@@ -21,7 +21,7 @@ variable {F : Type} [Field F] {Y : Var F} {σ : F →+* ℂ} {Δ Δ' : Y.Dv} {g 
   {y : Y.pts σ} {f f' : Y.FnC σ}
 
 /- English proof (translation)
-The claim follows from `have := ComplexPoints.surjective_specMap_field σ have : Smooth Y.str := SmoothOfRelativeDimension.smooth Y.dim _ have ⟨x, hx, hU⟩ := ComplexPoints.exists_geomPoint_mem Y.str (Spec.map (CommRingCat.ofHom σ)) U.isOpen.isLocallyClosed ⟨_, h⟩ ⟨⟨x, hx⟩, mem_ptsIn_iff.2 (hU _)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem_ptsIn {U : Y.X.Opens} (h : genericPoint Y.X ∈ U) :
     ∃ y : Y.pts σ, y ∈ ptsIn Y.str σ U :=
@@ -34,7 +34,7 @@ theorem exists_mem_ptsIn {U : Y.X.Opens} (h : genericPoint Y.X ∈ U) :
 instance nonempty_pts : Nonempty (Y.pts σ) := ⟨(exists_mem_ptsIn (U := ⊤) trivial).choose⟩
 
 /- English proof (translation)
-Distinguish the cases in `h : RegAt (base y) a`. Take `⟨U, hU, a, rfl⟩` from `h.exists_fnOf`. Rewrite using `[val_cx_fnOf hU, ratVal_fnOf (mem_ptsIn_iff.2 hU)]`. Rewrite using `[val_of_not_regC (mt regC_cx_iff.1 h)]`. Rewrite using `[ratVal, dif_neg (show ¬ RegAt (under y) a from h)]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_cx (a : Y.Fn) (y : Y.pts σ) : val y (Y.cx σ a) = ratVal a y := by
   by_cases h : RegAt (base y) a
@@ -47,7 +47,7 @@ variable (σ) in
 def eqnSet (Δ : Y.Dv) (g : Y.Fnˣ) : Set (Y.pts σ) := {y | Δ.IsEqn (base y) g}
 
 /- English proof (translation)
-The claim follows from `isOpen_iff_forall_mem_open.2 fun _ hy => have ⟨U, hU, h⟩ := IsEqn.exists_nhds hy ⟨ptsIn Y.str σ U, fun _ hz => h _ (mem_ptsIn_iff.1 hz), isOpen_ptsIn U, mem_ptsIn_iff.2 hU⟩`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_eqnSet (Δ : Y.Dv) (g : Y.Fnˣ) : IsOpen (eqnSet σ Δ g) :=
   isOpen_iff_forall_mem_open.2 fun _ hy =>
@@ -57,13 +57,13 @@ theorem isOpen_eqnSet (Δ : Y.Dv) (g : Y.Fnˣ) : IsOpen (eqnSet σ Δ g) :=
 def eqn (Δ : Y.Dv) (y : Y.pts σ) : Y.Fnˣ := (Δ.exists_isEqn (base y)).choose
 
 /- English proof (translation)
-The claim follows from `(Δ.exists_isEqn (base y)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mem_eqnSet (Δ : Y.Dv) (y : Y.pts σ) : y ∈ eqnSet σ Δ (eqn Δ y) :=
   (Δ.exists_isEqn (base y)).choose_spec
 
 /- English proof (translation)
-The claim follows from `not_not.symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_eqnSet_one : y ∈ eqnSet σ Δ 1 ↔ base y ∉ Y.supp Δ := not_not.symm
 
@@ -72,44 +72,44 @@ def fval (g : Y.Fnˣ) (f : Y.FnC σ) (y : Y.pts σ) : ℂ := val y (f * Y.cx σ 
 def tv (g g' : Y.Fnˣ) (y : Y.pts σ) : ℂ := val y (Y.cx σ (g' / g))
 
 /- English proof (translation)
-Simplify using `[fval]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fval_one (f : Y.FnC σ) (y : Y.pts σ) : fval 1 f y = val y f := by simp [fval]
 
 /- English proof (translation)
-Rewrite using `[fval, ← map_mul, val_cx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fval_cx (a : Y.Fn) (y : Y.pts σ) : fval g (Y.cx σ a) y = ratVal (a * (g : Y.Fn)) y := by
   rw [fval, ← map_mul, val_cx]
 
 /- English proof (translation)
-The claim follows from `val_cx_ne_zero_iff.2 ((IsEqn.iff_unitAt h).1 h')`.
+A detailed English derivation is pending.
 -/
 theorem tv_ne_zero (h : y ∈ eqnSet σ Δ g) (h' : y ∈ eqnSet σ Δ g') : tv g g' y ≠ 0 :=
   val_cx_ne_zero_iff.2 ((IsEqn.iff_unitAt h).1 h')
 
 /- English proof (translation)
-Rewrite using `[mul_left_comm, ← map_mul, div_mul_cancel₀ _ g.ne_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_cx_eq (f : Y.FnC σ) (g g' : Y.Fnˣ) :
     f * Y.cx σ g' = Y.cx σ (g' / g) * (f * Y.cx σ g) := by
   rw [mul_left_comm, ← map_mul, div_mul_cancel₀ _ g.ne_zero]
 
 /- English proof (translation)
-Rewrite using `[fval, mul_cx_eq f g g', val_unit_mul (tv_ne_zero h h')]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fval_trans (h : y ∈ eqnSet σ Δ g) (h' : y ∈ eqnSet σ Δ g') (f : Y.FnC σ) :
     fval g' f y = tv g g' y * fval g f y := by
   rw [fval, mul_cx_eq f g g', val_unit_mul (tv_ne_zero h h')]; rfl
 
 /- English proof (translation)
-Rewrite using `[tv, div_self g.ne_zero, map_one, hasVal_one.val_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tv_self (g : Y.Fnˣ) (y : Y.pts σ) : tv g g y = 1 := by
   rw [tv, div_self g.ne_zero, map_one, hasVal_one.val_eq]
 
 /- English proof (translation)
-Rewrite using `[tv, Units.val_mul, Units.val_mul, mul_div_mul_comm, map_mul, val_unit_mul (tv_ne_zero h h')]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tv_mul_mul {g₁ g₁' : Y.Fnˣ} (h : y ∈ eqnSet σ Δ g) (h' : y ∈ eqnSet σ Δ g') :
     tv (g * g₁) (g' * g₁') y = tv g g' y * tv g₁ g₁' y := by
@@ -117,7 +117,7 @@ theorem tv_mul_mul {g₁ g₁' : Y.Fnˣ} (h : y ∈ eqnSet σ Δ g) (h' : y ∈ 
   rfl
 
 /- English proof (translation)
-Rewrite using `[← tv_mul_mul h h', tv, tv, Units.val_mul, Units.val_mul, mul_comm (g : Y.Fn), mul_div_mul_left _ _ g'.ne_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tv_mul {g'' : Y.Fnˣ} (h : y ∈ eqnSet σ Δ g) (h' : y ∈ eqnSet σ Δ g') :
     tv g g' y * tv g' g'' y = tv g g'' y := by
@@ -125,7 +125,7 @@ theorem tv_mul {g'' : Y.Fnˣ} (h : y ∈ eqnSet σ Δ g) (h' : y ∈ eqnSet σ �
     mul_div_mul_left _ _ g'.ne_zero]
 
 /- English proof (translation)
-Rewrite using `[tv, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, ← div_pow, map_pow]`. Conclude with `((regC_of_val_ne_zero (tv_ne_zero h h')).hasVal.pow k).val_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tv_pow (h : y ∈ eqnSet σ Δ g) (h' : y ∈ eqnSet σ Δ g') (k : ℕ) :
     tv (g ^ k) (g' ^ k) y = tv g g' y ^ k := by
@@ -133,7 +133,7 @@ theorem tv_pow (h : y ∈ eqnSet σ Δ g) (h' : y ∈ eqnSet σ Δ g') (k : ℕ)
   exact ((regC_of_val_ne_zero (tv_ne_zero h h')).hasVal.pow k).val_eq
 
 /- English proof (translation)
-The claim follows from `(holoOn_val _).mono fun _ hz => regC_of_val_ne_zero (tv_ne_zero hz.1 hz.2)`.
+A detailed English derivation is pending.
 -/
 theorem holoOn_tv (Δ : Y.Dv) (g g' : Y.Fnˣ) :
     (Y.an σ).HoloOn (eqnSet σ Δ g ∩ eqnSet σ Δ g') (tv g g') :=
@@ -146,26 +146,26 @@ def SecZero (Δ : Y.Dv) (f : Y.FnC σ) (y : Y.pts σ) : Prop :=
   ∃ g, y ∈ eqnSet σ Δ g ∧ HasVal y (f * Y.cx σ g) 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨g', h', hf⟩ => mul_cx_eq f g' g ▸ (regC_mul_iff (tv_ne_zero h' h)).2 hf, fun hf => ⟨g, h, hf⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem secReg_iff (h : y ∈ eqnSet σ Δ g) : SecReg Δ f y ↔ RegC y (f * Y.cx σ g) :=
   ⟨fun ⟨g', h', hf⟩ => mul_cx_eq f g' g ▸ (regC_mul_iff (tv_ne_zero h' h)).2 hf, fun hf => ⟨g, h, hf⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨g', h', hf⟩ => ⟨⟨g', h', hf.regC⟩, by rw [fval_trans h' h, fval, hf.val_eq, mul_zero]⟩, fun hf => ⟨g, h, hf.2 ▸ ((secReg_iff h).1 hf.1).hasVal⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem secZero_iff (h : y ∈ eqnSet σ Δ g) : SecZero Δ f y ↔ SecReg Δ f y ∧ fval g f y = 0 :=
   ⟨fun ⟨g', h', hf⟩ => ⟨⟨g', h', hf.regC⟩, by rw [fval_trans h' h, fval, hf.val_eq, mul_zero]⟩,
     fun hf => ⟨g, h, hf.2 ▸ ((secReg_iff h).1 hf.1).hasVal⟩⟩
 
 /- English proof (translation)
-The claim follows from `exists_congr fun _ => and_congr_right fun _ => by rw [← map_mul, regC_cx_iff]`.
+A detailed English derivation is pending.
 -/
 theorem secReg_cx_iff {a : Y.Fn} : SecReg Δ (Y.cx σ a) y ↔ Δ.RegularAt (base y) a :=
   exists_congr fun _ => and_congr_right fun _ => by rw [← map_mul, regC_cx_iff]
 
 /- English proof (translation)
-Establish `h` using `mem_eqnSet Δ y`. Rewrite using `[secZero_iff h, secReg_cx_iff, vanishesAt_iff, IsEqn.generatesAt_iff h, fval, ← map_mul, ← val_cx_ne_zero_iff, not_not]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem secZero_cx_iff {a : Y.Fn} : SecZero Δ (Y.cx σ a) y ↔ Δ.VanishesAt (base y) a := by
   have h := mem_eqnSet Δ y
@@ -173,13 +173,13 @@ theorem secZero_cx_iff {a : Y.Fn} : SecZero Δ (Y.cx σ a) y ↔ Δ.VanishesAt (
     ← val_cx_ne_zero_iff, not_not]
 
 /- English proof (translation)
-The claim follows from `secReg_cx_iff.2 (mem_riemannRochSpace_iff_regularAt_everywhere.1 h _)`.
+A detailed English derivation is pending.
 -/
 theorem secReg_cx_of_mem {a : Y.Fn} (h : a ∈ Y.H0 Δ) (y : Y.pts σ) : SecReg Δ (Y.cx σ a) y :=
   secReg_cx_iff.2 (mem_riemannRochSpace_iff_regularAt_everywhere.1 h _)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_mul]`. Conclude with `HasVal.sum fun i _ => smul_mul_assoc (c i) (e i) _ ▸ ((secReg_iff h).1 (he i)).hasVal.smul _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasVal_sum_smul {ι : Type*} [Fintype ι] {e : ι → Y.FnC σ} (h : y ∈ eqnSet σ Δ g)
     (he : ∀ i, SecReg Δ (e i) y) (c : ι → ℂ) :
@@ -188,7 +188,7 @@ theorem hasVal_sum_smul {ι : Type*} [Fintype ι] {e : ι → Y.FnC σ} (h : y �
   exact HasVal.sum fun i _ => smul_mul_assoc (c i) (e i) _ ▸ ((secReg_iff h).1 (he i)).hasVal.smul _
 
 /- English proof (translation)
-The claim follows from `have ⟨g, hg, hf⟩ := h; have ⟨g', hg', hf'⟩ := h' ⟨g * g', IsEqn.add hg hg', by rw [Units.val_mul, map_mul, mul_mul_mul_comm]; exact (hf.hasVal.mul hf'.hasVal).regC⟩`.
+A detailed English derivation is pending.
 -/
 theorem SecReg.mul (h : SecReg Δ f y) (h' : SecReg Δ' f' y) : SecReg (Δ + Δ') (f * f') y :=
   have ⟨g, hg, hf⟩ := h; have ⟨g', hg', hf'⟩ := h'
@@ -196,7 +196,7 @@ theorem SecReg.mul (h : SecReg Δ f y) (h' : SecReg Δ' f' y) : SecReg (Δ + Δ'
     rw [Units.val_mul, map_mul, mul_mul_mul_comm]; exact (hf.hasVal.mul hf'.hasVal).regC⟩
 
 /- English proof (translation)
-Rewrite using `[fval, Units.val_mul, map_mul, mul_mul_mul_comm, val_mul ((secReg_iff hg).1 h) ((secReg_iff hg').1 h')]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fval_mul (hg : y ∈ eqnSet σ Δ g) (hg' : y ∈ eqnSet σ Δ' g') (h : SecReg Δ f y)
     (h' : SecReg Δ' f' y) : fval (g * g') (f * f') y = fval g f y * fval g' f' y := by
@@ -205,7 +205,7 @@ theorem fval_mul (hg : y ∈ eqnSet σ Δ g) (hg' : y ∈ eqnSet σ Δ' g') (h :
   rfl
 
 /- English proof (translation)
-Rewrite using `[fval, Units.val_pow_eq_pow_val, map_pow, ← mul_pow]`. Conclude with `(((secReg_iff hg).1 h).hasVal.pow k).val_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fval_pow (hg : y ∈ eqnSet σ Δ g) (h : SecReg Δ f y) (k : ℕ) :
     fval (g ^ k) (f ^ k) y = fval g f y ^ k := by
@@ -213,14 +213,14 @@ theorem fval_pow (hg : y ∈ eqnSet σ Δ g) (h : SecReg Δ f y) (k : ℕ) :
   exact (((secReg_iff hg).1 h).hasVal.pow k).val_eq
 
 /- English proof (translation)
-Simplify using `only [SecReg, setOf_exists]`. Conclude with `isOpen_iUnion fun g => (isOpen_eqnSet Δ g).inter (isOpen_regSet _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_secReg (Δ : Y.Dv) (f : Y.FnC σ) : IsOpen {y | SecReg Δ f y} := by
   simp only [SecReg, setOf_exists]
   exact isOpen_iUnion fun g => (isOpen_eqnSet Δ g).inter (isOpen_regSet _)
 
 /- English proof (translation)
-The claim follows from `(holoOn_val _).mono fun _ hz => (secReg_iff hz.2).1 hz.1`.
+A detailed English derivation is pending.
 -/
 theorem holoOn_fval (Δ : Y.Dv) (g : Y.Fnˣ) (f : Y.FnC σ) :
     (Y.an σ).HoloOn ({y | SecReg Δ f y} ∩ eqnSet σ Δ g) (fval g f) :=
@@ -247,7 +247,7 @@ def posSet : Set (Y.pts σ) := {y | 0 < m.h (eqn Δ y) y}
 variable {m} in
 
 /- English proof (translation)
-Use `tv_ne_zero (mem_eqnSet Δ y) hg` as an intermediate fact. Rewrite using `[posSet, mem_setOf_eq, m.trans _ g y (mem_eqnSet Δ y) hg, mul_pos_iff_of_pos_left (by positivity)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_posSet_iff (hg : y ∈ eqnSet σ Δ g) : y ∈ m.posSet ↔ 0 < m.h g y := by
   have := tv_ne_zero (mem_eqnSet Δ y) hg
@@ -256,7 +256,7 @@ theorem mem_posSet_iff (hg : y ∈ eqnSet σ Δ g) : y ∈ m.posSet ↔ 0 < m.h 
 variable {m} in
 
 /- English proof (translation)
-Rewrite using `[wt, neg_neg, Real.exp_log ((mem_posSet_iff hg).1 hy)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem h_eq_exp (hy : y ∈ m.posSet) (hg : y ∈ eqnSet σ Δ g) : m.h g y = Real.exp (-m.wt g y) := by
   rw [wt, neg_neg, Real.exp_log ((mem_posSet_iff hg).1 hy)]
@@ -264,7 +264,7 @@ theorem h_eq_exp (hy : y ∈ m.posSet) (hg : y ∈ eqnSet σ Δ g) : m.h g y = R
 variable {m} in
 
 /- English proof (translation)
-Use `tv_ne_zero hg hg'` as an intermediate fact. Rewrite using `[wt, wt, m.trans g g' y hg hg', Real.log_mul (by positivity) ((mem_posSet_iff hg').1 hy).ne']`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wt_trans (hy : y ∈ m.posSet) (hg : y ∈ eqnSet σ Δ g) (hg' : y ∈ eqnSet σ Δ g') :
     m.wt g' y = m.wt g y + Real.log (‖tv g g' y‖ ^ 2) := by
@@ -287,7 +287,7 @@ def ofCover : Met Y σ Δ where
 include sub compat in
 
 /- English proof (translation)
-The claim follows from `(compat i _ y hi (cover y).choose_spec).symm`.
+A detailed English derivation is pending.
 -/
 theorem ofCover_h {i : ι} (hi : y ∈ S i) : (ofCover (Δ := Δ) S e cover w hw).h (e i) y = w i y :=
   (compat i _ y hi (cover y).choose_spec).symm
@@ -302,7 +302,7 @@ def SmoothOn (m : Met Y σ Δ) (S : Set (Y.pts σ)) : Prop :=
 variable {m} in
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h0, fun g => AnRead.smoothOn_of_cover hT (fun y _ => hc y) fun i => AnRead.SmoothOn.congr (f := fun y => m.wt (e i) y + Real.log (‖tv (e i) g y‖ ^ 2)) (fun c => ((h i).mono (fun _ hz => ⟨hz.1.1, hz.2⟩) c).add (((holoOn_tv Δ (e i) g).mono fun _ hz => ⟨sub i hz.2, hz.1.2⟩).smoothO …`.
+Supply the required witnesses or components.
 -/
 theorem smoothOn_of_cover {S : Set (Y.pts σ)} (hS : IsOpen S) (h0 : S ⊆ m.posSet) {ι : Type}
     {T : ι → Set (Y.pts σ)} (hT : ∀ i, IsOpen (T i)) (hc : ∀ y, ∃ i, y ∈ T i) {e : ι → Y.Fnˣ}
@@ -320,7 +320,7 @@ end Met
 open Met
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(_, _), mem_eqnSet Δ y, mem_eqnSet Δ' y⟩`.
+Supply the required witnesses or components.
 -/
 theorem cover_pair (Δ Δ' : Y.Dv) (y : Y.pts σ) :
     ∃ i : Y.Fnˣ × Y.Fnˣ, y ∈ eqnSet σ Δ i.1 ∩ eqnSet σ Δ' i.2 :=
@@ -356,7 +356,7 @@ section OfWeight
 variable {L : LB Y.X} {r : L.ι → Y.Fnˣ}
 
 /- English proof (translation)
-Establish `h : base y ∈ L.U i ⊓ L.U j` using `⟨mem_ptsIn_iff.1 hi, mem_ptsIn_iff.1 hj⟩`. Rewrite using `[tv, hp.isRatSec i j (gen_mem h), mul_div_cancel_right₀ _ (r j).ne_zero, val_cx_fnOf h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tv_eq_gv (hp : Presents Δ L r) {i j : L.ι} (hi : y ∈ ptsIn Y.str σ (L.U i))
     (hj : y ∈ ptsIn Y.str σ (L.U j)) : tv (r j) (r i) y = gv Y.str σ L i j y := by
@@ -365,7 +365,7 @@ theorem tv_eq_gv (hp : Presents Δ L r) {i j : L.ι} (hi : y ∈ ptsIn Y.str σ 
   rfl
 
 /- English proof (translation)
-Introduce `_ h` and use `hp.isEqn i _ (mem_ptsIn_iff.1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ptsIn_subset_eqnSet (hp : Presents Δ L r) (i : L.ι) :
     ptsIn Y.str σ (L.U i) ⊆ eqnSet σ Δ (r i) := fun _ h => hp.isEqn i _ (mem_ptsIn_iff.1 h)
@@ -377,7 +377,7 @@ def ofWeight (_ : Presents Δ L r) (φ : Weight Y.str σ L) : Met Y σ Δ :=
     (fun i y => Real.exp (-φ.φ i y)) fun _ _ => (Real.exp_pos _).le
 
 /- English proof (translation)
-The claim follows from `ofCover_h _ _ (ptsIn_subset_eqnSet hp) _ _ _ (fun i j y hi hj => by have := normSq_mul_exp (gv_ne_zero hj hi) 1 (φ.φ i y) rw [φ.trans j i y hj hi, sub_add_cancel, mul_one, norm_one, one_pow, one_mul] at this rw [tv_eq_gv hp hj hi, φ.trans j i y hj hi, this]) hi`.
+A detailed English derivation is pending.
 -/
 theorem ofWeight_h (hp : Presents Δ L r) (φ : Weight Y.str σ L) {i : L.ι}
     (hi : y ∈ ptsIn Y.str σ (L.U i)) :
@@ -400,7 +400,7 @@ end OfWeight
 variable {m : Met Y σ Δ} {m' : Met Y σ Δ'}
 
 /- English proof (translation)
-The claim follows from `ofCover_h (Δ := Δ + Δ') _ (fun i : Y.Fnˣ × Y.Fnˣ => i.1 * i.2) (fun _ _ h => IsEqn.add h.1 h.2) _ _ _ (fun i j y hi hj => by rw [m.trans _ _ y hi.1 hj.1, m'.trans _ _ y hi.2 hj.2, tv_mul_mul hi.1 hj.1, norm_mul]; ring) (i := (g, g')) ⟨hg, hg'⟩`.
+A detailed English derivation is pending.
 -/
 theorem mAdd_h (hg : y ∈ eqnSet σ Δ g) (hg' : y ∈ eqnSet σ Δ' g') :
     (mAdd Y σ Δ Δ' m m').h (g * g') y = m.h g y * m'.h g' y :=
@@ -410,20 +410,20 @@ theorem mAdd_h (hg : y ∈ eqnSet σ Δ g) (hg' : y ∈ eqnSet σ Δ' g') :
     (i := (g, g')) ⟨hg, hg'⟩
 
 /- English proof (translation)
-The claim follows from `ofCover_h (Δ := k • Δ) _ (· ^ k) (fun _ _ h => IsEqn.nsmul h k) _ _ _ (fun i j y hi hj => by rw [m.trans _ _ y hi hj, tv_pow hi hj, norm_pow]; ring) hg`.
+A detailed English derivation is pending.
 -/
 theorem mPow_h (hg : y ∈ eqnSet σ Δ g) (k : ℕ) : (mPow Y σ Δ k m).h (g ^ k) y = m.h g y ^ k :=
   ofCover_h (Δ := k • Δ) _ (· ^ k) (fun _ _ h => IsEqn.nsmul h k) _ _ _
     (fun i j y hi hj => by rw [m.trans _ _ y hi hj, tv_pow hi hj, norm_pow]; ring) hg
 
 /- English proof (translation)
-The claim follows from `if_pos he`.
+A detailed English derivation is pending.
 -/
 theorem fsMet_h {κ : Type} [Fintype κ] {e : κ → Y.FnC σ} (he : ∀ k, SecReg Δ (e k) y) (g : Y.Fnˣ) :
     (fsMet Y σ Δ e).h g y = (∑ k, ‖fval g (e k) y‖ ^ 2)⁻¹ := if_pos he
 
 /- English proof (translation)
-Distinguish the cases in `he : ∀ k, SecReg Δ (e k) y`. Simplify using `only [posSet, mem_setOf_eq, fsMet_h he, inv_pos, secZero_iff (mem_eqnSet Δ y), he, implies_true, true_and]`. Rewrite using `[Finset.sum_pos_iff_of_nonneg fun _ _ => sq_nonneg _]`. Simplify using `[sq_pos_iff]`. Simplify using `[posSet, fsMet, he]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mem_posSet_fsMet {κ : Type} [Fintype κ] {e : κ → Y.FnC σ} : y ∈ (fsMet Y σ Δ e).posSet ↔
     (∀ k, SecReg Δ (e k) y) ∧ ∃ k, ¬ SecZero Δ (e k) y := by
@@ -435,7 +435,7 @@ theorem mem_posSet_fsMet {κ : Type} [Fintype κ] {e : κ → Y.FnC σ} : y ∈ 
   · simp [posSet, fsMet, he]
 
 /- English proof (translation)
-Use extensionality with `y`. Establish `h` using `mem_eqnSet Δ y`. Establish `h'` using `mem_eqnSet Δ' y`. Rewrite using `[mem_posSet_iff (IsEqn.add h h'), mAdd_h h h', mem_inter_iff, mem_posSet_iff h, mem_posSet_iff h']`. Conclude with `⟨fun e => ⟨pos_of_mul_pos_left e (m'.nonneg _ _), pos_of_mul_pos_right e (m.nonneg _ _)⟩, fun e => mul_pos e.1 e.2⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem posSet_mAdd : (mAdd Y σ Δ Δ' m m').posSet = m.posSet ∩ m'.posSet := by
   ext y
@@ -445,7 +445,7 @@ theorem posSet_mAdd : (mAdd Y σ Δ Δ' m m').posSet = m.posSet ∩ m'.posSet :=
   exact ⟨fun e => ⟨pos_of_mul_pos_left e (m'.nonneg _ _), pos_of_mul_pos_right e (m.nonneg _ _)⟩, fun e => mul_pos e.1 e.2⟩
 
 /- English proof (translation)
-Introduce `y hy` and use `by have h := mem_eqnSet Δ y rw [mem_posSet_iff (IsEqn.nsmul h k), mPow_h h] exact pow_pos hy k`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem posSet_subset_mPow (k : ℕ) : m.posSet ⊆ (mPow Y σ Δ k m).posSet := fun y hy => by
   have h := mem_eqnSet Δ y
@@ -453,7 +453,7 @@ theorem posSet_subset_mPow (k : ℕ) : m.posSet ⊆ (mPow Y σ Δ k m).posSet :=
   exact pow_pos hy k
 
 /- English proof (translation)
-Rewrite using `[wt, mAdd_h hg hg', Real.log_mul ((mem_posSet_iff hg).1 hy).ne' ((mem_posSet_iff hg').1 hy').ne', neg_add, wt, wt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_mAdd (hy : y ∈ m.posSet) (hy' : y ∈ m'.posSet) (hg : y ∈ eqnSet σ Δ g)
     (hg' : y ∈ eqnSet σ Δ' g') : (mAdd Y σ Δ Δ' m m').wt (g * g') y = m.wt g y + m'.wt g' y := by
@@ -461,14 +461,14 @@ theorem wt_mAdd (hy : y ∈ m.posSet) (hy' : y ∈ m'.posSet) (hg : y ∈ eqnSet
     neg_add, wt, wt]
 
 /- English proof (translation)
-Rewrite using `[wt, mPow_h hg, Real.log_pow, wt, mul_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_mPow (hg : y ∈ eqnSet σ Δ g) (k : ℕ) :
     (mPow Y σ Δ k m).wt (g ^ k) y = k * m.wt g y := by
   rw [wt, mPow_h hg, Real.log_pow, wt, mul_neg]
 
 /- English proof (translation)
-Rewrite using `[wt, fsMet_h he, Real.log_inv, neg_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wt_fsMet {κ : Type} [Fintype κ] {e : κ → Y.FnC σ} (he : ∀ k, SecReg Δ (e k) y) (g : Y.Fnˣ) :
     (fsMet Y σ Δ e).wt g y = Real.log (∑ k, ‖fval g (e k) y‖ ^ 2) := by
@@ -484,50 +484,50 @@ variable (Y σ Δ) in
 def pnK (m : Met Y σ Δ) (f : Y.FnC σ) (y : Y.pts σ) : ℝ := pn Y σ Δ m f y
 
 /- English proof (translation)
-Rewrite using `[pn, fval_trans hg (mem_eqnSet Δ y), m.trans g _ y hg (mem_eqnSet Δ y), norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pn_eq (hg : y ∈ eqnSet σ Δ g) : pn Y σ Δ m f y = ‖fval g f y‖ ^ 2 * m.h g y := by
   rw [pn, fval_trans hg (mem_eqnSet Δ y), m.trans g _ y hg (mem_eqnSet Δ y), norm_mul]; ring
 
 /- English proof (translation)
-Rewrite using `[pn_eq hg, h_eq_exp hy hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pn_eq_exp (hy : y ∈ m.posSet) (hg : y ∈ eqnSet σ Δ g) :
     pn Y σ Δ m f y = ‖fval g f y‖ ^ 2 * Real.exp (-m.wt g y) := by rw [pn_eq hg, h_eq_exp hy hg]
 
 /- English proof (translation)
-Rewrite using `[pn_eq_exp hy (mem_eqnSet_one.2 h), fval_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pn_of_notMem_supp (hy : y ∈ m.posSet) (h : base y ∉ Y.supp Δ) :
     pn Y σ Δ m f y = ‖val y f‖ ^ 2 * Real.exp (-m.wt 1 y) := by
   rw [pn_eq_exp hy (mem_eqnSet_one.2 h), fval_one]
 
 /- English proof (translation)
-The claim follows from `pn_of_notMem_supp hy h`.
+A detailed English derivation is pending.
 -/
 theorem pnK_of_notMem_supp (hy : y ∈ m.posSet) (h : base y ∉ Y.supp Δ) :
     pnK Y σ Δ m f y = ‖val y f‖ ^ 2 * Real.exp (-m.wt 1 y) := pn_of_notMem_supp hy h
 
 /- English proof (translation)
-The claim follows from `mul_nonneg (sq_nonneg _) (m.nonneg _ _)`.
+A detailed English derivation is pending.
 -/
 theorem pn_nonneg : 0 ≤ pn Y σ Δ m f y := mul_nonneg (sq_nonneg _) (m.nonneg _ _)
 
 /- English proof (translation)
-Rewrite using `[pn_eq hg, fval, ← map_mul, Units.inv_mul, map_one, hasVal_one.val_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pn_frame (hg : y ∈ eqnSet σ Δ g) : pn Y σ Δ m (Y.cx σ (g⁻¹ : Y.Fnˣ)) y = m.h g y := by
   rw [pn_eq hg, fval, ← map_mul, Units.inv_mul, map_one, hasVal_one.val_eq]; simp
 
 /- English proof (translation)
-Simplify using `[pn, secZero_iff (mem_eqnSet Δ y), hf, (show 0 < m.h (eqn Δ y) y from hy).ne']`.
+Simplify using the standard rewrite rules.
 -/
 theorem pn_eq_zero_iff (hy : y ∈ m.posSet) (hf : SecReg Δ f y) :
     pn Y σ Δ m f y = 0 ↔ SecZero Δ f y := by
   simp [pn, secZero_iff (mem_eqnSet Δ y), hf, (show 0 < m.h (eqn Δ y) y from hy).ne']
 
 /- English proof (translation)
-Rewrite using `[pn, pn, fval, mul_assoc, val_mul ha ((secReg_iff (mem_eqnSet Δ y)).1 hf), norm_mul, fval]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pn_mul {a : Y.FnC σ} (ha : RegC y a) (hf : SecReg Δ f y) :
     pn Y σ Δ m (a * f) y = ‖val y a‖ ^ 2 * pn Y σ Δ m f y := by
@@ -535,14 +535,14 @@ theorem pn_mul {a : Y.FnC σ} (ha : RegC y a) (hf : SecReg Δ f y) :
   ring
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, pn_mul (hasVal_algebraMap c).regC hf, (hasVal_algebraMap c).val_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pn_smul (c : ℂ) (hf : SecReg Δ f y) :
     pn Y σ Δ m (c • f) y = ‖c‖ ^ 2 * pn Y σ Δ m f y := by
   rw [Algebra.smul_def, pn_mul (hasVal_algebraMap c).regC hf, (hasVal_algebraMap c).val_eq]
 
 /- English proof (translation)
-Establish `h` using `mem_eqnSet Δ y`. Establish `h'` using `mem_eqnSet Δ' y`. Rewrite using `[pn_eq (IsEqn.add h h'), mAdd_h h h', fval_mul h h' hf hf', pn, pn, norm_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pn_mAdd (hf : SecReg Δ f y) (hf' : SecReg Δ' f' y) :
     pn Y σ _ (mAdd Y σ Δ Δ' m m') (f * f') y = pn Y σ Δ m f y * pn Y σ Δ' m' f' y := by
@@ -551,7 +551,7 @@ theorem pn_mAdd (hf : SecReg Δ f y) (hf' : SecReg Δ' f' y) :
   rw [pn_eq (IsEqn.add h h'), mAdd_h h h', fval_mul h h' hf hf', pn, pn, norm_mul]; ring
 
 /- English proof (translation)
-Establish `h` using `mem_eqnSet Δ y`. Rewrite using `[pn_eq (IsEqn.nsmul h k), mPow_h h, fval_pow h hf, pn, norm_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pn_mPow (hf : SecReg Δ f y) (k : ℕ) :
     pn Y σ _ (mPow Y σ Δ k m) (f ^ k) y = pn Y σ Δ m f y ^ k := by
@@ -559,7 +559,7 @@ theorem pn_mPow (hf : SecReg Δ f y) (k : ℕ) :
   rw [pn_eq (IsEqn.nsmul h k), mPow_h h, fval_pow h hf, pn, norm_pow]; ring
 
 /- English proof (translation)
-Rewrite using `[pn_eq hg, fsMet_h he, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pn_fsMet {κ : Type} [Fintype κ] {e : κ → Y.FnC σ} (he : ∀ k, SecReg Δ (e k) y)
     (hg : y ∈ eqnSet σ Δ g) :
@@ -567,7 +567,7 @@ theorem pn_fsMet {κ : Type} [Fintype κ] {e : κ → Y.FnC σ} (he : ∀ k, Sec
   rw [pn_eq hg, fsMet_h he, div_eq_mul_inv]
 
 /- English proof (translation)
-Establish `h` using `mem_eqnSet Δ y`. Rewrite using `[pn_fsMet he h, fval, (hasVal_sum_smul h he c).val_eq]`. Use `div_le_of_le_mul₀ (by positivity) (by positivity) (le_trans ?_ (Finset.sum_mul_sq_le_sq_mul_sq _ _ _))` and prove the remaining obligations. Simplify using `only [← norm_mul]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (norm_sum_le _ _) 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pn_fsMet_le {κ : Type} [Fintype κ] {e : κ → Y.FnC σ} (he : ∀ k, SecReg Δ (e k) y)
     (c : κ → ℂ) : pn Y σ Δ (fsMet Y σ Δ e) (∑ k, c k • e k) y ≤ ∑ k, ‖c k‖ ^ 2 := by
@@ -579,7 +579,7 @@ theorem pn_fsMet_le {κ : Type} [Fintype κ] {e : κ → Y.FnC σ} (he : ∀ k, 
   exact pow_le_pow_left₀ (norm_nonneg _) (norm_sum_le _ _) 2
 
 /- English proof (translation)
-Establish `he` using `(mem_posSet_fsMet.1 hy).1`. Establish `h : 0 < (fsMet Y σ Δ e).h (eqn Δ y) y` using `hy`. Rewrite `h` using `[fsMet_h he, inv_pos]`. Simplify using `only [pn_fsMet he (mem_eqnSet Δ y), ← Finset.sum_div, div_self h.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_pn_fsMet {κ : Type} [Fintype κ] {e : κ → Y.FnC σ} (hy : y ∈ (fsMet Y σ Δ e).posSet) :
     ∑ k, pn Y σ Δ (fsMet Y σ Δ e) (e k) y = 1 := by
@@ -589,7 +589,7 @@ theorem sum_pn_fsMet {κ : Type} [Fintype κ] {e : κ → Y.FnC σ} (hy : y ∈ 
   simp only [pn_fsMet he (mem_eqnSet Δ y), ← Finset.sum_div, div_self h.ne']
 
 /- English proof (translation)
-Rewrite using `[pn_eq (ptsIn_subset_eqnSet hp i hi), ofWeight_h hp φ hi]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pn_ofWeight {L : LB Y.X} {r : L.ι → Y.Fnˣ} (hp : Presents Δ L r) (φ : Weight Y.str σ L)
     {i : L.ι} (hi : y ∈ ptsIn Y.str σ (L.U i)) : pn Y σ Δ (ofWeight Y σ Δ L r hp φ) f y =
@@ -597,7 +597,7 @@ theorem pn_ofWeight {L : LB Y.X} {r : L.ι → Y.Fnˣ} (hp : Presents Δ L r) (�
   rw [pn_eq (ptsIn_subset_eqnSet hp i hi), ofWeight_h hp φ hi]
 
 /- English proof (translation)
-Establish `hi` using `mem_pick φ.isLB y`. Rewrite using `[pn_ofWeight hp φ hi, fval, ← map_mul, hp.rat_mul s _ (gen_mem (mem_ptsIn_iff.1 hi)), val_cx_fnOf (mem_ptsIn_iff.1 hi)]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pn_ofWeight_rat {L : LB Y.X} {r : L.ι → Y.Fnˣ} (hp : Presents Δ L r) (φ : Weight Y.str σ L)
     (s : L.Sec) (y : Y.pts σ) : pn Y σ Δ (ofWeight Y σ Δ L r hp φ) (Y.cx σ (hp.rat s)) y =
@@ -612,12 +612,12 @@ variable (Y σ Δ) in
 def mSmooth (m : Met Y σ Δ) : Prop := m.SmoothOn univ
 
 /- English proof (translation)
-The claim follows from `univ_subset_iff.1 h.1`.
+A detailed English derivation is pending.
 -/
 theorem mSmooth.posSet_eq (h : mSmooth Y σ Δ m) : m.posSet = univ := univ_subset_iff.1 h.1
 
 /- English proof (translation)
-The claim follows from `smoothOn_of_cover hS ((subset_inter h.1 h'.1).trans posSet_mAdd.ge) (fun _ => (isOpen_eqnSet _ _).inter (isOpen_eqnSet _ _)) (cover_pair Δ Δ') (e := fun i => i.1 * i.2) (fun _ _ hz => IsEqn.add hz.1 hz.2) fun i => AnRead.SmoothOn.congr (f := fun y => m.wt i.1 y + m'.wt i.2 y) (fu …`.
+A detailed English derivation is pending.
 -/
 theorem Met.SmoothOn.mAdd {S : Set (Y.pts σ)} (hS : IsOpen S) (h : m.SmoothOn S) (h' : m'.SmoothOn S) :
     (mAdd Y σ Δ Δ' m m').SmoothOn S :=
@@ -630,7 +630,7 @@ theorem Met.SmoothOn.mAdd {S : Set (Y.pts σ)} (hS : IsOpen S) (h : m.SmoothOn S
       fun _ hz => wt_mAdd (h.1 hz.1) (h'.1 hz.1) hz.2.1 hz.2.2
 
 /- English proof (translation)
-The claim follows from `smoothOn_of_cover hS (h.1.trans (posSet_subset_mPow k)) (isOpen_eqnSet Δ) (fun y => ⟨_, mem_eqnSet Δ y⟩) (e := (· ^ k)) (fun _ _ hz => IsEqn.nsmul hz k) fun g => AnRead.SmoothOn.congr (f := fun y => k * m.wt g y) (fun c => contDiffOn_const.mul (h.2 g c)) fun _ hz => wt_mPow hz.2 …`.
+A detailed English derivation is pending.
 -/
 theorem Met.SmoothOn.mPow {S : Set (Y.pts σ)} (hS : IsOpen S) (h : m.SmoothOn S) (k : ℕ) :
     (mPow Y σ Δ k m).SmoothOn S :=
@@ -640,7 +640,7 @@ theorem Met.SmoothOn.mPow {S : Set (Y.pts σ)} (hS : IsOpen S) (h : m.SmoothOn S
       fun _ hz => wt_mPow hz.2 k
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, fun g => have he (z) (hz : z ∈ S) := (mem_posSet_fsMet.1 (h hz)).1 AnRead.SmoothOn.congr (f := fun y => Real.log (∑ k, ‖fval g (e k) y‖ ^ 2)) (fun c => (ContDiffOn.sum (f := fun k v => ‖fval g (e k) (((Y.an σ).chart c).e.symm v)‖ ^ 2) fun k _ => (contDiffOn_real (isOpen_over …`.
+Supply the required witnesses or components.
 -/
 theorem smoothOn_fsMet {κ : Type} [Fintype κ] (e : κ → Y.FnC σ) {S : Set (Y.pts σ)} (hS : IsOpen S)
     (h : S ⊆ (fsMet Y σ Δ e).posSet) : (fsMet Y σ Δ e).SmoothOn S := ⟨h, fun g =>
@@ -656,7 +656,7 @@ theorem smoothOn_fsMet {κ : Type} [Fintype κ] (e : κ → Y.FnC σ) {S : Set (
     fun z hz => wt_fsMet (he z hz.1) g⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h y => mem_posSet_fsMet.1 (h.1 (mem_univ y)), fun h => smoothOn_fsMet e isOpen_univ fun y _ => mem_posSet_fsMet.2 (h y)⟩`.
+Supply the required witnesses or components.
 -/
 theorem mSmooth_fsMet_iff {κ : Type} [Fintype κ] {e : κ → Y.FnC σ} : mSmooth Y σ Δ (fsMet Y σ Δ e) ↔
     ∀ y, (∀ k, SecReg Δ (e k) y) ∧ ∃ k, ¬ SecZero Δ (e k) y :=
@@ -664,9 +664,9 @@ theorem mSmooth_fsMet_iff {κ : Type} [Fintype κ] {e : κ → Y.FnC σ} : mSmoo
     fun h => smoothOn_fsMet e isOpen_univ fun y _ => mem_posSet_fsMet.2 (h y)⟩
 
 /- English proof (translation)
-Establish `h' : Δ.BasePointFree (range b)` using `h`. Rewrite using `[mSmooth_fsMet_iff]`. Introduce `y`. Simplify using `only [secReg_cx_iff, secZero_cx_iff, vanishesAt_iff]`. Use `⟨fun k => mem_sections.1 (h'.mem _ ⟨k, rfl⟩) _, by_contra fun H => h'.not_isBasePoint (base y) ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `(not_not.1 fun h => H ⟨k, h⟩).2`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mSmooth_fsMet_cx {κ : Type} [Fintype κ] {b : κ → Y.Fn} (h : Y.bpf Δ (range b)) :
     mSmooth Y σ Δ (fsMet Y σ Δ fun k => Y.cx σ (b k)) := by
@@ -679,9 +679,9 @@ theorem mSmooth_fsMet_cx {κ : Type} [Fintype κ] {b : κ → Y.Fn} (h : Y.bpf �
   exact (not_not.1 fun h => H ⟨k, h⟩).2
 
 /- English proof (translation)
-Establish `e (i) (y) (hi : y ∈ ptsIn Y.str σ (L.U i)) : (ofWeight Y σ Δ L r hp φ).wt (r i) y = φ.φ i y`. Rewrite using `[wt, ofWeight_h hp φ hi, Real.log_exp, neg_neg]`. Use `⟨fun h i => ((h.2 (r i)).mono fun y hy => ⟨trivial, ptsIn_subset_eqnSet hp i hy⟩).congr fun y hy => (e i y hy).symm, fun h => smoothOn_of_cover isOpen_univ (fun y _ => ?_) (fun i => isOpen_ptsIn (L.U i)) (fun y => ⟨_, mem_pick φ.isLB y⟩) (ptsIn_subset_eqnSet hp) fun i => ((h i).m …` and prove the remaining obligations. Establish `hi` using `mem_pick φ.isLB y`. Rewrite using `[mem_posSet_iff (ptsIn_subset_eqnSet hp _ hi), ofWeight_h hp φ hi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.exp_pos _`.
+A detailed English derivation is pending.
 -/
 theorem mSmooth_ofWeight_iff {L : LB Y.X} {r : L.ι → Y.Fnˣ} (hp : Presents Δ L r)
     (φ : Weight Y.str σ L) : mSmooth Y σ Δ (ofWeight Y σ Δ L r hp φ) ↔ φ.IsSmooth (Y.an σ) := by
@@ -696,14 +696,14 @@ theorem mSmooth_ofWeight_iff {L : LB Y.X} {r : L.ι → Y.Fnˣ} (hp : Presents �
   exact Real.exp_pos _
 
 /- English proof (translation)
-Introduce `i` and use `(h.2 (r i)).mono fun _ hy => ⟨trivial, ptsIn_subset_eqnSet hp i hy⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mSmooth.isSmooth_toWeight (h : mSmooth Y σ Δ m) {L : LB Y.X} {r : L.ι → Y.Fnˣ}
     (hp : Presents Δ L r) : (m.toWeight h.posSet_eq hp).IsSmooth (Y.an σ) := fun i =>
   (h.2 (r i)).mono fun _ hy => ⟨trivial, ptsIn_subset_eqnSet hp i hy⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `f y`. Establish `hi` using `mem_pick hp.isLB y`. Rewrite using `[pn_ofWeight hp _ hi, pn_eq_exp (hm ▸ mem_univ y) (ptsIn_subset_eqnSet hp _ hi)]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pn_ofWeight_toWeight (hm : m.posSet = univ) {L : LB Y.X} {r : L.ι → Y.Fnˣ}
     (hp : Presents Δ L r) : pn Y σ Δ (ofWeight Y σ Δ L r hp (m.toWeight hm hp)) = pn Y σ Δ m := by
@@ -713,7 +713,7 @@ theorem pn_ofWeight_toWeight (hm : m.posSet = univ) {L : LB Y.X} {r : L.ι → Y
   rfl
 
 /- English proof (translation)
-Introduce `y hy` and use `by have ho := hS.inter (isOpen_eqnSet Δ (eqn Δ y)) have h₁ := ((holoOn_fval Δ (eqn Δ y) f).mono fun z hz => ⟨hf z hz.1, hz.2⟩).continuousOn ho refine ((((h₁.norm.pow 2).mul ((h.2 _).continuousOn ho).neg.rexp).congr fun z hz => pn_eq_exp (h.1 hz.1) hz.2).continuousAt (ho.mem_nhds …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Met.SmoothOn.continuousOn_pn {S : Set (Y.pts σ)} (hS : IsOpen S) (h : m.SmoothOn S)
     (hf : ∀ y ∈ S, SecReg Δ f y) : ContinuousOn (pn Y σ Δ m f) S := fun y hy => by
@@ -726,7 +726,7 @@ def omegaCoeff (c : AlgChart Y.str σ Y.dim) : Y.Fnˣ :=
   frameRat (CanonLB.all Y.str Y.dim).bundle (baseChart _ _) (gen_mem_baseOpen _ _) ⟨c.U, _, c.isFrame⟩
 
 /- English proof (translation)
-The claim follows from `(formOf_eq_ratio_smul h (gen_mem_baseOpen _ _) c.isFrame (isFrame_baseFrame _ _)).trans (congrArg (· • _) (val_frameRat (L := (CanonLB.all Y.str Y.dim).bundle) _ (gen_mem_baseOpen _ _) ⟨c.U, _, c.isFrame⟩ h).symm)`.
+A detailed English derivation is pending.
 -/
 theorem omega0_eq (c : AlgChart Y.str σ Y.dim) (h : genericPoint Y.X ∈ c.U) :
     Y.omega0 = (omegaCoeff c : Y.Fn) • formOf c.U h (dOn Y.str c.x) :=
@@ -735,14 +735,14 @@ theorem omega0_eq (c : AlgChart Y.str σ Y.dim) (h : genericPoint Y.X ∈ c.U) :
       ⟨c.U, _, c.isFrame⟩ h).symm)
 
 /- English proof (translation)
-The claim follows from `ptsIn_subset_eqnSet (presents_canonical Y.str Y.dim) ⟨c.U, _, c.isFrame⟩ (c.source_subset hy)`.
+A detailed English derivation is pending.
 -/
 theorem mem_eqnSet_omegaCoeff (c : AlgChart Y.str σ Y.dim) (hy : y ∈ c.e.source) :
     y ∈ eqnSet σ Y.KY (omegaCoeff c) :=
   ptsIn_subset_eqnSet (presents_canonical Y.str Y.dim) ⟨c.U, _, c.isFrame⟩ (c.source_subset hy)
 
 /- English proof (translation)
-The claim follows from `(tv_eq_gv (presents_canonical Y.str Y.dim) (i := ⟨c.U, _, c.isFrame⟩) (j := ⟨c'.U, _, c'.isFrame⟩) (c.source_subset hy) (c'.source_subset hy')).trans ((congrFun (gv_canon _ _ _) y).trans (rv_chart c c' hy hy'))`.
+A detailed English derivation is pending.
 -/
 theorem tv_omegaCoeff (c c' : AlgChart Y.str σ Y.dim) (hy : y ∈ c.e.source) (hy' : y ∈ c'.e.source) :
     tv (omegaCoeff c') (omegaCoeff c) y = transDet c.e c'.e y :=
@@ -757,11 +757,11 @@ def vol : Measure (Y.pts σ) :=
     fval (frameRat _ (baseChart _ _) (gen_mem_baseOpen _ _) a.1) 1
 
 /- English proof (translation)
-Rewrite using `[vol, AnRead.topMeasure_apply _ _ _ _ c hA h]`. Use `setLIntegral_congr_fun (measurableSet_image c.e hA h) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Establish `hp` using `presents_canonical Y.str Y.dim`. Establish `ha` using `mem_pick (CanonLB.all Y.str Y.dim).isLB y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `fval_trans (ptsIn_subset_eqnSet hp _ ha) (mem_eqnSet_omegaCoeff c (h hy)) 1`. Rewrite `e` using `[fval, one_mul]`. Establish `e₁ : tv _ (omegaCoeff c) y = rv σ c.isFrame ((CanonLB.all Y.str Y.dim).isFrame _) y` using `(tv_eq_gv hp (i := ⟨c.U, _, c.isFrame⟩) (c.source_subset (h hy)) ha).trans (congrFun (gv_canon _ _ _) y)`. Use `beta_reduce`. Rewrite using `[c.e.left_inv (h hy)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [e, e₁, AlgChart.topDens, AlgChart.topCoeff, Weight.ofFun, neg_zero, Real.exp_zero, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem vol_apply (c : AlgChart Y.str σ Y.dim) {A : Set (Y.pts σ)} (hA : MeasurableSet A)
     (h : A ⊆ c.e.source) : vol Y σ A =
@@ -796,11 +796,11 @@ def mPsh (m : Met Y σ Δ) (ψ : Y.pts σ → ℝ) : Prop :=
       PosCurrent (chartDom c Δ g) fun v => m.wt g (c.e.symm v) + ψ (c.e.symm v)
 
 /- English proof (translation)
-Use `⟨fun v hv => ?_, fun χ h₁ h₂ h₃ h₄ ξ => (h.2 χ h₁ h₂ h₃ h₄ ξ).trans_eq (integral_congr_ae ?_)⟩` and prove the remaining obligations. Take `⟨s, hs, hi⟩` from `h.1 v hv`. Use `⟨s ∩ O, inter_mem hs self_mem_nhdsWithin, (hi.mono_set inter_subset_left).congr ?_⟩` and prove the remaining obligations. Conclude with `ae_restrict_of_ae_restrict_of_subset inter_subset_right ((ae_restrict_iff' hO.measurableSet).2 e)`. Use `filter_upwards [e] with v hv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hvO : v ∈ O`. Rewrite using `[hv hvO]`. Establish `: (fun w => (χ w : ℂ)) =ᶠ[𝓝 v] fun _ => 0` using `(notMem_tsupport_iff_eventuallyEq.1 fun h => hvO (h₃ h)).mono fun w hw => by simp [hw]`. Rewrite using `[ReciprocityTheory.L2DbarEstimates.leviV_congr this]`. Establish `h0 (k) : ReciprocityTheory.L2DbarEstimates.wdb D k (fun _ => 0) = fun _ => 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `fun _ => by simp [ReciprocityTheory.L2DbarEstimates.wdb]`. Simplify using `[leviV, h0, ReciprocityTheory.L2DbarEstimates.wd]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ProjVar.PosCurrent.congr {D : ℕ} {O : Set (V D)} {u u' : V D → ℝ} (hO : IsOpen O)
     (h : PosCurrent O u) (e : ∀ᵐ v, v ∈ O → u v = u' v) : PosCurrent O u' := by
@@ -820,7 +820,7 @@ theorem _root_.GlobalTheory.ProjVar.PosCurrent.congr {D : ℕ} {O : Set (V D)} {
       simp [leviV, h0, ReciprocityTheory.L2DbarEstimates.wd]
 
 /- English proof (translation)
-Introduce `c g` and use `⟨(h c g).1, (h c g).2.congr (isOpen_over _ (isOpen_eqnSet Δ g)) ((e c).mono fun _ hv hv' => by rw [hv hv'.1])⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mPsh.congr {ψ ψ' : Y.pts σ → ℝ} (h : mPsh Y σ Δ m ψ)
     (e : ∀ c : AlgChart Y.str σ Y.dim, ∀ᵐ v, v ∈ c.e.target → ψ (c.e.symm v) = ψ' (c.e.symm v)) :
@@ -833,7 +833,7 @@ def jac (c : AlgChart Y.str σ Y.dim) (g : Y.Fnˣ) (s : Fin Y.dim → Y.FnC σ) 
 def chartAt (y : Y.pts σ) : AlgChart Y.str σ Y.dim := (AlgChart.exists_mem_source y).choose
 
 /- English proof (translation)
-The claim follows from `(AlgChart.exists_mem_source y).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem mem_chartAt (y : Y.pts σ) : y ∈ (chartAt y).e.source :=
   (AlgChart.exists_mem_source y).choose_spec
@@ -841,7 +841,7 @@ theorem mem_chartAt (y : Y.pts σ) : y ∈ (chartAt y).e.source :=
 variable {s : Fin Y.dim → Y.FnC σ} {c c' : AlgChart Y.str σ Y.dim}
 
 /- English proof (translation)
-The claim follows from `differentiableAt_euclidean.2 fun i => have hS := (isOpen_secReg Δ (s i)).inter (isOpen_eqnSet Δ g) ((holoOn_fval Δ g (s i)).chart hS c).differentiableAt ((isOpen_over _ hS).mem_nhds (mem_over _ hc ⟨hs i, hg⟩))`.
+A detailed English derivation is pending.
 -/
 theorem differentiableAt_fval (hc : y ∈ c.e.source) (hg : y ∈ eqnSet σ Δ g)
     (hs : ∀ i, SecReg Δ (s i) y) : DifferentiableAt ℂ
@@ -852,9 +852,9 @@ theorem differentiableAt_fval (hc : y ∈ c.e.source) (hg : y ∈ eqnSet σ Δ g
       ((isOpen_over _ hS).mem_nhds (mem_over _ hc ⟨hs i, hg⟩))
 
 /- English proof (translation)
-Establish `hn` using `(isOpen_over c.e c'.e.open_source).mem_nhds (mem_over c.e hc hc')`. Establish `e : (c'.e ∘ c.e.symm) (c.e y) = c'.e y` using `congrArg c'.e (c.e.left_inv hc)`. Establish `h₁` using `(e ▸ differentiableAt_fval hc' hg hs).hasFDerivAt.comp _ ((c.holo_trans c').differentiableAt hn).hasFDerivAt`. Rewrite using `[jac, (h₁.congr_of_eventuallyEq (eventually_of_mem hn fun v hv => by`. Simplify using `only [Function.comp_apply, c'.e.left_inv hv.2])).fderiv, e, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `LinearMap.det_comp _ _`.
+A detailed English derivation is pending.
 -/
 theorem jac_chart (hc : y ∈ c.e.source) (hc' : y ∈ c'.e.source) (hg : y ∈ eqnSet σ Δ g)
     (hs : ∀ i, SecReg Δ (s i) y) : jac c g s y = transDet c.e c'.e y * jac c' g s y := by
@@ -867,11 +867,9 @@ theorem jac_chart (hc : y ∈ c.e.source) (hc' : y ∈ c'.e.source) (hg : y ∈ 
   exact LinearMap.det_comp _ _
 
 /- English proof (translation)
-Establish `hS` using `(isOpen_eqnSet (σ := σ) Δ g).inter (isOpen_eqnSet Δ g')`. Establish `hn` using `(isOpen_over c.e hS).mem_nhds (mem_over c.e hc ⟨hg, hg'⟩)`. Establish `h₁` using `(((holoOn_tv Δ g g').chart hS c).differentiableAt hn).hasFDerivAt.smul (differentiableAt_fval hc hg fun i => ((secZero_iff hg).1 (hs i)).1).hasFDerivAt`. Establish `h0 : (WithLp.toLp 2 fun i => fval g (s i) (c.e.symm (c.e y)) : V Y.dim) = 0`. Use extensionality with `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[c.e.left_inv hc]`. Conclude with `((secZero_iff hg).1 (hs i)).2`. Rewrite `h₁` using `[h0, ContinuousLinearMap.smulRight_zero, add_zero, Function.comp_apply, c.e.left_inv hc]`. Rewrite using `[jac, (h₁.congr_of_eventuallyEq (eventually_of_mem hn fun v hv => by`. Use extensionality with `i`.
-
-Conclude with `fval_trans hv.2.1 hv.2.2 _)).fderiv]`. Conclude with `(LinearMap.det_smul _ _).trans (by rw [finrank_euclideanSpace_fin]; rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem jac_frame (hc : y ∈ c.e.source) (hg : y ∈ eqnSet σ Δ g) (hg' : y ∈ eqnSet σ Δ g')
     (hs : ∀ i, SecZero Δ (s i) y) : jac c g' s y = tv g g' y ^ Y.dim * jac c g s y := by
@@ -893,7 +891,7 @@ def redZero (s : Fin Y.dim → Y.FnC σ) (S : Set (Y.pts σ)) : Prop :=
     ∀ y ∈ S, jac (chartAt y) (eqn Δ y) s y ≠ 0
 
 /- English proof (translation)
-Establish `h` using `mem_eqnSet_omegaCoeff c hc`. Establish `h'` using `mem_eqnSet_omegaCoeff _ (mem_chartAt y)`. Rewrite using `[jac_frame (mem_chartAt y) hg (mem_eqnSet Δ y) hs, jac_chart (mem_chartAt y) hc hg fun i => ((secZero_iff hg).1 (hs i)).1, ← tv_omegaCoeff _ _ (mem_chartAt y) hc]`. Simplify using `[tv_ne_zero h h', tv_ne_zero hg (mem_eqnSet Δ y)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem jac_ne_zero_iff (hc : y ∈ c.e.source) (hg : y ∈ eqnSet σ Δ g)
     (hs : ∀ i, SecZero Δ (s i) y) : jac (chartAt y) (eqn Δ y) s y ≠ 0 ↔ jac c g s y ≠ 0 := by
@@ -913,7 +911,7 @@ variable (Y σ Δ) in
 def agreeOn (G G' : Y.FnC σ) (S : Set (Y.pts σ)) : Prop := ∀ y ∈ S, SecZero (Y.KY + Δ) (G - G') y
 
 /- English proof (translation)
-Use `forall₂_congr fun y hy => ?_` and prove the remaining obligations. Establish `hg` using `mem_eqnSet (Y.KY + Δ) y`. Establish `e` using `((secReg_iff hg).1 (h y hy)).hasVal.sub ((secReg_iff hg).1 (h' y hy)).hasVal`. Rewrite `e` using `[← sub_mul]`. Rewrite using `[secZero_iff hg, and_iff_right ⟨_, hg, e.regC⟩, fval, e.val_eq, sub_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -935,9 +933,9 @@ def resNorm (m : Met Y σ Δ) (Δ' : Y.Dv) (m' : Met Y σ Δ') (s : Fin Y.dim �
     (‖jac (chartAt y) (eqn Δ' y) s y‖ ^ 2 * m'.h (eqn Δ' y) y ^ Y.dim)
 
 /- English proof (translation)
-Establish `h` using `mem_eqnSet_omegaCoeff c hc`. Establish `h'` using `mem_eqnSet_omegaCoeff _ (mem_chartAt y)`. Establish `h₁` using `tv_ne_zero h h'`. Rewrite using `[resNorm, jac_frame (mem_chartAt y) hg' (mem_eqnSet Δ' y) hs, jac_chart (mem_chartAt y) hc hg' fun i => ((secZero_iff hg').1 (hs i)).1, ← tv_omegaCoeff _ _ (mem_chartAt y) hc, fval_trans (IsEqn.add h hg) (IsEqn.add h' (mem_eqnSet Δ y)), tv_mul_mul h h', m.trans g _ y hg (mem_eqnS …`. Use `Eq.trans ?_ (mul_div_mul_left _ _ (pow_ne_zero 2 (norm_ne_zero_iff.2 h₁)))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [norm_mul, norm_pow]`. Apply the tactic sequence `congr 1 <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem resNorm_eq (hc : y ∈ c.e.source) (hg : y ∈ eqnSet σ Δ g) (hg' : y ∈ eqnSet σ Δ' g')
     (hs : ∀ i, SecZero Δ' (s i) y) (G : Y.FnC σ) : resNorm Y σ Δ m Δ' m' s G y =
@@ -955,7 +953,7 @@ theorem resNorm_eq (hc : y ∈ c.e.source) (hg : y ∈ eqnSet σ Δ g) (hg' : y 
   congr 1 <;> ring
 
 /- English proof (translation)
-The claim follows from `div_nonneg (mul_nonneg (sq_nonneg _) (m.nonneg _ _)) (mul_nonneg (sq_nonneg _) (pow_nonneg (m'.nonneg _ _) _))`.
+A detailed English derivation is pending.
 -/
 theorem resNorm_nonneg (G : Y.FnC σ) : 0 ≤ resNorm Y σ Δ m Δ' m' s G y :=
   div_nonneg (mul_nonneg (sq_nonneg _) (m.nonneg _ _))
@@ -973,12 +971,12 @@ def projMet : (proj F n).Met σ (projHyp F n) :=
   fsMet _ σ _ fun j => (proj F n).cx σ ((proj F n).coordFn (proj_gen_mem F n 0) j)
 
 /- English proof (translation)
-The claim follows from `mSmooth_fsMet_cx ((proj F n).bpf_hyp _)`.
+A detailed English derivation is pending.
 -/
 theorem mSmooth_projMet : mSmooth _ σ _ (projMet F σ n) := mSmooth_fsMet_cx ((proj F n).bpf_hyp _)
 
 /- English proof (translation)
-Establish `hy` using `(mSmooth_projMet F σ n).1 (mem_univ y)`. Establish `he : (projHyp F n).Eff` using `(proj F n).eff_hyp _`. Use `⟨sum_pn_fsMet hy, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_one ((proj F n).cx σ), pn_eq_zero_iff hy (secReg_cx_iff.2 (he _)), secZero_cx_iff]`. Conclude with `he.mem_supp_iff.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example (y : (proj F n).pts σ) :
     ∑ j, pn _ σ _ (projMet F σ n) ((proj F n).cx σ ((proj F n).coordFn (proj_gen_mem F n 0) j)) y = 1 ∧
@@ -990,9 +988,9 @@ example (y : (proj F n).pts σ) :
   exact he.mem_supp_iff.symm
 
 /- English proof (translation)
-Take `⟨y⟩` from `nonempty_pts (Y := Y) (σ := σ)`. Establish `key (z) : z ∉ (fsMet Y σ Δ fun _ : Unit => 0).posSet` using `fun h =>`. Establish `⟨_, hk⟩` using `(mem_posSet_fsMet.1 h).2`. Use `hk ⟨_, mem_eqnSet Δ z, by rw [zero_mul]; exact hasVal_zero⟩`. Use `⟨fun h => key y (h.1 trivial), fun h => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ho : IsOpen (chartDom (chartAt y) Δ (eqn Δ y))` using `isOpen_over _ (isOpen_eqnSet _ _)`. Conclude with `(ho.measure_pos volume ⟨_, mem_over _ (mem_chartAt y) (mem_eqnSet Δ y)⟩).ne' (measure_eq_zero_iff_ae_notMem.2 ((h _ _).1.mono fun v hv hv' => key _ (hv hv')))`.
+A detailed English derivation is pending.
 -/
 example (Y : Var F) (Δ : Y.Dv) (ψ : Y.pts σ → ℝ) : ¬ mSmooth Y σ Δ (fsMet Y σ Δ fun _ : Unit => 0) ∧
     ¬ mPsh Y σ Δ (fsMet Y σ Δ fun _ : Unit => 0) ψ := by
@@ -1006,9 +1004,9 @@ example (Y : Var F) (Δ : Y.Dv) (ψ : Y.pts σ → ℝ) : ¬ mSmooth Y σ Δ (fs
     (measure_eq_zero_iff_ae_notMem.2 ((h _ _).1.mono fun v hv hv' => key _ (hv hv')))
 
 /- English proof (translation)
-Establish `hj (c g z) : Var.jac (Y` using `proj F 0) (σ := σ) c g s z = 1 :=`. Establish `: Subsingleton (V (proj F 0).dim)` using `inferInstanceAs (Subsingleton (V 0))`. Use the proof step `LinearMap.det_eq_one_of_subsingleton _`. Use `⟨⟨fun i => i.elim0, (eq_univ_of_forall fun _ i => i.elim0).symm, fun z _ => hj _ _ z ▸ one_ne_zero⟩, ?_⟩` and prove the remaining obligations. Use `(congrArg (fun j => _ / (‖j‖ ^ 2 * _)) (hj _ _ y)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[proj_dim]`.
+A detailed English derivation is pending.
 -/
 example (Δ Δ' : (proj F 0).Dv) (m : (proj F 0).Met σ Δ) (m' : (proj F 0).Met σ Δ')
     (s : Fin 0 → (proj F 0).FnC σ) (G : (proj F 0).FnC σ) (y : (proj F 0).pts σ) :
@@ -1023,7 +1021,7 @@ example (Δ Δ' : (proj F 0).Dv) (m : (proj F 0).Met σ Δ) (m' : (proj F 0).Met
   simp [proj_dim]
 
 /- English proof (translation)
-Introduce `c g` and use `by have : Subsingleton (V (proj F 0).dim) := inferInstanceAs (Subsingleton (V 0)) have : IsEmpty (Fin (proj F 0).dim) := inferInstanceAs (IsEmpty (Fin 0)) exact ⟨.of_forall fun _ _ => hm ▸ mem_univ _, (continuous_of_discreteTopology.locallyIntegrable).locallyIntegrableOn _, fun _ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (Δ : (proj F 0).Dv) (m : (proj F 0).Met σ Δ) (hm : m.posSet = univ)
     (ψ : (proj F 0).pts σ → ℝ) : mPsh _ σ Δ m ψ := fun c g => by
@@ -1034,7 +1032,7 @@ example (Δ : (proj F 0).Dv) (m : (proj F 0).Met σ Δ) (hm : m.posSet = univ)
     fun _ _ _ _ _ _ => by simp [leviV]⟩
 
 /- English proof (translation)
-Rewrite using `[Var.jac, ← c.transDet_self hy, transDet]`. Use `congrArg _ (EventuallyEq.fderiv_eq (eventually_of_mem (c.e.open_target.mem_nhds (c.e.map_source hy)) fun v hv => ?_))` and prove the remaining obligations. Use extensionality with `i`. Establish `hv'` using `c.e.map_target hv`. Conclude with `((fval_one _ _).trans (val_cx_fnOf (mem_ptsIn_iff.1 (c.source_subset hv')) h _)).trans (c.apply_eq _ hv' i).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jac_coord {Y : Var F} (c : AlgChart Y.str σ Y.dim) {y : Y.pts σ} (hy : y ∈ c.e.source)
     (h : genericPoint Y.X ∈ c.U) : Var.jac c 1 (fun i => Y.cx σ (fnOf c.U h (c.x i))) y = 1 := by

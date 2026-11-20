@@ -32,20 +32,18 @@ theorem ev_ind (S : Finset (HeightOneSpectrum (𝓞 F))) (u : HeightOneSpectrum 
     evalV F u (ind S) = if u ∈ S then 1 else 0 := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext h)`.
+A detailed English derivation is pending.
 -/
 theorem fin_ext {a b : Af F} (h : ∀ u, evalV F u a = evalV F u b) : a = b := Subtype.ext (funext h)
 
 /- English proof (translation)
-Set `T : Set (HeightOneSpectrum (𝓞 F))` to `{u | α u ∈ (u.adicCompletionIntegers F : Set (u.adicCompletion F))}`. Establish `hT : cofinite ≤ 𝓟 T` using `le_principal_iff.2 α.2`. Set `f : Finset (HeightOneSpectrum (𝓞 F)) → RestrictedProduct (fun u : HeightOneSpectrum (𝓞 F) => u.adicCompletion F) (fun u => (u.adicCompletionIntegers F : Set (u.adicCompletion F))) (𝓟 T)` to `fun S => ⟨fun u => if u ∈ S then α u else 0, fun u hu => by`. Distinguish the cases in `h : u ∈ S`. Simplify using `only [Set.mem_setOf_eq, h, if_true]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `hu`. Simplify using `only [Set.mem_setOf_eq, h, if_false]`. Conclude with `zero_mem _⟩`. Set `a : RestrictedProduct (fun u : HeightOneSpectrum (𝓞 F) => u.adicCompletion F) (fun u => (u.adicCompletionIntegers F : Set (u.adicCompletion F))) (𝓟 T)` to `⟨fun u => α u, fun u hu => hu⟩`. Establish `hf : Tendsto f atTop (𝓝 a)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[RestrictedProduct.isEmbedding_coe_of_principal.tendsto_nhds_iff, tendsto_pi_nhds]`. Introduce `u`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop ({u} : Finset _)] with S hS`. Conclude with `(if_pos (hS (Finset.mem_singleton_self u))).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h2` using `((RestrictedProduct.continuous_inclusion hT).tendsto a).comp hf`. Use `Tendsto.congr (fun S => fin_ext fun u => ?_) h2` and prove the remaining obligations. Rewrite using `[map_mul, ev_ind]`. Express the relevant statement in the definitionally equal form `(if u ∈ S then α u else 0) = _`. Use `split_ifs`.
-
-Conclude with `(one_mul _).symm`. Conclude with `(zero_mul _).symm`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_ind_mul (α : Af F) :
     Tendsto (fun S : Finset (HeightOneSpectrum (𝓞 F)) => ind S * α) atTop (𝓝 α) := by
@@ -79,7 +77,7 @@ theorem tendsto_ind_mul (α : Af F) :
 def eps (S : Finset (HeightOneSpectrum (𝓞 F))) : AF F := pairA F 1 (ind S)
 
 /- English proof (translation)
-Use `(tendsto_const_nhds (x := a.1)).prodMk_nhds (tendsto_ind_mul a.2)` as an intermediate fact. Use `Tendsto.congr (f₁ := fun S => ((a.1, ind S * a.2) : Ainf F × Af F)) (fun S => ?_) this` and prove the remaining obligations. Conclude with `Prod.ext (one_mul _).symm rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsto_eps_mul (a : AF F) :
     Tendsto (fun S : Finset (HeightOneSpectrum (𝓞 F)) => eps S * a) atTop (𝓝 a) := by
@@ -88,30 +86,30 @@ theorem tendsto_eps_mul (a : AF F) :
   exact Prod.ext (one_mul _).symm rfl
 
 /- English proof (translation)
-The claim follows from `fin_ext fun u => by rw [map_mul, ev_ind]; split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem ind_mul_self (S : Finset (HeightOneSpectrum (𝓞 F))) : ind S * ind S = ind S :=
   fin_ext fun u => by rw [map_mul, ev_ind]; split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `Prod.ext (one_mul _) (ind_mul_self S)`.
+A detailed English derivation is pending.
 -/
 theorem eps_mul_self (S : Finset (HeightOneSpectrum (𝓞 F))) : eps S * eps S = eps S :=
   Prod.ext (one_mul _) (ind_mul_self S)
 
 /- English proof (translation)
-The claim follows from `Prod.ext (mul_zero _) (ind_mul_self _)`.
+A detailed English derivation is pending.
 -/
 theorem pl_mul_self (v : HeightOneSpectrum (𝓞 F)) :
     pairA F 0 (ind {v}) * pairA F 0 (ind {v}) = pairA F 0 (ind {v}) :=
   Prod.ext (mul_zero _) (ind_mul_self _)
 
 /- English proof (translation)
-Use `⟨Prod.ext (mul_zero _) (fin_ext fun u => ?_), Prod.ext ?_ (fin_ext fun u => ?_)⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV F u (ind (S.cons v hv) * ind {v}) = evalV F u (ind {v})`. Rewrite using `[map_mul, ev_ind, ev_ind]`. Apply the tactic sequence `by_cases h : u = v <;> simp [h]`. Express the relevant statement in the definitionally equal form `(1 : Ainf F) * (1 - 0) = 1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `evalV F u (ind (S.cons v hv) * (1 - ind {v})) = evalV F u (ind S)`. Rewrite using `[map_mul, map_sub, map_one, ev_ind, ev_ind, ev_ind]`. Distinguish the cases in `h : u = v`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hv]`. Establish `hm : u ∈ S.cons v hv ↔ u ∈ S` using `by rw [Finset.mem_cons]; exact or_iff_right h`. Distinguish the cases in `h' : u ∈ S`. Rewrite using `[if_pos (hm.2 h'), if_pos h', if_neg (by simpa using h)]; simp`. Rewrite using `[if_neg (fun x => h' (hm.1 x)), if_neg h', zero_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eps_cons (S : Finset (HeightOneSpectrum (𝓞 F))) (v : HeightOneSpectrum (𝓞 F)) (hv : v ∉ S) :
     eps (S.cons v hv) * pairA F 0 (ind {v}) = pairA F 0 (ind {v}) ∧
@@ -134,11 +132,9 @@ theorem eps_cons (S : Finset (HeightOneSpectrum (𝓞 F))) (v : HeightOneSpectru
 variable {E : Type} [Field E] [Algebra F E]
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Use `haveI : ContinuousSMul (AF F) (AF F ⊗[F] E) := IsModuleTopology.toContinuousSMul (AF F) _`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simpa only [mul_zero] using tendsto_const_nhds`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `tmul a e`. Establish `h` using `(tendsto_eps_mul a).smul_const ((1 : AF F) ⊗ₜ[F] e)`. Simplify using `only [TensorProduct.smul_tmul', smul_eq_mul, mul_one] at h`. Use `h.congr fun S => ?_` and prove the remaining obligations. Rewrite using `[← Algebra.smul_def, TensorProduct.smul_tmul', smul_eq_mul]`.
-
-Consider the case `add x y hx hy => simpa only [mul_add] using hx.add hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tendsto_eps_tens (x : AF F ⊗[F] E) :
     Tendsto (fun S : Finset (HeightOneSpectrum (𝓞 F)) => algebraMap (AF F) (AF F ⊗[F] E) (eps S) * x)
@@ -156,9 +152,9 @@ theorem tendsto_eps_tens (x : AF F ⊗[F] E) :
   | add x y hx hy => simpa only [mul_add] using hx.add hy
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (AF F) (AF F ⊗[F] E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Use `tendsto_pi_nhds.2 fun i => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations. Establish `h` using `(tendsto_eps_tens ((M - 1) i j)).add_const ((1 : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) i j)`. Rewrite `h` using `[Matrix.sub_apply, sub_add_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `h.congr fun S => ?_` and prove the remaining obligations. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tendsto_mix {n : ℕ} (M : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) :
     Tendsto (fun S : Finset (HeightOneSpectrum (𝓞 F)) => algebraMap (AF F) (AF F ⊗[F] E) (eps S) • M +
@@ -175,7 +171,7 @@ theorem tendsto_mix {n : ℕ} (M : Matrix (Fin n) (Fin n) (AF F ⊗[F] E)) :
 end Adele
 
 /- English proof (translation)
-Use `(IsEmbedding.subtypeVal.tendsto_nhds_iff).2 ?_` and prove the remaining obligations. Use `(Units.isEmbedding_embedProduct.tendsto_nhds_iff).2 ?_` and prove the remaining obligations. Conclude with `h1.prodMk_nhds ((MulOpposite.continuous_op.tendsto _).comp h2)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tendsto_HA {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) {ι : Type} {l : Filter ι}
@@ -189,11 +185,11 @@ theorem tendsto_HA {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [Co
 variable {D : D7}
 
 /- English proof (translation)
-Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Establish `hf : finPart D (algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) (eps ∅)) = 0`. Establish `h0 : ind (∅ : Finset (HeightOneSpectrum (𝓞 D.host.F))) = 0` using `fin_ext fun u => by`. Rewrite using `[ev_ind, map_zero, if_neg (Finset.notMem_empty u)]`. Express the relevant statement in the definitionally equal form `ind ∅ ⊗ₜ[D.host.F] (1 : D.host.E) = 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h0, TensorProduct.zero_tmul]`. Establish `h` using `congrArg (finPart D) (hg i j)`. Rewrite `h` using `[map_mul, hf, zero_mul, Matrix.sub_apply, map_sub, eq_comm, sub_eq_zero]`. Express the relevant statement in the definitionally equal form `finPart D (Formalism.L2.Theta.mt V g i j) = (1 : Matrix _ _ _) i j`. Rewrite using `[h, Matrix.one_apply, Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Conclude with `map_one _`. Conclude with `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem mem_GinfC (V : HSp D) {g : GA D V} (hg : SuppPl (eps ∅) V g) : g ∈ GinfC V := by
   refine Units.ext (Matrix.ext fun i j => ?_)
@@ -211,27 +207,27 @@ theorem mem_GinfC (V : HSp D) {g : GA D V} (hg : SuppPl (eps ∅) V g) : g ∈ G
   · exact map_zero _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ind {v}, rfl, by rw [ev_ind, if_pos (Finset.mem_singleton_self v)], fun w hw => by rw [ev_ind, if_neg (by simpa using hw)]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isPlaceIdem (v : HeightOneSpectrum (𝓞 D.host.F)) : IsPlaceIdem D v (pairA D.host.F 0 (ind {v})) :=
   ⟨ind {v}, rfl, by rw [ev_ind, if_pos (Finset.mem_singleton_self v)],
     fun w hw => by rw [ev_ind, if_neg (by simpa using hw)]⟩
 
 /- English proof (translation)
-Rewrite using `[← map_mul, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem alg_idem {a : AF D.host.F} (h : a * a = a) :
     algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) a * algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) a =
       algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) a := by rw [← map_mul, h]
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.cons_induction with`. Consider the case `empty => exact fun g hg => hinf g (mem_GinfC V hg)`. Consider the case `cons v S hv ih`. Introduce `g hg`. Take `⟨h1, h2⟩` from `eps_cons S v hv`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1'` using `congrArg (algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D)) h1`. Establish `h2'` using `congrArg (algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D)) h2`. Rewrite `h1'`, `h2'` using `[map_mul]`. Rewrite `h2'` using `[map_sub, map_one]`. Take `⟨g₁, g₂, s₁, s₂, e⟩` from `exists_split V (alg_idem (pl_mul_self v)) (cA_algebraMap _) g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `t₁ : g₁ ∈ suppGroup V (algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) (eps (S.cons v hv)))` using `fun i j => by`. Rewrite using `[← s₁ i j, ← mul_assoc, h1']`. Establish `t : g ∈ suppGroup V (algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) (eps (S.cons v hv)))` using `hg`. Establish `t₂ : g₂ ∈ suppGroup V (algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) (eps (S.cons v hv)))`. Use `mul_mem (inv_mem t₁) t` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e, inv_mul_cancel_left]`. Then use the resulting hypothesis. Establish `u₂ : SuppPl (eps S) V g₂` using `fun i j => by`. Rewrite using `[← h2', mul_assoc, s₂ i j, t₂ i j]`. Rewrite using `[e, map_mul, hpl v g₁ s₁, ih g₂ u₂, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_eps (V : HSp D) (ν : GA D V →* Circle) (hinf : ∀ g ∈ GinfC V, ν g = 1)
     (hpl : ∀ v g, SuppPl (pairA D.host.F 0 (ind {v})) V g → ν g = 1) (S : Finset (HeightOneSpectrum (𝓞 D.host.F))) :
@@ -257,9 +253,9 @@ theorem triv_eps (V : HSp D) (ν : GA D V →* Circle) (hinf : ∀ g ∈ GinfC V
     rw [e, map_mul, hpl v g₁ s₁, ih g₂ u₂, mul_one]
 
 /- English proof (translation)
-Use `choose p hp using fun S : Finset (HeightOneSpectrum (𝓞 D.host.F)) => exists_piece V (alg_idem (eps_mul_self S)) (cA_algebraMap _) g`. Use `choose q hq using fun S : Finset (HeightOneSpectrum (𝓞 D.host.F)) => exists_piece V (alg_idem (eps_mul_self S)) (cA_algebraMap _) g⁻¹`. Establish `hpq : ∀ S, (p S)⁻¹ = q S` using `fun S => by`. Use `inv_eq_of_mul_eq_one_right (mt_inj V ?_)` and prove the remaining obligations. Rewrite using `[mt_mul, hp, hq, mix_mul (alg_idem (eps_mul_self S)), ← mt_mul, mul_inv_cancel, mt_one, one_mul, mix_self]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨p, fun S => (suppF_iff V _ (p S)).2 (smul_mix (alg_idem (eps_mul_self S)) (hp S)), ?_⟩` and prove the remaining obligations. Establish `a1 : Tendsto (fun S => Formalism.L2.Theta.mt V (p S)) atTop (𝓝 (Formalism.L2.Theta.mt V g))` using `(tendsto_mix _).congr fun S => (hp S).symm`. Establish `a2 : Tendsto (fun S => Formalism.L2.Theta.mt V (p S)⁻¹) atTop (𝓝 (Formalism.L2.Theta.mt V g⁻¹))` using `(tendsto_mix _).congr fun S => by rw [hpq, hq]`. Conclude with `tendsto_HA _ _ _ a1 a2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_approx (V : HSp D) (g : GA D V) :
     ∃ p : Finset (HeightOneSpectrum (𝓞 D.host.F)) → GA D V, (∀ S, SuppPl (eps S) V (p S)) ∧ Tendsto p atTop (𝓝 g) := by
@@ -278,9 +274,9 @@ theorem exists_approx (V : HSp D) (g : GA D V) :
   exact tendsto_HA _ _ _ a1 a2
 
 /- English proof (translation)
-Introduce `D V ν hν hinf hs hn g`. Establish `hpl : ∀ v g, SuppPl (pairA D.host.F 0 (ind {v})) V g → ν g = 1` using `fun v g hg => by`. Distinguish the cases in `h : ∃ e, IsSplitIdem D e ∧ e + cA D e = algebraMap (AF D.host.F) (Formalism.L2.Theta.AE D) (pairA D.host.F 0 (ind {v}))`. Take `⟨e, he, h⟩` from `h`. Conclude with `hs e he g fun i j => by rw [h]; exact hg i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hn v _ ⟨isPlaceIdem v, h⟩ g hg`. Take `⟨p, hp', hlim⟩` from `exists_approx V g`. Establish `hp : ∀ S, ν (p S) = 1` using `fun S => triv_eps V ν hinf hpl S _ (hp' S)`. Establish `h1` using `(hν.tendsto g).comp hlim`. Conclude with `tendsto_nhds_unique h1 (tendsto_const_nhds.congr fun S => (hp S).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_local : ∀ (D : D7) (V : HSp D) (ν : GA D V →* Circle), Continuous ν → (∀ g ∈ GinfC V, ν g = 1) → (∀ e, IsSplitIdem D e → ∀ g, SuppAt e V g → ν g = 1) → (∀ v ε, NonSplitAt D v ε → ∀ g, SuppPl ε V g → ν g = 1) → ∀ g, ν g = 1 := by
   intro D V ν hν hinf hs hn g

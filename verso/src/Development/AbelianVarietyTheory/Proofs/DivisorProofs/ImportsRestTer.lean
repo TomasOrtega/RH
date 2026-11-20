@@ -8,17 +8,15 @@ attribute [local instance] CategoryTheory.Over.cartesianMonoidalCategory
 namespace GlobalTheory.UpperBoundDescent
 
 /- English proof (translation)
-Introduce `p _ T T' φ hφ hfin hp OE _ _ dd FT actT h C _ _ _ v O _ _ hv _ _ _ _ iota hloc w _ t hb hf r W hW j`. Establish `hinj : Function.Injective ((algebraMap O C).comp iota)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Assume the negation of the conclusion as `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hp0 : (p : T.V) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible T.V`. Take `⟨n, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible h0 hϖ`. Take `⟨m, u', hm⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hp0 hϖ`. Establish `h1 : ((algebraMap O C).comp iota) ϖ = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `ha` using `[map_mul, map_pow, mul_eq_zero]`. Break down `ha with ha | ha` into its components or cases. Conclude with `absurd ha (u.isUnit.map _).ne_zero`. Conclude with `pow_eq_zero_iff'.1 ha |>.1`. Establish `hm0 : m ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hp (by rw [hm]; simp)`. Establish `h2` using `congrArg ((algebraMap O C).comp iota) hm`. Rewrite `h2` using `[map_natCast, map_mul, map_pow, h1, zero_pow hm0, mul_zero]`. Conclude with `(Fact.out : p.Prime).ne_zero (by exact_mod_cast h2)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Take `⟨ι', hl, hc⟩` from `GlobalTheory.CharDepth.exists_local_extension_of_integral v hv φ hφ hfin.to_isIntegral iota hinj`. Establish `key : ∀ {σ : Type} (f : MvPowerSeries σ T.V), MvPowerSeries.map ι' (MvPowerSeries.map φ f) = MvPowerSeries.map iota f`. Introduce `σ f`. Use extensionality with `n`. Simplify using `only [MvPowerSeries.coeff_map, ← hc, RingHom.comp_apply]`.
-
-Use `h C v O hv ι' hl w t hb hf r W (by simpa only [key] using hW) j` as an intermediate fact. Simplify `this` using `only [key]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem desc : ∀ (p : ℕ) [Fact p.Prime] (T T' : CDVR) (φ : T.V →+* T'.V), Function.Injective φ → φ.Finite → ¬ IsUnit (p : T.V) → ∀ (OE : Type) [CommRing OE] [StarRing OE] (dd : ℕ) (FT : Fin dd → PS T.V 2 dd) (actT : OE → Fin dd → PS T.V 1 dd), UpFBr.UpFLaw p T'.V OE dd (fun i => MvPowerSeries.map φ (FT i)) (fun a i => MvPowerSeries.map φ (actT a i)) → UpFBr.UpFLaw p T.V OE dd FT actT := by
   intro p _ T T' φ hφ hfin hp OE _ _ dd FT actT h C _ _ _ v O _ _ hv _ _ _ _ iota hloc w _ t hb hf r W hW j

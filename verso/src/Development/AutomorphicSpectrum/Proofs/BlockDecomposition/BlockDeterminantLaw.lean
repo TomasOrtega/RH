@@ -13,7 +13,7 @@ open PositivityTheory.RgEis
 variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_subtype (Finset.univ.filter (· ∈ s)) (by simp) f]`. Conclude with `(Finset.sum_filter_of_ne fun m _ hm => by_contra fun hs => hm (h m hs)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_eq_sum_set {S : Type} [AddCommMonoid S] (s : Set ι) [Fintype s] (f : ι → S)
     (h : ∀ m, m ∉ s → f m = 0) : ∑ m, f m = ∑ m : s, f m := by
@@ -22,7 +22,7 @@ theorem sum_eq_sum_set {S : Type} [AddCommMonoid S] (s : Set ι) [Fintype s] (f 
   exact (Finset.sum_filter_of_ne fun m _ hm => by_contra fun hs => hm (h m hs)).symm
 
 /- English proof (translation)
-Use extensionality with `r c`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Conclude with `sum_eq_sum_set s _ fun m hm => by rw [hy m hm c c.2, mul_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blk_mul {S : Type} [CommRing S] (s : Set ι) [Fintype s] (x y : Matrix ι ι S)
     (hy : ∀ r, r ∉ s → ∀ c ∈ s, y r c = 0) :
@@ -35,7 +35,7 @@ theorem blk_mul {S : Type} [CommRing S] (s : Set ι) [Fintype s] (x y : Matrix �
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[Units.val_mul, blk_mul s _ _ fun r hr c hc => (hq r hr c hc).1, Matrix.det_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_blk_mul (s : Set ι) (p : GL ι R) {q : GL ι R} (hq : q ∈ stab R s) :
     (((p * q : GL ι R) : Matrix ι ι R).submatrix (Subtype.val : s → ι) Subtype.val).det =
@@ -45,7 +45,7 @@ theorem det_blk_mul (s : Set ι) (p : GL ι R) {q : GL ι R} (hq : q ∈ stab R 
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[← det_blk_mul s p (inv_mem hp), mul_inv_cancel, Units.val_one, Matrix.submatrix_one _ Subtype.val_injective, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem det_blk_mul_inv (s : Set ι) {p : GL ι R} (hp : p ∈ stab R s) :
     ((p : Matrix ι ι R).submatrix (Subtype.val : s → ι) Subtype.val).det *
@@ -55,7 +55,7 @@ theorem det_blk_mul_inv (s : Set ι) {p : GL ι R} (hp : p ∈ stab R s) :
 
 open Classical in
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one _ (det_blk_mul_inv s hp)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_blk (s : Set ι) {p : GL ι R} (hp : p ∈ stab R s) :
     IsUnit ((p : Matrix ι ι R).submatrix (Subtype.val : s → ι) Subtype.val).det :=
@@ -63,14 +63,14 @@ theorem isUnit_det_blk (s : Set ι) {p : GL ι R} (hp : p ∈ stab R s) :
 
 open Classical in
 /- English proof (translation)
-Rewrite using `[bdet, dif_pos (isUnit_det_blk s hp), IsUnit.unit_spec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bdet_val (s : Set ι) {p : GL ι R} (hp : p ∈ stab R s) :
     ((bdet s p : Rˣ) : R) = ((p : Matrix ι ι R).submatrix (Subtype.val : s → ι) Subtype.val).det := by
   rw [bdet, dif_pos (isUnit_det_blk s hp), IsUnit.unit_spec]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, bdet_val s (mul_mem hp hq), bdet_val s hp, bdet_val s hq]`. Conclude with `det_blk_mul s p hq`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdet_mul (s : Set ι) {p q : GL ι R} (hp : p ∈ stab R s) (hq : q ∈ stab R s) :
     bdet s (p * q) = bdet s p * bdet s q := by
@@ -80,7 +80,7 @@ theorem bdet_mul (s : Set ι) {p q : GL ι R} (hp : p ∈ stab R s) (hq : q ∈ 
   exact det_blk_mul s p hq
 
 /- English proof (translation)
-Use `(eq_inv_of_mul_eq_one_right ?_).symm` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, bdet_val s hp, bdet_val s (inv_mem hp), Units.val_one]`. Conclude with `det_blk_mul_inv s hp`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdet_inv (s : Set ι) {p : GL ι R} (hp : p ∈ stab R s) : (bdet s p)⁻¹ = bdet s p⁻¹ := by
   classical
@@ -90,9 +90,9 @@ theorem bdet_inv (s : Set ι) {p : GL ι R} (hp : p ∈ stab R s) : (bdet s p)�
   exact det_blk_mul_inv s hp
 
 /- English proof (translation)
-Establish `hs : g ∈ stab R (Set.univ : Set ι)` using `fun r hr => absurd (Set.mem_univ r) hr`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[bdet_val _ hs]`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Use `Matrix.det_submatrix_equiv_self (Equiv.Set.univ ι) (g : Matrix ι ι R)` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Apply the tactic sequence `all_goals (funext x; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem bdet_univ (g : GL ι R) : bdet (Set.univ : Set ι) g = Matrix.GeneralLinearGroup.det g := by
   classical
@@ -108,9 +108,9 @@ section Top
 variable [TopologicalSpace R] [IsTopologicalRing R]
 
 /- English proof (translation)
-Establish `e : (stab R s : Set (GL ι R)) = ⋂ (r : ι) (_ : r ∉ s) (c : ι) (_ : c ∈ s), ({g : GL ι R | (g : Matrix ι ι R) r c = 0} ∩ {g : GL ι R | ((g⁻¹ : GL ι R) : Matrix ι ι R) r c = 0})`. Use extensionality with `g`. Simplify using `only [Set.mem_iInter, Set.mem_inter_iff, Set.mem_setOf_eq]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `isClosed_iInter fun r => isClosed_iInter fun _ => isClosed_iInter fun c => isClosed_iInter fun _ => IsClosed.inter ?_ ?_` and prove the remaining obligations. Conclude with `isClosed_eq (Units.continuous_val.matrix_elem r c) continuous_const`. Conclude with `isClosed_eq ((Units.continuous_val.comp continuous_inv).matrix_elem r c) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_stab [T2Space R] (s : Set ι) : IsClosed (stab R s : Set (GL ι R)) := by
   have e : (stab R s : Set (GL ι R)) = ⋂ (r : ι) (_ : r ∉ s) (c : ι) (_ : c ∈ s),
@@ -126,9 +126,9 @@ theorem isClosed_stab [T2Space R] (s : Set ι) : IsClosed (stab R s : Set (GL ι
   · exact isClosed_eq ((Units.continuous_val.comp continuous_inv).matrix_elem r c) continuous_const
 
 /- English proof (translation)
-Establish `hm (p : (stab R s : Set (GL ι R))) : (p : GL ι R) ∈ stab R s` using `p.2`. Rewrite using `[continuousOn_iff_continuous_restrict, Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Use `Continuous.congr (f := fun p : (stab R s : Set (GL ι R)) => (((p : GL ι R) : Matrix ι ι R).submatrix (Subtype.val : s → ι) Subtype.val).det) ((Units.continuous_val.comp continuous_subtype_val).matrix_submatrix _ _ |>.matrix_det) fun p => (bdet_val s (hm p)).symm` and prove the remaining obligations. Use `Continuous.congr (f := fun p : (stab R s : Set (GL ι R)) => ((((p : GL ι R)⁻¹ : GL ι R) : Matrix ι ι R).submatrix (Subtype.val : s → ι) Subtype.val).det) (((Units.continuous_val.comp continuous_inv).comp continuous_subtype_val).matrix_submatrix _ _ |>.matrix_det) fun p => ?_ show …` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[bdet_inv s (hm p), bdet_val s (inv_mem (hm p))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem continuousOn_bdet (s : Set ι) :
     ContinuousOn (bdet s) (stab R s : Set (GL ι R)) := by
@@ -156,13 +156,11 @@ variable {E : Type} [Field E]
 open Classical in
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `hr`. Use `set d : E := ((g : Matrix ι ι E).submatrix (Subtype.val : s → ι) Subtype.val).det with hd`. Establish `hval : ((bdet s (Matrix.GeneralLinearGroup.map A.i g) : Rˣ) : R) = A.i d`. Rewrite using `[bdet_val s hp, hd, RingHom.map_det]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hd0 : d ≠ 0`. Introduce `h0`. Establish `hu` using `(bdet s (Matrix.GeneralLinearGroup.map A.i g)).isUnit`. Rewrite `hu` using `[hval, h0, map_zero]`. Establish `h10 : (0 : R) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isUnit_zero_iff.1 hu` as an intermediate fact. Conclude with `this`. Conclude with `zero_ne_one (hi (by rw [map_zero, map_one, h10]) : (0 : E) = 1)`. Use `⟨Units.mk0 d hd0, Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hval]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem bdet_rat (A : Ad E R) (hi : Function.Injective A.i) (s : Set ι) {p : GL ι R}
     (hp : p ∈ stab R s) (hr : p ∈ A.ratGL ι) : ∃ x, bdet s p = Units.map A.i.toMonoidHom x := by
@@ -186,9 +184,9 @@ theorem bdet_rat (A : Ad E R) (hi : Function.Injective A.i) (s : Set ι) {p : GL
 open Classical in
 
 /- English proof (translation)
-Establish `h1 : star M * M = 1` using `Matrix.mem_unitaryGroup_iff'.1 hM`. Establish `h2 : ((star M * M).submatrix (Subtype.val : s → ι) (Subtype.val : s → ι)).det = 1`. Rewrite using `[h1, Matrix.submatrix_one _ Subtype.val_injective, Matrix.det_one]`. Rewrite `h2` using `[blk_mul s _ _ h0, Matrix.det_mul, Matrix.star_eq_conjTranspose, ← Matrix.conjTranspose_submatrix, Matrix.det_conjTranspose]`. Establish `h3 : ‖(M.submatrix (Subtype.val : s → ι) Subtype.val).det‖ ^ 2 = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `congrArg norm h2` as an intermediate fact. Rewrite `this` using `[norm_mul, norm_star, norm_one]`. Rewrite using `[sq]`. Conclude with `this`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_det_blk (M : Matrix ι ι ℂ) (hM : M ∈ Matrix.unitaryGroup ι ℂ) (s : Set ι)
     (h0 : ∀ r, r ∉ s → ∀ c ∈ s, M r c = 0) :
@@ -205,7 +203,7 @@ theorem norm_det_blk (M : Matrix ι ι ℂ) (hM : M ∈ Matrix.unitaryGroup ι �
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h3
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply']`. Conclude with `O.sum_mem fun σ _ => O.mul_mem (intCast_mem O _) (O.prod_mem fun i _ => h _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem_subring {κ : Type} [Fintype κ] [DecidableEq κ] (O : Subring R) (m : Matrix κ κ R)
     (h : ∀ r c, m r c ∈ O) : m.det ∈ O := by
@@ -215,25 +213,23 @@ theorem det_mem_subring {κ : Type} [Fintype κ] [DecidableEq κ] (O : Subring R
 variable [TopologicalSpace R] [IsTopologicalRing R]
 
 /- English proof (translation)
-Set `j : Rˣ →* GL Unit R` to `Units.map (Matrix.scalar Unit : R →+* Matrix Unit Unit R).toMonoidHom`. Establish `hj : j u ∈ A.kGL Unit`. Use `⟨fun r c => ⟨?_, ?_⟩, fun w => ?_⟩` and prove the remaining obligations. Simplify `h1` using `[j]`. Establish `: ((j u)⁻¹ : GL Unit R) = j u⁻¹` using `(map_inv j u).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[this]`. Simplify `h2` using `[j]`. Rewrite using `[Matrix.mem_unitaryGroup_iff]`. Use extensionality with `r c`. Simplify using `[j, Matrix.mul_apply, Complex.mul_conj, Complex.normSq_eq_norm_sq, hw w]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hdet : Continuous fun g : GL Unit R => (Matrix.GeneralLinearGroup.det g : Rˣ)`. Rewrite using `[Units.continuous_iff]`. Prove the components needed by the constructor for the conclusion. Conclude with `Units.continuous_val.matrix_det`. Establish `: (fun g : GL Unit R => (((Matrix.GeneralLinearGroup.det g)⁻¹ : Rˣ) : R)) = fun g => ((g⁻¹ : GL Unit R) : Matrix Unit Unit R).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[← map_inv, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[this]`. Conclude with `(Units.continuous_val.comp continuous_inv).matrix_det`. Establish `hc : Continuous fun g : GL Unit R => A.lg (Matrix.GeneralLinearGroup.det g)` using `hA.lgcont.comp hdet`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `(hA.kcpt Unit).exists_bound_of_continuousOn hc.continuousOn`. Establish `hone : A.lg 1 = 0`. Use `hA.lgmul 1 1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpow : ∀ n : ℕ, A.lg (u ^ n) = n * A.lg u`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp [hone]`. Consider the case `succ n ih => rw [pow_succ, hA.lgmul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hdj : Matrix.GeneralLinearGroup.det (j u) = u`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[j, Matrix.GeneralLinearGroup.val_det_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : ∀ n : ℕ, (n : ℝ) * |A.lg u| ≤ C`. Introduce `n`. Use `hC (j u ^ n) (pow_mem hj n)` as an intermediate fact. Rewrite `this` using `[map_pow, hdj, hpow, Real.norm_eq_abs, abs_mul, Nat.abs_cast]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < |A.lg u|` using `abs_pos.2 hne`. Take `⟨n, hn⟩` from `exists_nat_gt (C / |A.lg u|)`. Use `hb n` as an intermediate fact. Rewrite `hn` using `[div_lt_iff₀ hpos]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lg_eq_zero (A : Ad E R) (hA : A.GoodL) (u : Rˣ) (h1 : (u : R) ∈ A.O)
     (h2 : ((u⁻¹ : Rˣ) : R) ∈ A.O) (hw : ∀ w, ‖A.φ w (u : R)‖ = 1) : A.lg u = 0 := by
@@ -287,9 +283,9 @@ theorem lg_eq_zero (A : Ad E R) (hA : A.GoodL) (u : Rˣ) (h1 : (u : R) ∈ A.O)
 open Classical in
 
 /- English proof (translation)
-Use `lg_eq_zero A hA _ ?_ ?_ fun w => ?_` and prove the remaining obligations. Rewrite using `[bdet_val s hp]`. Conclude with `det_mem_subring _ _ fun r c => (hk.1 _ _).1`. Rewrite using `[bdet_inv s hp, bdet_val s (inv_mem hp)]`. Conclude with `det_mem_subring _ _ fun r c => (hk.1 _ _).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[bdet_val s hp, RingHom.map_det]`. Use `(congrArg norm (congrArg Matrix.det ?_)).trans (norm_det_blk _ (hk.2 w) s fun r hr c hc => ?_)` and prove the remaining obligations. Use extensionality with `r c`. Both sides reduce to the same expression. Simplify using `[(hp r hr c hc).1]`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lg_bdet (A : Ad E R) (hA : A.GoodL) (s : Set ι) {p : GL ι R} (hp : p ∈ stab R s)
     (hk : p ∈ A.kGL ι) : A.lg (bdet s p) = 0 := by
@@ -307,7 +303,7 @@ theorem lg_bdet (A : Ad E R) (hA : A.GoodL) (s : Set ι) {p : GL ι R} (hp : p �
 end Places
 
 /- English proof (translation)
-Introduce `E R _ _ _ _ _ _ _ A hA ι _ _ s`. Conclude with `⟨isClosed_stab s, fun p hp q hq => bdet_mul s hp hq, continuousOn_bdet s, fun p hp hr => bdet_rat A hA.iinj s hp hr, fun p hp hk => lg_bdet A hA s hp hk, bdet_univ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem bdetLaw : BdetLaw := by
   intro E R _ _ _ _ _ _ _ A hA ι _ _ s

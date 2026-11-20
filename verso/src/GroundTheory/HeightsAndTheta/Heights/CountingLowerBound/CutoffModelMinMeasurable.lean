@@ -238,7 +238,7 @@ def LimitInEpsilon.Statement : Prop :=
     ((n : ℝ) + 1) * (e' * Q 0 - W0 / 2) ≤ P 0
 
 /- English proof (translation)
-Rewrite using `[Real.le_log_iff_exp_le (by norm_num : (0 : ℝ) < 3)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma one_le_log_three : 1 ≤ Real.log 3 := by
   rw [Real.le_log_iff_exp_le (by norm_num : (0 : ℝ) < 3)]
@@ -246,7 +246,7 @@ private lemma one_le_log_three : 1 ≤ Real.log 3 := by
   linarith
 
 /- English proof (translation)
-Rewrite using `[Real.log_le_iff_le_exp (by norm_num : (0 : ℝ) < 3)]`. Use `Real.add_one_le_exp (2 : ℝ)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma log_three_le_two : Real.log 3 ≤ 2 := by
   rw [Real.log_le_iff_le_exp (by norm_num : (0 : ℝ) < 3)]
@@ -254,7 +254,7 @@ private lemma log_three_le_two : Real.log 3 ≤ 2 := by
   linarith
 
 /- English proof (translation)
-Evaluate the numerical expressions using `j'_pos := by norm_num vol_pos := by norm_num J_pos := by norm_num n_succ_pos := by norm_num one_le_N := by norm_num half_N_le_j := by norm_num j_pos := by norm_num one_le_La := by norm_num log_le_La := by norm_num; exact log_three_le_two formula := by norm_num bound_c := by norm_ …`.
+Evaluate the numerical expressions.
 -/
 example : ReductionSmallLast.Hyp 1 1 1 1 (1 / 2) 1 1 2 1 1 1 1 1 2 1 2 where
   f_pos := by norm_num
@@ -274,7 +274,7 @@ example : ReductionSmallLast.Hyp 1 1 1 1 (1 / 2) 1 1 2 1 1 1 1 1 2 1 2 where
   bound_rest := by norm_num
 
 /- English proof (translation)
-Evaluate the numerical expressions using `j'_pos := by norm_num vol_pos := by norm_num J_pos := by norm_num n_succ_pos := by norm_num one_le_N := by norm_num half_N_le := by norm_num sub_pos := by norm_num one_le_La := by norm_num log_le_La := by norm_num; exact log_three_le_two formula := by norm_num bound_c := by norm_ …`.
+Evaluate the numerical expressions.
 -/
 example : ReductionSmallFirst.Hyp 1 1 1 1 (-1 / 2) 1 1 0 1 1 1 1 1 2 1 2 where
   f_pos := by norm_num
@@ -294,7 +294,7 @@ example : ReductionSmallFirst.Hyp 1 1 1 1 (-1 / 2) 1 1 0 1 1 1 1 1 2 1 2 where
   bound_rest := by norm_num
 
 /- English proof (translation)
-The claim follows from `le_rfl one_le_fj := le_rfl g_le_exp := Real.one_le_exp zero_le_one one_le_La := le_rfl lower := by have : (0 : ℝ) ≤ Real.log 3 := Real.log_nonneg (by norm_num) norm_num linarith upper := by norm_num`.
+A detailed English derivation is pending.
 -/
 example : InteriorDichotomy.Hyp 1 1 1 (-5) (-1) 1 1 1 where
   one_le_g := le_rfl
@@ -308,12 +308,12 @@ example : InteriorDichotomy.Hyp 1 1 1 (-5) (-1) 1 1 1 where
   upper := by norm_num
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by norm_num, by norm_num, by norm_num, by norm_num⟩`.
+Supply the required witnesses or components.
 -/
 example : AvoidMatrixLemma.Hyp 2 3 5 7 := ⟨by norm_num, by norm_num, by norm_num, by norm_num⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, inferInstance, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example :
     DiscreteTopology (Submodule.span ℤ (Set.range (EuclideanSpace.basisFun (Fin 2) ℝ).toBasis)) ∧
@@ -322,7 +322,7 @@ example :
   ⟨inferInstance, inferInstance, by simp⟩
 
 /- English proof (translation)
-The claim follows from `le_rfl one_le_j' := le_rfl one_le_ρ := le_rfl ρ_le_j' := le_rfl one_le_rd := by norm_num lam_pos := by norm_num NI_pos := by norm_num covol_pos := by norm_num covol_eq := by norm_num minkowski := by rw [div_pow, Real.sq_sqrt (by norm_num)] norm_num`.
+A detailed English derivation is pending.
 -/
 example : CuspWeightBound.Hyp 1 1 1 2 (1 / 2) 2 4 where
   one_le_f := le_rfl
@@ -339,7 +339,7 @@ example : CuspWeightBound.Hyp 1 1 1 2 (1 / 2) 2 4 where
     norm_num
 
 /- English proof (translation)
-The claim follows from `abs_nonneg _ form_le v w := by simp [abs_mul] map_le v := by simp [abs_mul] vr_pos := by norm_num`.
+A detailed English derivation is pending.
 -/
 example : ShortVectorsOrthogonal.Hyp (fun v : ℤ => |(v : ℝ)|) (AddMonoidHom.mul : ℤ →+ ℤ →+ ℤ)
     (AddMonoidHom.mulLeft (2 : ℤ)) 2 where
@@ -349,7 +349,7 @@ example : ShortVectorsOrthogonal.Hyp (fun v : ℤ => |(v : ℝ)|) (AddMonoidHom.
   vr_pos := by norm_num
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, by simp⟩ sub_mem := by rintro _ ⟨k, rfl⟩ _ ⟨l, rfl⟩ exact ⟨k - l, by push_cast; ring⟩ lam_pos := by norm_num lam_le := by rintro _ ⟨k, rfl⟩ hk have hk' : k ≠ 0 := by rintro rfl; simp at hk rw [Real.norm_eq_abs, ← Int.cast_abs] exact_mod_cast Int.one_le_abs hk' finrank_eq := b …`.
+Supply the required witnesses or components.
 -/
 example : PackingCount.Hyp (Set.range (Int.cast : ℤ → ℝ)) 1 ⊤ 1 2 where
   zero_mem := ⟨0, by simp⟩
@@ -378,13 +378,13 @@ def cutoffModelCount (t x : ℝ) : ℝ :=
   if cutoffModelMin x < t then (if t ≤ 1 then 1 else t ^ 3) else 0
 
 /- English proof (translation)
-The claim follows from `Measurable.ite measurableSet_Ioi (by fun_prop) measurable_const`.
+A detailed English derivation is pending.
 -/
 lemma cutoffModelMin_measurable : Measurable cutoffModelMin :=
   Measurable.ite measurableSet_Ioi (by fun_prop) measurable_const
 
 /- English proof (translation)
-Unfold `cutoffModelMin`. Use `split_ifs with h`. Conclude with `Real.rpow_pos_of_pos h _`. Conclude with `one_pos`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma cutoffModelMin_pos (x : ℝ) : 0 < cutoffModelMin x := by
   unfold cutoffModelMin
@@ -393,9 +393,9 @@ lemma cutoffModelMin_pos (x : ℝ) : 0 < cutoffModelMin x := by
   · exact one_pos
 
 /- English proof (translation)
-Rewrite using `[cutoffModelMin, if_pos hx]`. Establish `h0 : 0 ≤ x ^ ((3 : ℝ)⁻¹)` using `Real.rpow_nonneg hx.le _`. Rewrite using `[← pow_lt_pow_iff_left₀ h0 ht.le (by norm_num : (3 : ℕ) ≠ 0)]`. Establish `h3 : (x ^ ((3 : ℝ)⁻¹)) ^ 3 = x`. Use `Real.rpow_inv_natCast_pow hx.le (n := 3) (by norm_num)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite using `[h3]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 lemma cutoffModelMin_lt_iff {x t : ℝ} (hx : 0 < x) (ht : 0 < t) :
     cutoffModelMin x < t ↔ x < t ^ 3 := by
@@ -408,7 +408,7 @@ lemma cutoffModelMin_lt_iff {x t : ℝ} (hx : 0 < x) (ht : 0 < t) :
   rw [h3]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [cutoffModelCount, Set.indicator_apply, Set.mem_ofPred_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma cutoffModelCount_eq (t : ℝ) :
     cutoffModelCount t = Set.indicator {x | cutoffModelMin x < t} (fun _ => if t ≤ 1 then 1 else t ^ 3) := by
@@ -416,21 +416,21 @@ lemma cutoffModelCount_eq (t : ℝ) :
   simp only [cutoffModelCount, Set.indicator_apply, Set.mem_ofPred_eq]
 
 /- English proof (translation)
-The claim follows from `measurableSet_lt cutoffModelMin_measurable measurable_const`.
+A detailed English derivation is pending.
 -/
 lemma cutoffModel_set_meas (t : ℝ) : MeasurableSet {x | cutoffModelMin x < t} :=
   measurableSet_lt cutoffModelMin_measurable measurable_const
 
 /- English proof (translation)
-Rewrite using `[meanCount, cutoffModelCount_eq, integral_indicator_const _ (cutoffModel_set_meas t), smul_eq_mul, measureReal_def, cutoffModelMeasure, Measure.restrict_apply (cutoffModel_set_meas t)]`. Distinguish the cases in `h1 : t ≤ 1`. Establish `hset : {x | cutoffModelMin x < t} ∩ Set.Ioc 0 1 = Set.Ioo 0 (t ^ 3)`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq, Set.mem_Ioc, Set.mem_Ioo]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hx0, -⟩`. Conclude with `⟨hx0, (cutoffModelMin_lt_iff hx0 ht).1 h⟩`. Introduce and unpack `⟨hx0, hx⟩`. Conclude with `⟨(cutoffModelMin_lt_iff hx0 ht).2 hx, hx0, hx.le.trans (pow_le_one₀ ht.le h1)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Rewrite using `[hset, Real.volume_Ioo, if_pos h1, sub_zero, ENNReal.toReal_ofReal (by positivity), mul_one]`. Establish `h1' : 1 < t` using `lt_of_not_ge h1`. Establish `hset : {x | cutoffModelMin x < t} ∩ Set.Ioc 0 1 = Set.Ioc 0 1`. Use extensionality with `x`. Simplify using `only [Set.mem_inter_iff, Set.mem_ofPred_eq, Set.mem_Ioc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Conclude with `h`. Introduce and unpack `⟨hx0, hx1⟩`. Conclude with `⟨(cutoffModelMin_lt_iff hx0 ht).2 (hx1.trans_lt (one_lt_pow₀ h1' (by norm_num))), hx0, hx1⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset, Real.volume_Ioc, if_neg h1]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 lemma cutoffModel_meanCount {t : ℝ} (ht : 0 < t) :
     meanCount cutoffModelMeasure cutoffModelCount t = t ^ 3 := by
@@ -462,7 +462,7 @@ lemma cutoffModel_meanCount {t : ℝ} (ht : 0 < t) :
     norm_num
 
 /- English proof (translation)
-The claim follows from `one_pos lam_meas := cutoffModelMin_measurable lam_pos := cutoffModelMin_pos cnt_meas t := by rw [cutoffModelCount_eq] exact measurable_const.indicator (cutoffModel_set_meas t) cnt_nonneg t z := by unfold cutoffModelCount split_ifs with h1 h2 · norm_num · exact pow_nonneg (by lina …`.
+A detailed English derivation is pending.
 -/
 example : MeanCountBoundUpTo.Hyp cutoffModelMeasure cutoffModelMin cutoffModelCount 1 3 1 where
   R_pos := one_pos
@@ -496,7 +496,7 @@ example : MeanCountBoundUpTo.Hyp cutoffModelMeasure cutoffModelMin cutoffModelCo
     ring
 
 /- English proof (translation)
-The claim follows from `measurable_const lam_meas := measurable_const lam_pos _ := by norm_num U_nonneg _ := Real.log_nonneg one_le_two one_le_f := le_rfl one_le_j' := le_rfl one_le_rd := le_rfl one_le_vr := le_rfl U_le _ := by have h2 : (0 : ℝ) ≤ Real.log 2 := Real.log_nonneg one_le_two norm_num [max_e …`.
+A detailed English derivation is pending.
 -/
 example : MeanCuspWeight.Hyp cutoffModelMeasure (fun _ => Real.log 2) (fun _ => 1 / 2) 1 1 1 1 where
   U_meas := measurable_const
@@ -519,9 +519,9 @@ example : MeanCuspWeight.Hyp cutoffModelMeasure (fun _ => Real.log 2) (fun _ => 
     linarith [Real.log_two_lt_d9]
 
 /- English proof (translation)
-Simplify using `[Finset.sum_range_succ]`. Evaluate the numerical expressions. Use `antitone i := by`. Apply `one_div_le_one_div_of_le (by positivity)` to reduce the goal to its premises. Use `push_cast`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 example : TelescopeMetric.Hyp 1 (1 / 4) 1 (fun i => 1 / ((i : ℝ) + 1)) where
   telescope := by
@@ -533,7 +533,7 @@ example : TelescopeMetric.Hyp 1 (1 / 4) 1 (fun i => 1 / ((i : ℝ) + 1)) where
     linarith
 
 /- English proof (translation)
-The claim follows from `(continuous_const.add continuous_id).continuousWithinAt Q_cont := continuousWithinAt_const W_tendsto := tendsto_const_nhds ineq := by filter_upwards [self_mem_nhdsWithin] with ε hε have : 0 < ε := Set.mem_Ioi.1 hε norm_num linarith`.
+A detailed English derivation is pending.
 -/
 example : LimitInEpsilon.Hyp 0 (fun ε => 1 + ε) (fun _ => 1) (fun _ => 0) 0 1 1 where
   P_cont := (continuous_const.add continuous_id).continuousWithinAt

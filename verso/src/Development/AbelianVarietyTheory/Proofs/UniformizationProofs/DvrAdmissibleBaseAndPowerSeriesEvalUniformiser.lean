@@ -25,7 +25,7 @@ variable {V : Type} [CommRing V] [IsLocalRing V] [IsAdicComplete (IsLocalRing.ma
 
 omit [IsAdicComplete (IsLocalRing.maximalIdeal V) V] in
 /- English proof (translation)
-The claim follows from `add_mem (C_mem_maximalIdeal_iff.2 ha) X_mem_maximalIdeal`.
+A detailed English derivation is pending.
 -/
 theorem C_add_X_mem {a : V} (ha : a ∈ IsLocalRing.maximalIdeal V) :
     (PowerSeries.C a + PowerSeries.X : PowerSeries V) ∈ IsLocalRing.maximalIdeal (PowerSeries V) :=
@@ -35,21 +35,21 @@ def translate {a : V} (ha : a ∈ IsLocalRing.maximalIdeal V) : PowerSeries V �
   evalAdic V (IsLocalRing.maximalIdeal (PowerSeries V)) (C_add_X_mem ha)
 
 /- English proof (translation)
-The claim follows from `evalAdic_X _ _`.
+A detailed English derivation is pending.
 -/
 theorem translate_X {a : V} (ha : a ∈ IsLocalRing.maximalIdeal V) :
     translate ha PowerSeries.X = PowerSeries.C a + PowerSeries.X := evalAdic_X _ _
 
 /- English proof (translation)
-The claim follows from `(translate ha).commutes x`.
+A detailed English derivation is pending.
 -/
 theorem translate_C {a : V} (ha : a ∈ IsLocalRing.maximalIdeal V) (x : V) :
     translate ha (PowerSeries.C x) = PowerSeries.C x := (translate ha).commutes x
 
 /- English proof (translation)
-Establish `h : (translate (neg_mem ha)).comp (translate ha) PowerSeries.X = PowerSeries.X`. Rewrite using `[AlgHom.comp_apply, translate_X, map_add, translate_C, translate_X, map_neg]`. Expand and normalize the polynomial expressions, which then agree. Use `algHom_ext_of_isHausdorff (IsLocalRing.maximalIdeal (PowerSeries V)) ?_ h` and prove the remaining obligations. Rewrite using `[h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `X_mem_maximalIdeal`.
+A detailed English derivation is pending.
 -/
 theorem translate_neg_comp {a : V} (ha : a ∈ IsLocalRing.maximalIdeal V) :
     (translate (neg_mem ha)).comp (translate ha) = AlgHom.id V _ := by
@@ -61,7 +61,7 @@ theorem translate_neg_comp {a : V} (ha : a ∈ IsLocalRing.maximalIdeal V) :
   exact X_mem_maximalIdeal
 
 /- English proof (translation)
-The claim follows from `Function.LeftInverse.injective (g := translate (neg_mem ha)) fun f => DFunLike.congr_fun (translate_neg_comp ha) f`.
+A detailed English derivation is pending.
 -/
 theorem translate_injective {a : V} (ha : a ∈ IsLocalRing.maximalIdeal V) :
     Function.Injective (translate ha) :=
@@ -69,9 +69,9 @@ theorem translate_injective {a : V} (ha : a ∈ IsLocalRing.maximalIdeal V) :
     DFunLike.congr_fun (translate_neg_comp ha) f
 
 /- English proof (translation)
-Introduce `V _ _ _ ϖ hϖ hc`. Establish `hm : ϖ ∈ IsLocalRing.maximalIdeal V` using `hϖ.not_isUnit`. Use `⟨⟨inferInstance, inferInstance, inferInstance, hϖ.maximalIdeal_eq ▸ hc⟩, ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, (PowerSeries.constantCoeff (R := V)).comp (translate hm : PowerSeries V →+* PowerSeries V), fun x => ?_, ?_, fun F _ i hi => ⟨(PowerSeries.map i) …` and prove the remaining obligations. Simplify using `[translate_C]`. Simplify using `[translate_X]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `(PowerSeries.map_injective i hi).comp (translate_injective hm)`. Simplify using `[translate_C]`. Simplify using `[translate_X]`. Simplify using `only [RingHom.comp_apply, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dvr_admissibleBase_and_powerSeries_evalUniformiser : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (ϖ : V), Irreducible ϖ → IsAdicComplete (IsLocalRing.maximalIdeal V) V → AdmBase V (Ideal.span {ϖ}) ∧ AdmBase (PowerSeries V) (Ideal.span {PowerSeries.X}) ∧ ∃ ev : PowerSeries V →+* V, (∀ x, ev (PowerSeries.C x) = x) ∧ ev PowerSeries.X = ϖ ∧ ∀ (F : Type) [Field F] (i : V →+* F), Function.Injective i → ∃ σ : PowerSeries V →+* PowerSeries F, Function.Injective σ ∧ (∀ x, σ (PowerSeries.C x) = PowerSeries.C (i x)) ∧ σ PowerSeries.X = PowerSeries.C (i ϖ) + PowerSeries.X ∧ ∀ f, PowerSeries.constantCoeff (σ f) = i (ev f) := by
   intro V _ _ _ ϖ hϖ hc

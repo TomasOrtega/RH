@@ -13,13 +13,13 @@ noncomputable section
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.CapelliMiscellany.norm_natCast_prime`.
+A detailed English derivation is pending.
 -/
 theorem norm_natCast_prime : ‖(p : PadicAlgCl p)‖ = (p : ℝ)⁻¹ :=
   _root_.UpperTheory.Reformulated.B.CapelliMiscellany.norm_natCast_prime
 
 /- English proof (translation)
-Establish `h : ‖x‖ ^ N = 1` using `by rw [← norm_pow, hx, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg x) hN).1 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_eq_one_of_pow_eq_one {x : PadicAlgCl p} {N : ℕ} (hN : N ≠ 0) (hx : x ^ N = 1) :
     ‖x‖ = 1 := by
@@ -27,7 +27,7 @@ theorem norm_eq_one_of_pow_eq_one {x : PadicAlgCl p} {N : ℕ} (hN : N ≠ 0) (h
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg x) hN).1 h
 
 /- English proof (translation)
-Establish `h1 : ‖ζ‖ = 1` using `norm_eq_one_of_pow_eq_one hN hζ`. Rewrite using `[← geom_sum_mul, norm_mul]`. Establish `: ‖∑ i ∈ Finset.range j, ζ ^ i‖ ≤ 1` using `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => by`. Rewrite using `[norm_pow, h1, one_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_pow_sub_one_le {ζ : PadicAlgCl p} {N : ℕ} (hN : N ≠ 0) (hζ : ζ ^ N = 1) (j : ℕ) :
     ‖ζ ^ j - 1‖ ≤ ‖ζ - 1‖ := by
@@ -40,9 +40,7 @@ theorem norm_pow_sub_one_le {ζ : PadicAlgCl p} {N : ℕ} (hN : N ≠ 0) (hζ : 
     _ = _ := one_mul _
 
 /- English proof (translation)
-Establish `: NeZero N` using `⟨hN⟩`. Take `⟨i, -, rfl⟩` from `hζ.eq_pow_of_pow_eq_one hη.pow_eq_one`. Take `⟨j, -, hj⟩` from `hη.eq_pow_of_pow_eq_one hζ.pow_eq_one`. Use `le_antisymm (norm_pow_sub_one_le hN hζ.pow_eq_one i) ?_` and prove the remaining obligations. Use `conv_lhs => rw [← hj]`.
-
-Conclude with `norm_pow_sub_one_le hN hη.pow_eq_one j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_sub_one_eq_of_isPrimitiveRoot {ζ η : PadicAlgCl p} {N : ℕ} (hN : N ≠ 0)
     (hζ : IsPrimitiveRoot ζ N) (hη : IsPrimitiveRoot η N) : ‖η - 1‖ = ‖ζ - 1‖ := by
@@ -54,11 +52,9 @@ theorem norm_sub_one_eq_of_isPrimitiveRoot {ζ η : PadicAlgCl p} {N : ℕ} (hN 
   exact norm_pow_sub_one_le hN hη.pow_eq_one j
 
 /- English proof (translation)
-Establish `hpos : 0 < p ^ (k + 1)` using `pow_pos (Fact.out : p.Prime).pos _`. Establish `h1` using `congrArg (eval 1) (cyclotomic_eq_prod_X_sub_primitiveRoots hζ)`. Rewrite `h1` using `[eval_one_cyclotomic_prime_pow, eval_prod]`. Simplify using `only [eval_sub, eval_X, eval_C] at h1`. Rewrite using `[← norm_natCast_prime]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, hζ.card_primitiveRoots]`. Use `_ = ∏ μ ∈ primitiveRoots (p ^ (k + 1)) (PadicAlgCl p), ‖1 - μ‖ := Finset.prod_congr rfl fun μ hμ => by`. Rewrite using `[norm_sub_rev 1 μ]`. Conclude with `(norm_sub_one_eq_of_isPrimitiveRoot hpos.ne' hζ ((mem_primitiveRoots hpos).1 hμ)).symm`.
-
-Use `_ = _ := by rw [h1, norm_prod]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_one_pow_totient {ζ : PadicAlgCl p} {k : ℕ}
     (hζ : IsPrimitiveRoot ζ (p ^ (k + 1))) :
@@ -79,7 +75,7 @@ theorem norm_sub_one_pow_totient {ζ : PadicAlgCl p} {k : ℕ}
     _ = _ := by rw [h1, norm_prod]
 
 /- English proof (translation)
-Use `IsUltrametricDist.norm_add_le_max ζ (-1)` as an intermediate fact. Rewrite `this` using `[← sub_eq_add_neg, norm_neg, norm_one, norm_eq_one_of_pow_eq_one hN hζ, max_self]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_one_le_one {ζ : PadicAlgCl p} {N : ℕ} (hN : N ≠ 0) (hζ : ζ ^ N = 1) :
     ‖ζ - 1‖ ≤ 1 := by
@@ -88,7 +84,7 @@ theorem norm_sub_one_le_one {ζ : PadicAlgCl p} {N : ℕ} (hN : N ≠ 0) (hζ : 
   exact this
 
 /- English proof (translation)
-Establish `hd : (minpoly ℚ_[p] y).natDegree ≠ 0` using `(minpoly.natDegree_pos (Algebra.IsIntegral.isIntegral y)).ne'`. Rewrite using `[← PadicAlgCl.spectralNorm_eq, spectralNorm.spectralNorm_eq_norm_coeff_zero_rpow, one_div, Real.rpow_inv_natCast_pow (norm_nonneg _) hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_pow_natDegree_minpoly (y : PadicAlgCl p) :
     ‖y‖ ^ (minpoly ℚ_[p] y).natDegree = ‖(minpoly ℚ_[p] y).coeff 0‖ := by
@@ -98,36 +94,34 @@ theorem norm_pow_natDegree_minpoly (y : PadicAlgCl p) :
     Real.rpow_inv_natCast_pow (norm_nonneg _) hd]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨-c.valuation, Padic.norm_eq_zpow_neg_valuation hc⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_norm_eq_zpow_of_ne_zero {c : ℚ_[p]} (hc : c ≠ 0) : ∃ z : ℤ, ‖c‖ = (p : ℝ) ^ z :=
   ⟨-c.valuation, Padic.norm_eq_zpow_neg_valuation hc⟩
 
 /- English proof (translation)
-Conclude with `(Fact.out : p.Prime).one_lt` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem one_lt_p_real : (1 : ℝ) < p := by exact_mod_cast (Fact.out : p.Prime).one_lt
 
 /- English proof (translation)
-The claim follows from `zpow_right_injective₀ (by linarith [one_lt_p_real (p := p)]) (one_lt_p_real (p := p)).ne'`.
+A detailed English derivation is pending.
 -/
 theorem zpow_p_injective : Function.Injective fun z : ℤ => (p : ℝ) ^ z :=
   zpow_right_injective₀ (by linarith [one_lt_p_real (p := p)]) (one_lt_p_real (p := p)).ne'
 
 /- English proof (translation)
-Establish `hpos : 0 < p ^ (k + 1)` using `pow_pos (Fact.out : p.Prime).pos _`. Establish `hint : IsIntegral ℚ_[p] ζ` using `Algebra.IsIntegral.isIntegral ζ`. Establish `hdvd : minpoly ℚ_[p] ζ ∣ cyclotomic (p ^ (k + 1)) ℚ_[p]`. Apply `minpoly.dvd` to reduce the goal to its premises. Rewrite using `[aeval_def, ← eval_map, map_cyclotomic]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hζ.isRoot_cyclotomic hpos`. Use `set d := (minpoly ℚ_[p] ζ).natDegree with hd`. Establish `hφ : 0 < Nat.totient (p ^ (k + 1))` using `Nat.totient_pos.2 hpos`. Establish `hd0 : 0 < d` using `minpoly.natDegree_pos hint`. Establish `hπdeg : (minpoly ℚ_[p] (ζ - 1)).natDegree = d`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: ζ - 1 = ζ - algebraMap ℚ_[p] (PadicAlgCl p) 1` using `by rw [map_one]`. Rewrite using `[this, minpoly.sub_algebraMap, natDegree_comp, natDegree_X_add_C, mul_one]`. Establish `hπ0 : ζ - 1 ≠ 0`. Rewrite using `[sub_ne_zero]`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hζ.pow_ne_one_of_pos_of_lt one_ne_zero (Nat.one_lt_pow (Nat.succ_ne_zero k) (Fact.out : p.Prime).one_lt)` as an intermediate fact. Conclude with `this (by rw [pow_one, h])`. Establish `hc0 : (minpoly ℚ_[p] (ζ - 1)).coeff 0 ≠ 0` using `minpoly.coeff_zero_ne_zero (Algebra.IsIntegral.isIntegral _) hπ0`. Take `⟨z, hz⟩` from `exists_norm_eq_zpow_of_ne_zero hc0`. Establish `e1` using `norm_pow_natDegree_minpoly (ζ - 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e1` using `[hπdeg, hz]`. Establish `e2` using `norm_sub_one_pow_totient hζ`. Establish `key : (p : ℝ) ^ (z * Nat.totient (p ^ (k + 1))) = (p : ℝ) ^ (-(d : ℤ))`. Combine the equalities or inequalities in the displayed calculation. Establish `key'` using `zpow_p_injective (p := p) key`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdvdφ : Nat.totient (p ^ (k + 1)) ∣ d`. Establish `: ((Nat.totient (p ^ (k + 1)) : ℕ) : ℤ) ∣ (d : ℤ)` using `⟨-z, by linear_combination key'⟩`. Conclude with `Int.natCast_dvd_natCast.1 this`. Establish `hle1 : Nat.totient (p ^ (k + 1)) ≤ d` using `Nat.le_of_dvd hd0 hdvdφ`. Establish `hle2 : d ≤ Nat.totient (p ^ (k + 1))`.
-
-Rewrite using `[← natDegree_cyclotomic (p ^ (k + 1)) ℚ_[p]]`. Conclude with `natDegree_le_of_dvd hdvd (cyclotomic_ne_zero _ _)`. Conclude with `(eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) (cyclotomic.monic _ _) hdvd (by rw [natDegree_cyclotomic]; omega)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minpoly_eq_cyclotomic_of_isPrimitiveRoot {ζ : PadicAlgCl p} {k : ℕ}
     (hζ : IsPrimitiveRoot ζ (p ^ (k + 1))) :
@@ -178,9 +172,9 @@ theorem minpoly_eq_cyclotomic_of_isPrimitiveRoot {ζ : PadicAlgCl p} {k : ℕ}
     (by rw [natDegree_cyclotomic]; omega)).symm
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => simpa using irreducible_X_sub_C (1 : ℚ_[p])`. Consider the case `succ k`. Take `⟨ζ, hζ⟩` from `exists_isPrimitiveRoot (p := p) (k + 1)`. Rewrite using `[← minpoly_eq_cyclotomic_of_isPrimitiveRoot hζ]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `minpoly.irreducible (Algebra.IsIntegral.isIntegral ζ)`.
+A detailed English derivation is pending.
 -/
 theorem irreducible_cyclotomic_prime_pow (n : ℕ) : Irreducible (cyclotomic (p ^ n) ℚ_[p]) := by
   cases n with
@@ -191,9 +185,9 @@ theorem irreducible_cyclotomic_prime_pow (n : ℕ) : Irreducible (cyclotomic (p 
     exact minpoly.irreducible (Algebra.IsIntegral.isIntegral ζ)
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `exists_isPrimitiveRoot (p := p) n`. Rewrite using `[cycl_eq_adjoin hζ, IntermediateField.adjoin.finrank (Algebra.IsIntegral.isIntegral ζ)]`. Consider the cases of `n with`. Consider the case `zero`. Rewrite `hζ` using `[pow_zero, IsPrimitiveRoot.one_right_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hζ` using the available equality. Rewrite using `[minpoly.one]`. Simplify using `using natDegree_X_sub_C (1 : ℚ_[p])`. Consider the case `succ k => rw [minpoly_eq_cyclotomic_of_isPrimitiveRoot hζ, natDegree_cyclotomic]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 -/
 theorem finrank_cycl (n : ℕ) : finrank ℚ_[p] (cycl p n) = Nat.totient (p ^ n) := by
   obtain ⟨ζ, hζ⟩ := exists_isPrimitiveRoot (p := p) n
@@ -207,7 +201,7 @@ theorem finrank_cycl (n : ℕ) : finrank ℚ_[p] (cycl p n) = Nat.totient (p ^ n
   | succ k => rw [minpoly_eq_cyclotomic_of_isPrimitiveRoot hζ, natDegree_cyclotomic]
 
 /- English proof (translation)
-Rewrite using `[pow_succ', Nat.totient_mul_of_prime_of_dvd (Fact.out : p.Prime) (dvd_pow_self p (by omega))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem totient_prime_pow_succ {k : ℕ} (hk : 1 ≤ k) :
     Nat.totient (p ^ (k + 1)) = p * Nat.totient (p ^ k) := by
@@ -215,9 +209,9 @@ theorem totient_prime_pow_succ {k : ℕ} (hk : 1 ≤ k) :
     (dvd_pow_self p (by omega))]
 
 /- English proof (translation)
-Establish `hint : IsIntegral (cycl p k) y` using `(Algebra.IsIntegral.isIntegral (R := ℚ_[p]) y).tower_top`. Establish `e` using `finrank_sup_adjoin_simple (cycl p k) hint`. Rewrite `e` using `[hy, sup_eq_right.2 (cycl_mono (Nat.le_succ k)), finrank_cycl, finrank_cycl, totient_prime_pow_succ hk]`. Establish `hφ : 0 < Nat.totient (p ^ k)` using `Nat.totient_pos.2 (pow_pos (Fact.out : p.Prime).pos _)`. Rewrite `e` using `[mul_comm p]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Nat.eq_of_mul_eq_mul_left hφ e).symm`.
+A detailed English derivation is pending.
 -/
 theorem natDegree_minpoly_cycl_of_adjoin_eq {k : ℕ} (hk : 1 ≤ k) {y : PadicAlgCl p}
     (hy : ℚ_[p]⟮y⟯ = cycl p (k + 1)) : (minpoly (cycl p k) y).natDegree = p := by
@@ -231,11 +225,11 @@ theorem natDegree_minpoly_cycl_of_adjoin_eq {k : ℕ} (hk : 1 ≤ k) {y : PadicA
   exact (Nat.eq_of_mul_eq_mul_left hφ e).symm
 
 /- English proof (translation)
-Establish `hp2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hint : IsIntegral (cycl p k) η` using `(Algebra.IsIntegral.isIntegral (R := ℚ_[p]) η).tower_top`. Establish `hdeg` using `natDegree_minpoly_cycl_of_adjoin_eq hk (cycl_eq_adjoin hη).symm`. Establish `hc : η ^ p ∈ cycl p k` using `pow_eq_one_mem_cycl (by rw [← pow_mul, ← pow_succ']; exact hη.pow_eq_one)`. Use `set f : (cycl p k)[X] := X ^ p - C ⟨η ^ p, hc⟩ with hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfm : f.Monic` using `monic_X_pow_sub_C _ (by omega)`. Establish `hfdeg : f.natDegree = p` using `natDegree_X_pow_sub_C`. Establish `hroot : aeval η f = 0` using `by simp [hf]`. Establish `hdvd : minpoly (cycl p k) η ∣ f` using `minpoly.dvd _ _ hroot`. Establish `heq : f = minpoly (cycl p k) η` using `eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic hint) hfm hdvd (by rw [hfdeg, hdeg])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnext : f.nextCoeff = 0`. Rewrite using `[nextCoeff_of_natDegree_pos (by omega), hfdeg, hf, coeff_sub, coeff_X_pow, coeff_C]`. Simplify using `only [if_neg (show p - 1 ≠ p by omega), if_neg (show p - 1 ≠ 0 by omega), sub_zero]`. Rewrite using `[normTrace, normTraceF, ← heq, hnext]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem normTrace_cycl_isPrimitiveRoot {k : ℕ} (hk : 1 ≤ k) {η : PadicAlgCl p}
     (hη : IsPrimitiveRoot η (p ^ (k + 1))) : normTrace (cycl p k) η = 0 := by
@@ -258,9 +252,9 @@ theorem normTrace_cycl_isPrimitiveRoot {k : ℕ} (hk : 1 ≤ k) {η : PadicAlgCl
   simp
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ_[p] y` using `Algebra.IsIntegral.isIntegral y`. Establish `hle : ℚ_[p]⟮y⟯ ≤ cycl p n` using `by rw [adjoin_simple_le_iff]; exact hy`. Establish `hdvd : (minpoly ℚ_[p] y).natDegree ∣ Nat.totient (p ^ n)`. Rewrite using `[← finrank_cycl, finrank_eq_mul_finrank_extendScalars hle, IntermediateField.adjoin.finrank hint]`. Conclude with `Dvd.intro _ rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hdvd`. Establish `hc0 : (minpoly ℚ_[p] y).coeff 0 ≠ 0` using `minpoly.coeff_zero_ne_zero hint hy0`. Take `⟨z, hz⟩` from `exists_norm_eq_zpow_of_ne_zero hc0`. Use `⟨z * m, ?_⟩` and prove the remaining obligations. Rewrite using `[hm, pow_mul, norm_pow_natDegree_minpoly, hz, zpow_mul, zpow_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_norm_pow_totient_eq_zpow {n : ℕ} {y : PadicAlgCl p} (hy : y ∈ cycl p n)
     (hy0 : y ≠ 0) : ∃ z : ℤ, ‖y‖ ^ Nat.totient (p ^ n) = (p : ℝ) ^ z := by
@@ -281,7 +275,7 @@ variable (p) in
 def cyclRadius (j : ℕ) : ℝ := ‖(exists_isPrimitiveRoot (p := p) j).choose - 1‖
 
 /- English proof (translation)
-The claim follows from `norm_sub_one_eq_of_isPrimitiveRoot (pow_ne_zero _ (Fact.out : p.Prime).ne_zero) (exists_isPrimitiveRoot (p := p) j).choose_spec hη`.
+A detailed English derivation is pending.
 -/
 theorem norm_sub_one_eq_cyclRadius {η : PadicAlgCl p} {j : ℕ} (hη : IsPrimitiveRoot η (p ^ j)) :
     ‖η - 1‖ = cyclRadius p j :=
@@ -289,12 +283,12 @@ theorem norm_sub_one_eq_cyclRadius {η : PadicAlgCl p} {j : ℕ} (hη : IsPrimit
     (exists_isPrimitiveRoot (p := p) j).choose_spec hη
 
 /- English proof (translation)
-The claim follows from `norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem cyclRadius_nonneg (j : ℕ) : 0 ≤ cyclRadius p j := norm_nonneg _
 
 /- English proof (translation)
-Rewrite using `[← norm_sub_one_eq_cyclRadius (exists_isPrimitiveRoot (p := p) (k + 1)).choose_spec]`. Conclude with `norm_sub_one_pow_totient (exists_isPrimitiveRoot (p := p) (k + 1)).choose_spec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyclRadius_pow_totient (k : ℕ) :
     cyclRadius p (k + 1) ^ Nat.totient (p ^ (k + 1)) = (p : ℝ)⁻¹ := by
@@ -302,14 +296,14 @@ theorem cyclRadius_pow_totient (k : ℕ) :
   exact norm_sub_one_pow_totient (exists_isPrimitiveRoot (p := p) (k + 1)).choose_spec
 
 /- English proof (translation)
-The claim follows from `norm_sub_one_le_one (pow_ne_zero _ (Fact.out : p.Prime).ne_zero) (exists_isPrimitiveRoot (p := p) j).choose_spec.pow_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem cyclRadius_le_one (j : ℕ) : cyclRadius p j ≤ 1 :=
   norm_sub_one_le_one (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)
     (exists_isPrimitiveRoot (p := p) j).choose_spec.pow_eq_one
 
 /- English proof (translation)
-Rewrite using `[← cyclRadius_pow_totient k]`. Conclude with `pow_le_of_le_one (norm_nonneg _) (cyclRadius_le_one _) (Nat.totient_pos.2 (pow_pos (Fact.out : p.Prime).pos _)).ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_p_le_cyclRadius (k : ℕ) : (p : ℝ)⁻¹ ≤ cyclRadius p (k + 1) := by
   rw [← cyclRadius_pow_totient k]
@@ -317,13 +311,13 @@ theorem inv_p_le_cyclRadius (k : ℕ) : (p : ℝ)⁻¹ ≤ cyclRadius p (k + 1) 
     (Nat.totient_pos.2 (pow_pos (Fact.out : p.Prime).pos _)).ne'
 
 /- English proof (translation)
-The claim follows from `lt_of_lt_of_le (inv_pos.2 (by exact_mod_cast (Fact.out : p.Prime).pos)) (inv_p_le_cyclRadius k)`.
+A detailed English derivation is pending.
 -/
 theorem cyclRadius_pos (k : ℕ) : 0 < cyclRadius p (k + 1) :=
   lt_of_lt_of_le (inv_pos.2 (by exact_mod_cast (Fact.out : p.Prime).pos)) (inv_p_le_cyclRadius k)
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Establish `hφ : Nat.totient (p ^ (j + 1)) ≠ 0` using `(Nat.totient_pos.2 (pow_pos (Fact.out : p.Prime).pos _)).ne'`. Use `(pow_left_inj₀ (pow_nonneg (cyclRadius_nonneg (p := p) _) _) (cyclRadius_nonneg (p := p) _) hφ).1 ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, ← totient_prime_pow_succ (p := p) (k := j + 1) (by omega), cyclRadius_pow_totient (p := p) (j + 1), cyclRadius_pow_totient (p := p) j]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cyclRadius_succ_pow {k : ℕ} (hk : 1 ≤ k) : cyclRadius p (k + 1) ^ p = cyclRadius p k := by
   obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
@@ -335,7 +329,7 @@ theorem cyclRadius_succ_pow {k : ℕ} (hk : 1 ≤ k) : cyclRadius p (k + 1) ^ p 
     cyclRadius_pow_totient (p := p) (j + 1), cyclRadius_pow_totient (p := p) j]
 
 /- English proof (translation)
-Establish `hp : 1 ≤ p` using `(Fact.out : p.Prime).one_lt.le`. Establish `h : cyclRadius p (k + 1) ^ (p - 1) * cyclRadius p (k + 1) = cyclRadius p k`. Rewrite using `[← pow_succ, Nat.sub_add_cancel hp, cyclRadius_succ_pow (p := p) hk]`. Rewrite using `[eq_div_iff (cyclRadius_pos (p := p) k).ne', h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cyclRadius_succ_pow_pred {k : ℕ} (hk : 1 ≤ k) :
     cyclRadius p (k + 1) ^ (p - 1) = cyclRadius p k / cyclRadius p (k + 1) := by
@@ -345,9 +339,9 @@ theorem cyclRadius_succ_pow_pred {k : ℕ} (hk : 1 ≤ k) :
   rw [eq_div_iff (cyclRadius_pos (p := p) k).ne', h]
 
 /- English proof (translation)
-Rewrite using `[cycl_eq_adjoin hζ]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[adjoin_simple_le_iff]`. Conclude with `sub_mem (mem_adjoin_simple_self ℚ_[p] ζ) (one_mem _)`. Rewrite using `[adjoin_simple_le_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `add_mem (mem_adjoin_simple_self ℚ_[p] (ζ - 1)) (one_mem ℚ_[p]⟮ζ - 1⟯)`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem adjoin_sub_one_eq_cycl {ζ : PadicAlgCl p} {n : ℕ} (hζ : IsPrimitiveRoot ζ (p ^ n)) :
     ℚ_[p]⟮ζ - 1⟯ = cycl p n := by
@@ -360,13 +354,11 @@ theorem adjoin_sub_one_eq_cycl {ζ : PadicAlgCl p} {n : ℕ} (hζ : IsPrimitiveR
     rwa [sub_add_cancel] at h
 
 /- English proof (translation)
-Establish `hint : IsIntegral (cycl p k) y` using `(Algebra.IsIntegral.isIntegral (R := ℚ_[p]) y).tower_top`. Use `set pb := IntermediateField.adjoin.powerBasis hint`. Establish `hdim : pb.dim = p`. Rewrite using `[IntermediateField.adjoin.powerBasis_dim, natDegree_minpoly_cycl_of_adjoin_eq hk hy]`. Establish `hx' : x ∈ (cycl p k)⟮y⟯`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: cycl p (k + 1) ≤ ((cycl p k)⟮y⟯).restrictScalars ℚ_[p]`. Rewrite using `[← hy, adjoin_simple_le_iff, mem_restrictScalars]`. Conclude with `mem_adjoin_simple_self _ y`. Conclude with `this hx`. Take `⟨f, hfdeg, hf⟩` from `pb.exists_eq_aeval ⟨x, hx'⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun i => algebraMap (cycl p k) (PadicAlgCl p) (f.coeff i), fun i => (f.coeff i).2, ?_⟩` and prove the remaining obligations. Establish `h1 : x = aeval y f`. Use `congrArg (algebraMap ((cycl p k)⟮y⟯) (PadicAlgCl p)) hf` as an intermediate fact. Rewrite `this` using `[IntermediateField.adjoin.powerBasis_gen, ← aeval_algebraMap_apply]`. Conclude with `this`.
-
-Rewrite using `[h1, aeval_eq_sum_range' (hfdeg.trans_eq hdim)]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [Algebra.smul_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_sum_pow_of_adjoin_eq {k : ℕ} (hk : 1 ≤ k) {y : PadicAlgCl p}
     (hy : ℚ_[p]⟮y⟯ = cycl p (k + 1)) {x : PadicAlgCl p} (hx : x ∈ cycl p (k + 1)) :
@@ -391,27 +383,23 @@ theorem exists_eq_sum_pow_of_adjoin_eq {k : ℕ} (hk : 1 ≤ k) {y : PadicAlgCl 
   exact Finset.sum_congr rfl fun i _ => by rw [Algebra.smul_def]
 
 /- English proof (translation)
-Use `set π := ζ - 1`. Use `set x := ∑ i ∈ Finset.range p, b i * π ^ i`. Use `set φ := Nat.totient (p ^ k)`. Establish `hπpow : ‖π‖ ^ (p * φ) = (p : ℝ)⁻¹`. Rewrite using `[← totient_prime_pow_succ hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `norm_sub_one_pow_totient hζ`. Establish `hterm : ∀ i, b i ≠ 0 → ∃ z : ℤ, (‖b i‖ * ‖π‖ ^ i) ^ (p * φ) = (p : ℝ) ^ ((p : ℤ) * z - i)`. Introduce `i hi`. Take `⟨z, hz⟩` from `exists_norm_pow_totient_eq_zpow (hb i) hi`. Use `⟨z, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hp0 : (p : ℝ) ≠ 0` using `by exact_mod_cast (Fact.out : p.Prime).ne_zero`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← zpow_natCast ((p : ℝ) ^ z) p, ← zpow_mul, inv_pow, ← zpow_natCast (p : ℝ) i, ← zpow_neg, ← zpow_add₀ hp0]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdistinct : ∀ i ∈ Finset.range p, ∀ j ∈ Finset.range p, i ≠ j → b i ≠ 0 → b j ≠ 0 → ‖b i‖ * ‖π‖ ^ i ≠ ‖b j‖ * ‖π‖ ^ j`. Introduce `i hi j hj hij hbi hbj h`. Take `⟨zi, hzi⟩` from `hterm i hbi`. Take `⟨zj, hzj⟩` from `hterm j hbj`. Use `zpow_p_injective (p := p) (hzi.symm.trans ((congrArg (· ^ (p * φ)) h).trans hzj))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hi'` using `Finset.mem_range.1 hi`. Establish `hj'` using `Finset.mem_range.1 hj`. Establish `hdvd : (p : ℤ) ∣ ((i : ℤ) - j)` using `⟨zi - zj, by linear_combination (-1 : ℤ) * this⟩`. Apply the tactic sequence `have habs : |(i : ℤ) - j| < p := by rw [abs_lt]; constructor <;> omega`. Conclude with `hij (by have := Int.eq_zero_of_abs_lt_dvd hdvd habs; omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i hi`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Take `⟨i0, hi0, hmax⟩` from `Finset.exists_max_image (Finset.range p) (fun i => ‖b i‖ * ‖π‖ ^ i) ⟨i, hi⟩`. Use `set M := ‖b i0‖ * ‖π‖ ^ i0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxM : ‖x‖ < M` using `lt_of_lt_of_le hlt (hmax i hi)`. Establish `hM0 : 0 < M` using `lt_of_le_of_lt (norm_nonneg _) hxM`. Establish `hbi0 : b i0 ≠ 0`. Introduce `h; rw [show M = 0 by simp [M, h]] at hM0; exact lt_irrefl 0 hM0`. Establish `hlt' : ∀ j ∈ (Finset.range p).erase i0, ‖b j * π ^ j‖ < M`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `j hj`. Rewrite using `[norm_mul, norm_pow]`. Break down `eq_or_ne (b j) 0 with h | h` into its components or cases. Rewrite using `[h, norm_zero, zero_mul]`. Conclude with `hM0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lt_of_le_of_ne (hmax j (Finset.mem_of_mem_erase hj)) (hdistinct j (Finset.mem_of_mem_erase hj) i0 hi0 (Finset.ne_of_mem_erase hj) h hbi0)`. Use `set rest := ∑ j ∈ (Finset.range p).erase i0, b j * π ^ j`. Establish `hrest : ‖rest‖ < M`. Break down `((Finset.range p).erase i0).eq_empty_or_nonempty with h | h` into its components or cases. Rewrite using `[show rest = 0 by simp [rest, h], norm_zero]; exact hM0`.
-
-Take `⟨j, hj, hjle⟩` from `IsUltrametricDist.exists_norm_finsetSum_le_of_nonempty h (fun j => b j * π ^ j)`. Conclude with `lt_of_le_of_lt hjle (hlt' j hj)`. Establish `hx : x = b i0 * π ^ i0 + rest` using `(Finset.add_sum_erase _ _ hi0).symm`. Establish `: ‖b i0 * π ^ i0‖ ≤ max ‖x‖ ‖rest‖`. Establish `h1` using `IsUltrametricDist.norm_add_le_max x (-rest)`.
-
-Rewrite `h1` using `[norm_neg]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `this` using `[norm_mul, norm_pow]`. Conclude with `absurd this (not_le.2 (max_lt hxM hrest))`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mul_pow_le_norm_sum {k : ℕ} (hk : 1 ≤ k) {ζ : PadicAlgCl p}
     (hζ : IsPrimitiveRoot ζ (p ^ (k + 1))) {b : ℕ → PadicAlgCl p} (hb : ∀ i, b i ∈ cycl p k) :
@@ -478,11 +466,11 @@ theorem norm_mul_pow_le_norm_sum {k : ℕ} (hk : 1 ≤ k) {ζ : PadicAlgCl p}
   exact absurd this (not_le.2 (max_lt hxM hrest))
 
 /- English proof (translation)
-Establish `hpr` using `(Fact.out : p.Prime)`. Rewrite using `[sub_eq_add_neg, add_pow, normTrace_sum]`. Rewrite using `[Finset.sum_eq_single 0]`. Simplify using `only [pow_zero, one_mul, Nat.sub_zero, Nat.choose_zero_right, Nat.cast_one, mul_one]`. Conclude with `normTrace_of_mem _ (pow_mem (neg_mem (one_mem _)) _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj hj0`. Establish `hjp : j < p` using `lt_of_lt_of_le (Finset.mem_range.1 hj) (by omega)`. Establish `hmem : (-1 : PadicAlgCl p) ^ (i - j) * (i.choose j : PadicAlgCl p) ∈ cycl p k` using `mul_mem (pow_mem (neg_mem (one_mem _)) _) (IntermediateField.natCast_mem _ _)`. Rewrite using `[mul_assoc, mul_comm, normTrace_mul_of_mem _ hmem]`. Establish `hcop : j.Coprime (p ^ (k + 1))` using `Nat.Coprime.pow_right _ (Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hpr).2 fun h => by have := Nat.le_of_dvd (by omega) h; omega))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[normTrace_cycl_isPrimitiveRoot hk (hζ.pow_of_coprime j hcop), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 (Nat.succ_pos i)) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem normTrace_cycl_sub_one_pow {k : ℕ} (hk : 1 ≤ k) {ζ : PadicAlgCl p}
     (hζ : IsPrimitiveRoot ζ (p ^ (k + 1))) {i : ℕ} (hi : i < p) :
@@ -504,13 +492,11 @@ theorem normTrace_cycl_sub_one_pow {k : ℕ} (hk : 1 ≤ k) {ζ : PadicAlgCl p}
   · intro h; exact absurd (Finset.mem_range.2 (Nat.succ_pos i)) h
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `exists_isPrimitiveRoot (p := p) (k + 1)`. Take `⟨b, hb, rfl⟩` from `exists_eq_sum_pow_of_adjoin_eq hk (adjoin_sub_one_eq_cycl hζ) hx`. Establish `horth` using `norm_mul_pow_le_norm_sum hk hζ hb`. Use `set x := ∑ i ∈ Finset.range p, b i * (ζ - 1) ^ i`. Establish `hr` using `cyclRadius_pos (p := p) k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrpow : 0 < cyclRadius p (k + 1) ^ (p - 1)` using `pow_pos hr _`. Establish `hrad : ‖ζ - 1‖ = cyclRadius p (k + 1)` using `norm_sub_one_eq_cyclRadius hζ`. Establish `htr : normTrace (cycl p k) x = ∑ i ∈ Finset.range p, b i * (-1) ^ i`. Rewrite using `[normTrace_sum]`. Conclude with `Finset.sum_congr rfl fun i hi => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[normTrace_mul_of_mem _ (hb i), normTrace_cycl_sub_one_pow hk hζ (Finset.mem_range.1 hi)]`. Rewrite using `[htr, ← le_div_iff₀ hrpow]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (div_nonneg (norm_nonneg _) hrpow.le) fun i hi => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, norm_neg, norm_one, one_pow, mul_one, le_div_iff₀ hrpow]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hrad]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_of_le_one hr.le (cyclRadius_le_one _) (by have := Finset.mem_range.1 hi; omega)) (norm_nonneg _)`. Use `_ ≤ ‖x‖ := horth i hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_normTrace_cycl_succ_mul_le {k : ℕ} (hk : 1 ≤ k) {x : PadicAlgCl p}
     (hx : x ∈ cycl p (k + 1)) :
@@ -537,9 +523,9 @@ theorem norm_normTrace_cycl_succ_mul_le {k : ℕ} (hk : 1 ≤ k) {x : PadicAlgCl
     _ ≤ ‖x‖ := horth i hi
 
 /- English proof (translation)
-Proceed by induction on `m, hnm using Nat.le_induction generalizing x with`. Consider the case `base => rw [normTrace_of_mem _ hx]`. Consider the case `succ m hnm ih`. Establish `hm : 1 ≤ m` using `le_trans hn hnm`. Rewrite using `[← normTrace_normTrace_of_le (cycl_mono hnm) x]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `ih (normTrace_mem (cycl p m) x)`. Establish `h2` using `norm_normTrace_cycl_succ_mul_le hm hx`. Rewrite `h2` using `[cyclRadius_succ_pow_pred hm, mul_div_assoc', div_le_iff₀ (cyclRadius_pos (p := p) m)]`. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_normTrace_cycl_mul_le {n m : ℕ} (hn : 1 ≤ n) (hnm : n ≤ m) {x : PadicAlgCl p}
     (hx : x ∈ cycl p m) :
@@ -555,9 +541,9 @@ theorem norm_normTrace_cycl_mul_le {n m : ℕ} (hn : 1 ≤ n) (hnm : n ≤ m) {x
     exact h1.trans h2
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j, n = j + 1` from `⟨n - 1, by omega⟩`. Establish `h` using `norm_normTrace_cycl_mul_le hn hnm hx`. Establish `hr` using `cyclRadius_pos (p := p) j`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`. Establish `h1 : ‖normTrace (cycl p (j + 1)) x‖ * cyclRadius p (j + 1) ≤ ‖x‖` using `h.trans (mul_le_of_le_one_right (norm_nonneg _) (cyclRadius_le_one _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (p : ℝ)⁻¹ ≤ cyclRadius p (j + 1)` using `inv_p_le_cyclRadius j`. Combine the equalities or inequalities in the displayed calculation. Clear the denominators using the available nonvanishing facts. Use `_ ≤ p * (‖normTrace (cycl p (j + 1)) x‖ * cyclRadius p (j + 1)) := mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_left h2 (norm_nonneg _)) hp0.le`. Use `_ ≤ p * ‖x‖ := mul_le_mul_of_nonneg_left h1 hp0.le`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem norm_normTrace_cycl_le {n m : ℕ} (hn : 1 ≤ n) (hnm : n ≤ m) {x : PadicAlgCl p}
     (hx : x ∈ cycl p m) : ‖normTrace (cycl p n) x‖ ≤ p * ‖x‖ := by
@@ -575,7 +561,7 @@ theorem norm_normTrace_cycl_le {n m : ℕ} (hn : 1 ≤ n) (hnm : n ≤ m) {x : P
     _ ≤ p * ‖x‖ := mul_le_mul_of_nonneg_left h1 hp0.le
 
 /- English proof (translation)
-Rewrite using `[← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq]`. Conclude with `(spectralNorm_eq_of_equiv γ x).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_algEquiv_apply (γ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (x : PadicAlgCl p) :
     ‖γ x‖ = ‖x‖ := by
@@ -583,9 +569,9 @@ theorem norm_algEquiv_apply (γ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (x 
   exact (spectralNorm_eq_of_equiv γ x).symm
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Establish `e : (γ ^ (N + 1)) y - y = (γ ^ N) (γ y - y) + ((γ ^ N) y - y)`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, map_sub]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ih)` and prove the remaining obligations. Rewrite using `[norm_algEquiv_apply]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_pow_apply_sub_le (γ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (y : PadicAlgCl p)
     (N : ℕ) : ‖(γ ^ N) y - y‖ ≤ ‖γ y - y‖ := by
@@ -599,7 +585,7 @@ theorem norm_pow_apply_sub_le (γ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (
     rw [norm_algEquiv_apply]
 
 /- English proof (translation)
-Establish `hη0 : η ≠ 0` using `hη.ne_zero (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)`. Establish `hc : η ^ p ∈ cycl p k` using `pow_eq_one_mem_cycl (by rw [← pow_mul, ← pow_succ']; exact hη.pow_eq_one)`. Use `⟨τ η * η⁻¹, ?_, by field_simp⟩` and prove the remaining obligations. Rewrite using `[mul_pow, inv_pow, ← map_pow, hτ _ hc, mul_inv_cancel₀ (pow_ne_zero _ hη0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_apply_eq_mul_of_fix {k : ℕ} (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p)
     (hτ : ∀ x ∈ cycl p k, τ x = x) {η : PadicAlgCl p} (hη : IsPrimitiveRoot η (p ^ (k + 1))) :
@@ -611,7 +597,7 @@ theorem exists_apply_eq_mul_of_fix {k : ℕ} (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] 
   rw [mul_pow, inv_pow, ← map_pow, hτ _ hc, mul_inv_cancel₀ (pow_ne_zero _ hη0)]
 
 /- English proof (translation)
-Apply `pow_eq_one_mem_cycl` to reduce the goal to its premises. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[pow_succ', pow_mul, hε, one_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_cycl_of_pow_prime_eq_one {k : ℕ} (hk : 1 ≤ k) {ε : PadicAlgCl p} (hε : ε ^ p = 1) :
     ε ∈ cycl p k := by
@@ -620,11 +606,11 @@ theorem mem_cycl_of_pow_prime_eq_one {k : ℕ} (hk : 1 ≤ k) {ε : PadicAlgCl p
   rw [pow_succ', pow_mul, hε, one_pow]
 
 /- English proof (translation)
-Establish `hpr` using `(Fact.out : p.Prime)`. Establish `hprim : IsPrimitiveRoot ε p`. Use `IsPrimitiveRoot.orderOf ε` as an intermediate fact. Rewrite `this` using `[orderOf_eq_prime hε hε1]`. Then use the resulting hypothesis. Establish `hcop : i.Coprime p` using `Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hpr).2 fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `Nat.le_of_dvd (by omega) h; omega)` as an intermediate fact. Establish `hprim' : IsPrimitiveRoot (ε ^ i) (p ^ (0 + 1))`. Rewrite using `[zero_add, pow_one]`. Conclude with `hprim.pow_of_coprime i hcop`. Establish `h` using `norm_sub_one_pow_totient hprim'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h]`. Conclude with `pow_le_of_le_one (norm_nonneg _) (norm_sub_one_le_one (pow_ne_zero _ hpr.ne_zero) hprim'.pow_eq_one) (Nat.totient_pos.2 (pow_pos hpr.pos _)).ne'`.
+A detailed English derivation is pending.
 -/
 theorem inv_p_le_norm_pow_sub_one {ε : PadicAlgCl p} (hε : ε ^ p = 1) (hε1 : ε ≠ 1) {i : ℕ}
     (hi0 : 1 ≤ i) (hip : i < p) : (p : ℝ)⁻¹ ≤ ‖ε ^ i - 1‖ := by
@@ -647,37 +633,37 @@ def cyclCoord (k : ℕ) (η y : PadicAlgCl p) (i : ℕ) : PadicAlgCl p :=
   normTrace (cycl p k) (y * η ^ (p ^ (k + 1) - i))
 
 /- English proof (translation)
-The claim follows from `normTrace_mem _ _`.
+A detailed English derivation is pending.
 -/
 theorem cyclCoord_mem (k : ℕ) (η y : PadicAlgCl p) (i : ℕ) : cyclCoord k η y i ∈ cycl p k :=
   normTrace_mem _ _
 
 /- English proof (translation)
-Rewrite using `[cyclCoord, Nat.sub_zero, hη.pow_eq_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cyclCoord_zero {k : ℕ} {η : PadicAlgCl p} (hη : IsPrimitiveRoot η (p ^ (k + 1)))
     (y : PadicAlgCl p) : cyclCoord k η y 0 = normTrace (cycl p k) y := by
   rw [cyclCoord, Nat.sub_zero, hη.pow_eq_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[cyclCoord, cyclCoord, cyclCoord, sub_mul, normTrace_sub]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cyclCoord_sub (k : ℕ) (η y y' : PadicAlgCl p) (i : ℕ) :
     cyclCoord k η (y - y') i = cyclCoord k η y i - cyclCoord k η y' i := by
   rw [cyclCoord, cyclCoord, cyclCoord, sub_mul, normTrace_sub]
 
 /- English proof (translation)
-Establish `hpr` using `(Fact.out : p.Prime)`. Take `⟨b, hb, hyb⟩` from `exists_eq_sum_pow_of_adjoin_eq hk (cycl_eq_adjoin hη).symm hy`. Establish `hcoord : ∀ i ∈ Finset.range p, cyclCoord k η y i = b i`. Introduce `i hi`. Establish `hi'` using `Finset.mem_range.1 hi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hle : i ≤ p ^ (k + 1)` using `le_trans hi'.le (Nat.le_self_pow (by omega) p)`. Rewrite using `[cyclCoord, hyb, Finset.sum_mul, normTrace_sum, Finset.sum_eq_single i]`. Rewrite using `[mul_assoc, ← pow_add, Nat.add_sub_cancel' hle, hη.pow_eq_one, mul_one, normTrace_of_mem _ (hb i)]`. Introduce `j hj hji`. Establish `hj'` using `Finset.mem_range.1 hj`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, ← pow_add, normTrace_mul_of_mem _ (hb j)]`. Establish `hcop : (j + (p ^ (k + 1) - i)).Coprime (p ^ (k + 1))`. Use `Nat.Coprime.pow_right _ (Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hpr).2 fun h => hji ?_))` and prove the remaining obligations. Establish `h' : (p : ℤ) ∣ ((j : ℤ) - i)`. Establish `e : ((j + (p ^ (k + 1) - i) : ℕ) : ℤ) = (p : ℤ) * (p : ℤ) ^ k + ((j : ℤ) - i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `[Nat.cast_sub hle]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (p : ℤ) ∣ ((j + (p ^ (k + 1) - i) : ℕ) : ℤ)` using `Int.natCast_dvd_natCast.2 h`. Rewrite `h2` using `[e]`. Conclude with `(dvd_add_right (dvd_mul_right _ _)).1 h2`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `have habs : |(j : ℤ) - i| < p := by rw [abs_lt]; constructor <;> omega`. Use `Int.eq_zero_of_abs_lt_dvd h' habs` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[normTrace_cycl_isPrimitiveRoot hk (hη.pow_of_coprime _ hcop), mul_zero]`. Introduce `h`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Conclude with `absurd hi h`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem eq_sum_cyclCoord {k : ℕ} (hk : 1 ≤ k) {η : PadicAlgCl p}
     (hη : IsPrimitiveRoot η (p ^ (k + 1))) {y : PadicAlgCl p} (hy : y ∈ cycl p (k + 1)) :
@@ -712,7 +698,7 @@ theorem eq_sum_cyclCoord {k : ℕ} (hk : 1 ≤ k) {η : PadicAlgCl p}
     _ = _ := Finset.sum_congr rfl fun i hi => by rw [hcoord i hi]
 
 /- English proof (translation)
-Establish `hηmem : η ∈ cycl p (k + 1)` using `pow_eq_one_mem_cycl hη.pow_eq_one`. Establish `h` using `norm_normTrace_cycl_le hk (Nat.le_succ k) (mul_mem hy (pow_mem hηmem (p ^ (k + 1) - i)))`. Rewrite `h` using `[norm_mul, norm_pow, norm_eq_one_of_pow_eq_one (pow_ne_zero _ (Fact.out : p.Prime).ne_zero) hη.pow_eq_one, one_pow, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem norm_cyclCoord_le {k : ℕ} (hk : 1 ≤ k) {η : PadicAlgCl p}
     (hη : IsPrimitiveRoot η (p ^ (k + 1))) {y : PadicAlgCl p} (hy : y ∈ cycl p (k + 1)) (i : ℕ) :
@@ -723,9 +709,9 @@ theorem norm_cyclCoord_le {k : ℕ} (hk : 1 ≤ k) {η : PadicAlgCl p}
     hη.pow_eq_one, one_pow, mul_one] at h
 
 /- English proof (translation)
-Establish `hεk : ε ∈ cycl p k` using `mem_cycl_of_pow_prime_eq_one hk hεp`. Establish `hε1 : ε ^ (p ^ (k + 1)) = 1` using `by rw [pow_succ', pow_mul, hεp, one_pow]`. Establish `e : τ y * η ^ (p ^ (k + 1) - i) = ε ^ i * τ (y * η ^ (p ^ (k + 1) - i))`. Rewrite using `[map_mul, map_pow, hτη, mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Nat.add_sub_cancel' hi, hε1, one_mul]`. Use `_ = _ := by rw [pow_add]; ring`. Rewrite using `[cyclCoord, e, normTrace_mul_of_mem _ (pow_mem hεk i), normTrace_map_of_map_eq (cycl p k) τ (cycl_map τ k), hτ _ (normTrace_mem _ _), cyclCoord]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyclCoord_apply {k : ℕ} (hk : 1 ≤ k) (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p)
     (hτ : ∀ x ∈ cycl p k, τ x = x) {η ε : PadicAlgCl p} (hεp : ε ^ p = 1) (hτη : τ η = ε * η)
@@ -743,15 +729,15 @@ theorem cyclCoord_apply {k : ℕ} (hk : 1 ≤ k) (τ : PadicAlgCl p ≃ₐ[ℚ_[
     normTrace_map_of_map_eq (cycl p k) τ (cycl_map τ k), hτ _ (normTrace_mem _ _), cyclCoord]
 
 /- English proof (translation)
-Establish `hpr` using `(Fact.out : p.Prime)`. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast hpr.pos`. Take `⟨ε, hεp, hτη'⟩` from `exists_apply_eq_mul_of_fix τ hτ hη`. Establish `hε1 : ε ≠ 1` using `by rintro rfl; rw [one_mul] at hτη'; exact hτη hτη'`. Establish `hτy : τ y ∈ cycl p (k + 1)` using `map_mem_cycl τ hy`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : τ y - y ∈ cycl p (k + 1)` using `sub_mem hτy hy`. Establish `hcoord : ∀ i ∈ Finset.range p, ‖cyclCoord k η y i‖ ≤ (p : ℝ) ^ 2 * ‖τ y - y‖`. Introduce `i hi`. Establish `hi'` using `Finset.mem_range.1 hi`. Break down `Nat.eq_zero_or_pos i with rfl | hipos` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[cyclCoord_zero hη, h0, norm_zero]`. Check the signs of the components of the expression. Establish `hle : i ≤ p ^ (k + 1)` using `le_trans hi'.le (Nat.le_self_pow (by omega) p)`. Establish `e : cyclCoord k η (τ y - y) i = (ε ^ i - 1) * cyclCoord k η y i`. Rewrite using `[cyclCoord_sub, cyclCoord_apply hk τ hτ hεp hτη' y hle]`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h1` using `norm_cyclCoord_le hk hη hw i`. Rewrite `h1` using `[e, norm_mul]`. Establish `h2` using `inv_p_le_norm_pow_sub_one hεp hε1 hipos hi'`. Establish `h3 : (p : ℝ)⁻¹ * ‖cyclCoord k η y i‖ ≤ p * ‖τ y - y‖` using `(mul_le_mul_of_nonneg_right h2 (norm_nonneg _)).trans h1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `conv_lhs => rw [eq_sum_cyclCoord hk hη hy]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun i hi => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow, norm_eq_one_of_pow_eq_one (pow_ne_zero _ hpr.ne_zero) hη.pow_eq_one, one_pow, mul_one]`. Conclude with `hcoord i hi`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_normTrace_cycl_succ_eq_zero {k : ℕ} (hk : 1 ≤ k)
     (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (hτ : ∀ x ∈ cycl p k, τ x = x)
@@ -787,15 +773,15 @@ theorem norm_le_of_normTrace_cycl_succ_eq_zero {k : ℕ} (hk : 1 ≤ k)
   exact hcoord i hi
 
 /- English proof (translation)
-Establish `hpr` using `(Fact.out : p.Prime)`. Establish `: NeZero (p ^ (k + 1))` using `⟨pow_ne_zero _ hpr.ne_zero⟩`. Take `⟨ε, hεp, hτη'⟩` from `exists_apply_eq_mul_of_fix τ hτ hη`. Establish `hε1 : ε ≠ 1` using `by rintro rfl; rw [one_mul] at hτη'; exact hτη hτη'`. Establish `hprim : IsPrimitiveRoot ε p`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsPrimitiveRoot.orderOf ε` as an intermediate fact. Rewrite `this` using `[orderOf_eq_prime hεp hε1]`. Then use the resulting hypothesis. Take `⟨j, -, rfl⟩` from `hη.eq_pow_of_pow_eq_one hη'.pow_eq_one`. Establish `hj : ¬ p ∣ j`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨c, rfl⟩` from `h`. Use `hη'.pow_eq_one_iff_dvd (p ^ k)` as an intermediate fact. Establish `h2 : (η ^ (p * c)) ^ (p ^ k) = 1`. Rewrite using `[← pow_mul, show p * c * p ^ k = p ^ (k + 1) * c by ring, pow_mul, hη.pow_eq_one, one_pow]`. Establish `h3` using `this.1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `Nat.le_of_dvd (pow_pos hpr.pos _) h3`. Establish `h5 : p ^ k < p ^ (k + 1)` using `Nat.pow_lt_pow_right hpr.one_lt (by omega)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[map_pow, hτη', mul_pow]`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hη0 : η ^ j ≠ 0` using `pow_ne_zero _ (hη.ne_zero (pow_ne_zero _ hpr.ne_zero))`. Establish `: ε ^ j = 1`. Use `congrArg (· * (η ^ j)⁻¹) h` as an intermediate fact. Simplify `this` using `[mul_assoc, mul_inv_cancel₀ hη0]`. Conclude with `hj ((hprim.pow_eq_one_iff_dvd j).1 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem apply_ne_of_isPrimitiveRoot {k : ℕ} (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p)
     (hτ : ∀ x ∈ cycl p k, τ x = x) {η : PadicAlgCl p} (hη : IsPrimitiveRoot η (p ^ (k + 1)))
@@ -827,13 +813,13 @@ theorem apply_ne_of_isPrimitiveRoot {k : ℕ} (τ : PadicAlgCl p ≃ₐ[ℚ_[p]]
   exact hj ((hprim.pow_eq_one_iff_dvd j).1 this)
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `exists_isPrimitiveRoot (p := p) (k + 1)`. Take `⟨ε, hεp, hτζ⟩` from `exists_apply_eq_mul_of_fix τ hτ hζ`. Establish `hεk : ε ∈ cycl p k` using `mem_cycl_of_pow_prime_eq_one hk hεp`. Establish `hpow : ∀ j : ℕ, (τ ^ j) ζ = ε ^ j * ζ`. Introduce `j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, hτζ, map_mul, ih]`. Establish `: (τ ^ j) ε = ε` using `by clear ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih2 => rw [pow_succ, AlgEquiv.mul_apply, hτ ε hεk, ih2]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hfix : (τ ^ p) ζ = ζ` using `by rw [hpow, hεp, one_mul]`. Introduce `x hx`. Rewrite `hx` using `[cycl_eq_adjoin hζ, mem_adjoin_simple_iff]`. Take `⟨r, s, rfl⟩` from `hx`. Rewrite using `[map_div₀, ← AlgEquiv.coe_toAlgHom, ← aeval_algHom_apply, ← aeval_algHom_apply, AlgEquiv.coe_toAlgHom, hfix]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_prime_fix_cycl_succ {k : ℕ} (hk : 1 ≤ k) (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p)
     (hτ : ∀ x ∈ cycl p k, τ x = x) : ∀ x ∈ cycl p (k + 1), (τ ^ p) x = x := by
@@ -860,19 +846,19 @@ theorem pow_prime_fix_cycl_succ {k : ℕ} (hk : 1 ≤ k) (τ : PadicAlgCl p ≃�
     AlgEquiv.coe_toAlgHom, hfix]
 
 /- English proof (translation)
-Establish `hpr` using `(Fact.out : p.Prime)`. Establish `hη'0 : η' ≠ 0` using `hη'.ne_zero (pow_ne_zero _ hpr.ne_zero)`. Establish `hη'p : IsPrimitiveRoot (η' ^ p) (p ^ (k + 1))` using `hη'.pow (pow_pos hpr.pos _) (by ring)`. Take `⟨ε, hεp, hτε⟩` from `exists_apply_eq_mul_of_fix τ hτ hη'p`. Establish `hε1 : ε ≠ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hτε` using `[one_mul]`. Conclude with `apply_ne_of_isPrimitiveRoot τ hτ hη hτη hη'p hτε`. Use `set δ := τ η' * η'⁻¹ with hδ`. Establish `hτη' : τ η' = δ * η'` using `by rw [hδ]; field_simp`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hδp : δ ^ p = ε`. Rewrite using `[hδ, mul_pow, inv_pow, ← map_pow, hτε, mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hη'0), mul_one]`. Establish `hδk : δ ∈ cycl p k`. Apply `pow_eq_one_mem_cycl` to reduce the goal to its premises. Take `⟨j, rfl⟩ : ∃ j, k = j + 2` from `⟨k - 2, by omega⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show p ^ (j + 2) = p * (p * p ^ j) by ring, pow_mul, hδp, pow_mul, hεp, one_pow]`. Establish `hpow : ∀ j : ℕ, (τ ^ j) η' = δ ^ j * η'`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ j ih`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, hτη', map_mul, ih]`. Establish `: (τ ^ j) δ = δ` using `by clear ih`. Proceed by induction on `j with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ j ih2 => rw [pow_succ, AlgEquiv.mul_apply, hτ δ hδk, ih2]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hpow, hδp]`. Introduce `h`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ε = 1`. Use `congrArg (· * η'⁻¹) h` as an intermediate fact. Simplify `this` using `[mul_assoc, mul_inv_cancel₀ hη'0]`. Conclude with `hε1 this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pow_prime_apply_ne {k : ℕ} (hk : 2 ≤ k) (τ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p)
     (hτ : ∀ x ∈ cycl p k, τ x = x) {η : PadicAlgCl p} (hη : IsPrimitiveRoot η (p ^ (k + 1)))
@@ -915,11 +901,11 @@ theorem pow_prime_apply_ne {k : ℕ} (hk : 2 ≤ k) (τ : PadicAlgCl p ≃ₐ[�
   exact hε1 this
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Simplify using `only [pow_zero, pow_one, add_zero]`. Conclude with `⟨hγn, fun η hη => apply_ne_of_isPrimitiveRoot γ hγn hζ hγζ hη⟩`. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨hfix, hmove⟩` from `ih`. Establish `hpj : γ ^ (p ^ (j + 1)) = (γ ^ (p ^ j)) ^ p` using `by rw [pow_succ, pow_mul]`. Take `⟨η, hη⟩` from `exists_isPrimitiveRoot (p := p) (n + j + 1)`. Use `⟨?_, fun η' hη' => ?_⟩` and prove the remaining obligations. Rewrite using `[hpj, ← add_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_prime_fix_cycl_succ (by omega) _ hfix`. Rewrite using `[hpj]`. Rewrite `hη'` using `[← add_assoc]`. Conclude with `pow_prime_apply_ne (by omega) _ hfix hη (hmove η hη) hη'`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_prime_pow_fix_and_move {n : ℕ} (hn : 2 ≤ n) (γ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p)
     (hγn : ∀ x ∈ cycl p n, γ x = x) {ζ : PadicAlgCl p} (hζ : IsPrimitiveRoot ζ (p ^ (n + 1)))
@@ -942,23 +928,21 @@ theorem pow_prime_pow_fix_and_move {n : ℕ} (hn : 2 ≤ n) (γ : PadicAlgCl p �
       exact pow_prime_apply_ne (by omega) _ hfix hη (hmove η hη) hη'
 
 /- English proof (translation)
-Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`. Break down `le_or_gt m n with hmn | hnm` into its components or cases. Rewrite `h0` using `[normTrace_of_mem _ (cycl_mono hmn hx)]`. Rewrite using `[h0, norm_zero]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Use `set w := γ x - x with hw`. Establish `hwm : w ∈ cycl p m` using `sub_mem (map_mem_cycl γ hx) hx`. Establish `hcomm : ∀ j y, γ (normTrace (cycl p j) y) = normTrace (cycl p j) (γ y)` using `fun j y => (normTrace_map_of_map_eq (cycl p j) γ (cycl_map γ j) y).symm`. Use `set f : ℕ → PadicAlgCl p := fun k => normTrace (cycl p k) x with hf`. Establish `hlayer : ∀ k ∈ Finset.Ico n m, ‖f (k + 1) - f k‖ ≤ (p : ℝ) ^ 3 * ‖w‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `k hk`. Take `⟨hnk, hkm⟩` from `Finset.mem_Ico.1 hk`. Establish `hk1 : 1 ≤ k` using `by omega`. Use `set y := f (k + 1) - f k`. Establish `hy : y ∈ cycl p (k + 1)` using `sub_mem (normTrace_mem _ _) (cycl_mono (Nat.le_succ k) (normTrace_mem _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hy0 : normTrace (cycl p k) y = 0`. Simplify using `only [y, hf]`. Rewrite using `[normTrace_sub, normTrace_normTrace_of_le (cycl_mono (p := p) (Nat.le_succ k)), normTrace_of_mem _ (normTrace_mem _ _), sub_self]`. Establish `hγy : γ y - y = normTrace (cycl p (k + 1)) w - normTrace (cycl p k) w`. Simplify using `only [y, hf, hw, map_sub, hcomm, normTrace_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hγy' : ‖γ y - y‖ ≤ p * ‖w‖`. Rewrite using `[hγy, sub_eq_add_neg]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `norm_normTrace_cycl_le (by omega) hkm hwm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[norm_neg]`. Conclude with `norm_normTrace_cycl_le hk1 hkm.le hwm`. Take `⟨hfix, hmove⟩` from `pow_prime_pow_fix_and_move hn γ hγn hζ hγζ (k - n)`. Rewrite `hfix`, `hmove` using `[Nat.add_sub_cancel' hnk]`. Take `⟨η, hη⟩` from `exists_isPrimitiveRoot (p := p) (k + 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `norm_le_of_normTrace_cycl_succ_eq_zero hk1 _ hfix hη (hmove η hη) hy hy0`. Establish `h2` using `norm_pow_apply_sub_le γ y (p ^ (k - n))`. Combine the equalities or inequalities in the displayed calculation. Establish `htel : ∀ m' : ℕ, n ≤ m' → ∑ k ∈ Finset.Ico n m', (f (k + 1) - f k) = f m' - f n`. Introduce `m' hm'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Proceed by induction on `m', hm' using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ m' hm' ih => rw [Finset.sum_Ico_succ_top hm', ih]`. Expand and normalize the polynomial expressions, which then agree. Establish `hxsum : x = ∑ k ∈ Finset.Ico n m, (f (k + 1) - f k)`.
-
-Rewrite using `[htel m hnm.le]`. Simplify using `only [hf]`. Rewrite using `[h0, sub_zero, normTrace_of_mem _ hx]`. Rewrite using `[hxsum]`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) hlayer`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_normTrace_cycl_eq_zero {n m : ℕ} (hn : 2 ≤ n)
     (γ : PadicAlgCl p ≃ₐ[ℚ_[p]] PadicAlgCl p) (hγn : ∀ x ∈ cycl p n, γ x = x)

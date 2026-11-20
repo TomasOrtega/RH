@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SquarefreeDivisorDegree
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SquarefreeDivisorDegree.CardMonicTwoRootsLe
 
 /- English proof (translation)
-The claim follows from `PI.SqfDivDeg.W.sqfDivDeg_of_rootDense PI.SqfDivDeg.W.rootDense`.
+A detailed English derivation is pending.
 -/
 theorem squarefree_div_degree : PI.SqfDivDeg.Claim :=
   PI.SqfDivDeg.W.sqfDivDeg_of_rootDense PI.SqfDivDeg.W.rootDense

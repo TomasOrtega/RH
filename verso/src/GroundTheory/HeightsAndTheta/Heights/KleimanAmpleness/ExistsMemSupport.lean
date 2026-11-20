@@ -18,45 +18,41 @@ def pt {i : Fin (N + 1)} (hi : i ∈ support x) : Cech.Idx (support x) 0 :=
   ⟨⟨{i}, Finset.singleton_nonempty i, Finset.singleton_subset_iff.mpr hi⟩, Finset.card_singleton i⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Subtype.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem idx_ext {U : Finset (Fin (N + 1))} {i : ℕ} {K K' : Cech.Idx U i} (h : K.1.1 = K'.1.1) :
     K = K' :=
   Subtype.ext (Subtype.ext h)
 
 /- English proof (translation)
-The claim follows from `(Submodule.mem_iInf _).mp hz I`.
+A detailed English derivation is pending.
 -/
 theorem mem_sub_of_mem_secs (F : SubSystem S x E) {z : E} (hz : z ∈ F.secs) (I : Chart x) :
     z ∈ F.sub I :=
   (Submodule.mem_iInf _).mp hz I
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Finset.card_eq_one.mp K.2`. Take `⟨b, hb⟩` from `Finset.card_eq_one.mp K'.2`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[idx_ext (ha.trans hb.symm)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub : ({a, b} : Finset (Fin (N + 1))) ⊆ support x`. Introduce `z hz`. Break down `Finset.mem_insert.mp hz with rfl | hz` into its components or cases. Conclude with `K.1.2.2 (by rw [ha]; exact Finset.mem_singleton_self _)`. Rewrite using `[Finset.mem_singleton.mp hz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `K'.1.2.2 (by rw [hb]; exact Finset.mem_singleton_self _)`. Set `J : Cech.Idx (support x) 1` to `⟨⟨{a, b}, Finset.insert_nonempty _ _, hsub⟩, Finset.card_pair hab⟩`. Establish `ha' : a ∈ J.1.1` using `Finset.mem_insert_self _ _`. Establish `hb' : b ∈ J.1.1` using `Finset.mem_insert_of_mem (Finset.mem_singleton_self _)`. Establish `fa : Cech.face J ⟨a, ha'⟩ = K'` using `idx_ext (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `({a, b} : Finset _).erase a = _`. Rewrite using `[hb]`. Use extensionality with `z`. Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2 | h2⟩`. Conclude with `absurd h2 h1`. Conclude with `h2`. Introduce and unpack `rfl`. Conclude with `⟨Ne.symm hab, Or.inr rfl⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `fb : Cech.face J ⟨b, hb'⟩ = K` using `idx_ext (by`. Express the relevant statement in the definitionally equal form `({a, b} : Finset _).erase b = _`. Rewrite using `[ha]`. Use extensionality with `z`. Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2 | h2⟩`. Conclude with `h2`. Conclude with `absurd h2 h1`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨hab, Or.inl rfl⟩)`. Establish `hval : ∀ L L' : Cech.Idx (support x) 0, L = L' → (s L : E) = (s L' : E)`. Introduce and unpack `L L' rfl`. Both sides reduce to the same expression. Establish `h0` using `congrArg (F.sub J.1).subtype (congrFun hs J)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[Cech.d_apply, map_sum, Pi.zero_apply, map_zero]`. Establish `huniv : (Finset.univ : Finset J.1.1) = {⟨a, ha'⟩, ⟨b, hb'⟩}`. Use extensionality with `⟨z, hz⟩`. Simplify using `only [Finset.mem_univ, Finset.mem_insert, Finset.mem_singleton, Subtype.mk.injEq, true_iff]`. Conclude with `(Finset.mem_insert.mp hz).imp id Finset.mem_singleton.mp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : (⟨a, ha'⟩ : J.1.1) ≠ ⟨b, hb'⟩` using `fun h => hab (congrArg Subtype.val h)`. Rewrite `h0` using `[huniv, Finset.sum_pair hne, map_zsmul, map_zsmul]`. Establish `h1 : Cech.sgn ({a, b} : Finset (Fin (N + 1))) a • (s K' : E) + Cech.sgn ({a, b} : Finset (Fin (N + 1))) b • (s K : E) = 0`. Rewrite using `[← hval _ _ fa, ← hval _ _ fb]`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Establish `hsum` using `Cech.sum_sgn_of_card_two (Finset.card_pair hab)`. Rewrite `hsum` using `[Finset.sum_pair hab]`. Establish `hb2 : Cech.sgn ({a, b} : Finset (Fin (N + 1))) b = - Cech.sgn ({a, b} : Finset (Fin (N + 1))) a` using `by linarith`. Rewrite `h1` using `[hb2, neg_smul, ← sub_eq_add_neg, ← smul_sub]`. Establish `hsq : Cech.sgn ({a, b} : Finset (Fin (N + 1))) a * Cech.sgn ({a, b} : Finset (Fin (N + 1))) a = 1`.
-
-Unfold `Cech.sgn`. Rewrite using `[← mul_pow]`. Evaluate the numerical expressions. Establish `h2 : (s K' : E) - (s K : E) = 0`. Rewrite using `[← one_smul ℤ ((s K' : E) - (s K : E)), ← hsq, mul_smul, h1, smul_zero]`.
-
-Conclude with `(sub_eq_zero.mp h2).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cocycle_coe_eq (F : SubSystem S x E) {s : Cech.Cochain (fun I => F.sub I) 0}
     (hs : Cech.d (fun I => F.sub I) F.res 0 s = 0) (K K' : Cech.Idx (support x) 0) :
@@ -124,7 +120,7 @@ def constC (F : SubSystem S x E) : F.secs →ₗ[S] Cech.Cochain (fun I => F.sub
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-The claim follows from `Cech.d_zero_of_compat (v := fun I => (⟨z, mem_sub_of_mem_secs F z.2 I⟩ : F.sub I)) (fun _ _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem constC_cocycle (F : SubSystem S x E) (z : F.secs) :
     Cech.d (fun I => F.sub I) F.res 0 (constC F z) = 0 :=
@@ -136,7 +132,7 @@ def toKer (F : SubSystem S x E) :
   (constC F).codRestrict _ fun z => LinearMap.mem_ker.mpr (constC_cocycle F z)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Simplify using `only [not_exists] at h`. Conclude with `hx (funext fun i => by_contra fun hi => h i ((mem_support x).mpr hi))`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_mem_support (hx : x ≠ 0) : ∃ i, i ∈ support x := by
   by_contra h
@@ -144,11 +140,11 @@ theorem exists_mem_support (hx : x ≠ 0) : ∃ i, i ∈ support x := by
   exact hx (funext fun i => by_contra fun hi => h i ((mem_support x).mpr hi))
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `exists_mem_support hx`. Use `⟨fun z₁ z₂ h => ?_, fun s => ?_⟩` and prove the remaining obligations. Use `congrArg (fun t => ((t.1 (pt hi₀) : F.sub (pt hi₀).1) : E)) h` as an intermediate fact. Conclude with `Subtype.ext this`. Establish `hs` using `LinearMap.mem_ker.mp s.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : (s.1 (pt hi₀) : E) ∈ F.secs`. Use `Submodule.mem_iInf _ |>.mpr fun I => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `I.2.1`. Establish `hsup : i ∈ support x` using `I.2.2 hi`. Rewrite using `[Submodule.restrictScalars_mem, cocycle_coe_eq F hs (pt hi₀) (pt hsup)]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `F.mono _ I (Finset.singleton_subset_iff.mpr hi) _ (s.1 (pt hsup)).2`. Use `⟨⟨_, hz⟩, Subtype.ext (funext fun K => Subtype.ext ?_)⟩` and prove the remaining obligations. Conclude with `cocycle_coe_eq F hs (pt hi₀) K`.
+A detailed English derivation is pending.
 -/
 theorem toKer_bijective (F : SubSystem S x E) (hx : x ≠ 0) : Function.Bijective (toKer F) := by
   obtain ⟨i₀, hi₀⟩ := exists_mem_support hx
@@ -166,7 +162,7 @@ theorem toKer_bijective (F : SubSystem S x E) (hx : x ≠ 0) : Function.Bijectiv
     exact cocycle_coe_eq F hs (pt hi₀) K
 
 /- English proof (translation)
-Introduce `S _ Ω _ _ N x E _ _ _ _ F hx`. Establish `hp : (Cech.bdry (fun I => F.sub I) F.res 0).comap (LinearMap.ker (Cech.d (fun I => F.sub I) F.res 0)).subtype = ⊥`. Rewrite using `[show Cech.bdry (fun I => F.sub I) F.res 0 = ⊥ from rfl, Submodule.comap_bot, Submodule.ker_subtype]`. Conclude with `⟨(Submodule.quotEquivOfEqBot _ hp).trans (LinearEquiv.ofBijective (toKer F) (toKer_bijective F hx)).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem proof : CechZerothCohomologySections.Statement.{u, v, w} := by
   intro S _ Ω _ _ N x E _ _ _ _ F hx

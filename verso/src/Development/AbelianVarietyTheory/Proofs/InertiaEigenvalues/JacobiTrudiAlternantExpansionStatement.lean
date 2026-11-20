@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.JacobiTrudiAlt
 import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SchurEqJtDet
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.JSW.alternant_staircase_mul_antidiagonal | exact GlobalTheory.JSW.alternant_staircase_mul_antidiagonal | (intros; apply GlobalTheory.JSW.alternant_staircase_mul_antidiagonal <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.jacobi_trudi_alternant_expansion : ∀ {A : Type} [CommRing A] (m d : ℕ) (h : ℕ → A),
     GlobalTheory.JSW.alternant A m (GlobalTheory.JSW.staircase m) *

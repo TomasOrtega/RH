@@ -14,11 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A B f hf`. Take `⟨hdim, -, -, -⟩` from `GlobalTheory.T.dim_eq_flat_finrank_eq_deg_of_isIsogeny K A B f hf`. Take `⟨n, hn, hker⟩` from `GlobalTheory.T.abelianVariety_finiteHom_kernel_killed_by_nat K A B f hf.1`. Establish `hB` using `B.smooth`. Establish `hA` using `A.smooth`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hA` using `[hdim]`. Take `⟨h, hh, hfh, hhf⟩` from `GlobalTheory.IsogenyQuasiInverse.exists_quasiInverse K A.X B.X B.dim A.ab B.ab hA hB f.hom inferInstance n hn hker`. Set `g : B ⟶ A` to `Hom.mk (A := B) (B := A) h (h := hh)`. Establish `e1 : f ≫ g = n • 𝟙 A` using `hom_ext (by simp [g, hfh])`. Establish `e2 : g ≫ f = n • 𝟙 B` using `hom_ext (by simp [g, hhf])`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨n, g, hn, ?_, e1, e2⟩` and prove the remaining obligations. Establish `hm : IsIsogeny ((n : ℤ) • 𝟙 B)` using `(GlobalTheory.T.abelianVariety_intCast_smul_isogeny_degree K B n (by exact_mod_cast hn.ne')).1`. Rewrite `hm` using `[natCast_zsmul, ← e2]`. Conclude with `(((GlobalTheory.T.isIsogeny_comp_iff_and_degree_mul K B A B g f hdim.symm hdim).1).mp hm).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quasiInverse_isogeny : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), IsIsogeny f →
     ∃ (n : ℕ) (g : B ⟶ A), 0 < n ∧ IsIsogeny g ∧ f ≫ g = n • 𝟙 A ∧ g ≫ f = n • 𝟙 B := by

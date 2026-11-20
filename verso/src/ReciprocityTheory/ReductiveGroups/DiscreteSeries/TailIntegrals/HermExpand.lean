@@ -10,9 +10,9 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 namespace BL
 
 /- English proof (translation)
-Establish `h : ∀ i j, star (H i j) = H j i` using `fun i j => by`. Use `congrFun (congrFun hH j) i` as an intermediate fact. Simplify `this` using `[Matrix.conjTranspose_apply]`. Unfold `herm`. Simplify using `only [dotProduct, mulVec, star_sum, star_mul', star_star, Finset.mul_sum, Pi.star_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem herm_conj {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (v w : Fin n → ℂ) :
     star (herm H v w) = herm H w v := by
@@ -26,7 +26,7 @@ theorem herm_conj {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : Hᴴ = H) (v 
   rw [h]; ring
 
 /- English proof (translation)
-Simplify using `[bvec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dot_bvec_r {n : ℕ} (i : Fin n) (x : Fin n → ℂ) : x ⬝ᵥ bvec i = x i := by
   simp [bvec]
@@ -44,7 +44,7 @@ Both sides reduce to the same expression.
 theorem wp_val (i : Fin (k - 1)) : (wp k n i).val = n + (i.val + 1) := rfl
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Rewrite using `[wp_val]`. Unfold `sg`. Rewrite using `[if_neg (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sg_wp (i : Fin (k - 1)) : sg k n (wp k n i).val = (wp k n i).val := by
   have hi := i.isLt
@@ -53,9 +53,9 @@ theorem sg_wp (i : Fin (k - 1)) : sg k n (wp k n i).val = (wp k n i).val := by
   rw [if_neg (by omega)]
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hv` using `wp_val k n i`. Establish `hj` using `j.isLt`. Establish `hij : wp k n i = j ↔ (wp k n i).val = j.val` using `Fin.ext_iff`. Unfold `Hpk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `h : (wp k n i).val = j.val`. Rewrite using `[if_pos (hij.2 h), if_neg (by omega), if_neg (by omega), if_pos ⟨by omega, by omega, hij.2 h⟩, if_neg (by omega)]`. Rewrite using `[if_neg (fun he => h (hij.1 he)), if_neg (by omega), if_neg (by omega), if_neg (by omega)]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem Hpk_apply_wp_eq_ite (i : Fin (k - 1)) (j : Fin (2 * n + k + 1)) :
     Hpk k n (wp k n i) j = if wp k n i = j then 1 else 0 := by
@@ -70,18 +70,18 @@ private theorem Hpk_apply_wp_eq_ite (i : Fin (k - 1)) (j : Fin (2 * n + k + 1)) 
   · rw [if_neg (fun he => h (hij.1 he)), if_neg (by omega), if_neg (by omega), if_neg (by omega)]
 
 /- English proof (translation)
-Simplify using `only [mulVec, dotProduct, Hpk_apply_wp_eq_ite, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hpk_mv_w (i : Fin (k - 1)) (y : Fin (2 * n + k + 1) → ℂ) : (Hpk k n *ᵥ y) (wp k n i) = y (wp k n i) := by
   simp only [mulVec, dotProduct, Hpk_apply_wp_eq_ite, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq,
     Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Establish `hc : Hpk k n p (wp k n i) = star (Hpk k n (wp k n i) p)`. Use `congrFun (congrFun (hpk_conjT k n) p) (wp k n i)` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_apply]`. Conclude with `this.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [wv, bvec, mulVec, dotProduct, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Rewrite using `[hc, Hpk_apply_wp_eq_ite]`. Distinguish the cases in `h : wp k n i = p`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg h, if_neg (fun he => h he.symm), star_zero]`.
+A detailed English derivation is pending.
 -/
 theorem hpk_bvec_w (i : Fin (k - 1)) : Hpk k n *ᵥ wv k n i = wv k n i := by
   funext p
@@ -97,13 +97,13 @@ theorem hpk_bvec_w (i : Fin (k - 1)) : Hpk k n *ᵥ wv k n i = wv k n i := by
   · rw [if_neg h, if_neg (fun he => h he.symm), star_zero]
 
 /- English proof (translation)
-Establish `hi` using `i.isLt`. Establish `hv` using `wp_val k n i`. Establish `ha` using `a.isLt`. Unfold `phiV`. Use `split_ifs with h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [bvec]`. Rewrite using `[Pi.single_apply, if_neg]`. Introduce `he`. Use `congrArg Fin.val he` as an intermediate fact. Simplify using `only [esI] at this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [epsV, bvec, Pi.smul_apply, Pi.add_apply, Pi.single_apply]`. Rewrite using `[if_neg, if_neg]`. Simplify using the standard rewrite rules. Introduce `he`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg Fin.val he` as an intermediate fact. Apply the tactic sequence `simp [wI, Fin.val_last] at this <;> omega`. Introduce `he`. Use `congrArg Fin.val he` as an intermediate fact. Apply the tactic sequence `simp [wI] at this <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem phi_w (a : Fin (n + 1)) (i : Fin (k - 1)) : phiV k n a (wp k n i) = 0 := by
   have hi := i.isLt
@@ -128,14 +128,14 @@ theorem phi_w (a : Fin (n + 1)) (i : Fin (k - 1)) : phiV k n a (wp k n i) = 0 :=
       simp [wI] at this <;> omega
 
 /- English proof (translation)
-Use `show (Hpk k n *ᵥ phiV k n a) (wp k n i) = 0`. Rewrite using `[hpk_mv_w, phi_w]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi'_w (a : Fin (n + 1)) (i : Fin (k - 1)) : phiV' k n a (wp k n i) = 0 := by
   show (Hpk k n *ᵥ phiV k n a) (wp k n i) = 0
   rw [hpk_mv_w, phi_w]
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[hpk_bvec_w]`. Simplify using `only [wv]`. Rewrite using `[dot_bvec_r]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem herm_w_l (v : Fin (2 * n + k + 1) → ℂ) (i : Fin (k - 1)) : herm (Hpk k n) (wv k n i) v = star (v (wp k n i)) := by
   unfold herm
@@ -145,7 +145,7 @@ theorem herm_w_l (v : Fin (2 * n + k + 1) → ℂ) (i : Fin (k - 1)) : herm (Hpk
   rfl
 
 /- English proof (translation)
-Unfold `herm`. Establish `hs : star (wv k n i) = Pi.single (wp k n i) (1 : ℂ)`. Use extensionality with `j`. Apply the tactic sequence `by_cases h : j = wp k n i <;> simp [wv, bvec, h]`. Rewrite using `[hs, single_dotProduct, one_mul, hpk_mv_w]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_w_r (v : Fin (2 * n + k + 1) → ℂ) (i : Fin (k - 1)) : herm (Hpk k n) v (wv k n i) = v (wp k n i) := by
   unfold herm
@@ -161,7 +161,7 @@ def Psv : Fin (n + 1) ⊕ (Fin (n + 1) ⊕ Fin (k - 1)) → Fin (2 * n + k + 1) 
   Sum.elim (phiV k n) (Sum.elim (phiV' k n) (wv k n))
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[mulVec_mulVec, hpk_mul, one_mulVec, Matrix.star_mulVec, hpk_conjT, dotProduct_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem herm_Hpk_mulVec_Hpk_mulVec (x y : Fin (2 * n + k + 1) → ℂ) :
     herm (Hpk k n) (Hpk k n *ᵥ x) (Hpk k n *ᵥ y) = herm (Hpk k n) x y := by
@@ -169,21 +169,21 @@ private theorem herm_Hpk_mulVec_Hpk_mulVec (x y : Fin (2 * n + k + 1) → ℂ) :
   rw [mulVec_mulVec, hpk_mul, one_mulVec, Matrix.star_mulVec, hpk_conjT, dotProduct_mulVec]
 
 /- English proof (translation)
-Establish `hφ' : ∀ a, phiV' k n a = Hpk k n *ᵥ phiV k n a` using `fun _ => rfl`. Apply the tactic sequence `rcases c with b | b | i <;> rcases d with a | a | j <;>`. Simplify using `only [Phv, Psv, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[← herm_conj (Hpk k n) (hpk_conjT k n) (phiV k n b) (phiV' k n a), phi_pair k n hk]`. Distinguish the cases in `h : b = a`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[phi_iso k n hk]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[herm_w_l, phi_w]`. Simplify using the standard rewrite rules. Rewrite using `[hφ', hφ', herm_Hpk_mulVec_Hpk_mulVec, phi_iso k n hk]`. Simplify using the standard rewrite rules. Rewrite using `[phi_pair k n hk]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Rewrite using `[herm_w_l, phi'_w]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[herm_w_r, phi'_w]`. Simplify using the standard rewrite rules. Rewrite using `[herm_w_r, phi_w]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[herm_w_l]`. Simplify using `only [wv, bvec, Pi.single_apply]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `hne : wp k n j ≠ wp k n i`. Introduce `he`. Apply `h` to reduce the goal to its premises. Use `ext`. Use `congrArg Fin.val he` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[wp_val, wp_val]`. Use linear arithmetic over natural numbers and integers. Simplify using `[hne, h]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem pair_all (hk : 1 ≤ k) (c d : Fin (n + 1) ⊕ (Fin (n + 1) ⊕ Fin (k - 1))) :
     herm (Hpk k n) (Phv k n d) (Psv k n c) = if c = d then 1 else 0 := by
@@ -218,9 +218,9 @@ theorem pair_all (hk : 1 ≤ k) (c d : Fin (n + 1) ⊕ (Fin (n + 1) ⊕ Fin (k -
       simp [hne, h]
 
 /- English proof (translation)
-Unfold `herm`. Simplify using `only [dotProduct, mulVec, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `conv_rhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem herm_sum_smul_left_tail_integrals {ι : Type*} [Fintype ι] (g : ι → ℂ) (v : ι → Fin (2 * n + k + 1) → ℂ)
     (w : Fin (2 * n + k + 1) → ℂ) :
@@ -234,15 +234,15 @@ private theorem herm_sum_smul_left_tail_integrals {ι : Type*} [Fintype ι] (g :
   ring
 
 /- English proof (translation)
-Establish `hcoef : ∀ (g : Fin (n + 1) ⊕ (Fin (n + 1) ⊕ Fin (k - 1)) → ℂ) c, herm (Hpk k n) (∑ d, g d • Phv k n d) (Psv k n c) = g c`. Introduce `g c`. Rewrite using `[herm_sum_smul_left_tail_integrals]`. Simplify using `[pair_all k n hk]`. Establish `hli : LinearIndependent ℂ (Phv k n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg c`. Use `hcoef g c` as an intermediate fact. Rewrite `this` using `[hg]`. Simplify `this.symm` using `[herm]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hcard : Fintype.card (Fin (n + 1) ⊕ (Fin (n + 1) ⊕ Fin (k - 1))) = Module.finrank ℂ (Fin (2 * n + k + 1) → ℂ)`. Simplify using `only [Fintype.card_sum, Fintype.card_fin, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Set `b` to `basisOfLinearIndependentOfCardEqFinrank hli hcard`. Establish `hb : ∀ c, b c = Phv k n c` using `fun c => by simp [b]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hy` using `b.sum_repr y`. Simplify using `only [hb] at hy`. Use `conv_lhs => rw [← hy]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Use `hcoef (fun d => b.repr y d) c` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hy]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand (hk : 1 ≤ k) (y : Fin (2 * n + k + 1) → ℂ) :
     y = ∑ c, herm (Hpk k n) y (Psv k n c) • Phv k n c := by
@@ -272,7 +272,7 @@ theorem expand (hk : 1 ≤ k) (y : Fin (2 * n + k + 1) → ℂ) :
   rw [this]
 
 /- English proof (translation)
-Use `conv_lhs => rw [expand k n hk y]`. Rewrite using `[herm_sum_smul_left_tail_integrals, Fintype.sum_sum_type, Fintype.sum_sum_type]`. Simplify using `only [Psv, Phv, Sum.elim_inl, Sum.elim_inr, herm_w_r]`. Rewrite using `[Finset.sum_add_distrib]`. Conclude with `(add_assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_expand (hk : 1 ≤ k) (y w : Fin (2 * n + k + 1) → ℂ) :
     herm (Hpk k n) y w = ∑ j, (herm (Hpk k n) y (phiV k n j) * herm (Hpk k n) (phiV' k n j) w +
@@ -285,7 +285,7 @@ theorem herm_expand (hk : 1 ≤ k) (y w : Fin (2 * n + k + 1) → ℂ) :
   exact (add_assoc _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[herm_expand k n hk y w]`. Simplify using `only [linF, hcoord]`. Use `congr 1`. Conclude with `((finCongr (by omega : 1 + n = n + 1)).sum_comp (fun j => herm (Hpk k n) y (phiV k n j) * herm (Hpk k n) (phiV' k n j) w + herm (Hpk k n) y (phiV' k n j) * herm (Hpk k n) (phiV k n j) w)).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem herm_linF (hk : 1 ≤ k) (y w : Fin (2 * n + k + 1) → ℂ) (s : ℝ) :
     herm (Hpk k n) y w = linF (fun j => herm (Hpk k n) (phiV' k n (Fin.cast (by omega) j)) w)

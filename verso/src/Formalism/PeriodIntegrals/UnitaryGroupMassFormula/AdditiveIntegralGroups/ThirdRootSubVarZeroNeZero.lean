@@ -14,7 +14,7 @@ section order
 variable {σ : Type*}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (hg.trans le_add_self).trans (MvPowerSeries.le_order_mul ..)`. Consider the case `exact (hg.trans le_add_self).trans (MvPowerSeries.order_mul_ge ..)`. Consider the case `exact (hg.trans le_add_self).trans (MvPowerSeries.add_order_le_order_mul ..)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rt_two_le_mul_left (f g : MvPowerSeries σ ℂ_[p]) (hg : 2 ≤ g.order) : 2 ≤ (f * g).order := by
   first
@@ -23,7 +23,7 @@ theorem rt_two_le_mul_left (f g : MvPowerSeries σ ℂ_[p]) (hg : 2 ≤ g.order)
     | exact (hg.trans le_add_self).trans (MvPowerSeries.add_order_le_order_mul ..)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact (hf.trans le_self_add).trans (MvPowerSeries.le_order_mul ..)`. Consider the case `exact (hf.trans le_self_add).trans (MvPowerSeries.order_mul_ge ..)`. Consider the case `exact (hf.trans le_self_add).trans (MvPowerSeries.add_order_le_order_mul ..)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rt_two_le_mul_right (f g : MvPowerSeries σ ℂ_[p]) (hf : 2 ≤ f.order) : 2 ≤ (f * g).order := by
   first
@@ -32,7 +32,7 @@ theorem rt_two_le_mul_right (f g : MvPowerSeries σ ℂ_[p]) (hf : 2 ≤ f.order
     | exact (hf.trans le_self_add).trans (MvPowerSeries.add_order_le_order_mul ..)
 
 /- English proof (translation)
-Use `MvPowerSeries.le_order fun d hd => ?_` and prove the remaining obligations. Rewrite using `[map_add, MvPowerSeries.coeff_of_lt_order (hd.trans_le hf), MvPowerSeries.coeff_of_lt_order (hd.trans_le hg), add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rt_two_le_add {f g : MvPowerSeries σ ℂ_[p]} (hf : 2 ≤ f.order) (hg : 2 ≤ g.order) :
     2 ≤ (f + g).order := by
@@ -41,14 +41,14 @@ theorem rt_two_le_add {f g : MvPowerSeries σ ℂ_[p]} (hf : 2 ≤ f.order) (hg 
     MvPowerSeries.coeff_of_lt_order (hd.trans_le hg), add_zero]
 
 /- English proof (translation)
-Rewrite using `[MvPowerSeries.order_neg]`. Conclude with `hf`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_two_le_neg {f : MvPowerSeries σ ℂ_[p]} (hf : 2 ≤ f.order) : 2 ≤ (-f).order := by
   rw [MvPowerSeries.order_neg]
   exact hf
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `rt_two_le_add hf (rt_two_le_neg hg)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_two_le_sub {f g : MvPowerSeries σ ℂ_[p]} (hf : 2 ≤ f.order) (hg : 2 ≤ g.order) :
     2 ≤ (f - g).order := by
@@ -56,7 +56,7 @@ theorem rt_two_le_sub {f g : MvPowerSeries σ ℂ_[p]} (hf : 2 ≤ f.order) (hg 
   exact rt_two_le_add hf (rt_two_le_neg hg)
 
 /- English proof (translation)
-Use `MvPowerSeries.le_order fun d hd => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.coeff_X, if_neg]`. Introduce and unpack `rfl`. Simplify using `at hd`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem rt_one_le_X (i : σ) : 1 ≤ (Xv i : MvPowerSeries σ ℂ_[p]).order := by
   refine MvPowerSeries.le_order fun d hd => ?_
@@ -65,9 +65,9 @@ theorem rt_one_le_X (i : σ) : 1 ≤ (Xv i : MvPowerSeries σ ℂ_[p]).order := 
   simp at hd
 
 /- English proof (translation)
-Establish `h2 : (2 : ℕ∞) ≤ f.order + (Xv i : MvPowerSeries σ ℂ_[p]).order`. Combine the equalities or inequalities in the displayed calculation. Use `first`. Consider the case `exact h2.trans (MvPowerSeries.le_order_mul ..)`. Consider the case `exact h2.trans (MvPowerSeries.order_mul_ge ..)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact h2.trans (MvPowerSeries.add_order_le_order_mul ..)`.
+A detailed English derivation is pending.
 -/
 theorem rt_two_le_mul_X {f : MvPowerSeries σ ℂ_[p]} (hf : 1 ≤ f.order) (i : σ) :
     2 ≤ (f * Xv i).order := by
@@ -82,7 +82,7 @@ theorem rt_two_le_mul_X {f : MvPowerSeries σ ℂ_[p]} (hf : 1 ≤ f.order) (i :
 end order
 
 /- English proof (translation)
-Use `MvPowerSeries.le_order fun e he => ?_` and prove the remaining obligations. Establish `hd : e 0 + e 1 < 2`. Rewrite `he` using `[Finsupp.degree_eq_sum, Fin.sum_univ_two]`. Conclude with `he` after adjusting the coercions. Rewrite using `[lamA_coeff_lam, lamA_coeff_wser, if_neg (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_order_lam (wq : PowerSeries ℂ_[p]) : 2 ≤ (lam wq).order := by
   refine MvPowerSeries.le_order fun e he => ?_
@@ -92,7 +92,7 @@ theorem rt_order_lam (wq : PowerSeries ℂ_[p]) : 2 ≤ (lam wq).order := by
   rw [lamA_coeff_lam, lamA_coeff_wser, if_neg (by omega)]
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Apply `MvPowerSeries.coeff_of_lt_order` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ hf` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem rt_constantCoeff_lam_lemma {f : MvPowerSeries (Fin 2) ℂ_[p]} (hf : 2 ≤ f.order) :
     MvPowerSeries.constantCoeff f = 0 := by
@@ -102,13 +102,13 @@ private theorem rt_constantCoeff_lam_lemma {f : MvPowerSeries (Fin 2) ℂ_[p]} (
   simp
 
 /- English proof (translation)
-Conclude with `rt_constantCoeff_lam_lemma (rt_order_lam wq)`.
+A detailed English derivation is pending.
 -/
 theorem rt_constantCoeff_lam (wq : PowerSeries ℂ_[p]) : MvPowerSeries.constantCoeff (lam wq) = 0 := by
   exact rt_constantCoeff_lam_lemma (rt_order_lam wq)
 
 /- English proof (translation)
-Establish `ha : PowerSeries.HasSubst (Xv i : MvPowerSeries (Fin 2) ℂ_[p])` using `PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)`. Unfold `wv wser`. Rewrite using `[← PowerSeries.coe_substAlgHom ha, map_mul, map_pow, PowerSeries.coe_substAlgHom, PowerSeries.subst_X ha]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rt_wv (wq : PowerSeries ℂ_[p]) (i : Fin 2) :
     wv wq i = (Xv i) ^ 3 * PowerSeries.subst (Xv i : MvPowerSeries (Fin 2) ℂ_[p]) wq := by
@@ -119,9 +119,7 @@ theorem rt_wv (wq : PowerSeries ℂ_[p]) (i : Fin 2) :
     PowerSeries.subst_X ha]
 
 /- English proof (translation)
-Establish `h3 : 2 ≤ ((Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) ^ 3).order`. Rewrite using `[pow_succ]`. Conclude with `rt_two_le_mul_right _ _ (by rw [pow_two]; exact rt_two_le_mul_X (rt_one_le_X 0) 0)`. Unfold `nu`. Rewrite using `[rt_wv]`.
-
-Conclude with `rt_two_le_sub (rt_two_le_mul_right _ _ h3) (rt_two_le_mul_right _ _ (rt_order_lam wq))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_order_nu (wq : PowerSeries ℂ_[p]) : 2 ≤ (nu wq).order := by
   have h3 : 2 ≤ ((Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) ^ 3).order := by
@@ -132,15 +130,15 @@ theorem rt_order_nu (wq : PowerSeries ℂ_[p]) : 2 ≤ (nu wq).order := by
   exact rt_two_le_sub (rt_two_le_mul_right _ _ h3) (rt_two_le_mul_right _ _ (rt_order_lam wq))
 
 /- English proof (translation)
-Conclude with `rt_constantCoeff_lam_lemma (rt_order_nu wq)`.
+A detailed English derivation is pending.
 -/
 theorem rt_constantCoeff_nu (wq : PowerSeries ℂ_[p]) : MvPowerSeries.constantCoeff (nu wq) = 0 := by
   exact rt_constantCoeff_lam_lemma (rt_order_nu wq)
 
 /- English proof (translation)
-Unfold `Bcf`. Establish `hl` using `rt_order_lam wq`. Establish `hn` using `rt_order_nu wq`. Establish `hl2 : 2 ≤ (lam wq ^ 2).order` using `by rw [pow_two]; exact rt_two_le_mul_left _ _ hl`. Use `rt_two_le_add (rt_two_le_add (rt_two_le_add (rt_two_le_add ?_ ?_) ?_) ?_) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `rt_two_le_mul_left _ _ hl`. Conclude with `rt_two_le_mul_left _ _ hn`. Conclude with `rt_two_le_mul_left _ _ hl2`. Conclude with `rt_two_le_mul_left _ _ hn`. Conclude with `rt_two_le_mul_left _ _ hn`.
+A detailed English derivation is pending.
 -/
 theorem rt_order_Bcf (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) : 2 ≤ (Bcf W wq).order := by
   unfold Bcf
@@ -155,14 +153,14 @@ theorem rt_order_Bcf (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
   · exact rt_two_le_mul_left _ _ hn
 
 /- English proof (translation)
-Simplify using `[Acf, rt_constantCoeff_lam]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_Acf (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     MvPowerSeries.constantCoeff (Acf W wq) = 1 := by
   simp [Acf, rt_constantCoeff_lam]
 
 /- English proof (translation)
-Rewrite using `[constantCoeff_Acf]`. Conclude with `one_ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_Acf_ne (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     MvPowerSeries.constantCoeff (Acf W wq) ≠ 0 := by
@@ -170,21 +168,21 @@ theorem rt_Acf_ne (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
   exact one_ne_zero
 
 /- English proof (translation)
-Conclude with `rt_two_le_mul_right _ _ (rt_order_Bcf W wq)`.
+A detailed English derivation is pending.
 -/
 theorem rt_order_BA (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     2 ≤ (Bcf W wq * (Acf W wq)⁻¹).order := by
   exact rt_two_le_mul_right _ _ (rt_order_Bcf W wq)
 
 /- English proof (translation)
-Simplify using `[Z3, rt_constantCoeff_lam_lemma (rt_order_Bcf W wq)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem constantCoeff_thirdRoot (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     MvPowerSeries.constantCoeff (Z3 W wq) = 0 := by
   simp [Z3, rt_constantCoeff_lam_lemma (rt_order_Bcf W wq)]
 
 /- English proof (translation)
-Establish `hA : Acf W wq * (Acf W wq)⁻¹ = 1` using `MvPowerSeries.mul_inv_cancel _ (rt_Acf_ne W wq)`. Unfold `Z3`. Take the linear combination `(-(Bcf W wq)) * hA`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem vieta1 (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
     Acf W wq * (Xv 0 + Xv 1 + Z3 W wq) = -Bcf W wq := by
@@ -193,9 +191,9 @@ theorem vieta1 (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) :
   linear_combination (-(Bcf W wq)) * hA
 
 /- English proof (translation)
-Establish `hs : Finsupp.single (0 : Fin 2) 1 ≠ Finsupp.single 1 1`. Rewrite using `[Ne, Finsupp.single_left_inj one_ne_zero]`. Evaluate the decidable proposition. Introduce `h0`. Establish `h1` using `congrArg (MvPowerSeries.coeff (Finsupp.single (0 : Fin 2) 1)) h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[MvPowerSeries.coeff_X, hs] at h1`.
+Simplify using the standard rewrite rules.
 -/
 theorem var_zero_sub_var_one_ne_zero : (Xv 0 - Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) ≠ 0 := by
   have hs : Finsupp.single (0 : Fin 2) 1 ≠ Finsupp.single 1 1 := by
@@ -206,7 +204,7 @@ theorem var_zero_sub_var_one_ne_zero : (Xv 0 - Xv 1 : MvPowerSeries (Fin 2) ℂ_
   simp [MvPowerSeries.coeff_X, hs] at h1
 
 /- English proof (translation)
-Unfold `G Acf Bcf Ccf Dcf`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem chordCubic_var_zero_lemma (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p])
     (u : MvPowerSeries (Fin 2) ℂ_[p]) :
@@ -215,7 +213,7 @@ private theorem chordCubic_var_zero_lemma (W : WeierstrassCurve ℂ_[p]) (wq : P
   ring
 
 /- English proof (translation)
-Establish `hw : wv wq 0 = lam wq * Xv 0 + nu wq`. Unfold `nu`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← chordCubic_var_zero_lemma, ← hw]`. Conclude with `G_wv h 0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chordCubic_var_zero {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     Acf W wq * Xv 0 ^ 3 + Bcf W wq * Xv 0 ^ 2 + Ccf W wq * Xv 0 + Dcf W wq = 0 := by
@@ -226,7 +224,7 @@ theorem chordCubic_var_zero {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ
   exact G_wv h 0
 
 /- English proof (translation)
-Establish `hw : wv wq 1 = lam wq * Xv 1 + nu wq`. Unfold `nu`. Take the linear combination `(-1 : MvPowerSeries (Fin 2) ℂ_[p]) * lam_mul wq`. Rewrite using `[← chordCubic_var_zero_lemma, ← hw]`. Conclude with `G_wv h 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chordCubic_var_one {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     Acf W wq * Xv 1 ^ 3 + Bcf W wq * Xv 1 ^ 2 + Ccf W wq * Xv 1 + Dcf W wq = 0 := by
@@ -237,7 +235,7 @@ theorem chordCubic_var_one {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_
   exact G_wv h 1
 
 /- English proof (translation)
-Establish `hK : Acf W wq * (Xv 0 ^ 2 + Xv 0 * Xv 1 + Xv 1 ^ 2) + Bcf W wq * (Xv 0 + Xv 1) + Ccf W wq = 0`. Establish `hprod : (Xv 0 - Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) * (Acf W wq * (Xv 0 ^ 2 + Xv 0 * Xv 1 + Xv 1 ^ 2) + Bcf W wq * (Xv 0 + Xv 1) + Ccf W wq) = 0`. Take the linear combination `chordCubic_var_zero h - chordCubic_var_one h`. Conclude with `(mul_eq_zero.1 hprod).resolve_left var_zero_sub_var_one_ne_zero`. Take the linear combination `hK - (Xv 0 + Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) * vieta1 W wq`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem vieta2 {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     Ccf W wq = Acf W wq * (Xv 0 * Xv 1 + Xv 0 * Z3 W wq + Xv 1 * Z3 W wq) := by
@@ -249,7 +247,7 @@ theorem vieta2 {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : Is
   linear_combination hK - (Xv 0 + Xv 1 : MvPowerSeries (Fin 2) ℂ_[p]) * vieta1 W wq
 
 /- English proof (translation)
-Take the linear combination `chordCubic_var_zero h - (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) ^ 2 * vieta1 W wq - (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) * vieta2 h`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem vieta3 {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     Dcf W wq = -(Acf W wq * Xv 0 * Xv 1 * Z3 W wq) := by
@@ -257,7 +255,7 @@ theorem vieta3 {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : Is
     (Xv 0 : MvPowerSeries (Fin 2) ℂ_[p]) * vieta2 h
 
 /- English proof (translation)
-Rewrite using `[chordCubic_var_zero_lemma]`. Take the linear combination `Z3 W wq ^ 2 * vieta1 W wq + Z3 W wq * vieta2 h + vieta3 h`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem zwEquation_thirdRoot {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     G W (Z3 W wq) (lam wq * Z3 W wq + nu wq) = 0 := by
@@ -265,7 +263,7 @@ theorem zwEquation_thirdRoot {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries �
   linear_combination Z3 W wq ^ 2 * vieta1 W wq + Z3 W wq * vieta2 h + vieta3 h
 
 /- English proof (translation)
-Simplify using `only [G, map_add, map_sub, map_mul, map_pow, AlgHom.commutes]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rt_G_map {R R' : Type*} [CommRing R] [Algebra ℂ_[p] R] [CommRing R'] [Algebra ℂ_[p] R']
     (φ : R →ₐ[ℂ_[p]] R') (W : WeierstrassCurve ℂ_[p]) (u v : R) :
@@ -273,17 +271,17 @@ theorem rt_G_map {R R' : Type*} [CommRing R] [Algebra ℂ_[p] R] [CommRing R'] [
   simp only [G, map_add, map_sub, map_mul, map_pow, AlgHom.commutes]
 
 /- English proof (translation)
-Take `⟨z, hz⟩ : ∃ z, z = Z3 W wq` from `⟨_, rfl⟩`. Establish `hGv` using `zwEquation_thirdRoot h`. Rewrite `hGv`, the goal using `[← hz]`. Establish `hz0 : MvPowerSeries.constantCoeff z = 0` using `by rw [hz]; exact constantCoeff_thirdRoot W wq`. Establish `ha : PowerSeries.HasSubst z` using `PowerSeries.HasSubst.of_constantCoeff_zero hz0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw⟩ : ∃ w, w = PowerSeries.subst z (wser wq)` from `⟨_, rfl⟩`. Take `⟨v, hv⟩ : ∃ v, v = lam wq * z + nu wq` from `⟨_, rfl⟩`. Rewrite using `[← hw, ← hv]`. Rewrite `hGv` using `[← hv]`. Establish `hGw : G W z w = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `congrArg (PowerSeries.substAlgHom ha) (G_wser h)`. Rewrite `h0` using `[rt_G_map, map_zero, PowerSeries.coe_substAlgHom, PowerSeries.subst_X ha, ← hw]`. Conclude with `h0`. Establish `hw' : w = z ^ 3 * PowerSeries.subst z wq`. Rewrite using `[hw, wser, ← PowerSeries.coe_substAlgHom ha, map_mul, map_pow, PowerSeries.coe_substAlgHom, PowerSeries.subst_X ha]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw0 : MvPowerSeries.constantCoeff w = 0`. Rewrite using `[hw', map_mul, map_pow, hz0]`. Simplify using the standard rewrite rules. Establish `hv0 : MvPowerSeries.constantCoeff v = 0`. Simplify using `[hv, hz0, rt_constantCoeff_lam, rt_constantCoeff_nu]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfac : G W z v - G W z w = (v - w) * (algebraMap ℂ_[p] (MvPowerSeries (Fin 2) ℂ_[p]) W.a₁ * z + algebraMap ℂ_[p] (MvPowerSeries (Fin 2) ℂ_[p]) W.a₂ * z ^ 2 + algebraMap ℂ_[p] (MvPowerSeries (Fin 2) ℂ_[p]) W.a₃ * (v + w) + algebraMap ℂ_[p] (MvPowerSeries (Fin 2) ℂ_[p]) W.a₄ * z * …`. Unfold `G`. Expand and normalize the polynomial expressions, which then agree. Establish `hF : (algebraMap ℂ_[p] (MvPowerSeries (Fin 2) ℂ_[p]) W.a₁ * z + algebraMap ℂ_[p] (MvPowerSeries (Fin 2) ℂ_[p]) W.a₂ * z ^ 2 + algebraMap ℂ_[p] (MvPowerSeries (Fin 2) ℂ_[p]) W.a₃ * (v + w) + algebraMap ℂ_[p] (MvPowerSeries (Fin 2) ℂ_[p]) W.a₄ * z * (v + w) + algebraMap ℂ_[p] (MvPo …`. Introduce `h0`.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `congrArg MvPowerSeries.constantCoeff h0`. Simplify using `[hz0, hv0, hw0] at h1`. Rewrite `hfac` using `[hGv, hGw, sub_zero]`. Conclude with `(sub_eq_zero.1 ((mul_eq_zero.1 hfac.symm).resolve_right hF)).symm`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_thirdRoot_wSeries {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]} (h : IsWq W wq) :
     PowerSeries.subst (Z3 W wq) (wser wq) = lam wq * Z3 W wq + nu wq := by
@@ -329,7 +327,7 @@ theorem subst_thirdRoot_wSeries {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries
   exact (sub_eq_zero.1 ((mul_eq_zero.1 hfac.symm).resolve_right hF)).symm
 
 /- English proof (translation)
-Apply `MvPowerSeries.coeff_of_lt_order` to reduce the goal to its premises. Use `lt_of_lt_of_le ?_ (rt_order_BA W wq)` and prove the remaining obligations. Evaluate the numerical expressions using `[Finsupp.degree_single]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Evaluate the numerical expressions.
 -/
 theorem rt_coeff_BA (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) (i : Fin 2) :
     MvPowerSeries.coeff (Finsupp.single i 1) (Bcf W wq * (Acf W wq)⁻¹) = 0 := by
@@ -338,9 +336,9 @@ theorem rt_coeff_BA (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) (i
   norm_num [Finsupp.degree_single]
 
 /- English proof (translation)
-Establish `hs : Finsupp.single (0 : Fin 2) 1 ≠ Finsupp.single 1 1`. Rewrite using `[Ne, Finsupp.single_left_inj one_ne_zero]`. Evaluate the decidable proposition. Introduce `h0`. Establish `h1` using `congrArg (MvPowerSeries.coeff (Finsupp.single (1 : Fin 2) 1)) h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Z3, rt_coeff_BA, MvPowerSeries.coeff_X, hs, hs.symm] at h1`.
+Simplify using the standard rewrite rules.
 -/
 theorem thirdRoot_sub_var_zero_ne_zero (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) : Z3 W wq - Xv 0 ≠ 0 := by
   have hs : Finsupp.single (0 : Fin 2) 1 ≠ Finsupp.single 1 1 := by
@@ -351,9 +349,9 @@ theorem thirdRoot_sub_var_zero_ne_zero (W : WeierstrassCurve ℂ_[p]) (wq : Powe
   simp [Z3, rt_coeff_BA, MvPowerSeries.coeff_X, hs, hs.symm] at h1
 
 /- English proof (translation)
-Establish `hs : Finsupp.single (0 : Fin 2) 1 ≠ Finsupp.single 1 1`. Rewrite using `[Ne, Finsupp.single_left_inj one_ne_zero]`. Evaluate the decidable proposition. Introduce `h0`. Establish `h1` using `congrArg (MvPowerSeries.coeff (Finsupp.single (0 : Fin 2) 1)) h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the decidable proposition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Z3, rt_coeff_BA, MvPowerSeries.coeff_X, hs, hs.symm] at h1`.
+Simplify using the standard rewrite rules.
 -/
 theorem thirdRoot_sub_var_one_ne_zero (W : WeierstrassCurve ℂ_[p]) (wq : PowerSeries ℂ_[p]) : Z3 W wq - Xv 1 ≠ 0 := by
   have hs : Finsupp.single (0 : Fin 2) 1 ≠ Finsupp.single 1 1 := by
@@ -364,19 +362,13 @@ theorem thirdRoot_sub_var_one_ne_zero (W : WeierstrassCurve ℂ_[p]) (wq : Power
   simp [Z3, rt_coeff_BA, MvPowerSeries.coeff_X, hs, hs.symm] at h1
 
 /- English proof (translation)
-Establish `hwq` using `wq_mem h1 h2 h3 h4 h6 h`. Establish `hcc : ∀ a ∈ S, cc a ∈ SerS S (Fin 2)` using `fun a ha => (mem_SerS S _).2 fun e => by`. Simplify using `only [cc, MvPowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, MvPowerSeries.coeff_C]`. Use `split_ifs`. Conclude with `ha`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.zero_mem`. Establish `hX : ∀ i, (Xv i : MvPowerSeries (Fin 2) ℂ_[p]) ∈ SerS S (Fin 2)` using `fun i => (mem_SerS S _).2 fun e => by`. Rewrite using `[MvPowerSeries.coeff_X]`. Use `split_ifs`. Conclude with `S.one_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `S.zero_mem`. Establish `hl : lam wq ∈ SerS S (Fin 2)` using `(mem_SerS S _).2 (lam_mem hwq)`. Establish `hw0 : wv wq 0 ∈ SerS S (Fin 2)` using `(mem_SerS S _).2 fun e => by`. Rewrite using `[coeff_wSeriesVar_zero]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `lamA_wser_mem hwq _`. Conclude with `S.zero_mem`. Establish `hn : nu wq ∈ SerS S (Fin 2)` using `sub_mem hw0 (mul_mem hl (hX 0))`. Establish `h2' : (2 : MvPowerSeries (Fin 2) ℂ_[p]) ∈ SerS S (Fin 2)`. Rewrite using `[show (2 : MvPowerSeries (Fin 2) ℂ_[p]) = 1 + 1 from one_add_one_eq_two.symm]`.
-
-Conclude with `add_mem (SerS S (Fin 2)).one_mem (SerS S (Fin 2)).one_mem`. Establish `h3' : (3 : MvPowerSeries (Fin 2) ℂ_[p]) ∈ SerS S (Fin 2)`. Rewrite using `[show (3 : MvPowerSeries (Fin 2) ℂ_[p]) = 1 + 1 + 1 by ring]`. Conclude with `add_mem (add_mem (SerS S (Fin 2)).one_mem (SerS S (Fin 2)).one_mem) (SerS S (Fin 2)).one_mem`. Establish `hA : Acf W wq ∈ SerS S (Fin 2)`.
-
-Unfold `Acf`. Conclude with `add_mem (add_mem (add_mem (SerS S (Fin 2)).one_mem (mul_mem (hcc _ h2) hl)) (mul_mem (hcc _ h4) (pow_mem hl 2))) (mul_mem (hcc _ h6) (pow_mem hl 3))`. Establish `hB : Bcf W wq ∈ SerS S (Fin 2)`. Unfold `Bcf`. Conclude with `add_mem (add_mem (add_mem (add_mem (mul_mem (hcc _ h1) hl) (mul_mem (hcc _ h2) hn)) (mul_mem (hcc _ h3) (pow_mem hl 2))) (mul_mem (mul_mem (mul_mem h2' (hcc _ h4)) hl) hn)) (mul_mem (mul_mem (mul_mem h3' (hcc _ h6)) (pow_mem hl 2)) hn)`.
-
-Unfold `Z3`. Conclude with `sub_mem (sub_mem (neg_mem (hX 0)) (hX 1)) (mul_mem hB (inv_mem_SerS S (constantCoeff_Acf W wq) hA))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem thirdRoot_mem_coeffSubring {S : Subring ℂ_[p]} {W : WeierstrassCurve ℂ_[p]} {wq : PowerSeries ℂ_[p]}
     (h1 : W.a₁ ∈ S) (h2 : W.a₂ ∈ S) (h3 : W.a₃ ∈ S) (h4 : W.a₄ ∈ S) (h6 : W.a₆ ∈ S) (h : IsWq W wq) :

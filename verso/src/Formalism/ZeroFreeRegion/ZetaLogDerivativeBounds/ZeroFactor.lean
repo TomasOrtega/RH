@@ -7,7 +7,7 @@ noncomputable section
 namespace Formalism.ZF
 
 /- English proof (translation)
-The claim follows from `Filter.mem_of_superset (Metric.isOpen_ball.mem_nhds (Metric.closedBall_subset_ball hR hz)) Metric.ball_subset_closedBall`.
+A detailed English derivation is pending.
 -/
 private theorem closedBall_mem_nhds_of_mem_closedBall_lt {z₀ z : ℂ} {r R₁ : ℝ} (hR : R₁ < r)
     (hz : z ∈ Metric.closedBall z₀ R₁) : Metric.closedBall z₀ r ∈ 𝓝 z :=
@@ -15,44 +15,42 @@ private theorem closedBall_mem_nhds_of_mem_closedBall_lt {z₀ z : ℂ} {r R₁ 
     Metric.ball_subset_closedBall
 
 /- English proof (translation)
-The claim follows from `ENat.natCast_toNat h`.
+A detailed English derivation is pending.
 -/
 private theorem natCast_analyticOrderNatAt_of_ne_top {f : ℂ → ℂ} {z : ℂ}
     (h : analyticOrderAt f z ≠ ⊤) : ((analyticOrderNatAt f z : ℕ) : ℕ∞) = analyticOrderAt f z :=
   ENat.natCast_toNat h
 
 /- English proof (translation)
-Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `f Z hf hZ hzero htop hsum`. Establish `h0 : ∀ ρ ∈ Z, analyticOrderNatAt f ρ = 0` using `Finset.sum_eq_zero_iff.mp hsum`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨f, hf, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz hfz`. Establish `hzZ` using `hzero z hz hfz`. Establish `han : AnalyticAt ℂ f z` using `hf.analyticAt (closedBall_mem_nhds_of_mem_closedBall_lt hR hz)`. Establish `hord : analyticOrderAt f z = 0`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← natCast_analyticOrderNatAt_of_ne_top (htop z hzZ)]`. Simplify using `[h0 z hzZ]`. Conclude with `(han.analyticOrderAt_eq_zero.mp hord) hfz`. Introduce `z _`. Rewrite using `[Finset.prod_eq_one (fun ρ hρ => by rw [h0 ρ hρ, pow_zero]), one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `f Z hf hZ hzero htop hsum`. Take `⟨ρ₀, hρ₀Z, hρ₀⟩` from `Finset.exists_ne_zero_of_sum_ne_zero (by rw [hsum]; exact Nat.succ_ne_zero n)`. Establish `hρ₀B` using `hZ ρ₀ hρ₀Z`. Establish `hanρ₀ : AnalyticAt ℂ f ρ₀` using `hf.analyticAt (closedBall_mem_nhds_of_mem_closedBall_lt hR hρ₀B)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfρ₀ : f ρ₀ = 0`. Assume the negation of the conclusion as `hne`. Apply `hρ₀` to reduce the goal to its premises. Establish `h0 : analyticOrderAt f ρ₀ = 0` using `hanρ₀.analyticOrderAt_eq_zero.mpr hne`. Simplify using `[analyticOrderNatAt, h0]`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩ : ∃ g : ℂ → ℂ, g = dslope f ρ₀` from `⟨_, rfl⟩`. Establish `hfg : ∀ z, f z = (z - ρ₀) * g z`. Introduce `z`. Establish `h` using `sub_smul_dslope f ρ₀ z`. Rewrite `h` using `[hfρ₀, sub_zero, smul_eq_mul, ← hg]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h.symm`. Establish `hgd : DifferentiableOn ℂ g (Metric.closedBall z₀ r)`. Rewrite using `[hg]`. Conclude with `(Complex.differentiableOn_dslope (closedBall_mem_nhds_of_mem_closedBall_lt hR hρ₀B)).mpr hf`. Establish `hfeq : f = (fun z : ℂ => z - ρ₀) * g` using `funext fun z => hfg z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : ∀ ρ ∈ Z, analyticOrderAt f ρ = (if ρ = ρ₀ then 1 else 0) + analyticOrderAt g ρ`. Introduce `ρ hρ`. Establish `hB` using `hZ ρ hρ`. Establish `hga : AnalyticAt ℂ g ρ` using `hgd.analyticAt (closedBall_mem_nhds_of_mem_closedBall_lt hR hB)`. Establish `hla : AnalyticAt ℂ (fun z : ℂ => z - ρ₀) ρ` using `analyticAt_id.sub analyticAt_const`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfeq, analyticOrderAt_mul hla hga]`. Use `congr 1`. Use `split_ifs with hρρ₀`. Rewrite using `[hρρ₀]`. Establish `hl : AnalyticAt ℂ (fun z : ℂ => z - ρ₀) ρ₀` using `analyticAt_id.sub analyticAt_const`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(hl.analyticOrderAt_eq_natCast (n := 1)).mpr ⟨fun _ => 1, analyticAt_const, one_ne_zero, Filter.Eventually.of_forall fun z => by simp⟩`. Simplify using `using h1`. Conclude with `hla.analyticOrderAt_eq_zero.mpr (sub_ne_zero.mpr hρρ₀)`. Establish `keyN : ∀ ρ ∈ Z, analyticOrderNatAt f ρ = (if ρ = ρ₀ then 1 else 0) + analyticOrderNatAt g ρ ∧ analyticOrderAt g ρ ≠ ⊤`. Introduce `ρ hρ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hk` using `key ρ hρ`. Establish `ht` using `htop ρ hρ`. Establish `hgt : analyticOrderAt g ρ ≠ ⊤`. Introduce `h`. Apply `ht` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, h]`. Simplify using the standard rewrite rules. Use `⟨?_, hgt⟩` and prove the remaining obligations. Establish `h1 : ((analyticOrderNatAt f ρ : ℕ) : ℕ∞) = (((if ρ = ρ₀ then 1 else 0) + analyticOrderNatAt g ρ : ℕ) : ℕ∞)`. Rewrite using `[natCast_analyticOrderNatAt_of_ne_top ht, hk, Nat.cast_add, natCast_analyticOrderNatAt_of_ne_top hgt]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Conclude with `h1` after adjusting the coercions. Establish `hsumg : ∑ ρ ∈ Z, analyticOrderNatAt g ρ = n`. Establish `hs : ∑ ρ ∈ Z, analyticOrderNatAt f ρ = ∑ ρ ∈ Z, ((if ρ = ρ₀ then 1 else 0) + analyticOrderNatAt g ρ)` using `Finset.sum_congr rfl fun ρ hρ => (keyN ρ hρ).1`. Rewrite `hsum` using `[hs, Finset.sum_add_distrib]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Finset.sum_ite_eq', hρ₀Z, if_true] at hsum`. Use linear arithmetic over natural numbers and integers. Establish `hzg : ∀ z ∈ Metric.closedBall z₀ R₁, g z = 0 → z ∈ Z` using `fun z hz h0 => hzero z hz (by rw [hfg z, h0, mul_zero])`. Take `⟨h, hhd, hh0, hhf⟩` from `ih g Z hgd hZ hzg (fun ρ hρ => (keyN ρ hρ).2) hsumg`. Use `⟨h, hhd, hh0, fun z hz => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hone : ∏ ρ ∈ Z, (z - ρ) ^ (if ρ = ρ₀ then 1 else 0) = z - ρ₀`. Rewrite using `[Finset.prod_eq_single ρ₀ (fun b _ hb => by simp [hb]) (fun h => absurd hρ₀Z h)]`. Simplify using the standard rewrite rules. Establish `hprod : ∏ ρ ∈ Z, (z - ρ) ^ analyticOrderNatAt f ρ = (z - ρ₀) * ∏ ρ ∈ Z, (z - ρ) ^ analyticOrderNatAt g ρ`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.prod_mul_distrib, hone]`. Rewrite using `[hfg z, hhf z hz, hprod, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factorization_of_sum_order (z₀ : ℂ) (r R₁ : ℝ) (hR : R₁ < r) :
     ∀ N : ℕ, ∀ (f : ℂ → ℂ) (Z : Finset ℂ), DifferentiableOn ℂ f (Metric.closedBall z₀ r) →
@@ -157,21 +155,19 @@ theorem exists_factorization_of_sum_order (z₀ : ℂ) (r R₁ : ℝ) (hR : R₁
     rw [hfg z, hhf z hz, hprod, mul_assoc]
 
 /- English proof (translation)
-Introduce `f z₀ r R₁ hR₁ hR hf hf0`. Establish `hr : 0 < r` using `hR₁.trans hR`. Establish `hU : AnalyticOnNhd ℂ f (Metric.ball z₀ r)` using `(hf.mono Metric.ball_subset_closedBall).analyticOnNhd Metric.isOpen_ball`. Establish `hz₀ : z₀ ∈ Metric.ball z₀ r` using `Metric.mem_ball_self hr`. Establish `hpre : IsPreconnected (Metric.ball z₀ r)` using `(convex_ball z₀ r).isPreconnected`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnotzero : ∀ x ∈ Metric.ball z₀ r, ¬ (∀ᶠ w in 𝓝 x, f w = 0)`. Introduce `x hx hev`. Establish `hEq` using `hU.eqOn_zero_of_preconnected_of_eventuallyEq_zero hpre hx hev`. Conclude with `hf0 (hEq hz₀)`. Establish `hisol : ∀ x ∈ Metric.ball z₀ r, ∀ᶠ w in 𝓝[≠] x, f w ≠ 0` using `fun x hx => ((hU x hx).eventually_eq_zero_or_eventually_ne_zero).resolve_left (hnotzero x hx)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htop : ∀ x ∈ Metric.ball z₀ r, analyticOrderAt f x ≠ ⊤` using `fun x hx h => hnotzero x hx (analyticOrderAt_eq_top.mp h)`. Establish `hSsub : Metric.closedBall z₀ R₁ ∩ f ⁻¹' {0} ⊆ Metric.ball z₀ r` using `fun x hx => Metric.closedBall_subset_ball hR hx.1`. Establish `hScpt : IsCompact (Metric.closedBall z₀ R₁ ∩ f ⁻¹' {0})` using `(isCompact_closedBall z₀ R₁).of_isClosed_subset ((hf.continuousOn.mono (Metric.closedBall_subset_closedBall hR.le)).preimage_isClosed_of_isClosed Metric.isClosed_closedBall isClosed_singleton) Set.inter_subset_left`. Establish `hSdisc : DiscreteTopology (Metric.closedBall z₀ R₁ ∩ f ⁻¹' {0} : Set ℂ)`. Rewrite using `[discreteTopology_subtype_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Use `Filter.inf_principal_eq_bot.mpr ?_` and prove the remaining obligations. Use `filter_upwards [hisol x (hSsub hx)] with w hw hwS`. Conclude with `hw hwS.2`. Establish `hfin : (Metric.closedBall z₀ R₁ ∩ f ⁻¹' {0}).Finite`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hScpt.finite ⟨hSdisc⟩`. Establish `hmem : ∀ ρ : ℂ, ρ ∈ hfin.toFinset ↔ (ρ ∈ Metric.closedBall z₀ R₁ ∧ f ρ = 0)`. Introduce `ρ`. Rewrite using `[Set.Finite.mem_toFinset]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hhd, hh0, hhf⟩` from `exists_factorization_of_sum_order z₀ r R₁ hR _ f hfin.toFinset hf (fun ρ hρ => ((hmem ρ).mp hρ).1) (fun z hz hfz => (hmem z).mpr ⟨hz, hfz⟩) (fun ρ hρ => htop ρ (Metric.closedBall_subset_ball hR ((hmem ρ).mp hρ).1)) rfl`. Use `⟨hfin.toFinset, analyticOrderNatAt f, h, hmem, ?_, hhd, hh0, hhf⟩` and prove the remaining obligations. Introduce `ρ hρ`. Take `⟨hB, hfρ⟩` from `(hmem ρ).mp hρ`. Establish `hball : ρ ∈ Metric.ball z₀ r` using `Metric.closedBall_subset_ball hR hB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hne : analyticOrderAt f ρ ≠ 0` using `fun h0 => ((hU ρ hball).analyticOrderAt_eq_zero.mp h0) hfρ`. Rewrite using `[Nat.one_le_iff_ne_zero]`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[← natCast_analyticOrderNatAt_of_ne_top (htop ρ hball)]`.
-
-Simplify using `[h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem zeroFactorization : ZeroFactor := by
   intro f z₀ r R₁ hR₁ hR hf hf0

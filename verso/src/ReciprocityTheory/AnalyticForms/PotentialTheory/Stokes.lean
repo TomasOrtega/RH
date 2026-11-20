@@ -19,7 +19,7 @@ def LocalSymmStatement : Prop :=
       mInt A (Fin.cons (LocPot.ofFun w) Φ) χ = mInt A (Fin.cons (LocPot.ofFun χ) Φ) w
 
 /- English proof (translation)
-Introduce `e X _ _ _ A _ χ w hχ hw _ Φ hΦ`. Conclude with `st_byPartsSymm_of ReciprocityTheory.AnForm.A.parts_thm A χ w hχ hw Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem localSymm : LocalSymmStatement := by
   intro e X _ _ _ A _ χ w hχ hw _ Φ hΦ
@@ -30,11 +30,11 @@ def MIntConstPotStatement : Prop :=
     (Φ : Fin e → LocPot X) (g : X → ℝ), mInt A (Fin.cons (LocPot.ofFun fun _ => c) Φ) g = 0
 
 /- English proof (translation)
-Establish `hU : (Finset.univ : Finset (Finset ι)) = (Finset.univ : Finset ι).powerset` using `Finset.powerset_univ.symm`. Establish `hpos : 0 < Fintype.card ι` using `Fintype.card_pos_iff.mpr ⟨a⟩`. Rewrite using `[hU, ← Finset.insert_erase (Finset.mem_univ a), Finset.sum_powerset_insert (by simp : a ∉ (Finset.univ : Finset ι).erase a), ← Finset.sum_add_distrib]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `ht` using `[Finset.mem_powerset]`. Establish `hat : a ∉ t` using `fun h => by simpa using ht h`. Establish `hc : t.card + 1 ≤ N`. Establish `h1` using `Finset.card_le_card ht`. Rewrite `h1` using `[Finset.card_erase_of_mem (Finset.mem_univ a), Finset.card_univ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_insert hat, ha, zero_add, Finset.card_insert_of_notMem hat]`. Take `⟨d, hd⟩ : ∃ d, N - t.card = d + 1` from `⟨N - (t.card + 1), by omega⟩`. Establish `hd' : N - (t.card + 1) = d` using `by omega`. Rewrite using `[hd, hd', pow_succ]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -63,7 +63,7 @@ private lemma sum_neg_one_pow_det_sum_eq_zero_of_eq_zero {ι m : Type} [Fintype 
   ring
 
 /- English proof (translation)
-Unfold `mdisc`. Rewrite using `[sum_neg_one_pow_det_sum_eq_zero_of_eq_zero M a ha n (by simp)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma mdisc_eq_zero_of_eq_zero' {n : ℕ} (M : Fin n → Matrix (Fin n) (Fin n) ℂ) (a : Fin n)
     (ha : M a = 0) : mdisc M = 0 := by
@@ -72,13 +72,13 @@ private lemma mdisc_eq_zero_of_eq_zero' {n : ℕ} (M : Fin n → Matrix (Fin n) 
   simp
 
 /- English proof (translation)
-Introduce `e X _ A c Φ g`. Unfold `mInt`. Use `split_ifs with h`. Simplify using `only [integralWith, locDens]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _`. Establish `h0 : ∀ y : Fin (e + 1) → ℂ, hessC (fun _ : Fin (e + 1) → ℂ => c) y = 0`. Introduce `y`. Unfold `hessC`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i k`. Both sides reduce to the same expression. Use `MeasureTheory.setIntegral_eq_zero_of_forall_eq_zero (fun y _ => ?_)` and prove the remaining obligations. Unfold `maDens`. Rewrite using `[mdisc_eq_zero_of_eq_zero' _ 0]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [Fin.cons_zero]`. Conclude with `h0 y`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mIntConstPot : MIntConstPotStatement := by
   intro e X _ A c Φ g
@@ -102,20 +102,20 @@ theorem mIntConstPot : MIntConstPotStatement := by
   · rfl
 
 /- English proof (translation)
-The claim follows from `st_stokes_of ReciprocityTheory.AnForm.A.parts_thm`.
+A detailed English derivation is pending.
 -/
 theorem stokes : StokesStatement := st_stokes_of ReciprocityTheory.AnForm.A.parts_thm
 /- English proof (translation)
-The claim follows from `st_byPartsSymm_of ReciprocityTheory.AnForm.A.parts_thm`.
+A detailed English derivation is pending.
 -/
 theorem byPartsSymm : ByPartsSymmStatement := st_byPartsSymm_of ReciprocityTheory.AnForm.A.parts_thm
 /- English proof (translation)
-The claim follows from `st_byPartsNonpos_of ReciprocityTheory.AnForm.A.parts_thm ReciprocityTheory.AnForm.A.gradDensNonneg_thm`.
+A detailed English derivation is pending.
 -/
 theorem byPartsNonpos : ByPartsNonposStatement :=
   st_byPartsNonpos_of ReciprocityTheory.AnForm.A.parts_thm ReciprocityTheory.AnForm.A.gradDensNonneg_thm
 /- English proof (translation)
-The claim follows from `st_massIndep_of ReciprocityTheory.AnForm.A.parts_thm`.
+A detailed English derivation is pending.
 -/
 theorem massIndep : MassIndepStatement := st_massIndep_of ReciprocityTheory.AnForm.A.parts_thm
 

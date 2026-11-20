@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RealisedOne
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.AdelicSvN.closure_gens_symp | exact GlobalTheory.AdelicSvN.closure_gens_symp | (intros; apply GlobalTheory.AdelicSvN.closure_gens_symp <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.symplectic_generator_preserves_form : ∀ (F : Type) [Field F] (κ : Type) [Fintype κ] [DecidableEq κ] (g : Matrix (κ ⊕ κ) (κ ⊕ κ) F),
     g ∈ Submonoid.closure (GlobalTheory.AdelicSvN.gens F κ) →

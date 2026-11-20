@@ -50,7 +50,7 @@ structure UnfAt (U : Unf Xo c σ r) (k : U.Comp) (x : (U.X k).dom) where
               (MeasureTheory.volume Fd).toReal = 1)
 
 /- English proof (translation)
-Take `⟨_, _, _, _, _, g, e, F, ik, φ, hiso, hpt⟩` from `h`. Take `⟨Pm, h1, h2, h3, h4, h5⟩` from `hpt k x`. Conclude with `⟨⟨g, e, F, ik, φ, hiso, Pm, h1, h2, h3, h4, h5⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_unfAt {U : Unf Xo c σ r} (h : IsUnf U) (k : U.Comp) (x : (U.X k).dom) :
     Nonempty (UnfAt U k x) := by
@@ -88,7 +88,7 @@ structure UnitAt {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} (W : UnfAt U
       (MeasureTheory.volume Fd).toReal = 1
 
 /- English proof (translation)
-Take `⟨Hm, χl, fr, θ, Fd, h0, h0', h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `W.unit hu`. Conclude with `⟨⟨Hm, χl, fr, θ, Fd, h0, h0', h1, h2, h3, h4, h5, h6, h7, h8, h9⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_unitAt {U : Unf Xo c σ r} {k : U.Comp} {x : (U.X k).dom} (W : UnfAt U k x)
     (hu : ∀ τ' i', ‖dmin (U.X k).Gm x.1 τ' i'‖ = 1) : Nonempty (UnitAt W) := by

@@ -12,11 +12,9 @@ namespace GlobalTheory.DZero.PsiM
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `set φ := IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k`. Establish `h0 : φ (uniformizer k) ≠ 0` using `by simp`. Apply `le_antisymm` to reduce the goal to its premises. Establish `: φ (uniformizer k) < φ 1` using `φ.strictMono uniformizer_lt_one`. Rewrite `this` using `[map_one, ← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `: φ.symm (WithZero.exp (-1)) ≤ uniformizer k`. Rewrite using `[le_uniformizer_iff, ← map_one φ.symm]`. Conclude with `φ.symm.strictMono (by rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; omega)`.
-
-Simplify using `using φ.strictMono.monotone this`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem valueGroupIso_uniformizer :
     IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k (uniformizer k) = WithZero.exp (-1) := by
@@ -35,7 +33,7 @@ theorem valueGroupIso_uniformizer :
 variable {k}
 
 /- English proof (translation)
-Rewrite using `[ord, hϖ, valueGroupIso_uniformizer, WithZero.log_exp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ord_eq_one {ϖ : kˣ} (hϖ : valuation k (ϖ : k) = uniformizer k) : ord k ϖ = 1 := by
   rw [ord, hϖ, valueGroupIso_uniformizer, WithZero.log_exp]; rfl

@@ -45,11 +45,11 @@ def crd {m k d : ℕ} (G : Matrix (Fin m) (Fin m) D.host.E) (hG : IsUnit G.det) 
     rfl
 
 /- English proof (translation)
-Establish `hG : IsUnit (show Matrix (Fin S.rank) (Fin S.rank) D.host.E from (sgn ε S).gram).det` using `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit (sgn ε S)`. Establish `hg : (show Matrix (Fin S.rank) (Fin S.rank) D.host.E from (sgn ε S).gram) = (if ε then -1 else 1 : D.host.E) • S.gram`. Consider the cases of `ε`. Simplify using `only [Bool.false_eq_true, if_false, one_smul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [if_true, neg_smul, one_smul]`. Conclude with `neg_gram S`. Take `⟨Φ, hΦ, hd⟩` from `(GlobalTheory.T.algebraicVectors_correspond_schrodinger_thetaMap D ψ θ hθ ε S X A B e.symm Bs hBs hψ Vs Ws r s r' s' hJ hJW hV hW hc M hM (crd (D := D) (show Matrix (Fin S.rank) (Fin S.rank) D.host.E from (sgn ε S).gram) hG e) (fun u => by rw [← hg]; rfl)).1 f hf`. Use `⟨Φ, hΦ, funext fun x => ?_⟩` and prove the remaining obligations. Use `hd.2 ((crd (D := D) (show Matrix (Fin S.rank) (Fin S.rank) D.host.E from (sgn ε S).gram) hG e).symm x)` as an intermediate fact.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[AddEquiv.apply_symm_apply]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exists_darbAlg_of_mem_algF (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hθ : IsInfFam θ)
     (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin d ≃ Fin X.rank)
@@ -77,7 +77,7 @@ theorem exists_darbAlg_of_mem_algF (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam
   exact this
 
 /- English proof (translation)
-Introduce `_ _ D ψ θ _ hθ W W₁ X A A₁ B α β _ ωA ωB _ _ e Bs Γ Xc om om' h _ _ R Rf hM g P hg`. Use `exists_darbAlg_of_mem_algF ψ θ hθ true W X A B e Bs hM.triple.base h.ψ Γ.V Γ.W _ _ _ _ h.JW h.JX hM.triple.geo.hV hM.triple.geo.hW (fun w => ?_) Γ.M hM.triple.geo.hM _ (Submodule.subset_span ⟨g, P, hg, rfl⟩)` and prove the remaining obligations. Take `⟨τ, h1, h2, -, h4⟩` from `h.cart w`. Conclude with `⟨τ, h1, by rw [h2]; simp, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fockF_eq_thO : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

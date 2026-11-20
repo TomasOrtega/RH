@@ -8,11 +8,11 @@ open Finset
 namespace GlobalTheory.HermitianFormFacts
 
 /- English proof (translation)
-Introduce `ι _ n w`. Use `set S : ℝ := ∑ v : ι, ∑ i, ‖w v i‖ ^ 2 with hS`. Establish `hprod : ∏ v : ι, GlobalTheory.GaussMean.gauss (w v) = Real.exp (-S)`. Unfold `GlobalTheory.GaussMean.gauss`. Rewrite using `[← Real.exp_sum, hS, ← Finset.sum_neg_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hprod, Real.exp_le_exp, neg_le_neg_iff]`. Establish `hS0 : 0 ≤ S` using `by positivity`. Establish `hle : ‖w‖ ≤ Real.sqrt S`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun v => ?_` and prove the remaining obligations. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Real.le_sqrt_of_sq_le` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem main : ∀ {ι : Type} [inst : Fintype ι] {n : ℕ} (w : ι → Fin n → ℂ),
     ∏ v : ι, GlobalTheory.GaussMean.gauss (w v) ≤ Real.exp (-‖w‖ ^ (2 : ℕ)) := by

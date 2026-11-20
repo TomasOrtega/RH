@@ -17,9 +17,9 @@ decreasing_by exact i.2
 
 open PowerSeries in
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Establish `e : (1 + X : R⟦X⟧) ^ (N + 1) = (1 + X) ^ N + X * (1 + X) ^ N` using `by ring`. Establish `h1 : coeff 1 (X * (1 + X : R⟦X⟧) ^ N) = constantCoeff ((1 + X : R⟦X⟧) ^ N)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_add, ih.1, map_mul, constantCoeff_X, zero_mul, add_zero]`. Rewrite using `[e, map_add, ih.2, h1, ih.1]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -39,7 +39,7 @@ private lemma constantCoeff_coeff_one_one_add_X_pow {R : Type*} [CommRing R] (N 
 
 open PowerSeries in
 /- English proof (translation)
-The claim follows from `PadicInt.isUnit_iff.2 (le_antisymm (PadicInt.norm_le_one z) (not_lt.1 fun h => hz ((PadicInt.norm_lt_one_iff_dvd z).1 h)))`.
+A detailed English derivation is pending.
 -/
 private lemma isUnit_padicInt_of_not_dvd' {l : ℕ} [Fact l.Prime] (z : ℤ_[l]) (hz : ¬ (l : ℤ_[l]) ∣ z) :
     IsUnit z :=
@@ -48,7 +48,7 @@ private lemma isUnit_padicInt_of_not_dvd' {l : ℕ} [Fact l.Prime] (z : ℤ_[l])
 
 open PowerSeries in
 /- English proof (translation)
-Rewrite using `[← RingHom.mem_ker, PadicInt.ker_toZMod, PadicInt.maximalIdeal_eq_span_p, Ideal.mem_span_singleton]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma toZMod_eq_zero_iff_dvd {l : ℕ} [Fact l.Prime] (z : ℤ_[l]) :
     PadicInt.toZMod z = 0 ↔ (l : ℤ_[l]) ∣ z := by
@@ -57,9 +57,9 @@ private lemma toZMod_eq_zero_iff_dvd {l : ℕ} [Fact l.Prime] (z : ℤ_[l]) :
 
 open PowerSeries in
 /- English proof (translation)
-Break down `hl.eq_two_or_odd' with rfl | hodd` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Establish `h3 : 3 ≤ l`. Use `hl.two_le` as an intermediate fact. Break down `hodd with ⟨r, hr⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation.
+Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation.
 -/
 private lemma three_le_prime_pow {l s : ℕ} (hl : l.Prime) (hs : 1 ≤ s) (h2 : l = 2 → 2 ≤ s) :
     3 ≤ l ^ s := by
@@ -76,9 +76,9 @@ private lemma three_le_prime_pow {l s : ℕ} (hl : l.Prime) (hs : 1 ≤ s) (h2 :
 
 open PowerSeries in
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨q, hq⟩ : X ^ 2 ∣ (1 + X ^ 2 * w) ^ n - 1 ^ n := by`. Use `sub_dvd_pow_sub_pow (1 + X ^ 2 * w) 1 n` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_left]`. Conclude with `(dvd_mul_right _ _).trans this`. Establish `e : f * (1 + X ^ 2 * w) ^ n = f + X ^ 2 * (f * q)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[one_pow]`. Take the linear combination `f * hq`. Rewrite using `[e, map_add, X_pow_dvd_iff.1 (dvd_mul_right _ _) 1 (by norm_num), add_zero]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma coeff_one_mul_one_add_X_sq_mul_pow {R : Type*} [CommRing R] (f w : R⟦X⟧) (n : ℕ) :
     coeff 1 (f * (1 + X ^ 2 * w) ^ n) = coeff 1 f := by
@@ -93,7 +93,7 @@ private lemma coeff_one_mul_one_add_X_sq_mul_pow {R : Type*} [CommRing R] (f w :
 
 open PowerSeries in
 /- English proof (translation)
-Rewrite using `[Finset.sum_range_succ, ← Fin.sum_univ_eq_sum_range (fun i => M n i * _root_.GlobalTheory.ExpImage.triSol M g i) n]`. Use `conv_lhs => rw [_root_.GlobalTheory.ExpImage.triSol]`. Rewrite using `[← mul_assoc, Ring.mul_inverse_cancel _ hn, one_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma sum_mul_triSol_eq {R : Type*} [CommRing R] (M : ℕ → ℕ → R)
     (g : ℕ → R) (n : ℕ) (hn : IsUnit (M n n)) :
@@ -107,47 +107,45 @@ private lemma sum_mul_triSol_eq {R : Type*} [CommRing R] (M : ℕ → ℕ → R)
 open PowerSeries in
 
 /- English proof (translation)
-Introduce `l _ s hs m hm U hU γ v hv hγ k F`. Choose the witnesses or unpack the hypotheses as in `⟨hs1, hs2⟩ : 1 ≤ s ∧ (l = 2 → 2 ≤ s) := by`. Unfold `_root_.GlobalTheory.Cyc.Lev at hs`. Conclude with `hs`. Establish `hlp : l.Prime` using `Fact.out`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : PowerSeries ℤ_[l] →ₗ[ℤ_[l]] PowerSeries ℤ_[l]` to `LinearMap.mulLeft ℤ_[l] (C U * (1 + X) ^ m) ∘ₗ γ.toLinearMap - LinearMap.mulLeft ℤ_[l] (v ^ k)`. Establish `hT : ∀ f, T f = C U * (1 + X) ^ m * γ f - v ^ k * f` using `fun f => rfl`. Establish `hTX : ∀ i : ℕ, T (X ^ i) = (C U * (1 + X) ^ m * v ^ i - v ^ k) * X ^ i`. Introduce `i`. Rewrite using `[hT, map_pow, hγ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hloc : ∀ f g : PowerSeries ℤ_[l], ∀ j : ℕ, (∀ i < j + 1, coeff i f = coeff i g) → coeff j (T f) = coeff j (T g)`. Introduce `f g j h`. Take `⟨q, hq⟩ : X ^ (j + 1) ∣ f - g` from `X_pow_dvd_iff.2 fun i hi => by rw [map_sub, h i hi, sub_self]`. Establish `e : T f - T g = X ^ (j + 1) * (C U * (1 + X) ^ m * v ^ (j + 1) * γ q - v ^ k * q)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_sub, hq, hT, map_mul, map_pow, hγ]`. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : coeff j (T f - T g) = 0`. Rewrite using `[e]`. Conclude with `X_pow_dvd_iff.1 (dvd_mul_right _ _) j (Nat.lt_succ_self j)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hsum : ∀ (c : ℕ → ℤ_[l]) (j : ℕ), coeff j (T (mk c)) = ∑ i ∈ Finset.range (j + 1), c i * coeff j (T (X ^ i))`. Introduce `c j`. Rewrite using `[hloc (mk c) (∑ i ∈ Finset.range (j + 1), c i • X ^ i) j]`. Simplify using `[map_sum, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i hi`. Simplify using `[coeff_mk, map_sum, coeff_X_pow, Finset.mem_range.2 hi]`. Establish `hv0 : constantCoeff v = 1 + (l : ℤ_[l]) ^ s`. Establish `h` using `congrArg (coeff 1) hv`. Rewrite `h` using `[show (1 : ℕ) = 0 + 1 from rfl, coeff_succ_X_mul, coeff_zero_eq_constantCoeff_apply, map_sub, (constantCoeff_coeff_one_one_add_X_pow (R := ℤ_[l]) (1 + l ^ s)).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Simplify using the standard rewrite rules. Establish `hunitv : IsUnit v`. Rewrite using `[isUnit_iff_constantCoeff, hv0]`. Use `isUnit_padicInt_of_not_dvd' _ fun hd => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (l : ℤ_[l]) ∣ 1` using `(dvd_add_left (dvd_pow_self (l : ℤ_[l]) (by omega : s ≠ 0))).1 hd`. Establish `hn` using `PadicInt.isUnit_iff.1 (isUnit_of_dvd_one h1)`. Establish `h2` using `(PadicInt.norm_lt_one_iff_dvd (l : ℤ_[l])).2 dvd_rfl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdiag : ∀ i : ℕ, (l : ℤ_[l]) ^ s ∣ coeff i (T (X ^ i))`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `e` using `coeff_mul_X_pow (C U * (1 + X) ^ m * v ^ i - v ^ k) i 0`. Rewrite `e` using `[zero_add]`. Rewrite using `[hTX, e, coeff_zero_eq_constantCoeff_apply]`. Simplify using `only [map_sub, map_mul, map_pow, constantCoeff_C, hv0, (constantCoeff_coeff_one_one_add_X_pow (R := ℤ_[l]) m).1, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `ha : ∀ n : ℕ, (l : ℤ_[l]) ^ s ∣ (1 + (l : ℤ_[l]) ^ s) ^ n - 1` using `fun n => by`. Simplify using `using sub_dvd_pow_sub_pow (1 + (l : ℤ_[l]) ^ s) 1 n`. Establish `e2 : U * (1 + (l : ℤ_[l]) ^ s) ^ i - (1 + (l : ℤ_[l]) ^ s) ^ k = (U - 1) * (1 + (l : ℤ_[l]) ^ s) ^ i + ((1 + (l : ℤ_[l]) ^ s) ^ i - 1) - ((1 + (l : ℤ_[l]) ^ s) ^ k - 1)` using `by ring`. Rewrite using `[e2]`. Conclude with `dvd_sub (dvd_add (dvd_mul_of_dvd_left hU _) (ha i)) (ha k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : ∀ n : ℕ, IsUnit (coeff (n + 1) (T (X ^ n)))`. Introduce `n`. Use `isUnit_padicInt_of_not_dvd' _ fun hd => hm ?_` and prove the remaining obligations. Rewrite `hd` using `[← toZMod_eq_zero_iff_dvd]`. Use `haveI : CharP (PowerSeries (ZMod l)) l := charP_of_injective_ringHom (PowerSeries.C_injective (R := ZMod l)) l`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨t, ht⟩ : ∃ t, l ^ s = t + 3` from `⟨l ^ s - 3, by have := three_le_prime_pow hlp hs1 hs2; omega⟩`. Establish `hvb : PowerSeries.map PadicInt.toZMod v = 1 + X ^ 2 * (X ^ t * (1 + X))`. Apply `X_mul_cancel` to reduce the goal to its premises. Establish `h` using `congrArg (PowerSeries.map (PadicInt.toZMod (p := l))) hv`. Simplify using `only [map_mul, map_sub, map_pow, map_add, map_one, PowerSeries.map_X] at h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, pow_add, pow_one, add_pow_char_pow (1 : PowerSeries (ZMod l)) X l s, one_pow, ht]`. Expand and normalize the polynomial expressions, which then agree. Establish `hU1 : PadicInt.toZMod U = 1`. Establish `: PadicInt.toZMod (U - 1) = 0` using `(toZMod_eq_zero_iff_dvd _).2 ((dvd_pow_self (l : ℤ_[l]) (by omega : s ≠ 0)).trans hU)`. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hcomp : PadicInt.toZMod (coeff (n + 1) (T (X ^ n))) = (m : ZMod l)`. Rewrite using `[← coeff_map, hTX, add_comm n 1]`. Simplify using `only [map_mul, map_sub, map_pow, map_add, map_one, PowerSeries.map_X, PowerSeries.map_C, hU1, one_mul]`. Rewrite using `[coeff_mul_X_pow, hvb, map_sub, coeff_one_mul_one_add_X_sq_mul_pow, show ((1 : PowerSeries (ZMod l)) + X ^ 2 * (X ^ t * (1 + X))) ^ k = 1 * (1 + X ^ 2 * (X ^ t * (1 + X))) ^ k by rw [one_mul], coeff_one_mul_one_add_X_sq_mul_pow, (constantCoeff_coeff_one_one_add_X_pow m).2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hd` using `[hcomp]`. Conclude with `(ZMod.natCast_eq_zero_iff m l).1 hd`. Set `g : ℕ → ℤ_[l]` to `fun j => coeff j (v ^ k * (X * F))`. Set `c : ℕ → ℤ_[l]` to `_root_.GlobalTheory.ExpImage.triSol (fun n i => coeff (n + 1) (T (X ^ i))) (fun n => g (n + 1))`. Establish `hcoef : ∀ j : ℕ, (l : ℤ_[l]) ^ s ∣ coeff j (T (mk c) - v ^ k * (X * F))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Introduce `j`. Rewrite using `[map_sub, hsum]`. Consider the cases of `j with`. Consider the case `zero`. Establish `h0 : coeff 0 (v ^ k * (X * F)) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[coeff_zero_eq_constantCoeff_apply]`. Rewrite using `[h0, sub_zero, Finset.sum_range_one]`. Conclude with `dvd_mul_of_dvd_right (hdiag 0) _`. Consider the case `succ n`. Establish `hs'` using `sum_mul_triSol_eq (fun n i => coeff (n + 1) (T (X ^ i))) (fun n => g (n + 1)) n (hsub n)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression.
 
-Rewrite using `[Finset.sum_range_succ]`. Use `dvd_mul_of_dvd_right (hdiag (n + 1)) (c (n + 1)) using 1` and compare the differences between its conclusion and the goal. Simplify using `only [g, c] at hs' ⊢`. Rewrite using `[← hs', Finset.sum_congr rfl fun i _ => mul_comm _ _]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Set `E : PowerSeries ℤ_[l]` to `mk fun j => (hcoef j).choose`. Establish `hE : T (mk c) - v ^ k * (X * F) = C ((l : ℤ_[l]) ^ s) * E`. Use extensionality with `j`. Rewrite using `[coeff_C_mul, coeff_mk]`. Conclude with `(hcoef j).choose_spec`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `hunitv.pow k`. Use `⟨mk c, -(↑u⁻¹ * E), ?_⟩` and prove the remaining obligations. Establish `hE' : T (mk c) = v ^ k * (X * F) + C ((l : ℤ_[l]) ^ s) * E`. Rewrite using `[← hE]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[← hT, hE']`. Establish `hl : (l : PowerSeries ℤ_[l]) ^ s = C ((l : ℤ_[l]) ^ s)` using `by simp`. Rewrite using `[hl, ← hu]`. Establish `: (u : PowerSeries ℤ_[l]) * ↑u⁻¹ = 1` using `Units.mul_inv u`. Take the linear combination `(-(C ((l : ℤ_[l]) ^ s) * E)) * this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ExpImage.solve_mod_pow : ∀ (l : ℕ) [Fact l.Prime] (s : ℕ), _root_.GlobalTheory.Cyc.Lev l s →
     ∀ (m : ℕ), ¬ l ∣ m → ∀ U : ℤ_[l], (l : ℤ_[l]) ^ s ∣ U - 1 →

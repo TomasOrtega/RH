@@ -28,7 +28,7 @@ Both sides reduce to the same expression.
 @[simp] theorem infiniteCoord_infty : crd1 ∞ = 0 := rfl
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨z, rfl⟩`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Rewrite using `[← OnePoint.isOpenEmbedding_coe.continuousAt_iff]`. Conclude with `continuousAt_id`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_finiteCoord : ContinuousOn crd0 (Set.range ((↑) : ℂ → OnePoint ℂ)) := by
   rintro _ ⟨z, rfl⟩
@@ -37,11 +37,11 @@ theorem continuousOn_finiteCoord : ContinuousOn crd0 (Set.range ((↑) : ℂ →
   exact continuousAt_id
 
 /- English proof (translation)
-Introduce `x hx`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Proceed by induction on `x with`. Consider the case `infty => show Tendsto crd1 (𝓝 ∞) (𝓝 (crd1 ∞))`. Rewrite using `[OnePoint.nhds_infty_eq, tendsto_sup, tendsto_map'_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, tendsto_pure_nhds crd1 ∞⟩` and prove the remaining obligations. Establish `h : crd1 ∘ ((↑) : ℂ → OnePoint ℂ) = fun z => z⁻¹` using `rfl`. Rewrite using `[h, infiniteCoord_infty, coclosedCompact_eq_cocompact, ← Metric.cobounded_eq_cocompact]`. Conclude with `tendsto_inv₀_cobounded`. Consider the case `coe z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Establish `hz : z ≠ 0` using `fun h => hx (by rw [h])`. Rewrite using `[← OnePoint.isOpenEmbedding_coe.continuousAt_iff]`. Conclude with `continuousAt_inv₀ hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_infiniteCoord : ContinuousOn crd1 {x | x ≠ ((0 : ℂ) : OnePoint ℂ)} := by
   intro x hx
@@ -141,7 +141,7 @@ Both sides reduce to the same expression.
 theorem projLineChart1_target : projectiveLineChartAtInfinity.target = Set.univ := rfl
 
 /- English proof (translation)
-Use `show projectiveLineChartAtInfinity.invFun w = ∞`. Simplify using `only [projectiveLineChartAtInfinity]`. Rewrite using `[if_pos h]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem projLineChart1_symm_of_eq_zero {w : Fin 1 → ℂ} (h : w 0 = 0) : projectiveLineChartAtInfinity.symm w = ∞ := by
   show projectiveLineChartAtInfinity.invFun w = ∞
@@ -149,7 +149,7 @@ private theorem projLineChart1_symm_of_eq_zero {w : Fin 1 → ℂ} (h : w 0 = 0)
   rw [if_pos h]
 
 /- English proof (translation)
-Use `show projectiveLineChartAtInfinity.invFun w = _`. Simplify using `only [projectiveLineChartAtInfinity]`. Rewrite using `[if_neg h]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem projLineChart1_symm_of_ne_zero {w : Fin 1 → ℂ} (h : w 0 ≠ 0) :
     projectiveLineChartAtInfinity.symm w = (((w 0)⁻¹ : ℂ) : OnePoint ℂ) := by
@@ -158,7 +158,7 @@ private theorem projLineChart1_symm_of_ne_zero {w : Fin 1 → ℂ} (h : w 0 ≠ 
   rw [if_neg h]
 
 /- English proof (translation)
-Distinguish the cases in `h : w 0 = 0`. Rewrite using `[projLineChart1_symm_of_eq_zero h, infiniteCoord_infty, h]`. Rewrite using `[projLineChart1_symm_of_ne_zero h, infiniteCoord_coe, inv_inv]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem infiniteCoord_projLineChart1_symm (w : Fin 1 → ℂ) : crd1 (projectiveLineChartAtInfinity.symm w) = w 0 := by
   by_cases h : w 0 = 0
@@ -166,7 +166,7 @@ Distinguish the cases in `h : w 0 = 0`. Rewrite using `[projLineChart1_symm_of_e
   · rw [projLineChart1_symm_of_ne_zero h, infiniteCoord_coe, inv_inv]
 
 /- English proof (translation)
-Distinguish the cases in `h : w 0 = 0`. Rewrite using `[projLineChart1_symm_of_eq_zero h, finiteCoord_infty, h, inv_zero]`. Rewrite using `[projLineChart1_symm_of_ne_zero h, finiteCoord_coe]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem finiteCoord_projLineChart1_symm (w : Fin 1 → ℂ) : crd0 (projectiveLineChartAtInfinity.symm w) = (w 0)⁻¹ := by
   by_cases h : w 0 = 0
@@ -174,7 +174,7 @@ Distinguish the cases in `h : w 0 = 0`. Rewrite using `[projLineChart1_symm_of_e
   · rw [projLineChart1_symm_of_ne_zero h, finiteCoord_coe]
 
 /- English proof (translation)
-Distinguish the cases in `h : w 0 = 0`. Rewrite using `[projLineChart1_symm_of_eq_zero h]`. Conclude with `⟨fun ⟨z, hz⟩ => absurd hz (OnePoint.coe_ne_infty z), fun h' => absurd h h'⟩`. Rewrite using `[projLineChart1_symm_of_ne_zero h]`. Conclude with `⟨fun _ => h, fun _ => ⟨_, rfl⟩⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem projLineChart1_symm_mem_range {w : Fin 1 → ℂ} :
     projectiveLineChartAtInfinity.symm w ∈ Set.range ((↑) : ℂ → OnePoint ℂ) ↔ w 0 ≠ 0 := by
@@ -185,7 +185,7 @@ theorem projLineChart1_symm_mem_range {w : Fin 1 → ℂ} :
     exact ⟨fun _ => h, fun _ => ⟨_, rfl⟩⟩
 
 /- English proof (translation)
-Rewrite using `[projLineChart0_symm_apply]`. Conclude with `⟨fun h h' => h (by rw [h']), fun h h' => h (OnePoint.coe_injective h')⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem projLineChart0_symm_ne_zero {w : Fin 1 → ℂ} :
     projectiveLineChartAtZero.symm w ≠ ((0 : ℂ) : OnePoint ℂ) ↔ w 0 ≠ 0 := by
@@ -257,19 +257,19 @@ def fsPot : LocPot (OnePoint ℂ) where
     else (1 / 2) * Real.log (1 + ‖crd0 y‖ ^ 2)
 
 /- English proof (translation)
-Simplify using `[fsPot]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fsPot_U_infty : fsPot.U ∞ = projectiveLineChartAtInfinity.source := by simp [fsPot]
 /- English proof (translation)
-Simplify using `[fsPot]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fsPot_U_coe (z : ℂ) : fsPot.U (z : OnePoint ℂ) = projectiveLineChartAtZero.source := by simp [fsPot]
 /- English proof (translation)
-Simplify using `[fsPot]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fsPot_φ_infty : fsPot.φ ∞ = fun y => (1 / 2) * Real.log (1 + ‖crd1 y‖ ^ 2) := by simp [fsPot]
 /- English proof (translation)
-Simplify using `[fsPot]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fsPot_φ_coe (z : ℂ) :
     fsPot.φ (z : OnePoint ℂ) = fun y => (1 / 2) * Real.log (1 + ‖crd0 y‖ ^ 2) := by simp [fsPot]
@@ -279,28 +279,28 @@ open scoped Classical in
 def projectiveLinePairSection (x y : OnePoint ℂ) : ℂ := if x = ∞ then crd1 y else 1
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[projectiveLinePairSection]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem projLineSection_infty : projectiveLinePairSection ∞ = crd1 := by
   funext y
   simp [projectiveLinePairSection]
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `[projectiveLinePairSection]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem projLineSection_coe (z : ℂ) : projectiveLinePairSection (z : OnePoint ℂ) = fun _ => 1 := by
   funext y
   simp [projectiveLinePairSection]
 
 /- English proof (translation)
-Introduce `j`. Use `revert j`. Use `Fin.forall_fin_two.2 ⟨?_, ?_⟩` and prove the remaining obligations. Proceed by induction on `x with`. Consider the case `infty => right`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun w hw => projLineChart0_symm_ne_zero.1 (by rw [fsPot_U_infty] at hw; exact hw.2)⟩` and prove the remaining obligations. Use function extensionality and compare the values at `w`. Rewrite using `[fsPot_φ_infty, projLineAtlas_chart0]`. Simplify using `only [Function.comp_apply, projLineChart0_symm_apply, infiniteCoord_coe, fubiniStudyProfileInv, fsQ, norm_inv, inv_pow]`. Consider the case `coe z => left`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[fsPot_φ_coe, projLineAtlas_chart0]`. Simplify using `only [Function.comp_apply, projLineChart0_symm_apply, finiteCoord_coe, fubiniStudyProfile, fsQ]`. Proceed by induction on `x with`. Consider the case `infty => left`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[fsPot_φ_infty, projLineAtlas_chart1]`. Simplify using `only [Function.comp_apply, infiniteCoord_projLineChart1_symm, fubiniStudyProfile, fsQ]`. Consider the case `coe z => right`. Use `⟨?_, fun w hw => projLineChart1_symm_mem_range.1 (by rw [fsPot_U_coe] at hw; exact hw.2)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `w`. Rewrite using `[fsPot_φ_coe, projLineAtlas_chart1]`. Simplify using `only [Function.comp_apply, finiteCoord_projLineChart1_symm, fubiniStudyProfileInv, fsQ, norm_inv, inv_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fsPot_chart (x : OnePoint ℂ) : ∀ j : Fin 2,
     (fsPot.φ x ∘ (p1.chart j).symm = fun w => fubiniStudyProfile (fsQ w)) ∨
@@ -335,9 +335,7 @@ theorem fsPot_chart (x : OnePoint ℂ) : ∀ j : Fin 2,
       simp only [Function.comp_apply, finiteCoord_projLineChart1_symm, fubiniStudyProfileInv, fsQ, norm_inv, inv_pow]
 
 /- English proof (translation)
-Introduce `j`. Break down `fsPot_chart x j with h | ⟨h, hne⟩` into its components or cases. Rewrite using `[h]`. Conclude with `contDiff_fubiniStudyProfile_normSqFirst.contDiffOn`. Rewrite using `[h]`.
-
-Conclude with `contDiffOn_fubiniStudyProfileInv_normSqFirst.mono fun w hw => hne w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fsPot_smooth (x : OnePoint ℂ) : p1.SmoothOn (fsPot.U x) (fsPot.φ x) := by
   intro j
@@ -348,11 +346,11 @@ theorem fsPot_smooth (x : OnePoint ℂ) : p1.SmoothOn (fsPot.U x) (fsPot.φ x) :
     exact contDiffOn_fubiniStudyProfileInv_normSqFirst.mono fun w hw => hne w hw
 
 /- English proof (translation)
-Use `Fin.forall_fin_two.2 ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `e : crd1 ∘ (p1.chart (0 : Fin 2)).symm = fun v : Fin 1 → ℂ => (v 0)⁻¹`. Use function extensionality and compare the values at `v`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `projLine_analyticAt_inv_apply_zero (projLineChart0_symm_ne_zero.1 hw.2)`. Introduce `w _`. Establish `e : crd1 ∘ (p1.chart (1 : Fin 2)).symm = fun v : Fin 1 → ℂ => v 0`. Use function extensionality and compare the values at `v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `infiniteCoord_projLineChart1_symm v`. Rewrite using `[e]`. Conclude with `projLine_analyticAt_apply_zero w`.
+A detailed English derivation is pending.
 -/
 theorem holomorphicOn_infiniteCoord : p1.HoloOn {x | x ≠ ((0 : ℂ) : OnePoint ℂ)} crd1 := by
   refine Fin.forall_fin_two.2 ⟨?_, ?_⟩
@@ -370,9 +368,9 @@ theorem holomorphicOn_infiniteCoord : p1.HoloOn {x | x ≠ ((0 : ℂ) : OnePoint
     exact projLine_analyticAt_apply_zero w
 
 /- English proof (translation)
-Use `Fin.forall_fin_two.2 ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `w _`. Conclude with `projLine_analyticAt_apply_zero w`. Introduce `w hw`. Establish `e : crd0 ∘ (p1.chart (1 : Fin 2)).symm = fun v : Fin 1 → ℂ => (v 0)⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `v`. Conclude with `finiteCoord_projLineChart1_symm v`. Rewrite using `[e]`. Conclude with `projLine_analyticAt_inv_apply_zero (projLineChart1_symm_mem_range.1 hw.2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem holomorphicOn_finiteCoord : p1.HoloOn (Set.range ((↑) : ℂ → OnePoint ℂ)) crd0 := by
   refine Fin.forall_fin_two.2 ⟨?_, ?_⟩
@@ -386,7 +384,7 @@ theorem holomorphicOn_finiteCoord : p1.HoloOn (Set.range ((↑) : ℂ → OnePoi
     exact projLine_analyticAt_inv_apply_zero (projLineChart1_symm_mem_range.1 hw.2)
 
 /- English proof (translation)
-Introduce `j w hw`. Conclude with `h j w ⟨hw.1, hVU hw.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem holoOn_mono {U V : Set (OnePoint ℂ)} {g : OnePoint ℂ → ℂ} (h : p1.HoloOn U g)
     (hVU : V ⊆ U) : p1.HoloOn V g := by
@@ -394,20 +392,18 @@ theorem holoOn_mono {U V : Set (OnePoint ℂ)} {g : OnePoint ℂ → ℂ} (h : p
   exact h j w ⟨hw.1, hVU hw.2⟩
 
 /- English proof (translation)
-Introduce `j w _`. Conclude with `analyticAt_const`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem holoOn_const (U : Set (OnePoint ℂ)) (c : ℂ) : p1.HoloOn U (fun _ => c) := by
   intro j w _
   exact analyticAt_const
 
 /- English proof (translation)
-Use `Fin.forall_fin_two.2 ⟨?_, ?_⟩` and prove the remaining obligations. Introduce `w hw`. Establish `hB : w 0 ∈ B` using `hw.2.2`. Establish `h` using `AnalyticAt.comp (g := F) (f := fun v : Fin 1 → ℂ => v 0) (x := w) (hF (w 0) hB) (projLine_analyticAt_apply_zero w)`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Establish `hne : w 0 ≠ 0` using `projLineChart1_symm_mem_range.1 hw.2.1`. Establish `hB : (w 0)⁻¹ ∈ B`. Establish `h2 : crd0 (projectiveLineChartAtInfinity.symm w) ∈ B` using `hw.2.2`. Rewrite `h2` using `[finiteCoord_projLineChart1_symm]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e : (fun x => F (crd0 x)) ∘ (p1.chart (1 : Fin 2)).symm = F ∘ (fun v : Fin 1 → ℂ => (v 0)⁻¹)`. Use function extensionality and compare the values at `v`. Conclude with `congrArg F (finiteCoord_projLineChart1_symm v)`. Rewrite using `[e]`. Establish `h` using `AnalyticAt.comp (g := F) (f := fun v : Fin 1 → ℂ => (v 0)⁻¹) (x := w) (hF _ hB) (projLine_analyticAt_inv_apply_zero hne)`.
-
-Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem holomorphicOn_comp_finiteCoord {B : Set ℂ} {F : ℂ → ℂ} (hF : AnalyticOnNhd ℂ F B) :
     p1.HoloOn (projectiveLineChartAtZero.source ∩ projectiveLineChartAtZero ⁻¹' {w | w 0 ∈ B}) (fun x => F (crd0 x)) := by
@@ -432,13 +428,11 @@ theorem holomorphicOn_comp_finiteCoord {B : Set ℂ} {F : ℂ → ℂ} (hF : Ana
     exact h
 
 /- English proof (translation)
-Use `set B : Set ℂ := {ζ | ζ * ζ0⁻¹ ∈ Complex.slitPlane} with hBdef`. Establish `hBo : IsOpen B` using `Complex.isOpen_slitPlane.preimage (continuous_id.mul continuous_const)`. Establish `hF : AnalyticOnNhd ℂ (fun ζ : ℂ => Complex.log (ζ * ζ0⁻¹) + (Real.log ‖ζ0‖ : ℂ)) B`. Introduce `ζ hζ`. Conclude with `((analyticAt_id.mul analyticAt_const).clog hζ).add analyticAt_const`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨projectiveLineChartAtZero.source ∩ projectiveLineChartAtZero ⁻¹' {w | w 0 ∈ B}, projectiveLineChartAtZero.isOpen_inter_preimage (hBo.preimage (continuous_apply 0)), ⟨⟨ζ0, rfl⟩, ?_⟩, _, holomorphicOn_comp_finiteCoord hF, ?_⟩` and prove the remaining obligations. Use `show ζ0 * ζ0⁻¹ ∈ Complex.slitPlane`. Rewrite using `[mul_inv_cancel₀ h0]`. Conclude with `Complex.one_mem_slitPlane`. Introduce and unpack `z ⟨⟨ζ, rfl⟩, hz⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hζB : ζ * ζ0⁻¹ ∈ Complex.slitPlane` using `hz`. Establish `hne : ζ * ζ0⁻¹ ≠ 0` using `Complex.slitPlane_ne_zero hζB`. Establish `hζ : ζ ≠ 0` using `left_ne_zero_of_mul hne`. Use `⟨ζ, rfl, hζ, ?_⟩` and prove the remaining obligations. Use `show (Complex.log (crd0 (ζ : OnePoint ℂ) * ζ0⁻¹) + (Real.log ‖ζ0‖ : ℂ)).re = Real.log ‖ζ‖`.
-
-Rewrite using `[finiteCoord_coe, Complex.add_re, Complex.log_re, Complex.ofReal_re, norm_mul, norm_inv, Real.log_mul (norm_ne_zero_iff.2 hζ) (inv_ne_zero (norm_ne_zero_iff.2 h0)), Real.log_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fs_local (ζ0 : ℂ) (h0 : ζ0 ≠ 0) : ∃ W : Set (OnePoint ℂ), IsOpen W ∧
     (ζ0 : OnePoint ℂ) ∈ W ∧ ∃ G : OnePoint ℂ → ℂ, p1.HoloOn W G ∧
@@ -465,9 +459,9 @@ theorem fs_local (ζ0 : ℂ) (h0 : ζ0 ≠ 0) : ∃ W : Set (OnePoint ℂ), IsOp
     ring
 
 /- English proof (translation)
-Establish `hn : 0 < ‖ζ‖` using `norm_pos_iff.2 h`. Establish `hn2 : ‖ζ‖ ^ 2 ≠ 0` using `by positivity`. Establish `h1 : 1 + ‖ζ⁻¹‖ ^ 2 = (1 + ‖ζ‖ ^ 2) / ‖ζ‖ ^ 2`. Rewrite using `[norm_inv, inv_pow, add_div, div_self hn2, one_div, add_comm]`. Rewrite using `[h1, Real.log_div (by positivity) hn2, Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem half_log_one_add_inv_sq_sub_eq_neg_log {ζ : ℂ} (h : ζ ≠ 0) :
     (1 / 2) * Real.log (1 + ‖ζ⁻¹‖ ^ 2) - (1 / 2) * Real.log (1 + ‖ζ‖ ^ 2) = -Real.log ‖ζ‖ := by
@@ -480,21 +474,21 @@ private theorem half_log_one_add_inv_sq_sub_eq_neg_log {ζ : ℂ} (h : ζ ≠ 0)
   ring
 
 /- English proof (translation)
-Use `⟨fsPot_smooth, ?_⟩` and prove the remaining obligations. Introduce `x x' y hy`. Proceed by induction on `x with`. Consider the case `infty`. Proceed by induction on `x' with`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `infty`. Conclude with `⟨Set.univ, isOpen_univ, trivial, fun _ => 0, holoOn_const _ 0, fun z _ => by simp⟩`. Consider the case `coe z'`. Take `⟨hy1, hy2⟩` from `hy`. Rewrite `hy1` using `[fsPot_U_infty]`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy2` using `[fsPot_U_coe]`. Take `⟨ζ0, rfl⟩` from `hy2`. Establish `h0 : ζ0 ≠ 0` using `fun h => hy1 (by rw [h])`. Take `⟨W, hWo, hyW, G, hG, hGW⟩` from `fs_local ζ0 h0`. Use `⟨W, hWo, hyW, fun z => -G z, fun j w hw => (hG j w hw).neg, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `z ⟨⟨hzW, _⟩, _⟩`. Take `⟨ζ, rfl, hζ, hre⟩` from `hGW z hzW`. Rewrite using `[fsPot_φ_infty, fsPot_φ_coe]`. Simplify using `only [infiniteCoord_coe, finiteCoord_coe, Complex.neg_re, hre]`. Conclude with `half_log_one_add_inv_sq_sub_eq_neg_log hζ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `coe z`. Proceed by induction on `x' with`. Consider the case `infty`. Take `⟨hy1, hy2⟩` from `hy`. Rewrite `hy1` using `[fsPot_U_coe]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy2` using `[fsPot_U_infty]`. Take `⟨ζ0, rfl⟩` from `hy1`. Establish `h0 : ζ0 ≠ 0` using `fun h => hy2 (by rw [h])`. Take `⟨W, hWo, hyW, G, hG, hGW⟩` from `fs_local ζ0 h0`. Use `⟨W, hWo, hyW, G, hG, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `z ⟨⟨hzW, _⟩, _⟩`. Take `⟨ζ, rfl, hζ, hre⟩` from `hGW z hzW`. Rewrite using `[fsPot_φ_infty, fsPot_φ_coe]`. Simplify using `only [infiniteCoord_coe, finiteCoord_coe, hre]`. Combine the linear relations using `[half_log_one_add_inv_sq_sub_eq_neg_log hζ]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Treat this case separately.
 
-Consider the case `coe z''`. Conclude with `⟨Set.univ, isOpen_univ, trivial, fun _ => 0, holoOn_const _ 0, fun w _ => by`. Simplify using `[fsPot_φ_coe]⟩`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem projLine_isSmoothPotential : IsPotential p1 fsPot := by
   refine ⟨fsPot_smooth, ?_⟩
@@ -537,19 +531,19 @@ theorem projLine_isSmoothPotential : IsPotential p1 fsPot := by
         simp [fsPot_φ_coe]⟩
 
 /- English proof (translation)
-Introduce `x j y hy v`. Break down `fsPot_chart x j with h | ⟨h, hne⟩` into its components or cases. Rewrite using `[h]`. Establish `ht : 0 ≤ ‖y 0‖ ^ 2` using `by positivity`. Establish `hG : ∀ᶠ t in 𝓝 (‖y 0‖ ^ 2), HasDerivAt fubiniStudyProfile ((1 / 2) * (1 + t)⁻¹) t` using `(lt_mem_nhds (by linarith : (-1 : ℝ) < ‖y 0‖ ^ 2)).mono fun t ht' => hasDerivAt_fubiniStudyProfile ht'`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG'` using `(((hasDerivAt_id' (‖y 0‖ ^ 2)).const_add 1).inv (by positivity : (1 : ℝ) + ‖y 0‖ ^ 2 ≠ 0)).const_mul (1 / 2 : ℝ)`. Rewrite using `[projLine_leviForm_radial (F := fun w => fubiniStudyProfile (fsQ w)) (Filter.Eventually.of_forall fun w => rfl) hG hG' v]`. Use `mul_nonneg ?_ (by positivity)` and prove the remaining obligations. Establish `h1 : (0 : ℝ) < 1 + ‖y 0‖ ^ 2` using `by positivity`. Use `beta_reduce`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `‖y 0‖ ^ 2 = t at ht h1 ⊢`. Establish `key : 1 / 2 * (-1 / (1 + t) ^ 2) * t + 1 / 2 * (1 + t)⁻¹ = 1 / (2 * (1 + t) ^ 2)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hpos : 0 ≤ 1 / (2 * (1 + t) ^ 2)` using `by positivity`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[key, hpos]`. Rewrite using `[h]`. Establish `ht : 0 < ‖y 0‖ ^ 2` using `pow_pos (norm_pos_iff.2 (hne y hy)) 2`. Establish `hG : ∀ᶠ t in 𝓝 (‖y 0‖ ^ 2), HasDerivAt fubiniStudyProfileInv (-(1 / 2) * (t * (t + 1))⁻¹) t` using `(lt_mem_nhds ht).mono fun t ht' => hasDerivAt_fubiniStudyProfileInv ht'`. Establish `hG'` using `(((hasDerivAt_id' (‖y 0‖ ^ 2)).mul ((hasDerivAt_id' (‖y 0‖ ^ 2)).add_const 1)).inv (by positivity : ‖y 0‖ ^ 2 * (‖y 0‖ ^ 2 + 1) ≠ 0)).const_mul (-(1 / 2) : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[projLine_leviForm_radial (F := fun w => fubiniStudyProfileInv (fsQ w)) (Filter.Eventually.of_forall fun w => rfl) hG hG' v]`. Use `mul_nonneg ?_ (by positivity)` and prove the remaining obligations. Simplify using `only [Pi.mul_apply]`. Use `beta_reduce`. Generalize the expression as in `‖y 0‖ ^ 2 = t at ht ⊢`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : t ≠ 0` using `ht.ne'`. Establish `ht1 : t + 1 ≠ 0` using `by positivity`. Establish `hu : t * (t + 1) * (t * (t + 1))⁻¹ = 1` using `mul_inv_cancel₀ (mul_ne_zero ht0 ht1)`. Establish `hpos : 0 ≤ 1 / 2 * (t * (t * (t + 1))⁻¹) ^ 2` using `by positivity`. Establish `hv : (t * (t + 1)) ^ 2 * ((t * (t + 1)) ^ 2)⁻¹ = 1` using `mul_inv_cancel₀ (pow_ne_zero 2 (mul_ne_zero ht0 ht1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `le_of_le_of_eq hpos ?_` and prove the remaining obligations. Take the linear combination `(1 / 2 * (2 * t + 1) * t * ((t * (t + 1)) ^ 2)⁻¹ * (1 + t * (t + 1) * (t * (t + 1))⁻¹) - 1 / 2 * (t * (t + 1))⁻¹) * hu + (-(1 / 2) * (2 * t + 1) * t * ((t * (t + 1))⁻¹) ^ 2) * hv`.
+A detailed English derivation is pending.
 -/
 theorem projLine_isPlurisubharmonic : IsPsh p1 fsPot := by
   intro x j y hy v
@@ -600,11 +594,11 @@ Both sides reduce to the same expression.
 theorem fsH_chart0 : fsH ∘ projectiveLineChartAtZero.symm = fun w => fsQ w / (1 + fsQ w) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [Function.comp_apply]`. Distinguish the cases in `h : w 0 = 0`. Rewrite using `[projLineChart1_symm_of_eq_zero h] show (1 : ℝ) = 1 / (1 + ‖w 0‖ ^ 2)`. Rewrite using `[h]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[projLineChart1_symm_of_ne_zero h]`. Establish `hn : ‖w 0‖ ≠ 0` using `norm_ne_zero_iff.2 h`. Use `show ‖(w 0)⁻¹‖ ^ 2 / (1 + ‖(w 0)⁻¹‖ ^ 2) = 1 / (1 + ‖w 0‖ ^ 2)`. Rewrite using `[norm_inv, inv_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fsH_chart1 : fsH ∘ projectiveLineChartAtInfinity.symm = fun w => 1 / (1 + fsQ w) := by
   funext w
@@ -622,7 +616,7 @@ theorem fsH_chart1 : fsH ∘ projectiveLineChartAtInfinity.symm = fun w => 1 / (
     ring
 
 /- English proof (translation)
-Use `Fin.forall_fin_two.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `h0.contDiffOn`. Conclude with `h1.contDiffOn`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem projLine_smooth_of_charts {f : OnePoint ℂ → ℝ}
     (h0 : ContDiff ℝ (⊤ : ℕ∞) (f ∘ projectiveLineChartAtZero.symm)) (h1 : ContDiff ℝ (⊤ : ℕ∞) (f ∘ projectiveLineChartAtInfinity.symm)) :
@@ -632,13 +626,13 @@ theorem projLine_smooth_of_charts {f : OnePoint ℂ → ℝ}
   · exact h1.contDiffOn
 
 /- English proof (translation)
-The claim follows from `(contDiff_norm_sq ℂ).comp (contDiff_apply ℝ ℂ (0 : Fin 1))`.
+A detailed English derivation is pending.
 -/
 private theorem contDiff_fsQ' : ContDiff ℝ (⊤ : ℕ∞) fsQ :=
   (contDiff_norm_sq ℂ).comp (contDiff_apply ℝ ℂ (0 : Fin 1))
 
 /- English proof (translation)
-Rewrite using `[fsH_chart0]`. Conclude with `contDiff_fsQ'.div (contDiff_const.add contDiff_fsQ') fun w => by`. Simplify using `only [fsQ]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem contDiff_fubiniStudyRatio_comp_chart0 : ContDiff ℝ (⊤ : ℕ∞) (fsH ∘ projectiveLineChartAtZero.symm) := by
   rw [fsH_chart0]
@@ -647,7 +641,7 @@ theorem contDiff_fubiniStudyRatio_comp_chart0 : ContDiff ℝ (⊤ : ℕ∞) (fsH
     positivity
 
 /- English proof (translation)
-Rewrite using `[fsH_chart1]`. Conclude with `contDiff_const.div (contDiff_const.add contDiff_fsQ') fun w => by`. Simplify using `only [fsQ]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem contDiff_fubiniStudyRatio_comp_chart1 : ContDiff ℝ (⊤ : ℕ∞) (fsH ∘ projectiveLineChartAtInfinity.symm) := by
   rw [fsH_chart1]
@@ -658,7 +652,7 @@ theorem contDiff_fubiniStudyRatio_comp_chart1 : ContDiff ℝ (⊤ : ℕ∞) (fsH
 def fsχ1 (x : OnePoint ℂ) : ℝ := Real.smoothTransition (4 * fsH x - 1)
 
 /- English proof (translation)
-Use `projLine_smooth_of_charts ?_ ?_` and prove the remaining obligations. Establish `h` using `Real.smoothTransition.contDiff.comp (((contDiff_const (c := (4 : ℝ))).mul contDiff_fubiniStudyRatio_comp_chart0).sub (contDiff_const : ContDiff ℝ (⊤ : ℕ∞) fun _ : Fin 1 → ℂ => (1 : ℝ)))`. Conclude with `h`. Establish `h` using `Real.smoothTransition.contDiff.comp (((contDiff_const (c := (4 : ℝ))).mul contDiff_fubiniStudyRatio_comp_chart1).sub (contDiff_const : ContDiff ℝ (⊤ : ℕ∞) fun _ : Fin 1 → ℂ => (1 : ℝ)))`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_fsχ1 : p1.Smooth fsχ1 := by
   refine projLine_smooth_of_charts ?_ ?_
@@ -670,7 +664,7 @@ theorem smooth_fsχ1 : p1.Smooth fsχ1 := by
     exact h
 
 /- English proof (translation)
-Introduce `j`. Establish `h` using `(contDiffOn_const (c := (1 : ℝ))).sub (smooth_fsχ1 j)`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_one_sub_fsχ1 : p1.Smooth (fun x => 1 - fsχ1 x) := by
   intro j
@@ -678,9 +672,9 @@ theorem smooth_one_sub_fsχ1 : p1.Smooth (fun x => 1 - fsχ1 x) := by
   exact h
 
 /- English proof (translation)
-Proceed by induction on `x with`. Consider the case `infty => show (1 : ℝ) = 1 / (1 + ‖crd1 ∞‖ ^ 2)`. Simplify using the standard rewrite rules. Consider the case `coe z`. Establish `hz : z ≠ 0` using `fun h => hx (by rw [h])`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Establish `hn : ‖z‖ ≠ 0` using `norm_ne_zero_iff.2 hz`. Use `show ‖z‖ ^ 2 / (1 + ‖z‖ ^ 2) = 1 / (1 + ‖z⁻¹‖ ^ 2)`. Rewrite using `[norm_inv, inv_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem fsH_eq_one_div_one_add_norm_sq_of_ne_zero {x : OnePoint ℂ} (hx : x ≠ ((0 : ℂ) : OnePoint ℂ)) :
     fsH x = 1 / (1 + ‖crd1 x‖ ^ 2) := by
@@ -697,13 +691,11 @@ private theorem fsH_eq_one_div_one_add_norm_sq_of_ne_zero {x : OnePoint ℂ} (hx
     ring
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun x => ?_` and prove the remaining obligations. Proceed by induction on `x with`. Consider the case `infty`. Establish `hU : {x : OnePoint ℂ | x ≠ ((0 : ℂ) : OnePoint ℂ)} ∈ 𝓝 (∞ : OnePoint ℂ)` using `isOpen_compl_singleton.mem_nhds (OnePoint.infty_ne_coe 0)`. Establish `hc : ContinuousAt crd1 ∞` using `(continuousOn_infiniteCoord ∞ (OnePoint.infty_ne_coe 0)).continuousAt hU`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ContinuousAt.congr (f := fun x => 1 / (1 + ‖crd1 x‖ ^ 2)) ?_ ?_` and prove the remaining obligations. Conclude with `continuousAt_const.div (continuousAt_const.add (hc.norm.pow 2)) (by positivity)`. Use `filter_upwards [hU] with x hx using (fsH_eq_one_div_one_add_norm_sq_of_ne_zero hx).symm`. Consider the case `coe z`. Establish `hU : Set.range ((↑) : ℂ → OnePoint ℂ) ∈ 𝓝 (z : OnePoint ℂ)` using `OnePoint.isOpen_range_coe.mem_nhds ⟨z, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ContinuousAt crd0 z` using `(continuousOn_finiteCoord _ ⟨z, rfl⟩).continuousAt hU`. Use `ContinuousAt.congr (f := fun x => ‖crd0 x‖ ^ 2 / (1 + ‖crd0 x‖ ^ 2)) ?_ ?_` and prove the remaining obligations. Conclude with `(hc.norm.pow 2).div (continuousAt_const.add (hc.norm.pow 2)) (by positivity)`. Use `filter_upwards [hU] with x hx`. Take `⟨w, rfl⟩` from `hx`.
-
-Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem continuous_fsH : Continuous fsH := by
   refine continuous_iff_continuousAt.2 fun x => ?_
@@ -776,12 +768,12 @@ def projLinePartition : ChartPartition p1 where
     simp [Fin.sum_univ_two]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨projLinePartition⟩`.
+Supply the required witnesses or components.
 -/
 theorem projLine_partition : Nonempty (ChartPartition p1) := ⟨projLinePartition⟩
 
 /- English proof (translation)
-Establish `hn : ‖ζ‖ ≠ 0` using `norm_ne_zero_iff.2 h`. Establish `e` using `half_log_one_add_inv_sq_sub_eq_neg_log h`. Establish `e2 : -((1 / 2) * Real.log (1 + ‖ζ⁻¹‖ ^ 2)) = -((1 / 2) * Real.log (1 + ‖ζ‖ ^ 2)) + Real.log ‖ζ‖` using `by linarith`. Rewrite using `[e2, Real.exp_add, Real.exp_log (norm_pos_iff.2 h), norm_inv, norm_one, mul_comm (Real.exp _) ‖ζ‖, ← mul_assoc, inv_mul_cancel₀ hn]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_inv_mul_exp_half_log_eq_of_ne_zero {ζ : ℂ} (h : ζ ≠ 0) :
     ‖ζ⁻¹‖ * Real.exp (-((1 / 2) * Real.log (1 + ‖ζ⁻¹‖ ^ 2))) =
@@ -794,19 +786,17 @@ private theorem norm_inv_mul_exp_half_log_eq_of_ne_zero {ζ : ℂ} (h : ζ ≠ 0
     mul_comm (Real.exp _) ‖ζ‖, ← mul_assoc, inv_mul_cancel₀ hn]
 
 /- English proof (translation)
-Use `⟨fun x => ?_, ?_⟩` and prove the remaining obligations. Proceed by induction on `x with`. Consider the case `infty`. Rewrite using `[projLineSection_infty, fsPot_U_infty]`. Conclude with `holomorphicOn_infiniteCoord`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `coe z`. Rewrite using `[projLineSection_coe, fsPot_U_coe]`. Conclude with `holoOn_const _ 1`. Introduce `x x' y hy`. Proceed by induction on `x with`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `infty`. Proceed by induction on `x' with`. Consider the case `infty => rfl`. Consider the case `coe z'`. Take `⟨hy1, hy2⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy1` using `[fsPot_U_infty]`. Rewrite `hy2` using `[fsPot_U_coe]`. Take `⟨ζ, rfl⟩` from `hy2`. Establish `hζ : ζ ≠ 0` using `fun h => hy1 (by rw [h])`. Rewrite using `[projLineSection_infty, projLineSection_coe, fsPot_φ_infty, fsPot_φ_coe]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction.
 
-Conclude with `norm_inv_mul_exp_half_log_eq_of_ne_zero hζ`. Consider the case `coe z`. Proceed by induction on `x' with`. Consider the case `infty`. Take `⟨hy1, hy2⟩` from `hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hy1` using `[fsPot_U_coe]`. Rewrite `hy2` using `[fsPot_U_infty]`. Take `⟨ζ, rfl⟩` from `hy1`. Establish `hζ : ζ ≠ 0` using `fun h => hy2 (by rw [h])`. Rewrite using `[projLineSection_infty, projLineSection_coe, fsPot_φ_infty, fsPot_φ_coe]`.
-
-Conclude with `(norm_inv_mul_exp_half_log_eq_of_ne_zero hζ).symm`. Consider the case `coe z''`. Rewrite using `[projLineSection_coe, projLineSection_coe, fsPot_φ_coe, fsPot_φ_coe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projLine_isHolomorphicSection : IsSection p1 fsPot projectiveLinePairSection := by
   refine ⟨fun x => ?_, ?_⟩
@@ -844,30 +834,28 @@ theorem projLine_isHolomorphicSection : IsSection p1 fsPot projectiveLinePairSec
         rw [projLineSection_coe, projLineSection_coe, fsPot_φ_coe, fsPot_φ_coe]
 
 /- English proof (translation)
-Introduce `j`. Conclude with `⟨p1.holo j k, p1.holo k j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem projLine_isCompatibleChart (k : Fin 2) : IsCompatChart p1 (p1.chart k) := by
   intro j
   exact ⟨p1.holo j k, p1.holo k j⟩
 
 /- English proof (translation)
-Introduce `x`. Proceed by induction on `x with`. Consider the case `infty`. Use `⟨projectiveLineChartAtInfinity, projLine_isCompatibleChart 1, OnePoint.infty_ne_coe 0, fun y hy => by rw [fsPot_U_infty]; exact hy, fun _ => Option.some 0, ?_, ?_, fun _ => 1, holoOn_const _ 1, fun _ _ => one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `k k' i _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subsingleton.elim k k'`. Introduce `k`. Take `rfl : k = 0` from `Subsingleton.elim _ _`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨hy1, hy2⟩`. Establish `hy : y = ∞` using `hy1`. Substitute `hy` using the available equality. Conclude with `⟨hy2, 0, rfl, rfl⟩`. Introduce and unpack `⟨hy1, i, _, hi⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hy1⟩` and prove the remaining obligations. Proceed by induction on `y with`. Consider the case `infty => exact Set.mem_singleton _`. Consider the case `coe z`. Establish `hz : z⁻¹ = 0` using `hi`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (show (z : OnePoint ℂ) = ((0 : ℂ) : OnePoint ℂ) by rw [inv_eq_zero.1 hz]) hy1`. Introduce `y _`. Rewrite using `[projLineSection_infty, Fin.prod_univ_one]`. Use `show crd1 y = 1 * crd1 y ^ 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `coe z`. Use `⟨projectiveLineChartAtZero, projLine_isCompatibleChart 0, ⟨z, rfl⟩, fun y hy => by rw [fsPot_U_coe]; exact hy, fun _ => Option.none, ?_, ?_, fun _ => 1, holoOn_const _ 1, fun _ _ => one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `k k' i hk _`. Consider the cases of `hk`. Introduce `k`.
+Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Take `rfl : k = 0` from `Subsingleton.elim _ _`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy1, ⟨w, rfl⟩⟩`. Conclude with `absurd (hy1 : (w : OnePoint ℂ) = ∞) (OnePoint.coe_ne_infty w)`.
+Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨_, i, hi, _⟩`. Consider the cases of `hi`. Introduce `y _`. Rewrite using `[projLineSection_coe, Fin.prod_univ_one]`. Use `show (1 : ℂ) = 1 * 1`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem projLine_isSimpleNormalCrossing : IsSNC p1 fsPot projectiveLinePairSection ![1] ![{∞}] := by
   intro x
@@ -942,15 +930,15 @@ def ptPart (Y : Type*) [TopologicalSpace Y] [Unique Y] : ChartPartition (ptAtlas
     simp
 
 /- English proof (translation)
-Establish `hne : Nonempty (ChartPartition (ptAtlas Y))` using `⟨ptPart Y⟩`. Establish `hχ : ∀ (Q : ChartPartition (ptAtlas Y)) (x : Y), Q.χ (0 : Fin 1) x = 1`. Introduce `Q x`. Establish `h` using `Q.sum_eq_one x`. Express the relevant statement in the definitionally equal form `∑ j : Fin 1, Q.χ j x = 1 at h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h` using `[Fin.sum_univ_one]`. Then use the resulting hypothesis. Establish `hd : ∀ y : Fin 0 → ℂ, locDens (ptAtlas Y) Fin.elim0 (0 : Fin 1) y = 1`. Introduce `y`. Simplify using `[locDens, maDens, mdisc]`. Establish `ht : ((ptAtlas Y).chart (0 : Fin 1)).target = Set.univ` using `rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Unfold `mInt`. Rewrite using `[dif_pos hne]`. Unfold `integralWith`. Express the relevant statement in the definitionally equal form `∑ j : Fin 1, _ = _`. Rewrite using `[Fin.sum_univ_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ∀ y : Fin 0 → ℂ, hne.some.χ (0 : Fin 1) (((ptAtlas Y).chart (0 : Fin 1)).symm y) * g (((ptAtlas Y).chart (0 : Fin 1)).symm y) * locDens (ptAtlas Y) Fin.elim0 (0 : Fin 1) y = g default`. Introduce `y`. Rewrite using `[hχ, hd, Subsingleton.elim (((ptAtlas Y).chart (0 : Fin 1)).symm y) default]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `[MeasureTheory.volume_pi, MeasureTheory.Measure.pi_univ, MeasureTheory.measureReal_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ptAtlas_mInt (Y : Type*) [TopologicalSpace Y] [Unique Y] (g : Y → ℝ) :
     mInt (ptAtlas Y) Fin.elim0 g = g default := by

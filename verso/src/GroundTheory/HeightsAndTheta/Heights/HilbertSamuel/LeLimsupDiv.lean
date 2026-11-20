@@ -13,13 +13,13 @@ noncomputable section
 namespace ArithmeticVolumeBigDimensionOne
 
 /- English proof (translation)
-Establish `hb : IsBoundedUnder (· ≤ ·) atTop (fun n : ℕ => u n / n)`. Use `isBoundedUnder_of_eventually_le (a := 2 * |C'|) ?_` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop 1] with n hn`. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`. Rewrite using `[div_le_iff₀ (by linarith)]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `le_of_forall_pos_le_add fun ε hε => ?_` and prove the remaining obligations. Take `⟨N, hN⟩` from `exists_nat_gt (C / ε)`. Establish `key : T - ε ≤ limsup (fun n : ℕ => u n / n) atTop`. Use `le_limsup_of_frequently_le (Eventually.frequently ?_) hb` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [eventually_ge_atTop (max N 1)] with n hn`. Establish `hn1 : 1 ≤ n` using `(le_max_right _ _).trans hn`. Establish `hn1' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn1`. Establish `hnN : (N : ℝ) ≤ n` using `by exact_mod_cast (le_max_left _ _).trans hn`. Rewrite using `[le_div_iff₀ (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : C < n * ε` using `(div_lt_iff₀ hε).mp (hN.trans_le hnN)`. Establish `hl` using `hlo n hn1`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem le_limsup_div {u : ℕ → ℝ} {T C C' : ℝ}
     (hlo : ∀ n : ℕ, 1 ≤ n → (n : ℝ) * T - C ≤ u n) (hup : ∀ n : ℕ, u n ≤ C' * ((n : ℝ) + 1)) :
@@ -49,9 +49,9 @@ theorem le_limsup_div {u : ℕ → ℝ} {T C C' : ℝ}
 end ArithmeticVolumeBigDimensionOne
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y A P0 II hII har hb hP0 hs hnef hc`. Take `⟨C, hC⟩` from `hL K ι Ω y A II hII har hb hs.1 hc`. Take `⟨-, C', hC'⟩` from `hP K ι Ω y 0 A (chartLat y A.a) har hb hs.1 (fun τ => SmallSectionPointHeight.chartLat_le_chartLatNm y A.a τ)`. Establish `e : arVolP (IsSmallH (mCoordIdeal y) y A) (chartLat y A.a) 1 0 = limsup (fun n : ℕ => smallSectionCount (IsSmallH (mCoordIdeal y) y A) (chartLat y A.a) n / n) atTop`. Unfold `arVolP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use function extensionality and compare the values at `n`. Simplify using the standard rewrite rules. Rewrite using `[e]`. Conclude with `ArithmeticVolumeBigDimensionOne.le_limsup_div hC (fun n => by simpa using hC' n)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ArithmeticVolumeBigDimensionOne.proof (hP : PackingStatement) (hL : CurveSmallCountLower.Statement) :
     ArithmeticVolumeBigDimensionOne.Statement := by

@@ -18,11 +18,9 @@ set_option linter.unusedSectionVars false
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hK.elim_finite_subcover (fun c : G => (fun x => c⁻¹ * x) ⁻¹' (stabilizerOf ρ v : Set G)) (fun c => hv.preimage (continuous_const.mul continuous_id)) (fun x _ => Set.mem_iUnion.2 ⟨x, show x⁻¹ * x ∈ (stabilizerOf ρ v : Set G) by`. Rewrite using `[inv_mul_cancel]`. Conclude with `one_mem _⟩)`. Use `((t.finite_toSet).image fun c => ρ c v).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, hck⟩` from `Set.mem_iUnion₂.1 (ht k.2)`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Establish `h1 : ρ (c⁻¹ * k) v = v` using `hck`. Express the relevant statement in the definitionally equal form `ρ c v = ρ k v`. Use `conv_lhs => rw [← h1]`.
-
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_range_of_isOpen_stabilizer {G V : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V) {v : V}
@@ -43,9 +41,9 @@ theorem finite_range_of_isOpen_stabilizer {G V : Type*} [Group G] [TopologicalSp
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]
 
 /- English proof (translation)
-Rewrite using `[translateSpanCusp, Submodule.span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`. Use `smooth_apply_mem _ ?_ g` and prove the remaining obligations. Use `Subgroup.isOpen_mono (H₁ := Gamma0Level N) (fun u hu => ?_) (isOpen_Gamma0Level N)` and prove the remaining obligations. Rewrite using `[mem_stabilizerOf]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subtype.ext (funext fun x => ?_)` and prove the remaining obligations. Conclude with `(liftEquiv N k f.toSlashInvariantForm).2.right_level x u hu`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem translateSpanCusp_le_smoothVectors (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     translateSpanCusp f ≤ smoothVectors (finRepCusp ℚ 2) := by
@@ -74,9 +72,9 @@ theorem coe_rightTranslate_apply (y : AdelicGL ℚ 2) (ψ : AdelicGL ℚ 2 → �
 variable (μ : Measure (Reduction.normOneGL ℚ 2)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Establish `hex : ∃ (s : {r : ℝ // 0 < r}) (y : AdelicGL ℚ 2), y ∈ Reduction.normOneGL ℚ 2 ∧ AutomorphicForm.finEmb ℚ 2 g = Reduction.centralSection ℚ 2 s * y` using `CuspidalSpectrum.exists_centralSection_mul_mem_normOneGL _`. Take `⟨s, y, hy, hxy⟩` from `hex`. Use `⟨⟨y, hy⟩, fun ψ hψ => ?_⟩` and prove the remaining obligations. Use `cuspToL2_rightTranslate μ ⟨y, hy⟩ ψ (finRepCusp ℚ 2 g ψ) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[coe_finRepCusp_apply, coe_rightTranslate_apply]`. Express the relevant statement in the definitionally equal form `(ψ : AdelicGL ℚ 2 → ℂ) (x * finEmb ℚ 2 g) = (ψ : AdelicGL ℚ 2 → ℂ) (x * y)`. Rewrite using `[hxy, ← mul_assoc, ← Reduction.centralSection_mul_comm, mul_assoc, centralSection_of_mem_translateSpanCusp f hψ]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cuspToL2_finRepCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (g : FiniteAdelicGL ℚ 2) :
     ∃ y : Reduction.normOneGL ℚ 2, ∀ ψ ∈ translateSpanCusp f,
@@ -94,7 +92,7 @@ theorem cuspToL2_finRepCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ))
     centralSection_of_mem_translateSpanCusp f hψ]
 
 /- English proof (translation)
-The claim follows from `injOn_cuspToL2 μ (fun s x => centralSection_of_mem_translateSpanCusp f hv s x) (fun _ _ => rfl) (h0.trans (map_zero _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_cuspFormLp_eq_zero (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     {v : cuspForms ℚ 2} (hv : v ∈ translateSpanCusp f) (h0 : cuspToL2 μ v = 0) : v = 0 :=
@@ -114,7 +112,7 @@ def cuspFormCoeL : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k →ₗ[ℂ]
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Introduce `u hu` and use `congrArg Subtype.val (hψ ⟨u, hu⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finRightRep_eq_of_mem_invariants {ψ : cuspForms ℚ 2}
     (hψ : ψ ∈ Representation.invariants ((finRepCusp ℚ 2).comp (Gamma0Level N).subtype)) :
@@ -122,13 +120,13 @@ theorem finRightRep_eq_of_mem_invariants {ψ : cuspForms ℚ 2}
   congrArg Subtype.val (hψ ⟨u, hu⟩)
 
 /- English proof (translation)
-Use `set M := translateSpanCusp f ⊓ Representation.invariants ((finRepCusp ℚ 2).comp (Gamma0Level N).subtype)`. Establish `hmem : ∀ ψ ∈ M, descendL k ψ ∈ LinearMap.range (cuspFormCoeL (N` using `N) (k := k)) := by`. Introduce `ψ hψ`. Take `⟨F, hF⟩` from `exists_cuspForm_of_mem_translateSpan f (coe_mem_translateSpan f hψ.1) (finRightRep_eq_of_mem_invariants hψ.2)`. Use `⟨F, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(F : ℍ → ℂ) = descend k ψ`. Rewrite using `[← hF, liftEquiv_apply, descend_adelicLift (fun γ hγ => SlashInvariantForm.slash_action_eqn F.toSlashInvariantForm γ hγ)]`. Both sides reduce to the same expression. Set `Φ : M →ₗ[ℂ] LinearMap.range (cuspFormCoeL (N` to `N) (k := k)) := (descendL k ∘ₗ M.subtype).codRestrict _ (fun ψ => hmem ψ ψ.2)`. Establish `hinj : Function.Injective Φ`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearMap.ker_eq_bot.1 (LinearMap.ker_eq_bot'.2 (fun (ψ : M) (hψ : Φ ψ = 0) => ?_))` and prove the remaining obligations. Establish `h0 : descend k (ψ : AdelicGL ℚ 2 → ℂ) = 0` using `congrArg Subtype.val hψ`. Establish `hW : IsWeightLevel N k (ψ : AdelicGL ℚ 2 → ℂ)` using `isWeightLevel_of_mem_translateSpan f.toSlashInvariantForm (coe_mem_translateSpan f ψ.2.1) (finRightRep_eq_of_mem_invariants ψ.2.2)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← adelicLift_descend hW, h0]`. Use function extensionality and compare the values at `x`. Simplify using `[adelicLift, archLift]`. Conclude with `Module.Finite.of_injective Φ hinj`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_translateSpanCusp_fixed (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) :
     FiniteDimensional ℂ ↥(translateSpanCusp f ⊓
@@ -164,7 +162,7 @@ def heckeFin (N p : ℕ) [NeZero p] : Finset (FiniteAdelicGL ℚ 2) :=
   (heckeReps N p).image (finiteDiagonal ℚ 2)
 
 /- English proof (translation)
-Rewrite using `[heckeFin, Finset.sum_image (fun a ha b hb hab => eq_of_inv_mul_mem_Gamma0Level N p ha hb (by rw [hab, inv_mul_cancel]; exact one_mem _))]`. Use function extensionality and compare the values at `x`. Rewrite using `[Submodule.coe_sum, Finset.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_sum_heckeFin (p : ℕ) [NeZero p] [Fact p.Prime] (ψ : cuspForms ℚ 2) :
     ((∑ g ∈ heckeFin N p, finRepCusp ℚ 2 g ψ : cuspForms ℚ 2) : AdelicGL ℚ 2 → ℂ) = heckeSum N p ψ := by
@@ -176,23 +174,23 @@ theorem coe_sum_heckeFin (p : ℕ) [NeZero p] [Fact p.Prime] (ψ : cuspForms ℚ
   rfl
 
 /- English proof (translation)
-Establish `hex : ∀ g : FiniteAdelicGL ℚ 2, ∃ y : Reduction.normOneGL ℚ 2, ∀ ψ ∈ translateSpanCusp f, cuspToL2 μ (finRepCusp ℚ 2 g ψ) = cuspRep μ y (cuspToL2 μ ψ)` using `fun g => cuspToL2_finRepCusp μ f g`. Establish `hφS : ∀ j : {p : ℕ // p.Prime}, ∑ g ∈ @heckeFin N j.1 ⟨j.2.ne_zero⟩, finRepCusp ℚ 2 g (liftCusp f) = (heckeConst j.1 k * ev j.1) • liftCusp f`. Introduce and unpack `⟨p, hp⟩`. Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `: NeZero p` using `⟨hp.ne_zero⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_sum_heckeFin]`. Express the relevant statement in the definitionally equal form `heckeSum N p (liftEquiv N k f.toSlashInvariantForm : AdelicGL ℚ 2 → ℂ) = _`. Rewrite using `[heckeSum_liftEquiv, ← heckeCusp_toSlashInvariantForm, hf p]`. Establish `e : (ev p • f).toSlashInvariantForm = ev p • f.toSlashInvariantForm` using `rfl`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, map_smul, Submodule.coe_smul, Submodule.coe_smul, mul_smul]`. Both sides reduce to the same expression. Establish `hP : ∀ z ∈ translateSpanCusp f, (∀ u : Gamma0Level N, finRepCusp ℚ 2 u z = z) → (∀ j : {p : ℕ // p.Prime}, ∑ g ∈ @heckeFin N j.1 ⟨j.2.ne_zero⟩, finRepCusp ℚ 2 g z = (heckeConst j.1 k * ev j.1) • z) → ∃ c : ℂ, z = c • liftCusp f`. Introduce `z hzT hzK hzE`. Take `⟨F, hF⟩` from `exists_cuspForm_of_mem_translateSpan f (coe_mem_translateSpan f hzT) (fun u hu => congrArg Subtype.val (hzK ⟨u, hu⟩))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hFe : ∀ (p : ℕ) [Fact p.Prime], heckeCusp N p k F = ev p • F`. Introduce `p hp`. Establish `: NeZero p` using `⟨hp.out.ne_zero⟩`. Establish `h1 : heckeSum N p (z : AdelicGL ℚ 2 → ℂ) = (heckeConst p k * ev p) • (z : AdelicGL ℚ 2 → ℂ)`. Rewrite using `[← coe_sum_heckeFin]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Subtype.val (hzE ⟨p, hp.out⟩)` as an intermediate fact. Conclude with `this`. Rewrite `h1` using `[← hF, heckeSum_liftEquiv, mul_smul]`. Establish `h2` using `smul_right_injective _ (heckeConst_ne_zero (k := k) p) h1`. Establish `h3 : liftEquiv N k (heckeSlash N p k F.toSlashInvariantForm) = liftEquiv N k (ev p • F.toSlashInvariantForm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[map_smul, Submodule.coe_smul]`. Conclude with `h2`. Establish `h4` using `(liftEquiv N k).injective h3`. Use extensionality with `w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Conclude with `congrArg (fun G : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k => G w) h4`. Take `⟨c, hc⟩ : ∃ c : ℂ, F = c • f` from `⟨_, eq_smul_of_eigen f F ev hf hFe hf1⟩`. Substitute `hc` using the available equality. Use `⟨c, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[← hF]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e : (c • f).toSlashInvariantForm = c • f.toSlashInvariantForm` using `rfl`. Rewrite using `[e, map_smul, Submodule.coe_smul, Submodule.coe_smul]`. Both sides reduce to the same expression. Establish `key` using `mem_of_stable_of_eigen (ρ := finRepCusp ℚ 2) (ι := cuspToL2 μ) (T := translateSpanCusp f) (φ := liftCusp f) (K := Gamma0Level N) (J := {p : ℕ // p.Prime}) (S := fun j => @heckeFin N j.1 ⟨j.2.ne_zero⟩) (ev := fun j => heckeConst j.1 k * ev j.1)`. Establish `k2` using `key rfl (fun v hv h0 => eq_zero_of_cuspFormLp_eq_zero μ f hv h0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hunit : ∀ g : FiniteAdelicGL ℚ 2, ∀ v ∈ translateSpanCusp f, ∀ w ∈ translateSpanCusp f, @inner ℂ (cuspidalL2 μ) InnerProductSpace.toInner (cuspToL2 μ (finRepCusp ℚ 2 g v)) (cuspToL2 μ (finRepCusp ℚ 2 g w)) = @inner ℂ (cuspidalL2 μ) InnerProductSpace.toInner (cuspToL2 μ v) (cuspTo …`. Introduce `g v hv w hw`. Establish `hy` using `(hex g).choose_spec`. Conclude with `(congrArg₂ (fun a b : cuspidalL2 μ => @inner ℂ (cuspidalL2 μ) InnerProductSpace.toInner a b) (hy v hv) (hy w hw)).trans (UnitaryRep.inner_map_map _ _ _ _)`. Conclude with `k2 hunit (fun u => Subtype.ext (funext fun x => (liftEquiv N k f.toSlashInvariantForm).2.right_level x u u.2)) (fun v hv => finite_range_of_isOpen_stabilizer _ (mem_smoothVectors.1 (translateSpanCusp_le_smoothVectors f hv)) _ (isCompact_Gamma0Level N)) (finiteDimensional_translat …`.
+A detailed English derivation is pending.
 -/
 theorem liftCusp_mem_of_le_translateSpanCusp_alt (μ : Measure (Reduction.normOneGL ℚ 2)) [μ.IsHaarMeasure]
     (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
@@ -261,7 +259,7 @@ theorem liftCusp_mem_of_le_translateSpanCusp_alt (μ : Measure (Reduction.normOn
     (finiteDimensional_translateSpanCusp_fixed f) hφS hP Y hYT hY hY0
 
 /- English proof (translation)
-The claim follows from `liftCusp_mem_of_le_translateSpanCusp_alt Measure.haar f ev hf hf1 Y hYT hY hY0`.
+A detailed English derivation is pending.
 -/
 theorem liftCusp_mem_of_le_translateSpanCusp (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (ev : ℕ → ℂ) (hf : ∀ (p : ℕ) [Fact p.Prime], heckeCusp N p k f = ev p • f)

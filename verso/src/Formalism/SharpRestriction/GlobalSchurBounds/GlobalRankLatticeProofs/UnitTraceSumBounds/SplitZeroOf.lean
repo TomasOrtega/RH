@@ -17,7 +17,7 @@ def OkpTwoUnits (D : D7) : Prop :=
     ∀ α ∈ OKp D lam, ∃ β ∈ OKp D lam, ∃ γ ∈ OKp D lam, ‖β.1‖ = 1 ∧ ‖γ.1‖ = 1 ∧ α = β + γ
 
 /- English proof (translation)
-Introduce `hPG hbc p _ cc δ g hAt hp`. Conclude with `H p g (OKp D g.lam) hAt.2.2.2.2 (okp_zero D g.lam) (fun β hβ => okp_swap D g.lam β hβ) (fun β hβ γ hγ => okp_add D g.lam β γ hβ hγ) (fun β hβ γ hγ => okp_mul D g.lam β γ hβ hγ) (hPG p cc δ g hAt hp) (hbc p cc δ g hAt hp)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sDiff_of (H : SDiffOfGram) (D : D7) : GL3r7.StatementSymmetricDifference D := by
   intro hPG hbc p _ cc δ g hAt hp
@@ -26,7 +26,7 @@ theorem sDiff_of (H : SDiffOfGram) (D : D7) : GL3r7.StatementSymmetricDifference
     (hPG p cc δ g hAt hp) (hbc p cc δ g hAt hp)
 
 /- English proof (translation)
-Introduce `p _ cc δ g hAt hp hspl`. Use `H p g (OKp D g.lam) hAt.2.2.2.2 hp (fun α hα => okpSwap_holds D p g.lam α hα) (fun α hα => he p cc δ g hAt α hα) (ha p cc δ g hAt).1 (fun α hα => hb p cc δ g hAt hp α hα) (hB p cc δ g hAt).1 ?_ (hsp p g.lam hp hspl)` and prove the remaining obligations. Establish `h` using `hn p cc δ g hAt hp _ (okpNeg_holds D p g.lam)`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem splitZero_of (H : SplitZeroG) (D : D7) (hsp : OkpSplit D) (he : endInt D) (ha : addInt D) (hn : phNorm D)
     (hb : beConj D) (hB : beBiadd D) : splitZero D := by
@@ -38,7 +38,7 @@ theorem splitZero_of (H : SplitZeroG) (D : D7) (hsp : OkpSplit D) (he : endInt D
   simpa using h
 
 /- English proof (translation)
-Introduce `p _ cc δ g hAt hp α hα`. Establish `hadd : ∀ β ∈ OKp D g.lam, ∀ γ ∈ OKp D g.lam, β + γ ∈ OKp D g.lam` using `fun β hβ γ hγ => okp_add D g.lam β γ hβ hγ`. Conclude with `H p g (OKp D g.lam) hAt.2.2.2.2 (fun β hβ => okpSwap_holds D p g.lam β hβ) hadd (fun β hβ => he p cc δ g hAt β hβ) (ha p cc δ g hAt).1 (fun β hβ => hN p g.lam β hβ) (fun β hβ => hU p g.lam hp β hβ) (fun β hβ => hn p cc δ g hAt hp β hβ) (hB p cc δ g hAt).1 α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem beConj_of (H : BeConjOfNorm) (D : D7) (hN : OkpNorm D) (hU : OkpTwoUnits D) (he : endInt D) (ha : addInt D)
     (hn : phNorm D) (hB : beBiadd D) : beConj D := by

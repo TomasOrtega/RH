@@ -21,27 +21,27 @@ Both sides reduce to the same expression.
 private theorem mulF_eq_actAf (x : 𝓞 D.F) : mulF D x = actAf D (algebraMap (𝓞 D.F) D.O x) := rfl
 
 /- English proof (translation)
-Rewrite using `[mulF_eq_actAf, actAf_inAf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mulF_inAf (c : 𝓞 D.F) (x : D.La) :
     mulF D c (inAf D x) = inAf D (algebraMap (𝓞 D.F) D.O c • x) := by
   rw [mulF_eq_actAf, actAf_inAf]
 
 /- English proof (translation)
-Rewrite using `[mulF_eq_actAf]`. Conclude with `actAf_mem_laHat D _ hv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mulF_mem (c : 𝓞 D.F) {v : AfP p ⊗[ℚ] VQ D} (hv : v ∈ LaHat D) : mulF D c v ∈ LaHat D := by
   rw [mulF_eq_actAf]; exact actAf_mem_laHat D _ hv
 
 /- English proof (translation)
-Rewrite using `[mulF_eq_actAf]`. Conclude with `actG_actAf L g _ v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem actG_mulF (g : G.GAf) (c : 𝓞 D.F) (v : AfP p ⊗[ℚ] VQ D) :
     L.actG g (mulF D c v) = mulF D c (L.actG g v) := by
   rw [mulF_eq_actAf]; exact actG_actAf L g _ v
 
 /- English proof (translation)
-Establish `e : mulF D (c + d) = mulF D c + mulF D d` using `GlobalTheory.AdelicSim.ext_inAf D fun x => by`. Rewrite using `[LinearMap.add_apply, mulF_inAf, mulF_inAf, mulF_inAf, map_add, add_smul, GlobalTheory.AdelicSim.inAf_add]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mulF_add (c d : 𝓞 D.F) (v : AfP p ⊗[ℚ] VQ D) :
     mulF D (c + d) v = mulF D c v + mulF D d v := by
@@ -51,7 +51,7 @@ private theorem mulF_add (c d : 𝓞 D.F) (v : AfP p ⊗[ℚ] VQ D) :
   rw [e]; rfl
 
 /- English proof (translation)
-Establish `e : mulF D (c * d) = mulF D c * mulF D d` using `GlobalTheory.AdelicSim.ext_inAf D fun x => by`. Rewrite using `[Module.End.mul_apply, mulF_inAf, mulF_inAf, mulF_inAf, map_mul, mul_smul]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mulF_mul (c d : 𝓞 D.F) (v : AfP p ⊗[ℚ] VQ D) :
     mulF D (c * d) v = mulF D c (mulF D d v) := by
@@ -61,7 +61,7 @@ private theorem mulF_mul (c d : 𝓞 D.F) (v : AfP p ⊗[ℚ] VQ D) :
   rw [e]; rfl
 
 /- English proof (translation)
-Establish `e : mulF D 1 = 1` using `GlobalTheory.AdelicSim.ext_inAf D fun x => by`. Rewrite using `[mulF_inAf, map_one, one_smul, Module.End.one_apply]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mulF_one (v : AfP p ⊗[ℚ] VQ D) : mulF D 1 v = v := by
   have e : mulF D 1 = 1 :=
@@ -70,7 +70,7 @@ private theorem mulF_one (v : AfP p ⊗[ℚ] VQ D) : mulF D 1 v = v := by
   rw [e]; rfl
 
 /- English proof (translation)
-Establish `e : mulF D (n : 𝓞 D.F) = n • (1 : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D))` using `GlobalTheory.AdelicSim.ext_inAf D fun x => by`. Rewrite using `[mulF_inAf, map_natCast, Nat.cast_smul_eq_nsmul, GlobalTheory.AdelicSim.inAf_nsmul, LinearMap.smul_apply, Module.End.one_apply]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem mulF_nat (n : ℕ) (v : AfP p ⊗[ℚ] VQ D) : mulF D (n : 𝓞 D.F) v = n • v := by
   have e : mulF D (n : 𝓞 D.F) = n • (1 : Module.End (AfP p) (AfP p ⊗[ℚ] VQ D)) :=
@@ -80,7 +80,7 @@ private theorem mulF_nat (n : ℕ) (v : AfP p ⊗[ℚ] VQ D) : mulF D (n : 𝓞 
   rw [e]; rfl
 
 /- English proof (translation)
-Establish `e : ∀ c : AfP p ⊗[ℚ] VQ D, ((n : ℚ)⁻¹) • (n • c) = c` using `fun c => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hn.ne'), one_smul]`. Rewrite using `[← e a, h, e b]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem nsmul_cancel {n : ℕ} (hn : 0 < n) {a b : AfP p ⊗[ℚ] VQ D} (h : n • a = n • b) : a = b := by
   have e : ∀ c : AfP p ⊗[ℚ] VQ D, ((n : ℚ)⁻¹) • (n • c) = c := fun c => by
@@ -88,19 +88,19 @@ private theorem nsmul_cancel {n : ℕ} (hn : 0 < n) {a b : AfP p ⊗[ℚ] VQ D} 
   rw [← e a, h, e b]
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem actG_inv_actG (h : G.GAf) (v : AfP p ⊗[ℚ] VQ D) : L.actG h⁻¹ (L.actG h v) = v := by
   rw [← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem actG_actG_inv (h : G.GAf) (v : AfP p ⊗[ℚ] VQ D) : L.actG h (L.actG h⁻¹ v) = v := by
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Introduce `c hc`. Use `Submodule.mul_induction_on hc h fun x y hx hy => ?_` and prove the remaining obligations. Rewrite using `[mulF_add]`. Conclude with `add_mem hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem killed_mul {𝔞 𝔟 : Ideal (𝓞 D.F)} {u : AfP p ⊗[ℚ] VQ D}
     (h : ∀ a ∈ 𝔞, ∀ b ∈ 𝔟, mulF D (a * b) u ∈ LaHat D) : ∀ c ∈ 𝔞 * 𝔟, mulF D c u ∈ LaHat D := by
@@ -109,19 +109,19 @@ private theorem killed_mul {𝔞 𝔟 : Ideal (𝓞 D.F)} {u : AfP p ⊗[ℚ] VQ
   rw [mulF_add]; exact add_mem hx hy
 
 /- English proof (translation)
-Establish `hle : Ideal.span {(n : 𝓞 D.F)} ≤ 𝔠` using `(Ideal.span_singleton_le_iff_mem _).2 hmem`. Take `⟨𝔡, e𝔡⟩` from `Ideal.dvd_iff_le.2 hle`. Establish `key : ∀ z ∈ idHat D 𝔠, ∀ d ∈ 𝔡, ∃ w ∈ LaHat D, mulF D d z = n • w`. Introduce `z hz d hd`. Proceed by induction on `hz using AddSubgroup.closure_induction with`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem z hz`. Take `⟨x, hx, v, hv, rfl⟩` from `hz`. Establish `hxd : x * d ∈ Ideal.span {(n : 𝓞 D.F)}` using `e𝔡 ▸ Ideal.mul_mem_mul hx hd`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 hxd`. Use `⟨mulF D y v, mulF_mem _ hv, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mulF_mul, mul_comm d x, ← hy, mul_comm, mulF_mul, mulF_nat]`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨w, hw, e⟩` from `ha`. Take `⟨w', hw', e'⟩` from `hb`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨w + w', add_mem hw hw', by rw [map_add, e, e', smul_add]⟩`. Consider the case `neg a _ ha`. Take `⟨w, hw, e⟩` from `ha`. Conclude with `⟨-w, neg_mem hw, by rw [map_neg, e, smul_neg]⟩`. Establish `key2 : ∀ e ∈ 𝔠 * 𝔡, ∃ w ∈ LaHat D, mulF D e (L.actG h t - t) = n • w`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `e he`. Use `Submodule.mul_induction_on he (fun c hc' d hd => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Take `⟨w, hw, ew⟩` from `key _ (hc _ (ht c hc')) d hd`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Rewrite using `[← ew, mul_comm c d, mulF_mul, map_sub (mulF D c), ← actG_mulF]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨w, hw, e₁⟩` from `ha`. Take `⟨w', hw', e₂⟩` from `hb`. Conclude with `⟨w + w', add_mem hw hw', by rw [mulF_add, e₁, e₂, smul_add]⟩`. Take `⟨w, hw, e⟩` from `key2 n (e𝔡 ▸ Ideal.mem_span_singleton_self _)`. Rewrite `e` using `[mulF_nat]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[nsmul_cancel hn e]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fix_of_killed {h : G.GAf} {𝔠 : Ideal (𝓞 D.F)} (hc : CongId L 𝔠 h) {n : ℕ} (hn : 0 < n)
     (hmem : (n : 𝓞 D.F) ∈ 𝔠) {t : AfP p ⊗[ℚ] VQ D} (ht : ∀ c ∈ 𝔠, mulF D c t ∈ LaHat D) :
@@ -159,19 +159,17 @@ private theorem fix_of_killed {h : G.GAf} {𝔠 : Ideal (𝓞 D.F)} (hc : CongId
   rw [nsmul_cancel hn e]; exact hw
 
 /- English proof (translation)
-Take `⟨s, hs, hk⟩` from `hk`. Take `⟨y, i, hi, e⟩` from `hw.exists_inv hs`. Establish `h1 : 𝔴 ⊔ Ideal.span {s} = ⊤`. Rewrite using `[Ideal.eq_top_iff_one, ← e, add_comm]`. Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left hi) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self s)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : 𝔴 ^ m ⊔ Ideal.span {s} = ⊤` using `Ideal.pow_sup_eq_top h1`. Take `⟨w, hw', z, hz, e2⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 h2)`. Take `⟨s', rfl⟩` from `Ideal.mem_span_singleton'.1 hz`. Establish `hu : L.actG h (L.actG h⁻¹ (mulF D (s' * s) t)) = mulF D (s' * s) t` using `actG_actG_inv L h _`. Use `⟨L.actG h⁻¹ (mulF D (s' * s) t), ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Rewrite `hc` using `[pow_succ']`. Use `killed_mul (fun x hx y hy => ?_) c hc` and prove the remaining obligations. Take `⟨v', hv', ev⟩` from `hk x hx _ (ht y hy)`. Establish `e3 : mulF D (x * y) (L.actG h⁻¹ (mulF D (s' * s) t)) = mulF D s' v'`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inj : ∀ a b : AfP p ⊗[ℚ] VQ D, L.actG h a = L.actG h b → a = b` using `fun a b e => by`. Establish `e'` using `congrArg (L.actG h⁻¹) e`. Rewrite `e'` using `[actG_inv_actG, actG_inv_actG]`. Then use the resulting hypothesis. Apply `inj` to reduce the goal to its premises. Rewrite using `[actG_mulF L h, hu, actG_mulF L h, ev]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [← mulF_mul]`. Conclude with `congrArg (fun c => mulF D c t) (by ring)`. Rewrite using `[e3]`. Conclude with `mulF_mem _ hv'`. Rewrite using `[hu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `e4 : mulF D w t + mulF D (s' * s) t = t` using `by rw [← mulF_add, e2, mulF_one]`. Establish `e5 : mulF D (s' * s) t - t = - mulF D w t`. Generalize the expression as in `mulF D (s' * s) t = A at e4 ⊢`. Generalize the expression as in `mulF D w t = B at e4 ⊢`. Rewrite using `[← e4]`.
-
-Normalize the expressions using the abelian group laws. Rewrite using `[e5]`. Conclude with `neg_mem (ht _ hw')`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lift_killed {h : G.GAf} {𝔴 : Ideal (𝓞 D.F)} (hw : 𝔴.IsMaximal) {m : ℕ}
     (hk : ∃ s : 𝓞 D.F, s ∉ 𝔴 ∧ ∀ x ∈ 𝔴, ∀ v ∈ LaHat D, ∃ v' ∈ LaHat D, L.actG h v' = mulF D (s * x) v)
@@ -210,13 +208,13 @@ private theorem lift_killed {h : G.GAf} {𝔴 : Ideal (𝓞 D.F)} (hw : 𝔴.IsM
     rw [e5]; exact neg_mem (ht _ hw')
 
 /- English proof (translation)
-Establish `key : ∀ e ∈ (Ideal.span {a} ⊔ Ideal.span {(N : 𝓞 D.F)}) * 𝔟, ∃ w ∈ LaHat D, ∃ w' ∈ LaHat D, mulF D e u = mulF D a w + N • w'`. Introduce `e he`. Use `Submodule.mul_induction_on he (fun c hc b hb => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Take `⟨c₁, h₁, c₂, h₂, rfl⟩` from `Submodule.mem_sup.1 hc`. Take `⟨s, rfl⟩` from `Ideal.mem_span_singleton'.1 h₁`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, rfl⟩` from `Ideal.mem_span_singleton'.1 h₂`. Establish `hv` using `hu b hb`. Use `⟨mulF D s (mulF D b u), mulF_mem _ hv, mulF D t (mulF D b u), mulF_mem _ hv, ?_⟩` and prove the remaining obligations. Rewrite using `[mulF_mul, mulF_add, mul_comm s a, mul_comm t (N : 𝓞 D.F), mulF_mul, mulF_mul, mulF_nat]`. Take `⟨w₁, h₁, w₁', h₁', e₁⟩` from `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w₂, h₂, w₂', h₂', e₂⟩` from `hy`. Use `⟨w₁ + w₂, add_mem h₁ h₂, w₁' + w₂', add_mem h₁' h₂', ?_⟩` and prove the remaining obligations. Rewrite using `[mulF_add, e₁, e₂, map_add, smul_add]`. Normalize the expressions using the abelian group laws. Establish `hg' : (Ideal.span {a} ⊔ Ideal.span {(N : 𝓞 D.F)}) * 𝔟 = Ideal.span {(N : 𝓞 D.F)}` using `hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Take `⟨w, hw, w', hw', e⟩` from `key N (by rw [hg']; exact Ideal.mem_span_singleton_self _)`. Rewrite `e` using `[mulF_nat]`. Take `⟨x, w'', hw'', ex⟩` from `exists_inAf_add_nsmul_of_mem_laHat p D N hN hp w hw`. Use `⟨x, mulF D a w'' + w', add_mem (mulF_mem _ hw'') hw', ?_⟩` and prove the remaining obligations. Rewrite using `[e, ex, map_add, map_nsmul, mulF_inAf, smul_add, add_assoc]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gen_rep {a : 𝓞 D.F} {N : ℕ} {𝔟 : Ideal (𝓞 D.F)} (hN : 0 < N) (hp : N.Coprime p) (hg : IsGen a N 𝔟)
     {u : AfP p ⊗[ℚ] VQ D} (hu : ∀ c ∈ 𝔟, mulF D c u ∈ LaHat D) :
@@ -245,37 +243,33 @@ private theorem gen_rep {a : 𝓞 D.F} {N : ℕ} {𝔟 : Ideal (𝓞 D.F)} (hN :
 end LatBProof
 
 /- English proof (translation)
-Introduce `p _ D G L q r 𝔴 𝔟₁ 𝔟₂ i h at' hT hI hle he M₁ M₂ a₁ a₂ g₁ g₂ y`. Take `⟨e, he⟩` from `he`. Establish `hq` using `at'.prime`. Establish `hwmax` using `at'.max`. Establish `hn : 0 < q ^ e` using `pow_pos hq.pos e`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqm : ((q ^ e : ℕ) : 𝓞 D.F) ∈ uId D q r ^ e`. Rewrite using `[Nat.cast_pow]`. Conclude with `Ideal.pow_mem_pow (Ideal.subset_span (by simp)) e`. Establish `hb₁ : ((q ^ e : ℕ) : 𝓞 D.F) ∈ 𝔟₁` using `he hqm`. Establish `hle₂ : 𝔟₁ ≤ 𝔟₂` using `hle.trans Ideal.mul_le_left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq0 : ((q ^ e : ℕ) : 𝓞 D.F) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hb₂ : 𝔟₂ ≠ ⊥` using `fun h0 => hq0 (by simpa [h0] using hle₂ hb₁)`. Establish `hw0 : 𝔴 ≠ ⊥`. Introduce `h0`. Establish `: (q : 𝓞 D.F) ∈ 𝔴` using `at'.le (Ideal.subset_span (by simp))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h0, Ideal.mem_bot]`. Conclude with `hq.ne_zero (by exact_mod_cast this)`. Establish `hM₁ : 0 < M₁.1` using `by have := M₁.2.1; omega`. Establish `hM₂ : 0 < M₂.1` using `by have := M₂.2.1; omega`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : AfP p ⊗[ℚ] VQ D, M₂.1 • z = inAf D (algebraMap (𝓞 D.F) D.O a₂ • y) := by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨((M₂.1 : ℚ)⁻¹) • inAf D (algebraMap (𝓞 D.F) D.O a₂ • y), ?_⟩` and prove the remaining obligations. Rewrite using `[← Nat.cast_smul_eq_nsmul ℚ, smul_smul, mul_inv_cancel₀ (by exact_mod_cast hM₂.ne'), one_smul]`. Establish `hkz : ∀ c ∈ 𝔟₂, mulF D c z ∈ LaHat D`. Introduce `c hc`. Establish `hg' : (Ideal.span {a₂} ⊔ Ideal.span {(M₂.1 : 𝓞 D.F)}) * 𝔟₂ = Ideal.span {(M₂.1 : 𝓞 D.F)}` using `g₂`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : a₂ * c ∈ Ideal.span {(M₂.1 : 𝓞 D.F)}`. Rewrite using `[← hg']`. Conclude with `Ideal.mul_mem_mul (Ideal.mem_sup_left (Ideal.mem_span_singleton_self _)) hc`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton'.1 hm`. Establish `e1 : mulF D c z = mulF D b (inAf D y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `nsmul_cancel hM₂` to reduce the goal to its premises. Rewrite using `[← map_nsmul (mulF D c), hz, ← mulF_inAf, ← mulF_mul, ← mulF_nat M₂.1, ← mulF_mul, mul_comm c a₂, ← hb, mul_comm]`. Rewrite using `[e1]`. Conclude with `mulF_mem _ (GlobalTheory.AdelicSim.inAf_mem D y)`. Take `⟨m, 𝔠, hnd, e𝔟⟩` from `WfDvdMonoid.max_power_factor hb₂ (Ideal.prime_of_isPrime hw0 hwmax.isPrime).irreducible`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hcop : 𝔠 ⊔ 𝔴 = ⊤`. Establish `hlt : 𝔴 < 𝔠 ⊔ 𝔴`. Use `lt_of_le_of_ne le_sup_right fun heq => hnd (Ideal.dvd_iff_le.2 ?_)` and prove the remaining obligations. Rewrite using `[heq]`. Conclude with `le_sup_left`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hwmax.out.2 _ hlt`. Establish `hcop' : 𝔠 ⊔ 𝔴 ^ m = ⊤` using `Ideal.sup_pow_eq_top hcop`. Take `⟨α, hα, β, hβ, eαβ⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 hcop')`. Establish `hle𝔠 : 𝔟₂ ≤ 𝔠` using `e𝔟 ▸ Ideal.mul_le_right`. Establish `hCong : CongId L 𝔠 h` using `hT.other 𝔠 hcop ⟨e, he.trans (hle₂.trans hle𝔠)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `k₁ : ∀ c ∈ 𝔠, mulF D c (mulF D β z) ∈ LaHat D`. Introduce `c hc`. Rewrite using `[← mulF_mul]`. Conclude with `hkz _ (by rw [e𝔟, mul_comm c β]; exact Ideal.mul_mem_mul hβ hc)`. Establish `k₂ : ∀ c ∈ 𝔴 ^ m, mulF D c (mulF D α z) ∈ LaHat D`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Rewrite using `[← mulF_mul]`. Conclude with `hkz _ (by rw [e𝔟]; exact Ideal.mul_mem_mul hc hα)`. Establish `f₁` using `fix_of_killed L hCong hn (hle𝔠 (hle₂ hb₁)) k₁`. Take `⟨u₂, ku, fu⟩` from `lift_killed L hwmax hT.kill k₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hle' : 𝔟₁ ≤ 𝔴 ^ (m + 1) * 𝔠` using `hle.trans (le_of_eq (by rw [e𝔟]; ring))`. Establish `ku' : ∀ c ∈ 𝔟₁, mulF D c (mulF D β z + u₂) ∈ LaHat D`. Introduce `c hc`. Use `killed_mul (fun x hx y hy => ?_) c (hle' hc)` and prove the remaining obligations. Rewrite using `[map_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mulF_mul]`. Conclude with `mulF_mem _ (k₁ y hy)`. Rewrite using `[mul_comm, mulF_mul]`. Conclude with `mulF_mem _ (ku x hx)`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, v₀, hv₀, ex⟩` from `gen_rep hM₁ M₁.2.2 g₁ ku'`. Establish `hsum : mulF D α z + mulF D β z = z` using `by rw [← mulF_add, eαβ, mulF_one]`. Establish `hlam : L.actG h (mulF D β z + u₂) - z ∈ LaHat D`. Establish `e1 : L.actG h (mulF D β z + u₂) - z = (L.actG h (mulF D β z) - mulF D β z) + (L.actG h u₂ - mulF D α z)`. Rewrite using `[map_add]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e1]`. Conclude with `add_mem f₁ fu`. Use `⟨x, (L.actG h (mulF D β z + u₂) - z) - L.actG h v₀, sub_mem hlam (hI _ hv₀), ?_⟩` and prove the remaining obligations. Establish `hB : inAf D (algebraMap (𝓞 D.F) D.O a₁ • x) = M₁.1 • (mulF D β z + u₂) - M₁.1 • v₀` using `eq_sub_of_add_eq ex.symm`.
-
-Rewrite using `[GlobalTheory.AdelicSim.inAf_nsmul, hB, GlobalTheory.AdelicSim.inAf_nsmul, ← hz, map_nsmul, map_sub, map_nsmul, map_nsmul]`. Use `module`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.latB_holds :
     LatB := by

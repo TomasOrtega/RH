@@ -252,7 +252,7 @@ inductive Tower.Is {T : HSp D} {top : RowOn T} : {ρ j : ℕ} → {N : Node c u 
       (hN : N.Is) (hd : d.Is) (ht : t.Is) : Tower.Is (.step N' d t)
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `last e _ he => have := he.idx`. Use linear arithmetic over natural numbers and integers. Consider the case `step _ _ _ _ _ _ ih => omega`.
+Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately.
 -/
 theorem Tower.Is.index {T : HSp D} {top : RowOn T} {ρ j : ℕ} {N : Node c u ρ j} {t : Tower c u top ρ j N} (h : t.Is) :
     j + 2 * ρ + 2 = D.R.m := by
@@ -274,7 +274,7 @@ def Suffices (D : D7) (u : D.what₂.Word) : Prop :=
   GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.NodeGap D → DoubleStep D → LastLaw D → LevelLaw D → ChainOnto.OntoAll D → Laws D u → GlobalTheory.Core.Rk.KerIncl D u
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `D.R.m_even`. Establish `h2` using `D.R.two_le_m`. Simplify using `only [Ranks.rS]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 example (D : D7) : 0 + 2 * D.R.rS + 2 = D.R.m := by
   obtain ⟨t, ht⟩ := D.R.m_even
@@ -283,13 +283,13 @@ example (D : D7) : 0 + 2 * D.R.rS + 2 = D.R.m := by
   omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_mem _, 1, one_mem _, 1, one_mem _, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example {V : HSp D} (R K : Subgroup (GA D V)) (b : GA D V) : b ∈ dcos R b K :=
   ⟨1, one_mem _, 1, one_mem _, 1, one_mem _, by simp⟩
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.product_first_zeroth_parts.MramI_zero D u`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (u : D.what₂.Word) : Ram D u 0 = (D.mem u).A.Mram := Formalism.MainNotions.product_first_zeroth_parts.MramI_zero D u
 

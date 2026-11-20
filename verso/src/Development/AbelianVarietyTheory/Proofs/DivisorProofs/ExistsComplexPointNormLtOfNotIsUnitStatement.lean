@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.CubicalLineBundles.Specialisation
 import Development.AbelianVarietyTheory.Proofs.FoundationProofs.ExistsFormDegreeLeHilbertDegreeEvalNeZero
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exists_complex_point_norm_lt_of_not_isUnit` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsComplexPointNormLtOfNotIsUnit.lean&line=124#L124)
 -/

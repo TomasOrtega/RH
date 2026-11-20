@@ -10,43 +10,39 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Introduce `r X la P ξ ν c1 w z0 hH x0 hx0 hx0o hfl0 lam h1 Z1 hu1 hfix1 hpres1 hsp1 hfl1 hZ1 n' hn'`. Establish `hD4'` using `hD4 r X la P ξ ν c1 w z0 hH`. Take `⟨-, -, hiso, hc1, -, -, hw, -, -, hz0D1, -⟩` from `hH`. Take `⟨hρ0, hρ1⟩` from `hN1 c1 w hc1 hw`. Establish `hZ1' : X.zN Z1 < d6rh c1 w / 21`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: d6rh c1 w / 100 < d6rh c1 w / 21` using `by linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `Nat.eq_zero_or_pos n' with rfl | hn'pos` into its components or cases. Establish `hone : X.lmulC (fun _ => (1 : Matrix (Fin r) (Fin r) ℂ)) (X.lmulC h1 z0) = X.lmulC h1 z0`. Use function extensionality and compare the values at `τ`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Data.lmulC, one_mul, mat, Matrix.of_apply]`. Both sides reduce to the same expression. Use `⟨fun _ => 1, Z1, ?_, ?_, ?_, ?_, ?_, hZ1'⟩` and prove the remaining obligations. Introduce `τ u v`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `τ`. Simplify using the standard rewrite rules. Introduce `μ _`. Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ a`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Data.embV, Data.emb]`. Rewrite using `[hone]`. Conclude with `hsp1`. Rewrite using `[hone]`. Conclude with `hfl1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz0dom : z0 ∈ X.dom` using `hz0D1.1`. Take `⟨hz1dom, hap, hmajξ, -⟩` from `hD2i r X.toData ξ hiso z0 hz0dom h1 hu1 hfix1 hpres1`. Establish `hz1D1 : X.lmulC h1 z0 ∈ X.FramesOverBasis ξ` using `⟨hz1dom, fun τ => by rw [hmajξ τ]; exact hz0D1.2 τ⟩`. Establish `hρ'0 : 0 < d6rh c1 w / 100` using `by positivity`. Establish `hρ'1 : d6rh c1 w / 100 ≤ 1 / 10` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `hcmp r X.toData x0 hx0 hx0o (d6rh c1 w / 100) hρ'0 hρ'1 Z1 hZ1 (X.lmulC h1 z0) hz1dom hfl1`. Establish `hmz0 : X.maj z0 = X.maj x0` using `hmf r X.toData z0 x0 hz0dom hx0 hfl0`. Use `set ρ := d6rh c1 w with hρdef`. Use `set t := (1 - ρ / 100) / (1 + ρ / 100) with htdef`. Apply the tactic sequence `have ht0 : 0 < t := by rw [htdef]; apply div_pos <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ht1 : t ≤ 1` using `by rw [htdef, div_le_one (by linarith)]; linarith`. Establish `htinv : (1 + ρ / 100) / (1 - ρ / 100) = 1 / t`. Rewrite using `[htdef, one_div_div]`. Use `set ep0 := flowEpsilonBound X.g (dE E) (fdeg E) X.NA X.NC c1 w with hep0def`. Establish `hep0 : 0 < ep0` using `hN4 r X c1 w hc1 hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hns : ∀ x ∈ X.L', herm X.Gm x ξ = 0 → (∀ e : E, x ≠ e • ξ) → ∃ τ : X.Ψ, t * ep0 ≤ X.maj (X.lmulC h1 z0) τ (X.ucomp (X.lmulC h1 z0) ξ (X.embV x) τ)`. Introduce `x hx hxξ hne`. Take `⟨τ, hτ⟩` from `hD4' x hx hxξ hne`. Use `⟨τ, ?_⟩` and prove the remaining obligations. Establish `hI : X.embV x ∈ X.Iperp ξ` using `fun τ => by show hermC τ.1 X.Gm (Data.emb τ.1 x) (Data.emb τ.1 ξ) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hemb, hxξ, map_zero]`. Establish `hu : X.ucomp (X.lmulC h1 z0) ξ (X.embV x) = X.ucomp z0 ξ (X.embV x)`. Simplify using `only [Data.ucomp, hap _ hI]`. Rewrite using `[hu]`. Establish `h1'` using `(hc τ (X.ucomp z0 ξ (X.embV x) τ)).1`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hτ` using `[hmz0]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨δ, hδb, hδΛ⟩` from `hdelta r X ξ (X.lmulC h1 z0) (t * ep0) n' hiso (mul_pos ht0 hep0) hn'pos hz1D1 hns`. Use `set ms := frameIndexBound r (fdeg E) (dE E) (rdE E) X.NA X.NC ep0 with hmsdef`. Use `set κ := frameIndexBound r (fdeg E) (dE E) (rdE E) X.NA X.NC (t * ep0) / n' with hκdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hrd : 0 ≤ rdE E` using `Real.rpow_nonneg (abs_nonneg _) _`. Establish `hm` using `hN2 r (fdeg E) (dE E) (rdE E) X.NA X.NC ep0 t (abs_nonneg _) hrd (Nat.cast_nonneg _) hep0 ht0 ht1`. Establish `hm'` using `(hN2 r (fdeg E) (dE E) (rdE E) X.NA X.NC (t * ep0) 1 (abs_nonneg _) hrd (Nat.cast_nonneg _) (mul_pos ht0 hep0) one_pos le_rfl).2`. Establish `hn'R : (0 : ℝ) < n'` using `by exact_mod_cast hn'pos`. Establish `hκ0 : 0 ≤ κ` using `div_nonneg hm' hn'R.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hmsn : ms / n' ≤ ρ / 1000`. Rewrite using `[div_le_iff₀ hn'R]`. Establish `h` using `hn'`. Rewrite `h` using `[div_le_iff₀ hρ0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hκρ : κ ≤ ρ / (1000 * t)`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hκ1, hη1, hfin⟩` from `hN3 ρ κ hρ0 hρ1 hκ0 hκρ`. Take `⟨n, hnu, hnξ, -, -, hnap, -, hnJ, hnb⟩` from `hD2ii r X.toData ξ hiso (X.lmulC h1 z0) hz1dom δ κ hκ0 hκ1 hδb`. Establish `hnb0 : ∀ (τ : X.Ψ) (v : Fin r → ℂ), X.maj x0 τ (Matrix.mulVec (n τ - 1) v) ≤ (3 * κ / t) ^ 2 * X.maj x0 τ v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ v`. Establish `a1` using `(hc τ (Matrix.mulVec (n τ - 1) v)).1`. Establish `a2` using `hnb τ v`. Establish `a3` using `(hc τ v).2`. Rewrite `a3` using `[htinv]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e1 : X.maj x0 τ (Matrix.mulVec (n τ - 1) v) ≤ X.maj (X.lmulC h1 z0) τ (Matrix.mulVec (n τ - 1) v) / t`. Rewrite using `[le_div_iff₀ ht0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e2 : X.maj (X.lmulC h1 z0) τ v ≤ X.maj x0 τ v / t`. Conclude with `le_of_le_of_eq a3 (by ring)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hη0 : 0 ≤ 3 * κ / t` using `by positivity`. Take `⟨Z, hZfl, hZn⟩` from `hgraph r X.toData x0 hx0 hx0o n Z1 (3 * κ / t) (ρ / 100) hη0 (by positivity) hZ1 hη1 hnb0`. Use `⟨n, Z, hnu, hnξ, ?_, ?_, ?_, lt_of_le_of_lt hZn hfin⟩` and prove the remaining obligations. Introduce `μ hμ`.
-
-Take `⟨e, he, hid⟩` from `hδΛ μ hμ`. Use `⟨e, he, ?_⟩` and prove the remaining obligations. Establish `hμξ : herm X.Gm μ ξ = 0` using `(AddMonoidHom.mem_ker.mp (AddSubgroup.mem_inf.mp hμ).2)`. Establish `hI : X.embV μ ∈ X.Iperp ξ` using `fun τ => by show hermC τ.1 X.Gm (Data.emb τ.1 μ) (Data.emb τ.1 ξ) = 0`. Rewrite using `[hemb, hμξ, map_zero]`.
-
-Rewrite using `[hnap _ hI]`. Conclude with `hid`. Conclude with `hsplit r X ξ _ (X.lmulC h1 z0) (X.lmulC n (X.lmulC h1 z0)) lam δ hiso hsp1 (fun u hu => hnap u hu) (fun u hu => hnJ u hu)`. Conclude with `fun τ => ((hflag r X.toData (X.lmulC h1 z0) (X.xZ x0 Z1) n hfl1) τ).trans (hZfl τ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem top_of (hemb : SEmb E) (hN1 : RadiusPosLeTenth) (hN2 : KatoClassHeckeEulerFactorRelation) (hN3 : UnipotentMoveNumericalInequalities) (hN4 : EpsilonZeroPos E)
     (hcmp : SCmp E) (hmf : SMajFlag E) (hflag : SFlagMap E) (hgraph : SGraph E)

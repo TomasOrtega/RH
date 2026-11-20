@@ -11,7 +11,7 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP.Height
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `h`. Conclude with `mul_mem_nonZeroDivisors.mpr ⟨ha, v.isUnit.mem_nonZeroDivisors⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_nonZeroDivisors_of_associated' {R : Type} [CommRing R] {a b : R} (h : Associated a b)
     (ha : a ∈ nonZeroDivisors R) : b ∈ nonZeroDivisors R := by
@@ -19,11 +19,9 @@ theorem mem_nonZeroDivisors_of_associated' {R : Type} [CommRing R] {a b : R} (h 
   exact mul_mem_nonZeroDivisors.mpr ⟨ha, v.isUnit.mem_nonZeroDivisors⟩
 
 /- English proof (translation)
-Establish `key : (eg ^ N * eh ^ N) • (Pf * (ε₁ * ε₂)) = (eg ^ N * eh ^ N) • (Pf * ε₃)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.smul_mul, smul_smul, Matrix.mul_assoc, mul_comm]`. Use `_ = eh ^ N • ((ef ^ N • Pg) * ε₂) := by rw [r1]`. Use `_ = ef ^ N • (eh ^ N • (Pg * ε₂)) := by`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.smul_mul, smul_smul, smul_smul, mul_comm]`. Use `_ = ef ^ N • (eg ^ N • Ph) := by rw [r2]`. Use `_ = eg ^ N • (ef ^ N • Ph) := by rw [smul_smul, smul_smul, mul_comm]`. Use `_ = eg ^ N • (eh ^ N • (Pf * ε₃)) := by rw [r3]`. Use `_ = (eg ^ N * eh ^ N) • (Pf * ε₃) := by rw [smul_smul]`.
-
-Establish `hc : eg ^ N * eh ^ N ∈ nonZeroDivisors R` using `mul_mem_nonZeroDivisors.mpr ⟨pow_mem hg _, pow_mem hh _⟩`. Use extensionality with `i j`. Establish `e` using `congrFun (congrFun key i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at e`. Conclude with `(mul_cancel_left_mem_nonZeroDivisors hc).mp e`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_cancel_of_rel {R : Type} [CommRing R] {n : Type} [Fintype n] {N : ℕ} {ef eg eh : R}
     (hg : eg ∈ nonZeroDivisors R) (hh : eh ∈ nonZeroDivisors R) {Pf Pg Ph ε₁ ε₂ ε₃ : Matrix n n R}
@@ -48,9 +46,9 @@ theorem mul_cancel_of_rel {R : Type} [CommRing R] {n : Type} [Fintype n] {N : �
   exact (mul_cancel_left_mem_nonZeroDivisors hc).mp e
 
 /- English proof (translation)
-Introduce `l _ K bk d ρ τ s ht B f₀ h0 f g h ε₁ ε₂ ε₃ h1 h2 h3`. Establish `hn : ∀ k : Hom bk.prism B, ‖toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf k X)‖ ≤ bk.ρ₀` using `fun k => (GlobalTheory.T.norm_breuilKisinHom_uniformizer_frobenius_le l K bk B f₀ k).1`. Establish `hE : ∀ k : Hom bk.prism B, toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf k bk.E) ∈ nonZeroDivisors (Disc l (BK.hf f₀ X) bk.ρ₀)` using `fun k => mem_nonZeroDivisors_of_associated' ((GlobalTheory.T.breuilKisin_two_homs_E_regular_associated l K bk B f₀ k).2.1.map (toDisc l (BK.hf f₀ X) bk.ρ₀)) h0`. Establish `mf` using `isDiscMap_map (BK.hf f) (hn f)`. Establish `mg` using `isDiscMap_map (BK.hf g) (hn g)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mh` using `isDiscMap_map (BK.hf h) (hn h)`. Establish `hF : Disc.map (BK.hf f) (hn f) (toDisc l (X : bk.S) bk.ρ₀ bk.E) ∈ nonZeroDivisors (Disc l (BK.hf f₀ X) bk.ρ₀)`. Rewrite using `[mf.ext]`. Conclude with `hE f`. Conclude with `GlobalTheory.T.basis_matrix_map_cancel_left l K bk d ρ τ s ht (Disc l (BK.hf f₀ X) bk.ρ₀) _ hF _ _ (mul_cancel_of_rel (hE g) (hE h) (h1 _ _ mf mg) (h2 _ _ mg mh) (h3 _ _ mf mh))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_mul : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (τ : Ainf l) (s : Seed bk d ρ τ) (ht : Height s) (B : Obj l ↥(OL K)) (f₀ : Hom bk.prism B), toDisc l (BK.hf f₀ X) bk.ρ₀ (BK.hf f₀ bk.E) ∈ nonZeroDivisors (Disc l (BK.hf f₀ X) bk.ρ₀) → ∀ (f g h : Hom bk.prism B) (ε₁ ε₂ ε₃ : Matrix (Fin d) (Fin d) (Disc l (BK.hf f₀ X) bk.ρ₀)), ht.Rel (BK.hf f₀ X) f g ε₁ → ht.Rel (BK.hf f₀ X) g h ε₂ → ht.Rel (BK.hf f₀ X) f h ε₃ → ε₁ * ε₂ = ε₃ := by
   intro l _ K bk d ρ τ s ht B f₀ h0 f g h ε₁ ε₂ ε₃ h1 h2 h3

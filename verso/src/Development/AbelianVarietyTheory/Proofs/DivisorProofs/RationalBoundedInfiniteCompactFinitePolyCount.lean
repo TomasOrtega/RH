@@ -10,7 +10,7 @@ open NumberField GlobalTheory.CuspRep GlobalTheory.CuspRep.CuspidalL2GL GlobalTh
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h` using `norm_le_pi_norm (pInf E (algebraMap E (Ad E) ξ)) w`. Rewrite `h` using `[pInf_algebraMap, InfinitePlace.norm_embedding_eq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place_le_norm_pInf {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (ξ : E)
     (w : InfinitePlace E) : w ξ ≤ ‖pInf E (algebraMap E (Ad E) ξ)‖ := by
@@ -19,15 +19,13 @@ theorem place_le_norm_pInf {E : Type} [Field E] [NumberField E] [IsTotallyComple
   exact h
 
 /- English proof (translation)
-Introduce `E _ _ _`. Take `⟨m, C₀, hC₀, hcount⟩` from `GlobalTheory.T.card_algebraic_integers_bounded_archimedean_le E`. Use `⟨m, fun Kf hKf => ?_⟩` and prove the remaining obligations. Take `⟨n, hn, hint⟩` from `GlobalTheory.T.exists_common_denominator_compact_finiteAdeles E Kf hKf`. Establish `hn' : (1 : ℝ) ≤ n` using `by exact_mod_cast hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨C₀ * (n : ℝ) ^ m, by positivity, fun T hT => ?_⟩` and prove the remaining obligations. Establish `hnT : (1 : ℝ) ≤ n * T` using `by nlinarith`. Take `⟨hAfin, hAcard⟩` from `hcount (n * T) hnT`. Use `set A := {x : 𝓞 E | ∀ w : InfinitePlace E, w (x : E) ≤ n * T}`. Use `set S := {ξ : E | ‖pInf E (algebraMap E (Ad E) ξ)‖ ≤ T ∧ pFin E (algebraMap E (Ad E) ξ) ∈ Kf}`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnE : (n : E) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hsub : S ⊆ (fun x : 𝓞 E => (x : E) / n) '' A`. Introduce `ξ hξ`. Establish `hi : IsIntegral ℤ ((n : E) * ξ)` using `hint ξ hξ.2`. Use `⟨⟨(n : E) * ξ, hi⟩, fun w => ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `show w ((n : E) * ξ) ≤ n * T`. Rewrite using `[← InfinitePlace.norm_embedding_eq, map_mul, map_natCast, norm_mul, Complex.norm_natCast, InfinitePlace.norm_embedding_eq]`. Conclude with `mul_le_mul_of_nonneg_left ((place_le_norm_pInf ξ w).trans hξ.1) (Nat.cast_nonneg n)`. Use `show (n : E) * ξ / n = ξ`. Clear the denominators using the available nonvanishing facts.
-
-Establish `hSfin : S.Finite` using `(hAfin.image _).subset hsub`. Use `⟨hSfin, ?_⟩` and prove the remaining obligations. Establish `h1 : S.ncard ≤ A.ncard` using `(Set.ncard_le_ncard hsub (hAfin.image _)).trans (Set.ncard_image_le hAfin)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem rat_bounded_compact_polynomial : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], ∃ m : ℕ,
     ∀ Kf : Set (Af E), IsCompact Kf → ∃ C : ℝ, 0 ≤ C ∧ ∀ T : ℝ, 1 ≤ T →

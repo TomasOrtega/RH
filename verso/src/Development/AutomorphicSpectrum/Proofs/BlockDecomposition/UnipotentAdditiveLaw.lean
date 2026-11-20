@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.NzxAdd
 
 /- English proof (translation)
-Introduce `D n ρ p hn M z z' x x'`. Conclude with `GlobalTheory.CompanionTheory.PcB.nzx_mul M z z' x x'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem nzx_add : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (z z' : hermA D ρ) (x x' : Mx D ρ p), M.nzx z x * M.nzx z' x' = M.nzx (z + z') (x + x') := by
   intro D n ρ p hn M z z' x x'

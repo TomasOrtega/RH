@@ -21,7 +21,7 @@ variable {X Y Z : Scheme.{0}} {L : LB X} {J K : Type} [Fintype J] [Fintype K]
 
 omit [Fintype J] in
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy (i, k)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem wchart_le (φ : J → K → (Y ⟶ X)) [Fintype J] (jj : J × K → L.ι) (i : J) :
     LB.wchart L (fun q : J × K => φ q.1 q.2) jj ≤ LB.wchart L (φ i) (fun k => jj (i, k)) :=
@@ -32,7 +32,7 @@ def prodGen (φ : J → K → (Y ⟶ X)) (ε : J → K → ℤ) (δ : J → ℤ)
   s := fun jj => ∏ i, res (wchart_le φ jj i) ((t i).s (fun k => jj (i, k))) ^ δ i
 
 /- English proof (translation)
-The claim follows from `(map_prod _ _ _).trans (Finset.prod_congr rfl fun i _ => (map_zpow _ _ _).trans (congrArg (· ^ δ i) (gm_res r z _ h _)))`.
+A detailed English derivation is pending.
 -/
 theorem gm_prodGen (φ : J → K → (Y ⟶ X)) (ε : J → K → ℤ) (δ : J → ℤ) (t : ∀ i, LB.Gen (LB.LinComb L (φ i) (ε i)))
     (r : Z ⟶ Y) (z : Z) (jj : J × K → L.ι) (h : r z ∈ LB.wchart L (fun q : J × K => φ q.1 q.2) jj) :
@@ -42,11 +42,11 @@ theorem gm_prodGen (φ : J → K → (Y ⟶ X)) (ε : J → K → ℤ) (δ : J �
     (map_zpow _ _ _).trans (congrArg (· ^ δ i) (gm_res r z _ h _)))
 
 /- English proof (translation)
-Introduce `jj jj'`. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `hm : (𝟙 Y : Y ⟶ Y) y ∈ LB.wchart L (fun q : J × K => φ q.1 q.2) jj ⊓ LB.wchart L (fun q : J × K => φ q.1 q.2) jj'` using `hy`. Use `(gm_res (𝟙 Y) y _ hm _).trans (Eq.trans ?_ ((map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_linComb L _ _ (𝟙 Y) y jj jj' hm.1 hm.2) (gm_res (𝟙 Y) y _ hm _))).symm)` and prove the remaining obligations. Use `(gm_prodGen φ ε δ t (𝟙 Y) y jj hm.1).trans (Eq.trans ?_ (congrArg _ (gm_prodGen φ ε δ t (𝟙 Y) y jj' hm.2)).symm)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fintype.prod_prod_type, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[gen_trans (ht i) (𝟙 Y) y (wchart_le φ jj i hm.1) (wchart_le φ jj' i hm.2), mul_zpow]`. Use `congr 1`. Rewrite using `[trF, ← Finset.prod_zpow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun k _ => by rw [← zpow_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem isGen_prodGen (φ : J → K → (Y ⟶ X)) (ε : J → K → ℤ) (δ : J → ℤ) (t : ∀ i, LB.Gen (LB.LinComb L (φ i) (ε i)))
     (ht : ∀ i, (t i).IsGen) : (prodGen φ ε δ t).IsGen := by
@@ -66,7 +66,7 @@ theorem isGen_prodGen (φ : J → K → (Y ⟶ X)) (ε : J → K → ℤ) (δ : 
   exact Finset.prod_congr rfl fun k _ => by rw [← zpow_mul, mul_comm]
 
 /- English proof (translation)
-The claim follows from `gm_prodGen φ ε δ t r z _ (hI.mem _ r)`.
+A detailed English derivation is pending.
 -/
 theorem val_prodGen (φ : J → K → (Y ⟶ X)) (ε : J → K → ℤ) (δ : J → ℤ) (t : ∀ i, LB.Gen (LB.LinComb L (φ i) (ε i)))
     (r : Z ⟶ Y) {z : Z} {I : (Z ⟶ X) → L.ι} (hI : Good L z I) :
@@ -76,7 +76,7 @@ theorem val_prodGen (φ : J → K → (Y ⟶ X)) (ε : J → K → ℤ) (δ : J 
 end Generators
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, zpow_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_sum {U J : Type} [CommGroup U] (s : Finset J) (a : U) (f : J → ℤ) :
     ∏ j ∈ s, a ^ f j = a ^ ∑ j ∈ s, f j := by
@@ -86,17 +86,17 @@ theorem prod_zpow_sum {U J : Type} [CommGroup U] (s : Finset J) (a : U) (f : J �
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, zpow_add]
 
 /- English proof (translation)
-Introduce `R _ _ D hD r e c hec`. Use `choose g hg hv using fun j => GlobalTheory.T.exists_lambdaGenerator_zpow_with_periods D hD (c j)`. Establish `hF : FormEq (fun q : Fin r × (Fin 4 ⊕ Fin 4) => Sum.elim (GlobalTheory.PolDeg.lamPts (fst D.P.A D.P.A) (snd D.P.A D.P.A ^ c q.1)) (GlobalTheory.PolDeg.lamPts (fst D.P.A D.P.A) (snd D.P.A D.P.A)) q.2) (fun q => e q.1 * Sum.elim Oε (fun l => -c q.1 * Oε l) q.2) (Sum.elim (fun q : F …`. Introduce `U _ h`. Simplify using `only [Fintype.prod_prod_type, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Finset.prod_mul_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[Finset.prod_comm]`. Establish `k : ∀ l, ∏ j, h (GlobalTheory.PolDeg.lamPts (fst D.P.A D.P.A) (snd D.P.A D.P.A) l) ^ (e j * (-c j * Oε l)) = h (GlobalTheory.PolDeg.lamPts (fst D.P.A D.P.A) (snd D.P.A D.P.A) l) ^ (-Oε l)` using `fun l => by`. Rewrite using `[prod_zpow_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_mul]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `_ = -Oε l := by rw [hec, _root_.one_mul]`. Simplify using `only [k]`. Rewrite using `[← Equiv.ulift.symm.prod_comp, show (Finset.univ : Finset (Finset (Fin 2))) = {∅, {0}, {1}, {0, 1}} from by decide, Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_insert (by decide), Finset.prod_singleton, Fin.prod_univ_four]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q0 : psum D.P.A (x2 D.P.A) ∅ = 1` using `rfl`. Establish `q1 : psum D.P.A (x2 D.P.A) {0} = fst D.P.A D.P.A` using `_root_.mul_one _`. Establish `q2 : psum D.P.A (x2 D.P.A) {1} = snd D.P.A D.P.A` using `_root_.mul_one _`. Establish `q3 : psum D.P.A (x2 D.P.A) {0, 1} = fst D.P.A D.P.A * snd D.P.A D.P.A` using `congrArg (fst D.P.A D.P.A * ·) (_root_.mul_one _)`. Simplify using `[q0, q1, q2, q3, GlobalTheory.PolDeg.lamPts, Oε]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Reduce the claim to the hypotheses of an applicable result.
 
-Generalize the expression as in `h (fst D.P.A D.P.A * snd D.P.A D.P.A).left = A, h (fst D.P.A D.P.A).left = A₁, h (snd D.P.A D.P.A).left = A₂, h (1 : D.P.A ⊗ D.P.A ⟶ D.P.A).left = A₀`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws. Take `⟨u, hu, hval⟩` from `exists_gen D.P.isLB hF (prodGen _ _ e g) (isGen_prodGen _ _ e g hg)`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨u, hu, fun a b z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hval _ _ z J hJ, val_prodGen _ _ e g _ hJ, ← Finset.prod_mul_distrib]`. Establish `: ∀ j, val (g j) (lift (toUnit (TK R) ≫ D.c a) (toUnit (TK R) ≫ D.c b)).left z J ^ e j * val (D.tau a (c j • b)) (𝟙 _) z J ^ e j = val (D.tau a b) (𝟙 _) z J ^ (e j * c j)` using `fun j => by`. Rewrite using `[← mul_zpow, mul_comm, hv j a b z J hJ, ← zpow_mul, mul_comm]`. Rewrite using `[Finset.prod_congr rfl fun j _ => this j, prod_zpow_sum, hec, zpow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_lam_comb : ∀ {R : Type} [CommRing R] [IsDomain R] (D : DegPre R), D.TauBimult → ∀ {r : ℕ}
     (e c : Fin r → ℤ), ∑ j, e j * c j = 1 →

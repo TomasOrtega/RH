@@ -28,7 +28,7 @@ def bD {R : Type} {n : ℕ} (M : Matrix (Fin (n + n)) (Fin (n + n)) R) : Matrix 
   (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₂
 
 /- English proof (translation)
-Unfold `blk4 bA bB bC bD`. Rewrite using `[Matrix.fromBlocks_toBlocks, Matrix.submatrix_submatrix]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem block_matrix_of_blocks {R : Type} {n : ℕ} (M : Matrix (Fin (n + n)) (Fin (n + n)) R) :
     M = blk4 (bA M) (bB M) (bC M) (bD M) := by
@@ -37,7 +37,7 @@ theorem block_matrix_of_blocks {R : Type} {n : ℕ} (M : Matrix (Fin (n + n)) (F
   simp
 
 /- English proof (translation)
-Unfold `bA blk4`. Rewrite using `[Matrix.submatrix_submatrix]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem upper_left_of_block_matrix {R : Type} {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) R) : bA (blk4 a b c d) = a := by
   unfold bA blk4
@@ -45,7 +45,7 @@ theorem upper_left_of_block_matrix {R : Type} {n : ℕ} (a b c d : Matrix (Fin n
   simp
 
 /- English proof (translation)
-Unfold `bB blk4`. Rewrite using `[Matrix.submatrix_submatrix]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem upper_right_of_block_matrix {R : Type} {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) R) : bB (blk4 a b c d) = b := by
   unfold bB blk4
@@ -53,7 +53,7 @@ theorem upper_right_of_block_matrix {R : Type} {n : ℕ} (a b c d : Matrix (Fin 
   simp
 
 /- English proof (translation)
-Unfold `bA reidx`. Rewrite using `[Matrix.submatrix_submatrix]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bA_reidx {n : ℕ} (y : M2 n) : bA (reidx y) = y.toBlocks₁₁ := by
   unfold bA reidx
@@ -61,7 +61,7 @@ theorem bA_reidx {n : ℕ} (y : M2 n) : bA (reidx y) = y.toBlocks₁₁ := by
   simp
 
 /- English proof (translation)
-Unfold `bB reidx`. Rewrite using `[Matrix.submatrix_submatrix]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bB_reidx {n : ℕ} (y : M2 n) : bB (reidx y) = y.toBlocks₁₂ := by
   unfold bB reidx
@@ -69,7 +69,7 @@ theorem bB_reidx {n : ℕ} (y : M2 n) : bB (reidx y) = y.toBlocks₁₂ := by
   simp
 
 /- English proof (translation)
-Unfold `bC reidx`. Rewrite using `[Matrix.submatrix_submatrix]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem bC_reidx {n : ℕ} (y : M2 n) : bC (reidx y) = y.toBlocks₂₁ := by
   unfold bC reidx
@@ -77,19 +77,19 @@ theorem bC_reidx {n : ℕ} (y : M2 n) : bC (reidx y) = y.toBlocks₂₁ := by
   simp
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.StdUnn.Frame.block_matrix_one, upper_right_of_block_matrix]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bB_one {R : Type} [CommRing R] {n : ℕ} : bB (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) = 0 := by
   rw [← GlobalTheory.StdUnn.Frame.block_matrix_one, upper_right_of_block_matrix]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.StdUnn.Frame.block_matrix_one, upper_left_of_block_matrix]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bA_one {R : Type} [CommRing R] {n : ℕ} : bA (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) = 1 := by
   rw [← GlobalTheory.StdUnn.Frame.block_matrix_one, upper_left_of_block_matrix]
 
 /- English proof (translation)
-Unfold `bC blk4`. Rewrite using `[Matrix.submatrix_submatrix]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lower_left_of_block_matrix {R : Type} {n : ℕ} (a b c d : Matrix (Fin n) (Fin n) R) : bC (blk4 a b c d) = c := by
   unfold bC blk4
@@ -97,7 +97,7 @@ theorem lower_left_of_block_matrix {R : Type} {n : ℕ} (a b c d : Matrix (Fin n
   simp
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.StdUnn.Frame.block_matrix_one, lower_left_of_block_matrix]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bC_one {R : Type} [CommRing R] {n : ℕ} : bC (1 : Matrix (Fin (n + n)) (Fin (n + n)) R) = 0 := by
   rw [← GlobalTheory.StdUnn.Frame.block_matrix_one, lower_left_of_block_matrix]
@@ -139,7 +139,7 @@ theorem compAt_bC (θ : InfFam D) (τ : D.what₂.Tau) {n : ℕ} (M : Mx D (n + 
     compAt θ τ (bC M) = bC (compAt θ τ M) := rfl
 
 /- English proof (translation)
-Unfold `adj`. Rewrite using `[Matrix.map_mul, Matrix.transpose_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_mul {m n k : ℕ} (x : Mx D m n) (z : Mx D n k) :
     adj (HMul.hMul x z : Mx D m k) = HMul.hMul (adj z) (adj x) := by
@@ -147,14 +147,14 @@ theorem adj_mul {m n k : ℕ} (x : Mx D m n) (z : Mx D n k) :
   rw [Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Unfold `adj`. Rewrite using `[Matrix.map_one _ (map_zero (cA D)) (map_one (cA D)), Matrix.transpose_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adj_one {n : ℕ} : adj (1 : Mx D n n) = 1 := by
   unfold adj
   rw [Matrix.map_one _ (map_zero (cA D)) (map_one (cA D)), Matrix.transpose_one]
 
 /- English proof (translation)
-Unfold `adj`. Rewrite using `[GlobalTheory.StdUnn.Frame.block_matrix_map, GlobalTheory.StdUnn.Frame.blockMatrixTwoByTwoFin_transpose, Matrix.map_zero _ (map_zero (cA D)), Matrix.transpose_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem adelicConjTranspose_blockMatrixTwoByTwoFin {n : ℕ} (a d : Mx D n n) : adj (blk4 a 0 0 d) = blk4 (adj a) 0 0 (adj d) := by
   unfold adj
@@ -162,7 +162,7 @@ theorem adelicConjTranspose_blockMatrixTwoByTwoFin {n : ℕ} (a d : Mx D n n) : 
     Matrix.transpose_zero]
 
 /- English proof (translation)
-Establish `h : adj (mat g) * rat (Jst D n) * mat g = rat (Jst D n)` using `g.2`. Rewrite `h` using `[GlobalTheory.StdUnn.Frame.rat_Jst]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem unitary_mat {n : ℕ} (g : G D n) :
     adj (mat g) * (blk4 0 1 (-1) 0 : Mx D (n + n) (n + n)) * mat g = blk4 0 1 (-1) 0 := by
@@ -176,29 +176,29 @@ namespace PositivityTheory.Rg.Sw.Glob
 open LeviH in
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `D n V ψ χ θ μ ω H l s ν τ ε fr ι hC y a ha hya`. Establish `hθ` using `hC.hθ`. Take `⟨hτ, hτ', hfin⟩` from `hC.hι.2 y`. Establish `h1 : mat (ι y) * mat (ι y)⁻¹ = 1` using `by show mat (ι y * (ι y)⁻¹) = 1`. Rewrite using `[mul_inv_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : mat (ι y)⁻¹ * mat (ι y) = 1` using `by show mat ((ι y)⁻¹ * ι y) = 1`. Rewrite using `[inv_mul_cancel]`. Both sides reduce to the same expression. Establish `hU` using `unitary_mat (ι y)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hlevi` using `hC.hω.levi (ι y)`. Generalize the expression as in `mat (ι y) = M at hτ hτ' hfin h1 h2 hU hlevi`. Generalize the expression as in `mat (ι y)⁻¹ = M' at h1 h2`. Establish `hB : bB M = 0`. Apply `GlobalTheory.StabAtPlace.mx_ext hθ` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.map_zero _ (map_zero (finPart D)), bB_map, hfin, bB_one]`. Introduce `τ'`. Rewrite using `[OG.compAt_zero', compAt_bB]`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hτ, bB_reidx, hya]`. Simplify using `only [mM, Matrix.toBlocks_fromBlocks₁₂]`. Rewrite using `[hτ' τ' h, bB_one]`. Establish `hC0 : bC M = 0`. Apply `GlobalTheory.StabAtPlace.mx_ext hθ` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Matrix.map_zero _ (map_zero (finPart D)), bC_map, hfin, bC_one]`. Introduce `τ'`. Rewrite using `[OG.compAt_zero', compAt_bC]`. Distinguish the cases in `h : τ' = τ`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hτ, bC_reidx, hya]`. Simplify using `only [mM, Matrix.toBlocks_fromBlocks₂₁]`. Rewrite using `[hτ' τ' h, bC_one]`. Establish `hM : M = blk4 (bA M) 0 0 (bD M)` using `by conv_lhs => rw [block_matrix_of_blocks M]`. Rewrite using `[hB, hC0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hAA' : bA M * bA M' = 1`. Establish `e` using `congrArg bA h1`. Rewrite `e` using `[hM, block_matrix_of_blocks M', GlobalTheory.StdUnn.Frame.submatrix_fromBlocks_mul, upper_left_of_block_matrix, bA_one, zero_mul, add_zero]`. Conclude with `e`. Establish `hA'A : bA M' * bA M = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `congrArg bA h2`. Rewrite `e` using `[hM, block_matrix_of_blocks M', GlobalTheory.StdUnn.Frame.submatrix_fromBlocks_mul, upper_left_of_block_matrix, bA_one, mul_zero, add_zero]`. Conclude with `e`. Establish `hAD : adj (bA M) * bD M = 1`. Rewrite `hU` using `[hM, adelicConjTranspose_blockMatrixTwoByTwoFin, GlobalTheory.StdUnn.Frame.submatrix_fromBlocks_mul, GlobalTheory.StdUnn.Frame.submatrix_fromBlocks_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `congrArg bB hU`. Rewrite `e` using `[upper_right_of_block_matrix, upper_right_of_block_matrix]`. Simplify using `only [mul_zero, zero_mul, add_zero, zero_add, mul_one] at e`. Conclude with `e`. Establish `hD : bD M = adj (bA M')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e : adj (bA M') * adj (bA M) = 1` using `by rw [← LeviH.adj_mul, hAA', LeviH.adj_one]`. Combine the equalities or inequalities in the displayed calculation. Establish `hmat : M = blk4 (bA M) 0 0 (adj (bA M'))`. Combine the equalities or inequalities in the displayed calculation. Use `⟨_, bA M, ?_, ?_, ?_, fun Φ x => hlevi ⟨bA M, bA M', hAA', hA'A⟩ hmat Φ x⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[compAt_bA, hτ, bA_reidx, hya]`. Simplify using `only [mM, Matrix.toBlocks_fromBlocks₁₁]`. Introduce `τ' h`. Rewrite using `[compAt_bA, hτ' τ' h, bA_one]`. Rewrite using `[bA_map, hfin, bA_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviTau : LeviTau := by
   intro D n V ψ χ θ μ ω H l s ν τ ε fr ι hC y a ha hya

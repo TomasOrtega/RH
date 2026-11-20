@@ -17,7 +17,7 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.Inhab
 
 /- English proof (translation)
-Introduce `h`. Take `⟨E, i₁, i₂, i₃, H, D, l, Xo, c, W₀, Y, bF, j₁, j₂, a, χ, w, g, ty, Fu, -, -, -, -, -, -, hn, -⟩` from `GlobalTheory.T.arc_witness_model_point h`. Use `haveI : CharZero (PowerSeries ℂ) := algebraRat.charZero _`. Take `⟨P, hD, -, -, hP⟩` from `GlobalTheory.T.linearUniformisation_triples_torsion E H (PowerSeries ℂ) _ (admissibleBase_powerSeries ℂ) w.t w.P.D w.P.A w.P.U w.P.bundle`. Conclude with `⟨E, i₁, i₂, i₃, H, w.t, P, hP, hD ▸ hn⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pelUnif_torsionIso_nontrivial : PartI → ∃ (E : Type) (_ : Field E) (_ : NumberField E) (_ : IsCMField E) (H : Host E) (t : SAB H (Sp (PowerSeries ℂ))) (P : PELUnif (Ideal.span {PowerSeries.X}) t), P.TorsionIso ∧ Nontrivial P.D.toPre.X := by
   intro h

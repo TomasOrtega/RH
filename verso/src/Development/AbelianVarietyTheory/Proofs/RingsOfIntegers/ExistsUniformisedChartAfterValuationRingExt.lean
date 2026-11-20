@@ -17,9 +17,9 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.GoodChartExt
 
 /- English proof (translation)
-Distinguish the cases in `ha : algebraMap T.V T.Fr a = 0`. Rewrite using `[ha]`. Simplify using `[vV]`. Establish `hv : valV T.V (algebraMap T.V T.Fr a) ≤ 1` using `(IsDiscreteValuationRing.maximalIdeal T.V).valuation_le_one a`. Use `(WithZero.log_le_log (valV_ne_zero (V := T.V) ha) one_ne_zero).2 hv` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [WithZero.log_one] at this`. Simplify using `only [vV]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vV_nonneg (T : CDVR) (a : T.V) : 0 ≤ vV T.V (algebraMap T.V T.Fr a) := by
   by_cases ha : algebraMap T.V T.Fr a = 0
@@ -31,13 +31,13 @@ theorem vV_nonneg (T : CDVR) (a : T.V) : 0 ≤ vV T.V (algebraMap T.V T.Fr a) :=
     simp only [vV]; omega
 
 /- English proof (translation)
-Establish `inj` using `IsFractionRing.injective T'.V T'.Fr`. Establish `hm : ∀ a : T.V, ∃ b, algebraMap T'.V T'.Fr b = iT (algebraMap T.V T.Fr a)` using `fun a => Formalism.L2.PjFree.mem_range_of_vV_nonneg (by`. Rewrite using `[hv]; exact mul_nonneg (by exact_mod_cast he.le) (vV_nonneg T a))`. Use `choose f hf using hm`. Set `φ : T.V →+* T'.V` to `{ toFun := f map_one' := inj (by simp [hf]) map_mul' := fun a b => inj (by simp [hf]) map_zero' := inj (by simp [hf]) map_add' := fun a b => inj (by simp [hf]) }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨φ, RingHom.ext hf, ⟨fun a ha => ?_⟩⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `ha.exists_right_inv`. Establish `h1 : iT (algebraMap T.V T.Fr a) * algebraMap T'.V T'.Fr w = 1`. Rewrite using `[← hf, ← map_mul]`. Conclude with `(congrArg _ hw).trans (map_one _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : algebraMap T.V T.Fr a ≠ 0` using `fun h => by simp [h] at h1`. Establish `h2 : iT (algebraMap T.V T.Fr a)⁻¹ = algebraMap T'.V T'.Fr w`. Rewrite using `[map_inv₀]`. Conclude with `(eq_inv_of_mul_eq_one_right h1).symm`. Establish `h3` using `vV_nonneg T' w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[← h2, hv]`. Establish `h4 : 0 ≤ vV T.V (algebraMap T.V T.Fr a)⁻¹` using `le_of_mul_le_mul_left (by simpa using h3) (by exact_mod_cast he : (0 : ℤ) < e)`. Take `⟨b, hb⟩` from `Formalism.L2.PjFree.mem_range_of_vV_nonneg h4`. Use `IsUnit.of_mul_eq_one b (IsFractionRing.injective T.V T.Fr ?_)` and prove the remaining obligations. Rewrite using `[map_mul, hb, mul_inv_cancel₀ h0, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_restrict (T T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ) (he : 0 < e)
     (hv : ∀ a : T.Fr, vV T'.V (iT a) = (e : ℤ) * vV T.V a) :
@@ -69,9 +69,9 @@ theorem exists_local_restrict (T T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ) (h
   rw [map_mul, hb, mul_inv_cancel₀ h0, map_one]
 
 /- English proof (translation)
-Take `⟨E₀, -, -, -, -, ⟨d⟩⟩` from `GlobalTheory.gtCoord_isGt V _ D.toPre 0 G ⟨U.gt 0⟩`. Set `g : V ⧸ (maximalIdeal V) ^ (0 + 1) →+* ResidueField V'` to `(ResidueField.map φ).comp (Ideal.Quotient.factor (Ideal.pow_le_self (by norm_num)))`. Establish `hr : spMap g ≫ thick V (maximalIdeal V) 0 = spMap (residue V') ≫ spMap φ`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨j, hj, -⟩` from `grpPullback_iso (((isGrpPullback_pullback (thickObj V (maximalIdeal V) 0 G) (spMap g)).comp (isGrpPullback_pullback G (thick V (maximalIdeal V) 0))).congr hr rfl) ((isGrpPullback_pullback G' (spMap (residue V'))).comp h)`. Conclude with `⟨_, isGt_of_iso j (GtBaseChange.isGt_extBC (spMap g) E₀ _ d)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem split_of_pullback {V V' : Type} [CommRing V] [IsDomain V] [IsLocalRing V] [CommRing V'] [IsLocalRing V']
     (φ : V →+* V') [IsLocalHom φ] {D : DegData V (maximalIdeal V)} {A : PolAV (Sp (FractionRing V))}
@@ -90,17 +90,17 @@ theorem split_of_pullback {V V' : Type} [CommRing V] [IsDomain V] [IsLocalRing V
   exact ⟨_, isGt_of_iso j (GtBaseChange.isGt_extBC (spMap g) E₀ _ d)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ hstar T io y C hC T' iT e y' hy`. Take `⟨-, P, -⟩` from `hC`. Take `⟨he, hv, ψ, hψ, hx, -⟩` from `hy`. Establish `hx' : xOf y' = spMap iT ≫ xOf y` using `hx.trans (congrArg (fun r => spMap r ≫ xOf y) hψ)`. Take `⟨C', hC'⟩` from `GlobalTheory.IntChartTrunc.intChart_frTrunc_exists E H Dw l Xo c hstar T' (iT.comp io) y'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨C', hC', ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, hloc⟩` from `exists_local_restrict T T' iT e he hv`. Establish `hsq : spMap iT ≫ spMap (algebraMap T.V T.Fr) = spMap (algebraMap T'.V T'.Fr) ≫ spMap φ`. Rewrite using `[← spMap_comp, ← spMap_comp, hφ]`. Establish `tr : ∀ {S S' : Scheme.{0}} {s : SAB H S} {s' : SAB H S'} {f g : S' ⟶ S}, f = g → SABMap s' s f → Nonempty (SABMap s' s g)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `S S' s s' f g h m`. Substitute `h` using the available equality. Conclude with `⟨m⟩`. Choose the witnesses or unpack the hypotheses as in `⟨G₂, ⟨m⟩⟩ : ∃ G₂ : SAB H (Sp T'.V), Nonempty (SABMap G₂ C.I.G (spMap φ)) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap φ) C.I.G`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, ⟨m⟩⟩`. Choose the witnesses or unpack the hypotheses as in `⟨t₂, ⟨p⟩⟩ : ∃ t₂ : SAB H (Sp T'.Fr), Nonempty (SABMap t₂ C.I.t' (spMap iT)) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull (spMap iT) C.I.t'`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨a₁, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ C.I.m1 p`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨n₁⟩` from `tr hx'.symm a₁`. Take `⟨a₂, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ C.I.m2 p`. Take `⟨b₂⟩` from `tr hsq a₂`. Take `⟨n₂, -⟩` from `sabCancel pullCubCancel E H _ _ _ _ _ _ _ _ m b₂`. Take `⟨-, n, -⟩` from `GlobalTheory.sab_extensions_iso E H Dw l Xo T'.V T'.Fr (xOf y') C'.I.G G₂ C'.I.t' t₂ C'.I.m1 C'.I.m2 n₁ n₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a₃, -⟩` from `sabComp pullCubComp E H _ _ _ _ _ _ _ _ m n`. Take `⟨k⟩` from `tr (Category.id_comp _) a₃`. Establish `hp` using `GlobalTheory.UnifAfterExt.polAt_of_sabMap k C.I.m2 C.I.m1 Xo.univ.proper Xo.univ.ample Xo.univ.ktriv (jK T'.V) (spMap iT) hsq.symm`. Take `⟨-, P', -, hP'⟩` from `GlobalTheory.UnifAfterExt.isOpen_and_uniformised T'.V inferInstance C'.I.G hp (split_of_pullback φ P.U.toUnifPre k.cart)`. Conclude with `⟨P', hP'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_good_chart_ext : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y), Good3 C → ∀ (T' : CDVR) (iT : T.Fr →+* T'.Fr) (e : ℕ) (y' : IntFr Xo c T' (iT.comp io)), IsExt y iT e y' → ∃ C' : IntegralChartA3 Xo c T' (iT.comp io) y', Good3 C' := by
   intro E _ _ _ H Dw l Xo c _ hstar T io y C hC T' iT e y' hy

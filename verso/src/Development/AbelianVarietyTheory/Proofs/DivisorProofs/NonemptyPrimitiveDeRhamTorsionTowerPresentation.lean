@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.PtExt
 
 /- English proof (translation)
-Use `choose s hs using hr`. Use `⟨fun n ↦ Nat.rec (motive := B) 0 (fun n x ↦ s n (x - a n)) n, fun n ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [hs, sub_sub_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_sub_tower {B : ℕ → Type} [∀ n, AddCommGroup (B n)] (r : ∀ n, B (n + 1) → B n)
     (hr : ∀ n, Function.Surjective (r n)) (a : ∀ n, B n) :
@@ -23,7 +23,7 @@ theorem exists_sub_tower {B : ℕ → Type} [∀ n, AddCommGroup (B n)] (r : ∀
   simp only [hs, sub_sub_cancel]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `CatCoh.H1.mk_surjective _ c.1`. Take `⟨g, hg⟩` from `GlobalTheory.T.exists_additiveStructure_of_primitiveDeRhamClass R A f (by rw [hf]; exact c.2)`. Take `⟨h, hh⟩` from `exists_sub_tower (B := fun n ↦ G.A n) (fun n ↦ G.res n) (fun n ↦ G.res_surjective n) (fun n ↦ fv f (G.A (n + 1)) (G.A n) (G.res n : G.A (n + 1) →ₐ[R] G.A n) (t.y (n + 1)))`. Conclude with `⟨⟨f, hf, g, hg, h, hh⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_dat (R : Type) [CommRing R] (A : Over (Sp R)) [GrpObj A] (p : ℕ) (G : PDivGroup p R)
     (t : G.TorsionTower A) (c : primDR A) : Nonempty (Dat t c) := by

@@ -18,7 +18,7 @@ private def av (ρ : K →* Module.End ℂ M) (S : Subgroup K) (m : M) : M :=
   ((S.index : ℂ)⁻¹) • ∑ᶠ q : K ⧸ S, ρ q.out m
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.ExistsAverage.exists_avg ρ hs`.
+A detailed English derivation is pending.
 -/
 private theorem exists_avg [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] (ρ : K →* Module.End ℂ M)
     (hs : ∀ m, IsOpen {k | ρ k m = m}) :
@@ -33,7 +33,7 @@ section Core
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by show finRep E n g (finRep E n k x.1) = finRep E n (g * k) x.1 rw [map_mul, Module.End.mul_apply])`.
+A detailed English derivation is pending.
 -/
 private theorem fin_op (π : CuspSub E n) (g k : GL (Fin n) (Af E)) (x : π.V) :
     π.finPart g (π.op (.fin k) x) = π.finPart (g * k) x :=
@@ -42,14 +42,14 @@ private theorem fin_op (π : CuspSub E n) (g k : GL (Fin n) (Af E)) (x : π.V) :
     rw [map_mul, Module.End.mul_apply])
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (LinearMap.congr_fun (lie_rt_fin X g) x.1)`.
+A detailed English derivation is pending.
 -/
 private theorem lie_fin (π : CuspSub E n) (X : Lie E n) (g : GL (Fin n) (Af E)) (x : π.V) :
     π.op (.lie X) (π.finPart g x) = π.finPart g (π.op (.lie X) x) :=
   Subtype.ext (LinearMap.congr_fun (lie_rt_fin X g) x.1)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by have h := congrArg (rt E n) (infGL_comm (Unitary.toUnits c) g) rw [map_mul, map_mul] at h exact LinearMap.congr_fun h x.1)`.
+A detailed English derivation is pending.
 -/
 private theorem cpt_fin (π : CuspSub E n) (c : Kinf E n) (g : GL (Fin n) (Af E)) (x : π.V) :
     π.op (.cpt c) (π.finPart g x) = π.finPart g (π.op (.cpt c) x) :=
@@ -59,30 +59,28 @@ private theorem cpt_fin (π : CuspSub E n) (c : Kinf E n) (g : GL (Fin n) (Af E)
     exact LinearMap.congr_fun h x.1)
 
 /- English proof (translation)
-Simplify using `only [PositivityTheory.S2.Clozel.EopV, LinearMap.smul_apply, LinearMap.sub_apply, lie_fin, map_smul, map_sub]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem eop_fin (π : CuspSub E n) (τ : E →+* ℂ) (i j : Fin n) (g : GL (Fin n) (Af E)) (x : π.V) :
     PositivityTheory.S2.Clozel.EopV π τ i j (π.finPart g x) = π.finPart g (PositivityTheory.S2.Clozel.EopV π τ i j x) := by
   simp only [PositivityTheory.S2.Clozel.EopV, LinearMap.smul_apply, LinearMap.sub_apply, lie_fin, map_smul, map_sub]
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hKc`. Set `ρ : K →* Module.End ℂ π.V` to `MonoidHom.comp π.finPart K.subtype`. Establish `hρ : ∀ (k : K) m, ρ k m = π.finPart k.1 m` using `fun _ _ => rfl`. Establish `hs : ∀ m, IsOpen {k : K | ρ k m = m}` using `fun m => by`. Establish `h1` using `(π.cusp m.1 m.2).1.level`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h1.preimage continuous_subtype_val using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Conclude with `Subtype.ext_iff`. Take `⟨P, hPinv, hPfix, hPT⟩` from `exists_avg ρ hs`. Establish `hcomm : ∀ T : Module.End ℂ π.V, (∀ g x, T (π.finPart g x) = π.finPart g (T x)) → ∀ m, T (P m) = P (T m)` using `fun T hT => hPT T fun k m => hT k.1 m`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `W0 : Submodule ℂ π.V` to `⨅ g, LinearMap.ker (P ∘ₗ π.finPart g)`. Establish `mem : ∀ x, x ∈ W0 ↔ ∀ g, P (π.finPart g x) = 0` using `fun x => by`. Simplify using `[W0, Submodule.mem_iInf]`. Establish `stable : IsStable (W0.map π.V.subtype)`. Introduce and unpack `o _ ⟨x, hx, rfl⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨π.op o x, ?_, rfl⟩` and prove the remaining obligations. Establish `hx'` using `(mem x).1 hx`. Use `(mem _).2 fun g => ?_` and prove the remaining obligations. Consider the cases of `o with`. Consider the case `fin k => rw [fin_op]`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `hx' _`. Consider the case `cpt c => rw [← cpt_fin, ← hcomm _ (fun g x => cpt_fin π c g x), hx', map_zero]`. Consider the case `lie X => rw [← lie_fin, ← hcomm _ (fun g x => lie_fin π X g x), hx', map_zero]`. Break down `π.irred _ (Submodule.map_subtype_le _ _) stable with h | h` into its components or cases. Establish `hn : ψ ∉ W0` using `fun hm => by`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ψ.1 ∈ W0.map π.V.subtype` using `⟨ψ, hm, rfl⟩`. Rewrite `h1` using `[h, Submodule.mem_bot]`. Conclude with `hψ (Subtype.ext h1)`. Rewrite `hn` using `[mem]`. Use `push_neg at hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `hn`. Use `⟨P (π.finPart g ψ), hg, fun k hk => hPinv _ ⟨k, hk⟩, fun T c hT hc => ?_⟩` and prove the remaining obligations. Rewrite using `[hcomm T hT, hT, hc, map_smul, map_smul]`. It suffices to derive a contradiction. Establish `h1 : v0.1 ∈ W0.map π.V.subtype`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[h]`. Conclude with `v0.2`. Take `⟨y, hy, e⟩` from `h1`. Establish `hy0 : y = v0` using `Subtype.ext e`. Substitute `hy0` using the available equality.
-
-Establish `h2` using `(mem y).1 hy 1`. Rewrite `h2` using `[map_one, Module.End.one_apply, hPfix y fun k => hfix k.1 k.2]`. Conclude with `hv0 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem core (π : CuspSub E n) (K : Subgroup (GL (Fin n) (Af E))) (hKc : IsCompact (K : Set (GL (Fin n) (Af E))))
     (v0 ψ : π.V) (hv0 : v0 ≠ 0) (hfix : ∀ k ∈ K, π.finPart k v0 = v0) (hψ : ψ ≠ 0) :
@@ -135,19 +133,19 @@ private theorem core (π : CuspSub E n) (K : Subgroup (GL (Fin n) (Af E))) (hKc 
 end Core
 
 /- English proof (translation)
-Introduce `_ hL`. Unfold `RlLow ForRl`. Introduce `E _ _ _ n hn π _ K _ hKc _ _ _ μf _ D hreg hnt w lam hanti hch`. Take `⟨ν, ψ, hψ, hψ0, hk, hc⟩` from `hL E n hn π hreg w lam hanti hch`. Take `⟨u0, hu0⟩` from `exists_ne (0 : D.U)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hv0 : D.i u0 ≠ 0` using `fun e => hu0 (D.inj (by rw [e, map_zero]))`. Establish `hfix0 : ∀ k ∈ K, π.finPart k (D.i u0) = D.i u0` using `fun k hk' => Subtype.ext ((D.rng (D.i u0)).1 ⟨u0, rfl⟩ k hk')`. Set `ψ' : π.V` to `⟨ψ, hψ⟩`. Establish `hψ' : ψ' ≠ 0` using `fun e => hψ0 (congrArg Subtype.val e)`. Take `⟨v, hv, hfix, hT⟩` from `core π K hKc (D.i u0) ψ' hv0 hfix0 hψ'`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `(D.rng v).2 fun k hk' => congrArg Subtype.val (hfix k hk')`. Establish `hune : u ≠ 0` using `fun e => hv (by rw [← hu, e, map_zero])`. Set `T : Fin n → Fin n → Module.End ℂ π.V` to `fun a b => PositivityTheory.S2.Clozel.EopV π w.embedding a b - PositivityTheory.S2.Clozel.EopV π (ComplexEmbedding.conjugate w.embedding) b a`. Establish `hTval : ∀ a b (x : π.V), (T a b x).1 = eopW w true a b x.1 - eopW w false b a x.1` using `fun a b x => by`. Simplify using `[T, eopW, GlobalTheory.CompanionTheory.ClozelPurity.EopV_val]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hTc : ∀ a b g (x : π.V), T a b (π.finPart g x) = π.finPart g (T a b x)` using `fun a b g x => by`. Simplify using `only [T, LinearMap.sub_apply, eop_fin, map_sub]`. Establish `hTu : ∀ a b, D.i (kF (D.E1 w) (D.E2 w) a b u) = T a b v` using `fun a b => Subtype.ext (by`. Rewrite using `[hTval, ← hu]`. Simplify using `only [kF, LinearMap.add_apply, map_add, Submodule.coe_add, D.hE1, D.hE2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `abel)`. Establish `hmem : u ∈ hwSp (D.E1 w) (D.E2 w) ν`. Use `⟨fun a => D.inj ?_, fun a b hab he => D.inj ?_⟩` and prove the remaining obligations. Establish `h1 : T a a ψ' = (ν a : ℂ) • ψ'` using `Subtype.ext (by`. Rewrite using `[hTval]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk.1 a)`. Rewrite using `[hTu, hT _ _ (hTc a a) h1, map_smul, hu]`. Establish `h1 : T a b ψ' = (0 : ℂ) • ψ'` using `Subtype.ext (by`. Rewrite using `[hTval, zero_smul]`. Conclude with `hk.2 a b hab he)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[hTu, hT _ _ (hTc a b) h1, zero_smul, map_zero]`. Conclude with `⟨ν, fun e => hune (by`. Establish `h1` using `hmem`. Rewrite `h1` using `[e, Submodule.mem_bot]`. Conclude with `h1), hc⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rlLow : HeckeMem → LowType → RlLow := by
   intro _ hL

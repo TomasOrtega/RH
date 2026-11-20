@@ -6,17 +6,15 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `x`. Use `set S : Set (v.adicCompletion F)ˣ := (fun y => x⁻¹ * y) ⁻¹' ((f.ker : Set (v.adicCompletion F)ˣ) ∩ g.ker) with hS`. Establish `hSo : IsOpen S` using `(hf.inter hg).preimage (continuous_const.mul continuous_id)`. Establish `hxS : x ∈ S` using `by simp [hS, MonoidHom.mem_ker]`. Take `⟨U, hU, hUS⟩` from `Units.isEmbedding_val₀.isInducing.isOpen_iff.1 hSo`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxU : (x : v.adicCompletion F) ∈ U`. Rewrite `hxS` using `[← hUS]`. Conclude with `hxS`. Establish `hU0 : IsOpen (U ∩ {0}ᶜ)` using `hU.inter isOpen_compl_singleton`. Take `⟨k, hk⟩` from `(IsDedekindDomain.HeightOneSpectrum.denseRange_algebraMap F v).exists_mem_open hU0 ⟨x, hxU, by simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hk0 : k ≠ 0`. Introduce and unpack `rfl; exact hk.2 (by simp)`. Use `set c : Fˣ := Units.mk0 k hk0`. Establish `hcS : Units.map (algebraMap F (v.adicCompletion F)).toMonoidHom c ∈ S`. Rewrite using `[← hUS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `hk.1` using `[c]`. Simplify using `only [hS, Set.mem_preimage, Set.mem_inter_iff, SetLike.mem_coe, MonoidHom.mem_ker, map_mul, map_inv] at hcS`. Establish `h1 : f (Units.map (algebraMap F (v.adicCompletion F)).toMonoidHom c) = f x`. Use `hcS.1` as an intermediate fact. Rewrite `this` using `[inv_mul_eq_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `h2 : g (Units.map (algebraMap F (v.adicCompletion F)).toMonoidHom c) = g x`. Use `hcS.2` as an intermediate fact. Rewrite `this` using `[inv_mul_eq_one]`. Conclude with `this.symm`.
-
-Rewrite using `[← h1, ← h2, hc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem units_adicCompletion_hom_ext (F : Type) [Field F] [NumberField F]
     (v : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers F))

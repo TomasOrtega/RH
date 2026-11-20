@@ -26,7 +26,7 @@ def commonRestr {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ → LB Y}
   g j j' := (B s).g (C.idx s j) (C.idx s j')
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Take `⟨j, hj⟩` from `C.cover y`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨j, (C.mem s j y).2 hj⟩`. Use `g_self j := (C.isLB s).g_self (C.idx s j)`. Use `cocycle i j k := (C.isLB s).cocycle (C.idx s i) (C.idx s j) (C.idx s k)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isLB_commonRestr {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ → LB Y} (C : Common B) (s : Λ) :
     (commonRestr C s).IsLB where
@@ -38,7 +38,7 @@ theorem isLB_commonRestr {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ 
   cocycle i j k := (C.isLB s).cocycle (C.idx s i) (C.idx s j) (C.idx s k)
 
 /- English proof (translation)
-The claim follows from `iso_of_chart (C.isLB s) { idx := C.idx s le := fun _ _ h => h g := fun _ _ _ _ _ => rfl }`.
+A detailed English derivation is pending.
 -/
 theorem commonRestr_iso {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ → LB Y} (C : Common B) (s : Λ) :
     LBIso (commonRestr C s) (B s) :=
@@ -48,7 +48,7 @@ theorem commonRestr_iso {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ �
       g := fun _ _ _ _ _ => rfl }
 
 /- English proof (translation)
-The claim follows from `iso_of_chart (isLB_tens (C.isLB a) (C.isLB b)) { idx := fun j => (C.idx a j, C.idx b j) le := fun j y h => by have h' : y ∈ C.U j := (C.mem (a + b) j y).1 h exact ⟨(C.mem a j y).2 h', (C.mem b j y).2 h'⟩ g := fun y j j' hj hj' => by have h₁ : y ∈ C.U j := (C.mem (a + b) j y).1 hj …`.
+A detailed English derivation is pending.
 -/
 theorem commonRestr_iso_tens {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ → LB Y} (C : Common B) (a b : Λ) :
     LBIso (commonRestr C (a + b)) (tens (B a) (B b)) :=
@@ -65,7 +65,7 @@ theorem commonRestr_iso_tens {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B :
           ⟨(C.mem a j y).2 h₁, (C.mem b j y).2 h₁⟩ ⟨(C.mem a j' y).2 h₂, (C.mem b j' y).2 h₂⟩).symm }
 
 /- English proof (translation)
-Establish `e₁` using `(cls_eq_iff (isLB_commonRestr C (a + b)) (C.isLB (a + b))).2 (commonRestr_iso C (a + b))`. Establish `e₂` using `(cls_eq_iff (isLB_commonRestr C (a + b)) (isLB_tens (C.isLB a) (C.isLB b))).2 (commonRestr_iso_tens C a b)`. Rewrite using `[← e₁, e₂, cls_tens (C.isLB a) (C.isLB b)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cls_common_add {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ → LB Y} (C : Common B) (a b : Λ) :
     cls (B (a + b)) (C.isLB (a + b)) = cls (B a) (C.isLB a) + cls (B b) (C.isLB b) := by
@@ -75,7 +75,7 @@ theorem cls_common_add {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ �
   rw [← e₁, e₂, cls_tens (C.isLB a) (C.isLB b)]
 
 /- English proof (translation)
-The claim follows from `@cls_common_add`.
+A detailed English derivation is pending.
 -/
 example : ∀ {Y : Scheme.{0}} {Λ : Type} [AddCommGroup Λ] {B : Λ → LB Y} (C : Common B) (a b : Λ), cls (B (a + b)) (C.isLB (a + b)) = cls (B a) (C.isLB a) + cls (B b) (C.isLB b) := @cls_common_add
 

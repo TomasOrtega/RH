@@ -8,37 +8,35 @@ open MeasureTheory Topology Matrix in
 open scoped ComplexOrder ENNReal Pointwise in
 
 /- English proof (translation)
-Introduce `hCS r S hS hirr i hi0 hir M hM`. Establish `hG0 : ∀ X : Matrix (Fin r) (Fin i) ℂ, 0 ≤ (Xᴴ * X).det.re ∧ (Xᴴ * X).det.im = 0`. Introduce `X`. Establish `h` using `Complex.le_def.mp (posSemidef_conjTranspose_mul_self X).det_nonneg`. Conclude with `⟨by simpa using h.1, by simpa using h.2.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hnorm : ∀ X : Matrix (Fin r) (Fin i) ℂ, ‖(Xᴴ * X).det‖ = (Xᴴ * X).det.re`. Introduce `X`. Establish `h : (Xᴴ * X).det = (((Xᴴ * X).det.re : ℝ) : ℂ)` using `Complex.ext (by simp) (by simp [(hG0 X).2])`. Rewrite using `[h, Complex.norm_real, Real.norm_of_nonneg (by simpa using (hG0 X).1)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hunit : ∀ a ∈ S, IsUnit a.det` using `fun a ha => isUnit_iff_ne_zero.mpr (hS a ha).2.1`. Establish `hmul : ∀ a ∈ S, (a * M)ᴴ * (a⁻¹ * M) = Mᴴ * M`. Introduce `a ha`. Rewrite using `[conjTranspose_mul, (hS a ha).1.eq, Matrix.mul_assoc, ← Matrix.mul_assoc a, mul_nonsing_inv _ (hunit a ha), Matrix.one_mul]`. Establish `hpair : ∀ a ∈ S, ((Mᴴ * M).det.re) ^ 2 ≤ ((a * M)ᴴ * (a * M)).det.re * ((a⁻¹ * M)ᴴ * (a⁻¹ * M)).det.re`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a ha`. Establish `h` using `(hCS (Fin r) (Fin i) (a * M) (a⁻¹ * M)).1`. Rewrite `h` using `[hmul a ha, hnorm]`. Then use the resulting hypothesis. Establish `hMsq : 0 < ((Mᴴ * M).det.re) ^ 2` using `pow_pos hM 2`. Establish `hpos : ∀ a ∈ S, 0 < ((a * M)ᴴ * (a * M)).det.re`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a ha`. Use `lt_of_le_of_ne (hG0 _).1 fun h => ?_` and prove the remaining obligations. Establish `h'` using `hpair a ha`. Rewrite `h'` using `[← h, zero_mul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `⟨hpos, ?_⟩` and prove the remaining obligations. Establish `hinvinv : ∀ a ∈ S, a⁻¹⁻¹ = a` using `fun a ha => nonsing_inv_nonsing_inv a (hunit a ha)`. Establish `hsum_inv : ∑ a ∈ S, Real.log ((((a⁻¹ * M)ᴴ * (a⁻¹ * M)).det.re) / (((M)ᴴ * (M)).det.re)) = ∑ a ∈ S, Real.log ((((a * M)ᴴ * (a * M)).det.re) / (((M)ᴴ * (M)).det.re))` using `Finset.sum_nbij' (·⁻¹) (·⁻¹) (fun a ha => (hS a ha).2.2) (fun a ha => (hS a ha).2.2) (fun a ha => hinvinv a ha) (fun a ha => hinvinv a ha) (fun a _ => rfl)`. Establish `hterm : ∀ a ∈ S, Real.log ((((a * M)ᴴ * (a * M)).det.re) / (((M)ᴴ * (M)).det.re)) + Real.log ((((a⁻¹ * M)ᴴ * (a⁻¹ * M)).det.re) / (((M)ᴴ * (M)).det.re)) = Real.log (((a * M)ᴴ * (a * M)).det.re * ((a⁻¹ * M)ᴴ * (a⁻¹ * M)).det.re / ((Mᴴ * M).det.re) ^ 2)`. Introduce `a ha`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Real.log_mul (div_pos (hpos a ha) hM).ne' (div_pos (hpos _ (hS a ha).2.2) hM).ne']`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hnonneg : ∀ a ∈ S, 0 ≤ Real.log ((((a * M)ᴴ * (a * M)).det.re) / (((M)ᴴ * (M)).det.re)) + Real.log ((((a⁻¹ * M)ᴴ * (a⁻¹ * M)).det.re) / (((M)ᴴ * (M)).det.re))`. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hterm a ha]`. Conclude with `Real.log_nonneg ((one_le_div hMsq).mpr (hpair a ha))`. Establish `hstrict : ∃ a ∈ S, 0 < Real.log ((((a * M)ᴴ * (a * M)).det.re) / (((M)ᴴ * (M)).det.re)) + Real.log ((((a⁻¹ * M)ᴴ * (a⁻¹ * M)).det.re) / (((M)ᴴ * (M)).det.re))`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : ∀ a ∈ S, ((a * M)ᴴ * (a * M)).det.re * ((a⁻¹ * M)ᴴ * (a⁻¹ * M)).det.re ≤ ((Mᴴ * M).det.re) ^ 2`. Introduce `a ha`. Use `(div_le_one hMsq).mp (not_lt.mp fun h => ?_)` and prove the remaining obligations. Establish `h'` using `hcon a ha`. Rewrite `h'` using `[hterm a ha]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd h' (not_le.mpr (Real.log_pos h))`. Establish `hdet : (Mᴴ * M).det ≠ 0`. Introduce `h`. Rewrite `hM` using `[h]`. Simplify using `at hM`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcol : ∀ a ∈ S, ∃ C : Matrix (Fin i) (Fin i) ℂ, a * a * M = M * C`. Introduce `a ha`. Establish `ha'` using `(hS a ha).2.2`. Establish `h` using `(hCS (Fin r) (Fin i) (a⁻¹ * M) (a⁻¹⁻¹ * M)).2`. Rewrite `h` using `[hmul _ ha', hnorm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC⟩` from `h hdet (hle _ ha')`. Rewrite `hC` using `[hinvinv a ha]`. Use `⟨C, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hC, ← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_nonsing_inv _ (hunit a ha), Matrix.one_mul]`. Establish `hW : ∀ a ∈ S, ∀ v ∈ LinearMap.range (Matrix.mulVecLin M), (a * a).mulVec v ∈ LinearMap.range (Matrix.mulVecLin M)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `a ha v ⟨w, rfl⟩`. Take `⟨C, hC⟩` from `hcol a ha`. Use `⟨C *ᵥ w, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hC]`. Break down `hirr _ hW with h | h` into its components or cases.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hM0 : M = 0`. Use extensionality with `x l`. Establish `h2` using `congrArg (fun f => f (Pi.single l 1) x) (LinearMap.range_eq_bot.mp h)`. Simplify `h2` using `[Matrix.mulVecLin_apply]`. Use `haveI : Nonempty (Fin i) := ⟨⟨0, hi0⟩⟩`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hM` using `[hM0]`. Simplify using `at hM`. Establish `h1` using `LinearMap.finrank_range_le (Matrix.mulVecLin M)`. Rewrite `h1` using `[h, finrank_top, Module.finrank_fin_fun, Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
-
-Establish `htot : 0 < ∑ a ∈ S, (Real.log ((((a * M)ᴴ * (a * M)).det.re) / (((M)ᴴ * (M)).det.re)) + Real.log ((((a⁻¹ * M)ᴴ * (a⁻¹ * M)).det.re) / (((M)ᴴ * (M)).det.re)))` using `Finset.sum_pos' hnonneg hstrict`. Rewrite `htot` using `[Finset.sum_add_distrib, hsum_inv]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.sum_log_gramDet_ratio_pos : (∀ (m n : Type) [Fintype m] [Fintype n] [DecidableEq n] (A B : Matrix m n ℂ), ‖(Aᴴ * B).det‖ ^ 2 ≤ (((A)ᴴ * (A)).det.re) * (((B)ᴴ * (B)).det.re) ∧ ((Aᴴ * B).det ≠ 0 → (((A)ᴴ * (A)).det.re) * (((B)ᴴ * (B)).det.re) ≤ ‖(Aᴴ * B).det‖ ^ 2 → ∃ C : Matrix n n ℂ, B = A * C)) → (∀ (r : ℕ) (S : Finset (Matrix (Fin r) (Fin r) ℂ)), (∀ a ∈ S, a.IsHermitian ∧ a.det ≠ 0 ∧ a⁻¹ ∈ S) → (∀ W : Submodule ℂ (Fin r → ℂ), (∀ a ∈ S, ∀ v ∈ W, (a * a).mulVec v ∈ W) → W = ⊥ ∨ W = ⊤) → ∀ (i : ℕ), 0 < i → i < r → ∀ M : Matrix (Fin r) (Fin i) ℂ, 0 < (((M)ᴴ * (M)).det.re) → (∀ a ∈ S, 0 < (((a * M)ᴴ * (a * M)).det.re)) ∧ 0 < ∑ a ∈ S, Real.log ((((a * M)ᴴ * (a * M)).det.re) / (((M)ᴴ * (M)).det.re))) := by
   intro hCS r S hS hirr i hi0 hir M hM

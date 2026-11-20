@@ -6,25 +6,23 @@ noncomputable section
 open Polynomial
 
 /- English proof (translation)
-Introduce `A _ I _ g hg n m hgm`. Distinguish the cases in `hR : Nontrivial (A ⧸ I)`. Use `swap`. Rewrite `hR` using `[not_nontrivial_iff_subsingleton]`. Conclude with `⟨g, 1, hg, monic_one, (mul_one g).symm, Subsingleton.elim _ _, Subsingleton.elim _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `haveI := hR`. Use `haveI hA : Nontrivial A := (Ideal.Quotient.mk I).domain_nontrivial`. Establish `h1 : ((X : (A ⧸ I)[X]) - 1) = X - C 1` using `by simp`. Establish `hdeg : g.natDegree = n + m`. Establish `h` using `congrArg natDegree hgm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[hg.natDegree_map, h1, (monic_X_pow n).natDegree_mul ((monic_X_sub_C 1).pow m), natDegree_X_pow, (monic_X_sub_C (1 : A ⧸ I)).natDegree_pow, natDegree_X_sub_C, mul_one]`. Conclude with `h`. Take `⟨α, c, hα, hc⟩` from `UpperTheory.exists_root_subset_product_equation_of_henselian_reduction A I g n m (n + m) rfl hg hdeg hgm`. Take `⟨P, Q, hP, hQ, hPQ, hQd, hQm, hQ0⟩` from `UpperTheory.exists_monic_factor_of_root_subset_product_equation A g n m (n + m) rfl hg hdeg α c hc`. Establish `hQdeg : Q.natDegree = m` using `natDegree_eq_of_le_of_coeff_ne_zero hQd (by rw [hQm]; exact one_ne_zero)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hPdeg : P.natDegree = n`. Establish `h` using `hP.natDegree_mul hQ`. Rewrite `h` using `[← hPQ, hdeg, hQdeg]`. Use linear arithmetic over natural numbers and integers. Use `set φ := Ideal.Quotient.mk I`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hPb : (P.map φ).Monic` using `hP.map φ`. Establish `hprod : P.map φ * Q.map φ = X ^ n * (X - 1) ^ m`. Rewrite using `[← Polynomial.map_mul, ← hPQ, hgm]`. Establish `hQ0b : (Q.map φ).eval 0 = (-1) ^ m`. Rewrite using `[eval_zero_map, hQ0, map_mul, map_pow, map_neg, map_one, Ideal.Quotient.eq.mpr hα, map_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcop : IsCoprime (X : (A ⧸ I)[X]) (Q.map φ)`. Establish `hd : X ∣ Q.map φ - C ((Q.map φ).coeff 0)` using `X_dvd_sub_C`. Take `⟨r, hr⟩` from `hd`. Rewrite `hr` using `[coeff_zero_eq_eval_zero, hQ0b]`. Use `⟨-(C ((-1) ^ m) * r), C ((-1) ^ m), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : ((-1 : A ⧸ I) ^ m) * (-1) ^ m = 1`. Rewrite using `[← mul_pow, neg_one_mul, neg_neg, one_pow]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨s, hs⟩` from `hcop.pow_left.dvd_of_dvd_mul_right ⟨(X - 1) ^ m, hprod⟩`. Establish `hsm : s.Monic` using `(monic_X_pow n).of_mul_monic_left (by rw [← hs]; exact hPb)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hsdeg : s.natDegree = 0`. Establish `h` using `congrArg natDegree hs`. Rewrite `h` using `[hP.natDegree_map φ, (monic_X_pow n).natDegree_mul hsm, natDegree_X_pow, hPdeg]`. Use linear arithmetic over natural numbers and integers. Establish `hs1 : s = 1` using `eq_one_of_monic_natDegree_zero hsm hsdeg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hPmap : P.map φ = X ^ n` using `by rw [hs, hs1, mul_one]`. Establish `hQmap : Q.map φ = (X - 1) ^ m`. Rewrite `hprod` using `[hPmap]`. Establish `h : X ^ n * (Q.map φ - (X - 1) ^ m) = 0` using `by rw [mul_sub, hprod, sub_self]`. Conclude with `sub_eq_zero.mp ((monic_X_pow n).mul_right_eq_zero_iff.mp h)`.
-
-Conclude with `⟨P, Q, hP, hQ, hPQ, hPmap, hQmap⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_monic_factor_lift_of_pow_mul_sub_one_pow :
     ∀ (A : Type) [CommRing A] (I : Ideal A) [HenselianRing A I] (g : A[X]), g.Monic → ∀ n m : ℕ, g.map (Ideal.Quotient.mk I) = X ^ n * (X - 1) ^ m →

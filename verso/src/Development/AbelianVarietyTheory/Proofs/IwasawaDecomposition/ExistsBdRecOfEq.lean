@@ -14,7 +14,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Mem.Top.Bl
 
 /- English proof (translation)
-Consider the cases of `h`. Conclude with `⟨R, rfl⟩`.
+Split into cases according to the possible forms of the given data. Supply the required witnesses or components.
 -/
 theorem exists_bdRec_of_eq {D D' : D7} {O : Obj D} {O' : Obj D'} (h : (⟨D, O⟩ : Σ D : D7, Obj D) = ⟨D', O'⟩)
     (R : Formalism.L2.RecT O'.ex) (c : ℝ) :

@@ -9,9 +9,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.TRGap
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Establish `hv : v = ∑ x, v x • Pi.single x (1 : ℂ)`. Use function extensionality and compare the values at `z`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Use `conv_lhs => rw [hv]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[cpV, cpFock, LinearMap.sum_apply, Finset.sum_mul]`.
+A detailed English derivation is pending.
 -/
 theorem cpV_eq_sum (v : Fin n × Fin n → ℂ) : cpV v = ∑ x, v x • cpFock (n := n) x.1 x.2 := by
   refine LinearMap.ext fun y => ?_
@@ -22,7 +22,7 @@ theorem cpV_eq_sum (v : Fin n × Fin n → ℂ) : cpV v = ∑ x, v x • cpFock 
   simp [cpV, cpFock, LinearMap.sum_apply, Finset.sum_mul]
 
 /- English proof (translation)
-Rewrite using `[cmV, dualV, map_sum]`. Simplify using `only [map_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem cmV_eq_sum (v : Fin n × Fin n → ℂ) : cmV v = ∑ x, star (v x) • cmFock (n := n) x.1 x.2 := by
   rw [cmV, dualV, map_sum]
@@ -30,7 +30,7 @@ theorem cmV_eq_sum (v : Fin n × Fin n → ℂ) : cmV v = ∑ x, star (v x) • 
   rfl
 
 /- English proof (translation)
-Rewrite using `[cmV_eq_sum, cpV_eq_sum, map_sum, map_sum, Matrix.conjTranspose_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, Matrix.conjTranspose_smul, lf_toMatrix_cm, lf_toMatrix_cp, fockMatrix_conjTranspose_eq_transpose]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem toMatrix_cmV (v : Fin n × Fin n → ℂ) :
     LinearMap.toMatrix (fockBasis n) (fockBasis n) (cmV v) =
@@ -40,9 +40,9 @@ theorem toMatrix_cmV (v : Fin n × Fin n → ℂ) :
   rw [map_smul, map_smul, Matrix.conjTranspose_smul, lf_toMatrix_cm, lf_toMatrix_cp, fockMatrix_conjTranspose_eq_transpose]
 
 /- English proof (translation)
-Establish `hkk : k * kᴴ = 1`. Use `hk.1` as an intermediate fact. Rewrite `this` using `[Matrix.mem_unitaryGroup_iff, star_eq_conjTranspose]`. Conclude with `this`. Rewrite using `[← LinearMap.comp_apply, ← adPhys_mul hk (kset_conjTranspose hk), hkk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[adPhys, adMat_one]`.
+A detailed English derivation is pending.
 -/
 theorem adPhys_kkH {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (w : Fin n × Fin n → ℂ) :
     adPhys ε k (adPhys ε kᴴ w) = w := by
@@ -54,7 +54,7 @@ theorem adPhys_kkH {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (w : Fi
   simp [adPhys, adMat_one]
 
 /- English proof (translation)
-Establish `h` using `congrArg (LinearMap.toMatrix (fockBasis n) (fockBasis n)) (ff_cmV hk (adPhys ε kᴴ w))`. Rewrite `h` using `[LinearMap.toMatrix_mul, LinearMap.toMatrix_mul, adPhys_kkH hk, toMatrix_cmV, toMatrix_cmV]`. Establish `h2` using `congrArg Matrix.conjTranspose h`. Rewrite `h2` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_conjTranspose]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ffMat_H_cp {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (w : Fin n × Fin n → ℂ) :
     LinearMap.toMatrix (fockBasis n) (fockBasis n) (cpV (adPhys ε kᴴ w)) * (ffMat ε k)ᴴ =
@@ -66,7 +66,7 @@ theorem ffMat_H_cp {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (w : Fi
   exact h2
 
 /- English proof (translation)
-Establish `h` using `congrArg (Matrix.toLin (fockBasis n) (fockBasis n)) (ffMat_H_cp hk w)`. Rewrite `h` using `[Matrix.toLin_mul (v₁ := fockBasis n) (v₂ := fockBasis n) (v₃ := fockBasis n), Matrix.toLin_mul (v₁ := fockBasis n) (v₂ := fockBasis n) (v₃ := fockBasis n), Matrix.toLin_toMatrix, Matrix.toLin_toMatrix]`. Establish `h3` using `LinearMap.congr_fun h z`. Simplify using `only [LinearMap.comp_apply] at h3`. Conclude with `h3.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nH_cpV {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (w : Fin n × Fin n → ℂ) (z : Fock n) :
     Matrix.toLin (fockBasis n) (fockBasis n) (ffMat ε k)ᴴ (cpV w z) =
@@ -80,7 +80,7 @@ theorem nH_cpV {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (w : Fin n 
   exact h3.symm
 
 /- English proof (translation)
-Establish `: (ExteriorAlgebra.algebraMapInv (R` using `ℂ) (M := Fin n × Fin n → ℂ)).comp (ff ε k) = ExteriorAlgebra.algebraMapInv := by`. Apply `ExteriorAlgebra.hom_ext` to reduce the goal to its premises. Use `LinearMap.ext fun m => ?_` and prove the remaining obligations. Simplify using `[ff, ExteriorAlgebra.algebraMapInv]`. Conclude with `AlgHom.congr_fun this x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem algebraMapInv_ff (k : Matrix (Fin n) (Fin n) ℂ) (x : Fock n) :
     ExteriorAlgebra.algebraMapInv (ff ε k x) = ExteriorAlgebra.algebraMapInv x := by
@@ -92,7 +92,7 @@ theorem algebraMapInv_ff (k : Matrix (Fin n) (Fin n) ℂ) (x : Fock n) :
   exact AlgHom.congr_fun this x
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Conclude with `ExteriorAlgebra.ιMulti_zero_apply v`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ιMulti_card_zero (p : ℕ) (v : Fin p → (Fin n × Fin n → ℂ)) (hp : p = 0) :
     ExteriorAlgebra.ιMulti ℂ p v = 1 := by
@@ -100,7 +100,7 @@ theorem ιMulti_card_zero (p : ℕ) (v : Fin p → (Fin n × Fin n → ℂ)) (hp
   exact ExteriorAlgebra.ιMulti_zero_apply v
 
 /- English proof (translation)
-Consider the cases of `p with`. Consider the case `zero => omega`. Consider the case `succ p`. Rewrite using `[ExteriorAlgebra.ιMulti_succ_apply, map_mul]`. Simplify using `[ExteriorAlgebra.algebraMapInv]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem algebraMapInv_ιMulti_pos (p : ℕ) (v : Fin p → (Fin n × Fin n → ℂ)) (hp : 0 < p) :
     ExteriorAlgebra.algebraMapInv (ExteriorAlgebra.ιMulti ℂ p v) = 0 := by
@@ -111,11 +111,11 @@ theorem algebraMapInv_ιMulti_pos (p : ℕ) (v : Fin p → (Fin n × Fin n → �
     simp [ExteriorAlgebra.algebraMapInv]
 
 /- English proof (translation)
-Establish `: Finsupp.lapply ∅ ∘ₗ (fockBasis n).repr.toLinearMap = (ExteriorAlgebra.algebraMapInv (R` using `ℂ) (M := Fin n × Fin n → ℂ)).toLinearMap := by`. Use `(fockBasis n).ext fun T => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Module.Basis.repr_self, Finsupp.lapply_apply, AlgHom.toLinearMap_apply]`. Rewrite using `[fockBasis_eq]`. Break down `Nat.eq_zero_or_pos T.card with h | h` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hT : T = ∅` using `Finset.card_eq_zero.mp h`. Rewrite using `[ιMulti_card_zero _ _ h, map_one, hT, Finsupp.single_eq_same]`. Establish `hT : T ≠ ∅` using `Finset.nonempty_iff_ne_empty.mp (Finset.card_pos.mp h)`. Rewrite using `[algebraMapInv_ιMulti_pos _ _ h]`. Simplify using `[hT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `LinearMap.congr_fun this x`.
+A detailed English derivation is pending.
 -/
 theorem repr_empty (x : Fock n) : (fockBasis n).repr x ∅ = ExteriorAlgebra.algebraMapInv x := by
   have : Finsupp.lapply ∅ ∘ₗ (fockBasis n).repr.toLinearMap =
@@ -133,7 +133,7 @@ theorem repr_empty (x : Fock n) : (fockBasis n).repr x ∅ = ExteriorAlgebra.alg
   exact LinearMap.congr_fun this x
 
 /- English proof (translation)
-Rewrite using `[ffMat, LinearMap.toMatrix_apply, AlgHom.toLinearMap_apply, repr_empty, algebraMapInv_ff, ← repr_empty, Module.Basis.repr_self, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ffMat_empty_row (k : Matrix (Fin n) (Fin n) ℂ) (T : Finset (Fin (n * n))) :
     ffMat ε k ∅ T = if T = ∅ then 1 else 0 := by
@@ -141,9 +141,9 @@ theorem ffMat_empty_row (k : Matrix (Fin n) (Fin n) ℂ) (T : Finset (Fin (n * n
     Module.Basis.repr_self, Finsupp.single_apply]
 
 /- English proof (translation)
-Establish `h1 : (1 : Fock n) = fockBasis n ∅`. Rewrite using `[fockBasis_eq, ιMulti_card_zero _ _ Finset.card_empty]`. Rewrite using `[h1, Matrix.toLin_self, Finset.sum_eq_single ∅]`. Simplify using `[conjTranspose_apply, ffMat_empty_row]`. Introduce `T _ hT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[conjTranspose_apply, ffMat_empty_row, hT]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem nH_one (k : Matrix (Fin n) (Fin n) ℂ) :
     Matrix.toLin (fockBasis n) (fockBasis n) (ffMat ε k)ᴴ 1 = 1 := by
@@ -156,11 +156,11 @@ theorem nH_one (k : Matrix (Fin n) (Fin n) ℂ) :
   · simp
 
 /- English proof (translation)
-Proceed by induction on `x using CliffordAlgebra.left_induction with`. Consider the case `algebraMap r`. Introduce `y`. Simplify using `[Algebra.algebraMap_eq_smul_one]`. Consider the case `add x x' hx hx'`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `y`. Rewrite using `[add_mul, map_add, hx, hx', map_add, add_mul]`. Consider the case `ι_mul x m hx`. Introduce `y`. Establish `h` using `nH_cpV hk m (x * y)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [cpV, LinearMap.mulLeft_apply] at h`. Rewrite using `[mul_assoc, h, hx, map_mul, ff, ExteriorAlgebra.map_apply_ι, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nH_mul {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (x : Fock n) :
     ∀ y : Fock n, Matrix.toLin (fockBasis n) (fockBasis n) (ffMat ε k)ᴴ (x * y) =
@@ -179,7 +179,7 @@ theorem nH_mul {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) (x : Fock n
     rw [mul_assoc, h, hx, map_mul, ff, ExteriorAlgebra.map_apply_ι, mul_assoc]
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `h` using `nH_mul hk x 1`. Rewrite `h` using `[mul_one, nH_one, mul_one]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nH_eq {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
     Matrix.toLin (fockBasis n) (fockBasis n) (ffMat ε k)ᴴ = (ff ε kᴴ).toLinearMap := by
@@ -189,11 +189,11 @@ theorem nH_eq {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[Matrix.mem_unitaryGroup_iff', star_eq_conjTranspose]`. Establish `h1 : (ffMat ε k)ᴴ = LinearMap.toMatrix (fockBasis n) (fockBasis n) (ff ε kᴴ).toLinearMap`. Rewrite using `[← nH_eq hk, LinearMap.toMatrix_toLin]`. Establish `hkk : kᴴ * k = 1`. Use `hk.1` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.mem_unitaryGroup_iff', star_eq_conjTranspose]`. Conclude with `this`. Establish `h2 : (ff ε kᴴ).toLinearMap * (ff ε k).toLinearMap = 1`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, AlgHom.toLinearMap_apply, AlgHom.toLinearMap_apply, ← AlgHom.comp_apply, ← ff_mul (kset_conjTranspose hk) hk, hkk, ff_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h1, ffMat, ← LinearMap.toMatrix_mul, h2, LinearMap.toMatrix_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ffMat_unitary {k : Matrix (Fin n) (Fin n) ℂ} (hk : k ∈ Kset ε) :
     ffMat ε k ∈ Matrix.unitaryGroup (Finset (Fin (n * n))) ℂ := by

@@ -3,17 +3,15 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `set S : Finset α := hU.toFinset with hS`. Establish `hmem : ∀ a, a ∈ S ↔ U a ≠ 0` using `fun a => by simp [hS]`. Establish `hin : ∀ i, ∑ᶠ c, W i c = ∑ a ∈ S.filter (fun a => π a = i), U a`. Introduce `i`. Establish `h1 : Function.support (W i) ⊆ ((S.filter (fun a => π a = i)).image (Φ i) : Finset (κ i))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc`. Take `⟨a, ha, hUa, hac⟩` from `hsurj i c hc`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe, Finset.mem_filter]`. Conclude with `⟨a, ⟨(hmem a).2 hUa, ha⟩, hac⟩`. Rewrite using `[finsum_eq_sum_of_support_subset _ h1, Finset.sum_image]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Take `⟨ha1, ha2⟩` from `Finset.mem_filter.1 ha`. Substitute `ha2` using the available equality. Conclude with `hval a ((hmem a).1 ha1)`. Introduce `a ha a' ha' h`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ha1, ha2⟩` from `Finset.mem_filter.1 ha`. Take `⟨ha1', ha2'⟩` from `Finset.mem_filter.1 ha'`. Substitute `ha2` using the available equality. Conclude with `hinj a a' ((hmem a).1 ha1) ((hmem a').1 ha1') ha2' h`. Simplify using `only [hin]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h2 : Function.support (fun i => ∑ a ∈ S.filter (fun a => π a = i), U a) ⊆ (S.image π : Finset ι)`. Introduce `i hi`. Take `⟨a, ha, -⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hi`. Take `⟨ha1, ha2⟩` from `Finset.mem_filter.1 ha`. Simplify using `only [Finset.coe_image, Set.mem_image, Finset.mem_coe]`.
-
-Conclude with `⟨a, ha1, ha2⟩`. Rewrite using `[finsum_eq_sum_of_support_subset _ h2, finsum_eq_sum U hU, Finset.sum_fiberwise_of_maps_to (fun a ha => Finset.mem_image_of_mem π ha)]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finsum_regroup_fibre_bij {α ι : Type} {κ : ι → Type} (U : α → ℂ)
     (W : (i : ι) → κ i → ℂ) (π : α → ι) (Φ : (i : ι) → α → κ i)

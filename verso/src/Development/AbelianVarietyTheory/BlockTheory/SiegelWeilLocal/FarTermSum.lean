@@ -28,7 +28,7 @@ def FarModerate : Prop :=
         ENNReal.ofReal (Real.exp (-((B.I.n : ℝ) ^ 2 * (B.I.f : ℝ))) * mainTerm B d)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h.2 ⟨h.1, h0, hc⟩`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 example (d : InfinitePlace B.I.F → ℝ) (x γ : B.I.GA) (h : γ ∈ farSet B d x)
     (h0 : phe B d (x⁻¹ * γ * x) ≠ 0) : ∃ v, epN B < dHS (uMat ((x⁻¹ * γ * x).1 v)) := by
@@ -37,7 +37,7 @@ example (d : InfinitePlace B.I.F → ℝ) (x γ : B.I.GA) (h : γ ∈ farSet B d
   exact h.2 ⟨h.1, h0, hc⟩
 
 /- English proof (translation)
-Introduce `_ hx` and use `hx.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (q : ℕ) (b : ℝ) : moderate B q b ⊆ B.fund := fun _ hx => hx.1
 

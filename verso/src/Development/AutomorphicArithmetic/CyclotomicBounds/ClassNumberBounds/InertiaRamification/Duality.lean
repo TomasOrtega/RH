@@ -7,7 +7,7 @@ open DirichletCharacter
 variable {N : ℕ} [NeZero N] (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Use extensionality with `χ`. Simplify using `[mem_annihilator_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem annihilator_eq_iso (H : Subgroup (ZMod N)ˣ) :
     annihilator ℂ (H : Set (ZMod N)ˣ) =
@@ -16,7 +16,7 @@ private theorem annihilator_eq_iso (H : Subgroup (ZMod N)ˣ) :
   simp [mem_annihilator_iff]
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `[charKer, Subgroup.mem_iInf, MonoidHom.mem_ker, Units.ext_iff]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem charKer_eq_iso (X : Subgroup (DirichletCharacter ℂ N)) :
     charKer X =
@@ -25,7 +25,7 @@ private theorem charKer_eq_iso (X : Subgroup (DirichletCharacter ℂ N)) :
   simp [charKer, Subgroup.mem_iInf, MonoidHom.mem_ker, Units.ext_iff]
 
 /- English proof (translation)
-Rewrite using `[annihilator_eq_iso, MulChar.card_subgroupOrderIsoSubgroupMulChar]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem card_annihilator_eq (H : Subgroup (ZMod N)ˣ) :
     Nat.card (annihilator ℂ (H : Set (ZMod N)ˣ)) = H.index := by
@@ -33,9 +33,9 @@ private theorem card_annihilator_eq (H : Subgroup (ZMod N)ˣ) :
   rfl
 
 /- English proof (translation)
-Establish `h1 : annihilator ℂ (charKer X : Set (ZMod N)ˣ) = X`. Rewrite using `[charKer_eq_iso, annihilator_eq_iso, OrderIso.apply_symm_apply]`. Both sides reduce to the same expression. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[annihilator_eq_iso, charKer_eq_iso]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← card_annihilator_eq, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem annihilator_charKer (X : Subgroup (DirichletCharacter ℂ N)) (H : Subgroup (ZMod N)ˣ) :
     annihilator ℂ (charKer X : Set (ZMod N)ˣ) = X ∧
@@ -49,13 +49,13 @@ theorem annihilator_charKer (X : Subgroup (DirichletCharacter ℂ N)) (H : Subgr
   · rw [← card_annihilator_eq, h1]
 
 /- English proof (translation)
-Take `⟨h1, -, h3⟩` from `annihilator_charKer X ⊥`. Establish `hk : (localPart N l).ker ⊓ X = annihilator ℂ ((inertiaUnits N l ⊔ charKer X : Subgroup (ZMod N)ˣ) : Set (ZMod N)ˣ)`. Rewrite using `[annihilator_eq_iso, OrderIso.map_sup, ofDual_sup, ← annihilator_eq_iso, ← annihilator_eq_iso, h1]`. Use `congr 1`. Use extensionality with `ψ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Rewrite using `[MonoidHom.mem_ker, (localPart_eq_one_iff l ψ).1, mem_annihilator_iff]`. Both sides reduce to the same expression. Establish `hc : Nat.card ((localPart N l).ker ⊓ X : Subgroup _) = (inertiaUnits N l ⊔ charKer X).index`. Rewrite using `[hk, card_annihilator_eq]`. Establish `e1 : Nat.card ((localPart N l).ker ⊓ X : Subgroup _) * ramIdx l X = Nat.card X`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `ramIdx`. Rewrite using `[← Subgroup.relIndex_ker, ← Subgroup.inf_relIndex_right, Subgroup.relIndex, ← Subgroup.card_mul_index (((localPart N l).ker ⊓ X).subgroupOf X), Nat.card_congr (Subgroup.subgroupOfEquivOfLe inf_le_right).toEquiv]`. Establish `e2 : ramIdxUnits l (charKer X) * (inertiaUnits N l ⊔ charKer X).index = (charKer X).index`. Unfold `ramIdxUnits`. Rewrite using `[← Subgroup.relIndex_ker, QuotientGroup.ker_mk', ← Subgroup.relIndex_sup_right, Subgroup.relIndex_mul_index le_sup_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < (inertiaUnits N l ⊔ charKer X).index` using `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`. Apply `Nat.eq_of_mul_eq_mul_left hpos` to reduce the goal to its premises. Rewrite using `[mul_comm _ (ramIdxUnits _ _), e2, ← hc, e1, h3]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem ramIdx_eq_ramIdxUnits (X : Subgroup (DirichletCharacter ℂ N)) :
     ramIdx l X = ramIdxUnits l (charKer X) := by

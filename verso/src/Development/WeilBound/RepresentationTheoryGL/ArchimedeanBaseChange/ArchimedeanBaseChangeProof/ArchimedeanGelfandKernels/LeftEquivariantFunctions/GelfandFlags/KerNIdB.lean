@@ -14,7 +14,7 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `v hv`. Establish `h` using `hu.2.2 v hv`. Rewrite `h` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_eq_zero]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nil_fix {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} {u : G n} (hu : u ∈ nilSet W₁ W₂) :
     ∀ v ∈ W₁, u.val *ᵥ v = v := by
@@ -24,7 +24,7 @@ theorem nil_fix {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} {u : G n} (hu : u �
   exact h
 
 /- English proof (translation)
-Introduce `v hv`. Establish `h` using `W₂.add_mem (hu.1 v) hv`. Rewrite `h` using `[Matrix.sub_mulVec, Matrix.one_mulVec, sub_add_cancel]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem nil_mem₂ {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂) {u : G n} (hu : u ∈ nilSet W₁ W₂) :
     ∀ v ∈ W₂, u.val *ᵥ v ∈ W₂ := by
@@ -33,13 +33,11 @@ theorem nil_mem₂ {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W�
   rwa [Matrix.sub_mulVec, Matrix.one_mulVec, sub_add_cancel] at h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨v, hv, rfl⟩` from `Submodule.mem_map.mp hx`. Rewrite using `[Matrix.mulVecLin_apply, nil_fix hu v hv]`.
+Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv`. Introduce `v hv`. Conclude with `Submodule.mem_map.mpr ⟨v, hv, by rw [Matrix.mulVecLin_apply, nil_fix hu v hv]⟩`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv, rfl⟩` from `Submodule.mem_map.mp hx`. Rewrite using `[Matrix.mulVecLin_apply]`. Conclude with `nil_mem₂ hW hu v hv`. Introduce `v hv`. Use `Submodule.mem_map.mpr ⟨u⁻¹.val *ᵥ v, nil_mem₂ hW hu' v hv, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nil_maps {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂) {u : G n} (hu : u ∈ nilSet W₁ W₂)
     (hu' : u⁻¹ ∈ nilSet W₁ W₂) :
@@ -62,7 +60,7 @@ theorem nil_maps {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂
       rw [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]
 
 /- English proof (translation)
-Rewrite using `[← hN]`. Conclude with `u.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_nil_of {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} {N : Subgroup (G n)} (hN : (N : Set (G n)) = nilSet W₁ W₂)
     (u : N) : (u : G n) ∈ nilSet W₁ W₂ := by
@@ -70,7 +68,7 @@ theorem mem_nil_of {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} {N : Subgroup (G 
   exact u.2
 
 /- English proof (translation)
-Use `nil_maps hW (mem_nil_of hN u) ?_` and prove the remaining obligations. Rewrite using `[← Subgroup.coe_inv]`. Conclude with `mem_nil_of hN u⁻¹`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maps_of {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂) {N : Subgroup (G n)}
     (hN : (N : Set (G n)) = nilSet W₁ W₂) (u : N) :
@@ -80,14 +78,14 @@ theorem maps_of {W₁ W₂ : Submodule ℂ (Fin n → ℂ)} (hW : W₁ ≤ W₂)
   exact mem_nil_of hN u⁻¹
 
 /- English proof (translation)
-The claim follows from `hNc.isClosedEmbedding_subtypeVal.isCompact_preimage (hLg n R)`.
+A detailed English derivation is pending.
 -/
 theorem cptN (hLg : LgCpt) {N : Subgroup (G n)} (hNc : IsClosed (N : Set (G n))) (R : ℝ) :
     IsCompact {u : N | lg (u : G n).val ≤ R} :=
   hNc.isClosedEmbedding_subtypeVal.isCompact_preimage (hLg n R)
 
 /- English proof (translation)
-Simplify using `only [GLs, Set.mem_setOf_eq] at hy ⊢`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (by simpa [GLs] using memGL u) hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_memGL (u : G n) (y : Mat n) (hy : y ∈ GLs n) : u.val * y ∈ GLs n := by
   simp only [GLs, Set.mem_setOf_eq] at hy ⊢
@@ -95,9 +93,9 @@ theorem mul_memGL (u : G n) (y : Mat n) (hy : y ∈ GLs n) : u.val * y ∈ GLs n
   exact mul_ne_zero (by simpa [GLs] using memGL u) hy
 
 /- English proof (translation)
-Establish `hcont : Continuous (fun u : N => h ((u : G n).val * y))` using `hc.comp_continuous ((Units.continuous_val.comp continuous_subtype_val).mul continuous_const) (fun u => mul_memGL _ y hy)`. Use `hcont.integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (cptN hLg hNc (R + lg y)) ?_` and prove the remaining obligations. Introduce `u hu`. Simplify using `only [Set.mem_setOf_eq, not_le] at hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `hR _ (mul_memGL _ y hy)` to reduce the goal to its premises. Use `lg_le_of_mul ((u : G n).val) y hy` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem integrable_N (hLg : LgCpt) [MeasurableSpace (G n)] [BorelSpace (G n)] {N : Subgroup (G n)}
     (hNc : IsClosed (N : Set (G n))) (ν : Measure N) [IsFiniteMeasureOnCompacts ν] {X : Type} [NormedAddCommGroup X]

@@ -20,18 +20,18 @@ Both sides reduce to the same expression.
 theorem szt_Jm_eq (ε : Fin n → Bool) : Jm ε = Matrix.diagonal (sztJd ε) := rfl
 
 /- English proof (translation)
-Unfold `sztJd`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem szt_jd_sq (ε : Fin n → Bool) (a : Fin n) : sztJd ε a * sztJd ε a = 1 := by
   unfold sztJd
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `S7.lead`. Use `split_ifs with h`. Establish `hsub : (Jm ε * z * Jm ε).submatrix (Fin.castLE h) (Fin.castLE h) = Matrix.diagonal (sztJd ε ∘ Fin.castLE h) * z.submatrix (Fin.castLE h) (Fin.castLE h) * Matrix.diagonal (sztJd ε ∘ Fin.castLE h)`. Rewrite using `[szt_Jm_eq]`. Use extensionality with `a b`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.submatrix_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Function.comp_apply]`. Rewrite using `[hsub, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal]`. Establish `hA : (∏ a, (sztJd ε ∘ Fin.castLE h) a) * (∏ a, (sztJd ε ∘ Fin.castLE h) a) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one fun a _ => szt_jd_sq ε _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Both sides reduce to the same expression.
 
-Combine the equalities or inequalities in the displayed calculation. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem szt_lead_Jconj (ε : Fin n → Bool) (z : Matrix (Fin n) (Fin n) ℂ) (i : ℕ) :
     S7.lead i (Jm ε * z * Jm ε) = S7.lead i z := by
@@ -55,7 +55,7 @@ theorem szt_lead_Jconj (ε : Fin n → Bool) (z : Matrix (Fin n) (Fin n) ℂ) (i
   · rfl
 
 /- English proof (translation)
-Unfold `S7.PhiM`. Simplify using `only [szt_lead_Jconj]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem szt_phiM_Jconj (ε : Fin n → Bool) (μ : Fin n → ℤ) (z : Matrix (Fin n) (Fin n) ℂ) :
     S7.PhiM μ (Jm ε * z * Jm ε) = S7.PhiM μ z := by
@@ -63,7 +63,7 @@ theorem szt_phiM_Jconj (ε : Fin n → Bool) (μ : Fin n → ℤ) (z : Matrix (F
   simp only [szt_lead_Jconj]
 
 /- English proof (translation)
-Take `⟨hY, hE⟩` from `S7.inP_conj k⁻¹ hX`. Simplify using `only [inv_inv] at hY hE`. Rewrite using `[← hE, Matrix.inv_eq_left_inv (PolarDecomposition.polar_exp_neg_mul _), ← S7.inP_JXJ hY, PolarDecomposition.polar_exp_Jconj, szt_phiM_Jconj]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem szt_phiM_inv_conj {ε : Fin n → Bool} (μ : Fin n → ℤ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : inP ε X)
     (k : S7.KG ε) :
@@ -79,9 +79,9 @@ section Cayley
 variable {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
 
 /- English proof (translation)
-Establish `hPu : P ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ` using `hP.2`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(Matrix.mem_unitaryGroup_iff' (A := P)).mp hPu` as an intermediate fact. Simplify `this` using `[Matrix.star_eq_conjTranspose]`. Use `(Matrix.mem_unitaryGroup_iff (A := P)).mp hPu` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.star_eq_conjTranspose]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem szt_unitary (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) : Pᴴ * P = 1 ∧ P * Pᴴ = 1 := by
   have hPu : P ∈ Matrix.unitaryGroup (Fin (2 * r + k + 1)) ℂ := hP.2
@@ -92,11 +92,11 @@ theorem szt_unitary (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) : Pᴴ * P
     simpa [Matrix.star_eq_conjTranspose] using this
 
 /- English proof (translation)
-Rewrite using `[← mir_UJset_eq]`. Take `⟨e1, e2⟩` from `szt_unitary hP`. Establish `hinv : P⁻¹ = Pᴴ` using `Matrix.inv_eq_left_inv e1`. Establish `hc : Pᴴ * Formalism.REAL.Jm ε * P = Formalism.QuantumDeterminants.Hpk k r` using `hP.1.2`. Establish `hg' : gᴴ * Formalism.QuantumDeterminants.Hpk k r * g = Formalism.QuantumDeterminants.Hpk k r` using `hg`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show (P * g * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P * g * P⁻¹) = Formalism.REAL.Jm ε`. Rewrite using `[hinv]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = P * Pᴴ * Formalism.REAL.Jm ε * (P * Pᴴ) := by`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, hg', ← hc]`. Simplify using `[Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [e2]; simp`.
+A detailed English derivation is pending.
 -/
 theorem szt_conj_mem (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) {g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ}
     (hg : g ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r)) : P * g * P⁻¹ ∈ UJset ε := by
@@ -115,9 +115,9 @@ theorem szt_conj_mem (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) {g : Matr
     _ = Formalism.REAL.Jm ε := by rw [e2]; simp
 
 /- English proof (translation)
-Take `⟨e1, -⟩` from `szt_unitary hP`. Establish `hinv : P⁻¹ = Pᴴ` using `Matrix.inv_eq_left_inv e1`. Establish `h` using `S7.decA_hs_conj (K := Pᴴ) (by rw [Matrix.conjTranspose_conjTranspose]; exact e1) g`. Rewrite `h` using `[Matrix.conjTranspose_conjTranspose]`. Rewrite using `[hinv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem szt_hs_conj (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     S7.hs (P * g * P⁻¹) = S7.hs g := by
@@ -131,7 +131,7 @@ theorem szt_hs_conj (hP : Formalism.MainNotions.S.IsCayleyU k r ε P) (g : Matri
 end Cayley
 
 /- English proof (translation)
-Unfold `Formalism.FourierDecayAlt.B.gN S7.hs`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `Complex.normSq_eq_norm_sq _`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem szt_gN_eq {k r : ℕ} (g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) :
     Formalism.FourierDecayAlt.B.gN g = Real.sqrt (S7.hs g) := by

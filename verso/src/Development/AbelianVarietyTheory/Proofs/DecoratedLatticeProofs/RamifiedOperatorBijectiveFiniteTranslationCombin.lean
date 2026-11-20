@@ -23,7 +23,7 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
   {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `P₁`. Establish `h` using `Classical.epsilon_spec (p := fun g : GL n k => g • P = P₁) (MulAction.exists_smul_eq (GL n k) P P₁)`. Use `show β.rep _ (φ P) = φ P₁`. Rewrite using `[← hφ, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formAt_eq (β : Frame p S n) (P : Pair k n) {φ : Form k n (GA D S → ℂ)} (hφ : φ ∈ EqForm β.rep) :
     formAt β P (φ P) = φ := by
@@ -33,7 +33,7 @@ theorem formAt_eq (β : Frame p S n) (P : Pair k n) {φ : Form k n (GA D S → �
   rw [← hφ, h]
 
 /- English proof (translation)
-Rewrite using `[← Finsupp.sum_finset_sum_index (fun h => zero_smul ℂ (β.rep h φ₀)) (fun h _ _ => add_smul _ _ (β.rep h φ₀))]`. Conclude with `Finset.sum_congr rfl fun i _ => Finsupp.sum_single_index (zero_smul ℂ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_single_sum (β : Frame p S n) {ι : Type} (s : Finset ι) (g : ι → GL n k) (a : ι → ℂ)
     (φ₀ : GA D S → ℂ) :
@@ -46,7 +46,7 @@ section Ops
 variable (q : Unif k) (χ : AddChar 𝓀[k] ℂ) (ε : 𝓀[k]ˣ) (β : Frame p S n)
 
 /- English proof (translation)
-Use `⟨dia_mem_EqForm ε (FFStar_mem_EqForm q χ hφ.1), hO.dia_mem_ram ε _ (hO.FFStar_mem_ram _ hφ.2.1), fun P' => ?_⟩` and prove the remaining obligations. Rewrite using `[dia_apply, FFStar_apply]`. Conclude with `(contAutSub S).sum_mem fun P₁ _ => (contAutSub S).smul_mem _ (hφ.2.2 P₁)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRam_diaFFStar (hO : OperatorIdentities k n (GA D S → ℂ) q χ) {φ : Form k n (GA D S → ℂ)}
     (hφ : IsRam β φ) : IsRam β (dia ε (FFStar q χ φ)) := by
@@ -56,7 +56,7 @@ theorem isRam_diaFFStar (hO : OperatorIdentities k n (GA D S → ℂ) q χ) {φ 
   exact (contAutSub S).sum_mem fun P₁ _ => (contAutSub S).smul_mem _ (hφ.2.2 P₁)
 
 /- English proof (translation)
-Use `⟨(EqForm β.rep).smul_mem c (FF_mem_EqForm q χ (dia_mem_EqForm _ hφ.1)), (Mram k n _).smul_mem c (hO.FF_mem_ram _ (hO.dia_mem_ram _ _ hφ.2.1)), fun P' => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, FF_apply]`. Use `(contAutSub S).smul_mem c ((contAutSub S).sum_mem fun Q _ => (contAutSub S).smul_mem _ ?_)` and prove the remaining obligations. Rewrite using `[dia_apply]`. Conclude with `hφ.2.2 _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isRam_FFdia (hO : OperatorIdentities k n (GA D S → ℂ) q χ) (c : ℂ) {φ : Form k n (GA D S → ℂ)}
     (hφ : IsRam β φ) : IsRam β (c • FF q χ (dia ε⁻¹ φ)) := by
@@ -68,7 +68,7 @@ theorem isRam_FFdia (hO : OperatorIdentities k n (GA D S → ℂ) q χ) (c : ℂ
   exact hφ.2.2 _
 
 /- English proof (translation)
-Establish `hqr : ((resCard k : ℂ) ^ Fintype.card n) ≠ 0` using `pow_ne_zero _ GlobalTheory.PairOp.resCard_ne_zero`. Rewrite using `[map_smul, map_smul, hO.FFStar_FF_ram _ (hO.dia_mem_ram _ _ h), map_smul, smul_smul, inv_mul_cancel₀ hqr, one_smul, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem diaFFStar_inv (hO : OperatorIdentities k n (GA D S → ℂ) q χ) {φ : Form k n (GA D S → ℂ)}
     (h : φ ∈ Mram k n (GA D S → ℂ)) :
@@ -78,9 +78,9 @@ theorem diaFFStar_inv (hO : OperatorIdentities k n (GA D S → ℂ) q χ) {φ : 
     one_smul, ← Module.End.mul_apply, ← map_mul, mul_inv_cancel, map_one, Module.End.one_apply]
 
 /- English proof (translation)
-Establish `hqr : ((resCard k : ℂ) ^ Fintype.card n) ≠ 0` using `pow_ne_zero _ GlobalTheory.PairOp.resCard_ne_zero`. Establish `h2 : FF q χ (dia ε⁻¹ (dia ε (FFStar q χ φ))) = FF q χ (dia ε⁻¹ (dia ε (FFStar q χ φ')))` using `by rw [he]`. Establish `hd : ∀ X : Form k n (GA D S → ℂ), dia ε⁻¹ (dia ε X) = X` using `fun X => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Rewrite `h2` using `[hd, hd, hO.FF_FFStar_ram _ h, hO.FF_FFStar_ram _ h']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `smul_right_injective _ hqr h2`.
+A detailed English derivation is pending.
 -/
 theorem diaFFStar_inj (hO : OperatorIdentities k n (GA D S → ℂ) q χ) {φ φ' : Form k n (GA D S → ℂ)}
     (h : φ ∈ Mram k n (GA D S → ℂ)) (h' : φ' ∈ Mram k n (GA D S → ℂ))
@@ -95,19 +95,17 @@ theorem diaFFStar_inj (hO : OperatorIdentities k n (GA D S → ℂ) q χ) {φ φ
 end Ops
 
 /- English proof (translation)
-Use `set χ := resChar χ₀ hχ q with hχdef`. Establish `hO : OperatorIdentities k n (GA D S → ℂ) q χ` using `((GlobalTheory.PairOp.pairOperatorStatement k q χ₀ hχ n).1 (GA D S → ℂ)).2`. Use `set r : ℂ := ((resCard k : ℂ) ^ Fintype.card n)⁻¹ with hr`. Establish `hval : ∀ φ, IsRam β φ → sOp β P q χ ε (φ P) = dia ε (FFStar q χ φ) P` using `fun φ hφ => by show dia ε (FFStar q χ (formAt β P (φ P))) P = _`. Rewrite using `[formAt_eq β P hφ.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv : ∀ φ, IsRam β φ → sOp β P q χ ε ((r • FF q χ (dia ε⁻¹ φ)) P) = φ P` using `fun φ hφ => by`. Rewrite using `[hval _ (isRam_FFdia q χ ε β hO r hφ), diaFFStar_inv q χ ε hO hφ.2.1]`. Set `gch : Pair k n → GL n k` to `fun P₁ => Classical.epsilon fun g : GL n k => g • P = P₁`. Use `⟨⟨?_, ?_, ?_⟩, fun φ hφ => ⟨isRam_diaFFStar q χ ε β hO hφ, hval φ hφ⟩, ∑ P₁ ∈ withKer (ε • P).lat, Finsupp.single (gch P₁) (χ (-cross q P₁ (ε • P))), ∑ Q ∈ withLat P.ker, Finsupp.single (gch (ε⁻¹ • Q)) (r * χ (cross q P Q)), fun φ₀ => ?_, fun φ₀ hφ₀ => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, isRam_diaFFStar q χ ε β hO hφ, (hval φ hφ).symm⟩`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩ _ ⟨φ', hφ', rfl⟩ he`. Rewrite `he` using `[hval φ hφ, hval φ' hφ']`. Establish `hX` using `isRam_diaFFStar q χ ε β hO hφ`. Establish `hX'` using `isRam_diaFFStar q χ ε β hO hφ'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he' : dia ε (FFStar q χ φ) = dia ε (FFStar q χ φ')`. Rewrite using `[← formAt_eq β P hX.1, ← formAt_eq β P hX'.1, he]`. Rewrite using `[diaFFStar_inj q χ ε hO hφ.2.1 hφ'.2.1 he']`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Conclude with `⟨_, ⟨_, isRam_FFdia q χ ε β hO r hφ, rfl⟩, hinv φ hφ⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[sum_single_sum]`. Both sides reduce to the same expression. Take `⟨φ, hφ, rfl⟩` from `hφ₀`. Establish `hc : (∑ Q ∈ withLat P.ker, Finsupp.single (gch (ε⁻¹ • Q)) (r * χ (cross q P Q))).sum (fun g a => a • β.rep g (φ P)) = (r • FF q χ (dia ε⁻¹ φ)) P`. Rewrite using `[sum_single_sum, Pi.smul_apply, FF_apply, Finset.smul_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun Q _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, dia_apply]`. Use `conv_rhs => rw [← formAt_eq β P hφ.1]`. Both sides reduce to the same expression. Rewrite using `[hc]`.
-
-Conclude with `⟨hinv φ hφ, _, isRam_FFdia q χ ε β hO r hφ, rfl⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ramBijective_at (q : Unif k) (χ₀ : AddChar k Circle) (hχ : HasConductor χ₀ 1) (ε : 𝓀[k]ˣ)
     (β : Frame p S n) (P : Pair k n) :
@@ -161,7 +159,7 @@ end GlobalTheory.FinPl.RamBij
 namespace GlobalTheory.FinPl
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p n _ _ q χ₀ hχ χ hχeq ε S β P`. Substitute `hχeq` using the available equality. Conclude with `RamBij.ramBijective_at q χ₀ hχ ε β P`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem ramBijective_holds : ∀ D : D7, GlobalTheory.FinPl.RamBijective D := by
   intro D k _ _ _ _ p n _ _ q χ₀ hχ χ hχeq ε S β P

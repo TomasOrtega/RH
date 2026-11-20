@@ -8,9 +8,9 @@ open UpperTheory.Gal.LocD UpperTheory.Gal.InertialTypesAlt.G UpperTheory.Gal.Joi
 open scoped Classical
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π hi ω hω w h`. Establish `hw : ∀ i, IsSmoothChar ((ω ∘ w) i)` using `fun i => hω (w i)`. Establish `h1` using `(UpperTheory.Gal.LocD.ofSupport k n V π ω hω).2 ⟨hi, h⟩`. Establish `e : (Finset.univ.val.map fun i => IrrGL.ofChar ((ω ∘ w) i) (hw i)) = Finset.univ.val.map fun i => IrrGL.ofChar (ω i) (hω i)`. Establish `e'` using `congrArg (Multiset.map fun i => IrrGL.ofChar (ω i) (hω i)) (Multiset.map_univ_val_equiv w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e'` using `[Multiset.map_map]`. Conclude with `e'`. Rewrite `h1` using `[← e]`. Conclude with `((UpperTheory.Gal.LocD.ofSupport k n V π (ω ∘ w) hw).1 h1).2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Join.subPerm :
     UpperTheory.Gal.Join.SubPerm := by

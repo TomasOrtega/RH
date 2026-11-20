@@ -5,7 +5,7 @@ open GlobalTheory.AlmostEt
 open scoped NNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AlmostEt.exists_normal_finiteIndex_fixing` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsNormalFiniteIndexFixing.lean&line=7#L7)
 -/

@@ -7,15 +7,15 @@ open FinHolAtlas
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_id, fun j k => A.holo j k⟩`.
+Supply the required witnesses or components.
 -/
 theorem holoMap_id (A : FinHolAtlas e X) : HoloMap A A id :=
   ⟨continuous_id, fun j k => A.holo j k⟩
 
 /- English proof (translation)
-Introduce `x`. Use `⟨Set.univ, isOpen_univ, Set.mem_univ x, 1, fun _ _ => (1 : ℂ), ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Conclude with `analyticOnNhd_const`. Use extensionality with `y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem isAnalyticSubset_empty (A : FinHolAtlas e X) : A.IsAnalyticSubset ∅ := by
   intro x
@@ -26,13 +26,13 @@ theorem isAnalyticSubset_empty (A : FinHolAtlas e X) : A.IsAnalyticSubset ∅ :=
     simp
 
 /- English proof (translation)
-Establish `hU : IsOpen ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart k).source)` using `(A.chart j).isOpen_inter_preimage_symm (A.chart k).open_source`. Establish `hyU : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart k).source` using `⟨hy, hk⟩`. Establish `hfd : DifferentiableAt ℂ (A.chart k ∘ (A.chart j).symm) y` using `(A.holo j k y hyU).differentiableAt`. Establish `hz : (A.chart k ∘ (A.chart j).symm) y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' (A.chart j).source`. Use `⟨(A.chart k).map_source hk, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (A.chart k).symm (A.chart k ((A.chart j).symm y)) ∈ (A.chart j).source`. Rewrite using `[(A.chart k).left_inv hk]`. Conclude with `(A.chart j).map_target hy`. Establish `hgd : DifferentiableAt ℂ (A.chart j ∘ (A.chart k).symm) ((A.chart k ∘ (A.chart j).symm) y)` using `(A.holo k j _ hz).differentiableAt`. Establish `hev : (A.chart j ∘ (A.chart k).symm) ∘ (A.chart k ∘ (A.chart j).symm) =ᶠ[nhds y] id` using `by filter_upwards [hU.mem_nhds hyU] with y' hy' show (A.chart j) ((A.chart k).symm ((A.chart k) ((A.chart j).symm y'))) = y'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(A.chart k).left_inv hy'.2, (A.chart j).right_inv hy'.1]`. Establish `hcomp : (fderiv ℂ (A.chart j ∘ (A.chart k).symm) ((A.chart k ∘ (A.chart j).symm) y)).comp (fderiv ℂ (A.chart k ∘ (A.chart j).symm) y) = ContinuousLinearMap.id ℂ (Fin e → ℂ)`. Rewrite using `[← fderiv_comp y hgd hfd, hev.fderiv_eq, fderiv_id]`. Introduce `h0`. Establish `hdet : LinearMap.det (((fderiv ℂ (A.chart j ∘ (A.chart k).symm) ((A.chart k ∘ (A.chart j).symm) y)) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)).comp ((fderiv ℂ (A.chart k ∘ (A.chart j).symm) y) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ))) = 1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ((fderiv ℂ (A.chart j ∘ (A.chart k).symm) ((A.chart k ∘ (A.chart j).symm) y)) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)).comp ((fderiv ℂ (A.chart k ∘ (A.chart j).symm) y) : (Fin e → ℂ) →ₗ[ℂ] (Fin e → ℂ)) = (((fderiv ℂ (A.chart j ∘ (A.chart k).symm) ((A.chart k ∘ (A.chart j).symm) y)). …` using `rfl`. Rewrite using `[hc, hcomp, ContinuousLinearMap.coe_id, LinearMap.det_id]`. Rewrite `hdet` using `[LinearMap.det_comp, h0, mul_zero]`. Conclude with `zero_ne_one hdet`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_fderiv_transition_ne_zero (A : FinHolAtlas e X) (j k : Fin A.n)
     {y : Fin e → ℂ} (hy : y ∈ (A.chart j).target) (hk : (A.chart j).symm y ∈ (A.chart k).source) :
@@ -68,11 +68,9 @@ theorem det_fderiv_transition_ne_zero (A : FinHolAtlas e X) (j k : Fin A.n)
   exact zero_ne_one hdet
 
 /- English proof (translation)
-Use `⟨isAnalyticSubset_empty A, interior_empty, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.preimage_id]`. Conclude with `isAnalyticSubset_empty A`. Rewrite using `[Set.preimage_id]`. Conclude with `interior_empty`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Rewrite using `[Set.preimage_id]`. Conclude with `Set.ncard_singleton x`. Introduce `j k y hy _ hk`. Rewrite using `[Function.id_comp]`.
-
-Conclude with `det_fderiv_transition_ne_zero A j k hy hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDegreeOff_id (A : FinHolAtlas e X) : IsDegreeOff A A id 1 ∅ := by
   refine ⟨isAnalyticSubset_empty A, interior_empty, ?_, ?_, ?_, ?_⟩

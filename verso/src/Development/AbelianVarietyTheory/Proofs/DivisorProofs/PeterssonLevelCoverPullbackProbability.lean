@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.LevPullNorm
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise Finset.univ π, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `hk` using `h k`. Rewrite `hk` using `[finsum_eq_sum_of_fintype]`. Rewrite using `[← hk, Nat.cast_sum, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_subtype _ (p := fun i => π i = k) (by simp)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[i.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mul_fibre {ι κ : Type} [Fintype ι] [Fintype κ] (π : ι → κ) (w : ι → ℕ) (N : ℕ) (I : κ → ℝ≥0∞)
     (h : ∀ k, ∑ᶠ i : {i // π i = k}, w i.1 = N) : ∑ i, (w i : ℝ≥0∞) * I (π i) = N * ∑ k, I k := by
@@ -32,7 +32,7 @@ theorem sum_mul_fibre {ι κ : Type} [Fintype ι] [Fintype κ] (π : ι → κ) 
   rw [i.2]
 
 /- English proof (translation)
-Unfold `GoodEmb`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 -/
 theorem goodEmb_comp_eF (D : D7) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : Moduli Dw l} {c : Coeff l} (d : DeltaDat Xo c 0) (σ₂ : d.c₂.F →+* ℂ) :
     GoodEmb c (σ₂.comp (d.eF : c.F →+* d.c₂.F)) ↔ GoodEmb d.c₂ σ₂ := by
@@ -40,14 +40,14 @@ theorem goodEmb_comp_eF (D : D7) {H : ReciprocityTheory.ChartRestriction.G.Geo.T
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem frame_tr {E : Type} [Field E] {r : ℕ} {A B : Finset (E →+* ℂ)} (h : A = B) (x : Frame A r) (ρ : E →+* ℂ)
     (h₁ : ρ ∈ B) (h₂ : ρ ∈ A) : (h ▸ x : Frame B r) ⟨ρ, h₁⟩ = x ⟨ρ, h₂⟩ := by
   subst h; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ`. Use extensionality with `a`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem relab_eF (D : D7) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : Moduli Dw l} {c : Coeff l} (d : DeltaDat Xo c 0) (τ : d.c₂.F →+* ℂ) :
@@ -57,7 +57,7 @@ theorem relab_eF (D : D7) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host
   rfl
 
 /- English proof (translation)
-Unfold `goodOf`. Distinguish the cases in `h : GoodEmb d.c₂ σ₂`. Rewrite using `[if_pos ((goodEmb_comp_eF D d σ₂).2 h), if_pos h]`. Rewrite using `[if_neg (fun h' => h ((goodEmb_comp_eF D d σ₂).1 h')), if_neg h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem goodOf_eF (D : D7) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} {Dw : Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}
     {Xo : Moduli Dw l} {c : Coeff l} (d : DeltaDat Xo c 0) (σ₂ : d.c₂.F →+* ℂ) :
@@ -69,15 +69,15 @@ theorem goodOf_eF (D : D7) {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Hos
     rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ r X X' hΨ δ la la' P P' t n hG hp hu hla ht h0' h0 hrel y`. Consider the cases of `X'`. Consider the cases of `hΨ`. Consider the cases of `hG`. Consider the cases of `hp`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Establish `hla' : la' = la` using `funext fun τ => funext fun i => hla τ.1 τ.2 i`. Substitute `hla'` using the available equality. Establish `hun : GlobalTheory.SW.IsUn X δ` using `hu`. Establish `hd : ∀ (z : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)), dmin X.Gm (lact δ z) τ i = dmin X.Gm z τ i` using `fun z τ i => GlobalTheory.Dict.Extend.dmin_lact hun z τ i`. Establish `hdom : ∀ z : Frame X.Ψ r, lact δ z ∈ X.dom → z ∈ X.dom`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz τ`. Use `⟨fun h => (hz τ).1 ?_, fun i => by rw [← hd z τ i]; exact (hz τ).2 i⟩` and prove the remaining obligations. Use `show ((δ : Matrix (Fin r) (Fin r) E).map τ.1 * mat z τ).det = 0`. Rewrite using `[Matrix.det_mul, h, mul_zero]`. Use `show _ = X.pnorm _ P (lact δ y)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Unfold `Data.pnorm`. Distinguish the cases in `hy : y ∈ X.dom`. Rewrite using `[hrel y hy, norm_mul, norm_pow, ht, one_pow, one_mul]`. Use `congrArg₂ (· * ·) rfl (Finset.prod_congr rfl fun τ _ => Finset.prod_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hd, hd]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : lact δ y ∉ X.dom` using `fun h => hy (hdom y h)`. Rewrite using `[h0' y hy, h0 _ hy', norm_zero, zero_mul, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem pnorm_lact_transport : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X X' : Data E r) (hΨ : X'.Ψ = X.Ψ) (δ : GL (Fin r) E) (la : Wt X.Ψ r) (la' : Wt X'.Ψ r) (P : Frame X.Ψ r → ℂ) (P' : Frame X'.Ψ r → ℂ) (t : ℂ) (n : ℕ), X'.Gm = X.Gm → X'.p0 = X.p0 → (∀ v w, herm X.Gm ((δ : Matrix (Fin r) (Fin r) E).mulVec v) ((δ : Matrix (Fin r) (Fin r) E).mulVec w) = herm X.Gm v w) → (∀ (τ : E →+* ℂ) (h : τ ∈ X'.Ψ) (i : Fin r), la' ⟨τ, h⟩ i = la ⟨τ, hΨ ▸ h⟩ i) → ‖t‖ = 1 → (∀ x ∉ X'.dom, P' x = 0) → (∀ x ∉ X.dom, P x = 0) → (∀ x ∈ X'.dom, P' x = t ^ n * P (lact δ (hΨ ▸ x))) → ∀ y : Frame X'.Ψ r, X'.pnorm la' P' y = X.pnorm la P (lact δ (hΨ ▸ y)) := by
   intro E _ _ _ r X X' hΨ δ la la' P P' t n hG hp hu hla ht h0' h0 hrel y
@@ -105,13 +105,13 @@ theorem pnorm_lact_transport : ∀ (E : Type) [Field E] [NumberField E] [IsCMFie
     rw [h0' y hy, h0 _ hy', norm_zero, zero_mul, zero_mul]
 
 /- English proof (translation)
-Introduce `D j H Dw l Xo c U dict hL σ hσ G f hf x0 FF hx`. Establish `hsf : ∀ k, ((U σ).X k).IsSec (modelWt (U σ) G k) (rdU (U σ) f k)` using `fun k => GlobalTheory.PeterssonCompare.isSec_of_mem_holSub _ _ ((mem_cuspW.1 hf).2 σ hσ) k`. Take `⟨h0, hT, hI⟩` from `GlobalTheory.T.adelicProbability_eq_normalised_fundamentalSets D j H Dw l Xo c U dict hL σ hσ x0 FF hx`. Use `⟨h0, hT, ?_⟩` and prove the remaining obligations. Use `hI (fun k y => ENNReal.ofReal (((U σ).X k).pnorm (modelWt (U σ) G k) (rdU (U σ) f k) y ^ 2)) (fun k => ENNReal.measurable_ofReal.comp ((GlobalTheory.PeterssonCompare.measurable_pnorm _ _ (hsf k).1.continuousOn (fun y hy => dif_neg hy)).pow_const 2)) (fun k γ hγ y hy => by simp on …` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Use `congr 1`. Unfold `petE`. Establish `e : eLpNorm (fun q => ptN (modelWt (U σ) G) (rdU (U σ) f) (dict σ (Quotient.out q))) 2 (muQ1 (D.sp.W j)) ^ 2 = ∫⁻ q, ‖ptN (modelWt (U σ) G) (rdU (U σ) f) (dict σ (Quotient.out q))‖ₑ ^ 2 ∂(muQ1 (D.sp.W j))`. Use `eLpNorm_nnreal_pow_eq_lintegral (p := 2) (μ := muQ1 (D.sp.W j)) (f := fun q => ptN (modelWt (U σ) G) (rdU (U σ) f) (dict σ (Quotient.out q))) two_ne_zero` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Rewrite using `[e]`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Establish `hnn : 0 ≤ ptN (modelWt (U σ) G) (rdU (U σ) f) (dict σ (Quotient.out q))`. Unfold `ptN Data.pnorm`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Check the signs of the components of the expression. Rewrite using `[← ofReal_norm_eq_enorm, Real.norm_of_nonneg hnn, ← ENNReal.ofReal_pow hnn]`. Both sides reduce to the same expression.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem petE_sq_mul_vol : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r), Laws D j Xo c U dict → ∀ σ, GoodEmb c σ → ∀ (G : WTZ D.host.E) (f : Rul Xo c), f ∈ cuspW Xo c U G → ∀ (x0 : ∀ k, Frame ((U σ).X k).Ψ D.R.r) (FF : ∀ k, Set (ReciprocityTheory.L2DbarEstimates.V (nd ((U σ).X k)))), (∀ k, IsOrth ((U σ).X k) (x0 k) ∧ IsFundSet ((U σ).X k) (x0 k) (FF k)) → (∑ k, muF ((U σ).X k) (x0 k) (FF k)) ≠ 0 ∧ (∑ k, muF ((U σ).X k) (x0 k) (FF k)) ≠ ⊤ ∧ petE (D.sp.W j) (dict σ) (muQ1 (D.sp.W j)) (modelWt (U σ) G) (rdU (U σ) f) ^ 2 * ∑ k, muF ((U σ).X k) (x0 k) (FF k) = ∑ k, ∫⁻ z in FF k, ENNReal.ofReal (((U σ).X k).pnorm (modelWt (U σ) G k) (rdU (U σ) f k) (cpt ((U σ).X k) (x0 k) z) ^ 2) ∂(muF ((U σ).X k) (x0 k)) := by
   intro D j H Dw l Xo c U dict hL σ hσ G f hf x0 FF hx
@@ -143,31 +143,27 @@ theorem petE_sq_mul_vol : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRes
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D j H Dw l Xo c U dict d U₂ dict₂ hL hL₂ hd a n ha hn f g hf hg hp τ hτ`. Establish `hσ : GoodEmb c (τ.comp (d.eF : c.F →+* d.c₂.F))` using `(goodEmb_comp_eF D d τ).2 hτ`. Take `⟨π, δ, N, hN, hcomp, hfib, t, ht1, hrel⟩` from `GlobalTheory.T.levelCover_complexModels_components_isometries_degree D j H Dw l Xo c U dict d U₂ dict₂ hL hL₂ hd τ hτ`. Establish `hex : ∀ (X : Data D.host.E D.R.r), ∃ x0, IsOrth X x0 ∧ ∃ FF, IsFundSet X x0 FF` using `fun X => by choose P _ hG using X.signature`. Conclude with `⟨fun τ => P τ, fun τ => hG τ, GlobalTheory.MetricWeightTest.exists_fundSet_orth X (fun τ => hG τ)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `choose x0 hx0 FF hFF using fun k => hex ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X k)`. Use `choose x0₂ hx0₂ FF₂ hFF₂ using fun k => hex ((U₂ τ).X k)`. Take `⟨hS0, hST, h1⟩` from `petE_sq_mul_vol D j H Dw l Xo c U dict hL (τ.comp (d.eF : c.F →+* d.c₂.F)) hσ (wtZ a n) f hf x0 FF (fun k => ⟨hx0 k, hFF k⟩)`. Take `⟨hS0₂, hST₂, h2⟩` from `petE_sq_mul_vol D j H Dw d.l₂ d.Xo₂ d.c₂ U₂ dict₂ hL₂ τ hτ (wtZ a n) g hg x0₂ FF₂ (fun k => ⟨hx0₂ k, hFF₂ k⟩)`. Establish `hΨ : ∀ k₂, ((U₂ τ).X k₂).Ψ = ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X (π k₂)).Ψ` using `fun k₂ => Finset.ext fun ρ => (((hL₂.unf τ hτ).2.1 k₂).2 ρ).trans (((hL.unf (τ.comp (d.eF : c.F →+* d.c₂.F)) hσ).2.1 (π k₂)).2 ρ).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : ∀ k₂, ((U₂ τ).X k₂).p0 = ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X (π k₂)).p0` using `fun k₂ => ((hL₂.unf τ hτ).2.1 k₂).1.trans ((hL.unf (τ.comp (d.eF : c.F →+* d.c₂.F)) hσ).2.1 (π k₂)).1.symm`. Establish `hsf : ∀ k, ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X k).IsSec (modelWt (U (τ.comp (d.eF : c.F →+* d.c₂.F))) (wtZ a n) k) (rdU (U (τ.comp (d.eF : c.F →+* d.c₂.F))) f k)` using `fun k => GlobalTheory.PeterssonCompare.isSec_of_mem_holSub _ _ ((mem_cuspW.1 hf).2 (τ.comp (d.eF : c.F →+* d.c₂.F)) hσ) k`. Establish `h0f : ∀ k, ∀ x ∉ ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X k).dom, rdU (U (τ.comp (d.eF : c.F →+* d.c₂.F))) f k x = 0` using `fun k x hx => dif_neg hx`. Establish `h0g : ∀ k, ∀ x ∉ ((U₂ τ).X k).dom, rdU (U₂ τ) g k x = 0` using `fun k x hx => dif_neg hx`. Establish `hsecf : f ∈ sec Xo c a n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `cuspW_le_secZ (wtZ a n) hf` as an intermediate fact. Rewrite `this` using `[GlobalTheory.AllWt.exZ_wtZ, secZ_nat]`. Then use the resulting hypothesis. Establish `hsecg : g ∈ sec d.Xo₂ d.c₂ a n`. Use `cuspW_le_secZ (wtZ a n) hg` as an intermediate fact. Rewrite `this` using `[GlobalTheory.AllWt.exZ_wtZ, secZ_nat]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmeas : ∀ k, Measurable fun x => ENNReal.ofReal (((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X k).pnorm (modelWt (U (τ.comp (d.eF : c.F →+* d.c₂.F))) (wtZ a n) k) (rdU (U (τ.comp (d.eF : c.F →+* d.c₂.F))) f k) x ^ 2)` using `fun k => ENNReal.measurable_ofReal.comp ((GlobalTheory.PeterssonCompare.measurable_pnorm _ _ (hsf k).1.continuousOn (h0f k)).pow_const 2)`. Establish `hcint : ∀ k₂, ∫⁻ z in FF₂ k₂, ENNReal.ofReal (((U₂ τ).X k₂).pnorm (modelWt (U₂ τ) (wtZ a n) k₂) (rdU (U₂ τ) g k₂) (cpt ((U₂ τ).X k₂) (x0₂ k₂) z) ^ 2) ∂(muF ((U₂ τ).X k₂) (x0₂ k₂)) = ((((U₂ τ).X k₂).Γ.map (MulAut.conj (δ k₂)).toMonoidHom).relIndex ((U (τ.comp (d.eF : c.F →+* d.c₂. …`. Introduce `k₂`. Establish `hGm` using `(hcomp k₂).1`. Establish `hu` using `(hcomp k₂).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `(hcomp k₂).2.2.1`. Establish `hidx` using `(hcomp k₂).2.2.2`. Establish `hu' : ∀ v w, herm ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X (π k₂)).Gm ((δ k₂ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec v) ((δ k₂ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).mulVec w) = herm ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X (π k₂)).Gm v w`. Rewrite using `[← hGm]`. Conclude with `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hP` using `pnorm_lact_transport D.host.E D.R.r ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X (π k₂)) ((U₂ τ).X k₂) (hΨ k₂) (δ k₂) (modelWt (U (τ.comp (d.eF : c.F →+* d.c₂.F))) (wtZ a n) (π k₂)) (modelWt (U₂ τ) (wtZ a n) k₂) (rdU (U (τ.comp (d.eF : c.F →+* d.c₂.F))) f (π k₂)) (rdU (U₂ τ) g k₂) (t …`. Use `hrel a n ha f hsecf g hsecg hp k₂ x _ hx (fun ρ h₂ h₁ => ?_) hn` and prove the remaining obligations. Use `show (δ k₂ : Matrix (Fin D.R.r) (Fin D.R.r) D.host.E).map ρ * mat (hΨ k₂ ▸ x) ⟨ρ, h₁⟩ = _`. Use `congr 1`. Unfold `mat`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[frame_tr (hΨ k₂) x ρ h₁ h₂])`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[hP]`. Conclude with `GlobalTheory.T.lintegral_fundamentalSet_conj_finiteIndex_subgroup D.host.E D.R.r ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X (π k₂)) ((U₂ τ).X k₂) (hΨ k₂) (δ k₂) (x0 (π k₂)) (x0₂ k₂) (FF (π k₂)) (FF₂ k₂) _ hGm (hp0 k₂) hu' hle hidx (hx0 _) (hx0₂ _) (hFF _) (hFF₂ _) (hmeas _) (fun γ h …`. Use `GlobalTheory.T.lintegral_fundamentalSet_conj_finiteIndex_subgroup D.host.E D.R.r ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X (π k₂)) ((U₂ τ).X k₂) (hΨ k₂) (δ k₂) (x0 (π k₂)) (x0₂ k₂) (FF (π k₂)) (FF₂ k₂) (fun _ => 1) hGm (hp0 k₂) hu' hle hidx (hx0 _) (hx0₂ _) (hFF _) (hFF₂ _) measura …` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [setLIntegral_one]`. Use `set w : (U₂ τ).Comp → ℕ := fun k₂ => (((U₂ τ).X k₂).Γ.map (MulAut.conj (δ k₂)).toMonoidHom).relIndex ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X (π k₂)).Γ with hw`. Establish `hfib' : ∀ k, ∑ᶠ i : {i // π i = k}, w i.1 = N` using `fun k => by`. Rewrite using `[← hfib k]`. Conclude with `finsum_congr fun i => by simp only [hw, i.2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hA` using `sum_mul_fibre π w N (fun k => ∫⁻ z in FF k, ENNReal.ofReal (((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X k).pnorm (modelWt (U (τ.comp (d.eF : c.F →+* d.c₂.F))) (wtZ a n) k) (rdU (U (τ.comp (d.eF : c.F →+* d.c₂.F))) f k) (cpt ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X k) (x0 k) z) ^ 2) ∂( …`. Establish `hB` using `sum_mul_fibre π w N (fun k => muF ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X k) (x0 k) (FF k)) hfib'`. Simplify using `only [hw] at hA hB`. Establish `e1` using `h2`. Simplify using `only [fun k₂ => (hcint k₂).1, fun k₂ => (hcint k₂).2] at e1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `e1` using `[hA, hB, ← h1]`. Establish `hNS0 : (N : ℝ≥0∞) * ∑ k, muF ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X k) (x0 k) (FF k) ≠ 0` using `mul_ne_zero (by exact_mod_cast hN.ne') hS0`. Establish `hNST : (N : ℝ≥0∞) * ∑ k, muF ((U (τ.comp (d.eF : c.F →+* d.c₂.F))).X k) (x0 k) (FF k) ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.natCast_ne_top N) hST`. Establish `e2 : petE (D.sp.W j) (dict₂ τ) (muQ1 (D.sp.W j)) (modelWt (U₂ τ) (wtZ a n)) (rdU (U₂ τ) g) ^ 2 = petE (D.sp.W j) (dict (τ.comp (d.eF : c.F →+* d.c₂.F))) (muQ1 (D.sp.W j)) (modelWt (U (τ.comp (d.eF : c.F →+* d.c₂.F))) (wtZ a n)) (rdU (U (τ.comp (d.eF : c.F →+* d.c₂.F))) f) ^ 2`. Rewrite using `[← ENNReal.mul_left_inj hNS0 hNST, e1]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `e3 : ∀ x y : ℝ≥0∞, x ^ 2 = y ^ 2 → x = y` using `fun x y h => by`. Establish `h' : x ^ (2:ℝ) = y ^ (2:ℝ)`. Rewrite using `[show (2:ℝ) = ((2:ℕ):ℝ) by norm_num, ENNReal.rpow_natCast, ENNReal.rpow_natCast]; exact h`. Conclude with `ENNReal.rpow_left_injective two_ne_zero h'`.
-
-Conclude with `e3 _ _ e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem petE_pull_good : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r) (d : DeltaDat Xo c 0) (U₂ : ∀ σ : d.c₂.F →+* ℂ, Unf d.Xo₂ d.c₂ σ D.R.r) (dict₂ : ∀ σ : d.c₂.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U₂ σ).X k).Ψ D.R.r), Laws D j Xo c U dict → Laws D j d.Xo₂ d.c₂ U₂ dict₂ → d.IsLev → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → Even n → ∀ (f g : _), f ∈ cuspW Xo c U (wtZ a n) → g ∈ cuspW d.Xo₂ d.c₂ U₂ (wtZ a n) → Pull d f g → ∀ τ : d.c₂.F →+* ℂ, GoodEmb d.c₂ τ →
     petE (D.sp.W j) (dict₂ τ) (muQ1 (D.sp.W j)) (modelWt (U₂ τ) (wtZ a n)) (rdU (U₂ τ) g) =
@@ -263,7 +259,7 @@ theorem petE_pull_good : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRest
   exact e3 _ _ e2
 
 /- English proof (translation)
-Introduce `D j H Dw l Xo c U dict d U₂ dict₂ hL hL₂ hd a n ha hn f g hp σ₂`. Simplify using `only [normW, petW, petAt]`. Rewrite using `[goodOf_eF D d σ₂, petE_pull_good D j H Dw l Xo c U dict d U₂ dict₂ hL hL₂ hd a n ha hn _ _ f.2 g.2 hp _ (goodEmb_goodOf _ _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem levPull_normW : ∀ (D : D7) (j : ℕ) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ D.R.r) (dict : ∀ σ : c.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U σ).X k).Ψ D.R.r) (d : DeltaDat Xo c 0) (U₂ : ∀ σ : d.c₂.F →+* ℂ, Unf d.Xo₂ d.c₂ σ D.R.r) (dict₂ : ∀ σ : d.c₂.F →+* ℂ, GA D (D.sp.W j) → Σ k, Frame ((U₂ σ).X k).Ψ D.R.r), Laws D j Xo c U dict → Laws D j d.Xo₂ d.c₂ U₂ dict₂ → d.IsLev → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ), Dom a n → Even n → ∀ (f : cuspW Xo c U (wtZ a n)) (g : cuspW d.Xo₂ d.c₂ U₂ (wtZ a n)), Pull d (f : Rul Xo c) (g : Rul d.Xo₂ d.c₂) → ∀ σ₂ : d.c₂.F →+* ℂ, normW U₂ (xiR D) (fun _ => D.sp.W j) dict₂ (wtZ a n) σ₂ g = normW U (xiR D) (fun _ => D.sp.W j) dict (wtZ a n) (σ₂.comp (d.eF : c.F →+* d.c₂.F)) f := by
   intro D j H Dw l Xo c U dict d U₂ dict₂ hL hL₂ hd a n ha hn f g hp σ₂

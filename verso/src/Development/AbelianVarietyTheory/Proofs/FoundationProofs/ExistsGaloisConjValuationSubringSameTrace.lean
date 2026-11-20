@@ -45,7 +45,7 @@ open Finset in
 open scoped Pointwise in
 variable {F L : Type} [Field F] [Field L] [Algebra F L] in
 /- English proof (translation)
-Rewrite using `[← U.valuation_le_one_iff, map_inv₀, not_le, one_lt_inv₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 h0))]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma valuation_lt_one_iff_inv_not_mem' {L : Type} [Field L] (U : ValuationSubring L)
     (y : L) (h0 : y ≠ 0) : U.valuation y < 1 ↔ y⁻¹ ∉ U := by
@@ -58,27 +58,25 @@ open Finset in
 open scoped Pointwise in
 variable {F L : Type} [Field F] [Field L] [Algebra F L] in
 /- English proof (translation)
-Use `set p := minpoly F x with hp`. Establish `hp0 : p ≠ 0` using `minpoly.ne_zero (Algebra.IsIntegral.isIntegral x)`. Use `set n := p.natDegree`. Set `c : ℕ → F` to `fun j => p.coeff j`. Set `w : ℕ → _` to `fun j => U.valuation (algebraMap F L (c j))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `s` to `(Finset.range (n + 1)).filter fun j => c j ≠ 0`. Establish `hs : s.Nonempty` using `⟨n, by`. Simplify using `only [s, c, Finset.mem_filter, Finset.mem_range]`. Conclude with `⟨by omega, Polynomial.leadingCoeff_ne_zero.2 hp0⟩⟩`. Set `M` to `s.sup' hs w`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `T` to `s.filter fun j => w j = M`. Establish `hT : T.Nonempty`. Take `⟨j, hj, hjM⟩` from `Finset.exists_mem_eq_sup' hs w`. Conclude with `⟨j, Finset.mem_filter.2 ⟨hj, hjM.symm⟩⟩`. Set `k` to `T.max' hT`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkT : k ∈ T` using `T.max'_mem hT`. Establish `hks : k ∈ s` using `(Finset.mem_filter.1 hkT).1`. Establish `hkM : w k = M` using `(Finset.mem_filter.1 hkT).2`. Establish `hck : c k ≠ 0` using `(Finset.mem_filter.1 hks).2`. Establish `hkn : k ≤ n` using `by have := (Finset.mem_filter.1 hks).1; simp at this; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwk : w k ≠ 0` using `by simp [w, hck]`. Establish `hle : ∀ j, w j ≤ w k`. Introduce `j`. Distinguish the cases in `hcj : c j = 0`. Simplify using `[w, hcj]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hjn : j ≤ n`. Assume the negation of the conclusion as `h`. Conclude with `hcj (Polynomial.coeff_eq_zero_of_natDegree_lt (by omega))`. Rewrite using `[hkM]`. Conclude with `Finset.le_sup' w (Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), hcj⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Establish `hlt : ∀ j, k < j → w j < w k`. Introduce `j hj`. Distinguish the cases in `hcj : c j = 0`. Simplify using `only [w, hcj, map_zero]`. Conclude with `zero_lt_iff.2 hwk`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_ne (hle j) fun h => ?_` and prove the remaining obligations. Establish `hjn : j ≤ n`. Assume the negation of the conclusion as `h'`. Conclude with `hcj (Polynomial.coeff_eq_zero_of_natDegree_lt (by omega))`. Establish `hjT : j ∈ T` using `Finset.mem_filter.2 ⟨Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), hcj⟩, h.trans hkM⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `absurd (T.le_max' j hjT) (by omega)`. Use `⟨n, k, fun j => c j / c k, hkn, fun j => ?_, fun j hj => ?_, div_self hck, ?_⟩` and prove the remaining obligations. Rewrite using `[← U.valuation_le_one_iff, map_div₀, map_div₀]`. Conclude with `div_le_one_of_le₀ (hle j) zero_le'`. Rewrite using `[map_div₀, map_div₀]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(div_lt_one₀ (zero_lt_iff.2 hwk)).2 (hlt j hj)`. Establish `h0 : Polynomial.aeval x p = 0` using `minpoly.aeval F x`. Rewrite `h0` using `[Polynomial.aeval_eq_sum_range]`. Establish `: ∑ j ∈ Finset.range (n + 1), algebraMap F L (c j / c k) * x ^ j = (∑ j ∈ Finset.range (n + 1), p.coeff j • x ^ j) * (algebraMap F L (c k))⁻¹`. Rewrite using `[Finset.sum_mul]`.
-
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_div₀, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, h0, zero_mul]`.
+A detailed English derivation is pending.
 -/
 private lemma exists_normalized_integral_relation {F L : Type} [Field F] [Field L] [Algebra F L]
     [FiniteDimensional F L] (U : ValuationSubring L) (x : L) :
@@ -148,7 +146,7 @@ open Finset in
 open scoped Pointwise in
 variable {F L : Type} [Field F] [Field L] [Algebra F L] in
 /- English proof (translation)
-Rewrite using `[← Finset.sum_range_add_sum_Ico f (by omega : k ≤ n + 1), Finset.sum_eq_sum_Ico_succ_bot (by omega : k < n + 1), add_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private lemma sum_range_succ_eq_lower_add_mid_add_upper {L : Type} [Field L] (f : ℕ → L) (n k : ℕ) (hk : k ≤ n) :
     ∑ j ∈ Finset.range (n + 1), f j =
@@ -162,17 +160,17 @@ open Finset in
 open scoped Pointwise in
 variable {F L : Type} [Field F] [Field L] [Algebra F L] in
 /- English proof (translation)
-Establish `hx : x ≠ 0` using `fun h => hxU' (h ▸ zero_mem U')`. Establish `hrel' : ∑ j ∈ Finset.range (n + 1), a j * x ^ j / x ^ k = 0`. Rewrite using `[← Finset.sum_div, hrel, zero_div]`. Rewrite `hrel'` using `[sum_range_succ_eq_lower_add_mid_add_upper _ n k hk, hak, one_mul, div_self (pow_ne_zero _ hx)]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `ht : U.valuation (∑ j ∈ Finset.Ico (k + 1) (n + 1), a j * x ^ j / x ^ k) < 1`. Use `Valuation.map_sum_lt _ one_ne_zero fun j hj => ?_` and prove the remaining obligations. Establish `hj' : k < j` using `by simp at hj; omega`. Rewrite using `[mul_div_assoc, div_eq_mul_inv, ← pow_sub₀ x hx hj'.le, map_mul]`. Establish `h1 : U.valuation (x ^ (j - k)) ≤ 1` using `(U.valuation_le_one_iff _).2 (pow_mem hxU _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `: ∑ j ∈ Finset.range k, a j * x ^ j / x ^ k = -(1 + ∑ j ∈ Finset.Ico (k + 1) (n + 1), a j * x ^ j / x ^ k)`. Take the linear combination `hrel'`. Rewrite using `[this, Valuation.map_neg, Valuation.map_one_add_of_lt _ ht]`. Establish `hxinv : x⁻¹ ∈ U'` using `(U'.mem_or_inv_mem x).resolve_left hxU'`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hxinv' : U'.valuation x⁻¹ < 1`. Rewrite using `[map_inv₀]`. Establish `: 1 < U'.valuation x`. Assume the negation of the conclusion as `h`. Conclude with `hxU' ((U'.valuation_le_one_iff _).1 (not_lt.1 h))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `inv_lt_one_of_one_lt₀ this`. Use `Valuation.map_sum_lt _ one_ne_zero fun j hj => ?_` and prove the remaining obligations. Establish `hj' : j < k` using `by simpa using hj`. Establish `: a j * x ^ j / x ^ k = a j * x⁻¹ ^ (k - j)`. Rewrite using `[inv_pow, pow_sub₀ x hx hj'.le, mul_div_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Rewrite using `[this, map_mul, map_pow]`. Establish `h1 : U'.valuation (a j) ≤ 1` using `(U'.valuation_le_one_iff _).2 (ha' j)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma valuation_sum_lower_div_pow_eq_one_and_lt_one {L : Type} [Field L] (U U' : ValuationSubring L) (n k : ℕ)
     (a : ℕ → L) (x : L) (hk : k ≤ n) (hxU : x ∈ U) (hxU' : x ∉ U') (ha : ∀ j, a j ∈ U)
@@ -223,15 +221,13 @@ open Finset in
 open scoped Pointwise in
 variable {F L : Type} [Field F] [Field L] [Algebra F L] in
 /- English proof (translation)
-Establish `hrel' : ∑ j ∈ Finset.range (n + 1), a j * z ^ j / z ^ k = 0`. Rewrite using `[← Finset.sum_div, hrel, zero_div]`. Rewrite `hrel'` using `[sum_range_succ_eq_lower_add_mid_add_upper _ n k hk, hak, one_mul, div_self (pow_ne_zero _ hz)]`. Distinguish the cases in `hzU : z ∈ U`. Establish `hbig : ∑ j ∈ Finset.Ico (k + 1) (n + 1), a j * z ^ j / z ^ k ∈ U`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `U.toSubring.sum_mem fun j hj => ?_` and prove the remaining obligations. Establish `hj' : k ≤ j` using `by simp at hj; omega`. Rewrite using `[mul_div_assoc, div_eq_mul_inv, ← pow_sub₀ z hz hj']`. Conclude with `mul_mem (ha j) (pow_mem hzU _)`. Establish `: ∑ j ∈ Finset.range k, a j * z ^ j / z ^ k = -(1 + ∑ j ∈ Finset.Ico (k + 1) (n + 1), a j * z ^ j / z ^ k)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hrel'`. Rewrite using `[this]`. Conclude with `neg_mem (add_mem (one_mem _) hbig)`. Establish `hzinv : z⁻¹ ∈ U` using `(U.mem_or_inv_mem z).resolve_left hzU`. Use `U.toSubring.sum_mem fun j hj => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj' : j ≤ k` using `by simp at hj; omega`. Establish `: a j * z ^ j / z ^ k = a j * z⁻¹ ^ (k - j)`. Rewrite using `[inv_pow, pow_sub₀ z hz hj', mul_div_assoc]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
-
-Conclude with `mul_mem (ha j) (pow_mem hzinv _)`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_lower_div_pow_mem_of_normalized_relation {L : Type} [Field L] (U : ValuationSubring L) (n k : ℕ) (a : ℕ → L)
     (z : L) (hz : z ≠ 0) (hk : k ≤ n) (ha : ∀ j, a j ∈ U) (hak : a k = 1)
@@ -266,15 +262,13 @@ open Finset in
 open scoped Pointwise in
 variable {F L : Type} [Field F] [Field L] [Algebra F L] in
 /- English proof (translation)
-Assume the negation of the conclusion as `hx'`. Take `⟨n, k, a, hk, ha, hbig, hak, hrel⟩` from `exists_normalized_integral_relation (F := F) U x`. Establish `hx0 : x ≠ 0` using `fun h => hx' (h ▸ zero_mem U')`. Take `⟨h1, h2⟩` from `valuation_sum_lower_div_pow_eq_one_and_lt_one U U' n k (fun j => algebraMap F L (a j)) x hk hx hx' ha (fun j => hUU' _ (ha j)) hbig (by simp [hak]) hrel`. Use `set s := ∑ j ∈ Finset.range k, algebraMap F L (a j) * x ^ j / x ^ k with hs`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsS : s ∈ _root_.GlobalTheory.ValConj.core F W₁ W₂`. Introduce `σ`. Establish `hσs : σ s = ∑ j ∈ Finset.range k, algebraMap F L (a j) * σ x ^ j / σ x ^ k`. Simplify using `[hs, map_sum, map_div₀, map_mul, map_pow, AlgEquiv.commutes]`. Establish `hσrel : ∑ j ∈ Finset.range (n + 1), algebraMap F L (a j) * σ x ^ j = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg σ hrel` as an intermediate fact. Simplify `this` using `[map_sum, map_mul, map_pow, AlgEquiv.commutes]`. Establish `hσx : σ x ≠ 0` using `by simpa using hx0`. Rewrite using `[hσs]`. Conclude with `⟨sum_lower_div_pow_mem_of_normalized_relation W₁ n k _ (σ x) hσx hk (fun j => hUW₁ _ (ha j)) (by simp [hak]) hσrel, sum_lower_div_pow_mem_of_normalized_relation W₂ n k _ (σ x) hσx hk (fun j => hUW₂ _ (ha j)) (by simp [hak]) hσrel⟩`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0`. Introduce `h`. Rewrite `h1` using `[h, map_zero]`. Conclude with `zero_ne_one h1`. Establish `hsU : s⁻¹ ∈ U`.
-
-Rewrite using `[← U.valuation_le_one_iff, map_inv₀, h1, inv_one]`. Conclude with `(valuation_lt_one_iff_inv_not_mem' U' s hs0).1 h2 (hcen s hsS hs0 hsU)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma mem_of_mem_of_inv_core_mem [FiniteDimensional F L] (W₁ W₂ U U' : ValuationSubring L)
     (hUW₁ : ∀ f : F, algebraMap F L f ∈ U → algebraMap F L f ∈ W₁)
@@ -315,31 +309,27 @@ variable {F L : Type} [Field F] [Field L] [Algebra F L] in
 open scoped Pointwise in
 
 /- English proof (translation)
-Introduce `F L _ _ _ _ _ W₁ W₂ hW`. Use `set S := _root_.GlobalTheory.ValConj.core F W₁ W₂ with hSdef`. Establish `hS₁ : S ≤ W₁.toSubring` using `fun y hy => by simpa using (hy 1).1`. Establish `hS₂ : S ≤ W₂.toSubring` using `fun y hy => by simpa using (hy 1).2`. Set `A` to `FixedPoints.subring S (L ≃ₐ[F] L)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Algebra.IsInvariant A S (L ≃ₐ[F] L) := (Algebra.isInvariant_iff _ _ _).2 fun b hb => ⟨⟨b, hb⟩, rfl⟩`. Use `haveI : SMulCommClass (L ≃ₐ[F] L) A S := ⟨fun g a s => by`. Rewrite using `[Algebra.smul_def, Algebra.smul_def, smul_mul']`. Conclude with `congrArg (· * g • s) (a.2 g)⟩`. Establish `hcentre : ∀ (W : ValuationSubring L) (h : S ≤ W.toSubring) (s : S), s ∈ _root_.GlobalTheory.ValConj.centre S W h ↔ W.valuation (s : L) < 1` using `fun W h s => W.valuation_lt_one_iff _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hcoe : ∀ (g : L ≃ₐ[F] L) (s : S), ((g • s : S) : L) = g (s : L)` using `fun _ _ => rfl`. Establish `hunder : Ideal.under A (_root_.GlobalTheory.ValConj.centre S W₁ hS₁) = Ideal.under A (_root_.GlobalTheory.ValConj.centre S W₂ hS₂)`. Use extensionality with `a`. Simplify using `only [Ideal.under, Ideal.mem_comap]`. Rewrite using `[hcentre, hcentre]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hfix : ∀ σ : L ≃ₐ[F] L, σ ((a : S) : L) = ((a : S) : L)` using `fun σ => by`. Rewrite using `[← hcoe, a.2 σ]`. Take `⟨f, hf⟩` from `IntermediateField.mem_bot.1 (((IsGalois.mem_bot_iff_fixed _).2 hfix))`. Express the relevant statement in the definitionally equal form `W₁.valuation ((a : S) : L) < 1 ↔ W₂.valuation ((a : S) : L) < 1`. Rewrite using `[← hf]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hf0 : f = 0`. Simplify using `[hf0]`. Establish `h0 : algebraMap F L f ≠ 0` using `by simpa using hf0`. Rewrite using `[valuation_lt_one_iff_inv_not_mem' _ _ h0, valuation_lt_one_iff_inv_not_mem' _ _ h0, ← map_inv₀, hW]`. Take `⟨g, hg⟩` from `Algebra.IsInvariant.exists_smul_of_under_eq A S (L ≃ₐ[F] L) _ _ hunder`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcen : ∀ s ∈ S, s ≠ 0 → (s⁻¹ ∈ W₂ ↔ (g⁻¹ s)⁻¹ ∈ W₁)`. Introduce `s hs hs0`. Establish `h` using `congrArg (fun I => (⟨s, hs⟩ : S) ∈ I) hg`. Simplify using `only [Ideal.mem_pointwise_smul_iff_inv_smul_mem, eq_iff_iff] at h`. Rewrite `h` using `[hcentre, hcentre, hcoe]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgs0 : g⁻¹ s ≠ 0` using `by simpa using hs0`. Rewrite `h` using `[valuation_lt_one_iff_inv_not_mem' _ _ hs0, valuation_lt_one_iff_inv_not_mem' _ _ hgs0]`. Conclude with `not_iff_not.1 h`. Establish `hgF : ∀ (τ : L ≃ₐ[F] L) (f : F), τ (algebraMap F L f) = algebraMap F L f` using `fun τ f => τ.commutes f`. Use `⟨g, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `mem_of_mem_of_inv_core_mem (F := F) W₁ W₂ W₂ (W₁.comap (g⁻¹ : L ≃ₐ[F] L).toRingEquiv.toRingHom) (fun f hf => (hW f).2 hf) (fun f hf => hf) (fun f hf => by` as an intermediate fact. Rewrite using `[ValuationSubring.mem_comap]`. Simplify `(hW f).2 hf)` using `[hgF]`. Use the proof step `(fun s hs hs0 h => by`. Rewrite using `[ValuationSubring.mem_comap]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify `(hcen s hs hs0).1 h) (g x) hx` using `[map_inv₀]`. Rewrite `this` using `[ValuationSubring.mem_comap]`. Simplify using `using this`. Use `mem_of_mem_of_inv_core_mem (F := F) W₁ W₂ (W₁.comap (g⁻¹ : L ≃ₐ[F] L).toRingEquiv.toRingHom) W₂ (fun f hf => by` as an intermediate fact. Rewrite `hf` using `[ValuationSubring.mem_comap]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(g⁻¹ : L ≃ₐ[F] L) (algebraMap F L f) ∈ W₁ at hf`. Rewrite using `[AlgEquiv.commutes] at hf)` and apply the resulting hypothesis. Use the proof step `(fun f hf => by`. Rewrite `hf` using `[ValuationSubring.mem_comap]`. Express the relevant statement in the definitionally equal form `(g⁻¹ : L ≃ₐ[F] L) (algebraMap F L f) ∈ W₁ at hf`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hf` using `[AlgEquiv.commutes]`. Conclude with `(hW f).1 hf)`. Use the proof step `(fun f hf => by`. Rewrite `hf` using `[ValuationSubring.mem_comap]`. Express the relevant statement in the definitionally equal form `(g⁻¹ : L ≃ₐ[F] L) (algebraMap F L f) ∈ W₁ at hf`.
-
-Rewrite `hf` using `[AlgEquiv.commutes]`. Conclude with `(hW f).1 hf)`. Use the proof step `(fun s hs hs0 h => by`. Rewrite `h` using `[ValuationSubring.mem_comap]`. Conclude with `(hcen s hs hs0).2 (by simpa [map_inv₀] using h)) (g x) (by`.
-
-Rewrite using `[ValuationSubring.mem_comap]`. Simplify using `using hx)`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.KZ.ES.exists_conj_of_same_trace : ∀ (F L : Type) [Field F] [Field L]
     [Algebra F L] [FiniteDimensional F L] [IsGalois F L] (W₁ W₂ : ValuationSubring L),

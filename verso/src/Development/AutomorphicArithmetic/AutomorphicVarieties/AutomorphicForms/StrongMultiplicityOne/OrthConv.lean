@@ -10,9 +10,9 @@ open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 open UpperTheory.V UpperTheory.V.Af.StrongMultiplicityOne
 
 /- English proof (translation)
-Establish `e : chart f (z * g) = chart f g`. Use function extensionality and compare the values at `x`. Unfold `chart`. Use `split_ifs with hx`. Rewrite using `[mul_assoc, h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Unfold `Af.StrongMultiplicityOne.conv`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conv_left {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ} (f : GA E n → ℂ)
     (α : Lie E n → ℂ) (z : GA E n) (h : ∀ g, f (z * g) = f g) (g : GA E n) : Af.StrongMultiplicityOne.conv f α (z * g) = Af.StrongMultiplicityOne.conv f α g := by
@@ -26,13 +26,11 @@ private theorem conv_left {E : Type} [Field E] [NumberField E] [IsTotallyComplex
   rw [e]
 
 /- English proof (translation)
-Use `Reduction.isFiniteMeasure_quotientMeasure (K := E) (n := n) μ` as an intermediate fact. Establish `hq` using `CuspidalSpectrum.continuous_cuspQuot h hc`. Establish `hb : ∀ q, ‖CuspidalSpectrum.cuspQuot h q‖ ≤ C` using `fun q => by`. Take `⟨y, rfl⟩` from `RightCosetSpace.mk_surjective _ q`. Conclude with `hC _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ∫ q, ‖CuspidalSpectrum.cuspQuot h q‖ ^ 2 ∂(RightCosetSpace.quotientMeasure (Reduction.rationalGLOne E n) μ) = 0`. Rewrite using `[← Complex.ofReal_eq_zero, ← integral_complex_ofReal, ← h0]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)` and prove the remaining obligations. Simplify using `only [Complex.conj_mul', Complex.ofReal_pow]`. Establish `hi : Integrable (fun q => ‖CuspidalSpectrum.cuspQuot h q‖ ^ 2) (RightCosetSpace.quotientMeasure (Reduction.rationalGLOne E n) μ)` using `Integrable.of_bound (hq.norm.pow 2).aestronglyMeasurable (C ^ 2) (Filter.Eventually.of_forall fun q => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_pow, norm_norm]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hb q) 2)`. Establish `h2` using `(integral_eq_zero_iff_of_nonneg (fun q => sq_nonneg _) hi).1 h1`. Establish `h3` using `(RightCosetSpace.quasiMeasurePreserving_mk (Reduction.rationalGLOne E n) μ).ae_eq h2`. Establish `h4` using `(Continuous.ae_eq_iff_eq μ (f := fun y : Reduction.normOneGL E n => ‖F y‖ ^ 2) ((hc.comp continuous_subtype_val).norm.pow 2) continuous_const).1 h3`.
-
-Introduce `y hy`. Conclude with `norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 (congrFun h4 ⟨y, hy⟩))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem zero_of_sq {E : Type} [Field E] [NumberField E] {n : ℕ} (μ : Measure (Reduction.normOneGL E n))
     [μ.IsHaarMeasure] (F : AdelicGLn.AdelicGL E n → ℂ) (hc : Continuous F) (C : ℝ) (hC : ∀ g, ‖F g‖ ≤ C)
@@ -63,17 +61,15 @@ private theorem zero_of_sq {E : Type} [Field E] [NumberField E] {n : ℕ} (μ : 
   exact norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 (congrFun h4 ⟨y, hy⟩))
 
 /- English proof (translation)
-Introduce `hS hC E _ _ _ n μ _ φ φ' hφ hφ' ho β β' e`. Take `⟨C, hb⟩` from `exists_norm_le_of_mem_centralCuspForms hφ`. Take `⟨C', hb'⟩` from `exists_norm_le_of_mem_centralCuspForms hφ'`. Establish `l : IsLeftInvariant (Af.StrongMultiplicityOne.conv φ.1 β)` using `fun γ g => conv_left _ _ _ (φ.2.1.isLeftInvariant γ) g`. Establish `l' : IsLeftInvariant (Af.StrongMultiplicityOne.conv φ'.1 β')` using `fun γ g => conv_left _ _ _ (φ'.2.1.isLeftInvariant γ) g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hc, D, hD⟩` from `hC E n φ'.1 φ'.2.1.continuous ⟨C', hb'⟩ β'`. Establish `s1 : ∀ g, ∫ q, starRingEnd ℂ (quotTr φ g q) * CuspidalSpectrum.cuspQuot l' q ∂(RightCosetSpace.quotientMeasure (Reduction.rationalGLOne E n) μ) = 0` using `fun g => hS E n μ φ'.1 φ'.2.1.continuous ⟨C', hb'⟩ φ'.2.1.isLeftInvariant (fun q => starRingEnd ℂ (quotTr φ g q)) (Complex.continuous_conj.comp (continuous_quotTr φ g)) ⟨C, fun q => by`. Take `⟨y, rfl⟩` from `RightCosetSpace.mk_surjective _ q`. Rewrite using `[Complex.norm_conj]`. Conclude with `hb _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use the proof step `(fun g' _ => ho g g') β' l'`. Establish `s2` using `hS E n μ φ.1 φ.2.1.continuous ⟨C, hb⟩ φ.2.1.isLeftInvariant (fun q => starRingEnd ℂ (CuspidalSpectrum.cuspQuot l' q)) (Complex.continuous_conj.comp (CuspidalSpectrum.continuous_cuspQuot l' hc)) ⟨D, fun q => by`. Take `⟨y, rfl⟩` from `RightCosetSpace.mk_surjective _ q`. Rewrite using `[Complex.norm_conj]`. Conclude with `hD _⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun g _ => by`. Establish `h` using `congrArg (starRingEnd ℂ) (s1 g)`. Rewrite `h` using `[← integral_conj, map_zero]`. Use `Eq.trans (integral_congr_ae (Filter.Eventually.of_forall fun q => ?_)) h` and prove the remaining obligations. Simplify using `only [map_mul, Complex.conj_conj]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_comm _ _) β l`. Establish `e' : CuspidalSpectrum.cuspQuot l = CuspidalSpectrum.cuspQuot l'` using `CuspidalSpectrum.cuspQuot_surj_eq l l' fun y => congrFun e _`. Rewrite `s2` using `[e']`. Establish `z` using `zero_of_sq μ _ hc D hD l' s2`. Rewrite using `[e]`.
-
-Use function extensionality and compare the values at `x`. Take `⟨s, y, hy, rfl⟩` from `CuspidalSpectrum.exists_centralSection_mul_mem_normOneGL x`. Conclude with `(conv_left _ _ _ (hφ' s) y).trans (z y hy)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.StrongMultiplicityOne.orthConv :
     UpperTheory.V.Af.StrongMultiplicityOne.OrthStep → UpperTheory.V.Af.StrongMultiplicityOne.ConvCont → UpperTheory.V.Af.StrongMultiplicityOne.OrthConv := by

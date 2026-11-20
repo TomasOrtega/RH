@@ -22,11 +22,11 @@ noncomputable section
 namespace GlobalTheory.AdmGThreeRest
 
 /- English proof (translation)
-Introduce `l _ a ρ h`. Break down `Nat.eq_zero_or_pos a with ha | ha` into its components or cases. Substitute `ha` using the available equality. Conclude with `Subsingleton.elim _ _`. Apply `GlobalTheory.BurnsideField.span_mat_eq_top_of_isIrrSub ρ` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hb`. Establish `: (Pi.single (⟨0, ha⟩ : Fin a) (1 : CyclotomicNorms.Fbar l) : Fin a → CyclotomicNorms.Fbar l) ∈ (⊤ : Submodule (CyclotomicNorms.Fbar l) (Fin a → CyclotomicNorms.Fbar l))` using `trivial`. Rewrite `this` using `[hb, Submodule.mem_bot]`. Establish `h1` using `congrFun this ⟨0, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `at h1`. Introduce `g x _`. Discharge the goal by the elementary cases of `trivial`. Introduce `W' _ hW'`. Conclude with `h W' (fun g _ x hx => hW' g x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Check the elementary cases of the proposition. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem litBurnside_host (D : D7) : LitBurnside (G D.host.E D.nd.Om) := by
   intro l _ a ρ h
@@ -45,7 +45,7 @@ theorem litBurnside_host (D : D7) : LitBurnside (G D.host.E D.nd.Om) := by
       exact h W' (fun g _ x hx => hW' g x hx)
 
 /- English proof (translation)
-Introduce `D L nch i r π ρ fa _ _ hHG hr _ hρ`. Take `⟨hcont, e, he⟩` from `hρ`. Establish `hdec : TruncatedSeriesCountingIdentities.SemisimpleDecomposition (D` using `D) i r (fun _ => ρ) π := ⟨e, fun g u => he g u⟩`. Conclude with `galois_condition_three_of D i r (fun _ => ρ) π fa.Conclusion1.1 hr hdec hcont hHG fa.rhoBar (litBurnside_host D) (fa.duties.2.1 i r hr)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (L : SizeData₂ D) (nch : NChoice D) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (π : D.nd.X i) (ρ : GE D.nd →* GL (Fin D.R.r) (D.nd.O i)), GlobalTheory.NFacts.Facts D nch → LevelStarExponents.lStar L < (D.nd.l i : ℝ) → (∀ k, D.nd.l i ≠ D.host.g k) → HG D.nd D.naut i → GoodR D.nd i r → π ∈ D.nd.Z i → GlobalTheory.IndefiniteRowSideFullHecke.BaseSizes.IsRankRPart D i (r π) ρ → TruncatedSeriesCountingIdentities.admG3 i r (fun _ => ρ) π := by
   intro D L nch i r π ρ fa _ _ hHG hr _ hρ

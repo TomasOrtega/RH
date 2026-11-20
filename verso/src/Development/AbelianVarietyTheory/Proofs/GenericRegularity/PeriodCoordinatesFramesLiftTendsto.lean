@@ -6,25 +6,23 @@ open scoped Matrix
 namespace GlobalTheory.PeriodLift
 
 /- English proof (translation)
-Use `set Q : ι → Matrix (Fin r) (Fin r) ℂ := fun n => Matrix.of fun k a => if p a then A n k a else A₀ k a with hQdef`. Use `set D : ι → Matrix (Fin r) (Fin r) ℂ := fun n => Matrix.of fun a j => if p a then (1 : Matrix (Fin r) (Fin r) ℂ) a j else ((A n)⁻¹ * Q n) a j with hDdef`. Establish `hQe : ∀ k a, Tendsto (fun n => Q n k a) 𝓕 (𝓝 (A₀ k a))`. Introduce `k a`. Distinguish the cases in `h : p a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hc a h k` using `[hQdef, h]`. Simplify `tendsto_const_nhds` using `[hQdef, h]`. Establish `hQ : Tendsto Q 𝓕 (𝓝 A₀)` using `tendsto_pi_nhds.2 fun k => tendsto_pi_nhds.2 fun a => hQe k a`. Establish `hD : Tendsto D 𝓕 (𝓝 1)`. Use `tendsto_pi_nhds.2 fun a => tendsto_pi_nhds.2 fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `h : p a`. Simplify `tendsto_const_nhds` using `[hDdef, h]`. Establish `e : (1 : Matrix (Fin r) (Fin r) ℂ) a j = ∑ k, A₀⁻¹ a k * A₀ k j`. Rewrite using `[← Matrix.mul_apply, Matrix.nonsing_inv_mul _ (Ne.isUnit h0)]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hDdef, Matrix.of_apply, h, if_false, Matrix.mul_apply]`. Conclude with `tendsto_finset_sum _ fun k _ => (hr a h k).mul (hQe k j)`. Establish `hdet : Continuous fun M : Matrix (Fin r) (Fin r) ℂ => M.det` using `continuous_id.matrix_det`. Establish `hDi : Tendsto (fun n => (D n)⁻¹) 𝓕 (𝓝 1)`. Establish `hc1 : ContinuousAt Inv.inv (1 : Matrix (Fin r) (Fin r) ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `continuousAt_matrix_inv` to reduce the goal to its premises. Rewrite using `[Matrix.det_one, Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ one_ne_zero`. Use `hc1.tendsto.comp hD` as an intermediate fact. Simplify `this` using `[Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Establish `hQd : ∀ᶠ n in 𝓕, (Q n).det ≠ 0` using `((hdet.tendsto _).comp hQ).eventually_ne h0`. Establish `hDd : ∀ᶠ n in 𝓕, (D n).det ≠ 0` using `((hdet.tendsto _).comp hD).eventually_ne (by simp)`. Use `⟨fun n => Q n * (D n)⁻¹, by simpa using hQ.mul hDi, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hA, hQd, hDd] with n hAn hQn hDn`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Introduce `j hj k`. Establish `hDj : ∀ i, D n i j = (1 : Matrix (Fin r) (Fin r) ℂ) i j`. Introduce `i`. Distinguish the cases in `h : p i`. Simplify using `[hDdef, h]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.nonsing_inv_mul _ (Ne.isUnit hAn)]`. Simplify using `[hDdef, hQdef, h, hj, Matrix.mul_apply]`. Establish `e : (Q n * (D n)⁻¹ * D n) k j = (Q n * (D n)⁻¹ * (1 : Matrix (Fin r) (Fin r) ℂ)) k j`. Rewrite using `[Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `only [hDj]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[Matrix.mul_one, Matrix.nonsing_inv_mul_cancel_right _ _ (Ne.isUnit hDn)]`. Rewrite using `[← e]`. Simplify using `[hQdef, hj]`. Introduce `a ha k`. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ (Ne.isUnit hDn)]`.
-
-Establish `e : ((A n)⁻¹ * Q n * (Q n)⁻¹) a k = (A n)⁻¹ a k`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_right _ _ (Ne.isUnit hQn)]`. Rewrite using `[← e, Matrix.mul_apply, Matrix.mul_apply]`. Simplify using `[hDdef, ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_matrix_lift {r : ℕ} {ι : Type} {𝓕 : Filter ι} (p : Fin r → Prop) [DecidablePred p]
     (A₀ : Matrix (Fin r) (Fin r) ℂ) (A : ι → Matrix (Fin r) (Fin r) ℂ)
@@ -89,9 +87,9 @@ theorem exists_matrix_lift {r : ℕ} {ι : Type} {𝓕 : Filter ι} (p : Fin r �
     simp [hDdef, ha]
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span E S` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact h x hx`. Consider the case `zero`. Establish `e : (0 : Fin r → E) = (0 : E) • (0 : Fin r → E)` using `by simp`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[e]`. Simplify using `only [hs, hs₀, hσ, zero_mul]`. Conclude with `tendsto_const_nhds`. Consider the case `add x y _ _ hx hy => simpa only [ha, ha₀] using hx.add hy`. Consider the case `smul c x _ hx => simpa only [hs, hs₀] using hx.const_mul (σ c)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tendsto_of_span {E : Type} [Field E] {r : ℕ} {ι : Type} {𝓕 : Filter ι}
     (S : Set (Fin r → E)) (hS : Submodule.span E S = ⊤) (σ : E → ℂ)
@@ -113,9 +111,9 @@ theorem tendsto_of_span {E : Type} [Field E] {r : ℕ} {ι : Type} {𝓕 : Filte
   | smul c x _ hx => simpa only [hs, hs₀] using hx.const_mul (σ c)
 
 /- English proof (translation)
-Establish `e : ∀ a, ∑ b, u a * τ (G a b) * (starRingEnd ℂ) (τ (cc (G⁻¹ b k))) = u a * τ ((G * G⁻¹) a k)`. Introduce `a`. Rewrite using `[Matrix.mul_apply, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[cc, IsCMField.complexEmbedding_complexConj, Complex.conj_conj, map_mul, mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hermC, Data.emb, e]`. Rewrite using `[Matrix.mul_nonsing_inv _ (Ne.isUnit hG)]`. Simplify using `[Matrix.one_apply, apply_ite τ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hermC_emb_inv_col {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
     (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (hG : G.det ≠ 0) (u : Fin r → ℂ) (k : Fin r) :
@@ -131,13 +129,13 @@ theorem hermC_emb_inv_col {E : Type} [Field E] [NumberField E] [IsCMField E] {r 
   simp [Matrix.one_apply, apply_ite τ]
 
 /- English proof (translation)
-Introduce `E _ _ _ r X ι 𝓕 x₀ x₁ h0 h1 h V hV`. Establish `key : ∀ τ : X.Ψ, ∃ B : ι → Matrix (Fin r) (Fin r) ℂ, Tendsto B 𝓕 (𝓝 (mat x₀ τ)) ∧ ∀ᶠ n in 𝓕, (∀ a : Fin r, (a : ℕ) < X.p0 → ∀ k, B n k a = mat (x₁ n) τ k a) ∧ (∀ a : Fin r, ¬ (a : ℕ) < X.p0 → ∀ k, (B n)⁻¹ a k = (mat (x₁ n) τ)⁻¹ a k)`. Introduce `τ`. Use `exists_matrix_lift (fun a : Fin r => (a : ℕ) < X.p0) (mat x₀ τ) (fun n => mat (x₁ n) τ) (h0 τ).1 (h1.mono fun n hn => (hn τ).1) ?_ ?_` and prove the remaining obligations. Introduce `a ha k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `tendsto_of_span (𝓕 := 𝓕) (X.Λ : Set (Fin r → E)) X.Λ_span (fun c => (starRingEnd ℂ) (τ.1 c)) (fun n v => hermC τ.1 X.Gm (col (mat (x₁ n) τ) a) (Data.emb τ.1 v)) (fun v => hermC τ.1 X.Gm (col (mat x₀ τ) a) (Data.emb τ.1 v)) (by intros; simp [hermC, Data.emb, mul_add, Finset.sum_ad …` as an intermediate fact. Simplify `this` using `only [hermC_emb_inv_col τ.1 X.Gm X.Gm_det, col]`. Introduce `a ha k`. Use `tendsto_of_span (𝓕 := 𝓕) (X.Λ : Set (Fin r → E)) X.Λ_span (fun c => τ.1 c) (fun n v => ((mat (x₁ n) τ)⁻¹ *ᵥ Data.emb τ.1 v) a) (fun v => ((mat x₀ τ)⁻¹ *ᵥ Data.emb τ.1 v) a) (by intros; simp [Matrix.mulVec, dotProduct, Data.emb, mul_add, Finset.sum_add_distrib]) (by intros; simp [ …` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Data.emb, Pi.single_apply, apply_ite τ.1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose B hB hB' using key`. Establish `hx : Tendsto (fun n => (fun τ => B τ n : Frame X.Ψ r)) 𝓕 (𝓝 x₀)` using `tendsto_pi_nhds.2 fun τ => hB τ`. Use `filter_upwards [hx.eventually_mem hV, eventually_all.2 hB'] with n hn hn'`. Use `⟨_, hn, fun v τ a => ?_⟩` and prove the remaining obligations. Establish `hm : mat (fun τ => B τ n : Frame X.Ψ r) τ = B τ n` using `rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hm]`. Distinguish the cases in `ha : (a : ℕ) < X.p0`. Establish `: col (B τ n) a = col (mat (x₁ n) τ) a` using `funext fun k => (hn' τ).1 a ha k`. Simplify using `only [ha, if_true, this]`. Simplify using `only [ha, if_false, Matrix.mulVec, dotProduct, (hn' τ).2 a ha]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem period_lift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (ι : Type) (𝓕 : Filter ι) (x₀ : Frame X.Ψ r) (x₁ : ι → Frame X.Ψ r), x₀ ∈ X.dom → (∀ᶠ n in 𝓕, x₁ n ∈ X.dom) → (∀ v ∈ X.Λ, ∀ (τ : X.Ψ) (a : Fin r), Tendsto (fun n => (if (a : ℕ) < X.p0 then hermC τ.1 X.Gm (col (mat (x₁ n) τ) a) (Data.emb τ.1 v) else ((mat (x₁ n) τ)⁻¹ *ᵥ Data.emb τ.1 v) a)) 𝓕 (𝓝 (if (a : ℕ) < X.p0 then hermC τ.1 X.Gm (col (mat x₀ τ) a) (Data.emb τ.1 v) else ((mat x₀ τ)⁻¹ *ᵥ Data.emb τ.1 v) a))) → ∀ V ∈ 𝓝 x₀, ∀ᶠ n in 𝓕, ∃ x ∈ V, ∀ (v : Fin r → E) (τ : X.Ψ) (a : Fin r), (if (a : ℕ) < X.p0 then hermC τ.1 X.Gm (col (mat x τ) a) (Data.emb τ.1 v) else ((mat x τ)⁻¹ *ᵥ Data.emb τ.1 v) a) = (if (a : ℕ) < X.p0 then hermC τ.1 X.Gm (col (mat (x₁ n) τ) a) (Data.emb τ.1 v) else ((mat (x₁ n) τ)⁻¹ *ᵥ Data.emb τ.1 v) a) := by
   intro E _ _ _ r X ι 𝓕 x₀ x₁ h0 h1 h V hV

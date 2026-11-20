@@ -22,11 +22,11 @@ noncomputable section
 variable {D : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Establish `hW : IsOpen (L.U q ∩ secOpen s)` using `(L.isOpen_U q).inter (isOpen_secOpen hL hs)`. Establish `hg : A.HoloOn (L.U q ∩ secOpen s) (s q)` using `fun j => (hs.1 q j).mono fun y hy => ⟨hy.1, hy.2.1⟩`. Establish `hne : ∀ z ∈ L.U q ∩ secOpen s, s q z ≠ 0`. Introduce `z hz h0`. Establish `h` using `hs.2 z q z ⟨L.mem_U z, hz.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[h0, norm_zero, zero_mul]`. Conclude with `hz.2 (norm_eq_zero.1 ((mul_eq_zero.1 h).resolve_right (Real.exp_ne_zero _)))`. Take `⟨V, hV, hqV, hVW, G, hG, hEq⟩` from `LogNormHolo.full D A _ (s q) hW hg hne q ⟨L.mem_U q, hq⟩`. Use `⟨V, hV, hqV, fun z hz => (hVW hz).1, G, hG, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h` using `hs.2 z q z ⟨L.mem_U z, (hVW hz).1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `rSec logNormSec`. Rewrite using `[h, Real.log_mul (norm_ne_zero_iff.2 (hne z (hVW hz))) (Real.exp_ne_zero _), Real.log_exp, hEq z hz]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rSec_local {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ} (hL : IsPotential A L)
     (hs : IsSection A L s) {q : X} (hq : q ∈ secOpen s) :
@@ -50,13 +50,13 @@ theorem rSec_local {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ} (h
   ring
 
 /- English proof (translation)
-Use `set q := (A.chart k).symm y`. Take `⟨V, hV, hqV, hVU, G, hG, hEq⟩` from `rSec_local hL hs hq`. Establish `hO : IsOpen ((A.chart k).target ∩ (A.chart k).symm ⁻¹' V)` using `(A.chart k).isOpen_inter_preimage_symm hV`. Establish `hyO : y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' V` using `⟨hy, hqV⟩`. Establish `hGa : AnalyticAt ℂ (G ∘ (A.chart k).symm) y` using `hG k y hyO`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRe : ContDiffAt ℝ ∞ (fun y' => (G ((A.chart k).symm y')).re) y`. Use `(Complex.reCLM.contDiff (𝕜 := ℝ) (n := ∞)).contDiffAt.comp y ((hGa.contDiffAt (n := ∞)).restrict_scalars ℝ)` as an intermediate fact. Simplify `this` using `[Function.comp_def]`. Establish `hφ : ContDiffAt ℝ ∞ (L.φ q ∘ (A.chart k).symm) y` using `(hL.1 q k).contDiffAt (((A.chart k).isOpen_inter_preimage_symm (L.isOpen_U q)).mem_nhds ⟨hy, L.mem_U q⟩)`. Establish `hev : rSec L s ∘ (A.chart k).symm =ᶠ[𝓝 y] fun y' => (Real.exp 1 + (-2) * (G ((A.chart k).symm y')).re) + 2 * (L.φ q ∘ (A.chart k).symm) y'` using `by filter_upwards [hO.mem_nhds hyO] with y' hy'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp]`. Rewrite using `[hEq _ hy'.2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : ContDiffAt ℝ ∞ (fun y' => Real.exp 1 + (-2) * (G ((A.chart k).symm y')).re) y` using `contDiffAt_const.add (contDiffAt_const.mul hRe)`. Use `⟨(hc.add (contDiffAt_const.mul hφ)).congr_of_eventuallyEq hev, fun v => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `levi_add_smul (f := fun y' => Real.exp 1 + (-2) * (G ((A.chart k).symm y')).re) (g := L.φ q ∘ (A.chart k).symm) 2 (hc.of_le ReciprocityTheory.AnForm.A.two_le_inf) (hφ.of_le ReciprocityTheory.AnForm.A.two_le_inf) v`. Establish `h2` using `levi_add_smul (f := fun _ : Fin D → ℂ => Real.exp 1) (g := fun y' => (G ((A.chart k).symm y')).re) (-2) contDiffAt_const (hRe.of_le ReciprocityTheory.AnForm.A.two_le_inf) v`. Establish `h0 : levi (fun y' => (G ((A.chart k).symm y')).re) y v = 0` using `levi_re_analytic hGa v`. Rewrite using `[levi_congr hev v, h1, h2, levi_const, h0]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rSec_chart {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ} (hL : IsPotential A L)
     (hs : IsSection A L s) (k : Fin A.n) {y : Fin D → ℂ} (hy : y ∈ (A.chart k).target)
@@ -97,7 +97,7 @@ theorem rSec_chart {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ} (h
   ring
 
 /- English proof (translation)
-Break down `eq_or_ne v 0 with h0 | h0` into its components or cases. Rewrite using `[h0, levi_zero]`. Conclude with `(Om.pos x k y hy v h0).le`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_kaehler_nonneg {A : FinHolAtlas D X} (Om : KaehlerForm A) (x : X) (k : Fin A.n)
     {y : Fin D → ℂ} (hy : y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' Om.pot.U x)
@@ -107,9 +107,9 @@ theorem levi_kaehler_nonneg {A : FinHolAtlas D X} (Om : KaehlerForm A) (x : X) (
   · exact (Om.pos x k y hy v h0).le
 
 /- English proof (translation)
-Take `⟨M, hM0, hM⟩` from `levi_abs_le_global A isCompact_univ L Om.pot hL Om.isPot Om.pos`. Use `⟨1 / (2 * (M + 1)), by positivity, fun k y hy v => ?_⟩` and prove the remaining obligations. Use `set q := (A.chart k).symm y`. Establish `h1` using `hM q k y ⟨hy, L.mem_U q, Om.pot.mem_U q⟩ v`. Establish `h2` using `levi_kaehler_nonneg Om q k ⟨hy, Om.pot.mem_U q⟩ v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `le_abs_self (levi (L.φ q ∘ (A.chart k).symm) y v)`. Establish `hM1 : 0 < M + 1` using `by linarith`. Rewrite using `[show 2 * (1 / (2 * (M + 1))) = (M + 1)⁻¹ by field_simp, inv_mul_le_iff₀ hM1]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_levi_weight_constant [CompactSpace X] {A : FinHolAtlas D X} (Om : KaehlerForm A) {L : LocPot X}
     (hL : IsPotential A L) : ∃ c₀ : ℝ, 0 < c₀ ∧ ∀ (k : Fin A.n) (y : Fin D → ℂ),
@@ -127,13 +127,13 @@ theorem exists_levi_weight_constant [CompactSpace X] {A : FinHolAtlas D X} (Om :
   nlinarith
 
 /- English proof (translation)
-Use `set δ := Real.exp ((Real.exp 1 - B / c₀) / 2)`. Establish `hq0 : ‖s q q‖ * Real.exp (-L.φ q q) = 0`. Establish `h : s q q = 0`. Assume the negation of the conclusion as `h`. Conclude with `hq h`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h]`. Establish `hT` using `(continuous_normSec hL hs).continuousAt (x := q)`. Establish `hev : ∀ᶠ z in 𝓝 q, ‖s z z‖ * Real.exp (-L.φ z z) < δ` using `hT.eventually (gt_mem_nhds (by show ‖s q q‖ * Real.exp (-L.φ q q) < δ`. Rewrite using `[hq0]`. Conclude with `Real.exp_pos _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hev] with z hz hzY`. Establish `hpos : 0 < ‖s z z‖ * Real.exp (-L.φ z z)` using `mul_pos (norm_pos_iff.2 hzY) (Real.exp_pos _)`. Establish `hlog : logNormSec L s z < (Real.exp 1 - B / c₀) / 2`. Use `Real.log_lt_log hpos hz` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr : B / c₀ < rSec L s z`. Unfold `rSec`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hr` using `[div_lt_iff₀ hc₀]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eventually_le_rSec {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ}
     (hL : IsPotential A L) (hs : IsSection A L s) {c₀ : ℝ} (hc₀ : 0 < c₀) {q : X}
@@ -171,11 +171,9 @@ def eWeight (L : LocPot X) (s : X → X → ℂ) (c₀ l : ℝ) (z : X) : ℝ :=
   if z ∈ secOpen s then regMax 1 (eWeightPair L s c₀ l z) - 1 else -l - 1
 
 /- English proof (translation)
-Take `⟨-, -, -, -, heq, -⟩` from `(regMax_thm (Fin 2)).1 1 one_pos`. Use `filter_upwards [eventually_le_rSec hL hs hc₀ hq (l + 1)] with z hz`. Distinguish the cases in `hzY : z ∈ secOpen s`. Establish `h` using `hz hzY`. Rewrite using `[eWeight, if_pos hzY, heq (eWeightPair L s c₀ l z) 1 fun j hj => ?_]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `fin_cases j`. Use `show -(c₀ * rSec L s z) + 1 ≤ -l`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd rfl hj`.
-
-Rewrite using `[eWeight, if_neg hzY]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eWeight_eventually_const {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ}
     (hL : IsPotential A L) (hs : IsSection A L s) {c₀ : ℝ} (hc₀ : 0 < c₀) (l : ℝ) {q : X}
@@ -193,11 +191,11 @@ theorem eWeight_eventually_const {A : FinHolAtlas D X} {L : LocPot X} {s : X →
   · rw [eWeight, if_neg hzY]
 
 /- English proof (translation)
-Take `⟨hcd, -⟩` from `(regMax_thm (Fin 2)).1 1 one_pos`. Introduce `k y hy`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Establish `ht : Tendsto (A.chart k).symm (𝓝 y) (𝓝 ((A.chart k).symm y))` using `(A.chart k).continuousAt_symm hy.1`. Distinguish the cases in `hq : (A.chart k).symm y ∈ secOpen s`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hev : eWeight L s c₀ l ∘ (A.chart k).symm =ᶠ[𝓝 y] fun y' => regMax 1 (fun j => eWeightPair L s c₀ l ((A.chart k).symm y') j) - 1` using `by filter_upwards [ht.eventually ((isOpen_secOpen hL hs).mem_nhds hq)] with y' hy'`. Establish `hy'' : (A.chart k).symm y' ∈ secOpen s` using `hy'`. Simplify using `only [Function.comp, eWeight, if_pos hy'']`. Use `ContDiffAt.congr_of_eventuallyEq ?_ hev` and prove the remaining obligations. Use `(hcd.contDiffAt.comp y (contDiffAt_pi.2 fun j => ?_)).sub contDiffAt_const` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases j`. Use `show ContDiffAt ℝ ∞ (fun y' => -(c₀ * rSec L s ((A.chart k).symm y'))) y`. Conclude with `(contDiffAt_const.mul (rSec_chart hL hs k hy.1 hq).1).neg`. Conclude with `contDiffAt_const`. Conclude with `contDiffAt_const.congr_of_eventuallyEq (ht.eventually (eWeight_eventually_const hL hs hc₀ l hq))`.
+A detailed English derivation is pending.
 -/
 theorem eWeight_smooth {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ}
     (hL : IsPotential A L) (hs : IsSection A L s) {c₀ : ℝ} (hc₀ : 0 < c₀) (l : ℝ) :
@@ -223,23 +221,21 @@ theorem eWeight_smooth {A : FinHolAtlas D X} {L : LocPot X} {s : X → X → ℂ
       (ht.eventually (eWeight_eventually_const hL hs hc₀ l hq))
 
 /- English proof (translation)
-Take `⟨hcd, -⟩` from `(regMax_thm (Fin 2)).1 1 one_pos`. Introduce `x k y hy v`. Establish `hyO : y ∈ (A.chart k).target ∩ (A.chart k).symm ⁻¹' Om.pot.U x` using `⟨hy.1, hy.2.1⟩`. Use `set q := (A.chart k).symm y with hqdef`. Establish `ht : Tendsto (A.chart k).symm (𝓝 y) (𝓝 q)` using `(A.chart k).continuousAt_symm hy.1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hO2 : ContDiffAt ℝ 2 (Om.pot.φ x ∘ (A.chart k).symm) y` using `((Om.isPot.1 x k).contDiffAt (((A.chart k).isOpen_inter_preimage_symm (Om.pot.isOpen_U x)).mem_nhds hyO)).of_le ReciprocityTheory.AnForm.A.two_le_inf`. Establish `hOnn` using `levi_kaehler_nonneg Om x k hyO v`. Use `show 0 ≤ levi (fun y' => Om.pot.φ x ((A.chart k).symm y') + eWeight L s c₀ l ((A.chart k).symm y')) y v`. Distinguish the cases in `hq : q ∈ secOpen s`. Establish `hU : IsOpen ((A.chart k).target ∩ (A.chart k).symm ⁻¹' secOpen s)` using `(A.chart k).isOpen_inter_preimage_symm (isOpen_secOpen hL hs) set u : Fin 2 → (Fin D → ℂ) → ℝ := fun j y' => eWeightPair L s c₀ l ((A.chart k).symm y') j with hudef`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : ∀ j, ContDiffOn ℝ 2 (u j) ((A.chart k).target ∩ (A.chart k).symm ⁻¹' secOpen s)`. Introduce `j`. Use `fin_cases j`. Introduce `y' hy'`. Conclude with `((contDiffAt_const.mul (rSec_chart hL hs k hy'.1 hy'.2).1).neg.of_le ReciprocityTheory.AnForm.A.two_le_inf).contDiffWithinAt`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `contDiffOn_const`. Establish `hh : ContDiffAt ℝ 2 (fun y' => regMax 1 (fun j => u j y')) y` using `(hcd.of_le ReciprocityTheory.AnForm.A.two_le_inf).contDiffAt.comp y (contDiffAt_pi.2 fun j => (hu j).contDiffAt (hU.mem_nhds ⟨hy.1, hq⟩))`. Establish `hev : (fun y' => Om.pot.φ x ((A.chart k).symm y') + eWeight L s c₀ l ((A.chart k).symm y')) =ᶠ[𝓝 y] fun y' => ((Om.pot.φ x ∘ (A.chart k).symm) y' + 1 * regMax 1 (fun j => u j y')) + (-1)` using `by filter_upwards [ht.eventually ((isOpen_secOpen hL hs).mem_nhds hq)] with y' hy'`. Establish `hy'' : (A.chart k).symm y' ∈ secOpen s` using `hy'`. Simplify using `only [Function.comp, eWeight, if_pos hy'', hudef]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hg` using `regMaxLevi_thm D (Fin 2) 1 _ u hU one_pos hu y ⟨hy.1, hq⟩ v (-levi (Om.pot.φ x ∘ (A.chart k).symm) y v) fun j => ?_`. Rewrite using `[levi_congr hev v, levi_add_const, levi_add_smul 1 hO2 hh v]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `fin_cases j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `show -levi (Om.pot.φ x ∘ (A.chart k).symm) y v ≤ levi (fun y' => -(c₀ * rSec L s ((A.chart k).symm y'))) y v`. Establish `hF` using `rSec_chart hL hs k hy.1 hq`. Establish `e1 : (fun y' => -(c₀ * rSec L s ((A.chart k).symm y'))) = fun y' => (0 : ℝ) + (-c₀) * (rSec L s ∘ (A.chart k).symm) y'`. Use function extensionality and compare the values at `y'`. Simplify using `only [Function.comp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hb` using `GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.Regular.ChartLeviThGe.levi_base_indep Om.isPot (ψ := A.chart k) (fun m => ⟨A.holo m k, A.holo k m⟩) (x := x) (x' := q) (p := q) hy.2.1 (Om.pot.mem_U q) ((A.chart k).map_target hy.1) v`. Rewrite `hb` using `[hqdef, (A.chart k).right_inv hy.1]`. Establish `h1` using `levi_add_smul (f := fun _ : Fin D → ℂ => (0 : ℝ)) (g := rSec L s ∘ (A.chart k).symm) (-c₀) contDiffAt_const (hF.1.of_le ReciprocityTheory.AnForm.A.two_le_inf) v`. Rewrite using `[e1, h1, levi_const, hF.2 v, hb]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `hc k y hy.1 v` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `show -levi (Om.pot.φ x ∘ (A.chart k).symm) y v ≤ levi (fun _ => -l) y v`. Rewrite using `[levi_const]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hev : (fun y' => Om.pot.φ x ((A.chart k).symm y') + eWeight L s c₀ l ((A.chart k).symm y')) =ᶠ[𝓝 y] fun y' => (Om.pot.φ x ∘ (A.chart k).symm) y' + (-l - 1)` using `by filter_upwards [ht.eventually (eWeight_eventually_const hL hs hc₀ l hq)] with y' hy'`. Simplify using `only [Function.comp] at hy' ⊢`. Rewrite using `[hy']`. Rewrite using `[levi_congr hev v, levi_add_const]`. Conclude with `hOnn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eWeight_psh {A : FinHolAtlas D X} (Om : KaehlerForm A) {L : LocPot X} {s : X → X → ℂ}
     (hL : IsPotential A L) (hs : IsSection A L s) {c₀ : ℝ} (hc₀ : 0 < c₀)
@@ -316,9 +312,9 @@ theorem eWeight_psh {A : FinHolAtlas D X} (Om : KaehlerForm A) {L : LocPot X} {s
     exact hOnn
 
 /- English proof (translation)
-Take `⟨-, -, -, hbd, -⟩` from `(regMax_thm (Fin 2)).1 1 one_pos`. Take `⟨h1, h2⟩` from `hbd (eWeightPair L s c₀ l z)`. Establish `h0 : -(c₀ * rSec L s z) ≤ tmax (eWeightPair L s c₀ l z)` using `le_tmax (eWeightPair L s c₀ l z) (0 : Fin 2)`. Establish `hm : tmax (eWeightPair L s c₀ l z) ≤ -min (c₀ * rSec L s z) l` using `tmax_le fun j => by fin_cases j`. Use `show -(c₀ * rSec L s z) ≤ -min (c₀ * rSec L s z) l`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_le_neg (min_le_left _ _)`. Use `show -l ≤ -min (c₀ * rSec L s z) l`. Conclude with `neg_le_neg (min_le_right _ _)`. Rewrite using `[eWeight, if_pos hz]`. Apply the tactic sequence `constructor <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem eWeight_bounds {L : LocPot X} {s : X → X → ℂ} (c₀ l : ℝ) {z : X} (hz : z ∈ secOpen s) :
     min (c₀ * rSec L s z) l ≤ -eWeight L s c₀ l z ∧ -eWeight L s c₀ l z ≤ c₀ * rSec L s z + 1 := by
@@ -336,7 +332,7 @@ theorem eWeight_bounds {L : LocPot X} {s : X → X → ℂ} (c₀ l : ℝ) {z : 
   constructor <;> linarith
 
 /- English proof (translation)
-Introduce `X _ _ _ D A Om L s hL hs`. Take `⟨c₀, hc₀, hc⟩` from `exists_levi_weight_constant Om hL`. Use `⟨c₀, hc₀, fun l _ => ⟨eWeight L s c₀ l, eWeight_smooth hL hs hc₀ l, eWeight_psh Om hL hs hc₀ hc l, fun x hx => eWeight_bounds c₀ l hx, fun x hx => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eWeight, if_neg hx]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem LemmaEWeight.proof : LemmaEWeight.Statement := by
   intro X _ _ _ D A Om L s hL hs

@@ -11,7 +11,7 @@ section Gen
 variable {R : Type} [CommRing R] {r : ℕ}
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun R).mp hy`. Use `⟨Fin.snoc c 0, by simp, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Fin.sum_univ_castSucc, Fin.snoc_castSucc, Fin.snoc_last, mul_zero, add_zero]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_headCols {Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R} {y : Fin (r + 1) → R}
     (hy : y ∈ headCols Z) : ∃ w : Fin (r + 1) → R, w (Fin.last r) = 0 ∧ y = Z.mulVec w := by
@@ -23,9 +23,9 @@ theorem mem_headCols {Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R} {y : Fin (r + 1)
   exact Finset.sum_congr rfl fun a _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `h1 : v - c • (fun i => Z i (Fin.last r)) ∈ headCols Z`. Rewrite using `[← Submodule.Quotient.eq]`. Rewrite using `[hv, bCls, Submodule.Quotient.mk_smul]`. Take `⟨w, -, hw⟩` from `mem_headCols h1`. Use `⟨w + Pi.single (Fin.last r) c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mulVec_add, ← hw]`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec_single]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem exists_of_mk {Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R} {v : Fin (r + 1) → R} {c : R}
     (hv : (Submodule.Quotient.mk v : MbMod Z) = c • bCls Z) : ∃ w, v = Z.mulVec w := by
@@ -39,7 +39,7 @@ theorem exists_of_mk {Z : Matrix (Fin (r + 1)) (Fin (r + 1)) R} {v : Fin (r + 1)
   simp [Matrix.mulVec_single]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sum_smul_single (c : Fin (r + 1) → R) : ∑ a, c a • (Pi.single a 1 : Fin (r + 1) → R) = c := by
   ext i
@@ -50,14 +50,14 @@ end Gen
 variable {E : Type} [CommRing E] (O : Subring E) (cj : E →+* E) {r : ℕ}
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, Matrix.map_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_mulVec (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (v : Fin (r + 1) → O) (i : Fin (r + 1)) :
     ((Z.mulVec v i : O) : E) = (Z.map O.subtype).mulVec (fun j => (v j : E)) i := by
   simp [Matrix.mulVec, dotProduct, Matrix.map_apply]
 
 /- English proof (translation)
-Simplify using `[Matrix.mulVec, dotProduct, cjT, Matrix.map_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cjT_mulVec_coe (hO : ∀ x ∈ O, cj x ∈ O) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
     (w : Fin (r + 1) → O) (b : Fin (r + 1)) :
@@ -65,9 +65,9 @@ theorem cjT_mulVec_coe (hO : ∀ x ∈ O, cj x ∈ O) (Z : Matrix (Fin (r + 1)) 
   simp [Matrix.mulVec, dotProduct, cjT, Matrix.map_apply]
 
 /- English proof (translation)
-Unfold `bRaw`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : (fun i => (((y + z) i : O) : E)) = (fun i => (y i : E)) + fun i => (z i : E)`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, Matrix.mulVec_add, Pi.add_apply, mul_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem bRaw_add_left (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (y z y' : Fin (r + 1) → O) :
     bRaw O cj Z (y + z) y' = bRaw O cj Z y y' + bRaw O cj Z z y' := by
@@ -80,9 +80,9 @@ theorem bRaw_add_left (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (y z y' : Fin (
   rw [h1, Matrix.mulVec_add, Pi.add_apply, mul_add]
 
 /- English proof (translation)
-Unfold `bRaw`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `h1 : (fun i => (((c • y) i : O) : E)) = (c : E) • fun i => (y i : E)`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bRaw_smul_left (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (c : O) (y y' : Fin (r + 1) → O) :
     bRaw O cj Z (c • y) y' = (c : E) * bRaw O cj Z y y' := by
@@ -96,7 +96,7 @@ theorem bRaw_smul_left (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (c : O) (y y' 
   ring
 
 /- English proof (translation)
-Unfold `bRaw`. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[map_add, add_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem bRaw_add_right (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (y y' z' : Fin (r + 1) → O) :
     bRaw O cj Z y (y' + z') = bRaw O cj Z y y' + bRaw O cj Z y z' := by
@@ -106,7 +106,7 @@ theorem bRaw_add_right (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (y y' z' : Fin
   simp [map_add, add_mul]
 
 /- English proof (translation)
-Unfold `bRaw`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem bRaw_smul_right (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (c : O) (y y' : Fin (r + 1) → O) :
     bRaw O cj Z y (c • y') = cj (c : E) * bRaw O cj Z y y' := by
@@ -129,7 +129,7 @@ theorem bLin_apply (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (y y' : Fin (r + 1
     bLin O cj Z y' y = bRaw O cj Z y y' := rfl
 
 /- English proof (translation)
-Unfold `bRaw`. Establish `h1 : (fun i => ((Z.mulVec v i : O) : E)) = (Z.map O.subtype).mulVec (fun j => (v j : E))`. Use function extensionality and compare the values at `(coe_mulVec O Z v)`. Rewrite using `[h1, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem bRaw_mulVec (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det)
     (v y' : Fin (r + 1) → O) :
@@ -140,7 +140,7 @@ theorem bRaw_mulVec (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.m
   rw [h1, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ hu, Matrix.one_mulVec]
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `exists_of_mk hv`. Rewrite using `[bRaw_mulVec O cj Z hu]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hO _ (y' j).2) (w j).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bRaw_mem_of_mk (hO : ∀ x ∈ O, cj x ∈ O) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
     (hu : IsUnit (Z.map O.subtype).det) {v : Fin (r + 1) → O} {c : O}
@@ -151,9 +151,9 @@ theorem bRaw_mem_of_mk (hO : ∀ x ∈ O, cj x ∈ O) (Z : Matrix (Fin (r + 1)) 
   exact Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hO _ (y' j).2) (w j).2
 
 /- English proof (translation)
-Unfold `bRaw`. Simplify using `only [hy', map_sum, map_mul, hcj, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `e : ∑ j, (Z.map O.subtype) a j * cj (w a) * ((Z.map O.subtype)⁻¹.mulVec (fun i => (y i : E))) j = cj (w a) * ((Z.map O.subtype).mulVec ((Z.map O.subtype)⁻¹.mulVec (fun i => (y i : E)))) a`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem bRaw_cjT (hcj : ∀ x, cj (cj x) = x) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
     (hu : IsUnit (Z.map O.subtype).det) (y y' : Fin (r + 1) → O) (w : Fin (r + 1) → E)
@@ -171,7 +171,7 @@ theorem bRaw_cjT (hcj : ∀ x, cj (cj x) = x) (Z : Matrix (Fin (r + 1)) (Fin (r 
   rw [e, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hu, Matrix.one_mulVec]
 
 /- English proof (translation)
-Unfold `lamS`. Establish `h1 : (fun b => (y' b : E)) = fun b => ∑ a, cj ((Z.map O.subtype) a b) * w a` using `funext hy'`. Rewrite using `[h1]`. Conclude with `lamStarC_mulVec (cj := cj) _ hu w`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamS_cjT (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det)
     (y' : Fin (r + 1) → O) (w : Fin (r + 1) → E)
@@ -183,7 +183,7 @@ theorem lamS_cjT (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map 
   exact lamStarC_mulVec (cj := cj) _ hu w
 
 /- English proof (translation)
-Take `⟨w, hw0, rfl⟩` from `mem_headCols hy`. Rewrite using `[lamS_cjT O cj Z hu _ (fun a => (w a : E)) (fun b => cjT_mulVec_coe O cj hO Z w b)]`. Simplify using `[hw0]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lamS_headCols (hO : ∀ x ∈ O, cj x ∈ O) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
     (hu : IsUnit (Z.map O.subtype).det) {y' : Fin (r + 1) → O} (hy : y' ∈ headCols (cjT O cj hO Z)) :
@@ -193,7 +193,7 @@ theorem lamS_headCols (hO : ∀ x ∈ O, cj x ∈ O) (Z : Matrix (Fin (r + 1)) (
   simp [hw0]
 
 /- English proof (translation)
-Take `⟨w, -, rfl⟩` from `mem_headCols hy`. Rewrite using `[bRaw_cjT O cj hcj Z hu y _ (fun a => (w a : E)) (fun b => cjT_mulVec_coe O cj hO Z w b)]`. Conclude with `Subring.sum_mem _ fun a _ => Subring.mul_mem _ (hO _ (w a).2) (y a).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bRaw_headCols_right (hcj : ∀ x, cj (cj x) = x) (hO : ∀ x ∈ O, cj x ∈ O)
     (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O) (hu : IsUnit (Z.map O.subtype).det)
@@ -204,7 +204,7 @@ theorem bRaw_headCols_right (hcj : ∀ x, cj (cj x) = x) (hO : ∀ x ∈ O, cj x
   exact Subring.sum_mem _ fun a _ => Subring.mul_mem _ (hO _ (w a).2) (y a).2
 
 /- English proof (translation)
-Simplify using `only [bRaw, lamS, lamStarC, coe_single, Matrix.mulVec_single_one, map_sum, map_mul, hcj, Matrix.transpose_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cj_bRaw_single (hcj : ∀ x, cj (cj x) = x) (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) O)
     (y' : Fin (r + 1) → O) :

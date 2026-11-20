@@ -7,13 +7,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.PBFc
 
 /- English proof (translation)
-Establish `ht : c + l = t` using `h`. Distinguish the cases in `hcl : c ≤ 0 ∧ l ≤ 0`. Take `⟨a, rfl⟩ : ∃ a : ℕ, c = -(a : ℤ)` from `⟨(-c).toNat, by omega⟩`. Take `⟨b, rfl⟩ : ∃ b : ℕ, l = -(b : ℤ)` from `⟨(-l).toNat, by omega⟩`. Take `rfl : t = -((a + b : ℕ) : ℤ)` from `by push_cast; omega`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← cancel_epi (biChainsXIso R (twX E V) a b).inv, comp_zero]`. Use `free_ext _ _ fun U y => ?_` and prove the remaining obligations. Establish `e1` using `evT_crossT V ℓ μ hk α z a b r hr U y`. Unfold `evT at e1`. Use `e1.trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0 : ev α a _ rfl U (baseS V y) = 0`. Rewrite using `[ev_def, hα _ _ _ hc, comp_zero]`. Conclude with `map_zero (mapHom _ _ (freeGen R _ U (baseS V y)))`. Rewrite using `[h0, map_zero, LinearMap.zero_apply, smul_zero]`. Conclude with `(map_zero (mapHom _ _ (freeGen R _ U y))).symm`.
-
-Conclude with `(biChains_isZero (R := R) (twX E V) c l (by omega)).eq_of_src _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crossT_ι_eq_zero_of_vanish {R : Type} [CommRing R] {E : Spc} {N : ℕ} (V : E ⟶ ofCat (glCat N)) {B : Spc}
     (ℓ : twX E V ⟶ (Functor.const SimplexCategoryᵒᵖ).obj B) {I J K : Cx R} (μ : Pair I J K) {n m k : ℤ}

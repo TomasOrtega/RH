@@ -19,17 +19,17 @@ section Values
 variable {k K : Type} [Field k] [Field K] {Z : Scheme.{0}} [IsIntegral Z] (p : Z ⟶ Sp k)
 
 /- English proof (translation)
-The claim follows from `unitAt_fnOf (U := ⊤) (x := x) trivial trivial (ha.isUnit.map (algX p ⊤)).unit`.
+A detailed English derivation is pending.
 -/
 theorem unitAt_constFn (x : Z) {a : k} (ha : a ≠ 0) : UnitAt x (Cartier.constFn p a) :=
   unitAt_fnOf (U := ⊤) (x := x) trivial trivial (ha.isUnit.map (algX p ⊤)).unit
 
 /- English proof (translation)
-Establish `h` using `OfModel.valAt_fnOf y (U := ⊤) trivial le_top (algX p ⊤ a)`. Use `h.trans ?_` and prove the remaining obligations. Establish `e1 : p.appLE ⊤ ⊤ le_top ≫ y.appLE ⊤ ⊤ le_top = (spMap φ).appTop`. Use `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hy]`. Both sides reduce to the same expression. Establish `e2` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ)`. Establish `e3 : (Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ p.appLE ⊤ ⊤ le_top ≫ y.appLE ⊤ ⊤ le_top ≫ (Scheme.ΓSpecIso (CommRingCat.of K)).hom = CommRingCat.ofHom φ`. Rewrite using `[← Category.assoc (p.appLE ⊤ ⊤ le_top), e1, e2, Iso.inv_hom_id_assoc]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun ψ => ψ.hom a) e3`.
+A detailed English derivation is pending.
 -/
 theorem valAt_constFn (φ : k →+* K) (y : Sp K ⟶ Z) (hy : y ≫ p = spMap φ) (a : k) :
     valAt y (Cartier.constFn p a) = φ a := by
@@ -47,7 +47,7 @@ theorem valAt_constFn (φ : k →+* K) (y : Sp K ⟶ Z) (hy : y ≫ p = spMap φ
   exact congrArg (fun ψ => ψ.hom a) e3
 
 /- English proof (translation)
-Take `⟨a, ha, rfl⟩` from `hf`. Rewrite using `[OfModel.valAt_algebraMap]`. Conclude with `(ha.map _).ne_zero`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_ne_zero (y : Sp K ⟶ Z) {f : Z.functionField} (hf : UnitAt (below y) f) : valAt y f ≠ 0 := by
   obtain ⟨a, ha, rfl⟩ := hf
@@ -55,7 +55,7 @@ theorem valAt_ne_zero (y : Sp K ⟶ Z) {f : Z.functionField} (hf : UnitAt (below
   exact (ha.map _).ne_zero
 
 /- English proof (translation)
-The claim follows from `(ratVal_fnOf (y := y) mem_ptsIn_top trivial (algX p ⊤ a)).trans (ev_algX mem_ptsIn_top a)`.
+A detailed English derivation is pending.
 -/
 theorem ratVal_constFn {σ : k →+* ℂ} (y : CxPts p σ) (a : k) :
     ratVal (Cartier.constFn p a) y = σ a :=
@@ -64,19 +64,17 @@ theorem ratVal_constFn {σ : k →+* ℂ} (y : CxPts p σ) (a : k) :
 end Values
 
 /- English proof (translation)
-Introduce `F _ _ C Y A M L k cf b hb ht ⟨hfin, r, hr, hinf, hv⟩`. Establish `hb' : algebraMap (𝓞 F) F b ≠ 0` using `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective _ _)).2 hb`. Establish `hu (x : Y.X)` using `unitAt_constFn Y.str x hb'`. Set `c : Y.Fnˣ` to `Units.mk0 (Cartier.constFn Y.str (algebraMap (𝓞 F) F b)) (hu (genericPoint Y.X)).ne_zero`. Establish `hc : (c : Y.Fn) = Cartier.constFn Y.str (algebraMap (𝓞 F) F b)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨?_, fun i => r i * c, ⟨hr.isLB, (hr.add_principal c).isRatSec, fun i x hx => ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `(hfin.union (sum_log_embedding_add_finsum_log_adicAbv_eq_zero F _ hb').1).subset fun v h => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h'`. Simplify using `only [Set.mem_union, Function.mem_support, not_or, not_not] at h'`. Conclude with `h (by simp only [h'.1, h'.2, zero_div, add_zero])`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hr.isEqn i x hx).iff_unitAt.2 ?_` and prove the remaining obligations. Rewrite using `[Units.val_mul, mul_div_cancel_left₀ _ (r i).ne_zero]`. Conclude with `hu x`. Introduce `σ y y' i f hy hi hf`. Establish `h₁ : RegAt (under y) (f * (r i : Y.Fn))` using `(hr.isEqn i _ hi).regularAt_iff.1 hf`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h₂ : 0 < ‖σ (algebraMap (𝓞 F) F b)‖` using `norm_pos_iff.2 ((map_ne_zero σ).2 hb')`. Use `(hinf σ y y' i f hy hi hf).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = ‖ratVal (f * ((r i : Y.Fn) * (c : Y.Fn))) y‖ ^ 2 * Real.exp (-((L.φ _).φ (i PUnit.unit) y' + 2 * Real.log ‖σ (algebraMap (𝓞 F) F b)‖))`. Rewrite using `[← mul_assoc, hc, ratVal_mul h₁ (hu _).regAt, ratVal_constFn, norm_mul, neg_add, Real.exp_add, Real.exp_neg (2 * _), show (2 : ℝ) * Real.log ‖σ (algebraMap (𝓞 F) F b)‖ = Real.log (‖σ (algebraMap (𝓞 F) F b)‖ ^ 2) by rw [Real.log_pow]; norm_num, Real.exp_log (pow_pos h₂ 2)]`. Clear the denominators using the available nonvanishing facts.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v e y yt i h hi`. Establish `h₁ : below y.1 ∈ (L.B.pull M.j).U i` using `OfModel.le_chart M L.B e y yt h hi trivial`. Establish `h₂ : UnitAt (below y.1) (((eqn A.D (below y.1))⁻¹ ^ (k : ℕ) * r i : Y.Fnˣ) : Y.Fn)`. Use `((A.D.exists_isEqn (below y.1)).choose_spec.nsmul k).iff_unitAt.1 (hr.isEqn i _ h₁)` as an intermediate fact. Rewrite `this` using `[div_eq_inv_mul, ← Units.val_inv_eq_inv_val, ← Units.val_mul, ← inv_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : ((k : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast k.ne_zero`. Establish `hn : ((A.n : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast A.n.ne_zero`. Use `(hv v e y yt i h hi).trans ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, Units.val_mul _ c, hc, OfModel.valAt_mul _ h₂.regAt (hu _).regAt, valAt_constFn Y.str _ y.1 y.2, map_mul, e.w_alg, Real.log_mul (e.w.ne_zero (valAt_ne_zero _ h₂)) (AbsoluteValue.ne_zero _ hb')]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem induced_shift : ∀ (F : Type) [Field F] [NumberField F] (C : CxSt F) (Y : Var F) (A : Adl C Y)
     (M : TrueGeo.Model Y) (L : HermLB M.p) (k : ℕ+) (cf : HeightOneSpectrum (𝓞 F) → ℝ) (b : 𝓞 F), b ≠ 0 →

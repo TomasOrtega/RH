@@ -17,35 +17,33 @@ open GlobalTheory.CuspRep GlobalTheory.UnitaryBC GlobalTheory.SmGL GlobalTheory.
 namespace PositivityTheory.Rg.Rs
 
 /- English proof (translation)
-Introduce `E _ _ _ r s V hV c z₁ z₂ T hT hL2 φ hφ`. Use `⟨hT.unipInv φ hφ, fun k g => ?_⟩` and prove the remaining obligations. Establish `hAφ` using `hV.aut φ hφ`. Set `L` to `GlobalTheory.DiscClosure.stabSub φ`. Establish `hLo : IsOpen (L : Set (GL (Fin (r + s)) (Af E)))` using `hAφ.level`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hLv : ∀ h ∈ L, finRep E (r + s) h (T φ) = T φ` using `fun h hh => by`. Establish `e` using `hT.equiv (.fin h) φ hφ`. Establish `hh' : finRep E (r + s) h φ = φ` using `hh`. Express the relevant statement in the definitionally equal form `T (finRep E (r + s) h φ) = finRep E (r + s) h (T φ) at e`. Rewrite using `[← e, hh']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Set `S` to `GlobalTheory.CuspRep.LocEx.orbSpan (T φ)`. Establish `: FiniteDimensional ℂ S`. Use `hAφ.kfin` as an intermediate fact. Use `Submodule.finiteDimensional_of_le (S₂ := (Submodule.span ℂ (Set.range fun κ => cptRep E (r + s) κ φ)).map T) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨κ, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, Submodule.subset_span ⟨κ, rfl⟩, hT.equiv (.cpt κ) φ hφ⟩`. Set `ρ` to `GlobalTheory.PRep.sub (cptRep E (r + s)) S (GlobalTheory.CuspRep.LocEx.orbSpan_stable (T φ))`. Establish `hρ : GlobalTheory.Published.AutFin.IsContRep ρ` using `GlobalTheory.CuspRep.LocEx.isContRep_sub S _`. Establish `hC : ∀ g : GA E (r + s), (fun κ : Kinf E (r + s) => (cptRep E (r + s) κ (T φ)).1 g) ∈ GlobalTheory.Published.AutFin.coeffSpan ρ` using `fun g => GlobalTheory.Published.AutFinGL.type_of_map ρ S.subtype (fun _ _ => rfl) ⟨T φ, Submodule.subset_span ⟨1, by simp⟩⟩ g`. Establish `hsc : ∀ (τ : E →+* ℂ) (u : ℂ), ∃ c : ℂ, ∀ ψ ∈ V, cap τ u ψ = c • ψ` using `fun τ u => GlobalTheory.DiscLocEx.exists_scalarD hV (Algebra.subset_adjoin ⟨τ, u, rfl⟩) (GlobalTheory.SpehInfChar.cap_commute_act τ u)`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose cc hcc using hsc`. Set `J : Set (Module.End ℂ (Sm E (r + s)))` to `{z | ∃ (τ : E →+* ℂ) (u : ℂ), z = Polynomial.aeval (cap (a := r + s) τ u) (Polynomial.X - Polynomial.C (cc τ u))}`. Establish `hJZ : J ⊆ Zalg E (r + s)`. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Conclude with `aeval_mem_Zalg (cap_mem_Zalg τ u) _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ : Cofin J` using `GlobalTheory.CompanionTheory.CTFin.MonicCofin.cofin_of_monic E (r + s) J hJZ fun τ u => ⟨_, Polynomial.monic_X_sub_C _, τ, u, rfl⟩`. Establish `hZ : ∀ z ∈ J, z (T φ) = 0`. Introduce and unpack `_ ⟨τ, u, rfl⟩`. Simplify using `only [map_sub, Polynomial.aeval_X, Polynomial.aeval_C, LinearMap.sub_apply, Module.algebraMap_end_apply]`. Rewrite using `[← GlobalTheory.SpehInfChar.cap_comm_quot (fun X ψ hψ => hV.stable (.lie X) ψ hψ) T hT.equiv τ u φ hφ, hcc τ u φ hφ, map_smul, sub_self]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨J₁, -, c₁, -, k₁, -⟩` from `centre J hJ`. Set `L₁` to `Slice1.levelOne s L g`. Set `ρ₁` to `ρ.comp (Slice1.levK E r s)`. Use `PositivityTheory.Rg.HF.GL.genFin E r L₁ (Slice1.isOpen_levelOne hLo g) S ρ₁ (fun ℓ w => (hρ ℓ w).comp Slice1.continuous_levK) J₁ c₁` as an intermediate fact. Set `S₁` to `tw (A2 E r) z₁ ⊓ Submodule.span ℂ (genSpace L₁ ρ₁ J₁)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: FiniteDimensional ℂ S₁` using `Submodule.finiteDimensional_of_le inf_le_right`. Set `U` to `S₁.map (Sm E r).subtype`. Take `⟨P, a, ha⟩` from `SliceTensor.interp U`. Set `f : GA E r × GA E s → ℂ` to `fun m => (T φ).1 (lev (Ad E) r s m * (infGL E (r + s) (Unitary.toUnits k) * finGL E (r + s) g))`. Establish `hleft : ∀ m₂, (fun m₁ => f (m₁, m₂)) ∈ U`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `m₂`. Take `⟨ψ, hψA, hψ, -⟩` from `hT.left φ hφ k g m₂`. Take `⟨ψ', hA', hS', e'⟩` from `(hL2 φ hφ k g).1 m₂`. Establish `hmem : ψ ∈ genSpace L₁ ρ₁ J₁`. Use `SliceTensor.slice_mem ρ hJZ k₁ (T φ) (hT.unipInv φ hφ) hLv hC hZ g k m₂ ψ hψA fun m₁ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hψ, infGL_comm, mul_assoc]`. Establish `htw : ψ ∈ tw (A2 E r) z₁`. Use `⟨ψ', Submodule.subset_span ⟨hA', hS'⟩, Subtype.ext (funext fun m₁ => ?_)⟩` and prove the remaining obligations. Conclude with `(e' m₁).trans (hψ m₁).symm`. Conclude with `⟨ψ, ⟨htw, Submodule.subset_span hmem⟩, funext fun m₁ => hψ m₁⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hb : ∀ κ : P, ∃ b ∈ tw (A2 E r) z₁, b.1 = (a κ : GA E r → ℂ)`. Introduce `κ`. Take `⟨b, hb, e⟩` from `(a κ).2`. Conclude with `⟨b, hb.1, e⟩`. Use `choose b hbm hbe using hb`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hright : ∀ κ : P, ∃ ψ ∈ tw (A2 E s) z₂, ∀ m₂, ψ.1 m₂ = f (κ.1, m₂)`. Introduce `κ`. Take `⟨ψ, hA, hS, e⟩` from `(hL2 φ hφ k g).2 κ.1`. Conclude with `⟨_, ⟨ψ, Submodule.subset_span ⟨hA, hS⟩, rfl⟩, e⟩`. Use `choose q hqm hqe using hright`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hf : f = ∑ κ : P, fun m : GA E r × GA E s => (b κ).1 m.1 * (q κ).1 m.2`. Use function extensionality and compare the values at `m`. Establish `e` using `congrFun (ha _ (hleft m.2)) m.1`. Rewrite using `[Finset.sum_apply]`. Rewrite `e` using `[Finset.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `e.trans (Finset.sum_congr rfl fun κ _ => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, hbe, hqe]`. Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `f ∈ _`. Rewrite using `[hf]`.
-
-Conclude with `Submodule.sum_mem _ fun κ _ => Submodule.subset_span ⟨b κ, hbm κ, q κ, hqm κ, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem sliceTens_holds : SliceTens := by
   intro E _ _ _ r s V hV c z₁ z₂ T hT hL2 φ hφ

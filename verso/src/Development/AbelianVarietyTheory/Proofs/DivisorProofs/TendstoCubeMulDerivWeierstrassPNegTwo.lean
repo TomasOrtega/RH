@@ -9,11 +9,11 @@ open scoped IntermediateField BigOperators Topology
 namespace GlobalTheory.CMModel
 
 /- English proof (translation)
-Establish `hw : ContinuousAt (fun z : ℂ ↦ z ^ 3 * L.derivWeierstrassPExcept 0 z - 2) 0`. Use `(L.analyticAt_derivWeierstrassPExcept 0).continuousAt` as an intermediate fact. Use `fun_prop`. Establish `h1 : Filter.Tendsto (fun z : ℂ ↦ z ^ 3 * L.derivWeierstrassPExcept 0 z - 2) (𝓝[≠] 0) (𝓝 (-2))`. Use `hw.tendsto.mono_left (nhdsWithin_le_nhds (s := {0}ᶜ))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Use `h1.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with z hz`. Establish `hz0 : z ≠ 0` using `hz`. Establish `h` using `L.derivWeierstrassPExcept_sub 0 z`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ZeroMemClass.coe_zero, sub_zero] at h`. Rewrite using `[← h]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem tendsto_cube_mul_derivWeierstrassP (L : PeriodPair) :
     Filter.Tendsto (fun z : ℂ => z ^ 3 * L.derivWeierstrassP z) (𝓝[≠] 0) (𝓝 (-2)) := by

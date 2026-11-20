@@ -16,25 +16,21 @@ variable {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin 
   {E : Fin n → Fin n → Module.End ℂ M} {V : Submodule ℂ M} {lam : Fin n → ℝ}
 
 /- English proof (translation)
-Establish `hinv : ∀ y ∈ ncV ε V 1, crossOp ε E 1 0 y ∈ ncV ε V 1` using `fun y hy => crossOp_mem_ncV hV.2.1 1 0 hy`. Use `haveI : FiniteDimensional ℂ (ncV ε V 1) := finiteDimensional_ncV hV.1 1`. Set `T' : Module.End ℂ (ncV ε V 1)` to `(crossOp ε E 1 0).restrict hinv`. Establish `hT' : T'.IsSymmetric` using `fun u v => crossOp_symm hU 1 0 u v`. Establish `htop : (⨆ μ, Module.End.eigenspace T' μ) = ⊤`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hT'.orthogonalComplement_iSup_eigenspaces_eq_bot` as an intermediate fact. Rewrite `this` using `[Submodule.orthogonal_eq_bot_iff]`. Then use the resulting hypothesis. Establish `hx' : (⟨x, hx⟩ : ncV ε V 1) ∈ ⨆ μ, Module.End.eigenspace T' μ`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hx'`. Establish `hreal : ∀ μ, g μ ≠ 0 → μ = ((μ.re : ℝ) : ℂ)`. Introduce `μ hμ`. Establish `hev : Module.End.HasEigenvalue T' μ` using `Module.End.hasEigenvalue_of_hasEigenvector ⟨hg μ, hμ⟩`. Conclude with `(Complex.conj_eq_iff_re.1 (hT'.conj_eigenvalue_eq_self hev)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmem : ∀ μ, ((g μ : ncV ε V 1) : Big n 1 M) ∈ Module.End.eigenspace (crossOp ε E 1 0) μ ⊓ ncV ε V 1`. Introduce `μ`. Use `Submodule.mem_inf.2 ⟨?_, (g μ).2⟩` and prove the remaining obligations. Rewrite using `[Module.End.mem_eigenspace_iff]`. Conclude with `congrArg Subtype.val (Module.End.mem_eigenspace_iff.1 (hg μ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hmem' : ∀ μ, g μ ≠ 0 → ((g μ : ncV ε V 1) : Big n 1 M) ∈ Module.End.eigenspace (crossOp ε E 1 0) ((μ.re : ℝ) : ℂ) ⊓ ncV ε V 1`. Introduce `μ hμ`. Establish `h1` using `hmem μ`. Rewrite using `[← hreal μ hμ]` and apply the resulting hypothesis. Establish `hne : ∀ μ, g μ ≠ 0 → ((g μ : ncV ε V 1) : Big n 1 M) ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `μ hμ h0`. Conclude with `hμ (Subtype.ext h0)`. Establish `hxsum : x = ∑ μ ∈ g.support, ((g μ : ncV ε V 1) : Big n 1 M)`. Use `congrArg Subtype.val hsum` as an intermediate fact. Simplify `this.symm` using `[Finsupp.sum]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∑ μ ∈ g.support.filter (fun μ => μ.re < 0), ((g μ : ncV ε V 1) : Big n 1 M), ?_, ∑ μ ∈ g.support.filter (fun μ => ¬ μ.re < 0), ((g μ : ncV ε V 1) : Big n 1 M), ?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ ⨆ (θ : ℝ) (_ : θ < 0), Module.End.eigenspace (crossOp ε E 1 0) (θ : ℂ) ⊓ ncV ε V 1`. Use `Submodule.sum_mem _ fun μ hμ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : g μ = 0`. Rewrite using `[h0]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Submodule.zero_mem _`. Conclude with `Submodule.mem_iSup_of_mem μ.re (Submodule.mem_iSup_of_mem (Finset.mem_filter.1 hμ).2 (hmem' μ h0))`. Use `show _ ∈ ⨆ (θ : ℝ) (_ : 0 < θ), Module.End.eigenspace (crossOp ε E 1 0) (θ : ℂ) ⊓ ncV ε V 1`. Use `Submodule.sum_mem _ fun μ hμ => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : g μ = 0`.
-
-Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Establish `hnn : ¬ μ.re < 0` using `(Finset.mem_filter.1 hμ).2`. Establish `hpos : 0 < μ.re`. Break down `crossOp_eig_gap hE hU hV hmono hh hbig (hmem' μ h0) (hne μ h0) with h1 | h1` into its components or cases.
-
-Combine the linear relations using `[h1.1, h1.2]`. Conclude with `absurd (by linarith [h1.1, h1.2]) hnn`. Conclude with `Submodule.mem_iSup_of_mem μ.re (Submodule.mem_iSup_of_mem hpos (hmem' μ h0))`. Rewrite using `[Finset.sum_filter_add_sum_filter_not]`. Conclude with `hxsum`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncV_one_decomp (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
@@ -96,11 +92,11 @@ theorem ncV_one_decomp (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW 
     exact hxsum
 
 /- English proof (translation)
-Establish `key : ∀ i, (w + root r s) i * (w + root r s) i - w i * w i = (if i = r then 2 * w r + 1 else 0) + (if i = s then -(2 * w s) + 1 else 0)`. Introduce `i`. Simplify using `only [root, Pi.add_apply, Pi.sub_apply, Pi.single_apply]`. Distinguish the cases in `h1 : i = r`. Substitute `h1` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hrs]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h2 : i = s`. Substitute `h2` using the available equality. Simplify using `[h1]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `[h1, h2]`. Unfold `nsq dot`. Rewrite using `[← Finset.sum_sub_distrib]`. Simplify using `only [key, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -125,9 +121,9 @@ private lemma nsq_add_root_sub_nsq (w : Fin n → ℝ) {r s : Fin n} (hrs : r �
   ring
 
 /- English proof (translation)
-Establish `key : ∀ t : Finset (Fin n), (t.card : ℝ) ≤ n` using `fun t => by`. Use `Finset.card_le_univ t` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Conclude with `this` after adjusting the coercions. Simplify using `only [rhoN]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Combine the linear relations using `[key (Finset.filter (fun b => b < a ∧ ε b ≠ ε a) Finset.univ), (Nat.cast_nonneg (Finset.filter (fun b => a < b ∧ ε b ≠ ε a) Finset.univ).card : (0 : ℝ) ≤ _)]`. Combine the linear relations using `[key (Finset.filter (fun b => a < b ∧ ε b ≠ ε a) Finset.univ), (Nat.cast_nonneg (Finset.filter (fun b => b < a ∧ ε b ≠ ε a) Finset.univ).card : (0 : ℝ) ≤ _)]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private lemma abs_rhoN_le_half (ε : Fin n → Bool) (a : Fin n) :
     -(n : ℝ) / 2 ≤ rhoN ε a ∧ rhoN ε a ≤ (n : ℝ) / 2 := by
@@ -143,21 +139,19 @@ private lemma abs_rhoN_le_half (ε : Fin n → Bool) (a : Fin n) :
       (Nat.cast_nonneg (Finset.filter (fun b => b < a ∧ ε b ≠ ε a) Finset.univ).card : (0 : ℝ) ≤ _)]
 
 /- English proof (translation)
-Establish `hle : Wm ε E V ≤ ncV ε V 1` using `by show (⨆ (θ : ℝ) (_ : θ < 0), Module.End.eigenspace (crossOp ε E 1 0) (θ : ℂ) ⊓ ncV ε V 1) ≤ ncV ε V 1`. Conclude with `iSup₂_le fun θ _ => inf_le_right`. Establish `hxN : x ∈ ncV ε V 1` using `hle hx`. Take `⟨r, s, hrs, hν', hC⟩` from `crossOp_khw hE hU hV hxN hx0 hν`. Establish `hne : r ≠ s` using `fun h' => hrs (h' ▸ rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_gt_of_ne hne with hlt | hgt` into its components or cases. It suffices to derive a contradiction. Establish `hdiff : casValK ε ν - casValK ε (lowK ε lam) = 2 * ((lowK ε lam + rhoC ε) r - (lowK ε lam + rhoC ε) s) + 2`. Rewrite using `[hν']`. Unfold `casValK`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_right_comm]`. Combine the linear relations using `[nsq_add_root_sub_nsq (lowK ε lam + rhoC ε) hne]`. Establish `hw : ∀ i, (lowK ε lam + rhoC ε) i = lam i + rhoN ε i`. Introduce `i`. Simplify using `[lowK]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hgap : h ≤ lam r - lam s`. Establish `h1` using `hh r s hrs`. Rewrite `h1` using `[abs_of_pos (sub_pos.2 (hmono hlt))]`. Then use the resulting hypothesis. Establish `hcpos : 0 < (casValK ε ν - n - casValK ε (lowK ε lam)) / 2`. Rewrite `hdiff` using `[hw r, hw s]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[(abs_rhoN_le_half ε r).1, (abs_rhoN_le_half ε s).2]`. Establish `heig : crossOp ε E 1 0 x = (((casValK ε ν - n - casValK ε (lowK ε lam)) / 2 : ℝ) : ℂ) • x`. Establish `h2 : (2 : ℂ) ≠ 0` using `two_ne_zero`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, inv_mul_cancel₀ h2, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = (2 : ℂ)⁻¹ • (((casValK ε ν - n - casValK ε (lowK ε lam) : ℝ) : ℂ) • x) := by`. Rewrite using `[hC]`. Use `_ = _ := by`. Rewrite using `[smul_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hxP : x ∈ Wp ε E V` using `by show x ∈ ⨆ (θ : ℝ) (_ : 0 < θ), Module.End.eigenspace (crossOp ε E 1 0) (θ : ℂ) ⊓ ncV ε V 1`. Conclude with `Submodule.mem_iSup_of_mem _ (Submodule.mem_iSup_of_mem hcpos (Submodule.mem_inf.2 ⟨Module.End.mem_eigenspace_iff.2 heig, hxN⟩))`. Conclude with `hx0 (inner_self_eq_zero.1 (Wm_perp_Wp hU hx hxP))`.
-
-Use `⟨s, r, hgt, fun h' => hrs h'.symm, ?_⟩` and prove the remaining obligations. Rewrite using `[hν']`. Unfold `root`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem Wm_khw (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)
@@ -212,17 +206,17 @@ theorem Wm_khw (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lo
     abel
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Establish `IH` using `ih (fun j hj => hy j (Finset.mem_insert_of_mem hj)) (fun a ha b hb hab => horth a (Finset.mem_insert_of_mem ha) b (Finset.mem_insert_of_mem hb) hab) (fun j hj => hc j (Finset.mem_insert_of_mem hj))`. Rewrite using `[Finset.sum_insert hi]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : inner ℂ (y i) (∑ j ∈ s, y j) = 0`. Rewrite using `[inner_sum]`. Conclude with `Finset.sum_eq_zero fun j hj => horth i (Finset.mem_insert_self i s) j (Finset.mem_insert_of_mem hj) (fun h => hi (h ▸ hj))`. Establish `h0' : inner ℂ (∑ j ∈ s, y j) (y i) = 0`. Rewrite using `[← inner_conj_symm, h0, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hTi : T (y i) = ((θ i : ℝ) : ℂ) • y i` using `hy i (Finset.mem_insert_self i s)`. Establish `h1 : inner ℂ (T (y i)) (∑ j ∈ s, y j) = 0`. Rewrite using `[hTi, inner_smul_left, h0, mul_zero]`. Establish `h2 : inner ℂ (T (∑ j ∈ s, y j)) (y i) = 0`. Rewrite using `[hT, hTi, inner_smul_right, h0', mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : RCLike.re (inner ℂ (T (y i)) (y i)) = θ i * ‖y i‖ ^ 2`. Rewrite using `[hTi, inner_smul_left, Complex.conj_ofReal, ← inner_self_eq_norm_sq (𝕜 := ℂ)]`. Conclude with `Complex.re_ofReal_mul _ _`. Establish `hn : ‖y i + ∑ j ∈ s, y j‖ ^ 2 = ‖y i‖ ^ 2 + ‖∑ j ∈ s, y j‖ ^ 2`. Rewrite using `[@norm_add_sq ℂ, h0]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hre : RCLike.re (inner ℂ (T (y i + ∑ j ∈ s, y j)) (y i + ∑ j ∈ s, y j)) = θ i * ‖y i‖ ^ 2 + RCLike.re (inner ℂ (T (∑ j ∈ s, y j)) (∑ j ∈ s, y j))`. Rewrite using `[map_add, inner_add_left, inner_add_right, inner_add_right, h1, h2, add_zero, zero_add, map_add, h3]`. Rewrite using `[hn, hre]`. Distinguish the cases in `hyi : y i = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hyi]`. Simplify using `only [norm_zero]`. Use polynomial arithmetic with `[IH]`. Use `hc i (Finset.mem_insert_self i s) hyi` as an intermediate fact. Use polynomial arithmetic with `[IH, mul_le_mul_of_nonneg_right this (sq_nonneg ‖y i‖)]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private lemma mul_norm_sq_sum_le_re_inner_of_orthogonal_eigen {W : Type*} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     (T : Module.End ℂ W) (hT : ∀ u v, inner ℂ (T u) v = inner ℂ u (T v)) (c : ℝ)
@@ -265,9 +259,9 @@ private lemma mul_norm_sq_sum_le_re_inner_of_orthogonal_eigen {W : Type*} [Norme
       nlinarith [IH, mul_le_mul_of_nonneg_right this (sq_nonneg ‖y i‖)]
 
 /- English proof (translation)
-Establish `hx' : x ∈ ⨆ θ : {θ : ℝ // 0 < θ}, Module.End.eigenspace (crossOp ε E 1 0) (((θ : ℝ)) : ℂ) ⊓ ncV ε V 1`. Establish `h1 : x ∈ ⨆ (θ : ℝ) (_ : 0 < θ), Module.End.eigenspace (crossOp ε E 1 0) (θ : ℂ) ⊓ ncV ε V 1` using `hx`. Rewrite `h1` using `[iSup_subtype']`. Then use the resulting hypothesis. Take `⟨f, hf, rfl⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ _).1 hx'`. Establish `key` using `mul_norm_sq_sum_le_re_inner_of_orthogonal_eigen (crossOp ε E 1 0) (crossOp_symm hU 1 0) (h - n + 1) (fun θ : {θ : ℝ // 0 < θ} => (θ : ℝ)) f f.support (fun i _ => Module.End.mem_eigenspace_iff.1 (hf i).1) (fun i _ j _ hij => inner_crossOp_eig_eq_zero hU (fun h' => hij (Subtype.ext …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Break down `crossOp_eig_gap hE hU hV hmono hh hbig (hf i) hi0 with h1 | h1` into its components or cases. Conclude with `h1.2`. Conclude with `absurd i.2 (by linarith [h1.1, h1.2]))`. Simplify using `only [Finsupp.sum]`. Combine the linear relations using `[key]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem Wp_bound (hE : IsGlRep E) (hU : IsInfUnitary ε E) (hV : IsKIrrHW ε E (lowK ε lam) V)
     (hmono : StrictAnti lam) {h : ℝ} (hh : GapAtLeast ε lam h)

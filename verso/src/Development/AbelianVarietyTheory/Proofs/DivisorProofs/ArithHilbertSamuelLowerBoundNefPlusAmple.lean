@@ -17,13 +17,13 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `_ hHS k _ X _ p D hX P c n α hn hL hLs hA hAs hα ε hε`. Establish `: Module.Finite ℤ k` using `hX.finite`. Establish `hp : IsProjOver p` using `hX.isProjOver`. Establish `hLn : NefFib (P.L.pow n)` using `fun Z i _ _ κ _ _ _ hd => by`. Rewrite using `[NefHodgeTateAt.topSelf_pow hp P.L n Z i κ hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_nonneg (Nat.cast_nonneg _) (hL Z i κ hd)`. Establish `hAmp : IsAmpleLB ((P.L.pow n).tens P.A).B` using `GlobalTheory.T.isAmple_tensor_of_nef_fibres_ample k X p D hX _ _ hLn hA`. Establish `hSP : ((P.L.pow n).tens P.A).SemiPos D` using `(hLs.pow n).tens hAs`. Establish `hRep : P.Rep (n : ℤ) 1 ((P.L.pow n).tens P.A)`. Establish `h1` using `Pair.rep_pow k X p P 1 0 P.L n (Pair.rep_base k X p P).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Pair.rep_tens k X p P _ _ 0 1 _ _ h1 (Pair.rep_base k X p P).2.1`. Simplify using `using h2`. Use `lowerBound_along_residues (D + 1) n (fun M => P.lc M ((M / n : ℕ) - c) 1) (α / (D + 1).factorial) hn (fun r hr ε' hε' => ?_) ε hε` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.T.log_count_radius_one_lower_bound_ample_semiPos hHS k X p D hX P n 1 r (-(c : ℤ)) _ α hRep hAmp hSP hα ε' hε'] with q hq`. Establish `e : (n * q + r) / n = q`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Nat.add_comm, Nat.add_mul_div_left _ _ hn, Nat.div_eq_of_lt hr, zero_add]`. Simplify using `only [e]`. Apply the tactic sequence `convert hq using 2 <;> push_cast <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem lowerBound_along_div : GlobalTheory.Published.ArCalc → AmpleHS → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p) (c n : ℕ) (α : ℝ), 0 < n → NefFib P.L → P.L.SemiPos D → IsAmpleLB P.A.B → P.A.SemiPos D → ((P.L.pow n).tens P.A).IsSelfInter α → ∀ ε : ℝ, 0 < ε → ∀ᶠ M : ℕ in atTop, (α / (D + 1).factorial / (n : ℝ) ^ (D + 1) - ε) * (M : ℝ) ^ (D + 1) ≤ P.lc M ((M / n : ℕ) - c) 1 := by
   intro _ hHS k _ X _ p D hX P c n α hn hL hLs hA hAs hα ε hε

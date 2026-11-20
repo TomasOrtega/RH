@@ -10,19 +10,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.StdUnn
 
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat_pt (D : D7) (n : ℕ) : Continuous (mat : G D n → _) :=
   Units.continuous_val.comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `Units.continuous_coe_inv.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_mat_pt_inv (D : D7) (n : ℕ) : Continuous (fun g : G D n => mat g⁻¹) :=
   Units.continuous_coe_inv.comp continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (f := fun x => AdelicU.matHom _ D.sp.cm.sig (Jst D n) (φ x)) (Units.continuous_iff.2 ⟨h, h'⟩) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_of_mat_pt {D : D7} {n : ℕ} {X : Type} [TopologicalSpace X] {φ : X → G D n}
     (h : Continuous fun x => mat (φ x)) (h' : Continuous fun x => mat (φ x)⁻¹) : Continuous φ :=
@@ -30,15 +30,13 @@ theorem continuous_of_mat_pt {D : D7} {n : ℕ} {X : Type} [TopologicalSpace X] 
     (Units.continuous_iff.2 ⟨h, h'⟩) _
 
 /- English proof (translation)
-Introduce `D A μ hμ κ hκ`. Establish `hT` using `(Tm_gram_inv D A μ hμ).2.1`. Establish `h₁ : (rat (Tm A μ)⁻¹ : Formalism.IndefR.Datum.Mx D (A.rank + A.rank) (A.rank + A.rank)) * rat (Tm A μ) = 1`. Rewrite using `[← rat_mul, Matrix.nonsing_inv_mul _ hT, rat_one]`. Establish `h₂ : (rat (Tm A μ) : Formalism.IndefR.Datum.Mx D (A.rank + A.rank) (A.rank + A.rank)) * rat (Tm A μ)⁻¹ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← rat_mul, Matrix.mul_nonsing_inv _ hT, rat_one]`. Establish `e₁ : ∀ g, mat (κ g) = (rat (Tm A μ)⁻¹ : Formalism.IndefR.Datum.Mx D (A.rank + A.rank) (A.rank + A.rank)) * (Formalism.L2.Theta.mt (dblSp A) g * rat (Tm A μ))` using `fun g => by`. Rewrite using `[← hκ g, ← Matrix.mul_assoc, h₁, Matrix.one_mul]`. Establish `e₂ : ∀ x, Formalism.L2.Theta.mt (dblSp A) (κ.symm x) = (rat (Tm A μ) : Formalism.IndefR.Datum.Mx D (A.rank + A.rank) (A.rank + A.rank)) * mat x * rat (Tm A μ)⁻¹` using `fun x => by`. Use `hκ (κ.symm x)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[κ.apply_symm_apply]`. Rewrite using `[this]`. Conclude with `((Matrix.mul_assoc _ _ _).trans ((congrArg _ h₂).trans (Matrix.mul_one _))).symm`. Establish `c₁ : Continuous fun g => mat (κ g)`. Simplify using `only [e₁]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_const.matrix_mul ((continuous_mt (dblSp A)).matrix_mul continuous_const)`. Use `⟨continuous_of_mat_pt c₁ ?_, continuous_of_mt (dblSp A) ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`. Conclude with `c₁.comp continuous_inv`. Simplify using `only [e₂]`.
-
-Conclude with `(continuous_const.matrix_mul (continuous_mat_pt D A.rank)).matrix_mul continuous_const`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chart_continuous : ∀ (D : D7) (A : HSp D) (μ : D.host.E), IsSkew μ → ∀ κ : GA D (dblSp A) ≃* G D A.rank, IsChart A μ κ → Continuous κ ∧ Continuous κ.symm := by
   intro D A μ hμ κ hκ

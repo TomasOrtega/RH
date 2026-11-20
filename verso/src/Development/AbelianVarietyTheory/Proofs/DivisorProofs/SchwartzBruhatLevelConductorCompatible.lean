@@ -10,29 +10,25 @@ noncomputable section
 namespace GlobalTheory.PureFix
 
 /- English proof (translation)
-Introduce `F _ _ κ _ ψ g m₁ M m₃ hm₁ hM hm₃ hg hx hψ f a b ha hb`. Use function extensionality and compare the values at `x`. Establish `ha' : IsMulInt F m₁ a`. Establish `e : 2 * m₁ * M * m₃ = (2 * M * m₃) * m₁` using `by ring`. Rewrite `ha` using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ha.mono`. Establish `e1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + a) i).1) = fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1`. Use function extensionality and compare the values at `i`. Use `congr 1`. Use `show (x i).1 + (a i).1 = (x i).1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ha.1 i, add_zero]`. Establish `e2 : (fun i => ((x + a) i).2) = (fun i => (x i).2) + fun i => (a i).2` using `rfl`. Simplify using `only [schr, pureA]`. Rewrite using `[e1, e2, hg a ha' (fun i => (x i).2)]`. Distinguish the cases in `h0 : g (fun i => (x i).2) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h0]`. Establish `hs : ∀ (c d : κ → AF F), (∀ i, (d i).1 = 0) → (c ⬝ᵥ d).1 = 0`. Introduce `c d hd`. Express the relevant statement in the definitionally equal form `fstA F (∑ i, c i * d i) = 0`. Rewrite using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Express the relevant statement in the definitionally equal form `(c i).1 * (d i).1 = 0`. Rewrite using `[hd i, mul_zero]`. Establish `hnat : ∀ (v : HeightOneSpectrum (𝓞 F)) (n : ℕ), ‖(n : Fv F v)‖ ≤ 1` using `fun v n => GlobalTheory.SmoothForms.denom_norm_natCast_le_one v n`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hψ _ ?_ ?_, one_mul]`. Express the relevant statement in the definitionally equal form `(x ⬝ᵥ b).1 + (⅟2 : AF F).1 * (a ⬝ᵥ b).1 = 0`. Rewrite using `[hs x b hb.1, hs a b hb.1, mul_zero, add_zero]`. Introduce `v`. Establish `hb' : ∀ i, ‖evFin F v (b i)‖ ≤ ‖(2 * m₁ : Fv F v)‖ * ‖(M : Fv F v)‖ * ‖(m₃ : Fv F v)‖`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Use `hb.2 v i` as an intermediate fact. Move the coercions through the operations in `at this`. Simplify `this` using `[norm_mul, mul_assoc]`. Establish `h2 : ‖evFin F v (⅟2 : AF F)‖ * ‖(2 : Fv F v)‖ = 1`.
+Move the embeddings inside the algebraic operations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← norm_mul, show (2 : Fv F v) = evFin F v (2 : AF F) from (map_ofNat _ 2).symm, ← map_mul, invOf_mul_self, map_one, norm_one]`. Establish `ha2 : ∀ i, ‖evFin F v (⅟2 * a i)‖ ≤ 1`. Introduce `i`. Use `ha.2 v i` as an intermediate fact. Move the coercions through the operations in `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_add, dotProduct, dotProduct, Finset.mul_sum, map_sum, map_sum]`. Use `(IsUltrametricDist.norm_add_le_max _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `hx x h0 i v`. Conclude with `hnat v _`. Use `_ = ‖(m₃ : Fv F v)‖ := by ring`.
-
-Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (norm_nonneg _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, map_mul, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `ha2 i`. Conclude with `hb' i`.
-
-Use `_ = ‖((2 * m₁ * M : ℕ) : Fv F v)‖ * ‖(m₃ : Fv F v)‖ := by push_cast; simp only [norm_mul]; ring`. Use `_ ≤ 1 * ‖(m₃ : Fv F v)‖ := by gcongr; exact hnat v _`. Use `_ = ‖(m₃ : Fv F v)‖ := one_mul _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pureA_fixed : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (ψ : AddChar (AF F) ℂ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) (m₁ M m₃ : ℕ), 0 < m₁ → 0 < M → 0 < m₃ → (∀ a : κ → AF F, IsMulInt F m₁ a → ∀ x : κ → FiniteAdeleRing (𝓞 F) F, g (x + fun i => (a i).2) = g x) → (∀ x : κ → AF F, g (fun i => (x i).2) ≠ 0 → ∀ i v, ‖(M : Fv F v) * evFin F v (x i)‖ ≤ 1) → (∀ t : AF F, t.1 = 0 → (∀ v, ‖evFin F v t‖ ≤ ‖(m₃ : Fv F v)‖) → ψ t = 1) → ∀ f : (κ → mixedEmbedding.mixedSpace F) → ℂ, ∀ a b : κ → AF F, IsMulInt F (2 * m₁ * M * m₃) a → IsMulInt F (2 * m₁ * M * m₃) b → schr ψ (a, b) (pureA F f g) = pureA F f g := by
   intro F _ _ κ _ ψ g m₁ M m₃ hm₁ hM hm₃ hg hx hψ f a b ha hb

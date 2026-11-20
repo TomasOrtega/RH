@@ -12,7 +12,7 @@ namespace GlobalTheory
 open GlobalTheory.Sieg
 
 /- English proof (translation)
-Unfold `ee`. Rewrite using `[← Complex.exp_nat_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma Sieg.cthS_ee_pow (w : ℂ) (n : ℕ) : ee w ^ n = ee ((n : ℂ) * w) := by
   unfold ee
@@ -21,13 +21,13 @@ lemma Sieg.cthS_ee_pow (w : ℂ) (n : ℕ) : ee w ^ n = ee ((n : ℂ) * w) := by
   ring
 
 /- English proof (translation)
-Establish `h2 : Nat.Coprime c 2` using `Nat.Coprime.coprime_dvd_right (by norm_num) hc`. Establish `hodd : Odd c`. Break down `Nat.even_or_odd c with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨j, hj⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `: 2 ∣ Nat.gcd c 2` using `Nat.dvd_gcd ⟨j, by omega⟩ dvd_rfl`. Rewrite `this` using `[h2]`. Use linear arithmetic over natural numbers and integers. Conclude with `h`. Take `⟨j, rfl⟩` from `hodd`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (2 * j + 1) ^ 2 = 4 * (j ^ 2 + j) + 1` using `by ring`. Rewrite using `[this, pow_succ, pow_mul]`. Establish `h4 : (-Complex.I) ^ 4 = 1`. Rewrite using `[show (4 : ℕ) = 2 * 2 from rfl, pow_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, one_pow, one_mul]`.
+A detailed English derivation is pending.
 -/
 lemma Sieg.cthS_negI_pow (c : ℕ) (hc : Nat.Coprime c 6) : (-Complex.I) ^ (c ^ 2) = -Complex.I := by
   have h2 : Nat.Coprime c 2 := Nat.Coprime.coprime_dvd_right (by norm_num) hc
@@ -48,19 +48,19 @@ lemma Sieg.cthS_negI_pow (c : ℕ) (hc : Nat.Coprime c 6) : (-Complex.I) ^ (c ^ 
   rw [h4, one_pow, one_mul]
 
 /- English proof (translation)
-Establish `hτ : (τ : ℂ) ≠ 0` using `τ.ne_zero`. Establish `hS : ((ModularGroup.S • τ : ℍ) : ℂ) = -(τ : ℂ)⁻¹`. Rewrite using `[UpperHalfPlane.modular_S_smul]`. Simplify using `[inv_neg]`. Establish `hB : th ((c : ℂ) * z) τ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Take `⟨m, n, hmn⟩` from `(GlobalTheory.T.oddThetaProductSiegel_eq_zero_iff_lattice τ _).1 h`. Conclude with `hz m n hmn`. Establish `hB' : th ((c : ℂ) * (z / (τ : ℂ))) (ModularGroup.S • τ) ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, n, hmn⟩` from `(GlobalTheory.T.oddThetaProductSiegel_eq_zero_iff_lattice _ _).1 h`. Rewrite `hmn` using `[hS]`. Apply `hz n (-m)` to reduce the goal to its premises. Establish `: (c : ℂ) * z = (τ : ℂ) * ((c : ℂ) * (z / (τ : ℂ)))` using `by field_simp`. Rewrite using `[this, hmn]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[GlobalTheory.T.smoothedThetaQProduct_eq_oddThetaProduct_quotient c _ _ h1 hc hB', GlobalTheory.T.smoothedThetaQProduct_eq_oddThetaProduct_quotient c _ _ h1 hc hB]`. Rewrite using `[show (c : ℂ) * (z / (τ : ℂ)) = ((c : ℂ) * z) / (τ : ℂ) by ring]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.T.oddThetaProductSiegel_modularS_transform τ z, GlobalTheory.T.oddThetaProductSiegel_modularS_transform τ ((c : ℂ) * z)]`. Establish `hee : ee (z ^ 2 / (2 * (τ : ℂ))) ^ (c ^ 2) = ee (((c : ℂ) * z) ^ 2 / (2 * (τ : ℂ)))`. Rewrite using `[Sieg.cthS_ee_pow]`. Use `congr 1`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hE : ee (((c : ℂ) * z) ^ 2 / (2 * (τ : ℂ))) ≠ 0` using `Complex.exp_ne_zero _`. Establish `hI : (-Complex.I) ≠ 0` using `by simp`. Rewrite using `[mul_pow, mul_pow, Sieg.cthS_negI_pow c hc, hee]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, mul_div_assoc, div_self (by unfold ee; exact Complex.exp_ne_zero _), mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem Sieg.cth_modular_S (c : ℕ) (τ : ℍ) (z : ℂ) (h1 : 1 < c) (hc : Nat.Coprime c 6)
     (hz : ∀ m n : ℤ, (c : ℂ) * z ≠ (m : ℂ) * (τ : ℂ) + n) :

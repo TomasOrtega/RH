@@ -32,7 +32,7 @@ def SplitB : Prop :=
           Reads v ι (om (1, h)) (omB (chrW χW t) (chrW χX t) 1 h₀)
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `(ι ∘ₗ (SB X).subtype).exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 fun a b h => Subtype.ext (hb.2.1 a.2 b.2 h))`. Establish `k : ∀ φ ∈ SB X, (q (ι φ)).1 = φ` using `fun φ h => congrArg Subtype.val (LinearMap.congr_fun hq ⟨φ, h⟩)`. Use `⟨(SB X).subtype ∘ₗ q, fun Φ h => ⟨(q Φ).2, ?_⟩, k⟩` and prove the remaining obligations. Take `⟨φ, h1, rfl⟩` from `hb.2.2 h`. Conclude with `congrArg ι (k φ h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_inv' {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {ι : (X → ℂ) →ₗ[ℂ] (Y → ℂ)}
     (hb : Set.BijOn ι (SB X : Set _) (SB Y : Set _)) : ∃ j : (Y → ℂ) →ₗ[ℂ] (X → ℂ),
@@ -45,9 +45,9 @@ theorem exists_inv' {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] {ι :
   exact congrArg ι (k φ h1)
 
 /- English proof (translation)
-Take `⟨r, hr, hr'⟩` from `GlobalTheory.PureFactor.exists_rest_factor v f φ h2`. Establish `m : ∀ ψ ∈ SB _, tens (evFin F v) ψ r ∈ schA F κ` using `fun ψ hψ => by`. Rewrite using `[hr']`. Use `PositivityTheory.KCo.pure_mem_schA f _ (fun u => ?_) (GlobalTheory.PureFactor.update_eventually φ v ψ h2)` and prove the remaining obligations. Distinguish the cases in `hu : u = v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Substitute `hu` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne hu]`. Conclude with `h1 u`. Conclude with `⟨{ toFun := fun ψ => tens (evFin F v) ψ r, map_add' := fun _ _ => funext fun _ => add_mul _ _ _ map_smul' := fun _ _ => funext fun _ => mul_assoc _ _ _ }, hr', m, fun S ψ hψ ψ₁ h => h r ⟨hr, m ψ hψ⟩⟩`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem intersection_update_fsHerm_neg_one {κ : Type} [Fintype κ] (v : Pl F) (f : SInf F κ) {φ : ∀ u : Pl F, (κ → Fv F u) → ℂ} (h1 : ∀ u, φ u ∈ SB _)
     (h2 : ∀ᶠ u in cofinite, φ u = Set.indicator {x | ∀ i, x i ∈ u.adicCompletionIntegers F} 1) :
@@ -64,7 +64,7 @@ theorem intersection_update_fsHerm_neg_one {κ : Type} [Fintype κ] (v : Pl F) (
            map_smul' := fun _ _ => funext fun _ => mul_assoc _ _ _ }, hr', m, fun S ψ hψ ψ₁ h => h r ⟨hr, m ψ hψ⟩⟩
 
 /- English proof (translation)
-Take `⟨φ₁, a, b, c⟩` from `h φ hφ`. Rewrite using `[← c, h2 φ₁ a]`. Conclude with `⟨a, b⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem acts_of_reads {v : Pl F} {ι : ((Fin n × Fin d → Fv F v) → ℂ) →ₗ[ℂ] (Matrix (Fin n) (Fin d) (Fv F v) → ℂ)} {S R}
     (h : Reads v ι S R) {j : (Matrix (Fin n) (Fin d) (Fv F v) → ℂ) →ₗ[ℂ] ((Fin n × Fin d → Fv F v) → ℂ)}
@@ -78,28 +78,28 @@ section Loc
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.SplitWeil.nabs k x ^ ((m : ℝ) / 2), Real.rpow_pos_of_pos (GlobalTheory.SplitWeil.nabs_pos k x) _, by rw [Complex.ofReal_cpow (GlobalTheory.SplitWeil.nabs_pos k x).le]; simp [apow]⟩`.
+Supply the required witnesses or components.
 -/
 theorem apow_real (x : kˣ) (m : ℕ) : ∃ r : ℝ, 0 < r ∧ apow x ((m : ℂ) / 2) = r :=
   ⟨GlobalTheory.SplitWeil.nabs k x ^ ((m : ℝ) / 2), Real.rpow_pos_of_pos (GlobalTheory.SplitWeil.nabs_pos k x) _, by
     rw [Complex.ofReal_cpow (GlobalTheory.SplitWeil.nabs_pos k x).le]; simp [apow]⟩
 
 /- English proof (translation)
-The claim follows from `funext fun Y => by simp [omB, gdet]`.
+A detailed English derivation is pending.
 -/
 theorem omB_right (ν α : kˣ →* ℂˣ) (h : GL (Fin d) k) (Φ : Matrix (Fin n) (Fin d) k → ℂ) :
     omB ν α 1 h Φ = ((α (gdet h) : ℂ) * apow (gdet h) ((n : ℂ) / 2)) • fun Y => Φ (Y * h.1) := funext fun Y => by
   simp [omB, gdet]
 
 /- English proof (translation)
-The claim follows from `funext fun Y => by simp [omB, gdet]`.
+A detailed English derivation is pending.
 -/
 theorem omB_left (ν α : kˣ →* ℂˣ) (g : GL (Fin n) k) (Φ : Matrix (Fin n) (Fin d) k → ℂ) :
     omB ν α g 1 Φ = ((ν (gdet g) : ℂ) * apow (gdet g) ((d : ℂ) / 2)) • fun Y => Φ (g.1ᵀ * Y) := funext fun Y => by
   simp [omB, gdet]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.comp star, h.2.comp_left (g := star) (star_zero _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem sb_star {A : Type} [TopologicalSpace A] {f : A → ℂ} (h : f ∈ SB A) : star f ∈ SB A :=
   ⟨h.1.comp star, h.2.comp_left (g := star) (star_zero _)⟩

@@ -11,7 +11,7 @@ open scoped Formalism.Per
 namespace GlobalTheory.MemLoc.AwayT
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.mk t hu hs fun _ _ h => ⟨0, by rw [hi h]⟩`.
+A detailed English derivation is pending.
 -/
 theorem away_of_injective {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (t : R)
     (hu : IsUnit (algebraMap R S t))
@@ -20,9 +20,9 @@ theorem away_of_injective {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (
   IsLocalization.Away.mk t hu hs fun _ _ h => ⟨0, by rw [hi h]⟩
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `z hz`. Take `⟨n, a, ha⟩` from `IsLocalization.Away.surj x z`. Establish `h1 : f a = 0` using `by rw [← hg, ← ha, map_mul, hz, zero_mul]`. Establish `h2 : a = 0` using `hf (h1.trans (map_zero f).symm)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `ha` using `[h2, map_zero]`. Conclude with `((IsLocalization.Away.algebraMap_isUnit (S := P) x).pow n).mul_left_eq_zero.1 ha`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_injective {R P S : Type} [CommRing R] [CommRing P] [CommRing S] [Algebra R P] (x : R)
     [IsLocalization.Away x P] (f : R →+* S) (g : P →+* S) (hg : ∀ a, g (algebraMap R P a) = f a)
@@ -38,34 +38,34 @@ theorem lift_injective {R P S : Type} [CommRing R] [CommRing P] [CommRing S] [Al
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `lift_injective ((l : ℕ) : Per.Acris l) C.j C.jP C.jP_alg (crisP_injective l C.j C.j_cris)`.
+A detailed English derivation is pending.
 -/
 theorem plusInj (C : Core l) : C.PlusInj :=
   lift_injective ((l : ℕ) : Per.Acris l) C.j C.jP C.jP_alg (crisP_injective l C.j C.j_cris)
 
 /- English proof (translation)
-Introduce `x y h` and use `plusInj C ((BdRField.bdR_isField l).2.1 (by rw [← C.ι_plusToB, ← C.ι_plusToB, h]))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem plusToB_injective (C : Core l) : Function.Injective (plusToB l) := fun x y h =>
   plusInj C ((BdRField.bdR_isField l).2.1 (by rw [← C.ι_plusToB, ← C.ι_plusToB, h]))
 
 /- English proof (translation)
-Introduce `x y h` and use `crisP_injective l C.j C.j_cris ((BdRField.bdR_isField l).2.1 (by rw [← C.ι_j, ← C.ι_j, h]))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem acris_injective (C : Core l) : Function.Injective (algebraMap (Per.Acris l) (Per.Bcris l)) :=
   fun x y h => crisP_injective l C.j C.j_cris
     ((BdRField.bdR_isField l).2.1 (by rw [← C.ι_j, ← C.ι_j, h]))
 
 /- English proof (translation)
-The claim follows from `away_of_injective C.t (core_t_unit_fil l C).1 (GlobalTheory.T.bcris_eq_acris_localization_periodT l C) (acris_injective C)`.
+A detailed English derivation is pending.
 -/
 theorem awayT (C : Core l) : C.AwayT :=
   away_of_injective C.t (core_t_unit_fil l C).1 (GlobalTheory.T.bcris_eq_acris_localization_periodT l C) (acris_injective C)
 
 /- English proof (translation)
-Use `letI := (plusToB l).toAlgebra`. Establish `e : ∀ x : Per.Acris l, algebraMap (BcrisP l) (Per.Bcris l) (algebraMap _ _ x) = algebraMap (Per.Acris l) (Per.Bcris l) x` using `plusToB_alg`. Use `away_of_injective _ ?_ (fun b => ?_) (plusToB_injective C)` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(core_t_unit_fil l C).1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, x, h⟩` from `GlobalTheory.T.bcris_eq_acris_localization_periodT l C b`. Conclude with `⟨r, algebraMap _ _ x, by rw [e, e]; exact h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem plusAwayT (C : Core l) : C.PlusAwayT := by
   letI := (plusToB l).toAlgebra
@@ -78,7 +78,7 @@ theorem plusAwayT (C : Core l) : C.PlusAwayT := by
     exact ⟨r, algebraMap _ _ x, by rw [e, e]; exact h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨awayT C, plusAwayT C, plusInj C⟩`.
+Supply the required witnesses or components.
 -/
 theorem away_and_inj (l : ℕ) [Fact l.Prime] (C : Core l) : C.AwayT ∧ C.PlusAwayT ∧ C.PlusInj :=
   ⟨awayT C, plusAwayT C, plusInj C⟩

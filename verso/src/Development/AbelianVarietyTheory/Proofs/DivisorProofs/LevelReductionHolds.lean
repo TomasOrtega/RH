@@ -21,11 +21,11 @@ open GlobalTheory.KernelNoTorsion GlobalTheory.TangentPow GlobalTheory.TorsionCh
 open GlobalTheory.CompHt.FormalChar GlobalTheory.RaynaudTorsionMap GlobalTheory.HodgeTateImage
 
 /- English proof (translation)
-Establish `hr : Set.range g.left ⊆ Set.range j.left`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `hy : y ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk I))`. Rewrite using `[range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, Ideal.mk_ker]`. Take `⟨k, hk⟩` from `hI`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `a ha`. Use `y.isPrime.mem_of_pow_mem k ?_` and prove the remaining obligations. Establish `h0 : a ^ k ∈ I ^ k` using `Ideal.pow_mem_pow ha k`. Rewrite `h0` using `[hk]`. Rewrite using `[show a ^ k = 0 from h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.zero_mem _`. Take `⟨y', rfl⟩` from `hy`. Conclude with `⟨z.left y', congrArg (fun q => q.left y') hz⟩`. Use `⟨Over.homMk (IsOpenImmersion.lift j.left g.left hr) ?_, Over.OverMorphism.ext (IsOpenImmersion.lift_fac _ _ _)⟩` and prove the remaining obligations. Rewrite using `[← Over.w j, ← Category.assoc, IsOpenImmersion.lift_fac, Over.w]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_nilpotent {O : Type} [CommRing O] {H Y : Over (Sp O)} (j : H ⟶ Y) [IsOpenImmersion j.left]
     {R : Type} [CommRing R] [Algebra O R] (I : Ideal R) (hI : IsNilpotent I) (g : specO O R ⟶ Y)
@@ -49,7 +49,7 @@ theorem exists_lift_of_nilpotent {O : Type} [CommRing O] {H Y : Over (Sp O)} (j 
   rw [← Over.w j, ← Category.assoc, IsOpenImmersion.lift_fac, Over.w]
 
 /- English proof (translation)
-Establish `e : w ≫ j = w' ≫ j` using `torsion_hom_ext (by rw [Category.assoc, Category.assoc, h])`. Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono j.left]`. Conclude with `congrArg (·.left) e`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext_open {O : Type} [CommRing O] {G : Over (Sp O)} [GrpObj G] {N : ℕ} {H T : Over (Sp O)}
     (j : H ⟶ torsion G N) [IsOpenImmersion j.left] {w w' : T ⟶ H}
@@ -60,7 +60,7 @@ theorem hom_ext_open {O : Type} [CommRing O] {G : Over (Sp O)} [GrpObj G] {N : �
   exact congrArg (·.left) e
 
 /- English proof (translation)
-Use `haveI := hj.1`. Take `⟨z, hz⟩` from `hj.2.2.2.1 (specO O (R ⧸ I))`. Take `⟨w, hw⟩` from `exists_lift_of_nilpotent j I hI (torsionLift g hg) z (torsion_hom_ext (by`. Rewrite using `[Category.assoc, Category.assoc, hz, torsionLift_ι, h1]))`. Conclude with `⟨w, by rw [← Category.assoc, hw, torsionLift_ι]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift_near_unit {O : Type} [CommRing O] {G : Over (Sp O)} [GrpObj G] {N : ℕ} {H : Over (Sp O)}
     {j : H ⟶ torsion G N} (hj : IsOpenFiniteFlatSubgroup G N j) {R : Type} [CommRing R] [Algebra O R]
@@ -76,15 +76,13 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0}
   [Algebra O C] {Λ : Type} [CommRing Λ] [StarRing Λ] (P : Point p v O Λ)
 
 /- English proof (translation)
-Use `haveI := P.isLocalRing`. Use `haveI := hj.1`. Use `haveI := hj.2.1`. Use `haveI := hj.2.2.1`. Take `⟨B, _, _, _, _, ⟨e⟩⟩` from `exists_finite_free H`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `ex : ∀ m : ℕ, ∃ w : specO O (A ⧸ Ideal.span {(p : A) ^ m}) ⟶ H, w ≫ j ≫ torsion.ι P.G N = P.cmp _ (nilpR m) (ptMap (redR p O A m) ≫ x)` using `fun m => by`. Set `θ` to `redR p O A m`. Use `exists_lift_near_unit hj (I.map θ) ⟨k * m, eq_bot_iff.2 ?_⟩ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← Ideal.map_pow, Ideal.map_le_iff_le_comap, pow_mul]`. Use `(Ideal.pow_right_mono hI _).trans fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `ha` using `[Ideal.span_singleton_pow]`. Then use the resulting hypothesis. Rewrite using `[← map_pow, ← MonObj.comp_pow, hx, MonObj.comp_one, map_one]`. Establish `h' : IsNilpotent (p : (A ⧸ Ideal.span {(p : A) ^ m}) ⧸ I.map θ)`. Simplify using `using (nilpR (p := p) (R := A) m).map (Ideal.Quotient.mk (I.map θ))`. Establish `e1 : (Ideal.Quotient.mkₐ O (I.map θ)).comp θ = (Ideal.quotientMapₐ (I.map θ) θ Ideal.le_comap_map).comp (Ideal.Quotient.mkₐ O I)` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← P.cmp_nat _ _ (nilpR m) h', ← Category.assoc, ptMap_comp_ptMap, e1, ← ptMap_comp_ptMap, Category.assoc, h1, MonObj.comp_one, map_one]`. Use `choose w hw using ex`. Take `⟨Q, hQ⟩` from `exists_lim_affine hc (fun m => w m ≫ e.inv) fun m => by`. Rewrite using `[← Category.assoc]`. Use `congr 1`.
-
-Apply `hom_ext_open j` to reduce the goal to its premises. Rewrite using `[Category.assoc, hw, hw, ← P.cmp_nat _ _ (nilpR (m + 1)) (nilpR m), ← Category.assoc, factor_redR]`. Use `⟨Q ≫ e.hom, fun m => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← Category.assoc, hQ, Category.assoc, Iso.inv_hom_id_assoc, hw]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_corr {N : ℕ} {H : Over (Sp O)} {j : H ⟶ torsion P.G N} (hj : IsOpenFiniteFlatSubgroup P.G N j)
     {A : Type} [CommRing A] [Algebra O A] (hc : IsAdicComplete (Ideal.span {(p : A)}) A) (I : Ideal A) {k : ℕ}
@@ -120,7 +118,7 @@ theorem exists_corr {N : ℕ} {H : Over (Sp O)} {j : H ⟶ torsion P.G N} (hj : 
   rw [Category.assoc, ← Category.assoc, hQ, Category.assoc, Iso.inv_hom_id_assoc, hw]
 
 /- English proof (translation)
-Establish `hzs : (z * s) ^ k = 1` using `by rw [mul_pow, hz, hs, _root_.mul_one]`. Establish `h` using `weil_self hk hzs`. Rewrite `h` using `[weil_mul_left hk hz hs hzs, weil_mul_right hk hz hs hz, weil_mul_right hk hz hs hs, weil_self hk hz, weil_self hk hs, _root_.one_mul, _root_.mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem weil_mul_swap [IsAlgClosed C] [CharZero C] {A : Out.PolAV (Sp C)} {k : ℕ} (hk : 1 ≤ k) {z s : ChTor.Pts A.A}
     (hz : z ^ k = 1) (hs : s ^ k = 1) : weil A k z s * weil A k s z = 1 := by
@@ -130,21 +128,19 @@ theorem weil_mul_swap [IsAlgClosed C] [CharZero C] {A : Out.PolAV (Sp C)} {k : �
     weil_self hk hs, _root_.one_mul, _root_.mul_one] at h
 
 /- English proof (translation)
-Introduce `p hp C _ _ _ v O _ _ _ hO _ _ _ Λ _ _ P n H j hj t χ _ hχ R _ _ hR x w hw`. Establish `hv` using `P.integers`. Establish `hp0` using `hp.out.ne_zero`. Establish `hN` using `one_le_ppow p n`. Use `haveI : IsDomain O := hv.hom_inj.isDomain _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := ValuationRing.of_integers v hv`. Use `haveI := (P.finite_flat _ hN).1`. Use `haveI := (P.finite_flat _ hN).2`. Use `haveI := hj.1`. Take `⟨A, _, _, X, I, m, _, _, hsep, hX, hI, hl⟩` from `exists_connected_part hv hp0 P.Gt (p ^ n) (pow_ne_zero n hp0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAc : IsAdicComplete (Ideal.span {(p : A)}) A`. Use `FlatComplete.isAdicComplete_of_finite_flat _ _ hO A` as an intermediate fact. Rewrite `this` using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Then use the resulting hypothesis. Take `⟨Q, hQ⟩` from `exists_corr P hj hAc I hI (X ≫ torsion.ι P.Gt (p ^ n)) (by rw [← MonObj.comp_pow, torsionι_pow, MonObj.comp_one]) hX`. Establish `e : (unitOf (Q ≫ χ) : A) * (unitOf (X ≫ (P.weilChar t).χ n) : A) = 1` using `hsep _ _ fun φ => hv.hom_inj (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : P.toG ((ptMap φ ≫ X) ≫ torsion.ι P.Gt (p ^ n)) = (ptMap φ ≫ Q) ≫ j ≫ torsion.ι P.G (p ^ n)` using `P.hom_ext_red fun k => by`. Rewrite using `[P.red_toG, Category.assoc (ptMap φ), Category.assoc (ptMap φ)]`. Conclude with `(hQ.comp φ k).symm`. Establish `h2` using `hχ (ptMap φ ≫ Q) _ (h1 ▸ (P.eq_toA_iff _ _).1 rfl)`. Rewrite using `[map_mul, map_mul, ← unitOf_ptMap, ← unitOf_ptMap, ← Category.assoc, ← Category.assoc, h2, P.isWeilChar_weilChar, ← Units.val_mul, weil_mul_swap hN (t.lev_pow n) (P.toA_pow _), map_one, map_one, Units.val_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hn` using `isNilpotent_dual hR`. Establish `hpow : (ptMap (dualBC (Algebra.ofId O R)) ≫ x.1) ^ p ^ n = 1` using `(P.cmp _ hn).injective (by`. Rewrite using `[map_pow, ← hw, map_one, ← MonObj.comp_pow, ← MonObj.comp_pow, torsionι_pow, MonObj.comp_one, MonObj.comp_one])`. Take `⟨ψ, hψ⟩` from `hl R (torsionLift _ hpow) (by rw [torsionLift_ι]; exact fst_bc R x)`. Establish `hx : (ptMap ψ ≫ X) ≫ torsion.ι P.Gt (p ^ n) = ptMap (dualBC (Algebra.ofId O R)) ≫ x.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hψ, torsionLift_ι]`. Establish `hw' : w = ptMap ψ ≫ Q` using `hom_ext_open j (by`. Rewrite using `[hw, ← hx, Category.assoc, cmp_of_corr P hQ, Category.assoc])`. Establish `h3` using `isAl_dlogTv (P.weilChar t) n R hR x _ hx`. Establish `h4` using `congrArg ψ e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite `h4` using `[map_mul, map_one, ← unitOf_ptMap, ← unitOf_ptMap, ← Category.assoc, ← Category.assoc, ← hw', h3]`. Establish `h5 : algebraMap O R ((alLeft P t).1 x) = -algebraMap O R ((dlogTv (P.weilChar t)).1 x)`. Rewrite using `[← map_neg]`. Both sides reduce to the same expression. Rewrite using `[h5]`.
-
-Generalize the expression as in `algebraMap O R ((dlogTv (P.weilChar t)).1 x) = a at h4 ⊢`. Establish `h6 : (TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr a : DualNumber R) * (TrivSqZeroExt.inl 1 + TrivSqZeroExt.inr (-a)) = 1`. Apply the tactic sequence `ext <;> simp`. Rewrite using `[← _root_.mul_one (unitOf (w ≫ χ) : DualNumber R), ← h6, ← _root_.mul_assoc, h4, _root_.one_mul]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levelReduction : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]
     (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)]

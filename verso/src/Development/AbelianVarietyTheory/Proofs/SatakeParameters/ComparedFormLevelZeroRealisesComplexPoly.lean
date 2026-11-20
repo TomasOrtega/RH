@@ -12,23 +12,21 @@ namespace GlobalTheory.TwV.DelA
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hP ι hι d h La hLa x`. Establish `hpos` using `(posTie_at S hP ι hι).2`. Take `⟨g, hg1, hg2⟩` from `latticeTupleLevelZero_point_isComponentPoint S hD La hLa`. Establish `hx : x = ex.tw.e0 u μ ((ex.tw.e0 u μ).symm x)` using `by simp`. Generalize the expression as in `(ex.tw.e0 u μ).symm x = x0 at hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Substitute `hx` using the available equality. Establish `K` using `lev0AtOf_compatible J.Gd.cmp u w hg`. Use `⟨MvPolynomial.map D.what₂.embLL (K.val x0 La.1 La.2), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(kaAt X H hT).cmp_zero, K.val_cmp x0 La.1 La.2 hLa]`. Use `(MvPolynomial.map_map _ _ _).trans ((congrArg (MvPolynomial.map · _) ?_).trans (MvPolynomial.map_map _ _ _).symm)` and prove the remaining obligations.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `r`. Conclude with `(hpos r).symm`. Introduce `z z' hz`. Establish `hj : (0:ℕ) ≤ D.R.m` using `Nat.zero_le _`. Use `set c := J.e0.symm (clsAt X H 0 La.1 La.2) with hc`.
+By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hce : clsAt X H 0 La.1 La.2 = J.e0 c` using `by simp [c]`. Establish `hU` using `(J.lev0 (J.chart std 0 hj La)).2.2.1`. Establish `hkmem : ((d.kap 0 hj La) : GL (Fin (D.R.N 0)) _) ∈ (J.Gd.forms u).cls0.lev.U` using `hU ▸ (d.kap 0 hj La).2`. Set `κ' : (J.Gd.forms u).cls0.lev.U` to `⟨(d.kap 0 hj La).1, hkmem⟩`. Establish `hchi` using `(J.lev0 (J.chart std 0 hj La)).2.2.2 (d.kap 0 hj La) κ' rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨κ0, hy0, hc0, -⟩` from `J.y0 c`. Establish `hpt` using `d.eq 0 hj La hLa`. Rewrite `hpt` using `[hce, hy0]`. Establish `hIs : (lev0At J.Gd u w hg).A.IsPt La.1 g (GlobalTheory.TwU.ratA D.host.F (d.gam 0 hj La) * ((J.Gd.forms u).cls0.y c).1 * (κ0 * κ').1)`. Use `hg2 using 2` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hpt, Subgroup.coe_mul]`. Simplify using `only [mul_assoc]`. Both sides reduce to the same expression. Establish `hv` using `K.val_emb x0 La.1 La.2 g hg1 c (d.gam 0 hj La) (d.mem 0 hj La) (κ0 * κ') hIs z z' hz`. Establish `e1 : (((J.Gd.forms u).cls0.lev.chi (κ0 * κ') : ℂˣ) : ℂ) = (((J.Gd.forms u).cls0.lev.chi κ' : ℂˣ) : ℂ)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `MonoidHom.map_mul (J.Gd.forms u).cls0.lev.chi κ0 κ'`. Rewrite `e2` using `[hc0, one_mul]`. Conclude with `congrArg Units.val e2`. Rewrite `hv` using `[e1]`. Use `show _ = _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[cTw_zero]`. Simplify using `only [zpow_zero, neg_zero, dPow, detF, Finset.prod_const_one, mul_one]`. Use `hv.trans ?_` and prove the remaining obligations. Establish `hy : (J.St 0 hj).eY.symm z' = J.jointCmpEmbeddingY ((J.Gd.forms u).val0.eY.symm z')`. Rewrite using `[Equiv.symm_apply_eq, J.fr0, Equiv.apply_symm_apply]`.
-
-Rewrite using `[ex.tw.embed_mul_block_embedding, hce, hy, J.e0Tw, Dec.chi, hchi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmp_realAt_zero : AllSites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => J.Dict std → S.Pos → ∀ ι : ℂ →+* ℂ_[D.what₂.places.resChar w], (∀ z : TaylorLogMetric.Qbar, ι z = S.lam z) → letI := wittFractionAlgebraCp (D.what₂.places.resChar w); letI := algKfC S.E.toCEmb; ∀ (d : Dec J std) (h : ((sysS H X std).Pj 0).m + 1 = D.R.N 0) (La : (sysS H X std).Lt 0), ((sysS H X std).Pj 0).IsLatTup La.2 → ∀ x : ((ex.tw.fm u μ).lat 0).V, ∃ V : XR ((sysS H X std).Pj 0) ℂ, MvPolynomial.map (algebraMap (sysS H X std).G.Kf ℂ_[D.what₂.places.resChar w]) ((kaAt X H hT).cmp 0 x La.1 La.2) = MvPolynomial.map ι V ∧ RealAt d 0 (Nat.zero_le _) h La ((ex.tw.fm u μ).emb 0 x) V) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hP ι hι d h La hLa x

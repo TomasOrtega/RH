@@ -28,9 +28,9 @@ def ModelCurves.Statement : Prop :=
               relDim W = ((d : ℕ) : WithBot (WithTop ℤ)) ∧ baseComap F k₀ e W = P)
 
 /- English proof (translation)
-Use `⟨IndefiniteRowSideFullHecke.Kleiman2.isModelWithBase_pnPt F 1, ?_, IndefiniteRowSideFullHecke.Kleiman2.relDim_pnPt F 1, ?_⟩` and prove the remaining obligations. Rewrite using `[IndefiniteRowSideFullHecke.Kleiman2.mIdealOver_pnPt]`. Conclude with `NumbersDVR.isMultiProjPrime_bot`. Rewrite using `[IndefiniteRowSideFullHecke.Kleiman2.mIdealOver_pnPt, baseComap]`. Use `Ideal.comap_bot_of_injective _ (rename_injective _ ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨⟩, i⟩ ⟨⟨⟩, j⟩ h`. Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ModelCurves.hyps (F : Type) [Field F] :
     IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase F (IndefiniteRowSideFullHecke.Kleiman2.pnPt F 1) () ∧

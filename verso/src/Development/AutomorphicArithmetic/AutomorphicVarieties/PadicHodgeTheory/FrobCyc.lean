@@ -4,9 +4,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.C
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology
 
 /- English proof (translation)
-Introduce `l _`. Take `⟨-, -, -, ⟨σ, hσ⟩, h⟩` from `iqBasic l`. Take `⟨g, hg, hc⟩` from `(cycInertia l).1 (cyc l l σ)⁻¹`. Use `⟨σ * g, (h σ _ hσ).2 ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_mul_cancel_left]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[map_mul, hc, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Loc.frobCyc :
     ∀ (l : ℕ) [Fact l.Prime], ∃ σ : GQ l, IsFrob σ ∧ cyc l l σ = 1 := by

@@ -21,9 +21,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 local instance borelUA {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : BorelSpace (UA σ J) := ⟨rfl⟩
 
 /- English proof (translation)
-Establish `hP` using `(GlobalTheory.ThK.Check.isPair_of_isTriple hT).1`. Establish `hS : Ψ ∈ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a'))`. Use `(Submodule.span_le.2 ?_ : GlobalTheory.ThK.PolData B G.M ≤ GlobalTheory.WeilM.schA F (Fin a × Fin (a + a'))) hΨ` and prove the remaining obligations. Introduce and unpack `Φ ⟨f, -, φ, hSB, hvac, rfl⟩`. Conclude with `GlobalTheory.TensUniq.pure_mem_schA f φ hSB ((hvac.and hT.geo.hM.std).mono fun v hv => hv.1.trans hv.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨hc, hr, -⟩` from `(GlobalTheory.T.theta_basic_properties hKP.base F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hP).1 Ψ hS`. Take `⟨hw, -⟩` from `GlobalTheory.T.weil_convergence_of_kernel hKP F E σ B a (a + a') G.V G.W G.M _ _ om _ _ _ _ hP (Or.inl (GlobalTheory.ThK.Check.conv_range hT.geo))`. Use `⟨hc.comp (Continuous.prodMk continuous_id continuous_const), fun δ hδ g => ?_, (hw Ψ hS).1 h⟩` and prove the remaining obligations. Simplify using `using hr δ hδ 1 (one_mem _) g h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem theta_basic {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {Ψ} (hΨ : Ψ ∈ GlobalTheory.ThK.PolData B G.M)
@@ -42,9 +42,9 @@ theorem theta_basic {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E
   simpa using hr δ hδ 1 (one_mem _) g h
 
 /- English proof (translation)
-Establish `hE : Countable E` using `(Module.finBasis ℚ E).equivFun.injective.countable`. Establish `hM : Countable (Matrix (Fin n) (Fin n) E)` using `inferInstanceAs (Countable (Fin n → Fin n → E))`. Establish `hGL : Countable (GL (Fin n) E)` using `Function.Injective.countable (f := (Units.val : GL (Fin n) E → Matrix (Fin n) (Fin n) E)) Units.val_injective`. Establish `hR : Countable (Matrix.GeneralLinearGroup.map (n` using `Fin n) (inclR (F := F) (E := E) (AF F))).range := (Set.countable_range _).to_subtype`. Use `Function.Injective.countable (f := fun x : ratU σ J => (⟨x.1.1, x.2⟩ : (Matrix.GeneralLinearGroup.map (n := Fin n) (inclR (F := F) (E := E) (AF F))).range)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y hxy`. Establish `h1` using `congrArg Subtype.val hxy`. Conclude with `Subtype.ext (Subtype.ext h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countable_ratU {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Countable (ratU σ J) := by
   have hE : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
@@ -60,9 +60,9 @@ theorem countable_ratU {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : Countable (rat
   exact Subtype.ext (Subtype.ext h1)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Establish `hΨ'` using `GlobalTheory.T.line_derivative_preserves_polynomial F E σ B a a' G X om om' hKP hT Ψ hΨ γ hγ`. Take `⟨hc, hr, hi⟩` from `theta_basic hKP hT hΨ h`. Take `⟨hc', -, -⟩` from `theta_basic hKP hT hΨ' h`. Take `⟨b, hb, hbd⟩` from `GlobalTheory.T.theta_along_line_le_integrableOn_bound F E σ B a a' G X om om' hKP hT _ hΨ' γ hγ h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hT.geo.hM.haar`. Use `haveI := GlobalTheory.T.unitary_haar_right_invariant F E σ B a G.V (a - G.p) G.p hT.base hT.geo.hV G.M.μ hT.geo.hM.haar`. Use `haveI := countable_ratU (σ := σ) G.V.J`. Use `show ∫ g in G.M.dom, theta om _ g h ∂G.M.μ = 0`. Conclude with `GlobalTheory.T.fundamental_domain_line_derivative_integral G.M.μ (ratU σ G.V.J) G.M.dom hT.geo.hM.dom _ _ (fun t => γ (Multiplicative.ofAdd t)) b (fun s t => by simp only [ofAdd_add, map_mul]) hr hc hc' hi hb (fun g => GlobalTheory.T.theta_derivative_along_line F E σ B a a' G X o …`.
+A detailed English derivation is pending.
 -/
 theorem kill_one {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {om : Rep σ G.V G.W}
     {om' : Rep σ G.V' G.W} (hKP : GlobalTheory.ThK.KP) (hT : IsTriple B G X om om') {Ψ} (hΨ : Ψ ∈ GlobalTheory.ThK.PolData B G.M)
@@ -82,9 +82,9 @@ theorem kill_one {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E} {
     (fun g => GlobalTheory.T.theta_derivative_along_line F E σ B a a' G X om om' hKP hT Ψ hΨ γ hγ g h) hbd
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hKP hT Φ hΦ l hl`. Proceed by induction on `l with`. Consider the case `nil => exact ⟨hΦ, fun h => absurd rfl h⟩`. Consider the case `cons γ l ih`. Establish `ih'` using `(ih fun γ' h' => hl γ' (List.mem_cons_of_mem _ h')).1`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hγ` using `hl γ List.mem_cons_self`. Simplify using `only [List.map_cons, List.foldr_cons]`. Conclude with `⟨GlobalTheory.T.line_derivative_preserves_polynomial F E σ B a a' G X om om' hKP hT _ ih' γ hγ, fun _ => kill_one hKP hT ih' hγ⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem kill : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

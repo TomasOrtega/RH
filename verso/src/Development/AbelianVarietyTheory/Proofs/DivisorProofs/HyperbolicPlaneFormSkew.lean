@@ -45,19 +45,19 @@ def derEnd {γ : ℝ → GAd σ J} (hγ : IsRealLine σ J γ) : Module.End ℂ (
   map_smul' a f := Subtype.ext (lineDer_smul a f.1 γ)
 
 /- English proof (translation)
-Set `ρ : Matrix (Fin n) (Fin n) ℂ → Module.End ℂ (SmG σ J)` to `fun Z => if hZ : ∃ γ, IsLineOf σ J τ Z γ then derEnd (hZ.choose_spec.isRealLine h) else 0`. Establish `hρ : ∀ Z γ, IsLineOf σ J τ Z γ → ∀ f : SmG σ J, (ρ Z f).1 = lineDer γ f.1` using `fun Z γ hγ f => by`. Establish `hZ : ∃ γ, IsLineOf σ J τ Z γ` using `⟨γ, hγ⟩`. Simplify using `only [ρ, dif_pos hZ]`. Rewrite using `[hγ.unique h hZ.choose_spec]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨D, h1, h2⟩` from `GlobalTheory.T.lie_algebra_rep_derivation_matrix n (J.map τ.1) (conjTranspose_map h hJ τ.1) (isUnit_det_map hJ τ.1) _ ρ (fun X X' hX hX' => by`. Take `⟨γ, hγ⟩` from `exists_isLineOf h hJ hX`. Take `⟨δ, hδ⟩` from `exists_isLineOf h hJ hX'`. Take `⟨ε, hε⟩` from `exists_isLineOf (τ := τ) (Z := X + X') h hJ (by`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add, add_add_add_comm, hX, hX', add_zero])`. Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[LinearMap.add_apply, Submodule.coe_add, hρ _ _ hγ, hρ _ _ hδ, hρ _ _ hε]`. Conclude with `(GlobalTheory.T.line_derivative_additive F E σ h n J hJ w τ f.1 f.2 X X' γ δ ε hγ hδ).1 hε)`. Use the proof step `(fun c X hX => by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ⟩` from `exists_isLineOf h hJ hX`. Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, hρ _ _ hγ, hρ _ _ (hγ.smul c)]`. Use function extensionality and compare the values at `g`. Establish `hd` using `((differentiable_of_isSm f.2 (hγ.isRealLine h) g) (0 * c)).hasDerivAt.scomp (0 : ℝ) ((hasDerivAt_id (0 : ℝ)).mul_const c)`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `hd.deriv` as an intermediate fact. Simplify using `only [zero_mul, one_mul] at this`. Simplify `this)` using `[lineDer, Function.comp_def]`. Use the proof step `(fun X X' hX hX' => by`. Take `⟨γ, hγ⟩` from `exists_isLineOf h hJ hX`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨δ, hδ⟩` from `exists_isLineOf h hJ hX'`. Take `⟨ε, hε⟩` from `exists_isLineOf (τ := τ) (Z := X * X' - X' * X) h hJ (by`. Establish `e1` using `eq_neg_of_add_eq_zero_left hX`. Establish `e2` using `eq_neg_of_add_eq_zero_left hX'`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, Matrix.sub_mul, Matrix.mul_assoc, Matrix.mul_assoc, e1, e2, Matrix.mul_neg, Matrix.mul_neg, ← Matrix.mul_assoc, ← Matrix.mul_assoc, e1, e2, Matrix.mul_sub]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mul_assoc])`. Use `LinearMap.ext fun f => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, Submodule.coe_sub, Module.End.mul_apply, Module.End.mul_apply, hρ _ _ hγ, hρ _ _ hδ, hρ _ _ hδ, hρ _ _ hγ, hρ _ _ hε]`. Conclude with `(GlobalTheory.T.line_derivative_additive F E σ h n J hJ w τ f.1 f.2 X X' γ δ ε hγ hδ).2 hε)`. Conclude with `⟨D, h1, fun Z γ hγ f => by rw [h2 Z (hγ.skew h)]; exact hρ Z γ hγ f⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isDer (h : IsCMExt F E σ) (hJ : IsHermND σ J) {w : InfinitePlace F} (τ : EmbOver E w) :
     ∃ D, IsDer σ J τ D := by
@@ -104,11 +104,11 @@ theorem exists_isDer (h : IsCMExt F E σ) (hJ : IsHermND σ J) {w : InfinitePlac
   exact ⟨D, h1, fun Z γ hγ f => by rw [h2 Z (hγ.skew h)]; exact hρ Z γ hγ f⟩
 
 /- English proof (translation)
-Introduce `a b c d`. Establish `e : ∀ a b c d : Fin m, Q * Matrix.single a b (1 : ℂ) * R * (Q * Matrix.single c d (1 : ℂ) * R) = if b = c then Q * Matrix.single a d (1 : ℂ) * R else 0` using `fun a b c d => by`. Establish `: Q * Matrix.single a b (1 : ℂ) * R * (Q * Matrix.single c d (1 : ℂ) * R) = Q * (Matrix.single a b (1 : ℂ) * (R * Q) * Matrix.single c d 1) * R` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[this, hRQ, Matrix.mul_one]`. Use `split_ifs with hbc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Substitute `hbc` using the available equality. Rewrite using `[Matrix.single_mul_single_same, mul_one]`. Rewrite using `[Matrix.single_mul_single_of_ne _ _ _ _ hbc]`. Simplify using the standard rewrite rules. Rewrite using `[← hD, e, e, map_sub]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `congr 1 <;> split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem glRel_frame {B : Type} [Ring B] [Algebra ℂ B] {m : ℕ} (D : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] B)
     (hD : ∀ X Y, D (X * Y - Y * X) = D X * D Y - D Y * D X) {Q : Matrix (Fin n) (Fin m) ℂ} {R : Matrix (Fin m) (Fin n) ℂ}
@@ -126,9 +126,9 @@ theorem glRel_frame {B : Type} [Ring B] [Algebra ℂ B] {m : ℕ} (D : Matrix (F
   congr 1 <;> split_ifs <;> simp
 
 /- English proof (translation)
-Establish `e : ∑ a, ∑ b, (R * X * Q) a b • (Q * Matrix.single a b (1 : ℂ) * R) = Q * (∑ a, ∑ b, Matrix.single a b ((R * X * Q) a b)) * R`. Simplify using `only [Matrix.mul_sum, Matrix.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.smul_mul, ← Matrix.mul_smul, Matrix.smul_single, smul_eq_mul, mul_one]`. Rewrite using `[e, ← Matrix.matrix_eq_sum_single]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [← Matrix.mul_assoc, hQR, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hQR, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_sum_frame {m : ℕ} {Q : Matrix (Fin n) (Fin m) ℂ} {R : Matrix (Fin m) (Fin n) ℂ} (hQR : Q * R = 1)
     (X : Matrix (Fin n) (Fin n) ℂ) : X = ∑ a, ∑ b, (R * X * Q) a b • (Q * Matrix.single a b (1 : ℂ) * R) := by
@@ -142,9 +142,9 @@ theorem eq_sum_frame {m : ℕ} {Q : Matrix (Fin n) (Fin m) ℂ} {R : Matrix (Fin
   rw [Matrix.mul_assoc, hQR, Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `qdet Formalism.REAL.qminor`. Use `S.sum_mem fun π _ => S.mul_mem (intCast_mem S _) (S.list_prod_mem fun x hx => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Unfold `Formalism.REAL.Tm`. Use `S.add_mem ?_ (hS _ _)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs`. Use `exacts [S.algebraMap_mem _, S.zero_mem]`.
+A detailed English derivation is pending.
 -/
 theorem qdet_mem {B : Type} [Ring B] [Algebra ℂ B] {m : ℕ} (X : Fin m → Fin m → B) (S : Subalgebra ℂ B)
     (hS : ∀ a b, X a b ∈ S) (u : ℂ) : qdet X u ∈ S := by
@@ -157,7 +157,7 @@ theorem qdet_mem {B : Type} [Ring B] [Algebra ℂ B] {m : ℕ} (X : Fin m → Fi
   exacts [S.algebraMap_mem _, S.zero_mem]
 
 /- English proof (translation)
-Unfold `gelfA`. Use `S.sum_mem fun π _ => S.list_prod_mem fun x hx => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `hS _ _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem gelfA_mem {B : Type} [Ring B] [Algebra ℂ B] {m : ℕ} (X : Fin m → Fin m → B) (S : Subalgebra ℂ B)
     (hS : ∀ a b, X a b ∈ S) (k : ℕ) : gelfA X k ∈ S := by
@@ -167,31 +167,27 @@ theorem gelfA_mem {B : Type} [Ring B] [Algebra ℂ B] {m : ℕ} (X : Fin m → F
   exact hS _ _
 
 /- English proof (translation)
-Set `X : InfinitePlace F → Fin n → Fin n → Module.End ℂ (SmG σ J)` to `fun w a b => D w (Matrix.single a b 1)`. Establish `hG : ∀ w, GlRel (X w)` using `fun w => by`. Simplify using `using glRel_frame (D w) (hD w).1 (Q := 1) (R := 1) (Matrix.mul_one _)`. Establish `hc : ∀ w w', w ≠ w' → ∀ a b c d, X w a b * X w' c d = X w' c d * X w a b` using `fun w w' hne a b c d => GlobalTheory.T.derivations_commute_distinct_places F E σ h n J hJ w (τ w) (D w) (hD w) w' (τ w') (D w') (hD w') hne _ _`. Take `⟨W, hW, hvW, hs⟩` from `GlobalTheory.FiniteOrbit.exists_finiteDimensional_stable (SmG σ J) (InfinitePlace F) (fun w => Algebra.adjoin ℂ (Set.range (gelfA (X w)))) (fun w w' hne a ha b hb => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ∀ c d, a * X w' c d = X w' c d * a` using `fun c d => by`. Establish `: Algebra.adjoin ℂ (Set.range (gelfA (X w))) ≤ Subalgebra.centralizer ℂ {X w' c d}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `gelfA_mem _ _ (fun a b => by rintro _ rfl; exact (hc w w' hne a b c d).symm) k`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `(this ha _ rfl).symm`. Establish `: Algebra.adjoin ℂ (Set.range (gelfA (X w'))) ≤ Subalgebra.centralizer ℂ {a}`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `gelfA_mem _ _ (fun c d => by rintro _ rfl; exact h1 c d) k`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this hb _ rfl) v hv`. Set `A` to `Algebra.adjoin ℂ (Set.range fun p : InfinitePlace F × Fin n × Fin n => X p.1 p.2.1 p.2.2)`. Establish `hDA : ∀ w Z, D w Z ∈ A` using `fun w Z => by`. Rewrite using `[Matrix.matrix_eq_sum_single Z]`. Simplify using `only [map_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Proceed by induction.
 
-Use `A.sum_mem fun a _ => A.sum_mem fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_one (Z a b), ← smul_eq_mul, ← Matrix.smul_single, map_smul]`. Conclude with `A.smul_mem (Algebra.subset_adjoin ⟨(w, a, b), rfl⟩) _`. Establish `hword : ∀ l : List (ℝ → GAd σ J), (∀ γ ∈ l, IsRealLine σ J γ) → ∃ u ∈ A, ∀ f : SmG σ J, l.foldr lineDer f.1 = (u f).1` using `fun l => by`. Proceed by induction on `l with`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `nil => exact fun _ => ⟨1, A.one_mem, fun f => rfl⟩`. Consider the case `cons γ l ih`. Introduce `hl`. Take `⟨u, hu, e⟩` from `ih fun δ hδ => hl δ (List.mem_cons_of_mem _ hδ)`. Take `⟨w, Z, hZ⟩` from `GlobalTheory.T.real_line_is_line_of_place F E σ h n J hJ τ γ (hl γ List.mem_cons_self)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Conclude with `⟨D w Z * u, A.mul_mem (hDA w Z) hu, fun f => by`. Rewrite using `[List.foldr_cons, e, Module.End.mul_apply, (hD w).2 Z γ hZ]⟩`. Use `Submodule.finiteDimensional_of_le (S₂ := W.map (SmG σ J).subtype) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Use `choose! u hu he using fun l (hl : l ∈ z.support) => hword l (hz.1 l hl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Set `U` to `∑ l ∈ z.support, z l • u l`. Establish `hU : ∀ f : SmG σ J, dop z f.1 = (U f).1` using `fun f => by`. Rewrite using `[LinearMap.sum_apply, Submodule.coe_sum]`. Use function extensionality and compare the values at `g`. Simplify using `only [dop, Finsupp.sum, Finset.sum_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun l hl => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, ← he l hl]`. Establish `hline : ∀ w Z γ, IsLineOf σ J (τ w) Z γ → D w Z * U = U * D w Z` using `fun w Z γ hγ => LinearMap.ext fun f => Subtype.ext (by`. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, (hD w).2 Z γ hγ, ← hU, ← hU, (hD w).2 Z γ hγ]`. Conclude with `GlobalTheory.UAut.CentralComm.lineDer_dop_comm F E σ n J z hz f.1 f.2 γ (hγ.isRealLine h))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hmem` using `GlobalTheory.T.centre_generated_by_gelfand GlobalTheory.T.relativeCentre' _ _ n X hG hc U (A.sum_mem fun l hl => A.smul_mem (hu l hl) _) fun w a b => by`. Take `⟨γ₁, γ₂, h1, h2, e⟩` from `exists_lines h hJ (τ w) (Matrix.single a b 1)`. Express the relevant statement in the definitionally equal form `D w _ * U = U * D w _`. Rewrite using `[e, map_add, map_smul (D w) Complex.I, add_mul, mul_add, smul_mul_assoc, mul_smul_comm, hline w _ _ h1, hline w _ _ h2]`. Establish `key : ∀ a ∈ Algebra.adjoin ℂ (Set.range fun p : InfinitePlace F × ℕ => gelfA (X p.1) p.2), ∀ x ∈ W, a x ∈ W`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Introduce `a ha`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx => obtain ⟨p, rfl⟩ := hx`. Conclude with `hs p.1 _ (Algebra.subset_adjoin ⟨p.2, rfl⟩)`. Consider the case `algebraMap r => intro x hx`.
-
-Conclude with `W.smul_mem r hx`. Consider the case `add x y _ _ hx hy => intro f hf`. Conclude with `add_mem (hx f hf) (hy f hf)`. Consider the case `mul x y _ _ hx hy => intro f hf`. Conclude with `hx _ (hy f hf)`.
-
-Conclude with `⟨U v, key U hmem v hvW, (hU v).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_gelf (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : ∀ w : InfinitePlace F, EmbOver E w)
     (D : InfinitePlace F → Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (SmG σ J)) (hD : ∀ w, IsDer σ J (τ w) (D w))
@@ -265,7 +261,7 @@ theorem finite_of_gelf (h : IsCMExt F E σ) (hJ : IsHermND σ J) (τ : ∀ w : I
 end General
 
 /- English proof (translation)
-Establish `: R * (Q * Matrix.single p q (1 : ℂ) * R) * Q = R * Q * Matrix.single p q (1 : ℂ) * (R * Q)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[this, hRQ, Matrix.one_mul, Matrix.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_unit_apply {n m : ℕ} {Q : Matrix (Fin n) (Fin m) ℂ} {R : Matrix (Fin m) (Fin n) ℂ} (hRQ : R * Q = 1)
     (p q : Fin m) : R * (Q * Matrix.single p q (1 : ℂ) * R) * Q = Matrix.single p q 1 := by

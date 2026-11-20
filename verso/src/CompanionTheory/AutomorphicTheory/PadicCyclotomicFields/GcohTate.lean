@@ -7,15 +7,15 @@ namespace CompanionTheory.LocalTateOrthogonality.Gcoh
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Take `⟨A, _, eA, hA⟩` from `hRep G (ZMod n) M rho hrho`. Establish `ht : Function.Bijective H.tTop` using `(H.t ⊤).bijective.comp (bijective_cohomologyRes_top D 2)`. Set `t : cohomology D 2 ≃+ ZMod n` to `AddEquiv.ofBijective H.tTop ht`. Establish `: Finite A` using `Finite.of_equiv _ eA.toEquiv`. Establish `: Finite D` using `Finite.of_equiv _ eD.toEquiv`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAn : ∀ a : A, n • a = 0` using `fun a => by`. Take `⟨m, rfl⟩` from `eA.surjective a`. Rewrite using `[← map_nsmul, nsmul_zmod, map_zero]`. Establish `hDn : ∀ a : D, n • a = 0` using `nsmul_eq_zero_of_nonempty_addEquiv ⟨eD.symm⟩`. Set `ι` to `MonoidHom.id G`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hid : Function.Bijective (evalPair (R` using `ZMod n) (M := M)).flip := Function.bijective_id`. Establish `hev : Function.Bijective (evalPair (R` using `ZMod n) (M := M)).flip.flip := bij_flip _ (AddEquiv.refl _) hid`. Take `⟨eB, hB, hAB⟩` from `exists_dualEquiv (rho.comp ι) ((twDual χ rho).comp ι) ((charRep χ).comp ι) evalPair (fun g x y => evalPair_equiv χ rho (ι g) x y) A D eA hA eD hD hid`. Take `⟨eC, hC, hBC⟩` from `exists_dualEquiv ((twDual χ rho).comp ι) (rho.comp ι) ((charRep χ).comp ι) evalPair.flip (fun g y x => evalPair_equiv χ rho (ι g) x y) (dualRep D A) D eB hB eD hD hev`. Establish `: Finite (dualRep D A)` using `finite_dualRep`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: IsDiscreteRep (dualRep D (dualRep D A))` using `isDiscreteRep_dualRep D (dualRep D A)`. Establish `h11 : Function.Bijective (cupH1H1TwistedDual χ rho ι (hrho.comp' continuous_id))` using `cup_product_H1_H1_bijective _ _ _ _ _ _ (dualRep D A) D eB hB eD hD eC hC hBC t h1 h2 _ (H.bijective_dualityMap_of_group (dualRep D A) (nsmul_dualRep_eq_zero hDn) _)`. Take `⟨eP, -⟩` from `h2 G (ZMod n) (ZMod n) (charRep χ) D eD hD`. Take `⟨eP', -⟩` from `h2 G (ZMod n) (ZMod n) ((charRep χ).comp ι) D eD hD`. Take `⟨e1, -⟩` from `h1 G (ZMod n) M (rho.comp ι) A eA hA`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hfin A hAn` as an intermediate fact. Establish `: Finite (H1 (rho.comp ι))` using `Finite.of_equiv _ e1.symm.toEquiv`. Use `⟨⟨LinearEquiv.ofBijective ((eP.trans t).toAddMonoidHom.toZModLinearMap n) (eP.trans t).bijective⟩, ?_, h11, bij_flip _ (eP'.trans t) h11, ?_⟩` and prove the remaining obligations. Conclude with `cup_product_H0_H2_bijective _ _ _ _ _ _ A D eA hA eD hD eB hB hAB t h0 h2 (H.bijective_dualityMap_of_group A hAn _)`. Conclude with `cup_product_H2_H0_bijective _ _ _ _ _ _ A D eA hA eD hD eB hB hAB t h0 h2 (H.bijective_dualityMap_of_group A hAn _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tate_core (hRep : SgcRep) (h0 : Sgc0) (h1 : Sgc1) (h2 : Sgc2) {n : ℕ} [NeZero n]
     {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
@@ -70,9 +70,9 @@ theorem tate_core (hRep : SgcRep) (h0 : Sgc0) (h1 : Sgc1) (h2 : Sgc2) {n : ℕ} 
       (H.bijective_dualityMap_of_group A hAn _)
 
 /- English proof (translation)
-Introduce `l _ K hK r M _ _ _ _ _ rho hr hrho`. Take `⟨hsep, _, _, hloc, -⟩` from `hF l K hK`. Establish `hl : (l ^ r : ℕ) ≠ 0` using `pow_ne_zero _ (Fact.out : l.Prime).ne_zero`. Establish `: NeZero (l ^ r)` using `⟨hl⟩`. Establish `: CharZero K` using `algebraRat.charZero K`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ((l ^ r : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 hl`. Take `⟨eD, hD⟩` from `hMu l K r`. Conclude with `tate_core hRep h0 h1 h2 (galRootsOfUnity.{0} K (PadicAlgCl l) (l ^ r)) (localDualityHypotheses hn) (fun A _ _ hA => finite_cohomology_galois_top K (PadicAlgCl l) hn A hA 1) (cycK l K r) eD hD M rho hrho`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tate_of (hRep : SgcRep) (h0 : Sgc0) (h1 : Sgc1) (h2 : Sgc2) (hF : SgcField) (hMu : SgcMu) :
     Formalism.GaloisCohomology.LocalTateDualityK := by

@@ -8,9 +8,9 @@ namespace GlobalTheory.Mem.Col2.LRank
 open scoped TensorProduct in
 
 /- English proof (translation)
-Establish `: IsArtinianRing (R ⧸ I)` using `isArtinian_of_finite`. Take `⟨b⟩` from `Module.nonempty_basis_of_flat_of_finrank_eq (R ⧸ I) ((R ⧸ I) ⊗[R] N) (Module.finrank R N) (fun P => by`. Use `P.isMaximal` as an intermediate fact. Set `: Field ((R ⧸ I) ⧸ P.asIdeal)` to `Ideal.Quotient.field _`. Rewrite using `[(TensorProduct.AlgebraTensorModule.cancelBaseChange R (R ⧸ I) ((R ⧸ I) ⧸ P.asIdeal) ((R ⧸ I) ⧸ P.asIdeal) N).finrank_eq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Module.rankAtStalk_baseChange (R := R) (M := N) (S := (R ⧸ I) ⧸ P.asIdeal) ⊥`. Rewrite `h1` using `[Module.rankAtStalk_eq_finrank_of_free, Module.rankAtStalk_eq, Ideal.finrank_fiber_eq_finrank]`. Conclude with `h1)`. Rewrite using `[← Nat.card_congr (TensorProduct.quotTensorEquivQuotSMul N I).toEquiv, Nat.card_congr b.equivFun.toEquiv, Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_quot {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup N] [Module R N]
     [Module.Finite R N] [Module.Projective R N] (I : Ideal R) [Finite (R ⧸ I)] :
@@ -29,9 +29,9 @@ theorem natCard_quot {R N : Type} [CommRing R] [IsDomain R] [AddCommGroup N] [Mo
     Nat.card_fun, Nat.card_eq_fintype_card (α := Fin _), Fintype.card_fin]
 
 /- English proof (translation)
-Establish `: IsLocalizedModule (nonZeroDivisors (𝓞 K)) p.subtype`. Use `⟨fun s => ?_, fun y => ?_, fun {a b} hab => ⟨1, by simpa using hab⟩⟩` and prove the remaining obligations. Use `isLocalizedModule_id (nonZeroDivisors (𝓞 K)) V K` as an intermediate fact. Conclude with `IsLocalizedModule.map_units (S := nonZeroDivisors (𝓞 K)) (LinearMap.id : V →ₗ[𝓞 K] V) s`. Establish `hy : y ∈ Submodule.span K (p : Set V)` using `h ▸ Submodule.mem_top`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `multiple_mem_span_of_mem_localization_span (nonZeroDivisors (𝓞 K)) K _ y hy`. Rewrite `ht` using `[Submodule.span_eq]`. Conclude with `⟨(⟨_, ht⟩, t), rfl⟩`. Rewrite using `[← IsLocalizedModule.finrank_eq (nonZeroDivisors (𝓞 K)) p.subtype le_rfl, IsFractionRing.finrank_right_eq (𝓞 K) K V]`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_of_span_top {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (p : Submodule (𝓞 K) V)
@@ -48,9 +48,9 @@ theorem finrank_of_span_top {K V : Type} [Field K] [NumberField K] [AddCommGroup
     IsFractionRing.finrank_right_eq (𝓞 K) K V]
 
 /- English proof (translation)
-Establish `h1 : 1 < Nat.card F` using `Finite.one_lt_card`. Establish `: Finite V` using `Nat.finite_of_card_ne_zero (by rw [h]; positivity)`. Establish `: Module.Finite F V` using `Module.Finite.of_finite`. Establish `h2` using `Module.natCard_eq_pow_finrank (K := F) (V := V)`. Rewrite `h2` using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Nat.pow_right_injective h1 h2).symm`.
+A detailed English derivation is pending.
 -/
 theorem finrank_of_card {F V : Type} [Field F] [Finite F] [AddCommGroup V] [Module F V] {n : ℕ}
     (h : Nat.card V = Nat.card F ^ n) : Module.finrank F V = n := by
@@ -64,9 +64,9 @@ theorem finrank_of_card {F V : Type} [Field F] [Finite F] [AddCommGroup V] [Modu
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Establish `: Module.Finite (𝓞 E) N` using `Module.Finite.iff_fg.2 (Submodule.IsLattice.fg (self := hN))`. Establish `: Module.FinitePresentation (𝓞 E) N` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Flat (𝓞 E) N` using `inferInstance`. Establish `: Module.Projective (𝓞 E) N` using `Module.Flat.projective_of_finitePresentation`. Establish `: Finite (𝓞 E ⧸ P.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ P.ne_bot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : Module.finrank (𝓞 E) N = n`. Simplify using `using finrank_of_span_top N hN.span_eq_top`. Establish `h` using `natCard_quot (R := 𝓞 E) (N := N) P.asIdeal`. Rewrite `h` using `[hr]`. Conclude with `finrank_of_card (F := Res P) h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_red {E : Type} [Field E] [NumberField E] {n : ℕ} (N : Submodule (𝓞 E) (Fin n → E))
     (hN : Submodule.IsLattice E N) (P : HeightOneSpectrum (𝓞 E)) :
@@ -85,7 +85,7 @@ theorem finrank_red {E : Type} [Field E] [NumberField E] {n : ℕ} (N : Submodul
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `E K _ _ _ _ n S ST A T _ h`. Conclude with `⟨fun P c => finrank_red _ (h.N_lat _ _) P.1, fun P c => finrank_red _ (h.dnN_lat _ _ P) P.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem ranks : ∀ {E K : Type} [Field E] [NumberField E] [StarRing E] [Field K] {n : ℕ} {S : GStep E K n} {ST : Finset (HeightOneSpectrum (𝓞 E))} (A : TDat S ST) (T : ℕ), S.Ok → A.Ok T → (∀ P c, Module.finrank (Res P.1) (A.lv P c) = n) ∧ ∀ P c, Module.finrank (Res P.1) (A.lk P c) = n := by
   intro E K _ _ _ _ n S ST A T _ h

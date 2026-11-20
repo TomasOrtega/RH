@@ -12,7 +12,7 @@ namespace GlobalTheory.SW.UnitaryLeft
 noncomputable section
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, dotProduct, Matrix.mulVec, Matrix.transpose_apply, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem sum_rows_eq_trace {n N : ℕ} (U V : Matrix (Fin n) (Fin N) ℂ) (A : Matrix (Fin N) (Fin N) ℂ) :
     ∑ k, U k ⬝ᵥ A *ᵥ V k = (U * A * Vᵀ).trace := by
@@ -23,7 +23,7 @@ theorem sum_rows_eq_trace {n N : ℕ} (U V : Matrix (Fin n) (Fin N) ℂ) (A : Ma
   refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Rewrite using `[sum_rows_eq_trace, sum_rows_eq_trace, Matrix.transpose_mul, Matrix.mul_assoc P, Matrix.mul_assoc P, Matrix.trace_mul_comm, ← Matrix.mul_assoc, Matrix.mul_assoc _ Qᵀ, hPQ, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_rows_unitary {n N : ℕ} (P Q : Matrix (Fin n) (Fin n) ℂ) (hPQ : Qᵀ * P = 1)
     (U V : Matrix (Fin n) (Fin N) ℂ) (A : Matrix (Fin N) (Fin N) ℂ) :
@@ -33,7 +33,7 @@ theorem sum_rows_unitary {n N : ℕ} (P Q : Matrix (Fin n) (Fin n) ℂ) (hPQ : Q
     Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `using sum_rows_unitary P Q hPQ U V 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_rows_unitary' {n N : ℕ} (P Q : Matrix (Fin n) (Fin n) ℂ) (hPQ : Qᵀ * P = 1)
     (U V : Matrix (Fin n) (Fin N) ℂ) :
@@ -43,15 +43,15 @@ theorem sum_rows_unitary' {n N : ℕ} (P Q : Matrix (Fin n) (Fin n) ℂ) (hPQ : 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)) {n N : ℕ}
 
 /- English proof (translation)
-The claim follows from `IsCMField.complexEmbedding_complexConj E τ x`.
+A detailed English derivation is pending.
 -/
 theorem emb_cc (τ : E →+* ℂ) (x : E) : τ (cc x) = conj (τ x) :=
   IsCMField.complexEmbedding_complexConj E τ x
 
 /- English proof (translation)
-Establish `h1` using `congrArg (fun M : Matrix (Fin n) (Fin n) E => M.map τ) hh`. Simplify using `only [Matrix.map_mul] at h1`. Rewrite `h1` using `[Matrix.map_one _ (map_zero τ) (map_one τ)]`. Rewrite using `[← h1]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i j`. Simplify using `[ccT, emb_cc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem unit_map {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1) (τ : E →+* ℂ) :
     ((h.map τ).map conj)ᵀ * h.map τ = 1 := by
@@ -64,7 +64,7 @@ theorem unit_map {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1) (τ : E →
   simp [ccT, emb_cc]
 
 /- English proof (translation)
-Establish `h1` using `congrArg Matrix.transpose (unit_map hh τ)`. Simplify `h1` using `[Matrix.transpose_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_map' {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1) (τ : E →+* ℂ) :
     (h.map τ)ᵀ * (h.map τ).map conj = 1 := by
@@ -78,9 +78,9 @@ def mv' (h : Matrix (Fin n) (Fin n) E) (z : CM Ψ n N) : CM Ψ n N :=
   fun τ => h.map τ.1 * z τ
 
 /- English proof (translation)
-Unfold `expo`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e1 : ∀ (y : Matrix (Fin n) (Fin N) E) k, (fun a => τ.1 (y k a)) = (y.map τ.1) k` using `fun _ _ => rfl`. Establish `e2 : ∀ (y : Matrix (Fin n) (Fin N) E) k, (fun a => conj (τ.1 (y k a))) = ((y.map τ.1).map conj) k` using `fun _ _ => rfl`. Simplify using `only [e1, e2, Finset.sum_add_distrib, mv, mv']`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, sum_rows_unitary _ _ (unit_map hh τ.1), sum_rows_unitary' _ _ (unit_map hh τ.1), sum_rows_unitary' _ _ (unit_map hh τ.1)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem expo_mul {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1)
     (x : Matrix (Fin n) (Fin N) E) (Z : CM Ψ N N) (z z' : CM Ψ n N) :
@@ -96,9 +96,9 @@ theorem expo_mul {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1)
     sum_rows_unitary' _ _ (unit_map hh τ.1), sum_rows_unitary' _ _ (unit_map hh τ.1)]
 
 /- English proof (translation)
-Establish `hh' : h * ccT h = 1` using `mul_eq_one_comm.1 hh`. Set `e : Matrix (Fin n) (Fin N) E ≃ Matrix (Fin n) (Fin N) E` to `{ toFun := fun x => h * x invFun := fun x => ccT h * x left_inv := fun x => by simp only [← Matrix.mul_assoc, hh, Matrix.one_mul] right_inv := fun x => by simp only [← Matrix.mul_assoc, hh', Matrix.one_mul] }`. Unfold `thH`. Rewrite using `[← e.tsum_eq (fun x => φ x * cexp (2 * Real.pi * I * expo Ψ x Z (mv Ψ h z) (mv' Ψ h z')))]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `_ = φ (h * x) * cexp (2 * Real.pi * I * expo Ψ (h * x) Z (mv Ψ h z) (mv' Ψ h z'))`. Rewrite using `[expo_mul Ψ hh]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem thH_mul {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1)
     (φ : Matrix (Fin n) (Fin N) E → ℂ) (Z : CM Ψ N N) (z z' : CM Ψ n N) :
@@ -116,7 +116,7 @@ theorem thH_mul {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1)
   rw [expo_mul Ψ hh]
 
 /- English proof (translation)
-Unfold `hFac`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Simplify using `only [mv, mv']`. Rewrite using `[sum_rows_unitary _ _ (unit_map hh τ.1)]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hFac_mv {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1) (γ : M2 E N)
     (Z : CM Ψ N N) (z z' : CM Ψ n N) :
@@ -127,7 +127,7 @@ theorem hFac_mv {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1) (γ : M2 E N
   rw [sum_rows_unitary _ _ (unit_map hh τ.1)]
 
 /- English proof (translation)
-Establish `e : ∀ w : Matrix (Fin n) (Fin N) ℂ, (Matrix.of fun k => A *ᵥ w k) = w * Aᵀ`. Introduce `w`. Use extensionality with `k a`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, mul_comm]`. Rewrite using `[e, e, Matrix.mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_of_mulVec (P : Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin N) (Fin N) ℂ)
     (z : Matrix (Fin n) (Fin N) ℂ) :
@@ -138,7 +138,7 @@ theorem mul_of_mulVec (P : Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin N) (Fin 
   rw [e, e, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `e : ∀ w : Matrix (Fin n) (Fin N) ℂ, (Matrix.of fun k => w k ᵥ* A) = w * A`. Introduce `w`. Use extensionality with `k a`. Simplify using `[Matrix.mul_apply, Matrix.vecMul, dotProduct]`. Rewrite using `[e, e, Matrix.mul_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_of_vecMul (P : Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin N) (Fin N) ℂ)
     (z : Matrix (Fin n) (Fin N) ℂ) :
@@ -149,9 +149,9 @@ theorem mul_of_vecMul (P : Matrix (Fin n) (Fin n) ℂ) (A : Matrix (Fin N) (Fin 
   rw [e, e, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `Z hZ z z'`. Rewrite using `[thH_mul Ψ hh ψ, thH_mul Ψ hh φ, ← hFac_mv Ψ hh, ← H Z hZ]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `mul_of_mulVec _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ`. Conclude with `mul_of_vecMul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem transH_mul {h : Matrix (Fin n) (Fin n) E} (hh : ccT h * h = 1) (γ : M2 E N)
     {φ ψ : Matrix (Fin n) (Fin N) E → ℂ} (H : TransH Ψ γ φ ψ) :
@@ -170,15 +170,15 @@ end GlobalTheory.SW.UnitaryLeft
 open GlobalTheory.SW.UnitaryLeft in
 
 /- English proof (translation)
-Introduce `E _ _ _ Ψ hΨ n N hn h hh φ hφ`. Establish `hdet : h.det ≠ 0`. Establish `h1` using `congrArg Matrix.det hh`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_one]`. Conclude with `right_ne_zero_of_mul_eq_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hSB : ∀ ψ : Matrix (Fin n) (Fin N) E → ℂ, IsSB ψ → IsSB (fun x : Matrix (Fin n) (Fin N) E => ψ (h * x))` using `fun ψ hψ => ((GlobalTheory.T.schwartzBruhatInvariantIntegral_matrix_mul E (Fin n) (Fin N) ψ hψ).2 h hdet).1`. Establish `hw : ∀ γ ∈ UU E N, weil Ψ γ (fun x => φ (h * x)) = fun x => weil Ψ γ φ (h * x)`. Introduce `γ hγ`. Take `⟨h1, h2, -⟩` from `GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ φ hφ`. Conclude with `((GlobalTheory.T.hermitianWeilAction_unitaryGroup_testFunctions E Ψ hΨ n N hn γ hγ _ (hSB φ hφ)).2.2.1 _ (hSB _ h1) (transH_mul Ψ hh γ h2)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hSB φ hφ, hw, fun Z _ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `(thH_mul Ψ hh φ Z 0 0).trans ?_` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using `[mv]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `τ`. Simplify using `[mv']`. Unfold `eis`. Use `tsum_congr fun U => ?_` and prove the remaining obligations. Unfold `eisTerm`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hw _ U.2.choose_spec.1]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SW.weil_comp_unitary : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (Ψ : Finset (E →+* ℂ)), IsType Ψ → ∀ (n N : ℕ), Even n → ∀ h : Matrix (Fin n) (Fin n) E, ccT h * h = 1 → ∀ φ : Matrix (Fin n) (Fin N) E → ℂ, IsSB φ → IsSB (fun x : Matrix (Fin n) (Fin N) E => φ (h * x)) ∧ (∀ γ ∈ UU E N, weil Ψ γ (fun x => φ (h * x)) = fun x => weil Ψ γ φ (h * x)) ∧ ∀ Z ∈ Hn Ψ N, thH Ψ (fun x => φ (h * x)) Z 0 0 = thH Ψ φ Z 0 0 ∧ eis Ψ (fun x => φ (h * x)) Z 0 0 = eis Ψ φ Z 0 0 := by
   intro E _ _ _ Ψ hΨ n N hn h hh φ hφ

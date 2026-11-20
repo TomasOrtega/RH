@@ -28,20 +28,20 @@ def genSubrep (N : Submodule ℂ V) : Subrepresentation σ where
     exact this hx
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_iSup_of_mem g ⟨n, hn, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_genSubrep_of_mem {N : Submodule ℂ V} {n : V} (hn : n ∈ N) (g : L) :
     σ g n ∈ (genSubrep σ N).toSubmodule :=
   Submodule.mem_iSup_of_mem g ⟨n, hn, rfl⟩
 
 /- English proof (translation)
-Introduce `n hn` and use `by simpa using mem_genSubrep_of_mem (σ := σ) hn 1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_genSubrep (N : Submodule ℂ V) : N ≤ (genSubrep σ N).toSubmodule := fun n hn => by
   simpa using mem_genSubrep_of_mem (σ := σ) hn 1
 
 /- English proof (translation)
-The claim follows from `iSup_le fun g => by rintro _ ⟨n, hn, rfl⟩ exact X.apply_mem_toSubmodule g (h hn)`.
+A detailed English derivation is pending.
 -/
 theorem genSubrep_le {N : Submodule ℂ V} {X : Subrepresentation σ} (h : N ≤ X.toSubmodule) :
     (genSubrep σ N).toSubmodule ≤ X.toSubmodule :=
@@ -63,7 +63,7 @@ def genKernel : Submodule ℂ (genSubrep σ N).toSubmodule where
     simp only [mem_setOf_eq, Submodule.coe_smul, map_smul, ha g, smul_zero]
 
 /- English proof (translation)
-Introduce `u hu h`. Use `show fixedProj σ hσ hKc hKo (σ h (σ g u)) = 0`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Conclude with `hu (h * g)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem genKernel_le_comap (g : L) :
     genKernel hσ hKc hKo N ≤
@@ -94,7 +94,7 @@ def genQuotMap : Representation.IntertwiningMap (genSubrep σ N).toRepresentatio
 
 include hσ in
 /- English proof (translation)
-Introduce `u`. Use `Subgroup.isOpen_mono (H₁ := stabilizerOf σ (u : V)) (fun g hg => ?_) (hσ u)` and prove the remaining obligations. Conclude with `Subtype.ext hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSmooth_genSubrep : IsSmooth (genSubrep σ N).toRepresentation := by
   intro u
@@ -102,7 +102,7 @@ theorem isSmooth_genSubrep : IsSmooth (genSubrep σ N).toRepresentation := by
   exact Subtype.ext hg
 
 /- English proof (translation)
-Introduce `q`. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Use `Subgroup.isOpen_mono (H₁ := stabilizerOf (genSubrep σ N).toRepresentation u) (fun g hg => ?_) (isSmooth_genSubrep hσ N u)` and prove the remaining obligations. Use `show genQuotRep hσ hKc hKo N g (Submodule.Quotient.mk u) = Submodule.Quotient.mk u`. Rewrite using `[genQuotRep_mk, hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_genQuotRep : IsSmooth (genQuotRep hσ hKc hKo N) := by
   intro q
@@ -122,9 +122,9 @@ variable (hNK : N ≤ fixedVectors σ K)
 include hNK hNst in
 
 /- English proof (translation)
-Establish `h1 : (fixedProj σ hσ hKc hKo u : V) = u` using `fixedProj_apply_of_mem hσ hKc hKo huK`. Rewrite using `[← h1]`. Establish `: (genSubrep σ N).toSubmodule ≤ N.comap ((fixedVectors σ K).subtype ∘ₗ fixedProj σ hσ hKc hKo)`. Use `iSup_le fun g => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `hNst g n hn`. Conclude with `this hu`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_mem_genSubrep_fixed {u : V} (hu : u ∈ (genSubrep σ N).toSubmodule)
     (huK : u ∈ fixedVectors σ K) : u ∈ N := by
@@ -139,11 +139,11 @@ theorem mem_of_mem_genSubrep_fixed {u : V} (hu : u ∈ (genSubrep σ N).toSubmod
 
 include hNK in
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `n hn`. Rewrite `hn` using `[LinearMap.mem_ker, genQuotMk, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `hn 1` as an intermediate fact. Rewrite `this` using `[map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (fixedProj σ hσ hKc hKo (n : V) : V) = n` using `fixedProj_apply_of_mem hσ hKc hKo (hNK n.2)`. Rewrite using `[Submodule.mem_bot]`. Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[← h2]`. Simplify using `only [Submodule.coe_inclusion] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem genQuotMk_injective : Function.Injective (genQuotMk hσ hKc hKo N) := by
   rw [← LinearMap.ker_eq_bot, eq_bot_iff]
@@ -163,7 +163,7 @@ theorem genQuotMk_injective : Function.Injective (genQuotMk hσ hKc hKo N) := by
 include hNK in
 
 /- English proof (translation)
-Introduce `k hk`. Use `show genQuotRep hσ hKc hKo N k (Submodule.Quotient.mk _) = Submodule.Quotient.mk _`. Rewrite using `[genQuotRep_mk]`. Use `congr 1`. Conclude with `Subtype.ext (hNK n.2 k hk)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem genQuotMk_mem_fixedVectors (n : N) :
     genQuotMk hσ hKc hKo N n ∈ fixedVectors (genQuotRep hσ hKc hKo N) K := by
@@ -176,27 +176,23 @@ theorem genQuotMk_mem_fixedVectors (n : N) :
 include hNK hNst in
 
 /- English proof (translation)
-Use `set U := genSubrep σ N`. Use `set U₀ := genKernel hσ hKc hKo N`. Use `set π := genQuotRep hσ hKc hKo N`. Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hN0`. Establish `hmk0 : genQuotMk hσ hKc hKo N ⟨n, hn⟩ ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Use `genQuotMk_injective hσ hKc hKo hNK (a₁ := ⟨n, hn⟩) (a₂ := 0) (by rw [h, map_zero])` as an intermediate fact. Conclude with `hn0 (congrArg Subtype.val this)`. Establish `hbt : (⊥ : Subrepresentation π) ≠ ⊤`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `: genQuotMk hσ hKc hKo N ⟨n, hn⟩ ∈ (⊤ : Subrepresentation π).toSubmodule` using `Submodule.mem_top`. Rewrite `this` using `[← h0]`. Conclude with `hmk0 this`. Use `{ exists_pair_ne := ⟨⊥, ⊤, hbt⟩, eq_bot_or_eq_top := fun X => ?_ }` and prove the remaining obligations. Set `Y : Subrepresentation σ` to `{ toSubmodule := (X.toSubmodule.comap U₀.mkQ).map U.toSubmodule.subtype apply_mem_toSubmodule := by`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `g _ ⟨u, hu, rfl⟩`. Use `⟨U.toRepresentation g u, ?_, rfl⟩` and prove the remaining obligations. Establish `hu' : U₀.mkQ u ∈ X.toSubmodule` using `hu`. Use `X.apply_mem_toSubmodule g hu'` as an intermediate fact. Conclude with `this }`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Establish `hYU : ∀ {x : V}, x ∈ Y.toSubmodule → x ∈ U.toSubmodule`. Introduce and unpack `_ ⟨u, _, rfl⟩`. Conclude with `u.2`. Establish `hst : ∀ g, ∀ m ∈ Y.toSubmodule ⊓ N, (fixedProj σ hσ hKc hKo (σ g m) : V) ∈ Y.toSubmodule ⊓ N`. Introduce and unpack `g m ⟨hmY, hmN⟩`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨fixedProj_mem hσ hKc hKo Y (Y.apply_mem_toSubmodule g hmY), hNst g m hmN⟩`. Distinguish the cases in `hYN : Y.toSubmodule ⊓ N = ⊥`. Use `left`. Use extensionality with `q`. Use `⟨fun hq => ?_, fun hq => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q show Submodule.Quotient.mk u = (0 : U.toSubmodule ⧸ U₀)`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Introduce `g`. Establish `hY : (U.toRepresentation g u : V) ∈ Y.toSubmodule` using `⟨U.toRepresentation g u, X.apply_mem_toSubmodule g hq, rfl⟩`. Establish `h1` using `fixedProj_mem hσ hKc hKo Y hY`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (fixedProj σ hσ hKc hKo (σ g u) : V) ∈ N` using `mem_of_mem_genSubrep_fixed hσ hKc hKo hNK hNst (hYU h1) (fixedProj σ hσ hKc hKo _).2`. Establish `h3 : (fixedProj σ hσ hKc hKo (σ g u) : V) ∈ Y.toSubmodule ⊓ N` using `⟨h1, h2⟩`. Rewrite `h3` using `[hYN, Submodule.mem_bot]`. Conclude with `Subtype.ext h3`. Establish `: q = 0` using `hq`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `X.toSubmodule.zero_mem`. Use `right`. Establish `hle : Y.toSubmodule ⊓ N ≤ N` using `inf_le_right`. Establish `heq` using `hNmin _ hle hYN hst`.
-
-Establish `hNY : N ≤ Y.toSubmodule` using `heq ▸ inf_le_left`. Establish `hUY` using `genSubrep_le hNY`. Use extensionality with `q`. Use `⟨fun _ => Submodule.mem_top, fun _ => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
-
-Take `⟨u', hu', hu'u⟩` from `hUY u.2`. Establish `: u' = u` using `Subtype.ext hu'u`. Rewrite using `[← this]`. Conclude with `hu'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIrreducible_genQuotRep (hN0 : N ≠ ⊥)
     (hNmin : ∀ N₁ : Submodule ℂ V, N₁ ≤ N → N₁ ≠ ⊥ →
@@ -271,7 +267,7 @@ theorem isIrreducible_genQuotRep (hN0 : N ≠ ⊥)
 end Simple
 
 /- English proof (translation)
-Use `⟨isSmooth_genQuotRep hσ hKc hKo N, fun K' hK'c hK'o => ?_⟩` and prove the remaining obligations. Use `hfin K' hK'c hK'o` as an intermediate fact. Establish `hsurj` using `fixedMap_surjective (isSmooth_genSubrep hσ N) (isSmooth_genQuotRep hσ hKc hKo N) hK'c hK'o (f := genQuotMap hσ hKc hKo N) (Submodule.mkQ_surjective _)`. Conclude with `Module.Finite.of_surjective _ hsurj`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAdmissible_genQuotRep
     (hfin : ∀ K' : Subgroup L, IsCompact (K' : Set L) → IsOpen (K' : Set L) →

@@ -7,7 +7,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.IsUnitOneAddPiOMul
 import GroundTheory.LocalFields.FilteredSurj
 open Polynomial Matrix Formalism.UG
 /- English proof (citation)
-Apply `GlobalTheory.NormEq.exists_mul_conj_sub_mem_piPow_one` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FNormApproximationFirstLevel.lean&line=224#L224)
 -/

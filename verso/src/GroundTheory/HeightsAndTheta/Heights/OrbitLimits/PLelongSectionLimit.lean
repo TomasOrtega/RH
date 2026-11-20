@@ -22,7 +22,7 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `sheetDensity`. Apply the tactic sequence `split_ifs <;> simp [Finset.sum_mul]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sheetDensity_finset_sum {e : ℕ} (Q : Ideal (MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
@@ -33,9 +33,9 @@ theorem sheetDensity_finset_sum {e : ℕ} (Q : Ideal (MRing ι))
   split_ifs <;> simp [Finset.sum_mul]
 
 /- English proof (translation)
-Establish `hsm : IsSmoothHerm (HermLine.ofWeight u hu.2)` using `Real.contDiff_exp.comp_contDiffOn hu.1.neg`. Establish `h` using `hInt K ι Q e Ψ L (HermLine.ofWeight u hu.2) 1 hQ hΨ hL hsm (Inter.isSectionOn_one hQ rfl)`. Establish `hlog : logNorm (HermLine.ofWeight u hu.2) 1 = u`. Use function extensionality and compare the values at `z`. Simplify using `[logNorm, HermLine.ofWeight, Real.log_inv, Real.log_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hlog]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem integrable_fibreSum_degZero (hInt : PtsIntegrableStatement) {Q : Ideal (MRing ι)} {e : ℕ}
     (hQ : IsArithVar Q (e + 1)) {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} (hΨ : IsGoodProj Q Ψ)
@@ -52,9 +52,9 @@ theorem integrable_fibreSum_degZero (hInt : PtsIntegrableStatement) {Q : Ideal (
   rwa [hlog] at h
 
 /- English proof (translation)
-Distinguish the cases in `hΨ : ∃ Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ), IsGoodProj Q Ψ`. Simplify using `only [ptsIntegral, dif_pos hΨ, ptsIntegralAt]`. Rewrite using `[← integral_finsetSum S fun t _ => integrable_fibreSum_degZero hInt hQ hΨ.choose_spec hL (hu t)]`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfin` using `fibreFinite K ι Q e hΨ.choose hQ hΨ.choose_spec y`. Simplify using `only [sheetDensity_finset_sum]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun t _ => (finsum_mem_eq_finite_toFinset_sum _ hfin).symm`. Simplify using `[ptsIntegral, dif_neg hΨ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ptsIntegral_finset_sum (hInt : PtsIntegrableStatement) {Q : Ideal (MRing ι)} {e : ℕ}
     (hQ : IsArithVar Q (e + 1)) {L : Fin e → HermLine ι} (hL : ∀ j, IsSmoothHerm (L j)) {T : Type*}
@@ -74,21 +74,21 @@ theorem ptsIntegral_finset_sum (hInt : PtsIntegrableStatement) {Q : Ideal (MRing
   · simp [ptsIntegral, dif_neg hΨ]
 
 /- English proof (translation)
-Introduce `K _ ι _ P n L A B s hP hL hA hB hBa hs`. Take `⟨a, ha, hsa, -⟩` from `id hs`. Establish `hne : ∀ k, Nonempty (ι k)` using `fun k => ⟨(hP.2.1.2.2 k).choose⟩`. Take `⟨δ, hδ, ρ, hρ, hsum, hsupp⟩` from `SegrePartition.proof K ι hne`. Establish `hv` using `isDegZeroSmooth_log hB hBa`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg : ∀ i, IsDegZeroSmooth (fun z => ρ i z * Real.log (B.h z))` using `fun i => (hρ i).mul hv`. Establish `hvsum : (fun z => Real.log (B.h z)) = fun z => ∑ i, ρ i z * Real.log (B.h z)`. Use function extensionality and compare the values at `fun z => by rw [← Finset.sum_mul, hsum, one_mul]`. Establish `hlim` using `tendsto_finsetSum (Finset.univ : Finset ((k : K) → ι k)) fun i _ => hChart K ι P n L A s _ i δ hP hL hA hs (hg i) hδ fun z hz => by simp [hsupp i z hz]`. Establish `hfin : {W | W ∈ divSupp P s ∧ IsHorizontal W}.Finite` using `(divSupp_finite P s).subset fun _ h => h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : ∀ f : Ideal (MRing ι) → ℝ, ∑ᶠ (W) (_ : W ∈ divSupp P s ∧ IsHorizontal W), f W = ∑ W ∈ hfin.toFinset, f W` using `fun f => finsum_mem_eq_finite_toFinset_sum f hfin`. Establish `hW : ∀ W ∈ hfin.toFinset, ptsIntegral W (pot L) (fun z => Real.log (B.h z)) = ∑ i, ptsIntegral W (pot L) (fun z => ρ i z * Real.log (B.h z))`. Introduce `W hW`. Rewrite `hW` using `[Set.Finite.mem_toFinset]`. Establish `hWar : IsArithVar W (n + 1)` using `(divSuppArith K ι P (n + 1) A s W hP hs hW.1).1 hW.2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hvsum]`. Conclude with `ptsIntegral_finset_sum hInt hWar hL Finset.univ hg`. Establish `hrhs : (∑ i, ∑ᶠ (W) (_ : W ∈ divSupp P s ∧ IsHorizontal W), (multAt (P ⊔ Ideal.span {s}) W : ℝ) * ptsIntegral W (pot L) (fun z => ρ i z * Real.log (B.h z))) = ∑ᶠ (W) (_ : W ∈ divSupp P s ∧ IsHorizontal W), (multAt (P ⊔ Ideal.span {s}) W : ℝ) * ptsIntegral W (pot L) (fun z => Real …`. Simplify using `only [hsplit]`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun W hW' => ?_` and prove the remaining obligations. Rewrite using `[hW W hW', Finset.mul_sum]`. Rewrite `hlim` using `[hrhs]`. Use `hlim.congr' (eventually_nhdsWithin_of_forall fun ε (hε : 0 < ε) => ?_)` and prove the remaining obligations. Use `set M := (regLine A s ε ha hsa).tensor A`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : IsSmoothHerm M` using `(isSmoothHerm_regLine hA hε ha hsa).mul hA`. Establish `hcongr : ∀ g : ((Σ k, ι k) → ℂ) → ℝ, ptsIntegral P (Fin.cons (fun z => Real.log (‖eval z (map (Int.castRingHom ℂ) s)‖ ^ 2 + ε * A.h z ^ 2) / 2) (pot L)) g = ptsIntegral P (pot (Fin.cons M L)) g`. Introduce `g`. Rewrite using `[Inter.PtsAddFirst.pot_cons]`. Use `Inter.DiagRAux.ptsIntegral_congr_mcPts P (fun j => ?_) (fun _ _ => rfl)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Fin.cases ?_ (fun i => ?_) j` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [Fin.cons_zero]`. Conclude with `(log_regLine_tensor A s hε ha hsa z hz.1).symm`. Introduce `z _`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.cons_succ]`. Establish `hML : ∀ j, IsSmoothHerm ((Fin.cons M L : Fin (n + 1) → HermLine ι) j)` using `fun j => Fin.cases hM (fun i => hL i) j`. Simplify using `only [hcongr]`. Rewrite using `[hvsum]`. Conclude with `(ptsIntegral_finset_sum hInt hP hML Finset.univ hg).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LelongSectionLimit.proof (hInt : PtsIntegrableStatement) (hChart : LelongChartLimit.Statement) :
     LelongSectionLimit.Statement := by

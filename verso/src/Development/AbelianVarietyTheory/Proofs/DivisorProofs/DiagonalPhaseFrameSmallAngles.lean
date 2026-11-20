@@ -10,9 +10,9 @@ open scoped ENNReal
 namespace GlobalTheory.RiemConst
 
 /- English proof (translation)
-Establish `h` using `Complex.norm_mul_exp_arg_mul_I (Complex.exp (Complex.I * (t : ℂ)))`. Establish `h1 : ‖Complex.exp (Complex.I * (t : ℂ))‖ = 1`. Rewrite using `[mul_comm]`. Conclude with `Complex.norm_exp_ofReal_mul_I t`. Rewrite `h` using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `[mul_comm]`.
+A detailed English derivation is pending.
 -/
 lemma exp_I_arg_exp_I (t : ℝ) :
     Complex.exp (Complex.I * ((Complex.exp (Complex.I * (t : ℂ))).arg : ℂ)) =
@@ -24,7 +24,7 @@ lemma exp_I_arg_exp_I (t : ℝ) :
   simpa [mul_comm] using h
 
 /- English proof (translation)
-Use `push_cast`. Rewrite using `[mul_neg, Complex.exp_neg, Finset.mul_sum, Complex.exp_sum]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 lemma exp_I_neg_sum {n : ℕ} (f : Fin n → ℝ) :
     Complex.exp (Complex.I * ((-∑ k, f k : ℝ) : ℂ)) =
@@ -33,15 +33,15 @@ lemma exp_I_neg_sum {n : ℕ} (f : Fin n → ℝ) :
   rw [mul_neg, Complex.exp_neg, Finset.mul_sum, Complex.exp_sum]
 
 /- English proof (translation)
-Introduce `E _ Ψ r δ hδ`. Take `⟨η, hη, hcont⟩` from `Metric.continuousAt_iff.mp (Complex.continuousAt_arg (Complex.one_mem_slitPlane)) δ hδ`. Use `⟨η, hη, fun θ hθ => ?_⟩` and prove the remaining obligations. Use `⟨fun τ k => (Complex.exp (Complex.I * (θ τ k : ℂ))).arg, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pi_norm_lt_iff hδ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ`. Rewrite using `[pi_norm_lt_iff hδ]`. Introduce `k`. Establish `hk` using `hθ τ (Fin.castLE (Nat.sub_le r 1) k)`. Apply the tactic sequence `have hentry : phaseFrame θ τ (Fin.castLE (Nat.sub_le r 1) k) (Fin.castLE (Nat.sub_le r 1) k) = Complex.exp (Complex.I * (θ τ k : ℂ)) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [phaseFrame, Matrix.diagonal_apply_eq, angles, Fin.coe_castLE, k.isLt, dif_pos]`. Rewrite `hk` using `[hentry]`. Use `hcont (x := Complex.exp (Complex.I * (θ τ k : ℂ))) (by rwa [dist_eq_norm])` as an intermediate fact. Rewrite `this` using `[Complex.arg_one, Real.dist_eq, sub_zero]`. Simplify `this` using `[Real.norm_eq_abs]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use function extensionality and compare the values at `τ`. Simplify using `only [phaseFrame]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Unfold `angles`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use `split_ifs with h`. Conclude with `exp_I_arg_exp_I _`. Rewrite using `[exp_I_neg_sum, exp_I_neg_sum]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun k _ => exp_I_arg_exp_I _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem phaseFrame_small_angles : ∀ (E : Type) [Field E] (Ψ : Finset (E →+* ℂ)) (r : ℕ) (δ : ℝ), 0 < δ → ∃ η : ℝ, 0 < η ∧ ∀ θ : Ψ → Fin (r - 1) → ℝ, (∀ τ (a : Fin r), ‖phaseFrame θ τ a a - 1‖ < η) → ∃ θ' : Ψ → Fin (r - 1) → ℝ, ‖θ'‖ < δ ∧ phaseFrame θ' = phaseFrame θ := by
   intro E _ Ψ r δ hδ

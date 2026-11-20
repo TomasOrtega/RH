@@ -7,7 +7,7 @@ section ValuationRepresentative
 variable {L : Type} [Field L] [Algebra ℂ L] {B : Subalgebra ℂ L} {e : B →ₐ[ℂ] ℂ}
 
 /- English proof (translation)
-Take `⟨ev, hev⟩` from `(hV L B e).2.1`. Take `⟨h1, rfl⟩` from `(hev _ _).1 h`. Take `⟨h2, rfl⟩` from `(hev _ _).1 h'`. Conclude with `(hev _ _).2 ⟨add_mem h1 h2, map_add ev ⟨v, h1⟩ ⟨w, h2⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem val_add (hV : ValBasic) {v w : L} {a b : ℂ} (h : Val B e v a) (h' : Val B e w b) :
     Val B e (v + w) (a + b) := by
@@ -17,7 +17,7 @@ private theorem val_add (hV : ValBasic) {v w : L} {a b : ℂ} (h : Val B e v a) 
   exact (hev _ _).2 ⟨add_mem h1 h2, map_add ev ⟨v, h1⟩ ⟨w, h2⟩⟩
 
 /- English proof (translation)
-Take `⟨ev, hev⟩` from `(hV L B e).2.1`. Take `⟨h1, rfl⟩` from `(hev _ _).1 h`. Take `⟨h2, rfl⟩` from `(hev _ _).1 h'`. Conclude with `(hev _ _).2 ⟨sub_mem h1 h2, map_sub ev ⟨v, h1⟩ ⟨w, h2⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem val_sub (hV : ValBasic) {v w : L} {a b : ℂ} (h : Val B e v a) (h' : Val B e w b) :
     Val B e (v - w) (a - b) := by
@@ -27,7 +27,7 @@ private theorem val_sub (hV : ValBasic) {v w : L} {a b : ℂ} (h : Val B e v a) 
   exact (hev _ _).2 ⟨sub_mem h1 h2, map_sub ev ⟨v, h1⟩ ⟨w, h2⟩⟩
 
 /- English proof (translation)
-Take `⟨ev, hev⟩` from `(hV L B e).2.1`. Take `⟨h1, rfl⟩` from `(hev _ _).1 h`. Take `⟨h2, rfl⟩` from `(hev _ _).1 h'`. Conclude with `(hev _ _).2 ⟨mul_mem h1 h2, map_mul ev ⟨v, h1⟩ ⟨w, h2⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem val_mul (hV : ValBasic) {v w : L} {a b : ℂ} (h : Val B e v a) (h' : Val B e w b) :
     Val B e (v * w) (a * b) := by
@@ -37,20 +37,20 @@ private theorem val_mul (hV : ValBasic) {v w : L} {a b : ℂ} (h : Val B e v a) 
   exact (hev _ _).2 ⟨mul_mem h1 h2, map_mul ev ⟨v, h1⟩ ⟨w, h2⟩⟩
 
 /- English proof (translation)
-Take `⟨ev, hev⟩` from `(hV L B e).2.1`. Conclude with `(hev _ _).2 ⟨(loc B e).algebraMap_mem c, ev.commutes c⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem val_const (hV : ValBasic) (c : ℂ) : Val B e (algebraMap ℂ L c) c := by
   obtain ⟨ev, hev⟩ := (hV L B e).2.1
   exact (hev _ _).2 ⟨(loc B e).algebraMap_mem c, ev.commutes c⟩
 
 /- English proof (translation)
-Simplify using `using val_const (B := B) (e := e) hV 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem val_one (hV : ValBasic) : Val B e 1 1 := by
   simpa using val_const (B := B) (e := e) hV 1
 
 /- English proof (translation)
-Take `⟨ev, hev⟩` from `(hV L B e).2.1`. Take `⟨h1, rfl⟩` from `(hev _ _).1 h`. Take `⟨h2, rfl⟩` from `(hev _ _).1 h'`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 private theorem val_unique (hV : ValBasic) {v : L} {a b : ℂ} (h : Val B e v a) (h' : Val B e v b) : a = b := by
   obtain ⟨ev, hev⟩ := (hV L B e).2.1
@@ -59,7 +59,7 @@ private theorem val_unique (hV : ValBasic) {v : L} {a b : ℂ} (h : Val B e v a)
   rfl
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simpa using val_one hV`. Consider the case `succ N ih => simpa [pow_succ] using val_mul hV ih h`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 private theorem val_pow (hV : ValBasic) {v : L} {a : ℂ} (h : Val B e v a) (N : ℕ) : Val B e (v ^ N) (a ^ N) := by
   induction N with
@@ -67,15 +67,15 @@ private theorem val_pow (hV : ValBasic) {v : L} {a : ℂ} (h : Val B e v a) (N :
   | succ N ih => simpa [pow_succ] using val_mul hV ih h
 
 /- English proof (translation)
-The claim follows from `(hV L B e).2.2.1 ⟨b, hb⟩`.
+A detailed English derivation is pending.
 -/
 private theorem val_mem (hV : ValBasic) {b : L} (hb : b ∈ B) : Val B e b (e ⟨b, hb⟩) :=
   (hV L B e).2.2.1 ⟨b, hb⟩
 
 /- English proof (translation)
-Take `⟨hv0, hv⟩` from `(hV L B e).2.2.2 v c h hc`. Take `⟨ev, hev⟩` from `(hV L B e).2.1`. Establish `h1 : Val B e v⁻¹ (ev ⟨v⁻¹, hv⟩)` using `(hev _ _).2 ⟨hv, rfl⟩`. Establish `h2` using `val_mul hV h h1`. Rewrite `h2` using `[mul_inv_cancel₀ hv0]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3` using `val_unique hV h2 (val_one hV)`. Rewrite using `[← eq_inv_of_mul_eq_one_right h3]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_inv (hV : ValBasic) {v : L} {c : ℂ} (h : Val B e v c) (hc : c ≠ 0) : Val B e v⁻¹ c⁻¹ := by
   obtain ⟨hv0, hv⟩ := (hV L B e).2.2.2 v c h hc
@@ -88,7 +88,7 @@ private theorem val_inv (hV : ValBasic) {v : L} {c : ℂ} (h : Val B e v c) (hc 
   exact h1
 
 /- English proof (translation)
-Take `⟨ev, hev⟩` from `(hV L B e).2.1`. Conclude with `((hev _ _).1 h).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem val_loc (hV : ValBasic) {v : L} {c : ℂ} (h : Val B e v c) : v ∈ loc B e := by
   obtain ⟨ev, hev⟩ := (hV L B e).2.1
@@ -101,7 +101,7 @@ variable {F K K' : Type} [Field F] [Field K] [Field K'] [Algebra ℂ F] [Algebra
   [IsScalarTower ℂ F K] {d : ℕ}
 
 /- English proof (translation)
-Establish `hA : rA ℂ x J ≤ rA ℂ x J'` using `Algebra.adjoin_mono fun y ⟨i, hi, j, hy⟩ => ⟨i, h hi, j, hy⟩`. Introduce `y hy`. Establish `hy' : IsIntegral (rA ℂ x J) y` using `hy`. Conclude with `IsIntegral.map_of_comp_eq (Subalgebra.inclusion hA).toRingHom (RingHom.id K) (by ext; rfl) hy'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem rB_mono' (x : Fin (d + 1) → F) {J J' : Finset (Fin (d + 1))} (h : J ⊆ J') :
     rB ℂ K x J ≤ rB ℂ K x J' := by
@@ -111,7 +111,7 @@ private theorem rB_mono' (x : Fin (d + 1) → F) {J J' : Finset (Fin (d + 1))} (
   exact IsIntegral.map_of_comp_eq (Subalgebra.inclusion hA).toRingHom (RingHom.id K) (by ext; rfl) hy'
 
 /- English proof (translation)
-Establish `hA : (rB ℂ K x J).map j2 ≤ (rB ℂ K x J').map j2` using `Subalgebra.map_mono (rB_mono' x h)`. Introduce `y hy`. Establish `hy' : IsIntegral ((rB ℂ K x J).map j2) y` using `hy`. Conclude with `IsIntegral.map_of_comp_eq (Subalgebra.inclusion hA).toRingHom (RingHom.id K') (by ext; rfl) hy'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem integralClosure_mono_subset (x : Fin (d + 1) → F) (j2 : K →ₐ[ℂ] K') {J J' : Finset (Fin (d + 1))} (h : J ⊆ J') :
     R2 x j2 J ≤ R2 x j2 J' := by
@@ -132,18 +132,18 @@ private abbrev Xv (a : Fin (d + 1)) : K' := algebraMap F K' (x a)
 private abbrev Yv (a : Fin (d + 1)) : K' := j2 (algebraMap F K (x a))
 
 /- English proof (translation)
-The claim follows from `(map_ne_zero (algebraMap F K')).2 (x a).ne_zero`.
+A detailed English derivation is pending.
 -/
 private theorem Xv_ne (a : Fin (d + 1)) : (Xv (K' := K') x a) ≠ 0 :=
   (map_ne_zero (algebraMap F K')).2 (x a).ne_zero
 
 /- English proof (translation)
-The claim follows from `Units.ne_zero ((sysY x j2 d).Y a)`.
+A detailed English derivation is pending.
 -/
 private theorem Yv_ne (a : Fin (d + 1)) : Yv x j2 a ≠ 0 := Units.ne_zero ((sysY x j2 d).Y a)
 
 /- English proof (translation)
-Use `hG.memX I J hJ i hi a` as an intermediate fact. Rewrite `this` using `[Units.val_mul, Units.val_inv_eq_inv_val]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem memX' (hG : (sysY x j2 d).Good) {I J : Finset (Fin (d + 1))} (hJ : J.Nonempty) {i : Fin (d + 1)}
     (hi : i ∈ I) (a : Fin (d + 1)) : Xv x a * (Xv x i)⁻¹ ∈ RY (xv x) j2 I J := by
@@ -152,7 +152,7 @@ private theorem memX' (hG : (sysY x j2 d).Good) {I J : Finset (Fin (d + 1))} (hJ
   exact this
 
 /- English proof (translation)
-Use `hG.memY I J hI j hj a` as an intermediate fact. Rewrite `this` using `[Units.val_mul, Units.val_inv_eq_inv_val]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem memY' (hG : (sysY x j2 d).Good) {I J : Finset (Fin (d + 1))} (hI : I.Nonempty) {j : Fin (d + 1)}
     (hj : j ∈ J) (a : Fin (d + 1)) : Yv x j2 a * (Yv x j2 j)⁻¹ ∈ RY (xv x) j2 I J := by
@@ -161,7 +161,7 @@ private theorem memY' (hG : (sysY x j2 d).Good) {I J : Finset (Fin (d + 1))} (hI
   exact this
 
 /- English proof (translation)
-Use `show (sysY x j2 d).mu m * (((((sysY x j2 d).X i ^ 1 * (sysY x j2 d).Y j ^ 1)⁻¹ : K'ˣ)) : K') = _`. Rewrite using `[Units.val_inv_eq_inv_val, pow_one, pow_one, Units.val_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem r_inl {κ : Type} [LinearOrder κ] (n : κ → ℕ × ℕ) (z : κ → K ⊗[ℂ] K) (i j : Fin (d + 1)) (m : Mi d) :
     (sysY x j2 d).r (app n11 n) (gG x j2 z) i j (toLex (Sum.inl m)) =
@@ -171,7 +171,7 @@ private theorem r_inl {κ : Type} [LinearOrder κ] (n : κ → ℕ × ℕ) (z : 
   rfl
 
 /- English proof (translation)
-Use `show gS j2 (z l) * (((((sysY x j2 d).X i ^ (n l).1 * (sysY x j2 d).Y j ^ (n l).2)⁻¹ : K'ˣ)) : K') = _`. Rewrite using `[Units.val_inv_eq_inv_val, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem r_inr {κ : Type} [LinearOrder κ] (n : κ → ℕ × ℕ) (z : κ → K ⊗[ℂ] K) (i j : Fin (d + 1)) (l : κ) :
     (sysY x j2 d).r (app n11 n) (gG x j2 z) i j (toLex (Sum.inr l)) =
@@ -181,9 +181,9 @@ private theorem r_inr {κ : Type} [LinearOrder κ] (n : κ → ℕ × ℕ) (z : 
   rfl
 
 /- English proof (translation)
-Establish `hX : gS j2 (((sysZ K x 0).X i : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) = Xv x i` using `by show gS j2 ((algebraMap F K (x i)) ⊗ₜ 1) = _`. Simplify using `[gS, Algebra.TensorProduct.productMap_apply_tmul, IsScalarTower.algebraMap_apply F K K']`. Establish `hY : gS j2 (((sysZ K x 0).Y i : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) = Yv x j2 i` using `by show gS j2 (1 ⊗ₜ (algebraMap F K (x i))) = _`. Simplify using `[gS, Algebra.TensorProduct.productMap_apply_tmul]`. Rewrite using `[map_mul, Units.val_mul, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_mul, map_pow, map_pow, hX, hY, map_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[gS, Algebra.TensorProduct.productMap_apply_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gS_gen (i : Fin (d + 1)) (N : ℕ) (b : K) :
     gS j2 ((((sysZ K x 0).X i ^ N * (sysZ K x 0).Y i ^ N : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) * (b ⊗ₜ 1 - 1 ⊗ₜ b)) =
@@ -199,37 +199,33 @@ private theorem gS_gen (i : Fin (d + 1)) (N : ℕ) (b : K) :
   simp [gS, Algebra.TensorProduct.productMap_apply_tmul]
 
 /- English proof (translation)
-Take `⟨hR1, hGood, hR3, hR4, hR5⟩` from `hR F K K' d x j2 hY.toY0`. Establish `hG` using `hGood d`. Establish `hIne : I.Nonempty` using `⟨i, hi⟩`. Establish `hJne : J.Nonempty` using `⟨j, hj⟩`. Establish `hα` using `val_mem (e := e) hV (memX' x j2 hG hJne hi j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβ` using `val_mem (e := e) hV (memY' x j2 hG hIne hj i)`. Generalize the expression as in `e ⟨_, memX' x j2 hG hJne hi j⟩ = α at hα`. Generalize the expression as in `e ⟨_, memY' x j2 hG hIne hj i⟩ = β at hβ`. Establish `hXi` using `Xv_ne (K' := K') x i`. Establish `hXj` using `Xv_ne (K' := K') x j`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYi` using `Yv_ne x j2 i`. Establish `hYj` using `Yv_ne x j2 j`. Establish `hab : α * β = 1`. Establish `hr` using `h (toLex (Sum.inl (toLex (i, j))))`. Rewrite `hr` using `[r_inl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `val_sub hV (val_one (B := RY (xv x) j2 I J) (e := e) hV) hr`. Establish `heq : (1 : K') - (Xv x (ofLex (toLex (i, j))).1 * Yv x j2 (ofLex (toLex (i, j))).2 - Xv x (ofLex (toLex (i, j))).2 * Yv x j2 (ofLex (toLex (i, j))).1) * (Xv x i * Yv x j2 j)⁻¹ = Xv x j * (Xv x i)⁻¹ * (Yv x j2 i * (Yv x j2 j)⁻¹)`. Simplify using `only [ofLex_toLex]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `h1` using `[heq, sub_zero]`. Conclude with `val_unique hV (val_mul hV hα hβ) h1`. Establish `hβ0 : β ≠ 0` using `right_ne_zero_of_mul_eq_one hab`. Establish `hinv` using `val_inv hV hβ hβ0`. Establish `hηne : Yv x j2 i * (Yv x j2 j)⁻¹ ≠ 0` using `mul_ne_zero hYi (inv_ne_zero hYj)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR2 : R2 (xv x) j2 {i} ≤ loc (RY (xv x) j2 I J) e`. Introduce `y hy`. Take `⟨N, hN⟩` from `hR5 {j} j (Finset.mem_singleton_self j) i y (integralClosure_mono_subset (xv x) j2 (by simp) hy)`. Establish `hyJ : y * j2 (algebraMap F K ((x i : F) / x j)) ^ N ∈ RY (xv x) j2 I J` using `(le_sup_right : R2 (xv x) j2 J ≤ RY (xv x) j2 I J) (integralClosure_mono_subset (xv x) j2 (Finset.singleton_subset_iff.2 hj) hN)`. Establish `hl` using `val_loc hV (val_mul hV (val_mem (e := e) hV hyJ) (val_pow hV hinv N))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : j2 (algebraMap F K ((x i : F) / x j)) = Yv x j2 i * (Yv x j2 j)⁻¹`. Simplify using `[div_eq_mul_inv]`. Rewrite `hl` using `[heq, mul_assoc, ← mul_pow, mul_inv_cancel₀ hηne, one_pow, mul_one]`. Conclude with `hl`. Establish `hgen : ∀ b ∈ {b : K | b ∈ rB ℂ K (xv x) {i} ∧ ∃ l N, n l = (N, N) ∧ z l = (((sysZ K x 0).X i ^ N * (sysZ K x 0).Y i ^ N : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) * (b ⊗ₜ 1 - 1 ⊗ₜ b)}, ∃ c, Val (RY (xv x) j2 I J) e (algebraMap K K' b) c ∧ Val (RY (xv x) j2 I J) e (j2 b) c`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `b ⟨hb, l, N, hl, hz⟩`. Establish `hbR : algebraMap K K' b ∈ RY (xv x) j2 I J` using `(le_sup_left : rB ℂ K' (xv x) I ≤ RY (xv x) j2 I J) (rB_mono' (xv x) (Finset.singleton_subset_iff.2 hi) (hR4 {i} b hb).1)`. Establish `hr` using `h (toLex (Sum.inr l))`. Establish `hb1` using `val_mem (e := e) hV hbR`. Use `⟨_, hb1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (sysY x j2 d).r (app n11 n) (gG x j2 z) i j (toLex (Sum.inr l)) = (Yv x j2 i * (Yv x j2 j)⁻¹) ^ N * (algebraMap K K' b - j2 b) by`. Rewrite using `[r_inr, hl, hz, gS_gen]`. Simplify using `only [mul_pow, inv_pow]`. Use the proof step `field_simp] at hr`. Establish `h2` using `val_mul hV (val_pow hV hinv N) hr`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← mul_assoc, ← mul_pow, inv_mul_cancel₀ hηne, one_pow, one_mul, mul_zero]`. Establish `h3` using `val_sub hV hb1 h2`. Rewrite `h3` using `[sub_sub_cancel, sub_zero]`. Conclude with `h3`. Establish `hall : ∀ b ∈ rB ℂ K (xv x) {i}, ∃ c, Val (RY (xv x) j2 I J) e (algebraMap K K' b) c ∧ Val (RY (xv x) j2 I J) e (j2 b) c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Introduce `b hb`. Establish `hb' : b ∈ (Algebra.adjoin ℂ {b : K | b ∈ rB ℂ K (xv x) {i} ∧ ∃ l N, n l = (N, N) ∧ z l = (((sysZ K x 0).X i ^ N * (sysZ K x 0).Y i ^ N : (K ⊗[ℂ] K)ˣ) : K ⊗[ℂ] K) * (b ⊗ₜ 1 - 1 ⊗ₜ b)})`. Rewrite using `[hZ.gen i]`. Conclude with `hb`. Use `clear hb`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `hb' using Algebra.adjoin_induction with`. Consider the case `mem b hb => exact hgen b hb`. Consider the case `algebraMap c`. Use `⟨c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `val_const hV c`. Rewrite using `[AlgHom.commutes]`. Conclude with `val_const hV c`. Consider the case `add a b _ _ ha hb`. Take `⟨c, h1, h2⟩` from `ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c', h1', h2'⟩` from `hb`. Conclude with `⟨c + c', by simpa using val_add hV h1 h1', by simpa using val_add hV h2 h2'⟩`. Consider the case `mul a b _ _ ha hb`. Take `⟨c, h1, h2⟩` from `ha`. Take `⟨c', h1', h2'⟩` from `hb`.
-
-Conclude with `⟨c * c', by simpa using val_mul hV h1 h1', by simpa using val_mul hV h2 h2'⟩`. Take `⟨e0, hloc, hval⟩` from `hL F K K' d x j2 hY.toY0 I J i hi e`. Use `⟨e0, hloc, hval, fun b hb h1 => ?_⟩` and prove the remaining obligations. Take `⟨c, hc1, hc2⟩` from `hall b hb`. Establish `hc : e0 ⟨_, h1⟩ = c` using `val_unique hV (val_mem hV h1) ((hval _ _).1 hc1)`.
-
-Rewrite using `[hc]`. Conclude with `(hval _ _).1 hc2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem core (hL : LocEq) (hV : ValBasic) (hR : RYBasic)
     {Fx : Finset (fib ℂ K' (xv x))} {A : fib ℂ K' (xv x) → Matrix (Fin d) (Fin d) ℂ} (hY : Y1 x j2 Fx A)
@@ -327,25 +323,25 @@ private theorem core (hL : LocEq) (hV : ValBasic) (hR : RYBasic)
 end Main
 
 /- English proof (translation)
-Introduce `hL hV hR _ F K K' _ _ _ _ _ _ _ _ _ _ _ _ _ d x j2 Fx A hY κ _ _ n z hZ I J i hi j hj e h`. Take `⟨e0, hloc, hval, hfix⟩` from `core x j2 hL hV hR hY hZ hi hj e h`. Choose the witnesses or unpack the hypotheses as in `rfl : i = 0 := by`. Assume the negation of the conclusion as `h0`. Conclude with `hY.off i h0 e0 hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨hR1, hGood, hR3, hR4, hR5⟩` from `hR F K K' d x j2 hY.toY0`. Establish `hG` using `hGood d`. Establish `hIne : I.Nonempty` using `⟨0, hi⟩`. Establish `hJne : J.Nonempty` using `⟨j, hj⟩`. Establish `ht` using `hY.orig e0 hfix`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hI : I = {0}`. Use `Finset.eq_singleton_iff_unique_mem.2 ⟨hi, fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Take `⟨m, rfl⟩` from `Fin.exists_succ_eq.2 h0`. Establish `h1 : Val (rB ℂ K' (xv x) {0}) e0 (algebraMap F K' ((x m.succ : F) / x 0)) 0`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `val_mem (e := e0) hV (tco_mem ℂ K' (xv x) m)` as an intermediate fact. Rewrite `this` using `[ht m]`. Then use the resulting hypothesis. Establish `h2` using `(hval _ _).2 h1`. Establish `hm` using `memX' x j2 hG hJne ha 0`. Establish `hv` using `val_mul hV h2 (val_mem (e := e) hV hm)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : algebraMap F K' ((x m.succ : F) / x 0) * (Xv x 0 * (Xv x m.succ)⁻¹) = 1`. Establish `h3` using `Xv_ne (K' := K') x 0`. Establish `h4` using `Xv_ne (K' := K') x m.succ`. Rewrite using `[map_div₀]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[heq, zero_mul]`. Conclude with `zero_ne_one (val_unique hV hv (val_one hV))`. Establish `hJ : J = {0}`. Use `Finset.eq_singleton_iff_nonempty_unique_mem.2 ⟨hJne, fun a ha => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, rfl⟩` from `Fin.exists_succ_eq.2 h0`. Establish `hb` using `tco_mem ℂ K (xv x) m`. Establish `hb1` using `(hR4 {0} _ hb).1`. Establish `h1` using `hfix _ hb hb1`. Establish `h0e : e0 ⟨_, hb1⟩ = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← ht m]`. Conclude with `congrArg e0 (Subtype.ext (IsScalarTower.algebraMap_apply F K K' _).symm)`. Rewrite `h1` using `[h0e]`. Establish `h2` using `(hval _ _).2 h1`. Establish `hm` using `memY' x j2 hG hIne ha 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `val_mul hV h2 (val_mem (e := e) hV hm)`. Establish `heq : j2 (algebraMap F K ((xv x m.succ) / xv x 0)) * (Yv x j2 0 * (Yv x j2 m.succ)⁻¹) = 1`. Establish `h3` using `Yv_ne x j2 0`. Establish `h4` using `Yv_ne x j2 m.succ`. Rewrite using `[map_div₀, map_div₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Clear the denominators using the available nonvanishing facts. Rewrite `hv` using `[heq, zero_mul]`. Conclude with `zero_ne_one (val_unique hV hv (val_one hV))`. Conclude with `⟨hJ, ⟨e0, ht⟩, (hY.fx _).2 hfix, hI, hloc, hval⟩`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.ptG_of :
     LocEq → ValBasic → RYBasic → PtT → PtG := by

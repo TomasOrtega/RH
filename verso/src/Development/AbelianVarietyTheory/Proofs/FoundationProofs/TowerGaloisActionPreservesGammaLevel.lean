@@ -6,11 +6,11 @@ open Matrix GlobalTheory.KZ
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap ℚ Ω).injective`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Use `haveI : NeZero (M : Ω) := ⟨by exact_mod_cast hM.ne'⟩`. Take `⟨ζ, hζ⟩` from `IsAlgClosed.exists_root (Polynomial.cyclotomic M Ω) (Polynomial.degree_cyclotomic_pos M Ω hM).ne'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hζ` using `[Polynomial.isRoot_cyclotomic_iff]`. Establish `hsζ : IsPrimitiveRoot (s ζ) M` using `hζ.map_of_injective s.injective`. Take `⟨i, -, hi⟩` from `hζ.eq_pow_of_pow_eq_one hsζ.pow_eq_one`. Introduce `γ hγ`. Establish `hγ'` using `hγ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hγ'` using `[CongruenceSubgroup.Gamma_mem]`. Take `⟨-, h01, h10, -⟩` from `hγ'`. Establish `key` using `X.recip M f hM hf ζ hζ s (i : ℤ) (by rw [zpow_natCast, hi]) γ γ ⟨rfl, by simp [en, h01], by simp [en, h10], rfl⟩`. Rewrite `key` using `[hf γ hγ]`. Conclude with `key.symm`.
+A detailed English derivation is pending.
 -/
 theorem Tower.gal_level {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] {ε : Ω →+* ℂ} (X : Tower Ω ε) (M : ℕ)
     (s : Ω ≃ₐ[ℚ] Ω) (f : X.K) (hM : 0 < M) (hf : ∀ γ ∈ CongruenceSubgroup.Gamma M, X.sl (ofSL γ) f = f) :

@@ -11,11 +11,11 @@ section Ring
 variable {A : Type*} [CommRing A] {n : Type*} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Establish `hm : ((1 + (x - 1) • R).map σ)ᵀ = 1 + (σ x - 1) • (R.map σ)ᵀ`. Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply_ne h, Matrix.one_apply_ne (Ne.symm h)]`. Establish `h1 : (R.map σ)ᵀ * J = J * R` using `hJR.symm`. Establish `h2 : (R.map σ)ᵀ * J * R = J * R` using `by rw [h1, Matrix.mul_assoc, hRR]`. Establish `e : (1 + (σ x - 1) • (R.map σ)ᵀ) * J * (1 + (x - 1) • R) = J + (x - 1) • (J * R) + (σ x - 1) • ((R.map σ)ᵀ * J) + ((σ x - 1) * (x - 1)) • ((R.map σ)ᵀ * J * R)`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.smul_mul, Matrix.mul_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `module`. Establish `hs : (x - 1) + ((σ x - 1) + (σ x - 1) * (x - 1)) = 0` using `by linear_combination hx`. Rewrite using `[hm, e, h2, h1, add_assoc, add_assoc, ← add_smul, ← add_smul, hs, zero_smul, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_of_proj (σ : A →+* A) (J R : Matrix n n A) (hRR : R * R = R)
     (hJR : J * R = (R.map σ)ᵀ * J) (x : A) (hx : σ x * x = 1) :
@@ -37,7 +37,7 @@ theorem unitary_of_proj (σ : A →+* A) (J R : Matrix n n A) (hRR : R * R = R)
   rw [hm, e, h2, h1, add_assoc, add_assoc, ← add_smul, ← add_smul, hs, zero_smul, add_zero]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.smul_mul, ← Matrix.replicateCol_smul, det_one_add_replicateCol_mul_replicateRow, dotProduct_smul, hru, smul_eq_mul, mul_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_proj (u r : n → A) (hru : r ⬝ᵥ u = 1) (x : A) :
     (1 + (x - 1) • (replicateCol Unit u * replicateRow Unit r)).det = x := by
@@ -46,7 +46,7 @@ theorem det_proj (u r : n → A) (hru : r ⬝ᵥ u = 1) (x : A) :
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, replicateCol_apply, replicateRow_apply, Finset.univ_unique, Finset.sum_singleton]`. Rewrite using `[show (∑ k, u i * r k * (u k * r j)) = u i * (∑ k, r k * u k) * r j by`. Rewrite using `[Finset.mul_sum, Finset.sum_mul]; exact Finset.sum_congr rfl fun k _ => by ring]`. Rewrite using `[show (∑ k, r k * u k) = r ⬝ᵥ u from rfl, hru, mul_one]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem proj_idem (u r : n → A) (hru : r ⬝ᵥ u = 1) :
     (replicateCol Unit u * replicateRow Unit r) * (replicateCol Unit u * replicateRow Unit r) =
@@ -72,7 +72,7 @@ def proj (σ : A →+* A) (J : Matrix n n A) (u : n → A) (ainv : A) : Matrix n
   replicateCol Unit u * replicateRow Unit (ainv • rowJ σ J u)
 
 /- English proof (translation)
-Simplify using `only [rowJ, vecMul, mulVec, dotProduct, map_sum, map_mul, hσ, hJ]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sigma_rowJ (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (J : Matrix n n A) (hJ : ∀ i j, σ (J i j) = J j i)
     (u : n → A) (i : n) : σ (rowJ σ J u i) = (J *ᵥ u) i := by
@@ -80,9 +80,9 @@ theorem sigma_rowJ (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (J : Matrix n n
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `h1 : σ (hsq σ J u) = ∑ i, (J *ᵥ u) i * σ (u i)`. Simplify using `only [hsq, dotProduct, map_sum, map_mul, sigma_rowJ σ hσ J hJ]`. Rewrite using `[h1]`. Use `show _ = rowJ σ J u ⬝ᵥ u`. Rewrite using `[rowJ, ← dotProduct_mulVec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [dotProduct]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem sigma_hsq (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (J : Matrix n n A) (hJ : ∀ i j, σ (J i j) = J j i)
     (u : n → A) : σ (hsq σ J u) = hsq σ J u := by
@@ -95,25 +95,23 @@ theorem sigma_hsq (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (J : Matrix n n 
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
 /- English proof (translation)
-The claim follows from `proj_idem u _ (by rw [smul_dotProduct, smul_eq_mul]; exact ha)`.
+A detailed English derivation is pending.
 -/
 theorem proj_idem' (σ : A →+* A) (J : Matrix n n A) (u : n → A) (ainv : A) (ha : ainv * hsq σ J u = 1) :
     proj σ J u ainv * proj σ J u ainv = proj σ J u ainv :=
   proj_idem u _ (by rw [smul_dotProduct, smul_eq_mul]; exact ha)
 
 /- English proof (translation)
-The claim follows from `det_proj u _ (by rw [smul_dotProduct, smul_eq_mul]; exact ha) x`.
+A detailed English derivation is pending.
 -/
 theorem det_proj' (σ : A →+* A) (J : Matrix n n A) (u : n → A) (ainv : A) (ha : ainv * hsq σ J u = 1) (x : A) :
     (1 + (x - 1) • proj σ J u ainv).det = x :=
   det_proj u _ (by rw [smul_dotProduct, smul_eq_mul]; exact ha) x
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `lhs : (J * proj σ J u ainv) i j = (J *ᵥ u) i * (ainv * rowJ σ J u j)`. Simplify using `only [proj, Matrix.mul_apply, replicateCol_apply, replicateRow_apply, Pi.smul_apply, smul_eq_mul, Finset.univ_unique, Finset.sum_singleton, mulVec, dotProduct, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Establish `hrow : rowJ σ J u j = ∑ k, σ (u k) * J k j` using `rfl`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `rhs : (((proj σ J u ainv).map σ)ᵀ * J) i j = σ (ainv * rowJ σ J u i) * rowJ σ J u j`. Rewrite using `[hrow, Finset.mul_sum]`. Simplify using `only [proj, Matrix.mul_apply, transpose_apply, map_apply, replicateCol_apply, replicateRow_apply, Pi.smul_apply, smul_eq_mul, Finset.univ_unique, Finset.sum_singleton, map_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`. Rewrite using `[lhs, rhs, map_mul, hainv, sigma_rowJ σ hσ J hJ]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem proj_herm (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (J : Matrix n n A) (hJ : ∀ i j, σ (J i j) = J j i)
     (u : n → A) (ainv : A) (hainv : σ ainv = ainv) :
@@ -133,7 +131,7 @@ theorem proj_herm (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (J : Matrix n n 
   ring
 
 /- English proof (translation)
-The claim follows from `unitary_of_proj σ J _ (proj_idem' σ J u ainv ha) (proj_herm σ hσ J hJ u ainv hainv) x hx`.
+A detailed English derivation is pending.
 -/
 theorem proj_unitary (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (J : Matrix n n A) (hJ : ∀ i j, σ (J i j) = J j i)
     (u : n → A) (ainv : A) (ha : ainv * hsq σ J u = 1) (hainv : σ ainv = ainv) (x : A) (hx : σ x * x = 1) :
@@ -141,7 +139,7 @@ theorem proj_unitary (σ : A →+* A) (hσ : ∀ a, σ (σ a) = a) (J : Matrix n
   unitary_of_proj σ J _ (proj_idem' σ J u ainv ha) (proj_herm σ hσ J hJ u ainv hainv) x hx
 
 /- English proof (translation)
-Simplify using `only [rowJ, vecMul, dotProduct, map_sum, map_mul, hf, Matrix.map_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowJ_map {B : Type*} [CommRing B] (f : A →+* B) (σ : A →+* A) (σ' : B →+* B)
     (hf : ∀ a, f (σ a) = σ' (f a)) (J : Matrix n n A) (u : n → A) (j : n) :
@@ -149,7 +147,7 @@ theorem rowJ_map {B : Type*} [CommRing B] (f : A →+* B) (σ : A →+* A) (σ' 
   simp only [rowJ, vecMul, dotProduct, map_sum, map_mul, hf, Matrix.map_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [proj, Matrix.map_apply, Matrix.mul_apply, replicateCol_apply, replicateRow_apply, Pi.smul_apply, smul_eq_mul, Finset.univ_unique, Finset.sum_singleton, map_mul, rowJ_map f σ σ' hf]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem proj_map {B : Type*} [CommRing B] (f : A →+* B) (σ : A →+* A) (σ' : B →+* B)
     (hf : ∀ a, f (σ a) = σ' (f a)) (J : Matrix n n A) (u : n → A) (ainv : A) :
@@ -159,7 +157,7 @@ theorem proj_map {B : Type*} [CommRing B] (f : A →+* B) (σ : A →+* A) (σ' 
     smul_eq_mul, Finset.univ_unique, Finset.sum_singleton, map_mul, rowJ_map f σ σ' hf]
 
 /- English proof (translation)
-Simplify using `only [hsq, dotProduct, map_sum, map_mul, rowJ_map f σ σ' hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsq_map {B : Type*} [CommRing B] (f : A →+* B) (σ : A →+* A) (σ' : B →+* B)
     (hf : ∀ a, f (σ a) = σ' (f a)) (J : Matrix n n A) (u : n → A) :
@@ -173,23 +171,21 @@ section Field
 variable {K : Type*} [Field K] [CharZero K] {n : Type*} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Use `set B : (n → K) → (n → K) → K := fun u v => rowJ σ J u ⬝ᵥ v with hB`. Establish `hadd : ∀ u v, hsq σ J (u + v) = hsq σ J u + hsq σ J v + B u v + B v u`. Introduce `u v`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hsq, hB, rowJ, Pi.add_apply, map_add]`. Rewrite using `[show (fun i => σ (u i) + σ (v i)) = (fun i => σ (u i)) + (fun i => σ (v i)) from rfl, add_vecMul, add_dotProduct, dotProduct_add, dotProduct_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsym : ∀ u v, B v u = σ (B u v)`. Introduce `u v`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hB, dotProduct, map_sum, map_mul, sigma_rowJ σ hσ J hJ]`. Simplify using `only [rowJ, vecMul, mulVec, dotProduct, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring`. Establish `hlin : ∀ u v (t : K), B u (t • v) = t * B u v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `u v t`. Simplify using `only [hB, dotProduct_smul, smul_eq_mul]`. Establish `hzero : ∀ u v, B u v = 0`. Introduce `u v`. Establish `h0 : ∀ t : K, t * B u v + σ (t * B u v) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `t`. Use `hadd u (t • v)` as an intermediate fact. Rewrite `this` using `[hcon, hcon, hcon, hsym u (t • v), hlin]`. Take the linear combination `-this`. Assume the negation of the conclusion as `hb`.
+Take a linear combination of the given relations to obtain the conclusion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions.
 
-Use `h0 (B u v)⁻¹` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel₀ hb, map_one]`. Evaluate the numerical expressions using `at this`. Apply `hdet` to reduce the goal to its premises. Establish `hJ0 : J = 0`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Use `hzero (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Simplify using `only [hB, rowJ] at this`. Rewrite using `[show (fun k => σ ((Pi.single i (1 : K) : n → K) k)) = Pi.single i 1 by`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hk]] at this`. Simplify `this` using `[single_one_vecMul]`.
-
-Rewrite using `[hJ0, Matrix.det_zero]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_aniso (σ : K →+* K) (hσ : ∀ a, σ (σ a) = a) (J : Matrix n n K) (hJ : ∀ i j, σ (J i j) = J j i)
     (hdet : J.det ≠ 0) [Nonempty n] : ∃ u : n → K, hsq σ J u ≠ 0 := by

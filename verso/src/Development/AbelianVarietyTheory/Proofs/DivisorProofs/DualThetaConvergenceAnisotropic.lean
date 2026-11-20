@@ -16,7 +16,7 @@ namespace GlobalTheory.ThK.AnConv
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Simplify using `only [form, hE, Formalism.UG.hform, dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul, AlgHom.coe_toRingHom, RingHom.coe_coe, hσ, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_eq (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (z : Fin n → E) :
     form σ J z z = σ (hE σ (J.map σ) z z) := by
@@ -26,23 +26,21 @@ theorem form_eq (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin 
   ring
 
 /- English proof (translation)
-Take `⟨hs, A, hA⟩` from `h`. Set `e : (Fin 0 ⊕ Fin s) ≃ Fin n` to `(Equiv.emptySum (Fin 0) (Fin s)).trans (finCongr (by omega))`. Use `set D : Matrix (Fin 0 ⊕ Fin s) (Fin 0 ⊕ Fin s) ℂ := Matrix.fromBlocks 1 0 0 (-1) with hD`. Establish `hDD : D * D = 1`. Rewrite using `[hD, Matrix.fromBlocks_multiply]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.fromBlocks_one]`. Establish `h1 : Aᵀ * (M * A.map star * D) = 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hA, hDD]`. Establish `h2 : (M * A.map star * D) * Aᵀ = 1` using `(Matrix.mul_eq_one_comm_of_equiv e).mp h1`. Establish `h3 : A * (M * A.map star * D)ᵀ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Matrix.transpose h2` as an intermediate fact. Rewrite `this` using `[Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.transpose_one]`. Then use the resulting hypothesis. Use `set w := (M * A.map star * D)ᵀ *ᵥ y`. Establish `hyw : y = A *ᵥ w` using `by rw [Matrix.mulVec_mulVec, h3, Matrix.one_mulVec]`. Establish `hst : star (A *ᵥ w) = A.map star *ᵥ star w`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i`. Simplify using `[Matrix.mulVec, dotProduct, star_sum]`. Establish `key : y ⬝ᵥ M *ᵥ star y = w ⬝ᵥ D *ᵥ star w`. Rewrite using `[← hA, hyw, hst, Matrix.dotProduct_mulVec, ← Matrix.mulVec_mulVec, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec, Matrix.dotProduct_mulVec, Matrix.vecMul_vecMul, ← Matrix.vecMul_transpose, Matrix.vecMul_vecMul]`. Simplify using `only [Matrix.vecMul_vecMul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : w ⬝ᵥ D *ᵥ star w = 0` using `key.symm.trans hy`. Establish `hsum : ∑ i : Fin s, w (Sum.inr i) * star (w (Sum.inr i)) = 0`. Simplify using `[hD, dotProduct, Matrix.mulVec, Matrix.fromBlocks, Fintype.sum_sum_type] at h0`. Simplify `h0` using `[Matrix.one_apply]`. Establish `hz : ∀ i, w (Sum.inr i) = 0`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∑ i : Fin s, Complex.normSq (w (Sum.inr i)) = 0`. Establish `: ((∑ i : Fin s, Complex.normSq (w (Sum.inr i)) : ℝ) : ℂ) = 0`. Rewrite using `[← hsum]`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Complex.star_def, Complex.mul_conj]`. Conclude with `this` after adjusting the coercions. Introduce `i`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => Complex.normSq_nonneg (w (Sum.inr j)))).mp hr i (Finset.mem_univ _)` as an intermediate fact. Conclude with `Complex.normSq_eq_zero.mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : w = 0`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Conclude with `i.elim0`. Conclude with `hz i`.
-
-Rewrite using `[hyw, hw, Matrix.mulVec_zero]`.
+A detailed English derivation is pending.
 -/
 theorem aniso_sig {n s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M 0 s) (y : Fin n → ℂ)
     (hy : y ⬝ᵥ M *ᵥ star y = 0) : y = 0 := by
@@ -86,13 +84,13 @@ theorem aniso_sig {n s : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} (h : HasSig M 0 s
   rw [hyw, hw, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Set `τ : E →+* ℂ` to `(B.emb w).1`. Establish `hcm : ∀ z : E, τ (σ z) = star (τ z)` using `fun z => hB.cm.2.2.2 τ z`. Establish `hy : (fun i => τ (x i)) ⬝ᵥ (X.J.map τ) *ᵥ star (fun i => τ (x i)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg τ hx` as an intermediate fact. Rewrite `this` using `[map_zero]`. Establish `hs : (star fun i => τ (x i)) = τ ∘ fun i => σ (x i)`. Use extensionality with `i`. Simplify using `[hcm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this, hs, form, RingHom.map_dotProduct]`. Use `show (τ ∘ x) ⬝ᵥ _ = (τ ∘ x) ⬝ᵥ _`. Use `congr 1`. Use extensionality with `i`. Conclude with `(RingHom.map_mulVec τ X.J _ i).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `aniso_sig (h.sig w) _ hy` as an intermediate fact. Use function extensionality and compare the values at `i`. Conclude with `τ.injective (by simpa using congrFun this i)`.
+A detailed English derivation is pending.
 -/
 theorem aniso_herm {n s : ℕ} (B : Base F E) (hB : B.IsGood σ) (X : Spc F E n) (h : X.IsHerm σ B 0 s) :
     ∀ x, form σ X.J x x = 0 → x = 0 := by
@@ -115,19 +113,17 @@ theorem aniso_herm {n s : ℕ} (B : Base F E) (hB : B.IsGood σ) (X : Spc F E n)
   exact τ.injective (by simpa using congrFun this i)
 
 /- English proof (translation)
-Introduce `hP hTB F E _ _ _ _ _ σ B a a' G X om om' hT hq Φ' hΦ' h`. Establish `hcm` using `hT.base.cm`. Establish `hσ` using `GlobalTheory.SiegelSet.sigma_sigma hcm`. Establish `hV'` using `hT.geo.hV'`. Rewrite `hV'` using `[hq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `han` using `aniso_herm B hT.base G.V' hV'`. Establish `hJ : IsHermND σ (G.V'.J.map σ)` using `GlobalTheory.UnitaryVol.isHermND_map hσ hT.geo.hV'`. Establish `hW : GlobalTheory.SiegelSet.IsWittFrame σ (G.V'.J.map σ) (0 : Matrix (Fin a') (Fin 0) E) 0` using `⟨Subsingleton.elim _ _, Subsingleton.elim _ _, Subsingleton.elim _ _, fun z _ _ hz => han z (by rw [form_eq hσ, hz, map_zero])⟩`. Take `⟨C, hC, hcov⟩` from `GlobalTheory.SiegelSet.Model.compact_quotient hP hcm hJ hW`. Establish `heq : UG (cA σ) (incM F G.V'.J) = HR (AF F) σ (G.V'.J.map σ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.SiegelSet.ug_eq_hr (F := F) (J := G.V'.J) hσ one_ne_zero`. Rewrite `h` using `[one_smul]`. Conclude with `h`. Set `e : UA σ G.V'.J ≃* GAd σ (G.V'.J.map σ)` to `MulEquiv.subgroupCongr heq`. Establish `he' : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hcont, hinv, -⟩` from `(hTB F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ (Check.isPair_of_isTriple hT).2).1 Φ' hΦ'`. Establish `hf : Continuous fun g => theta om' Φ' g h` using `hcont.comp (continuous_id.prodMk continuous_const)`. Take `⟨M, hM⟩` from `(hC.image he').exists_bound_of_continuousOn hf.continuousOn`. Establish `hbd : ∀ g, ‖theta om' Φ' g h‖ ≤ M`. Introduce `g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, s, hs, hgs⟩` from `hcov (e g)`. Take `⟨u, -, hu⟩` from `Subgroup.mem_map.1 (Subgroup.mem_subgroupOf.1 hγ)`. Establish `hr : e.symm γ ∈ ratU σ G.V'.J` using `Subgroup.mem_subgroupOf.2 ⟨u, hu⟩`. Establish `hg : g = e.symm γ * e.symm s`. Rewrite using `[← map_mul, ← hgs, MulEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hinv (e.symm γ) hr 1 (one_mem _) (e.symm s) h`. Rewrite `h1` using `[one_mul]`. Rewrite using `[hg, h1]`. Conclude with `hM _ ⟨s, hs, rfl⟩`. Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`.
-
-Establish `hfin` using `GlobalTheory.UnitaryVol.measure_dom_lt_top F E σ B a a' G X om om' hP hT`. Conclude with `Measure.integrableOn_of_bounded (M := M) hfin.ne hf.aestronglyMeasurable (Filter.Eventually.of_forall hbd)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem conv : GlobalTheory.Published.SiegelSetUnitary → ThetaBasic → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → G.q = 0 → ∀ Φ' ∈ schA F (Fin a' × Fin (a + a')), G.M'.Conv om' Φ' := by
   intro hP hTB F E _ _ _ _ _ σ B a a' G X om om' hT hq Φ' hΦ' h

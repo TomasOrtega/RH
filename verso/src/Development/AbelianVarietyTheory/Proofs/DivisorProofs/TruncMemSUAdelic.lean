@@ -13,7 +13,7 @@ section Ring
 variable {R : Type} [CommRing R] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he, Matrix.sub_mul, Matrix.mul_sub, smul_sub, smul_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem idem_mul (e : R) (he : e * e = e) (A B : Matrix n n R) :
     (1 + e • (A - 1)) * (1 + e • (B - 1)) = 1 + e • (A * B - 1) := by
@@ -22,7 +22,7 @@ theorem idem_mul (e : R) (he : e * e = e) (A B : Matrix n n R) :
   abel
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.one_apply, hc, eq_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem idem_cT (c : R →+* R) (e : R) (hc : c e = e) (A : Matrix n n R) :
     Formalism.UG.cT c (1 + e • (A - 1)) = 1 + e • (Formalism.UG.cT c A - 1) := by
@@ -30,7 +30,7 @@ theorem idem_cT (c : R →+* R) (e : R) (hc : c e = e) (A : Matrix n n R) :
   simp [Formalism.UG.cT, Matrix.one_apply, hc, eq_comm]
 
 /- English proof (translation)
-Rewrite using `[idem_cT c e hc]`. Establish `: (1 + e • (Formalism.UG.cT c A - 1)) * J * (1 + e • (A - 1)) = J + e • (Formalism.UG.cT c A * J * A - J)`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_one, Matrix.one_mul, Matrix.smul_mul, Matrix.mul_smul, smul_smul, he, Matrix.sub_mul, Matrix.mul_sub, smul_sub, smul_add, Matrix.mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[this, hA, sub_self, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_unitary (c : R →+* R) (e : R) (he : e * e = e) (hc : c e = e) (J A : Matrix n n R)
     (hA : Formalism.UG.cT c A * J * A = J) :
@@ -44,15 +44,15 @@ theorem idem_unitary (c : R →+* R) (e : R) (he : e * e = e) (hc : c e = e) (J 
   rw [this, hA, sub_self, smul_zero, add_zero]
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty n with hn | hn` into its components or cases. Conclude with `Matrix.det_isEmpty`. Establish `hpow : ∀ f : R, f * f = f → ∀ k : ℕ, f ^ (k + 1) = f`. Introduce `f hf k`. Proceed by induction on `k with`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ, ih, hf]`. Establish `hk : Fintype.card n = (Fintype.card n - 1) + 1`. Use `Fintype.card_pos (α := n)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h1 : e • (1 + e • (A - 1)) = e • A`. Rewrite using `[smul_add, smul_smul, he, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `h2 : (1 - e) • (1 + e • (A - 1)) = (1 - e) • (1 : Matrix n n R)`. Rewrite using `[smul_add, smul_smul, show (1 - e) * e = 0 by rw [sub_mul, one_mul, he, sub_self], zero_smul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he' : (1 - e) * (1 - e) = 1 - e` using `by ring_nf; rw [sq, he]; ring`. Establish `d1` using `congrArg Matrix.det h1`. Establish `d2` using `congrArg Matrix.det h2`. Rewrite `d1` using `[Matrix.det_smul, Matrix.det_smul, hk, hpow e he, hA]`. Rewrite `d2` using `[Matrix.det_smul, Matrix.det_smul, hk, hpow _ he', Matrix.det_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `d1 + d2`.
+A detailed English derivation is pending.
 -/
 theorem idem_det (e : R) (he : e * e = e) (A : Matrix n n R) (hA : A.det = 1) :
     (1 + e • (A - 1)).det = 1 := by
@@ -85,7 +85,7 @@ def qr (x : Fin M → E) (u : E) : Matrix (Fin M) (Fin M) E :=
   1 + ((u - 1) / hE σ J x x) • Matrix.vecMulVec x (Matrix.vecMul (fun i => σ (x i)) J)
 
 /- English proof (translation)
-Simplify using `[sigR, inclR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (e : E) : sigR (AF F) σ (inclR (AF F) e) = inclR (AF F) (σ e) := by
   simp [sigR, inclR]
@@ -94,7 +94,7 @@ def rmat (g : GL (Fin M) E) : Matrix (Fin M) (Fin M) (AF F ⊗[F] E) :=
   RingHom.mapMatrix (inclR (AF F)) (g : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[rmat, Formalism.UG.cT, sigR_inclR]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cT_rmat (g : GL (Fin M) E) :
     Formalism.UG.cT (sigR (AF F) σ) (rmat (F := F) g) =
@@ -103,7 +103,7 @@ theorem cT_rmat (g : GL (Fin M) E) :
   simp [rmat, Formalism.UG.cT, sigR_inclR]
 
 /- English proof (translation)
-Establish `h : Formalism.UG.cT (σ : E →+* E) (g : Matrix (Fin M) (Fin M) E) * J * (g : Matrix (Fin M) (Fin M) E) = J` using `hg`. Rewrite using `[cT_rmat, show JR (AF F) J = RingHom.mapMatrix (inclR (AF F)) J from rfl, rmat, ← map_mul, ← map_mul, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rmat_unitary {g : GL (Fin M) E} (hg : g ∈ Formalism.UG.UJ (σ : E →+* E) J) :
     Formalism.UG.cT (sigR (AF F) σ) (rmat (F := F) g) * JR (AF F) J * rmat (F := F) g = JR (AF F) J := by
@@ -114,7 +114,7 @@ def tm (η : AF F) (A : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) : Matrix (Fin M)
   1 + algebraMap (AF F) (AF F ⊗[F] E) η • (A - 1)
 
 /- English proof (translation)
-The claim follows from `idem_mul _ (by rw [← map_mul, hη]) A B`.
+A detailed English derivation is pending.
 -/
 theorem tm_mul (η : AF F) (hη : η * η = η) (A B : Matrix (Fin M) (Fin M) (AF F ⊗[F] E)) :
     tm η A * tm η B = tm η (A * B) :=
@@ -146,7 +146,7 @@ theorem mv_trunc (η : AF F) (hη : η * η = η) (g : Formalism.UG.UJ (σ : E �
       1 + algebraMap (AF F) (AF F ⊗[F] E) η • (rmat (F := F) g.1 - 1) := rfl
 
 /- English proof (translation)
-Rewrite using `[StrongApprox.mem_SUAdelic, mv_trunc]`. Use `idem_det _ (by rw [← map_mul, hη]) _ ?_` and prove the remaining obligations. Rewrite using `[rmat, ← RingHom.map_det, hg, map_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem trunc_mem_SUAdelic (η : AF F) (hη : η * η = η) (g : Formalism.UG.UJ (σ : E →+* E) J)
     (hg : (g.1 : Matrix (Fin M) (Fin M) E).det = 1) : trunc σ J η hη g ∈ SUAdelic σ J := by
@@ -155,11 +155,11 @@ theorem trunc_mem_SUAdelic (η : AF F) (hη : η * η = η) (g : Formalism.UG.UJ
   rw [rmat, ← RingHom.map_det, hg, map_one]
 
 /- English proof (translation)
-Take `⟨a1, -, b1, -⟩` from `h`. Take `⟨-, a0', -, b0'⟩` from `h'`. Apply `Prod.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Express the relevant statement in the definitionally equal form `fstA F ε w * fstA F ε' w = fstA F ε' w`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `hw : w ∈ S₁'`. Rewrite using `[a1 w (hS₁ hw), one_mul]`. Rewrite using `[a0' w hw, mul_zero]`. Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `v`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `evalV F v (sndA F ε) * evalV F v (sndA F ε') = evalV F v (sndA F ε')`. Distinguish the cases in `hv : v ∈ S₂'`. Rewrite using `[b1 v (hS₂ hv), one_mul]`. Rewrite using `[b0' v hv, mul_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_of_sub {S₁ S₁' : Finset (InfinitePlace F)} {S₂ S₂' : Finset (HeightOneSpectrum (𝓞 F))}
     {ε ε' : AF F} (h : IsPlacesIdem S₁ S₂ ε) (h' : IsPlacesIdem S₁' S₂' ε') (hS₁ : S₁' ⊆ S₁) (hS₂ : S₂' ⊆ S₂) :
@@ -180,14 +180,14 @@ theorem idem_mul_of_sub {S₁ S₁' : Finset (InfinitePlace F)} {S₂ S₂' : Fi
     · rw [b0' v hv, mul_zero]
 
 /- English proof (translation)
-The claim follows from `idem_mul_of_sub h h subset_rfl subset_rfl`.
+A detailed English derivation is pending.
 -/
 theorem idem_sq {S₁ : Finset (InfinitePlace F)} {S₂ : Finset (HeightOneSpectrum (𝓞 F))} {ε : AF F}
     (h : IsPlacesIdem S₁ S₂ ε) : ε * ε = ε :=
   idem_mul_of_sub h h subset_rfl subset_rfl
 
 /- English proof (translation)
-Use `⟨hg.1, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← hg.2 i j, ← mul_assoc, ← map_mul, hε]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem SUSupp_mono {ε ε' : AF F} (hε : ε * ε' = ε') {g : HA (AF F) σ J} (hg : g ∈ SUSupp σ J ε') :
     g ∈ SUSupp σ J ε := by

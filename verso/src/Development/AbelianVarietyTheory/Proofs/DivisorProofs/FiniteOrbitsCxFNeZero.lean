@@ -37,7 +37,7 @@ variable {p : ℕ} [Fact p.Prime] {G : HTGroup p} {v : InfinitePlace G.F} {β : 
   {t : (AfP p)ˣ} {hx : Triv G (AfP p) β x t} {Kf : Subgroup G.GAf} {K' : Subgroup (Gr G 1)}
 
 /- English proof (translation)
-Introduce `h`. Establish `hz` using `z.2`. Rewrite `hz` using `[h]`. Simplify using `at hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem posV_val_ne_zero (z : PosV G v β) : z.1 ≠ 0 := by
   intro h
@@ -46,9 +46,9 @@ theorem posV_val_ne_zero (z : PosV G v β) : z.1 ≠ 0 := by
   simp at hz
 
 /- English proof (translation)
-Unfold `FixL`. Simplify using `only [Matrix.mulVec_smul]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he⟩`. Use `⟨e, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `he` using `[smul_comm e c z]`. Conclude with `smul_right_injective _ hc he`. Introduce and unpack `⟨e, he⟩`. Conclude with `⟨e, by rw [he, smul_comm]⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fixL_smul_vec_iff (y : grp G β) (z : Fin G.n → ℂ) {c : ℂ} (hc : c ≠ 0) :
     FixL G v β y (c • z) ↔ FixL G v β y z := by
@@ -68,11 +68,11 @@ def orbOfDat (d : Dat G v β) : MulAction.orbitRel.Quotient (grp G β) (Ys G v �
   Quotient.mk'' (LeftCosets.mk _ _ d.1, (Projectivization.mk ℂ d.2.1 (posV_val_ne_zero d.2) : PLv G v β))
 
 /- English proof (translation)
-Take `⟨g, k, c, hk1, hk2, hc, h1, h2⟩` from `h`. Use `symm`. Apply `Quotient.sound` to reduce the goal to its premises. Use `⟨g, Prod.ext ?_ ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g • LeftCosets.mk ((toAfF G β x t hx).prod (toP1 G β)) (Kf.prod K') a.1 = LeftCosets.mk _ _ b.1`.
+Extract witnesses or component facts from the available result. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[LeftCosets.smul_mk, LeftCosets.mk_eq_mk, h1, MonoidHom.prod_apply, inv_mul_cancel_left]`. Conclude with `Subgroup.mem_prod.2 ⟨hk1, hk2⟩`. Express the relevant statement in the definitionally equal form `Projectivization.map (Matrix.toLin' (toV G v β g : Matrix (Fin G.n) (Fin G.n) ℂ)) (toV_injective G v β g) (Projectivization.mk ℂ a.2.1 (posV_val_ne_zero a.2)) = Projectivization.mk ℂ b.2.1 (posV_val_ne_zero b.2)`. Rewrite using `[Projectivization.map_mk, Projectivization.mk_eq_mk_iff']`. Use `⟨c⁻¹, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, smul_smul, inv_mul_cancel₀ hc, one_smul, Matrix.toLin'_apply]`.
+A detailed English derivation is pending.
 -/
 theorem orbOfDat_eq_of_same {a b : Dat G v β} (h : Same G v β x t hx Kf K' a b) :
     orbOfDat G v β x t hx Kf K' a = orbOfDat G v β x t hx Kf K' b := by
@@ -95,15 +95,15 @@ def DatWt (f : G.GAf → ℂ) (f' : Gr G 1 → ℂ) (d : Dat G v β) : Prop :=
     f (d.1.1⁻¹ * toAfF G β x t hx y * d.1.1) * f' (d.1.2⁻¹ * toP1 G β y * d.1.2) ≠ 0
 
 /- English proof (translation)
-Take `⟨g, k, c, hk1, hk2, hc, h1, h2⟩` from `h`. Establish `e1 : ∀ y : grp G β, b.1.1⁻¹ * toAfF G β x t hx (g * y * g⁻¹) * b.1.1 = k.1⁻¹ * (a.1.1⁻¹ * toAfF G β x t hx y * a.1.1) * k.1`. Introduce `y`. Rewrite using `[h1]`. Simplify using `only [Prod.fst_mul, map_mul, map_inv]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `group`. Establish `e2 : ∀ y : grp G β, b.1.2⁻¹ * toP1 G β (g * y * g⁻¹) * b.1.2 = k.2⁻¹ * (a.1.2⁻¹ * toP1 G β y * a.1.2) * k.2`. Introduce `y`. Rewrite using `[h1]`. Simplify using `only [Prod.snd_mul, map_mul, map_inv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `group`. Establish `efix : ∀ y : grp G β, FixL G v β (g * y * g⁻¹) b.2.1 ↔ FixL G v β y a.2.1`. Introduce `y`. Rewrite using `[h2, fixL_smul_vec_iff _ _ hc]`. Conclude with `(fixL_conj_iff p G v β y g a.2.1).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, hne⟩`. Use `⟨g * y * g⁻¹, (efix y).2 hy, ?_⟩` and prove the remaining obligations. Rewrite using `[e1, e2, hf _ hk1, hf' _ hk2]` and apply the resulting hypothesis. Introduce and unpack `⟨y', hy', hne⟩`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨y, rfl⟩ : ∃ y, y' = g * y * g⁻¹` from `⟨g⁻¹ * y' * g, by group⟩`. Use `⟨y, (efix y).1 hy', ?_⟩` and prove the remaining obligations. Rewrite `hne` using `[e1, e2, hf _ hk1, hf' _ hk2]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem datWt_iff_of_same {f : G.GAf → ℂ} {f' : Gr G 1 → ℂ} (hf : ∀ k ∈ Kf, ∀ g, f (k⁻¹ * g * k) = f g)
     (hf' : ∀ k ∈ K', ∀ g, f' (k⁻¹ * g * k) = f' g) {a b : Dat G v β} (h : Same G v β x t hx Kf K' a b) :

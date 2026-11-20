@@ -19,7 +19,7 @@ def TorsVals {S : Scheme.{0}} (P : PolAV S) (rig : LB.Gen (P.L.pull (eSec P.A)))
       ∃ a, z.left = x ≫ (pt a).left
 
 /- English proof (translation)
-Use `⟨ρ.pt, ρ.fr, ρ.fr_tors, ρ.th_val, fun K _ _ x z hz => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, -⟩` from `ρ.pt_bij K (x ≫ (baseOver (Sp S.R)).hom) z hz`. Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← ha]`. Conclude with `congrArg (· ≫ (ρ.pt a).left) (Category.comp_id x)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torsVals_real {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} (ρ : S.Real) :
     TorsVals ρ.P ρ.rig (baseOver (Sp S.R)) ρ.th₁ (S.r * S.N) (fun a => fn (⟨S.th a, S.th_mem a⟩ : S.R)) := by
@@ -30,7 +30,7 @@ theorem torsVals_real {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : 
   exact congrArg (· ≫ (ρ.pt a).left) (Category.comp_id x)
 
 /- English proof (translation)
-Introduce `s`. Take `⟨r, hr, -⟩` from `ρ.th₁_basis s`. Conclude with `⟨r 0, fun j => (hr j).trans (Fin.sum_univ_one _)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isGenSec_real {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {S : ThetaSys o Ω} (ρ : S.Real) :
     IsGenSec ρ.P.A ρ.P.L 1 ρ.th₁ := by

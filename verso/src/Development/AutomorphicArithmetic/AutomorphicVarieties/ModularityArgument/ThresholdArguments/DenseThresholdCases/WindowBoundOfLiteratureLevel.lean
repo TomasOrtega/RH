@@ -23,7 +23,7 @@ section
 open UpperTheory.Top
 namespace UpperTheory.V.HV.DescentVanishingReductions
 /- English proof (translation)
-The claim follows from `have hK := _root_.UpperTheory.V.ZK.lemmaK_litN_alt hH.litN have hE := _root_.UpperTheory.V.Z.Win.Dn.ends0_alt hH have h4 := _root_.UpperTheory.V.HV.DescentVanishingReductions.countII_and_countIII_of_printsH_of_sp4In hH hK (_root_.UpperTheory.V.HV.DescentVanishingReductions.sp4In0 …`.
+A detailed English derivation is pending.
 -/
 theorem vwin_of_hypotheses_H_E_alt (hH : _root_.UpperTheory.V.Af.HypothesesH') : VWin :=
   have hK := _root_.UpperTheory.V.ZK.lemmaK_litN_alt hH.litN
@@ -31,13 +31,13 @@ theorem vwin_of_hypotheses_H_E_alt (hH : _root_.UpperTheory.V.Af.HypothesesH') :
   have h4 := _root_.UpperTheory.V.HV.DescentVanishingReductions.countII_and_countIII_of_printsH_of_sp4In hH hK (_root_.UpperTheory.V.HV.DescentVanishingReductions.sp4In0_alt hH)
   _root_.UpperTheory.V.HV.Core.of_four_alt hH.litN hK (_root_.UpperTheory.V.Z.J.count_i_of_printed_bound_k_kato_automorphy hH hK (_root_.UpperTheory.V.Z.Kato.WeilSphericalRecords.katoTwoW_of_printsH hH) (_root_.UpperTheory.V.HV.Core0.automorphyUnramified_of_litN_of_gdEnd hH.litN hE.1)) h4.1 h4.2 (_root_.UpperTheory.V.Z.J.count_v_of_printed_bound_k_reduced_unitary_lift hH hK hE.2)
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.V.HV.DescentVanishingReductions.vwin_of_hypotheses_H_E_alt (_root_.UpperTheory.V.HV.DescentVanishingReductions.published_hypotheses_from_patching_alt hN UpperTheory.V.Z.Tf.SR.descWeak)`.
+A detailed English derivation is pending.
 -/
 theorem v_window_of_automorphy_csd_ss_mono_odd (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) : VWin :=
   _root_.UpperTheory.V.HV.DescentVanishingReductions.vwin_of_hypotheses_H_E_alt (_root_.UpperTheory.V.HV.DescentVanishingReductions.published_hypotheses_from_patching_alt hN UpperTheory.V.Z.Tf.SR.descWeak)
 end UpperTheory.V.HV.DescentVanishingReductions
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.V.HV.DescentVanishingReductions.v_window_of_automorphy_csd_ss_mono_odd hN`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.v_window_of_literal_automorphy_n (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) : VWin :=
   _root_.UpperTheory.V.HV.DescentVanishingReductions.v_window_of_automorphy_csd_ss_mono_odd hN

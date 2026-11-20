@@ -13,17 +13,15 @@ open GlobalTheory.TypeLeaf
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formalism.MainNotions.ArithmeticCylinders Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `D hG hF i π ρ hc ha hfull hρ k v w hwv hw s hs`. Establish `hn : UpperTheory.GalS.Nc D.nd D.naut (D.naut.locG π w)`. Use `hfull.2 k v` as an intermediate fact. Rewrite `this` using `[isoLoc_cusp, ← hwv]`. Then use the resulting hypothesis. Establish `hr1 : 1 ≤ D.R.r`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2` using `D.R.two_le_m`. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers. Take `⟨r, hrc, hr⟩` from `hG i D.R.r hr1 π hc ha`. Take `⟨hιc, -⟩` from `GlobalTheory.TypeLeaf.iotaOQ_continuous_injective D i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hρc, -, hρf⟩` from `hρ`. Establish `hcomp : iotaO D.nd D.naut i = (D.naut.iotaQC i).toRingHom.comp (iotaOQ D.nd D.naut i)` using `rfl`. Establish `hinj : Function.Injective (Polynomial.map (D.naut.iotaQC i).toRingHom)` using `Polynomial.map_injective _ (D.naut.iotaQC i).injective`. Establish `hfin` using `placesOver_finite_of_prime D.host.E (D.nd.lPrime i).out`. Establish `hall` using `(hfin.eventually_cofinite_notMem.and (D.naut.locG_unr_ae π)).and hρf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `hF _ (Filter.eventually_cofinite.1 hall)`. Establish `key` using `GlobalTheory.TypeLeaf.charpoly_eq_of_dense _ (Qbar (D.nd.l i)) D.R.r (fun g => ((ρ g : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).map (iotaOQ D.nd D.naut i)) (fun g => ((r g : GL (Fin D.R.r) (Qbar (D.nd.l i))) : Matrix (Fin D.R.r) (Fin D.R.r) (Qbar (D.nd.l i)))) _ hd (h …`. Introduce and unpack `g ⟨v, hv, -, B, hB, hg⟩`. Take `⟨⟨h1, h2⟩, h3⟩` from `not_not.1 hv`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hu : D.naut.unr (D.naut.wdOf i r v)`. Rewrite using `[(hr v h1).eq_of_unr ((D.naut.unr_tw _ _).2 h2)]`. Conclude with `(D.naut.unr_tw _ _).2 h2`. Rewrite using `[Matrix.charpoly_map, Polynomial.map_map, ← hcomp, h3 B g hB hg, isoLoc_cusp, D.naut.wdOf_frob i r v h1 hrc hu B g hB hg, (hr v h1).eq_of_unr ((D.naut.unr_tw _ _).2 h2)]`. Use the proof step `rfl) s`.
-
-Rewrite using `[hcomp, ← Polynomial.map_map, ← Matrix.charpoly_map, key, D.naut.wdOf_ine i r w hw hrc s hs, (hr w hw).ine ((UpperTheory.GalS.nc_tw _ _).2 hn) s hs, D.naut.inePol_tw _ _ _ hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ineAt' : ∀ D : D7, UpperTheory.GalS.GalAwayN D → FrobDense D → ∀ (i : D.nd.Loc) (π : D.naut.CG D.R.r) (ρ : G D.host.E D.nd.Om →* GL (Fin D.R.r) (D.nd.O i)), D.naut.csd π → D.naut.ralg π → UpperTheory.GalS.FullLabS D [⟨D.R.r, π, 1⟩] → IsRepOfSig D.nd D.naut i [⟨D.R.r, π, 1⟩] ρ → ∀ (k : Fin 2) (v : D.nd.PlG k) (w), w = D.naut.plGw k v → w ∉ placesOver D.host.E (D.nd.l i) → ∀ s ∈ Ine (F := D.host.E) (D.nd.plOm.1 w), ((ρ s : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.nd.O i)).charpoly.map (iotaO D.nd D.naut i) = D.naut.inePol (D.naut.locG π w) s := by
   intro D hG hF i π ρ hc ha hfull hρ k v w hwv hw s hs
@@ -77,7 +75,7 @@ namespace GlobalTheory.AdmTame
 open NumberField IsDedekindDomain Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations Formalism.ConjugateSelfDual ReciprocityTheory.Gal Polynomial
 
 /- English proof (translation)
-Introduce `i a ha π hc hr` and use `by obtain ⟨ρ, hρc, -, hρw, -⟩ := (hG i).1 a ha π hc hr exact ⟨ρ, hρc, hρw⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem galAwayOfS' {D : D7} (hG : UpperTheory.GalS.AutomorphicGaloisAdmissible D.nd D.naut) : UpperTheory.GalS.GalAwayN D := fun i a ha π hc hr => by
   obtain ⟨ρ, hρc, -, hρw, -⟩ := (hG i).1 a ha π hc hr

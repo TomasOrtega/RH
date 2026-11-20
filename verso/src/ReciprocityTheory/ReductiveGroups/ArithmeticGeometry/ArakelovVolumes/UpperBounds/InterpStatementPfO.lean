@@ -15,7 +15,7 @@ def bmul (a b : Frame X.Ψ r) : Frame X.Ψ r := fun τ => (mat a τ * mat b τ :
 def binv (b : Frame X.Ψ r) : Frame X.Ψ r := fun τ => ((mat b τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `first`. Consider the case `exact Matrix.mul_assoc (mat x τ) (mat a τ) (mat b τ)`. Consider the case `(ext i j; simp [rmul, bmul, mat, Matrix.mul_assoc])`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rmul_rmul (x a b : Frame X.Ψ r) : rmul (rmul x a) b = rmul x (bmul X a b) := by
   funext τ
@@ -24,11 +24,11 @@ theorem rmul_rmul (x a b : Frame X.Ψ r) : rmul (rmul x a) b = rmul x (bmul X a 
     | (ext i j; simp [rmul, bmul, mat, Matrix.mul_assoc])
 
 /- English proof (translation)
-Simplify using `only [Bor, Set.mem_setOf_eq] at ha hb ⊢`. Introduce `τ`. Take `⟨ha1, ha2⟩` from `ha τ`. Take `⟨hb1, hb2⟩` from `hb τ`. Establish `hA : Matrix.BlockTriangular (mat a τ) id`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i j h`. Conclude with `ha2 i j h`. Establish `hB : Matrix.BlockTriangular (mat b τ) id`. Introduce `i j h`. Conclude with `hb2 i j h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun i j h => hA.mul hB h⟩` and prove the remaining obligations. Use `show (mat a τ * mat b τ).det ≠ 0`. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero ha1 hb1`.
+A detailed English derivation is pending.
 -/
 theorem bmul_mem {a b : Frame X.Ψ r} (ha : a ∈ Bor X.Ψ r) (hb : b ∈ Bor X.Ψ r) :
     bmul X a b ∈ Bor X.Ψ r := by
@@ -48,11 +48,9 @@ theorem bmul_mem {a b : Frame X.Ψ r} (ha : a ∈ Bor X.Ψ r) (hb : b ∈ Bor X.
   exact mul_ne_zero ha1 hb1
 
 /- English proof (translation)
-Simplify using `only [Bor, Set.mem_setOf_eq] at hb ⊢`. Introduce `τ`. Take `⟨hb1, hb2⟩` from `hb τ`. Establish `hB : Matrix.BlockTriangular (mat b τ) id`. Introduce `i j h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hb2 i j h`. Use `haveI : Invertible (mat b τ) := Matrix.invertibleOfIsUnitDet _ (isUnit_iff_ne_zero.mpr hb1)`. Establish `hI : Matrix.BlockTriangular (mat b τ)⁻¹ id` using `Matrix.blockTriangular_inv_of_blockTriangular hB`. Use `⟨?_, fun i j h => hI h⟩` and prove the remaining obligations. Use `show ((mat b τ)⁻¹).det ≠ 0`.
-
-Conclude with `(Matrix.isUnit_nonsing_inv_det _ (isUnit_iff_ne_zero.mpr hb1)).ne_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem binv_mem {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) : binv X b ∈ Bor X.Ψ r := by
   simp only [Bor, Set.mem_setOf_eq] at hb ⊢
@@ -68,9 +66,9 @@ theorem binv_mem {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) : binv X b ∈ Bor X
   exact (Matrix.isUnit_nonsing_inv_det _ (isUnit_iff_ne_zero.mpr hb1)).ne_zero
 
 /- English proof (translation)
-Simplify using `only [Bor, Set.mem_setOf_eq] at hb`. Use function extensionality and compare the values at `τ`. Establish `h` using `isUnit_iff_ne_zero.mpr (hb τ).1`. Use `show mat x τ * mat b τ * (mat b τ)⁻¹ = x τ`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_right _ _ h]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem rmul_binv (x : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) :
     rmul (rmul x b) (binv X b) = x := by
@@ -82,7 +80,7 @@ theorem rmul_binv (x : Frame X.Ψ r) {b : Frame X.Ψ r} (hb : b ∈ Bor X.Ψ r) 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `(Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat x τ) (mat b τ)).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lact_rmul (γ : GL (Fin r) E) (x b : Frame X.Ψ r) :
     lact γ (rmul x b) = rmul (lact γ x) b := by
@@ -90,7 +88,7 @@ theorem lact_rmul (γ : GL (Fin r) E) (x b : Frame X.Ψ r) :
   exact (Matrix.mul_assoc ((γ : Matrix (Fin r) (Fin r) E).map τ.1) (mat x τ) (mat b τ)).symm
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show (γ : Matrix (Fin r) (Fin r) E).map τ.1 * ((δ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ) = ((γ * δ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_lact (γ δ : GL (Fin r) E) (x : Frame X.Ψ r) : lact γ (lact δ x) = lact (γ * δ) x := by
   funext τ
@@ -99,7 +97,7 @@ theorem lact_lact (γ δ : GL (Fin r) E) (x : Frame X.Ψ r) : lact γ (lact δ x
   rw [Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[lact_lact, inv_mul_cancel]`. Use function extensionality and compare the values at `τ`. Use `show ((1 : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = x τ`. Rewrite using `[Units.val_one, Matrix.map_one _ (map_zero τ.1) (map_one τ.1), Matrix.one_mul]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_inv (γ : GL (Fin r) E) (x : Frame X.Ψ r) : lact γ⁻¹ (lact γ x) = x := by
   rw [lact_lact, inv_mul_cancel]
@@ -109,25 +107,23 @@ theorem lact_inv (γ : GL (Fin r) E) (x : Frame X.Ψ r) : lact γ⁻¹ (lact γ 
   try rfl
 
 /- English proof (translation)
-Introduce `z hz b hb h1`. Establish `hbc : ∀ c ∈ Bor X.Ψ r, bchar Xa.L c ≠ 0`. Introduce `c hc`. Simplify using `only [Bor, Set.mem_setOf_eq] at hc`. Unfold `bchar`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `Finset.prod_ne_zero_iff.mpr fun τ _ => Finset.prod_ne_zero_iff.mpr fun i _ => zpow_ne_zero _ ?_` and prove the remaining obligations. Take `⟨hd, ht⟩` from `hc τ`. Establish `hT : Matrix.BlockTriangular (mat c τ) id`. Introduce `a e h`. Conclude with `ht a e h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[Matrix.det_of_upperTriangular hT]`. Conclude with `(Finset.prod_ne_zero_iff.mp hd) i (Finset.mem_univ _)`. Establish `hzdom : cpt X x0 z ∈ X.dom` using `hball hz`. Establish `hsz : ∀ k, Fl.s k (cpt X x0 z) = 0`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hv` using `Fl.s_van k`. Simplify using `only [Data.SSgt, Data.SS, Data.IsBddSec, Data.IsSec, Set.mem_setOf_eq] at hv`. Establish `hsec` using `hv.1.1.1.2.1 (cpt X x0 z) hzdom b hb`. Establish `h0` using `hs1 k`. Rewrite `h0` using `[h1, hsec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.mp h0).resolve_left (hbc b hb)`. Establish `hz0 : z = 0` using `hiso z hz hsz`. Establish `hc0 : cpt X x0 0 = x0`. Use function extensionality and compare the values at `τ`. Establish `hm : mat (nmat X 0) τ = 1`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use extensionality with `a e`. Distinguish the cases in `h : e < a`. Establish `hne : a ≠ e` using `ne_of_gt h`. Simplify using `only [mat, nmat, Matrix.of_apply, dif_pos h, Matrix.one_apply_ne hne]`. Apply the tactic sequence `all_goals first | rfl | simp`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [mat, nmat, Matrix.of_apply, dif_neg h, Matrix.one_apply]`. Use `show mat x0 τ * mat (nmat X 0) τ = x0 τ`. Rewrite using `[hm, Matrix.mul_one]`. Both sides reduce to the same expression. Establish `hx0 : rmul (Fl.xs j) (binv X b0) = x0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx]`. Conclude with `rmul_binv X x0 hb0`. Establish `hcB : bmul X (binv X b0) (bmul X b b1) ∈ Bor X.Ψ r` using `bmul_mem X (binv_mem X hb0) (bmul_mem X hb hb1)`. Establish `hy' : lact γ (Fl.xs j') = rmul (Fl.xs j) (bmul X (binv X b0) (bmul X b b1))`. Rewrite using `[hy, h1, hz0, hc0, ← hx0, rmul_rmul X, rmul_rmul X]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hj` using `congrArg (lact γ⁻¹) hy'`. Rewrite `hj` using `[lact_inv]`. Establish `hjj : j = j'` using `Fl.xs_inj j j' γ⁻¹ (X.Γ.inv_mem hγ) _ hcB hj`. Substitute `hjj` using the available equality. Establish `hγ1 : γ = 1` using `X.Γ_free γ hγ (Fl.xs j) (Fl.xs_mem j) _ hcB hy'`.
-
-Break down `hne with h | h` into its components or cases. Conclude with `h hγ1`. Conclude with `h rfl`.
+A detailed English derivation is pending.
 -/
 theorem avoid_base (Xa : ArchInM X) (Fl : FlatM X Xa) (j j' : Fin Fl.δ) {γ : GL (Fin r) E}
     (hγ : γ ∈ X.Γ) (hne : γ ≠ 1 ∨ j' ≠ j) (x0 b0 : Frame X.Ψ r) (hb0 : b0 ∈ Bor X.Ψ r)

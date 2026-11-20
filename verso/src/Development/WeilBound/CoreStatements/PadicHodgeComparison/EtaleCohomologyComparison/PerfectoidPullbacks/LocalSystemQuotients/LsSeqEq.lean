@@ -19,7 +19,7 @@ namespace CrystallineSemistableComparison.Pb.LsG
 open CrystallineSemistableComparison.Ls
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hc⟩` from `LsQ.seqflat0_pf r M hM`. Establish `hfl : ∀ c, FlatL l c (Kt l (B.schFn M.p) r.ρ c)` using `fun c => GlobalTheory.T.flat_witt_tower_level l r.k _ (B.schFn M.p) r.ρ c`. Conclude with `⟨ψ, hψ, fun m b h j => GlobalTheory.T.quotient_reduction_bijective_of_flat _ l _ _ m (ψ m) (hfl m) (hfl (m + 1)) (hψ m) b h j, hc⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem seq_flat {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : Res l K) (M : Model l K)
     (hM : M.Sm) : ∃ (ψ : ∀ n, Cx.Hom (Kt l (B.schFn M.p) r.ρ n) (quo l (Kt l (B.schFn M.p) r.ρ (n + 1)) n) (RingHom.id _))
@@ -32,13 +32,11 @@ theorem seq_flat {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicA
   exact ⟨ψ, hψ, fun m b h j => GlobalTheory.T.quotient_reduction_bijective_of_flat _ l _ _ m (ψ m) (hfl m) (hfl (m + 1)) (hψ m) b h j, hc⟩
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hq, hc⟩` from `seq_flat r M hM`. Establish `hf` using `GlobalTheory.T.smooth_model_restriction_bijective r M hM`. Establish `hfl : ∀ c, FlatL l c (Kt l (B.schFn M.p) r.ρ c)` using `fun c => GlobalTheory.T.flat_witt_tower_level l r.k _ (B.schFn M.p) r.ρ c`. Establish `fwd : ∀ i n x, (tsys l (Kt l (B.schFn M.p) r.ρ) ψ hψ i).r n (resF l (B.schFn M.p) r.ρ (n + 1) i x) = resF l (B.schFn M.p) r.ρ n i ((Wc.HS l (B.schFn M.p) r.ρ i).r n x)`. Introduce `i n x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Express the relevant statement in the definitionally equal form `(LinearEquiv.ofBijective _ (hψ n i)).symm ((prj l _ n).mapH i (resF l (B.schFn M.p) r.ρ (n + 1) i x)) = _`. Rewrite using `[← hc n i x]`. Conclude with `(LinearEquiv.ofBijective _ (hψ n i)).symm_apply_apply _`. Set `E : ∀ i n, (Wc.HS l (B.schFn M.p) r.ρ i).M n ≃ₗ[WittVector l r.k] (Kt l (B.schFn M.p) r.ρ n).H i` to `fun i n => LinearEquiv.ofBijective _ (hf n i)`. Set `e : ∀ i, Sys.Hom (tsys l (Kt l (B.schFn M.p) r.ρ) ψ hψ i) (Wc.HS l (B.schFn M.p) r.ρ i) (RingHom.id _)` to `fun i => { f := fun n => (E i n).symm.toLinearMap comm := fun n y => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(E i n).injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `E i n ((Wc.HS l (B.schFn M.p) r.ρ i).r n ((E i (n + 1)).symm y)) = E i n ((E i n).symm _)`. Rewrite using `[LinearEquiv.apply_symm_apply]`. Establish `h1` using `fwd i n ((E i (n + 1)).symm y)`. Establish `h2 : resF l (B.schFn M.p) r.ρ (n + 1) i ((E i (n + 1)).symm y) = y` using `(E i (n + 1)).apply_symm_apply y`.
-
-Conclude with `h1.symm.trans (congrArg _ h2) }`. Conclude with `GlobalTheory.T.lseq_of_level_isos _ l _ _ _ _ (e j) (e (j + 1)) (fun n => (E j n).symm.bijective) (fun n => (E (j + 1) n).symm.bijective) (GlobalTheory.T.lseq_of_flat_tower _ l _ ψ hψ hfl hq j).some`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ls_seq {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : Res l K) (M : Model l K)
     (hM : M.Sm) (j : ℕ) :

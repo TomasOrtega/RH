@@ -14,11 +14,11 @@ variable {n : ℕ}
 def sn (t : ℝ) (y : Fin n → ℝ) : Fin (n + 1) → ℝ := Fin.snoc (α := fun _ => ℝ) y t
 
 /- English proof (translation)
-Simplify using `[sn]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma sn_last (t : ℝ) (y : Fin n → ℝ) : sn t y (Fin.last n) = t := by simp [sn]
 /- English proof (translation)
-Simplify using `[sn]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma sn_cast (t : ℝ) (y : Fin n → ℝ) (k : Fin n) : sn t y (Fin.castSucc k) = y k := by
   simp [sn]
@@ -28,17 +28,17 @@ noncomputable def snocL (n : ℕ) : (Fin n → ℝ) →L[ℝ] (Fin (n + 1) → �
     else ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℝ) (j.castPred h))
 
 /- English proof (translation)
-Establish `hnot : Fin.last n ∉ (Finset.univ : Finset (Fin n)).map Fin.castSuccEmb`. Simplify using `[Fin.castSucc_ne_last]`. Establish `hu : (Finset.univ : Finset (Finset (Fin (n + 1)))) = (insert (Fin.last n) ((Finset.univ : Finset (Fin n)).map Fin.castSuccEmb)).powerset`. Rewrite using `[← Finset.cons_eq_insert _ _ hnot, ← Fin.univ_castSuccEmb, Finset.powerset_univ]`. Rewrite using `[hu, Finset.sum_powerset_insert hnot]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ h : Finset (Fin (n + 1)) → ℝ, ∑ t ∈ ((Finset.univ : Finset (Fin n)).map Fin.castSuccEmb).powerset, h t = ∑ β : Finset (Fin n), h (β.map Fin.castSuccEmb)`. Introduce `h`. Use `symm`. Apply `Finset.sum_nbij' (fun β => β.map Fin.castSuccEmb) (fun α => Finset.univ.filter (fun k => Fin.castSucc k ∈ α))` to reduce the goal to its premises. Introduce `β _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Finset.map_subset_map]`. Introduce `α _`. Simplify using the standard rewrite rules. Introduce `β _`. Use extensionality with `k`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Introduce `α hα`. Rewrite `hα` using `[Finset.mem_powerset]`. Use extensionality with `x`. Simplify using `only [Finset.mem_map, Finset.mem_filter, Finset.mem_univ, true_and, Fin.coe_castSuccEmb]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `hk`. Introduce `hx`. Take `⟨k, -, rfl⟩` from `Finset.mem_map.1 (hα hx)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨k, hx, rfl⟩`. Introduce `β _`. Both sides reduce to the same expression. Rewrite using `[key, key (fun t => f (insert (Fin.last n) t))]`.
+Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sum_split (f : Finset (Fin (n + 1)) → ℝ) :
     ∑ α : Finset (Fin (n + 1)), f α =

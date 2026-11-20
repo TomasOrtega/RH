@@ -18,18 +18,18 @@ def polMapD (W : Type) [Fintype W] [DecidableEq W] (Λ : W → Type) :
     fun w => (MvPolynomial.rename (Sigma.mk w)).toLinearMap)
 
 /- English proof (translation)
-Simplify using `[polMapD]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polMapD_tprod (W : Type) [Fintype W] [DecidableEq W] (Λ : W → Type) (q : ∀ w, MvPolynomial (Λ w) ℂ) :
     polMapD W Λ (PiTensorProduct.tprod ℂ q) = ∏ v, MvPolynomial.rename (Sigma.mk v) (q v) := by
   simp [polMapD]
 
 /- English proof (translation)
-Establish `key : ∀ (f : ∀ w, (Λ w →₀ ℕ)) (w : W) (l : Λ w), (∑ w, Finsupp.mapDomain (Sigma.mk w) (f w)) ⟨w, l⟩ = f w l`. Introduce `f w l`. Rewrite using `[Finsupp.finset_sum_apply, Finset.sum_eq_single w]`. Conclude with `Finsupp.mapDomain_apply sigma_mk_injective _ _`. Introduce `v _ hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finsupp.mapDomain_notin_range` to reduce the goal to its premises. Introduce and unpack `⟨x, hx⟩`. Conclude with `hv (congrArg Sigma.fst hx)`. Introduce `h`. Conclude with `absurd (Finset.mem_univ w) h`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Introduce `f g h`. Use function extensionality and compare the values at `w`. Use extensionality with `l`. Rewrite using `[← key f w l, ← key g w l]`. Conclude with `congrArg (fun F : (Σ w, Λ w) →₀ ℕ => F ⟨w, l⟩) h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polMapD_index_injective (W : Type) [Fintype W] (Λ : W → Type) :
     Function.Injective (fun f : ∀ w, (Λ w →₀ ℕ) => ∑ w, Finsupp.mapDomain (Sigma.mk w) (f w)) := by
@@ -51,7 +51,7 @@ theorem polMapD_index_injective (W : Type) [Fintype W] (Λ : W → Type) :
   exact congrArg (fun F : (Σ w, Λ w) →₀ ℕ => F ⟨w, l⟩) h
 
 /- English proof (translation)
-Rewrite using `[monomial_sum_one]`. Simplify using `only [polMapD, PiTensorProduct.lift.tprod, MultilinearMap.compLinearMap_apply, MultilinearMap.mkPiAlgebra_apply, AlgHom.toLinearMap_apply, rename_monomial]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem polMapD_tprod_monomial (W : Type) [Fintype W] [DecidableEq W] (Λ : W → Type) (f : ∀ w, (Λ w →₀ ℕ)) :
     polMapD W Λ (PiTensorProduct.tprod ℂ (fun w => (monomial (f w) (1 : ℂ) : MvPolynomial (Λ w) ℂ))) =
@@ -61,13 +61,13 @@ theorem polMapD_tprod_monomial (W : Type) [Fintype W] [DecidableEq W] (Λ : W �
     MultilinearMap.mkPiAlgebra_apply, AlgHom.toLinearMap_apply, rename_monomial]
 
 /- English proof (translation)
-Set `B` to `Basis.piTensorProduct (fun w : W => basisMonomials (Λ w) ℂ)`. Establish `hli : LinearIndependent ℂ (polMapD W Λ ∘ B)`. Establish `h` using `(basisMonomials (Σ w, Λ w) ℂ).linearIndependent.comp _ (polMapD_index_injective W Λ)`. Establish `e : polMapD W Λ ∘ B = (basisMonomials (Σ w, Λ w) ℂ) ∘ (fun f : ∀ w, (Λ w →₀ ℕ) => ∑ w, Finsupp.mapDomain (Sigma.mk w) (f w))`. Use function extensionality and compare the values at `f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Function.comp, B, Basis.piTensorProduct_apply, coe_basisMonomials]`. Conclude with `polMapD_tprod_monomial W Λ f`. Rewrite using `[e]`. Conclude with `h`. Establish `h1 : polMapD W Λ ∘ₗ Finsupp.linearCombination ℂ B = Finsupp.linearCombination ℂ (polMapD W Λ ∘ B)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `f`. Simplify using the standard rewrite rules. Introduce `x y hxy`. Apply `B.repr.injective` to reduce the goal to its premises. Apply `hli` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1]`. Simplify using `only [LinearMap.comp_apply, Module.Basis.linearCombination_repr, hxy]`.
+A detailed English derivation is pending.
 -/
 theorem polMapD_injective (W : Type) [Fintype W] [DecidableEq W] (Λ : W → Type) :
     Function.Injective (polMapD W Λ) := by
@@ -92,9 +92,9 @@ theorem polMapD_injective (W : Type) [Fintype W] [DecidableEq W] (Λ : W → Typ
   simp only [LinearMap.comp_apply, Module.Basis.linearCombination_repr, hxy]
 
 /- English proof (translation)
-Unfold `atPl`. Rewrite using `[PiTensorProduct.map_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Distinguish the cases in `hv : v = w`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hv` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hv]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem atPl_tprod_dep {W : Type} [Fintype W] [DecidableEq W] {Λ : W → Type} (w : W)
     (L : Module.End ℂ (MvPolynomial (Λ w) ℂ)) (p : ∀ v, MvPolynomial (Λ v) ℂ) :
@@ -109,9 +109,9 @@ theorem atPl_tprod_dep {W : Type} [Fintype W] [DecidableEq W] {Λ : W → Type} 
   · simp [Function.update_of_ne hv]
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `p`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, atPl_tprod_dep, polMapD_tprod, LinearMap.mulLeft_apply]`. Rewrite using `[Fintype.prod_eq_mul_prod_compl w, Fintype.prod_eq_mul_prod_compl w (fun v => MvPolynomial.rename (Sigma.mk v) (p v)), ← mul_assoc]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using the standard rewrite rules. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Establish `hv' : v ≠ w` using `by simpa using hv`. Rewrite using `[Function.update_of_ne hv']`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem polMapD_atPl_mulLeft_X (W : Type) [Fintype W] [DecidableEq W] (Λ : W → Type) (w : W) (l : Λ w) :
     polMapD W Λ ∘ₗ atPl (V := fun w => MvPolynomial (Λ w) ℂ) w (LinearMap.mulLeft ℂ (MvPolynomial.X l)) =
@@ -130,9 +130,9 @@ theorem polMapD_atPl_mulLeft_X (W : Type) [Fintype W] [DecidableEq W] (Λ : W �
     rw [Function.update_of_ne hv']
 
 /- English proof (translation)
-Proceed by induction on `r using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`. Rewrite using `[map_mul, MvPolynomial.rename_X, Derivation.leibniz, hp, MvPolynomial.pderiv_X_of_ne]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `e`. Conclude with `h (congrArg Sigma.fst e)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pderiv_rename_sigmaMk_of_ne {W : Type} {Λ : W → Type} {v w : W} (h : v ≠ w) (l : Λ w)
     (r : MvPolynomial (Λ v) ℂ) :
@@ -146,7 +146,7 @@ theorem pderiv_rename_sigmaMk_of_ne {W : Type} {Λ : W → Type} {v w : W} (h : 
     · intro e; exact h (congrArg Sigma.fst e)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite `hs` using `[Finset.mem_insert, not_or]`. Rewrite using `[Finset.prod_insert ha, Derivation.leibniz, ih hs.2, pderiv_rename_sigmaMk_of_ne (fun e => hs.1 e.symm)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -163,9 +163,9 @@ theorem pderiv_prod_rename_sigma_of_notMem {W : Type} {Λ : W → Type} {w : W} 
     simp
 
 /- English proof (translation)
-Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises. Introduce `q`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, atPl_tprod_dep, polMapD_tprod]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w), ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ w)]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∏ i ∈ Finset.univ.erase w, MvPolynomial.rename (Sigma.mk i) (Function.update q w ((MvPolynomial.pderiv l).toLinearMap (q w)) i) = ∏ i ∈ Finset.univ.erase w, MvPolynomial.rename (Sigma.mk i) (q i)` using `Finset.prod_congr rfl fun i hi => by`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hi)]`. Rewrite using `[h1, Function.update_self, Derivation.coeFn_coe, Derivation.coeFn_coe, Derivation.leibniz, pderiv_prod_rename_sigma_of_notMem l q _ (Finset.notMem_erase w _), MvPolynomial.pderiv_rename sigma_mk_injective l (q w)]`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem polMapD_atPl_pderiv (W : Type) [Fintype W] [DecidableEq W] (Λ : W → Type) (w : W) (l : Λ w) :
     polMapD W Λ ∘ₗ atPl (V := fun w => MvPolynomial (Λ w) ℂ) w (MvPolynomial.pderiv l).toLinearMap =
@@ -187,7 +187,7 @@ theorem polMapD_atPl_pderiv (W : Type) [Fintype W] [DecidableEq W] (Λ : W → T
   simp [mul_comm]
 
 /- English proof (translation)
-Introduce `W _ _ Λ`. Use `⟨polMapD W Λ, polMapD_injective W Λ, fun w l T => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (polMapD_atPl_mulLeft_X W Λ w l) T`. Conclude with `LinearMap.congr_fun (polMapD_atPl_pderiv W Λ w l) T`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_polMapD : ∀ (W : Type) [Fintype W] [DecidableEq W] (Λ : W → Type),
     ∃ θ : (⨂[ℂ] w : W, MvPolynomial (Λ w) ℂ) →ₗ[ℂ] MvPolynomial (Σ w, Λ w) ℂ, Function.Injective θ ∧

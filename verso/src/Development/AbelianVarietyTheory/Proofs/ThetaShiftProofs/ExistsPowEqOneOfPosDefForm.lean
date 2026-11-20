@@ -4,23 +4,23 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.BirationalGeometry.T
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[← isOfFinOrder_iff_pow_eq_one]`. Assume the negation of the conclusion as `hfin`. Establish `hinj` using `injective_pow_iff_not_isOfFinOrder.mpr hfin`. Set `e` to `Module.Free.chooseBasis ℤ Y`. Establish `h0 : ∀ y, 0 ≤ b y y` using `fun y => by`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Distinguish the cases in `h : y = 0`. Simplify using `[h]`. Conclude with `(hp y h).le`. Establish `hpow : ∀ (n : ℕ) y, b ((σ ^ n) y) ((σ ^ n) y) = b y y`. Introduce `n`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero => intro y`. Simplify using the standard rewrite rules. Consider the case `succ n ih => intro y`. Rewrite using `[pow_succ', LinearEquiv.mul_apply, hσ, ih]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnd : ∀ y, (∀ j, b y (e j) = 0) → y = 0`. Introduce `y hy`. Assume the negation of the conclusion as `h`. Establish `: b y = 0` using `e.ext fun j => by simpa using hy j`. Establish `h2` using `hp y h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this] at h2`. Set `f : ℕ → (_ → _ → ℤ)` to `fun n i j => b ((σ ^ n) (e i)) (e j)`. Establish `hf : Function.Injective f`. Introduce `m n h`. Apply `hinj` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `LinearEquiv.toLinearMap_injective` to reduce the goal to its premises. Use `e.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Apply `hnd` to reduce the goal to its premises. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun (congrFun h i) j` as an intermediate fact. Simplify using `only [f] at this`. Simplify using `[this]`. Set `C : _ → _ → ℤ` to `fun i j => b (e i) (e i) * b (e j) (e j)`. Establish `hS : (Set.univ.pi fun i => Set.univ.pi fun j => Set.Icc (-C i j) (C i j)).Finite` using `Set.Finite.pi fun i => Set.Finite.pi fun j => Set.finite_Icc _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.infinite_of_injective_forall_mem hf (fun n => ?_) hS` and prove the remaining obligations. Introduce `i _ j _`. Establish `h1` using `LinearMap.BilinForm.apply_mul_apply_le_of_forall_zero_le b h0 ((σ ^ n) (e i)) (e j)`. Rewrite `h1` using `[hpow, hs (e j), hs (e j)]`. Establish `h2 : f n i j ^ 2 ≤ C i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [f, C]`. Use polynomial arithmetic with `[h1]`. Apply the tactic sequence `constructor <;> nlinarith [h2, sq_nonneg (f n i j - 1), sq_nonneg (f n i j + 1), Int.le_self_sq (f n i j), Int.le_self_sq (-f n i j)]`.
+Use the polynomial consequences of the given equalities and inequalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_one_of_posDef_form (Y : Type) [AddCommGroup Y] [Module.Free ℤ Y] [Module.Finite ℤ Y]
     (b : LinearMap.BilinForm ℤ Y) (hs : ∀ y z, b y z = b z y) (hp : ∀ y, y ≠ 0 → 0 < b y y)
@@ -69,7 +69,7 @@ theorem exists_pow_eq_one_of_posDef_form (Y : Type) [AddCommGroup Y] [Module.Fre
   constructor <;> nlinarith [h2, sq_nonneg (f n i j - 1), sq_nonneg (f n i j + 1), Int.le_self_sq (f n i j), Int.le_self_sq (-f n i j)]
 
 /- English proof (translation)
-Introduce `Y _ _ _ b hs hp σ hσ` and use `exists_pow_eq_one_of_posDef_form Y b hs hp σ hσ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem latFinOrdSt : ReciprocityTheory.ChartRestriction.G.Geo.Tor.LatFinOrdSt :=
   fun Y _ _ _ b hs hp σ hσ => exists_pow_eq_one_of_posDef_form Y b hs hp σ hσ

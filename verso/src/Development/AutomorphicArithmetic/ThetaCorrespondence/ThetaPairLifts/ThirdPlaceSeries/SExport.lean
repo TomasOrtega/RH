@@ -18,9 +18,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.TwSys GlobalTheory.LiftLeaf GlobalTheory.TwAll GlobalTheory.SupLaw
 namespace GlobalTheory.ExportFirst
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 h20 h21 h22 hA hG hR hLG hconds hL p H`. Use `H.imp fun K _ _ _ _ hK => hK.imp fun B f T _ hp hKP hT C W V S N G c hc => ?_` and prove the remaining obligations. Take `⟨w, Z, c', ⟨b, -⟩, e⟩` from `hc`. It suffices to establish `hs : ∀ y : Σ (C : GlobalTheory.Mem.Cols B) (Y : GlobalTheory.Mem.Col2.TC.Later B C), GlobalTheory.Mem.Top.V4.Core K ⟨B, C, Y.W, Y.V, Y.S, Y.N, Y.G⟩ f T, y = ⟨w.C, Z, c'⟩ → GlobalTheory.Mem.Top.ExportAt (GlobalTheory.Mem.assemble B y.1 y.2.1.W y.2.1.V y.2.1.S y.2.1.N y.2.1.G) y.2. …`. Introduce and unpack `_ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Assume the hypotheses and unpack their components.
 
-Take `⟨cn, en⟩` from `b.nx`. Take `⟨j⟩` from `hp hKP hT w Z c'.Wt c'.O.p0 b.what₂ c'.O.nch b.n c'.O.xd cn ⟨en⟩ ⟨b.rx⟩ b.pin`. Conclude with `_root_.GlobalTheory.T.series_realization_of_published_alt h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 h20 h21 h22 (w.st Z).toD7 c'.O.nch c'.O.xd j.X j.Y j.gal j.field (_root_.UpperTheory.GalS.ghOf'_alt hL hA hG hR hLG _ _ j.cg j.gal.lab) (hconds _) c'.nch_t …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exportF_isBuiltE_alt_alt : _root_.GlobalTheory.ExportFirst.exportF_isBuiltE_tyz := by
   intro h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 h20 h21 h22 hA hG hR hLG hconds hL p H

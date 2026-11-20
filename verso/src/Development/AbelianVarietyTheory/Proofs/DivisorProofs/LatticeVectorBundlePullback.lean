@@ -29,18 +29,16 @@ def extF (D : Datum p) (f : D.La →ₗ[ℤ] ℤ) : AfP p ⊗[ℚ] VQ D →ₗ[A
     ((Algebra.linearMap ℚ (AfP p)) ∘ₗ LinearMap.liftBaseChange ℚ ((Algebra.linearMap ℤ ℚ) ∘ₗ f))
 
 /- English proof (translation)
-Simplify using `[extF, LinearMap.liftBaseChange_tmul, Algebra.smul_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extF_tmul (D : Datum p) (f : D.La →ₗ[ℤ] ℤ) (a : AfP p) (x : D.La) :
     extF D f (a ⊗ₜ ((1 : ℚ) ⊗ₜ x)) = a * ((f x : ℤ) : AfP p) := by
   simp [extF, LinearMap.liftBaseChange_tmul, Algebra.smul_def]
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, x, ha, rfl⟩` from `hz`. Introduce `v`. Rewrite using `[extF_tmul, map_mul, map_intCast]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_mem (ha v) (intCast_mem _ _)`. Consider the case `zero => simpa using (intAf p).zero_mem`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`.
-
-Conclude with `neg_mem hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem extF_mem (D : Datum p) (f : D.La →ₗ[ℤ] ℤ) {w : AfP p ⊗[ℚ] VQ D} (hw : w ∈ LaHat D) :
     extF D f w ∈ intAf p := by
@@ -55,23 +53,21 @@ theorem extF_mem (D : Datum p) (f : D.La →ₗ[ℤ] ℤ) {w : AfP p ⊗[ℚ] VQ
   | neg x _ hx => rw [map_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Establish `hb` using `extF_mem D f hw`. Establish `e : ((f x : ℤ) : AfP p) = (n : AfP p) * extF D f w`. Use `congrArg (extF D f) h` as an intermediate fact. Rewrite `this` using `[inAf, extF_tmul, _root_.one_mul, _root_.map_nsmul, nsmul_eq_mul]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set q : ℚ := (f x : ℚ) / n with hq`. Establish `hn0 : (n : ℚ) ≠ 0` using `by exact_mod_cast hn.ne'`. Establish `hval : ∀ v : IsDedekindDomain.HeightOneSpectrum ℤ, v.valuation ℚ q ≤ 1`. Introduce `v`. Distinguish the cases in `hv : v.asIdeal = Ideal.span {(p : ℤ)}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : v.valuation ℚ (n : ℚ) = 1`. Establish `: (n : ℚ) = algebraMap ℤ ℚ (n : ℤ)` using `by simp`. Rewrite using `[this, IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap, IsDedekindDomain.HeightOneSpectrum.intValuation_eq_one_iff, hv, Ideal.mem_span_singleton]`. Introduce `hd`. Establish `: (p : ℤ) ∣ (n : ℤ)` using `hd`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : p ∣ n` using `by exact_mod_cast this`. Establish `h3 : p ∣ Nat.gcd n p` using `Nat.dvd_gcd h2 dvd_rfl`. Rewrite `h3` using `[hnp]`. Conclude with `(Fact.out : p.Prime).one_lt.ne' (Nat.dvd_one.1 h3)`. Establish `h2 : v.valuation ℚ ((f x : ℤ) : ℚ) ≤ 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← eq_intCast (algebraMap ℤ ℚ), IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap]`. Conclude with `v.intValuation_le_one _`. Rewrite using `[hq, map_div₀, h1, div_one]`. Conclude with `h2`. Set `v' : AwayP p` to `⟨v, hv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbv` using `hb v'`. Establish `e2` using `congrArg (AfP.eval v') e`. Rewrite `e2` using `[map_intCast, map_mul, map_natCast]`. Establish `hqv : algebraMap ℚ (v.adicCompletion ℚ) q = AfP.eval v' (extF D f w)`. Establish `hn' : algebraMap ℚ (v.adicCompletion ℚ) (n : ℚ) ≠ 0` using `(map_ne_zero _).2 hn0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `: algebraMap ℚ (v.adicCompletion ℚ) q * algebraMap ℚ (v.adicCompletion ℚ) (n : ℚ) = ((f x : ℤ) : v.adicCompletion ℚ)`. Rewrite using `[← map_mul, hq, div_mul_cancel₀ _ hn0, map_intCast]`. Rewrite using `[← mul_left_inj' hn', this, e2, map_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : Valued.v (algebraMap ℚ (v.adicCompletion ℚ) q) = v.valuation ℚ q` using `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v q`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hc, hqv]`. Conclude with `(IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hbv`. Take `⟨k, hk⟩` from `IsDedekindDomain.HeightOneSpectrum.mem_integers_of_valuation_le_one ℚ q hval`. Use `⟨k, ?_⟩` and prove the remaining obligations. Establish `: ((k : ℤ) : ℚ) = (f x : ℚ) / n` using `by rw [← eq_intCast (algebraMap ℤ ℚ)]; exact hk.trans hq`.
-
-Establish `h4 : ((f x : ℤ) : ℚ) = ((n : ℤ) * k : ℤ)` using `by push_cast; rw [this]; field_simp`. Conclude with `h4` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem int_dvd (D : Datum p) (f : D.La →ₗ[ℤ] ℤ) (x : D.La) (n : ℕ) (hn : 0 < n) (hnp : n.Coprime p)
     (w : AfP p ⊗[ℚ] VQ D) (hw : w ∈ LaHat D) (h : inAf D x = n • w) : (n : ℤ) ∣ f x := by
@@ -126,11 +122,9 @@ end GlobalTheory.LKGeo.LatDiv
 namespace GlobalTheory.LKGeo.LatDiv
 
 /- English proof (translation)
-Introduce `p _ D x n hn hnp w hw h`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Establish `hd : ∀ i, (n : ℤ) ∣ b.coord i x` using `fun i => int_dvd D (b.coord i) x n hn hnp w hw h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose c hc using hd`. Use `⟨∑ i, c i • b i, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr x]`. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Establish `: b.repr x i = (n : ℤ) * c i` using `hc i`. Rewrite using `[this, mul_smul]`. Conclude with `Nat.cast_smul_eq_nsmul ℤ n _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_nsmul_of_inAf_eq_nsmul : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (x : D.La) (n : ℕ), 0 < n → n.Coprime p →
     ∀ w ∈ LaHat D, inAf D x = n • w → ∃ z, x = n • z := by

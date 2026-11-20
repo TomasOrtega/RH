@@ -8,7 +8,7 @@ open scoped ComplexOrder
 open GlobalTheory.ShFam.Hor GlobalTheory.HermFrame GlobalTheory.Toroidal
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun i => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (h i k) (norm_le_pi_norm v k) (norm_nonneg _) hb`. Use `_ = m * b * ‖v‖ := by simp [mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_mulVec_le_of_entry {m : ℕ} (M : Matrix (Fin m) (Fin m) ℂ) {b : ℝ} (hb : 0 ≤ b)
     (h : ∀ i k, ‖M i k‖ ≤ b) (v : Fin m → ℂ) : ‖M *ᵥ v‖ ≤ m * b * ‖v‖ := by
@@ -21,17 +21,17 @@ private theorem norm_mulVec_le_of_entry {m : ℕ} (M : Matrix (Fin m) (Fin m) �
     _ = m * b * ‖v‖ := by simp [mul_assoc]
 
 /- English proof (translation)
-Establish `hc : ContinuousAt H w₀` using `continuousAt_pi.2 fun a => continuousAt_pi.2 fun b => (h1 a b).continuousAt`. Take `⟨c, C, hc0, hC0, hq⟩` from `GlobalTheory.T.posDef_uniform_bounds_near_point E (Fin m) H w₀ hc hp`. Establish `hu : IsUnit (H w₀).det` using `(isUnit_iff_isUnit_det _).1 hp.isUnit`. Establish `hinv : ContinuousAt (fun w => (H w)⁻¹) w₀`. Use `ContinuousAt.comp (f := H) (g := fun A : Matrix (Fin m) (Fin m) ℂ => A⁻¹) ?_ hc` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuousAt_matrix_inv _ ?_` and prove the remaining obligations. Rewrite using `[Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ hu.ne_zero`. Set `f : E → (Fin m → Fin m → ℂ × (E →L[ℝ] ℂ))` to `fun z i k => ((H z)⁻¹ i k, fderiv ℝ (fun x => H x i k) z)`. Establish `hf : ContinuousAt f w₀` using `continuousAt_pi.2 fun i => continuousAt_pi.2 fun k => (continuousAt_pi.1 (continuousAt_pi.1 hinv i) k).prodMk ((h1 i k).fderiv_right (m := 0) (by norm_num)).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := ‖f w₀‖ + 1 with hBdef`. Establish `hB : 0 ≤ B` using `by positivity`. Use `⟨c, max C (m * B * (m * B)), hc0, le_max_of_le_left hC0, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hf.norm.eventually_lt continuousAt_const (lt_add_one ‖f w₀‖), hq, Filter.eventually_all.2 fun i => Filter.eventually_all.2 fun k => (h1 i k).eventually (by simp)] with z hz hqz ha`. Establish `hik : ∀ i k, ‖f z i k‖ ≤ B` using `fun i k => (norm_le_pi_norm (f z i) k).trans ((norm_le_pi_norm (f z) i).trans hz.le)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun a b => (ha a b).differentiableAt (by norm_num), fun v => ⟨(hqz v).1, (hqz v).2.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) (by positivity)), fun ξ => ?_⟩⟩` and prove the remaining obligations. Establish `hd : ∀ (η : E) i k, ‖dMat H z η i k‖ ≤ B * ‖η‖` using `fun η i k => (fderiv ℝ (fun x => H x i k) z).le_of_opNorm_le ((norm_snd_le (f z i k)).trans (hik i k)) η`. Establish `hw : ∀ i k, ‖wirt H z ξ i k‖ ≤ B * ‖ξ‖` using `fun i k => by`. Establish `e : wirt H z ξ i k = (1 / 2 : ℂ) * (dMat H z ξ i k - Complex.I * dMat H z (Complex.I • ξ) i k)` using `rfl`. Establish `a1` using `hd ξ i k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `a2` using `hd (Complex.I • ξ) i k`. Rewrite `a2` using `[norm_smul, Complex.norm_I, one_mul]`. Establish `a3` using `norm_sub_le (dMat H z ξ i k) (Complex.I * dMat H z (Complex.I • ξ) i k)`. Rewrite `a3` using `[norm_mul, Complex.norm_I, one_mul]`. Rewrite using `[e, norm_mul, show ‖(1 / 2 : ℂ)‖ = 1 / 2 by simp]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← mulVec_mulVec]`. Apply the tactic sequence `have b1 := norm_mulVec_le_of_entry (H z)⁻¹ hB (fun i k => (norm_fst_le (f z i k)).trans (hik i k)) (wirt H z ξ *ᵥ v)`. Apply the tactic sequence `have b2 := norm_mulVec_le_of_entry (wirt H z ξ) (by positivity) hw v`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem local_bounds {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : ℕ}
     (H : E → Matrix (Fin m) (Fin m) ℂ) (w₀ : E) (h1 : ∀ a b, ContDiffAt ℝ 1 (fun w => H w a b) w₀)
@@ -80,13 +80,13 @@ private theorem local_bounds {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ 
     _ ≤ _ := by gcongr; exact le_max_right _ _
 
 /- English proof (translation)
-Introduce `D O x P _ _ _ c σ ch U g hA y₀ hy₀`. Establish `hF` using `hA.2.2.2.2.2 (x.eigMet (embOf O.κ.e σ)) Set.univ isOpen_univ (OddPrimesWithRootsOfUnity.smoothOn_eigMet _ _)`. Establish `hmem : ch.e y₀ ∈ ch.e '' (U ∩ {p | (O.Φ.C c).down p ∈ Set.univ})` using `⟨y₀, ⟨hy₀, Set.mem_univ _⟩, rfl⟩`. Establish `hloc` using `fun τ : D.host.E →+* ℂ => local_bounds (GlobalTheory.BdGram.gramIn O (x.eigMet (embOf O.κ.e σ)) ch g τ) (ch.e y₀) (fun a b => (((hF τ).smooth b a).contDiffAt ((hF τ).isOpen.mem_nhds hmem)).of_le (by exact_mod_cast le_top)) (by simpa using ((hF τ).posDef _ hmem).transpose)`. Use `choose c₀ C₀ hc₀ hC₀ hev using hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ContinuousAt ch.e y₀` using `ch.e.continuousAt (hA.2.1 hy₀)`. Establish `hall` using `hcont.eventually (Filter.eventually_all.2 hev)`. Take `⟨V, hV, hVo, hyV⟩` from `eventually_nhds_iff.1 hall`. Establish `hS : 0 ≤ ∑ τ, 1 / c₀ τ` using `Finset.sum_nonneg fun τ _ => (one_div_pos.2 (hc₀ τ)).le`. Establish `hcle : ∀ τ, 1 / (1 + ∑ τ, 1 / c₀ τ) ≤ c₀ τ` using `fun τ => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 / c₀ τ ≤ ∑ τ, 1 / c₀ τ` using `Finset.single_le_sum (f := fun τ => 1 / c₀ τ) (fun τ _ => (one_div_pos.2 (hc₀ τ)).le) (Finset.mem_univ τ)`. Conclude with `(one_div_le (by positivity) (hc₀ τ)).2 (by linarith)`. Establish `hCle : ∀ τ, C₀ τ ≤ ∑ τ, C₀ τ` using `fun τ => Finset.single_le_sum (fun τ _ => hC₀ τ) (Finset.mem_univ τ)`. Use `⟨V ∩ U, 1 / (1 + ∑ τ, 1 / c₀ τ), ∑ τ, C₀ τ, hVo.inter hA.1, ⟨hyV, hy₀⟩, Set.inter_subset_right, by positivity, fun y hy τ => ?_⟩` and prove the remaining obligations. Take `⟨hd, hb⟩` from `hV y hy.1 τ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨hd, fun v => ?_⟩` and prove the remaining obligations. Take `⟨b1, b2, b3⟩` from `hb v`. Conclude with `⟨(mul_le_mul_of_nonneg_right (hcle τ) (by positivity)).trans b1, b2.trans (mul_le_mul_of_nonneg_right (hCle τ) (by positivity)), fun ξ => (b3 ξ).trans (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (hCle τ) (norm_nonneg _)) (norm_nonneg _))⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.local_metric_lower_bound :
     OnCore fun D O x P => ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (U : Set (GlobalTheory.CxPts (O.var c).str σ)) (g : ∀ p : GlobalTheory.CxPts (O.var c).str σ, (O.Φ.C c).FrameAt p), GlobalTheory.BdGram.IsHolAdapted O ch U g →

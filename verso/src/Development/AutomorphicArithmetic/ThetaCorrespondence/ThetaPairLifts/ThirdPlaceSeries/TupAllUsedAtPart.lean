@@ -28,11 +28,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.RT Globa
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fc.StageZeroRow
 /- English proof (translation)
-Introduce `t`. Break down `b.pt.charW.tup.mu_used t with h | ⟨w, hw⟩` into its components or cases. Use `left`. Substitute `h` using the available equality. Conclude with `b.P.tied.div.tup.mu0`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `right`. Use `⟨D.plEq.symm w, ?_⟩` and prove the remaining obligations. Establish `e1` using `b.pt.tupAt (D.plEq.symm w)`. Rewrite `e1` using `[Equiv.apply_symm_apply]`. Establish `e2` using `b.pt.tupTie (D.what₂.muAt (D.plEq.symm w)) (Or.inr ⟨_, rfl⟩)`.
-
-Rewrite `e2` using `[e1, hw]`. Conclude with `e2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupAllUsed_at_part_alt {D : D7} {O : Obj D} {c : ℝ} (b : _root_.GlobalTheory.Fc.Ind.PointSummands D O c) : Formalism.L2.DIV.TupAllUsed b.P := by
   intro t
@@ -48,19 +46,17 @@ theorem tupAllUsed_at_part_alt {D : D7} {O : Obj D} {c : ℝ} (b : _root_.Global
     rw [e1, hw] at e2
     exact e2
 /- English proof (translation)
-The claim follows from `Formalism.L2.DIV.DivRows3G.toRows (_root_.GlobalTheory.Fc.StageZeroRow.tupAllUsed_at_part_alt b) ⟨h.sharpRR, h.baseRR, h.divisionRows_rationalLift, h.thTheta, ⟨h.num.Ij, h.num.jw, h.num.etaJ⟩, h.colsBk⟩`.
+A detailed English derivation is pending.
 -/
 theorem p_div_at_piece_of_div3g {D : D7} {O : Obj D} {c : ℝ} (b : _root_.GlobalTheory.Fc.Ind.PointSummands D O c) (h : GlobalTheory.Cp.DivRows3G b.P) : _root_.GlobalTheory.Fc.Ind.DivisorPointSummands D O c b :=
   Formalism.L2.DIV.DivRows3G.toRows (_root_.GlobalTheory.Fc.StageZeroRow.tupAllUsed_at_part_alt b)
     ⟨h.sharpRR, h.baseRR, h.divisionRows_rationalLift, h.thTheta, ⟨h.num.Ij, h.num.jw, h.num.etaJ⟩, h.colsBk⟩
 /- English proof (translation)
-Introduce `hDS hHC hCR hCW hDC hOnto hLam Q Lk hPA hDiv hGood hGeo hL3 hFun hMi hKap hDf`. Use `_root_.GlobalTheory.Fc.row_rRows_of_parts_alt _root_.GlobalTheory.Fc.DefiniteSideCondition Q Lk ?_ hMi hKap hDf` and prove the remaining obligations. Use `(((((hPA.and hDiv).and hGood).and hGeo).and hL3).and hFun).imp fun 𝒜 σ hsel H => ?_` and prove the remaining obligations. Take `⟨⟨⟨⟨⟨hpa, hdv⟩, hgd⟩, hall⟩, hl3⟩, hfun⟩` from `H`. Use `choose τ hτ using fun {eps : ℝ} (Fm : FamP eps) (hc : 𝒜 Fm) x hx i => hall Fm hc x hx i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `τ' : _root_.GlobalTheory.Fc.CompatibleSelection σ` to `fun Fm hc x hx i => τ Fm hc x hx i`. Establish `hduty : ∀ (eps : ℝ) (Fm : FamP eps), 𝒜 Fm → GlobalTheory.EX.DQ.Duty7 Fm` using `fun _ Fm hc =>`. Set `⟨_, _, h7, _⟩` to `hsel Fm hc`. Use the proof step `(DQ.familyClass_sevenDuties_and_stableLattices _ Fm h7).1`. Establish `hiota : AtAll _root_.GlobalTheory.Fc.Ind.IotaPointSummands 𝒜 (_root_.GlobalTheory.Fc.summandSelection σ τ')` using `fun Fm hc x hx i => (hτ Fm hc x hx i).1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hppa : AtAll _root_.GlobalTheory.Fc.Ind.summandPrimitive 𝒜 (_root_.GlobalTheory.Fc.summandSelection σ τ')` using `fun Fm hc x hx i => hpa Fm hc x hx i`. Establish `hpdiv : AtAll _root_.GlobalTheory.Fc.Ind.DivisorPointSummands 𝒜 (_root_.GlobalTheory.Fc.summandSelection σ τ')` using `fun Fm hc x hx i => _root_.GlobalTheory.Fc.StageZeroRow.p_div_at_piece_of_div3g _ (hdv Fm hc x hx i)`. Establish `hcs : AtAll (fun D O c (b : _root_.GlobalTheory.Fc.Ind.PointSummands D O c) => GlobalTheory.ExportPin.ClassSumPin b.pt ∧ b.pt.CompatibilityConditions) 𝒜 (_root_.GlobalTheory.Fc.summandSelection σ τ')` using `fun Fm hc x hx i => ⟨(hτ Fm hc x hx i).2.1, (hτ Fm hc x hx i).2.2.1⟩`. Establish `hrows : Ind.EvW _root_.GlobalTheory.Fc.Ind.RowPointSummands 𝒜 (_root_.GlobalTheory.Fc.summandSelection σ τ')` using `_root_.GlobalTheory.T.eventually_pDiv_ties_of_class_sum_pin hDS hHC hCR hCW 𝒜 (_root_.GlobalTheory.Fc.summandSelection σ τ') hppa hpdiv hgd hcs`. Establish `hmore : Ind.EvW (fun _ _ _ b => GlobalTheory.BigOn.More b.pt) 𝒜 (_root_.GlobalTheory.Fc.summandSelection σ τ')` using `evW_of_atAll' fun Fm hc x hx i => (hτ Fm hc x hx i).2.2.2`.
-
-Use `⟨τ', ?_, hl3, _root_.GlobalTheory.T.eventually_norm_bound_of_more_points hOnto 𝒜 (_root_.GlobalTheory.Fc.summandSelection σ τ') hduty hrows hmore, _root_.GlobalTheory.T.eventually_L6_bound_of_lamLow hLam 𝒜 (_root_.GlobalTheory.Fc.summandSelection σ τ') hduty hrows, hfun⟩` and prove the remaining obligations. Conclude with `_root_.GlobalTheory.T.eventually_small_of_seeEx_primitive 𝒜 (_root_.GlobalTheory.Fc.summandSelection σ τ') (fun Fm hc x hx i => _root_.GlobalTheory.T.indefinite_scale_theta_nonvanishing_alt hDC _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (_root_.GlobalTheory.Fc.summandSelection σ τ' Fm hc x …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem row_rRows_stage0_alt : GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.DiscreteSeriesClassification → _root_.GlobalTheory.BigOn.SurjectiveOntoX → _root_.GlobalTheory.BigTop.LambdaLowerBound₂ → ∀ (Q : V4.Slot) (Lk : LkT _root_.GlobalTheory.Fc.BundleCondition), _root_.GlobalTheory.Fc.R1.SlotPrimitivityCondition Q Lk → _root_.GlobalTheory.Fc.R1.SlotDivisorCondition Q Lk → _root_.GlobalTheory.Fc.RL.RowGoodnessCondition Q Lk → _root_.GlobalTheory.Fc.S0.GeometricWeakCompatibility' Q Lk → _root_.GlobalTheory.Fc.S0.CovolumeBoundThirdPlaceSeries Q Lk → _root_.GlobalTheory.Fc.S0.FunctionalCondition Q Lk → _root_.GlobalTheory.Fc.RL.RowMultiplicityCondition Q Lk → _root_.GlobalTheory.Fc.RL.RowKappaCondition Q Lk → _root_.GlobalTheory.Fc.RL.RowDefectCondition Q Lk → _root_.GlobalTheory.Fc.R1.SlotDefiniteRowsCondition _root_.GlobalTheory.Fc.DefiniteSideCondition Q Lk := by
   intro hDS hHC hCR hCW hDC hOnto hLam Q Lk hPA hDiv hGood hGeo hL3 hFun hMi hKap hDf

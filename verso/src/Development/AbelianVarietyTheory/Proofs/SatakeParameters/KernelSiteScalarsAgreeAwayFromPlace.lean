@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.TwV.Xc.AwayId
 
 /- English proof (translation)
-Simplify using `only [mul_zpow, ← zpow_mul, inv_zpow', mul_sub, zpow_sub₀ hP, neg_mul, zpow_neg]`. Rewrite using `[mul_comm A n, mul_comm A' n', mul_comm V n, mul_comm V n']`. Clear the denominators using the available nonvanishing facts.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem key {K : Type} [Field K] {P M C : K} (hP : P ≠ 0) (hM : M ≠ 0) (hC : C ≠ 0) (V A A' n n' : ℤ) :
     P ^ (V * (n - n')) * (M ^ n' * (M ^ n)⁻¹ * (C ^ n) ^ (-A) * (C ^ n') ^ A') * (P ^ (-V) * (M * C ^ A)) ^ n *
@@ -26,7 +26,7 @@ theorem key {K : Type} [Field K] {P M C : K} (hP : P ≠ 0) (hM : M ≠ 0) (hC :
   field_simp
 
 /- English proof (translation)
-Set `φ : U →* M` to `{ toFun := fun y => f y, map_one' := h1, map_mul' := fun y z => hm _ y.2 _ z.2 }`. Use `map_zpow φ ⟨x, hx⟩ n` as an intermediate fact. Simplify `this` using `[φ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_zpow_of {G M : Type*} [Group G] [DivisionMonoid M] (f : G → M) (U : Subgroup G) (h1 : f 1 = 1)
     (hm : ∀ x ∈ U, ∀ y ∈ U, f (x * y) = f x * f y) {x : G} (hx : x ∈ U) (n : ℤ) : f (x ^ n) = f x ^ n := by
@@ -35,7 +35,7 @@ theorem map_zpow_of {G M : Type*} [Group G] [DivisionMonoid M] (f : G → M) (U 
   simpa [φ] using this
 
 /- English proof (translation)
-Rewrite using `[lamC_eq_of_mem lam hx, lamC_eq_of_mem lam hy, lamC_eq_of_mem lam (mul_mem hx hy), ← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamC_mul' {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) {x y : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) (hy : y ∈ TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam (x * y) = TaylorLogMetric.lamC lam x * TaylorLogMetric.lamC lam y := by
@@ -43,7 +43,7 @@ theorem lamC_mul' {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ
   rfl
 
 /- English proof (translation)
-Rewrite using `[lamC_eq_of_mem lam hx, lamC_eq_of_mem lam (zpow_mem hx n), ← map_zpow₀]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamC_zpow' {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) {x : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) (n : ℤ) :
     TaylorLogMetric.lamC lam (x ^ n) = TaylorLogMetric.lamC lam x ^ n := by
@@ -51,7 +51,7 @@ theorem lamC_zpow' {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* �
   rfl
 
 /- English proof (translation)
-Rewrite using `[lamC_eq_of_mem lam hx, lamC_eq_of_mem lam (inv_mem hx), ← map_inv₀]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamC_inv' {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) {x : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) :
     TaylorLogMetric.lamC lam x⁻¹ = (TaylorLogMetric.lamC lam x)⁻¹ := by
@@ -59,7 +59,7 @@ theorem lamC_inv' {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ
   rfl
 
 /- English proof (translation)
-Rewrite using `[lamC_eq_of_mem lam hx]`. Conclude with `(map_ne_zero lam).2 fun h => h0 (congrArg Subtype.val h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lamC_ne_zero' {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+* ℂ_[p]) {x : ℂ} (hx : x ∈ TaylorLogMetric.Qbar) (h0 : x ≠ 0) :
     TaylorLogMetric.lamC lam x ≠ 0 := by
@@ -67,7 +67,7 @@ theorem lamC_ne_zero' {p : ℕ} [Fact p.Prime] (lam : TaylorLogMetric.Qbar →+*
   exact (map_ne_zero lam).2 fun h => h0 (congrArg Subtype.val h)
 
 /- English proof (translation)
-Establish `hXa : P ^ (-V) * (M * C ^ A) ≠ 0` using `mul_ne_zero (zpow_ne_zero _ hP) (mul_ne_zero hM (zpow_ne_zero _ hC))`. Establish `hXb : P ^ V * (M⁻¹ * C ^ (-A')) ≠ 0` using `mul_ne_zero (zpow_ne_zero _ hP) (mul_ne_zero (inv_ne_zero hM) (zpow_ne_zero _ hC))`. Establish `hk` using `key hP hM hC V A A' n n'`. Rewrite using `[zpow_add₀ hXa, zpow_add₀ hXb]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem final {K : Type} [Field K] {P M C Q s : K} (hP : P ≠ 0) (hM : M ≠ 0) (hC : C ≠ 0) (V A A' la la' n n' : ℤ) :
     Q * P ^ (V * (n - n')) * (s * (M ^ n' * (M ^ n)⁻¹ * (C ^ n) ^ (-A) * (C ^ n') ^ A')) *
@@ -85,33 +85,33 @@ theorem final {K : Type} [Field K] {P M C Q s : K} (hP : P ≠ 0) (hM : M ≠ 0)
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hSpl hP v π hπ j hj a b ha hb La Lb La' Lb' hab hab'`. Establish `hR` using `GlobalTheory.TwV.DelB.sysS_ranks S`. Establish `hjle : j ≤ D.R.m` using `hj.le`. Establish `hj1 : j + 1 ≤ D.R.m` using `hj`. Establish `hjm : j < (sysS H X std).mm` using `hR.1 ▸ hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPa` using `hP j hjm La La' hab.1 hab'.1`. Establish `hPb` using `hP j hjm Lb Lb' hab.2.1 hab'.2.1`. Take `⟨k, hkU, hkI, hkO, hk⟩` from `GlobalTheory.T.det_latticeTuples_agreeing_away_from_place S hD hSpl v π hπ j hjle La Lb hab`. Take `⟨k', hkU', hkI', hkO', hk'⟩` from `GlobalTheory.T.det_latticeTuples_agreeing_away_from_place S hD hSpl v π hπ (j + 1) hj1 La' Lb' hab'`. Take `⟨c0, hc0⟩` from `GlobalTheory.T.kernelLattice_detIdeal_character_eq_const_mul_det S hD hSpl j hjle`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c0', hc0'⟩` from `GlobalTheory.T.kernelLattice_detIdeal_character_eq_const_mul_det S hD hSpl (j + 1) hj1`. Take `⟨-, hsl⟩` from `GlobalTheory.T.adelicPoints_agreeAway_of_latticeTuples_agreeAway S hD hSpl v j hjle La Lb hab`. Take `⟨-, hsl'⟩` from `GlobalTheory.T.adelicPoints_agreeAway_of_latticeTuples_agreeAway S hD hSpl v (j + 1) hj1 La' Lb' hab'`. Take `⟨hχm, hχ1, -, hχN⟩` from `GlobalTheory.T.charOnNormOneIdeles_mul_unramified_classValue S hD hSpl`. Establish `hbad` using `(GlobalTheory.T.level_badPrimes_coprime_residueChar S hD hSpl).2.2.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdtb` using `(GlobalTheory.T.lattice_det_mem_U1_and_ordA_eq_neg_len S hD hSpl j hjle Lb hab.2.1).1`. Establish `hdtb'` using `(GlobalTheory.T.lattice_det_mem_U1_and_ordA_eq_neg_len S hD hSpl (j + 1) hj1 Lb' hab'.2.1).1`. Establish `law` using `S.law`. Establish `hmuk : ∀ κ ∈ U1 (sigD D), κ ∈ intU D.host.F D.host.E → OneOff ((A0 J).pl v).1 κ → S.muT (j + 1) κ = 1`. Introduce `κ hκ hκI hκO`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `law.mu_unr j hj κ hκ hκI fun v' hv' => hκO v' fun h => hbad v' hv' ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `((A0 J).pl v).2`. Establish `hmuF : ∀ x ∈ U1 (sigD D), ∀ (e : ℤ) (κ : (AfE D.host.F D.host.E)ˣ), κ ∈ U1 (sigD D) → S.muT (j + 1) κ = 1 → S.muT (j + 1) (x * π ^ e * κ) = S.muT (j + 1) x * S.muT (j + 1) π ^ e`. Introduce `x hx e κ hκ h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpe : π ^ e ∈ U1 (sigD D)` using `zpow_mem hπ.1 e`. Rewrite using `[(law.mu_mul j hj).2 _ (mul_mem hx hpe) _ hκ, h1, mul_one, (law.mu_mul j hj).2 _ hx _ hpe, map_zpow_of (S.muT (j + 1)) (U1 (sigD D)) (law.mu_mul j hj).1 (law.mu_mul j hj).2 hπ.1 e]`. Establish `hchi1 : chiI J 1 = 1` using `hχ1 1 (one_mem _) (one_mem _)`. Establish `hchF : ∀ x ∈ U1 (sigD D), ∀ (e : ℤ) (κ : (AfE D.host.F D.host.E)ˣ), κ ∈ U1 (sigD D) → κ ∈ intU D.host.F D.host.E → chiI J (x * π ^ e * κ) = chiI J x * chiI J π ^ e`. Introduce `x hx e κ hκ hκI`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpe : π ^ e ∈ U1 (sigD D)` using `zpow_mem hπ.1 e`. Rewrite using `[hχm _ (mul_mem hx hpe) _ hκ, hχ1 κ hκ hκI, mul_one, hχm _ hx _ hpe, map_zpow_of (chiI J) (U1 (sigD D)) hchi1 hχm hπ.1 e]`. Establish `hscal : GlobalTheory.TwU.scal0 (sysS H X std) (J.fd std) t.χ S.muT j La La' = GlobalTheory.TwU.scal0 (sysS H X std) (J.fd std) t.χ S.muT j Lb Lb' * (S.muT (j + 1) π ^ (len (sysS H X std) v (j + 1) Lb'.2 - len (sysS H X std) v (j + 1) La'.2) * (S.muT (j + 1) π ^ (len (sysS H X std …`. Unfold `GlobalTheory.TwU.scal0`. Rewrite using `[hc0 La hab.1 hPa.1.2.2.1, hc0 Lb hab.2.1 hPb.1.2.2.1, hc0' La' hab'.1 hPa.1.2.2.2, hc0' Lb' hab'.2.1 hPb.1.2.2.2, hk, hk', hmuF _ hdtb _ k hkU (hmuk k hkU hkI hkO), hmuF _ hdtb' _ k' hkU' (hmuk k' hkU' hkI' hkO'), hchF _ hdtb _ k hkU hkI, hchF _ hdtb' _ k' hkU' hkI']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_zpow, mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Establish `hp0 : ((D.what₂.places.resChar w : ℕ) : ℂ_[D.what₂.places.resChar w]) ≠ 0` using `Nat.cast_ne_zero.2 (Fact.out : (D.what₂.places.resChar w).Prime).ne_zero`. Establish `hpp : GlobalTheory.TwU.pPow (sysS H X std) j La La' = GlobalTheory.TwU.pPow (sysS H X std) j Lb Lb' * ((D.what₂.places.resChar w : ℕ) : ℂ_[D.what₂.places.resChar w]) ^ ((sysS H X std).vm v (j + 1) * ((len (sysS H X std) v j Lb.2 - len (sysS H X std) v j La.2) - (len (sysS H X std …`. Unfold `GlobalTheory.TwU.pPow`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← zpow_add₀ hp0]`. Use `congr 1`. Rewrite using `[← Finset.add_sum_erase _ _ (Finset.mem_univ v), ← Finset.add_sum_erase _ _ (Finset.mem_univ v)]`. Establish `he : ∀ v' ∈ Finset.univ.erase v, (sysS H X std).vm v' (j + 1) * (len (sysS H X std) v' (j + 1) La'.2 - len (sysS H X std) v' j La.2) = (sysS H X std).vm v' (j + 1) * (len (sysS H X std) v' (j + 1) Lb'.2 - len (sysS H X std) v' j Lb.2)`. Introduce `v' hv'`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsl v' (Finset.ne_of_mem_erase hv'), hsl' v' (Finset.ne_of_mem_erase hv')]`. Rewrite using `[Finset.sum_congr rfl he]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm_alg : S.muT (j + 1) π ∈ TaylorLogMetric.Qbar` using `law.mu_alg j hj π hπ.1`. Establish `hm_ne : S.muT (j + 1) π ≠ 0` using `law.mu_ne hj hπ.1`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨𝔞, hN1, hc𝔞⟩` from `hχN π hπ.1`. Establish `hgx` using `GlobalTheory.TwU.XdInert.gidx_facts D _ _ hg`. Establish `hcu` using `GlobalTheory.TwV.Xc.chi_alg_unit_inert D _ S.lam t.χ t.χ_ok (by omega) hgx.2.1 𝔞 hN1`. Establish `hc_alg : chiI J π ∈ TaylorLogMetric.Qbar` using `hc𝔞 ▸ hcu.1`. Establish `hc_ne : chiI J π ≠ 0` using `hc𝔞 ▸ hcu.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsb : GlobalTheory.TwU.scal0 (sysS H X std) (J.fd std) t.χ S.muT j Lb Lb' ∈ TaylorLogMetric.Qbar` using `hPb.2.2.2.2.1`. Establish `hLm` using `lamC_ne_zero' S.lam hm_alg hm_ne`. Establish `hLc` using `lamC_ne_zero' S.lam hc_alg hc_ne`. Establish `hma` using `fun (e : ℤ) => zpow_mem hm_alg e`. Establish `hca` using `fun (e : ℤ) => zpow_mem hc_alg e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[lamC_mul' S.lam hm_alg (hca _), lamC_zpow' S.lam hc_alg]`. Rewrite `hb` using `[lamC_mul' S.lam (inv_mem hm_alg) (hca _), lamC_inv' S.lam hm_alg, lamC_zpow' S.lam hc_alg]`. Rewrite using `[hpp, hscal, lamC_mul' S.lam hsb (mul_mem (mul_mem (mul_mem (hma _) (inv_mem (hma _))) (zpow_mem (hca _) _)) (zpow_mem (hca _) _)), lamC_mul' S.lam (mul_mem (mul_mem (hma _) (inv_mem (hma _))) (zpow_mem (hca _) _)) (zpow_mem (hca _) _), lamC_mul' S.lam (mul_mem (hma _) (inv_mem ( …`. Establish `e1 : len (sysS H X std) v j Lb.2 = len (sysS H X std) v j La.2 + (len (sysS H X std) v j Lb.2 - len (sysS H X std) v j La.2)` using `by ring`. Establish `e2 : len (sysS H X std) v (j + 1) Lb'.2 = len (sysS H X std) v (j + 1) La'.2 + (len (sysS H X std) v (j + 1) Lb'.2 - len (sysS H X std) v (j + 1) La'.2)` using `by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `len (sysS H X std) v j Lb.2 - len (sysS H X std) v j La.2 = n at e1 ⊢`. Generalize the expression as in `len (sysS H X std) v (j + 1) Lb'.2 - len (sysS H X std) v (j + 1) La'.2 = n' at e2 ⊢`. Rewrite using `[e1, e2]`. Conclude with `final hp0 hLm hLc _ _ _ _ _ _ _`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scal_away : Sites (fun {D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X} [Fact (D.what₂.places.resChar w).Prime] {std t J} S => S.Pair → ∀ v π, IsUnifAt J v π → ∀ j < D.R.m, ∀ a b : (sysS H X std).G.Kf, S.E.iK a = ((D.what₂.places.resChar w : ℕ) : ℂ_[D.what₂.places.resChar w]) ^ (-((sysS H X std).vm v (j + 1))) * TaylorLogMetric.lamC S.lam (S.muT (j + 1) π * chiI J π ^ (((j * ((sysS H X std).t + 1) / 2 : ℕ) : ℤ))) → S.E.iK b = ((D.what₂.places.resChar w : ℕ) : ℂ_[D.what₂.places.resChar w]) ^ ((sysS H X std).vm v (j + 1)) * TaylorLogMetric.lamC S.lam ((S.muT (j + 1) π)⁻¹ * chiI J π ^ (-((((j + 1) * ((sysS H X std).t + 1) / 2 : ℕ) : ℤ)))) → ∀ (La Lb : (sysS H X std).Lt j) (La' Lb' : (sysS H X std).Lt (j + 1)), SameAway (hT := hT) (H := H) (X := X) std v j La Lb → SameAway (hT := hT) (H := H) (X := X) std v (j + 1) La' Lb' → GlobalTheory.TwU.pPow (sysS H X std) j La La' * TaylorLogMetric.lamC S.lam (GlobalTheory.TwU.scal0 (sysS H X std) (J.fd std) t.χ S.muT j La La') * S.E.iK (a ^ len (sysS H X std) v j Lb.2 * b ^ len (sysS H X std) v (j + 1) Lb'.2) = GlobalTheory.TwU.pPow (sysS H X std) j Lb Lb' * TaylorLogMetric.lamC S.lam (GlobalTheory.TwU.scal0 (sysS H X std) (J.fd std) t.χ S.muT j Lb Lb') * S.E.iK (a ^ len (sysS H X std) v j La.2 * b ^ len (sysS H X std) v (j + 1) La'.2)) := by
   intro D L hT Gi Gl Kc Dx cX ex u μ w hg Lv I H X _ std t J S hD hSpl hP v π hπ j hj a b ha hb La Lb La' Lb' hab hab'

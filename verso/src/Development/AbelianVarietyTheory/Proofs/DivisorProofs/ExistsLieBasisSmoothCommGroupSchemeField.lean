@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.LieField
 
 /- English proof (translation)
-Introduce `_ _ B _ _ _ hdim` and use `GlobalTheory.KeyPow.exists_isLieBasis B hdim`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isLieBasis_field : ∀ (K : Type) [Field K] (B : Over (Sp K)) [GrpObj B] [IsCommMonObj B] (g : ℕ),
     SmoothOfRelativeDimension g B.hom → ∃ y : Fin g → (epsR K ⟶ B), IsLieBasis y :=

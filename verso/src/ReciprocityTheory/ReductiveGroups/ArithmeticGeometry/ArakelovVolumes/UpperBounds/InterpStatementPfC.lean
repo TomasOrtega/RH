@@ -12,20 +12,20 @@ noncomputable section
 variable {n : ℕ} {U : Set (V n)}
 
 /- English proof (translation)
-The claim follows from `hU.isOpenEmbedding_subtypeVal.isLocalHomeomorph`.
+A detailed English derivation is pending.
 -/
 theorem val_lh (hU : IsOpen U) : IsLocalHomeomorph (Subtype.val : U → V n) :=
   hU.isOpenEmbedding_subtypeVal.isLocalHomeomorph
 
 /- English proof (translation)
-The claim follows from `(he (e.map_target hy)).trans (e.right_inv hy)`.
+A detailed English derivation is pending.
 -/
 theorem symm_val {e : OpenPartialHomeomorph U (V n)} (he : IsChart n (Subtype.val : U → V n) e)
     {y : V n} (hy : y ∈ e.target) : ((e.symm y : U) : V n) = y :=
   (he (e.map_target hy)).trans (e.right_inv hy)
 
 /- English proof (translation)
-Introduce `y hy` and use `by rw [← symm_val he hy] exact (e.symm y).2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem target_sub {e : OpenPartialHomeomorph U (V n)} (he : IsChart n (Subtype.val : U → V n) e) :
     e.target ⊆ U := fun y hy => by
@@ -33,7 +33,7 @@ theorem target_sub {e : OpenPartialHomeomorph U (V n)} (he : IsChart n (Subtype.
   exact (e.symm y).2
 
 /- English proof (translation)
-Introduce `y hy` and use `by simp only [Function.comp] rw [symm_val he hy]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem comp_symm_eqOn (f : V n → ℂ) {e : OpenPartialHomeomorph U (V n)}
     (he : IsChart n (Subtype.val : U → V n) e) :
@@ -42,21 +42,21 @@ theorem comp_symm_eqOn (f : V n → ℂ) {e : OpenPartialHomeomorph U (V n)}
   rw [symm_val he hy]
 
 /- English proof (translation)
-Introduce `e he` and use `(hf.mono (target_sub he)).congr (comp_symm_eqOn f he)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_val {f : V n → ℂ} (hf : ContDiffOn ℝ ∞ f U) :
     Smooth n (Subtype.val : U → V n) (fun x => f x.1) := fun e he =>
   (hf.mono (target_sub he)).congr (comp_symm_eqOn f he)
 
 /- English proof (translation)
-The claim follows from `smooth_val (f := fun y => (f y : ℂ)) (Complex.ofRealCLM.contDiff.comp_contDiffOn hf)`.
+A detailed English derivation is pending.
 -/
 theorem smoothR_val {f : V n → ℝ} (hf : ContDiffOn ℝ ∞ f U) :
     SmoothR n (Subtype.val : U → V n) (fun x => f x.1) :=
   smooth_val (f := fun y => (f y : ℂ)) (Complex.ofRealCLM.contDiff.comp_contDiffOn hf)
 
 /- English proof (translation)
-Establish `hx' : x.1 ∈ e.target`. Rewrite using `[show x.1 = e x from he hx]`. Conclude with `e.map_source hx`. Conclude with `e.open_target.mem_nhds hx'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_target (hU : IsOpen U) {e : OpenPartialHomeomorph U (V n)}
     (he : IsChart n (Subtype.val : U → V n) e) {x : U} (hx : x ∈ e.source) :
@@ -67,7 +67,7 @@ theorem eventually_target (hU : IsOpen U) {e : OpenPartialHomeomorph U (V n)}
   exact e.open_target.mem_nhds hx'
 
 /- English proof (translation)
-Take `⟨e, he, hx⟩` from `exists_chart n (Subtype.val : U → V n) (val_lh hU) x`. Rewrite using `[levi_eq_leviV n _ e he _ x hx ξ]`. Conclude with `leviV_congr ((comp_symm_eqOn (fun y => (f y : ℂ)) he).eventuallyEq_of_mem (eventually_target hU he hx)) ξ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_val (hU : IsOpen U) (f : V n → ℝ) (x : U) (ξ : Fin n → ℂ) :
     Levi n (Subtype.val : U → V n) (fun y => f y.1) x ξ = leviV n (fun y => (f y : ℂ)) x.1 ξ := by
@@ -77,7 +77,7 @@ theorem levi_val (hU : IsOpen U) (f : V n → ℝ) (x : U) (ξ : Fin n → ℂ) 
     (eventually_target hU he hx)) ξ
 
 /- English proof (translation)
-Take `⟨e, he, hx⟩` from `exists_chart n (Subtype.val : U → V n) (val_lh hU) x`. Rewrite using `[db_eq_wdb n _ e he j _ x hx]`. Establish `hfe : ((fun y : U => f y.1) ∘ e.symm) =ᶠ[𝓝 x.1] f` using `(comp_symm_eqOn f he).eventuallyEq_of_mem (eventually_target hU he hx)`. Simplify using `only [wdb]`. Rewrite using `[hfe.fderiv_eq]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem db_val (hU : IsOpen U) (f : V n → ℂ) (j : Fin n) (x : U) :
     db n (Subtype.val : U → V n) j (fun y => f y.1) x = wdb n j f x.1 := by
@@ -93,15 +93,15 @@ def ext0 (F : U → ℂ) (y : V n) : ℂ := by
   exact if h : y ∈ U then F ⟨y, h⟩ else 0
 
 /- English proof (translation)
-Simplify using `[ext0, x.2]`.
+Simplify using the standard rewrite rules.
 -/
 theorem extendByZeroOnSubset_apply_coe (F : U → ℂ) (x : U) : ext0 F x.1 = F x := by
   simp [ext0, x.2]
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨e, he, hx⟩` from `exists_chart n (Subtype.val : U → V n) (val_lh hU) ⟨y, hy⟩`. Establish `hT : e.target ∈ 𝓝 y` using `eventually_target hU he hx`. Establish `hd : DifferentiableAt ℂ (F ∘ e.symm) y` using `(hF e he).differentiableAt hT`. Establish `heq : (F ∘ e.symm) =ᶠ[𝓝 y] ext0 F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Filter.eventuallyEq_of_mem hT fun w hw => ?_` and prove the remaining obligations. Establish `h1` using `extendByZeroOnSubset_apply_coe F (e.symm w)`. Rewrite `h1` using `[symm_val he hw]`. Conclude with `h1.symm`. Conclude with `(hd.congr_of_eventuallyEq heq.symm).differentiableWithinAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem differentiableOn_extendByZero (hU : IsOpen U) {F : U → ℂ} (hF : Holo n (Subtype.val : U → V n) F) :
     DifferentiableOn ℂ (ext0 F) U := by
@@ -117,15 +117,15 @@ theorem differentiableOn_extendByZero (hU : IsOpen U) {F : U → ℂ} (hF : Holo
   exact (hd.congr_of_eventuallyEq heq.symm).differentiableWithinAt
 
 /- English proof (translation)
-Establish `key : ∀ y : V n, ((A ∩ Subtype.val ⁻¹' {y}).encard : ℝ≥0∞) = (Subtype.val '' A).indicator 1 y`. Introduce `y`. Distinguish the cases in `hy : y ∈ Subtype.val '' A`. Take `⟨x, hxA, rfl⟩` from `hy`. Establish `hs : A ∩ Subtype.val ⁻¹' {x.1} = {x}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hz⟩`. Conclude with `Set.mem_singleton_iff.mpr (Subtype.ext (Set.mem_singleton_iff.mp hz))`. Introduce `hz`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[Set.mem_singleton_iff]`. Substitute `hz` using the available equality. Conclude with `⟨hxA, rfl⟩`. Rewrite using `[hs, Set.encard_singleton, Set.indicator_of_mem (Set.mem_image_of_mem _ hxA)]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : A ∩ Subtype.val ⁻¹' {y} = ∅`. Use extensionality with `z`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Introduce `hz hzy`. Conclude with `hy ⟨z, hz, hzy⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, Set.encard_empty]`. Simplify using `[Set.indicator, hy]`. Rewrite using `[volFun, lintegral_congr key, lintegral_indicator_one (hU.measurableSet.subtype_image hA)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem volFun_val_eq_volume_image (hU : IsOpen U) (A : Set U) (hA : MeasurableSet A) :
     volFun n (Subtype.val : U → V n) A = volume (Subtype.val '' A) := by
@@ -156,9 +156,9 @@ private theorem volFun_val_eq_volume_image (hU : IsOpen U) (A : Set U) (hA : Mea
   rw [volFun, lintegral_congr key, lintegral_indicator_one (hU.measurableSet.subtype_image hA)]
 
 /- English proof (translation)
-Establish `hadd : VolAdditive n (Subtype.val : U → V n)`. Introduce `f hf hd`. Rewrite using `[volFun_val_eq_volume_image hU _ (MeasurableSet.iUnion hf), Set.image_iUnion]`. Rewrite using `[measure_iUnion (fun i j hij => (hd hij).image Subtype.val_injective.injOn (Set.subset_univ _) (Set.subset_univ _)) (fun i => hU.measurableSet.subtype_image (hf i))]`. Conclude with `tsum_congr fun i => (volFun_val_eq_volume_image hU _ (hf i)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `A hA`. Rewrite using `[vol, dif_pos hadd, Measure.ofMeasurable_apply _ hA, Measure.comap_apply _ Subtype.val_injective (fun s hs => hU.measurableSet.subtype_image hs) _ hA]`. Conclude with `volFun_val_eq_volume_image hU A hA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vol_val (hU : IsOpen U) :
     vol n (Subtype.val : U → V n) = Measure.comap Subtype.val volume := by
@@ -174,7 +174,7 @@ theorem vol_val (hU : IsOpen U) :
   exact volFun_val_eq_volume_image hU A hA
 
 /- English proof (translation)
-Rewrite using `[vol_val hU]`. Conclude with `lintegral_subtype_comap hU.measurableSet g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_val (hU : IsOpen U) (g : V n → ℝ≥0∞) :
     ∫⁻ x, g x.1 ∂vol n (Subtype.val : U → V n) = ∫⁻ y in U, g y := by
@@ -182,13 +182,13 @@ theorem lintegral_val (hU : IsOpen U) (g : V n → ℝ≥0∞) :
   exact lintegral_subtype_comap hU.measurableSet g
 
 /- English proof (translation)
-Set `X : EtaleStein n U` to `{ z := Subtype.val isLocalHomeomorph := val_lh hU e := fun x => e x.1 smooth_e := smoothR_val he levi_e := fun x ξ => by rw [levi_val hU]; exact hel x.1 x.2 ξ isCompact_le := fun a => by`. Rewrite using `[Subtype.isCompact_iff]`. Use `hec a using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Simplify using `[and_comm] }`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨F, hFh, hFi⟩` from `ReciprocityTheory.L2DbarEstimates.hormander n U X (fun x => φ x.1) (fun x => F0 x.1) (fun x => h x.1) (smoothR_val hφ) (fun x ξ => by rw [levi_val hU]; exact hφl x.1 x.2 ξ) (smooth_val hF0) (hh.comp measurable_subtype_coe) (fun x ξ => by show ENNReal.ofReal (‖dbarDot n (Subtype.v …`. Rewrite using `[levi_val hU, dbarDot]`. Simplify using `only [db_val hU]`. Conclude with `hb x.1 x.2 ξ)`. Use `⟨ext0 F, differentiableOn_extendByZero hU hFh, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : ∫⁻ y in U, ENNReal.ofReal (‖F0 y - ext0 F y‖ ^ 2 * Real.exp (-φ y)) = wint n (Subtype.val : U → V n) (fun x => F0 x.1 - F x) (fun x => φ x.1)`. Rewrite using `[wint, ← lintegral_val hU]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Simplify using `only [extendByZeroOnSubset_apply_coe]`. Establish `e2 : ∫⁻ y in U, h y * ENNReal.ofReal (Real.exp (-φ y)) = ∫⁻ x, h x.1 * ENNReal.ofReal (Real.exp (-φ x.1)) ∂vol n (Subtype.val : U → V n)` using `(lintegral_val hU _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2]`. Conclude with `hFi`.
+A detailed English derivation is pending.
 -/
 theorem hormander_open (hU : IsOpen U) (e : V n → ℝ) (he : ContDiffOn ℝ ∞ e U)
     (hel : ∀ y ∈ U, ∀ ξ : Fin n → ℂ, 0 ≤ (leviV n (fun w => (e w : ℂ)) y ξ).re)

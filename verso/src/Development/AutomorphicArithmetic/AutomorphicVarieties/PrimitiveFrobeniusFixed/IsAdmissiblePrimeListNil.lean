@@ -11,7 +11,7 @@ namespace UpperTheory.V.ML
 def th (M b : ℕ) (t : ZMod M) : ℤ := ((t.val * b / M : ℕ) : ℤ) - (((-t).val * b / M : ℕ) : ℤ)
 
 /- English proof (translation)
-Simplify using `[th]`.
+Simplify using the standard rewrite rules.
 -/
 theorem th_neg (M b : ℕ) (t : ZMod M) : th M b (-t) = -th M b t := by simp [th]
 
@@ -27,7 +27,7 @@ def admitted (l F r d : ℕ) : Prop := Squarefree d ∧ ∀ q : ℕ, q.Prime →
 def AdmL (l F r : ℕ) (L : List ℕ) : Prop := L.Nodup ∧ ∀ q ∈ L, AdmP l F r q
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨List.nodup_nil, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAdmissiblePrimeList_nil (l F r : ℕ) : AdmL l F r [] := ⟨List.nodup_nil, by simp⟩
 

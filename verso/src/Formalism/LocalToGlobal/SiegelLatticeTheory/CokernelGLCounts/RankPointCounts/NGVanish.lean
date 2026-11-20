@@ -12,9 +12,9 @@ namespace Formalism.L2.SG.NGVanish
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hi : ∀ i, A (stdOrthonormalBasis ℂ Wq i) = 0`. Introduce `i`. Use `congrArg (fun v : Formalism.L2.SG.PackageTie.HS Wq Wp => WithLp.ofLp v i) h` as an intermediate fact. Simplify `this` using `[Formalism.L2.SG.PackageTie.hsEmb]`. Establish `hA : (A : Wq →ₗ[ℂ] Wp) = 0` using `(stdOrthonormalBasis ℂ Wq).toBasis.ext (fun i => by simpa using hi i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `using congrArg (fun f : Wq →ₗ[ℂ] Wp => f x) hA`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hsEmb_eq_zero {Wq Wp : Type} [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq]
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] (A : Wq →L[ℂ] Wp)
@@ -41,17 +41,17 @@ def FormNGC : Prop :=
                 (Formalism.L2.SG.RealObj.gamW X u u' w)).comp B)
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨a₀, b₀, h2⟩` from `h Cg cb Cw cT CT C0`. Use `⟨a₀, b₀, fun C' Cl e1 e2 D large₂ X Y u u' hc ν hν t ht hJ => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hv`. Take `⟨⟨w, hw, hrep⟩, hform⟩` from `h2 C' Cl e1 e2 D large₂ X Y u u' hc ν hν t ht hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hex : ∃ w' : Point D.host.E (D.R.rS + 1), toPts w' = ptPN t ∧ ∃ g, Formalism.L2.SG.RealObj.IsPtRep X u u' w' g` using `⟨w, hw, hrep⟩`. Unfold `J2of at hJ`. Rewrite `hJ` using `[dif_pos hex]`. Establish `hJw : Jw Y u u' ν hex.choose = 0` using `hsEmb_eq_zero _ (norm_eq_zero.1 (pow_eq_zero_iff two_ne_zero |>.1 hJ))`. Take `⟨c, A, B, hO⟩` from `hform hex.choose hex.choose_spec.1 hex.choose_spec.2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ (k χ c : ℂ) (A : X.Vpi u →L[ℂ] X.Vpi u) (Z : X.Vpi u' →L[ℂ] X.Vpi u) (B : X.Vpi u' →L[ℂ] X.Vpi u'), k • Z = 0 → k • (χ • (c • A.comp (Z.comp B))) = 0`. Introduce `k χ c A Z B hZ`. Establish `hy : ∀ y, k • Z y = 0` using `fun y => by simpa using congrArg (fun T => T y) hZ`. Use extensionality with `x`. Simplify using `only [smul_apply, ContinuousLinearMap.comp_apply, zero_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[smul_comm k χ, smul_comm k c, ← map_smul A k, hy]`. Simplify using the standard rewrite rules. Establish `hamp : ampN (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = 0`. Unfold `ampN`. Rewrite using `[hO]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Jw at hJw`. Conclude with `key _ _ _ _ _ _ hJw`. Apply `hv` to reduce the goal to its premises. Use `show vec (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = 0`. Unfold `vec`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hamp]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem stepTermVanish_of_form (h : FormNGC) : StepTermVanish := by
   intro Cg cb Cw cT CT C0
@@ -99,7 +99,7 @@ def FormRelC : Prop :=
                 (Formalism.L2.SG.RealObj.gamW X u u' w)).comp B)
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Take `⟨a, b, hh⟩` from `h Cg cb Cw cT CT C0`. Conclude with `⟨a, b, fun C' Cl h1 h2 D large₂ X Y u u' hc ν hν t ht hv => hh C' Cl h1 h2 D large₂ X Y u u' hc ν hν t (Set.mem_union_left _ ht) hv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem formNGC_of_rel (h : FormRelC) : FormNGC := by
   intro Cg cb Cw cT CT C0
@@ -108,7 +108,7 @@ theorem formNGC_of_rel (h : FormRelC) : FormNGC := by
     hh C' Cl h1 h2 D large₂ X Y u u' hc ν hν t (Set.mem_union_left _ ht) hv⟩
 
 /- English proof (translation)
-The claim follows from `stepTermVanish_of_form (formNGC_of_rel h)`.
+A detailed English derivation is pending.
 -/
 theorem stepTermVanish_of_rel (h : FormRelC) : StepTermVanish :=
   stepTermVanish_of_form (formNGC_of_rel h)

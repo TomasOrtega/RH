@@ -3,17 +3,17 @@ import Mathlib
 namespace Bl.SecondBlockLemmaN
 
 /- English proof (translation)
-Introduce `z h`. Establish `key : ∀ k : ℕ, (3 / 2 : ℝ) ^ k * ‖z - 1‖ ≤ ‖z ^ (2 ^ k) - 1‖`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih`. Establish `hx` using `h (2 ^ k)`. Establish `e : z ^ (2 ^ (k + 1)) - 1 = (z ^ (2 ^ k) - 1) * ((z ^ (2 ^ k) - 1) + 2)`. Rewrite using `[pow_succ, pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e, norm_mul]`. Establish `h3 : ‖(2 : ℂ)‖ ≤ ‖(z ^ (2 ^ k) - 1) + 2‖ + ‖z ^ (2 ^ k) - 1‖`. Use `norm_sub_le ((z ^ (2 ^ k) - 1) + 2) (z ^ (2 ^ k) - 1)` as an intermediate fact. Simplify using `using this`. Establish `h4 : ‖(2 : ℂ)‖ = 2` using `by simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : (3 / 2 : ℝ) ≤ ‖(z ^ (2 ^ k) - 1) + 2‖` using `by linarith`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_comm]`. Conclude with `mul_le_mul_of_nonneg_left h2 (norm_nonneg _)`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hpos : 0 < ‖z - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hne)`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (1 / (2 * ‖z - 1‖)) (by norm_num : (1 : ℝ) < 3 / 2)`. Establish `h6 : 1 < (3 / 2 : ℝ) ^ k * (2 * ‖z - 1‖)` using `(div_lt_iff₀ (by positivity)).mp hk`. Establish `h7 : (3 / 2 : ℝ) ^ k * (2 * ‖z - 1‖) = 2 * ((3 / 2) ^ k * ‖z - 1‖)` using `by ring`. Establish `h8` using `key k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h9` using `h (2 ^ k)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ (z : Complex),

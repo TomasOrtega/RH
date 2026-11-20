@@ -43,15 +43,15 @@ variable {θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ
   {ρ : ∀ τ, Representation ℂ (Formalism.REAL.KG (ε τ)) (W τ)} {c : D.what₂.Tau → ℕ → ℂ}
 
 /- English proof (translation)
-Establish `sf : GlobalTheory.UAut.IsSm D.sp.cm.sig V.gram f` using `hf.smooth`. Establish `sg : GlobalTheory.UAut.IsSm D.sp.cm.sig V.gram g` using `hg.smooth`. Use `⟨fun γ hγ x => ?_, ?_, hf.cont.add hg.cont, GlobalTheory.UAut.isSm_add sf sg, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, hf.left γ hγ x, hg.left γ hγ x]`. Take `⟨A, hA, eA⟩` from `hf.level`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB, eB⟩` from `hg.level`. Use `⟨A ⊓ B, hA.inter hB, fun k hk hk' x => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, eA k hk.1 hk' x, eB k hk.2 hk' x]`. Take `⟨N, hN⟩` from `hf.growth`. Take `⟨M, hM⟩` from `hg.growth`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max N M, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨A, hA⟩` from `hN l hl`. Take `⟨B, hB⟩` from `hM l hl`. Use `⟨max A 0 + max B 0, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ (GlobalTheory.AdelicU.height D.sp.cm.sig V.gram x : ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.AdelicU.one_le_height D.sp.cm.sig V.gram x` after adjusting the coercions. Establish `p1` using `pow_le_pow_right₀ h1 (le_max_left N M)`. Establish `p2` using `pow_le_pow_right₀ h1 (le_max_right N M)`. Establish `p0 : (0 : ℝ) ≤ (GlobalTheory.AdelicU.height D.sp.cm.sig V.gram x : ℝ) ^ N` using `by positivity`. Establish `p0' : (0 : ℝ) ≤ (GlobalTheory.AdelicU.height D.sp.cm.sig V.gram x : ℝ) ^ M` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.UAut.foldr_add hl sf sg, Pi.add_apply, add_mul]`. Use `(norm_add_le _ _).trans (add_le_add ((hA x).trans ?_) ((hB x).trans ?_))` and prove the remaining obligations. Conclude with `(mul_le_mul_of_nonneg_right (le_max_left A 0) p0).trans (mul_le_mul_of_nonneg_left p1 (le_max_right A 0))`. Conclude with `(mul_le_mul_of_nonneg_right (le_max_left B 0) p0').trans (mul_le_mul_of_nonneg_left p2 (le_max_right B 0))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSmModOn_add {Γ : Set (GA D V)} {f g : GA D V → ℂ} (hf : IsSmModOn D.sp.cm.sig V.gram Γ f)
     (hg : IsSmModOn D.sp.cm.sig V.gram Γ g) : IsSmModOn D.sp.cm.sig V.gram Γ (f + g) := by
@@ -83,11 +83,11 @@ theorem isSmModOn_add {Γ : Set (GA D V)} {f g : GA D V → ℂ} (hf : IsSmModOn
         (mul_le_mul_of_nonneg_left p2 (le_max_right B 0))
 
 /- English proof (translation)
-Establish `sf : GlobalTheory.UAut.IsSm D.sp.cm.sig V.gram f` using `hf.smooth`. Use `⟨fun γ hγ x => ?_, ?_, hf.cont.const_smul a, GlobalTheory.UAut.isSm_smul a sf, ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, hf.left γ hγ x]`. Take `⟨A, hA, eA⟩` from `hf.level`. Conclude with `⟨A, hA, fun k hk hk' x => by simp only [Pi.smul_apply, eA k hk hk' x]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨N, hN⟩` from `hf.growth`. Use `⟨N, fun l hl => ?_⟩` and prove the remaining obligations. Take `⟨A, hA⟩` from `hN l hl`. Use `⟨‖a‖ * A, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.UAut.foldr_smul, Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hA x) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem isSmModOn_smul {Γ : Set (GA D V)} (a : ℂ) {f : GA D V → ℂ} (hf : IsSmModOn D.sp.cm.sig V.gram Γ f) :
     IsSmModOn D.sp.cm.sig V.gram Γ (a • f) := by
@@ -104,9 +104,9 @@ theorem isSmModOn_smul {Γ : Set (GA D V)} (a : ℂ) {f : GA D V → ℂ} (hf : 
     exact mul_le_mul_of_nonneg_left (hA x) (norm_nonneg _)
 
 /- English proof (translation)
-Take `⟨f1, f2, f3, f4⟩` from `hf`. Take `⟨g1, g2, g3, g4⟩` from `hg`. Use `⟨isSmModOn_add f1 g1, fun u hu hu' x => ?_, fun τ x => ?_, fun τ k => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, f2 u hu hu' x, g2 u hu hu' x]`. Conclude with `(coeffSpan (ρ τ)).add_mem (f3 τ x) (g3 τ x)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(GlobalTheory.Mem.AutSpace.linOnSm_gelf (θ := θ) (V := V) τ k).add f (GlobalTheory.SphSmooth.mem_smFun_of_isSm hθ f1.smooth) g (GlobalTheory.SphSmooth.mem_smFun_of_isSm hθ g1.smooth), f4, g4, smul_add]`.
+A detailed English derivation is pending.
 -/
 theorem formsOn_add (hθ : IsInfFam θ) {f g : GA D V → ℂ} (hf : f ∈ formsOn θ V X Y S U ε fr ρ c)
     (hg : g ∈ formsOn θ V X Y S U ε fr ρ c) : f + g ∈ formsOn θ V X Y S U ε fr ρ c := by
@@ -119,7 +119,7 @@ theorem formsOn_add (hθ : IsInfFam θ) {f g : GA D V → ℂ} (hf : f ∈ forms
       (GlobalTheory.SphSmooth.mem_smFun_of_isSm hθ g1.smooth), f4, g4, smul_add]
 
 /- English proof (translation)
-Take `⟨f1, f2, f3, f4⟩` from `hf`. Use `⟨isSmModOn_smul a f1, fun u hu hu' x => ?_, fun τ x => ?_, fun τ k => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, f2 u hu hu' x]`. Conclude with `(coeffSpan (ρ τ)).smul_mem a (f3 τ x)`. Rewrite using `[(GlobalTheory.Mem.AutSpace.linOnSm_gelf (θ := θ) (V := V) τ k).smul, f4, smul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formsOn_smul (a : ℂ) {f : GA D V → ℂ} (hf : f ∈ formsOn θ V X Y S U ε fr ρ c) :
     a • f ∈ formsOn θ V X Y S U ε fr ρ c := by
@@ -130,7 +130,7 @@ theorem formsOn_smul (a : ℂ) {f : GA D V → ℂ} (hf : f ∈ formsOn θ V X Y
   · rw [(GlobalTheory.Mem.AutSpace.linOnSm_gelf (θ := θ) (V := V) τ k).smul, f4, smul_comm]
 
 /- English proof (translation)
-Use `⟨isSmModOn_const _ _ _ 0, fun _ _ _ _ => rfl, fun τ x => (coeffSpan (ρ τ)).zero_mem, fun τ k => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.Mem.AutSpace.linOnSm_gelf (θ := θ) (V := V) τ k).smul 0 0` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem zero_mem_formsOn : (0 : GA D V → ℂ) ∈ formsOn θ V X Y S U ε fr ρ c := by
   refine ⟨isSmModOn_const _ _ _ 0, fun _ _ _ _ => rfl, fun τ x => (coeffSpan (ρ τ)).zero_mem, fun τ k => ?_⟩
@@ -138,7 +138,7 @@ theorem zero_mem_formsOn : (0 : GA D V → ℂ) ∈ formsOn θ V X Y S U ε fr �
   simpa using this
 
 /- English proof (translation)
-The claim follows from `have h := const_mem_forms (θ := θ) (V := V) U ε fr a ⟨isSmModOn_const _ _ _ a, h.2.1, h.2.2.1, h.2.2.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem const_mem_formsOn (a : ℂ) :
     (fun _ => a) ∈ formsOn θ V X Y S U ε fr (fun τ => Representation.trivial ℂ (Formalism.REAL.KG (ε τ)) ℂ) (fun _ _ => 0) :=
@@ -146,7 +146,7 @@ theorem const_mem_formsOn (a : ℂ) :
   ⟨isSmModOn_const _ _ _ a, h.2.1, h.2.2.1, h.2.2.2⟩
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x h => exact h`. Consider the case `zero => exact zero_mem_formsOn`. Consider the case `add x y _ _ hx hy => exact formsOn_add hθ hx hy`. Consider the case `smul a x _ hx => exact formsOn_smul a hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mem_formsOn_of_mem_span (hθ : IsInfFam θ) {f : GA D V → ℂ}
     (hf : f ∈ Submodule.span ℂ (formsOn θ V X Y S U ε fr ρ c)) : f ∈ formsOn θ V X Y S U ε fr ρ c := by

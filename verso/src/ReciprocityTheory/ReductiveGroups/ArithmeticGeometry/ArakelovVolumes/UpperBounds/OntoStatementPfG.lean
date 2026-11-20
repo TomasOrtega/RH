@@ -8,7 +8,7 @@ open scoped ENNReal ComplexConjugate
 noncomputable section
 
 /- English proof (translation)
-Establish `h : 0 ≤ (x - k * y) ^ 2 / k` using `by positivity`. Establish `e : (x - k * y) ^ 2 / k = x ^ 2 / k - 2 * (x * y) + k * y ^ 2`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem amgm {k x y : ℝ} (hk : 0 < k) : x * y ≤ (x ^ 2 / k + k * y ^ 2) / 2 := by
   have h : 0 ≤ (x - k * y) ^ 2 / k := by positivity
@@ -18,27 +18,25 @@ theorem amgm {k x y : ℝ} (hk : 0 < k) : x * y ≤ (x ^ 2 / k + k * y ^ 2) / 2 
   linarith
 
 /- English proof (translation)
-Establish `hWm : AEMeasurable (fun a => (w a).toReal) μ` using `hwm.ennreal_toReal`. Establish `hF1m : AEMeasurable (fun a => k a * ‖g a‖ ^ 2 * (w a).toReal) μ` using `(hkm.mul (hgm.norm.pow_const 2)).mul hWm`. Establish `hF2m : AEMeasurable (fun a => ‖u a‖ ^ 2 / k a * (w a).toReal) μ` using `((hum.norm.pow_const 2).div hkm).mul hWm`. Establish `hF1nn : 0 ≤ᵐ[μ] fun a => k a * ‖g a‖ ^ 2 * (w a).toReal` using `by filter_upwards [hk] with a ha`. Conclude with `mul_nonneg (mul_nonneg ha.le (sq_nonneg _)) ENNReal.toReal_nonneg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF2nn : 0 ≤ᵐ[μ] fun a => ‖u a‖ ^ 2 / k a * (w a).toReal` using `by filter_upwards [hk] with a ha`. Conclude with `mul_nonneg (div_nonneg (sq_nonneg _) ha.le) ENNReal.toReal_nonneg`. Establish `hA : ∫⁻ a, ENNReal.ofReal (k a * ‖g a‖ ^ 2) * w a ∂μ = ∫⁻ a, ENNReal.ofReal (k a * ‖g a‖ ^ 2 * (w a).toReal) ∂μ`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hk, hw] with a ha hwa`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[ENNReal.ofReal_mul (mul_nonneg ha.le (sq_nonneg _)), ENNReal.ofReal_toReal hwa.ne]`. Establish `hB : ∫⁻ a, ENNReal.ofReal (‖u a‖ ^ 2 / k a) * w a ∂μ = ∫⁻ a, ENNReal.ofReal (‖u a‖ ^ 2 / k a * (w a).toReal) ∂μ`. Apply `lintegral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hk, hw] with a ha hwa`. Rewrite using `[ENNReal.ofReal_mul (div_nonneg (sq_nonneg _) ha.le), ENNReal.ofReal_toReal hwa.ne]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hI`, `hJ`, the goal using `[hA]`. Rewrite `hJ` using `[hB]`. Establish `hJfin : ∫⁻ a, ENNReal.ofReal (‖u a‖ ^ 2 / k a * (w a).toReal) ∂μ < ⊤` using `lt_of_le_of_lt hJ (ENNReal.mul_lt_top ENNReal.ofReal_lt_top hI)`. Establish `hF1i : Integrable (fun a => k a * ‖g a‖ ^ 2 * (w a).toReal) μ` using `⟨hF1m.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal hF1nn).2 hI⟩`. Establish `hF2i : Integrable (fun a => ‖u a‖ ^ 2 / k a * (w a).toReal) μ` using `⟨hF2m.aestronglyMeasurable, (hasFiniteIntegral_iff_ofReal hF2nn).2 hJfin⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint1 : ∫ a, k a * ‖g a‖ ^ 2 * (w a).toReal ∂μ = (∫⁻ a, ENNReal.ofReal (k a * ‖g a‖ ^ 2 * (w a).toReal) ∂μ).toReal` using `integral_eq_lintegral_of_nonneg_ae hF1nn hF1m.aestronglyMeasurable`. Establish `hint2 : ∫ a, ‖u a‖ ^ 2 / k a * (w a).toReal ∂μ = (∫⁻ a, ENNReal.ofReal (‖u a‖ ^ 2 / k a * (w a).toReal) ∂μ).toReal` using `integral_eq_lintegral_of_nonneg_ae hF2nn hF2m.aestronglyMeasurable`. Establish `hPm : AEStronglyMeasurable (fun a => u a * conj (g a) * ((w a).toReal : ℂ)) μ` using `((hum.mul (Complex.continuous_conj.measurable.comp_aemeasurable hgm)).mul (Complex.measurable_ofReal.comp_aemeasurable hWm)).aestronglyMeasurable`. Establish `hPbd : ∀ᵐ a ∂μ, ‖u a * conj (g a) * ((w a).toReal : ℂ)‖ ≤ (‖u a‖ ^ 2 / k a * (w a).toReal + k a * ‖g a‖ ^ 2 * (w a).toReal) / 2` using `by filter_upwards [hk] with a ha`. Rewrite using `[norm_mul, norm_mul, Complex.norm_conj, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg ENNReal.toReal_nonneg]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h1` using `amgm (k := k a) (x := ‖u a‖) (y := ‖g a‖) ha`. Establish `hW0 : 0 ≤ (w a).toReal` using `ENNReal.toReal_nonneg`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h1 hW0]`. Establish `hbdi : Integrable (fun a => (‖u a‖ ^ 2 / k a * (w a).toReal + k a * ‖g a‖ ^ 2 * (w a).toReal) / 2) μ` using `(hF2i.add hF1i).div_const 2`. Establish `hPi : Integrable (fun a => u a * conj (g a) * ((w a).toReal : ℂ)) μ` using `Integrable.mono' hbdi hPm hPbd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hF1c : Integrable (fun a => ((k a * ‖g a‖ ^ 2 * (w a).toReal : ℝ) : ℂ)) μ` using `hF1i.ofReal`. Establish `hsplit : (fun a => ((k a : ℂ) * g a - u a) * conj (g a) * ((w a).toReal : ℂ)) = fun a => ((k a * ‖g a‖ ^ 2 * (w a).toReal : ℝ) : ℂ) - u a * conj (g a) * ((w a).toReal : ℂ)`. Use function extensionality and compare the values at `a`. Rewrite using `[sub_mul, sub_mul, mul_assoc (k a : ℂ) (g a) (conj (g a)), Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h0` using `[hsplit, integral_sub hF1c hPi, integral_complex_ofReal, sub_eq_zero]`. Establish `hn : 0 ≤ ∫ a, k a * ‖g a‖ ^ 2 * (w a).toReal ∂μ` using `integral_nonneg_of_ae hF1nn`. Establish `hle : ∫ a, k a * ‖g a‖ ^ 2 * (w a).toReal ∂μ ≤ ((∫ a, ‖u a‖ ^ 2 / k a * (w a).toReal ∂μ) + ∫ a, k a * ‖g a‖ ^ 2 * (w a).toReal ∂μ) / 2`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.norm_real, Real.norm_of_nonneg hn]`. Use `_ = ‖∫ a, u a * conj (g a) * ((w a).toReal : ℂ) ∂μ‖ := by rw [h0]`. Use `_ ≤ ∫ a, ‖u a * conj (g a) * ((w a).toReal : ℂ)‖ ∂μ := norm_integral_le_integral_norm _`. Use `_ ≤ ∫ a, (‖u a‖ ^ 2 / k a * (w a).toReal + k a * ‖g a‖ ^ 2 * (w a).toReal) / 2 ∂μ := integral_mono_ae hPi.norm hbdi hPbd`. Use `_ = ((∫ a, ‖u a‖ ^ 2 / k a * (w a).toReal ∂μ) + ∫ a, k a * ‖g a‖ ^ 2 * (w a).toReal ∂μ) / 2 := by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[integral_div, integral_add hF2i hF1i]`. Establish `hJr : ∫ a, ‖u a‖ ^ 2 / k a * (w a).toReal ∂μ ≤ q * ∫ a, k a * ‖g a‖ ^ 2 * (w a).toReal ∂μ`. Rewrite using `[hint1, hint2]`. Use `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hI.ne) hJ` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal hq0]`. Then use the resulting hypothesis.
-
-Establish `hz : ∫ a, k a * ‖g a‖ ^ 2 * (w a).toReal ∂μ = 0`. Use polynomial arithmetic with `[mul_nonneg (sub_nonneg.2 hq1.le) hn]`. Rewrite `hz` using `[hint1]`. Conclude with `((ENNReal.toReal_eq_zero_iff _).1 hz).resolve_right hI.ne`.
+A detailed English derivation is pending.
 -/
 theorem I_zero {α : Type*} [MeasurableSpace α] {μ : Measure α} {k : α → ℝ} {g u : α → ℂ}
     {w : α → ℝ≥0∞} {q : ℝ} (hk : ∀ᵐ a ∂μ, 0 < k a) (hw : ∀ᵐ a ∂μ, w a < ⊤) (hq1 : q < 1)

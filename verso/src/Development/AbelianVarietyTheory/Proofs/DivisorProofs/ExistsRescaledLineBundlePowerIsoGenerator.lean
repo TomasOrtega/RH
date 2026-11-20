@@ -11,13 +11,13 @@ namespace GlobalTheory.RigNorm
 open Opposite TopologicalSpace
 
 /- English proof (translation)
-Establish `hc : (⊤ : T.Opens) ≤ iSup W` using `fun x _ => by`. Take `⟨i, hi⟩` from `hW x`. Conclude with `Opens.mem_iSup.2 ⟨i, hi⟩`. Establish `glue : ∀ sf : ∀ i, Γ(T, W i), (∀ i j, (T.presheaf.map (homOfLE (inf_le_left : W i ⊓ W j ≤ W i)).op).hom (sf i) = (T.presheaf.map (homOfLE (inf_le_right : W i ⊓ W j ≤ W j)).op).hom (sf j)) → ∃ s : Γ(T, ⊤), ∀ i, (T.presheaf.map (homOfLE (le_top : W i ≤ ⊤)).op).hom s = sf i`. Introduce `sf hsf`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, -⟩` from `TopCat.Sheaf.existsUnique_gluing' T.sheaf W ⊤ (fun i => homOfLE le_top) hc sf hsf`. Conclude with `⟨s, hs⟩`. Take `⟨s, hs⟩` from `glue (fun i => (u i).val) (fun i j => congrArg Units.val (hu i j))`. Take `⟨s', hs'⟩` from `glue (fun i => ((u i)⁻¹).val) (fun i j => by`. Use `congrArg (fun x => (x⁻¹).val) (hu i j)` as an intermediate fact.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this)` using `[res, map_inv]`. Establish `h1 : s * s' = 1`. Apply `TopCat.Sheaf.eq_of_locally_eq' T.sheaf W ⊤ (fun i => homOfLE le_top) hc` to reduce the goal to its premises. Introduce `i`. Use `hs i` as an intermediate fact.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hs' i` as an intermediate fact. Express the relevant statement in the definitionally equal form `(T.presheaf.map (homOfLE (le_top : W i ≤ ⊤)).op).hom (s * s') = (T.presheaf.map (homOfLE (le_top : W i ≤ ⊤)).op).hom 1`. Rewrite using `[map_mul, map_one, hs i, hs' i, Units.mul_inv]`. Use `⟨⟨s, s', h1, by rw [mul_comm, h1]⟩, fun i => Units.ext ?_⟩` and prove the remaining obligations. Conclude with `hs i`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem glue_units {T : Scheme.{0}} {I : Type} (W : I → T.Opens) (hW : ∀ x : T, ∃ i, x ∈ W i)
     (u : ∀ i, Γ(T, W i)ˣ)
@@ -57,7 +57,7 @@ theorem val_pullU {X Y : Scheme.{0}} (f : Y ⟶ X) (U : X.Opens) (u : Γ(X, U)ˣ
     (pullU f U u).val = (f.app U).hom u.val := rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [val_res]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h₁ : W ≤ V) (h₂ : V ≤ U) (u : Γ(X, U)ˣ) :
     res h₁ (res h₂ u) = res (h₁.trans h₂) u := by
@@ -67,7 +67,7 @@ theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h₁ : W ≤ V) (h₂ : V �
   rfl
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.map_appLE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem appLE_res {X Y : Scheme.{0}} (h : X ⟶ Y) {U U' : Y.Opens} {V : X.Opens} (e : V ≤ h ⁻¹ᵁ U)
     (hU : U ≤ U') (x : Γ(Y, U')) :
@@ -76,7 +76,7 @@ theorem appLE_res {X Y : Scheme.{0}} (h : X ⟶ Y) {U U' : Y.Opens} {V : X.Opens
   rw [← CommRingCat.comp_apply, Scheme.Hom.map_appLE]
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_appLE {X Y : Scheme.{0}} (h : X ⟶ Y) {U : Y.Opens} {V V' : X.Opens} (e : V ≤ h ⁻¹ᵁ U)
     (hV : V' ≤ V) (x : Γ(Y, U)) :
@@ -84,7 +84,7 @@ theorem res_appLE {X Y : Scheme.{0}} (h : X ⟶ Y) {U : Y.Opens} {V V' : X.Opens
   rw [← CommRingCat.comp_apply, Scheme.Hom.appLE_map]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_appLE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appLE_app {X Y Z : Scheme.{0}} (h : X ⟶ Y) (k : Y ⟶ Z) {U : Z.Opens} {W : X.Opens}
     (e : W ≤ h ⁻¹ᵁ (k ⁻¹ᵁ U)) (x : Γ(Z, U)) :
@@ -92,7 +92,7 @@ theorem appLE_app {X Y Z : Scheme.{0}} (h : X ⟶ Y) (k : Y ⟶ Z) {U : Z.Opens}
   rw [Scheme.Hom.comp_appLE]; rfl
 
 /- English proof (translation)
-Substitute `H` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem appLE_congr' {X Y : Scheme.{0}} {h h' : X ⟶ Y} (H : h = h') {U : Y.Opens} {V : X.Opens}
     (e : V ≤ h ⁻¹ᵁ U) (x : Γ(Y, U)) :
@@ -107,20 +107,20 @@ theorem id_appLE' {X : Scheme.{0}} {U V : X.Opens} (e : V ≤ (𝟙 X) ⁻¹ᵁ 
   rfl
 
 /- English proof (translation)
-Substitute `hB hA` using the available equality. Take the linear combination `(-(Bq ^ k * Aq ^ k)) * ha`.
+Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem alg {R : Type*} [CommRing R] (Bp Bq Ap Aq ap aq cM cL : R) (k : ℕ) (hB : Bp = cM * Bq)
     (hA : Ap = cL * Aq) (ha : ap * cL ^ k = cM ^ k * aq) : Bp ^ k * (aq * Aq ^ k) = Bq ^ k * (ap * Ap ^ k) := by
   subst hB hA; linear_combination (-(Bq ^ k * Aq ^ k)) * ha
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[mul_right_comm, inv_mul_cancel_right]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_inv_mul_cancel_comm {G : Type*} [CommGroup G] (m l a l' : G) (h : l = l') : m * l⁻¹ * a * l' = m * a := by
   subst h; rw [mul_right_comm, inv_mul_cancel_right]
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_map' {X : Scheme.{0}} {U V W : X.Opens} (h₁ : W ≤ V) (h₂ : V ≤ U) (x : Γ(X, U)) :
     (X.presheaf.map (homOfLE h₁).op).hom ((X.presheaf.map (homOfLE h₂).op).hom x) =
@@ -128,33 +128,33 @@ theorem map_map' {X : Scheme.{0}} {U V W : X.Opens} (h₁ : W ≤ V) (h₂ : V �
   rw [← CommRingCat.comp_apply, ← Functor.map_comp]; rfl
 
 /- English proof (translation)
-Introduce `_ hx` and use `h hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pre_mono {X Y : Scheme.{0}} (f : X ⟶ Y) {U U' : Y.Opens} (h : U ≤ U') : f ⁻¹ᵁ U ≤ f ⁻¹ᵁ U' :=
   fun _ hx => h hx
 
 /- English proof (translation)
-Introduce `_ hx` and use `hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pre_inf {X Y : Scheme.{0}} (f : X ⟶ Y) (U U' : Y.Opens) : f ⁻¹ᵁ U ⊓ f ⁻¹ᵁ U' ≤ f ⁻¹ᵁ (U ⊓ U') :=
   fun _ hx => hx
 
 /- English proof (translation)
-Introduce `_ hy` and use `⟨Set.mem_iInter.1 hy.1 PUnit.unit, Set.mem_iInter.1 hy.2 PUnit.unit⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem pull_inf_le {X Y : Scheme.{0}} (L : LB X) (φ : Y ⟶ X) (i j : L.ι) :
     LB.wchart L (fun _ : PUnit => φ) (fun _ => i) ⊓ LB.wchart L (fun _ : PUnit => φ) (fun _ => j) ≤ φ ⁻¹ᵁ (L.U i ⊓ L.U j) :=
   fun _ hy => ⟨Set.mem_iInter.1 hy.1 PUnit.unit, Set.mem_iInter.1 hy.2 PUnit.unit⟩
 
 /- English proof (translation)
-Introduce `_ hy` and use `⟨Set.mem_iInter.1 hy.1 0, Set.mem_iInter.1 hy.2 0⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem pow_inf_le {X Y : Scheme.{0}} (L : LB X) (φ : Y ⟶ X) (i j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => φ) i ⊓ LB.wchart L (fun _ : Fin 1 => φ) j ≤ φ ⁻¹ᵁ (L.U (i 0) ⊓ L.U (j 0)) :=
   fun _ hy => ⟨Set.mem_iInter.1 hy.1 0, Set.mem_iInter.1 hy.2 0⟩
 
 /- English proof (translation)
-Use `show (∏ m : PUnit, (res (le_inf (inf_le_left.trans (LB.wchart_le L _ i m)) (inf_le_right.trans (LB.wchart_le L _ j m))) (pullU φ (L.U (i m) ⊓ L.U (j m)) (L.g (i m) (j m)))) ^ (1 : ℤ)).val = _`. Rewrite using `[Fintype.prod_unique, zpow_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem pull_g_val {X Y : Scheme.{0}} (L : LB X) (φ : Y ⟶ X) (i j : PUnit → L.ι) :
     ((L.pull φ).g i j).val = (Y.presheaf.map (homOfLE (fun y hy => ⟨Set.mem_iInter.1 hy.1 PUnit.unit,
@@ -168,7 +168,7 @@ by
   rfl
 
 /- English proof (translation)
-Use `show (∏ m : Fin 1, (res (le_inf (inf_le_left.trans (LB.wchart_le L _ i m)) (inf_le_right.trans (LB.wchart_le L _ j m))) (pullU φ (L.U (i m) ⊓ L.U (j m)) (L.g (i m) (j m)))) ^ (k : ℤ)).val = _`. Rewrite using `[Fin.prod_univ_one, zpow_natCast, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem powPull_g_val {X Y : Scheme.{0}} (L : LB X) (φ : Y ⟶ X) (k : ℕ) (i j : Fin 1 → L.ι) :
     ((powPull L φ (k : ℤ)).g i j).val = ((Y.presheaf.map (homOfLE (fun y hy => ⟨Set.mem_iInter.1 hy.1 0,
@@ -181,7 +181,7 @@ by
   rfl
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Conclude with `(congrArg Units.val (he (fun _ => i) (fun _ => j))).trans (congrArg (· * _) (pull_g_val L φ (fun _ => i) (fun _ => j)))`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem pull_rel {X Y : Scheme.{0}} (L : LB X) (φ : Y ⟶ X) (e : LB.Gen (L.pull φ)) (he : e.IsGen)
     (s : ∀ i : L.ι, Γ(Y, LB.wchart L (fun _ : PUnit => φ) (fun _ => i))ˣ) (hs : s = fun i => e.s (fun _ => i))
@@ -196,11 +196,9 @@ theorem pull_rel {X Y : Scheme.{0}} (L : LB X) (φ : Y ⟶ X) (e : LB.Gen (L.pul
     (congrArg (· * _) (pull_g_val L φ (fun _ => i) (fun _ => j)))
 
 /- English proof (translation)
-Substitute `hs` using the available equality. Establish `hhL : (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U p ⊓ (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U q ≤ (powPull L f (k : ℤ)).U p.2 ⊓ (powPull L f (k : ℤ)).U q.2` using `le_inf (inf_le_left.trans inf_le_right) (inf_le_right.trans inf_le_right)`. Establish `hhM : (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U p ⊓ (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U q ≤ (powPull M g (k : ℤ)).U p.1 ⊓ (powPull M g (k : ℤ)).U q.1` using `le_inf (inf_le_left.trans inf_le_left) (inf_le_right.trans inf_le_left)`. Establish `h2 : res (inf_le_left : (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U p ⊓ (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U q ≤ (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U p) (α₀.s p) * res hhL ((powPull L f (k : ℤ)).g p.2 q.2) = res hhM ((powPull M g (k …`. Rewrite using `[hα p q]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_inv_mul_cancel_comm _ _ _ _ rfl`. Establish `eL` using `((congrArg (X.presheaf.map (homOfLE hhL).op).hom (powPull_g_val L f k p.2 q.2)).trans (map_pow _ _ _)).trans (congrArg (· ^ k) (map_map' _ _ _))`. Establish `eM` using `((congrArg (X.presheaf.map (homOfLE hhM).op).hom (powPull_g_val M g k p.1 q.1)).trans (map_pow _ _ _)).trans (congrArg (· ^ k) (map_map' _ _ _))`. Establish `h3` using `congrArg Units.val h2`. Rewrite `h3` using `[Units.val_mul, Units.val_mul, val_res hhL, val_res hhM, eL, eM]`.
-
-Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_rel {X Y₁ Y₂ : Scheme.{0}} (L : LB Y₁) (M : LB Y₂) (f : X ⟶ Y₁) (g : X ⟶ Y₂) (k : ℕ)
     (α₀ : LB.Gen (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ)))) (hα : α₀.IsGen)
@@ -241,27 +239,25 @@ theorem div_rel {X Y₁ Y₂ : Scheme.{0}} (L : LB Y₁) (M : LB Y₂) (f : X �
   exact h3
 
 /- English proof (translation)
-Introduce `T X Z₀ Z₁ Z₂ L M f g eL eM t z π k eA eB α₀ hL hM hA hB hα hzπ hzf hzg`. Take `⟨sA, hsA⟩ : ∃ s : ∀ i : L.ι, Γ(Z₀, LB.wchart L (fun _ : PUnit => eL) (fun _ => i))ˣ, s = fun i => eA.s (fun _ => i)` from `⟨_, rfl⟩`. Take `⟨sB, hsB⟩ : ∃ s : ∀ i : M.ι, Γ(Z₀, LB.wchart M (fun _ : PUnit => eM) (fun _ => i))ˣ, s = fun i => eB.s (fun _ => i)` from `⟨_, rfl⟩`. Take `⟨sα, hsα⟩ : ∃ s : ∀ p : (Fin 1 → M.ι) × (Fin 1 → L.ι), Γ(X, (LB.wchart M (fun _ : Fin 1 => g) p.1 ⊓ LB.wchart L (fun _ : Fin 1 => f) p.2))ˣ, s = fun p => α₀.s p` from `⟨_, rfl⟩`. Set `Wo : (Fin 1 → M.ι) × (Fin 1 → L.ι) → T.Opens` to `fun p => z ⁻¹ᵁ (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U p ⊓ t ⁻¹ᵁ LB.wchart L (fun _ : PUnit => eL) (fun _ => p.2 0) ⊓ t ⁻¹ᵁ LB.wchart M (fun _ : PUnit => eM) (fun _ => p.1 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hDU : ∀ p : (Fin 1 → M.ι) × (Fin 1 → L.ι), (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U p = (LB.wchart M (fun _ : Fin 1 => g) p.1 ⊓ LB.wchart L (fun _ : Fin 1 => f) p.2)` using `fun _ => rfl`. Set `a : ∀ p, Γ(T, Wo p)ˣ` to `fun p => Units.map (z.appLE (LB.wchart M (fun _ : Fin 1 => g) p.1 ⊓ LB.wchart L (fun _ : Fin 1 => f) p.2) (Wo p) ((inf_le_left.trans inf_le_left).trans (pre_mono z (hDU p).le))).hom.toMonoidHom (sα p)`. Set `A : ∀ p, Γ(T, Wo p)ˣ` to `fun p => Units.map (t.appLE (LB.wchart L (fun _ : PUnit => eL) (fun _ => p.2 0)) (Wo p) (inf_le_left.trans inf_le_right)).hom.toMonoidHom (sA (p.2 0))`. Set `B : ∀ p, Γ(T, Wo p)ˣ` to `fun p => Units.map (t.appLE (LB.wchart M (fun _ : PUnit => eM) (fun _ => p.1 0)) (Wo p) inf_le_right).hom.toMonoidHom (sB (p.1 0))`. Set `u : ∀ p, Γ(T, Wo p)ˣ` to `fun p => B p ^ k * (a p * A p ^ k)⁻¹`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hcov : ∀ x : T, ∃ p, x ∈ Wo p`. Introduce `x`. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 (show eL (t x) ∈ ⨆ i, L.U i by rw [hL.cover]; trivial)`. Take `⟨j, hj⟩` from `Opens.mem_iSup.1 (show eM (t x) ∈ ⨆ j, M.U j by rw [hM.cover]; trivial)`. Establish `hf : f (z x) = eL (t x)` using `by rw [← Scheme.Hom.comp_apply, hzf, Scheme.Hom.comp_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg : g (z x) = eM (t x)` using `by rw [← Scheme.Hom.comp_apply, hzg, Scheme.Hom.comp_apply]`. Use `⟨(fun _ => j, fun _ => i), ⟨⟨⟨?_, ?_⟩, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Conclude with `Set.mem_iInter.2 fun _ => show g (z x) ∈ M.U j by rw [hg]; exact hj`. Conclude with `Set.mem_iInter.2 fun _ => show f (z x) ∈ L.U i by rw [hf]; exact hi`. Conclude with `Set.mem_iInter.2 fun _ => hi`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Set.mem_iInter.2 fun _ => hj`. Establish `hcomp : ∀ p q, res (inf_le_left : Wo p ⊓ Wo q ≤ Wo p) (u p) = res (inf_le_right : Wo p ⊓ Wo q ≤ Wo q) (u q)`. Introduce `p q`. Establish `eV : Wo p ⊓ Wo q ≤ z ⁻¹ᵁ ((LB.wchart M (fun _ : Fin 1 => g) p.1 ⊓ LB.wchart L (fun _ : Fin 1 => f) p.2) ⊓ (LB.wchart M (fun _ : Fin 1 => g) q.1 ⊓ LB.wchart L (fun _ : Fin 1 => f) q.2))` using `(inf_le_inf ((inf_le_left.trans inf_le_left).trans (pre_mono z (hDU p).le)) ((inf_le_left.trans inf_le_left).trans (pre_mono z (hDU q).le))).trans (pre_inf z _ _)`. Establish `eVA : Wo p ⊓ Wo q ≤ t ⁻¹ᵁ (LB.wchart L (fun _ : PUnit => eL) (fun _ => p.2 0) ⊓ LB.wchart L (fun _ : PUnit => eL) (fun _ => q.2 0))` using `(inf_le_inf (inf_le_left.trans inf_le_right) (inf_le_left.trans inf_le_right)).trans (pre_inf t _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eVB : Wo p ⊓ Wo q ≤ t ⁻¹ᵁ (LB.wchart M (fun _ : PUnit => eM) (fun _ => p.1 0) ⊓ LB.wchart M (fun _ : PUnit => eM) (fun _ => q.1 0))` using `(inf_le_inf inf_le_right inf_le_right).trans (pre_inf t _ _)`. Establish `ra` using `congrArg (z.appLE _ _ eV).hom (div_rel L M f g k α₀ hα sα hsα p q)`. Establish `rA` using `congrArg (t.appLE _ _ eVA).hom (pull_rel L eL eA hA sA hsA (p.2 0) (q.2 0))`. Establish `rB` using `congrArg (t.appLE _ _ eVB).hom (pull_rel M eM eB hB sB hsB (p.1 0) (q.1 0))`. Simplify using `only [map_mul, map_pow, appLE_res, appLE_app, appLE_congr' hzf, appLE_congr' hzg] at ra rA rB`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [u, map_mul, map_pow, map_inv]`. Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, div_eq_div_iff_mul_eq_mul]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, val_res, a, A, B, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, res_appLE]`. Conclude with `alg _ _ _ _ _ _ _ _ k rB rA ra`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Simplify using the standard rewrite rules.
 
-Take `⟨v, hv⟩` from `glue_units Wo hcov u hcomp`. Use `⟨⟨fun p => res (show (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U p ≤ π ⁻¹ᵁ ⊤ from fun _ _ => trivial) (pullU π ⊤ v) * α₀.s p⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `p q dsimp only`. Simplify using `only [map_mul, res_res, hα p q]`. Conclude with `mul_left_comm _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `p`. Establish `key : ((z ≫ π).appLE ⊤ (Wo p) (fun _ _ => trivial)).hom v.val = (u p).val`. Establish `h1` using `appLE_congr' hzπ (U := ⊤) (V := Wo p) (fun _ _ => trivial) v.val`. Rewrite `h1` using `[id_appLE']`. Conclude with `h1.trans (congrArg Units.val (hv p))`.
+Simplify using the standard rewrite rules. Simplify by unfolding definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Establish `hu` using `congrArg Units.val (inv_mul_cancel_right (B p ^ k) (a p * A p ^ k))`. Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val] at hu`. Simplify using `only`. Simplify using `only [Units.val_mul, val_res, val_pullU, map_mul, appLE_res, appLE_app]`. Rewrite using `[key, _root_.mul_assoc]`.
-
-Substitute `hsA hsB hsα` using the available equality. Conclude with `hu`.
+A detailed English derivation is pending.
 -/
 theorem exists_rescaled_gen : ∀ {T X Z₀ Z₁ Z₂ : Scheme.{0}} (L : LB Z₁) (M : LB Z₂) (f : X ⟶ Z₁) (g : X ⟶ Z₂) (eL : Z₀ ⟶ Z₁) (eM : Z₀ ⟶ Z₂) (t : T ⟶ Z₀) (z : T ⟶ X) (π : X ⟶ T) (k : ℕ) (eA : LB.Gen (L.pull eL)) (eB : LB.Gen (M.pull eM)) (α₀ : LB.Gen (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ)))), L.IsLB → M.IsLB → eA.IsGen → eB.IsGen → α₀.IsGen → z ≫ π = 𝟙 T → z ≫ f = t ≫ eL → z ≫ g = t ≫ eM → ∃ α : LB.Gen (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))), α.IsGen ∧ ∀ p : (Fin 1 → M.ι) × (Fin 1 → L.ι), (z.appLE ((LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U p) (z ⁻¹ᵁ (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U p ⊓ t ⁻¹ᵁ LB.wchart L (fun _ : PUnit => eL) (fun _ => p.2 0) ⊓ t ⁻¹ᵁ LB.wchart M (fun _ : PUnit => eM) (fun _ => p.1 0)) (inf_le_left.trans inf_le_left)).hom (α.s p).val * ((t.appLE (LB.wchart L (fun _ : PUnit => eL) (fun _ => p.2 0)) (z ⁻¹ᵁ (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U p ⊓ t ⁻¹ᵁ LB.wchart L (fun _ : PUnit => eL) (fun _ => p.2 0) ⊓ t ⁻¹ᵁ LB.wchart M (fun _ : PUnit => eM) (fun _ => p.1 0)) (inf_le_left.trans inf_le_right)).hom (eA.s (fun _ => p.2 0)).val) ^ k = ((t.appLE (LB.wchart M (fun _ : PUnit => eM) (fun _ => p.1 0)) (z ⁻¹ᵁ (LB.div (powPull M g (k : ℤ)) (powPull L f (k : ℤ))).U p ⊓ t ⁻¹ᵁ LB.wchart L (fun _ : PUnit => eL) (fun _ => p.2 0) ⊓ t ⁻¹ᵁ LB.wchart M (fun _ : PUnit => eM) (fun _ => p.1 0)) inf_le_right).hom (eB.s (fun _ => p.1 0)).val) ^ k := by
   intro T X Z₀ Z₁ Z₂ L M f g eL eM t z π k eA eB α₀ hL hM hA hB hα hzπ hzf hzg

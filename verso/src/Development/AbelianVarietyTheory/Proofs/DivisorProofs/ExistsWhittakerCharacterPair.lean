@@ -14,11 +14,11 @@ open Formalism.L2.DIV
 variable {κ κ' : Type} [CommRing κ] [CommRing κ'] {r : ℕ}
 
 /- English proof (translation)
-Establish `hc : ∀ a b, ((Matrix.GeneralLinearGroup.map f.toRingHom M : GL (Fin r) κ') : Matrix (Fin r) (Fin r) κ') a b = f ((M : Matrix (Fin r) (Fin r) κ) a b)` using `fun a b => rfl`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `(h i j).1 hij` as an intermediate fact.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hc]`. Conclude with `f.injective (by rw [this, map_zero])`. Use `(h i i).2 rfl` as an intermediate fact. Rewrite `this` using `[hc]`. Conclude with `f.injective (by rw [this, map_one])`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h a b`. Use `⟨fun hab => ?_, fun hab => ?_⟩` and prove the remaining obligations. Rewrite using `[hc, unip_lower h hab, map_zero]`. Substitute `hab` using the available equality. Rewrite using `[hc, unip_diag h, map_one]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUniUp_map_iff (f : κ ≃+* κ') (M : GL (Fin r) κ) :
     Formalism.MainNotions.ArithmeticCylinders.IsUniUp ((Matrix.GeneralLinearGroup.map f.toRingHom M : GL (Fin r) κ') : Matrix (Fin r) (Fin r) κ') ↔
@@ -41,17 +41,17 @@ theorem isUniUp_map_iff (f : κ ≃+* κ') (M : GL (Fin r) κ) :
       rw [hc, unip_diag h, map_one]
 
 /- English proof (translation)
-Establish `h1 : ∀ i : Fin r, (∑ j : Fin r, if supEdge i j then (M : Matrix (Fin r) (Fin r) κ) i j else 0) = Formalism.MainNotions.ArithmeticCylinders.entN (M : Matrix (Fin r) (Fin r) κ) i.val (i.val + 1)`. Introduce `i`. Unfold `Formalism.MainNotions.ArithmeticCylinders.entN`. Distinguish the cases in `hi : i.val + 1 < r`. Rewrite using `[Finset.sum_eq_single ⟨i.val + 1, hi⟩]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos (show supEdge i ⟨i.val + 1, hi⟩ from rfl), dif_pos ⟨i.isLt, hi⟩]`. Introduce `j _ hj`. Rewrite using `[if_neg (show ¬ supEdge i j from fun e => hj (Fin.ext e))]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg (by omega)]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[if_neg (show ¬ supEdge i j from fun e => by`. Use `j.isLt` as an intermediate fact. Unfold `supEdge at e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Use the proof step `omega)]`. Unfold `edgeSum`. Rewrite using `[Finset.sum_congr rfl (fun i _ => h1 i)]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => Formalism.MainNotions.ArithmeticCylinders.entN (M : Matrix (Fin r) (Fin r) κ) i (i + 1)) r]`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hr` using the available equality. Simplify using the standard rewrite rules. Take `⟨s, rfl⟩ : ∃ s, r = s + 1` from `⟨r - 1, by omega⟩`. Rewrite using `[Finset.sum_range_succ, Nat.add_sub_cancel]`. Establish `: Formalism.MainNotions.ArithmeticCylinders.entN (M : Matrix (Fin (s + 1)) (Fin (s + 1)) κ) s (s + 1) = 0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Formalism.MainNotions.ArithmeticCylinders.entN`. Rewrite using `[dif_neg (by omega)]`. Rewrite using `[this, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem edgeSum_supEdge_eq (M : GL (Fin r) κ) :
     edgeSum supEdge M = ∑ i ∈ Finset.range (r - 1), Formalism.MainNotions.ArithmeticCylinders.entN (M : Matrix (Fin r) (Fin r) κ) i (i + 1) := by
@@ -85,7 +85,7 @@ theorem edgeSum_supEdge_eq (M : GL (Fin r) κ) :
     rw [this, add_zero]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.ArithmeticCylinders.entN`. Use `split_ifs`. Both sides reduce to the same expression. Rewrite using `[map_zero]`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entN_map (f : κ ≃+* κ') (M : GL (Fin r) κ) (a b : ℕ) :
     Formalism.MainNotions.ArithmeticCylinders.entN ((Matrix.GeneralLinearGroup.map f.toRingHom M : GL (Fin r) κ') : Matrix (Fin r) (Fin r) κ') a b =
@@ -107,11 +107,9 @@ variable {D : D7} {G : Type} [Group G] {P0 : Subgroup G} {ψ0 : P0 →* D.what�
   {ψ : ∀ PP : Pl D.host.E, AddChar (kP PP) D.what₂.LL} {eC : G ≃* G0 Pg D.R.r}
 
 /- English proof (translation)
-Rewrite using `[h.p0 g]`. Use `show eC g ∈ Subgroup.pi Set.univ _ ↔ _`. Rewrite using `[Subgroup.mem_pi]`. Prove the components needed by the constructor for the conclusion. Introduce `hx kv`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.comp g kv, isUniUp_map_iff]`. Conclude with `hx (pl kv) (Set.mem_univ _)`. Introduce `hx PP _`. Take `⟨kv, rfl⟩` from `pl.surjective PP`. Use `hx kv` as an intermediate fact.
-
-Rewrite `this` using `[h.comp g kv, isUniUp_map_iff]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_iff_of_lvlTie (h : LvlTie D P0 ψ0 Ps ψs eG Pg pl res ψ eC) (g : G) :
     g ∈ P0 ↔ ∀ kv, Formalism.MainNotions.ArithmeticCylinders.IsUniUp ((eG g kv : GL (Fin D.R.r) (ZMod (D.host.g kv.1))) :
@@ -130,7 +128,7 @@ theorem mem_iff_of_lvlTie (h : LvlTie D P0 ψ0 Ps ψs eG Pg pl res ψ eC) (g : G
     exact this
 
 /- English proof (translation)
-Rewrite using `[h.chi0 g hg]`. Unfold `Formalism.L2.DIV.P0 LevelP.ofLocal`. Simplify using `only`. Rewrite using `[MonoidHom.finsetProd_apply, Units.coe_prod]`. Conclude with `Finset.prod_congr rfl fun PP _ => rfl`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_of_lvlTie (h : LvlTie D P0 ψ0 Ps ψs eG Pg pl res ψ eC) (g : P0)
     (hg : eC g ∈ (Formalism.L2.DIV.P0 Pg D.R.r ψ).H) :
@@ -152,23 +150,23 @@ open GlobalTheory.ShareOn.WhitBase
 open Formalism.L2.DIV in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p hR`. Take `⟨Pg, pl, res, ψ', eC, hL, -⟩` from `hR.psi`. Rewrite `hL` using `[p.eGtie]`. Unfold `HalfUnip`. Generalize the expression as in `p.R.eG.trans p.cG = e at hL ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable.
 
-Set `ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g kv.1)) ℂ` to `fun kv => D.what₂.embLL.toMonoidHom.compAddChar ((ψ' (pl kv).1).compAddMonoidHom ((res kv).symm.toAddMonoidHom.comp (-AddMonoidHom.id _)))`. Establish `hψ : ∀ kv c, ψ kv c = D.what₂.embLL (ψ' (pl kv).1 ((res kv).symm (-c)))` using `fun _ _ => rfl`. Set `iso` to `p.P.P0.equivMapOfInjective e.toMonoidHom e.injective`. Establish `hiso : ∀ g0 : p.P.P0, ((iso g0 : p.P.P0.map e.toMonoidHom) : G0g D.nd) = e g0` using `fun _ => rfl`. Set `lam : (p.P.P0.map e.toMonoidHom) →* ℂˣ` to `(Units.map D.what₂.embLL.toMonoidHom).comp (p.P.ψ0⁻¹.comp iso.symm.toMonoidHom)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hlam : ∀ g, ((lam g : ℂˣ) : ℂ) = D.what₂.embLL ((p.P.ψ0 (iso.symm g) : D.what₂.LLˣ) : D.what₂.LL)⁻¹`. Introduce `g`. Use `show D.what₂.embLL (((p.P.ψ0 (iso.symm g))⁻¹ : D.what₂.LLˣ) : D.what₂.LL) = _`. Rewrite using `[Units.val_inv_eq_inv_val]`. Use `⟨lam, ψ, ⟨?_, ?_, ?_⟩, ?_, ⟨0, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `kv h1`. Apply `hL.gen (pl kv).1 (pl kv).2` to reduce the goal to its premises. Use extensionality with `x`. Establish `h2 : ψ kv (-(res kv x)) = 1` using `by rw [h1, AddChar.one_apply]`. Rewrite `h2` using `[hψ, neg_neg, RingEquiv.symm_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddChar.one_apply]`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Rewrite using `[h2, map_one]`. Introduce `g`. Rewrite using `[Subgroup.mem_map_equiv, mem_iff_of_lvlTie hL]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [MulEquiv.apply_symm_apply]`. Introduce `g`. Establish `hg0 : e (iso.symm g) = (g : G0g D.nd)` using `by rw [← hiso, MulEquiv.apply_symm_apply]`. Establish `hg : eC (iso.symm g) ∈ (Formalism.L2.DIV.P0 Pg D.R.r ψ').H` using `(hL.p0 _).1 (iso.symm g).2`. Rewrite using `[hlam, chi_of_lvlTie hL _ hg, ← Finset.prod_inv_distrib, map_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Fintype.prod_equiv pl (fun kv => D.what₂.embLL (ψ' (pl kv).1 (edgeSum supEdge (eC (iso.symm g) (pl kv))))⁻¹) _ (fun _ => rfl)]`. Use `Finset.prod_congr rfl fun kv _ => ?_` and prove the remaining obligations. Rewrite using `[← hg0, hL.comp _ kv]`. Simplify using `only [entN_map]`. Rewrite using `[← map_sum, ← edgeSum_supEdge_eq, hψ, ← map_neg, RingEquiv.symm_apply_apply, AddChar.map_neg_eq_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g h`. Establish `: iso.symm ⟨_, h⟩ = g`. Rewrite using `[MulEquiv.symm_apply_eq]`. Conclude with `Subtype.ext rfl`. Rewrite using `[hlam, this, ← Units.val_inv_eq_inv_val]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `g hg v`. Conclude with `(mem_iff_of_lvlTie hL g).1 hg ⟨0, v⟩`.
+A detailed English derivation is pending.
 -/
 theorem baseLevel_isWhit : ∀ (D : D7) (L : SizeData₂ D) (hT : GatTies D) (Gi : Formalism.MainNotions.G.Inst D L) (Gl : Formalism.MainNotions.G.LatInst D) (Kc : Formalism.MainNotions.G.Consts) (Y : DivX D) (cX : ExtraC) (ex : Extra D L hT Gi Gl Kc Y cX) (Csz : ℝ) (p : PtAt ex Csz), p.Rows → ∃ (lam : (p.P.P0.map (p.R.eG.trans p.cG).toMonoidHom) →* ℂˣ) (ψ : ∀ kv : (Σ k : Fin 2, D.nd.PlG k), AddChar (ZMod (D.host.g kv.1)) ℂ), GlobalTheory.BadCount.IsWhit D _ lam ψ ∧ (∀ (g : p.P.P0) (h : (p.R.eG.trans p.cG) g ∈ p.P.P0.map (p.R.eG.trans p.cG).toMonoidHom), ((lam ⟨_, h⟩ : ℂˣ) : ℂ) = D.what₂.embLL ((p.P.ψ0⁻¹ g : D.what₂.LLˣ) : D.what₂.LL)) ∧ HalfUnip p p.P.P0 := by
   intro D L hT Gi Gl Kc Y cX ex Csz p hR

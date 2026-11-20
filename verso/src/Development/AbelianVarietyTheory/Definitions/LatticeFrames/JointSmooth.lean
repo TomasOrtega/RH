@@ -284,19 +284,19 @@ def LastVan : Prop :=
 end Dat
 
 /- English proof (translation)
-Introduce `n L L' c c' h h' u v` and use `(hf.smooth n L c h u).mul (hg.smooth n L' c' h' v)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {ψ : AddChar (AF D.host.F) ℂ} {A S A' : HSp D} {f : WO A S → ℂ} {g : WO S A' → ℂ}
     (hf : IsThetaFunO ψ A S f) (hg : IsThetaFunO ψ S A' g) : JointSmooth fun u v => f u * g v :=
   fun n L L' c c' h h' u v => (hf.smooth n L c h u).mul (hg.smooth n L' c' h' v)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_mem _, 1, one_mem _, 1, rfl, by simp⟩`.
+Supply the required witnesses or components.
 -/
 example {V : HSp D} (R : Subgroup (GA D V)) (t : GA D V) : InCell R t {1} t := ⟨1, one_mem _, 1, one_mem _, 1, rfl, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ => by simp, fun h => by simpa using h 1 (one_mem _) (one_mem _) 1⟩`.
+Supply the required witnesses or components.
 -/
 example (A : HSp D) : HasCen A (fun _ => 1) (fun _ => 1) ∧ ¬ HasCen A (fun _ => 2) (fun _ => 1) :=
   ⟨fun _ _ _ _ => by simp, fun h => by simpa using h 1 (one_mem _) (one_mem _) 1⟩

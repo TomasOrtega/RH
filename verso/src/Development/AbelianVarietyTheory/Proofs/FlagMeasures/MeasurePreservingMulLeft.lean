@@ -15,7 +15,7 @@ def leftMat {j : ℕ} (A : Matrix (Fin j) (Fin j) ℂ) :
   map_smul' c T := by simp
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.TwoSidedJac.real_jacobians).1 j j A 1 (leftMat A) (fun T => by show A * T = A * T * 1`. Rewrite using `[Matrix.mul_one])`. Rewrite using `[h, Matrix.det_one, norm_one, one_pow, mul_one, ← pow_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_leftMat {j : ℕ} (A : Matrix (Fin j) (Fin j) ℂ) :
     LinearMap.det (leftMat A) = (‖A.det‖ ^ 2) ^ j := by
@@ -32,7 +32,7 @@ def leftMul (a : MatInf E j) :
     leftMat (Matrix.of (a w))).comp (LinearMap.proj w)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem det_leftMul (a : MatInf E j) : LinearMap.det (leftMul E j a) = detNorm E j a ^ j := by
   calc LinearMap.det (leftMul E j a)
@@ -42,7 +42,7 @@ theorem det_leftMul (a : MatInf E j) : LinearMap.det (leftMul E j a) = detNorm E
     _ = detNorm E j a ^ j := by rfl
 
 /- English proof (translation)
-Unfold `detNorm`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hw : Matrix.of ((x * y) w) = Matrix.of (x w) * Matrix.of (y w)` using `rfl`. Rewrite using `[hw, Matrix.det_mul, norm_mul, mul_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem detNorm_mul (x y : MatInf E j) : detNorm E j (x * y) = detNorm E j x * detNorm E j y := by
   unfold detNorm
@@ -52,7 +52,7 @@ theorem detNorm_mul (x y : MatInf E j) : detNorm E j (x * y) = detNorm E j x * d
   rw [hw, Matrix.det_mul, norm_mul, mul_pow]
 
 /- English proof (translation)
-Unfold `detNorm`. Use `continuous_finsetProd _ fun w _ => ?_` and prove the remaining obligations. Conclude with `((Continuous.matrix_det (continuous_apply w)).norm).pow 2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_detNorm :
     Continuous (fun x : InfinitePlace E → Fin j → Fin j → ℂ => detNorm E j x) := by
@@ -61,7 +61,7 @@ theorem continuous_detNorm :
   exact ((Continuous.matrix_det (continuous_apply w)).norm).pow 2
 
 /- English proof (translation)
-Establish `: (volume : Measure (Fin j → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure (Fin j → Fin j → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Conclude with `Measure.pi.isAddHaarMeasure _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAddHaar_volume : (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)).IsAddHaarMeasure := by
   have : (volume : Measure (Fin j → ℂ)).IsAddHaarMeasure := Measure.pi.isAddHaarMeasure _
@@ -69,17 +69,15 @@ theorem isAddHaar_volume : (volume : Measure (InfinitePlace E → Fin j → Fin 
   exact Measure.pi.isAddHaarMeasure _
 
 /- English proof (translation)
-Introduce `E _ _ j a ha`. Establish `: (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)).IsAddHaarMeasure` using `isAddHaar_volume E j`. Establish `hdet0 : LinearMap.det (leftMul E j a) ≠ 0`. Rewrite using `[det_leftMul]`. Conclude with `pow_ne_zero _ ha.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hemb : MeasurableEmbedding ⇑(leftMul E j a)` using `((LinearMap.toContinuousLinearMap (leftMul E j a)).toContinuousLinearEquivOfDetNeZero hdet0).toHomeomorph.toMeasurableEquiv.measurableEmbedding`. Establish `hpos : 0 < (detNorm E j a)⁻¹ ^ j` using `pow_pos (inv_pos.mpr ha) j`. Establish `hmap : Measure.map (leftMul E j a) (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)) = ENNReal.ofReal ((detNorm E j a)⁻¹ ^ j) • volume`. Rewrite using `[Measure.map_linearMap_addHaar_eq_smul_addHaar _ hdet0, det_leftMul, ← inv_pow, abs_of_pos hpos]`. Establish `hc0 : ENNReal.ofReal ((detNorm E j a)⁻¹ ^ j) ≠ 0` using `(ENNReal.ofReal_pos.mpr hpos).ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hctop : ENNReal.ofReal ((detNorm E j a)⁻¹ ^ j) ≠ ⊤` using `ENNReal.ofReal_ne_top`. Establish `hρ : Measurable fun x : InfinitePlace E → Fin j → Fin j → ℂ => ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)` using `(((continuous_detNorm E j).measurable.inv).pow_const j).ennreal_ofReal`. Establish `hρf : ∀ x : InfinitePlace E → Fin j → Fin j → ℂ, ENNReal.ofReal ((detNorm E j (leftMul E j a x))⁻¹ ^ j) = ENNReal.ofReal ((detNorm E j a)⁻¹ ^ j) * ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)`. Introduce `x`. Establish `hx : detNorm E j (leftMul E j a x) = detNorm E j a * detNorm E j x` using `detNorm_mul E j a x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, mul_inv, mul_pow, ENNReal.ofReal_mul hpos.le]`. Establish `hV : Measure.map (leftMul E j a) ((volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)).withDensity fun x => ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)) = (volume : Measure (InfinitePlace E → Fin j → Fin j → ℂ)).withDensity fun x => ENNReal.ofReal ((detNorm E j x)⁻¹ ^ j)`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply hemb.measurable hs, withDensity_apply _ (hemb.measurable hs), withDensity_apply _ hs]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[hρf]`. Rewrite using `[lintegral_const_mul' _ _ hctop, ← mul_assoc, ENNReal.inv_mul_cancel hc0 hctop, one_mul]`. Use `_ = (ENNReal.ofReal ((detNorm E j a)⁻¹ ^ j))⁻¹ * ∫⁻ y in s, ENNReal.ofReal ((detNorm E j y)⁻¹ ^ j) ∂(Measure.map (leftMul E j a) volume) := by`. Rewrite using `[setLIntegral_map hs hρ hemb.measurable]`. Use `_ = ∫⁻ y in s, ENNReal.ofReal ((detNorm E j y)⁻¹ ^ j) := by`.
-
-Rewrite using `[hmap, Measure.restrict_smul, lintegral_smul_measure, smul_eq_mul, ← mul_assoc, ENNReal.inv_mul_cancel hc0 hctop, one_mul]`. Conclude with `⟨hemb, hemb.measurable, hV⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem measurePreserving_mul_left : ∀ (E : Type) [Field E] [NumberField E] (j : ℕ) (a : MatInf E j), 0 < detNorm E j a → MeasurableEmbedding (fun g : MatInf E j => a * g) ∧ MeasurePreserving (fun g : MatInf E j => a * g) (haarGL E j) (haarGL E j) := by
   intro E _ _ j a ha

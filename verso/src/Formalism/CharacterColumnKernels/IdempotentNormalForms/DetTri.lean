@@ -7,17 +7,15 @@ noncomputable section
 namespace Formalism.NG
 
 /- English proof (translation)
-Unfold `StatDetTri bigMat`. Introduce `R O _ g d _ _ _ _ α _ ρ b hb Θ`. Establish `hM : Matrix.BlockTriangular (fun p q : g × d => ρ (Θ p.1 q.1) p.2 q.2) (fun p => b p.2)`. Introduce `i j hij`. Conclude with `hb (Θ i.1 j.1) hij`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM.det]`. Break down `isEmpty_or_nonempty g with hg | ⟨⟨g0⟩⟩` into its components or cases. Use `haveI := hg`. Rewrite using `[Finset.univ_eq_empty, Finset.image_empty, Finset.prod_empty]`. Use `symm`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `k _`. Conclude with `Matrix.det_isEmpty`. Establish `himg : (univ : Finset (g × d)).image (fun p => b p.2) = (univ : Finset d).image b`. Use extensionality with `k`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and, Prod.exists]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, i, hi⟩`. Conclude with `⟨i, hi⟩`. Introduce and unpack `⟨i, hi⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨g0, i, hi⟩`. Rewrite using `[himg]`. Apply `Finset.prod_congr rfl` to reduce the goal to its premises. Introduce `k _`. Set `e : g × {i : d // b i = k} ≃ {p : g × d // b p.2 = k}` to `{ toFun := fun x => ⟨(x.1, x.2.1), x.2.2⟩ invFun := fun p => (p.1.1, ⟨p.1.2, p.2⟩) left_inv := fun _ => rfl right_inv := fun _ => rfl }`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem detTri : StatDetTri := by
   unfold StatDetTri bigMat

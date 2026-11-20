@@ -6,11 +6,11 @@ noncomputable def UpperTheory.Reformulated.B.Qj27.dc :
       ∑ i : Fin (m + (2 : ℕ)), (-1 : ℝ) ^ (↑i : ℕ) * F fun (j : Fin (m + (1 : ℕ))) ↦ y (i.succAbove j)
 
 /- English proof (translation)
-Introduce `Y m F a w`. Establish `h : ∀ i : Fin (m + 2), (fun j : Fin (m + 2) ↦ (Fin.cons a w : Fin (m + 3) → Y) (i.succ.succAbove j)) = (Fin.cons a (fun j : Fin (m + 1) ↦ w (i.succAbove j)) : Fin (m + 2) → Y)`. Introduce `i`. Use function extensionality and compare the values at `j`. Use `Fin.cases ?_ (fun k ↦ ?_) j` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Unfold `UpperTheory.Reformulated.B.Qj27.dc`. Rewrite using `[Fin.sum_univ_succ, sub_eq_add_neg, ← Finset.sum_neg_distrib]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Use `Finset.sum_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[h i, Fin.val_succ, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem UpperTheory.Reformulated.B.Qj27.dc_cons :
     ∀ {Y : Type} {m : ℕ} (F : (Fin (m + (2 : ℕ)) → Y) → ℝ) (a : Y) (w : Fin (m + (2 : ℕ)) → Y),

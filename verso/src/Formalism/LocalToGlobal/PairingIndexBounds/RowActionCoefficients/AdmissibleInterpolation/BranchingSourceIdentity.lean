@@ -25,7 +25,7 @@ variable (g : ∀ v, Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v)) (hg : ∀ 
 
 include hg in
 /- English proof (translation)
-Substitute `hm` using the available equality. Conclude with `htupW_le P g hg hinj T hT`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem htupW_leC (hinj : Function.Injective (algebraMap O Kf)) (T : Submodule O P.Xsp)
     (hT : ∀ F : GlobalTheory P → MvPolynomial (Fin N × Fin N) Kf,
@@ -37,7 +37,7 @@ theorem htupW_leC (hinj : Function.Injective (algebraMap O Kf)) (T : Submodule O
 
 include hg in
 /- English proof (translation)
-Substitute `hm` using the available equality. Conclude with `mem_htupW P g hg hinj F hF`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_htupWC (hinj : Function.Injective (algebraMap O Kf)) (F : GlobalTheory P → MvPolynomial (Fin N × Fin N) Kf)
     (hF : ∀ b, F b ∈ deltaL O Kf N (nuC P N hm b) (gamC P N hm g b)) :
@@ -52,9 +52,9 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
   Formalism.MainNotions.G.GAtP.algOK
 
 /- English proof (translation)
-Introduce `p _ X hinj j L g hg hL T hT`. Consider the cases of `j with`. Consider the case `zero`. Establish `hLe : L = fun v => colSpan (X.G.P.W v) (g v)` using `funext hL`. Rewrite using `[hLe]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `htupW_leC X.G.P _ (rankJ X 0) g hg hinj T hT`. Consider the case `succ j`. Establish `hLe : L = fun v => colSpan (X.G.P.W v) (g v)` using `funext hL`. Rewrite using `[hLe]`. Conclude with `htupW_leC (X.Fl.Pj (j + 1)) _ (rankJ X (j + 1)) g hg hinj T hT`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem branching_source_identity : XBrS := by
   intro p _ X hinj j L g hg hL T hT
@@ -69,9 +69,9 @@ theorem branching_source_identity : XBrS := by
     exact htupW_leC (X.Fl.Pj (j + 1)) _ (rankJ X (j + 1)) g hg hinj T hT
 
 /- English proof (translation)
-Introduce `p _ X hinj j L g hg hL F hF`. Consider the cases of `j with`. Consider the case `zero`. Establish `hLe : L = fun v => colSpan (X.G.P.W v) (g v)` using `funext hL`. Rewrite using `[hLe]`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mem_htupWC X.G.P _ (rankJ X 0) g hg hinj F hF`. Consider the case `succ j`. Establish `hLe : L = fun v => colSpan (X.G.P.W v) (g v)` using `funext hL`. Rewrite using `[hLe]`. Conclude with `mem_htupWC (X.Fl.Pj (j + 1)) _ (rankJ X (j + 1)) g hg hinj F hF`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem branching_target_identity : XBrT := by
   intro p _ X hinj j L g hg hL F hF

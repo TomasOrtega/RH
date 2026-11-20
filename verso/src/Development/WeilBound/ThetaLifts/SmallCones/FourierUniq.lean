@@ -12,15 +12,15 @@ open NumberField Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Globa
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Introduce `h1`. Establish `hn : 0 < Module.finrank ℚ F` using `Module.finrank_pos`. Set `m : NumberField.mixedEmbedding.mixedSpace F` to `algebraMap ℝ (NumberField.mixedEmbedding.mixedSpace F) (1 / (2 * (Module.finrank ℚ F : ℝ)))`. Set `a : AF F` to `((NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace F).symm m, 0)`. Establish `hAt : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F) a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hu1 : u.1 = 0`. Establish `h2 : NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace F u.1 = 0` using `hu`. Conclude with `(NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (h2.trans (map_zero _).symm)`. Use `show u * a = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Prod.ext (by show u.1 * _ = 0; rw [hu1, zero_mul]) (by show u.2 * 0 = 0; rw [mul_zero])`. Establish `hψa` using `h.2.2 a hAt`. Rewrite `hψa` using `[h1, AddChar.one_apply]`. Establish `htr : Algebra.trace ℝ (NumberField.mixedEmbedding.mixedSpace F) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.evI F a) = 1 / 2` using `by show Algebra.trace ℝ _ (NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace F ((NumberField.InfiniteAdeleRing.ringEquiv_mixedSpace F).symm m)) = 1 / 2`. Rewrite using `[RingEquiv.apply_symm_apply, Algebra.trace_algebraMap, NumberField.mixedEmbedding.finrank, nsmul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (Module.finrank ℚ F : ℝ) ≠ 0` using `by exact_mod_cast hn.ne'`. Clear the denominators using the available nonvanishing facts. Rewrite `hψa` using `[htr]`. Establish `he : Complex.exp (-(2 * ↑Real.pi * Complex.I) * (((1 / 2 : ℝ)) : ℂ)) = -1`. Rewrite using `[show -(2 * ↑Real.pi * Complex.I) * (((1 / 2 : ℝ)) : ℂ) = -(↑Real.pi * Complex.I) by push_cast; ring]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Complex.exp_neg, Complex.exp_pi_mul_I]`. Evaluate the numerical expressions. Rewrite `hψa` using `[he]`. Evaluate the numerical expressions using `at hψa`.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem std_ne_one {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) : ψ ≠ 1 := by
   intro h1
@@ -52,13 +52,13 @@ theorem std_ne_one {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) : ψ ≠ 1 := by
   norm_num at hψa
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.adelic_character_rational_dual F ψ h.1 (std_ne_one h) h.2.1).1 x`.
+A detailed English derivation is pending.
 -/
 theorem std_norm {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (x : AF F) : ‖ψ x‖ = 1 :=
   (GlobalTheory.T.adelic_character_rational_dual F ψ h.1 (std_ne_one h) h.2.1).1 x
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1 : ψ (x + -x) = ψ x * ψ (-x)` using `AddChar.map_add_eq_mul ψ x (-x)`. Rewrite `h1` using `[add_neg_cancel, AddChar.map_zero_eq_one, h0, zero_mul]`. Conclude with `one_ne_zero h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_ne_zero {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (x : AF F) : ψ x ≠ 0 := by
   intro h0
@@ -67,37 +67,35 @@ theorem std_ne_zero {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (x : AF F) : ψ x �
   exact one_ne_zero h1
 
 /- English proof (translation)
-Introduce `F _ _ κ _ ψ hψ l hl hinv`. Conclude with `GlobalTheory.CompanionTheory.ThetaUniq.theta_unique F κ ψ hψ.1 (std_ne_one hψ) hψ.2.1 l hl (fun w Φ hΦ => hinv w.1 w.2 Φ hΦ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaUniq_of : ThetaUniq := by
   intro F _ _ κ _ ψ hψ l hl hinv
   exact GlobalTheory.CompanionTheory.ThetaUniq.theta_unique F κ ψ hψ.1 (std_ne_one hψ) hψ.2.1 l hl (fun w Φ hΦ => hinv w.1 w.2 Φ hΦ)
 
 /- English proof (translation)
-Introduce `F _ _ κ _ ψ hψ Φ hΦ h0`. Conclude with `GlobalTheory.CompanionTheory.ThetaInj.theta_inj F κ ψ hψ.1 (std_ne_one hψ) hψ.2.1 Φ hΦ h0`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaInj_of : ThetaInj := by
   intro F _ _ κ _ ψ hψ Φ hΦ h0
   exact GlobalTheory.CompanionTheory.ThetaInj.theta_inj F κ ψ hψ.1 (std_ne_one hψ) hψ.2.1 Φ hΦ h0
 
 /- English proof (translation)
-Set `e : (κ → F) → (κ → AF F) → ℂ` to `fun y t => ψ ((fun i => algebraMap F (AF F) (y i)) ⬝ᵥ t)`. Set `c : (κ → F) → ℂ` to `fun y => a (y + y₀)`. Establish `hmul : ∀ y s t, e y (s + t) = e y s * e y t` using `fun y s t => by`. Simplify using `only [e, dotProduct_add, AddChar.map_add_eq_mul]`. Establish `hle : ∀ y t, ‖e y t‖ ≤ 1` using `fun y t => (std_norm h _).le`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h00 : ∀ t, e 0 t = 1` using `fun t => by simp [e]`. Establish `hne : ∀ y, y ≠ 0 → ∃ t, e y t ≠ 1`. Introduce `y hy`. Take `⟨i, hi⟩` from `Function.ne_iff.mp hy`. Establish `hi' : y i ≠ 0` using `hi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨s, hs'⟩ : ∃ s, ψ s ≠ 1 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `std_ne_one h (AddChar.ext ψ 1 fun s => by simpa using hc s)`. Use `⟨Pi.single i (algebraMap F (AF F) (y i)⁻¹ * s), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [e, dotProduct_single]`. Rewrite using `[← mul_assoc, ← map_mul, mul_inv_cancel₀ hi', map_one, one_mul]` and apply the resulting hypothesis. Establish `hcs : Summable fun y => ‖c y‖`. Establish `hc : Summable c` using `(Equiv.addRight y₀).summable_iff.mpr hs`. Conclude with `summable_norm_iff.mpr hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF : ∀ t, ∑' y, c y * e y t = 0`. Introduce `t`. Establish `key : ∀ y, c y * e y t = e (-y₀) t * (a (y + y₀) * e (y + y₀) t)`. Introduce `y`. Establish `hsplit : e y t = e (-y₀) t * e (y + y₀) t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [e]`. Rewrite using `[← AddChar.map_add_eq_mul, ← add_dotProduct]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[map_add, map_neg]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[hsplit]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[key]`. Rewrite using `[tsum_mul_left]`. Establish `hre : ∑' y, a (y + y₀) * e (y + y₀) t = ∑' y, a y * e y t` using `(Equiv.addRight y₀).tsum_eq (fun y => a y * e y t)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hre]`. Use `h0 t` as an intermediate fact. Simplify using `only [e] at this ⊢`. Rewrite using `[this, mul_zero]`. Use `GlobalTheory.CompanionTheory.ThetaInj.charSeries_coeff_eq_zero e c 0 hmul hle h00 hne hcs hF` as an intermediate fact.
-
-Simplify `this` using `[c]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fourier_uniq {κ : Type} [Fintype κ] {ψ : AddChar (AF F) ℂ} (h : IsStd ψ) (a : (κ → F) → ℂ) (hs : Summable a)
     (h0 : ∀ t : κ → AF F, ∑' y, a y * ψ ((fun i => algebraMap F (AF F) (y i)) ⬝ᵥ t) = 0) (y₀ : κ → F) : a y₀ = 0 := by

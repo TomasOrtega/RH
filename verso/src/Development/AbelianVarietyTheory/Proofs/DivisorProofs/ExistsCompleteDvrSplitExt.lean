@@ -13,13 +13,11 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SplitExtDVR
 
 /- English proof (translation)
-Introduce `V _ _ _ _ hcV G _ hG`. Use `haveI := hcV`. Set `F` to `AlgebraicClosure (FractionRing V)`. Establish `: Algebra.IsAlgebraic V F` using `(IsFractionRing.comap_isAlgebraic_iff (A := V) (K := FractionRing V) (C := F)).2 inferInstance`. Establish `hi : Function.Injective (algebraMap V F)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_eq V (FractionRing V) F]`. Conclude with `(algebraMap (FractionRing V) F).injective.comp (IsFractionRing.injective _ _)`. Establish `: FaithfulSMul V F` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hi`. Take `⟨W, hd, hc, hfin, hs⟩` from `GlobalTheory.Ex.UnifModel.exists_split V F G hG`. Establish `hW : Function.Injective (algebraMap V W)` using `fun _ _ h => hi (congrArg (fun z : W => (z : F)) h)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CharZero W` using `charZero_of_injective_algebraMap hW`. Establish `: FaithfulSMul V W` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hW`. Establish `hl : IsLocalHom (algebraMap V W)` using `inferInstance`. Establish `hint : (algebraMap V W).IsIntegral`. Establish `: Algebra.IsIntegral V W` using `Algebra.IsIntegral.of_finite V W`.
-
-Conclude with `Algebra.IsIntegral.isIntegral`. Conclude with `⟨W, inferInstance, inferInstance, hd, inferInstance, algebraMap V W, hc, hint, hW, hl, hs⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_complete_dvr_split_ext : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V],
     IsAdicComplete (IsLocalRing.maximalIdeal V) V → ∀ (G : Over (Sp V)) [GrpObj G], IsSemiAbelian G →

@@ -18,7 +18,7 @@ section Alg
 variable {q : ℕ} [NeZero q] {A : Type} [CommRing A]
 
 /- English proof (translation)
-Establish `h` using `Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ`. Take `⟨r, hr⟩` from `h`. Establish `h2` using `congrArg (Polynomial.aeval ζ.1) hr`. Rewrite `h2` using `[map_mul, ζ.2.2, zero_mul, map_sub, map_pow, Polynomial.aeval_X, map_one]`. Conclude with `sub_eq_zero.1 h2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_pow_q (ζ : Prim q A) : ζ.1 ^ q = 1 := by
   have h := Polynomial.cyclotomic.dvd_X_pow_sub_one q ℤ
@@ -28,9 +28,7 @@ theorem prim_pow_q (ζ : Prim q A) : ζ.1 ^ q = 1 := by
   exact sub_eq_zero.1 h2
 
 /- English proof (translation)
-Establish `hq : IsUnit (q : B)` using `by simpa using ζ.2.1.map φ`. Use `haveI : NeZero (q : B) := ⟨hq.ne_zero⟩`. Rewrite using `[← Polynomial.isRoot_cyclotomic_iff]`. Establish `h` using `(Prim.map φ ζ).2.2`. Rewrite `h` using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prim_isPrim {B : Type} [CommRing B] [IsDomain B] (φ : A →+* B) (ζ : Prim q A) :
     IsPrimitiveRoot (φ ζ.1) q := by
@@ -42,9 +40,9 @@ theorem prim_isPrim {B : Type} [CommRing B] [IsDomain B] (φ : A →+* B) (ζ : 
   exact h
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Take `⟨m, hm, hmem⟩` from `exists_max_ideal_of_mem_nonunits h`. Establish `hp` using `prim_isPrim (Ideal.Quotient.mk m) ζ`. Establish `h0 : Ideal.Quotient.mk m (ζ.1 ^ j - 1) = 0` using `Ideal.Quotient.eq_zero_iff_mem.2 hmem`. Rewrite `h0` using `[map_sub, map_pow, map_one, sub_eq_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp.pow_ne_one_of_pos_of_lt (Nat.pos_iff_ne_zero.1 hj0) hjq h0`.
+A detailed English derivation is pending.
 -/
 theorem unit_sub (ζ : Prim q A) {j : ℕ} (hj0 : 0 < j) (hjq : j < q) : IsUnit (ζ.1 ^ j - 1) := by
   by_contra h
@@ -63,7 +61,7 @@ def yy (a : ℕ) : A := x * ζ.1 ^ (a * (q - 1))
 def ee (a : ℕ) : A := (ζ.2.1.unit⁻¹ : Aˣ) * ∑ j ∈ Finset.range q, (yy ζ x a) ^ j
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, q = k + 1` from `⟨q - 1, (Nat.succ_pred_eq_of_pos (Nat.pos_of_ne_zero (NeZero.ne q))).symm⟩`. Establish `hz : ζ.1 ^ (k + 1) = 1` using `by rw [show k + 1 = q by omega]; exact prim_pow_q ζ`. Unfold `yy`. Rewrite using `[show q - 1 = k by omega]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem zeta_mul_yy (a : ℕ) : ζ.1 ^ a * yy ζ x a = x := by
   obtain ⟨k, hk⟩ : ∃ k, q = k + 1 := ⟨q - 1, (Nat.succ_pred_eq_of_pos (Nat.pos_of_ne_zero (NeZero.ne q))).symm⟩
@@ -75,9 +73,9 @@ theorem zeta_mul_yy (a : ℕ) : ζ.1 ^ a * yy ζ x a = x := by
     _ = x := by rw [hz, one_pow, mul_one]
 
 /- English proof (translation)
-Establish `h1 : x - ζ.1 ^ a = ζ.1 ^ a * (yy ζ x a - 1)`. Rewrite using `[mul_sub, zeta_mul_yy, mul_one]`. Establish `hy : (yy ζ x a) ^ q = 1`. Unfold `yy`. Rewrite using `[mul_pow, hx, ← pow_mul, mul_comm (a * (q - 1)) q, pow_mul, prim_pow_q, one_pow, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Unfold `ee`. Rewrite using `[h1]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem ee_kill (hx : x ^ q = 1) (a : ℕ) : ee ζ x a * (x - ζ.1 ^ a) = 0 := by
   have h1 : x - ζ.1 ^ a = ζ.1 ^ a * (yy ζ x a - 1) := by
@@ -91,11 +89,11 @@ theorem ee_kill (hx : x ^ q = 1) (a : ℕ) : ee ζ x a * (x - ζ.1 ^ a) = 0 := b
     _ = 0 := by rw [geom_sum_mul, hy, sub_self, mul_zero]
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, q = k + 1` from `⟨q - 1, (Nat.succ_pred_eq_of_pos (Nat.pos_of_ne_zero (NeZero.ne q))).symm⟩`. Take `⟨i, rfl⟩ : ∃ i, j = i + 1` from `⟨j - 1, by omega⟩`. Establish `hz : ζ.1 ^ (k + 1) = 1` using `by rw [show k + 1 = q by omega]; exact prim_pow_q ζ`. Establish `hik : i < k` using `by omega`. Establish `e1 : (q - 1) * (i + 1) = (k + 1) * i + (k - i)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show q - 1 = k by omega]; zify [hik.le]; ring`. Establish `hw : ζ.1 ^ ((q - 1) * (i + 1)) = ζ.1 ^ (k - i)`. Rewrite using `[e1, pow_add, pow_mul, hz, one_pow, one_mul]`. Establish `hu : IsUnit (ζ.1 ^ (k - i) - 1)` using `unit_sub ζ (by omega) (by omega)`. Establish `hwq : (ζ.1 ^ (k - i)) ^ q = 1` using `by rw [← pow_mul, mul_comm, pow_mul, prim_pow_q, one_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hw]`. Establish `h2` using `geom_sum_mul (ζ.1 ^ (k - i)) q`. Rewrite `h2` using `[hwq, sub_self]`. Conclude with `(hu.mul_left_eq_zero).1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_sum {j : ℕ} (hj0 : 0 < j) (hjq : j < q) :
     ∑ a ∈ Finset.range q, (ζ.1 ^ ((q - 1) * j)) ^ a = 0 := by
@@ -115,11 +113,11 @@ theorem inner_sum {j : ℕ} (hj0 : 0 < j) (hjq : j < q) :
   exact (hu.mul_left_eq_zero).1 h2
 
 /- English proof (translation)
-Unfold `ee yy`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Establish `hterm : ∀ j ∈ Finset.range q, ∑ a ∈ Finset.range q, (x * ζ.1 ^ (a * (q - 1))) ^ j = x ^ j * ∑ a ∈ Finset.range q, (ζ.1 ^ ((q - 1) * j)) ^ a`. Introduce `j _`. Rewrite using `[Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul]`. Put the polynomial expressions in normal form. Rewrite using `[Finset.sum_congr rfl hterm, Finset.sum_eq_single 0]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j hj hj0`. Rewrite using `[inner_sum ζ (Nat.pos_of_ne_zero hj0) (Finset.mem_range.1 hj), mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.2 (Nat.pos_of_ne_zero (NeZero.ne q))) h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ee_sum : ∑ a ∈ Finset.range q, ee ζ x a = 1 := by
   unfold ee yy
@@ -139,11 +137,11 @@ theorem ee_sum : ∑ a ∈ Finset.range q, ee ζ x a = 1 := by
 end Idem
 
 /- English proof (translation)
-Rewrite using `[← mem_nilradical, nilradical_eq_sInf, Submodule.mem_sInf]`. Introduce `p hp`. Use `haveI : Ideal.IsPrime p := hp`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Assume the negation of the conclusion as `hne`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hk` using `congrArg (Ideal.Quotient.mk p) (ee_kill ζ ξ.1 (prim_pow_q ξ) a)`. Rewrite `hk` using `[map_mul, map_zero, map_sub, map_pow]`. Establish `he : Ideal.Quotient.mk p ξ.1 = (Ideal.Quotient.mk p ζ.1) ^ a` using `sub_eq_zero.1 ((mul_eq_zero.1 hk).resolve_left hne)`. Establish `hξ` using `prim_isPrim (Ideal.Quotient.mk p) ξ`. Establish `hζ` using `prim_isPrim (Ideal.Quotient.mk p) ζ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hξ` using `[he]`. Conclude with `ha ((hζ.pow_iff_coprime (Nat.pos_of_ne_zero (NeZero.ne q)) a).1 hξ)`.
+A detailed English derivation is pending.
 -/
 theorem ee_nil {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ ξ : Prim q A) (a : ℕ) (ha : ¬ a.Coprime q) :
     IsNilpotent (ee ζ ξ.1 a) := by
@@ -162,11 +160,11 @@ theorem ee_nil {q : ℕ} [NeZero q] {A : Type} [CommRing A] (ζ ξ : Prim q A) (
   exact ha ((hζ.pow_iff_coprime (Nat.pos_of_ne_zero (NeZero.ne q)) a).1 hξ)
 
 /- English proof (translation)
-Introduce `q _ A _ ζ ξ`. Use `⟨Set.range fun a : Fin q => ee ζ ξ.1 a, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.eq_top_iff_one, ← ee_sum ζ ξ.1, Finset.sum_range]`. Conclude with `Ideal.sum_mem _ fun a _ => Ideal.subset_span ⟨a, rfl⟩`. Introduce and unpack `f ⟨a, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hc : (a : ℕ).Coprime q`. Use `⟨ZMod.unitOfCoprime a hc, 1, ?_⟩` and prove the remaining obligations. Establish `hv : ((ZMod.unitOfCoprime (a : ℕ) hc : (ZMod q)ˣ) : ZMod q).val = a`. Rewrite using `[ZMod.coe_unitOfCoprime, ZMod.val_natCast, Nat.mod_eq_of_lt a.2]`. Rewrite using `[hv, pow_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `ee_kill ζ ξ.1 (prim_pow_q ξ) a`. Take `⟨n, hn⟩` from `ee_nil ζ ξ a hc`. Conclude with `⟨1, n, by rw [hn, zero_mul]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem algPow : AlgPow := by
   intro q _ A _ ζ ξ
@@ -184,17 +182,15 @@ theorem algPow : AlgPow := by
       exact ⟨1, n, by rw [hn, zero_mul]⟩
 
 /- English proof (translation)
-Set `O : s → U.Opens` to `fun f => U.basicOpen f.1`. Establish `hO : TopologicalSpace.IsOpenCover O`. Unfold `TopologicalSpace.IsOpenCover`. Establish `h` using `iSup_basicOpen_of_span_eq_top ⊤ s hs`. Use `show ⨆ f : s, U.basicOpen f.1 = ⊤`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iSup_subtype]`. Conclude with `h`. Set `𝒰` to `U.openCoverOfIsOpenCover O hO`. Set `S : Sieve U` to `{ arrows := fun V g => ∃ f ∈ s, IsUnit (g.appTop.hom f) downward_closed := by`. Introduce and unpack `V W g ⟨f, hf, hu⟩ k`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨f, hf, (show IsUnit (k.appTop.hom (g.appTop.hom f)) from hu.map _)⟩ }`. Establish `hgen : Sieve.generate (Presieve.ofArrows 𝒰.X 𝒰.f) ≤ S`. Introduce and unpack `W g ⟨Y, k, _, ⟨i⟩, rfl⟩`. Use `(S.downward_closed ?_ k)` and prove the remaining obligations. Use `⟨i.1, i.2, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : (O i).ι ''ᵁ ⊤ ≤ U.basicOpen i.1` using `by simp [O]`. Use `(U.toRingedSpace.isUnit_res_basicOpen i.1).map (U.presheaf.map (homOfLE hle).op).hom` as an intermediate fact. Establish `e : U.presheaf.map (homOfLE (x` using `(O i).ι ''ᵁ ⊤) (y := ⊤) le_top).op = U.presheaf.map (homOfLE (U.basicOpen_le i.1)).op ≫ U.presheaf.map (homOfLE hle).op := by`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show IsUnit ((O i).ι.appTop.hom i.1)`. Rewrite using `[Scheme.Opens.ι_appTop, e]`. Conclude with `this`. Use `⟨S, Scheme.etaleTopology.superset_covering hgen (Scheme.zariskiTopology_le_etaleTopology _ (Scheme.mem_grothendieckTopology_iff.2 ⟨𝒰, Sieve.le_generate _⟩)), ?_⟩` and prove the remaining obligations. Introduce and unpack `V g ⟨f, hf, hu⟩`.
-
-Conclude with `h f hf V g hu`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem loc_of_span {U : Scheme.{0}} (s : Set Γ(U, ⊤)) (hs : Ideal.span s = ⊤) {P : ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
     (h : ∀ f ∈ s, ∀ (V : Scheme.{0}) (g : V ⟶ U), IsUnit (g.appTop.hom f) → P V g) : Loc U P := by
@@ -229,7 +225,7 @@ theorem loc_of_span {U : Scheme.{0}} (s : Set Γ(U, ⊤)) (hs : Ideal.span s = �
   exact h f hf V g hu
 
 /- English proof (translation)
-Establish `h0 : φ (f ^ n * (x - y)) = 0` using `by rw [hn, map_zero]`. Rewrite `h0` using `[map_mul, map_pow, map_sub]`. Conclude with `sub_eq_zero.1 ((hu.pow n).mul_right_eq_zero.1 h0)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_unit_kill {A B : Type*} [CommRing A] [CommRing B] (φ : A →+* B) {f x y : A} {n : ℕ}
     (hn : f ^ n * (x - y) = 0) (hu : IsUnit (φ f)) : φ x = φ y := by
@@ -238,7 +234,7 @@ theorem eq_of_unit_kill {A B : Type*} [CommRing A] [CommRing B] (φ : A →+* B)
   exact sub_eq_zero.1 ((hu.pow n).mul_right_eq_zero.1 h0)
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Conclude with `⟨S, hS, fun V g hg => hPQ V g (hP V g hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_mono' {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (h : Loc U P)
     (hPQ : ∀ V g, P V g → Q V g) : Loc U Q := by
@@ -246,11 +242,11 @@ theorem loc_mono' {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop
   exact ⟨S, hS, fun V g hg => hPQ V g (hP V g hg)⟩
 
 /- English proof (translation)
-Establish `hsep : (Polynomial.cyclotomic q Γ(U, ⊤)).Separable`. Establish `h1` using `Polynomial.separable_X_pow_sub_C_unit (1 : (Γ(U, ⊤))ˣ) hq`. Rewrite `h1` using `[Units.val_one, map_one]`. Conclude with `h1.of_dvd (Polynomial.cyclotomic.dvd_X_pow_sub_one q _)`. Establish `hdeg : Nontrivial Γ(U, ⊤) → 0 < (Polynomial.cyclotomic q Γ(U, ⊤)).natDegree`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_`. Rewrite using `[Polynomial.natDegree_cyclotomic]`. Conclude with `Nat.totient_pos.2 (Nat.pos_of_ne_zero (NeZero.ne q))`. Use `loc_mono' (hE U _ (Polynomial.cyclotomic.monic q _) hdeg hsep) fun V g ⟨t, ht⟩ => ?_` and prove the remaining obligations. Establish `hqV : IsUnit (q : Γ(V, ⊤))` using `by simpa using hq.map g.appTop.hom`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨⟨t, hqV, ?_⟩⟩` and prove the remaining obligations. Rewrite `ht` using `[Polynomial.map_cyclotomic]`. Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_eq_eval_map, Polynomial.map_cyclotomic]`. Conclude with `ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem c1 (hE : EtRoot) (q : ℕ) [NeZero q] (U : Scheme.{0}) (hq : IsUnit (q : Γ(U, ⊤))) :
     Loc U fun V _ => Nonempty (Prim q Γ(V, ⊤)) := by
@@ -268,9 +264,9 @@ theorem c1 (hE : EtRoot) (q : ℕ) [NeZero q] (U : Scheme.{0}) (hq : IsUnit (q :
   exact ht
 
 /- English proof (translation)
-Establish `hq0 : q ≠ 0` using `NeZero.ne q`. Use `loc_mono' (hE U _ (Polynomial.monic_X_pow_sub_C _ hq0) (fun _ => by rw [Polynomial.natDegree_X_pow_sub_C]; omega) (Polynomial.separable_X_pow_sub_C_unit u hq)) fun V g ⟨t, ht⟩ => ?_` and prove the remaining obligations. Establish `ht' : t ^ q = g.appTop.hom u`. Simplify `ht` using `[Polynomial.IsRoot, sub_eq_zero]`. Establish `htu : IsUnit t` using `(isUnit_pow_iff hq0).1 (by rw [ht']; exact (u.isUnit.map _))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨htu.unit, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `[ht']`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem c4 (hE : EtRoot) (q : ℕ) [NeZero q] (U : Scheme.{0}) (hq : IsUnit (q : Γ(U, ⊤))) (u : (Γ(U, ⊤))ˣ) :
     Loc U fun V g => ∃ v : (Γ(V, ⊤))ˣ, v ^ q = Units.map g.appTop.hom.toMonoidHom u := by
@@ -284,7 +280,7 @@ theorem c4 (hE : EtRoot) (q : ℕ) [NeZero q] (U : Scheme.{0}) (hq : IsUnit (q :
   simp [ht']
 
 /- English proof (translation)
-Take `⟨s, hs, hf⟩` from `hA q Γ(U, ⊤) ζ ξ`. Use `loc_of_span s hs fun f hfs V g hu => ?_` and prove the remaining obligations. Take `⟨a, n, hn⟩` from `hf f hfs`. Conclude with `⟨a, by rw [eq_of_unit_kill g.appTop.hom hn hu, map_pow]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem c2 (hA : AlgPow) (q : ℕ) [NeZero q] (U : Scheme.{0}) (ζ ξ : Prim q Γ(U, ⊤)) :
     Loc U fun _ g => ∃ a : (ZMod q)ˣ, g.appTop.hom ξ.1 = g.appTop.hom ζ.1 ^ (a : ZMod q).val := by
@@ -294,7 +290,7 @@ theorem c2 (hA : AlgPow) (q : ℕ) [NeZero q] (U : Scheme.{0}) (ζ ξ : Prim q �
   exact ⟨a, by rw [eq_of_unit_kill g.appTop.hom hn hu, map_pow]⟩
 
 /- English proof (translation)
-Take `⟨s, hs, hf⟩` from `hR q Γ(U, ⊤) ζ x hx`. Use `loc_of_span s hs fun f hfs V g hu => ?_` and prove the remaining obligations. Take `⟨a, n, hn⟩` from `hf f hfs`. Conclude with `⟨a, by rw [eq_of_unit_kill g.appTop.hom hn hu, map_pow]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem c3 (hR : AlgRoot) (q : ℕ) [NeZero q] (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)) (x : Γ(U, ⊤)) (hx : x ^ q = 1) :
     Loc U fun _ g => ∃ a : ℕ, g.appTop.hom x = g.appTop.hom ζ.1 ^ a := by

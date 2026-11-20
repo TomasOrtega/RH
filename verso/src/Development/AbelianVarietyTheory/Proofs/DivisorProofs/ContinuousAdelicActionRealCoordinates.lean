@@ -10,18 +10,18 @@ noncomputable section
 namespace GlobalTheory.RealWeilF.MCont
 
 /- English proof (translation)
-The claim follows from `continuous_fst`.
+A detailed English derivation is pending.
 -/
 theorem continuous_fstA (F : Type) [Field F] [NumberField F] : Continuous (fstA F) := continuous_fst
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI := isModuleTopology_AE F E`. Set `b` to `Module.finBasis F E`. Set `B` to `Algebra.TensorProduct.basis (AF F) b`. Establish `hrep : Continuous B.equivFun` using `IsModuleTopology.continuous_of_linearMap B.equivFun.toLinearMap`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : Continuous fun a : AF F => θ (fstA F a ⊗ₜ[F] (1 : E))` using `h.2.comp (continuous_fstA F)`. Establish `e : ∀ z, (θ.comp (infPartF F E)) z = ∑ i, θ (fstA F (B.equivFun z i) ⊗ₜ[F] (1 : E)) * τ (b i)`. Introduce `z`. Use `conv_lhs => rw [← B.sum_equivFun z]`. Rewrite using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.basis_apply, TensorProduct.smul_tmul', smul_eq_mul, mul_one, RingHom.comp_apply]`. Establish `: infPartF F E (B.equivFun z i ⊗ₜ[F] b i) = (fstA F (B.equivFun z i) ⊗ₜ[F] (1 : E)) * ((1 : Ainf F) ⊗ₜ[F] b i)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[this, map_mul, h.1]`. Establish `: (θ.comp (infPartF F E) : AF F ⊗[F] E → ℂ) = fun z => ∑ i, θ (fstA F (B.equivFun z i) ⊗ₜ[F] (1 : E)) * τ (b i)`. Use function extensionality and compare the values at `e`. Rewrite using `[this]`. Conclude with `continuous_finset_sum _ fun i _ => (hg.comp ((continuous_apply i).comp hrep)).mul continuous_const`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_comp_infPartF {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {τ : E →+* ℂ} {θ : Ainf F ⊗[F] E →+* ℂ} (h : IsInfEmbF τ θ) : Continuous (θ.comp (infPartF F E)) := by
@@ -47,11 +47,9 @@ theorem continuous_comp_infPartF {F E : Type} [Field F] [NumberField F] [Field E
   exact continuous_finset_sum _ fun i _ => (hg.comp ((continuous_apply i).comp hrep)).mul continuous_const
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B _ nS nT JS JT θ hθ`. Establish `hc : ∀ (w : InfinitePlace F) (m n : ℕ), Continuous fun x : Matrix (Fin m) (Fin n) (AEF F E) => compAtF θ w x` using `fun w m n => continuous_id.matrix_map (continuous_comp_infPartF (hθ w))`. Establish `h1 : Continuous fun p : GAF σ JS × GAF σ JT => mtF σ JT p.2` using `(Units.continuous_val.comp continuous_subtype_val).comp continuous_snd`. Establish `h2 : Continuous fun p : GAF σ JS × GAF σ JT => mtF σ JS p.1⁻¹`. Establish `: (fun g : GAF σ JS => mtF σ JS g⁻¹) = fun g => (((Subtype.val (show HR (AF F) σ JS from g))⁻¹ : GL (Fin nS) (AF F ⊗[F] E)) : Matrix _ _ _)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi : Continuous fun g : GAF σ JS => mtF σ JS g⁻¹`. Rewrite using `[this]`. Conclude with `Units.continuous_coe_inv.comp continuous_subtype_val`. Conclude with `hi.comp continuous_fst`. Establish `e : (mMF σ JS JT θ : GAF σ JS × GAF σ JT → _) = fun p => GlobalTheory.RealWeil.blk (fun w => compAtF θ w (mtF σ JT p.2)) fun w => compAtF θ w (mtF σ JS p.1⁻¹)` using `funext fun p => rfl`.
-
-Rewrite using `[e]`. Conclude with `GlobalTheory.RealWeil.continuous_blk (fun w => (hc w _ _).comp h1) fun w => (hc w _ _).comp h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_mMF : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E), B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)

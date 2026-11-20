@@ -86,9 +86,9 @@ def GRegScalar : Prop :=
     Q.SmoothLev k r 0 (Q.OmPlus k r z z') u
 
 /- English proof (translation)
-Introduce `k r Wp Wq _ _ _ _ _ _ D u u' J hT hT' hF hCV`. Establish `hG : GEqs k r D.z D.z' J`. Take `⟨hn1, hn2⟩` from `hN k r Wp Wq D _ J hF`. Take `⟨hu1, hu2⟩` from `hU k r Wp Wq D u u' J hT hT' hF`. Use `⟨?_, hn1, hn2, hu1, hu2, hCV⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g₀ hg₀`. Take `⟨U, F, hUo, hgU, hFc, hJF⟩` from `hF.1 g₀ hg₀`. Conclude with `⟨U, F, hUo, hgU, by simpa [Gr.smM] using hFc, hJF⟩`. Conclude with `hC k r (Wq →L[ℂ] Wp) _ J (fun ℓ => hS k r D.z D.z' _ D.k_pos D.z_mem D.z'_mem D.T_pos D.T'_pos (hP k r D.z D.z' _ J ℓ hG))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gRegJ_of (hN : NDiff) (hU : UCap) (hP : GEqsPost) (hC : SmoothOfCoeffs) (hS : GRegScalar) : GRegJ := by
   intro k r Wp Wq _ _ _ _ _ _ D u u' J hT hT' hF hCV
@@ -103,23 +103,21 @@ theorem gRegJ_of (hN : NDiff) (hU : UCap) (hP : GEqsPost) (hC : SmoothOfCoeffs) 
     hS k r D.z D.z' _ D.k_pos D.z_mem D.z'_mem D.T_pos D.T'_pos (hP k r D.z D.z' _ J ℓ hG))
 
 /- English proof (translation)
-Introduce `k r z z' u hk hz hz' hT hT' hG g₀ hg₀`. Take `⟨d, hd⟩` from `hK k r`. Establish `hg₀G : g₀ ∈ B.GV k r` using `hg₀.1.1`. Take `⟨O, U, κ, Φ, hO, hU, hg₀U, hκ, hΦ, hκO, hΦU⟩` from `hd g₀ hg₀G`. Establish `hO' : IsOpen (O ∩ κ ⁻¹' Q.OmPlus k r z z')` using `hκ.continuousOn.isOpen_inter_preimage hO (Formalism.FourierDecayAlt.P.PositiveOrbitOpen.omPlus_open z z')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU' : IsOpen (U ∩ Φ ⁻¹' (O ∩ κ ⁻¹' Q.OmPlus k r z z'))` using `hΦ.continuousOn.isOpen_inter_preimage hU hO'`. Establish `hΦg₀ : Φ g₀ ∈ O ∩ κ ⁻¹' Q.OmPlus k r z z'`. Take `⟨h1, h2⟩` from `hΦU g₀ hg₀U hg₀G`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Use `show κ (Φ g₀) ∈ Q.OmPlus k r z z'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `hg₀.2`. Establish `hκO' : ∀ x ∈ O ∩ κ ⁻¹' Q.OmPlus k r z z', κ x ∈ B.GV k r ∧ κ x ∈ U ∩ Φ ⁻¹' (O ∩ κ ⁻¹' Q.OmPlus k r z z') ∧ Φ (κ x) = x`. Introduce `x hx`. Take `⟨h1, h2, h3⟩` from `hκO x hx.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨h1, ⟨h2, ?_⟩, h3⟩` and prove the remaining obligations. Use `show Φ (κ x) ∈ O ∩ κ ⁻¹' Q.OmPlus k r z z'`. Rewrite using `[h3]`. Conclude with `hx`. Establish `hΦU' : ∀ g ∈ U ∩ Φ ⁻¹' (O ∩ κ ⁻¹' Q.OmPlus k r z z'), g ∈ B.GV k r → Φ g ∈ O ∩ κ ⁻¹' Q.OmPlus k r z z' ∧ κ (Φ g) = g` using `fun g hg hgG => ⟨hg.2, (hΦU g hg.1 hgG).2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ι, hι, P, hPc, hPo, huc, hPu, hsym⟩` from `hE k r z z' d _ _ κ Φ u hk hz hz' hT hT' hO' hU' (hκ.mono Set.inter_subset_left) (hΦ.mono Set.inter_subset_left) hκO' hΦU' (fun x hx => hx.2) hG`. Use `hι` as an intermediate fact. Establish `hsm : ContDiffOn ℝ ∞ (fun x => u (κ x)) (O ∩ κ ⁻¹' Q.OmPlus k r z z')`. Use `hR d ι P _ _ hO' hPc huc.continuousOn (fun j φ hφ hφc hφs => hW d _ (P j) _ _ hO' (hPc j) (hPo j) huc (hPu j) φ hφ hφc hφs) ?_` and prove the remaining obligations. Introduce `x hx ξ hξ`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `hall`. Simplify using `only [not_exists, not_not] at hall`. Take `⟨Ξ, hΞ, hΞ0, hnil, hl, hr⟩` from `hsym x hx ξ hξ hall`. Apply `hΞ0` to reduce the goal to its premises. Establish `hxG` using `(hκO' x hx).1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hxOm : κ x ∈ Q.OmPlus k r z z'` using `hx.2`. Use `hSym k r z z' hk hz hz' hT hT' (κ x) hxG ⟨hxOm.2, fun a => hxOm.1 ⟨(a : ℕ) + 1, by omega⟩ a.isLt⟩ Ξ hΞ hnil ?_ ?_` and prove the remaining obligations. Introduce `X hX`. Take `⟨A, hA, Bn, hB, rfl⟩` from `hL k r z hz hT X hX`. Simplify using `only [mul_add, Matrix.trace_add, Complex.add_re]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[hl A (Or.inl hA), hl Bn (Or.inr hB), add_zero]`. Introduce `X hX`. Take `⟨A, hA, Bn, hB, rfl⟩` from `hL k r z' hz' hT' X hX`. Simplify using `only [mul_add, add_mul, Matrix.trace_add, Complex.add_re]`. Rewrite using `[hr A (Or.inl hA), hr Bn (Or.inr hB), add_zero]`.
-
-Use `⟨U ∩ Φ ⁻¹' (O ∩ κ ⁻¹' Q.OmPlus k r z z'), fun g => u (κ (Φ g)), hU', ⟨hg₀U, hΦg₀⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hsm.comp (hΦ.mono Set.inter_subset_left) (fun g hg => hg.2)`. Introduce `g hg hgG show u g = u (κ (Φ g))`. Rewrite using `[(hΦU g hg.1 hgG.1).2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gRegScalar_of (hK : GChart) (hE : ChartEqs) (hW : ClassToWeak) (hR : EllRegW) (hSym : JfS.SymbolNil)
     (hL : LieSsetSplit) : GRegScalar := by
@@ -176,7 +174,7 @@ theorem gRegScalar_of (hK : GChart) (hE : ChartEqs) (hW : ClassToWeak) (hR : Ell
     rw [(hΦU g hg.1 hgG.1).2]
 
 /- English proof (translation)
-The claim follows from `transfer_smooth_of_regularity (gRegJ_of hN hU hP hC (gRegScalar_of hK hE hW hR hSym hL))`.
+A detailed English derivation is pending.
 -/
 theorem jfSmoothBuilt_of_leaves (hN : NDiff) (hU : UCap) (hP : GEqsPost) (hC : SmoothOfCoeffs) (hK : GChart)
     (hE : ChartEqs) (hW : ClassToWeak) (hR : EllRegW) (hSym : JfS.SymbolNil) (hL : LieSsetSplit) :

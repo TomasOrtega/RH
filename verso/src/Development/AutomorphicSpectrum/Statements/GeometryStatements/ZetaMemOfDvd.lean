@@ -23,15 +23,15 @@ abbrev thLevel (l : Level H) {R : ℕ} (hR : R ^ 2 ∣ l.M) : Level H :=
   { l with A := R ^ 2, A_pos := Nat.pos_of_dvd_of_pos hR (lt_of_lt_of_le (by norm_num) l.three_le) }
 
 /- English proof (translation)
-Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Establish `hM' : 0 < l.M'` using `Nat.lcm_pos hM l.A_pos`. Take `⟨k, hk⟩ : d ∣ l.M'` from `hd.trans (Nat.dvd_lcm_left _ _)`. Establish `hd0 : (d : ℂ) ≠ 0`. Introduce and unpack `h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `: d = 0` using `by exact_mod_cast h`. Rewrite `hk` using `[this, zero_mul]`. Use linear arithmetic over natural numbers and integers. Establish `hk0 : (k : ℂ) ≠ 0`. Introduce and unpack `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `: k = 0` using `by exact_mod_cast h`. Rewrite `hk` using `[this, mul_zero]`. Use linear arithmetic over natural numbers and integers. Establish `: zeta d = zeta l.M' ^ k`. Unfold `zeta`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[← Complex.exp_nat_mul, hk]`. Use `congr 1`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_mem c.zeta_mem k`.
+A detailed English derivation is pending.
 -/
 theorem zeta_mem_of_dvd (c : Coeff l) {d : ℕ} (hd : d ∣ l.M) : zeta d ∈ c.F := by
   have hM : 0 < l.M := lt_of_lt_of_le (by norm_num) l.three_le

@@ -21,15 +21,13 @@ namespace GlobalTheory.Mix
 open GlobalTheory.Mean4O.CombForm in
 
 /- English proof (translation)
-Introduce `k _ X Y p q σ hp π _ hπ e A hA hs`. Establish `hq : IsProjOver q`. Take `⟨N, i, hi, h⟩` from `hp`. Conclude with `⟨N, π ≫ i, inferInstance, by rw [Category.assoc, h, hπ]⟩`. Use `haveI : CompactSpace (CxPts q σ) := CxPts.compactSpace σ hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `haveI : T2Space (CxPts q σ) := CxPts.t2Space_cxPts_of_isProjOver σ hq`. Use `haveI : SecondCountableTopology (CxPts q σ) := CxPts.secondCountableTopology_of_isProjOver σ hq`. Use `haveI : T2Space (CxPts p σ) := CxPts.t2Space_cxPts_of_isProjOver σ hp`. Establish `hc : Continuous (ptMap π hπ σ)` using `PtsOver.continuous_map π hπ _`. Establish `hinj : Function.Injective (ptMap π hπ σ)` using `fun a b h => Subtype.ext ((cancel_mono π).1 (congrArg Subtype.val h))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hE : IsClosedEmbedding (ptMap π hπ σ)` using `hc.isClosedEmbedding hinj`. Set `h : CxPts q σ ≃ₜ Set.range (ptMap π hπ σ)` to `hE.isEmbedding.toHomeomorph`. Use `haveI : CompactSpace (Set.range (ptMap π hπ σ)) := h.compactSpace`. Set `A' : FinHolAtlas e (CxPts q σ)` to `(AnRead.all q σ e).finAtlas`. Establish `hA' : IsAlgAtlas A'` using `AnRead.isAlgAtlas_finAtlas _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : HoloMap A' A (ptMap π hπ σ)` using `hA.holoMap hA' (f := π) fun _ => rfl`. Establish `hB : HoloMap (tAtlas A' h) A Subtype.val` using `⟨continuous_subtype_val, fun j l => hm.2 j l⟩`. Use `⟨tAtlas A' h, hB, fun L v hv => ?_⟩` and prove the remaining obligations. Establish `hsm (i : Fin e) : (L i).φ.IsSmooth hA.anRead` using `(Weight.isCInf_iff_isSmooth _).1 (L i).cInf`. Establish `hv' : Continuous fun y => v (ptMap π hπ σ y)` using `hv.comp hc`.
-
-Establish `hP (i : Fin e) : IsPotential A' ((L i).pull π hπ).φ.locPot` using `Weight.isPotential_locPot ((Weight.isCInf_iff_isSmooth _).1 ((L i).pull π hπ).cInf)`. Take `⟨h₁, h₂⟩` from `GlobalTheory.T.mixedChernIntegral_eq_mongeAmpereIntegral_compact k Y q σ e A' hA' (fun i => (L i).pull π hπ) _ hv'.measurable`. Rewrite using `[h₂ (h₁.2 (mIntegrableCont _ _ hP _ hv')), GlobalTheory.Adopt.mongeAmpereIntegral_invariant_homeomorph_transport e _ _ A' h _ _ (fun i => isPotentialPullback A _ _ hB _ ((hsm i).isPotential hA)) (hv.comp continuous_subtype_val)]`. Conclude with `(SameForm.mInt_eq (fun i => (hsm i).sameForm_pull hA hA' π hπ) _).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_subAtlas : ∀ (k : Type) [CommRing k] (X Y : Scheme.{0}) (p : X ⟶ Sp k) (q : Y ⟶ Sp k) (σ : k →+* ℂ), IsProjOver p → ∀ (π : Y ⟶ X) [IsClosedImmersion π] (hπ : π ≫ p = q) (e : ℕ) (A : FinHolAtlas (e + 1) (CxPts p σ)), IsAlgAtlas A → SmoothOfRelativeDimension e q → ∃ B : FinHolAtlas e (Set.range (ptMap π hπ σ)), HoloMap B A Subtype.val ∧ ∀ (L : Fin e → MLine p σ) (v : CxPts p σ → ℝ), Continuous v → mInt B (fun i => (L i).φ.locPot.pullback Subtype.val continuous_subtype_val) (v ∘ Subtype.val) = Mix.int (fun i => (L i).pull π hπ) (fun y => v (ptMap π hπ σ y)) := by
   intro k _ X Y p q σ hp π _ hπ e A hA hs

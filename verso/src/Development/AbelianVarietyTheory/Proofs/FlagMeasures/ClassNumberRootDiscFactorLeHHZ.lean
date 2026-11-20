@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LoopC.SizeQ
 
 /- English proof (translation)
-Unfold `sizeZ`. Use `Finset.prod_induction _ (fun x : ℝ => 1 ≤ x) (fun x y hx hy => one_le_mul_of_one_le_of_one_le hx hy) le_rfl (fun τ _ => ?_)` and prove the remaining obligations. Conclude with `Finset.prod_induction _ (fun x : ℝ => 1 ≤ x) (fun x y hx hy => one_le_mul_of_one_le_of_one_le hx hy) le_rfl (fun l _ => le_max_left _ _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem one_le_size (D : D7) (b C : ℝ) (Z : GramM D) : 1 ≤ sizeZ D b C Z := by
   unfold sizeZ
@@ -21,9 +21,9 @@ theorem one_le_size (D : D7) (b C : ℝ) (Z : GramM D) : 1 ≤ sizeZ D b C Z := 
     (fun x y hx hy => one_le_mul_of_one_le_of_one_le hx hy) le_rfl (fun l _ => le_max_left _ _)
 
 /- English proof (translation)
-Establish `hf0 : (0 : ℝ) < f` using `by exact_mod_cast hf`. Establish `hr1 : (1 : ℝ) ≤ r` using `by exact_mod_cast hr`. Establish `hl2 : (1 : ℝ) / 2 < Real.log 2`. Use `Real.log_two_gt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hsq : Real.sqrt r ≤ r` using `Real.sqrt_le_iff.mpr ⟨by linarith, by nlinarith⟩`. Establish `hsplit : Real.logb 2 (2 * (f : ℝ)) = 1 + Real.log f / Real.log 2`. Rewrite using `[Real.logb, Real.log_mul (by norm_num) hf0.ne', add_div, div_self (by linarith)]`. Establish `hdiv : Real.log f / Real.log 2 ≤ 2 * r`. Rewrite using `[div_le_iff₀ (by linarith)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -42,11 +42,11 @@ private lemma one_add_logb_two_mul_le_of_log_le_sqrt (f r : ℕ) (hf : 1 ≤ f) 
   linarith
 
 /- English proof (translation)
-Take `⟨-, hdeg, -, hm, hrd1, -⟩` from `GlobalTheory.real_places_facts D`. Establish `hcn` using `Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.classNumberBound D.host.E`. Establish `hf0 : (0 : ℝ) < D.R.f` using `by exact_mod_cast hf`. Establish `hdeg' : (Module.finrank ℚ D.host.E : ℝ) = 2 * D.R.f` using `by rw [hdeg]; push_cast; ring`. Establish `hdisc : |(NumberField.discr D.host.E : ℝ)| = D.host.rdE ^ (2 * (D.R.f : ℝ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Formalism.BasicNotions.Host.rdE, hdeg', ← Real.rpow_mul (abs_nonneg _), one_div, inv_mul_cancel₀ (by positivity), Real.rpow_one]`. Rewrite `hcn` using `[hdisc, hdeg', ← Real.rpow_mul (by linarith)]`. Establish `hc` using `one_add_logb_two_mul_le_of_log_le_sqrt D.R.f D.R.rS hf hr hlog`. Establish `hf1r : (1 : ℝ) ≤ D.R.f` using `by exact_mod_cast hf`. Establish `hlb : 0 ≤ Real.logb 2 (2 * (D.R.f : ℝ))` using `Real.logb_nonneg (by norm_num) (by linarith)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm' : (D.R.m : ℝ) = 2 * D.R.rS + 2` using `by rw [hm]; push_cast; ring`. Combine the equalities or inequalities in the displayed calculation. Apply `Real.rpow_le_rpow_of_exponent_le hb` to reduce the goal to its premises. Rewrite using `[hm']`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem classNumber_le (D : D7) (b : ℝ) (hb : 1 ≤ b) (hrd : D.host.rdE ≤ b) (hf : 1 ≤ D.R.f)
     (hr : 1 ≤ D.R.rS) (hlog : Real.log D.R.f ≤ Real.sqrt D.R.rS) :
@@ -75,11 +75,11 @@ theorem classNumber_le (D : D7) (b : ℝ) (hb : 1 ≤ b) (hrd : D.host.rdE ≤ b
         nlinarith
 
 /- English proof (translation)
-Establish `hk8 : k ^ 8 ≤ b ^ |Cg|`. Combine the equalities or inequalities in the displayed calculation. Apply `pow_le_pow_left₀ hk` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Use `_ ≤ b ^ Cg := h1.trans h2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `_ ≤ b ^ |Cg| := Real.rpow_le_rpow_of_exponent_le hb (le_abs_self _)`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Establish `hpos : 0 ≤ b ^ (|Cg| / 8)` using `Real.rpow_nonneg (by linarith) _`. Use `pow_lt_pow_left₀ hlt hpos (by norm_num : (8 : ℕ) ≠ 0)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `this` using `[← Real.rpow_natCast, ← Real.rpow_mul (by linarith)]`. Evaluate the numerical expressions using `at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 private lemma le_rpow_abs_div_eight_of_mul_pow_le (k b Cg g : ℝ) (hk : 0 ≤ k) (hb : 1 ≤ b) (h1 : (k * b) ^ 8 ≤ g)
     (h2 : g ≤ b ^ Cg) : k ≤ b ^ (|Cg| / 8) := by
@@ -97,35 +97,35 @@ private lemma le_rpow_abs_div_eight_of_mul_pow_le (k b Cg g : ℝ) (hk : 0 ≤ k
   linarith
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT C0 A`. Use `⟨|Cg| / 8 + 3 / 2 + 6, ?_⟩` and prove the remaining obligations. Introduce `C hC D large₂ u u' C' Cl hCl hH Z`. Take `⟨⟨hS0, -, -⟩, hSt, -⟩` from `hH`. Take `⟨-, -, hmf, -, hlogf, -, -, -, -, -, hlrd, hg1, hg1b, -, -, -, -, -, hv, -, -, -, -, -, -⟩` from `hS0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hr : 1 ≤ D.R.rS` using `hSt.1`. Take `⟨-, -, -, hm, hrd1, -⟩` from `GlobalTheory.real_places_facts D`. Use `set b := large₂.sc.b with hbdef`. Establish `hL : 0 < large₂.sc.L`. Unfold `Formalism.BasicNotions.Scale.L`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `Real.rpow_pos_of_pos (by linarith [large₂.sc.one_lt_alt]) _`. Establish `hbexp : b = Real.exp large₂.sc.L` using `rfl`. Establish `hrd2 : 2 ≤ D.host.rdE`. Establish `: D.host.v = D.host.rdE / 2` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrdb : D.host.rdE ≤ b`. Establish `hlog : Real.log D.host.rdE ≤ large₂.sc.L`. Establish `: large₂.sc.L / Cl ≤ large₂.sc.L` using `div_le_self hL.le hCl`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2 : 2 ≤ b` using `hrd2.trans hrdb`. Establish `hb1 : 1 ≤ b` using `by linarith`. Establish `hb0 : 0 < b` using `by linarith`. Establish `hm4 : 4 ≤ D.R.m` using `by omega`. Establish `hf1 : 1 ≤ D.R.f` using `le_trans (Nat.one_le_pow _ _ (by omega)) hmf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : (D.R.k : ℝ) ≤ b ^ (|Cg| / 8)` using `le_rpow_abs_div_eight_of_mul_pow_le _ _ _ _ (Nat.cast_nonneg _) hb1 hg1 hg1b`. Establish `hsq : D.host.rdE ^ ((1 : ℝ) / 2) ≤ b ^ ((1 : ℝ) / 2)` using `Real.rpow_le_rpow (by linarith) hrdb (by norm_num)`. Establish `hbase : 2 * (D.R.k : ℝ) * D.host.rdE ^ ((1 : ℝ) / 2) ≤ b ^ (|Cg| / 8 + 3 / 2)`. Establish `e : b ^ (|Cg| / 8 + 3 / 2) = b ^ (1 : ℝ) * b ^ (|Cg| / 8) * b ^ ((1 : ℝ) / 2)`. Rewrite using `[← Real.rpow_add hb0, ← Real.rpow_add hb0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Put the polynomial expressions in normal form. Rewrite using `[e, Real.rpow_one]`. Establish `h0 : 0 ≤ D.host.rdE ^ ((1 : ℝ) / 2)` using `Real.rpow_nonneg (by linarith) _`. Establish `h0' : 0 ≤ (D.R.k : ℝ)` using `Nat.cast_nonneg _`. Establish `h0'' : 0 ≤ b ^ (|Cg| / 8)` using `Real.rpow_nonneg hb0.le _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hcls` using `classNumber_le D b hb1 hrdb hf1 hr hlogf`. Establish `h18 : (2 : ℝ) ^ D.R.f * 9 ^ D.R.f ≤ b ^ ((5 : ℝ) * D.R.f)`. Rewrite using `[← mul_pow, Real.rpow_mul hb0.le, Real.rpow_natCast]`. Apply `pow_le_pow_left₀ (by norm_num)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (2 : ℝ) ^ (5 : ℝ) ≤ b ^ (5 : ℝ)` using `Real.rpow_le_rpow (by norm_num) hb2 (by norm_num)`. Establish `h32 : (2 : ℝ) ^ (5 : ℝ) = 32` using `by norm_num`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set e1 : ℝ := |Cg| / 8 + 3 / 2 with he1`. Establish `he1n : 0 ≤ e1` using `by positivity`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpow : (2 * (D.R.k : ℝ) * D.host.rdE ^ ((1 : ℝ) / 2)) ^ D.R.f ≤ b ^ (e1 * D.R.f)`. Rewrite using `[Real.rpow_mul hb0.le, Real.rpow_natCast]`. Conclude with `pow_le_pow_left₀ (by positivity) hbase _`. Establish `hprod : (2 * (D.R.k : ℝ) * D.host.rdE ^ ((1 : ℝ) / 2)) ^ D.R.f * (classNumber D.host.E : ℝ) * 2 ^ D.R.f * 9 ^ D.R.f ≤ b ^ ((e1 + D.R.m + 5) * D.R.f)`. Establish `e : b ^ ((e1 + D.R.m + 5) * D.R.f) = b ^ (e1 * D.R.f) * b ^ ((D.R.m : ℝ) * D.R.f) * b ^ ((5 : ℝ) * D.R.f)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_add hb0, ← Real.rpow_add hb0]`. Put the polynomial expressions in normal form. Rewrite using `[e, mul_assoc _ ((2 : ℝ) ^ D.R.f)]`. Establish `hc0 : (0 : ℝ) ≤ classNumber D.host.E` using `Nat.cast_nonneg _`. Establish `hq0 : (0 : ℝ) ≤ (2 : ℝ) ^ D.R.f * 9 ^ D.R.f` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `gcongr`. Establish `hm1 : (4 : ℝ) ≤ D.R.m` using `by exact_mod_cast hm4`. Establish `hf0 : (0 : ℝ) ≤ D.R.f` using `Nat.cast_nonneg _`. Establish `hC1 : 1 ≤ C`. Establish `: 0 ≤ |Cg| / 8` using `by positivity`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : (e1 + D.R.m + 5) * D.R.f ≤ C * (D.R.m : ℝ) ^ 2 * D.R.f * (C * D.R.m)`. Establish `h1 : e1 + D.R.m + 5 ≤ C * D.R.m`. Use polynomial arithmetic with `[mul_nonneg (by linarith : (0 : ℝ) ≤ C - (e1 + 6)) (by linarith : (0 : ℝ) ≤ D.R.m), mul_nonneg he1n (by linarith : (0 : ℝ) ≤ D.R.m - 1)]`. Establish `hm2 : (1 : ℝ) ≤ (D.R.m : ℝ) ^ 2` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `h2 : 1 ≤ C * (D.R.m : ℝ) ^ 2` using `one_le_mul_of_one_le_of_one_le hC1 hm2`. Establish `h3 : e1 + D.R.m + 5 ≤ C * (D.R.m : ℝ) ^ 2 * (C * D.R.m)` using `h1.trans (le_mul_of_one_le_left (by positivity) h2)`. Combine the equalities or inequalities in the displayed calculation. Establish `hsz` using `one_le_size D b C Z`. Unfold `HHZ`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[← Real.rpow_mul hb0.le]`. Combine the equalities or inequalities in the displayed calculation. Establish `: 1 ≤ sizeZ D b C Z ^ 4` using `one_le_pow₀ hsz`. Establish `: 0 ≤ b ^ (C * (D.R.m : ℝ) ^ 2 * D.R.f * (C * D.R.m))` using `Real.rpow_nonneg hb0.le _`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ Cg cb Cu cT CT C0 A : ℝ, ∃ C₀ : ℝ, ∀ C ≥ C₀, ∀ (D : D7) (large₂ : SizeData₂ D) (u u' : D.what₂.Word) (C' Cl : ℝ), 1 ≤ Cl → Hyp D large₂ u u' C' Cl Cg cb Cu cT CT C0 A → ∀ Z : GramM D, (2 * (D.R.k : ℝ) * D.host.rdE ^ ((1 : ℝ) / 2)) ^ D.R.f * (classNumber D.host.E : ℝ) * 2 ^ D.R.f * 9 ^ D.R.f ≤ HHZ D large₂.sc.b C Z := by
   intro Cg cb Cu cT CT C0 A

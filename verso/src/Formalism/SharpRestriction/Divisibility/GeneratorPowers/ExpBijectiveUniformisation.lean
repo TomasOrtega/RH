@@ -25,9 +25,7 @@ section Help
 variable {X Y Z : Scheme.{0}}
 
 /- English proof (translation)
-Introduce `y hy`. Establish `h1 : (z ≫ g).base y ∈ L.U (j 0)` using `Set.mem_iInter.1 hy ⟨⟩`. Use `show z.base y ∈ (⋂ k : Fin 1, g.base ⁻¹' (L.U (j k) : Set X))`. Use `Set.mem_iInter.2 fun k => ?_` and prove the remaining obligations. Rewrite using `[Fin.fin_one_eq_zero k]`.
-
-Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma wchart_comp_le (L : LB X) (g : Y ⟶ X) (z : Z ⟶ Y) (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : PUnit.{1} => z ≫ g) (fun _ => j 0) ≤ z ⁻¹ᵁ LB.wchart L (fun _ : Fin 1 => g) j := by

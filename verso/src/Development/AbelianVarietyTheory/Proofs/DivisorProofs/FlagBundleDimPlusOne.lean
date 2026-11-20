@@ -21,9 +21,9 @@ open Limits GlobalTheory.QCoh
 namespace GlobalTheory.FlagLineDim
 
 /- English proof (translation)
-Use `choose U e hb he using fun a => hE a b`. Set `V : B.Opens` to `Finset.univ.inf U`. Establish `hle : ∀ a, V ≤ U a` using `fun a => Finset.inf_le (Finset.mem_univ a)`. Establish `hbV : b ∈ V`. Rewrite using `[← SetLike.mem_coe, TopologicalSpace.Opens.coe_finset_inf]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hb`. Establish `hfr (a : ι)` using `(isFrame_restrict_iff V.ι _).2 ((he a).res ((V.ι_image_le ⊤).trans (hle a)))`. Set `φ : ∀ a, freeModule V.toScheme (Fin (r a)) ≅ (Scheme.Modules.pullback V.ι).obj (E a)` to `fun a => (isFrame_freeFrame _ _).iso (hfr a) ≪≫ (Scheme.Modules.restrictFunctorIsoPullback V.ι).app (E a)`. Take `⟨g', ⟨w, -⟩, -⟩` from `hfl V.toScheme V.ι (fun a => (GlobalTheory.FlagSurj.freeFlag V.toScheme (r a)).ofIso (φ a))`. Conclude with `⟨V, g', hbV, w⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_local_section (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fintype ι] (E : ι → B.Modules)
     (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a))
@@ -42,13 +42,11 @@ theorem exists_local_section (B Y : Scheme.{0}) (π : Y ⟶ B) (ι : Type) [Fint
   exact ⟨V, g', hbV, w⟩
 
 /- English proof (translation)
-Use `choose V g hbV hg using exists_local_section B Y π ι E r fl hE hfl`. Set `S : {U : B.affineOpens // ∃ b, (U : B.Opens) ≤ V b} → B.affineOpens` to `fun U => U.1`. Use `isLocallyNoetherian_of_affine_cover (S := S) ?_ ?_` and prove the remaining obligations. Use `top_le_iff.1 fun b _ => ?_` and prove the remaining obligations. Take `⟨U, hU, hbU, hUV⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp B.isBasis_affineOpens (hbV b)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TopologicalSpace.Opens.mem_iSup]`. Conclude with `⟨⟨⟨U, hU⟩, b, hUV⟩, hbU⟩`. Introduce and unpack `⟨U, b, hUV⟩`. Set `s : (U : B.Opens).toScheme ⟶ Y` to `B.homOfLE hUV ≫ g b`. Establish `hs : s ≫ π = (U : B.Opens).ι`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [s, Category.assoc, hg, Scheme.homOfLE_ι]`. Use `haveI : LocallyOfFiniteType (s ≫ π) := by rw [hs]; infer_instance`. Use `haveI : LocallyOfFiniteType s := locallyOfFiniteType_of_comp s π`. Use `haveI : IsLocallyNoetherian (U : B.Opens).toScheme := LocallyOfFiniteType.isLocallyNoetherian s`. Use `haveI : IsAffine (U : B.Opens).toScheme := U.2`.
-
-Use `IsLocallyNoetherian.component_noetherian (X := (U : B.Opens).toScheme) ⟨⊤, isAffineOpen_top _⟩` as an intermediate fact. Conclude with `isNoetherianRing_of_ringEquiv _ ((U : B.Opens).topIso).commRingCatIsoToRingEquiv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocallyNoetherian_base (B Y : Scheme.{0}) [IsLocallyNoetherian Y] (π : Y ⟶ B) (ι : Type) [Fintype ι]
     (E : ι → B.Modules) (r : ι → ℕ) (fl : ∀ a, Vert.Flag ((Scheme.Modules.pullback π).obj (E a)) (r a))
@@ -72,7 +70,7 @@ theorem isLocallyNoetherian_base (B Y : Scheme.{0}) [IsLocallyNoetherian Y] (π 
     exact isNoetherianRing_of_ringEquiv _ ((U : B.Opens).topIso).commRingCatIsoToRingEquiv
 
 /- English proof (translation)
-Use `choose g hg using fun i => WithBot.ne_bot_iff_exists.mp (hf i)`. Take `rfl : f = fun i => ((g i : ℕ∞) : WithBot ℕ∞)` from `funext fun i => (hg i).symm`. Rewrite using `[← WithBot.coe_iSup (OrderTop.bddAbove _), ← WithBot.coe_one, ← WithBot.coe_add, ENat.iSup_add, WithBot.coe_iSup (OrderTop.bddAbove _)]`. Conclude with `iSup_le fun i => by simpa using h i`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_add_one_le {ι : Type} [Nonempty ι] (f : ι → WithBot ℕ∞) (hf : ∀ i, f i ≠ ⊥) (c : WithBot ℕ∞)
     (h : ∀ i, f i + 1 ≤ c) : (⨆ i, f i) + 1 ≤ c := by
@@ -87,15 +85,13 @@ end GlobalTheory.FlagLineDim
 namespace GlobalTheory.FlagLineDim
 
 /- English proof (translation)
-Introduce `k _ _ Y Y₁ p ρ E₁ fl₁ hp hE hfl`. Use `haveI : IsProper p := GlobalTheory.CommonModel.isProper_of_isProjOver hp`. Use `haveI : IsLocallyNoetherian Y := LocallyOfFiniteType.isLocallyNoetherian p`. Use `haveI : IsLocallyNoetherian Y₁ := isLocallyNoetherian_base Y₁ Y ρ Unit (fun _ => E₁) (fun _ => 2) (fun _ => fl₁) (fun _ => hE) hfl`. Establish `hsm` using `GlobalTheory.T.flag_bundle_smooth_relative_dimension Y₁ Y ρ Unit (fun _ => E₁) (fun _ => 2) (fun _ => fl₁) (fun _ => hE) hfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (∑ _a : Unit, 2 * (2 - 1) / 2) = 1` using `by decide`. Rewrite `hsm` using `[h1]`. Use `haveI : SmoothOfRelativeDimension 1 ρ := hsm`. Use `haveI : Smooth ρ := SmoothOfRelativeDimension.smooth 1 ρ`. Establish `hsurj` using `GlobalTheory.FlagSurj.isFlagBundle_surjective Y₁ Y ρ Unit (fun _ => E₁) (fun _ => 2) (fun _ => fl₁) (fun _ => hE) hfl`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_iSup_stalk, GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_iSup_stalk]`. Repeatedly rewrite using `[GlobalTheory.SmoothDimTotal.ringKrullDim_stalk_eq_add Y₁ Y ρ]`. Break down `isEmpty_or_nonempty Y₁ with hY₁ | hY₁` into its components or cases. Use `haveI : IsEmpty Y := ⟨fun y => hY₁.false (ρ y)⟩`. Simplify using `[iSup_of_empty]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun y => add_le_add (le_iSup (fun b : Y₁ => ringKrullDim (Y₁.presheaf.stalk b)) (ρ y)) ?_` and prove the remaining obligations. Simplify using `using GlobalTheory.SmoothDimTotal.fib_le Y₁ Y ρ 1 y`. Use `iSup_add_one_le _ (fun b => ?_) _ fun b => ?_` and prove the remaining obligations. Conclude with `ne_bot_of_le_ne_bot (by simp) ringKrullDim_nonneg_of_nontrivial`.
-
-Take `⟨y₀, rfl⟩` from `hsurj b`. Take `⟨y, hy, hge⟩` from `GlobalTheory.SmoothDimTotal.fib_ge Y₁ Y ρ 1 y₀`. Rewrite using `[← hy]`. Conclude with `le_iSup_of_le y (add_le_add le_rfl (by simpa using hge))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_eq_add_one : ∀ (k : Type) [CommRing k] [IsNoetherianRing k] (Y Y₁ : Scheme.{0}) (p : Y ⟶ Sp k) (ρ : Y ⟶ Y₁) (E₁ : Y₁.Modules)
     (fl₁ : Vert.Flag ((Scheme.Modules.pullback ρ).obj E₁) 2), IsProjOver p → GlobalTheory.VB.IsVB E₁ 2 →

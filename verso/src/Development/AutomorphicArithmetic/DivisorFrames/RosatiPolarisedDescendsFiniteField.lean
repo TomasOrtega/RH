@@ -13,13 +13,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.TorusPart
 
 /- English proof (translation)
-Set `ρ : ∀ s : (Finset Ω)ᵒᵖ, X ⟶ (Spread.bcDiagram f₀ Ω).obj s` to `fun s => H.isoPullback.hom ≫ (Spread.bcCone f₀ Ω).π.app s`. Establish `w : ∀ {s t} (g : s ⟶ t), ρ s ≫ (Spread.bcDiagram f₀ Ω).map g = ρ t` using `fun g => (Category.assoc _ _ _).trans (congrArg _ ((Spread.bcCone f₀ Ω).w g))`. Establish `hc : IsLimit (schemeConeOfFamily _ ρ w)` using `(Spread.isLimitBcCone f₀ Ω).ofIsoLimit (Cone.ext H.isoPullback fun _ => rfl).symm`. Take `⟨s, M, hM, -, h⟩` from `LBLimit.exists_lb_of_isLimit _ ρ w hc L hL`. Use `⟨s.unop, fun F hS X₁ f₁ π₁ j H₁ hj₁ hj₂ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsub : Algebra.adjoin K (s.unop : Set Ω) ≤ F.toSubalgebra` using `Algebra.adjoin_le hS`. Set `φ : Algebra.adjoin K (s.unop : Set Ω) →+* F` to `(Algebra.adjoin K (s.unop : Set Ω)).val.toRingHom.codRestrict F (fun x => hsub x.2)`. Set `q : X₁ ⟶ pullback f₀ (spMap (algebraMap K (Algebra.adjoin K (s.unop : Set Ω))))` to `pullback.lift π₁ (f₁ ≫ spMap φ) (by`. Rewrite using `[H₁.w, Category.assoc, ← spMap_comp]`. Use the proof step `rfl)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M.pull q, pull_isLB hM _, h X₁ j q ?_⟩` and prove the remaining obligations. Use `show j ≫ q = H.isoPullback.hom ≫ Spread.bcMap f₀ (Algebra.adjoin K (s.unop : Set Ω)).val`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, hj₁, Category.assoc, Spread.bcMap_fst, IsPullback.isoPullback_hom_fst]`. Rewrite using `[Category.assoc, pullback.lift_snd, ← Category.assoc, hj₂, Category.assoc, ← spMap_comp, Category.assoc, Spread.bcMap_snd, IsPullback.isoPullback_hom_snd_assoc]`.
-
-Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem lb_descends (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] (X X₀ : Scheme.{0}) (f : X ⟶ Sp Ω)
     (f₀ : X₀ ⟶ Sp K) (π : X ⟶ X₀) [QuasiCompact f₀] [QuasiSeparated f₀] (L : LB X)
@@ -53,15 +51,15 @@ private theorem lb_descends (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω] (X
     rfl
 
 /- English proof (translation)
-Introduce `O _ _ c K Ω _ _ _ _ B _ hB j₀ P j ψ hψ hR`. Use `hB.proper` as an intermediate fact. Use `hB.comm` as an intermediate fact. Take `⟨S, hS⟩` from `lb_descends K Ω P.A.left B.left P.A.hom B.hom ψ P.L hψ.1.1 P.isLB`. Set `F : IntermediateField K Ω` to `IntermediateField.adjoin K (S : Set Ω)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hF : FiniteDimensional K F` using `IntermediateField.finiteDimensional_adjoin fun x _ => Algebra.IsIntegral.isIntegral x`. Use `⟨F, hF, ?_⟩` and prove the remaining obligations. Establish `e : spMap (algebraMap K Ω) = spMap (algebraMap F Ω) ≫ spMap (algebraMap K F)` using `spMap_comp (algebraMap K F) (algebraMap F Ω)`. Establish `hp` using `exists_isActPull (spMap (algebraMap K F)) j₀`. Set `χ : P.A.left ⟶ ((Over.pullback (spMap (algebraMap K F))).obj B).left` to `hp.1.1.lift ψ (P.A.hom ≫ spMap (algebraMap F Ω)) (by rw [hψ.1.1.w, e, Category.assoc])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h₁ : χ ≫ pullback.fst B.hom (spMap (algebraMap K F)) = ψ` using `hp.1.1.lift_fst _ _ _`. Establish `h₂ : χ ≫ ((Over.pullback (spMap (algebraMap K F))).obj B).hom = P.A.hom ≫ spMap (algebraMap F Ω)` using `hp.1.1.lift_snd _ _ _`. Establish `hG : IsGrpPullback P.A ((Over.pullback (spMap (algebraMap K F))).obj B) (spMap (algebraMap F Ω)) χ` using `IsGrpPullback.cancel hp.1 (hψ.1.congr e h₁.symm) h₂`. Take `⟨L₁, hL₁, hL⟩` from `hS F (IntermediateField.subset_adjoin _ _) _ _ _ χ hp.1.1 h₁ h₂`. Take `⟨hab, hdim⟩` from `FieldDescentAb.isAbelianScheme_and_relDim_descend _ Ω (algebraMap F Ω) _ P.A χ hG P.isAb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hr, hs, hk⟩` from `PolDescent.rigidified_sym_kTriv_descend _ Ω (algebraMap F Ω) _ P.A χ L₁ P.L hab hG hL₁ P.isLB hL`. Establish `hamp` using `AmpleDescent.relAmple_of_fieldExtension _ Ω (algebraMap F Ω) _ P.A χ L₁ P.L hab hG hL₁ P.isLB hL P.ample`. Establish `hact : ∀ a, (j.act a).left ≫ χ = χ ≫ ((OAct.pullback (spMap (algebraMap K F)) B j₀).act a).left` using `fun a => by`. Apply `hp.1.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, h₁, Category.assoc, hp.2, ← Category.assoc, h₁, hψ.2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, h₂, ← Category.assoc, Over.w, Category.assoc, Over.w, h₂]`. Use `⟨⟨_, hab, P.g, hdim _ P.smoothDim, L₁, hL₁, hr P.rigid, hs P.sym, hamp, hk P.ktriv⟩, OAct.pullback (spMap (algebraMap K F)) B j₀, _, hp, fun a => ?_⟩` and prove the remaining obligations. Use `P.isAb.comm` as an intermediate fact. Conclude with `RosatiDescent.rosatiAdj_descend (algebraMap F Ω) hab hG hL₁ P.isLB hL (hact a) (hact (c a)) (hR a)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.rosati_polarised_descends_finite_field :
     ∀ (O : Type) [CommRing O] [Module.Finite ℤ O] (c : O →+* O) (K Ω : Type) [Field K] [Field Ω] [Algebra K Ω]

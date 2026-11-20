@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.FlagStep
 
 /- English proof (translation)
-Establish `hsplit : (⨆ t, P t) ≤ P s ⊔ ⨆ (t) (_ : t ≠ s), P t` using `iSup_le fun t => by`. Distinguish the cases in `e : t = s`. Substitute `e` using the available equality. Conclude with `le_sup_left`. Conclude with `le_sup_of_le_right (le_iSup₂_of_le t e le_rfl)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, d, hd, rfl⟩` from `Submodule.mem_sup.1 (hsplit hx)`. Establish `hd2 : d ∈ ⨆ (t) (_ : t ≠ s), F t`. Establish `hle : (⨆ (t) (_ : t ≠ s), P t) ≤ (⨆ (t) (_ : t ≠ s), F t).restrictScalars A` using `iSup₂_le fun t e v hv => (le_iSup₂_of_le t e le_rfl : F t ≤ ⨆ (t) (_ : t ≠ s), F t) (hP t hv)`. Conclude with `hle hd`. Establish `hd3 : d ∈ F s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `sub_mem hxs (show a ∈ F s from hP s ha)`. Simplify using `using h`. Establish `h0 : d = 0` using `Submodule.disjoint_def.1 (hF s) d hd3 hd2`. Rewrite using `[h0, add_zero]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_iSup_of_indep {Ω W I : Type} [Field Ω] [AddCommGroup W] [Module Ω W] (A : Subring Ω)
     {F : I → Submodule Ω W} (hF : iSupIndep F) {P : I → Submodule A W}
@@ -43,23 +43,21 @@ theorem mem_of_mem_iSup_of_indep {Ω W I : Type} [Field Ω] [AddCommGroup W] [Mo
   exact ha
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c X X' t t' f Ω₀ Ω _ _ _ _ _ ξ ξ' cst V V' _ _ _ _ M M' ρ ρ' L j r b hg hg' hd hact hact' hint hint' hL hlat hj hfl`. Establish `key : ∀ s (q : Cpt ξ'), (∀ r : ℕ, r.Prime → ¬ InFibre ξ' r q) → (M'.eigLat ρ' (((algebraMap Ω₀ Ω).comp cst).comp (labelEmb c s))) q = ((L s).pull ξ' f j) q`. Introduce `s q hq`. Take `⟨h, -, h2⟩` from `RegAtDom.regAt_dominates X Ω₀ ξ X' Ω ξ' f (algebraMap Ω₀ Ω) hd q`. Establish `hp : ∀ r : ℕ, r.Prime → ¬ InFibre ξ r ⟨f q.1, h⟩` using `fun r hr hn => hn (h2 hg' _ (natCast_mem _ r) (by rw [map_natCast]; exact not_not.1 (hq r hr)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsum` using `(SatModel.lat_eq_iSup_of_char0 c t ξ hg cst M ρ hact hint).2 _ hp`. Establish `hind` using `(SatModel.lat_eq_iSup_of_char0 c t' ξ' hg' ((algebraMap Ω₀ Ω).comp cst) M' ρ' hact' hint').1`. Establish `hle : ∀ u, ((L u).pull ξ' f j) q ≤ M'.lat q ⊓ (eigSp ρ' (((algebraMap Ω₀ Ω).comp cst).comp (labelEmb c u))).restrictScalars (regAt ξ' q)`. Introduce `u`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨h', e, he, rfl⟩`. Establish `he' : e ∈ M.lat.inter (eigSp ρ (cst.comp (labelEmb c u))) ⟨f q.1, h⟩`. Establish `h3` using `hL u ⟨f q.1, h⟩ hp`. Establish `h4 : e ∈ L u ⟨f q.1, h⟩` using `he`. Rewrite `h4` using `[h3]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h4`. Use `⟨?_, hj u e he'.2⟩` and prove the remaining obligations. Use `show j e ∈ M'.lat q`. Rewrite using `[hlat]`. Conclude with `Submodule.subset_span ⟨h, e, he'.1, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hall : M'.lat q ≤ ⨆ u, ((L u).pull ξ' f j) q`. Rewrite using `[hlat]`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨h', e, he, rfl⟩`. Establish `he1 : e ∈ ⨆ u, M.lat.inter (eigSp ρ (cst.comp (labelEmb c u))) ⟨f q.1, h⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hsum]`. Conclude with `he`. Use `Submodule.iSup_induction _ (motive := fun e => j e ∈ ⨆ u, ((L u).pull ξ' f j) q) he1 (fun u e he => ?_) ?_ (fun x y hx hy => ?_)` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem u (Submodule.subset_span ⟨h, e, ?_, rfl⟩)` and prove the remaining obligations. Establish `h3` using `hL u ⟨f q.1, h⟩ hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h3]`. Conclude with `he`. Simplify using `only [map_zero]`. Conclude with `zero_mem _`. Simplify using `only [map_add]`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `add_mem hx hy`. Use `le_antisymm ?_ (hle s)` and prove the remaining obligations. Introduce and unpack `x ⟨hx1, hx2⟩`. Conclude with `mem_of_mem_iSup_of_indep (regAt ξ' q) hind (fun u => (hle u).trans inf_le_right) s (hall hx1) hx2`. Introduce `s p hp`.
-
-Take `⟨U, hU, b', hb, hf⟩` from `hfl s p trivial`. Use `⟨U, hU, b', hb, fun q hq hqU => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hf q trivial hqU`. Conclude with `⟨h1, (key s q hq).trans h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eigLat_isFlagVBOn_of_pull_char0 : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Tor.Level H) (c : Coeff l)
     (X X' : Scheme.{0}) (t : SAB H X) (t' : SAB H X') (f : X' ⟶ X) (Ω₀ Ω : Type) [Field Ω₀] [Field Ω] [CharZero Ω₀]

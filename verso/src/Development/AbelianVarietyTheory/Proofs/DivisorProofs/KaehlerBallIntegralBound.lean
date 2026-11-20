@@ -16,25 +16,23 @@ noncomputable section
 namespace GlobalTheory.AvgMV
 
 /- English proof (translation)
-Introduce `k _ Y p σ d _ a E c f y t Cc M ha hE hy ht hCc hM hsub hker hdf`. Establish `hq` using `continuous_and_smul ha hy`. Establish `hpos` using `ha.2 c y hy`. Establish `hMs` using `mass_pos hq.1 hq.2 hpos`. Establish `hI` using `integrable_cutoff hq.1 hq.2 hpos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set B := Metric.ball (c.e y) (Cc * t) with hB`. Establish `hR : 0 < Cc * t` using `mul_pos hCc ht`. Establish `hyB : c.e y ∈ B` using `Metric.mem_ball_self hR`. Establish `hsy : c.e.symm (c.e y) = y` using `c.e.left_inv hy`. Establish `hMV : ∀ v ∈ B, |f (c.e.symm v) - f y| ≤ M * (Cc * t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Establish `h` using `(convex_ball (c.e y) (Cc * t)).norm_image_sub_le_of_norm_fderiv_le (fun w hw => (hdf w hw).1) (fun w hw => (hdf w hw).2) hyB hv`. Simplify using `only [Function.comp_apply, hsy, Real.norm_eq_abs] at h`. Use `h.trans (mul_le_mul_of_nonneg_left ?_ hM)` and prove the remaining obligations. Rewrite using `[← dist_eq_norm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Metric.mem_ball.1 hv).le`. Establish `hcont : ContinuousOn (f ∘ c.e.symm) B` using `fun w hw => (hdf w hw).1.continuousAt.continuousWithinAt`. Establish `hfin : volume B ≠ ⊤` using `measure_ball_lt_top.ne`. Establish `hIO : IntegrableOn (f ∘ c.e.symm) B` using `by haveI : IsFiniteMeasure (volume.restrict B) := isFiniteMeasure_restrict.2 hfin`. Use `Integrable.of_bound (C := |f y| + M * (Cc * t)) (hcont.aestronglyMeasurable Metric.isOpen_ball.measurableSet) ((ae_restrict_iff' Metric.isOpen_ball.measurableSet).2 (ae_of_all _ fun v hv => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hMV v hv` as an intermediate fact. Rewrite using `[Function.comp_apply, Real.norm_eq_abs]`. Use `abs_sub_abs_le_abs_sub (f (c.e.symm v)) (f y)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hIOg : IntegrableOn ((fun z => f z - f y) ∘ c.e.symm) B` using `hIO.sub (integrableOn_const hfin)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg` using `(hker f hIO).1`. Establish `hk2` using `(hker (fun z => f z - f y) hIOg).2`. Establish `hdiff : rho a E f y t - f y = rho a E (fun z => f z - f y) y t`. Rewrite using `[rho_eq ha hE f hy t, rho_eq ha hE _ hy t, rhoIn, rhoIn, mean, mean]`. Repeatedly rewrite using `[sub_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[integral_sub hg (hI.const_mul (f y)), integral_const_mul, sub_div, mul_div_cancel_right₀ _ hMs.ne']`. Establish `hint : ∫ v in B, |(fun z => f z - f y) (c.e.symm v)| ≤ M * (Cc * t) * (volume B).toReal`. Use `setIntegral_mono_on hIOg.abs (integrableOn_const hfin) Metric.isOpen_ball.measurableSet (fun v hv => hMV v hv)` as an intermediate fact. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[setIntegral_const]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Measure.real, smul_eq_mul, mul_comm]`. Establish `hvol : (volume B).toReal = (Cc * t) ^ (2 * d) * (volume (Metric.ball (0 : V d) 1)).toReal`. Rewrite using `[hB, Measure.addHaar_ball_of_pos _ _ hR, ENNReal.toReal_mul, ENNReal.toReal_ofReal (by positivity)]`. Use `congr 2`. Rewrite using `[← Module.finrank_mul_finrank ℝ ℂ (V d), Complex.finrank_real_complex]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hV1 : 0 ≤ (volume (Metric.ball (0 : V d) 1)).toReal` using `ENNReal.toReal_nonneg`. Establish `htd : 0 < t ^ (2 * d)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hvol, mul_pow]`.
-
-Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem avg_sub_le : ∀ (k : Type) [CommRing k] (Y : Scheme.{0}) (p : Y ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) [SmoothOfRelativeDimension d p]
     (a : ChartForm p σ d) (E : ChartMap p σ d) (c : AlgChart p σ d) (f : CxPts p σ → ℝ) (y : CxPts p σ) (t Cc M : ℝ),

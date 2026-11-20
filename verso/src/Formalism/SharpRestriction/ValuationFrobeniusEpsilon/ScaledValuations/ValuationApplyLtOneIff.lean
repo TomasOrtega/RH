@@ -13,13 +13,13 @@ variable {F Ω : Type*} [Field F] [NumberField F] [Field Ω] [Algebra F Ω]
 def Dec (A : ValuationSubring (Ω)) : Subgroup (G F Ω) := A.decompositionSubgroup F
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Dec {A : ValuationSubring (Ω)} {σ : G F Ω} :
     σ ∈ Dec (F := F) A ↔ σ • A = A := Iff.rfl
 
 /- English proof (translation)
-Establish `h : σ • A = A` using `hσ`. Rewrite using `[← AlgEquiv.smul_def]`. Use `conv_lhs => rw [← h]`. Conclude with `ValuationSubring.smul_mem_pointwise_smul_iff`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_mem_iff_of_mem_Dec {A : ValuationSubring (Ω)} {σ : G F Ω}
     (hσ : σ ∈ Dec (F := F) A) (x : Ω) : σ x ∈ A ↔ x ∈ A := by
@@ -29,11 +29,11 @@ theorem apply_mem_iff_of_mem_Dec {A : ValuationSubring (Ω)} {σ : G F Ω}
   exact ValuationSubring.smul_mem_pointwise_smul_iff
 
 /- English proof (translation)
-Rewrite using `[← A.valuation_le_one_iff, ← A.valuation_le_one_iff, map_inv₀]`. Break down `eq_or_ne y 0 with rfl | hy` into its components or cases. Simplify using the standard rewrite rules. Establish `h0 : A.valuation y ≠ 0` using `by simpa using hy`. Simplify using `only [hy, false_or]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨h.le, fun h' => ?_⟩` and prove the remaining obligations. Establish `: (1 : A.ValueGroup) ≤ A.valuation y`. Simplify using `using (inv_le_one₀ (zero_lt_iff.mpr h0)).mp h'`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `absurd h (not_lt.mpr this)`. Introduce and unpack `⟨h1, h2⟩`. Use `lt_of_le_of_ne h1 fun he => h2 ?_` and prove the remaining obligations. Rewrite using `[he, inv_one]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_lt_one_iff' (A : ValuationSubring (Ω)) (y : Ω) :
     A.valuation y < 1 ↔ y ∈ A ∧ (y = 0 ∨ y⁻¹ ∉ A) := by
@@ -53,7 +53,7 @@ theorem valuation_lt_one_iff' (A : ValuationSubring (Ω)) (y : Ω) :
       rw [he, inv_one]
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', apply_mem_iff_of_mem_Dec hσ, ← map_inv₀, apply_mem_iff_of_mem_Dec hσ, map_eq_zero_iff _ σ.injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_apply_lt_one_iff {A : ValuationSubring (Ω)} {σ : G F Ω}
     (hσ : σ ∈ Dec (F := F) A) (y : Ω) :
@@ -62,7 +62,7 @@ theorem valuation_apply_lt_one_iff {A : ValuationSubring (Ω)} {σ : G F Ω}
     ← map_inv₀, apply_mem_iff_of_mem_Dec hσ, map_eq_zero_iff _ σ.injective]
 
 /- English proof (translation)
-Use `show (σ * σ⁻¹) x = x`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_inv_apply {σ : G F Ω} (x : Ω) : σ ((σ⁻¹ : G F Ω) x) = x := by
   show (σ * σ⁻¹) x = x
@@ -90,21 +90,21 @@ def Ine (A : ValuationSubring (Ω)) : Subgroup (G F Ω) where
     exact hσ' _ hy
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_Ine {A : ValuationSubring (Ω)} {σ : G F Ω} :
     σ ∈ Ine (F := F) A ↔ σ ∈ Inertia (F := F) A := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ine_le_Dec (A : ValuationSubring (Ω)) : Ine (F := F) A ≤ Dec (F := F) A :=
   fun _ h => h.1
 
 /- English proof (translation)
-Use `⟨(Dec (F := F) A).mul_mem ((Dec (F := F) A).mul_mem hg hσ.1) ((Dec (F := F) A).inv_mem hg), fun x hx => ?_⟩` and prove the remaining obligations. Establish `hy : A.valuation ((g⁻¹ : G F Ω) x) ≤ 1`. Rewrite using `[A.valuation_le_one_iff, ← apply_mem_iff_of_mem_Dec hg, mul_inv_apply]`. Conclude with `(A.valuation_le_one_iff x).mp hx`. Establish `e : (g * σ * g⁻¹) x - x = g (σ ((g⁻¹ : G F Ω) x) - (g⁻¹ : G F Ω) x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, mul_inv_apply]`. Both sides reduce to the same expression. Rewrite using `[e, valuation_apply_lt_one_iff hg]`. Conclude with `hσ.2 _ hy`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_Ine {A : ValuationSubring (Ω)} {g σ : G F Ω} (hg : g ∈ Dec (F := F) A)
     (hσ : σ ∈ Ine (F := F) A) : g * σ * g⁻¹ ∈ Ine (F := F) A := by

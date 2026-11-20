@@ -16,13 +16,13 @@ noncomputable section
 namespace GlobalTheory.PDivGroup.IdemSplit
 
 /- English proof (translation)
-Set `r : M →ₗ[R] LinearMap.range e` to `e.rangeRestrict`. Set `i : LinearMap.range e →ₗ[R] M` to `(LinearMap.range e).subtype`. Establish `hri : r ∘ₗ i = LinearMap.id`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `x.2`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `e x.1 = x.1`. Rewrite using `[← hy]`. Conclude with `LinearMap.congr_fun he y`. Establish `hir : e = i ∘ₗ r` using `LinearMap.ext fun _ => rfl`. Establish `hS : r.baseChange S ∘ₗ i.baseChange S = LinearMap.id`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.baseChange_comp, hri, LinearMap.baseChange_id]`. Establish `hsurj : Function.Surjective (r.baseChange S)` using `fun x => ⟨i.baseChange S x, LinearMap.congr_fun hS x⟩`. Establish `hinj : Function.Injective (i.baseChange S)` using `fun x y hxy => by`. Use `congrArg (r.baseChange S) hxy` as an intermediate fact. Rewrite `this` using `[← LinearMap.comp_apply, hS, ← LinearMap.comp_apply, hS]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2 : e.baseChange S = i.baseChange S ∘ₗ r.baseChange S`. Rewrite using `[← LinearMap.baseChange_comp, ← hir]`. Rewrite using `[h2, LinearMap.range_comp_of_range_eq_top _ (LinearMap.range_eq_top.2 hsurj), LinearMap.finrank_range_of_inj hinj, Module.finrank_baseChange]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_range_baseChange_of_idem {R S M : Type} [CommRing R] [CommRing S] [Algebra R S]
     [StrongRankCondition R] [StrongRankCondition S] [AddCommGroup M] [Module R M]
@@ -63,19 +63,17 @@ namespace GlobalTheory.PDivGroup.IdemSplit
 open GlobalTheory.PDivGroup.KerGrp
 
 /- English proof (translation)
-Use `haveI : ∀ n, IsCocomm k (B n) := fun n => isCocomm_of_surjective (π n) (hπ n)`. Establish `hle : ∀ n, RingHom.ker (π (n + 1)) ≤ RingHom.ker ((π n).comp (G.res n))` using `fun n a ha => by`. Establish `: G.res n a ∈ RingHom.ker (π n)`. Rewrite using `[hk, ← map_res_kerIdeal]`. Rewrite `ha` using `[hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `Ideal.mem_map_of_mem (G.res n : G.A (n + 1) →ₐ[k] G.A n) ha`. Conclude with `this`. Set `r` to `fun n => liftSurj (π (n + 1)) (hπ (n + 1)) ((π n).comp (G.res n)) (hle n)`. Establish `hr : ∀ n a, r n (π (n + 1) a) = π n (G.res n a)` using `fun n a => liftSurj_apply ..`. Set `K : PDivGroup p k` to `{ height := h₀ A := B finite := fun n => Module.Finite.of_surjective (π n : G.A n →ₗ[k] B n) (hπ n) rank_eq := h res := r res_surjective := fun n b => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, rfl⟩` from `hπ n b`. Take `⟨a, rfl⟩` from `G.res_surjective n c`. Conclude with `⟨_, hr n a⟩`. Use `ker_res := fun n => by`. Rewrite using `[← map_torsionIdeal (hπ (n + 1)), ← G.ker_res]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `le_antisymm (fun b hb => ?_) (Ideal.map_le_iff_le_comap.2 fun a ha => ?_)` and prove the remaining obligations. Take `⟨a, rfl⟩` from `hπ _ b`. Establish `h1 : G.res n a ∈ RingHom.ker (π n)` using `(hr n a).symm.trans hb`. Rewrite `h1` using `[hk, ← map_res_kerIdeal]`. Take `⟨c, hc, e⟩` from `(Ideal.mem_map_iff_of_surjective (G.res n : G.A (n + 1) →ₐ[k] G.A n) (G.res_surjective n)).1 h1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc` using `[← hk]`. Establish `hc' : π (n + 1) c = 0` using `hc`. Establish `e' : G.res n c = G.res n a` using `e`. Establish `h2 : a - c ∈ RingHom.ker (G.res n)`. Rewrite using `[RingHom.mem_ker, map_sub, e', sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h3 : π (n + 1) a = π (n + 1) (a - c)` using `by rw [map_sub, hc', sub_zero]`. Rewrite using `[h3]`. Conclude with `Ideal.mem_map_of_mem (π (n + 1) : G.A (n + 1) →ₐ[k] B (n + 1)) h2`. Establish `ha' : G.res n a = 0` using `ha`. Express the relevant statement in the definitionally equal form `r n (π (n + 1) a) = 0`.
-
-Rewrite using `[hr, ha', map_zero] }`. Conclude with `⟨K, ⟨π, fun n => BialgHom.ext fun a => hr n a⟩, fun n => ⟨hπ n, hk n⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_of_family {p : ℕ} {k : Type} [CommRing k] (G : PDivGroup p k)
     (v : G ⟶ G) (h₀ : ℕ) (B : ℕ → Type) [∀ n, CommRing (B n)] [∀ n, HopfAlgebra k (B n)]
@@ -130,7 +128,7 @@ end GlobalTheory.PDivGroup.IdemSplit
 namespace GlobalTheory.PDivGroup.IdemSplit
 
 /- English proof (translation)
-Establish `h` using `baseChangeMap_add O' (0 : G ⟶ H) 0`. Rewrite `h` using `[add_zero]`. Conclude with `(add_eq_left.1 h.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseChangeMap_zero {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] (O' : Type) [CommRing O']
     [Algebra O O'] (G H : PDivGroup p O) : baseChangeMap O' (0 : G ⟶ H) = 0 := by
@@ -139,7 +137,7 @@ theorem baseChangeMap_zero {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] (O' 
   exact (add_eq_left.1 h.symm)
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `tmul r a => exact bcMap_tmul f r a`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem bcMap_toLinearMap {O : Type} [CommRing O] (O' : Type) [CommRing O'] [Algebra O O']
     {A : Type} [CommRing A] [Bialgebra O A] (f : A →ₐc[O] A) :
@@ -154,27 +152,25 @@ theorem bcMap_toLinearMap {O : Type} [CommRing O] (O' : Type) [CommRing O'] [Alg
 variable (p : ℕ) [Fact p.Prime] (O : Type) [CommRing O] [IsLocalRing O]
 
 /- English proof (translation)
-Use `set v : G ⟶ G := 𝟙 G - u with hv`. Establish `huv : u + v = 𝟙 G` using `add_sub_cancel u (𝟙 G)`. Establish `h1 : u ≫ v = 0` using `by rw [hv, Preadditive.comp_sub, hu, Category.comp_id, sub_self]`. Establish `h2 : v ≫ u = 0` using `by rw [hv, Preadditive.sub_comp, hu, Category.id_comp, sub_self]`. Establish `hker : ∀ n, RingHom.ker (u.app n) = kerIdeal (v.app n)` using `ker_app_eq_kerIdeal_of_idempotents p O G u v huv h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `k` to `IsLocalRing.ResidueField O`. Set `uk` to `baseChangeMap k u`. Set `vk` to `baseChangeMap k v`. Establish `hF : ∀ {X Y Z : PDivGroup p O} (f : X ⟶ Y) (g : Y ⟶ Z), baseChangeMap k (f ≫ g) = baseChangeMap k f ≫ baseChangeMap k g` using `fun f g => (baseChangeFunctor p O k).map_comp f g`. Establish `hI : baseChangeMap k (𝟙 G) = 𝟙 (G.baseChange k)` using `(baseChangeFunctor p O k).map_id G`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvuk : vk + uk = 𝟙 _` using `by rw [← baseChangeMap_add, add_comm, huv, hI]`. Establish `huvk : uk + vk = 𝟙 _` using `by rw [add_comm]; exact hvuk`. Establish `h1k : uk ≫ vk = 0` using `by rw [← hF, h1, baseChangeMap_zero]`. Establish `h2k : vk ≫ uk = 0` using `by rw [← hF, h2, baseChangeMap_zero]`. Take `⟨h₀, hrk⟩` from `kerIdeal_finrank_eq_pow_of_idempotent p k (G.baseChange k) vk uk hvuk h2k h1k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hkerk : ∀ n, RingHom.ker (uk.app n) = kerIdeal (vk.app n)` using `ker_app_eq_kerIdeal_of_idempotents p k (G.baseChange k) uk vk huvk h1k h2k`. Set `e : ∀ n, G.A n →ₗ[O] G.A n` to `fun n => ((u.app n : G.A n →ₐ[O] G.A n)).toLinearMap`. Establish `he : ∀ n, e n ∘ₗ e n = e n` using `fun n => LinearMap.ext fun a => DFunLike.congr_fun (congrArg (fun w : G ⟶ G => w.app n) hu) a`. Establish `hproj : ∀ n, Module.Projective O (LinearMap.range (e n))` using `fun n => Module.Projective.of_split (LinearMap.range (e n)).subtype (e n).rangeRestrict (LinearMap.ext fun x => Subtype.ext (by`. Take `⟨y, hy⟩` from `x.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `e n x.1 = x.1`. Rewrite using `[← hy]`. Conclude with `LinearMap.congr_fun (he n) y))`. Establish `hfin : ∀ n, Module.Finite O (LinearMap.range (e n))` using `fun n => Module.Finite.of_surjective (e n).rangeRestrict (LinearMap.surjective_rangeRestrict _)`. Establish `hfree : ∀ n, Module.Free O (LinearMap.range (e n))` using `fun n => Module.free_of_flat_of_isLocalRing`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `B` to `fun n => G.A n ⧸ kerIdeal (v.app n)`. Establish `hHopf : ∀ n, (kerIdeal (v.app n)).IsHopfIdeal O` using `fun n => GlobalTheory.PDiv.isHopfIdeal_kerIdeal_of_bialgHom O _ _ (v.app n)`. Set `eqv : ∀ n, B n ≃ₗ[O] LinearMap.range (e n)` to `fun n => quotEquivRange (u.app n : G.A n →ₐ[O] G.A n) _ (hker n)`. Establish `hBproj : ∀ n, Module.Projective O (B n)` using `fun n => Module.Projective.of_equiv (eqv n).symm`. Establish `hrank : ∀ n, Module.finrank O (B n) = p ^ (n * h₀)` using `fun n => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(eqv n).finrank_eq, ← finrank_range_baseChange_of_idem (S := k) (e n) (he n), ← bcMap_toLinearMap, ← (quotEquivRange _ _ (hkerk n)).finrank_eq]`. Conclude with `hrk n`. Establish `hBrank : ∀ (n : ℕ) (q : PrimeSpectrum O), Module.rankAtStalk (B n) q = p ^ (n * h₀)` using `fun n q => by haveI := Module.Free.of_equiv (eqv n).symm`. Rewrite using `[Module.rankAtStalk_eq_finrank_of_free, hrank]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K, i, hi⟩` from `exists_of_family G v h₀ B (fun _ => Bialgebra.Quotient.mkBialgHom _) (fun _ => Ideal.Quotient.mk_surjective) (fun _ => Ideal.ext fun _ => Ideal.Quotient.eq_zero_iff_mem) hBrank`. Take `⟨hfac, hcan⟩` from `factor_closedImmersion p O K G i (fun n => (hi n).1)`. Take `⟨q, hq⟩` from `hfac G u (fun n => by rw [(hi n).2, hker n])`. Establish `hiv : i ≫ v = 0`. Use `hom_ext fun n => BialgHom.ext fun b => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `(kerIdeal_le_ker_iff (v.app n) (i.app n : G.A n →ₐ[O] K.A n)).1 (hi n).2.ge b`. Express the relevant statement in the definitionally equal form `i.app n (v.app n b) = (1 : WithConv (G.A n →ₐc[O] K.A n)).ofConv b`. Use `Eq.trans h ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Establish `hiu : i ≫ u = i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e` using `Preadditive.comp_add _ _ _ i u v`. Rewrite `e` using `[huv, hiv, add_zero, Category.comp_id]`. Conclude with `e.symm`. Use `⟨K, i, q, ?_, hq⟩` and prove the remaining obligations. Apply `hcan K` to reduce the goal to its premises.
-
-Rewrite using `[Category.assoc, hq, hiu, Category.id_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idempotent_split_of_isLocalRing (G : PDivGroup p O) (u : G ⟶ G) (hu : u ≫ u = u) :
     ∃ (H : PDivGroup p O) (i : H ⟶ G) (q : G ⟶ H), i ≫ q = 𝟙 H ∧ q ≫ i = u := by
@@ -253,7 +249,7 @@ theorem idempotent_split_of_isLocalRing (G : PDivGroup p O) (u : G ⟶ G) (hu : 
 end GlobalTheory.PDivGroup.IdemSplit
 
 /- English proof (translation)
-Introduce `p _ _ _ _ _ _ O _ _ _ _ _ _ _ G u hu` and use `GlobalTheory.PDivGroup.IdemSplit.idempotent_split_of_isLocalRing p O G u hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PDivGroup.IdemSplit.idempotent_split_integers :
     ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C]

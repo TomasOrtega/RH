@@ -21,15 +21,15 @@ section Alg
 variable {K : Type} [CommRing K] {A B : Type} [CommRing A] [CommRing B] [Algebra K A] [Algebra K B]
 
 /- English proof (translation)
-Use `letI : Algebra A B := φ.toRingHom.toAlgebra`. Use `haveI : IsScalarTower K A B := IsScalarTower.of_algHom φ`. Establish `hs : ∀ (c : A) (x : CrystallineSemistableComparison.Onto.Om K A a), CrystallineSemistableComparison.Onto.omMap φ a (c • x) = φ c • CrystallineSemistableComparison.Onto.omMap φ a x`. Introduce `c x`. Establish `h'` using `map_smul (exteriorPower.alternatingMapLinearEquiv { ((exteriorPower.ιMulti B a (M := Ω[B⁄K])).toMultilinearMap.restrictScalars A).compLinearMap fun _ => KaehlerDifferential.map K K A B with map_eq_zero_of_eq' := fun v i j h hij => (exteriorPower.ιMulti B a (M := Ω[B⁄K])).map_eq_z …`.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h'.trans (algebraMap_smul B c _)`. Establish `hι : ∀ g : Fin a → Ω[A⁄K], CrystallineSemistableComparison.Onto.omMap φ a (exteriorPower.ιMulti A a g) = h.mOm a (exteriorPower.ιMulti A a g)`. Introduce `g`. Establish `e1 : CrystallineSemistableComparison.Onto.omMap φ a (exteriorPower.ιMulti A a g) = exteriorPower.ιMulti B a fun k => KaehlerDifferential.map K K A B (g k)` using `exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ _`. Rewrite using `[e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[SemiHom.coe_mOm, exteriorPower.ιMulti_apply_coe, exteriorPower.ιMulti_apply_coe, ExteriorAlgebra.ιMulti_apply, ExteriorAlgebra.ιMulti_apply, map_list_prod, List.map_ofFn]`. Use `congr 2`. Use function extensionality and compare the values at `k`. Conclude with `(congrArg ι1 (SemiHom.oneFormMap_eq_kaehlerDifferential_map h (fun _ => rfl) (g k))).symm.trans (SemiHom.mDR_ι h (g k)).symm`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction.
 
-Establish `hmem : ω ∈ (⊤ : Submodule A (CrystallineSemistableComparison.Onto.Om K A a))` using `Submodule.mem_top`. Rewrite `hmem` using `[← exteriorPower.ιMulti_span]`. Proceed by induction on `hmem using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `hι g`. Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `add x y _ _ hx hy => rw [map_add, map_add, hx, hy]`. Consider the case `smul c x _ hx => rw [hs, SemiHom.mOm_smul, hx]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem omMap_eq_mOm (φ : A →ₐ[K] B) (h : SemiHom (RingHom.id K) (φ : A →+* B)) (a : ℕ) (ω : CrystallineSemistableComparison.Onto.Om K A a) :
     CrystallineSemistableComparison.Onto.omMap φ a ω = h.mOm a ω := by
@@ -76,9 +76,9 @@ variable {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.o
 abbrev omSheaf (a : ℕ) : TopCat.Sheaf Ab X := ⟨(Omega q a).presheaf, (Omega q a).isSheaf⟩
 
 /- English proof (translation)
-Establish `hT : IsAffineOpen (⊤ : X.Opens)` using `isAffineOpen_top X`. Use `⟨fun ω ω' h => toOm_injective hT ?_, fun y hy => ?_⟩` and prove the remaining obligations. Use `TopCat.Sheaf.eq_of_locally_eq' (omSheaf q a) U ⊤ (fun α => homOfLE le_top) hcov.ge _ _ fun α => ?_` and prove the remaining obligations. Conclude with `(res_toOm q a le_top ω).trans ((h α).trans (res_toOm q a le_top ω').symm)`. Establish `hc : TopCat.Presheaf.IsCompatible (omSheaf q a).1 U (fun α => toOm q a (U α) (y α))` using `fun α β => (res_toOm q a inf_le_left (y α)).trans ((congrArg _ (hy α β)).trans (res_toOm q a inf_le_right (y β)).symm)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, -⟩` from `TopCat.Sheaf.existsUnique_gluing' (omSheaf q a) U ⊤ (fun α => homOfLE le_top) hcov.ge (fun α => toOm q a (U α) (y α)) hc`. Take `⟨ω, rfl⟩` from `toOm_surjective hT t`. Conclude with `⟨ω, fun α => (res_toOm q a le_top ω).symm.trans (ht α)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem glue_core [IsAffine X] {ι : Type} (U : ι → X.Opens) (hcov : (⨆ α, U α) = ⊤) (a : ℕ) :
     (∀ ω ω' : OmU q ⊤ a, (∀ α, toOm q a (U α) (formRes q (le_top : U α ≤ ⊤) a ω) =
@@ -98,7 +98,7 @@ theorem glue_core [IsAffine X] {ι : Type} (U : ι → X.Opens) (hcov : (⨆ α,
     exact ⟨ω, fun α => (res_toOm q a le_top ω).symm.trans (ht α)⟩
 
 /- English proof (translation)
-Establish `e : φ = (Sec.res q h : GlobalTheory.CechDR.Sec q V →ₐ[K] GlobalTheory.CechDR.Sec q W)` using `AlgHom.ext hφ`. Substitute `e` using the available equality. Conclude with `omMap_eq_mOm _ (SemiHom.of_algHom (Sec.res q h)) a ω`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem omMap_res {V W : X.Opens} (h : W ≤ V) (φ : CrystallineSemistableComparison.Onto.Sec q V →ₐ[K] CrystallineSemistableComparison.Onto.Sec q W)
     (hφ : ∀ g, φ g = (X.presheaf.map (homOfLE h).op).hom g) (a : ℕ)
@@ -116,11 +116,11 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris DividedPowers GlobalT
 namespace GlobalTheory.CompanionTheory.FormsGlue
 
 /- English proof (translation)
-Introduce `K _ X q _ ι U hU hcov φ ψ₁ ψ₂ hφ hψ₁ hψ₂ a`. Establish `hc` using `glue_core q U hcov a`. Use `⟨fun ω ω' h => hc.1 ω ω' fun α => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Establish `e` using `congrFun h α`. Simplify using `only [] at e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[omMap_res q le_top (φ α) (hφ α), omMap_res q le_top (φ α) (hφ α)]`. Conclude with `congrArg _ e`. Take `⟨ω, hω⟩` from `hc.2 y fun α β => by`. Establish `e` using `hy α β`. Rewrite `e` using `[omMap_res q inf_le_left (ψ₁ α β) (hψ₁ α β), omMap_res q inf_le_right (ψ₂ α β) (hψ₂ α β)]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `e`. Use `⟨ω, fun α => ?_⟩` and prove the remaining obligations. Rewrite using `[omMap_res q le_top (φ α) (hφ α)]`. Conclude with `toOm_injective (hU α) (hω α)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem forms_glue : ∀ {K : Type} [CommRing K] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of K)) [IsAffine X] {ι : Type}
     (U : ι → X.Opens), (∀ α, IsAffineOpen (U α)) → (⨆ α, U α) = ⊤ →

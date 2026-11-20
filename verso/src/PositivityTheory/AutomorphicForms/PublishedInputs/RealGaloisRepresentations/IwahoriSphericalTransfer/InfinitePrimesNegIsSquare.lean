@@ -13,21 +13,19 @@ namespace GlobalTheory.RealGal.PrimesNegSquare
 open Polynomial
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h`. Establish `hq1 : (1 : ℝ) < q` using `by exact_mod_cast (Fact.out : q.Prime).one_lt`. Establish `h2pos : 0 < ‖(2 : ℤ_[q])‖` using `norm_pos_iff.mpr two_ne_zero`. Establish `h2le : ‖(2 : ℤ_[q])‖ ≤ 1` using `PadicInt.norm_le_one _`. Establish `hcle : ‖((c : ℤ) : ℤ_[q])‖ ≤ 1` using `PadicInt.norm_le_one _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqn : ‖((q : ℕ) : ℤ_[q])‖ = (q : ℝ)⁻¹` using `PadicInt.norm_p`. Establish `key : ‖(((p : ℤ) + 1 : ℤ) : ℤ_[q])‖ < ‖(2 : ℤ_[q])‖ ^ 2`. Rewrite using `[hc]`. Use `push_cast`. Establish `e8 : (8 : ℤ_[q]) = 2 ^ 3` using `by norm_num`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite using `[e8, norm_mul, norm_mul, norm_pow, hqn]`. Establish `hqinv : (q : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hq1`. Establish `hqinv0 : 0 < (q : ℝ)⁻¹` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `mul_le_of_le_one_right (by positivity) hcle` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Use `_ < ‖(2 : ℤ_[q])‖ ^ 2 * 1 := by`. Rewrite using `[pow_succ, mul_assoc]`. Apply `mul_lt_mul_of_pos_left _ (by positivity)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `_ = ‖(2 : ℤ_[q])‖ ^ 2 := mul_one _`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `F : ℤ[X]` to `X ^ 2 + C (p : ℤ)`. Establish `hF : ‖aeval (1 : ℤ_[q]) F‖ < ‖aeval (1 : ℤ_[q]) (derivative F)‖ ^ 2`. Establish `e1 : aeval (1 : ℤ_[q]) F = (((p : ℤ) + 1 : ℤ) : ℤ_[q])`. Simplify using `[F]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e2 : aeval (1 : ℤ_[q]) (derivative F) = 2`. Simplify using `[F]`. Conclude with `map_ofNat _ 2`. Rewrite using `[e1, e2]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨z, hz, -⟩` from `hensels_lemma hF`. Establish `hz' : z ^ 2 + (p : ℤ_[q]) = 0` using `by simpa [F] using hz`. Use `⟨(z : ℚ_[q]), ?_⟩` and prove the remaining obligations. Establish `: ((z ^ 2 + (p : ℤ_[q]) : ℤ_[q]) : ℚ_[q]) = 0` using `by rw [hz']; simp`. Move the coercions through the operations in `at this`.
-
-Take the linear combination `-this`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isSquare_neg_of_dvd (q : ℕ) [Fact q.Prime] (p : ℕ) (h : ((8 * q : ℕ) : ℤ) ∣ (p : ℤ) + 1) :
     IsSquare (-(p : ℚ_[q])) := by
@@ -69,11 +67,9 @@ theorem isSquare_neg_of_dvd (q : ℕ) [Fact q.Prime] (p : ℕ) (h : ((8 * q : �
   linear_combination -this
 
 /- English proof (translation)
-Introduce `q _`. Establish `hq0 : (8 * q) ≠ 0`. Use `(Fact.out : q.Prime).pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `haveI : NeZero (8 * q) := ⟨hq0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hu : IsUnit (-1 : ZMod (8 * q))` using `isUnit_one.neg`. Use `(Nat.infinite_setOfPred_prime_and_eq_mod hu).mono ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hpe⟩`. Use `⟨hp, GlobalTheory.RealGal.PrimesNegSquare.isSquare_neg_of_dvd q p ?_⟩` and prove the remaining obligations. Establish `: (((p : ℤ) + 1 : ℤ) : ZMod (8 * q)) = 0` using `by push_cast; rw [hpe]; ring`.
-
-Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mp this`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem infinite_primes_neg_isSquare : ∀ (q : ℕ) [Fact q.Prime], {p : ℕ | p.Prime ∧ IsSquare (-(p : ℚ_[q]))}.Infinite := by
   intro q _

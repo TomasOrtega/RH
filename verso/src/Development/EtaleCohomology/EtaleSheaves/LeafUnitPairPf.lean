@@ -7,9 +7,9 @@ namespace LateralTheory.E.LeafUnitPairPf
 open LateralTheory.E.CupProductRingLaws LateralTheory.E.LeafRingUnitPf
 
 /- English proof (translation)
-Establish `h1 : Sec.res g (twGen i ζ) = twGen i (ζ.map g.appTop.hom)`. Establish `h` using `congrArg (fun f => f.hom (Submodule.Quotient.mk (Finsupp.single ζ 1) : (twF q i).obj Γ(U, ⊤))) ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).naturality g.op)`. Simplify using `only [ModuleCat.hom_comp] at h`. Use `h.symm.trans (congrArg (fun x => ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op V)).hom x) ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk (Finsupp.mapDomain (Prim.map g.appTop.hom) (Finsupp.single ζ (1 : ULift.{1} (ZMod q)))) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Finsupp.mapDomain_single]`. Both sides reduce to the same expression. Unfold `resGen`. Rewrite using `[← h1]`. Conclude with `congrArg (fun f => f.hom (twGen i ζ)) (((resι _ (tw q i)).hom.naturality g.op)).symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resGen_res' {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (resGen i ζ) = resGen i (ζ.map g.appTop.hom) := by
@@ -31,11 +31,11 @@ def UnitPairLoc : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ), ∃ ν : Pair (res
     Loc U (fun V g => ∃ ζ : Prim q Γ(V, ⊤), Sec.res g a = resGen 0 ζ) → ν.mul U 0 t t (zero_add t) a b = b
 
 /- English proof (translation)
-Take `⟨S, hS, hP⟩` from `h`. Establish `hsh` using `(F.property (ModuleCat.of (ULift.{1} R) (ULift.{1} R)) S hS).isSeparatedFor`. Set `fx : ModuleCat.of (ULift.{1} R) (ULift.{1} R) ⟶ F.obj.obj (op U)` to `ModuleCat.ofHom (LinearMap.toSpanSingleton _ _ x)`. Set `fy : ModuleCat.of (ULift.{1} R) (ULift.{1} R) ⟶ F.obj.obj (op U)` to `ModuleCat.ofHom (LinearMap.toSpanSingleton _ _ y)`. Establish `hxy : fx = fy`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hsh.ext (fun V g hg => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fx ≫ F.obj.map g.op = fy ≫ F.obj.map g.op`. Use `ModuleCat.hom_ext (LinearMap.ext_ring ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(F.obj.map g.op).hom (fx.hom 1) = (F.obj.map g.op).hom (fy.hom 1)`. Simplify `hP V g hg` using `[fx, fy]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg (fun f => f.hom 1) hxy` as an intermediate fact. Simplify `this` using `[fx, fy]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sec_eq_of_loc {R : Type} [CommRing R] (F : Shv R) {U : Scheme.{0}} (x y : Sec F U)
     (h : Loc U fun V g => Sec.res g x = Sec.res g y) : x = y := by
@@ -59,9 +59,9 @@ def LeafUnitPairG : Prop := ∀ (q : ℕ) [NeZero q] (i : ℤ), ∃ ν : Pair (r
     ν.mul U 0 t t (zero_add t) (resGen 0 ζ) b = b
 
 /- English proof (translation)
-Introduce `q _ i`. Take `⟨ν, hν⟩` from `h q i`. Use `⟨ν, fun U t a b ha => sec_eq_of_loc _ _ _ ?_⟩` and prove the remaining obligations. Take `⟨S, hS, hP⟩` from `ha`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨ζ, hζ⟩` from `hP V g hg`. Rewrite using `[ν.nat g 0 t t (zero_add t) a b, hζ, hν]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem unitPairLoc_of (h : LeafUnitPairG) : UnitPairLoc := by
   intro q _ i
@@ -73,13 +73,13 @@ theorem unitPairLoc_of (h : LeafUnitPairG) : UnitPairLoc := by
   rw [ν.nat g 0 t t (zero_add t) a b, hζ, hν]
 
 /- English proof (translation)
-Introduce `q _ i`. Take `⟨ν, hν⟩` from `h q i`. Establish `key : ∀ k (_ : i = k), ∃ μ : Pair (res _ (tw q 0)) (res _ (tw q i)) (res _ (tw q k)), ∀ U s t w (hw : s + t = w) a b, HEq (μ.mul U s t w hw a b) (ν.mul U s t w hw a b)`. Introduce and unpack `k rfl`. Conclude with `⟨ν, fun _ _ _ _ _ _ _ => HEq.rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Take `⟨μ, hμ⟩` from `key (0 + i) (zero_add i).symm`. Establish `gen : ∀ U t w w' (h1 : 0 + t = w) (h2 : 0 + t = w') (_ : w = w') a b, HEq (ν.mul U 0 t w h1 a b) (ν.mul U 0 t w' h2 a b)`. Introduce `U t w w' h1 h2 e a b`. Substitute `e` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression.
 
-Establish `hgen : ∀ k (_ : k = i) (U : Scheme.{0}) (ζ : Prim q Γ(U, ⊤)), HEq (resGen k ζ) (resGen i ζ)`. Introduce and unpack `k rfl U ζ`. Both sides reduce to the same expression. Use `⟨μ, ?_, ?_⟩` and prove the remaining obligations. Introduce `U ζ`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hloc : Loc U (fun V g => ∃ ζ' : Prim q Γ(V, ⊤), Sec.res g (resGen 0 ζ) = resGen 0 ζ')` using `⟨⊤, GrothendieckTopology.top_mem _ _, fun _ g _ => ⟨_, resGen_res' 0 g ζ⟩⟩`. Conclude with `eq_of_heq ((hμ U 0 0 0 _ _ _).trans ((heq_of_eq (hν U 0 _ _ hloc)).trans (hgen _ (zero_add i) U ζ).symm))`. Introduce `U t w hw a b ha`. Conclude with `(hμ U 0 t w hw a b).trans ((gen U t w t hw (zero_add t) (by omega) a b).trans (heq_of_eq (hν U t a b ha)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem leafUnitPair_of_loc (h : UnitPairLoc) : LeafUnitPair := by
   intro q _ i
@@ -106,7 +106,7 @@ theorem leafUnitPair_of_loc (h : UnitPairLoc) : LeafUnitPair := by
     exact (hμ U 0 t w hw a b).trans ((gen U t w t hw (zero_add t) (by omega) a b).trans (heq_of_eq (hν U t a b ha)))
 
 /- English proof (translation)
-The claim follows from `leafUnitPair_of_loc (unitPairLoc_of h)`.
+A detailed English derivation is pending.
 -/
 theorem LeafUnitPair_of (h : LeafUnitPairG) : LeafUnitPair := leafUnitPair_of_loc (unitPairLoc_of h)
 

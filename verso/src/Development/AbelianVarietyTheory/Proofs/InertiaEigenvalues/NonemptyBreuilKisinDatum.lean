@@ -15,9 +15,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Assume the negation of the conclusion as `h0`. Take `⟨n, u, rfl⟩` from `WittVector.exists_eq_pow_p_mul' x h0`. Rewrite `hx` using `[map_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `mul_eq_zero.1 hx with h | h` into its components or cases. Conclude with `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero) h`. Conclude with `(u.isUnit.map w).ne_zero h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem wq_map_injective {l : ℕ} [Fact l.Prime] {a : ℕ} [NeZero a] {O : Type} [CommRing O] [IsDomain O]
     [CharZero O] (w : Wq l a →+* O) : Function.Injective w := by
@@ -31,17 +31,15 @@ theorem wq_map_injective {l : ℕ} [Fact l.Prime] {a : ℕ} [NeZero a] {O : Type
   · exact (u.isUnit.map w).ne_zero h
 
 /- English proof (translation)
-Introduce `l hl K`. Take `⟨hdvr, hfin, hunit⟩` from `GlobalTheory.T.ringOfIntegers_finiteExt_isDVR_finite_unit_iff l K`. Take `⟨a, ha, w, hK, hw, hres⟩` from `GlobalTheory.T.exists_witt_residueField_in_ringOfIntegers l K`. Use `letI : Algebra (Wq l a) ↥(OL K) := w.toRingHom.toAlgebra`. Establish `halg : ∀ c, algebraMap (Wq l a) ↥(OL K) c = w c` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower ℤ_[l] (Wq l a) ↥(OL K) := IsScalarTower.of_algebraMap_eq fun z => (w.commutes z).symm`. Use `haveI : Module.Finite (Wq l a) ↥(OL K) := Module.Finite.of_restrictScalars_finite ℤ_[l] _ _`. Take `⟨π, Ep, hπ, hE, hne, hmin⟩` from `GlobalTheory.T.exists_uniformiser_eisenstein_not_in_X_pow l a ↥(OL K) (wq_map_injective _) hres`. Take `⟨str, hstr⟩` from `GlobalTheory.T.breuilKisin_quotient_eisenstein_equiv l a ↥(OL K) π Ep hE hmin`. Take `⟨hδ, hc⟩` from `GlobalTheory.T.eisenstein_distinguished_powerSeries_adicComplete l a Ep hE`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨fl, ev, hfl, hX, hC, hφ⟩` from `GlobalTheory.T.exists_breuilKisin_eval_teichmuller_tilt l a (intToOC K π) (fun h => hπ.not_isUnit ((hunit π).2 h))`. Establish `hpoly : ∀ f : Polynomial (Wq l a), Per.θ l (ev (f : (Wq l a)⟦X⟧)) = intToOC K (Polynomial.aeval π f)`. Introduce `f`. Establish `: ((Per.θ l).comp ev).comp Polynomial.coeToPowerSeries.ringHom = (intToOC K).comp (Polynomial.aeval π : Polynomial (Wq l a) →ₐ[Wq l a] ↥(OL K)).toRingHom`. Use `Polynomial.ringHom_ext (fun c => ?_) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Per.θ l (ev ((Polynomial.C c : Polynomial (Wq l a)) : (Wq l a)⟦X⟧)) = intToOC K (Polynomial.aeval π (Polynomial.C c))`. Rewrite using `[Polynomial.coe_C, hC, Polynomial.aeval_C, halg, hw]`. Express the relevant statement in the definitionally equal form `Per.θ l (ev ((Polynomial.X : Polynomial (Wq l a)) : (Wq l a)⟦X⟧)) = intToOC K (Polynomial.aeval π (Polynomial.X : Polynomial (Wq l a)))`. Rewrite using `[Polynomial.coe_X, hX, Polynomial.aeval_X, hfl]`. Conclude with `congrArg (fun φ : Polynomial (Wq l a) →+* OC l => φ f) this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hE0 : Per.θ l (ev (Ep : (Wq l a)⟦X⟧)) = 0` using `by rw [hpoly, hmin.1, map_zero]`. Use `⟨{ a := a, Ep := Ep, monic := hE.1, deg_pos := hE.2.1, dvd_coeff := hE.2.2.1, coeff_zero := hE.2.2.2 not_expand := hne, str := str, isUnit_δ := hδ, complete := hc, flat := fl, ev := ev, ev_X := hX ev_C := hC, ev_frob := hφ span_ev := GlobalTheory.T.span_eq_ker_theta_of_distinguis …` and prove the remaining obligations. Rewrite using `[← (deltaS l a).map_δ_of_map_φ (ainfDelta l) ainf_torsionFree ev hφ]`. Conclude with `hδ.map ev`. Take `⟨f, rfl⟩` from `hmin.2.1 r`.
-
-Rewrite `h` using `[hstr, Ideal.Quotient.eq, Ideal.mem_span_singleton']`. Take `⟨y, hy⟩` from `h`. Rewrite using `[← hpoly, ← sub_eq_zero, ← map_sub, ← map_sub, ← hy, map_mul, map_mul, hE0, mul_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_bk_of_finExt : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l), Nonempty (BK K) := by
   intro l hl K

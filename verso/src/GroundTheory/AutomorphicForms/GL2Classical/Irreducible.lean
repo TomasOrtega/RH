@@ -18,13 +18,13 @@ local notation "𝕢₁" => Function.Periodic.qParam 1
 variable {N : ℕ} [NeZero N] {k : ℤ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hk`. Establish `hk' : k ≤ 0` using `not_lt.1 hk`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : ℂ, ∀ τ : ℍ, f τ = c := by`. Break down `lt_or_eq_of_le hk' with hlt | rfl` into its components or cases. Establish `h0` using `ModularForm.isZero_of_neg_weight hlt (CuspForm.toModularFormₗ f)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `⟨0, fun τ => congrArg (fun F : ModularForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k => F τ) h0⟩`. Take `⟨c, hc⟩` from `ModularForm.eq_const_of_weight_zero (CuspForm.toModularFormₗ f)`. Conclude with `⟨c, fun τ => congrFun hc τ⟩`. Establish `h1` using `qExpansion_coeff_eq_of_hasSum f (b := fun n => if n = 0 then c else 0) (fun τ => by`. Rewrite using `[hc τ]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hasSum_ite_eq 0 c using 2 with n` and compare the differences between its conclusion and the goal. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Use the proof step `simp) 1`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hf1]`. Simplify using `at h1`.
+A detailed English derivation is pending.
 -/
 theorem weight_pos_of_coeff_one (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (hf1 : (qExpansion 1 f).coeff 1 = 1) : 0 < k := by
@@ -46,11 +46,11 @@ theorem weight_pos_of_coeff_one (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) �
   simp at h1
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : liftEquiv N k f.toSlashInvariantForm = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val h` as an intermediate fact. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : f.toSlashInvariantForm = 0` using `(liftEquiv N k).map_eq_zero_iff.1 h1`. Establish `h3 : f = 0`. Use extensionality with `τ`. Conclude with `congrArg (fun F : SlashInvariantForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k => F τ) h2`. Rewrite `hf1` using `[h3]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4` using `qExpansion_coeff_eq_of_hasSum (0 : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k) (b := fun _ => 0) (fun τ => by simp) 1`. Rewrite `h4` using `[hf1]`. Conclude with `one_ne_zero h4`.
+A detailed English derivation is pending.
 -/
 theorem liftCusp_ne_zero (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (hf1 : (qExpansion 1 f).coeff 1 = 1) : liftCusp f ≠ 0 := by
@@ -70,13 +70,11 @@ theorem liftCusp_ne_zero (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
   exact one_ne_zero h4
 
 /- English proof (translation)
-Set `ev : ℕ → ℂ` to `fun p => if h : p.Prime then (haveI : Fact p.Prime := ⟨h⟩; Classical.choose (hf p)) else 0`. Establish `hev : ∀ (p : ℕ) [Fact p.Prime], heckeCusp N p k f = ev p • f`. Introduce `p hp`. Establish `h` using `Classical.choose_spec (@hf p ⟨hp.out⟩)`. Simplify using `only [ev, dif_pos hp.out]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`. Establish `hk` using `weight_pos_of_coeff_one f hf1`. Use `⟨fun h => liftCusp_ne_zero f hf1 ?_, fun W hW hWle => ?_⟩` and prove the remaining obligations. Use `mem_gkfSpan_self (liftCusp f)` as an intermediate fact. Rewrite `this` using `[h]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Conclude with `(Submodule.mem_bot ℂ).1 this`. Distinguish the cases in `hW0 : W = ⊥`. Conclude with `Or.inl hW0`. Use `right`. Take `⟨t, htT, ht0, htW⟩` from `exists_ne_zero_mem_translateSpanCusp f hk hW (hWle.trans (gkfSpan_le_weightSpan f)) hW0`.
-
-Establish `hY : liftCusp f ∈ W ⊓ translateSpanCusp f` using `liftCusp_mem_of_le_translateSpanCusp f ev hev hf1 (W ⊓ translateSpanCusp f) inf_le_right (fun g y hy => ⟨hW.2.2 g y hy.1, finRepCusp_mem_translateSpanCusp f g hy.2⟩) (fun h => ht0 ((Submodule.mem_bot ℂ).1 (h ▸ ⟨htW, htT⟩)))`. Conclude with `le_antisymm hWle (gkfSpan_le hW hY.1)`.
+Prove the first alternative. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gkfSpan_liftCusp_irreducible (f : CuspForm (Gamma0 N : Subgroup (GL (Fin 2) ℝ)) k)
     (hf : ∀ (p : ℕ) [Fact p.Prime], ∃ c : ℂ, heckeCusp N p k f = c • f)

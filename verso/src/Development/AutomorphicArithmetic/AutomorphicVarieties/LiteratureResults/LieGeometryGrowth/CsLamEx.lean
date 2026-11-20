@@ -13,13 +13,13 @@ private noncomputable def lam0 (g : GA E a) : ℝ :=
   Real.log (Reduction.detModule E a g).1 / (a * Module.finrank ℚ E)
 
 /- English proof (translation)
-The claim follows from `mul_pos (Nat.cast_pos.2 ha) (Nat.cast_pos.2 Module.finrank_pos)`.
+A detailed English derivation is pending.
 -/
 private theorem deg_pos (ha : 1 ≤ a) : (0 : ℝ) < a * Module.finrank ℚ E :=
   mul_pos (Nat.cast_pos.2 ha) (Nat.cast_pos.2 Module.finrank_pos)
 
 /- English proof (translation)
-Unfold `lam0`. Rewrite using `[map_mul, ← add_div, ← Real.log_mul (Reduction.detModule E a g).2.ne' (Reduction.detModule E a h).2.ne']`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem central_log_mul (g h : GA E a) : lam0 (g * h) = lam0 g + lam0 h := by
   unfold lam0
@@ -27,9 +27,9 @@ private theorem central_log_mul (g h : GA E a) : lam0 (g * h) = lam0 g + lam0 h 
   rfl
 
 /- English proof (translation)
-Establish `e : splitCentre E a (lam0 g) = Reduction.centralSection E a (Reduction.detModule E a g)`. Rewrite using `[KernelIndexFullLattice.splitEq_holds E a]`. Use `congrArg (Reduction.centralSection E a) (Subtype.ext ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Real.exp _ = _`. Rewrite using `[lam0, mul_div_cancel₀ _ (deg_pos ha).ne', Real.exp_log (Reduction.detModule E a g).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_comm, e, coe_retractOne, inv_mul_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem central_split_mul_retract (ha : 1 ≤ a) (g : GA E a) :
     splitCentre E a (lam0 g) * (retractOne g : KernelIndexFullLattice.G1 E a).1 = g := by
@@ -41,14 +41,14 @@ private theorem central_split_mul_retract (ha : 1 ≤ a) (g : GA E a) :
   rw [GlobalTheory.CuspRep.CuspidalL2GL.splitCentre_comm, e, coe_retractOne, inv_mul_cancel_right]
 
 /- English proof (translation)
-Rewrite using `[lam0, (Reduction.mem_normOneGL_iff_detModule).1 x.2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem central_log_eq_zero_on_norm_one (x : KernelIndexFullLattice.G1 E a) : lam0 (x.1 : GA E a) = 0 := by
   rw [lam0, (Reduction.mem_normOneGL_iff_detModule).1 x.2]
   simp
 
 /- English proof (translation)
-Rewrite using `[lam0, KernelIndexFullLattice.splitEq_holds E a, Reduction.detModule_centralSection (by omega)]`. Express the relevant statement in the definitionally equal form `Real.log (Real.exp _) / _ = _`. Rewrite using `[Real.log_exp, mul_div_cancel_left₀ _ (deg_pos ha).ne']`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem central_log_split (ha : 1 ≤ a) (t : ℝ) : lam0 (splitCentre E a t) = t := by
   rw [lam0, KernelIndexFullLattice.splitEq_holds E a, Reduction.detModule_centralSection (by omega)]
@@ -58,9 +58,9 @@ private theorem central_log_split (ha : 1 ≤ a) (t : ℝ) : lam0 (splitCentre E
 end UpperTheory.V.Lit.Geo.Cs
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha`. Use `⟨lam0, central_log_mul, central_split_mul_retract ha, fun c => ?_⟩` and prove the remaining obligations. Take `⟨T, hT⟩` from `(UpperTheory.V.Lit.Geo.retrFacts E a).2.2 c`. Use `⟨T, fun h hh => ?_⟩` and prove the remaining obligations. Take `⟨t, ht, e⟩` from `hT 1 h hh.1 hh.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e'` using `congrArg lam0 e`. Rewrite `e'` using `[central_log_mul, central_log_mul, central_log_eq_zero_on_norm_one, central_log_eq_zero_on_norm_one, central_log_split ha, zero_add, add_zero]`. Rewrite using `[e']` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.V.Lit.Geo.Cs.lamEx :
     LamEx := by

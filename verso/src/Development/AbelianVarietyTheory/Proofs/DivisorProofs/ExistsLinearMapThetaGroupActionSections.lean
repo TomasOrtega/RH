@@ -14,13 +14,11 @@ namespace GlobalTheory.Mum.Desc
 open GlobalTheory.FieldBaseChange
 
 /- English proof (translation)
-Introduce `R _ _ A F _ _ N θ`. Establish `hex : ∀ t : SecF A F N, ∃ u : SecF A F N, IsActOf A.A A.L N θ t u` using `fun t => GlobalTheory.VVCompare.exists_isActOf A.A A.isLB θ t`. Use `choose Θ hΘ using hex`. Establish `hb : (translT A.A θ.pt).left ≫ (fst (TFK (R` using `R) F) A.A).left = (fst (TFK (R := R) F) A.A).left := congrArg (fun q => q.left) (lift_fst _ _ : translT A.A θ.pt ≫ fst _ _ = _)`. Establish `hv` using `fun (t u : SecF A F N) (h : IsActOf A.A A.L N θ t u) y J hJ => GlobalTheory.VVCompare.sv_of_isTwistPull A.A h (𝟙 _) y (J := J) hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨⟨Θ, fun s s' => sec_ext' A.isLB fun y J hJ => ?_⟩, fun c s => sec_ext' A.isLB fun y J hJ => ?_⟩, fun t t' => ⟨fun h => sec_ext' A.isLB fun y J hJ => ?_, ?_⟩⟩` and prove the remaining obligations. Use `(hv _ _ (hΘ _) y J hJ).trans ?_` and prove the remaining obligations. Use `Eq.symm ((sval_add' hJ _ _ _).trans (Eq.trans ?_ (congrArg _ (sval_add' hJ _ s s')).symm))` and prove the remaining obligations. Conclude with `(congrArg₂ (· + ·) (hv _ _ (hΘ s) y J hJ) (hv _ _ (hΘ s') y J hJ)).trans (mul_add _ _ _).symm`. Use `(hv _ _ (hΘ _) y J hJ).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.symm ((sval_smul' hJ _ _ _).trans (Eq.trans ?_ (congrArg _ (sval_smul' hJ _ c s)).symm))` and prove the remaining obligations. Rewrite using `[Category.assoc, hb]`. Conclude with `(congrArg _ (hv _ _ (hΘ s) y J hJ)).trans (mul_left_comm _ _ _)`. Conclude with `(hv _ _ h y J hJ).trans (hv _ _ (hΘ t) y J hJ).symm`. Introduce and unpack `rfl`.
-
-Conclude with `hΘ t`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem exists_linear_isActOf : ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) (F : Type) [Field F] [Algebra (FractionRing R) F] (N : ℕ) (θ : ThetaGrp A.A A.L (N : ℤ) (TFK (R := R) F)), ∃ b : SecF A F N →ₗ[F] SecF A F N, ∀ t t' : SecF A F N, IsActOf A.A A.L N θ t t' ↔ t' = b t := by
   intro R _ _ A F _ _ N θ

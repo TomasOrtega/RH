@@ -12,7 +12,7 @@ section Abs
 variable {M ι Λ : Type} [AddCommGroup M] [Module ℂ M] [DecidableEq ι]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons f l ih`. Rewrite using `[List.prod_cons, Module.End.mul_apply, ih (fun g hg => h g (List.mem_cons_of_mem _ hg)), map_smul, h f List.mem_cons_self, smul_smul, List.map_cons, List.prod_cons, mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem list_prod_apply (l : List (Module.End ℂ M)) (k : Module.End ℂ M → ℂ) (φ : M) (h : ∀ f ∈ l, f φ = k f • φ) :
     l.prod φ = (l.map k).prod • φ := by
@@ -23,9 +23,9 @@ theorem list_prod_apply (l : List (Module.End ℂ M)) (k : Module.End ℂ M → 
       h f List.mem_cons_self, smul_smul, List.map_cons, List.prod_cons, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨1, by simp⟩`. Consider the case `cons f l ih`. Take `⟨c, hc⟩` from `ih (fun g hg => h g (List.mem_cons_of_mem _ hg))`. Take `⟨d, hd⟩` from `h f List.mem_cons_self`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c * d, by rw [List.prod_cons, Module.End.mul_apply, hc, map_smul, hd, smul_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem list_prod_smul (l : List (Module.End ℂ M)) (φ : M) (h : ∀ f ∈ l, ∃ c : ℂ, f φ = c • φ) :
     ∃ c : ℂ, l.prod φ = c • φ := by
@@ -46,7 +46,7 @@ variable {A χ lam}
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `only [fac, LinearMap.smul_apply, LinearMap.sub_apply, Module.End.one_apply, hP k φ hφ]`. Rewrite using `[smul_sub, smul_smul, smul_smul, mul_sub, sub_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fac_apply {P : ι → Submodule ℂ M} (hP : ∀ k, ∀ φ ∈ P k, ∀ l, A l φ = χ k l • φ) (i j k : ι) {φ : M}
     (hφ : φ ∈ P k) :
@@ -55,9 +55,9 @@ theorem fac_apply {P : ι → Submodule ℂ M} (hP : ∀ k, ∀ φ ∈ P k, ∀ 
   rw [smul_sub, smul_smul, smul_smul, mul_sub, sub_smul]
 
 /- English proof (translation)
-Unfold `proj`. Rewrite using `[list_prod_apply _ (fun _ => 1) φ]`. Simplify using the standard rewrite rules. Introduce `f hf`. Take `⟨j, hj, rfl⟩` from `List.mem_map.1 hf`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[one_smul, fac_apply hP i j i hφ]`. Establish `hij : i ≠ j` using `fun h => by subst h; exact Finset.notMem_erase i SS (Finset.mem_toList.1 hj)`. Rewrite using `[inv_mul_cancel₀ (sub_ne_zero.2 (hlam i j hij)), one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_self {P : ι → Submodule ℂ M} (hP : ∀ k, ∀ φ ∈ P k, ∀ l, A l φ = χ k l • φ)
     (hlam : ∀ i j, i ≠ j → χ i (lam i j) ≠ χ j (lam i j)) (SS : Finset ι) (i : ι) {φ : M} (hφ : φ ∈ P i) :
@@ -72,11 +72,11 @@ theorem proj_self {P : ι → Submodule ℂ M} (hP : ∀ k, ∀ φ ∈ P k, ∀ 
     rw [inv_mul_cancel₀ (sub_ne_zero.2 (hlam i j hij)), one_smul]
 
 /- English proof (translation)
-Unfold `proj`. Establish `hmem : fac A χ lam i k ∈ ((SS.erase i).toList).map (fac A χ lam i)` using `List.mem_map.2 ⟨k, Finset.mem_toList.2 (Finset.mem_erase.2 ⟨hki, hk⟩), rfl⟩`. Take `⟨l₁, l₂, he⟩` from `List.append_of_mem hmem`. Establish `hl₂ : ∀ f ∈ l₂, ∃ c : ℂ, f φ = c • φ`. Introduce `f hf`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf' : f ∈ ((SS.erase i).toList).map (fac A χ lam i)`. Rewrite using `[he]`. Conclude with `List.mem_append_right _ (List.mem_cons_of_mem _ hf)`. Take `⟨j, -, rfl⟩` from `List.mem_map.1 hf'`. Conclude with `⟨_, fac_apply hP i j k hφ⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `list_prod_smul l₂ φ hl₂`. Rewrite using `[he, List.prod_append, List.prod_cons, Module.End.mul_apply, Module.End.mul_apply, hc, map_smul, fac_apply hP i k k hφ, sub_self, mul_zero, zero_smul, smul_zero, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_other {P : ι → Submodule ℂ M} (hP : ∀ k, ∀ φ ∈ P k, ∀ l, A l φ = χ k l • φ)
     (SS : Finset ι) (i k : ι) (hk : k ∈ SS) (hki : k ≠ i) {φ : M} (hφ : φ ∈ P k) :
@@ -96,11 +96,11 @@ theorem proj_other {P : ι → Submodule ℂ M} (hP : ∀ k, ∀ φ ∈ P k, ∀
     fac_apply hP i k k hφ, sub_self, mul_zero, zero_smul, smul_zero, map_zero]
 
 /- English proof (translation)
-Take `⟨μ, hμ⟩` from `(Submodule.mem_iSup_finset_iff_exists_sum P φ).1 hφ`. Establish `key : ∀ i, proj A χ lam SS i φ = if i ∈ SS then (μ i : M) else 0`. Introduce `i`. Rewrite using `[← hμ, map_sum]`. Rewrite using `[Finset.sum_congr rfl (g := fun k => if k = i then (μ k : M) else 0) (fun k hk => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : k = i`. Substitute `h` using the available equality. Rewrite using `[if_pos rfl, proj_self hP hlam SS k (μ k).2]`. Rewrite using `[if_neg h, proj_other hP SS i k hk h (μ k).2])]`. Rewrite using `[Finset.sum_ite_eq']`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key] split_ifs`. Conclude with `(μ i).2`. Conclude with `(P i).zero_mem`. Rewrite using `[Finset.sum_congr rfl (fun i hi => by rw [key, if_pos hi]), hμ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_decomp {P : ι → Submodule ℂ M} (hP : ∀ k, ∀ φ ∈ P k, ∀ l, A l φ = χ k l • φ)
     (hlam : ∀ i j, i ≠ j → χ i (lam i j) ≠ χ j (lam i j)) (SS : Finset ι) {φ : M} (hφ : φ ∈ ⨆ i ∈ SS, P i) :
@@ -122,7 +122,7 @@ theorem proj_decomp {P : ι → Submodule ℂ M} (hP : ∀ k, ∀ φ ∈ P k, �
   · rw [Finset.sum_congr rfl (fun i hi => by rw [key, if_pos hi]), hμ]
 
 /- English proof (translation)
-Unfold `proj`. Use `Commute.list_prod_left _ _ fun f hf => ?_` and prove the remaining obligations. Take `⟨j, -, rfl⟩` from `List.mem_map.1 hf`. Conclude with `((hB _).sub_left ((Commute.one_left B).smul_left _)).smul_left _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem proj_commute (SS : Finset ι) (i : ι) (B : Module.End ℂ M) (hB : ∀ l, Commute (A l) B) :
     Commute (proj A χ lam SS i) B := by
@@ -136,11 +136,11 @@ end Abs
 section Sep
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `ev : ∀ (n : Multiset ℂ) (w : ℂ), (n.map fun z => w + sh + z).prod = ((n.map fun z => -(sh + z)).map fun a => X - C a).prod.eval w`. Introduce `n w`. Rewrite using `[eval_multiset_prod, Multiset.map_map, Multiset.map_map]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish `hp : ((m.map fun z => -(sh + z)).map fun a => X - C a).prod = ((m'.map fun z => -(sh + z)).map fun a => X - C a).prod` using `Polynomial.funext fun w => by rw [← ev, ← ev, hc w]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `congrArg Polynomial.roots hp`. Rewrite `hr` using `[roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C]`. Conclude with `h (Multiset.map_injective (fun x y hxy => by simpa using hxy) hr)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ne_prod {m m' : Multiset ℂ} (sh : ℂ) (h : m ≠ m') :
     ∃ w : ℂ, (m.map fun z => w + sh + z).prod ≠ (m'.map fun z => w + sh + z).prod := by
@@ -166,11 +166,11 @@ end Sep
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Set `A : (E →+* ℂ) × ℂ → Module.End ℂ (Sm E a)` to `fun l => cap l.1 l.2`. Set `χ : ((E →+* ℂ) → Multiset ℂ) → (E →+* ℂ) × ℂ → ℂ` to `fun σ l => ((σ l.1).map fun z => l.2 + sh + z).prod`. Establish `hsep : ∀ σ σ' : (E →+* ℂ) → Multiset ℂ, σ ≠ σ' → ∃ l, χ σ l ≠ χ σ' l`. Introduce `σ σ' h`. Take `⟨τ, hτ⟩` from `Function.ne_iff.1 h`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `exists_ne_prod sh hτ`. Conclude with `⟨(τ, w), hw⟩`. Set `lam : ((E →+* ℂ) → Multiset ℂ) → ((E →+* ℂ) → Multiset ℂ) → (E →+* ℂ) × ℂ` to `fun σ σ' => if h : σ ≠ σ' then Classical.choose (hsep σ σ' h) else (Classical.arbitrary _, 0)`. Establish `hlam : ∀ σ σ', σ ≠ σ' → χ σ (lam σ σ') ≠ χ σ' (lam σ σ')`. Introduce `σ σ' h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [lam, dif_pos h]`. Conclude with `Classical.choose_spec (hsep σ σ' h)`. Establish `hP : ∀ k, ∀ φ ∈ BlockCapelli.Eig L k sh, ∀ l, A l φ = χ k l • φ` using `fun k φ hφ l => hφ.2 l.1 l.2`. Use `⟨proj A χ lam SS, fun σ o => proj_commute SS σ _ fun l => GlobalTheory.SpehInfChar.cap_commute_act l.1 l.2 o, fun σ φ hφ => (proj_decomp hP hlam SS (hL hφ)).1 σ, fun φ hφ => (proj_decomp hP hlam SS (hL hφ)).2⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem proj_exists {a : ℕ} (L : Submodule ℂ (Sm E a)) (SS : Finset ((E →+* ℂ) → Multiset ℂ)) (sh : ℂ)
     (hL : L ≤ ⨆ σ ∈ SS, BlockCapelli.Eig L σ sh) :

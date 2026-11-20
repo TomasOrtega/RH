@@ -12,11 +12,9 @@ section
 variable {n : ℕ} {K V : Type*} [Field K] [AddCommGroup V] [Module K V]
 
 /- English proof (translation)
-Unfold `isoSub`. Introduce `x hx`. Establish `hle : Submodule.span K {x | ∃ u ∈ Umon E, ∃ v, IsHWV E mu v ∧ x = u v} ≤ (Submodule.span K {x | ∃ u ∈ Umon E, ∃ v, IsHWV E mu v ∧ x = u v}).comap (E a b)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `y ⟨u, hu, v, hv, rfl⟩`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Simplify using `only [SetLike.mem_coe, Submodule.mem_comap]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨E a b * u, ?_, v, hv, rfl⟩` and prove the remaining obligations. Unfold `Umon at hu ⊢`. Conclude with `Submonoid.mul_mem _ (Submonoid.subset_closure ⟨(a, b), rfl⟩) hu`.
-
-Conclude with `hle hx`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isotypic_stable_under_gl_operator (E : GLOps n K V) (mu : Fin n → ℤ) (a b : Fin n) :
     ∀ x ∈ isoSub E mu, E a b x ∈ isoSub E mu := by
@@ -34,7 +32,7 @@ theorem isotypic_stable_under_gl_operator (E : GLOps n K V) (mu : Fin n → ℤ)
   exact hle hx
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hle : (⨆ mu : Fin n → ℤ, isoSub E mu) ≤ (⨆ mu : Fin n → ℤ, isoSub E mu).comap (E a b)` using `iSup_le fun mu y hy => Submodule.mem_comap.mpr (Submodule.mem_iSup_of_mem mu (isotypic_stable_under_gl_operator E mu a b y hy))`. Conclude with `hle hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isotypic_sum_stable_gl_operator (E : GLOps n K V) (a b : Fin n) :
     ∀ x ∈ (⨆ mu : Fin n → ℤ, isoSub E mu), E a b x ∈ (⨆ mu : Fin n → ℤ, isoSub E mu) := by
@@ -45,9 +43,9 @@ theorem isotypic_sum_stable_gl_operator (E : GLOps n K V) (a b : Fin n) :
   exact hle hx
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil`. Introduce `x hx`. Simplify using `using hx`. Consider the case `cons u l ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `x hx`. Rewrite using `[List.prod_cons]`. Use `show u (l.prod x) ∈ W`. Conclude with `h u (by simp) _ (ih (fun v hv => h v (by simp [hv])) x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem list_prod_preserves_submodule (W : Submodule K V) (l : List (Module.End K V))
     (h : ∀ u ∈ l, ∀ x ∈ W, u x ∈ W) : ∀ x ∈ W, l.prod x ∈ W := by
@@ -62,11 +60,11 @@ theorem list_prod_preserves_submodule (W : Submodule K V) (l : List (Module.End 
     exact h u (by simp) _ (ih (fun v hv => h v (by simp [hv])) x hx)
 
 /- English proof (translation)
-Unfold `binomE`. Introduce `x hx`. Rewrite using `[LinearMap.smul_apply]`. Apply `W.smul_mem` to reduce the goal to its premises. Use `list_prod_preserves_submodule W _ ?_ x hx` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu`. Simplify using `only [List.mem_map, List.mem_range] at hu`. Take `⟨j, -, rfl⟩` from `hu`. Introduce `y hy`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `W.sub_mem (hW a y hy) (W.smul_mem _ (by simpa using hy))`.
+A detailed English derivation is pending.
 -/
 theorem binomial_preserves_diagonal_stable (E : GLOps n K V) (W : Submodule K V) (hW : ∀ a, ∀ x ∈ W, E a a x ∈ W)
     (a : Fin n) (k : ℕ) : ∀ x ∈ W, binomE E a k x ∈ W := by
@@ -83,9 +81,9 @@ theorem binomial_preserves_diagonal_stable (E : GLOps n K V) (W : Submodule K V)
   exact W.sub_mem (hW a y hy) (W.smul_mem _ (by simpa using hy))
 
 /- English proof (translation)
-Unfold `binomialDiagonalSubring at hu`. Set `S : Subring (Module.End K V)` to `{ carrier := {u | ∀ x ∈ W, u x ∈ W} mul_mem' := fun {u v} hu hv x hx => hu _ (hv x hx) one_mem' := fun x hx => hx add_mem' := fun {u v} hu hv x hx => W.add_mem (hu x hx) (hv x hx) zero_mem' := fun x _ => W.zero_mem neg_mem' := fun {u} hu x hx => W.neg_mem (hu x hx) }`. Establish `hle : Subring.closure {u | ∃ a k, u = binomE E a k} ≤ S`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `v ⟨a, k, rfl⟩`.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `binomial_preserves_diagonal_stable E W hW a k`. Introduce `x hx`. Conclude with `(hle hu : u ∈ S) x hx`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem binomial_subring_preserves_stable (E : GLOps n K V) (W : Submodule K V) (hW : ∀ a, ∀ x ∈ W, E a a x ∈ W)
     (u : Module.End K V) (hu : u ∈ binomialDiagonalSubring E) : ∀ x ∈ W, u x ∈ W := by
@@ -105,11 +103,9 @@ theorem binomial_subring_preserves_stable (E : GLOps n K V) (W : Submodule K V) 
   exact (hle hu : u ∈ S) x hx
 
 /- English proof (translation)
-Unfold `IsGLRep at hE`. Establish `hx : x ∈ ⨆ ν, weightSp E ν`. Rewrite using `[hE.2.2]`. Conclude with `Submodule.mem_top`. Establish `hle : (⨆ ν, weightSp E ν) ≤ (weightSp E μ).comap (Θ μ)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun ν y hy => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_comap, hΘ μ ν y hy]`. Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hy`.
-
-Conclude with `Submodule.zero_mem _`. Conclude with `hle hx`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem weight_projection_mem_weightSpace (E : GLOps n K V) (hE : IsGLRep E) (Θ : (Fin n → ℤ) → Module.End K V)
     (hΘ : ∀ μ ν, ∀ x ∈ weightSp E ν, Θ μ x = if ν = μ then x else 0) (μ : Fin n → ℤ) (x : V) :
@@ -128,13 +124,13 @@ theorem weight_projection_mem_weightSpace (E : GLOps n K V) (hE : IsGLRep E) (Θ
   exact hle hx
 
 /- English proof (translation)
-Unfold `IsGLRep at hE`. Establish `hx : x ∈ ⨆ ν, weightSp E ν`. Rewrite using `[hE.2.2]`. Conclude with `Submodule.mem_top`. Establish `hle : (⨆ ν, weightSp E ν) ≤ LinearMap.ker ((∑ μ ∈ box, Θ μ) - 1)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun ν y hy => ?_` and prove the remaining obligations. Establish `hy' : ∀ μ, Θ μ y = if ν = μ then y else 0` using `fun μ => hΘ μ ν y hy`. Rewrite using `[LinearMap.mem_ker]`. Distinguish the cases in `hν : weightSp E ν = ⊥`. Establish `h0 : y = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy` using `[hν]`. Conclude with `(Submodule.mem_bot K).mp hy`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hy', hbox ν hν]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hle hx`. Rewrite `h` using `[LinearMap.mem_ker]`. Simplify `h` using `[sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_weight_projections_eq_self (E : GLOps n K V) (hE : IsGLRep E) (Θ : (Fin n → ℤ) → Module.End K V)
     (hΘ : ∀ μ ν, ∀ x ∈ weightSp E ν, Θ μ x = if ν = μ then x else 0) (box : Finset (Fin n → ℤ))
@@ -161,7 +157,7 @@ theorem sum_weight_projections_eq_self (E : GLOps n K V) (hE : IsGLRep E) (Θ : 
 def negHeightFunctional (ν : Fin n → ℤ) : ℤ := - ∑ c : Fin n, ((c : ℕ) : ℤ) * ν c
 
 /- English proof (translation)
-Unfold `negHeightFunctional rootW`. Simplify using `only [Pi.add_apply, Pi.sub_apply, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, Pi.single_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem negHeight_add_root (ν : Fin n → ℤ) (a b : Fin n) :
     negHeightFunctional (ν + rootW a b) = negHeightFunctional ν + (((b : ℕ) : ℤ) - ((a : ℕ) : ℤ)) := by
@@ -173,29 +169,27 @@ theorem negHeight_add_root (ν : Fin n → ℤ) (a b : Fin n) :
 end
 
 /- English proof (translation)
-Unfold `IsotypicComponentsSpanModule`. Take `⟨W', hc, hW'⟩` from `h2 K V n E hE (⨆ mu : Fin n → ℤ, isoSub E mu) (fun a b => isotypic_sum_stable_gl_operator E a b)`. Assume the negation of the conclusion as `hne`. Establish `hW'ne : W' ≠ ⊥`. Introduce `h0`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc` using `[h0]`. Conclude with `hne (by simpa using hc.sup_eq_top)`. Take `⟨x, hxW', hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW'ne`. Take `⟨m, hm⟩` from `hb`. Take `⟨Θ, hΘm, hΘ⟩` from `hθ`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set box : Finset (Fin n → ℤ) := Fintype.piFinset (fun _ : Fin n => Finset.Icc (-(m : ℤ)) m) with hboxdef`. Establish `hbox : ∀ ν, weightSp E ν ≠ ⊥ → ν ∈ box`. Introduce `ν hν`. Rewrite using `[hboxdef, Fintype.mem_piFinset]`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.mem_Icc]`. Conclude with `abs_le.1 (hm ν hν a)`. Establish `hsum` using `sum_weight_projections_eq_self E hE Θ hΘ box hbox x`. Establish `hex : ∃ ν ∈ box, Θ ν x ≠ 0`. Apply `Finset.exists_ne_zero_of_sum_ne_zero` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hsum]`. Conclude with `hx0`. Use `set S : Finset (Fin n → ℤ) := box.filter (fun ν => W' ⊓ weightSp E ν ≠ ⊥) with hS`. Establish `hSne : S.Nonempty`. Take `⟨ν, hν, hν0⟩` from `hex`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨ν, ?_⟩` and prove the remaining obligations. Rewrite using `[hS, Finset.mem_filter]`. Use `⟨hν, fun hbot => hν0 ?_⟩` and prove the remaining obligations. Establish `: Θ ν x ∈ W' ⊓ weightSp E ν` using `⟨binomial_subring_preserves_stable E W' (fun a => hW' a a) (Θ ν) (hΘm ν) x hxW', weight_projection_mem_weightSpace E hE Θ hΘ ν x⟩`. Rewrite `this` using `[hbot]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨ν, hνS, hmax⟩` from `Finset.exists_max_image S negHeightFunctional hSne`. Rewrite `hνS` using `[hS, Finset.mem_filter]`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hνS.2`. Establish `hraise : ∀ a b : Fin n, a < b → E a b y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Assume the negation of the conclusion as `hne0`. Establish `hmem : E a b y ∈ W' ⊓ weightSp E (ν + rootW a b)` using `⟨hW' a b y hy.1, hs a b ν y hy.2⟩`. Establish `h1 : W' ⊓ weightSp E (ν + rootW a b) ≠ ⊥`. Introduce `hbot`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmem` using `[hbot]`. Conclude with `hne0 (by simpa using hmem)`. Establish `h2' : weightSp E (ν + rootW a b) ≠ ⊥`. Introduce `hbot`. Rewrite `h1` using `[hbot]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1 (by simp)`. Establish `h3 : ν + rootW a b ∈ S`. Rewrite using `[hS, Finset.mem_filter]`. Conclude with `⟨hbox _ h2', h1⟩`. Establish `h4` using `hmax _ h3`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[negHeight_add_root]`. Establish `h5 : ((a : ℕ) : ℤ) < ((b : ℕ) : ℤ)` using `by exact_mod_cast hab`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hhw : IsHWV E ν y` using `⟨hy0, hy.2, hraise⟩`. Establish `hyiso : y ∈ isoSub E ν` using `Submodule.subset_span ⟨1, (Umon E).one_mem, y, hhw, rfl⟩`.
-
-Establish `hyW : y ∈ (⨆ mu : Fin n → ℤ, isoSub E mu)` using `(le_iSup (fun mu : Fin n → ℤ => isoSub E mu) ν) hyiso`. Establish `: y ∈ (⨆ mu : Fin n → ℤ, isoSub E mu) ⊓ W'` using `⟨hyW, hy.1⟩`. Rewrite `this` using `[hc.inf_eq_bot]`. Conclude with `hy0 (by simpa using this)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_isotypic_top_of_weight_data (D : Formalism.BasicNotions.D7) (h2 : adm2 D) {K V : Type} [Field K] [CharZero K] [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] {n : ℕ} (E : GLOps n K V) (hE : IsGLRep E) (hs : OperatorsShiftWeightsByRoots E)

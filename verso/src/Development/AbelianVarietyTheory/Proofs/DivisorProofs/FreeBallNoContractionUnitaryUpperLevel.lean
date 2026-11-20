@@ -15,9 +15,9 @@ open scoped Matrix
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Introduce `N hN hop`. Use `h N hN fun τ => ?_` and prove the remaining obligations. Take `⟨c, hc0, hc1, hc⟩` from `hop τ`. Use `⟨c, hc0, hc1, fun u => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.MajInv.maj_rmul X.toData hx1 hb, GlobalTheory.MajInv.maj_rmul X.toData hx1 hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hc u`.
+A detailed English derivation is pending.
 -/
 theorem noContraction_of_rmul (X : DataX E r) {x1 b : Frame X.Ψ r} (hx1 : x1 ∈ X.dom)
     (hb : b ∈ Bor X.Ψ r) (h : GlobalTheory.IndefiniteRowSideFullHecke.SmallUnipotentElements.NoContraction X (rmul x1 b)) :
@@ -30,11 +30,11 @@ theorem noContraction_of_rmul (X : DataX E r) {x1 b : Frame X.Ψ r} (hx1 : x1 �
   exact hc u
 
 /- English proof (translation)
-Introduce `u`. Rewrite using `[ModeHalfA.maj_orth X h0, ModeHalfA.maj_orth X h0]`. Express the relevant statement in the definitionally equal form `ReciprocityTheory.MultiplicativeHeights.normSq _ ≤ _ * ReciprocityTheory.MultiplicativeHeights.normSq _`. Establish `hk` using `ReciprocityTheory.MultiplicativeHeights.sb_ballRatio_nonneg hr`. Establish `hu : IsUnit (mat x0 τ).det` using `isUnit_iff_ne_zero.mpr (LUPf.orthogonalFrame_det_ne_zero X x0 h0 τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1 : IsUnit (mat z1 τ).det` using `isUnit_iff_ne_zero.mpr (LUPf.orthogonalFrame_det_ne_zero X z1 h1 τ)`. Establish `b1` using `(frame_bound hr X h0 h1 hlt τ ((mat x0 τ)⁻¹ *ᵥ u)).1`. Establish `b2` using `(frame_bound hr X h0 h2 hlt2 τ ((mat z1 τ)⁻¹ *ᵥ u)).2`. Establish `e : mat (lact γ z1) τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat z1 τ` using `rfl`. Rewrite `b1` using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ hu, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv_cancel_right _ _ hu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `b2` using `[e, Matrix.mulVec_mulVec, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ hu1, ← Matrix.mulVec_mulVec]`. Establish `hn : 0 ≤ ReciprocityTheory.MultiplicativeHeights.normSq ((mat x0 τ)⁻¹ *ᵥ u)` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hE : ReciprocityTheory.MultiplicativeHeights.ballRatio r ^ 2 ≤ Real.exp (1 / (3 * (r : ℝ))) ^ 2` using `pow_le_pow_left₀ hk (ReciprocityTheory.MultiplicativeHeights.sb_ballRatio_le hr) 2`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem opNormLe_of_ball (hr : 0 < r) (X : Data E r) {x0 z1 : Frame X.Ψ r} {γ : GL (Fin r) E}
     (h0 : IsOrth X x0) (h1 : IsOrth X z1) (h2 : IsOrth X (lact γ z1))
@@ -64,13 +64,13 @@ theorem opNormLe_of_ball (hr : 0 < r) (X : Data E r) {x0 z1 : Frame X.Ψ r} {γ 
     _ ≤ _ := mul_le_mul_of_nonneg_right hE hn
 
 /- English proof (translation)
-Introduce `E _ _ _ r X G g hsp hg hΓ hL' hΛ hU x hx hNC`. Take `⟨x1, h1, b, hb, rfl⟩` from `ortho_holds r X.toData x hx`. Establish `hx1 : x1 ∈ X.dom` using `IW.orth_mem_dom X.toData x1 h1`. Establish `hNC1` using `noContraction_of_rmul X hx1 hb hNC`. Use `⟨x1, h1, ⟨b, hb, rfl⟩, hΓ, hΛ, fun γ hγ hne z hz hlt => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hlt2`. Rewrite `hlt2` using `[not_le]`. Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Use `rhX_nonneg h1 hz` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Simplify using `at hlt`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨z1, hz1, b', hb', rfl⟩` from `ortho_holds r X.toData z hz`. Rewrite `hlt2` using `[FundSetPf.lact_rmul, rhX_rmul _ _ hb']`. Rewrite `hlt` using `[rhX_rmul _ _ hb']`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `isOrth_lact_of_isUStab (hΛ γ hγ) hz1`. Conclude with `hne (GlobalTheory.T.smallUnipotentUnitaryElementIsOne_proof E r X g hsp hg G hL' hU x1 hx1 hNC1 γ hγ (opNormLe_of_ball hr X.toData h1 hz1 h2 hlt hlt2))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem freeBall_at : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : DataX E r) (G : Subgroup (GL (Fin r) E)) (g : ℕ), GlobalTheory.IndefiniteRowSideFullHecke.SmallUnipotentElements.IsTotallySplitPrime E g → 3 * r < g → X.Γ ≤ G → (∀ γ ∈ G, IsUStab X.Gm X.L' γ) → (∀ γ ∈ G, IsUStab X.Gm X.Λ γ) → (∀ γ ∈ G, GlobalTheory.IndefiniteRowSideFullHecke.SmallUnipotentElements.IsUnipotentModOver X.L' g γ) → ∀ x ∈ X.dom, GlobalTheory.IndefiniteRowSideFullHecke.SmallUnipotentElements.NoContraction X x → ∃ x0 : Frame X.Ψ r, IsOrth X.toData x0 ∧ (∃ b ∈ Bor X.Ψ r, x = rmul x0 b) ∧ GlobalTheory.Up.FreeBall X.toData G x0 (1 / (49 * (r : ℝ) ^ 2)) := by
   intro E _ _ _ r X G g hsp hg hΓ hL' hΛ hU x hx hNC

@@ -13,100 +13,100 @@ namespace Formalism.MainNotions
 section Parts25
 variable {D : Formalism.BasicNotions.D7} {C : ℝ}
 /- English proof (translation)
-The claim follows from `h.1.1`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.gauge_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.RadialGauge D := h.1.1
 /- English proof (translation)
-The claim follows from `h.1.2.1`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.herm_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.RadialPartHermitian D C := h.1.2.1
 /- English proof (translation)
-The claim follows from `h.1.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.capelli_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.RadialCapelli D := h.1.2.2.1
 /- English proof (translation)
-The claim follows from `h.1.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.top_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.RadialHighestLevel D := h.1.2.2.2.1
 /- English proof (translation)
-The claim follows from `h.1.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.signs_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.RadialSigns D := h.1.2.2.2.2
 /- English proof (translation)
-The claim follows from `h.2.1.1`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.rtt_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.RadialRTTRelation D := h.2.1.1
 /- English proof (translation)
-The claim follows from `h.2.1.2`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.det_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.RadialDeterminant D := h.2.1.2
 /- English proof (translation)
-The claim follows from `h.2.2.1.1`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.module_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.WordModuleHermitian D C := h.2.2.1.1
 /- English proof (translation)
-The claim follows from `h.2.2.1.2.1`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.rrherm_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.ModuleFormHermitian D C := h.2.2.1.2.1
 /- English proof (translation)
-The claim follows from `h.2.2.1.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.tele_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.ModuleTelescoping D := h.2.2.1.2.2.1
 /- English proof (translation)
-The claim follows from `h.2.2.1.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.entry_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.CornerEntryProduct D := h.2.2.1.2.2.2.1
 /- English proof (translation)
-The claim follows from `h.2.2.1.2.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.dual_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.ModuleDualityInequality D C := h.2.2.1.2.2.2.2.1
 /- English proof (translation)
-The claim follows from `h.2.2.1.2.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.wave_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.ModulePlaneWave D := h.2.2.1.2.2.2.2.2
 /- English proof (translation)
-The claim follows from `h.2.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.frame_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.ThetaAdjointPositiveScalar D C := h.2.2.2.1
 /- English proof (translation)
-The claim follows from `h.2.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem ChoiceOfModulusAndDiscriminant.pos_of (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : ChoiceOfModulusAndDiscriminant.ConclusionE D C := h.2.2.2.2
 end Parts25
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem RadialRules.level_tools_of_admitted (D : Formalism.BasicNotions.D7) (C : ℝ) (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : RadialRules.adm7 D C := h.1
 
 /- English proof (translation)
-The claim follows from `h.2.1`.
+A detailed English derivation is pending.
 -/
 theorem RadialRules.lemma_M_prime_hypothesis (D : Formalism.BasicNotions.D7) (C : ℝ) (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : RadialRules.adm8 D := h.2.1
 
 /- English proof (translation)
-The claim follows from `h.2.2.1`.
+A detailed English derivation is pending.
 -/
 theorem RadialRules.crystalline_lift_of_theorem_c (D : Formalism.BasicNotions.D7) (C : ℝ) (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : RadialRules.adm9 D C := h.2.2.1
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem RadialRules.condition_iff_additive_maps (D : Formalism.BasicNotions.D7) : RadialRules.adm5 D ↔ ChoiceOfModulusAndDiscriminant.adm5 D := Iff.rfl
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem RadialRules.residualIrreducibility_forms_equivalent (D : Formalism.BasicNotions.D7) : RadialRules.adm6 D ↔ ChoiceOfModulusAndDiscriminant.adm6 D := Iff.rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Formalism.QuantumDeterminants.capCentralH, Formalism.QuantumDeterminants.capLeftH, Formalism.QuantumDeterminants.capHWH, Formalism.QuantumDeterminants.capComatrix, Formalism.QuantumDeterminants.qMinorLeft, Formalism.QuantumDeterminants.glRelAd, Formalism.QuantumDeterminants.eabH …`.
+Supply the required witnesses or components.
 -/
 theorem ChoiceOfModulusAndDiscriminant.subgroup_admissible_holds (D : Formalism.BasicNotions.D7) : ChoiceOfModulusAndDiscriminant.adm3 D :=
   ⟨Formalism.QuantumDeterminants.capCentralH, Formalism.QuantumDeterminants.capLeftH, Formalism.QuantumDeterminants.capHWH, Formalism.QuantumDeterminants.capComatrix, Formalism.QuantumDeterminants.qMinorLeft,
     Formalism.QuantumDeterminants.glRelAd, Formalism.QuantumDeterminants.eabHGl, Formalism.QuantumDeterminants.eabHTransport⟩
 
 /- English proof (translation)
-The claim follows from `ChoiceOfModulusAndDiscriminant.subgroup_admissible_holds D`.
+A detailed English derivation is pending.
 -/
 theorem RadialRules.subgroup_admissible_holds (D : Formalism.BasicNotions.D7) : RadialRules.adm3 D := ChoiceOfModulusAndDiscriminant.subgroup_admissible_holds D
 
@@ -114,19 +114,19 @@ section RadialChainStatements
 variable (D : Formalism.BasicNotions.D7) (C : ℝ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ChoiceOfModulusAndDiscriminant.module_of h, ChoiceOfModulusAndDiscriminant.rrherm_of h⟩`.
+Supply the required witnesses or components.
 -/
 theorem RadialChainStatements.restriction_dimension_of_division (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : RadialChainStatements.adm6 D C := ⟨ChoiceOfModulusAndDiscriminant.module_of h, ChoiceOfModulusAndDiscriminant.rrherm_of h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ChoiceOfModulusAndDiscriminant.tele_of h, ChoiceOfModulusAndDiscriminant.entry_of h⟩`.
+Supply the required witnesses or components.
 -/
 theorem RadialChainStatements.level_tools_of_admitted (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : RadialChainStatements.adm7 D := ⟨ChoiceOfModulusAndDiscriminant.tele_of h, ChoiceOfModulusAndDiscriminant.entry_of h⟩
 
 end RadialChainStatements
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hC1, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem RadialChainStatements.killer_conditions_of_stable (D : Formalism.BasicNotions.D7) (CB Cv C1 C2 : ℝ) (hC1 : 0 < C1) (h : RadialRules.aux₃ D CB Cv C1 C2) :
     RadialChainStatements.adm11 D CB Cv C1 C2 := ⟨hC1, h⟩
@@ -135,19 +135,19 @@ section BlockEstimateTheorem
 variable (D : Formalism.BasicNotions.D7) (C : ℝ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ChoiceOfModulusAndDiscriminant.module_of h, ChoiceOfModulusAndDiscriminant.rrherm_of h⟩`.
+Supply the required witnesses or components.
 -/
 theorem BlockEstimateTheorem.restriction_dimension_of_division (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : BlockEstimateTheorem.adm6 D C := ⟨ChoiceOfModulusAndDiscriminant.module_of h, ChoiceOfModulusAndDiscriminant.rrherm_of h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ChoiceOfModulusAndDiscriminant.tele_of h, ChoiceOfModulusAndDiscriminant.entry_of h⟩`.
+Supply the required witnesses or components.
 -/
 theorem BlockEstimateTheorem.level_tools_of_admitted (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : BlockEstimateTheorem.adm7 D := ⟨ChoiceOfModulusAndDiscriminant.tele_of h, ChoiceOfModulusAndDiscriminant.entry_of h⟩
 
 end BlockEstimateTheorem
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hC1, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem BlockEstimateTheorem.killer_conditions_of_stable (D : Formalism.BasicNotions.D7) (CB Cv C1 C2 : ℝ) (hC1 : 0 < C1) (h : RadialRules.aux₃ D CB Cv C1 C2) :
     BlockEstimateTheorem.adm11 D CB Cv C1 C2 := ⟨hC1, h⟩
@@ -156,19 +156,19 @@ section HereditaryPositivity
 variable (D : Formalism.BasicNotions.D7) (C : ℝ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ChoiceOfModulusAndDiscriminant.module_of h, ChoiceOfModulusAndDiscriminant.rrherm_of h⟩`.
+Supply the required witnesses or components.
 -/
 theorem HereditaryPositivity.restriction_dimension_of_division (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : HereditaryPositivity.adm6 D C := ⟨ChoiceOfModulusAndDiscriminant.module_of h, ChoiceOfModulusAndDiscriminant.rrherm_of h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ChoiceOfModulusAndDiscriminant.tele_of h, ChoiceOfModulusAndDiscriminant.entry_of h⟩`.
+Supply the required witnesses or components.
 -/
 theorem HereditaryPositivity.level_tools_of_admitted (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : HereditaryPositivity.adm7 D := ⟨ChoiceOfModulusAndDiscriminant.tele_of h, ChoiceOfModulusAndDiscriminant.entry_of h⟩
 
 end HereditaryPositivity
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hC1, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem HereditaryPositivity.killer_conditions_of_stable (D : Formalism.BasicNotions.D7) (CB Cv C1 C2 : ℝ) (hC1 : 0 < C1) (h : RadialRules.aux₃ D CB Cv C1 C2) :
     HereditaryPositivity.adm11 D CB Cv C1 C2 := ⟨hC1, h⟩
@@ -177,19 +177,19 @@ section RadialRuleConsequences
 variable (D : Formalism.BasicNotions.D7) (C : ℝ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ChoiceOfModulusAndDiscriminant.module_of h, ChoiceOfModulusAndDiscriminant.rrherm_of h⟩`.
+Supply the required witnesses or components.
 -/
 theorem RadialRuleConsequences.restriction_dimension_of_division (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : RadialRuleConsequences.adm6 D C := ⟨ChoiceOfModulusAndDiscriminant.module_of h, ChoiceOfModulusAndDiscriminant.rrherm_of h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ChoiceOfModulusAndDiscriminant.tele_of h, ChoiceOfModulusAndDiscriminant.entry_of h⟩`.
+Supply the required witnesses or components.
 -/
 theorem RadialRuleConsequences.level_tools_of_admitted (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : RadialRuleConsequences.adm7 D := ⟨ChoiceOfModulusAndDiscriminant.tele_of h, ChoiceOfModulusAndDiscriminant.entry_of h⟩
 
 end RadialRuleConsequences
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hC1, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem RadialRuleConsequences.killer_conditions_of_stable (D : Formalism.BasicNotions.D7) (CB Cv C1 C2 : ℝ) (hC1 : 0 < C1) (h : RadialRules.aux₃ D CB Cv C1 C2) :
     RadialRuleConsequences.adm11 D CB Cv C1 C2 := ⟨hC1, h⟩
@@ -198,24 +198,24 @@ section OnePlaceEstimates
 variable (D : Formalism.BasicNotions.D7) (C : ℝ)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ChoiceOfModulusAndDiscriminant.top_of h, ChoiceOfModulusAndDiscriminant.signs_of h⟩`.
+Supply the required witnesses or components.
 -/
 theorem OnePlaceEstimates.integrality_of_commutation (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : OnePlaceEstimates.adm3 D := ⟨ChoiceOfModulusAndDiscriminant.top_of h, ChoiceOfModulusAndDiscriminant.signs_of h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ChoiceOfModulusAndDiscriminant.tele_of h, ChoiceOfModulusAndDiscriminant.entry_of h⟩`.
+Supply the required witnesses or components.
 -/
 theorem OnePlaceEstimates.restriction_dimension_of_division (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : OnePlaceEstimates.adm6 D := ⟨ChoiceOfModulusAndDiscriminant.tele_of h, ChoiceOfModulusAndDiscriminant.entry_of h⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ChoiceOfModulusAndDiscriminant.pos_of h, ChoiceOfModulusAndDiscriminant.frame_of h⟩`.
+Supply the required witnesses or components.
 -/
 theorem OnePlaceEstimates.crystalline_lift_of_theorem_c (h : ChoiceOfModulusAndDiscriminant.aux₃ D C) : OnePlaceEstimates.adm9 D C := ⟨ChoiceOfModulusAndDiscriminant.pos_of h, ChoiceOfModulusAndDiscriminant.frame_of h⟩
 
 variable (Gm : HereditaryPositivity.GM) (Ks : ℕ) (E₀ Eg E₁ E₂ E₃ : ℝ)
 
 /- English proof (translation)
-The claim follows from `h.2.2.2`.
+A detailed English derivation is pending.
 -/
 theorem OnePlaceEstimates.column_lemma_of_definite_form (h : HereditaryPositivity.aux₃ D Gm Ks E₀ Eg E₁ E₂ E₃) : OnePlaceEstimates.adm17 D Gm Ks E₀ Eg E₁ E₂ E₃ := h.2.2.2
 
@@ -232,15 +232,15 @@ def HereditaryPositivity.EnergyBridge (D : Formalism.BasicNotions.D7) (Ks : ℕ)
 open Filter Topology in
 
 /- English proof (translation)
-Introduce `k0 X hS χ hχ w hA hL`. Establish `hlim : ∀ v, Tendsto (fun ε : ℝ => RadialRuleConsequences.energy (X.B v) (X.μsec v) (X.I v) (w v) (RadialRuleConsequences.cutF (X.B v).z (X.B v).z' χ ε (X.f v))) (𝓝[>] 0) (𝓝 ((S.brkW (X.B v).lam ((w v).map Prod.snd) : ℂ) * (X.B v).beta (X.μsec v) (X.f v) (X.f v)))`. Introduce `v`. Take `⟨hK, hv⟩` from `hS`. Take `⟨e1, e2, e3, e4, ⟨_, _, hab, _⟩, e6, _, _, _, e10, e11, e12, e13, e14, _, _⟩` from `hv v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `h k0 X.hk (X.B v) (X.μsec v) (X.I v) (S.GramWordSpace.NN D Ks) (X.f v) χ (w v) ⟨e1, e2, e3, e4, e6⟩ e10 e11 e13 ?_ ?_ e14 hχ (hA v) (hL v)` and prove the remaining obligations. Conclude with `Nat.le_mul_of_pos_left _ (by omega)`. Establish `hI : sSup (X.I v) - sInf (X.I v) = X.b v - X.a v`. Simplify using `[S.GramWordSpace.Dat.I, csSup_Icc hab, csInf_Icc hab]`. Rewrite using `[hI]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (mul_le_mul_of_nonneg_left ?_ hC) e12` and prove the remaining obligations. Establish `: (0 : ℝ) ≤ ((S.GramWordSpace.NN D Ks : ℕ) : ℝ) ^ 3` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hprod` using `tendsto_finsetProd Finset.univ (fun v _ => hlim v)`. Establish `htgt : ((X.brk w : ℝ) : ℂ) * X.jn2 = ∏ v, ((S.brkW (X.B v).lam ((w v).map Prod.snd) : ℂ) * (X.B v).beta (X.μsec v) (X.f v) (X.f v))`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `S.GramWordSpace.Dat.brk S.GramWordSpace.Dat.jn2`. Rewrite using `[Finset.prod_mul_distrib]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[htgt]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hprod.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Unfold `S.GramWordSpace.Dat.energy`. Conclude with `(Finset.prod_congr rfl (fun v _ => hbr k0 X hS χ hχ w hA hL ε hε v)).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem HereditaryPositivity.baseChange_preserves_unitary_of (D : Formalism.BasicNotions.D7) (Ks : ℕ) (C₀ Cg : ℝ) (hC : 0 ≤ C₀) (hbr : HereditaryPositivity.EnergyBridge D Ks C₀ Cg)
     (h : RadialRuleConsequences.Conclusion1 D Cg C₀) : HereditaryPositivity.Conclusion1 D Ks C₀ Cg := by
@@ -284,7 +284,7 @@ def RadialRuleConsequences.Rest (D : Formalism.BasicNotions.D7) (CB Co Cd Cs c C
     RadialRuleConsequences.adm16 D ∧ RadialRuleConsequences.adm17 D ∧ RadialRuleConsequences.adm18 D
 
 /- English proof (translation)
-Take `⟨r1, r2d, r3b, r4a, r8b, r9, r10a, r12c, r12d, r12e, r13, r14, r15, r16, r17, r18⟩` from `hR`. Conclude with `⟨r1, ⟨ChoiceOfModulusAndDiscriminant.gauge_of h, ChoiceOfModulusAndDiscriminant.herm_of h, ChoiceOfModulusAndDiscriminant.capelli_of h, r2d⟩, ⟨ChoiceOfModulusAndDiscriminant.top_of h, r3b, ChoiceOfModulusAndDiscriminant.signs_of h⟩, ⟨r4a, ChoiceOfModulusAndDiscriminant.rtt_of h⟩, …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RadialRuleConsequences.Adm_of (D : Formalism.BasicNotions.D7) (CB Co Cd Cv C1 C2 Cs c C₁ : ℝ) (hC1 : 0 < C1) (h : ChoiceOfModulusAndDiscriminant.aux₃ D CB)
     (hb : RadialRules.aux₃ D CB Cv C1 C2) (hR : RadialRuleConsequences.Rest D CB Co Cd Cs c C₁) :
@@ -301,7 +301,7 @@ def RadialChainStatements.Rest (D : Formalism.BasicNotions.D7) (CB Co Cd Cs c C�
     RadialChainStatements.adm15 D ∧ RadialChainStatements.adm16 D ∧ RadialChainStatements.adm17 D Cg₁ Cg₂ ∧ RadialChainStatements.adm18 D
 
 /- English proof (translation)
-Take `⟨r1, r2d, r3b, r4a, r8b, r9, r10a, r12c, r12d, r12e, r13, r14, r15, r16, r17, r18⟩` from `hR`. Conclude with `⟨r1, ⟨ChoiceOfModulusAndDiscriminant.gauge_of h, ChoiceOfModulusAndDiscriminant.herm_of h, ChoiceOfModulusAndDiscriminant.capelli_of h, r2d⟩, ⟨ChoiceOfModulusAndDiscriminant.top_of h, r3b, ChoiceOfModulusAndDiscriminant.signs_of h⟩, ⟨r4a, ChoiceOfModulusAndDiscriminant.rtt_of h⟩, …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RadialChainStatements.Adm_of (D : Formalism.BasicNotions.D7) (CB Co Cd Cv C1 C2 Cs c C₁ Cg₁ Cg₂ : ℝ) (hC1 : 0 < C1) (h : ChoiceOfModulusAndDiscriminant.aux₃ D CB)
     (hb : RadialRules.aux₃ D CB Cv C1 C2) (hR : RadialChainStatements.Rest D CB Co Cd Cs c C₁ Cg₁ Cg₂) :
@@ -318,7 +318,7 @@ def HereditaryPositivity.Rest (D : Formalism.BasicNotions.D7) (Gm : HereditaryPo
     HereditaryPositivity.LowerLevelPositivity D Ks C₀ Cg ∧ HereditaryPositivity.adm13 D c C₁ ∧ HereditaryPositivity.adm14 D ∧ HereditaryPositivity.adm15 D ∧ HereditaryPositivity.adm16 D ∧ HereditaryPositivity.adm17 D ∧ HereditaryPositivity.adm18 D
 
 /- English proof (translation)
-Take `⟨r1, r2d, r3b, r4a, r8b, r9, r10a, r12c, r12d, r12e, r12f, r12g, r13, r14, r15, r16, r17, r18⟩` from `hR`. Conclude with `⟨r1, ⟨ChoiceOfModulusAndDiscriminant.gauge_of h, ChoiceOfModulusAndDiscriminant.herm_of h, ChoiceOfModulusAndDiscriminant.capelli_of h, r2d⟩, ⟨ChoiceOfModulusAndDiscriminant.top_of h, r3b, ChoiceOfModulusAndDiscriminant.signs_of h⟩, ⟨r4a, ChoiceOfModulusAndDiscriminant.rtt_of h⟩, …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HereditaryPositivity.Adm_of (D : Formalism.BasicNotions.D7) (Gm : HereditaryPositivity.GM) (CB Co Cd Cv C1 C2 Cs c C₁ : ℝ) (Ks : ℕ) (C₀ Cg : ℝ)
     (hC1 : 0 < C1) (h : ChoiceOfModulusAndDiscriminant.aux₃ D CB) (hb : RadialRules.aux₃ D CB Cv C1 C2)
@@ -335,7 +335,7 @@ def OnePlaceEstimates.Rest (D : Formalism.BasicNotions.D7) (Gm : HereditaryPosit
     OnePlaceEstimates.DualTranslationPrinciple D ∧ OnePlaceEstimates.adm19 D ∧ OnePlaceEstimates.adm20 D ∧ OnePlaceEstimates.adm21 D c C₁ ∧ OnePlaceEstimates.CapelliEigenvalueAlt D
 
 /- English proof (translation)
-Take `⟨r1, r4a, r7b, r8a, r11, r12, r13s, r15s, r17s, r17u, r18, r18d, r19, r20, r21, r2d⟩` from `hR`. Conclude with `⟨r1, ChoiceOfModulusAndDiscriminant.gauge_of h, OnePlaceEstimates.integrality_of_commutation D CB h, ⟨r4a, ChoiceOfModulusAndDiscriminant.rtt_of h⟩, ChoiceOfModulusAndDiscriminant.det_of h, OnePlaceEstimates.restriction_dimension_of_division D CB h, ⟨ChoiceOfModulusAndDiscriminan …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem OnePlaceEstimates.Adm_of (D : Formalism.BasicNotions.D7) (Gm : HereditaryPositivity.GM) (CB Co Cd C0 CA Cg₁ Cg₂ c C₁ : ℝ) (Ks : ℕ)
     (E₀ Eg E₁ E₂ E₃ Cs C₃ Ch Cg Cq : ℝ) (h : ChoiceOfModulusAndDiscriminant.aux₃ D CB) (hE : RadialRuleConsequences.Conclusion2 D C0 CA)
@@ -354,7 +354,7 @@ def BlockEstimateTheorem.Rest (D : Formalism.BasicNotions.D7) (Gm : BlockEstimat
     BlockEstimateTheorem.adm13 D c C₁ ∧ BlockEstimateTheorem.adm14 D ∧ BlockEstimateTheorem.adm15 D ∧ BlockEstimateTheorem.adm16 D ∧ BlockEstimateTheorem.adm17 D Cg₁ Cg₂ ∧ BlockEstimateTheorem.adm18 D
 
 /- English proof (translation)
-Take `⟨r1, r2d, r3b, r4a, r8b, r9, r10a, r12c, r12d, r12e, r12f, r12g, r23, r13, r14, r15, r16, r17, r18⟩` from `hR`. Conclude with `⟨⟨r1, ⟨ChoiceOfModulusAndDiscriminant.gauge_of h, ChoiceOfModulusAndDiscriminant.herm_of h, ChoiceOfModulusAndDiscriminant.capelli_of h, r2d⟩, ⟨ChoiceOfModulusAndDiscriminant.top_of h, r3b, ChoiceOfModulusAndDiscriminant.signs_of h⟩, ⟨r4a, ChoiceOfModulusAndDiscriminant.rtt_of h⟩ …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem BlockEstimateTheorem.Adm_of (D : Formalism.BasicNotions.D7) (Gm : BlockEstimateTheorem.GM) (Ks : ℕ)
     (CB Co Cd Cv C1 C2 Cs c C₁ Cg₁ Cg₂ E₀ Eg E₁ E₂ E₃ : ℝ) (hC1 : 0 < C1) (h : ChoiceOfModulusAndDiscriminant.aux₃ D CB)
@@ -371,7 +371,7 @@ section Same
 variable (D : Formalism.BasicNotions.D7)
 
 /- English proof (translation)
-Introduce `k r L B₁ B₂ hc` and use `h k r L B₁ B₂ (by rw [hc]; simp [Formalism.QuantumDeterminants.cStd])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem RadialRuleConsequences.bessel_model_uniqueness_generic (h : RadialChainStatements.adm18 D) : RadialRuleConsequences.adm18 D := fun k r L B₁ B₂ hc =>
   h k r L B₁ B₂ (by rw [hc]; simp [Formalism.QuantumDeterminants.cStd])
@@ -379,7 +379,7 @@ theorem RadialRuleConsequences.bessel_model_uniqueness_generic (h : RadialChainS
 end Same
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6, a7⟩` from `hA`. Conclude with `⟨a1, a2, a3, a4, a5, a6, h.1, h.2.1, h.2.2.1, a7⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem RadialRules.Adm_of (D : Formalism.BasicNotions.D7) (CB Ca : ℝ) (hA : ChoiceOfModulusAndDiscriminant.admitted D CB) (h : ChoiceOfModulusAndDiscriminant.aux₃ D Ca) : RadialRules.admitted D CB Ca := by
   obtain ⟨a1, a2, a3, a4, a5, a6, a7⟩ := hA
@@ -400,7 +400,7 @@ section Assembly
 variable {CB Co Cd Cs Cg₁ Cg₂ c C₁ : ℝ}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hX.lemmaB, hL.capEig, hX.t22, hX.LetterIdentitiesRTT, ⟨hCo, hX.dualList⟩, ⟨hX.PointwiseIntegrationByParts, hX.ConjugationIdentity⟩, hX.PlaneWaveLetterIdentities, hX.slices, hX.smooth, hX.slicesOrb, hd, hL.markov, hL.herglotz, hL.poisson, hL.statPhase, RadialRuleConsequences.bess …`.
+Supply the required witnesses or components.
 -/
 theorem RadialRuleConsequences.Rest_of (D : Formalism.BasicNotions.D7) (hCo : 0 < Co) (hX : PX.S1 CB Co Cd Cs Cg₁ Cg₂) (hd : PX.decay D c C₁)
     (hL : PX.ClassicalAnalysisAndRepresentationTheorems) : RadialRuleConsequences.Rest D CB Co Cd Cs c C₁ :=
@@ -408,7 +408,7 @@ theorem RadialRuleConsequences.Rest_of (D : Formalism.BasicNotions.D7) (hCo : 0 
     hX.smooth, hX.slicesOrb, hd, hL.markov, hL.herglotz, hL.poisson, hL.statPhase, RadialRuleConsequences.bessel_model_uniqueness_generic D hL.besselModel_unique⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hX.lemmaB, hL.capEig, hX.t22, hX.LetterIdentitiesRTT, ⟨hCo, hX.dualList⟩, ⟨hX.PointwiseIntegrationByParts, hX.ConjugationIdentity⟩, hX.PlaneWaveLetterIdentities, hX.slices, hX.smooth, hX.slicesOrb, hd, hL.markov, hL.herglotz, hL.poisson, hX.germ, hL.besselModel_unique⟩`.
+Supply the required witnesses or components.
 -/
 theorem RadialChainStatements.Rest_of (D : Formalism.BasicNotions.D7) (hCo : 0 < Co) (hX : PX.S1 CB Co Cd Cs Cg₁ Cg₂) (hd : PX.decay D c C₁)
     (hL : PX.ClassicalAnalysisAndRepresentationTheorems) : RadialChainStatements.Rest D CB Co Cd Cs c C₁ Cg₁ Cg₂ :=
@@ -416,7 +416,7 @@ theorem RadialChainStatements.Rest_of (D : Formalism.BasicNotions.D7) (hCo : 0 <
     hX.smooth, hX.slicesOrb, hd, hL.markov, hL.herglotz, hL.poisson, hX.germ, hL.besselModel_unique⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hX.lemmaB, hL.capEig, hX.t22, hX.LetterIdentitiesRTT, ⟨hCo, hX.dualList⟩, ⟨hX.PointwiseIntegrationByParts, hX.ConjugationIdentity⟩, hX.PlaneWaveLetterIdentities, hX.slicesOrb, hX.smooth, hp, hw, hl, hd, hL.markov, hL.herglotz, hL.poisson, hL.statPhase, RadialRuleConsequences.bes …`.
+Supply the required witnesses or components.
 -/
 theorem HereditaryPositivity.Rest_of (D : Formalism.BasicNotions.D7) (Gm : HereditaryPositivity.GM) (Ks : ℕ) (E₀ Eg : ℝ) (hCo : 0 < Co)
     (hX : PX.S1 CB Co Cd Cs Cg₁ Cg₂) (hd : PX.decay D c C₁) (hp : PX.topPos D Gm Ks E₀ Eg)
@@ -426,7 +426,7 @@ theorem HereditaryPositivity.Rest_of (D : Formalism.BasicNotions.D7) (Gm : Hered
     hX.smooth, hp, hw, hl, hd, hL.markov, hL.herglotz, hL.poisson, hL.statPhase, RadialRuleConsequences.bessel_model_uniqueness_generic D hL.besselModel_unique⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hX.lemmaB, hL.capEig, hX.t22, hX.LetterIdentitiesRTT, ⟨hCo, hX.dualList⟩, ⟨hX.PointwiseIntegrationByParts, hX.ConjugationIdentity⟩, hX.PlaneWaveLetterIdentities, hX.slicesOrb, hX.smooth, hp, hw, hl, hX.lettersExist, hd, hL.markov, hL.herglotz, hL.poisson, hX.germ, hL.besselModel …`.
+Supply the required witnesses or components.
 -/
 theorem BlockEstimateTheorem.Rest_of (D : Formalism.BasicNotions.D7) (Gm : HereditaryPositivity.GM) (Ks : ℕ) (E₀ Eg : ℝ) (hCo : 0 < Co)
     (hX : PX.S1 CB Co Cd Cs Cg₁ Cg₂) (hd : PX.decay D c C₁) (hp : PX.topPos D Gm Ks E₀ Eg)
@@ -436,7 +436,7 @@ theorem BlockEstimateTheorem.Rest_of (D : Formalism.BasicNotions.D7) (Gm : Hered
     hX.slicesOrb, hX.smooth, hp, hw, hl, hX.lettersExist, hd, hL.markov, hL.herglotz, hL.poisson, hX.germ, hL.besselModel_unique⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hX.lemmaB, hX.LetterIdentitiesRTT, ⟨hCo, hX.dualList⟩, hX.PlaneWaveLetterIdentities, hX.germ, h71, hs.e72, hs.e73, hs.e74, hs.sup, hL.tensorDS D, hL.tensorDSd D, hL.besselModel_unique, hL.kTypes D, hd, hL.capEig⟩`.
+Supply the required witnesses or components.
 -/
 theorem OnePlaceEstimates.Rest_of (D : Formalism.BasicNotions.D7) (Gm : HereditaryPositivity.GM) (Ss C₃ : ℝ) (hCo : 0 < Co) (hX : PX.S1 CB Co Cd Cs Cg₁ Cg₂)
     (hd : PX.decay D c C₁) (h71 : PX.LettersOnCells D CB) (hs : PX.shortGrids D Gm CB Ss C₃) (hL : PX.ClassicalAnalysisAndRepresentationTheorems) :
@@ -445,7 +445,7 @@ theorem OnePlaceEstimates.Rest_of (D : Formalism.BasicNotions.D7) (Gm : Heredita
     hL.tensorDSd D, hL.besselModel_unique, hL.kTypes D, hd, hL.capEig⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hB.1, hB.2.1, ChoiceOfModulusAndDiscriminant.subgroup_admissible_holds D, hL.qAnti, hL.qBranch, hL.qWigner, hB.2.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem ChoiceOfModulusAndDiscriminant.Adm_of (D : Formalism.BasicNotions.D7) (hB : PX.lemmaB CB) (hL : PX.ClassicalAnalysisAndRepresentationTheorems) : ChoiceOfModulusAndDiscriminant.admitted D CB :=
   ⟨hB.1, hB.2.1, ChoiceOfModulusAndDiscriminant.subgroup_admissible_holds D, hL.qAnti, hL.qBranch, hL.qWigner, hB.2.2.1⟩
@@ -453,7 +453,7 @@ theorem ChoiceOfModulusAndDiscriminant.Adm_of (D : Formalism.BasicNotions.D7) (h
 variable {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x i => (ChoiceOfModulusAndDiscriminant.Adm_of (Fm.D x i) hB hL).1, fun x i => (ChoiceOfModulusAndDiscriminant.Adm_of (Fm.D x i) hB hL).2.1, fun x i => (ChoiceOfModulusAndDiscriminant.Adm_of (Fm.D x i) hB hL).2.2.1, fun x i => (ChoiceOfModulusAndDiscriminant.Adm_of (Fm.D x i) …`.
+Supply the required witnesses or components.
 -/
 theorem ChoiceOfModulusAndDiscriminant.AdmF_of (hB : PX.lemmaB CB) (hL : PX.ClassicalAnalysisAndRepresentationTheorems) : ChoiceOfModulusAndDiscriminant.AdmF Fm CB :=
   ⟨fun x i => (ChoiceOfModulusAndDiscriminant.Adm_of (Fm.D x i) hB hL).1,
@@ -465,7 +465,7 @@ theorem ChoiceOfModulusAndDiscriminant.AdmF_of (hB : PX.lemmaB CB) (hL : PX.Clas
     fun x i => (ChoiceOfModulusAndDiscriminant.Adm_of (Fm.D x i) hB hL).2.2.2.2.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun x i => (RadialRules.Adm_of (Fm.D x i) CB Ca (ChoiceOfModulusAndDiscriminant.Adm_of (Fm.D x i) hB hL) (h25 x i)).1, fun x i => (RadialRules.Adm_of (Fm.D x i) CB Ca (ChoiceOfModulusAndDiscriminant.Adm_of (Fm.D x i) hB hL) (h25 x i)).2.1, fun x i => (RadialRules.Adm_of (Fm.D x …`.
+Supply the required witnesses or components.
 -/
 theorem RadialRules.AdmF_of (Ca : ℝ) (h25 : ChoiceOfModulusAndDiscriminant.FamilyTargetsAtConstants Fm Ca) (hB : PX.lemmaB CB) (hL : PX.ClassicalAnalysisAndRepresentationTheorems) : RadialRules.AdmF Fm CB Ca :=
   ⟨fun x i => (RadialRules.Adm_of (Fm.D x i) CB Ca (ChoiceOfModulusAndDiscriminant.Adm_of (Fm.D x i) hB hL) (h25 x i)).1,
@@ -480,7 +480,7 @@ theorem RadialRules.AdmF_of (Ca : ℝ) (h25 : ChoiceOfModulusAndDiscriminant.Fam
     fun x i => (RadialRules.Adm_of (Fm.D x i) CB Ca (ChoiceOfModulusAndDiscriminant.Adm_of (Fm.D x i) hB hL) (h25 x i)).2.2.2.2.2.2.2.2.2⟩
 
 /- English proof (translation)
-Establish `hA : ∀ x (i : Fm.Ix x), RadialRuleConsequences.admitted (Fm.D x i) CB Co Cd Cv C1 C2 Cs c C₁` using `fun x i => RadialRuleConsequences.Adm_of _ CB Co Cd Cv C1 C2 Cs c C₁ hC1 (h25 x i) (h25b x i) (RadialRuleConsequences.Rest_of _ hCo hX (hd x i) hL)`. Conclude with `⟨fun x i => (hA x i).1, fun x i => (hA x i).2.1, fun x i => (hA x i).2.2.1, fun x i => (hA x i).2.2.2.1, fun x i => (hA x i).2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.2.2.2.1, …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem RadialRuleConsequences.AdmF_of (Cv C1 C2 : ℝ) (hC1 : 0 < C1) (hCo : 0 < Co) (h25 : ChoiceOfModulusAndDiscriminant.FamilyTargetsAtConstants Fm CB)
     (h25b : RadialRules.FamilyTargetsAtConstants Fm CB Cv C1 C2) (hX : PX.S1 CB Co Cd Cs Cg₁ Cg₂)
@@ -508,7 +508,7 @@ theorem RadialRuleConsequences.AdmF_of (Cv C1 C2 : ℝ) (hC1 : 0 < C1) (hCo : 0 
     fun x i => (hA x i).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2⟩
 
 /- English proof (translation)
-Establish `hA : ∀ x (i : Fm.Ix x), RadialChainStatements.admitted (Fm.D x i) CB Co Cd Cv C1 C2 Cs c C₁ Cg₁ Cg₂` using `fun x i => RadialChainStatements.Adm_of _ CB Co Cd Cv C1 C2 Cs c C₁ Cg₁ Cg₂ hC1 (h25 x i) (h25b x i) (RadialChainStatements.Rest_of _ hCo hX (hd x i) hL)`. Conclude with `⟨fun x i => (hA x i).1, fun x i => (hA x i).2.1, fun x i => (hA x i).2.2.1, fun x i => (hA x i).2.2.2.1, fun x i => (hA x i).2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.2.2.2.1, …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem RadialChainStatements.AdmF_of (Cv C1 C2 : ℝ) (hC1 : 0 < C1) (hCo : 0 < Co) (h25 : ChoiceOfModulusAndDiscriminant.FamilyTargetsAtConstants Fm CB)
     (h25b : RadialRules.FamilyTargetsAtConstants Fm CB Cv C1 C2) (hX : PX.S1 CB Co Cd Cs Cg₁ Cg₂)
@@ -536,7 +536,7 @@ theorem RadialChainStatements.AdmF_of (Cv C1 C2 : ℝ) (hC1 : 0 < C1) (hCo : 0 <
     fun x i => (hA x i).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2⟩
 
 /- English proof (translation)
-Establish `hA : ∀ x (i : Fm.Ix x), HereditaryPositivity.admitted (Fm.D x i) Gm CB Co Cd Cv C1 C2 Cs c C₁ Ks E₀ Eg` using `fun x i => HereditaryPositivity.Adm_of _ Gm CB Co Cd Cv C1 C2 Cs c C₁ Ks E₀ Eg hC1 (h25 x i) (h25b x i) (HereditaryPositivity.Rest_of _ Gm Ks E₀ Eg hCo hX (hd x i) (hp x i) (hw x i) (hl x i) hL)`. Conclude with `⟨fun x i => (hA x i).1, fun x i => (hA x i).2.1, fun x i => (hA x i).2.2.1, fun x i => (hA x i).2.2.2.1, fun x i => (hA x i).2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.2.2.2.1, …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem HereditaryPositivity.AdmF_of (Gm : HereditaryPositivity.GM) (Ks : ℕ) (E₀ Eg Cv C1 C2 : ℝ) (hC1 : 0 < C1) (hCo : 0 < Co) (h25 : ChoiceOfModulusAndDiscriminant.FamilyTargetsAtConstants Fm CB)
     (h25b : RadialRules.FamilyTargetsAtConstants Fm CB Cv C1 C2) (hX : PX.S1 CB Co Cd Cs Cg₁ Cg₂)
@@ -570,7 +570,7 @@ theorem HereditaryPositivity.AdmF_of (Gm : HereditaryPositivity.GM) (Ks : ℕ) (
     fun x i => (hA x i).2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2.2⟩
 
 /- English proof (translation)
-Establish `hA : ∀ x (i : Fm.Ix x), BlockEstimateTheorem.admitted (Fm.D x i) Gm Ks CB Co Cd Cv C1 C2 Cs c C₁ Cg₁ Cg₂ E₀ Eg E₁ E₂ E₃` using `fun x i => BlockEstimateTheorem.Adm_of _ Gm Ks CB Co Cd Cv C1 C2 Cs c C₁ Cg₁ Cg₂ E₀ Eg E₁ E₂ E₃ hC1 (h25 x i) (h25b x i) ⟨h07b.1 x i, h07b.2.1 x i, h07b.2.2.1 x i, h07b.2.2.2 x i⟩ (BlockEstimateTheorem.Rest_of _ Gm Ks E₀ Eg hCo hX (hd x i) (hp x i) (hw x i) (hl x i) hL)`. Conclude with `⟨⟨fun x i => ((hA x i).1).1, fun x i => ((hA x i).1).2.1, fun x i => ((hA x i).1).2.2.1, fun x i => ((hA x i).1).2.2.2.1, fun x i => ((hA x i).1).2.2.2.2.1, fun x i => ((hA x i).1).2.2.2.2.2.1, fun x i => ((hA x i).1).2.2.2.2.2.2.1, fun x i => ((hA x i).1).2.2.2.2.2.2.2.1, fun x …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem BlockEstimateTheorem.AdmF_of (Gm : HereditaryPositivity.GM) (Ks : ℕ) (E₀ Eg E₁ E₂ E₃ Cv C1 C2 : ℝ) (hC1 : 0 < C1) (hCo : 0 < Co)
     (h25 : ChoiceOfModulusAndDiscriminant.FamilyTargetsAtConstants Fm CB) (h25b : RadialRules.FamilyTargetsAtConstants Fm CB Cv C1 C2) (h07b : HereditaryPositivity.OrbitValuationBound Fm Gm Ks E₀ Eg E₁ E₂ E₃)
@@ -611,7 +611,7 @@ theorem BlockEstimateTheorem.AdmF_of (Gm : HereditaryPositivity.GM) (Ks : ℕ) (
     fun x i => ((hA x i).2).2.2.2.2.2.2.2⟩⟩
 
 /- English proof (translation)
-Establish `hA : ∀ x (i : Fm.Ix x), OnePlaceEstimates.admitted (Fm.D x i) Gm CB Co Cd C0 CA Cg₁ Cg₂ c C₁ Ks E₀ Eg E₁ E₂ E₃ Ss C₃ Ch Cg Cq` using `fun x i => OnePlaceEstimates.Adm_of _ Gm CB Co Cd C0 CA Cg₁ Cg₂ c C₁ Ks E₀ Eg E₁ E₂ E₃ Ss C₃ Ch Cg Cq (h25 x i) (h07c x i) ⟨h07b.1 x i, h07b.2.1 x i, h07b.2.2.1 x i, h07b.2.2.2 x i⟩ (OnePlaceEstimates.Rest_of _ Gm Ss C₃ hCo hX (hd x i) (h71 x i) (hs x i) hL) (h3d x i)`. Conclude with `⟨fun x i => (hA x i).1, fun x i => (hA x i).2.1, fun x i => (hA x i).2.2.1, fun x i => (hA x i).2.2.2.1, fun x i => (hA x i).2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.2.2.1, fun x i => (hA x i).2.2.2.2.2.2.2.2.1, …`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem OnePlaceEstimates.AdmF_of (Gm : HereditaryPositivity.GM) (Ks : ℕ) (C0 CA E₀ Eg E₁ E₂ E₃ Ss C₃ Ch Cg Cq : ℝ) (hCo : 0 < Co)
     (h25 : ChoiceOfModulusAndDiscriminant.FamilyTargetsAtConstants Fm CB) (h07c : RadialRuleConsequences.ConclusionF2 Fm C0 CA) (h07b : HereditaryPositivity.OrbitValuationBound Fm Gm Ks E₀ Eg E₁ E₂ E₃)
@@ -655,9 +655,9 @@ theorem OnePlaceEstimates.AdmF_of (Gm : HereditaryPositivity.GM) (Ks : ℕ) (C0 
 end Assembly
 
 /- English proof (translation)
-Establish `p25a : ChoiceOfModulusAndDiscriminant.FamilyTargetsAtConstants Fm Ca` using `s25a (ChoiceOfModulusAndDiscriminant.AdmF_of Fm hBL hL)`. Establish `p25 : ChoiceOfModulusAndDiscriminant.FamilyTargetsAtConstants Fm CB` using `s25 (ChoiceOfModulusAndDiscriminant.AdmF_of Fm hBL hL)`. Establish `p25b : RadialRules.FamilyTargetsAtConstants Fm CB Cv C1 C2` using `s25b (RadialRules.AdmF_of Fm Ca p25a hBL hL)`. Establish `p07c` using `s07c (RadialRuleConsequences.AdmF_of Fm Cv C1 C2 hC1 hCo p25 p25b hX hd hL)`. Establish `p07b` using `s07b (HereditaryPositivity.AdmF_of Fm Gm Ks E₀ Eg Cv C1 C2 hC1 hCo p25 p25b hX hd hp hw hl hL)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p07a` using `s07a (BlockEstimateTheorem.AdmF_of Fm Gm Ks E₀ Eg E₁ E₂ E₃ Cv C1 C2 hC1 hCo p25 p25b p07b hX hd hp hw hl hL)`. Establish `p47` using `s47 (OnePlaceEstimates.AdmF_of Fm Gm Ks C0 CA E₀ Eg E₁ E₂ E₃ Ss C₃ Ch Bg Bq hCo p25 p07c.2 p07b hX hd h71 hs h3d hL)`. Conclude with `⟨p25, p25b, p07c, p07b, p07a, p47⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem S1.family_statements_all {CB Co Cd Cs Cg₁ Cg₂ c C₁ eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) (Gm : HereditaryPositivity.GM) (Ks : ℕ)
     (CL Ca Cv C1 C2 E₀ Eg E₁ E₂ E₃ Gg GI C0 CA C C' Ch Aw Cu Bg Bq Bg' B1 B2 Bb BB2 Bgf Bf Ss C₃ : ℝ) (hC1 : 0 < C1) (hCo : 0 < Co)

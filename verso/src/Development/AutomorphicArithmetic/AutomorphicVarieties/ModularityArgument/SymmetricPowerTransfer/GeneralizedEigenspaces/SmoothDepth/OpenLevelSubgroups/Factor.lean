@@ -17,7 +17,7 @@ open GlobalTheory.SplitPts GlobalTheory.BCT.GlobLev
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Use `Subtype.ext (ga_ext h1 ?_)` and prove the remaining obligations. Use `Units.ext (matAf_ext fun u => ?_)` and prove the remaining obligations. Conclude with `congrArg Units.val (h2 u)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem ua_ext {g h : UA E n} (h1 : cInf g = cInf h) (h2 : ∀ u, cLoc u g = cLoc u h) : g = h := by
   refine Subtype.ext (ga_ext h1 ?_)
@@ -44,7 +44,7 @@ private def cutM (P : HeightOneSpectrum (𝓞 E) → Prop) (A : Matrix (Fin n) (
     Matrix (Fin n) (Fin n) (Af E) := idem P • A + (1 - idem P) • 1
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[cutM, Matrix.add_apply, Matrix.smul_apply, pLoc_idem, h]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_cutM_pos {P : HeightOneSpectrum (𝓞 E) → Prop} (A : Matrix (Fin n) (Fin n) (Af E))
     {u : HeightOneSpectrum (𝓞 E)} (h : P u) :
@@ -53,7 +53,7 @@ private theorem map_cutM_pos {P : HeightOneSpectrum (𝓞 E) → Prop} (A : Matr
   simp [cutM, Matrix.add_apply, Matrix.smul_apply, pLoc_idem, h]
 
 /- English proof (translation)
-Establish `h0 : pLoc E u (idem P) = 0` using `by rw [pLoc_idem, if_neg h]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pLoc E u (idem P * A i j + (1 - idem P) * (1 : Matrix (Fin n) (Fin n) (Af E)) i j) = (1 : Matrix (Fin n) (Fin n) (u.adicCompletion E)) i j`. Rewrite using `[map_add, map_mul, map_mul, map_sub, map_one, h0, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_cutM_neg {P : HeightOneSpectrum (𝓞 E) → Prop} (A : Matrix (Fin n) (Fin n) (Af E))
     {u : HeightOneSpectrum (𝓞 E)} (h : ¬ P u) :
@@ -66,7 +66,7 @@ private theorem map_cutM_neg {P : HeightOneSpectrum (𝓞 E) → Prop} (A : Matr
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `matAf_ext fun u => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_one]`. Distinguish the cases in `hu : P u`. Rewrite using `[map_cutM_pos _ hu, map_cutM_pos _ hu, ← map_mul, h, map_one]`. Rewrite using `[map_cutM_neg _ hu, map_cutM_neg _ hu, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cutM_mul (P : HeightOneSpectrum (𝓞 E) → Prop) {A B : Matrix (Fin n) (Fin n) (Af E)}
     (h : A * B = 1) : cutM P A * cutM P B = 1 := by
@@ -83,7 +83,7 @@ private def cut (P : HeightOneSpectrum (𝓞 E) → Prop) (k : GL (Fin n) (Af E)
   inv_val := cutM_mul P (by simp)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (IsCMField.complexConj_ne_one E) u _).2 (Or.inr (conjPl_self_conjSrc u))`.
+A detailed English derivation is pending.
 -/
 private theorem under_conj (u : HeightOneSpectrum (𝓞 E)) :
     (conjSrc (conjE E) u).under (𝓞 (maximalRealSubfield E)) = u.under (𝓞 (maximalRealSubfield E)) :=
@@ -92,13 +92,11 @@ private theorem under_conj (u : HeightOneSpectrum (𝓞 E)) :
       (Or.inr (conjPl_self_conjSrc u))
 
 /- English proof (translation)
-Use `set P : HeightOneSpectrum (𝓞 E) → Prop := fun u => u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)) with hP`. Use `set k : GL (Fin n) (Af E) := cut P (Matrix.GeneralLinearGroup.map (pFin E) g.1) with hk`. Establish `hpos : ∀ u, P u → Matrix.GeneralLinearGroup.map (pLoc E u) k = cLoc u g` using `fun u hu => Units.ext (map_cutM_pos _ hu)`. Establish `hneg : ∀ u, ¬ P u → Matrix.GeneralLinearGroup.map (pLoc E u) k = 1` using `fun u hu => Units.ext (map_cutM_neg _ hu)`. Establish `hmem : finGL E n k ∈ UA E n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `finGL_mem_UA k fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : P u`. Establish `hc : P (conjSrc (conjE E) u)` using `(under_conj u).trans hu`. Rewrite using `[hpos u hu, hpos _ hc]`. Conclude with `comp_eq g u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc : ¬ P (conjSrc (conjE E) u)` using `fun h => hu ((under_conj u).symm.trans h)`. Rewrite using `[hneg u hu, hneg _ hc]`. Simplify using the standard rewrite rules. Establish `hloc : ∀ u, cLoc u (⟨_, hmem⟩ : UA E n) = Matrix.GeneralLinearGroup.map (pLoc E u) k` using `fun u => by`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.map ((pLoc E u).comp (pFin E)) (finGL E n k) = _`.
-
-Conclude with `Units.ext (congrArg (fun M : GL (Fin n) (Af E) => RingHom.mapMatrix (pLoc E u) M.val) (pFin_finGL k))`. Conclude with `⟨⟨_, hmem⟩, pInf_finGL k, fun u hu => (hloc u).trans (hpos u hu), fun u hu => (hloc u).trans (hneg u hu)⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_part (w : HeightOneSpectrum (𝓞 E)) (g : UA E n) :
     ∃ x : UA E n, cInf x = 1 ∧
@@ -131,25 +129,23 @@ end UpperTheory.V.Z.Sym.Al.FactorizationTer
 end
 
 /- English proof (translation)
-Introduce `L _ _ _ n w`. Establish `hfin : ∀ {x : UA L n}, x ∈ locU n w → cInf x = 1` using `fun hx => (Subgroup.mem_inf.1 hx).1`. Establish `hout : ∀ {x : UA L n}, x ∈ locU n w → ∀ u : Plc L, u.under (𝓞 (Lp L)) ≠ w.under (𝓞 (Lp L)) → cLoc u x = 1` using `fun hx u hu => MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u) hu)`. Establish `hin : ∀ {y : UA L n}, y ∈ away n w → ∀ u : Plc L, u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L)) → cLoc u y = 1` using `fun hy u hu => MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hy u) hu)`. Establish `haway : ∀ {y : UA L n}, (∀ u : Plc L, u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L)) → cLoc u y = 1) → y ∈ away n w` using `fun h => Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => MonoidHom.mem_ker.2 (h u hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK : ∀ {x : UA L n}, x ∈ Kall L n → ∀ u : Plc L, cLoc u x ∈ GlobalTheory.LFun.KGL u n` using `fun hx u => Subgroup.mem_comap.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u)`. Establish `hKmk : ∀ {x : UA L n}, x ∈ finU L n → (∀ u : Plc L, cLoc u x ∈ GlobalTheory.LFun.KGL u n) → x ∈ Kall L n` using `fun h1 h2 => Subgroup.mem_inf.2 ⟨h1, Subgroup.mem_iInf.2 fun u => Subgroup.mem_comap.2 (h2 u)⟩`. Establish `hKf : ∀ {x : UA L n}, x ∈ Kall L n → x ∈ finU L n` using `fun hx => (Subgroup.mem_inf.1 hx).1`. Use `⟨fun x hx y hy => ?_, fun g => ?_, fun w' hw' x hx => ?_, fun x hx => ?_, fun x hx => ⟨fun h => hK h w, fun h => ?_⟩, fun x hx y hy => ⟨fun h => ?_, fun h => mul_mem h.1 h.2⟩⟩` and prove the remaining obligations. Use `FactorizationTer.ua_ext ?_ fun u => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_mul, hfin hx, one_mul, mul_one]`. Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))`. Rewrite using `[hin hy u hu, one_mul, mul_one]`. Rewrite using `[hout hx u hu, one_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, h1, h2, h3⟩` from `FactorizationTer.exists_part w g`. Use `⟨x, Subgroup.mem_inf.2 ⟨h1, Subgroup.mem_iInf.2 fun u => Subgroup.mem_iInf.2 fun hu => MonoidHom.mem_ker.2 (h3 u hu)⟩, x⁻¹ * g, haway fun u hu => ?_, by group⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv, h2 u hu, inv_mul_cancel]`. Use `haway fun u hu => ?_` and prove the remaining obligations. Conclude with `MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 hx).2 u) (by rw [hu]; exact hw'.symm))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `haway fun u _ => ?_` and prove the remaining obligations. Establish `h : Matrix.GeneralLinearGroup.map (pFin L) x.1 = 1` using `hx`. Establish `h'` using `congrArg (Matrix.GeneralLinearGroup.map (pLoc L u)) h`. Rewrite `h'` using `[map_one]`. Conclude with `h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `hKmk (Subgroup.mem_inf.1 hx).1 fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))`. Break down `GlobalTheory.BCT.GlobLev.eq_or_eq_conjSrc hu with e | e` into its components or cases. Substitute `e` using the available equality. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Conclude with `GlobalTheory.BCT.GlobLev.integral_conjSrc x w h`. Rewrite using `[hout hx u hu]`. Conclude with `one_mem _`. Establish `hf : cInf (x * y) = 1` using `hKf h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hf` using `[map_mul, hfin hx, one_mul]`. Use `⟨hKmk (Subgroup.mem_inf.1 hx).1 fun u => ?_, hKmk hf fun u => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))`. Use `hK h u` as an intermediate fact. Rewrite `this` using `[map_mul, hin hy u hu, mul_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[hout hx u hu]`. Conclude with `one_mem _`. Distinguish the cases in `hu : u.under (𝓞 (Lp L)) = w.under (𝓞 (Lp L))`. Rewrite using `[hin hy u hu]`. Conclude with `one_mem _`.
-
-Use `hK h u` as an intermediate fact. Rewrite `this` using `[map_mul, hout hx u hu, one_mul]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Al.factor :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (w : Plc L),

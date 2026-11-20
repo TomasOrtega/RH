@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.CurveAlgebraic
 
 /- English proof (translation)
-Set `τ : k⟮x⟯ →ₐ[k] ℂ` to `(k⟮x'⟯.val).comp ((RatFunc.algEquivOfTranscendental x' hx').toAlgHom.comp (RatFunc.algEquivOfTranscendental x hx).symm.toAlgHom)`. Establish `hτ : τ (IntermediateField.AdjoinSimple.gen k x) = x'`. Express the relevant statement in the definitionally equal form `((RatFunc.algEquivOfTranscendental x' hx') ((RatFunc.algEquivOfTranscendental x hx).symm (IntermediateField.AdjoinSimple.gen k x)) : ℂ) = x'`. Rewrite using `[RatFunc.algEquivOfTranscendental_symm_gen, RatFunc.algEquivOfTranscendental_X]`. Take `⟨σ, hσ⟩` from `IsAlgClosed.surjective_domRestrict_of_isAlgebraic (K := k) (L := k⟮x⟯) (M := ℂ) (E := algebraicClosure k⟮x⟯ ℂ) τ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨σ, ?_⟩` and prove the remaining obligations. Rewrite using `[← hτ, ← hσ]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_algHom_apply_eq {k : Type} [Field k] [Algebra k ℂ] {x x' : ℂ}
     (hx : Transcendental k x) (hx' : Transcendental k x')
@@ -38,15 +38,15 @@ theorem exists_algHom_apply_eq {k : Type} [Field k] [Algebra k ℂ] {x x' : ℂ}
   rfl
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Assume the negation of the conclusion as `hx`. Set `F` to `algebraicClosure k⟮x⟯ ℂ`. Establish `hxF : x ∈ F` using `F.algebraMap_mem (IntermediateField.AdjoinSimple.gen k x)`. Establish `hyF : y ∈ F` using `mem_algebraicClosure_iff.mpr hy`.
+Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ι : F →ₐ[k] ℂ` to `F.val.restrictScalars k`. Establish `hι : Function.Injective ι` using `ι.toRingHom.injective`. Establish `hF : (W.baseChange F).Nonsingular ⟨x, hxF⟩ ⟨y, hyF⟩` using `(W.baseChange_nonsingular hι _ _).mp h`. Establish `h1 : m • (WeierstrassCurve.Affine.Point.some _ _ hF) = 0`. Apply `WeierstrassCurve.Affine.Point.map_injective (W' := W) ι` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_nsmul, map_zero, WeierstrassCurve.Affine.Point.map_some]`. Conclude with `h0`. Establish `h2 : ∀ n : ℕ, x + n ∈ S` using `fun n => by`. Establish `hn : Transcendental k (x + n)` using `fun ha => hx (by`. Use `ha.sub (isAlgebraic_natCast (R := k) (A := ℂ) n)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this)`. Take `⟨σ, hσ⟩` from `exists_algHom_apply_eq hx hn hxF`. Establish `h3` using `congrArg (WeierstrassCurve.Affine.Point.map (W' := W) σ) h1`. Rewrite `h3` using `[map_nsmul, map_zero, WeierstrassCurve.Affine.Point.map_some]`. Conclude with `hσ ▸ hmem _ _ _ h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Set.infinite_of_injective_forall_mem (f := fun n : ℕ => x + n) ?_ h2 hS` and prove the remaining obligations. Introduce `a b hab`. Simplify using `using hab`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_of_torsion {k : Type} [Field k] [CharZero k] [Algebra k ℂ]
     (W : WeierstrassCurve.Affine k) (V : WeierstrassCurve.Affine ℂ) (hV : W.baseChange ℂ = V)
@@ -81,19 +81,17 @@ theorem isAlgebraic_of_torsion {k : Type} [Field k] [CharZero k] [Algebra k ℂ]
   simpa using hab
 
 /- English proof (translation)
-Establish `hm0 : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `hmul : ∀ z : ℂ, m • latticePoint L z = latticePoint L ((m : ℂ) * z)` using `fun z => by`. Rewrite using `[← latticePointHom_apply, ← latticePointHom_apply, ← map_nsmul, nsmul_eq_mul]`. Take `⟨A, D, -, -, hD, -, -, -, -, hroot, -⟩` from `exists_weierstrassP_mul_eq_div (L := L) (L' := L) hm0 (fun l hl => by rw [← nsmul_eq_mul]; exact nsmul_mem hl m) ⊤ trivial trivial trivial (fun _ _ _ => trivial)`. Establish `hsq` using `L.derivWeierstrassP_sq t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : IsAlgebraic Qbar (L.weierstrassP t)`. Use `isAlgebraic_of_torsion (⟨0, 0, 0, -⟨L.g₂, h2⟩ / 4, -⟨L.g₃, h3⟩ / 4⟩ : WeierstrassCurve Qbar) (latticeCurve L).toAffine ?_ m (D.rootSet ℂ) (D.rootSet_finite ℂ) ?_ (latticeCurve_nonsingular L ht) ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `ext <;> simp [latticeCurve, WeierstrassCurve.Affine.baseChange, WeierstrassCurve.baseChange] <;> rfl`. Introduce `x y h h0`. Take `⟨z, hz⟩` from `latticePoint_surjective L (.some x y h)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hz' : z ∉ L.lattice` using `fun hc => by`. Rewrite `hz` using `[latticePoint_of_mem L hc]`. Conclude with `WeierstrassCurve.Affine.Point.some_ne_zero _ hz.symm`. Rewrite `h0` using `[← hz, hmul, latticePoint_eq_zero_iff]`. Rewrite `hz` using `[latticePoint_of_notMem L hz']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, -⟩` from `WeierstrassCurve.Affine.Point.some.inj hz`. Rewrite using `[Polynomial.mem_rootSet]`. Conclude with `⟨hD.ne_zero, (hroot z hz').mpr h0⟩`. Rewrite using `[← latticePoint_of_notMem L ht, hmul, latticePoint_eq_zero_iff]`. Conclude with `hmt`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F := (↥Qbar)⟮L.weierstrassP t⟯`. Establish `e1 : L.weierstrassP t ∈ F` using `IntermediateField.mem_adjoin_simple_self _ _`. Establish `e2 : L.g₂ ∈ F` using `F.algebraMap_mem ⟨L.g₂, h2⟩`. Establish `e3 : L.g₃ ∈ F` using `F.algebraMap_mem ⟨L.g₃, h3⟩`. Establish `e4 : (L.derivWeierstrassP t / 2) ^ 2 ∈ F`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[div_pow, hsq]`. Use `div_mem (sub_mem (sub_mem (mul_mem (ofNat_mem F 4) (pow_mem e1 3)) (mul_mem e2 e1)) e3) (pow_mem (ofNat_mem F 2) 2)` and prove the remaining obligations. Conclude with `IsAlgebraic.of_pow two_pos (isAlgebraic_algebraMap (⟨_, e4⟩ : F))`. Establish `hx' : L.weierstrassP t ∈ Qbar` using `haveI : Algebra.IsAlgebraic ℚ Qbar := algebraicClosure.isAlgebraic ℚ ℂ mem_algebraicClosure_iff.mpr (hx.restrictScalars ℚ)`. Use `⟨hx', mem_algebraicClosure_iff.mpr (IsAlgebraic.of_pow two_pos ?_)⟩` and prove the remaining obligations.
-
-Rewrite using `[hsq, ← mem_algebraicClosure_iff]`. Conclude with `sub_mem (sub_mem (mul_mem (ofNat_mem _ 4) (pow_mem hx' 3)) (mul_mem h2 hx')) h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weierstrassP_mem (L : PeriodPair) (h2 : L.g₂ ∈ Qbar) (h3 : L.g₃ ∈ Qbar) {m : ℕ}
     (hm : 0 < m) {t : ℂ} (ht : t ∉ L.lattice) (hmt : (m : ℂ) * t ∈ L.lattice) :
@@ -139,9 +137,9 @@ theorem weierstrassP_mem (L : PeriodPair) (h2 : L.g₂ ∈ Qbar) (h3 : L.g₃ �
   exact sub_mem (sub_mem (mul_mem (ofNat_mem _ 4) (pow_mem hx' 3)) (mul_mem h2 hx')) h3
 
 /- English proof (translation)
-Take `⟨⟨w₁, w₂, hw, he⟩, -, hΔ, -, hcm⟩` from `GlobalTheory.CurveLattice.lattice_of_curve D hD cc δ h`. Set `L : PeriodPair` to `⟨w₁, w₂, hw⟩`. Establish `hL : ∀ z, z ∈ lamOf D cc δ ↔ z ∈ L.lattice` using `fun z => by`. Rewrite using `[he, AddSubgroup.mem_closure_pair, PeriodPair.mem_lattice]`. Simplify using `[L]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨e2, e3, -⟩` from `GlobalTheory.LatticeInvariants.invariants_dictionary L _ hL`. Establish `hΔ' : L.g₂ ^ 3 - 27 * L.g₃ ^ 2 = 1` using `by rw [← e2, ← e3]; exact hΔ`. Use `⟨L, hL, hΔ', ?_⟩` and prove the remaining obligations. Use `CMCurves.isIntegral_latticeJ (Formalism.L2.Pj.LPb.finrank_K D) (D.host.φ₀.comp (algebraMap D.host.K D.host.E)) L (fun a z hz => (hL _).mp (hcm a z ((hL _).mpr hz)))` as an intermediate fact. Rewrite `this` using `[CMCurves.latticeJ, hΔ', div_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_periodPair (D : D7) (hD : admG1 D) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ)
     (h : Crv D cc δ) : ∃ L : PeriodPair, (∀ z, z ∈ lamOf D cc δ ↔ z ∈ L.lattice) ∧
@@ -160,13 +158,13 @@ theorem exists_periodPair (D : D7) (hD : admG1 D) (cc : Ideal (𝓞 D.host.K)) (
   rwa [CMCurves.latticeJ, hΔ', div_one] at this
 
 /- English proof (translation)
-Introduce `D hD`. Use `⟨fun cc δ h1 h2 => ?_, fun cc δ h => ?_⟩` and prove the remaining obligations. Take `⟨L, hL, -, hj⟩` from `exists_periodPair D hD cc δ ⟨h1, h2⟩`. Rewrite using `[(GlobalTheory.LatticeInvariants.invariants_dictionary L _ hL).1]` and apply the resulting hypothesis. Take `⟨L, hL, hΔ, hj⟩` from `exists_periodPair D hD cc δ h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨e2, e3, -, -, hp, -⟩` from `GlobalTheory.LatticeInvariants.invariants_dictionary L _ hL`. Establish `hj' : 1728 * L.g₂ ^ 3 ∈ Qbar` using `mem_algebraicClosure_iff.mpr (hj.tower_top (A := ℚ)).isAlgebraic`. Establish `hc : L.g₂ ^ 3 ∈ Qbar`. Use `div_mem hj' (ofNat_mem Qbar 1728)` as an intermediate fact. Rewrite `this` using `[mul_div_cancel_left₀ _ (by norm_num)]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : L.g₂ ∈ Qbar` using `mem_algebraicClosure_iff.mpr (IsAlgebraic.of_pow three_pos (mem_algebraicClosure_iff.mp hc))`. Establish `h3 : L.g₃ ∈ Qbar`. Use `mem_algebraicClosure_iff.mpr (IsAlgebraic.of_pow two_pos ?_)` and prove the remaining obligations. Rewrite using `[← mem_algebraicClosure_iff, show L.g₃ ^ 2 = (L.g₂ ^ 3 - 1) / 27 by linear_combination (-1 / 27 : ℂ) * hΔ]`. Conclude with `div_mem (sub_mem hc (one_mem _)) (ofNat_mem _ 27)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun τ x => ?_, e2 ▸ h2, e3 ▸ h3⟩, ?_⟩` and prove the remaining obligations. Conclude with `mem_algebraicClosure_iff.mpr ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom (embT D τ).toRatAlgHom)`. Introduce and unpack `t ⟨m, hm, hmt⟩ ht`. Rewrite using `[(hp t ht).1, (hp t ht).2]`. Conclude with `weierstrassP_mem L h2 h3 hm (fun hc => ht ((hL _).mpr hc)) ((hL _).mp hmt)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_j_and_algebraic_data : ∀ (D : D7), admG1 D → GL3Theta.admJ D ∧ ∀ (cc : Ideal (𝓞 D.host.K)) (δ : ℂ), Crv D cc δ → DataIn D (tor0 D cc δ) Qbar ∧ ∀ t, InRationalLattice (lamOf D cc δ) t → t ∉ (lamOf D cc δ) → wpF (lamOf D cc δ) t ∈ Qbar ∧ wpD (lamOf D cc δ) t ∈ Qbar := by
   intro D hD

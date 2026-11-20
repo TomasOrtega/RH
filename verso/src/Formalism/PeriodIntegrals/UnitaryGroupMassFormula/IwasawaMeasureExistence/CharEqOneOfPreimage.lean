@@ -14,9 +14,9 @@ variable {A : Type*} [AddCommGroup A] [TopologicalSpace A] [IsTopologicalAddGrou
   [T2Space A] [SecondCountableTopology A] [MeasurableSpace A] [BorelSpace A]
 
 /- English proof (translation)
-Take `⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts A)` from `inferInstance`. Establish `h0 : μ K ≠ 0` using `(measure_pos_of_nonempty_interior μ K.interior_nonempty).ne'`. Establish `ht : μ K ≠ ⊤` using `K.isCompact.measure_lt_top.ne`. Establish `hK` using `congrArg (fun ν : Measure A => ν K) h`. Simplify using `only [Measure.smul_apply, nnreal_smul_coe_apply] at hK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(ENNReal.mul_left_inj h0 ht).1 hK` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem nnreal_eq_of_smul (μ : Measure A) [μ.IsAddHaarMeasure] {a b : ℝ≥0} (h : a • μ = b • μ) : a = b := by
   obtain ⟨K⟩ : Nonempty (TopologicalSpace.PositiveCompacts A) := inferInstance
@@ -27,7 +27,7 @@ theorem nnreal_eq_of_smul (μ : Measure A) [μ.IsAddHaarMeasure] {a b : ℝ≥0}
   exact_mod_cast (ENNReal.mul_left_inj h0 ht).1 hK
 
 /- English proof (translation)
-Establish `h1` using `addEquivAddHaarChar_smul_map μ φ`. Rewrite `h1` using `[h, smul_smul]`. Conclude with `eq_inv_of_mul_eq_one_left (nnreal_eq_of_smul μ (h1.trans (one_smul _ _).symm))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_eq_of_map (μ : Measure A) [μ.IsAddHaarMeasure] [μ.Regular] (φ : A ≃ₜ+ A) {c : ℝ≥0} (hc : c ≠ 0)
     (h : μ.map φ = c • μ) : addEquivAddHaarChar φ = c⁻¹ := by
@@ -36,7 +36,7 @@ theorem char_eq_of_map (μ : Measure A) [μ.IsAddHaarMeasure] [μ.Regular] (φ :
   exact eq_inv_of_mul_eq_one_left (nnreal_eq_of_smul μ (h1.trans (one_smul _ _).symm))
 
 /- English proof (translation)
-Use `conv_rhs => rw [← addEquivAddHaarChar_smul_map μ φ]`. Rewrite using `[smul_smul, inv_mul_cancel₀ (addEquivAddHaarChar_pos φ).ne', one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_char (μ : Measure A) [μ.IsAddHaarMeasure] [μ.Regular] (φ : A ≃ₜ+ A) :
     μ.map φ = (addEquivAddHaarChar φ)⁻¹ • μ := by
@@ -47,9 +47,9 @@ variable {B : Type*} [AddCommGroup B] [TopologicalSpace B] [IsTopologicalAddGrou
   [T2Space B] [SecondCountableTopology B] [MeasurableSpace B] [BorelSpace B]
 
 /- English proof (translation)
-Establish `: ((addHaar : Measure A).map e).IsAddHaarMeasure` using `e.isAddHaarMeasure_map _`. Establish `: ((addHaar : Measure A).map e).Regular` using `Regular.map e.toHomeomorph`. Use `(char_eq_of_map ((addHaar : Measure A).map e) _ (inv_ne_zero (addEquivAddHaarChar_pos φ).ne') ?_).trans (inv_inv _)` and prove the remaining obligations. Establish `hcomp : ((e.symm.trans φ).trans e : B → B) ∘ e = e ∘ φ`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using the standard rewrite rules. Rewrite using `[Measure.map_map (map_continuous _).measurable (map_continuous e).measurable, hcomp, ← Measure.map_map (map_continuous e).measurable (map_continuous φ).measurable, map_char (addHaar : Measure A) φ, Measure.map_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem char_transport (e : A ≃ₜ+ B) (φ : A ≃ₜ+ A) :
     addEquivAddHaarChar ((e.symm.trans φ).trans e) = addEquivAddHaarChar φ := by
@@ -74,7 +74,7 @@ def prodE (φ : A ≃ₜ+ A) (ψ : B ≃ₜ+ B) : A × B ≃ₜ+ A × B where
   continuous_invFun := (φ.symm.continuous.comp continuous_fst).prodMk (ψ.symm.continuous.comp continuous_snd)
 
 /- English proof (translation)
-Establish `hmap : ((addHaar : Measure A).prod (addHaar : Measure B)).map (prodE φ ψ) = ((addEquivAddHaarChar φ)⁻¹ * (addEquivAddHaarChar ψ)⁻¹) • ((addHaar : Measure A).prod (addHaar : Measure B))`. Rewrite using `[show (prodE φ ψ : A × B → A × B) = Prod.map φ ψ from rfl, ← Measure.map_prod_map _ _ (map_continuous φ).measurable (map_continuous ψ).measurable, map_char (addHaar : Measure A) φ, map_char (addHaar : Measure B) ψ, Measure.prod_smul_left, Measure.prod_smul_right, smul_smul]`. Rewrite using `[char_eq_of_map _ _ (mul_ne_zero (inv_ne_zero (addEquivAddHaarChar_pos φ).ne') (inv_ne_zero (addEquivAddHaarChar_pos ψ).ne')) hmap, mul_inv, inv_inv, inv_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem char_prod (φ : A ≃ₜ+ A) (ψ : B ≃ₜ+ B) :
     addEquivAddHaarChar (prodE φ ψ) = addEquivAddHaarChar φ * addEquivAddHaarChar ψ := by

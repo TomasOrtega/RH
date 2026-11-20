@@ -13,7 +13,7 @@ variable {Y V : Type} [MeasurableSpace Y] {ν : Measure Y}
   [NormedAddCommGroup V] [InnerProductSpace ℂ V]
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (ν.restrict s) := ⟨by simpa using hs.lt_top⟩`. Establish `h2 : MemLp h 2 (ν.restrict s)` using `hh.restrict s`. Conclude with `memLp_one_iff_integrable.1 (h2.mono_exponent (by norm_num))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrableOn_of_memLp_two {h : Y → V} (hh : MemLp h 2 ν) {s : Set Y} (hs : ν s ≠ ⊤) :
     IntegrableOn h s ν := by
@@ -22,11 +22,11 @@ theorem integrableOn_of_memLp_two {h : Y → V} (hh : MemLp h 2 ν) {s : Set Y} 
   exact memLp_one_iff_integrable.1 (h2.mono_exponent (by norm_num))
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (ν.restrict s) := ⟨by simpa using hs.lt_top⟩`. Establish `hm : AEStronglyMeasurable h (ν.restrict s)` using `hh.1.restrict`. Establish `h1` using `eLpNorm_le_eLpNorm_mul_rpow_measure_univ (μ := ν.restrict s) (p := 1) (q := 2) (by norm_num) hm`. Establish `h3 : eLpNorm h 2 (ν.restrict s) ≤ eLpNorm h 2 ν` using `eLpNorm_restrict_le _ _ _ _`. Establish `hexp : (1 / (1 : ℝ≥0∞).toReal - 1 / (2 : ℝ≥0∞).toReal) = (1 / 2 : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Rewrite `h1` using `[hexp, Measure.restrict_apply_univ]`. Establish `hfin : (ν s) ^ (1 / 2 : ℝ) ≠ ⊤` using `ENNReal.rpow_ne_top_of_nonneg (by norm_num) hs`. Establish `h4 : eLpNorm h 1 (ν.restrict s) ≤ (ν s) ^ (1 / 2 : ℝ) * eLpNorm h 2 ν`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h5 : ∫ y in s, ‖h y‖ ∂ν = (eLpNorm h 1 (ν.restrict s)).toReal`. Rewrite using `[integral_norm_eq_lintegral_enorm hm, eLpNorm_one_eq_lintegral_enorm]`. Rewrite using `[h5, ← ENNReal.toReal_mul]`. Conclude with `ENNReal.toReal_mono (ENNReal.mul_ne_top hfin hh.2.ne) h4`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_norm_restrict_le {h : Y → V} (hh : MemLp h 2 ν) {s : Set Y} (hs : ν s ≠ ⊤) :
     ∫ y in s, ‖h y‖ ∂ν ≤ ((ν s) ^ (1 / 2 : ℝ)).toReal * (eLpNorm h 2 ν).toReal := by
@@ -75,19 +75,15 @@ theorem setIntegralCLM_apply (s : Set Y) (hs : ν s ≠ ⊤) (h : Lp V 2 ν) :
     setIntegralCLM ν s hs h = ∫ y in s, h y ∂ν := rfl
 
 /- English proof (translation)
-Establish `hFs : ∀ s : Set Y, AEStronglyMeasurable (Function.uncurry F) (α.prod (ν.restrict s))`. Introduce `s`. Use `hF.mono_measure ?_` and prove the remaining obligations. Conclude with `Measure.prod_mono le_rfl Measure.restrict_le_self`. Establish `hint : ∀ s : Set Y, ν s ≠ ⊤ → Integrable (Function.uncurry F) (α.prod (ν.restrict s))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Rewrite using `[integrable_prod_iff (hFs s)]`. Prove the components needed by the constructor for the conclusion. Use `filter_upwards [hcF] with a ha`. Conclude with `(integrableOn_of_memLp_two (Lp.memLp (c a)) hs).congr (ae_restrict_of_ae ha)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Integrable.mono' (hc.norm.const_mul ((ν s) ^ (1 / 2 : ℝ)).toReal) (hFs s).norm.integral_prod_right' ?_ filter_upwards [hcF] with a ha` and prove the remaining obligations. Establish `hnn : 0 ≤ ∫ y, ‖Function.uncurry F (a, y)‖ ∂(ν.restrict s)` using `integral_nonneg fun _ => norm_nonneg _`. Rewrite using `[Real.norm_of_nonneg hnn, Lp.norm_def]`. Establish `: ∫ y, ‖Function.uncurry F (a, y)‖ ∂(ν.restrict s) = ∫ y in s, ‖c a y‖ ∂ν` using `integral_congr_ae (ae_restrict_of_ae (ha.mono fun y hy => by simp [hy]))`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `integral_norm_restrict_le (Lp.memLp (c a)) hs`. Use `ae_eq_of_forall_setIntegral_eq_of_sigmaFinite ?_ ?_ ?_` and prove the remaining obligations. Introduce `s _ hs`. Conclude with `integrableOn_of_memLp_two (Lp.memLp _) hs.ne`. Introduce `s _ hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `(hint s hs.ne).integral_prod_right`. Introduce `s hsm hs`. Establish `h1 : ∫ y in s, (∫ a, c a ∂α) y ∂ν = ∫ a, ∫ y in s, c a y ∂ν ∂α`. Rewrite using `[← setIntegralCLM_apply s hs.ne, ← ContinuousLinearMap.integral_comp_comm _ hc]`. Both sides reduce to the same expression.
-
-Establish `h2 : ∫ a, ∫ y in s, c a y ∂ν ∂α = ∫ a, ∫ y in s, F a y ∂ν ∂α`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hcF] with a ha`. Conclude with `integral_congr_ae (ae_restrict_of_ae ha)`. Rewrite using `[h1, h2]`.
-
-Conclude with `integral_integral_swap (hint s hs.ne)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bochner_Lp_ae (A : Type) [MeasurableSpace A] (α : Measure A) [SFinite α]
     [SigmaFinite ν] (c : A → Lp V 2 ν) (F : A → Y → V)
@@ -131,7 +127,7 @@ theorem bochner_Lp_ae (A : Type) [MeasurableSpace A] (α : Measure A) [SFinite �
     exact integral_integral_swap (hint s hs.ne)
 
 /- English proof (translation)
-Introduce `A Y V _ _ α _ ν _ _ _ _ c F hc hF hcF`. Conclude with `bochner_Lp_ae A α c F hc hF hcF`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coe_integral_ae_eq : ∀ (A Y V : Type) [MeasurableSpace A] [MeasurableSpace Y] (α : Measure A) [SFinite α] (ν : Measure Y) [SigmaFinite ν] [NormedAddCommGroup V] [InnerProductSpace ℂ V] [CompleteSpace V] (c : A → Lp V 2 ν) (F : A → Y → V), Integrable c α → AEStronglyMeasurable (Function.uncurry F) (α.prod ν) → (∀ᵐ a ∂α, c a =ᵐ[ν] F a) → (⇑(∫ a, c a ∂α) : Y → V) =ᵐ[ν] fun y => ∫ a, F a y ∂α := by
   intro A Y V _ _ α _ ν _ _ _ _ c F hc hF hcF

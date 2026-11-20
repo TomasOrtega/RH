@@ -28,9 +28,9 @@ section
 variable {V : Type} [CommRing V] [IsDomain V]
 
 /- English proof (translation)
-Establish `hw : (DegPre.prB D F).left ≫ D.P.A.hom = (fst (TF (R` using `V) F) D.P.A).left ≫ jFK (R := V) F ≫ jK V := (Over.w (DegPre.prB D F)).trans (Over.w (fst (TF (R := V) F) D.P.A)).symm`. Establish `e : (jFK (R` using `V) F ≫ jK V).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom a) = (Scheme.ΓSpecIso (CommRingCat.of F)).inv.hom (algebraMap (FractionRing V) F (algebraMap V (FractionRing V) a)) := by`. Establish `h` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom ((algebraMap (FractionRing V) F).comp (algebraMap V (FractionRing V))))`. Establish `h'` using `congrArg (fun f => f.hom a) h`. Rewrite using `[jFK, jK, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h'.symm`. Rewrite using `[Category.assoc, hw, Geo.Tor.cst]`. Use `(gs_pull (𝟙 _) _ y ⊤ trivial _).symm.trans (congrArg (gs (𝟙 _) y ⊤) ?_)` and prove the remaining obligations. Conclude with `congrArg (fst (TF (R := V) F) D.P.A).left.appTop.hom e`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cst_prB (D : DegPre V) (F : Type) [Field F] [Algebra (FractionRing V) F] (y : (DegPre.BF D F).left) (a : V) :
     Geo.Tor.cst ((𝟙 _ ≫ (DegPre.prB D F).left) ≫ D.P.A.hom) y a =
@@ -52,21 +52,19 @@ theorem cst_prB (D : DegPre V) (F : Type) [Field F] [Algebra (FractionRing V) F]
 end
 
 /- English proof (translation)
-Introduce `V _ _ _ _ ϖ hϖ D F _ _ v hv θ θ' h h'`. Take `⟨σ, σF, hs, he, hn⟩` from `h`. Take `⟨τ, τF, ht, hf, hm⟩` from `h'`. Establish `hL` using `D.toPre.P.isLB`. Establish `gσ` using `GlobalTheory.IndivisibleSection.secBGenerates_of_not_dvd GlobalTheory.firstFiveLaws.1.secBaseChange V ϖ hϖ D σ hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha, -⟩` from `gσ τ`. Establish `hu : IsUnit a`. Assume the negation of the conclusion as `hna`. Establish `hmem : a ∈ maximalIdeal V` using `hna`. Rewrite `hmem` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.mem_span_singleton]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, rfl⟩` from `hmem`. Use `hm ⟨SecOps.secScale (Out.scal D.toPre.P.A.hom b) σ, ?_⟩` and prove the remaining obligations. Use `show SecIsMul D.toPre.P.A.hom ϖ τ (SecOps.secScale (Out.scal D.toPre.P.A.hom b) σ)`. Introduce `j`. Use `(ha j).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [SecOps.secScale, Out.scal, resTop, map_mul, _root_.mul_assoc]`. Use `⟨algebraMap (FractionRing V) F (algebraMap V (FractionRing V) a), ?_, ?_⟩` and prove the remaining obligations. Use `hv (algebraMap V (FractionRing V) a) 0 ⟨hu.unit, by simp⟩` as an intermediate fact. Simplify using `using this`. Use `set u := algebraMap (FractionRing V) F (algebraMap V (FractionRing V) a) with hudef`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eθ : θ.s 0 = σF` using `SecOps.sec_ext he`. Establish `eθ' : θ'.s 0 = τF` using `SecOps.sec_ext hf`. Establish `h0 : ∀ j, (θ'.s 0).f j = ((u • θ).s 0).f j`. Use `sec_ext_val hL fun y J hJ => ?_` and prove the remaining obligations. Establish `e₁` using `GlobalTheory.PullIntegral.sval_of_secScal hs (𝟙 _) y hJ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `GlobalTheory.PullIntegral.sval_of_secScal ht (𝟙 _) y hJ`. Establish `e₃` using `GlobalTheory.IndivisibleSection.sval_of_secIsMul ha (𝟙 _ ≫ (DegPre.prB D.toPre F).left) y hJ`. Establish `o : gs (𝟙 (DegPre.BF D.toPre F).left) y ⊤ 1 = 1`. Rewrite using `[gs_eq _ y ⊤ trivial, map_one, map_one]`. Rewrite `e₁`, `e₂` using `[o, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e₃` using `[e₁, e₂, cst_prB, ← eθ, ← eθ']`. Use `e₃.trans ?_` and prove the remaining obligations. Establish `hmem` using `hJ.mem (DegPre.famφ D.toPre F 0) (𝟙 _)`. Conclude with `((gs_mul (𝟙 _) y _ hmem _ _).trans (congrArg₂ (· * ·) (gs_res (𝟙 _) y le_top hmem _) rfl)).symm`. Use `(isSmul_iff u θ θ').2 (sub_eq_zero.1 (fam_ext fun α j => TG.fam_eq_zero hϖ (θ' - u • θ) (fun j => ?_) α j))` and prove the remaining obligations.
-
-Conclude with `(congrArg (· + -((u • θ).s 0).f j) (h0 j)).trans (add_neg_cancel _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] (ϖ : V), Irreducible ϖ → ∀ (D : DegData V (maximalIdeal V)) (F : Type) [Field F] [Algebra (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ValOver ϖ F v → ∀ θ θ' : Fam D.toPre F 1, ThFrame D ϖ F θ → ThFrame D ϖ F θ' → ∃ u : F, v u = 0 ∧ Fam.IsSmul D.toPre F u θ θ' := by
   intro V _ _ _ _ ϖ hϖ D F _ _ v hv θ θ' h h'

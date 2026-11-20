@@ -17,13 +17,13 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 namespace GlobalTheory.SpanW
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hW hEx hS hGS hCD hME hcar i`. Take `⟨hCore, hSF, hE, hWc⟩` from `GlobalTheory.CoreOfWeak.core_of_weak R F hW hEx`. Establish `hOk2 : A3.A.fam.Ok s` using `hOk.ok2`. Establish `hirr : ∀ χ ∈ A3.A.X, IsAbsIrrChar χ` using `hOk2.irr`. Take `⟨h, -, -, -, hsum, -⟩` from `GlobalTheory.T.sphericalOperators_forms_on_rank_space_normal R.toRealDat F.lv2 hCore hS hirr R.SF hSF i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hsum]`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup_le fun p => iSup₂_le fun c _ => ?_` and prove the remaining obligations. Rewrite using `[hWc]`. Conclude with `le_iSup (fun c => Wcc R.toRealDat R.SF i c) c`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun c => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : Wcc R.toRealDat R.SF i c = ⊥`. Rewrite using `[h0]`. Conclude with `bot_le`. Establish `hE0 : EEc R.toRealDat R.SF c ≠ ⊥` using `GlobalTheory.T.eigensystem_goodForms_thetaTarget_occurs_on_rows R.toRealDat F.lv2 hOk2 hCore hS hGS hCD hME R.SF hSF i c h0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨p, hp⟩` from `hcar c (by rw [hE]; exact hE0)`. Rewrite using `[← hWc]`. Conclude with `le_trans (le_iSup₂ (f := fun c (_ : R.Carries p c) => R.Wc' i c) c hp) (le_iSup (fun p => R.Wp3 i p) p)`.
+A detailed English derivation is pending.
 -/
 theorem iSup_wp3_eq_range_eH : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) {s : ℕ}, A3.fam3.Ok3 s → R.WeakCharacterisation F → R.toRealDat.ExAt → SchurAll R.toRealDat → GoodStable A3.A.X → GlobalTheory.CuspMult.CuspDecomp D → GlobalTheory.CuspMult.MultEq R.toRealDat → (∀ c, R.EEc c ≠ ⊥ → ∃ p, R.Carries p c) → ∀ i, (⨆ p, R.Wp3 i p) = LinearMap.range (eH R.toRealDat i) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F s hOk hW hEx hS hGS hCD hME hcar i

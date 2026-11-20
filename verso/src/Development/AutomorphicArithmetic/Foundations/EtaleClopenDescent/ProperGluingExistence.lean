@@ -8,7 +8,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite LateralTheory.E.E4 Lateral
 namespace UpperTheory.Cb
 
 /- English proof (translation)
-Set `e : R ≃+* j.range` to `RingEquiv.ofBijective j.rangeRestrict ⟨fun a b hab => hj (congrArg Subtype.val hab), j.rangeRestrict_surjective⟩`. Use `⟨e.symm.toRingHom.comp (ψ.codRestrict j.range h), ?_⟩` and prove the remaining obligations. Use extensionality with `q`. Express the relevant statement in the definitionally equal form `((e (e.symm (ψ.codRestrict j.range h q)) : j.range) : K) = ψ q`. Rewrite using `[e.apply_symm_apply]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -24,9 +24,9 @@ private lemma ringLift {Q R K : Type} [CommRing Q] [CommRing R] [CommRing K] (j 
   rfl
 
 /- English proof (translation)
-Establish `h1` using `S.commSq.w`. Rewrite `h1` using `[← hψ, ← hw, Category.assoc, hc, ← Spec.map_comp, ← Spec.map_comp]`. Establish `h2` using `Spec.map_injective h1`. Use extensionality with `a`. Establish `h3` using `congrArg (fun f => f.hom a) h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma compat {X : Scheme.{0}} {Ω Q : Type} [Field Ω] [CommRing Q] [Algebra Ω Q]
     (c : X ⟶ Sp Ω) (i : Sp Q ⟶ X)
@@ -43,13 +43,13 @@ private lemma compat {X : Scheme.{0}} {Ω Q : Type} [Field Ω] [CommRing Q] [Alg
   simpa using h3
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap S.R S.K)` using `IsFractionRing.injective S.R S.K`. Take `⟨g, hg⟩` from `ringLift (algebraMap S.R S.K) hinj ψ hR`. Establish `hw : Spec.map (Spec.preimage S.i₂) = S.i₂` using `Spec.map_preimage _`. Establish `hcomp` using `compat c i hc S ψ hψ (Spec.preimage S.i₂) hw`. Establish `hgψ : CommRingCat.ofHom g ≫ CommRingCat.ofHom (algebraMap S.R S.K) = CommRingCat.ofHom ψ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← CommRingCat.ofHom_comp, hg]`. Use `⟨⟨⟨Spec.map (CommRingCat.ofHom g) ≫ i, ?_, ?_⟩⟩⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← Spec.map_comp, hgψ, hψ]`. Rewrite using `[Category.assoc, hc, ← Spec.map_comp, ← hw]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `a`. Apply `hinj` to reduce the goal to its premises. Establish `h1` using `congrArg (fun f => f a) hcomp`. Establish `h2` using `congrArg (fun f => f (algebraMap Ω Q a)) hg`. Simplify using `only [RingHom.comp_apply] at h1 h2`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [CommRingCat.hom_comp, CommRingCat.hom_ofHom, RingHom.comp_apply]`. Rewrite using `[h2, h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private lemma closeSq {X : Scheme.{0}} {Ω Q : Type} [Field Ω] [CommRing Q] [Algebra Ω Q]
     (c : X ⟶ Sp Ω) (i : Sp Q ⟶ X)
@@ -76,13 +76,11 @@ private lemma closeSq {X : Scheme.{0}} {Ω Q : Type} [Field Ω] [CommRing Q] [Al
     rw [h2, h1]
 
 /- English proof (translation)
-Use `haveI hdim : Ring.KrullDimLE 1 P := by`. Rewrite using `[Ring.krullDimLE_iff, hd]`. Both sides reduce to the same expression. Use `haveI : (RingHom.ker ψ).IsPrime := RingHom.ker_isPrime ψ`. Establish `hne : RingHom.ker ψ ≠ ⊥` using `fun h => hker ((RingHom.injective_iff_ker_eq_bot ψ).mpr h)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI : (RingHom.ker ψ).IsMaximal := Ideal.IsPrime.isMaximal_of_ne_bot ‹_› hne`. Use `letI : Field (P ⧸ RingHom.ker ψ) := Ideal.Quotient.field _`. Use `haveI : Module.Finite Ω (P ⧸ RingHom.ker ψ) := finite_of_finite_type_of_isJacobsonRing Ω (P ⧸ RingHom.ker ψ)`. Take `⟨p, hmon, hp⟩ : IsIntegral Ω (Ideal.Quotient.mk (RingHom.ker ψ) q)` from `Algebra.IsIntegral.isIntegral _`. Establish `hpq : Polynomial.aeval q p ∈ RingHom.ker ψ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, ← Ideal.Quotient.mkₐ_eq_mk Ω, ← Polynomial.aeval_algHom_apply, Ideal.Quotient.mkₐ_eq_mk, Polynomial.aeval_def]`. Conclude with `hp`. Rewrite `hpq` using `[RingHom.mem_ker, Polynomial.aeval_def, Polynomial.hom_eval₂, hω, ← Polynomial.eval₂_map]`. Establish `hi : IsIntegral R (ψ q)` using `⟨p.map ω, hmon.map ω, hpq⟩`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hi`.
-
-Conclude with `⟨y, hy⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private lemma closedCase {Ω P R K : Type} [Field Ω] [CommRing P] [IsDomain P] [Algebra Ω P]
     [Algebra.FiniteType Ω P] (hd : ringKrullDim P = 1) [CommRing R] [IsDomain R] [ValuationRing R]
@@ -111,13 +109,11 @@ private lemma closedCase {Ω P R K : Type} [Field Ω] [CommRing P] [IsDomain P] 
   exact ⟨y, hy⟩
 
 /- English proof (translation)
-Set `V : ValuationSubring L` to `{ (algebraMap R K).range.comap f with mem_or_inv_mem' := fun x => by`. Break down `ValuationRing.isInteger_or_isInteger R (f x) with hx | hx` into its components or cases. Use `left`. Take `⟨y, hy⟩` from `hx`. Conclude with `⟨y, hy⟩`.
+Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `right`. Take `⟨y, hy⟩` from `hx`. Use `⟨y, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap R K y = f x⁻¹`. Rewrite using `[map_inv₀]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hy }`. Use `⟨V, fun a => ?_, fun x hx => hx⟩` and prove the remaining obligations. Use `⟨ω a, ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (fun g => g a) h`. Simplify using `only [RingHom.comp_apply] at h1`.
-
-Conclude with `h1.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma genericVal {Ω L R K : Type} [Field Ω] [Field L] [Algebra Ω L] [CommRing R] [IsDomain R]
     [ValuationRing R] [Field K] [Algebra R K] [IsFractionRing R K] (ω : Ω →+* R) (f : L →+* K)
@@ -144,13 +140,11 @@ private lemma genericVal {Ω L R K : Type} [Field Ω] [Field L] [Algebra Ω L] [
   exact h1.symm
 
 /- English proof (translation)
-Establish `hw : Spec.map (Spec.preimage S.i₂) = S.i₂` using `Spec.map_preimage _`. Establish `hcomp` using `compat c iP hP S φ hφ (Spec.preimage S.i₂) hw`. Distinguish the cases in `hinj : Function.Injective φ`. Set `f : L →+* S.K` to `IsFractionRing.lift hinj`. Establish `hf : f.comp (algebraMap P L) = φ` using `RingHom.ext fun x => IsFractionRing.lift_algebraMap hinj x`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfΩ : f.comp (algebraMap Ω L) = (algebraMap S.R S.K).comp (Spec.preimage S.i₂).hom`. Rewrite using `[IsScalarTower.algebraMap_eq Ω P L, ← RingHom.comp_assoc, hf, hcomp]`. Take `⟨V, hΩV, hVR⟩` from `genericVal (Spec.preimage S.i₂).hom f hfΩ`. Break down `hV V hΩV with hPV | hQV` into its components or cases. Use `closeSq c iP hP S φ hφ fun q => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hf]`. Conclude with `hVR _ (hPV q.2)`. Establish `hψ : Spec.map (CommRingCat.ofHom (f.comp (algebraMap Q L))) ≫ iQ = S.i₁`. Rewrite using `[← hag S.K f, hf, hφ]`. Conclude with `closeSq c iQ hQ S _ hψ fun q => hVR _ (hQV q.2)`.
-
-Conclude with `closeSq c iP hP S φ hφ (closedCase hd (Spec.preimage S.i₂).hom φ hcomp hinj)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma chart {Ω L : Type} [Field Ω] [Field L] [Algebra Ω L] {X : Scheme.{0}}
     (c : X ⟶ Sp Ω) (P Q : Subalgebra Ω L) (iP : Sp P ⟶ X) (iQ : Sp Q ⟶ X)
@@ -187,19 +181,17 @@ end UpperTheory.Cb
 
 open UpperTheory.Cb in
 /- English proof (translation)
-Introduce `Ω L _ _ _ A B u h G S`. Take `⟨-, -, -, hfA, hfB, -, -, hdA, hdB, hFA, hFB, hadj, hV⟩` from `h`. Use `haveI := hfA`. Use `haveI := hfB`. Use `haveI := hFA`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI := hFB`. Use `haveI := G.hiA`. Use `haveI := G.hiB`. Establish `hagA : ∀ (K : Type) [Field K] (f : L →+* K), Spec.map (CommRingCat.ofHom (f.comp (algebraMap A L))) ≫ G.iA = Spec.map (CommRingCat.ofHom (f.comp (algebraMap B L))) ≫ G.iB`. Introduce `K _ f`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression.
 
-Establish `eA : f.comp (algebraMap A L) = (f.comp (algebraMap (Dr Ω A u) L)).comp (Subalgebra.inclusion (le_Dr_A A u)).toRingHom`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `eB : f.comp (algebraMap B L) = (f.comp (algebraMap (Dr Ω A u) L)).comp (Subalgebra.inclusion (le_Dr_B A B u hadj)).toRingHom`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[eA, eB]`. Simplify using `only [CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, G.agree]`. Take `⟨x0⟩ : Nonempty (Spec (CommRingCat.of S.K))` from `inferInstance`. Establish `hx : S.i₁ x0 ∈ Set.range G.iA ∪ Set.range G.iB`.
+Check the elementary cases of the proposition. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[G.cover]`. Discharge the goal by the elementary cases of `trivial`. Break down `hx with hA | hB` into its components or cases. Establish `hr : Set.range S.i₁ ⊆ Set.range G.iA`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Subsingleton.elim y x0]` and apply the resulting hypothesis. Establish `hg` using `IsOpenImmersion.lift_fac G.iA S.i₁ hr`. Use `chart G.c0 A B G.iA G.iB G.hcA G.hcB hdA hV hagA S (Spec.preimage (IsOpenImmersion.lift G.iA S.i₁ hr)).hom ?_` and prove the remaining obligations. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage, hg]`. Establish `hr : Set.range S.i₁ ⊆ Set.range G.iB`.
-
-Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Subsingleton.elim y x0]` and apply the resulting hypothesis. Establish `hg` using `IsOpenImmersion.lift_fac G.iB S.i₁ hr`. Use `chart G.c0 B A G.iB G.iA G.hcB G.hcA hdB (fun V hV' => (hV V hV').symm) (fun K _ f => (hagA K f).symm) S (Spec.preimage (IsOpenImmersion.lift G.iB S.i₁ hr)).hom ?_` and prove the remaining obligations. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage, hg]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.properGluing_existence :
     LateralTheory.E.LeafGlueIsProperPf.LeafGlueExistence := by

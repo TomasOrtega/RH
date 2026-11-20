@@ -14,13 +14,13 @@ open GlobalTheory.ConeSmallUnf
 open GroundTheory.Global GroundTheory.Global.IdeleGroup in
 open scoped nonZeroDivisors in
 /- English proof (translation)
-Establish `h1 : finiteModule x = finiteModule (ofFinite (IdeleGroup.toFinite K x))` using `rfl`. Establish `h2` using `(mem_idealFiniteAdeles_iff_ord L (IdeleGroup.toFinite K x)).1 hx`. Use `set y := ofFinite (IdeleGroup.toFinite K x)`. Establish `h3` using `finiteModule_rpow_eq y 1`. Rewrite `h3` using `[Real.rpow_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, h3]`. Use `set n : HeightOneSpectrum (𝓞 K) →₀ ℤ := ordFinsupp K y with hn`. Establish `h4 : n = (n - countFinsupp L) + countFinsupp L` using `(sub_add_cancel _ _).symm`. Establish `hk : ∀ v, 0 ≤ (n - countFinsupp L) v` using `fun v => by`. Establish `: (n - countFinsupp L) v = ord v y - FractionalIdeal.count K v (L : FractionalIdeal (𝓞 K)⁰ K)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `sub_nonneg.2 (h2 v)`. Rewrite using `[h4, zetaWeight_add]`. Use `mul_le_of_le_one_left (zetaWeight_nonneg _ _) ?_` and prove the remaining obligations. Use `Finset.prod_le_one (fun v _ => (Real.rpow_pos_of_pos (absNorm_asIdeal_pos v) _).le) fun v _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Real.rpow_le_one_of_one_le_of_nonpos ?_ ?_` and prove the remaining obligations. Conclude with `(HeightOneSpectrum.one_lt_absNorm v).le` after adjusting the coercions. Establish `: (0 : ℝ) ≤ (((n - countFinsupp L) v : ℤ) : ℝ)` using `by exact_mod_cast hk v`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 private theorem finiteModule_le_of_mem {K : Type} [Field K] [NumberField K]
     (L : (FractionalIdeal (𝓞 K)⁰ K)ˣ) (x : IdeleGroup K)
@@ -49,9 +49,9 @@ private theorem finiteModule_le_of_mem {K : Type} [Field K] [NumberField K]
 
 open GroundTheory.Global GroundTheory.Global.IdeleGroup in
 /- English proof (translation)
-Establish `hs : Continuous fun y : AdeleRing (𝓞 K) K => (y.2 : FiniteAdeleRing (𝓞 K) K)` using `continuous_snd`. Take `⟨L, hL⟩` from `exists_subset_idealFiniteAdeles (hC.image hs)`. Establish `hf : Continuous fun y : AdeleRing (𝓞 K) K => ∏ w : InfinitePlace K, ‖(y.1 : InfiniteAdeleRing K) w‖ ^ w.mult` using `continuous_finsetProd _ fun w _ => (continuous_norm.comp ((continuous_apply w).comp continuous_fst)).pow _`. Take `⟨b, hb⟩` from `(hC.image hf).bddAbove`. Use `⟨b * zetaWeight 1 (countFinsupp L), fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ideleModule_apply]`. Establish `h1 : infiniteModule x ≤ b` using `hb ⟨_, hx, rfl⟩`. Establish `h2` using `finiteModule_le_of_mem L x (hL ⟨_, hx, rfl⟩)`. Conclude with `mul_le_mul h1 h2 (finiteModule_pos x).le ((infiniteModule_pos x).le.trans h1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ideleModule_bdd {K : Type} [Field K] [NumberField K]
     {C : Set (AdeleRing (𝓞 K) K)} (hC : IsCompact C) :
@@ -70,7 +70,7 @@ private theorem ideleModule_bdd {K : Type} [Field K] [NumberField K]
   exact mul_le_mul h1 h2 (finiteModule_pos x).le ((infiniteModule_pos x).le.trans h1)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ C hC`. Take `⟨c, hc⟩` from `ideleModule_bdd (hC.image (GlobalTheory.TateConv.continuous_tens F E))`. Use `⟨c, fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.TateConv.absE_eq]`. Conclude with `hc _ ⟨_, hu, (GlobalTheory.TateConv.idl_val F E u).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.compact_adele_norm_bounded :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (C : Set (AE F E)), IsCompact C → ∃ c : ℝ, ∀ u : (AE F E)ˣ, (u : AE F E) ∈ C → (absE F E u : ℝ) ≤ c := by

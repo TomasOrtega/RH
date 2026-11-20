@@ -19,7 +19,7 @@ def actH (q : ℕ) {P : Arrow Spc} (n : ℤ) {m i j : ℤ} (b : Hs q P m j) :
     abel
 
 /- English proof (translation)
-Rewrite using `[AddMonoidHom.coe_comp]`. Conclude with `hf.comp hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bij_comp {A B C : Type*} [AddZeroClass A] [AddZeroClass B] [AddZeroClass C] {f : B →+ C} {g : A →+ B}
     (hf : Function.Bijective f) (hg : Function.Bijective g) : Function.Bijective (f.comp g) := by
@@ -37,7 +37,7 @@ def purT {d : ℕ} (T : ∀ P : SP d, Tube P) (q : ℕ) (P : SP d) (n i : ℤ) :
   else 0
 
 /- English proof (translation)
-Establish `h : q ≠ 0 ∧ IsUnit (q : Γ(P.X, ⊤))` using `⟨NeZero.ne q, hq⟩`. Unfold `purT`. Rewrite using `[dif_pos h]`. Use `bij_comp (bij_comp (AddEquiv.bijective _) ?_) (bij_comp (AddEquiv.bijective _) (((T P).ok q hq).2.1 i n))` and prove the remaining obligations. Conclude with `((T P).ok q hq).2.2.2 n i`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem purT_bij {d : ℕ} (T : ∀ P : SP d, Tube P) (q : ℕ) [NeZero q] (P : SP d) (hq : IsUnit (q : Γ(P.X, ⊤)))
     (n i : ℤ) : Function.Bijective (purT T q P n i) := by
@@ -74,7 +74,7 @@ def EtalePurityReduction : Prop := Hyp → LeafCl → ∀ d (T : ∀ P : SP d, T
     (purT T r P n i (red q r _ _ _ a)).1 = red q r _ _ _ (purT T q P n i a).1
 
 /- English proof (translation)
-Introduce `hH d`. Take `⟨T, hT⟩` from `hTube hH d`. Conclude with `⟨purT T, fun q _ P hq => ⟨purT_bij T q P hq, hN hH hCl d T hT q P hq, hP hH d T q P hq, hR hH hCl d T q P hq⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem EtalePurity_of_parts (hCl : LeafCl) (hTube : LeafTube) (hN : EtalePurityNaturality) (hP : EtalePurityProjection) (hR : EtalePurityReduction) :
     LeafPur := by

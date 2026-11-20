@@ -13,14 +13,14 @@ abbrev ext (f : k →+* L) {a : ℕ} (W : Submodule k (Fin a → k)) : Submodule
   Submodule.span L ((fun v => f ∘ v) '' (W : Set (Fin a → k)))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec f M v i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem map_mulVec_comp (f : k →+* L) {m n : ℕ} (M : Matrix (Fin m) (Fin n) k) (v : Fin n → k) :
     (M.map f).mulVec (f ∘ v) = f ∘ M.mulVec v := by
   funext i; exact (RingHom.map_mulVec f M v i).symm
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, Matrix.mulVecLin_apply]`. Rewrite using `[map_mulVec_comp]`. Conclude with `Submodule.subset_span ⟨_, h v hv, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ext_le_comap (f : k →+* L) {m n : ℕ} (M : Matrix (Fin m) (Fin n) k)
     (U : Submodule k (Fin n → k)) (U' : Submodule k (Fin m → k)) (h : ∀ v ∈ U, M.mulVec v ∈ U') :
@@ -32,9 +32,9 @@ theorem ext_le_comap (f : k →+* L) {m n : ℕ} (M : Matrix (Fin m) (Fin n) k)
   exact Submodule.subset_span ⟨_, h v hv, rfl⟩
 
 /- English proof (translation)
-Take `⟨v, hv, hv0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hW`. Introduce `h`. Establish `: f ∘ v ∈ ext f W` using `Submodule.subset_span ⟨v, hv, rfl⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Apply `hv0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Use `congrFun this i` as an intermediate fact. Simplify using `using this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ext_ne_bot (f : k →+* L) {a : ℕ} {W : Submodule k (Fin a → k)} (hW : W ≠ ⊥) : ext f W ≠ ⊥ := by
   obtain ⟨v, hv, hv0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot hW
@@ -46,13 +46,11 @@ theorem ext_ne_bot (f : k →+* L) {a : ℕ} {W : Submodule k (Fin a → k)} (hW
   simpa using this
 
 /- English proof (translation)
-Set `e` to `Module.finBasis k W`. Establish `hle : ext f W ≤ Submodule.span L (Set.range fun i => f ∘ (e i : Fin a → k))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hv' : v = ∑ i, (e.repr ⟨v, hv⟩ i) • (e i : Fin a → k)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `congrArg Subtype.val (e.sum_repr ⟨v, hv⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul] at this`. Conclude with `this.symm`. Establish `: f ∘ v = ∑ i, f (e.repr ⟨v, hv⟩ i) • (f ∘ (e i : Fin a → k))` using `by conv_lhs => rw [hv']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Simplify using `[Finset.sum_apply, map_sum]`. Use `show f ∘ v ∈ _`. Rewrite using `[this]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem finrank_ext_le (f : k →+* L) {a : ℕ} (W : Submodule k (Fin a → k)) :
     Module.finrank L (ext f W) ≤ Module.finrank k W := by
@@ -79,9 +77,9 @@ theorem finrank_ext_le (f : k →+* L) {a : ℕ} (W : Submodule k (Fin a → k))
     _ = Module.finrank k W := Fintype.card_fin _
 
 /- English proof (translation)
-Introduce `h`. Apply `hX` to reduce the goal to its premises. Use `Matrix.ext_of_mulVec_single fun i => ?_` and prove the remaining obligations. Establish `: X.mulVecLin (Pi.single i 1) ∈ LinearMap.range X.mulVecLin` using `LinearMap.mem_range_self _ _`. Rewrite `this` using `[h, Submodule.mem_bot, Matrix.mulVecLin_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, Matrix.zero_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem range_ne_bot {K : Type} [Field K] {m n : ℕ} {X : Matrix (Fin m) (Fin n) K} (hX : X ≠ 0) :
     LinearMap.range X.mulVecLin ≠ ⊥ := by
@@ -97,27 +95,27 @@ end GlobalTheory.SplitCrit
 namespace GlobalTheory.SplitCrit
 
 /- English proof (translation)
-Introduce `k Γ L _ _ _ _ f a ρ hmod W hW`. Take `⟨hW0, hWi, hWmin⟩` from `hW`. Establish `hLi : IsInv (mapRep f ρ) (ext f W)` using `fun g v hv => ext_le_comap f (ρ g : Matrix (Fin a) (Fin a) k) W W (hWi g) hv`. Take `⟨V, hVle, hV⟩` from `GlobalTheory.SemisimpleDecomp.exists_irr_le hLi (ext_ne_bot f hW0)`. Take `⟨b, σ, C, hCinj, hCr, hCint⟩` from `hmod V hV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨W', hc⟩` from `Submodule.exists_isCompl W`. Set `φ : (Fin a → k) →ₗ[k] (Fin a → k)` to `W'.subtype.comp (W'.projectionOnto W hc.symm)`. Establish `hφ : ∀ v, φ v = 0 ↔ v ∈ W`. Introduce `v`. Establish `hk` using `Submodule.ker_projectionOnto hc.symm`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [φ, LinearMap.comp_apply, Submodule.subtype_apply, ZeroMemClass.coe_eq_zero]`. Rewrite using `[← LinearMap.mem_ker, hk]`. Set `Q` to `LinearMap.toMatrix' φ`. Establish `hQ : ∀ v, Q.mulVec v = 0 ↔ v ∈ W` using `fun v => by`. Simplify using `only [Q, LinearMap.toMatrix'_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hφ v`. Establish `hQL : ext f W ≤ LinearMap.ker (Q.map f).mulVecLin`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, Matrix.mulVecLin_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mulVec_comp, (hQ v).2 hv]`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Establish `hQC : Q.map f * C = 0`. Use `Matrix.ext_of_mulVec_single fun j => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.zero_mulVec, ← Matrix.mulVec_mulVec]`. Establish `: C.mulVec (Pi.single j 1) ∈ V` using `hCr ▸ LinearMap.mem_range_self C.mulVecLin _`. Use `hQL (hVle this)` as an intermediate fact. Simplify using `using this`. Establish `hC0 : C ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Apply `hV.1` to reduce the goal to its premises. Rewrite using `[← hCr, h]`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hint : ∀ g, ((ρ g : Matrix (Fin a) (Fin a) k)).map f * C = C * ((σ g : Matrix (Fin b) (Fin b) k)).map f` using `fun g => hCint g`. Take `⟨X, hX0, hXint, hQX⟩` from `GlobalTheory.T.exists_ne_zero_intertwiner_of_map f (fun g => (ρ g : Matrix (Fin a) (Fin a) k)) (fun g => (σ g : Matrix (Fin b) (Fin b) k)) Q C hC0 hint hQC`. Establish `hXW : LinearMap.range X.mulVecLin ≤ W`. Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[← hQ, Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hQX, Matrix.zero_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hXi : IsInv ρ (LinearMap.range X.mulVecLin)`. Introduce and unpack `g _ ⟨w, rfl⟩`. Use `⟨(σ g : Matrix (Fin b) (Fin b) k).mulVec w, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.mulVecLin_apply, Matrix.mulVec_mulVec, hXint g]`. Establish `hXeq : LinearMap.range X.mulVecLin = W` using `(hWmin _ hXW hXi).resolve_left (range_ne_bot hX0)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWb : Module.finrank k W ≤ b`. Rewrite using `[← hXeq]`. Conclude with `(LinearMap.finrank_range_le _).trans (Module.finrank_fin_fun k).le`. Establish `hVb : Module.finrank L V = b`. Rewrite using `[← hCr, LinearMap.finrank_range_of_inj hCinj, Module.finrank_fin_fun]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVeq : V = ext f W` using `Submodule.eq_of_le_of_finrank_le hVle ((finrank_ext_le f W).trans (hWb.trans hVb.ge))`. Establish `hV' : IsIrrSub (mapRep f ρ) (ext f W)` using `hVeq ▸ hV`. Conclude with `GlobalTheory.T.absIrrSub_of_isIrrSub_span_map f ρ W hWi hV'`.
+A detailed English derivation is pending.
 -/
 theorem splitRep_of_models : ∀ {k Γ L : Type} [Field k] [Group Γ] [Field L] [IsAlgClosed L] (f : k →+* L) {a : ℕ} (ρ : Γ →* GL (Fin a) k), (∀ V, IsIrrSub (mapRep f ρ) V → ∃ (b : ℕ) (σ : Γ →* GL (Fin b) k) (C : Matrix (Fin a) (Fin b) L), Function.Injective C.mulVec ∧ LinearMap.range C.mulVecLin = V ∧ ∀ g, ((mapRep f ρ g : GL (Fin a) L) : Matrix (Fin a) (Fin a) L) * C = C * ((mapRep f σ g : GL (Fin b) L) : Matrix (Fin b) (Fin b) L)) → GlobalTheory.SplitCoef.SplitRep ρ := by
   intro k Γ L _ _ _ _ f a ρ hmod W hW

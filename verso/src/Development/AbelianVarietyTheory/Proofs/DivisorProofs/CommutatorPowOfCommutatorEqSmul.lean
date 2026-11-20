@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.CommutatorPowerFormula
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Establish `e : H * X ^ (n + 1) - X ^ (n + 1) * H = (H * X ^ n - X ^ n * H) * X + X ^ n * (H * X - X * H)`. Rewrite using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `noncomm_ring`. Rewrite using `[e, ih, h, smul_mul_assoc, mul_smul_comm, ← pow_succ, ← add_smul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem commutator_pow_of_commutator_eq_smul {A : Type} [Ring A] [Algebra ℚ A] {H X : A} {s : ℚ}
     (h : H * X - X * H = s • X) (k : ℕ) :

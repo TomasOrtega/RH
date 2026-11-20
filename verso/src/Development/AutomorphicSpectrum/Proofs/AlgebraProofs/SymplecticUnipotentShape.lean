@@ -4,21 +4,19 @@ open Matrix
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Introduce `g Λ _ B bas halt hB T hT hTa`. Establish `hB1 : ∀ i j, B (bas (.inl i)) (bas (.inl j)) = 0` using `fun i j => (hB i j).1`. Establish `hB2 : ∀ i j, B (bas (.inr i)) (bas (.inr j)) = 0` using `fun i j => (hB i j).2.1`. Establish `hB3 : ∀ i j, B (bas (.inl i)) (bas (.inr j)) = if i = j then 1 else 0` using `fun i j => (hB i j).2.2`. Establish `skew : ∀ x y, B x y = -B y x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x y`. Establish `h` using `halt (x + y)`. Simplify using `only [map_add, LinearMap.add_apply, halt, zero_add, add_zero] at h`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hexp : ∀ v : Λ, v = ∑ k, bas.repr v (.inl k) • bas (.inl k) + ∑ k, bas.repr v (.inr k) • bas (.inr k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Introduce `v`. Use `conv_lhs => rw [← bas.sum_repr v]`. Rewrite using `[Fintype.sum_sum_type]`. Establish `pa : ∀ i v, B (bas (.inl i)) v = bas.repr v (.inr i)`. Introduce `i v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [hexp v]`. Simplify using `[hB1, hB3]`. Establish `pb : ∀ i v, B (bas (.inr i)) v = -bas.repr v (.inl i)`. Introduce `i v`. Establish `hba : ∀ k, B (bas (.inr i)) (bas (.inl k)) = -(if k = i then 1 else 0)` using `fun k => by rw [skew, hB3]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `conv_lhs => rw [hexp v]`. Simplify using `[hba, hB2]`. Establish `hd : ∀ i j, bas.repr (T (bas (.inr j))) (.inr i) = if i = j then 1 else 0`. Introduce `i j`. Rewrite using `[← pa, ← hTa i, hT, hB3]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hTb : ∀ j, T (bas (.inr j)) = bas (.inr j) + ∑ k, bas.repr (T (bas (.inr j))) (.inl k) • bas (.inl k)`. Introduce `j`. Use `conv_lhs => rw [hexp (T (bas (.inr j)))]`. Rewrite using `[add_comm]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `[hd, ite_smul]`. Use `⟨fun j k => bas.repr (T (bas (.inr j))) (.inl k), ?_, hTb⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `show bas.repr (T (bas (.inr j))) (.inl i) = bas.repr (T (bas (.inr i))) (.inl j)`. Establish `h0 : B (T (bas (.inr j))) (T (bas (.inr i))) = 0` using `by rw [hT, hB2]`.
-
-Rewrite `h0` using `[hTb j, map_add, LinearMap.add_apply, pb j]`. Simplify using `[map_sum, LinearMap.sum_apply, pa, hd] at h0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem symplectic_unipotent_shape : ∀ (g : ℕ) (Λ : Type) [AddCommGroup Λ] (B : LinearMap.BilinForm ℤ Λ) (bas : Module.Basis (Fin g ⊕ Fin g) ℤ Λ), (∀ x, B x x = 0) → (∀ i j, B (bas (.inl i)) (bas (.inl j)) = 0 ∧ B (bas (.inr i)) (bas (.inr j)) = 0 ∧ B (bas (.inl i)) (bas (.inr j)) = if i = j then 1 else 0) → ∀ T : Λ →ₗ[ℤ] Λ, (∀ x y, B (T x) (T y) = B x y) → (∀ i, T (bas (.inl i)) = bas (.inl i)) → ∃ N : Matrix (Fin g) (Fin g) ℤ, Nᵀ = N ∧ ∀ j, T (bas (.inr j)) = bas (.inr j) + ∑ k, N j k • bas (.inl k) := by
   intro g Λ _ B bas halt hB T hT hTa

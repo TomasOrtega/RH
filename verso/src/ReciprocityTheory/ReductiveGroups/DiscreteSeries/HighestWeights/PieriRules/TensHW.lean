@@ -12,9 +12,9 @@ namespace ReciprocityTheory.ChartRestriction.DS.HW
 open ReciprocityTheory.ChartRestriction.DS ReciprocityTheory.ChartRestriction.DS.S7
 
 /- English proof (translation)
-Simplify using `only [khwSub, Submodule.mem_inf, Submodule.mem_iInf, LinearMap.mem_ker]`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, sub_eq_zero, Formalism.REAL.KHighest, Formalism.REAL.IsWeight]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun a => by simpa using h1 a, fun a b hab he => h2 a b ⟨hab, he⟩⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun a => by simpa using h1 a, fun a b h => h2 a b h.1 h.2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem tensHW_mem_khwSub {W : Type*} [AddCommGroup W] [Module ℂ W] {n : ℕ} (ε : Fin n → Bool)
     (E : Fin n → Fin n → Module.End ℂ W) (ν : Fin n → ℝ) (v : W) :
@@ -29,7 +29,7 @@ theorem tensHW_mem_khwSub {W : Type*} [AddCommGroup W] [Module ℂ W] {n : ℕ} 
     exact ⟨fun a => by simpa using h1 a, fun a b h => h2 a b h.1 h.2⟩
 
 /- English proof (translation)
-Break down `Formalism.REAL.kHiUniq V n ε A Λ μ w y hA hU hw (by rw [hspan]; exact Submodule.mem_top) hy with h | h` into its components or cases. Conclude with `absurd h hy0`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem tensHW_hw_eq {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] {n : ℕ}
     {ε : Fin n → Bool} {A : Fin n → Fin n → Module.End ℂ V} {Λ : Fin n → ℝ} {w : V}
@@ -42,17 +42,17 @@ theorem tensHW_hw_eq {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
   · exact h
 
 /- English proof (translation)
-Introduce `V _ _ n ε A Λ w ι _ _ M γ hA hU hw hspan hM hdiag`. Establish `key : ∀ (ν : Fin n → ℝ) (x : PiLp 2 (fun _ : ι => V)), x ≠ 0 → Formalism.REAL.KHighest ε (tensAct A M) ν x → ∃ i, ν = Λ + γ i ∧ x i ≠ 0 ∧ ∃ c : ℂ, x i = c • w`. Introduce `ν x hx hK`. Take `⟨β, ⟨i, hi, hxi⟩, hall⟩` from `h V n ε A ι M γ hM hdiag ν x hx hK`. Take `⟨hμ, c, hc⟩` from `tensHW_hw_eq hA hU hw hspan (hall i hi) hxi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨i, ?_, hxi, c, hc⟩` and prove the remaining obligations. Rewrite using `[hi, ← hμ, sub_add_cancel]`. Use `⟨fun ν x hx hK => ?_, fun ν => ?_⟩` and prove the remaining obligations. Take `⟨i, hi, -⟩` from `key ν x hx hK`. Conclude with `⟨i, hi⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `L : khwSub ε (tensAct A M) ν →ₗ[ℂ] ({i : ι // ν = Λ + γ i} → ℂ)` to `{ toFun := fun x i => ⟪w, (x : PiLp 2 (fun _ : ι => V)) i.1⟫_ℂ map_add' := fun x y => by ext i; simp map_smul' := fun c x => by ext i; simp }`. Establish `hL : Function.Injective L`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `x hx0`. Assume the negation of the conclusion as `hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hx' : (x : PiLp 2 (fun _ : ι => V)) ≠ 0` using `fun h0 => hne (Subtype.ext h0)`. Establish `hK` using `(tensHW_mem_khwSub ε _ ν _).1 x.2`. Take `⟨i, hi, hxi, c, hc⟩` from `key ν x hx' hK`. Establish `h1 : ⟪w, (x : PiLp 2 (fun _ : ι => V)) i⟫_ℂ = 0` using `congrFun hx0 ⟨i, hi⟩`. Rewrite `h1` using `[hc, inner_smul_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `mul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `hxi (by rw [hc, h2, zero_smul])`. Conclude with `hxi (by rw [hc, inner_self_eq_zero.1 h2, smul_zero])`. Establish `: FiniteDimensional ℂ (khwSub ε (tensAct A M) ν)` using `Module.Finite.of_injective L hL`. Use `⟨this, ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Module.finrank_fintype_fun_eq_card, Nat.card_eq_fintype_card]`.
+A detailed English derivation is pending.
 -/
 theorem tensHW_of (h : LowCompStatement) : TensHWStatement := by
   intro V _ _ n ε A Λ w ι _ _ M γ hA hU hw hspan hM hdiag
@@ -93,7 +93,7 @@ theorem tensHW_of (h : LowCompStatement) : TensHWStatement := by
           rw [Module.finrank_fintype_fun_eq_card, Nat.card_eq_fintype_card]
 
 /- English proof (translation)
-The claim follows from `tensHW_of lowComp`.
+A detailed English derivation is pending.
 -/
 theorem tensHW : TensHWStatement := tensHW_of lowComp
 

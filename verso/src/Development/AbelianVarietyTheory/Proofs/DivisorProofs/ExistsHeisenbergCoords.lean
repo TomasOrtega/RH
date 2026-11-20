@@ -23,12 +23,12 @@ variable {n : ℕ} (J : Matrix (Fin n) (Fin n) ℂ)
 def hf (a b : Fin n → ℂ) : ℂ := star a ⬝ᵥ J *ᵥ b
 
 /- English proof (translation)
-Simplify using `[hf, mulVec_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_add_right (a b c : Fin n → ℂ) : hf J a (b + c) = hf J a b + hf J a c := by
   simp [hf, mulVec_add]
 /- English proof (translation)
-Simplify using `[hf, mulVec_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hf_smul_right (a b : Fin n → ℂ) (s : ℂ) : hf J a (s • b) = s * hf J a b := by
   simp [hf, mulVec_smul]
@@ -66,7 +66,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E} {ν : InfinitePlace F}
 
 /- English proof (translation)
-The claim follows from `(archEquiv J hcm τ g).2`.
+A detailed English derivation is pending.
 -/
 theorem archMat_unitary (hcm : IsCMExt F E σ) (τ : EmbOver E ν) (g : HA ν.Completion σ J) :
     (archMat σ J τ g)ᴴ * J.map τ.1 * archMat σ J τ g = J.map τ.1 := (archEquiv J hcm τ g).2

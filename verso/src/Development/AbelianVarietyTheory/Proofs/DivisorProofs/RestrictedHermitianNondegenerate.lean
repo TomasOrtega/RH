@@ -13,7 +13,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.EisRestrict
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, map_sum, map_mul, RingHom.coe_coe, hσ]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [hJ]; ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hE_swap_conj {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (hσ : ∀ e, σ (σ e) = e) (hJ : ∀ i j, σ (J j i) = J i j) (x y : Fin n → E) :
@@ -23,7 +23,7 @@ theorem hE_swap_conj {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →�
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by rw [hJ]; ring
 
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, Formalism.UG.cT, GlobalTheory.EisMidHt.firstColumn, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hE_col0v_gram {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n r : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (X Y : Matrix (Fin n) (Fin (r + 1)) E) :
@@ -37,35 +37,33 @@ end GlobalTheory.EisRestrict
 open GlobalTheory.EisRestrict in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y hcm hJ hW`. Establish `hσ : ∀ e, σ (σ e) = e` using `fun e => GlobalTheory.SiegelSet.sigma_sigma (σ := σ) hcm e`. Use `set x₀ := GlobalTheory.EisMidHt.firstColumn X`. Use `set y₀ := GlobalTheory.EisMidHt.firstColumn Y`. Establish `hxy : hE σ J x₀ y₀ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hE_col0v_gram, hW.xy, Matrix.one_apply_eq]`. Establish `hyx : hE σ J y₀ x₀ = 1` using `by rw [hE_swap_conj σ J hσ hJ.1, hxy, map_one]`. Establish `hxx : hE σ J x₀ x₀ = 0`. Rewrite using `[hE_col0v_gram σ J X X, hW.xx]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyy : hE σ J y₀ y₀ = 0`. Rewrite using `[hE_col0v_gram σ J Y Y, hW.yy]`. Both sides reduce to the same expression. Use `⟨fun i j => ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [J0, Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, map_sum, map_mul, RingHom.coe_coe, hσ]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[← hJ.1 l k]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hdet`. Take `⟨u, hu0, hu⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Use `set z := ι σ J X Y u with hz`. Establish `hzV : z ∈ V0 σ J X Y` using `ι_mem σ J X Y u`. Establish `hV : ∀ v ∈ V0 σ J X Y, hE σ J z v = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Take `⟨u', rfl⟩` from `exists_ι_eq σ J X Y hv`. Rewrite using `[hE_swap_conj σ J hσ hJ.1, ← hE_J0, hE_eq_dot, hu, dotProduct_zero, map_zero]`. Establish `hzV'` using `(mem_invariant_forms σ J X Y).1 hzV`. Establish `hx : hE σ J z x₀ = 0` using `by rw [hE_swap_conj σ J hσ hJ.1, hzV'.1, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : hE σ J z y₀ = 0` using `by rw [hE_swap_conj σ J hσ hJ.1, hzV'.2, map_zero]`. Establish `hall : ∀ w, hE σ J z w = 0`. Introduce `w`. Use `set w' := w - hE σ J y₀ w • x₀ - hE σ J x₀ w • y₀`. Establish `hw' : w' ∈ V0 σ J X Y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hRight σ J x₀).map_sub (w - hE σ J y₀ w • x₀) (hE σ J x₀ w • y₀)`. Establish `h2` using `(hRight σ J x₀).map_sub w (hE σ J y₀ w • x₀)`. Establish `h3` using `(hRight σ J y₀).map_sub (w - hE σ J y₀ w • x₀) (hE σ J x₀ w • y₀)`. Establish `h4` using `(hRight σ J y₀).map_sub w (hE σ J y₀ w • x₀)`. Simplify using `only [hRight, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.map_smul, smul_eq_mul] at h1 h2 h3 h4`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `(mem_invariant_forms σ J X Y).2 ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, h2, hxx, hxy]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h3, h4, hyx, hyy]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Establish `hw : w = w' + hE σ J y₀ w • x₀ + hE σ J x₀ w • y₀`. Simplify using `only [w']`. Normalize the expressions using the abelian group laws. Establish `e` using `(hRight σ J z).map_add (w' + hE σ J y₀ w • x₀) (hE σ J x₀ w • y₀)`. Establish `e2` using `(hRight σ J z).map_add w' (hE σ J y₀ w • x₀)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [hRight, LinearMap.coe_mk, AddHom.coe_mk, LinearMap.map_smul, smul_eq_mul] at e e2`. Rewrite using `[hw, e, e2, hV w' hw', hx, hy]`. Expand and normalize the polynomial expressions, which then agree. Establish `hJz : J *ᵥ z = 0`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `hall (Pi.single i 1)`. Rewrite `h` using `[hE_swap_conj σ J hσ hJ.1, hE_eq_dot]`. Establish `h' : (fun k => σ ((Pi.single i (1 : E) : Fin n → E) k)) = Pi.single i 1`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, hk]`. Rewrite `h` using `[h', single_one_dotProduct]`. Use `congrArg σ h` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `this` using `[hσ, map_zero]`. Simplify using `using this`. Establish `hz0 : z = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hJ.2 (Matrix.exists_mulVec_eq_zero_iff.mp ⟨z, hne, hJz⟩)`.
-
-Conclude with `hu0 (ι_injective σ J X Y (by rw [← hz, hz0, map_zero]))`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EisRestrict.isHermND_restrictedForm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E),

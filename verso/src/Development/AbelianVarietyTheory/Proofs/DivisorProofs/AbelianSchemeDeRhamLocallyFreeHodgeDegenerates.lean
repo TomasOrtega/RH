@@ -23,13 +23,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AbCoh
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hg`. Take `⟨hfr, h0, -, -⟩` from `GlobalTheory.T.abelianScheme_oneFormFrame_and_square R A g hA hg`. Take `⟨hO, hW, hB1, -⟩` from `GlobalTheory.T.abelian_structure_cohomology_statement R A g hA hg`. Establish `hcl` using `GlobalTheory.T.abelianScheme_globalOneForms_closed R A g hA hg`. Establish `hs` using `GlobalTheory.T.de_rham_to_structure_h1_surjective R A g hA hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH` using `(GlobalTheory.T.de_rham_h1_rank_primitive R A g hA hg).1`. Use `⟨⟨hH.1, hH.2.1, fun p ↦ (hH.2.2 p).trans (by push_cast; rfl)⟩, GlobalTheory.T.hyper_h2_exterior_square_iso R _ (OAff A.hom) hfr h0 hcl hs hW (GlobalTheory.T.cup_self_zero_de_rham_abelian R A g hA hg), GlobalTheory.T.abelianScheme_global_oneForms_projective_rank R A g hA hg, hO, ⟨ …` and prove the remaining obligations. Introduce `R' _ _ X' s' φ h`. Take `⟨⟨e₁, he₁⟩, e₂, he₂⟩` from `GlobalTheory.T.de_rham_global_forms_base_change R A g hA hg R' X' s' φ h`. Take `⟨e₃, he₃⟩` from `hB1 R' X' s' φ h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨e₁, fun c ↦ ?_⟩, ⟨e₂, fun c ↦ ?_⟩, e₃, fun c ↦ ?_⟩` and prove the remaining obligations. Rewrite using `[he₁]`. Conclude with `isPull1_pullHH1 h.w c`. Rewrite using `[he₂]`. Conclude with `isPullForm_pullForm h.w c`.
-
-Rewrite using `[he₃]`. Conclude with `isPullO_pullHO1 h.w c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem abelianHodgeDeRham : GlobalTheory.Published.AbelianHodgeDeRham := by
   intro R _ A _ g hA hg

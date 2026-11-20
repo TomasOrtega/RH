@@ -24,11 +24,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.SqTower
 
 /- English proof (translation)
-Take `⟨F₁, h₁⟩` from `h₁`. Take `⟨F₂, h₂⟩` from `h₂`. Take `⟨F₃, h₃⟩` from `h₃`. Use `⟨max F₁ (max F₂ F₃), fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C₁, x₁, k₁⟩` from `h₁ ε CF (le_trans (le_max_left _ _) hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C₂, x₂, k₂⟩` from `h₂ ε CF (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hCF)`. Take `⟨C₃, x₃, k₃⟩` from `h₃ ε CF (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hCF)`. Use `⟨max C₁ (max C₂ C₃), max x₁ (max x₂ x₃), fun C hC D large₂ he hx hR T Lc μ₀ hL G => H G μ₀ C _ _ ?_ ?_ ?_⟩` and prove the remaining obligations. Conclude with `k₁ C (le_trans (le_max_left _ _) hC) D large₂ he (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hL G`. Conclude with `k₂ C (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hC) D large₂ he (le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G`.
-
-Conclude with `k₃ C (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hC) D large₂ he (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gBig_of₃ {Q₁ Q₂ Q₃ Q : GP} (h₁ : GBig Q₁) (h₂ : GBig Q₂) (h₃ : GBig Q₃)
     (H : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),
@@ -48,9 +46,9 @@ theorem gBig_of₃ {Q₁ Q₂ Q₃ Q : GP} (h₁ : GBig Q₁) (h₂ : GBig Q₂)
       (le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hx) hR T Lc μ₀ hL G
 
 /- English proof (translation)
-Introduce `hP hK hM`. Use `gBig_of₃ (GlobalTheory.T.weil_top_grid_stage_exists hP) (GlobalTheory.T.exists_factor_of_stage_triangle hP hK hM) (GlobalTheory.T.exists_nonvanishing_factor_stage hP hK hM) ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b hex hfac hcmp W S hstd hN ρ i j`. Take `⟨X, hT, hX⟩` from `hex W i j`. Take `⟨lam, hl⟩` from `hfac W S hstd hN i j (pp D j) (qq D j) _ _ _ X hX`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ, hc⟩` from `hcmp W S hstd hN ρ i j X lam hT hX hl`. Use `haveI : Nonempty T := ⟨μ₀⟩`. Conclude with `⟨_, _, _, X, lam, κ, hX, hl.isConst, hκ, hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem top_stage : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

@@ -2,9 +2,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.NiceSep
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ F n T x L y j hj hN hm hψ v`. Take `⟨g, hgU, hfr⟩` from `UpperTheory.V.Pr.niceSep l O F n T x L y j hj hN hm hψ ⊤ (by simp) v`. Establish `hG : T.G.φ v g ∈ T.G.G'` using `(Subgroup.mem_inf.mp hgU).2`. Establish `he : (T.G.eps O y.A) (T.G.φ v g) = 1`. Rewrite `hG` using `[UpperTheory.V.W.GFrame.G', MonoidHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hG' : T.G.ε ↑(T.G.φ v g) = 1` using `hG`. Simplify using `[UpperTheory.V.W.GFrame.eps, UpperTheory.V.W.pushCh, hG']`. Use `⟨fun i k hik h => hfr i k hik 1 one_pos (by simp [h]), fun i k hik h => ?_⟩` and prove the remaining obligations. Apply `hfr i k (ne_of_lt hik) 1 one_pos` to reduce the goal to its premises. Simplify using `[h, MonoidHom.mul_apply, he]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.V.Pr.nice_specialization_twist_satisfies_first_condition :
     ∀ (l : ℕ) [Fact l.Prime] (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [UpperTheory.V.Fr.IsCoef l O] [Algebra ℤ_[l] O] (F : UpperTheory.V.Fr.Frame l (IsLocalRing.ResidueField O)) (n : ℕ) (T : UpperTheory.V.Pr.Setup F n) (x : Ideal T.S.A) (L : T.S.Loc x) (y : UpperTheory.V.W.Point T.r) (j : L.R →ₐ[O] y.A), IsLocalHom j → UpperTheory.V.Pr.Nice L.ρ (RingHom.ker j) → UpperTheory.V.W.mat y.ρ = T.K.tw (L.ρ.map (j : L.R →+* y.A)) → y.ψ = T.K.twψ (L.ρ.map (j : L.R →+* y.A)) → y.N1 := by

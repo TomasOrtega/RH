@@ -18,9 +18,9 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 variable {K : Type} [Field K] {X : Scheme.{0}} {N : ℕ} (i : X ⟶ PSpace K N)
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Use extensionality with `x`. Simplify using `[yS, Proj.basicOpen]`. Consider the case `insert a S ha ih`.
+Proceed by induction. Treat this case separately. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[Finset.iInf_insert, ih]`. Simplify using `only [yS]`. Rewrite using `[Finset.prod_insert ha, Proj.basicOpen_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem biInf_preimage {m : ℕ} (y : Fin m → MvPolynomial (Fin (N + 1)) K) (S : Finset (Fin m)) :
     ⨅ k ∈ S, i ⁻¹ᵁ Proj.basicOpen (grK K N) (y k) = i ⁻¹ᵁ Proj.basicOpen (grK K N) (yS y S) := by
@@ -36,7 +36,7 @@ theorem biInf_preimage {m : ℕ} (y : Fin m → MvPolynomial (Fin (N + 1)) K) (S
     rfl
 
 /- English proof (translation)
-Use `haveI := hci`. Conclude with `(Proj.isAffineOpen_basicOpen (grK K N) g hg he).preimage i`.
+A detailed English derivation is pending.
 -/
 theorem isAffineOpen_preimage (hci : IsClosedImmersion i) {g : MvPolynomial (Fin (N + 1)) K} {e : ℕ}
     (hg : g ∈ grK K N e) (he : 0 < e) : IsAffineOpen (i ⁻¹ᵁ Proj.basicOpen (grK K N) g) := by
@@ -44,7 +44,7 @@ theorem isAffineOpen_preimage (hci : IsClosedImmersion i) {g : MvPolynomial (Fin
   exact (Proj.isAffineOpen_basicOpen (grK K N) g hg he).preimage i
 
 /- English proof (translation)
-Use `first`. Consider the case `exact GlobalTheory.T.basic_open_eval_surjective ..`. Consider the case `(intros; apply GlobalTheory.T.basic_open_eval_surjective <;> assumption)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem evV_surjective (hci : IsClosedImmersion i) {g : MvPolynomial (Fin (N + 1)) K} {e : ℕ}
     (hg : g ∈ grK K N e) (he : 0 < e) :
@@ -54,9 +54,9 @@ theorem evV_surjective (hci : IsClosedImmersion i) {g : MvPolynomial (Fin (N + 1
     | (intros; apply GlobalTheory.T.basic_open_eval_surjective <;> assumption)
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Establish `e0 : i.appLE _ (i ⁻¹ᵁ Proj.basicOpen (grK K N) g) le_rfl ≫ X.presheaf.map (homOfLE h).op = i.appLE _ V h'` using `Scheme.Hom.appLE_map i _ _`. Establish `hcomp : evV i g V h' = (resO h).comp (evV i g _ le_rfl)`. Use `RingHom.ext fun a => ?_` and prove the remaining obligations. Simplify using `only [evV, resO, RingHom.comp_apply, ← e0]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[hcomp, RingHom.coe_comp, Set.range_comp, (evV_surjective i hci hg he).range_eq, Set.image_univ]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_resO_eq (hci : IsClosedImmersion i) {g : MvPolynomial (Fin (N + 1)) K} {e : ℕ}
     (hg : g ∈ grK K N e) (he : 0 < e) {V W : X.Opens} (hW : W = i ⁻¹ᵁ Proj.basicOpen (grK K N) g) (h : V ≤ W)
@@ -71,7 +71,7 @@ theorem range_resO_eq (hci : IsClosedImmersion i) {g : MvPolynomial (Fin (N + 1)
   rw [hcomp, RingHom.coe_comp, Set.range_comp, (evV_surjective i hci hg he).range_eq, Set.image_univ]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact GlobalTheory.T.basic_opens_cover_of_finite ..`. Consider the case `(intros; apply GlobalTheory.T.basic_opens_cover_of_finite <;> assumption)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem iSup_preimage_eq_top {m e : ℕ} (he : 0 < e) (y : Fin m → MvPolynomial (Fin (N + 1)) K)
     (hy : ∀ k, (y k).IsHomogeneous e)
@@ -83,7 +83,7 @@ theorem iSup_preimage_eq_top {m e : ℕ} (he : 0 < e) (y : Fin m → MvPolynomia
     | (intros; apply GlobalTheory.T.basic_opens_cover_of_finite <;> assumption)
 
 /- English proof (translation)
-Use `first`. Consider the case `exact GlobalTheory.T.affine_open_finiteType ..`. Consider the case `(intros; apply GlobalTheory.T.affine_open_finiteType <;> assumption)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finiteType_affine (q : X ⟶ Spec (CommRingCat.of K)) [LocallyOfFiniteType q] {W : X.Opens}
     (hW : IsAffineOpen W) : letI := (strV q W).toAlgebra; Algebra.FiniteType K Γ(X, W) := by

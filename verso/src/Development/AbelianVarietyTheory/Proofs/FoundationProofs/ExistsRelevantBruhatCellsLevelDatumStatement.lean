@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Foundations.StandardFiveNont
 open Polynomial Classical GlobalTheory.BadShare
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.BadShare.Cells.relevant_cells` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FExistsRelevantBruhatCellsLevelDatum.lean&line=183#L183)
 -/

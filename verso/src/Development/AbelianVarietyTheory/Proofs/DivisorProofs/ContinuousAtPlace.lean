@@ -32,7 +32,7 @@ theorem psiV_eq_psiLoc (ψ : AddChar (AF F) ℂ) (v : HeightOneSpectrum (𝓞 F)
     psiV ψ v t = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.psiLoc ψ v t := rfl
 
 /- English proof (translation)
-Establish `h : (GlobalTheory.EmbChart.atPlace v : Fv F v → AF F) = fun t => (0, GlobalTheory.AdelicU.singleFin v t)` using `rfl`. Rewrite using `[h]`. Conclude with `continuous_const.prodMk (GlobalTheory.AdelicU.continuous_singleFin v)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_atPlace (v : HeightOneSpectrum (𝓞 F)) : Continuous (GlobalTheory.EmbChart.atPlace v) := by
   have h : (GlobalTheory.EmbChart.atPlace v : Fv F v → AF F) = fun t => (0, GlobalTheory.AdelicU.singleFin v t) := rfl
@@ -40,7 +40,7 @@ theorem continuous_atPlace (v : HeightOneSpectrum (𝓞 F)) : Continuous (Global
   exact continuous_const.prodMk (GlobalTheory.AdelicU.continuous_singleFin v)
 
 /- English proof (translation)
-The claim follows from `hψ.comp (continuous_atPlace v)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_psiV {ψ : AddChar (AF F) ℂ} (hψ : Continuous ψ) (v : HeightOneSpectrum (𝓞 F)) :
     Continuous (psiV ψ v) :=
@@ -53,7 +53,7 @@ variable {v : HeightOneSpectrum (𝓞 F)}
 local notation "ev" => GlobalTheory.AdelicU.evFin F v
 
 /- English proof (translation)
-Use `(invOf_eq_right_inv ?_).symm` and prove the remaining obligations. Establish `h : ev (2 * ⅟(2 : AF F)) = 1` using `by rw [mul_invOf_self, map_one]`. Rewrite `h` using `[map_mul, map_ofNat]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem evFin_invOf_two : ev (⅟(2 : AF F)) = ⅟(2 : Fv F v) := by
   refine (invOf_eq_right_inv ?_).symm
@@ -61,53 +61,51 @@ theorem evFin_invOf_two : ev (⅟(2 : AF F)) = ⅟(2 : Fv F v) := by
   rwa [map_mul, map_ofNat] at h
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_eq_mul, mul_comm, GlobalTheory.EmbChart.atPlace_mul_right, hu, mul_zero, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_atPlace (t : Fv F v) : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev (GlobalTheory.EmbChart.atPlace v t) := fun u hu => by
   rw [smul_eq_mul, mul_comm, GlobalTheory.EmbChart.atPlace_mul_right, hu, mul_zero, map_zero]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_eq_mul, ← mul_assoc, show u * x = 0 from hx u hu, zero_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_mul_right {x : AF F} (hx : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev x) (y : AF F) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev (x * y) := fun u hu => by
   rw [smul_eq_mul, ← mul_assoc, show u * x = 0 from hx u hu, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `at_mul_right hy x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_mul_left (x : AF F) {y : AF F} (hy : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev y) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev (x * y) := by
   rw [mul_comm]; exact at_mul_right hy x
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_add, hx u hu, hy u hu, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_add {x y : AF F} (hx : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev x) (hy : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev y) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev (x + y) := fun u hu => by rw [smul_add, hx u hu, hy u hu, add_zero]
 
 /- English proof (translation)
-Introduce `u _` and use `smul_zero u`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_zero : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev (0 : AF F) := fun u _ => smul_zero u
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_neg, hx u hu, neg_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_neg {x : AF F} (hx : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev x) : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev (-x) := fun u hu => by
   rw [smul_neg, hx u hu, neg_zero]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `at_add hx (at_neg hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_sub {x y : AF F} (hx : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev x) (hy : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev y) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev (x - y) := by
   rw [sub_eq_add_neg]; exact at_add hx (at_neg hy)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `at_zero`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`.
-
-Conclude with `at_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem at_sum {ι : Type} (s : Finset ι) {f : ι → AF F} (h : ∀ i ∈ s, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev (f i)) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev (∑ i ∈ s, f i) := by
@@ -119,7 +117,7 @@ theorem at_sum {ι : Type} (s : Finset ι) {f : ι → AF F} (h : ∀ i ∈ s, G
     exact at_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Introduce `u hu` and use `funext fun i => h i u hu`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_pi {κ : Type} {z : κ → AF F} (h : ∀ i, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev (z i)) :
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At ev z := fun u hu => funext fun i => h i u hu

@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `atTau`. Use `split_ifs with h`. Conclude with `h.choose_spec.1`. Conclude with `(GinfC V).one_mem`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private lemma atTau_mem_GinfC_twisted_operators {D : D7} (θ : InfFam D) (V : HSp D) (τ : D.what₂.Tau)
     (g : Matrix (Fin V.rank) (Fin V.rank) ℂ) : atTau θ V τ g ∈ GinfC V := by
@@ -23,13 +23,13 @@ private lemma atTau_mem_GinfC_twisted_operators {D : D7} (θ : InfFam D) (V : HS
   · exact (GinfC V).one_mem
 
 /- English proof (translation)
-Introduce `D V S θ M J χ κ hκ hJ T hT`. Use `⟨(LinearMap.funLeft ℂ ℂ (fun g : GA D V => g * κ)).compMultilinearMap T, ⟨fun v => ?_, fun v => ?_, fun v k hk g => ?_, fun τ g hg v w hw => ?_, fun τ v x => ?_⟩, fun v => rfl⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.isSmoothAutomorphic_rightTranslate_finite θ V κ hκ (T v) (hT.aut v)`. Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Establish `h` using `hT.cusp v r C hC μ 𝓕 hμ h𝓕 (g * κ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `only [LinearMap.compMultilinearMap_apply, LinearMap.funLeft_apply, Function.comp, mul_assoc]`. Take `⟨hk1, hk2⟩` from `hJ k hk`. Use `show T v (g * k * κ) = χ k * T v (g * κ)`. Establish `h` using `hT.lev v _ hk1 (g * κ)`. Rewrite `h` using `[hk2]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← h]`. Use `congr 1`. Use `group`. Rewrite using `[LinearMap.compMultilinearMap_apply, hT.equiv τ g hg v w hw]`. Use function extensionality and compare the values at `x`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.funLeft_apply, rTr]`. Rewrite using `[mul_assoc, mul_assoc, GlobalTheory.T.mul_comm_of_mem_GfC_of_mem_GinfC V κ _ hκ (atTau_mem_GinfC_twisted_operators θ V τ g)]`. Take `⟨ℓ, hℓ, hℓw⟩` from `hT.cont τ v (x * κ)`. Conclude with `⟨ℓ, hℓ, fun w => hℓw w⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isMultMap_rightTranslate_finite : ∀ {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (θ : InfFam D) (M : DSModel V S) (J : Set (GA D V)) (χ : GA D V → ℂ) (κ : GA D V), κ ∈ GfC V → (∀ k ∈ J, κ⁻¹ * k * κ ∈ J ∧ χ (κ⁻¹ * k * κ) = χ k) → ∀ T : MMap M, IsMultMap θ M J χ T → ∃ T' : MMap M, IsMultMap θ M J χ T' ∧ ∀ v, T' v = rTr V κ (T v) := by
   intro D V S θ M J χ κ hκ hJ T hT

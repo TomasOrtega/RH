@@ -26,13 +26,13 @@ section
 variable {R S : Type} [CommRing R] [IsLocalRing R] [CommRing S] [IsLocalRing S] {X Y : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `(Scheme.preimage_eq_top_of_closedPoint_mem r h).ge`.
+A detailed English derivation is pending.
 -/
 theorem top_le_of_mem (r : Spec (CommRingCat.of R) ⟶ X) {U : X.Opens} (h : r (closedPoint R) ∈ U) :
     ⊤ ≤ r ⁻¹ᵁ U := (Scheme.preimage_eq_top_of_closedPoint_mem r h).ge
 
 /- English proof (translation)
-Establish `e1` using `congrArg (fun q => q.hom (((Spec.map (CommRingCat.ofHom f)).app ⊤).hom a.val)) (germ_stalkClosedPointIso_hom (CommRingCat.of S))`. Establish `e2` using `congrArg (fun q => q.hom a.val) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f))`. Use `Eq.trans ?_ (e1.trans e2)` and prove the remaining obligations. Conclude with `congrArg (stalkClosedPointIso (CommRingCat.of S)).hom.hom (gm_val _ _ ⊤ trivial a)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sig_gm_top (f : R →+* S) (a : Γ(Spec (CommRingCat.of R), ⊤)ˣ) :
     (sig S (gm (Spec.map (CommRingCat.ofHom f)) (closedPoint S) ⊤ a)).val =
@@ -44,7 +44,7 @@ theorem sig_gm_top (f : R →+* S) (a : Γ(Spec (CommRingCat.of R), ⊤)ˣ) :
   exact congrArg (stalkClosedPointIso (CommRingCat.of S)).hom.hom (gm_val _ _ ⊤ trivial a)
 
 /- English proof (translation)
-Rewrite using `[← sig_gm_top]`. Conclude with `congrArg (fun u => (sig S u).val) ((gm_res (Spec.map (CommRingCat.ofHom f)) (closedPoint S) (top_le_of_mem r h) trivial _).trans (gm_pull (Spec.map (CommRingCat.ofHom f)) r (closedPoint S) U (top_le_of_mem r h trivial) a)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_gm (f : R →+* S) (r : Spec (CommRingCat.of R) ⟶ X) {U : X.Opens} (h : r (closedPoint R) ∈ U)
     (a : Γ(X, U)ˣ) :
@@ -56,7 +56,7 @@ theorem sig_gm (f : R →+* S) (r : Spec (CommRingCat.of R) ⟶ X) {U : X.Opens}
       (gm_pull (Spec.map (CommRingCat.ofHom f)) r (closedPoint S) U (top_le_of_mem r h trivial) a)).symm
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[sig_gm f r h]`. Use `sig_gm (RingHom.id R) r h a` as an intermediate fact. Rewrite `this` using `[CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`. Conclude with `congrArg f this`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sig_nat (f : R →+* S) (r : Spec (CommRingCat.of R) ⟶ X) {U : X.Opens} (h : r (closedPoint R) ∈ U)
     (a : Γ(X, U)ˣ) :
@@ -74,16 +74,16 @@ def del (L : LB X) (f : R →+* S) (JR : (Spec (CommRingCat.of R) ⟶ X) → L.�
     (L.U (JS (Spec.map (CommRingCat.ofHom f) ≫ ψ)) ⊓ L.U (JR ψ)) (L.g (JS (Spec.map (CommRingCat.ofHom f) ≫ ψ)) (JR ψ)))
 
 /- English proof (translation)
-Rewrite using `[del, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp, gm_self hL _ _ (hR ψ), map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem del_id {L : LB X} (hL : L.IsLB) {JR : (Spec (CommRingCat.of R) ⟶ X) → L.ι} (hR : Good L (closedPoint R) JR)
     (ψ : Spec (CommRingCat.of R) ⟶ X) : del L (RingHom.id R) JR JR ψ = 1 := by
   rw [del, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp, gm_self hL _ _ (hR ψ), map_one]
 
 /- English proof (translation)
-Establish `mQ : (Spec.map (CommRingCat.ofHom f) ≫ ψ) (closedPoint R) ∈ L.U (JQ ψ)` using `top_le_of_mem ψ (hQ ψ) trivial`. Establish `mQ' : (Spec.map (CommRingCat.ofHom h) ≫ Spec.map (CommRingCat.ofHom f) ≫ ψ) (closedPoint S) ∈ L.U (JQ ψ)` using `top_le_of_mem ψ (hQ ψ) trivial`. Establish `mR : (Spec.map (CommRingCat.ofHom h) ≫ Spec.map (CommRingCat.ofHom f) ≫ ψ) (closedPoint S) ∈ L.U (JR (Spec.map (CommRingCat.ofHom f) ≫ ψ))` using `top_le_of_mem _ (hR _) trivial`. Establish `mm : (Spec.map (CommRingCat.ofHom f) ≫ ψ) (closedPoint R) ∈ L.U (JR (Spec.map (CommRingCat.ofHom f) ≫ ψ)) ⊓ L.U (JQ ψ)` using `⟨hR _, mQ⟩`. Establish `c` using `gm_cocycle hL _ _ (hS (Spec.map (CommRingCat.ofHom h) ≫ Spec.map (CommRingCat.ofHom f) ≫ ψ)) mR mQ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[del, del, del, sig_nat h _ mm, ← map_mul, mul_comm, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc]`. Conclude with `congrArg (sig S) c.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem del_comp {Q : Type} [CommRing Q] [IsLocalRing Q] {L : LB X} (hL : L.IsLB) (f : Q →+* R) (h : R →+* S)
     {JQ : (Spec (CommRingCat.of Q) ⟶ X) → L.ι} (hQ : Good L (closedPoint Q) JQ)
@@ -104,7 +104,7 @@ theorem del_comp {Q : Type} [CommRing Q] [IsLocalRing Q] {L : LB X} (hL : L.IsLB
   exact congrArg (sig S) c.symm
 
 /- English proof (translation)
-Establish `m` using `hR.mem φ r`. Establish `g` using `gen_trans ht (Spec.map (CommRingCat.ofHom f) ≫ r) (closedPoint S) (hS.mem φ _) (top_le_of_mem r m trivial)`. Use `(congrArg (sig S) g).trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (sig_nat f r m _).symm))` and prove the remaining obligations. Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) ?_))` and prove the remaining obligations. Conclude with `congrArg (fun q => sig S (gm q (closedPoint S) (L.U (JS q) ⊓ L.U (JR (r ≫ φ k))) (L.g (JS q) (JR (r ≫ φ k))))) (Category.assoc _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_nat {L : LB X} {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ} {t : LB.Gen (LB.LinComb L φ ε)}
     (ht : t.IsGen) (f : R →+* S)
@@ -126,7 +126,7 @@ variable {S₀ : Scheme.{0}} {G : Over S₀} [GrpObj G] [IsCommMonObj G] {P : LB
   {T : Over S₀} {z : T.left} {J : (T.left ⟶ (G ⊗ G).left) → P.ι}
 
 /- English proof (translation)
-Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, comp_lift, comp_lift]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_pull3 {K : Type} [Fintype K] {φ : K → ((G3 G).left ⟶ (G ⊗ G).left)} {ε : K → ℤ}
     (t : LB.Gen (LB.LinComb P φ ε)) (hJ : Good P z J) {T' : Over S₀} (ρ : T ⟶ T') (x x' y : T' ⟶ G) :
@@ -137,7 +137,7 @@ theorem val_pull3 {K : Type} [Fintype K] {φ : K → ((G3 G).left ⟶ (G ⊗ G).
 
 omit [GrpObj G] [IsCommMonObj G] in
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_⟩ <;> simp [x4]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_four_points_comp_projections (x x' x'' y : T ⟶ G) : lift x (lift x' (lift x'' y)) ≫ x4 G 0 = x ∧
     lift x (lift x' (lift x'' y)) ≫ x4 G 1 = x' ∧ lift x (lift x' (lift x'' y)) ≫ x4 G 2 = x'' ∧
@@ -146,7 +146,7 @@ theorem lift_four_points_comp_projections (x x' x'' y : T ⟶ G) : lift x (lift 
 
 omit [GrpObj G] [IsCommMonObj G] in
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> simp [x3]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem onObjOf3_x_eq (x x' y : T ⟶ G) : lift x (lift x' y) ≫ x3 G 0 = x ∧
     lift x (lift x' y) ≫ x3 G 1 = x' ∧ lift x (lift x' y) ≫ x3 G 2 = y := by
@@ -154,13 +154,13 @@ theorem onObjOf3_x_eq (x x' y : T ⟶ G) : lift x (lift x' y) ≫ x3 G 0 = x ∧
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-The claim follows from `MonObj.comp_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem comp_padd {T' : Over S₀} (ρ : T ⟶ T') (a b : T' ⟶ G) : ρ ≫ padd G a b = (ρ ≫ a) * (ρ ≫ b) :=
   MonObj.comp_mul _ _ _
 
 /- English proof (translation)
-Use `val_corr hJ β.assoc1 (lift x (lift x' (lift x'' y))).left` as an intermediate fact. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull3 _ hJ _ _ _ _) (val_pull3 _ hJ _ _ _ _))).symm.trans (this.trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull3 _ hJ _ _ _ _) (val_pull3 _ hJ _ _ _ _))))`. Take `⟨a₀, a₁, a₂, a₃⟩` from `lift_four_points_comp_projections x x' x'' y`. Rewrite `e` using `[comp_padd, comp_padd, a₀, a₁, a₂, a₃]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem biextension_firstLaw_associativity_value (hJ : Good P z J) (x x' x'' y : T ⟶ G) :
     val β.law1 (lift (x * x') (lift x'' y)).left z J * val β.law1 (lift x (lift x' y)).left z J =
@@ -172,7 +172,7 @@ theorem biextension_firstLaw_associativity_value (hJ : Good P z J) (x x' x'' y :
   rwa [comp_padd, comp_padd, a₀, a₁, a₂, a₃] at e
 
 /- English proof (translation)
-Use `val_corr hJ β.assoc2 (lift x (lift y (lift y' y''))).left` as an intermediate fact. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull3 _ hJ _ _ _ _) (val_pull3 _ hJ _ _ _ _))).symm.trans (this.trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull3 _ hJ _ _ _ _) (val_pull3 _ hJ _ _ _ _))))`. Take `⟨a₀, a₁, a₂, a₃⟩` from `lift_four_points_comp_projections x y y' y''`. Rewrite `e` using `[comp_padd, comp_padd, a₀, a₁, a₂, a₃]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem biextension_secondLaw_associativity_value (hJ : Good P z J) (x y y' y'' : T ⟶ G) :
     val β.law2 (lift x (lift (y * y') y'')).left z J * val β.law2 (lift x (lift y y')).left z J =
@@ -184,7 +184,7 @@ theorem biextension_secondLaw_associativity_value (hJ : Good P z J) (x y y' y'' 
   rwa [comp_padd, comp_padd, a₀, a₁, a₂, a₃] at e
 
 /- English proof (translation)
-Establish `e` using `(val_corr hJ β.comm1 (lift x (lift x' y)).left).trans (val_pull3 _ hJ _ _ _ _)`. Take `⟨a₀, a₁, a₂⟩` from `onObjOf3_x_eq x x' y`. Rewrite `e` using `[a₀, a₁, a₂]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem biextension_firstLaw_commutativity_value (hJ : Good P z J) (x x' y : T ⟶ G) :
     val β.law1 (lift x (lift x' y)).left z J = val β.law1 (lift x' (lift x y)).left z J := by
@@ -193,7 +193,7 @@ theorem biextension_firstLaw_commutativity_value (hJ : Good P z J) (x x' y : T �
   rwa [a₀, a₁, a₂] at e
 
 /- English proof (translation)
-Establish `e` using `(val_corr hJ β.comm2 (lift x (lift y y')).left).trans (val_pull3 _ hJ _ _ _ _)`. Take `⟨a₀, a₁, a₂⟩` from `onObjOf3_x_eq x y y'`. Rewrite `e` using `[a₀, a₁, a₂]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem biextension_secondLaw_commutativity_value (hJ : Good P z J) (x y y' : T ⟶ G) :
     val β.law2 (lift x (lift y y')).left z J = val β.law2 (lift x (lift y' y)).left z J := by
@@ -202,7 +202,7 @@ theorem biextension_secondLaw_commutativity_value (hJ : Good P z J) (x y y' : T 
   rwa [a₀, a₁, a₂] at e
 
 /- English proof (translation)
-Use `val_corr hJ β.compat (lift x (lift x' (lift y y'))).left` as an intermediate fact. Establish `e` using `((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) (val_pull3 _ hJ _ _ _ _) (val_pull3 _ hJ _ _ _ _))) (val_pull3 _ hJ _ _ _ _))).symm.trans (this.trans ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * · …`. Take `⟨a₀, a₁, a₂, a₃⟩` from `lift_four_points_comp_projections x x' y y'`. Rewrite `e` using `[comp_padd, comp_padd, a₀, a₁, a₂, a₃]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem law_compat (hJ : Good P z J) (x x' y y' : T ⟶ G) :
     val β.law1 (lift x (lift x' (y * y'))).left z J * val β.law2 (lift x (lift y y')).left z J *
@@ -219,7 +219,7 @@ theorem law_compat (hJ : Good P z J) (x x' y y' : T ⟶ G) :
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-Take `⟨a₀, a₁, a₂⟩` from `onObjOf3_x_eq x x' y`. Use `(Fintype.prod_equiv (Equiv.ulift : ULift (Fin 3) ≃ Fin 3) _ (fun k => h ((lift x (lift x' y)).left ≫ law1φ G (x3 G 0) (x3 G 1) (x3 G 2) ⟨k⟩) ^ lawε ⟨k⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_three]`. Use `show h (lift x (lift x' y) ≫ lift (padd G (x3 G 0) (x3 G 1)) (x3 G 2)).left ^ (1 : ℤ) * h (lift x (lift x' y) ≫ lift (x3 G 0) (x3 G 2)).left ^ (-1 : ℤ) * h (lift x (lift x' y) ≫ lift (x3 G 1) (x3 G 2)).left ^ (-1 : ℤ) = _`. Rewrite using `[comp_lift, comp_lift, comp_lift, comp_padd, a₀, a₁, a₂, zpow_one, _root_.zpow_neg_one, _root_.zpow_neg_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biextension_first_law_product (x x' y : T ⟶ G) {U : Type} [CommGroup U] (h : (T.left ⟶ (G ⊗ G).left) → U) :
     ∏ k, h ((lift x (lift x' y)).left ≫ law1φ G (x3 G 0) (x3 G 1) (x3 G 2) k) ^ lawε k =
@@ -235,7 +235,7 @@ theorem biextension_first_law_product (x x' y : T ⟶ G) {U : Type} [CommGroup U
 
 omit [IsCommMonObj G] in
 /- English proof (translation)
-Take `⟨a₀, a₁, a₂⟩` from `onObjOf3_x_eq x y y'`. Use `(Fintype.prod_equiv (Equiv.ulift : ULift (Fin 3) ≃ Fin 3) _ (fun k => h ((lift x (lift y y')).left ≫ law2φ G (x3 G 0) (x3 G 1) (x3 G 2) ⟨k⟩) ^ lawε ⟨k⟩) (fun _ => rfl)).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_three]`. Use `show h (lift x (lift y y') ≫ lift (x3 G 0) (padd G (x3 G 1) (x3 G 2))).left ^ (1 : ℤ) * h (lift x (lift y y') ≫ lift (x3 G 0) (x3 G 1)).left ^ (-1 : ℤ) * h (lift x (lift y y') ≫ lift (x3 G 0) (x3 G 2)).left ^ (-1 : ℤ) = _`. Rewrite using `[comp_lift, comp_lift, comp_lift, comp_padd, a₀, a₁, a₂, zpow_one, _root_.zpow_neg_one, _root_.zpow_neg_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem biextension_second_law_product (x y y' : T ⟶ G) {U : Type} [CommGroup U] (h : (T.left ⟶ (G ⊗ G).left) → U) :
     ∏ k, h ((lift x (lift y y')).left ≫ law2φ G (x3 G 0) (x3 G 1) (x3 G 2) k) ^ lawε k =
@@ -251,7 +251,7 @@ theorem biextension_second_law_product (x y y' : T ⟶ G) {U : Type} [CommGroup 
 
 omit [GrpObj G] [IsCommMonObj G] in
 /- English proof (translation)
-Rewrite using `[Fin.prod_univ_two]`. Use `show h (lift x y ≫ lift (snd G G) (fst G G)).left ^ (1 : ℤ) * h ((lift x y).left ≫ 𝟙 _) ^ (-1 : ℤ) = _`. Rewrite using `[comp_lift, lift_fst, lift_snd, Category.comp_id, zpow_one, _root_.zpow_neg_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_swap (x y : T ⟶ G) {U : Type} [CommGroup U] (h : (T.left ⟶ (G ⊗ G).left) → U) :
     ∏ k : Fin 2, h ((lift x y).left ≫ (![(lift (snd G G) (fst G G)).left, 𝟙 (G ⊗ G).left] k)) ^ (![1, -1] k : ℤ) =
@@ -263,7 +263,7 @@ theorem prod_swap (x y : T ⟶ G) {U : Type} [CommGroup U] (h : (T.left ⟶ (G �
 end
 
 /- English proof (translation)
-Rewrite using `[h]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem alg_three {U : Type} [CommGroup U] {a b c d t : U} (h : t = a * b⁻¹ * c⁻¹ * d) : d * a = b * c * t := by
   rw [h]
@@ -272,7 +272,7 @@ theorem alg_three {U : Type} [CommGroup U] {a b c d t : U} (h : t = a * b⁻¹ *
   abel
 
 /- English proof (translation)
-Rewrite using `[h]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem alg_two {U : Type} [CommGroup U] {a b d t : U} (h : t = a * b⁻¹ * d) : d * a = b * t := by
   rw [h]
@@ -281,25 +281,15 @@ theorem alg_two {U : Type} [CommGroup U] {a b d t : U} (h : t = a * b⁻¹ * d) 
   abel
 
 /- English proof (translation)
-Introduce `GRP CyclotomicNorms R₀ _ G _ _ _ g hg P β s hs`. Take `⟨hs, hsym⟩` from `hs`. Take `⟨B₀, e, he, hadd, hnat⟩` from `GRP G g hg`. Establish `hex : ∀ R : LAlg R₀, ∃ J : (Spec (CommRingCat.of (R : Type)) ⟶ (G ⊗ G).left) → P.ι, Good P (closedPoint (R : Type)) J` using `fun R => by choose I hI using fun χ : Spec (CommRingCat.of (R : Type)) ⟶ (G ⊗ G).left => ReciprocityTheory.ChartRestriction.G.Geo.Tor.exists_chart β.isLB (χ (closedPoint (R : Type)))`. Conclude with `⟨I, hI⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `choose J hJ using hex`. Establish `n2 : ∀ {R S : LAlg R₀} (f : LHom R S) (x y : B₀.G R), (lift (e S (B₀.map f x)) (e S (B₀.map f y))).left = Spec.map (CommRingCat.ofHom f.1.toRingHom) ≫ (lift (e R x) (e R y)).left` using `fun f x y => by`. Rewrite using `[hnat, hnat, ← comp_lift]`. Both sides reduce to the same expression. Establish `n3 : ∀ {R S : LAlg R₀} (f : LHom R S) (x y w : B₀.G R), (lift (e S (B₀.map f x)) (lift (e S (B₀.map f y)) (e S (B₀.map f w)))).left = Spec.map (CommRingCat.ofHom f.1.toRingHom) ≫ (lift (e R x) (lift (e R y) (e R w))).left` using `fun f x y w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnat, hnat, hnat, ← comp_lift, ← comp_lift]`. Both sides reduce to the same expression. Take `⟨B, κ, b, hκ, h1, h2, -⟩` from `CyclotomicNorms B₀ (fun {R S} f x y => del P f.1.toRingHom (J R) (J S) (lift (e R x) (e R y)).left) (fun R x x' y => sig R (val β.law1 (lift (e R x) (lift (e R x') (e R y))).left (closedPoint (R : Type)) (J R))) (fun R x y y' => sig R (val β.law2 (lift (e R x) (lift (e R y) (e R …`. Rewrite using `[n2 f x y]`. Conclude with `del_comp β.isLB f.1.toRingHom h.1.toRingHom (hJ Q) (hJ R) (hJ S) _)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun R x x' x'' y => by`. Rewrite using `[hadd, hadd, ← map_mul, ← map_mul]`. Conclude with `congrArg (sig R) (biextension_firstLaw_associativity_value β (T := sp (R : Type)) (hJ R) _ _ _ _))`. Use the proof step `(fun R x x' y => congrArg (sig R) (biextension_firstLaw_commutativity_value β (T := sp (R : Type)) (hJ R) _ _ _))`. Use the proof step `(fun R x y y' y'' => by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hadd, hadd, ← map_mul, ← map_mul]`. Conclude with `congrArg (sig R) (biextension_secondLaw_associativity_value β (T := sp (R : Type)) (hJ R) _ _ _ _))`. Use the proof step `(fun R x y y' => congrArg (sig R) (biextension_secondLaw_commutativity_value β (T := sp (R : Type)) (hJ R) _ _ _))`. Use the proof step `(fun R x x' y y' => by`. Rewrite using `[hadd, hadd, ← map_mul, ← map_mul, ← map_mul, ← map_mul]`.
-
-Conclude with `congrArg (sig R) (law_compat β (T := sp (R : Type)) (hJ R) _ _ _ _))`. Use the proof step `(fun {R S} f x x' y => by`. Rewrite using `[n3 f x x' y, hadd]`. Conclude with `alg_three ((val_nat β.isGen1 f.1.toRingHom (hJ R) (hJ S) _).trans (congrArg₂ (· * ·) (biextension_first_law_product (T := sp (R : Type)) _ _ _ (del P f.1.toRingHom (J R) (J S))) rfl)))`. Use the proof step `(fun {R S} f x y y' => by`.
-
-Rewrite using `[n3 f x y y', hadd]`. Conclude with `alg_three ((val_nat β.isGen2 f.1.toRingHom (hJ R) (hJ S) _).trans (congrArg₂ (· * ·) (biextension_second_law_product (T := sp (R : Type)) _ _ _ (del P f.1.toRingHom (J R) (J S))) rfl)))`. Use the proof step `(fun R x y => by`. Rewrite using `[← map_mul]`. Conclude with `(congrArg (sig R) (hsym (sp (R : Type)) _ _ (hJ R) (e R x) (e R x) (e R y)).1).trans (map_one _))`.
-
-Use the proof step `(fun R x x' y => by`. Rewrite using `[hadd, ← map_mul, ← map_mul, ← map_mul]`. Conclude with `congrArg (sig R) (hsym (sp (R : Type)) _ _ (hJ R) (e R x) (e R x') (e R y)).2)`. Use the proof step `(fun {R S} f x y => by`. Rewrite using `[n2 f x y]`.
-
-Conclude with `alg_two ((val_nat hs f.1.toRingHom (hJ R) (hJ S) _).trans (congrArg₂ (· * ·) (prod_swap (T := sp (R : Type)) _ _ (del P f.1.toRingHom (J R) (J S))) rfl)))`. Use `⟨B, fun R x => e R (κ R x), fun R => (he R).comp (κ R).bijective, fun R x y => ?_, fun f x => ?_, b, J, hJ, h1, h2⟩` and prove the remaining obligations. Use `show e R (κ R (x + y)) = _`. Rewrite using `[map_add, hadd]`. Use `show e _ (κ _ (B.map f x)) = _`.
-
-Rewrite using `[hκ, hnat]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main :
   (∀ {R₀ : Type} [CommRing R₀] (G : Over (Spec (CommRingCat.of R₀))) [GrpObj G] [IsCommMonObj G] [IsLocalRing R₀] (g : ℕ), SmoothOfRelativeDimension g G.hom →

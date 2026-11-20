@@ -13,7 +13,7 @@ open scoped Matrix
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ n d X W M ψ χX χW om hψ _ _ _ _ _ _ _ _ _ τ _ _ q f hf`. Conclude with `GlobalTheory.PolMul.model_mul M ψ hψ τ q f hf`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PolMul.pol_mul_pairInf_pair : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

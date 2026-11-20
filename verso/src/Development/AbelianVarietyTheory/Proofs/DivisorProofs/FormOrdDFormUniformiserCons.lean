@@ -11,15 +11,15 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k K _ _ _ c n E t w ht hw hx`. Take `⟨x, hx⟩` from `hx`. Establish `e : dForm c (Fin.cons (t : K) (fun i => (w i : K)) : Fin (n + 1) → K) = E.toRat (n + 1) (dForm E.const (Fin.cons t w : Fin (n + 1) → E.ring))`. Establish `h` using `TopForm.formMap_dForm (D := n + 1) (α := E.const) (β := c) E.ring.subtype rfl (Fin.cons t w : Fin (n + 1) → E.ring)`. Use `Eq.trans ?_ h.symm` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i using Fin.cases <;> rfl`. Use `letI := E.const.toAlgebra`. Use `letI := c.toAlgebra`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : IsScalarTower k E.ring K := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.EssFiniteType k E.ring := E.essFiniteType`. Use `haveI := formallySmooth_of_isRegularLocalRing_of_perfectField k E.ring`. Take `⟨t', ht'⟩` from `IsDiscreteValuationRing.exists_irreducible E.ring`. Take `⟨m, z, b, -, hb⟩` from `exists_basis_kaehler_uniformiser k ht'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `trdeg_eq_of_basis_kaehler k K b`. Establish `h2` using `IsTranscendenceBasis.cardinalMk_eq_trdeg (R := k) hx`. Rewrite `h2` using `[h1, Cardinal.mk_fin]`. Choose the witnesses or unpack the hypotheses as in `rfl : n = m := by`. Establish `: n + 1 = m + 1` using `by exact_mod_cast h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hG` using `isFreeGen_dForm_uniformiser_cons k E.ring E.const n t w E.essFiniteType ht ⟨b⟩ hw`. Rewrite using `[e]`. Conclude with `E.formOrd_toRat hG`.
+A detailed English derivation is pending.
 -/
 theorem formOrd_dForm_uniformiser_cons : ∀ {k K : Type} [Field k] [CharZero k] [Field K] (c : k →+* K) (n : ℕ) (E : Place c) (t : E.ring)
   (w : Fin n → E.ring), Irreducible t →

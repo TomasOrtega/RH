@@ -20,9 +20,9 @@ open GlobalTheory.FinPlLoc (idem ePl evalV_ePl ePl_int idem_mem_idAt idem_mul_se
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[AlgHom.commutes, HeightOneSpectrum.mem_adicCompletionIntegers]`. Establish `h1 : x.intValuation c = 1` using `HeightOneSpectrum.intValuation_eq_one_iff.2 hc`. Establish `h2` using `HeightOneSpectrum.valuation_of_algebraMap (K := D.host.F) x c`. Rewrite `h2` using `[h1]`. Use `show Valued.v ((((c : D.host.F))⁻¹ : D.host.F) : x.adicCompletion D.host.F) ≤ 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', map_inv₀]`. Establish `: HeightOneSpectrum.valuation D.host.F x (c : D.host.F) = 1` using `h2`. Rewrite using `[this, inv_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evalV_inv_mem (x : GlobalTheory.FinPl.Pl D) (c : 𝓞 D.host.F) (hc : c ∉ x.asIdeal) :
     evalV D.host.F x (algebraMap D.host.F (Af D.host.F) ((c : D.host.F))⁻¹) ∈ x.adicCompletionIntegers D.host.F := by
@@ -36,9 +36,9 @@ theorem evalV_inv_mem (x : GlobalTheory.FinPl.Pl D) (c : 𝓞 D.host.F) (hc : c 
   rw [this, inv_one]
 
 /- English proof (translation)
-Introduce `w`. Rewrite using `[Algebra.smul_def, map_mul, evalV_ePl]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `evalV_inv_mem w c hc`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem inv_ePl_int (x : GlobalTheory.FinPl.Pl D) (c : 𝓞 D.host.F) (hc : c ∉ x.asIdeal) :
     ((c : D.host.F))⁻¹ • ePl D (· = x) ∈ intAf D.host.F := by
@@ -49,11 +49,9 @@ theorem inv_ePl_int (x : GlobalTheory.FinPl.Pl D) (c : 𝓞 D.host.F) (hc : c �
   · rw [mul_zero]; exact zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `hw using AddSubgroup.closure_induction with`. Consider the case `mem w hw`. Take `⟨α, hα, o, rfl⟩` from `hw`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `AddSubgroup.subset_closure ⟨γ * α, fun v => ?_, o, rfl⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul]`. Conclude with `mul_mem (hγ v) (hα v)`. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mul_add]`.
-
-Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [mul_neg]`. Conclude with `neg_mem hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tmul_one_mul_mem {γ : Af D.host.F} (hγ : γ ∈ intAf D.host.F) {w : Af D.host.F ⊗[D.host.F] D.host.E}
     (hw : w ∈ intAE D) : (γ ⊗ₜ[D.host.F] (1 : D.host.E)) * w ∈ intAE D := by
@@ -69,9 +67,9 @@ theorem tmul_one_mul_mem {γ : Af D.host.F} (hγ : γ ∈ intAf D.host.F) {w : A
   | neg x _ hx => rw [mul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Establish `h0 : idem D (· = x) * incA D ((c : D.host.F) : D.host.E)⁻¹ = pairA D.host.F 0 (ePl D (· = x)) ⊗ₜ[D.host.F] ((c : D.host.F) : D.host.E)⁻¹`. Express the relevant statement in the definitionally equal form `(pairA D.host.F 0 (ePl D (· = x)) ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] ((c : D.host.F) : D.host.E)⁻¹) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Establish `h1 : ((c : D.host.F) : D.host.E)⁻¹ = ((c : D.host.F))⁻¹ • (1 : D.host.E)`. Rewrite using `[Algebra.smul_def, map_inv₀, mul_one]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h0, finPart_pair, h1, TensorProduct.tmul_smul, TensorProduct.smul_tmul']`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem finPart_idem_inv (x : GlobalTheory.FinPl.Pl D) (c : 𝓞 D.host.F) :
     finPart D (idem D (· = x) * incA D ((c : D.host.F) : D.host.E)⁻¹) =
@@ -86,13 +84,11 @@ theorem finPart_idem_inv (x : GlobalTheory.FinPl.Pl D) (c : 𝓞 D.host.F) :
   rw [h0, finPart_pair, h1, TensorProduct.tmul_smul, TensorProduct.smul_tmul']
 
 /- English proof (translation)
-Introduce `D v u hu z hz`. Establish `hu0 : ((u : D.host.F) : D.host.E) ≠ 0`. Introduce `h`. Apply `hu` to reduce the goal to its premises. Establish `h' : (u : D.host.F) = 0` using `by exact_mod_cast h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h'' : u = 0` using `by exact_mod_cast h'`. Rewrite using `[h'']`. Conclude with `zero_mem _`. Establish `hinc : incA D ((u : D.host.F) : D.host.E)⁻¹ * incA D ((u : D.host.F) : D.host.E) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hu0, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : idem D (· = v) * z = (idem D (· = v) * incA D ((u : D.host.F) : D.host.E)⁻¹) * (idem D (· = v) * incA D ((u : D.host.F) : D.host.E) * z)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[idem_mul_self, hinc, mul_one]`. Use `_ = _ := by ring`. Use `⟨Ideal.mul_mem_right _ _ (idem_mem_idAt _), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[key, (finPart D).map_mul, finPart_idem_inv]`. Conclude with `tmul_one_mul_mem (inv_ePl_int v u hu) hz.2`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mul_mem_of_unit : ∀ (D : D7) (v : GlobalTheory.FinPl.Pl D) (u : 𝓞 D.host.F), u ∉ v.asIdeal → ∀ z : AE D, GlobalTheory.FinPlLoc.idem D (· = v) * incA D ((u : D.host.F) : D.host.E) * z ∈ intAt D (· = v) → GlobalTheory.FinPlLoc.idem D (· = v) * z ∈ intAt D (· = v) := by
   intro D v u hu z hz

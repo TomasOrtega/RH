@@ -6,26 +6,26 @@ import Formalism.LandauZeroFreeBounds.ExceptionalZeroBounds.LRight
 import Formalism.ZeroFreeRegion.ZetaLogDerivativeBounds.ZetaGrowth
 
 /- English proof (translation)
-The claim follows from `Formalism.ZF.zeroFactorization`.
+A detailed English derivation is pending.
 -/
 theorem chk_discFactor : PI.DiscFactor := Formalism.ZF.zeroFactorization
 /- English proof (translation)
-Introduce `_ _ _ hf hne` and use `Formalism.ZF.zflb_exists_log hf hne`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chk_discLog : PI.DiscLog := fun _ _ _ hf hne => Formalism.ZF.zflb_exists_log hf hne
 
 /- English proof (translation)
-The claim follows from `Formalism.ZF.growthBound`.
+A detailed English derivation is pending.
 -/
 theorem chk_zetaBoundRight : PI.ZetaBoundRight := Formalism.ZF.growthBound
 
 /- English proof (translation)
-The claim follows from `Formalism.ZeroFreeDirichlet.inverseBound`.
+A detailed English derivation is pending.
 -/
 theorem chk_lInvRight : PI.LInvRight := Formalism.ZeroFreeDirichlet.inverseBound
 
 /- English proof (translation)
-Introduce `q _ χ hχ s hs`. Establish `h` using `Formalism.FX.l_function_partial_sum q χ hχ ((q : ℝ) + 1) (fun M => Formalism.ZeroFreeDirichlet.norm_character_sum_Icc_le χ hχ M) s hs 1 le_rfl`. Simplify using `only [Finset.Icc_self, Finset.sum_singleton, Nat.cast_one, map_one, Complex.one_cpow, mul_one, Real.one_rpow] at h`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem chk_lBoundRight : PI.LBoundRight := by
   intro q _ χ hχ s hs

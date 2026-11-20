@@ -8,11 +8,11 @@ open NumberField IsDedekindDomain ValuativeRel Formalism.MainNotions.GlobalTheor
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Set `β' : GlobalTheory.SplitWeil.SB (Matrix (Fin n) (Fin d) k) →ₗ[ℂ] V' →ₗ[ℂ] W` to `{ toFun := fun Φ => (β Φ).comp (C.symm : V' →ₛₗ[starRingEnd ℂ] V) map_add' := fun Φ Ψ => by ext x; simp map_smul' := fun a Φ => by ext x; simp }`. Establish `hβ' : ∀ Φ x, β' Φ x = β Φ (C.symm x)` using `fun _ _ => rfl`. Use `⟨β', fun h0 => hβ ?_, fun g h Φ Φ₁ hΦ x => ?_⟩` and prove the remaining obligations. Use extensionality with `Φ x`. Use `hβ' Φ (C x)` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite `this` using `[h0]`. Simplify using `using this.symm`. Rewrite using `[hβ', hβ']`. Establish `: C.symm (σ' g x) = σ g (C.symm x)`. Apply `C.injective` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hC]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `he g h Φ Φ₁ hΦ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isLift_of_conj {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {n d : ℕ} {V V' W : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V'] [AddCommGroup W] [Module ℂ W]
@@ -41,7 +41,7 @@ private theorem isLift_of_conj {k : Type} [Field k] [ValuativeRel k] [Topologica
     exact he g h Φ Φ₁ hΦ _
 
 /- English proof (translation)
-Unfold `seg`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [coe_npowU, npow, h]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 private theorem seg_eq {K L : Type} [Field K] [NumberField K] [Field L] [NumberField L]
     (v : HeightOneSpectrum (𝓞 K)) (w : HeightOneSpectrum (𝓞 L))
@@ -53,29 +53,27 @@ private theorem seg_eq {K L : Type} [Field K] [NumberField K] [Field L] [NumberF
   simp only [coe_npowU, npow, h]
 
 /- English proof (translation)
-Introduce `hLift hPull hCI hCU hSC E _ _ _ n d hnd v t χX χW τ τ' hP hU hX hW B hB`. Establish `hw` using `splitPrime_under t`. Take `⟨ψ, h1, -, h3, -, -⟩` from `SplitChart.exists_equiv_complMap t hw`. Establish `hcs : Function.Surjective (complMap hw)` using `fun y => ⟨ψ.symm y, by rw [← h1]; simp⟩`. Establish `hcc : Continuous (complMap hw)` using `SplitChart.continuous_complMap hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap : ∀ (m : ℕ) (g : GL (Fin m) (Fv (maximalRealSubfield E) v)), Matrix.GeneralLinearGroup.map ψ.toRingHom g = Matrix.GeneralLinearGroup.map (complMap hw) g` using `fun m g => Units.ext (Matrix.ext fun i j => h1 _)`. Establish `hmap' : ∀ (m : ℕ) (g : GL (Fin m) ((splitPrime t).adicCompletion E)), Matrix.GeneralLinearGroup.map (complMap hw) (Matrix.GeneralLinearGroup.map ψ.symm.toRingHom g) = g` using `fun m g => Units.ext (Matrix.ext fun i j => (h1 _).symm.trans (ψ.apply_symm_apply _))`. Establish `hq : Formalism.UG.qV E (splitPrime t) = Formalism.UG.qV (maximalRealSubfield E) v` using `SplitChart.absNorm_splitPrime t`. Establish `hv : ∀ x, Valued.v (ψ x) = Valued.v x` using `h3`. Establish `hv' : ∀ x, Valued.v (ψ.symm x) = Valued.v x` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hv, ψ.apply_symm_apply]`. Take `⟨s1, s2, s3⟩` from `hPull _ _ (complMap hw) hcc hcs n τ.V τ.ρ`. Take `⟨p1, p2, -⟩` from `hPull _ _ (complMap hw) hcc hcs d τ'.V τ'.ρ`. Establish `a1` using `s1 τ.smooth`. Establish `a2` using `s2 τ.irred`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `s3 hU`. Establish `b1` using `p1 τ'.smooth`. Establish `b2` using `p2 τ'.irred`. Use `set σ₀ : Representation ℂ (GL (Fin n) (Fv (maximalRealSubfield E) v)) τ.V := τ.ρ.comp (Matrix.GeneralLinearGroup.map (complMap hw)) with hσ₀`. Use `set π : Representation ℂ (GL (Fin d) (Fv (maximalRealSubfield E) v)) τ'.V := τ'.ρ.comp (Matrix.GeneralLinearGroup.map (complMap hw)) with hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hB₀ : HasSatGL v σ₀ B` using `GlobalTheory.IsoPull.hasSatGL_of_ringEquiv ψ.symm hv' hq.symm (LinearEquiv.refl ℂ _) (fun g x => by`. Express the relevant statement in the definitionally equal form `τ.ρ _ x = _`. Rewrite using `[hmap']`. Use the proof step `rfl) hB`. Take `⟨c1, C, hC⟩` from `hCU _ n τ.V σ₀ a1 a2 a3`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2` using `(hCI _ n τ.V σ₀ a1 a2).1`. Establish `hB₁` using `hSC _ v n τ.V σ₀ a1 a2 a3 B hB₀`. Establish `hL : IsLift (chrW χW t)⁻¹ (chrW χX t) (contra σ₀) π`. Take `⟨β, hβ, he⟩` from `hP`. Conclude with `isLift_of_conj _ _ σ₀ _ _ β hβ he C hC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `uX` using `(PositivityTheory.ThK.SplitAsm.isUnram_chrW_iff χX t).2 hX`. Establish `uW` using `(PositivityTheory.ThK.SplitAsm.isUnram_chrW_iff χW t).2 hW`. Establish `uW' : GlobalTheory.SplitWeil.IsUnram (chrW χW t)⁻¹` using `fun x hx => by`. Rewrite using `[MonoidHom.inv_apply, uW x hx, inv_one]`. Establish `nX : IsUnitaryChar (chrW χX t)` using `fun x => norm_locChar χX (splitPrime t) _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `nW : IsUnitaryChar (chrW χW t)⁻¹` using `fun x => by`. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, norm_inv]`. Rewrite using `[show ‖((chrW χW t x : ℂˣ) : ℂ)‖ = 1 from norm_locChar χW (splitPrime t) _, inv_one]`. Take `⟨ϖ₀, hϖ₀⟩` from `exists_isUnifV v`. Establish `hϖ0 : ϖ₀ ≠ 0` using `fun e => by simp [Formalism.UG.IsUnifV, e] at hϖ₀`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Set `ϖ : (Fv (maximalRealSubfield E) v)ˣ` to `Units.mk0 ϖ₀ hϖ0`. Establish `hunif : ∀ {χ : Chr (maximalRealSubfield E) E}, UnrAt χ (splitPrime t) → chrW χ t ϖ = val χ (splitPrime t)`. Introduce `χ hχ`. Use `hχ.locChar_eq_val ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v (complMap hw ϖ₀) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, hv]`. Conclude with `hϖ₀`. Establish `key` using `hLift _ v n d _ _ _ _ (contra σ₀) π hnd uW' nW uX nX (isSmooth_contra _) c2 c1 b1 b2 hL ϖ hϖ₀ _ hB₁`. Establish `e1 : (B.map (·⁻¹)).map (fun x => x⁻¹ * ((chrW χW t)⁻¹ ϖ * chrW χX t ϖ)) = B.map (· * (val χX (splitPrime t) * (val χW (splitPrime t))⁻¹))`. Rewrite using `[Multiset.map_map]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Multiset.map_congr rfl fun x _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp, inv_inv, MonoidHom.inv_apply, hunif hX, hunif hW, mul_comm]`. Rewrite `key` using `[e1, hunif hX, seg_eq v (splitPrime t) (SplitChart.absNorm_splitPrime t)]`. Conclude with `GlobalTheory.IsoPull.hasSatGL_of_ringEquiv ψ hv hq (LinearEquiv.refl ℂ _) (fun g x => by`. Express the relevant statement in the definitionally equal form `τ'.ρ _ x = τ'.ρ _ x`.
-
-Rewrite using `[hmap]) key`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Loc.pairSat :
     UpperTheory.Gal.TP.Loc.LiftSat → UpperTheory.Gal.TP.Loc.PullGood → UpperTheory.Gal.TP.Loc.ContraIrr → UpperTheory.Gal.TP.Loc.ContraUnit → UpperTheory.Gal.TP.Loc.SatContra → UpperTheory.Gal.TP.Loc.PairSat := by

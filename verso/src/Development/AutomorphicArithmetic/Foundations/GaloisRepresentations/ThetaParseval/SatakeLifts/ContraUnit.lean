@@ -5,27 +5,25 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.SesqMapBijecti
 open NumberField IsDedekindDomain ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.ThetaGL UpperTheory.Gal.TP.Loc
 
 /- English proof (translation)
-Introduce `hci k _ _ _ _ n V _ _ ρ hsm hirr hu`. Take `⟨B, hherm, hpos, hinv⟩` from `hu`. Establish `hnd : ∀ w : V, (∀ v : V, B v w = 0) → w = 0`. Introduce `w hw`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1` using `hpos w hne`. Rewrite `h1` using `[hw w]`. Simplify using `at h1`. Choose the witnesses or unpack the hypotheses as in `⟨w0, hw0⟩ : ∃ w : V, w ≠ 0 := by`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at hne`. Use `haveI : IsSimpleOrder (Subrepresentation ρ) := hirr`. Apply `(bot_ne_top : (⊥ : Subrepresentation ρ) ≠ ⊤)` to reduce the goal to its premises. Generalize the expression as in `(⊥ : Subrepresentation ρ) = a`. Generalize the expression as in `(⊤ : Subrepresentation ρ) = b`.
+Reduce the claim to the hypotheses of an applicable result. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨A, hA⟩` from `a`. Take `⟨A', hA'⟩` from `b`. Use `congr 1`. Use extensionality with `x`. Rewrite using `[hne x]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Submodule.zero_mem]`. Establish `hcirr : (contra ρ).IsIrreducible` using `(hci k n V ρ hsm hirr).1`. Establish `hbij` using `GlobalTheory.HermDualSelf.sesqMap_bijective ρ hsm B hinv hnd ⟨w0, hw0⟩ hcirr`. Establish `hcomm` using `GlobalTheory.HermDualSelf.sesqMap_comm ρ hsm B hinv`. Use `set S := GlobalTheory.HermDualSelf.sesqMap ρ hsm B hinv with hS`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e` to `LinearEquiv.ofBijective S hbij`. Set `T : ↥(GlobalTheory.PRep.smoothPart ρ.dual) →ₗ⋆[ℂ] V` to `e.symm.toLinearMap`. Establish `hST : ∀ f, S (T f) = f` using `fun f => e.apply_symm_apply f`. Establish `hTS : ∀ w, T (S w) = w` using `fun w => e.symm_apply_apply w`. Establish `hTg : ∀ g f, T (contra ρ g f) = ρ g (T f)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g f`. Rewrite using `[← hST f, ← hcomm, hTS, hTS]`. Use `⟨⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun f f' => B (T f') (T f)) ?_ ?_ ?_ ?_, ?_, ?_, ?_⟩, ⟨e, fun g x => hcomm g x⟩⟩` and prove the remaining obligations. Introduce `f₁ f₂ f'`. Simplify using `[map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c f f'`. Simplify using `[LinearMap.map_smulₛₗ]`. Introduce `f f₁ f₂`. Simplify using `[map_add]`. Introduce `c f f'`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[LinearMap.map_smulₛₗ]`. Introduce `f f'`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply]`. Conclude with `hherm (T f') (T f)`. Introduce `f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.mk₂'ₛₗ_apply]`. Conclude with `hpos _ (fun h => hf (by rw [← hST f, h, map_zero]))`. Introduce `g f f'`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply]`. Rewrite using `[hTg, hTg]`.
-
-Conclude with `hinv g _ _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Loc.contraUnit :
     UpperTheory.Gal.TP.Loc.ContraIrr → UpperTheory.Gal.TP.Loc.ContraUnit := by

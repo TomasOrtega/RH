@@ -13,17 +13,15 @@ namespace GlobalTheory.CoordsOfMemAdjoin
 open IntermediateField
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ s`. Apply `IsIntegral.of_pow (n := 2) (by norm_num)` to reduce the goal to its premises. Rewrite using `[hs]`. Conclude with `isIntegral_algebraMap`. Establish `hx' : x ∈ Algebra.adjoin ℚ ({s} : Set F)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IntermediateField.adjoin_simple_toSubalgebra_of_isAlgebraic hint.isAlgebraic]`. Conclude with `hx`. Use `clear hx`. Proceed by induction on `hx' using Algebra.adjoin_induction with`. Consider the case `mem y hy`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨0, 1, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_singleton_iff.mp hy]`. Simplify using the standard rewrite rules. Consider the case `algebraMap r => exact ⟨r, 0, by simp⟩`. Consider the case `add y z _ _ hy hz`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, b, rfl⟩` from `hy`. Take `⟨a', b', rfl⟩` from `hz`. Use `⟨a + a', b + b', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `mul y z _ _ hy hz`. Take `⟨a, b, rfl⟩` from `hy`. Take `⟨a', b', rfl⟩` from `hz`. Use `⟨a * a' + b * b' * c, a * b' + b * a', ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, ← hs]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_coords_of_mem_adjoin {F : Type*} [Field F] [Algebra ℚ F] {s : F} {c : ℚ}
     (hs : s ^ 2 = algebraMap ℚ F c) {x : F} (hx : x ∈ ℚ⟮s⟯) :
@@ -56,9 +54,9 @@ theorem exists_coords_of_mem_adjoin {F : Type*} [Field F] [Algebra ℚ F] {s : F
     ring
 
 /- English proof (translation)
-Establish `hb : H.sqd ^ 2 = -(H.d : H.E)` using `H.sqd_sq`. Establish `hs : H.sqrtMinusD ^ 2 = algebraMap ℚ H.E (-(H.d : ℚ))`. Rewrite using `[map_neg, map_natCast]`. Conclude with `hb`. Take `⟨a, b, h⟩` from `exists_coords_of_mem_adjoin hs hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, b, by simpa only [eq_ratCast] using h⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_rat_coords {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) {x : H.E} (hx : x ∈ H.K) :
     ∃ a b : ℚ, x = (a : H.E) + (b : H.E) * H.sqrtMinusD := by

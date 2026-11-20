@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace UpperTheory.Gal.TP.Skew
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, rfl⟩`. Conclude with `o.2`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨⟨y, h⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 private lemma mem_one_iff {E : Type} [Field E] [NumberField E] (y : E) :
     y ∈ (1 : Submodule (𝓞 E) E) ↔ IsIntegral ℤ y := by
@@ -23,36 +23,34 @@ private lemma mem_one_iff {E : Type} [Field E] [NumberField E] (y : E) :
     exact ⟨⟨y, h⟩, rfl⟩
 
 /- English proof (translation)
-Simplify using `[form, dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma form_one {F E : Type} [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {n : ℕ}
     (y x : Fin n → E) : form σ (1 : Matrix (Fin n) (Fin n) E) y x = ∑ i, y i * σ (x i) := by
   simp [form, dotProduct]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hc B hP n`. Establish `hint : ∀ x : E, IsIntegral ℤ x → IsIntegral ℤ (σ x)` using `fun x h => h.map (σ.toRingHom.toIntAlgHom)`. Establish `hL : ∀ y : Fin n → E, y ∈ (stdSpc F E n).L ↔ ∀ i, IsIntegral ℤ (y i)`. Introduce `y`. Establish `: (stdSpc F E n).L = Submodule.pi Set.univ fun _ => (1 : Submodule (𝓞 E) E)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this, Submodule.mem_pi]`. Conclude with `forall_congr' fun i => by simp only [Set.mem_univ, true_imp_iff, mem_one_iff]`. Establish `hs : ∀ i, (Pi.single i (1 : E) : Fin n → E) ∈ (stdSpc F E n).L` using `fun i => (hL _).2 fun j => by`. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using isIntegral_one`. Simplify `isIntegral_zero` using `[Pi.single_eq_of_ne e]`. Establish `hJ : ∀ w, (stdSpc F E n).J.map (B.emb w).1 = 1`. Introduce `w`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Simplify using `only [stdSpc, Matrix.one_apply]`. Distinguish the cases in `h : i = j`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h' : ¬ j = i` using `fun e => h e.symm`. Simplify using `[h, h']`. Introduce `w`. Rewrite using `[hJ]`. Use `⟨rfl, Matrix.fromCols 1 0, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `(i | i) (j | j)`. Simplify using `only [Matrix.mul_one]`. Simplify using `[Matrix.mul_apply, Matrix.one_apply]`. Distinguish the cases in `e : i = j`. Simplify using `[e]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e' : ¬ j = i` using `fun h => e h.symm`. Simplify using `[e, e']`. Apply the tactic sequence `all_goals first | exact i.elim0 | exact j.elim0`. Use `⟨Submodule.fg_pi fun _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.one_eq_span]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Submodule.fg_span_singleton 1`. Rewrite using `[eq_top_iff]`. Introduce `z _`. Establish `hz : z = ∑ i, z i • (Pi.single i (1 : E) : Fin n → E)`. Use extensionality with `j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Pi.single_apply]`. Rewrite using `[hz]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span (hs i))`. Introduce `y`. Rewrite using `[hL]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy x hx`. Rewrite `hx` using `[hL]`. Simplify using `only [stdSpc, form_one]`. Conclude with `IsIntegral.sum _ fun i _ => (hy i).mul (hint _ (hx i))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h i`. Use `h _ (hs i)` as an intermediate fact. Simplify `this` using `[stdSpc, form_one, Pi.single_apply]`. Introduce `w`. Rewrite using `[hJ]`.
-
-Use `⟨by simp [stdSpc], by simp [stdSpc], fun x hx => ?_⟩` and prove the remaining obligations. Simplify using `only [stdSpc, Matrix.one_mulVec]`. Conclude with `(Complex.pos_iff.1 (Matrix.dotProduct_self_star_pos_iff.2 hx)).1`. Introduce `v`. Conclude with `absurd v.2 (by simp [hP])`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stdHerm : StdHerm := by
   intro F E _ _ _ _ _ σ hc B hP n

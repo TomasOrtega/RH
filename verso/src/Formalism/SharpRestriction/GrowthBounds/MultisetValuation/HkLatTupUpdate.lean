@@ -12,17 +12,15 @@ section Loc
 variable {W Qq : Type} [CommRing W] [Field Qq] [Algebra W Qq]
 
 /- English proof (translation)
-Take `⟨g, -, hg⟩` from `hL`. Establish `hfg : L.FG`. Rewrite using `[hg]`. Conclude with `Submodule.fg_span (Set.finite_range _)`. Establish `: Module.Finite W L` using `Module.Finite.iff_fg.mpr hfg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set I : Ideal W := Ideal.span {(p : W)} with hI`. Establish `: Module.Finite (W ⧸ I) (↥L ⧸ I • (⊤ : Submodule W L))` using `Module.Finite.of_restrictScalars_finite W _ _`. Establish `: Finite (↥L ⧸ I • (⊤ : Submodule W L))` using `Module.finite_of_finite (W ⧸ I)`. Set `f : Submodule W (Fin k → Qq) → Set (↥L ⧸ I • (⊤ : Submodule W L))` to `fun A => ((A.comap L.subtype).map (I • (⊤ : Submodule W L)).mkQ : Set _)`. Use `Set.Finite.of_finite_image (f := f) (Set.toFinite _) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ A : Submodule W (Fin k → Qq), (∀ x ∈ L, (p : W) • x ∈ A) → I • (⊤ : Submodule W L) ≤ A.comap L.subtype`. Introduce `A hA`. Rewrite using `[Submodule.smul_le]`. Introduce `a ha x _`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.mp ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[mul_smul]`. Apply `Submodule.smul_mem` to reduce the goal to its premises. Use `show (p : W) • (x : Fin k → Qq) ∈ A`. Conclude with `hA x x.2`. Introduce `A hA B hB hAB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (A.comap L.subtype).map (I • (⊤ : Submodule W L)).mkQ = (B.comap L.subtype).map (I • (⊤ : Submodule W L)).mkQ` using `SetLike.coe_injective hAB`. Establish `h2` using `congrArg (Submodule.comap (I • (⊤ : Submodule W L)).mkQ) h1`. Rewrite `h2` using `[Submodule.comap_map_mkQ, Submodule.comap_map_mkQ, sup_eq_right.mpr (key A hA.2), sup_eq_right.mpr (key B hB.2)]`. Establish `h3` using `congrArg (Submodule.map L.subtype) h2`. Rewrite `h3` using `[Submodule.map_comap_subtype, Submodule.map_comap_subtype, inf_eq_right.mpr hA.1, inf_eq_right.mpr hB.1]`.
-
-Conclude with `h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem between_fin (p k : ℕ) (hfin : Finite (W ⧸ Ideal.span {(p : W)})) (L : Submodule W (Fin k → Qq))
     (hL : IsLattice W L) :
@@ -61,13 +59,13 @@ theorem between_fin (p k : ℕ) (hfin : Finite (W ⧸ Ideal.span {(p : W)})) (L 
   exact h3
 
 /- English proof (translation)
-Distinguish the cases in `hA : IsLattice W A`. Set `φ : (Fin k → Qq) →ₗ[W] (Fin k → Qq)` to `(p : W) • LinearMap.id`. Establish `hφ : Function.Injective φ`. Introduce `x y hxy`. Establish `h1 : (p : W) • x = (p : W) • y` using `hxy`.
+Consider separately whether the proposition holds or fails. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[← algebraMap_smul Qq (p : W) x, ← algebraMap_smul Qq (p : W) y]`. Conclude with `smul_right_injective _ hp h1`. Use `Set.Finite.of_finite_image (f := fun A1 => A1.map φ) ((between_fin p k hfin A hA).subset ?_) (fun a _ b _ h => Submodule.map_injective_of_injective hφ h)` and prove the remaining obligations. Introduce and unpack `_ ⟨A1, hA1, rfl⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hA1.2.2.2.1 x hx`. Introduce `x hx`. Conclude with `⟨x, hA1.2.2.1 hx, rfl⟩`. Use `Set.finite_empty` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `A1`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_empty_iff_false, iff_false]`. Conclude with `fun h => hA h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem up_fin_gen (p n' r k : ℕ) (hfin : Finite (W ⧸ Ideal.span {(p : W)})) (hp : algebraMap W Qq (p : W) ≠ 0)
     (A : Submodule W (Fin k → Qq)) :
@@ -93,11 +91,11 @@ theorem up_fin_gen (p n' r k : ℕ) (hfin : Finite (W ⧸ Ideal.span {(p : W)}))
     exact fun h => hA h.1
 
 /- English proof (translation)
-Establish `e1 : ∀ (M : ℕ) (S : Finset (Submodule W (Fin M → Qq))) (E Pp : Submodule W (Fin M → Qq) → Prop) (_ : ∀ Z, Z ∈ S ↔ E Z), (∑ Z ∈ S, if Pp Z then (1 : ℚ) else 0) = (Nat.card {Z : Submodule W (Fin M → Qq) // E Z ∧ Pp Z} : ℚ)`. Introduce `M S E Pp hS`. Rewrite using `[Finset.sum_boole]`. Use `congr 1`. Rewrite using `[← Nat.card_eq_fintype_card.trans (Fintype.card_coe (S.filter Pp))]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Apply `Nat.card_congr` to reduce the goal to its premises. Conclude with `Equiv.subtypeEquivRight fun Z => by rw [Finset.mem_filter, hS]`. Use `hC p n' W Qq h1 h2 h3 N N' g i hN A B hA hB x` as an intermediate fact. Use `congrArg (fun n : ℕ => (n : ℚ)) this using 1` and compare the differences between its conclusion and the goal. Conclude with `e1 N' SB _ _ hSB`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_cast`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l _`. Use `congr 1`. Conclude with `e1 N (SA (i - l)) _ _ (hSA (i - l))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem count_fun (hC : CountLoc) (p n' : ℕ) [IsDomain W] [IsDiscreteValuationRing W] (h1 : IsFractionRing W Qq)
     (h2 : Irreducible (p : W)) (h3 : Nat.card (W ⧸ Ideal.span {(p : W)}) = p ^ n') (N N' g i : ℕ) (hN : N' = N + g)
@@ -135,14 +133,14 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   (P : Places p O Kf)
 
 /- English proof (translation)
-Use `(P.setting v).frac_alt` as an intermediate fact. Conclude with `(map_ne_zero_iff _ (IsFractionRing.injective (P.W v) (P.Qq v))).2 (P.setting v).p_unif.ne_zero`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hk_pQ_ne (v : Fin P.nV) : algebraMap (P.W v) (P.Qq v) (p : P.W v) ≠ 0 := by
   have := (P.setting v).frac_alt
   exact (map_ne_zero_iff _ (IsFractionRing.injective (P.W v) (P.Qq v))).2 (P.setting v).p_unif.ne_zero
 
 /- English proof (translation)
-Apply `up_fin_gen` to reduce the goal to its premises. Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[(P.setting v).res_card]`. Conclude with `pow_ne_zero _ (P.setting v).prime.ne_zero`. Conclude with `hk_pQ_ne P v`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_fin (v : Fin P.nV) (i : ℕ) (A : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) :
     {A1 : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v) | IsEdge p (P.n' v) i ⟨A, A1⟩}.Finite := by
@@ -157,16 +155,16 @@ def UP (v : Fin P.nV) (i : ℕ) (A : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v
   (up_fin P v i A).toFinset
 
 /- English proof (translation)
-Simplify using `[UP]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_UP {v : Fin P.nV} {i : ℕ} {A A1 : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)} :
     A1 ∈ UP P v i A ↔ IsEdge p (P.n' v) i ⟨A, A1⟩ := by
   simp [UP]
 
 /- English proof (translation)
-Unfold `Places.IsLatTup at *`. Introduce `w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality. Establish `e : Function.update (β` using `fun v => Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) L w A w = A := by first`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Consider the case `exact Function.update_self (β := fun v => Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) w A L`. Consider the case `exact Function.update_same (β := fun v => Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) w A L`. Conclude with `(congrArg (fun Z => IsLattice (P.W w) Z) e).mpr hA`. Establish `e : Function.update (β` using `fun v => Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) L v A w = L w := Function.update_of_ne (β := fun v => Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) h A L`. Conclude with `(congrArg (fun Z => IsLattice (P.W w) Z) e).mpr (hL w)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hk_latTup_update {L : P.Tup} (hL : P.IsLatTup L) (v : Fin P.nV)
     (A : Submodule (P.W v) (Fin (P.m + 1) → P.Qq v)) (hA : IsLattice (P.W v) A) :
@@ -184,9 +182,9 @@ theorem hk_latTup_update {L : P.Tup} (hL : P.IsLatTup L) (v : Fin P.nV)
     exact (congrArg (fun Z => IsLattice (P.W w) Z) e).mpr (hL w)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h u`. Establish `h1 : IsLattice (P.W u) ((L u).map (nt_phi (P.W u) (C.act u γ)))` using `h u`. Establish `h2` using `nt_lat_map (C.act u γ)⁻¹ _ h1`. Rewrite `h2` using `[nt_map_inv]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h2`. Introduce `h u`. Conclude with `nt_lat_map (C.act u γ) (L u) (h u)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem latTup_smul (C : Level P) (γ : C.Γ) (L : P.Tup) : P.IsLatTup (C.smul γ L) ↔ P.IsLatTup L := by
   constructor

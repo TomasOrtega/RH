@@ -16,21 +16,19 @@ private def affPairs (N : Type) [AddCommGroup N] : Subgroup (Equiv.Perm N × Equ
     simp
 
 /- English proof (translation)
-Introduce `D E E' _ _ _ _ _ _ I φ hcl hd q w' e hw' hI hq`. Establish `hn : 0 < orderOf e` using `orderOf_pos e`. Use `haveI : NeZero (orderOf e) := ⟨hn.ne'⟩`. Take `⟨d, hdl, hdI, hdφ⟩` from `hd (orderOf e) hn`. Set `f : Multiplicative (ZMod (orderOf e)) →* E` to `MonoidHom.mk' (fun x => e ^ (Multiplicative.toAdd x).val) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Simplify using `only [toAdd_mul, ZMod.val_add, pow_mod_orderOf, pow_add])`. Establish `hf1 : f (Multiplicative.ofAdd 1) = e` using `by show e ^ (1 : ZMod (orderOf e)).val = e`. Rewrite using `[ZMod.val_one_eq_one_mod, pow_mod_orderOf, pow_one]`. Establish `hwl : IsLocallyConstant (f.comp d)` using `hdl.comp f`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hwI : ∀ s ∈ I, (f.comp d) s = 1`. Introduce `s hs`. Simplify using `[hdI s hs]`. Use `⟨f.comp d, hwl, hwI, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : IsLocallyConstant (q.comp (f.comp d))` using `hwl.comp q`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(h1.prodMk hw').comp (fun p : E' × E' => p.1 = p.2)`. Establish `hclosed : IsClosed (((q.comp (f.comp d)).eqLocus w' : Subgroup D) : Set D)`. Use `h2.isClosed_fiber True` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[MonoidHom.eqLocus]`. Both sides reduce to the same expression. Establish `hle : I ⊔ Subgroup.zpowers φ ≤ (q.comp (f.comp d)).eqLocus w'`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce `s hs show q ((f.comp d) s) = w' s`.
+Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hwI s hs, hI s hs, map_one]`. Rewrite using `[Subgroup.zpowers_le] show q (f (d φ)) = w' φ`. Rewrite using `[hdφ, hf1, hq]`. Use `Subgroup.topologicalClosure_minimal _ hle hclosed` as an intermediate fact. Rewrite `this` using `[hcl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Conclude with `this (Subgroup.mem_top x)`. Use `show f (d φ) = e`. Rewrite using `[hdφ, hf1]`. Introduce `g`.
-
-Conclude with `Subgroup.npow_mem_zpowers e _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem zhat_lift :
     ∀ {D E E' : Type} [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [Group E] [Finite E] [Group E'] (I : Subgroup D) (φ : D),
@@ -80,43 +78,37 @@ private theorem zhat_lift :
     exact Subgroup.npow_mem_zpowers e _
 
 /- English proof (translation)
-Introduce `k D M _ _ _ _ _ _ _ _ _ ρ I W hρ hI ⟨φ, hcl, hd⟩ hW`. Use `set N : Submodule k M := H0 (ρ.comp I.subtype : Representation k I M) with hNdef`. Establish `hN : ∀ m, m ∈ N ↔ ∀ s ∈ I, ρ s m = m` using `fun m => ⟨fun h s hs => h ⟨s, hs⟩, fun h s => h s.1 s.2⟩`. Establish `hev : ∀ y ∈ W, y φ ∈ N`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨-, hc⟩, h0⟩` from `(hW y).1 hy`. Rewrite using `[hN]`. Introduce `s hs`. Establish `h1` using `hc s φ`. Establish `h2` using `hc φ (φ⁻¹ * s * φ)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h0 _ (hI.conj_mem' s hs φ), map_zero, add_zero]`. Rewrite `h1` using `[h0 s hs, zero_add]`. Rewrite using `[← h1, ← h2]`. Use `congr 1`. Use `group`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ev : W →ₗ[k] N` to `((LinearMap.proj φ).comp W.subtype).codRestrict N (fun y => hev y.1 y.2)`. Establish `hinj : Function.Injective ev`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `y hy`. Establish `hyφ : y.1 φ = 0` using `congrArg Subtype.val hy`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨⟨hcont, hc⟩, h0⟩` from `(hW y.1).1 y.2`. Establish `h1 : y.1 1 = 0` using `h0 1 I.one_mem`. Set `Z : Subgroup D` to `{ carrier := {g | y.1 g = 0} one_mem' := h1 mul_mem' := fun {a b} ha hb => by show y.1 (a * b) = 0`. Rewrite using `[hc, show y.1 a = 0 from ha, show y.1 b = 0 from hb, map_zero, add_zero]`. Use the proof step `inv_mem' := fun {a} ha => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `hc a⁻¹ a` as an intermediate fact. Rewrite `this` using `[inv_mul_cancel, h1, show y.1 a = 0 from ha, map_zero, add_zero]`. Conclude with `this.symm }`. Establish `hZ : IsClosed (Z : Set D)` using `isClosed_eq hcont continuous_const`. Establish `hle : I ⊔ Subgroup.zpowers φ ≤ Z` using `sup_le h0 (by rw [Subgroup.zpowers_le]; exact hyφ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `Subgroup.topologicalClosure_minimal _ hle hZ` as an intermediate fact. Rewrite `this` using `[hcl]`. Use extensionality with `g`. Conclude with `this (Subgroup.mem_top g)`. Establish `hst : ∀ g : D, ∀ m : N, ρ g m ∈ N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Introduce `g m`. Rewrite using `[hN]`. Introduce `s hs`. Establish `h` using `(hN m).1 m.2 _ (hI.conj_mem' s hs g)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Module.End.mul_apply, ← Module.End.mul_apply, ← map_mul, ← map_mul]`. Use `congr 2`. Use `group`. Use `_ = ρ g m := by rw [h]`. Set `a0 : D →* Function.End N` to `{ toFun := fun g m => ⟨ρ g m, hst g m⟩ map_one' := by`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use function extensionality and compare the values at `m`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ρ 1 m = m`. Simplify using the standard rewrite rules. Use the proof step `map_mul' := fun g h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `m`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show ρ (g * h) m = ρ g (ρ h m)`. Simplify using `}`. Set `a : D →* Equiv.Perm N` to `a0.toHomPerm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `ha : ∀ g m, (a g m : M) = ρ g m` using `fun _ _ => rfl`. Establish `hal : IsLocallyConstant a`. Use `IsLocallyConstant.desc a (fun (p : Equiv.Perm N) (m : N) => (p m : M)) ?_ ?_` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_continuous]`. Conclude with `continuous_pi fun m => hρ.comp (continuous_id.prodMk continuous_const)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p q h`. Use extensionality with `m`. Conclude with `congrFun h m`. Establish `haI : ∀ s ∈ I, a s = 1`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `m`. Conclude with `(hN m).1 m.2 s hs`. Establish `hsurj : Function.Surjective ev`. Introduce `m`. Take `⟨w, hwl, hwI, hq, hwφ, hw⟩` from `zhat_lift I φ hcl hd (MonoidHom.fst _ (Equiv.Perm N)) a (a φ, Equiv.addRight m * a φ) hal haI rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP : ∀ g, w g ∈ affPairs N`. Introduce `g`. Use `(Subgroup.zpowers_le.2 ?_ : _ ≤ affPairs N) (hw g)` and prove the remaining obligations. Introduce `x y`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show ρ φ (x + y : M) + m = ρ φ x + (ρ φ y + m)`. Rewrite using `[map_add, add_assoc]`. Establish `hw1 : ∀ g, (w g).1 = a g` using `fun g => DFunLike.congr_fun hq g`. Use `⟨⟨fun g => ((w g).2 0 : M), (hW _).2 ⟨⟨?_, ?_⟩, ?_⟩⟩, ?_⟩` and prove the remaining obligations. Conclude with `(hwl.comp (fun p : Equiv.Perm N × Equiv.Perm N => (p.2 0 : M))).continuous`.
-
-Introduce `g h`. Use `hP g ((w h).2 0) 0` as an intermediate fact. Rewrite `this` using `[add_zero, hw1]`. Use `show (((w (g * h)).2 0 : N) : M) = (w g).2 0 + ρ g ((w h).2 0)`. Rewrite using `[map_mul, Prod.snd_mul, Equiv.Perm.mul_apply, this, Submodule.coe_add, ha, add_comm]`.
-
-Introduce `s hs show (((w s).2 0 : N) : M) = 0`. Rewrite using `[hwI s hs]`. Both sides reduce to the same expression. Apply `Subtype.ext show (((w φ).2 0 : N) : M) = m` to reduce the goal to its premises. Rewrite using `[hwφ]`.
-
-Use `show ρ φ 0 + m = m`. Simplify using the standard rewrite rules. Conclude with `(LinearEquiv.ofBijective ev ⟨hinj, hsurj⟩).finrank_eq`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.finrank_unramified_cocycles_eq_finrank_invariants :
     ∀ {k D M : Type} [Field k] [Group D] [TopologicalSpace D] [IsTopologicalGroup D] [AddCommGroup M] [Module k M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (ρ : Representation k D M) (I : Subgroup D) (W : Submodule k (D → M)), ContAction ρ → I.Normal → (∃ φ : D, (I ⊔ Subgroup.zpowers φ).topologicalClosure = ⊤ ∧ ∀ n : ℕ, 0 < n → ∃ d : D →* Multiplicative (ZMod n), IsLocallyConstant d ∧ (∀ s ∈ I, d s = 1) ∧ d φ = Multiplicative.ofAdd 1) →

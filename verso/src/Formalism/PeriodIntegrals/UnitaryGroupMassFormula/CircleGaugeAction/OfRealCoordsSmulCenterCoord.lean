@@ -13,9 +13,9 @@ variable {r : ℕ}
 def dz (r : ℕ) (z : ℂ) : Mat 0 r := diagonal (Pi.single (cI r) z)
 
 /- English proof (translation)
-Rewrite using `[dz, Matrix.exp_diagonal, dgl]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.coe_exp]`. Distinguish the cases in `h : i = cI r`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[← Complex.exp_eq_exp_ℂ]`. Simplify using `[h]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma exp_dz (z : ℂ) : NormedSpace.exp (dz r z) = dgl r (Complex.exp z) := by
   rw [dz, Matrix.exp_diagonal, dgl]
@@ -28,13 +28,13 @@ lemma exp_dz (z : ℂ) : NormedSpace.exp (dz r z) = dgl r (Complex.exp z) := by
   · simp [h]
 
 /- English proof (translation)
-Rewrite using `[dz, dz, ← Matrix.diagonal_smul, ← Pi.single_smul', smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma smul_dz (t z : ℂ) : t • dz r z = dz r (t * z) := by
   rw [dz, dz, ← Matrix.diagonal_smul, ← Pi.single_smul', smul_eq_mul]
 
 /- English proof (translation)
-Introduce `t`. Rewrite using `[smul_dz, exp_dz]`. Apply `dgl_mem` to reduce the goal to its premises. Rewrite using `[conj_mul_iff, Complex.norm_exp]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma dz_mem_lie (s : ℝ) : dz r ((s : ℂ) * Complex.I) ∈ lieOf (UWb 0 r) := by
   intro t
@@ -46,11 +46,11 @@ lemma dz_mem_lie (s : ℝ) : dz r ((s : ℂ) * Complex.I) ∈ lieOf (UWb 0 r) :=
 set_option backward.isDefEq.respectTransparency false in
 open scoped Norms.Operator in
 /- English proof (translation)
-Use `letI : NormedRing (Mat 0 r) := Matrix.linftyOpNormedRing`. Use `letI : NormedAlgebra ℝ (Mat 0 r) := Matrix.linftyOpNormedAlgebra`. Establish `hconst : ∀ t : ℝ, (NormedSpace.exp (t • X)) i j = (1 : Mat 0 r) i j`. Introduce `t`. Establish `hm` using `hX t`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hm` using `[Complex.coe_smul]`. Rewrite using `[eq_dgl hm, dgl_apply_off _ _ _ hij]`. Set `L : Mat 0 r →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Establish `hd` using `(L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_exp_smul_const X (0 : ℝ)))`. Establish `hfun : (L ∘ fun t : ℝ => NormedSpace.exp (t • X)) = fun _ => (1 : Mat 0 r) i j`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `hconst`. Rewrite `hd` using `[hfun]`. Establish `h0` using `hd.unique (hasDerivAt_const (0 : ℝ) ((1 : Mat 0 r) i j))`. Simplify `h0` using `[L]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma entry_zero {X : Mat 0 r} (hX : X ∈ lieOf (UWb 0 r)) (i j : Fin (2 * r + 0 + 1))
     (hij : ¬ (i = cI r ∧ j = cI r)) : X i j = 0 := by
@@ -71,9 +71,9 @@ lemma entry_zero {X : Mat 0 r} (hX : X ∈ lieOf (UWb 0 r)) (i j : Fin (2 * r + 
   simpa [L] using h0
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = cI r ∧ j = cI r`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[dz]`. Rewrite using `[entry_zero hX i j h, dz, diagonal_apply] split_ifs with hij`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `hij` using the available equality. Establish `hi : i ≠ cI r` using `fun hi => h ⟨hi, hi⟩`. Simplify using `[hi]`. Both sides reduce to the same expression.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma eq_dz_of_lie {X : Mat 0 r} (hX : X ∈ lieOf (UWb 0 r)) : X = dz r (X (cI r) (cI r)) := by
   ext i j
@@ -88,11 +88,11 @@ lemma eq_dz_of_lie {X : Mat 0 r} (hX : X ∈ lieOf (UWb 0 r)) : X = dz r (X (cI 
     · rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hX`. Establish `hX'` using `eq_dz_of_lie hX`. Use `set x := X (cI r) (cI r)`. Establish `h1` using `hX 1`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hX', Complex.ofReal_one, one_smul, exp_dz]`. Establish `hn` using `(conj_mul_iff _).1 (dgl_norm h1)`. Rewrite `hn` using `[Complex.norm_exp, Real.exp_eq_one_iff]`. Use `⟨x.im, hX'.trans ?_⟩` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `apply Complex.ext <;> simp [hn]`. Introduce and unpack `⟨s, rfl⟩`. Conclude with `dz_mem_lie s`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lieOf_iff (X : Mat 0 r) :
     X ∈ lieOf (UWb 0 r) ↔ ∃ s : ℝ, X = dz r ((s : ℂ) * Complex.I) := by
@@ -114,13 +114,13 @@ def v0 (r : ℕ) : EuclideanSpace ℝ (Fin (2 * r + 0 + 1) × Fin (2 * r + 0 + 1
   EuclideanSpace.single (cI r, cI r, true) 1
 
 /- English proof (translation)
-Simplify using `[v0]`.
+Simplify using the standard rewrite rules.
 -/
 lemma norm_v0_eq_one : ‖v0 r‖ = 1 := by
   simp [v0]
 
 /- English proof (translation)
-Introduce `h`. Use `norm_v0_eq_one (r := r)` as an intermediate fact. Rewrite `this` using `[h, norm_zero]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma v0_ne : v0 r ≠ 0 := by
   intro h
@@ -129,9 +129,9 @@ lemma v0_ne : v0 r ≠ 0 := by
   exact zero_ne_one this
 
 /- English proof (translation)
-Use extensionality with `⟨i, j, b⟩`. Simplify using `only [WithLp.equiv_symm_apply, realifyFun, v0, dz, diagonal_apply, PiLp.smul_apply, EuclideanSpace.single_apply, smul_eq_mul]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Distinguish the cases in `hi : i = cI r`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Apply the tactic sequence `cases b <;> simp`. Apply the tactic sequence `cases b <;> simp [hi]`. Apply the tactic sequence `cases b <;> simp [hij] <;> intro hi hj <;> exact absurd (hi.trans hj.symm) hij`.
+Substitute using the available equality. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma realify_dz (s : ℝ) :
     (WithLp.equiv 2 _).symm (realifyFun (dz r ((s : ℂ) * Complex.I))) = s • v0 r := by
@@ -147,13 +147,13 @@ lemma realify_dz (s : ℝ) :
   · cases b <;> simp [hij] <;> intro hi hj <;> exact absurd (hi.trans hj.symm) hij
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [unrealify, v0, dz, diagonal_apply, PiLp.smul_apply, EuclideanSpace.single_apply, smul_eq_mul]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hi : i = cI r`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hi]`. Simplify using `[hij]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [unrealify, v0, dz, diagonal_apply, PiLp.smul_apply, EuclideanSpace.single_apply, smul_eq_mul]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Distinguish the cases in `hi : i = cI r`. Substitute `hi` using the available equality.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[hi]`. Simplify using `[hij]`. Introduce `hi hj`. Conclude with `absurd (hi.trans hj.symm) hij`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma ofRealCoords_smul_centerCoord (s : ℝ) : unrealify (s • v0 r) = dz r ((s : ℂ) * Complex.I) := by
   ext i j
@@ -180,11 +180,9 @@ lemma ofRealCoords_smul_centerCoord (s : ℝ) : unrealify (s • v0 r) = dz r ((
       exact absurd (hi.trans hj.symm) hij
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[lieE, Submodule.span_le]`. Introduce and unpack `_ ⟨X, hX, rfl⟩`. Take `⟨s, rfl⟩` from `(lieOf_iff X).1 hX`. Use `beta_reduce`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[realify_dz]`. Conclude with `Submodule.smul_mem _ s (Submodule.subset_span rfl)`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨dz r ((1 : ℝ) * Complex.I), dz_mem_lie 1, ?_⟩` and prove the remaining obligations.
-
-Use `beta_reduce`. Rewrite using `[realify_dz, one_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieE_eq : lieE (UWb 0 r) = Submodule.span ℝ {v0 r} := by
   apply le_antisymm

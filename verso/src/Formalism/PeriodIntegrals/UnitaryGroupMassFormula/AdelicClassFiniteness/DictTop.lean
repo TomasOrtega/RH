@@ -10,19 +10,19 @@ open Formalism.MainNotions.S PI.AdelClassFin NumberField
 open scoped TensorProduct Matrix
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem dictTop_sig (I : AutInst) : ((I.cm.sig : I.E →ₐ[I.F] I.E) : I.E →+* I.E) = starRingEnd I.E :=
   RingHom.ext fun _ => rfl
 
 /- English proof (translation)
-Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dictTop_mul_inv (I : AutInst) (x : I.Gf) : I.fmat x * I.fmat x⁻¹ = 1 := by
   simp [Formalism.MainNotions.S.AutInst.fmat]
 
 /- English proof (translation)
-Simplify using `[Formalism.MainNotions.S.AutInst.fmat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dictTop_inv_mul (I : AutInst) (x : I.Gf) : I.fmat x⁻¹ * I.fmat x = 1 := by
   simp [Formalism.MainNotions.S.AutInst.fmat]
@@ -33,7 +33,7 @@ Both sides reduce to the same expression.
 theorem dictTop_fmat_mul (I : AutInst) (x y : I.Gf) : I.fmat (x * y) = I.fmat x * I.fmat y := rfl
 
 /- English proof (translation)
-Simplify using `only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hform_eq_dotProduct_mulVec {A : Type} [CommRing A] {k : ℕ} (σ : A →+* A)
     (J : Matrix (Fin k) (Fin k) A) (x y : Fin k → A) :
@@ -41,9 +41,7 @@ private theorem hform_eq_dotProduct_mulVec {A : Type} [CommRing A] {k : ℕ} (σ
   simp only [Formalism.UG.hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dotProduct_mulVec, hform_eq_dotProduct_mulVec]`. Use `show _ = (fun i => σ (a i)) ⬝ᵥ (((M.map σ)ᵀ * J * M) *ᵥ b)`. Establish `e : (fun i => σ ((M *ᵥ a) i)) = M.map σ *ᵥ (fun i => σ (a i))`. Use function extensionality and compare the values at `i`. Conclude with `RingHom.map_mulVec σ M a i`.
-
-Rewrite using `[e, Matrix.mulVec_mulVec, ← Matrix.vecMul_transpose (M.map σ) (fun i => σ (a i)), ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hform_mulVec_mulVec_eq_hform_cT_mul_mul {A : Type} [CommRing A] {k : ℕ} (σ : A →+* A)
     (J M : Matrix (Fin k) (Fin k) A) (a b : Fin k → A) :
@@ -57,7 +55,7 @@ private theorem hform_mulVec_mulVec_eq_hform_cT_mul_mul {A : Type} [CommRing A] 
     ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hx : Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) (I.fmat x) * I.J.map (Formalism.UG.inclE (F` using `I.F) (Af I.F)) * I.fmat x = I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) := x.2`. Unfold `hhat`. Rewrite using `[hform_mulVec_mulVec_eq_hform_cT_mul_mul, hx]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem dictTop_hhat_unit (I : AutInst) (x : I.Gf) (a b : Fin I.n → I.E ⊗[I.F] Af I.F) :
     hhat I (I.fmat x *ᵥ a) (I.fmat x *ᵥ b) = hhat I a b := by
@@ -68,7 +66,7 @@ theorem dictTop_hhat_unit (I : AutInst) (x : I.Gf) (a b : Fin I.n → I.E ⊗[I.
   rw [hform_mulVec_mulVec_eq_hform_cT_mul_mul, hx]
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.map_tmul I.cm.sig (AlgHom.id I.F (Af I.F)) e 1`.
+A detailed English derivation is pending.
 -/
 private theorem sigR_inclE' (I : AutInst) (e : I.E) :
     Formalism.UG.sigR I.cm.sig (Af I.F) (Formalism.UG.inclE (F := I.F) (Af I.F) e) =
@@ -76,7 +74,7 @@ private theorem sigR_inclE' (I : AutInst) (e : I.E) :
   Algebra.TensorProduct.map_tmul I.cm.sig (AlgHom.id I.F (Af I.F)) e 1
 
 /- English proof (translation)
-Unfold `hhat iv`. Simplify using `only [Formalism.UG.hform, map_sum, map_mul, Matrix.map_apply, sigR_inclE']`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 private theorem inclE_hform (I : AutInst) (w v : Fin I.n → I.E) :
     Formalism.UG.inclE (F := I.F) (Af I.F) (Formalism.UG.hform (starRingEnd I.E) I.J w v) =
@@ -85,11 +83,11 @@ private theorem inclE_hform (I : AutInst) (w v : Fin I.n → I.E) :
   simp only [Formalism.UG.hform, map_sum, map_mul, Matrix.map_apply, sigR_inclE']
 
 /- English proof (translation)
-Establish `hle : IntAf I.F I.E ≤ (IntAf I.F I.E).comap (Formalism.UG.sigR I.cm.sig (Af I.F))`. Use `(Subring.closure_le).2 ?_` and prove the remaining obligations. Introduce and unpack `_ (⟨⟨e, he⟩, rfl⟩ | ⟨⟨a, ha⟩, rfl⟩)`. Take `⟨o, rfl⟩` from `he show Formalism.UG.sigR I.cm.sig (Af I.F) (Formalism.UG.inclE (F := I.F) (Af I.F) (algebraMap (𝓞 I.E) I.E o)) ∈ IntAf I.F I.E`. Rewrite using `[sigR_inclE']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : starRingEnd I.E (algebraMap (𝓞 I.E) I.E o) ∈ Formalism.UG.intOE I.E` using `⟨⟨star (o : I.E), (NumberField.RingOfIntegers.isIntegral_coe o).map (starRingEnd I.E).toIntAlgHom⟩, rfl⟩`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨_, hs⟩, rfl⟩)`. Use `show Formalism.UG.sigR I.cm.sig (Af I.F) ((1 : I.E) ⊗ₜ[I.F] a) ∈ IntAf I.F I.E`. Establish `h1` using `Algebra.TensorProduct.map_tmul I.cm.sig (AlgHom.id I.F (Af I.F)) (1 : I.E) a`. Rewrite `h1` using `[map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Formalism.UG.sigR I.cm.sig (Af I.F) ((1 : I.E) ⊗ₜ[I.F] a) = (1 : I.E) ⊗ₜ[I.F] a` using `h1`. Rewrite using `[e1]`. Conclude with `Subring.subset_closure (Or.inr ⟨⟨a, ha⟩, rfl⟩)`. Conclude with `hle hc`.
+A detailed English derivation is pending.
 -/
 private theorem sigR_mem_intAf (I : AutInst) (c : I.E ⊗[I.F] Af I.F) (hc : c ∈ IntAf I.F I.E) :
     Formalism.UG.sigR I.cm.sig (Af I.F) c ∈ IntAf I.F I.E := by
@@ -113,21 +111,21 @@ private theorem sigR_mem_intAf (I : AutInst) (c : I.E ⊗[I.F] Af I.F) (hc : c �
   exact hle hc
 
 /- English proof (translation)
-Simplify using `[hhat, Formalism.UG.hform]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hhat_zero_left' (I : AutInst) (z : Fin I.n → I.E ⊗[I.F] Af I.F) :
     hhat I 0 z = 0 := by
   simp [hhat, Formalism.UG.hform]
 
 /- English proof (translation)
-Simplify using `only [hhat, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hhat_add_left' (I : AutInst) (a b z : Fin I.n → I.E ⊗[I.F] Af I.F) :
     hhat I (a + b) z = hhat I a z + hhat I b z := by
   simp only [hhat, Formalism.UG.hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hhat, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem hhat_smul_left' (I : AutInst) (r : I.E ⊗[I.F] Af I.F)
     (a z : Fin I.n → I.E ⊗[I.F] Af I.F) :
@@ -135,15 +133,13 @@ private theorem hhat_smul_left' (I : AutInst) (r : I.E ⊗[I.F] Af I.F)
   simp only [hhat, Formalism.UG.hform, Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Introduce `I x v`. Prove the components needed by the constructor for the conclusion. Introduce `hv w hw`. Apply `hDI I.F I.E` to reduce the goal to its premises. Rewrite using `[inclE_hform, ← dictTop_hhat_unit I x⁻¹]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hLI I (I.fmat x⁻¹ *ᵥ iv I w) hw (I.fmat x⁻¹ *ᵥ iv I v) hv`. Introduce `hv show I.fmat x⁻¹ *ᵥ iv I v ∈ I.Lf`. Apply `hLD I` to reduce the goal to its premises. Introduce `y hy`. Rewrite using `[← dictTop_hhat_unit I x y, Matrix.mulVec_mulVec, dictTop_mul_inv, Matrix.one_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_induction (p := fun z _ => hhat I z (iv I v) ∈ IntAf I.F I.E) (fun z hz => ?_) ?_ (fun z w _ _ hz hw => ?_) (fun c z _ hz => ?_) (hG I x y hy)` and prove the remaining obligations. Take `⟨w, rfl⟩` from `hz`. Take `⟨o, ho⟩` from `hv w w.2`. Rewrite using `[← inclE_hform, ← ho]`. Conclude with `Subring.subset_closure (Or.inl ⟨⟨(o : I.E), o, rfl⟩, rfl⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hhat_zero_left']`. Conclude with `(IntAf I.F I.E).zero_mem`. Rewrite using `[hhat_add_left']`. Conclude with `(IntAf I.F I.E).add_mem hz hw`. Use `show hhat I ((c : I.E ⊗[I.F] Af I.F) • z) (iv I v) ∈ IntAf I.F I.E`.
-
-Rewrite using `[hhat_smul_left']`. Conclude with `(IntAf I.F I.E).mul_mem (sigR_mem_intAf I _ c.2) hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mDual_of (hDI : DInter) (hLI : LHatInt) (hLD : LHatDual) (hG : MGen) : MDual := by
   intro I x v
@@ -172,11 +168,9 @@ theorem mDual_of (hDI : DInter) (hLI : LHatInt) (hLD : LHatDual) (hG : MGen) : M
       exact (IntAf I.F I.E).mul_mem (sigR_mem_intAf I _ c.2) hz
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun y _ => I.fmat a⁻¹ *ᵥ y ∈ I.Lf) (fun y hy => ?_) ?_ (fun y w _ _ hy hw => ?_) (fun c y _ hy => ?_) (hG I b z hz)` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hy`. Establish `hv : (v : Fin I.n → I.E) ∈ abelian₂ I a`. Rewrite using `[h]`. Conclude with `v.2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv`. Rewrite using `[Matrix.mulVec_zero]`. Conclude with `I.Lf.zero_mem`. Rewrite using `[Matrix.mulVec_add]`. Conclude with `I.Lf.add_mem hy hw`.
-
-Use `show I.fmat a⁻¹ *ᵥ ((c : I.E ⊗[I.F] Af I.F) • y) ∈ I.Lf`. Rewrite using `[Matrix.mulVec_smul]`. Conclude with `I.Lf.smul_mem c hy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dictTop_into (hG : MGen) (I : AutInst) (a b : I.Gf) (h : abelian₂ I a = abelian₂ I b)
     (z : Fin I.n → I.E ⊗[I.F] Af I.F) (hz : z ∈ I.Lf) : I.fmat a⁻¹ *ᵥ (I.fmat b *ᵥ z) ∈ I.Lf := by
@@ -196,11 +190,9 @@ theorem dictTop_into (hG : MGen) (I : AutInst) (a b : I.Gf) (h : abelian₂ I a 
     exact I.Lf.smul_mem c hy
 
 /- English proof (translation)
-Introduce `I x y h`. Use `⟨x⁻¹ * y, fun z => ?_, (mul_inv_cancel_left x y).symm⟩` and prove the remaining obligations. Use `show z ∈ I.Lf ↔ I.fmat (x⁻¹ * y) *ᵥ z ∈ I.Lf`. Rewrite using `[dictTop_fmat_mul, ← Matrix.mulVec_mulVec]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hz`. Conclude with `dictTop_into hG I x y h z hz`. Introduce `hz`. Establish `h2` using `dictTop_into hG I y x h.symm _ hz`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc] at h2`.
-
-Rewrite `h2` using `[← Matrix.mul_assoc (I.fmat x), dictTop_mul_inv, Matrix.one_mul, dictTop_inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mInj_of (hG : MGen) : MInj := by
   intro I x y h
@@ -217,7 +209,7 @@ theorem mInj_of (hG : MGen) : MInj := by
       Matrix.one_mulVec] at h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `(RingHom.map_mulVec (Formalism.UG.inclE (F := I.F) (Af I.F)) M w i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem dictTop_map_mulVec (I : AutInst) (M : Matrix (Fin I.n) (Fin I.n) I.E) (w : Fin I.n → I.E) :
     M.map (Formalism.UG.inclE (F := I.F) (Af I.F)) *ᵥ iv I w = iv I (M *ᵥ w) := by
@@ -225,15 +217,15 @@ theorem dictTop_map_mulVec (I : AutInst) (M : Matrix (Fin I.n) (Fin I.n) I.E) (w
   exact (RingHom.map_mulVec (Formalism.UG.inclE (F := I.F) (Af I.F)) M w i).symm
 
 /- English proof (translation)
-Introduce `I γ hγ`. Establish `hmem : Units.map (RingHom.mapMatrix (Formalism.UG.inclE (F` using `I.F) (Af I.F))).toMonoidHom γ ∈ Formalism.UG.UPts I.cm.sig I.J (Af I.F) := by show Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) ((γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F := I.F) (Af I.F))) * I.J.map (Formalism.UG.inclE (F := I.F) (Af I.F)) * (γ : M …`. Establish `hg : Formalism.UG.cT (starRingEnd I.E) (γ : Matrix (Fin I.n) (Fin I.n) I.E) * I.J * (γ : Matrix (Fin I.n) (Fin I.n) I.E) = I.J` using `hγ`. Establish `hc : Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) ((γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F` using `I.F) (Af I.F))) = (Formalism.UG.cT (starRingEnd I.E) (γ : Matrix (Fin I.n) (Fin I.n) I.E)).map (Formalism.UG.inclE (F := I.F) (Af I.F)) := by`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `sigR_inclE' I _`. Rewrite using `[hc, ← Matrix.map_mul, ← Matrix.map_mul, hg]`. Set `c : I.Gf` to `⟨_, hmem⟩`. Establish `hfc : I.fmat c = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.UG.inclE (F` using `I.F) (Af I.F)) := rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, ⟨γ, hγ, rfl⟩, rfl, fun x v => ?_⟩` and prove the remaining obligations. Establish `K : ∀ z, I.fmat (c * x)⁻¹ *ᵥ (I.fmat c *ᵥ z) = I.fmat x⁻¹ *ᵥ z`. Introduce `z`. Rewrite using `[Matrix.mulVec_mulVec, ← dictTop_fmat_mul, mul_inv_rev, inv_mul_cancel_right]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hv`. Use `⟨((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ v, ?_, ?_⟩` and prove the remaining obligations. Use `show I.fmat x⁻¹ *ᵥ iv I (((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ v) ∈ I.Lf`. Rewrite using `[← K, hfc, dictTop_map_mulVec, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `hv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Introduce and unpack `⟨w, hw, rfl⟩ show I.fmat (c * x)⁻¹ *ᵥ iv I ((γ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ w) ∈ I.Lf`. Rewrite using `[← dictTop_map_mulVec, ← hfc, K]`. Conclude with `hw`.
+A detailed English derivation is pending.
 -/
 theorem lattice_m_equiv : MEquiv := by
   intro I γ hγ

@@ -13,11 +13,11 @@ namespace Unipotence
 open Polynomial
 
 /- English proof (translation)
-Establish `hm` using `Y.charpoly_monic`. Establish `hs : Y.charpoly.Splits` using `IsAlgClosed.splits _`. Establish `hr : Y.charpoly.roots = Multiset.replicate (Multiset.card Y.charpoly.roots) 0`. Rewrite using `[Multiset.eq_replicate_card]`. Introduce `μ hμ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h μ (Matrix.mem_spectrum_iff_isRoot_charpoly.mpr (isRoot_of_mem_roots hμ))`. Establish `he` using `hs.eq_prod_roots_of_monic hm`. Rewrite `he` using `[hr]`. Establish `hch` using `Matrix.aeval_self_charpoly Y`. Rewrite `hch` using `[he]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Multiset.card Y.charpoly.roots, ?_⟩` and prove the remaining obligations. Simplify using `using hch`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pow_card_eq_zero {K n : Type} [Field K] [IsAlgClosed K] [Fintype n] [DecidableEq n]
     (Y : Matrix n n K) (h : ∀ μ ∈ spectrum K Y, μ = 0) : IsNilpotent Y := by
@@ -35,15 +35,13 @@ theorem pow_card_eq_zero {K n : Type} [Field K] [IsAlgClosed K] [Fintype n] [Dec
   simpa using hch
 
 /- English proof (translation)
-Establish `hconj : A ^ q = P * A * (P⁻¹ : (Matrix n n K)ˣ)`. Rewrite using `[h, mul_assoc, Units.mul_inv, mul_one]`. Establish `hstep : ∀ y ∈ spectrum K A, y ^ q ∈ spectrum K A`. Introduce `y hy`. Use `spectrum.pow_mem_pow A q hy` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hconj, spectrum.units_conjugate]`. Then use the resulting hypothesis. Establish `hall : ∀ k : ℕ, x ^ (q ^ k) ∈ spectrum K A`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hx`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ k ih => rw [pow_succ, pow_mul]`. Conclude with `hstep _ ih`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `(spectrum.zero_mem_iff K).mp hx hA`.
+Treat this case separately. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, j, hij, he⟩` from `(Matrix.finite_spectrum A).exists_lt_map_eq_of_forall_mem hall`. Establish `hlt : q ^ i < q ^ j` using `Nat.pow_lt_pow_right (by omega) hij`. Use `⟨q ^ j - q ^ i, by omega, ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ (pow_ne_zero (q ^ i) hx0)` to reduce the goal to its premises. Rewrite using `[← pow_add, mul_one, Nat.add_sub_cancel' hlt.le]`.
-
-Conclude with `he.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem root_of_unity {K n : Type} [Field K] [Fintype n] [DecidableEq n]
     (A : Matrix n n K) (hA : IsUnit A) (P : (Matrix n n K)ˣ) (q : ℕ) (hq : 2 ≤ q)
@@ -71,15 +69,15 @@ theorem root_of_unity {K n : Type} [Field K] [Fintype n] [DecidableEq n]
   exact he.symm
 
 /- English proof (translation)
-Set `E` to `Algebra.adjoin ℤ_[l] ({μ} : Set K)`. Use `haveI : Module.Finite ℤ_[l] E := Module.Finite.iff_fg.mpr hμ.fg_adjoin_singleton`. Set `ψ : E` to `⟨μ, Algebra.self_mem_adjoin_singleton _ _⟩`. Establish `hl0 : l ≠ 0` using `by omega`. Establish `key : (1 : E) + l • ψ = 1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `SerreTorsion.eq_one_of_pow (E := E) (q := l) (c := l) ?_ hl.out ?_ hl0 dvd_rfl (fun h2 => by omega) m hm ψ ?_` and prove the remaining obligations. Introduce `n x hn hx`. Establish `: (n : K) * (x : K) = 0`. Use `congrArg (Subtype.val : E → K) hx` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext ((mul_eq_zero.mp this).resolve_left (Nat.cast_ne_zero.mpr hn))`. Introduce `x hx`. Establish `hk` using `Ideal.iInf_pow_smul_eq_bot_of_isLocalRing (R := ℤ_[l]) (M := E) (IsLocalRing.maximalIdeal ℤ_[l]) (IsLocalRing.maximalIdeal.isMaximal _).ne_top`. Rewrite using `[← Submodule.mem_bot ℤ_[l], ← hk, Submodule.mem_iInf]`. Introduce `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `hx k`. Rewrite using `[hy, ← Nat.cast_smul_eq_nsmul ℤ_[l], Nat.cast_pow]`. Use `Submodule.smul_mem_smul (Ideal.pow_mem_pow ?_ k) Submodule.mem_top` and prove the remaining obligations. Rewrite using `[PadicInt.maximalIdeal_eq_span_p]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify `h` using `[ψ]`. Use `congrArg (Subtype.val : E → K) key` as an intermediate fact. Simplify `this` using `[ψ, hl0]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_integral (l : ℕ) [hl : Fact l.Prime] (h3 : 3 ≤ l) {K : Type} [Field K] [CharZero K]
     [Algebra ℤ_[l] K] (μ : K) (hμ : IsIntegral ℤ_[l] μ) (m : ℕ) (hm : m ≠ 0)
@@ -112,13 +110,13 @@ theorem eq_zero_of_integral (l : ℕ) [hl : Fact l.Prime] (h3 : 3 ≤ l) {K : Ty
   simpa [ψ, hl0] using this
 
 /- English proof (translation)
-Set `K` to `AlgebraicClosure ℚ_[l]`. Establish `hinj : Function.Injective (algebraMap ℤ_[l] K)`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] K]`. Conclude with `(algebraMap ℚ_[l] K).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`. Set `f : Matrix n n ℤ_[l] →+* Matrix n n K` to `(algebraMap ℤ_[l] K).mapMatrix`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : Function.Injective f` using `Matrix.map_injective hinj`. Rewrite using `[← IsNilpotent.map_iff hf]`. Apply `pow_card_eq_zero` to reduce the goal to its premises. Introduce `μ hμ`. Establish `hint : IsIntegral ℤ_[l] μ`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Y.charpoly, Y.charpoly_monic, ?_⟩` and prove the remaining obligations. Use `Matrix.mem_spectrum_iff_isRoot_charpoly.mp hμ` as an intermediate fact. Rewrite `this` using `[show f Y = Y.map (algebraMap ℤ_[l] K) from rfl, Matrix.charpoly_map]`. Rewrite using `[← Polynomial.eval_map]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspec : 1 + l • μ ∈ spectrum K (f (1 + l • Y))`. Use `spectrum.subset_polynomial_aeval (f Y) (1 + l • (X : K[X])) ⟨μ, hμ, rfl⟩` as an intermediate fact. Simplify using `using this`. Take `⟨m, hm, hx⟩` from `root_of_unity (f (1 + l • Y)) (hA.map f) (hP.map f).unit q hq (by rw [IsUnit.unit_spec, ← map_mul, h, map_mul, map_pow]) _ hspec`. Conclude with `eq_zero_of_integral l h3 μ hint m hm hx`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem matrix_nilpotent (l : ℕ) [hl : Fact l.Prime] (h3 : 3 ≤ l) {n : Type} [Fintype n]
     [DecidableEq n] (Y P : Matrix n n ℤ_[l]) (hA : IsUnit (1 + l • Y)) (hP : IsUnit P)
@@ -148,15 +146,13 @@ theorem matrix_nilpotent (l : ℕ) [hl : Fact l.Prime] (h3 : 3 ≤ l) {n : Type}
 end Unipotence
 
 /- English proof (translation)
-Introduce `l _ h3 T _ _ _ _ S Φ q hq h hS`. Set `b` to `Module.Free.chooseBasis ℤ_[l] T`. Use `choose y hy using hS`. Set `Y : Module.End ℤ_[l] T` to `b.constr ℤ_[l] (fun i => y (b i))`. Establish `hSY : (S : T →ₗ[ℤ_[l]] T) = 1 + l • Y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `b.ext` to reduce the goal to its premises. Introduce `i`. Simplify using `only [Y, LinearMap.add_apply, LinearMap.smul_apply, Module.Basis.constr_basis, Module.End.one_apply, LinearEquiv.coe_coe, ← hy]`. Normalize the expressions using the abelian group laws. Set `g : (T ≃ₗ[ℤ_[l]] T) →* Module.End ℤ_[l] T` to `LinearEquiv.automorphismGroup.toLinearMapMonoidHom`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgS : g S = 1 + l • Y` using `hSY`. Set `e` to `LinearMap.toMatrixAlgEquiv b`. Establish `heS : e (g S) = 1 + l • e Y` using `by rw [hgS, map_add, map_one, map_nsmul]`. Establish `hN : IsNilpotent (e Y)`. Use `Unipotence.matrix_nilpotent l h3 (e Y) (e (g Φ)) ?_ (((Group.isUnit Φ).map g).map e) q hq ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← heS]`. Conclude with `((Group.isUnit S).map g).map e`. Rewrite using `[← heS, ← map_mul, ← map_mul, h, map_mul, map_mul, map_pow, map_pow]`. Rewrite `hN` using `[IsNilpotent.map_iff (f := e) e.injective]`. Rewrite using `[hSY, add_sub_cancel_left]`.
-
-Conclude with `hN.smul l`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNilpotent_sub_one_of_conj_pow :
     ∀ (l : ℕ) [Fact l.Prime], 3 ≤ l → ∀ (T : Type) [AddCommGroup T] [Module ℤ_[l] T] [Module.Free ℤ_[l] T] [Module.Finite ℤ_[l] T] (S Φ : T ≃ₗ[ℤ_[l]] T) (q : ℕ), 2 ≤ q → Φ * S = S ^ q * Φ → (∀ x, ∃ y, S x - x = l • y) → IsNilpotent ((S : T →ₗ[ℤ_[l]] T) - 1) := by

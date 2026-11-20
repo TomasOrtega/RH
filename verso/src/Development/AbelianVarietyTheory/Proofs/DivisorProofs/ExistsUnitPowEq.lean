@@ -5,15 +5,13 @@ open Polynomial IsLocalRing
 namespace GlobalTheory.UnitPowerExistence
 
 /- English proof (translation)
-Establish `hq0 : (q : ResidueField O) ≠ 0`. Establish `h` using `hq.map (residue O)`. Rewrite `h` using `[map_natCast]`. Conclude with `h.ne_zero`. Establish `hw : residue O (w : O) ≠ 0` using `(w.isUnit.map (residue O)).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a₀, ha₀⟩` from `IsSepClosed.exists_root (X ^ q - C (residue O (w : O))) (by rw [degree_X_pow_sub_C hpos]; exact_mod_cast hpos.ne') (separable_X_pow_sub_C _ hq0 hw)`. Take `⟨b, rfl⟩` from `residue_surjective a₀`. Establish `hb : b ^ q - (w : O) ∈ maximalIdeal O`. Rewrite using `[← residue_eq_zero_iff, map_sub, map_pow]`. Simplify `ha₀` using `[IsRoot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hbu : IsUnit b`. Assume the negation of the conclusion as `hb'`. Establish `h2 : b ^ q ∈ maximalIdeal O` using `Ideal.pow_mem_of_mem _ ((mem_maximalIdeal b).2 hb') q hpos`. Establish `h3 : (w : O) ∈ maximalIdeal O` using `by simpa using sub_mem h2 hb`. Conclude with `(mem_maximalIdeal _).1 h3 w.isUnit`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, -⟩` from `HenselianLocalRing.is_henselian (X ^ q - C (w : O)) (monic_X_pow_sub_C _ hpos.ne') b (by simpa using hb) (by`. Rewrite using `[derivative_sub, derivative_C, sub_zero, derivative_X_pow, eval_mul, eval_C, eval_pow, eval_X]`. Conclude with `hq.mul (hbu.pow (q - 1)))`. Establish `hapow : a ^ q = w` using `by simpa [IsRoot, sub_eq_zero] using ha`. Establish `hau : IsUnit a` using `(isUnit_pow_iff hpos.ne').1 (hapow ▸ w.isUnit)`.
-
-Conclude with `⟨hau.unit, Units.ext (by simpa using hapow)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unit_pow_eq (O : Type) [CommRing O] [HenselianLocalRing O]
     [IsSepClosed (IsLocalRing.ResidueField O)] (q : ℕ) (hq : IsUnit (q : O)) (hpos : 0 < q)

@@ -11,13 +11,13 @@ noncomputable section
 variable {K : Type*} [DecidableEq K] {ι : K → Type*}
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_eq]`. Use `Finset.sum_eq_zero fun d hd => ?_` and prove the remaining obligations. Establish `hw` using `hf (MvPolynomial.mem_support_iff.mp hd)`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv, hvk⟩ : ∃ v ∈ d.support, v.1 = k := by`. Assume the negation of the conclusion as `hno`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hno`. Establish `h0 : (Finsupp.weight (blockWeight ι) d) k = 0`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum, Finset.sum_apply]`. Use `Finset.sum_eq_zero fun v hv => ?_` and prove the remaining obligations. Simplify using `[blockWeight, hno v hv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `hm k` as an intermediate fact. Rewrite `h0` using `[hw]`. Use linear arithmetic over natural numbers and integers. Use `mul_eq_zero_of_right _ (Finset.prod_eq_zero hv ?_)` and prove the remaining obligations. Take `⟨k', i⟩` from `v`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Substitute using the available equality.
 
-Substitute `hvk` using the available equality. Rewrite using `[hx i]`. Conclude with `zero_pow (Finsupp.mem_support_iff.mp hv)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_eq_zero_of_block_zero {m : K → ℕ} (hm : ∀ k, 1 ≤ m k) {f : MvPolynomial (Σ k, ι k) ℂ}
     (hf : IsWeightedHomogeneous (blockWeight ι) f m) {x : (Σ k, ι k) → ℂ} {k : K}
@@ -45,9 +45,9 @@ theorem eval_eq_zero_of_block_zero {m : K → ℕ} (hm : ∀ k, 1 ≤ m k) {f : 
 variable [Fintype K] [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Rewrite using `[← vanishingIdeal_zeroLocus_eq_radical (K := ℂ) I]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => vanishingIdeal_anti_mono Set.inter_subset_left h`. Introduce `h x hx`. Distinguish the cases in `hU : ∀ k, ∃ i, x ⟨k, i⟩ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `h x ⟨hx, hU⟩`. Use `push Not at hU`. Take `⟨k, hk⟩` from `hU`. Conclude with `eval_eq_zero_of_block_zero hm hf hk`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_radical_iff_offBlocks (I : Ideal (MvPolynomial (Σ k, ι k) ℂ)) {m : K → ℕ} (hm : ∀ k, 1 ≤ m k)
     {f : MvPolynomial (Σ k, ι k) ℂ} (hf : IsWeightedHomogeneous (blockWeight ι) f m) :
@@ -65,11 +65,11 @@ theorem mem_radical_iff_offBlocks (I : Ideal (MvPolynomial (Σ k, ι k) ℂ)) {m
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `set W := weightedHomogeneousSubmodule ℂ (blockWeight ι) m`. Set `f₁` to `(Ideal.Quotient.mkₐ ℂ P₁).toLinearMap ∘ₗ W.subtype`. Set `f₂` to `(Ideal.Quotient.mkₐ ℂ P₂).toLinearMap ∘ₗ W.subtype`. Establish `hr₁ : LinearMap.range f₁ = gradedPiece P₁ m`. Simplify using `only [f₁, LinearMap.range_comp, Submodule.range_subtype]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hr₂ : LinearMap.range f₂ = gradedPiece P₂ m`. Simplify using `only [f₂, LinearMap.range_comp, Submodule.range_subtype]`. Both sides reduce to the same expression. Establish `hk : LinearMap.ker f₁ = LinearMap.ker f₂`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `⟨x, hx⟩`. Simplify using `only [LinearMap.mem_ker, f₁, f₂, LinearMap.comp_apply, Submodule.subtype_apply, AlgHom.toLinearMap_apply, Ideal.Quotient.mkₐ_eq_mk, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `h x hx`. Rewrite using `[← hr₁, ← hr₂]`. Conclude with `((f₁.quotKerEquivRange.symm.trans (Submodule.quotEquivOfEq _ _ hk)).trans f₂.quotKerEquivRange).finrank_eq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_gradedPiece_eq {P₁ P₂ : Ideal (MvPolynomial (Σ k, ι k) ℂ)} (m : K → ℕ)
     (h : ∀ f ∈ weightedHomogeneousSubmodule ℂ (blockWeight ι) m, f ∈ P₁ ↔ f ∈ P₂) :
@@ -93,9 +93,9 @@ theorem finrank_gradedPiece_eq {P₁ P₂ : Ideal (MvPolynomial (Σ k, ι k) ℂ
     f₂.quotKerEquivRange).finrank_eq
 
 /- English proof (translation)
-Unfold `hilbFn`. Establish `h0 : ∀ k, 0 ≤ m k` using `fun k => le_trans zero_le_one (hm k)`. Rewrite using `[if_pos h0, if_pos h0]`. Use `congr 1`. Use `finrank_gradedPiece_eq _ fun f hf => mem_radical_iff_offBlocks I (m := fun k => (m k).toNat) (fun k => ?_) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `hm k` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `hf` using `[mem_weightedHomogeneousSubmodule]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem hilbFn_radical_eq_offBlocks (I : Ideal (MvPolynomial (Σ k, ι k) ℂ)) {m : K → ℤ} (hm : ∀ k, 1 ≤ m k) :
     hilbFn I.radical m = hilbFn (vanishingIdeal ℂ (zeroLocus ℂ I ∩ {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0})) m := by
@@ -111,9 +111,9 @@ theorem hilbFn_radical_eq_offBlocks (I : Ideal (MvPolynomial (Σ k, ι k) ℂ)) 
 omit [DecidableEq K] [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact h`. Consider the case `cons b l ih`. Establish `ht : Tendsto (fun m : K → ℤ => m - b) atTop atTop`. Conclude with `(tendsto_atTop_add_const_right atTop (-b) tendsto_id).congr fun m => by simp [sub_eq_add_neg]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [ih, ht.eventually ih] with m hm hmb`. Simplify using `only [List.foldr_cons, diffStep, hm, hmb]`.
+A detailed English derivation is pending.
 -/
 theorem foldr_diffStep_eventuallyEq {h₁ h₂ : (K → ℤ) → ℤ} (h : h₁ =ᶠ[atTop] h₂) (l : List (K → ℤ)) :
     l.foldr diffStep h₁ =ᶠ[atTop] l.foldr diffStep h₂ := by
@@ -128,9 +128,9 @@ theorem foldr_diffStep_eventuallyEq {h₁ h₂ : (K → ℤ) → ℤ} (h : h₁ 
 omit [DecidableEq K] [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `eventualValue`. Establish `hiff : (∃ c, ∀ᶠ m in atTop, f m = c) ↔ ∃ c, ∀ᶠ m in atTop, g m = c` using `⟨fun ⟨c, hc⟩ => ⟨c, (h.and hc).mono fun _ hm => hm.1.symm.trans hm.2⟩, fun ⟨c, hc⟩ => ⟨c, (h.and hc).mono fun _ hm => hm.1.trans hm.2⟩⟩`. Distinguish the cases in `hf : ∃ c, ∀ᶠ m in atTop, f m = c`. Rewrite using `[dif_pos hf, dif_pos (hiff.mp hf)]`. Take `⟨m, hm⟩` from `(hf.choose_spec.and ((hiff.mp hf).choose_spec.and h)).exists`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hm.1.symm.trans (hm.2.2.trans hm.2.1)`. Rewrite using `[dif_neg hf, dif_neg (mt hiff.mpr hf)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventualValue_congr {f g : (K → ℤ) → ℤ} (h : f =ᶠ[atTop] g) : eventualValue f = eventualValue g := by
   unfold eventualValue
@@ -144,7 +144,7 @@ theorem eventualValue_congr {f g : (K → ℤ) → ℤ} (h : f =ᶠ[atTop] g) : 
   · rw [dif_neg hf, dif_neg (mt hiff.mpr hf)]
 
 /- English proof (translation)
-Unfold `intNum mixedDiff`. Use `eventualValue_congr (foldr_diffStep_eventuallyEq ?_ _)` and prove the remaining obligations. Use `filter_upwards [eventually_ge_atTop (1 : K → ℤ)] with m hm`. Conclude with `hilbFn_radical_eq_offBlocks I fun k => hm k`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem intNum_radical_eq_offBlocks (I : Ideal (MvPolynomial (Σ k, ι k) ℂ)) {n : ℕ} (bs : Fin n → K → ℤ) :
     intNum ℂ I.radical bs =

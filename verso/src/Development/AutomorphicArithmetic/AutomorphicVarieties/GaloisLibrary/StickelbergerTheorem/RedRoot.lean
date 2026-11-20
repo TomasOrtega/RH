@@ -4,13 +4,11 @@ open NumberField IsDedekindDomain UpperTheory.V.Kum UpperTheory.V.Stick
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-Introduce `R _ _ p hp π M ζ hcop hζ`. Establish `hpp : p.Prime` using `hp.out`. Establish `hM : 0 < M`. Break down `Nat.eq_zero_or_pos M with rfl | h` into its components or cases. Conclude with `absurd (Nat.coprime_zero_right p |>.mp hcop) hpp.one_lt.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hne : NeZero (M : ZMod p)`. Use `⟨fun h => ?_⟩` and prove the remaining obligations. Rewrite `h` using `[ZMod.natCast_eq_zero_iff]`. Conclude with `hpp.one_lt.ne' (Nat.Coprime.eq_one_of_dvd hcop h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hroot : (Polynomial.cyclotomic M R).IsRoot ζ` using `hζ.isRoot_cyclotomic hM`. Establish `hroot' : (Polynomial.cyclotomic M (ZMod p)).IsRoot (π ζ)`. Rewrite using `[← Polynomial.map_cyclotomic M π]`. Conclude with `hroot.map`. Establish `hprim : IsPrimitiveRoot (π ζ) M` using `(Polynomial.isRoot_cyclotomic_iff).mp hroot'`.
-
-Use `⟨hprim, hprim.dvd_of_pow_eq_one _ ?_⟩` and prove the remaining obligations. Conclude with `ZMod.pow_card_sub_one_eq_one (hprim.ne_zero hM.ne')`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Stick.redRoot :
     ∀ (R : Type) [CommRing R] [IsDomain R] (p : ℕ) [Fact p.Prime] (π : R →+* ZMod p) (M : ℕ) (ζ : R),

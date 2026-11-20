@@ -19,20 +19,20 @@ section Bundles
 variable {W X Y : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (GlobalTheory.chartPullPull L j) (GlobalTheory.chartPullPull M j) h`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pullback {L M : LB X} (h : LBIso L M) (j : Y ⟶ X) : LBIso (L.pull j) (M.pull j) :=
   LBIso.chartPull (GlobalTheory.chartPullPull L j) (GlobalTheory.chartPullPull M j) h
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullSame L _ _ _ j fun _ => ha) (GlobalTheory.chartPullPull _ j) (lbIso_refl (pull_isLB hL a))`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_pull {L : LB X} (hL : L.IsLB) {a : Y ⟶ X} (j : W ⟶ Y) {a' : W ⟶ X} (ha : a' = j ≫ a) :
     LBIso (L.pull a') ((L.pull a).pull j) :=
   LBIso.chartPull (chartPullSame L _ _ _ j fun _ => ha) (GlobalTheory.chartPullPull _ j) (lbIso_refl (pull_isLB hL a))
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (chartPullSame L _ _ _ j fun _ => ha) (chartPullSame M _ _ _ j fun _ => hb) h`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_comp {Z : Scheme.{0}} {L : LB X} {M : LB Z} {a : Y ⟶ X} {b : Y ⟶ Z} (j : W ⟶ Y) {a' : W ⟶ X}
     {b' : W ⟶ Z} (ha : a' = j ≫ a) (hb : b' = j ≫ b) (h : LBIso (L.pull a) (M.pull b)) :
@@ -40,7 +40,7 @@ theorem lbIso_pull_comp {Z : Scheme.{0}} {L : LB X} {M : LB Z} {a : Y ⟶ X} {b 
   LBIso.chartPull (chartPullSame L _ _ _ j fun _ => ha) (chartPullSame M _ _ _ j fun _ => hb) h
 
 /- English proof (translation)
-The claim follows from `LBIso.chartPull (GlobalTheory.chartPullPull M j) (chartPullSame L _ _ _ j fun _ => ha) h`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_of_lbIso {L : LB X} {M : LB Y} {a : Y ⟶ X} (h : LBIso M (L.pull a)) (j : W ⟶ Y) {a' : W ⟶ X}
     (ha : a' = j ≫ a) : LBIso (M.pull j) (L.pull a') :=
@@ -51,7 +51,7 @@ end Bundles
 variable {R K : Type} [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K]
 
 /- English proof (translation)
-Take `⟨_, ⟨_, ⟨a, rfl⟩, rfl⟩, ha, hle⟩` from `PrimeSpectrum.isBasis_basic_opens.exists_subset_of_mem_open hV V.isOpen`. Use `⟨a, ?_, fun R' _ g hg z => hle ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `at ha`. Conclude with `fun h => z.2.ne_top (Ideal.eq_top_of_isUnit_mem _ h hg)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_forall_mem {V : (Sp R).Opens} (hV : genericPoint (Sp R) ∈ V) :
     ∃ a : R, a ≠ 0 ∧ ∀ (R' : Type) [CommRing R'] (g : R →+* R'), IsUnit (g a) → ∀ z : Sp R', spMap g z ∈ V := by
@@ -63,7 +63,7 @@ theorem exists_forall_mem {V : (Sp R).Opens} (hV : genericPoint (Sp R) ∈ V) :
   · exact fun h => z.2.ne_top (Ideal.eq_top_of_isUnit_mem _ h hg)
 
 /- English proof (translation)
-Establish `hg : genericPoint (Sp R) ∈ Set.range (spMap (algebraMap R K))`. Rewrite using `[(IsGenericPointHom.fractionField R K).range_eq]`. Both sides reduce to the same expression. Take `⟨z, hz⟩` from `hg`. Conclude with `exists_forall_mem (V := ⟨Cᶜ, hC.isOpen_compl⟩) (hz ▸ h z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_forall_notMem {C : Set (Sp R)} (hC : IsClosed C)
     (h : ∀ z : Sp K, spMap (algebraMap R K) z ∉ C) :
@@ -74,7 +74,7 @@ theorem exists_forall_notMem {C : Set (Sp R)} (hC : IsClosed C)
   exact exists_forall_mem (V := ⟨Cᶜ, hC.isOpen_compl⟩) (hz ▸ h z)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `IsGenericPointHom.fractionField R K`. Use `⟨p₀ ≫ e.hom, h.of_iso (Iso.refl _) (Iso.refl _) e (Iso.refl _) (by simp) (by simp) (by simp) ?_⟩` and prove the remaining obligations. Simplify using `using he.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem exists_isPullback_stalk {Y Y₀ : Scheme.{0}} {p : Y ⟶ Sp R} {φ : Y₀ ⟶ Y} {p₀ : Y₀ ⟶ Sp K}
     (h : IsPullback φ p₀ p (spMap (algebraMap R K))) :
@@ -84,7 +84,7 @@ theorem exists_isPullback_stalk {Y Y₀ : Scheme.{0}} {p : Y ⟶ Sp R} {φ : Y�
   simpa using he.symm
 
 /- English proof (translation)
-Use `⟨pullback.lift π (IsOpenImmersion.lift V.ι (p' ≫ t) ?_) ?_, pullback.lift_fst _ _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι, Scheme.Hom.comp_apply]`. Conclude with `ht _`. Conclude with `w.trans (IsOpenImmersion.lift_fac _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_open {S S' Y Y' : Scheme.{0}} (p : Y ⟶ S) (V : S.Opens) {π : Y' ⟶ Y} {p' : Y' ⟶ S'}
     {t : S' ⟶ S} (w : π ≫ p = p' ≫ t) (ht : ∀ z, t z ∈ V) :
@@ -96,9 +96,9 @@ theorem exists_lift_open {S S' Y Y' : Scheme.{0}} (p : Y ⟶ S) (V : S.Opens) {�
   · exact w.trans (IsOpenImmersion.lift_fac _ _ _).symm
 
 /- English proof (translation)
-Take `⟨p₁, h₁⟩` from `exists_isPullback_stalk h`. Take `⟨V, hV, -, w, u, hw, hwu, hq⟩` from `StalkLimit.exists_spread h₁ q u₀ hu`. Take `⟨a, ha, H⟩` from `exists_forall_mem hV`. Use `⟨a, ha, fun R' _ g hg Y' π p' e => ?_⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `exists_lift_open p V e (H R' g hg)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨l ≫ u, by rw [Category.assoc, hq, reassoc_of% hl], fun φ' hφ' => ?_⟩` and prove the remaining obligations. Establish `: φ' ≫ l = w`. Rewrite using `[← cancel_mono (pullback.fst p V.ι), Category.assoc, hl, hφ', hw]`. Rewrite using `[reassoc_of% this, hwu]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_hom {Y X Y₀ : Scheme.{0}} (p : Y ⟶ Sp R) [QuasiCompact p] [QuasiSeparated p] (q : X ⟶ Sp R)
     [LocallyOfFinitePresentation q] {φ : Y₀ ⟶ Y} {p₀ : Y₀ ⟶ Sp K}
@@ -117,11 +117,11 @@ theorem exists_hom {Y X Y₀ : Scheme.{0}} (p : Y ⟶ Sp R) [QuasiCompact p] [Qu
   rw [reassoc_of% this, hwu]
 
 /- English proof (translation)
-Take `⟨p₁, h₁⟩` from `exists_isPullback_stalk h`. Take `⟨hc⟩` from `StalkLimit.nonempty_isLimit h₁`. Take `⟨V₀⟩ : Nonempty (StalkLimit.AffNhd (genericPoint (Sp R)))` from `IsCofiltered.nonempty`. Establish `: IsAffine V₀.1.toScheme` using `V₀.2.2`. Establish `: CompactSpace ((StalkLimit.diagram _ p).obj V₀)` using `QuasiCompact.compactSpace_of_compactSpace (pullback.snd p V₀.1.ι)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: QuasiSeparatedSpace ((StalkLimit.diagram _ p).obj V₀)` using `quasiSeparatedSpace_of_quasiSeparated (pullback.snd p V₀.1.ι)`. Set `ι₀ : (StalkLimit.diagram _ p).obj V₀ ⟶ Y` to `pullback.fst p V₀.1.ι`. Establish `e₀ : φ = (StalkLimit.cone h₁).π.app V₀ ≫ ι₀` using `(StalkLimit.cone_π_fst h₁ V₀).symm`. Take `⟨V, i, HV⟩` from `exists_lbIso_of_isLimit (StalkLimit.diagram _ p) (fun V => (StalkLimit.cone h₁).π.app V) (fun i => (StalkLimit.cone h₁).w i) hc (M.pull ι₀) (N.pull ι₀) (pull_isLB hM _) (pull_isLB hN _) (LBIso.trans (pull_isLB (pull_isLB hM _) _) (pull_isLB hM _) (pull_isLB (pull_isLB hN _) _) (l …`. Establish `e₁ : pullback.fst p V.1.ι = (StalkLimit.diagram _ p).map i ≫ ι₀` using `(StalkLimit.diagram_map_fst _ p i).symm`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `HV' : LBIso (M.pull (pullback.fst p V.1.ι)) (N.pull (pullback.fst p V.1.ι))` using `LBIso.trans (pull_isLB hM _) (pull_isLB (pull_isLB hM _) _) (pull_isLB hN _) (lbIso_pull_pull hM _ e₁) (LBIso.trans (pull_isLB (pull_isLB hM _) _) (pull_isLB (pull_isLB hN _) _) (pull_isLB hN _) HV (lbIso_pull_pull hN _ e₁).symm)`. Take `⟨a, ha, Ha⟩` from `exists_forall_mem V.2.1`. Use `⟨a, ha, fun R' _ g hg Y' π p' e => ?_⟩` and prove the remaining obligations. Take `⟨l, hl⟩` from `exists_lift_open p V.1 e (Ha R' g hg)`. Conclude with `lbIso_pull_comp l hl.symm hl.symm HV'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_lbIso {Y Y₀ : Scheme.{0}} (p : Y ⟶ Sp R) [QuasiCompact p] [QuasiSeparated p]
     {φ : Y₀ ⟶ Y} {p₀ : Y₀ ⟶ Sp K} (h : IsPullback φ p₀ p (spMap (algebraMap R K))) {M N : LB Y}
@@ -155,13 +155,13 @@ theorem exists_lbIso {Y Y₀ : Scheme.{0}} (p : Y ⟶ Sp R) [QuasiCompact p] [Qu
   exact lbIso_pull_comp l hl.symm hl.symm HV'
 
 /- English proof (translation)
-Take `⟨N, hN, M, s, hs⟩` from `hL.exists_veryAmpleBy f₀`. Take `⟨hs, hc⟩` from `(ProjSpace.veryAmpleBy_iff f₀ s).1 hs`. Set `c` to `ProjSpace.toProj f₀ s hs`. Set `u` to `ProjSpace.baseChange M (algebraMap R K)`. Establish `hu` using `ProjSpace.isPullback_baseChange M (algebraMap R K)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: Flat (spMap (algebraMap R K))` using `flat_specMap_localization (nonZeroDivisors R) K`. Establish `: Mono (spMap (algebraMap R K))` using `mono_specMap_localization (nonZeroDivisors R) K`. Establish `: Flat u` using `MorphismProperty.of_isPullback (P := @Flat) hu.flip inferInstance`. Establish `: Mono u` using `MorphismProperty.of_isPullback (P := .monomorphisms _) hu.flip (inferInstanceAs (Mono (spMap (algebraMap R K))))`. Establish `: QuasiCompact u` using `MorphismProperty.of_isPullback (P := @QuasiCompact) hu.flip inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `isPullback_toImage_of_isClosedImmersion (c ≫ u) c u rfl`. Use `isProper_str R M` as an intermediate fact. Use `⟨(c ≫ u).image, (c ≫ u).imageι ≫ PSpace.str R M, (c ≫ u).toImage, (ProjSpace.O1 R M).pull (c ≫ u).imageι, N, inferInstance, ?_, pull_isLB (ProjSpace.O1_isLB R M) _, (isAmple_projective_O_one R M).pull_of_isClosedImmersion _, hN, ?_⟩` and prove the remaining obligations. Use `hp.flip.paste_vert hu` as an intermediate fact. Rewrite `this` using `[ProjSpace.toProj_str]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1 {Y : Scheme.{0}} (F : Y ⟶ PSpace R M)` using `pull_isLB (ProjSpace.O1_isLB R M) F`. Use `LBIso.trans (isLB_lbPow hL' _) (pull_isLB (ProjSpace.O1_isLB K M) c) (pull_isLB (h1 _) _) (ProjSpace.lbIso_pullback_O1_toProj f₀ s hs).symm ?_` and prove the remaining obligations. Use `LBIso.trans (pull_isLB (ProjSpace.O1_isLB K M) c) (h1 (c ≫ u)) (pull_isLB (h1 _) _) (lbIso_pull_of_lbIso (ProjSpace.lbIso_pull_O1 M (algebraMap R K)).symm c rfl) ?_` and prove the remaining obligations. Conclude with `lbIso_pull_pull (ProjSpace.O1_isLB R M) _ (Scheme.Hom.toImage_imageι _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_projective_model {X₀ : Scheme.{0}} (f₀ : X₀ ⟶ Sp K) [IsProper f₀] {L₀ : LB X₀}
     (hL : IsAmpleLB L₀) (hL' : L₀.IsLB) :
@@ -193,7 +193,7 @@ theorem exists_projective_model {X₀ : Scheme.{0}} (f₀ : X₀ ⟶ Sp K) [IsPr
     exact lbIso_pull_pull (ProjSpace.O1_isLB R M) _ (Scheme.Hom.toImage_imageι _).symm
 
 /- English proof (translation)
-Take `⟨a, ha, Ha⟩` from `exists_lbIso f h (isLB_lbPow hL N) hH (LBIso.trans (pull_isLB (isLB_lbPow hL N) _) (isLB_lbPow (pull_isLB hL _) N) (pull_isLB hH _) (lbIso_lbPow_pull hL φ N).symm (LBIso.trans (isLB_lbPow (pull_isLB hL _) N) (isLB_lbPow hL₀ N) (pull_isLB hH _) (lbIso_lbPow e N).symm e'))`. Use `⟨a, ha, fun R' _ g hg X' π f' hp => ?_⟩` and prove the remaining obligations. Establish `: IsAffineHom π` using `MorphismProperty.of_isPullback (P := @IsAffineHom) hp.flip inferInstance`. Use `(isAmpleLB_pow_iff (pull_isLB hL π) hN).1 ((hA.pull_of_isAffineHom π).of_lbIso (isLB_lbPow (pull_isLB hL _) N) ?_)` and prove the remaining obligations. Conclude with `LBIso.trans (isLB_lbPow (pull_isLB hL _) N) (pull_isLB (isLB_lbPow hL N) _) (pull_isLB hH _) (lbIso_lbPow_pull hL π N) (Ha R' g hg X' π f' hp.w)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isAmpleLB {X X₀ : Scheme.{0}} (f : X ⟶ Sp R) [QuasiCompact f] [QuasiSeparated f]
     {φ : X₀ ⟶ X} {f₀ : X₀ ⟶ Sp K} (h : IsPullback φ f₀ f (spMap (algebraMap R K))) {L H : LB X} {L₀ : LB X₀}

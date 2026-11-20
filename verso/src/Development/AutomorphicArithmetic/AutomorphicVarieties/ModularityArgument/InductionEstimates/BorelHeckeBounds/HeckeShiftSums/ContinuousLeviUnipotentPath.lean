@@ -21,17 +21,15 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Adel PositivityTheory.Rg
 open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 
 /- English proof (translation)
-Set `ev : X → Module.Dual ℂ E` to `fun x => (LinearMap.proj x : (X → ℂ) →ₗ[ℂ] ℂ) ∘ₗ S`. Take `⟨b, hb, hsp, hli⟩` from `exists_linearIndependent ℂ (Set.range ev)`. Establish `hfin : b.Finite` using `hli.setFinite`. Use `haveI := hfin.fintype`. Establish `hch : ∀ y : b, ∃ x, ev x = y` using `fun y => hb y.2`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose q hq using hch`. Set `e` to `Fintype.equivFin b`. Set `R : E →ₗ[ℂ] (Fin (Fintype.card b) → ℂ)` to `LinearMap.pi fun i => ev (q (e.symm i))`. Establish `hR : Function.Injective R`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `v hv`. Establish `h1 : ∀ y ∈ b, y v = 0` using `fun y hy => by`. Use `congrFun hv (e ⟨y, hy⟩)` as an intermediate fact. Simplify `this` using `[R, hq]`. Establish `h2 : ∀ y ∈ Submodule.span ℂ b, y v = 0` using `fun y hy => by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact h1 y hy`. Consider the case `zero => rfl`. Consider the case `add y z _ _ hy hz => simp [hy, hz]`. Consider the case `smul a y _ hy => simp [hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply `hS` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Rewrite using `[map_zero]`. Conclude with `h2 (ev x) (hsp ▸ Submodule.subset_span ⟨x, rfl⟩)`. Take `⟨T, hT⟩` from `R.exists_leftInverse_of_injective (LinearMap.ker_eq_bot.2 hR)`.
-
-Conclude with `⟨_, fun i => q (e.symm i), T, fun v => LinearMap.congr_fun hT v⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem ptInv {E X : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimensional ℂ E] (S : E →ₗ[ℂ] (X → ℂ))
     (hS : Function.Injective S) :
@@ -66,11 +64,11 @@ private theorem ptInv {E X : Type} [AddCommGroup E] [Module ℂ E] [FiniteDimens
   exact ⟨_, fun i => q (e.symm i), T, fun v => LinearMap.congr_fun hT v⟩
 
 /- English proof (translation)
-Establish `hr : MemLp κ 2 (volume : Measure ℝ)` using `hk.1.memLp_of_hasCompactSupport hk.2`. Use `⟨(eLpNorm κ 2 volume).toReal, ENNReal.toReal_nonneg, fun u => ?_⟩` and prove the remaining obligations. Use `filter_upwards [(convSpec κ hk u).1] with x hx`. Rewrite using `[hx]`. Establish `hmp` using `measurePreserving_add_left (volume : Measure ℝ) x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : AEStronglyMeasurable (fun t => u (x + t)) (volume : Measure ℝ)` using `(Lp.aestronglyMeasurable u).comp_measurePreserving hmp`. Establish `hn : eLpNorm (fun t => u (x + t)) 2 volume = eLpNorm u 2 volume` using `eLpNorm_comp_measurePreserving (Lp.aestronglyMeasurable u) hmp`. Establish `h1` using `eLpNorm_le_eLpNorm_mul_eLpNorm_of_nnnorm (p := 2) (q := 2) (r := 1) hr.1 hg (fun (A : V →L[ℂ] W) (v : V) => A v) 1 (Eventually.of_forall fun t => by`. Rewrite using `[one_mul]`. Conclude with `(κ t).le_opNNNorm _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[eLpNorm_one_eq_lintegral_enorm, hn, ENNReal.coe_one, one_mul]`. Establish `h2` using `(enorm_integral_le_lintegral_enorm (fun t => κ t (u (x + t)))).trans h1`. Rewrite using `[← toReal_enorm, Lp.norm_def, ← ENNReal.toReal_mul]`. Conclude with `ENNReal.toReal_mono (ENNReal.mul_ne_top hr.2.ne (Lp.memLp u).2.ne) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem convPt {V W : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V]
     [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W]
@@ -95,11 +93,11 @@ private theorem convPt {V W : Type} [NormedAddCommGroup V] [InnerProductSpace �
   exact ENNReal.toReal_mono (ENNReal.mul_ne_top hr.2.ne (Lp.memLp u).2.ne) h2
 
 /- English proof (translation)
-Use `Measure.ext_of_lintegral _ fun φ hφ => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map hφ measurable_inv]`. Establish `h1 : ∫⁻ k, ∫⁻ h, φ (k⁻¹ * h) ∂ν ∂ν = ∫⁻ h, φ h ∂ν`. Establish `: ∀ᵐ k ∂ν, ∫⁻ h, φ (k⁻¹ * h) ∂ν = ∫⁻ h, φ h ∂ν` using `hs.mono fun k hk => (hi _ (U.inv_mem hk)).lintegral_comp hφ`. Rewrite using `[lintegral_congr_ae this, lintegral_const, measure_univ, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∫⁻ h, ∫⁻ k, φ (k⁻¹ * h) ∂ν ∂ν = ∫⁻ k, φ k⁻¹ ∂ν`. Establish `: ∀ᵐ h ∂ν, ∫⁻ k, φ (k⁻¹ * h) ∂ν = ∫⁻ k, φ k⁻¹ ∂ν` using `hs.mono fun h hh => by`. Rewrite using `[← (hi _ (U.inv_mem hh)).lintegral_comp (f := fun k => φ k⁻¹) (hφ.comp measurable_inv)]`. Simplify using the standard rewrite rules. Rewrite using `[lintegral_congr_ae this, lintegral_const, measure_univ, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, ← h2]`. Conclude with `(lintegral_lintegral_swap (f := fun k h => φ (k⁻¹ * h)) (hφ.comp (measurable_fst.inv.mul measurable_snd)).aemeasurable).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inv_map {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul₂ G] [MeasurableInv G]
     (ν : Measure G) [IsProbabilityMeasure ν] (U : Subgroup G) (hs : ∀ᵐ k ∂ν, k ∈ U)
@@ -120,11 +118,11 @@ private theorem inv_map {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul�
     (hφ.comp (measurable_fst.inv.mul measurable_snd)).aemeasurable).symm
 
 /- English proof (translation)
-Use `haveI := D.prob`. Establish `hm` using `inv_map D.ν D.U D.supp D.inv`. Establish `hI : ∀ φ : G1 K n → ℂ, ∫ k, φ k⁻¹ ∂D.ν = ∫ k, φ k ∂D.ν` using `fun φ => by`. Use `integral_map_equiv (μ := D.ν) (MeasurableEquiv.inv (G1 K n)) φ` as an intermediate fact. Rewrite `this` using `[show (Measure.map (MeasurableEquiv.inv (G1 K n)) D.ν) = D.ν from hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `this.symm`. Introduce `g`. Prove the components needed by the constructor for the conclusion. Rewrite using `[CuspidalProjection.ccStar_apply, ← (hf g⁻¹).2, ← integral_conj, ← hI]`. Use `integral_congr_ae (D.supp.mono fun k hk => ?_)` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[D.star k hk, mul_comm]`. Rewrite using `[CuspidalProjection.ccStar_apply, ← (hf g⁻¹).1, ← integral_conj, ← hI]`. Use `integral_congr_ae (D.supp.mono fun k hk => ?_)` and prove the remaining obligations. Simplify using `[D.star k hk, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem star_hecke {K : Type} [Field K] [NumberField K] {n : ℕ} (D : TypeDat K n) (f : CC K n)
     (hf : D.Hecke f) : D.Hecke (CuspidalProjection.ccStar f) := by
@@ -144,13 +142,13 @@ private theorem star_hecke {K : Type} [Field K] [NumberField K] {n : ℕ} (D : T
     simp [D.star k hk, mul_comm]
 
 /- English proof (translation)
-Take `⟨β, hk, hc, -⟩` from `convR K μ μ₂ τ₁ τ₂ hp D d d' A A' (CuspidalProjection.ccStar a) (star_hecke D a ha)`. Take `⟨hs, hadj, -⟩` from `convAdj β hk`. Take `⟨C, hC0, hC⟩` from `convPt (sharp β) hs`. Use `⟨C, hC0, fun ψ => ?_⟩` and prove the remaining obligations. Establish `e : Jd A.J (Rop μ a ψ) = UpperTheory.V.Z.IntegralApplyAeEq.conv (sharp β) (Jd A.J ψ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ext_inner_left ℂ fun u => ?_` and prove the remaining obligations. Establish `h1 : Rop μ (CuspidalProjection.ccStar a) (A.J u) = A.J (UpperTheory.V.Z.IntegralApplyAeEq.conv β u)` using `hc u _ (convSpec β hk u).1`. Rewrite using `[← hadj, ContinuousLinearMap.adjoint_inner_right, ContinuousLinearMap.adjoint_inner_right, ContinuousLinearMap.adjoint_inner_right]`. Express the relevant statement in the definitionally equal form `⟪A.J u, Rop μ a ψ⟫_ℂ = ⟪A.J (UpperTheory.V.Z.IntegralApplyAeEq.conv β u), ψ⟫_ℂ`. Rewrite using `[← h1, ← ropAdj, ContinuousLinearMap.adjoint_inner_left]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ‖Jd A.J ψ‖ ≤ ‖ψ‖`. Use `(ContinuousLinearMap.le_opNorm _ _).trans ?_` and prove the remaining obligations. Establish `: ‖Jd A.J‖ ≤ 1`. Rewrite using `[Jd, LinearIsometryEquiv.norm_map]`. Conclude with `A.J.norm_toContinuousLinearMap_le`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_left (norm_nonneg _) this`. Use `filter_upwards [hC (Jd A.J ψ)] with s hs'`. Rewrite using `[e]`. Conclude with `hs'.trans (mul_le_mul_of_nonneg_left hn hC0)`.
+A detailed English derivation is pending.
 -/
 private theorem adjBd {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure]
     (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (hp : Pair μ₂ τ₁ τ₂) (D : TypeDat K (2 + 2))
@@ -179,15 +177,15 @@ private theorem adjBd {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] 
   exact hs'.trans (mul_le_mul_of_nonneg_left hn hC0)
 
 /- English proof (translation)
-Establish `hW : LocallyIntegrable (fun x => W x) (volume : Measure ℝ)` using `(Lp.memLp W).locallyIntegrable (by norm_num)`. Establish `hUl : LocallyIntegrable U (volume : Measure ℝ)` using `hU.locallyIntegrable`. Establish `hz : ∀ᵐ x : ℝ, W x - U x = 0`. Use `ae_eq_zero_of_integral_contDiff_smul_eq_zero (hW.sub hUl) fun g hg hc => ?_` and prove the remaining obligations. Establish `i1 : Integrable (fun x => g x • W x) (volume : Measure ℝ)` using `hW.integrable_smul_left_of_hasCompactSupport hg.continuous hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `i2 : Integrable (fun x => g x • U x) (volume : Measure ℝ)` using `hUl.integrable_smul_left_of_hasCompactSupport hg.continuous hc`. Simplify using `only [smul_sub]`. Rewrite using `[integral_sub i1 i2, sub_eq_zero]`. Use `ext_inner_left ℂ fun v => ?_` and prove the remaining obligations. Rewrite using `[← integral_inner i1, ← integral_inner i2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hβ : Continuous fun x => (g x : ℂ)` using `Complex.continuous_ofReal.comp hg.continuous`. Establish `hβc : HasCompactSupport fun x => (g x : ℂ)` using `hc.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Take `⟨u, hu⟩` from `(denseCc d).2.1 _ v hβ hβc`. Establish `h0` using `h _ v u hβ hβc hu`. Rewrite `h0` using `[L2.inner_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : ∫ x, ⟪v, g x • W x⟫_ℂ = ∫ x, ⟪u x, W x⟫_ℂ`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hu] with x hx`. Rewrite using `[hx, inner_smul_left, Complex.conj_ofReal, ← Complex.coe_smul, inner_smul_right]`. Rewrite using `[e1, h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [Complex.conj_ofReal]`. Rewrite using `[← Complex.coe_smul, inner_smul_right]`. Use `filter_upwards [hz] with x hx`. Conclude with `sub_eq_zero.1 hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem aeId {d : ℕ} (W : L (Eu d)) (U : ℝ → Eu d) (hU : Continuous U)
     (h : ∀ (β : ℝ → ℂ) (v : Eu d) (u : L (Eu d)), Continuous β → HasCompactSupport β → (∀ᵐ x : ℝ, u x = β x • v) →
@@ -221,7 +219,7 @@ private theorem aeId {d : ℕ} (W : L (Eu d)) (U : ℝ → Eu d) (hU : Continuou
   exact sub_eq_zero.1 hx
 
 /- English proof (translation)
-Establish `hd : Dense {x : ℝ | ‖U x‖ ≤ B}` using `Measure.dense_of_ae h`. Establish `hc : IsClosed {x : ℝ | ‖U x‖ ≤ B}` using `isClosed_le hU.norm continuous_const`. Establish `: s ∈ closure {x : ℝ | ‖U x‖ ≤ B}` using `hd s`. Rewrite `this` using `[hc.closure_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem bdAll {E : Type} [NormedAddCommGroup E] (U : ℝ → E) (hU : Continuous U) (B : ℝ)
     (h : ∀ᵐ s : ℝ, ‖U s‖ ≤ B) (s : ℝ) : ‖U s‖ ≤ B := by
@@ -232,14 +230,14 @@ private theorem bdAll {E : Type} [NormedAddCommGroup E] (U : ℝ → E) (hU : Co
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Use `haveI : CompactSpace (KG K (2 + 2)) := isCompact_iff_compactSpace.1 ((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 (2 + 2)).1`. Conclude with `⟨Measure.haar, inferInstance⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exK (K : Type) [Field K] [NumberField K] : ∃ κ : Measure (KG K (2 + 2)), κ.IsHaarMeasure := by
   haveI : CompactSpace (KG K (2 + 2)) := isCompact_iff_compactSpace.1 ((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 (2 + 2)).1
   exact ⟨Measure.haar, inferInstance⟩
 
 /- English proof (translation)
-Establish `h1 : Continuous fun s : ℝ => ((1 : G1 K 2), (1 : G1 K 2), s - r)` using `by fun_prop`. Conclude with `(Continuous.comp (g := fun p : G1 K 2 × G1 K 2 × ℝ => lv p.1 p.2.1 p.2.2) (blkLaws (K := K)).2.2.2.1 h1).mul continuous_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem continuous_levi_unipotent_path (K : Type) [Field K] [NumberField K] (h : G1 K (2 + 2)) (r : ℝ) :
     Continuous fun s : ℝ => (lv (1 : G1 K 2) 1 (s - r) * h : G1 K (2 + 2)) := by
@@ -248,9 +246,9 @@ private theorem continuous_levi_unipotent_path (K : Type) [Field K] [NumberField
     continuous_const
 
 /- English proof (translation)
-Rewrite using `[integral_prod _ h]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h.prod_right_ae] with m₁ h1`. Rewrite using `[integral_prod _ h1]`. Use `integral_congr_ae ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [h1.prod_right_ae] with m₂ h2`. Rewrite using `[integral_prod _ h2]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h2.prod_right_ae] with t h3`. Rewrite using `[integral_prod _ h3]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem five {M₁ M₂ T Kc U : Type} [MeasurableSpace M₁] [MeasurableSpace M₂] [MeasurableSpace T] [MeasurableSpace Kc]
     [MeasurableSpace U] (a₁ : Measure M₁) (a₂ : Measure M₂) (τ : Measure T) (κ : Measure Kc) (ν : Measure U)
@@ -270,9 +268,9 @@ private theorem five {M₁ M₂ T Kc U : Type} [MeasurableSpace M₁] [Measurabl
   rw [integral_prod _ h3]
 
 /- English proof (translation)
-Establish `h0 : Integrable (fun p : (M × M) × Z => u p.2 * b p.1.1 p.1.2 p.2) ((a.prod a).prod ζ)` using `(hu.comp_snd (a.prod a)).mul_bdd hb.aestronglyMeasurable (Eventually.of_forall fun p => hC _ _ _)`. Establish `h1 : ∀ z, ∫ m : M × M, u z * b m.1 m.2 z ∂(a.prod a) = u z * ∫ x, ∫ y, b x y z ∂a ∂a`. Introduce `z`. Rewrite using `[integral_const_mul, integral_prod]`. Conclude with `Integrable.of_bound (hb.comp_measurable (measurable_id.prodMk measurable_const)).aestronglyMeasurable C (Eventually.of_forall fun p => hC _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x y => ?_, h0.integral_prod_left, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hu.mul_bdd (hb.comp_measurable (g := fun z => ((x, y), z)) (measurable_const.prodMk measurable_id)).aestronglyMeasurable (Eventually.of_forall fun p => hC _ _ _)`. Simplify `h0.integral_prod_right` using `only [h1]`. Rewrite using `[integral_integral_swap (f := fun (m : M × M) z => u z * b m.1 m.2 z) h0]`. Simplify using `only [h1]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem swap {M Z : Type} [MeasurableSpace M] [MeasurableSpace Z] (a : Measure M) (ζ : Measure Z) [IsFiniteMeasure a]
     [SFinite ζ] (u : Z → ℂ) (hu : Integrable u ζ) (b : M → M → Z → ℂ)
@@ -296,17 +294,17 @@ private theorem swap {M Z : Type} [MeasurableSpace M] [MeasurableSpace Z] (a : M
     simp only [h1]
 
 /- English proof (translation)
-Set `Q : ι → M × M → ℂ` to `fun i m => ∫ k, b i m.1 m.2 k ∂κ`. Establish `hQ : ∀ i, StronglyMeasurable (Q i)` using `fun i => (hb i).integral_prod_right'`. Establish `hQb : ∀ i m, ‖Q i m‖ ≤ C i * κ.real univ` using `fun i m => norm_integral_le_of_norm_le_const (Eventually.of_forall fun k => hC i _ _ k)`. Establish `hS : ∀ i x y, Integrable (b i x y) κ` using `fun i x y => Integrable.of_bound ((hb i).comp_measurable (g := fun z => ((x, y), z)) (measurable_const.prodMk measurable_id)).aestronglyMeasurable (C i) (Eventually.of_forall fun k => hC i _ _ k)`. Establish `hY : ∀ i x, Integrable (fun y => Q i (x, y)) a` using `fun i x => Integrable.of_bound ((hQ i).comp_measurable (g := fun y => (x, y)) (measurable_const.prodMk measurable_id)).aestronglyMeasurable _ (Eventually.of_forall fun y => hQb i _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ i, Integrable (fun x => ∫ y, Q i (x, y) ∂a) a` using `fun i => Integrable.of_bound (hQ i).integral_prod_right'.aestronglyMeasurable (C i * κ.real univ * a.real univ) (Eventually.of_forall fun x => norm_integral_le_of_norm_le_const (Eventually.of_forall fun y => hQb i _))`. Establish `hM : ∀ i, Integrable (Q i) (a.prod a)` using `fun i => Integrable.of_bound (hQ i).aestronglyMeasurable _ (Eventually.of_forall fun m => hQb i m)`. Establish `e1 : ∀ x y, ∫ t, ∫ k, ∑ i, u i t * b i x y k ∂κ = ∑ i, (∫ t, u i t) * Q i (x, y)`. Introduce `x y`. Establish `: ∀ t, ∫ k, ∑ i, u i t * b i x y k ∂κ = ∑ i, u i t * Q i (x, y)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t`. Rewrite using `[integral_finset_sum _ fun i _ => (hS i x y).const_mul _]`. Simplify using `only [integral_const_mul, Q]`. Simplify using `only [this]`. Rewrite using `[integral_finset_sum _ fun i _ => (hu i).mul_const _]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [integral_mul_const]`. Simplify using `only [e1]`. Establish `e2 : ∀ x, ∫ y, ∑ i, (∫ t, u i t) * Q i (x, y) ∂a = ∑ i, (∫ t, u i t) * ∫ y, Q i (x, y) ∂a`. Introduce `x`. Rewrite using `[integral_finset_sum _ fun i _ => (hY i x).const_mul _]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [integral_const_mul]`. Simplify using `only [e2]`. Rewrite using `[integral_finset_sum _ fun i _ => (hX i).const_mul _]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[integral_const_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `h` using `(swap a κ (fun _ => 1) (integrable_const 1) (b i) (hb i) (C i) (hC i)).2.2.2`. Simplify using `only [one_mul] at h`. Rewrite using `[← h, integral_prod _ (hM i)]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem oneS {ι M Kc : Type} [Fintype ι] [MeasurableSpace M] [MeasurableSpace Kc] (a : Measure M) (κ : Measure Kc)
     [IsFiniteMeasure a] [IsFiniteMeasure κ] (u : ι → ℝ → ℂ) (hu : ∀ i, Integrable (u i)) (b : ι → M → M → Kc → ℂ)
@@ -351,9 +349,9 @@ private theorem oneS {ι M Kc : Type} [Fintype ι] [MeasurableSpace M] [Measurab
   simp only [one_mul] at h
   rw [← h, integral_prod _ (hM i)]
 /- English proof (translation)
-Establish `h1 : HP 2 2 (lv x y t * g) = t + HH g`. Use `(hpSpec (K := K)).1 0 x y t g` as an intermediate fact. Rewrite `this` using `[show nn (0 : UPos (2 + 2) 2 → 𝔸[K]) = 1 from unipOne_zero 2, one_mul]`. Then use the resulting hypothesis. Establish `h2 : f (lv x y t * g) = f (lv x y 0 * g)`. Rewrite using `[← hf.ray t (lv x y 0 * g), ← mul_assoc, (blkLaws (K := K)).2.1, one_mul, one_mul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[bf, h1, h2]`. Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem bf_lv {K : Type} [Field K] [NumberField K] {f : G1 K (2 + 2) → ℂ} (hf : SFun f) (β : ℝ → ℂ) (x y : G1 K 2) (t : ℝ)
     (g : G1 K (2 + 2)) :
@@ -369,15 +367,15 @@ private theorem bf_lv {K : Type} [Field K] [NumberField K] {f : G1 K (2 + 2) →
   ring
 
 /- English proof (translation)
-Take `⟨hP, -, -⟩` from `bfFun f β hf hβ hβs`. Establish `hk0` using `((hpSpec (K := K)).2.1 k hk).1`. Establish `hH : HH (lv x y t * k) = t`. Use `(hpSpec (K := K)).1 0 x y t k` as an intermediate fact. Rewrite `this` using `[show nn (0 : UPos (2 + 2) 2 → 𝔸[K]) = 1 from unipOne_zero 2, one_mul, hk0, add_zero]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hr : ∀ {h : G1 K (2 + 2) → ℂ}, SFun h → h (lv x y t * k) = h (lv x y 0 * k)` using `fun hh => by`. Rewrite using `[← hh.ray t (lv x y 0 * k), ← mul_assoc, (blkLaws (K := K)).2.1, one_mul, one_mul, add_zero]`. Establish `e1 : ∀ X : UPos (2 + 2) 2 → 𝔸[K], bf β f (nn X * (lv x y t * k)) = β t * Complex.exp (2 * (t : ℂ)) * f (lv x y 0 * k)`. Introduce `X`. Rewrite using `[hP.unip, bf_lv hf, hk0]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [mul_assoc (nn _), e1]`. Rewrite using `[integral_const_mul]`. Establish `e2 : ∫ X in unipFundamentalDomain K (2 + 2) 2, Φ (nn X * (lv x y t * k)) ∂unipMeasure K (2 + 2) 2 = ct 2 Φ (lv x y t * k)` using `rfl`. Establish `e3 : conj (Complex.exp (2 * (t : ℂ))) = Complex.exp (2 * (t : ℂ))`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (2 * (t : ℂ)) = ((2 * t : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[h2, ← Complex.exp_conj, Complex.conj_ofReal]`. Establish `hE : (Real.exp (-4 * t) : ℂ) * Complex.exp (2 * (t : ℂ)) * Complex.exp (2 * (t : ℂ)) = 1`. Use `push_cast`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, hQ, secF, secF, hH, hr (hs _), hr (hs' _), map_mul, map_mul, e3]`. Take the linear combination `(conj (β t) * (conj (f (lv x y 0 * k)) * (sec (U t) (lv x y 0 * k) + sec' (U' t) (lv x y 0 * k)))) * hE`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem innerX {K : Type} [Field K] [NumberField K] {f : G1 K (2 + 2) → ℂ} (hf : SFun f) (β : ℝ → ℂ) (hβ : Continuous β)
     (hβs : HasCompactSupport β) (Φ : G1 K (2 + 2) → ℂ) {d d' : ℕ} (sec : Eu d →ₗ[ℂ] (G1 K (2 + 2) → ℂ))
@@ -414,7 +412,7 @@ private theorem innerX {K : Type} [Field K] [NumberField K] {f : G1 K (2 + 2) �
   linear_combination (conj (β t) * (conj (f (lv x y 0 * k)) * (sec (U t) (lv x y 0 * k) + sec' (U' t) (lv x y 0 * k)))) * hE
 
 /- English proof (translation)
-Establish `h` using `(EuclideanSpace.basisFun (Fin e) ℂ).sum_repr w`. Use `conv_lhs => rw [← h]`. Rewrite using `[map_sum, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Pi.smul_apply, smul_eq_mul, EuclideanSpace.basisFun_repr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sec_exp {e : ℕ} {X : Type} (sec : Eu e →ₗ[ℂ] (X → ℂ)) (w : Eu e) (g : X) :
     sec w g = ∑ i, w i * sec (EuclideanSpace.basisFun (Fin e) ℂ i) g := by
@@ -425,7 +423,7 @@ private theorem sec_exp {e : ℕ} {X : Type} (sec : Eu e →ₗ[ℂ] (X → ℂ)
   rw [map_smul, Pi.smul_apply, smul_eq_mul, EuclideanSpace.basisFun_repr]
 
 /- English proof (translation)
-Establish `h` using `(EuclideanSpace.basisFun (Fin e) ℂ).sum_repr w`. Use `conv_lhs => rw [← h]`. Rewrite using `[inner_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right, EuclideanSpace.basisFun_repr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem inner_exp {e : ℕ} (v w : Eu e) :
     ⟪v, w⟫_ℂ = ∑ i, w i * ⟪v, EuclideanSpace.basisFun (Fin e) ℂ i⟫_ℂ := by
@@ -437,35 +435,27 @@ private theorem inner_exp {e : ℕ} (v w : Eu e) :
 
 set_option synthInstance.maxHeartbeats 400000 in
 /- English proof (translation)
-Use `haveI := isFiniteMeasure_quotientMeasure μ₂`. Use `haveI : IsFiniteMeasure (fd μ₂) := isFiniteMeasure_restrict.2 (measure_fundamentalDomain_pos_lt_top (Gam K 2) μ₂).2.ne`. Use `haveI : CompactSpace (KG K (2 + 2)) := isCompact_iff_compactSpace.1 ((blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 (2 + 2)).1`. Use `haveI : IsFiniteMeasure κ := CompactSpace.isFiniteMeasure`. Use `haveI : SFinite (fd μ₂) := inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : SFinite κ := inferInstance`. Use `haveI : SecondCountableTopology (KG K (2 + 2)) := TopologicalSpace.Subtype.secondCountableTopology _`. Establish `hs : ∀ w, SFun (A.sec w)` using `fun w => secFun μ₂ τ₁ τ₂ D hp.irr₁ hp.irr₂ _ ((A.onto (A.sec w)).1 ⟨_, rfl⟩).1 ((A.onto (A.sec w)).1 ⟨_, rfl⟩).2`. Establish `hs' : ∀ w, SFun (A'.sec w)` using `fun w => secFun μ₂ τ₂ τ₁ D hp.irr₂ hp.irr₁ _ ((A'.onto (A'.sec w)).1 ⟨_, rfl⟩).1 ((A'.onto (A'.sec w)).1 ⟨_, rfl⟩).2`. Take `⟨hP, hB, hD⟩` from `bfFun (A.sec v) β (hs v) hβ hβs`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hv : Reps μ (A.J u) (th (bf β (A.sec v)))` using `A.spec β v u hβ hβs hu`. Take `⟨hI, hE⟩` from `(master μ μ₂ κ c hU _ hP.cont hP.rat hB hD _ w₀ hv).2.2 Φ hΦ hi hw`. Take `⟨hs₁, hs₀⟩` from `secIp K μ μ₂ τ₁ τ₂ hp D d d' A A' κ c hU`. Set `e` to `EuclideanSpace.basisFun (Fin d) ℂ`. Set `e'` to `EuclideanSpace.basisFun (Fin d') ℂ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ui : Fin d ⊕ Fin d' → ℝ → ℂ` to `Sum.elim (fun i t => conj (β t) * U t i) (fun j t => conj (β t) * U' t j)`. Set `sv : Fin d ⊕ Fin d' → G1 K (2 + 2) → ℂ` to `Sum.elim (fun i => A.sec (e i)) (fun j => A'.sec (e' j))`. Set `bi : Fin d ⊕ Fin d' → G1 K 2 → G1 K 2 → KG K (2 + 2) → ℂ` to `fun i x y k => conj (A.sec v (lv x y 0 * k.1)) * sv i (lv x y 0 * k.1)`. Establish `hsv : ∀ i, SFun (sv i)`. Introduce and unpack `(i | j)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hs _`. Conclude with `hs' _`. Establish `hcj : Continuous fun t => conj (β t)` using `Complex.continuous_conj.comp hβ`. Establish `hcs : HasCompactSupport fun t => conj (β t)` using `hβs.comp_left (g := fun z : ℂ => conj z) (by simp)`. Establish `hui : ∀ i, Integrable (ui i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `(i | j)`. Conclude with `(hcj.mul (by fun_prop)).integrable_of_hasCompactSupport hcs.mul_right`. Conclude with `(hcj.mul (by fun_prop)).integrable_of_hasCompactSupport hcs.mul_right`. Establish `hlv : Continuous fun p : (G1 K 2 × G1 K 2) × KG K (2 + 2) => (lv p.1.1 p.1.2 0 * p.2.1 : G1 K (2 + 2))`. Establish `h1 : Continuous fun p : (G1 K 2 × G1 K 2) × KG K (2 + 2) => (p.1.1, p.1.2, (0 : ℝ))` using `by fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Conclude with `(Continuous.comp (g := fun p : G1 K 2 × G1 K 2 × ℝ => lv p.1 p.2.1 p.2.2) (blkLaws (K := K)).2.2.2.1 h1).mul (continuous_subtype_val.comp continuous_snd)`. Establish `hbi : ∀ i, StronglyMeasurable fun p : (G1 K 2 × G1 K 2) × KG K (2 + 2) => bi i p.1.1 p.1.2 p.2` using `fun i => ((Complex.continuous_conj.comp ((hs v).cont.comp hlv)).mul ((hsv i).cont.comp hlv)).stronglyMeasurable`. Take `⟨C₀, hC₀⟩` from `(hs v).bdd`. Use `choose C hC using fun i => (hsv i).bdd`. Establish `hbd : ∀ i x y k, ‖bi i x y k‖ ≤ C₀ * C i` using `fun i x y k => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [bi, norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul (hC₀ _) (hC i _) (norm_nonneg _) ((norm_nonneg _).trans (hC₀ (1 : G1 K (2 + 2))))`. Establish `key` using `oneS (fd μ₂) κ ui hui bi hbi _ hbd`. Establish `hex : ∀ (x y : G1 K 2) (t : ℝ) (k : KG K (2 + 2)), conj (β t) * (conj (A.sec v (lv x y 0 * k.1)) * (A.sec (U t) (lv x y 0 * k.1) + A'.sec (U' t) (lv x y 0 * k.1))) = ∑ i, ui i t * bi i x y k`. Introduce `x y t k`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_sum_type, sec_exp A.sec (U t), sec_exp A'.sec (U' t), mul_add, mul_add, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [ui, bi, sv, Sum.elim_inl, Sum.elim_inr]`. Apply the tactic sequence `congr 1 <;> exact Finset.sum_congr rfl fun i _ => by ring`. Establish `nest : ∫ x, ∫ y, ∫ t, ∫ k, ∫ X, conj (bf β (A.sec v) (pt (x, y, t, k, X))) * Φ (pt (x, y, t, k, X)) ∂((unipMeasure K (2 + 2) 2).restrict (unipFundamentalDomain K (2 + 2) 2)) ∂κ ∂((volume : Measure ℝ).withDensity fun t => ENNReal.ofReal (Real.exp (-4 * t))) ∂fd μ₂ ∂fd μ₂ = ∫ x, ∫ …`. Use `integral_congr_ae (Eventually.of_forall fun x => integral_congr_ae (Eventually.of_forall fun y => ?_))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `beta_reduce`. Rewrite using `[integral_withDensity_eq_integral_toReal_smul (by fun_prop) (Eventually.of_forall fun _ => ENNReal.ofReal_lt_top)]`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[ENNReal.toReal_ofReal (Real.exp_pos _).le, Complex.real_smul, ← integral_const_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Conclude with `(innerX (hs v) β hβ hβs Φ A.sec A'.sec U U' hs hs' hQ x y t k.1 k.2).trans (hex x y t k)`. Establish `hui' : ∀ i, Integrable (fun t => conj (β t) * U t i)` using `fun i => hui (Sum.inl i)`. Establish `hR : ∫ t, conj (β t) * ⟪v, U t⟫_ℂ = ∑ i, (∫ t, conj (β t) * U t i) * ⟪v, e i⟫_ℂ`. Establish `hin : ∀ t, conj (β t) * ⟪v, U t⟫_ℂ = ∑ i, conj (β t) * U t i * ⟪v, e i⟫_ℂ`.
-
-Introduce `t`. Rewrite using `[inner_exp, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Simplify using `only [hin]`. Rewrite using `[integral_finset_sum _ fun i _ => (hui' i).mul_const _]`.
-
-Simplify using `only [integral_mul_const]`. Establish `t1 : ∀ i, (c : ℂ) * ((∫ t, ui (Sum.inl i) t) * ∫ k, ∫ x, ∫ y, bi (Sum.inl i) x y k ∂fd μ₂ ∂fd μ₂ ∂κ) = (∫ t, conj (β t) * U t i) * ⟪v, e i⟫_ℂ` using `fun i => by`. Establish `hb : (∫ k, ∫ x, ∫ y, bi (Sum.inl i) x y k ∂fd μ₂ ∂fd μ₂ ∂κ) = ∫ k : KG K (2 + 2), pm μ₂ (A.sec v) (A.sec (e i)) k k ∂κ` using `rfl`. Establish `hu' : (∫ t, ui (Sum.inl i) t) = ∫ t, conj (β t) * U t i` using `rfl`. Rewrite using `[hb, hu', ← hs₁ v (e i)]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `t2 : ∀ j, (c : ℂ) * ((∫ t, ui (Sum.inr j) t) * ∫ k, ∫ x, ∫ y, bi (Sum.inr j) x y k ∂fd μ₂ ∂fd μ₂ ∂κ) = 0` using `fun j => by`. Establish `hb : (∫ k, ∫ x, ∫ y, bi (Sum.inr j) x y k ∂fd μ₂ ∂fd μ₂ ∂κ) = ∫ k : KG K (2 + 2), pm μ₂ (A.sec v) (A'.sec (e' j)) k k ∂κ` using `rfl`. Rewrite using `[hb, hs₀, mul_zero, mul_zero]`. Establish `hfive` using `five (fd μ₂) (fd μ₂) ((volume : Measure ℝ).withDensity fun t => ENNReal.ofReal (Real.exp (-4 * t))) κ ((unipMeasure K (2 + 2) 2).restrict (unipFundamentalDomain K (2 + 2) 2)) _ hI`.
-
-Rewrite using `[hE, parM, hfive, nest, key, hR, Fintype.sum_sum_type, mul_add, Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [t1, t2, Finset.sum_const_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ipSec {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure]
     (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (τ₁ τ₂ : Submodule ℂ (L2 μ₂)) (hp : Pair μ₂ τ₁ τ₂) (D : TypeDat K (2 + 2))
@@ -563,35 +553,31 @@ private theorem ipSec {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] 
   simp only [t1, t2, Finset.sum_const_zero, add_zero]
 
 /- English proof (translation)
-Introduce `K _ _ _ μ _ μ₂ _ τ₁ τ₂ hp D d d' A A' a P hP ha`. Establish `hp' : Pair μ₂ τ₂ τ₁` using `⟨hp.irr₂, hp.irr₁, hp.orth.symm⟩`. Take `⟨C₁, hC₁, hb₁⟩` from `adjBd μ μ₂ τ₁ τ₂ hp D d d' A A' a ha`. Take `⟨C₂, hC₂, hb₂⟩` from `adjBd μ μ₂ τ₂ τ₁ hp' D d' d A' A a ha`. Use `⟨max C₁ C₂, fun φ hφ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨κ, hκ⟩` from `exK K`. Take `⟨c, hU⟩` from `(unf μ μ₂ κ).1`. Take `⟨hs₁, hs₀⟩` from `secIp K μ μ₂ τ₁ τ₂ hp D d d' A A' κ c hU`. Take `⟨hkc, hrc⟩` from `ctKv μ a`. Take `⟨kc, hkcc, hkcs⟩` from `hkc 2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hc₀, hr₀, hi₀, -, -⟩` from `hrc φ`. Establish `hf : Continuous (ct 2 (rc μ a φ))`. Establish `: ct 2 (rc μ a φ) = fun z => ⟪kc z, φ⟫_ℂ` using `funext fun z => (hkcs φ z).symm`. Rewrite using `[this]`. Conclude with `hkcc.inner continuous_const`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `choose v v' hv using ctMem K μ μ₂ τ₁ τ₂ hp D d d' A A' a P hP ha φ hφ`. Set `S : (Eu d × Eu d') →ₗ[ℂ] (G1 K (2 + 2) → ℂ)` to `A.sec ∘ₗ LinearMap.fst ℂ _ _ + A'.sec ∘ₗ LinearMap.snd ℂ _ _`. Establish `hS : Function.Injective S`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce and unpack `⟨x, y⟩ hxy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : A.sec x = A'.sec (-y)`. Establish `: A.sec x + A'.sec y = 0` using `hxy`. Rewrite using `[map_neg]`. Conclude with `eq_neg_of_add_eq_zero_left this`. Establish `h1` using `hs₁ x x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hs₀ x (-y)`. Rewrite `h2` using `[← e]`. Rewrite `h1` using `[h2, mul_zero]`. Establish `hx : x = 0` using `inner_self_eq_zero.1 h1.symm`. Establish `hy : y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `A'.inj` to reduce the goal to its premises. Establish `: A.sec x + A'.sec y = 0` using `hxy`. Rewrite `this` using `[hx, map_zero, zero_add]`. Rewrite using `[this, map_zero]`. Rewrite using `[hx, hy]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Take `⟨n, p, T, hT⟩` from `ptInv S hS`. Establish `hcv : Continuous fun s => (v s, v' s)`. Establish `e : (fun s => (v s, v' s)) = fun s => T (fun i => ct 2 (rc μ a φ) (lv 1 1 (s - HH (p i)) * p i))`. Use function extensionality and compare the values at `s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← hT (v s, v' s)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(hv s (p i)).symm`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `T.continuous_of_finiteDimensional.comp (continuous_pi fun i => hf.comp (continuous_levi_unipotent_path K (p i) _))`. Establish `hex : Continuous fun s : ℝ => Complex.exp (-2 * (s : ℂ))` using `by fun_prop`. Establish `hUc : Continuous fun s : ℝ => Complex.exp (-2 * (s : ℂ)) • v s` using `hex.smul hcv.fst`. Establish `hUc' : Continuous fun s : ℝ => Complex.exp (-2 * (s : ℂ)) • v' s` using `hex.smul hcv.snd`. Establish `hsF : ∀ {e : ℕ} (sec : Eu e →ₗ[ℂ] (G1 K (2 + 2) → ℂ)) (y : ℝ → Eu e) (z : G1 K (2 + 2)), secF sec (fun s : ℝ => Complex.exp (-2 * (s : ℂ)) • y s) z = sec (y (HH z)) z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e sec y z`. Rewrite using `[secF, map_smul, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← Complex.exp_add]`. Simplify using the standard rewrite rules. Establish `hQ : ∀ z, ct 2 (rc μ a φ) z = secF A.sec (fun s : ℝ => Complex.exp (-2 * (s : ℂ)) • v s) z + secF A'.sec (fun s : ℝ => Complex.exp (-2 * (s : ℂ)) • v' s) z`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hsF, hsF, ← hv (HH z) z, sub_self, (blkLaws (K := K)).2.2.1, one_mul]`. Establish `hQ' : ∀ z, ct 2 (rc μ a φ) z = secF A'.sec (fun s : ℝ => Complex.exp (-2 * (s : ℂ)) • v' s) z + secF A.sec (fun s : ℝ => Complex.exp (-2 * (s : ℂ)) • v s) z` using `fun z => by rw [hQ, add_comm]`. Establish `ae₁` using `aeId (Jd A.J (Rop μ a φ)) _ hUc fun β w u hβ hβs hu => by`. Rewrite using `[ContinuousLinearMap.adjoint_inner_right]`. Conclude with `ipSec μ μ₂ τ₁ τ₂ hp D d d' A A' κ c hU _ hc₀ hi₀ _ hr₀ _ _ hUc hUc' hQ β w u hβ hβs hu`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ae₂` using `aeId (Jd A'.J (Rop μ a φ)) _ hUc' fun β w u hβ hβs hu => by`. Rewrite using `[ContinuousLinearMap.adjoint_inner_right]`. Establish `hU' : Unf μ μ₂ κ c` using `hU`. Conclude with `ipSec μ μ₂ τ₂ τ₁ hp' D d' d A' A κ c hU' _ hc₀ hi₀ _ hr₀ _ _ hUc' hUc hQ' β w u hβ hβs hu`. Establish `hφ0` using `norm_nonneg φ`.
-
-Use `⟨_, _, hUc, hUc', fun s => ⟨?_, ?_⟩, ae₁, ae₂, hQ⟩` and prove the remaining obligations. Use `bdAll _ hUc _ ?_ s filter_upwards [ae₁, hb₁ φ] with x h1 h2` and prove the remaining obligations. Rewrite using `[← h1]`. Conclude with `h2.trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hφ0)`. Use `bdAll _ hUc' _ ?_ s filter_upwards [ae₂, hb₂ φ] with x h1 h2` and prove the remaining obligations.
-
-Rewrite using `[← h1]`. Conclude with `h2.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hφ0)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.ctRep :
     ForAllC fun K _ _ μ _ _ _ _ _ D d d' A A' => ∀ (a : CC K (2 + 2)) (P : L2 μ →L[ℂ] L2 μ), IsOrthogonalProjectionTwoLines A.J A'.J P → D.Hecke a → ∃ C : ℝ, ∀ φ, P φ = φ →

@@ -13,39 +13,37 @@ namespace GlobalTheory.WeightedCount
 open NumberField GlobalTheory.LatCount
 
 /- English proof (translation)
-Introduce `D κ _ L hL`. Take `⟨C₀, hC₀, hCb⟩` from `exists_repr_le D`. Set `ι` to `Module.Free.ChooseBasisIndex ℤ (𝓞 D.host.E)`. Set `P` to `κ × ι`. Establish `hLpos : (0 : ℝ) < L` using `by exact_mod_cast hL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨2 * Fintype.card P, (1 + 2 * C₀ * L) ^ Fintype.card P, by positivity, fun s hs => ?_⟩` and prove the remaining obligations. Use `set S := {η : κ → D.host.E | ∀ k, IsIntegral ℤ ((L : D.host.E) * η k)} with hS`. Rewrite using `[← tsum_subtype S]`. Set `b : P → ℝ` to `fun p => 1 / (C₀ * L * s p.1)`. Establish `hb : ∀ p, 0 < b p` using `fun p => by have := hs p.1; positivity`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `kap : (κ → D.host.E) → P → ℤ` to `fun η p => ⌊(integralBasis D.host.E).repr ((L : D.host.E) * η p.1) p.2⌋`. Establish `hint : ∀ η ∈ S, ∀ p : P, (((kap η p : ℤ) : ℚ)) = (L : ℚ) * (integralBasis D.host.E).repr (η p.1) p.2`. Introduce `η hη p`. Rewrite using `[← repr_nat_mul]`. Conclude with `repr_int (hη p.1) p.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `G : (P → ℤ) → ℝ≥0∞` to `fun z => ∏ p, ENNReal.ofReal (((1 + b p * |((z p : ℤ) : ℝ)|) ^ 2)⁻¹)`. Establish `hpt : ∀ η : S, ENNReal.ofReal (((1 + ∑ k, (∑ τ, ‖tauE D τ ((η : κ → D.host.E) k)‖) / s k) ^ (2 * Fintype.card P))⁻¹) ≤ G (kap η)`. Introduce and unpack `⟨η, hη⟩`. Use `show ENNReal.ofReal (((1 + ∑ k, (∑ τ, ‖tauE D τ (η k)‖) / s k) ^ (2 * Fintype.card P))⁻¹) ≤ G (kap η)`. Take `⟨T, hT⟩ : ∃ T : ℝ, T = ∑ k, (∑ τ, ‖tauE D τ (η k)‖) / s k` from `⟨_, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hT]`. Establish `hterm : ∀ k, 0 ≤ (∑ τ, ‖tauE D τ (η k)‖) / s k` using `fun k => div_nonneg (Finset.sum_nonneg fun _ _ => norm_nonneg _) (hs k).le`. Establish `hT0 : 0 ≤ T` using `by rw [hT]; exact Finset.sum_nonneg fun k _ => hterm k`. Establish `hkp : ∀ p : P, 1 + b p * |((kap η p : ℤ) : ℝ)| ≤ 1 + T`. Introduce and unpack `⟨k, l⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : |((kap η (k, l) : ℤ) : ℝ)| = L * |((integralBasis D.host.E).repr (η k) l : ℝ)|`. Use `congrArg (fun q : ℚ => (q : ℝ)) (hint η hη (k, l))` as an intermediate fact. Simplify using `only [Rat.cast_intCast, Rat.cast_mul, Rat.cast_natCast] at this`. Rewrite using `[this, abs_mul, abs_of_nonneg (Nat.cast_nonneg _)]`. Establish `hsk` using `hs k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : |((integralBasis D.host.E).repr (η k) l : ℝ)| ≤ ∑ l', |((integralBasis D.host.E).repr (η k) l' : ℝ)|` using `Finset.single_le_sum (f := fun l' => |((integralBasis D.host.E).repr (η k) l' : ℝ)|) (fun _ _ => abs_nonneg _) (Finset.mem_univ l)`. Establish `h2` using `hCb (η k)`. Establish `h3 : (∑ τ, ‖tauE D τ (η k)‖) / s k ≤ T`. Rewrite using `[hT]`. Conclude with `Finset.single_le_sum (f := fun k => (∑ τ, ‖tauE D τ (η k)‖) / s k) (fun k _ => hterm k) (Finset.mem_univ k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Establish `e2 : b (k, l) * |((kap η (k, l) : ℤ) : ℝ)| = |((integralBasis D.host.E).repr (η k) l : ℝ)| / (C₀ * s k)`. Rewrite using `[e1]`. Simplify using `only [b]`. Clear the denominators using the available nonvanishing facts. Establish `h4 : |((integralBasis D.host.E).repr (η k) l : ℝ)| / (C₀ * s k) ≤ (∑ τ, ‖tauE D τ (η k)‖) / s k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_le_div_iff₀ (by positivity) hsk]`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Use `show ENNReal.ofReal (((1 + T) ^ (2 * Fintype.card P))⁻¹) ≤ ∏ p, ENNReal.ofReal (((1 + b p * |((kap η p : ℤ) : ℝ)|) ^ 2)⁻¹)`. Rewrite using `[← ENNReal.ofReal_prod_of_nonneg (fun p _ => by have := hb p; positivity)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[Finset.prod_inv_distrib]`. Apply `inv_anti₀ (Finset.prod_pos fun p _ => by have := hb p; positivity)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_const, Finset.card_univ, ← pow_mul]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (fun η : S => kap η)`. Introduce and unpack `⟨η, hη⟩ ⟨η', hη'⟩ h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Establish `hL0 : (L : D.host.E) ≠ 0` using `Nat.cast_ne_zero.2 hL.ne'`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `mul_left_cancel₀ hL0` to reduce the goal to its premises. Apply `(integralBasis D.host.E).repr.injective` to reduce the goal to its premises. Use extensionality with `l`. Establish `h1` using `hint η hη (k, l)`. Establish `h2` using `hint η' hη' (k, l)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : kap η (k, l) = kap η' (k, l)` using `congrFun h (k, l)`. Rewrite using `[repr_nat_mul, repr_nat_mul]`. Rewrite using `[← h1, ← h2, h3]`. Establish `hcard : Fintype.card ι = Module.finrank ℚ D.host.E`. Rewrite using `[← Module.finrank_eq_card_chooseBasisIndex, RingOfIntegers.rank]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbnd : ∀ p : P, 1 + 2 / b p ≤ (1 + 2 * C₀ * L) * max 1 (s p.1)`. Introduce `p`. Establish `e : 2 / b p = 2 * C₀ * L * s p.1` using `by simp only [b]; field_simp`. Rewrite using `[e]`. Establish `h1 : (1 : ℝ) ≤ max 1 (s p.1)` using `le_max_left _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : s p.1 ≤ max 1 (s p.1)` using `le_max_right _ _`. Establish `: 0 ≤ 2 * C₀ * L` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Use `congr 1`. Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
-
-Use `show ∏ _y : ι, max 1 (s k) = _`. Rewrite using `[Finset.prod_const, Finset.card_univ, hcard]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weighted_count : ∀ (D : D7) (κ : Type) [Fintype κ] (L : ℕ), 0 < L → ∃ (N : ℕ) (C : ℝ), 0 ≤ C ∧
     ∀ s : κ → ℝ, (∀ k, 0 < s k) → ∑' η : κ → D.host.E,

@@ -17,7 +17,7 @@ Both sides reduce to the same expression.
 theorem sig_apply (x : D.host.E) : (D.sp.cm.sig : D.host.E →+* D.host.E) x = starRingEnd D.host.E x := rfl
 
 /- English proof (translation)
-Simplify using `only [vecOf, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, Module.Basis.equivFun_symm_apply, LinearEquiv.funCongrLeft_apply]`. Rewrite using `[← Equiv.sum_comp (ci X).symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem vecOf_sum (x : Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) :
     vecOf X x = ∑ i, x i • X.bas (ci X i) := by
@@ -27,7 +27,7 @@ theorem vecOf_sum (x : Fin (2 * D.R.rS + D.R.k + 1) → D.host.E) :
   simp
 
 /- English proof (translation)
-Rewrite using `[vecOf_sum]`. Simplify using `only [crdH]`. Rewrite using `[Equiv.sum_comp (ci X) (fun j => X.bas.repr y j • X.bas j)]`. Conclude with `X.bas.sum_repr y`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vecOf_crdH (y : (VS D).V) : vecOf X (crdH X y) = y := by
   rw [vecOf_sum]
@@ -36,7 +36,7 @@ theorem vecOf_crdH (y : (VS D).V) : vecOf X (crdH X y) = y := by
   exact X.bas.sum_repr y
 
 /- English proof (translation)
-Rewrite using `[vecOf_sum, vecOf_sum]`. Simplify using `only [GlobalTheory.SgAlg.pairM, GlobalTheory.SgAlg.cT, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Jc, map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, sig_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [RingHom.id_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem pairM_apply {α β : Type} [Fintype α] [Fintype β]
     (P : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) α D.host.E) (Q : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) β D.host.E)
@@ -52,43 +52,43 @@ theorem pairM_apply {α β : Type} [Fintype α] [Fintype β]
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Pc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_last (u : D.what₂.Word) : (fun i => Pc X u i (Fin.last D.R.rS)) = crdH X (X.zu u) := by
   funext i; simp [Pc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Pc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_cs (u : D.what₂.Word) (a : Fin D.R.rS) : (fun i => Pc X u i a.castSucc) = crdH X (X.eX a) := by
   funext i; simp [Pc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[fc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem col_f (a : Fin D.R.rS) : (fun i => fc X i a) = crdH X (X.fY a) := by
   funext i; simp [fc]
 
 /- English proof (translation)
-Rewrite using `[← (VS D).herm.eq x y, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_swap_zero {x y : (VS D).V} (h : (VS D).hT x y = 0) : (VS D).hT y x = 0 := by
   rw [← (VS D).herm.eq x y, h, map_zero]
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem T_ne_zero (u : D.what₂.Word) : ((((D.mem u).A.T : ℕ) : D.host.E)) ≠ 0 :=
   Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero
 
 /- English proof (translation)
-Use extensionality with `a b`. Rewrite using `[pairM_apply]`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `last => rw [col_last, vecOf_crdH, X.zu_norm]`. Simplify using `[GlobalTheory.SgAlg.TF, Tc]`. Consider the case `cast b`. Rewrite using `[col_last, col_cs, vecOf_crdH, vecOf_crdH, hT_swap_zero (X.zu_orth u b).1]`. Simplify using `[GlobalTheory.SgAlg.TF, (Fin.castSucc_ne_last b).symm]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `cast a`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`. Rewrite using `[col_last, col_cs, vecOf_crdH, vecOf_crdH, (X.zu_orth u a).1]`. Simplify using `[GlobalTheory.SgAlg.TF, Fin.castSucc_ne_last a]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `cast b`. Rewrite using `[col_cs, col_cs, vecOf_crdH, vecOf_crdH, X.ee]`. Simplify using `[GlobalTheory.SgAlg.TF, Matrix.diagonal_apply, Fin.castSucc_ne_last a]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_frame (u : D.what₂.Word) :
     GlobalTheory.SgAlg.pairM (D.sp.cm.sig : D.host.E →+* D.host.E) (Jc X) (Pc X u) (Pc X u) =
@@ -112,17 +112,17 @@ theorem gram_frame (u : D.what₂.Word) :
       simp [GlobalTheory.SgAlg.TF, Matrix.diagonal_apply, Fin.castSucc_ne_last a]
 
 /- English proof (translation)
-Establish `hT0` using `T_ne_zero u`. Set `Y : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (D.R.rS + 1)) D.host.E` to `Matrix.of fun i c => Fin.lastCases (crdH X (X.zu u) i) (fun a => crdH X (X.fY a) i) c`. Set `Dg : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E` to `Matrix.diagonal fun c => Fin.lastCases (-(((D.mem u).A.T : ℕ) : D.host.E))⁻¹ (fun _ => 1) c`. Use `⟨Dg * (GlobalTheory.SgAlg.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * Jc X), ?_⟩` and prove the remaining obligations. Establish `h : Dg * (GlobalTheory.SgAlg.cT (D.sp.cm.sig : D.host.E →+* D.host.E) Y * Jc X) * Pc X u = Dg * GlobalTheory.SgAlg.pairM (D.sp.cm.sig : D.host.E →+* D.host.E) (Jc X) (Pc X u) Y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.SgAlg.pairM, Matrix.mul_assoc]`. Rewrite using `[h]`. Use extensionality with `c d`. Rewrite using `[Matrix.diagonal_mul, pairM_apply]`. Proceed by induction on `c using Fin.lastCases with`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `last`. Establish `hy : (fun i => Y i (Fin.last D.R.rS)) = crdH X (X.zu u)` using `by funext i; simp [Y]`. Proceed by induction on `d using Fin.lastCases with`. Consider the case `last => rw [hy, col_last, vecOf_crdH, X.zu_norm]`. Simplify using `[hT0]`.
+Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `cast b`. Rewrite using `[hy, col_cs, vecOf_crdH, vecOf_crdH, hT_swap_zero (X.zu_orth u b).1]`. Simplify using `[(Fin.castSucc_ne_last b).symm]`. Consider the case `cast a`. Establish `hy : (fun i => Y i a.castSucc) = crdH X (X.fY a)` using `by funext i; simp [Y]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `d using Fin.lastCases with`. Consider the case `last`. Rewrite using `[hy, col_last, vecOf_crdH, vecOf_crdH, (X.zu_orth u a).2]`. Simplify using `[Fin.castSucc_ne_last a]`. Consider the case `cast b`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Rewrite using `[hy, col_cs, vecOf_crdH, vecOf_crdH, ← (VS D).herm.eq (X.eX b) (X.fY a), X.ef]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hab, Ne.symm hab]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem free_frame (u : D.what₂.Word) : GlobalTheory.SgAlg.Free (Pc X u) := by
   have hT0 := T_ne_zero u
@@ -158,11 +158,11 @@ theorem free_frame (u : D.what₂.Word) : GlobalTheory.SgAlg.Free (Pc X u) := by
       · simp [hab, Ne.symm hab]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Rewrite using `[pairM_apply, col_f, vecOf_crdH]`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[col_last, vecOf_crdH, hT_swap_zero (X.zu_orth u b).2]`. Simplify using `[(Fin.castSucc_ne_last b).symm]`. Consider the case `cast a`. Rewrite using `[col_cs, vecOf_crdH, X.ef]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `a b`. Rewrite using `[pairM_apply, col_f, col_f, vecOf_crdH, vecOf_crdH, X.ff]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dual_frame (u : D.what₂.Word) :
     GlobalTheory.SgAlg.IsDual (D.sp.cm.sig : D.host.E →+* D.host.E) (Jc X) (Pc X u) (fc X) := by
@@ -181,22 +181,22 @@ theorem dual_frame (u : D.what₂.Word) :
     simp
 
 /- English proof (translation)
-Rewrite using `[aaD, GlobalTheory.IntTerm.Conv.ddS_eq, GlobalTheory.SgGlob.dInv, ← Nat.cast_sub a.2.le, _root_.zpow_neg, _root_.zpow_natCast, inv_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aaD_eq (a : Fin D.R.rS) : aaD D a = GlobalTheory.SgGlob.dInv D.host.E (D.R.rS - a) := by
   rw [aaD, GlobalTheory.IntTerm.Conv.ddS_eq, GlobalTheory.SgGlob.dInv, ← Nat.cast_sub a.2.le, _root_.zpow_neg, _root_.zpow_natCast,
     inv_pow]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SnMass.tupLat, Submodule.span_le]`. Introduce and unpack `_ ⟨b, x, hx, rfl⟩`. Use `show vecOf X (x • fun i => GlobalTheory.SnMass.sideM (Pc X u) (fc X) i b) ∈ (VS D).L0`. Rewrite using `[LinearMap.map_smul, X.Lam_split]`. Proceed by induction on `b using Fin.addCases with`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `left c`. Simplify using `only [GlobalTheory.SnMass.sideM, Fin.append_left]`. Simplify using `only [GlobalTheory.SnMass.id1, Fin.append_left] at hx`. Proceed by induction on `c using Fin.lastCases with`. Consider the case `last`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_last, Nat.sub_self, GlobalTheory.SgGlob.dInv, pow_zero] at hx`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hx`. Rewrite using `[col_last, vecOf_crdH, algebraMap_smul]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_right (X.Lb.smul_mem o (X.zu_Lb u)))`. Consider the case `cast a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Fin.val_castSucc] at hx`. Rewrite `hx` using `[← aaD_eq]`. Rewrite using `[col_cs, vecOf_crdH]`. Conclude with `Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.subset_span ⟨a, x, hx, rfl⟩))`. Consider the case `right a`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [GlobalTheory.SnMass.sideM, Fin.append_right]`. Simplify using `only [GlobalTheory.SnMass.id1, Fin.append_right] at hx`. Rewrite `hx` using `[← aaD_eq]`. Rewrite using `[col_f, vecOf_crdH]`. Conclude with `Submodule.mem_sup_right (Submodule.subset_span ⟨a, x, hx, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupLat_le (u : D.what₂.Word) :
     GlobalTheory.SnMass.tupLat (GlobalTheory.SnMass.id1 D.host.E D.R.rS) (GlobalTheory.SnMass.sideM (Pc X u) (fc X)) ≤ Lc X := by
@@ -233,7 +233,7 @@ namespace GlobalTheory.CovDom
 open GlobalTheory.CovDom.FrameCrd in
 
 /- English proof (translation)
-Introduce `_ X u` and use `⟨⟨free_frame X u, gram_frame X u⟩, dual_frame X u, tupLat_le X u⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem frame_dual_lat : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word),
     GlobalTheory.SgAlg.IsFrame (D.sp.cm.sig : D.host.E →+* D.host.E) (Jc X) (algebraMap D.host.F D.host.E (Tc u)) (Pc X u) ∧

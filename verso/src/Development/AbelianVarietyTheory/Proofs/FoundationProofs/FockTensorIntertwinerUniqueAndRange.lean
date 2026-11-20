@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.FockUniq
 
 /- English proof (translation)
-The claim follows from `sInf_le ⟨h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem genSub_le {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (S : Set V) (N : Submodule ℂ V)
@@ -17,7 +17,7 @@ theorem genSub_le {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   sInf_le ⟨h1, h2⟩
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [genSub, SetLike.mem_coe, Submodule.mem_sInf]`. Conclude with `fun N hN => hN.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subset_genSub {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (S : Set V) : S ⊆ genSub act S := by
@@ -26,7 +26,7 @@ theorem subset_genSub {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   exact fun N hN => hN.1 hx
 
 /- English proof (translation)
-Simplify using `only [genSub, Submodule.mem_sInf] at hy ⊢`. Conclude with `fun N hN => hN.2 Z y (hy N hN)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem genSub_stable {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (act : Mat p q →ₗ[ℂ] Module.End ℂ V) (S : Set V) (Z : Mat p q) (y : V)
@@ -35,27 +35,25 @@ theorem genSub_stable {p q : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   exact fun N hN => hN.2 Z y (hy N hN)
 
 /- English proof (translation)
-Introduce `p q n T0 T1 T2 F M₁ W M I e₀ v₀ hgen hK hirr hM he hv hI`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `io hio h0`. Establish `h1 : ∀ v, io (e₀ ⊗ₜ v) = I ((e₀ : M₁.V) ⊗ₜ v)`. Set `N : Submodule ℂ M.V` to `LinearMap.eqLocus (io ∘ₗ TensorProduct.mk ℂ W M.V e₀) (I ∘ₗ TensorProduct.mk ℂ M₁.V M.V e₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hN : ∀ v, v ∈ N ↔ io (e₀ ⊗ₜ v) = I ((e₀ : M₁.V) ⊗ₜ v)` using `fun v => Iff.rfl`. Break down `hM.2 N (fun Z y hy => by` into its components or cases. Rewrite `hy`, the goal using `[hN]`. Rewrite using `[← hio.2, ← hI.2, hy]) with h | h`. Conclude with `absurd ((Submodule.mem_bot ℂ).1 (h ▸ (hN v₀).2 h0)) hv`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Conclude with `(hN v).1 (h ▸ Submodule.mem_top)`. Use `TensorProduct.ext' fun e v => ?_` and prove the remaining obligations. Set `N : Submodule ℂ W` to `LinearMap.eqLocus (io ∘ₗ (TensorProduct.mk ℂ W M.V).flip v) (I ∘ₗ (TensorProduct.mk ℂ M₁.V M.V).flip v ∘ₗ W.subtype)`. Establish `hN : ∀ e, e ∈ N ↔ io (e ⊗ₜ v) = I ((e : M₁.V) ⊗ₜ v)` using `fun v => Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hst : KStable M₁.act (N.map W.subtype)`. Introduce and unpack `Z hZ _ ⟨w, hw, rfl⟩`. Use `⟨⟨M₁.act Z w, hK Z hZ w w.2⟩, ?_, rfl⟩` and prove the remaining obligations. Establish `hw'` using `(hN w).1 hw`. Use `(hN _).2 ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hio.1 Z hZ w _ v rfl, hw', hI.1]`. Establish `h0' : (e₀ : M₁.V) ∈ N.map W.subtype` using `⟨e₀, (hN e₀).2 (h1 v), rfl⟩`. Break down `hirr _ (Submodule.map_subtype_le W N) hst with h | h` into its components or cases. Rewrite `h0'` using `[h, Submodule.mem_bot]`. Conclude with `absurd (Subtype.ext h0') he`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (e : M₁.V) ∈ N.map W.subtype` using `by rw [h]; exact e.2`. Take `⟨e', he', hee⟩` from `this`. Establish `: e' = e` using `Subtype.ext hee`. Substitute `this` using the available equality. Simplify using `using (hN e').1 he'`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Introduce `I' hI' hW`. Use `TensorProduct.ext' fun x v => ?_` and prove the remaining obligations. Set `N : Submodule ℂ M₁.V` to `LinearMap.eqLocus (I' ∘ₗ (TensorProduct.mk ℂ M₁.V M.V).flip v) (I ∘ₗ (TensorProduct.mk ℂ M₁.V M.V).flip v)`. Establish `hN : ∀ e, e ∈ N ↔ I' (e ⊗ₜ v) = I (e ⊗ₜ v)` using `fun v => Iff.rfl`. Use `genSub_le M₁.act (W : Set M₁.V) N (fun w hw => (hN w).2 (hW ⟨w, hw⟩ v)) (fun Z y hy => by` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy`, the goal using `[hN]`. Rewrite using `[← hI'.1, ← hI.1, hy])`. Rewrite `this` using `[hgen]`. Conclude with `(hN x).1 (this Submodule.mem_top)`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Set `f : M₁.V →ₗ[ℂ] Pol p q n 0` to `I ∘ₗ (TensorProduct.mk ℂ M₁.V M.V).flip v`. Establish `hf : ∀ x, f x = I (x ⊗ₜ v)` using `fun x => rfl`. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, rfl⟩`. Use `genSub_le M₁.act (W : Set M₁.V) ((genSub F.act1 (Set.range fun e : W => I ((e : M₁.V) ⊗ₜ v))).comap f) (fun w hw => subset_genSub F.act1 _ ⟨⟨w, hw⟩, rfl⟩) (fun Z y hy => by` as an intermediate fact.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hy`, the goal using `[Submodule.mem_comap, hf]`. Rewrite using `[← hI.1]`. Conclude with `genSub_stable _ _ _ _ hy)`. Rewrite `this` using `[hgen]`. Conclude with `this (Submodule.mem_top : x ∈ ⊤)`.
-
-Use `genSub_le F.act1 (Set.range fun e : W => I ((e : M₁.V) ⊗ₜ v)) (LinearMap.range f) (by rintro _ ⟨e, rfl⟩; exact ⟨e, rfl⟩) (by rintro Z _ ⟨x, rfl⟩; exact ⟨M₁.act Z x, by rw [hf, hf, hI.1]⟩)` as an intermediate fact. Introduce `y hy`. Take `⟨x, hx⟩` from `this hy`. Conclude with `⟨x, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem intertwiner_unique_and_range : ∀ (p q n : ℕ) (T0 : GrpData (p * n + q * 0) (p * 0 + q * n)) (T1 : GrpData p q) (T2 : GrpData n 0) (F : FockData T0 T1 T2) (M₁ : GKMod p q) (W : Submodule ℂ M₁.V) (M : GKMod n 0) (I : M₁.V ⊗[ℂ] M.V →ₗ[ℂ] Pol p q n 0) (e₀ : W) (v₀ : M.V), genSub M₁.act (W : Set M₁.V) = ⊤ → KStable M₁.act W → (∀ N : Submodule ℂ M₁.V, N ≤ W → KStable M₁.act N → N = ⊥ ∨ N = W) → IrrGK M → e₀ ≠ 0 → v₀ ≠ 0 → IsGIntw F M₁ M I → (∀ io', IsKIntw F M₁ W M io' → io' (e₀ ⊗ₜ v₀) = I ((e₀ : M₁.V) ⊗ₜ v₀) → io' = I ∘ₗ TensorProduct.map W.subtype LinearMap.id) ∧ (∀ I', IsGIntw F M₁ M I' → (∀ (e : W) (v : M.V), I' ((e : M₁.V) ⊗ₜ v) = I ((e : M₁.V) ⊗ₜ v)) → I' = I) ∧ ∀ v : M.V, Set.range (fun x : M₁.V => I (x ⊗ₜ v)) = (genSub F.act1 (Set.range fun e : W => I ((e : M₁.V) ⊗ₜ v)) : Set (Pol p q n 0)) := by
   intro p q n T0 T1 T2 F M₁ W M I e₀ v₀ hgen hK hirr hM he hv hI

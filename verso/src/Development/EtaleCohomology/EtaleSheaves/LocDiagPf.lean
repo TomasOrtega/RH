@@ -13,7 +13,7 @@ def g {S : Type} [CommRing S] (p : PrimeSpectrum S) (s : Finset p.asIdeal.primeC
 variable {S : Type} [CommRing S] (p : PrimeSpectrum S)
 
 /- English proof (translation)
-Unfold `g`. Use `Submonoid.prod_mem _ (fun (x : p.asIdeal.primeCompl) _ => x.2)` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem g_mem (s : Finset p.asIdeal.primeCompl) : g p s ∈ p.asIdeal.primeCompl := by
   classical
@@ -21,7 +21,7 @@ theorem g_mem (s : Finset p.asIdeal.primeCompl) : g p s ∈ p.asIdeal.primeCompl
   convert Submonoid.prod_mem _ (fun (x : p.asIdeal.primeCompl) _ => x.2)
 
 /- English proof (translation)
-Unfold `g`. Use `Finset.prod_dvd_prod_of_subset s t (fun x : p.asIdeal.primeCompl => (x : S)) h` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem g_dvd {s t : Finset p.asIdeal.primeCompl} (h : s ⊆ t) : g p s ∣ g p t := by
   classical
@@ -29,7 +29,7 @@ theorem g_dvd {s t : Finset p.asIdeal.primeCompl} (h : s ⊆ t) : g p s ∣ g p 
   convert Finset.prod_dvd_prod_of_subset s t (fun x : p.asIdeal.primeCompl => (x : S)) h
 
 /- English proof (translation)
-Unfold `g`. Use `Finset.prod_singleton (fun x : p.asIdeal.primeCompl => (x : S)) y` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem g_single (y : p.asIdeal.primeCompl) : g p {y} = (y : S) := by
   classical
@@ -37,7 +37,7 @@ theorem g_single (y : p.asIdeal.primeCompl) : g p {y} = (y : S) := by
   convert Finset.prod_singleton (fun x : p.asIdeal.primeCompl => (x : S)) y
 
 /- English proof (translation)
-The claim follows from `isUnit_of_dvd_unit (map_dvd _ (g_dvd p h)) (IsLocalization.Away.algebraMap_isUnit _)`.
+A detailed English derivation is pending.
 -/
 theorem unitAway {s t : Finset p.asIdeal.primeCompl} (h : s ⊆ t) :
     IsUnit (algebraMap S (Localization.Away (g p t)) (g p s)) :=
@@ -48,21 +48,21 @@ def tr {s t : Finset p.asIdeal.primeCompl} (h : s ⊆ t) :
   IsLocalization.Away.lift (g p s) (unitAway p h)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_comp _ _`.
+A detailed English derivation is pending.
 -/
 theorem tr_comp {s t : Finset p.asIdeal.primeCompl} (h : s ⊆ t) :
     (tr p h).comp (algebraMap S _) = algebraMap S _ :=
   IsLocalization.Away.lift_comp _ _
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem tr_apply {s t : Finset p.asIdeal.primeCompl} (h : s ⊆ t) (x : S) :
     tr p h (algebraMap S _ x) = algebraMap S _ x :=
   IsLocalization.Away.lift_eq _ _ _
 
 /- English proof (translation)
-The claim follows from `IsLocalization.ringHom_ext (Submonoid.powers (g p s)) h`.
+A detailed English derivation is pending.
 -/
 theorem away_ext {s : Finset p.asIdeal.primeCompl} {P : Type} [CommRing P]
     {u v : Localization.Away (g p s) →+* P}
@@ -84,7 +84,7 @@ def Dg : Finset p.asIdeal.primeCompl ⥤ CommRingCat.{0} where
     rw [RingHom.comp_assoc, tr_comp, tr_comp, tr_comp]
 
 /- English proof (translation)
-The claim follows from `IsLocalization.map_units _ (⟨g p s, g_mem p s⟩ : p.asIdeal.primeCompl)`.
+A detailed English derivation is pending.
 -/
 theorem unitLoc (s : Finset p.asIdeal.primeCompl) :
     IsUnit (algebraMap S (Localization.AtPrime p.asIdeal) (g p s)) :=
@@ -95,14 +95,14 @@ def toLoc (s : Finset p.asIdeal.primeCompl) :
   IsLocalization.Away.lift (g p s) (unitLoc p s)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_comp _ _`.
+A detailed English derivation is pending.
 -/
 theorem toLoc_comp (s : Finset p.asIdeal.primeCompl) :
     (toLoc p s).comp (algebraMap S _) = algebraMap S _ :=
   IsLocalization.Away.lift_comp _ _
 
 /- English proof (translation)
-The claim follows from `IsLocalization.Away.lift_eq _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem toLoc_apply (s : Finset p.asIdeal.primeCompl) (x : S) :
     toLoc p s (algebraMap S _ x) = algebraMap S _ x :=
@@ -128,7 +128,7 @@ def phi (c : Cocone (Dg p)) : S →+* c.pt :=
   (c.ι.app ∅).hom.comp (algebraMap S (Localization.Away (g p ∅)))
 
 /- English proof (translation)
-Establish `hw` using `c.w (homOfLE (Finset.empty_subset s))`. Unfold `phi`. Rewrite using `[← hw]`. Use extensionality with `x`. Conclude with `congrArg (c.ι.app s).hom (tr_apply p (Finset.empty_subset s) x).symm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem cocone_comp (c : Cocone (Dg p)) (s : Finset p.asIdeal.primeCompl) :
     (c.ι.app s).hom.comp (algebraMap S (Localization.Away (g p s))) = phi p c := by
@@ -139,7 +139,7 @@ theorem cocone_comp (c : Cocone (Dg p)) (s : Finset p.asIdeal.primeCompl) :
   exact congrArg (c.ι.app s).hom (tr_apply p (Finset.empty_subset s) x).symm
 
 /- English proof (translation)
-Rewrite using `[← DFunLike.congr_fun (cocone_comp p c {y}) (y : S)]`. Establish `hy : IsUnit (algebraMap S (Localization.Away (g p {y})) y)`. Rewrite using `[show (y : S) = g p {y} from (g_single p y).symm]`. Conclude with `IsLocalization.Away.algebraMap_isUnit _`. Conclude with `IsUnit.map (c.ι.app {y}).hom hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phi_unit (c : Cocone (Dg p)) (y : p.asIdeal.primeCompl) : IsUnit (phi p c y) := by
   rw [← DFunLike.congr_fun (cocone_comp p c {y}) (y : S)]
@@ -175,9 +175,9 @@ def isColim : IsColimit (Cc p) where
     rw [toLoc_apply]
 
 /- English proof (translation)
-Introduce `S _ p`. Use `⟨Finset p.asIdeal.primeCompl, inferInstance, inferInstance, Dg p, Cc p, ⟨isColim p⟩, id, ∅, algebraMap S (Localization.Away (g p ∅)), ?_⟩` and prove the remaining obligations. Introduce `k m`. Use `⟨g p k, g_mem p k, RingHom.id _, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `tr_apply p (leOfHom m) x`.
+A detailed English derivation is pending.
 -/
 theorem LocDiag_of : LateralTheory.E.ZarLocalPf.LocDiag := by
   intro S _ p

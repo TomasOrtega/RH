@@ -15,17 +15,15 @@ namespace GlobalTheory.FlatTors
 open GlobalTheory.TorusModel GlobalTheory.TorsionFormCompare GlobalTheory.KernelNoTorsion
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ _ _ hR t P W _ _ ψW k hk`. Take `⟨_, -, -, hc⟩` from `hR`. Establish `hL` using `abelianSchemeLaws_all.1`. Take `⟨Gt, _, _, hH⟩` from `exists_isGt hL.globalFns (splitExt P.D.toPre)`. Take `⟨Φ, hΦ⟩` from `exists_points hL.globalFns hH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hΦ : Represents Φ` using `hΦ`. Establish `hfin : IsFinite (torsion Gt k).hom ∧ Flat (torsion Gt k).hom`. Take `⟨h₁, h₂, -⟩` from `hL.mulN _ P.D.toPre.P k hk`. Establish `h₁' : IsFinite (𝟙 P.D.toPre.P.A ^ k).left` using `h₁`. Establish `h₂' : Flat (𝟙 P.D.toPre.P.A ^ k).left` using `h₂`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h₁'`, `h₂'` using `[← MulEtaleDvr.mulN_eq_pow]`. Establish `Q` using `MulEtaleDvr.isPullback_torsion P.D.toPre.P.A k`. Conclude with `isFinite_flat_torsion_of_isGt _ (splitExt P.D.toPre) Gt hH k hk (MorphismProperty.of_isPullback (P := @IsFinite) Q h₁') (MorphismProperty.of_isPullback (P := @Flat) Q h₂')`. Take `⟨hf, hl⟩` from `hfin`. Establish `hs` using `(GlobalTheory.UnitRigidity.smooth_geometricallyConnected_of_isGt _ _ hH).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : CharZero (FractionRing R) := (RingHom.charZero_iff (IsFractionRing.injective R _)).1 inferInstance`. Establish `hu : IsUnit (k : Γ(Sp (FractionRing R), ⊤))` using `MulEtaleDvr.isUnit_natCast_sections (Nat.cast_ne_zero.mpr (by omega)).isUnit`. Establish `het : Etale (pullback.snd (torsion Gt k).hom (jK R))` using `GlobalTheory.LamF.etale_pullback_torsion (jK R) Gt hu`. Take `⟨J, hJ⟩` from `exists_mulEquiv P.U.toUnifPre hL.globalFns hΦ`. Establish `hN` using `isAdicColimit_of_isFinite hc (torsion Gt k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨torsion Gt k, Φ _ (torsion.ι Gt k), J _ hN (torsion.ι Gt k), hf, hl, het, (tors_iff hΦ k _).2 (torsionι_pow Gt k), fun T g hg => ?_, ?_, (formalEq_iff _ _ _).2 ((hJ _ hN _ _).1 rfl)⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(Φ T).surjective g`. Establish `hx` using `(tors_iff hΦ k x).1 hg`. Use `⟨torsionLift x hx, (isPull_iff_comp hΦ _ _ _).2 (torsionLift_ι _ _), fun h hh => torsion_hom_ext ?_⟩` and prove the remaining obligations. Rewrite using `[torsionLift_ι]`.
-
-Conclude with `(isPull_iff_comp hΦ _ _ _).1 hh`. Rewrite using `[← map_pow, torsionι_pow, map_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_torsion_toG : AllFlat fun {E} _ _ _ {H} {R} _ _ _ {t} P {W} ψW k => ∃ (N : Over (Sp R)) (g₀ : GtPt P.D.toPre N) (x₀ : N ⟶ t.G), IsFinite N.hom ∧ Flat N.hom ∧ Etale (pullback.snd N.hom (jK R)) ∧ GtTors k g₀ ∧ (∀ (T : Over (Sp R)) (g : GtPt P.D.toPre T), GtTors k g → ∃! h : T ⟶ N, GtPt.IsPull h.left g₀ g) ∧ x₀ ^ k = 1 ∧ FormalEq P.U.toUnifPre x₀ g₀ := by
   intro E _ _ _ H R _ _ _ _ hR t P W _ _ ψW k hk

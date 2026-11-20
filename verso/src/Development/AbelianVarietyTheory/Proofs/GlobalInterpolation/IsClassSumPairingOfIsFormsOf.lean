@@ -20,7 +20,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (P : LevFam X.E X.K R.r Pr.vGs)
 
 /- English proof (translation)
-Establish `e : d.1.L = d.1.N`. Rewrite using `[Deco.L]`. Simplify using the standard rewrite rules. Rewrite using `[Deco.Lsh, e]`. Conclude with `d.2.uni`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Lsh_eq_N {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {SG : Finset (HeightOneSpectrum (𝓞 E))}
     (d : DecoSet E n ∅ SG) : d.1.Lsh = d.1.N := by
@@ -31,14 +31,14 @@ theorem Lsh_eq_N {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {SG
   exact d.2.uni
 
 /- English proof (translation)
-Introduce `φ` and use `by rw [← hX.emb_star] exact hX.conjE (φ.comp (X.emb τ)) x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem emb_mem_cmMax (hX : X.Ok) (τ : X.Tau) (x : X.E) : X.emb τ x ∈ cmMax X.K := fun φ => by
   rw [← hX.emb_star]
   exact hX.conjE (φ.comp (X.emb τ)) x
 
 /- English proof (translation)
-Introduce `φ` and use `by obtain ⟨m, hm, hc⟩ := hc have h1 := star_mul_root hX.conjK hm hc have h2 : star (φ c) * φ c = 1 := by have h3 : ‖φ c‖ = 1 := Complex.norm_eq_one_of_pow_eq_one (by rw [← map_pow, hc, map_one]) hm.ne' rw [← starRingEnd_apply, Complex.conj_mul', h3] simp have h0 : φ c ≠ 0 := righ …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem root_mem_cmMax (hX : X.Ok) {c : X.K} (hc : ∃ m : ℕ, 0 < m ∧ c ^ m = 1) : c ∈ cmMax X.K := fun φ => by
   obtain ⟨m, hm, hc⟩ := hc
@@ -52,7 +52,7 @@ theorem root_mem_cmMax (hX : X.Ok) {c : X.K} (hc : ∃ m : ℕ, 0 < m ∧ c ^ m 
   rw [← map_mul, h1, map_one, starRingEnd_apply, h2]
 
 /- English proof (translation)
-Rewrite using `[formGSD_rho, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (root_mem_cmMax hX (LevFam.chr_root _ _)) (coefAction_repr_mem_subfield X.emb _ W.sgTrue (emb_mem_cmMax hX) _ i j).1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem row_act_rat (hX : X.Ok) (g : (mtildeGSD W Ch sel mu P).G) (i j) :
     (mtildeGSD W Ch sel mu P).bV.repr ((mtildeGSD W Ch sel mu P).ρ g ((mtildeGSD W Ch sel mu P).bV j)) i ∈ cmMax X.K := by
@@ -61,7 +61,7 @@ theorem row_act_rat (hX : X.Ok) (g : (mtildeGSD W Ch sel mu P).G) (i j) :
     (coefAction_repr_mem_subfield X.emb _ W.sgTrue (emb_mem_cmMax hX) _ i j).1
 
 /- English proof (translation)
-Rewrite using `[formGSD_rho, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (root_mem_cmMax hX (LevFam.chr_root _ _)) (coefAction_repr_mem_subfield X.emb _ W.sgTrue (emb_mem_cmMax hX) _ i j).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_act_rat (hX : X.Ok) (g : (dualGSD W Ch sel mu P).G) (i j) :
     (dualGSD W Ch sel mu P).bV.repr ((dualGSD W Ch sel mu P).ρ g ((dualGSD W Ch sel mu P).bV j)) i ∈ cmMax X.K := by
@@ -70,7 +70,7 @@ theorem dual_act_rat (hX : X.Ok) (g : (dualGSD W Ch sel mu P).G) (i j) :
     (coefAction_repr_mem_subfield X.emb _ W.sgTrue (emb_mem_cmMax hX) _ i j).2
 
 /- English proof (translation)
-The claim follows from `isFormsOf_toH _ _ (row_act_rat W Ch sel mu P hX) (fun v => by rw [row_gramV]; exact gramB_posDef _ _) _`.
+A detailed English derivation is pending.
 -/
 theorem isFormsOf_MtildeH (hX : X.Ok) : IsFormsOf _ (mtildeOk W Ch sel mu hX P) (MtildeL W Ch sel mu P)
     (MtildeH W Ch hX sel mu P) (LinearEquiv.refl _ _) :=
@@ -81,9 +81,9 @@ def rowPt (c : (stepX Ch sel mu P).Cl) : RowPt Pr R sel mu := toRow sel mu ((ste
 def rowCl (c : (stepX Ch sel mu P).Cl) : (mtildeGSD W Ch sel mu P).Cl := (mtildeGSD W Ch sel mu P).cls (rowPt Ch sel mu P c)
 
 /- English proof (translation)
-Introduce and unpack `⟨d⟩`. Take `⟨p, rfl⟩` from `toRow_surjective sel mu d`. Use `⟨(stepX Ch sel mu P).cl () (trivPt X _ _ _ _ p), ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `(stepX Ch sel mu P).exists_mv () (trivPt X _ _ _ _ p)`. Establish `h1` using `congrArg (fun q => toRow sel mu q.1.1) hg`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Eq.symm (((mtildeGSD W Ch sel mu P).cls_eq_iff _ _).2 ⟨toRowG Ch sel mu P g, ?_⟩)` and prove the remaining obligations. Conclude with `(toRow_smul Ch sel mu P g _).symm.trans h1`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rowCl_surjective : Function.Surjective (rowCl W Ch sel mu P) := by
   rintro ⟨d⟩
@@ -99,7 +99,7 @@ variable (hd : Disjoint Pr.vGs (QE sel (mu : Chr X.F X.E X.K)))
 include hd in
 
 /- English proof (translation)
-Take `⟨g, h1, h2⟩` from `exists_toRowG_smul Ch sel mu P hd a _ _ h`. Use `⟨g, h1, (trivPt X _ _ _ _).symm.injective h2⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_step_smul (a : FormG (rowTy Ch sel mu P).inv) (p q : (stepX Ch sel mu P).D ())
     (h : a • toRow sel mu p.1.1 = toRow sel mu q.1.1) :
@@ -109,9 +109,9 @@ theorem exists_step_smul (a : FormG (rowTy Ch sel mu P).inv) (p q : (stepX Ch se
 
 include hd in
 /- English proof (translation)
-Introduce and unpack `⟨⟨⟩, c⟩ ⟨⟨⟩, c'⟩ h`. Take `⟨a, ha⟩` from `((mtildeGSD W Ch sel mu P).cls_eq_iff _ _).1 h`. Take `⟨g, -, hg⟩` from `exists_step_smul Ch sel mu P hd a _ _ ha`. Use `congrArg (Sigma.mk ()) ?_` and prove the remaining obligations. Rewrite using `[← (stepX Ch sel mu P).rp_spec () c, ← (stepX Ch sel mu P).rp_spec () c']`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Quotient.sound ⟨g, hg⟩`.
+A detailed English derivation is pending.
 -/
 theorem rowCl_injective : Function.Injective (rowCl W Ch sel mu P) := by
   rintro ⟨⟨⟩, c⟩ ⟨⟨⟩, c'⟩ h
@@ -142,14 +142,14 @@ def dualSec : (dualGSD W Ch sel mu P).Sec where
   spec c := (clInv_cls _ _ _ _).symm.trans ((dualEquiv W Ch sel mu P hd).apply_symm_apply c)
 
 /- English proof (translation)
-The claim follows from `congrArg (rowPt Ch sel mu P) ((dualEquiv W Ch sel mu P hd).symm_apply_apply c)`.
+A detailed English derivation is pending.
 -/
 theorem dualSec_rep (c : (stepX Ch sel mu P).Cl) :
     (dualSec W Ch sel mu P hd).rep (dualEquiv W Ch sel mu P hd c) = rowPt Ch sel mu P c :=
   congrArg (rowPt Ch sel mu P) ((dualEquiv W Ch sel mu P hd).symm_apply_apply c)
 
 /- English proof (translation)
-The claim follows from `congrArg (rowPt Ch sel mu P) ((clEquiv W Ch sel mu P hd).symm_apply_apply c)`.
+A detailed English derivation is pending.
 -/
 theorem rowSec_rep (c : (stepX Ch sel mu P).Cl) :
     (rowSec W Ch sel mu P hd).rep (clEquiv W Ch sel mu P hd c) = rowPt Ch sel mu P c :=
@@ -158,7 +158,7 @@ theorem rowSec_rep (c : (stepX Ch sel mu P).Cl) :
 include hd in
 
 /- English proof (translation)
-Use `Eq.trans ?_ (card_stabilizer_toRow Ch sel mu P hd _)` and prove the remaining obligations. Use `Nat.card_congr (Equiv.subtypeEquiv (Equiv.refl _) fun g => ?_)` and prove the remaining obligations. Conclude with `(trivPt X _ _ _ _).symm.injective.eq_iff.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem card_stab (c : (stepX Ch sel mu P).Cl) : Nat.card ((stepX Ch sel mu P).Stab c) =
     Nat.card (MulAction.stabilizer (mtildeGSD W Ch sel mu P).G (rowPt Ch sel mu P c)) := by
@@ -169,7 +169,7 @@ theorem card_stab (c : (stepX Ch sel mu P).Cl) : Nat.card ((stepX Ch sel mu P).S
 include hd in
 
 /- English proof (translation)
-Establish `e : (stepX Ch sel mu P).chr () g = (rowTy Ch sel mu P).chr (toRowG Ch sel mu P g).2` using `(chr_stepX Ch sel mu P hd g).trans ((congrArg (·⁻¹) (chr_inv _ _)).trans (inv_inv _))`. Conclude with `congrArg (fun a : X.Kˣ => (a : X.K) • rhoVr X.emb W.sgTrue (ufGL _ _ g.1)) e.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dual_rho (g : (stepX Ch sel mu P).G ()) :
     (dualGSD W Ch sel mu P).ρ (toRowG Ch sel mu P g) = (stepX Ch sel mu P).rho X.emb W.sgTrue () g := by
@@ -190,13 +190,11 @@ def toStep : (dualGSD W Ch sel mu P).EqFun →ₗ[X.K] (stepX Ch sel mu P).Forms
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `φ ψ h`. Apply `((dualGSD W Ch sel mu P).resOf h' (dualSec W Ch sel mu P hd)).injective` to reduce the goal to its premises. Conclude with `Subtype.ext (funext fun c => congrFun (congrArg Subtype.val h) ((dualEquiv W Ch sel mu P hd).symm c))`. Introduce `x`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `f : ((dualGSD W Ch sel mu P).toCSDOf h' (dualSec W Ch sel mu P hd)).Forms` to `⟨fun c => x.1 ((dualEquiv W Ch sel mu P hd).symm c), fun c γ => by`. Take `⟨g, h1, h2⟩` from `exists_step_smul Ch sel mu P hd γ.1 _ _ γ.2`. Establish `h3` using `x.2 ((dualEquiv W Ch sel mu P hd).symm c) ⟨g, h2⟩`. Use `Eq.trans ?_ h3` and prove the remaining obligations. Use `show (dualGSD W Ch sel mu P).ρ γ.1 _ = (stepX Ch sel mu P).rho X.emb W.sgTrue () g _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← dual_rho W Ch sel mu P hd, h1]`. Use the proof step `rfl⟩`. Take `⟨φ, hφ⟩` from `((dualGSD W Ch sel mu P).resOf h' (dualSec W Ch sel mu P hd)).surjective f`. Use `⟨φ, Subtype.ext (funext fun c => ?_)⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(dualEquiv W Ch sel mu P hd).symm.surjective c`.
-
-Conclude with `congrFun (congrArg Subtype.val hφ) c`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem toStep_bijective (h' : (dualGSD W Ch sel mu P).Ok) : Function.Bijective (toStep W Ch sel mu P hd hF) := by
   constructor
@@ -222,7 +220,7 @@ def ofStep (h' : (dualGSD W Ch sel mu P).Ok) :
   (LinearEquiv.ofBijective _ (toStep_bijective W Ch sel mu P hd hF h')).symm
 
 /- English proof (translation)
-The claim follows from `congrFun (congrArg Subtype.val ((LinearEquiv.ofBijective _ (toStep_bijective W Ch sel mu P hd hF h')).apply_symm_apply x)) c`.
+A detailed English derivation is pending.
 -/
 theorem ofStep_val (h' : (dualGSD W Ch sel mu P).Ok) (x : (stepX Ch sel mu P).FormsK X.emb W.sgTrue hF)
     (c : (stepX Ch sel mu P).Cl) : (ofStep W Ch sel mu P hd hF h' x).1 (rowPt Ch sel mu P c) = x.1 c :=
@@ -239,7 +237,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (hF : ((stepX Ch sel mu P).fam X.emb W.sgTrue).Ok) (h' : (dualGSD W Ch sel mu P).Ok)
 
 /- English proof (translation)
-Rewrite using `[GSD.mem_intDel_iff _ h' (dualSec W Ch sel mu P hd), (dualEquiv W Ch sel mu P hd).surjective.forall]`. Use `forall_congr' fun c => ?_` and prove the remaining obligations. Rewrite using `[dualSec_rep, ofStep_val]`. Conclude with `Iff.of_eq (congrArg (fun L => x.1 c ∈ delAtr X.emb W.sgTrue L) (Lsh_eq_N (rowPt Ch sel mu P c)))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_hlat_iff (x : (stepX Ch sel mu P).FormsK X.emb W.sgTrue hF) :
     x ∈ ((stepX Ch sel mu P).hlat X.emb W.sgTrue hF).L ↔
@@ -250,11 +248,11 @@ theorem mem_hlat_iff (x : (stepX Ch sel mu P).FormsK X.emb W.sgTrue hF) :
   exact Iff.of_eq (congrArg (fun L => x.1 c ∈ delAtr X.emb W.sgTrue L) (Lsh_eq_N (rowPt Ch sel mu P c)))
 
 /- English proof (translation)
-Use `⟨mem_hlat_iff W Ch sel mu P hd hF h', fun v x => ?_⟩` and prove the remaining obligations. Establish `hG : ((dualGSD W Ch sel mu P).gramV.map v.embedding).PosDef`. Rewrite using `[dual_gramV]`. Conclude with `gramB_posDef _ _`. Establish `hb : ((stepX Ch sel mu P).csd X.emb W.sgTrue hF).HasRatBasis` using `FormsDescent.hasRatBasis_of_act _ fun c γ i j => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `dual_act_rat W Ch sel mu P hX (toRowG Ch sel mu P γ.1) i j`. Rewrite `h1` using `[dual_rho W Ch sel mu P hd]`. Conclude with `h1`. Use `(normAt_sq ((stepX Ch sel mu P).csd X.emb W.sgTrue hF) v hb hG x).trans ?_` and prove the remaining obligations. Use `letI := h'.fintypeCl`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Rewrite using `[ipAt_sec v _ h' (dual_act_rat W Ch sel mu P hX) (dualSec W Ch sel mu P hd)]`. Use `letI : Fintype (stepX Ch sel mu P).Cl := ((stepX Ch sel mu P).csd X.emb W.sgTrue hF).finCl`. Use `Fintype.sum_equiv (dualEquiv W Ch sel mu P hd) _ _ fun c => ?_` and prove the remaining obligations. Rewrite using `[dualSec_rep, ofStep_val, ← card_stab_inv _ (rowVal W (rowSG Pr sel mu)), ← card_stab W Ch sel mu P hd]`. Conclude with `congrArg₂ (fun (k : ℕ) (a : ℂ) => (k : ℂ)⁻¹ * a) (@Nat.card_eq_fintype_card _ (_)).symm (pairAt_eq (dualGSD W Ch sel mu P) v (x.1 c)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFormsOf_hlat (hX : X.Ok) : IsFormsOf _ h' (dualGSD W Ch sel mu P).intDel
     ((stepX Ch sel mu P).hlat X.emb W.sgTrue hF) (ofStep W Ch sel mu P hd hF h') := by
@@ -275,7 +273,7 @@ theorem isFormsOf_hlat (hX : X.Ok) : IsFormsOf _ h' (dualGSD W Ch sel mu P).intD
     (pairAt_eq (dualGSD W Ch sel mu P) v (x.1 c)).symm
 
 /- English proof (translation)
-Use `letI := h.fintypeCl`. Use `((rowPair W Ch sel mu P).sumOf_indep h _ (rowSec W Ch sel mu P hd) _ z).trans ?_` and prove the remaining obligations. Use `(Fintype.sum_equiv (clEquiv W Ch sel mu P hd) _ _ fun c => ?_).symm` and prove the remaining obligations. Rewrite using `[GSD.wt_eq, rowSec_rep, card_stab W Ch sel mu P hd, ← ofStep_val W Ch sel mu P hd hF h' x c]`. Both sides reduce to the same expression.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem classSum_ofStep [Fintype (stepX Ch sel mu P).Cl] (h : (mtildeGSD W Ch sel mu P).Ok)
     (x : (stepX Ch sel mu P).FormsK X.emb W.sgTrue hF) (z : (mtildeGSD W Ch sel mu P).EqFun) :
@@ -294,14 +292,14 @@ section Pol
 variable {K : Type} [Field K] (σ : K →+* ℂ)
 
 /- English proof (translation)
-Rewrite using `[fockB_eq_sum _ _ f.support (MvPolynomial.support_map_subset _ _), fockB, map_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [map_mul, map_mul, map_natCast, MvPolynomial.coeff_map, MvPolynomial.coeff_map]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_fockB {τ : Type} (f g : MvPolynomial τ K) : σ (fockB f g) = fockB (MvPolynomial.map σ f) (MvPolynomial.map σ g) := by
   rw [fockB_eq_sum _ _ f.support (MvPolynomial.support_map_subset _ _), fockB, map_sum]
   exact Finset.sum_congr rfl fun m _ => by rw [map_mul, map_mul, map_natCast, MvPolynomial.coeff_map, MvPolynomial.coeff_map]
 
 /- English proof (translation)
-Rewrite using `[pairB_apply, pairB_apply, map_mul, map_inv₀, map_fockB, extNormB, extNormB, map_prod]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun τ _ => by rw [map_fockB, Formalism.L2.DIV.map_extremal]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_pairB {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) (F F' : Pol K ι n) :
     σ (pairB lam F F') = pairB lam (MvPolynomial.map σ F) (MvPolynomial.map σ F') := by
@@ -310,7 +308,7 @@ theorem map_pairB {ι : Type} [Fintype ι] {n : ℕ} (lam : ι → DomWeight n) 
   exact Finset.prod_congr rfl fun τ _ => by rw [map_fockB, Formalism.L2.DIV.map_extremal]
 
 /- English proof (translation)
-Establish `e : (fun τ => ((fr0 emb σ n).1 τ)⁻¹) = 1` using `funext fun _ => inv_one`. Rewrite using `[evV_apply, ← e, polOf_fnOf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem polOf_evV {E ι : Type} [Field E] [Fintype ι] {n : ℕ} (emb : ι → E →+* K) (lam : ι → DomWeight n) (x : VV K lam) :
     polOf (Gr emb σ n) (Formalism.L2.Forms.shiftOf lam) (fr0 emb σ n) (evV emb 1 lam σ x) = MvPolynomial.map σ x.1 := by
@@ -320,7 +318,7 @@ theorem polOf_evV {E ι : Type} [Field E] [Fintype ι] {n : ℕ} (emb : ι → E
 end Pol
 
 /- English proof (translation)
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, map_sum, map_mul, map_inv₀, map_natCast]`. Use `Finset.sum_congr rfl fun c _ => congrArg _ ?_` and prove the remaining obligations. Rewrite using `[pairBK_apply, map_pairB, ← hy, ← polOf_evV σ emb]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem period_embF {E K ι : Type} [Field E] [NumberField E] [StarRing E] [Field K] [NumberField K] [StarRing K] [Fintype ι]
     {R : Ranks} {I : ChainIn E K ι R} (Q : PerIn I) (emb : ι → E →+* K) (σ : K →+* ℂ) (hI : I.Ok) (hQ : Q.Ok)
@@ -355,9 +353,9 @@ variable (hd : Disjoint Pr.vGs (QE sel (mu : Chr X.F X.E X.K))) (σ : X.K →+* 
 include hd in
 
 /- English proof (translation)
-Establish `h1` using `z.2 (toRowG Ch sel mu P g) (toRow sel mu d.1.1)`. Rewrite `h1` using `[mtilde_rho_toRowG W Ch sel mu P hd]`. Establish `h2` using `(congrArg z.1 (toRow_smul Ch sel mu P g d.1.1)).trans h1`. Use `(congrArg (fun y : VV X.K W.sgTrue => mapS σ y.1) h2).trans ?_` and prove the remaining obligations. Use `(LinearMap.map_smulₛₗ (mapS σ) _ (actP W.sgTrue (embGL X.emb (ufGL _ _ g.1)) (z.1 (toRow sel mu d.1.1)).1)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, mapS_apply, GlobalTheory.ValCmp.use₂]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem row_law (z : (mtildeGSD W Ch sel mu P).EqFun) (g : (stepX Ch sel mu P).G ()) (d : (stepX Ch sel mu P).D ()) :
     MvPolynomial.map σ (z.1 (toRow sel mu (letI := (stepX Ch sel mu P).actD (); g • d : (stepX Ch sel mu P).D ()).1.1)).1 =
@@ -391,7 +389,7 @@ variable {Λ' : HLat X.K} {ι : Λ'.V ≃ₗ[X.K] (mtildeGSD W Ch sel mu P).EqFu
 include hι
 
 /- English proof (translation)
-Use `⟨ofStep W Ch sel mu P hd lf.famP _, ι, isFormsOf_hlat W Ch sel mu P hd lf.famP _ hX, hι, fun x z => ?_⟩` and prove the remaining obligations. Use `letI : Fintype (stepX Ch sel mu P).Cl := (perOn W Ch sel mu P b0 til ext tz H).clFin hQ`. Conclude with `(period_embF (perOn W Ch sel mu P b0 til ext tz H) X.emb σ hI hQ hc lf.famP x _ (fun c => (ι z).1 (rowPt Ch sel mu P c)) fun _ => rfl).trans (congrArg σ (classSum_ofStep W Ch sel mu P hd lf.famP _ _ x (ι z)).symm)`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isConcrete_forms : IsConcrete W Ch sel mu P (mtildeOk W Ch sel mu hX P) (dualOk W Ch sel mu P hX) σ
     (forms J (perOn W Ch sel mu P b0 til ext tz H) X.emb σ hc Z hI hJ hQ l lf hT).ptLat Λ' fun x z =>

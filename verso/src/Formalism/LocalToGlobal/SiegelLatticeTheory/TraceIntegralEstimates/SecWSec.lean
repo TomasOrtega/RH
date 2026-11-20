@@ -20,32 +20,32 @@ def Mv (ε : Fin n → Bool) (e f : Fin r → Fin n → ℂ) (z z' : Fin n → �
   fr2M ε e f z' w' (e2 sc c f) (p2 sc c e) (z2 T T' c z w i0) (w2 T T' c z w i0) T'
 
 /- English proof (translation)
-Simplify using `only [famSc, fam, Fin.snoc_castSucc, Fin.coe_castSucc, sfv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem famSc_castSucc (sc : ℝ) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) (b : Fin r) :
     famSc sc e z (Fin.castSucc b) = sfv sc b • e b := by
   simp only [famSc, fam, Fin.snoc_castSucc, Fin.coe_castSucc, sfv]
 
 /- English proof (translation)
-Simplify using `only [famSc, fam, Fin.snoc_last, Fin.val_last, Nat.sub_self, pow_zero, inv_one, one_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem famSc_last (sc : ℝ) (e : Fin r → Fin n → ℂ) (z : Fin n → ℂ) : famSc sc e z (Fin.last r) = z := by
   simp only [famSc, fam, Fin.snoc_last, Fin.val_last, Nat.sub_self, pow_zero, inv_one, one_smul]
 
 /- English proof (translation)
-Establish `hMe : ∀ b, Mv ε e f z z' w w' sc T T' i0 c *ᵥ e b = e2 sc c f b` using `fun b => frameChangeMatrix_isotropic F1 b`. Establish `hMz : Mv ε e f z z' w w' sc T T' i0 c *ᵥ z' = z2 T T' c z w i0` using `fr2M_mulVec_z F1`. Establish `hTc : (T : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 F0.T_ne`. Establish `hfe : ∀ a b, hJ ε (e a) (f b) = if a = b then 1 else 0` using `F0.ep`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Zhat]`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `b using Fin.lastCases with`. Consider the case `last`.
+Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Rewrite using `[famSc_last, famSc_last, hMz]`. Simplify using `only [z2, UnitaryIsometries.hJ_add_right, UnitaryIsometries.hJ_smul_right, F0.zz, F0.zw, mul_zero, add_zero, diagonal_apply_eq, alv]`. Clear the denominators using the available nonvanishing facts. Consider the case `cast b`. Rewrite using `[famSc_last, famSc_castSucc, mulVec_smul, hMe]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e2, UnitaryIsometries.hJ_smul_right, hJ_swap0 (F0.pz b), mul_zero]`. Rewrite using `[diagonal_apply_ne]`. Conclude with `fun h => (Fin.castSucc_lt_last b).ne h.symm`. Consider the case `cast a`. Proceed by induction on `b using Fin.lastCases with`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Treat this case separately. Proceed by induction.
 
-Consider the case `last`. Rewrite using `[famSc_castSucc, famSc_last, hMz]`. Simplify using `only [z2, UnitaryIsometries.hJ_smul_left, UnitaryIsometries.hJ_add_right, UnitaryIsometries.hJ_smul_right, F0.ez, F0.ew, mul_zero, add_zero]`. Rewrite using `[diagonal_apply_ne]`. Conclude with `(Fin.castSucc_lt_last a).ne`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cast b`. Rewrite using `[famSc_castSucc, famSc_castSucc, mulVec_smul, hMe]`. Simplify using `only [e2, UnitaryIsometries.hJ_smul_left, UnitaryIsometries.hJ_smul_right, hfe, conj_sfv]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[diagonal_apply_eq, if_pos rfl, lamv]`. Establish `hs : sfv sc a ≠ 0` using `sfv_ne hsc a`. Clear the denominators using the available nonvanishing facts. Rewrite using `[if_neg h, diagonal_apply_ne _ (fun h' => h (Fin.castSucc_injective _ h'))]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem zhat_Mv (F0 : Frm ε e f z w T) (F1 : Frm ε e f z' w' T') (hsc : 0 < sc) {c : Fin (r + 1) → ℂ} (i0 : Fin k) :
     Zhat ε (famSc sc e z) (famSc sc e z') (Mv ε e f z z' w w' sc T T' i0 c) = Matrix.diagonal c := by
@@ -88,15 +88,13 @@ theorem zhat_Mv (F0 : Frm ε e f z w T) (F1 : Frm ε e f z' w' T') (hsc : 0 < sc
         ring
 
 /- English proof (translation)
-Establish `hlam : ∀ a, Measurable (fun c : Fin (r + 1) → ℂ => lamv sc c a)` using `fun a => (measurable_pi_apply _).div_const _`. Establish `hinv : ∀ a, Measurable (fun c : Fin (r + 1) → ℂ => (conj (lamv sc c a))⁻¹)` using `fun a => (Complex.continuous_conj.measurable.comp (hlam a)).inv`. Establish `hal : Measurable (fun c : Fin (r + 1) → ℂ => alv T c)` using `(measurable_pi_apply _).neg.div_const _`. Establish `hbe : Measurable (fun c : Fin (r + 1) → ℂ => bev T T' c)`. Unfold `bev`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `Complex.measurable_ofReal.comp (Real.continuous_sqrt.measurable.comp ((((measurable_pi_apply _).norm.pow_const 2).div_const _).sub_const _))`. Establish `hcal : Measurable (fun c : Fin (r + 1) → ℂ => conj (alv T c))` using `Complex.continuous_conj.measurable.comp hal`. Use `measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => ?_` and prove the remaining obligations. Simplify using `only [Mv, frameChangeMatrix_entry, syn, Finset.sum_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Use `((Finset.measurable_sum _ fun a _ => ?_).add (Finset.measurable_sum _ fun a _ => ?_)).add ?_ |>.add (Finset.measurable_sum _ fun l _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [e2, Pi.smul_apply, smul_eq_mul]`. Conclude with `measurable_const.mul ((hlam a).mul measurable_const)`. Simplify using `only [p2, Pi.smul_apply, smul_eq_mul]`. Conclude with `measurable_const.mul ((hinv a).mul measurable_const)`. Simplify using `only [z2, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `measurable_const.mul ((hal.mul measurable_const).add (hbe.mul measurable_const))`. Simplify using `only [w2]`. Distinguish the cases in `hl : l = i0`. Simplify using `only [if_pos hl, Pi.smul_apply, Pi.add_apply, smul_eq_mul]`. Conclude with `measurable_const.mul (measurable_const.mul ((hbe.mul measurable_const).add ((hcal.mul measurable_const).mul measurable_const)))`.
-
-Simplify using `only [if_neg hl]`. Conclude with `measurable_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem measurable_Mv (i0 : Fin k) :
     Measurable (fun c : Fin (r + 1) → ℂ => Mv ε e f z z' w w' sc T T' i0 c) := by
@@ -132,7 +130,7 @@ instance matrix_borel (m : ℕ) : BorelSpace (Matrix (Fin m) (Fin m) ℂ) :=
   inferInstanceAs (BorelSpace (Fin m → Fin m → ℂ))
 
 /- English proof (translation)
-The claim follows from `(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.measurableEmbedding`.
+A detailed English derivation is pending.
 -/
 theorem measurableEmbedding_uMat (ε : Fin n → Bool) :
     MeasurableEmbedding (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.uMat g) :=
@@ -145,7 +143,7 @@ def secV (F0 : Frm ε e f z w T) (F1 : Frm ε e f z' w' T') (hdim : n = 2 * r + 
   else 1
 
 /- English proof (translation)
-Unfold `secV`. Use `split_ifs with h`. Both sides reduce to the same expression. Simplify using `[Formalism.MainNotions.S.uMat]`.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem uMat_secV (F0 : Frm ε e f z w T) (F1 : Frm ε e f z' w' T') (hdim : n = 2 * r + 1 + k) (hT : 0 < T)
     (hT' : 0 < T') (hsc : 0 < sc) (i0 : Fin k) (c : Fin (r + 1) → ℂ) :
@@ -157,11 +155,9 @@ theorem uMat_secV (F0 : Frm ε e f z w T) (F1 : Frm ε e f z' w' T') (hdim : n =
   · simp [Formalism.MainNotions.S.uMat]
 
 /- English proof (translation)
-Rewrite using `[← (measurableEmbedding_uMat ε).measurable_comp_iff]`. Establish `he : (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.uMat g) ∘ secV F0 F1 hdim hT hT' hsc i0 = fun c => if (∀ l, c l ≠ 0) ∧ 0 < ‖c (Fin.last r)‖ ^ 2 - T * T' then Mv ε e f z z' w w' sc T T' i0 c else 1`. Use function extensionality and compare the values at `c`. Conclude with `uMat_secV F0 F1 hdim hT hT' hsc i0 c`. Rewrite using `[he]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm1 : MeasurableSet {c : Fin (r + 1) → ℂ | ∀ l, c l ≠ 0}`. Rewrite using `[Set.setOf_forall]`. Conclude with `MeasurableSet.iInter fun l => (measurableSet_singleton 0).compl.preimage (measurable_pi_apply l)`. Establish `hm2 : MeasurableSet {c : Fin (r + 1) → ℂ | 0 < ‖c (Fin.last r)‖ ^ 2 - T * T'}` using `measurableSet_lt measurable_const ((((measurable_pi_apply _).norm.pow_const 2)).sub_const _)`. Establish `hm : MeasurableSet {c : Fin (r + 1) → ℂ | (∀ l, c l ≠ 0) ∧ 0 < ‖c (Fin.last r)‖ ^ 2 - T * T'}` using `hm1.inter hm2`.
-
-Conclude with `Measurable.ite hm (measurable_Mv i0) measurable_const`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_secV (F0 : Frm ε e f z w T) (F1 : Frm ε e f z' w' T') (hdim : n = 2 * r + 1 + k)
     (hT : 0 < T) (hT' : 0 < T') (hsc : 0 < sc) (i0 : Fin k) :
@@ -183,7 +179,7 @@ theorem measurable_secV (F0 : Frm ε e f z w T) (F1 : Frm ε e f z' w' T') (hdim
   exact Measurable.ite hm (measurable_Mv i0) measurable_const
 
 /- English proof (translation)
-Rewrite using `[uMat_secV, if_pos ⟨hc, hg⟩]`. Conclude with `zhat_Mv F0 F1 hsc i0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zhat_secV (F0 : Frm ε e f z w T) (F1 : Frm ε e f z' w' T') (hdim : n = 2 * r + 1 + k) (hT : 0 < T)
     (hT' : 0 < T') (hsc : 0 < sc) (i0 : Fin k) {c : Fin (r + 1) → ℂ} (hc : ∀ l, c l ≠ 0)

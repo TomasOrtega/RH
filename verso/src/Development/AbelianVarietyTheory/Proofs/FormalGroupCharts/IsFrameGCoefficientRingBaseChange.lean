@@ -23,14 +23,14 @@ namespace GlobalTheory.TripleFrameBaseChange
 open MvPolynomial (X C)
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spec_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'') (g : R →+* R') :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   simp only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Use `Eq.trans ?_ (gm_pull r (spMap f) z ⊤ trivial (unitΓ u))` and prove the remaining obligations. Use `congrArg (gm r z ⊤) (Units.ext ?_)` and prove the remaining obligations. Conclude with `congrArg (fun q => q.hom u.val) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gm_unit_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (u : Aˣ) {Z : Scheme.{0}} (r : Z ⟶ Sp B)
     (z : Z) : gm r z ⊤ (unitΓ (Units.map f.toMonoidHom u)) = gm (r ≫ spMap f) z ⊤ (unitΓ u) := by
@@ -41,7 +41,7 @@ theorem gm_unit_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (u : 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X0 : Scheme.{0}} {t : SAB H X0}
 
 /- English proof (translation)
-The claim follows from `(map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r z le_top (hJ.mem φ r) c) rfl)`.
+A detailed English derivation is pending.
 -/
 theorem val_scale {Y Z : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ t.G.left)} {ε : K → ℤ}
     {z : Z} {J : (Z ⟶ t.G.left) → t.PP.L.ι} (hJ : Good t.PP.L z J) (c : Γ(Y, ⊤)ˣ)
@@ -60,9 +60,9 @@ def jetOver (d m n : ℕ) : jOG (spMap ψ ≫ x0) d m n ⟶ jOG x0 d m n :=
     exact jetBC_algebraMap ψ _ m s)
 
 /- English proof (translation)
-Unfold `psIn`. Rewrite using `[MvPolynomial.map_rename]`. Use `congr 1`. Unfold `psTrunc`. Rewrite using `[map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.map_monomial, MvPowerSeries.coeff_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem psIn_map {d n n' : ℕ} (m : ℕ) (r : Fin n → Fin n') (f : MvPowerSeries (Fin n × Fin d) S) :
     psIn d m r (MvPowerSeries.map ψ f) = MvPolynomial.map ψ (psIn d m r f) := by
@@ -75,7 +75,7 @@ theorem psIn_map {d n n' : ℕ} (m : ℕ) (r : Fin n → Fin n') (f : MvPowerSer
   rw [MvPolynomial.map_monomial, MvPowerSeries.coeff_map]
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap (jetBC ψ _ m) = spMap (jetBC ψ _ m) ≫ spMap _`. Rewrite using `[spec_comp, spec_comp]`. Conclude with `congrArg spMap (PullbackSections.jetSubstP_comp_jetBC ψ m φ)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_square {n n' d : ℕ} (m : ℕ) (φ : Fin n × Fin d → MvPolynomial (Fin n' × Fin d) S) :
     homAt (spMap ψ ≫ x0) (jetSubstP m (fun i => MvPolynomial.map ψ (φ i)) :
@@ -87,7 +87,7 @@ theorem subst_square {n n' d : ℕ} (m : ℕ) (φ : Fin n × Fin d → MvPolynom
   exact congrArg spMap (PullbackSections.jetSubstP_comp_jetBC ψ m φ)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem jetMap_congr {R κ κ' : Type} [CommRing R] {m : ℕ} {f g : κ → MvPolynomial κ' R} (e : f = g)
     (hf : ∀ i, f i ∈ orig R κ') (hg : ∀ i, g i ∈ orig R κ') : jetMap (m := m) f hf = jetMap (m := m) g hg := by
@@ -95,9 +95,7 @@ theorem jetMap_congr {R κ κ' : Type} [CommRing R] {m : ℕ} {f g : κ → MvPo
   rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show spMap _ ≫ spMap (jetBC ψ _ m) = spMap (jetBC ψ _ m) ≫ spMap _`. Rewrite using `[spec_comp, spec_comp]`. Establish `e` using `PullbackSections.jetMap_comp_jetBC ψ m (fun p : Fin 1 × Fin d => (X (i, p.2) : MvPolynomial (Fin n × Fin d) S)) (fun _ => X_mem_orig _) (fun p => by rw [MvPolynomial.map_X]; exact X_mem_orig _)`. Rewrite `e` using `[jetMap_congr (show (fun p : Fin 1 × Fin d => MvPolynomial.map ψ (X (i, p.2) : MvPolynomial (Fin n × Fin d) S)) = fun p => X (i, p.2) from funext fun p => MvPolynomial.map_X ψ _) _ (fun _ => X_mem_orig _)]`.
-
-Conclude with `congrArg spMap e`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem copy_square (d m n : ℕ) (i : Fin n) :
     homAt (spMap ψ ≫ x0) (jetCopy d m i : Jet S' (Fin 1 × Fin d) m →ₐ[S'] Jet S' (Fin n × Fin d) m) ≫
@@ -115,7 +113,7 @@ theorem copy_square (d m n : ℕ) (i : Fin n) :
 variable {ψ x0} {d : ℕ} {x : ∀ m, jOG x0 d m 1 ⟶ t.G} {x' : ∀ m, jOG (spMap ψ ≫ x0) d m 1 ⟶ t.G}
 
 /- English proof (translation)
-Unfold `jptG`. Rewrite using `[hx m, ← Category.assoc, copy_square, Category.assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem point_bc (hx : ∀ m, x' m = jetOver ψ x0 d m 1 ≫ x m) {n : ℕ} (m : ℕ) (i : Fin n) :
     jptG t (spMap ψ ≫ x0) d x' m i = jetOver ψ x0 d m n ≫ jptG t x0 d x m i := by
@@ -129,7 +127,7 @@ variable {e : ∀ m, FrTyG t x0 d x m} {e' : ∀ m, FrTyG t (spMap ψ ≫ x0) d 
 include hc hJ
 
 /- English proof (translation)
-Take `rfl : φ' = fun i j => MvPolynomial.map ψ (φ i j)` from `funext fun i => funext fun j => hφ i j`. Use `(val_pull hJ _ _ _).trans ((val_corr hJ hc _).trans ((val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)))` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, ← Over.comp_left, ← Over.comp_left, subst_square ψ x0 m (fun p : Fin 2 × Fin d => φ p.1 p.2)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_subst {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S)
     (φ' : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S') (hφ : ∀ i j, φ' i j = MvPolynomial.map ψ (φ i j))
@@ -150,25 +148,23 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ (PS Pt ev pt comp1 FGLaw)
 open MvPolynomial (X C)
 
 /- English proof (translation)
-Introduce `E _ _ _ H X0 t S S' _ _ ψ x0 x1 h01 d x x' hx0 e e' _ he' hc0 F act ph1 ph2 sy ad h`. Substitute `h01` using the available equality. Establish `hx : ∀ m, x' m = jetOver ψ x0 d m 1 ≫ x m` using `fun m => Over.OverMorphism.ext (hx0 m)`. Establish `hc : ∀ m, LB.Gen.Corr t.PP.L _ _ _ _ (e' m) (LB.pullGen t.PP.L (cφG t ![jptG t x0 d x m (0 : Fin 2), jptG t x0 d x m (1 : Fin 2)]) (cε 2) (e m) (jetOver ψ x0 d m 2).left)` using `hc0`. Establish `hX : ∀ {n : ℕ} (p : Fin n × Fin d), (X p : MvPolynomial (Fin n × Fin d) S') = MvPolynomial.map ψ (X p)` using `fun p => (MvPolynomial.map_X ψ p).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨he', fun m => ?_, fun m => ?_, fun m => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hcor⟩` from `h.ph1 m`. Use `⟨Units.map (jetBC ψ _ m).toMonoidHom u, (congrArg (jetBC ψ _ m) hu).trans (PullbackSections.jetBC_psJet ψ m ph1), corr_of_val t.PP.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `k` using `val_corr hJ hcor (𝟙 _ ≫ (jetOver ψ x0 d m 3).left)`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ ((val_pull hJ _ _ _).symm.trans (k.trans ?_)))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[point_bc hx, point_bc hx, point_bc hx, ← comp_lift, ← comp_lift, Over.comp_left, Category.assoc]`. Use `(val_scale hJ _ _ _).trans (Eq.trans ?_ (val_scale hJ _ _ _).symm)` and prove the remaining obligations. Use `congrArg₂ (· * ·) (gm_unit_map _ u _ y).symm ?_` and prove the remaining obligations. Use `(val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) ?_ ?_) (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Conclude with `(val_subst (hc m) hJ _ _ (Fin.forall_fin_two.2 ⟨fun j => psIn_map ψ m _ _, fun j => hX _⟩) _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) ?_ ?_) (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Use `all_goals`. Conclude with `(val_inv _ _).trans ((congrArg (·⁻¹) (val_subst (hc m) hJ _ _ (Fin.forall_fin_two.2 ⟨fun j => hX _, fun j => hX _⟩) _).symm).trans (val_inv _ _).symm)`. Take `⟨u, hu, hcor⟩` from `h.ph2 m`. Use `⟨Units.map (jetBC ψ _ m).toMonoidHom u, (congrArg (jetBC ψ _ m) hu).trans (PullbackSections.jetBC_psJet ψ m ph2), corr_of_val t.PP.isLB fun y J hJ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `k` using `val_corr hJ hcor (𝟙 _ ≫ (jetOver ψ x0 d m 3).left)`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ ((val_pull hJ _ _ _).symm.trans (k.trans ?_)))` and prove the remaining obligations. Rewrite using `[point_bc hx, point_bc hx, point_bc hx, ← comp_lift, ← comp_lift, Over.comp_left, Category.assoc]`. Use `(val_scale hJ _ _ _).trans (Eq.trans ?_ (val_scale hJ _ _ _).symm)` and prove the remaining obligations. Use `congrArg₂ (· * ·) (gm_unit_map _ u _ y).symm ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `(val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) ?_ ?_) (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Conclude with `(val_subst (hc m) hJ _ _ (Fin.forall_fin_two.2 ⟨fun j => hX _, fun j => psIn_map ψ m _ _⟩) _).symm`. Use `(val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) ?_ ?_) (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Use `all_goals`. Conclude with `(val_inv _ _).trans ((congrArg (·⁻¹) (val_subst (hc m) hJ _ _ (Fin.forall_fin_two.2 ⟨fun j => hX _, fun j => hX _⟩) _).symm).trans (val_inv _ _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu, hcor⟩` from `h.sy m`. Use `⟨Units.map (jetBC ψ _ m).toMonoidHom u, (congrArg (jetBC ψ _ m) hu).trans (PullbackSections.jetBC_psJet ψ m sy), corr_of_val t.PP.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `k` using `val_corr hJ hcor (𝟙 _ ≫ (jetOver ψ x0 d m 2).left)`. Use `(val_corr hJ (hc m) _).trans ((val_pull hJ _ _ _).trans (k.trans ?_))` and prove the remaining obligations. Use `(val_scale hJ _ _ _).trans (Eq.trans ?_ (val_scale hJ _ _ _).symm)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg₂ (· * ·) (gm_unit_map _ u⁻¹ _ y).symm ?_` and prove the remaining obligations. Conclude with `(val_subst (hc m) hJ _ _ (Fin.forall_fin_two.2 ⟨fun j => hX _, fun j => hX _⟩) _).symm`. Take `⟨wL, hw, hall⟩` from `h.ad a`. Use `⟨wL, hw, fun m => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hcor⟩` from `hall m`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Units.map (jetBC ψ _ m).toMonoidHom u, (congrArg (jetBC ψ _ m) hu).trans (PullbackSections.jetBC_psJet ψ m (ad a)), corr_of_val t.PP.isLB fun y J hJ => ?_⟩` and prove the remaining obligations. Establish `k` using `val_corr hJ hcor (𝟙 _ ≫ (jetOver ψ x0 d m 2).left)`. Use `(val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) ?_ ?_) ((val_mul hJ _ _ _).symm.trans (k.trans ?_)))` and prove the remaining obligations. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Rewrite using `[point_bc hx, point_bc hx, ← comp_lift, Over.comp_left, Category.assoc]`.
-
-Conclude with `val_subst (hc m) hJ _ _ (Fin.forall_fin_two.2 ⟨fun j => psIn_map ψ m _ _, fun j => hX _⟩) _`. Use `(val_scale hJ _ _ _).trans (Eq.trans ?_ (val_scale hJ _ _ _).symm)` and prove the remaining obligations. Use `congrArg₂ (· * ·) (gm_unit_map _ u _ y).symm ?_` and prove the remaining obligations. Conclude with `(val_subst (hc m) hJ _ _ (Fin.forall_fin_two.2 ⟨fun j => hX _, fun j => psIn_map ψ m _ _⟩) _).symm`.
+A detailed English derivation is pending.
 -/
 theorem isFrameG_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (X0 : Scheme.{0}) (t : SAB H X0) (S S' : Type) [CommRing S] [CommRing S'] (ψ : S →+* S') (x0 : Sp S ⟶ X0) (x1 : Sp S' ⟶ X0), x1 = spMap ψ ≫ x0 → ∀ (d : ℕ) (x : ∀ m, jOG x0 d m 1 ⟶ t.G) (x' : ∀ m, jOG x1 d m 1 ⟶ t.G), (∀ m, (x' m).left = spMap (jetCoef ψ (Fin 1 × Fin d) m) ≫ (x m).left) → ∀ (e : ∀ m, FrTyG t x0 d x m) (e' : ∀ m, FrTyG t x1 d x' m), (∀ m, (e m).IsGen) → (∀ m, (e' m).IsGen) → (∀ m, LB.Gen.Corr t.PP.L _ _ _ _ (e' m) (LB.pullGen t.PP.L _ _ (e m) (spMap (jetCoef ψ (Fin 2 × Fin d) m)))) → ∀ (F : Fin d → PS S 2 d) (act : 𝓞 E → Fin d → PS S 1 d) (ph1 ph2 : PS S 3 d) (sy : PS S 2 d) (ad : 𝓞 E → PS S 2 d), IsFrameG t x0 d x F act ph1 ph2 sy ad e → IsFrameG t x1 d x' (fun i => (MvPowerSeries.map ψ (F i))) (fun a i => (MvPowerSeries.map ψ (act a i))) (MvPowerSeries.map ψ ph1) (MvPowerSeries.map ψ ph2) (MvPowerSeries.map ψ sy) (fun a => (MvPowerSeries.map ψ (ad a))) e' := by
   intro E _ _ _ H X0 t S S' _ _ ψ x0 x1 h01 d x x' hx0 e e' _ he' hc0 F act ph1 ph2 sy ad h

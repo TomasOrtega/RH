@@ -9,7 +9,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Rewrite using `[← PadicAlgCl.spectralNorm_eq, ← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralNorm, minpoly.algHom_eq σ σ.injective, ← minpoly.algHom_eq K.val K.val.injective]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem norm_hom {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
     (σ : K →ₐ[ℚ_[l]] PadicAlgCl l) (x : K) : ‖σ x‖ = ‖(x : PadicAlgCl l)‖ := by
@@ -20,9 +20,9 @@ private theorem norm_hom {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l]
 open Formalism.BasicNotions.Loc in
 
 /- English proof (translation)
-Establish `e : w = GlobalTheory.EvExtend.placeOf τ`. Use `HeightOneSpectrum.ext (Ideal.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[GlobalTheory.EvExtend.mem_placeOf, hτ]`. Establish `h1` using `norm_hom (LL'.1.val.comp τ') ⟨Bw.j (algebraMap F Ω x), Bw.j_E x⟩`. Use `((hj.valuation_lt_one_iff _).symm.trans (h x)).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `iff_of_eq (congrArg (· < 1) h1.symm)`. Substitute `e` using the available equality. Take `⟨j, hc, hx, -⟩` from `GlobalTheory.EvExtend.exists_ext τ`. Conclude with `⟨⟨j, hc⟩, RingHom.ext hx⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem ex_emb {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] {l : ℕ}
     [Fact l.Prime] {A : ValuationSubring Ω} {w : Plc F} (h : IsPlaceOver A w) {O : Type} [CommRing O]
@@ -41,13 +41,11 @@ private theorem ex_emb {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algeb
   exact ⟨⟨j, hc⟩, RingHom.ext hx⟩
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ ι n A w h r HT τ lam hHT hLG hw _ _ _ _ rc hrc hab O _ _ _ Bw hj`. Take `⟨h1, h2⟩` from `hHT w A h O Bw hj`. Use `⟨h1, fun t LL' τ' hτ => ?_, fun s => ?_⟩` and prove the remaining obligations. Take `⟨j, rfl⟩` from `ex_emb h Bw hj t LL' τ' hτ`. Establish `e : HT (j.1.comp (algebraMap L _)) = Finset.univ.val.map fun i => htW lam i (j.1.comp (algebraMap L _))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Multiset.map_injective (f := fun k : ℤ => (k : ℂ)) Int.cast_injective ?_` and prove the remaining obligations. Rewrite using `[hw j]`. Simplify using `only [infOfWeight, Multiset.map_map]`. Use `Multiset.map_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [htW, lowW, Function.comp_apply, DomWeight.dual]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3` using `h2 _ LL' τ' hτ`. Rewrite `h3` using `[e]`. Conclude with `h3`.
-
-Conclude with `((hLG A h rc hrc).2 O Bw hj).2 (Or.inr hab) s`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.hodge_tate_weights_of_local_global :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (ι : Qbar l ≃+* ℂ) (n : ℕ) (A : ValuationSubring Ω) (w : Plc L) (h : IsPlaceOver A w) (r : G L Ω →* GL (Fin n) (Qbar l)) (HT : (L →+* Qbar l) → Multiset ℤ) (τ : SmIrr (GLw n w)) (lam : Wt L l n), Af.HasHT r HT → Af.LocGlob ι r w τ → (∀ j : W.Emb l w, (HT (j.1.comp (algebraMap L _))).map (fun k : ℤ => (k : ℂ)) = (infOfWeight (lam (j.1.comp (algebraMap L _))).dual).map fun z => ((n : ℂ) - 1) / 2 - z) → AtL ι h (r.comp (Dec (F := L) A).subtype) lam τ := by

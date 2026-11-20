@@ -13,11 +13,9 @@ section General
 variable {A O : Type} [CommRing A] [CommRing O] {h : ℕ}
 
 /- English proof (translation)
-Establish `hdet : F.det ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Matrix.det hGF`. Rewrite `h1` using `[Matrix.det_mul, h0, mul_zero, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ hμ h1.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : X * F * F.adjugate = Y * F * F.adjugate` using `by rw [hX]`. Rewrite `h2` using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_adjugate, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_one, Matrix.mul_one]`. Use extensionality with `i j`. Establish `h3` using `congrFun (congrFun h2 i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at h3`.
-
-Conclude with `mul_left_cancel₀ hdet h3`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem right_cancel [IsDomain A] {F G : Matrix (Fin h) (Fin h) A} {μ : A} (hμ : μ ≠ 0)
     (hGF : G * F = μ • (1 : Matrix (Fin h) (Fin h) A)) {X Y : Matrix (Fin h) (Fin h) A}
@@ -36,7 +34,7 @@ theorem right_cancel [IsDomain A] {F G : Matrix (Fin h) (Fin h) A} {μ : A} (hμ
   exact mul_left_cancel₀ hdet h3
 
 /- English proof (translation)
-Apply `right_cancel hμ hGF` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, hGF]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mul_swap [IsDomain A] {F G : Matrix (Fin h) (Fin h) A} {μ : A} (hμ : μ ≠ 0)
     (hGF : G * F = μ • (1 : Matrix (Fin h) (Fin h) A)) :
@@ -46,9 +44,9 @@ theorem mul_swap [IsDomain A] {F G : Matrix (Fin h) (Fin h) A} {μ : A} (hμ : �
   simp
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[LinearMap.mem_ker, ← Matrix.toLin'_mul_apply, ← Matrix.map_mul, hGF]`. Establish `: (μ • (1 : Matrix (Fin h) (Fin h) A)).map θ = 0`. Use extensionality with `i j`. Simplify using `[hμ]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem range_le_ker (θ : A →+* O) {F G : Matrix (Fin h) (Fin h) A} {μ : A} (hμ : θ μ = 0)
     (hGF : G * F = μ • (1 : Matrix (Fin h) (Fin h) A)) :
@@ -62,15 +60,15 @@ theorem range_le_ker (θ : A →+* O) {F G : Matrix (Fin h) (Fin h) A} {μ : A} 
   simp
 
 /- English proof (translation)
-Use `choose m hm using fun i => hs (f i)`. Establish `hf' : f = θ ∘ m`. Use function extensionality and compare the values at `i`. Conclude with `(hm i).symm`. Rewrite `hf` using `[LinearMap.mem_ker, Matrix.toLin'_apply, hf']`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : ∀ i, ∃ x, x * ξ = (G *ᵥ m) i`. Introduce `i`. Rewrite using `[← Ideal.mem_span_singleton', ← hker, RingHom.mem_ker, RingHom.map_mulVec, hf]`. Both sides reduce to the same expression. Use `choose x hx using h1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : G *ᵥ m = ξ • x`. Use function extensionality and compare the values at `i`. Rewrite using `[← hx i, Pi.smul_apply, smul_eq_mul, mul_comm]`. Establish `h3 : F *ᵥ (G *ᵥ m) = μ • m`. Rewrite using `[Matrix.mulVec_mulVec, hFG, Matrix.smul_mulVec, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h3` using `[h2, Matrix.mulVec_smul, ← hμ]`. Use `⟨θ ∘ x, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Establish `h4` using `congrFun h3 i`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc] at h4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h5` using `mul_left_cancel₀ hξ h4`. Rewrite using `[Matrix.toLin'_apply, ← RingHom.map_mulVec, h5, map_mul, hm]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_range [IsDomain A] (θ : A →+* O) (hs : Function.Surjective θ) {ξ ν μ : A}
     (hker : RingHom.ker θ = Ideal.span {ξ}) (hξ : ξ ≠ 0) (hμ : ξ * ν = μ)
@@ -106,13 +104,11 @@ end General
 open Matrix in
 variable {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n] in
 /- English proof (translation)
-Establish `hdet : A.det ≠ 0`. Introduce `h0`. Establish `hprod : B.det * A.det = c ^ Fintype.card n`. Rewrite using `[← det_mul, hBA, det_smul, det_one, mul_one]`. Rewrite `hprod` using `[h0, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero _ hc hprod.symm`. Establish `key : A.det • (A * B) = A.det • (c • (1 : Matrix n n R))`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_adjugate, Matrix.mul_smul, Matrix.mul_one]`. Use `_ = A * (B * A) * adjugate A := by simp only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `_ = A.det • (c • (1 : Matrix n n R)) := by`. Rewrite using `[hBA, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, mul_adjugate, smul_smul, smul_smul, mul_comm]`. Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun key i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at hij`.
-
-Conclude with `mul_left_cancel₀ hdet hij`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma mul_eq_smul_one_of_mul_eq_smul_one [IsDomain R] {A B : Matrix n n R} {c : R}
     (hc : c ≠ 0) (hBA : B * A = c • (1 : Matrix n n R)) : A * B = c • (1 : Matrix n n R) := by
@@ -137,17 +133,17 @@ private lemma mul_eq_smul_one_of_mul_eq_smul_one [IsDomain R] {A B : Matrix n n 
 open Matrix in
 variable {A O : Type*} [CommRing A] [CommRing O] {h : ℕ} in
 /- English proof (translation)
-Use `choose s hs using fun i => hθ (t i)`. Establish `hst : (θ ∘ s) = t` using `funext hs`. Rewrite `ht` using `[LinearMap.mem_ker, toLin'_apply]`. Establish `hmem : ∀ i, (P *ᵥ s) i ∈ Ideal.span {ξ}`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hker, RingHom.mem_ker, RingHom.map_mulVec, hst]`. Conclude with `congrFun ht i`. Use `choose g hg using fun i => Ideal.mem_span_singleton'.mp (hmem i)`. Establish `hQg : Q *ᵥ g = ν • s`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `sub_eq_zero.mp` to reduce the goal to its premises. Apply `hξ` to reduce the goal to its premises. Establish `h1 : Q *ᵥ (P *ᵥ s) = (ξ * ν) • s`. Rewrite using `[mulVec_mulVec, hQP, Matrix.smul_mulVec, one_mulVec]`. Establish `h2 : P *ᵥ s = fun j => g j * ξ` using `funext fun j => (hg j).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h3` using `congrFun h1 i`. Rewrite `h3` using `[h2]`. Simplify using `only [mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at h3 ⊢`. Establish `h4 : ∑ j, Q i j * (g j * ξ) = (∑ j, Q i j * g j) * ξ`. Rewrite using `[Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [mul_assoc]`. Rewrite `h3` using `[h4]`. Take the linear combination `h3`. Use `⟨θ ∘ g, ?_⟩` and prove the remaining obligations. Rewrite using `[toLin'_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← RingHom.map_mulVec, hQg]`. Simplify using `[← hs]`.
+A detailed English derivation is pending.
 -/
 private lemma smul_mem_range_of_mem_ker_of_mul_eq (θ : A →+* O) (hθ : Function.Surjective θ)
     {ξ ν : A} (hker : RingHom.ker θ = Ideal.span {ξ}) (hξ : ∀ y : A, y * ξ = 0 → y = 0)
@@ -186,9 +182,9 @@ private lemma smul_mem_range_of_mem_ker_of_mul_eq (θ : A →+* O) (hθ : Functi
 open Matrix in
 variable {O : Type*} [CommRing O] {h : ℕ} in
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, hx, rfl⟩`. Simplify using `only [SetLike.mem_coe, Submodule.mem_iInf] at hx`. Rewrite using `[Submodule.mem_iInf]`. Introduce `a`. Establish `hxa` using `hx a`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hxa`, the goal using `[Module.End.mem_eigenspace_iff, toLin'_apply]`. Rewrite using `[toLin'_apply, mulVec_mulVec, hZ, ← mulVec_mulVec, hxa, mulVec_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma map_iInf_eigenspace_le_of_intertwine {ι : Type*} {X Y : ι → Matrix (Fin h) (Fin h) O}
     {Z : Matrix (Fin h) (Fin h) O} (c : ι → O) (hZ : ∀ a, Y a * Z = Z * X a) :
@@ -205,33 +201,29 @@ private lemma map_iInf_eigenspace_le_of_intertwine {ι : Type*} {X Y : ι → Ma
 open Matrix in
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ hv ε hε Λ _ _ h D`. Use `haveI : IsDomain (_root_.GlobalTheory.Sandwich.Ainf p O) := _root_.GlobalTheory.AinfXi.isDomain_ainf hv`. Establish `hker` using `_root_.GlobalTheory.AinfXi.ker_theta hv ε hε`. Establish `hξ` using `_root_.GlobalTheory.AinfXi.xi_nzd hv ε hε`. Establish `hsurj : Function.Surjective (WittVector.fontaineTheta O p)` using `_root_.ReciprocityTheory.PGsh.Ainf.theta_surj p O hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ` using `_root_.GlobalTheory.Sandwich.xi_mul_nu ε`. Establish `hθξ : WittVector.fontaineTheta O p (_root_.GlobalTheory.Sandwich.xi ε) = 0`. Rewrite using `[← RingHom.mem_ker, hker]`. Conclude with `Ideal.mem_span_singleton_self _`. Establish `hθμ : WittVector.fontaineTheta O p (_root_.GlobalTheory.Sandwich.mu ε) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hμ, map_mul, hθξ, zero_mul]`. Establish `hξ0 : _root_.GlobalTheory.Sandwich.xi ε ≠ 0`. Introduce `h0`. Conclude with `one_ne_zero (hξ 1 (by rw [h0, mul_zero]))`. Establish `hν0 : _root_.GlobalTheory.Sandwich.nu ε ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h0`. Establish `h1 : WittVector.fontaineTheta O p (_root_.GlobalTheory.Sandwich.nu ε) = PreTilt.untilt (_root_.GlobalTheory.Sandwich.root ε) - 1`. Simplify using `[_root_.GlobalTheory.Sandwich.nu, WittVector.fontaineTheta_teichmuller]`. Rewrite `h1` using `[h0, map_zero]`. Conclude with `hε.ne_one (Fact.out : p.Prime).one_lt (sub_eq_zero.mp h1.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ0 : _root_.GlobalTheory.Sandwich.mu ε ≠ 0`. Rewrite using `[← hμ]`. Conclude with `mul_ne_zero hξ0 hν0`. Establish `hGF` using `D.G_mul_F`. Establish `hFG` using `mul_eq_smul_one_of_mul_eq_smul_one hμ0 hGF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hA : D.G.map (WittVector.fontaineTheta O p) * D.F.map (WittVector.fontaineTheta O p) = 0`. Rewrite using `[← Matrix.map_mul, hGF]`. Use extensionality with `i j`. Simplify using `[hθμ]`. Establish `hB : D.F.map (WittVector.fontaineTheta O p) * D.G.map (WittVector.fontaineTheta O p) = 0`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.map_mul, hFG]`. Use extensionality with `i j`. Simplify using `[hθμ]`. Establish `hpad : ∀ M : Matrix (Fin h) (Fin h) ℤ_[p], (M.map (_root_.GlobalTheory.Sandwich.ofPadic p O)).map (WittVector.fontaineTheta O p) = M.map (_root_.GlobalTheory.Sandwich.padicToO p O)`. Introduce `M`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Simplify using `[_root_.GlobalTheory.Sandwich.padicToO]`. Establish `hact` using `D.F_act`. Establish `hGact : ∀ a, (D.ρT a).map (_root_.GlobalTheory.Sandwich.ofPadic p O) * D.G = D.G * D.ρM a`. Introduce `a`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `e : _root_.GlobalTheory.Sandwich.mu ε • ((D.ρT a).map (_root_.GlobalTheory.Sandwich.ofPadic p O) * D.G) = _root_.GlobalTheory.Sandwich.mu ε • (D.G * D.ρM a)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hGF, Matrix.smul_mul, Matrix.one_mul, Matrix.smul_mul]`. Use `_ = D.G * (D.F * (D.ρT a).map (_root_.GlobalTheory.Sandwich.ofPadic p O)) * D.G := by`. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = D.G * (D.ρM a * D.F) * D.G := by rw [hact a]`. Use `_ = D.G * D.ρM a * (D.F * D.G) := by`. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hFG, Matrix.mul_smul, Matrix.mul_one]`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `hij` using `congrFun (congrFun e i) j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul] at hij`. Conclude with `mul_left_cancel₀ hμ0 hij`. Simplify using `only [_root_.GlobalTheory.Sandwich.Datum.al, _root_.GlobalTheory.Sandwich.Datum.bb, _root_.GlobalTheory.Sandwich.Datum.Fil, _root_.GlobalTheory.Sandwich.Datum.Lie, _root_.GlobalTheory.Sandwich.Datum.Tsub, _root_.GlobalTheory.Sandwich.Datum.Hsub, _root_.GlobalTheory.Sandwich.Datum …`. Establish `hrange : LinearMap.range (toLin' (D.F.map (WittVector.fontaineTheta O p))) ≤ LinearMap.ker (toLin' (D.G.map (WittVector.fontaineTheta O p)))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[LinearMap.mem_ker, toLin'_apply, toLin'_apply, mulVec_mulVec, hA, zero_mulVec]`. Establish `hlie : LinearMap.range (toLin' (D.G.map (WittVector.fontaineTheta O p))) ≤ LinearMap.ker (toLin' (D.F.map (WittVector.fontaineTheta O p)))`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[LinearMap.mem_ker, toLin'_apply, toLin'_apply, mulVec_mulVec, hB, zero_mulVec]`.
-
-Use `⟨hFG, hrange, hlie, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `smul_mem_range_of_mem_ker_of_mul_eq _ hsurj hker hξ (by rw [hFG, hμ])`. Conclude with `smul_mem_range_of_mem_ker_of_mul_eq _ hsurj hker hξ (by rw [hGF, hμ])`. Introduce `τ`. Use `⟨le_inf (LinearMap.map_le_range.trans hrange) ?_, le_inf LinearMap.map_le_range ?_, fun x hx => ⟨hx.2, hlie hx.1⟩⟩` and prove the remaining obligations.
-
-Use `map_iInf_eigenspace_le_of_intertwine τ fun a => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, ← hact a, Matrix.map_mul, hpad]`. Use `map_iInf_eigenspace_le_of_intertwine τ fun a => ?_` and prove the remaining obligations. Rewrite using `[← hpad, ← Matrix.map_mul, hGact a, Matrix.map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Sandwich.HodgeTateBound.bound : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C]
     [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C]

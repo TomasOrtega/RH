@@ -16,9 +16,9 @@ namespace GlobalTheory.CompanionTheory.Ar.Top
 namespace RealProp
 
 /- English proof (translation)
-Take `⟨Pl, -, hev, hco, -⟩` from `GlobalTheory.T.polarization_polynomial_coeff_bound J d Φ`. Establish `hP : Pl = 0` using `MvPolynomial.funext fun c => by rw [hev c, h c, map_zero]`. Establish `h0` using `hco m hm`. Rewrite `h0` using `[hP, coeff_zero]`. Establish `hmul : ((m.multinomial : ℕ) : ℝ) ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Nat.multinomial_pos _ _).ne'` after adjusting the coercions. Establish `hpow : ((-1 : ℝ) ^ d) ≠ 0` using `pow_ne_zero _ (by norm_num)`. Conclude with `(mul_eq_zero.mp h0.symm).resolve_left (mul_ne_zero hpow hmul)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_monomial_eq_zero {J : Type} [Fintype J] [DecidableEq J] (d : ℕ) (Φ : MvPolynomial J ℝ →ₗ[ℝ] ℝ)
     (h : ∀ c : J → ℝ, Φ ((-∑ x, C (c x) * X x) ^ d) = 0) (m : J →₀ ℕ) (hm : m.degree = d) :
@@ -33,7 +33,7 @@ theorem map_monomial_eq_zero {J : Type} [Fintype J] [DecidableEq J] (d : ℕ) (�
   exact (mul_eq_zero.mp h0.symm).resolve_left (mul_ne_zero hpow hmul)
 
 /- English proof (translation)
-Unfold `PB.toWt`. Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p n hp => simp only [map_mul, hp, aeval_X, eval_X, PB.gap]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_toWt {Ψ : Type} {N : ℕ} (lam : Ψ × Fin N → ℝ) (P : MvPolynomial (Ψ × Fin N) ℝ) :
     eval lam (PB.toWt P) = eval (PB.gap lam) P := by
@@ -44,11 +44,11 @@ theorem eval_toWt {Ψ : Type} {N : ℕ} (lam : Ψ × Fin N → ℝ) (P : MvPolyn
   | mul_X p n hp => simp only [map_mul, hp, aeval_X, eval_X, PB.gap]
 
 /- English proof (translation)
-Simplify using `only [PB.AnSys.degPoly, PB.formPoly, map_sum, map_mul, map_prod, eval_C, eval_X]`. Use `Fintype.sum_of_injective (fun w j => some (w j)) ?_ _ _ ?_ ?_` and prove the remaining obligations. Introduce `w w' hw`. Use function extensionality and compare the values at `j`. Conclude with `Option.some_injective _ (congrFun hw j)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `b hb`. Establish `: ∃ j, b j = none`. Assume the negation of the conclusion as `hne`. Conclude with `hb ⟨fun j => (b j).get (Option.ne_none_iff_isSome.mp fun h => hne ⟨j, h⟩), funext fun j => by simp⟩`. Take `⟨j, hj⟩` from `this`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ j) (by simp [hj]), mul_zero]`. Introduce `w`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eval_degPoly_comap_some {e : ℕ} {σ : Type} [Fintype σ] (S : PB.AnSys e (Option σ)) (c : σ → ℝ) :
     eval c (S.comap some).degPoly = eval (fun o : Option σ => o.elim 0 c) S.degPoly := by
@@ -67,13 +67,13 @@ theorem eval_degPoly_comap_some {e : ℕ} {σ : Type} [Fintype σ] (S : PB.AnSys
     rfl
 
 /- English proof (translation)
-Use `⟨((dimFl Ψ N).factorial : ℝ) * ∏ τ : Ψ, ∏ i : Fin N, ∏ k : Fin N, (if i < k then (((k : ℕ) : ℝ) - ((i : ℕ) : ℝ))⁻¹ else 1), ?_, ?_⟩` and prove the remaining obligations. Use `mul_pos (by exact_mod_cast Nat.factorial_pos _) (Finset.prod_pos fun τ _ => Finset.prod_pos fun i _ => Finset.prod_pos fun k _ => ?_) split_ifs with h` and prove the remaining obligations. Establish `: ((i : ℕ) : ℝ) < ((k : ℕ) : ℝ)` using `by exact_mod_cast h`. Conclude with `inv_pos.2 (by linarith)`. Conclude with `one_pos`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `lam`. Rewrite using `[(flagDeg_eq_weyl Ψ N lam).1, mul_assoc]`. Use `congr 1`. Simplify using `only [antisymDelta, map_prod, map_sub, eval_X]`. Rewrite using `[← Finset.prod_mul_distrib]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hsplit : ∀ k : Fin N, (if i < k then (lam τ i - lam τ k) / (((k : ℕ) : ℝ) - ((i : ℕ) : ℝ)) else 1) = (if i < k then (((k : ℕ) : ℝ) - ((i : ℕ) : ℝ))⁻¹ else 1) * (if i < k then lam τ i - lam τ k else 1)`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> ring`. Rewrite using `[Finset.prod_congr rfl fun k _ => hsplit k, Finset.prod_mul_distrib]`. Use `congr 1`. Simplify using `[Finset.prod_ite, Finset.filter_lt_eq_Ioi]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_flagDeg_eq (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) :
     ∃ c : ℝ, 0 < c ∧ ∀ lam : Wt Ψ N, flagDeg lam = c * eval (fun x : Ψ × Fin N => lam x.1 x.2) (antisymDelta Ψ N) := by
@@ -102,7 +102,7 @@ theorem exists_flagDeg_eq (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) :
     simp [Finset.prod_ite, Finset.filter_lt_eq_Ioi]
 
 /- English proof (translation)
-Introduce `τ a b hab`. Establish `h : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Simplify using `only [rhoWt]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem rhoWt_regDominant (Ψ : Type) [Fintype Ψ] (N : ℕ) : RegDominant (rhoWt : Wt Ψ N) := by
   intro τ a b hab
@@ -111,14 +111,14 @@ theorem rhoWt_regDominant (Ψ : Type) [Fintype Ψ] (N : ℕ) : RegDominant (rhoW
   linarith
 
 /- English proof (translation)
-Conclude with `Nat.pos_of_ne_zero fun hn => M.δ_pos.ne' (R.δ_eq.trans (mul_eq_zero.2 (Or.inl hn)))`.
+A detailed English derivation is pending.
 -/
 theorem RealTie_n_pos {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} {M : RootModel Ψ N}
     {S : PB.AnSys (dimFl Ψ N) (Option (Ψ × Fin N))} {n : ℕ} (R : RealTie M S n) : 0 < n := by
   exact Nat.pos_of_ne_zero fun hn => M.δ_pos.ne' (R.δ_eq.trans (mul_eq_zero.2 (Or.inl hn)))
 
 /- English proof (translation)
-Use `(MvPolynomial.basisMonomials J ℝ).ext fun m => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coe_basisMonomials, LinearMap.zero_apply]`. Conclude with `h m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_eq_zero {J : Type} (Φ : MvPolynomial J ℝ →ₗ[ℝ] ℝ) (h : ∀ m, Φ (monomial m 1) = 0) : Φ = 0 := by
   refine (MvPolynomial.basisMonomials J ℝ).ext fun m => ?_
@@ -126,7 +126,7 @@ theorem lin_eq_zero {J : Type} (Φ : MvPolynomial J ℝ →ₗ[ℝ] ℝ) (h : �
   exact h m
 
 /- English proof (translation)
-Use `show ∑ i ∈ (m.mapDomain some).support, (m.mapDomain some) i = ∑ i ∈ m.support, m i`. Rewrite using `[Finsupp.mapDomain_support_of_injective (Option.some_injective _), Finset.sum_image (fun x _ y _ hxy => Option.some_injective _ hxy)]`. Conclude with `Finset.sum_congr rfl fun x _ => Finsupp.mapDomain_apply (Option.some_injective _) m x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degree_mapDomain_some {J : Type} (m : J →₀ ℕ) : (m.mapDomain some).degree = m.degree := by
   classical
@@ -136,7 +136,7 @@ theorem degree_mapDomain_some {J : Type} (m : J →₀ ℕ) : (m.mapDomain some)
   exact Finset.sum_congr rfl fun x _ => Finsupp.mapDomain_apply (Option.some_injective _) m x
 
 /- English proof (translation)
-Use `(MvPolynomial.basisMonomials (Option (Ψ × Fin N)) ℝ).constr_basis ℝ M.geoMono m` as an intermediate fact. Rewrite `this` using `[MvPolynomial.coe_basisMonomials]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geoFun_monomial {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N) (m : Option (Ψ × Fin N) →₀ ℕ) :
     M.geoFun (monomial m 1) = M.geoMono m := by
@@ -145,14 +145,14 @@ theorem geoFun_monomial {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N) 
   exact this
 
 /- English proof (translation)
-Rewrite using `[geoFun_monomial, RootModel.geoMono, if_neg h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem geoFun_monomial_of_ne {Ψ : Type} [Fintype Ψ] {N : ℕ} (M : RootModel Ψ N) (m : Option (Ψ × Fin N) →₀ ℕ)
     (h : m.degree ≠ dimFl Ψ N) : M.geoFun (monomial m 1) = 0 := by
   rw [geoFun_monomial, RootModel.geoMono, if_neg h]
 
 /- English proof (translation)
-Simplify using `only [linA, toA, linRoot, Fintype.sum_option, map_neg, map_sum, map_mul, rename_C, rename_X]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem neg_sum_eq_linA {Ψ : Type} [Fintype Ψ] {N : ℕ} (a : Option (Ψ × Fin N) → ℝ) :
     (-∑ x, C (a x) * X x : RPA Ψ N) = linA (fun τ i => a (some (τ, i))) (-a none) := by
@@ -160,24 +160,24 @@ theorem neg_sum_eq_linA {Ψ : Type} [Fintype Ψ] {N : ℕ} (a : Option (Ψ × Fi
   ring
 
 /- English proof (translation)
-Rewrite using `[dimFl, antisymDegree, Nat.choose_two_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dimFl_eq_antisymDegree (Ψ : Type) [Fintype Ψ] (N : ℕ) : dimFl Ψ N = antisymDegree Ψ N := by
   rw [dimFl, antisymDegree, Nat.choose_two_right]
 
 /- English proof (translation)
-Simplify using `only [linA, map_zero, zero_mul, add_zero, toA, map_pow]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toA_linRoot_pow {Ψ : Type} [Fintype Ψ] {N : ℕ} (lam : Wt Ψ N) (d : ℕ) :
     toA (linRoot lam ^ d) = linA lam 0 ^ d := by
   simp only [linA, map_zero, zero_mul, add_zero, toA, map_pow]
 
 /- English proof (translation)
-Establish `hN2 : 2 ≤ N` using `by have := T.j_pos; have := T.j_lt; omega`. Take `⟨⟨c0, hc0, hdeg⟩, hall⟩` from `hProp hI Ψ N T.j hN2 T.j_lt.le`. Take `⟨hvol, htoWt⟩` from `hall (dimFl Ψ N) ((R.Sys c).comap some) (dimFl_eq_antisymDegree Ψ N) (hU c)`. Take `⟨cf, hcf, hflag⟩` from `exists_flagDeg_eq Ψ N`. Establish `hnR : (0 : ℝ) < (R.n c : ℝ)` using `by exact_mod_cast RealTie_n_pos (R.tie 0 c)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨PB.volOf ((R.Sys c).comap some) * c0 / ((R.n c : ℝ) * cf), div_pos (mul_pos hvol hc0) (mul_pos hnR hcf), fun B lam => ?_⟩` and prove the remaining obligations. Establish `key` using `GlobalTheory.T.real_tower_geometric_agreement hI II hII Ψ N (T.M B c) (R.Sys c) (R.n c) (R.tie B c) lam 0`. Rewrite `key` using `[zero_div, ← toA_linRoot_pow]`. Establish `e1 : eval (PB.gapS (fun x : Ψ × Fin N => lam x.1 x.2) 0) (R.Sys c).degPoly = PB.volOf ((R.Sys c).comap some) * c0 * eval (fun x : Ψ × Fin N => lam x.1 x.2) (antisymDelta Ψ N)` using `by show eval (fun o : Option (Ψ × Fin N) => o.elim 0 (PB.gap fun x : Ψ × Fin N => lam x.1 x.2)) (R.Sys c).degPoly = _`. Rewrite using `[← eval_degPoly_comap_some (R.Sys c) (PB.gap fun x : Ψ × Fin N => lam x.1 x.2), ← eval_toWt (fun x : Ψ × Fin N => lam x.1 x.2), htoWt, hdeg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, eval_C]`. Expand and normalize the polynomial expressions, which then agree. Establish `key2` using `key.trans e1`. Rewrite using `[hflag lam, div_mul_eq_mul_div, eq_div_iff (mul_pos hnR hcf).ne']`. Take the linear combination `cf * key2`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_geoFun_eq (hProp : PB.Proportional) (hI : PB.Inputs) (II : IntersectionSystem)
     (hII : IsFullIntersectionSystem II) {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N : ℕ} [Nonempty Ψ]
@@ -209,23 +209,23 @@ end RealProp
 open RealProp in
 
 /- English proof (translation)
-Introduce `hProp hI II hII Ψ _ _ N _ T R hU`. Establish `hrho : 0 < flagDeg (rhoWt : Wt Ψ N)` using `(flagDeg_eq_weyl Ψ N rhoWt).2.1 (rhoWt_regDominant Ψ N)`. Establish `hvol : ∀ c : T.Comp, ∃ κ : ℝ, 0 < κ ∧ T.vol c = κ ∧ ∀ (B : ℕ) (lam : Wt Ψ N), (T.M B c).geoFun (toA (linRoot lam ^ dimFl Ψ N)) = κ * flagDeg lam`. Introduce `c`. Take `⟨κ, hκ, h⟩` from `exists_geoFun_eq hProp hI II hII R hU c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨κ, hκ, ?_, h⟩` and prove the remaining obligations. Rewrite using `[RootTower.vol, h, mul_div_assoc, div_self hrho.ne', mul_one]`. Take `⟨Φd, hΦd⟩` from `(GlobalTheory.T.flag_degree_linear_functionals Ψ N).1`. Use `⟨fun c => ?_, fun B c F => ?_, fun B B' c => ?_⟩` and prove the remaining obligations. Take `⟨κ, hκ, hv, -⟩` from `hvol c`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hv]`. Conclude with `hκ`. Take `⟨κ, -, hv, h⟩` from `hvol c`. Rewrite using `[hv]`. Establish `hL : (T.M B c).geoFun ∘ₗ (rename (R` using `ℝ) (Option.some : Ψ × Fin N → Option (Ψ × Fin N))).toLinearMap - κ • Φd = 0 := by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `lin_eq_zero` to reduce the goal to its premises. Introduce `m`. Distinguish the cases in `hm : m.degree = dimFl Ψ N`. Use `map_monomial_eq_zero (dimFl Ψ N) _ (fun a => ?_) m hm` and prove the remaining obligations. Establish `hlin : (-∑ x, C (a x) * X x : MvPolynomial (Ψ × Fin N) ℝ) = linRoot (fun τ i => a (τ, i))` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply, AlgHom.toLinearMap_apply, hΦd, smul_eq_mul]`. Rewrite using `[hlin]`. Establish `h1` using `h B (fun τ i => a (τ, i))`. Simplify using `only [toA] at h1`. Rewrite using `[h1, flagDeg, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply, AlgHom.toLinearMap_apply, hΦd, smul_eq_mul, rename_monomial]`. Rewrite using `[geoFun_monomial_of_ne _ _ (by rwa [degree_mapDomain_some]), (GlobalTheory.T.flag_degree_linear_functionals Ψ N).2.2.2 _ _ (isHomogeneous_monomial _ rfl) hm, mul_zero, sub_zero]`. Establish `h2` using `LinearMap.congr_fun hL F`. Simplify using `only [LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply, AlgHom.toLinearMap_apply, hΦd, smul_eq_mul, LinearMap.zero_apply] at h2`. Simplify using `only [toA]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp h2`. Establish `hnR : (0 : ℝ) < (R.n c : ℝ)` using `by exact_mod_cast RealTie_n_pos (R.tie 0 c)`. Establish `hL : (T.M B c).geoFun - (T.M B' c).geoFun = 0`. Apply `lin_eq_zero` to reduce the goal to its premises. Introduce `m`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hm : m.degree = dimFl Ψ N`. Use `map_monomial_eq_zero (dimFl Ψ N) _ (fun a => ?_) m hm` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, sub_eq_zero, neg_sum_eq_linA]`. Establish `k1` using `GlobalTheory.T.real_tower_geometric_agreement hI II hII Ψ N (T.M B c) (R.Sys c) (R.n c) (R.tie B c) (fun τ i => a (some (τ, i))) (-a none)`. Establish `k2` using `GlobalTheory.T.real_tower_geometric_agreement hI II hII Ψ N (T.M B' c) (R.Sys c) (R.n c) (R.tie B' c) (fun τ i => a (some (τ, i))) (-a none)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `k1` using `[R.kA_eq B B' c, ← k2]`. Conclude with `mul_left_cancel₀ hnR.ne' k1`. Rewrite using `[LinearMap.sub_apply, geoFun_monomial_of_ne _ _ hm, geoFun_monomial_of_ne _ _ hm, sub_zero]`. Conclude with `sub_eq_zero.mp hL`.
+A detailed English derivation is pending.
 -/
 theorem rootTower_proportional_of_unif : PB.Proportional → PB.Inputs → ∀ II : IntersectionSystem,
     IsFullIntersectionSystem II → ∀ (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N : ℕ) [Nonempty Ψ] (T : RootTower Ψ N)

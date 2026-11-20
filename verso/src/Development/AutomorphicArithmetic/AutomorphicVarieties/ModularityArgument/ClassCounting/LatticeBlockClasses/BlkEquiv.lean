@@ -21,23 +21,23 @@ private def blkEquiv {k Γ J X : Type} [Field k] [Group Γ] (s : J → Γ) (β :
     exact key _ (by simp)
 
 /- English proof (translation)
-Introduce `L F _ _ _ _ _ J _ q _ e ζ h kap hkap k _ _ r b hb hS μ hμ hζ v θ hθ hv f hf χ 𝔟 δ g ρ ⟨_, s, β, g', hB, hs, hδ⟩ hρ`. Take `⟨q1, q2, q3, -⟩` from `cRes L F k r`. Establish `hloc` using `((cBlock L F J _ s β g').2 g.1 hB).2.1 b g.2`. Use `choose g₁ hg₁ hg₂ using fun (x : ZMod q) => (cMat L F _ k r b hb (g' x) (hloc x)).2`. Establish `hint : ∀ (I : Type) (a : I → 𝓞 F), InLoc b fun i => (a i : F)` using `fun I a i P _ => P.valuation_le_one (a i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlift : ∀ w : (F ≃ₐ[L] F) × J → k, ∃ a : J → 𝓞 F, ∀ σ j, r (actO σ (a j)) = w (σ, j)` using `fun w => by choose a ha using fun j => hS.1 fun σ => w (σ, j)`. Conclude with `⟨a, fun σ j => ha j σ⟩`. Establish `hred : ∀ (σ : F ≃ₐ[L] F) (a : 𝓞 F), ResF r (σ a) (r (actO σ a))` using `fun σ a => q2 (actO σ a)`. Rewrite using `[cBlockVal k q e _ hζ v θ hθ hv ((F ≃ₐ[L] F) × ZMod q) (fun p => {j // β j = p.2} → k) _ (blkEquiv s β) (μ.comp ρ) (μ g) (fun p => kap p.1 * p.2.val) (fun p => g₁ p.2 p.1), Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun σ _ => Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hδ, hf _ _ (hg₁ x σ)]`. Simplify using the standard rewrite rules. Introduce and unpack `c w ⟨σ, x⟩`. Take `⟨a, ha⟩` from `hlift w`. Use extensionality with `⟨j, hj⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify by unfolding definitions.
 
-Simplify using `only at hj`. Establish `h1` using `hμ (ρ c) _ w (hint J a) (fun τ j => ha τ j ▸ hred τ (a j)) (σ * s j) j`. Use `q1 _ _ _ h1 ?_` and prove the remaining obligations. Establish `h2 : (σ * s j) ((ρ c).1 (fun i => (a i : F)) j) = ((ζ ^ (kap σ * x.val * (Multiplicative.toAdd c).val) : (𝓞 F)ˣ) : 𝓞 F) * (σ * s j) (a j)`. Rewrite using `[hρ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(σ * s j) (((toF ζ ^ ((χ j).val * (Multiplicative.toAdd c).val) : Fˣ) : F) * a j) = _`. Rewrite using `[map_mul]`. Use `congr 1`. Establish `h3 : actU σ (actU (s j) (toF ζ ^ ((χ j).val * (Multiplicative.toAdd c).val))) = toF ζ ^ (kap σ * x.val * (Multiplicative.toAdd c).val)`. Rewrite using `[pow_mul, map_pow, map_pow (actU (s j)), hs, hj, map_pow, map_pow, hkap, pow_mul, pow_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `congrArg Units.val h3`. Simplify `h4` using `[actU, toF]`. Rewrite using `[h2]`. Establish `h5` using `(q3 _ _ _ _ (q2 ((ζ ^ (kap σ * x.val * (Multiplicative.toAdd c).val) : (𝓞 F)ˣ) : 𝓞 F)) (hred (σ * s j) (a j))).2`. Rewrite `h5` using `[ha]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `h5 using 1` and compare the differences between its conclusion and the goal. Simplify using `[chi, blkEquiv]`. Introduce and unpack `w ⟨σ, x⟩`. Take `⟨a, ha⟩` from `hlift w`. Use extensionality with `⟨j, hj⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Simplify by unfolding definitions.
 
-Simplify using `only at hj`. Substitute `hj` using the available equality. Establish `h1` using `hμ g _ w (hint J a) (fun τ j => ha τ j ▸ hred τ (a j)) (σ * s j) j`. Use `q1 _ _ _ h1 ?_` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, hB]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hg₂ (β j) σ _ _ (hint _ fun i : {i // β i = β j} => actO (s i.1) (a i.1)) (fun i => by`. Use `hred (σ * s i.1) (a i.1)` as an intermediate fact. Rewrite `this` using `[ha]`. Conclude with `this) ⟨j, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.ZK.Cl.cVal :
     UpperTheory.V.ZK.Cl.CVal := by

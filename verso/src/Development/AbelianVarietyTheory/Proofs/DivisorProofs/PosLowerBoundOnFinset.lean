@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.PositiveLowerBoundFinset
 
 /- English proof (translation)
-Introduce `Y T f hf`. Break down `T.eq_empty_or_nonempty with h | h` into its components or cases. Conclude with `⟨1, one_pos, by simp [h]⟩`. Take `⟨x, -, hmin⟩` from `T.exists_min_image f h`. Conclude with `⟨f x, hf x, hmin⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pos_lower_bound_on_finset : ∀ {Y : Type} (T : Finset Y) (f : Y → ℝ),
     (∀ (P : Y), (0 : ℝ) < f P) → ∃ (r : ℝ), (0 : ℝ) < r ∧ ∀ P ∈ T, r ≤ f P := by

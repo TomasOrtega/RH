@@ -29,14 +29,14 @@ theorem prodChart_symm_apply (z : Fin (e + e') → ℂ) :
       (B.chart k).symm ((appendCLE e e').symm z).2) := rfl
 
 /- English proof (translation)
-Simplify using `[prodChart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem prodChart_source :
     (prodChart A B j k).source = (A.chart j).source ×ˢ (B.chart k).source := by
   simp [prodChart]
 
 /- English proof (translation)
-Simplify using `[prodChart]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_prodChart_target (z : Fin (e + e') → ℂ) :
     z ∈ (prodChart A B j k).target ↔
@@ -52,9 +52,9 @@ variable {e e' : ℕ} {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
   (A : FinHolAtlas e X) (B : FinHolAtlas e' Y)
 
 /- English proof (translation)
-Introduce `z ⟨ht, hs⟩`. Rewrite `ht` using `[mem_prodChart_target]`. Rewrite `hs` using `[Set.mem_preimage, prodChart_source, prodChart_symm_apply]`. Establish `h1` using `A.holo j j' _ ⟨ht.1, hs.1⟩`. Establish `h2` using `B.holo k k' _ ⟨ht.2, hs.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : AnalyticAt ℂ (fun z => ((appendCLE e e').symm z).1) z` using `((ContinuousLinearMap.fst ℂ _ _).comp (appendCLE e e').symm.toContinuousLinearMap).analyticAt z`. Establish `hS : AnalyticAt ℂ (fun z => ((appendCLE e e').symm z).2) z` using `((ContinuousLinearMap.snd ℂ _ _).comp (appendCLE e e').symm.toContinuousLinearMap).analyticAt z`. Establish `hp : AnalyticAt ℂ (fun z => ((A.chart j' ∘ (A.chart j).symm) ((appendCLE e e').symm z).1, (B.chart k' ∘ (B.chart k).symm) ((appendCLE e e').symm z).2)) z` using `(h1.comp_of_eq hF rfl).prod (h2.comp_of_eq hS rfl)`. Conclude with `(appendCLE e e').analyticAt _ |>.comp hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prodChart_holo (j j' : Fin A.n) (k k' : Fin B.n) :
     AnalyticOnNhd ℂ (prodChart A B j' k' ∘ (prodChart A B j k).symm)
@@ -74,9 +74,9 @@ theorem prodChart_holo (j j' : Fin A.n) (k k' : Fin B.n) :
   exact (appendCLE e e').analyticAt _ |>.comp hp
 
 /- English proof (translation)
-Introduce `z ⟨ht, hs⟩`. Rewrite `ht` using `[mem_prodChart_target]`. Rewrite `hs` using `[Set.mem_preimage, Set.mem_preimage, prodChart_symm_apply]`. Establish `h1` using `A.holo j l _ ⟨ht.1, hs⟩`. Establish `hF : AnalyticAt ℂ (fun z => ((appendCLE e e').symm z).1) z` using `((ContinuousLinearMap.fst ℂ _ _).comp (appendCLE e e').symm.toContinuousLinearMap).analyticAt z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.comp_of_eq hF rfl` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prodChart_holo_fst (j : Fin A.n) (k : Fin B.n) (l : Fin A.n) :
     AnalyticOnNhd ℂ (A.chart l ∘ Prod.fst ∘ (prodChart A B j k).symm)
@@ -91,9 +91,9 @@ theorem prodChart_holo_fst (j : Fin A.n) (k : Fin B.n) (l : Fin A.n) :
   exact this
 
 /- English proof (translation)
-Introduce `z ⟨ht, hs⟩`. Rewrite `ht` using `[mem_prodChart_target]`. Rewrite `hs` using `[Set.mem_preimage, Set.mem_preimage, prodChart_symm_apply]`. Establish `h1` using `B.holo k l _ ⟨ht.2, hs⟩`. Establish `hS : AnalyticAt ℂ (fun z => ((appendCLE e e').symm z).2) z` using `((ContinuousLinearMap.snd ℂ _ _).comp (appendCLE e e').symm.toContinuousLinearMap).analyticAt z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.comp_of_eq hS rfl` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prodChart_holo_snd (j : Fin A.n) (k : Fin B.n) (l : Fin B.n) :
     AnalyticOnNhd ℂ (B.chart l ∘ Prod.snd ∘ (prodChart A B j k).symm)
@@ -123,14 +123,14 @@ def prodAtlas {e e' : ℕ} {X Y : Type*} [TopologicalSpace X] [TopologicalSpace 
   holo := fun i i' => prodChart_holo A B _ _ _ _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_fst, fun _ l => prodChart_holo_fst A B _ _ l⟩`.
+Supply the required witnesses or components.
 -/
 theorem prodAtlas_holoMap_fst {e e' : ℕ} {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     (A : FinHolAtlas e X) (B : FinHolAtlas e' Y) : HoloMap (prodAtlas A B) A Prod.fst :=
   ⟨continuous_fst, fun _ l => prodChart_holo_fst A B _ _ l⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_snd, fun _ l => prodChart_holo_snd A B _ _ l⟩`.
+Supply the required witnesses or components.
 -/
 theorem prodAtlas_holoMap_snd {e e' : ℕ} {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
     (A : FinHolAtlas e X) (B : FinHolAtlas e' Y) : HoloMap (prodAtlas A B) B Prod.snd :=

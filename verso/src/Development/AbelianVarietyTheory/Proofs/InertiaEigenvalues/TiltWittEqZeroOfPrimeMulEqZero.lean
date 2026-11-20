@@ -14,7 +14,7 @@ variable {Z O : Type} [CommRing Z] [CommRing O] [Algebra Z O] {I : Type} [Fintyp
   (b : Module.Basis I Z O) {W : Type} [CommRing W] [Algebra Z W]
 
 /- English proof (translation)
-Simplify using `only [crd, TensorProduct.lift.tmul, LinearMap.coe_comp, Function.comp_apply, LinearMap.lsmul_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem crd_tmul_lemma (i : I) (o : O) (v : W) :
     crd b i (o ⊗ₜ[Z] v) = b.coord i o • v := by
@@ -22,9 +22,9 @@ private theorem crd_tmul_lemma (i : I) (o : O) (v : W) :
     LinearMap.lsmul_apply]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o v`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, crd_tmul_lemma, crd_tmul_lemma]`. Conclude with `(mul_smul_comm _ _ _).symm`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add y z hy hz => rw [mul_add, map_add, map_add, hy, hz, mul_add]`.
+A detailed English derivation is pending.
 -/
 private theorem crd_mul_lemma_2 (i : I) (c : W) (y : O ⊗[Z] W) :
     crd b i ((1 : O) ⊗ₜ[Z] c * y) = c * crd b i y := by
@@ -36,9 +36,9 @@ private theorem crd_mul_lemma_2 (i : I) (c : W) (y : O ⊗[Z] W) :
   | add y z hy hz => rw [mul_add, map_add, map_add, hy, hz, mul_add]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o v`. Repeatedly rewrite using `[crd_tmul_lemma, Module.Basis.coord_apply, ← TensorProduct.smul_tmul, ← TensorProduct.sum_tmul, Module.Basis.sum_repr]`. Consider the case `add y z hy hz`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion repeatedly using the stated equalities. Treat this case separately.
 
-Repeatedly rewrite using `[map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, hy, hz]`.
+Rewrite the conclusion repeatedly using the stated equalities.
 -/
 private theorem sum_basis_tmul_crd_eq (y : O ⊗[Z] W) : ∑ i, b i ⊗ₜ[Z] crd b i y = y := by
   induction y using TensorProduct.induction_on with
@@ -50,18 +50,18 @@ private theorem sum_basis_tmul_crd_eq (y : O ⊗[Z] W) : ∑ i, b i ⊗ₜ[Z] cr
     simp_rw [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib, hy, hz]
 
 /- English proof (translation)
-Simplify using `[map_sum, crd_tmul_lemma, Module.Basis.coord_apply, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem crd_sum_lemma_4 (j : I) (v : I → W) : crd b j (∑ i, b i ⊗ₜ[Z] v i) = v j := by
   classical
   simp [map_sum, crd_tmul_lemma, Module.Basis.coord_apply, Finsupp.single_apply]
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.tmul_pow, one_pow, Ideal.mem_span_singleton]`. Repeatedly rewrite using `[Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩ i`. Conclude with `⟨crd b i y, crd_mul_lemma_2 b i _ y⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `h choose c hc using h`. Use `⟨∑ i, b i ⊗ₜ[Z] c i, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [← sum_basis_tmul_crd_eq b x]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc i, Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem mem_pow_iff (w : W) (n : ℕ) (x : O ⊗[Z] W) :
     x ∈ Ideal.span {((1 : O) ⊗ₜ[Z] w) ^ n} ↔ ∀ i, crd b i x ∈ Ideal.span {w ^ n} := by
@@ -81,15 +81,13 @@ theorem mem_pow_iff (w : W) (n : ℕ) (x : O ⊗[Z] W) :
 include b in
 
 /- English proof (translation)
-Establish `key : ∀ (n : ℕ) (x : O ⊗[Z] W), x ∈ (Ideal.span {(1 : O) ⊗ₜ[Z] w} ^ n • ⊤ : Submodule (O ⊗[Z] W) (O ⊗[Z] W)) ↔ ∀ i, crd b i x ∈ (Ideal.span {w} ^ n • ⊤ : Submodule W W)`. Introduce `n x`. Simplify using `only [smul_eq_mul, Ideal.mul_top, Ideal.span_singleton_pow]`. Conclude with `mem_pow_iff b w n x`. Establish `H1 : IsHausdorff (Ideal.span {(1 : O) ⊗ₜ[Z] w}) (O ⊗[Z] W)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Establish `hi : ∀ i, crd b i x = 0` using `fun i => IsHausdorff.haus h.toIsHausdorff _ fun n => by`. Rewrite using `[SModEq.sub_mem, sub_zero]`. Conclude with `(key n x).1 (by simpa [SModEq.sub_mem] using hx n) i`. Rewrite using `[← sum_basis_tmul_crd_eq b x]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hi]`. Establish `H2 : IsPrecomplete (Ideal.span {(1 : O) ⊗ₜ[Z] w}) (O ⊗[Z] W)`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations. Establish `hfi : ∀ i, ∃ L : W, ∀ n, crd b i (f n) ≡ L [SMOD (Ideal.span {w} ^ n • ⊤ : Submodule W W)]` using `fun i => IsPrecomplete.prec h.toIsPrecomplete fun {m n} hmn => by`. Rewrite using `[SModEq.sub_mem, ← map_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(key m _).1 (SModEq.sub_mem.1 (hf hmn)) i`. Use `choose L hL using hfi`. Use `⟨∑ i, b i ⊗ₜ[Z] L i, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[SModEq.sub_mem, key]`. Introduce `i`.
-
-Rewrite using `[map_sub, crd_sum_lemma_4]`. Conclude with `SModEq.sub_mem.1 (hL i n)`. Conclude with `{ toIsHausdorff := H1, toIsPrecomplete := H2 }`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem complete_tensor (w : W) [h : IsAdicComplete (Ideal.span {w}) W] :
     IsAdicComplete (Ideal.span {(1 : O) ⊗ₜ[Z] w}) (O ⊗[Z] W) := by
@@ -127,16 +125,14 @@ end Coord
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Unfold `inclW`. Conclude with `WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem inclW_injective : Function.Injective (inclW l) := by
   unfold inclW
   exact WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))
 
 /- English proof (translation)
-Use `haveI : CharP (Cb l) l := charP_of_injective_algebraMap (IsFractionRing.injective (OCb l) (Cb l)) l`. Use extensionality with `n`. Establish `h1` using `WittVector.mul_charP_coeff_succ (p := l) x n`. Rewrite `h1` using `[mul_comm, h, WittVector.zero_coeff]`. Rewrite using `[WittVector.zero_coeff]`.
-
-Conclude with `(pow_eq_zero_iff (Fact.out : l.Prime).ne_zero).1 h1.symm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tiltWitt_eq_zero_of_prime_mul_eq_zero (x : WCb l) (h : ((l : ℕ) : WCb l) * x = 0) : x = 0 := by
   haveI : CharP (Cb l) l :=
@@ -148,9 +144,9 @@ theorem tiltWitt_eq_zero_of_prime_mul_eq_zero (x : WCb l) (h : ((l : ℕ) : WCb 
   exact (pow_eq_zero_iff (Fact.out : l.Prime).ne_zero).1 h1.symm
 
 /- English proof (translation)
-Use `haveI : CharP (Cb l) l := charP_of_injective_algebraMap (IsFractionRing.injective (OCb l) (Cb l)) l`. Use `⟨WittVector.mk l fun n => (frobeniusEquiv (OCb l) l).symm (a.coeff (n + 1)), ?_⟩` and prove the remaining obligations. Use extensionality with `n`. Establish `h1` using `congrArg (fun z : WCb l => z.coeff (n + 1)) h`. Simplify using `only [inclW, WittVector.map_coeff] at h1`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[mul_comm, WittVector.mul_charP_coeff_succ]`. Apply `frobenius_inj (Cb l) l` to reduce the goal to its premises. Simplify using `only [inclW, WittVector.map_coeff, WittVector.coeff_mk]`. Rewrite using `[← RingHom.map_frobenius, frobenius_apply_frobeniusEquiv_symm, h1, frobenius_def]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ainf_saturated_in_tiltWitt_prime (a : Loc.Ainf l) (w : WCb l) (h : inclW l a = ((l : ℕ) : WCb l) * w) :
     ∃ a', inclW l a' = w := by
@@ -166,7 +162,7 @@ theorem ainf_saturated_in_tiltWitt_prime (a : Loc.Ainf l) (w : WCb l) (h : inclW
   rw [← RingHom.map_frobenius, frobenius_apply_frobeniusEquiv_symm, h1, frobenius_def]
 
 /- English proof (translation)
-Introduce `hu`. Apply `he` to reduce the goal to its premises. Establish `h1` using `hu.map (WittVector.constantCoeff : WittVector l (OCb l) →+* OCb l)`. Rewrite `h1` using `[map_sub, map_one, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem not_isUnit_teich (e : OCb l) (he : ¬ IsUnit (e - 1)) :
     ¬ IsUnit (WittVector.teichmuller l e - 1 : Loc.Ainf l) := by
@@ -176,7 +172,7 @@ theorem not_isUnit_teich (e : OCb l) (he : ¬ IsUnit (e - 1)) :
   rwa [map_sub, map_one, WittVector.constantCoeff_apply, WittVector.teichmuller_coeff_zero] at h1
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o v`. Rewrite using `[Algebra.TensorProduct.map_tmul, AlgHom.id_apply, crd_tmul_lemma, crd_tmul_lemma, map_smul]`. Consider the case `add y z hy hz => rw [map_add, map_add, hy, hz, map_add, map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 private theorem crd_tensorProduct_map_eq {Z O I W W' : Type} [CommRing Z] [CommRing O] [Algebra Z O]
     [Fintype I] (b : Module.Basis I Z O) [CommRing W] [Algebra Z W] [CommRing W'] [Algebra Z W']
@@ -189,7 +185,7 @@ private theorem crd_tensorProduct_map_eq {Z O I W W' : Type} [CommRing Z] [CommR
   | add y z hy hz => rw [map_add, map_add, hy, hz, map_add, map_add]
 
 /- English proof (translation)
-Rewrite using `[← sum_basis_tmul_crd_eq b y, ← sum_basis_tmul_crd_eq b y']`. Repeatedly rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 private theorem tensor_eq_of_crd_eq {Z O I W : Type} [CommRing Z] [CommRing O] [Algebra Z O]
     [Fintype I] (b : Module.Basis I Z O) [CommRing W] [Algebra Z W] {y y' : O ⊗[Z] W}
@@ -198,9 +194,7 @@ private theorem tensor_eq_of_crd_eq {Z O I W : Type} [CommRing Z] [CommRing O] [
   simp_rw [h]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[l] ↥LL.1 := LL.2`. Use `haveI : IsIntegralClosure ↥(OL LL) ℤ_[l] ↥LL.1 := integralClosure.isIntegralClosure _ _`. Use `haveI : Module.Finite ℤ_[l] ↥(OL LL) := IsIntegralClosure.finite ℤ_[l] ℚ_[l] ↥LL.1 ↥(OL LL)`. Use `haveI : Module.IsTorsionFree ℤ_[l] ↥LL.1 := .of_smul_eq_zero fun r x h => by`. Rewrite `h` using `[Algebra.smul_def, mul_eq_zero]`.
-
-Use `h.imp (fun h => ?_) id` and prove the remaining obligations. Rewrite `h` using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] ↥LL.1, RingHom.comp_apply, map_eq_zero_iff _ (algebraMap ℚ_[l] ↥LL.1).injective]`. Conclude with `(map_eq_zero_iff _ (IsFractionRing.injective ℤ_[l] ℚ_[l])).1 h`. Use `haveI : Module.Free ℤ_[l] ↥(OL LL) := IsIntegralClosure.module_free ℤ_[l] ℚ_[l] ↥LL.1 ↥(OL LL)`. Conclude with `⟨_, inferInstance, ⟨Module.Free.chooseBasis ℤ_[l] ↥(OL LL)⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_basis_padicInt_OL (l : ℕ) [Fact l.Prime] (LL : FinExt l) :
     ∃ (I : Type) (_ : Fintype I), Nonempty (Module.Basis I ℤ_[l] ↥(OL LL)) := by
@@ -217,17 +211,13 @@ private theorem exists_basis_padicInt_OL (l : ℕ) [Fact l.Prime] (LL : FinExt l
   exact ⟨_, inferInstance, ⟨Module.Free.chooseBasis ℤ_[l] ↥(OL LL)⟩⟩
 
 /- English proof (translation)
-Introduce `l _ LL`. Take `⟨I, _, ⟨b⟩⟩` from `exists_basis_padicInt_OL l LL`. Use `haveI : CharP (Cb l) l := charP_of_injective_algebraMap (IsFractionRing.injective (OCb l) (Cb l)) l`. Establish `hl : ((l : ℕ) : RW LL) = (1 : ↥(OL LL)) ⊗ₜ[ℤ_[l]] ((l : ℕ) : WCb l)`. Rewrite using `[← Algebra.TensorProduct.includeRight_apply, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl' : ∀ i (x : RW LL), crd b i (((l : ℕ) : RW LL) * x) = ((l : ℕ) : WCb l) * crd b i x`. Introduce `i x`. Rewrite using `[hl]`. Conclude with `crd_mul_lemma_2 b i _ x`. Establish `hinc : ∀ (y : RA LL) i, crd b i (inclR LL y) = inclW l (crd b i y)` using `fun y i => crd_tensorProduct_map_eq b (inclWA l) i y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hl] haveI : IsAdicComplete (Ideal.span {((l : ℕ) : WCb l)}) (WCb l) := (GlobalTheory.Per.AinfComplete.witt_complete (p := l) (R := Cb l) ((l : ℕ) : WCb l) (fun c => ⟨c, fun n => by simp⟩) (fun x hx => by simpa using hx 1)).2`. Conclude with `complete_tensor b _`. Introduce `x hx`. Use `tensor_eq_of_crd_eq b fun i => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_zero]`. Conclude with `tiltWitt_eq_zero_of_prime_mul_eq_zero _ (by rw [← hl', hx, map_zero])`. Introduce `y y' h`. Conclude with `tensor_eq_of_crd_eq b fun i => inclW_injective (by rw [← hinc, ← hinc, h])`. Introduce `y x hyx`.
-
-Establish `hi : ∀ i, ∃ a' : Loc.Ainf l, inclW l a' = crd b i x` using `fun i => ainf_saturated_in_tiltWitt_prime (crd b i y) (crd b i x) ((hinc y i).symm.trans ((congrArg (crd b i) hyx).trans (hl' i x)))`. Use `choose a' ha' using hi`. Use `⟨∑ i, b i ⊗ₜ[ℤ_[l]] a' i, tensor_eq_of_crd_eq b fun i => ?_⟩` and prove the remaining obligations. Conclude with `(hinc _ i).trans ((congrArg (inclW l) (crd_sum_lemma_4 b i a')).trans (ha' i))`. Introduce `e he haveI : IsAdicComplete (Ideal.span {(WittVector.teichmuller l e - 1 : Ainf l)}) (Ainf l) := (GlobalTheory.Per.AinfComplete.main l _ (not_isUnit_teich e he)).2`.
-
-Conclude with `complete_tensor b _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem main : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l),
     IsAdicComplete (Ideal.span {((l : ℕ) : RW LL)}) (RW LL) ∧

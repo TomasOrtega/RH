@@ -26,7 +26,7 @@ private def algSub (p : ℕ) [hp : Fact p.Prime] (R : Type) [CommRing R] [CharP 
     rwa [zero_sub, hx, zero_pow (pow_pos hp.out.pos _).ne', zero_sub] at h
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.WittVectorTrivializingMatrix.exists_alg ρ hopen M hM hJ`.
+A detailed English derivation is pending.
 -/
 private theorem exists_alg {p : ℕ} [hp : Fact p.Prime] {G : Type} [Group G] {R : Type} [CommRing R]
     (ρ : G →* (R ≃+* R)) [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [IsDomain R] [CharP R p]
@@ -39,7 +39,7 @@ private theorem exists_alg {p : ℕ} [hp : Fact p.Prime] {G : Type} [Group G] {R
   _root_.UpperTheory.Reformulated.B.WittVectorTrivializingMatrix.exists_alg ρ hopen M hM hJ
 
 /- English proof (translation)
-Rewrite using `[WittVector.frobenius_eq_map_frobenius]`. Use extensionality with `i`. Simplify using `[iterateFrobenius_def, frobenius_def, pow_succ, pow_mul]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem map_iterFrob {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] [CharP R p] (k : ℕ)
     (x : WittVector p R) :
@@ -50,9 +50,9 @@ private theorem map_iterFrob {p : ℕ} [Fact p.Prime] {R : Type} [CommRing R] [C
   simp [iterateFrobenius_def, frobenius_def, pow_succ, pow_mul]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Express the relevant statement in the definitionally equal form `(AIP l).ιA x = _`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i`. Simplify using the standard rewrite rules. Consider the case `succ k ih`. Rewrite using `[pow_succ', map_iterFrob, (AIP l).ιA_φ, ← ih]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem φB_pow_ιA {l : ℕ} [Fact l.Prime] (k : ℕ) (x : WittVector l (OCb l)) :
     ((PP l).φB ^ k) ((AIP l).ιA x) = (AIP l).ιA (WittVector.map (iterateFrobenius _ l k) x) := by
@@ -69,13 +69,11 @@ private theorem φB_pow_ιA {l : ℕ} [Fact l.Prime] (k : ℕ) (x : WittVector l
 
 open GlobalTheory.UnramifiedRep GlobalTheory.Cyc in
 /- English proof (translation)
-Introduce `l _ K r M hM hMI`. Take `⟨-, -, hI, -, -⟩` from `iqBasic l`. Take `⟨Ti⟩` from `tiedP l`. Use `compactSpace_GK K` as an intermediate fact. Take `⟨W, hW, hWg⟩` from `exists_alg (p := l) ((AIP l).actT.comp (GK K).subtype) (fun y m hm hy => (continuous_subtype_val.tendsto (1 : ↥(GK K))).eventually (eventually_actT_eq (AIP l) y m hm hy)) M hM (fun g hg => hMI g ((hI g).2 (norm_sub_lt_one_of_fix (AIP l) g hg)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ (g : ↥(GK K)) (f : OCb l →+* OCb l) (F : Bcr l → Bcr l), (∀ m, 0 < m → ∀ y : OCb l, y ^ l ^ m = y → f y = (AIP l).actT g y) → (∀ x, F ((AIP l).ιA x) = (AIP l).ιA (WittVector.map f x)) → (M g).map (fun z => algebraMap ℚ_[l] (Bcr l) (z : ℚ_[l])) * ((AIP l).ιA.mapMatrix W).m …` using `fun g f F hf hF => by conv_rhs => rw [← hWg g f hf, map_mul]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `(ιA_zlW (AIP l) Ti (M g i j)).symm`. Use extensionality with `i j`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hF _`. Use `⟨(AIP l).ιA.mapMatrix W, ?_, fun g => ?_, fun g k hk => ?_⟩` and prove the remaining obligations. Rewrite using `[← RingHom.map_det]`. Conclude with `hW.map _`. Conclude with `key g ((AIP l).actT g).toRingHom _ (fun _ _ _ _ => rfl) fun x => ((AIP l).ιA_act g x).symm`.
-
-Conclude with `key g (iterateFrobenius _ l k) _ (fun m hm y hy => (UpperTheory.tilt_frobenius_teichmuller_action l y m hm hy g k hk).symm) fun x => φB_pow_ιA k x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.crystalline_frobenius_algebraic_elements :
     UpperTheory.V.Af.Wd.WittPer := by

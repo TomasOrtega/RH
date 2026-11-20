@@ -9,25 +9,23 @@ open ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Introduce `K _ ι _ A hA`. Set `blk : (k : K) → ((Σ k, ι k) → ℂ) → (ι k → ℂ)` to `fun k z i => z ⟨k, i⟩`. Establish `hblkc : ∀ k, Continuous (blk k)` using `fun k => continuous_pi fun i => continuous_apply _`. Set `S : Set ((Σ k, ι k) → ℂ)` to `{z | ∀ k, ‖blk k z‖ = 1}`. Establish `hSc : IsCompact S`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `Metric.isCompact_of_isClosed_isBounded ?_ ?_` and prove the remaining obligations. Establish `hS : S = ⋂ k, (fun z => ‖blk k z‖) ⁻¹' {1}` using `by ext z; simp [S]`. Rewrite using `[hS]`. Conclude with `isClosed_iInter fun k => isClosed_singleton.preimage (hblkc k).norm`. Use `(Metric.isBounded_closedBall (x := (0 : (Σ k, ι k) → ℂ)) (r := 1)).subset fun z hz => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.mem_closedBall, dist_zero_right, pi_norm_le_iff_of_nonneg zero_le_one]`. Introduce `p`. Combine the equalities or inequalities in the displayed calculation. Establish `hSU : S ⊆ {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}`. Introduce `z hz k`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Establish `h0 : blk k z = 0` using `funext h`. Establish `h1 : ‖blk k z‖ = 1` using `hz k`. Rewrite `h1` using `[h0, norm_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `zero_ne_one h1`. Take `⟨C0, hC0⟩` from `hSc.exists_bound_of_continuousOn (hA.continuousOn.mono hSU)`. Use `⟨max C0 1, le_max_right _ _, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hn : ∀ k, 0 < ‖blk k z‖` using `fun k => by`. Take `⟨i, hi⟩` from `hz k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `norm_pos_iff.mpr fun h0 => hi (congrFun h0 i)`. Set `c : K → ℂ` to `fun k => ((‖blk k z‖⁻¹ : ℝ) : ℂ)`. Establish `hc0 : ∀ k, c k ≠ 0` using `fun k => by`. Simplify using `only [c, ne_eq, Complex.ofReal_eq_zero, inv_eq_zero]`. Conclude with `(hn k).ne'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcn : ∀ k, ‖c k‖ = ‖blk k z‖⁻¹` using `fun k => by`. Simplify using `only [c, Complex.norm_real, Real.norm_eq_abs]`. Conclude with `abs_of_pos (inv_pos.mpr (hn k))`. Establish `hwS : (fun p : Σ k, ι k => c p.1 * z p) ∈ S` using `fun k => by`. Establish `h1 : blk k (fun p : Σ k, ι k => c p.1 * z p) = c k • blk k z` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, norm_smul, hcn, inv_mul_cancel₀ (hn k).ne']`. Establish `hmax : (HermLine.ofMetrics (fun k => maxMetric ℂ (ι k)) A.a).h z = ∏ k, ‖blk k z‖ ^ A.a k` using `rfl`. Establish `hprod : (∏ k, ‖blk k z‖ ^ A.a k) * (∏ k, ‖c k‖ ^ A.a k) = 1`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcn, ← mul_zpow, mul_inv_cancel₀ (hn k).ne', one_zpow]`. Establish `hz' : A.h z = (∏ k, ‖blk k z‖ ^ A.a k) * A.h (fun p : Σ k, ι k => c p.1 * z p)`. Rewrite using `[A.smul c z hc0, ← mul_assoc, hprod, one_mul]`. Establish `hpos : 0 ≤ ∏ k, ‖blk k z‖ ^ A.a k` using `Finset.prod_nonneg fun k _ => zpow_nonneg (norm_nonneg _) _`. Establish `hbw : A.h (fun p : Σ k, ι k => c p.1 * z p) ≤ max C0 1`.
-
-Establish `h1` using `hC0 _ hwS`. Rewrite `h1` using `[Real.norm_eq_abs]`. Conclude with `(le_abs_self _).trans (h1.trans (le_max_left _ _))`. Rewrite using `[hmax, hz', mul_comm (max C0 1)]`. Conclude with `mul_le_mul_of_nonneg_left hbw hpos`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MetricMaxComparison.proof : MetricMaxComparison.Statement := by
   intro K _ ι _ A hA

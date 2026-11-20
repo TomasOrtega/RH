@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `F _ _ v n`. Proceed by induction on `n using Nat.recOnMul with`. Consider the case `zero => intro h`. Conclude with `absurd rfl h`. Consider the case `one`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_ h`. Rewrite `h` using `[Nat.cast_one]`. Conclude with `absurd ((Ideal.eq_top_iff_one _).2 h) v.isPrime.ne_top`. Consider the case `prime p hp => intro _ h`. Conclude with `⟨p, hp, dvd_rfl, h⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `mul a b iha ihb`. Introduce `hab h`. Rewrite `h` using `[Nat.cast_mul]`. Break down `v.isPrime.mem_or_mem h with ha | hb` into its components or cases. Take `⟨p, hp, hd, hm⟩` from `iha (left_ne_zero_of_mul hab) ha`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p, hp, hd.mul_right b, hm⟩`. Take `⟨p, hp, hd, hm⟩` from `ihb (right_ne_zero_of_mul hab) hb`. Conclude with `⟨p, hp, hd.mul_left a, hm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qk5.dz_exists_prime :
     ∀ {F : Type} [inst : Field F] [NumberField F]

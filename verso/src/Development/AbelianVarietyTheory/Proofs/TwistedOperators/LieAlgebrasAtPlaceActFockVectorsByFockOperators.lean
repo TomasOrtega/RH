@@ -32,17 +32,15 @@ variable {D : D7}
 open scoped ComplexOrder in
 
 /- English proof (translation)
-Establish `h1 : A.fr τ * (A.fr τ)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (A.fr_unit τ))`. Establish `h2 : (A.fr τ)⁻¹ * A.fr τ = 1` using `mul_eq_one_comm.1 h1`. Establish `hJ` using `Formalism.REAL.Jm_mul_self (A.ε τ)`. Establish `hJ'` using `Formalism.REAL.Jm_conjTranspose (A.ε τ)`. Establish `hG : gramAt D V τ * A.cart τ = (A.fr τ)ᴴ * A.fr τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← A.fr_gram τ]`. Unfold `Fr.cart`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.mul_one, hJ, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : A.cart τ * A.cart τ = 1`. Unfold `Fr.cart`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = _ := by rw [h1, Matrix.mul_one, hJ, Matrix.mul_one, h2]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hs, ?_, ?_⟩` and prove the remaining obligations. Establish `hGh : (gramAt D V τ)ᴴ = gramAt D V τ`. Rewrite using `[← A.fr_gram τ]`. Simplify using `[Matrix.conjTranspose_mul, hJ', Matrix.mul_assoc]`. Establish `h3 : (A.cart τ)ᴴ * gramAt D V τ = gramAt D V τ * A.cart τ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg Matrix.conjTranspose hG` as an intermediate fact. Rewrite `this` using `[Matrix.conjTranspose_mul, hGh, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose]`. Rewrite using `[this, hG]`. Rewrite using `[h3, Matrix.mul_assoc, hs, Matrix.mul_one]`. Rewrite using `[hG]`.
-
-Conclude with `Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_of_isUnit (A.fr_unit τ))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cart_isCartanInv {V : HSp D} (A : Fr V) (τ : D.what₂.Tau) : IsCartanInv (gramAt D V τ) (A.cart τ) := by
   have h1 : A.fr τ * (A.fr τ)⁻¹ = 1 := Matrix.mul_nonsing_inv _ ((Matrix.isUnit_iff_isUnit_det _).1 (A.fr_unit τ))
@@ -71,11 +69,11 @@ theorem cart_isCartanInv {V : HSp D} (A : Fr V) (τ : D.what₂.Tau) : IsCartanI
     exact Matrix.PosDef.conjTranspose_mul_self _ (Matrix.mulVec_injective_of_isUnit (A.fr_unit τ))
 
 /- English proof (translation)
-Take `⟨A⟩` from `(GlobalTheory.FrameExists.frame_exists_signCompat D V).1`. Use `⟨⟨Function.update A.ε τ ε, Function.update A.fr τ fr, fun ρ => ?_, fun ρ => ?_⟩, by simp, by simp, ?_⟩` and prove the remaining obligations. Distinguish the cases in `e : ρ = τ`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.1`. Rewrite using `[Function.update_of_ne e]`. Conclude with `A.fr_unit ρ`. Distinguish the cases in `e : ρ = τ`. Substitute `e` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_self, Function.update_self]`. Conclude with `h.2.1`. Rewrite using `[Function.update_of_ne e, Function.update_of_ne e]`. Conclude with `A.fr_gram ρ`. Simplify using `[Fr.cart, h.2.2]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_fr {V : HSp D} {τ : D.what₂.Tau} {s fr : Mn V.rank} {ε : Fin V.rank → Bool}
     (h : IsFrameOf (gramAt D V τ) s ε fr) : ∃ A : Fr V, A.ε τ = ε ∧ A.fr τ = fr ∧ A.cart τ = s := by
@@ -91,9 +89,9 @@ theorem exists_fr {V : HSp D} {τ : D.what₂.Tau} {s fr : Mn V.rank} {ε : Fin 
   · simp [Fr.cart, h.2.2]
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C a`. Rewrite using `[MvPolynomial.rename_C, ← mul_one (MvPolynomial.C a : MvPolynomial ι ℂ), ← mul_one (MvPolynomial.C a : MvPolynomial κ ℂ), MvPolynomial.C_mul', MvPolynomial.C_mul', map_smul, map_smul, GlobalTheory.FockIndep.pure_one, GlobalTheory.FockIndep.pure_one]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p v hp`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[mul_comm, map_mul (MvPolynomial.rename e), MvPolynomial.rename_X, hX, hX', hp, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pure_rename {ι κ X : Type} {A : ι → (X → ℂ) → (X → ℂ)} {A' : κ → (X → ℂ) → (X → ℂ)} {g : X → ℂ}
     (hX : ∀ v Q, pureTensorL A g (MvPolynomial.X v * Q) = A v (pureTensorL A g Q))
@@ -112,11 +110,11 @@ theorem pure_rename {ι κ X : Type} {A : ι → (X → ℂ) → (X → ℂ)} {A
 variable {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
 
 /- English proof (translation)
-Establish `hS` using `cart_isCartanInv A`. Establish `hT` using `cart_isCartanInv B`. Use `pure_rename (fun v Q => ?_) (fun v Q => ?_) _ (fun k => rfl) P` and prove the remaining obligations. Use `GlobalTheory.FockIndep.pure_X_mul (P := IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) (fun a _ => GlobalTheory.OrientedHeis.theta_smul a) (fun _ _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ h) ?_ ?_ ?_ hf Q v` and prove the remaining obligations. Conclude with `fun i j _ h => GlobalTheory.FockIndep.aPlus_comm' hψ hθ i.1 _ hS hT j.1 _ h`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun _ _ _ h h' => GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ h h'`. Conclude with `fun _ a _ h => GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ a h`. Use `GlobalTheory.FockIndep.pure_X_mul (P := IsThetaFunO ψ S T) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) (fun a _ => GlobalTheory.OrientedHeis.theta_smul a) (fun _ _ h => GlobalTheory.FockIndep.aPlus_theta hψ hθ _ _ _ h) ?_ ?_ ?_ hf Q v` and prove the remaining obligations. Conclude with `fun i j _ h => GlobalTheory.FockIndep.aPlus_comm' hψ hθ τ _ hS hT τ _ h`. Conclude with `fun _ _ _ h h' => GlobalTheory.FockIndep.aPlus_add hψ hθ _ _ _ h h'`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun _ a _ h => GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ a h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ptF_rename (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A : Fr S) (B : Fr T) (τ : D.what₂.Tau)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (P : LPol T.rank S.rank) :
@@ -137,7 +135,7 @@ theorem ptF_rename (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A : Fr S) (B
     · exact fun _ a _ h => GlobalTheory.FockIndep.aPlus_smul hψ hθ _ _ _ a h
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Chain.RealIt.GlueProof.ins_apply]`. Simplify using `[GlobalTheory.Chain.RealIt.GlueProof.rest]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ins_one {a b : ℕ} (τ : D.what₂.Tau) (p : LPol b a) :
     GlobalTheory.Chain.RealIt.GlueProof.ins τ (fun _ => 1) p = (MvPolynomial.rename (fun s => (τ, s)) p : PolF D b a) := by
@@ -145,11 +143,11 @@ theorem ins_one {a b : ℕ} (τ : D.what₂.Tau) (p : LPol b a) :
   simp [GlobalTheory.Chain.RealIt.GlueProof.rest]
 
 /- English proof (translation)
-Take `⟨k, c, z, z', lam, hq⟩` from `hγ`. Use `choose L hL using GlobalTheory.T.exists_fockPolynomial_operator_heisenberg_derivative D ψ θ S T τ hψ hθ sS frS εS sT frT εT hS hT`. Establish `hc` using `GlobalTheory.T.fockVectors_at_one_realPlace_over_vacuum D ψ θ S T τ hψ hθ sS frS εS sT frT εT hS hT`. Establish `key : ∀ g, IsThetaFunO ψ S T g → IsFockVacAt (heisO ψ S T) θ τ (cplxO sS sT) g → DerAll ψ ω γ (ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ g P) (ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ g ((∑ i, c i • L (z i) (L (z' i) P)) + lam • P))` using `fun g hg vg => by`. Establish `h` using `hq _ ((hc g hg vg).1 P)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hL _ g hg vg] at h`. Establish `e : ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ g ((∑ i, c i • L (z i) (L (z' i) P)) + lam • P) = (∑ i, c i • ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ g (L (z i) (L (z' i) P))) + lam • ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ g P`. Simplify using `only [ptAt, map_add, map_sum, map_smul]`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : P' = (∑ i, c i • L (z i) (L (z' i) P)) + lam • P`. Use `((hc f₀ h0 v0).2 n0).1 (funext fun w => (hd w).unique ?_)` and prove the remaining obligations. Simplify using `using (key f₀ h0 v0).1 1 w`. Rewrite using `[e]`. Conclude with `key f hf hv`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derAll_of_one (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {τ : D.what₂.Tau}
     {sS frS : Mn S.rank} {εS : Fin S.rank → Bool} {sT frT : Mn T.rank} {εT : Fin T.rank → Bool}
@@ -182,13 +180,11 @@ theorem derAll_of_one (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) {τ : D.wh
   exact key f hf hv
 
 /- English proof (translation)
-Introduce `D ψ θ S T χS χT ω τ hθ hW aS aT haS haT sS frS εS sT frT εT hS hT f hf hv`. Establish `hψ` using `hW.std`. Take `⟨A, rfl, rfl, rfl⟩` from `exists_fr hS`. Take `⟨B, rfl, rfl, rfl⟩` from `exists_fr hT`. Take `⟨f₀, h0, n0⟩` from `GlobalTheory.IndefiniteRowSideFullHecke.BoundedCommutantVacua.exists_isVac_ne_zero hψ hθ (cart_isCartanInv A) (cart_isCartanInv B)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hl` using `GlobalTheory.T.lieAction_fockOperators_scalars_trace D S T A B θ ψ χS χT ω f₀ τ aS aT hθ hW haS haT h0`. Establish `hg` using `GlobalTheory.T.weilGenerator_quadratic_oneParameter_at_place D ψ θ S T χS χT ω τ hθ hW`. Use `⟨fun X hX P => ?_, fun Y hY P => ?_⟩` and prove the remaining obligations. Use `derAll_of_one hψ hθ hS hT (hg.1 X hX) h0.1 (h0.2 τ) n0 (fun z => ?_) hf hv` and prove the remaining obligations. Establish `h` using `hl.1 X hX (MvPolynomial.rename (fun s => (τ, s)) P) z`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[← ins_one, GlobalTheory.Chain.RealIt.GlueProof.fockS_ins, ← map_smul, ← map_add, ins_one, ins_one, ptF_rename hψ hθ A B τ h0.1, ptF_rename hψ hθ A B τ h0.1, neg_smul, ← sub_eq_add_neg]`. Conclude with `h`. Use `derAll_of_one hψ hθ hS hT (hg.2 Y hY) h0.1 (h0.2 τ) n0 (fun z => ?_) hf hv` and prove the remaining obligations. Establish `h` using `hl.2 Y hY (MvPolynomial.rename (fun s => (τ, s)) P) z`. Rewrite `h` using `[← ins_one, GlobalTheory.Chain.RealIt.GlueProof.fockT_ins, ← map_smul, ← map_add, ins_one, ins_one, ptF_rename hψ hθ A B τ h0.1, ptF_rename hψ hθ A B τ h0.1]`.
-
-Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieAt_of_vacAt : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle) (ω : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (τ : D.what₂.Tau), IsInfFam θ → IsWeilDatumO ψ S T χS χT ω → ∀ aS aT : ℚ, HasInfExp D χS τ aS → HasInfExp D χT τ aT → ∀ (sS frS : Mn S.rank) (εS : Fin S.rank → Bool) (sT frT : Mn T.rank) (εT : Fin T.rank → Bool), IsFrameOf (gramAt D S τ) sS εS frS → IsFrameOf (gramAt D T τ) sT εT frT → ∀ f, IsThetaFunO ψ S T f → IsFockVacAt (heisO ψ S T) θ τ (cplxO sS sT) f → LieAt ψ θ τ ω εS frS εT frT aS aT (ptAt ψ θ S T τ sS sT frS⁻¹ frT⁻¹ f) := by
   intro D ψ θ S T χS χT ω τ hθ hW aS aT haS haT sS frS εS sT frT εT hS hT f hf hv

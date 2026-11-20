@@ -5,15 +5,15 @@ open Formalism.MainNotions.N Formalism.BasicNotions.Loc GlobalTheory.UseLoc
 namespace GlobalTheory.UseLoc
 
 /- English proof (translation)
-Use `set N := LinearMap.range (Algebra.linearMap R S) with hN`. Use `haveI : Module.Free R (S ⧸ N) := Module.free_of_finite_type_torsion_free'`. Take `⟨s, hs⟩` from `Module.projective_lifting_property N.mkQ LinearMap.id N.mkQ_surjective`. Set `φ : S →ₗ[R] S` to `LinearMap.id - s ∘ₗ N.mkQ`. Establish `hφ : ∀ x, φ x ∈ N`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[← Submodule.Quotient.mk_eq_zero]`. Use `LinearMap.congr_fun hs (N.mkQ x)` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at this`. Establish `this' : (Submodule.Quotient.mk (s (Submodule.Quotient.mk x)) : S ⧸ N) = Submodule.Quotient.mk x` using `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[φ, Submodule.Quotient.mk_sub, this']`. Establish `hinj' : Function.Injective (Algebra.linearMap R S)` using `hinj`. Set `e` to `LinearEquiv.ofInjective (Algebra.linearMap R S) hinj'`. Use `⟨e.symm.toLinearMap ∘ₗ φ.codRestrict N hφ, ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : S) ∈ N` using `⟨1, map_one (algebraMap R S)⟩`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφ1 : φ 1 = 1`. Establish `: N.mkQ 1 = 0` using `(Submodule.Quotient.mk_eq_zero N).2 h1`. Simplify using `[φ, this]`. Apply `hinj'` to reduce the goal to its premises. Use `congrArg Subtype.val (e.apply_symm_apply (φ.codRestrict N hφ 1))` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite `this` using `[LinearEquiv.ofInjective_apply]`. Rewrite using `[this, LinearMap.codRestrict_apply, hφ1, Algebra.linearMap_apply, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_linRetraction_of_isTorsionFree {R S : Type} [CommRing R] [IsDomain R] [IsPrincipalIdealRing R]
     [CommRing S] [Algebra R S] [Module.Finite R S] (hinj : Function.Injective (algebraMap R S))
@@ -44,9 +44,9 @@ theorem exists_linRetraction_of_isTorsionFree {R S : Type} [CommRing R] [IsDomai
   rw [this, LinearMap.codRestrict_apply, hφ1, Algebra.linearMap_apply, map_one]
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Introduce `x y hxy`. Proceed by induction on `x using Submodule.Quotient.induction_on with | _ x => ?_`. Proceed by induction on `y using Submodule.Quotient.induction_on with | _ y => ?_`. Establish `hxy' : (Submodule.Quotient.mk (a • x) : S ⧸ LinearMap.range (Algebra.linearMap R S)) = Submodule.Quotient.mk (a • y)` using `hxy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Establish an intermediate fact.
 
-Rewrite `hxy'`, the goal using `[Submodule.Quotient.eq]`. Take `⟨b, hb⟩` from `hxy'`. Rewrite `hb` using `[← smul_sub, Algebra.smul_def]`. Take `⟨c, hc⟩` from `H a ha.ne_zero b (x - y) hb`. Conclude with `⟨c, hc⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isTorsionFree_quot_range {R S : Type} [CommRing R] [IsDomain R] [CommRing S] [Algebra R S]
     (H : ∀ a : R, a ≠ 0 → ∀ (b : R) (z : S), algebraMap R S b = algebraMap R S a * z → ∃ c, algebraMap R S c = z) :
@@ -68,7 +68,7 @@ end GlobalTheory.UseLoc
 namespace GlobalTheory.UseLoc
 
 /- English proof (translation)
-Introduce `a b hab`. Use `congrArg (fun x : ↥(OL LL') => ((x : ↥LL'.1) : Om l)) hab` as an intermediate fact. Conclude with `Subtype.ext (Subtype.ext this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem incO_injective {l : ℕ} [Fact l.Prime] {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) :
     Function.Injective (incO h) := by
@@ -77,11 +77,11 @@ theorem incO_injective {l : ℕ} [Fact l.Prime] {LL LL' : FinExt l} (h : LL.1 �
   exact Subtype.ext (Subtype.ext this)
 
 /- English proof (translation)
-Establish `haL : ((a : ↥LL.1) : Om l) ≠ 0` using `fun e => ha0 (Subtype.ext (Subtype.ext e))`. Establish `hb' : ((b : ↥LL.1) : Om l) = ((a : ↥LL.1) : Om l) * ((z : ↥LL'.1) : Om l)` using `congrArg (fun x : ↥(OL LL') => ((x : ↥LL'.1) : Om l)) hb`. Establish `hz : ((z : ↥LL'.1) : Om l) = ((b : ↥LL.1) : Om l) / ((a : ↥LL.1) : Om l)`. Rewrite using `[eq_div_iff haL, mul_comm]`. Conclude with `hb'.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (b : ↥LL.1) / (a : ↥LL.1) ∈ OL LL`. Rewrite using `[Formalism.BasicNotions.Examples₂.LB.mem_OL]`. Establish `hz1` using `(Formalism.BasicNotions.Examples₂.LB.mem_OL LL' (z : ↥LL'.1)).1 z.2`. Rewrite `hz1` using `[hz]`. Simplify using `using hz1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨_, hc⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `((b : ↥LL.1) : Om l) / ((a : ↥LL.1) : Om l) = ((z : ↥LL'.1) : Om l)`. Rewrite using `[hz]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incO_div {l : ℕ} [Fact l.Prime] {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1) {a b : ↥(OL LL)} (ha0 : a ≠ 0)
     {z : ↥(OL LL')} (hb : incO h b = incO h a * z) : ∃ c, incO h c = z := by
@@ -104,11 +104,9 @@ theorem incO_div {l : ℕ} [Fact l.Prime] {LL LL' : FinExt l} (h : LL.1 ≤ LL'.
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `l _ LL LL' h`. Use `letI A : Algebra ↥(OL LL) ↥(OL LL') := (incO h).toAlgebra`. Use `haveI : IsDiscreteValuationRing ↥(OL LL) := Formalism.BasicNotions.Examples₂.LB.OL_dvr LL`. Use `haveI T : IsScalarTower ℤ_[l] ↥(OL LL) ↥(OL LL') := IsScalarTower.of_algebraMap_eq (fun x => by`. Apply `Subtype.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use the proof step `rfl)`. Use `haveI : Module.Finite ℤ_[l] ↥(OL LL') := Formalism.BasicNotions.Examples₂.LB.OL_finite LL'`. Use `haveI : Module.Finite ↥(OL LL) ↥(OL LL') := Module.Finite.of_restrictScalars_finite ℤ_[l] _ _`. Use `haveI := isTorsionFree_quot_range (R := ↥(OL LL)) (S := ↥(OL LL')) (fun a ha b z hb => incO_div h ha hb)`.
-
-Take `⟨r, hr⟩` from `exists_linRetraction_of_isTorsionFree (R := ↥(OL LL)) (S := ↥(OL LL')) (incO_injective h)`. Use `⟨r.toAddMonoidHom, fun a x => ?_, hr⟩` and prove the remaining obligations. Use `show r (incO h a * x) = a * r x`. Establish `e1 : incO h a * x = a • x` using `(Algebra.smul_def a x).symm`. Rewrite using `[e1, map_smul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_intRetraction : ∀ {l : ℕ} [Fact l.Prime] {LL LL' : FinExt l} (h : LL.1 ≤ LL'.1),
     ∃ r : ↥(OL LL') →+ ↥(OL LL), (∀ (a : ↥(OL LL)) (x : ↥(OL LL')), r (incO h a * x) = a * r x) ∧ r 1 = 1 := by

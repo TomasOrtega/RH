@@ -26,13 +26,13 @@ def pRootSeq : ℕ → ℂ_[p]
   | (n + 1) => (IsAlgClosed.exists_pow_nat_eq (pRootSeq n) hp.out.pos).choose
 
 /- English proof (translation)
-The claim follows from `(IsAlgClosed.exists_pow_nat_eq (pRootSeq p n) hp.out.pos).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem pRootSeq_succ_pow (n : ℕ) : pRootSeq p (n + 1) ^ p = pRootSeq p n :=
   (IsAlgClosed.exists_pow_nat_eq (pRootSeq p n) hp.out.pos).choose_spec
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [pRootSeq]`. Consider the case `succ n ih => rw [pow_succ, pow_mul', pRootSeq_succ_pow, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem pRootSeq_pow (n : ℕ) : pRootSeq p n ^ p ^ n = p := by
   induction n with
@@ -40,9 +40,9 @@ theorem pRootSeq_pow (n : ℕ) : pRootSeq p n ^ p ^ n = p := by
   | succ n ih => rw [pow_succ, pow_mul', pRootSeq_succ_pow, ih]
 
 /- English proof (translation)
-Establish `h` using `congrArg norm (pRootSeq_pow (p := p) n)`. Rewrite `h` using `[norm_pow]`. Establish `hp1 : ‖(p : ℂ_[p])‖ ≤ 1`. Use `(IsPerfectoidField.norm_natCast_integer_lt_one (K := ℂ_[p]) (p := p)).le` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `: 1 < ‖pRootSeq p n‖ ^ p ^ n` using `one_lt_pow₀ hlt (pow_ne_zero _ hp.out.ne_zero)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_pRootSeq_le (n : ℕ) : ‖pRootSeq p n‖ ≤ 1 := by
   have h := congrArg norm (pRootSeq_pow (p := p) n)
@@ -61,7 +61,7 @@ def pRootSeqInt (n : ℕ) : 𝒪 :=
   ⟨pRootSeq p n, mem_normInteger.2 (norm_pRootSeq_le n)⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by simp [pRootSeqInt, pRootSeq_succ_pow])`.
+A detailed English derivation is pending.
 -/
 theorem pRootSeqInt_succ_pow (n : ℕ) : pRootSeqInt p (n + 1) ^ p = pRootSeqInt p n :=
   Subtype.ext (by simp [pRootSeqInt, pRootSeq_succ_pow])
@@ -72,21 +72,21 @@ def pFlat : 𝒪♭ :=
   IsPerfectoidField.ofCompatible p (pRootSeqInt p) pRootSeqInt_succ_pow
 
 /- English proof (translation)
-Rewrite using `[pFlat, IsPerfectoidField.untilt_ofCompatible]`. Conclude with `Subtype.ext (by simp [pRootSeqInt, pRootSeq])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untilt_pFlat : PreTilt.untilt (pFlat p) = (p : 𝒪) := by
   rw [pFlat, IsPerfectoidField.untilt_ofCompatible]
   exact Subtype.ext (by simp [pRootSeqInt, pRootSeq])
 
 /- English proof (translation)
-Rewrite using `[untilt_pFlat]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coe_untilt_pFlat : ((PreTilt.untilt (pFlat p) : 𝒪) : ℂ_[p]) = p := by
   rw [untilt_pFlat]
   simp
 
 /- English proof (translation)
-The claim follows from `Nat.cast_ne_zero.2 hp.out.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem natCast_p_ne_zero_cp : (p : ℂ_[p]) ≠ 0 := Nat.cast_ne_zero.2 hp.out.ne_zero
 
@@ -94,7 +94,7 @@ def qBdR : 𝔹 := algebraMap ℚ 𝔹 (p : ℚ)⁻¹ * wittToBDeRhamPlus 𝒪 p
 
 omit hp in
 /- English proof (translation)
-Rewrite using `[qBdR]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem one_add_qBdR [Fact p.Prime] :
     1 + qBdR (p := p) = algebraMap ℚ 𝔹 (p : ℚ)⁻¹ * wittToBDeRhamPlus 𝒪 p (teichmuller p (pFlat p)) := by
@@ -102,7 +102,7 @@ theorem one_add_qBdR [Fact p.Prime] :
   ring
 
 /- English proof (translation)
-Rewrite using `[IsPerfectoidField.maximalIdeal_bDeRhamPlus, RingHom.mem_ker, qBdR, map_sub, map_mul, IsPerfectoidField.thetaBDeRhamPlusField_wittToBDeRhamPlus, fontaineTheta_teichmuller, untilt_pFlat, RingHom.map_rat_algebraMap, map_one]`. Establish `h : ((p : 𝒪) : ℂ_[p]) = p` using `by simp`. Simplify using `only [eq_ratCast, Rat.cast_inv, Rat.cast_natCast, h]`. Rewrite using `[inv_mul_cancel₀ natCast_p_ne_zero_cp, sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem qBdR_mem : qBdR (p := p) ∈ 𝔪 := by
   rw [IsPerfectoidField.maximalIdeal_bDeRhamPlus, RingHom.mem_ker, qBdR, map_sub, map_mul,
@@ -117,21 +117,21 @@ variable (p) in
 def uBdR : 𝔹 := logOnePlus 𝔪 (qBdR (p := p)) qBdR_mem
 
 /- English proof (translation)
-The claim follows from `logOnePlus_mem qBdR_mem`.
+A detailed English derivation is pending.
 -/
 theorem uBdR_mem : uBdR p ∈ 𝔪 := logOnePlus_mem qBdR_mem
 
 variable {K : IntermediateField ℚ_[p] (PadicAlgCl p)}
 
 /- English proof (translation)
-Rewrite using `[AInf.coe_untilt_gal, coe_untilt_pFlat, ← galCp_apply, map_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_untilt_galFlat_pFlat (σ : Gal(PadicAlgCl p/K)) :
     ((PreTilt.untilt (preTiltMap p (galCp σ : ℂ_[p] →+* ℂ_[p]) (AInf.norm_galCp_toRingHom σ) (pFlat p)) : 𝒪) : ℂ_[p]) = p := by
   rw [AInf.coe_untilt_gal, coe_untilt_pFlat, ← galCp_apply, map_natCast]
 
 /- English proof (translation)
-Use `preTilt_dvd_iff_norm_le.2 (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[preTilt_norm_def, preTilt_norm_def, coe_untilt_pFlat, coe_untilt_galFlat_pFlat]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_galFlat_pFlat_eq (σ : Gal(PadicAlgCl p/K)) :
     ∃ η : 𝒪♭, preTiltMap p (galCp σ : ℂ_[p] →+* ℂ_[p]) (AInf.norm_galCp_toRingHom σ) (pFlat p) = pFlat p * η := by
@@ -142,16 +142,16 @@ theorem exists_galFlat_pFlat_eq (σ : Gal(PadicAlgCl p/K)) :
 def kummerEta (σ : Gal(PadicAlgCl p/K)) : 𝒪♭ := (exists_galFlat_pFlat_eq σ).choose
 
 /- English proof (translation)
-The claim follows from `(exists_galFlat_pFlat_eq σ).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem pFlat_mul_kummerEta (σ : Gal(PadicAlgCl p/K)) :
     preTiltMap p (galCp σ : ℂ_[p] →+* ℂ_[p]) (AInf.norm_galCp_toRingHom σ) (pFlat p) = pFlat p * kummerEta σ :=
   (exists_galFlat_pFlat_eq σ).choose_spec
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun x => ((PreTilt.untilt x : 𝒪) : ℂ_[p])) (pFlat_mul_kummerEta σ)`. Simplify using `only [untilt_mul, MulMemClass.coe_mul] at h`. Rewrite `h` using `[coe_untilt_galFlat_pFlat, coe_untilt_pFlat]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[OneMemClass.coe_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(mul_eq_left₀ natCast_p_ne_zero_cp).1 h.symm`.
+A detailed English derivation is pending.
 -/
 theorem untilt_kummerEta (σ : Gal(PadicAlgCl p/K)) : PreTilt.untilt (kummerEta σ) = 1 := by
   have h := congrArg (fun x => ((PreTilt.untilt x : 𝒪) : ℂ_[p])) (pFlat_mul_kummerEta σ)
@@ -162,7 +162,7 @@ theorem untilt_kummerEta (σ : Gal(PadicAlgCl p/K)) : PreTilt.untilt (kummerEta 
   exact (mul_eq_left₀ natCast_p_ne_zero_cp).1 h.symm
 
 /- English proof (translation)
-Rewrite using `[gal_smul_bdR_def, logOnePlus, logOnePlus]`. Conclude with `map_seriesEval (galBdRHom σ) (Ideal.map_le_iff_le_comap.2 fun x hx => by`. Establish `h` using `gal_smul_mem_maximalIdeal σ hx`. Rewrite `h` using `[gal_smul_bdR_def]`. Conclude with `h) _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gal_smul_logOnePlus (σ : Gal(PadicAlgCl p/K)) {z : 𝔹} (hz : z ∈ 𝔪) :
     σ • logOnePlus 𝔪 z hz = logOnePlus 𝔪 (σ • z) (gal_smul_mem_maximalIdeal σ hz) := by
@@ -174,7 +174,7 @@ theorem gal_smul_logOnePlus (σ : Gal(PadicAlgCl p/K)) {z : 𝔹} (hz : z ∈ �
       exact h) _ _ _
 
 /- English proof (translation)
-Establish `h1 : σ • (1 + qBdR (p` using `p)) = 1 + σ • qBdR := by rw [smul_add, smul_one]`. Rewrite using `[← h1, one_add_qBdR, muBdR_eq, add_sub_cancel, smul_mul', gal_smul_wittToBDeRhamPlus, AInf.gal_smul_teichmuller, pFlat_mul_kummerEta, map_mul, map_mul, gal_smul_bdR_def (x := algebraMap _ _ _), RingHom.map_rat_algebraMap, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_add_gal_smul_qBdR (σ : Gal(PadicAlgCl p/K)) :
     1 + σ • qBdR (p := p) = (1 + qBdR) * (1 + muBdR p (kummerEta σ)) := by
@@ -184,7 +184,7 @@ theorem one_add_gal_smul_qBdR (σ : Gal(PadicAlgCl p/K)) :
     RingHom.map_rat_algebraMap, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[uBdR, gal_smul_logOnePlus, fontaineT]`. Conclude with `logOnePlus_mul qBdR_mem (muBdR_mem (untilt_kummerEta σ)) _ (one_add_gal_smul_qBdR σ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gal_smul_uBdR (σ : Gal(PadicAlgCl p/K)) :
     σ • uBdR p = uBdR p + fontaineT (kummerEta σ) (untilt_kummerEta σ) := by

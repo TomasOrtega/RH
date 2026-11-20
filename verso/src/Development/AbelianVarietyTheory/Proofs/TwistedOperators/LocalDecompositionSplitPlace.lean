@@ -30,7 +30,7 @@ variable {D : D7} {V : HSp D} (Φ : WittFrame V)
 def cols {r : ℕ} (x : Fin r → V.V) : Matrix (Fin V.rank) (Fin r) D.host.E := Matrix.of fun k i => V.frame.repr (x i) k
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.hT_coord V]`. Simplify using `only [Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, cols, Matrix.of_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_cols {r s : ℕ} (x : Fin r → V.V) (y : Fin s → V.V) (i : Fin r) (j : Fin s) :
     (((cols x).map D.sp.cm.sig).transpose * V.gram * cols y) i j = V.hT (x i) (y j) := by
@@ -40,7 +40,7 @@ theorem gram_cols {r s : ℕ} (x : Fin r → V.V) (y : Fin s → V.V) (i : Fin r
   rfl
 
 /- English proof (translation)
-Use extensionality with `j i`. Rewrite using `[gram_cols, Matrix.one_apply, ← HSpace.hD, Φ.ef]`. Simplify using `only [eq_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fe : ((cols Φ.f).map D.sp.cm.sig).transpose * V.gram * cols Φ.e = 1 := by
   ext j i
@@ -48,21 +48,21 @@ theorem fe : ((cols Φ.f).map D.sp.cm.sig).transpose * V.gram * cols Φ.e = 1 :=
   simp only [eq_comm]
 
 /- English proof (translation)
-Use extensionality with `j i`. Rewrite using `[gram_cols, Matrix.zero_apply, ← HSpace.hD, Φ.ee]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ee : ((cols Φ.e).map D.sp.cm.sig).transpose * V.gram * cols Φ.e = 0 := by
   ext j i
   rw [gram_cols, Matrix.zero_apply, ← HSpace.hD, Φ.ee]
 
 /- English proof (translation)
-Use extensionality with `j i`. Rewrite using `[gram_cols, Matrix.zero_apply, ← HSpace.hD, Φ.ff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ff : ((cols Φ.f).map D.sp.cm.sig).transpose * V.gram * cols Φ.f = 0 := by
   ext j i
   rw [gram_cols, Matrix.zero_apply, ← HSpace.hD, Φ.ff]
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h1 : V.hT (Φ.e i) (Φ.f j) = star (V.hT (Φ.f j) (Φ.e i))` using `GlobalTheory.IndefiniteRowSideFullHecke.BesselData.hT_swap rfl`. Rewrite using `[gram_cols, Matrix.one_apply, h1, ← HSpace.hD, Φ.ef]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ef : ((cols Φ.e).map D.sp.cm.sig).transpose * V.gram * cols Φ.f = 1 := by
   ext i j
@@ -71,7 +71,7 @@ theorem ef : ((cols Φ.e).map D.sp.cm.sig).transpose * V.gram * cols Φ.f = 1 :=
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem coordMat_eq (R : Type) [CommRing R] [Algebra D.host.F R] :
     (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V R (Φ.e i) x) =
@@ -81,15 +81,15 @@ theorem coordMat_eq (R : Type) [CommRing R] [Algebra D.host.F R] :
 end Frame
 
 /- English proof (translation)
-Use `set π : Matrix (Fin n) (Fin n) K := 1 - e * p - e' * a with hπdef`. Establish `hXX : e * p * (e * p) = e * p` using `by rw [Matrix.mul_assoc, ← Matrix.mul_assoc p, hpe, Matrix.one_mul]`. Establish `hXY : e * p * (e' * a) = 0` using `by rw [Matrix.mul_assoc, ← Matrix.mul_assoc p, hpe', Matrix.zero_mul, Matrix.mul_zero]`. Establish `hYX : e' * a * (e * p) = 0` using `by rw [Matrix.mul_assoc, ← Matrix.mul_assoc a, hae, Matrix.zero_mul, Matrix.mul_zero]`. Establish `hYY : e' * a * (e' * a) = e' * a` using `by rw [Matrix.mul_assoc, ← Matrix.mul_assoc a, hae', Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ : π * π = π`. Simplify using `only [hπdef, Matrix.sub_mul, Matrix.mul_sub, Matrix.one_mul, Matrix.mul_one, hXX, hXY, hYX, hYY]`. Normalize the expressions using the abelian group laws. Establish `hid : IsIdempotentElem (Matrix.toLin' π)`. Rewrite using `[IsIdempotentElem, Module.End.mul_eq_comp, ← Matrix.toLin'_mul, hπ]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `set W := LinearMap.range (Matrix.toLin' π)`. Use `set b := Module.finBasis K W`. Use `⟨Module.finrank K W, LinearMap.toMatrix' (W.subtype ∘ₗ b.equivFun.symm.toLinearMap), LinearMap.toMatrix' (b.equivFun.toLinearMap ∘ₗ (Matrix.toLin' π).rangeRestrict), ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `(LinearMap.IsIdempotentElem.isProj_range _ hid).trace`. Rewrite `h1` using `[Matrix.trace_toLin'_eq, hπdef, Matrix.trace_sub, Matrix.trace_sub, Matrix.trace_mul_comm e, Matrix.trace_mul_comm e', hpe, hae', Matrix.trace_one, Matrix.trace_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fintype.card_fin] at h1`. Establish `h2 : ((r + Module.finrank K W + r : ℕ) : K) = n` using `by push_cast; rw [← h1]; ring`. Conclude with `(Nat.cast_injective h2).symm`. Rewrite using `[← LinearMap.toMatrix'_comp]`. Establish `h3 : (W.subtype ∘ₗ b.equivFun.symm.toLinearMap) ∘ₗ (b.equivFun.toLinearMap ∘ₗ (Matrix.toLin' π).rangeRestrict) = Matrix.toLin' π`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, Submodule.subtype_apply, LinearMap.rangeRestrict, LinearMap.codRestrict_apply]`. Rewrite using `[h3, LinearMap.toMatrix'_toLin', hπdef]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem exists_compl {K : Type} [Field K] [CharZero K] {n r : ℕ} (e e' : Matrix (Fin n) (Fin r) K)
     (p a : Matrix (Fin r) (Fin n) K) (hpe : p * e = 1) (hpe' : p * e' = 0) (hae : a * e = 0) (hae' : a * e' = 1) :
@@ -130,14 +130,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E} {v : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.AdelicU.matHom_apply, ← GlobalTheory.AdelicU.matHom_apply, ← GlobalTheory.AdelicU.matHom_apply, map_mul, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_mul (g h : GLoc σ J v) : (HA.mat (F := F) (Fv F v) σ J (g * h)).1 =
     (HA.mat (F := F) (Fv F v) σ J g).1 * (HA.mat (F := F) (Fv F v) σ J h).1 := by
   rw [← GlobalTheory.AdelicU.matHom_apply, ← GlobalTheory.AdelicU.matHom_apply, ← GlobalTheory.AdelicU.matHom_apply, map_mul, Units.val_mul]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.AdelicU.matHom_apply, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_one : (HA.mat (F := F) (Fv F v) σ J 1).1 = 1 := by
   rw [← GlobalTheory.AdelicU.matHom_apply, map_one, Units.val_one]
@@ -160,13 +160,11 @@ def keepGrp (j : Matrix (Fin n) (Fin r) (Fv F v ⊗[F] E)) : Subgroup (GLoc σ J
       _ = j * (β⁻¹).1 := by rw [← hβ, ← Matrix.mul_assoc, h1, Matrix.one_mul]
 
 /- English proof (translation)
-Use `set j := e.map (inclR (F := F) (Fv F v))`. Use `set P := p.map (inclR (F := F) (Fv F v))`. Establish `hP : P * j = 1`. Rewrite using `[← Matrix.map_mul, hp, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `key : ∀ (t : E →ₐ[F] Fv F v) {b : Matrix (Fin r) (Fin r) (Fv F v)}, (splitHom σ J t g).1 * e.map t = e.map t * b → (HA.mat (F` using `F) (Fv F v) σ J g).1.map ((splitProj t).toRingHom) * j.map ((splitProj t).toRingHom) = j.map ((splitProj t).toRingHom) * b := fun t b hb => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e2 : j.map ((splitProj t).toRingHom) = e.map t`. Use extensionality with `k l`. Simplify using `[j, splitProj_inclR]`. Rewrite using `[e2]`. Conclude with `hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hk : (HA.mat (F` using `F) (Fv F v) σ J g).1 * j = j * (P * ((HA.mat (F := F) (Fv F v) σ J g).1 * j)) := by`. Use extensionality with `k l`. Conclude with `split_ext h τ (congrFun (congrFun (GlobalTheory.Core.Rk.IwFlagSplit.map_keeps _ hP (key τ h1)) k) l) (congrFun (congrFun (GlobalTheory.Core.Rk.IwFlagSplit.map_keeps _ hP (key _ h2)) k) l)`. Establish `hk' : (HA.mat (F` using `F) (Fv F v) σ J g⁻¹).1 * (HA.mat (F := F) (Fv F v) σ J g).1 = 1 := by`. Rewrite using `[← mat_mul, inv_mul_cancel, mat_one]`.
-
-Establish `h3 : (P * ((HA.mat (F` using `F) (Fv F v) σ J g⁻¹).1 * j)) * (P * ((HA.mat (F := F) (Fv F v) σ J g).1 * j)) = 1 := by`. Rewrite using `[Matrix.mul_assoc P, Matrix.mul_assoc (HA.mat (F := F) (Fv F v) σ J g⁻¹).1, ← hk, ← Matrix.mul_assoc (HA.mat (F := F) (Fv F v) σ J g⁻¹).1, hk', Matrix.one_mul, hP]`. Conclude with `⟨⟨_, _, mul_eq_one_comm.1 h3, h3⟩, hk⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem keeps_of_split (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (g : GLoc σ J v) {e : Matrix (Fin n) (Fin r) E}
     {p : Matrix (Fin r) (Fin n) E} (hp : p * e = 1) {a a' : Matrix (Fin r) (Fin r) (Fv F v)}
@@ -200,11 +198,11 @@ theorem keeps_of_split (h : IsCMExt F E σ) (τ : E →ₐ[F] Fv F v) (g : GLoc 
 end Local
 
 /- English proof (translation)
-Introduce `D V Φ L a hG v ⟨P, P', hne, hP, hP'⟩ g`. Take `⟨τ, -⟩` from `existsUnique_splitPrime_eq (isCMExt_host D) (v := v) hne (HeightOneSpectrum.ext hP) (HeightOneSpectrum.ext hP')`. Use `haveI : Submodule.IsLattice D.host.E L := hG.1`. Take `⟨k, i, qq, hn, hsum⟩` from `exists_compl (cols Φ.e) (cols Φ.f) (((cols Φ.f).map D.sp.cm.sig).transpose * V.gram) (((cols Φ.e).map D.sp.cm.sig).transpose * V.gram) (fe Φ) (ff Φ) (ee Φ) (ef Φ)`. Take `⟨B, lv, hB⟩` from `GlobalTheory.Core.Rk.IwFlagSplit.exists_flag_basis (v := v) τ (GlobalTheory.Doubling.isHermND_gram V) (e := cols Φ.e) (e' := cols Φ.f) (i := i) (p := ((cols Φ.f).map D.sp.cm.sig).transpose * V.gram) (q := qq) (Fintype.equivOfCardEq (by simp only [Fintype.card_sum, Fintype.card_fi …`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hQ : ∀ x : GLoc D.sp.cm.sig V.gram v, (B⁻¹ * splitHom D.sp.cm.sig V.gram τ x * B).1.BlockTriangular lv → x ∈ keepGrp (σ` using `D.sp.cm.sig) (J := V.gram) (v := v) ((cols Φ.e).map (inclR (F := D.host.F) (Fv D.host.F v))) := fun x hx => by`. Take `⟨⟨b, hb⟩, b', hb'⟩` from `hB x hx`. Conclude with `keeps_of_split (isCMExt_host D) τ x (fe Φ) hb hb'`. Take `⟨q, k', hq, hk, rfl⟩` from `GlobalTheory.Core.Rk.IwFlagSplit.iwasawa_of_triangular (isCMExt_host D) (GlobalTheory.Doubling.isHermND_gram V) τ L (hG.2.1 v) _ B lv hQ g`. Take `⟨β, hβ⟩` from `hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨q, k', hk, rfl, β, ?_⟩` and prove the remaining obligations. Rewrite using `[coordMat_eq]`. Conclude with `hβ`.
+A detailed English derivation is pending.
 -/
 theorem iwasawa_span_split : ∀ (D : D7) (V : HSp D) (Φ : WittFrame V) (L : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (a : GL (Fin V.rank) (TensorProduct D.host.F (AF D.host.F) D.host.E)), Φ.IsGood D.sp.cm L a → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)), Formalism.MainNotions.SchurIrreducible.IsSplit (E := D.host.E) v → ∀ (g : GLoc D.sp.cm.sig V.gram v), ∃ q k : GLoc D.sp.cm.sig V.gram v, k ∈ stabLoc D.sp.cm.sig V.gram L v ∧ g = q * k ∧ ∃ β : GL (Fin (wittIndex V)) (TensorProduct D.host.F (Fv D.host.F v) D.host.E), (HA.mat (F := D.host.F) (Fv D.host.F v) D.sp.cm.sig V.gram q).1 * (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) = (Matrix.of fun (x : Fin V.rank) (i : Fin (wittIndex V)) => GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.coordR (F := D.host.F) V (Fv D.host.F v) (Φ.e i) x) * β.1 := by
   intro D V Φ L a hG v ⟨P, P', hne, hP, hP'⟩ g

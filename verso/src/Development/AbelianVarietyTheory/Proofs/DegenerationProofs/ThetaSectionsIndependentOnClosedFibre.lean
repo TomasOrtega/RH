@@ -20,11 +20,11 @@ attribute [local instance] SplitExt.free SplitExt.finite MvPolynomial.gradedAlge
 namespace GlobalTheory.ZH.IndepFib
 
 /- English proof (translation)
-Establish `: JacobsonSpace X` using `LocallyOfFiniteType.jacobsonSpace π`. Use `(basicOpen_eq_bot_iff f).1 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `hne' : ((X.basicOpen f : X.Opens) : Set X).Nonempty`. Rewrite using `[Set.nonempty_iff_ne_empty]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun e => hne (SetLike.coe_injective e)`. Take `⟨y, hy, hc⟩` from `nonempty_inter_closedPoints hne' (X.basicOpen f).isOpen.isLocallyClosed`. Establish `hb : ⊤ ≤ (pointOfClosedPoint π y hc) ⁻¹ᵁ X.basicOpen f` using `fun q _ => by show pointOfClosedPoint π y hc q ∈ X.basicOpen f`. Rewrite using `[pointOfClosedPoint_apply π y hc q]`. Conclude with `hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hU : ⊤ ≤ (pointOfClosedPoint π y hc) ⁻¹ᵁ U` using `hb.trans (Scheme.Hom.preimage_mono _ (X.basicOpen_le f))`. Conclude with `((CrdCalc.isUnit_valR_iff _ U hU f).2 hb).ne_zero (h _ (pointOfClosedPoint_comp π y hc) hU)`.
+A detailed English derivation is pending.
 -/
 theorem eq_zero_of_points {k : Type} [Field k] [IsAlgClosed k] {X : Scheme.{0}} [IsReduced X] (π : X ⟶ Sp k)
     [LocallyOfFiniteType π] (U : X.Opens) (f : Γ(X, U))
@@ -44,9 +44,9 @@ theorem eq_zero_of_points {k : Type} [Field k] [IsAlgClosed k] {X : Scheme.{0}} 
   exact ((CrdCalc.isUnit_valR_iff _ U hU f).2 hb).ne_zero (h _ (pointOfClosedPoint_comp π y hc) hU)
 
 /- English proof (translation)
-Establish `: IsReduced Φ.G.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced Φ.G.hom`. Use `GlobalTheory.ZH.WtLin.linIndep k Φ N q J cls F hG a fun l => ?_` and prove the remaining obligations. Use `eq_zero_of_points Φ.G.hom _ _ fun x hx hU => ?_` and prove the remaining obligations. Establish `h1` using `h _ ⟨x, hx, l, 1, hU, fun _ => rfl⟩`. Rewrite using `[CrdCalc.valR_eq x _ hU, map_sum, ← h1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← CrdCalc.valR_eq, ← CrdCalc.valR_eq, Units.val_one, _root_.one_mul]`. Conclude with `congrArg (· * _) (GlobalTheory.Points.valR_constFn_of_section Φ.G.hom x hx _ hU (a i))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lin_eq_zero {k : Type} [Field k] [IsAlgClosed k] (Φ : FibPre k) [Smooth Φ.G.hom] {N : ℕ}
     {q : QuadraticMap ℤ Φ.E.X ℝ} {J : Type} [Fintype J] {cls : J → Φ.E.X} {F : J → (Φ.H 1).Sec}
@@ -61,9 +61,9 @@ theorem lin_eq_zero {k : Type} [Field k] [IsAlgClosed k] (Φ : FibPre k) [Smooth
   exact congrArg (· * _) (GlobalTheory.Points.valR_constFn_of_section Φ.G.hom x hx _ hU (a i))
 
 /- English proof (translation)
-Establish `h1 : B' * C = 1` using `mul_eq_one_comm.1 hC`. Establish `h2 : (g.map (↑) * g'.map (↑) : Matrix J J Ω) = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, h1, Matrix.mul_one]`. Use `_ = 1 := by rw [← h', ← h, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Use `congrFun (congrFun h2 i) j` as an intermediate fact. Apply the tactic sequence `by_cases hij : i = j <;> simpa [Matrix.mul_apply, Matrix.one_apply, hij] using this`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem change_mul_change {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {J : Type} [Fintype J]
     {A : Subalgebra o Ω} {B B' C : Matrix J J Ω} (hC : C * B' = 1) {g g' : Matrix J J A}
@@ -78,31 +78,29 @@ theorem change_mul_change {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {
   by_cases hij : i = j <;> simpa [Matrix.mul_apply, Matrix.one_apply, hij] using this
 
 /- English proof (translation)
-Introduce `L o Ω _ _ _ _ S ρ M U₀ EE hB Q hBig hGeo l z hz hcl`. Take `⟨hT, hC⟩` from `GlobalTheory.T.exists_geometricTest_map_classicalPoint L o Ω S ρ M U₀ EE hB Q hBig hGeo`. Take `⟨p, hp, y, hy, hyU⟩` from `hC z hcl`. Take `⟨y₀, t, c, ⟨tm⟩⟩` from `hT p y hyU`. Establish `hG` using `GlobalTheory.T.testModel_maps_into_openPart L o Ω S ρ M U₀ EE hB Q p y y₀ t c tm hBig`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsAlgClosed (kb p) := (GlobalTheory.ZJ.kb_isAlgClosed_and_conj p).1`. Establish `hx : (rPt p ≫ y) (IsLocalRing.closedPoint (kb p)) = z`. Conclude with `(Scheme.Hom.comp_apply _ _ _).trans ((congrArg y (IsLocalRing.comap_closedPoint (IsLocalRing.residue (OO p)))).trans hy)`. Establish `hr : Set.range (rPt p ≫ y) = {z}` using `hx ▸ RatModel.range_eq_singleton _ _`. Use `⟨kb p, inferInstance, rPt p ≫ y, hr, fun a ha => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz' : z ∈ Q.W tm.l` using `hy ▸ tm.mem`. Take `⟨g, hg, -⟩` from `InFibChart.exists_change Q tm.l l hz' hz`. Take `⟨g', hg', hc'⟩` from `InFibChart.exists_change Q l tm.l hz hz'`. Establish `hgg` using `change_mul_change (Q.c_inv l) hg hg'`. Set `χ` to `RatModel.valHom (rPt p ≫ y) z hr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGG : g.map χ * g'.map χ = 1`. Rewrite using `[← Matrix.map_mul, hgg, Matrix.map_one _ χ.map_zero χ.map_one]`. Set `ψ : t.u.V →+* kb p` to `(IsLocalRing.residue (OO p)).comp t.u.j`. Establish `hψ : spMap ψ = rPt p ≫ spMap t.u.j`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `pb : IsPullback t.mod.r t.mod.Φ.G.hom t.u.G.hom (rPt p ≫ spMap t.u.j)` using `t.mod.cart.1`. Establish `hs : Smooth t.u.G.hom` using `t.mod.smooth.smooth`. Establish `: Smooth t.mod.Φ.G.hom` using `MorphismProperty.of_isPullback pb hs`. Establish `h0` using `lin_eq_zero t.mod.Φ t.mod.good (Matrix.vecMul (Matrix.vecMul a (g.map χ)) (tm.m.map ψ)) ?_`. Establish `hdet : (tm.m.map ψ).det ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(tm.unit.map ψ).ne_zero`. Establish `h1` using `Matrix.eq_zero_of_vecMul_eq_zero hdet h0`. Establish `h2` using `congrArg (Matrix.vecMul · (g'.map χ)) h1`. Simplify `h2` using `[Matrix.vecMul_vecMul, hGG]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `v ⟨x, hxs, hv⟩`. Establish `h1` using `t.mod.red (Over.homMk x hxs) v hv`. Establish `hxG : (x ≫ t.mod.r) ≫ t.u.G.hom = spMap ψ`. Rewrite using `[Category.assoc, pb.w, ← Category.assoc, hxs, Category.id_comp, hψ]`. Establish `h2` using `tm.crd (kb p) ψ (x ≫ t.mod.r) v hxG h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hov : ((x ≫ t.mod.r) ≫ tm.f) ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι ≫ Q.P.hom = rPt p ≫ y`. Rewrite using `[Category.assoc, tm.f_over, ← Category.assoc, hxG, hψ, Category.assoc, c.fac]`. Take `⟨x', hx'⟩ : ∃ x' : Sp (kb p) ⟶ (Q.P.hom ⁻¹ᵁ Q.W l).toScheme, x' ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι = ((x ≫ t.mod.r) ≫ tm.f) ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι` from `⟨IsOpenImmersion.lift _ _ (by`. Rewrite using `[Scheme.Opens.range_ι]`. Introduce and unpack `_ ⟨w, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : Q.P.hom ((((x ≫ t.mod.r) ≫ tm.f) ≫ (Q.P.hom ⁻¹ᵁ Q.W tm.l).ι) w) = z`. Rewrite using `[← Scheme.Hom.comp_apply, Category.assoc, hov, Subsingleton.elim w (IsLocalRing.closedPoint (kb p)), hx]`. Use `show Q.P.hom _ ∈ Q.W l`. Rewrite using `[e]`. Conclude with `hz), IsOpenImmersion.lift_fac _ _ _⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hov' : x' ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι ≫ Q.P.hom = rPt p ≫ y`. Rewrite using `[← Category.assoc, hx', Category.assoc, hov]`. Take `⟨w, hw⟩` from `CrdCalc.crd_exists (LB.isLB_pull Q.isLB _) (Q.σ l) x'`. Take `⟨u, hu⟩` from `InFibChart.crd_change Q hB.ov.ne l tm.l x' _ (rPt p ≫ y) hx'.symm hov' hx hz hz' g' hc' hw h2`. Establish `h3 : a ⬝ᵥ w = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, e, -, he⟩` from `hw`. Establish `h4` using `ha x' j (by`. Rewrite using `[hx', Category.assoc]`. Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `hG (Set.mem_univ _)) hov'`. Rewrite using `[dotProduct, ← mul_zero (e : kb p), ← h4, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[he i, mul_left_comm]`. Both sides reduce to the same expression.
-
-Establish `h5 : (tm.m.map ψ).mulVec v = u • (g'.map χ).mulVec w` using `hu`. Use `show Matrix.vecMul (Matrix.vecMul a (g.map χ)) (tm.m.map ψ) ⬝ᵥ v = 0`. Rewrite using `[← Matrix.dotProduct_mulVec, ← Matrix.dotProduct_mulVec, h5, Matrix.mulVec_smul, Matrix.mulVec_mulVec, hGG, Matrix.one_mulVec, dotProduct_smul, h3, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indep_on_closed_fibre : GlobalTheory.UT.LL → ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (S : ThetaSys o Ω) (ρ : S.Real) (M : RatModel o Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J), BaseFacts S M U₀ EE → ∀ (Q : Clos ρ M U₀ EE), S.Big → ρ.HasGeo → ∀ l, ∀ z ∈ Q.W l, IsClosed ({z} : Set M.Z) → ∃ (K : Type) (_ : Field K) (x : Sp K ⟶ M.Z), Set.range x = {z} ∧ ∀ c : S.J → K, (∀ (g : Sp K ⟶ (Q.P.hom ⁻¹ᵁ Q.W l).toScheme) (j), Set.range (g ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι) ⊆ Q.G → g ≫ (Q.P.hom ⁻¹ᵁ Q.W l).ι ≫ Q.P.hom = x → ∑ i, c i * valF g _ ((Q.σ l i).f j) = 0) → c = 0 := by
   intro L o Ω _ _ _ _ S ρ M U₀ EE hB Q hBig hGeo l z hz hcl

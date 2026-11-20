@@ -18,15 +18,13 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `U X j _ R _ ξ K' _ χ yy h q _ hq`. Establish `hopen : IsOpen (Set.range j)` using `j.isOpenEmbedding.isOpen_range`. Set `pt : Sp K'` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum K')`. Establish `hpt : (spMap χ pt : PrimeSpectrum R) = (⟨q, inferInstance⟩ : PrimeSpectrum R)`. Apply `PrimeSpectrum.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `Ideal.comap χ ⊥ = q`. Rewrite using `[← hq]`. Both sides reduce to the same expression. Establish `hmem : ξ (⟨q, inferInstance⟩ : PrimeSpectrum R) ∈ Set.range j`. Use `⟨yy pt, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← h, Scheme.Hom.comp_apply]`. Conclude with `congrArg ξ hpt`. Use `⟨IsOpenImmersion.lift j (spMap (algebraMap R (Localization.AtPrime q)) ≫ ξ) ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : (spMap (algebraMap R (Localization.AtPrime q)) x : PrimeSpectrum R) ⤳ (⟨q, inferInstance⟩ : PrimeSpectrum R)`. Establish `hle' : Ideal.comap (algebraMap R (Localization.AtPrime q)) (x : PrimeSpectrum _).asIdeal ≤ q`. Introduce `r hr`. Assume the negation of the conclusion as `hrq`. Establish `hu : IsUnit (algebraMap R (Localization.AtPrime q) r)` using `IsLocalization.map_units (Localization.AtPrime q) (⟨r, hrq⟩ : q.primeCompl)`.
-
-Conclude with `(x : PrimeSpectrum _).isPrime.ne_top ((Ideal.eq_top_of_isUnit_mem _ hr hu))`. Conclude with `(PrimeSpectrum.le_iff_specializes (spMap (algebraMap R (Localization.AtPrime q)) x : PrimeSpectrum R) ⟨q, inferInstance⟩).1 hle'`. Conclude with `(hle.map ξ.continuous).mem_open hopen hmem`. Conclude with `(IsOpenImmersion.lift_fac _ _ _).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem spec_factor_localization_of_field_point : ∀ (U X : Scheme.{0}) (j : U ⟶ X) [IsOpenImmersion j] (R : Type) [CommRing R] (ξ : Sp R ⟶ X)
     (K' : Type) [Field K'] (χ : R →+* K') (yy : Sp K' ⟶ U), spMap χ ≫ ξ = yy ≫ j →

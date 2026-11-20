@@ -16,7 +16,7 @@ noncomputable def mulPullback (n : ℤ) (hn : n ≠ 0) :
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Rewrite using `[mulPullback, Isogeny.comap_genX, mulIsogeny_alt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulPullback_genX {n : ℤ} (hn : n ≠ 0) :
     mulPullback W n hn (genX W) = aeval (genX W) (W.Φ n) / aeval (genX W) (W.ΨSq n) := by
@@ -24,7 +24,7 @@ theorem mulPullback_genX {n : ℤ} (hn : n ≠ 0) :
 
 omit [DecidableEq F] in
 /- English proof (translation)
-Take `⟨h, he⟩` from `eq_some_xOf_yOf _ (zsmul_genericPoint_ne_zero W hn)`. Rewrite using `[mulPullback, Isogeny.comap, map_liftPoint_genericPoint]`. Conclude with `he.symm`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mulPullback_genericPoint {n : ℤ} (hn : n ≠ 0) :
     Point.map (mulPullback W n hn) (genericPoint W) = n • genericPoint W := by
@@ -35,7 +35,7 @@ theorem map_mulPullback_genericPoint {n : ℤ} (hn : n ≠ 0) :
 variable [IsAlgClosed F]
 
 /- English proof (translation)
-Apply `algHom_eq_of_map_genericPoint` to reduce the goal to its premises. Rewrite using `[← Point.map_map, ← Point.map_map, map_mulPullback_genericPoint, map_zsmul, map_translate_genericPoint, map_translate_genericPoint, map_add, map_mulPullback_genericPoint, map_constPoint, zsmul_add, map_zsmul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem translate_comp_mulPullback {n : ℤ} (hn : n ≠ 0) (P : W.toAffine.Point) :
     (translate W P).comp (mulPullback W n hn) = (mulPullback W n hn).comp (translate W (n • P)) := by
@@ -47,7 +47,7 @@ theorem translate_comp_mulPullback {n : ℤ} (hn : n ≠ 0) (P : W.toAffine.Poin
 omit [DecidableEq F] [W.IsElliptic] [IsAlgClosed F] in
 
 /- English proof (translation)
-Simplify using `only [genX_eq, aeval_algebraMap_apply, aeval_X_left, AlgHom.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_genX (p : F[X]) :
     aeval (genX W) p = algebraMap F[X] W.toAffine.FunctionField p := by
@@ -55,7 +55,7 @@ theorem aeval_genX (p : F[X]) :
 
 omit [DecidableEq F] [IsAlgClosed F] [W.IsElliptic] in
 /- English proof (translation)
-Rewrite using `[valuationInfty_eq_exp W ((map_ne_zero_iff _ (algebraMap F _).injective).mpr hc), ordInfty_algebraMap_const W hc, neg_zero, exp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuationInfty_algebraMap_const_eq_one {c : F} (hc : c ≠ 0) :
     valuationInfty W (algebraMap F W.toAffine.FunctionField c) = 1 := by
@@ -65,15 +65,15 @@ theorem valuationInfty_algebraMap_const_eq_one {c : F} (hc : c ≠ 0) :
 omit [IsAlgClosed F] [DecidableEq F] in
 
 /- English proof (translation)
-Set `w` to `(valuationInfty W).comap (mulPullback W n hn0).toRingHom`. Establish `hwapp : ∀ g, w g = valuationInfty W (mulPullback W n hn0 g)` using `fun g => rfl`. Establish `hF : ∀ c : F, c ≠ 0 → w (algebraMap F W.toAffine.FunctionField c) = 1` using `fun c hc => by`. Rewrite using `[hwapp, AlgHom.commutes, valuationInfty_algebraMap_const_eq_one W hc]`. Establish `hΦ0 : W.Φ n ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Use `W.natDegree_Φ n` as an intermediate fact. Rewrite `this` using `[h, natDegree_zero]`. Establish `: 0 < n.natAbs ^ 2` using `by positivity`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `hΨ0 : W.ΨSq n ≠ 0` using `ΨSq_ne_zero_of_ne_zero W hn0`. Establish `hvF : ∀ c : F, c ≠ 0 → valuationInfty W (algebraMap F W.toAffine.FunctionField c) = 1` using `fun c hc => valuationInfty_algebraMap_const_eq_one W hc`. Establish `hΦ` using `valuation_poly_of_one_lt (valuationInfty W) hvF two_pos (valuationInfty_genX W) hΦ0`. Establish `hΨ` using `valuation_poly_of_one_lt (valuationInfty W) hvF two_pos (valuationInfty_genX W) hΨ0`. Rewrite `hΦ` using `[W.natDegree_Φ n]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hΨ` using `[W.natDegree_ΨSq hn]`. Establish `hx : w (genX W) = exp 2`. Rewrite using `[hwapp, mulPullback_genX, aeval_genX, aeval_genX, map_div₀, hΦ, hΨ, ← exp_sub]`. Use `congr 1`. Establish `h1 : 1 ≤ n.natAbs ^ 2` using `Nat.one_le_pow _ _ (Int.natAbs_pos.mpr hn0)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Move the coercions through the operations in `[Nat.cast_sub h1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `DFunLike.congr_fun (eq_valuationInfty_of_genX w hF hx) f`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem valuationInfty_mulPullback {n : ℤ} (hn : (n : F) ≠ 0) (hn0 : n ≠ 0)
     (f : W.toAffine.FunctionField) :
@@ -104,7 +104,7 @@ theorem valuationInfty_mulPullback {n : ℤ} (hn : (n : F) ≠ 0) (hn0 : n ≠ 0
   exact DFunLike.congr_fun (eq_valuationInfty_of_genX w hF hx) f
 
 /- English proof (translation)
-Rewrite using `[← valuationInfty_translate, ← valuationInfty_translate, ← valuationInfty_mulPullback W hn hn0 (translate W (n • P) f)]`. Conclude with `congrArg (valuationInfty W) (DFunLike.congr_fun (translate_comp_mulPullback W hn0 P) f)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuationPoint_mulPullback {n : ℤ} (hn : (n : F) ≠ 0) (hn0 : n ≠ 0)
     (P : W.toAffine.Point) (f : W.toAffine.FunctionField) :
@@ -114,7 +114,7 @@ theorem valuationPoint_mulPullback {n : ℤ} (hn : (n : F) ≠ 0) (hn0 : n ≠ 0
   exact congrArg (valuationInfty W) (DFunLike.congr_fun (translate_comp_mulPullback W hn0 P) f)
 
 /- English proof (translation)
-Establish `hf' : mulPullback W n hn0 f ≠ 0` using `(map_ne_zero_iff _ (mulPullback W n hn0).injective).mpr hf`. Establish `h` using `valuationPoint_mulPullback W hn hn0 P f`. Rewrite `h` using `[valuationPoint_eq_exp W P hf', valuationPoint_eq_exp W (n • P) hf, exp_inj]`. Conclude with `neg_injective h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordPoint_mulPullback {n : ℤ} (hn : (n : F) ≠ 0) (hn0 : n ≠ 0) (P : W.toAffine.Point)
     {f : W.toAffine.FunctionField} (hf : f ≠ 0) :
@@ -125,11 +125,11 @@ theorem ordPoint_mulPullback {n : ℤ} (hn : (n : F) ≠ 0) (hn0 : n ≠ 0) (P :
   exact neg_injective h
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0` using `by rintro rfl; simp at hn`. Establish `hcard` using `card_zsmul_eq_zero W hn`. Establish `hker : {P : W.toAffine.Point | n • P = 0}.Finite`. Rewrite using `[← Set.finite_coe_iff]`. Use `Nat.finite_of_card_ne_zero ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Nat.card {P : W.toAffine.Point // n • P = 0} ≠ 0`. Rewrite using `[hcard]`. Check the signs of the components of the expression. Break down `Set.eq_empty_or_nonempty {P : W.toAffine.Point | n • P = Q} with h | ⟨P₀, hP₀⟩` into its components or cases. Rewrite using `[h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.finite_empty`. Use `(hker.image (· + P₀)).subset fun P hP => ⟨P - P₀, ?_, sub_add_cancel P P₀⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `n • (P - P₀) = 0`. Rewrite using `[zsmul_sub, hP, hP₀.out, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_setOf_zsmul_eq {n : ℤ} (hn : (n : F) ≠ 0) (Q : W.toAffine.Point) :
     {P : W.toAffine.Point | n • P = Q}.Finite := by
@@ -163,7 +163,7 @@ theorem mulPullbackDivisor_apply {n : ℤ} (hn : (n : F) ≠ 0) (D : CurveDiviso
     (P : W.toAffine.Point) : mulPullbackDivisor W hn D P = D (n • P) := rfl
 
 /- English proof (translation)
-Use extensionality with `P`. Rewrite using `[divisorOf_apply, mulPullbackDivisor_apply, divisorOf_apply, ordPoint_mulPullback W hn hn0 P hf]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem divisorOf_mulPullback {n : ℤ} (hn : (n : F) ≠ 0) (hn0 : n ≠ 0)
     {f : W.toAffine.FunctionField} (hf : f ≠ 0) :

@@ -27,7 +27,7 @@ def lat (V : Submodule k (Matrix (Fin n) (Fin n) k)) (γ : ValueGroupWithZero k)
     exact ha.2 i j⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lat {V : Submodule k (Matrix (Fin n) (Fin n) k)} {γ : ValueGroupWithZero k}
     {y : Matrix (Fin n) (Fin n) k} : y ∈ lat V γ ↔ y ∈ V ∧ ∀ i j, valuation k (y i j) ≤ γ := Iff.rfl
@@ -36,26 +36,26 @@ def cj (g : GL (Fin n) k) (X : AddSubgroup (Matrix (Fin n) (Fin n) k)) : AddSubg
   X.comap (adL g⁻¹).toAddMonoidHom
 
 /- English proof (translation)
-Simplify using `[cj, adL_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cj {g : GL (Fin n) k} {X : AddSubgroup (Matrix (Fin n) (Fin n) k)} {y : Matrix (Fin n) (Fin n) k} :
     y ∈ cj g X ↔ g⁻¹.val * y * g.val ∈ X := by
   simp [cj, adL_apply]
 
 /- English proof (translation)
-Simplify using `[← mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adL_inv_adL (g : GL (Fin n) k) (y : Matrix (Fin n) (Fin n) k) : g⁻¹.val * (g.val * y * g⁻¹.val) * g.val = y := by
   simp [← mul_assoc]
 
 /- English proof (translation)
-Simplify using `[← mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adL_adL_inv (g : GL (Fin n) k) (y : Matrix (Fin n) (Fin n) k) : g.val * (g⁻¹.val * y * g.val) * g⁻¹.val = y := by
   simp [← mul_assoc]
 
 /- English proof (translation)
-Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem ent_mul {γ : ValueGroupWithZero k} {a b : Matrix (Fin n) (Fin n) k} (ha : ∀ i j, valuation k (a i j) ≤ 1)
     (hb : ∀ i j, valuation k (b i j) ≤ γ) : ∀ i j, valuation k ((a * b) i j) ≤ γ := by
@@ -67,13 +67,13 @@ theorem ent_mul {γ : ValueGroupWithZero k} {a b : Matrix (Fin n) (Fin n) k} (ha
     _ = γ := one_mul γ
 
 /- English proof (translation)
-Introduce `i j` and use `((mem_integralGL_iff k n).1 hu).1 i j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ent_integral {u : GL (Fin n) k} (hu : u ∈ integralGL k n) : ∀ i j, valuation k (u.val i j) ≤ 1 :=
   fun i j => ((mem_integralGL_iff k n).1 hu).1 i j
 
 /- English proof (translation)
-Rewrite using `[Subalgebra.mem_toSubmodule, Subalgebra.mem_centralizer_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_C_iff (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (y : Matrix (Fin n) (Fin n) k) :
     y ∈ (Subalgebra.centralizer k (Z : Set (Matrix (Fin n) (Fin n) k))).toSubmodule ↔ y ∈ Bz Z := by
@@ -81,9 +81,9 @@ theorem mem_C_iff (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (y : Matrix (Fin
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a ha`. Rewrite using `[mul_sub, sub_mul, h a ha, mul_one, one_mul]`. Introduce `h a ha`. Use `h a ha` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_sub, sub_mul, mul_one, one_mul]`. Conclude with `sub_left_inj.1 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_Gz_iff (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (u : GL (Fin n) k) :
     u ∈ Gz Z ↔ u.val - 1 ∈ Bz Z := by
@@ -96,14 +96,14 @@ theorem mem_Gz_iff (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) (u : GL (Fin n)
     exact sub_left_inj.1 this
 
 /- English proof (translation)
-Introduce `z hz` and use `by rw [← mul_assoc, ha z hz, mul_assoc, hb z hz, mul_assoc]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Bz_mul (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {a b : Matrix (Fin n) (Fin n) k} (ha : a ∈ Bz Z)
     (hb : b ∈ Bz Z) : a * b ∈ Bz Z := fun z hz => by
   rw [← mul_assoc, ha z hz, mul_assoc, hb z hz, mul_assoc]
 
 /- English proof (translation)
-Use `cC_inv Z g hg a ((mem_C_iff Z a).2 ha)` as an intermediate fact. Rewrite `this` using `[adL_apply]`. Conclude with `(mem_C_iff Z _).1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bz_conj (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {g : GL (Fin n) k} (hg : g ∈ Gz Z)
     {a : Matrix (Fin n) (Fin n) k} (ha : a ∈ Bz Z) : g.val * a * g⁻¹.val ∈ Bz Z := by
@@ -112,7 +112,7 @@ theorem Bz_conj (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {g : GL (Fin n) k}
   exact (mem_C_iff Z _).1 this
 
 /- English proof (translation)
-The claim follows from `(GzS Z).inv_mem hg`.
+A detailed English derivation is pending.
 -/
 theorem Gz_inv (Z : Subalgebra k (Matrix (Fin n) (Fin n) k)) {g : GL (Fin n) k} (hg : g ∈ Gz Z) : g⁻¹ ∈ Gz Z :=
   (GzS Z).inv_mem hg

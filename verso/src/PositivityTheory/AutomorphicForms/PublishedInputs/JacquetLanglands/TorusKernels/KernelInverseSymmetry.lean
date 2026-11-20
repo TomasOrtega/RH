@@ -17,7 +17,7 @@ def T (k : I → ℕ) (p : X I × Gf) (γ : PG F) (y : D.Y) : ℂ :=
   D.ee ((D.rep y.1)⁻¹ * (D.j γ.out)⁻¹ * p.2) * (qq k p.1 (D.act γ.out y.2) * D.J k γ.out y.2)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_nonneg fun v _ => div_nonneg (by have h : (4 : ℝ) ≤ k v := by exact_mod_cast hk v linarith) (by positivity)`.
+A detailed English derivation is pending.
 -/
 theorem cK_nonneg (k : I → ℕ) (hk : ∀ v, 4 ≤ k v) : 0 ≤ cK k :=
   Finset.prod_nonneg fun v _ => div_nonneg (by
@@ -25,13 +25,13 @@ theorem cK_nonneg (k : I → ℕ) (hk : ∀ v, 4 ≤ k v) : 0 ≤ cK k :=
     linarith) (by positivity)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun v _ => Real.rpow_pos_of_pos (abs_pos.2 (z v).2) _`.
+A detailed English derivation is pending.
 -/
 theorem nrm_pos (k : I → ℕ) (z : X I) : 0 < nrm k z :=
   Finset.prod_pos fun v _ => Real.rpow_pos_of_pos (abs_pos.2 (z v).2) _
 
 /- English proof (translation)
-Rewrite using `[← D.mk_smulX]`. Use `congr 1`. Conclude with `Quotient.out_eq γ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem act_out (γ : PG F) (z : D.Xs) : D.act γ.out z = γ • z := by
   rw [← D.mk_smulX]
@@ -39,7 +39,7 @@ theorem act_out (γ : PG F) (z : D.Xs) : D.act γ.out z = γ • z := by
   exact Quotient.out_eq γ
 
 /- English proof (translation)
-Take `⟨-, -, -, -, hj, hq, -⟩` from `hB`. Establish `e1` using `hq k z (g • w) hk`. Establish `e2` using `hj k g w`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_qj (hB : B1b) (k : ℕ) (hk : 1 ≤ k) (g : GL (Fin 2) ℝ) (z w : P) :
     ‖q1 k z (g • w)‖ * ‖j1 k g w‖ * |z.1.im| ^ ((k : ℝ) / 2) =
@@ -51,7 +51,7 @@ theorem norm_qj (hB : B1b) (k : ℕ) (hk : 1 ≤ k) (g : GL (Fin 2) ℝ) (z w : 
     _ = _ := by rw [e1, ← e2]; ring
 
 /- English proof (translation)
-Simplify using `only [qq, Dat.J, Kap, nrm, cK, norm_mul, norm_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Conclude with `norm_qj hB (k v) (hk v) (D.r v g) (z v) (w v)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem norm_term (hB : B1b) (k : I → ℕ) (hk : ∀ v, 1 ≤ k v) (g : GL (Fin 2) F) (z w : X I) :
     ‖qq k z (D.act g w) * D.J k g w‖ * nrm k z = cK k * Kap k z (D.act g w) * nrm k w := by
@@ -60,9 +60,9 @@ theorem norm_term (hB : B1b) (k : I → ℕ) (hk : ∀ v, 1 ≤ k v) (g : GL (Fi
   exact norm_qj hB (k v) (hk v) (D.r v g) (z v) (w v)
 
 /- English proof (translation)
-Take `⟨-, -, -, hkap, -⟩` from `hB`. Rewrite using `[← act_out, ← act_out]`. Unfold `Kap`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Use `show kap (D.r v δ.out • z v) (D.r v δ.out • w v) ^ _ = _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hkap]`.
+A detailed English derivation is pending.
 -/
 theorem Kap_smul (hB : B1b) (k : I → ℕ) (δ : PG F) (z w : D.Xs) :
     Kap k (δ • z : D.Xs) (δ • w : D.Xs) = Kap k z w := by
@@ -74,7 +74,7 @@ theorem Kap_smul (hB : B1b) (k : I → ℕ) (δ : PG F) (z w : D.Xs) :
   rw [hkap]
 
 /- English proof (translation)
-Take `⟨hsym, -⟩` from `hBc`. Unfold `Kap`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[(hsym _ _).2.2]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Kap_symm (hBc : B1c) (k : I → ℕ) (z w : X I) : Kap k z w = Kap k w z := by
   obtain ⟨hsym, -⟩ := hBc
@@ -83,7 +83,7 @@ theorem Kap_symm (hBc : B1c) (k : I → ℕ) (z w : X I) : Kap k z w = Kap k w z
   rw [(hsym _ _).2.2]
 
 /- English proof (translation)
-Rewrite using `[← Kap_smul D hB k γ⁻¹ z (γ • w), inv_smul_smul]`. Conclude with `Kap_symm hBc k _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Kap_swap (hB : B1b) (hBc : B1c) (k : I → ℕ) (γ : PG F) (z w : D.Xs) :
     Kap k z (γ • w : D.Xs) = Kap k w (γ⁻¹ • z : D.Xs) := by
@@ -91,7 +91,7 @@ theorem Kap_swap (hB : B1b) (hBc : B1c) (k : I → ℕ) (γ : PG F) (z w : D.Xs)
   exact Kap_symm hBc k _ _
 
 /- English proof (translation)
-Unfold `Dat.ee at h`. Use `split_ifs at h with hx`. Conclude with `hx`. Conclude with `absurd rfl h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ee_mem (x : Gf) (h : D.ee x ≠ 0) : x ∈ D.H := by
   unfold Dat.ee at h
@@ -100,7 +100,7 @@ theorem ee_mem (x : Gf) (h : D.ee x ≠ 0) : x ∈ D.H := by
   · exact absurd rfl h
 
 /- English proof (translation)
-Unfold `Dat.ee`. Use `split_ifs with hx`. Rewrite using `[hAx.χn]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_ee (hAx : D.Ax) (x : Gf) : ‖D.ee x‖ ≤ 1 := by
   unfold Dat.ee
@@ -109,9 +109,9 @@ theorem norm_ee (hAx : D.Ax) (x : Gf) : ‖D.ee x‖ ≤ 1 := by
   · simp
 
 /- English proof (translation)
-Establish `hm` using `ee_mem D _ h`. Rewrite `hm` using `[mul_assoc]`. Establish `e : ((D.rep ω : Gf) : Gf ⧸ D.H) = (((D.j γ.out)⁻¹ * x : Gf) : Gf ⧸ D.H)` using `QuotientGroup.eq.2 hm`. Establish `hω : ((D.rep ω : Gf) : Gf ⧸ D.H) = ω` using `Quotient.out_eq ω`. Establish `hγ : ((γ.out : GL (Fin 2) F) : PG F) = γ` using `Quotient.out_eq γ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ((γ.out : GL (Fin 2) F) : PG F) • (show D.Om from (((D.j γ.out)⁻¹ * x : Gf) : Gf ⧸ D.H)) = (show D.Om from (x : Gf ⧸ D.H))`. Rewrite using `[D.mk_smulO, mul_inv_cancel_left]`. Rewrite using `[← hω, e]`. Rewrite `key` using `[hγ]`. Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem supp (γ : PG F) (ω : D.Om) (x : Gf) (h : D.ee ((D.rep ω)⁻¹ * (D.j γ.out)⁻¹ * x) ≠ 0) :
     γ • ω = (show D.Om from (x : Gf ⧸ D.H)) := by
@@ -138,13 +138,13 @@ def invEquiv (ω x : D.Om) : {γ : PG F // γ • ω = x} ≃ {δ : PG F // δ �
   right_inv δ := Subtype.ext (inv_inv _)
 
 /- English proof (translation)
-Distinguish the cases in `hγ : γ • y.1 = (xH D p)`. Rewrite using `[Set.indicator_of_mem (show γ ∈ {γ : PG F | γ • y.1 = (xH D p)} from hγ)]`. Rewrite using `[← ENNReal.ofReal_mul (mul_nonneg (div_nonneg (cK_nonneg k hk) (nrm_pos k p.1).le) (nrm_pos k y.2).le), ← ofReal_norm]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hn` using `norm_term D hB k (fun v => le_trans (by norm_num) (hk v)) γ.out p.1 y.2`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hK : Kap k p.1 (D.act γ.out y.2) = Kap k y.2 (γ⁻¹ • (zX D p) : D.Xs)`. Rewrite using `[act_out]`. Conclude with `Kap_swap D hB hBc k γ p.1 y.2`. Rewrite `hn` using `[hK]`. Establish `hN` using `eq_div_of_mul_eq (nrm_pos k p.1).ne' hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he` using `norm_ee D hAx ((D.rep y.1)⁻¹ * (D.j γ.out)⁻¹ * p.2)`. Unfold `T`. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Set.indicator_of_notMem (show γ ∉ {γ : PG F | γ • y.1 = (xH D p)} from hγ)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : D.ee ((D.rep y.1)⁻¹ * (D.j γ.out)⁻¹ * p.2) = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hγ (supp D γ y.1 p.2 hne)`. Simplify using `[T, h0]`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem T_le (hB : B1b) (hBc : B1c) (hAx : D.Ax) (k : I → ℕ) (hk : ∀ v, 4 ≤ k v) (p : X I × Gf) (γ : PG F) (y : D.Y) :
     ‖T D k p γ y‖ₑ ≤ {γ : PG F | γ • y.1 = (xH D p)}.indicator
@@ -173,9 +173,7 @@ theorem T_le (hB : B1b) (hBc : B1c) (hAx : D.Ax) (k : I → ℕ) (hk : ∀ v, 4 
     simp [T, h0]
 
 /- English proof (translation)
-Establish `h1` using `ENNReal.tsum_le_tsum fun γ => T_le D hB hBc hAx k hk p γ y`. Rewrite `h1` using `[← tsum_subtype]`. Use `beta_reduce at h1`. Rewrite `h1` using `[ENNReal.tsum_mul_left]`. Use `h1.trans (mul_le_mul' le_rfl (Eq.trans_le ?_ (hS y.1 y.2)))` and prove the remaining obligations.
-
-Conclude with `Equiv.tsum_eq (invEquiv D y.1 (xH D p)) (fun δ => ENNReal.ofReal (Kap k y.2 (δ.1 • (zX D p) : D.Xs)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tsum_le (hB : B1b) (hBc : B1c) (hAx : D.Ax) (k : I → ℕ) (hk : ∀ v, 4 ≤ k v) (p : X I × Gf) (Bnd : ℝ)
     (hS : ∀ (ω : D.Om) (w : X I), ∑' δ : {δ : PG F // δ • (xH D p) = ω},
@@ -190,19 +188,17 @@ theorem tsum_le (hB : B1b) (hBc : B1c) (hAx : D.Ax) (k : I → ℕ) (hk : ∀ v,
     (fun δ => ENNReal.ofReal (Kap k y.2 (δ.1 • (zX D p) : D.Xs)))
 
 /- English proof (translation)
-Take `⟨hcount, -, -, -, -, -, hborel, -⟩` from `hE0a F I Gf D hAx`. Take `⟨c₀, hc₀, hmink⟩` from `hAx.mink`. Take `⟨C, hCb⟩` from `hKS F I Gf D hAx k hk c₀ hc₀`. Take `⟨s, hs, hsle⟩` from `hmink p.1 (D.rep (xH D p))`. Take `⟨Bnd, hBnd, hS⟩ : ∃ Bnd : ℝ, 0 ≤ Bnd ∧ ∀ (ω : D.Om) (w : X I), ∑' δ : {δ : PG F // δ • (xH D p) = ω}, ENNReal.ofReal (Kap k w (δ.1 • (zX D p) : D.Xs)) ≤ ENNReal.ofReal Bnd` from `⟨max (C * (1 + D.HtY s ((xH D p), p.1))) 0, le_max_right _ _, fun ω w => (hCb ((xH D p), p.1) s hs hsle ω w).trans (ENNReal.ofReal_le_ofReal (le_max_left _ _))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT` using `fun y => tsum_le D hB hBc hAx k hk p Bnd hS y`. Establish `hfin : ∀ y : D.Y, ∑' γ, ‖T D k p γ y‖ₑ ≠ ⊤` using `fun y => ne_top_of_le_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top ENNReal.ofReal_ne_top) (hT y)`. Establish `hsumm : ∀ y : D.Y, Summable fun γ => ‖T D k p γ y‖` using `fun y => by`. Simplify `ENNReal.summable_toReal (hfin y)` using `only [toReal_enorm]`. Establish `hc0 : 0 ≤ cK k / nrm k p.1` using `div_nonneg (cK_nonneg k hk) (nrm_pos k p.1).le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hbound : ∀ y : D.Y, ∑' γ, ‖T D k p γ y‖ ≤ cK k / nrm k p.1 * Bnd * nrm k y.2` using `fun y => by`. Establish `h1 : ∑' γ, ‖T D k p γ y‖ = (∑' γ, ‖T D k p γ y‖ₑ).toReal`. Rewrite using `[ENNReal.tsum_toReal_eq (fun γ => enorm_ne_top)]`. Simplify using `only [toReal_enorm]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `ENNReal.toReal_le_of_le_ofReal (mul_nonneg (mul_nonneg hc0 hBnd) (nrm_pos k y.2).le) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_mul (mul_nonneg hc0 (nrm_pos k y.2).le)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Use `⟨hsumm, ?_, ⟨cK k / nrm k p.1 * Bnd, fun y => (norm_tsum_le_tsum_norm (hsumm y)).trans (hbound y)⟩⟩` and prove the remaining obligations. Use `haveI := hcount`. Use `haveI := hborel`. Take `⟨-, -, -, -, -, -, hjc, hqc, -⟩` from `hB`. Establish `hgc : ∀ g : GL (Fin 2) ℝ, Continuous fun z : P => g • z` using `fun g => (hB1a.2.2 g).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTm : ∀ γ : PG F, Measurable (T D k p γ)` using `fun γ => by`. Establish `hG : Continuous fun w : D.Xs => qq k p.1 (D.act γ.out w) * D.J k γ.out w`. Use `Continuous.mul ?_ ?_` and prove the remaining obligations. Use `continuous_finsetProd _ fun v _ => ?_` and prove the remaining obligations. Conclude with `(hqc (k v)).comp (continuous_const.prodMk ((hgc (D.r v γ.out)).comp (continuous_apply v)))`.
-
-Conclude with `continuous_finsetProd _ fun v _ => (hjc (k v) (D.r v γ.out)).comp (continuous_apply v)`. Conclude with `((Measurable.of_discrete (f := fun ω : D.Om => D.ee ((D.rep ω)⁻¹ * (D.j γ.out)⁻¹ * p.2))).comp measurable_fst).mul (hG.measurable.comp measurable_snd)`. Establish `hlim : Tendsto (fun (s : Finset (PG F)) (y : D.Y) => ∑ γ ∈ s, T D k p γ y) atTop (𝓝 fun y => ∑' γ, T D k p γ y)` using `tendsto_pi_nhds.2 fun y => ((hsumm y).of_norm).hasSum`. Conclude with `measurable_of_tendsto_metrizable' atTop (fun s => Finset.measurable_sum s fun γ _ => hTm γ) hlim`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main (hB1a : B1a) (hB : B1b) (hBc : B1c) (hE0a : E0a) (hKS : KapSum) (hAx : D.Ax)
     (k : I → ℕ) (hk : ∀ v, 4 ≤ k v) (p : X I × Gf) :
@@ -256,7 +252,7 @@ theorem main (hB1a : B1a) (hB : B1b) (hBc : B1c) (hE0a : E0a) (hKS : KapSum) (hA
 end UpperTheory.Esk.KernelInverseSymmetry
 
 /- English proof (translation)
-Introduce `hB1a hB1b hB1c hE0a _ hKS F I Gf _ _ _ D hAx k hk _ p`. Conclude with `UpperTheory.Esk.KernelInverseSymmetry.main D hB1a hB1b hB1c hE0a hKS hAx k hk p`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Esk.kernel_inverse_symmetry : UpperTheory.Esk.B1a → UpperTheory.Esk.B1b → UpperTheory.Esk.B1c → UpperTheory.Esk.E0a → UpperTheory.Esk.E0d → UpperTheory.Esk.KapSum → UpperTheory.Esk.faceMap_zero_comp_eq_one := by
   intro hB1a hB1b hB1c hE0a _ hKS F I Gf _ _ _ D hAx k hk _ p

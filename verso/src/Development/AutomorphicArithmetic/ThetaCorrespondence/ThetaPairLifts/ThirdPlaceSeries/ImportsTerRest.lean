@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.JumpsSt
 set_option maxHeartbeats 2000000 in
 /- English proof (translation)
-Introduce `hL _ hH`. Use `StepW.of_all fun K B f T w _ _ _ => ?_` and prove the remaining obligations. Introduce `P x l`. Use `⟨fun _ => ∅, fun L hB _ => ?_⟩` and prove the remaining obligations. Take `⟨Sp, ⟨Au⟩, hs⟩` from `hB`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `b : _root_.GlobalTheory.HeightCounting.NormChoiceConstructed hL (withLoc L)` to `{ D := Dof x, cf := cfOf x, jE := l.a.jE, A := l.a.A, cg := l.a.cg, au := l.a.au, rep := repOf x.r.Y, row := l.a.row, low := lowAll (Dof x), Pq := l.Pq, S := l.rat.S, hL := l.rat.In.hL, eig := l.rat.In.eig, θ := l.rat.In.θ, Bs := l.b.Bs, M := l.mt.M, C := l.c.ch, tp := l.c.tp, ch …`. Conclude with `_root_.GlobalTheory.HeightCounting.JumpsAt.jumpsCard_of_built_alt hH b l.a.fr l.a.pht`.
+Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem locComp_of_isRc_classMapD_cenLoc : ∀ hL : _root_.UpperTheory.Zero.LLC.RecTExists, _root_.GlobalTheory.HeightCounting.Up.PublishedInputsThirdLayerAlt → GlobalTheory.HeightCounting.HtCard → AllSt fun _ _ _ _ _ _ x =>
     ∀ l : _root_.GlobalTheory.HeightCounting.Up.StrictHenselianAcyclicLevel hL x, _root_.GlobalTheory.CoefDuty.ForcedByAutomorphicSemisimpleData l.a.A l.mt.M l.c.ch l.c.tp.tup fun D' => SumRepresentations.hypO D' → JumpsCard D'.nd D'.naut := by

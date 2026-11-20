@@ -12,11 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.HtRightTranslate
 
 /- English proof (translation)
-Introduce and unpack `D n H hH ⟨C₀, hC₀, hcov⟩ C hC`. Establish `hcont : Continuous fun g => (H g : ℝ)` using `NNReal.continuous_coe.comp hH.1`. Establish `hpos : ∀ g, 0 < (H g : ℝ)` using `fun g => by exact_mod_cast hH.2.1 g`. Establish `hF : Continuous fun p : G D n × G D n => (H (p.1 * p.2) : ℝ) / (H p.1 : ℝ)` using `(hcont.comp (continuous_fst.mul continuous_snd)).div (hcont.comp continuous_fst) fun p => (hpos p.1).ne'`. Take `⟨M, hM⟩` from `(hC₀.prod hC).bddAbove_image hF.continuousOn`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨max M 1, le_max_right _ _, fun c hc x => ?_⟩` and prove the remaining obligations. Take `⟨q, hq, k, hk, rfl⟩` from `hcov x`. Establish `hb : (H (k * c) : ℝ) / (H k : ℝ) ≤ max M 1` using `(hM ⟨(k, c), ⟨hk, hc⟩, rfl⟩).trans (le_max_left _ _)`. Establish `hb' : (H (k * c) : ℝ) ≤ max M 1 * (H k : ℝ)` using `(div_le_iff₀ (hpos k)).1 hb`. Establish `hl` using `hH.2.2 q hq (HeightExists.leviBlock (D := D) (n := n) ⟨q, hq⟩) rfl`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_assoc, hl (k * c), hl k]`. Use `push_cast`. Establish `hd : (0 : ℝ) ≤ (absA D (Matrix.GeneralLinearGroup.det (HeightExists.leviBlock (D` using `D) (n := n) ⟨q, hq⟩)) : ℝ) := NNReal.coe_nonneg _`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hb' hd]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem height_mul_le : ∀ (D : D7) (n : ℕ) (H : G D n → ℝ≥0), IsHt H →
     (∃ C : Set (G D n), IsCompact C ∧ ∀ g, ∃ q ∈ P D n, ∃ c ∈ C, g = q * c) →

@@ -9,7 +9,7 @@ variable {ι : Type*} [Fintype ι]
 def size (m : ℤ) (G : (ι → ℤ) × ℤ) : ℤ := ∑ i, |G.1 i| + m * G.2 + 1
 
 /- English proof (translation)
-Establish `h1 : 0 ≤ ∑ i, |G.1 i|` using `sum_nonneg fun i _ => abs_nonneg _`. Establish `h2` using `mul_nonneg hm hG`. Unfold `size`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_le_size {m : ℤ} (hm : 0 ≤ m) {G : (ι → ℤ) × ℤ} (hG : 0 ≤ G.2) : 1 ≤ size m G := by
   have h1 : 0 ≤ ∑ i, |G.1 i| := sum_nonneg fun i _ => abs_nonneg _

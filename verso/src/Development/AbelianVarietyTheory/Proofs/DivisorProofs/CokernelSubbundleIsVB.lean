@@ -28,9 +28,9 @@ namespace GlobalTheory.VB
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Use `fun V h => ⟨inj V h, fun s => ?_⟩` and prove the remaining obligations. Use `choose W hW hx a ha using fun x : V => loc V h s x x.2`. Establish `hc : V ≤ iSup W` using `fun x hxV => Opens.mem_iSup.2 ⟨⟨x, hxV⟩, hx _⟩`. Establish `key (x y : V) : (fun i => resG X (inf_le_left : W x ⊓ W y ≤ W x) (a x i)) = fun i => resG X (inf_le_right : W x ⊓ W y ≤ W y) (a y i)`. Apply `inj _ (inf_le_left.trans ((hW x).trans h))` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← resM_linearCombination e ((hW x).trans h), ← resM_linearCombination e ((hW y).trans h), ha, ha, resM_resM, resM_resM]`. Use `choose b hb' using fun i => exists_fun_of_cover W hW hc (fun x => a x i) fun x y => congrFun (key x y) i`. Use `⟨b, sec_ext_of_cover W hW hc fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[resM_linearCombination, ← ha x]`. Conclude with `congrArg _ (funext fun i => hb' i x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrame_of_injective_of_local {F : X.Modules} {U : X.Opens} {ι : Type} [Fintype ι]
     {e : ι → Γ(F, U)}
@@ -55,15 +55,15 @@ theorem isFrame_of_injective_of_local {F : X.Modules} {U : X.Opens} {ι : Type} 
   exact congrArg _ (funext fun i => hb' i x)
 
 /- English proof (translation)
-Establish `hex (V : X.Opens)` using `GlobalTheory.QCoh.exact_app_of_exact_of_mono (ShortComplex.exact_cokernel i) V`. Establish `hzero (V : X.Opens) (h : V ≤ U) (j : Fin l) : (cokernel.π i).app V (resM E h (e (Fin.castAdd m j))) = 0`. Rewrite using `[← hi, ← app_resM]`. Conclude with `(hex V _).2 ⟨_, rfl⟩`. Use `isFrame_of_injective_of_local (fun V h => ?_) (fun V h s x hx => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(injective_iff_map_eq_zero _).2 fun a ha => ?_` and prove the remaining obligations. Simplify using `only [Fintype.linearCombination_apply, ← app_resM, ← Scheme.Modules.Hom.app_smul, ← map_sum] at ha`. Take `⟨g, hg⟩` from `((hex V _).1 ha)`. Take `⟨b, rfl⟩` from `(hf V h).2 g`. Simplify using `only [Fintype.linearCombination_apply, map_sum, Scheme.Modules.Hom.app_smul, app_resM, hi] at hg`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h0 : Fintype.linearCombination Γ(X, V) (fun j => resM E h (e j)) (Fin.append (-b) a) = 0`. Rewrite using `[Fintype.linearCombination_apply, Fin.sum_univ_add]`. Simplify using `only [Fin.append_left, Fin.append_right, Pi.neg_apply, neg_smul, Finset.sum_neg_distrib, hg, neg_add_cancel]`. Establish `h1` using `(he V h).1 (h0.trans (map_zero _).symm)`. Use function extensionality and compare the values at `k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `congrFun h1 (Fin.natAdd l k)` as an intermediate fact. Rewrite `this` using `[Fin.append_right]`. Then use the resulting hypothesis. Take `⟨W, hWV, hxW, t, ht⟩` from `exists_app_eq_of_epi (cokernel.π i) s hx`. Take `⟨a, rfl⟩` from `(he W (hWV.trans h)).2 t`. Use `⟨W, hWV, hxW, fun k => a (Fin.natAdd l k), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht, Fintype.linearCombination_apply, Fintype.linearCombination_apply, Fin.sum_univ_add, map_add, map_sum, map_sum]`. Simplify using `only [Scheme.Modules.Hom.app_smul, hzero, smul_zero, Finset.sum_const_zero, zero_add, app_resM]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFrame_cokernel_π {G E : X.Modules} (i : G ⟶ E) [Mono i] {U : X.Opens} {l m : ℕ}
     {e : Fin (l + m) → Γ(E, U)} {f : Fin l → Γ(G, U)} (he : IsFrame e) (hf : IsFrame f)
@@ -101,9 +101,9 @@ theorem isFrame_cokernel_π {G E : X.Modules} (i : G ⟶ E) [Mono i] {U : X.Open
       app_resM]
 
 /- English proof (translation)
-Introduce `X G E i n l hl _ H`. Take `⟨m, rfl⟩` from `Nat.exists_eq_add_of_le hl`. Rewrite using `[Nat.add_sub_cancel_left]`. Introduce `x`. Take `⟨U, e, f, hx, he, hf, hi⟩` from `H x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, _, hx, isFrame_cokernel_π i he hf fun j => (hi j).trans (congrArg e (Fin.ext rfl))⟩`.
+Supply the required witnesses or components.
 -/
 theorem isVB_cokernel_of_frames : ∀ (X : Scheme.{0}) (G E : X.Modules) (i : G ⟶ E) (n l : ℕ)
     (hl : l ≤ n), Mono i → (∀ x : X, ∃ (U : X.Opens) (e : Fin n → Γ(E, U)) (f : Fin l → Γ(G, U)),

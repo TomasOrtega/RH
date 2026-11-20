@@ -23,15 +23,15 @@ noncomputable section
 namespace GlobalTheory.HSNef.LowerNef
 
 /- English proof (translation)
-Introduce `hAr hHS k _ X _ p D hX L N a hNef hSP hSI ε hε`. Take `⟨P, b, s, t, c, hPL, hG, hGen, hReg, hLe⟩` from `GlobalTheory.T.exists_goodHermPair_adapted_twist hAr hHS k X p D hX L N`. Substitute `hPL` using the available equality. Establish `hlow` using `GlobalTheory.T.smallSections_lowerBound_ample_minus_twist hAr hHS k X p D hX P b s t hG c hGen hReg hNef hSP a hSI ε hε`. Use `filter_upwards [hlow] with m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, -⟩` from `Pair.rep_base k X p P`. Establish `hRep : P.Rep (m : ℤ) (-(c : ℤ)) ((P.L.pow m).tens ((P.A.pow c).dual))`. Use `Pair.rep_tens k X p P _ _ _ _ _ _ (Pair.rep_pow k X p P _ _ _ m h1) (Pair.rep_dual k X p P _ _ _ (Pair.rep_pow k X p P _ _ _ c h2))` as an intermediate fact. Simplify using `using this`. Establish `hE` using `SmallBall.encard_eq_Bl P hRep ((P.L.pow m).tens ((P.A.pow c).dual)).smallSec 1 zero_le_one fun u => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [HermLB.smallSec, Set.mem_setOf_eq, one_pow]`. Establish `hle` using `GlobalTheory.T.encard_smallSections_le_of_hermLBLeBySmallSection k X p _ _ ((GlobalTheory.T.hermLBLeBySmallSection_tensor_isometric_trans_shift k X p _ _ (P.L.pow m)).1 hLe)`. Establish `hfin` using `GlobalTheory.T.finite_smallSec_hermitian_line_bundle_arith_variety k X p D hX ((P.L.pow m).tens N)`. Establish `hBle : (P.Bl m (-c) 1).encard ≤ ((P.L.pow m).tens N).smallSec.encard` using `hE ▸ hle`. Establish `hBfin : (P.Bl m (-c) 1).Finite` using `Set.finite_of_encard_le_coe (hBle.trans_eq hfin.cast_ncard_eq.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : (1 : ℕ∞) ≤ (P.Bl m (-c) 1).encard` using `hE ▸ Set.one_le_encard_iff_nonempty.2 ⟨_, ((P.L.pow m).tens ((P.A.pow c).dual)).zero_mem_smallSec⟩`. Establish `hc1 : 1 ≤ (P.Bl m (-c) 1).ncard`. Use `hBfin.cast_ncard_eq ▸ hone` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hc2 : (P.Bl m (-c) 1).ncard ≤ ((P.L.pow m).tens N).smallSec.ncard`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hBfin.cast_ncard_eq ▸ hfin.cast_ncard_eq ▸ hBle` as an intermediate fact. Conclude with `this` after adjusting the coercions. Use `hm.trans ?_` and prove the remaining obligations. Unfold `Pair.lc`. Conclude with `Real.log_le_log (by exact_mod_cast hc1) (by exact_mod_cast hc2)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.Published.ArCalc → AmpleHS → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (L N : HermLB p) (a : ℝ), NefFib L → L.SemiPos D → L.IsSelfInter a → ∀ ε : ℝ, 0 < ε → ∀ᶠ m : ℕ in atTop, (a / (D + 1).factorial - ε) * (m : ℝ) ^ (D + 1) ≤ Real.log (((L.pow m).tens N).smallSec.ncard : ℝ) := by
   intro hAr hHS k _ X _ p D hX L N a hNef hSP hSI ε hε

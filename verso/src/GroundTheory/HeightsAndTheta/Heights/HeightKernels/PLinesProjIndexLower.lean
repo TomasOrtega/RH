@@ -11,14 +11,14 @@ noncomputable section
 namespace KLinesProjIndexLower
 
 /- English proof (translation)
-The claim follows from `(Submodule.fg_span (Set.finite_range _)).restrictScalars`.
+A detailed English derivation is pending.
 -/
 theorem stdLattice_fg (K : Type) [Field K] [NumberField K] (k : ℕ) :
     ((stdLattice K k).restrictScalars ℤ).FG :=
   (Submodule.fg_span (Set.finite_range _)).restrictScalars
 
 /- English proof (translation)
-The claim follows from `(HermLattice.standard K k).span_eq`.
+A detailed English derivation is pending.
 -/
 theorem stdLattice_span (K : Type) [Field K] [NumberField K] (k : ℕ) :
     Submodule.span K ((stdLattice K k : Submodule (𝓞 K) (Fin k → K)) : Set (Fin k → K)) = ⊤ :=
@@ -29,9 +29,9 @@ end KLinesProjIndexLower
 open KLinesProjIndexLower in
 
 /- English proof (translation)
-Introduce `K _ _ n m k a B τ ha hB hτ`. Take `⟨hPfg, hPspan, hle⟩` from `h1 K n m k a B τ ha hB hτ`. Take `⟨hAfg, hAspan⟩` from `h2 K k (fun j => a (τ j)) (fun j => ha (τ j))`. Establish `hA` using `h3 K (Fin k) _ hAfg.restrictScalars hAspan`. Establish `hP` using `h3 K (Fin k) _ hPfg hPspan`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `h3 K (Fin k) _ (stdLattice_fg K k) (stdLattice_span K k)`. Establish `key` using `h4 (Fin k → K) _ _ _ hA hP hS (Submodule.restrictScalars_mono ℤ hle)`. Rewrite using `[← h5 K k (fun j => a (τ j))]`. Conclude with `key`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LinesProjIndexLower.proof (h1 : LinesProjLattice.Statement)
     (h2 : LinesIdealLatticeFG.Statement) (h3 : LinesIsLattice.Statement)

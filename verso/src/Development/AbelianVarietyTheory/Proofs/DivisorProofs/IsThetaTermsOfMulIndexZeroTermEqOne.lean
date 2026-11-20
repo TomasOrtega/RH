@@ -12,11 +12,11 @@ noncomputable section
 namespace GlobalTheory.Poinc.Sep
 
 /- English proof (translation)
-Introduce `V₁ _ _ D N₁ X C _ e T v c₀ h hv`. Take `⟨th, g, b, w, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `⟨(algebraMap V₁ (FractionRing V₁) v) • th, g, b, w, h₁, h₂, h₃, h₄, ?_, ⟨c₀, hv⟩⟩` and prove the remaining obligations. Introduce `mu c z J hJ`. Establish `H` using `h₅ mu c z J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[ReciprocityTheory.ChartRestriction.G.DVR.sval_smul _ _ _ _ z hJ]`. Establish `e₁ : (lift (𝟙 (TF (R` using `V₁) (FractionRing V₁))) (g c).b).left ≫ (fst (TF (R := V₁) (FractionRing V₁)) D.P.A).left = 𝟙 _ := by`. Rewrite using `[← Over.comp_left, lift_fst, Over.id_left]`. Rewrite using `[e₁]`. Establish `e₂ : GlobalTheory.UT.cst (FractionRing V₁) z (algebraMap V₁ (FractionRing V₁) (T mu c * v)) = GlobalTheory.UT.cst (FractionRing V₁) z (algebraMap V₁ (FractionRing V₁) v) * GlobalTheory.UT.cst (FractionRing V₁) z (algebraMap V₁ (FractionRing V₁) (T mu c))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.UT.cst, map_mul]`. Rewrite using `[gs_mul _ z ⊤ trivial, mul_comm]`. Rewrite using `[e₂, _root_.mul_assoc, H]`. Simplify using `only [GlobalTheory.UT.cst, _root_.mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isThetaTerms_of_mul_eq_one : ∀ (V₁ : Type) [CommRing V₁] [IsDomain V₁] (D : DegPre V₁) (N₁ : ℕ) (X C : Type) [AddCommGroup X] (e : X ≃+ D.X) (T : X → C → V₁) (v : V₁) (c₀ : C), IsThetaTerms₀ D N₁ e T → T 0 c₀ * v = 1 → IsThetaTerms D N₁ e (fun mu c => T mu c * v) := by
   intro V₁ _ _ D N₁ X C _ e T v c₀ h hv

@@ -35,14 +35,14 @@ def IsClosedHerm (B : Set E) (k : E → E →ₗ[ℂ] E →ₗ⋆[ℂ] ℂ) : Pr
     ∀ u v w, d10 (fun x => k x v w) b u = d10 (fun x => k x u w) b v
 
 /- English proof (translation)
-Simplify using `[IsTorsionFormWith, IsTorsionForm, IsHeatTraceWith, IsHeatTrace, baseMul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isTorsionFormWith_zero (b : E) (T : Ext (n + n)) :
     IsTorsionFormWith τ M j h β b 0 T ↔ IsTorsionForm τ M j h β b T := by
   simp [IsTorsionFormWith, IsTorsionForm, IsHeatTraceWith, IsHeatTrace, baseMul]
 
 /- English proof (translation)
-Establish `e₁ : (Finset.univ : Finset (Fin 2)).erase 0 = {1}` using `by decide`. Establish `e₄ : (({1} : Finset (Fin 2)).filter (· = 0)).card = 0` using `by decide`. Establish `e₅ : Fin.castAdd 1 (0 : Fin 1) = (0 : Fin 2)` using `rfl`. Establish `e₆ : Fin.natAdd 1 (0 : Fin 1) = (1 : Fin 2)` using `rfl`. Simplify using `[baseMul, wedge, sgn, e₁, e₄, e₅, e₆]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 example (k : ℂ) : baseMul (n := 1) (of fun _ _ => k) (Pi.single ∅ 1) Finset.univ = k := by
   have e₁ : (Finset.univ : Finset (Fin 2)).erase 0 = {1} := by decide

@@ -5,11 +5,11 @@ open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical G
 
 open ValuativeRel in
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨u, rfl⟩, hl⟩`. Use `⟨u, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `residueReduction F n u ∈ borel n _`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[mem_borel_iff]`. Introduce `i j hij`. Rewrite using `[residueReduction_apply]`. Conclude with `(residue_eq_zero_iff_valuation_lt_one F (u i j)).mpr (hl i j hij)`. Introduce `hg`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨iwahori_le_integralGL F n hg, ((mem_iwahori_iff F n).1 hg).2.1⟩`.
+A detailed English derivation is pending.
 -/
 private theorem iw_eq (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ) :
     PositivityTheory.Rg.Tf.Loc.iwahori (m := n) F = (iwahori F n : Set (GL (Fin n) F)) := by
@@ -27,9 +27,9 @@ private theorem iw_eq (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F]
 
 open ValuativeRel in
 /- English proof (translation)
-Use `⟨valuation_uniformizer_lt_one F, Units.ne_zero _, fun x hx => ?_⟩` and prove the remaining obligations. Set `y : 𝒪[F]` to `⟨x, (Valuation.mem_integer_iff _ _).mpr hx.le⟩`. Establish `hy : y ∈ IsLocalRing.maximalIdeal 𝒪[F]`. Rewrite using `[← IsLocalRing.residue_eq_zero_iff]`. Conclude with `(residue_eq_zero_iff_valuation_lt_one F y).mpr hx`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `(mem_maximalIdeal_pow_iff F (m := 1) (y := y)).1 (by rwa [pow_one])`. Simplify using `using h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem unif (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] :
     PositivityTheory.Rg.Tf.Loc.IsUniformiser ((uniformizerUnit F : Fˣ) : F) := by
@@ -43,11 +43,11 @@ private theorem unif (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] 
 
 open ValuativeRel in
 /- English proof (translation)
-Establish `he : ∀ i j, ((diagGL F n t : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) i j = Matrix.diagonal (fun i => ((t i : Fˣ) : F)) i j` using `fun i j => rfl`. Use `(mem_iwahori_iff F n).2 ⟨fun i j => ?_, fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[he]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[ht]`. Simplify using `[Matrix.diagonal_apply_ne _ h]`. Rewrite using `[he, Matrix.diagonal_apply_ne _ hij.ne']`. Simplify using the standard rewrite rules. Rewrite using `[he]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[ht]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem diag_mem (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ)
     (t : Fin n → Fˣ) (ht : ∀ i, valuation F ((t i : Fˣ) : F) = 1) : diagGL F n t ∈ iwahori F n := by
@@ -65,17 +65,17 @@ private theorem diag_mem (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace
     simp [ht]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ n`. Establish `hI` using `iw_eq F n`. Use `⟨rfl, hI, ⟨uniformizerUnit F, unif F⟩, fun ϖ hϖ a => ?_⟩` and prove the remaining obligations. Establish `h0` using `unif F`. Establish `hv : ValuativeRel.valuation F (ϖ : F) = ValuativeRel.valuation F ((uniformizerUnit F : Fˣ) : F)` using `le_antisymm (h0.2.2 _ hϖ.1) (hϖ.2.2 _ h0.1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u : Fˣ := ϖ * (uniformizerUnit F)⁻¹ with hu`. Establish `hu1 : ValuativeRel.valuation F (u : F) = 1`. Establish `hne : ValuativeRel.valuation F ((uniformizerUnit F : Fˣ) : F) ≠ 0` using `(Valuation.ne_zero_iff _).mpr (Units.ne_zero _)`. Rewrite using `[hu, Units.val_mul, map_mul, hv, Units.val_inv_eq_inv_val, map_inv₀, mul_inv_cancel₀ hne]`. Establish `hd : diagGL F n (fun i => u ^ a i) ∈ iwahori F n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `diag_mem F n _ fun i => ?_` and prove the remaining obligations. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, hu1, one_zpow]`. Establish `hfac : PositivityTheory.Rg.Tf.Loc.diagPow ϖ a = torusPow F n a * diagGL F n (fun i => u ^ a i)`. Establish `: PositivityTheory.Rg.Tf.Loc.diagPow ϖ a = diagGL F n (fun i => ϖ ^ a i)` using `Units.ext rfl`. Rewrite using `[this, torusPow, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.mul_apply, hu, ← mul_zpow]`. Simplify using the standard rewrite rules. Unfold `PositivityTheory.Rg.Tf.Loc.iwahoriFn uFn dco`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, hI, SetLike.mem_coe, hfac]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, y, hy, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨x, hx, _ * y, mul_mem hd hy, by simp only [mul_assoc]⟩`. Introduce and unpack `⟨x, hx, y, hy, rfl⟩`. Conclude with `⟨x, hx, (diagGL F n (fun i => u ^ a i))⁻¹ * y, mul_mem (inv_mem hd) hy, by simp only [mul_assoc, mul_inv_cancel_left]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.H.defBridge :
     ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (n : ℕ),

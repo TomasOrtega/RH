@@ -9,15 +9,15 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (Fin n) with h | h` into its components or cases. Conclude with `⟨1, fun _ _ i => h.elim i⟩`. Take `⟨p, hp⟩` from `Finite.exists_min (fun p : Fin n × Fin n => valuation k ((t p.2 * (t p.1)⁻¹ : kˣ) : k))`. Use `set c : kˣ := t p.2 * (t p.1)⁻¹ with hc`. Establish `h1 : valuation k (c : k) ≤ 1` using `by simpa using hp (p.1, p.1)`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, fun s hs i j hij => ?_⟩` and prove the remaining obligations. Break down `hij.eq_or_lt with rfl | hlt` into its components or cases. Conclude with `le_rfl`. Establish `h2 : valuation k (s i : k) * valuation k (c : k) ≤ valuation k (s j : k)`. Break down `hs with rfl | rfl` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h1`. Use `mul_le_mul_right (hp (i, j)) (valuation k (s i : k))` as an intermediate fact. Use `this.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← map_mul, ← Units.val_mul]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hj` using `j.2`. Establish `hlt' : (i : ℕ) < j` using `hlt`. Establish `e : n - (i : ℕ) = 1 + ((n - j) + (j - i - 1))` using `by omega`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Units.val_mul, Units.val_pow_eq_pow_val, map_mul, map_pow, pow_add, pow_one]`. Rewrite using `[← mul_assoc]`. Conclude with `mul_le_mul' h2 (mul_le_of_le_one_right' (pow_le_one' h1 _))`.
+A detailed English derivation is pending.
 -/
 private theorem nilKill_split {k : Type} [Field k] [ValuativeRel k] {n : ℕ} (t : Fin n → kˣ) :
     ∃ c : kˣ, ∀ s : Fin n → kˣ, (s = 1 ∨ s = t) → ∀ i j : Fin n, i ≤ j →
@@ -47,7 +47,7 @@ private theorem nilKill_split {k : Type} [Field k] [ValuativeRel k] {n : ℕ} (t
   exact mul_le_mul' h2 (mul_le_of_le_one_right' (pow_le_one' h1 _))
 
 /- English proof (translation)
-Use `haveI : Fintype (MulAction.orbit K (x : G ⧸ K')) := Set.Finite.fintype hx`. Unfold `dc`. Rewrite using `[finsum_eq_sum_of_fintype, finsum_eq_sum_of_fintype, LinearMap.sum_apply, LinearMap.sum_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun q _ => (hf _ _).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem nilKill_dc {A M A' M' G : Type} [CommRing A] [AddCommGroup M] [Module A M] [CommRing A'] [AddCommGroup M']
     [Module A' M'] [Group G] (ρ : Representation A G M) (ρ' : Representation A' G M') (K K' : Subgroup G) (x : G)
@@ -59,7 +59,7 @@ private theorem nilKill_dc {A M A' M' G : Type} [CommRing A] [AddCommGroup M] [M
   exact Finset.sum_congr rfl fun q _ => (hf _ _).symm
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (θ' b).val` using `((Module.End.isUnit_iff _).1 (θ' b).isUnit).1`. Apply `hinj` to reduce the goal to its premises. Establish `h` using `ha m`. Rewrite `h` using `[map_mul, map_mul, Units.val_mul, Units.val_mul, Module.End.mul_apply, Module.End.mul_apply]`. Rewrite using `[h, hb]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem nilKill_ext {A N A' N' T : Type} [CommRing A] [AddCommGroup N] [Module A N] [CommRing A'] [AddCommGroup N']
     [Module A' N'] [Group T] (θ : T →* (Module.End A N)ˣ) (θ' : T →* (Module.End A' N')ˣ) (g : N → N') (t b : T)
@@ -72,17 +72,15 @@ private theorem nilKill_ext {A N A' N' T : Type} [CommRing A] [AddCommGroup N] [
   rw [h, hb]
 
 /- English proof (translation)
-Take `⟨S, ⟨hS0, hle, hS⟩, hmin⟩` from `(wellFounded_lt (α := Submodule ℂ W)).has_min {S | S ≠ ⊥ ∧ S ≤ S0 ∧ ∀ t, ∀ v ∈ S, (θ t : Module.End ℂ W) v ∈ S} ⟨S0, h0, le_rfl, h1⟩`. Establish `: Nontrivial S` using `Submodule.nontrivial_iff_ne_bot.2 hS0`. Establish `key : ∀ t, ∃ c : ℂ, ∀ v ∈ S, (θ t : Module.End ℂ W) v = c • v` using `fun t => by`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue ((θ t : Module.End ℂ W).restrict (hS t))`. Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hw1 : (θ t : Module.End ℂ W) w = c • (w : W)` using `congrArg Subtype.val hw.apply_eq_smul`. Use `⟨c, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : S ⊓ Module.End.eigenspace (θ t : Module.End ℂ W) c = S`. Assume the negation of the conclusion as `hne`. Use `hmin _ ⟨?_, inf_le_left.trans hle, ?_⟩ (lt_of_le_of_ne inf_le_left hne)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(Submodule.ne_bot_iff _).2 ⟨w, ⟨w.2, Module.End.mem_eigenspace_iff.2 hw1⟩, fun h => hw.2 (Subtype.ext h)⟩`. Introduce and unpack `s x ⟨hx, hx'⟩`. Use `⟨hS s x hx, Module.End.mem_eigenspace_iff.2 ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.End.mul_apply, ← Units.val_mul, ← map_mul, mul_comm, map_mul, Units.val_mul, Module.End.mul_apply, Module.End.mem_eigenspace_iff.1 hx', map_smul]`. Rewrite `hv` using `[← h1]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Module.End.mem_eigenspace_iff.1 hv.2`. Use `choose c hc using key`. Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hS0`. Set `c' : T →* ℂ` to `{ toFun := c map_one' := by`. Use `hc 1 v hv` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_one, Units.val_one, Module.End.one_apply]`. Conclude with `smul_left_injective ℂ hv0 (this.symm.trans (one_smul _ _).symm)`. Use the proof step `map_mul' := fun s t => by`. Use `hc (s * t) v hv` as an intermediate fact. Rewrite `this` using `[map_mul, Units.val_mul, Module.End.mul_apply, hc t v hv, map_smul, hc s v hv, smul_smul, mul_comm]`.
-
-Conclude with `smul_left_injective ℂ hv0 this.symm }`. Use `⟨c'.toHomUnits, v, hle hv, hv0, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[hc t v hv]`. Simplify using `[c']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem nilKill_eig {T W : Type} [CommGroup T] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (θ : T →* (Module.End ℂ W)ˣ) (S0 : Submodule ℂ W) (h0 : S0 ≠ ⊥)
@@ -125,7 +123,7 @@ private theorem nilKill_eig {T W : Type} [CommGroup T] [AddCommGroup W] [Module 
   simp [c']
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(MonoidAlgebra.lift ℂ (Module.End ℂ W) T ((Units.coeHom _).comp θ)).comp (MvPolynomial.aeval fun a => MonoidAlgebra.single (t a) 1), fun a => by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem nilKill_act {T W κ : Type} [CommGroup T] [AddCommGroup W] [Module ℂ W]
     (θ : T →* (Module.End ℂ W)ˣ) (t : κ → T) :
@@ -134,9 +132,9 @@ private theorem nilKill_act {T W κ : Type} [CommGroup T] [AddCommGroup W] [Modu
     (MvPolynomial.aeval fun a => MonoidAlgebra.single (t a) 1), fun a => by simp⟩
 
 /- English proof (translation)
-Proceed by induction on `F using MvPolynomial.induction_on generalizing v with`. Consider the case `C c`. Rewrite using `[← MvPolynomial.algebraMap_eq, AlgHom.commutes, AlgHom.commutes]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => simp [hp, hq]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p a hp => simp [h, hp]`.
+Treat this case separately.
 -/
 private theorem nilKill_int {W W' κ : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup W'] [Module ℂ W']
     (act : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ W) (act' : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ W') (g : W →ₗ[ℂ] W')
@@ -150,15 +148,15 @@ private theorem nilKill_int {W W' κ : Type} [AddCommGroup W] [Module ℂ W] [Ad
   | mul_X p a hp => simp [h, hp]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h0 : LinearMap.range (act (F ^ N)) ≠ ⊥` using `fun h => hne (LinearMap.range_eq_bot.1 h)`. Take `⟨χ, v, ⟨u, rfl⟩, hv0, hv⟩` from `nilKill_eig θ _ h0 (by`. Introduce and unpack `s _ ⟨u, rfl⟩`. Use `⟨(θ s : Module.End ℂ W) u, nilKill_int act act _ (fun a v => ?_) _ _⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hact, ← Module.End.mul_apply, ← Module.End.mul_apply, ← Units.val_mul, ← Units.val_mul, ← map_mul, ← map_mul, mul_comm])`. Establish `hχ` using `hF χ ((Submodule.ne_bot_iff _).2 ⟨_, (Submodule.mem_iInf _).2 fun s => (Module.End.mem_maxGenEigenspace _ _ _).2 ⟨1, by rw [pow_one, LinearMap.sub_apply, hv s]; simp⟩, hv0⟩)`. Establish `hev : ∀ G : MvPolynomial κ ℂ, act G (act (F ^ N) u) = MvPolynomial.eval (fun a => (χ (t a) : ℂ)) G • act (F ^ N) u`. Introduce `G`. Generalize the expression as in `act (F ^ N) u = x at hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `G using MvPolynomial.induction_on with`. Consider the case `C c`. Rewrite using `[MvPolynomial.eval_C, ← MvPolynomial.algebraMap_eq, AlgHom.commutes]`. Simplify using the standard rewrite rules. Consider the case `add p q hp hq => simp [hp, hq, add_smul]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `mul_X p a hp`. Rewrite using `[map_mul, map_mul, Module.End.mul_apply, hact, hv, map_smul, hp, MvPolynomial.eval_X, smul_smul, mul_comm]`. Establish `h1 : u ∈ LinearMap.ker (act F ^ (N + 1))`. Rewrite using `[LinearMap.mem_ker, pow_succ', Module.End.mul_apply, ← map_pow, hev, hχ, zero_smul]`. Establish `h2` using `Module.End.ker_pow_le_ker_pow_finrank _ _ h1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `hv0` to reduce the goal to its premises. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le' hN`. Rewrite using `[map_pow, pow_add, Module.End.mul_apply, LinearMap.mem_ker.1 h2, map_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem nilKill_nil {T W κ : Type} [CommGroup T] [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W]
     (θ : T →* (Module.End ℂ W)ˣ) (t : κ → T) (act : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ W)
@@ -194,21 +192,19 @@ private theorem nilKill_nil {T W κ : Type} [CommGroup T] [AddCommGroup W] [Modu
   rw [map_pow, pow_add, Module.End.mul_apply, LinearMap.mem_ker.1 h2, map_zero]
 
 /- English proof (translation)
-Establish `hq : IsUnit (resCard k : ℂ)` using `(Nat.cast_ne_zero.2 (Nat.card_pos (α := 𝓀[k])).ne').isUnit`. Take `⟨θ, hθ, -⟩` from `thetaEx k n C ℂ σ.V σ.ρ hq`. Take `⟨hfd, hrk, -⟩` from `jqLine hG hBZ k n C σ.V σ.ρ σ.smooth σ.irred`. Take `⟨actσ, hσ⟩` from `nilKill_act θ t`. Establish `hnil` using `nilKill_nil θ t actσ hσ F (hF θ hθ) _ hrk`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ho : IsOpen (iwC k n C : Set (GL (Fin n) k))` using `Subgroup.isOpen_mono (H₁ := KOne k (Fin n)) (le_sup_left.trans le_sup_left) GlobalTheory.StepData.isOpen_KOne`. Establish `hle : iwC k n C ≤ iwahori k (Fin n)` using `fun g hg => (((memIwC k n C).1 g).1 hg).1`. Establish `hc : IsCompact (iwC k n C : Set (GL (Fin n) k))` using `(IwahoriOnto.isCompact_iwahori k (Fin n)).of_isClosed_subset (Subgroup.isClosed_of_isOpen _ ho) hle`. Use `LinearMap.ext fun y => ?_` and prove the remaining obligations. Establish `hy` using `isoFix k n Y π σ _ hc hs y y.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hsub : (⨆ f : {f : σ.V →ₗ[ℂ] Y // ∀ g v, f (σ.ρ g v) = π g (f v)}, (fixd σ.ρ (iwC k n C)).map f.1) ≤ (LinearMap.ker (act (F ^ n.factorial))).map (fixd π (iwC k n C)).subtype`. Use `iSup_le ?_` and prove the remaining obligations. Introduce and unpack `⟨f, hf⟩ _ ⟨v, hv, rfl⟩`. Set `g : fixd σ.ρ (iwC k n C) →ₗ[ℂ] fixd π (iwC k n C)` to `f.restrict fun x hx u hu => by rw [← hf, hx u hu]`. Establish `hd : ∀ s, Dom s → ∀ v, (θY s).val (g v) = g ((θ s).val v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `s hs v`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = f _`. Establish `hfin : FinOrb (iwC k n C) (iwC k n C) (diagT k (Fin n) s)` using `(heckePairIwC _ n C).1 _`. Rewrite using `[hY s hs, hθ s hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `((hkApply ℂ _ Y π _ _ _ hfin).1 (g v)).trans ?_` and prove the remaining obligations. Use `(nilKill_dc σ.ρ π _ _ _ hfin f.toAddMonoidHom hf v).trans ?_` and prove the remaining obligations. Conclude with `congrArg f ((hkApply ℂ _ σ.V σ.ρ _ _ _ hfin).1 v).symm`. Establish `hall : ∀ s v, (θY s).val (g v) = g ((θ s).val v)`. Introduce `s v`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `nilKill_split s`. Use `nilKill_ext θ θY g s (fun i : Fin n => c ^ (n - (i : ℕ))) (hd _ ?_) (hd _ ?_) v` and prove the remaining obligations. Introduce `i i' hi`. Simplify using `using hc 1 (Or.inl rfl) i i' hi`. Rewrite using `[mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hc s (Or.inr rfl)`. Use `⟨g ⟨v, hv⟩, ?_, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `act _ _ = 0`. Rewrite using `[nilKill_int actσ act g (fun a v => by rw [hact, hσ, hall]), hnil, LinearMap.zero_apply, map_zero]`. Take `⟨y', hy', e⟩` from `hsub hy`.
-
-Take `rfl : y' = y` from `Subtype.ext e`. Conclude with `hy'`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem nilKill_loc (hG : GlobalTheory.Published.GeometricLemma) (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness)
     {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
@@ -261,13 +257,13 @@ private theorem nilKill_loc (hG : GlobalTheory.Published.GeometricLemma) (hBZ : 
   exact hy'
 
 /- English proof (translation)
-Introduce `hG hBZ L _ _ n q w Y _ _ π C Θ hΘ j σ hs κ t act hact F hF`. Establish `hq : IsUnit (resCard ((w j).adicCompletion L) : ℂ)` using `(Nat.cast_ne_zero.2 (Nat.card_pos (α := 𝓀[(w j).adicCompletion L])).ne').isUnit`. Take `⟨θY, hY, -⟩` from `thetaEx _ n (C j) ℂ Y (π.comp (atJ n w j)) hq`. Take `⟨actY, haY⟩` from `nilKill_act θY t`. Establish `h0` using `nilKill_loc hG hBZ (C j) (π.comp (atJ n w j)) σ hs t θY hY actY haY F hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : fixd π (UC n w C) ≤ fixd (π.comp (atJ n w j)) (iwC _ n (C j))`. Introduce `x hx u hu`. Use `hx (atJ n w j u) fun j' _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : j' = j`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify `hu` using `[atJ]`. Establish `: atJ n w j u j' = 1` using `Pi.mulSingle_eq_of_ne (M := fun j => GLw n (w j)) h u`. Rewrite using `[this]`. Conclude with `(iwC _ n (C j')).one_mem`. Use `LinearMap.ext fun m => Submodule.inclusion_injective hle ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← nilKill_int act actY (Submodule.inclusion hle) (fun a v => ?_), h0, LinearMap.zero_apply, LinearMap.zero_apply, map_zero]`. Rewrite using `[haY, hact]`. Conclude with `Subtype.ext (thetaLoc L n q w ℂ Y π C Θ hΘ j θY hY (t a) v _ rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.nilKill :
     GlobalTheory.Published.GeometricLemma → GlobalTheory.Published.BernsteinZelevinskyFiniteness → ∀ (L : Type) [Field L] [NumberField L] (n q : ℕ) (w : Fin q → Plc L) (Y : Type) [AddCommGroup Y] [Module ℂ Y] (π : Representation ℂ (GV n w) Y) (C : ∀ j, Subgroup 𝓀[(w j).adicCompletion L]ˣ) (Θ), IsThetaQ π C Θ → ∀ (j : Fin q) (σ : SmIrr (GLw n (w j))), IsoSum (π.comp (atJ n w j)) ⊤ σ → ∀ (κ : Type) (t : κ → Fin n → ((w j).adicCompletion L)ˣ) (act : MvPolynomial κ ℂ →ₐ[ℂ] Module.End ℂ (fixd π (UC n w C))), (∀ a, act (MvPolynomial.X a) = Θ j (t a)) → ∀ F : MvPolynomial κ ℂ, (∀ θ, IsTheta σ.ρ (C j) θ → ∀ χ : (Fin n → ((w j).adicCompletion L)ˣ) →* ℂˣ, (⨅ t, Module.End.maxGenEigenspace (θ t : Module.End ℂ (fixd σ.ρ (iwC _ n (C j)))) (χ t : ℂ)) ≠ ⊥ → MvPolynomial.eval (fun a => (χ (t a) : ℂ)) F = 0) → act (F ^ n.factorial) = 0 := by

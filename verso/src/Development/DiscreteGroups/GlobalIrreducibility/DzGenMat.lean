@@ -15,11 +15,11 @@ section Ring
 variable {R : Type} [CommRing R] {m : ℕ}
 
 /- English proof (translation)
-Take `⟨hu0, hu1⟩` from `(mem_unipB _).1 hu`. Take `⟨hc0, hc1⟩` from `(mem_unipB _).1 hc`. Establish `hne : i ≠ j` using `by intro h; subst h; omega`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Fintype.sum_eq_add i j hne]`. Rewrite using `[hu1, hc1, one_mul, mul_one, add_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `l ⟨hli, hlj⟩`. Break down `lt_or_gt_of_ne hli with h | h` into its components or cases. Rewrite using `[hu0 i l h, zero_mul]`. Establish `hjl : j < l`. Establish `h1` using `Fin.val_ne_of_ne hlj`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h`, the goal using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hc0 l j hjl, mul_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_apply_super {u c : GL (Fin m) R} (hu : u ∈ unipB R (Fin m)) (hc : c ∈ unipB R (Fin m))
     {i j : Fin m} (hij : j.val = i.val + 1) :
@@ -40,7 +40,7 @@ theorem mul_apply_super {u c : GL (Fin m) R} (hu : u ∈ unipB R (Fin m)) (hc : 
       rw [hc0 l j hjl, mul_zero]
 
 /- English proof (translation)
-Simplify using `only [superDiag, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Conclude with `mul_apply_super hu hc (Finset.mem_filter.1 hj).2`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem superDiag_mul {u c : GL (Fin m) R} (hu : u ∈ unipB R (Fin m)) (hc : c ∈ unipB R (Fin m)) :
     superDiag (u * c) = superDiag u + superDiag c := by
@@ -49,7 +49,7 @@ theorem superDiag_mul {u c : GL (Fin m) R} (hu : u ∈ unipB R (Fin m)) (hc : c 
   exact mul_apply_super hu hc (Finset.mem_filter.1 hj).2
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Fintype.sum_eq_single (Fin.rev i)]`. Simplify using `[Matrix.one_apply]`. Introduce `l hl`. Simplify using `[Matrix.one_apply, Ne.symm hl]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem wRev_sq : (1 : Matrix (Fin m) (Fin m) R).submatrix Fin.rev id * (1 : Matrix (Fin m) (Fin m) R).submatrix Fin.rev id
     = 1 := by
@@ -64,7 +64,7 @@ def wRev (R : Type) [CommRing R] (m : ℕ) : GL (Fin m) R :=
     wRev_sq, wRev_sq⟩
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.mul_apply, Fintype.sum_eq_single (Fin.rev i)]`. Use `show (1 : Matrix (Fin m) (Fin m) R) (Fin.rev i) (Fin.rev i) * _ = _`. Rewrite using `[Matrix.one_apply_eq, one_mul]`. Introduce `l hl`. Simplify using `[wRev, Ne.symm hl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wRev_mul_apply (M : GL (Fin m) R) (i j : Fin m) :
     ((wRev R m * M : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) i j = (M : Matrix (Fin m) (Fin m) R) (Fin.rev i) j := by
@@ -75,9 +75,9 @@ theorem wRev_mul_apply (M : GL (Fin m) R) (i j : Fin m) :
     simp [wRev, Ne.symm hl]
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Matrix.mul_apply, Fintype.sum_eq_single (Fin.rev j)]`. Use `show _ * (1 : Matrix (Fin m) (Fin m) R) (Fin.rev (Fin.rev j)) j = _`. Rewrite using `[Fin.rev_rev, Matrix.one_apply_eq, mul_one]`. Introduce `l hl`. Establish `: Fin.rev l ≠ j` using `fun h => hl (by rw [← h, Fin.rev_rev])`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[wRev, this]`.
+A detailed English derivation is pending.
 -/
 theorem mul_wRev_apply (M : GL (Fin m) R) (i j : Fin m) :
     ((M * wRev R m : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) i j = (M : Matrix (Fin m) (Fin m) R) i (Fin.rev j) := by
@@ -89,12 +89,12 @@ theorem mul_wRev_apply (M : GL (Fin m) R) (i j : Fin m) :
     simp [wRev, this]
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem wRev_inv : (wRev R m)⁻¹ = wRev R m := Units.ext rfl
 
 /- English proof (translation)
-Rewrite using `[mul_wRev_apply, wRev_mul_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wRev_conj_apply (M : GL (Fin m) R) (i j : Fin m) :
     ((wRev R m * M * wRev R m : GL (Fin m) R) : Matrix (Fin m) (Fin m) R) i j =
@@ -108,16 +108,16 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {m : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isUpperTriangular (fun i j hij => ((mem_unipB _).1 hu).1 i j hij)]`. Simplify using `[((mem_unipB _).1 hu).2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_unip {u : GL (Fin m) k} (hu : u ∈ unipB k (Fin m)) : (u : Matrix (Fin m) (Fin m) k).det = 1 := by
   rw [Matrix.det_of_isUpperTriangular (fun i j hij => ((mem_unipB _).1 hu).1 i j hij)]
   simp [((mem_unipB _).1 hu).2]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SplitFlip.mem_KO_iff]`. Use `⟨fun i j => (Valuation.mem_integer_iff _ _).2 (h i j), fun i j => ?_⟩` and prove the remaining obligations. Establish `hinv : ((u⁻¹ : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) = (u : Matrix (Fin m) (Fin m) k).adjugate`. Rewrite using `[Matrix.coe_units_inv, Matrix.inv_def, det_unip hu, Ring.inverse_one, one_smul]`. Set `A : Matrix (Fin m) (Fin m) 𝒪[k]` to `fun i j => ⟨(u : Matrix (Fin m) (Fin m) k) i j, (Valuation.mem_integer_iff _ _).2 (h i j)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hA : (algebraMap 𝒪[k] k).mapMatrix A = (u : Matrix (Fin m) (Fin m) k)` using `by ext i j; rfl`. Use `show ((u⁻¹ : GL (Fin m) k) : Matrix (Fin m) (Fin m) k) i j ∈ 𝒪[k]`. Rewrite using `[hinv, ← hA, ← RingHom.map_adjugate]`. Conclude with `(A.adjugate i j).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_KO_of_unip {u : GL (Fin m) k} (hu : u ∈ unipB k (Fin m))
     (h : ∀ i j, valuation k ((u : Matrix (Fin m) (Fin m) k) i j) ≤ 1) : u ∈ KO k (Fin m) := by
@@ -133,7 +133,7 @@ theorem mem_KO_of_unip {u : GL (Fin m) k} (hu : u ∈ unipB k (Fin m))
   exact (A.adjugate i j).2
 
 /- English proof (translation)
-Use `GlobalTheory.StepData.mem_KOne.2 fun i j => ?_` and prove the remaining obligations. Break down `lt_trichotomy i j with hij | rfl | hij` into its components or cases. Simplify `h i j hij` using `[Matrix.sub_apply, Matrix.one_apply_ne hij.ne]`. Simplify using `[Matrix.sub_apply, ((mem_unipB _).1 hu).2 i]`. Simplify using `[Matrix.sub_apply, Matrix.one_apply_ne hij.ne', ((mem_unipB _).1 hu).1 i j hij]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mem_KOne_of_unip {u : GL (Fin m) k} (hu : u ∈ unipB k (Fin m))
     (h : ∀ i j, i < j → valuation k ((u : Matrix (Fin m) (Fin m) k) i j) < 1) : u ∈ KOne k (Fin m) := by
@@ -144,7 +144,7 @@ theorem mem_KOne_of_unip {u : GL (Fin m) k} (hu : u ∈ unipB k (Fin m))
   · simp [Matrix.sub_apply, Matrix.one_apply_ne hij.ne', ((mem_unipB _).1 hu).1 i j hij]
 
 /- English proof (translation)
-Use `GlobalTheory.StepData.mem_KOne.1 hu i j` as an intermediate fact. Simplify `this` using `[Matrix.sub_apply, Matrix.one_apply_ne hij]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_lt_of_mem_KOne {u : GL (Fin m) k} (hu : u ∈ KOne k (Fin m)) {i j : Fin m} (hij : i ≠ j) :
     valuation k ((u : Matrix (Fin m) (Fin m) k) i j) < 1 := by
@@ -152,7 +152,7 @@ theorem val_lt_of_mem_KOne {u : GL (Fin m) k} (hu : u ∈ KOne k (Fin m)) {i j :
   simpa [Matrix.sub_apply, Matrix.one_apply_ne hij] using this
 
 /- English proof (translation)
-The claim follows from `(Valuation.mem_integer_iff _ _).1 (((GlobalTheory.SplitFlip.mem_KO_iff u).1 hu).1 i j)`.
+A detailed English derivation is pending.
 -/
 theorem val_le_of_mem_KO {u : GL (Fin m) k} (hu : u ∈ KO k (Fin m)) (i j : Fin m) :
     valuation k ((u : Matrix (Fin m) (Fin m) k) i j) ≤ 1 :=

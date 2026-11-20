@@ -27,7 +27,7 @@ theorem val_secUnit (σ : LB.Sec H) (k : H.ι) {O : Y.Opens} (hk : O ≤ H.U k)
     (h : O ≤ nonzeroLocus σ) : (secUnit σ k hk h).val = rs Y hk (σ.f k) := rfl
 
 /- English proof (translation)
-Establish `: secUnit σ k (e.trans hk) (e.trans h) = Units.map (rs Y e).toMonoidHom (secUnit σ k hk h)` using `Units.ext (rs_rs _ _ _).symm`. Rewrite using `[this, ← map_zpow]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rs_secUnit_zpow (σ : LB.Sec H) (k : H.ι) {O O' : Y.Opens} (hk : O ≤ H.U k)
     (h : O ≤ nonzeroLocus σ) (e : O' ≤ O) (t : ℤ) :
@@ -39,7 +39,7 @@ theorem rs_secUnit_zpow (σ : LB.Sec H) (k : H.ι) {O O' : Y.Opens} (hk : O ≤ 
   rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (GlobalTheory.LB.sec_rel σ k l _ (hH.trans inf_le_right) hH)`.
+A detailed English derivation is pending.
 -/
 theorem secUnit_compat (σ : LB.Sec H) (k l : H.ι) {O : Y.Opens} (hH : O ≤ H.U k ⊓ H.U l)
     (h : O ≤ nonzeroLocus σ) :
@@ -73,21 +73,21 @@ theorem twCoord_divPow (σ : LB.Sec H) (h : V ≤ nonzeroLocus σ) (t : ℤ) (x 
         twCoord x p k := rfl
 
 /- English proof (translation)
-The claim follows from `tw_ext fun p k => by rw [twCoord_divPow, neg_zero, zpow_zero, Units.val_one, _root_.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem divPow_zero (σ : LB.Sec H) (h : V ≤ nonzeroLocus σ) (x : SecOn (tw M H 0) V) :
     divPow M σ h 0 x = x :=
   tw_ext fun p k => by rw [twCoord_divPow, neg_zero, zpow_zero, Units.val_one, _root_.one_mul]
 
 /- English proof (translation)
-Introduce `_ _ e` and use `tw_ext fun p k => (Units.isUnit _).mul_left_cancel (congrArg (twCoord · p k) e)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem divPow_injective (σ : LB.Sec H) (h : V ≤ nonzeroLocus σ) (t : ℤ) :
     Function.Injective (divPow M σ h t) := fun _ _ e =>
   tw_ext fun p k => (Units.isUnit _).mul_left_cancel (congrArg (twCoord · p k) e)
 
 /- English proof (translation)
-The claim follows from `tw_ext fun p k => by rw [twCoord_divPow, twCoord_divPow, twCoord_mulSec, ← _root_.mul_assoc, ← val_secUnit σ k _ (inf_le_left.trans h), ← Units.val_mul, ← zpow_add_one] congr 3 ring`.
+A detailed English derivation is pending.
 -/
 theorem divPow_mulSec (σ : LB.Sec H) (h : V ≤ nonzeroLocus σ) (t : ℤ) (x : SecOn (tw M H t) V) :
     divPow M σ h (t + 1) (mulSec M t σ V x) = divPow M σ h t x :=
@@ -130,7 +130,7 @@ def dehom : GrSum hx →ₛₗ[MvPolynomial.eval₂Hom (cst f V) r] SecOnR f (tw
     | mul_X p j hp => rw [mul_smul, hp, hX, map_mul, MvPolynomial.eval₂Hom_X', mul_smul]
 
 /- English proof (translation)
-The claim follows from `GrSum.desc_of hx _ t a`.
+A detailed English derivation is pending.
 -/
 theorem dehom_of (t : ℤ) (a : SecOnR f (tw M H t) V) :
     dehom f s hx i h r hr (GrSum.of hx t a) = SecOnR.lin f (divPow M (s i) h t) a :=
@@ -139,9 +139,7 @@ theorem dehom_of (t : ℤ) (a : SecOnR f (tw M H t) V) :
 include h hr in
 
 /- English proof (translation)
-Use `Y.sheaf.eq_of_locally_eq' (fun k : H.ι => V ⊓ H.U k) V (fun k => homOfLE inf_le_left) (fun x hx => ?_) _ _ fun k => ?_` and prove the remaining obligations. Take `⟨l, hl⟩` from `TopologicalSpace.Opens.mem_iSup.1 (h hx)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨l, hx, Y.basicOpen_le _ hl⟩`. Express the relevant statement in the definitionally equal form `rs Y inf_le_left (r i) = rs Y inf_le_left 1`. Rewrite using `[map_one]`.
-
-Conclude with `(isUnit_rs_of_le_nonzeroLocus (s i) k inf_le_right (inf_le_left.trans h)).mul_right_cancel ((hr i k).symm.trans (_root_.one_mul _).symm)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_self : r i = 1 := by
   refine Y.sheaf.eq_of_locally_eq' (fun k : H.ι => V ⊓ H.U k) V
@@ -154,15 +152,13 @@ theorem ratio_self : r i = 1 := by
       (inf_le_left.trans h)).mul_right_cancel ((hr i k).symm.trans (_root_.one_mul _).symm)
 
 /- English proof (translation)
-Establish `hp : xProd R {i} = MvPolynomial.X i` using `Finset.prod_singleton _ _`. Rewrite `h₁`, `h₂` using `[hp]`. Establish `hi` using `ratio_self s i h r hr`. Take `⟨ρ, hρ⟩ : ∃ ρ : GrSum (hx ⊤) →ₗ[MvPolynomial ι R] GrSum (hx V), ∀ t a, ρ (GrSum.of (hx ⊤) t a) = GrSum.of (hx V) t (SecOnR.restrict f _ le_top a)` from `⟨_, GrSum.map_of (hx ⊤) (hx V) (fun t => SecOnR.restrict f (tw M H t) le_top) fun j t a => (SecOn.mulSec_restrict (s j) le_top a).symm⟩`. Set `ε : GrSum (hx ⊤) →ₛₗ[MvPolynomial.eval₂Hom (cst f V) r] SecOnR f (tw M H 0) V` to `(dehom f s (hx V) i h r hr).comp ρ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hε (t : ℤ) (a : SecOnR f (tw M H t) ⊤) : ε (GrSum.of (hx ⊤) t a) = dehom f s (hx V) i h r hr (GrSum.of (hx V) t (SecOnR.restrict f _ le_top a))`. Rewrite using `[← hρ]`. Conclude with `LinearMap.comp_apply _ _ _`. Establish `s₁ : Function.Surjective ε` using `fun y => by`. Take `⟨k, t, a, e⟩` from `h₂ 0 y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨GrSum.of (hx ⊤) t a, (hε t a).trans ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_smulₛₗ, map_pow, MvPolynomial.eval₂Hom_X', hi, one_pow, one_smul, dehom_of]`. Conclude with `divPow_zero (s i) h y`. Establish `s₂ : ∀ n, ∀ y ∈ GrSum.grading (hx ⊤) n, ε y = 0 → ∃ k : ℕ, (MvPolynomial.X i : MvPolynomial ι R) ^ k • y = 0`. Introduce and unpack `n _ ⟨a, rfl⟩ ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ha` using `[hε, dehom_of]`. Conclude with `h₁ n a ((map_eq_zero_iff _ (divPow_injective (s i) h n)).1 ha)`. Establish `s₃ (a : SecOnR f (tw M H 0) ⊤) : ε (GrSum.of (hx ⊤) 0 a) = SecOnR.restrict f _ le_top a`. Rewrite using `[hε, dehom_of]`. Conclude with `divPow_zero (s i) h _`.
-
-Conclude with `⟨ε, s₁, s₂, s₃⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dehom_top
     (hx : ∀ V : Y.Opens, OperatorsCommute (ι := ι) (A := fun t => SecOnR f (tw M H t) V)
@@ -217,9 +213,9 @@ namespace GlobalTheory.AbLaw
 open Dehom
 
 /- English proof (translation)
-Introduce `R _ Y f H m s M hH hM hs hx i r hr`. Establish `key : ∀ V : Y.Opens, (⨅ j ∈ ({i} : Finset (Fin (m + 1))), nonzeroLocus (s j)) = V → (∀ (t : ℤ) (a : SecOnR f (tw M H t) ⊤), SecOnR.restrict f _ (le_top : V ≤ ⊤) a = 0 → ∃ k : ℕ, xProd R {i} ^ k • GrSum.of (hx ⊤) t a = 0) ∧ ∀ (t : ℤ) (y : SecOnR f (tw M H t) V), ∃ (k : ℕ) (t' : ℤ) …`. Introduce and unpack `_ rfl`. Conclude with `GlobalTheory.T.twistedSections_localise_to_charts R Y f H m s M hH hM hs hx {i}`. Take `⟨h₁, h₂⟩` from `key (nonzeroLocus (s i)) (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨ratio_self s i le_rfl r hr, exists_dehom_top f s hx i le_rfl r hr h₁ h₂⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_dehom_chart : ∀ (R : Type) [CommRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (H : LB Y) (m : ℕ) (s : Fin (m + 1) → LB.Sec H) (M : LB Y), H.IsLB → M.IsLB → VeryAmpleBy f H s → ∀ (hx : ∀ V : Y.Opens, OperatorsCommute (ι := Fin (m + 1)) (A := fun t => SecOnR f (tw M H t) V) fun i t => SecOnR.mulSec f M t (s i) V) (i : Fin (m + 1)) (r : Fin (m + 1) → Γ(Y, nonzeroLocus (s i))), (∀ j k, rs Y (inf_le_right : nonzeroLocus (s i) ⊓ H.U k ≤ H.U k) ((s j).f k) = rs Y (inf_le_left : nonzeroLocus (s i) ⊓ H.U k ≤ nonzeroLocus (s i)) (r j) * rs Y (inf_le_right : nonzeroLocus (s i) ⊓ H.U k ≤ H.U k) ((s i).f k)) → r i = 1 ∧ ∃ ε : GrSum (hx ⊤) →ₛₗ[MvPolynomial.eval₂Hom (cst f (nonzeroLocus (s i))) r] SecOn (tw M H 0) (nonzeroLocus (s i)), Function.Surjective ε ∧ (∀ n, ∀ y ∈ GrSum.grading (hx ⊤) n, ε y = 0 → ∃ k : ℕ, (MvPolynomial.X i : MvPolynomial (Fin (m + 1)) R) ^ k • y = 0) ∧ ∀ a : SecOn (tw M H 0) ⊤, ε (GrSum.of (hx ⊤) 0 (SecOnR.of f _ ⊤ a)) = SecOn.restrict _ le_top a := by
   intro R _ Y f H m s M hH hM hs hx i r hr

@@ -29,7 +29,7 @@ def extZ {Q : ObjectProperty C} (hQ : Cosieve Q) {n : ℕ} (b : CH.Cn (Q.ι ⋙ 
   fun s => if hs : Q (s.obj 0) then b (liftS hQ s hs) else 0
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • (F.map (toLast i s)).hom (extZ F hQ b (face i s)) = ∑ i : Fin (n + 2), (-1 : ℤ) ^ (i : ℕ) • ((Q.ι ⋙ F).map (toLast i (liftS hQ s hs))).hom (b (face i (liftS hQ s hs)))`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h : Q ((face i s).obj 0)` using `hQ (s.map (homOfLE (Fin.zero_le _))) hs`. Establish `e : extZ F hQ b (face i s) = b (liftS hQ (face i s) h)` using `dif_pos h`. Rewrite using `[e]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -48,19 +48,19 @@ end RelativeFormLift
 open RelativeFormLift in
 
 /- English proof (translation)
-Introduce `hS hO K _ W Z q i _ a n y hy`. Establish `hQ : Cosieve (On q i)` using `(hS K W Z W q i i).2.1`. Establish `hQ' : Cosieve ((⊤ : ObjectProperty (Thick (smFun Z q))) ⊓ On q i)` using `fun _ _ f h => ⟨trivial, hQ f h.2⟩`. Establish `h : ∀ T, (⊤ : ObjectProperty (Thick (smFun W (i ≫ q)))) T → ((⊤ : ObjectProperty (Thick (smFun Z q))) ⊓ On q i) ((smS i rfl).G.obj T)` using `fun T _ => ⟨trivial, ((hS K W Z W q i i).2.2.2.2.2 T).1 ⟨pullback.lift (pt (γ := dividedPowersBot K) (p := 0) (q := i ≫ q) (κ := Ideal.Quotient.mk ⊥) T) (pt (γ := dividedPowersBot K) (p := 0) (q := i ≫ q) (κ := Ideal.Quotient.mk ⊥) T) rfl, pullback.lift_snd _ _ _⟩⟩`. Establish `hbij` using `hO K W Z q i ⊤ ⊤ h (fun _ _ => trivial) a n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨z₀, hz₀⟩, hy0⟩` from `Submodule.Quotient.mk_surjective (((CH.cx (G q a)).B n).submoduleOf ((CH.cx (G q a)).Z n)) (show (CH.cx (G q a)).H n from y)`. Establish `hz₀' : CH.d (G q a) n z₀ = 0` using `hz₀`. Substitute `hy0` using the available equality. Use `set w₀ := (CH.Mor.restrict (G q a) ((⊤ : ObjectProperty (Thick (smFun Z q))) ⊓ On q i).ι).pullC n z₀ with hw`. Establish `hw₀ : CH.d _ n w₀ = 0` using `by rw [hw, CH.Mor.d_pullC, hz₀', map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : (morV i rfl a h).pull n ((CH.cx _).cls w₀ hw₀) = (CH.Mor.restrict (G (i ≫ q) a) (⊤ : ObjectProperty (Thick (smFun W (i ≫ q)))).ι).pull n (pullH i rfl a n (Submodule.Quotient.mk ⟨z₀, hz₀⟩))` using `rfl`. Establish `e2 : (morV i rfl a h).pull n ((CH.cx _).cls w₀ hw₀) = 0`. Rewrite using `[e1, hy, map_zero]`. Establish `e3 : (CH.cx _).cls w₀ hw₀ = 0` using `hbij.1 (by rw [e2, map_zero])`. Establish `e4 : w₀ ∈ (CH.cx (((⊤ : ObjectProperty (Thick (smFun Z q))) ⊓ On q i).ι ⋙ G q a)).B n` using `(Submodule.Quotient.mk_eq_zero (((CH.cx _).B n).submoduleOf ((CH.cx _).Z n)) (x := (⟨w₀, hw₀⟩ : (CH.cx (((⊤ : ObjectProperty (Thick (smFun Z q))) ⊓ On q i).ι ⋙ G q a)).Z n))).1 e3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `n with`. Consider the case `zero`. Establish `e5 : w₀ = 0` using `(Submodule.mem_bot K).1 e4`. Use `⟨z₀, hz₀', fun s hs => ?_, rfl⟩` and prove the remaining obligations. Conclude with `congrFun e5 (liftS hQ' s ⟨trivial, hs⟩)`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `succ m`. Take `⟨b', hb'⟩` from `e4`. Establish `hz : CH.d (G q a) (m + 1) (z₀ - CH.d (G q a) m (extZ (G q a) hQ' b')) = 0`. Rewrite using `[map_sub, hz₀', CH.d_d, sub_zero]`. Use `⟨z₀ - CH.d (G q a) m (extZ (G q a) hQ' b'), hz, fun s hs => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `z₀ s - CH.d (G q a) m (extZ (G q a) hQ' b') s = 0`. Rewrite using `[d_extZ (G q a) hQ' b' s ⟨trivial, hs⟩]`. Rewrite using `[hb']`. Conclude with `sub_self _`. Use `show Submodule.Quotient.mk _ = Submodule.Quotient.mk _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Submodule.Quotient.eq]`. Use `⟨-extZ (G q a) hQ' b', ?_⟩` and prove the remaining obligations. Rewrite using `[map_neg]`. Express the relevant statement in the definitionally equal form `-(CH.d (G q a) m (extZ (G q a) hQ' b')) = (z₀ - CH.d (G q a) m (extZ (G q a) hQ' b')) - z₀`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem relLiftOf_pf : RelLiftOf := by
   intro hS hO K _ W Z q i _ a n y hy

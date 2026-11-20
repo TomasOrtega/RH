@@ -32,9 +32,9 @@ instance (LL : FinExt l) : ContinuousConstSMul ↥(OL LL) (FracModInt LL) where
 def FracModInt.mk (LL : FinExt l) : ↥LL.1 →ₗ[↥(OL LL)] FracModInt LL := (intSub LL).mkQ
 
 /- English proof (translation)
-Take `⟨a, ha, -⟩` from `P.χQ_cyc (g : GQ l) 0 1 (by simp)`. Rewrite using `[P.PD_χ]`. Establish `h1 : ‖((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]) - (a : ℚ_[l])‖ ≤ 1` using `by simpa using ha`. Establish `h2 : ‖(a : ℚ_[l])‖ ≤ 1` using `by simpa using Padic.norm_int_le_one (p := l) (a : ℤ)`. Establish `h3` using `IsUltrametricDist.norm_add_le_max (((P.χQ (g : GQ l) : ℚ_[l]ˣ) : ℚ_[l]) - (a : ℚ_[l])) (a : ℚ_[l])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[sub_add_cancel]`. Conclude with `h3.trans (max_le h1 h2)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_chi_le_one (P : LocPrime l) (K : FinExt l) (g : ↥(GK K)) :
     ‖(((P.PD K).χ g : ℚ_[l]ˣ) : ℚ_[l])‖ ≤ 1 := by
@@ -63,7 +63,7 @@ def fracModIntTwist (P : LocPrime l) (K LL : FinExt l) :
   Formalism.GaloisCohomology.scalRep (FracModInt LL) (chiO P K LL)
 
 /- English proof (translation)
-Rewrite using `[fracModIntTwist, Formalism.GaloisCohomology.scalRep_apply, ← map_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem fracModIntTwist_mk (P : LocPrime l) (K LL : FinExt l) (g : ↥(GK K)) (x : ↥LL.1) :
     fracModIntTwist P K LL g (FracModInt.mk LL x) =
@@ -87,7 +87,7 @@ def TateLocalDualityDegreeTwoGood (D : D7) : Prop :=
     TateLocalDualityDegreeTwoAt (D.loc l) K LL
 
 /- English proof (translation)
-Introduce `l _ K _ LL _` and use `h l K LL`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem TateLocalDualityDegreeTwoAll.tateDualityTop_of_all {D : D7} (h : TateLocalDualityDegreeTwoAll D) : TateLocalDualityDegreeTwoGood D :=
   fun l _ K _ LL _ => h l K LL

@@ -31,7 +31,7 @@ def RepSmooth : Prop :=
       ContDiffOn ℝ ∞ P V ∧ ∀ h ∈ V, h ∈ UWset k r z → π h = P h
 
 /- English proof (translation)
-Establish `h` using `(isBoundedBilinearMap_comp (𝕜 := ℂ) (E := E) (F := F) (G := G)).contDiff (n := ∞)`. Conclude with `h.restrict_scalars ℝ`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_clm_comp {E F G : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedAddCommGroup F]
     [NormedSpace ℂ F] [NormedAddCommGroup G] [NormedSpace ℂ G] :
@@ -44,11 +44,11 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {μsec : ℂ → Matri
   {π : Q.Mx k r → (Wp →L[ℂ] Wp)} {π' : Q.Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Take `⟨hu, hb, hz⟩` from `hg`. Take `⟨hu', hb', hz'⟩` from `hh`. Use `⟨?_, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Use `show (g * h)ᴴ * Hpk k r * (g * h) = Hpk k r`. Establish `e1 : gᴴ * Hpk k r * g = Hpk k r` using `hu`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : hᴴ * Hpk k r * h = Hpk k r` using `hu'`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mulVec_mulVec, (hb' a).1, (hb a).1]`. Rewrite using `[← Matrix.mulVec_mulVec, (hb' a).2, (hb a).2]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, hz', hz]`.
+A detailed English derivation is pending.
 -/
 theorem uw_mul {z : Fin (2 * r + k + 1) → ℂ} {g h : Q.Mx k r} (hg : g ∈ UWset k r z) (hh : h ∈ UWset k r z) :
     g * h ∈ UWset k r z := by
@@ -66,9 +66,9 @@ theorem uw_mul {z : Fin (2 * r + k + 1) → ℂ} {g h : Q.Mx k r} (hg : g ∈ UW
   · rw [← Matrix.mulVec_mulVec, hz', hz]
 
 /- English proof (translation)
-Establish `h1 : gᴴ * Hpk k r * g = Hpk k r` using `hg.1`. Establish `hH : (Hpk k r).det * (Hpk k r).det = 1`. Rewrite using `[← Matrix.det_mul, Formalism.QuantumDeterminants.GBasic.Hpk_sq, Matrix.det_one]`. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `isUnit_iff_ne_zero.mpr fun h0 => ?_` and prove the remaining obligations. Rewrite `h2` using `[h0, mul_zero]`. Rewrite `hH` using `[← h2]`. Simplify using `at hH`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem isUnit_det_of_mem_uwset {z : Fin (2 * r + k + 1) → ℂ} {g : Q.Mx k r} (hg : g ∈ UWset k r z) :
     IsUnit g.det := by
@@ -83,21 +83,21 @@ private theorem isUnit_det_of_mem_uwset {z : Fin (2 * r + k + 1) → ℂ} {g : Q
   simp at hH
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_mul g (isUnit_det_of_mem_uwset hg)`.
+A detailed English derivation is pending.
 -/
 theorem uw_inv_mul {z : Fin (2 * r + k + 1) → ℂ} {g : Q.Mx k r} (hg : g ∈ UWset k r z) : g⁻¹ * g = 1 :=
   Matrix.nonsing_inv_mul g (isUnit_det_of_mem_uwset hg)
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv g (isUnit_det_of_mem_uwset hg)`.
+A detailed English derivation is pending.
 -/
 theorem uw_mul_inv {z : Fin (2 * r + k + 1) → ℂ} {g : Q.Mx k r} (hg : g ∈ UWset k r z) : g * g⁻¹ = 1 :=
   Matrix.mul_nonsing_inv g (isUnit_det_of_mem_uwset hg)
 
 /- English proof (translation)
-Establish `hi : g⁻¹ * g = 1` using `uw_inv_mul hg`. Establish `hi' : g * g⁻¹ = 1` using `uw_mul_inv hg`. Establish `fix : ∀ v, g *ᵥ v = v → g⁻¹ *ᵥ v = v` using `fun v hv => by`. Combine the equalities or inequalities in the displayed calculation. Take `⟨hu, hb, hz⟩` from `hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, fun a => ⟨fix _ (hb a).1, fix _ (hb a).2⟩, fix _ hz⟩` and prove the remaining obligations. Use `show (g⁻¹)ᴴ * Hpk k r * g⁻¹ = Hpk k r`. Establish `e1 : gᴴ * Hpk k r * g = Hpk k r` using `hu`. Establish `hci : (g⁻¹)ᴴ * gᴴ = 1` using `by rw [← Matrix.conjTranspose_mul, hi', Matrix.conjTranspose_one]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem inv_mem_uwset_of_mem {z : Fin (2 * r + k + 1) → ℂ} {g : Q.Mx k r} (hg : g ∈ UWset k r z) :
     g⁻¹ ∈ UWset k r z := by
@@ -116,13 +116,11 @@ private theorem inv_mem_uwset_of_mem {z : Fin (2 * r + k + 1) → ℂ} {g : Q.Mx
     _ = Hpk k r := by rw [hci, hi', Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hp : (a₂⁻¹ * a₁, b₁ * b₂⁻¹) ∈ Stab k r z z' μsec ζ`. Use `⟨uw_mul (inv_mem_uwset_of_mem ha₂) ha₁, uw_mul hb₁ (inv_mem_uwset_of_mem hb₂), ?_⟩` and prove the remaining obligations. Use `show a₂⁻¹ * a₁ * muZ k r μsec ζ * (b₁ * b₂⁻¹) = muZ k r μsec ζ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `_ = a₂⁻¹ * (a₂ * muZ k r μsec ζ * b₂) * b₂⁻¹ := by rw [he]`. Use `_ = (a₂⁻¹ * a₂) * muZ k r μsec ζ * (b₂ * b₂⁻¹) := by simp only [Matrix.mul_assoc]`. Use `_ = muZ k r μsec ζ := by rw [uw_inv_mul ha₂, uw_mul_inv hb₂, Matrix.one_mul, Matrix.mul_one]`. Establish `hXp : (π (a₂⁻¹ * a₁)).comp (X.comp (π' (b₁ * b₂⁻¹))) = X` using `hX _ hp`. Establish `ea : π a₁ = (π a₂).comp (π (a₂⁻¹ * a₁))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hπ.2 _ ha₂ _ (uw_mul (inv_mem_uwset_of_mem ha₂) ha₁), ← Matrix.mul_assoc, uw_mul_inv ha₂, Matrix.one_mul]`. Establish `eb : π' b₁ = (π' (b₁ * b₂⁻¹)).comp (π' b₂)`. Rewrite using `[← hπ'.2 _ (uw_mul hb₁ (inv_mem_uwset_of_mem hb₂)) _ hb₂, Matrix.mul_assoc, uw_inv_mul hb₂, Matrix.mul_one]`. Rewrite using `[ea, eb]`. Use `conv_rhs => rw [← hXp]`.
-
-Simplify using `only [ContinuousLinearMap.comp_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem wd (hπ : IsCRepOn (UWset k r z) π) (hπ' : IsCRepOn (UWset k r z') π') {ζ : ℂ}
     {X : Wq →L[ℂ] Wp} (hX : X ∈ Fib k r z z' μsec π π' ζ)
@@ -157,7 +155,7 @@ def Phi (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (μsec : ℂ → Matrix
   else 0
 
 /- English proof (translation)
-Establish `h0 : 0 < GGl k r z z' g` using `hg`. Unfold `GGl at h0`. Conclude with `⟨hc, by linarith⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem qr_of_dp {c : Fin r → ℂ} {g : Q.Mx k r} (hc : c ∈ OmX r) (hg : g ∈ Qx5.Dp k r z z') :
     (c, zetaL k r z z' (Fin.last r) g) ∈ QR k r z z' := by
@@ -166,9 +164,9 @@ theorem qr_of_dp {c : Fin r → ℂ} {g : Q.Mx k r} (hc : c ∈ OmX r) (hg : g �
   exact ⟨hc, by linarith⟩
 
 /- English proof (translation)
-Establish `hq : (c, zetaL k r z z' (Fin.last r) g) ∈ QR k r z z'` using `qr_of_dp hx.1 hx.2.2`. Establish `hex : ∃ p : Q.Mx k r × Q.Mx k r, p.1 ∈ UWset k r z ∧ p.2 ∈ UWset k r z' ∧ g = p.1 * muZ k r μsec (zetaL k r z z' (Fin.last r) g) * p.2` using `⟨(a, b), ha, hb, hg⟩`. Unfold `Phi`. Rewrite using `[dif_pos ⟨hx, hex⟩]`. Take `⟨h1, h2, h3⟩` from `Classical.choose_spec hex`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `wd hπ hπ' (hφ _ hq) h1 ha h2 hb (h3.symm.trans hg)`.
+A detailed English derivation is pending.
 -/
 theorem phi_val (hπ : IsCRepOn (UWset k r z) π) (hπ' : IsCRepOn (UWset k r z') π')
     {φ : (Fin r → ℂ) × ℂ → (Wq →L[ℂ] Wp)} (hφ : ∀ q ∈ QR k r z z', φ q ∈ Fib k r z z' μsec π π' q.2)
@@ -184,11 +182,11 @@ theorem phi_val (hπ : IsCRepOn (UWset k r z) π) (hπ' : IsCRepOn (UWset k r z'
   exact wd hπ hπ' (hφ _ hq) h1 ha h2 hb (h3.symm.trans hg)
 
 /- English proof (translation)
-Take `⟨hu, hb, -⟩` from `hh`. Take `⟨hu', hb', -⟩` from `hh'`. Take `⟨hug, hbg⟩` from `hg`. Use `⟨?_, fun a ha => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `show (h * g * h')ᴴ * Hpk k r * (h * g * h') = Hpk k r`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : hᴴ * Hpk k r * h = Hpk k r` using `hu`. Establish `e2 : gᴴ * Hpk k r * g = Hpk k r` using `hug`. Establish `e3 : h'ᴴ * Hpk k r * h' = Hpk k r` using `hu'`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_mulVec, (hb' a).1, ← Matrix.mulVec_mulVec, (hbg a ha).1, (hb a).1]`. Rewrite using `[← Matrix.mulVec_mulVec, (hb' a).2, ← Matrix.mulVec_mulVec, (hbg a ha).2, (hb a).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_mul_mem_glev_last_of_mem_uwset {g h h' : Q.Mx k r} (hg : g ∈ Glev k r (Fin.last r))
     (hh : h ∈ UWset k r z) (hh' : h' ∈ UWset k r z') : h * g * h' ∈ Glev k r (Fin.last r) := by
@@ -208,43 +206,39 @@ private theorem mul_mul_mem_glev_last_of_mem_uwset {g h h' : Q.Mx k r} (hg : g �
   · rw [← Matrix.mulVec_mulVec, (hb' a).2, ← Matrix.mulVec_mulVec, (hbg a ha).2, (hb a).2]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by show (1 : Q.Mx k r)ᴴ * Hpk k r * 1 = Hpk k r; simp, fun _ => ⟨by simp, by simp⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 private theorem one_mem_uwset_of_vec {z : Fin (2 * r + k + 1) → ℂ} : (1 : Q.Mx k r) ∈ UWset k r z :=
   ⟨by show (1 : Q.Mx k r)ᴴ * Hpk k r * 1 = Hpk k r; simp, fun _ => ⟨by simp, by simp⟩, by simp⟩
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ k r z z' μsec π π' hB φ hφ`. Take `⟨hk, hz, hz', hT, hT', hsec, hπ, hπ', hπc, hπc'⟩` from `hB`. Take `⟨hφs, hφf, hφ0⟩` from `hφ`. Establish `hzc : Continuous (zetaL k r z z' (Fin.last r))` using `(Qx5.zetaL_contDiff k r z z' (Fin.last r)).continuous`. Use `⟨Phi k r z z' μsec π π' φ, ⟨?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx show Phi k r z z' μsec π π' φ x.1 x.2 = 0`. Unfold `Phi`. Rewrite using `[dif_neg]`. Conclude with `fun h => hx h.1`. Introduce and unpack `⟨c₀, g₀⟩ ⟨hc₀, hg₀l, hg₀g⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components.
 
-Take `⟨V, hV, hg₀V, a, b, ha_s, hb_s, hab⟩` from `hL k r z z' μsec hk hz hz' hT hT' hsec g₀ hg₀l hg₀g`. Take `⟨ha₀, hb₀, -⟩` from `hab g₀ hg₀V hg₀l hg₀g`. Take `⟨VP, hVP, haVP, P, hPs, hPeq⟩` from `hR Wp k r z π hz hT hπ hπc (a g₀) ha₀`. Take `⟨VQ, hVQ, hbVQ, P', hP's, hP'eq⟩` from `hR Wq k r z' π' hz' hT' hπ' hπc' (b g₀) hb₀`. Establish `hSa : IsOpen (V ∩ a ⁻¹' VP)` using `ha_s.continuousOn.isOpen_inter_preimage hV hVP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSb : IsOpen (V ∩ b ⁻¹' VQ)` using `hb_s.continuousOn.isOpen_inter_preimage hV hVQ`. Establish `hpc : Continuous (fun x : (Fin r → ℂ) × Q.Mx k r => (x.1, zetaL k r z z' (Fin.last r) x.2))` using `continuous_fst.prodMk (hzc.comp continuous_snd)`. Set `U : Set ((Fin r → ℂ) × Q.Mx k r)` to `Prod.snd ⁻¹' ((V ∩ a ⁻¹' VP) ∩ (V ∩ b ⁻¹' VQ)) ∩ (fun x : (Fin r → ℂ) × Q.Mx k r => (x.1, zetaL k r z z' (Fin.last r) x.2)) ⁻¹' QR k r z z'`. Establish `hU : IsOpen U` using `(continuous_snd.isOpen_preimage _ (hSa.inter hSb)).inter (hpc.isOpen_preimage _ NFRadRedA.qr_open)`. Establish `h1 : ContDiffOn ℝ ∞ (fun x : (Fin r → ℂ) × Q.Mx k r => P (a x.2)) U`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : ContDiffOn ℝ ∞ (fun x : (Fin r → ℂ) × Q.Mx k r => a x.2) U` using `ha_s.comp contDiff_snd.contDiffOn (fun x hx => hx.1.1.1)`. Conclude with `hPs.comp ha' (fun x hx => hx.1.1.2)`. Establish `h2 : ContDiffOn ℝ ∞ (fun x : (Fin r → ℂ) × Q.Mx k r => P' (b x.2)) U`. Establish `hb' : ContDiffOn ℝ ∞ (fun x : (Fin r → ℂ) × Q.Mx k r => b x.2) U` using `hb_s.comp contDiff_snd.contDiffOn (fun x hx => hx.1.2.1)`. Conclude with `hP's.comp hb' (fun x hx => hx.1.2.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ContDiffOn ℝ ∞ (fun x : (Fin r → ℂ) × Q.Mx k r => φ (x.1, zetaL k r z z' (Fin.last r) x.2)) U`. Establish `hp : ContDiff ℝ ∞ (fun x : (Fin r → ℂ) × Q.Mx k r => (x.1, zetaL k r z z' (Fin.last r) x.2))` using `contDiff_fst.prodMk ((Qx5.zetaL_contDiff k r z z' (Fin.last r)).comp contDiff_snd)`. Conclude with `hφs.comp hp.contDiffOn (fun x hx => hx.2)`. Establish `h4 : ContDiffOn ℝ ∞ (fun x : (Fin r → ℂ) × Q.Mx k r => (φ (x.1, zetaL k r z z' (Fin.last r) x.2)).comp (P' (b x.2))) U` using `contDiff_clm_comp.comp_contDiffOn (h3.prodMk h2)`. Establish `h5 : ContDiffOn ℝ ∞ (fun x : (Fin r → ℂ) × Q.Mx k r => (P (a x.2)).comp ((φ (x.1, zetaL k r z z' (Fin.last r) x.2)).comp (P' (b x.2)))) U` using `contDiff_clm_comp.comp_contDiffOn (h1.prodMk h4)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨U, _, hU, ⟨⟨⟨hg₀V, haVP⟩, ⟨hg₀V, hbVQ⟩⟩, qr_of_dp hc₀ hg₀g⟩, h5, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨c, g⟩ ⟨⟨⟨hgV, haP⟩, ⟨-, hbQ⟩⟩, hq⟩ hgl`. Establish `hq' : (c, zetaL k r z z' (Fin.last r) g) ∈ QR k r z z'` using `hq`. Establish `hgg : 0 < GGl k r z z' g`. Unfold `GGl`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_pos.mpr hq'.2`. Take `⟨ha, hb, hfac⟩` from `hab g hgV hgl hgg`. Use `show Phi k r z z' μsec π π' φ c g = _`. Rewrite using `[phi_val hπ hπ' hφf ⟨hq'.1, hgl, hgg⟩ ha hb hfac]`. Use `show _ = (P (a g)).comp ((φ (c, zetaL k r z z' (Fin.last r) g)).comp (P' (b g)))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hPeq _ haP ha, hP'eq _ hbQ hb]`. Introduce and unpack `⟨c, g⟩ ⟨hc, hgl, hgg⟩ h hh h' hh'`. Take `⟨V, -, hgV, a, b, -, -, hab⟩` from `hL k r z z' μsec hk hz hz' hT hT' hsec g hgl hgg`. Take `⟨ha, hb, hfac⟩` from `hab g hgV hgl hgg`. Establish `hzi : zetaL k r z z' (Fin.last r) (h * g * h') = zetaL k r z z' (Fin.last r) g` using `Qx5.zeta_inv hh hh' g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgg' : 0 < GGl k r z z' (h * g * h')`. Establish `e : GGl k r z z' (h * g * h') = GGl k r z z' g` using `by unfold GGl; rw [hzi]`. Rewrite using `[e]`. Conclude with `hgg`. Establish `hdom' : (c, h * g * h') ∈ DomR k r z z'` using `⟨hc, mul_mul_mem_glev_last_of_mem_uwset hgl hh hh', hgg'⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Establish `hfac' : h * g * h' = (h * a g) * muZ k r μsec (zetaL k r z z' (Fin.last r) (h * g * h')) * (b g * h')`. Rewrite using `[hzi]`. Use `conv_lhs => rw [hfac]`. Simplify using `only [Matrix.mul_assoc]`. Use `show Phi k r z z' μsec π π' φ c (h * g * h') = (π h).comp ((Phi k r z z' μsec π π' φ c g).comp (π' h'))`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[phi_val hπ hπ' hφf hdom' (uw_mul hh ha) (uw_mul hb hh') hfac', phi_val hπ hπ' hφf ⟨hc, hgl, hgg⟩ ha hb hfac, hzi, hπ.2 _ hh _ ha, hπ'.2 _ hb _ hh']`. Simplify using `only [ContinuousLinearMap.comp_assoc]`. Use function extensionality and compare the values at `q`. Take `⟨c, ζ⟩` from `q`. Use `show (QR k r z z').indicator (fun q => Phi k r z z' μsec π π' φ q.1 (muZ k r μsec q.2)) (c, ζ) = φ (c, ζ)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hq : (c, ζ) ∈ QR k r z z'`. Rewrite using `[Set.indicator_of_mem hq]`. Establish `hζ : Tz k r z * Tz k r z' < Complex.normSq ζ` using `hq.2`. Establish `hzm : zetaL k r z z' (Fin.last r) (muZ k r μsec ζ) = ζ` using `NFRadRedA.zeta_muZ hz hz' hsec hζ`. Establish `hmg : muZ k r μsec ζ ∈ Glev k r (Fin.last r)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hu, hfix⟩` from `NFRadRedA.muZ_uwb hsec hζ`. Conclude with `⟨hu, fun a _ => hfix a⟩`. Establish `hmgg : 0 < GGl k r z z' (muZ k r μsec ζ)`. Unfold `GGl`. Rewrite using `[hzm]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hdom : (c, muZ k r μsec ζ) ∈ DomR k r z z'` using `⟨hq.1, hmg, hmgg⟩`. Establish `hf1 : muZ k r μsec ζ = 1 * muZ k r μsec (zetaL k r z z' (Fin.last r) (muZ k r μsec ζ)) * 1`. Rewrite using `[hzm, Matrix.one_mul, Matrix.mul_one]`. Use `show Phi k r z z' μsec π π' φ c (muZ k r μsec ζ) = φ (c, ζ)`.
-
-Rewrite using `[phi_val hπ hπ' hφf hdom one_mem_uwset_of_vec one_mem_uwset_of_vec hf1, hzm, hπ.1, hπ'.1]`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hq, hφ0 _ hq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem radRedSurj_of (hL : LocSec) (hR : RepSmooth) : NF.RadRedSurj := by
   intro Wp Wq _ _ _ _ _ _ k r z z' μsec π π' hB φ hφ
@@ -345,7 +339,7 @@ end Formalism.FourierDecayAlt.P.NFRadRedS
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-Introduce `hL hR` and use `NFRadRedS.radRedSurj_of hL hR`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem radical_surjective_of_parts : NFRadRedS.LocSec → NFRadRedS.RepSmooth → Formalism.FourierDecayAlt.NF.RadRedSurj :=
   fun hL hR => NFRadRedS.radRedSurj_of hL hR

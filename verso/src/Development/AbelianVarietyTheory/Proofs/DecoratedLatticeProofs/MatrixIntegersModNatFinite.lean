@@ -5,15 +5,13 @@ open ValuativeRel GlobalTheory.SplitWeil Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `U : Set k` to `((𝒪[k] : Subring k) : Set k)`. Establish `hUo : IsOpen U` using `Valuation.isOpen_integer`. Establish `hUc : IsCompact U` using `isCompact_iff_compactSpace.mpr (inferInstance : CompactSpace 𝒪[k])`. Establish `hc : (n : k) ≠ 0` using `by exact_mod_cast hn.ne'`. Set `V : U → Set k` to `fun x => (fun y => (y - (x : k)) * (n : k)⁻¹) ⁻¹' U`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hVo : ∀ x, IsOpen (V x)` using `fun x => hUo.preimage ((continuous_id.sub continuous_const).mul continuous_const)`. Establish `hcov : U ⊆ ⋃ x, V x`. Introduce `y hy`. Use `Set.mem_iUnion.2 ⟨⟨y, hy⟩, ?_⟩` and prove the remaining obligations. Use `show (y - y) * (n : k)⁻¹ ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_self, zero_mul]`. Conclude with `(𝒪[k]).zero_mem`. Take `⟨t, ht⟩` from `hUc.elim_finite_subcover V hVo hcov`. Use `⟨t, inferInstance, fun i => ((i : U) : k), fun i => (i : U).2, ?_⟩` and prove the remaining obligations. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `ht hy` as an intermediate fact. Simplify using `only [Set.mem_iUnion] at this`. Take `⟨x, hxt, hyx⟩` from `this`. Use `⟨⟨x, hxt⟩, (y - (x : k)) * (n : k)⁻¹, hyx, ?_⟩` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_finite_integer_residues (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [CharZero k] (n : ℕ) (hn : 0 < n) :
@@ -43,9 +41,9 @@ theorem exists_finite_integer_residues (k : Type) [Field k] [ValuativeRel k] [To
   ring
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ Y Y' _ _ n hn`. Take `⟨ι, hι, x, -, hx⟩` from `exists_finite_integer_residues k n hn`. Use `⟨Set.range (fun f : Y → Y' → ι => Matrix.of fun r q => x (f r q)), Set.finite_range _, ?_⟩` and prove the remaining obligations. Introduce `t ht`. Establish `key` using `fun r q => hx (t r q) (ht r q)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose f u hu hf using key`. Use `⟨Matrix.of fun r q => x (f r q), ⟨f, rfl⟩, Matrix.of fun r q => u r q, hu, ?_⟩` and prove the remaining obligations. Use extensionality with `r q`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, nsmul_eq_mul]`. Conclude with `hf r q`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matrix_integers_mod_nat_finite : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] [CharZero k] (Y Y' : Type) [Fintype Y] [Fintype Y'] (n : ℕ), 0 < n →

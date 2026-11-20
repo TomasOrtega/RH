@@ -23,31 +23,25 @@ def infiniteComponent (F : Type) [Field F] [NumberField F] (w : InfinitePlace F)
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Establish `hinf : ∀ w : InfinitePlace F, ∃ i, (s i).1 w * (f i).1 w ≠ 0`. Introduce `w`. Establish `h1 : ∑ i, (s i).1 w * (f i).1 w = 1`. Use `congrArg (infiniteComponent F w) h` as an intermediate fact. Rewrite `this` using `[map_sum, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Rewrite `h1` using `[Finset.sum_eq_zero (fun i _ => hc i)]`. Conclude with `zero_ne_one h1`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfin : ∀ v : HeightOneSpectrum (𝓞 F), ∃ i, 1 ≤ Valued.v ((s i).2 v * (f i).2 v)`. Introduce `v`. Establish `h1 : ∑ i, (s i).2 v * (f i).2 v = 1`. Use `congrArg (finiteComponent F v) h` as an intermediate fact. Rewrite `this` using `[map_sum, map_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use `Valuation.map_sum_lt (Valued.v) (s := Finset.univ) (g := 1) one_ne_zero (fun i _ => hc i)` as an intermediate fact. Rewrite `this` using `[h1, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lt_irrefl _ this`. Use `choose a ha using hinf`. Use `choose b hb using hfin`. Establish `hfv : ∀ v, (f (b v)).2 v ≠ 0`. Introduce `v h0`.
+Simplify by unfolding definitions. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `hb v` as an intermediate fact. Rewrite `this` using `[h0, mul_zero, map_zero]`. Conclude with `absurd this (by simp)`. Use `⟨fun i => (fun w => if a w = i then 1 else 0, ⟨fun v => if b v = i then 1 else 0, Filter.Eventually.of_forall fun v => by dsimp only split_ifs` and prove the remaining obligations. Conclude with `one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `zero_mem _⟩),`. Use `fun i => (fun w => if a w = i then ((f i).1 w)⁻¹ else 0, ⟨fun v => if b v = i then ((f i).2 v)⁻¹ else 0, (s i).2.2.mono fun v hv => by dsimp only split_ifs with hbi`. Substitute `hbi` using the available equality. Establish `hv' : Valued.v ((s (b v)).2 v) ≤ 1` using `hv`. Express the relevant statement in the definitionally equal form `Valued.v ((f (b v)).2 v)⁻¹ ≤ 1`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Use `le_trans ?_ hv'` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, mul_comm ((s (b v)).2 v), ← mul_assoc, inv_mul_cancel₀ (hfv v), one_mul]`. Conclude with `zero_mem _⟩), ?_, ?_, ?_⟩`. Use `Prod.ext (funext fun w => ?_) (FiniteAdeleRing.ext _ fun v => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(map_sum (infiniteComponent F w) _ _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ i, (if a w = i then (1 : w.Completion) else 0) = 1`. Simplify using the standard rewrite rules. Use `(map_sum (finiteComponent F v) _ _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∑ i, (if b v = i then (1 : v.adicCompletion F) else 0) = 1`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Introduce `i j hij`. Use `Prod.ext (funext fun w => ?_) (FiniteAdeleRing.ext _ fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if a w = i then (1 : w.Completion) else 0) * (if a w = j then 1 else 0) = 0 split_ifs with h1 h2`. Conclude with `absurd (h1.symm.trans h2) hij`.
-
-Apply the tactic sequence `all_goals simp`. Express the relevant statement in the definitionally equal form `(if b v = i then (1 : v.adicCompletion F) else 0) * (if b v = j then 1 else 0) = 0 split_ifs with h1 h2`. Conclude with `absurd (h1.symm.trans h2) hij`. Apply the tactic sequence `all_goals simp`. Introduce `i`.
-
-Use `Prod.ext (funext fun w => ?_) (FiniteAdeleRing.ext _ fun v => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(if a w = i then ((f i).1 w)⁻¹ else 0) * (f i).1 w = (if a w = i then 1 else 0) split_ifs with h1`. Substitute `h1` using the available equality. Conclude with `inv_mul_cancel₀ (right_ne_zero_of_mul (ha w))`. Simplify using the standard rewrite rules.
-
-Express the relevant statement in the definitionally equal form `(if b v = i then ((f i).2 v)⁻¹ else 0) * (f i).2 v = (if b v = i then 1 else 0) split_ifs with h1`. Substitute `h1` using the available equality. Conclude with `inv_mul_cancel₀ (hfv v)`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_orthogonal_idempotents_of_sum_mul_eq_one (F : Type) [Field F] [NumberField F]
     (ι : Type) [Fintype ι] (f s : ι → AdeleRing (𝓞 F) F) (h : ∑ i, s i * f i = 1) :

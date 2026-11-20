@@ -8,7 +8,7 @@ variable {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchim
 
 omit [TopologicalSpace E] [IsNonarchimedeanLocalField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Simplify using `using mul_le_mul' (hX i l) (hY l j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mul_bd {X Y : Matrix (Fin n) (Fin n) E} {s : ValueGroupWithZero E}
     (hX : ∀ i j, valuation E (X i j) ≤ s) (hY : ∀ i j, valuation E (Y i j) ≤ 1) (i j : Fin n) :
@@ -20,7 +20,7 @@ private theorem mul_bd {X Y : Matrix (Fin n) (Fin n) E} {s : ValueGroupWithZero 
 
 omit [TopologicalSpace E] [IsNonarchimedeanLocalField E] in
 /- English proof (translation)
-Rewrite using `[Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem one_bd (i j : Fin n) : valuation E ((1 : Matrix (Fin n) (Fin n) E) i j) ≤ 1 := by
   rw [Matrix.one_apply]
@@ -28,7 +28,7 @@ private theorem one_bd (i j : Fin n) : valuation E ((1 : Matrix (Fin n) (Fin n) 
 
 omit [TopologicalSpace E] [IsNonarchimedeanLocalField E] in
 /- English proof (translation)
-Establish `e : g.val i j = (g.val - 1) i j + (1 : Matrix (Fin n) (Fin n) E) i j` using `by simp`. Rewrite using `[e]`. Conclude with `Valuation.map_add_le _ (h i j).le (one_bd i j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_bd {g : GL (Fin n) E} (h : ∀ i j, valuation E ((g.val - 1) i j) < 1) (i j : Fin n) :
     valuation E (g.val i j) ≤ 1 := by
@@ -38,13 +38,13 @@ private theorem val_bd {g : GL (Fin n) E} (h : ∀ i j, valuation E ((g.val - 1)
 
 omit [TopologicalSpace E] [IsNonarchimedeanLocalField E] in
 /- English proof (translation)
-Take `⟨m, -, hm⟩` from `Finset.exists_max_image Finset.univ (fun i => valuation E ((g⁻¹).val i j)) ⟨i, Finset.mem_univ _⟩`. Use `(hm i (Finset.mem_univ _)).trans ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `h0 : 0 < valuation E ((g⁻¹).val m j)` using `lt_of_le_of_lt zero_le hlt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e0 : (g⁻¹).val = 1 - (g.val - 1) * (g⁻¹).val`. Rewrite using `[sub_mul, Units.mul_inv]`. Use `noncomm_ring`. Establish `e : (g⁻¹).val m j = (1 : Matrix (Fin n) (Fin n) E) m j - ((g.val - 1) * (g⁻¹).val) m j` using `congrFun (congrFun e0 m) j`. Establish `h1 : valuation E (((g.val - 1) * (g⁻¹).val) m j) < valuation E ((g⁻¹).val m j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_lt _ h0.ne' fun l _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2` using `Valuation.map_sub_lt (valuation E) ((one_bd m j).trans_lt hlt) h1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← e]`. Conclude with `lt_irrefl _ h2`.
+A detailed English derivation is pending.
 -/
 private theorem inv_bd {g : GL (Fin n) E} (h : ∀ i j, valuation E ((g.val - 1) i j) < 1) (i j : Fin n) :
     valuation E ((g⁻¹).val i j) ≤ 1 := by
@@ -86,9 +86,9 @@ private def cg (n : ℕ) (c : Eˣ) (hc : valuation E (c : E) < 1) : Subgroup (GL
     exact mul_bd hx (inv_bd fun i j => (hx i j).trans_lt hc) i j
 
 /- English proof (translation)
-Establish `e : (cg n c hc : Set (GL (Fin n) E)) = (fun g : GL (Fin n) E => ((c⁻¹ : Eˣ) : E) • (g.val - 1)) ⁻¹' {A : Matrix (Fin n) (Fin n) E | ∀ i j, A i j ∈ 𝒪[E]}`. Use extensionality with `g`. Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ ↔ valuation E (((c⁻¹ : Eˣ) : E) * (g.val - 1) i j) ≤ 1`. Rewrite using `[map_mul, Units.val_inv_eq_inv_val, map_inv₀, inv_mul_le_one₀ ((Valuation.pos_iff _).2 c.ne_zero)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Establish `hc : Continuous fun g : GL (Fin n) E => ((c⁻¹ : Eˣ) : E) • (g.val - 1)` using `(Units.continuous_val.sub continuous_const).const_smul ((c⁻¹ : Eˣ) : E)`. Conclude with `GlobalTheory.SplitFlip.isOpen_intMatrix.preimage hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isOpen_cg (n : ℕ) (c : Eˣ) (hc : valuation E (c : E) < 1) :
     IsOpen (cg n c hc : Set (GL (Fin n) E)) := by
@@ -105,7 +105,7 @@ private theorem isOpen_cg (n : ℕ) (c : Eˣ) (hc : valuation E (c : E) < 1) :
   exact GlobalTheory.SplitFlip.isOpen_intMatrix.preimage hc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SplitFlip.isCompact_KO.of_isClosed_subset (Subgroup.isClosed_of_isOpen _ (isOpen_cg n c hc)) fun g hg => (GlobalTheory.SplitFlip.mem_KO_iff g).2 ⟨val_bd fun i j => (hg i j).trans_lt hc, inv_bd fun i j => (hg i j).trans_lt hc⟩`.
+A detailed English derivation is pending.
 -/
 private theorem isCompact_cg (n : ℕ) (c : Eˣ) (hc : valuation E (c : E) < 1) :
     IsCompact (cg n c hc : Set (GL (Fin n) E)) :=
@@ -115,9 +115,9 @@ private theorem isCompact_cg (n : ℕ) (c : Eˣ) (hc : valuation E (c : E) < 1) 
 
 omit [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] in
 /- English proof (translation)
-Establish `e : (GlobalTheory.SplitFlip.diagGL t * g * (GlobalTheory.SplitFlip.diagGL t)⁻¹).val = (Matrix.diagonal fun i => (t i : E)) * g.val * Matrix.diagonal fun i => (((t i)⁻¹ : Eˣ) : E)` using `rfl`. Rewrite using `[e, Matrix.sub_apply, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[sub_mul, mul_right_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply_ne h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem conj_entry (t : Fin n → Eˣ) (g : GL (Fin n) E) (i j : Fin n) :
     ((GlobalTheory.SplitFlip.diagGL t * g * (GlobalTheory.SplitFlip.diagGL t)⁻¹).val - 1) i j =
@@ -134,13 +134,13 @@ private theorem conj_entry (t : Fin n → Eˣ) (g : GL (Fin n) E) (i j : Fin n) 
 end UpperTheory.V.Z.Tf.L4
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n ϖ hϖ a c ha`. Establish `hlt : valuation E ((ϖ ^ a : Eˣ) : E) < 1`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, hϖ]`. Conclude with `zpow_lt_one₀ (by rw [← hϖ]; exact (Valuation.pos_iff _).2 ϖ.ne_zero) uniformizer_lt_one (by omega)`. Set `t : Fin n → Eˣ` to `fun i => ϖ ^ (-(c * ((i : ℕ) : ℤ)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `d : GL (Fin n) E` to `GlobalTheory.SplitFlip.diagGL t`. Set `φ : GL (Fin n) E ≃ₜ GL (Fin n) E` to `(Homeomorph.mulLeft d).trans (Homeomorph.mulRight d⁻¹)`. Use `⟨(cg n (ϖ ^ a) hlt).comap (MulAut.conj d).toMonoidHom, ?_, (isOpen_cg n _ hlt).preimage φ.continuous, φ.isCompact_preimage.2 (isCompact_cg n _ hlt)⟩` and prove the remaining obligations. Use extensionality with `g`. Express the relevant statement in the definitionally equal form `(∀ i j, valuation E (((d * g * d⁻¹).val - 1) i j) ≤ valuation E ((ϖ ^ a : Eˣ) : E)) ↔ _`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Establish `e : (ϖ ^ a : Eˣ) = ϖ ^ (a + c * (((i : ℕ) : ℤ) - ((j : ℕ) : ℤ))) * (t i * (t j)⁻¹)`. Simplify using `only [t]`. Rewrite using `[← zpow_neg, ← zpow_add, ← zpow_add]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[conj_entry, e, Units.val_mul (ϖ ^ (a + _)), map_mul, map_mul]`. Conclude with `mul_le_mul_iff_left₀ ((Valuation.pos_iff (valuation E)).2 (t i * (t j)⁻¹).ne_zero)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.L4.howeGroup :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) (ϖ : Eˣ), valuation E (ϖ : E) = uniformizer E → ∀ a c : ℤ, 1 ≤ a →

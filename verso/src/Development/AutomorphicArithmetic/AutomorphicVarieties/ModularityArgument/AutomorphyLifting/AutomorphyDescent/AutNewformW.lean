@@ -24,11 +24,11 @@ def Adm2B {Ω : Type} [Field Ω] [Algebra ℚ Ω] {l : ℕ} [Fact l.Prime] {K : 
     (ι : Qbar l ≃+* ℂ) (e M : ℕ) (ρ : G K Ω →* GL (Fin 3) (Qbar l)) : Prop := Adm2A ι e M ρ
 
 /- English proof (translation)
-The claim follows from `@Adm2B`.
+A detailed English derivation is pending.
 -/
 example : type_of% @UpperTheory.GalN.V.Adm2N := @Adm2B
 /- English proof (translation)
-The claim follows from `@Adm2A`.
+A detailed English derivation is pending.
 -/
 example : type_of% @Af.Adm2 := @Adm2A
 
@@ -50,15 +50,15 @@ def AutEnd2A {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ
       (∃ f : Af.Newform (2 * e + 1), f.Att ι (Af.tw W (cycBar ℚ Ω l ^ (-(e : ℤ))))) ∧ WitAQ ι W
 
 /- English proof (translation)
-The claim follows from `@IsModularA`.
+A detailed English derivation is pending.
 -/
 example : type_of% @UpperTheory.GalN.V.IsModularN := @IsModularA
 /- English proof (translation)
-The claim follows from `@IsModularA`.
+A detailed English derivation is pending.
 -/
 example : type_of% @Dat.IsModular := @IsModularA
 /- English proof (translation)
-The claim follows from `@AutEnd2A`.
+A detailed English derivation is pending.
 -/
 example : type_of% @UpperTheory.GalN.V.AutEnd2N := @AutEnd2A
 
@@ -67,7 +67,7 @@ variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [F
   {Ψ : G ℚ Ω →* c.Oˣ} {σ g₁ : G ℚ Ω} {B : ValuationSubring Ω} {e : ℕ} {ι : Qbar l ≃+* ℂ}
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem end2' (h : AutEnd2A c η Ψ σ g₁ B e ι) : AutEnd2A c η Ψ σ g₁ B e ι := h
 end
@@ -87,11 +87,11 @@ def AutNewformW : Prop :=
     ∃ f : Newform (2 * e + 1), f.Att ι (tw W (cycBar ℚ Ω l ^ (-(e : ℤ))))
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ ι e he W h1 h2 h3 _` and use `h Ω l ι e he W h1 h2 h3`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nw (h : Pr.AutNewform) : AutNewformW := fun Ω _ _ _ l _ ι e he W h1 h2 h3 _ => h Ω l ι e he W h1 h2 h3
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem nw' (h : RR.AutNewformA) : RR.AutNewformA := h
 

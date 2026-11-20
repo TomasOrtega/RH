@@ -26,7 +26,7 @@ structure Dat (F I Gf : Type) [Field F] [Group Gf] where
 abbrev X (I : Type) : Type := I → P
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Establish `h0` using `den_ne g z.2`. Rewrite using `[coe_smul, div_eq_iff h0]`. Simplify using `[num, den, hb, hc, h, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem center_smul (g : GL (Fin 2) ℝ) (hb : g 0 1 = 0) (hc : g 1 0 = 0) (h : g 0 0 = g 1 1) (z : P) : g • z = z := by
   refine Subtype.ext ?_
@@ -35,9 +35,9 @@ theorem center_smul (g : GL (Fin 2) ℝ) (hb : g 0 1 = 0) (hc : g 1 0 = 0) (h : 
   simp [num, den, hb, hc, h, mul_comm]
 
 /- English proof (translation)
-Establish `h1` using `Subgroup.mem_center_iff.1 h ⟨!![1, 1; 0, 1], !![1, -1; 0, 1], by simp [Matrix.one_fin_two], by simp [Matrix.one_fin_two]⟩`. Establish `h2` using `Subgroup.mem_center_iff.1 h ⟨!![1, 0; 1, 1], !![1, 0; -1, 1], by simp [Matrix.one_fin_two], by simp [Matrix.one_fin_two]⟩`. Establish `a1` using `congrArg (fun g : GL (Fin 2) F => g 0 0) h1`. Establish `a2` using `congrArg (fun g : GL (Fin 2) F => g 0 1) h1`. Establish `a3` using `congrArg (fun g : GL (Fin 2) F => g 0 0) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[Matrix.mul_apply, Fin.sum_univ_two] at a1 a2 a3`. Conclude with `⟨a3, a1, by linear_combination -a2⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem center_entries {F : Type} [Field F] {γ : GL (Fin 2) F} (h : γ ∈ Subgroup.center (GL (Fin 2) F)) :
     γ 0 1 = 0 ∧ γ 1 0 = 0 ∧ γ 0 0 = γ 1 1 := by

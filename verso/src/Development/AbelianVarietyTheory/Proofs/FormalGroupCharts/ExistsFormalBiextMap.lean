@@ -18,14 +18,14 @@ def NoConst {n : ℕ} (a : Pt R n d) : Prop := ∀ i, constantCoeff (a i) = 0
 def mapPt {n : ℕ} (a : Pt R n d) : Pt k n d := fun i => MvPowerSeries.map f (a i)
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun p => ha p.1 p.2`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_of {m n : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j, NoConst (a j)) :
     HasSubst (fun p : Fin m × Fin d => a p.1 p.2) :=
   hasSubst_of_constantCoeff_zero fun p => ha p.1 p.2
 
 /- English proof (translation)
-Unfold `ev mapPt`. Rewrite using `[MvPowerSeries.map_subst (hasSubst_of ha)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_ev {m n : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j, NoConst (a j)) (g : PS R m d) :
     MvPowerSeries.map f (ev a g) = ev (fun j => mapPt f (a j)) (MvPowerSeries.map f g) := by
@@ -33,14 +33,14 @@ theorem map_ev {m n : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j, NoConst (a j)) 
   rw [MvPowerSeries.map_subst (hasSubst_of ha)]
 
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_eq_zero (hasSubst_of ha) (fun p => ha p.1 p.2) hg`.
+A detailed English derivation is pending.
 -/
 theorem cc_ev {m n : ℕ} {a : Fin m → Pt R n d} (ha : ∀ j, NoConst (a j)) {g : PS R m d}
     (hg : constantCoeff g = 0) : constantCoeff (ev a g) = 0 :=
   constantCoeff_subst_eq_zero (hasSubst_of ha) (fun p => ha p.1 p.2) hg
 
 /- English proof (translation)
-Rewrite using `[map_ev f (fun j => by fin_cases j; exact ha)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `fin_cases j`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_ev1 {n : ℕ} {a : Pt R n d} (ha : NoConst a) (g : PS R 1 d) :
     MvPowerSeries.map f (ev ![a] g) = ev ![mapPt f a] (MvPowerSeries.map f g) := by
@@ -50,7 +50,7 @@ theorem map_ev1 {n : ℕ} {a : Pt R n d} (ha : NoConst a) (g : PS R 1 d) :
   fin_cases j; rfl
 
 /- English proof (translation)
-Rewrite using `[map_ev f (fun j => by fin_cases j; exacts [ha, hb])]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_ev2 {n : ℕ} {a b : Pt R n d} (ha : NoConst a) (hb : NoConst b) (g : PS R 2 d) :
     MvPowerSeries.map f (ev ![a, b] g) = ev ![mapPt f a, mapPt f b] (MvPowerSeries.map f g) := by
@@ -60,7 +60,7 @@ theorem map_ev2 {n : ℕ} {a b : Pt R n d} (ha : NoConst a) (hb : NoConst b) (g 
   fin_cases j <;> rfl
 
 /- English proof (translation)
-Rewrite using `[map_ev f (fun j => by fin_cases j; exacts [ha, hb, hc])]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases j <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_ev3 {n : ℕ} {a b c : Pt R n d} (ha : NoConst a) (hb : NoConst b) (hc : NoConst c)
     (g : PS R 3 d) :
@@ -72,62 +72,62 @@ theorem map_ev3 {n : ℕ} {a b c : Pt R n d} (ha : NoConst a) (hb : NoConst b) (
   fin_cases j <;> rfl
 
 /- English proof (translation)
-Introduce `_` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nc_zero {n : ℕ} : NoConst (0 : Pt R n d) := fun _ => by simp
 
 /- English proof (translation)
-Introduce `_` and use `by simp [pt]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nc_pt {n : ℕ} (j : Fin n) : NoConst (pt R d j) := fun _ => by simp [pt]
 
 /- English proof (translation)
-Introduce `i` and use `cc_ev (fun j => by fin_cases j; exact ha) (hφ i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nc_comp1 {n : ℕ} {φ : Pt R 1 d} {a : Pt R n d} (hφ : NoConst φ) (ha : NoConst a) :
     NoConst (comp1 φ a) := fun i =>
   cc_ev (fun j => by fin_cases j; exact ha) (hφ i)
 
 /- English proof (translation)
-Introduce `i` and use `cc_ev (fun j => by fin_cases j; exacts [ha, hb]) (hF i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nc_addOf {n : ℕ} {F : Pt R 2 d} {a b : Pt R n d} (hF : NoConst F) (ha : NoConst a)
     (hb : NoConst b) : NoConst (addOf F a b) := fun i =>
   cc_ev (fun j => by fin_cases j; exacts [ha, hb]) (hF i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[mapPt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mapPt_zero {n : ℕ} : mapPt f (0 : Pt R n d) = 0 := by
   funext i; simp [mapPt]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[mapPt, pt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mapPt_pt {n : ℕ} (j : Fin n) : mapPt f (pt R d j) = pt k d j := by
   funext i; simp [mapPt, pt]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `map_ev1 f ha (φ i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mapPt_comp1 {n : ℕ} (φ : Pt R 1 d) {a : Pt R n d} (ha : NoConst a) :
     mapPt f (comp1 φ a) = comp1 (mapPt f φ) (mapPt f a) := by
   funext i; exact map_ev1 f ha (φ i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `map_ev2 f ha hb (F i)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mapPt_addOf {n : ℕ} (F : Pt R 2 d) {a b : Pt R n d} (ha : NoConst a) (hb : NoConst b) :
     mapPt f (addOf F a b) = addOf (mapPt f F) (mapPt f a) (mapPt f b) := by
   funext i; exact map_ev2 f ha hb (F i)
 
 /- English proof (translation)
-The claim follows from `G.const`.
+A detailed English derivation is pending.
 -/
 theorem nc_law (G : FGLaw R d) : NoConst G.F := G.const
 
 /- English proof (translation)
-The claim follows from `A.const a`.
+A detailed English derivation is pending.
 -/
 theorem nc_act {O : Type} [CommRing O] {G : FGLaw R d} (A : OAct O G) (a : O) :
     NoConst (A.act a) := A.const a
@@ -289,7 +289,7 @@ end GlobalTheory.FBMap
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ _ _ _ f _ _ _ _ B` and use `⟨FBMap.mapFB f B, fun _ => rfl, fun _ _ => rfl, rfl, rfl, rfl, fun _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_formalBiext_map :
     ∀ (R k : Type) [CommRing R] [CommRing k] (f : R →+* k) (d : ℕ) (O : Type) [CommRing O]

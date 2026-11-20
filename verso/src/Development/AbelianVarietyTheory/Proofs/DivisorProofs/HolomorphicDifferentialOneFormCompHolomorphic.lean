@@ -16,16 +16,16 @@ open ReciprocityTheory.L2DbarEstimates (V)
 open GlobalTheory.GoodMetric (coordVec)
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[coordVec, EuclideanSpace.single_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem sum_coord_smul_coordVec {n : ℕ} (w : V n) : ∑ b, w b • coordVec b = w := by
   ext i
   simp [coordVec, EuclideanSpace.single_apply, Pi.single_apply]
 
 /- English proof (translation)
-Establish `key (a : Fin n) : del (fun w => c (φ w)) v (coordVec a) = ∑ b, fderiv ℂ φ v (coordVec a) b * del c (φ v) (coordVec b)`. Rewrite using `[del_comp_holo hc hφ]`. Use `conv_lhs => rw [← sum_coord_smul_coordVec (fderiv ℂ φ v (coordVec a))]`. Simplify using `[map_sum, map_smul, smul_eq_mul]`. Simplify using `only [dOne, map_sum, map_smul, (pull_dz _ _).1, Finset.smul_sum, smul_smul, key, Finset.sum_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dOne_comp_holo {n : ℕ} {φ : V n → V n} {c : V n → ℂ} {v : V n}
     (hc : DifferentiableAt ℝ c (φ v)) (hφ : DifferentiableAt ℂ φ v) :

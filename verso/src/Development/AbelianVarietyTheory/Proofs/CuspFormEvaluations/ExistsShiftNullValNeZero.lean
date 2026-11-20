@@ -22,7 +22,7 @@ open GlobalTheory.ThetaCoord GlobalTheory.VVRank
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
 
 /- English proof (translation)
-Rewrite using `[Submodule.Quotient.mk_eq_zero, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using `only [Submodule.mem_top, true_and, Nat.cast_smul_eq_nsmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mk_eq_zero_iff (k : ℕ) (m : Dw.La) :
     (Submodule.Quotient.mk m : LatMod Dw k) = 0 ↔ ∃ m' : Dw.La, k • m' = m := by
@@ -30,11 +30,11 @@ theorem mk_eq_zero_iff (k : ℕ) (m : Dw.La) :
   simp only [Submodule.mem_top, true_and, Nat.cast_smul_eq_nsmul]
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨m', hm⟩` from `(mk_eq_zero_iff (R ^ 4) (R • m)).1 hq`. Establish `e : R ^ 3 • m' = m`. Establish `h : R • R ^ 3 • m' = R • m` using `by rw [← hm, ← mul_nsmul', ← pow_succ']`. Use `Dw.unimod.1 (LinearMap.ext fun v => nsmul_right_injective hR ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun t => Dw.EF t v) h` as an intermediate fact. Simplify `this` using `only [map_nsmul, LinearMap.smul_apply]`. Use `⟨Submodule.Quotient.mk m', ?_⟩` and prove the remaining obligations. Establish `h : (Submodule.Quotient.mk (qRep (Submodule.Quotient.mk m' : LatMod Dw R)) : LatMod Dw R) = Submodule.Quotient.mk m'` using `Classical.choose_spec (Submodule.Quotient.mk_surjective _ _)`. Rewrite `h`, the goal using `[← sub_eq_zero, ← Submodule.Quotient.mk_sub]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨d, hd⟩` from `(mk_eq_zero_iff R _).1 h`. Use `(mk_eq_zero_iff _ _).2 ⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, ← smul_sub, ← hd, ← mul_nsmul', ← pow_succ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_shift {R : ℕ} (hR : R ≠ 0) (q : LatMod Dw (R ^ 4)) (hq : R • q = 0) :
     ∃ u : LatMod Dw R, (Submodule.Quotient.mk (R ^ 3 • qRep u) : LatMod Dw (R ^ 4)) = q := by
@@ -56,7 +56,7 @@ theorem exists_shift {R : ℕ} (hR : R ≠ 0) (q : LatMod Dw (R ^ 4)) (hq : R �
 variable (Xo : Moduli Dw l) (c : Coeff l)
 
 /- English proof (translation)
-Introduce `h` and use `by have h₀ : ∀ i, y.s.f i = 0 := fun i => congrFun (congrArg Subtype.val h) i exact zero_ne_one ((y.gen y.s).unique (y₁ := 0) (y₂ := 1) (fun i => by rw [h₀, MulZeroClass.mul_zero]) (fun i => by rw [h₀, MulZeroClass.mul_zero]))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gen_ne_zero {K : Type} [CommRing K] [Nontrivial K] [Algebra c.F K] (y : FrPt Xo c K) :
     (SecM.ofSec Xo.univ.t.G y.s : SecM Xo.univ.t.G Xo.univ.t.PP.L 1 (Over.mk y.x)) ≠ 0 := fun h => by
@@ -65,11 +65,11 @@ theorem gen_ne_zero {K : Type} [CommRing K] [Nontrivial K] [Algebra c.F K] (y : 
     (fun i => by rw [h₀, MulZeroClass.mul_zero]))
 
 /- English proof (translation)
-Establish `: CharZero K` using `charZero_of_injective_algebraMap (algebraMap c.F K).injective`. Establish `hK : (n : K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Take `⟨z, hz, hu⟩` from `UT.ExactTerm.exists_good_point hL.goodPt hL.polBaseChange (UnivPol.pol Xo) y.x hn hK y.s (gen_ne_zero Xo c y) a`. Use `⟨z, hz, ?_⟩` and prove the remaining obligations. Introduce and unpack `p w ⟨F, ⟨t', α₀, α, s₁, U, -, rfl, -, -, -, hs₁, hU, hF⟩, hw⟩ hp h₀`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Set `o : (Over.mk y.x).left` to `IsLocalRing.closedPoint K`. Use `choose J hJ using fun χ : (Over.mk y.x).left ⟶ Xo.univ.t.G.left => exists_chart Xo.univ.t.PP.isLB (χ o)`. Use `replace hJ : Good Xo.univ.t.PP.L o J := hJ`. Establish `b₁` using `sv_act hU.pt_eq hF (𝟙 _) hJ 1`. Establish `b₂` using `sv_mulPull hs₁ (𝟙 _) hJ t'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `b₃` using `sv_of_isValueAt hw (𝟙 _) hJ`. Rewrite `b₁` using `[Category.id_comp, _root_.mul_one]`. Rewrite `b₃` using `[Category.id_comp]`. Rewrite `b₁` using `[b₃, b₂, hp, h₀, map_zero, UT.ExactTerm.gs_zero' _ _ ⊤ trivial, MulZeroClass.zero_mul]`. Conclude with `((Units.isUnit _).mul ((Units.isUnit _).mul (hu o J hJ))).ne_zero b₁.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nullVal_ne_zero (hL : Laws) {K : Type} [Field K] [IsAlgClosed K] [Algebra c.F K] (y : FrPt Xo c K)
     (N : ℕ) {n : ℕ} (hn : 2 ≤ n) (a : ptO Xo y.x ⟶ Xo.univ.t.G) :
@@ -99,15 +99,15 @@ namespace GlobalTheory
 open GlobalTheory.EtaBase
 
 /- English proof (translation)
-Introduce `hL E _ _ _ H Dw l Xo c R _ hR K _ _ _ y ev w hev hw n x₀ g`. Establish `hR₀ : R ≠ 0` using `by omega`. Establish `e₀ : ev 0 = 1`. Use `hev.1 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `mul_eq_left.1 this.symm`. Establish `es : ∀ (m : ℕ) q, ev (m • q) = ev q ^ m` using `fun m q => by`. Proceed by induction on `m with`. Consider the case `zero => rw [zero_smul, e₀, pow_zero]`. Consider the case `succ m ih => rw [succ_nsmul, hev.1, ih, pow_succ]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `sur` using `((T.fullLinearLevel_cover_baseChange_torsor hL E H Dw l Xo (R ^ 4) (by positivity)).2.2.1 K y.x ev hev).1`. Establish `key : ∀ x : Dw.La, ∃ u : LatMod Dw R, w (g (Submodule.Quotient.mk (x + R • qRep u))) ≠ 0` using `fun x => by`. Take `⟨z, hz, h⟩` from `exists_nullVal_ne_zero Xo c hL y (R ^ 2) hR (ev (g (Submodule.Quotient.mk x)) ^ R ^ 2)`. Take `⟨q, rfl⟩` from `sur z (by rw [pow_succ', pow_mul, hz, one_pow])`. Establish `hq : R • q = 0` using `hev.2.2 K (RingHom.id K) _ _ (by rw [es, hz, e₀])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu⟩` from `exists_shift hR₀ (g.symm q) (by rw [← map_nsmul, hq, map_zero])`. Use `⟨u, h _ _ (hw _) ?_⟩` and prove the remaining obligations. Rewrite using `[← es, ← es, ← hev.1, ← g.apply_symm_apply q, ← hu, ← map_nsmul, ← map_nsmul, ← map_add]`. Use `congr 2`. Use `show (Submodule.Quotient.mk (R ^ 2 • (x + R • qRep u)) : LatMod Dw (R ^ 4)) = Submodule.Quotient.mk (R ^ 2 • x + R ^ 3 • qRep u)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[smul_add, ← mul_nsmul', ← pow_succ]`. Use `choose u hu using key`. Conclude with `⟨fun b => u (x₀ b), fun b => hu (x₀ b)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_shift_nullVal_ne_zero : Laws → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (R : ℕ), Odd R → 1 < R → ∀ (K : Type) [Field K] [IsAlgClosed K] [Algebra c.F K] (y : FrPt Xo c K) (ev : LatMod Dw (R ^ 4) → (ptO Xo y.x ⟶ Xo.univ.t.G)) (w : LatMod Dw (R ^ 4) → K), IsFullLev Xo (R ^ 4) y.x ev → (∀ q, IsNullVal Xo c (R ^ 2) y (ev q) (w q)) → ∀ (n : ℕ) (x₀ : Fin n → Dw.La) (g : LevGrp Dw (R ^ 4)), ∃ u : Fin n → LatMod Dw R, ∀ b, w (g (shiftFam R x₀ u b)) ≠ 0 := by
   intro hL E _ _ _ H Dw l Xo c R _ hR K _ _ _ y ev w hev hw n x₀ g

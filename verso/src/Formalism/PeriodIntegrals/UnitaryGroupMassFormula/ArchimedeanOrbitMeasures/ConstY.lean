@@ -11,7 +11,7 @@ open MeasureTheory Formalism.BasicNotions Formalism.L2.SG.HidaSetting Formalism.
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `D X u' ψ hT μinf νinf fibInf hH`. Establish `h` using `(orbM_mem X u' hT (detNZ_holds X u' ψ hT μinf νinf fibInf hH) 1).2`. Establish `h2 : orbM X u' 1 = Y0 X u'` using `one_smul _ _`. Rewrite `h` using `[h2]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem frame_independent_at_infinity : FrameIndependentAtInfinity := by
   intro D X u' ψ hT μinf νinf fibInf hH
@@ -20,7 +20,7 @@ theorem frame_independent_at_infinity : FrameIndependentAtInfinity := by
   rwa [h2] at h
 
 /- English proof (translation)
-The claim follows from `constTest_of_polar_proper hP frame_independent_at_infinity hPr`.
+A detailed English derivation is pending.
 -/
 theorem constTest_of_polar_prop (hP : PolarLoc) (hPr : ProperOrb) : ConstTest :=
   constTest_of_polar_proper hP frame_independent_at_infinity hPr

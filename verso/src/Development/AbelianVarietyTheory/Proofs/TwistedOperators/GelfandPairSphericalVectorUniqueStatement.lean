@@ -7,7 +7,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes IsDedekindDomain 
 open GlobalTheory.PRep (IsAdmissible fixed)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.fixed_eq_span_of_gelfandPair` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FGelfandPairSphericalVectorUnique.lean&line=204#L204)
 -/

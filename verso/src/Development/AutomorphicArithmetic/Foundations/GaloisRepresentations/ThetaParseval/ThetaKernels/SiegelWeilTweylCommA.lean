@@ -15,9 +15,9 @@ namespace PositivityTheory.SiegelWeilFormula.tweyl
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 variable (d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ)
 /- English proof (translation)
-Take `⟨⟨ε, hε⟩, -⟩` from `d.ok.frame`. Introduce `h0`. Establish `hd : (dbl d.Y.J).det = 0`. Rewrite using `[dbl, Matrix.det_fromBlocks_zero₁₂, h0, zero_mul]`. Establish `h` using `congrArg Matrix.det hε`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, hd, mul_zero, zero_mul]`. Conclude with `det_weyl_block_ne_zero ε h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detY_k : d.Y.J.det ≠ 0 := by
   obtain ⟨⟨ε, hε⟩, -⟩ := d.ok.frame
@@ -28,16 +28,16 @@ theorem detY_k : d.Y.J.det ≠ 0 := by
   rw [Matrix.det_mul, Matrix.det_mul, hd, mul_zero, zero_mul] at h
   exact det_weyl_block_ne_zero ε h.symm
 /- English proof (translation)
-Break down `d.ok.sign with ⟨-, h⟩ | ⟨-, h⟩` into its components or cases. Conclude with `⟨-1, fun i j => by rw [h]; simp⟩`. Conclude with `⟨1, fun i j => by rw [h]; simp⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem signY_k : ∃ ε : ℤˣ, ∀ i j, σ (d.Y.J j i) = ((ε : ℤ) : E) * d.Y.J i j := by
   rcases d.ok.sign with ⟨-, h⟩ | ⟨-, h⟩
   · exact ⟨-1, fun i j => by rw [h]; simp⟩
   · exact ⟨1, fun i j => by rw [h]; simp⟩
 /- English proof (translation)
-Take `⟨φz, hφz, hφz0⟩` from `GlobalTheory.T.exists_adelicSchwartz_ne_zero_at_origin F d.κ`. Establish `hne : d.T φz ≠ 0` using `fun h => hφz0 (by rw [(hT F E σ d).2.2 φz hφz h]; rfl)`. Choose the witnesses or unpack the hypotheses as in `⟨X, hX⟩ : ∃ X, d.T φz X ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Supply the required witnesses or components.
 
-Conclude with `hne (funext h)`. Conclude with `⟨_, GlobalTheory.HeisSchA.schr_mem_schA d.B.ψ (_root_.PositivityTheory.SiegelWeilFormula.tweyl.std_k d) _ φz hφz, hX⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_l_ne_k (hT : _root_.PositivityTheory.SiegelWeilFormula.TBij_k) : ∃ φ ∈ schA F d.κ, d.l φ ≠ 0 := by
   obtain ⟨φz, hφz, hφz0⟩ := GlobalTheory.T.exists_adelicSchwartz_ne_zero_at_origin F d.κ

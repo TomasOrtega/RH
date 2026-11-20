@@ -18,113 +18,113 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ}
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.beta_iota_right C x v`.
+A detailed English derivation is pending.
 -/
 theorem beta_iota_right (C : Ctx σ B JS JT ξ₀ θ ι) (x : WOF F E nS nT) (v : IxF F nS nT → ℂ) :
     B.ψ (symplOHF σ JS JT ξ₀ x (iotaVF ι v)) = Complex.exp (-(Real.pi * Complex.I) * (omV (HMF JS JT ξ₀ (tauB B)) (piWF θ x) v : ℝ)) :=
   TauSpanIdentities.beta_iota_right C x v
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.beta_iota_left C v x`.
+A detailed English derivation is pending.
 -/
 theorem beta_iota_left (C : Ctx σ B JS JT ξ₀ θ ι) (v : IxF F nS nT → ℂ) (x : WOF F E nS nT) :
     B.ψ (symplOHF σ JS JT ξ₀ (iotaVF ι v) x) = Complex.exp (-(Real.pi * Complex.I) * (omV (HMF JS JT ξ₀ (tauB B)) v (piWF θ x) : ℝ)) :=
   TauSpanIdentities.beta_iota_left C v x
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.piWF_iotaVF hι v`.
+A detailed English derivation is pending.
 -/
 theorem piWF_iotaVF (hι : IsChartF θ ι) (v : IxF F nS nT → ℂ) : piWF θ (iotaVF ι v) = v :=
   TauSpanIdentities.piWF_iotaVF hι v
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.piWF_ratWF C y`.
+A detailed English derivation is pending.
 -/
 theorem piWF_ratWF (C : Ctx σ B JS JT ξ₀ θ ι) (y : Matrix (Fin nT) (Fin nS) E) :
     piWF θ (ratWF (F := F) y) = infRatF (tauB B) y :=
   TauSpanIdentities.piWF_ratWF C y
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.finIdem_add_iota hι x`.
+A detailed English derivation is pending.
 -/
 theorem finIdem_add_iota (hι : IsChartF θ ι) (x : WOF F E nS nT) : x = finIdem F E • x + iotaVF ι (piWF θ x) :=
   TauSpanIdentities.finIdem_add_iota hι x
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.finIdem_smul_of_fin hu`.
+A detailed English derivation is pending.
 -/
 theorem finIdem_smul_of_fin {u : WOF F E nS nT} (hu : u.map (infPartF F E) = 0) : finIdem F E • u = u :=
   TauSpanIdentities.finIdem_smul_of_fin hu
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.finIdem_smul_of_real hu`.
+A detailed English derivation is pending.
 -/
 theorem finIdem_smul_of_real {u : WOF F E nS nT} (hu : u.map (finPartF F E) = 0) : finIdem F E • u = 0 :=
   TauSpanIdentities.finIdem_smul_of_real hu
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.continuous_piWF C`.
+A detailed English derivation is pending.
 -/
 theorem continuous_piWF (C : Ctx σ B JS JT ξ₀ θ ι) : Continuous (piWF (nS := nS) (nT := nT) θ) :=
   TauSpanIdentities.continuous_piWF C
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.piWF_actOF C g h x`.
+A detailed English derivation is pending.
 -/
 theorem piWF_actOF (C : Ctx σ B JS JT ξ₀ θ ι) (g : GAF σ JS) (h : GAF σ JT) (x : WOF F E nS nT) :
     piWF θ (actOF σ JS JT g h x) = mMF σ JS JT θ (g, h) *ᵥ piWF θ x :=
   TauSpanIdentities.piWF_actOF C g h x
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.symplOF_actOF C g h x y`.
+A detailed English derivation is pending.
 -/
 theorem symplOF_actOF (C : Ctx σ B JS JT ξ₀ θ ι) (g : GAF σ JS) (h : GAF σ JT) (x y : WOF F E nS nT) :
     symplOF σ JS JT ξ₀ (actOF σ JS JT g h x) (actOF σ JS JT g h y) = symplOF σ JS JT ξ₀ x y :=
   TauSpanIdentities.symplOF_actOF C g h x y
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.psi_rat C x y`.
+A detailed English derivation is pending.
 -/
 theorem psi_rat (C : Ctx σ B JS JT ξ₀ θ ι) (x y : Matrix (Fin nT) (Fin nS) E) :
     B.ψ (symplOHF σ JS JT ξ₀ (ratWF x) (ratWF y)) = 1 :=
   TauSpanIdentities.psi_rat C x y
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.rhoFF_finRatF ha hb y`.
+A detailed English derivation is pending.
 -/
 theorem rhoFF_finRatF {g : GAF σ JS} {h : GAF σ JT} {a b} (ha : IsRatF σ JS g a) (hb : IsRatF σ JT h⁻¹ b)
     (y : Matrix (Fin nT) (Fin nS) E) : rhoFF σ JS JT (g⁻¹, h⁻¹) (finRatF F y) = finRatF F (b * y * a) :=
   TauSpanIdentities.rhoFF_finRatF ha hb y
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.gamQF_eq_one_iff C x y`.
+A detailed English derivation is pending.
 -/
 theorem gamQF_eq_one_iff (C : Ctx σ B JS JT ξ₀ θ ι) (x y : Matrix (Fin nT) (Fin nS) E) :
     gamQF σ JS JT ξ₀ B.ψ x y = 1 ↔ ∃ z : ℤ, omV (HMF JS JT ξ₀ (tauB B)) (infRatF (tauB B) x) (infRatF (tauB B) y) = z :=
   TauSpanIdentities.gamQF_eq_one_iff C x y
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.gamQF_eq_one_iff' C x y`.
+A detailed English derivation is pending.
 -/
 theorem gamQF_eq_one_iff' (C : Ctx σ B JS JT ξ₀ θ ι) (x y : Matrix (Fin nT) (Fin nS) E) :
     gamQF σ JS JT ξ₀ B.ψ x y = 1 ↔ ∃ n : ℤ, Algebra.trace ℚ E (ξ₀ * hRatF σ JS JT x y) = n :=
   TauSpanIdentities.gamQF_eq_one_iff' C x y
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.infRatF_injective B`.
+A detailed English derivation is pending.
 -/
 theorem infRatF_injective (B : Base F E) : Function.Injective (infRatF (nS := nS) (nT := nT) (tauB B)) :=
   TauSpanIdentities.infRatF_injective B
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.span_infRatF hB`.
+A detailed English derivation is pending.
 -/
 theorem span_infRatF (hB : B.IsGood σ) :
     Submodule.span ℝ (Set.range (infRatF (nS := nS) (nT := nT) (tauB B))) = ⊤ :=
   TauSpanIdentities.span_infRatF hB
 
 /- English proof (translation)
-The claim follows from `TauSpanIdentities.omV_laws hH hs hQ`.
+A detailed English derivation is pending.
 -/
 theorem omV_laws {κ : Type} [Fintype κ] [DecidableEq κ] {H s : Matrix κ κ ℂ} (hH : Hᴴ = H) (hs : s * s = 1) (hQ : (H * s).PosDef) :
     (∀ x y, omV H x y = -omV H y x) ∧ (∀ v, jV s (jV s v) = -v) ∧ (∀ x y, omV H x (jV s y) = omV H y (jV s x)) ∧

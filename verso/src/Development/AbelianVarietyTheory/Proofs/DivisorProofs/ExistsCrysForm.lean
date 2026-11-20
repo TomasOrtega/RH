@@ -18,17 +18,15 @@ open IsLocalRing GlobalTheory.AbDual GlobalTheory.Published.GrothendieckMessing
 namespace GlobalTheory.HTDefLift
 
 /- English proof (translation)
-Introduce `p _ D R _ b N C C₀ _ _ _ _ π hπ hsq tR o₀`. Establish `hI2 : RingHom.ker π ^ 2 = ⊥` using `hsq`. Use `haveI : Nontrivial C₀ := by`. Use `⟨⟨0, 1, fun h ↦ ?_⟩⟩` and prove the remaining obligations. Establish `h1 : (1 : C) ∈ RingHom.ker π` using `by rw [RingHom.mem_ker, map_one]; exact h.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (1 : C) ∈ RingHom.ker π ^ 2`. Rewrite using `[pow_two]`. Simplify using `using Ideal.mul_mem_mul h1 h1`. Rewrite `h2` using `[hI2]`. Conclude with `one_ne_zero ((Submodule.mem_bot C).1 h2)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsLocalRing C₀ := IsLocalRing.of_surjective' π hπ`. Set `κ` to `GlobalTheory.Cris.divided₂ hsq`. Establish `hκ : GlobalTheory.Cris.IsNilDP κ` using `GlobalTheory.Cris.isDPNilpotent_squareZero hsq`. Establish `ADR : GlobalTheory.Published.AbelianDeRham` using `GlobalTheory.abelianDeRham`. Establish `ADC : GlobalTheory.Published.AbelianDualCrystal` using `GlobalTheory.abelianDualCrystal`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨A', _, i', h', hA'⟩` from `GlobalTheory.UnobTop.abelianUnobstructed C (RingHom.ker π) hsq C₀ π hπ rfl o₀.A o₀.ab`. Take `⟨g, hg⟩` from `GlobalTheory.AbelianDim.exists_relDim C A' hA'`. Establish `CS` using `GlobalTheory.Published.AbelianDualCrystal.cupSquare_crys_prod ADR.1 ADC.2 hκ hπ rfl hA' hg hA' hg h' h'`. Take `⟨φ₀, hφ₀⟩` from `exists_isCorrForm CS o₀.isLB o₀.rig₁ o₀.rig₂`. Use `⟨φ₀, hφ₀, fun φ hφ ↦ hφ.unique CS o₀.isLB hφ₀, fun c x y ↦ ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI := o₀.act.hom c haveI := o₀.act.hom (D.star c).unop`. Use `hφ₀.adjoint CS o₀.isLB o₀.isLB hφ₀ (o₀.act.act c) (o₀.act.act (D.star c).unop) (LBIso.symm (o₀.rosati c)) x y` as an intermediate fact. Conclude with `this.symm`. Establish `iso : LBIso (o₀.P.pull (Over.Hom.left (𝟙 (o₀.A ⊗ o₀.A)))) o₀.P` using `(GlobalTheory.CechPic.cls_eq_iff (pull_isLB o₀.isLB _) o₀.isLB).1 (by rw [GlobalTheory.CechPic.cls_pull o₀.isLB, Over.id_left, GlobalTheory.CechPic.pull_id])`. Take `⟨φ', hφ', e'⟩` from `hφ₀.pull o₀.isLB (crysRedMor κ rfl o₀.A) (crysRedMor κ rfl o₀.A) (h := Over.Hom.left (𝟙 (o₀.A ⊗ o₀.A))) (by simp) (by simp) o₀.isLB iso`.
-
-Conclude with `⟨φ', hφ', e'⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_crysForm : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (C C₀ : Type) [CommRing C] [IsLocalRing C] [IsArtinianRing C] [CommRing C₀] (π : C →+* C₀), Function.Surjective π → ∀ (hsq : RingHom.ker π ^ 2 = 0) (tR : R →+* C) (o₀ : GlobalTheory.UPel.HT.Obj b N (spMap π ≫ spMap tR)), ∃ φ₀ : Crys (divided₂ hsq) (spMap π) o₀.A →ₗ[C] Crys (divided₂ hsq) (spMap π) o₀.A →ₗ[C] C, GlobalTheory.AbDual.IsCorrForm (divided₂ hsq) (spMap π) o₀.A o₀.A o₀.P φ₀ ∧ (∀ φ, GlobalTheory.AbDual.IsCorrForm (divided₂ hsq) (spMap π) o₀.A o₀.A o₀.P φ → φ = φ₀) ∧ (∀ (c : D.O) x y, φ₀ (GlobalTheory.HTSummand.crysAct (divided₂ hsq) (spMap π) o₀.act c x) y = φ₀ x (GlobalTheory.HTSummand.crysAct (divided₂ hsq) (spMap π) o₀.act (D.star c).unop y)) ∧ ∃ φ' : HdR o₀.A →ₗ[C₀] HdR o₀.A →ₗ[C₀] C₀, GlobalTheory.AbDual.IsCorrForm (dp0 C₀) (𝟙 _) o₀.A o₀.A o₀.P φ' ∧ ∀ x x' y y', (GlobalTheory.Published.GrothendieckMessing.crysRedMor (divided₂ hsq) rfl o₀.A).Corr x x' → (GlobalTheory.Published.GrothendieckMessing.crysRedMor (divided₂ hsq) rfl o₀.A).Corr y y' → φ' x' y' = π (φ₀ x y) := by
   intro p _ D R _ b N C C₀ _ _ _ _ π hπ hsq tR o₀

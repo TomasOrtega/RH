@@ -7,19 +7,19 @@ open scoped ContDiff
 namespace PositivityTheory.ThKF0
 
 /- English proof (translation)
-Introduce `V _ _ _ a L f G hG T`. Set `ph : ℝ × V → ℝ` to `fun q => -(2 * Real.pi) * (q.1 * L q.2 + q.1 * q.1 * (L a / 2))`. Set `l : ℝ →L[ℝ] V` to `(ContinuousLinearMap.id ℝ ℝ).smulRight a`. Establish `h1` using `(ContinuousLinearMap.fst ℝ ℝ V).hasTemperateGrowth`. Establish `h2` using `(L ∘L ContinuousLinearMap.snd ℝ ℝ V).hasTemperateGrowth`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hph : Function.HasTemperateGrowth ph` using `(Function.HasTemperateGrowth.const _).fun_mul ((h1.fun_mul h2).fun_add ((h1.fun_mul h1).fun_mul (Function.HasTemperateGrowth.const _)))`. Establish `hA` using `temperate_exp.comp hph`. Set `F : ℝ × V → ℂ` to `fun q => cexp (I * (ph q : ℝ)) * f (q.2 + l q.1)`. Establish `hF : ContDiff ℝ ∞ F` using `hA.1.mul ((f.smooth ⊤).comp (contDiff_snd.add (l.contDiff.comp contDiff_fst)))`. Establish `hR : ∀ t, ⇑(G t) = fun x => F (t, x)` using `fun t => by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[hG, Lib.hl]`. Simplify using `only [F, ph, l, ContinuousLinearMap.smulRight_apply, ContinuousLinearMap.id_apply]`. Use `congr 2`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hd : ∀ x, HasDerivAt (fun t => F (t, x)) (Lib.dop a L f x) 0` using `fun x => by`. Establish `e1 : HasDerivAt (fun t : ℝ => ph (t, x)) (-(2 * Real.pi) * L x) 0`. Use `((((hasDerivAt_id (0 : ℝ)).mul_const (L x)).add (((hasDerivAt_id (0 : ℝ)).mul (hasDerivAt_id (0 : ℝ))).mul_const (L a / 2))).const_mul (-(2 * Real.pi)))` as an intermediate fact. Conclude with `this.congr_deriv (by simp)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(e1.ofReal_comp.const_mul I).cexp`. Establish `e3 : HasDerivAt (fun t : ℝ => f (x + l t)) (fderiv ℝ f x a) 0`. Use `(f.differentiable (x + l 0)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (l.hasDerivAt.const_add x)` as an intermediate fact. Conclude with `this.congr_deriv (by simp [l])`. Use `(e2.mul e3).congr_deriv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Lib.dop_apply]`. Simplify using `[ph, l]`. Expand and normalize the polynomial expressions, which then agree. Establish `hD : ∀ v : ℝ, ⇑((v : ℂ) • Lib.dop a L f) = fun x => fderiv ℝ F (0, x) (v, 0)` using `fun v => by`. Use function extensionality and compare the values at `x`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `(hF.differentiable (by simp) (0, x)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) ((hasDerivAt_id (0 : ℝ)).prodMk (hasDerivAt_const (0 : ℝ) x))`. Establish `e' : fderiv ℝ F (0, x) (1, 0) = Lib.dop a L f x` using `e.unique (hd x)`. Rewrite using `[show ((v, 0) : ℝ × V) = v • (1, 0) by simp, map_smul, e', SchwartzMap.smul_apply, smul_eq_mul, Complex.real_smul]`. Establish `key` using `hasFDerivAt_family hF 0 (fun k n => bound_mul_translate hA f l 0 k n) G (fun v => (v : ℂ) • Lib.dop a L f) hR hD T ((ContinuousLinearMap.id ℝ ℝ).smulRight (T (Lib.dop a L f))) fun v => by simp`. Conclude with `key.hasDerivAt.congr_deriv (by simp)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem schwartzDq : SchwartzDq := by
   intro V _ _ _ a L f G hG T

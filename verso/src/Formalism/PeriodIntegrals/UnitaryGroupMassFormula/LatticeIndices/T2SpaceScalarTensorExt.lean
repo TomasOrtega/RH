@@ -12,14 +12,14 @@ open scoped Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes TensorProd
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `Module.Finite.of_restrictScalars_finite ℚ F E`.
+A detailed English derivation is pending.
 -/
 theorem fdFE : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E
 
 instance imt (v : HeightOneSpectrum (𝓞 F)) : IsModuleTopology (Fv F v) (Fv F v ⊗[F] E) := ⟨rfl⟩
 
 /- English proof (translation)
-Use `fdFE (F := F) (E := E)` as an intermediate fact. Set `b` to `Module.finBasis (Fv F v) (Fv F v ⊗[F] E)`. Conclude with `T2Space.of_injective_continuous b.equivFun.injective (IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap)`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem t2Space_scalarTensorExt (v : HeightOneSpectrum (𝓞 F)) : T2Space (Fv F v ⊗[F] E) := by
   have := fdFE (F := F) (E := E)
@@ -30,20 +30,20 @@ theorem t2Space_scalarTensorExt (v : HeightOneSpectrum (𝓞 F)) : T2Space (Fv F
 variable {n : ℕ} (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `map_zero _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ratV_zero : ratV (F := F) (Fv F v) (0 : Fin n → E) = 0 := by
   funext i; exact map_zero _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `map_add _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ratV_add (x y : Fin n → E) :
     ratV (F := F) (Fv F v) (x + y) = ratV (F := F) (Fv F v) x + ratV (F := F) (Fv F v) y := by
   funext i; exact map_add _ _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Conclude with `map_zsmul _ _ _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem ratV_zsmul (m : ℤ) (x : Fin n → E) :
     ratV (F := F) (Fv F v) (m • x) = m • ratV (F := F) (Fv F v) x := by
@@ -59,31 +59,25 @@ theorem mulE_apply (e : E) (w : Fin n → Fv F v ⊗[F] E) (i : Fin n) :
     mulE v e w i = inclR (F := F) (Fv F v) e * w i := rfl
 
 /- English proof (translation)
-Use `set W := Submodule.span (Fv F v) (ratV (F := F) (Fv F v) '' (L : Set (Fin n → E))) with hW`. Establish `h1 : ∀ a : 𝓞 E, ∀ w ∈ W, mulE v (algebraMap (𝓞 E) E a) w ∈ W`. Introduce `a w hw`. Establish `: W.map (mulE v (algebraMap (𝓞 E) E a)) ≤ W`. Rewrite using `[hW, Submodule.map_span, Submodule.span_le]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨a • x, L.smul_mem a hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show inclR (F := F) (Fv F v) ((a • x) i) = inclR (F := F) (Fv F v) (algebraMap (𝓞 E) E a) * inclR _ (x i)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Pi.smul_apply, Algebra.smul_def, map_mul]`. Conclude with `this ⟨w, hw, rfl⟩`. Establish `h2 : ∀ e : E, ∀ w ∈ W, mulE v e w ∈ W`. Introduce `e w hw`. Take `⟨y, hy0, hyi⟩` from `IsAlgebraic.exists_integral_multiple (R := ℤ) (z := e) ((IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (Algebra.IsAlgebraic.isAlgebraic e))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : 𝓞 E` to `IsIntegralClosure.mk' (𝓞 E) (y • e) hyi`. Establish `ha : algebraMap (𝓞 E) E a = y • e` using `IsIntegralClosure.algebraMap_mk' _ _ _`. Establish `hyF : ((y : Fv F v)) ≠ 0`. Rewrite using `[← map_intCast (algebraMap F (Fv F v))]`. Conclude with `(map_ne_zero _).2 (Int.cast_ne_zero.2 hy0)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `key : algebraMap (Fv F v) (Fv F v ⊗[F] E) ((y : Fv F v))⁻¹ * (y : Fv F v ⊗[F] E) = 1`. Rewrite using `[← map_intCast (algebraMap (Fv F v) (Fv F v ⊗[F] E)), ← map_mul, inv_mul_cancel₀ hyF, map_one]`. Establish `: mulE v e w = ((y : Fv F v))⁻¹ • mulE v (algebraMap (𝓞 E) E a) w`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.smul_apply, mulE_apply, mulE_apply, ha, zsmul_eq_mul, map_mul, map_intCast, Algebra.smul_def, ← mul_assoc, ← mul_assoc, key, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `W.smul_mem _ (h1 a w hw)`. Establish `h3 : ∀ x : Fin n → E, ratV (F` using `F) (Fv F v) x ∈ W := by`. Introduce `x`. Establish `hx : x ∈ Submodule.span E (L : Set (Fin n → E))` using `by rw [hL]; exact Submodule.mem_top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact Submodule.subset_span ⟨x, hx, rfl⟩`. Consider the case `zero => rw [ratV_zero]`. Conclude with `W.zero_mem`. Consider the case `add x y _ _ hx hy => rw [ratV_add]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `W.add_mem hx hy`. Consider the case `smul e x _ hx`. Establish `: ratV (F` using `F) (Fv F v) (e • x) = mulE v e (ratV (F := F) (Fv F v) x) := by`. Use function extensionality and compare the values at `i`. Conclude with `map_mul _ _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `h2 e _ hx`. Rewrite using `[eq_top_iff]`. Introduce `w _`. Rewrite using `[← Finset.univ_sum_single w]`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `W.sum_mem fun i _ => ?_` and prove the remaining obligations. Generalize the expression as in `w i = t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [Pi.single_zero]`. Conclude with `W.zero_mem`.
-
-Consider the case `tmul r e`. Establish `: (Pi.single i (r ⊗ₜ[F] e) : Fin n → Fv F v ⊗[F] E) = r • ratV (F` using `F) (Fv F v) (Pi.single i e) := by`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
-
-Simplify using `[ratV, inclR, TensorProduct.smul_tmul']`. Simplify using `[ratV, h]`. Rewrite using `[this]`. Conclude with `W.smul_mem r (h3 _)`. Consider the case `add s t hs ht => rw [Pi.single_add]`.
-
-Conclude with `W.add_mem hs ht`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem spanTop (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.span E (L : Set (Fin n → E)) = ⊤) :
     Submodule.span (Fv F v) (ratV (F := F) (Fv F v) '' (L : Set (Fin n → E))) = ⊤ := by

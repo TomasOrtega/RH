@@ -18,11 +18,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Br
 
 /- English proof (translation)
-Use `haveI : IsIso (Scheme.stalkClosedPointTo ξ) := (ConcreteCategory.isIso_iff_bijective _).2 h`. Use `haveI : IsIso (Scheme.stalkClosedPointTo ξ') := (ConcreteCategory.isIso_iff_bijective _).2 h'`. Establish `hi : Inseparable (ξ (IsLocalRing.closedPoint Ω)) (ξ' (IsLocalRing.closedPoint Ω'))` using `.of_eq he`. Set `i : CommRingCat.of Ω ≅ CommRingCat.of Ω'` to `(asIso (Scheme.stalkClosedPointTo ξ)).symm ≪≫ X.presheaf.stalkCongr hi ≪≫ asIso (Scheme.stalkClosedPointTo ξ')`. Use `⟨i.commRingCatIsoToRingEquiv, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : Scheme.stalkClosedPointTo ξ ≫ i.hom = (X.presheaf.stalkCongr hi).hom ≫ Scheme.stalkClosedPointTo ξ'` using `by simp [i]`. Establish `h1` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`. Establish `h2` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ'`. Establish `h3 : Spec.map (X.presheaf.stalkCongr hi).hom ≫ X.fromSpecStalk _ = X.fromSpecStalk _` using `Scheme.SpecMap_stalkSpecializes_fromSpecStalk hi.symm.specializes`. Use `show Spec.map i.hom ≫ ξ = ξ'`.
-
-Use `conv_lhs => rw [← h1]`. Use `conv_rhs => rw [← h2]`. Rewrite using `[← Category.assoc, ← Spec.map_comp, e1, Spec.map_comp, Category.assoc, h3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ringEquiv_of_genPt_eq {X : Scheme.{0}} {Ω Ω' : Type} [Field Ω] [Field Ω'] (ξ : Sp Ω ⟶ X)
     (ξ' : Sp Ω' ⟶ X) (h : Function.Bijective (Scheme.stalkClosedPointTo ξ).hom)
@@ -50,7 +48,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l}
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `j_flat_preimmersion Y hβ.1 hβ.2.2`. Establish `hb` using `stalkMap_bijective_of_flat_preimmersion Y.j (Z.ξ₀ (IsLocalRing.closedPoint Z.Ω))`. Establish `hg` using `Z.gen.bij`. Rewrite `hg` using `[Scheme.stalkClosedPointTo_comp]`. Conclude with `(Function.Bijective.of_comp_iff _ hb).1 hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bijective_stalk_of_cptOver {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {U : Set (Xo.XF c)}
     (Z : CptOver Y U) (hβ : FracBase β) : Function.Bijective (Scheme.stalkClosedPointTo Z.ξ₀).hom := by
@@ -61,7 +59,7 @@ theorem bijective_stalk_of_cptOver {O : Type} [CommRing O] {β : O →+* c.F} {Y
   exact (Function.Bijective.of_comp_iff _ hb).1 hg
 
 /- English proof (translation)
-The claim follows from `(((Z.closure _).1 Z'.genPt_mem).antisymm ((Z'.closure _).1 Z.genPt_mem)).eq`.
+A detailed English derivation is pending.
 -/
 theorem genPt_eq_of_cptOver {O O' : Type} [CommRing O] [CommRing O'] {β : O →+* c.F} {β' : O' →+* c.F}
     {Y : Model Xo c β} {Y' : Model Xo c β'} {U : Set (Xo.XF c)} (Z : CptOver Y U) (Z' : CptOver Y' U) :
@@ -69,13 +67,13 @@ theorem genPt_eq_of_cptOver {O O' : Type} [CommRing O] [CommRing O'] {β : O →
   (((Z.closure _).1 Z'.genPt_mem).antisymm ((Z'.closure _).1 Z.genPt_mem)).eq
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c U hU`. Use `⟨Formalism.L2.Pj.CompSplitPfB.cspB_isClopen (Formalism.L2.Pj.CompSplitPfD.cspD_comp_disj Xo c) ⟨U, hU⟩, fun O _ β Y hβ => nonempty_cptOver_of_fraction hβ.1 hβ.2.2 Y U hU, ?_⟩` and prove the remaining obligations. Introduce `O _ β Y O' _ β' Y' Z Z' hβ hβ' hg`. Take `⟨e, he⟩` from `exists_ringEquiv_of_genPt_eq Z.ξ₀ Z'.ξ₀ (bijective_stalk_of_cptOver Z hβ) (bijective_stalk_of_cptOver Z' hβ') (genPt_eq_of_cptOver Z Z')`. Establish `h2 : spMap e.toRingHom ≫ spMap Z.inc = spMap Z'.inc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Z.over_inc, ← Z'.over_inc, ← he, Category.assoc]`. Establish `h4 : CommRingCat.ofHom Z.inc ≫ CommRingCat.ofHom e.toRingHom = CommRingCat.ofHom Z'.inc` using `Spec.map_injective (by rw [Spec.map_comp]; exact h2)`. Establish `h3 : e.toRingHom.comp Z.inc = Z'.inc` using `congrArg CommRingCat.Hom.hom h4`. Introduce and unpack `x ⟨f, hf, hx⟩`. Establish `h5 : f.eval₂ Z.inc (e.symm x) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Apply `e.injective` to reduce the goal to its premises. Use `Polynomial.hom_eval₂ f Z.inc e.toRingHom (e.symm x)` as an intermediate fact. Rewrite `this` using `[h3]`. Simplify `this` using `[hx]`. Take `⟨a, ha⟩` from `hg (e.symm x) ⟨f, hf, h5⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `⟨a, ?_⟩` and prove the remaining obligations. Rewrite using `[← h3]`. Simplify using `[ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cptOver_any : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)), U ∈ irreducibleComponents (Xo.XF c) → IsClopen U ∧ (∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β), FracBase β → Nonempty (CptOver Y U)) ∧ ∀ (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (O' : Type) [CommRing O'] (β' : O' →+* c.F) (Y' : Model Xo c β') (Z : CptOver Y U) (Z' : CptOver Y' U), FracBase β → FracBase β' → Z.IsGeom → Z'.IsGeom := by
   intro E _ _ _ H D l Xo c U hU

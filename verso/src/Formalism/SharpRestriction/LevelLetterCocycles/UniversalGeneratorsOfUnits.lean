@@ -17,7 +17,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `univGenCore_of' W hinj hO2 hpu hR hKL hS hRAT hInv (finLev_of W hR (p_ne_zero_O' W) hpu)`.
+A detailed English derivation is pending.
 -/
 theorem univGenCore_of_lev [IsDomain O] [IsPrincipalIdealRing O] [NeZero n]
     [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O] [Fintype (K →ₐ[Qp] LL)]
@@ -31,7 +31,7 @@ theorem univGenCore_of_lev [IsDomain O] [IsPrincipalIdealRing O] [NeZero n]
   univGenCore_of' W hinj hO2 hpu hR hKL hS hRAT hInv (finLev_of W hR (p_ne_zero_O' W) hpu)
 
 /- English proof (translation)
-Introduce `hR hKL hS _ hRAT hInv` and use `univGenCore_of_lev W hinj hO2 hpu hR hKL hS hRAT fun _ _ _ s _ => invLevAt_of W hInv s`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem universal_generators_of_units [IsDomain O] [IsPrincipalIdealRing O] [NeZero n]
     [IsAdicComplete (Ideal.span {((PD.p : ℕ) : O)}) O] [Fintype (K →ₐ[Qp] LL)]

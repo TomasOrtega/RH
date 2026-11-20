@@ -8,25 +8,25 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology Polynomial
 namespace GlobalTheory.JR.DenseMatch
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero => intro p`. Simplify using `[Matrix.charpoly, Matrix.det_isEmpty]`. Consider the case `succ s ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the cases of `s with`. Consider the case `zero`. Introduce `p`. Simplify using `[Matrix.charpoly, Matrix.det_unique, charmatrix_apply, companion]`. Consider the case `succ n`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `p`. Establish `h00 : (charmatrix (companion p)).submatrix Fin.succ Fin.succ = charmatrix (companion (fun i : Fin (n + 1) => p i.succ))`. Use extensionality with `i j`. Simplify using `only [submatrix_apply, charmatrix_apply, companion, of_apply, diagonal_apply, Fin.succ_inj, Fin.val_succ]`. Apply the tactic sequence `split_ifs <;> first | rfl | simp_all | omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hlast : ((charmatrix (companion p)).submatrix Fin.succ (Fin.last (n + 1)).succAbove).det = (-1) ^ (n + 1)`. Rewrite using `[Fin.succAbove_last, Matrix.det_of_upperTriangular]`. Establish `: ∀ i : Fin (n + 1), (charmatrix (companion p)).submatrix Fin.succ Fin.castSucc i i = -1`. Introduce `i`. Simplify using `only [submatrix_apply, charmatrix_apply, companion, of_apply, diagonal_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp_all [Fin.ext_iff] <;> omega`. Simplify using `only [submatrix_apply] at this`. Simplify using `[this]`. Introduce `i j hij`. Simplify using `only [submatrix_apply, charmatrix_apply, companion, of_apply, diagonal_apply]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `: (j : ℕ) < i` using `hij`. Apply the tactic sequence `split_ifs <;> simp_all [Fin.ext_iff] <;> omega`. Rewrite using `[Matrix.charpoly, Matrix.det_succ_row_zero, Fin.sum_univ_succ, Finset.sum_eq_single (Fin.last n)]`. Rewrite using `[Fin.succAbove_zero, h00, ← Matrix.charpoly, ih, Fin.succ_last, hlast]`. Establish `e1 : charmatrix (companion p) 0 0 = X`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[charmatrix_apply, companion]`. Establish `e2 : charmatrix (companion p) 0 (Fin.last (n + 1)) = C (p 0)`. Simplify using `[charmatrix_apply, companion, Fin.ext_iff]`. Rewrite using `[e1, e2, Fin.sum_univ_succ (n := n + 1)]`. Simplify using `only [Fin.val_last, Fin.val_zero, Fin.val_succ, pow_zero, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: ((-1 : k[X]) ^ (n + 1)) * (-1) ^ (n + 1) = 1` using `by rw [← mul_pow]; simp`. Establish `e3 : ∑ x : Fin (n + 1), C (p x.succ) * X ^ ((x : ℕ) + 1) = X * ∑ i : Fin (n + 1), C (p i.succ) * X ^ (i : ℕ)`. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl (fun _ _ => by ring)`. Rewrite using `[e3, Nat.succ_eq_add_one]`. Take the linear combination `C (p 0) * this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Introduce `j _ hj`. Establish `: charmatrix (companion p) 0 j.succ = 0`. Establish `hjn : (j : ℕ) ≠ n` using `fun h => hj (Fin.ext (by simp [h]))`. Rewrite using `[charmatrix_apply, diagonal_apply_ne _ (Fin.succ_ne_zero j).symm]`. Simplify using `only [companion, of_apply, Fin.val_succ, Fin.val_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg (by omega)]`. Simplify using the standard rewrite rules. Rewrite using `[this, mul_zero, zero_mul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem charpoly_companion {k : Type} [CommRing k] :
     ∀ (r : ℕ) (p : Fin r → k), (companion p).charpoly = X ^ r + ∑ i : Fin r, C (p i) * X ^ (i : ℕ) := by
@@ -89,13 +89,13 @@ end GlobalTheory.JR.DenseMatch
 namespace GlobalTheory.JR.DenseMatch
 
 /- English proof (translation)
-Distinguish the cases in `hd : derivative P = 0`. Take `⟨c, rfl⟩ : ∃ c, P = C c` from `⟨P.coeff 0, eq_C_of_derivative_eq_zero hd⟩`. Use `(Set.finite_singleton (-c)).subset fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, ← C_add, separable_C, isUnit_iff_ne_zero, not_not] at ht`. Simplify using `only [Set.mem_singleton_iff]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take the linear combination `ht`. Set `K` to `AlgebraicClosure F`. Establish `hfin : ((fun α : K => -aeval α P) '' (derivative P).rootSet K).Finite` using `((derivative P).rootSet_finite K).image _`. Use `(hfin.preimage (algebraMap F K).injective.injOn).subset fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, separable_def, isCoprime_iff_aeval_ne_zero_of_isAlgClosed F K, not_forall, not_or, not_not, derivative_add, derivative_C, add_zero] at ht`.
+Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨α, h1, h2⟩` from `ht`. Use `⟨α, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_rootSet]`. Conclude with `⟨hd, h2⟩`. Simplify using `only [map_add, aeval_C] at h1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Take the linear combination `-h1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem finite_not_separable_add_C {F : Type} [Field F] [CharZero F] (P : F[X]) :
     {t : F | ¬ (P + C t).Separable}.Finite := by
@@ -117,9 +117,9 @@ theorem finite_not_separable_add_C {F : Type} [Field F] [CharZero F] (P : F[X]) 
       linear_combination -h1
 
 /- English proof (translation)
-Introduce `hne`. Establish `h1 : ∀ᶠ t in 𝓝[≠] (0 : F), ¬ P (γ t)` using `((h0 ▸ hγ.tendsto 0).mono_left nhdsWithin_le_nhds).eventually hne`. Establish `h2 : ∀ᶠ t in 𝓝[≠] (0 : F), t ∉ {t | ¬ P (γ t)}`. Establish `hc : IsClosed ({t | ¬ P (γ t)} \ {0})` using `(hfin.subset Set.diff_subset).isClosed`. Establish `: ∀ᶠ t in 𝓝 (0 : F), t ∉ ({t | ¬ P (γ t)} \ {0})` using `hc.isOpen_compl.mem_nhds (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [nhdsWithin_le_nhds this, self_mem_nhdsWithin] with t ht ht0`. Conclude with `fun hb => ht ⟨hb, ht0⟩`. Take `⟨t, ht1, ht2⟩` from `(h1.and h2).exists`. Conclude with `ht2 ht1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem frequently_of_curve {Y F : Type} [TopologicalSpace Y] [NontriviallyNormedField F] (γ : F → Y)
     (hγ : Continuous γ) (x₀ : Y) (h0 : γ 0 = x₀) (P : Y → Prop) (hfin : {t | ¬ P (γ t)}.Finite) :
@@ -136,11 +136,9 @@ theorem frequently_of_curve {Y F : Type} [TopologicalSpace Y] [NontriviallyNorme
   exact ht2 ht1
 
 /- English proof (translation)
-Establish `hc : Continuous (fun p : Fin r → F => companion p)`. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [companion, of_apply]`. Use `split_ifs`. Conclude with `(continuous_apply i).neg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `continuous_const`. Conclude with `continuous_const`. Establish `hc' : Continuous (fun a : Inv r F => companion a.1)` using `hc.comp continuous_fst`. Unfold `Delta`. Apply `Continuous.matrix_det` to reduce the goal to its premises.
-
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [hankel, of_apply, mom, sec]`. Conclude with `(continuous_snd.fst).dotProduct ((hc'.pow _).matrix_mulVec continuous_const)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_Delta {r : ℕ} {F : Type} [NontriviallyNormedField F] :
     Continuous (fun a : Inv r F => Delta a) := by
@@ -163,7 +161,7 @@ end GlobalTheory.JR.DenseMatch
 namespace GlobalTheory.JR.DenseMatch
 
 /- English proof (translation)
-The claim follows from `| 0, a₀ => (Eventually.of_forall fun a => by rw [charpoly_companion]; simp).frequently | s + 1, a₀ => by have key : ∀ t : F, (companion (a₀.1 + Pi.single 0 t)).charpoly = (companion a₀.1).charpoly + C t := by intro t rw [charpoly_companion, charpoly_companion, Fin.sum_univ_succ, …`.
+A detailed English derivation is pending.
 -/
 theorem frequently_separable {F : Type} [NontriviallyNormedField F] [CharZero F] :
     ∀ (r : ℕ) (a₀ : Inv r F), ∃ᶠ a in 𝓝 a₀, (companion a.1).charpoly.Separable
@@ -182,9 +180,9 @@ theorem frequently_separable {F : Type} [NontriviallyNormedField F] [CharZero F]
     simpa [key] using ht
 
 /- English proof (translation)
-Establish `key : ∀ a : Inv (s + 1) F, mom (sec a) 0 = a.2.1 0`. Introduce `a`. Simplify using `[mom, sec, dotProduct, Fin.sum_univ_succ, Fin.succ_ne_zero]`. Apply the tactic sequence `have hs : Continuous (fun t : F => (Pi.single 0 t : Fin (s + 1) → F)) := continuous_pi fun i => by simp only [Pi.single_apply]; split_ifs <;> fun_prop`. Use `frequently_of_curve (fun t : F => ((a₀.1, a₀.2.1 + Pi.single 0 t, a₀.2.2) : Inv (s + 1) F)) (by fun_prop) a₀ (by simp) (fun a => mom (sec a) 0 ≠ 0) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Set.finite_singleton (-a₀.2.1 0)).subset fun t ht => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, key, not_not, Pi.add_apply, Pi.single_eq_same] at ht`. Simplify using `only [Set.mem_singleton_iff]`. Take the linear combination `ht`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem frequently_mom_ne_zero {F : Type} [NontriviallyNormedField F] (s : ℕ) (a₀ : Inv (s + 1) F) :
     ∃ᶠ a in 𝓝 a₀, mom (sec a) 0 ≠ 0 := by
@@ -199,11 +197,11 @@ theorem frequently_mom_ne_zero {F : Type} [NontriviallyNormedField F] (s : ℕ) 
   simp only [Set.mem_singleton_iff]; linear_combination ht
 
 /- English proof (translation)
-Introduce `a₀ hΔ`. Establish `hcont : ∀ᶠ a in 𝓝 a₀, Delta a ≠ 0` using `continuous_Delta.continuousAt.eventually_ne hΔ`. Establish `hL7` using `GlobalTheory.T.jacquetRallisOrbitalIntegrals_invariant_locallyConstant F E r M`. Establish `hO` using `hL7.2.2.1 f' hf' a₀ hΔ`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `X hX`. Establish `hU` using `hL7.2.2.2 f hf a₀ X hΔ hX`. Take `⟨a, ha1, ha2, ha3, ⟨X', hX'⟩, hUX⟩` from `((hG a₀).and_eventually (hcont.and (hO.and hU))).exists`. Rewrite using `[← ha3, (h a ha2 ha1).1 X' hX', hUX X' hX']`. Introduce `hno`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h5` using `(GlobalTheory.T.invariant_image_openClosed_local_sections F E r a₀ hΔ).1 hno`. Take `⟨a, ha1, ha2, ha3, ha4⟩` from `((hG a₀).and_eventually (hcont.and (hO.and h5))).exists`. Rewrite using `[← ha3]`. Conclude with `(h a ha2 ha1).2 ha4`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem match_of_frequently {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] {r : ℕ} (M : Meas r F E) (f' : Gl r F → ℂ) (f : Hn r F E → ℂ)
@@ -225,7 +223,7 @@ theorem match_of_frequently {F E : Type} [NontriviallyNormedField F] [Nontrivial
     exact (h a ha2 ha1).2 ha4
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ r M f' f hf' hf`. Use `haveI : CharZero F := Unram.charZero (F := F) (E := E)`. Use `⟨fun h => match_of_frequently M f' f hf' hf _ (frequently_separable r) h, fun hr h => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `Nat.exists_eq_add_one_of_ne_zero hr.ne'`. Conclude with `match_of_frequently M f' f hf' hf _ (frequently_mom_ne_zero s) h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem match_of_dense : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (r : ℕ) (M : Meas r F E) (f' : Gl r F → ℂ) (f : Hn r F E → ℂ),

@@ -14,14 +14,14 @@ namespace Ad
 variable {F : Type} [Field F] [NumberField F] {κ κ₁ : Type} [Fintype κ] [Fintype κ₁]
 
 /- English proof (translation)
-Rewrite using `[norm_eq_sup'_normAtPlace]`. Conclude with `Finset.sup'_le _ _ fun w hw => Finset.single_le_sum (fun v _ => normAtPlace_nonneg v x) hw`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_sum (x : mixedSpace F) : ‖x‖ ≤ ∑ w : InfinitePlace F, normAtPlace w x := by
   rw [norm_eq_sup'_normAtPlace]
   exact Finset.sup'_le _ _ fun w hw => Finset.single_le_sum (fun v _ => normAtPlace_nonneg v x) hw
 
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul, ← Finset.card_univ]`. Use `Finset.sum_le_card_nsmul _ _ _ fun w hw => ?_` and prove the remaining obligations. Rewrite using `[norm_eq_sup'_normAtPlace]`. Conclude with `Finset.le_sup' (fun w => normAtPlace w x) hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_le_norm (x : mixedSpace F) : ∑ w : InfinitePlace F, normAtPlace w x ≤ Fintype.card (InfinitePlace F) * ‖x‖ := by
   rw [← nsmul_eq_mul, ← Finset.card_univ]
@@ -31,55 +31,51 @@ theorem sum_le_norm (x : mixedSpace F) : ∑ w : InfinitePlace F, normAtPlace w 
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Establish `key : ∀ (y : Fin m → AF F) j (a : AF F), ∀ Φ ∈ schA F κ, e (schr ψ (∑ i, y i • c i) (schr ψ (a • ζ j) Φ)) = ψ (-(a * y j)) • e (schr ψ (∑ i, y i • c i) Φ)` using `fun y j a Φ hΦ => by`. Rewrite using `[schr_comm, map_smul, hinv _ _ _ (schr_mem_schA ψ hψ _ _ hΦ)]`. Use `congr 2`. Establish `: a * y j = ∑ i, a * y i * ((ζ j).1 ⬝ᵥ (c i).2 - (c i).1 ⬝ᵥ (ζ j).2)` using `by simp [hp]`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Prod.fst_sum, Prod.snd_sum, Prod.smul_fst, Prod.smul_snd, sum_dotProduct, dotProduct_sum, smul_dotProduct, dotProduct_smul, smul_eq_mul, Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Set `wy : (Fin m → AF F) → _` to `fun y => aw0 F κ (∑ j, qI F (y j) • ev2 (c j))`. Set `T : (Fin m → AF F) → SInf F κ →L[ℂ] SInf F κ₁` to `fun y => ei.comp (S (wy y))`. Set `G : (Fin m → Af F) → (κ₁ → Af F) → ℂ` to `fun b => ef (fw ψ (∑ j, b j • fn2 (c j)) φ)`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `main : ∀ y (f : SInf F κ), e (schr ψ (∑ j, y j • c j) (pureA F f φ)) = pureA F (T y f) (G fun j => p2 (y j))` using `fun y f => by rw [schr_pure hψ, (he _ (fw_mem hψ _ hφ)).2, pairEvaluation_linear_combination, pairFunctional_linear_combination]; rfl`. Establish `hG : IsLocallyConstant G` using `((fw_lc hψ hφ).comp_continuous (f := fun b : Fin m → Af F => ∑ j, b j • fn2 (c j)) (continuous_finsetSum _ fun j _ => (continuous_apply j).smul continuous_const)).comp ef`. Establish `hGm : ∀ b, G b ∈ SB _` using `fun b => (he _ (fw_mem hψ _ hφ)).1`. Choose the witnesses or unpack the hypotheses as in `⟨C, hC, hC'⟩ : ∃ C : Set (Fin m → Af F), IsCompact C ∧ ∀ b, G b ≠ 0 → b ∈ C := by`. Establish `hU : ∀ᶠ a : Af F in 𝓝 0, ∀ j, fw ψ (a • fn2 (ζ j)) φ = φ` using `eventually_all.2 fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `((fw_lc hψ hφ).comp_continuous (f := fun a : Af F => a • fn2 (ζ j)) (continuous_id.smul continuous_const)).eventually_eq 0` as an intermediate fact. Simplify `this` using `only [Function.comp_apply, zero_smul, fw_zero]`. Take `⟨C₀, h₀, h₀'⟩` from `annih hψ hU`. Use `⟨Set.pi Set.univ fun _ => -C₀, isCompact_univ_pi fun _ => h₀.neg, fun b hb j _ => h₀' _ fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨f₀, hf₀⟩ : ∃ f₀, ei f₀ ≠ 0` from `by by_contra! h`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `h0 (ContinuousLinearMap.ext h)`. Set `y : Fin m → AF F` to `fun j => pt 0 (b j)`. Establish `h1` using `key y j (pt 0 a) _ (pureA_mem (S (-wy y) f₀) hφ)`. Rewrite `h1` using `[schr_pure hψ (pt 0 a • ζ j), pairEvaluation_smul, pairFunctional_smul, qI_pt, finite_projection_mixed_point, ha j, zero_smul, map_zero, S_zero, main, ← pureA_smul_left]`. Establish `h2` using `pureA_cancel hb h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[show T y (S (-wy y) f₀) = ei f₀ from congrArg ei (S_neg _ _)]`. Establish `h3 : ψ (-(pt 0 a * y j)) = 1`. Assume the negation of the conclusion as `h`. Conclude with `hf₀ ((smul_eq_zero.1 (show (ψ (-(pt 0 a * y j)) - 1) • ei f₀ = 0 by`. Rewrite using `[sub_smul, one_smul, ← h2, sub_self])).resolve_left (sub_ne_zero.2 h))`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h3` using `[psi_eq hψ, map_neg, map_mul, qI_pt, zero_mul, neg_zero, map_zero, map_neg, map_mul, finite_projection_mixed_point, finite_projection_mixed_point]`. Simplify using `using h3`. Establish `hfin : (G '' C \ {0}).Finite` using `by haveI := isCompact_iff_compactSpace.1 hC`. Use `(hG.comp_continuous (continuous_subtype_val : Continuous ((↑) : C → _))).range_finite` as an intermediate fact. Rewrite `this` using `[Set.range_comp, Subtype.range_coe]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `this.diff`. Set `φ₁ : Fin hfin.toFinset.card → (κ₁ → Af F) → ℂ` to `fun i => (hfin.toFinset.equivFin.symm i).1`. Establish `hφ₁ : ∀ i, φ₁ i ∈ G '' C \ {0}` using `fun i => hfin.mem_toFinset.1 (hfin.toFinset.equivFin.symm i).2`. Set `A : Fin hfin.toFinset.card → (Fin m → AF F) → SInf F κ →L[ℂ] SInf F κ₁` to `fun i y => if G (fun j => p2 (y j)) = φ₁ i then T y else 0`. Establish `z0 : ∀ g : (κ₁ → Af F) → ℂ, pureA F (0 : SInf F κ₁) g = 0` using `fun g => funext fun x => zero_mul _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K₁, hK₁, hK₁'⟩` from `(LinearMap.toContinuousLinearMap (aw0 F κ)).bound`. Use `⟨_, φ₁, C, A, fun i => by obtain ⟨b, -, hb⟩ := (hφ₁ i).1; exact hb ▸ hGm b, hC, fun i f => ?_, fun y f => ?_, fun i y hy => if_neg fun h : G (fun j => p2 (y j)) = φ₁ i => hy (hC' _ fun h' => (hφ₁ i).2 (h.symm.trans h')), fun q N hq => ?_⟩` and prove the remaining obligations. Establish `h1 : IsLocallyConstant fun y : Fin m → AF F => if G (fun j => p2 (y j)) = φ₁ i then (1 : ℂ) else 0` using `(hG.comp_continuous (f := fun (y : Fin m → AF F) j => p2 (y j)) (continuous_pi fun j => continuous_snd.comp (continuous_apply j))).comp fun g => if g = φ₁ i then (1 : ℂ) else 0`. Establish `h2 : Continuous wy` using `(aw0 F κ).continuous_of_finiteDimensional.comp (continuous_finsetSum _ fun j _ => Continuous.smul (f := fun y : Fin m → AF F => qI F (y j)) (continuous_qI.comp (continuous_apply j)) continuous_const)`. Use `(h1.continuous.smul (ei.continuous.comp ((continuous_S f).comp h2))).congr fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [A]`. Use `split_ifs with h`. Simplify using `[h, T]`. Simplify using `[h]`. Rewrite using `[main]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : G (fun j => p2 (y j)) = 0`. Rewrite using `[h, GlobalTheory.ThK.Dbl.Dense.pureA_zero]`. Use `(Finset.sum_eq_zero fun i _ => ?_).symm` and prove the remaining obligations. Simplify using `only [A]`. Rewrite using `[if_neg fun h' => (hφ₁ i).2 (h'.symm.trans h)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `z0 _`. Set `i₀` to `hfin.toFinset.equivFin ⟨G fun j => p2 (y j), hfin.mem_toFinset.2 ⟨⟨_, hC' _ h, rfl⟩, h⟩⟩`. Establish `hi : G (fun j => p2 (y j)) = φ₁ i₀` using `by simp only [φ₁, i₀, Equiv.symm_apply_apply]`. Rewrite using `[Finset.sum_eq_single i₀ (fun i _ hne => ?_) fun h => absurd (Finset.mem_univ _) h]`. Simplify using `only [A]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Rewrite using `[if_pos hi, ← hi]`. Simplify using `only [A]`. Rewrite using `[if_neg fun h' => hne (hfin.toFinset.equivFin.symm.injective (Subtype.ext (h'.symm.trans hi)))]`. Conclude with `z0 _`. Take `⟨p, M, hp, hp'⟩` from `grow (q.comp ei.toLinearMap) (hq.comp ei.continuous)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨K, hK, hK'⟩` from `exists_half_trace (F := F)`. Set `s : (Fin m → AF F) → ℝ` to `fun y => ∑ j, ∑ w : InfinitePlace F, normAtPlace w (qI F (y j))`. Establish `hs0 : ∀ (y : Fin m → AF F) j, 0 ≤ ∑ w : InfinitePlace F, normAtPlace w (qI F (y j))` using `fun y j => Finset.sum_nonneg fun w _ => normAtPlace_nonneg _ _`. Establish `hs : ∀ y, 0 ≤ s y` using `fun y => Finset.sum_nonneg fun j _ => hs0 y j`. Take `⟨Z, hZ⟩ : ∃ Z, Z = ∑ j, ‖ev2 (ζ j)‖` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Cc, hCc⟩ : ∃ Z, Z = ∑ j, ‖ev2 (c j)‖` from `⟨_, rfl⟩`. Establish `hCc0 : 0 ≤ Cc` using `hCc ▸ Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hZ0 : 0 ≤ Z` using `hZ ▸ Finset.sum_nonneg fun _ _ => norm_nonneg _`. Establish `hZ1 : ∀ j, ‖ev2 (ζ j)‖ ≤ Z` using `fun j => hZ ▸ Finset.single_le_sum (f := fun j => ‖ev2 (ζ j)‖) (fun _ _ => norm_nonneg _) (Finset.mem_univ j)`. Establish `hKC : 0 ≤ (1 + K₁ * Cc) ^ M` using `pow_nonneg (add_nonneg zero_le_one (mul_nonneg hK₁.le hCc0)) _`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(decay (Y := Fin hfin.toFinset.card × (Fin m → AF F)) (fun x => (A x.1 x.2).toLinearMap) (fun x => s x.2) (fun x => hs x.2) (K₁ * Z * (m * Fintype.card (InfinitePlace F)) * K) (fun x hy => ?_) q (sc ((1 + K₁ * Cc) ^ M) p) (sc_cont _ hp) M (fun x f => ?_) N).imp fun p' h => ⟨h.1, …` and prove the remaining obligations. Take `⟨i, y⟩` from `x`. Express the relevant statement in the definitionally equal form `0 < s y at hy`. Establish `hm : (Finset.univ : Finset (Fin m)).Nonempty`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[Finset.not_nonempty_iff_eq_empty]`. Simplify using `only [s, h, Finset.sum_empty, lt_irrefl] at hy`. Take `⟨j, -, hj⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖qI F (y j)‖) hm`. Establish `h1 : s y ≤ m * Fintype.card (InfinitePlace F) * ‖qI F (y j)‖`. Use `(Finset.sum_le_card_nsmul _ _ (Fintype.card (InfinitePlace F) * ‖qI F (y j)‖) fun i hi => (sum_le_norm _).trans (mul_le_mul_of_nonneg_left (hj i hi) (Nat.cast_nonneg _))).trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, mul_assoc]`. Take `⟨α, hα, hα'⟩` from `hK' (qI F (y j)) fun h => by`. Rewrite `h1` using `[h, norm_zero, mul_zero]`. Conclude with `absurd hy (not_lt.2 h1)`. Use `⟨aw0 F κ (α • ev2 (ζ j)), ?_, fun f => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ‖aw0 F κ (α • ev2 (ζ j))‖ ≤ K₁ * (‖α‖ * Z)` using `(hK₁' _).trans (mul_le_mul_of_nonneg_left ((norm_smul_le _ _).trans (mul_le_mul_of_nonneg_left (hZ1 j) (norm_nonneg _))) hK₁.le)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [A] split_ifs with h`. Establish `h1` using `key y j (pt α 0) _ (pureA_mem f hφ)`. Rewrite `h1` using `[schr_pure hψ (pt α 0 • ζ j), pairEvaluation_smul, pairFunctional_smul, qI_pt, finite_projection_mixed_point, zero_smul, fw_zero, main, main, ← pureA_smul_left]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `pureA_cancel (h ▸ (hφ₁ i).2) h1`. Establish `h3 : ψ (-(pt α 0 * y j)) = -1`. Rewrite using `[psi_eq hψ, map_neg, map_mul, qI_pt, map_neg, mul_comm α, hα', map_neg, map_mul, finite_projection_mixed_point, zero_mul, neg_zero, AddChar.map_zero_eq_one, mul_one, ← Complex.exp_pi_mul_I]`. Use `congr 1`. Use `push_cast`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `h2` using `[h3, neg_one_smul]`. Conclude with `h2`. Simplify using the standard rewrite rules. Take `⟨i, y⟩` from `x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sc_apply hKC]`. Establish `h1 : ‖wy y‖ ≤ K₁ * (s y * Cc)` using `(hK₁' _).trans (mul_le_mul_of_nonneg_left ((norm_sum_le _ _).trans (by`. Rewrite using `[hCc, Finset.mul_sum]`. Use `Finset.sum_le_sum fun j hj => (norm_smul_le _ _).trans (mul_le_mul_of_nonneg_right ?_ (norm_nonneg _))` and prove the remaining obligations. Conclude with `(norm_le_sum _).trans (Finset.single_le_sum (fun j _ => hs0 y j) hj))) hK₁.le)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2` using `hs y`. Establish `h3` using `apply_nonneg p f`. Simplify using `only [A]`. Use `split_ifs with h`. Use `(hp' (wy y) f).trans ?_` and prove the remaining obligations.
-
-Rewrite using `[← mul_assoc, ← mul_pow]`. Use `mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (add_nonneg zero_le_one (norm_nonneg _)) ?_ _) h3` and prove the remaining obligations. Establish `h4` using `mul_nonneg hK₁.le hCc0`. Express the relevant statement in the definitionally equal form `1 + ‖wy y‖ ≤ (1 + s y) * (1 + K₁ * Cc)`. Generalize the expression as in `‖wy y‖ = a, s y = b at h1 h2 ⊢`.
-
-Use the polynomial consequences of the given equalities and inequalities. Simplify using `only [ContinuousLinearMap.toLinearMap_zero, LinearMap.zero_apply, map_zero]`. Conclude with `mul_nonneg (pow_nonneg (add_nonneg zero_le_one h2) _) (mul_nonneg hKC h3)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem slice_core {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (e : ((κ → AF F) → ℂ) →ₗ[ℂ] (κ₁ → AF F) → ℂ)
     (ei : SInf F κ →L[ℂ] SInf F κ₁) (ef : ((κ → Af F) → ℂ) → (κ₁ → Af F) → ℂ) (h0 : ei ≠ 0)
@@ -247,9 +243,9 @@ theorem slice_core {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (e : ((κ → AF F
 end Ad
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ hB hM hM₁ ι ι' I e he m u z hD φ hφ`. Take `⟨ei, ef, h0, h⟩` from `ev_pure hM hM₁ he`. Take `⟨r, φ₁, C, A, h1, h2, h3, h4, h5⟩` from `slice_core hB.std e ei ef h0 h (fun j => M.co.e (incM F (u j))) (fun j => M.co.e (incM F (z j))) (fun j a Φ hΦ => by rw [← map_smul]; exact he.inv _ (hD.mem j a) Φ hΦ) (fun i j => by rw [← M.co.form]; convert hD.pair i j) hφ`. Use `⟨r, φ₁, C, A, h1, h2, h3, fun y f => ?_, h5⟩` and prove the remaining obligations. Rewrite using `[← h4, Darboux.rho, lin, map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem slice_of : Slice := by
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ hB hM hM₁ ι ι' I e he m u z hD φ hφ
@@ -262,11 +258,11 @@ theorem slice_of : Slice := by
   simp only [map_smul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ hB hM hM₁`. Use `⟨exists_adm_eq_thetaSum_of_locallyCompact F _, fun u Φ hΦ => schr_mem_schA _ hB.std _ Φ hΦ, fun ι ι' I e he u l hl => ?_⟩` and prove the remaining obligations. Take `⟨ei, ef, -, h⟩` from `ev_pure hM hM₁ he`. Set `R : Fn F n d →ₗ[ℂ] Fn F n d` to `{ toFun := M.co.rho B.ψ u map_add' := fun φ φ' => funext fun x => by simp only [Darboux.rho, schr, Pi.add_apply]; ring map_smul' := fun a φ => funext fun x => by`. Simplify using `only [Darboux.rho, schr, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Use `ring }`. Use `⟨l ∘ₗ e ∘ₗ R, fun g hg => ?_, fun Φ _ => rfl⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `h _ (fw_mem hB.std (fn2 (M.co.e u)) hg)`. Take `⟨T, hT⟩` from `hl _ h1`. Use `⟨T.comp (ei.comp (S (aw0 F _ (ev2 (M.co.e u))))), fun f => ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `l (e (schr B.ψ (M.co.e u) (pureA F f g))) = _`. Rewrite using `[schr_pure hB.std, h2, hT]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evAdm_of : EvAdm := by
   intro F E _ _ _ _ _ σ B n d n₁ d₁ X W X₁ W₁ M M₁ hB hM hM₁

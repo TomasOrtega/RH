@@ -8,9 +8,9 @@ open Complex Matrix ReciprocityTheory.L2DbarEstimates
 open scoped ComplexConjugate
 
 /- English proof (translation)
-Establish `hs : (sqNorm g0 : ℂ) ≠ 0`. Conclude with `(sqNorm_pos h).ne'` after adjusting the coercions. Establish `e : star g0 ⬝ᵥ g0 = (sqNorm g0 : ℂ)`. Simplify using `[sqNorm, dotProduct, Complex.normSq_eq_conj_mul_self]`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [projPerp, sub_mulVec, one_mulVec, smul_mulVec, Pi.sub_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul]`. Rewrite using `[show (vecMulVec g0 (star g0) *ᵥ g0) i = g0 i * (star g0 ⬝ᵥ g0) by`. Simplify using `[vecMulVec, mulVec, dotProduct, Finset.mul_sum, mul_assoc], e]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem projPerp_self {N : ℕ} (g0 : Fin N → ℂ) (h : g0 ≠ 0) : projPerp g0 *ᵥ g0 = 0 := by
   have hs : (sqNorm g0 : ℂ) ≠ 0 := by

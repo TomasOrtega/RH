@@ -22,19 +22,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (v : Hei
 def ext0 (M : Matrix ι ι (Fv F v ⊗[F] E)) : Matrix ι ι (AE F E) := M.map (tensAt E v)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[ext0]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matrixExtendByZero_add (M N : Matrix ι ι (Fv F v ⊗[F] E)) : ext0 v (M + N) = ext0 v M + ext0 v N := by
   ext i j; simp [ext0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[ext0]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem matrixExtendByZero_zero : ext0 v (0 : Matrix ι ι (Fv F v ⊗[F] E)) = 0 := by
   ext i j; simp [ext0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [ext0, Matrix.mul_apply, Matrix.map_apply, map_sum, tensAt_mul_right]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ext_zero_mul_right (M : Matrix ι ι (Fv F v ⊗[F] E)) (C : Matrix ι ι (AE F E)) :
     ext0 v M * C = ext0 v (M * C.map (compFin F E v)) := by
@@ -42,7 +42,7 @@ theorem ext_zero_mul_right (M : Matrix ι ι (Fv F v ⊗[F] E)) (C : Matrix ι �
   simp only [ext0, Matrix.mul_apply, Matrix.map_apply, map_sum, tensAt_mul_right]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [ext0, Matrix.mul_apply, Matrix.map_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm, tensAt_mul_right, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_zero_mul_left (M : Matrix ι ι (Fv F v ⊗[F] E)) (C : Matrix ι ι (AE F E)) :
     C * ext0 v M = ext0 v (C.map (compFin F E v) * M) := by
@@ -52,7 +52,7 @@ theorem ext_zero_mul_left (M : Matrix ι ι (Fv F v ⊗[F] E)) (C : Matrix ι ι
   rw [mul_comm, tensAt_mul_right, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[ext_zero_mul_right]`. Use `congr 2`. Use extensionality with `i j`. Conclude with `compFin_tensAt v _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem matrixExtendByZero_mul (M N : Matrix ι ι (Fv F v ⊗[F] E)) : ext0 v M * ext0 v N = ext0 v (M * N) := by
   rw [ext_zero_mul_right]
@@ -66,7 +66,7 @@ Both sides reduce to the same expression.
 theorem ext_zero_transpose (M : Matrix ι ι (Fv F v ⊗[F] E)) : (ext0 v M)ᵀ = ext0 v Mᵀ := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `sigR_tensAt v σ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ext_zero_map_conj (σ : E →ₐ[F] E) (M : Matrix ι ι (Fv F v ⊗[F] E)) :
     (ext0 v M).map (cA σ) = ext0 v (M.map (sigR (Fv F v) σ)) := by
@@ -74,7 +74,7 @@ theorem ext_zero_map_conj (σ : E →ₐ[F] E) (M : Matrix ι ι (Fv F v ⊗[F] 
   exact sigR_tensAt v σ _
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `compFin_tensAt v _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ext_zero_comp_finite (M : Matrix ι ι (Fv F v ⊗[F] E)) : (ext0 v M).map (compFin F E v) = M := by
   ext i j
@@ -83,7 +83,7 @@ theorem ext_zero_comp_finite (M : Matrix ι ι (Fv F v ⊗[F] E)) : (ext0 v M).m
 def lift (Y : Matrix ι ι (Fv F v ⊗[F] E)) : Matrix ι ι (AE F E) := 1 + ext0 v (Y - 1)
 
 /- English proof (translation)
-Establish `e : Y * Z - 1 = (Y - 1) + (Z - 1) + (Y - 1) * (Z - 1)` using `by noncomm_ring`. Rewrite using `[lift, lift, lift, e, matrixExtendByZero_add, matrixExtendByZero_add, ← matrixExtendByZero_mul]`. Use `noncomm_ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_mul (Y Z : Matrix ι ι (Fv F v ⊗[F] E)) : lift v Y * lift v Z = lift v (Y * Z) := by
   have e : Y * Z - 1 = (Y - 1) + (Z - 1) + (Y - 1) * (Z - 1) := by noncomm_ring
@@ -91,13 +91,13 @@ theorem lift_mul (Y Z : Matrix ι ι (Fv F v ⊗[F] E)) : lift v Y * lift v Z = 
   noncomm_ring
 
 /- English proof (translation)
-Rewrite using `[lift, sub_self, matrixExtendByZero_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_one : lift v (1 : Matrix ι ι (Fv F v ⊗[F] E)) = 1 := by
   rw [lift, sub_self, matrixExtendByZero_zero, add_zero]
 
 /- English proof (translation)
-Establish `h2 : (1 : Matrix ι ι (AE F E)).map (compFin F E v) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h1 : (lift v Y).map (compFin F E v) = (1 : Matrix ι ι (AE F E)).map (compFin F E v) + (ext0 v (Y - 1)).map (compFin F E v)`. Use extensionality with `i j`. Simplify using `only [lift, Matrix.map_apply, Matrix.add_apply, map_add]`. Rewrite using `[h1, ext_zero_comp_finite, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -110,9 +110,9 @@ theorem compFin_lift (Y : Matrix ι ι (Fv F v ⊗[F] E)) : (lift v Y).map (comp
   abel
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[lift, add_sub_cancel_left]`. Use extensionality with `i j`. Simplify using `only [ext0, Matrix.smul_apply, Matrix.map_apply, Matrix.zero_apply]`. Rewrite using `[Algebra.smul_def, mul_comm, tensAt_mul_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `: compFin F E v (algebraMap (AF F) (AE F E) u) = 0`. Express the relevant statement in the definitionally equal form `(evFin F v u) ⊗ₜ[F] (1 : E) = 0`. Rewrite using `[hu, TensorProduct.zero_tmul]`. Rewrite using `[this, mul_zero, map_zero]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_sub_one_at (Y : Matrix ι ι (Fv F v ⊗[F] E)) : At (evFin F v) (lift v Y - 1) := by
   intro u hu
@@ -126,15 +126,13 @@ theorem lift_sub_one_at (Y : Matrix ι ι (Fv F v ⊗[F] E)) : At (evFin F v) (l
   rw [this, mul_zero, map_zero]
 
 /- English proof (translation)
-Use `set C := incM F J`. Establish `hC : C.map (compFin F E v) = J.map (inclR (Fv F v))`. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `compFin F E v ((1 : AF F) ⊗ₜ[F] J i j) = (1 : Fv F v) ⊗ₜ[F] J i j`. Express the relevant statement in the definitionally equal form `evFin F v 1 ⊗ₜ[F] J i j = _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one]`. Establish `hT : (lift v Y)ᵀ = 1 + ext0 v (Y - 1)ᵀ`. Rewrite using `[lift, Matrix.transpose_add, Matrix.transpose_one, ext_zero_transpose]`. Establish `hS : (lift v Y).map (cA σ) = 1 + ext0 v ((Y - 1).map (sigR (Fv F v) σ))`. Rewrite using `[← ext_zero_map_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[lift, Matrix.one_apply]`. Rewrite using `[hT, hS]`. Establish `e1 : (1 + ext0 v (Y - 1)ᵀ) * C * (1 + ext0 v ((Y - 1).map (sigR (Fv F v) σ))) = C + (ext0 v (Y - 1)ᵀ * C + C * ext0 v ((Y - 1).map (sigR (Fv F v) σ)) + ext0 v (Y - 1)ᵀ * C * ext0 v ((Y - 1).map (sigR (Fv F v) σ)))` using `by noncomm_ring`. Rewrite using `[e1, ext_zero_mul_right, matrixExtendByZero_mul, ext_zero_mul_left, ← matrixExtendByZero_add, ← matrixExtendByZero_add, hC]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hYs : (Y - 1).map (sigR (Fv F v) σ) = Y.map (sigR (Fv F v) σ) - 1`. Rewrite using `[Matrix.map_sub _ (fun a b => map_sub _ a b), Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[hYs, Matrix.transpose_sub, Matrix.transpose_one]`. Use `set Jl : Matrix ι ι (Fv F v ⊗[F] E) := J.map (inclR (Fv F v))`. Establish `e2 : (Yᵀ - 1) * Jl + Jl * (Y.map (sigR (Fv F v) σ) - 1) + (Yᵀ - 1) * Jl * (Y.map (sigR (Fv F v) σ) - 1) = Yᵀ * Jl * Y.map (sigR (Fv F v) σ) - Jl` using `by noncomm_ring`.
-
-Rewrite using `[e2, hY, sub_self, matrixExtendByZero_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_unitary (σ : E →ₐ[F] E) (J : Matrix ι ι E) (Y : Matrix ι ι (Fv F v ⊗[F] E))
     (hY : Yᵀ * J.map (inclR (Fv F v)) * Y.map (sigR (Fv F v) σ) = J.map (inclR (Fv F v))) :
@@ -172,14 +170,14 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : HeightOneSpectrum (𝓞 F)} {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := f.toRingHom)`.
+A detailed English derivation is pending.
 -/
 theorem map_mul_alg (f : Fv F v ⊗[F] E →ₐ[Fv F v] Fv F v) (M N : Matrix ι ι (Fv F v ⊗[F] E)) :
     (M * N).map f = M.map f * N.map f :=
   Matrix.map_mul (f := f.toRingHom)
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `split_ext h t (congrFun (congrFun h1 i) j) (congrFun (congrFun h2 i) j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem mat_split_ext (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) {Y Z : Matrix ι ι (Fv F v ⊗[F] E)}
     (h1 : Y.map (splitProj t) = Z.map (splitProj t))
@@ -191,21 +189,21 @@ def pairMat (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (A B : Matrix ι ι (F
     Matrix ι ι (Fv F v ⊗[F] E) := fun i j => (splitAlgEquiv h t).symm (A i j, B i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[pairMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pairMat_fst (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (A B : Matrix ι ι (Fv F v)) :
     (pairMat h t A B).map (splitProj t) = A := by
   ext i j; simp [pairMat]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[pairMat]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem pairMat_snd (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (A B : Matrix ι ι (Fv F v)) :
     (pairMat h t A B).map (splitProj (t.comp σ)) = B := by
   ext i j; simp [pairMat]
 
 /- English proof (translation)
-The claim follows from `mat_split_ext h t (by rw [map_mul_alg, pairMat_fst, pairMat_fst, pairMat_fst]) (by rw [map_mul_alg, pairMat_snd, pairMat_snd, pairMat_snd])`.
+A detailed English derivation is pending.
 -/
 theorem pairMat_mul (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (A B A' B' : Matrix ι ι (Fv F v)) :
     pairMat h t A B * pairMat h t A' B' = pairMat h t (A * A') (B * B') :=
@@ -213,7 +211,7 @@ theorem pairMat_mul (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (A B A' B' : M
     (by rw [map_mul_alg, pairMat_snd, pairMat_snd, pairMat_snd])
 
 /- English proof (translation)
-The claim follows from `mat_split_ext h t (by rw [pairMat_fst, Matrix.map_one _ (map_zero _) (map_one _)]) (by rw [pairMat_snd, Matrix.map_one _ (map_zero _) (map_one _)])`.
+A detailed English derivation is pending.
 -/
 theorem pairMat_one (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) :
     pairMat h t (1 : Matrix ι ι (Fv F v)) 1 = 1 :=
@@ -224,7 +222,7 @@ def conjC (t : E →ₐ[F] Fv F v) (K : Matrix ι ι E) (g : GL ι (Fv F v)) : M
   (K.map t)⁻¹ * ((g⁻¹ : GL ι (Fv F v)) : Matrix ι ι (Fv F v))ᵀ * K.map t
 
 /- English proof (translation)
-Simplify using `only [conjC, mul_inv_rev, Units.val_mul, Matrix.transpose_mul, Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hK]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjC_mul (t : E →ₐ[F] Fv F v) (K : Matrix ι ι E) (hK : IsUnit (K.map t).det)
     (g₁ g₂ : GL ι (Fv F v)) : conjC t K (g₁ * g₂) = conjC t K g₁ * conjC t K g₂ := by
@@ -232,7 +230,7 @@ theorem conjC_mul (t : E →ₐ[F] Fv F v) (K : Matrix ι ι E) (hK : IsUnit (K.
     Matrix.mul_nonsing_inv_cancel_left _ _ hK]
 
 /- English proof (translation)
-Simplify using `only [conjC, inv_one, Units.val_one, Matrix.transpose_one, Matrix.mul_one]`. Conclude with `Matrix.nonsing_inv_mul _ hK`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conjC_one (t : E →ₐ[F] Fv F v) (K : Matrix ι ι E) (hK : IsUnit (K.map t).det) :
     conjC t K 1 = 1 := by
@@ -243,7 +241,7 @@ def locM (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (K : Matrix ι ι E) (g :
     Matrix ι ι (Fv F v ⊗[F] E) := pairMat h t g (conjC t K g)
 
 /- English proof (translation)
-Rewrite using `[locM, locM, locM, pairMat_mul, conjC_mul t K hK, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locM_mul (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (K : Matrix ι ι E)
     (hK : IsUnit (K.map t).det) (g₁ g₂ : GL ι (Fv F v)) :
@@ -251,24 +249,22 @@ theorem locM_mul (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (K : Matrix ι ι
   rw [locM, locM, locM, pairMat_mul, conjC_mul t K hK, Units.val_mul]
 
 /- English proof (translation)
-Rewrite using `[locM, conjC_one t K hK, Units.val_one, pairMat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem locM_one (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (K : Matrix ι ι E)
     (hK : IsUnit (K.map t).det) : locM h t K 1 = 1 := by
   rw [locM, conjC_one t K hK, Units.val_one, pairMat_one]
 
 /- English proof (translation)
-Establish `hJl : ∀ τ : E →ₐ[F] Fv F v, (K.map (inclR (Fv F v))).map (splitProj τ) = K.map τ` using `fun τ => Matrix.ext fun i j => by`. Simplify using `only [Matrix.map_apply]`. Conclude with `splitProj_inclR τ (K i j)`. Establish `hs1 : ((locM h t K g).map (sigR (Fv F v) σ)).map (splitProj t) = conjC t K g`. Rewrite using `[Matrix.map_map]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (splitProj t ∘ sigR (Fv F v) σ) = splitProj (t.comp σ)` using `funext fun y => (splitProj_comp t σ y).symm`. Rewrite using `[this, locM, pairMat_snd]`. Establish `hs2 : ((locM h t K g).map (sigR (Fv F v) σ)).map (splitProj (t.comp σ)) = g`. Rewrite using `[Matrix.map_map]`. Establish `: (splitProj (t.comp σ) ∘ sigR (Fv F v) σ) = splitProj t` using `funext fun y => splitProj_comp_sigR h t y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, locM, pairMat_fst]`. Establish `hKs : K.map (t.comp σ) = -(K.map t)ᵀ`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.transpose_apply, Matrix.neg_apply, AlgHom.comp_apply]`. Rewrite using `[skew j i, map_neg]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set A : Matrix ι ι (Fv F v) := ((g⁻¹ : GL ι (Fv F v)) : Matrix ι ι (Fv F v))`. Establish `eA : A * (g : Matrix ι ι (Fv F v)) = 1` using `Units.inv_mul g`. Use `mat_split_ext h t ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul_alg, map_mul_alg, Matrix.transpose_map, hJl, hs1, locM, pairMat_fst, conjC] set Jt := K.map t`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_nonsing_inv _ hK, Matrix.mul_one, Matrix.transpose_mul]`. Use `_ = Jt := by rw [eA, Matrix.transpose_one, Matrix.one_mul]`. Rewrite using `[map_mul_alg, map_mul_alg, Matrix.transpose_map, hJl, hs2, locM, pairMat_snd, conjC, hKs] set Jt := K.map t`. Establish `e : (Jt⁻¹)ᵀ * Jtᵀ = 1`. Rewrite using `[← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hK, Matrix.transpose_one]`.
-
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`. Use `_ = -Jtᵀ := by rw [e, Matrix.mul_one, Matrix.mul_assoc, eA, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem locM_unitary (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (K : Matrix ι ι E)
     (hK : IsUnit (K.map t).det) (skew : ∀ i j, σ (K j i) = -K i j) (g : GL ι (Fv F v)) :
@@ -323,7 +319,7 @@ def adelicGL (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (K : Matrix ι ι E)
     by rw [lift_mul, ← locM_mul h t K hK, inv_mul_cancel, locM_one h t K hK, lift_one]⟩
 
 /- English proof (translation)
-The claim follows from `lift_sub_one_at v _`.
+A detailed English derivation is pending.
 -/
 theorem adelicGL_at (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (K : Matrix ι ι E)
     (hK : IsUnit (K.map t).det) (g : GL ι (Fv F v)) :
@@ -331,7 +327,7 @@ theorem adelicGL_at (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (K : Matrix ι
   lift_sub_one_at v _
 
 /- English proof (translation)
-The claim follows from `lift_unitary v σ K _ (locM_unitary h t K hK skew g)`.
+A detailed English derivation is pending.
 -/
 theorem adelicGL_unitary (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (K : Matrix ι ι E)
     (hK : IsUnit (K.map t).det) (skew : ∀ i j, σ (K j i) = -K i j) (g : GL ι (Fv F v)) :
@@ -340,7 +336,7 @@ theorem adelicGL_unitary (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (K : Matr
   lift_unitary v σ K _ (locM_unitary h t K hK skew g)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show (lift v (locM h t K g)).map (piW t) = (g : Matrix ι ι (Fv F v))`. Use `conv_rhs => rw [← pairMat_fst h t (g : Matrix ι ι (Fv F v)) (conjC t K g), ← compFin_lift v (pairMat h t (g : Matrix ι ι (Fv F v)) (conjC t K g)), Matrix.map_map]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem adelicGL_map_piW (h : IsCMExt F E σ) (t : E →ₐ[F] Fv F v) (K : Matrix ι ι E)
     (hK : IsUnit (K.map t).det) (g : GL ι (Fv F v)) :

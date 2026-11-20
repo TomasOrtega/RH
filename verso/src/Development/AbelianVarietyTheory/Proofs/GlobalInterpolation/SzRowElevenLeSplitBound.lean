@@ -18,13 +18,13 @@ open Formalism.BasicNotions Formalism.BasicNotions.LevelStarExponents Formalism.
 namespace GlobalTheory.EX
 
 /- English proof (translation)
-Introduce `eps heps _ C _`. Use `⟨0, fun cD _ => ⟨0, fun ch _ => ⟨(11 : ℝ) ^ (eps / C.P.Cpde / 5)⁻¹, ?_⟩⟩⟩` and prove the remaining obligations. Introduce `D L hε hx hV`. Establish `hH` using `hV.host`. Establish `hC : (0 : ℝ) < C.P.Cpde` using `lt_of_lt_of_le one_pos hH.one_le`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : 0 < eps / C.P.Cpde / 5` using `by positivity`. Establish `h1 : (11 : ℝ) ≤ L.sc.x ^ (eps / C.P.Cpde / 5)`. Establish `h2` using `Real.rpow_le_rpow (by positivity) hx ha.le`. Rewrite `h2` using `[Real.rpow_inv_rpow (by norm_num) ha.ne']`. Then use the resulting hypothesis. Establish `h3 : L.sc.x ^ (eps / C.P.Cpde / 5) ≤ L.sc.x ^ (L.sc.ez / 5)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `Real.rpow_le_rpow_of_exponent_le L.sc.one_lt_alt.le ?_` and prove the remaining obligations. Use `hH.eps_div_le_ez` as an intermediate fact. Rewrite `this` using `[hε]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : 11 ≤ ⌊L.sc.x ^ (L.sc.ez / 5)⌋₊` using `Nat.le_floor (by exact_mod_cast h1.trans h3)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Conclude with `h4.trans hH.split_tie`.
+A detailed English derivation is pending.
 -/
 private theorem szRow_eleven_le_splitBound : SzRow (fun _ D _ => 11 ≤ D.host.splitBound) := by
   intro eps heps _ C _
@@ -45,7 +45,7 @@ private theorem szRow_eleven_le_splitBound : SzRow (fun _ D _ => 11 ≤ D.host.s
   exact h4.trans hH.split_tie
 
 /- English proof (translation)
-Establish `h` using `((((((((((GlobalTheory.T.sizes_sizeN_sizeM_sizeK_sizeT_sizeTT_sizeDe2_sizeLw.and GlobalTheory.T.sizes_sizeKRel).and GlobalTheory.T.sizes_sizeCond_sizeQD_sizePde).and GlobalTheory.T.sizes_sizeLa_sizeRho_sizeBot).and GlobalTheory.T.explicitChoice_sizeEta).and GlobalTheory.T.explici …`. Use `h.imp ?_` and prove the remaining obligations. Introduce and unpack `C cD ch D L - - ⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨⟨hN, hM, hK, hT, hTT, hDe, hLw⟩, hKR⟩, hCo, hQD, hP⟩, hLa, hRho, hBot⟩, hEta⟩, hNo⟩, hLs⟩, hDel⟩, hW, hBm, hX⟩, hG, hWo⟩, h11⟩`. Conclude with `⟨hN, hM, hK, hKR, hT, hCo, hQD, hTT, hLa, hRho, hBot, hDe, hLw, hEta, hNo, hLs, hDel, hW, hBm, hX, hG, hP, hWo, h11⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem szRow_sizesAt : SzRow (fun _ _ L => SizesAt L) := by
   have h := ((((((((((GlobalTheory.T.sizes_sizeN_sizeM_sizeK_sizeT_sizeTT_sizeDe2_sizeLw.and GlobalTheory.T.sizes_sizeKRel).and GlobalTheory.T.sizes_sizeCond_sizeQD_sizePde).and GlobalTheory.T.sizes_sizeLa_sizeRho_sizeBot).and GlobalTheory.T.explicitChoice_sizeEta).and

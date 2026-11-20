@@ -16,7 +16,7 @@ noncomputable def dualB : Module.Basis (Module.Free.ChooseBasisIndex ℤ (𝓞 E
   (Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate ℚ E) (integralBasis E)
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (dualB E).sum_repr z]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[dualB, LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_dualB (z : E) :
     ∑ i, Algebra.trace ℚ E (z * integralBasis E i) • dualB E i = z := by
@@ -26,11 +26,11 @@ theorem sum_dualB (z : E) :
   rw [dualB, LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply]
 
 /- English proof (translation)
-Establish `h : ∀ j, Algebra.trace ℚ E (dualB E i * integralBasis E j) = if j = i then 1 else 0`. Introduce `j`. Establish `h` using `LinearMap.BilinForm.apply_dualBasis_left (traceForm_nondegenerate ℚ E) (integralBasis E) i j`. Rewrite `h` using `[Algebra.traceForm_apply]`. Use `h` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Both sides reduce to the same expression. Use `conv_rhs => rw [← (integralBasis E).sum_repr z]`. Rewrite using `[Finset.mul_sum, map_sum]`. Repeatedly rewrite using `[mul_smul_comm, LinearMap.map_smul, h, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Finset.sum_ite_eq']`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem repr_eq_trace (z : E) (i : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
     (integralBasis E).repr z i = Algebra.trace ℚ E (dualB E i * z) := by
@@ -49,7 +49,7 @@ theorem repr_eq_trace (z : E) (i : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← repr_eq_trace]`. Conclude with `integralBasis_repr_apply E c i`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_dualB_int (c : 𝓞 E) (i : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
     Algebra.trace ℚ E (dualB E i * (c : E)) = ((RingOfIntegers.basis E).repr c i : ℚ) := by
@@ -57,9 +57,9 @@ theorem trace_dualB_int (c : 𝓞 E) (i : Module.Free.ChooseBasisIndex ℤ (𝓞
   exact integralBasis_repr_apply E c i
 
 /- English proof (translation)
-Establish `key : ∀ z : E, Algebra.trace ℚ E ((∑ i, integralBasis E i * dualB E i) * z) = Algebra.trace ℚ E z`. Introduce `z`. Rewrite using `[Finset.sum_mul, map_sum, Algebra.trace_eq_matrix_trace (integralBasis E) z, Matrix.trace]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, Algebra.leftMulMatrix_eq_repr_mul, repr_eq_trace]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← sub_eq_zero]`. Use `(traceForm_nondegenerate ℚ E).1 _ fun z => ?_` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, sub_mul, map_sub, key, one_mul, sub_self]`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_mul_dualB : ∑ i, integralBasis E i * dualB E i = 1 := by
   classical
@@ -75,11 +75,11 @@ theorem sum_mul_dualB : ∑ i, integralBasis E i * dualB E i = 1 := by
   rw [Algebra.traceForm_apply, sub_mul, map_sub, key, one_mul, sub_self]
 
 /- English proof (translation)
-Establish `hmem : dualB E i ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E)`. Rewrite using `[Submodule.mem_traceDual]`. Introduce `a ha`. Rewrite `ha` using `[Submodule.mem_one]`. Take `⟨a, rfl⟩` from `ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨(RingOfIntegers.basis E).repr a i, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply]`. Conclude with `(trace_dualB_int E a i).symm`. Use `isIntegral_discr_mul_of_mem_traceDual (A := ℤ) (K := ℚ) (1 : Submodule (𝓞 E) E) (b := integralBasis E) (fun i => by` as an intermediate fact. Rewrite using `[integralBasis_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(RingOfIntegers.isIntegral_coe _)) (Submodule.one_le.mp le_rfl) hmem`. Rewrite `this` using `[← coe_discr, Algebra.smul_def, mul_one, map_intCast]`. Conclude with `⟨⟨_, this⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem discr_mul_dualB (i : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
     ∃ y : 𝓞 E, (y : E) = ((discr E : ℤ) : E) * dualB E i := by
@@ -99,19 +99,15 @@ theorem discr_mul_dualB (i : Module.Free.ChooseBasisIndex ℤ (𝓞 E)) :
   exact ⟨⟨_, this⟩, rfl⟩
 
 /- English proof (translation)
-Use `choose y hy using discr_mul_dualB E`. Establish `hy' : ∀ i, algebraMap (𝓞 E) E (y i) = ((discr E : ℤ) : E) * dualB E i` using `hy`. Use `⟨RingOfIntegers.basis E, y, ?_, fun a => ?_⟩` and prove the remaining obligations. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_intCast]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, hy', ← integralBasis_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun i _ => by ring`. Use `_ = _ := by rw [sum_mul_dualB, mul_one]`. Establish `h1 : ∀ k, ∑ i, (RingOfIntegers.basis E).repr (a * RingOfIntegers.basis E i) k • y i = a * y k`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k`. Apply `RingOfIntegers.coe_injective` to reduce the goal to its premises. Rewrite using `[map_sum, map_mul, hy']`. Establish `h2` using `sum_dualB E (dualB E k * algebraMap (𝓞 E) E a)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `h3` using `trace_dualB_int E (a * RingOfIntegers.basis E i) k`. Establish `h4 : ((a * RingOfIntegers.basis E i : 𝓞 E) : E) = algebraMap (𝓞 E) E a * integralBasis E i`. Rewrite using `[integralBasis_apply, ← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[h4, ← mul_assoc]`. Rewrite using `[h3, map_zsmul, hy', Int.cast_smul_eq_zsmul, mul_smul_comm]`. Use `_ = _ := by rw [h2]; ring`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Use `conv_lhs => rw [← (RingOfIntegers.basis E).sum_repr (a * RingOfIntegers.basis E i)]`. Rewrite using `[TensorProduct.sum_tmul]`. Conclude with `Finset.sum_congr rfl fun k _ => TensorProduct.smul_tmul _ _ _`. Use `_ = _ := by`. Rewrite using `[Finset.sum_comm]`.
-
-Conclude with `Finset.sum_congr rfl fun k _ => by rw [← TensorProduct.tmul_sum, h1]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sep_discr :
     ∃ x y : Module.Free.ChooseBasisIndex ℤ (𝓞 E) → 𝓞 E, ∑ i, x i * y i = ((discr E : ℤ) : 𝓞 E) ∧

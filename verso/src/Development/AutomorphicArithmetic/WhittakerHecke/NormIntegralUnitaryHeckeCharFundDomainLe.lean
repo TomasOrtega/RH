@@ -8,11 +8,11 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-Introduce `M U χ f B hχ hf hB`. Use `haveI := U.prob`. Establish `hD : M.μ M.D < ⊤` using `UpperTheory.ConvolutionTheory.R2.M.volD ℚ M`. Use `haveI : IsFiniteMeasure (M.μ.restrict M.D) := ⟨by simpa using hD⟩`. Establish `hfu : ∀ u, Measurable (f u)` using `fun u => hf.comp measurable_prodMk_left`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ u ∂U.υ, u ∈ (UU : Set (A ℚ)ˣ)` using `mem_ae_iff.mpr U.supp`. Establish `hI : StronglyMeasurable (fun u => ∫ g in M.D, f u g ∂M.μ)` using `(hf.stronglyMeasurable).integral_prod_right`. Establish `hχm : Measurable (fun u : IdeleGroup ℚ => ((χ.1 u : ℂˣ) : ℂ))` using `(Units.continuous_val.comp χ.2.1).measurable`. Establish `hbd : ∀ᵐ u ∂U.υ, ‖((χ.1 u : ℂˣ) : ℂ) * ∫ g in M.D, f u g ∂M.μ‖ ≤ B * M.μ.real M.D` using `by filter_upwards [hae] with u hu`. Rewrite using `[norm_mul, hχ, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `norm_setIntegral_le_of_norm_le_const hD (fun g _ => hB u hu g)`. Use `⟨fun u hu => Integrable.of_bound (hfu u).aestronglyMeasurable B (Eventually.of_forall (hB u hu)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Integrable.of_bound (hχm.aestronglyMeasurable.mul hI.aestronglyMeasurable) _ hbd`. Simplify using `using norm_integral_le_of_norm_le_const hbd`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.norm_integral_unitaryHeckeChar_fundDomain_le :
     ∀ (M : Meas ℚ) (U : UMeas) (χ : HChar ℚ) (f : IdeleGroup ℚ → G1 ℚ → ℂ) (B : ℝ), (∀ a, ‖((χ.1 a : ℂˣ) : ℂ)‖ = 1) → Measurable (Function.uncurry f) →

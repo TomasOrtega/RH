@@ -6,19 +6,17 @@ open NumberField IsDedekindDomain Formalism.L2.Pj
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hc : ∀ a : 𝓞 E, IsCMField.complexConj E (a : E) ∈ (algebraMap (𝓞 E) E).range` using `fun a => ⟨IsCMField.ringOfIntegersComplexConj E a, IsCMField.coe_ringOfIntegersComplexConj E a⟩`. Introduce `x hx y hy`. Unfold `GlobalTheory.BetaEx.detSpan at hx hy`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨v, hv, rfl⟩` from `(GlobalTheory.BetaEx.mem_detSet M x).1 hx`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨w, hw, rfl⟩` from `(GlobalTheory.BetaEx.mem_detSet M' y).1 hy`. Use `choose A hA using fun i k => h (v i) (hv i) (w k) (hw k)`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Matrix.of A).det, ?_⟩` and prove the remaining obligations. Establish `e1 : IsCMField.complexConj E v.det = ((IsCMField.complexConj E : E →+* E).mapMatrix v).det`. Rewrite using `[← RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[RingHom.map_det, e1, ← Matrix.det_transpose w, ← Matrix.det_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `i k`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, hA]`. Both sides reduce to the same expression. Consider the case `zero => simpa using Subring.zero_mem _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `Subring.add_mem _ ha hb`. Consider the case `smul a b _ hb`. Rewrite using `[Algebra.smul_def, mul_left_comm]`. Conclude with `Subring.mul_mem _ ⟨a, rfl⟩ hb`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simpa using Subring.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add, add_mul]`. Conclude with `Subring.add_mem _ ha hb`. Consider the case `smul a b _ hb`. Rewrite using `[Algebra.smul_def, map_mul, mul_assoc]`.
-
-Conclude with `Subring.mul_mem _ (hc a) hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detSpan_conj_mul_mem_range (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ)
     (M M' : Submodule (𝓞 E) (Fin n → E))

@@ -19,7 +19,7 @@ namespace GlobalTheory.StdUnn.WeylFourier
 variable {D : D7}
 
 /- English proof (translation)
-Use `(dblDec A).mat_ext ?_ (Matrix.ext fun _ j => Fin.elim0 j) ?_` and prove the remaining obligations. Simplify using `only [HypDec.extX_apply, HypDec.extY_apply, Matrix.mul_assoc, hX, Matrix.mul_neg, Matrix.mul_smul]`. Rewrite using `[(dblDec A).pX_jY, (dblDec A).pY_jX, Matrix.mul_zero, Matrix.mul_zero, smul_zero, neg_zero]`. Simplify using `only [HypDec.extX_apply, HypDec.extY_apply, Matrix.mul_assoc, hY, Matrix.mul_smul]`. Rewrite using `[(dblDec A).pX_jX, (dblDec A).pY_jY, Matrix.mul_one, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem extX_mul_weyl {A B : HSp D} {w : GA D (dblSp A)} {b c : AE D}
     (hX : mt (dblSp A) w ⬝ (dblDec A).jX = -(b • (dblDec A).jY))
@@ -32,7 +32,7 @@ theorem extX_mul_weyl {A B : HSp D} {w : GA D (dblSp A)} {b c : AE D}
     rw [(dblDec A).pX_jX, (dblDec A).pY_jY, Matrix.mul_one, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `h` using `d.hO_ext T y 0 0 (c • x) 0 0`. Simplify using `only [map_zero, zero_add, add_zero, hO_eq_trace S₀, Matrix.mul_zero, Matrix.trace_zero] at h`. Rewrite using `[symplO_eq, h, show pairS T (0 : Mx D T.rank ρ) 0 = 0 by simp [pairS], add_zero, pairS, adj_smul, Matrix.smul_mul, Matrix.trace_smul, smul_eq_mul, ← mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem symplO_extX_extY_smul {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (c : AE D) (x y : Mx D T.rank ρ) :
     symplO S T (d.extX T y) (d.extY T (c • x)) =
@@ -44,13 +44,11 @@ theorem symplO_extX_extY_smul {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ �
   rfl
 
 /- English proof (translation)
-Introduce `D ψ A B χB omh hW ν 𝓨 hν μ hμ w hw hX hY f hf x`. Use `set u : WO (dblSp A) B := (dblDec A).extY B (incA D μ⁻¹ • x) with hu`. Establish `hact : actO (dblSp A) B w 1 u = (dblDec A).extX B x`. Rewrite using `[actO_eq, mt_one, Matrix.one_mul, hu, ← extX_mul_weyl hX hY x, Matrix.mul_assoc, mt_mul_inv, Matrix.mul_one]`. Establish `hf₁ : IsThetaFunO ψ (dblSp A) B (heisO ψ (dblSp A) B u f)` using `(GlobalTheory.HeisThetaLaws.heis_theta_laws D ψ hW.std (dblSp A) B).1 u f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : sch ψ A B ν 𝓨 (omh (w, 1) f) x = swSec A B omh ν 𝓨 (heisO ψ (dblSp A) B u f) w`. Establish `h` using `congrFun (GlobalTheory.MixModel.Check.mixS_heis_extX (ψ := ψ) (dblDec A) ν 𝓨 (omh (w, 1) f) x 0) 0`. Rewrite `h` using `[zero_add, ← hact, ← hW.om_heis w 1 u f hf, mixS_dblDec_zero]`. Conclude with `h.symm`. Rewrite using `[h1, GlobalTheory.T.siegelSection_weylElement_eq_schrodingerIntegral D ψ A B χB omh hW ν 𝓨 hν _ hf₁ w hw]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg _ (funext fun y => ?_)` and prove the remaining obligations. Establish `hc : incA D D.host.xi0 * cA D (incA D μ⁻¹) = incA D (-D.host.xi0 / μ)`. Rewrite using `[GlobalTheory.DualPairCheck.cA_incA, ← map_mul, star_inv₀, hμ.2, inv_neg, mul_neg, neg_div, div_eq_mul_inv]`. Establish `h2` using `GlobalTheory.MixModel.Check.mixS_heis_extY (dblDec A) hν hf (incA D μ⁻¹ • x) y 0`. Rewrite `h2` using `[symplO_extX_extY_smul, hc, mul_comm]`.
-
-Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sch_weyl : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A B : HSp D) (χB : (AE D)ˣ →* Circle) (omh : GA D (dblSp A) × GA D B →* Module.End ℂ (WO (dblSp A) B → ℂ)), IsWeilDatumO ψ (dblSp A) B 1 χB omh → ∀ (ν : Measure (WO A B)) (𝓨 : Set (WO A B)), IsCovolOne (ratL B A) ν 𝓨 → ∀ μ : D.host.E, IsSkew μ → ∀ w : GA D (dblSp A), IsWeyl A w → mt (dblSp A) w ⬝ (dblDec A).jX = -(incA D μ • (dblDec A).jY) → mt (dblSp A) w ⬝ (dblDec A).jY = incA D μ⁻¹ • (dblDec A).jX → ∀ f, IsThetaFunO ψ (dblSp A) B f → ∀ x, sch ψ A B ν 𝓨 (omh (w, 1) f) x = ∫ y, sch ψ A B ν 𝓨 f y * ψ (trA (incA D (-D.host.xi0 / μ) * Matrix.trace (GlobalTheory.StdUnn.inner B x y))) ∂ν := by
   intro D ψ A B χB omh hW ν 𝓨 hν μ hμ w hw hX hY f hf x

@@ -19,25 +19,23 @@ variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintyp
   {F : Type} [Field F]
 
 /- English proof (translation)
-Set `e : (∀ k, ι k) → (Σ k, ι k) →₀ ℕ` to `fun σ => Finsupp.equivFunOnFinite.symm (fun v => if v.2 = σ v.1 then 1 else 0)`. Establish `he : ∀ σ v, e σ v = if v.2 = σ v.1 then 1 else 0` using `fun σ v => rfl`. Establish `hrad : ∀ σ : (∀ k, ι k), (monomial (e σ) (1 : F)) ∈ J.radical`. Introduce `σ`. Rewrite using `[← Ideal.sInf_minimalPrimes, Submodule.mem_sInf]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `W hW`. Establish `hWp : Ideal.IsPrime W` using `hW.1.1`. Establish `hWh : IsMultiHomogIdeal W` using `MinimalPrimeMultiHomog.proof F K ι J W hJ hW`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, ∀ i : ι k, (X ⟨k, i⟩ : MRing ι F) ∈ W := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Conclude with `hrel W hWp hWh h hW.1.2`. Use `Ideal.mem_of_dvd _ ?_ (hk (σ k))` and prove the remaining obligations. Rewrite using `[← pow_one (X _), X_pow_eq_monomial, monomial_dvd_monomial]`. Use `⟨Or.inr ?_, one_dvd _⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.single_le_iff, he]`. Simplify using the standard rewrite rules. Establish `hrad' : ∀ σ : (∀ k, ι k), ∃ n : ℕ, (monomial (e σ) (1 : F)) ^ n ∈ J` using `fun σ => hrad σ`. Use `choose N hN using hrad'`. Use `⟨Finset.univ.sup N, fun m hm x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[x.as_sum]`. Use `Ideal.sum_mem _ fun d hd => ?_` and prove the remaining obligations. Establish `hw` using `hx (mem_support_iff.mp hd)`. Rewrite `hw` using `[Bridge.weight_blockWeight]`. Establish `hσ : ∀ k, ∃ i : ι k, Finset.univ.sup N ≤ d ⟨k, i⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `k`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h1 : ∑ i, d ⟨k, i⟩ ≤ ∑ _i : ι k, Finset.univ.sup N` using `Finset.sum_le_sum fun i _ => (h i).le`. Establish `h2` using `congrFun hw k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, smul_eq_mul] at h1 h2`. Establish `h3` using `hm k`. Rewrite `h1` using `[h2]`. Rewrite `h3` using `[mul_comm]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose σ hσ using hσ`. Establish `hmem : monomial (e σ) (1 : F) ^ Finset.univ.sup N ∈ J` using `Ideal.pow_mem_of_pow_mem _ (hN σ) (Finset.le_sup (Finset.mem_univ σ))`. Use `Ideal.mem_of_dvd _ ?_ hmem` and prove the remaining obligations. Rewrite using `[monomial_pow, one_pow, monomial_dvd_monomial]`. Use `⟨Or.inr ?_, one_dvd _⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Introduce `v`. Rewrite using `[Finsupp.smul_apply, he, smul_eq_mul]`. Use `split_ifs with hv`. Take `⟨k, i⟩` from `v`. Simplify using `only at hv`.
-
-Substitute `hv` using the available equality. Simplify using `using hσ k`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_forms_mem_of_not_le_relevant {J : Ideal (MRing ι F)} (hJ : IsMultiHomogIdeal J)
     (hrel : ∀ W : Ideal (MRing ι F), W.IsPrime → IsMultiHomogIdeal W → IsRelevant W → ¬ J ≤ W) :
@@ -98,37 +96,33 @@ theorem exists_forms_mem_of_not_le_relevant {J : Ideal (MRing ι F)} (hJ : IsMul
   · simp
 
 /- English proof (translation)
-Use `hP.isPrime` as an intermediate fact. Take `⟨bf, bg, hf, hg, hb⟩` from `hs.degrees`. Use `set J : Ideal (MRing ι F) := (P ⊔ Ideal.span {g}).colon {f} with hJdef`. Establish `hJh : IsMultiHomogIdeal J` using `ColonMultiHomog.proof F K ι _ f bf (SupSpanMultiHomog.proof F K ι P g bg hP.multiHomog hg) hf`. Establish `hPJ : P ≤ J` using `fun p hp => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hJdef, Submodule.mem_colon_singleton, smul_eq_mul]`. Conclude with `Ideal.mem_sup_left (P.mul_mem_right f hp)`. Establish `hrel : ∀ W : Ideal (MRing ι F), W.IsPrime → IsMultiHomogIdeal W → IsRelevant W → ¬ J ≤ W`. Introduce `W hWp hWh hWr hJW`. Take `⟨u, v, hu, huv⟩` from `hs.regular W ⟨hWp, hWh, hWr⟩ (hPJ.trans hJW)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hu` to reduce the goal to its premises. Apply `hJW` to reduce the goal to its premises. Rewrite using `[hJdef, Submodule.mem_colon_singleton, smul_eq_mul]`. Establish `: u * f = (u * f - v * g) + v * g` using `by ring`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.add_mem _ (Ideal.mem_sup_left huv) (Ideal.mem_sup_right (Ideal.mul_mem_left _ _ (Ideal.subset_span rfl)))`. Take `⟨n, hn⟩` from `exists_forms_mem_of_not_le_relevant hJh hrel`. Rewrite using `[Filter.eventually_atTop]`. Use `⟨fun k => |b k| + (n * Fintype.card (ι k) : ℕ) + 1, fun m hm => ?_⟩` and prove the remaining obligations. Establish `hm' : ∀ k, |b k| + (n * Fintype.card (ι k) : ℕ) + 1 ≤ m k` using `fun k => hm k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : ∀ k, b k = (bf k : ℤ) - bg k` using `fun k => (congrFun hb k).symm`. Establish `hm0 : ∀ k, 0 ≤ m k` using `fun k => by have := hm' k; have := abs_nonneg (b k); omega`. Establish `hmb0 : ∀ k, 0 ≤ (m - b) k` using `fun k => by`. Use `hm' k` as an intermediate fact. Use `le_abs_self (b k)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers. Use `set M : K → ℕ := fun k => (m k).toNat with hM`. Use `set M' : K → ℕ := fun k => ((m - b) k).toNat with hM'`. Establish `hdeg : M' + bf = M + bg`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `k`. Use `hm0 k` as an intermediate fact. Use `hmb0 k` as an intermediate fact. Use `hb' k` as an intermediate fact. Simplify using `only [Pi.add_apply, hM, hM', Pi.sub_apply] at *`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `hbig : ∀ k, n * Fintype.card (ι k) < M' k`. Introduce `k`. Use `hm' k` as an intermediate fact. Use `le_abs_self (b k)` as an intermediate fact.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hM', Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers. Establish `hfin` using `(FieldNumbers.GradedFinite.proof F K ι P M).1`. Establish `hfin'` using `(FieldNumbers.GradedFinite.proof F K ι P M').1`. Establish `e1 : hilbFn P m = Module.finrank F (gradedPiece P M)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `hilbFn`. Rewrite using `[if_pos hm0]`. Establish `e2 : hilbFn P (m - b) = Module.finrank F (gradedPiece P M')`. Unfold `hilbFn`. Rewrite using `[if_pos hmb0]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, Nat.cast_le]`. Set `φ : MRing ι F → (MRing ι F ⧸ P) →ₗ[F] (MRing ι F ⧸ P)` to `fun a => LinearMap.mulLeft F (Ideal.Quotient.mk P a)`. Establish `hinj : ∀ a, a ∉ P → Function.Injective (φ a)`. Introduce `a ha`. Conclude with `mul_right_injective₀ (fun h => ha (Ideal.Quotient.eq_zero_iff_mem.mp h))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hle : (gradedPiece P M').map (φ f) ≤ (gradedPiece P M).map (φ g)`. Introduce and unpack `_ ⟨_, ⟨x, hx, rfl⟩, rfl⟩`. Establish `hxh : IsMultiHomog x M'` using `(mem_weightedHomogeneousSubmodule _ _ _ _).mp hx`. Establish `hxJ : x ∈ J` using `hn M' hbig x hxh`. Rewrite `hxJ` using `[hJdef, Submodule.mem_colon_singleton, smul_eq_mul, Submodule.mem_sup]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨p, hp, q, hq, hpq⟩` from `hxJ`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.mp hq`. Use `set y := weightedHomogeneousComponent (blockWeight ι) M a`. Establish `hxf : IsMultiHomog (x * f) (M + bg)`. Rewrite using `[← hdeg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hxh.mul hf`. Establish `hcomp` using `congrArg (weightedHomogeneousComponent (blockWeight ι) (M + bg)) hpq`. Rewrite `hcomp` using `[map_add, ← component_mul_multiHomog a g M bg hg, hxf.weightedHomogeneousComponent_same]`. Establish `hpc : weightedHomogeneousComponent (blockWeight ι) (M + bg) p ∈ P` using `hP.multiHomog p hp _`. Use `⟨Ideal.Quotient.mk P y, ⟨y, weightedHomogeneousComponent_isWeightedHomogeneous _ _, rfl⟩, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [φ, LinearMap.mulLeft_apply, Ideal.Quotient.mkₐ_eq_mk, AlgHom.toLinearMap_apply, ← map_mul]`. Rewrite using `[Ideal.Quotient.eq, mul_comm f x, ← hcomp]`. Establish `: g * y - (weightedHomogeneousComponent (blockWeight ι) (M + bg) p + y * g) = -weightedHomogeneousComponent (blockWeight ι) (M + bg) p` using `by ring`. Rewrite using `[this]`. Conclude with `P.neg_mem hpc`.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `: FiniteDimensional F ((gradedPiece P M).map (φ g))` using `Module.Finite.map _ _`. Conclude with `LinearMap.finrank_le_finrank_of_injective (f := Submodule.inclusion hle) (Submodule.inclusion_injective hle)`. Use `_ = Module.finrank F (gradedPiece P M) := ((Submodule.equivMapOfInjective _ (hinj g hs.den_not_mem) _).finrank_eq).symm`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hilbFn_sub_le_of_regular {P : Ideal (MRing ι F)} (hP : IsMultiProjPrime P) {b : K → ℤ}
     {f g : MRing ι F} (hs : IsRegularSection P b f g) :
@@ -225,9 +219,9 @@ theorem hilbFn_sub_le_of_regular {P : Ideal (MRing ι F)} (hP : IsMultiProjPrime
 end
 
 /- English proof (translation)
-Introduce `K _ _ ι _ F _ P hP _ b f g hs`. Establish `hev` using `hilbFn_sub_le_of_regular hP hs`. Unfold `intNum eventualValue`. Use `split_ifs with h`. Take `⟨m, hm1, hm2⟩` from `(h.choose_spec.and hev).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hm1]`. Simplify using `only [mixedDiff, List.ofFn_succ, List.ofFn_zero, List.foldr_cons, List.foldr_nil, Matrix.cons_val_zero, diffStep]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `le_rfl`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem SectionNef.proof : SectionNef.Statement := by
   intro K _ _ ι _ F _ P hP _ b f g hs
@@ -242,7 +236,7 @@ theorem SectionNef.proof : SectionNef.Statement := by
   · exact le_rfl
 
 /- English proof (translation)
-The claim follows from `SectionNefGenerated.of_sectionNef SectionNef.proof`.
+A detailed English derivation is pending.
 -/
 theorem SectionNefGenerated.proof : SectionNefGenerated.Statement :=
   SectionNefGenerated.of_sectionNef SectionNef.proof

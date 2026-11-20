@@ -13,13 +13,13 @@ noncomputable section
 namespace GlobalTheory.Pinch
 
 /- English proof (translation)
-Establish `hmap : ∀ a : R, algebraMap R (Localization.Away (algebraMap R R' f)) a = algebraMap R' (Localization.Away (algebraMap R R' f)) (algebraMap R R' a)` using `fun a => IsScalarTower.algebraMap_apply R R' _ a`. Use `(isLocalization_iff _ _).2 ⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, n, rfl⟩`. Rewrite using `[hmap, map_pow, map_pow]`. Conclude with `IsUnit.pow n (IsLocalization.Away.algebraMap_isUnit (algebraMap R R' f))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Take `⟨⟨r', ⟨_, n, rfl⟩⟩, hz⟩` from `IsLocalization.surj (Submonoid.powers (algebraMap R R' f)) z`. Take `⟨y, -, hy⟩` from `hc f hf r'`. Use `⟨⟨y, ⟨f ^ (n + 1), n + 1, rfl⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only at hz ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap, hmap, hy, map_pow, map_pow, pow_succ, map_mul, ← hz, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a b h`. Rewrite `h` using `[hmap, hmap]`. Take `⟨⟨_, k, rfl⟩, hk⟩` from `IsLocalization.exists_of_eq (M := Submonoid.powers (algebraMap R R' f)) h`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨f ^ k, k, rfl⟩, hinj ?_⟩` and prove the remaining obligations. Simplify using `only [map_mul, map_pow] at hk ⊢`. Conclude with `hk`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLocalization_away_of_absorb {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
     (hinj : Function.Injective (algebraMap R R')) (c : Ideal R)
@@ -47,31 +47,27 @@ theorem isLocalization_away_of_absorb {R R' : Type} [CommRing R] [CommRing R'] [
     exact hk
 
 /- English proof (translation)
-Introduce `R _ R' _ _ hinj c hc g B' C Y b' e i q hsm x hx`. Choose the witnesses or unpack the hypotheses as in `⟨f, hfc, hfx⟩ : ∃ f ∈ c, f ∉ ((b' ≫ spMap (algebraMap R R')) x).asIdeal := by`. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Apply `hx` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hr : Set.range (spMap (Ideal.Quotient.mk c)) = PrimeSpectrum.zeroLocus (RingHom.ker (Ideal.Quotient.mk c))` using `range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective`. Rewrite using `[hr, Ideal.mk_ker]`. Conclude with `hno`. Use `haveI : IsLocalization.Away f (Localization.Away (algebraMap R R' f)) := isLocalization_away_of_absorb hinj c hc hfc`. Set `l' : Sp (Localization.Away (algebraMap R R' f)) ⟶ Sp R'` to `spMap (algebraMap R' _)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `h : Sp (Localization.Away (algebraMap R R' f)) ⟶ Sp R` to `spMap (algebraMap R _)`. Use `haveI : IsOpenImmersion l' := IsOpenImmersion.of_isLocalization (algebraMap R R' f)`. Use `haveI : IsOpenImmersion h := IsOpenImmersion.of_isLocalization f`. Establish `hcomp : l' ≫ spMap (algebraMap R R') = h`. Simplify using `only [l', h, spMap, ← Spec.map_comp]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `congr 1`. Establish `hrange : Set.range h = (PrimeSpectrum.basicOpen f : Set (PrimeSpectrum R))` using `PrimeSpectrum.localization_away_comap_range _ f`. Establish `hrange' : Set.range l' = (PrimeSpectrum.basicOpen (algebraMap R R' f) : Set (PrimeSpectrum R'))` using `PrimeSpectrum.localization_away_comap_range _ _`. Set `j : pullback b' l' ⟶ B'` to `pullback.fst b' l'`. Set `u : pullback b' l' ⟶ Sp R` to `pullback.snd b' l' ≫ h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hju : j ≫ b' ≫ spMap (algebraMap R R') = u`. Simplify using `only [j, u, ← hcomp]`. Rewrite using `[← Category.assoc, pullback.condition, Category.assoc]`. Establish `hsmu : SmoothOfRelativeDimension g u` using `by haveI : SmoothOfRelativeDimension g (pullback.snd b' l') := (smoothOfRelativeDimension_isStableUnderBaseChange g).of_isPullback (IsPullback.of_hasPullback b' l') hsm haveI : SmoothOfRelativeDimension 0 h := inferInstance`. Use `smoothOfRelativeDimension_comp g 0 (pullback.snd b' l') h` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hD : ∀ t : ↥(pullback b' l'), f ∉ (u t).asIdeal` using `fun t => by`. Establish `: u t ∈ Set.range h` using `⟨pullback.snd b' l' t, rfl⟩`. Rewrite `this` using `[hrange]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hEmpty : ∀ (T : Scheme.{0}) (a : T ⟶ pullback b' l') (a' : T ⟶ Sp (R ⧸ c)), a ≫ u = a' ≫ spMap (Ideal.Quotient.mk c) → IsEmpty T`. Introduce `T a a' w`. Use `⟨fun t => hD (a t) ?_⟩` and prove the remaining obligations. Establish `e1 : u (a t) = spMap (Ideal.Quotient.mk c) (a' t)`. Rewrite using `[← Scheme.Hom.comp_apply, w, Scheme.Hom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1]`. Use `show Ideal.Quotient.mk c f ∈ (a' t).asIdeal`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hfc]`. Conclude with `Ideal.zero_mem _`. Establish `w1 : 𝟙 (pullback b' l') ≫ u = (j ≫ b') ≫ spMap (algebraMap R R')`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.id_comp, Category.assoc, hju]`. Establish `w2 : Scheme.emptyTo (pullback b' l') ≫ u = (Scheme.emptyTo C ≫ e) ≫ spMap (Ideal.Quotient.mk c)` using `Scheme.empty_ext _ _`. Use `⟨pullback b' l', pullback b' l', ∅, u, 𝟙 _, j, Scheme.emptyTo _, Scheme.emptyTo C, hsmu, ⟨⟨w1⟩, ⟨PullbackCone.IsLimit.mk w1 (fun s => s.fst) (fun s => Category.comp_id _) (fun s => ?_) (fun s m h1 _ => by simpa using h1)⟩⟩, inferInstance, ?_, ⟨⟨w2⟩, ⟨PullbackCone.IsLimit.mk w2 (f …` and prove the remaining obligations. Establish `hr : Set.range s.snd ⊆ Set.range l'`. Introduce and unpack `_ ⟨t, rfl⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrange']`. Establish `e1 : spMap (algebraMap R R') (s.snd t) = u (s.fst t)`. Rewrite using `[← Scheme.Hom.comp_apply, ← s.condition, Scheme.Hom.comp_apply]`. Use `hD (s.fst t)` as an intermediate fact. Rewrite `this` using `[← e1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `hl : IsOpenImmersion.lift l' s.snd hr ≫ l' = s.snd` using `IsOpenImmersion.lift_fac l' s.snd hr`. Establish `hl2 : IsOpenImmersion.lift l' s.snd hr = s.fst ≫ pullback.snd b' l'`. Rewrite using `[← cancel_mono h, ← hcomp, ← Category.assoc, hl, ← s.condition]`. Use `show s.fst ≫ (pullback.snd b' l' ≫ h) = _`.
-
-Rewrite using `[← hcomp]`. Simplify using `only [Category.assoc]`. Use `show s.fst ≫ j ≫ b' = s.snd`. Rewrite using `[← hl, hl2]`. Conclude with `congrArg (s.fst ≫ ·) pullback.condition`.
-
-Rewrite using `[IsOpenImmersion.range_pullbackFst l' b'] show b' x ∈ Set.range l'`. Rewrite using `[hrange']`. Conclude with `hfx`. Introduce `T a a' _ haveI : IsEmpty T := ⟨fun t => isEmptyElim (a' t)⟩`. Conclude with `⟨isInitialOfIsEmpty.to Y, isInitialOfIsEmpty.hom_ext _ _, isInitialOfIsEmpty.hom_ext _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pinched_off : ∀ (R : Type) [CommRing R] (R' : Type) [CommRing R'] [Algebra R R'], Function.Injective (algebraMap R R') → ∀ c : Ideal R, (∀ x ∈ c, ∀ r : R', ∃ y ∈ c, algebraMap R R' y = algebraMap R R' x * r) → ∀ (g : ℕ) (B' C Y : Scheme.{0}) (b' : B' ⟶ Sp R') (e : C ⟶ Sp (R ⧸ c)) (i : Y ⟶ B') (q : Y ⟶ C), SmoothOfRelativeDimension g b' → ∀ x : B', (b' ≫ spMap (algebraMap R R')) x ∉ Set.range (spMap (Ideal.Quotient.mk c)) → GlobalTheory.Pinch.Pinched g (spMap (algebraMap R R')) (spMap (Ideal.Quotient.mk c)) b' e i q x := by
   intro R _ R' _ _ hinj c hc g B' C Y b' e i q hsm x hx

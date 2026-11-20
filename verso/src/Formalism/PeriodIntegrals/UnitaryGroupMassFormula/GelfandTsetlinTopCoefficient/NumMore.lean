@@ -12,15 +12,15 @@ open Formalism.BasicNotions PI Finset
 variable {n N : ℕ} (h : n + 1 = N) (lam : DomWeight N) (sg : DomWeight n)
 
 /- English proof (translation)
-The claim follows from `le_trans (hI j).1 (lam.anti (Fin.mk_le_mk.2 (Nat.zero_le _)))`.
+A detailed English derivation is pending.
 -/
 theorem sg_le_top (hI : Interlace h lam sg) (j : Fin n) : sg.w j ≤ lam.w ⟨0, by omega⟩ :=
   le_trans (hI j).1 (lam.anti (Fin.mk_le_mk.2 (Nat.zero_le _)))
 
 /- English proof (translation)
-Unfold `Rset at hv`. Rewrite `hv` using `[Finset.mem_Icc]`. Establish `h1` using `lam_le_last h lam (i.1 + 1) (by omega)`. Establish `h2 : lam.w ⟨i.1, by omega⟩ ≤ lam.w ⟨0, by omega⟩` using `lam.anti (Fin.mk_le_mk.2 (Nat.zero_le _))`. Establish `h5` using `min_le_left (lam.w ⟨i.1, by omega⟩) (lam.w ⟨i.1 + 1, by omega⟩ + D0 h lam sg)`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `constructor <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_R_bounds_top (i : Fin n) (v : ℤ) (hv : v ∈ Rset h lam sg i) :
     lam.w ⟨N - 1, by omega⟩ ≤ v ∧ v ≤ lam.w ⟨0, by omega⟩ := by
@@ -32,13 +32,13 @@ theorem mem_R_bounds_top (i : Fin n) (v : ℤ) (hv : v ∈ Rset h lam sg i) :
   constructor <;> omega
 
 /- English proof (translation)
-Unfold `cBr`. Use `Finset.prod_ne_zero_iff.2 (fun i _ => Finset.prod_ne_zero_iff.2 (fun v hv => Finset.prod_ne_zero_iff.2 (fun j _ => ?_)))` and prove the remaining obligations. Establish `hvs : v ≠ sg.w i` using `Finset.ne_of_mem_erase hv`. Establish `hvR` using `Finset.mem_of_mem_erase hv`. Unfold `Rset at hvR`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hvR` using `[Finset.mem_Icc]`. Establish `h5` using `min_le_left (lam.w ⟨i.1, by omega⟩) (lam.w ⟨i.1 + 1, by omega⟩ + D0 h lam sg)`. Break down `lt_trichotomy j.1 i.1 with hji | hji | hji` into its components or cases. Establish `a1 : lam.w ⟨i.1, by omega⟩ ≤ lam.w ⟨j.1 + 1, by omega⟩` using `lam.anti (Fin.mk_le_mk.2 (by omega))`. Establish `a2` using `(hI j).2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `e : j = i` using `Fin.ext hji`. Substitute `e` using the available equality. Use linear arithmetic over natural numbers and integers. Establish `a1 : lam.w ⟨j.1, by omega⟩ ≤ lam.w ⟨i.1 + 1, by omega⟩` using `lam.anti (Fin.mk_le_mk.2 (by omega))`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `a2` using `(hI j).1`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem cBr_ne_zero (hI : Interlace h lam sg) : cBr h lam sg ≠ 0 := by
   unfold cBr
@@ -61,7 +61,7 @@ theorem cBr_ne_zero (hI : Interlace h lam sg) : cBr h lam sg ≠ 0 := by
     omega
 
 /- English proof (translation)
-The claim follows from `|cBr h lam sg| ≤ (lam.w ⟨0, by omega⟩ - lam.w ⟨N - 1, by omega⟩ + (n : ℤ)) ^ (n * ∑ i : Fin n, ((Rset h lam sg i).erase (sg.w i)).card) := by unfold cBr rw [← prod_pow_pow] refine abs_prod_le_prod _ _ _ (fun i _ => ?_) refine abs_prod_le_pow _ _ _ (fun v hv => ?_) have hc : ((lam …`.
+A detailed English derivation is pending.
 -/
 theorem abs_cBr_le_top (hI : Interlace h lam sg) :
     |cBr h lam sg| ≤ (lam.w ⟨0, by omega⟩ - lam.w ⟨N - 1, by omega⟩ + (n : ℤ)) ^
@@ -84,7 +84,7 @@ theorem abs_cBr_le_top (hI : Interlace h lam sg) :
   constructor <;> omega
 
 /- English proof (translation)
-The claim follows from `|((cBr h lam sg : ℤ) : ℝ)| ≤ cBd h lam sg := by set K : ℕ := ∑ i : Fin n, ((Rset h lam sg i).erase (sg.w i)).card with hK have hD1 : (N : ℤ) * D1 h lam sg = ((N * K : ℕ) : ℤ) := by rw [interlacing_defect_eq_card h lam sg hI, ← hK, Nat.cast_mul] have hN : 0 < N := by omega have hs …`.
+A detailed English derivation is pending.
 -/
 theorem abs_cBr_le_cBd (hI : Interlace h lam sg) :
     |((cBr h lam sg : ℤ) : ℝ)| ≤ cBd h lam sg := by
@@ -113,9 +113,9 @@ theorem abs_cBr_le_cBd (hI : Interlace h lam sg) :
   exact_mod_cast le_trans hb hb2
 
 /- English proof (translation)
-Substitute `h` using the available equality. Unfold `degZ wsum D0`. Rewrite using `[Fin.sum_univ_succ, Finset.sum_sub_distrib]`. Establish `e1 : ∑ i : Fin n, lam.w i.succ = ∑ i : Fin n, lam.w ⟨i.1 + 1, by omega⟩` using `rfl`. Establish `e0 : lam.w 0 = lam.w ⟨0, by omega⟩` using `rfl`.
+Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e0]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem degZ_eq : degZ lam sg = lam.w ⟨0, by omega⟩ - D0 h lam sg := by
   subst h

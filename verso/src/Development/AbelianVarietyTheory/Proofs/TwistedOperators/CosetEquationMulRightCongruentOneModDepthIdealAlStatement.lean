@@ -29,7 +29,7 @@ open Matrix
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CosDualStep.coset_equation_mul_right_congruent_one_mod_depthIdeal` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FCosetEquationMulRightCongruentOneModDepthIdealAl.lean&line=125#L125)
 -/

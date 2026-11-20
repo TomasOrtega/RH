@@ -14,21 +14,15 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.StageF
 
 /- English proof (translation)
-Take `⟨iTR, iLR, iSR, iTR2, -⟩` from `D.hR`. Use `haveI := iTR`. Use `haveI := iLR`. Use `haveI := iSR`. Use `haveI := iTR2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨iTK, iLK, iSK, iT2K, -, -, -, iBor, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ D.hCM R`. Use `haveI := iTK`. Use `haveI := iLK`. Use `haveI := iSK`. Use `haveI := iT2K`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJ'` using `GlobalTheory.T.block_one_scalar_preserves_nondegenerate F E σ M J D.hJ t D.ht`. Take `⟨-, ⟨κ, hκs, hκm⟩, -, -⟩` from `GlobalTheory.T.local_fibre_measure_orthogonal_sum F E σ D.hCM M n J D.hJ R D.hR d b lam D.hlam m' D.hm'`. Take `⟨-, hloc₁, -⟩` from `GlobalTheory.T.gram_fiber_measure_locally_finite_measurable_supported F E σ D.hCM (M + 1) 1 _ hJ' R D.hR d b lam D.hlam m₁ D.hm₁`. Take `⟨-, -, iSH, -, iBH, hH⟩` from `GlobalTheory.T.adelic_unitary_group_locally_compact F E σ D.hCM (M + 1) _ hJ' R`. Use `haveI := iSH`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI := iBH`. Use `haveI : BorelSpace (Fin n → Fin M → R ⊗[F] E) := iBor n M`. Use `haveI : BorelSpace (Fin (n + 1) → Fin (M + 1) → R ⊗[F] E) := iBor (n + 1) (M + 1)`. Use `haveI : BorelSpace (Fin 1 → Fin (M + 1) → R ⊗[F] E) := iBor 1 (M + 1)`. Use `haveI : BorelSpace (R ⊗[F] E) := ⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsModuleTopology R (R ⊗[F] E) := ⟨rfl⟩`. Establish `hact` using `(hH (n + 1)).1`. Establish `hten : Measurable (fun r : R => r ⊗ₜ[F] (1 : E))` using `by haveI : ContinuousSMul R (R ⊗[F] E) := IsModuleTopology.toContinuousSMul R (R ⊗[F] E)`. Establish `hc : Continuous (fun r : R => r • (1 : R ⊗[F] E))` using `Continuous.smul (f := fun r : R => r) (g := fun _ : R => (1 : R ⊗[F] E)) continuous_id continuous_const`. Establish `he : (fun r : R => r ⊗ₜ[F] (1 : E)) = fun r : R => r • (1 : R ⊗[F] E)`.
-
-Use function extensionality and compare the values at `r`. Simplify using `[Algebra.TensorProduct.one_def, TensorProduct.smul_tmul']`. Rewrite using `[he]`. Conclude with `hc.measurable`. Use `haveI : IsSFiniteKernel κ := hκs`.
-
-Set `κ' : Kernel ((R × (Fin n → R ⊗[F] E) × HermR R σ n) × (Fin 1 → Fin (M + 1) → R ⊗[F] E)) (Fin n → Fin M → R ⊗[F] E)` to `κ.comap (fun p => p.1.2.2) (measurable_snd.comp (measurable_snd.comp measurable_fst))`. Use `haveI := hloc₁ (hermScal R σ (algebraMap F R t))`. Establish `hvec : Measurable (fun q : ((R × (Fin n → R ⊗[F] E) × HermR R σ n) × (Fin 1 → Fin (M + 1) → R ⊗[F] E)) × (Fin n → Fin M → R ⊗[F] E) => (vec (q.1.1.1 ⊗ₜ[F] (1 : E)) q.1.1.2.1 q.2 : Fin (n + 1) → Fin (M + 1) → R ⊗[F] E))` using `measurable_vec_triple.comp ((hten.comp (measurable_fst.comp (measurable_fst.comp measurable_fst))).prodMk (((measurable_fst.comp (measurable_snd.comp (measurable_fst.comp measurable_fst)))).prodMk measurable_snd))`. Establish `hΦ : Measurable (fun q : ((R × (Fin n → R ⊗[F] E) × HermR R σ n) × (Fin 1 → Fin (M + 1) → R ⊗[F] E)) × (Fin n → Fin M → R ⊗[F] E) => actW R σ (blockOne (algebraMap F E t) J) (s q.1.2) (vec (q.1.1.1 ⊗ₜ[F] (1 : E)) q.1.1.2.1 q.2))` using `hact.measurable.comp ((D.hs.comp (measurable_snd.comp measurable_fst)).prodMk hvec)`. Establish `hinner` using `Measurable.lintegral_kernel_prod_right' (κ := κ') (hφ.comp hΦ)`.
-
-Establish `hfin` using `Measurable.lintegral_prod_right' (ν := m₁ (hermScal R σ (algebraMap F R t))) hinner`. Establish `hm'κ : m' = fun S => κ S` using `funext fun S => (hκm S).symm`. Rewrite using `[hm'κ]`. Conclude with `hfin`.
+A detailed English derivation is pending.
 -/
 theorem measurable_PintF (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) (t : F) (n : ℕ) (R : Type) [CommRing R]

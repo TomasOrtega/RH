@@ -7,7 +7,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory.LocIota
 
 /- English proof (translation)
-Establish `hint : IsIntegral ℚ_[l] (c : Om l)` using `Algebra.IsIntegral.isIntegral _`. Take `⟨K, hc⟩ : ∃ K : FinExt l, (c : Om l) ∈ K0 K` from `⟨⟨IntermediateField.adjoin ℚ_[l] {(c : Om l)}, IntermediateField.adjoin.finiteDimensional hint⟩, IntermediateField.mem_adjoin_simple_self ℚ_[l] (c : Om l), c.2⟩`. Establish `h` using `(P.PD K).ι.commutes (⟨c, hc⟩ : ↥(K0 K))`. Rewrite `h` using `[P.PD_ι]`. Conclude with `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ιB_algebraMap_Kur {l : ℕ} [Fact l.Prime] (P : LocPrime l) (c : ↥(MaximalUnramifiedExtension l)) :
     P.ιB (algebraMap ↥(MaximalUnramifiedExtension l) P.R.B c) = algebraMap (Om l) P.R.BdR (c : Om l) := by
@@ -21,7 +21,7 @@ theorem ιB_algebraMap_Kur {l : ℕ} [Fact l.Prime] (P : LocPrime l) (c : ↥(Ma
   exact h
 
 /- English proof (translation)
-Introduce `_ _ P _ _ c` and use `ιB_algebraMap_Kur P c`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tied_ιB_algebraMap_Kur : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P),
     LocTied l P AI → ∀ c : ↥(MaximalUnramifiedExtension l),

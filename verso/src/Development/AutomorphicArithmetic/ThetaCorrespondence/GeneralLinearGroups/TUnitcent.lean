@@ -9,23 +9,21 @@ open Filter Topology GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL 
 
 open MeasureTheory in
 /- English proof (translation)
-Introduce `k _ _ _ _ N V _ _ π p hs hirr hLp t c hc`. Use `haveI := GlobalTheory.SmGL.Model.nontrivial_of_isIrreducible hirr`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Take `⟨K, hKo, hKc, -⟩` from `GlobalTheory.SqIntUnit.compactOpen_basis k N Set.univ Filter.univ_mem`. Take `⟨l, hl⟩` from `GlobalTheory.ContraRefl.exists_smooth_form_ne hs (GlobalTheory.SqIntUnit.compactOpen_basis k N) hv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI hQ : IsTopologicalGroup (GL (Fin N) k ⧸ Subgroup.center (GL (Fin N) k)) := inferInstance`. Use `letI : MeasurableSpace (AdGL k N) := borel _`. Use `haveI : BorelSpace (AdGL k N) := ⟨rfl⟩`. Set `q : GL (Fin N) k → AdGL k N` to `QuotientGroup.mk`. Establish `hqc : Continuous q` using `continuous_quot_mk`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hqo : IsOpenMap q` using `QuotientGroup.isOpenMap_coe`. Set `K₀ : TopologicalSpace.PositiveCompacts (AdGL k N)` to `⟨⟨q '' (K : Set (GL (Fin N) k)), hKc.image hqc⟩, by`. Use `⟨q 1, ?_⟩` and prove the remaining obligations. Rewrite using `[(hqo _ hKo).interior_eq]`. Conclude with `⟨1, K.one_mem, rfl⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hopen : IsOpen {g : GL (Fin N) k | (l : Module.Dual ℂ V) ∘ₗ π g = l}`. Establish `h1` using `l.2`. Express the relevant statement in the definitionally equal form `IsOpen {g | π.dual g l = l} at h1`. Establish `h2 : {g : GL (Fin N) k | (l : Module.Dual ℂ V) ∘ₗ π g = l} = (fun g => g⁻¹) ⁻¹' {g | π.dual g l = l}`. Use extensionality with `g`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `[Representation.dual_apply, Module.Dual.transpose_apply]`. Rewrite using `[h2]`. Conclude with `h1.preimage continuous_inv`. Take `⟨F, hF, -⟩` from `hLp (MeasureTheory.Measure.haarMeasure K₀) (MeasureTheory.Measure.isHaarMeasure_haarMeasure K₀) v l hopen`. Establish `hz : (Matrix.GeneralLinearGroup.scalar (Fin N) t) ∈ Subgroup.center (GL (Fin N) k)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subgroup.mem_center_iff]`. Introduce `g`. Use extensionality with `i j`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.mul_smul, Matrix.smul_mul, mul_comm]`. Establish `hq : ((Matrix.GeneralLinearGroup.scalar (Fin N) t : GL (Fin N) k) : AdGL k N) = ((1 : GL (Fin N) k) : AdGL k N)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[QuotientGroup.eq]`. Simplify using `using hz`. Establish `e1` using `hF (Matrix.GeneralLinearGroup.scalar (Fin N) t)`. Establish `e2` using `hF 1`. Rewrite `e1` using `[hq, e2, hc v, map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Module.End.one_apply, map_smul, norm_smul] at e1`. Establish `hlv : 0 < ‖(l : Module.Dual ℂ V) v‖` using `norm_pos_iff.mpr hl`. Establish `h3 : (‖c‖ - 1) * ‖(l : Module.Dual ℂ V) v‖ = 0`. Rewrite using `[sub_mul, one_mul, ← e1, sub_self]`. Break down `mul_eq_zero.mp h3 with h | h` into its components or cases.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.Cas.unitcent :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) (p : ℝ), IsSmooth π → π.IsIrreducible → CoeffLp p π → UnitaryCentral π := by

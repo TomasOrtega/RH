@@ -6,9 +6,9 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.EvenOrdLConjGramDet
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `w.valuation_exists_uniformizer E`. Establish `hv : Valued.v (algebraMap E (w.adicCompletion E) π) = WithZero.exp (-1 : ℤ)` using `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w π).trans hπ`. Establish `h0 : algebraMap E (w.adicCompletion E) π ≠ 0`. Introduce `h`. Rewrite `hv` using `[h, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `WithZero.exp_ne_zero hv.symm`. Conclude with `⟨Units.mk0 _ h0, GlobalTheory.GramParity.ordL_eq_of h0 hv⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_unit_ordL_eq_one {E : Type} [Field E] [NumberField E] (w : Pl E) :
     ∃ ϖ : (w.adicCompletion E)ˣ, ordL (ϖ : w.adicCompletion E) = 1 := by
@@ -22,7 +22,7 @@ private theorem exists_unit_ordL_eq_one {E : Type} [Field E] [NumberField E] (w 
   exact ⟨Units.mk0 _ h0, GlobalTheory.GramParity.ordL_eq_of h0 hv⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ n w τ B h`. Take `⟨ϖ, hϖ⟩` from `exists_unit_ordL_eq_one w`. Take `⟨x, hx, htr⟩` from `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.dcosTr E n w ϖ hϖ τ h.1`. Take `⟨hL, hS⟩` from `UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.dcosSep E n w ϖ hϖ x hx`. Conclude with `⟨_, hL, htr, hS⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.regFn :
     UpperTheory.V.Z.Tf.GlobalTraceComparison.Asm.RegFn := by

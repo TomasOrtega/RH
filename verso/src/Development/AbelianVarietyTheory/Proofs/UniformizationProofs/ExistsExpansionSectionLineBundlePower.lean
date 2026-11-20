@@ -24,7 +24,7 @@ section General
 variable {X X₁ X₂ Y Y' Z : Scheme.{0}} {L : LB X} {L₁ : LB X₁} {L₂ : LB X₂} {K : Type} [Fintype K]
 
 /- English proof (translation)
-Take `rfl : φ' = fun i => h ≫ φ i` from `funext e`. Conclude with `⟨_, fun Z r z J hJ => H1.SectionArithmetic.sval_pullSec s h r z hJ⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pull {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {ε : K → ℤ} (h : Y' ⟶ Y) (e : ∀ i, φ' i = h ≫ φ i)
     (s : LB.Sec (LB.LinComb L φ ε)) : ∃ s' : LB.Sec (LB.LinComb L φ' ε),
@@ -33,9 +33,9 @@ theorem exists_pull {φ : K → (Y ⟶ X)} {φ' : K → (Y' ⟶ X)} {ε : K → 
   exact ⟨_, fun Z r z J hJ => H1.SectionArithmetic.sval_pullSec s h r z hJ⟩
 
 /- English proof (translation)
-Take `⟨τ, hτ⟩` from `GenericFibreSections.exists_transfer hL₁ hL₂ f₁ f₂ k (fun i j => (L₂.pull f₂).U (fun _ => j) ⊓ (L₁.pull f₁).U (fun _ => i)) (fun i j y hi hj => ⟨mem_pull.2 hj, mem_pull.2 hi⟩) (fun i j => (show Γ(Y, (L₂.pull f₂).U (fun _ => j) ⊓ (L₁.pull f₁).U (fun _ => i))ˣ from w.s (fun _ => j, …`. Establish `e` using `GenericFibreSections.gw_trans hw y hi hi' hj hj'`. Rewrite using `[map_pow, map_pow, zpow_natCast, zpow_natCast, ← mul_pow, ← mul_pow]`. Conclude with `congrArg (· ^ k) e) s`. Use `⟨τ, fun Z r z J₁ J₂ h₁ h₂ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτ Z r z J₁ J₂ h₁ h₂, map_pow, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_carry (hL₁ : L₁.IsLB) (hL₂ : L₂.IsLB) {f₁ : Y ⟶ X₁} {f₂ : Y ⟶ X₂}
     (w : LB.Iso (L₁.pull f₁) (L₂.pull f₂)) (hw : w.IsGen) (k : ℕ)
@@ -56,7 +56,7 @@ theorem exists_carry (hL₁ : L₁.IsLB) (hL₂ : L₂.IsLB) {f₁ : Y ⟶ X₁}
   rfl
 
 /- English proof (translation)
-The claim follows from `(congrArg (gs r z _) (h _)).trans ((gs_eq r z _ (hJ.mem φ r) _).trans ((congrArg _ (map_zero _)).trans (map_zero _)))`.
+A detailed English derivation is pending.
 -/
 theorem sval_zero {φ : K → (Y ⟶ X)} {ε : K → ℤ} {s : LB.Sec (LB.LinComb L φ ε)} (h : ∀ j, s.f j = 0)
     (r : Z ⟶ Y) {z : Z} {J} (hJ : Good L z J) : sval s r z J = 0 :=
@@ -64,7 +64,7 @@ theorem sval_zero {φ : K → (Y ⟶ X)} {ε : K → ℤ} {s : LB.Sec (LB.LinCom
     ((congrArg _ (map_zero _)).trans (map_zero _)))
 
 /- English proof (translation)
-Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Take `⟨J, hJ, e⟩` from `sval_trans hL s y j hy`. Rewrite `e` using `[h y J hJ, mul_zero]`. Conclude with `e.trans ((gs_eq (𝟙 Y) y _ hy _).trans ((congrArg _ (map_zero _)).trans (map_zero _))).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zero_of_sval (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {s : LB.Sec (LB.LinComb L φ ε)}
     (h : ∀ y J, Good L y J → sval s (𝟙 Y) y J = 0) (j) : s.f j = 0 := by
@@ -74,7 +74,7 @@ theorem zero_of_sval (hL : L.IsLB) {φ : K → (Y ⟶ X)} {ε : K → ℤ} {s : 
   exact e.trans ((gs_eq (𝟙 Y) y _ hy _).trans ((congrArg _ (map_zero _)).trans (map_zero _))).symm
 
 /- English proof (translation)
-Take `⟨h₀, h₁, -⟩` from `values_natural X Y Y' Z L K φ ε p r z J hJ`. Take `⟨-, h₂, -⟩` from `values_natural X Y₁ Y' Z L K' φ' ε' p' r z J hJ`. Rewrite using `[h₁, h₂, h _ _ h₀]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sval_eq_of_id {Y₁ : Scheme.{0}} {K' : Type} [Fintype K'] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {φ' : K' → (Y₁ ⟶ X)} {ε' : K' → ℤ} {s : LB.Sec (LB.LinComb L φ ε)} {s' : LB.Sec (LB.LinComb L φ' ε')}
@@ -85,9 +85,9 @@ theorem sval_eq_of_id {Y₁ : Scheme.{0}} {K' : Type} [Fintype K'] {φ : K → (
   rw [h₁, h₂, h _ _ h₀]
 
 /- English proof (translation)
-Take `⟨h₀, h₁, -⟩` from `values_natural X Y Y Z L K φ ε (𝟙 Y) r z J hJ`. Establish `a` using `h₁ τ`. Rewrite `a` using `[Category.comp_id, h _ _ h₀, map_sum]`. Use `a.trans (Finset.sum_congr rfl fun α _ => ?_)` and prove the remaining obligations. Establish `b` using `(values_natural X Y' Y Z L K₁ (φ₁ α) ε₁ q r z J hJ).2.1 (f α)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `c` using `(values_natural X Y Y Z L K₂ (φ₂ α) ε₂ (𝟙 Y) r z J hJ).2.2.1 (t α)`. Rewrite `c` using `[Category.comp_id]`. Rewrite using `[map_mul, b, c]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_of_id {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂] {N : Type} {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     {φ₁ : N → K₁ → (Y' ⟶ X)} {ε₁ : K₁ → ℤ} {φ₂ : N → K₂ → (Y ⟶ X)} {ε₂ : K₂ → ℤ}
@@ -113,13 +113,13 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R}
 
 omit [GrpObj G] [IsCommMonObj G] in
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem thickMap_fst (e : ℕ) : thickMap R I e G ≫ (fstG I (e + 1) G).left = (fstG I e G).left :=
   (pullback.lift_fst _ _ _).trans (Category.comp_id _)
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem thickMap_prBe (e : ℕ) : thickMap R I e D.P.A ≫ (D.prBe I (e + 1)).left = (D.prBe I e).left :=
   (pullback.lift_fst _ _ _).trans (Category.comp_id _)
@@ -130,9 +130,7 @@ Both sides reduce to the same expression.
 theorem pG_left {e : ℕ} (g : GtCoord I D e G) : g.pG.left = g.q.left ≫ (D.prBe I e).left := rfl
 
 /- English proof (translation)
-Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).trans ((congrArg ((U.gt e).q.left ≫ ·) (thickMap_prBe e)).trans ((U.gt_q e).symm.trans (Category.assoc _ _ _).symm))`. Establish `a : (U.gt e).q.left ≫ pullback.snd D.P.A.hom (thick R I e) = pullback.snd G.hom (thick R I e)` using `Over.w (U.gt e).q`. Establish `b : (U.gt (e + 1)).q.left ≫ pullback.snd D.P.A.hom (thick R I (e + 1)) = pullback.snd G.hom (thick R I (e + 1))` using `Over.w (U.gt (e + 1)).q`. Establish `c : ∀ H : Over (Spec (CommRingCat.of R)), thickMap R I e H ≫ pullback.snd H.hom (thick R I (e + 1)) = pullback.snd H.hom (thick R I e) ≫ thickTrans R I e` using `fun H => pullback.lift_snd _ _ _`.
-
-Conclude with `(Category.assoc _ _ _).trans ((congrArg ((U.gt e).q.left ≫ ·) (c _)).trans ((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ thickTrans R I e) a).trans ((c G).symm.trans ((congrArg (thickMap R I e G ≫ ·) b.symm).trans (Category.assoc _ _ _).symm)))))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem q_thickMap (U : PreU I D A G) (e : ℕ) :
     (U.gt e).q.left ≫ thickMap R I e D.P.A = thickMap R I e G ≫ (U.gt (e + 1)).q.left := by
@@ -150,11 +148,9 @@ theorem q_thickMap (U : PreU I D A G) (e : ℕ) :
         ((congrArg (thickMap R I e G ≫ ·) b.symm).trans (Category.assoc _ _ _).symm)))))
 
 /- English proof (translation)
-Use `fin_cases i`. Conclude with `(Category.comp_id _).symm`. Use `show (padd D.P.A (snd T D.P.A) (toUnit _ ≫ D.c α)).left = (snd T D.P.A ≫ padd D.P.A (𝟙 D.P.A) (toUnit _ ≫ D.c α)).left`. Use `congr 1`. Rewrite using `[padd, padd, ← Category.assoc, comp_lift, Category.comp_id, ← Category.assoc, comp_toUnit]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `show (toUnit (T ⊗ D.P.A) ≫ D.c α).left = (snd T D.P.A ≫ toUnit D.P.A ≫ D.c α).left`. Use `congr 1`. Simplify using the standard rewrite rules. Use `show (toUnit (T ⊗ D.P.A) ≫ η[D.P.A]).left = (snd T D.P.A ≫ toUnit D.P.A ≫ η[D.P.A]).left`. Use `congr 1`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem famφT_eq (T : Over (Spec (CommRingCat.of R))) (α : D.X) (i : Fin 4) :
     famφT D T α i = (snd T D.P.A).left ≫ D.famφB α i := by
@@ -174,25 +170,21 @@ theorem famφT_eq (T : Over (Spec (CommRingCat.of R))) (α : D.X) (i : Fin 4) :
 end Levels
 
 /- English proof (translation)
-Introduce `h1 h2 V _ _ _ hV D A G _ _ U k hk σ`. Establish `hB` using `D.P.isLB`. Establish `hG` using `U.P.L.isLB`. Establish `lam : (snd (𝟙_ _) G).left ≫ (λ_ G).inv.left = 𝟙 _`. Rewrite using `[← Over.comp_left, ← leftUnitor_hom, Iso.hom_inv_id, Over.id_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `lam' : (λ_ G).inv.left ≫ (snd (𝟙_ _) G).left = 𝟙 _`. Rewrite using `[← Over.comp_left, ← leftUnitor_hom, Iso.inv_hom_id, Over.id_left]`. Establish `lev : ∀ e : ℕ, ∃ τ : LB.Sec (LB.LinComb D.P.L (K` using `Fin 1) (fun _ => (U.gt e).pG.left) (fun _ => (k : ℤ))), ∀ (Z : Scheme.{0}) (r : Z ⟶ (thickObj V (IsLocalRing.maximalIdeal V) e G).left) (z : Z) JG J, Good U.P.L.L z JG → Good D.P.L z J → sval τ r z J = (gw (U.w e) r z (J (r ≫ (U.gt e).pG.left)) (fun _ => JG (r ≫ (fstG (IsLocalRin …`. Take `⟨s, hs⟩` from `exists_pull (φ' := fun _ : Fin 1 => (fstG (IsLocalRing.maximalIdeal V) e G).left) ((fstG (IsLocalRing.maximalIdeal V) e G).left ≫ (λ_ G).inv.left) (fun _ => by rw [Category.assoc, lam', Category.comp_id]) σ`. Take `⟨τ, hτ⟩` from `exists_carry hG hB (U.w e) (U.w_gen e) k s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨τ, fun Z r z JG J hJG hJ => (hτ Z r z JG J hJG hJ).trans (congrArg _ ((hs Z r z JG hJG).trans ?_))⟩` and prove the remaining obligations. Conclude with `congrArg (fun p => sval σ p z JG) (Category.assoc _ _ _).symm`. Use `choose τ hτ using lev`. Establish `ex` using `fun e => GlobalTheory.T.existsUnique_thickTorus_level_weight_expansion V _ D e G (U.gt e) k (τ e)`. Use `choose f hf hu using ex`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose S hS hsum using hf`. Establish `compat : ∀ α e z J, Good D.P.L z J → sval (f (e + 1) α) (thickMap V _ e D.P.A) z J = sval (f e α) (𝟙 _) z J`. Introduce `α e`. Use `choose f' hf' using fun β => exists_pull (φ' := fun i => (D.prBe (IsLocalRing.maximalIdeal V) e).left ≫ D.famφB β i) (thickMap V _ e D.P.A) (fun i => ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ D.famφB β i) (thickMap_prBe e))).symm) (f (e + 1) β)`. Establish `E : f' = f e`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hu e f' ⟨S (e + 1), fun β hβ => zero_of_sval hB fun y J hJ => (hf' β _ _ y J hJ).trans (sval_zero (hS _ β hβ) _ hJ), fun z J hJ => ?_⟩` and prove the remaining obligations. Take `⟨JG, hJG⟩` from `exists_good_pt hG z`. Establish `a` using `sum_of_id (hsum (e + 1)) (thickMap V _ e G) z hJ`. Establish `b : sval (τ e) (𝟙 (thickObj V (IsLocalRing.maximalIdeal V) e G).left) z J = sval (τ (e + 1)) (thickMap V _ e G) z J`. Use `(hτ e _ _ z JG J hJG hJ).trans (Eq.trans ?_ (hτ (e + 1) _ _ z JG J hJG hJ).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c` using `U.w_compat e _ (𝟙 _) z _ _ (hJ (U.gt e).pG.left) (hJG (fstG (IsLocalRing.maximalIdeal V) e G).left)`. Rewrite `c` using `[Category.id_comp]`. Rewrite using `[U.gt_q, thickMap_fst, c]`. Simplify using `only [Category.id_comp]`. Use `b.trans (a.trans (Finset.sum_congr rfl fun β _ => congrArg₂ (· * ·) ?_ (congrArg Units.val ?_)))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(congrArg (fun p => sval (f (e + 1) β) p z J) (q_thickMap U e).symm).trans (hf' β _ _ z J hJ).symm`. Conclude with `((congrArg (fun p => val ((U.gt (e + 1)).t β) p z J) (Category.id_comp _).symm).trans (val_pull hJ _ _ _).symm).trans (val_corr hJ (U.gt_t e β) _)`. Introduce `z J hJ`. Rewrite using `[← E]`. Conclude with `((hf' α _ _ z J hJ).trans (congrArg (fun p => sval (f (e + 1) α) p z J) (Category.id_comp _))).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose s hs _ using fun α => GlobalTheory.T.existsUnique_twistedSection_of_compatible_levels h1 h2 V hV D k hk α (fun e => f e α) (compat α)`. Use `choose F hF using fun α => exists_pull (snd (𝟙_ _) D.P.A).left (famφT_eq (𝟙_ _) α) (s α)`. Use `⟨F, fun e => ⟨S e, fun Z x rG rB hrG hrB _ z JG J hJG hJ => ?_⟩⟩` and prove the remaining obligations. Establish `v : ∀ α, sval (F α) rB z J = sval (f e α) (x ≫ (U.gt e).q.left) z J` using `fun α => by`. Use `(hF α _ _ z J hJ).trans ?_` and prove the remaining obligations.
-
-Establish `a` using `sval_eq_of_id (hs α e) (x ≫ (U.gt e).q.left) z hJ`. Use `Eq.trans (congrArg (fun p => sval (s α) p z J) (hrB.trans (Category.assoc _ _ _).symm)) (a.trans ?_)` and prove the remaining obligations. Conclude with `congrArg (fun p => sval (f e α) p z J) (Category.comp_id _)`. Use `⟨fun α hα => (v α).trans (sval_zero (hS e α hα) _ hJ), ?_⟩` and prove the remaining obligations. Establish `r : rG = (x ≫ (fstG (IsLocalRing.maximalIdeal V) e G).left) ≫ (λ_ G).inv.left`.
-
-Rewrite using `[← hrG, Category.assoc, lam, Category.comp_id]`. Rewrite using `[r]`. Use `(hτ e _ x z JG J hJG hJ).symm.trans ((sum_of_id (hsum e) x z hJ).trans ?_)` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun α _ => congrArg (· * _) (v α).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem main : Laws → Laws2 → (AllPre fun U => ∀ k, 1 ≤ k → ∀ σ, ∃ f, U.ExpT (𝟙_ _) k σ f) := by
   intro h1 h2 V _ _ _ hV D A G _ _ U k hk σ

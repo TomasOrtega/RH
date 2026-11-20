@@ -23,18 +23,18 @@ section Point
 variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts}
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz)
 /- English proof (translation)
-The claim follows from `h.ioExt`.
+A detailed English derivation is pending.
 -/
 theorem ioExt_R2 (h : p.PointConditions') : IoExt (R2 p) := h.ioExt
 /- English proof (translation)
-Use `oneMapRowR_charOf (κ := p.κ) (v₀ := p.v₀) p.O (F2 p) (phEff p.R) i (h.oneMap i)` as an intermediate fact. Rewrite `this` using `[phEff_eq_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_map_R2 (h : p.PointConditions') (i : Fin D.R.m) : OneMapRowR p.T (R2 p) p.κ p.v₀ (om2 p) (fun _ => 1) i := by
   have := oneMapRowR_charOf (κ := p.κ) (v₀ := p.v₀) p.O (F2 p) (phEff p.R) i (h.oneMap i)
   rw [phEff_eq_one] at this
   exact this
 /- English proof (translation)
-Establish `hL : Links2 p` using `_root_.GlobalTheory.T.links2_of_single_index_twisted _ _ _ _ _ _ _ _ _ _ p h hm.1`. Conclude with `GlobalTheory.T.twistedClassSums_rational_of_rayClassFields D _ _ _ _ p.T (R2 p) (F2 p) p.κ p.v₀ (fw2 p) (om2 p) hL.1 (_root_.GlobalTheory.BigOn.ioExt_R2 p h) hL.2.2.1 hL.2.2.2.2.2.2.1 (splitPartRealisation_satisfies_qGuard p) (_root_.GlobalTheory.BigOn.one_map_R2 p h) hL.2.2.2.1 …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twistedRational_R2_F2 (h : p.PointConditions') (hm : More p) : GlobalTheory.RealIndexBound.TwistedRational (R2 p) (F2 p) fun _ => 1 := by
   have hL : Links2 p := _root_.GlobalTheory.T.links2_of_single_index_twisted _ _ _ _ _ _ _ _ _ _ p h hm.1
@@ -42,7 +42,7 @@ theorem twistedRational_R2_F2 (h : p.PointConditions') (hm : More p) : GlobalThe
     hL.2.2.2.2.2.2.1 (splitPartRealisation_satisfies_qGuard p) (_root_.GlobalTheory.BigOn.one_map_R2 p h) hL.2.2.2.1 hL.2.2.2.2.1 hm.2.2.rayQ
 end Point
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ _ _ p h hm => _root_.GlobalTheory.BigOn.twistedRational_R2_F2 p h hm⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem bigOn_ratSt : _root_.GlobalTheory.BigOn.RationalityStatement' :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, fun _ _ _ _ p h hm => _root_.GlobalTheory.BigOn.twistedRational_R2_F2 p h hm⟩⟩⟩

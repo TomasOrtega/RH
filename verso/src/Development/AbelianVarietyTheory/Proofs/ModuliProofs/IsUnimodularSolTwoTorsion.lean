@@ -21,9 +21,9 @@ open GlobalTheory.WeierstrassCurve
 noncomputable def curve : _root_.WeierstrassCurve ℤ_[3] := ⟨0, 0, 0, -1, 0⟩
 
 /- English proof (translation)
-Establish `h : curve.Δ = ((64 : ℤ) : ℤ_[3])`. Simplify using `only [curve, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Evaluate the numerical expressions. Rewrite using `[h, PadicInt.isUnit_iff]`. Use `le_antisymm (PadicInt.norm_le_one _) (not_lt.1 fun hlt => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hlt` using `[PadicInt.norm_int_lt_one_iff_dvd]`. Use `revert hlt`. Evaluate the numerical expressions.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem isUnit_curve_Δ : IsUnit curve.Δ := by
   have h : curve.Δ = ((64 : ℤ) : ℤ_[3]) := by
@@ -37,7 +37,7 @@ theorem isUnit_curve_Δ : IsUnit curve.Δ := by
   norm_num
 
 /- English proof (translation)
-Use `⟨?_, (Ideal.eq_top_iff_one _).2 (Ideal.subset_span ⟨1, rfl⟩)⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Projective.equation_iff]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isUnimodularSol_origin : IsUnimodularSol (curve.map (RingHom.id _)) ![0, 1, 0] := by
   refine ⟨?_, (Ideal.eq_top_iff_one _).2 (Ideal.subset_span ⟨1, rfl⟩)⟩
@@ -45,7 +45,7 @@ theorem isUnimodularSol_origin : IsUnimodularSol (curve.map (RingHom.id _)) ![0,
   simp
 
 /- English proof (translation)
-Use `⟨?_, (Ideal.eq_top_iff_one _).2 (Ideal.subset_span ⟨2, rfl⟩)⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.Projective.equation_iff]`. Simplify using `[curve]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isUnimodularSol_twoTorsion : IsUnimodularSol (curve.map (RingHom.id _)) ![0, 0, 1] := by
   refine ⟨?_, (Ideal.eq_top_iff_one _).2 (Ideal.subset_span ⟨2, rfl⟩)⟩
@@ -53,7 +53,7 @@ theorem isUnimodularSol_twoTorsion : IsUnimodularSol (curve.map (RingHom.id _)) 
   simp [curve]
 
 /- English proof (translation)
-Introduce `hm`. Establish `h : ptHom curve (RingHom.id _) _ isUnimodularSol_origin = ptHom curve (RingHom.id _) _ isUnimodularSol_twoTorsion`. Rewrite using `[← cancel_mono (toSpec curve), ptHom_toSpec, ptHom_toSpec]`. Establish `h'` using `(GlobalTheory.AddLaw.ptHom_eq_ptHom_iff_proportional _ curve _ _ _ _ _ _).1 h 1 2`. Simplify using `at h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem not_mono_toSpec : ¬ Mono (toSpec curve) := by
   intro hm
@@ -64,7 +64,7 @@ theorem not_mono_toSpec : ¬ Mono (toSpec curve) := by
   simp at h'
 
 /- English proof (translation)
-Introduce `hi`. Take `⟨i, r, hir⟩` from `exists_retract_tensorTriple (H := H) A hA`. Establish `e : i.left ≫ r.left = 𝟙 A.left` using `by rw [← Over.comp_left, hir, Over.id_left]`. Establish `: Mono i.left` using `mono_of_mono_fac e`. Conclude with `h (Over.w i ▸ inferInstance)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem not_isIso_tensorTriple {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) {X : Scheme.{0}}
     (A : Over X) [GrpObj A] [IsCommMonObj A] (hA : IsAbelianScheme A) (h : ¬ Mono A.hom) :

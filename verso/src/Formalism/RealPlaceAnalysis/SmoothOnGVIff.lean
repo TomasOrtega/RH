@@ -20,7 +20,7 @@ def expG {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) (t : �
   else 1
 
 /- English proof (translation)
-Rewrite using `[expG, dif_pos h]`. Conclude with `IsUnit.unit_spec _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma toM_expG {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) (h : inG ε X) :
     toM (expG ε X t) = NormedSpace.exp ((t : ℂ) • X) := by
@@ -28,7 +28,7 @@ lemma toM_expG {n : ℕ} (ε : Fin n → Bool) (X : Matrix (Fin n) (Fin n) ℂ) 
   exact IsUnit.unit_spec _
 
 /- English proof (translation)
-Use `⟨Submonoid.mul_mem _ hg.1 hh.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma Kset_mul {n : ℕ} (ε : Fin n → Bool) {g h : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε)
     (hh : h ∈ Kset ε) : g * h ∈ Kset ε := by
@@ -36,9 +36,9 @@ lemma Kset_mul {n : ℕ} (ε : Fin n → Bool) {g h : Matrix (Fin n) (Fin n) ℂ
   rw [Matrix.mul_assoc, hh.2, ← Matrix.mul_assoc, hg.2, Matrix.mul_assoc]
 
 /- English proof (translation)
-Establish `hJ : star (Jm ε) = Jm ε`. Rewrite using `[Jm, Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose]`. Apply the tactic sequence `congr 1; funext a; by_cases ha : ε a <;> simp [ha]`. Use `⟨Unitary.star_mem hg.1, ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg star hg.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[star_mul, star_mul, hJ]`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Kset_star {n : ℕ} (ε : Fin n → Bool) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Kset ε) :
     star g ∈ Kset ε := by
@@ -73,16 +73,16 @@ def KG {n : ℕ} (ε : Fin n → Bool) : Subgroup (UJ ε) where
     exact Kset_star ε hg
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_KG {n : ℕ} (ε : Fin n → Bool) (g : UJ ε) : g ∈ KG ε ↔ toM g ∈ Kset ε := Iff.rfl
 
 abbrev toMK {n : ℕ} {ε : Fin n → Bool} (k : KG ε) : Matrix (Fin n) (Fin n) ℂ := toM (k : UJ ε)
 
 /- English proof (translation)
-Use extensionality with `M`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, rfl⟩`. Conclude with `k.2`. Introduce `hM`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu : M * star M = 1` using `Unitary.mul_star_self_of_mem hM.1`. Establish `hu' : star M * M = 1` using `Unitary.star_mul_self_of_mem hM.1`. Establish `hUJ : inUJ ε M` using `by show Mᴴ * Jm ε * M = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hM.2, ← Matrix.mul_assoc, ← Matrix.star_eq_conjTranspose, hu', Matrix.one_mul]`. Conclude with `⟨⟨⟨⟨M, star M, hu, hu'⟩, hUJ⟩, hM⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma range_toMK {n : ℕ} (ε : Fin n → Bool) :
     Set.range (fun k : KG ε => toMK k) = Kset ε := by
@@ -111,9 +111,9 @@ instance instIsHaarMuK (n : ℕ) (ε : Fin n → Bool) : (muK ε).IsHaarMeasure 
   unfold muK; infer_instance
 
 /- English proof (translation)
-Take `⟨hG, hJ⟩` from `h`. Establish `hs : star (t : ℂ) = t` using `Complex.conj_ofReal t`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Unfold `inG at hG ⊢`. Rewrite using `[Matrix.conjTranspose_smul, hs, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hG, smul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, hJ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma inK_smul_real {n : ℕ} (ε : Fin n → Bool) {Z : Matrix (Fin n) (Fin n) ℂ} (h : inK ε Z) (t : ℝ) :
     inK ε ((t : ℂ) • Z) := by
@@ -199,7 +199,7 @@ def EwordV {n : ℕ} {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] (ε 
   | p :: w => fun f => EabV ε p.1 p.2 (EwordV ε w f)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma smoothOnGV_iff {n : ℕ} (ε : Fin n → Bool) (f : Matrix (Fin n) (Fin n) ℂ → ℂ) :
     SmoothOnGV ε f ↔ SmoothOnG ε f := Iff.rfl

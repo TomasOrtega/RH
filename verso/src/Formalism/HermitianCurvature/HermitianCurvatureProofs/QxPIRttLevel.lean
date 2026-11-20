@@ -3,15 +3,15 @@ import Mathlib
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.QuadraticFormLevel.Imports
 
 /- English proof (translation)
-Introduce `hU hLT hGI hFF _ k r i`. Proceed by induction on `i using Fin.cases with`. Consider the case `succ l => exact hU k r l`. Consider the case `zero`. Introduce `Wp Wq _ _ _ _ z z' π π' D hz hz' hD J hJ g hg u v a b c d`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨π₁, π₁', D₁, f, hw, hw', hD₁, hf, hfJ⟩` from `hFF Wp Wq k r z z' π π' D hz hz' hD J hJ`. Establish `key : ∀ (Y Y' : ℂ) (p q p' q' : Fin 2), Formalism.FourierDecayAlt.Q.tL k (1 + r) (Formalism.QuantumDeterminants.liftVec k 1 r z) (Formalism.QuantumDeterminants.liftVec k 1 r z') ⟨1, by omega⟩ Y p q (Formalism.FourierDecayAlt.Q.tL k (1 + r) (Formalism.QuantumDeterminants.liftVec k …`. Introduce `Y Y' p q p' q'`. Rewrite using `[hLT (Wq →L[ℂ] Wp) k 1 r z z' Y p q _ g hg.1.1]`. Use `(Formalism.FourierDecayAlt.P.Qx2.ll_tL (i := 0) hD.1 z z' Y p q).loc _ _ ?_ g hg` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Rewrite using `[hLT (Wq →L[ℂ] Wp) k 1 r z z' Y' p' q' f x hx.1.1]`. Use `(Formalism.FourierDecayAlt.P.Qx2.ll_tL (i := 0) hD.1 z z' Y' p' q').loc _ _ ?_ x hx` and prove the remaining obligations. Introduce `y hy`. Conclude with `(hfJ y hy.1.1).2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hιg : Formalism.QuantumDeterminants.ιLev k 1 r g ∈ Formalism.FourierDecayAlt.Q.Glev k (1 + r) ⟨1, by omega⟩ ∩ D₁`. Use `⟨?_, (hfJ g hg.1.1).1.mpr hg.2⟩` and prove the remaining obligations. Rewrite using `[hGI k 1 r]`. Conclude with `⟨g, hg.1.1, rfl⟩`. Establish `h1 : Formalism.FourierDecayAlt.Q.RTTAt k (1 + r) ⟨1, by omega⟩` using `hU k (1 + r) ⟨0, by omega⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `h1 Wp Wq _ _ π₁ π₁' D₁ hw hw' hD₁ f hf _ hιg u v a b c d`. Simplify using `only [key] at h`. Conclude with `h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Formalism.FourierDecayAlt.P.rtt_level_from_upper : Formalism.FourierDecayAlt.Q.RTTLevelFromUpper := by
   intro hU hLT hGI hFF _ k r i

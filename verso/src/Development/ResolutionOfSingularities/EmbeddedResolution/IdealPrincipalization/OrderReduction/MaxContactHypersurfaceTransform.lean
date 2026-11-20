@@ -31,7 +31,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Substitute `hp hA hH` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isMaxContactHypersurface_of_eq_of_eq_of_eq (k : Type u) [Field k] {P : Scheme.{u}}
     {p p' : P ⟶ Spec (CommRingCat.of k)}
@@ -45,7 +45,7 @@ theorem isMaxContactHypersurface_of_eq_of_eq_of_eq (k : Type u) [Field k] {P : S
   exact h
 
 /- English proof (translation)
-Use `h` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem locallyOfFiniteType_of_smooth_morphism {X Y : Scheme.{u}} {f : X ⟶ Y}
     (h : AlgebraicGeometry.Smooth f) : AlgebraicGeometry.LocallyOfFiniteType f := by
@@ -53,7 +53,7 @@ private theorem locallyOfFiniteType_of_smooth_morphism {X Y : Scheme.{u}} {f : X
   infer_instance
 
 /- English proof (translation)
-Substitute `hp hA hH` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isMaxContactHypersurface_congr (k : Type u) [instk : Field k] {P : Scheme.{u}}
     {p p' : P ⟶ Spec (CommRingCat.of k)}
@@ -67,15 +67,13 @@ private theorem isMaxContactHypersurface_congr (k : Type u) [instk : Field k] {P
   exact h
 
 /- English proof (translation)
-Establish `: AlgebraicGeometry.Smooth e.hom` using `inferInstance`. Establish `hmax : maxContactIdeal k (e.hom ≫ q) (A.comap e.hom) m = (maxContactIdeal k q A m).comap e.hom`. Rewrite using `[maxContactIdeal_eq_derivIdealSheafIterate, maxContactIdeal_eq_derivIdealSheafIterate]`. Conclude with `derivIdealSheafIterate_comap k q e.hom (m - 1) A`. Rewrite `h` using `[isMaxContactHypersurface_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isMaxContactHypersurface_iff]`. Introduce `x`. Take `⟨U, hU, hxU, hcase⟩` from `h (e.hom.base x)`. Use `⟨(TopologicalSpace.Opens.map e.hom.base).obj U, hU.preimage_of_isIso e.hom, hxU, ?_⟩` and prove the remaining obligations. Break down `hcase with ⟨hdisj, htop⟩ | ⟨n, c, j, hHU, hmc⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the components needed by the constructor for the conclusion.
 
-Use `left`. Prove the components needed by the constructor for the conclusion. Establish `hd : Disjoint (⇑e.hom.base ⁻¹' orderAtLeastLocus A m) (⇑e.hom.base ⁻¹' (U : Set ↥Y))` using `hdisj.preimage _`. Rewrite using `[orderAtLeastLocus_comap_iso_hom_eq_preimage]`. Conclude with `hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[restrictIdeal_comap, htop]`. Simplify using the standard rewrite rules. Use `right`. Use `⟨n, EtaleChart.ofIso q e c, j, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[restrictIdeal_comap, hHU, EtaleChart.ofIso_coordIdeal]`.
-
-Rewrite `hmc` using `[isMaxContactCoord_iff]`. Rewrite using `[isMaxContactCoord_iff, EtaleChart.ofIso_coordIdeal, hmax, restrictIdeal_comap]`. Conclude with `Scheme.IdealSheafData.comap_mono _ hmc`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isMaxContactHypersurface_comap_iso (k : Type u) [Field k] {X Y : Scheme.{u}}
     (q : Y ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth q]
@@ -111,19 +109,17 @@ private theorem isMaxContactHypersurface_comap_iso (k : Type u) [Field k] {X Y :
       exact Scheme.IdealSheafData.comap_mono _ hmc
 
 /- English proof (translation)
-Establish `hlft : ∀ i : ℕ, i ≤ u.length → AlgebraicGeometry.LocallyOfFiniteType (u.proj i ≫ S.structMap)`. Introduce `i hi`. Establish `hsm : AlgebraicGeometry.Smooth (u.toMarkedSequenceOfBlowups.projectionToSpec i)` using `MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hv u.toMarkedSequenceOfBlowups i (by rw [MarkedBlowupSequenceData.toMarkedSequence_length]; exact hi)`. Rewrite `hsm` using `[MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]`. Conclude with `locallyOfFiniteType_of_smooth_morphism hsm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ i : ℕ, i ≤ u.length → ∀ inst : AlgebraicGeometry.LocallyOfFiniteType (u.proj i ≫ S.structMap), @IsMaxContactHypersurface S.base _ _ (u.proj i ≫ S.structMap) inst (u.ideal i) S.mult (MaxContactReduction.iteratedStrictTransform u H i)`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ inst`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hiso : AlgebraicGeometry.LocallyOfFiniteType (u.isoZero.hom ≫ S.structMap)`. Rewrite using `[← u.proj_zero]`. Conclude with `inst`. Use `isMaxContactHypersurface_congr S.base hiso inst ?_ (u.ideal_zero).symm (MaxContactReduction.iteratedStrictTransform_zero u H).symm (@isMaxContactHypersurface_comap_iso S.base _ _ _ S.structMap hv.smooth hv.locallyOfFiniteType u.isoZero hiso S.ideal S.mult H hH)` and prove the remaining obligations. Rewrite using `[u.proj_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ j ih`. Introduce `hj inst`. Establish `hjl : j < u.length` using `hj`. Establish `instj : AlgebraicGeometry.LocallyOfFiniteType (u.proj j ≫ S.structMap)` using `hlft j (le_of_lt hjl)`. Establish `instsj : AlgebraicGeometry.LocallyOfFiniteType (u.toMarkedSequenceOfBlowups.projectionToSpec j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]`. Conclude with `instj`. Establish `instsj1 : AlgebraicGeometry.LocallyOfFiniteType (u.toMarkedSequenceOfBlowups.projectionToSpec (j + 1))`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]`. Conclude with `inst`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : j < u.toMarkedSequenceOfBlowups.toSequenceOfBlowups.length`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_length]`. Conclude with `hjl`. Establish `hadm` using `isMaxContactHypersurface_congr S.base instj instsj (MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec u j).symm (MarkedBlowupSequenceData.toMarkedSequence_ideal u j).symm (rfl : MaxContactReduction.iteratedStrictTransform u H j = MaxContactReduction.iteratedStrictTransfo …`. Establish `hstep` using `@MaxContactCoverProperties.isMaxContactHypersurface_strictTransform_succ hstar S hv hord u.toMarkedSequenceOfBlowups j hlt instsj instsj1 (MaxContactReduction.iteratedStrictTransform u H j) hadm`.
-
-Establish `hHeq : Blowup.strictTransform (u.toMarkedSequenceOfBlowups.transitionMapSucc j) (u.toMarkedSequenceOfBlowups.center j) (MaxContactReduction.iteratedStrictTransform u H j) = MaxContactReduction.iteratedStrictTransform u H (j + 1)`. Simplify using `only [MarkedBlowupSequenceData.toMarkedSequence_blowupMorphism, MarkedBlowupSequenceData.toMarkedSequence_center, MaxContactReduction.iteratedStrictTransform_succ]`. Both sides reduce to the same expression. Conclude with `isMaxContactHypersurface_congr S.base instsj1 inst (MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec u (j + 1)) (MarkedBlowupSequenceData.toMarkedSequence_ideal u (j + 1)) hHeq hstep`. Conclude with `key t ht (hlft t ht)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isMaxContactHypersurface_iteratedStrictTransform (hstar : MaxContactCoverProperties.{u})
     (S : MarkedIdealWithBoundary.{u}) (hv : S.IsAdmissible)
@@ -193,11 +189,11 @@ theorem isMaxContactHypersurface_iteratedStrictTransform (hstar : MaxContactCove
   exact key t ht (hlft t ht)
 
 /- English proof (translation)
-Use `hred` as an intermediate fact. Establish `hker : Scheme.Hom.ker I.subschemeι = I` using `Scheme.IdealSheafData.ker_subschemeι I`. Establish `hmem : I ≤ Scheme.IdealSheafData.ofIdeals (fun U : X.affineOpens => RingHom.ker (CommRingCat.Hom.hom (Scheme.Hom.app I.subschemeι U.1)))` using `le_of_eq hker.symm`. Establish `hle` using `Scheme.IdealSheafData.le_ofIdeals_iff.mp hmem`. Establish `hgoal : I.radical ≤ Scheme.IdealSheafData.ofIdeals (fun U : X.affineOpens => RingHom.ker (CommRingCat.Hom.hom (Scheme.Hom.app I.subschemeι U.1)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Scheme.IdealSheafData.le_ofIdeals_iff.mpr ?_` and prove the remaining obligations. Introduce `U`. Rewrite using `[Scheme.IdealSheafData.radical_ideal]`. Introduce `x hx`. Take `⟨n, hn⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hR` using `AlgebraicGeometry.IsReduced.component_reduced (X := I.subscheme) (I.subschemeι ⁻¹ᵁ U.1)`. Use `RingHom.mem_ker.mpr (hR.eq_zero _ ⟨n, ?_⟩)` and prove the remaining obligations. Rewrite using `[← map_pow]`. Conclude with `RingHom.mem_ker.mp (hle U hn)`. Conclude with `le_trans hgoal (le_of_eq hker)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem radical_le_of_isReduced_subscheme {X : Scheme.{u}} (I : X.IdealSheafData)
     (hred : AlgebraicGeometry.IsReduced I.subscheme) : I.radical ≤ I := by
@@ -224,31 +220,27 @@ private theorem radical_le_of_isReduced_subscheme {X : Scheme.{u}} (I : X.IdealS
   exact le_trans hgoal (le_of_eq hker)
 
 /- English proof (translation)
-Establish `hsmooth : ∀ i : ℕ, i ≤ u.length → AlgebraicGeometry.Smooth (u.proj i ≫ S.structMap)`. Introduce `i hi`. Establish `hsm : AlgebraicGeometry.Smooth (u.toMarkedSequenceOfBlowups.projectionToSpec i)` using `MarkedSequenceOfBlowups.smooth_projectionToSpec effectiveCartierSupportContainsNoComponent hv u.toMarkedSequenceOfBlowups i (by rw [MarkedBlowupSequenceData.toMarkedSequence_length]; exact hi)`. Rewrite `hsm` using `[MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]`. Conclude with `hsm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hkey : ∀ i : ℕ, i < u.length → MaxContactReduction.iteratedStrictTransform u H i ≤ u.center i`. Introduce `i hi`. Establish `hsmi : AlgebraicGeometry.Smooth (u.proj i ≫ S.structMap)` using `hsmooth i (le_of_lt hi)`. Establish `hlfti : AlgebraicGeometry.LocallyOfFiniteType (u.proj i ≫ S.structMap)` using `locallyOfFiniteType_of_smooth_morphism hsmi`. Establish `hcz : CharZero S.base` using `hv.charZero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hadm` using `isMaxContactHypersurface_iteratedStrictTransform hstar S hv hord H hH u i (le_of_lt hi)`. Establish `hcos` using `hadm.orderAtLeastLocus_subset_support hv.one_le_mult`. Establish `hsupp : (((u.center i).support : Set ↥(u.obj i))) ⊆ (((MaxContactReduction.iteratedStrictTransform u H i).support : Set ↥(u.obj i)))` using `Set.Subset.trans (u.center_order i hi) hcos`. Establish `hsupp' : (u.center i).support ≤ (MaxContactReduction.iteratedStrictTransform u H i).support` using `SetLike.coe_subset_coe.mp hsupp`. Establish `h1 : MaxContactReduction.iteratedStrictTransform u H i ≤ Scheme.IdealSheafData.vanishingIdeal (u.center i).support` using `(Scheme.IdealSheafData.gc _ _).mp hsupp'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Scheme.IdealSheafData.vanishingIdeal_support]`. Establish `hsmZ : AlgebraicGeometry.Smooth ((u.center i).subschemeι ≫ (u.proj i ≫ S.structMap))` using `u.center_smooth i hi`. Establish `hred : AlgebraicGeometry.IsReduced (u.center i).subscheme` using `isReduced_of_smooth ((u.center i).subschemeι ≫ (u.proj i ≫ S.structMap))`. Conclude with `le_trans h1 (radical_le_of_isReduced_subscheme (u.center i) hred)`. Use `revert ht`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `t with`. Consider the case `zero`. Introduce `_`. Establish `hb : (u.boundary 0).drop S.boundary.length = []`. Rewrite using `[u.boundary_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Simplify using the standard rewrite rules. Rewrite using `[hb]`. Conclude with `h0`. Consider the case `succ j ih`. Introduce `hj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjl : j < u.length` using `hj`. Establish `hjle : j ≤ u.length` using `le_of_lt hjl`. Establish `hsmj : AlgebraicGeometry.Smooth (u.proj j ≫ S.structMap)` using `hsmooth j hjle`. Establish `hlj : AlgebraicGeometry.LocallyOfFiniteType (u.proj j ≫ S.structMap)` using `locallyOfFiniteType_of_smooth_morphism hsmj`. Establish `hnoeth : AlgebraicGeometry.IsNoetherian (u.obj (j + 1))` using `MarkedSequenceOfBlowups.isNoetherian_schemeAt effectiveCartierSupportContainsNoComponent hv u.toMarkedSequenceOfBlowups (j + 1) (by rw [MarkedBlowupSequenceData.toMarkedSequence_length]; exact hj)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnsp : TopologicalSpace.NoetherianSpace ↥(u.obj (j + 1))` using `inferInstance`. Establish `hsncj : InStrictNormalCrossingPosition (u.proj j ≫ S.structMap) (MaxContactReduction.iteratedStrictTransform u H j :: (u.boundary j).drop S.boundary.length)` using `ih hjle`. Establish `hZN : HasStrictNormalCrossingsWith (u.proj j ≫ S.structMap) (u.center j) ((u.boundary j).drop S.boundary.length)`. Establish `hfull` using `u.center_snc j hjl`. Rewrite `hfull` using `[← List.take_append_drop S.boundary.length (u.boundary j)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `HasStrictNormalCrossingsWith.of_append hfull`. Establish `hcons : HasStrictNormalCrossingsWith (u.proj j ≫ S.structMap) (u.center j) (MaxContactReduction.iteratedStrictTransform u H j :: (u.boundary j).drop S.boundary.length)`. Establish `hsm' : AlgebraicGeometry.Smooth (u.toMarkedSequenceOfBlowups.projectionToSpec j)`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]`. Conclude with `hsmj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : j < u.toMarkedSequenceOfBlowups.toSequenceOfBlowups.length`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_length]`. Conclude with `hjl`. Establish `hsnc' : InStrictNormalCrossingPosition (u.toMarkedSequenceOfBlowups.projectionToSpec j) (MaxContactReduction.iteratedStrictTransform u H j :: (u.boundary j).drop S.boundary.length)`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hsncj`. Establish `hZN' : HasStrictNormalCrossingsWith (u.toMarkedSequenceOfBlowups.projectionToSpec j) (u.toMarkedSequenceOfBlowups.center j) ((u.boundary j).drop S.boundary.length)`. Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec, MarkedBlowupSequenceData.toMarkedSequence_center]`. Conclude with `hZN`. Establish `hHZ' : MaxContactReduction.iteratedStrictTransform u H j ≤ u.toMarkedSequenceOfBlowups.center j`.
-
-Rewrite using `[MarkedBlowupSequenceData.toMarkedSequence_center]`. Conclude with `hkey j hjl`. Establish `hres` using `@MaxContactCoverProperties.hasStrictNormalCrossingsWith_cons_of_le_center hstar S u.toMarkedSequenceOfBlowups j hlt hsm' (MaxContactReduction.iteratedStrictTransform u H j) ((u.boundary j).drop S.boundary.length) hsnc' hZN' hHZ'`. Rewrite `hres` using `[MarkedBlowupSequenceData.toMarkedSequence_projectionToSpec, MarkedBlowupSequenceData.toMarkedSequence_center]`. Conclude with `hres`.
-
-Establish `hbd : (u.boundary (j + 1)).drop S.boundary.length = ((u.boundary j).drop S.boundary.length).map (Blowup.strictTransform (u.map j) (u.center j)) ++ [Blowup.exceptionalIdeal (u.map j) (u.center j)]` using `u.boundary_succ_drop hjl S.boundary.length (by rw [u.boundary_length j hjle]; omega)`. Rewrite using `[hbd, MaxContactReduction.iteratedStrictTransform_succ, u.proj_succ j, Category.assoc]`. Conclude with `inStrictNormalCrossingPosition_strictTransform_cons_append (u.proj j ≫ S.structMap) (u.map j) (u.center j) (MaxContactReduction.iteratedStrictTransform u H j) ((u.boundary j).drop S.boundary.length) (u.isBlowup j hjl) hsncj hcons`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inStrictNormalCrossingPosition_iteratedStrictTransform_cons_drop (hstar : MaxContactCoverProperties.{u})
     (S : MarkedIdealWithBoundary.{u}) (hv : S.IsAdmissible)

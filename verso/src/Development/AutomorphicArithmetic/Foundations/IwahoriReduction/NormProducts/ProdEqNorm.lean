@@ -11,11 +11,11 @@ set_option maxHeartbeats 200000
 set_option synthInstance.maxHeartbeats 40000
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `at h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← A.valuation_le_one_iff, h]`. Rewrite using `[← A.valuation_le_one_iff, map_inv₀, h, inv_one]`. Introduce and unpack `⟨h0, h1, h2⟩`. Rewrite `h1`, `h2` using `[← A.valuation_le_one_iff]`. Rewrite `h2` using `[map_inv₀]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : A.valuation x ≠ 0` using `by simpa using h0`. Conclude with `le_antisymm h1 ((inv_le_one₀ (zero_lt_iff.2 h3)).1 h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem val_one_iff {K : Type} [Field K] (A : ValuationSubring K) (x : K) :
     A.valuation x = 1 ↔ x ≠ 0 ∧ x ∈ A ∧ x⁻¹ ∈ A := by
@@ -33,7 +33,7 @@ private theorem val_one_iff {K : Type} [Field K] (A : ValuationSubring K) (x : K
     exact le_antisymm h1 ((inv_le_one₀ (zero_lt_iff.2 h3)).1 h2)
 
 /- English proof (translation)
-Rewrite using `[val_one_iff, val_one_iff]`. Simplify using `[ValuationSubring.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem val_comap {K : Type} [Field K] (F : Subfield K) (W : ValuationSubring K) (x : F) :
     (W.comap F.subtype).valuation x = 1 ↔ W.valuation (x : K) = 1 := by
@@ -41,13 +41,13 @@ private theorem val_comap {K : Type} [Field K] (F : Subfield K) (W : ValuationSu
   simp [ValuationSubring.mem_comap]
 
 /- English proof (translation)
-Take `⟨W, hW, hloc⟩` from `IsLocalRing.exists_factor_valuationRing (F.subtype.comp B.subtype)`. Use `⟨W, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[ValuationSubring.mem_comap]`. Use `⟨fun hx => ?_, fun hx => hW ⟨x, hx⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hn`. Establish `hi : x⁻¹ ∈ B` using `(B.mem_or_inv_mem x).resolve_left hn`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Conclude with `hn B.zero_mem`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hu : IsUnit ((F.subtype.comp B.subtype).codRestrict W.toSubring hW ⟨x⁻¹, hi⟩)`. Use `IsUnit.of_mul_eq_one ⟨F.subtype x, hx⟩ (Subtype.ext ?_)` and prove the remaining obligations. Use `show F.subtype x⁻¹ * F.subtype x = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hx0, map_one]`. Take `⟨y, hy⟩` from `(hloc.map_nonunit _ hu).exists_right_inv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : x⁻¹ * (y : F) = 1` using `congrArg Subtype.val hy`. Establish `: (y : F) = x`. Clear denominators, using `at hy'` for the nonvanishing conditions. Conclude with `hy'`. Conclude with `hn (this ▸ y.2)`.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 private theorem exists_ext {K : Type} [Field K] (F : Subfield K) (B : ValuationSubring F) :
     ∃ W : ValuationSubring K, W.comap F.subtype = B := by
@@ -76,13 +76,11 @@ section
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩ p`. Rewrite using `[ValuationSubring.mem_comap]`. Use `show ((jPoly X H p : lev X H) : X.K) ∈ W`. Rewrite using `[coe_jPoly]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Proceed by induction on `p using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `W.add_mem _ _ hp hq`. Consider the case `monomial n c`. Rewrite using `[Polynomial.aeval_monomial]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `W.mul_mem _ _ (h1 c) (pow_mem h2 n)`. Introduce `h`. Establish `h' : ∀ p : Polynomial Ω, Polynomial.aeval X.jK p ∈ W` using `fun p => by`. Rewrite using `[← coe_jPoly X H]`. Conclude with `h p`.
-
-Conclude with `⟨fun c => by simpa using h' (C c), by simpa using h' Polynomial.X⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem over_iff (X : Tower Ω ε) (H : Subgroup SL(2, ℤ)) (W : ValuationSubring X.K) :
     X.OverY W ↔ ∀ p : Polynomial Ω, jPoly X H p ∈ W.comap (lev X H).subtype := by
@@ -103,11 +101,11 @@ private theorem over_iff (X : Tower Ω ε) (H : Subgroup SL(2, ℤ)) (W : Valuat
     exact ⟨fun c => by simpa using h' (C c), by simpa using h' Polynomial.X⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h B hB`. Take `⟨W, rfl⟩` from `exists_ext (lev X H) B`. Take `⟨c, hc, hc0, hv⟩` from `h W ((over_iff X H W).2 hB)`. Use `⟨⟨c, hc⟩, fun e => hc0 (congrArg Subtype.val e), ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[val_comap]`. Simplify using `using hv`. Introduce `h W hW`. Take `⟨c, hc0, hv⟩` from `h _ ((over_iff X H W).1 hW)`. Rewrite `hv` using `[val_comap]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨c, c.2, fun e => hc0 (Subtype.ext e), by simpa using hv⟩`.
+Supply the required witnesses or components.
 -/
 private theorem lun_iff (X : Tower Ω ε) (H : Subgroup SL(2, ℤ)) (m : ℕ) (f : lev X H) :
     (∀ W : ValuationSubring X.K, X.OverY W → ∃ c ∈ lev X H, c ≠ 0 ∧ W.valuation ((f : X.K) / c ^ m) = 1) ↔
@@ -125,7 +123,7 @@ private theorem lun_iff (X : Tower Ω ε) (H : Subgroup SL(2, ℤ)) (m : ℕ) (f
     exact ⟨c, c.2, fun e => hc0 (Subtype.ext e), by simpa using hv⟩
 
 /- English proof (translation)
-Introduce `f hf` and use `(mem_lev_iff X H' f).2 fun γ hγ => (mem_lev_iff X H f).1 hf γ (h hγ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem lev_anti (X : Tower Ω ε) {H H' : Subgroup SL(2, ℤ)} (h : H' ≤ H) : lev X H ≤ lev X H' := fun f hf =>
   (mem_lev_iff X H' f).2 fun γ hγ => (mem_lev_iff X H f).1 hf γ (h hγ)
@@ -133,9 +131,7 @@ private theorem lev_anti (X : Tower Ω ε) {H H' : Subgroup SL(2, ℤ)} (h : H' 
 end
 
 /- English proof (translation)
-Establish `e : algebraMap (RatFunc k) K' = (algebraMap K K').comp (algebraMap (RatFunc k) K)`. Use `IsLocalization.ringHom_ext (nonZeroDivisors (Polynomial k)) (RingHom.ext fun p => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply (Polynomial k) (RatFunc k) K', ← IsScalarTower.algebraMap_apply (Polynomial k) (RatFunc k) K, ← IsScalarTower.algebraMap_apply (Polynomial k) K K']`. Use `haveI : IsScalarTower (RatFunc k) K K' := IsScalarTower.of_algebraMap_eq' e`.
-
-Conclude with `Module.Finite.of_restrictScalars_finite (RatFunc k) _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fd_tower (k K K' : Type) [Field k] [Field K] [Field K'] [Algebra (Polynomial k) K] [Algebra (RatFunc k) K]
     [IsScalarTower (Polynomial k) (RatFunc k) K] [Algebra (Polynomial k) K'] [Algebra (RatFunc k) K']
@@ -157,7 +153,7 @@ variable {L Γ : Type} [Field L] [Group Γ] (a : Γ → L ≃+* L) (a1 : ∀ f, 
 
 include a1 am hn hF hF' in
 /- English proof (translation)
-Rewrite `hf`, the goal using `[hF']`. Introduce `δ hδ`. Establish `e : γ * δ = (γ * δ * γ⁻¹) * γ` using `by group`. Rewrite using `[← am, e, am, hf _ (hn γ hγ δ hδ)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem a_mem {γ : Γ} (hγ : γ ∈ H) {f : L} (hf : f ∈ F') : a γ f ∈ F' := by
   rw [hF'] at hf ⊢
@@ -167,9 +163,7 @@ private theorem a_mem {γ : Γ} (hγ : γ ∈ H) {f : L} (hf : f ∈ F') : a γ 
 
 include a1 am hn hF hF' in
 /- English proof (translation)
-Use `⟨{ toFun := fun x => ⟨a γ x, a_mem a a1 am hn hF hF' hγ x.2⟩ invFun := fun x => ⟨a γ⁻¹ x, a_mem a a1 am hn hF hF' (H.inv_mem hγ) x.2⟩ left_inv := fun x => Subtype.ext ?_ right_inv := fun x => Subtype.ext ?_ map_mul' := fun x y => Subtype.ext ?_ map_add' := fun x y => Subtype.ext …` and prove the remaining obligations. Use `show a γ⁻¹ (a γ x) = x`. Rewrite using `[← am, mul_inv_cancel, a1]`. Use `show a γ (a γ⁻¹ x) = x`. Rewrite using `[← am, inv_mul_cancel, a1]`.
-
-Conclude with `map_mul (a γ) (x : L) y`. Conclude with `map_add (a γ) (x : L) y`. Use `show a γ _ = _`. Rewrite using `[ha]`. Conclude with `(hF _).1 x.2 γ hγ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_aut' [Algebra F F'] (ha : ∀ x : F, ((algebraMap F F' x : F') : L) = x) {γ : Γ} (hγ : γ ∈ H) :
     ∃ τ : F' ≃ₐ[F] F', ∀ x : F', ((τ x : F') : L) = a γ x := by
@@ -192,15 +186,15 @@ private theorem exists_aut' [Algebra F F'] (ha : ∀ x : F, ((algebraMap F F' x 
 
 include a1 am hn hF hF' in
 /- English proof (translation)
-Set `S : Subgroup (F' ≃ₐ[F] F')` to `{ carrier := {τ | ∃ γ ∈ H, ∀ x : F', ((τ x : F') : L) = a γ x} one_mem' := ⟨1, H.one_mem, fun x => (a1 _).symm⟩ mul_mem' := by`. Introduce and unpack `σ τ ⟨p, hpH, hσ⟩ ⟨q, hqH, hτ⟩`. Use `⟨q * p, H.mul_mem hqH hpH, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[am, ← hτ, ← hσ]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use the proof step `inv_mem' := by`. Introduce and unpack `σ ⟨p, hpH, hσ⟩`. Use `⟨p⁻¹, H.inv_mem hpH, fun x => ?_⟩` and prove the remaining obligations. Establish `e : (x : L) = a p (σ⁻¹ x : F')`. Rewrite using `[← hσ]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Subtype.val (σ.apply_symm_apply x).symm`. Rewrite using `[e, ← am, mul_inv_cancel, a1] }`. Establish `hS : IntermediateField.fixedField S = ⊥`. Use `le_bot_iff.1 fun x hx => ?_` and prove the remaining obligations. Rewrite `hx` using `[IntermediateField.mem_fixedField_iff]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hxH : (x : L) ∈ F` using `(hF _).2 fun γ hγ => by`. Take `⟨τ, hτ⟩` from `exists_aut' a a1 am hn hF hF' ha hγ`. Rewrite using `[← hτ, hx τ ⟨γ, hγ, hτ⟩]`. Conclude with `IntermediateField.mem_bot.2 ⟨⟨x, hxH⟩, Subtype.ext (ha _)⟩`. Establish `hT : S = ⊤`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← IntermediateField.fixingSubgroup_fixedField S, hS, IntermediateField.fixingSubgroup_bot]`. Use `⟨IsGalois.of_fixedField_eq_bot _ _ (hT ▸ hS), fun τ => ?_⟩` and prove the remaining obligations. Establish `: τ ∈ S` using `hT ▸ Subgroup.mem_top τ`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 private theorem gal_surj' [Algebra F F'] (ha : ∀ x : F, ((algebraMap F F' x : F') : L) = x) [FiniteDimensional F F'] :
     IsGalois F F' ∧ ∀ τ : F' ≃ₐ[F] F', ∃ γ ∈ H, ∀ x : F', ((τ x : F') : L) = a γ x := by
@@ -234,13 +228,13 @@ private theorem gal_surj' [Algebra F F'] (ha : ∀ x : F, ((algebraMap F F' x : 
 
 include a1 am hn hF hF' in
 /- English proof (translation)
-Take `⟨-, hsurj⟩` from `gal_surj' a a1 am hn hF hF' ha`. Use `choose σ hσ using fun i => exists_aut' a a1 am hn hF hF' ha (hδ1 i)`. Establish `hbij : Function.Bijective σ`. Prove the components needed by the constructor for the conclusion. Introduce `i j hij`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfix : ∀ x ∈ F', a (δ i * (δ j)⁻¹) x = x` using `fun x hx => by`. Rewrite using `[am, ← hσ i ⟨x, hx⟩, hij, hσ j ⟨x, hx⟩, ← am, mul_inv_cancel, a1]`. Establish `hmem : δ i * (δ j)⁻¹ ∈ H'` using `faith _ (H.mul_mem (hδ1 i) (H.inv_mem (hδ1 j))) hfix`. Conclude with `(hδ2 (δ i) (hδ1 i)).unique (by rw [mul_inv_cancel]; exact H'.one_mem) hmem`. Introduce `τ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, hτ⟩` from `hsurj τ`. Take `⟨i, hi, -⟩` from `hδ2 γ hγ`. Use `⟨i, AlgEquiv.ext fun x => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `e : γ = γ * (δ i)⁻¹ * δ i` using `by group`. Rewrite using `[hσ, hτ, e, am, (hF' _).1 x.2 _ hi]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `Algebra.norm_eq_prod_automorphisms F f'`. Rewrite `h1` using `[← hbij.prod_comp (fun τ => τ f')]`. Establish `h2` using `congrArg (fun y : F' => (y : L)) h1`. Simplify using `only [ha, SubmonoidClass.coe_finset_prod, hσ] at h2`. Conclude with `h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem prod_eq_norm [Algebra F F'] (ha : ∀ x : F, ((algebraMap F F' x : F') : L) = x) [FiniteDimensional F F']
     [IsGalois F F'] (faith : ∀ γ ∈ H, (∀ f ∈ F', a γ f = f) → γ ∈ H') {ι : Type} [Fintype ι] (δ : ι → Γ)
@@ -270,11 +264,9 @@ private theorem prod_eq_norm [Algebra F F'] (ha : ∀ x : F, ((algebraMap F F' x
 end
 
 /- English proof (translation)
-Use `letI : Algebra F F' := (Subfield.inclusion hle).toAlgebra`. Establish `ha : ∀ x : F, ((algebraMap F F' x : F') : L) = x` using `fun _ => rfl`. Use `haveI : IsScalarTower (Polynomial k) F F' := IsScalarTower.of_algebraMap_eq fun p => Subtype.ext <| by`. Rewrite using `[ha]`. Conclude with `(hc p).symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : FiniteDimensional F F' := fd_tower k F F'`. Use `haveI := (gal_surj' a a1 am hn hF hF' ha).1`. Take `⟨h, hh0, hh⟩` from `UpperTheory.Kd.K4.cdAbs k F m m' f hm hm' hf0 hf`. Take `⟨f', hf'0, hN, hf'⟩` from `UpperTheory.Kd.K4.nsAbs k F F' (m * m') (f / h ^ m) (Nat.mul_pos hm hm') (div_ne_zero hf0 (pow_ne_zero _ hh0)) hh`. Use `⟨f', hf'0, hf', (h : L)⁻¹, inv_ne_zero fun e => hh0 (Subtype.ext e), ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[prod_eq_norm a a1 am hn hF hF' ha faith δ hδ1 hδ2 f', hN, inv_pow, ← div_eq_mul_inv]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem abs_step {k L Γ : Type} [Field k] [IsAlgClosed k] [CharZero k] [Field L] [Group Γ] (a : Γ → L ≃+* L)
     (a1 : ∀ f, a 1 f = f) (am : ∀ x y f, a (x * y) f = a y (a x f)) {H H' : Subgroup Γ}
@@ -307,9 +299,9 @@ private theorem abs_step {k L Γ : Type} [Field k] [IsAlgClosed k] [CharZero k] 
   simp
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X H H' M m m' hM hm hm' hΓ hle hneg hn ι _ δ hδ f hf`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Take `⟨hf0, hfH, hfW⟩` from `hf`. Establish `hF0 : (⟨f, hfH⟩ : lev X H) ≠ 0` using `fun e => hf0 (congrArg Subtype.val e)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfaith : ∀ γ ∈ H, (∀ g ∈ lev X H', X.sl (ofSL γ) g = g) → γ ∈ H'` using `fun γ hγ hfix => (UpperTheory.Kd.K4.faith ε X H' M hM hΓ γ hfix).resolve_right fun h1 => hneg <| by`. Establish `h2` using `H.mul_mem (hle h1) (H.inv_mem hγ)`. Rewrite `h2` using `[neg_mul, mul_inv_cancel]`. Then use the resulting hypothesis. Take `⟨f', hf'0, hf', h, hh0, hprod⟩` from `@abs_step Ω X.K SL(2, ℤ) _ _ _ _ _ (fun γ => (X.sl (ofSL γ)).toRingEquiv) (fun g => by simp [X.sl_one]) (fun x y g => by simp [X.sl_mul]) H H' hn (lev X H) (lev X H') (lev_anti X hle) (mem_lev_iff X H) (mem_lev_iff X H') (algPoly X H) (algRat X H) (isScalarTower_poly_rat X H) (Gl …`. Conclude with `⟨f', ⟨fun e => hf'0 (Subtype.ext e), f'.2, (lun_iff X H' (m * m') f').2 hf'⟩, h, hh0, hprod⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.K4.step :
     ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε), ∀ (H H' : Subgroup SL(2, ℤ)) (M m m' : ℕ), 0 < M → 0 < m → 0 < m' → CongruenceSubgroup.Gamma M ≤ H' → H' ≤ H → -1 ∉ H →

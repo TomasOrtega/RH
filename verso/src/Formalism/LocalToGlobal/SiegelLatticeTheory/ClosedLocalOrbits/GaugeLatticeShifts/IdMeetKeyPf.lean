@@ -20,17 +20,15 @@ open Formalism.L2.SG.Pf.Vanish2 Formalism.L2.SG.Pf.SlabCoverPf Formalism.L2.SG.P
 variable {D : D7} (X : HidaSetting D)
 
 /- English proof (translation)
-Establish `hin` using `Formalism.L2.SG.FourParts.isInS_of_isIdT ht`. Establish `hS : Formalism.L2.SG.FourParts.InSF (lf D (X.Fu u)) t.frame` using `(Formalism.L2.SG.FourParts.isInS_mk (Λ := t.lam) (F := lf D (X.Fu u)) (P := Formalism.L2.SG.TermDef.PD D t.lam (lf D (X.Fu u)) u) (PI.InSClassConstW.inSFun_all _ _ _) ⟨t.frame, t.rep.2.2.2.2⟩).1 hin`. Establish `hfr : t.frame.fl = mapFlag t.rep.1.2 t.rep.2.2.1 (lf D (X.Fu u)).fl` using `by show (mapLF t.rep.1.2 (lf D (X.Fu u))).fl = _`. Unfold `mapLF`. Rewrite using `[dif_pos t.rep.2.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rfl`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hS.1 a`. Establish `e1 : t.frame.fl.e a = t.lin (X.eX a)`. Rewrite using `[hfr]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show t.rep.1.2 ((X.Fu u).e a) = t.rep.1.2 (X.eX a)`. Rewrite using `[X.Fu_e u]`. Establish `e2 : (lf D (X.Fu u)).fl.e a = X.eX a` using `by show (X.Fu u).e a = _`. Rewrite using `[X.Fu_e u]`. Establish `e3 : Xflag (lf D (X.Fu u)) a.val = Submodule.span D.host.E ((X.Fu u).e '' {i | i.1 < a.1})` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[e1, e2, e3, X.Fu_e u]`. Conclude with `h`. Establish `h` using `hS.2`. Establish `e1 : t.frame.fl.z = t.lin (X.zu u)`. Rewrite using `[hfr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show t.rep.1.2 ((X.Fu u).z) = t.rep.1.2 (X.zu u)`. Rewrite using `[X.flagZVector u]`. Establish `e2 : (lf D (X.Fu u)).fl.z = X.zu u` using `by show (X.Fu u).z = _`. Rewrite using `[X.flagZVector u]`. Establish `e3 : Xsp (lf D (X.Fu u)) = Submodule.span D.host.E (Set.range (X.Fu u).e)` using `rfl`.
-
-Rewrite `h` using `[e1, e2, e3, X.Fu_e u]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isId_rat {u : D.what₂.Word} {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
     (t : GTerm X u u (X.Fu u) (X.Fu u) what₂ what₂) (ht : t.isId) :
@@ -71,19 +69,17 @@ theorem isId_rat {u : D.what₂.Word} {what₂ : Finset (Submodule (𝓞 D.host.
     exact h
 
 /- English proof (translation)
-Establish `hmem` using `ratLink_mem X hx`. Take `⟨M, -, h1, h2, h3⟩` from `hx`. Establish `hE : ∀ a : Fin D.R.rS, ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) - 1) *ᵥ X.eR a ∈ Submodule.span X.B.I.E (X.eR '' {b | b.1 < a.1})`. Introduce `a`. Use `crd_span' X (he a)` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Set.image_image]`. Use `show _ *ᵥ X.crd (X.eX a) ∈ _`. Rewrite using `[mcrd X h3]`. Conclude with `this`. Establish `hZ : ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) - 1) *ᵥ X.zR u ∈ Submodule.span X.B.I.E (Set.range X.eR)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `crd_span' X hz` as an intermediate fact. Rewrite `this` using `[← Set.range_comp]`. Use `show _ *ᵥ X.crd (X.zu u) ∈ _`. Rewrite using `[mcrd X h3]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Subgroup.mem_inf.2 ⟨hmem, Subgroup.subset_closure ⟨fun v => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hG : ∀ y, uMat (x.1 v) *ᵥ Vanish2.rvHom X.B.I v y = Vanish2.rvHom X.B.I v ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ y)`. Introduce `y`. Rewrite using `[Vanish2.rvHom_apply, Vanish2.rvHom_apply, h1 v]`. Conclude with `rv_mulVec X v _ y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Conclude with `tr_flag (X.B.I.φ v) (Vanish2.rvHom X.B.I v) (rv_smul' X.B.I v) _ _ hG X.eR _ _ (hE a)`. Use `tr_flag (X.B.I.φ v) (Vanish2.rvHom X.B.I v) (rv_smul' X.B.I v) _ _ hG X.eR Set.univ _ (by rw [Set.image_univ]; exact hZ)` as an intermediate fact. Unfold `spanLt`. Rewrite using `[← range_eq_image_lt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Set.image_univ]`. Then use the resulting hypothesis. Establish `hG : ∀ y, X.B.I.fmat x.2 *ᵥ Vanish2.inclHom X.B.I y = Vanish2.inclHom X.B.I ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ y)`. Introduce `y`. Rewrite using `[Vanish2.inclHom_apply, Vanish2.inclHom_apply, h2]`. Conclude with `incl_mulVec X _ y`.
-
-Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations. Conclude with `tr_flag _ (Vanish2.inclHom X.B.I) (incl_smul' X.B.I) _ _ hG X.eR _ _ (hE a)`. Use `tr_flag _ (Vanish2.inclHom X.B.I) (incl_smul' X.B.I) _ _ hG X.eR Set.univ _ (by rw [Set.image_univ]; exact hZ)` as an intermediate fact. Rewrite `this` using `[Set.image_univ]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem pt_srat {u : D.what₂.Word} {x : X.B.I.GA} {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x n)
     (he : ∀ a : Fin D.R.rS, n (X.eX a) - X.eX a ∈ Submodule.span D.host.E (X.eX '' {i | i.1 < a.1}))
@@ -130,13 +126,13 @@ theorem pt_srat {u : D.what₂.Word} {x : X.B.I.GA} {n : (VS D).V ≃ₗ[D.host.
       rwa [Set.image_univ] at this
 
 /- English proof (translation)
-Take `⟨M, -, h1, -, h3⟩` from `hx`. Take `⟨N, -, k1, -, k3⟩` from `hy`. Take `⟨v⟩ : Nonempty (InfinitePlace X.B.I.F)` from `inferInstance`. Establish `hP : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (X.B.I.P_unit v)`. Establish `e3 : ∀ A : Matrix (Fin X.B.I.n) (Fin X.B.I.n) ℂ, X.B.I.P v * ((X.B.I.P v)⁻¹ * A * X.B.I.P v) * (X.B.I.P v)⁻¹ = A`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `A`. Simplify using `only [Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hP, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ hP]`. Establish `e : (X.B.I.P v)⁻¹ * (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v) * X.B.I.P v = (X.B.I.P v)⁻¹ * (N : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v) * X.B.I.P v`. Rewrite using `[← h1 v, ← k1 v, h]`. Establish `e2 : (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v) = (N : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← e3 ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v)), ← e3 ((N : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E).map (X.B.I.φ v)), e]`. Establish `hMN : (M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) = N`. Use extensionality with `i j`. Conclude with `(X.B.I.φ v).injective (congrFun (congrFun e2 i) j)`. Use `LinearEquiv.ext fun p => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← toV_crd X (m p), ← toV_crd X (n p), h3, k3, hMN]`.
+A detailed English derivation is pending.
 -/
 theorem lin_eq_of_fst {x y : X.B.I.GA} {m n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hx : RatLink X x m)
     (hy : RatLink X y n) (h : x.1 = y.1) : m = n := by
@@ -171,21 +167,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.L2.SG.Pf.Vanish2 Formalism.L2.SG.Pf.SlabCoverPf Formalism.L2.SG.Pf.Level
 
 /- English proof (translation)
-Introduce `D X Y u hNeat ρ ρ' t ht hM`. Take `⟨-, -, hk⟩` from `hM`. Take `⟨he, hz⟩` from `isId_rat X t ht`. Establish `hs : t.pt ∈ Srat X u` using `pt_srat X t.rep.2.1 he hz`. Establish `hg : (((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)⁻¹ * t.pt.2 * (((Y.cs u).h ρ' : X.B.I.Gf) * X.xu u) ∈ X.K2` using `hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hs1, hs2⟩` from `sratComp_holds X u t.pt hs`. Take `⟨ν, η, hνη, hνG, hν1, hν2, hη⟩` from `Formalism.L2.SG.Pf.ratLevi_holds X u t.pt (Subgroup.mem_inf.1 hs).1 hs1 hs2`. Take `⟨ηg, hηg⟩ : ∃ ηg : Gam X u, ηg = ⟨η, hη⟩` from `⟨_, rfl⟩`. Establish `hs2e : t.pt.2 = ν.2 * η.2` using `by rw [hνη]; rfl`. Take `⟨hn1, -⟩` from `nfinConj_holds X u ((Y.cs u).h ρ)⁻¹ ν.2 hν2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hLD` using `Formalism.L2.SG.Pf.Level.levelDec_of_psiDd (X := X) (u := u) (Formalism.L2.SG.Pf.psiDd_holds X)`. Take `⟨h1, hh1⟩ : ∃ h1 : Hfin X u, h1 = ((Y.cs u).h ρ)⁻¹ * iotaF X u ηg * (Y.cs u).h ρ'` from `⟨_, rfl⟩`. Establish `e1 : (X.xu u)⁻¹ * ((((Y.cs u).h ρ)⁻¹ : Hfin X u) * ν.2 * ((((Y.cs u).h ρ)⁻¹ : Hfin X u) : X.B.I.Gf)⁻¹ * (h1 : X.B.I.Gf)) * X.xu u = (((Y.cs u).h ρ : X.B.I.Gf) * X.xu u)⁻¹ * t.pt.2 * (((Y.cs u).h ρ' : X.B.I.Gf) * X.xu u)`. Rewrite using `[hs2e, hh1]`. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, iotaF_coe, hηg]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `group`. Establish `hh1K : (X.xu u)⁻¹ * (h1 : X.B.I.Gf) * X.xu u ∈ X.K2` using `(hLD _ hn1 h1 (e1 ▸ hg)).1`. Establish `hρρ : ρ = ρ'`. Use `(Y.colReps u ((Y.cs u).h ρ')).unique ⟨ηg⁻¹, ⟨h1, hh1K⟩, ?_⟩ ⟨1, 1, by simp⟩` and prove the remaining obligations. Use `show (Y.cs u).h ρ' = iotaF X u ηg⁻¹ * (Y.cs u).h ρ * h1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[map_inv, hh1]`. Use `group`. Substitute `hρρ` using the available equality. Establish `hmem : ((Y.cs u).h ρ)⁻¹ * iotaF X u ηg * (Y.cs u).h ρ ∈ Ku X u Y.hK`. Rewrite using `[← hh1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hh1K`. Establish `hη1 : ηg = 1` using `hNeat ((Y.cs u).h ρ) ηg hmem`. Establish `hη1' : η = 1`. Use `congrArg Subtype.val hη1` as an intermediate fact. Rewrite `this` using `[hηg]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Establish `hsν : t.pt = ν` using `by rw [hνη, hη1', mul_one]`. Establish `hsN` using `nilradical_rational_lattice D X Y u ρ t.pt (Formalism.L2.SG.Closed.level_subgroup_properties X) (by rw [hsν]; exact hνG) (by rw [hsν]; exact hν1) (by rw [hsν]; exact hν2) hg`. Take `⟨x, n, hx, hx1, hn⟩` from `hsN`. Use `⟨rfl, ?_⟩` and prove the remaining obligations.
-
-Establish `hl : t.lin = n` using `lin_eq_of_fst X t.rep.2.1 hx hx1`. Rewrite using `[hl]`. Conclude with `hn`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idMeetKeyC_holds : IdMeetKeyC := by
   intro D X Y u hNeat ρ ρ' t ht hM

@@ -8,13 +8,13 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `i u hu`. Establish `h0` using `hsz i`. Establish `ht` using `Int.self_le_toNat (W.sz i + W.S)`. Establish `hT'` using `hT i u hu`. Establish `hm1 : (W.η : ℤ) ≤ max (W.η : ℤ) ((W.sz i + W.S).toNat : ℤ)` using `le_max_left _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm2 : (((W.sz i + W.S).toNat : ℕ) : ℤ) ≤ max (W.η : ℤ) ((W.sz i + W.S).toNat : ℤ)` using `le_max_right _ _`. Break down `hT' with h | h` into its components or cases. Distinguish the cases in `hup : W.up i`. Rewrite `h` using `[if_pos hup]`. Simplify using `only [WordData.Mi, WordData.hi, if_pos hup, Nat.cast_max]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[if_neg hup]`. Simplify using `only [WordData.Mi, WordData.hi, if_neg hup, Nat.cast_max]`. Use linear arithmetic over natural numbers and integers. Establish `h'` using `abs_le.mp h`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Distinguish the cases in `hup : W.up i`. Simplify using `only [WordData.Mi, WordData.hi, if_pos hup, Nat.cast_max]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [WordData.Mi, WordData.hi, if_neg hup, Nat.cast_max]`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem HTW.WordData.jumps_mem_box {n : ℕ} (W : WordData n) (hsz : ∀ i, 0 ≤ W.sz i) (hT : W.T1) :
     ∀ i, ∀ u ∈ W.J1 i, -(W.Mi i : ℤ) ≤ u ∧ u ≤ W.hi i := by

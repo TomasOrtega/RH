@@ -34,7 +34,7 @@ theorem relLength_eq_length_quotient_comap (A B : Submodule R V) :
     relLength A B = Module.length R (A ⧸ B.comap A.subtype) := rfl
 
 /- English proof (translation)
-Rewrite using `[relLength_def, ← hg]`. Conclude with `g.quotKerEquivRange.length_eq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLength_eq_length_range {P : Type*} [AddCommGroup P] [Module R P]
     {A B : Submodule R V} (g : A →ₗ[R] P) (hg : LinearMap.ker g = B.submoduleOf A) :
@@ -43,7 +43,7 @@ theorem relLength_eq_length_range {P : Type*} [AddCommGroup P] [Module R P]
   exact g.quotKerEquivRange.length_eq
 
 /- English proof (translation)
-Rewrite using `[relLength_eq_length_range g hg, LinearMap.range_eq_top.mpr hs, Module.length_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_eq_length_of_surjective {P : Type*} [AddCommGroup P] [Module R P]
     {A B : Submodule R V} (g : A →ₗ[R] P) (hg : LinearMap.ker g = B.submoduleOf A)
@@ -51,7 +51,7 @@ theorem relLength_eq_length_of_surjective {P : Type*} [AddCommGroup P] [Module R
   rw [relLength_eq_length_range g hg, LinearMap.range_eq_top.mpr hs, Module.length_top]
 
 /- English proof (translation)
-Rewrite using `[relLength_eq_length_range (B.mkQ ∘ₗ A.subtype) (by rw [LinearMap.ker_comp, Submodule.ker_mkQ]; rfl), LinearMap.range_comp, Submodule.range_subtype]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_eq_length_map_mkQ (A B : Submodule R V) :
     relLength A B = Module.length R (A.map B.mkQ) := by
@@ -60,14 +60,14 @@ theorem relLength_eq_length_map_mkQ (A B : Submodule R V) :
     Submodule.range_subtype]
 
 /- English proof (translation)
-The claim follows from `Module.length_ne_top_iff`.
+A detailed English derivation is pending.
 -/
 theorem relLength_ne_top_iff {A B : Submodule R V} :
     relLength A B ≠ ⊤ ↔ IsFiniteLength R (A ⧸ B.submoduleOf A) :=
   Module.length_ne_top_iff
 
 /- English proof (translation)
-Establish `: B.submoduleOf A = B'.submoduleOf A`. Use extensionality with `x`. Use `SetLike.ext_iff.mp h (x : V)` as an intermediate fact. Simplify `this` using `[Submodule.submoduleOf, x.2]`. Rewrite using `[relLength_def, relLength_def, this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_congr_right {A B B' : Submodule R V} (h : A ⊓ B = A ⊓ B') :
     relLength A B = relLength A B' := by
@@ -78,7 +78,7 @@ theorem relLength_congr_right {A B B' : Submodule R V} (h : A ⊓ B = A ⊓ B') 
   rw [relLength_def, relLength_def, this]
 
 /- English proof (translation)
-Establish `: A.map B.mkQ = A'.map B.mkQ`. Use `congrArg (Submodule.map B.mkQ) h` as an intermediate fact. Simplify `this` using `[Submodule.map_sup]`. Rewrite using `[relLength_eq_length_map_mkQ, relLength_eq_length_map_mkQ, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_congr_left {A A' B : Submodule R V} (h : A ⊔ B = A' ⊔ B) :
     relLength A B = relLength A' B := by
@@ -88,28 +88,28 @@ theorem relLength_congr_left {A A' B : Submodule R V} (h : A ⊔ B = A' ⊔ B) :
   rw [relLength_eq_length_map_mkQ, relLength_eq_length_map_mkQ, this]
 
 /- English proof (translation)
-The claim follows from `relLength_congr_right (by rw [← inf_assoc, inf_idem])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem relLength_inf_right (A B : Submodule R V) :
     relLength A (A ⊓ B) = relLength A B :=
   relLength_congr_right (by rw [← inf_assoc, inf_idem])
 
 /- English proof (translation)
-Rewrite using `[inf_comm, relLength_inf_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem relLength_inf_right' (A B : Submodule R V) :
     relLength A (B ⊓ A) = relLength A B := by
   rw [inf_comm, relLength_inf_right]
 
 /- English proof (translation)
-The claim follows from `relLength_congr_left (by rw [sup_assoc, sup_idem])`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem relLength_sup_left (A B : Submodule R V) :
     relLength (A ⊔ B) B = relLength A B :=
   relLength_congr_left (by rw [sup_assoc, sup_idem])
 
 /- English proof (translation)
-Rewrite using `[sup_comm, relLength_sup_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem relLength_sup_left' (A B : Submodule R V) :
     relLength (B ⊔ A) B = relLength A B := by
@@ -122,20 +122,20 @@ theorem relLength_inf_eq_relLength_sup (A B : Submodule R V) :
     relLength A (A ⊓ B) = relLength (A ⊔ B) B := by simp
 
 /- English proof (translation)
-Rewrite using `[relLength_def, Module.length_eq_zero_iff, Submodule.Quotient.subsingleton_iff, Submodule.submoduleOf_eq_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem relLength_eq_zero_iff {A B : Submodule R V} : relLength A B = 0 ↔ A ≤ B := by
   rw [relLength_def, Module.length_eq_zero_iff, Submodule.Quotient.subsingleton_iff,
     Submodule.submoduleOf_eq_top]
 
 /- English proof (translation)
-The claim follows from `relLength_eq_zero_iff.mpr h`.
+A detailed English derivation is pending.
 -/
 theorem relLength_eq_zero_of_le {A B : Submodule R V} (h : A ≤ B) : relLength A B = 0 :=
   relLength_eq_zero_iff.mpr h
 
 /- English proof (translation)
-Rewrite using `[pos_iff_ne_zero, ne_eq, relLength_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_pos_iff {A B : Submodule R V} : 0 < relLength A B ↔ ¬ A ≤ B := by
   rw [pos_iff_ne_zero, ne_eq, relLength_eq_zero_iff]
@@ -156,7 +156,7 @@ Simplify using the standard rewrite rules.
 theorem relLength_top_right (A : Submodule R V) : relLength A ⊤ = 0 := by simp
 
 /- English proof (translation)
-The claim follows from `relLength_eq_length_of_surjective (LinearMap.id : A →ₗ[R] A) (by simp [Submodule.submoduleOf]) Function.surjective_id`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem relLength_bot_right (A : Submodule R V) :
     relLength A ⊥ = Module.length R A :=
@@ -164,14 +164,14 @@ The claim follows from `relLength_eq_length_of_surjective (LinearMap.id : A →�
     (by simp [Submodule.submoduleOf]) Function.surjective_id
 
 /- English proof (translation)
-Rewrite using `[relLength_eq_length_map_mkQ, Submodule.map_top, Submodule.range_mkQ, Module.length_top]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem relLength_top_left (B : Submodule R V) :
     relLength ⊤ B = Module.length R (V ⧸ B) := by
   rw [relLength_eq_length_map_mkQ, Submodule.map_top, Submodule.range_mkQ, Module.length_top]
 
 /- English proof (translation)
-Rewrite using `[relLength_eq_length_map_mkQ, relLength_eq_length_map_mkQ]`. Conclude with `Module.length_le_of_injective (Submodule.inclusion (Submodule.map_mono h)) (Submodule.inclusion_injective _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLength_mono_left {A A' : Submodule R V} (h : A ≤ A') (B : Submodule R V) :
     relLength A B ≤ relLength A' B := by
@@ -180,7 +180,7 @@ theorem relLength_mono_left {A A' : Submodule R V} (h : A ≤ A') (B : Submodule
     (Submodule.inclusion_injective _)
 
 /- English proof (translation)
-The claim follows from `Module.length_le_of_surjective (Submodule.factor (Submodule.comap_mono h : B.submoduleOf A ≤ B'.submoduleOf A)) (Submodule.factor_surjective _)`.
+A detailed English derivation is pending.
 -/
 theorem relLength_anti_right (A : Submodule R V) {B B' : Submodule R V} (h : B ≤ B') :
     relLength A B' ≤ relLength A B :=
@@ -189,33 +189,33 @@ theorem relLength_anti_right (A : Submodule R V) {B B' : Submodule R V} (h : B �
     (Submodule.factor_surjective _)
 
 /- English proof (translation)
-The claim follows from `(relLength_mono_left hA B).trans (relLength_anti_right A' hB)`.
+A detailed English derivation is pending.
 -/
 @[gcongr] theorem relLength_le_relLength {A A' B B' : Submodule R V} (hA : A ≤ A')
     (hB : B' ≤ B) : relLength A B ≤ relLength A' B' :=
   (relLength_mono_left hA B).trans (relLength_anti_right A' hB)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `relLength_mono_left h B`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem monotone_relLength_left (B : Submodule R V) : Monotone fun A => relLength A B :=
   fun _ _ h => relLength_mono_left h B
 
 /- English proof (translation)
-Introduce `_ _ h` and use `relLength_anti_right A h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem antitone_relLength_right (A : Submodule R V) : Antitone (relLength A) :=
   fun _ _ h => relLength_anti_right A h
 
 /- English proof (translation)
-Rewrite using `[← relLength_bot_right]`. Conclude with `relLength_anti_right A bot_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLength_le_length_left (A B : Submodule R V) : relLength A B ≤ Module.length R A := by
   rw [← relLength_bot_right]
   exact relLength_anti_right A bot_le
 
 /- English proof (translation)
-Rewrite using `[← relLength_top_left]`. Conclude with `relLength_mono_left le_top B`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLength_le_length_quotient (A B : Submodule R V) :
     relLength A B ≤ Module.length R (V ⧸ B) := by
@@ -230,7 +230,7 @@ variable {R S V V' : Type*} [Ring R] [Ring S] [AddCommGroup V] [Module R V]
   [AddCommGroup V'] [Module S V'] {σ : R →+* S} [RingHomSurjective σ]
 
 /- English proof (translation)
-Apply `WithBot.coe_injective` to reduce the goal to its premises. Rewrite using `[Module.coe_length, Module.coe_length, Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComapOfBijective f hf)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem length_eq_of_semilinear_bijective (f : V →ₛₗ[σ] V') (hf : Function.Bijective f) :
     Module.length R V = Module.length S V' := by
@@ -239,11 +239,11 @@ theorem length_eq_of_semilinear_bijective (f : V →ₛₗ[σ] V') (hf : Functio
     Order.krullDim_eq_of_orderIso (Submodule.orderIsoMapComapOfBijective f hf)]
 
 /- English proof (translation)
-Use `symm`. Set `g : A →ₛₗ[σ] A.map f` to `f.restrict fun x hx => Submodule.mem_map_of_mem hx`. Use `length_eq_of_semilinear_bijective (Submodule.mapQ ((B'.comap f).submoduleOf A) (B'.submoduleOf (A.map f)) g fun x hx => hx) ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`.
+Use symmetry to reverse the relation. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `hx' : (Submodule.Quotient.mk (g x) : A.map f ⧸ B'.submoduleOf (A.map f)) = 0` using `hx`. Rewrite `hx'`, the goal using `[Submodule.Quotient.mk_eq_zero]`. Conclude with `hx'`. Introduce `y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨_, x, hx, rfl⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Conclude with `⟨Submodule.Quotient.mk ⟨x, hx⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem relLength_map_left (f : V →ₛₗ[σ] V') (A : Submodule R V) (B' : Submodule S V') :
     relLength (A.map f) B' = relLength A (B'.comap f) := by
@@ -263,28 +263,28 @@ theorem relLength_map_left (f : V →ₛₗ[σ] V') (A : Submodule R V) (B' : Su
     exact ⟨Submodule.Quotient.mk ⟨x, hx⟩, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[relLength_map_left, Submodule.comap_map_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_map_map (f : V →ₛₗ[σ] V') (A B : Submodule R V) :
     relLength (A.map f) (B.map f) = relLength A (B ⊔ LinearMap.ker f) := by
   rw [relLength_map_left, Submodule.comap_map_eq]
 
 /- English proof (translation)
-Rewrite using `[← relLength_map_left, Submodule.map_comap_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_comap_comap (f : V →ₛₗ[σ] V') (A' B' : Submodule S V') :
     relLength (A'.comap f) (B'.comap f) = relLength (LinearMap.range f ⊓ A') B' := by
   rw [← relLength_map_left, Submodule.map_comap_eq]
 
 /- English proof (translation)
-Rewrite using `[relLength_map_left, Submodule.comap_map_eq_of_injective hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_map_of_injective (f : V →ₛₗ[σ] V') (hf : Function.Injective f)
     (A B : Submodule R V) : relLength (A.map f) (B.map f) = relLength A B := by
   rw [relLength_map_left, Submodule.comap_map_eq_of_injective hf]
 
 /- English proof (translation)
-Rewrite using `[relLength_comap_comap, inf_eq_right.mpr hA]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_comap_of_le_range (f : V →ₛₗ[σ] V') {A' : Submodule S V'}
     (hA : A' ≤ LinearMap.range f) (B' : Submodule S V') :
@@ -292,14 +292,14 @@ theorem relLength_comap_of_le_range (f : V →ₛₗ[σ] V') {A' : Submodule S V
   rw [relLength_comap_comap, inf_eq_right.mpr hA]
 
 /- English proof (translation)
-The claim follows from `relLength_comap_of_le_range f (by rw [LinearMap.range_eq_top.mpr hf]; exact le_top) B'`.
+A detailed English derivation is pending.
 -/
 theorem relLength_comap_of_surjective (f : V →ₛₗ[σ] V') (hf : Function.Surjective f)
     (A' B' : Submodule S V') : relLength (A'.comap f) (B'.comap f) = relLength A' B' :=
   relLength_comap_of_le_range f (by rw [LinearMap.range_eq_top.mpr hf]; exact le_top) B'
 
 /- English proof (translation)
-Simplify using `only [LengthCommensurable, relLength_map_of_injective f hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lengthCommensurable_map_iff_of_injective (f : V →ₛₗ[σ] V') (hf : Function.Injective f)
     {A B : Submodule R V} :
@@ -307,7 +307,7 @@ theorem lengthCommensurable_map_iff_of_injective (f : V →ₛₗ[σ] V') (hf : 
   simp only [LengthCommensurable, relLength_map_of_injective f hf]
 
 /- English proof (translation)
-Simplify using `only [signedLength, relLength_map_of_injective f hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem LengthCommensurable.signedLength_map_of_injective {A B : Submodule R V}
     (_h : LengthCommensurable A B) (f : V →ₛₗ[σ] V') (hf : Function.Injective f) :
@@ -323,21 +323,21 @@ variable {R S V V' : Type*} [Ring R] [Ring S] [AddCommGroup V] [Module R V]
   [RingHomInvPair σ σ'] [RingHomInvPair σ' σ] [RingHomSurjective σ]
 
 /- English proof (translation)
-The claim follows from `relLength_map_of_injective _ e.injective A B`.
+A detailed English derivation is pending.
 -/
 theorem relLength_map_equiv (e : V ≃ₛₗ[σ] V') (A B : Submodule R V) :
     relLength (A.map (e : V →ₛₗ[σ] V')) (B.map (e : V →ₛₗ[σ] V')) = relLength A B :=
   relLength_map_of_injective _ e.injective A B
 
 /- English proof (translation)
-The claim follows from `relLength_comap_of_surjective _ e.surjective A' B'`.
+A detailed English derivation is pending.
 -/
 theorem relLength_comap_equiv (e : V ≃ₛₗ[σ] V') (A' B' : Submodule S V') :
     relLength (A'.comap (e : V →ₛₗ[σ] V')) (B'.comap (e : V →ₛₗ[σ] V')) = relLength A' B' :=
   relLength_comap_of_surjective _ e.surjective A' B'
 
 /- English proof (translation)
-The claim follows from `lengthCommensurable_map_iff_of_injective _ e.injective`.
+A detailed English derivation is pending.
 -/
 theorem lengthCommensurable_map_equiv_iff (e : V ≃ₛₗ[σ] V') {A B : Submodule R V} :
     LengthCommensurable (A.map (e : V →ₛₗ[σ] V')) (B.map (e : V →ₛₗ[σ] V')) ↔
@@ -345,7 +345,7 @@ theorem lengthCommensurable_map_equiv_iff (e : V ≃ₛₗ[σ] V') {A B : Submod
   lengthCommensurable_map_iff_of_injective _ e.injective
 
 /- English proof (translation)
-The claim follows from `h.signedLength_map_of_injective _ e.injective`.
+A detailed English derivation is pending.
 -/
 theorem LengthCommensurable.signedLength_map_equiv {A B : Submodule R V}
     (h : LengthCommensurable A B) (e : V ≃ₛₗ[σ] V') :
@@ -359,21 +359,21 @@ section Ambient
 variable {R V : Type*} [Ring R] [AddCommGroup V] [Module R V]
 
 /- English proof (translation)
-The claim follows from `relLength_comap_of_le_range W.subtype (by rwa [Submodule.range_subtype]) B`.
+A detailed English derivation is pending.
 -/
 theorem relLength_submoduleOf {A W : Submodule R V} (h : A ≤ W) (B : Submodule R V) :
     relLength (A.submoduleOf W) (B.submoduleOf W) = relLength A B :=
   relLength_comap_of_le_range W.subtype (by rwa [Submodule.range_subtype]) B
 
 /- English proof (translation)
-The claim follows from `relLength_map_of_injective W.subtype W.injective_subtype A B`.
+A detailed English derivation is pending.
 -/
 theorem relLength_map_subtype (W : Submodule R V) (A B : Submodule R W) :
     relLength (A.map W.subtype) (B.map W.subtype) = relLength A B :=
   relLength_map_of_injective W.subtype W.injective_subtype A B
 
 /- English proof (translation)
-Rewrite using `[relLength_map_map, Submodule.ker_mkQ, sup_eq_left.mpr h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relLength_map_mkQ {N B : Submodule R V} (h : N ≤ B) (A : Submodule R V) :
     relLength (A.map N.mkQ) (B.map N.mkQ) = relLength A B := by
@@ -382,7 +382,7 @@ theorem relLength_map_mkQ {N B : Submodule R V} (h : N ≤ B) (A : Submodule R V
 open Pointwise in
 
 /- English proof (translation)
-The claim follows from `relLength_map_of_injective (DistribSMul.toLinearMap R V a) ha A B`.
+A detailed English derivation is pending.
 -/
 theorem relLength_smul_smul {G : Type*} [Monoid G] [DistribMulAction G V] [SMulCommClass G R V]
     {a : G} (ha : IsSMulRegular V a) (A B : Submodule R V) :
@@ -392,7 +392,7 @@ theorem relLength_smul_smul {G : Type*} [Monoid G] [DistribMulAction G V] [SMulC
 open Pointwise in
 
 /- English proof (translation)
-The claim follows from `lengthCommensurable_map_iff_of_injective (DistribSMul.toLinearMap R V a) ha`.
+A detailed English derivation is pending.
 -/
 theorem lengthCommensurable_smul_smul_iff {G : Type*} [Monoid G] [DistribMulAction G V]
     [SMulCommClass G R V] {a : G} (ha : IsSMulRegular V a) {A B : Submodule R V} :
@@ -402,7 +402,7 @@ theorem lengthCommensurable_smul_smul_iff {G : Type*} [Monoid G] [DistribMulActi
 open Pointwise in
 
 /- English proof (translation)
-The claim follows from `h.signedLength_map_of_injective (DistribSMul.toLinearMap R V a) ha`.
+A detailed English derivation is pending.
 -/
 theorem LengthCommensurable.signedLength_smul_smul {G : Type*} [Monoid G] [DistribMulAction G V]
     [SMulCommClass G R V] {a : G} {A B : Submodule R V} (h : LengthCommensurable A B)
@@ -412,7 +412,7 @@ theorem LengthCommensurable.signedLength_smul_smul {G : Type*} [Monoid G] [Distr
 open Pointwise in
 
 /- English proof (translation)
-The claim follows from `relLength_smul_smul (IsSMulRegular.of_ne_zero hs) A B`.
+A detailed English derivation is pending.
 -/
 example (A B : Submodule ℤ (Fin 2 → ℚ)) {s : ℚ} (hs : s ≠ 0) :
     relLength (s • A) (s • B) = relLength A B :=
@@ -425,7 +425,7 @@ section Signed
 variable {R V : Type*} [Ring R] [AddCommGroup V] [Module R V] {A B : Submodule R V}
 
 /- English proof (translation)
-Rewrite using `[LengthCommensurable, relLength_ne_top_iff, relLength_ne_top_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lengthCommensurable_iff_isFiniteLength :
     LengthCommensurable A B ↔
@@ -433,39 +433,39 @@ theorem lengthCommensurable_iff_isFiniteLength :
   rw [LengthCommensurable, relLength_ne_top_iff, relLength_ne_top_iff]
 
 /- English proof (translation)
-Simplify using `[LengthCommensurable, relLength_self]`.
+Simplify using the standard rewrite rules.
 -/
 @[refl] theorem LengthCommensurable.refl (A : Submodule R V) : LengthCommensurable A A := by
   simp [LengthCommensurable, relLength_self]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.2, h.1⟩`.
+Supply the required witnesses or components.
 -/
 @[symm] theorem LengthCommensurable.symm (h : LengthCommensurable A B) :
     LengthCommensurable B A := ⟨h.2, h.1⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨.symm, .symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem lengthCommensurable_comm : LengthCommensurable A B ↔ LengthCommensurable B A :=
   ⟨.symm, .symm⟩
 
 /- English proof (translation)
-Simplify using `[LengthCommensurable, relLength_eq_zero_of_le h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lengthCommensurable_iff_of_ge (h : B ≤ A) :
     LengthCommensurable A B ↔ relLength A B ≠ ⊤ := by
   simp [LengthCommensurable, relLength_eq_zero_of_le h]
 
 /- English proof (translation)
-Simplify using `[LengthCommensurable, relLength_eq_zero_of_le h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lengthCommensurable_iff_of_le (h : A ≤ B) :
     LengthCommensurable A B ↔ relLength B A ≠ ⊤ := by
   simp [LengthCommensurable, relLength_eq_zero_of_le h]
 
 /- English proof (translation)
-Establish `key : ∀ C D : Submodule R V, relLength C D ≠ ⊤` using `fun C D => ne_top_of_le_ne_top h ((relLength_le_length_left C D).trans (Module.length_le_of_injective C.subtype C.injective_subtype))`. Conclude with `⟨key A B, key B A⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem lengthCommensurable_of_length_ne_top (h : Module.length R V ≠ ⊤) (A B : Submodule R V) :
     LengthCommensurable A B := by
@@ -475,7 +475,7 @@ theorem lengthCommensurable_of_length_ne_top (h : Module.length R V ≠ ⊤) (A 
   exact ⟨key A B, key B A⟩
 
 /- English proof (translation)
-Rewrite using `[lengthCommensurable_iff_of_ge (inf_le_left : A ⊓ B ≤ A), lengthCommensurable_iff_of_ge (inf_le_right : A ⊓ B ≤ B), relLength_inf_right, relLength_inf_right', LengthCommensurable]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lengthCommensurable_iff_inf :
     LengthCommensurable A B ↔
@@ -485,7 +485,7 @@ theorem lengthCommensurable_iff_inf :
     relLength_inf_right, relLength_inf_right', LengthCommensurable]
 
 /- English proof (translation)
-Rewrite using `[lengthCommensurable_iff_of_ge (le_sup_right : B ≤ A ⊔ B), lengthCommensurable_iff_of_ge (le_sup_left : A ≤ A ⊔ B), relLength_sup_left, relLength_sup_left', LengthCommensurable]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lengthCommensurable_iff_sup :
     LengthCommensurable A B ↔
@@ -495,77 +495,77 @@ theorem lengthCommensurable_iff_sup :
     relLength_sup_left, relLength_sup_left', LengthCommensurable]
 
 /- English proof (translation)
-Simplify using `[signedLength, hm, hn]`.
+Simplify using the standard rewrite rules.
 -/
 theorem signedLength_eq_of_relLength_eq {m n : ℕ} (hm : relLength A B = m)
     (hn : relLength B A = n) : signedLength A B = (m : ℤ) - n := by
   simp [signedLength, hm, hn]
 
 /- English proof (translation)
-The claim follows from `sub_self _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem signedLength_self (A : Submodule R V) : signedLength A A = 0 := sub_self _
 
 namespace LengthCommensurable
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, _, (ENat.coe_toNat h.1).symm, (ENat.coe_toNat h.2).symm, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_signedLength_eq (h : LengthCommensurable A B) :
     ∃ m n : ℕ, relLength A B = m ∧ relLength B A = n ∧ signedLength A B = (m : ℤ) - n :=
   ⟨_, _, (ENat.coe_toNat h.1).symm, (ENat.coe_toNat h.2).symm, rfl⟩
 
 /- English proof (translation)
-Simplify using `[signedLength]`.
+Simplify using the standard rewrite rules.
 -/
 theorem signedLength_swap (_h : LengthCommensurable A B) :
     signedLength B A = -signedLength A B := by
   simp [signedLength]
 
 /- English proof (translation)
-Rewrite using `[h.signedLength_swap, add_neg_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem signedLength_add_swap (h : LengthCommensurable A B) :
     signedLength A B + signedLength B A = 0 := by
   rw [h.signedLength_swap, add_neg_cancel]
 
 /- English proof (translation)
-Simplify using `[signedLength, relLength_eq_zero_of_le hBA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem signedLength_of_ge (_h : LengthCommensurable A B) (hBA : B ≤ A) :
     signedLength A B = (relLength A B).toNat := by
   simp [signedLength, relLength_eq_zero_of_le hBA]
 
 /- English proof (translation)
-Simplify using `[signedLength, relLength_eq_zero_of_le hAB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem signedLength_of_le (_h : LengthCommensurable A B) (hAB : A ≤ B) :
     signedLength A B = -((relLength B A).toNat : ℤ) := by
   simp [signedLength, relLength_eq_zero_of_le hAB]
 
 /- English proof (translation)
-Rewrite using `[h.signedLength_of_ge hBA, Int.toNat_natCast, ENat.coe_toNat h.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_toNat_signedLength_of_ge (h : LengthCommensurable A B) (hBA : B ≤ A) :
     ((signedLength A B).toNat : ℕ∞) = relLength A B := by
   rw [h.signedLength_of_ge hBA, Int.toNat_natCast, ENat.coe_toNat h.1]
 
 /- English proof (translation)
-Rewrite using `[h.signedLength_of_ge hBA, Nat.cast_inj, ← ENat.coe_inj, ENat.coe_toNat h.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem signedLength_eq_natCast_iff_of_ge (h : LengthCommensurable A B) (hBA : B ≤ A) {n : ℕ} :
     signedLength A B = n ↔ relLength A B = n := by
   rw [h.signedLength_of_ge hBA, Nat.cast_inj, ← ENat.coe_inj, ENat.coe_toNat h.1]
 
 /- English proof (translation)
-Rewrite using `[h.signedLength_of_ge hBA, Nat.cast_le, ← ENat.coe_le_coe, ENat.coe_toNat h.1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem signedLength_le_natCast_iff_of_ge (h : LengthCommensurable A B) (hBA : B ≤ A) {n : ℕ} :
     signedLength A B ≤ n ↔ relLength A B ≤ n := by
   rw [h.signedLength_of_ge hBA, Nat.cast_le, ← ENat.coe_le_coe, ENat.coe_toNat h.1]
 
 /- English proof (translation)
-Rewrite using `[h.signedLength_of_ge hBA]`. Conclude with `Int.natCast_nonneg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem signedLength_nonneg (h : LengthCommensurable A B) (hBA : B ≤ A) :
     0 ≤ signedLength A B := by
@@ -573,7 +573,7 @@ theorem signedLength_nonneg (h : LengthCommensurable A B) (hBA : B ≤ A) :
   exact Int.natCast_nonneg _
 
 /- English proof (translation)
-Rewrite using `[h.signedLength_of_le hAB, neg_nonpos]`. Conclude with `Int.natCast_nonneg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem signedLength_nonpos (h : LengthCommensurable A B) (hAB : A ≤ B) :
     signedLength A B ≤ 0 := by
@@ -581,7 +581,7 @@ theorem signedLength_nonpos (h : LengthCommensurable A B) (hAB : A ≤ B) :
   exact Int.natCast_nonneg _
 
 /- English proof (translation)
-Use `h.signedLength_eq_natCast_iff_of_ge hBA (n := 0)` as an intermediate fact. Rewrite `this` using `[Nat.cast_zero, Nat.cast_zero, relLength_eq_zero_iff]`. Conclude with `this.trans ⟨fun hAB => le_antisymm hAB hBA, le_of_eq⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem signedLength_eq_zero_iff_of_ge (h : LengthCommensurable A B) (hBA : B ≤ A) :
     signedLength A B = 0 ↔ A = B := by
@@ -590,14 +590,14 @@ theorem signedLength_eq_zero_iff_of_ge (h : LengthCommensurable A B) (hBA : B �
   exact this.trans ⟨fun hAB => le_antisymm hAB hBA, le_of_eq⟩
 
 /- English proof (translation)
-The claim follows from `sub_le_self _ (Int.natCast_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem signedLength_le_toNat_relLength (_h : LengthCommensurable A B) :
     signedLength A B ≤ (relLength A B).toNat :=
   sub_le_self _ (Int.natCast_nonneg _)
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `lengthCommensurable_iff_inf.mp h`. Rewrite using `[h₁.signedLength_of_ge inf_le_left, h₂.signedLength_of_ge inf_le_right, relLength_inf_right, relLength_inf_right', signedLength]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem signedLength_eq_sub_inf (h : LengthCommensurable A B) :
     signedLength A B = signedLength A (A ⊓ B) - signedLength B (A ⊓ B) := by
@@ -606,7 +606,7 @@ theorem signedLength_eq_sub_inf (h : LengthCommensurable A B) :
     relLength_inf_right, relLength_inf_right', signedLength]
 
 /- English proof (translation)
-Take `⟨h₁, h₂⟩` from `lengthCommensurable_iff_sup.mp h`. Rewrite using `[h₁.signedLength_of_ge le_sup_right, h₂.signedLength_of_ge le_sup_left, relLength_sup_left, relLength_sup_left', signedLength]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem signedLength_eq_sub_sup (h : LengthCommensurable A B) :
     signedLength A B = signedLength (A ⊔ B) B - signedLength (A ⊔ B) A := by
@@ -615,7 +615,7 @@ theorem signedLength_eq_sub_sup (h : LengthCommensurable A B) :
     relLength_sup_left, relLength_sup_left', signedLength]
 
 /- English proof (translation)
-Establish `h₁` using `ENat.toNat_le_toNat (relLength_le_relLength hA hB) h'.1`. Establish `h₂` using `ENat.toNat_le_toNat (relLength_le_relLength hB hA) h.2`. Unfold `signedLength`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem signedLength_le_signedLength {A' B' : Submodule R V} (h : LengthCommensurable A B)
     (h' : LengthCommensurable A' B') (hA : A ≤ A') (hB : B' ≤ B) :
@@ -632,7 +632,7 @@ end Signed
 section Examples
 
 /- English proof (translation)
-Rewrite using `[relLength_top_left, Module.length_eq_one_iff, isSimpleModule_iff_isCoatom]`. Conclude with `hI.out`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relLength_top_of_isMaximal {R : Type*} [CommRing R] (I : Ideal R) [hI : I.IsMaximal] :
     relLength (⊤ : Ideal R) I = 1 := by
@@ -640,7 +640,7 @@ theorem relLength_top_of_isMaximal {R : Type*} [CommRing R] (I : Ideal R) [hI : 
   exact hI.out
 
 /- English proof (translation)
-The claim follows from `have := PrincipalIdealRing.isMaximal_of_irreducible hp.irreducible relLength_top_of_isMaximal _`.
+A detailed English derivation is pending.
 -/
 theorem relLength_int_top_span_prime {p : ℤ} (hp : Prime p) :
     relLength (⊤ : Ideal ℤ) (Ideal.span {p}) = 1 :=
@@ -648,9 +648,9 @@ theorem relLength_int_top_span_prime {p : ℤ} (hp : Prime p) :
   relLength_top_of_isMaximal _
 
 /- English proof (translation)
-Establish `h₁` using `relLength_int_top_span_prime Int.prime_two`. Establish `h : LengthCommensurable (⊤ : Ideal ℤ) (Ideal.span {2})`. Rewrite using `[lengthCommensurable_iff_of_ge le_top, h₁]`. Simplify using the standard rewrite rules. Establish `h₂ : signedLength (⊤ : Ideal ℤ) (Ideal.span {2}) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[h.signedLength_of_ge le_top, h₁]`. Simplify using the standard rewrite rules. Conclude with `⟨h, h₂, by rw [h.signedLength_swap, h₂]⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 example : LengthCommensurable (⊤ : Ideal ℤ) (Ideal.span {2}) ∧
     signedLength (⊤ : Ideal ℤ) (Ideal.span {2}) = 1 ∧
@@ -665,11 +665,9 @@ example : LengthCommensurable (⊤ : Ideal ℤ) (Ideal.span {2}) ∧
   exact ⟨h, h₂, by rw [h.signedLength_swap, h₂]⟩
 
 /- English proof (translation)
-Establish `hs : (Ideal.span {2} : Ideal ℤ) ⊔ Ideal.span {3} = ⊤`. Rewrite using `[Ideal.sup_eq_top_iff_isCoprime]`. Conclude with `⟨-1, 1, by norm_num⟩`. Establish `h₁ : relLength (Ideal.span {2} : Ideal ℤ) (Ideal.span {3}) = 1`. Rewrite using `[← relLength_sup_left, hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `relLength_int_top_span_prime Int.prime_three`. Establish `h₂ : relLength (Ideal.span {3} : Ideal ℤ) (Ideal.span {2}) = 1`. Rewrite using `[← relLength_sup_left', hs]`. Conclude with `relLength_int_top_span_prime Int.prime_two`. Conclude with `⟨h₁, h₂, by`.
-
-Rewrite using `[signedLength_eq_of_relLength_eq (m := 1) (n := 1) (by simpa using h₁) (by simpa using h₂)]`. Use the proof step `simp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : relLength (Ideal.span {2} : Ideal ℤ) (Ideal.span {3}) = 1 ∧
     relLength (Ideal.span {3} : Ideal ℤ) (Ideal.span {2}) = 1 ∧
@@ -688,14 +686,14 @@ example : relLength (Ideal.span {2} : Ideal ℤ) (Ideal.span {3}) = 1 ∧
     simp⟩
 
 /- English proof (translation)
-Rewrite using `[relLength_bot_right, Module.length_top, Module.length_prod, Module.length_eq_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example : relLength (⊤ : Submodule ℚ (ℚ × ℚ)) ⊥ = 2 := by
   rw [relLength_bot_right, Module.length_top, Module.length_prod, Module.length_eq_one]
   rfl
 
 /- English proof (translation)
-Rewrite using `[lengthCommensurable_iff_of_ge bot_le, relLength_bot_right, Module.length_top, Module.length_ne_top_iff, isFiniteLength_iff_isNoetherian_isArtinian]`. Introduce and unpack `⟨-, h⟩`. Establish `: IsArtinianRing ℤ` using `h`. Conclude with `Int.not_isField (IsArtinianRing.isField_of_isDomain ℤ)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example : ¬ LengthCommensurable (⊤ : Ideal ℤ) ⊥ := by
   rw [lengthCommensurable_iff_of_ge bot_le, relLength_bot_right, Module.length_top,

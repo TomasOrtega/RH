@@ -18,15 +18,13 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSAmp
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX P hA e x hg`. Take `⟨hx, hind, hfin⟩` from `GlobalTheory.T.sectionQuotients_transcendenceBasis_basepointFree k X p D hX P hA e x hg`. Take `⟨hK, hι⟩` from `GlobalTheory.T.projArith_charZero_functionField_injective_constants k X p D hX`. Use `haveI := hX.isDomain`. Use `haveI := hX.finite`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : CharZero k := ⟨fun a b h => Nat.cast_injective (R := X.functionField) (by`. Use `congrArg (GlobalTheory.toFunctionField p) h` as an intermediate fact. Simplify `this)⟩` using `only [map_natCast]`. Take `⟨hP, -, -⟩` from `GlobalTheory.T.projectiveSpace_order_arithVariety_fubiniStudyDegree k D`. Use `haveI : IsIntegral (PSpace k D) := hP.isIntegral`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hdeg, hev⟩` from `GlobalTheory.T.finrank_quotientSubfield_eq_mul_rank_order k X.functionField (GlobalTheory.toFunctionField p) D x hι hind`. Take `⟨π, hπ, hc, hiso⟩` from `GlobalTheory.T.exists_morphism_projSpace_basepointFreeSections k X p D hX P e x hg (hx 0)`. Establish `hgen` using `GlobalTheory.T.map_genericPoint_eq_of_algIndependent_quotients k X p D π hπ x (hx 0) hc hev`. Establish `hr` using `GlobalTheory.T.residueDegree_genericPoint_eq_finrank_quotients k X p D π hπ x (hx 0) hc hgen`. Use `⟨inferInstance, π, hπ, hgen, ?_, ?_, hiso⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hr]`. Introduce `h0`. Use `haveI := hfin`. Establish `: 0 < Module.finrank (ratF x) X.functionField` using `Module.finrank_pos`. Rewrite `this` using `[hdeg, h0, zero_mul]`.
-
-Conclude with `lt_irrefl _ this`. Rewrite using `[hr, hdeg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toProj_gens : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ), IsArithVar p D → ∀ (P : Pair p), IsAmpleLB P.L.B → ∀ (e : ℕ) (x : Fin (D + 1) → X.functionField), Gens P D e x → ∃ (_ : IsIntegral (PSpace k D)) (π : X ⟶ PSpace k D) (hπ : π ≫ PSpace.str k D = p), π (genericPoint X) = genericPoint (PSpace k D) ∧ π.residueDegree (genericPoint X) ≠ 0 ∧ π.residueDegree (genericPoint X) * Module.finrank ℤ k = Module.finrank (ratF x) X.functionField ∧ ∀ u : SmFn p, IsCan P e 1 x u → ((up P.L u).pow e).Isometric ((ProjSpace.hermitianTwistingSheaf k D).pull π hπ) := by
   intro k _ X _ p D hX P hA e x hg

@@ -19,9 +19,9 @@ namespace GlobalTheory.BotFormula.ClassSumMonotone
 open GlobalTheory.SqTop
 end GlobalTheory.BotFormula.ClassSumMonotone
 /- English proof (translation)
-Introduce `hPr hTA hLM hInp hBS`. Use `GlobalTheory.BotFormula.ClassSumMonotone.gbig_mono' (GlobalTheory.BotFormula.ClassSumMonotone.gbig_and' (_root_.GlobalTheory.T.bottom_large_level_kernel hPr hTA hLM hInp hBS) (_root_.GlobalTheory.T.bottom_kernel_real_invariant hPr hTA hLM hInp hBS)) ?_` and prove the remaining obligations. Introduce `D T Lc sc G μ₀ C x b H`. Take `⟨H3, H4⟩` from `H`. Introduce `W hW i j A A' WW X δ t0 hX`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv, hsum⟩` from `GlobalTheory.T.integral_fundamentalDomain_eq_vol_mul_classSum A hX.std.1 X.m X.fd hX.is.meas.1 hX.is.meas.2`. Use `⟨v, hv, fun s Q P P' hB ea ed g pt hpt T => ?_⟩` and prove the remaining obligations. Conclude with `hsum P.a ea pt hpt _ (GlobalTheory.T.definiteBottomTriple_thetaKernel_left_rational_invariant hX s _ g) (fun k hk y => H4 W hW i j A A' WW X hX s Q δ t0 P P' hB ea ed g T k hk y) (fun x k hx hk y => H3 W hW i j A A' WW X hX s _ g P.a x k hx hk y)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BotFormula.bottom_thetaIntegral_eq_classSum : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →
@@ -57,7 +57,7 @@ open Classical
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.BotFormula.bottom_thetaIntegral_eq_classSum | exact _root_.GlobalTheory.BotFormula.bottom_thetaIntegral_eq_classSum | (intros; apply _root_.GlobalTheory.BotFormula.bottom_thetaIntegral_eq_classSum <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.bottom_thetaIntegral_classSum_formula : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
     (∀ D, GlobalTheory.NormSum.Inp D) → GlobalTheory.SqTop.BotSmall →

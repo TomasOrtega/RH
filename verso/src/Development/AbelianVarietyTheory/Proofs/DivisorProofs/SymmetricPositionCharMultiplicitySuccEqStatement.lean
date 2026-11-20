@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.SplitDoublingNBlock
 open GlobalTheory.FinGL Formalism.L2.DIV Module
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FinGL.RootExchange.nPos_succ` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSymmetricPositionCharMultiplicitySuccEq.lean&line=292#L292)
 -/

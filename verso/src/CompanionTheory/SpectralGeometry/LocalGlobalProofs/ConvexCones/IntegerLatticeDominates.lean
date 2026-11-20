@@ -14,7 +14,7 @@ open Matrix
 def quadOf {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) (x : Fin n → ℝ) : ℝ := ∑ i, ∑ j, A i j * x i * x j
 
 /- English proof (translation)
-Simplify using `only [quadOf, dotProduct, mulVec, Finset.mul_sum, Pi.star_apply, star_trivial]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quadOf_eq {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) (x : Fin n → ℝ) :
     quadOf A x = star x ⬝ᵥ (A *ᵥ x) := by
@@ -23,14 +23,14 @@ theorem quadOf_eq {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) (x : Fin n → ℝ)
   ring
 
 /- English proof (translation)
-Unfold `quadOf`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_quadOf {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) : Continuous (quadOf A) := by
   unfold quadOf
   fun_prop
 
 /- English proof (translation)
-Simplify using `only [quadOf, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem quadOf_smul {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) (t : ℝ) (x : Fin n → ℝ) :
     quadOf A (t • x) = t ^ 2 * quadOf A x := by
@@ -39,17 +39,15 @@ theorem quadOf_smul {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ) (t : ℝ) (x : Fi
   ring
 
 /- English proof (translation)
-Establish `hpos : ∀ x, x ≠ 0 → 0 < quadOf P x` using `fun x hx => by`. Rewrite using `[quadOf_eq]`. Conclude with `hP.dotProduct_mulVec_pos hx`. Establish `hS : IsCompact (Metric.sphere (0 : Fin n → ℝ) 1)` using `isCompact_sphere 0 1`. Establish `hne : ∀ u ∈ Metric.sphere (0 : Fin n → ℝ) 1, u ≠ 0` using `fun u hu h => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h] at hu`. Establish `hc : ContinuousOn (fun u => quadOf R u / quadOf P u) (Metric.sphere (0 : Fin n → ℝ) 1)` using `(continuous_quadOf R).continuousOn.div (continuous_quadOf P).continuousOn fun u hu => (hpos u (hne u hu)).ne'`. Take `⟨K, hK⟩` from `hS.bddAbove_image hc`. Use `⟨⌈K⌉₊, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hx` using the available equality. Simplify using `[quadOf]`. Establish `hn : ‖x‖ ≠ 0` using `norm_ne_zero_iff.2 hx`. Take `⟨u, hu⟩ : ∃ u, u = ‖x‖⁻¹ • x` from `⟨_, rfl⟩`. Establish `hum : u ∈ Metric.sphere (0 : Fin n → ℝ) 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[hu, norm_smul, hn]`. Establish `h1 : quadOf R u / quadOf P u ≤ K` using `hK ⟨u, hum, rfl⟩`. Establish `hpu` using `hpos u (hne u hum)`. Establish `h2 : quadOf R u ≤ ⌈K⌉₊ * quadOf P u`. Rewrite `h1` using `[div_le_iff₀ hpu]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1.trans (mul_le_mul_of_nonneg_right (Nat.le_ceil K) hpu.le)`. Establish `hxu : x = ‖x‖ • u` using `by simp [hu, smul_smul, hn]`. Establish `eR : ∀ A : Matrix (Fin n) (Fin n) ℝ, quadOf A x = ‖x‖ ^ 2 * quadOf A u` using `fun A => by`. Rewrite using `[← quadOf_smul, ← hxu]`. Rewrite using `[eR, eR]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_nat_quadOf_le {n : ℕ} {P : Matrix (Fin n) (Fin n) ℝ} (hP : P.PosDef)
     (R : Matrix (Fin n) (Fin n) ℝ) : ∃ C : ℕ, ∀ x, quadOf R x ≤ C * quadOf P x := by
@@ -85,7 +83,7 @@ theorem exists_nat_quadOf_le {n : ℕ} {P : Matrix (Fin n) (Fin n) ℝ} (hP : P.
     _ = _ := by ring
 
 /- English proof (translation)
-Establish `h` using `(hA.hadamard hG).dotProduct_mulVec_nonneg (fun _ => (1 : ℝ))`. Simplify `h` using `[dotProduct, mulVec, Matrix.hadamard_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sum_mul_nonneg {n : ℕ} {A G : Matrix (Fin n) (Fin n) ℝ} (hA : A.PosSemidef) (hG : G.PosSemidef) :
     0 ≤ ∑ i, ∑ j, A i j * G i j := by
@@ -93,13 +91,13 @@ theorem sum_mul_nonneg {n : ℕ} {A G : Matrix (Fin n) (Fin n) ℝ} (hA : A.PosS
   simpa [dotProduct, mulVec, Matrix.hadamard_apply] using h
 
 /- English proof (translation)
-Establish `hrat : ∀ w : Fin n → ℚ, 0 ≤ quadOf G fun i => (w i : ℝ)` using `fun w => by`. Take `⟨c, hc⟩` from `IsLocalization.exist_integer_multiples_of_finite (nonZeroDivisors ℤ) w`. Use `choose v hv using hc`. Establish `hc0 : (((c : ℤ) : ℝ)) ≠ 0`. Conclude with `nonZeroDivisors.ne_zero c.2` after adjusting the coercions.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hv' : ∀ i, (v i : ℚ) = (c : ℤ) * w i` using `fun i => by`. Simplify `hv i` using `[Algebra.smul_def]`. Establish `e : (fun i => (v i : ℝ)) = ((c : ℤ) : ℝ) • fun i => (w i : ℝ)`. Use function extensionality and compare the values at `i`. Use `congrArg (Rat.cast : ℚ → ℝ) (hv' i)` as an intermediate fact.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `h1` using `h v`. Rewrite `h1` using `[e, quadOf_smul]`. Establish `h2 : 0 < (((c : ℤ) : ℝ)) ^ 2` using `by positivity`. Conclude with `nonneg_of_mul_nonneg_right h1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdense : DenseRange (fun (w : Fin n → ℚ) (i : Fin n) => (w i : ℝ))` using `DenseRange.piMap (fun _ => Rat.denseRange_cast)`. Establish `hcl : IsClosed {x : Fin n → ℝ | 0 ≤ quadOf G x}` using `isClosed_le continuous_const (continuous_quadOf G)`. Use `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg hs fun x => ?_` and prove the remaining obligations. Rewrite using `[← quadOf_eq]`. Conclude with `hdense.induction_on (p := fun x => 0 ≤ quadOf G x) x hcl hrat`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posSemidef_of_int_nonneg {n : ℕ} {G : Matrix (Fin n) (Fin n) ℝ} (hs : G.IsHermitian)
     (h : ∀ v : Fin n → ℤ, 0 ≤ quadOf G fun i => (v i : ℝ)) : G.PosSemidef := by
@@ -133,12 +131,12 @@ def elemForm (i j : Fin n) : LinearMap.BilinForm ℤ X :=
   (LinearMap.mul ℤ ℤ).compl₁₂ (b.coord i) (b.coord j) + (LinearMap.mul ℤ ℤ).compl₁₂ (b.coord j) (b.coord i)
 
 /- English proof (translation)
-The claim follows from `add_comm _ _`.
+A detailed English derivation is pending.
 -/
 theorem elemForm_comm (i j : Fin n) : elemForm b i j = elemForm b j i := add_comm _ _
 
 /- English proof (translation)
-Use `b.ext fun k => b.ext fun l => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.smul_apply, LinearMap.sum_apply, smul_eq_mul]`. Simplify using `[elemForm, Finsupp.single_apply, mul_add, Finset.sum_add_distrib]`. Rewrite using `[hβ (b l) (b k)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_smul_eq {β : LinearMap.BilinForm ℤ X} (hβ : ∀ y z, β y z = β z y) :
     (2 : ℤ) • β = ∑ i, ∑ j, β (b i) (b j) • elemForm b i j := by
@@ -149,7 +147,7 @@ theorem two_smul_eq {β : LinearMap.BilinForm ℤ X} (hβ : ∀ y z, β y z = β
   ring
 
 /- English proof (translation)
-Establish `h` using `congrArg L (two_smul_eq b hβ)`. Simplify using `only [map_smul, map_sum, smul_eq_mul] at h`. Rewrite using `[h]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_mul_map (L : LinearMap.BilinForm ℤ X →ₗ[ℤ] ℤ) {β : LinearMap.BilinForm ℤ X}
     (hβ : ∀ y z, β y z = β z y) : 2 * L β = ∑ i, ∑ j, L (elemForm b i j) * β (b i) (b j) := by
@@ -167,41 +165,39 @@ namespace GlobalTheory.CompanionTheory.Ar.Fan
 open Matrix DomZ
 
 /- English proof (translation)
-Introduce `ℓ m hℓ`. Set `Q : Matrix (Fin n) (Fin n) ℚ` to `fun i j => (ℓ (elemForm b i j) : ℚ)`. Set `P : Matrix (Fin n) (Fin n) ℝ` to `Q.map (Rat.cast : ℚ → ℝ)`. Set `R : Matrix (Fin n) (Fin n) ℝ` to `fun i j => (m (elemForm b i j) : ℝ)`. Establish `hQs : Q.IsSymm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `show (ℓ (elemForm b j i) : ℚ) = (ℓ (elemForm b i j) : ℚ)`. Rewrite using `[elemForm_comm b j i]`. Establish `hQ : ∀ v : Fin n → ℤ, v ≠ 0 → 0 < ∑ i, ∑ j, Q i j * v i * v j` using `fun v hv => by`. Set `l : X →ₗ[ℤ] ℤ` to `∑ i, v i • b.coord i`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hl : ∀ i, l (b i) = v i` using `fun i => by simp [l, Finsupp.single_apply]`. Establish `hsym : ∀ y z, GlobalTheory.PolFan.sqForm l y z = GlobalTheory.PolFan.sqForm l z y` using `fun y z => by`. Simplify using `[mul_comm]`. Establish `hne : GlobalTheory.PolFan.sqForm l ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `Function.ne_iff.1 hv`. Establish `h1` using `congrArg (fun β : LinearMap.BilinForm ℤ X => β (b k) (b k)) h0`. Simplify using `only [GlobalTheory.PolFan.sqForm_apply, hl, LinearMap.zero_apply, mul_self_eq_zero] at h1`. Conclude with `hk h1`. Establish `h1` using `hℓ (GlobalTheory.PolFan.sqForm l) (mem_balForms_int.2 hsym) (fun y => by simpa using mul_self_nonneg (l y)) hne`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `two_mul_map b ℓ hsym`. Simplify using `only [GlobalTheory.PolFan.sqForm_apply, hl] at h2`. Establish `h3 : (0 : ℤ) < ∑ i, ∑ j, ℓ (elemForm b i j) * (v i * v j)`. Rewrite using `[← h2]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `h4 : ((∑ i, ∑ j, ℓ (elemForm b i j) * (v i * v j) : ℤ) : ℚ) = ∑ i, ∑ j, Q i j * v i * v j`. Use `push_cast`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Q]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h4]`. Conclude with `h3` after adjusting the coercions. Establish `hP : P.PosDef` using `posDef_of_int_pos n Q hQs hQ`. Take `⟨C, hC⟩` from `exists_nat_quadOf_le hP R`. Use `⟨C, fun β hβ hp => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hβs` using `mem_balForms_int.1 hβ`. Set `G : Matrix (Fin n) (Fin n) ℝ` to `fun i j => (β (b i) (b j) : ℝ)`. Establish `hG : G.PosSemidef`. Use `posSemidef_of_int_nonneg ?_ fun v => ?_` and prove the remaining obligations. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.conjTranspose_apply, star_trivial]`. Use `show ((β (b j) (b i) : ℤ) : ℝ) = ((β (b i) (b j) : ℤ) : ℝ)`. Rewrite using `[hβs]`. Establish `h1` using `hp (∑ i, v i • b i)`. Establish `h2 : ((β (∑ i, v i • b i) (∑ i, v i • b i) : ℤ) : ℝ) = quadOf G fun i => (v i : ℝ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, smul_eq_mul, quadOf, G]`. Use `push_cast`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [Finset.mul_sum]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h2]`. Conclude with `h1` after adjusting the coercions. Establish `hRs : R.IsHermitian`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, star_trivial]`. Use `show (m (elemForm b j i) : ℝ) = (m (elemForm b i j) : ℝ)`. Rewrite using `[elemForm_comm b j i]`. Establish `hA : ((C : ℝ) • P - R).PosSemidef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Matrix.PosSemidef.of_dotProduct_mulVec_nonneg ?_ fun x => ?_` and prove the remaining obligations. Conclude with `(hP.1.smul (by simp)).sub hRs`. Rewrite using `[← quadOf_eq]`. Establish `e : quadOf ((C : ℝ) • P - R) x = C * quadOf P x - quadOf R x`. Simplify using `only [quadOf, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Combine the linear relations using `[hC x]`. Establish `h1` using `sum_mul_nonneg hA hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hPij : ∀ i j, P i j = (ℓ (elemForm b i j) : ℝ)` using `fun i j => by show (((ℓ (elemForm b i j) : ℤ) : ℚ) : ℝ) = _`. Simplify using the standard rewrite rules. Establish `e1 : ∑ i, ∑ j, P i j * G i j = ((2 * ℓ β : ℤ) : ℝ)`. Rewrite using `[two_mul_map b ℓ hβs]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hPij, G]`. Establish `e2 : ∑ i, ∑ j, R i j * G i j = ((2 * m β : ℤ) : ℝ)`. Rewrite using `[two_mul_map b m hβs]`. Use `push_cast`. Simplify using `only [R, G]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `e3 : ∑ i, ∑ j, ((C : ℝ) • P - R) i j * G i j = C * ∑ i, ∑ j, P i j * G i j - ∑ i, ∑ j, R i j * G i j`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[e3, e1, e2]`.
-
-Establish `h2 : (2 * m β : ℝ) ≤ C * (2 * ℓ β)`. Move the coercions through the operations in `at h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : (m β : ℝ) ≤ C * ℓ β` using `by linarith`. Conclude with `h3` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dominates_of_basis {X : Type} [AddCommGroup X] {n : ℕ} (b : Module.Basis (Fin n) ℤ X) :
     GlobalTheory.PolFan.Dominates (id : ℤ → ℤ) X := by
@@ -302,7 +298,7 @@ theorem dominates_of_basis {X : Type} [AddCommGroup X] {n : ℕ} (b : Module.Bas
   exact_mod_cast h3
 
 /- English proof (translation)
-Introduce `X _ _ _` and use `dominates_of_basis (Module.finBasis ℤ X)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dominates_int : ∀ (X : Type) [AddCommGroup X] [Module.Finite ℤ X] [Module.Free ℤ X],
     GlobalTheory.PolFan.Dominates (id : ℤ → ℤ) X := fun X _ _ _ => dominates_of_basis (Module.finBasis ℤ X)

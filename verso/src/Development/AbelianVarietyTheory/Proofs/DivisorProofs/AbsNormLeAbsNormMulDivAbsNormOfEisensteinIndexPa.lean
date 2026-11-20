@@ -7,19 +7,17 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization
 namespace GlobalTheory.NormLe
 
 /- English proof (translation)
-Use `set B : FractionalIdeal (𝓞 F)⁰ F := (𝔟 : FractionalIdeal (𝓞 F)⁰ F)`. Use `set S : FractionalIdeal (𝓞 F)⁰ F := FractionalIdeal.spanSingleton (𝓞 F)⁰ b`. Use `set J : FractionalIdeal (𝓞 F)⁰ F := ((𝔟⁻¹ : Frac F) : FractionalIdeal (𝓞 F)⁰ F) * S`. Establish `hSB : S ≤ B` using `(FractionalIdeal.spanSingleton_le_iff_mem).2 hb`. Establish `hSJ : S = B * J`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [J, B, ← mul_assoc, Units.mul_inv, one_mul]`. Establish `hJ1 : J ≤ 1`. Establish `: J ≤ ((𝔟⁻¹ : Frac F) : FractionalIdeal (𝓞 F)⁰ F) * B`. Simplify using `only [J]`. Use `gcongr`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `this` using `[B, Units.inv_mul]`. Take `⟨I₀, hI₀⟩` from `FractionalIdeal.le_one_iff_exists_coeIdeal.1 hJ1`. Establish `hS0 : S ≠ 0`. Rewrite using `[Ne, FractionalIdeal.spanSingleton_eq_zero_iff]`. Conclude with `hb0`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hJ0 : J ≠ 0`. Introduce and unpack `h`. Rewrite `hSJ` using `[h, mul_zero]`. Conclude with `hS0 hSJ`. Establish `hN : (1 : ℚ) ≤ FractionalIdeal.absNorm J`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hI₀, FractionalIdeal.coeIdeal_absNorm]`. Establish `: Ideal.absNorm I₀ ≠ 0`. Introduce `h`. Rewrite `h` using `[Ideal.absNorm_eq_zero_iff]`. Apply `hJ0` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hI₀, h]`. Simplify using the standard rewrite rules. Conclude with `Nat.one_le_iff_ne_zero.2 this` after adjusting the coercions. Establish `key : FractionalIdeal.absNorm S = FractionalIdeal.absNorm B * FractionalIdeal.absNorm J`. Rewrite using `[hSJ, map_mul]`.
-
-Rewrite using `[← FractionalIdeal.absNorm_span_singleton (𝓞 F) b]`. Express the relevant statement in the definitionally equal form `FractionalIdeal.absNorm B ≤ FractionalIdeal.absNorm S`. Rewrite using `[key]`. Use `FractionalIdeal.absNorm_nonneg B` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem absNorm_le_abs_norm {F : Type} [Field F] [NumberField F] (𝔟 : Frac F) {b : F}
     (hb : b ∈ (𝔟 : FractionalIdeal (𝓞 F)⁰ F)) (hb0 : b ≠ 0) :
@@ -55,7 +53,7 @@ theorem absNorm_le_abs_norm {F : Type} [Field F] [NumberField F] (𝔟 : Frac F)
   nlinarith
 
 /- English proof (translation)
-The claim follows from `|(Algebra.norm ℚ p.1.1 : ℝ)| ≤ |(Algebra.norm ℚ (p.1.1 * p.1.2) : ℝ)| / nrm 𝔟 := by intro F _ _ _ 𝔞 𝔟 p obtain ⟨⟨ν, b⟩, h𝔞, h𝔟, hpos⟩ := p dsimp only at h𝔞 h𝔟 hpos ⊢ obtain ⟨w⟩ : Nonempty (InfinitePlace F) := inferInstance have τ : Emb F := w.embedding_of_isReal (IsTotallyReal.is …`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (𝔞 𝔟 : Frac F) (p : QPair 𝔞 𝔟),
     |(Algebra.norm ℚ p.1.1 : ℝ)| ≤ |(Algebra.norm ℚ (p.1.1 * p.1.2) : ℝ)| / nrm 𝔟 := by

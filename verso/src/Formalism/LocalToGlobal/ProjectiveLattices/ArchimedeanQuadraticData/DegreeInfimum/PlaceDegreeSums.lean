@@ -11,7 +11,7 @@ open scoped nonZeroDivisors
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Use `Eq.trans ?_ (Finset.sum_fiberwise Finset.univ (fun τ : K →+* ℂ => InfinitePlace.mk τ) (fun τ => f (InfinitePlace.mk τ)))` and prove the remaining obligations. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl (g := fun _ => f w) (fun τ hτ => by rw [(Finset.mem_filter.mp hτ).2]), Finset.sum_const, InfinitePlace.card_filter_mk_eq, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_infinite_places_mult (f : InfinitePlace K → ℝ) :
     ∑ σ : InfinitePlace K, (σ.mult : ℝ) * f σ = ∑ τ : K →+* ℂ, f (InfinitePlace.mk τ) := by
@@ -23,19 +23,17 @@ theorem sum_infinite_places_mult (f : InfinitePlace K → ℝ) :
     Finset.sum_const, InfinitePlace.card_filter_mk_eq, nsmul_eq_mul]
 
 /- English proof (translation)
-Establish `h00` using `FractionalIdeal.finite_factors I`. Establish `hfs : {v : HeightOneSpectrum (𝓞 K) | ¬ FractionalIdeal.count K v I = 0}.Finite` using `Filter.eventually_cofinite.mp h00`. Establish `hN : ∀ v : HeightOneSpectrum (𝓞 K), ((FractionalIdeal.absNorm ((v.asIdeal : FractionalIdeal (𝓞 K)⁰ K) ^ FractionalIdeal.count K v I) : ℚ) : ℝ) = ((Ideal.absNorm v.asIdeal : ℕ) : ℝ) ^ FractionalIdeal.count K v I`. Introduce `v`. Simplify using `[map_zpow₀, FractionalIdeal.coeIdeal_absNorm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hNpos : ∀ v : HeightOneSpectrum (𝓞 K), (0 : ℝ) < ((Ideal.absNorm v.asIdeal : ℕ) : ℝ)`. Introduce `v`. Conclude with `Nat.pos_of_ne_zero (fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h))` after adjusting the coercions. Establish `hprod : FractionalIdeal.absNorm I = ∏ v ∈ hfs.toFinset, FractionalIdeal.absNorm ((v.asIdeal : FractionalIdeal (𝓞 K)⁰ K) ^ FractionalIdeal.count K v I)` using `by conv_lhs => rw [← FractionalIdeal.finprod_heightOneSpectrum_factorization' K hI]`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Assume the negation of the conclusion as `h0`. Apply `hv` to reduce the goal to its premises. Establish `h0' : FractionalIdeal.count K v I = 0`. Assume the negation of the conclusion as `hc`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Conclude with `h0 (Finset.mem_coe.mpr (hfs.mem_toFinset.mpr hc))`. Simplify using `[h0']), map_prod]`. Establish `hterm : ∀ v : HeightOneSpectrum (𝓞 K), (FractionalIdeal.count K v I : ℝ) * logN v = Real.log ((FractionalIdeal.absNorm ((v.asIdeal : FractionalIdeal (𝓞 K)⁰ K) ^ FractionalIdeal.count K v I) : ℚ) : ℝ)`. Introduce `v`. Rewrite using `[hN, Real.log_zpow, logN]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finsum_eq_sum_of_support_subset _ (s := hfs.toFinset) ?_, hprod]`. Rewrite using `[Rat.cast_prod, Real.log_prod]`. Conclude with `Finset.sum_congr rfl fun v _ => hterm v`. Introduce `v _`. Rewrite using `[hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(zpow_pos (hNpos v) _).ne'`. Introduce `v hv`. Assume the negation of the conclusion as `h0`. Apply `hv` to reduce the goal to its premises. Establish `h0' : FractionalIdeal.count K v I = 0`.
-
-Assume the negation of the conclusion as `hc`. Conclude with `h0 (Finset.mem_coe.mpr (hfs.mem_toFinset.mpr hc))`. Simplify using `[h0']`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_count_log_norm (I : FractionalIdeal (𝓞 K)⁰ K) (hI : I ≠ 0) :
     ∑ᶠ w : HeightOneSpectrum (𝓞 K), (FractionalIdeal.count K w I : ℝ) * logN w =

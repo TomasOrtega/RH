@@ -14,17 +14,17 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.Mix
 
 /- English proof (translation)
-Introduce `T _ μ _ w C hw hwC hpos hint`. Establish `hint' : Integrable (fun x => Real.log (w x)) μ`. Use `(hint.const_mul 2).congr (Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hlim : 2 * ∫ x, Real.log (w x) / 2 ∂μ = ∫ x, Real.log (w x) ∂μ`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use extensionality with `x`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hlim]`. Use `tendsto_integral_of_dominated_convergence (fun x => |Real.log (w x)| + |Real.log (C + 1)|) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `n`. Conclude with `(Real.measurable_log.comp (hw.add_const _)).aestronglyMeasurable`. Conclude with `hint'.abs.add (integrable_const _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n filter_upwards [hpos] with x hx`. Establish `hd : 0 < 1 / ((n:ℝ) + 1)` using `by positivity`. Establish `hd1 : 1 / ((n:ℝ) + 1) ≤ 1`. Rewrite using `[div_le_one (by positivity)]; linarith [n.cast_nonneg (α := ℝ)]`. Establish `h1 : Real.log (w x) ≤ Real.log (w x + 1 / ((n:ℝ)+1))` using `Real.log_le_log hx (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : Real.log (w x + 1 / ((n:ℝ)+1)) ≤ Real.log (C + 1)` using `Real.log_le_log (by linarith) (by linarith [(hwC x).2])`. Rewrite using `[Real.norm_eq_abs, abs_le]`. Prove the components needed by the constructor for the conclusion. Combine the linear relations using `[neg_abs_le (Real.log (w x)), abs_nonneg (Real.log (C+1))]`. Combine the linear relations using `[le_abs_self (Real.log (C+1)), abs_nonneg (Real.log (w x))]`.
+Prove the components needed by the constructor for the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `filter_upwards [hpos] with x hx`. Establish `h : Tendsto (fun n : ℕ => w x + 1 / ((n:ℝ) + 1)) atTop (𝓝 (w x + 0))` using `tendsto_const_nhds.add tendsto_one_div_add_atTop_nhds_zero_nat`. Rewrite `h` using `[add_zero]`. Conclude with `(Real.continuousAt_log hx.ne').tendsto.comp h`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_integral_log_add_inv : ∀ (T : Type) [MeasurableSpace T] (μ : Measure T) [IsFiniteMeasure μ] (w : T → ℝ) (C : ℝ), Measurable w → (∀ x, 0 ≤ w x ∧ w x ≤ C) → (∀ᵐ x ∂μ, 0 < w x) → Integrable (fun x => Real.log (w x) / 2) μ → Tendsto (fun n : ℕ => ∫ x, Real.log (w x + 1 / ((n : ℝ) + 1)) ∂μ) atTop (𝓝 (2 * ∫ x, Real.log (w x) / 2 ∂μ)) := by
   intro T _ μ _ w C hw hwC hpos hint

@@ -13,7 +13,7 @@ namespace GlobalTheory.NMulEndo
 variable {R : Type} [CommRing R] {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero (by rintro (j | j); exacts [hu j, hv j])`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_elim {τ : Type} {u v : Fin d → MvPowerSeries τ R}
     (hu : ∀ i, constantCoeff (u i) = 0) (hv : ∀ i, constantCoeff (v i) = 0) :
@@ -21,7 +21,7 @@ theorem hasSubst_elim {τ : Type} {u v : Fin d → MvPowerSeries τ R}
   hasSubst_of_constantCoeff_zero (by rintro (j | j); exacts [hu j, hv j])
 
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_eq_zero (hasSubst_elim hu hv) (by rintro (j | j); exacts [hu j, hv j]) (hμ i)`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_op (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     (hμ : ∀ i, constantCoeff (μ i) = 0) {τ : Type} {u v : Fin d → MvPowerSeries τ R}
@@ -30,9 +30,9 @@ theorem constantCoeff_op (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
   constantCoeff_subst_eq_zero (hasSubst_elim hu hv) (by rintro (j | j); exacts [hu j, hv j]) (hμ i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [op, at2]`. Rewrite using `[subst_comp_subst_apply (hasSubst_elim hu hv) hw]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `rcases j with j | j <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem subst_op (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) {σ τ : Type}
     {u v : Fin d → MvPowerSeries σ R}
@@ -47,11 +47,11 @@ theorem subst_op (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) {σ τ : Typ
   rcases j with j | j <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `hs : HasSubst (Sum.elim (fun j => (X (Sum.inr j) : MvPowerSeries (Fin d ⊕ Fin d) R)) (fun j => X (Sum.inl j)))` using `hasSubst_elim (fun _ => constantCoeff_X _) (fun _ => constantCoeff_X _)`. Establish `hab` using `hasSubst_elim ha hb`. Establish `h` using `congrArg (subst (Sum.elim a b)) (hμ.comm i)`. Simplify using `only [swap, at2] at h`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[subst_comp_subst_apply hs hab]`. Establish `e : (fun s => subst (Sum.elim a b) (Sum.elim (fun j => (X (Sum.inr j) : MvPowerSeries (Fin d ⊕ Fin d) R)) (fun j => X (Sum.inl j)) s)) = Sum.elim b a`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `rcases s with s | s <;> simp [subst_X hab]`. Rewrite `h` using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem op_comm {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ : IsLaw μ) {τ : Type}
     {a b : Fin d → MvPowerSeries τ R}
@@ -73,9 +73,9 @@ theorem op_comm {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ : IsLaw 
   exact h
 
 /- English proof (translation)
-Establish `hW : HasSubst (Sum.elim a (Sum.elim b c))` using `hasSubst_of_constantCoeff_zero (by rintro (j | j | j); exacts [ha j, hb j, hc j])`. Establish `h1 : ∀ i, constantCoeff ((x1 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0` using `fun _ => constantCoeff_X _`. Establish `h2 : ∀ i, constantCoeff ((x2 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0` using `fun _ => constantCoeff_X _`. Establish `h3 : ∀ i, constantCoeff ((x3 : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) i) = 0` using `fun _ => constantCoeff_X _`. Establish `h` using `congrArg (fun F : Fin d → MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R => fun i => subst (Sum.elim a (Sum.elim b c)) (F i)) hμ.assoc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `try simp only at h`. Rewrite `h` using `[subst_op μ (constantCoeff_op μ hμ.const h1 h2) h3 hW, subst_op μ h1 h2 hW, subst_op μ h1 (constantCoeff_op μ hμ.const h2 h3) hW, subst_op μ h2 h3 hW]`. Simplify `h` using `[x1, x2, x3, subst_X hW]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem op_assoc {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ : IsLaw μ) {τ : Type}
     {a b c : Fin d → MvPowerSeries τ R} (ha : ∀ i, constantCoeff (a i) = 0)
@@ -97,7 +97,7 @@ theorem op_assoc {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ : IsLaw
   simpa [x1, x2, x3, subst_X hW] using h
 
 /- English proof (translation)
-Rewrite using `[op_assoc hμ ha hb (constantCoeff_op μ hμ.const hc he), ← op_assoc hμ hb hc he, op_comm hμ hc hb, op_assoc hμ hc hb he, ← op_assoc hμ ha hc (constantCoeff_op μ hμ.const hb he)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem op_interchange {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ : IsLaw μ) {τ : Type}
     {a b c e : Fin d → MvPowerSeries τ R} (ha : ∀ i, constantCoeff (a i) = 0)
@@ -109,9 +109,9 @@ theorem op_interchange {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ :
     ← op_assoc hμ ha hc (constantCoeff_op μ hμ.const hb he)]
 
 /- English proof (translation)
-Establish `hw : HasSubst (fun _ : Fin d => (0 : MvPowerSeries τ R))` using `hasSubst_of_constantCoeff_zero fun _ => map_zero _`. Establish `hz : subst (fun _ : Fin d => (0 : MvPowerSeries τ R)) (0 : MvPowerSeries (Fin d) R) = 0`. Rewrite using `[← coe_substAlgHom hw, map_zero]`. Establish `h` using `congrArg (fun F : Fin d → MvPowerSeries (Fin d) R => fun i => subst (fun _ : Fin d => (0 : MvPowerSeries τ R)) (F i)) hμ.unit`. Apply the tactic sequence `try simp only at h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[subst_op μ (fun i => constantCoeff_X i) (fun _ => map_zero _) hw]`. Simplify `h` using `[subst_X hw, hz]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem op_zero_zero {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ : IsLaw μ) (τ : Type) :
     op μ (fun _ => (0 : MvPowerSeries τ R)) (fun _ => 0) = fun _ => 0 := by
@@ -126,7 +126,7 @@ theorem op_zero_zero {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ : I
   simpa [subst_X hw, hz] using h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `show subst a (0 : MvPowerSeries (Fin d) R) = 0`. Rewrite using `[← coe_substAlgHom (hasSubst_of_constantCoeff_zero ha), map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subst_nmul_zero {τ : Type} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     {a : Fin d → MvPowerSeries τ R} (ha : ∀ i, constantCoeff (a i) = 0) :
@@ -136,7 +136,7 @@ theorem subst_nmul_zero {τ : Type} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin
   rw [← coe_substAlgHom (hasSubst_of_constantCoeff_zero ha), map_zero]
 
 /- English proof (translation)
-Establish `hs` using `hasSubst_of_constantCoeff_zero ha`. Rewrite using `[QLogDefect.nmul_succ, subst_op μ (QLogDefect.constantCoeff_nmul hμ k) (fun i => constantCoeff_X i) hs]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `subst_X hs i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem subst_nmul_succ {τ : Type} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     (hμ : ∀ i, constantCoeff (μ i) = 0) {a : Fin d → MvPowerSeries τ R}
@@ -150,7 +150,7 @@ theorem subst_nmul_succ {τ : Type} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin
   exact subst_X hs i
 
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_eq_zero (hasSubst_of_constantCoeff_zero ha) ha (QLogDefect.constantCoeff_nmul hμ k j)`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_subst_nmul {τ : Type} (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     (hμ : ∀ i, constantCoeff (μ i) = 0) {a : Fin d → MvPowerSeries τ R}
@@ -160,9 +160,9 @@ theorem constantCoeff_subst_nmul {τ : Type} (μ : Fin d → MvPowerSeries (Fin 
     (QLogDefect.constantCoeff_nmul hμ k j)
 
 /- English proof (translation)
-Establish `hab` using `constantCoeff_op μ hμ.const ha hb`. Proceed by induction on `k with`. Consider the case `zero`. Rewrite using `[subst_nmul_zero μ hab, subst_nmul_zero μ ha, subst_nmul_zero μ hb, op_zero_zero hμ]`. Consider the case `succ k ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[subst_nmul_succ μ hμ.const hab, ih, subst_nmul_succ μ hμ.const ha, subst_nmul_succ μ hμ.const hb, op_interchange hμ (constantCoeff_subst_nmul μ hμ.const ha k) (constantCoeff_subst_nmul μ hμ.const hb k) ha hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_nmul_op {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ : IsLaw μ) (k : ℕ)
     {τ : Type} {a b : Fin d → MvPowerSeries τ R} (ha : ∀ i, constantCoeff (a i) = 0)
@@ -180,11 +180,11 @@ theorem subst_nmul_op {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R} (hμ : 
         (constantCoeff_subst_nmul μ hμ.const hb k) ha hb]
 
 /- English proof (translation)
-Introduce `R _ d μ hμ k`. Use `⟨QLogDefect.constantCoeff_nmul hμ.const k, fun j => ?_⟩` and prove the remaining obligations. Establish `hL : ∀ i, constantCoeff ((fun i => X (Sum.inl i) : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) i) = 0` using `fun _ => constantCoeff_X _`. Establish `hR : ∀ i, constantCoeff ((fun i => X (Sum.inr i) : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) i) = 0` using `fun _ => constantCoeff_X _`. Establish `hxy : op μ (fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) R)) (fun i => X (Sum.inr i)) = μ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Establish `e : (Sum.elim (fun i => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) R)) (fun i => X (Sum.inr i))) = X`. Apply the tactic sequence `funext s; rcases s with s | s <;> rfl`. Use `show subst _ (μ i) = μ i`. Rewrite using `[e, subst_self]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h` using `congrFun (subst_nmul_op hμ k hL hR) j`. Rewrite `h` using `[hxy]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHom_nmul : ∀ (R : Type) [CommRing R] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R),
     IsLaw μ → ∀ k : ℕ, IsHom μ μ (nmul μ k) := by

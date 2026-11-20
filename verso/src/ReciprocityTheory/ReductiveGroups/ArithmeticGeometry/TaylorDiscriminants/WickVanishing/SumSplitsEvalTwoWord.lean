@@ -9,9 +9,9 @@ namespace ReciprocityTheory.ChartRestriction.G.TB.G2
 variable {k : Type} [CommRing k] {ι : Type} [DecidableEq ι]
 
 /- English proof (translation)
-Proceed by induction on `w generalizing F with`. Consider the case `nil => simp [splits]`. Consider the case `cons l w ih`. Simplify using `only [splits, List.map_append, List.map_map, List.sum_append, Function.comp_def]`. Rewrite using `[ih (fun u => F (l :: u))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.sum_eq_zero (fun x hx => ?_), add_zero]`. Take `⟨p, -, rfl⟩` from `List.mem_map.mp hx`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 private theorem splits_nil_lemma (w : List ι) (F : List ι → k) (c : k) :
     ((splits w).map (fun p => F p.1 * (if p.2 = [] then c else 0))).sum = F w * c := by
@@ -25,14 +25,14 @@ private theorem splits_nil_lemma (w : List ι) (F : List ι → k) (c : k) :
     simp
 
 /- English proof (translation)
-Apply the tactic sequence `cases t <;> simp [ev1]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ev1_cons_lemma_2 (g : ι → k) (l : ι) (t : List ι) :
     ev1 g (l :: t) = if t = [] then g l else 0 := by
   cases t <;> simp [ev1]
 
 /- English proof (translation)
-Simplify using `only [splits, List.map_append, List.map_map, List.sum_append, Function.comp_def, ev1_cons_lemma_2]`. Rewrite using `[splits_nil_lemma w φ (g l)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem t1_cons_lemma_3 (g : ι → k) (l : ι) (w : List ι) (φ : List ι → k) :
     ((splits (l :: w)).map (fun p => φ p.1 * ev1 g p.2)).sum =
@@ -42,11 +42,11 @@ private theorem t1_cons_lemma_3 (g : ι → k) (l : ι) (w : List ι) (φ : List
   rw [splits_nil_lemma w φ (g l)]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing φ with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[List.replicate_succ, List.cons_append, t1_cons_lemma_3, ih (fun u => φ (y :: u))]`. Consider the cases of `n with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Simplify using the standard rewrite rules. Apply the tactic sequence `try ring`. Consider the case `succ n`. Simplify using `only [Nat.add_sub_cancel, List.replicate_succ, List.cons_append]`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem t1_rep_lemma_4 (g : ι → k) (y : ι) (n : ℕ) (w : List ι) (φ : List ι → k) :
     ((splits (List.replicate n y ++ w)).map (fun p => φ p.1 * ev1 g p.2)).sum =
@@ -66,14 +66,14 @@ private theorem t1_rep_lemma_4 (g : ι → k) (y : ι) (n : ℕ) (w : List ι) (
       ring
 
 /- English proof (translation)
-Simplify using `[word, List.flatMap_cons]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem word_cons_lemma_5 (y : ι) (Ls : List ι) (m : ι →₀ ℕ) :
     word (y :: Ls) m = List.replicate (m y) y ++ word Ls m := by
   simp [word, List.flatMap_cons]
 
 /- English proof (translation)
-Proceed by induction on `Ls with`. Consider the case `nil => rfl`. Consider the case `cons y Ls ih`. Rewrite using `[word_cons_lemma_5, word_cons_lemma_5, h y (by simp), ih fun z hz => h z (by simp [hz])]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem word_congr_lemma_6 (Ls : List ι) (m m' : ι →₀ ℕ) (h : ∀ z ∈ Ls, m z = m' z) :
     word Ls m = word Ls m' := by
@@ -83,15 +83,15 @@ private theorem word_congr_lemma_6 (Ls : List ι) (m m' : ι →₀ ℕ) (h : �
     rw [word_cons_lemma_5, word_cons_lemma_5, h y (by simp), ih fun z hz => h z (by simp [hz])]
 
 /- English proof (translation)
-Use `revert hnd`. Proceed by induction on `Ls generalizing φ with`. Consider the case `nil`. Introduce `_`. Simplify using `[word, splits, ev1]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `cons y Ls ih`. Introduce `hnd`. Establish `hy : y ∉ Ls` using `(List.nodup_cons.mp hnd).1`. Establish `hnd' : Ls.Nodup` using `(List.nodup_cons.mp hnd).2`. Rewrite using `[word_cons_lemma_5, t1_rep_lemma_4, ih (fun u => φ (List.replicate (m y) y ++ u)) hnd', List.map_cons, List.sum_cons, add_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `e1 : (m - Finsupp.single y 1 : ι →₀ ℕ) y = m y - 1` using `by simp`. Establish `e2 : word Ls (m - Finsupp.single y 1) = word Ls m` using `word_congr_lemma_6 _ _ _ fun z hz => by`. Establish `hyz : y ≠ z` using `fun h => hy (h ▸ hz)`. Simplify using `[Finsupp.single_apply, hyz]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[word_cons_lemma_5, e1, e2]`. Use `congr 1`. Use `List.map_congr_left fun z hz => ?_` and prove the remaining obligations. Establish `hzy : z ≠ y` using `fun h => hy (h ▸ hz)`. Establish `e : (m - Finsupp.single z 1 : ι →₀ ℕ) y = m y` using `by simp [Finsupp.single_apply, hzy]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[word_cons_lemma_5, e]`.
+A detailed English derivation is pending.
 -/
 theorem sum_splits_evalOne_word (g : ι → k) (Ls : List ι) (hnd : Ls.Nodup) (m : ι →₀ ℕ) (φ : List ι → k) :
     ((splits (word Ls m)).map (fun p => φ p.1 * ev1 g p.2)).sum =
@@ -121,9 +121,9 @@ theorem sum_splits_evalOne_word (g : ι → k) (Ls : List ι) (hnd : Ls.Nodup) (
       rw [word_cons_lemma_5, e]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Nat.choose_succ_succ, Nat.choose_one_right, mul_add, ih]`. Consider the cases of `n with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => simp`. Consider the case `succ n => simp only [Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem two_mul_choose_two (n : ℕ) : 2 * n.choose 2 = n * (n - 1) := by
   induction n with
@@ -135,14 +135,14 @@ theorem two_mul_choose_two (n : ℕ) : 2 * n.choose 2 = n * (n - 1) := by
     | succ n => simp only [Nat.add_sub_cancel]; ring
 
 /- English proof (translation)
-Apply the tactic sequence `rcases t with _ | ⟨a, _ | ⟨b, t⟩⟩ <;> first | rfl | simp [ev1, ev2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ev2_cons_lemma_7 (c : ι → ι → k) (l : ι) (t : List ι) :
     ev2 c (l :: t) = ev1 (c l) t := by
   rcases t with _ | ⟨a, _ | ⟨b, t⟩⟩ <;> first | rfl | simp [ev1, ev2]
 
 /- English proof (translation)
-Simplify using `only [splits, List.map_append, List.map_map, List.sum_append, Function.comp_def, ev2_cons_lemma_7]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem t2_cons_lemma_8 (c : ι → ι → k) (l : ι) (w : List ι) (φ : List ι → k) :
     ((splits (l :: w)).map (fun p => φ p.1 * ev2 c p.2)).sum =
@@ -152,13 +152,13 @@ private theorem t2_cons_lemma_8 (c : ι → ι → k) (l : ι) (w : List ι) (φ
     ev2_cons_lemma_7]
 
 /- English proof (translation)
-Proceed by induction on `n generalizing φ with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[List.replicate_succ, List.cons_append, t2_cons_lemma_8, ih (fun u => φ (y :: u)), t1_rep_lemma_4]`. Break down `n with _ | _ | n` into its components or cases.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `[Nat.choose_zero_succ, Nat.choose_succ_self]`. Apply the tactic sequence `simp [Nat.choose_succ_self, Nat.choose_self] try ring`. Establish `e1 : n + 1 + 1 + 1 - 1 = n + 1 + 1` using `by omega`. Establish `e2 : n + 1 + 1 - 1 = n + 1` using `by omega`. Establish `e3 : n + 1 + 1 + 1 - 2 = n + 1` using `by omega`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e4 : n + 1 + 1 - 2 = n` using `by omega`. Establish `e5 : (n + 1 + 1 + 1).choose 2 = (n + 1 + 1).choose 2 + (n + 1 + 1)`. Rewrite using `[Nat.choose_succ_succ', Nat.choose_one_right]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, e3, e4, e5]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [List.replicate_succ, List.cons_append]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem t2_rep_lemma_9 (c : ι → ι → k) (y : ι) (n : ℕ) (w : List ι) (φ : List ι → k) :
     ((splits (List.replicate n y ++ w)).map (fun p => φ p.1 * ev2 c p.2)).sum =
@@ -186,27 +186,27 @@ private theorem t2_rep_lemma_9 (c : ι → ι → k) (y : ι) (n : ℕ) (w : Lis
       ring
 
 /- English proof (translation)
-Use `revert hnd`. Proceed by induction on `Ls generalizing φ with`. Consider the case `nil`. Introduce `_`. Simplify using `[word, splits, ev2]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `cons y0 Ls ih`. Introduce `hnd`. Establish `hy : y0 ∉ Ls` using `(List.nodup_cons.mp hnd).1`. Establish `hnd' : Ls.Nodup` using `(List.nodup_cons.mp hnd).2`. Establish `hne : ∀ z ∈ Ls, y0 ≠ z` using `fun z hz h => hy (h ▸ hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[word_cons_lemma_5, t2_rep_lemma_9, mul_add, mul_add, ih (fun u => φ (List.replicate (m y0) y0 ++ u)) hnd', sum_splits_evalOne_word (c y0) Ls hnd' m (fun u => φ (List.replicate (m y0 - 1) y0 ++ u))]`. Simplify using `only [List.map_cons, List.sum_cons, List.sum_map_add]`. Establish `ha : c y0 y0 * ((m y0 * (m - Finsupp.single y0 1 : ι →₀ ℕ) y0 : ℕ) : k) * φ (word (y0 :: Ls) (m - Finsupp.single y0 1 - Finsupp.single y0 1)) = 2 * (((m y0).choose 2 : ℕ) * c y0 y0 * φ (List.replicate (m y0 - 2) y0 ++ word Ls m))`. Establish `e1 : (m - Finsupp.single y0 1 : ι →₀ ℕ) y0 = m y0 - 1` using `by simp`. Establish `e2 : (m - Finsupp.single y0 1 - Finsupp.single y0 1 : ι →₀ ℕ) y0 = m y0 - 2` using `by first`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `(simp; done)`. Consider the case `(simp; omega)`. Establish `e3 : word Ls (m - Finsupp.single y0 1 - Finsupp.single y0 1) = word Ls m` using `word_congr_lemma_6 _ _ _ fun z hz => by simp [Finsupp.single_apply, hne z hz]`. Rewrite using `[e1, word_cons_lemma_5, e2, e3, ← two_mul_choose_two]`. Use `push_cast`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hb1 : (Ls.map (fun y => c y0 y * ((m y * (m - Finsupp.single y 1 : ι →₀ ℕ) y0 : ℕ) : k) * φ (word (y0 :: Ls) (m - Finsupp.single y 1 - Finsupp.single y0 1)))).sum = (m y0 : k) * (Ls.map (fun y => (m y : k) * c y0 y * φ (List.replicate (m y0 - 1) y0 ++ word Ls (m - Finsupp.single …`. Rewrite using `[← List.sum_map_mul_left]`. Use `congr 1`. Use `List.map_congr_left fun y hyL => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hyy : y0 ≠ y` using `hne y hyL`. Establish `e1 : (m - Finsupp.single y 1 : ι →₀ ℕ) y0 = m y0` using `by simp [Finsupp.single_apply, hyy.symm]`. Establish `e2 : (m - Finsupp.single y 1 - Finsupp.single y0 1 : ι →₀ ℕ) y0 = m y0 - 1`. Simplify using `[Finsupp.single_apply, hyy.symm]`. Establish `e3 : word Ls (m - Finsupp.single y 1 - Finsupp.single y0 1) = word Ls (m - Finsupp.single y 1)` using `word_congr_lemma_6 _ _ _ fun z hz => by simp [Finsupp.single_apply, hne z hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, word_cons_lemma_5, e2, e3]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hb2 : (Ls.map (fun x => c x y0 * ((m y0 * (m - Finsupp.single y0 1 : ι →₀ ℕ) x : ℕ) : k) * φ (word (y0 :: Ls) (m - Finsupp.single y0 1 - Finsupp.single x 1)))).sum = (m y0 : k) * (Ls.map (fun y => (m y : k) * c y0 y * φ (List.replicate (m y0 - 1) y0 ++ word Ls (m - Finsupp.single …`. Rewrite using `[← List.sum_map_mul_left]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `List.map_congr_left fun x hxL => ?_` and prove the remaining obligations. Establish `hxx : y0 ≠ x` using `hne x hxL`. Establish `e1 : (m - Finsupp.single y0 1 : ι →₀ ℕ) x = m x` using `by simp [Finsupp.single_apply, hxx]`. Establish `e2 : (m - Finsupp.single y0 1 - Finsupp.single x 1 : ι →₀ ℕ) y0 = m y0 - 1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[Finsupp.single_apply, hxx.symm]`. Establish `e3 : word Ls (m - Finsupp.single y0 1 - Finsupp.single x 1) = word Ls (m - Finsupp.single x 1)` using `word_congr_lemma_6 _ _ _ fun z hz => by simp [Finsupp.single_apply, hne z hz]`. Rewrite using `[e1, word_cons_lemma_5, e2, e3, hc x y0]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hcc : (Ls.map (fun x => (Ls.map (fun y => c x y * ((m y * (m - Finsupp.single y 1 : ι →₀ ℕ) x : ℕ) : k) * φ (word (y0 :: Ls) (m - Finsupp.single y 1 - Finsupp.single x 1)))).sum)).sum = (Ls.map (fun x => (Ls.map (fun y => c x y * ((m y * (m - Finsupp.single y 1 : ι →₀ ℕ) x : ℕ) : …`. Use `congr 1`. Use `List.map_congr_left fun x hxL => ?_` and prove the remaining obligations. Use `congr 1`. Use `List.map_congr_left fun y hyL => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (m - Finsupp.single y 1 - Finsupp.single x 1 : ι →₀ ℕ) y0 = m y0`. Simplify using `[Finsupp.single_apply, (hne y hyL).symm, (hne x hxL).symm]`. Rewrite using `[word_cons_lemma_5, e]`. Take the linear combination `-ha - hb1 - hb2 - hcc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_splits_evalTwo_word (c : ι → ι → k) (hc : ∀ x y, c x y = c y x) (Ls : List ι) (hnd : Ls.Nodup)
     (m : ι →₀ ℕ) (φ : List ι → k) :

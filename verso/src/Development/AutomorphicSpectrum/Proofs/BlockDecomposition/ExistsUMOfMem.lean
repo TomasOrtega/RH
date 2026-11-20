@@ -29,7 +29,7 @@ def topV (i t : ℕ) (x : Fin i → k) : Fin (i + t) → k := Fin.append x 0
 def midV (i t : ℕ) (v : Fin t → k) : Fin (i + t) → k := Fin.append 0 v
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show unip k n (Multiplicative.ofAdd (a + b)) = unip k n (Multiplicative.ofAdd a) * unip k n (Multiplicative.ofAdd b)`. Rewrite using `[ofAdd_add, map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uM_add (n : ℕ) (a b : Fin n → k) : uM k n (a + b) = uM k n a * uM k n b := by
   apply Subtype.ext
@@ -37,7 +37,7 @@ theorem uM_add (n : ℕ) (a b : Fin n → k) : uM k n (a + b) = uM k n a * uM k 
   rw [ofAdd_add, map_mul]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show unip k n (Multiplicative.ofAdd 0) = 1`. Rewrite using `[ofAdd_zero, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uM_zero (n : ℕ) : uM k n 0 = 1 := by
   apply Subtype.ext
@@ -45,19 +45,19 @@ theorem uM_zero (n : ℕ) : uM k n 0 = 1 := by
   rw [ofAdd_zero, map_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem uM_mem (n : ℕ) (y : Fin n → k) : uM k n y ∈ MirUin k n := ⟨_, rfl⟩
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `(hu : (u : GL (Fin (n + 1)) k) ∈ MirU k n)`. Conclude with `⟨v.toAdd, Subtype.ext hv.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_uM_of_mem (n : ℕ) {u : Mir k n} (hu : u ∈ MirUin k n) : ∃ y, u = uM k n y := by
   obtain ⟨v, hv⟩ := (hu : (u : GL (Fin (n + 1)) k) ∈ MirU k n)
   exact ⟨v.toAdd, Subtype.ext hv.symm⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `glEmb_mul_unip' k n g (Multiplicative.ofAdd y)`.
+Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem levi_mul_uM (n : ℕ) (g : GL (Fin n) k) (y : Fin n → k) :
     levi k n g * uM k n y = uM k n ((g : Matrix (Fin n) (Fin n) k).mulVec y) * levi k n g := by
@@ -65,7 +65,7 @@ theorem levi_mul_uM (n : ℕ) (g : GL (Fin n) k) (y : Fin n → k) :
   exact glEmb_mul_unip' k n g (Multiplicative.ofAdd y)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `induction j using Fin.addCases <;> simp [topV, midV]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem topV_add_midV (i t : ℕ) (x : Fin i → k) (v : Fin t → k) :
     topV k i t x + midV k i t v = Fin.append x v := by
@@ -73,7 +73,7 @@ theorem topV_add_midV (i t : ℕ) (x : Fin i → k) (v : Fin t → k) :
   induction j using Fin.addCases <;> simp [topV, midV]
 
 /- English proof (translation)
-Use `⟨fun j => y (Fin.castAdd t j), fun j => y (Fin.natAdd i j), ?_⟩` and prove the remaining obligations. Rewrite using `[topV_add_midV]`. Use function extensionality and compare the values at `j`. Apply the tactic sequence `induction j using Fin.addCases <;> simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_top_mid (i t : ℕ) (y : Fin (i + t) → k) : ∃ x v, y = topV k i t x + midV k i t v := by
   refine ⟨fun j => y (Fin.castAdd t j), fun j => y (Fin.natAdd i j), ?_⟩

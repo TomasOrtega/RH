@@ -17,11 +17,11 @@ open PI.RhsWLim
 variable {k : ℕ}
 
 /- English proof (translation)
-Establish `hH : (volume : Measure (Fin k → ℂ)).IsAddHaarMeasure` using `inferInstance`. Use `set f : (Fin k → ℂ) →ₗ[ℝ] (Fin k → ℂ) := t⁻¹ • LinearMap.id with hfdef`. Establish `hdet : LinearMap.det f = (t⁻¹) ^ Module.finrank ℝ (Fin k → ℂ)`. Rewrite using `[hfdef, LinearMap.det_smul, LinearMap.det_id, mul_one]`. Establish `hdet0 : LinearMap.det f ≠ 0` using `by rw [hdet]; exact pow_ne_zero _ (inv_ne_zero ht.ne')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmap` using `Measure.map_linearMap_addHaar_eq_smul_addHaar (μ := (volume : Measure (Fin k → ℂ))) hdet0`. Rewrite `hmap` using `[hdet, inv_pow, inv_inv, abs_of_pos (pow_pos ht _)]`. Establish `hfm : Measurable f` using `f.continuous_of_finiteDimensional.measurable`. Establish `e : (fun y : Fin k → ℂ => G (t⁻¹ • y)) = fun y => G (f y)`. Use function extensionality and compare the values at `y`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[hfdef]`. Rewrite using `[e, ← lintegral_map hG hfm, hmap, lintegral_smul_measure, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_inv_smul {t : ℝ} (ht : 0 < t) {G : (Fin k → ℂ) → ℝ≥0∞} (hG : Measurable G) :
     ∫⁻ y, G (t⁻¹ • y) = ENNReal.ofReal (t ^ Module.finrank ℝ (Fin k → ℂ)) * ∫⁻ y, G y := by
@@ -39,44 +39,40 @@ theorem lintegral_inv_smul {t : ℝ} (ht : 0 < t) {G : (Fin k → ℂ) → ℝ�
   rw [e, ← lintegral_map hG hfm, hmap, lintegral_smul_measure, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[Complex.polarCoord_symm_apply, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem polar_symm_exp (p : ℝ × ℝ) :
     Complex.polarCoord.symm p = (p.1 : ℂ) * Complex.exp (p.2 * Complex.I) := by
   rw [Complex.polarCoord_symm_apply, Complex.exp_mul_I, ← Complex.ofReal_cos, ← Complex.ofReal_sin]
 
 /- English proof (translation)
-Introduce `k T' hT'`. Use `set d := Module.finrank ℝ (Fin k → ℂ) with hd`. Use `set C : ℝ≥0∞ := ∫⁻ t in Set.Ioo (1 : ℝ) 2, ENNReal.ofReal (T' * t) * ENNReal.ofReal (t ^ d) with hC`. Use `⟨C, ?_, ?_, fun E hE => ?_⟩` and prove the remaining obligations. Apply `ne_of_gt` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.volume_Ioo]`. Conclude with `ENNReal.mul_pos (by simpa using hT') (by norm_num)`. Use `_ = ∫⁻ t in Set.Ioo (1 : ℝ) 2, ENNReal.ofReal T' := (setLIntegral_const _ _).symm`. Use `_ ≤ C := setLIntegral_mono' measurableSet_Ioo fun t ht => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht1 : 1 < t` using `ht.1`. Rewrite using `[← ENNReal.ofReal_mul (by nlinarith)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `h1 : 1 ≤ t ^ d` using `one_le_pow₀ ht1.le`. Establish `h2 : 1 ≤ t * t ^ d` using `one_le_mul_of_one_le_of_one_le ht1.le h1`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `ne_of_lt` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `ht1 : 1 < t` using `ht.1`. Establish `ht2 : t < 2` using `ht.2`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ENNReal.ofReal_mul (by nlinarith)]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `h1 : t ^ d ≤ 2 ^ d` using `pow_le_pow_left₀ (by linarith) ht2.le d`. Establish `h2 : 0 ≤ t ^ d` using `pow_nonneg (by linarith) d`. Establish `h3 : T' * t ≤ T' * 2` using `by nlinarith`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ < ⊤ := by`. Rewrite using `[setLIntegral_const, Real.volume_Ioo]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.ofReal_lt_top`. Establish `hS` using `measurableSet_coneSh hT' hE`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf : Measurable (E.indicator (1 : (Fin k → ℂ) × ℂ → ℝ≥0∞))` using `measurable_one.indicator hE`. Use `set F3 : (Fin k → ℂ) → ℝ → ℝ → ℝ≥0∞ := fun y θ t => ENNReal.ofReal (T' * t) * E.indicator 1 (hq k T' (t⁻¹ • y) θ) with hF3`. Establish `hF3m : Measurable (fun p : ((Fin k → ℂ) × ℝ) × ℝ => F3 p.1.1 p.1.2 p.2)`. Use `(ENNReal.measurable_ofReal.comp (measurable_const.mul measurable_snd)).mul ?_` and prove the remaining obligations. Conclude with `hf.comp ((continuous_hq k T').measurable.comp ((measurable_snd.inv.smul (measurable_fst.comp measurable_fst)).prodMk (measurable_snd.comp measurable_fst)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfib : ∀ y : Fin k → ℂ, volume (Prod.mk y ⁻¹' coneSh k T' E) = ∫⁻ θ in Set.Ioo (-Real.pi) Real.pi, ∫⁻ t in Set.Ioo (1 : ℝ) 2, F3 y θ t`. Introduce `y`. Establish `hSy : MeasurableSet (Prod.mk y ⁻¹' coneSh k T' E)` using `measurable_prodMk_left hS`. Establish `hg : Measurable (fun p : ℝ × ℝ => ENNReal.ofReal p.1 • (Prod.mk y ⁻¹' coneSh k T' E).indicator (1 : ℂ → ℝ≥0∞) ((p.1 : ℂ) * Complex.exp (p.2 * Complex.I)))`. Use `(ENNReal.measurable_ofReal.comp measurable_fst).smul ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(measurable_one.indicator hSy).comp ((Complex.continuous_ofReal.comp continuous_fst).mul (Complex.continuous_exp.comp ((Complex.continuous_ofReal.comp continuous_snd).mul continuous_const))).measurable`. Rewrite using `[← lintegral_indicator_one hSy, ← Complex.lintegral_comp_polarCoord_symm]`. Repeatedly rewrite using `[polar_symm_exp]`. Rewrite using `[polarCoord_target, Measure.volume_eq_prod, ← Measure.prod_restrict, lintegral_prod _ hg.aemeasurable, lintegral_lintegral_swap hg.aemeasurable]`. Use `lintegral_congr fun θ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF3]`. Simplify using `only`. Rewrite using `[← radial hT' E hE y θ]`. Use `lintegral_congr fun R => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[Measure.volume_eq_prod, Measure.prod_apply hS]`. Repeatedly rewrite using `[hfib]`. Establish `hm2 : Measurable (fun p : (Fin k → ℂ) × ℝ => ∫⁻ t in Set.Ioo (1 : ℝ) 2, F3 p.1 p.2 t)` using `hF3m.lintegral_prod_right'`. Rewrite using `[lintegral_lintegral_swap hm2.aemeasurable]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hm3 : ∀ θ : ℝ, Measurable (fun p : (Fin k → ℂ) × ℝ => F3 p.1 θ p.2)` using `fun θ => hF3m.comp (((measurable_fst).prodMk measurable_const).prodMk measurable_snd)`. Establish `step : ∀ θ : ℝ, ∫⁻ y, ∫⁻ t in Set.Ioo (1 : ℝ) 2, F3 y θ t = ∫⁻ t in Set.Ioo (1 : ℝ) 2, ENNReal.ofReal (T' * t) * ENNReal.ofReal (t ^ d) * ∫⁻ y, E.indicator 1 (hq k T' y θ)`. Introduce `θ`. Rewrite using `[lintegral_lintegral_swap (hm3 θ).aemeasurable]`. Use `setLIntegral_congr_fun measurableSet_Ioo fun t ht => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : 0 < t` using `by linarith [ht.1]`. Rewrite using `[hF3]`. Simplify using `only`. Establish `hGm : Measurable (fun y : Fin k → ℂ => E.indicator (1 : (Fin k → ℂ) × ℂ → ℝ≥0∞) (hq k T' y θ))` using `hf.comp ((continuous_hq k T').measurable.comp (measurable_id.prodMk measurable_const))`. Rewrite using `[lintegral_const_mul (ENNReal.ofReal (T' * t)) (f := fun x => E.indicator (1 : (Fin k → ℂ) × ℂ → ℝ≥0∞) (hq k T' (t⁻¹ • x) θ)) (hGm.comp (measurable_const_smul _))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hsc` using `lintegral_inv_smul ht0 hGm`. Rewrite using `[hsc, mul_assoc]`. Repeatedly rewrite using `[step]`. Establish `hP : Measurable (fun θ : ℝ => ∫⁻ y, E.indicator (1 : (Fin k → ℂ) × ℂ → ℝ≥0∞) (hq k T' y θ))`. Establish `: Measurable (fun p : (Fin k → ℂ) × ℝ => E.indicator (1 : (Fin k → ℂ) × ℂ → ℝ≥0∞) (hq k T' p.1 p.2))` using `hf.comp (continuous_hq k T').measurable`.
-
-Conclude with `this.lintegral_prod_left'`. Establish `hct : Measurable (fun t : ℝ => ENNReal.ofReal (T' * t) * ENNReal.ofReal (t ^ d))` using `(ENNReal.measurable_ofReal.comp (measurable_const.mul measurable_id)).mul (ENNReal.measurable_ofReal.comp (measurable_id.pow_const d))`. Establish `hprod : Measurable (Function.uncurry fun (θ : ℝ) (t : ℝ) => ENNReal.ofReal (T' * t) * ENNReal.ofReal (t ^ d) * ∫⁻ y, E.indicator (1 : (Fin k → ℂ) × ℂ → ℝ≥0∞) (hq k T' y θ))` using `(hct.comp measurable_snd).mul (hP.comp measurable_fst)`. Rewrite using `[lintegral_lintegral_swap hprod.aemeasurable]`. Unfold `hqI`.
-
-Rewrite using `[hC, ← lintegral_mul_const _ hct]`. Use `lintegral_congr fun t => ?_` and prove the remaining obligations. Rewrite using `[lintegral_const_mul _ hP]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coneVol : ConeVol := by
   intro k T' hT'

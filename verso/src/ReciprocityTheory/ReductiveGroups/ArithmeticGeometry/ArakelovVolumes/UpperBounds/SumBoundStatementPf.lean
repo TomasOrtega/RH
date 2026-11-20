@@ -8,15 +8,15 @@ open scoped Matrix ComplexOrder ENNReal
 noncomputable section
 
 /- English proof (translation)
-Introduce `f p q s hs Γ hd hU`. Take `⟨c, hc, hsepΓ⟩` from `sumBd_sep Γ hd hU`. Take `⟨C, hC, hbound⟩` from `sumBd_sum (p := p) (q := q) (f := f) hs hc`. Use `⟨C, hC, fun v hv => ?_⟩` and prove the remaining obligations. Use `choose G hG hGw using fun k => sumBd_frame (hv k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `x : Γ → Fin f → Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ` to `fun γ k => ((γ.1 k : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) * G k`. Establish `hxU : ∀ a k, IsUpq (x a k)` using `fun a k => sumBd_isUpq_mul (hU a.1 a.2 k) (hG k)`. Establish `hxsep : ∀ a b : Γ, a ≠ b → ∃ k i j, c ≤ ‖(x b k * (x a k)⁻¹) i j - (1 : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ) i j‖`. Introduce `a b hab`. Establish `hmem : b.1 * a.1⁻¹ ∈ Γ` using `Γ.mul_mem b.2 (Γ.inv_mem a.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : b.1 * a.1⁻¹ ≠ 1` using `fun h => hab (Subtype.ext (mul_inv_eq_one.mp h).symm)`. Take `⟨k, i, j, hk⟩` from `hsepΓ _ hmem hne`. Use `⟨k, i, j, le_of_le_of_eq hk ?_⟩` and prove the remaining obligations. Establish `: x b k * (x a k)⁻¹ = (((b.1 * a.1⁻¹) k : GL (Fin p ⊕ Fin q) ℂ) : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)`. Simplify using `only [x, Pi.mul_apply, Pi.inv_apply, Units.val_mul, Matrix.coe_units_inv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_inv_rev]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (G k), sumBd_mul_inv (hG k), Matrix.one_mul]`. Rewrite using `[this]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `γ`. Rewrite using `[Finset.prod_congr rfl fun k _ => hGw k _ (hU γ.1 γ.2 k) s]`. Use `_ ≤ C := hbound Γ x hxU hxsep`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SumBoundStatement_holds : SumBoundStatement := by
   intro f p q s hs Γ hd hU

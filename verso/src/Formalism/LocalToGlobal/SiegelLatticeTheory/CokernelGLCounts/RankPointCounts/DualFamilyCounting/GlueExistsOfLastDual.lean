@@ -10,7 +10,7 @@ namespace Formalism.L2.SG.Pf.GluingBases
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-The claim follows from `glueVecs_of gluing_vectors_exist (lastRescale_of hL)`.
+A detailed English derivation is pending.
 -/
 theorem glueVecs_of_last (hL : LastUnit) : GlueVecs :=
   glueVecs_of gluing_vectors_exist (lastRescale_of hL)
@@ -21,7 +21,7 @@ namespace Formalism.L2.SG.Pf.Cnt
 
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-The claim follows from `glueExists_of_fam jordan_splitting_exists (Formalism.L2.SG.Pf.GluingBases.glueVecs_of_last hL) Formalism.L2.SG.Pf.GluingBases.family_top_holds Formalism.L2.SG.Pf.GluingBases.family_gram_holds hD`.
+A detailed English derivation is pending.
 -/
 theorem glueExists_of_last_dual (hL : Formalism.L2.SG.Pf.GluingBases.LastUnit) (hD : Formalism.L2.SG.Pf.GluingBases.FamDual) :
     GlueExists :=

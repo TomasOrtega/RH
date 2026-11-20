@@ -18,20 +18,20 @@ def redCoef (π : R →ₐ[ℂ] ℂ) : R ⊗[ℂ] H →ₐ[ℂ] H :=
   Algebra.TensorProduct.lift ((Algebra.ofId ℂ H).comp π) (AlgHom.id ℂ H) (fun _ _ ↦ Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[redCoef, Algebra.TensorProduct.lift_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem redCoef_tmul (π : R →ₐ[ℂ] ℂ) (d : R) (y : H) :
     redCoef π (d ⊗ₜ[ℂ] y) = algebraMap ℂ H (π d) * y := by
   simp [redCoef, Algebra.TensorProduct.lift_tmul]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul d y`. Rewrite using `[redCoef_tmul]`. Establish `e : d ⊗ₜ[ℂ] y - (1 : R) ⊗ₜ[ℂ] (algebraMap ℂ H (π d) * y) = (Algebra.TensorProduct.includeLeft : R →ₐ[ℂ] R ⊗[ℂ] H) (d - algebraMap ℂ R (π d)) * ((1 : R) ⊗ₜ[ℂ] y)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Algebra.TensorProduct.includeLeft_apply, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one, TensorProduct.sub_tmul, Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, TensorProduct.smul_tmul]`. Rewrite using `[e]`. Use `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ?_)` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, map_sub, AlgHom.commutes]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy`. Establish `e : x + y - 1 ⊗ₜ[ℂ] redCoef π (x + y) = (x - 1 ⊗ₜ[ℂ] redCoef π x) + (y - 1 ⊗ₜ[ℂ] redCoef π y)`. Rewrite using `[map_add, TensorProduct.tmul_add]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.add_mem _ hx hy`.
+A detailed English derivation is pending.
 -/
 theorem sub_redCoef_mem (π : R →ₐ[ℂ] ℂ) (x : R ⊗[ℂ] H) :
     x - 1 ⊗ₜ[ℂ] redCoef π x ∈
@@ -57,7 +57,7 @@ theorem sub_redCoef_mem (π : R →ₐ[ℂ] ℂ) (x : R ⊗[ℂ] H) :
 end General
 
 /- English proof (translation)
-Rewrite using `[← Hol.ev_apply p hp]`. Express the relevant statement in the definitionally equal form `((Hol.ev p hp).comp (redCoef π)) x = (π.comp (evT R p hp)) x`. Use `congr 1`. Use `Algebra.TensorProduct.ext' fun d y ↦ ?_` and prove the remaining obligations. Simplify using `only [AlgHom.comp_apply, redCoef_tmul, evT, Algebra.TensorProduct.lift_tmul, map_mul, AlgHom.commutes, AlgHom.id_apply, Algebra.ofId_apply]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -73,9 +73,9 @@ theorem fn_redCoef {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {W : Op
   simp
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.PeriodFamily.taylor_sub_value_mem_span N t f`. Establish `hle : Ideal.span (Set.range t) ≤ RingHom.ker π`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `ht i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `hle h` as an intermediate fact. Rewrite `this` using `[RingHom.mem_ker, map_sub, AlgHom.commutes, sub_eq_zero]`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem taylor_red {I : Type} [Fintype I] [DecidableEq I] {R : Type} [CommRing R] [Algebra ℂ R] (N : ℕ)
     (t : I → R) (π : R →ₐ[ℂ] ℂ) (ht : ∀ i, π (t i) = 0) (f : (I → ℂ) → ℂ) :
@@ -88,7 +88,7 @@ theorem taylor_red {I : Type} [Fintype I] [DecidableEq I] {R : Type} [CommRing R
   simpa using this
 
 /- English proof (translation)
-Introduce `I _ _ g R _ _ N t π ht W W₀ _ ρ hρ h h₀ hh₀`. Establish `hq : redCoef π (ρ h) = h₀` using `Hol.ext_fn fun p hp ↦ by`. Rewrite using `[fn_redCoef π _ hp, hρ h p hp, taylor_red N t π ht, hh₀ p hp]`. Use `sub_redCoef_mem (H := Hol W₀) π (ρ h)` as an intermediate fact. Rewrite `this` using `[hq]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem taylor_reduces_to_slice : ∀ {I : Type} [Fintype I] [DecidableEq I] {g : ℕ} {R : Type} [CommRing R] [Algebra ℂ R] (N : ℕ) (t : I → R) (π : R →ₐ[ℂ] ℂ), (∀ i, π (t i) = 0) → ∀ (W : Opens (Tot I g)) (W₀ : Opens (Tot Empty g)), (∀ p ∈ W₀, (((0 : I → ℂ), p.2) : Tot I g) ∈ W) → ∀ ρ : Hol W →+* R ⊗[ℂ] Hol W₀, IsTay N t ρ → ∀ (h : Hol W) (h₀ : Hol W₀), (∀ p ∈ W₀, h₀.fn p = h.fn (0, p.2)) → ρ h - 1 ⊗ₜ[ℂ] h₀ ∈ (RingHom.ker π).map (Algebra.TensorProduct.includeLeft : R →ₐ[ℂ] R ⊗[ℂ] Hol W₀) := by
   intro I _ _ g R _ _ N t π ht W W₀ _ ρ hρ h h₀ hh₀

@@ -8,47 +8,45 @@ open scoped ValuativeRel
 namespace Ad3.SchwartzSpaceL2
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ μ₁ μ₂ h₁ h₂`. Use `⟨⟨?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, hun F ψ hψ μ₁ μ₂ h₁ h₂⟩` and prove the remaining obligations. Take `⟨φ, hφ, h⟩` from `hne F ψ hψ μ₁ μ₂ h₁ h₂`. Conclude with `⟨_, Submodule.subset_span ⟨φ, hφ, rfl⟩, h⟩`. Introduce `W hW h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨φ, hφ, rfl⟩` from `hx`. Take `⟨hm, he⟩` from `htr F ψ hψ μ₁ μ₂ h₁ h₂ φ hφ h`. Establish `: (fun g => W2 ψ μ₁ μ₂ φ (g * h)) = (((μ₂ (GeneralLinearGroup.det h) : ℂˣ) : ℂ) * mp (GeneralLinearGroup.det h) (1 / 2)) • W2 ψ μ₁ μ₂ (rt φ h)`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[he g]`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, hm, rfl⟩)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => exact Submodule.smul_mem _ a hx`. Introduce `W hW x g`. Proceed by induction on `hW using Submodule.span_induction with`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem w hw`. Take `⟨φ, hφ, rfl⟩` from `hw`. Conclude with `hpsi F ψ hψ μ₁ μ₂ h₁ h₂ φ hφ x g`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => simp only [Pi.add_apply, hu, hv]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `smul a u _ hu => simp only [Pi.smul_apply, smul_eq_mul, hu]`. Expand and normalize the polynomial expressions, which then agree. Introduce `W hW a g`. Proceed by induction on `hW using Submodule.span_induction with`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `mem w hw`. Take `⟨φ, hφ, rfl⟩` from `hw`. Conclude with `hcen F ψ hψ μ₁ μ₂ h₁ h₂ φ hφ a g`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => simp only [Pi.add_apply, hu, hv]`.
+Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `smul b u _ hu => simp only [Pi.smul_apply, smul_eq_mul, hu]`. Expand and normalize the polynomial expressions, which then agree. Introduce `W hW`. Proceed by induction on `hW using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `mem w hw`. Take `⟨φ, hφ, rfl⟩` from `hw`. Conclude with `hsm F ψ hψ μ₁ μ₂ h₁ h₂ φ hφ`. Consider the case `zero => exact ⟨⊤, fun _ _ _ => rfl⟩`. Consider the case `add u v _ _ hu hv`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨U, hU⟩` from `hu`. Take `⟨V, hV⟩` from `hv`. Use `⟨U ⊓ V, fun g w hw => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, hU g w hw.1, hV g w hw.2]`. Consider the case `smul b u _ hu`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Take `⟨U, hU⟩` from `hu`. Conclude with `⟨U, fun g w hw => by simp only [Pi.smul_apply, hU g w hw]⟩`. Introduce `W hW ε hε`. Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem w hw`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨φ, hφ, rfl⟩` from `hw`. Conclude with `hbd F ψ hψ μ₁ μ₂ h₁ h₂ φ hφ ε hε`. Consider the case `zero => exact ⟨0, 0, fun a k _ => ⟨by simp, fun h => absurd rfl h⟩⟩`. Consider the case `add u v _ _ hu hv`. Take `⟨C₁, B₁, hu⟩` from `hu`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Take `⟨C₂, B₂, hv⟩` from `hv`. Use `⟨C₁ + C₂, max B₁ B₂, fun a k hk => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `(hu a k hk).1`. Establish `h2` using `(hv a k hk).1`. Combine the equalities or inequalities in the displayed calculation.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hu0 : u (dg2 a 1 * k) = 0`. Establish `: v (dg2 a 1 * k) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Simplify using `[hu0, h0]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `le_max_of_le_right ((hv a k hk).2 this)`. Conclude with `le_max_of_le_left ((hu a k hk).2 hu0)`. Consider the case `smul b u _ hu`. Take `⟨C, B, hu⟩` from `hu`. Use `⟨‖b‖ * C, B, fun a k hk => ⟨?_, fun hne => ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately.
 
-Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hu a k hk).1 (norm_nonneg _)`. Use `(hu a k hk).2 fun h0 => hne ?_` and prove the remaining obligations. Simplify using `[h0]`. Introduce `W hW c hc s hs0 hs1`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-It suffices to establish `H : Integrable (fun a : Fˣ => W (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 / 2 - s)) (multHaar F) ∧ Integrable (fun a : Fˣ => W (dg2 a 1) * ((c a : ℂˣ) : ℂ) * mp a (s - 1 / 2)) (multHaar F) ∧ ∫ a, W (dg2 a 1 * w0) * (((μ₁ a * μ₂ a * c a)⁻¹ : ℂˣ) : ℂ) * mp a (1 …`. Proceed by induction on `hW using Submodule.span_induction with`. Consider the case `mem w hw`. Take `⟨φ, hφ, rfl⟩` from `hw`. Conclude with `hfe F ψ hψ μ₁ μ₂ h₁ h₂ φ hφ c hc s hs0 hs1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv`. Take `⟨hu1, hu2, hu3⟩` from `hu`. Take `⟨hv1, hv2, hv3⟩` from `hv`. Simplify using `only [Pi.add_apply, add_mul]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨hu1.add hv1, hu2.add hv2, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_add hu1 hv1, integral_add hu2 hv2, hu3, hv3]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `smul b u _ hu`. Take `⟨hu1, hu2, hu3⟩` from `hu`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Simplify using `only [← mul_assoc] at hu1 hu2 hu3 ⊢`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `hu1.const_mul b` using `only [mul_assoc]`. Simplify `hu2.const_mul b` using `only [mul_assoc]`.
-
-Simplify using `only [mul_assoc]`. Rewrite using `[integral_const_mul, integral_const_mul]`. Simplify using `only [← mul_assoc] at hu3 ⊢`. Rewrite using `[hu3]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem top (hpsi : SPsi) (hcen : SCen) (htr : STrans) (hsm : SSmooth) (hbd : SBound) (hne : SNe)
     (hun : SUnr) (hfe : FeGen) : Loc2 := by
@@ -159,7 +157,7 @@ theorem top (hpsi : SPsi) (hcen : SCen) (htr : STrans) (hsm : SSmooth) (hbd : SB
         ring
 
 /- English proof (translation)
-The claim follows from `top hpsi hcen htr hsm hbd hne hun (hfe hdz hwd hpu hli htr hta)`.
+A detailed English derivation is pending.
 -/
 theorem top' (hpsi : SPsi) (hcen : SCen) (htr : STrans) (hsm : SSmooth) (hbd : SBound) (hne : SNe)
     (hun : SUnr) (hdz : SDZ) (hwd : SWd) (hpu : SPure) (hli : SLin) (hta : STate) (hfe : SFe) : Loc2 :=

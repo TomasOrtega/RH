@@ -10,7 +10,7 @@ attribute [-instance] GlobalTheory.CompHt.fintypePsi
 namespace UpperTheory.Lit.ArakelovGeometry
 
 /- English proof (translation)
-Introduce `h₁ h₂ hPL _ _` and use `SelfIntersectionVolumeEstimates.topCovolSlim2_use h₁ h₂ hPL PositivityTheory.Pf1.HilbertSamuelMoriwaki.hsUse_outright PositivityTheory.Pf1.HilbertSamuelMoriwaki.moriwakiBig_outright`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem topCovolSlim2_free : GlobalTheory.CompanionTheory.Hypotheses₂.ResolutionCharZero → GlobalTheory.CompanionTheory.Hypotheses₂.PrincipalisationCharZero → GlobalTheory.CompanionTheory.Hypotheses₂.PoincareLelongInv → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiHSStatement → ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.MoriwakiBigStatement → HT.FarguesExact → GR.ZarhinStatement → Pub.NefRR → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → GlobalTheory.Published.PointSeparationPair → GlobalTheory.Published.ArDegree → GlobalTheory.CovTop.Hypotheses2 → GlobalTheory.Published.ScholzeWeinsteinB → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.CovTop.CovolX :=
   fun h₁ h₂ hPL _ _ => SelfIntersectionVolumeEstimates.topCovolSlim2_use h₁ h₂ hPL PositivityTheory.Pf1.HilbertSamuelMoriwaki.hsUse_outright

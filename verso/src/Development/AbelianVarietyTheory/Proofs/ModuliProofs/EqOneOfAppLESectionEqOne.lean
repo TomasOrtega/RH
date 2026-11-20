@@ -14,13 +14,13 @@ namespace GlobalTheory
 namespace RigidFunction
 
 /- English proof (translation)
-Establish `hle : (⊤ : F.Opens) ≤ φ ⁻¹ᵁ (p ⁻¹ᵁ V)`. Introduce `c _`. Express the relevant statement in the definitionally equal form `p (φ c) ∈ V`. Rewrite using `[← Scheme.Hom.comp_apply, w, Scheme.Hom.comp_apply]`. Conclude with `hV _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ c : F, φ c ∈ P.basicOpen s ↔ c ∈ F.basicOpen ((φ.appLE (p ⁻¹ᵁ V) ⊤ hle).hom s)`. Introduce `c`. Rewrite using `[Scheme.basicOpen_appLE]`. Conclude with `⟨fun h => ⟨trivial, h⟩, fun h => h.2⟩`. Rewrite `ha`, the goal using `[key]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hF` using `isField_of_universallyClosed K q`. Distinguish the cases in `hs : (φ.appLE (p ⁻¹ᵁ V) ⊤ hle).hom s = 0`. Rewrite using `[hs, Scheme.basicOpen_zero]`. Conclude with `fun h => h`. It suffices to derive a contradiction.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ha` to reduce the goal to its premises. Take `⟨v, hv⟩` from `hF.mul_inv_cancel hs`. Rewrite using `[Scheme.basicOpen_of_isUnit _ (isUnit_iff_exists_inv.mpr ⟨v, hv⟩)]`. Discharge the goal by the elementary cases of `trivial`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem not_mem_basicOpen_fibre {X P F : Scheme.{0}} {K : Type} [Field K] {p : P ⟶ X}
     {t : Spec (CommRingCat.of K) ⟶ X} {φ : F ⟶ P} {q : F ⟶ Spec (CommRingCat.of K)} (w : φ ≫ p = q ≫ t)
@@ -49,21 +49,21 @@ theorem not_mem_basicOpen_fibre {X P F : Scheme.{0}} {K : Type} [Field K] {p : P
 end RigidFunction
 
 /- English proof (translation)
-Introduce `X P e he hsm hgi hXg V u h hu`. Take `⟨hred, hgen⟩` from `hXg`. Use `hsm` as an intermediate fact. Use `hgi` as an intermediate fact. Establish `: IsReduced P.left` using `GlobalTheory.isReduced_of_smooth_of_isReduced P.hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (e.appLE _ V h).hom (u - 1) = 0` using `by rw [map_sub, map_one, hu, sub_self]`. Rewrite using `[← sub_eq_zero, ← basicOpen_eq_bot_iff]`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[← TopologicalSpace.Opens.not_nonempty_iff_eq_bot, not_not]`. Establish `hopen` using `P.hom.isOpenMap _ (P.left.basicOpen (u - 1)).isOpen`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨x₀, ⟨y, hy, hyx₀⟩, hxg⟩` from `(dense_iff_closure_eq.mpr genericPoints.closure).inter_open_nonempty _ hopen (hne.image _)`. Establish `hxV : x₀ ∈ V`. Rewrite using `[← hyx₀]`. Conclude with `P.left.basicOpen_le _ hy`. Establish `hxnot : e x₀ ∉ P.left.basicOpen (u - 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hm`. Establish `hmem : x₀ ∈ X.basicOpen ((e.appLE _ V h).hom (u - 1))`. Rewrite using `[Scheme.basicOpen_appLE]`. Conclude with `⟨hxV, hm⟩`. Rewrite `hmem` using `[h0, Scheme.basicOpen_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hmem`. Set `K` to `AlgebraicClosure (X.residueField x₀)`. Set `t : Spec (.of K) ⟶ X` to `Spec.map (CommRingCat.ofHom (algebraMap (X.residueField x₀) K)) ≫ X.fromSpecResidueField x₀`. Establish `ht : ∀ z, t z = x₀`. Introduce `z`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hz : t z ∈ Set.range (X.fromSpecResidueField x₀)` using `⟨_, (Scheme.Hom.comp_apply _ _ z).symm⟩`. Rewrite `hz` using `[Scheme.range_fromSpecResidueField]`. Then use the resulting hypothesis. Set `pt : Spec (.of K)` to `IsLocalRing.closedPoint K`. Establish `: IsProper (pullback.snd P.hom t)` using `hgen hxg K t ⟨pt, ht pt⟩`. Establish `: IsIntegral (pullback P.hom t)` using `hgi.geometrically_isIntegral t (pullback.fst _ _) (pullback.snd _ _) (IsPullback.of_hasPullback _ _)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hpt : P.hom (e x₀) = t pt`. Rewrite using `[ht, ← Scheme.Hom.comp_apply, he]`. Both sides reduce to the same expression. Take `⟨a, ha, -⟩` from `Scheme.Pullback.exists_preimage_pullback (e x₀) pt hpt`. Take `⟨b, hb, -⟩` from `Scheme.Pullback.exists_preimage_pullback y pt (hyx₀.trans (ht pt).symm)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfib` using `RigidFunction.not_mem_basicOpen_fibre pullback.condition V (fun z => by rw [ht z]; exact hxV) (u - 1) a b (by rw [ha]; exact hxnot)`. Rewrite `hfib` using `[hb]`. Conclude with `hfib hy`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_appLE_section_eq_one :
     ∀ (X : Scheme.{0}) (P : Over X) (e : X ⟶ P.left), e ≫ P.hom = 𝟙 X → Smooth P.hom → GeometricallyIntegral P.hom → (IsReduced X ∧ genericPoints X ⊆ abLocus P) → (∀ (V : X.Opens) (u : Γ(P.left, P.hom ⁻¹ᵁ V)) (h : V ≤ e ⁻¹ᵁ (P.hom ⁻¹ᵁ V)), (e.appLE _ V h).hom u = 1 → u = 1) := by

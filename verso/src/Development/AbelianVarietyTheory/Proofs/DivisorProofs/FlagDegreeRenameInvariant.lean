@@ -8,9 +8,9 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 namespace GlobalTheory.FlagPerm
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Prod.map σ (id : Fin N → Fin N))` using `σ.injective.prodMap Function.injective_id`. Use extensionality with `⟨a, i⟩`. Take `⟨b, rfl⟩` from `σ.surjective a`. Establish `h` using `Finsupp.mapDomain_apply hinj (permExp (fun τ => p (σ τ))) (b, i)`. Rewrite `h` using `[show Prod.map σ (id : Fin N → Fin N) (b, i) = (σ b, i) from rfl]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem permExp_comp_perm {ι : Type} [Fintype ι] {N : ℕ} (σ : Equiv.Perm ι)
     (p : ι → Equiv.Perm (Fin N)) :
@@ -25,11 +25,11 @@ theorem permExp_comp_perm {ι : Type} [Fintype ι] {N : ℕ} (σ : Equiv.Perm ι
   rfl
 
 /- English proof (translation)
-Introduce `ι _ _ N σ F`. Establish `hinj : Function.Injective (Prod.map σ (id : Fin N → Fin N))` using `σ.injective.prodMap Function.injective_id`. Unfold `degFl`. Use `congr 1`. Use `Fintype.sum_equiv (Equiv.arrowCongr σ.symm (Equiv.refl _)) _ _ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p`. Establish `e : (Equiv.arrowCongr σ.symm (Equiv.refl (Equiv.Perm (Fin N)))) p = fun τ => p (σ τ)`. Use function extensionality and compare the values at `τ`. Simplify using the standard rewrite rules. Rewrite using `[e, permExp_comp_perm σ p, coeff_rename_mapDomain _ hinj]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `(Equiv.prod_comp σ (fun τ => ((Equiv.Perm.sign (p τ) : ℤ) : ℝ))).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem degFl_rename_perm : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (σ : Equiv.Perm ι)
     (F : Pol ι N), degFl ι N (rename (Prod.map σ id) F) = degFl ι N F := by

@@ -19,7 +19,7 @@ def rowM (r : ℕ) (ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : Matrix (CI k 
   Matrix.fromBlocks 1 0 0 (Matrix.fromBlocks ((1 : Matrix (Fin r) (Fin r) ℂ) ⊗ₖ νᵀ) 0 0 1)
 
 /- English proof (translation)
-Unfold `rowM`. Rewrite using `[Matrix.det_fromBlocks_zero₂₁, Matrix.det_fromBlocks_zero₂₁, Matrix.det_kronecker]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rowM_det (ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : (rowM r ν).det = ν.det ^ r := by
   unfold rowM
@@ -27,21 +27,21 @@ theorem rowM_det (ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) : (rowM r ν).det
   simp
 
 /- English proof (translation)
-Simplify using `[rowM, Matrix.fromBlocks_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowM_A (ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (x : CI k r → ℂ) (p : UP r) :
     (rowM r ν *ᵥ x) (Sum.inl p) = x (Sum.inl p) := by
   simp [rowM, Matrix.fromBlocks_mulVec]
 
 /- English proof (translation)
-Simplify using `[rowM, Matrix.fromBlocks_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowM_K (ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (x : CI k r → ℂ) (p : UP r) :
     (rowM r ν *ᵥ x) (Sum.inr (Sum.inr p)) = x (Sum.inr (Sum.inr p)) := by
   simp [rowM, Matrix.fromBlocks_mulVec]
 
 /- English proof (translation)
-Simplify using `only [rowM, Matrix.fromBlocks_mulVec, Sum.elim_inr, Sum.elim_inl, Matrix.zero_mulVec, zero_add, add_zero]`. Simplify using `[Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Matrix.one_apply, mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem rowM_B (ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (x : CI k r → ℂ) (a : Fin r) (j : Fin (k + 1)) :
     (rowM r ν *ᵥ x) (Sum.inr (Sum.inl (a, j))) = ∑ c, x (Sum.inr (Sum.inl (a, c))) * ν c j := by
@@ -49,9 +49,9 @@ theorem rowM_B (ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (x : CI k r → ℂ
   simp [Matrix.mulVec, dotProduct, Fintype.sum_prod_type, Matrix.one_apply, mul_comm]
 
 /- English proof (translation)
-Set `L : (CI k r → ℂ) →ₗ[ℝ] (CI k r → ℂ)` to `(Matrix.toLin' (rowM r ν)).restrictScalars ℝ`. Establish `hd : LinearMap.det L = 1`. Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_toLin', rowM_det, Algebra.norm_complex_apply, map_pow, hν, one_pow]`. Use `⟨L.continuous_of_finiteDimensional.measurable, ?_⟩` and prove the remaining obligations. Use `Measure.map_linearMap_addHaar_eq_smul_addHaar (volume : Measure (CI k r → ℂ)) (f := L) (by rw [hd]; exact one_ne_zero)` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[hd]`. Use `show Measure.map L volume = volume`. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem rowM_mp {ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hν : Complex.normSq ν.det = 1) :
     MeasurePreserving (fun x : CI k r → ℂ => rowM r ν *ᵥ x) volume volume := by
@@ -65,7 +65,7 @@ theorem rowM_mp {ν : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hν : Complex.nor
   simpa using this
 
 /- English proof (translation)
-Establish `: Continuous (conjM (k` using `k) (r := r) a) := by show Continuous fun x : Mt k r => (a * (Matrix.of x : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) * a⁻¹ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ)`. Conclude with `(continuous_const.matrix_mul (continuous_id : Continuous fun x : Mt k r => x)).matrix_mul continuous_const`. Conclude with `this.measurable`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem meas_conjM (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) : Measurable (conjM (k := k) (r := r) a) := by
   have : Continuous (conjM (k := k) (r := r) a) := by
@@ -74,25 +74,23 @@ theorem meas_conjM (a : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) 
   exact this.measurable
 
 /- English proof (translation)
-Establish `hρ0 : ρ ∈ UWset k r 0` using `⟨hρ.1, hρ.2, by simp⟩`. Take `⟨μ, hμ, rfl⟩` from `(TwoByOneBlock.UWb_iff ρ).1 hρ`. Establish `hνU : (μ⁻¹)ᴴ * Hb k * μ⁻¹ = Hb k` using `(TwoByOneBlock.UHb_inv hμ).2`. Establish `hν : Complex.normSq (μ⁻¹).det = 1`. Establish `h` using `congrArg Matrix.det hνU`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `h0 : (Hb k).det ≠ 0` using `TwoByOneBlock.Hb_unit.ne_zero`. Establish `h2 : ((Complex.normSq (μ⁻¹).det : ℝ) : ℂ) = 1`. Rewrite using `[Complex.normSq_eq_conj_mul_self]`. Use `mul_right_cancel₀ h0 ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[RCLike.star_def]`. Take the linear combination `h`. Conclude with `h2` after adjusting the coercions. Set `Φ : (CI k r → ℂ) × (Fin r → ℝ) → Mt k r` to `fun t => phi0 t.1 t.2`. Establish `hΦc : Continuous Φ` using `continuous_nilpotent_chart`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ : Measurable Φ` using `hΦc.measurable`. Establish `hmp` using `(rowM_mp (r := r) hν).prod (MeasurePreserving.id (volume : Measure (Fin r → ℝ)))`. Establish `key : conjM (B2.embWb k r μ) ∘ Φ = Φ ∘ Prod.map (fun x : CI k r → ℂ => rowM r μ⁻¹ *ᵥ x) id`. Use function extensionality and compare the values at `t`. Use `set g : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ := phi0 t.1 t.2 with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : B2.embWb k r μ * g * (B2.embWb k r μ)⁻¹ ∈ Nset k r` using `PI.QuotSetU.UnitaryGroupMassFormula.SW.uw_conj_N hρ0 (test_vector_mem_schwartz_bruhat t.1 t.2)`. Use `show B2.embWb k r μ * g * (B2.embWb k r μ)⁻¹ = phi0 (rowM r μ⁻¹ *ᵥ t.1) t.2`. Rewrite using `[← nilpotent_chart_left_inverse hN, TwoByOneBlock.emb_inv hμ]`. Use `set g' := B2.embWb k r μ * g * B2.embWb k r μ⁻¹ with hg'`. Establish `ho : ∀ i j, ¬ TwoByOneBlock.mid k r i → ¬ TwoByOneBlock.mid k r j → g' i j = g i j` using `fun i j hi hj => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hg', TwoByOneBlock.mul_emb_out _ _ _ _ hj, TwoByOneBlock.emb_mul_out _ _ _ _ hi]`. Establish `hm : mof g' = mof g`. Establish `e1 : bF g' = bF g` using `by ext a b; exact ho _ _ (TwoByOneBlock.esI_out a) (TwoByOneBlock.esI_out b)`. Establish `e2 : bC g' = bC g` using `by ext a b; exact ho _ _ (TwoByOneBlock.eI_out a) (TwoByOneBlock.esI_out b)`. Unfold `mof`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e1, e2]`. Take `⟨p1, p2⟩` from `nilpotent_chart_right_inverse t.1 t.2`. Rewrite `p1`, `p2` using `[← hg]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `i with p | ⟨a, j⟩ | p` into its components or cases. Rewrite using `[rowM_A, ← p1]`. Conclude with `ho _ _ (TwoByOneBlock.eI_out _) (TwoByOneBlock.eI_out _)`. Rewrite using `[rowM_B, ← p1] show g' (eI k r a) (wI k r j) = _`. Rewrite using `[hg', TwoByOneBlock.mul_emb_mid]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.sum_congr rfl fun c _ => by rw [TwoByOneBlock.emb_mul_out _ _ _ _ (TwoByOneBlock.eI_out a)]; rfl`. Rewrite using `[rowM_K, ← p1] show kof g' _ _ = kof g _ _`. Unfold `kof`. Rewrite using `[hm]`. Rewrite using `[← p2]`.
-
-Unfold `psiR`. Rewrite using `[hm]`. Establish `hH : haarLie (Nset k r) 1 = ENNReal.ofReal ((2 : ℝ) ^ (r ^ 2 + r * k)) • (volume : Measure ((CI k r → ℂ) × (Fin r → ℝ))).map Φ` using `Formalism.L2.SG.Pf.NcReal.JX.exponential_chart_haar k r`. Rewrite using `[hH, Measure.map_smul, Measure.map_map (meas_conjM _) hΦ, key, ← Measure.map_map hΦ hmp.measurable]`. Conclude with `congrArg (fun m => ENNReal.ofReal ((2 : ℝ) ^ (r ^ 2 + r * k)) • Measure.map Φ m) hmp.map_eq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_uwb {ρ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hρ : ρ ∈ B2.UWb k r) :
     (haarLie (Nset k r) 1).map (conjM ρ) = haarLie (Nset k r) 1 := by
@@ -147,7 +145,7 @@ theorem conj_uwb {ρ : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (
   exact congrArg (fun m => ENNReal.ofReal ((2 : ℝ) ^ (r ^ 2 + r * k)) • Measure.map Φ m) hmp.map_eq
 
 /- English proof (translation)
-Unfold `B.aDil bvec`. Rewrite using `[Matrix.diagonal_mulVec_single, ← Pi.single_smul']`. Establish `: (eI k r a).val < r` using `a.isLt`. Rewrite using `[if_pos this]`. Simplify using `[eI]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aDil_e (t : ℝ) (a : Fin r) :
     B.aDil k r t *ᵥ bvec (eI k r a) = ((t : ℂ) ^ (r - a.val)) • bvec (eI k r a) := by
@@ -158,9 +156,9 @@ theorem aDil_e (t : ℝ) (a : Fin r) :
   simp [eI]
 
 /- English proof (translation)
-Unfold `B.aDil bvec`. Rewrite using `[Matrix.diagonal_mulVec_single, ← Pi.single_smul']`. Use `a.isLt` as an intermediate fact. Establish `h1 : ¬ (esI k r a).val < r` using `by simp only [esI]; omega`. Establish `h2 : ¬ (esI k r a).val ≤ r + k` using `by simp only [esI]; omega`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (esI k r a).val - (r + k) = r - a.val` using `by simp only [esI]; omega`. Rewrite using `[if_neg h1, if_neg h2, h3]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aDil_f (t : ℝ) (a : Fin r) :
     B.aDil k r t *ᵥ bvec (esI k r a) = ((t : ℂ) ^ (r - a.val))⁻¹ • bvec (esI k r a) := by
@@ -174,13 +172,11 @@ theorem aDil_f (t : ℝ) (a : Fin r) :
   simp
 
 /- English proof (translation)
-Establish `hG` using `unitary_group_closed k r`. Establish `ha : B.aDil k r t ∈ B.GV k r` using `B4.aDil_mem k r t ht.ne'`. Establish `htc : ∀ a : Fin r, ((t : ℂ) ^ (r - a.val)) ≠ 0` using `fun a => pow_ne_zero _ (by exact_mod_cast ht.ne')`. Establish `hi` using `B2x7.aDil_inv_mul k r t ht.ne'`. Establish `hρ : (B.aDil k r t)⁻¹ * d ∈ B2.UWb k r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hG.mul_mem _ (hG.inv_mem _ ha) _ hd, fun a => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, he, ← aDil_e, Matrix.mulVec_mulVec, hi, Matrix.one_mulVec]`. Rewrite using `[← Matrix.mulVec_mulVec, hf, ← aDil_f, Matrix.mulVec_mulVec, hi, Matrix.one_mulVec]`. Establish `e : conjM (k` using `k) (r := r) d = conjM (B.aDil k r t) ∘ conjM ((B.aDil k r t)⁻¹ * d) := by`. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show d * Matrix.of x * d⁻¹ = B.aDil k r t * ((B.aDil k r t)⁻¹ * d * Matrix.of x * ((B.aDil k r t)⁻¹ * d)⁻¹) * (B.aDil k r t)⁻¹`. Rewrite using `[Matrix.mul_inv_rev, Matrix.nonsing_inv_nonsing_inv _ (hG.unit _ ha)]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[B2x7.aDil_mul_inv k r t ht.ne', Matrix.mul_one, ← Matrix.mul_assoc (B.aDil k r t), B2x7.aDil_mul_inv k r t ht.ne', Matrix.one_mul]`. Rewrite using `[e, ← Measure.map_map (meas_conjM _) (meas_conjM _), conj_uwb hρ]`.
-
-Conclude with `dilation_jacobian_unipotent k r _ (Formalism.MainNotions.BridgeLemma₃.lbHaarUp_proved.2 _ _ _ (Formalism.MainNotions.BridgeCSB.haarLieN k r 1 one_ne_zero ENNReal.one_ne_top)) t ht`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_levi {d : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ} (hd : d ∈ UH (Hpk k r)) {t : ℝ} (ht : 0 < t)
     (he : ∀ a : Fin r, d *ᵥ bvec (eI k r a) = ((t : ℂ) ^ (r - a.val)) • bvec (eI k r a))

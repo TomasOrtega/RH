@@ -22,33 +22,31 @@ section Record
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (N : NData R H what₂) (i : N.Loc)
 
 /- English proof (translation)
-Establish `hinjχ : Set.InjOn (fun c => ((N.chi i c g0 : (N.O i)ˣ) : N.O i)) (Finset.Icc 1 R.t : Set ℕ)`. Introduce `a ha b hb hab`. Assume the negation of the conclusion as `hne`. Use `hu a ha b hb hne` as an intermediate fact. Simplify using `only at hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[hab, sub_self]`. Conclude with `not_isUnit_zero this`. Establish `hβ' : ∀ x, ∃ β : Fin R.t → N.O i, Function.Injective β ∧ blockPol (eB x) (X0 x) = ∏ c, (Polynomial.X - Polynomial.C (β c)) ∧ (x = π → ∀ c, β c = ((N.chi i ((c : ℕ) + 1) g0 : (N.O i)ˣ) : N.O i))`. Introduce `x`. Distinguish the cases in `hx : x = π`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hx` using the available equality. Use `⟨fun c => ((N.chi i ((c : ℕ) + 1) g0 : (N.O i)ˣ) : N.O i), fun a b hab => ?_, ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Use `hinjχ (x₁ := (a : ℕ) + 1) (by simp) (x₂ := (b : ℕ) + 1) (by simp) hab` as an intermediate fact. Conclude with `Fin.ext (by omega)`. Apply `Polynomial.map_injective (toK N i) (IsFractionRing.injective _ _)` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[blockPol_map, (GlobalTheory.T.rank_idempotentBlockCharPoly_of_projection e _ _ _ heB hXπ).2, Polynomial.map_prod]`. Simplify using the standard rewrite rules. Take `⟨β, h1, h2⟩` from `hβ x`. Conclude with `⟨β, h1, h2, fun h => absurd h hx⟩`. Use `choose β hβi hβp hβπ using hβ'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hrπ : ∀ c ∈ Finset.Icc 1 R.t, root β c (π, 1) = ((N.chi i c g0 : (N.O i)ˣ) : N.O i)`. Introduce `c hc`. Take `⟨a, rfl⟩` from `exists_succ hc`. Rewrite using `[root_succ]`. Conclude with `hβπ π rfl a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hset : (fun c => root β c) '' (Finset.Icc 1 R.t : Set ℕ) = Set.range fun c : Fin R.t => fun x' : N.X i × Equiv.Perm (Fin R.t) => β x'.1 (x'.2 c)`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc, rfl⟩`. Take `⟨a, rfl⟩` from `exists_succ hc`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Conclude with `⟨a, funext fun x' => (root_succ β a x').symm⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨(a : ℕ) + 1, by simp, funext fun x' => root_succ β a x'⟩`. Set `T' : Subalgebra (N.O i) (N.X i × Equiv.Perm (Fin R.t) → N.O i)` to `Algebra.adjoin (N.O i) ((fun f : N.X i → N.O i => fun x' => f x'.1) '' (N.T i : Set _) ∪ (fun c => root β c) '' (Finset.Icc 1 R.t : Set ℕ))`. Establish `hTT : ∀ f ∈ N.T i, (fun x' : N.X i × Equiv.Perm (Fin R.t) => f x'.1) ∈ T'` using `fun f hf => Algebra.subset_adjoin (Or.inl ⟨f, hf, rfl⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT' : CharPolyIn T' (fun x' => rep x'.1)` using `fun h d => hTT _ (hT h d)`. Take `⟨ψρ, ψχ, hψ, hψs⟩` from `GlobalTheory.T.exists_block_action_of_decomposition T' (fun x' => rep x'.1) (ρ π) (N.chi i) (π, 1) e hspan hd`. Establish `hpol : ∀ x' : N.X i × Equiv.Perm (Fin R.t), ∏ c ∈ Finset.Icc 1 R.t, (Polynomial.X - Polynomial.C (root β c x')) = blockPol (eB x'.1) (X0 x'.1)`. Introduce `x'`. Rewrite using `[prod_Icc_eq, hβp, ← Equiv.prod_comp x'.2 (fun c => Polynomial.X - Polynomial.C (β x'.1 c))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [root_succ]`. Establish `hE` using `fun x' : N.X i × Equiv.Perm (Fin R.t) => GlobalTheory.T.idempotentBlock_rootFactors_rank_one_domain R.nV R.t (eB x'.1) (X0 x'.1) (fun c => root β c x') (two_le_ranks_t R) (congrFun hid.2.2.1 _) (congrFun hX1 _) (congrFun hX2 _) (by`. Introduce `c hc c' hc' h`. Take `⟨a, rfl⟩` from `exists_succ hc`. Take `⟨a', rfl⟩` from `exists_succ hc'`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `only [root_succ] at h`. Rewrite using `[x'.2.injective (hβi _ h)]) (hpol x')`. Use `⟨{ eB := eB, e1 := e1, g0 := g0, X0 := X0, X' := N.X i × Equiv.Perm (Fin R.t), p := Prod.fst, T' := T', rr := root β, π' := (π, 1), e := e, ψρ := ψρ, ψχ := ψχ }, rfl, hid, hd, hψ, hψs, hw, hord, ⟨hX, hX1, hX2, hXπ⟩, ⟨hTT, ?_, rfl, ?_, ?_⟩, hpol, ⟨rfl, hrπ⟩, ⟨fun x' => (hE x').1, …` and prove the remaining obligations. Conclude with `fun c hc => Algebra.subset_adjoin (Or.inr ⟨c, hc, rfl⟩)`. Use `GlobalTheory.SplittingAlgebra.main (N.T i) R.t β hβi (N.T_sep i) (fun j => by` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `blockPol_coeff_mem hT hid.1 hX j)` using `only [hβp]`. Simplify using `only [← hset] at this`. Conclude with `this`. Introduce `x`. Establish `: {x' : N.X i × Equiv.Perm (Fin R.t) // x'.1 = x} ≃ Equiv.Perm (Fin R.t)` using `{ toFun := fun a => a.1.2 invFun := fun σ => ⟨(x, σ), rfl⟩ left_inv := by rintro ⟨⟨y, σ⟩, rfl⟩; rfl right_inv := fun _ => rfl }`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Nat.card_congr this).trans (by simp [Fintype.card_perm])`. Use `GlobalTheory.T.prod_other_root_factors_action_first_coordinate e (eB π) (X0 π) (fun c => root β c (π, 1)) (two_le_ranks_t R) heB (fun u => ?_)` and prove the remaining obligations. Rewrite using `[hXπ]`. Use `congr 1`. Use function extensionality and compare the values at `c`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrπ _ (by simp)]`. Establish `h2` using `two_le_ranks_t R`. Establish `: del51 N (⟨eB, e1, g0, X0, N.X i × Equiv.Perm (Fin R.t), Prod.fst, T', root β, (π, 1), e, ψρ, ψχ⟩ : IdempotentChoiceData N i) (π, 1) = ∏ c ∈ Finset.Ioc 1 R.t, (((N.chi i 1 g0 : (N.O i)ˣ) : N.O i) - ((N.chi i c g0 : (N.O i)ˣ) : N.O i))`. Use `Finset.prod_congr rfl fun c hc => ?_` and prove the remaining obligations. Use `show root β 1 (π, 1) - root β c (π, 1) = _`.
-
-Rewrite using `[hrπ 1 (by simp; omega), hrπ c (Finset.Ioc_subset_Icc_self hc)]`. Rewrite using `[this]`. Use `Finset.prod_induction _ IsUnit (fun a b ha hb => ha.mul hb) isUnit_one (fun c hc => ?_)` and prove the remaining obligations. Establish `hc'` using `Finset.mem_Ioc.1 hc`. Conclude with `hu 1 (by simp; omega) c (Finset.Ioc_subset_Icc_self hc) (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_good_gen (rep : N.X i → (GE N →* GL (Fin R.nV) (N.O i)))
     (ρ : N.X i → (GE N →* GL (Fin R.r) (N.O i))) (π : N.X i) (g0 : GE N)
@@ -165,21 +163,19 @@ theorem exists_good_gen (rep : N.X i → (GE N →* GL (Fin R.nV) (N.O i)))
 end Record
 
 /- English proof (translation)
-Introduce `D i r ρ π _ hG1 _ _ _ hdec _ hres _ hun ht`. Take `⟨e, hd⟩` from `hdec`. Take `⟨w, hw, g0, hg0, hord⟩` from `GlobalTheory.T.exists_inertia_cyclotomic_generates_units_mod D.nd i hun`. Establish `hu` using `GlobalTheory.T.isUnit_sub_charValues_of_cyclotomic_generator D.nd i g0 hord ht`. Establish `hT : CharPolyIn (D.nd.T i) r` using `hG1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : Submodule.span (D.nd.O i) (Set.range (mat (ρ π))) = ⊤` using `GlobalTheory.T.span_repMatrix_eq_top_of_residue_span_eq_top (ρ π) hres`. Take `⟨eB, e1, ⟨hB, h1, hBB, h11, hB1, h1B⟩, heB, ε, hε, he1⟩` from `GlobalTheory.T.exists_orthogonal_idempotents_heckeSpan_rep (D.nd.l i) (D.nd.T i) r (ρ π) (D.nd.chi i) π e (two_le_r _) hspan hd`. Establish `hl` using `D.nd.T_local i`. Establish `hXπ : ∀ u, e (((eB π * mat (r π) g0 * eB π).map (toK D.nd i)).mulVec u) = (0, fun c : Fin D.R.t => toK D.nd i ((D.nd.chi i ((c : ℕ) + 1) g0 : (D.nd.O i)ˣ) : D.nd.O i) * (e u).2 c)`. Introduce `u`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.map_mul, Matrix.map_mul]`. Conclude with `corner_act e heB (hd g0) u`. Establish `hat` using `GlobalTheory.T.rank_idempotentBlockCharPoly_of_projection e _ _ _ heB hXπ`. Establish `hrB : ∀ x, ((eB x).map (toK D.nd i)).rank = D.R.t` using `fun x => by`. Rewrite using `[rank_const hl hT hB hBB x π]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hat.1`. Establish `hr1 : ∀ x, ((e1 x).map (toK D.nd i)).rank = 1` using `fun x => by`. Rewrite using `[rank_const hl hT h1 h11 x π, GlobalTheory.T.rank_eq_of_mulVec_through_first_block e _ ε he1, hε]`. Establish `hX : InRing (D.nd.T i) r (fun x => eB x * mat (r x) g0 * eB x)` using `inRing_mul (inRing_mul hB (inRing_mat g0)) hB`. Establish `hBx : ∀ x, eB x * eB x = eB x` using `congrFun hBB`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hX1 : eB * (fun x => eB x * mat (r x) g0 * eB x) = fun x => eB x * mat (r x) g0 * eB x`. Use function extensionality and compare the values at `x`. Simplify using `only [Pi.mul_apply, ← mul_assoc, hBx]`. Establish `hX2 : (fun x => eB x * mat (r x) g0 * eB x) * eB = fun x => eB x * mat (r x) g0 * eB x`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Pi.mul_apply, mul_assoc, hBx]`. Use `haveI := D.nd.O_complete i`. Establish `hβ` using `GlobalTheory.T.exists_injective_roots_of_distinct_units_roots (t := D.R.t) (D.nd.T i) hl (fun x => blockPol (eB x) (eB x * mat (r x) g0 * eB x)) (blockPol_coeff_mem hT hB hX) (fun x => by`. Establish `hm` using `blockPol_monic (congrFun hBB x) (hrB x) (congrFun hX1 x) (congrFun hX2 x)`. Conclude with `⟨Polynomial.monic_of_injective (IsFractionRing.injective _ _) hm.1, (Polynomial.natDegree_map_eq_of_injective (IsFractionRing.injective _ _) _).symm.trans hm.2⟩)`.
+Establish an intermediate fact. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `π (fun c => ((D.nd.chi i ((c : ℕ) + 1) g0 : (D.nd.O i)ˣ) : D.nd.O i))`. Use the proof step `(fun a b hab => hu _ (Finset.mem_Icc.2 ⟨by omega, by omega⟩) _ (Finset.mem_Icc.2 ⟨by omega, by omega⟩) (fun h => hab (Fin.ext (by omega))))`. Use the proof step `(by`. Apply `Polynomial.map_injective (toK D.nd i) (IsFractionRing.injective _ _)` to reduce the goal to its premises. Rewrite using `[blockPol_map, hat.2, Polynomial.map_prod]`.
-
-Use the proof step `simp)`. Take `⟨S, -, hS⟩` from `exists_good_gen D.nd i r ρ π g0 ⟨w, hw, hg0⟩ hord hu eB e1 _ hT hspan ⟨hB, h1, hBB, h11, hB1, h1B, hrB, hr1⟩ e hd heB hX hX1 hX2 hXπ hβ`. Conclude with `⟨S, hS⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem objects_globalStep_gen : ∀ (D : D7) (i : D.nd.Loc) (r : D.nd.X i → (GE D.nd →* GL (Fin D.R.nV) (D.nd.O i))) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i), GoodR D.nd i r → TruncatedSeriesCountingIdentities.admG1 i r → TruncatedSeriesCountingIdentities.admG3 i r ρ π → TruncatedSeriesCountingIdentities.FamilyContinuous i r → TruncatedSeriesCountingIdentities.admSS i r → TruncatedSeriesCountingIdentities.SemisimpleDecomposition i r ρ π → TruncatedSeriesCountingIdentities.CyclotomicInertiaImage (D := D) i → ResSpan i ρ π → π ∈ D.nd.Z i → (∀ v ∈ placesOver D.host.E (D.nd.l i), v.asIdeal.ramificationIdx ℤ = 1) → D.R.t + 1 < D.nd.l i → ∃ S : IdempotentChoiceData D.nd i, IdempotentChoiceDepthZero.IsOrthogonalIdempotentDecomposition D.nd r ρ π S := by
   intro D i r ρ π _ hG1 _ _ _ hdec _ hres _ hun ht

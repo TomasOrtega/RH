@@ -8,7 +8,7 @@ namespace Formalism.RepresentationBoundsCohomology.JN
 open Formalism.CoboundaryTransfers Formalism.RepresentationBoundsCohomology.N1 Formalism.RepresentationBoundsCohomology.N2
 
 /- English proof (translation)
-Introduce `ℓ _ A A₀ _ _ _ _ S B Δ _ _ _ IB ι _ pr D _ _ _ _ W M₀ D' _ _ _ _ V Hh _ _ cl Hf M h H hℓ hs hR hD hP2 hP5 hL hM hH hcard hΔ hE κ hκ`. Take `⟨X, Dp, Dt, i1, i2, i3, i4, i5, i6, i7, i8, Wp, Wt, E, ρp, ρt, Jp, Jt, p2p, p2t, p5p, p5t, lp, lt, p6, -, -, ⟨d1, d2, d3⟩, hF, hdict⟩` from `hE κ hκ`. Conclude with `⟨X, x_kills_case_a ℓ A A₀ S B Δ IB ι pr D Dp Dt W Wp Wt E M h M₀ H ρp ρt X.Dp X.Dt X.Wp X.Wt X.S.π Jp Jt hℓ hs hR hD hP2 p2p p2t hP5 p5p p5t hL lp lt p6 hM hH hcard hΔ d1 d2 d3 hF, hdict⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem extension_case_a : StatExtA := by
   intro ℓ _ A A₀ _ _ _ _ S B Δ _ _ _ IB ι _ pr D _ _ _ _ W M₀ D' _ _ _ _ V Hh _ _ cl Hf M h H hℓ hs hR
@@ -19,17 +19,15 @@ theorem extension_case_a : StatExtA := by
     X.S.π Jp Jt hℓ hs hR hD hP2 p2p p2t hP5 p5p p5t hL lp lt p6 hM hH hcard hΔ d1 d2 d3 hF, hdict⟩
 
 /- English proof (translation)
-Introduce `ℓ _ hℓ2 A A₀ _ _ _ _ S B Δ _ _ _ IB ι _ pr D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ E M h M₀ H ρ₀ ρ₁ ρ₂ D₀' D₁' D₂' _ _ _ _ _ _ _ _ _ _ _ _ V₀ V₁ V₂ Sq J₀ J₁ J₂ u jumps δ R P ρ κ _ _ _ _ _ _ _ L H₁ H₂ _ _ _ _ cl₁ cl₂ Hf₁ Hf₂ g _ hℓ hs hc hu hR hD a0 a1 a2 b0 b1 b2 c0 c1 c2 hP6 h …`. Take `⟨-, -, -, -, -, -, -, q8, -, -⟩` from `base_case_b ℓ A S hℓ`. Establish `hval : PadicInt.valuation ((u : ℤ_[ℓ]) - 1) = 1` using `by rw [hu, q8 hc, hs]`. Take `⟨hPhi, hGX⟩` from `base_case_a ℤ_[ℓ] A A₀ S B Δ IB hs hΔ hmodπ hcap hreg`. Rewrite `hPhi`, `hGX` using `[hcard]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hGX` using `[← hu]`. Establish `hGQ` using `gamma_quotient_case_a ℤ_[ℓ] A₀ B hQL hdiv hjac`. Take `⟨c, hcc, -, -⟩` from `consequence_five_holds ℓ u hℓ2 hval`. Take `⟨l1, l3⟩` from `regulator_quotient_case_a ℓ A A₀ S B Δ IB ι pr D₀ W₀ ρ₀ M₀ D₀' V₀ J₀ hℓ c0`. Take `⟨d1, d2, d3⟩` from `hΔM`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11⟩` from `hP4`. Establish `hQI : B.Q ∈ Ideal.span {(ℓ : A₀), B.X}`. Establish `hQ' : B.Q = B.X + (B.p : A₀)` using `hQL`. Rewrite using `[hQ', hp]`. Conclude with `Ideal.add_mem _ (Ideal.subset_span (by simp)) (Ideal.subset_span (by simp))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφI : ∀ a ∈ Ideal.span {(ℓ : A₀), B.X}, B.φ a ∈ Ideal.span {(ℓ : A₀), B.X}`. Introduce `a ha`. Establish `: Ideal.span {(ℓ : A₀), B.X} ≤ (Ideal.span {(ℓ : A₀), B.X}).comap (B.φ : A₀ →+* A₀)`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `x (rfl | rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `show (B.φ : A₀ →+* A₀) (ℓ : A₀) ∈ Ideal.span {(ℓ : A₀), B.X}`. Rewrite using `[map_natCast]`. Conclude with `Ideal.subset_span (by simp)`. Use `show B.φ B.X ∈ Ideal.span {(ℓ : A₀), B.X}`. Take `⟨v, hv⟩` from `B.φX`.
-
-Rewrite using `[hv]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span (by simp))`. Conclude with `this ha`. Conclude with `lift_exists_first_case ℓ hℓ2 A₀ B M₀ u H jumps c hp hPhi hGX hval hcc D₀' D₁' D₂' V₀ V₁ V₂ Sq δ H₁ H₂ cl₁ cl₂ Hf₁ Hf₂ g (Ideal.span {(ℓ : A₀), B.X}) hδ hQI hφI l1 (l3 hnt) (x_kills_case_a ℓ A A₀ S B Δ IB ι pr D₀ D₁ D₂ W₀ W₁ W₂ E M h M₀ H ρ₁ ρ₂ D₁' D₂' V₁ V₂ Sq.π J₁ J₂ hℓ hs hR hD …`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem composition_case_a : StatCompA := by
   intro ℓ _ hℓ2 A A₀ _ _ _ _ S B Δ _ _ _ IB ι _ pr D₀ D₁ D₂ _ _ _ _ _ _ _ _ _ _ _ _ W₀ W₁ W₂ E M h M₀ H

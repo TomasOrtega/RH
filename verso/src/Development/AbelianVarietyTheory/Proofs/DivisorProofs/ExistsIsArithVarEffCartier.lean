@@ -16,21 +16,19 @@ open GlobalTheory GlobalTheory.CxPts GlobalTheory.VB
 namespace GlobalTheory.BlowArith
 
 /- English proof (translation)
-Use `hX.isNoetherianRing` as an intermediate fact. Take `⟨Y, b, hb, hproj, hiso⟩` from `ProjBlowup.exists_blowup p hX.isProjOver J`. Set `V : X.Opens` to `J.support.compl`. Establish `hbV : IsIso (b ∣_ V)` using `hiso V fun _ hx => hx`. Establish `: Nonempty V.toScheme` using `⟨⟨genericPoint X, hJ⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegral V.toScheme` using `isIntegral_of_isOpenImmersion V.ι`. Establish `: Nonempty (b ⁻¹ᵁ V).toScheme` using `⟨inv (b ∣_ V) (Classical.arbitrary _)⟩`. Establish `: IsIntegral (b ⁻¹ᵁ V).toScheme` using `isIntegral_of_isOpenImmersion (b ∣_ V)`. Establish `hU : (J.comap b).support.compl = b ⁻¹ᵁ V`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `not_congr (ProjBlowup.mem_support_comap J b y)`. Establish `hdom : IsSchemeTheoreticallyDominant (b ⁻¹ᵁ V).ι` using `hU ▸ ProjBlowup.isSchemeTheoreticallyDominant_compl_of_effCartier Y _ hb.1`. Establish `: IsNoetherian Y` using `isNoetherian_of_isProjOver hproj`. Establish `: IsIntegral Y`. Establish `: IsReduced Y` using `IsSchemeTheoreticallyDominant.isReduced (b ⁻¹ᵁ V).ι`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `((IrreducibleSpace.isIrreducible_univ (b ⁻¹ᵁ V).toScheme).image _ (b ⁻¹ᵁ V).ι.continuous.continuousOn).closure`. Rewrite `h` using `[Set.image_univ, (b ⁻¹ᵁ V).ι.denseRange.closure_range]`. Establish `: IrreducibleSpace Y` using `(irreducibleSpace_def _).2 h`. Conclude with `isIntegral_of_irreducibleSpace_of_isReduced Y`. Establish `hfac : (b ⁻¹ᵁ V).ι ≫ b = b ∣_ V ≫ V.ι` using `(morphismRestrict_ι b V).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hoi : IsOpenImmersion ((b ⁻¹ᵁ V).ι ≫ b)` using `by rw [hfac]; infer_instance`. Establish `hg : (b ⁻¹ᵁ V).ι (genericPoint _) = genericPoint Y` using `genericPoint_eq_of_isOpenImmersion _`. Establish `hgen : b (genericPoint Y) = genericPoint X`. Rewrite using `[← hg, ← Scheme.Hom.comp_apply]`. Conclude with `genericPoint_eq_of_isOpenImmersion _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdeg : b.residueDegree (genericPoint Y) ≠ 0`. Introduce `h0`. Establish `h1` using `CurveDegreesCompare.residueDegree_comp (b ⁻¹ᵁ V).ι b (genericPoint _)`. Rewrite `h1` using `[CurveDegreesCompare.residueDegree_of_isOpenImmersion, hg, h0, zero_mul]`. Conclude with `one_ne_zero h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hflat : Flat ((b ≫ p) ≫ spMap (Int.castRingHom k))`. Rewrite using `[flat_int_iff_charZero]`. Use `hX.charZero` as an intermediate fact. Establish `: IsDominant b` using `⟨by`. Rewrite using `[DenseRange, dense_iff_closure_eq, ← Set.univ_subset_iff, ← genericPoint_closure]`.
-
-Conclude with `closure_mono (Set.singleton_subset_iff.2 ⟨_, hgen⟩)⟩`. Use `IsSchemeTheoreticallyDominant.of_isDominant b` as an intermediate fact. Establish `hinj' : Function.Injective b.appTop` using `Scheme.Hom.app_injective b ⊤`. Conclude with `charZero_of_injective_ringHom (f := b.appTop.hom) hinj'`. Conclude with `⟨Y, b, ‹_›, ⟨hX.isDomain, hX.finite, ‹_›, hproj, hflat, DimCover.topologicalKrullDim_eq k X Y p (b ≫ p) D hX hproj hflat b rfl hgen hdeg⟩, hgen, hdeg, hb.1⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isArithVar_effCartier (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k)
     [IsIntegral X] (D : ℕ) (hX : IsArithVar p D) (J : X.IdealSheafData)

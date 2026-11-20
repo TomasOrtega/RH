@@ -11,11 +11,11 @@ open CategoryTheory AlgebraicGeometry TopologicalSpace
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Take `⟨U, hyU, -⟩` from `Scheme.exists_affineOpens_mem_le (X := X) (x := y) (U := ⊤) trivial`. Establish `hny` using `hy`. Rewrite `hny` using `[AlgebraicGeometry.Scheme.IdealSheafData.mem_support_iff_of_mem (I := I) (U := U) hyU, AlgebraicGeometry.Scheme.mem_zeroLocus_iff]`. Use `push Not at hny`. Take `⟨s, hs, hys⟩` from `hny`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨X.affineBasicOpen s, hys, ?_⟩` and prove the remaining obligations. Set `_ : Algebra Γ(X, U.1) Γ(X, X.basicOpen s)` to `(X.presheaf.map (homOfLE (X.basicOpen_le s)).op).hom.toAlgebra`. Establish `hloc : IsLocalization.Away s Γ(X, X.basicOpen s)` using `U.2.isLocalization_basicOpen s`. Establish `hunit : IsUnit (algebraMap Γ(X, U.1) Γ(X, X.basicOpen s) s)` using `IsLocalization.map_units (M := Submonoid.powers s) Γ(X, X.basicOpen s) ⟨s, Submonoid.mem_powers s⟩`. Establish `hmem : algebraMap Γ(X, U.1) Γ(X, X.basicOpen s) s ∈ I.ideal (X.affineBasicOpen s)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← I.map_ideal_basicOpen U s]`. Conclude with `Ideal.mem_map_of_mem _ hs`. Conclude with `Ideal.eq_top_of_isUnit_mem _ hmem hunit`.
+A detailed English derivation is pending.
 -/
 private theorem exists_affineOpen_ideal_eq_top_of_not_mem_support {X : Scheme.{u}}
     (I : X.IdealSheafData) (y : ↥X) (hy : y ∉ I.support) :
@@ -40,9 +40,9 @@ private theorem exists_affineOpen_ideal_eq_top_of_not_mem_support {X : Scheme.{u
   exact Ideal.eq_top_of_isUnit_mem _ hmem hunit
 
 /- English proof (translation)
-Introduce `hx0`. Establish `hZ : stalkIdeal Z x ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk x)` using `(mem_support_iff_stalkIdeal_le_maximalIdeal Z x).mp hx`. Establish `hI0 : stalkIdeal I₀ x ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk x)` using `(mem_support_iff_stalkIdeal_le_maximalIdeal I₀ x).mp hx0`. Establish `hIle : stalkIdeal I x ≤ IsLocalRing.maximalIdeal (X.presheaf.stalk x) ^ (m + 1)`. Rewrite using `[hfac, stalkIdeal_mul, stalkIdeal_pow, pow_succ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mono (Ideal.pow_right_mono hZ m) hI0`. Establish `h1` using `(le_orderAt_iff I x (m + 1)).mpr hIle`. Establish `h3 : ((m + 1 : ℕ) : ℕ∞) ≤ (m : ℕ∞)` using `le_trans h1 (hord x)`. Establish `h4 : m + 1 ≤ m` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem not_mem_support_of_mem_support_of_pow_mul {X : Scheme.{u}}
     (Z I I₀ : X.IdealSheafData) (m : ℕ) (hfac : I = Z ^ m * I₀)
@@ -62,17 +62,15 @@ theorem not_mem_support_of_mem_support_of_pow_mul {X : Scheme.{u}}
   omega
 
 /- English proof (translation)
-Use `(isDerivBalanced_iff k p I₀ m).mpr ?_` and prove the remaining obligations. Introduce `i hi`. Use `le_of_forall_exists_affineOpen ?_` and prove the remaining obligations. Introduce `y`. Distinguish the cases in `hyZ : y ∈ Z.support`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨V, hyV, hV⟩` from `exists_affineOpen_ideal_eq_top_of_not_mem_support I₀ y (not_mem_support_of_mem_support_of_pow_mul Z I I₀ m hfac hord hyZ)`. Use `⟨V, hyV, ?_⟩` and prove the remaining obligations. Establish `htop : (I₀ ^ (m - i)).ideal V = ⊤`. Rewrite using `[Scheme.IdealSheafData.ideal_pow]`. Use `show I₀.ideal V ^ (m - i) = ⊤`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hV, ← Ideal.one_eq_top, one_pow]`. Rewrite using `[htop]`. Conclude with `le_top`. Take `⟨V, hyV, hV⟩` from `exists_affineOpen_ideal_eq_top_of_not_mem_support Z y hyZ`. Use `⟨V, hyV, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hIV : I.ideal V = I₀.ideal V`. Rewrite using `[hfac, Scheme.IdealSheafData.ideal_mul, Scheme.IdealSheafData.ideal_pow]`. Use `show Z.ideal V ^ m * I₀.ideal V = I₀.ideal V`. Rewrite using `[hV, ← Ideal.one_eq_top, one_pow, one_mul]`. Establish `hder : (derivIdealSheafIterate k p i I).ideal V = (derivIdealSheafIterate k p i I₀).ideal V`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[derivIdealSheafIterate_ideal, derivIdealSheafIterate_ideal, hIV]`. Establish `hb : ((derivIdealSheafIterate k p i I).ideal V) ^ m ≤ (I.ideal V) ^ (m - i)`. Establish `hb0` using `Scheme.IdealSheafData.le_def.mp ((isDerivBalanced_iff k p I m).mp hbal i hi) V`. Rewrite `hb0` using `[Scheme.IdealSheafData.ideal_pow, Scheme.IdealSheafData.ideal_pow]`. Then use the resulting hypothesis. Rewrite using `[Scheme.IdealSheafData.ideal_pow, Scheme.IdealSheafData.ideal_pow]`.
-
-Use `show ((derivIdealSheafIterate k p i I₀).ideal V) ^ m ≤ (I₀.ideal V) ^ (m - i)`. Rewrite using `[← hIV, ← hder]`. Conclude with `hb`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDerivBalanced_of_pow_mul (k : Type u) [Field k] {X : Scheme.{u}}
     (p : X ⟶ Spec (CommRingCat.of k)) [AlgebraicGeometry.Smooth p]

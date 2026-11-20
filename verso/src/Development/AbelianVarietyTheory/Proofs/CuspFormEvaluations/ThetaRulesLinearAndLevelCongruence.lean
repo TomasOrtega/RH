@@ -24,7 +24,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hrow` using `hP.1.2.2 m hm`. Rewrite using `[Finsupp.sum_fintype _ _ (fun _ => rfl), Fintype.sum_sigma]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun i _ => hrow τ i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem monomial_degree_of_mem_harm {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {P : MvPolynomial (LtN Dw n) c.F}
     (hP : P ∈ harmA (Dw := Dw) c a n) {m : LtN Dw n →₀ ℕ} (hm : m ∈ P.support) :
@@ -36,7 +36,7 @@ theorem monomial_degree_of_mem_harm {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
   exact Finset.sum_congr rfl fun i _ => hrow τ i
 
 /- English proof (translation)
-Take `⟨m0, hm0⟩` from `Finset.nonempty_iff_ne_empty.2 (mt MvPolynomial.support_eq_empty.1 h0)`. Unfold `MvPolynomial.totalDegree`. Use `le_antisymm (Finset.sup_le fun m hm => (monomial_degree_of_mem_harm hP hm).le) ?_` and prove the remaining obligations. Rewrite using `[← monomial_degree_of_mem_harm hP hm0]`. Conclude with `Finset.le_sup (f := fun s : LtN Dw n →₀ ℕ => s.sum fun _ e => e) hm0`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem totalDegree_of_mem_harm {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {P : MvPolynomial (LtN Dw n) c.F}
     (hP : P ∈ harmA (Dw := Dw) c a n) (h0 : P ≠ 0) :
@@ -48,9 +48,9 @@ theorem totalDegree_of_mem_harm {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {P 
   exact Finset.le_sup (f := fun s : LtN Dw n →₀ ℕ => s.sum fun _ e => e) hm0
 
 /- English proof (translation)
-Unfold `thExpr`. Rewrite using `[Finset.sum_subset hU (fun m _ hm => by rw [MvPolynomial.notMem_support_iff.1 hm, map_zero, zero_mul])]`. Distinguish the cases in `h0 : P = 0`. Substitute `h0` using the available equality. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[totalDegree_of_mem_harm hP h0]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thExpr_eq_sum_superset (nab : NabV Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
@@ -66,9 +66,9 @@ theorem thExpr_eq_sum_superset (nab : NabV Xo c) {S : Type} [CommRing S] [Algebr
   · rw [totalDegree_of_mem_harm hP h0]
 
 /- English proof (translation)
-Use `set U := P.support ∪ Finset.univ.biUnion fun i => (Q i).support`. Establish `hQU : ∀ i, (Q i).support ⊆ U` using `fun i => (Finset.subset_biUnion_of_mem (fun i => (Q i).support) (Finset.mem_univ i)).trans Finset.subset_union_right`. Rewrite using `[thExpr_eq_sum_superset nab y F hP U Finset.subset_union_left]`. Simplify using `only [fun i => thExpr_eq_sum_superset nab y F (hQ i) U (hQU i)]`. Substitute `hsum` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [MvPolynomial.coeff_sum, MvPolynomial.coeff_smul, smul_eq_mul, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun m _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thExpr_linear (nab : NabV Xo c) {S : Type} [CommRing S] [Algebra c.F S] (y : FrPt Xo c S)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ}
@@ -89,9 +89,9 @@ theorem thExpr_linear (nab : NabV Xo c) {S : Type} [CommRing S] [Algebra c.F S] 
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun m _ => by ring
 
 /- English proof (translation)
-Take `⟨S', _, _, φ, y', F, hff, hmap, hV, he⟩` from `hv`. Establish `hrefl : FrMap (AlgHom.id c.F S') y' y'` using `(GlobalTheory.Frames.frMap_unique_refl_iff E H Dw l Xo c S' S' (AlgHom.id c.F S') y').2.1`. Establish `e1 : ∀ i, φ (vi i) = thExpr Xo c nab y' (Q i) F` using `fun i => GlobalTheory.thetaValue_natural GlobalTheory.abelianSchemeLaws_all.1 hC E H Dw l Xo c nab hnab S S' φ y0 y' hmap a n x (Q i) (hQ i) _ _ (hvi i) ⟨S', inferInstance, inferInstance, AlgHom.id c.F S', y', F, RingHom.FaithfullyFlat.of_bijective Function.bijective_id, hrefl, h …`. Apply `hff.injective` to reduce the goal to its premises. Use `show φ v = φ (∑ i, algebraMap c.F S (cf i) * vi i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, thExpr_linear nab y' F cf Q hQ hP hsum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, AlgHom.commutes, e1 i]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thValAt_linear (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab : NabV Xo c) (hnab : IsNab Xo c nab)
     {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} (x : Fin n → Dw.La)
@@ -114,9 +114,9 @@ theorem thValAt_linear (hC : ChartIndepSt2) [StarRing (𝓞 E)] (nab : NabV Xo c
   rw [map_mul, AlgHom.commutes, e1 i]
 
 /- English proof (translation)
-Establish `e : Xo.univ.eta u = Xo.univ.eta u'`. Establish `h1` using `Xo.univ.eta_add (u - u') u'`. Rewrite `h1` using `[sub_add_cancel, Xo.univ.eta_ker _ h, _root_.one_mul]`. Conclude with `h1`. Unfold `levPt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`.
+A detailed English derivation is pending.
 -/
 theorem levPt_eq_of_sub_mem {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) {u u' : Dw.La}
     (h : u - u' ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)) : levPt Xo x0 u = levPt Xo x0 u' := by
@@ -130,9 +130,9 @@ theorem levPt_eq_of_sub_mem {S : Type} [CommRing S] (x0 : Sp S ⟶ Xo.X) {u u' :
 end Lin
 
 /- English proof (translation)
-Introduce `hC E _ _ _ H Dw l Xo c _ nab hnab a n`. Use `⟨fun x m cf Q f g hQ hP hf hg => ?_, fun x x' P f hx hf p y => ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p y`. Rewrite using `[thValAt_linear hC nab hnab x cf Q hQ hP rfl y (hf p y) (fun i => g i p y) (fun i => hg i p y)]`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => (Algebra.smul_def (cf i) (g i p y)).symm`. Take `⟨S', _, _, φ, y', F, hff, hmap, hV, he⟩` from `hf p y`. Conclude with `⟨S', inferInstance, inferInstance, φ, y', F, hff, hmap, fun b => levPt_eq_of_sub_mem (Xo := Xo) y'.x (hx b) ▸ hV b, he⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isThRule_linear_and_congr : ChartIndepSt2 → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (nab : NabV Xo c), IsNab Xo c nab → ∀ (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ), (∀ (x : Fin n → Dw.La) (m : ℕ) (cf : Fin m → c.F) (Q : Fin m → MvPolynomial (LtN Dw n) c.F) (f : Rul Xo c) (g : Fin m → Rul Xo c), (∀ i, Q i ∈ harmA c a n) → (∑ i, cf i • Q i) ∈ harmA c a n → IsThRule Xo c nab x (∑ i, cf i • Q i) f → (∀ i, IsThRule Xo c nab x (Q i) (g i)) → f = ∑ i, cf i • g i) ∧ ∀ (x x' : Fin n → Dw.La) (P : MvPolynomial (LtN Dw n) c.F) (f : Rul Xo c), (∀ b, x b - x' b ∈ l.Mb • (⊤ : Submodule (𝓞 E) Dw.La)) → IsThRule Xo c nab x P f → IsThRule Xo c nab x' P f := by
   intro hC E _ _ _ H Dw l Xo c _ nab hnab a n

@@ -24,7 +24,7 @@ section Linear
 variable {K : Type} [Field K] {Y : Scheme.{0}} {I : Type} {U : I → Y.Opens} {g : ℕ}
 
 /- English proof (translation)
-Use `isCob_lc q (g := 1) (fun _ => a) (fun _ => c) fun _ => h` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i j`. Simplify using `[lc]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem isCob_const_mul (q : Y ⟶ Sp K) (a : K) {c : C1 U} (h : IsCob U c) :
     IsCob U (fun i j => constFn q (U i ⊓ U j) a * c i j) := by
@@ -34,9 +34,9 @@ theorem isCob_const_mul (q : Y ⟶ Sp K) (a : K) {c : C1 U} (h : IsCob U c) :
   simp [lc]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use function extensionality and compare the values at `b`. Use `hφ _ ?_` and prove the remaining obligations. Use `(((e b).sub (h'' b)).add (isCob_const_mul q c (h b))).add (h' b) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i j`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `: ∀ a, constFn q (U i ⊓ U j) ((Θ'' - (c • Θ + Θ')) b a) = constFn q (U i ⊓ U j) (Θ'' b a) - (constFn q (U i ⊓ U j) c * constFn q (U i ⊓ U j) (Θ b a) + constFn q (U i ⊓ U j) (Θ' b a))` using `fun a => by`. Simplify using `[constFn]`. Simplify using `only [lc, Pi.add_apply, Pi.sub_apply, this, sub_mul, add_mul, mul_sub, Finset.sum_sub_distrib, Finset.sum_add_distrib, Finset.mul_sum, _root_.mul_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem matrix_comb (q : Y ⟶ Sp K) {φ θ θ' θ'' : Fin g → C1 U} (hφ : ∀ c, IsCob U (lc q c φ) → c = 0)
     {Θ Θ' Θ'' : Matrix (Fin g) (Fin g) K} (c : K) (h : ∀ b, IsCob U (θ b - lc q (Θ b) φ))
@@ -65,11 +65,9 @@ def linearOfComb {K V W : Type} [Field K] [AddCommGroup V] [Module K V] [AddComm
     simpa [h0] using h c x 0
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `e`. Establish `pa : ∀ {a : G ⟶ G} {a₀ : G' ⟶ G'}, a₀.left ≫ φ = φ ≫ a.left → ∀ {T : Over S'} (x : T ⟶ G'), pushPt h.1.w (x ≫ a₀) = pushPt h.1.w x ≫ a` using `fun ha _ x => Over.OverMorphism.ext (by show (x.left ≫ _) ≫ _ = (x.left ≫ _) ≫ _`. Rewrite using `[Category.assoc, ha, Category.assoc])`. Set `U` to `lift (pushPt h.1.w (fst G' G')) (pushPt h.1.w (snd G' G'))`. Establish `M : LBIso (L.LinComb (fun I : ULift (Finset (Fin 2)) => (psum G' ![fst G' G' ≫ f₀, snd G' G'] I.down).left ≫ φ) fun I => (-1) ^ (2 - I.down.card)) (L.LinComb (fun I : ULift (Finset (Fin 2)) => (psum G' ![fst G' G', snd G' G' ≫ f₀'] I.down).left ≫ φ) fun I => (-1) ^ (2 - I.down.ca …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `LBIso.chartPull (chartPullSame L _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) (chartPullSame L _ _ _ U.left fun I => psum_push h _ _ U (fun i => ?_) I.down) H` and prove the remaining obligations. Use `fin_cases i`. Conclude with `(pa hf _).trans (by simp [U])`. Simplify using `[U]`. Use `fin_cases i`.
-
-Simplify using `[U]`. Conclude with `(pa hf' _).trans (by simp [U])`. Conclude with `LBIso.trans (DVR.linComb_isLB _ hL' _ _) (DVR.linComb_isLB _ hL _ _) (DVR.linComb_isLB _ hL' _ _) (iso_linComb ((isGen_iff w).1 hw) _ _) (LBIso.trans (DVR.linComb_isLB _ hL _ _) (DVR.linComb_isLB _ hL _ _) (DVR.linComb_isLB _ hL' _ _) M (iso_linComb ((isGen_iff w).1 hw) _ _).symm …`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lbIso_cube_pull {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [IsCommMonObj G] [GrpObj G']
     [IsCommMonObj G'] {s : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G s φ) {L : LB G.left} {L' : LB G'.left}
@@ -101,7 +99,7 @@ theorem lbIso_cube_pull {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj 
       (iso_linComb ((isGen_iff w).1 hw) _ _).symm)
 
 /- English proof (translation)
-Use `⟨fun a b => by simp, fun a b => ?_⟩` and prove the remaining obligations. Simplify using `[TrivSqZeroExt.snd_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isDerK_snd {K : Type} [Field K] {r : ℕ} (lam : (Fin r → K) →ₗ[K] K) :
     IsDerK (TrivSqZeroExt.fstHom K K (Fin r → K)).toRingHom (fun x => lam x.snd) := by
@@ -109,7 +107,7 @@ theorem isDerK_snd {K : Type} [Field K] {r : ℕ} (lam : (Fin r → K) →ₗ[K]
   simp [TrivSqZeroExt.snd_mul]
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Apply the tactic sequence `ext x <;> simp [dirMap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem spMap_fst_dirMap {K : Type} [Field K] {r : ℕ} (lam : (Fin r → K) →ₗ[K] K) :
     spMap (TrivSqZeroExt.fstHom K K K).toRingHom ≫ spMap (dirMap lam) =
@@ -119,17 +117,17 @@ theorem spMap_fst_dirMap {K : Type} [Field K] {r : ℕ} (lam : (Fin r → K) →
   ext x <;> simp [dirMap]
 
 /- English proof (translation)
-Introduce `hL hL2 hC K _ _ r P P₀ φ₀ g v hp hI hv`. Establish `hc : CompactSpace P.A.left`. Use `P.isAb.proper` as an intermediate fact. Conclude with `QuasiCompact.compactSpace_of_compactSpace P.A.hom`. Take `⟨L, hfin, hLB, haff, hiso⟩` from `href _ P.L hc P.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hI' : LBIso P₀.L (L.pull φ₀)` using `LBIso.trans P₀.isLB (pull_isLB P.isLB _) (pull_isLB hLB _) hI (hiso.chartPull (Geo.Tor.chartPullPull _ _ _ rfl) (Geo.Tor.chartPullPull _ _ _ rfl))`. Use `choose dd hdd using fun a => (hinv K P₀.A (v a) (hv.1 a)).1`. Take `⟨⟨φ, hφ⟩, hφ'⟩` from `hphi K P₀ g v dd hv hdd _ φ₀ L hLB hI'`. Establish `hind` using `(hφ' φ hφ).2`. Use `choose d θ hks _ using fun lam : (Fin r → K) →ₗ[K] K => hcoc K P₀.A g v dd P₀.isAb.smooth hv hdd _ _ _ P.A.hom φ₀ hp.1 P.isAb.smooth _ L.ι L.U (isDerK_snd lam) haff`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose Θ hΘ hΘ' using fun lam : (Fin r → K) →ₗ[K] K => hsym hL hL2 hC K P₀ g v dd hv hdd _ _ P φ₀ L _ (d lam) (θ lam) φ hp hLB haff hI' (hks lam) hφ`. Use `⟨linearOfComb Θ fun c x y => matrix_comb P₀.A.hom hind c (hΘ' x) (hΘ' y) (hΘ' _) (hlin K P₀.A g v dd P₀.isAb.smooth hv hdd _ _ _ P.A.hom φ₀ hp.1 L.ι L.U _ _ c _ _ _ _ _ _ (hks x) (hks y) (hks (c • x + y))), hΘ, fun f f' f₀ f₀' F F' hf hf' e e' H hF hF' lam => ?_, fun lam h0 G _ ψ …` and prove the remaining obligations. Conclude with `hend K P₀ g v dd hv hdd _ _ P φ₀ L _ (d lam) (θ lam) φ hp hLB haff hI' (hks lam) hφ (Θ lam) f f₀ f₀' F F' (hΘ' lam) (PureType.isMonHom_over hp hp e) (PureType.isMonHom_over hp hp e') e (lbIso_cube_pull hp P.isLB P₀.isLB hI e e' H) hF hF'`. Establish `h0' : Θ lam = 0` using `h0`. Establish `hcob : ∀ a, IsCob _ (θ lam a)` using `fun a => by`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hΘ' lam a using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i j`. Simplify using `[h0', lc, constFn]`. Take `⟨d₁, hd₁⟩` from `hzero K P₀.A g v dd P₀.isAb.smooth hv hdd _ _ _ P.A.hom φ₀ hp.1 L.ι L.U _ _ _ hLB.cover (hks lam) hcob`. Establish `w : φ₀ ≫ P.A.hom = (P₀.A.hom ≫ spMap (TrivSqZeroExt.fstHom K K K).toRingHom) ≫ spMap (dirMap lam)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Category.assoc, spMap_fst_dirMap, hp.1.w]`. Take `⟨j, hj, hj'⟩ : ∃ j : P₀.A.left ⟶ G.left, j ≫ ψ = φ₀ ∧ j ≫ G.hom = P₀.A.hom ≫ spMap (TrivSqZeroExt.fstHom K K K).toRingHom` from `⟨hψ.1.lift _ _ w, hψ.1.lift_fst _ _ w, hψ.1.lift_snd _ _ w⟩`. Establish `hD : (fun x : TrivSqZeroExt K (Fin r → K) => (dirMap lam x).snd) = fun x => lam x.snd`. Use function extensionality and compare the values at `fun x => TrivSqZeroExt.snd_map lam x`. Choose the witnesses or unpack the hypotheses as in `⟨d₂, hd₂⟩ : ∃ d₂, LocDerK P₀.A.hom P.A.hom (j ≫ ψ) (fun x => (dirMap lam x).snd) ⊤ d₂ := by`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj, hD]`. Conclude with `⟨d₁, hd₁⟩`. Take `⟨ρ, hρ, -, hρ'⟩` from `htriv hL K P₀.A _ (dirMap lam) P.A G ψ j d₂ P₀.isAb (PolPull.isAbelianScheme_of_isGrpPullback P.isAb hψ) hψ (hψ.cancel (hp.congr (spMap_fst_dirMap lam).symm hj.symm) hj') hd₂`. Use `⟨ρ, hρ, fun io h₁ h₂ => ?_⟩` and prove the remaining obligations. Rewrite using `[hψ.1.hom_ext (h₁.trans hj.symm) (h₂.trans hj'.symm), hρ']`.
+A detailed English derivation is pending.
 -/
 theorem exists_ksMatrix_of
     (href : ∀ (X : Scheme.{0}) (L : LB X), CompactSpace X → L.IsLB → ∃ L' : LB X, Finite L'.ι ∧ L'.IsLB ∧ (∀ i, IsAffineOpen (L'.U i)) ∧ LBIso L L')

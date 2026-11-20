@@ -12,11 +12,11 @@ open GlobalTheory.LB (resG_resG le_iSup_inf)
 variable {X : Scheme.{0}} {F G : X.Modules}
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.VB.isFrame_iff]`. Introduce `V h`. Establish `hcomp : (appLinear N.incl V) ∘ (fun i => resM N.toMod h (N.mkSec (e i) (he i))) = fun i => resM F h (e i)` using `funext fun i => by`. Simplify using `only [Function.comp, appLinear_apply]`. Rewrite using `[app_resM]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨LinearIndependent.of_comp (appLinear N.incl V) (hcomp ▸ hli V h), ?_⟩` and prove the remaining obligations. Introduce and unpack `y -`. Establish `hx` using `hsp V h _ (N.incl_app_mem y)`. Rewrite `hx` using `[← hcomp, Set.range_comp, Submodule.span_image]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y', hy', e'⟩` from `hx`. Establish `: y' = y` using `N.incl_app_injective V (by rwa [appLinear_apply] at e')`. Conclude with `this ▸ hy'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFrame_mkSec (N : Sub F) {U : X.Opens} {ν : Type} [Fintype ν] (e : ν → Γ(F, U))
     (he : ∀ i, e i ∈ N.sec U)

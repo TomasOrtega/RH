@@ -5,7 +5,7 @@ namespace ReciprocityTheory.ChartRestriction.G.AI
 open Module
 
 /- English proof (translation)
-Conclude with `Module.length_eq_add_of_exact (LinearMap.ker φ).subtype φ.rangeRestrict (Submodule.injective_subtype _) φ.surjective_rangeRestrict (by rw [LinearMap.exact_iff, LinearMap.ker_rangeRestrict, Submodule.range_subtype])`.
+A detailed English derivation is pending.
 -/
 theorem length_eq_ker_add_range {A : Type*} [Ring A] {M N : Type*} [AddCommGroup M] [Module A M]
     [AddCommGroup N] [Module A N] (φ : M →ₗ[A] N) :
@@ -15,7 +15,7 @@ theorem length_eq_ker_add_range {A : Type*} [Ring A] {M N : Type*} [AddCommGroup
     (by rw [LinearMap.exact_iff, LinearMap.ker_rangeRestrict, Submodule.range_subtype])
 
 /- English proof (translation)
-The claim follows from `Module.length_eq_add_of_exact P.subtype P.mkQ (Submodule.injective_subtype _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ P)`.
+A detailed English derivation is pending.
 -/
 theorem length_eq_sub_add_quot {A : Type*} [Ring A] {M : Type*} [AddCommGroup M] [Module A M]
     (P : Submodule A M) : length A M = length A P + length A (M ⧸ P) :=
@@ -23,7 +23,7 @@ theorem length_eq_sub_add_quot {A : Type*} [Ring A] {M : Type*} [AddCommGroup M]
     (LinearMap.exact_subtype_mkQ P)
 
 /- English proof (translation)
-Rewrite using `[length_eq_ker_add_range φ, h.linearMap_ker_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem length_eq_range_add_range {A : Type*} [Ring A] {L M N : Type*}
     [AddCommGroup L] [Module A L] [AddCommGroup M] [Module A M]
@@ -32,7 +32,7 @@ theorem length_eq_range_add_range {A : Type*} [Ring A] {L M N : Type*}
   rw [length_eq_ker_add_range φ, h.linearMap_ker_eq]
 
 /- English proof (translation)
-Establish `e1 : length A M₁ = length A (LinearMap.range f₁)` using `(LinearEquiv.ofInjective f₁ h₁).length_eq`. Establish `e6 : length A (LinearMap.range f₅) = length A M₆` using `(LinearEquiv.ofTop _ (LinearMap.range_eq_top.2 h₆)).length_eq`. Rewrite using `[e1, length_eq_range_add_range h₂, length_eq_range_add_range h₃, length_eq_range_add_range h₄, length_eq_range_add_range h₅, ← e6]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem length_six_term {A : Type*} [Ring A] {M₁ M₂ M₃ M₄ M₅ M₆ : Type*}
     [AddCommGroup M₁] [Module A M₁] [AddCommGroup M₂] [Module A M₂]
@@ -66,49 +66,43 @@ def cokerSmulMap {A : Type*} [CommRing A] {M N : Type*} [AddCommGroup M] [Module
     exact ⟨f m, by simp⟩)
 
 /- English proof (translation)
-Establish `key : ∀ z : LinearMap.ker (LinearMap.lsmul A M'' x), ∃ (m : M) (m' : M'), g m = (z : M'') ∧ f m' = x • m`. Introduce `z`. Take `⟨m, hm⟩` from `hg z`. Establish `hz : x • (z : M'') = 0` using `z.2`. Take `⟨m', hm'⟩` from `(hex (x • m)).1 (by rw [map_smul, hm, hz])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, m', hm, hm'⟩`. Establish `indep : ∀ (m₁ : M) (m₁' : M') (m₂ : M) (m₂' : M'), g m₁ = g m₂ → f m₁' = x • m₁ → f m₂' = x • m₂ → Submodule.mkQ (LinearMap.range (LinearMap.lsmul A M' x)) m₁' = Submodule.mkQ (LinearMap.range (LinearMap.lsmul A M' x)) m₂'`. Introduce `m₁ m₁' m₂ m₂' h h1 h2`. Take `⟨n, hn⟩` from `(hex (m₁ - m₂)).1 (by rw [map_sub, h, sub_self])`. Establish `e : m₁' - m₂' = x • n` using `hf (by rw [map_sub, map_smul, hn, h1, h2, smul_sub])`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, e]`. Conclude with `⟨n, rfl⟩`. Use `choose lift liftP hlift using key`. Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ⟩ : ∃ δ : LinearMap.ker (LinearMap.lsmul A M'' x) →ₗ[A] (M' ⧸ LinearMap.range (LinearMap.lsmul A M' x)), ∀ (z : LinearMap.ker (LinearMap.lsmul A M'' x)) (m : M) (m' : M'), g m = (z : M'') → f m' = x • m → δ z = Submodule.mkQ (LinearMap.range (LinearMap.lsmul A M' x)) m' := …`. Use `⟨{ toFun := fun z => Submodule.mkQ (LinearMap.range (LinearMap.lsmul A M' x)) (liftP z), map_add' := ?_, map_smul' := ?_ }, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z₁ z₂ show Submodule.mkQ _ (liftP (z₁ + z₂)) = Submodule.mkQ _ (liftP z₁) + Submodule.mkQ _ (liftP z₂)`. Rewrite using `[← map_add]`. Conclude with `indep _ _ (lift z₁ + lift z₂) _ (by rw [(hlift _).1, map_add, (hlift z₁).1, (hlift z₂).1, Submodule.coe_add]) (hlift _).2 (by rw [map_add, (hlift z₁).2, (hlift z₂).2, smul_add])`. Introduce `a z show Submodule.mkQ _ (liftP (a • z)) = a • Submodule.mkQ _ (liftP z)`. Rewrite using `[← map_smul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `indep _ _ (a • lift z) _ (by rw [(hlift _).1, map_smul, (hlift z).1, Submodule.coe_smul]) (hlift _).2 (by rw [map_smul, (hlift z).2, smul_comm])`. Introduce `z m m' h h'`. Conclude with `indep _ _ m m' (by rw [(hlift z).1, h]) (hlift z).2 h'`. Establish `h₁ : Function.Injective (kerSmulMap f x)`. Introduce `a b h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `hf` to reduce the goal to its premises. Conclude with `congrArg Subtype.val h`. Establish `h₂ : Function.Exact (kerSmulMap f x) (kerSmulMap g x)`. Introduce `y`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `hy0 : g y = 0` using `congrArg Subtype.val hy`. Take `⟨m', hm'⟩` from `(hex y).1 hy0`. Establish `hyx : x • (y : M) = 0` using `y.2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨⟨m', ?_⟩, Subtype.ext hm'⟩` and prove the remaining obligations. Use `show x • m' = 0`. Apply `hf` to reduce the goal to its premises. Rewrite using `[map_smul, hm', hyx, map_zero]`. Introduce and unpack `⟨w, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `(hex _).2 ⟨w, rfl⟩`. Establish `h₃ : Function.Exact (kerSmulMap g x) δ`. Introduce `z`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `hz`. Take `⟨m, hm⟩` from `hg z`. Establish `hzx : x • (z : M'') = 0` using `z.2`. Take `⟨m', hm'⟩` from `(hex (x • m)).1 (by rw [map_smul, hm, hzx])`. Rewrite `hz` using `[hδ z m m' hm hm', Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `LinearMap.mem_range.1 hz`. Establish `hn' : x • n = m'` using `hn`. Use `⟨⟨m - f n, ?_⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `show x • (m - f n) = 0`. Rewrite using `[smul_sub, ← map_smul, hn', hm', sub_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion.
 
-Use `show g (m - f n) = z`. Rewrite using `[map_sub, hm, (hex _).2 ⟨n, rfl⟩, sub_zero]`. Introduce and unpack `⟨y, rfl⟩`. Establish `hyx : x • (y : M) = 0` using `y.2`. Rewrite using `[hδ _ y 0 rfl (by rw [map_zero, hyx]), map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h₄ : Function.Exact δ (cokerSmulMap f x)`. Introduce `w`. Take `⟨m', rfl⟩` from `Submodule.mkQ_surjective _ w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw' : Submodule.mkQ (LinearMap.range (LinearMap.lsmul A M x)) (f m') = 0` using `hw`. Rewrite `hw'` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨m, hm⟩` from `LinearMap.mem_range.1 hw'`. Establish `hm2 : x • m = f m'` using `hm`. Use `⟨⟨g m, ?_⟩, hδ _ m m' rfl hm2.symm⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `show x • g m = 0`. Rewrite using `[← map_smul, hm2]`. Conclude with `(hex _).2 ⟨m', rfl⟩`. Introduce and unpack `⟨z, hz⟩`. Take `⟨m, hm⟩` from `hg z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hzx : x • (z : M'') = 0` using `z.2`. Take `⟨n', hn'⟩` from `(hex (x • m)).1 (by rw [map_smul, hm, hzx])`. Rewrite using `[← hz, hδ z m n' hm hn']`. Use `show Submodule.mkQ (LinearMap.range (LinearMap.lsmul A M x)) (f n') = 0`. Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, hn']`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨m, rfl⟩`. Establish `h₅ : Function.Exact (cokerSmulMap f x) (cokerSmulMap g x)`. Introduce `w`. Take `⟨m, rfl⟩` from `Submodule.mkQ_surjective _ w`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Introduce `hw`. Establish `hw' : Submodule.mkQ (LinearMap.range (LinearMap.lsmul A M'' x)) (g m) = 0` using `hw`. Rewrite `hw'` using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨m'', hm''⟩` from `LinearMap.mem_range.1 hw'`. Establish `hm2 : x • m'' = g m` using `hm''`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hg m''`. Take `⟨m', hm'⟩` from `(hex (m - x • t)).1 (by rw [map_sub, map_smul, ht, hm2, sub_self])`. Use `⟨Submodule.mkQ _ m', ?_⟩` and prove the remaining obligations. Use `show Submodule.mkQ (LinearMap.range (LinearMap.lsmul A M x)) (f m') = Submodule.mkQ _ m`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, hm']`.
-
-Use `⟨-t, ?_⟩` and prove the remaining obligations. Use `show x • -t = m - x • t - m`. Rewrite using `[smul_neg]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨w', hw'⟩`.
-
-Take `⟨m', rfl⟩` from `Submodule.mkQ_surjective _ w'`. Rewrite using `[← hw']`. Use `show Submodule.mkQ (LinearMap.range (LinearMap.lsmul A M'' x)) (g (f m')) = 0`. Rewrite using `[(hex _).2 ⟨m', rfl⟩, map_zero]`. Establish `h₆ : Function.Surjective (cokerSmulMap g x)`.
-
-Introduce `w`. Take `⟨m'', rfl⟩` from `Submodule.mkQ_surjective _ w`. Take `⟨m, rfl⟩` from `hg m''`. Conclude with `⟨Submodule.mkQ _ m, rfl⟩`. Conclude with `length_six_term h₁ h₂ h₃ h₄ h₅ h₆`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem euler_ses {A : Type*} [CommRing A] {M' M M'' : Type*} [AddCommGroup M'] [Module A M']
     [AddCommGroup M] [Module A M] [AddCommGroup M''] [Module A M'']
@@ -245,9 +239,9 @@ theorem euler_ses {A : Type*} [CommRing A] {M' M M'' : Type*} [AddCommGroup M'] 
   exact length_six_term h₁ h₂ h₃ h₄ h₅ h₆
 
 /- English proof (translation)
-Establish `h1` using `length_eq_ker_add_range (LinearMap.lsmul A N x)`. Establish `h2` using `length_eq_sub_add_quot (LinearMap.range (LinearMap.lsmul A N x))`. Establish `hle : length A (LinearMap.range (LinearMap.lsmul A N x)) ≤ length A N`. Rewrite using `[h1]`. Conclude with `le_add_self`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hR` using `ne_top_of_le_ne_top hN hle`. Rewrite `h2` using `[h1, add_comm]`. Conclude with `(WithTop.add_left_cancel hR h2).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem euler_finLength {A : Type*} [CommRing A] {N : Type*} [AddCommGroup N] [Module A N]
     (hN : length A N ≠ ⊤) (x : A) :

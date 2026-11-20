@@ -13,9 +13,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 abbrev Below (r : ℕ) : Type := {p : Fin r × Fin r // p.2 < p.1}
 
 /- English proof (translation)
-Establish `h : Fintype.card (Below r) = ∑ i : Fin r, (i : ℕ)`. Rewrite using `[Fintype.card_subtype, Finset.card_filter, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.card_filter]`. Establish `: (Finset.univ.filter fun j : Fin r => j < i) = Finset.Iio i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `j`. Simplify using the standard rewrite rules. Rewrite using `[this, Fin.card_Iio]`. Rewrite using `[h, Fin.sum_univ_eq_sum_range (fun i => i) r, Finset.sum_range_id]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_below (r : ℕ) : Fintype.card (Below r) = r * (r - 1) / 2 := by
   have h : Fintype.card (Below r) = ∑ i : Fin r, (i : ℕ) := by
@@ -30,7 +30,7 @@ theorem card_below (r : ℕ) : Fintype.card (Below r) = r * (r - 1) / 2 := by
 def flagDim (X : Data E r) : ℕ := X.Ψ.card * (r * (r - 1) / 2)
 
 /- English proof (translation)
-Rewrite using `[Fintype.card_prod, card_below, Fintype.card_coe, flagDim]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_index (X : Data E r) : Fintype.card (X.Ψ × Below r) = flagDim X := by
   rw [Fintype.card_prod, card_below, Fintype.card_coe, flagDim]
@@ -78,7 +78,7 @@ def IsStrictlyDominant (X : Data E r) (la : Wt X.Ψ r) : Prop :=
     ∀ (h0 : 0 < X.p0) (h1 : X.p0 < r), 0 < pairing la τ (h0.trans h1)
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨fun i h hi => ?_, fun h0 h1 => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `simp only [gap]; split_ifs <;> omega`. Apply the tactic sequence `simp only [pairing]; split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (X : Data E r) : IsStrictlyDominant X
     (fun _ i => if (i : ℕ) < X.p0 then -((i : ℕ) : ℤ) else (r : ℤ) - ((i : ℕ) : ℤ)) := by

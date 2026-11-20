@@ -17,15 +17,13 @@ open GlobalTheory.UU
 namespace GlobalTheory.BiextTriv
 
 /- English proof (translation)
-Establish `: IsIntegral G.left` using `isIntegral_of_smooth_of_geometricallyConnected G.hom`. Establish `: IsIntegral (G ⊗ G).left`. Establish `: Smooth (fst G G).left` using `inferInstanceAs (Smooth (pullback.fst G.hom G.hom))`. Establish `: GeometricallyConnected (fst G G).left` using `inferInstanceAs (GeometricallyConnected (pullback.fst G.hom G.hom))`. Conclude with `isIntegral_of_smooth_of_geometricallyConnected (fst G G).left`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegral (splitTorus (Spec (CommRingCat.of A)) X ⊗ G).left`. Establish `: Smooth (snd (splitTorus (Spec (CommRingCat.of A)) X) G).left` using `inferInstanceAs (Smooth (pullback.snd (splitTorus (Spec (CommRingCat.of A)) X).hom G.hom))`. Establish `: GeometricallyIntegral (snd (splitTorus (Spec (CommRingCat.of A)) X) G).left` using `inferInstanceAs (GeometricallyIntegral (pullback.snd (splitTorus (Spec (CommRingCat.of A)) X).hom G.hom))`. Conclude with `isIntegral_of_geometricallyIntegral (snd (splitTorus (Spec (CommRingCat.of A)) X) G).left`. Take `⟨s, hs, hn⟩` from `exists_normalised_gen (φ := lamφ i) (ε := Oε) (fun U hU => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsAffine U.1.toScheme` using `U.2`. Establish `: IsIntegral U.1.toScheme` using `isIntegral_of_isOpenImmersion U.1.ι`. Establish `h` using `(HasRingHomProperty.appTop (P := @Smooth) (U.1.ι ≫ G.hom) inferInstance)`. Use `algebraize [(U.1.ι ≫ G.hom).appTop.hom]`. Establish `: IsIntegrallyClosed Γ(Spec (CommRingCat.of A), ⊤)` using `IsIntegrallyClosed.of_equiv (Scheme.ΓSpecIso (CommRingCat.of A)).symm.commRingCatIsoToRingEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `isIntegrallyClosed_of_smooth Γ(Spec (CommRingCat.of A), ⊤) _) L.isLB fun V _ h => by`. Use `(prod_lam i 1 (𝟙 G) V h).trans ?_` and prove the remaining obligations. Simplify using `[lamForm]`. Establish `R` using `(rep_val hs).mul (rep_lam i hs (fst (splitTorus _ X) G) 1).inv`. Take `⟨s', hs', hv⟩` from `exists_gen_of_rep L.isLB (lamφ i) Oε R fun V _ h => by simp [lamForm]`.
-
-Establish `hv' : ∀ (Z : Over (Spec (CommRingCat.of A))) (t : Z ⟶ splitTorus _ X) (x : Z ⟶ G) z J, Good L.L z J → val s' (lift t x).left z J = val s (lift t x).left z J * (val s (lift t (1 : Z ⟶ G)).left z J)⁻¹` using `fun Z t x z J hJ => by rw [hv _ _ z J hJ, ← Over.comp_left, comp_lift, lift_fst, MonObj.comp_one]`. Use `nonempty_biTriv c i hs' (fun Z y z J hJ => (hv' Z 1 y z J hJ).trans ?_) fun Z t z J hJ => ?_` and prove the remaining obligations. Conclude with `mul_inv_eq_one.2 ((hn Z y z J hJ).trans (hn Z 1 z J hJ).symm)`. Rewrite using `[hv' Z t 1 z J hJ, mul_inv_cancel]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_biTriv_of_isIntegrallyClosed (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A] (X : Type)
     [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (G : Over (Spec (CommRingCat.of A))) [GrpObj G]
@@ -63,7 +61,7 @@ theorem nonempty_biTriv_of_isIntegrallyClosed (A : Type) [CommRing A] [IsDomain 
   · rw [hv' Z t 1 z J hJ, mul_inv_cancel]
 
 /- English proof (translation)
-Introduce `_ _ A _ _ _ _ X _ _ _ G _ _ _ _ L c i _` and use `nonempty_biTriv_of_isIntegrallyClosed A X G L c i`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem nonempty_biTriv_normal : Laws → Laws2 → ∀ (A : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] (G : Over (Spec (CommRingCat.of A))) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] [GeometricallyConnected G.hom] (L : RigLB G) (c : CubicalStr G L) (i : splitTorus _ X ⟶ G), IsMonHom i → Nonempty (BiTriv c i) :=
   fun _ _ A _ _ _ _ X _ _ _ G _ _ _ _ L c i _ => nonempty_biTriv_of_isIntegrallyClosed A X G L c i

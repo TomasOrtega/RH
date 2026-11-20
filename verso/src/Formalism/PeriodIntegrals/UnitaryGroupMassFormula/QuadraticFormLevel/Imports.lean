@@ -11,13 +11,13 @@ namespace Formalism.FourierDecayAlt.Q.RttLevelZero
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q
 
 /- English proof (translation)
-Introduce `hUp hLT hGI hFF _hTL k r i`. Use `Fin.cases ?_ (fun l => hUp k r l) i` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ z z' π π' D hz hz' hD J hJ g hg u v a b c d`. Take `⟨π₁, π₁', D₁, f, hz1, hz1', hD1, hf, hι⟩` from `hFF Wp Wq k r z z' π π' D hz hz' hD J hJ`. Establish `hgU : g ∈ UH (Hpk k r)` using `hg.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hιg : ιLev k 1 r g ∈ Glev k (1 + r) ⟨1, by omega⟩ ∩ D₁`. Use `⟨?_, (hι g hgU).1.mpr hg.2⟩` and prove the remaining obligations. Rewrite using `[hGI k 1 r]`. Conclude with `⟨g, hgU, rfl⟩`. Establish `h1 : RTTAt k (1 + r) ⟨1, by omega⟩` using `hUp k (1 + r) ⟨0, by omega⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `key` using `h1 Wp Wq (liftVec k 1 r z) (liftVec k 1 r z') π₁ π₁' D₁ hz1 hz1' hD1 f hf (ιLev k 1 r g) hιg u v a b c d`. Establish `step : ∀ (Y Y' : ℂ) (p q p' q' : Fin 2), tL k (1 + r) (liftVec k 1 r z) (liftVec k 1 r z') ⟨1, by omega⟩ Y p q (tL k (1 + r) (liftVec k 1 r z) (liftVec k 1 r z') ⟨1, by omega⟩ Y' p' q' f) (ιLev k 1 r g) = tL k r z z' 0 Y p q (tL k r z z' 0 Y' p' q' J) g`. Introduce `Y Y' p q p' q'`. Rewrite using `[hLT (Wq →L[ℂ] Wp) k 1 r z z' Y p q _ g hgU]`. Use `(Formalism.FourierDecayAlt.P.Qx2.ll_tL (E := Wq →L[ℂ] Wp) (i := (0 : Fin (r + 1))) hD.1 z z' Y p q).loc _ _ ?_ g hg` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Rewrite using `[hLT (Wq →L[ℂ] Wp) k 1 r z z' Y' p' q' f x hx.1.1]`. Conclude with `(Formalism.FourierDecayAlt.P.Qx2.ll_tL (E := Wq →L[ℂ] Wp) (i := (0 : Fin (r + 1))) hD.1 z z' Y' p' q').loc _ _ (fun y hy => (hι y hy.1.1).2) x hx`. Simplify using `only [step] at key`. Conclude with `key`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : RTTLevelFromUpper := by
   intro hUp hLT hGI hFF _hTL k r i

@@ -13,15 +13,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChainOnto
 
 /- English proof (translation)
-Introduce `D V Sb ι f B h0 hP hB`. Establish `hJ` using `GlobalTheory.LFun.sphOff_KsphC V Sb`. Use `choose a ha using fun i => GlobalTheory.T.sphericalOperator_eigenvalues_determined_by_params D V (KsphC V ∅) (fun _ => 1) Sb hJ (B i)`. Establish `hfix : ∀ i, ∀ v ∉ Sb, ∀ k ∈ GlobalTheory.AdelicU.stabLoc D.sp.cm.sig V.gram (GlobalTheory.AdelicU.frameLat V) v, ∀ g, f i (g * GlobalTheory.AdelicU.emb D.sp.cm.sig V.gram v k) = f i g`. Introduce `i v hv k hk g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v := by`. Use `v.isPrime` as an intermediate fact. Take `⟨Q, hQ, hl⟩` from `(Ideal.nonempty_primesOver v.asIdeal (S := 𝓞 D.host.E)).some`. Conclude with `⟨⟨Q, hQ, Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot Q⟩, HeightOneSpectrum.ext hl.over.symm⟩`. Establish `hx` using `(hP i v hv w hw).mem_fixed`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `congrFun (GlobalTheory.LGrp.mem_fixed.1 hx k hk) g`. Set `α` to `{t : HeightOneSpectrum (𝓞 D.host.E) × List ℤ × Finset (GA D V) // Hecke₂ V (KsphC V ∅) (fun _ => 1) Sb t.1 t.2.1 t.2.2}`. Use `GlobalTheory.FinWeil.linearIndependent_of_simultaneous_eigen f (fun i (t : α) => a i t.1.1 t.1.2.1) (fun t : α => heckeLin V t.1.2.2) ?_ (fun t i => ha i (f i) (hP i) _ _ _ t.2) h0` and prove the remaining obligations. Introduce `i i' hii`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw, hne'⟩` from `hB i i' hne`. Establish `hc : ∀ P d R, Hecke₂ V (KsphC V ∅) (fun _ => 1) Sb P d R → heckeLin V R (f i') = a i P d • f i'`. Introduce `P d R hR`. Use `congrFun hii ⟨(P, d, R), hR⟩` as an intermediate fact. Rewrite using `[ha i' (f i') (hP i') P d R hR]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg (· • f i') this.symm`. Establish `h1` using `(GlobalTheory.LFun.isParamFunV_iff_isSysParamD hJ (h0 i) (hfix i) (ha i (f i) (hP i)) (B i)).1 (hP i)`. Establish `h2` using `(GlobalTheory.LFun.isParamFunV_iff_isSysParamD hJ (h0 i') (hfix i') hc (B i')).1 (hP i')`. Conclude with `hne' (GlobalTheory.LFun.IsSysParamOff.unique h1 h2 hw)`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_of_isParamFunV : ∀ (D : D7) (V : HSp D) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))) (ι : Type)
     (f : ι → (GA D V → ℂ)) (B : ι → GlobalTheory.LFun.Fam D.host.E), (∀ i, f i ≠ 0) → (∀ i, GlobalTheory.LFun.IsParamFunV V Sb (f i) (B i)) →

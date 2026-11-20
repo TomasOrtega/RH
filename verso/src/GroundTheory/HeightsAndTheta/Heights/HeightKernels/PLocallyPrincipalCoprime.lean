@@ -9,11 +9,11 @@ namespace LocallyPrincipalCoprimeAlt
 variable {L : Type} [Field L]
 
 /- English proof (translation)
-Establish `: Module.Free ℤ B` using `Module.free_of_finite_type_torsion_free'`. Establish `hI : Ideal.span {s} ≠ ⊥` using `by simpa [Ideal.span_singleton_eq_bot] using hs`. Establish `: Finite (B ⧸ Ideal.span {s})` using `Ideal.finiteQuotientOfFreeOfNeBot _ hI`. Use `Set.Finite.of_finite_image (f := fun m : Ideal B => Ideal.Quotient.mk (Ideal.span {s}) '' (m : Set B)) (Set.toFinite _) ?_` and prove the remaining obligations. Establish `key : ∀ m m' : Ideal B, s ∈ m' → Ideal.Quotient.mk (Ideal.span {s}) '' (m : Set B) = Ideal.Quotient.mk (Ideal.span {s}) '' (m' : Set B) → m ≤ m'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `m m' hs' h x hx`. Take `⟨y, hy, hxy⟩ : Ideal.Quotient.mk (Ideal.span {s}) x ∈ Ideal.Quotient.mk (Ideal.span {s}) '' (m' : Set B)` from `h ▸ ⟨x, hx, rfl⟩`. Establish `hd : x - y ∈ Ideal.span {s}` using `Ideal.Quotient.eq.mp hxy.symm`. Establish `hle : Ideal.span {s} ≤ m'` using `(Ideal.span_singleton_le_iff_mem _).mpr hs'`. Use `m'.add_mem (hle hd) hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `m hm m' hm' h`. Conclude with `le_antisymm (key m m' hm'.2 h) (key m' m hm.2 h.symm)`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_maximal_of_ne_zero [CharZero L] (B : Subring L) [Module.Finite ℤ B] {s : B} (hs : s ≠ 0) :
     Set.Finite {m : Ideal B | m.IsMaximal ∧ s ∈ m} := by
@@ -36,11 +36,11 @@ theorem finite_maximal_of_ne_zero [CharZero L] (B : Subring L) [Module.Finite �
   exact le_antisymm (key m m' hm'.2 h) (key m' m hm.2 h.symm)
 
 /- English proof (translation)
-Use `set S := Submodule.span B (Set.range a)`. Assume the negation of the conclusion as `hzS`. Establish `hJ : S.colon {z} ≠ ⊤`. Introduce `h`. Establish `h1 : (1 : B) ∈ S.colon {z}` using `h ▸ Submodule.mem_top`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Submodule.mem_colon_singleton, one_smul]`. Conclude with `hzS h1`. Take `⟨m, hm, hJm⟩` from `Ideal.exists_le_maximal _ hJ`. Take `⟨i, hi⟩` from `hloc m hm`. Take `⟨b, c, hbm, hbc⟩` from `hi z hz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hbm` to reduce the goal to its premises. Apply `hJm` to reduce the goal to its premises. Establish `e : b • z = c • a i` using `by rw [Subring.smul_def, Subring.smul_def, smul_eq_mul, smul_eq_mul, hbc]`. Rewrite using `[Submodule.mem_colon_singleton, e]`. Conclude with `S.smul_mem c (Submodule.subset_span ⟨i, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_local {B : Subring L} {M : AddSubgroup L} {ι : Type} {a : ι → L}
     (hloc : ∀ m : Ideal B, m.IsMaximal → ∃ i, ∀ z ∈ M, ∃ b c : B, b ∉ m ∧ (b : L) * z = c * a i)
@@ -62,9 +62,9 @@ theorem mem_span_of_local {B : Subring L} {M : AddSubgroup L} {ι : Type} {a : �
   exact S.smul_mem c (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨z, hzM, hz0⟩ : ∃ z ∈ M, z ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hM ((AddSubgroup.eq_bot_iff_forall M).mpr h)`. Take `⟨b, c, hbm, hbc⟩` from `hi z hzM`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `ha`. Establish `hb : (b : L) ≠ 0` using `fun h => hbm (by rw [show b = 0 from Subtype.ext h]; exact m.zero_mem)`. Rewrite `hbc` using `[ha, mul_zero]`. Conclude with `mul_ne_zero hb hz0 hbc`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_local {B : Subring L} {M : AddSubgroup L} {ι : Type} {a : ι → L} {m : Ideal B} {i : ι}
     (hi : ∀ z ∈ M, ∃ b c : B, b ∉ m ∧ (b : L) * z = c * a i) (hM : M ≠ ⊥) : a i ≠ 0 := by
@@ -79,17 +79,17 @@ theorem ne_zero_of_local {B : Subring L} {M : AddSubgroup L} {ι : Type} {a : ι
   exact mul_ne_zero hb hz0 hbc
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hloc m hm`. Establish `hai` using `ne_zero_of_local hi hM`. Use `set P := Submodule.span B {a i}`. Establish `hK : ¬ (Finset.univ.inf fun j => P.colon {a j}) ≤ m`. Rewrite using `[hm.isPrime.inf_le']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨j, -, hj⟩`. Take `⟨b, c, hbm, hbc⟩` from `hi (a j) (haM j)`. Apply `hbm` to reduce the goal to its premises. Apply `hj` to reduce the goal to its premises. Establish `e : b • a j = c • a i` using `by rw [Subring.smul_def, Subring.smul_def, smul_eq_mul, smul_eq_mul, hbc]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_colon_singleton, e]`. Conclude with `Submodule.mem_span_singleton.mpr ⟨c, rfl⟩`. Take `⟨t, htK, htm⟩` from `SetLike.not_le_iff_exists.mp hK`. Use `⟨t / a i, i, ?_, t, by field_simp, htm⟩` and prove the remaining obligations. Introduce `z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzN` using `mem_span_of_local hloc hz`. Establish `hle : Submodule.span B (Set.range a) ≤ P.comap (t • LinearMap.id)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Use `Submodule.mem_colon_singleton.mp ((Finset.inf_le (f := fun j => P.colon {a j}) (Finset.mem_univ j)) htK)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `htz : t • z ∈ P` using `by simpa using hle hzN`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.mp htz`. Rewrite `hc` using `[Subring.smul_def, Subring.smul_def, smul_eq_mul, smul_eq_mul]`. Establish `: t / a i * z = c`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `-hc`. Rewrite using `[this]`. Conclude with `c.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_local_mult {B : Subring L} {M : AddSubgroup L} {ι : Type} [Fintype ι] {a : ι → L}
     (haM : ∀ i, a i ∈ M)
@@ -132,7 +132,7 @@ open Classical in
 noncomputable def toB (B : Subring L) (x : L) : B := if h : x ∈ B then ⟨x, h⟩ else 0
 
 /- English proof (translation)
-Simplify using `[toB, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_toB {B : Subring L} {x : L} (h : x ∈ B) : (toB B x : L) = x := by
   simp [toB, h]
@@ -142,53 +142,43 @@ end LocallyPrincipalCoprimeAlt
 open LocallyPrincipalCoprimeAlt in
 
 /- English proof (translation)
-Introduce `L _ _ B M ι _ a hfin hBM haM hden hloc hM s hs`. Take `⟨m₀, hm₀⟩` from `Ideal.exists_maximal B`. Establish `: Nonempty ι` using `⟨(hloc m₀ hm₀).choose⟩`. Use `choose! g idx hgM y hy hym using exists_local_mult haM hloc hM`. Establish `hS` using `finite_maximal_of_ne_zero B hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S := hS.toFinset with hSdef`. Establish `memS : ∀ m, m ∈ S ↔ m.IsMaximal ∧ s ∈ m` using `fun m => hS.mem_toFinset`. Establish `havoid : ∀ m ∈ S, ∃ e : B, (∀ m' ∈ S.erase m, e ∈ m') ∧ e ∉ m`. Introduce `m hmS`. Establish `hmS'` using `(memS m).mp hmS`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hnle : ¬ (S.erase m).inf id ≤ m`. Rewrite using `[hmS'.1.isPrime.inf_le']`. Introduce and unpack `⟨m', hm'S, hm'm⟩`. Establish `h'` using `(memS m').mp (Finset.mem_of_mem_erase hm'S)`. Conclude with `Finset.ne_of_mem_erase hm'S (h'.1.eq_of_le hmS'.1.ne_top hm'm)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨e, he, hem⟩` from `SetLike.not_le_iff_exists.mp hnle`. Conclude with `⟨e, fun m' hm' => Finset.inf_le (f := id) hm' he, hem⟩`. Use `choose! e he hem using havoid`. Use `set γ : L := (s : L) * g m₀ + ∑ m ∈ S, (e m : L) * g m with hγdef`. Establish `hγM : ∀ z ∈ M, γ * z ∈ B`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Rewrite using `[hγdef, add_mul, Finset.sum_mul]`. Use `B.add_mem ?_ (B.sum_mem fun m hm => ?_)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `B.mul_mem s.2 (hgM m₀ hm₀ z hz)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Conclude with `B.mul_mem (e m).2 (hgM m ((memS m).mp hm).1 z hz)`. Establish `hγm : ∀ m ∈ S, ∀ h : γ * a (idx m) ∈ B, (⟨_, h⟩ : B) ∉ m`. Introduce `m hmS h hin`. Establish `hmS'` using `(memS m).mp hmS`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hw : (⟨_, h⟩ : B) = s * toB B (g m₀ * a (idx m)) + (e m * toB B (g m * a (idx m)) + ∑ m' ∈ S.erase m, e m' * toB B (g m' * a (idx m)))`. Rewrite using `[Finset.add_sum_erase S (fun m' => e m' * toB B (g m' * a (idx m))) hmS]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[coe_toB (hgM m₀ hm₀ _ (haM _)), hγdef, add_mul, Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Use `Finset.sum_congr rfl fun m' hm' => ?_` and prove the remaining obligations. Rewrite using `[coe_toB (hgM m' ((memS m').mp hm').1 _ (haM _))]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hym' : toB B (g m * a (idx m)) = y m`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[coe_toB (hgM m hmS'.1 _ (haM _)), hy m hmS'.1]`. Establish `h1 : s * toB B (g m₀ * a (idx m)) ∈ m` using `m.mul_mem_right _ hmS'.2`. Establish `h2 : ∑ m' ∈ S.erase m, e m' * toB B (g m' * a (idx m)) ∈ m`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `m.sum_mem fun m' hm' => m.mul_mem_right _ (he m' (Finset.mem_of_mem_erase hm') m ?_)` and prove the remaining obligations. Conclude with `Finset.mem_erase.mpr ⟨(Finset.ne_of_mem_erase hm').symm, hmS⟩`. Rewrite `hin` using `[hw]`. Establish `h3 : e m * toB B (g m * a (idx m)) ∈ m` using `(m.add_mem_iff_left h2).mp ((m.add_mem_iff_right h1).mp hin)`. Rewrite `h3` using `[hym']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hmS'.1.isPrime.mem_or_mem h3 with h4 | h4` into its components or cases. Conclude with `hem m hmS h4`. Conclude with `hym m hmS'.1 h4`. Establish `hy0 : (y m₀ : L) ≠ 0` using `fun h0 => hym m₀ hm₀ (by rw [show y m₀ = 0 from Subtype.ext h0]; exact m₀.zero_mem)`. Establish `ha0 : a (idx m₀) ≠ 0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `h0`. Apply `hy0` to reduce the goal to its premises. Rewrite using `[hy m₀ hm₀, h0, mul_zero]`. Establish `hg0 : g m₀ ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hy0` to reduce the goal to its premises. Rewrite using `[hy m₀ hm₀, h0, zero_mul]`. Establish `hγ : γ ≠ 0`. Introduce `h0`. Break down `S.eq_empty_or_nonempty with hE | ⟨m, hmS⟩` into its components or cases.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `h0` using `[hγdef, hE, Finset.sum_empty, add_zero]`. Establish `hs' : (s : L) ≠ 0` using `fun h => hs (Subtype.ext h)`. Conclude with `mul_ne_zero hs' hg0 h0`. Establish `h : γ * a (idx m) ∈ B` using `by rw [h0, zero_mul]; exact B.zero_mem`. Apply `hγm m hmS h` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: (⟨_, h⟩ : B) = 0` using `Subtype.ext (by simp [h0])`. Rewrite using `[this]`. Conclude with `m.zero_mem`. Take `⟨c₀, hc₀B, hc₀, hc₀a⟩` from `hden (idx m₀)`. Use `set a₀ := a (idx m₀)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `I : Ideal B` to `{ carrier := {w | (w : L) * γ⁻¹ ∈ M} add_mem' := fun {u v} hu hv => by`. Simplify using `only [Set.mem_ofPred_eq, Subring.coe_add, add_mul] at hu hv ⊢`. Conclude with `M.add_mem hu hv`. Use the proof step `zero_mem' := by simp [M.zero_mem]`. Use the proof step `smul_mem' := fun c u hu => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_ofPred_eq, smul_eq_mul, Subring.coe_mul, mul_assoc] at hu ⊢`. Conclude with `hBM c c.2 _ hu }`. Establish `memI : ∀ w : B, w ∈ I ↔ (w : L) * γ⁻¹ ∈ M` using `fun w => Iff.rfl`. Use `⟨⟨γ * a₀ * c₀, B.mul_mem (hγM _ (haM _)) hc₀B⟩, ⟨c₀ * a₀, hc₀a⟩, I, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : γ * a₀ * c₀ = 0` using `congrArg Subtype.val h`. Conclude with `mul_ne_zero (mul_ne_zero hγ ha0) hc₀ h'`. Introduce `h`. Establish `h' : c₀ * a₀ = 0` using `congrArg Subtype.val h`. Conclude with `mul_ne_zero hc₀ ha0 h'`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ h`. Establish `hsm : s ∈ m` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self s))`. Establish `hmS : m ∈ S` using `(memS m).mpr ⟨hm, hsm⟩`. Establish `hmem : (⟨_, hγM _ (haM (idx m))⟩ : B) ∈ I`.
-
-Rewrite using `[memI]`. Establish `: γ * a (idx m) * γ⁻¹ = a (idx m)` using `by field_simp`. Rewrite using `[this]`. Conclude with `haM _`. Conclude with `hγm m hmS _ (hle (Ideal.mem_sup_left hmem))`.
-
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨⟨γ * x, hγM x hx⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[memI]`.
-
-Establish `: γ * x * γ⁻¹ = x` using `by field_simp`. Rewrite using `[this]`. Conclude with `hx`. Use `show γ * a₀ * c₀ * x = c₀ * a₀ * (γ * x)`. Expand and normalize the polynomial expressions, which then agree.
-
-Introduce and unpack `⟨w, hwI, hxw⟩`. Establish `hxw' : γ * a₀ * c₀ * x = c₀ * a₀ * w` using `hxw`. Establish `h1 : (c₀ * a₀) * (γ * x) = (c₀ * a₀) * w` using `by linear_combination hxw'`. Establish `h2` using `mul_left_cancel₀ (mul_ne_zero hc₀ ha0) h1`. Establish `hx : x = (w : L) * γ⁻¹` using `by rw [← h2]; field_simp`.
-
-Rewrite using `[hx]`. Conclude with `(memI w).mp hwI`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LocallyPrincipalCoprime.proof : LocallyPrincipalCoprime.Statement := by
   intro L _ _ B M ι _ a hfin hBM haM hden hloc hM s hs

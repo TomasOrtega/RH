@@ -18,7 +18,7 @@ section Disc
 variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-The claim follows from `continuous_prod_of_discrete_right.2 h`.
+A detailed English derivation is pending.
 -/
 theorem contAction_of_disc {V : Type u} [AddCommGroup V] [Module R V] [TopologicalSpace V]
     [DiscreteTopology V] (rho : Representation R G V) (h : ∀ v, Continuous fun g => rho g v) :
@@ -26,7 +26,7 @@ theorem contAction_of_disc {V : Type u} [AddCommGroup V] [Module R V] [Topologic
   continuous_prod_of_discrete_right.2 h
 
 /- English proof (translation)
-The claim follows from `B.cont.comp (f := fun g : G => (g, v)) (continuous_id.prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem orbit_cont (B : TRep R G) (v : B.V) : Continuous fun g => B.rho g v :=
   B.cont.comp (f := fun g : G => (g, v)) (continuous_id.prodMk continuous_const)
@@ -42,7 +42,7 @@ instance (B : TRep R G) [DiscreteTopology B.V] (S : Submodule R B.V) (hS) :
     DiscreteTopology (subRep B S hS).V := inferInstanceAs (DiscreteTopology S)
 
 /- English proof (translation)
-The claim follows from `discreteTopology_iff_forall_isOpen.2 fun _ => (Submodule.isQuotientMap_mkQ S).isOpen_preimage.1 (isOpen_discrete _)`.
+A detailed English derivation is pending.
 -/
 theorem disc_quot {V : Type u} [AddCommGroup V] [Module R V] [TopologicalSpace V] [DiscreteTopology V]
     (S : Submodule R V) : DiscreteTopology (V ⧸ S) :=
@@ -70,7 +70,7 @@ def quotMk (B : TRep R G) [DiscreteTopology B.V] (S : Submodule R B.V) (hS) : Pa
   Pair.ofMap (M' := quotRep B S hS) S.mkQ continuous_of_discreteTopology fun _ _ => rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hi, hp, ⟨⟨by rw [DiscreteTopology.eq_bot (α := A.V)] symm apply eq_bot_of_singletons_open intro a refine ⟨{i.u a}, isOpen_discrete _, ?_⟩ ext x simp [hinj.eq_iff]⟩, hinj⟩, hex, ⟨surjInv hsurj, continuous_of_discreteTopology, surjInv_eq hsurj⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem admissible_of_discrete_topology {A B C : TRep R G} [DiscreteTopology A.V] [DiscreteTopology B.V]
     [DiscreteTopology C.V] (i : Pair A B) (p : Pair B C) (hi : i.φ = MonoidHom.id G)
@@ -94,15 +94,15 @@ variable {R : Type u} [CommRing R] {H : Type u} [Group H] [TopologicalSpace H] [
   [Subsingleton H]
 
 /- English proof (translation)
-Establish `key : ∀ n : ℕ, ∑ j ∈ Finset.range n, (-1 : R) ^ (j + 1) = if Even n then 0 else -1`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Finset.sum_range_succ, ih]`. Break down `Nat.even_or_odd n with h | h` into its components or cases. Establish `h' : ¬ Even (n + 1)`. Rewrite using `[Nat.even_add_one]`. Conclude with `not_not.mpr h`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos h, if_neg h', pow_succ, h.neg_one_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `h' : Even (n + 1)`. Rewrite using `[Nat.even_add_one]`. Conclude with `Nat.not_even_iff_odd.mpr h`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_neg (Nat.not_even_iff_odd.mpr h), if_pos h', pow_succ, h.neg_one_pow]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key, if_neg (by rw [Nat.not_even_iff_odd]; exact ⟨m, rfl⟩)]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[key, if_pos ⟨m + 1, by ring⟩]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem alt_sum_range (m : ℕ) :
     (1 + ∑ j ∈ Finset.range (2 * m + 1), (-1 : R) ^ (j + 1)) = 0 ∧
@@ -131,14 +131,14 @@ theorem alt_sum_range (m : ℕ) :
     ring
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => (-1 : R) ^ (j + 1)) (2 * m + 1 + 1)]`. Conclude with `(alt_sum_range m).2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alt_sum_odd (m : ℕ) : (1 + ∑ j : Fin (2 * m + 1 + 1), (-1 : R) ^ ((j : ℕ) + 1)) = 1 := by
   rw [Fin.sum_univ_eq_sum_range (fun j => (-1 : R) ^ (j + 1)) (2 * m + 1 + 1)]
   exact (alt_sum_range m).2
 
 /- English proof (translation)
-Rewrite using `[dn_apply, Subsingleton.elim (g 0) 1, map_one, Module.End.one_apply, Subsingleton.elim (fun i => g i.succ) a, add_smul, one_smul, Finset.sum_smul]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Subsingleton.elim (Fin.contractNth j (· * ·) g) a]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem dn_triv {V : Type u} [AddCommGroup V] [Module R V] [TopologicalSpace V] [IsTopologicalAddGroup V]
     [ContinuousConstSMul R V] (rho : Representation R H V) (n : ℕ) (f : (Fin n → H) → V)
@@ -151,11 +151,11 @@ theorem dn_triv {V : Type u} [AddCommGroup V] [Module R V] [TopologicalSpace V] 
   rw [Subsingleton.elim (Fin.contractNth j (· * ·) g) a]
 
 /- English proof (translation)
-Use `subsingleton_of_forall_eq 0 fun c => ?_` and prove the remaining obligations. Proceed by induction on `c using Cx.H_ind with`. Consider the case `h x hx`. Rewrite using `[Cx.cls_eq_zero_iff]`. Establish `h0 : ∀ g, x.1 g = 0` using `fun g => by`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congrFun (congrArg Subtype.val hx) (fun _ => 1)` as an intermediate fact. Express the relevant statement in the definitionally equal form `dn T.rho (2 * m + 1) x.1 (fun _ => 1) = 0 at this`. Rewrite `this` using `[dn_triv T.rho (2 * m + 1) _ _ g, alt_sum_odd, one_smul]`. Conclude with `this`. Establish `: x = 0` using `Subtype.ext (funext h0)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem triv_odd (T : TRep R H) (m : ℕ) : Subsingleton (T.H (2 * m + 1)) := by
   refine subsingleton_of_forall_eq 0 fun c => ?_
@@ -172,9 +172,9 @@ theorem triv_odd (T : TRep R H) (m : ℕ) : Subsingleton (T.H (2 * m + 1)) := by
     exact zero_mem _
 
 /- English proof (translation)
-Use `subsingleton_of_forall_eq 0 fun c => ?_` and prove the remaining obligations. Proceed by induction on `c using Cx.H_ind with`. Consider the case `h x hx`. Rewrite using `[Cx.cls_eq_zero_iff]`. Use `⟨⟨fun _ => x.1 fun _ => 1, continuous_const⟩, Subtype.ext (funext fun g => ?_)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show dn T.rho (2 * m + 1) (fun _ => x.1 fun _ => 1) g = x.1 g`. Rewrite using `[dn_triv T.rho (2 * m + 1) _ g (fun _ => 1), alt_sum_odd, one_smul, Subsingleton.elim g (fun _ => 1)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_even (T : TRep R H) (m : ℕ) : Subsingleton (T.H (2 * m + 1 + 1)) := by
   refine subsingleton_of_forall_eq 0 fun c => ?_
@@ -187,9 +187,9 @@ theorem triv_even (T : TRep R H) (m : ℕ) : Subsingleton (T.H (2 * m + 1 + 1)) 
       Subsingleton.elim g (fun _ => 1)]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨m, hm | hm⟩ : ∃ m, k = 2 * m + 1 ∨ k = 2 * m + 1 + 1 := by`. Break down `Nat.even_or_odd k with ⟨t, ht⟩ | ⟨t, ht⟩` into its components or cases. Conclude with `⟨t - 1, Or.inr (by omega)⟩`. Conclude with `⟨t, Or.inl ht⟩`. Substitute `hm` using the available equality.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Substitute using the available equality.
 
-Conclude with `triv_odd T m`. Substitute `hm` using the available equality. Conclude with `triv_even T m`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem triv_H_sub (T : TRep R H) (k : ℕ) (hk : 1 ≤ k) : Subsingleton (T.H k) := by
   obtain ⟨m, hm | hm⟩ : ∃ m, k = 2 * m + 1 ∨ k = 2 * m + 1 + 1 := by
@@ -208,11 +208,11 @@ section ShiftSec
 variable {R : Type u} [CommRing R] {G : Type u} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use `discreteTopology_iff_isOpen_singleton.2 fun f => ?_` and prove the remaining obligations. Establish `hfin : (Set.range f).Finite` using `(isCompact_range f.continuous).finite_of_discrete`. Establish `he : ({f} : Set C(X, Y)) = ⋂ y ∈ Set.range f, {g : C(X, Y) | Set.MapsTo g (f ⁻¹' {y}) {y}}`. Use extensionality with `g`. Simplify using `only [Set.mem_singleton_iff, Set.mem_iInter, Set.mem_setOf_eq]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl y _ x hx`. Conclude with `hx`. Introduce `h`. Use extensionality with `x`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h (f x) ⟨x, rfl⟩ rfl`. Rewrite using `[he]`. Conclude with `hfin.isOpen_biInter fun y _ => ContinuousMap.isOpen_setOfPred_mapsTo ((isClosed_discrete _).preimage f.continuous).isCompact (isOpen_discrete _)`.
+A detailed English derivation is pending.
 -/
 theorem disc_CM {X Y : Type u} [TopologicalSpace X] [CompactSpace X] [TopologicalSpace Y]
     [DiscreteTopology Y] : DiscreteTopology C(X, Y) := by
@@ -256,7 +256,7 @@ def shI : M.V →ₗ[R] (shC M).V where
   map_smul' r m := Subtype.ext (ContinuousMap.ext fun g => map_smul (M.rho g) r m)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (ContinuousMap.ext fun h => by show M.rho h (M.rho g m) = M.rho (h * g) m rw [map_mul]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem shI_equiv (g : G) (m : M.V) : shI M (M.rho g m) = (shC M).rho g (shI M m) :=
   Subtype.ext (ContinuousMap.ext fun h => by
@@ -264,7 +264,7 @@ theorem shI_equiv (g : G) (m : M.V) : shI M (M.rho g m) = (shC M).rho g (shI M m
     rw [map_mul]; rfl)
 
 /- English proof (translation)
-Introduce `m m' h` and use `by have := congrArg (fun f : (shC M).V => f.1 1) h change M.rho 1 m = M.rho 1 m' at this simpa only [map_one, Module.End.one_apply] using this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem shI_inj : Injective (shI M) := fun m m' h => by
   have := congrArg (fun f : (shC M).V => f.1 1) h
@@ -272,7 +272,7 @@ theorem shI_inj : Injective (shI M) := fun m m' h => by
   simpa only [map_one, Module.End.one_apply] using this
 
 /- English proof (translation)
-Introduce and unpack `v ⟨m, rfl⟩`. Conclude with `⟨M.rho g m, shI_equiv M g m⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem shI_stable (g : G) : LinearMap.range (shI M) ≤ (LinearMap.range (shI M)).comap ((shC M).rho g) := by
   rintro v ⟨m, rfl⟩
@@ -283,16 +283,16 @@ def shIP : Pair M (shC M) := Pair.ofMap (shI M) continuous_of_discreteTopology (
 abbrev shQ : TRep R G := quotRep (shC M) (LinearMap.range (shI M)) (shI_stable M)
 
 /- English proof (translation)
-The claim follows from `admissible_of_discrete_topology _ _ rfl rfl (shI_inj M) (LinearMap.exact_iff.2 (Submodule.ker_mkQ _)) (Submodule.mkQ_surjective _)`.
+A detailed English derivation is pending.
 -/
 theorem shAdm : admitted (shIP M) (quotMk (shC M) _ (shI_stable M)) :=
   admissible_of_discrete_topology _ _ rfl rfl (shI_inj M)
     (LinearMap.exact_iff.2 (Submodule.ker_mkQ _)) (Submodule.mkQ_surjective _)
 
 /- English proof (translation)
-Introduce `f`. Use `choose k hk using hM`. Establish `hfin : (Set.range f.1).Finite` using `(isCompact_range f.1.continuous).finite_of_discrete`. Take `⟨s, hs⟩ : ∃ s : Finset M.V, ∀ g, f.1 g ∈ s` from `⟨hfin.toFinset, fun g => hfin.mem_toFinset.2 ⟨g, rfl⟩⟩`. Use `⟨∏ m ∈ s, k m, Finset.prod_pos fun m _ => (hk m).1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ v ∈ s, (∏ m ∈ s, k m) • v = 0`. Introduce `v hv`. Take `⟨d, hd⟩` from `Finset.dvd_prod_of_mem k hv`. Rewrite using `[hd, mul_comm, mul_smul, (hk v).2, smul_zero]`. Conclude with `Subtype.ext (ContinuousMap.ext fun g => key _ (hs g))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shC_tors (hM : ∀ m : M.V, ∃ k : ℕ, 0 < k ∧ k • m = 0) :
     ∀ f : (shC M).V, ∃ k : ℕ, 0 < k ∧ k • f = 0 := by
@@ -309,9 +309,9 @@ theorem shC_tors (hM : ∀ m : M.V, ∃ k : ℕ, 0 < k ∧ k • m = 0) :
   exact Subtype.ext (ContinuousMap.ext fun g => key _ (hs g))
 
 /- English proof (translation)
-Introduce `q`. Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H f`. Take `⟨k, hk, hf⟩` from `shC_tors M hM f`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `map_nsmul (LinearMap.range (shI M)).mkQ k f` as an intermediate fact. Rewrite `this` using `[hf, map_zero]`. Conclude with `this.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shQ_tors (hM : ∀ m : M.V, ∃ k : ℕ, 0 < k ∧ k • m = 0) :
     ∀ q : (shQ M).V, ∃ k : ℕ, 0 < k ∧ k • q = 0 := by
@@ -325,7 +325,7 @@ theorem shQ_tors (hM : ∀ m : M.V, ∃ k : ℕ, 0 < k ∧ k • m = 0) :
     exact this.symm
 
 /- English proof (translation)
-Establish `hq` using `shapiro_holds R G (⊥ : Subgroup G) (M.resSub ⊥) (shC M) (coindEv _ _) (coindEv_isCoind _ _) ⟨fun _ => 1, continuous_const, fun x g => Subsingleton.elim _ _⟩`. Use `triv_H_sub (M.resSub (⊥ : Subgroup G)) k hk` as an intermediate fact. Conclude with `(hq k).1.subsingleton`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem shC_acyc (k : ℕ) (hk : 1 ≤ k) : Subsingleton ((shC M).H k) := by
   have hq := shapiro_holds R G (⊥ : Subgroup G) (M.resSub ⊥) (shC M) (coindEv _ _)
@@ -334,9 +334,9 @@ theorem shC_acyc (k : ℕ) (hk : 1 ≤ k) : Subsingleton ((shC M).H k) := by
   exact (hq k).1.subsingleton
 
 /- English proof (translation)
-Take `⟨δ, -, hL⟩` from `(lES_holds R _ _ _ _ _ (admissibility_holds R G _ _ _ _ _ (shAdm M))).1`. Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Establish `hC` using `shC_acyc M (n + 1) (by omega)`. Establish `h0 : (shIP M).hom.H (n + 1) x = 0` using `Subsingleton.elim _ _`. Take `⟨q, rfl⟩` from `(hL.exA n x).1 h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Subsingleton.elim q 0, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem shift_step (n : ℕ) (hQ : Subsingleton ((shQ M).H n)) : Subsingleton (M.H (n + 1)) := by
   obtain ⟨δ, -, hL⟩ := (lES_holds R _ _ _ _ _ (admissibility_holds R G _ _ _ _ _ (shAdm M))).1

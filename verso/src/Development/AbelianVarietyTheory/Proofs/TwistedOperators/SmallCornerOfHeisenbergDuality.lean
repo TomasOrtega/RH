@@ -15,21 +15,21 @@ variable {L : Type} [Field L] {N : ℕ}
 def hermJ (σ : L →+* L) (x y : Fin N → L) : L := ∑ i, σ (x i) * y i.rev
 
 /- English proof (translation)
-Simplify using `only [hermJ, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermJ_add_left (σ : L →+* L) (x x' y : Fin N → L) :
     hermJ σ (x + x') y = hermJ σ x y + hermJ σ x' y := by
   simp only [hermJ, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermJ, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermJ_add_right (σ : L →+* L) (x y y' : Fin N → L) :
     hermJ σ x (y + y') = hermJ σ x y + hermJ σ x y' := by
   simp only [hermJ, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hermJ, map_sum, map_mul, hσσ]`. Use `Fintype.sum_equiv Fin.revPerm _ _ fun i => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply, Fin.rev_rev, mul_comm]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem map_hermJ {σ : L →+* L} (hσσ : ∀ x, σ (σ x) = x) (x y : Fin N → L) :
     σ (hermJ σ x y) = hermJ σ y x := by
@@ -38,7 +38,7 @@ theorem map_hermJ {σ : L →+* L} (hσσ : ∀ x, σ (σ x) = x) (x y : Fin N �
   simp only [Fin.revPerm_apply, Fin.rev_rev, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[hermJ, ← Finset.sum_neg_distrib]`. Use `Fintype.sum_equiv Fin.revPerm _ _ fun j => ?_` and prove the remaining obligations. Simplify using `only [Fin.revPerm_apply, Fin.rev_rev, h, neg_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem dotProduct_eq_neg_hermJ {σ : L →+* L} (r b w : Fin N → L) (h : ∀ j, r j = -σ (b j.rev)) :
     r ⬝ᵥ w = -hermJ σ b w := by
@@ -53,13 +53,11 @@ section Unitary
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L →+* L} {N : ℕ}
 
 /- English proof (translation)
-Establish `hconj : ∀ i k : Fin N, σ (mat g i k) = mat g⁻¹ k.rev i.rev` using `fun i k => by`. Rewrite using `[mat_inv_apply, Fin.rev_rev, Fin.rev_rev]`. Establish `hinner : ∀ k l : Fin N, ∑ i : Fin N, mat g⁻¹ k.rev i.rev * mat g i.rev l = (1 : Matrix (Fin N) (Fin N) L) k.rev l`. Introduce `k l`. Rewrite using `[← mat_inv_mul g, Matrix.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Fintype.sum_equiv Fin.revPerm _ _ fun i => rfl`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hermJ, Matrix.mulVec, dotProduct, map_sum, map_mul, hconj, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Use `_ = ∑ k : Fin N, σ (x k) * y k.rev := by`.
-
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [hinner, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermJ_mulVec (g : GU σ N) (x y : Fin N → L) :
     hermJ σ (mat g *ᵥ x) (mat g *ᵥ y) = hermJ σ x y := by
@@ -84,7 +82,7 @@ theorem hermJ_mulVec (g : GU σ N) (x y : Fin N → L) :
           if_true]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Valued.v (σ x) ≤ 1`. Rewrite using `[hσ]`. Conclude with `h`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigma_mem_intL {x : L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (h : x ∈ intL L) : σ x ∈ intL L := by
   change Valued.v (σ x) ≤ 1
@@ -92,7 +90,7 @@ theorem sigma_mem_intL {x : L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (h : 
   exact h
 
 /- English proof (translation)
-Establish `hsum : ϖ ^ (2 * e) * hermJ σ x x = ∑ i, σ (ϖ ^ e * x i) * (ϖ ^ e * x i.rev)`. Simplify using `only [hermJ, Finset.mul_sum, map_mul, map_pow, hϖ]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[hsum]`. Conclude with `Subring.sum_mem _ fun i _ => Subring.mul_mem _ (sigma_mem_intL hσ (h i)) (h i.rev)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermJ_int {ϖ : L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (hϖ : σ ϖ = ϖ) (e : ℕ) (x : Fin N → L)
     (h : ∀ i, ϖ ^ e * x i ∈ intL L) : ϖ ^ (2 * e) * hermJ σ x x ∈ intL L := by
@@ -105,27 +103,27 @@ theorem hermJ_int {ϖ : L} (hσ : ∀ x, Valued.v (σ x) = Valued.v x) (hϖ : σ
 end Unitary
 
 /- English proof (translation)
-Introduce `hH hD`. Unfold `SmallCorner`. Introduce `L _ _ ϖ σ q N hU g₀ U V C hF e f r hef hr`. Establish `hU'` using `hU`. Unfold `IsUnramInv at hU'`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Take `⟨hσσ, hσv, hϖσ, hϖv, -⟩` from `hU'`. Take `⟨b, hb⟩ : ∃ b : Fin N → L, b = fun i => -σ (r i.rev)` from `⟨_, rfl⟩`. Establish `hrb : ∀ j, r j = -σ (b j.rev)` using `fun j => by`. Rewrite using `[hb]`. Simplify using `only [Fin.rev_rev, map_neg, hσσ, neg_neg]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨b₁, hb₁⟩ : ∃ x : Fin N → L, x = (C * V * mat g₀) *ᵥ b` from `⟨_, rfl⟩`. Take `⟨b₂, hb₂⟩ : ∃ x : Fin N → L, x = (C * U) *ᵥ b` from `⟨_, rfl⟩`. Establish `hsplit : b₁ + b₂ = b`. Establish `hCinv : C * (U + V * mat g₀) = 1` using `mul_eq_one_comm.mp hF.2.2.2.2`. Rewrite using `[hb₁, hb₂, ← Matrix.add_mulVec, add_comm, Matrix.mul_assoc, ← Matrix.mul_add, hCinv, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨τ, hτint, hτ⟩` from `exists_trace_one hU`. Take `⟨s, hs⟩ : ∃ s : L, s = hermJ σ b₁ b₁ - hermJ σ b₂ b₂` from `⟨_, rfl⟩`. Establish `hσs : σ s = s` using `by rw [hs, map_sub, map_hermJ hσσ, map_hermJ hσσ]`. Establish `hrb₁ : r ⬝ᵥ b₁ = -hermJ σ b b₁` using `dotProduct_eq_neg_hermJ r b b₁ hrb`. Establish `hnorm : -∑ j, r j * σ (r j.rev) = -hermJ σ b b`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← dotProduct_eq_neg_hermJ r b b hrb, hb]`. Simplify using `only [dotProduct, mul_neg, Finset.sum_neg_distrib]`. Establish `hc : r ⬝ᵥ b₁ + τ * s + σ (r ⬝ᵥ b₁ + τ * s) = -∑ j, r j * σ (r j.rev)`. Rewrite using `[hnorm, hrb₁, map_add, map_mul, map_neg, map_hermJ hσσ, hσs, ← hsplit]`. Simplify using `only [hermJ_add_left, hermJ_add_right]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `s * hτ + hs`. Take `⟨hHrad, -, hHex⟩` from `hH L ϖ σ q N hU`. Take `⟨u, hu, hur, huc⟩` from `hHex r (r ⬝ᵥ b₁ + τ * s) hc`. Establish `hcol : colOf u = b`. Use function extensionality and compare the values at `i`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hi` using `(hHrad u hu).1 i.rev`. Rewrite `hi` using `[hur, Fin.rev_rev]`. Rewrite using `[hb]`. Simplify using `only [hi, map_neg, hσσ, neg_neg]`. Take `⟨h₁, h₂⟩` from `(hD L ϖ σ q N hU g₀ U V C hF r b (ϖ ^ e) hrb).1 hr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨u, hu, hur, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hur]`. Conclude with `hr`. Rewrite using `[hur, hcol, huc, ← hb₁, add_sub_cancel_left]`. Establish `hϖint : ϖ ∈ intL L`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Valued.v ϖ ≤ 1`. Rewrite using `[hϖv]`. Conclude with `WithZero.coe_le_one.mpr (by decide)`. Establish `i₁ : ϖ ^ (2 * e) * hermJ σ b₁ b₁ ∈ intL L` using `hermJ_int hσv hϖσ e b₁ (by rw [hb₁]; exact h₁)`. Establish `hg : mat g₀ *ᵥ b₂ = (mat g₀ * C * U) *ᵥ b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hb₂, Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Establish `i₂ : ϖ ^ (2 * e) * hermJ σ b₂ b₂ ∈ intL L`. Rewrite using `[← hermJ_mulVec g₀ b₂ b₂, hg]`. Conclude with `hermJ_int hσv hϖσ e _ h₂`. Establish `hf : ϖ ^ f = ϖ ^ (f - 2 * e) * ϖ ^ (2 * e)` using `by rw [← pow_add, Nat.sub_add_cancel hef]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hsplit' : ϖ ^ f * (τ * s) = τ * ϖ ^ (f - 2 * e) * (ϖ ^ (2 * e) * hermJ σ b₁ b₁ - ϖ ^ (2 * e) * hermJ σ b₂ b₂)`. Rewrite using `[hf, hs]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit']`. Conclude with `Subring.mul_mem _ (Subring.mul_mem _ hτint (Subring.pow_mem _ hϖint _)) (Subring.sub_mem _ i₁ i₂)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smallCorner_of_heis_dual : Heis → Dual → SmallCorner := by
   intro hH hD

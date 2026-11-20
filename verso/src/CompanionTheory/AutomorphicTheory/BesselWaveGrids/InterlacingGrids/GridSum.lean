@@ -5,13 +5,11 @@ namespace GroundTheory.BlockD.FourierDecayAlt.WaveGridLiftGrid
 open Finset
 
 /- English proof (translation)
-Establish `hmap : ∀ h : ℝ → ℝ, ((List.ofFn fun a => grid a (n a)).map h).prod = ∏ a, h (grid a (n a))`. Introduce `h`. Rewrite using `[List.map_ofFn, List.prod_ofFn]`. Both sides reduce to the same expression. Simplify using `only [hmap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_div_distrib]`. Establish `hle : ∏ a, nn (grid a (n a)) * nn (grid a (n a) + 1) / Q (grid a (n a)) ≤ ∏ _a : Fin K, β ^ 2`. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `a _`. Establish `h` using `hpos a (n a)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `div_nonneg (mul_nonneg h.1.le h.2.1.le) h.2.2.le`. Introduce `a _`. Rewrite using `[div_le_iff₀ (hpos a (n a)).2.2]`. Conclude with `hb a (n a)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, pow_mul', Real.sqrt_sq (pow_nonneg hβ K)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grid_sqrt_le {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (nn Q : ℝ → ℝ) (β : ℝ)
     (hβ : 0 ≤ β)
@@ -43,11 +41,9 @@ theorem grid_sqrt_le {K d : ℕ} (grid : Fin K → Fin (d + 1) → ℝ) (nn Q : 
         Real.sqrt_sq (pow_nonneg hβ K)]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Apply `Finset.sum_le_sum` to reduce the goal to its premises. Introduce `n _`. Conclude with `mul_le_mul_of_nonneg_left (grid_sqrt_le grid nn Q β hβ hpos hb n) (abs_nonneg _)`. Use `_ = (∏ a, ∑ i, |c a i|) * β ^ K := by`.
+Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.sum_mul, Fintype.prod_sum]`. Simplify using `only [Finset.abs_prod]`. Use `_ ≤ 1 * β ^ K := by`. Use `mul_le_mul_of_nonneg_right ?_ (pow_nonneg hβ K)` and prove the remaining obligations. Apply `Finset.prod_le_one` to reduce the goal to its premises.
-
-Introduce `a _`. Conclude with `Finset.sum_nonneg (fun i _ => abs_nonneg _)`. Introduce `a _`. Conclude with `hc a`. Use `_ = β ^ K := one_mul _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem grid_sum_le {K d : ℕ} (grid c : Fin K → Fin (d + 1) → ℝ) (nn Q : ℝ → ℝ) (β : ℝ)
     (hβ : 0 ≤ β)

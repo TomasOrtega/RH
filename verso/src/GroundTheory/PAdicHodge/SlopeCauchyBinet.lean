@@ -11,7 +11,7 @@ abbrev KSubset (n k : ℕ) := {s : Finset (Fin n) // s.card = k}
 def KSubset.emb {n k : ℕ} (s : KSubset n k) : Fin k ↪o Fin n := s.1.orderEmbOfFin s.2
 
 /- English proof (translation)
-The claim follows from `Finset.range_orderEmbOfFin _ _`.
+A detailed English derivation is pending.
 -/
 theorem KSubset.range_emb {n k : ℕ} (s : KSubset n k) : Set.range s.emb = (s.1 : Set (Fin n)) :=
   Finset.range_orderEmbOfFin _ _
@@ -23,7 +23,7 @@ section CauchyBinet
 variable {k n : ℕ}
 
 /- English proof (translation)
-Simplify using `only [det_apply', mul_apply, prod_univ_sum, mul_sum, Fintype.piFinset_univ, submatrix_apply, id, sum_mul, prod_mul_distrib, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem det_mul_eq_sum_fun (A : Matrix (Fin k) (Fin n) R) (B : Matrix (Fin n) (Fin k) R) :
     (A * B).det = ∑ p : Fin k → Fin n, (A.submatrix id p).det * ∏ i, B (p i) i := by
@@ -32,33 +32,31 @@ private theorem det_mul_eq_sum_fun (A : Matrix (Fin k) (Fin n) R) (B : Matrix (F
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Use `set F : (Fin k → Fin n) → R := fun p => (A.submatrix id p).det * ∏ i, B (p i) i with hF`. Establish `hzero : ∀ p, ¬ Function.Injective p → F p = 0`. Introduce `p hp`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij, hne⟩ : ∃ i j, p i = p j ∧ i ≠ j := by`. Simplify using `only [Function.Injective, not_forall] at hp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨i, j, h, hne⟩` from `hp`. Conclude with `⟨i, j, h, hne⟩`. Simplify using `only [hF]`. Rewrite using `[det_zero_of_column_eq hne (fun r => by simp [hij]), zero_mul]`. Establish `hterm : ∀ (s : KSubset n k) (σ : Perm (Fin k)), F (s.emb ∘ σ) = (A.submatrix id s.emb).det * (Perm.sign σ * ∏ i, B (s.emb (σ i)) i)`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s σ`. Simplify using `only [hF]`. Establish `: A.submatrix id (s.emb ∘ σ) = (A.submatrix id s.emb).submatrix id σ` using `rfl`. Rewrite using `[this, det_permute']`. Simplify using `only [Function.comp_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hs : ∀ s : KSubset n k, (A.submatrix id s.emb).det * (B.submatrix s.emb id).det = ∑ σ : Perm (Fin k), F (s.emb ∘ σ)`. Introduce `s`. Simplify using `only [hterm, ← mul_sum]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_apply']`. Both sides reduce to the same expression. Establish `hprod` using `Fintype.sum_prod_type (fun x : KSubset n k × Perm (Fin k) => F (x.1.emb ∘ x.2))`. Simplify using `only at hprod`. Rewrite using `[det_mul_eq_sum_fun, Finset.sum_congr rfl (fun s _ => hs s)]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `∑ p, F p = _`. Rewrite using `[← hprod, ← Finset.sum_filter_of_ne (p := Function.Injective) (fun p _ h => by`. Assume the negation of the conclusion as `hp`. Conclude with `h (hzero p hp))]`. Use `symm`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_bij (fun x _ => x.1.emb ∘ x.2) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x _`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Conclude with `x.1.emb.injective.comp x.2.injective`. Introduce and unpack `⟨s, σ⟩ _ ⟨t, τ⟩ _ h`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only at h`. Establish `hst : s = t`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : Set.range (s.emb ∘ σ) = Set.range (t.emb ∘ τ)` using `by rw [h]`. Rewrite `h1` using `[Set.range_comp, Set.range_comp, σ.range_eq_univ, τ.range_eq_univ, Set.image_univ, Set.image_univ, KSubset.range_emb, KSubset.range_emb]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `h1` after adjusting the coercions. Substitute `hst` using the available equality. Establish `: σ = τ`. Use extensionality with `i`. Use `congrFun h i` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply] at this`. Conclude with `congrArg Fin.val (s.emb.injective this)`. Rewrite using `[this]`. Introduce `p hp`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcard : (Finset.univ.image p).card = k`. Rewrite using `[Finset.card_image_of_injective _ hp, Finset.card_univ, Fintype.card_fin]`. Set `s : KSubset n k` to `⟨Finset.univ.image p, hcard⟩`. Establish `hex : ∀ i, ∃ j, s.emb j = p i`. Introduce `i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: p i ∈ (s.1 : Set (Fin n))` using `by simp [s]`. Rewrite `this` using `[← KSubset.range_emb]`. Conclude with `this`. Use `choose f hf using hex`. Establish `hfinj : Function.Injective f`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j hij`. Apply `hp` to reduce the goal to its premises. Rewrite using `[← hf i, ← hf j, hij]`. Set `σ : Perm (Fin k)` to `Equiv.ofBijective f (Finite.injective_iff_bijective.mp hfinj)`. Use `⟨(s, σ), Finset.mem_univ _, ?_⟩` and prove the remaining obligations.
-
-Use function extensionality and compare the values at `i`. Conclude with `hf i`. Introduce `x _`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem det_mul_eq_sum_minors (A : Matrix (Fin k) (Fin n) R) (B : Matrix (Fin n) (Fin k) R) :
     (A * B).det =
@@ -137,7 +135,7 @@ theorem det_mul_eq_sum_minors (A : Matrix (Fin k) (Fin n) R) (B : Matrix (Fin n)
     rfl
 
 /- English proof (translation)
-Rewrite using `[det_mul_eq_sum_minors]`. Use `Finset.sum_eq_zero fun s _ => ?_` and prove the remaining obligations. It suffices to derive a contradiction. Use `s.1.card_le_univ` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin, s.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -169,7 +167,7 @@ theorem compound_apply (k : ℕ) (P : Matrix (Fin m) (Fin n) R) (s : KSubset m k
     (t : KSubset n k) : compound k P s t = (P.submatrix s.emb t.emb).det := rfl
 
 /- English proof (translation)
-Unfold `maxMinor`. Rewrite using `[← det_mul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem maxMinor_mul_right (B : Matrix (Fin n) (Fin k) R) (C : Matrix (Fin k) (Fin k) R)
     (s : KSubset n k) : maxMinor (B * C) s = maxMinor B s * C.det := by
@@ -178,7 +176,7 @@ theorem maxMinor_mul_right (B : Matrix (Fin n) (Fin k) R) (C : Matrix (Fin k) (F
   congr 1
 
 /- English proof (translation)
-Unfold `maxMinor`. Establish `: (P * B).submatrix s.emb id = P.submatrix s.emb id * B`. Use extensionality with `i j`. Simplify using `[mul_apply]`. Rewrite using `[this, det_mul_eq_sum_minors]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -192,7 +190,7 @@ theorem maxMinor_mul_left (P : Matrix (Fin m) (Fin n) R) (B : Matrix (Fin n) (Fi
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Rewrite using `[maxMinor_mul_left]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem maxMinor_mul_left_eq_mulVec (P : Matrix (Fin m) (Fin n) R) (B : Matrix (Fin n) (Fin k) R) :
     maxMinor (P * B) = compound k P *ᵥ maxMinor B := by
@@ -201,9 +199,9 @@ theorem maxMinor_mul_left_eq_mulVec (P : Matrix (Fin m) (Fin n) R) (B : Matrix (
   rfl
 
 /- English proof (translation)
-Use extensionality with `s u`. Rewrite using `[compound_apply, mul_apply]`. Establish `: (P * Q).submatrix s.emb u.emb = P.submatrix s.emb id * Q.submatrix id u.emb`. Use extensionality with `i j`. Simplify using `[mul_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, det_mul_eq_sum_minors]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compound_mul {l : ℕ} (P : Matrix (Fin m) (Fin n) R) (Q : Matrix (Fin n) (Fin l) R) :
     compound k (P * Q) = compound k P * compound k Q := by
@@ -215,7 +213,7 @@ theorem compound_mul {l : ℕ} (P : Matrix (Fin m) (Fin n) R) (Q : Matrix (Fin n
   rfl
 
 /- English proof (translation)
-Unfold `maxMinor`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem maxMinor_map {S : Type*} [CommRing S] (f : R →+* S) (B : Matrix (Fin n) (Fin k) R)
     (s : KSubset n k) : maxMinor (B.map f) s = f (maxMinor B s) := by
@@ -224,7 +222,7 @@ theorem maxMinor_map {S : Type*} [CommRing S] (f : R →+* S) (B : Matrix (Fin n
   rfl
 
 /- English proof (translation)
-Use extensionality with `s t`. Rewrite using `[compound_apply, map_apply, compound_apply, RingHom.map_det]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem compound_map {S : Type*} [CommRing S] (f : R →+* S) (P : Matrix (Fin m) (Fin n) R) :
     compound k (P.map f) = (compound k P).map f := by
@@ -233,7 +231,7 @@ theorem compound_map {S : Type*} [CommRing S] (f : R →+* S) (P : Matrix (Fin m
   rfl
 
 /- English proof (translation)
-Rewrite using `[← maxMinor_mul_left_eq_mulVec, h]`. Use function extensionality and compare the values at `s`. Rewrite using `[maxMinor_mul_right, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem compound_mulVec_maxMinor_of_mul_eq (A : Matrix (Fin n) (Fin n) R)
     (B B' : Matrix (Fin n) (Fin k) R) (C : Matrix (Fin k) (Fin k) R) (h : A * B' = B * C) :
@@ -243,7 +241,7 @@ theorem compound_mulVec_maxMinor_of_mul_eq (A : Matrix (Fin n) (Fin n) R)
   rw [maxMinor_mul_right, Pi.smul_apply, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← compound_mulVec_maxMinor_of_mul_eq A B (B.map φ) C h]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[maxMinor_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem compound_mulVec_map_maxMinor_of_mul_eq (φ : R →+* R) (A : Matrix (Fin n) (Fin n) R)
     (B : Matrix (Fin n) (Fin k) R) (C : Matrix (Fin k) (Fin k) R) (h : A * B.map φ = B * C) :
@@ -260,11 +258,11 @@ section Independence
 variable {n k : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Establish `key : ∀ v : Fin k → R, ∑ j, v j • B.col j = B *ᵥ v`. Introduce `v`. Use extensionality with `i`. Simplify using `[mulVec, dotProduct, Finset.sum_apply, col, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h v hv`. Use function extensionality and compare the values at `j`. Conclude with `h v (by rw [key, hv]) j`. Introduce `h g hg j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h g (by rw [← key, hg])` as an intermediate fact. Conclude with `congrFun this j`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_col_iff_mulVec_eq_zero (B : Matrix (Fin n) (Fin k) R) :
     LinearIndependent R B.col ↔ ∀ v, B *ᵥ v = 0 → v = 0 := by
@@ -280,9 +278,9 @@ theorem linearIndependent_col_iff_mulVec_eq_zero (B : Matrix (Fin n) (Fin k) R) 
     exact congrFun this j
 
 /- English proof (translation)
-Rewrite using `[linearIndependent_col_iff_mulVec_eq_zero]`. Introduce `v hv`. Apply `eq_zero_of_mulVec_eq_zero hs` to reduce the goal to its premises. Establish `: B.submatrix s.emb id *ᵥ v = fun i => (B *ᵥ v) (s.emb i)`. Use extensionality with `i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[mulVec, dotProduct]`. Rewrite using `[this, hv]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem linearIndependent_col_of_maxMinor_ne_zero [IsDomain R] (B : Matrix (Fin n) (Fin k) R)
     (s : KSubset n k) (hs : maxMinor B s ≠ 0) : LinearIndependent R B.col := by
@@ -295,7 +293,7 @@ theorem linearIndependent_col_of_maxMinor_ne_zero [IsDomain R] (B : Matrix (Fin 
   rfl
 
 /- English proof (translation)
-The claim follows from `_root_.GroundTheory.Variant₂.N1.exists_maxMinor_ne_zero_of_linearIndependent_alt B hB`.
+A detailed English derivation is pending.
 -/
 theorem exists_maxMinor_ne_zero_of_linearIndependent [IsDomain R]
     (B : Matrix (Fin n) (Fin k) R) (hB : LinearIndependent R B.col) :
@@ -303,7 +301,7 @@ theorem exists_maxMinor_ne_zero_of_linearIndependent [IsDomain R]
   _root_.GroundTheory.Variant₂.N1.exists_maxMinor_ne_zero_of_linearIndependent_alt B hB
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨s, hs⟩ => linearIndependent_col_of_maxMinor_ne_zero B s hs, exists_maxMinor_ne_zero_of_linearIndependent B⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_maxMinor_ne_zero_iff_linearIndependent [IsDomain R]
     (B : Matrix (Fin n) (Fin k) R) :
@@ -312,7 +310,7 @@ theorem exists_maxMinor_ne_zero_iff_linearIndependent [IsDomain R]
     exists_maxMinor_ne_zero_of_linearIndependent B⟩
 
 /- English proof (translation)
-Rewrite using `[← exists_maxMinor_ne_zero_iff_linearIndependent, Ne, funext_iff, not_forall]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem maxMinor_ne_zero_iff_linearIndependent [IsDomain R] (B : Matrix (Fin n) (Fin k) R) :
     maxMinor B ≠ 0 ↔ LinearIndependent R B.col := by

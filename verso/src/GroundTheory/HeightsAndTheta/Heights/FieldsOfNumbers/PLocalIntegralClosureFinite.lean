@@ -17,15 +17,13 @@ noncomputable section
 universe u
 
 /- English proof (translation)
-Introduce `F _ K K' _ _ _ _ j ι' _ P' hP' hdim W hW hle`. Use `hP'.isPrime` as an intermediate fact. Use `hW.isPrime` as an intermediate fact. Use `set P := contractPrime j P'`. Use `set φ := contractFracMap j P'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set A' := (degZeroLoc P {W}).map φ`. Use `set L := homFracDegZero P'`. Use `choose u hu using hW.relevant`. Take `⟨hRA, hloc⟩` from `degZeroLoc_map_eq_mul_inv hQ hD P W hle u hu φ`. Use `set S := Set.range fun v => φ (chartMap P u (X v))`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hAL : ∀ a ∈ A', a ∈ L`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `map_homFracDegZero_le j ι' P' ⟨a, mem_homFracDegZero_of_mem_degZeroLoc P {W} a ha, rfl⟩`. Establish `hEL : IntermediateField.adjoin F S ≤ L` using `IntermediateField.adjoin_le_iff.mpr fun _ hx => hAL _ (hRA (Algebra.subset_adjoin hx))`. Establish `hAE : ∀ a ∈ A', a ∈ IntermediateField.adjoin F S` using `fun a ha => by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr, d, hd, -, -, rfl⟩` from `hloc a ha`. Conclude with `mul_mem (IntermediateField.algebra_adjoin_le_adjoin F S hr) (inv_mem (IntermediateField.algebra_adjoin_le_adjoin F S hd))`. Establish `hκE : (homFracDegZero P).map φ ≤ IntermediateField.adjoin F S`. Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨y, hy, w, hw, -, rfl⟩` from `hFr F K (fun k => ι' (j k)) P (isMultiProjPrime_contractPrime j ι' hP') {W} (Set.finite_singleton W) (fun W' h => by rw [Set.mem_singleton_iff.mp h]; exact hW) z hz`.
-
-Rewrite using `[map_div₀]`. Conclude with `div_mem (hAE _ ⟨y, hy, rfl⟩) (hAE _ ⟨w, hw, rfl⟩)`. Establish `hdeg : IntermediateField.relfinrank ((homFracDegZero P).map φ) L ≠ 0` using `hF F K K' j ι' P' hP' hdim`. Rewrite `hdeg` using `[← IntermediateField.relfinrank_mul_relfinrank hκE hEL, IntermediateField.relfinrank_eq_finrank_of_le hEL]`. Conclude with `exists_finset_integral_span hN (Set.finite_range _) A' L hRA hloc hEL (FiniteDimensional.of_finrank_pos (Nat.pos_of_ne_zero (right_ne_zero_of_mul hdeg)))`.
+A detailed English derivation is pending.
 -/
 theorem LocalIntegralClosureFinite.proof (hN : NoetherIntegralClosureFinite.Statement.{u})
     (hF : FunctionFieldFinite.Statement.{u}) (hQ : DegZeroLocQuot.Statement.{u})

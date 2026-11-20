@@ -11,9 +11,9 @@ namespace GlobalTheory.CompanionTheory.EisTF
 variable {k : Type} [Field k] [NumberField k]
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => simp only [Nat.cast_zero]`. Both sides reduce to the same expression. Consider the case `succ m ih`. Simplify using `only [Nat.cast_succ]`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `((m : FiniteAdeleRing (𝓞 k) k) v) + (1 : FiniteAdeleRing (𝓞 k) k) v = _`. Rewrite using `[ih]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem natCast_finiteAdele_apply (v : HeightOneSpectrum (𝓞 k)) (M : ℕ) :
     ((M : FiniteAdeleRing (𝓞 k) k) v) = (M : v.adicCompletion k) := by
@@ -26,7 +26,7 @@ theorem natCast_finiteAdele_apply (v : HeightOneSpectrum (𝓞 k)) (M : ℕ) :
     rfl
 
 /- English proof (translation)
-Establish `: (M : v.adicCompletion k) ∈ v.adicCompletionIntegers k` using `natCast_mem _ M`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem valued_natCast_le_one (v : HeightOneSpectrum (𝓞 k)) (M : ℕ) :
     Valued.v (M : v.adicCompletion k) ≤ 1 := by
@@ -34,9 +34,9 @@ theorem valued_natCast_le_one (v : HeightOneSpectrum (𝓞 k)) (M : ℕ) :
   exact this
 
 /- English proof (translation)
-Establish `hv : ∀ x : k, Valued.v (algebraMap k (v.adicCompletion k) x) = v.valuation k x` using `fun x => v.valuedAdicCompletion_eq_valuation' x`. Establish `h : ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 k) ∈ v.asIdeal` using `Ideal.absNorm_mem _`. Establish `h2` using `(v.valuation_lt_one_iff_mem (K := k) _).2 h`. Establish `h3 : ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion k) = algebraMap k (v.adicCompletion k) (algebraMap (𝓞 k) k ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 k))`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3, hv]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_absNorm_lt_one (v : HeightOneSpectrum (𝓞 k)) :
     Valued.v ((Ideal.absNorm v.asIdeal : ℕ) : v.adicCompletion k) < 1 := by
@@ -51,7 +51,7 @@ theorem valued_absNorm_lt_one (v : HeightOneSpectrum (𝓞 k)) :
   exact h2
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Simplify using `[hx]`. Take `⟨a, rfl⟩ : ∃ a : ℤ, x = exp a` from `⟨log x, (exp_log hx).symm⟩`. Rewrite `h` using `[← exp_zero, exp_lt_exp]`. Rewrite using `[exp_le_exp]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -64,7 +64,7 @@ theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1)
     omega
 
 /- English proof (translation)
-Establish `h1` using `le_exp_neg_one_of_lt_one (valued_absNorm_lt_one v)`. Rewrite using `[Nat.cast_pow, map_pow]`. Use `(pow_le_pow_left₀ zero_le' h1 n).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← exp_nsmul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Simplify using the standard rewrite rules.
 -/
@@ -78,7 +78,7 @@ theorem valued_absNorm_pow_le (v : HeightOneSpectrum (𝓞 k)) (n : ℕ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[← Finset.mul_prod_erase S _ hv, Nat.cast_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem valued_prod_le (S : Finset (HeightOneSpectrum (𝓞 k))) (n : HeightOneSpectrum (𝓞 k) → ℕ)
     {v : HeightOneSpectrum (𝓞 k)} (hv : v ∈ S) :
@@ -90,15 +90,15 @@ theorem valued_prod_le (S : Finset (HeightOneSpectrum (𝓞 k))) (n : HeightOneS
     _ ≤ exp (-(n v : ℤ)) := by rw [mul_one]; exact valued_absNorm_pow_le v (n v)
 
 /- English proof (translation)
-Introduce `k _ _ ω`. Set `χ : (FiniteAdeleRing (𝓞 k) k)ˣ →* Circle` to `ω.toIdele.comp ofFinite`. Establish `hχ : Continuous χ` using `ω.continuous_toIdele.comp continuous_ofFinite`. Take `⟨S, n, -, h0, hker⟩` from `exists_finiteLevel_le_ker_circle χ hχ`. Use `⟨∏ v ∈ S, Ideal.absNorm v.asIdeal ^ n v, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_ne_zero_iff.2 fun v _ => pow_ne_zero _ ?_` and prove the remaining obligations. Conclude with `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Introduce and unpack `u hu ⟨y, hy, huy⟩`. Establish `hmem : u ∈ finiteLevel n`. Use `mem_finiteLevel.2 fun v => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : finiteComponent v u ∈ unitsLevel (K` using `k) v 0 := by`. Rewrite using `[unitsLevel_zero, Submonoid.mem_units_iff]`. Conclude with `(mem_finiteIntegralUnits k).1 hu v`. Distinguish the cases in `hv : v ∈ S`. Use `mem_unitsLevel.2 ⟨(mem_unitsLevel.1 hz).1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hyv : Valued.v (y v) ≤ 1` using `mem_integralFiniteAdeles.1 hy v`. Establish `huv : ((u : FiniteAdeleRing (𝓞 k) k) v) - 1 = ((∏ w ∈ S, Ideal.absNorm w.asIdeal ^ n w : ℕ) : v.adicCompletion k) * y v`. Use `congrArg (fun x : FiniteAdeleRing (𝓞 k) k => x v) huy` as an intermediate fact. Rewrite using `[← natCast_finiteAdele_apply]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[coe_finiteComponent, huv, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h0 v hv]`. Conclude with `hz`. Conclude with `MonoidHom.mem_ker.1 (hker hmem)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem condM : CondM := by
   intro k _ _ ω

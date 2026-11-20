@@ -3,19 +3,17 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.HermitianForm
 
 /- English proof (translation)
-Establish `hb : 0 ≤ (B u u).re` using `hpos u`. Establish `key : ∀ t : ℝ, 0 ≤ 2 * t * (B v u).re + t ^ 2 * (B u u).re`. Introduce `t`. Establish `h` using `hpos (v + (t : ℂ) • u)`. Establish `e : B (v + (t : ℂ) • u) (v + (t : ℂ) • u) = B v v + (t : ℂ) * B v u + (t : ℂ) * B u v + (t : ℂ) * (t : ℂ) * B u u`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, LinearMap.add_apply, map_smul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Complex.conj_ofReal]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e, hv, hB v u]`. Simplify using `only [zero_add, Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, Complex.conj_re, Complex.mul_im, zero_mul, sub_zero, add_zero] at h`. Use polynomial arithmetic with `[h]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `set a := (B v u).re with ha`. Use `set b := (B u u).re with hb'`. Establish `hb1 : 0 < b + 1` using `by linarith`. Establish `h` using `key (-a / (b + 1))`. Establish `e2 : 2 * (-a / (b + 1)) * a + (-a / (b + 1)) ^ 2 * b = -(a ^ 2 * (b + 2)) / (b + 1) ^ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[e2]`. Establish `h3 : 0 ≤ -(a ^ 2 * (b + 2))`. Assume the negation of the conclusion as `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push Not at hc`. Establish `: -(a ^ 2 * (b + 2)) / (b + 1) ^ 2 < 0` using `div_neg_of_neg_of_pos hc (by positivity)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : a ^ 2 * (b + 2) ≤ 0` using `by linarith`. Establish `h5 : a ^ 2 ≤ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Establish `: 0 < a ^ 2 * (b + 2)` using `mul_pos hc (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6 : a ^ 2 = 0` using `le_antisymm h5 (sq_nonneg a)`.
-
-Conclude with `pow_eq_zero_iff (two_ne_zero) |>.mp h6`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem re_pairing_eq_zero_of_psd {V : Type} [AddCommGroup V] [Module ℂ V]
     (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ) (hB : ∀ v w, B w v = starRingEnd ℂ (B v w))
@@ -57,9 +55,9 @@ theorem re_pairing_eq_zero_of_psd {V : Type} [AddCommGroup V] [Module ℂ V]
   exact pow_eq_zero_iff (two_ne_zero) |>.mp h6
 
 /- English proof (translation)
-Introduce `V _ _ B hB hpos v hv w`. Establish `hre` using `re_pairing_eq_zero_of_psd B hB hpos v hv w`. Establish `him` using `re_pairing_eq_zero_of_psd B hB hpos v hv (Complex.I • w)`. Establish `e : B v (Complex.I • w) = -Complex.I * B v w`. Simplify using `only [map_smulₛₗ, smul_eq_mul, Complex.conj_I]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `him` using `[e]`. Simplify using `only [Complex.mul_re, Complex.neg_re, Complex.neg_im, Complex.I_re, Complex.I_im] at him`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `using hre`. Simplify using `using him`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pairing_eq_zero_of_psd : ∀ (V : Type) [AddCommGroup V] [Module ℂ V]
     (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ), (∀ v w, B w v = starRingEnd ℂ (B v w)) →

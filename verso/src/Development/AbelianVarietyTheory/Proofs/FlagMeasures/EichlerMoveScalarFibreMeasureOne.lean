@@ -12,27 +12,25 @@ open scoped Pointwise ENNReal Classical
 namespace GlobalTheory.MoveFibre
 
 /- English proof (translation)
-Establish `hN : Nice A (ind P)`. Use `⟨A, le_rfl, by simp, fun w b hb => ?_, ?_⟩` and prove the remaining obligations. Establish `: P (w + b) ↔ P w`. Rewrite using `[hP, hP, show w + b - t₀ = w - t₀ + b by abel]`. Conclude with `A.add_mem_cancel_right hb`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ind, this]`. Use `(Set.finite_singleton (QuotientAddGroup.mk t₀ : W ⧸ A)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Establish `h1 : P w`. Assume the negation of the conclusion as `h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw (by simp [ind, h])`. Rewrite using `[Set.mem_singleton_iff, eq_comm, QuotientAddGroup.eq, neg_add_eq_sub]`. Conclude with `(hP w).1 h1`. Rewrite using `[cint, dif_pos hN]`. Take `⟨hle, hidx, -, -⟩` from `hN.choose_spec`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Generalize the expression as in `hN.choose = B at hle hidx`. Set `g : A ⧸ B.addSubgroupOf A → W ⧸ B` to `fun x => Quotient.liftOn' x (fun a : A => (QuotientAddGroup.mk (t₀ + a) : W ⧸ B)) (fun a b hab => by`. Rewrite `hab` using `[QuotientAddGroup.leftRel_apply, AddSubgroup.mem_addSubgroupOf]`. Rewrite using `[QuotientAddGroup.eq]`. Use `hab using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Use the proof step `abel)`. Establish `hg : ∀ a : A, g (QuotientAddGroup.mk a) = QuotientAddGroup.mk (t₀ + a)` using `fun _ => rfl`. Establish `hinj : Function.Injective g`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `x using QuotientAddGroup.induction_on with | H a => ?_`. Proceed by induction on `y using QuotientAddGroup.induction_on with | H b => ?_`. Introduce `h`. Rewrite `h` using `[hg, hg, QuotientAddGroup.eq]`. Rewrite using `[QuotientAddGroup.eq, AddSubgroup.mem_addSubgroupOf]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Normalize the expressions using the abelian group laws. Establish `hr : ∀ c : W ⧸ B, P c.out ↔ c ∈ Set.range g`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[hP]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨QuotientAddGroup.mk ⟨_, h⟩, by rw [hg]; simp⟩`. Introduce and unpack `⟨x, hx⟩`.
+Assume the hypotheses and unpack their components. Proceed by induction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Proceed by induction on `x using QuotientAddGroup.induction_on with | H a => ?_`. Rewrite `hx` using `[hg, ← c.out_eq, QuotientAddGroup.eq]`. Use `A.add_mem (hle hx) a.2` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin : Finite (A ⧸ B.addSubgroupOf A)` using `Nat.finite_of_card_ne_zero hidx`. Use `Fintype.ofFinite (A ⧸ B.addSubgroupOf A)` as an intermediate fact. Establish `hs : (∑ᶠ c : W ⧸ B, ind P c.out) = ∑ᶠ c ∈ Set.range g, (1 : ℂ)`. Use `finsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[finsum_eq_if]`.
-
-Simplify using `only [ind, hr]`. Rewrite using `[hs, finsum_mem_range hinj, finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, ← Nat.card_eq_fintype_card]`. Conclude with `div_self (Nat.cast_ne_zero.2 hidx)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cint_coset {W : Type} [AddCommGroup W] (A : AddSubgroup W) (P : W → Prop) (t₀ : W)
     (hP : ∀ t, P t ↔ t - t₀ ∈ A) : cint A (ind P) = 1 := by
@@ -91,7 +89,7 @@ theorem cint_coset {W : Type} [AddCommGroup W] (A : AddSubgroup W) (P : W → Pr
   exact div_self (Nat.cast_ne_zero.2 hidx)
 
 /- English proof (translation)
-Establish `h1 : ∀ i j, L.cj (Hm i j) = Hm j i` using `fun i j => congrFun (congrFun h j) i`. Simplify using `only [hf, map_sum, map_mul, L.cj_cj, h1]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cj_hf_self {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E) {n : ℕ}
@@ -103,15 +101,15 @@ theorem cj_hf_self {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   exact Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L r k S _ u`. Take `⟨htr, hO, -⟩` from `GlobalTheory.UnramOrder.order_facts L S.ϖ S.ϖ_irr`. Establish `hfix : L.cj (S.h u u) = S.h u u` using `cj_hf_self L S.herm.1 u`. Establish `h2 : algebraMap F E 2⁻¹ * 2 = 1`. Rewrite using `[← map_ofNat (algebraMap F E) 2, ← map_mul, inv_mul_cancel₀ two_ne_zero, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hT : ∀ t, t ∈ S.refT ↔ t + L.cj t = 0 ∧ ∃ c ∈ L.O, algebraMap F E ((S.ϖ : F) ^ S.a) * c = t` using `fun t => Iff.rfl`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨c, hc⟩`. Take `⟨x, hx, hxc⟩` from `htr c`. Rewrite `hc` using `[map_mul, ← hxc]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `cint_coset _ _ (algebraMap F E ((S.ϖ : F) ^ S.a) * x - algebraMap F E 2⁻¹ * S.h u u) fun t => ?_` and prove the remaining obligations. Rewrite using `[hT]`. Simplify using `only [map_sub L.cj, map_mul L.cj, AlgEquiv.commutes, hfix]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨y, hy, e⟩, ht⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨by linear_combination ht + hc + S.h u u * h2, y - x, L.O.sub_mem hy hx, by linear_combination -e⟩`. Introduce and unpack `⟨ht, y, hy, e⟩`. Conclude with `⟨⟨y + x, L.O.add_mem hy hx, by linear_combination -e⟩, by linear_combination ht - hc - S.h u u * h2⟩`. Introduce and unpack `⟨t, ⟨y, hy, e⟩, ht⟩`. Take `⟨c, hc⟩` from `(hO y hy).2.1`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `e'` using `congrArg L.cj e`. Simplify using `only [map_add L.cj, map_mul L.cj, AlgEquiv.commutes, hfix] at e'`. Rewrite using `[map_mul, ← hc]`. Take the linear combination `e + e' - ht - S.h u u * h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem fibre_scalar : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (r k : ℕ) (S : Frames L r k), 0 ≤ S.a → ∀ u : S.V, (S.InZ u → cint S.refT (ind fun t : E => (∃ c ∈ L.O, algebraMap F E 2⁻¹ * S.h u u + t = algebraMap F E ((S.ϖ : F) ^ S.a) * c) ∧ t + L.cj t = 0) = 1) ∧ ((∃ t : E, (∃ c ∈ L.O, algebraMap F E 2⁻¹ * S.h u u + t = algebraMap F E ((S.ϖ : F) ^ S.a) * c) ∧ t + L.cj t = 0) → S.InZ u) := by
   intro F _ _ _ _ _ E _ _ _ L r k S _ u

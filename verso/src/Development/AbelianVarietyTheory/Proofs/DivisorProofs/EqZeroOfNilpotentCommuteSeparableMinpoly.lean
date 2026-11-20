@@ -7,15 +7,13 @@ open scoped TensorProduct Classical
 namespace GlobalTheory.LKCx.ClsReg
 
 /- English proof (translation)
-Introduce `p _ G y₀ hsep hdeg x hx k hk`. Break down `Nat.eq_zero_or_pos k with rfl | hkpos` into its components or cases. Establish `h10 : (1 : G.C) = 0` using `by simpa using hk`. Rewrite using `[← one_mul x, h10, zero_mul]`. Establish `hk0 : k ≠ 0` using `hkpos.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `GlobalTheory.CentSep.centralizer_eq_adjoin G.F G.C G.n G.rankC y₀ hsep hdeg`. Establish `hxmem : x ∈ Subalgebra.centralizer G.F ({y₀} : Set G.C)`. Rewrite using `[Subalgebra.mem_centralizer_iff]`. Introduce `g hg`. Rewrite using `[Set.mem_singleton_iff.1 hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx.eq.symm`. Rewrite `hxmem` using `[hc, Algebra.adjoin_singleton_eq_range_aeval]`. Take `⟨f, rfl⟩` from `hxmem`. Establish `h1 : Polynomial.aeval y₀ (f ^ k) = 0`. Rewrite using `[map_pow]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hk`. Establish `h2 : minpoly G.F y₀ ∣ f ^ k` using `minpoly.dvd G.F y₀ h1`. Establish `hsq : Squarefree (minpoly G.F y₀)` using `hsep.squarefree`. Establish `h3 : minpoly G.F y₀ ∣ f` using `(hsq.dvd_pow_iff_dvd hk0).1 h2`. Take `⟨g, hg⟩` from `h3`.
-
-Use `show Polynomial.aeval y₀ f = 0`. Rewrite using `[hg, map_mul, minpoly.aeval, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_commute_of_pow_eq_zero : ∀ (p : ℕ) [Fact p.Prime] (G : HTGroup p) (y₀ : G.C),
     (minpoly G.F y₀).Separable →

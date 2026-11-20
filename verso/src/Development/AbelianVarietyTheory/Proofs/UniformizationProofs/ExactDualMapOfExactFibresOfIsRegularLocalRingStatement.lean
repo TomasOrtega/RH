@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.UniformizationProofs.ExactDualMap
 open CategoryTheory CategoryTheory.Limits TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.exact_dualMap_of_exact_fibres_of_isRegularLocalRing` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FUniformizationProofs%2FExactDualMapOfExactFibresOfIsRegularLocalRing.lean&line=28#L28)
 -/

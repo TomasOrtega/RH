@@ -8,7 +8,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formali
 open scoped Topology ComplexOrder
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ShFam.Hor.HodgeLoc.hodge_eq_riem_chart` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FLogChartLinearIndependent.lean&line=62#L62)
 -/

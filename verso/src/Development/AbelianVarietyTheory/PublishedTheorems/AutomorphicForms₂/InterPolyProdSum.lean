@@ -25,9 +25,9 @@ def interPoly : MvPolynomial κ ℝ →ₗ[ℝ] ℝ :=
     if h : ∃ s : Fin Y.dim → κ, ∑ i, Finsupp.single (s i) 1 = d then (Y.inter (Δ ∘ h.choose) : ℝ) else 0
 
 /- English proof (translation)
-Establish `hc : ∀ k, Fintype.card {i // t i = k} = Fintype.card {i // s i = k}`. Introduce `k`. Establish `hk` using `congrArg (fun f : κ →₀ ℕ => f k) h`. Simplify using `only [Finsupp.finsetSum_apply, Finsupp.single_apply] at hk`. Simplify `hk` using `[Fintype.card_subtype, Finset.sum_boole]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Set `σ : Fin Y.dim ≃ Fin Y.dim` to `(Equiv.sigmaFiberEquiv t).symm.trans ((Equiv.sigmaCongrRight fun k => Fintype.equivOfCardEq (hc k)).trans (Equiv.sigmaFiberEquiv s))`. Establish `hσ : ∀ i, s (σ i) = t i` using `fun i => ((Fintype.equivOfCardEq (hc (t i))) ⟨i, rfl⟩).2`. Establish `hcomp : Δ ∘ t = (Δ ∘ s) ∘ σ` using `funext fun i => by simp only [Function.comp_apply, hσ]`. Rewrite using `[hcomp, inter_comp_perm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem inter_comp_eq_of_sum_single_eq (s t : Fin Y.dim → κ)
     (h : ∑ i, Finsupp.single (t i) 1 = ∑ i, Finsupp.single (s i) (1 : ℕ)) :
@@ -45,9 +45,9 @@ private theorem inter_comp_eq_of_sum_single_eq (s t : Fin Y.dim → κ)
   rw [hcomp, inter_comp_perm]
 
 /- English proof (translation)
-Establish `hprod : (∏ i, MvPolynomial.X (s i) : MvPolynomial κ ℝ) = (basisMonomials κ ℝ) (∑ i, Finsupp.single (s i) 1)`. Simplify using `only [coe_basisMonomials]`. Rewrite using `[monomial_sum_one]`. Both sides reduce to the same expression. Establish `h : ∃ t : Fin Y.dim → κ, ∑ i, Finsupp.single (t i) 1 = ∑ i, Finsupp.single (s i) 1` using `⟨s, rfl⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hprod]`. Unfold `interPoly`. Rewrite using `[Module.Basis.constr_basis, dif_pos h]`. Conclude with `inter_comp_eq_of_sum_single_eq Y Δ s h.choose h.choose_spec` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem interPoly_prod (s : Fin Y.dim → κ) : Y.interPoly Δ (∏ i, MvPolynomial.X (s i)) = Y.inter (Δ ∘ s) := by
   classical
@@ -63,9 +63,9 @@ theorem interPoly_prod (s : Fin Y.dim → κ) : Y.interPoly Δ (∏ i, MvPolynom
   exact_mod_cast inter_comp_eq_of_sum_single_eq Y Δ s h.choose h.choose_spec
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_sum, map_sum, ← interForm_apply, MultilinearMap.map_sum, Int.cast_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[interForm_apply]`. Establish `e1 : (∏ i, C (a i (p i) : ℝ) * MvPolynomial.X (p i) : MvPolynomial κ ℝ) = ((∏ i, a i (p i) : ℤ) : ℝ) • ∏ i, MvPolynomial.X (p i)`. Rewrite using `[Finset.prod_mul_distrib, ← map_prod, C_mul']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[e1, map_smul, interPoly_prod, smul_eq_mul]`. Rewrite using `[show (fun i => a i (p i) • Δ (p i)) = fun i => a i (p i) • (Δ ∘ p) i from rfl, inter_zsmul]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Both sides reduce to the same expression.
 -/

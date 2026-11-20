@@ -11,79 +11,71 @@ open PI.UpqRep Formalism.BasicNotions Formalism.GradedWeylDivisibility MvPolynom
 open scoped InnerProductSpace
 
 /- English proof (translation)
-Establish `hA : PolyExt` using `polyExt_of polynomial_coefficients unitaryGroupDense_holds`. Establish `hI : LamInt` using `lambda_integrality`. Establish `hT : TorusEig` using `torus_eigenvalue_formula`. Establish `hL : LowerInv` using `lower_triangular_invariance`. Establish `hM : ModelMap` using `model_map_equivariance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : DetSplit` using `determinant_splitting_formula`. Establish `hH : PI.HwIrred` using `highest_weight_irreducible`. Take `⟨hfin, hstab, hirr, ⟨v0, hv0S, hv0ne, hv0w⟩, hdom⟩` from `id hK`. Establish `hK' : IsKTypeOf (allPos N) σ Λ S` using `⟨hfin, hstab, hirr, ⟨v0, hv0S, hv0ne, hv0w⟩, hdom⟩`. Use `haveI := hfin`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨K, P, hP, hPσ⟩` from `hA N H σ S hU hfin hstab`. Use `choose μ hμ using hI N Λ H σ v0 hU hv0ne hv0w`. Set `w0 : S` to `⟨v0, hv0S⟩`. Establish `hw0ne : w0 ≠ 0`. Introduce `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `hv0ne` to reduce the goal to its premises. Use `congrArg Subtype.val h` as an intermediate fact. Simplify `this` using `[w0]`. Establish `hT'` using `hT N Λ H σ S K P hU hstab hPσ w0 hv0w`. Establish `hL'` using `hL N Λ H σ S K P hU hK' hP hPσ w0 hv0w`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hT'' : ∀ (θ : Fin N → ℝ) (x : S), ⟪w0, P (torus θ) x⟫_ℂ = Complex.exp (((∑ a, ((μ a : ℝ) + K) * θ a : ℝ) : ℂ) * Complex.I) * ⟪w0, x⟫_ℂ`. Introduce `θ x`. Rewrite using `[hT' θ x]`. Simplify using `only [hμ]`. Take `⟨ν, F, hν, hFmem, hF0, hFint⟩` from `hM N S P w0 μ K hP hw0ne hT'' hL'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hanti : Antitone ν`. Introduce `l j hlj`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Break down `eq_or_lt_of_le hlj with h | h` into its components or cases.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `h` using the available equality. Conclude with `lt_irrefl _ hlt`. Establish `hbot` using `dualWeylNonDom ℂ N N ν ⟨l, j, h, hlt⟩`. Use `hFmem w0` as an intermediate fact. Rewrite `this` using `[hbot, Submodule.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hF0 this`. Establish `hμanti : Antitone μ`. Introduce `a b hab`. Establish `h1` using `hν a`. Establish `h2` using `hν b`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `h3 : (ν b : ℤ) ≤ ν a` using `by exact_mod_cast hanti hab`. Use linear arithmetic over natural numbers and integers. Set `lam : DomWeight N` to `⟨μ, hμanti⟩`. Use `⟨lam, fun a => hμ a, ?_⟩` and prove the remaining obligations. Set `c : ℕ` to `if h : 0 < N then ν ⟨N - 1, by omega⟩ else 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnat : ∀ a, lam.natW a + c = ν a`. Introduce `a`. Establish `hN : 0 < N` using `a.pos`. Establish `h1` using `hν a`. Establish `h2` using `hν ⟨N - 1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h3 : ν ⟨N - 1, by omega⟩ ≤ ν a` using `hanti (by rw [Fin.le_def]; simp; omega)`. Establish `h3' : (ν ⟨N - 1, by omega⟩ : ℤ) ≤ ν a` using `by exact_mod_cast h3`. Simplify using `only [DomWeight.natW, DomWeight.detShift, c, dif_pos hN, lam]`. Use linear arithmetic over natural numbers and integers. Establish `hlast : ∀ h : 0 < N, lam.natW ⟨N - 1, by omega⟩ = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Simplify using `[DomWeight.natW, DomWeight.detShift, h, lam]`. Establish `hsplit` using `hD N lam.natW c hlast`. Establish `hνeq : (fun a => lam.natW a + c) = ν` using `funext hnat`. Establish `hFmem' : ∀ x, F x ∈ dualWeyl ℂ N N (fun a => lam.natW a + c)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Rewrite using `[hνeq]`. Conclude with `hFmem x`. Set `mulD : MvPolynomial (Fin N × Fin N) ℂ →ₗ[ℂ] MvPolynomial (Fin N × Fin N) ℂ` to `LinearMap.mulLeft ℂ (detPoly N ^ c)`. Establish `hmulD_inj : Function.Injective mulD`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `f g hfg`. Simplify using `only [mulD, LinearMap.mulLeft_apply] at hfg`. Conclude with `mul_left_cancel₀ (pow_ne_zero _ (detPoly_ne_zero N)) hfg`. Set `U : Submodule ℂ (MvPolynomial (Fin N × Fin N) ℂ)` to `nablaSq ℂ N lam ⊓ (LinearMap.range F).comap mulD`. Establish `hUst : ∀ (g : GL (Fin N) ℂ), ∀ f ∈ U, sqAct ℂ N lam g f ∈ U`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g f hf`. Take `⟨hf1, hf2⟩` from `Submodule.mem_inf.mp hf`. Take `⟨x, hx⟩` from `LinearMap.mem_range.mp (Submodule.mem_comap.mp hf2)`. Use `Submodule.mem_inf.mpr ⟨?_, ?_⟩` and prove the remaining obligations. Unfold `sqAct`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (dualWeylRowStable ℂ N N _ _ f hf1)`. Use `set dg := (g : Matrix (Fin N) (Fin N) ℂ).det with hdgdef`. Establish `hdg : dg ≠ 0`. Use `(Matrix.GeneralLinearGroup.det g).ne_zero` as an intermediate fact. Rewrite `this` using `[Matrix.GeneralLinearGroup.val_det_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Use `Submodule.mem_comap.mpr (LinearMap.mem_range.mpr ⟨(detPow ℂ N g lam.detShift * (dg ^ c)⁻¹) • P (g : Matrix (Fin N) (Fin N) ℂ) x, ?_⟩)` and prove the remaining obligations. Rewrite using `[map_smul, hFint, hx]`. Simplify using `only [mulD, LinearMap.mulLeft_apply, sqAct]`. Rewrite using `[map_mul, map_pow, rowAct_detPoly, Matrix.det_transpose]`. Establish `key : C ((dg ^ c)⁻¹) * C dg ^ c = (1 : MvPolynomial (Fin N × Fin N) ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← C_pow, ← C_mul, inv_mul_cancel₀ (pow_ne_zero _ hdg), C_1]`. Simplify using `only [smul_eq_C_mul, C_mul]`. Take the linear combination `(C (detPow ℂ N g lam.detShift) * detPoly N ^ c * rowAct ℂ (n := N) (g : Matrix (Fin N) (Fin N) ℂ)ᵀ f) * key`. Take `⟨f0, hf0mem, hf0eq⟩` from `hsplit (F w0) (hFmem' w0)`. Establish `hf0U : f0 ∈ U` using `Submodule.mem_inf.mpr ⟨hf0mem, Submodule.mem_comap.mpr (LinearMap.mem_range.mpr ⟨w0, by simp only [mulD, LinearMap.mulLeft_apply]; exact hf0eq⟩)⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hf0ne : f0 ≠ 0`. Introduce `h`. Apply `hF0` to reduce the goal to its premises. Rewrite using `[hf0eq, h, mul_zero]`. Establish `hUeq : U = nablaSq ℂ N lam`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Break down `(hH N lam).2.1 U inf_le_left hUst with h | h` into its components or cases. It suffices to derive a contradiction. Rewrite `hf0U` using `[h, Submodule.mem_bot]`. Conclude with `hf0ne hf0U`. Conclude with `h`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hFinj : Function.Injective F`. Rewrite using `[← LinearMap.ker_eq_bot]`. Set `S' : Submodule ℂ H` to `(LinearMap.ker F).map S.subtype`. Establish `hS'le : S' ≤ S`. Introduce and unpack `_ ⟨y, _, rfl⟩`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `y.2`. Establish `hS'st : IsKStableOn (allPos N) σ S'`. Introduce and unpack `g hg _ ⟨y, hy, rfl⟩`. Establish `hd : g.det ^ K ≠ 0` using `pow_ne_zero _ (det_ne_zero_of_mem_K hg)`. Use `⟨(g.det ^ K)⁻¹ • P g y, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hy`, the goal using `[SetLike.mem_coe, LinearMap.mem_ker]`. Rewrite using `[map_smul, hFint, hy, map_zero, smul_zero]`. Simplify using `only [Submodule.subtype_apply, Submodule.coe_smul, hPσ g hg y, smul_smul, inv_mul_cancel₀ hd, one_smul]`. Break down `hirr S' hS'le hS'st with h | h` into its components or cases. Rewrite using `[eq_bot_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `y hy`. Establish `hyS : (y : H) ∈ S'` using `⟨y, hy, rfl⟩`. Rewrite `hyS` using `[h, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot]`. Conclude with `Subtype.ext hyS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-It suffices to derive a contradiction. Establish `hv : v0 ∈ S'` using `by rw [h]; exact hv0S`. Take `⟨y, hy, hyv⟩` from `hv`. Establish `hyw : y = w0` using `Subtype.ext hyv`. Rewrite `hy` using `[hyw]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hF0 hy`. Set `φ : U →ₗ[ℂ] LinearMap.range F` to `LinearMap.codRestrict (LinearMap.range F) (mulD ∘ₗ U.subtype) (fun u => Submodule.mem_comap.mp (Submodule.mem_inf.mp u.2).2)`. Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce `u v huv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Subtype.val huv` as an intermediate fact. Simplify using `only [φ, LinearMap.codRestrict_apply, LinearMap.comp_apply, Submodule.subtype_apply] at this`. Conclude with `Subtype.ext (hmulD_inj this)`. Introduce and unpack `⟨z, x, rfl⟩`. Take `⟨f', hf'mem, hf'eq⟩` from `hsplit (F x) (hFmem' x)`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨⟨f', Submodule.mem_inf.mpr ⟨hf'mem, Submodule.mem_comap.mpr (LinearMap.mem_range.mpr ⟨x, by simp only [mulD, LinearMap.mulLeft_apply]; exact hf'eq⟩)⟩⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [φ, LinearMap.codRestrict_apply, LinearMap.comp_apply, Submodule.subtype_apply, mulD, LinearMap.mulLeft_apply]`. Conclude with `hf'eq.symm`. Set `eF : S ≃ₗ[ℂ] LinearMap.range F` to `LinearEquiv.ofInjective F hFinj`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `eφ : U ≃ₗ[ℂ] LinearMap.range F` to `LinearEquiv.ofBijective φ hφ`. Set `e : S ≃ₗ[ℂ] nablaSq ℂ N lam` to `eF.trans (eφ.symm.trans (LinearEquiv.ofEq _ _ hUeq))`. Establish `he : ∀ x : S, detPoly N ^ c * ((e x : nablaSq ℂ N lam) : MvPolynomial (Fin N × Fin N) ℂ) = F x`. Introduce `x`. Establish `h2 : ((eφ (eφ.symm (eF x)) : LinearMap.range F) : MvPolynomial (Fin N × Fin N) ℂ) = F x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[eφ.apply_symm_apply]`. Both sides reduce to the same expression. Conclude with `h2`. Use `⟨e, ?_⟩` and prove the remaining obligations. Introduce `g hg x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `hdg : (g : Matrix (Fin N) (Fin N) ℂ).det ≠ 0` using `det_ne_zero_of_mem_K hg`. Apply `hmulD_inj` to reduce the goal to its premises. Simplify using `only [mulD, LinearMap.mulLeft_apply]`. Rewrite using `[he]`. Establish `hy : P (g : Matrix (Fin N) (Fin N) ℂ) x = ((g : Matrix (Fin N) (Fin N) ℂ).det ^ K) • (⟨σ g x, hK.2.1 _ hg _ x.2⟩ : S)` using `Subtype.ext (by rw [hPσ _ hg x]; rfl)`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFy` using `hFint (g : Matrix (Fin N) (Fin N) ℂ) x`. Rewrite `hFy` using `[hy, map_smul, ← he x, map_mul, map_pow, rowAct_detPoly, Matrix.det_transpose]`. Use `set d := (g : Matrix (Fin N) (Fin N) ℂ).det with hd`. Establish `hdK : d ^ K ≠ 0` using `pow_ne_zero _ hdg`. Establish `hexp : detPow ℂ N g lam.detShift * d ^ K = d ^ c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : ((Matrix.GeneralLinearGroup.det g : ℂˣ) : ℂ) = d`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Distinguish the cases in `hN : 0 < N`. Establish `hds : lam.detShift = (c : ℤ) - K`. Establish `h1` using `hν ⟨N - 1, by omega⟩`.
-
-Simplify using `only [DomWeight.detShift, c, dif_pos hN, lam]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[detPow, hds, _root_.zpow_sub, zpow_natCast, zpow_natCast, Units.val_mul, Units.val_inv_eq_inv_val, Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, hu, mul_assoc, inv_mul_cancel₀ hdK, mul_one]`. Establish `hN0 : N = 0` using `by omega`. Substitute `hN0` using the available equality.
-
-Establish `h1 : d = 1` using `by rw [hd]; exact Matrix.det_isEmpty`. Establish `hc : c = 0` using `by simp [c]`. Establish `hs : lam.detShift = 0` using `by simp [DomWeight.detShift]`. Rewrite using `[hc, hs, h1, detPow]`. Simplify using the standard rewrite rules.
-
-Establish `hFy' : F ⟨σ g x, hK.2.1 _ hg _ x.2⟩ = C ((d ^ K)⁻¹) * (d ^ K • F ⟨σ g x, hK.2.1 _ hg _ x.2⟩)`. Rewrite using `[smul_eq_C_mul, ← mul_assoc, ← C_mul, inv_mul_cancel₀ hdK, C_1, one_mul]`. Rewrite using `[hFy', hFy, sqAct, smul_eq_C_mul]`. Establish `hexp' : detPow ℂ N g lam.detShift = d ^ c * (d ^ K)⁻¹`. Rewrite using `[← hexp, mul_assoc, mul_inv_cancel₀ hdK, mul_one]`.
-
-Rewrite using `[hexp', C_mul, C_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem highest_weight_model_equiv (N : ℕ) (Λ : Fin N → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin N) (Fin N) ℂ → (H →L[ℂ] H)) (S : Submodule ℂ H)
@@ -280,7 +272,7 @@ end SlopeTestRemainingChoices
 open Formalism.BasicNotions PI.UpqRep
 
 /- English proof (translation)
-The claim follows from `highest_weight_model_equiv N Λ H σ S hU hK`.
+A detailed English derivation is pending.
 -/
 theorem model_equiv (N : ℕ) (Λ : Fin N → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin N) (Fin N) ℂ → (H →L[ℂ] H)) (S : Submodule ℂ H)

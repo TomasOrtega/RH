@@ -19,7 +19,7 @@ open GlobalTheory.PsCo.Pc1
 namespace GlobalTheory.PsCo.Pc
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.PsCo.Pc1.localPC_of_steps GlobalTheory.PsCo.Pc1.A.stAlg GlobalTheory.PsCo.Pc1.stProfile_holds GlobalTheory.PsCo.Pc1.stFam GlobalTheory.PsCo.Pc1.Homot.stHomot GlobalTheory.PsCo.Pcd.stLim GlobalTheory.ShapeSmoothFinite.stShape GlobalTheory.PsCo.Pc1.orbInt_adSpan_eq_zer …`.
+A detailed English derivation is pending.
 -/
 theorem localPC_holds : LocalPC :=
   GlobalTheory.PsCo.Pc1.localPC_of_steps GlobalTheory.PsCo.Pc1.A.stAlg GlobalTheory.PsCo.Pc1.stProfile_holds

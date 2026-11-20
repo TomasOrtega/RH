@@ -9,7 +9,7 @@ namespace Formalism.VB.Cmp
 variable {K Ω' : Type*} [Field K] [NumberField K] [Field Ω'] [Algebra K Ω'] (A : ValuationSubring Ω')
 
 /- English proof (translation)
-Establish `hv : A.valuation.Integers A` using `⟨Subtype.val_injective, fun a => A.valuation_le_one a, fun {r} hr => ⟨⟨r, A.mem_of_valuation_le_one r hr⟩, rfl⟩⟩`. Establish `hx : IsIntegral ℤ (algebraMap K Ω' (x : K))` using `(NumberField.RingOfIntegers.isIntegral_coe x).algebraMap`. Conclude with `hv.isIntegral_iff_v_le_one.1 hx.tower_top`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_le_one (x : 𝓞 K) : A.valuation (algebraMap K Ω' (x : K)) ≤ 1 := by
   have hv : A.valuation.Integers A :=
@@ -39,18 +39,18 @@ def ltIdeal : Ideal (𝓞 K) where
       _ < 1 := hx
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_ltIdeal (x : 𝓞 K) : x ∈ ltIdeal (K := K) A ↔ A.valuation (algebraMap K Ω' (x : K)) < 1 := by exact Iff.rfl
 
 /- English proof (translation)
-Establish `hprime : (ltIdeal (K` using `K) A).IsPrime := by`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.ne_top_iff_one, mem_ltIdeal]`. Simplify using the standard rewrite rules. Introduce `x y hxy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hxy` using `[mem_ltIdeal]`. Rewrite using `[mem_ltIdeal, mem_ltIdeal]`. Establish `e : ((x * y : 𝓞 K) : K) = (x : K) * (y : K)` using `by norm_cast`. Rewrite `hxy` using `[e, map_mul, map_mul]`. Break down `lt_or_eq_of_le (val_le_one A x) with hx | hx` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl hx`. Break down `lt_or_eq_of_le (val_le_one A y) with hy | hy` into its components or cases. Conclude with `Or.inr hy`. Rewrite `hxy` using `[hx, hy, one_mul]`. Conclude with `absurd hxy (lt_irrefl 1)`.
+Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : ((n : ℕ) : 𝓞 K) ∈ ltIdeal (K` using `K) A := by`. Rewrite using `[mem_ltIdeal]`. Simplify using `using h`. Establish `hne : ((n : ℕ) : 𝓞 K) ≠ 0` using `by exact_mod_cast hn.ne'`. Use `⟨⟨ltIdeal (K := K) A, hprime, fun hbot => hne (Ideal.mem_bot.1 (hbot ▸ hmem))⟩, fun x => (mem_ltIdeal A x).symm, fun x => mem_ltIdeal A x⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem exists_placeOver_of_valuation_natCast_lt_one (n : ℕ) (hn : 0 < n) (h : A.valuation (n : Ω') < 1) :
     ∃ v : HeightOneSpectrum (𝓞 K), Formalism.ConjugateSelfDual.IsPlaceOver A v ∧
@@ -78,9 +78,9 @@ private theorem exists_placeOver_of_valuation_natCast_lt_one (n : ℕ) (hn : 0 <
     fun x => (mem_ltIdeal A x).symm, fun x => mem_ltIdeal A x⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hl⟩`. Establish `h` using `(hv _).2 hl`. Simplify using `using h`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, hv, hmem⟩` from `exists_placeOver_of_valuation_natCast_lt_one (K := K) A l (Fact.out : l.Prime).pos h`. Conclude with `⟨v, hv, (hmem _).2 (by simpa using h)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_over_above_iff (l : ℕ) [Fact l.Prime] :
     (∃ v : HeightOneSpectrum (𝓞 K), Formalism.ConjugateSelfDual.IsPlaceOver A v ∧ ((l : ℕ) : 𝓞 K) ∈ v.asIdeal) ↔

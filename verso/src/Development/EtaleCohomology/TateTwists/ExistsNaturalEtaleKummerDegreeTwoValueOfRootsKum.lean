@@ -11,7 +11,7 @@ def KumTEx : Prop := ∀ (q : ℕ) [NeZero q], IsKum q (kumT q)
 def SecGlue : Prop := ∀ (R : Type) [CommRing R] (F : Shv R) (U : Scheme.{0}), (∀ a b : Sec F U, (Loc U fun _ g => Sec.res g a = Sec.res g b) → a = b) ∧ ∀ (S : Sieve U), S ∈ Scheme.etaleTopology U → ∀ s : ∀ (V : Scheme.{0}) (g : V ⟶ U), S.arrows g → Sec F V, (∀ (V W : Scheme.{0}) (g : V ⟶ U) (k : W ⟶ V) (hg : S.arrows g), Sec.res k (s V g hg) = s W (k ≫ g) (S.downward_closed hg k)) → ∃ a : Sec F U, ∀ V g hg, Sec.res g a = s V g hg
 
 /- English proof (translation)
-Take `⟨S, hS, h⟩` from `hP`. Take `⟨T, hT, h'⟩` from `hQ`. Conclude with `⟨S ⊓ T, Scheme.etaleTopology.intersection_covering hS hT, fun V g hg => ⟨h V g hg.1, h' V g hg.2⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_and {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P) (hQ : Loc U Q) :
     Loc U fun V g => P V g ∧ Q V g := by
@@ -20,7 +20,7 @@ theorem loc_and {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} 
   exact ⟨S ⊓ T, Scheme.etaleTopology.intersection_covering hS hT, fun V g hg => ⟨h V g hg.1, h' V g hg.2⟩⟩
 
 /- English proof (translation)
-Take `⟨S, hS, h'⟩` from `hP`. Conclude with `⟨S, hS, fun V g hg => h V g (h' V g hg)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem loc_mono {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop} (hP : Loc U P)
     (h : ∀ V g, P V g → Q V g) : Loc U Q := by
@@ -28,39 +28,39 @@ theorem loc_mono {U : Scheme.{0}} {P Q : ∀ V : Scheme.{0}, (V ⟶ U) → Prop}
   exact ⟨S, hS, fun V g hg => h V g (h' V g hg)⟩
 
 /- English proof (translation)
-Simplify using `only [Sec.res, op_comp, Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem res_comp {R : Type} [CommRing R] {F : Shv R} {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (a : Sec F U) :
     Sec.res k (Sec.res g a) = Sec.res (k ≫ g) a := by
   simp only [Sec.res, op_comp, Functor.map_comp]; rfl
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem res_id {R : Type} [CommRing R] {F : Shv R} {U : Scheme.{0}} (a : Sec F U) : Sec.res (𝟙 U) a = a := by
   simp [Sec.res]
 
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem umap_comp {W V U : Scheme.{0}} (k : W ⟶ V) (g : V ⟶ U) (u : (Γ(U, ⊤))ˣ) :
     Units.map k.appTop.hom.toMonoidHom (Units.map g.appTop.hom.toMonoidHom u) = Units.map (k ≫ g).appTop.hom.toMonoidHom u := by
   ext; simp; rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem umap_id {U : Scheme.{0}} (u : (Γ(U, ⊤))ˣ) : Units.map (Scheme.Hom.appTop (𝟙 U)).hom.toMonoidHom u = u := by
   ext; simp
 
 /- English proof (translation)
-Simplify using `using h.map g.appTop.hom`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unit_res {q : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (h : IsUnit (q : Γ(U, ⊤))) : IsUnit (q : Γ(V, ⊤)) := by
   simpa using h.map g.appTop.hom
 
 /- English proof (translation)
-Unfold `Sx.sub Sx.res`. Use `ConcreteCategory.congr_hom ((E.map (SimplexCategory.subinterval j l h).op).naturality g.op) x` as an intermediate fact. Simplify using `using this`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sub_res {E : Spc} {N : ℕ} {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E N U) (j l : ℕ) (h : j + l ≤ N) :
     (x.res g).sub j l h = (x.sub j l h).res g := by
@@ -75,7 +75,7 @@ theorem glMat_res {V U : Scheme.{0}} (g : V ⟶ U) (y : Sx (ofCat (glCat 1)) 1 U
     glMat (((ofCat (glCat 1)).obj (op (SimplexCategory.mk 1))).map g.op y) = Matrix.GeneralLinearGroup.map g.appTop.hom (glMat y) := rfl
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_gmap {V U : Scheme.{0}} (g : V ⟶ U) (m : GL (Fin 1) Γ(U, ⊤)) :
     Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.map g.appTop.hom m) = Units.map g.appTop.hom.toMonoidHom (Matrix.GeneralLinearGroup.det m) := by
@@ -83,7 +83,7 @@ theorem det_gmap {V U : Scheme.{0}} (g : V ⟶ U) (m : GL (Fin 1) Γ(U, ⊤)) :
   simp [Matrix.GeneralLinearGroup.map]
 
 /- English proof (translation)
-Unfold `lineUnit Sx.res`. Use `ConcreteCategory.congr_hom ((L.app (op (SimplexCategory.mk 1))).naturality g.op) x` as an intermediate fact. Simplify using `only [ConcreteCategory.comp_apply] at this`. Rewrite using `[this, glMat_res, det_gmap]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lineUnit_res {E : Spc} (L : E ⟶ ofCat (glCat 1)) {V U : Scheme.{0}} (g : V ⟶ U) (x : Sx E 1 U) :
     lineUnit L (x.res g) = Units.map g.appTop.hom.toMonoidHom (lineUnit L x) := by
@@ -96,11 +96,11 @@ noncomputable def fv (q : ℕ) (U : Scheme.{0}) (v w : (Γ(U, ⊤))ˣ) : Sec ((r
   kumT q U v + kumT q U w - kumT q U (v * w)
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => intro v w h; have : w = v := Units.ext (by simpa using h); subst this; simp`. Consider the case `succ a ih`. Introduce `v w h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : IsUnit (ζ.1 ^ (a + 1))`. Rewrite using `[show ζ.1 ^ (a + 1) = (w : Γ(U, ⊤)) * ((v⁻¹ : (Γ(U, ⊤))ˣ) : Γ(U, ⊤)) by rw [h, mul_assoc]; simp]`. Conclude with `(w * v⁻¹).isUnit`. Establish `hz : IsUnit ζ.1` using `(isUnit_pow_iff (Nat.succ_ne_zero a)).1 hu`. Set `m : (Γ(U, ⊤))ˣ` to `hz.unit ^ a * v`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : kumT q U m = kumT q U v + a • resGen 1 ζ` using `ih v m (by simp [m])`. Establish `hw : kumT q U w = kumT q U m + resGen 1 ζ` using `(hK q).2 U ζ m w (by rw [h]; simp [m, pow_succ']; ring)`. Rewrite using `[hw, hm, succ_nsmul, add_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kumT_pow (hK : KumTEx) (q : ℕ) [NeZero q] {U : Scheme.{0}} (ζ : Prim q Γ(U, ⊤)) :
     ∀ (a : ℕ) (v w : (Γ(U, ⊤))ˣ), (w : Γ(U, ⊤)) = ζ.1 ^ a * v → kumT q U w = kumT q U v + a • resGen 1 ζ := by
@@ -119,7 +119,7 @@ theorem kumT_pow (hK : KumTEx) (q : ℕ) [NeZero q] {U : Scheme.{0}} (ζ : Prim 
     rw [hw, hm, succ_nsmul, add_assoc]
 
 /- English proof (translation)
-Establish `e : ∀ a b c : Sec ((res _ (tw q 1)).X 0) U, Sec.res g (a + b - c) = Sec.res g a + Sec.res g b - Sec.res g c`. Introduce `a b c`. Simplify using `[Sec.res]`. Unfold `fv`. Rewrite using `[e, (hK q).1 V U g v hq, (hK q).1 V U g w hq, (hK q).1 V U g (v * w) hq, map_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem res_fv (hK : KumTEx) (q : ℕ) [NeZero q] {V U : Scheme.{0}} (g : V ⟶ U) (hq : IsUnit (q : Γ(U, ⊤))) (v w : (Γ(U, ⊤))ˣ) :
     Sec.res g (fv q U v w) = fv q V (Units.map g.appTop.hom.toMonoidHom v) (Units.map g.appTop.hom.toMonoidHom w) := by
@@ -129,7 +129,7 @@ theorem res_fv (hK : KumTEx) (q : ℕ) [NeZero q] {V U : Scheme.{0}} (g : V ⟶ 
   rw [e, (hK q).1 V U g v hq, (hK q).1 V U g w hq, (hK q).1 V U g (v * w) hq, map_mul]
 
 /- English proof (translation)
-Establish `: (v' : Γ(V, ⊤)) = ((v' * v⁻¹ : (Γ(V, ⊤))ˣ) : Γ(V, ⊤)) * v` using `by simp`. Use `show h.appTop.hom (v' : Γ(V, ⊤)) = h.appTop.hom ζ.1 ^ a * h.appTop.hom v`. Rewrite using `[this, map_mul, ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem umap_root {q : ℕ} {W V : Scheme.{0}} (h : W ⟶ V) (ζ : Prim q Γ(V, ⊤)) (v v' : (Γ(V, ⊤))ˣ) (a : ℕ)
     (ha : h.appTop.hom ((v' * v⁻¹ : (Γ(V, ⊤))ˣ) : Γ(V, ⊤)) = h.appTop.hom ζ.1 ^ a) :
@@ -140,13 +140,13 @@ theorem umap_root {q : ℕ} {W V : Scheme.{0}} (h : W ⟶ V) (ζ : Prim q Γ(V, 
   rw [this, map_mul, ha]
 
 /- English proof (translation)
-Establish `hx : (((v' * v⁻¹ : (Γ(V, ⊤))ˣ)) : Γ(V, ⊤)) ^ q = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, mul_pow, ← hv, inv_pow, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `hy : (((w' * w⁻¹ : (Γ(V, ⊤))ˣ)) : Γ(V, ⊤)) ^ q = 1`. Rewrite using `[← Units.val_pow_eq_pow_val, mul_pow, ← hw, inv_pow, mul_inv_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Apply `(hG _ _ V).1` to reduce the goal to its premises. Use `loc_mono (loc_and ((hP q V).2.2.1 ζ _ hx) ((hP q V).2.2.1 ζ _ hy)) ?_` and prove the remaining obligations. Introduce and unpack `W h ⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Rewrite using `[res_fv hK q h hq, res_fv hK q h hq]`.
+Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `umap_root h ζ v v' a ha`. Establish `h2` using `umap_root h ζ w w' b hb`. Establish `h3 : ((Units.map h.appTop.hom.toMonoidHom v' * Units.map h.appTop.hom.toMonoidHom w' : (Γ(W, ⊤))ˣ) : Γ(W, ⊤)) = (Prim.map h.appTop.hom ζ).1 ^ (a + b) * ((Units.map h.appTop.hom.toMonoidHom v * Units.map h.appTop.hom.toMonoidHom w : (Γ(W, ⊤))ˣ) : Γ(W, ⊤))`. Rewrite using `[Units.val_mul, h1, h2, Units.val_mul, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `fv`. Rewrite using `[kumT_pow hK q _ a _ _ h1, kumT_pow hK q _ b _ _ h2, kumT_pow hK q _ (a + b) _ _ h3, add_nsmul]`. Normalize the expressions using the abelian group laws.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem indepA (hP : PrimLoc) (hK : KumTEx) (hG : SecGlue) (q : ℕ) [NeZero q] {V : Scheme.{0}} (ζ : Prim q Γ(V, ⊤))
     (hq : IsUnit (q : Γ(V, ⊤))) (v v' w w' : (Γ(V, ⊤))ˣ) (hv : v ^ q = v' ^ q) (hw : w ^ q = w' ^ q) :
@@ -169,7 +169,7 @@ theorem indepA (hP : PrimLoc) (hK : KumTEx) (hG : SecGlue) (q : ℕ) [NeZero q] 
   abel
 
 /- English proof (translation)
-Apply `(hG _ _ U).1` to reduce the goal to its premises. Use `loc_mono ((hP q U).1 hq) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨ζ⟩`. Rewrite using `[res_fv hK q g hq, res_fv hK q g hq]`. Conclude with `indepA hP hK hG q ζ (unit_res g hq) _ _ _ _ (by rw [← map_pow, ← map_pow, hv]) (by rw [← map_pow, ← map_pow, hw])`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indepB (hP : PrimLoc) (hK : KumTEx) (hG : SecGlue) (q : ℕ) [NeZero q] {U : Scheme.{0}}
     (hq : IsUnit (q : Γ(U, ⊤))) (v v' w w' : (Γ(U, ⊤))ˣ) (hv : v ^ q = v' ^ q) (hw : w ^ q = w' ^ q) :
@@ -185,13 +185,13 @@ def Good (q : ℕ) (U : Scheme.{0}) (u1 u2 : (Γ(U, ⊤))ˣ) (a : Sec ((res _ (t
     w ^ q = Units.map g.appTop.hom.toMonoidHom u2 → Sec.res g a = fv q V v w
 
 /- English proof (translation)
-Take `⟨S, hS, hS'⟩` from `loc_and ((hP q U).2.2.2 hq u1) ((hP q U).2.2.2 hq u2)`. Set `s : ∀ (V : Scheme.{0}) (g : V ⟶ U), S.arrows g → Sec ((res _ (tw q 1)).X 0) V` to `fun V g hg => fv q V (hS' V g hg).1.choose (hS' V g hg).2.choose`. Take `⟨a, ha⟩` from `(hG _ _ U).2 S hS s (by`. Introduce `V W g k hg`. Simplify using `only [s]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[res_fv hK q k (unit_res g hq)]`. Apply `indepB hP hK hG q (unit_res (k ≫ g) hq)` to reduce the goal to its premises. Rewrite using `[← map_pow, (hS' V g hg).1.choose_spec, umap_comp, (hS' W (k ≫ g) (S.downward_closed hg k)).1.choose_spec]`. Rewrite using `[← map_pow, (hS' V g hg).2.choose_spec, umap_comp, (hS' W (k ≫ g) (S.downward_closed hg k)).2.choose_spec])`. Use `⟨a, fun V g v w hv hw => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `(hG _ _ V).1` to reduce the goal to its premises. Use `⟨S.pullback g, Scheme.etaleTopology.pullback_stable g hS, fun W k hk => ?_⟩` and prove the remaining obligations. Use `show Sec.res k (Sec.res g a) = Sec.res k (fv q V v w)`. Rewrite using `[res_comp, ha W (k ≫ g) hk, res_fv hK q k (unit_res g hq)]`. Apply `indepB hP hK hG q (unit_res (k ≫ g) hq)` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hS' W (k ≫ g) hk).1.choose_spec, ← map_pow, hv, umap_comp]`. Rewrite using `[(hS' W (k ≫ g) hk).2.choose_spec, ← map_pow, hw, umap_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_exists (hP : PrimLoc) (hK : KumTEx) (hG : SecGlue) (q : ℕ) [NeZero q] {U : Scheme.{0}}
     (hq : IsUnit (q : Γ(U, ⊤))) (u1 u2 : (Γ(U, ⊤))ˣ) : ∃ a, Good q U u1 u2 a := by
@@ -215,7 +215,7 @@ theorem good_exists (hP : PrimLoc) (hK : KumTEx) (hG : SecGlue) (q : ℕ) [NeZer
   · rw [(hS' W (k ≫ g) hk).2.choose_spec, ← map_pow, hw, umap_comp]
 
 /- English proof (translation)
-Apply `(hG _ _ U).1` to reduce the goal to its premises. Use `loc_mono (loc_and ((hP q U).2.2.2 hq u1) ((hP q U).2.2.2 hq u2)) ?_` and prove the remaining obligations. Introduce and unpack `V g ⟨⟨v, hv⟩, ⟨w, hw⟩⟩`. Rewrite using `[ha V g v w hv hw, hb V g v w hv hw]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem good_unique (hP : PrimLoc) (hG : SecGlue) (q : ℕ) [NeZero q] {U : Scheme.{0}}
     (hq : IsUnit (q : Γ(U, ⊤))) {u1 u2 : (Γ(U, ⊤))ˣ} {a b : Sec ((res _ (tw q 1)).X 0) U}
@@ -226,7 +226,7 @@ theorem good_unique (hP : PrimLoc) (hG : SecGlue) (q : ℕ) [NeZero q] {U : Sche
   rw [ha V g v w hv hw, hb V g v w hv hw]
 
 /- English proof (translation)
-Introduce `W k v w hv hw`. Rewrite using `[res_comp]`. Conclude with `ha W (k ≫ g) v w (by rw [hv, umap_comp]) (by rw [hw, umap_comp])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_res (q : ℕ) {V U : Scheme.{0}} (g : V ⟶ U) {u1 u2 : (Γ(U, ⊤))ˣ} {a : Sec ((res _ (tw q 1)).X 0) U}
     (ha : Good q U u1 u2 a) :
@@ -239,11 +239,11 @@ end LateralTheory.EtaleFoundations.V2
 
 open LateralTheory.EtaleFoundations.V2 in
 /- English proof (translation)
-Introduce `q _ E L hi`. Establish `hq : ∀ (U : Scheme.{0}) (x : Sx E 2 U), IsUnit (q : Γ(U, ⊤))` using `fun U x => hi U ⟨x.sub 0 0 (by omega)⟩`. Use `⟨fun U x => pick (Good q U (lineUnit L (x.sub 0 1 (by omega))) (lineUnit L (x.sub 1 1 (by omega)))), ?_, ?_⟩` and prove the remaining obligations. Introduce `V U g x`. Establish `e1 : lineUnit L ((x.res g).sub 0 1 (by omega)) = Units.map g.appTop.hom.toMonoidHom (lineUnit L (x.sub 0 1 (by omega)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[sub_res, lineUnit_res]`. Establish `e2 : lineUnit L ((x.res g).sub 1 1 (by omega)) = Units.map g.appTop.hom.toMonoidHom (lineUnit L (x.sub 1 1 (by omega)))`. Rewrite using `[sub_res, lineUnit_res]`. Establish `h1` using `good_res q g (pick_spec (good_exists hP hK hG q (hq U x) (lineUnit L (x.sub 0 1 (by omega))) (lineUnit L (x.sub 1 1 (by omega)))))`. Rewrite `h1` using `[← e1, ← e2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `good_unique hP hG q (hq V (x.res g)) h1 (pick_spec (good_exists hP hK hG q (hq V (x.res g)) _ _))`. Introduce `U x v w hv hw`. Use `pick_spec (good_exists hP hK hG q (hq U x) (lineUnit L (x.sub 0 1 (by omega))) (lineUnit L (x.sub 1 1 (by omega)))) U (𝟙 U) v w (by rw [umap_id]; exact hv) (by rw [umap_id]; exact hw)` as an intermediate fact. Rewrite `this` using `[res_id]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.exists_natural_etale_kummer_degree_two_value_of_roots_kummer_gluing (hP : PrimLoc) (hK : KumTEx) (hG : SecGlue) : LateralTheory.EtaleFoundations.ExistsNaturalEtaleKummerChernClassDegreeTwoValue := by
   intro q _ E L hi

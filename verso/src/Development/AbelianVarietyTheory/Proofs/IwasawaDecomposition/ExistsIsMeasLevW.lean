@@ -17,11 +17,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.LevelMeasure
 
 /- English proof (translation)
-Use `haveI := (GlobalTheory.UpqTopology.upq_lcsc p q).1`. Use `haveI := (GlobalTheory.UpqTopology.upq_lcsc p q).2.2.1`. Use `haveI := (GlobalTheory.UpqTopology.upq_lcsc p q).2.2.2.1`. Use `haveI := (GlobalTheory.UpqTopology.upq_lcsc p q).2.2.2.2.1`. Use `haveI := h.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := h'.1`. Establish `e : m' = ((Measure.haarScalarFactor m' m : NNReal) : ENNReal) • m` using `Measure.isMulLeftInvariant_eq_smul m' m`. Establish `h1` using `GlobalTheory.OmegaDensityScale.omegaDensity_smul h.2 (Measure.haarScalarFactor m' m)`. Rewrite `h1` using `[← e]`. Establish `h2` using `GlobalTheory.OmegaDensityScale.omegaDensity_unique h'.2 h1`.
-
-Establish `h0 : minfDensity (p + q) ≠ 0` using `ENNReal.inv_ne_zero.2 (ENNReal.pow_ne_top ENNReal.ofNat_ne_top)`. Establish `ht : minfDensity (p + q) ≠ ⊤` using `ENNReal.inv_ne_top.2 (pow_ne_zero _ two_ne_zero)`. Establish `hc : ((Measure.haarScalarFactor m' m : NNReal) : ENNReal) = 1` using `(ENNReal.mul_left_inj h0 ht).1 (h2.trans (one_mul _).symm)`. Rewrite using `[e, hc, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMinf_unique {p q : ℕ} {m m' : Measure (UpqT p q)} (h : Lev.IsMinf m) (h' : Lev.IsMinf m') : m' = m := by
   haveI := (GlobalTheory.UpqTopology.upq_lcsc p q).1
@@ -41,41 +39,35 @@ theorem isMinf_unique {p q : ℕ} {m m' : Measure (UpqT p q)} (h : Lev.IsMinf m)
   rw [e, hc, one_smul]
 
 /- English proof (translation)
-Establish `hτ : GlobalTheory.Mem.Vol.IsCMFam (tauE D)` using `GlobalTheory.Mem.Vol.isCMFam_host _ D.host _ D.eTau`. Take `⟨hcm, -⟩` from `GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND D.host.F D.host.E D.sp.cm`. Establish `hθ` using `GlobalTheory.Mem.VolEmb.existsUnique_infEmb D.host.F D.host.E D.sp.cm.sig hcm`. Use `choose θ hθ1 hθ2 using fun i => hθ (tauE D i)`. Establish `hA` using `fun i => GlobalTheory.Mem.SignatureFactor.exists_factor _ _ _ _ (hV (tauE D i))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose A hA1 using fun i => (hA i).2.1`. Take `⟨e1, he1⟩` from `GlobalTheory.Mem.InfGroup.real_points D.host.F D.host.E D.sp.cm.sig V.rank V.gram D.what₂.Tau (tauE D) θ (fun ρ => (V.sig (tauE D ρ)).1) (fun ρ => (V.sig (tauE D ρ)).2) A hcm hτ hθ1 (fun i => hV (tauE D i)) hA1`. Take `⟨e0, he0⟩` from `GlobalTheory.Mem.VolSplit.exists_adelic_split D.host.F D.host.E D.sp.cm.sig V.rank V.gram`. Take `⟨-, hsc, ht2⟩` from `GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary D.host.F D.host.E D.sp.cm.sig V.rank V.gram`. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.1`. Use `haveI := fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hinj` using `fun P Q => (GlobalTheory.UpqTopology.upq_lcsc P Q).2.2.2.2.2.injective`. Set `j : HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram →* GA D V` to `(e0.symm.toMulEquiv.toMonoidHom).comp (MonoidHom.inr _ _)`. Establish `hj : Continuous j` using `e0.symm.continuous.comp (Continuous.prodMk_right 1)`. Establish `hj0 : ∀ k, e0 (j k) = (1, k)` using `fun k => e0.apply_symm_apply _`. Establish `hfin : ∀ h : GA D V, Lev.finE V (j (e0 h).2) = Lev.finE V h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `h`. Establish `h1 : finHom V (j (e0 h).2) = finHom V h`. Use `Units.ext ?_` and prove the remaining obligations. Establish `a1` using `(he0 (j (e0 h).2)).1`. Establish `a2` using `(he0 h).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `a1` using `[hj0]`. Conclude with `a1.symm.trans a2`. Rewrite using `[Lev.finE_eq, Lev.finE_eq, h1]`. Establish `hinf : ∀ k, j k ∈ GfC V`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `(he0 (j k)).2`. Rewrite `a1` using `[hj0]`. Conclude with `Units.ext a1.symm`. Set `K'` to `(K.comap (Lev.finE V)).comap j`. Establish `hK : ∀ h : GA D V, (e0 h).2 ∈ K' ↔ Lev.finE V h ∈ K` using `fun h => by`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Rewrite using `[← hfin h]`. Both sides reduce to the same expression. Establish `hK'o : IsOpen (K' : Set (HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram))` using `hKo.preimage hj`. Establish `hK'c : IsCompact (K' : Set (HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram))`. Establish `h1` using `hKc.image (continuous_snd.comp e0.continuous)`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `k`. Prove the components needed by the constructor for the conclusion. Introduce `hk`. Conclude with `⟨j k, ⟨hinf k, hk⟩, congrArg Prod.snd (hj0 k)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨h, hh, rfl⟩`. Conclude with `(hK h).2 hh.2`. Set `e : GA D V ≃ₜ* (∀ i, UpqT (V.sig (tauE D i)).1 (V.sig (tauE D i)).2) × HA (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Af D.host.F) D.sp.cm.sig V.gram` to `e0.trans { e1.toMulEquiv.prodCongr (MulEquiv.refl _) with continuous_toFun := e1.continuous_toFun.prodMap continuous_id continuous_invFun := e1.continuous_invFun.prodMap continuous_id }`. Establish `hee : ∀ h, e h = (e1 (e0 h).1, (e0 h).2)` using `fun h => rfl`. Take `⟨μ, hμ, hμB⟩` from `GlobalTheory.Mem.VolExists.exists_haar_prod m e K' hK'o hK'c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨μ, hμ, ⟨θ, hθ1⟩, fun θ' hθ' => ?_⟩` and prove the remaining obligations. Take `rfl : θ' = θ` from `funext fun i => hθ2 i _ (hθ' i)`. Use `⟨⟨A, hA1⟩, fun A' hA' => ⟨⟨m, hg⟩, fun m' hm' B hB => ?_⟩⟩` and prove the remaining obligations. Take `rfl : m' = m` from `funext fun i => hu i _ (hm' i)`. Establish `hv : ∀ i, ∃ u : UpqT (V.sig (tauE D i)).1 (V.sig (tauE D i)).2, UpqT.mat u * A i = A' i`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Introduce `i`. Take `⟨C, h1, h2⟩` from `(hA i).2.2 _ (hA1 i)`. Take `⟨C', h3, h4⟩` from `(hA i).2.2 _ (hA' i)`. Conclude with `GlobalTheory.Mem.VolExists.exists_upq_mul _ _ C C' h1 h2 h3 h4 ((hA1 i).trans (hA' i).symm)`. Use `choose u hv using hv`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `hμB (fun i => (fun g => u i * g) ⁻¹' ((fun g => g * (u i)⁻¹) ⁻¹' B i)) (fun i => measurable_const_mul _ (measurable_mul_const _ (hB i)))`. Establish `hcj : ∀ i, m' i ((fun g => u i * g) ⁻¹' ((fun g => g * (u i)⁻¹) ⁻¹' B i)) = m' i (B i)`. Introduce `i`. Use `haveI := GlobalTheory.UpqHaarRight.isMulRightInvariant _ _ _ (hm i)`. Rewrite using `[measure_preimage_mul, measure_preimage_mul_right]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[Finset.prod_congr rfl (fun i _ => hcj i)]`. Rewrite using `[← key]`. Use `congr 1`. Use extensionality with `h`. Simplify using `only [Set.mem_setOf_eq, hee, Set.mem_preimage]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hK]`. Use `and_congr_right fun _ => forall_congr' fun i => ?_` and prove the remaining obligations. Establish `h1 : UpqT.mat (e1 (e0 h).1 i) * A i = A i * infMat D.sp.cm.sig V.gram (θ' i) h`. Rewrite using `[he1, (he0 h).2]`. Both sides reduce to the same expression.
-
-Establish `h2 : UpqT.mat (u i * e1 (e0 h).1 i * (u i)⁻¹) * A' i = A' i * infMat D.sp.cm.sig V.gram (θ' i) h`. Establish `h3 : UpqT.mat (u i)⁻¹ * A' i = A i`. Rewrite using `[← hv i, ← Matrix.mul_assoc, ← GlobalTheory.Mem.VolExists.mat_mul, inv_mul_cancel, GlobalTheory.Mem.VolExists.mat_one, Matrix.one_mul]`. Rewrite using `[GlobalTheory.Mem.VolExists.mat_mul, GlobalTheory.Mem.VolExists.mat_mul, Matrix.mul_assoc, h3, Matrix.mul_assoc, h1, ← Matrix.mul_assoc, hv i]`. Prove the components needed by the constructor for the conclusion.
-
-Introduce and unpack `⟨b, hb, hbe⟩`. Take `⟨C', h3, -⟩` from `(hA i).2.2 _ (hA' i)`. Establish `: b = u i * e1 (e0 h).1 i * (u i)⁻¹`. Apply `hinj` to reduce the goal to its premises. Establish `h5` using `congrArg (· * C') (hbe.trans h2.symm)`.
-
-Simplify `h5` using `only [Matrix.mul_assoc, h3, Matrix.mul_one]`. Conclude with `this ▸ hb`. Introduce `hb`. Conclude with `⟨_, hb, h2⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isMeasLevW (D : D7) (V : HSp D) (hV : V.SigOK) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D)))
     (hKo : IsOpen ((K.comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V)))
@@ -183,7 +175,7 @@ theorem exists_isMeasLevW (D : D7) (V : HSp D) (hV : V.SigOK) (K : Subgroup (GL 
     exact ⟨_, hb, h2⟩
 
 /- English proof (translation)
-Use `choose m hm using GlobalTheory.MinfMeasure.exists_isMinf`. Conclude with `exists_isMeasLevW D V hV _ (GlobalTheory.ParahoricCompact.isOpen_comap_lev V β L) (GlobalTheory.ParahoricCompact.isCompact_levG V β L) _ (fun _ => m _ _) (fun _ => (hm _ _).1) (fun _ => hm _ _) (fun _ _ h => isMinf_unique (hm _ _) h)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isMeasLev (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D))
     (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank) (hV : V.SigOK) :
@@ -194,7 +186,7 @@ theorem exists_isMeasLev (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D))
     (fun _ _ h => isMinf_unique (hm _ _) h)
 
 /- English proof (translation)
-Introduce `D V β _ L _ hV`. Take `⟨μ, hμ⟩` from `exists_isMeasLev D V β L hV`. Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_fundDom D V μ hμ.1`. Conclude with `⟨μ, 𝓕, hμ, h𝓕⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isMeasFD : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (L : Formalism.L2.DIV.LevDat D.host.E ℂ V.rank), IsFrame β Λ → V.SigOK → ∃ μ 𝓕, Lev.IsMeasFD V (lev D.sp.cm V.gram β L) μ 𝓕 := by
   intro D V β _ L _ hV

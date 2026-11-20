@@ -9,27 +9,23 @@ open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F _ _`. Take `⟨hcl, e, he⟩` from `M.borHomeo F`. Establish `hcont : Continuous fun a : IdeleGroup F => (ab a)⁻¹ ^ 2` using `(M.continuous_ab.inv₀ fun a => (M.ab_pos a).ne').pow 2`. Establish `hwm : Measurable (M.wt : IdeleGroup F → ℝ≥0∞)` using `M.measurable_wt`. Establish `hw0 : ∀ a : IdeleGroup F, M.wt a ≠ 0` using `fun a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 < (ab a)⁻¹ ^ 2` using `pow_pos (inv_pos.2 (M.ab_pos a)) 2`. Conclude with `(ENNReal.ofReal_pos.2 this).ne'`. Use `set ν : Measure (IdeleGroup F) := (ideleMeasure F).withDensity M.wt with hν`. Use `haveI : IsLocallyFiniteMeasure ν := IsLocallyFiniteMeasure.withDensity_ofReal hcont`. Use `haveI : ν.IsOpenPosMeasure := (withDensity_absolutelyContinuous' hwm.aemeasurable (ae_of_all _ hw0)).isOpenPosMeasure`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SFinite ν := by rw [hν]; infer_instance`. Use `set ρ : Measure (IdeleGroup F × A F) := ν.prod (adeleMeasure F) with hρ`. Establish `hint : ∀ f : G1 F → ℝ≥0∞, Measurable f → ∫⁻ s, f s ∂(ρ.map e) = ∫⁻ a : IdeleGroup F, ∫⁻ b, f (nU b * mD a) * M.wt a ∂(adeleMeasure F) ∂(ideleMeasure F)`. Introduce `f hf`. Establish `hc : Continuous fun p : IdeleGroup F × A F => nU p.2 * mD p.1` using `(M.continuous_nU.comp continuous_snd).mul (M.continuous_mD.comp continuous_fst)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfm : Measurable fun p : IdeleGroup F × A F => f (nU p.2 * mD p.1)` using `hf.comp hc.measurable`. Rewrite using `[show ∫⁻ s, f s ∂(ρ.map e) = ∫⁻ p, f (e p) ∂ρ from lintegral_map (f := fun s : M.Bor F => f s) (hf.comp measurable_subtype_coe) e.continuous.measurable]`. Simplify using `only [he]`. Rewrite using `[hρ, lintegral_prod _ hfm.aemeasurable, hν, lintegral_withDensity_eq_lintegral_mul _ hwm hfm.lintegral_prod_right']`. Use `lintegral_congr fun a => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : M.wt a ≠ ⊤` using `ENNReal.ofReal_ne_top`. Rewrite using `[Pi.mul_apply, lintegral_mul_const' _ _ hne, mul_comm]`. Use `⟨ρ.map e, ?_, hint⟩` and prove the remaining obligations. Use `haveI : IsFiniteMeasureOnCompacts (ρ.map e) := ⟨fun K hK => by`. Rewrite using `[e.measurableEmbedding.map_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((e.isCompact_preimage).2 hK).measure_lt_top⟩`. Use `haveI : (ρ.map e).IsOpenPosMeasure := e.continuous.isOpenPosMeasure_map e.surjective`. Use `haveI : (ρ.map e).IsMulLeftInvariant := ⟨fun g => by`. Use extensionality with `s hs`. Rewrite using `[Measure.map_apply (measurable_const_mul g) hs]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hS : MeasurableSet (Subtype.val '' s : Set (G1 F))` using `hcl.measurableSet.subtype_image hs`. Use `set f : G1 F → ℝ≥0∞ := (Subtype.val '' s : Set (G1 F)).indicator 1 with hfdef`. Establish `hf : Measurable f` using `measurable_one.indicator hS`. Establish `hval : ∀ x : M.Bor F, f x = s.indicator 1 x` using `fun x => by`. Distinguish the cases in `hx : x ∈ s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.indicator_of_mem hx, hfdef, Set.indicator_of_mem (Set.mem_image_of_mem _ hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, hfdef, Set.indicator_of_notMem]`. Introduce and unpack `⟨y, hy, hyx⟩`. Conclude with `hx (Subtype.ext hyx ▸ hy)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : (ρ.map e) s = ∫⁻ x, f x ∂(ρ.map e)`. Simplify using `only [hval]`. Rewrite using `[lintegral_indicator_one hs]`. Establish `h2 : (ρ.map e) ((fun x => g * x) ⁻¹' s) = ∫⁻ x, (fun y => f (g.1 * y)) x ∂(ρ.map e)`. Establish `hs' : MeasurableSet ((fun x => g * x) ⁻¹' s)` using `measurable_const_mul g hs`.
-
-Rewrite using `[← lintegral_indicator_one hs']`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Use `hval (g * x)` as an intermediate fact. Simplify `this.symm` using `[Set.indicator]`. Take `⟨p, rfl⟩` from `e.surjective g`.
-
-Rewrite using `[h1, h2, hint (fun y => f ((e p : G1 F) * y)) (hf.comp (measurable_const_mul _)), hint f hf]`. Simplify using `only [he]`. Conclude with `M.borLeft F f hf p.2 p.1⟩`. Conclude with `{}`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.M.borHaar :
     ∀ (F : Type) [Field F] [NumberField F], ∃ μS : Measure (M.Bor F), μS.IsHaarMeasure ∧ ∀ (f : G1 F → ℝ≥0∞), Measurable f → ∫⁻ s, f s ∂μS = ∫⁻ a : IdeleGroup F, ∫⁻ b, f (nU b * mD a) * M.wt a ∂(adeleMeasure F) ∂(ideleMeasure F) := by

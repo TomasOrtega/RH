@@ -17,14 +17,14 @@ private def mkC {K I : Cx (ZMod q)} {n : ℤ} (f : ∀ p, K.X p ⟶ I.X (p + n))
   Cochain.mk fun p r h => f p ≫ eqToHom (by rw [h])
 
 /- English proof (translation)
-Simplify using `[mkC]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mkC_v {K I : Cx (ZMod q)} {n : ℤ} (f : ∀ p, K.X p ⟶ I.X (p + n)) (p : ℤ) :
     (mkC f).v p (p + n) rfl = f p := by
   simp [mkC]
 
 /- English proof (translation)
-Use `Cochain.ext _ _ fun p r hpr => ?_` and prove the remaining obligations. Substitute `hpr` using the available equality. Conclude with `h p`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem coch_ext {K I : Cx (ZMod q)} {n : ℤ} {a b : Cochain K I n}
     (h : ∀ p, a.v p (p + n) rfl = b.v p (p + n) rfl) : a = b := by
@@ -42,7 +42,7 @@ private def asm {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M] {K 
     rw [RingHom.id_apply, Cochain.smul_v, mkC_v, mkC_v, map_smul]
 
 /- English proof (translation)
-The claim follows from `mkC_v (fun p => f p x) p`.
+A detailed English derivation is pending.
 -/
 private theorem asm_v {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M] {K I : Cx (ZMod q)} {n : ℤ}
     (f : ∀ p, M →ₗ[ULift.{1} (ZMod q)] (K.X p ⟶ I.X (p + n))) (x : M) (p : ℤ) :
@@ -50,7 +50,7 @@ private theorem asm_v {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) 
   mkC_v (fun p => f p x) p
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((Cochain.ofHom f).comp α (zero_add n)).v p (p + n) rfl = _`. Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem preL_v {K K' I : Cx (ZMod q)} (f : K' ⟶ K) (n p : ℤ) (α : Cochain K I n) :
     (preL f I n α).v p (p + n) rfl = f.f p ≫ α.v p (p + n) rfl := by
@@ -87,9 +87,9 @@ private def fanLim (C : B.Etale ⥤ Cx (ZMod q)) (I : Cx (ZMod q)) (n : ℤ) : I
       rfl)
 
 /- English proof (translation)
-Introduce `q B C I hC hI n`. Establish `hS` using `fun p : ℤ => hC p (I.X (p + n)) (hI _)`. Set `S : ℤ → SShv B q` to `fun p => ⟨HP (C ⋙ HomologicalComplex.eval _ _ p) (I.X (p + n)), (hS p).choose⟩`. Use `haveI : ∀ p, Injective (S p) := fun p => (hS p).choose_spec`. Set `G` to `sheafToPresheaf (EtTop B) (ModuleCat.{1} (ULift.{1} (ZMod q)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `e : G.obj (∏ᶜ S) ≅ TP C I n` to `PreservesProduct.iso G S ≪≫ (limit.isLimit _).conePointUniqueUpToIso (fanLim C I n)`. Establish `h : Presheaf.IsSheaf (EtTop B) (TP C I n)` using `(Presheaf.isSheaf_of_iso_iff e).1 (∏ᶜ S).cond`. Use `⟨h, ?_⟩` and prove the remaining obligations. Conclude with `Injective.of_iso ((fullyFaithfulSheafToPresheaf _ _).preimageIso (Y := ⟨TP C I n, h⟩) e) inferInstance`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.totalHomPresheaf_isSheaf_injective_of_homAcyclic :
     ∀ (q : ℕ) {B : Scheme.{0}} (C : B.Etale ⥤ Cx (ZMod q)) (I : Cx (ZMod q)), (∀ p : ℤ, Good (C ⋙ HomologicalComplex.eval _ _ p)) → (∀ n, Injective (I.X n)) → ∀ n : ℤ, ∃ h : Presheaf.IsSheaf (EtTop B) (TP C I n), Injective (⟨TP C I n, h⟩ : SShv B q) := by

@@ -14,7 +14,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Hodge
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SmoothDimTotal.topologicalKrullDim_eq_iSup_stalk]`. Conclude with `iSup_le fun x ↦ GroundTheory.Arith.SchemeCoh.ringKrullDim_stalk_le_of_smoothOfRelativeDimension g f x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem topologicalKrullDim_le_of_smooth {k : Type} [Field k] {X : Scheme.{0}} (f : X ⟶ Sp k) (g : ℕ)
     (hf : SmoothOfRelativeDimension g f) : topologicalKrullDim X ≤ g := by
@@ -22,7 +22,7 @@ theorem topologicalKrullDim_le_of_smooth {k : Type} [Field k] {X : Scheme.{0}} (
   exact iSup_le fun x ↦ GroundTheory.Arith.SchemeCoh.ringKrullDim_stalk_le_of_smoothOfRelativeDimension g f x
 
 /- English proof (translation)
-Use `GlobalTheory.subsingleton_coh_of_isProjOver (PositivityTheory.Xgn.AbelianSchemeSpreading.isProjOver_abelian k A hA) _ ?_` and prove the remaining obligations. Use `lt_of_le_of_lt ((topologicalKrullDim_subspace_le _ _).trans (topologicalKrullDim_le_of_smooth A.hom g hg)) ?_` and prove the remaining obligations. Conclude with `hn` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem subsingleton_coh_abelian (k : Type) [Field k] (A : Over (Sp k)) [GrpObj A] (g n : ℕ)
     (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) (hn : g < n) :
@@ -33,9 +33,9 @@ theorem subsingleton_coh_abelian (k : Type) [Field k] (A : Over (Sp k)) [GrpObj 
   exact_mod_cast hn
 
 /- English proof (translation)
-Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hm : (⟨x, hx⟩ : LinearMap.ker (dn F (n + 1))) ∈ (LinearMap.range (dn F n)).comap (LinearMap.ker (dn F (n + 1))).subtype` using `(Submodule.Quotient.mk_eq_zero _).1 (Subsingleton.elim _ _)`. Conclude with `hm`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `LinearMap.congr_fun hdd y`.
+A detailed English derivation is pending.
 -/
 theorem exact_of_subsingleton_Hs {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R)
     (n : ℕ) (hdd : dn F (n + 1) ∘ₗ dn F n = 0) (h : Subsingleton (Hs F n)) :
@@ -51,9 +51,9 @@ theorem exact_of_subsingleton_Hs {R : Type} [CommRing R] {C : Type} [Category.{0
     exact LinearMap.congr_fun hdd y
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hg hR P _ _ S n hn`. Use `letI := hR.toField`. Establish `hsep : IsSeparated A.hom`. Use `hA.proper` as an intermediate fact. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `(hCmp R A.left A.hom hsep P S).2 n`. Establish `hs : Subsingleton (GlobalTheory.coh (GlobalTheory.structureModule A.left) (n + 1))` using `subsingleton_coh_abelian R A g (n + 1) hA hg (Nat.lt_succ_of_le hn)`. Conclude with `exact_of_subsingleton_Hs _ n ((hCx R _ (OSys A.hom S)).1 n) e.toEquiv.subsingleton`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem vanSt (hCx : CxSt) (hCmp : CmpSt) : VanSt := by
   intro R _ A _ g hA hg hR P _ _ S n hn

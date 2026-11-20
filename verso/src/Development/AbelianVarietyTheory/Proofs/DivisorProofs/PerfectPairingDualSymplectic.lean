@@ -8,15 +8,13 @@ open Module
 namespace GlobalTheory.AnnIso
 
 /- English proof (translation)
-Introduce `R _ M _ _ N _ _ e g hfin hproj hrk b hb φ hφ S ⟨S', hc⟩ hS hiso u v hu hv`. Set `β : M ≃ₗ[R] Dual R M` to `LinearEquiv.ofBijective b.flip hb.bijective_right`. Set `γ : M ≃ₗ[R] Dual R N` to `β.trans e.symm.dualMap`. Establish `hγ : ∀ (u w : M), γ u (e w) = b w u`. Introduce `u w`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[γ, β]`. Establish `hφγ : φ = b.compl₁₂ γ.symm.toLinearMap γ.symm.toLinearMap`. Use extensionality with `x y`. Take `⟨u', rfl⟩` from `γ.surjective x`. Take `⟨v', rfl⟩` from `γ.surjective y`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `[hφ _ _ u' v' (hγ u') (hγ v')]`. Use `haveI : φ.IsPerfPair := hφγ ▸ inferInstance`. Establish `hpS : (S.projectionOnto S' hc) ∘ₗ S.subtype = LinearMap.id` using `LinearMap.ext fun x ↦ Submodule.projectionOnto_apply_left hc x`. Use `haveI : Module.Projective R S := Module.Projective.of_split _ _ hpS`. Use `haveI : Module.Finite R S := Module.Finite.of_surjective _ (Submodule.projectionOnto_surjective hc)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `GlobalTheory.PolExistsRing.mem_of_annihilates_dual φ S S' hc g hrk hS (fun x hx y hy ↦ hiso x y ((Submodule.mem_dualAnnihilator _).1 hx) ((Submodule.mem_dualAnnihilator _).1 hy)) (γ v) (fun h hh ↦ by`. Take `⟨v', rfl⟩` from `γ.surjective h`. Rewrite using `[hφ _ _ v v' (hγ v) (hγ v'), ← hγ v' v]`. Conclude with `(Submodule.mem_dualAnnihilator _).1 hh _ hv)`. Rewrite using `[← hγ v u]`.
-
-Conclude with `(Submodule.mem_dualAnnihilator _).1 key _ hu`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairing_vanishes_of_annihilator_isotropic : ∀ (R : Type) [CommRing R] (M : Type) [AddCommGroup M] [Module R M]
     (N : Type 1) [AddCommGroup N] [Module R N] (e : M ≃ₗ[R] N) (g : ℕ),

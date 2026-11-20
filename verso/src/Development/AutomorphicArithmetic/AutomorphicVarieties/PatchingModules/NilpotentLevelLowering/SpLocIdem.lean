@@ -14,21 +14,19 @@ open scoped TensorProduct
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use `set J := Module.annihilator B M ⊔ (maximalIdeal Λ ^ k).map (algebraMap Λ B) with hJ`. Establish `hmax : ∀ p : Ideal B, p.IsPrime → J ≤ p → p.IsMaximal`. Introduce `p hp hJp`. Use `haveI : Algebra.IsIntegral Λ (B ⧸ p) := by`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Take `⟨f, hf, hf0⟩` from `LinearMap.exists_monic_and_aeval_eq_zero Λ (Algebra.lsmul Λ Λ M b)`. Establish `hmem : Polynomial.aeval b f ∈ Module.annihilator B M`. Rewrite using `[Module.mem_annihilator]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `m`. Establish `hm` using `congrArg (fun φ : Module.End Λ M => φ m) hf0`. Simplify `hm` using `[Polynomial.aeval_algHom_apply]`. Use `⟨f, hf, ?_⟩` and prove the remaining obligations. Establish `hq` using `Polynomial.aeval_algHom_apply (Ideal.Quotient.mkₐ Λ p) b f`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hq` using `[Ideal.Quotient.mkₐ_eq_mk]`. Rewrite using `[← Polynomial.aeval_def, hq, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hJp (le_sup_left (a := Module.annihilator B M) hmem)`. Establish `hle : maximalIdeal Λ ≤ (⊥ : Ideal (B ⧸ p)).comap (algebraMap Λ (B ⧸ p))`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, Ideal.mem_bot, IsScalarTower.algebraMap_apply Λ B (B ⧸ p), Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Apply `hp.mem_of_pow_mem k` to reduce the goal to its premises. Rewrite using `[← map_pow]`. Conclude with `hJp (le_sup_right (a := Module.annihilator B M) (Ideal.mem_map_of_mem _ (Ideal.pow_mem_pow hx k)))`. Establish `hcomap : ((⊥ : Ideal (B ⧸ p)).comap (algebraMap Λ (B ⧸ p))).IsMaximal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : (⊥ : Ideal (B ⧸ p)).comap (algebraMap Λ (B ⧸ p)) ≠ ⊤` using `(Ideal.comap_isPrime (algebraMap Λ (B ⧸ p)) (⊥ : Ideal (B ⧸ p))).ne_top`. Rewrite using `[← (IsLocalRing.maximalIdeal.isMaximal Λ).eq_of_le hne hle]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal Λ`. Establish `hbot : (⊥ : Ideal (B ⧸ p)).IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap _ hcomap`. Establish `hK` using `Ideal.comap_isMaximal_of_surjective (Ideal.Quotient.mk p) Ideal.Quotient.mk_surjective (K := ⊥)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `hK` using `[← RingHom.ker_eq_comap_bot, Ideal.mk_ker]`. Then use the resulting hypothesis. Establish `hrad : maximalIdeal B ≤ J.radical`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hJp, hp⟩`.
-
-Conclude with `le_of_eq (IsLocalRing.eq_maximalIdeal (hmax p hp hJp)).symm`. Conclude with `Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)`.
+A detailed English derivation is pending.
 -/
 private theorem spLoc_pow {Λ B M : Type} [CommRing Λ] [IsLocalRing Λ] [CommRing B] [IsLocalRing B]
     [IsNoetherianRing B] [Algebra Λ B] [AddCommGroup M] [Module B M] [Module Λ M] [IsScalarTower Λ B M]
@@ -79,11 +77,11 @@ private theorem spLoc_pow {Λ B M : Type} [CommRing Λ] [IsLocalRing Λ] [CommRi
   exact Ideal.exists_pow_le_of_le_radical_of_fg hrad (IsNoetherian.noetherian _)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `spLoc_pow (Λ := Λ) (B := B) (M := M) k`. Use `⟨s, (Submodule.smul_mono_left hs).trans ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.sup_smul]`. Use `sup_le ?_ le_rfl` and prove the remaining obligations. Rewrite using `[Submodule.smul_le]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `r hr x hx`. Use `clear hx`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.smul_tmul', TensorProduct.smul_tmul, Module.mem_annihilator.1 hr m, TensorProduct.tmul_zero]`. Conclude with `zero_mem _`. Consider the case `add x y hx hy`. Rewrite using `[smul_add]`. Conclude with `add_mem hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spLoc_top {Λ B M : Type} (A : Type) [CommRing Λ] [IsLocalRing Λ] [CommRing B] [IsLocalRing B]
     [IsNoetherianRing B] [Algebra Λ B] [AddCommGroup M] [Module B M] [Module Λ M] [IsScalarTower Λ B M]
@@ -108,13 +106,13 @@ private theorem spLoc_top {Λ B M : Type} (A : Type) [CommRing Λ] [IsLocalRing 
     exact add_mem hx hy
 
 /- English proof (translation)
-Establish `key : ∀ {a b : A}, IsIdempotentElem a → IsIdempotentElem b → (∀ n : Ideal A, n.IsMaximal → a ∉ n → b ∉ n) → a * (1 - b) = 0`. Introduce `a b ha hb hab`. Establish `hx : IsIdempotentElem (a * (1 - b))` using `ha.mul hb.one_sub`. Establish `hmem : ∀ n : Ideal A, n.IsMaximal → a * (1 - b) ∈ n`. Introduce `n hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `han : a ∈ n`. Conclude with `n.mul_mem_right _ han`. Conclude with `n.mul_mem_left _ ((GlobalTheory.one_sub_mem_iff_notMem_of_isIdempotentElem hb n).2 (hab n hn han))`. Establish `hu : IsUnit (1 - a * (1 - b))`. Assume the negation of the conclusion as `hu`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal (Ideal.span {1 - a * (1 - b)}) (by rwa [Ne, Ideal.span_singleton_eq_top])`. Establish `h1 : 1 - a * (1 - b) ∈ m` using `hle (Ideal.subset_span rfl)`. Establish `h2` using `hmem m hm`. Conclude with `hm.ne_top ((Ideal.eq_top_iff_one m).2 (by simpa using m.add_mem h1 h2))`. Establish `hz : (1 - a * (1 - b)) * (a * (1 - b)) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sub_mul, one_mul, hx.eq, sub_self]`. Conclude with `(hu.mul_right_eq_zero).1 hz`. Establish `h1` using `key he he' (fun n hn => (h n hn).1)`. Establish `h2` using `key he' he (fun n hn => (h n hn).2)`. Take the linear combination `h1 - h2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem spLoc_idem {A : Type} [CommRing A] {e e' : A} (he : IsIdempotentElem e)
     (he' : IsIdempotentElem e') (h : ∀ n : Ideal A, n.IsMaximal → (e ∉ n ↔ e' ∉ n)) : e = e' := by
@@ -143,9 +141,9 @@ private theorem spLoc_idem {A : Type} [CommRing A] {e e' : A} (he : IsIdempotent
   linear_combination h1 - h2
 
 /- English proof (translation)
-Establish `hC : ∀ r : R, F (MvPowerSeries.C r) = algebraMap R L r` using `fun r => F.commutes r`. Establish `hle : spIdeal P ut ≤ RingHom.ker F`. Rewrite using `[spIdeal, Ideal.span_le]`. Introduce and unpack `z ⟨j, k, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(F : MvPowerSeries (Fin q × Fin n) R →+* L) _ = 0`. Establish `hcomp : (F : MvPowerSeries (Fin q × Fin n) R →+* L).comp MvPowerSeries.C = algebraMap R L` using `RingHom.ext hC`. Rewrite using `[← Polynomial.coeff_map, Polynomial.map_sub, Polynomial.map_prod, Polynomial.map_map, hcomp, ← ha j]`. Simplify using `[hC, hX]`. Conclude with `⟨Ideal.Quotient.liftₐ (spIdeal P ut) F (fun z hz => hle hz), fun z => rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem spLoc_desc {R L : Type} [CommRing R] [CommRing L] [Algebra R L] {q n : ℕ}
     (P : Fin q → Polynomial R) (ut : Fin q → Fin n → R) (a : Fin q → Fin n → L)
@@ -167,7 +165,7 @@ private theorem spLoc_desc {R L : Type} [CommRing R] [CommRing L] [Algebra R L] 
   exact ⟨Ideal.Quotient.liftₐ (spIdeal P ut) F (fun z hz => hle hz), fun z => rfl⟩
 
 /- English proof (translation)
-Establish `h` using `congrArg (Polynomial.map (ι : MSplitAlg P n →+* L)) (MSplitAlg.prod_root P n j)`. Rewrite `h` using `[Polynomial.map_map, AlgHom.comp_algebraMap]`. Rewrite using `[← h, Polynomial.map_prod]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem spLoc_map {R L : Type} [CommRing R] [CommRing L] [Algebra R L] {q n : ℕ}
     (P : Fin q → Polynomial R) (ι : MSplitAlg P n →ₐ[R] L) (j : Fin q) :
@@ -178,15 +176,15 @@ private theorem spLoc_map {R L : Type} [CommRing R] [CommRing L] [Algebra R L] {
   simp
 
 /- English proof (translation)
-Set `S : Subalgebra R (MSplitAlg P n)` to `(⊥ : Subalgebra R (MSplitAlg P n ⧸ m)).comap (Ideal.Quotient.mkₐ R m)`. Establish `hS : ∀ y, y ∈ S ↔ ∃ r : R, y - algebraMap R _ r ∈ m`. Introduce `y`. Simplify using `only [S, Subalgebra.mem_comap, Algebra.mem_bot, Set.mem_range, Ideal.Quotient.mkₐ_eq_mk]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨r, hr⟩`. Conclude with `⟨r, Ideal.Quotient.eq.1 (by rw [Ideal.Quotient.mk_algebraMap, hr])⟩`. Introduce and unpack `⟨r, hr⟩`. Conclude with `⟨r, by rw [← Ideal.Quotient.mk_algebraMap, Ideal.Quotient.eq.2 hr]⟩`. Establish `hroot : ∀ j i, MSplitAlg.root P n j i ∈ S` using `fun j i => (hS _).2 ⟨ut j i, h j i⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Set `a : Fin q → Fin n → S` to `fun j i => ⟨_, hroot j i⟩`. Establish `ha : ∀ j, ∏ i, (Polynomial.X - Polynomial.C (a j i)) = (P j).map (algebraMap R S)`. Introduce `j`. Apply `Polynomial.map_injective (S.val : S →+* MSplitAlg P n) Subtype.val_injective` to reduce the goal to its premises. Rewrite using `[Polynomial.map_map, AlgHom.comp_algebraMap, Polynomial.map_prod, ← MSplitAlg.prod_root P n j]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[a]`. Establish `hid : S.val.comp (MSplitAlg.lift P n a ha) = AlgHom.id R _` using `MSplitAlg.hom_ext P n (fun j i => by simp [MSplitAlg.lift_root, a])`. Establish `hx : x ∈ S`. Establish `hx'` using `congrArg (fun f : MSplitAlg P n →ₐ[R] MSplitAlg P n => f x) hid`. Simplify using `only [AlgHom.comp_apply, AlgHom.id_apply] at hx'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hx']`. Conclude with `(MSplitAlg.lift P n a ha x).2`. Conclude with `(hS x).1 hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spLoc_res {R : Type} [CommRing R] {q n : ℕ}
     (P : Fin q → Polynomial R) (ut : Fin q → Fin n → R) (m : Ideal (MSplitAlg P n))
@@ -220,11 +218,11 @@ private theorem spLoc_res {R : Type} [CommRing R] {q n : ℕ}
   exact (hS x).1 hx
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨r, hr⟩` from `spLoc_res P ut (m ⊓ m') (fun j i => ⟨h j i, h' j i⟩) x`. Establish `hrm : algebraMap R _ r ∈ m`. Establish `h1` using `m.sub_mem hx hr.1`. Simplify using `using h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hrR : r ∈ maximalIdeal R`. Assume the negation of the conclusion as `hr'`. Establish `hu : IsUnit r`. Rewrite `hr'` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, not_not]`. Then use the resulting hypothesis. Conclude with `hm (Ideal.eq_top_of_isUnit_mem m hrm (hu.map _))`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h2` using `m'.add_mem hr.2 (hR r hrR)`. Simplify using `using h2`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem spLoc_le {R : Type} [CommRing R] [IsLocalRing R] {q n : ℕ}
     (P : Fin q → Polynomial R) (ut : Fin q → Fin n → R) (m m' : Ideal (MSplitAlg P n)) (hm : m ≠ ⊤)
@@ -245,7 +243,7 @@ private theorem spLoc_le {R : Type} [CommRing R] [IsLocalRing R] {q n : ℕ}
   simpa using h2
 
 /- English proof (translation)
-Use `{ complete := inferInstance, isLocalHom := ?_, res_surj := fun x => ⟨x, by simp⟩ }` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_self]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spLoc_co (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [IsAdicComplete (maximalIdeal R) R] : IsCO R R := by
@@ -254,47 +252,41 @@ private theorem spLoc_co (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRi
   infer_instance
 
 /- English proof (translation)
-Set `t : Fin q × Fin n → MSplitAlg P n` to `fun p => MSplitAlg.root P n p.1 p.2 - algebraMap R _ (ut p.1 p.2)`. Use `haveI hRco : IsCO R R := spLoc_co R`. Use `haveI hMco : IsCO R (MvPowerSeries (Fin q × Fin n) R) := co_mvps R R (Fin q × Fin n)`. Establish `hmk : Function.Surjective (Sp.mk P ut)` using `Ideal.Quotient.mkₐ_surjective R _`. Establish `hψt : ∀ p, ψ (t p) = Sp.mk P ut (MvPowerSeries.X p)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `p`. Simplify using `only [t, map_sub, AlgHom.commutes, hψ]`. Conclude with `(Core.spRoots R q n P ut p.1).2 p.2`. Establish `key : ∀ (N : Ideal (MSplitAlg P n)) [N.IsMaximal], (∀ p, t p ∈ N) → ∃ F' : Sp P ut →ₐ[R] Localization.AtPrime N, ∀ x, F' (ψ x) = algebraMap (MSplitAlg P n) (Localization.AtPrime N) x`. Introduce `N hN htN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hsurj, hfin, hloc, hcompl, -, -, -⟩` from `local_factor R (MSplitAlg P n) N`. Establish `hmemL : ∀ y ∈ N, algebraMap (MSplitAlg P n) (Localization.AtPrime N) y ∈ maximalIdeal (Localization.AtPrime N)`. Introduce `y hy`. Establish `h` using `Localization.AtPrime.comap_maximalIdeal (I := N)`. Rewrite `hy` using `[← h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hy`. Use `haveI : IsNoetherian (Localization.AtPrime N) (Localization.AtPrime N) := isNoetherian_of_tower R inferInstance`. Use `haveI hLco : IsCO R (Localization.AtPrime N) := by`. Use `{ complete := hcompl, isLocalHom := hloc, res_surj := ?_ }` and prove the remaining obligations. Introduce `x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `hsurj x`. Take `⟨r, hr⟩` from `spLoc_res P ut N (fun j i => htN (j, i)) y`. Use `⟨r, ?_⟩` and prove the remaining obligations. Establish `h` using `hmemL _ hr`. Rewrite `h` using `[map_sub, ← IsScalarTower.algebraMap_apply]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨F, ⟨hFC, hFX⟩, -⟩` from `co_ev R R (Localization.AtPrime N) (Fin q × Fin n) (Algebra.ofId R _) (fun p => algebraMap _ _ (t p)) (fun p => hmemL _ (htN p))`. Take `⟨F', hF'⟩` from `spLoc_desc P ut (fun j i => algebraMap (MSplitAlg P n) (Localization.AtPrime N) (MSplitAlg.root P n j i)) (fun j => spLoc_map P (IsScalarTower.toAlgHom R (MSplitAlg P n) (Localization.AtPrime N)) j) F (fun p => by`. Rewrite using `[hFX]`. Simplify using `only [t, map_sub]`. Rewrite using `[← IsScalarTower.algebraMap_apply])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `⟨F', fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `MSplitAlg.hom_ext P n (f := F'.comp ψ) (g := IsScalarTower.toAlgHom R (MSplitAlg P n) (Localization.AtPrime N)) (fun j i => by`. Establish `hu : Sp.u P ut j i = algebraMap R _ (ut j i) + Sp.mk P ut (MvPowerSeries.X (j, i))`. Rewrite using `[← (Core.spRoots R q n P ut j).2 i]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[AlgHom.comp_apply, hψ, hu, map_add, AlgHom.commutes, hF', hFX]`. Simplify using `only [t, map_sub, IsScalarTower.toAlgHom_apply]`. Rewrite using `[← IsScalarTower.algebraMap_apply]`. Use the proof step `ring)`. Simplify using `using DFunLike.congr_fun h x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Distinguish the cases in `hnt : Nontrivial (Sp P ut)`. Use `haveI := hnt haveI hSco : IsCO R (Sp P ut) := co_quot R (MvPowerSeries (Fin q × Fin n) R) (Sp P ut) (Sp.mk P ut) hmk haveI : IsLocalHom (algebraMap R (Sp P ut)) := hSco.isLocalHom`. Establish `hXmax : ∀ p, Sp.mk P ut (MvPowerSeries.X p) ∈ maximalIdeal (Sp P ut)`. Introduce `p`. Rewrite using `[← res_eq_zero_iff R, res_map, res_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, MvPowerSeries.isUnit_iff_constantCoeff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Set `N : Ideal (MSplitAlg P n)` to `(maximalIdeal (Sp P ut)).comap ψ`. Use `haveI hNprime : N.IsPrime := Ideal.comap_isPrime _ _`. Establish `hNR : N.comap (algebraMap R (MSplitAlg P n)) = maximalIdeal R`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression.
 
-Rewrite using `[Ideal.mem_comap, Ideal.mem_comap, AlgHom.commutes, ← Ideal.mem_comap, IsLocalRing.maximalIdeal_comap]`. Use `haveI hNmax : N.IsMaximal := Ideal.isMaximal_of_isIntegral_of_isMaximal_comap N (by rw [hNR]; exact IsLocalRing.maximalIdeal.isMaximal R)`. Establish `htN : ∀ p, t p ∈ N` using `fun p => by`. Rewrite using `[Ideal.mem_comap, hψt]`. Conclude with `hXmax p`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨F', hF'⟩` from `key N htN`. Take `⟨hsurj, -, -, -, -, ⟨e, he, hen, hker⟩, huniv⟩` from `local_factor R (MSplitAlg P n) N`. Take `⟨g, hg⟩` from `huniv (Sp P ut) (ψ : MSplitAlg P n →+* Sp P ut) rfl`. Establish `hgx : ∀ x, g (algebraMap _ (Localization.AtPrime N) x) = ψ x` using `fun x => by`. Simplify using `using DFunLike.congr_fun hg x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `G : MvPowerSeries (Fin q × Fin n) R →ₐ[R] Sp P ut` to `⟨(g.comp (F' : Sp P ut →+* Localization.AtPrime N)).comp (Sp.mk P ut : MvPowerSeries (Fin q × Fin n) R →+* Sp P ut), fun r => by`. Express the relevant statement in the definitionally equal form `g (F' (Sp.mk P ut (algebraMap R _ r))) = algebraMap R _ r`. Rewrite using `[AlgHom.commutes, AlgHom.commutes, IsScalarTower.algebraMap_apply R (MSplitAlg P n) (Localization.AtPrime N), hgx, AlgHom.commutes]⟩`. Take `⟨F0, -, huniq⟩` from `co_ev R R (Sp P ut) (Fin q × Fin n) (Algebra.ofId R (Sp P ut)) (fun p => Sp.mk P ut (MvPowerSeries.X p)) hXmax`. Establish `h1` using `huniq G ⟨fun x => G.commutes x, fun p => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `g (F' (Sp.mk P ut (MvPowerSeries.X p))) = _`. Rewrite using `[← hψt, hF', hgx, hψt]⟩`. Establish `h2` using `huniq (Sp.mk P ut) ⟨fun x => (Sp.mk P ut).commutes x, fun p => rfl⟩`. Establish `hG : G = Sp.mk P ut` using `h1.trans h2.symm`. Establish `hsurjψ : Function.Surjective ψ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Take `⟨z, rfl⟩` from `hmk y`. Take `⟨w, hw⟩` from `hsurj (F' (Sp.mk P ut z))`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[← hgx, hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `DFunLike.congr_fun hG z`. Establish `hkerψ : RingHom.ker ψ = RingHom.ker (algebraMap (MSplitAlg P n) (Localization.AtPrime N))`. Use extensionality with `x`. Simplify using `only [RingHom.mem_ker]`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `hx`. Rewrite using `[← hF', hx, map_zero]`. Introduce `hx`. Rewrite using `[← hgx, hx, map_zero]`. Use `⟨hsurjψ, e, he, hkerψ.trans hker, fun m hm => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hen m hm]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `fun p => htN p`. Introduce `hmt`.
-
-Establish `hle` using `spLoc_le P ut m N hm.ne_top (fun j i => hmt (j, i)) (fun j i => htN (j, i)) (fun r hr => by rw [← Ideal.mem_comap, hNR]; exact hr)`. Conclude with `hm.eq_of_le hNmax.ne_top hle`. Rewrite `hnt` using `[not_nontrivial_iff_subsingleton]`. Use `⟨fun y => ⟨0, Subsingleton.elim _ _⟩, 0, IsIdempotentElem.zero, ?_, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[sub_zero, Ideal.span_singleton_one, eq_top_iff]`.
-
-Introduce `x _`. Rewrite using `[RingHom.mem_ker]`. Conclude with `Subsingleton.elim _ _`. Simplify using `only [Submodule.zero_mem, not_true_eq_false, false_iff]`. Introduce `hmt`.
-
-Use `haveI := hm`. Take `⟨F', -⟩` from `key m hmt`. Establish `h01 : (1 : Localization.AtPrime m) = 0`. Rewrite using `[← map_one F', ← map_zero F', Subsingleton.elim (1 : Sp P ut) 0]`. Conclude with `one_ne_zero h01`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem spLoc_alg (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     [IsAdicComplete (maximalIdeal R) R] (q n : ℕ) (P : Fin q → Polynomial R) (ut : Fin q → Fin n → R)
@@ -435,19 +427,17 @@ private theorem spLoc_alg (R : Type) [CommRing R] [IsLocalRing R] [IsNoetherianR
       exact one_ne_zero h01
 
 /- English proof (translation)
-Introduce `Λ _ _ _ _ B M _ _ _ _ _ _ _ _ _ _ _ q n P ut hmon hdeg`. Take `⟨b, -⟩` from `mSplitAlg_basis (Fin q) n B P hmon hdeg`. Use `haveI : Module.Finite B (MSplitAlg P n) := Module.Finite.of_basis b`. Set `π : MSplitAlg P n →ₐ[B] Sp P ut` to `MSplitAlg.lift P n (Sp.u P ut) (fun j => (Core.spRoots B q n P ut j).1)`. Establish `hπ : ∀ j i, π (MSplitAlg.root P n j i) = Sp.u P ut j i` using `fun j i => MSplitAlg.lift_root _ _ _ _ j i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hsurj, e, he, hker, hem⟩` from `spLoc_alg B q n P ut π hπ`. Use `⟨π, hπ, hsurj, e, he, hker, ?_⟩` and prove the remaining obligations. Set `t : Fin q × Fin n → MSplitAlg P n` to `fun p => MSplitAlg.root P n p.1 p.2 - algebraMap B _ (ut p.1 p.2)`. Use `haveI : Module.Finite B M := Module.Finite.of_restrictScalars_finite Λ B M`. Take `⟨e', he', hem', htop⟩` from `topNil_eq_idem B (MSplitAlg P n) (Fin q × Fin n) t`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hee : e = e'` using `spLoc_idem he he' (fun m hm => (hem m hm).trans (hem' m hm).symm)`. Substitute `hee` using the available equality. Establish `hT : ∀ p (r : ℕ) (x : MSplitAlg P n ⊗[B] M), ((Algebra.lsmul B B (MSplitAlg P n ⊗[B] M) (t p)) ^ r) x = t p ^ r • x`. Introduce `p r x`. Rewrite using `[← map_pow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `z`. Rewrite using `[← htop (MSplitAlg P n ⊗[B] M) z, mem_topNil_iff_exists]`. Prove the components needed by the constructor for the conclusion. Introduce `h j i k`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `spLoc_top (Λ := Λ) (B := B) (M := M) (MSplitAlg P n) k`. Take `⟨r, hr⟩` from `h (j, i) s`. Rewrite `hr` using `[hT]`. Conclude with `⟨r, hs hr⟩`. Introduce `h p j`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, hd⟩` from `h p.1 p.2 j`. Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[hT]`. Establish `hle : (maximalIdeal Λ ^ j).map (algebraMap Λ B) ≤ maximalIdeal B ^ j`. Rewrite using `[Ideal.map_pow]`.
-
-Conclude with `Ideal.pow_right_mono (IsLocalRing.map_maximalIdeal_le _) j`. Conclude with `Submodule.smul_mono_left hle hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Lev.spLoc :
     ∀ (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] [IsAdicComplete (maximalIdeal Λ) Λ] (B M : Type) [CommRing B] [IsLocalRing B] [IsNoetherianRing B] [IsAdicComplete (maximalIdeal B) B] [Algebra Λ B] [IsLocalHom (algebraMap Λ B)] [AddCommGroup M] [Module B M] [Module Λ M] [IsScalarTower Λ B M] [Module.Finite Λ M] (q n : ℕ) (P : Fin q → Polynomial B) (ut : Fin q → Fin n → B), (∀ j, (P j).Monic) → (∀ j, (P j).natDegree = n) → ∃ π : MSplitAlg P n →ₐ[B] Sp P ut, (∀ j i, π (MSplitAlg.root P n j i) = Sp.u P ut j i) ∧ Function.Surjective π ∧ ∃ e : MSplitAlg P n, IsIdempotentElem e ∧ RingHom.ker π = Ideal.span {1 - e} ∧ ∀ z : MSplitAlg P n ⊗[B] M, e • z = z ↔ ∀ j i (k : ℕ), ∃ d : ℕ, (MSplitAlg.root P n j i - algebraMap B _ (ut j i)) ^ d • z ∈ ((maximalIdeal Λ ^ k).map (algebraMap Λ B) • ⊤ : Submodule B (MSplitAlg P n ⊗[B] M)) := by

@@ -7,7 +7,7 @@ open Formalism.L2.DIV GlobalTheory.FinGL GlobalTheory.Parabolic GlobalTheory.Ind
 namespace GlobalTheory.Proof.BlockConj
 
 /- English proof (translation)
-Establish `h1 : Set.range (blockEnum b c h) = (block b c : Set (Fin r))` using `Finset.range_orderEmbOfFin (block b c) h`. Rewrite using `[h1]`. Simplify using `[block]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem range_blockEnum {r d : ℕ} (b : Fin r → ℕ) (c : ℕ) (h : (block b c).card = d) (k : Fin r) :
     k ∈ Set.range (blockEnum b c h) ↔ b k = c := by
@@ -17,17 +17,15 @@ theorem range_blockEnum {r d : ℕ} (b : Fin r → ℕ) (c : ℕ) (h : (block b 
   simp [block]
 
 /- English proof (translation)
-Use `⟨?_, fun d h h' => ?_⟩` and prove the remaining obligations. Use `Finset.card_equiv w fun k => ?_` and prove the remaining obligations. Simplify using `[block, hw k i]`. Use `set e := blockEnum b (b i) h with he set e' := blockEnum b' (b' (w i)) h' with he'`. Establish `hr : ∀ k, k ∈ Set.range e ↔ w k ∈ Set.range e'` using `fun k => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he, he', range_blockEnum, range_blockEnum, hw k i]`. Establish `hex : ∀ a, ∃ a', e' a' = w (e a)` using `fun a => (hr (e a)).1 ⟨a, rfl⟩`. Use `choose p hp using hex`. Establish `hinj : Function.Injective p` using `fun a a' haa => by`. Apply `e.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `w.injective` to reduce the goal to its premises. Rewrite using `[← hp, ← hp, haa]`. Set `π₀ : Equiv.Perm (Fin d)` to `Equiv.ofBijective p (Finite.injective_iff_bijective.1 hinj)`. Establish `hπ : ∀ a, e' (π₀ a) = w (e a)` using `hp`. Use `⟨permGL F π₀, fun g => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `eq_mul_inv_iff_mul_eq.1 ?_` and prove the remaining obligations. Use extensionality with `k l`. Take `⟨k, rfl⟩` from `w.surjective k`. Take `⟨l, rfl⟩` from `w.surjective l`. Rewrite using `[conj_permGL_apply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `show extendMat e' ((permGL F π₀ * g * (permGL F π₀)⁻¹ : GL (Fin d) F) : Matrix (Fin d) (Fin d) F) (w k) (w l) = extendMat e (g : Matrix (Fin d) (Fin d) F) k l`. Distinguish the cases in `hkl : k ∈ Set.range e ∧ l ∈ Set.range e`. Take `⟨⟨a, rfl⟩, ⟨a', rfl⟩⟩` from `hkl`. Rewrite using `[← hπ, ← hπ, extendMat_in, extendMat_in, conj_permGL_apply]`. Rewrite `hkl` using `[not_and_or]`.
-
-Rewrite using `[extendMat_out _ _ _ _ hkl, extendMat_out _ _ _ _ (by rwa [← hr, ← hr])]`. Simplify using `[Matrix.one_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blockHom_conj_permGL (F : Type) [Field F] (r : ℕ) (b b' : Fin r → ℕ) (w : Equiv.Perm (Fin r))
     (hw : ∀ i j : Fin r, b i = b j ↔ b' (w i) = b' (w j)) (i : Fin r) :

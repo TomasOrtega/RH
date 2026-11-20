@@ -8,9 +8,9 @@ open Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.MainNotions.N
 open UpperTheory.Gal UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Establish `h1 : (P : Matrix (Fin d) (Fin d) L) * ((P⁻¹ : GL (Fin d) L) : Matrix (Fin d) (Fin d) L) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `h2 : ((P⁻¹ : GL (Fin d) L) : Matrix (Fin d) (Fin d) L) * (P : Matrix (Fin d) (Fin d) L) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Set `e : U ≃ₗ[L] U` to `LinearEquiv.ofLinear (Matrix.toLin b b (P : Matrix (Fin d) (Fin d) L)) (Matrix.toLin b b ((P⁻¹ : GL (Fin d) L) : Matrix (Fin d) (Fin d) L)) (by rw [← Matrix.toLin_mul b b b, h1, Matrix.toLin_one]) (by rw [← Matrix.toLin_mul b b b, h2, Matrix.toLin_one])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `⟨b.map e, fun j => ?_⟩` and prove the remaining obligations. Establish `h : e (b j) = ∑ i, (P : Matrix (Fin d) (Fin d) L) i j • b i` using `Matrix.toLin_self b b _ j`. Simplify using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem conj_basis {L : Type} [Field L] {M : Type*} [AddCommGroup M] [Module L M]
     (U : Submodule L M) {d : ℕ} (b : Module.Basis (Fin d) L U) (P : GL (Fin d) L) :
@@ -30,9 +30,9 @@ private theorem conj_basis {L : Type} [Field L] {M : Type*} [AddCommGroup M] [Mo
   simp [h]
 
 /- English proof (translation)
-Establish `key : ∀ (B : Matrix (Fin d) (Fin d) L) (j : Fin d), ∑ i, B i j • y i = ∑ t, (P * B) t j • x t`. Introduce `B j`. Simplify using `only [hy, Finset.smul_sum, Matrix.mul_apply, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun i _ => by rw [mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[key, show P * (Q * A * P) = A * P by`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hPQ, Matrix.one_mul], hy j]`. Simplify using `only [map_sum, map_smul, hx, Finset.smul_sum, Matrix.mul_apply, Finset.sum_smul, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun i _ => by rw [mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_mat {L : Type} [Field L] {M : Type*} [AddCommGroup M] [Module L M]
     (f : M →ₗ[L] M) {d : ℕ} (x y : Fin d → M) (A P Q : Matrix (Fin d) (Fin d) L) (hPQ : P * Q = 1)
@@ -51,9 +51,9 @@ private theorem conj_mat {L : Type} [Field L] {M : Type*} [AddCommGroup M] [Modu
   exact Finset.sum_congr rfl fun t _ => Finset.sum_congr rfl fun i _ => by rw [mul_comm]
 
 /- English proof (translation)
-Introduce `l _ k _ H Ω _ _ L _ _ θ d ρ P ⟨b, hb⟩`. Take `⟨b', hb'⟩` from `conj_basis _ b P`. Use `⟨b', fun σ j => ?_⟩` and prove the remaining obligations. Establish `h1 : (P : Matrix (Fin d) (Fin d) L) * ((P⁻¹ : GL (Fin d) L) : Matrix (Fin d) (Fin d) L) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cj_apply, Units.val_mul, Units.val_mul]`. Conclude with `conj_mat (galV l H Ω L σ) (fun i => (b i).1) (fun i => (b' i).1) _ _ _ h1 (hb σ) hb' j`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.matConj_of :
     MatConj := by

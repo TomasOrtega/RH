@@ -10,11 +10,11 @@ open HeckeCharacterZeroLocus.SiegelWeilU GlobalTheory.CompanionTheory.SW NumberF
 open scoped TensorProduct ENNReal NNReal Matrix
 
 /- English proof (translation)
-Establish `key : ∀ x y : Fin m → A, hform σ J x y = (fun i => σ (x i)) ⬝ᵥ (J *ᵥ y)`. Introduce `x y`. Simplify using `[hform, dotProduct, Matrix.mulVec, Finset.mul_sum, mul_assoc]`. Establish `hs : (fun i => σ ((g *ᵥ x) i)) = (g.map σ) *ᵥ (fun i => σ (x i))`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul]`. Rewrite using `[key, key, hs]`. Use `conv_lhs => rw [dotProduct_comm, Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, dotProduct_comm]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `cT σ g *ᵥ (J *ᵥ (g *ᵥ y)) = J *ᵥ y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hg]`.
+A detailed English derivation is pending.
 -/
 theorem hform_mulVec {A : Type} [CommRing A] {m : ℕ} (σ : A →+* A) (J g : Matrix (Fin m) (Fin m) A)
     (hg : cT σ g * J * g = J) (x y : Fin m → A) :
@@ -37,7 +37,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E]
   (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R]
 
 /- English proof (translation)
-Establish `hv : Continuous fun g : GL (Fin M) (R ⊗[F] E) => (g : Matrix (Fin M) (Fin M) (R ⊗[F] E))` using `Units.continuous_val`. Establish `hc : Continuous fun g : GL (Fin M) (R ⊗[F] E) => cT (sigR R σ) (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR R J * (g : Matrix (Fin M) (Fin M) _)`. Use `((Continuous.matrix_transpose (Continuous.matrix_map hv hs)).matrix_mul continuous_const).matrix_mul hv` and prove the remaining obligations. Conclude with `isClosed_eq hc continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClosed_HR [IsTopologicalRing (R ⊗[F] E)] [T2Space (R ⊗[F] E)] (σ : E →ₐ[F] E) (hs : Continuous (sigR R σ)) {M : ℕ}
     (J : Matrix (Fin M) (Fin M) E) :
@@ -52,19 +52,11 @@ theorem isClosed_HR [IsTopologicalRing (R ⊗[F] E)] [T2Space (R ⊗[F] E)] (σ 
 end
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J _ R _ _ _ _ _ _ _`. Take `⟨h1, h2, h3, h4, hs, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hCM R`. Use `haveI := h1`. Use `haveI := h2`. Use `haveI := h3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := h4`. Use `haveI : LocallyCompactSpace (Matrix (Fin M) (Fin M) (R ⊗[F] E)) := inferInstanceAs (LocallyCompactSpace (Fin M → Fin M → R ⊗[F] E))`. Use `haveI : SecondCountableTopology (Matrix (Fin M) (Fin M) (R ⊗[F] E)) := inferInstanceAs (SecondCountableTopology (Fin M → Fin M → R ⊗[F] E))`. Use `haveI : T2Space (Matrix (Fin M) (Fin M) (R ⊗[F] E)) := inferInstanceAs (T2Space (Fin M → Fin M → R ⊗[F] E))`. Use `haveI : LocallyCompactSpace (Matrix (Fin M) (Fin M) (R ⊗[F] E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isOpenEmbedding.locallyCompactSpace`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI : SecondCountableTopology (Matrix (Fin M) (Fin M) (R ⊗[F] E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.secondCountableTopology`. Use `haveI : LocallyCompactSpace (GL (Fin M) (R ⊗[F] E)) := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (GL (Fin M) (R ⊗[F] E)) := Units.isEmbedding_embedProduct.isInducing.secondCountableTopology`. Establish `hcl` using `isClosed_HR R σ hs J`. Use `haveI g1 : IsTopologicalGroup (HR R σ J) := inferInstance`.
-
-Use `haveI g2 : LocallyCompactSpace (HR R σ J) := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI g3 : SecondCountableTopology (HR R σ J) := Topology.IsInducing.subtypeVal.secondCountableTopology`. Use `haveI g4 : T2Space (HR R σ J) := inferInstance`. Use `⟨g1, g2, g3, g4, ⟨rfl⟩, fun n => ⟨?_, ?_, ?_, ?_⟩⟩` and prove the remaining obligations. Establish `hm : Continuous fun p : HA R σ J × (Fin n → Fin M → R ⊗[F] E) => ((HA.mat R σ J p.1 : GL (Fin M) (R ⊗[F] E)) : Matrix (Fin M) (Fin M) (R ⊗[F] E))` using `Units.continuous_val.comp (continuous_subtype_val.comp continuous_fst)`.
-
-Conclude with `continuous_pi fun a => hm.matrix_mulVec ((continuous_apply a).comp continuous_snd)`. Introduce `X`. Use function extensionality and compare the values at `a`. Conclude with `Matrix.one_mulVec (X a)`. Introduce `g h X`.
-
-Use function extensionality and compare the values at `a`. Express the relevant statement in the definitionally equal form `((HA.mat R σ J g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * (HA.mat R σ J h : Matrix (Fin M) (Fin M) _)) *ᵥ X a = _`. Conclude with `(Matrix.mulVec_mulVec _ _ _).symm`. Introduce `h X`. Use function extensionality and compare the values at `a b`.
-
-Conclude with `hform_mulVec (sigR R σ) (JR R J) _ h.2 (X a) (X b)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem topH_props : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [IsTopologicalRing R] [LocallyCompactSpace R] [SecondCountableTopology R] [T2Space R], IsTopologicalGroup (HA R σ J) ∧ LocallyCompactSpace (HA R σ J) ∧ SecondCountableTopology (HA R σ J) ∧ T2Space (HA R σ J) ∧ BorelSpace (HA R σ J) ∧ ∀ n : ℕ, (Continuous fun p : HA R σ J × (Fin n → Fin M → R ⊗[F] E) => actW R σ J p.1 p.2) ∧ (∀ X : Fin n → Fin M → R ⊗[F] E, actW R σ J 1 X = X) ∧ (∀ (g h : HA R σ J) (X : Fin n → Fin M → R ⊗[F] E), actW R σ J (g * h) X = actW R σ J g (actW R σ J h X)) ∧ ∀ (h : HA R σ J) (X : Fin n → Fin M → R ⊗[F] E), gramR R σ J (actW R σ J h X) = gramR R σ J X := by
   intro F E _ _ _ _ _ σ hCM M J _ R _ _ _ _ _ _ _

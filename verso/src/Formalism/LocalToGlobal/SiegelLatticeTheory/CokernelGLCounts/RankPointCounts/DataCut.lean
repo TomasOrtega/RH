@@ -125,7 +125,7 @@ def LocalModelS (D : Formalism.BasicNotions.D7) : Prop := LMAt D ClS
 def LocalModelT (D : Formalism.BasicNotions.D7) : Prop := LMAt D ClT
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ S δ M hA u u' hC`. Conclude with `⟨hK Wp Wq S δ M hA u u' hC, hS Wp Wq S δ M hA u u' hC, hT Wp Wq S δ M hA u u' hC, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem localModelAt_of {D : Formalism.BasicNotions.D7} (hK : LocalModelK D) (hS : LocalModelS D) (hT : LocalModelT D) :
     LocalModelAt D := by
@@ -143,9 +143,9 @@ def badSet (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D
       ∃ a, modPt δ T T' p w = some a ∧ (M p).InGLR a)}
 
 /- English proof (translation)
-Simplify using `only [badSet, Set.mem_setOf_eq, not_not] at hw hw'`. Take `⟨_, hψ, a, ha, haG⟩` from `hw`. Take `⟨_, _, b, hb, hbG⟩` from `hw'`. Unfold `locK`. Rewrite using `[ha, hb]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only`. Rewrite using `[hK _ _ (M p) (hA p).1 n a b]`. Conclude with `Formalism.FourierDecayAlt.P.zero_kernel_all_ones _ (M p).R (M p).psiR hψ _ _ (by rw [Formalism.MainNotions.LocalModelPeriodLattices.tr_sum, Formalism.MainNotions.LocalModelPeriodLattices.tr_sum]) (Formalism.MainNotions.LocalModelPeriodLattices.inGLR_tr a haG) (Formalism.MainNotio …`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locK_eq_one (hK : Formalism.MainNotions.LocalModelPeriodLattices.KKAll) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) {T T' n : ℕ}
@@ -163,9 +163,9 @@ theorem locK_eq_one (hK : Formalism.MainNotions.LocalModelPeriodLattices.KKAll) 
     (Formalism.MainNotions.LocalModelPeriodLattices.inGLR_tr a haG) (Formalism.MainNotions.LocalModelPeriodLattices.inGLR_tr b hbG)
 
 /- English proof (translation)
-Establish `h` using `(hA p).2.2.2.2.2`. Rewrite `h` using `[hs]`. Establish `hs' : (D.s.atP p).split = none`. Consider the cases of `h' : (D.s.atP p).split with`. Consider the case `none => rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `some sg => rw [h'] at h`. Conclude with `h.elim`. Unfold `dfac`. Rewrite using `[hs']`.
+Treat this case separately. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dfac_eq_one {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) {T T' : ℕ} {p : PlF D}
@@ -186,44 +186,40 @@ section DensA
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-The claim follows from `Nat.cast_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem qP_nonneg (p : PlF D) : 0 ≤ qP p := Nat.cast_nonneg _
 
 /- English proof (translation)
-Introduce `hk δ M hA L u u' hT F0 what₂ hrows ϖ hϖ`. Use `set s := D.R.k - 2 * D.R.rS - 2 with hs`. Establish `hs2 : 2 ≤ s` using `by omega`. Use `set a : PlF D → ℝ := fun p => (qP p ^ s)⁻¹ with ha`. Establish `ha0 : ∀ p, 0 ≤ a p` using `fun p => inv_nonneg.2 (pow_nonneg (qP_nonneg p) _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsum : ∀ S : Finset (PlF D), ∑ p ∈ S, a p ≤ 3 * (D.R.f : ℝ) * ((2 : ℝ) ^ s)⁻¹`. Introduce `S`. Conclude with `Formalism.FourierDecayAlt.P.DensitySumsAndDomination.densSum (PlF D) S qP Loc.resChar D.R.f s hs2 (fun p _ => ⟨(D.s.atP p).ellPrime.out, hP.1 p⟩) (fun m => hP.2 m _ (fun p hp => (Finset.mem_filter.1 hp).2))`. Establish `haS : Summable a` using `summable_of_sum_le ha0 hsum`. Establish `hαb` using `hα hk u u'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hal0 : ∀ p, 0 < alpD u u' p` using `fun p => lt_of_lt_of_le (Real.exp_pos _) (hαb p).1`. Establish `hlogα : Summable fun p => Real.log (alpD u u' p)`. Use `Summable.of_norm_bounded (g := fun p => 2 * a p) (haS.mul_left 2) (fun p => ?_)` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs, abs_le]`. Establish `h1` using `Real.log_le_log (Real.exp_pos _) (hαb p).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `Real.log_le_log (hal0 p) (hαb p).2`. Rewrite `h1`, `h2` using `[Real.log_exp]`. Establish `ha' : a p = (qP p ^ (D.R.k - 2 * D.R.rS - 2))⁻¹` using `rfl`. Apply the tactic sequence `constructor <;> linarith`. Establish `hMα : Multipliable (alpD u u')` using `Real.multipliable_of_summable_log hal0 hlogα`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hαpos : 0 < ∏' p, alpD u u' p`. Rewrite using `[← Real.rexp_tsum_eq_tprod hal0 hlogα]`. Conclude with `Real.exp_pos _`. Establish `key : ∀ Z : CntLocal.MatZ D, (∃ Λ ∈ what₂, (CntLocal.EZ (CntLocal.Tn u') F0 Λ Z).Nonempty) → Multipliable (fun p => CntLocal.densP L δ ϖ (CntLocal.Tn u) (CntLocal.Tn u') Z p / alpD u u' p) ∧ Multipliable (CntLocal.densP L δ ϖ (CntLocal.Tn u) (CntLocal.Tn u') Z) ∧ ∏' p, CntLocal.d …`. Introduce `Z hZ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hb, hfin⟩` from `hL hk δ M hA L u u' hT F0 what₂ hrows ϖ hϖ Z hZ`. Use `set d := CntLocal.densP L δ ϖ (CntLocal.Tn u) (CntLocal.Tn u') Z with hd`. Use `set q : PlF D → ℝ := fun p => d p / alpD u u' p with hq`. Establish `hq0 : ∀ p, 0 < q p` using `fun p => div_pos (hb p).1 (hal0 p)`. Establish `hlog_le : ∀ p, Real.log (q p) ≤ 4 * a p` using `fun p => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Real.log_le_iff_le_exp (hq0 p)]`. Conclude with `(hb p).2`. Establish `hlogS : Summable fun p => Real.log (q p)`. Use `Summable.of_norm_bounded_eventually (g := fun p => 5 * a p) (haS.mul_left 5) ?_` and prove the remaining obligations. Use `Filter.mem_of_superset hfin.compl_mem_cofinite ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `p hp`. Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq, not_lt] at hp`. Use `show ‖Real.log (q p)‖ ≤ 5 * a p`. Rewrite using `[Real.norm_eq_abs, abs_le]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `Real.log_le_log (Real.exp_pos _) hp` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`. Establish `ha' : a p = (qP p ^ (D.R.k - 2 * D.R.rS - 2))⁻¹` using `rfl`. Establish `hq' : q p = d p / alpD u u' p` using `rfl`. Rewrite using `[hq']`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear relations using `[hlog_le p, ha0 p]`. Establish `hMq : Multipliable q` using `Real.multipliable_of_summable_log hq0 hlogS`. Establish `hdq : d = fun p => q p * alpD u u' p`. Use function extensionality and compare the values at `p`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hq]`. Rewrite using `[div_mul_cancel₀ _ (hal0 p).ne']`. Establish `hMd : Multipliable d` using `by rw [hdq]; exact hMq.mul hMα`. Use `⟨hMq, hMd, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hdq]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hMq.tprod_mul hMα`. Rewrite using `[← Real.rexp_tsum_eq_tprod hq0 hlogS]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Rewrite using `[← tsum_mul_left]`. Conclude with `hlogS.tsum_le_tsum hlog_le (haS.mul_left 4)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hbdd : BddAbove (densSet L δ ϖ u u' F0 what₂)`. Use `⟨Real.exp (4 * ∑' p, a p) * ∏' p, alpD u u' p, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨Z, hZ, rfl⟩`. Take `⟨-, -, he, hle⟩` from `key Z hZ`. Rewrite using `[he]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_le_mul_of_nonneg_right hle hαpos.le`. Use `⟨fun Z hZ => (key Z hZ).2.1, hbdd, hMα, hαpos, hk, PlF D, qP, Loc.resChar, fun p => ⟨(D.s.atP p).ellPrime.out, hP.1 p⟩, hP.2, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Distinguish the cases in `hne : (densSet L δ ϖ u u' F0 what₂).Nonempty`. Establish `hx' : x * ∏' p, alpD u u' p < supDens L δ ϖ u u' F0 what₂` using `(lt_div_iff₀ hαpos).1 hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, ⟨Z, hZ, rfl⟩, hxd⟩` from `exists_lt_of_lt_csSup hne hx'`. Take `⟨hMq, -, he, -⟩` from `key Z hZ`. Take `⟨hb, -⟩` from `hL hk δ M hA L u u' hT F0 what₂ hrows ϖ hϖ Z hZ`. Rewrite `hxd` using `[he]`. Establish `hxq : x < ∏' p, CntLocal.densP L δ ϖ (CntLocal.Tn u) (CntLocal.Tn u') Z p / alpD u u' p` using `lt_of_mul_lt_mul_right hxd hαpos.le`.
-
-Take `⟨S, hS⟩` from `(hMq.hasProd.eventually (lt_mem_nhds hxq)).exists`. Use `⟨S, le_of_lt (lt_of_lt_of_le hS ?_)⟩` and prove the remaining obligations. Conclude with `Finset.prod_le_prod (fun p _ => (div_pos (hb p).1 (hal0 p)).le) (fun p _ => (hb p).2)`. Rewrite `hne` using `[Set.not_nonempty_iff_eq_empty]`. Establish `h0 : supDens L δ ϖ u u' F0 what₂ = 0` using `by simp [supDens, hne]`.
-
-Rewrite `hx` using `[h0, zero_div]`. Use `⟨∅, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.prod_empty]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem densInputAt_of (hL : DensLocBound D) (hα : AlpBound D) (hP : PlacesOver D) : DensInputAt D := by
   intro hk δ M hA L u u' hT F0 what₂ hrows ϖ hϖ
@@ -334,7 +330,7 @@ instance countable_V : Countable (VS D).V :=
   (VS D).frame.equivFun.injective.countable
 
 /- English proof (translation)
-Use `Function.Injective.countable (f := fun F : Lat.LFlag (VS D) r T => (F.fl.e, F.fl.z, F.zt)) ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨e, z, _, _, _, _⟩, zt⟩ ⟨⟨e', z', _, _, _, _⟩, zt'⟩ h`. Simplify using `only [Prod.mk.injEq] at h`. Take `⟨rfl, rfl, rfl⟩` from `h`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem countable_LFlag {r : ℕ} {T : D.host.E} : Countable (Lat.LFlag (VS D) r T) := by
   refine Function.Injective.countable (f := fun F : Lat.LFlag (VS D) r T => (F.fl.e, F.fl.z, F.zt)) ?_
@@ -344,9 +340,9 @@ theorem countable_LFlag {r : ℕ} {T : D.host.E} : Countable (Lat.LFlag (VS D) r
   rfl
 
 /- English proof (translation)
-Establish `: ∀ Λ : Submodule (𝓞 D.host.E) (VS D).V, Countable (TermDef.TermsOf D u' F0 Λ)` using `fun Λ => by`. Use `countable_LFlag (D := D) (r := D.R.rS) (T := ((Lat.Tu D u' : ℕ) : D.host.E))` as an intermediate fact. Unfold `TermDef.TermsOf TermDef.TermQ`. Use `infer_instance`. Use `Function.Injective.countable (f := fun t : TermDef.Term D u u' F0 what₂ => (⟨⟨t.lam, t.mem⟩, t.cls⟩ : Σ Λ : {Λ // Λ ∈ what₂}, TermDef.TermsOf D u' F0 Λ.1)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨l, m, c⟩ ⟨l', m', c'⟩ h`. Simplify using `only [Sigma.mk.injEq, Subtype.mk.injEq] at h`. Take `⟨rfl, h2⟩` from `h`. Consider the cases of `eq_of_heq h2`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem countable_Term (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Lat.Tu D u : ℕ) : D.host.E))
     (what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)) : Countable (TermDef.Term D u u' F0 what₂) := by
@@ -364,9 +360,9 @@ theorem countable_Term (u u' : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Lat.T
   rfl
 
 /- English proof (translation)
-Introduce `u u' F0 what₂ hrows`. Establish `e` using `Corank.scalarEquivT_of (Formalism.L2.SG.Pf.term_equivalence_iff D u u') (Corank.scalarEquiv_of_G hG u u') (hR u u') F0 what₂ hrows`. Use `letI s : Setoid {t : TermDef.Term D u u' F0 what₂ // t.G ≠ 0} := ⟨_, e⟩`. Use `countable_Term u u' F0 what₂` as an intermediate fact. Take `⟨enc, henc⟩` from `exists_injective_nat (Quotient s)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨fun t => if h : t.G ≠ 0 then enc (Quotient.mk s ⟨t, h⟩) else 0, ?_⟩` and prove the remaining obligations. Introduce `t t' ht ht'`. Simplify using `only [dif_pos ht.2, dif_pos ht'.2, henc.eq_iff, Quotient.eq]`. Conclude with `Iff.rfl`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem rowLabelExists_of (hG : Corank.ScalarEquivG) (hR : ∀ u u' : D.what₂.Word, Corank.ScalarRepFree D u u') :
     RowLabelExists D := by
@@ -388,7 +384,7 @@ section RowsA
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Establish `h` using `Matrix.posSemidef_conjTranspose_mul_self (Matrix.of fun (_ : Unit) (j : ι) => star (u j))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x y`. Simplify using `[Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem posSemidef_outer_product {ι : Type*} [Fintype ι] (u : ι → ℂ) :
     (Matrix.of fun x y => u x * star (u y)).PosSemidef := by
@@ -398,17 +394,17 @@ private theorem posSemidef_outer_product {ι : Type*} [Fintype ι] (u : ι → �
   simp [Matrix.mul_apply, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Establish `hF : ((Y : Set α)).Finite` using `Y.finite_toSet`. Set `F : Finset ℕ` to `(hF.biUnion fun x _ => hfin x).toFinset`. Establish `hmem : ∀ x ∈ Y, ∀ ρ, ρ ∉ F → c ρ x = 0`. Introduce `x hx ρ hρ`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hρ ((Set.Finite.mem_toFinset _).2 (Set.mem_iUnion₂.2 ⟨x, hx, h⟩))`. Establish `hts : ∀ x ∈ Y, ∀ y ∈ Y, ∑' ρ, c ρ x * (starRingEnd ℂ) (c ρ y) = ∑ ρ ∈ F, c ρ x * (starRingEnd ℂ) (c ρ y)`. Introduce `x hx y hy`. Conclude with `tsum_eq_sum (fun ρ hρ => by simp [hmem x hx ρ hρ])`. Establish `hR : ∀ x ∈ Y, ∀ y ∈ Y, ∑ ρ ∈ R, c ρ x * (starRingEnd ℂ) (c ρ y) = ∑ ρ ∈ F ∩ R, c ρ x * (starRingEnd ℂ) (c ρ y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx y hy`. Rewrite using `[Finset.inter_comm]`. Use `(Finset.sum_subset Finset.inter_subset_left ?_).symm` and prove the remaining obligations. Introduce `ρ hρR hρ`. Establish `: ρ ∉ F` using `fun h => hρ (Finset.mem_inter.2 ⟨hρR, h⟩)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hmem x hx ρ this]`. Simplify using `only [TB.PSDOn] at hD ⊢`. Establish `hS : (∑ ρ ∈ F \ R, Matrix.of fun x y : Y => c ρ x * star (c ρ y)).PosSemidef` using `Finset.sum_induction _ Matrix.PosSemidef (fun A B hA hB => hA.add hB) Matrix.PosSemidef.zero (fun ρ _ => posSemidef_outer_product (fun x : Y => c ρ x))`. Use `hD.add hS using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x y`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Matrix.add_apply, Matrix.of_apply, Matrix.sum_apply, starRingEnd_apply]`. Establish `h1` using `hts x x.2 y y.2`. Establish `h2` using `hR x x.2 y y.2`. Simplify using `only [starRingEnd_apply] at h1 h2`. Establish `e : F \ (F ∩ R) = F \ R`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `ρ`. Simplify using `only [Finset.mem_sdiff, Finset.mem_inter]`. The claim follows by propositional logic. Rewrite using `[h1, h2, ← Finset.sum_sdiff (Finset.inter_subset_left : F ∩ R ⊆ F), e]`. Expand and normalize the polynomial expressions, which then agree.
+The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem psdOn_of_full {α : Type} (Y : Finset α) (K : α → α → ℂ) (c : ℕ → α → ℂ)
     (hfin : ∀ x, {ρ | c ρ x ≠ 0}.Finite)
@@ -455,7 +451,7 @@ end RowsA
 section LMT
 
 /- English proof (translation)
-The claim follows from `| b, [], c => by simp [signAux] | b, (s, t) :: rest, c => by simp only [List.cons_append, signAux, signFlip_append r (b + s) rest c, List.map_cons, List.sum_cons, add_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem signFlip_append {K : Type} [Ring K] (r : ℕ) : ∀ (b : ℕ) (x : TB.Pt K) (c : ℕ × K),
     signAux r b (x ++ [c]) =
@@ -465,15 +461,13 @@ theorem signFlip_append {K : Type} [Ring K] (r : ℕ) : ∀ (b : ℕ) (x : TB.Pt
     simp only [List.cons_append, signAux, signFlip_append r (b + s) rest c, List.map_cons, List.sum_cons, add_assoc]
 
 /- English proof (translation)
-Unfold `ptOfList at ha`. Use `split_ifs at ha with hx`. Consider the cases of `ha`. Use `set w := (Formalism.L2.S.ptEquiv D.host.E (D.R.rS + 1)).symm ⟨signPt D.R.rS (TB.join h 1 t), hx⟩ with hw`. Establish `hl : (h.map Prod.fst).sum = D.R.rS` using `hh`.
+Replace the relevant objects with their definitions. Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : w.1 = (signPt D.R.rS h).map Prod.swap ++ [(t, 1)]` using `by show (signPt D.R.rS (h ++ [(1, t)])).map Prod.swap = (signPt D.R.rS h).map Prod.swap ++ [(t, 1)]`. Establish `e : D.R.rS + 1 - (1 + (h.map Prod.fst).sum + 1 - 1) = 0` using `by rw [hl]; omega`. Rewrite using `[signPt, signFlip_append, e]`. Simplify using `[signPt]`. Establish `hs : (((signPt D.R.rS h).map Prod.swap).map Prod.snd).sum = D.R.rS`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[List.map_map, show (Prod.snd ∘ Prod.swap : ℕ × D.host.E → ℕ) = Prod.fst from funext fun _ => rfl, signPt, sign_list_fst]`. Conclude with `hl`. Establish `hdet : Dmin w (D.R.rS + 1) ≠ 0`. Rewrite using `[Formalism.L2.SG.Pf.dmin_top]`. Conclude with `Formalism.MainNotions.BridgeLemma.ptMat_det_ne w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : Dmin w D.R.rS ≠ 0`. Introduce `h0`. Apply `hdet` to reduce the goal to its premises. Rewrite using `[Formalism.L2.SG.Pf.dmin_snoc w _ t hb hs, h0, zero_mul]`. Unfold `kind`.
-
-Rewrite using `[if_neg h0, Formalism.L2.SG.Pf.zeta_snoc w h0 _ t hb hs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kind_ptOfList_join {D : Formalism.BasicNotions.D7} (h : TB.Pt D.host.E) (t : D.host.E) (hh : TB.level h = D.R.rS)
     (a : Point D.host.E (D.R.rS + 1)) (ha : ptOfList (D.R.rS + 1) (TB.join h 1 t) = some a) :
@@ -503,13 +497,13 @@ theorem kind_ptOfList_join {D : Formalism.BasicNotions.D7} (h : TB.Pt D.host.E) 
   rw [if_neg h0, Formalism.L2.SG.Pf.zeta_snoc w h0 _ t hb hs]
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ S δ M hA u u' hC`. Introduce `h h' t t' hh hh' _ _ htt`. Establish `hr : (dOf S δ M u u').r = D.R.rS` using `hC.1`. Rewrite `hh`, `hh'`, the goal using `[hr]`. Use `show KrOf δ M (D.mem u).A.T (D.mem u').A.T (D.R.rS + 1) (TB.join h 1 t) (TB.join h' 1 t') = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `KrOf`. Rewrite using `[if_neg (Nat.succ_ne_zero _), if_neg (lt_irrefl _)]`. Break down `ha : ptOfList (D.R.rS + 1) (TB.join h 1 t) with _ | a` into its components or cases. Both sides reduce to the same expression. Break down `hb : ptOfList (D.R.rS + 1) (TB.join h' 1 t') with _ | b` into its components or cases.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `e1` using `kind_ptOfList_join h t hh a ha`. Establish `e2` using `kind_ptOfList_join h' t' hh' b hb`. Use `show Kglob δ M (D.mem u).A.T (D.mem u').A.T (D.R.rS + 1) a b / _ = 0`. Rewrite using `[Kglob, dif_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `KtopG`. Rewrite using `[e1, e2, if_neg (by simpa using htt)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem localModelT_holds (D : Formalism.BasicNotions.D7) : LocalModelT D := by
   intro Wp Wq _ _ _ _ S δ M hA u u' hC
@@ -538,11 +532,11 @@ section RowsFin
 variable {D : Formalism.BasicNotions.D7}
 
 /- English proof (translation)
-Introduce `δ M hA u u' _ F0 what₂ hrows nc κ _ x`. Break down `hx : ptOfList (D.R.rS + 1) x with _ | w` into its components or cases. Use `Set.finite_empty.subset ?_` and prove the remaining obligations. Introduce `ρ hρ`. Apply `hρ` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[rowVec, hx]`. Establish `hfin` using `TermDef.term_atPt_finite (hT u u') hsig F0 what₂ hrows w`. Use `(hfin.image κ).subset ?_` and prove the remaining obligations. Introduce `ρ hρ`. Assume the negation of the conclusion as `hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hρ` to reduce the goal to its premises. Establish `he : IsEmpty {t : TermDef.Term D u u' F0 what₂ // Elig t ∧ κ t = ρ ∧ t.atPt w}` using `⟨fun t => hc ⟨t.1, t.2.2.2, t.2.2.1⟩⟩`. Simplify using `only [rowVec, hx]`. Rewrite using `[tsum_empty, zero_div]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowsFinAt_of (hT : ∀ u u' : D.what₂.Word, TermDef.TermsAtFinite D u u') (hsig : (VS D).SigOK) :
     RowsFinAt D := by
@@ -570,9 +564,9 @@ def ResCardD (D : Formalism.BasicNotions.D7) : Prop :=
   ∀ p : PlF D, Nat.card (IsLocalRing.ResidueField 𝒪[(D.s.atP p).Fp]) = p.asIdeal.absNorm
 
 /- English proof (translation)
-Unfold `Loc.resChar`. Rewrite using `[ringChar.eq_iff]`. Use `⟨fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : ((x : ℕ) : 𝓞 F ⧸ p.asIdeal) = Ideal.Quotient.mk p.asIdeal (x : 𝓞 F)` using `(map_natCast _ x).symm`. Rewrite using `[h1, Ideal.Quotient.eq_zero_iff_mem]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((x : 𝓞 F) ∈ p.asIdeal) ↔ (((x : ℕ) : ℤ) ∈ p.asIdeal.under ℤ)`. Rewrite using `[Ideal.under_def, Ideal.mem_comap, map_natCast]`. Rewrite using `[h2, ← Formalism.HermitianLattices.Ext.L3.IdealNormInequalities.span_resChar, Ideal.mem_span_singleton, Int.natCast_dvd_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem locResChar_eq {F : Type} [Field F] [NumberField F] (p : IsDedekindDomain.HeightOneSpectrum (𝓞 F)) :
     Loc.resChar p = Formalism.HermitianLattices.Ext.L3.IdealNormInequalities.resChar p.asIdeal := by
@@ -586,11 +580,11 @@ theorem locResChar_eq {F : Type} [Field F] [NumberField F] (p : IsDedekindDomain
   rw [h2, ← Formalism.HermitianLattices.Ext.L3.IdealNormInequalities.span_resChar, Ideal.mem_span_singleton, Int.natCast_dvd_natCast]
 
 /- English proof (translation)
-Use `⟨fun p => ?_, fun m S hS => ?_⟩` and prove the remaining obligations. Unfold `qP`. Rewrite using `[hR p, locResChar_eq]`. Conclude with `Formalism.HermitianLattices.Ext.L3.IdealNormInequalities.resChar_le_absNorm p.isMaximal` after adjusting the coercions. Set `g : PlF D → {P : Ideal (𝓞 D.host.F) // P.IsMaximal}` to `fun p => ⟨p.asIdeal, p.isMaximal⟩`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hg : Function.Injective g` using `fun a b h => IsDedekindDomain.HeightOneSpectrum.ext (congrArg Subtype.val h)`. Establish `h1` using `Formalism.HermitianLattices.Ext.L3.IdealNormInequalities.card_filter_resChar_le (K := D.host.F) (S.image g) m`. Establish `hf : (S.image g).filter (fun P => Formalism.HermitianLattices.Ext.L3.IdealNormInequalities.resChar P.1 = m) = S.image g`. Use `Finset.filter_true_of_mem fun P hP => ?_` and prove the remaining obligations. Take `⟨p, hp, rfl⟩` from `Finset.mem_image.1 hP`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← locResChar_eq]`. Conclude with `hS p hp`. Rewrite `h1` using `[hf, Finset.card_image_of_injective _ hg, Formalism.MainNotions.BridgeLemma.szf_finrankF D]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placesOver_of {D : Formalism.BasicNotions.D7} (hR : ResCardD D) : PlacesOver D := by
   refine ⟨fun p => ?_, fun m S hS => ?_⟩
@@ -668,23 +662,21 @@ def RowsDatum (D : Formalism.BasicNotions.D7) : Prop :=
 section RDProof
 
 /- English proof (translation)
-Establish `hsum : ∀ (M : Θ → Matrix ι ι ℂ), (∀ θ, (M θ).PosSemidef) → (∑ θ, M θ).PosSemidef` using `fun M hM => Finset.sum_induction _ Matrix.PosSemidef (fun A B hA hB => hA.add hB) Matrix.PosSemidef.zero (fun θ _ => hM θ)`. Establish `h1 : (∑ θ, (((Dsup - dens θ) * a θ : ℝ) : ℂ) • Matrix.of fun x y => (if 0 < n x then v θ x else 0) * star (if 0 < n y then v θ y else 0)).PosSemidef` using `hsum _ fun θ => (posSemidef_outer_product (fun x => if 0 < n x then v θ x else 0)).smul (Complex.zero_le_real.mpr (mul_nonneg (sub_nonneg.mpr (hd θ)) (ha θ)))`. Establish `h2 : (∑ θ, ((Dsup * a θ : ℝ) : ℂ) • Matrix.of fun x y => (if 0 < n x then 0 else v θ x) * star (if 0 < n y then 0 else v θ y)).PosSemidef` using `hsum _ fun θ => (posSemidef_outer_product (fun x => if 0 < n x then 0 else v θ x)).smul (Complex.zero_le_real.mpr (mul_nonneg hD0 (ha θ)))`. Use `h1.add h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.of_apply, Matrix.add_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum]`. Distinguish the cases in `hP : 0 < n x ∧ 0 < n y`. Rewrite using `[if_pos hP, Finset.sum_div, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun θ _ => ?_` and prove the remaining obligations. Simplify using `only [if_pos hP.1, if_pos hP.2, star_zero, mul_zero, add_zero]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hvx : v θ x = 0`. Simplify using `[hvx]`. Distinguish the cases in `hvy : v θ y = 0`. Simplify using `[hvy]`. Establish `hxy` using `hsupp θ x y hvx hvy`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hxy, Real.sqrt_mul_self (hn x)]`. Establish `hnx : (n x : ℂ) ≠ 0` using `by exact_mod_cast hP.1.ne'`. Clear the denominators using the available nonvanishing facts. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[if_neg hP, sub_zero, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun θ _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hx : 0 < n x <;> by_cases hy : 0 < n y`. Conclude with `absurd ⟨hx, hy⟩ hP`. Simplify using `only [if_pos hx, if_neg hy, star_zero, mul_zero, zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hvx : v θ x = 0`. Simplify using `[hvx]`. Distinguish the cases in `hvy : v θ y = 0`. Simplify using `[hvy]`. Establish `hxy` using `hsupp θ x y hvx hvy`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `absurd (hxy ▸ hx) hy`. Simplify using `only [if_neg hx, if_pos hy, star_zero, mul_zero, zero_mul, zero_add]`. Distinguish the cases in `hvx : v θ x = 0`. Simplify using `[hvx]`. Distinguish the cases in `hvy : v θ y = 0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hvy]`. Establish `hxy` using `hsupp θ x y hvx hvy`. Conclude with `absurd (hxy ▸ hy) hx`. Simplify using `only [if_neg hx, if_neg hy, star_zero, mul_zero, zero_mul, zero_add]`. Use `push_cast`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem density_gram_matrix_sub_posSemidef {ι Θ : Type*} [Fintype ι] [Fintype Θ] (v : Θ → ι → ℂ) (a dens : Θ → ℝ) (Dsup : ℝ) (n : ι → ℝ)
     (ha : ∀ θ, 0 ≤ a θ) (hd : ∀ θ, dens θ ≤ Dsup) (hD0 : 0 ≤ Dsup) (hn : ∀ x, 0 ≤ n x)
@@ -758,7 +750,7 @@ def chat (vR : TermDef.Term D u u' F0 what₂ → ℝ) (κ : TermDef.Term D u u'
     ((Real.sqrt (n0 nc (D.mem u).A.T (D.mem u').A.T w) : ℝ) : ℂ)
 
 /- English proof (translation)
-Simplify using `only [rowVec, hx, chat]`. Use `push_cast`. Rewrite using `[div_div]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rowVec_eq_chat (vR : TermDef.Term D u u' F0 what₂ → ℝ) (κ : TermDef.Term D u u' F0 what₂ → ℕ) (nc : ℝ)
     (ρ : ℕ) (x : TB.Pt D.host.E) (w : Point D.host.E (D.R.rS + 1)) (hx : ptOfList (D.R.rS + 1) x = some w) :
@@ -768,9 +760,9 @@ theorem rowVec_eq_chat (vR : TermDef.Term D u u' F0 what₂ → ℝ) (κ : TermD
   rw [div_div]
 
 /- English proof (translation)
-Unfold `PairVal.massTerm PairVal.massRow`. Apply `div_nonneg` to reduce the goal to its premises. Unfold `Formalism.MainNotions.S.wRow`. Check the signs of the components of the expression. Unfold `Formalism.MainNotions.S.Cnt.massRows`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Check the signs of the components of the expression. Replace the relevant objects with their definitions.
 
-Conclude with `Finset.sum_nonneg fun _ _ => by unfold Formalism.MainNotions.S.wRow; positivity`.
+A detailed English derivation is pending.
 -/
 theorem massTerm_nonneg (t : TermDef.Term D u u' F0 what₂) : 0 ≤ PairVal.massTerm t := by
   unfold PairVal.massTerm PairVal.massRow
@@ -780,16 +772,16 @@ theorem massTerm_nonneg (t : TermDef.Term D u u' F0 what₂) : 0 ≤ PairVal.mas
     exact Finset.sum_nonneg fun _ _ => by unfold Formalism.MainNotions.S.wRow; positivity
 
 /- English proof (translation)
-Take `⟨p, rfl, rfl, -⟩` from `h`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem lam_eq_of_termScal {t t' : TermDef.Term D u u' F0 what₂} (h : Corank.TermScal D t t') : t.lam = t'.lam := by
   obtain ⟨p, rfl, rfl, -⟩ := h
   rfl
 
 /- English proof (translation)
-Simplify using `only [chat]`. Use `congr 1`. Establish `e : ∀ t, (Elig t ∧ κ t = ρ ∧ t.atPt w) ↔ t ∈ Γ.filter (fun t => κ t = ρ)`. Introduce `t`. Simplify using `only [Finset.mem_filter, hΓ, EligAt]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-The claim follows by propositional logic. Rewrite using `[← Finset.tsum_subtype]`. Conclude with `(Equiv.subtypeEquivRight e).tsum_eq (fun t : {t // t ∈ Γ.filter (fun t => κ t = ρ)} => ((Real.sqrt (PairVal.massTerm t.1) : ℝ) : ℂ) * PairVal.cAt vR t.1 w)`.
+The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chat_eq_sum (vR : TermDef.Term D u u' F0 what₂ → ℝ) (κ : TermDef.Term D u u' F0 what₂ → ℕ) (nc : ℝ) (ρ : ℕ)
     (w : Point D.host.E (D.R.rS + 1)) (Γ : Finset (TermDef.Term D u u' F0 what₂)) (hΓ : ∀ t, t ∈ Γ ↔ EligAt t w) :
@@ -815,16 +807,16 @@ variable {D : Formalism.BasicNotions.D7} {u u' : D.what₂.Word} {F0 : FlagG (VS
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Unfold `n0`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem normalizing_weight_nonneg {c : ℝ} (hc : 0 ≤ c) (T T' : ℕ) (w : Point D.host.E (D.R.rS + 1)) : 0 ≤ n0 c T T' w := by
   unfold n0
   positivity
 
 /- English proof (translation)
-Establish `hk : D.R.k - 1 ≠ 0`. Establish `h1` using `D.R.m_add_three_le_k`. Establish `h2` using `D.R.two_le_m`. Use linear arithmetic over natural numbers and integers. Unfold `n0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Rewrite using `[hG]`. Simplify using `[hk, Algebra.norm_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem normalizing_weight_eq_zero {c : ℝ} {T T' : ℕ} {w : Point D.host.E (D.R.rS + 1)} (hG : Gpt T T' w = 0) :
     n0 c T T' w = 0 := by
@@ -837,31 +829,27 @@ theorem normalizing_weight_eq_zero {c : ℝ} {T T' : ℕ} {w : Point D.host.E (D
   simp [hk, Algebra.norm_zero]
 
 /- English proof (translation)
-Use `set ax : ℂ := ((Real.sqrt (n0 nc (D.mem u).A.T (D.mem u').A.T wx) : ℝ) : ℂ)`. Use `set ay : ℂ := ((Real.sqrt (n0 nc (D.mem u).A.T (D.mem u').A.T wy) : ℝ) : ℂ)`. Use `set f : TermDef.Term D u u' F0 what₂ → Point D.host.E (D.R.rS + 1) → ℂ := fun t w => ((Real.sqrt (PairVal.massTerm t) : ℝ) : ℂ) * PairVal.cAt vR t w`. Use `set Sx : ℕ → ℂ := fun ρ => ∑ t ∈ Γx.filter (fun t => κ t = ρ), f t wx`. Use `set Sy : ℕ → ℂ := fun ρ => ∑ t ∈ Γy.filter (fun t => κ t = ρ), f t wy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcx : ∀ ρ, chat vR κ nc ρ wx = Sx ρ / ax` using `fun ρ => chat_eq_sum vR κ nc ρ wx Γx hΓx`. Establish `hcy : ∀ ρ, chat vR κ nc ρ wy = Sy ρ / ay` using `fun ρ => chat_eq_sum vR κ nc ρ wy Γy hΓy`. Establish `hay : star ay = ay` using `by simp [ay, Complex.star_def]`. Establish `hax : star ax = ax` using `by simp [ax, Complex.star_def]`. Establish `e1 : ∀ ρ, chat vR κ nc ρ wx * star (chat vR κ nc ρ wy) = Sx ρ * star (Sy ρ) / (ax * ay)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Introduce `ρ`. Rewrite using `[hcx, hcy, star_div₀, hay]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[e1]`. Establish `hz : ∀ ρ ∉ Γx.image κ, Sx ρ * star (Sy ρ) / (ax * ay) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `ρ hρ`. Establish `: Γx.filter (fun t => κ t = ρ) = ∅`. Rewrite using `[Finset.filter_eq_empty_iff]`. Introduce `t ht hκt`. Conclude with `hρ (Finset.mem_image.2 ⟨t, ht, hκt⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `[Sx, this]`. Rewrite using `[tsum_eq_sum (s := Γx.image κ) hz, ← Finset.sum_div]`. Use `congr 1`. Establish `hP : ∀ t ∈ Γx, Sy (κ t) = ((Real.sqrt (PairVal.massTerm t) : ℝ) : ℂ) * BBG M δ (D.mem u).A.T (D.mem u').A.T wy (kind wx) (th t)`. Introduce `t ht`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htE` using `(hΓx t).1 ht`. Establish `hfilt : Γy.filter (fun t' => κ t' = κ t) = Γy.filter (fun t' => Corank.TermScal D t t')`. Use `Finset.filter_congr fun t' ht' => ?_` and prove the remaining obligations. Rewrite using `[eq_comm]`. Conclude with `hκ t t' htE.1 ((hΓy t').1 ht').1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hm : ∀ t' ∈ Γy.filter (fun t' => Corank.TermScal D t t'), f t' wy = ((Real.sqrt (PairVal.massTerm t) : ℝ) : ℂ) * PairVal.cAt vR t' wy`. Introduce `t' ht'`. Establish `hl` using `lam_eq_of_termScal (Finset.mem_filter.1 ht').2`. Establish `: PairVal.massTerm t' = PairVal.massTerm t`. Unfold `PairVal.massTerm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl]`. Simplify using `only [f, this]`. Use `show ∑ t' ∈ Γy.filter (fun t' => κ t' = κ t), f t' wy = _`. Rewrite using `[hfilt, Finset.sum_congr rfl hm, ← Finset.mul_sum]`. Use `congr 1`.
+The claim follows by propositional logic. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hset : ∀ t', (Corank.TermScal D t t' ∧ EligAt t' wy) ↔ t' ∈ Γy.filter (fun t' => Corank.TermScal D t t')`. Introduce `t'`. Rewrite using `[Finset.mem_filter, hΓy]`. The claim follows by propositional logic. Rewrite using `[← Finset.tsum_subtype, ← (Equiv.subtypeEquivRight hset).tsum_eq]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hPS t wx htE wy hGy).tsum_eq`. Establish `hfib : ∑ ρ ∈ Γx.image κ, Sx ρ * star (Sy ρ) = ∑ t ∈ Γx, f t wx * star (Sy (κ t))`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (g := κ) (t := Γx.image κ) (fun t ht => Finset.mem_image_of_mem κ ht) (fun t => f t wx * star (Sy (κ t)))]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Simplify using `only [Sx, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[(Finset.mem_filter.1 ht).2]`. Rewrite using `[hfib]`. Use `Finset.sum_congr rfl fun t ht => ?_` and prove the remaining obligations. Rewrite using `[hP t ht]`.
-
-Establish `hm0` using `massTerm_nonneg t`. Simplify using `only [f, star_mul', Complex.star_def, Complex.conj_ofReal]`. Establish `hsq : ((Real.sqrt (PairVal.massTerm t) : ℝ) : ℂ) * ((Real.sqrt (PairVal.massTerm t) : ℝ) : ℂ) = (PairVal.massTerm t : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt hm0]`. Rewrite using `[← hsq]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rows_pair {δ : ∀ p : PlF D, (D.s.atP p).Fp} {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
     (vR : TermDef.Term D u u' F0 what₂ → ℝ) {κ : TermDef.Term D u u' F0 what₂ → ℕ} (hκ : RowLabel κ) (nc : ℝ)
@@ -951,41 +939,37 @@ variable {D : Formalism.BasicNotions.D7} {u u' : D.what₂.Word} {F0 : FlagG (VS
   {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)}
 
 /- English proof (translation)
-Establish `hfinA : ∀ x, {t : TermDef.Term D u u' F0 what₂ | t.atPt (w x)}.Finite` using `fun x => TermDef.term_atPt_finite hTF hsig F0 what₂ hrows (w x)`. Set `Γ : ι → Finset (TermDef.Term D u u' F0 what₂)` to `fun x => (hfinA x).toFinset.filter Elig`. Establish `hΓ : ∀ x t, t ∈ Γ x ↔ EligAt t (w x)`. Introduce `x t`. Simplify using `only [Γ, Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq, EligAt]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-The claim follows by propositional logic. Set `n : ι → ℝ` to `fun x => n0 nc (D.mem u).A.T (D.mem u').A.T (w x)`. Establish `hn0 : ∀ x, 0 ≤ n x` using `fun x => normalizing_weight_nonneg hnc.le _ _ _`. Establish `hnG : ∀ x, 0 < n x → Gpt (D.mem u).A.T (D.mem u').A.T (w x) ≠ 0`. Introduce `x h hG`.
+The claim follows by propositional logic. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: n x = 0` using `normalizing_weight_eq_zero hG`. Combine the linear equalities and inequalities to obtain the conclusion. Set `dat : ι → TermDef.Term D u u' F0 what₂ → Option D.host.E × (∀ p, Option ((M p).Cls D.R.rS))` to `fun x t => (kind (w x), th t)`. Take `⟨Θs, hΘs⟩ : ∃ Θs : Finset (Option D.host.E × (∀ p, Option ((M p).Cls D.R.rS))), Θs = Finset.univ.biUnion (fun x => (Γ x).image (dat x))` from `⟨_, rfl⟩`. Establish `maps : ∀ x, ∀ t ∈ Γ x, dat x t ∈ Θs` using `fun x t ht => by`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hΘs]`. Conclude with `Finset.mem_biUnion.2 ⟨x, Finset.mem_univ _, Finset.mem_image_of_mem _ ht⟩`. Establish `memΘ : ∀ j : Θs, ∃ x, ∃ t ∈ Γ x, dat x t = j.1`. Introduce `j`. Establish `hj : j.1 ∈ Finset.univ.biUnion (fun x => (Γ x).image (dat x))` using `by rw [← hΘs]; exact j.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨x, -, hx⟩` from `Finset.mem_biUnion.1 hj`. Take `⟨t, ht, he⟩` from `Finset.mem_image.1 hx`. Conclude with `⟨x, t, ht, he⟩`. Use `choose xr rep hrep hdat using memΘ`. Establish `repE : ∀ j, EligAt (rep j) (w (xr j))` using `fun j => (hΓ _ _).1 (hrep j)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : ∀ j : Θs, j.1.1 = kind (w (xr j))` using `fun j => (congrArg Prod.fst (hdat j)).symm`. Establish `e2 : ∀ j : Θs, j.1.2 = th (rep j)` using `fun j => (congrArg Prod.snd (hdat j)).symm`. Establish `hresΘ : ∀ j ∈ Θs, Formalism.L2.SG.Pf.Restricted θ0 j.2` using `fun j hj => by`. Rewrite using `[e2 ⟨j, hj⟩]`. Conclude with `hres _ _ (repE ⟨j, hj⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hkindΘ : ∀ j ∈ Θs, ∃ x, j.1 = kind (w x)` using `fun j hj => ⟨xr ⟨j, hj⟩, e1 ⟨j, hj⟩⟩`. Use `choose Sx hSx using fun x => (hU (w x)).1`. Establish `hB : ∀ x p, Formalism.L2.SG.Pf.BBsq M δ (D.mem u).A.T (D.mem u').A.T p (w x)` using `fun x => (hU (w x)).2`. Set `v : Θs → ι → ℂ` to `fun j x => BBG M δ (D.mem u).A.T (D.mem u').A.T (w x) j.1.1 j.1.2`. Set `a : Θs → ℝ` to `fun j => (Formalism.L2.SG.Pf.autR M j.1.2)⁻¹`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `dens : Θs → ℝ` to `fun j => dn (rep j)`. Establish `hsupp : ∀ j x y, v j x ≠ 0 → v j y ≠ 0 → n x = n y`. Introduce `j x y hx hy`. Conclude with `SupportG.n0_eq_of_normG_eq (Formalism.L2.SG.Pf.supportVec_of_normProd hN δ M hA _ _ (w x) (w y) j.1.1 j.1.2 (Formalism.L2.SG.Pf.bbtop_mulSupport_finite (hSx x) (hresΘ j.1 j.2)) (Formalism.L2.SG.Pf.bbtop_mulSupport_finite (hSx y) (hresΘ j.1 j.2)) hx hy) _`. Establish `hclose` using `density_gram_matrix_sub_posSemidef v a dens sd n (fun j => inv_nonneg.2 (Formalism.L2.SG.Pf.autR_nonneg _)) (fun j => hdn _ _ (repE j)) hsd hn0 hsupp`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hKA` using `Formalism.L2.SG.Pf.ktop_sub_posSemidef w θ0 Sx hSx hB Θs (fun j hj => ⟨hkindΘ j hj, hresΘ j hj⟩)`. Establish `hrow : ∀ x y, ∑' ρ, chat vR κ nc ρ (w x) * star (chat vR κ nc ρ (w y)) = if 0 < n x ∧ 0 < n y then ((n x : ℂ) * ∑ j, (dens j : ℂ) * (a j : ℂ) * v j x * star (v j y)) / ((Real.sqrt (n x * n y) : ℝ) : ℂ) else 0`. Introduce `x y`. Use `split_ifs with hxy`. Rewrite using `[rows_pair vR hκ nc hPS (w x) (w y) (Γ x) (Γ y) (hΓ x) (hΓ y) (hnG y hxy.2), Real.sqrt_mul (hn0 x), Complex.ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[← Finset.sum_fiberwise_of_maps_to (maps x), ← Finset.sum_coe_sort Θs, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hfib : ∀ t ∈ (Γ x).filter (fun t => dat x t = j.1), (PairVal.massTerm t : ℂ) * PairVal.cAt vR t (w x) * star (BBG M δ (D.mem u).A.T (D.mem u').A.T (w y) (kind (w x)) (th t)) = ((PairVal.massTerm t : ℂ) * PairVal.cAt vR t (w x)) * star (v j y)`. Introduce `t ht`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `(Finset.mem_filter.1 ht).2`. Simplify using `only [v, ← h2, dat]`. Rewrite using `[Finset.sum_congr rfl hfib, ← Finset.sum_mul]`. Establish `hF` using `hFC (w x) (hnG x hxy.1) (rep j) (w (xr j)) (repE j)`. Establish `hset : ∀ t, (EligAt t (w x) ∧ kind (w x) = kind (w (xr j)) ∧ th t = th (rep j)) ↔ t ∈ (Γ x).filter (fun t => dat x t = j.1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `t`. Rewrite using `[Finset.mem_filter, hΓ, ← hdat j]`. Simplify using `only [dat, Prod.mk.injEq]`. Apply the tactic sequence `try tauto`. Establish `hsum : ∑ t ∈ (Γ x).filter (fun t => dat x t = j.1), (PairVal.massTerm t : ℂ) * PairVal.cAt vR t (w x) = (n x : ℂ) * (dens j : ℂ) * (a j : ℂ) * v j x`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h1 : ∑ t ∈ (Γ x).filter (fun t => dat x t = j.1), (PairVal.massTerm t : ℂ) * PairVal.cAt vR t (w x) = ∑' t : {t : TermDef.Term D u u' F0 what₂ // EligAt t (w x) ∧ kind (w x) = kind (w (xr j)) ∧ th t = th (rep j)}, (PairVal.massTerm t.1 : ℂ) * PairVal.cAt vR t.1 (w x)`. Rewrite using `[← Finset.tsum_subtype]`. Conclude with `((Equiv.subtypeEquivRight hset).tsum_eq (fun t : {t // t ∈ (Γ x).filter (fun t => dat x t = j.1)} => (PairVal.massTerm t.1 : ℂ) * PairVal.cAt vR t.1 (w x))).symm`. Rewrite using `[h1, hF.tsum_eq]`. Simplify using `only [n, dens, a, v, e1 j, e2 j]`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hsum]`. Expand and normalize the polynomial expressions, which then agree. Establish `h0 : n x = 0 ∨ n y = 0`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hxy ⟨lt_of_le_of_ne (hn0 x) (Ne.symm h.1), lt_of_le_of_ne (hn0 y) (Ne.symm h.2)⟩`. Break down `h0 with h0 | h0` into its components or cases. Establish `hc : ∀ ρ, chat vR κ nc ρ (w x) = 0` using `fun ρ => by`. Establish `h0' : n0 nc (D.mem u).A.T (D.mem u').A.T (w x) = 0` using `h0`. Simplify using `only [chat, h0', Real.sqrt_zero, Complex.ofReal_zero, div_zero]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[hc]`. Establish `hc : ∀ ρ, chat vR κ nc ρ (w y) = 0` using `fun ρ => by`. Establish `h0' : n0 nc (D.mem u).A.T (D.mem u').A.T (w y) = 0` using `h0`. Simplify using `only [chat, h0', Real.sqrt_zero, Complex.ofReal_zero, div_zero]`. Simplify using `[hc]`.
-
-Establish `hM : (Matrix.of fun x y => (sd : ℂ) * KtopG M δ (D.mem u).A.T (D.mem u').A.T (w x) (w y) - ∑' ρ, chat vR κ nc ρ (w x) * star (chat vR κ nc ρ (w y))) = (sd : ℂ) • (Matrix.of fun x y => KtopG M δ (D.mem u).A.T (D.mem u').A.T (w x) (w y) - ∑ j ∈ Θs, (((Formalism.L2.SG.Pf.autR M j.2) …`. Use extensionality with `x y`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[hrow x y]`. Establish `hA' : ∑ j : Θs, (a j : ℂ) * v j x * star (v j y) = ∑ j ∈ Θs, (((Formalism.L2.SG.Pf.autR M j.2)⁻¹ : ℝ) : ℂ) * BBG M δ (D.mem u).A.T (D.mem u').A.T (w x) j.1 j.2 * star (BBG M δ (D.mem u).A.T (D.mem u').A.T (w y) j.1 j.2)` using `Finset.sum_coe_sort Θs (fun j => (((Formalism.L2.SG.Pf.autR M j.2)⁻¹ : ℝ) : ℂ) * BBG M δ (D.mem u).A.T (D.mem u').A.T (w x) j.1 j.2 * star (BBG M δ (D.mem u).A.T (D.mem u').A.T (w y) j.1 j.2))`.
-
-Rewrite using `[hA']`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hM]`. Conclude with `(hKA.smul (Complex.zero_le_real.2 hsd)).add hclose`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dom_points (hN : SupportG.NormProd D) {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p)
@@ -1133,12 +1117,12 @@ end RDProof5
 section Close
 
 /- English proof (translation)
-The claim follows from `rowLabelExists_of Formalism.L2.SG.Closed.ScalarEquivG_holds (fun u u' => Formalism.L2.SG.Closed.ScalarRepFree_holds D u u')`.
+A detailed English derivation is pending.
 -/
 theorem rowLabelExists_holds (D : Formalism.BasicNotions.D7) : RowLabelExists D := rowLabelExists_of Formalism.L2.SG.Closed.ScalarEquivG_holds (fun u u' => Formalism.L2.SG.Closed.ScalarRepFree_holds D u u')
 
 /- English proof (translation)
-The claim follows from `localModelAt_of hK hS (localModelT_holds D)`.
+A detailed English derivation is pending.
 -/
 theorem localModelAt_of_KS {D : Formalism.BasicNotions.D7} (hK : LocalModelK D) (hS : LocalModelS D) : LocalModelAt D := localModelAt_of hK hS (localModelT_holds D)
 

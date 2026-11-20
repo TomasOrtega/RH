@@ -11,7 +11,7 @@ def T (E : Spc) (n i : ℤ) (k : ℕ) : Submodule ℤ_[l] (Hl l E n i) :=
   LinearMap.ker (((l : ℤ_[l]) ^ k) • (LinearMap.id : Hl l E n i →ₗ[ℤ_[l]] Hl l E n i))
 
 /- English proof (translation)
-Introduce `a b hab x hx`. Simplify using `only [T, LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply] at hx ⊢`. Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Rewrite using `[pow_add, mul_comm, mul_smul, hx, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem T_mono (E : Spc) (n i : ℤ) : Monotone (T l E n i) := by
   intro a b hab x hx
@@ -20,9 +20,7 @@ theorem T_mono (E : Spc) (n i : ℤ) : Monotone (T l E n i) := by
   rw [pow_add, mul_comm, mul_smul, hx, smul_zero]
 
 /- English proof (translation)
-Establish `: IsNoetherian ℤ_[l] (Hl l E n i)` using `inferInstance`. Take `⟨K, hK⟩` from `monotone_stabilizes_iff_noetherian.mpr this ⟨T l E n i, T_mono l E n i⟩`. Use `⟨K, fun m => ?_⟩` and prove the remaining obligations. Break down `le_total m K with h | h` into its components or cases. Conclude with `T_mono l E n i h`.
-
-Conclude with `(hK m h).symm.le`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem stab (E : Spc) (n i : ℤ) [Module.Finite ℤ_[l] (Hl l E n i)] :
     ∃ K : ℕ, ∀ m, T l E n i m ≤ T l E n i K := by
@@ -34,19 +32,19 @@ theorem stab (E : Spc) (n i : ℤ) [Module.Finite ℤ_[l] (Hl l E n i)] :
   · exact (hK m h).symm.le
 
 /- English proof (translation)
-Establish `hl : NeZero l` using `⟨(Fact.out : l.Prime).ne_zero⟩`. Take `⟨K, hK⟩` from `stab l E (n + 1) i`. Use `⟨l ^ K, pow_pos (Fact.out : l.Prime).pos K, fun k z => ?_⟩` and prove the remaining obligations. Take `⟨u, d, h⟩` from `hB k`. Set `D : Hl l E (n + 1) i` to `⟨fun a => d a n z, fun a => (h a n).2.2.2.2.1 z⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hD : D ∈ T l E (n + 1) i k`. Simplify using `only [T, LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `(l ^ k) • d a n z = 0`. Rewrite using `[← map_nsmul, KerPf.smul_zero_of l E n i k k le_rfl, map_zero]`. Establish `hD'` using `hK k hD`. Simplify using `only [T, LinearMap.mem_ker, LinearMap.smul_apply, LinearMap.id_apply] at hD'`. Rewrite `hD'` using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : ∀ a, d a n ((l ^ K) • z) = 0` using `fun a => by`. Use `congrArg (fun v : Hl l E (n + 1) i => v.1 a) hD'` as an intermediate fact. Express the relevant statement in the definitionally equal form `(l ^ K) • d a n z = 0 at this`. Rewrite using `[map_nsmul]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `S : ℕ → Type 1` to `fun a => {w : Ht (l ^ (k + a)) E n i // red (l ^ (k + a)) (l ^ k) E n i w = (l ^ K) • z}`. Establish `hS : ∀ a, Finite (S a)` using `fun a => by have := hFin (k + a) n; exact Subtype.finite`. Establish `hN : ∀ a, Nonempty (S a)` using `fun a => by`. Take `⟨w, hw⟩` from `((h a n).2.1 ((l ^ K) • z)).1 (hz a)`. Conclude with `⟨⟨w, hw⟩⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `t : ∀ a, S (a + 1) → S a` to `fun a w => ⟨red (l ^ (k + (a + 1))) (l ^ (k + a)) E n i w.1, by`. Rewrite using `[(@hA (l ^ (k + (a + 1))) (l ^ (k + a)) _ (pow_dvd_pow l (by omega)) E).2.2.2 (l ^ k) (pow_dvd_pow l (by omega)) n i w.1]`. Conclude with `w.2⟩`. Take `⟨s, hs⟩` from `KerPf.seqSec S t`. Set `x : Hl l E n i` to `⟨fun j => red (l ^ (k + j)) (l ^ j) E n i (s j).1, fun j => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A` using `(@hA (l ^ (k + (j + 1))) (l ^ (j + 1)) _ (pow_dvd_pow l (by omega)) E).2.2.2 (l ^ j) (pow_dvd_pow l (by omega)) n i (s (j + 1)).1`. Establish `B` using `(@hA (l ^ (k + (j + 1))) (l ^ (k + j)) _ (pow_dvd_pow l (by omega)) E).2.2.2 (l ^ j) (pow_dvd_pow l (by omega)) n i (s (j + 1)).1`. Conclude with `A.trans (B.symm.trans (congrArg (fun w : S j => red (l ^ (k + j)) (l ^ j) E n i w.1) (hs j)))⟩`. Conclude with `⟨x, (s k).2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cok (hA : A11) (E : Spc) (i : ℤ) (hB : ∀ b, BockData l b E i)
     (hFin : ∀ (k : ℕ) (n : ℤ), Finite (Ht (l ^ k) E n i)) (n : ℤ) [Module.Finite ℤ_[l] (Hl l E (n + 1) i)] :
@@ -92,7 +90,7 @@ end LateralTheory.KummerTheory.CokPf
 namespace LateralTheory.KummerTheory
 
 /- English proof (translation)
-Introduce `hA l _ E i hB hFin n _` and use `CokPf.cok l hA E i hB hFin n`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem AdicCok_holds : AdicCok := fun hA l _ E i hB hFin n _ => CokPf.cok l hA E i hB hFin n
 

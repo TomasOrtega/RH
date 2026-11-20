@@ -20,21 +20,19 @@ set_option maxHeartbeats 1000000
 namespace GlobalTheory.Unf
 
 /- English proof (translation)
-Introduce `D ψ V V₀ W ρ d χV χW om om' hw hw' vS vN vW x₀ G Φ hG hΦ`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D W`. Take `⟨j1, j2, j3, j4⟩` from `GlobalTheory.Mem.TrueRecord.top_NFlag V (isIsoSub_e d)`. Use `haveI := vN.unit.1`. Use `haveI := vW.haar`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, A, hC⟩` from `GlobalTheory.T.thetaTermSeries_summable_moderateGrowth_uniform D ψ V V₀ W ρ d χV χW om om' hw hw' vS Φ hΦ`. Take `⟨B, hBd⟩` from `hG.2.2 A`. Establish `hB0 : 0 ≤ B` using `(mul_nonneg (norm_nonneg _) (pow_nonneg (quotHeight_pos W 1).le _)).trans (hBd 1)`. Establish `hfin : (vN.ν.prod vW.μ) (vN.𝓝 ×ˢ vW.𝓕) ≠ ⊤`. Rewrite using `[Measure.prod_prod, vN.unit.2.2, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.Chain.LiftReg.vol_ne_top vW.haar vW.fund`. Establish `hK0 : 0 ≤ max C 0 * B` using `mul_nonneg (le_max_right _ _) hB0`. Establish `hm0 : 0 ≤ ((vN.ν.prod vW.μ) (vN.𝓝 ×ˢ vW.𝓕)).toReal` using `ENNReal.toReal_nonneg`. Use `⟨max C 0 * B * ((vN.ν.prod vW.μ) (vN.𝓝 ×ˢ vW.𝓕)).toReal, A, fun g => ?_⟩` and prove the remaining obligations. Establish `hg0 : 0 ≤ height V g ^ A` using `pow_nonneg (height_pos V g).le _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hpt : ∀ (n : flagN d) (h : GA D W), ∑' y : Orb W x₀, ‖G h * term ψ d W vS (om (n.1 * g, h) Φ) y.1‖ₑ ≤ ENNReal.ofReal (max C 0 * B * height V g ^ A)`. Introduce `n h`. Establish `h1 : ∑' y : Orb W x₀, ‖G h * term ψ d W vS (om (n.1 * g, h) Φ) y.1‖ₑ = ‖G h‖ₑ * ∑' y : Orb W x₀, ‖term ψ d W vS (om (n.1 * g, h) Φ) y.1‖ₑ`. Repeatedly rewrite using `[enorm_mul]`. Conclude with `ENNReal.tsum_mul_left`.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ∑' y : Orb W x₀, ‖term ψ d W vS (om (n.1 * g, h) Φ) y.1‖ₑ ≤ ∑' x : Matrix (Fin W.rank) (Fin ρ) D.host.E, ‖term ψ d W vS (om (n.1 * g, h) Φ) x‖ₑ` using `ENNReal.tsum_comp_le_tsum_of_injective Subtype.val_injective _`. Establish `hq0 : 0 ≤ quotHeight W h ^ A` using `pow_nonneg (quotHeight_pos W h).le _`. Establish `h3 : ∑' x : Matrix (Fin W.rank) (Fin ρ) D.host.E, ‖term ψ d W vS (om (n.1 * g, h) Φ) x‖ₑ ≤ ENNReal.ofReal (max C 0 * height V g ^ A * quotHeight W h ^ A)`. Use `(hC g h n.1 n.2).trans (ENNReal.ofReal_le_ofReal ?_)` and prove the remaining obligations. Rewrite using `[mul_pow, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right (le_max_left _ _) hg0) hq0`. Establish `h4 : ‖G h‖ * (max C 0 * height V g ^ A * quotHeight W h ^ A) ≤ max C 0 * B * height V g ^ A`. Establish `e : ‖G h‖ * (max C 0 * height V g ^ A * quotHeight W h ^ A) = max C 0 * height V g ^ A * (‖G h‖ * quotHeight W h ^ A)` using `by ring`. Rewrite using `[e, mul_right_comm (max C 0) B]`. Conclude with `mul_le_mul_of_nonneg_left (hBd h) (mul_nonneg (le_max_right _ _) hg0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[h1]`. Use `(mul_le_mul' le_rfl (h2.trans h3)).trans ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_mul (norm_nonneg _)]`. Conclude with `ENNReal.ofReal_le_ofReal h4`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← ENNReal.ofReal_toReal hfin, ENNReal.toReal_ofReal hm0, ← ENNReal.ofReal_mul (mul_nonneg hK0 hg0)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem orbit_sum_moderate_growth : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (V V₀ W : HSp D) (ρ : ℕ) (d : HypDec V V₀ ρ) (χV χW : (AE D)ˣ →* Circle) (om : Om V W) (om' : Om V₀ W), IsWeilDatumO ψ V W χV χW om → IsWeilDatumO ψ V₀ W χV χW om' → ∀ (vS : VolM D W.rank ρ) (vN : VolN d) (vW : Vol W) (x₀ : Matrix (Fin W.rank) (Fin ρ) D.host.E) (G : GA D W → ℂ) (Φ : WO V W → ℂ), RapidDec W G → IsThetaFunO ψ V W Φ → ∃ (C : ℝ) (A : ℕ), ∀ g : GA D V, ∫⁻ p in vN.𝓝 ×ˢ vW.𝓕, ∑' y : Orb W x₀, ‖G p.2 * term ψ d W vS (om (p.1.1 * g, p.2) Φ) y.1‖ₑ ∂(vN.ν.prod vW.μ) ≤ ENNReal.ofReal (C * height V g ^ A) := by
   intro D ψ V V₀ W ρ d χV χW om om' hw hw' vS vN vW x₀ G Φ hG hΦ

@@ -15,7 +15,7 @@ namespace PositivityTheory.AdelicQuotientData
 namespace ThetaDecayingFunction
 
 /- English proof (translation)
-Rewrite using `[mul_pow, ← Real.rpow_mul_natCast hD.le, Real.rpow_inv_natCast_pow (div_nonneg hx.le hC.le) ha, show -(a : ℝ) / k = -((k : ℝ)⁻¹ * a) by ring, Real.rpow_neg hD.le]`. Establish `: 0 < D ^ ((k : ℝ)⁻¹ * a)` using `Real.rpow_pos_of_pos hD _`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem key {x C1 D : ℝ} {a k : ℕ} (ha : a ≠ 0) (hx : 0 < x) (hC : 0 < C1) (hD : 0 < D) :
     ((D ^ ((k : ℝ)⁻¹) * (x / C1) ^ ((a : ℝ)⁻¹)) ^ a)⁻¹ * x = C1 * D ^ (-(a : ℝ) / k) := by
@@ -25,7 +25,7 @@ theorem key {x C1 D : ℝ} {a k : ℕ} (ha : a ≠ 0) (hx : 0 < x) (hC : 0 < C1)
   field_simp
 
 /- English proof (translation)
-Establish `hDk : 0 < D ^ ((k : ℝ)⁻¹)` using `Real.rpow_pos_of_pos hD _`. Establish `h1 : (x / C1) ^ ((a : ℝ)⁻¹) ≤ h / D ^ ((k : ℝ)⁻¹)`. Rewrite using `[← pow_le_pow_iff_left₀ (Real.rpow_nonneg (div_nonneg hx.le hC.le) _) ht.le ha, Real.rpow_inv_natCast_pow (div_nonneg hx.le hC.le) ha, div_le_iff₀' hC]`. Conclude with `hb`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem le_height {x C1 D h : ℝ} {a k : ℕ} (ha : a ≠ 0) (hx : 0 < x) (hC : 0 < C1) (hD : 0 < D)
     (ht : 0 < h / D ^ ((k : ℝ)⁻¹)) (hb : x ≤ C1 * (h / D ^ ((k : ℝ)⁻¹)) ^ a) :
@@ -41,15 +41,15 @@ theorem le_height {x C1 D h : ℝ} {a k : ℕ} (ha : a ≠ 0) (hx : 0 < x) (hC :
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {k : ℕ}
 
 /- English proof (translation)
-Take `⟨M, C, hMC⟩` from `hG E k Cf hCf a hka`. Take `⟨C1, hC1⟩` from `hφ a`. Use `⟨M, C * C1, fun g => ?_⟩` and prove the remaining obligations. Establish `hDg : 0 < Dt g` using `(hD E k).1 g`. Distinguish the cases in `h0 : φ g = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h0]`. Establish `hx : 0 < ‖φ g‖` using `norm_pos_iff.2 h0`. Establish `hne : (fun _ : Fin k => (1 : E)) ≠ 0`. Introduce `h`. Use `congrFun h ⟨0, hk⟩` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `at this`. Establish `hC1p : 0 < C1`. Establish `h1` using `hC1 g _ hne`. Establish `h2` using `(hH E k).1 g _ hne`. Assume the negation of the conclusion as `hc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `replace hc := not_lt.1 hc`. Establish `: C1 * ht g (fun _ => 1) ^ a ≤ 0` using `mul_nonpos_of_nonpos_of_nonneg hc (pow_nonneg h2.le _)`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `ha : a ≠ 0` using `by omega`. Establish `hr : 0 < Dt g ^ ((k : ℝ)⁻¹) * (‖φ g‖ / C1) ^ ((a : ℝ)⁻¹)` using `mul_pos (Real.rpow_pos_of_pos hDg _) (Real.rpow_pos_of_pos (div_pos hx hC1p) _)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbound` using `hMC g _ hr fun ξ hξ => le_height ha hx hC1p hDg ((hH E k).1 g ξ hξ) (hC1 g ξ hξ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul' (norm_nonneg _), ofReal_norm]`. Use `_ = _ := by rw [mul_assoc, key ha hx hC1p hDg, mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part1 (hD : D0) (hH : H0) (hG : ThetaSeriesBound) (hk : 1 ≤ k) (φ : GA E k → ℂ) (hφ : Dec φ)
     (Cf : Set (Fin k → Af E)) (hCf : IsCompact Cf) (a : ℕ) (hka : k ≤ a) :
@@ -86,7 +86,7 @@ theorem part1 (hD : D0) (hH : H0) (hG : ThetaSeriesBound) (hk : 1 ≤ k) (φ : G
     _ = _ := by rw [mul_assoc, key ha hx hC1p hDg, mul_assoc]
 
 /- English proof (translation)
-Distinguish the cases in `hy : y ∈ C₀`. Rewrite using `[Set.indicator_of_mem hy, Set.indicator_of_mem (Set.mem_image_of_mem _ hy), ← ENNReal.ofReal_mul (by positivity), ENNReal.one_le_ofReal, ← div_eq_mul_inv, one_le_div (by positivity)]`. Conclude with `pow_le_pow_left₀ (by positivity) (by linarith [hR y hy, le_max_left R 0]) M`. Rewrite using `[Set.indicator_of_notMem hy]`. Conclude with `bot_le`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_le {C₀ : Set (Fin k → Ad E)} {R : ℝ} (hR : ∀ y ∈ C₀, ‖fun i => pInf E (y i)‖ ≤ R) (M : ℕ)
     (y : Fin k → Ad E) :
@@ -102,13 +102,11 @@ theorem ind_le {C₀ : Set (Fin k → Ad E)} {R : ℝ} (hR : ∀ y ∈ C₀, ‖
     exact bot_le
 
 /- English proof (translation)
-Establish `hcF : Continuous fun y : Fin k → Ad E => fun i => pFin E (y i)` using `continuous_pi fun i => (GlobalTheory.CuspRep.ContAut.continuous_pFin E).comp (continuous_apply i)`. Establish `hcI : Continuous fun y : Fin k → Ad E => fun i => pInf E (y i)` using `continuous_pi fun i => (GlobalTheory.CuspRep.ContAut.continuous_pInf E).comp (continuous_apply i)`. Take `⟨R, hR⟩` from `hC₀.exists_bound_of_continuousOn hcI.continuousOn`. Take `⟨M, C', hC'⟩` from `part1 hD hH hG hk φ hφ _ (hC₀.image hcF) a hka`. Take `⟨-, -, -, -, -, -, -, -, -, hlast⟩` from `hN E k k hk le_rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `e : {ξ : Fin k → E // ξ ≠ 0} ≃ RowT E k k` to `{ toFun := fun ξ => ⟨ξ.1, ξ.2, fun i hi => absurd i.2 (by omega)⟩ invFun := fun ξ => ⟨ξ.1, ξ.2.1⟩ left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Establish `hK : (0 : ℝ) ≤ (1 + max R 0) ^ M` using `by positivity`. Use `⟨(1 + max R 0) ^ M * C', fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[← e.tsum_eq]`. Combine the equalities or inequalities in the displayed calculation.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `congr 1`. Conclude with `tsum_congr fun ξ => by rw [hlast]; rfl`. Use `_ ≤ (∑' ξ : {ξ : Fin k → E // ξ ≠ 0}, ENNReal.ofReal ((1 + max R 0) ^ M) * ENNReal.ofReal ( ((fun y : Fin k → Ad E => fun i => pFin E (y i)) '' C₀).indicator (fun _ => ((1 + ‖fun i => pInf E (((fun i => algebraMap E (Ad E) (ξ.1 i)) ᵥ* g.val) i)‖) ^ M)⁻¹) fun i => pFin E (((fun i …`. Conclude with `ind_le hR M _`. Use `_ = ENNReal.ofReal ((1 + max R 0) ^ M) * ((∑' ξ : {ξ : Fin k → E // ξ ≠ 0}, ENNReal.ofReal ( ((fun y : Fin k → Ad E => fun i => pFin E (y i)) '' C₀).indicator (fun _ => ((1 + ‖fun i => pInf E (((fun i => algebraMap E (Ad E) (ξ.1 i)) ᵥ* g.val) i)‖) ^ M)⁻¹) fun i => pFin E (((fun i …`.
-
-Rewrite using `[ENNReal.tsum_mul_left, mul_assoc]`. Use `_ ≤ ENNReal.ofReal ((1 + max R 0) ^ M) * ENNReal.ofReal (C' * Dt g ^ (-(a : ℝ) / k)) := by gcongr`. Conclude with `hC' g`. Use `_ = _ := by rw [← ENNReal.ofReal_mul hK, mul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part2 (hD : D0) (hN : N0) (hH : H0) (hG : ThetaSeriesBound) (hk : 1 ≤ k) (φ : GA E k → ℂ) (hφ : Dec φ)
     (C₀ : Set (Fin k → Ad E)) (hC₀ : IsCompact C₀) (a : ℕ) (hka : k ≤ a) :
@@ -155,7 +153,7 @@ theorem part2 (hD : D0) (hN : N0) (hH : H0) (hG : ThetaSeriesBound) (hk : 1 ≤ 
 end ThetaDecayingFunction
 
 /- English proof (translation)
-Introduce `hD hN hH hG E _ _ _ k hk φ hφ`. Conclude with `⟨fun Cf hCf a hka => ThetaDecayingFunction.part1 hD hH hG hk φ hφ Cf hCf a hka, fun C₀ hC₀ a hka => ThetaDecayingFunction.part2 hD hN hH hG hk φ hφ C₀ hC₀ a hka⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem theta_decaying_of_bound : D0 → N0 → H0 → ThetaSeriesBound → ThetaDecaying := by
   intro hD hN hH hG E _ _ _ k hk φ hφ

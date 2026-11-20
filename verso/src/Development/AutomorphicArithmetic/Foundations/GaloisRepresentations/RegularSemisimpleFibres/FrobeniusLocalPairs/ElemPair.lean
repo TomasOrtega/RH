@@ -17,17 +17,17 @@ open UpperTheory.V.Published UpperTheory.CBC
 open UpperTheory.Gal.InertialTypesAlt.L
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ _ σ hσ hp v w hw inst8 _ _ _ hmap n r hr0 hr1`. Take `⟨x0, _, _, _, s, hs, hfin, hinc, hgal, -⟩` from `UpperTheory.V.Z.Tf.Orb.placeData_holds F E σ hσ v w hw`. Establish `hx : x0 = inst8` using `Algebra.algebra_ext _ _ fun a => (hinc a).symm.trans (hmap a)`. Substitute `hx` using the available equality. Take `⟨⟨mE0, bE, mF0, bF, mE, mF, hmE, hmF, h1, h2⟩, hone⟩` from `UpperTheory.ConvolutionTheory.GM.matchOne F E σ n v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `letI : MeasurableSpace (GL (Fin n) (HeightOneSpectrum.adicCompletion E w.1)) := borel _`. Use `haveI : BorelSpace (GL (Fin n) (HeightOneSpectrum.adicCompletion E w.1)) := ⟨rfl⟩`. Take `⟨hμE, k2⟩` from `UpperTheory.V.Z.Tf.Orb.placeOfLocal_holds F E σ hσ v w hw s hs hfin hinc hgal n mE mF hmE hmF`. Take `⟨r₀, hr₀0, hr₀1, hr₀⟩` from `UpperTheory.Gal.InertialTypesAlt.L.elemLoc _ _ s hs n _ mF hμE hmF r hr0 hr1`. Use `⟨r₀, hr₀0, hr₀1, fun r' hr' hr'0 => ?_⟩` and prove the remaining obligations.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨hsurj, c, hc0, hc⟩` from `hr₀ r' hr' hr'0`. Use `⟨hsurj, c, hc0, fun t ht => ?_⟩` and prove the remaining obligations. Establish `hr'1 : r' < 1` using `lt_of_le_of_lt hr' hr₀1`. Establish `hT1` using `UpperTheory.Gal.InertialTypesAlt.L.elemTest _ n r hr0 hr1 {t} isCompact_singleton`. Establish `hcpt` using `((UpperTheory.Gal.InertialTypesAlt.L.normDiag _ _ s hs n).2.2 r hr1 t ht).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT2` using `UpperTheory.Gal.InertialTypesAlt.L.elemTest _ n r' hr'0 hr'1 _ hcpt`. Use `⟨hT1.2.2.1, hT2.2.2.1, ?_, ?_⟩` and prove the remaining obligations. Apply `UpperTheory.Gal.InertialTypesAlt.L.matchSmul F E σ n v _ (by exact_mod_cast hc0.ne')` to reduce the goal to its premises. Apply `hone mE mF hmE hmF h1 h2` to reduce the goal to its premises. Conclude with `k2 _ hT1.2.2.2.1 _ (Submodule.smul_mem _ _ hT2.2.2.2.1) (hc t ht)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g hg η hη`. Take `⟨t', ⟨u, -, rfl⟩, x, hx, hdet⟩` from `hT2.2.2.2.2 g hg`. Take `⟨y, -, hy⟩` from `hsurj x hx`. Establish `hy' : x = Units.map (Algebra.norm (HeightOneSpectrum.adicCompletion F v)) y` using `Units.ext hy`. Establish `hprod : (∏ i, nrmT (HeightOneSpectrum.adicCompletion F v) (t * u) i) = Units.map (Algebra.norm (HeightOneSpectrum.adicCompletion F v)) (∏ i, (t * u) i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [nrmT, map_prod]`. Rewrite using `[hdet, hprod, hy', ← map_mul]`. Conclude with `UpperTheory.Gal.InertialTypesAlt.L.normLoc F E σ hσ hp v w hw hmap η hη _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.L.elemPair :
     UpperTheory.Gal.InertialTypesAlt.L.ElemPair := by

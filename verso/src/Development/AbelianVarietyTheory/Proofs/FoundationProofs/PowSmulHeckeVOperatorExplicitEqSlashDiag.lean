@@ -6,15 +6,15 @@ open scoped MatrixGroups ModularForm Manifold
 namespace GlobalTheory.Hk
 
 /- English proof (translation)
-Use `set g := (Matrix.GeneralLinearGroup.map (Rat.castHom ℝ) (Matrix.GeneralLinearGroup.mkOfDetNeZero !![(q : ℚ), 0; 0, 1] (by simp [Matrix.det_fin_two_of]; exact_mod_cast hq.ne'))) with hg`. Establish `h00 : (g : Matrix (Fin 2) (Fin 2) ℝ) 0 0 = q` using `by simp [hg, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Establish `h01 : (g : Matrix (Fin 2) (Fin 2) ℝ) 0 1 = 0` using `by simp [hg, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Establish `h10 : (g : Matrix (Fin 2) (Fin 2) ℝ) 1 0 = 0` using `by simp [hg, Matrix.GeneralLinearGroup.mkOfDetNeZero]`. Establish `h11 : (g : Matrix (Fin 2) (Fin 2) ℝ) 1 1 = 1` using `by simp [hg, Matrix.GeneralLinearGroup.mkOfDetNeZero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdet : (g.det : ℝ) = q`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, Matrix.det_fin_two, h00, h01, h10, h11]`. Expand and normalize the polynomial expressions, which then agree. Establish `hdpos : 0 < (g.det : ℝ)` using `by rw [hdet]; exact_mod_cast hq`. Use extensionality with `τ`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hden : denom g τ = 1` using `by simp [denom, h10, h11]`. Establish `hnum : num g τ = q * τ` using `by simp [num, h00, h01]`. Establish `hsmul : ((g • τ : ℍ) : ℂ) = q * τ`. Rewrite using `[UpperHalfPlane.coe_smul_of_det_pos hdpos, hnum, hden, div_one]`. Establish `hof : ofComplex ((q : ℂ) * τ) = g • τ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hsmul]`. Conclude with `ofComplex_apply _`. Rewrite using `[slash_apply, hden, one_zpow, mul_one, hdet, abs_of_pos (by exact_mod_cast hq : (0:ℝ) < q)]`. Simplify using `only [σ, hdpos, if_true, RingHom.id_apply, Pi.smul_apply, smul_eq_mul, vOp, hof]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Both sides reduce to the same expression.
 
-Put the polynomial expressions in normal form. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem smul_vOp_eq_slash (q : ℕ) (k : ℤ) (f : ℍ → ℂ) (hq : 0 < q) : (q : ℂ) ^ (k - 1) • vOp q f = f ∣[k] (Matrix.GeneralLinearGroup.map (Rat.castHom ℝ) (Matrix.GeneralLinearGroup.mkOfDetNeZero !![(q : ℚ), 0; 0, 1] (by simp [Matrix.det_fin_two_of]; exact_mod_cast hq.ne'))) := by
   set g := (Matrix.GeneralLinearGroup.map (Rat.castHom ℝ) (Matrix.GeneralLinearGroup.mkOfDetNeZero !![(q : ℚ), 0; 0, 1] (by simp [Matrix.det_fin_two_of]; exact_mod_cast hq.ne'))) with hg

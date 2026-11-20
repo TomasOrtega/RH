@@ -9,15 +9,13 @@ open scoped Matrix TensorProduct Classical
 open GlobalTheory.AdelicSim
 
 /- English proof (translation)
-Establish `s1 : σ 1 = 1`. Establish `h0` using `ha 1`. Rewrite `h0` using `[map_one]`. Then use the resulting hypothesis. Establish `hσ : σ y' * σ y = 1` using `by rw [← hm, h₂, s1]`. Establish `hσ' : σ y * σ y' = 1` using `by rw [← hm, h₁, s1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : σ y * B * y = algebraMap A S u`. Establish `h3` using `congrArg σ h`. Rewrite `h3` using `[hm, hs, ha]`. Rewrite using `[_root_.mul_assoc]`. Conclude with `h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : B = σ y' * algebraMap A S u * y'`. Rewrite using `[← hU]`. Combine the equalities or inequalities in the displayed calculation. Establish `e1 : algebraMap A S u * (σ y' * y' * b) = 1`. Rewrite using `[← hBb, hB, (Algebra.commutes u (σ y')).symm]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [_root_.mul_assoc]`. Establish `hX : σ y' * y' * b = algebraMap A S t`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← map_mul, hut, map_one, _root_.one_mul]`. Use `_ = algebraMap A S t := by rw [_root_.mul_assoc, e1, _root_.mul_one]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem trivCore {A S : Type} [CommRing A] [Ring S] [Algebra A S] (σ : S → S)
     (hm : ∀ a b, σ (a * b) = σ b * σ a) (hs : ∀ x, σ (σ x) = x)
@@ -52,7 +50,7 @@ private theorem trivCore {A S : Type} [CommRing A] [Ring S] [Algebra A S] (σ : 
     _ = algebraMap A S t := by rw [hσ', _root_.mul_one]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb`. Simplify using `only [map_add, MulOpposite.unop_add, ha, hb]`. Consider the case `tmul r c => rw [starT_tmul, starT_tmul, G.star_star]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 private theorem starT_invol {p : ℕ} [Fact p.Prime] (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ R]
     (x : R ⊗[ℚ] G.C) : (starT G.star R (starT G.star R x).unop).unop = x := by
@@ -63,28 +61,26 @@ private theorem starT_invol {p : ℕ} [Fact p.Prime] (G : HTGroup p) (R : Type) 
   | tmul r c => rw [starT_tmul, starT_tmul, G.star_star]
 
 /- English proof (translation)
-Rewrite using `[Algebra.TensorProduct.algebraMap_apply, starT_tmul, map_one, MulOpposite.unop_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem starT_alg {p : ℕ} [Fact p.Prime] (G : HTGroup p) (R : Type) [CommRing R] [Algebra ℚ R]
     (r : R) : (starT G.star R (algebraMap R (R ⊗[ℚ] G.C) r)).unop = algebraMap R (R ⊗[ℚ] G.C) r := by
   rw [Algebra.TensorProduct.algebraMap_apply, starT_tmul, map_one, MulOpposite.unop_one]
 
 /- English proof (translation)
-Introduce `p _ D G L β y y' h₁ h₂ s hs0 c hyp`. Establish `hs : s ≠ 0` using `ne_of_gt hs0`. Use `set Bi := inC G (AfP p) ((β⁻¹ : G.Cˣ) : G.C) with hBi`. Use `set b := inC G (AfP p) (β : G.C) with hb`. Establish `hBb : Bi * b = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hBi, hb, ← map_mul, Units.inv_mul, map_one]`. Set `u : AfP p` to `algebraMap ℚ (AfP p) (2 * s⁻¹) * (c : AfP p)`. Set `t : AfP p` to `algebraMap ℚ (AfP p) (s / 2) * ((c⁻¹ : (AfP p)ˣ) : AfP p)`. Establish `hut : t * u = 1`. Establish `hq : s / 2 * (2 * s⁻¹) = 1` using `by field_simp`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [t, u, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by rw [hq, map_one, Units.inv_mul, _root_.one_mul]`. Establish `htu : u * t = 1` using `by rw [_root_.mul_comm]; exact hut`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `σ : AfP p ⊗[ℚ] G.C → AfP p ⊗[ℚ] G.C` to `fun x => (starT G.star (AfP p) x).unop`. Establish `hkey : σ (Bi * y) * y = algebraMap (AfP p) (AfP p ⊗[ℚ] G.C) u`. Apply `GlobalTheory.AdelicSim.inj L` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AlgHom.commutes, Module.algebraMap_end_apply, ← sub_eq_zero]`. Apply `nondeg D` to reduce the goal to its premises. Introduce `v`. Rewrite using `[map_sub, map_smul, smul_eq_mul, map_mul, Module.End.mul_apply]`. Simplify using `only [σ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← adjAf L, map_mul, Module.End.mul_apply]`. Establish `hsinv : algebraMap ℚ (AfP p) s⁻¹ * algebraMap ℚ (AfP p) s = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ hs, map_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← _root_.mul_assoc, hsinv, _root_.one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `_ = 0 := by`. Rewrite using `[hyp v w]`. Simplify using `only [u]`. Rewrite using `[map_mul, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `⟨⟨t, u, hut, htu⟩, ?_⟩` and prove the remaining obligations. Conclude with `trivCore σ (fun a a' => by simp only [σ]; rw [map_mul, MulOpposite.unop_mul]) (starT_invol G (AfP p)) (starT_alg G (AfP p)) Bi b y y' hBb h₁ h₂ u t hut hkey`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_unit_triv_of_similitude_factor :
     ∀ {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} (L : Link D G) (β : G.Cˣ) (y y' : AfP p ⊗[ℚ] G.C) (h₁ : y' * y = 1) (h₂ : y * y' = 1) (s : ℚ),

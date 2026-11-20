@@ -12,13 +12,13 @@ variable {R : Type} [CommRing R] {d : ℕ} {O : Type} [CommRing O] [StarRing O]
 variable {k : Type} [CommRing k] [Algebra ℚ k] [Algebra R k]
 
 /- English proof (translation)
-Simplify using `[betaH]`.
+Simplify using the standard rewrite rules.
 -/
 theorem betaH_zero_zero (φ φ' : Fin d → k) : betaH k (0, φ) (0, φ') = 0 := by
   simp [betaH]
 
 /- English proof (translation)
-Unfold `betaH`. Rewrite using `[← Finset.sum_neg_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem betaH_antisymm (ξ η : (Fin d → k) × (Fin d → k)) : betaH k ξ η = -betaH k η ξ := by
   unfold betaH
@@ -29,7 +29,7 @@ def kapW (m : ℕ) {ι : Type} (s : ι → Bool) (ξa ξb : ι → (Fin d → k)
   if s l = true ∧ s l' = false then (m : k) * betaH k (ξb l) (ξa l') else 0
 
 /- English proof (translation)
-Unfold `kapW at h`. Assume the negation of the conclusion as `hc`. Conclude with `h (if_neg hc)`.
+Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem kapW_supp (m : ℕ) {ι : Type} (s : ι → Bool) (ξa ξb : ι → (Fin d → k) × (Fin d → k)) (l l' : ι)
     (h : kapW m s ξa ξb l l' ≠ 0) : s l = true ∧ s l' = false := by
@@ -38,17 +38,15 @@ theorem kapW_supp (m : ℕ) {ι : Type} (s : ι → Bool) (ξa ξb : ι → (Fin
   exact h (if_neg hc)
 
 /- English proof (translation)
-Establish `hbb : ∀ l l', betaH k (ξb l) (ξb l') = 0` using `fun l l' => by`. Rewrite using `[show ξb l = (0, (ξb l).2) from Prod.ext (hb0 l) rfl, show ξb l' = (0, (ξb l').2) from Prod.ext (hb0 l') rfl]`. Conclude with `betaH_zero_zero _ _`. Establish `hba : ∀ l l', s l = s l' → betaH k (ξb l) (ξa l') = 0` using `fun l l' e => by`. Rewrite using `[betaH_antisymm, hab l' l e.symm, neg_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `cA : ∀ l l', s l = s l' → Commute (nablaL B h m (ξa l).1 (ξa l).2) (nablaL B h m (ξa l').1 (ξa l').2)` using `fun l l' e => nablaL_comm hN2 B h m _ _ (haa l l' e)`. Establish `cAB : ∀ l l', s l = s l' → Commute (nablaL B h m (ξa l).1 (ξa l).2) (nablaL B h m (ξb l').1 (ξb l').2)` using `fun l l' e => nablaL_comm hN2 B h m _ _ (hab l l' e)`. Establish `cBA : ∀ l l', s l = s l' → Commute (nablaL B h m (ξb l).1 (ξb l).2) (nablaL B h m (ξa l').1 (ξa l').2)` using `fun l l' e => nablaL_comm hN2 B h m _ _ (hba l l' e)`. Establish `cB : ∀ l l', Commute (nablaL B h m (ξb l).1 (ξb l).2) (nablaL B h m (ξb l').1 (ξb l').2)` using `fun l l' => nablaL_comm hN2 B h m _ _ (hbb l l')`. Establish `hsum : ∀ l, nablaL B h m (ξa l + ξb l).1 (ξa l + ξb l).2 = nablaL B h m (ξa l).1 (ξa l).2 + nablaL B h m (ξb l).1 (ξb l).2` using `fun l => nablaL_add B h m _ _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cAll : ∀ l l', s l = s l' → Commute (nablaL B h m (ξa l + ξb l).1 (ξa l + ξb l).2) (nablaL B h m (ξa l' + ξb l').1 (ξa l' + ξb l').2)` using `fun l l' e => by`. Rewrite using `[hsum, hsum]`. Conclude with `((cA l l' e).add_right (cAB l l' e)).add_left ((cBA l l' e).add_right (cB l l'))`. Rewrite using `[ordNabla_eq B h m s (fun l => ξa l + ξb l) cAll P (liftX k f)]`. Establish `hL : opL B h m s (fun l => ξa l + ξb l) = opL B h m s ξa + opL B h m s ξb` using `funext fun i => hsum _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : opR B h m s (fun l => ξa l + ξb l) = opR B h m s ξa + opR B h m s ξb` using `funext fun j => hsum _`. Establish `key` using `_root_.wick_formula k (Module.End k (AA k d)) (AA k d) _ _ (opL B h m s ξa) (opL B h m s ξb) (opR B h m s ξa) (opR B h m s ξb) (kapE s (kapW m s ξa ξb)) (liftX k f) (fun i i' => ⟨cA _ _ (by rw [side_inl s i, side_inl s i']), cAB _ _ (by rw [side_inl s i, side_inl s i']), cB _ _⟩) …`. Rewrite using `[nablaL_bracket hN2 B h m]`. Unfold `kapE kapW`. Rewrite using `[if_pos ⟨side_inl s i, side_inr s j⟩])`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun i => by`. Rewrite using `[Module.End.smul_def, opL, hb0]`. Conclude with `hN3 R d O k B h m _ f)`. Use the proof step `(fun j => by`. Rewrite using `[Module.End.smul_def, opR, hb0]`.
-
-Conclude with `hN3 R d O k B h m _ f)`. Use the proof step `(MvPolynomial.rename (sideE s) P)`. Rewrite using `[hL, hR, ← Module.End.smul_def, key]`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Rewrite using `[Module.End.smul_def, delta_pow_rename s _ (kapW_supp m s ξa ξb)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordNabla_wick (hN2 : ConnectionCommutator) (hN3 : ConnectionKillsSeries) (B : FB R d O) (h : PS k 2 d) (m : ℕ) {ι : Type}
     [Fintype ι] (s : ι → Bool) (ξa ξb : ι → (Fin d → k) × (Fin d → k)) (hb0 : ∀ l, (ξb l).1 = 0)
@@ -105,11 +103,11 @@ theorem ordNabla_wick (hN2 : ConnectionCommutator) (hN3 : ConnectionKillsSeries)
   rw [Module.End.smul_def, delta_pow_rename s _ (kapW_supp m s ξa ξb)]
 
 /- English proof (translation)
-Establish `hcomm : ∀ a b : ι, Function.Commute (nabla k B h m (u a) 0) (nabla k B h m (u b) 0)`. Introduce `a b z`. Establish `hz` using `hN2 R d O k B h m (u a, 0) (u b, 0) z`. Establish `hb : betaH k (u a, (0 : Fin d → k)) (u b, 0) = 0` using `by simp [betaH]`. Rewrite `hz` using `[hb, mul_zero, map_zero, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `sub_eq_zero.mp hz`. Unfold `ordNabla nablaPoly`. Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← List.foldr_append]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `List.Perm.foldr_eq' (List.filter_append_perm _ _) ?_ _` and prove the remaining obligations. Introduce `x _ y _ z`. Conclude with `(hcomm y x).iterate_iterate (n y) (n x) z`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ordNabla_u (hN2 : ConnectionCommutator) (B : FB R d O) (h : PS k 2 d) (m : ℕ) {ι : Type} [Fintype ι] (s : ι → Bool)
     (u : ι → Fin d → k) (P : MvPolynomial ι k) (G : AA k d) :

@@ -8,13 +8,13 @@ open Formalism.REAL Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.T.capelli_left_comatrix_qminor_eq A m E hE u j j`. Rewrite `h1` using `[if_pos rfl]`. Establish `h2 : ∀ a : Fin (m + 1), qminor E (Fin.succAbove a) (Fin.succAbove j) (u - 1) * x j = x j * qminor E (Fin.succAbove a) (Fin.succAbove j) (u - 1)`. Introduce `a`. Use `GlobalTheory.T.qminor_commute_of_commute_columns A (m + 1) m E (x j) _ _ _ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `c i`. Rewrite using `[hx, if_neg (Fin.succAbove_ne j i), add_zero]`. Establish `h3 : ∀ a : Fin (m + 1), Tm E u a j * x j = x j * Tm E u a j + x a`. Introduce `a`. Establish `h` using `hx a j j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[if_pos rfl]`. Unfold `Tm`. Distinguish the cases in `haj : a = j`. Simplify using `only [if_pos haj, add_mul, mul_add, h, Algebra.commutes]`. Normalize the expressions using the abelian group laws.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Simplify using `only [if_neg haj, zero_add, h]`. Rewrite using `[← h1, Finset.sum_mul, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[smul_mul_assoc, mul_smul_comm, ← smul_add, mul_assoc, h2, ← mul_assoc, h3, add_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem qdet_mul_vector (A : Type) [Ring A] [Algebra ℂ A] (m : ℕ)
     (E : Fin (m + 1) → Fin (m + 1) → A) (x : Fin (m + 1) → A) (hE : GlRel E)

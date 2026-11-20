@@ -4,7 +4,7 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `conv_lhs => rw [← b.sum_repr s]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul, map_zsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotSpanNat_mk_eq_sum {S : Type} [CommRing S] {ι : Type} [Fintype ι] (b : Module.Basis ι ℤ S)
     (n : ℕ) [Algebra (ZMod n) (S ⧸ Ideal.span {((n : ℕ) : S)})] (s : S) :
@@ -16,13 +16,13 @@ theorem quotSpanNat_mk_eq_sum {S : Type} [CommRing S] {ι : Type} [Fintype ι] (
   rw [Int.cast_smul_eq_zsmul, map_zsmul]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use `set c : ι → ℤ := fun i => ((g i).val : ℤ) with hc`. Establish `hcg : ∀ i, ((c i : ℤ) : ZMod n) = g i` using `fun i => by simp [c]`. Establish `h0 : Ideal.Quotient.mk (Ideal.span {((n : ℕ) : S)}) (∑ i, c i • b i) = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[quotSpanNat_mk_eq_sum b n, ← hg]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[b.repr_sum_self c, hcg]`. Rewrite `h0` using `[Ideal.Quotient.eq_zero_iff_mem, Ideal.mem_span_singleton']`. Take `⟨a, ha⟩` from `h0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrep` using `congrArg (fun y => b.repr y i) ha`. Simplify using `only [b.repr_sum_self c] at hrep`. Establish `: a * ((n : ℕ) : S) = ((n : ℤ)) • a`. Rewrite using `[zsmul_eq_mul, mul_comm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hrep` using `[this, map_zsmul]`. Rewrite using `[← hcg i, ← hrep]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem quotSpanNat_linearIndependent {S : Type} [CommRing S] {ι : Type} [Fintype ι]
     (b : Module.Basis ι ℤ S) (n : ℕ) [NeZero n] [Algebra (ZMod n) (S ⧸ Ideal.span {((n : ℕ) : S)})] :
@@ -61,7 +61,7 @@ noncomputable def quotSpanNatBasis {S : Type} [CommRing S] {ι : Type} [Fintype 
     exact Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩))
 
 /- English proof (translation)
-The claim follows from `Module.Basis.mk_apply _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem quotSpanNatBasis_apply {S : Type} [CommRing S] {ι : Type} [Fintype ι]
     (b : Module.Basis ι ℤ S) (n : ℕ) [NeZero n] [Algebra (ZMod n) (S ⧸ Ideal.span {((n : ℕ) : S)})]
@@ -69,7 +69,7 @@ theorem quotSpanNatBasis_apply {S : Type} [CommRing S] {ι : Type} [Fintype ι]
   Module.Basis.mk_apply _ _ _
 
 /- English proof (translation)
-Establish `h` using `quotSpanNat_mk_eq_sum b n s`. Rewrite `h` using `[← quotSpanNatBasis_apply b n]`. Rewrite using `[h, (quotSpanNatBasis b n).repr_sum_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem quotSpanNatBasis_repr {S : Type} [CommRing S] {ι : Type} [Fintype ι]
     (b : Module.Basis ι ℤ S) (n : ℕ) [NeZero n] [Algebra (ZMod n) (S ⧸ Ideal.span {((n : ℕ) : S)})]
@@ -80,7 +80,7 @@ theorem quotSpanNatBasis_repr {S : Type} [CommRing S] {ι : Type} [Fintype ι]
   rw [h, (quotSpanNatBasis b n).repr_sum_self]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℤ S`. Rewrite using `[Algebra.trace_eq_matrix_trace b, Algebra.trace_eq_matrix_trace (quotSpanNatBasis b n)]`. Simplify using `only [Matrix.trace, Matrix.diag, Algebra.leftMulMatrix_apply, LinearMap.toMatrix_apply, Algebra.coe_lmul_eq_mul, LinearMap.mul_apply', Int.cast_sum, quotSpanNatBasis_apply, ← map_mul, quotSpanNatBasis_repr]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem intCast_trace_eq_trace_quotSpanNat {S : Type} [CommRing S] [Module.Free ℤ S] [Module.Finite ℤ S]
     (n : ℕ) [NeZero n] [Algebra (ZMod n) (S ⧸ Ideal.span {((n : ℕ) : S)})] (x : S) :
@@ -93,16 +93,16 @@ theorem intCast_trace_eq_trace_quotSpanNat {S : Type} [CommRing S] [Module.Free 
     quotSpanNatBasis_repr]
 
 /- English proof (translation)
-Establish `: Fact (1 < l ^ b)` using `⟨Nat.one_lt_pow hb (Fact.out : l.Prime).one_lt⟩`. Conclude with `IsLocalRing.of_surjective' (PadicInt.toZModPow (p := l) b) (ZMod.ringHom_surjective _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocalRing_zmod_primePow (l b : ℕ) [Fact l.Prime] (hb : b ≠ 0) : IsLocalRing (ZMod (l ^ b)) := by
   have : Fact (1 < l ^ b) := ⟨Nat.one_lt_pow hb (Fact.out : l.Prime).one_lt⟩
   exact IsLocalRing.of_surjective' (PadicInt.toZModPow (p := l) b) (ZMod.ringHom_surjective _)
 
 /- English proof (translation)
-Break down `eq_or_ne b 0 with rfl | hb` into its components or cases. Use `haveI : Subsingleton (ZMod (l ^ 0)) := by rw [pow_zero]; infer_instance haveI : Subsingleton M := by`. Use `⟨fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[← one_smul (ZMod (l ^ 0)) x, ← one_smul (ZMod (l ^ 0)) y, Subsingleton.elim (1 : ZMod (l ^ 0)) 0, zero_smul, zero_smul]`. Conclude with `⟨inferInstance, inferInstance⟩`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `haveI := isLocalRing_zmod_primePow l b hb`. Use `haveI : Module.Projective (ZMod (l ^ b)) M := Module.Projective.of_split (LinearMap.inl _ M N) (LinearMap.fst _ M N) (by ext; simp)`. Use `haveI : Module.Finite (ZMod (l ^ b)) M := Module.Finite.of_surjective (LinearMap.fst _ M N) LinearMap.fst_surjective`. Conclude with `⟨Module.free_of_flat_of_isLocalRing, inferInstance⟩`.
+A detailed English derivation is pending.
 -/
 theorem free_finite_fst_of_prod (l b : ℕ) [Fact l.Prime] (M N : Type) [AddCommGroup M] [AddCommGroup N]
     [Module (ZMod (l ^ b)) M] [Module (ZMod (l ^ b)) N] [Module.Free (ZMod (l ^ b)) (M × N)]
@@ -123,17 +123,13 @@ theorem free_finite_fst_of_prod (l b : ℕ) [Fact l.Prime] (M N : Type) [AddComm
   exact ⟨Module.free_of_flat_of_isLocalRing, inferInstance⟩
 
 /- English proof (translation)
-Use `haveI : NeZero (l ^ b) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Establish `hnIQ : ((l ^ b : ℕ) : 𝓞 L) ∈ I * Q` using `by rw [hmul]; exact Ideal.mem_span_singleton_self _`. Establish `hnQ : ((l ^ b : ℕ) : 𝓞 L) ∈ Q` using `(Ideal.mul_le_inf.trans inf_le_right) hnIQ`. Use `letI instJ : Algebra (ZMod (l ^ b)) (𝓞 L ⧸ Ideal.span {((l ^ b : ℕ) : 𝓞 L)}) := (zmodRingHomOfCastEqZero (l ^ b) (by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk (Ideal.span {((l ^ b : ℕ) : 𝓞 L)})), Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Conclude with `Ideal.mem_span_singleton_self _)).toAlgebra`. Use `letI instQ : Algebra (ZMod (l ^ b)) (𝓞 L ⧸ Q) := (zmodRingHomOfCastEqZero (l ^ b) (by`. Rewrite using `[← map_natCast (Ideal.Quotient.mk Q), Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hnQ)).toAlgebra`. Establish `hcop : IsCoprime I Q` using `Ideal.isCoprime_iff_sup_eq.mpr hsup`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `e : (𝓞 L ⧸ Ideal.span {((l ^ b : ℕ) : 𝓞 L)}) ≃+* (𝓞 L ⧸ I) × (𝓞 L ⧸ Q)` to `(Ideal.quotEquivOfEq hmul.symm).trans (Ideal.quotientMulEquivQuotientProd I Q hcop)`. Establish `he : ∀ y : 𝓞 L, e (Ideal.Quotient.mk (Ideal.span {((l ^ b : ℕ) : 𝓞 L)}) y) = (Ideal.Quotient.mk I y, Ideal.Quotient.mk Q y)`. Introduce `y`. Apply the tactic sequence `refine Prod.ext ?_ ?_ <;>`. Simplify using `[e, Ideal.quotientMulEquivQuotientProd_fst, Ideal.quotientMulEquivQuotientProd_snd, Ideal.Quotient.factor_mk]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `eA : (𝓞 L ⧸ Ideal.span {((l ^ b : ℕ) : 𝓞 L)}) ≃ₐ[ZMod (l ^ b)] (𝓞 L ⧸ I) × (𝓞 L ⧸ Q)` to `AlgEquiv.ofRingEquiv (f := e) (fun r => congrArg (fun f => f r) (Subsingleton.elim ((e : (𝓞 L ⧸ Ideal.span {((l ^ b : ℕ) : 𝓞 L)}) →+* _).comp (algebraMap (ZMod (l ^ b)) (𝓞 L ⧸ Ideal.span {((l ^ b : ℕ) : 𝓞 L)}))) (algebraMap (ZMod (l ^ b)) ((𝓞 L ⧸ I) × (𝓞 L ⧸ Q)))))`. Use `haveI hfreeJ : Module.Free (ZMod (l ^ b)) (𝓞 L ⧸ Ideal.span {((l ^ b : ℕ) : 𝓞 L)}) := Module.Free.of_basis (quotSpanNatBasis (Module.Free.chooseBasis ℤ (𝓞 L)) (l ^ b))`. Use `haveI hfinJ : Module.Finite (ZMod (l ^ b)) (𝓞 L ⧸ Ideal.span {((l ^ b : ℕ) : 𝓞 L)}) := Module.Finite.of_basis (quotSpanNatBasis (Module.Free.chooseBasis ℤ (𝓞 L)) (l ^ b))`. Use `haveI : Module.Free (ZMod (l ^ b)) ((𝓞 L ⧸ I) × (𝓞 L ⧸ Q)) := Module.Free.of_equiv eA.toLinearEquiv`. Use `haveI : Module.Finite (ZMod (l ^ b)) ((𝓞 L ⧸ I) × (𝓞 L ⧸ Q)) := Module.Finite.equiv eA.toLinearEquiv`.
-
-Take `⟨hfI, hfinI⟩` from `free_finite_fst_of_prod l b (𝓞 L ⧸ I) (𝓞 L ⧸ Q)`. Use `haveI : Module.Free (ZMod (l ^ b)) ((𝓞 L ⧸ Q) × (𝓞 L ⧸ I)) := Module.Free.of_equiv (LinearEquiv.prodComm (ZMod (l ^ b)) (𝓞 L ⧸ I) (𝓞 L ⧸ Q))`. Use `haveI : Module.Finite (ZMod (l ^ b)) ((𝓞 L ⧸ Q) × (𝓞 L ⧸ I)) := Module.Finite.equiv (LinearEquiv.prodComm (ZMod (l ^ b)) (𝓞 L ⧸ I) (𝓞 L ⧸ Q))`. Take `⟨hfQ, hfinQ⟩` from `free_finite_fst_of_prod l b (𝓞 L ⧸ Q) (𝓞 L ⧸ I)`. Rewrite using `[intCast_trace_eq_trace_quotSpanNat (l ^ b) x, ← Algebra.trace_eq_of_algEquiv eA]`.
-
-Establish `: eA (Ideal.Quotient.mk (Ideal.span {((l ^ b : ℕ) : 𝓞 L)}) x) = (Ideal.Quotient.mk I x, 0)` using `by show e _ = _`. Rewrite using `[he, Ideal.Quotient.eq_zero_iff_mem.mpr hx]`. Rewrite using `[this, Algebra.trace_prod_apply, map_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intCast_trace_eq_trace_quotient_of_mem (L : Type) [Field L] [NumberField L] (l b : ℕ) [Fact l.Prime]
     (I Q : Ideal (𝓞 L)) (hsup : I ⊔ Q = ⊤) (hmul : I * Q = Ideal.span {((l ^ b : ℕ) : 𝓞 L)})

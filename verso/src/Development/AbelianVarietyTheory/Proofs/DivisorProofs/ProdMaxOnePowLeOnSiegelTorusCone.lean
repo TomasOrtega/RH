@@ -11,17 +11,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ConeMax
 
 /- English proof (translation)
-Use `set c0 : ℝ := min c 1 ^ r with hc0`. Establish `hm0 : 0 < min c 1` using `lt_min hc one_pos`. Establish `hc0pos : 0 < c0` using `pow_pos hm0 r`. Establish `hc0le : c0 ≤ 1` using `pow_le_one₀ hm0.le (min_le_right _ _)`. Use `⟨(c0⁻¹ ^ e) ^ r * (c0⁻¹ ^ e) ^ r, by positivity, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t ht`. Establish `hlow : ∀ i, c0 ≤ t i` using `fun i => GlobalTheory.LatCount.cone_pow_le hc ht i`. Establish `htpos : ∀ i, 0 < t i` using `fun i => hc0pos.trans_le (hlow i)`. Establish `h1 : ∀ i, max 1 (t i) ≤ t i * c0⁻¹`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi : 1 ≤ c0⁻¹` using `one_le_inv₀ hc0pos |>.2 hc0le`. Use `max_le ?_ ?_` and prove the remaining obligations. Rewrite using `[← mul_inv_cancel₀ hc0pos.ne']`. Conclude with `mul_le_mul_of_nonneg_right (hlow i) (inv_nonneg.2 hc0pos.le)`. Conclude with `le_mul_of_one_le_right (htpos i).le hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : ∀ i, max 1 (t i)⁻¹ ≤ c0⁻¹`. Introduce `i`. Use `max_le (one_le_inv₀ hc0pos |>.2 hc0le) ?_` and prove the remaining obligations. Conclude with `inv_anti₀ hc0pos (hlow i)`. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, max_self, one_pow, Finset.prod_const_one, mul_one]`. Establish `A : ∏ i : Fin r, max 1 (t i) ^ e ≤ ∏ i : Fin r, (t i ^ e * c0⁻¹ ^ e)`. Use `Finset.prod_le_prod (fun i _ => pow_nonneg (zero_le_one.trans (le_max_left _ _)) _) fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (le_max_left _ _ |>.trans' zero_le_one) (h1 i) e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `B : ∏ i : Fin r, max 1 (t i)⁻¹ ^ e ≤ ∏ _i : Fin r, c0⁻¹ ^ e` using `Finset.prod_le_prod (fun i _ => pow_nonneg (zero_le_one.trans (le_max_left _ _)) _) fun i _ => pow_le_pow_left₀ (zero_le_one.trans (le_max_left _ _)) (h2 i) e`. Rewrite `A` using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Rewrite `B` using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Establish `hA0 : 0 ≤ ∏ i : Fin r, max 1 (t i)⁻¹ ^ e` using `Finset.prod_nonneg fun i _ => pow_nonneg (zero_le_one.trans (le_max_left _ _)) _`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem prod_max_le_prod (r m e : ℕ) (c : ℝ) (hc : 0 < c) : ∃ C : ℝ, 0 ≤ C ∧ ∀ t ∈ GlobalTheory.SiegelSet.cone r c,
     ∏ k : Fin r ⊕ Fin r ⊕ Fin m, max 1 (Sum.elim t (Sum.elim (fun i => (t i)⁻¹) (fun _ => (1 : ℝ))) k) ^ e ≤

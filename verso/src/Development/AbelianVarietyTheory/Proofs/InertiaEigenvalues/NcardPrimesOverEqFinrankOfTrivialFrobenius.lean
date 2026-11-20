@@ -4,13 +4,13 @@ open NumberField IsDedekindDomain Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite F`. Establish `hne : (X ^ q - X : F[X]) ≠ 0`. Introduce `h0`. Establish `h1` using `congrArg Polynomial.natDegree (sub_eq_zero.1 h0)`. Rewrite `h1` using `[natDegree_X_pow, natDegree_X]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hdeg : (X ^ q - X : F[X]).natDegree ≤ q`. Use `(natDegree_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[natDegree_X_pow, natDegree_X]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.card_eq_fintype_card, ← Finset.card_univ]`. Use `le_trans ?_ hdeg` and prove the remaining obligations. Use `Polynomial.card_le_degree_of_subset_roots ?_` and prove the remaining obligations. Introduce `x _`. Rewrite using `[mem_roots hne]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h x]`.
+A detailed English derivation is pending.
 -/
 theorem natCard_le_of_forall_pow_eq_self (F : Type*) [CommRing F] [IsDomain F] [Finite F]
     (q : ℕ) (hq : 1 < q) (h : ∀ x : F, x ^ q = x) : Nat.card F ≤ q := by
@@ -33,27 +33,21 @@ theorem natCard_le_of_forall_pow_eq_self (F : Type*) [CommRing F] [IsDomain F] [
   simp [h x]
 
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ _`. Establish `hD : differentIdeal (𝓞 K) (𝓞 M) ≠ ⊥` using `differentIdeal_ne_bot`. Use `⟨(fun P : HeightOneSpectrum (𝓞 M) => P.under (𝓞 K)) '' {P | P.asIdeal ∣ differentIdeal (𝓞 K) (𝓞 M)}, (Ideal.finite_factors hD).image _, ?_⟩` and prove the remaining obligations. Introduce `v hv hx`. Use `haveI := v.isPrime`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hq : 1 < Ideal.absNorm v.asIdeal`. Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`. Establish `h1 : Ideal.absNorm v.asIdeal ≠ 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `v.isPrime.ne_top`. Use linear arithmetic over natural numbers and integers. Establish `hf : ∀ P ∈ v.asIdeal.primesOver (𝓞 M), P.inertiaDeg (𝓞 K) = 1`. Introduce `P hP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hP.1`. Use `haveI := hP.2`. Establish `hP0 : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P`. Use `haveI : Finite (𝓞 M ⧸ P) := Ideal.finiteQuotientOfFreeOfNeBot P hP0`. Establish `hle : Nat.card (𝓞 M ⧸ P) ≤ Ideal.absNorm v.asIdeal`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `natCard_le_of_forall_pow_eq_self _ _ hq fun y => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[← map_pow, Ideal.Quotient.eq]`. Conclude with `hx P hP x`. Establish `hN : Ideal.absNorm P = Nat.card (𝓞 M ⧸ P)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `h` using `Ideal.absNorm_pow_inertiaDeg v.asIdeal P`. Rewrite `hle` using `[← hN, ← h]`. Establish `hpos : 0 < P.inertiaDeg (𝓞 K)` using `P.inertiaDeg_pos (𝓞 K)`. Establish `h2 : P.inertiaDeg (𝓞 K) ≤ 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Nat.pow_le_pow_iff_right hq, pow_one]`. Conclude with `hle`. Use linear arithmetic over natural numbers and integers. Establish `he : ∀ P ∈ v.asIdeal.primesOver (𝓞 M), P.ramificationIdx (𝓞 K) = 1`. Introduce `P hP`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI := hP.1`. Use `haveI := hP.2`. Establish `hP0 : P ≠ ⊥` using `Ideal.ne_bot_of_liesOver_of_ne_bot v.ne_bot P`. Establish `hn : ¬ P ∣ differentIdeal (𝓞 K) (𝓞 M)`. Introduce `hd`.
-
-Use `hv ⟨⟨P, hP.1, hP0⟩, hd, ?_⟩` and prove the remaining obligations. Use `ext1`. Conclude with `(Ideal.over_def P v.asIdeal).symm`. Use `haveI : Algebra.IsUnramifiedAt (𝓞 K) P := not_dvd_differentIdeal_iff.1 hn`. Conclude with `Ideal.ramificationIdx_eq_one P (𝓞 K)`.
-
-Use `⟨?_, fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨P⟩` from `(inferInstance : Nonempty (v.asIdeal.primesOver (𝓞 M))) haveI := P.2.1 haveI := P.2.2`. Establish `h` using `Ideal.ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn v.asIdeal (𝓞 M) Gal(M/K)`. Rewrite `h` using `[Ideal.ramificationIdxIn_eq_ramificationIdx v.asIdeal P.1 Gal(M/K), Ideal.inertiaDegIn_eq_inertiaDeg v.asIdeal P.1 Gal(M/K), he P.1 P.2, hf P.1 P.2, IsGalois.card_aut_eq_finrank]`. Simplify using `using h`.
-
-Use `haveI := hP.1 haveI := hP.2`. Rewrite using `[← Ideal.absNorm_pow_inertiaDeg v.asIdeal P, hf P hP, pow_one]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_ncard_primesOver_eq_finrank_of_pow_absNorm_sub_mem :
     ∀ (K M : Type) [Field K] [NumberField K] [Field M] [NumberField M] [Algebra K M]

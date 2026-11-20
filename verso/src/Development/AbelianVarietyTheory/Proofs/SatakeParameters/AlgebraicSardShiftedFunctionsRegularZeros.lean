@@ -20,11 +20,11 @@ namespace GlobalTheory.AlgSard
 variable {X : Scheme.{0}} {p : X ⟶ Sp ℂ} {d : ℕ}
 
 /- English proof (translation)
-Use `haveI : Smooth p := SmoothOfRelativeDimension.smooth d p`. Establish `h1` using `LocallyOfFiniteType.finiteType_of_affine_subset p (isAffineOpen_top (Sp ℂ)) hU (by simp)`. Establish `h2 : ((Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv).hom.FiniteType` using `RingHom.FiniteType.of_surjective _ (Scheme.ΓSpecIso (CommRingCat.of ℂ)).commRingCatIsoToRingEquiv.symm.surjective`. Establish `hft : (algX p U).FiniteType` using `h1.comp h2`. Take `⟨k, G, ⟨hom⟩⟩` from `GlobalTheory.AffCxPts.homeomorph_zeroSet X p U hU hft`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : SecondCountableTopology (ptsIn p (RingHom.id ℂ) U) := hom.secondCountableTopology`. Use `choose ch hch using fun y : ptsIn p (RingHom.id ℂ) U => AlgChart.exists_mem_source (p := p) (D := d) (σ := RingHom.id ℂ) y.1`. Take `⟨T, hT, hTU⟩` from `TopologicalSpace.isOpen_iUnion_countable (fun y : ptsIn p (RingHom.id ℂ) U => (Subtype.val ⁻¹' (ch y).e.source : Set (ptsIn p (RingHom.id ℂ) U))) (fun y => (ch y).e.open_source.preimage continuous_subtype_val)`. Use `⟨ch '' T, hT.image _, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hm : (⟨z, hz⟩ : ptsIn p (RingHom.id ℂ) U) ∈ ⋃ i ∈ T, Subtype.val ⁻¹' (ch i).e.source`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[hTU]`. Conclude with `mem_iUnion.2 ⟨⟨z, hz⟩, hch _⟩`. Take `⟨y, hyT, hy⟩` from `mem_iUnion₂.1 hm`. Conclude with `⟨ch y, mem_image_of_mem _ hyT, hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem countable_charts [SmoothOfRelativeDimension d p] {U : X.Opens} (hU : IsAffineOpen U) :
     ∃ C : Set (AlgChart p (RingHom.id ℂ) d), C.Countable ∧
@@ -54,11 +54,11 @@ end GlobalTheory.AlgSard
 open GlobalTheory.AlgSard in
 
 /- English proof (translation)
-Introduce `X p d _ U hU φ`. Take `⟨C, hC, hcov⟩` from `countable_charts (p := p) (d := d) hU`. Use `choose E hE0 hE using fun ch : AlgChart p (RingHom.id ℂ) d => GlobalTheory.T.null_negEval_of_jacobian_det_eq_zero X p d U ch φ`. Use `⟨⋃ ch ∈ C, E ch, (measure_biUnion_null_iff hC).2 fun ch _ => hE0 ch, ?_⟩` and prove the remaining obligations. Introduce `c hc z hz hzero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨ch, hchC, hzc⟩` from `hcov z hz`. Establish `hcz : c = fun j => -evHom hz (φ j)` using `funext fun j => by linear_combination hzero j`. Establish `hdet : (ch.jacMat φ z).det ≠ 0` using `fun h0 => hc (mem_biUnion hchC (hcz ▸ hE ch z hzc hz h0))`. Establish `key` using `GlobalTheory.T.ker_evalComplexPoint_le_span_jacobian X p d U hU ch φ z hzc hz hdet`. Establish `e : (fun j => φ j + algX p U (c j)) = fun j => φ j - algX p U (evHom hz (φ j))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[hcz, map_neg, sub_eq_add_neg]`. Rewrite using `[e]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AlgSard.main : ∀ (X : Scheme.{0}) (p : X ⟶ Sp ℂ) (d : ℕ) [SmoothOfRelativeDimension d p] (U : X.Opens), IsAffineOpen U →
     ∀ φ : Fin d → Γ(X, U), ∃ E : Set (Fin d → ℂ), MeasureTheory.volume E = 0 ∧

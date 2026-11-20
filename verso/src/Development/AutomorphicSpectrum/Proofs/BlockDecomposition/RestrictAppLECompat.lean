@@ -8,7 +8,7 @@ open CategoryTheory AlgebraicGeometry GlobalTheory.LogCris ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.ConeRs
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((f.appLE U W hW) ≫ X.presheaf.map (homOfLE h).op).hom s = _`. Rewrite using `[Scheme.Hom.appLE_map]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rs_appLE_apply {X Y : Scheme.{0}} (f : X ⟶ Y) (U : Y.Opens) {V W : X.Opens} (h : V ≤ W) (hW : W ≤ f ⁻¹ᵁ U)
     (s : Γ(Y, U)) : rs h ((f.appLE U W hW).hom s) = (f.appLE U V (h.trans hW)).hom s := by

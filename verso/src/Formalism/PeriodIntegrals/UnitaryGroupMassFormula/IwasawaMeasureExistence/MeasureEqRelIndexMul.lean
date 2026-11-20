@@ -12,21 +12,21 @@ section Idx
 variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
 
 /- English proof (translation)
-Establish `hcard : Nat.card (U ⧸ W.subgroupOf U) = W.relIndex U` using `rfl`. Use `haveI : Finite (U ⧸ W.subgroupOf U) := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hfin)`. Use `letI : Fintype (U ⧸ W.subgroupOf U) := Fintype.ofFinite _`. Use `choose r hr using fun q : U ⧸ W.subgroupOf U => QuotientGroup.mk_surjective q`. Establish `hC : (U : Set G) = ⋃ q, (fun x => ((r q : U) : G)⁻¹ * x) ⁻¹' (W : Set G)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `⟨(QuotientGroup.mk (⟨x, hx⟩ : U) : U ⧸ W.subgroupOf U), ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `QuotientGroup.eq.mp (hr (QuotientGroup.mk (⟨x, hx⟩ : U)))`. Rewrite `h` using `[Subgroup.mem_subgroupOf]`. Simplify using `using h`. Introduce and unpack `⟨q, hq⟩`. Establish `e : x = ((r q : U) : G) * (((r q : U) : G)⁻¹ * x)` using `by group`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `U.mul_mem (r q).2 (hWU hq)`. Establish `hdisj : Pairwise (Function.onFun Disjoint fun q => (fun x => ((r q : U) : G)⁻¹ * x) ⁻¹' (W : Set G))`. Introduce `q q' hne`. Express the relevant statement in the definitionally equal form `Disjoint ((fun x => ((r q : U) : G)⁻¹ * x) ⁻¹' (W : Set G)) ((fun x => ((r q' : U) : G)⁻¹ * x) ⁻¹' (W : Set G))`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Set.disjoint_left.mpr ?_` and prove the remaining obligations. Introduce `x hx hx'`. Apply `hne` to reduce the goal to its premises. Simplify using `only [Set.mem_preimage, SetLike.mem_coe] at hx hx'`. Rewrite using `[← hr q, ← hr q']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `QuotientGroup.eq.mpr ?_` and prove the remaining obligations. Rewrite using `[Subgroup.mem_subgroupOf]`. Establish `key : ((r q : U) : G)⁻¹ * ((r q' : U) : G) ∈ W`. Establish `e : ((r q : U) : G)⁻¹ * ((r q' : U) : G) = (((r q : U) : G)⁻¹ * x) * (((r q' : U) : G)⁻¹ * x)⁻¹` using `by group`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `W.mul_mem hx (W.inv_mem hx')`. Simplify using `using key`. Establish `hmeas : ∀ q, MeasurableSet ((fun x => ((r q : U) : G)⁻¹ * x) ⁻¹' (W : Set G))` using `fun q => hW.preimage (measurable_const_mul _)`. Establish `hval : ∀ q, μ ((fun x => ((r q : U) : G)⁻¹ * x) ⁻¹' (W : Set G)) = μ W` using `fun q => measure_preimage_mul μ _ _`. Establish `hfc : (Fintype.card (U ⧸ W.subgroupOf U) : ℝ≥0∞) = (W.relIndex U : ℝ≥0∞)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.card_eq_fintype_card, hcard]`. Rewrite using `[hC, measure_iUnion hdisj hmeas, tsum_fintype]`. Simplify using `only [hval, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[hfc]`.
+A detailed English derivation is pending.
 -/
 theorem measure_eq_relIndex_mul (μ : Measure G) [IsMulLeftInvariant μ] {U W : Subgroup G} (hWU : W ≤ U)
     (hU : MeasurableSet (U : Set G)) (hW : MeasurableSet (W : Set G)) (hfin : W.relIndex U ≠ 0) :
@@ -103,25 +103,21 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Loca
   [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `hφm : Measurable φ` using `φ.continuous.measurable`. Establish `hW'set : ((U.comap φ.toMulEquiv.toMonoidHom : Subgroup G) : Set G) = φ ⁻¹' (U : Set G)` using `by first`. Consider the case `rfl`. Consider the case `(ext x; rfl)`. Consider the case `(ext x; simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hUm : MeasurableSet (U : Set G)` using `hUo.measurableSet`. Establish `hW'o : IsOpen ((U.comap φ.toMulEquiv.toMonoidHom : Subgroup G) : Set G)`. Rewrite using `[hW'set]`. Conclude with `hUo.preimage φ.continuous`. Establish `hVo : IsOpen ((U ⊓ U.comap φ.toMulEquiv.toMonoidHom : Subgroup G) : Set G)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.coe_inf]`. Conclude with `hUo.inter hW'o`. Establish `eU` using `measure_eq_relIndex_mul (haar : Measure G) (U := U) (W := U ⊓ U.comap φ.toMulEquiv.toMonoidHom) inf_le_left hUm hVo.measurableSet h1`. Establish `eW` using `measure_eq_relIndex_mul (haar : Measure G) (U := U.comap φ.toMulEquiv.toMonoidHom) (W := U ⊓ U.comap φ.toMulEquiv.toMonoidHom) inf_le_right hW'o.measurableSet hVo.measurableSet h2`. Establish `hV0 : (haar : Measure G) ((U ⊓ U.comap φ.toMulEquiv.toMonoidHom : Subgroup G) : Set G) ≠ 0` using `hVo.measure_ne_zero _ ⟨1, Subgroup.one_mem _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hVtop : (haar : Measure G) ((U ⊓ U.comap φ.toMulEquiv.toMonoidHom : Subgroup G) : Set G) ≠ ∞` using `((measure_mono (SetLike.coe_subset_coe.mpr (inf_le_left : U ⊓ U.comap φ.toMulEquiv.toMonoidHom ≤ U))).trans_lt hUc.measure_lt_top).ne`. Take `⟨c, hc⟩ : ∃ c : ℝ≥0∞, (haar : Measure G).map φ = c • (haar : Measure G)` from `by haveI hreg : Regular (haar : Measure G) := by first`. Consider the case `infer_instance`. Consider the case `exact regular_haarMeasure`. Use `haveI : IsHaarMeasure ((haar : Measure G).map φ) := by first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `infer_instance`. Consider the case `exact ContinuousMulEquiv.isHaarMeasure_map (haar : Measure G) φ`. Consider the case `exact φ.isHaarMeasure_map (haar : Measure G)`. Consider the case `exact isHaarMeasure_map (haar : Measure G) φ.toMulEquiv.toMonoidHom φ.continuous φ.surjective φ.toHomeomorph.isClosedEmbedding.tendsto_cocompact`. Use `haveI : Regular ((haar : Measure G).map φ) := by first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `infer_instance`. Consider the case `exact Regular.map (μ := (haar : Measure G)) φ.toHomeomorph`. Consider the case `exact hreg.map φ.toHomeomorph`. Use `first`. Consider the case `exact ⟨_, (isMulLeftInvariant_eq_smul_of_regular ((haar : Measure G).map φ) (haar : Measure G)).trans (ENNReal.smul_def _ _)⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `exact ⟨_, (isMulLeftInvariant_eq_smul_of_regular ((haar : Measure G).map φ) (haar : Measure G)).trans rfl⟩`. Consider the case `exact ⟨_, haarMeasure_unique ((haar : Measure G).map φ) _⟩`. Consider the case `exact ⟨_, (isMulLeftInvariant_eq_smul_of_regular ((haar : Measure G).map φ) (haar : Measure G)).trans (by ext s _; simp)⟩`. Establish `hνU : (haar : Measure G).map φ (U : Set G) = (c • (haar : Measure G)) (U : Set G)`. Rewrite using `[hc]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite `hνU` using `[Measure.map_apply hφm hUm, ← hW'set, Measure.smul_apply, smul_eq_mul, eU, eW, ← mul_assoc]`. Establish `hca : c * ((U ⊓ U.comap φ.toMulEquiv.toMonoidHom).relIndex U : ℝ≥0∞) = ((U ⊓ U.comap φ.toMulEquiv.toMonoidHom).relIndex (U.comap φ.toMulEquiv.toMonoidHom) : ℝ≥0∞)` using `by first`. Consider the case `exact ((ENNReal.mul_eq_mul_right hV0 hVtop).mp hνU).symm`. Consider the case `exact ((ENNReal.mul_left_inj hV0 hVtop).mp hνU).symm`. Consider the case `(have h' := congrArg (· / (haar : Measure G) ((U ⊓ U.comap φ.toMulEquiv.toMonoidHom : Subgroup G) : Set G)) hνU`.
-
-Simplify using `only [ENNReal.mul_div_cancel_right hV0 hVtop] at h'`. Conclude with `h'.symm)`. Rewrite using `[hc]`. Use `congr 1`. Rewrite using `[ENNReal.ofReal_div_of_pos (Nat.cast_pos.mpr (Nat.pos_of_ne_zero h1)), ENNReal.ofReal_natCast, ENNReal.ofReal_natCast, ENNReal.eq_div_iff (by exact_mod_cast h1) (by simp), mul_comm]`.
-
-Conclude with `hca`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem haar_map_eq_relIndex (φ : G ≃ₜ* G) (U : Subgroup G) (hUo : IsOpen (U : Set G))
     (hUc : IsCompact (U : Set G))

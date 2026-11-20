@@ -18,9 +18,7 @@ abbrev qAlg (A : LocAt F E sig p) : Algebra ℚ_[resChar p] A.Ep :=
   ((algebraMap A.Fp A.Ep).comp (algebraMap ℚ_[resChar p] A.Fp)).toAlgebra
 
 /- English proof (translation)
-Use `letI := qAlg A`. Establish `: IsScalarTower ℚ_[resChar p] A.Fp A.Ep` using `IsScalarTower.of_algebraMap_eq' (R := ℚ_[resChar p]) (S := A.Fp) (A := A.Ep) rfl`. Use `haveI := A.free`. Use `haveI : Module.Finite A.Fp A.Ep := Module.finite_of_finrank_pos (by rw [A.rank]; norm_num)`. Use `haveI := A.qlFin`.
-
-Conclude with `(Algebra.trace_trace (R := ℚ_[resChar p]) (S := A.Fp) z).symm`.
+Equip the data with the indicated structure. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem trQ_eq (A : LocAt F E sig p) (z : A.Ep) :
     (letI := qAlg A; Algebra.trace ℚ_[resChar p] A.Ep z) =
@@ -33,9 +31,7 @@ theorem trQ_eq (A : LocAt F E sig p) (z : A.Ep) :
   exact (Algebra.trace_trace (R := ℚ_[resChar p]) (S := A.Fp) z).symm
 
 /- English proof (translation)
-Take `⟨a, ha, hle, hpsi⟩` from `A.psiE_def z`. Establish `hle' : ‖Algebra.trace ℚ_[resChar p] A.Fp (Algebra.trace A.Fp A.Ep z) - (a : ℚ_[resChar p])‖ ≤ 1`. Rewrite using `[← trQ_eq]`. Conclude with `hle`. Rewrite using `[hpsi]`.
-
-Conclude with `hK _ _ a ha hle'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_tower (hK : PsiKer) (A : LocAt F E sig p) (z : A.Ep) :
     A.psiE z = 1 ↔ ‖Algebra.trace ℚ_[resChar p] A.Fp (Algebra.trace A.Fp A.Ep z)‖ ≤ 1 := by
@@ -46,22 +42,22 @@ theorem psi_tower (hK : PsiKer) (A : LocAt F E sig p) (z : A.Ep) :
   exact hK _ _ a ha hle'
 
 /- English proof (translation)
-Rewrite using `[mul_comm, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_smul (A : LocAt F E sig p) (z : A.Ep) (c : A.Fp) :
     Algebra.trace A.Fp A.Ep (z * algebraMap A.Fp A.Ep c) = Algebra.trace A.Fp A.Ep z * c := by
   rw [mul_comm, ← Algebra.smul_def, LinearMap.map_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Establish `key : ∀ x y : A.Ep, A.psiE (-(x * y * algebraMap A.Fp A.Ep d⁻¹)) = 1 ↔ ‖Algebra.trace ℚ_[resChar p] A.Fp (Algebra.trace A.Fp A.Ep (x * y) * d⁻¹)‖ ≤ 1`. Introduce `x y`. Rewrite using `[psi_tower hK]`. Simplify using `only [map_neg, norm_neg]`. Rewrite using `[tr_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `DualAtL`. Introduce `x`. Repeatedly rewrite using `[key]`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion repeatedly using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hE]`. Introduce `y hy`. Rewrite using `[← hd]`. Introduce `b`. Establish `hyb : y * algebraMap A.Fp A.Ep (b : A.Fp) ∈ A.O` using `A.O.mul_mem hy (Part2.alg_mem_O A b)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `H _ hyb` as an intermediate fact. Rewrite `this` using `[← mul_assoc, tr_smul]`. Then use the resulting hypothesis. Introduce `hx y hy`. Establish `ha` using `(hE x).2 hx y hy`. Use `(hd _).2 ha 1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem assemble (hK : PsiKer) (A : LocAt F E sig p) (d : A.Fp)
     (hd : ∀ a : A.Fp, (∀ b : 𝒪[A.Fp],
@@ -93,9 +89,9 @@ theorem assemble (hK : PsiKer) (A : LocAt F E sig p) (d : A.Fp)
     simpa using this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig p A`. Use `haveI := A.ellPrime`. Establish `hE : IsReduced A.Ep → UnramL A → ∀ x : A.Ep, (∀ y ∈ A.O, Algebra.trace A.Fp A.Ep (x * y) ∈ 𝒪[A.Fp]) ↔ x ∈ A.O` using `fun hr hu => h3 A.Fp A.Ep A.lf A.char0 A.free A.rank hr A.O A.O_def hu`. Use `⟨fun hr hu => ?_, fun δ u hu h => Part2.dualAtL_mul_unit A δ u hu h, fun hr hu hl => ?_⟩` and prove the remaining obligations. Take `⟨d, hd0, hd⟩` from `h1 A.Fp (resChar p) A.lf A.char0 A.qlCont A.qlFin`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨d, hd0, assemble hK A d hd (hE hr hu)⟩`. Use `assemble hK A 1 (fun a => ?_) (hE hr hu)` and prove the remaining obligations. Simplify `h2 A.Fp (resChar p) A.lf A.char0 A.qlCont A.qlFin hl a` using `[inv_one, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem stmt_of (hK : PsiKer) (h1 : FpDual) (h2 : FpDualUnram) (h3 : EpSelfDual) :
     PI.LocDualGen.Stmt := by

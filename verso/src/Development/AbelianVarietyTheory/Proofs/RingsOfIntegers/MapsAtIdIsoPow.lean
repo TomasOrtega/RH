@@ -36,7 +36,7 @@ def genOfPullBoxPow
   s := fun jN => res (wchart_comp_le_pull L F q jN) (a.s (fun _ => jN))
 
 /- English proof (translation)
-Establish `h2` using `congrArg (res hDO) h`. Simplify using `only [map_mul, map_zpow, Fintype.prod_unique, res_res'] at h2`. Establish `hid : ∀ (k : q ⁻¹ᵁ O ≤ q ⁻¹ᵁ O) (x : Γ(Y, q ⁻¹ᵁ O)ˣ), res k x = x` using `fun k x => (res_res' k k x).symm.trans (res_of_le_of_le k k x)`. Rewrite using `[res_res', h2, hid]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma res_res_eq_pullU_pow_mul_res_of_res_eq {Y Z : Scheme.{0}} (q : Y ⟶ Z) {O : Z.Opens} (g : Γ(Z, O)ˣ) (n : ℤ)
     {U1 U2 D V : Y.Opens} (s1 : Γ(Y, U1)ˣ) (s2 : Γ(Y, U2)ˣ)
@@ -51,9 +51,9 @@ private lemma res_res_eq_pullU_pow_mul_res_of_res_eq {Y Z : Scheme.{0}} (q : Y �
   rw [res_res', h2, hid]
 
 /- English proof (translation)
-Introduce `jN jL`. Establish `h` using `ha (fun _ => jN) (fun _ => jL)`. Simplify using `only [CubePf.idIsoL, genOfPullBoxPow]`. Use `res_res_eq_pullU_pow_mul_res_of_res_eq q ((L.LinComb F fun _ => 1).g jN jL) n (a.s fun _ => jN) (a.s fun _ => jL) _ _ _ h _ _ _ ?_` and prove the remaining obligations. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy'` using `TopologicalSpace.Opens.mem_inf.1 (show q.base y ∈ _ from hy)`. Conclude with `TopologicalSpace.Opens.mem_inf.2 ⟨Set.mem_iInter.2 fun _ => hy'.1, Set.mem_iInter.2 fun _ => hy'.2⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mapsAt_idIso_pow
     (a : LB.Gen (LB.LinComb (LB.LinComb L F (fun _ => 1)) (K := PUnit) (fun _ => q) (fun _ => n)))
@@ -78,7 +78,7 @@ def boxAt : LB.Gen (LB.LinComb (LB.LinComb L F (fun _ => 1)) (K := PUnit) (fun _
       (fun _ => (he i).trans (Category.id_comp _).symm) (t i)
 
 /- English proof (translation)
-Unfold `boxAt`. Conclude with `isGen_boxGen L F _ _ _ fun i => LBxP.isGen_pullAlong L (F i) (𝟙 Y) _ _ _ _ (t i) (ht i)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isGen_boxAt (ht : ∀ i, (t i).IsGen) : (boxAt L F q n r he t).IsGen := by
   unfold boxAt
@@ -86,7 +86,7 @@ theorem isGen_boxAt (ht : ∀ i, (t i).IsGen) : (boxAt L F q n r he t).IsGen := 
     LBxP.isGen_pullAlong L (F i) (𝟙 Y) _ _ _ _ (t i) (ht i)
 
 /- English proof (translation)
-Use `ext`. Simplify using `[res, pullU]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 private lemma res_pullU_id_eq_res_of_le {Y : Scheme.{0}} {U V : Y.Opens} (h : V ≤ (𝟙 Y) ⁻¹ᵁ U) (h' : V ≤ U)
     (x : Γ(Y, U)ˣ) : res h (pullU (𝟙 Y) U x) = res h' x := by
@@ -95,7 +95,7 @@ private lemma res_pullU_id_eq_res_of_le {Y : Scheme.{0}} {U V : Y.Opens} (h : V 
   rfl
 
 /- English proof (translation)
-Simplify using `only [map_prod, res_res']`. Conclude with `Finset.prod_congr rfl fun i _ => res_pullU_id_eq_res_of_le _ _ (x i)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma res_res_prod_res_pullU_id_eq_res_prod {Y : Scheme.{0}} {J : Type} [Fintype J] {O T : J → Y.Opens}
     {W V Z W' : Y.Opens} (x : ∀ i, Γ(Y, O i)ˣ) (hD : ∀ i, T i ≤ (𝟙 Y) ⁻¹ᵁ O i) (hC : ∀ i, W ≤ T i)
@@ -106,7 +106,7 @@ private lemma res_res_prod_res_pullU_id_eq_res_prod {Y : Scheme.{0}} {J : Type} 
   exact Finset.prod_congr rfl fun i _ => res_pullU_id_eq_res_of_le _ _ (x i)
 
 /- English proof (translation)
-Introduce `j j' hj hj' hjj`. Establish `hj'' : j' = fun p => j p.1` using `funext fun p => (hjj p.1 p (he p.1)).symm`. Substitute `hj''` using the available equality. Simplify using `only [genOfPullBoxPow, boxAt, GeneratorPullback.boxGen, GeneratorPullback.pullAlong, GeneratorPullback.finProdGen]`. Conclude with `res_res_prod_res_pullU_id_eq_res_prod (fun i => (t i).s fun _ => j i) _ _ _ _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem corr_boxAt :
     LB.Gen.Corr L _ _ _ _ (genOfPullBoxPow L F q n (boxAt L F q n r he t))
@@ -126,13 +126,13 @@ variable {S : Scheme.{0}} {G' G : Over S} [GrpObj G'] [GrpObj G] {j : ℕ} (p : 
 def tuple {T : Over S} (x : Fin j → (T ⟶ G)) : T ⟶ G' := p.lim.lift (Fan.mk T x)
 
 /- English proof (translation)
-Simplify `p.lim.fac (Fan.mk T x) ⟨i⟩` using `[tuple]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tuple_pr {T : Over S} (x : Fin j → (T ⟶ G)) (i : Fin j) : tuple p x ≫ p.pr i = x i := by
   simpa [tuple] using p.lim.fac (Fan.mk T x) ⟨i⟩
 
 /- English proof (translation)
-Use `p.lim.hom_ext fun k => ?_` and prove the remaining obligations. Take `⟨k⟩` from `k`. Simplify using `using h k`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem pt_ext {T : Over S} {a b : T ⟶ G'} (h : ∀ i, a ≫ p.pr i = b ≫ p.pr i) : a = b := by
   refine p.lim.hom_ext fun k => ?_
@@ -140,7 +140,7 @@ theorem pt_ext {T : Over S} {a b : T ⟶ G'} (h : ∀ i, a ≫ p.pr i = b ≫ p.
   simpa using h k
 
 /- English proof (translation)
-Use `p.hom i` as an intermediate fact. Rewrite using `[Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_mul_pr {T : Over S} (a b : T ⟶ G') (i : Fin j) :
     (lift a b ≫ μ[G']) ≫ p.pr i = lift (a ≫ p.pr i) (b ≫ p.pr i) ≫ μ[G] := by
@@ -148,7 +148,7 @@ theorem lift_mul_pr {T : Over S} (a b : T ⟶ G') (i : Fin j) :
   rw [Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map]
 
 /- English proof (translation)
-Use `p.hom i` as an intermediate fact. Rewrite using `[← Over.comp_left, IsMonHom.one_hom]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eSec_pr (i : Fin j) : η[G'].left ≫ (p.pr i).left = η[G].left := by
   have := p.hom i
@@ -161,7 +161,7 @@ variable {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (j : ℕ)
 abbrev pw : IsPowGrp (powPol D.P j).A D.P.A j := (isPowPolAV_powPol D.P j).toIsPowGrp
 
 /- English proof (translation)
-Unfold `ptK`. Rewrite using `[← Over.comp_left, Category.assoc, tuple_pr]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ptK_tuple_pr (x : Fin j → D.X) (i : Fin j) :
     ptK (tuple (pw D j) fun i => D.c (x i)) ≫ ((pw D j).pr i).left = ptK (D.c (x i)) := by
@@ -199,7 +199,7 @@ def isPowDeg_pow : IsPowDeg (pow D j) D j where
     corr_boxAt D.P.L _ _ (-1) (fun i => ptK (D.c (x i))) (ptK_tuple_pr D j x) (fun i => D.psi (x i))⟩
 
 /- English proof (translation)
-Introduce `R _ _ D j`. Conclude with `⟨pow D j, ⟨isPowDeg_pow D j⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_pow : ∀ (R : Type) [CommRing R] [IsDomain R] (D : DegPre R) (j : ℕ),
     ∃ D' : DegPre R, Nonempty (IsPowDeg D' D j) := by

@@ -20,14 +20,14 @@ noncomputable section
 namespace GlobalTheory.PolGlue
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (g : A →+* B) (f : B →+* C) :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   simp only [spMap, ← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Take `⟨-, -, hfr⟩` from `hω`. Use `letI := ω.toAlgebra`. Use extensionality with `x`. Conclude with `IsFractionRing.injective B F (congrArg (fun k => k x) e)`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem ringHom_eq_of_dedFrac {A B F : Type} [CommRing A] [CommRing B] [Field F] {ω : B →+* F} (hω : Models.IsDedFrac ω)
     {f g : A →+* B} (e : ω.comp f = ω.comp g) : f = g := by
@@ -37,31 +37,27 @@ theorem ringHom_eq_of_dedFrac {A B F : Type} [CommRing A] [CommRing B] [Field F]
   exact IsFractionRing.injective B F (congrArg (fun k => k x) e)
 
 /- English proof (translation)
-Take `⟨hβ, hR, hspan⟩` from `hcov`. Establish `hD : ∀ i, Models.IsDedFrac (ω i)` using `fun i => (hR i).1`. Establish `hωb : ∀ i, (ω i).comp (b i) = algebraMap (𝓞 c.F) c.F` using `fun i => (hR i).2.1`. Establish `hloc : ∀ i, @IsLocalization.Away _ _ (a i) (R i) _ (b i).toAlgebra` using `fun i => (hR i).2.2`. Establish `hft : Algebra.FiniteType ℤ (𝓞 c.F)` using `by haveI : FiniteDimensional ℚ c.F := c.fin haveI : NumberField c.F := ⟨⟩ infer_instance`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose ω' h hω'1 hω'2 hD' hft' hopen hsq hsw using fun i k => GlobalTheory.T.exists_common_localization_model (algebraMap (𝓞 c.F) c.F) (a i) (a k) (b i) (b k) (ω i) (ω k) hβ (hD i) (hD k) (hωb i) (hωb k) (hloc i) (hloc k) hft`. Use `choose C' BD' v hv hvj hpol' hBD' using fun i k => GlobalTheory.T.isPol_localization_away (C i) (BD i) φ m (b i (a k)) (ω' i k) (hD i) (hD' i k) (hω'1 i k) (hpol i)`. Use `choose s hs using fun i k => hsw i k (ω' k i) (hω'1 k i)`. Use `choose θ hθs hθj hθBD using fun i k => GlobalTheory.T.isPol_transfer_ring_maps hPM (C' k i) (C' i k) (BD' k i) (BD' i k) φ m (s i k) (s k i) (hD' k i) (hD' i k) (hft' k i) (hft' i k) hφ (hs i k) (hs k i) (hpol' k i) (hpol' i k)`. Establish `e1 : ∀ i k, (s i k).comp (algebraMap (R k) (Localization.Away (b k (a i)))) = h i k` using `fun i k => ringHom_eq_of_dedFrac (hD' i k) (by rw [← RingHom.comp_assoc, hs i k, hω'1 k i, hω'2 i k])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e2 : ∀ i k, (s i k).comp (h k i) = algebraMap (R i) (Localization.Away (b i (a k)))` using `fun i k => ringHom_eq_of_dedFrac (hD' i k) (by rw [← RingHom.comp_assoc, hs i k, hω'2 k i, hω'1 i k])`. Establish `ha : ∀ i k, IsPullback (v i k) (((θ i k).hom ≫ v k i) ≫ (C k).s) ((C i).s ≫ spMap (b i)) (spMap (b k))`. Introduce `i k`. Establish `e : ((θ i k).hom ≫ v k i) ≫ (C k).s = (C' i k).s ≫ spMap (h i k)`. Rewrite using `[Category.assoc, (hv k i).w, ← Category.assoc, hθs, Category.assoc, spMap_comp', e1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e]`. Conclude with `(hv i k).paste_vert (hsq i k)`. Establish `hb : ∀ i k, IsPullback ((θ i k).hom ≫ v k i) (v i k ≫ (C i).s) ((C k).s ≫ spMap (b k)) (spMap (b i))`. Introduce `i k`. Use `((hv k i).paste_vert (hsq k i)).of_iso (θ i k).symm (Iso.refl _) (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [Iso.symm_hom, Iso.refl_hom, Category.comp_id]`. Rewrite using `[(hv i k).w, ← e2, ← spMap_comp']`. Rewrite using `[← Category.assoc ((C' i k).s), ← hθs]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `dp` using `fun i => ModelRelCompare.densePart (C i) (hD i)`. Take `⟨A, F, ψ, hψ, hpsq⟩` from `GlobalTheory.T.isIso_of_glued_pullbacks_reduced (fun i => Sp (R i)) (fun i => (C i).X) (fun i => spMap (b i)) (fun i => (C i).s) (fun i k => (C' i k).X) v (fun i k => (θ i k).hom ≫ v k i) (fun i => (C i).j) (fun i k => (C' i k).j) (fun i => hopen i i) ha hb (fun i => (dp i).2.1) …`. Establish `hjc : ∀ i k, (C i).j ≫ ψ i = (C k).j ≫ ψ k` using `fun i k => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hvj i k, Category.assoc, (hpsq i k).w, ← Category.assoc, ← Category.assoc, hθj, hvj]`. Take `⟨hcv, hN, hF, hZ, hj⟩` from `GlobalTheory.T.pullback_cover_models_scheme C A F ψ ⟨hβ, hR, hspan⟩ hψ hjc`. Establish `hI : Nonempty I`. Assume the negation of the conclusion as `hne`. Rewrite `hne` using `[not_nonempty_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hspan` using `[Set.range_eq_empty, Ideal.span_empty]`. Conclude with `bot_ne_top hspan`. Take `⟨i₀⟩` from `hI`. Establish `oψ : ∀ i, IsOpenImmersion (ψ i)` using `fun i => MorphismProperty.of_isPullback (P := @IsOpenImmersion) (hψ i).flip (hopen i i)`. Establish `tr` using `fun i => TripleGlueMap.exists_transport (ψ i).isoOpensRange (C i).t`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose tU _ mU using tr`. Establish `ofeq : ∀ i, Nonempty (SABMap (C i₀).oF.t (C i).oF.t (𝟙 _))` using `fun i => by`. Take `⟨n, -⟩` from `exists_sabMap_of_base_eq (C i₀).m0.toSABMap (Category.id_comp _).symm`. Take `⟨m', -⟩` from `ObjMaps.exists_sab_cancel (C i).m0.toSABMap n`. Conclude with `⟨m'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `aU : ∀ i, Nonempty (SABMap (C i₀).oF.t (tU i) ((C i).j ≫ (ψ i).isoOpensRange.hom))` using `fun i => by`. Take `⟨n₁⟩` from `ofeq i`. Take `⟨n₂, -⟩` from `ObjMaps.exists_sab_comp (C i).m n₁`. Take `⟨n₃, -⟩` from `ObjMaps.exists_sab_comp (mU i).some n₂`. Take `⟨n₄, -⟩` from `exists_sabMap_of_base_eq n₃ (by rw [Category.id_comp])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n₄⟩`. Take `⟨t, -, n, -⟩` from `exists_sab_glue_of_common_generic semiAbelian_hom_extends_uniquely_dvr E H A (Xo.XF c) ((C i₀).j ≫ ψ i₀) (C i₀).oF.t I (fun i => (ψ i).opensRange) (fun i => (C i).j ≫ (ψ i).isoOpensRange.hom) tU (fun i => (aU i).some) ⟨i₀⟩ ⟨hN, hZ⟩ (hj i₀).1 (hj i₀).2.1 (hj i₀).2.2.1 (hj i₀).2.2. …`. Take `⟨i, y, rfl⟩` from `hcv x`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, y, rfl⟩)`. Use the proof step `(fun i => by rw [Category.assoc, Scheme.Hom.isoOpensRange_hom_ι, hjc])`.
-
-Establish `nC : ∀ i, Nonempty (SABMap (C i).t t (ψ i))` using `fun i => by`. Take `⟨n₁, -⟩` from `ObjMaps.exists_sab_comp (n i) (mU i).some`. Take `⟨n₂, -⟩` from `exists_sabMap_of_base_eq n₁ (Scheme.Hom.isoOpensRange_hom_ι _)`. Conclude with `⟨n₂⟩`. Establish `hproj` using `GlobalTheory.T.polarization_glues_over_cover C BD φ m A F t ψ (fun i k => (C' i k).X) v (fun i k => (θ i k).hom ≫ v k i) ⟨hβ, hR, hspan⟩ hψ hpsq nC hpol (fun i k => by`.
-
-Rewrite using `[← hBD', Scheme.IdealSheafData.comap_comp, ← hBD', hθBD])`. Conclude with `GlobalTheory.T.semiabelian_glues_over_cover C A F ψ t (fun i => (nC i).some) i₀ ⟨hβ, hR, hspan⟩ hψ hjc hN hproj hF`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_charts_of_pol (hPM : PolMapSt) {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H}
     {l : Level H} {Xo : Moduli D l} {c : Coeff l} {I : Type} [Finite I] {R : I → Type} [∀ i, CommRing (R i)]

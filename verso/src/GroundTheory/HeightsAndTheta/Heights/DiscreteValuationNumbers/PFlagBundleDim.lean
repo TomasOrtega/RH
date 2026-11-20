@@ -11,39 +11,35 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo
 noncomputable section
 
 /- English proof (translation)
-Introduce `F _ Ω _ _ K _ _ ι _ y e hV hdimV N E _ _ B w b hflag M a φ hφ Φ _ _ t ht i hi1 hiN`. Establish `hne : ∀ k, ∃ j, y ⟨k, j⟩ ≠ 0` using `fun k => by`. Take `⟨j, hj⟩` from `hV.relevant k`. Use `⟨j, fun h0 => hj ?_⟩` and prove the remaining obligations. Rewrite using `[pointIdeal, RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[pointConeMap, h0]`. Use `choose c hc using hne`. Establish `hyc : segreVec y c ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => hc k`. Establish `hsp` using `hspan F Ω K ι y N E B a M φ hφ c hyc`. Establish `hv : ∀ m : Fin N, ∃ v ∈ B.lat c, (∀ j, m < j → w.repr v j = 0) ∧ w.repr v m = ∏ k, y ⟨k, c k⟩ ^ b m k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Establish `hmem : (∏ k, y ⟨k, c k⟩ ^ b m k) ∈ degLat F y (b m) c` using `⟨1, one_mem _, (one_mul _).symm⟩`. Rewrite `hmem` using `[← hflag.graded c hyc m]`. Conclude with `hmem`. Use `choose v hvl hvz hvd using hv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ι', hι'⟩ : ∃ ι' : Fin i → Fin N, ι' = Fin.castLE hiN` from `⟨_, rfl⟩`. Establish `hsum : ∀ {β : Type} [AddCommMonoid β] (f : Fin N → β), (∀ j : Fin N, i ≤ (j : ℕ) → f j = 0) → ∑ j, f j = ∑ j : Fin i, f (ι' j)`. Introduce `β _ f hf`. Establish `hm : ∑ j : Fin i, f (ι' j) = ∑ j ∈ Finset.univ.map (Fin.castLEEmb hiN), f j`. Rewrite using `[Finset.sum_map, hι']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[hm]`. Use `(Finset.sum_subset (Finset.subset_univ _) fun j _ hj => hf j ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hj (Finset.mem_map.mpr ⟨⟨j, by omega⟩, Finset.mem_univ _, rfl⟩)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨G, hG⟩ : ∃ G : Fin M → Fin i → Ω, G = fun l j => φ l (w (ι' j))` from `⟨_, rfl⟩`. Take `⟨H, hH⟩ : ∃ H : Matrix (Fin i) (Fin i) Ω, H = Matrix.of fun j m => w.repr (v (ι' m)) (ι' j)` from `⟨_, rfl⟩`. Establish `hinj : Function.Injective ι'`. Rewrite using `[hι']`. Conclude with `Fin.castLE_injective hiN`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : ∀ m : Fin i, ((ι' m : Fin N) : ℕ) = m` using `fun m => by`. Rewrite using `[hι', Fin.val_castLE]`. Establish `hlt : ∀ m j : Fin i, m < j → ι' m < ι' j` using `fun m j h => by`. Rewrite using `[Fin.lt_def, hval, hval]`. Conclude with `Fin.lt_def.mp h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hGH : ∀ l m, (Matrix.of G * H) l m = φ l (v (ι' m))`. Introduce `l m`. Use `conv_rhs => rw [← w.sum_repr (v (ι' m))]`. Rewrite using `[map_sum, hsum]`. Simplify using `[Matrix.mul_apply, hG, hH, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j hj`. Establish `hm` using `m.isLt`. Rewrite using `[map_smul, hvz _ j (by rw [Fin.lt_def, hval]; omega), zero_smul]`. Establish `hdet : IsUnit H.det`. Rewrite using `[Matrix.det_of_isUpperTriangular (M := H) fun j m hjm => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hH, Matrix.of_apply]`. Conclude with `hvz _ _ (hlt m j hjm)]`. Use `isUnit_iff_ne_zero.mpr (Finset.prod_ne_zero_iff.mpr fun m _ => ?_)` and prove the remaining obligations. Simplify using `only [hH, Matrix.of_apply, hvd]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hc k)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hlin : LinearIndependent Ω (fun j l => G l j)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hall : ∀ ψ ∈ Submodule.span Ω (Set.range φ), ψ (∑ j, g j • w (ι' j)) = 0`. Introduce `ψ hψ`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, rfl⟩` from `hx`. Use `congrFun hg l` as an intermediate fact. Simplify `this` using `[hG, map_sum, Finset.sum_apply, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `add x z _ _ hx hz => rw [LinearMap.add_apply, hx, hz, add_zero]`. Consider the case `smul r x _ hx => rw [LinearMap.smul_apply, hx, smul_zero]`. Rewrite `hall` using `[hsp]`. Establish `hw` using `(Module.forall_dual_apply_eq_zero_iff Ω _).mp fun ψ => hall ψ Submodule.mem_top`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Fintype.linearIndependent_iff.mp (w.linearIndependent.comp ι' hinj) g hw`. Establish `hcoord : projCoord y w φ (truncCoord t i) = projCoord y (Pi.basisFun Ω (Fin i)) (fun l => LinearMap.proj l ∘ₗ (Matrix.of G).mulVecLin) (t ∘ ι')`. Use function extensionality and compare the values at `p`. Break down `p with ⟨_ | k, l⟩` into its components or cases. Use `show ∑ j, truncCoord t i j * _ = ∑ j, _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hsum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `hj : ((ι' j : Fin N) : ℕ) < i` using `by rw [hval]; exact j.isLt`. Simplify using `only [truncCoord, hj, if_true, hG, Function.comp_apply, Pi.basisFun_apply]`. Rewrite using `[LinearMap.comp_apply, Matrix.mulVecLin_apply, Matrix.mulVec_single_one]`.
-
-Both sides reduce to the same expression. Introduce `j hj`. Simplify using `[truncCoord, not_lt.mpr hj]`. Both sides reduce to the same expression. Establish `hproj : projIdeal F y w φ (truncCoord t i) = projIdeal F y (Pi.basisFun Ω (Fin i)) (fun l => LinearMap.proj l ∘ₗ (Matrix.of G).mulVecLin) (t ∘ ι')`.
-
-Unfold `projIdeal`. Rewrite using `[hcoord]`. Rewrite using `[hproj]`. Conclude with `hdim F Ω K ι y e hV hdimV M i G (by omega) hlin c a H hyc hdet (fun l m => by rw [hGH]; exact hφ.sections c hyc l _ (hvl _)) Φ (t ∘ ι') (ht.comp ι' hinj)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagBundleDim.proof (hspan : TwistedDualGensSpan.Statement)
     (hdim : SpanBundleDim.Statement) : FlagBundleDim.Statement := by

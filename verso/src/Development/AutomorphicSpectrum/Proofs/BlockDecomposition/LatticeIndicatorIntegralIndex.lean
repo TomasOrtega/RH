@@ -15,25 +15,25 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.HintInd
 
 /- English proof (translation)
-Establish `hrep : ∀ x : Multiplicative A, Multiplicative.toAdd ((x : Multiplicative A ⧸ K).out) ∈ Λ ↔ Multiplicative.toAdd x ∈ Λ`. Introduce `x`. Establish `h1 : ((x : Multiplicative A ⧸ K).out)⁻¹ * x ∈ K` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' (x : Multiplicative A ⧸ K))`. Establish `h2 : -Multiplicative.toAdd ((x : Multiplicative A ⧸ K).out) + Multiplicative.toAdd x ∈ Λ` using `hSΛ ((hK _).1 h1)`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `Λ.add_mem h h2` as an intermediate fact. Simplify using `using this`. Introduce `h`. Use `Λ.add_mem h (Λ.neg_mem h2)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using this`. Set `T : Set (Multiplicative A ⧸ K)` to `{q | Multiplicative.toAdd q.out ∈ Λ}`. Establish `hsame : ∀ x y : Multiplicative A, (x : Multiplicative A ⧸ K) = y ↔ -Multiplicative.toAdd x + Multiplicative.toAdd y ∈ S`. Introduce `x y`. Rewrite using `[QuotientGroup.eq, hK]`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Set `f : Λ → T` to `fun x => ⟨((Multiplicative.ofAdd (x : A) : Multiplicative A) : Multiplicative A ⧸ K), (hrep _).2 x.2⟩`. Set `g : Λ ⧸ S.addSubgroupOf Λ → T` to `fun y => Quotient.liftOn' y f (by`. Introduce `x y hxy`. Establish `h : -(x : A) + (y : A) ∈ S`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `QuotientAddGroup.leftRel_apply.1 hxy` as an intermediate fact. Simplify `this` using `[AddSubgroup.mem_addSubgroupOf]`. Conclude with `Subtype.ext ((hsame _ _).2 h))`. Establish `hg : Function.Bijective g`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y₁ y₂`. Proceed by induction on `y₁ using QuotientAddGroup.induction_on with | H x =>`. Proceed by induction on `y₂ using QuotientAddGroup.induction_on with | H y =>`. Introduce `h`. Establish `h' : ((Multiplicative.ofAdd (x : A) : Multiplicative A) : Multiplicative A ⧸ K) = ((Multiplicative.ofAdd (y : A) : Multiplicative A) : Multiplicative A ⧸ K)` using `congrArg Subtype.val h`.
+Proceed by induction. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `QuotientAddGroup.eq.2 ?_` and prove the remaining obligations. Rewrite using `[AddSubgroup.mem_addSubgroupOf]`. Simplify using `using (hsame _ _).1 h'`. Introduce and unpack `⟨q, hq⟩`. Take `⟨x, rfl⟩` from `QuotientGroup.mk_surjective q`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨((⟨Multiplicative.toAdd x, (hrep x).1 hq⟩ : Λ) : Λ ⧸ S.addSubgroupOf Λ), rfl⟩`. Establish `hcard : Nat.card T = S.relIndex Λ` using `(Nat.card_congr (Equiv.ofBijective g hg)).symm`. Establish `hfun : (fun q : Multiplicative A ⧸ K => if Multiplicative.toAdd q.out ∈ Λ then (1 : ℂ) else 0) = T.indicator 1`. Use function extensionality and compare the values at `q`. Distinguish the cases in `h : q ∈ T`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem h]`. Conclude with `if_pos h`. Rewrite using `[Set.indicator_of_notMem h]`. Conclude with `if_neg h`. Rewrite using `[hfun, ← hcard]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hT : T.Finite`. Rewrite using `[← finsum_mem_def, finsum_mem_eq_finite_toFinset_sum _ hT, Nat.card_coe_set_eq, Set.ncard_eq_toFinset_card T hT]`. Simplify using the standard rewrite rules. Rewrite using `[finsum_of_infinite_support (by simpa using hT)] haveI : Infinite T := Set.Infinite.to_subtype hT`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finsum_out_indicator {A : Type} [AddCommGroup A] (S Λ : AddSubgroup A) (hSΛ : S ≤ Λ)
     (K : Subgroup (Multiplicative A)) (hK : ∀ X, X ∈ K ↔ Multiplicative.toAdd X ∈ S) :
@@ -99,9 +99,9 @@ theorem finsum_out_indicator {A : Type} [AddCommGroup A] (S Λ : AddSubgroup A) 
     simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hX`. Proceed by induction on `hX using Subgroup.closure_induction with`. Consider the case `mem x hx => exact fun i j => hx i j`. Consider the case `one => exact isInt_zero w _ _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy => exact IsInt.add hx hy`. Consider the case `inv x _ hx => exact IsInt.neg hx`. Introduce `hX`. Conclude with `Subgroup.subset_closure fun i j => hX i j`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_intMat_iff {E : Type} [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E)
     (X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E))) :
@@ -117,11 +117,11 @@ theorem mem_intMat_iff {E : Type} [Field E] [NumberField E] [IsCMField E] (a b :
     exact Subgroup.subset_closure fun i j => hX i j
 
 /- English proof (translation)
-Introduce `E _ _ _ a b w Λ h`. Establish `hstab : intMat a b w ≤ rStab (fun X : Multiplicative (Matrix (Fin a) (Fin b) (w.adicCompletion E)) => if Multiplicative.toAdd X ∈ Λ then (1 : ℂ) else 0)`. Introduce `k hk x`. Establish `hkΛ : Multiplicative.toAdd k ∈ Λ` using `h ((mem_intMat_iff a b w k).1 hk)`. Establish `e : (Multiplicative.toAdd (x * k) ∈ Λ) ↔ Multiplicative.toAdd x ∈ Λ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[toAdd_mul]`. Conclude with `Λ.add_mem_cancel_right hkΛ`. Simplify using `only [e]`. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level _ (intMat a b w) (intMat a b w) _ le_rfl hstab (by simp [Subgroup.relIndex_self])]`. Rewrite using `[Subgroup.relIndex_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Nat.cast_one, inv_one, one_mul]`. Conclude with `finsum_out_indicator (intSub a b w) Λ h (intMat a b w) (mem_intMat_iff a b w)`.
+A detailed English derivation is pending.
 -/
 theorem hint_indicator_lattice : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (Λ : AddSubgroup (Matrix (Fin a) (Fin b) (w.adicCompletion E))), intSub a b w ≤ Λ → hint (intMat a b w) (fun X => if Multiplicative.toAdd X ∈ Λ then (1 : ℂ) else 0) = (((intSub a b w).relIndex Λ : ℕ) : ℂ) := by
   intro E _ _ _ a b w Λ h

@@ -21,13 +21,13 @@ noncomputable section
 namespace GlobalTheory.EisM
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_dirichletCharacter_parity_mul_ne_one_mul_inv_ne_one`.
+A detailed English derivation is pending.
 -/
 theorem chapterM_theta : ∀ (N r : ℕ) (χ : DirichletCharacter ℂ N) (sg : ℂ), 0 < N → r.Prime → 7 ≤ r → r ∣ N →
     (sg = 1 ∨ sg = -1) → ∃ θ : DirichletCharacter ℂ N, θ (-1) = sg ∧ θ * χ ≠ 1 ∧ θ * χ⁻¹ ≠ 1 := GlobalTheory.T.exists_dirichletCharacter_parity_mul_ne_one_mul_inv_ne_one
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_smoothing_integers_coprime`.
+A detailed English derivation is pending.
 -/
 theorem chapterM_smooth : ∀ (N l e : ℕ) (θ₁ θ₂ : DirichletCharacter ℂ N) (ψ : DirichletCharacter ℂ l), 0 < N → l.Prime →
     ¬ l ∣ N → 1 ≤ e → θ₁ ≠ 1 → θ₂ ≠ 1 → ∃ c d : ℕ, 1 < c ∧ 1 < d ∧ c.Coprime (6 * N * l) ∧ d.Coprime (6 * N * l) ∧
@@ -35,7 +35,7 @@ theorem chapterM_smooth : ∀ (N l e : ℕ) (θ₁ θ₂ : DirichletCharacter �
         (d : ℂ) ^ 2 ≠ (d : ℂ) ^ (e + 1) * (θ₁ d ^ n₁ * ψ d ^ n₂) ∧ (d : ℂ) ^ 2 ≠ (d : ℂ) ^ (e + 1) * (θ₂ d ^ n₁ * ψ d ^ n₂) := GlobalTheory.T.exists_smoothing_integers_coprime
 
 /- English proof (translation)
-Establish `h : (φ u) ^ Fintype.card (ZMod N)ˣ = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, pow_card_eq_one, Units.val_one, map_one]`. Establish `h2 : ‖ι.symm (φ u)‖ ^ Fintype.card (ZMod N)ˣ = 1`. Rewrite using `[← norm_pow, ← map_pow, h, map_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) Fintype.card_ne_zero).1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_symm_char_unit {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) {N : ℕ} [NeZero N]
     (φ : DirichletCharacter ℂ N) (u : (ZMod N)ˣ) : ‖ι.symm (φ u)‖ = 1 := by
@@ -46,25 +46,23 @@ theorem norm_symm_char_unit {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* �
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) Fintype.card_ne_zero).1 h2
 
 /- English proof (translation)
-Establish `hlp : l.Prime` using `Fact.out`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Establish `hcop : l.Coprime N` using `(Nat.Prime.coprime_iff_not_dvd hlp).2 hlN`. Establish `hgl : g' l = g.a l` using `hg' l hcop`. Establish `hχm1 : χ (-1) = -1` using `(GlobalTheory.T.odd_chi_and_tendsto_twisted_LSeries_ne_zero_of_prim (2 * e + 1) N 1 χ (1 : DirichletCharacter ℂ 1) g' ((((2 * e + 1 : ℕ) : ℝ) + 1) / 2) (odd_two_mul_add_one e) hN one_pos hprim le_rfl).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ψ (-1) = 1 ∨ ψ (-1) = -1` using `mul_self_eq_one_iff.mp (by rw [← map_mul, neg_one_mul, neg_neg, map_one])`. Establish `hsg : (-1 : ℂ) ^ e * ψ (-1) = 1 ∨ (-1 : ℂ) ^ e * ψ (-1) = -1`. Apply the tactic sequence `rcases neg_one_pow_eq_or ℂ e with h | h <;> rcases hψ with h' | h' <;> simp [h, h']`. Take `⟨θ, hθm1, hθχ, hθχ'⟩` from `chapterM_theta N r χ _ hN hr hr7 hrN hsg`. Use `set u : (ZMod N)ˣ := ZMod.unitOfCoprime l hcop with hu`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hul : ((u : ZMod N)) = (l : ZMod N)` using `ZMod.coe_unitOfCoprime l hcop`. Establish `hnχ : ‖ι.symm (χ l)‖ = 1` using `by rw [← hul]; exact norm_symm_char_unit ι χ u`. Establish `hnχ' : ‖ι.symm (χ⁻¹ l)‖ = 1` using `by rw [← hul]; exact norm_symm_char_unit ι χ⁻¹ u`. Establish `hnl : ‖ι.symm (l : ℂ)‖ < 1`. Rewrite using `[map_natCast, ← map_natCast (algebraMap ℚ_[l] (PadicAlgCl l)), PadicAlgCl.norm_extends, Padic.norm_p]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `inv_lt_one_of_one_lt₀ (by exact_mod_cast hlp.one_lt)`. Establish `ht : ‖ι.symm (χ⁻¹ l * g' l)‖ = 1` using `by rw [map_mul, norm_mul, hnχ', hgl, hal, one_mul]`. Establish `hD : ‖ι.symm (χ⁻¹ l * (l : ℂ) ^ (2 * e))‖ < 1`. Rewrite using `[map_mul, norm_mul, hnχ', one_mul, map_pow, norm_pow]`. Conclude with `pow_lt_one₀ (norm_nonneg _) hnl (by omega)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨α, β, hs, hp, hα, -⟩` from `GlobalTheory.unitRoot_split l ι _ _ ht hD`. Take `⟨B, c, hEig, hval⟩` from `GlobalTheory.T.exists_heckeEigenfunctional_depletedEisenstein_ne_zero l ι e N χ θ ψ g' α β he hN hlN hprim hs hp hα hθm1 hθχ`. Take `⟨x, y, hxy⟩ : IsCoprime (N : ℤ) (l : ℤ)` from `Nat.isCoprime_iff_coprime.2 hcop.symm`. Establish `hbez : (N : ℤ) * x * 1 - l * (-y) * 1 = 1` using `by linear_combination hxy`. Take `⟨B', c', hall, hrel⟩` from `GlobalTheory.T.eigenfunctionalAllCharacters_of_atkinLehner (2 * e + 1) N l χ g' α B c x (-y) 1 1 hbez (by omega) hN hlp hlN hEig`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hα0 : α ≠ 0`. Introduce `h`. Rewrite `hα` using `[h, map_zero, norm_zero]`. Conclude with `zero_ne_one hα`. Establish `key` using `GlobalTheory.T.muModelProduct_value_ne_zero_of_depleted e N l χ⁻¹ θ ψ (fun n => conj (g' n)) α β x (-y) 1 1 hbez he hN hlp hlN`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [inv_inv, Complex.conj_conj] at key`. Establish `hv` using `key hprim hs hp hα0 hθm1 hθχ B c hEig hval B' c' hrel (fun a ha => hall.U a ha)`. Establish `hmeas` using `GlobalTheory.T.exists_muModel_measure_of_eigenfunctional l ι e N χ θ ψ (χ l * α) B' c' he hN hlN (by rw [map_mul, norm_mul, hnχ, hα, one_mul]) hall.kill hall.U hθm1 hχm1`. Take `⟨c₁, d₁, hc1, hd1, hc1c, hd1c, hc, hd⟩` from `chapterM_smooth N l e (θ * χ) (θ * χ⁻¹) ψ hN hlp hlN he hθχ hθχ'`. Use `⟨θ, χ l * α, _, B', c', c₁, d₁, ?_, ?_, ?_, ?_, hχm1, hθm1, hmeas, ?_, hc1, hd1, hc1c, hd1c, hc, hd⟩` and prove the remaining obligations.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Nat.le_of_dvd hN hrN` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[map_mul, norm_mul, hnχ, hα, one_mul]`. Establish `hxy1 : χ l * χ⁻¹ l = 1`. Rewrite using `[← hul, MulChar.inv_apply_eq_inv', mul_inv_cancel₀]`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(u.isUnit.map χ).ne_zero`. Rewrite `hs` using `[hgl]`. Take the linear combination `((χ l) ^ 2 * α) * hs - (χ l) ^ 2 * hp + (χ l * g.a l * α - χ l * (l : ℂ) ^ (2 * e)) * hxy1`. Use `⟨⟨fun a ha q hq hqN => ?_, hall.U⟩, hall.kill⟩` and prove the remaining obligations. Establish `hqc : q.Coprime N` using `(Nat.Prime.coprime_iff_not_dvd hq).2 (fun h => hqN (h.trans (dvd_mul_right N l)))`.
-
-Rewrite using `[← hg' q hqc]`. Conclude with `hall.T a ha q hq hqN`. Use `mul_ne_zero (div_ne_zero two_ne_zero ?_) hv` and prove the remaining obligations. Conclude with `(Nat.totient_pos.2 hN).ne'` after adjusting the coercions.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem chapterM_of_level (l : ℕ) [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) (e : ℕ) (he : 1 ≤ e)
     (g : Newform (2 * e + 1)) (hal : ‖ι.symm (g.a l)‖ = 1) (ψ : DirichletCharacter ℂ l)
@@ -137,17 +135,17 @@ theorem chapterM_of_level (l : ℕ) [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ)
     exact_mod_cast (Nat.totient_pos.2 hN).ne'
 
 /- English proof (translation)
-Introduce `l _ hl2 ι e he g hlM hal ψ N₀ hN₀ hlN₀`. Establish `hlp : l.Prime` using `Fact.out`. Take `⟨r, hrge, hr⟩` from `Nat.exists_infinite_primes (l + 7)`. Establish `hrl : ¬ l ∣ r`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `(Nat.dvd_prime hr).1 h with h1 | h1` into its components or cases. Conclude with `hlp.one_lt.ne' h1`. Use linear arithmetic over natural numbers and integers. Take `⟨χ, hprim, hχ⟩` from `depleted_newform_prim (2 * e + 1) (N₀ * r) g (by omega) (by nlinarith [hr.two_le])`. Establish `hMpos` using `g.pos`.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrpos` using `hr.pos`. Establish `hN : 0 < g.M * (g.M * (N₀ * r)) ^ 2` using `by positivity`. Establish `hL : g.M * (N₀ * r) ∣ g.M * (g.M * (N₀ * r)) ^ 2` using `(dvd_pow_self _ two_ne_zero).mul_left g.M`. Establish `hrN : r ∣ g.M * (g.M * (N₀ * r)) ^ 2` using `(dvd_mul_of_dvd_right (dvd_mul_left r N₀) g.M).trans hL`. Establish `hN₀N : N₀ ∣ g.M * (g.M * (N₀ * r)) ^ 2` using `(dvd_mul_of_dvd_right (dvd_mul_right N₀ r) g.M).trans hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hMN : g.M ∣ g.M * (g.M * (N₀ * r)) ^ 2` using `dvd_mul_right _ _`. Establish `hlN : ¬ l ∣ g.M * (g.M * (N₀ * r)) ^ 2`. Introduce `h`. Break down `hlp.dvd_mul.1 h with h | h` into its components or cases. Conclude with `hlM h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hlp.dvd_mul.1 (hlp.dvd_of_dvd_pow h) with h | h` into its components or cases. Conclude with `hlM h`. Break down `hlp.dvd_mul.1 h with h | h` into its components or cases. Conclude with `hlN₀ h`. Conclude with `hrl h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hg' : ∀ n : ℕ, n.Coprime (g.M * (g.M * (N₀ * r)) ^ 2) → (fun n => if n.Coprime (g.M * (N₀ * r)) then g.a n else 0) n = g.a n`. Introduce `n hn`. Simplify using `only [if_pos (hn.coprime_dvd_right hL)]`. Take `⟨θ, α, v, B, c, c₁, d₁, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14⟩` from `chapterM_of_level l ι e he g hal ψ _ r hN hr (by omega) hrN hlN χ _ hprim hg'`. Conclude with `⟨_, χ, θ, α, v, B, c, c₁, d₁, h1, hMN, hN₀N, hlN, hχ, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14⟩`.
+A detailed English derivation is pending.
 -/
 theorem chapterM_holds : CuspidalUnitaryTwistsClaim := by
   intro l _ hl2 ι e he g hlM hal ψ N₀ hN₀ hlN₀

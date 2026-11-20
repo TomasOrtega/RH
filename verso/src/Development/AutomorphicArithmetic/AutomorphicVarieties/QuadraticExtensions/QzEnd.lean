@@ -6,39 +6,35 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `l _ f`. Establish `hl : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hl0 : (l : ℚ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `hz : ∀ q : ℚ_[l], QZ.mk l q = 0 ↔ ‖q‖ ≤ 1`. Introduce `q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (Submodule.Quotient.mk q : ℚ_[l] ⧸ ZlSub l) = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `y.2`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `h`. Conclude with `⟨⟨q, h⟩, rfl⟩`. Use `set x : ℕ → QZ l := fun k => QZ.mk l (((l : ℚ_[l]) ^ k)⁻¹) with hx`. Establish `hA : ∀ (c : ℤ_[l]) (k : ℕ), c • x k = 0 ↔ ‖c‖ ≤ (l : ℝ) ^ (-(k : ℤ))`. Introduce `c k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 
-Use `show QZ.mk l ((c : ℚ_[l]) * ((l : ℚ_[l]) ^ k)⁻¹) = 0 ↔ _`. Establish `hpos : (0 : ℝ) < (l : ℝ) ^ (-(k : ℤ))` using `by positivity`. Rewrite using `[hz, norm_mul, norm_inv, Padic.norm_p_pow, mul_inv_le_iff₀ hpos, one_mul]`. Conclude with `Iff.rfl`. Establish `hC : ∀ (k : ℕ) (y : QZ l), (l ^ k) • y = 0 → ∃ a : ℤ_[l], y = a • x k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `k y hy`. Take `⟨q, rfl⟩` from `Submodule.Quotient.mk_surjective (ZlSub l) y`. Establish `h1 : QZ.mk l ((l : ℚ_[l]) ^ k * q) = 0`. Rewrite using `[← hy]`. Use `show _ = (Submodule.Quotient.mk ((l ^ k) • q) : ℚ_[l] ⧸ ZlSub l)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[nsmul_eq_mul]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite `h1` using `[hz]`. Use `⟨⟨(l : ℚ_[l]) ^ k * q, h1⟩, ?_⟩` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments.
 
-Use `show QZ.mk l q = QZ.mk l (((l : ℚ_[l]) ^ k * q) * ((l : ℚ_[l]) ^ k)⁻¹)`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hstep : ∀ k, x k = (l : ℤ_[l]) • x (k + 1)`. Introduce `k`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show QZ.mk l (((l : ℚ_[l]) ^ k)⁻¹) = QZ.mk l ((l : ℚ_[l]) * ((l : ℚ_[l]) ^ (k + 1))⁻¹)`. Use `congr 1`. Rewrite using `[pow_succ]`. Clear the denominators using the available nonvanishing facts. Establish `hkill : ∀ k, (l ^ k) • x k = 0`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `k`. Rewrite using `[← Nat.cast_smul_eq_nsmul ℤ_[l], hA]`. Use `push_cast`. Rewrite using `[PadicInt.norm_p_pow]`. Establish `hex : ∀ k, ∃ a : ℤ_[l], f (x k) = a • x k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Apply `hC` to reduce the goal to its premises. Rewrite using `[← map_nsmul, hkill, map_zero]`. Use `choose a ha using hex`. Establish `hdiff : ∀ k, ‖a (k + 1) - a k‖ ≤ (l : ℝ) ^ (-(k : ℤ))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k`. Rewrite using `[← hA, sub_smul, sub_eq_zero, ← ha k, hstep k, map_smul, ha (k + 1)]`. Conclude with `smul_comm _ _ _`. Establish `hr : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hl`. Establish `hcs : CauchySeq a`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Use `cauchySeq_of_le_geometric ((l : ℝ)⁻¹) 1 hr (fun n => ?_)` and prove the remaining obligations. Rewrite using `[dist_comm, dist_eq_norm, one_mul, inv_pow, ← zpow_natCast, ← zpow_neg]`. Conclude with `hdiff n`. Take `⟨c, hc⟩` from `cauchySeq_tendsto_of_complete hcs`. Establish `hmono : ∀ k m, k ≤ m → ‖a m - a k‖ ≤ (l : ℝ) ^ (-(k : ℤ))`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `k m hkm`. Proceed by induction on `m, hkm using Nat.le_induction with`. Consider the case `base`. Rewrite using `[sub_self, norm_zero]`. Check the signs of the components of the expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `succ m hkm ih`. Use `PadicInt.nonarchimedean (a (m + 1) - a m) (a m - a k)` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Use `this.trans (max_le ((hdiff m).trans ?_) ih)` and prove the remaining obligations. Conclude with `zpow_le_zpow_right₀ hl.le (by omega)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hck : ∀ k, ‖c - a k‖ ≤ (l : ℝ) ^ (-(k : ℤ))`. Introduce `k`. Establish `ht : Filter.Tendsto (fun m => ‖a m - a k‖) Filter.atTop (nhds ‖c - a k‖)` using `(hc.sub_const (a k)).norm`. Conclude with `le_of_tendsto ht (Filter.eventually_atTop.2 ⟨k, fun m hm => hmono k m hm⟩)`. Establish `hfx : ∀ k, f (x k) = c • x k`.
-
-Introduce `k`. Use `(hA (c - a k) k).2 (hck k)` as an intermediate fact. Rewrite `this` using `[sub_smul, sub_eq_zero]`. Rewrite using `[this, ha k]`. Use `⟨c, fun y => ?_⟩` and prove the remaining obligations.
-
-Take `⟨k, hk⟩` from `(qzBasic l).2.1 y`. Take `⟨b, rfl⟩` from `hC k y hk`. Rewrite using `[map_smul, hfx, smul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.qzEnd :
     ∀ (l : ℕ) [Fact l.Prime] (f : QZ l →ₗ[ℤ_[l]] QZ l), ∃ c : ℤ_[l], ∀ x, f x = c • x := by

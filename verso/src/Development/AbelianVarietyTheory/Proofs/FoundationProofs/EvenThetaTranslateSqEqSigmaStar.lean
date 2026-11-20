@@ -10,13 +10,13 @@ open scoped BigOperators
 namespace GlobalTheory.EvenTheta
 
 /- English proof (translation)
-Introduce `Λ h t₀ h0 h2 t ht z`. Establish `hsq` using `(GlobalTheory.T.th0_zero_even_sq_zeros_and_periodicity Λ h t₀ h0 h2).2.2.2.1 (z + t)`. Establish `hσ` using `(h.sg_eq_zero t).not.2 ht`. Rewrite `hsq` using `[h.sqTh_sub h0 ht]`. Establish `hs : sqTh Λ t (z + t) * sgStar Λ t ^ 2 = -(sgStar Λ (z + 2 * t) * sgStar Λ z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sqTh, div_mul_cancel₀ _ (pow_ne_zero 2 hσ), show t - (z + t) = -z by ring, h.sg_neg, show t + (z + t) = z + 2 * t by ring]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [U1, zero_add, mul_pow]`. Rewrite using `[hsq]`. Establish `he : Complex.exp (-↑Real.pi * z * (starRingEnd ℂ) (2 * t) / ↑(area Λ) - ↑Real.pi * (2 * t) * (starRingEnd ℂ) (2 * t) / (2 * ↑(area Λ))) = Complex.exp (-↑Real.pi * 0 * (starRingEnd ℂ) t / ↑(area Λ) - ↑Real.pi * t * (starRingEnd ℂ) t / (2 * ↑(area Λ))) ^ 2 * Complex.exp (-↑Real.pi …`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_pow, ← Complex.exp_add, sq, ← Complex.exp_add, map_mul, map_ofNat]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`. Generalize the expression as in `Complex.exp (-↑Real.pi * 0 * (starRingEnd ℂ) t / ↑(area Λ) - ↑Real.pi * t * (starRingEnd ℂ) t / (2 * ↑(area Λ))) = a`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Complex.exp (-↑Real.pi * z * (starRingEnd ℂ) t / ↑(area Λ) - ↑Real.pi * t * (starRingEnd ℂ) t / (2 * ↑(area Λ))) = b`. Take the linear combination `a ^ 2 * b ^ 2 * hs`.
+Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem IsLat.evenTheta_translate_sq_eq_sigmaStar : ∀ Λ : AddSubgroup ℂ, IsLat Λ → ∀ t₀ : ℂ, t₀ ∉ Λ → 2 * t₀ ∈ Λ → ∀ t, t ∉ Λ → ∀ z, U1 Λ t (sgStar Λ) 0 ^ 2 * U1 Λ t (GL3Theta.th0 Λ t₀) z ^ 2 = -(U1 Λ (2 * t) (sgStar Λ) z * sgStar Λ z) + (wpF Λ t - wpF Λ t₀) * U1 Λ t (sgStar Λ) 0 ^ 2 * U1 Λ t (sgStar Λ) z ^ 2 := by
   intro Λ h t₀ h0 h2 t ht z

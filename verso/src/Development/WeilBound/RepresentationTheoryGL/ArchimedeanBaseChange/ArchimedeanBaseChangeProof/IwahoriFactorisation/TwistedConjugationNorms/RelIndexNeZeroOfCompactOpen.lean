@@ -12,7 +12,7 @@ section Gen
 variable {G : Type} [Group G]
 
 /- English proof (translation)
-Rewrite using `[Subgroup.coe_map]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem coe_map_conj [TopologicalSpace G] [IsTopologicalGroup G] (H : Subgroup G) (x : G) :
     (H.map (MulAut.conj x).toMonoidHom : Set G) =
@@ -21,11 +21,11 @@ theorem coe_map_conj [TopologicalSpace G] [IsTopologicalGroup G] (H : Subgroup G
   rfl
 
 /- English proof (translation)
-Introduce `t ht`. Establish `ht'` using `Subgroup.mem_inf.1 ht`. Unfold `cptPart`. Apply `Subgroup.subset_closure` to reduce the goal to its premises. Use `⟨ht'.1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hC : IsCompact ((K.map (MulAut.conj x).toMonoidHom : Subgroup G) : Set G)`. Rewrite using `[coe_map_conj]`. Conclude with `hKc.image (Homeomorph.continuous _)`. Establish `hCo : IsOpen ((K.map (MulAut.conj x).toMonoidHom : Subgroup G) : Set G)`. Rewrite using `[coe_map_conj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Homeomorph.isOpenMap _) _ hKo`. Establish `hCcl` using `Subgroup.isClosed_of_isOpen _ hCo`. Use `hC.of_isClosed_subset isClosed_closure (closure_minimal ?_ hCcl)` and prove the remaining obligations. Introduce `y hy`. Conclude with `(Subgroup.zpowers_le.2 ht'.2) hy`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem inf_map_conj_le_cptPart [TopologicalSpace G] [IsTopologicalGroup G] (T K : Subgroup G)
     (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G)) (x : G) :
@@ -45,11 +45,11 @@ theorem inf_map_conj_le_cptPart [TopologicalSpace G] [IsTopologicalGroup G] (T K
   exact (Subgroup.zpowers_le.2 ht'.2) hy
 
 /- English proof (translation)
-Unfold `cptPart`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `t ⟨htT, htc⟩`. Simplify using `only [Subgroup.coe_comap, Set.mem_preimage]`. Apply `Subgroup.subset_closure` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Conclude with `T.mul_mem (T.mul_mem hc htT) (T.inv_mem hc)`. Establish `hz : (Subgroup.zpowers ((MulAut.conj c).toMonoidHom t) : Set G) = ((Homeomorph.mulLeft c).trans (Homeomorph.mulRight c⁻¹)) '' (Subgroup.zpowers t : Set G)`. Rewrite using `[← MonoidHom.map_zpowers, coe_map_conj]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, ← Homeomorph.image_closure]`. Conclude with `htc.image (Homeomorph.continuous _)`.
+A detailed English derivation is pending.
 -/
 theorem cptPart_le_comap_conj [TopologicalSpace G] [IsTopologicalGroup G] (T : Subgroup G) {c : G}
     (hc : c ∈ T) : cptPart T ≤ (cptPart T).comap (MulAut.conj c).toMonoidHom := by
@@ -68,7 +68,7 @@ theorem cptPart_le_comap_conj [TopologicalSpace G] [IsTopologicalGroup G] (T : S
     exact htc.image (Homeomorph.continuous _)
 
 /- English proof (translation)
-Establish `: CompactSpace C` using `isCompact_iff_compactSpace.mp hC`. Establish `: Finite (C ⧸ U.subgroupOf C)` using `Subgroup.quotient_finite_of_isOpen _ (hU.preimage continuous_subtype_val)`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero_of_compact_open [TopologicalSpace G] [IsTopologicalGroup G] {C U : Subgroup G}
     (hC : IsCompact (C : Set G)) (hU : IsOpen (U : Set G)) : U.relIndex C ≠ 0 := by
@@ -78,29 +78,27 @@ theorem relIndex_ne_zero_of_compact_open [TopologicalSpace G] [IsTopologicalGrou
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Take `⟨hIo, hIK, hθI⟩` from `hI`. Establish `hIcl : IsClosed (I : Set G)` using `I.isClosed_of_isOpen hIo`. Establish `hIc : IsCompact (I : Set G)` using `hKc.of_isClosed_subset hIcl hIK`. Establish `hcpT : cptPart (twCent θ δ) ≤ twCent θ δ` using `(Subgroup.closure_le _).2 fun t ht => ht.1`. Establish `hH : IsHecke I (X.indicator (1 : G → ℂ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hXc, fun k hk x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Set.indicator_apply, (hXI k hk x).1, Pi.one_apply]`. Simplify using `only [Set.indicator_apply, (hXI k hk x).2, Pi.one_apply]`. Establish `hb : ∀ x : G, twCent θ δ ⊓ K.map (MulAut.conj x).toMonoidHom ≤ cptPart (twCent θ δ) ∧ (twCent θ δ ⊓ I.map (MulAut.conj x).toMonoidHom).relIndex (cptPart (twCent θ δ)) ≠ 0`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨inf_map_conj_le_cptPart _ K hKo hKc x, ?_⟩` and prove the remaining obligations. Establish `hC : IsCompact ((I.map (MulAut.conj p0).toMonoidHom : Subgroup G) : Set G)`. Rewrite using `[coe_map_conj]`. Conclude with `hIc.image (Homeomorph.continuous _)`. Establish `hO : IsOpen ((I.map (MulAut.conj x).toMonoidHom : Subgroup G) : Set G)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coe_map_conj]`. Conclude with `(Homeomorph.isOpenMap _) _ hIo`. Establish `h1` using `relIndex_ne_zero_of_compact_open hC hO`. Establish `h2 : (I.map (MulAut.conj x).toMonoidHom).relIndex (cptPart (twCent θ δ)) ≠ 0` using `fun h => h1 (Subgroup.relIndex_eq_zero_of_le_right hcpt h)`. Rewrite using `[← Subgroup.inf_relIndex_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : twCent θ δ ⊓ I.map (MulAut.conj x).toMonoidHom ⊓ cptPart (twCent θ δ) = I.map (MulAut.conj x).toMonoidHom ⊓ cptPart (twCent θ δ)` using `le_antisymm (le_inf (inf_le_left.trans inf_le_right) inf_le_right) (le_inf (le_inf (inf_le_right.trans hcpT) inf_le_left) inf_le_right)`. Rewrite using `[e, Subgroup.inf_relIndex_right]`. Conclude with `h2`. Establish `hq : ∀ q : DoubleCoset.Quotient (twCent θ δ : Set G) (I : Set G), X.indicator (1 : G → ℂ) ((Quotient.out q)⁻¹ * δ * θ (Quotient.out q)) ≠ 0 → q = DoubleCoset.mk (twCent θ δ) I p0`. Introduce `q hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hm : (Quotient.out q)⁻¹ * δ * θ (Quotient.out q) ∈ X`. Assume the negation of the conclusion as `h`. Conclude with `hq (Set.indicator_of_notMem h _)`. Take `⟨c, hc, i, hi, he⟩` from `(hP _).1 hm`. Rewrite using `[← DoubleCoset.out_eq' (twCent θ δ) I q, DoubleCoset.eq]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨c⁻¹, (twCent θ δ).inv_mem hc, i⁻¹, I.inv_mem hi, by rw [he]; group⟩`. Establish `hfin : {q : DoubleCoset.Quotient (twCent θ δ : Set G) (I : Set G) | X.indicator (1 : G → ℂ) ((Quotient.out q)⁻¹ * δ * θ (Quotient.out q)) ≠ 0}.Finite` using `(Set.finite_singleton (DoubleCoset.mk (twCent θ δ) I p0)).subset fun q hq' => Set.mem_singleton_iff.2 (hq q hq')`. Establish `hcl : ∀ c ∈ twCent θ δ, ∀ i ∈ I, cptPart (twCent θ δ) ≤ I.map (MulAut.conj (c * p0 * i)).toMonoidHom`. Introduce `c hc i hi y hy`. Establish `h1 : c⁻¹ * y * c ∈ cptPart (twCent θ δ)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `cptPart_le_comap_conj (twCent θ δ) ((twCent θ δ).inv_mem hc) hy` as an intermediate fact. Simplify `this` using `[MulAut.conj_apply]`. Take `⟨j, hj, hj'⟩` from `Subgroup.mem_map.1 (hcpt h1)`. Use `Subgroup.mem_map.2 ⟨i⁻¹ * j * i, I.mul_mem (I.mul_mem (I.inv_mem hi) hj) hi, ?_⟩` and prove the remaining obligations. Simplify using `only [MulEquiv.coe_toMonoidHom, MulAut.conj_apply] at hj' ⊢`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `key` using `GlobalTheory.T.twistedOrbitalIntegral_eq_sum_smallerLevel G θ K hKo hKc hθK I ⟨hIo, hIK, hθI⟩ δ (X.indicator 1) hH hb hfin`. Rewrite using `[key.1, key.2]`. Rewrite using `[finsum_eq_single _ (DoubleCoset.mk (twCent θ δ) I p0)]`. Take `⟨h, hh, k, hk, hq0⟩` from `(DoubleCoset.eq (twCent θ δ) I _ _).1 (DoubleCoset.out_eq' (twCent θ δ) I (DoubleCoset.mk (twCent θ δ) I p0))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ho : Quotient.out (DoubleCoset.mk (twCent θ δ) I p0) = h⁻¹ * p0 * k⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hX1 : X.indicator (1 : G → ℂ) ((Quotient.out (DoubleCoset.mk (twCent θ δ) I p0))⁻¹ * δ * θ (Quotient.out (DoubleCoset.mk (twCent θ δ) I p0))) = 1` using `Set.indicator_of_mem ((hP _).2 ⟨h⁻¹, (twCent θ δ).inv_mem hh, k⁻¹, I.inv_mem hk, ho⟩) _`. Establish `hle` using `hcl h⁻¹ ((twCent θ δ).inv_mem hh) k⁻¹ (I.inv_mem hk)`. Rewrite `hle` using `[← ho]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hR : (twCent θ δ ⊓ I.map (MulAut.conj (Quotient.out (DoubleCoset.mk (twCent θ δ) I p0))).toMonoidHom).relIndex (cptPart (twCent θ δ)) = 1`. Rewrite using `[Subgroup.relIndex, Subgroup.subgroupOf_eq_top.2 (le_inf hcpT hle), Subgroup.index_top]`. Rewrite using `[hX1, hR]`. Simplify using the standard rewrite rules. Introduce `q hne`.
-
-Establish `h0 : X.indicator (1 : G → ℂ) ((Quotient.out q)⁻¹ * δ * θ (Quotient.out q)) = 0`. Assume the negation of the conclusion as `h`. Conclude with `hne (hq q h)`. Rewrite using `[h0, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twOrb_indicator_eq_inv_index [TopologicalSpace G] [IsTopologicalGroup G] (θ : G →* G)
     (K I : Subgroup G) (hKo : IsOpen (K : Set G)) (hKc : IsCompact (K : Set G)) (hθK : ∀ k ∈ K, θ k ∈ K)
@@ -186,7 +184,7 @@ theorem twOrb_indicator_eq_inv_index [TopologicalSpace G] [IsTopologicalGroup G]
     rw [h0, mul_zero]
 
 /- English proof (translation)
-Use `⟨fun x => ⟨1, by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `x y ⟨g, rfl⟩`. Conclude with `⟨g⁻¹, by simp only [inv_inv, map_inv]; group⟩`. Introduce and unpack `x y z ⟨g, rfl⟩ ⟨h, rfl⟩`. Conclude with `⟨g * h, by simp only [map_mul]; group⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem twConj_equivalence (θ : G →* G) : Equivalence (fun x y : G => ∃ g, y = g⁻¹ * x * θ g) := by
   refine ⟨fun x => ⟨1, by simp⟩, ?_, ?_⟩
@@ -196,7 +194,7 @@ theorem twConj_equivalence (θ : G →* G) : Equivalence (fun x y : G => ∃ g, 
     exact ⟨g * h, by simp only [map_mul]; group⟩
 
 /- English proof (translation)
-Establish `e : Quot.mk (fun x y : G => ∃ g, y = g⁻¹ * x * θ g) (Quot.out (Quot.mk (fun x y : G => ∃ g, y = g⁻¹ * x * θ g) x)) = Quot.mk (fun x y : G => ∃ g, y = g⁻¹ * x * θ g) x` using `Quot.out_eq _`. Conclude with `(twConj_equivalence θ).symm ((twConj_equivalence θ).eqvGen_iff.1 (Quot.eqvGen_exact e))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rep_mk_eq (θ : G →* G) (x : G) :
     ∃ g : G, TwCl.rep (Quot.mk (fun x y : G => ∃ g, y = g⁻¹ * x * θ g) x : TwCl θ) = g⁻¹ * x * θ g := by
@@ -206,11 +204,11 @@ theorem rep_mk_eq (θ : G →* G) (x : G) :
   exact (twConj_equivalence θ).symm ((twConj_equivalence θ).eqvGen_iff.1 (Quot.eqvGen_exact e))
 
 /- English proof (translation)
-Unfold `clSum`. Use `(finsum_eq_single _ (Quot.mk (fun x y : G => ∃ g, y = g⁻¹ * x * θ g) δ0 : TwCl θ) ?_).trans ?_` and prove the remaining obligations. Introduce `c hc`. Assume the negation of the conclusion as `hne`. Use `split_ifs at hne with hcS`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `hone c hcS hne`. Apply `hc` to reduce the goal to its premises. Establish `e1 : Quot.mk (fun x y : G => ∃ g, y = g⁻¹ * x * θ g) (Quot.out c) = c` using `Quot.out_eq c`. Rewrite using `[← e1]`. Express the relevant statement in the definitionally equal form `Quot.mk _ (TwCl.rep c) = _`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg]`. Conclude with `(Quot.sound ⟨g, rfl⟩).symm`. Conclude with `hne rfl`. Take `⟨g, hg⟩` from `rep_mk_eq θ δ0`. Rewrite using `[hg, if_pos (hS0 g), hinv g]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clSum_eq_single (θ : G →* G) [TopologicalSpace G] (K : Subgroup G) (S : Set G) (wt f : G → ℂ) (δ0 : G)
     (hS0 : ∀ g : G, g⁻¹ * δ0 * θ g ∈ S)

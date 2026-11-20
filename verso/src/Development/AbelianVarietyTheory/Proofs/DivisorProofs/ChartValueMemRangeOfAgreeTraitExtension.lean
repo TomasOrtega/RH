@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Rewrite using `[gs_eq f z U (h trivial)]`. Conclude with `(TopCat.Presheaf.germ_res_apply Z.presheaf (homOfLE h) z trivial _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_eq_germ_top {Z X : Scheme.{0}} (f : Z ⟶ X) (z : Z) (U : X.Opens) (h : ⊤ ≤ f ⁻¹ᵁ U) (a : Γ(X, U)) :
     gs f z U a = (Z.presheaf.germ ⊤ z trivial).hom ((f.appLE U ⊤ h).hom a) := by
@@ -19,11 +19,11 @@ theorem gs_eq_germ_top {Z X : Scheme.{0}} (f : Z ⟶ X) (z : Z) (U : X.Opens) (h
   exact (TopCat.Presheaf.germ_res_apply Z.presheaf (homOfLE h) z trivial _).symm
 
 /- English proof (translation)
-Establish `e1` using `Scheme.Hom.map_appLE (Spec.map (CommRingCat.ofHom f)) (U := ⊤) (U' := V) (V := ⊤) (fun _ _ => trivial) (homOfLE hV).op`. Establish `e2` using `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f)`. Rewrite using `[← e1]`. Establish `e3 : (Spec.map (CommRingCat.ofHom f)).appLE ⊤ ⊤ (fun _ _ => trivial) = (Spec.map (CommRingCat.ofHom f)).appTop`. Rewrite using `[Scheme.Hom.appTop, ← Scheme.Hom.appLE_eq_app]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e4 : ∀ x, ((Spec.map (CommRingCat.ofHom f)).appTop).hom x = (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (f ((Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom x))` using `fun x => by`. Use `congrArg (fun t => t.hom x) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`. Rewrite using `[← this, ← CommRingCat.comp_apply, Iso.hom_inv_id, CommRingCat.id_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CommRingCat.hom_comp, RingHom.comp_apply, e3, e4]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem specMap_appLE_top {R Ω : Type} [CommRing R] [CommRing Ω] (f : R →+* Ω) (V : (Sp R).Opens) (hV : ⊤ ≤ V)
     (h : ⊤ ≤ Spec.map (CommRingCat.ofHom f) ⁻¹ᵁ V) (a : Γ(Sp R, V)) :
@@ -43,7 +43,7 @@ theorem specMap_appLE_top {R Ω : Type} [CommRing R] [CommRing Ω] (f : R →+* 
   rw [CommRingCat.hom_comp, RingHom.comp_apply, e3, e4]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appLE, hU.fromSpec_app_self, Category.assoc, ← Functor.map_comp]`. Use `Category.comp_id _` and compare the differences between its conclusion and the goal. Conclude with `(Spec Γ(X, U)).presheaf.map_id _`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem fromSpec_appLE_self {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U) (h : ⊤ ≤ hU.fromSpec ⁻¹ᵁ U) :
     hU.fromSpec.appLE U ⊤ h = (Scheme.ΓSpecIso Γ(X, U)).inv := by
@@ -52,7 +52,7 @@ theorem fromSpec_appLE_self {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U)
   exact (Spec Γ(X, U)).presheaf.map_id _
 
 /- English proof (translation)
-Rewrite using `[← CommRingCat.comp_apply, Iso.inv_hom_id, CommRingCat.id_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ΓSpecIso_hom_inv_apply (R : CommRingCat.{0}) (a : R) :
     (Scheme.ΓSpecIso R).hom.hom ((Scheme.ΓSpecIso R).inv.hom a) = a := by
@@ -63,7 +63,7 @@ end GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Establish `h : ⊤ ≤ Spec.map (CommRingCat.ofHom f) ⁻¹ᵁ (g ⁻¹ᵁ U)` using `fun x _ => hg trivial`. Rewrite using `[← gs_pull (Spec.map (CommRingCat.ofHom f)) g z U (hg trivial) a, gs_eq_germ_top _ z _ h, specMap_appLE_top f _ hg h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gs_specMap_comp {R Ω : Type} [CommRing R] [CommRing Ω] {X : Scheme.{0}} (f : R →+* Ω) (g : Sp R ⟶ X)
     (z : Sp Ω) (U : X.Opens) (hg : ⊤ ≤ g ⁻¹ᵁ U) (a : Γ(X, U)) :
@@ -80,21 +80,19 @@ end GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `X S Y gX L hL α k s j W hW hWa hαW T _ lam W' _ io σ hσ Ω _ ψ e hψ`. Establish `hq : (Spec.map (CommRingCat.ofHom (io.comp lam)) ≫ hWa.fromSpec) ≫ gX = 𝟙 (Sp W') ≫ (spMap io ≫ Spec.map (CommRingCat.ofHom lam) ≫ hWa.fromSpec ≫ gX)`. Rewrite using `[CommRingCat.ofHom_comp, Spec.map_comp, Category.id_comp]`. Simplify using `only [spMap, Category.assoc]`. Set `q''` to `pullback.lift (Spec.map (CommRingCat.ofHom (io.comp lam)) ≫ hWa.fromSpec) (𝟙 (Sp W')) hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `P : Sp Ω ⟶ _` to `Spec.map (CommRingCat.ofHom e) ≫ q''`. Set `pY : Sp Ω ⟶ Y` to `Spec.map (CommRingCat.ofHom ψ) ≫ hαW.fromSpec`. Establish `hring : α.appLE W (α ⁻¹ᵁ W) le_rfl ≫ CommRingCat.ofHom ψ = CommRingCat.ofHom (e.comp (io.comp lam))`. Use extensionality with `c`. Rewrite using `[Scheme.Hom.appLE_eq_app]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hψ c`. Establish `hA : P ≫ pullback.fst _ _ = pY ≫ α`. Simplify using `only [P, pY, q'', Category.assoc, pullback.lift_fst]`. Rewrite using `[← IsAffineOpen.SpecMap_appLE_fromSpec α hWa hαW le_rfl, ← Spec.map_comp_assoc, ← Spec.map_comp_assoc, hring, ← CommRingCat.ofHom_comp]`. Establish `hαmem : ∀ x, hαW.fromSpec x ∈ α ⁻¹ᵁ W` using `fun x => by show _ ∈ ((α ⁻¹ᵁ W : Y.Opens) : Set Y)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hαW.range_fromSpec]`. Conclude with `⟨x, rfl⟩`. Establish `hWmem : ∀ x, hWa.fromSpec x ∈ W` using `fun x => by show _ ∈ ((W : X.Opens) : Set X)`. Rewrite using `[← hWa.range_fromSpec]`. Conclude with `⟨x, rfl⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨z⟩ : Nonempty (Sp Ω)` from `⟨IsLocalRing.closedPoint Ω⟩`. Establish `hz : (pY ≫ α) z ∈ L.U j` using `hW (hαmem _)`. Take `⟨J, hJ, hJj⟩` from `exists_good L hL z (K := Unit) (fun _ => pY ≫ α) (fun _ => j) (fun _ _ _ => rfl) (fun _ => hz)`. Establish `hag` using `hσ (Sp Ω) P pY hA z J hJ`. Establish `hl : sval s pY z J = ((Sp Ω).presheaf.germ ⊤ z trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (ψ (chartVal L α s j W hW)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sval_of s pY z J (fun _ => j) (fun _ => hJj ()), ← gs_res pY z (locInt_le_chart L α j W hW) (hαmem _) (s.f (fun _ => j))]`. Rewrite using `[gs_specMap_comp ψ hαW.fromSpec z (α ⁻¹ᵁ W) hαW.fromSpec_preimage_self.ge]`. Rewrite using `[fromSpec_appLE_self hαW]`. Conclude with `congrArg (fun t => ((Sp Ω).presheaf.germ ⊤ z trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (ψ t))) (ΓSpecIso_hom_inv_apply _ _)`. Establish `hq'' : ⊤ ≤ q'' ⁻¹ᵁ LB.wchart L (K` using `Fin 1) (fun _ => pullback.fst _ _) (fun _ => j) := fun x _ => Set.mem_iInter.2 fun _ => hW (by show (q'' ≫ pullback.fst _ _) x ∈ W`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[pullback.lift_fst]`. Conclude with `hWmem _)`. Establish `hr : sval σ P z J = ((Sp Ω).presheaf.germ ⊤ z trivial).hom ((Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom (e ((Scheme.ΓSpecIso (CommRingCat.of W')).hom.hom ((q''.appLE _ ⊤ hq'').hom (σ.f (fun _ => j))))))`. Rewrite using `[sval_of σ P z J (fun _ => j) (fun _ => by rw [hA]; exact hJj ())]`. Conclude with `gs_specMap_comp e q'' z _ hq'' _`.
-
-Use `⟨(Scheme.ΓSpecIso (CommRingCat.of W')).hom.hom ((q''.appLE _ ⊤ hq'').hom (σ.f (fun _ => j))), ((((Sp Ω).presheaf.germ ⊤ z trivial).hom.comp (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom).injective) ?_⟩` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← hl, ← hr, hag]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartVal_mem_range_of_agree : ∀ (X S Y : Scheme.{0}) (gX : X ⟶ S) (L : LB X), L.IsLB → ∀ (α : Y ⟶ X) (k : ℕ) (s : SecK L α k) (j : L.ι) (W : X.Opens) (hW : W ≤ L.U j) (hWa : IsAffineOpen W), IsAffineOpen (α ⁻¹ᵁ W) → ∀ (T : Type) [CommRing T] (lam : Γ(X, W) →+* T) (W' : Type) [CommRing W'] (io : T →+* W') (σ : SecK L (pullback.fst gX (spMap io ≫ Spec.map (CommRingCat.ofHom lam) ≫ hWa.fromSpec ≫ gX)) k), Agree L σ s → ∀ (Ω : Type) [Field Ω] (ψ : Γ(Y, α ⁻¹ᵁ W) →+* Ω) (e : W' →+* Ω), (∀ c, ψ ((α.app W).hom c) = e (io (lam c))) → ∃ w : W', ψ (chartVal L α s j W hW) = e w := by
   intro X S Y gX L hL α k s j W hW hWa hαW T _ lam W' _ io σ hσ Ω _ ψ e hψ

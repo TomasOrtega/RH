@@ -21,7 +21,7 @@ def zC (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (n : ℕ) (τ :
     UpperTheory.V.Cm.capC τ ((j : ℕ) : ℂ)
 
 /- English proof (translation)
-The claim follows from `Subalgebra.sum_mem _ fun _ _ => Subalgebra.smul_mem _ (UpperTheory.V.Cm.capC_mem_center _ _) _`.
+A detailed English derivation is pending.
 -/
 theorem zC_mem (τ : E →+* ℂ) (i : ℕ) : zC E n τ i ∈ Subalgebra.center ℂ (UpperTheory.V.Cm.UC E n) :=
   Subalgebra.sum_mem _ fun _ _ => Subalgebra.smul_mem _ (UpperTheory.V.Cm.capC_mem_center _ _) _

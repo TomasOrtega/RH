@@ -11,17 +11,15 @@ open NumberField ReciprocityTheory.ChartRestriction.G.T0 ReciprocityTheory.Chart
 open scoped IntermediateField.algebraAdjoinAdjoin in
 
 /- English proof (translation)
-Use `set L := IntermediateField.adjoin K (Set.range x) with hL`. Establish `htow : Algebra.trdeg K L + Algebra.trdeg L F = D` using `(trdeg_add_eq K L (A := F)).trans hD`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite `htow` using `[h]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : Algebra.trdeg L F = 0` using `(Cardinal.add_nat_inj D).mp (by rw [add_comm, htow, zero_add])`. Use `haveI : Algebra.IsAlgebraic L F := trdeg_eq_zero_iff.mp h0`. Use `haveI : Algebra.IsAlgebraic (Algebra.adjoin K (Set.range x)) F := Algebra.IsAlgebraic.trans (Algebra.adjoin K (Set.range x)) L F`. Take `⟨t, ht, hb⟩` from `exists_isTranscendenceBasis_subset (R := K) (Set.range x)`. Establish `hc : Cardinal.mk t = Cardinal.mk (Fin D)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hb.cardinalMk_eq_trdeg, hD, Cardinal.mk_fin]`. Take `⟨e⟩` from `Cardinal.eq.mp hc`. Use `choose J hJ using fun k : Fin D => ht (e.symm k).2`. Use `haveI := hb.isAlgebraic_field`. Use `haveI : CharZero (IntermediateField.adjoin K (Set.range ((↑) : t → F))) := algebraRat.charZero _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Take `⟨b, hbD⟩` from `exists_basis_kaehler_of_algebraicIndependent hb.1`. Use `⟨J, ?_⟩` and prove the remaining obligations. Use `b.linearIndependent.comp e.symm e.symm.injective` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp_apply, hbD, hJ]`. Introduce and unpack `⟨J, hJ⟩`. Establish `hind : AlgebraicIndependent K fun k => x (J k)` using `ReciprocityTheory.ChartRestriction.G.AR.differentialIndependence K F D _ hJ`. Set `y : Fin D → L` to `fun k => ⟨x (J k), IntermediateField.subset_adjoin K _ ⟨J k, rfl⟩⟩`. Establish `hy : AlgebraicIndependent K y` using `AlgebraicIndependent.of_comp L.val hind`.
-
-Use `le_antisymm (htow ▸ le_self_add) ?_` and prove the remaining obligations. Simplify using `using hy.cardinalMk_le_trdeg`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem trdeg_adjoin_eq_iff_exists_linearIndependent_D {K F κ : Type} [Field K] [CharZero K]
     [Field F] [Algebra K F] {D : ℕ} (hD : Algebra.trdeg K F = D) (x : κ → F) :
@@ -66,13 +64,13 @@ variable {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι]
   [∀ c, Algebra (𝓞 K) (A c)]
 
 /- English proof (translation)
-Introduce `d c hD hw`. Establish `hone : ratio (Ω` using `Ω c) (d.w (d.jc c) c) (d.w (d.jc c) c) = 1 := by`. Establish `hex : ∃ a : Ω c, d.w (d.jc c) c = a • d.w (d.jc c) c` using `⟨1, (one_smul _ _).symm⟩`. Establish `h` using `hex.choose_spec`. Rewrite using `[ratio, dif_pos hex]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul_left_injective (Ω c) hw (h.symm.trans (one_smul _ _).symm)`. Establish `heq : IntermediateField.adjoin K (Set.range fun j => ratio (Ω` using `Ω c) (d.w j c) (d.w (d.jc c) c)) = IntermediateField.adjoin K (Set.range (d.x c)) := by`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_le_iff]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Fin.eq_self_or_eq_succAbove (d.jc c) j with rfl | ⟨k, rfl⟩` into its components or cases. Simplify using `only [hone]`. Conclude with `one_mem _`. Conclude with `IntermediateField.subset_adjoin K _ ⟨k, rfl⟩`. Apply `IntermediateField.adjoin.mono` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨(d.jc c).succAbove k, rfl⟩`. Rewrite using `[TrdegD, heq]`. Conclude with `trdeg_adjoin_eq_iff_exists_linearIndependent_D hD (d.x c)`.
+A detailed English derivation is pending.
 -/
 theorem trdegD_iff_exists_linearIndependent_D :
     ∀ (d : Data K ι Ω WT A) (c : ι), Algebra.trdeg K (Ω c) = d.D → d.w (d.jc c) c ≠ 0 →

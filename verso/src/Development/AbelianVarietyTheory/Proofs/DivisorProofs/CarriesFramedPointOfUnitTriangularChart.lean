@@ -9,13 +9,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.FlagMod.Frames
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Y Z π F hT S _ _ P z k hz hx U hU hd hv`. Take `⟨Q, hQ⟩` from `hT.exists_chartFr (frX_snd P) hx k hz`. Establish `hQx : frX Q ≫ Y.j = frX P ≫ Y.j` using `hQ.over.trans hx`. Establish `hv' : ∀ σ i, frVec Y P rfl σ i = ∑ j, U σ j i • frVec Y Q hQx σ j` using `fun σ i => by`. Rewrite using `[hQ.frVec_eq hx hQx]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv σ i`. Establish `e : P.x = Q.x`. Rewrite using `[← frX_fst, ← frX_fst, xF_ext (Y := Y) (frX_snd P) (frX_snd Q) hQx.symm]`. Establish `hB : ∃ t, FrBor t Q P`. Establish `hM` using `F.inM hz hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `clear hv hQ`. Use `revert hv' hQx hM`. Take `⟨x', xo', v', t1', t2', t3', s', t4'⟩` from `P`. Simplify using `only at e`. Substitute `e` using the available equality.
+Simplify by unfolding definitions. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `hQx hv' hM`. Take `⟨u0, hu0⟩` from `gen_unit Q.s s' Q.gen t4'`. Conclude with `⟨_, frBor_of_frVec hM hQx rfl (fun ix => match ix with | none => u0 | some p => (hd p.1 p.2).unit) U hU (fun _ _ => rfl) hv' fun _ => hu0⟩`. Take `⟨t, ht⟩` from `hB`. Conclude with `hQ.lies.frBor ht`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lies_of_chart_tri : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (Z : Scheme.{0}) (π : Z ⟶ Y.X) (F : Frames Y π), F.TopEigen → ∀ (S : Type) [CommRing S] [Algebra c.F S] (P : FrPt Xo c S) (z : Sp S ⟶ Z) (k : F.J) (hz : ⊤ ≤ z ⁻¹ᵁ F.U k) (hx : z ≫ π = frX P ≫ Y.j) (U : ∀ σ : E →+* ℂ, Matrix (Fin (Dw.mult σ)) (Fin (Dw.mult σ)) S), (∀ σ, (U σ).BlockTriangular id) → (∀ σ i, IsUnit (U σ i i)) → (∀ σ i, frVec Y P rfl σ i = ∑ j, U σ j i • F.vecAt k z hz hx σ j) → F.Lies z P := by
   intro E _ _ _ H Dw l Xo c O _ β Y Z π F hT S _ _ P z k hz hx U hU hd hv

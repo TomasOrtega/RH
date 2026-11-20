@@ -11,17 +11,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta IsDedek
 namespace GlobalTheory.MeasTupleEq
 
 /- English proof (translation)
-Simplify using `only [indexValue, parIdx, zpow_neg, zpow_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem indexValue_eq_parIdx (q : ℝ) (r d : ℕ) : indexValue q r d = parIdx q r d := by
   simp only [indexValue, parIdx, zpow_neg, zpow_natCast]
 
 /- English proof (translation)
-Introduce `g`. Set `M : Matrix (Fin n) (Fin n) O` to `fun a b => Function.surjInv (IsLocalRing.residue_surjective (R := O)) ((g : Matrix (Fin n) (Fin n) _) a b)`. Establish `hM : M.map (IsLocalRing.residue O) = (g : Matrix (Fin n) (Fin n) _)`. Use extensionality with `a b`. Simplify using `only [M]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Function.surjInv_eq _ _`. Establish `hdet : IsUnit M.det`. Establish `h1 : IsUnit (IsLocalRing.residue O M.det)`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, hM]`. Simplify `(Matrix.GeneralLinearGroup.det g).isUnit` using `[Matrix.GeneralLinearGroup.val_det_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isUnit_map_iff (IsLocalRing.residue O) _).1 h1`. Use `⟨Matrix.GeneralLinearGroup.mk'' M hdet, Units.ext ?_⟩` and prove the remaining obligations. Conclude with `hM`.
+A detailed English derivation is pending.
 -/
 theorem map_residue_surjective (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ) :
     Function.Surjective (Matrix.GeneralLinearGroup.map (n := Fin n) (IsLocalRing.residue O)) := by
@@ -42,9 +42,9 @@ theorem map_residue_surjective (O : Type) [CommRing O] [IsLocalRing O] (n : ℕ)
   exact hM
 
 /- English proof (translation)
-Rewrite using `[← Subgroup.index_comap_of_surjective _ (map_residue_surjective O (r + d))]`. Use `congr 1`. Use extensionality with `h`. Rewrite using `[Subgroup.mem_comap]`. Use `forall_congr' fun i => forall_congr' fun k => forall_congr' fun _ => forall_congr' fun _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.mem_bot]`. Conclude with `(IsLocalRing.residue_eq_zero_iff _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_parahoric (O : Type) [CommRing O] [IsLocalRing O] (r d : ℕ) :
     (parahoric (IsLocalRing.maximalIdeal O) r d).index =
@@ -63,7 +63,7 @@ def glT {k : Type} [Field k] {n : ℕ} (g : GL (Fin n) k) : GL (Fin n) k :=
     by rw [← Matrix.transpose_mul, Units.mul_inv, Matrix.transpose_one]⟩
 
 /- English proof (translation)
-Establish `hc : Nat.card (parahoric (⊥ : Ideal k) r d) = Nat.card (tjcosets_par (𝔽` using `k) (r + d) r) := Nat.card_congr { toFun := fun g => ⟨glT g.1, fun a b ha hb => Ideal.mem_bot.1 (g.2 b a hb ha)⟩ invFun := fun g => ⟨glT g.1, fun a b ha hb => Ideal.mem_bot.2 (g.2 b a hb ha)⟩ left_inv := fun g => Subtype.ext (Units.ext rfl) right_inv := fun g => Subtype.ext (Units …`. Establish `h1` using `(parahoric (⊥ : Ideal k) r d).index_mul_card`. Establish `h2` using `(tjcosets_par (𝔽 := k) (r + d) r).index_mul_card`. Rewrite `h1` using `[hc, ← h2]`. Conclude with `Nat.eq_of_mul_eq_mul_right Nat.card_pos h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_upper_eq_lower (k : Type) [Field k] [Fintype k] (r d : ℕ) :
     (parahoric (⊥ : Ideal k) r d).index = (tjcosets_par (𝔽 := k) (r + d) r).index := by
@@ -80,9 +80,9 @@ theorem index_upper_eq_lower (k : Type) [Field k] [Fintype k] (r d : ℕ) :
   exact Nat.eq_of_mul_eq_mul_right Nat.card_pos h1
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Finset.prod_Icc_succ_top (by omega), Finset.sum_range_succ, Finset.prod_range_succ, ← ih, pow_add q (∑ i ∈ Finset.range n, (i + 1))]`. Establish `: (1 - (q ^ (n + 1))⁻¹) * q ^ (n + 1) = q ^ (n + 1) - 1` using `by field_simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prod_one_sub {q : ℝ} (hq : q ≠ 0) (n : ℕ) :
     (∏ i ∈ Finset.Icc 1 n, (1 - (q ^ i)⁻¹)) * q ^ (∑ i ∈ Finset.range n, (i + 1)) =
@@ -96,7 +96,7 @@ theorem prod_one_sub {q : ℝ} (hq : q ≠ 0) (n : ℕ) :
     rw [← this]; ring
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih => rw [← add_assoc, Finset.sum_range_succ, ih, Finset.sum_range_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_add (r d : ℕ) : ∑ i ∈ Finset.range (r + d), (i + 1) =
     r * d + (∑ i ∈ Finset.range r, (i + 1) + ∑ i ∈ Finset.range d, (i + 1)) := by
@@ -105,9 +105,9 @@ theorem sum_add (r d : ℕ) : ∑ i ∈ Finset.range (r + d), (i + 1) =
   | succ d ih => rw [← add_assoc, Finset.sum_range_succ, ih, Finset.sum_range_succ]; ring
 
 /- English proof (translation)
-Establish `h0 : q ≠ 0` using `by linarith`. Establish `hp : ∀ n, (∏ i ∈ Finset.Icc 1 n, (1 - (q ^ i)⁻¹)) ≠ 0` using `fun n => by`. Use `(GlobalTheory.MeasTuple.prod_pos' hq n).ne'` as an intermediate fact. Simplify `this` using `only [zpow_neg, zpow_natCast]`. Rewrite `h` using `[← prod_one_sub h0, ← prod_one_sub h0, ← prod_one_sub h0, sum_add, pow_add, pow_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `indexValue`. Rewrite using `[eq_div_iff (mul_ne_zero (hp r) (hp d))]`. Apply `mul_right_cancel₀ (mul_ne_zero (pow_ne_zero (∑ i ∈ Finset.range r, (i + 1)) h0) (pow_ne_zero (∑ i ∈ Finset.range d, (i + 1)) h0))` to reduce the goal to its premises. Take the linear combination `h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem eq_indexValue {q : ℝ} (hq : 1 < q) (r d : ℕ) (C : ℝ)
     (h : C * (∏ i ∈ Finset.range r, (q ^ (i + 1) - 1)) * ∏ i ∈ Finset.range d, (q ^ (i + 1) - 1) =
@@ -124,9 +124,9 @@ theorem eq_indexValue {q : ℝ} (hq : 1 < q) (r d : ℕ) (C : ℝ)
   linear_combination h
 
 /- English proof (translation)
-Establish `hq : 1 < Fintype.card k` using `Fintype.one_lt_card`. Establish `h` using `tjcosets_arith _ (r + d) r _ hq (by omega) (tjcosets_ff_count (𝔽 := k) (r + d) r (by omega))`. Establish `h2` using `tjcosets_prod_shift (Fintype.card k : ℤ) d r`. Rewrite `h2` using `[add_comm d r, ← h, ← index_upper_eq_lower, mul_comm]`. Apply `eq_indexValue (by exact_mod_cast hq)` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h2` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem index_field (k : Type) [Field k] [Fintype k] (r d : ℕ) :
     ((parahoric (⊥ : Ideal k) r d).index : ℝ) = indexValue (Fintype.card k : ℝ) r d := by
@@ -138,9 +138,9 @@ theorem index_field (k : Type) [Field k] [Fintype k] (r d : ℕ) :
   exact_mod_cast h2
 
 /- English proof (translation)
-Introduce `F _ _ v r d`. Use `haveI : Finite (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) := tjcosets_finite v`. Use `letI := Fintype.ofFinite (IsLocalRing.ResidueField (v.adicCompletionIntegers F))`. Establish `hc` using `tjcosets_card_residue v`. Rewrite `hc` using `[Nat.card_eq_fintype_card]`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `localIndex`. Rewrite using `[index_parahoric, index_field, hc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem indexFormula : IndexFormula := by
   intro F _ _ v r d
@@ -153,11 +153,11 @@ theorem indexFormula : IndexFormula := by
   rfl
 
 /- English proof (translation)
-Introduce `h`. Unfold `localIndex at h`. Rewrite `h` using `[Subgroup.index_eq_one, eq_top_iff]`. Set `i : Fin (r + d)` to `⟨r, by omega⟩`. Set `k : Fin (r + d)` to `⟨0, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hik : i ≠ k` using `fun e => by have := congrArg Fin.val e; simp only [i, k] at this; omega`. Establish `hdet : IsUnit (Matrix.transvection i k (1 : v.adicCompletionIntegers F)).det`. Rewrite using `[Matrix.det_transvection_of_ne i k hik]`. Conclude with `isUnit_one`. Establish `hm` using `h (Subgroup.mem_top (Matrix.GeneralLinearGroup.mk'' _ hdet)) i k le_rfl hr`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he : (Matrix.transvection i k (1 : v.adicCompletionIntegers F)) i k = 1`. Simplify using `[Matrix.transvection, Matrix.one_apply_ne hik]`. Establish `hm' : (1 : v.adicCompletionIntegers F) ∈ IsLocalRing.maximalIdeal _` using `he ▸ hm`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top ((Ideal.eq_top_iff_one _).2 hm')`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem localIndex_ne_one {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) {r d : ℕ} (hr : 0 < r)
     (hd : 0 < d) : localIndex v r d ≠ 1 := by
@@ -178,16 +178,16 @@ theorem localIndex_ne_one {F : Type} [Field F] [NumberField F] (v : HeightOneSpe
 variable {D : D7} {X : ThetaX D}
 
 /- English proof (translation)
-Unfold `ThetaDivisorCompatibility ThetaX.TieMY MeasFactorAbstract`. Simplify using `only [indexValue_eq_parIdx]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem myTied_iff_abstract (X : ThetaX D) (Z : DivX D) : ThetaDivisorCompatibility X Z ↔ MeasFactorAbstract X Z := by
   unfold ThetaDivisorCompatibility ThetaX.TieMY MeasFactorAbstract
   simp only [indexValue_eq_parIdx]
 
 /- English proof (translation)
-Use `symm`. Use `Finset.prod_bij (fun x _ => (e x).1) (fun x _ => ?_) (fun x _ y _ hxy => ?_) (fun v hv => ?_) (fun x _ => ?_)` and prove the remaining obligations. Conclude with `Finset.mem_coe.mp (hS.symm.subset (e x).2)`. Conclude with `e.injective (Subtype.ext hxy)`. Establish `hv' : v ∈ ramPlaces T μ` using `by rw [← hS]; exact hv`.
+Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨e.symm ⟨v, hv'⟩, Finset.mem_univ _, by simp⟩`. Rewrite using `[he x, indexFormula, indexValue_eq_parIdx]`.
+A detailed English derivation is pending.
 -/
 theorem prod_localIndex {T : ThetaTied D X} {Z : DivX D} {μ : D.what₂.Tup} (e : Z.QPl μ ≃ ramPlaces T μ)
     (he : ∀ x, Z.qv μ x = Ideal.absNorm (e x).1.asIdeal) (S : Finset (HeightOneSpectrum (𝓞 D.host.F)))
@@ -202,9 +202,9 @@ theorem prod_localIndex {T : ThetaTied D X} {Z : DivX D} {μ : D.what₂.Tup} (e
   · rw [he x, indexFormula, indexValue_eq_parIdx]
 
 /- English proof (translation)
-Use `forall_congr' fun μ => ?_` and prove the remaining obligations. Take `⟨e, he⟩` from `hP μ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨S, hS, hm⟩ j hj`. Rewrite using `[hm j hj, prod_localIndex e he S hS]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Establish `hfin : (ramPlaces T μ).Finite` using `Set.finite_coe_iff.1 (Finite.of_equiv _ e)`. Use `⟨hfin.toFinset, hfin.coe_toFinset, fun j hj => ?_⟩` and prove the remaining obligations. Rewrite using `[h j hj, prod_localIndex e he _ hfin.coe_toFinset]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem factor_iff_myTied {T : ThetaTied D X} {Z : DivX D} (hP : PlacesTied T Z) : MeasFactor T ↔ ThetaDivisorCompatibility X Z := by
   refine forall_congr' fun μ => ?_
@@ -218,7 +218,7 @@ theorem factor_iff_myTied {T : ThetaTied D X} {Z : DivX D} (hP : PlacesTied T Z)
     rw [h j hj, prod_localIndex e he _ hfin.coe_toFinset]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.split, h.places, (factor_iff_myTied h.places).1 h.factor⟩, fun h => ⟨h.1, h.2.1, (factor_iff_myTied h.2.1).2 h.2.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem measTupleTied_iff (T : ThetaTied D X) (Z : DivX D) :
     MeasTupleTied T Z ↔ (∀ μ, ∀ v ∈ ramPlaces T μ, IsSplit D v) ∧ PlacesTied T Z ∧ ThetaDivisorCompatibility X Z :=
@@ -226,15 +226,15 @@ theorem measTupleTied_iff (T : ThetaTied D X) (Z : DivX D) :
     fun h => ⟨h.1, h.2.1, (factor_iff_myTied h.2.1).2 h.2.2⟩⟩
 
 /- English proof (translation)
-The claim follows from `((measTupleTied_iff T Z).1 h).2.2`.
+A detailed English derivation is pending.
 -/
 theorem myTied_of_measTupleTied {T : ThetaTied D X} {Z : DivX D} (h : MeasTupleTied T Z) : ThetaDivisorCompatibility X Z :=
   ((measTupleTied_iff T Z).1 h).2.2
 
 /- English proof (translation)
-Take `⟨S, hS, hm⟩` from `h μ`. Take `⟨v, hv⟩` from `hμ`. Establish `h2` using `D.R.two_le_m`. Establish `hr : 0 < D.R.r` using `by unfold Ranks.r; omega`. Establish `ht : 0 < 1 * D.R.t` using `by have := D.R.rank_add_five_le; omega`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hm 1 (by omega), ← Nat.cast_prod, Ne, Nat.cast_eq_one, Finset.prod_eq_one_iff]`. Introduce `hall`. Conclude with `localIndex_ne_one v hr ht (hall v (Finset.mem_coe.1 (hS.symm.subset hv)))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mY_ne_one {T : ThetaTied D X} (h : MeasFactor T) {μ : D.what₂.Tup} (hμ : (ramPlaces T μ).Nonempty) :
     X.mY μ 1 ≠ 1 := by
@@ -248,7 +248,7 @@ theorem mY_ne_one {T : ThetaTied D X} (h : MeasFactor T) {μ : D.what₂.Tup} (h
   exact localIndex_ne_one v hr ht (hall v (Finset.mem_coe.1 (hS.symm.subset hv)))
 
 /- English proof (translation)
-Establish `hn : ¬ PlacesTied (GlobalTheory.MeasTuple.thetaDivisorRestriction T (GlobalTheory.MeasTuple.rep Z 0)) (GlobalTheory.MeasTuple.rep Z 0)` using `fun h => by`. Take `⟨e, -⟩` from `h μ`. Take `⟨v, hv⟩` from `hμ`. Conclude with `(e.symm ⟨v, hv⟩).1.elim0`. Conclude with `⟨_, GlobalTheory.MeasTuple.thetaDivisorRestriction T (GlobalTheory.MeasTuple.rep Z 0), GlobalTheory.MeasTuple.rep Z 0, rfl, fun _ => rfl, (GlobalTheory.MeasTuple.trivial_factor X Z).2.2, GlobalTheory.MeasTuple.myTied_setMY _ _, hn, fun h => mY_ne_one h (μ := μ) hμ ((GlobalTheory. …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem myTied_not_measTupleTied (T : ThetaTied D X) (Z : DivX D) {μ : D.what₂.Tup} (hμ : (ramPlaces T μ).Nonempty) :
     ∃ (X' : ThetaX D) (T' : ThetaTied D X') (Z' : DivX D), Z'.Qp = Z.Qp ∧ (∀ ν, ramPlaces T' ν = ramPlaces T ν) ∧

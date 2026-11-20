@@ -9,7 +9,7 @@ variable {K : Type*} [Field K] [NumberField K] {V : Type*} [AddCommGroup V] [Mod
   [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Take `⟨r, v, hv⟩` from `exists_isFullRankFamily_of_fg E hE`. Take `rfl` from `hv.length_eq_latticeRank`. Conclude with `⟨v, hv⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isFrame (E : Submodule (𝓞 K) V) (hE : E.FG) :
     ∃ v : Fin (latRank K E) → V, IsFrame K E v := by
@@ -18,14 +18,14 @@ theorem exists_isFrame (E : Submodule (𝓞 K) V) (hE : E.FG) :
   exact ⟨v, hv⟩
 
 /- English proof (translation)
-Conclude with `hv.length_eq_latticeRank`.
+A detailed English derivation is pending.
 -/
 theorem IsFrame.card_eq {E : Submodule (𝓞 K) V} {r : ℕ} {v : Fin r → V} (hv : IsFrame K E v) :
     r = latRank K E := by
   exact hv.length_eq_latticeRank
 
 /- English proof (translation)
-Conclude with `hv.relIndex_span_frame_ne_zero hE`.
+A detailed English derivation is pending.
 -/
 theorem IsFrame.relIndex_ne_zero {E : Submodule (𝓞 K) V} (hE : E.FG) {r : ℕ} {v : Fin r → V}
     (hv : IsFrame K E v) :
@@ -33,7 +33,7 @@ theorem IsFrame.relIndex_ne_zero {E : Submodule (𝓞 K) V} (hE : E.FG) {r : ℕ
   exact hv.relIndex_span_frame_ne_zero hE
 
 /- English proof (translation)
-Take `rfl : r = r'` from `hv.length_eq_latticeRank.trans hv'.length_eq_latticeRank.symm`. Conclude with `degreeOfFamily_eq_of_isFullRankFamily h hE hv hv'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem degreeOfFamily_eq_degreeOfFamily (h : HermFam K V) {E : Submodule (𝓞 K) V} (hE : E.FG) {r r' : ℕ}
     {v : Fin r → V} {v' : Fin r' → V} (hv : IsFrame K E v) (hv' : IsFrame K E v') :
@@ -42,7 +42,7 @@ theorem degreeOfFamily_eq_degreeOfFamily (h : HermFam K V) {E : Submodule (𝓞 
   exact degreeOfFamily_eq_of_isFullRankFamily h hE hv hv'
 
 /- English proof (translation)
-Establish `hex : ∃ p : (Σ r : ℕ, Fin r → V), IsFrame K E p.2` using `⟨⟨r, v⟩, hv⟩`. Unfold `deg`. Rewrite using `[dif_pos hex]`. Conclude with `degreeOfFamily_eq_degreeOfFamily h hE hex.choose_spec hv`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arakelovDegree_eq_degreeOfFamily (h : HermFam K V) {E : Submodule (𝓞 K) V} (hE : E.FG) {r : ℕ}
     {v : Fin r → V} (hv : IsFrame K E v) : deg h E = degreeOfFamily h E v := by
@@ -52,13 +52,13 @@ theorem arakelovDegree_eq_degreeOfFamily (h : HermFam K V) {E : Submodule (𝓞 
   exact degreeOfFamily_eq_degreeOfFamily h hE hex.choose_spec hv
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_isFrame E' hE'`. Establish `hvE : IsFrame K E v`. Use `⟨fun i => hle (hv.1 i), hv.2.1, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hx'` using `hspan hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hx'` using `[← hv.ds_spanK_eq]`. Conclude with `hx'`. Rewrite using `[arakelovDegree_eq_degreeOfFamily h hE' hv, arakelovDegree_eq_degreeOfFamily h hE hvE]`. Unfold `degreeOfFamily`. Establish `hS : Submodule.span (𝓞 K) (Set.range v) ≤ E'` using `Submodule.span_le.mpr (Set.range_subset_iff.mpr hv.1)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex (H := (Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup) (K := E'.toAddSubgroup) (L := E.toAddSubgroup) (fun x hx => hS hx) (fun x hx => hle hx)`. Establish `ha` using `hv.relIndex_span_frame_ne_zero hE'`. Establish `hc` using `hvE.relIndex_span_frame_ne_zero hE`. Establish `hb : E'.toAddSubgroup.relIndex E.toAddSubgroup ≠ 0` using `fun h0 => hc (by rw [← hmul, h0, mul_zero])`. Establish `hlog : Real.log ((Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup.relIndex E.toAddSubgroup : ℝ) = Real.log ((Submodule.span (𝓞 K) (Set.range v)).toAddSubgroup.relIndex E'.toAddSubgroup : ℝ) + Real.log (E'.toAddSubgroup.relIndex E.toAddSubgroup : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hmul, Nat.cast_mul, Real.log_mul (Nat.cast_ne_zero.mpr ha) (Nat.cast_ne_zero.mpr hb)]`. Rewrite using `[hlog]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deg_of_le (h : HermFam K V) {E' E : Submodule (𝓞 K) V} (hE' : E'.FG) (hE : E.FG)
     (hle : E' ≤ E) (hspan : (E : Set V) ⊆ Submodule.span K (E' : Set V)) :

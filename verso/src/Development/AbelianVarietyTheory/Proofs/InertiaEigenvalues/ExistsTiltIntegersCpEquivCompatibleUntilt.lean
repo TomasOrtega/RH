@@ -11,7 +11,7 @@ open GroundTheory.PAdicHodge
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[mem_normInteger, ← GlobalTheory.RingBasics.mem_OC]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem oc_eq_normInteger : (𝓞_ℂ_[l]).toSubring = normInteger ℂ_[l] := by
   ext x
@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
 theorem coe_ocEquiv (x : OC l) : ((ocEquiv l x : normInteger ℂ_[l]) : ℂ_[l]) = (x : ℂ_[l]) := rfl
 
 /- English proof (translation)
-Rewrite using `[Ideal.map_span, Set.image_singleton]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem span_map_ocEquiv :
     Ideal.span {(l : normInteger ℂ_[l])} = (Ideal.span {(l : OC l)}).map ((ocEquiv l : OC l →+* normInteger ℂ_[l])) := by
@@ -68,9 +68,9 @@ Both sides reduce to the same expression.
 theorem flEquiv_apply (x : Fl l) : flEquiv l x = flTo l x := rfl
 
 /- English proof (translation)
-Use `Perfection.teichmuller_spec (I := Ideal.span {(l : normInteger ℂ_[l])}) fun n => ?_` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (Perfection.coeff _ l n x)`. Use `⟨ocEquiv l y, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[coeff_flTo, ← hy]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `(Perfection.teichmuller_sModEq hy).symm` as an intermediate fact. Rewrite `this` using `[SModEq.sub_mem, GlobalTheory.RingBasics.mem_span_pow_OC]`. Establish `hl : ((l : normInteger ℂ_[l]) : ℂ_[l]) = (l : ℂ_[l])` using `by simp`. Rewrite using `[SModEq.sub_mem, mem_span_singleton_pow_iff, ← map_pow, ← map_sub, coe_ocEquiv, hl]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem untilt_flTo (x : Fl l) : (flTo l x).untilt = ocEquiv l x.untilt := by
   refine Perfection.teichmuller_spec (I := Ideal.span {(l : normInteger ℂ_[l])}) fun n => ?_
@@ -85,7 +85,7 @@ theorem untilt_flTo (x : Fl l) : (flTo l x).untilt = ocEquiv l x.untilt := by
     exact this
 
 /- English proof (translation)
-Introduce `l _`. Use `⟨flEquiv l, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[flEquiv_apply, untilt_flTo, coe_ocEquiv]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem exists_flEquiv_untilt : ∀ (l : ℕ) [Fact l.Prime], ∃ e : Fl l ≃+* PreTilt (GroundTheory.PAdicHodge.normInteger ℂ_[l]) l,
     ∀ x : Fl l, ((PreTilt.untilt (e x) : GroundTheory.PAdicHodge.normInteger ℂ_[l]) : ℂ_[l]) = sh x := by

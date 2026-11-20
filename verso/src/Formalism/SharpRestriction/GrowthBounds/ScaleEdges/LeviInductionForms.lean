@@ -18,9 +18,9 @@ section XX
 variable {O : Type} [CommRing O] [IsDomain O] {n' r K : ℕ} [NeZero n'] [NeZero r] [NeZero K] (F : Frames n' r) (j : ℤ)
 
 /- English proof (translation)
-Unfold `XX'`. Apply `inf_le_inf_right` to reduce the goal to its premises. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `P ⟨A, G, M, hA, hG, hc, rfl⟩`. Use `⟨A, G, M, hA, hG, fun x hx hW => ?_, rfl⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2, h3⟩` from `hc x hx hW`. Establish `key : ∀ v : WithTop ℤ, ((M x + mg x : ℤ) : WithTop ℤ) ≤ v → ((M x + 0 : ℤ) : WithTop ℤ) ≤ v` using `fun v hv => le_trans (WithTop.coe_le_coe.mpr (by linarith [hmg x])) hv`. Conclude with `⟨fun he => ⟨(h1 he).1, key _ (h1 he).2⟩, fun he => ⟨(h2 he).1, key _ (h2 he).2⟩, h3⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem xx_mono (mg : ℤ → ℤ) (th o : ℤ → ℝ) (hmg : ∀ x, 0 ≤ mg x) :
     XX' O r K F j mg th o ≤ XX' O r K F j (fun _ => 0) th o := by
@@ -46,11 +46,11 @@ variable {p n' r k : ℕ} [Fact p.Prime] [NeZero n'] {O : Type} [CommRing O] [Is
 local notation "PP" => MvPolynomial (TV n' k) (KK O)
 
 /- English proof (translation)
-Proceed by induction on `hZ using AddSubmonoid.closure_induction with`. Consider the case `mem P hP`. Take `⟨o', hS⟩` from `hP`. Establish `hh : IsWeightedHomogeneous (normalVariableWeight n' k r) P o'` using `(hom_iff P o').mp hS.1`. Establish `hm : IsWeightedHomogeneous (normalVariableWeight n' k r) (P * H0) o'` using `by simpa using hh.mul hH0`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `he : o = o'`. Substitute `he` using the available equality. Conclude with `⟨P, SyS_of_Sy hS, hm.weightedHomogeneousComponent_same⟩`. Conclude with `⟨0, zero_mem _, by rw [hm.weightedHomogeneousComponent_ne o he, zero_mul]⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by simp⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨Za, hZa, ea⟩` from `ha`. Take `⟨Zb, hZb, eb⟩` from `hb`. Conclude with `⟨Za + Zb, add_mem hZa hZb, by rw [add_mul, map_add, ea, eb, add_mul]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SyS_compZ {H0 : PP} (hH0 : IsWeightedHomogeneous (normalVariableWeight n' k r) H0 0) {Z : PP} (hZ : Z ∈ SyS w Fr Q g) (o : ℕ) :
     ∃ FinalForm ∈ SyS w Fr Q g, weightedHomogeneousComponent (normalVariableWeight n' k r) o (Z * H0) = FinalForm * H0 := by
@@ -72,9 +72,9 @@ theorem SyS_compZ {H0 : PP} (hH0 : IsWeightedHomogeneous (normalVariableWeight n
 end Comp
 
 /- English proof (translation)
-Use extensionality with `d`. Rewrite using `[coeff_sum]`. Simplify using `only [coeff_weightedHomogeneousComponent]`. Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hd`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `symm`. Assume the negation of the conclusion as `hne`. Conclude with `hd (Finset.mem_range.mpr (Nat.lt_succ_of_le (h d (mem_support_iff.mpr hne))))`.
+Use symmetry to reverse the relation. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem sum_comp_range {R σ : Type*} [CommSemiring R] (wt : σ → ℕ) (φ : MvPolynomial σ R) (T : ℕ)
     (h : ∀ m ∈ φ.support, Finsupp.weight wt m ≤ T) :
@@ -90,9 +90,9 @@ theorem sum_comp_range {R σ : Type*} [CommSemiring R] (wt : σ → ℕ) (φ : M
     exact hd (Finset.mem_range.mpr (Nat.lt_succ_of_le (h d (mem_support_iff.mpr hne))))
 
 /- English proof (translation)
-Unfold `normDeg vsDeg`. Rewrite using `[Finset.sum_subset (Finset.subset_univ m.support) (fun v _ hv => by simp [Finsupp.notMem_support_iff.mp hv])]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl (fun t _ => ?_)` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ht : Even t.val`. Simplify using `only [IsNormal, ht, if_true]`. Simplify using the standard rewrite rules. Simplify using `only [IsNormal, ht, if_false]`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem normDeg_eq_vsDeg {n' r K : ℕ} (m : Fin n' × Fin (r + K) →₀ ℕ) : normDeg r m = vsDeg m := by
   unfold normDeg vsDeg

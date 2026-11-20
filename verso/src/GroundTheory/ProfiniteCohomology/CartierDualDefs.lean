@@ -110,7 +110,7 @@ def cartierDualFunctor :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem cartierDualFunctor_obj (M : (Rep.{u} (ULift.{u} ℤ) Gal(L/K))ᵒᵖ) :
     (cartierDualFunctor K L).obj M = cartierDual K L M.unop :=
@@ -143,7 +143,7 @@ variable {K L}
 
 @[simp]
 /- English proof (translation)
-The claim follows from `pairingHom_tmul (A := M) (B := cartierDual K L M) (evalBilin K L M) _ m f`.
+A detailed English derivation is pending.
 -/
 theorem cartierPairing_tmul (M : Rep.{u} (ULift.{u} ℤ) Gal(L/K)) (m : M)
     (f : M →ₗ[ULift.{u} ℤ] galUnits.{u} K L) :

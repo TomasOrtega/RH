@@ -10,9 +10,9 @@ open scoped TensorProduct
 namespace GlobalTheory.Proof.StabilizerIndex
 
 /- English proof (translation)
-Use `letI : Fintype F := Fintype.ofFinite F`. Establish `h` using `Formalism.LogVandermondeBounds.StandardLattice.cardStabilizerVector F k φ hφ`. Establish `hcm` using `(GlobalTheory.IndefiniteRowSideFullHecke.OverPlaceIntegralForm.stabRow φ).card_mul_index`. Establish `hc : Nat.card (GlobalTheory.IndefiniteRowSideFullHecke.OverPlaceIntegralForm.stabRow φ) = Nat.card {A : GL (Fin k) F // Matrix.vecMul φ (A : Matrix (Fin k) (Fin k) F) = φ}` using `Nat.card_congr (Equiv.subtypeEquivRight (fun A => Iff.rfl))`. Rewrite `h` using `[← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, ← Nat.card_eq_fintype_card, ← hc, ← hcm]`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(Nat.eq_of_mul_eq_mul_left Nat.card_pos h).symm`.
+A detailed English derivation is pending.
 -/
 lemma index_field (F : Type) [Field F] [Finite F] (k : ℕ) (φ : Fin k → F) (hφ : φ ≠ 0) :
     (GlobalTheory.IndefiniteRowSideFullHecke.OverPlaceIntegralForm.stabRow φ).index = Nat.card F ^ k - 1 := by
@@ -28,11 +28,11 @@ lemma index_field (F : Type) [Field F] [Finite F] (k : ℕ) (φ : Fin k → F) (
   exact (Nat.eq_of_mul_eq_mul_left Nat.card_pos h).symm
 
 /- English proof (translation)
-Introduce `κ _ T k hT hcard φ hφ`. Use `haveI : Fact T.Prime := ⟨hT⟩`. Use `haveI : Finite κ := Nat.finite_of_card_ne_zero (hcard ▸ hT.ne_zero)`. Use `letI : Fintype κ := Fintype.ofFinite κ`. Establish `e : ZMod T ≃+* κ` using `ZMod.ringEquivOfPrime κ hT (by rw [← Nat.card_eq_fintype_card, hcard])`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : IsField κ` using `MulEquiv.isField (Field.toIsField (ZMod T)) e.symm.toMulEquiv`. Establish `h` using `@index_field κ hF.toField _ k φ hφ`. Establish `h' : (GlobalTheory.IndefiniteRowSideFullHecke.OverPlaceIntegralForm.stabRow φ).index = T ^ k - 1`. Rewrite using `[← hcard]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Rewrite using `[h', Nat.cast_sub (Nat.one_le_pow _ _ hT.pos)]`. Use `push_cast`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem index_stabRow : ∀ (κ : Type) [CommRing κ] (T k : ℕ), T.Prime → Nat.card κ = T →
     ∀ φ : Fin k → κ, φ ≠ 0 →

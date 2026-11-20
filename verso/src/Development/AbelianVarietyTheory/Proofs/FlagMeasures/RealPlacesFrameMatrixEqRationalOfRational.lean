@@ -12,31 +12,29 @@ namespace GlobalTheory.St
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D X u wt hW s γ₀ y₀ hs hy`. Take `⟨Q, Qi, G', hQQi, hQiQ, hQq, -, -, -, hG', hblk⟩` from `GlobalTheory.T.columnWittFrame_basis_blockGram D X u wt hW`. Use function extensionality and compare the values at `τ`. Use `set v := X.pl.symm τ with hv`. Use `set φ := X.B.I.φ v with hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `set G := (Formalism.L2.Forms.gramN D 0 (Nat.zero_le _)).map X.ιE.symm with hGdef`. Establish `hgram : gramQ X wt v = G.map φ`. Use extensionality with `a b`. Establish `h1` using `congrFun (congrFun hblk (Sum.inl a)) (Sum.inl b)`. Rewrite `h1` using `[Matrix.fromBlocks_apply₁₁]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.map_apply, ← h1]`. Simplify using `only [gramQ, Matrix.of_apply, rvV]`. Use `PI.ScPiFrameW.hJ_rv X.B.I v (X.crd (qFr wt a)) (X.crd (qFr wt b))` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Formalism.UG.hform, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, hQq, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hdetG : G.det ≠ 0`. Establish `hJu : IsUnit X.B.I.J.det` using `isUnit_iff_ne_zero.mpr X.B.I.J_det`. Establish `hJinv : X.B.I.J * X.B.I.J⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hJu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hR : Matrix.fromBlocks G 0 0 G' * (Qi * X.B.I.J⁻¹ * (Qi.map (starRingEnd X.B.I.E))ᵀ) = 1`. Rewrite using `[← hblk]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc Q Qi, hQQi, Matrix.one_mul, ← Matrix.mul_assoc X.B.I.J, hJinv, Matrix.one_mul, ← Matrix.transpose_mul, ← Matrix.map_mul, hQiQ, Matrix.map_one _ (map_zero _) (map_one _), Matrix.transpose_one]`. Establish `hd` using `congrArg Matrix.det hR`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hd` using `[Matrix.det_mul, Matrix.det_one, Matrix.det_fromBlocks_zero₂₁]`. Conclude with `left_ne_zero_of_mul (left_ne_zero_of_mul_eq_one hd)`. Establish `hdetQ : IsUnit (gramQ X wt v).det`. Establish `hm : (G.map φ).det = φ G.det` using `(RingHom.map_det φ G).symm`. Rewrite using `[hgram, hm, isUnit_iff_ne_zero, map_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hdetG`. Establish `hvec : ∀ x, uMat (s v) *ᵥ rv X.B.I v x = rv X.B.I v (γ₀ *ᵥ x)`. Introduce `x`. Establish `hu : IsUnit (X.B.I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (X.B.I.P_unit v)`. Establish `hinv : X.B.I.P v * (X.B.I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hs v]`. Simplify using `only [rv]`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_assoc _ (X.B.I.P v), hinv, Matrix.mul_one, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.mulVec, dotProduct, map_sum, map_mul, φ]`. Establish `hlin : ∀ b, rv X.B.I v (γ₀ *ᵥ X.crd (qFr wt b)) = ∑ i, φ (y₀ i b) • rvV X v (qFr wt i)`. Introduce `b`. Rewrite using `[hy b]`. Simplify using `only [rvV, rv]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[← Matrix.mulVec_smul]`. Rewrite using `[← Matrix.mulVec_sum]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[Finset.sum_apply, map_sum, map_mul, φ]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM : (Matrix.of fun a b => hJ (X.B.I.ε v) (rvV X v (qFr wt a)) (uMat (s v) *ᵥ rvV X v (qFr wt b))) = gramQ X wt v * y₀.map φ`. Use extensionality with `a b`. Rewrite using `[Matrix.of_apply, show rvV X v (qFr wt b) = rv X.B.I v (X.crd (qFr wt b)) from rfl, hvec, hlin, Matrix.mul_apply]`. Simplify using `only [hJ, Matrix.mulVec_sum, Matrix.mulVec_smul, dotProduct_sum, dotProduct_smul, gramQ, Matrix.of_apply, Matrix.map_apply, smul_eq_mul, rvV]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hfin : y₀.map φ = Formalism.L2.Forms.atInf (Formalism.L2.Forms.embT D) (y₀.map X.ιE) τ`. Use extensionality with `a b`. Simplify using `only [Formalism.L2.Forms.atInf, Matrix.map_apply, φ, X.φ_eq, hv, Equiv.apply_symm_apply]`. Both sides reduce to the same expression.
-
-Use `show (gramQ X wt v)⁻¹ * _ = _`. Rewrite using `[hM, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdetQ, Matrix.one_mul, hfin]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sTil_eq_atInf_of_rational : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V), WittX X u wt → ∀ (s : X.B.I.Ginf) (γ₀ : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) (y₀ : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) X.B.I.E), (∀ v, uMat (s v) = (X.B.I.P v)⁻¹ * γ₀.map (X.B.I.φ v) * X.B.I.P v) → (∀ j, γ₀ *ᵥ X.crd (qFr wt j) = ∑ i, y₀ i j • X.crd (qFr wt i)) → sTil X wt s = Formalism.L2.Forms.atInf (Formalism.L2.Forms.embT D) (y₀.map X.ιE) := by
   intro D X u wt hW s γ₀ y₀ hs hy

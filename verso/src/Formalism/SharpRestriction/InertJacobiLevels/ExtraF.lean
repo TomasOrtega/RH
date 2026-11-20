@@ -33,35 +33,35 @@ variable {R : Ranks} (H : Host R) (hc : Tau2 R → HCParam R) (etaF : ℝ) (Dn :
 def d7F : D7 := twistRecord H hc (Dn : ℚ) hDel hgap hlet (CD.cdScaleOf CD.cdHaar) (CD.cdScaleOf_pos _) (fun τ => (hu τ).choose) (fun τ => (hu τ).choose_spec.1) etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw
 
 /- English proof (translation)
-The claim follows from `shape_zero_trivialDatum H hc (Dn : ℚ) hDel hgap hlet (CD.cdScaleOf CD.cdHaar) (CD.cdScaleOf_pos _) (fun τ => (hu τ).choose) (fun τ => (hu τ).choose_spec.1) etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw hE hDG`.
+A detailed English derivation is pending.
 -/
 theorem trivialFamily_shape_zero (hE : ∀ i, IsEmpty (K.cls (i + 1))) (hDG : K.DGam = minkM (2 * R.f * R.N R.m)) : Shape0 (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) := shape_zero_trivialDatum H hc (Dn : ℚ) hDel hgap hlet (CD.cdScaleOf CD.cdHaar) (CD.cdScaleOf_pos _) (fun τ => (hu τ).choose) (fun τ => (hu τ).choose_spec.1) etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw hE hDG
 
 /- English proof (translation)
-The claim follows from `trivialDatum_finrank_zero H hc (Dn : ℚ) hDel hgap hlet (CD.cdScaleOf CD.cdHaar) (CD.cdScaleOf_pos _) (fun τ => (hu τ).choose) (fun τ => (hu τ).choose_spec.1) etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw u`.
+A detailed English derivation is pending.
 -/
 theorem trivialFamily_rank_zero (u) : Module.finrank ℂ ((d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).A.Mu0 = 0 := trivialDatum_finrank_zero H hc (Dn : ℚ) hDel hgap hlet (CD.cdScaleOf CD.cdHaar) (CD.cdScaleOf_pos _) (fun τ => (hu τ).choose) (fun τ => (hu τ).choose_spec.1) etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw u
 
 /- English proof (translation)
-The claim follows from `Function.bijective_id`.
+A detailed English derivation is pending.
 -/
 theorem trivialFamily_embedding_bijective : Function.Bijective (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).embE := Function.bijective_id
 
 /- English proof (translation)
-The claim follows from `ties_withTw _ W rfl (fun τ V _ _ σ d h1 h2 => (hu τ).choose_spec.2 V σ d h1 h2) (fun _ _ _ _ => rfl) (fun _ _ _ => rfl) ⟨fun x => Empty.elim x⟩`.
+A detailed English derivation is pending.
 -/
 theorem trivialFamily_compatibilities (W : TwGap (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw)) : Ties (withTw (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) W) :=
   ties_withTw _ W rfl (fun τ V _ _ σ d h1 h2 => (hu τ).choose_spec.2 V σ d h1 h2)
     (fun _ _ _ _ => rfl) (fun _ _ _ => rfl) ⟨fun x => Empty.elim x⟩
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem trivialFamily_dualStar_eq (h : (du : ℝ) = duStarH H hc) (u) :
     (((d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).mem u).A.duStar : ℝ) = StandardLattice.duStarU (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) u := h
 
 /- English proof (translation)
-Substitute `hvl` using the available equality. Conclude with `dstar_def_of_vol _ rfl`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem trivialFamily_discriminantStar_eq (hvl : vol = fun _ => volFor R H.g (fun τ => (hu τ).choose) Dst) :
     (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).what₂.Dstar = StandardLattice.DstarD (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) := by
@@ -69,13 +69,13 @@ theorem trivialFamily_discriminantStar_eq (hvl : vol = fun _ => volFor R H.g (fu
   exact dstar_def_of_vol _ rfl
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem trivialFamily_kappaDef_congr (hv' : ℝ) (h : DV.KapDef (d7F H hc etaF Dn hDel hgap hlet hu hv' vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw)) :
     DV.KapDef (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) := h
 
 /- English proof (translation)
-The claim follows from `twistRecord_weights_defined H hc (Dn : ℚ) hDel hgap hlet (CD.cdScaleOf CD.cdHaar) (CD.cdScaleOf_pos _) (fun τ => (hu τ).choose) (fun τ => (hu τ).choose_spec.1) etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G tw htw`.
+A detailed English derivation is pending.
 -/
 theorem trivialFamily_exists_kappa : ∃ kb ks, DV.KapDef (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) :=
   twistRecord_weights_defined H hc (Dn : ℚ) hDel hgap hlet (CD.cdScaleOf CD.cdHaar) (CD.cdScaleOf_pos _) (fun τ => (hu τ).choose) (fun τ => (hu τ).choose_spec.1) etaF hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G tw htw
@@ -94,7 +94,7 @@ theorem trivialFamily_logDerivative_eq (hv' : ℝ) (s : ℂ) :
     dlogL (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) s = dlogL (d7F H hc etaF Dn hDel hgap hlet hu hv' vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw) s := rfl
 
 /- English proof (translation)
-Use `show ∑ u : Unit, (zeroHLat H.E).rank = 0`. Simplify using `[zeroHLat_rank]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem trivialFamily_divisor_rank_zero : (d7F H hc etaF Dn hDel hgap hlet hu hv vol hvol K T Dst hD du hdu Gam hG hwin hg ht hlev hpde pz hK hpz hcong lat hlat G kb ks tw htw).div.R = 0 := by
   show ∑ u : Unit, (zeroHLat H.E).rank = 0

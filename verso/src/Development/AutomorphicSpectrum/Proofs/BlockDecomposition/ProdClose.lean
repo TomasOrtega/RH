@@ -7,13 +7,13 @@ open GlobalTheory.CompanionTheory.EGlue PositivityTheory.Rg.BcB.E PositivityTheo
 namespace GlobalTheory.CompanionTheory.EGlue.MCl
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `zero => exact Multiset.nodup_zero`. Consider the case `@cons a b as bs hab hrel ih`. Establish `hgn : (b ::ₘ bs).Nodup` using `hg.1`. Establish `hb : b ∉ bs` using `(Multiset.nodup_cons.1 hgn).1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : GapM bs`. Use `⟨(Multiset.nodup_cons.1 hgn).2, fun x hx y hy hxy => ?_⟩` and prove the remaining obligations. Conclude with `hg.2 x (Multiset.mem_cons_of_mem hx) y (Multiset.mem_cons_of_mem hy) hxy`. Use `Multiset.nodup_cons.2 ⟨fun ha => ?_, ih hg'⟩` and prove the remaining obligations. Take `⟨y, hy, hay⟩` from `Multiset.exists_mem_of_rel_of_mem hrel ha`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : b ≠ y` using `fun e => hb (e ▸ hy)`. Establish `h1` using `hg.2 b (Multiset.mem_cons_self b bs) y (Multiset.mem_cons_of_mem hy) hne`. Establish `h2 : ‖b - y‖ ≤ ‖a - b‖ + ‖a - y‖`. Establish `: b - y = (a - y) - (a - b)` using `by ring`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nodup_of_close {ε : ℝ} (hε : ε < 1 / 4) {m n : Multiset ℂ}
     (h : Multiset.Rel (fun x y : ℂ => ‖x - y‖ ≤ ε) m n) (hg : GapM n) : m.Nodup := by
@@ -37,17 +37,17 @@ theorem nodup_of_close {ε : ℝ} (hε : ε < 1 / 4) {m n : Multiset ℂ}
     linarith
 
 /- English proof (translation)
-Proceed by induction on `n using Multiset.induction_on with`. Consider the case `empty`. Introduce `δ hδ`. Use `⟨1, one_pos, fun m hm => ?_⟩` and prove the remaining obligations. Establish `: m = 0` using `Multiset.rel_zero_right.1 hm`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using `using hδ`. Consider the case `cons b bs ih`. Introduce `δ hδ`. Establish `hc : ContinuousAt (fun p : ℂ × ℂ => p.1 * p.2) (u + b, (bs.map (u + ·)).prod)` using `continuous_mul.continuousAt`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨δ', hδ', H⟩` from `Metric.continuousAt_iff.1 hc δ hδ`. Take `⟨ε₁, hε₁, H₁⟩` from `ih δ' hδ'`. Use `⟨min ε₁ (δ' / 2), lt_min hε₁ (half_pos hδ'), fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨a, as, hab, has, rfl⟩` from `Multiset.rel_cons_right.1 hm`. Establish `has' : Multiset.Rel (fun x y : ℂ => ‖x - y‖ ≤ ε₁) as bs` using `has.mono fun x _ y _ hxy => hxy.trans (min_le_left _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : ‖(u + a) - (u + b)‖ < δ'`. Establish `e : (u + a) - (u + b) = a - b` using `by ring`. Rewrite using `[e]`. Use `hab.trans (min_le_right _ _)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `H₁ as has'`. Establish `hd : dist ((u + a, (as.map (u + ·)).prod) : ℂ × ℂ) (u + b, (bs.map (u + ·)).prod) < δ'`. Rewrite using `[Prod.dist_eq, max_lt_iff, dist_eq_norm, dist_eq_norm]`. Conclude with `⟨h1, h2⟩`. Establish `h3` using `H hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite `h3` using `[dist_eq_norm]`. Simplify `h3` using `[Multiset.map_cons, Multiset.prod_cons]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem prod_close (u : ℂ) (n : Multiset ℂ) : ∀ δ : ℝ, 0 < δ → ∃ ε : ℝ, 0 < ε ∧ ∀ m : Multiset ℂ,
     Multiset.Rel (fun x y : ℂ => ‖x - y‖ ≤ ε) m n →
@@ -87,11 +87,11 @@ end GlobalTheory.CompanionTheory.EGlue.MCl
 namespace GlobalTheory.CompanionTheory.EGlue
 
 /- English proof (translation)
-Use `⟨fun ε m n B h hB x hx => ?_, fun ε m n hε h hg => MCl.nodup_of_close hε h hg, fun m n hm u => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hxy⟩` from `Multiset.exists_mem_of_rel_of_mem h hx`. Establish `h1 : ‖x‖ ≤ ‖x - y‖ + ‖y‖`. Simplify using `using norm_add_le (x - y) y`. Establish `h2` using `hB y hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h3 : ‖x - y‖ ≤ ε` using `hxy`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[Metric.tendsto_nhds]`. Introduce `δ hδ`. Take `⟨ε, hε, H⟩` from `MCl.prod_close u n δ hδ`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [hm ε hε] with k hk`. Rewrite using `[dist_eq_norm]`. Conclude with `H _ hk`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mCloseFacts_holds : MCloseFacts := by
   refine ⟨fun ε m n B h hB x hx => ?_, fun ε m n hε h hg => MCl.nodup_of_close hε h hg,

@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.ValNe
 
 /- English proof (translation)
-Establish `key` using `Scheme.germ_stalkClosedPointTo (R := CommRingCat.of V) x W hy`. Use `congrArg (fun φ => φ.hom g) key` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply] at this`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `only [TangentOrigin.evalPt, Scheme.Hom.appLE, Iso.trans_hom, Functor.mapIso_hom, Iso.op_hom, eqToIso.hom, CommRingCat.hom_comp, RingHom.comp_apply, Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `congr!`.
+A detailed English derivation is pending.
 -/
 theorem evalPt_eq_stalkClosedPointTo {Y : Scheme.{0}} {V : Type} [CommRing V] [IsLocalRing V] (x : Sp V ⟶ Y) (W : Y.Opens)
     (h : ⊤ ≤ x ⁻¹ᵁ W) (g : Γ(Y, W)) (hy : x (IsLocalRing.closedPoint V) ∈ W) :
@@ -31,7 +31,7 @@ theorem evalPt_eq_stalkClosedPointTo {Y : Scheme.{0}} {V : Type} [CommRing V] [I
   congr!
 
 /- English proof (translation)
-Introduce `K _ Y q L σ z i hi`. Establish `hy : z (IsLocalRing.closedPoint K) ∈ L.U i` using `hi (Set.mem_univ _)`. Establish `e : H0.val (p` using `q) z i le_top hi (H0.ofSec q ⊤ σ) = TangentOrigin.evalPt z _ hi (σ.f i) := H0.val_ofSec z i le_top hi σ`. Rewrite using `[e, ← evalPt_eq_stalkClosedPointTo z (L.U i) hi (σ.f i) hy, ← isUnit_iff_ne_zero, isUnit_map_iff, GlobalTheory.Vanishing.isUnit_ger_iff σ hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_ofSec_ne_zero_iff : ∀ (K : Type) [Field K] (Y : Scheme.{0}) (q : Y ⟶ Sp K) (L : LB Y) (σ : L.Sec) (z : Sp K ⟶ Y) (i : L.ι) (hi : ⊤ ≤ z ⁻¹ᵁ L.U i), (H0.val (p := q) z i le_top hi (H0.ofSec q ⊤ σ) ≠ 0 ↔ z (IsLocalRing.closedPoint K) ∈ nonzeroLocus σ) := by
   intro K _ Y q L σ z i hi

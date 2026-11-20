@@ -29,14 +29,14 @@ def kLiftPt (G : Over S) {Y : Over (Sp Ω)} (v : Over.mk (Y.hom ≫ s) ⟶ G) : 
   Over.homMk (pullback.lift v.left Y.hom (Over.w v)) (pullback.lift_snd _ _ _)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (pullback.lift_fst _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem kToBase_liftPt (G : Over S) {Y : Over (Sp Ω)} (v : Over.mk (Y.hom ≫ s) ⟶ G) :
     toBase G s (kLiftPt s G v) = v :=
   Over.OverMorphism.ext (pullback.lift_fst _ _ _)
 
 /- English proof (translation)
-Use `ext1`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify `congrArg Over.Hom.left h` using `[toBase]`. Conclude with `(Over.w a).trans (Over.w b).symm`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem kToBase_inj (G : Over S) {Y : Over (Sp Ω)} {a b : Y ⟶ (Over.pullback s).obj G}
     (h : toBase G s a = toBase G s b) : a = b := by
@@ -46,7 +46,7 @@ theorem kToBase_inj (G : Over S) {Y : Over (Sp Ω)} {a b : Y ⟶ (Over.pullback 
   · exact (Over.w a).trans (Over.w b).symm
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (Category.assoc _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem kToBase_comp (G : Over S) {Y Y' : Over (Sp Ω)} (h : Y' ⟶ Y) (a : Y ⟶ (Over.pullback s).obj G) :
     toBase G s (h ≫ a) = (Over.homMk h.left (by simp only [Over.mk_hom]; rw [← Category.assoc, Over.w h]) :
@@ -54,9 +54,9 @@ theorem kToBase_comp (G : Over S) {Y Y' : Over (Sp Ω)} (h : Y' ⟶ Y) (a : Y �
   Over.OverMorphism.ext (Category.assoc _ _ _)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [toBase, Hom.one_def]`. Simplify using the standard rewrite rules. Use `erw [pullback.lift_fst]`. Establish `hc : pullback.fst (𝟙 S) s = pullback.snd (𝟙 S) s ≫ s`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (pullback.condition (f := 𝟙 S) (g := s))`. Use `erw [reassoc_of% hc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kToBase_one (G : Over S) [GrpObj G] {Y : Over (Sp Ω)} :
     toBase G s (1 : Y ⟶ (Over.pullback s).obj G) = 1 := by
@@ -70,9 +70,9 @@ theorem kToBase_one (G : Over S) [GrpObj G] {Y : Over (Sp Ω)} :
   simp
 
 /- English proof (translation)
-Establish `key : (Over.homMk (lift a u).left (by simp only [Over.mk_hom]; rw [← Category.assoc, Over.w (lift a u)]) : Over.mk (Y.hom ≫ s) ⟶ Over.mk (((Over.pullback s).obj G ⊗ (Over.pullback s).obj G).hom ≫ s)) ≫ lift (toBase G s (fst _ _)) (toBase G s (snd _ _)) = lift (toBase G s a) (toBa …`. Apply `CartesianMonoidalCategory.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, lift_fst, ← kToBase_comp, lift_fst, lift_fst]`. Rewrite using `[Category.assoc, lift_snd, ← kToBase_comp, lift_snd, lift_snd]`. Unfold `sqToBase`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← key]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kLift_sqToBase (G : Over S) {Y : Over (Sp Ω)} (a u : Y ⟶ (Over.pullback s).obj G) :
     (lift a u).left ≫ sqToBase G s = (lift (toBase G s a) (toBase G s u)).left := by
@@ -91,9 +91,9 @@ end Points
 variable {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Establish `k` using `lam_zb hA hB hD hD' l mu α Ω s L hL e`. Establish `k2` using `congrArg (pull (lift a u).left) k`. Rewrite `k2` using `[pull_lam, lift_fst, lift_snd]`. Rewrite using `[← k2, ← pull_comp, kLift_sqToBase]`. Unfold `zc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[zcPair_pull, lift_fst, lift_snd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kLam_zb_pt (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (hD : IsDual A B P)
     (hD' : IsDual B A (swap P)) (l : A ⟶ B) [IsMonHom l] (mu : B ⟶ A) [IsMonHom mu] (α : Matrix (Fin 4) (Fin 4) ℤ)
@@ -110,9 +110,9 @@ theorem kLam_zb_pt (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A 
   rw [zcPair_pull, lift_fst, lift_snd]
 
 /- English proof (translation)
-Use `haveI := hA.comm`. Use `haveI : IsCommMonObj ((Over.pullback s).obj A) := inferInstance`. Establish `h1` using `lam_cL_pt s hP l L hL e (kLiftPt s A x) (kLiftPt s A y)`. Establish `h2` using `lam_cL_pt s hP l L hL e (kLiftPt s A y) (kLiftPt s A x)`. Rewrite `h1`, `h2` using `[kToBase_liftPt, kToBase_liftPt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[← h1, ← h2]`. Unfold `lam`. Rewrite using `[mul_comm (kLiftPt s A x) (kLiftPt s A y)]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem kEvc_sym (hA : IsAbelianScheme A) {P : LB (A ⊗ B).left} (hP : P.IsLB) (l : A ⟶ B) (s : Sp Ω ⟶ S)
     (L : LB ((Over.pullback s).obj A).left) (hL : L.IsLB)
@@ -130,7 +130,7 @@ theorem kEvc_sym (hA : IsAbelianScheme A) {P : LB (A ⊗ B).left} (hP : P.IsLB) 
   abel
 
 /- English proof (translation)
-Unfold `evc`. Rewrite using `[← pull_comp, ← Over.comp_left, comp_lift]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem evc_comp_left_eq_pull {S' : Scheme} {G H Y0 Y1 : Over S'} {P : LB (G ⊗ H).left} (hP : P.IsLB)
     (h : Y1 ⟶ Y0) (a : Y0 ⟶ G) (b : Y0 ⟶ H) : evc hP (h ≫ a) (h ≫ b) = pull h.left (evc hP a b) := by
@@ -138,7 +138,7 @@ private theorem evc_comp_left_eq_pull {S' : Scheme} {G H Y0 Y1 : Over S'} {P : L
   rw [← pull_comp, ← Over.comp_left, comp_lift]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.TripleProd.cls_translDiff hL x]`. Simplify using `only [map_sub, ← pull_comp, ← Over.comp_left, comp_mul, lift_fst_assoc, lift_snd]`. Rewrite using `[_root_.mul_one]`. Unfold `lam`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Normalize the expressions using the abelian group laws.
 -/
 private theorem lam_comp_eq_pull_lift_sub_pull_lift_one {S' : Scheme} {G T0 Y0 : Over S'} [GrpObj G] {L : LB G.left} (hL : L.IsLB)
     (x : T0 ⟶ G) (g : Y0 ⟶ T0) (u : Y0 ⟶ G) :
@@ -152,11 +152,11 @@ private theorem lam_comp_eq_pull_lift_sub_pull_lift_one {S' : Scheme} {G T0 Y0 :
   abel
 
 /- English proof (translation)
-Establish `hD : (Out.translDiff G L x).IsLB` using `LB.isLB_linComb hL _ _`. Establish `h0` using `(cls_eq_zero_iff (LB.isLB_pull hD ((fst T0 G).left ⁻¹ᵁ W).ι)).2 hW`. Rewrite `h0` using `[cls_pull hD _ (LB.isLB_pull hD _)]`. Establish `hr : Set.range (lift g u).left.base ⊆ Set.range ((fst T0 G).left ⁻¹ᵁ W).ι.base`. Introduce and unpack `_ ⟨y, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Use `show (fst T0 G).left.base ((lift g u).left.base y) ∈ W`. Establish `e1 : (fst T0 G).left.base ((lift g u).left.base y) = g.left.base y`. Rewrite using `[← Scheme.Hom.comp_apply, ← Over.comp_left, lift_fst]`. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg ⟨y, rfl⟩`. Rewrite using `[← IsOpenImmersion.lift_fac _ _ hr, pull_comp, h0, map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem pull_lift_cls_translDiff_eq_zero_of_gen {S' : Scheme} {G T0 Y0 : Over S'} [GrpObj G] {L : LB G.left} (hL : L.IsLB)
     (x : T0 ⟶ G) (W : T0.left.Opens)
@@ -177,23 +177,21 @@ private theorem pull_lift_cls_translDiff_eq_zero_of_gen {S' : Scheme} {G T0 Y0 :
   rw [← IsOpenImmersion.lift_fac _ _ hr, pull_comp, h0, map_zero]
 
 /- English proof (translation)
-Introduce `R _ t x hloc`. Establish `core : ∀ V : (Spec (CommRingCat.of R)).Opens, (∃ c : ((Out.translDiff _ (zb mu α s P L) x).pull ((fst (Over.mk t) ((Over.pullback s).obj (G4 (A ⊗ B)))).left ⁻¹ᵁ V).ι).Gen, c.IsGen) → V.ι ≫ x.left = V.ι ≫ (toUnit (Over.mk t) ≫ η).left`. Introduce `V hV`. Set `Z : Over (Sp Ω)` to `Over.mk (V.ι ≫ t)`. Set `j : Z ⟶ Over.mk t` to `Over.homMk V.ι rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hxV : j ≫ x = 1`. Apply `kToBase_inj s` to reduce the goal to its premises. Rewrite using `[kToBase_one]`. Use `zcPair_eq_one hA hB hD hD' l mu α m hm h₁ h₂ hα hα' (toBase _ s (j ≫ x)) ?_ ?_` and prove the remaining obligations. Introduce `Y w a b`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `Z' : Over (Sp Ω)` to `Over.mk (w.left ≫ Z.hom)`. Set `ε : Y ≅ Over.mk (Z'.hom ≫ s)` to `Over.isoMk (Iso.refl _) (by simpa [Z'] using Over.w w)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc ε.inv b l, kEvc_sym hA hD.isLB l s L hL e (ε.inv ≫ a) (ε.inv ≫ b)]`. Use `_ = evc _ b (a ≫ l) := by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← evc_comp_left_eq_pull]`. Simplify using the standard rewrite rules. Introduce `Y w v`. Set `Z' : Over (Sp Ω)` to `Over.mk (w.left ≫ Z.hom)`. Set `ε : Y ≅ Over.mk (Z'.hom ≫ s)` to `Over.isoMk (Iso.refl _) (by simpa [Z'] using Over.w w)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `k : Z' ⟶ Z` to `Over.homMk w.left rfl`. Establish `hk : ε.inv ≫ w = (Over.homMk k.left (by simp only [Over.mk_hom]; rw [← Category.assoc, Over.w k]) : Over.mk (Z'.hom ≫ s) ⟶ Over.mk (Z.hom ≫ s))`. Use `ext`. Simplify using `[ε, k]`. Apply the tactic sequence `try exact Category.id_comp _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hg : Set.range (k ≫ j).left.base ⊆ (V : Set (Spec (CommRingCat.of R)))`. Introduce and unpack `_ ⟨y, rfl⟩`. Establish `e2 : (k ≫ j).left = k.left ≫ V.ι` using `by simp [j]`. Rewrite using `[e2, Scheme.Hom.comp_apply]`. Establish `hm` using `Set.mem_range_self (f := V.ι.base) (k.left.base y)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation.
 
-Rewrite `hm` using `[Scheme.Opens.range_ι]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation. Simplify using the standard rewrite rules. Use `_ = pull ε.hom.left (zcPair hD.isLB l mu α (ε.inv ≫ w ≫ toBase _ s (j ≫ x)) (ε.inv ≫ v)) := (zcPair_pull _ _ _ _ _ _ _).symm`. Use `_ = 0 := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hk, ← kToBase_comp, ← kToBase_liftPt s _ (ε.inv ≫ v), ← kLam_zb_pt hA hB hD hD' l mu α s L hL e, ← Category.assoc, lam_comp_eq_pull_lift_sub_pull_lift_one (isLB_zb mu α s hD.isLB hL) x (k ≫ j), pull_lift_cls_translDiff_eq_zero_of_gen (isLB_zb mu α s hD.isLB hL) …`. Establish `h2 : j ≫ (toUnit (Over.mk t) ≫ η[(Over.pullback s).obj (G4 (A ⊗ B))]) = (1 : Z ⟶ (Over.pullback s).obj (G4 (A ⊗ B)))`. Rewrite using `[Hom.one_def, ← Category.assoc, comp_toUnit]`. Establish `h3` using `congrArg Over.Hom.left (hxV.trans h2.symm)`. Conclude with `h3`.
-
-Use `choose V hpV hV using hloc`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `Scheme.Cover.hom_ext ((Spec (CommRingCat.of R)).openCoverOfIsOpenCover V ?_) _ _ (fun p => ?_)` and prove the remaining obligations. Conclude with `eq_top_iff.2 (fun p _ => TopologicalSpace.Opens.mem_iSup.2 ⟨p, hpV p⟩)`. Conclude with `core (V p) (hV p)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kTriv_zb' (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (hD : IsDual A B P)
     (hD' : IsDual B A (swap P)) (l : A ⟶ B) [IsMonHom l] (mu : B ⟶ A) [IsMonHom mu] (α : Matrix (Fin 4) (Fin 4) ℤ)
@@ -264,7 +262,7 @@ theorem kTriv_zb' (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A �
   · exact core (V p) (hV p)
 
 /- English proof (translation)
-The claim follows from `kTriv_zb' hA hB hD hD' l mu α s L hL e m hm h₁ h₂ hα hα'`.
+A detailed English derivation is pending.
 -/
 theorem kTriv_zb (hA : IsAbelianScheme A) (hB : IsAbelianScheme B) {P : LB (A ⊗ B).left} (hD : IsDual A B P)
     (hD' : IsDual B A (swap P)) (l : A ⟶ B) [IsMonHom l] (mu : B ⟶ A) [IsMonHom mu] (α : Matrix (Fin 4) (Fin 4) ℤ)

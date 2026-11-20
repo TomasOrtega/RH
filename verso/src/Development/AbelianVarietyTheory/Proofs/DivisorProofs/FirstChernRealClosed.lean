@@ -16,7 +16,7 @@ open GlobalTheory.GoodMetric (coordVec)
 open scoped ContDiff ComplexOrder ComplexConjugate
 
 /- English proof (translation)
-Take `⟨ε, h⟩` from `bas_mul (S := {finSumFinEquiv (.inl a)}) (T := {finSumFinEquiv (.inr b)}) (Finset.disjoint_singleton.2 (finSumFinEquiv.injective.ne Sum.inl_ne_inr))`. Conclude with `⟨ε, by rw [dz, dzb, ← bas_singleton, ← bas_singleton, h, Units.smul_def, Int.cast_smul_eq_zsmul ℂ]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dz_mul_dzb {n : ℕ} (a b : Fin n) : ∃ ε : ℤˣ, dz a * dzb b =
     ((ε : ℤ) : ℂ) • bas n ({finSumFinEquiv (.inl a)} ∪ {finSumFinEquiv (.inr b)}) := by
@@ -25,22 +25,22 @@ theorem dz_mul_dzb {n : ℕ} (a b : Fin n) : ∃ ε : ℤˣ, dz a * dzb b =
   exact ⟨ε, by rw [dz, dzb, ← bas_singleton, ← bas_singleton, h, Units.smul_def, Int.cast_smul_eq_zsmul ℂ]⟩
 
 /- English proof (translation)
-Simplify using `only [ofValues, AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_smul, sym]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coe_ofValues {n : ℕ} (α : V n → V n → ℂ) :
     (ofValues α : Alt n) = ∑ a, ∑ b, α (coordVec a) (coordVec b) • (dz a * dzb b) := by
   simp only [ofValues, AddSubmonoidClass.coe_finset_sum, Subalgebra.coe_smul, sym]
 
 /- English proof (translation)
-Introduce `S hS`. Rewrite `hS` using `[coe_ofValues, map_sum, Finsupp.finsetSum_apply]`. Take `⟨a, -, ha⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hS`. Rewrite `ha` using `[map_sum, Finsupp.finsetSum_apply]`. Take `⟨b, -, hb⟩` from `Finset.exists_ne_zero_of_sum_ne_zero ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ε, h⟩` from `dz_mul_dzb a b`. Choose the witnesses or unpack the hypotheses as in `rfl : ({finSumFinEquiv (.inl a)} ∪ {finSumFinEquiv (.inr b)} : Finset (Fin (n + n))) = S := by`. Assume the negation of the conclusion as `hne`. Rewrite `hb` using `[h]`. Simplify using `only [map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply, if_neg hne, smul_zero, ne_eq, not_true_eq_false] at hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `a.isLt` as an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite using `[Finset.card_eq_one]`. Use `⟨finSumFinEquiv (.inl a), ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_union, Finset.mem_singleton, Fin.ext_iff, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.val_castAdd, Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.card_eq_one]`. Use `⟨finSumFinEquiv (.inr b), ?_⟩` and prove the remaining obligations. Use extensionality with `i`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_union, Finset.mem_singleton, Fin.ext_iff, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Fin.val_castAdd, Fin.val_natAdd]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem isType_ofValues {n : ℕ} (α : V n → V n → ℂ) : IsType 1 1 (ofValues α : Alt n) := by
   intro S hS
@@ -70,11 +70,11 @@ theorem isType_ofValues {n : ℕ} (α : V n → V n → ℂ) : IsType 1 1 (ofVal
     omega
 
 /- English proof (translation)
-Introduce `S`. Establish `h1 (a b : Fin n) : swap (dz a * dzb b) = -(dz b * dzb a)`. Rewrite using `[map_mul, (swap_dz a).1, (swap_dz b).2, dz, dzb, eq_neg_of_add_eq_zero_right (ExteriorAlgebra.ι_add_mul_swap _ _)]`. Establish `h2 (a b : Fin n) : conj ((bas n).repr (dz a * dzb b) S) = (bas n).repr (dz a * dzb b) S`. Take `⟨ε, h⟩` from `dz_mul_dzb a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h]`. Simplify using `only [map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[coe_ofValues]`. Simplify using `only [map_sum, map_smul, h1, map_neg, Finsupp.finsetSum_apply, Finsupp.smul_apply, Finsupp.neg_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul (starRingEnd ℂ), h2, hα]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isReal_ofValues {n : ℕ} {α : V n → V n → ℂ} (hα : ∀ ξ η, conj (α ξ η) = -α η ξ) :
     IsReal (ofValues α : Alt n) := by
@@ -96,7 +96,7 @@ theorem isReal_ofValues {n : ℕ} {α : V n → V n → ℂ} (hα : ∀ ξ η, c
   ring
 
 /- English proof (translation)
-Establish `hk : conj kappa = -kappa`. Simplify using `[kappa, neg_div, map_ofNat]`. Rewrite using `[ddc, ddc, map_mul, hk, leviForm_conj_symm hu, neg_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_ddc {n : ℕ} {u : V n → ℝ} {v : V n} (hu : ContDiffAt ℝ 2 u v) (ξ η : V n) :
     conj (ddc u v ξ η) = -ddc u v η ξ := by
@@ -105,11 +105,11 @@ theorem conj_ddc {n : ℕ} {u : V n → ℝ} {v : V n} (hu : ContDiffAt ℝ 2 u 
   rw [ddc, ddc, map_mul, hk, leviForm_conj_symm hu, neg_mul]
 
 /- English proof (translation)
-Establish `h1 (G : V n → Matrix Unit Unit ℂ) : chernAt G v 1 = ofValues (chernOne G v)`. Unfold `chernAt ofValues GlobalTheory.GoodMetric.chernPoly chernOne`. Rewrite using `[Matrix.coeff_charpolyRev_eq_neg_trace, Matrix.trace_neg, neg_neg, pow_one]`. Simplify using `only [Matrix.trace, Matrix.diag, GlobalTheory.GoodMetric.curvPoly, Matrix.of_apply, map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.aeval_X, ← Algebra.smul_def, mul_smul, ← Finset.smul_sum, Finset.sum_smul]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Rewrite using `[h1]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `ξ η`. Rewrite using `[chernOne_line (f := fun x => Real.exp (-u x)) (Real.contDiff_exp.contDiffAt.comp v hu.neg) (Real.exp_ne_zero _) (Eventually.of_forall fun _ => rfl)]`. Simplify using `only [Real.log_exp, ddc, leviForm_neg]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem chernAt_exp_neg {n : ℕ} {u : V n → ℝ} {v : V n} (hu : ContDiffAt ℝ 2 u v) :
     chernAt (fun x => (Matrix.of fun _ _ : Unit => ((Real.exp (-u x) : ℝ) : ℂ))) v 1 = ofValues (ddc u v) := by
@@ -131,13 +131,11 @@ theorem chernAt_exp_neg {n : ℕ} {u : V n → ℝ} {v : V n} (hu : ContDiffAt �
   simp
 
 /- English proof (translation)
-Introduce `k _ X _ p D hX σ L`. Establish `hφ : ∀ a (x : (hX.atlas σ).Pt), x.pt ∈ ptsIn p σ (L.B.U a) → ContDiffAt ℝ 2 (fun v => (L.φ σ).φ a (x.ch.symm v)) x.crd`. Introduce `a x hx`. Conclude with `((vInfAt_iff_cInfAt.2 (L.cInf σ a _ hx)).contDiffAt_chart x.1.1 x.2).of_le (by norm_cast)`. Take `⟨hfr, hP⟩` from `GlobalTheory.T.chernForms_frame_independent_closed (hX.atlas σ) (ι := Unit) (fun a => ptsIn p σ (L.B.U a)) (fun _ => isOpen_ptsIn _) (fun y => ⟨_, mem_pick L.isLB y⟩) (fun a b y => Matrix.of fun _ _ => gv p σ L.B a b y) (fun a b _ _ c => (AlgChart.holo c _ _).mono fun _ hv => ⟨hv …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (Matrix.of fun _ _ : Unit => ((Real.exp (-(L.φ σ).φ a y) : ℝ) : ℂ)) = Matrix.diagonal fun _ => ((Real.exp (-(L.φ σ).φ a y) : ℝ) : ℂ)` using `by ext; simp`. Rewrite using `[this, Matrix.posDef_diagonal_iff]`. Conclude with `fun _ => Complex.zero_lt_real.2 (Real.exp_pos _))`. Use the proof step `(fun a b y hy => by`. Use `ext`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : 0 < ‖gv p σ L.B a b y‖ ^ 2` using `by have := gv_ne_zero hy.1 hy.2; positivity`. Rewrite using `[(L.φ σ).trans a b y hy.1 hy.2, neg_sub, sub_eq_add_neg, Real.exp_add, Real.exp_log h0]`. Simplify using `only [chg, Matrix.mul_apply, Matrix.of_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply, Fintype.sum_unique, Complex.ofReal_mul, Complex.ofReal_pow, ← Complex.mul_conj', Complex.star_def]`. Use the proof step `ring) 1`. Take `⟨h1, h2, h3⟩` from `hP (fld _ (c1F hX σ L)) fun a x hx => by`.
-
-Rewrite using `[hfr a _ x hx (mem_pick (L.φ σ).isLB x.pt)]`. Conclude with `congrArg Subtype.val (chernAt_exp_neg (hφ _ x (mem_pick _ _))).symm`. Conclude with `⟨⟨h1, fun x => ⟨isType_ofValues _, isReal_ofValues (conj_ddc (hφ _ x (mem_pick _ _)))⟩⟩, h2, h3⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem c1F_isRealForm_closed : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (D : ℕ)
     (hX : IsRegVar p D) (σ : k →+* ℂ),

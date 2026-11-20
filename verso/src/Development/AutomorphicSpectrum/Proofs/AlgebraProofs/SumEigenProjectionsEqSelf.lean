@@ -9,13 +9,13 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.ExG.SumEig
 
 /- English proof (translation)
-Set `Ω` to `AlgebraicClosure C`. Set `f : (E →+* C) → (E →ₐ[ℚ] Ω)` to `fun s => RingHom.toRatAlgHom ((algebraMap C Ω).comp s)`. Establish `hf : ∀ s y, f s y = algebraMap C Ω (s y)` using `fun s y => rfl`. Establish `hinj : Function.Injective f`. Introduce `s t hst`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `y`. Establish `h` using `congrArg (fun φ : E →ₐ[ℚ] Ω => φ y) hst`. Simplify using `only [hf] at h`. Conclude with `(algebraMap C Ω).injective h`. Establish `hbij : Function.Bijective f`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.bijective_iff_injective_and_card]`. Conclude with `⟨hinj, by rw [hc, AlgHom.card]⟩`. Establish `key : algebraMap ℚ Ω (Algebra.trace ℚ E x) = ∑ σ : E →ₐ[ℚ] Ω, σ x` using `trace_eq_sum_embeddings Ω (x := x)`. Rewrite `key` using `[← hbij.sum_comp (fun σ : E →ₐ[ℚ] Ω => σ x)]`. Simplify using `only [hf] at key`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(algebraMap C Ω).injective` to reduce the goal to its premises. Rewrite using `[map_sum, ← key, eq_ratCast (algebraMap ℚ Ω), eq_ratCast (algebraMap ℚ C), map_ratCast]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_embeddings_eq_trace (E : Type) [Field E] [NumberField E] (C : Type) [Field C] [CharZero C]
     [Fintype (E →+* C)] (hc : Fintype.card (E →+* C) = Module.finrank ℚ E) (x : E) :
@@ -41,21 +41,19 @@ theorem sum_embeddings_eq_trace (E : Type) [Field E] [NumberField E] (C : Type) 
   rw [map_sum, ← key, eq_ratCast (algebraMap ℚ Ω), eq_ratCast (algebraMap ℚ C), map_ratCast]
 
 /- English proof (translation)
-Use `set b := RingOfIntegers.basis E with hb`. Establish `h1 : (1 : E) = ∑ j, ((b.repr 1 j : ℤ) : ℚ) • integralBasis E j`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integralBasis_apply, map_zsmul, Int.cast_smul_eq_zsmul]`. Establish `htr : ∀ k, Algebra.trace ℚ E (HT.dualInt E k) = ((b.repr 1 k : ℤ) : ℚ)`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Algebra.traceForm_apply, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ j, ((b.repr 1 j : ℤ) : ℚ) * Algebra.traceForm ℚ E (HT.dualInt E k) (integralBasis E j) := by conv_lhs => rw [h1]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul]`. Use `_ = ((b.repr 1 k : ℤ) : ℚ) := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [HT.dualInt, LinearMap.BilinForm.apply_dualBasis_left, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hsum : ∀ k, ∑ s : E →+* C, s (HT.dualInt E k) = ((b.repr 1 k : ℤ) : C)`. Introduce `k`. Rewrite using `[sum_embeddings_eq_trace E C hc, htr, map_intCast]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Simplify using `only [HT.eigProj]`. Rewrite using `[LinearMap.sum_apply]`. Simplify using `only [LinearMap.smul_apply, hb]`. Use `_ = ∑ k, (∑ s : E →+* C, s (HT.dualInt E k)) • ρ (b k) y := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Use `_ = ∑ k, ((b.repr 1 k : ℤ) : C) • ρ (b k) y := by`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum]`. Use `_ = ρ (∑ k, b.repr 1 k • b k) y := by`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, LinearMap.smul_apply, Int.cast_smul_eq_zsmul]`.
-
-Use `_ = y := by`. Rewrite using `[b.sum_repr, map_one, Module.End.one_apply]`.
+A detailed English derivation is pending.
 -/
 theorem sum_eigProj (E : Type) [Field E] [NumberField E] (C : Type) [Field C] [CharZero C]
     [Fintype (E →+* C)] (hc : Fintype.card (E →+* C) = Module.finrank ℚ E)

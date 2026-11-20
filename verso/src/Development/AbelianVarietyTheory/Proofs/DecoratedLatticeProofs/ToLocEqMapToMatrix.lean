@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain MeasureTheory ValuativeRel Matrix Formalism.Ba
 namespace GlobalTheory.SymBridge
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [toLoc, Matrix.map_apply, Matrix.submatrix_apply, LinearMap.toMatrix'_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toLoc_eq_map_toMatrix' {E k : Type} [Field E] [Field k] (ι : E →+* k) {A : Type} [Fintype A] [DecidableEq A]
     {N : ℕ} (e : A ≃ Fin N) (x : Sp E N →ₗ[E] Sp E N) :
@@ -15,7 +15,7 @@ theorem toLoc_eq_map_toMatrix' {E k : Type} [Field E] [Field k] (ι : E →+* k)
   simp only [toLoc, Matrix.map_apply, Matrix.submatrix_apply, LinearMap.toMatrix'_apply]
 
 /- English proof (translation)
-Rewrite using `[toLoc_eq_map_toMatrix', toLoc_eq_map_toMatrix', toLoc_eq_map_toMatrix', LinearMap.toMatrix'_comp, ← Matrix.submatrix_mul_equiv _ _ _ e _, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toLoc_comp_square {E k : Type} [Field E] [Field k] (ι : E →+* k) {A : Type} [Fintype A] [DecidableEq A]
     {N : ℕ} (e : A ≃ Fin N) (x y : Sp E N →ₗ[E] Sp E N) :
@@ -24,7 +24,7 @@ theorem toLoc_comp_square {E k : Type} [Field E] [Field k] (ι : E →+* k) {A :
     ← Matrix.submatrix_mul_equiv _ _ _ e _, Matrix.map_mul]
 
 /- English proof (translation)
-Rewrite using `[toLoc_eq_map_toMatrix', LinearMap.toMatrix'_id, Matrix.submatrix_one_equiv, Matrix.map_one _ ι.map_zero ι.map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem toLoc_id_square {E k : Type} [Field E] [Field k] (ι : E →+* k) {A : Type} [Fintype A] [DecidableEq A]
     {N : ℕ} (e : A ≃ Fin N) :

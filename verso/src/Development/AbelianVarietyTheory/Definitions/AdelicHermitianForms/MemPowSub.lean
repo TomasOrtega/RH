@@ -41,7 +41,7 @@ theorem dif_apply {A : Type} [CommGroup A] (σ : A →* A) (a : A) : dif σ a = 
 open NumberField IsDedekindDomain Polynomial in
 open scoped TensorProduct in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem _root_.GlobalTheory.CNorm.mem_fix {A : Type} [CommGroup A] (σ : A →* A) (a : A) :
     a ∈ _root_.GlobalTheory.CNorm.fix σ ↔ σ a = a := Iff.rfl
@@ -62,7 +62,7 @@ def powSub (p : ℕ) {F L : Type} [Field F] [Field L] (φ : F →+* L) : Subgrou
 open NumberField IsDedekindDomain Polynomial in
 open scoped TensorProduct in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem _root_.GlobalTheory.CNorm.mem_powSub (p : ℕ) {F L : Type} [Field F] [Field L] (φ : F →+* L)
     (x : Fˣ) : x ∈ _root_.GlobalTheory.CNorm.powSub p φ ↔ ∃ r : L, r ^ p = φ (x : F) := Iff.rfl
@@ -74,7 +74,7 @@ def kNorm (p : ℕ) {F L : Type} [Field F] [Field L] (φ : F →+* L) (δ : F) :
 open NumberField IsDedekindDomain Polynomial in
 open scoped TensorProduct in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, by simpa using congrArg Units.val hy⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, Units.ext (by simpa using hy)⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.CNorm.mem_kNorm (p : ℕ) {F L : Type} [Field F] [Field L] (φ : F →+* L)
     (δ : F) (x : Fˣ) :

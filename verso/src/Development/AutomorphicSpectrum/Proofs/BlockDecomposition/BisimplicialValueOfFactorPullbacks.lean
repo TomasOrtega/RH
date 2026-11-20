@@ -10,9 +10,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 namespace GlobalTheory.CompanionTheory.HopfC
 
 /- English proof (translation)
-Use `⟨funext fun a => funext fun b => ?_, funext fun a => funext fun b => ?_⟩` and prove the remaining obligations. Use `show Algebra.TensorProduct.map _ _ (_ ⊗ₜ[R] 1) = _`. Use `(Algebra.TensorProduct.map_tmul _ _ _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `all_goals first | exact map_one _ | rfl`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use `show Algebra.TensorProduct.map _ _ (1 ⊗ₜ[R] _) = _`. Use `(Algebra.TensorProduct.map_tmul _ _ _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Apply the tactic sequence `all_goals first | exact map_one _ | rfl`.
+A detailed English derivation is pending.
 -/
 theorem bv_pulln_box {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) {N p q : ℕ}
     (ρ₁ : Fin (N + 1) →o Fin (p + 1)) (ρ₂ : Fin (N + 1) →o Fin (q + 1)) (x : Cn F N) :

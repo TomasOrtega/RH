@@ -23,9 +23,9 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Rewrite `hv` using `[mem_smD_iff]`. Introduce `m Xs hX`. Establish `hc` using `Formalism.IndefR.PeterssonHilbertSpace.sm_prod_exp_contDiff m Xs`. Establish `hmem : ∀ t : Fin m → ℝ, Formalism.QuantumDeterminants.inUH (Formalism.REAL.Jm ε) ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod)` using `fun t => Formalism.IndefR.PeterssonHilbertSpace.sm_prod_exp_mem _ m Xs (fun i => hX i) t`. Rewrite using `[contDiff_iff_contDiffAt]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `t0`. Take `⟨U, F, hU, h0, hF, hEq⟩` from `hv _ (hmem t0)`. Establish `hev : (fun t : Fin m → ℝ => σ ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod) v) =ᶠ[𝓝 t0] fun t => F ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod)` using `by filter_upwards [hc.continuous.continuousAt.preimage_mem_nhds (hU.mem_nhds h0)] with t ht`. Conclude with `hEq _ ht (hmem t)`. Conclude with `((hF.contDiffAt (hU.mem_nhds h0)).comp t0 hc.contDiffAt).congr_of_eventuallyEq hev`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothVec_of_smD {v : H} (hv : v ∈ smD ε σ) :
     Formalism.L2.Theta.SmoothVec (GlobalTheory.SmoothGlob.lieSet ε) σ v := by
@@ -64,7 +64,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Unfold `Formalism.L2.Theta.dRep dS`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem dRep_eq_dS (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (X : Matrix (Fin n) (Fin n) ℂ) (w : H) :
     Formalism.L2.Theta.dRep σ X w = dS σ X w := by
@@ -72,7 +72,7 @@ theorem dRep_eq_dS (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (X : Ma
   congr 1
 
 /- English proof (translation)
-Introduce and unpack `S ⟨hf, -, hK, -⟩`. Establish `hfin : FiniteDimensional ℂ (Formalism.MainNotions.BridgeCPX.eqImg (fun k : Formalism.REAL.KG ε => σ (Formalism.REAL.toMK k)) S)` using `(CompanionTheory.HCMult.harish_chandra_multiplicity : Formalism.MainNotions.BridgeCPX.HCMult) n ε H σ hσ hirr S hf hK`. Establish `hle : kIsotypic ε σ S ≤ Formalism.MainNotions.BridgeCPX.eqImg (fun k : Formalism.REAL.KG ε => σ (Formalism.REAL.toMK k)) S` using `iSup_le fun T => le_sSup ⟨T.1, fun a v w h => T.2 _ a.2 v w h, rfl⟩`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isAdmissible_of [CompleteSpace H] (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
     (hirr : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) σ) : IsAdmissible ε σ := by
@@ -84,9 +84,9 @@ theorem isAdmissible_of [CompleteSpace H] (hσ : Formalism.MainNotions.S.IsURepO
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Introduce `X hX v hv`. Take `⟨h1, h2⟩` from `CompanionTheory.D.gk.HC.K_finite_smooth_vectors n ε H σ hσ hirr`. Establish `hvS : v ∈ smD ε σ` using `h1 v hv`. Rewrite using `[dRep_eq_dS]`. Establish `e` using `dS_eq_actM (isDerivedOn_smE hσ) hX ⟨v, hvS⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [] at e`. Rewrite using `[e]`. Simplify using `only [actM, LinearMap.sum_apply, LinearMap.smul_apply, Submodule.coe_sum, Submodule.coe_smul]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => Submodule.smul_mem _ _ (h2 a b ⟨v, hvS⟩ hv)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isLieStable_of [CompleteSpace H] (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
     (hirr : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) σ) : IsLieStable ε σ (kFinSub ε σ) := by
@@ -102,15 +102,13 @@ theorem isLieStable_of [CompleteSpace H] (hσ : Formalism.MainNotions.S.IsURepOn
     Submodule.smul_mem _ _ (h2 a b ⟨v, hvS⟩ hv)
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `CompanionTheory.D.gk.HC.K_finite_smooth_vectors n ε H σ hσ hirr`. Set `N : Submodule ℂ (smD ε σ)` to `S.comap (smD ε σ).subtype`. Establish `hNK : (N : Set (smD ε σ)) ⊆ KF ε σ` using `fun v hv => hS hv`. Establish `hst : ∀ a b, ∀ v ∈ N, smE ε σ a b v ∈ N`. Introduce `a b v hv`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show ((smE ε σ a b v : smD ε σ) : H) ∈ S`. Rewrite using `[smE_apply hσ]`. Establish `e1` using `hL _ (ReciprocityTheory.ChartRestriction.DS.SmDerA.inG_cpart1 ε (Matrix.single a b 1)) (v : H) hv`. Establish `e2` using `hL _ (ReciprocityTheory.ChartRestriction.DS.SmDerA.inG_cpart2 ε (Matrix.single a b 1)) (v : H) hv`. Rewrite `e1`, `e2` using `[dRep_eq_dS]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `S.add_mem e1 (S.smul_mem _ e2)`. Break down `GlobalTheory.HcPort.uIrr n ε H σ hσ hirr N hNK hst with h | h` into its components or cases. Use `left`. Use `eq_bot_iff.2 fun v hv => ?_` and prove the remaining obligations. Establish `hvN : (⟨v, h1 v (hS hv)⟩ : smD ε σ) ∈ N` using `hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hvN` using `[h]`. Use `(Submodule.mem_bot ℂ).1 hvN` as an intermediate fact. Conclude with `(Submodule.mem_bot ℂ).2 (congrArg Subtype.val this)`. Use `right`. Use `le_antisymm hS fun v hv => ?_` and prove the remaining obligations.
-
-Establish `hvK : (⟨v, h1 v hv⟩ : smD ε σ) ∈ KF ε σ` using `hv`. Rewrite `hvK` using `[← h]`. Conclude with `hvK`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieIrr_of [CompleteSpace H] (hσ : Formalism.MainNotions.S.IsURepOn (Formalism.MainNotions.S.UJset ε) σ)
     (hirr : Formalism.MainNotions.S.IsIrredOn (Formalism.MainNotions.S.UJset ε) σ) (S : Submodule ℂ H) (hS : S ≤ kFinSub ε σ)
@@ -157,7 +155,7 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {V : Submodule ℂ H}
 
 /- English proof (translation)
-Rewrite using `[dsigC_eq]`. Conclude with `add_mem (hV.lieStable _ (cre_mem Y) v hv) (Submodule.smul_mem _ _ (hV.lieStable _ (cim_mem Y) v hv))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dsigC_mem_sub (hV : IsGKSub ε ρ V) (Y : Matrix (Fin n) (Fin n) ℂ) {v : H} (hv : v ∈ V) :
     PI.DSInfCharCap.dsigC ε ρ Y v ∈ V := by
@@ -181,7 +179,7 @@ theorem vAct_coe (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (h
     ((vAct hρ hV Y v : V) : H) = PI.DSInfCharCap.dsigC ε ρ Y v := rfl
 
 /- English proof (translation)
-Rewrite using `[vAct_coe, dsigC_eq, cre_of_mem hX, cim_of_mem hX, dRep_zero, smul_zero, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem vAct_of_mem (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) (v : V) :
@@ -189,7 +187,7 @@ theorem vAct_of_mem (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ)
   rw [vAct_coe, dsigC_eq, cre_of_mem hX, cim_of_mem hX, dRep_zero, smul_zero, add_zero]
 
 /- English proof (translation)
-Use `conv_lhs => rw [← cre_add_cim (ε := ε) X]`. Rewrite using `[map_add, map_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vAct_decomp (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V)
     (X : Matrix (Fin n) (Fin n) ℂ) :
@@ -198,7 +196,7 @@ theorem vAct_decomp (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ)
   rw [map_add, map_smul]
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[vAct_of_mem hρ hV (bracket_mem hX hY), LinearMap.sub_apply, Module.End.mul_apply, Module.End.mul_apply, Submodule.coe_sub]`. Simplify using `only [vAct_of_mem hρ hV hX, vAct_of_mem hρ hV hY]`. Conclude with `(dRep_add_bracket hρ (hV.smooth v v.2) hX hY).2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vAct_bracket_of_mem (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V)
     {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) (hY : Y ∈ lieSet ε) :
@@ -210,9 +208,9 @@ theorem vAct_bracket_of_mem (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset
   exact (dRep_add_bracket hρ (hV.smooth v v.2) hX hY).2
 
 /- English proof (translation)
-Establish `hm : ∀ X1 X2 Y1 Y2 : Matrix (Fin n) (Fin n) ℂ, (X1 + Complex.I • X2) * (Y1 + Complex.I • Y2) - (Y1 + Complex.I • Y2) * (X1 + Complex.I • X2) = (X1 * Y1 - Y1 * X1) + Complex.I • (X1 * Y2 - Y2 * X1) + Complex.I • (X2 * Y1 - Y1 * X2) - (X2 * Y2 - Y2 * X2)`. Introduce `X1 X2 Y1 Y2`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I, neg_one_smul, smul_sub, smul_add, smul_neg, neg_smul, Complex.I_mul_I]`. Use `module`. Establish `h` using `hm (cre ε X) (cim ε X) (cre ε Y) (cim ε Y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[cre_add_cim, cre_add_cim]`. Rewrite using `[h, map_sub, map_add, map_add, map_smul, map_smul, vAct_bracket_of_mem hρ hV (cre_mem X) (cre_mem Y), vAct_bracket_of_mem hρ hV (cre_mem X) (cim_mem Y), vAct_bracket_of_mem hρ hV (cim_mem X) (cre_mem Y), vAct_bracket_of_mem hρ hV (cim_mem X) (cim_mem Y), vAct_decomp hρ hV X, vAct …`. Simplify using `only [add_mul, mul_add, smul_mul_assoc, mul_smul_comm, smul_smul, Complex.I_mul_I, neg_one_smul, smul_sub, smul_add, smul_neg, neg_smul, Complex.I_mul_I]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem vAct_bracket (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V)
     (X Y : Matrix (Fin n) (Fin n) ℂ) :
@@ -238,7 +236,7 @@ def vE (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSu
   vAct hρ hV (single a b 1)
 
 /- English proof (translation)
-Establish `hX : X = ∑ a, ∑ b, X a b • single a b (1 : ℂ)`. Use extensionality with `i j`. Simplify using `[Matrix.sum_apply, single_apply, ite_and, Finset.sum_ite_eq, Finset.sum_ite_eq']`. Use `conv_rhs => rw [hX]`. Simplify using `only [map_sum, map_smul, ReciprocityTheory.ChartRestriction.DS.actM, vE]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actM_vE (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V) (X : Matrix (Fin n) (Fin n) ℂ) :
     ReciprocityTheory.ChartRestriction.DS.actM (vE hρ hV) X = vAct hρ hV X := by
@@ -249,7 +247,7 @@ theorem actM_vE (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV
   simp only [map_sum, map_smul, ReciprocityTheory.ChartRestriction.DS.actM, vE]
 
 /- English proof (translation)
-Introduce `a b c d`. Simplify using `only [vE]`. Rewrite using `[← vAct_bracket, single_mul_single', single_mul_single', map_sub]`. Apply the tactic sequence `split_ifs <;> simp`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem isGlRep_vE (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V) :
     ReciprocityTheory.ChartRestriction.DS.IsGlRep (vE hρ hV) := by
@@ -259,7 +257,7 @@ theorem isGlRep_vE (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Use `⟨isGlRep_vE hρ hV, fun k hk v hv => hV.kStable k hk v hv, fun X hX v => ?_⟩` and prove the remaining obligations. Rewrite using `[actM_vE, vAct_of_mem hρ hV hX]`. Establish `h : HasDerivAt (fun t : ℝ => ρ (NormedSpace.exp (t • X)) (v : H)) (dRep ρ X v) 0` using `(differentiableAt_orbit (hV.smooth v v.2) hX).hasDerivAt`. Simplify `h` using `only [Complex.coe_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isDerivedOn_vE (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V) :
     ReciprocityTheory.ChartRestriction.DS.IsDerivedOn ε ρ V (vE hρ hV) := by
@@ -274,18 +272,18 @@ def vIso (ε : Fin n → Bool) (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ]
   sSup {S | S ≤ V ∧ IsKTypeOf ε ρ Λ S}
 
 /- English proof (translation)
-The claim follows from `sSup_le fun _ hS => hS.1`.
+A detailed English derivation is pending.
 -/
 theorem vIso_le (Λ : Fin n → ℝ) : vIso ε ρ V Λ ≤ V := sSup_le fun _ hS => hS.1
 
 /- English proof (translation)
-The claim follows from `sSup_le_sSup fun _ hS => hS.2`.
+A detailed English derivation is pending.
 -/
 theorem vIso_le_kIso (Λ : Fin n → ℝ) : vIso ε ρ V Λ ≤ GlobalTheory.KFinDual.kIso ε ρ Λ :=
   sSup_le_sSup fun _ hS => hS.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨hU.1.1, fun a ha b hb => hU.1.2 a (mem_UJset_of_mem_Kset ha) b (mem_UJset_of_mem_Kset hb)⟩, fun g hg => hU.2.1 g (mem_UJset_of_mem_Kset hg), fun v => (hU.2.2 v).mono fun _ hk => mem_UJset_of_mem_Kset hk⟩`.
+Supply the required witnesses or components.
 -/
 theorem isURepOn_Kset (hU : IsURepOn (UJset ε) ρ) : IsURepOn (Kset ε) ρ :=
   ⟨⟨hU.1.1, fun a ha b hb => hU.1.2 a (mem_UJset_of_mem_Kset ha) b (mem_UJset_of_mem_Kset hb)⟩,
@@ -293,25 +291,21 @@ theorem isURepOn_Kset (hU : IsURepOn (UJset ε) ρ) : IsURepOn (Kset ε) ρ :=
     fun v => (hU.2.2 v).mono fun _ hk => mem_UJset_of_mem_Kset hk⟩
 
 /- English proof (translation)
-Establish `key : ∀ (d : ℕ) (F : Submodule ℂ H), FiniteDimensional ℂ F → Module.finrank ℂ F ≤ d → IsKStableOn ε ρ F → F ≤ V → F ≤ ⨆ Λ : Fin n → ℝ, vIso ε ρ V Λ`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `F hF hd _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.finrank_eq_zero.1 (Nat.le_zero.1 hd)]`. Conclude with `bot_le`. Consider the case `succ d ih`. Introduce `F hF hd hFK hFV`. Distinguish the cases in `hF0 : F = ⊥`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF0]`. Conclude with `bot_le`. Establish `hex : ∃ m, ∃ S : Submodule ℂ H, S ≤ F ∧ S ≠ ⊥ ∧ IsKStableOn ε ρ S ∧ Module.finrank ℂ S = m` using `⟨_, F, le_rfl, hF0, hFK, rfl⟩`. Take `⟨S, hSF, hS0, hSK, hSm⟩` from `Nat.find_spec hex`. Use `haveI : FiniteDimensional ℂ S := Submodule.finiteDimensional_of_le hSF`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hirrS : ∀ S' : Submodule ℂ H, S' ≤ S → IsKStableOn ε ρ S' → S' = ⊥ ∨ S' = S`. Introduce `S' hS' hS'K`. Distinguish the cases in `h0 : S' = ⊥`. Conclude with `Or.inl h0`. Use `right`.
+Prove the first alternative. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ S' := Submodule.finiteDimensional_of_le hS'`. Establish `h1` using `Nat.find_min' hex ⟨S', hS'.trans hSF, h0, hS'K, rfl⟩`. Conclude with `Submodule.eq_of_le_of_finrank_le hS' (hSm ▸ h1)`. Take `⟨Λ, hΛ⟩` from `hirr S inferInstance hS0 hSK hirrS`. Establish `hSle : S ≤ ⨆ Λ : Fin n → ℝ, vIso ε ρ V Λ` using `(le_sSup (s := {S : Submodule ℂ H | S ≤ V ∧ IsKTypeOf ε ρ Λ S}) ⟨hSF.trans hFV, hΛ⟩).trans (le_iSup (fun Λ => vIso ε ρ V Λ) Λ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF'K : IsKStableOn ε ρ (Sᗮ ⊓ F)`. Introduce `k hk v hv`. Use `⟨?_, hFK k hk v hv.2⟩` and prove the remaining obligations. Use `show (ρ k) v ∈ Sᗮ`. Rewrite using `[Submodule.mem_orthogonal]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `h1` using `GlobalTheory.Dec.FormF.inner_rep_K hU (Formalism.REAL.Kset_star ε hk) u v`. Rewrite `h1` using `[star_star]`. Rewrite using `[← h1]`. Conclude with `(Submodule.mem_orthogonal S v).1 hv.1 _ (hSK _ (Formalism.REAL.Kset_star ε hk) u hu)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `haveI : FiniteDimensional ℂ (Sᗮ ⊓ F : Submodule ℂ H) := Submodule.finiteDimensional_of_le inf_le_right`. Establish `hsup : S ⊔ Sᗮ ⊓ F = F` using `Submodule.sup_orthogonal_inf_of_hasOrthogonalProjection hSF`. Establish `hinf : S ⊓ (Sᗮ ⊓ F) = ⊥` using `eq_bot_iff.2 ((inf_le_inf_left S inf_le_left).trans (Submodule.inf_orthogonal_eq_bot S).le)`. Establish `hdim` using `Submodule.finrank_sup_add_finrank_inf_eq S (Sᗮ ⊓ F)`. Rewrite `hdim` using `[hsup, hinf, finrank_bot, add_zero]`.
-
-Establish `hpos : 0 < Module.finrank ℂ S` using `Nat.pos_of_ne_zero fun h => hS0 (Submodule.finrank_eq_zero.1 h)`. Establish `hle : F ≤ _` using `hsup ▸ sup_le hSle (ih _ inferInstance (by omega) hF'K (inf_le_right.trans hFV))`. Conclude with `hle`. Introduce `v hv`. Take `⟨S, hS, hvS, hSK⟩` from `hV.kFin v hv`.
-
-Use `haveI : FiniteDimensional ℂ (S ⊓ V : Submodule ℂ H) := Submodule.finiteDimensional_of_le inf_le_left`. Conclude with `key _ (S ⊓ V) inferInstance le_rfl (fun k hk u hu => ⟨hSK k hk u hu.1, hV.kStable k hk u hu.2⟩) inf_le_right ⟨hvS, hv⟩`.
+A detailed English derivation is pending.
 -/
 theorem le_iSup_vIso (hU : IsURepOn (Kset ε) ρ)
     (hirr : ∀ S : Submodule ℂ H, FiniteDimensional ℂ S → S ≠ ⊥ → IsKStableOn ε ρ S →
@@ -372,7 +366,7 @@ theorem le_iSup_vIso (hU : IsURepOn (Kset ε) ρ)
     inf_le_right ⟨hvS, hv⟩
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.maxCompact_irreducible_has_highest_weight_and_iso n ε H ρ hU.1 hU.2.2 fun k hk => hU.2.1 k (mem_UJset_of_mem_Kset hk)).1`.
+A detailed English derivation is pending.
 -/
 theorem kType_exists [CompleteSpace H] (hU : IsURepOn (UJset ε) ρ) :
     ∀ S : Submodule ℂ H, FiniteDimensional ℂ S → S ≠ ⊥ → IsKStableOn ε ρ S →
@@ -380,17 +374,13 @@ theorem kType_exists [CompleteSpace H] (hU : IsURepOn (UJset ε) ρ) :
   (GlobalTheory.T.maxCompact_irreducible_has_highest_weight_and_iso n ε H ρ hU.1 hU.2.2 fun k hk => hU.2.1 k (mem_UJset_of_mem_Kset hk)).1
 
 /- English proof (translation)
-Establish `hUK` using `isURepOn_Kset hU`. Establish `hty` using `kType_exists hU`. Take `⟨s, hs⟩` from `GlobalTheory.KFinDual.exists_finset (GlobalTheory.KFinDual.decomp n ε H ρ hUK hty) w hk`. Use `set A : Submodule ℂ H := s.sup (vIso ε ρ V) with hAdef`. Use `haveI : ∀ Λ, FiniteDimensional ℂ (vIso ε ρ V Λ) := fun Λ => hA Λ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ A := Submodule.finiteDimensional_finset_sup _ _`. Establish `hAV : A ≤ V` using `Finset.sup_le fun Λ _ => vIso_le Λ`. Establish `hAK : A ≤ s.sup (GlobalTheory.KFinDual.kIso ε ρ)` using `Finset.sup_le fun Λ hΛ => (vIso_le_kIso Λ).trans (Finset.le_sup hΛ)`. Establish `ha : A.starProjection w ∈ A` using `A.starProjection_apply_mem w`. Use `set w' : H := w - A.starProjection w with hw'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw'C : w' ∈ V.topologicalClosure` using `sub_mem hw (Submodule.le_topologicalClosure _ (hAV ha))`. Establish `hw'K : w' ∈ s.sup (GlobalTheory.KFinDual.kIso ε ρ)` using `sub_mem hs (hAK ha)`. Establish `hperpA : w' ∈ Aᗮ` using `Submodule.sub_starProjection_mem_orthogonal w`. Establish `hperpV : ∀ y ∈ V, ⟪w', y⟫_ℂ = 0`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.iSup_induction (vIso ε ρ V) (motive := fun y => ⟪w', y⟫_ℂ = 0) (le_iSup_vIso hUK hty hV hy) (fun Λ y hyΛ => ?_) (by simp) (fun y₁ y₂ h₁ h₂ => by simp [inner_add_right, h₁, h₂])` and prove the remaining obligations. Distinguish the cases in `hΛ : Λ ∈ s`. Conclude with `Submodule.inner_left_of_mem_orthogonal ((Finset.le_sup (f := vIso ε ρ V) hΛ) hyΛ) hperpA`. Conclude with `GlobalTheory.KFinDual.finset_orth hUK s hΛ w' hw'K y (vIso_le_kIso Λ hyΛ)`. Establish `hmem : w' ∈ Vᗮ` using `(Submodule.mem_orthogonal' _ _).2 fun y hy => hperpV y hy`.
-
-Establish `hcl : V.topologicalClosure ≤ Vᗮᗮ` using `V.topologicalClosure_minimal (Submodule.le_orthogonal_orthogonal V) (Submodule.isClosed_orthogonal _)`. Establish `h0 : w' = 0`. Use `Submodule.inner_right_of_mem_orthogonal hmem (hcl hw'C)` as an intermediate fact. Conclude with `inner_self_eq_zero.1 this`. Establish `: w = A.starProjection w` using `sub_eq_zero.1 h0`.
-
-Rewrite using `[this]`. Conclude with `hAV ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_mem_closure [CompleteSpace H] (hU : IsURepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V)
     (hA : IsAdmissibleSub ε ρ V) {w : H} (hw : w ∈ V.topologicalClosure) (hk : IsKFin ε ρ w) : w ∈ V := by
@@ -429,7 +419,7 @@ theorem mem_of_mem_closure [CompleteSpace H] (hU : IsURepOn (UJset ε) ρ) (hV :
   exact hAV ha
 
 /- English proof (translation)
-Simplify using `only [ReciprocityTheory.ChartRestriction.DS.casimir, etr, Formalism.REAL.epow, Finset.sum_mul, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem casimir_eq_etr {M : Type} [AddCommGroup M] [Module ℂ M] (E : Fin n → Fin n → Module.End ℂ M) :
     ReciprocityTheory.ChartRestriction.DS.casimir E = etr E 2 := by
@@ -446,7 +436,7 @@ theorem vK_coe (hV : IsGKSub ε ρ V) (κ : Matrix (Fin n) (Fin n) ℂ) (hκ : �
     ((vK hV κ hκ v : V) : H) = ρ κ v := rfl
 
 /- English proof (translation)
-Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[Module.End.mul_apply, Module.End.mul_apply, vK_coe, vAct_coe, vAct_coe, vK_coe, dsigC_eq, dsigC_eq, cre_kconj hκ, cim_kconj hκ, GlobalTheory.T.derivedRep_conj_maxCompact_intertwines n ε H ρ hρ κ hκ _ (cre_mem Y) v (hV.smooth v v.2), GlobalTheory.T.derivedRep_conj_maxCompact_inte …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem vAct_kconj (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V)
     {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) (Y : Matrix (Fin n) (Fin n) ℂ) :
@@ -458,9 +448,9 @@ theorem vAct_kconj (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) 
     GlobalTheory.T.derivedRep_conj_maxCompact_intertwines n ε H ρ hρ κ hκ _ (cim_mem Y) v (hV.smooth v v.2), map_add, map_smul]
 
 /- English proof (translation)
-Establish `: (fun a b => vAct hρ hV (P * single a b 1 * P⁻¹)) = fun a b => ∑ c, ∑ d, (P c a * P⁻¹ b d) • vAct hρ hV (single c d 1)`. Use function extensionality and compare the values at `a b`. Rewrite using `[conj_single]`. Simplify using `only [map_sum, map_smul]`. Rewrite using `[this]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `GlobalTheory.T.gelfandTrace_conj_invertible_scalarMatrix (fun a b => vAct hρ hV (single a b 1)) P hP k`.
+A detailed English derivation is pending.
 -/
 theorem vAct_conj_etr (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V)
     (P : Matrix (Fin n) (Fin n) ℂ) (hP : IsUnit P) (k : ℕ) :
@@ -474,9 +464,9 @@ theorem vAct_conj_etr (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) �
   exact GlobalTheory.T.gelfandTrace_conj_invertible_scalarMatrix (fun a b => vAct hρ hV (single a b 1)) P hP k
 
 /- English proof (translation)
-Establish `hw' : w = vK hV κ hκ v` using `Subtype.ext (by rw [hw, vK_coe])`. Establish `hU : IsUnit κ` using `(isUnit_iff_isUnit_det κ).2 (isUnit_det_of_left_inverse (kset_facts hκ).1)`. Establish `hint` using `etr_intertwine (fun a b => vAct hρ hV (single a b 1)) (fun a b => vAct hρ hV (κ * single a b 1 * κ⁻¹)) (vK hV κ hκ) (fun a b => vAct_kconj hρ hV hκ _) 2`. Rewrite `hint` using `[vAct_conj_etr hρ hV κ hU 2]`. Establish `hE : vE hρ hV = fun a b => vAct hρ hV (single a b 1)` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[casimir_eq_etr, hE]`. Rewrite using `[hw', ← vK_coe hV κ hκ, ← Module.End.mul_apply, ← Module.End.mul_apply, hint]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem casimir_kequiv (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V)
     {κ : Matrix (Fin n) (Fin n) ℂ} (hκ : κ ∈ Kset ε) (v w : V) (hw : (w : H) = ρ κ v) :
@@ -491,9 +481,9 @@ theorem casimir_kequiv (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) 
   rw [hw', ← vK_coe hV κ hκ, ← Module.End.mul_apply, ← Module.End.mul_apply, hint]
 
 /- English proof (translation)
-Establish `hI` using `ReciprocityTheory.ChartRestriction.DS.isInfUnitary_of_isDerivedOn hU (isDerivedOn_vE hU.1 hV)`. Simplify using `only [ReciprocityTheory.ChartRestriction.DS.casimir, LinearMap.sum_apply, Module.End.mul_apply, sum_inner, inner_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hI, hI, ← mul_assoc]`. Establish `: ReciprocityTheory.ChartRestriction.DS.adjSign ε a b * ReciprocityTheory.ChartRestriction.DS.adjSign ε b a = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `ReciprocityTheory.ChartRestriction.DS.adjSign`. Distinguish the cases in `h : ε a = ε b`. Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Rewrite using `[this, one_mul]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem casimir_symm (hU : IsURepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V) (x y : V) :
     ⟪ReciprocityTheory.ChartRestriction.DS.casimir (vE hU.1 hV) x, y⟫_ℂ = ⟪x, ReciprocityTheory.ChartRestriction.DS.casimir (vE hU.1 hV) y⟫_ℂ := by
@@ -509,9 +499,9 @@ theorem casimir_symm (hU : IsURepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V) (x y :
   rw [this, one_mul]
 
 /- English proof (translation)
-Introduce `k hk v hv`. Unfold `vIso at hv`. Rewrite `hv` using `[sSup_eq_iSup']`. Use `Submodule.iSup_induction _ (motive := fun v => ρ k v ∈ vIso ε ρ V Λ) hv ?_ ?_ ?_` and prove the remaining obligations. Introduce `S x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_sSup (s := {S : Submodule ℂ H | S ≤ V ∧ IsKTypeOf ε ρ Λ S}) S.2 (S.2.2.2.1 k hk x hx)`. Simplify using the standard rewrite rules. Introduce `x y hx hy`. Rewrite using `[map_add]`. Conclude with `add_mem hx hy`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vIso_kStable (Λ : Fin n → ℝ) : IsKStableOn ε ρ (vIso ε ρ V Λ) := by
   intro k hk v hv
@@ -526,17 +516,15 @@ theorem vIso_kStable (Λ : Fin n → ℝ) : IsKStableOn ε ρ (vIso ε ρ V Λ) 
     exact add_mem hx hy
 
 /- English proof (translation)
-Use `set C : Module.End ℂ V := ReciprocityTheory.ChartRestriction.DS.casimir (vE hρ hV) with hC`. Set `P : Submodule ℂ V` to `(vIso ε ρ V Λ).comap (V.subtype ∘ₗ C)`. Establish `hle : vIso ε ρ V Λ ≤ P.map V.subtype`. Use `sSup_le ?_` and prove the remaining obligations. Introduce and unpack `S ⟨hSV, hS⟩ y hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨y, hSV hy⟩, ?_, rfl⟩` and prove the remaining obligations. Use `haveI := hS.1`. Set `ι : S →ₗ[ℂ] V` to `Submodule.inclusion hSV`. Set `T : S →L[ℂ] H` to `LinearMap.toContinuousLinearMap (V.subtype ∘ₗ C ∘ₗ ι)`. Establish `hT : ∀ s : S, T s = ((C (ι s) : V) : H)` using `fun _ => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ((C ⟨y, hSV hy⟩ : V) : H) ∈ vIso ε ρ V Λ`. Establish `hy' : ((C ⟨y, hSV hy⟩ : V) : H) = T ⟨y, hy⟩` using `rfl`. Rewrite using `[hy']`. Distinguish the cases in `h0 : T = 0`. Rewrite using `[h0]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hty` using `GlobalTheory.Dec.FormF.rangeType n ε Λ H ρ S H ρ T hS (fun k hk a b hab => by`. Rewrite using `[hT, hT]`. Conclude with `casimir_kequiv hρ hV hk (ι a) (ι b) hab) h0`. Establish `hle : LinearMap.range (T : S →ₗ[ℂ] H) ≤ V`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `(C (ι s)).2`. Conclude with `le_sSup (s := {S : Submodule ℂ H | S ≤ V ∧ IsKTypeOf ε ρ Λ S}) ⟨hle, hty⟩ ⟨_, rfl⟩`. Take `⟨x', hx', he⟩` from `hle hx`. Establish `: x' = x` using `Subtype.ext he`.
-
-Substitute `this` using the available equality. Conclude with `hx'`.
+A detailed English derivation is pending.
 -/
 theorem casimir_mem_vIso (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V) (Λ : Fin n → ℝ)
     (x : V) (hx : (x : H) ∈ vIso ε ρ V Λ) :
@@ -569,25 +557,21 @@ theorem casimir_mem_vIso (hρ : Formalism.QuantumDeterminants.IsCRepOn (UJset ε
   exact hx'
 
 /- English proof (translation)
-Establish `hD` using `isDerivedOn_vE hU.1 hV`. Use `set C : Module.End ℂ V := ReciprocityTheory.ChartRestriction.DS.casimir (vE hU.1 hV) with hC`. Set `A' : Submodule ℂ V` to `(vIso ε ρ V Λ).comap V.subtype`. Use `haveI hfin : FiniteDimensional ℂ (vIso ε ρ V Λ) := hA Λ`. Use `haveI : FiniteDimensional ℂ A' := by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `Submodule.equivMapOfInjective V.subtype Subtype.val_injective A'`. Establish `: FiniteDimensional ℂ (A'.map V.subtype)` using `Submodule.finiteDimensional_of_le (Submodule.map_comap_le _ _)`. Conclude with `LinearEquiv.finiteDimensional e.symm`. Establish `hCA : ∀ y ∈ A', C y ∈ A'` using `fun y hy => casimir_mem_vIso hU.1 hV Λ y hy`. Set `T : Module.End ℂ A'` to `C.restrict hCA`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : T.IsSymmetric` using `fun a b => casimir_symm hU hV a.1 b.1`. Establish `htop : (⨆ μ, Module.End.eigenspace T μ) = ⊤`. Use `hT.orthogonalComplement_iSup_eigenspaces_eq_bot` as an intermediate fact. Conclude with `Submodule.orthogonal_eq_bot_iff.1 this`. Establish `main : ∀ y : A', ρ g ((y : V) : H) ∈ V.topologicalClosure`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Introduce `y`. Establish `hy : y ∈ ⨆ μ, Module.End.eigenspace T μ` using `by rw [htop]; trivial`. Use `Submodule.iSup_induction _ (motive := fun y : A' => ρ g ((y : V) : H) ∈ V.topologicalClosure) hy (fun μ z hz => ?_) (by simp) (fun a b ha hb => by` and prove the remaining obligations. Simplify `add_mem ha hb)` using `only [Submodule.coe_add, map_add]`. Distinguish the cases in `hz0 : z = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[hz0]`. Establish `hreal : (starRingEnd ℂ) μ = μ` using `hT.conj_eigenvalue_eq_self (Module.End.hasEigenvalue_of_hasEigenvector ⟨hz, hz0⟩)`. Take `⟨c, rfl⟩ : ∃ c : ℝ, (c : ℂ) = μ` from `⟨μ.re, (Complex.conj_eq_iff_real.1 hreal).choose_spec ▸ by simp⟩`. Set `W : Submodule ℂ V` to `(Module.End.eigenspace T (c : ℂ)).map A'.subtype`. Establish `hWf : FiniteDimensional ℂ W` using `inferInstance`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hWc : ∀ v ∈ W, ReciprocityTheory.ChartRestriction.DS.casimir (vE hU.1 hV) v = (c : ℂ) • v`. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Use `Module.End.mem_eigenspace_iff.1 hu` as an intermediate fact. Conclude with `congrArg Subtype.val this`. Establish `hWK : ∀ k ∈ ReciprocityTheory.ChartRestriction.DS.Kset ε, ∀ v ∈ W, ∃ w ∈ W, (w : H) = ρ k v`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce and unpack `k hk _ ⟨u, hu, rfl⟩`. Establish `hkV : ρ k ((u : V) : H) ∈ V` using `hV.kStable k hk _ (u : V).2`. Establish `hkA : (⟨_, hkV⟩ : V) ∈ A'` using `vIso_kStable Λ k hk _ u.2`. Use `⟨⟨_, hkV⟩, ⟨⟨_, hkA⟩, ?_, rfl⟩, rfl⟩` and prove the remaining obligations. Use `Module.End.mem_eigenspace_iff.2 (Subtype.ext (Subtype.ext ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `casimir_kequiv hU.1 hV hk (u : V) ⟨_, hkV⟩ rfl`. Establish `h2` using `Module.End.mem_eigenspace_iff.1 hu`. Establish `h3 : ReciprocityTheory.ChartRestriction.DS.casimir (vE hU.1 hV) (u : V) = (c : ℂ) • (u : V)` using `congrArg Subtype.val h2`. Rewrite `h1` using `[h3]`. Use `show ((C ⟨_, hkV⟩ : V) : H) = (c : ℂ) • ρ k ((u : V) : H)`.
-
-Rewrite using `[hC, h1]`. Conclude with `(ρ k).map_smul _ _`. Establish `hWst` using `ReciprocityTheory.ChartRestriction.DS.isKStableSub_of_kStable hU hD W hWf hWK`. Establish `hz'` using `ReciprocityTheory.ChartRestriction.DS.closure_genSub_stable hU hD hWf hWst hWc g hg ((z : V) : H) (Submodule.le_topologicalClosure _ ⟨(z : V), (le_sInf fun _ hT' => hT'.1 : W ≤ ReciprocityTheory.ChartRestriction.DS.genSub (vE hU.1 hV) W) ⟨z, hz, rfl⟩, rfl⟩)`. Conclude with `Submodule.topologicalClosure_mono (Submodule.map_subtype_le _ _) hz'`.
-
-Conclude with `main ⟨⟨x, vIso_le Λ hx⟩, hx⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rep_mem_closure_of_vIso [CompleteSpace H] (hU : IsURepOn (UJset ε) ρ) (hV : IsGKSub ε ρ V)
     (hA : IsAdmissibleSub ε ρ V) (Λ : Fin n → ℝ) {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ UJset ε) {x : H}
@@ -646,9 +630,9 @@ theorem rep_mem_closure_of_vIso [CompleteSpace H] (hU : IsURepOn (UJset ε) ρ) 
   exact main ⟨⟨x, vIso_le Λ hx⟩, hx⟩
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hU V hV hA`. Use `⟨fun g hg w hw => ?_, fun w hw hk => mem_of_mem_closure hU hV hA hw hk⟩` and prove the remaining obligations. Establish `hgen : ∀ v ∈ V, σ g v ∈ V.topologicalClosure`. Introduce `v hv`. Use `Submodule.iSup_induction (vIso ε σ V) (motive := fun v => σ g v ∈ V.topologicalClosure) (le_iSup_vIso (isURepOn_Kset hU) (kType_exists hU) hV hv) (fun Λ y hy => rep_mem_closure_of_vIso hU hV hA Λ hg hy) (by simp) (fun a b ha hb => by rw [map_add]; exact add_mem ha hb)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw' : w ∈ closure (V : Set H)` using `by rwa [← Submodule.topologicalClosure_coe]`. Use `map_mem_closure (σ g).continuous hw' (t := (V.topologicalClosure : Set H)) hgen` as an intermediate fact. Rewrite `this` using `[(Submodule.isClosed_topologicalClosure V).closure_eq]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem admissibleClosure_gKSubmodule : GlobalTheory.Published.AdmissibleClosure := by
   intro n ε H _ _ _ σ hU V hV hA
@@ -668,7 +652,7 @@ section Equiv
 variable [CompleteSpace H]
 
 /- English proof (translation)
-Take `⟨h1, -⟩` from `CompanionTheory.D.gk.HC.K_finite_smooth_vectors n ε H ρ hU hI`. Conclude with `⟨fun v hv => GlobalTheory.GKPort.smoothVec_of_smD (h1 v hv), fun v hv => hv, isKStableOn_kFinVec ε ρ, fun X hX v hv => GlobalTheory.GKPort.KFinLink.isLieStable_of hU hI X hX v hv⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isGKSub_kFinVec (hU : IsURepOn (UJset ε) ρ) (hI : IsIrredOn (UJset ε) ρ) :
     IsGKSub ε ρ (kFinVec ε ρ) := by
@@ -677,11 +661,11 @@ theorem isGKSub_kFinVec (hU : IsURepOn (UJset ε) ρ) (hI : IsIrredOn (UJset ε)
     fun X hX v hv => GlobalTheory.GKPort.KFinLink.isLieStable_of hU hI X hX v hv⟩
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ S₀ : Submodule ℂ H, IsKTypeOf ε ρ Λ S₀`. Take `⟨S₀, hS₀⟩` from `hex`. Establish `hfd` using `GlobalTheory.GKPort.KFinLink.isAdmissible_of hU hI S₀ (GlobalTheory.KFinVec.isIrrKSub_of_isKTypeOf hS₀)`. Use `Submodule.finiteDimensional_of_le (sSup_le fun S hS => ?_ : _ ≤ GlobalTheory.KFinVec.kIsotypic ε ρ S₀)` and prove the remaining obligations. Take `⟨B, hB, hBS⟩` from `(GlobalTheory.T.maxCompact_irreducible_has_highest_weight_and_iso n ε H ρ hU.1 hU.2.2 fun k hk => hU.2.1 k (mem_UJset_of_mem_Kset hk)).2 Λ S₀ S hS₀ hS`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hT : GlobalTheory.KFinVec.IsKMapFrom ε ρ S₀ ((B : H →ₗ[ℂ] H) ∘ₗ S₀.subtype)` using `fun k hk s s' hs => by show B s' = ρ k (B s)`. Rewrite using `[hs, hB k hk]`. Use `le_trans ?_ (GlobalTheory.KFinVec.range_le_kIsotypic hT)` and prove the remaining obligations. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype, hBS]`. Establish `: {S : Submodule ℂ H | IsKTypeOf ε ρ Λ S} = ∅` using `Set.eq_empty_of_forall_notMem fun S hS => hex ⟨S, hS⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `GlobalTheory.KFinDual.kIso`. Rewrite using `[this, sSup_empty]`. Use `infer_instance`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_kIso' (hU : IsURepOn (UJset ε) ρ) (hI : IsIrredOn (UJset ε) ρ) (Λ : Fin n → ℝ) :
     FiniteDimensional ℂ (GlobalTheory.KFinDual.kIso ε ρ Λ) := by
@@ -702,7 +686,7 @@ theorem finiteDimensional_kIso' (hU : IsURepOn (UJset ε) ρ) (hI : IsIrredOn (U
     infer_instance
 
 /- English proof (translation)
-The claim follows from `(((GlobalTheory.SmVecCalc.smooth_calculus n H (Jm ε) ρ (GlobalTheory.GKLie.Jm_conjTranspose ε) (GlobalTheory.GKLie.isUnit_Jm_det ε) hU v hv).2.2 X hX).2.2.2.2 w hw).1`.
+A detailed English derivation is pending.
 -/
 theorem dRep_skew (hU : IsURepOn (UJset ε) ρ) {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) {v w : H}
     (hv : SmoothVec (lieSet ε) ρ v) (hw : SmoothVec (lieSet ε) ρ w) :
@@ -719,11 +703,11 @@ variable {H₁ H₂ : Type} [NormedAddCommGroup H₁] [InnerProductSpace ℂ H�
   {σ₁ : Matrix (Fin n) (Fin n) ℂ → (H₁ →L[ℂ] H₁)} {σ₂ : Matrix (Fin n) (Fin n) ℂ → (H₂ →L[ℂ] H₂)}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `hall : ∀ v : H₁, IsKFin ε σ₁ v → v = 0` using `fun v hv => by`. Establish `h` using `GlobalTheory.KFinDual.decomp n ε H₁ σ₁ (isURepOn_Kset hU) (kType_exists hU) v hv`. Establish `h0 : (⨆ Λ : Fin n → ℝ, sSup {S : Submodule ℂ H₁ | IsKTypeOf ε σ₁ Λ S}) = ⊥` using `iSup_eq_bot.2 hc`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).1 h`. Take `⟨x, hx⟩` from `exists_ne (0 : H₁)`. Establish `hd` using `GlobalTheory.HcPort.kfinDense_UJC hU`. Take `⟨a, ha, hK⟩` from `Metric.dense_iff.1 hd x (‖x‖) (norm_pos_iff.2 hx)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `ha` using `[hall a hK]`. Simplify using `at ha`.
+A detailed English derivation is pending.
 -/
 theorem exists_kIso_ne_bot [Nontrivial H₁] (hU : IsURepOn (UJset ε) σ₁) :
     ∃ Λ, GlobalTheory.KFinDual.kIso ε σ₁ Λ ≠ ⊥ := by
@@ -741,33 +725,27 @@ theorem exists_kIso_ne_bot [Nontrivial H₁] (hU : IsURepOn (UJset ε) σ₁) :
   simp at ha
 
 /- English proof (translation)
-Establish `hUK₁` using `isURepOn_Kset hU₁`. Establish `hUK₂` using `isURepOn_Kset hU₂`. Establish `hG₁` using `isGKSub_kFinVec hU₁ hI₁`. Establish `hG₂` using `isGKSub_kFinVec hU₂ hI₂`. Take `⟨Λ₀, hΛ₀⟩` from `exists_kIso_ne_bot hU₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set A : Submodule ℂ H₁ := GlobalTheory.KFinDual.kIso ε σ₁ Λ₀ with hAdef`. Use `haveI : FiniteDimensional ℂ A := finiteDimensional_kIso' hU₁ hI₁ Λ₀`. Establish `hAK : ∀ x ∈ A, IsKFin ε σ₁ x` using `fun x hx => GlobalTheory.KFinDual.kIso_le Λ₀ hx`. Use `haveI : Nontrivial A := Submodule.nontrivial_iff_ne_bot.2 hΛ₀`. Set `L : A →L[ℂ] H₂` to `LinearMap.toContinuousLinearMap (T ∘ₗ A.subtype)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hL' : ∀ x : A, L x = T x` using `fun _ => rfl`. Set `P : A →L[ℂ] A` to `(ContinuousLinearMap.adjoint L) ∘L L`. Establish `hP : ∀ x y : A, ⟪P x, y⟫_ℂ = ⟪L x, L y⟫_ℂ` using `fun x y => ContinuousLinearMap.adjoint_inner_left L y (L x)`. Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue (P : Module.End ℂ A)`. Take `⟨y, hy⟩` from `hμ.exists_hasEigenvector`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPy : P y = μ • y` using `Module.End.mem_eigenspace_iff.1 hy.1`. Establish `hy0 : (y : H₁) ≠ 0` using `fun h => hy.2 (Subtype.ext h)`. Establish `hTy0 : T y ≠ 0` using `fun h => hy0 (hinj _ (hAK _ y.2) h)`. Establish `hnum : (starRingEnd ℂ) μ * ((‖(y : H₁)‖ : ℂ) ^ 2) = ((‖T y‖ : ℂ) ^ 2)`. Establish `h1` using `hP y y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hPy, inner_smul_left, hL', Submodule.coe_inner, inner_self_eq_norm_sq_to_K, inner_self_eq_norm_sq_to_K]`. Conclude with `h1` after adjusting the coercions. Use `set c : ℝ := ‖T y‖ ^ 2 / ‖(y : H₁)‖ ^ 2 with hc`. Establish `hny : 0 < ‖(y : H₁)‖` using `norm_pos_iff.2 hy0`. Establish `hnT : 0 < ‖T y‖` using `norm_pos_iff.2 hTy0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `hcpos : 0 < c` using `by positivity`. Establish `hμc : (starRingEnd ℂ) μ = (c : ℂ)`. Establish `hne : ((‖(y : H₁)‖ : ℂ) ^ 2) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hny.ne')`. Rewrite using `[hc]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eq_div_iff hne]`. Conclude with `hnum`. Establish `hkey : ∀ w, IsKFin ε σ₁ w → ⟪T y, T w⟫_ℂ = (c : ℂ) * ⟪(y : H₁), w⟫_ℂ`. Introduce `w hw`. Establish `hd` using `GlobalTheory.KFinDual.decomp n ε H₁ σ₁ hUK₁ (kType_exists hU₁) w hw`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Submodule.iSup_induction _ (motive := fun w => ⟪T y, T w⟫_ℂ = (c : ℂ) * ⟪(y : H₁), w⟫_ℂ) hd (fun Λ z hz => ?_) (by simp) (fun a b ha hb => by simp only [map_add, inner_add_right, ha, hb]; ring)` and prove the remaining obligations. Distinguish the cases in `hΛ : Λ = Λ₀`. Substitute `hΛ` using the available equality. Establish `h1` using `hP y ⟨z, hz⟩`. Rewrite `h1` using `[hPy, inner_smul_left, hμc, hL', hL', Submodule.coe_inner]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Conclude with `h1.symm`. Establish `hne : Λ₀ ≠ Λ` using `fun h => hΛ h.symm`. Establish `h1` using `GlobalTheory.KFinDual.kIso_orth hUK₁ hΛ (y : H₁) y.2 z hz`. Establish `h2` using `GlobalTheory.KFinDual.kIso_orth hUK₂ hΛ (T y) (GlobalTheory.KFinDual.map_kIso_le (ρ := σ₁) (π := σ₂) (T := T) hK Λ₀ (Submodule.mem_map_of_mem y.2)) (T z) (GlobalTheory.KFinDual.map_kIso_le (ρ := σ₁) (π := σ₂) (T := T) hK Λ (Submodule.mem_map_of_mem hz))`. Rewrite using `[h1, h2, mul_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `R : Submodule ℂ H₁` to `{ carrier := {x | IsKFin ε σ₁ x ∧ ∀ w, IsKFin ε σ₁ w → ⟪T x, T w⟫_ℂ = (c : ℂ) * ⟪x, w⟫_ℂ} add_mem' := fun {a b} ha hb => ⟨(kFinVec ε σ₁).add_mem ha.1 hb.1, fun w hw => by`. Simplify using `only [map_add, inner_add_left, ha.2 w hw, hb.2 w hw]`. Use the proof step `ring⟩`. Use the proof step `zero_mem' := ⟨(kFinVec ε σ₁).zero_mem, fun w _ => by simp⟩`. Use the proof step `smul_mem' := fun r a ha => ⟨(kFinVec ε σ₁).smul_mem r ha.1, fun w hw => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [map_smul, inner_smul_left, ha.2 w hw]`. Use the proof step `ring⟩ }`. Establish `hRle : R ≤ GlobalTheory.KFinVec.kFinSub ε σ₁` using `fun x hx => hx.1`. Establish `hRst : GlobalTheory.KFinVec.IsLieStable ε σ₁ R`. Introduce `X hX x hx`.
-
-Establish `hdx : IsKFin ε σ₁ (dRep σ₁ X x)` using `hG₁.lieStable X hX x hx.1`. Use `⟨hdx, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hdw : IsKFin ε σ₁ (dRep σ₁ X w)` using `hG₁.lieStable X hX w hw`. Rewrite using `[hL X hX x hx.1, dRep_skew hU₂ hX (hG₂.smooth _ (hTf x hx.1)) (hG₂.smooth _ (hTf w hw)), ← hL X hX w hw, hx.2 _ hdw, dRep_skew hU₁ hX (hG₁.smooth _ hx.1) (hG₁.smooth _ hw)]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `hyR : (y : H₁) ∈ R` using `⟨hAK _ y.2, hkey⟩`. Break down `GlobalTheory.GKPort.KFinLink.lieIrr_of hU₁ hI₁ R hRle hRst with h | h` into its components or cases. Conclude with `absurd ((Submodule.mem_bot ℂ).1 (h ▸ hyR)) hy0`. Conclude with `⟨c, hcpos, fun v w hv _ => by`. Establish `hvR : v ∈ R` using `h ▸ (hv : v ∈ GlobalTheory.KFinVec.kFinSub ε σ₁)`.
-
-Conclude with `hvR.2 w ‹_›⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem form_prop [Nontrivial H₁] (hU₁ : IsURepOn (UJset ε) σ₁) (hI₁ : IsIrredOn (UJset ε) σ₁)
     (hU₂ : IsURepOn (UJset ε) σ₂) (hI₂ : IsIrredOn (UJset ε) σ₂) (T : H₁ →ₗ[ℂ] H₂)
@@ -853,37 +831,33 @@ theorem form_prop [Nontrivial H₁] (hU₁ : IsURepOn (UJset ε) σ₁) (hI₁ :
 end Two
 
 /- English proof (translation)
-Introduce `n ε H₁ _ _ _ _ H₂ _ _ _ _ σ₁ σ₂ hU₁ hI₁ hU₂ hI₂ e he`. Establish `hG₁` using `isGKSub_kFinVec hU₁ hI₁`. Establish `hG₂` using `isGKSub_kFinVec hU₂ hI₂`. Take `⟨T, hT⟩` from `LinearMap.exists_extend ((kFinVec ε σ₂).subtype ∘ₗ e.toLinearMap)`. Establish `hTe : ∀ v : kFinVec ε σ₁, T v = (e v : H₂)` using `fun v => LinearMap.congr_fun hT v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hTf : ∀ v, IsKFin ε σ₁ v → IsKFin ε σ₂ (T v)` using `fun v hv => by`. Rewrite using `[hTe ⟨v, hv⟩]`. Conclude with `(e ⟨v, hv⟩).2`. Take `⟨c, hc, hB⟩` from `form_prop hU₁ hI₁ hU₂ hI₂ T hTf (fun v hv h => by`. Establish `h1 : e ⟨v, hv⟩ = 0` using `Subtype.ext (by rw [← hTe ⟨v, hv⟩]; exact h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val (e.map_eq_zero_iff.1 h1))`. Use the proof step `(fun k hk v hv => by`. Establish `hkv` using `isKStableOn_kFinVec ε σ₁ k hk v hv`. Rewrite using `[hTe ⟨_, hkv⟩, hTe ⟨v, hv⟩]`. Conclude with `he.1 k hk ⟨v, hv⟩ ⟨_, hkv⟩ rfl)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun X hX v hv => by`. Establish `hxv` using `hG₁.lieStable X hX v hv`. Rewrite using `[hTe ⟨_, hxv⟩, hTe ⟨v, hv⟩]`. Conclude with `he.2 X hX ⟨v, hv⟩ ⟨_, hxv⟩ rfl)`. Establish `hs : 0 < √c` using `Real.sqrt_pos.2 hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set r : ℝ := (√c)⁻¹ with hr`. Establish `hrpos : 0 < r` using `inv_pos.2 hs`. Establish `hr0 : (r : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hrpos.ne'`. Establish `hD : ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}, IsURepOn (UJset ε) σ → DenseRange (kFinVec ε σ).subtype` using `fun hU => by`. Use `GlobalTheory.HcPort.kfinDense_UJC hU` as an intermediate fact.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use `this.mono ?_` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨⟨x, hx⟩, rfl⟩`. Establish `d₁` using `hD hU₁`. Establish `d₂ : DenseRange ((r : ℂ) • (kFinVec ε σ₂).subtype)` using `(hD hU₂).mono (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `⟨(r : ℂ)⁻¹ • v, by`. Rewrite using `[LinearMap.smul_apply, map_smul, smul_smul, mul_inv_cancel₀ hr0, one_smul]⟩)`. Establish `hn : ∀ v, ‖((r : ℂ) • (kFinVec ε σ₂).subtype) (e v)‖ = ‖(kFinVec ε σ₁).subtype v‖` using `fun v => by`. Establish `h2 : ‖(e v : H₂)‖ ^ 2 = c * ‖(v : H₁)‖ ^ 2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `h` using `congrArg Complex.re (hB v v v.2 v.2)`. Rewrite `h` using `[Complex.re_ofReal_mul, hTe v]`. Rewrite using `[← inner_self_eq_norm_sq (𝕜 := ℂ), ← inner_self_eq_norm_sq (𝕜 := ℂ)]`. Conclude with `h`. Establish `h3 : ‖(e v : H₂)‖ = √c * ‖(v : H₁)‖`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.sqrt_sq (norm_nonneg (e v : H₂)), h2, Real.sqrt_mul hc.le, Real.sqrt_sq (norm_nonneg _)]`. Use `show ‖(r : ℂ) • (e v : H₂)‖ = ‖(v : H₁)‖`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hrpos.le, h3, hr, inv_mul_cancel_left₀ hs.ne']`. Apply the tactic sequence `let U := e.extendOfIsometry (kFinVec ε σ₁).subtype ((r : ℂ) • (kFinVec ε σ₂).subtype) d₁ d₂ hn`. Establish `hUe : ∀ v : kFinVec ε σ₁, U v = (r : ℂ) • (e v : H₂)` using `fun v => LinearEquiv.extendOfIsometry_eq e _ _ d₁ d₂ hn v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hρ₁` using `hU₁.1`. Establish `hρ₂` using `hU₂.1`. Establish `hD₁` using `isDerivedOn_vE hρ₁ hG₁`. Establish `hD₂` using `isDerivedOn_vE hρ₂ hG₂`. Establish `hcomm : ∀ (Y : Matrix (Fin n) (Fin n) ℂ) (v : kFinVec ε σ₁), e (vAct hρ₁ hG₁ Y v) = vAct hρ₂ hG₂ Y (e v)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ X ∈ lieSet ε, ∀ v : kFinVec ε σ₁, e (vAct hρ₁ hG₁ X v) = vAct hρ₂ hG₂ X (e v)` using `fun X hX v => Subtype.ext (by`. Rewrite using `[vAct_of_mem hρ₂ hG₂ hX]`. Conclude with `he.2 X hX v _ (vAct_of_mem hρ₁ hG₁ hX v))`. Introduce `Y v`. Rewrite using `[vAct_decomp hρ₁ hG₁ Y, vAct_decomp hρ₂ hG₂ Y]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.add_apply, LinearMap.smul_apply, map_add, map_smul, hX _ (cre_mem Y), hX _ (cim_mem Y)]`. Take `⟨cs, hcs⟩` from `GlobalTheory.HcPort.casimirActsByScalar_indefUnitary n ε H₁ σ₁ hU₁ hI₁`. Establish `hsm` using `(CompanionTheory.D.gk.HC.K_finite_smooth_vectors n ε H₁ σ₁ hU₁ hI₁).1`. Establish `hcas : ∀ v, ReciprocityTheory.ChartRestriction.DS.casimir (vE hρ₁ hG₁) v = (cs : ℂ) • v` using `fun v => Subtype.ext (by`. Establish `h1` using `ReciprocityTheory.ChartRestriction.DS.casU_eq_casimir hD₁ v`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `ReciprocityTheory.ChartRestriction.DS.casU_eq_casimir (ReciprocityTheory.ChartRestriction.DS.isDerivedOn_smE hU₁) ⟨(v : H₁), hsm _ v.2⟩`. Rewrite `h2` using `[hcs]`. Rewrite using `[← h1]`. Conclude with `h2)`. Establish `main : ∀ g ∈ UJset ε, ∀ w : kFinVec ε σ₁, U (σ₁ g w) = σ₂ g (U w)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g hg w`. Take `⟨S, hSf, hwS, hSK⟩` from `w.2`. Set `W : Submodule ℂ (kFinVec ε σ₁)` to `S.comap (kFinVec ε σ₁).subtype`. Establish `hWf : FiniteDimensional ℂ W`. Establish `e'` using `Submodule.equivMapOfInjective (kFinVec ε σ₁).subtype Subtype.val_injective W`.
-
-Establish `: FiniteDimensional ℂ (W.map (kFinVec ε σ₁).subtype)` using `Submodule.finiteDimensional_of_le (Submodule.map_comap_le _ _)`. Conclude with `LinearEquiv.finiteDimensional e'.symm`. Establish `hWK : ReciprocityTheory.ChartRestriction.DS.IsKStableSub ε (vE hρ₁ hG₁) W` using `ReciprocityTheory.ChartRestriction.DS.isKStableSub_of_kStable hU₁ hD₁ W hWf fun k hk v hv => ⟨⟨_, isKStableOn_kFinVec ε σ₁ k hk v v.2⟩, hSK k hk v hv, rfl⟩`. Use `GlobalTheory.HcPort.graphD hU₁ hU₂ hD₁ hD₂ (vE hρ₁ hG₁) LinearMap.id ((r : ℂ) • e.toLinearMap) (fun _ _ h => h) (fun _ _ _ => rfl) (fun a b v => by` as an intermediate fact. Simplify using `only [LinearMap.smul_apply, LinearEquiv.coe_coe, map_smul, vE, hcomm])`.
-
-Use `hcas U.toContinuousLinearEquiv.toContinuousLinearMap (fun v => hUe v) hWf hWK`. Use the proof step `(show w ∈ W from hwS) hg`. Simplify `this` using `[hUe w]`. Use `⟨U, r, hrpos, fun g hg x => ?_, hUe⟩` and prove the remaining obligations. Conclude with `d₁.induction_on (p := fun x => U (σ₁ g x) = σ₂ g (U x)) x (isClosed_eq (U.continuous.comp (σ₁ g).continuous) ((σ₂ g).continuous.comp U.continuous)) fun w => main g hg w`.
+A detailed English derivation is pending.
 -/
 theorem infinitesimalEquivalence_unitaryGroupPQ : GlobalTheory.Published.InfinitesimalEquivalence := by
   intro n ε H₁ _ _ _ _ H₂ _ _ _ _ σ₁ σ₂ hU₁ hI₁ hU₂ hI₂ e he
@@ -987,7 +961,7 @@ end GlobalTheory.GKPort.Closure
 namespace GlobalTheory
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.GKPort.Closure.admissibleClosure_gKSubmodule, GlobalTheory.GKPort.Closure.infinitesimalEquivalence_unitaryGroupPQ⟩`.
+Supply the required witnesses or components.
 -/
 theorem gkGlobalisation_holds : GlobalTheory.Published.GKGlobalisation :=
   ⟨GlobalTheory.GKPort.Closure.admissibleClosure_gKSubmodule, GlobalTheory.GKPort.Closure.infinitesimalEquivalence_unitaryGroupPQ⟩

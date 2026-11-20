@@ -25,9 +25,9 @@ open GlobalTheory.Reg.VecEig GlobalTheory.GrpTangent
 variable {R : Type} [CommRing R] {G H : Over (Sp R)} [GrpObj G] [IsCommMonObj G] [GrpObj H] [IsCommMonObj H]
 
 /- English proof (translation)
-Unfold `comb`. It suffices to establish `h : ∀ s : Finset (Fin n), Rel (∏ i ∈ s, epsScale (c i) ≫ y i) (∏ i ∈ s, epsScale (c i) ≫ x i) from h _`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa only [Finset.prod_empty] using h1`.
+Replace the relevant objects with their definitions. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `hmul _ _ _ _ (hsc (c a) (y a) (x a) _ _ rfl rfl (hr a)) ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_comb (Rel : (epsR R ⟶ G) → (epsR R ⟶ H) → Prop) (h1 : Rel 1 1)
     (hmul : ∀ y y' x x', Rel y x → Rel y' x' → Rel (y * y') (x * x'))
@@ -50,11 +50,11 @@ end GlobalTheory.LieTransfer
 open GlobalTheory.Reg.VecEig GlobalTheory.LieTransfer in
 
 /- English proof (translation)
-Introduce `R _ G H _ _ _ _ Rel h1 hmul hsc hex hinj hfun n x y hx hy`. Establish `hyt : ∀ j, IsTangent (y j)` using `fun j => (hy j).1`. Establish `hrc` using `rel_comb Rel h1 hmul hsc x y (fun j => (hy j).2)`. Use `⟨hyt, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨xw, hxw, hrw⟩` from `hex w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc, -⟩` from `hx.2 xw hxw`. Rewrite `hc` using `[isLieComb_iff_comb]`. Substitute `hc` using the available equality. Use `⟨c, (isLieComb_iff_comb _ _ _).2 (hinj w _ _ hw (isTangent_comb hyt c) hrw (hrc c)), ?_⟩` and prove the remaining obligations. Introduce `c' hc'`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hc'` using `[isLieComb_iff_comb]`. Substitute `hc'` using the available equality. Establish `e2 : comb x c = comb x c'` using `hfun _ _ _ (hrc c') hrw |>.symm`. Conclude with `(comb_injective hx e2).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LieTransfer.isLieBasis_of_rel : ∀ (R : Type) [CommRing R] (G H : Over (Sp R)) [GrpObj G] [IsCommMonObj G] [GrpObj H] [IsCommMonObj H] (Rel : (epsR R ⟶ G) → (epsR R ⟶ H) → Prop), Rel 1 1 → (∀ y y' x x', Rel y x → Rel y' x' → Rel (y * y') (x * x')) → (∀ (c : R) (y : epsR R ⟶ G) (x : epsR R ⟶ H) (y' : epsR R ⟶ G) (x' : epsR R ⟶ H), y'.left = spMap (epsScaleR c) ≫ y.left → x'.left = spMap (epsScaleR c) ≫ x.left → Rel y x → Rel y' x') → (∀ y, IsTangent y → ∃ x, IsTangent x ∧ Rel y x) → (∀ y y' x, IsTangent y → IsTangent y' → Rel y x → Rel y' x → y = y') → (∀ y x x', Rel y x → Rel y x' → x = x') → ∀ (n : ℕ) (x : Fin n → (epsR R ⟶ H)) (y : Fin n → (epsR R ⟶ G)), IsLieBasis x → (∀ j, IsTangent (y j) ∧ Rel (y j) (x j)) → IsLieBasis y := by
   intro R _ G H _ _ _ _ Rel h1 hmul hsc hex hinj hfun n x y hx hy

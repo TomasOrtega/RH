@@ -10,17 +10,15 @@ namespace GlobalTheory.FullLatticeOfSpan
 open NumberField
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨a, ha, hay⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hbz⟩` from `hz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `N.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `N.smul_mem _ hay`. Rewrite using `[mul_smul]`. Conclude with `N.smul_mem _ hbz`. Consider the case `smul c y _ hy`. Take `⟨a, ha, hay⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r, s, hs, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) c`. Establish `hs0 : s ≠ 0` using `nonZeroDivisors.ne_zero hs`. Establish `hsE : algebraMap (𝓞 E) E s ≠ 0`. Introduce `h`. Conclude with `hs0 (IsFractionRing.injective (𝓞 E) E (by rw [h, map_zero]))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `⟨a * s, mul_ne_zero ha hs0, ?_⟩` and prove the remaining obligations. Establish `: (a * s) • ((algebraMap (𝓞 E) E r / algebraMap (𝓞 E) E s) • y) = r • (a • y)`. Rewrite using `[← algebraMap_smul E (a * s), ← algebraMap_smul E r, ← algebraMap_smul E a, smul_smul, smul_smul, map_mul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[this]`. Conclude with `N.smul_mem _ hay`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V]
     [Module E V] [Module (𝓞 E) V] [IsScalarTower (𝓞 E) E V] (N : Submodule (𝓞 E) V) {x : V}
@@ -53,7 +51,7 @@ theorem exists_smul_mem {E : Type} [Field E] [NumberField E] {V : Type} [AddComm
     exact N.smul_mem _ hay
 
 /- English proof (translation)
-Use `⟨Ideal.absNorm (Ideal.span {d}), ?_, ?_⟩` and prove the remaining obligations. Apply `Nat.pos_of_ne_zero` to reduce the goal to its premises. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hd`. Conclude with `Ideal.mem_span_singleton.mp (Ideal.absNorm_mem _)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_dvd {E : Type} [Field E] [NumberField E] (d : 𝓞 E) (hd : d ≠ 0) :
     ∃ m : ℕ, 0 < m ∧ d ∣ (m : 𝓞 E) := by
@@ -64,9 +62,9 @@ theorem exists_nat_dvd {E : Type} [Field E] [NumberField E] (d : 𝓞 E) (hd : d
   · exact Ideal.mem_span_singleton.mp (Ideal.absNorm_mem _)
 
 /- English proof (translation)
-Introduce `E _ _ n N hN x`. Take `⟨d, hd, hdx⟩` from `exists_smul_mem N (x := x) (by rw [hN]; trivial)`. Take `⟨m, hm, c, hc⟩` from `exists_nat_dvd d hd`. Use `⟨m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, mul_comm, mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `N.smul_mem _ hdx`.
+A detailed English derivation is pending.
 -/
 theorem full_of_span_eq_top : ∀ {E : Type} [inst : Field E] [NumberField E] {n : ℕ}
     (N : Submodule (NumberField.RingOfIntegers E) (Formalism.L2.Col.Sp E n)),

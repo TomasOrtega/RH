@@ -15,11 +15,9 @@ section Rings
 variable {P A B C : Type} [CommRing P] [CommRing A] [CommRing B] [CommRing C]
 
 /- English proof (translation)
-Use `letI := t.toAlgebra`. Use `letI : Algebra P C := (π.comp u).toAlgebra`. Use `letI : Algebra P B := u.toAlgebra`. Use `haveI : Algebra.FormallyEtale P A := ht`. Set `fA : A →ₐ[P] C` to `{ f with commutes' := fun r => RingHom.congr_fun h r }`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `πA : B →ₐ[P] C` to `{ π with commutes' := fun r => rfl }`. Set `g` to `Algebra.FormallySmooth.liftOfSurjective fA πA hπ hn`. Use `⟨g.toRingHom, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Conclude with `g.commutes r`.
-
-Use extensionality with `x`. Conclude with `Algebra.FormallySmooth.liftOfSurjective_apply fA πA hπ hn x`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem fe_lift (t : P →+* A) (ht : t.FormallyEtale) (π : B →+* C) (hπ : Function.Surjective π)
     (hn : IsNilpotent (RingHom.ker π)) (u : P →+* B) (f : A →+* C) (h : f.comp t = π.comp u) :
@@ -38,9 +36,9 @@ theorem fe_lift (t : P →+* A) (ht : t.FormallyEtale) (π : B →+* C) (hπ : F
     exact Algebra.FormallySmooth.liftOfSurjective_apply fA πA hπ hn x
 
 /- English proof (translation)
-Use `letI := t.toAlgebra`. Use `letI : Algebra P B := (g₁.comp t).toAlgebra`. Use `haveI : Algebra.FormallyEtale P A := ht`. Set `a₁ : A →ₐ[P] B` to `{ g₁ with commutes' := fun r => rfl }`. Set `a₂ : A →ₐ[P] B` to `{ g₂ with commutes' := fun r => (RingHom.congr_fun h r).symm }`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key` using `Algebra.FormallyUnramified.ext' π hn a₁ a₂ (fun x => RingHom.congr_fun h' x)`. Use extensionality with `x`. Conclude with `AlgHom.congr_fun key x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem fe_uniq (t : P →+* A) (ht : t.FormallyEtale) (π : B →+* C) (hn : IsNilpotent (RingHom.ker π))
     (g₁ g₂ : A →+* B) (h : g₁.comp t = g₂.comp t) (h' : π.comp g₁ = π.comp g₂) : g₁ = g₂ := by
@@ -54,7 +52,7 @@ theorem fe_uniq (t : P →+* A) (ht : t.FormallyEtale) (π : B →+* C) (hn : Is
   exact AlgHom.congr_fun key x
 
 /- English proof (translation)
-Use `letI := t.toAlgebra`. Use `haveI : Algebra.Etale P A := ht`. Use `show Algebra.FormallyEtale P A`. Use `infer_instance`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem fe_of_etale {t : P →+* A} (ht : t.Etale) : t.FormallyEtale := by
   letI := t.toAlgebra
@@ -63,35 +61,33 @@ theorem fe_of_etale {t : P →+* A} (ht : t.Etale) : t.FormallyEtale := by
   infer_instance
 
 /- English proof (translation)
-Take `⟨N, hN⟩` from `h.exists_dpow_eq_zero`. Establish `hexp : ∀ xs : List B, (∀ x ∈ xs, x ∈ J) → ∀ y ∈ J, ∀ n, N ≤ n → PowerSeries.coeff n ((xs.map fun x => δ.exp x - 1).prod * δ.exp y) = 0`. Introduce `xs`. Proceed by induction on `xs with`. Consider the case `nil`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `_ y _ n hn`. Simplify using `[DividedPowers.exp, PowerSeries.coeff_mk, hN n hn]`. Consider the case `cons x xs ih`. Introduce `hxs y hy n hn`. Establish `hx : x ∈ J` using `hxs x (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxs' : ∀ z ∈ xs, z ∈ J` using `fun z hz => hxs z (by simp [hz])`. Establish `e : (List.map (fun x => δ.exp x - 1) (x :: xs)).prod * δ.exp y = (xs.map fun x => δ.exp x - 1).prod * δ.exp (x + y) - (xs.map fun x => δ.exp x - 1).prod * δ.exp y`. Rewrite using `[δ.exp_add hx hy, List.map_cons, List.prod_cons]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, map_sub, ih hxs' (x + y) (J.add_mem hx hy) n hn, ih hxs' y hy n hn, sub_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `hone : δ.exp 0 = 1`. Use extensionality with `n`. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[DividedPowers.exp, δ.dpow_zero J.zero_mem]`. Simplify using `[DividedPowers.exp, PowerSeries.coeff_one, δ.dpow_eval_zero hn.ne', hn.ne']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hfac : ∀ xs : List B, (∀ x ∈ xs, x ∈ J) → ∃ G : PowerSeries B, (xs.map fun x => δ.exp x - 1).prod = PowerSeries.X ^ xs.length * G ∧ PowerSeries.constantCoeff G = xs.prod`. Introduce `xs`. Proceed by induction on `xs with`. Consider the case `nil => exact fun _ => ⟨1, by simp, by simp⟩`. Consider the case `cons x xs ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `hxs`. Establish `hx : x ∈ J` using `hxs x (by simp)`. Take `⟨G, hG, hG0⟩` from `ih (fun z hz => hxs z (by simp [hz]))`. Use `⟨PowerSeries.mk (fun n => δ.dpow (n + 1) x) * G, ?_, ?_⟩` and prove the remaining obligations. Establish `ex : δ.exp x - 1 = PowerSeries.X * PowerSeries.mk (fun n => δ.dpow (n + 1) x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use extensionality with `n`. Break down `n with _ | n` into its components or cases. Simplify using `[DividedPowers.exp, δ.dpow_zero hx]`. Rewrite using `[PowerSeries.coeff_succ_X_mul]`. Simplify using `[DividedPowers.exp, PowerSeries.coeff_one]`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[List.map_cons, List.prod_cons, hG, ex, List.length_cons, pow_succ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_mul, hG0, List.prod_cons, ← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_mk, zero_add, δ.dpow_one hx]`. Establish `hprod : ∀ xs : List B, (∀ x ∈ xs, x ∈ J) → N ≤ xs.length → xs.prod = 0`. Introduce `xs hxs hlen`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨G, hG, hG0⟩` from `hfac xs hxs`. Use `hexp xs hxs 0 J.zero_mem xs.length hlen` as an intermediate fact. Rewrite `this` using `[hone, mul_one, hG]`. Establish `e2` using `PowerSeries.coeff_X_pow_mul G xs.length 0`. Rewrite `e2` using `[zero_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[e2, PowerSeries.coeff_zero_eq_constantCoeff_apply, hG0]`. Conclude with `this`. Establish `key : ∀ n, ∀ z ∈ J ^ n, ∀ xs : List B, (∀ x ∈ xs, x ∈ J) → N ≤ n + xs.length → z * xs.prod = 0`. Introduce `n`. Proceed by induction on `n with`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Introduce `z _ xs hxs hlen`. Rewrite using `[hprod xs hxs (by simpa using hlen), mul_zero]`. Consider the case `succ n ih`. Introduce `z hz xs hxs hlen`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[pow_succ']`. Use `Submodule.mul_induction_on hz ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`. Use `ih b hb (a :: xs) (fun x hx' => by` as an intermediate fact. Break down `List.mem_cons.1 hx' with rfl | hx'` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ha`. Conclude with `hxs x hx') (by simp; omega)`. Rewrite `this` using `[List.prod_cons]`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u v hu hv`. Rewrite using `[add_mul, hu, hv, add_zero]`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.zero_eq_bot, eq_bot_iff]`. Introduce `z hz`.
-
-Use `key N z hz [] (by simp) (by simp)` as an intermediate fact. Simplify using `using this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isNilpotent_of_isNilDP {J : Ideal B} {δ : DividedPowers J} (h : IsNilDP δ) : IsNilpotent J := by
   obtain ⟨N, hN⟩ := h.exists_dpow_eq_zero
@@ -181,7 +177,7 @@ variable {R : Type} [CommRing R] {I : Ideal R} {X : Scheme.{0}} {κ : DividedPow
 instance (U : X.affineOpens) : IsOpenImmersion (affPt s U) := U.2.isOpenImmersion_fromSpec
 
 /- English proof (translation)
-Establish `: RingHom.ker T.π = T.J` using `Ideal.ext T.ker`. Rewrite using `[this]`. Conclude with `isNilpotent_of_isNilDP T.nil`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nil_ker {γ : DividedPowers I} (T : Thick γ s) : IsNilpotent (RingHom.ker T.π) := by
   have : RingHom.ker T.π = T.J := Ideal.ext T.ker
@@ -189,9 +185,9 @@ theorem nil_ker {γ : DividedPowers I} (T : Thick γ s) : IsNilpotent (RingHom.k
   exact isNilpotent_of_isNilDP T.nil
 
 /- English proof (translation)
-Establish `e : V.1 ≤ (𝟙 X : X ⟶ X) ⁻¹ᵁ U.1` using `h`. Establish `H` using `(𝟙 X : X ⟶ X).etale_appLE U.2 V.2 e`. Establish `key : ((𝟙 X : X ⟶ X).appLE U.1 V.1 e).hom = (Sec.res s h : Sec s U.1 →+* Sec s V.1)`. Simplify using `only [Scheme.Hom.appLE, Scheme.Hom.id_app, Category.id_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite `H` using `[key]`. Conclude with `H`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_etale {U V : X.affineOpens} (h : V.1 ≤ U.1) : (Sec.res s h : Sec s U.1 →+* Sec s V.1).Etale := by
   have e : V.1 ≤ (𝟙 X : X ⟶ X) ⁻¹ᵁ U.1 := h
@@ -203,9 +199,9 @@ theorem res_etale {U V : X.affineOpens} (h : V.1 ≤ U.1) : (Sec.res s h : Sec s
   exact H
 
 /- English proof (translation)
-Establish `e : U.1 ≤ s ⁻¹ᵁ (⊤ : (Sp R).Opens)` using `le_top`. Establish `H1 : (s.appLE ⊤ U.1 e).hom.Smooth` using `hs.smooth_appLE (isAffineOpen_top (Sp R)) U.2 e`. Establish `H0 : (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.Smooth` using `RingHom.Smooth.of_bijective (ConcreteCategory.bijective_of_isIso _)`. Establish `H` using `H0.comp H1`. Rewrite using `[← RingHom.smooth_algebraMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H`.
+A detailed English derivation is pending.
 -/
 theorem sec_smooth (hs : Smooth s) (U : X.affineOpens) : Algebra.Smooth R (Sec s U.1) := by
   have e : U.1 ≤ s ⁻¹ᵁ (⊤ : (Sp R).Opens) := le_top
@@ -217,21 +213,17 @@ theorem sec_smooth (hs : Smooth s) (U : X.affineOpens) : Algebra.Smooth R (Sec s
   exact H
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[TopologicalSpace.Opens.mem_iSup]`. Take `⟨V, hV, hxV, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x) (U := ⊤) trivial`. Use `letI algV : Algebra R Γ(X, V) := (secMap s V).hom.toAlgebra`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Establish `hsmV : Algebra.Smooth R Γ(X, V)`. Establish `e : V ≤ s ⁻¹ᵁ (⊤ : (Sp R).Opens)` using `le_top`. Establish `H1 : (s.appLE ⊤ V e).hom.Smooth` using `hs.smooth_appLE (isAffineOpen_top (Sp R)) hV e`. Establish `H0 : (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom.Smooth` using `RingHom.Smooth.of_bijective (ConcreteCategory.bijective_of_isIso _)`. Conclude with `H0.comp H1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨S, hS, hSt⟩` from `Algebra.Smooth.exists_span_eq_top_isStandardSmooth R Γ(X, V)`. Establish `hcov` using `(hV.iSup_basicOpen_eq_self_iff (s := S)).2 hS`. Rewrite `hxV` using `[← hcov, TopologicalSpace.Opens.mem_iSup]`. Take `⟨⟨g, hgS⟩, hxg⟩` from `hxV`. Set `W : X.affineOpens` to `⟨X.basicOpen g, hV.basicOpen g⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨W, ?_, ?_⟩, hxg⟩` and prove the remaining obligations. Conclude with `RingHom.flat_algebraMap_iff.1 (RingHom.Smooth.flat (RingHom.smooth_algebraMap.2 (sec_smooth hs W)))`. Use `haveI := hSt g hgS`. Take `⟨d, g', hg'C, hg'e⟩` from `RingHom.IsStandardSmooth.exists_etale_mvPolynomial (RingHom.isStandardSmooth_algebraMap.2 this)`. Use `haveI : IsLocalization.Away g Γ(X, X.basicOpen g) := hV.isLocalization_basicOpen g`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Set `e : Localization.Away g ≃ₐ[Γ(X, V)] Γ(X, X.basicOpen g)` to `IsLocalization.algEquiv (Submonoid.powers g) _ _`. Establish `he : (e : Localization.Away g →+* Γ(X, X.basicOpen g)).FormallyEtale`. Use `letI := (e : Localization.Away g →+* Γ(X, X.basicOpen g)).toAlgebra`. Use `show Algebra.FormallyEtale (Localization.Away g) Γ(X, X.basicOpen g)`. Conclude with `Algebra.FormallyEtale.of_equiv (AlgEquiv.ofRingEquiv (f := e.toRingEquiv) (fun _ => rfl))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcompat : ∀ r, e (algebraMap R (Localization.Away g) r) = algebraMap R (Sec s W.1) r`. Introduce `r`. Rewrite using `[IsScalarTower.algebraMap_apply R Γ(X, V) (Localization.Away g), e.commutes]`. Use `show (X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom ((secMap s V).hom r) = (secMap s (X.basicOpen g)).hom r`. Rewrite using `[← CommRingCat.comp_apply]`.
-
-Establish `key` using `Scheme.Hom.appLE_map s (U := ⊤) (V := V) (V' := X.basicOpen g) le_top (homOfLE (X.basicOpen_le g)).op`. Simplify using `only [secMap, Category.assoc]`. Conclude with `congrArg (fun φ => ConcreteCategory.hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ φ) r) key`. Set `tr : MvPolynomial (Fin d) R →+* Sec s W.1` to `(e : Localization.Away g →+* Γ(X, X.basicOpen g)).comp g'`. Use `⟨d, { tr with commutes' := fun r => ?_ }, ?_⟩` and prove the remaining obligations.
-
-Use `show e (g' (MvPolynomial.C r)) = algebraMap R (Sec s W.1) r`. Rewrite using `[← RingHom.comp_apply g' MvPolynomial.C, hg'C]`. Conclude with `hcompat r`. Conclude with `RingHom.FormallyEtale.comp (fe_of_etale hg'e) he`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_cover (hs : Smooth s) : ⨆ U : Chart s, U.1.1 = ⊤ := by
   classical
@@ -282,9 +274,9 @@ theorem chart_cover (hs : Smooth s) : ⨆ U : Chart s, U.1.1 = ⊤ := by
     · exact RingHom.FormallyEtale.comp (fe_of_etale hg'e) he
 
 /- English proof (translation)
-Establish `ha : IsAffineOpen (U.1.1 ⊓ V.1.1)` using `isAffineHom_diagonal_iff.1 (inferInstance : IsAffineHom (Limits.pullback.diagonal s)) ⊤ (isAffineOpen_top _) _ le_top _ le_top U.1.2 V.1.2`. Set `W : X.affineOpens` to `⟨_, ha⟩`. Establish `hW : W.1 ≤ U.1.1` using `inf_le_left`. Establish `he` using `res_etale (s := s) hW`. Take `⟨hf, d, t, ht⟩` from `U.2`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨W, ?_, d, (Sec.res s hW).comp t, ht.comp (fe_of_etale he)⟩, rfl⟩` and prove the remaining obligations. Establish `k` using `(RingHom.flat_algebraMap_iff.2 hf).comp (RingHom.Etale.iff_flat_and_formallyUnramified.1 he).1`. Rewrite `k` using `[AlgHom.comp_algebraMap]`. Conclude with `RingHom.flat_algebraMap_iff.1 k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_inf (hs : IsSeparated s) (U V : Chart s) : ∃ W : Chart s, W.1.1 = U.1.1 ⊓ V.1.1 := by
   have ha : IsAffineOpen (U.1.1 ⊓ V.1.1) :=
@@ -300,14 +292,14 @@ theorem chart_inf (hs : IsSeparated s) (U V : Chart s) : ∃ W : Chart s, W.1.1 
   exact RingHom.flat_algebraMap_iff.1 k
 
 /- English proof (translation)
-The claim follows from `U.2.fromSpec_preimage_self.ge`.
+A detailed English derivation is pending.
 -/
 theorem bas_le (U : X.affineOpens) : ⊤ ≤ (bas s U).x ⁻¹ᵁ U.1 := U.2.fromSpec_preimage_self.ge
 
 /- English proof (translation)
-Use `haveI : Module.Flat R (Sec s U.1.1) := U.2.1`. Take `⟨δ, hδ⟩` from `flatExt R (Sec s U.1.1) I κ`. Use `ExtDP.of_eq (κ := κ) δ (bot_sup_eq _).symm ⟨by simp, fun {n} a ha => ?_⟩ hδ` and prove the remaining obligations. Rewrite `ha` using `[Ideal.mem_bot]`. Substitute `ha` using the available equality.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[RingHom.id_apply, RingHom.id_apply, DividedPowers.dpow_zero _ (Ideal.zero_mem _), DividedPowers.dpow_zero _ (Ideal.zero_mem _)]`. Rewrite using `[RingHom.id_apply, RingHom.id_apply, DividedPowers.dpow_eval_zero _ hn.ne', DividedPowers.dpow_eval_zero _ hn.ne']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bas_inN (U : Chart s) : InN κ (bas s U.1) := by
   haveI : Module.Flat R (Sec s U.1.1) := U.2.1
@@ -322,7 +314,7 @@ theorem bas_inN (U : Chart s) : InN κ (bas s U.1) := by
       DividedPowers.dpow_eval_zero _ hn.ne']
 
 /- English proof (translation)
-Establish `h1 : spMap f = spMap g` using `(cancel_mono (affPt s U)).1 h`. Establish `h2 : CommRingCat.ofHom f = CommRingCat.ofHom g` using `Spec.map_injective h1`. Conclude with `congrArg CommRingCat.Hom.hom h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_of_affPt (U : X.affineOpens) {B : Type} [CommRing B] {f g : Sec s U.1 →+* B}
     (h : spMap f ≫ affPt s U = spMap g ≫ affPt s U) : f = g := by
@@ -331,11 +323,9 @@ theorem eq_of_affPt (U : X.affineOpens) {B : Type} [CommRing B] {f g : Sec s U.1
   exact congrArg CommRingCat.Hom.hom h2
 
 /- English proof (translation)
-Establish `hr : Set.range x ⊆ Set.range (affPt s U)`. Introduce and unpack `_ ⟨p, rfl⟩`. Establish `hp : p ∈ x ⁻¹ᵁ U.1` using `h trivial`. Use `show _ ∈ Set.range U.2.fromSpec`. Rewrite using `[U.2.range_fromSpec]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `hp`. Set `y` to `IsOpenImmersion.lift (affPt s U) x hr`. Use `⟨(Spec.preimage y).hom, ?_⟩` and prove the remaining obligations. Establish `e : spMap (Spec.preimage y).hom = y` using `Spec.map_preimage y`. Rewrite using `[e]`.
-
-Conclude with `IsOpenImmersion.lift_fac _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_le (U : X.affineOpens) {B : Type} [CommRing B] (x : Sp B ⟶ X) (h : ⊤ ≤ x ⁻¹ᵁ U.1) :
     ∃ f : Sec s U.1 →+* B, spMap f ≫ affPt s U = x := by
@@ -352,17 +342,15 @@ theorem exists_hom_of_le (U : X.affineOpens) {B : Type} [CommRing B] (x : Sp B �
   exact IsOpenImmersion.lift_fac _ _ _
 
 /- English proof (translation)
-Establish `hw : affPt s U ≫ s = spMap (algebraMap R (Sec s U.1))` using `(bas s U).w`. Establish `hsp : spMap (f.comp (algebraMap R (Sec s U.1))) = spMap (T.π.comp (algebraMap R T.B))`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap_comp, ← hw, ← Category.assoc, hf, T.w]`. Establish `hR : f.comp (algebraMap R (Sec s U.1)) = T.π.comp (algebraMap R T.B)` using `congrArg CommRingCat.Hom.hom (Spec.map_injective hsp)`. Set `u : MvPolynomial (Fin d) R →ₐ[R] T.B` to `MvPolynomial.aeval z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hfu : f.comp t.toRingHom = T.π.comp u.toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Establish `h1` using `RingHom.congr_fun hR r`. Use `show f (t (MvPolynomial.C r)) = T.π (u (MvPolynomial.C r))`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MvPolynomial.algebraMap_eq, t.commutes, u.commutes]`. Conclude with `h1`. Introduce `k show f (t (MvPolynomial.X k)) = T.π (u (MvPolynomial.X k))`. Rewrite using `[MvPolynomial.aeval_X]`. Conclude with `(hz k).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨g, hg1, hg2⟩` from `fe_lift t.toRingHom ht T.π T.surj (nil_ker T) u.toRingHom f hfu`. Set `φ : Sec s U.1 →ₐ[R] T.B` to `{ g with commutes' := fun r => by`. Establish `h1` using `RingHom.congr_fun hg1 (algebraMap R (MvPolynomial (Fin d) R) r)`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, AlgHom.commutes] at h1`. Conclude with `h1 }`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hφ : spMap (T.π.comp (φ : Sec s U.1 →+* T.B)) ≫ affPt s U = T.x`. Establish `e : T.π.comp (φ : Sec s U.1 →+* T.B) = f` using `hg2`. Rewrite using `[e, hf]`. Use `⟨Thick.trivHom φ hφ, fun k => ?_⟩` and prove the remaining obligations. Establish `h1` using `RingHom.congr_fun hg1 (MvPolynomial.X k)`.
-
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at h1`. Rewrite `h1` using `[MvPolynomial.aeval_X]`. Conclude with `h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_coord (U : X.affineOpens) {d : ℕ} (t : MvPolynomial (Fin d) R →ₐ[R] Sec s U.1)
     (ht : t.toRingHom.FormallyEtale) (T : Thick (dp0 R) s) (f : Sec s U.1 →+* T.B₀) (hf : spMap f ≫ affPt s U = T.x)
@@ -402,7 +390,7 @@ theorem exists_lift_of_coord (U : X.affineOpens) {d : ℕ} (t : MvPolynomial (Fi
   exact h1
 
 /- English proof (translation)
-Take `⟨-, d, t, ht⟩` from `U.2`. Take `⟨f, hf⟩` from `exists_hom_of_le (s := s) U.1 T.x h`. Use `choose z hz using fun k ↦ T.surj (f (t (MvPolynomial.X k)))`. Conclude with `⟨(exists_lift_of_coord U.1 t ht T f hf z hz).choose⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift (U : Chart s) (T : Thick (dp0 R) s) (h : ⊤ ≤ T.x ⁻¹ᵁ U.1.1) : Nonempty (bas s U.1 ⟶ T) := by
   obtain ⟨-, d, t, ht⟩ := U.2
@@ -411,14 +399,14 @@ theorem exists_lift (U : Chart s) (T : Thick (dp0 R) s) (h : ⊤ ≤ T.x ⁻¹�
   exact ⟨(exists_lift_of_coord U.1 t ht T f hf z hz).choose⟩
 
 /- English proof (translation)
-The claim follows from `(a.comm c).symm.trans ((RingHom.congr_fun (eq_of_affPt U (a.pt.trans b.pt.symm)) c).trans (b.comm c))`.
+A detailed English derivation is pending.
 -/
 theorem π_eq (U : X.affineOpens) {T : Thick (dp0 R) s} (a b : bas s U ⟶ T) (c : Sec s U.1) :
     T.π (a.φ c) = T.π (b.φ c) :=
   (a.comm c).symm.trans ((RingHom.congr_fun (eq_of_affPt U (a.pt.trans b.pt.symm)) c).trans (b.comm c))
 
 /- English proof (translation)
-Establish `e1 : (a.φ.comp t : MvPolynomial (Fin d) R →ₐ[R] T.B) = b.φ.comp t` using `MvPolynomial.algHom_ext (fun k => h k)`. Establish `key` using `fe_uniq t.toRingHom ht T.π (nil_ker T) (a.φ : Sec s U.1 →+* T.B) (b.φ : Sec s U.1 →+* T.B) (RingHom.ext fun p => AlgHom.congr_fun e1 p) (RingHom.ext fun c => π_eq U a b c)`. Apply `Thick.hom_ext` to reduce the goal to its premises. Introduce `c`. Conclude with `RingHom.congr_fun key c`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lift_ext (U : X.affineOpens) {d : ℕ} (t : MvPolynomial (Fin d) R →ₐ[R] Sec s U.1)
     (ht : t.toRingHom.FormallyEtale) {T : Thick (dp0 R) s} (a b : bas s U ⟶ T)
@@ -432,21 +420,19 @@ theorem lift_ext (U : X.affineOpens) {d : ℕ} (t : MvPolynomial (Fin d) R →�
   exact RingHom.congr_fun key c
 
 /- English proof (translation)
-Take `⟨-, d, t, ht⟩` from `U.2`. Take `⟨fS, hfS⟩` from `@exists_hom_of_le R _ X s U.1 S.B₀ S.ring₀ S.x h`. Use `choose zS hzS using fun k : Fin d => S.surj (fS (t (MvPolynomial.X k)))`. Take `⟨jS, -⟩` from `exists_lift_of_coord U.1 t ht S fS hfS zS hzS`. Take `⟨P, i, y, hP, hlev, hy, huniv⟩` from `exists_adj S hS d n hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hbπ : ∀ {T : Thick (dp0 R) s} (a : bas s U.1 ⟶ T) (c : Sec s U.1.1), T.π (a.φ c) = a.φ₀ c` using `fun a c => (a.comm c).symm`. Establish `hyπ : ∀ k, P.π (y k) = 0` using `fun k => (P.ker _).2 (hy k)`. Take `⟨j, hj⟩` from `exists_lift_of_coord U.1 t ht P (jS ≫ i).φ₀ (jS ≫ i).pt (fun k => (jS ≫ i).φ (t (MvPolynomial.X k)) + y k) (fun k => by`. Simplify using `only []`. Rewrite using `[map_add, hyπ, add_zero, hbπ])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨P, i, j, hP, hlev, fun V hV φ b => ?_⟩` and prove the remaining obligations. Establish `hiψ : ∀ (ψ : P ⟶ V), i ≫ ψ = φ → ∀ x, ψ.φ (i.φ x) = φ.φ x`. Introduce `ψ e x`. Rewrite using `[← Thick.comp_φ, e]`. Set `zV : Fin d → V.B` to `fun k => b.φ (t (MvPolynomial.X k)) - (jS ≫ φ).φ (t (MvPolynomial.X k))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hzV : ∀ k, zV k ∈ V.J` using `fun k => by`. Use `(V.ker _).1 ?_` and prove the remaining obligations. Simplify using `only [zV, map_sub]`. Conclude with `sub_eq_zero.2 (π_eq U.1 b (jS ≫ φ) _)`. Take `⟨ψ, ⟨hψ1, hψ2⟩, hψu⟩` from `huniv V hV φ zV hzV`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨ψ, ⟨hψ1, ?_⟩, ?_⟩` and prove the remaining obligations. Apply `lift_ext U.1 t ht` to reduce the goal to its premises. Introduce `k`. Rewrite using `[Thick.comp_φ, hj k, map_add, hψ2]`. Simplify using `only [zV]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Thick.comp_φ jS i, Thick.comp_φ jS φ, hiψ ψ hψ1]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `ψ' ⟨h1, h2⟩`. Apply `hψu` to reduce the goal to its premises. Use `⟨h1, fun k => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ψ'.φ (j.φ (t (MvPolynomial.X k))) = b.φ (t (MvPolynomial.X k))`. Rewrite using `[← Thick.comp_φ, h2]`. Rewrite `e1` using `[hj k, map_add, Thick.comp_φ jS i, hiψ ψ' h1]`. Simplify using `only [zV]`. Rewrite using `[Thick.comp_φ jS φ, ← e1]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_coprod (U : Chart s) (S : Thick (dp0 R) s) (hS : InN κ S) (h : ⊤ ≤ S.x ⁻¹ᵁ U.1.1) (n : ℕ)
     (hn : 1 ≤ n) : ∃ (P : Thick (dp0 R) s) (i : S ⟶ P) (j : bas s U.1 ⟶ P), InN κ P ∧ IsLev P.δ n ∧

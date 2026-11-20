@@ -27,13 +27,13 @@ def IsWittStep (B B' : HSp D) (t : ℕ) (ι : B'.V →ₗ[D.host.E] B.V) (C : Ma
   B'.rank + 2 * t = B.rank ∧ HSpace.IsIsomEmb B' B ι ∧ IsIsoSub B C ∧ ct (frameMat B B' ι) * B.gram * C = 0
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun ⟨h, ι, h1, C, h2, h3⟩ => ⟨ι, C, h, h1, h2, h3⟩, fun ⟨ι, C, h, h1, h2, h3⟩ => ⟨h, ι, h1, C, h2, h3⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isWittLower_iff (B B' : HSp D) (t : ℕ) : IsWittLower B B' t ↔ ∃ ι C, IsWittStep B B' t ι C :=
   ⟨fun ⟨h, ι, h1, C, h2, h3⟩ => ⟨ι, C, h, h1, h2, h3⟩, fun ⟨ι, C, h, h1, h2, h3⟩ => ⟨h, ι, h1, C, h2, h3⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.Cusp.exists_isWittLower_iff]`. Conclude with `⟨fun ⟨B', ι, C, h, h'⟩ => ⟨B', (isWittLower_iff _ _ _).2 ⟨ι, C, h⟩, h'⟩, fun ⟨B', h, h'⟩ => let ⟨ι, C, h⟩ := (isWittLower_iff _ _ _).1 h; ⟨B', ι, C, h, h'⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_isWittStep_iff (B : HSp D) (t : ℕ) :
     (∃ B' ι C, IsWittStep B B' t ι C ∧ B'.SigOK) ↔ t ≤ GlobalTheory.Cusp.wittIndex B := by
@@ -42,7 +42,7 @@ theorem exists_isWittStep_iff (B : HSp D) (t : ℕ) :
     fun ⟨B', h, h'⟩ => let ⟨ι, C, h⟩ := (isWittLower_iff _ _ _).1 h; ⟨B', ι, C, h, h'⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ht, h.2.2.1.1, h.2.2.1.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsWittStep.isIsoFrame {B B' : HSp D} {t : ℕ} {ι : B'.V →ₗ[D.host.E] B.V}
     {C : Matrix (Fin B.rank) (Fin t) D.host.E} (h : IsWittStep B B' t ι C) (ht : 1 ≤ t) : IsIsoFrame B C :=
@@ -233,7 +233,7 @@ def TowerAniso (D : D7) : Prop :=
 def TowerProperty (D : D7) : Prop := TowerAniso D ∧ TowerGeneral D
 
 /- English proof (translation)
-Take `⟨B', ι, C, h, -⟩` from `(exists_isWittStep_iff (CuspDecay.Model.plane D) 1).2 (GlobalTheory.Cusp.wittIndex_plane D).ge`. Establish `h1 : B'.rank + 2 * 1 = 2` using `h.1`. Conclude with `⟨B', ι, C, h, by omega⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 example (D : D7) : ∃ B' ι C, IsWittStep (CuspDecay.Model.plane D) B' 1 ι C ∧ B'.rank = 0 := by
   obtain ⟨B', ι, C, h, -⟩ := (exists_isWittStep_iff (CuspDecay.Model.plane D) 1).2 (GlobalTheory.Cusp.wittIndex_plane D).ge
@@ -241,7 +241,7 @@ example (D : D7) : ∃ B' ι C, IsWittStep (CuspDecay.Model.plane D) B' 1 ι C �
   exact ⟨B', ι, C, h, by omega⟩
 
 /- English proof (translation)
-Simplify using `[IsLeviElt, Formalism.L2.Theta.mt]`.
+Simplify using the standard rewrite rules.
 -/
 example (B B' : HSp D) {t : ℕ} (ι : B'.V →ₗ[D.host.E] B.V) (C : Matrix (Fin B.rank) (Fin t) D.host.E) :
     IsLeviElt B B' ι C 1 1 1 := by

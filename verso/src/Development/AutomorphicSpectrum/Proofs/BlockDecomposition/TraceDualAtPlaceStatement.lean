@@ -3,7 +3,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.TraceDualAtPlac
 import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula.UnramifiedWhittaker.AlmostGoodOf
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.Gunr.TraceDual.traceDualAt | exact GlobalTheory.CompanionTheory.Gunr.TraceDual.traceDualAt | (intros; apply GlobalTheory.CompanionTheory.Gunr.TraceDual.traceDualAt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.trace_dual_at_place : PositivityTheory.SiegelWeilFormula.Gunr.TraceDualAt := by
   first | exact @GlobalTheory.CompanionTheory.Gunr.TraceDual.traceDualAt | exact GlobalTheory.CompanionTheory.Gunr.TraceDual.traceDualAt | (intros; apply GlobalTheory.CompanionTheory.Gunr.TraceDual.traceDualAt <;> assumption)

@@ -22,9 +22,9 @@ namespace GlobalTheory.KTrivLocal
 open GlobalTheory.AbLaw GlobalTheory.UU
 
 /- English proof (translation)
-Use `algebraize [φ]`. Establish `hle : (⊤ : Submodule A C) ≤ LinearMap.range (Algebra.linearMap A C)`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot Module.Finite.fg_top (IsLocalRing.maximalIdeal_le_jacobson _) fun x _ => ?_` and prove the remaining obligations. Use `Submodule.mem_sup.2 ⟨φ (ε x), ⟨ε x, rfl⟩, x - φ (ε x), ?_, by ring⟩` and prove the remaining obligations. Rewrite using `[Ideal.smul_top_eq_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h x`. Take `⟨a, rfl⟩` from `hle (Submodule.mem_top (x := c))`. Conclude with `congrArg φ (he a)`.
+A detailed English derivation is pending.
 -/
 theorem ring_retraction {A C : Type} [CommRing A] [IsLocalRing A] [CommRing C] (φ : A →+* C) (hφ : φ.Finite)
     (ε : C →+* A) (he : ∀ a, ε (φ a) = a)
@@ -40,13 +40,11 @@ theorem ring_retraction {A C : Type} [CommRing A] [IsLocalRing A] [CommRing C] (
   exact congrArg φ (he a)
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `Spec.map_surjective f`. Take `⟨ε, rfl⟩` from `Spec.map_surjective e`. Establish `hφ : φ.hom.Finite` using `(IsFinite.SpecMap_iff φ).1 hf`. Establish `he' : φ ≫ ε = 𝟙 _` using `Spec.map_injective (by rw [Spec.map_comp, he, Spec.map_id])`. Set `I : Ideal C` to `(IsLocalRing.maximalIdeal A).map φ.hom`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `τ : IsLocalRing.ResidueField A →+* C ⧸ I` to `Ideal.Quotient.lift _ ((Ideal.Quotient.mk I).comp φ.hom) fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.mem_map_of_mem _ ha)`. Establish `k` using `h _ (spMap τ) (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I))) (by`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp]`. Use the proof step `rfl)`. Rewrite `k` using `[← Spec.map_comp, ← Spec.map_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `k'` using `Spec.map_injective k`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`. Use `congr 1`. Use extensionality with `c`. Use `ring_retraction φ.hom hφ ε.hom (fun a => congrArg (fun q => q.hom a) he') (fun x => ?_) c` and prove the remaining obligations.
-
-Conclude with `Ideal.Quotient.eq.1 (congrArg (fun q => q.hom x) k').symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comp_section_eq_id_spec {A : Type} [CommRing A] [IsLocalRing A] {C : CommRingCat.{0}}
     (f : Spec C ⟶ Spec (CommRingCat.of A)) [hf : IsFinite f] (e : Spec (CommRingCat.of A) ⟶ Spec C)
@@ -73,9 +71,9 @@ theorem comp_section_eq_id_spec {A : Type} [CommRing A] [IsLocalRing A] {C : Com
   exact Ideal.Quotient.eq.1 (congrArg (fun q => q.hom x) k').symm
 
 /- English proof (translation)
-Establish `: IsAffine H` using `isAffine_of_isAffineHom f`. Establish `k` using `comp_section_eq_id_spec (H.isoSpec.inv ≫ f) (e ≫ H.isoSpec.hom) (by simpa using he) fun T t y hy => by`. Use `h T t (y ≫ H.isoSpec.inv) (by simpa using hy)` as an intermediate fact. Simplify using `only [Category.assoc] at this ⊢`. Rewrite using `[reassoc_of% this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← cancel_epi H.isoSpec.inv, ← cancel_mono H.isoSpec.hom]`. Simplify using `using k`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem comp_section_eq_id {A : Type} [CommRing A] [IsLocalRing A] {H : Scheme.{0}}
     (f : H ⟶ Spec (CommRingCat.of A)) [IsFinite f] (e : Spec (CommRingCat.of A) ⟶ H) (he : e ≫ f = 𝟙 _)
@@ -92,19 +90,19 @@ theorem comp_section_eq_id {A : Type} [CommRing A] [IsLocalRing A] {H : Scheme.{
   simpa using k
 
 /- English proof (translation)
-Introduce `hLaws _ A _ _ _ B _ _ hB L hLB hL hk`. Establish `hG` using `hLaws.globalFns`. Take `⟨d, -, n, s, hs⟩` from `(GlobalTheory.Unif.relAmple_iff_veryAmpleBy A B L hLB).1 hL`. Establish `hP : IsProjBy B.hom` using `⟨_, isLB_pw hLB _, n, s, hs⟩`. Take `⟨hO, -, hK⟩` from `GlobalTheory.UU.TrivTwist.inK_iff_trivial_twist _ B L hLB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨H, j, hj, hH⟩` from `GlobalTheory.UU.TwistKer.exists_closed_twist_kernel hG A B hB hP L (pw L 0) hLB hO`. Establish `hfin : IsFinite H.hom` using `GlobalTheory.AmpleStabFinite.isFinite_of_relAmple hG A B hB L (pw L 0) hLB hO hL H j hj hH`. Establish `hrep : ∀ (T : Over (Spec (CommRingCat.of A))) (x : T ⟶ B), InK B L x ↔ ∃ y : T ⟶ H, y ≫ j = x` using `fun T x => (hK _ rfl T x).trans (hH T x)`. Establish `hm : Mono j` using `(Over.forget _).mono_of_mono_map (inferInstanceAs (Mono j.left))`. Take `⟨e, he⟩` from `(hrep _ _).1 (inK_one hLB (𝟙_ _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h` using `isGrpPullback_pullback B (spMap (IsLocalRing.residue A))`. Establish `hL' : (L.pull (pullback.fst B.hom (spMap (IsLocalRing.residue A)))).IsLB` using `DVR.linComb_isLB _ hLB _ _`. Establish `key : H.hom ≫ e.left = 𝟙 _`. Use `comp_section_eq_id H.hom e.left (Over.w e) fun T t y hy => ?_` and prove the remaining obligations. Establish `hdi : (y ≫ j.left) ≫ B.hom = t ≫ spMap (IsLocalRing.residue A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Over.w j, hy]`. Set `x : Over.mk t ⟶ (Over.pullback (spMap (IsLocalRing.residue A))).obj B` to `Over.homMk (h.1.lift _ _ hdi) (h.1.lift_snd _ _ _)`. Set `z : Over.mk (t ≫ spMap (IsLocalRing.residue A)) ⟶ H` to `Over.homMk y hy`. Establish `hz : z ≫ j = pushPt h.1.w x` using `Over.OverMorphism.ext (h.1.lift_fst _ _ hdi).symm`. Establish `hx : x = 1` using `InK.eq_one hk (inK_of_push h hLB hL' (lbIso_self hL') x ((hrep _ _).2 ⟨z, hz⟩))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : pushPt h.1.w x = 1` using `(congrArg (pushHom h (Over.mk t)) hx).trans (map_one _)`. Establish `h1 : z ≫ toUnit H ≫ e = z`. Rewrite using `[← cancel_mono j, hz, hx', Category.assoc, Category.assoc, he, MonObj.comp_one, MonObj.comp_one]`. Establish `h2 : (toUnit H).left = H.hom` using `(Category.comp_id _).symm.trans (Over.w (toUnit H))`. Conclude with `(congrArg (fun q => y ≫ q ≫ e.left) h2).symm.trans (congrArg (fun q => q.left) h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj1 : j = 1`. Establish `h2 : (toUnit H).left = H.hom` using `(Category.comp_id _).symm.trans (Over.w (toUnit H))`. Establish `h1 : toUnit H ≫ e = 𝟙 H` using `Over.OverMorphism.ext ((congrArg (fun q => q ≫ e.left) h2).trans key)`. Rewrite using `[← Category.id_comp j, ← h1, Category.assoc, he, MonObj.comp_one]`. Use `kTriv_iff_forall.2 fun T x hxK => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `(hrep T x).1 hxK`. Rewrite using `[hj1, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kTriv_of_closed_fibre : Laws → Laws2 → ∀ (A : Type) [CommRing A] [IsLocalRing A] [IsNoetherianRing A] (B : Over (Spec (CommRingCat.of A))) [GrpObj B] [IsCommMonObj B], IsAbelianScheme B → ∀ N : LB B.left, N.IsLB → RelAmple B N → KTriv ((Over.pullback (spMap (IsLocalRing.residue A))).obj B) (N.pull (pullback.fst B.hom (spMap (IsLocalRing.residue A)))) → KTriv B N := by
   intro hLaws _ A _ _ _ B _ _ hB L hLB hL hk

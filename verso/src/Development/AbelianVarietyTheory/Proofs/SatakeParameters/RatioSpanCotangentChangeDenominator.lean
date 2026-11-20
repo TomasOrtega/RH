@@ -10,13 +10,13 @@ attribute [local instance] MvPolynomial.gradedAlgebra
 namespace GlobalTheory.EtProj
 
 /- English proof (translation)
-Take `⟨⟨y, t⟩, e⟩` from `(IsLocalization.mem_map_algebraMap_iff (Submonoid.powers s) S).1 hx`. Rewrite `e` using `[← map_mul]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers s) S).1 e`. Establish `hw : ((c : R) * t) * x ∈ I`. Establish `: (c : R) * y ∈ I` using `I.mul_mem_left _ y.2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← hc]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hwm : (c : R) * t ∉ m`. Take `⟨k, hk⟩` from `c.2`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨l, hl⟩` from `t.2`. Rewrite using `[← hk, ← hl, ← pow_add]`. Conclude with `fun h => hs (hm.isPrime.mem_of_pow_mem _ h)`. Take `⟨u, i, hi, h1⟩` from `hm.exists_inv hwm`. Establish `hi2 : i ^ 2 ∈ I` using `hI (Ideal.pow_mem_pow hi 2)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx' : x = (u ^ 2 * ((c : R) * t) + 2 * u * i) * (((c : R) * t) * x) + x * i ^ 2`. Take the linear combination `(-x * (u * ((c : R) * t) + i + 1)) * h1`. Rewrite using `[hx']`. Conclude with `I.add_mem (I.mul_mem_left _ hw) (I.mul_mem_left _ hi2)`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_algebraMap_mem_map_away {R S : Type} [CommRing R] [CommRing S] [Algebra R S] (s : R)
     [IsLocalization.Away s S] {I m : Ideal R} (hm : m.IsMaximal) (hI : m ^ 2 ≤ I) (hs : s ∉ m) {x : R}
@@ -41,9 +41,9 @@ theorem mem_of_algebraMap_mem_map_away {R S : Type} [CommRing R] [CommRing S] [A
   exact I.add_mem (I.mul_mem_left _ hw) (I.mul_mem_left _ hi2)
 
 /- English proof (translation)
-Introduce `w hw`. Take `⟨⟨x, t⟩, rfl⟩` from `IsLocalization.mk'_surjective (Submonoid.powers s) w`. Simplify using `only at hw ⊢`. Establish `hx : evR x = 0`. Use `congrArg evS (IsLocalization.mk'_spec S x t)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, RingHom.mem_ker.1 hw, zero_mul, h]`. Conclude with `this.symm`. Rewrite using `[IsLocalization.mk'_eq_mul_mk'_one]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_le_map_ker_away {R S K : Type} [CommRing R] [CommRing S] [Field K] [Algebra R S] (s : R)
     [IsLocalization.Away s S] (evR : R →+* K) (evS : S →+* K) (h : ∀ x, evS (algebraMap R S x) = evR x) :
@@ -59,35 +59,27 @@ theorem ker_le_map_ker_away {R S K : Type} [CommRing R] [CommRing S] [Field K] [
   exact Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ hx)
 
 /- English proof (translation)
-Use `haveI := hι`. Use `set 𝒜 := ProjSpace.grading ℂ N`. Use `set D := Proj.basicOpen 𝒜 a ⊓ Proj.basicOpen 𝒜 b with hDdef`. Use `set W : X.Opens := ι ⁻¹ᵁ D with hWdef`. Establish `hWa : W ≤ fOpen ι a` using `fun x hx => hx.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hWb : W ≤ fOpen ι b` using `fun x hx => hx.2`. Establish `hzW : z ∈ CxPts.ptsIn p (RingHom.id ℂ) W` using `CxPts.mem_ptsIn.2 ⟨CxPts.mem_ptsIn.1 hza, CxPts.mem_ptsIn.1 hzb⟩`. Establish `hUa : IsAffineOpen (fOpen ι a)` using `(Proj.isAffineOpen_basicOpen 𝒜 a ha hn).preimage ι`. Establish `hUb : IsAffineOpen (fOpen ι b)` using `(Proj.isAffineOpen_basicOpen 𝒜 b hb hn).preimage ι`. Establish `hres : ∀ {c d : MvPolynomial (Fin (N + 1)) ℂ} (hc : c ∈ 𝒜 n) (hd : d ∈ 𝒜 n) (hW : W ≤ fOpen ι d) (hD : D ≤ Proj.basicOpen 𝒜 d), resG X hW (fRatio ι c d hc hd) = (ι.app D).hom (ProjFrac.frac 𝒜 D c d hc hd hD)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `c d hc hd hW hD`. Use `congrArg (fun φ => φ.hom (ProjFrac.frac 𝒜 _ c d hc hd le_rfl)) (ι.naturality (homOfLE hD).op)` as an intermediate fact. Simplify using `only [CommRingCat.comp_apply] at this`. Rewrite using `[← ProjFrac.resG_frac hD]`. Conclude with `this.symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hratio : ∀ j, resG X hWa (fRatio ι (f j) a (hf j) ha) = resG X hWb (fRatio ι (f j) b (hf j) hb) * (ι.app D).hom (ProjFrac.frac 𝒜 D b a hb ha inf_le_left)`. Introduce `j`. Rewrite using `[hres _ _ hWa inf_le_left, hres _ _ hWb inf_le_right, ← map_mul]`. Use `congr 1`. Conclude with `(ProjFrac.frac_mul_eq (by ring)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set sa := fRatio ι b a hb ha`. Use `set sb := fRatio ι a b ha hb`. Establish `eA : W = X.basicOpen sa`. Rewrite using `[show sa = (ι.app _).hom (ProjFrac.frac 𝒜 _ b a hb ha le_rfl) from rfl]`. Use `Eq.trans ?_ (Scheme.preimage_basicOpen ι _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Rewrite using `[ProjFrac.basicOpen_frac]`. Establish `eB : W = X.basicOpen sb`. Rewrite using `[show sb = (ι.app _).hom (ProjFrac.frac 𝒜 _ a b ha hb le_rfl) from rfl]`. Use `Eq.trans ?_ (Scheme.preimage_basicOpen ι _)` and prove the remaining obligations. Rewrite using `[ProjFrac.basicOpen_frac]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun U => ι ⁻¹ᵁ U) (inf_comm _ _)`. Use `letI algA : Algebra Γ(X, fOpen ι a) Γ(X, W) := (resG X hWa).toAlgebra`. Use `letI algB : Algebra Γ(X, fOpen ι b) Γ(X, W) := (resG X hWb).toAlgebra`. Use `haveI locA : IsLocalization.Away sa Γ(X, W) := hUa.isLocalization_of_eq_basicOpen sa (homOfLE hWa) eA`. Use `haveI locB : IsLocalization.Away sb Γ(X, W) := hUb.isLocalization_of_eq_basicOpen sb (homOfLE hWb) eB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `evA : ∀ g, CxPts.evHom hzW (algebraMap Γ(X, fOpen ι a) Γ(X, W) g) = CxPts.evHom hza g` using `fun g => by`. Express the relevant statement in the definitionally equal form `CxPts.evHom hzW (resG X hWa g) = _`. Rewrite using `[← CxPts.ev_eq, ← CxPts.ev_eq]`. Conclude with `CxPts.ev_res hWa hzW g`. Establish `evB : ∀ g, CxPts.evHom hzW (algebraMap Γ(X, fOpen ι b) Γ(X, W) g) = CxPts.evHom hzb g` using `fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `CxPts.evHom hzW (resG X hWb g) = _`. Rewrite using `[← CxPts.ev_eq, ← CxPts.ev_eq]`. Conclude with `CxPts.ev_res hWb hzW g`. Establish `h1A` using `ker_le_map_ker_away sa _ _ evA`. Establish `h1B` using `ker_le_map_ker_away sb _ _ evB`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2A : (RingHom.ker (CxPts.evHom hza)).map (algebraMap Γ(X, fOpen ι a) Γ(X, W)) ≤ RingHom.ker (CxPts.evHom hzW)` using `Ideal.map_le_iff_le_comap.2 fun x hx => by`. Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, evA]`. Conclude with `hx`. Establish `h3 : RingHom.ker (CxPts.evHom hzW) ≤ Ideal.span ((algebraMap Γ(X, fOpen ι a) Γ(X, W)) '' Set.range fun j => fRatio ι (f j) a (hf j) ha) ⊔ RingHom.ker (CxPts.evHom hzW) ^ 2`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Ideal.map_mono h (h1A hx)` as an intermediate fact. Rewrite `this` using `[Ideal.map_sup, Ideal.map_pow, Ideal.map_span]`. Conclude with `sup_le_sup le_rfl (Ideal.pow_right_mono h2A 2) this`. Establish `h4 : Ideal.span ((algebraMap Γ(X, fOpen ι a) Γ(X, W)) '' Set.range fun j => fRatio ι (f j) a (hf j) ha) ≤ Ideal.span ((algebraMap Γ(X, fOpen ι b) Γ(X, W)) '' Set.range fun j => fRatio ι (f j) b (hf j) hb)`. Rewrite using `[Ideal.span_le]`.
-
-Introduce and unpack `_ ⟨_, ⟨j, rfl⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `resG X hWa _ ∈ _`. Rewrite using `[hratio j]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨_, ⟨j, rfl⟩, rfl⟩)`. Establish `hsurj : Function.Surjective (CxPts.evHom hzb)` using `fun c => ⟨ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p (fOpen ι b) c, by rw [← CxPts.ev_eq]; exact CxPts.ev_algX hzb c⟩`.
-
-Establish `hmax : (RingHom.ker (CxPts.evHom hzb)).IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ hsurj`. Establish `hs : sb ∉ RingHom.ker (CxPts.evHom hzb)`. Rewrite using `[RingHom.mem_ker, ← CxPts.ev_eq]`. Conclude with `(CxPts.mem_ptsIn_basicOpen hzb sb).1 (eB ▸ hzW)`. Introduce `g hg`.
-
-Use `mem_of_algebraMap_mem_map_away (S := Γ(X, W)) sb hmax le_sup_right hs ?_` and prove the remaining obligations. Establish `hgW : algebraMap Γ(X, fOpen ι b) Γ(X, W) g ∈ RingHom.ker (CxPts.evHom hzW)`. Rewrite using `[RingHom.mem_ker, evB]`. Conclude with `hg`. Rewrite using `[Ideal.map_sup, Ideal.map_pow, Ideal.map_span]`.
-
-Conclude with `sup_le_sup h4 (Ideal.pow_right_mono h1B 2) (h3 hgW)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_ratio_of_span_ratio (X : Scheme.{0}) (p : X ⟶ Sp ℂ) (N : ℕ) (ι : X ⟶ PSpace ℂ N)
     (hι : IsClosedImmersion ι) (n : ℕ) (hn : 0 < n) (k : ℕ) (f : Fin k → MvPolynomial (Fin (N + 1)) ℂ)

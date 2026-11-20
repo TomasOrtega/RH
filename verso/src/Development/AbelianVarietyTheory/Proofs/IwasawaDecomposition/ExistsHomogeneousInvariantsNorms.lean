@@ -8,21 +8,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.NormFam
 
 /- English proof (translation)
-Establish `: (RingHom.ker x).IsPrime` using `RingHom.ker_isPrime x`. Take `⟨𝔮, -, h𝔮, hc⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (RingHom.ker x) (⊥ : Ideal R) (by`. Introduce `a ha`. Simplify using `only [Ideal.mem_comap, Ideal.mem_bot] at ha`. Establish `: a = 0` using `hinj (by simpa using ha)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[this])`. Set `𝔭 : Ideal A` to `Ideal.comap (algebraMap A R) 𝔮`. Establish `: 𝔮.IsPrime` using `h𝔮`. Establish `: 𝔭.IsPrime` using `Ideal.IsPrime.comap _`. Set `g : A ⧸ 𝔭 →+* C` to `Ideal.Quotient.lift 𝔭 x (fun a ha => by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `a ∈ 𝔭 at ha`. Rewrite `ha` using `[show 𝔭 = RingHom.ker x from hc]`. Conclude with `ha)`. Establish `hg : Function.Injective g`. Rewrite using `[RingHom.injective_iff_ker_eq_bot, eq_bot_iff]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q hq`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Rewrite `hq` using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `x a = 0 at hq`. Rewrite using `[Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `a ∈ 𝔭`. Rewrite using `[show 𝔭 = RingHom.ker x from hc]`. Conclude with `hq`. Set `: Algebra (A ⧸ 𝔭) C` to `g.toAlgebra`. Establish `: Module.IsTorsionFree (A ⧸ 𝔭) C` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hg`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: Module.IsTorsionFree (A ⧸ 𝔭) (R ⧸ 𝔮)`. Apply `Module.isTorsionFree_iff_algebraMap_injective.mpr` to reduce the goal to its premises. Conclude with `Ideal.quotientMap_injective' le_rfl`. Establish `: Algebra.IsAlgebraic (A ⧸ 𝔭) (R ⧸ 𝔮)` using `Algebra.IsIntegral.isAlgebraic`. Set `y₀ : (R ⧸ 𝔮) →ₐ[A ⧸ 𝔭] C` to `IsAlgClosed.lift`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨y₀.toRingHom.comp (Ideal.Quotient.mk 𝔮), ?_⟩` and prove the remaining obligations. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Establish `h1 : (Ideal.Quotient.mk 𝔮) (algebraMap A R a) = algebraMap (A ⧸ 𝔭) (R ⧸ 𝔮) (Ideal.Quotient.mk 𝔭 a)` using `rfl`. Rewrite using `[h1, y₀.commutes]`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_isIntegral (A R C : Type) [CommRing A] [CommRing R] [Algebra A R]
     [Algebra.IsIntegral A R] (hinj : Function.Injective (algebraMap A R))
@@ -69,11 +67,11 @@ theorem exists_lift_of_isIntegral (A R C : Type) [CommRing A] [CommRing R] [Alge
   rfl
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := A) (M := A')`. Establish `: Algebra.IsIntegral A A'` using `Algebra.IsIntegral.of_finite A A'`. Set `Ψ : (A' →ₐ[A] E) → (∀ a : s, (minpoly A (a : A')).rootSet E)` to `fun σ a => ⟨σ a, by`. Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨minpoly.ne_zero (Algebra.IsIntegral.isIntegral _), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Polynomial.aeval_algHom_apply, minpoly.aeval, map_zero]⟩`. Use `Finite.of_injective Ψ ?_` and prove the remaining obligations. Introduce `σ σ' h`. Apply `AlgHom.toLinearMap_injective` to reduce the goal to its premises. Apply `LinearMap.ext_on hs` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a ha`. Use `congrArg (fun f => (f ⟨a, ha⟩ : E)) h` as an intermediate fact. Simplify `this` using `[Ψ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finite_algHom (A A' E : Type) [CommRing A] [IsDomain A] [CommRing A'] [IsDomain A']
     [Algebra A A'] [Module.Finite A A'] [Field E] [Algebra A E] [Module.IsTorsionFree A A']
@@ -102,9 +100,9 @@ namespace GlobalTheory.NormFam
 open MvPolynomial Polynomial in
 
 /- English proof (translation)
-Establish `hmem : c ∈ (⊥ : IntermediateField (FractionRing A) (AlgebraicClosure (FractionRing A)))`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup (⊥ : IntermediateField (FractionRing A) (AlgebraicClosure (FractionRing A))), IntermediateField.mem_fixedField_iff]`. Introduce `ρ _`. Conclude with `hfix ρ`. Rewrite `hmem` using `[IntermediateField.mem_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, rfl⟩` from `hmem`. Establish `hk : IsIntegral A k` using `(isIntegral_algebraMap_iff (algebraMap (FractionRing A) (AlgebraicClosure (FractionRing A))).injective).mp hint`. Take `⟨a, rfl⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hk`. Conclude with `⟨a, (IsScalarTower.algebraMap_apply A (FractionRing A) _ a).symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_algebraMap_of_fixed (A : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A]
     [CharZero A] (c : AlgebraicClosure (FractionRing A))
@@ -129,9 +127,9 @@ section Gauss
 variable {C : Type} [NormedField C]
 
 /- English proof (translation)
-Establish `hna : IsNonarchimedean (NormedField.toAbsoluteValue C)` using `IsUltrametricDist.isNonarchimedean_norm`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty]`. Rewrite using `[← Polynomial.C_1, Polynomial.gaussNorm_C]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[NormedField.toAbsoluteValue]`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi, Polynomial.gaussNorm_mul hna one_pos, ih]`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussNorm_prod [IsUltrametricDist C] {κ : Type} (s : Finset κ) (p : κ → Polynomial C) :
     Polynomial.gaussNorm (NormedField.toAbsoluteValue C) 1 (∏ i ∈ s, p i) =
@@ -148,11 +146,11 @@ theorem gaussNorm_prod [IsUltrametricDist C] {κ : Type} (s : Finset κ) (p : κ
     rw [Finset.prod_insert hi, Finset.prod_insert hi, Polynomial.gaussNorm_mul hna one_pos, ih]
 
 /- English proof (translation)
-Establish `hv : ∀ c : C, NormedField.toAbsoluteValue C c = ‖c‖` using `fun c => rfl`. Establish `hbdd : BddAbove (Set.range fun i : Fin n => ‖p.coeff i‖)` using `(Set.finite_range _).bddAbove`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨i, hi⟩` from `Polynomial.exists_eq_gaussNorm (NormedField.toAbsoluteValue C) 1 p`. Rewrite using `[hi, hv, one_pow, _root_.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hin : i < n`. Conclude with `le_ciSup hbdd ⟨i, hin⟩`. Establish `: p.coeff i = 0` using `Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)`. Rewrite using `[this, norm_zero]`. Conclude with `Real.iSup_nonneg (fun _ => norm_nonneg _)`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Real.iSup_le (fun i => ?_) (Polynomial.gaussNorm_nonneg _ _ zero_le_one)` and prove the remaining obligations. Use `Polynomial.le_gaussNorm (NormedField.toAbsoluteValue C) p zero_le_one i` as an intermediate fact. Rewrite `this` using `[hv, one_pow, _root_.mul_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gaussNorm_eq_iSup_fin (p : Polynomial C) (n : ℕ) (hn : p.natDegree < n) :
     Polynomial.gaussNorm (NormedField.toAbsoluteValue C) 1 p = ⨆ i : Fin n, ‖p.coeff i‖ := by
@@ -171,19 +169,17 @@ theorem gaussNorm_eq_iSup_fin (p : Polynomial C) (n : ℕ) (hn : p.natDegree < n
     rwa [hv, one_pow, _root_.mul_one] at this
 
 /- English proof (translation)
-Establish `hv : ∀ c : C, NormedField.toAbsoluteValue C c = ‖c‖` using `fun c => rfl`. Establish `hcoeff : ∀ i, (∑ j, Polynomial.monomial (e j) (c j)).coeff i = if h : ∃ j, e j = i then c h.choose else 0`. Introduce `i`. Rewrite using `[Polynomial.finsetSum_coeff]`. Simplify using `only [Polynomial.coeff_monomial]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `split_ifs with h`. Rewrite using `[Finset.sum_eq_single h.choose]`. Simplify using `[h.choose_spec]`. Introduce `j _ hj`. Rewrite using `[if_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hij`. Conclude with `hj (he (hij.trans h.choose_spec.symm))`. Simplify using the standard rewrite rules. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `j _`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[if_neg]`. Conclude with `fun hij => h ⟨j, hij⟩`. Establish `hbdd : BddAbove (Set.range fun j : J => ‖c j‖)` using `(Set.finite_range _).bddAbove`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨i, hi⟩` from `Polynomial.exists_eq_gaussNorm (NormedField.toAbsoluteValue C) 1 _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hi, hv, one_pow, _root_.mul_one, hcoeff]`. Use `split_ifs with h`. Conclude with `le_ciSup hbdd _`. Rewrite using `[norm_zero]`. Conclude with `Real.iSup_nonneg (fun _ => norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Real.iSup_le (fun j => ?_) (Polynomial.gaussNorm_nonneg _ _ zero_le_one)` and prove the remaining obligations. Use `Polynomial.le_gaussNorm (NormedField.toAbsoluteValue C) (∑ j, Polynomial.monomial (e j) (c j)) zero_le_one (e j)` as an intermediate fact. Rewrite `this` using `[hv, one_pow, _root_.mul_one, hcoeff]`. Establish `h : ∃ j', e j' = e j` using `⟨j, rfl⟩`. Rewrite `this` using `[dif_pos h]`.
-
-Rewrite `this` using `[he h.choose_spec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem gaussNorm_sum_monomial {J : Type} [Fintype J] (e : J → ℕ) (he : Function.Injective e)
     (c : J → C) :
@@ -238,7 +234,7 @@ def CoeffsHom (a : ℕ) (p : Polynomial (MvPolynomial σ R)) : Prop :=
   ∀ i, (p.coeff i).IsHomogeneous a
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[Polynomial.coeff_mul]`. Conclude with `MvPolynomial.IsHomogeneous.sum _ _ _ (fun x _ => (hp x.1).mul (hq x.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffsHom.mul {a b : ℕ} {p q : Polynomial (MvPolynomial σ R)} (hp : CoeffsHom a p)
     (hq : CoeffsHom b q) : CoeffsHom (a + b) (p * q) := by
@@ -247,7 +243,7 @@ theorem CoeffsHom.mul {a b : ℕ} {p q : Polynomial (MvPolynomial σ R)} (hp : C
   exact MvPolynomial.IsHomogeneous.sum _ _ _ (fun x _ => (hp x.1).mul (hq x.2))
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[Polynomial.coeff_one]`. Use `split_ifs`. Conclude with `MvPolynomial.isHomogeneous_one _ _`. Conclude with `MvPolynomial.isHomogeneous_zero _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffsHom.one : CoeffsHom (σ := σ) (R := R) 0 1 := by
   intro i
@@ -257,7 +253,7 @@ theorem CoeffsHom.one : CoeffsHom (σ := σ) (R := R) 0 1 := by
   · exact MvPolynomial.isHomogeneous_zero _ _ _
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using CoeffsHom.one`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.card_insert_of_notMem hi, show (s.card + 1) * a = a + s.card * a by ring]`. Conclude with `(hp i (Finset.mem_insert_self i s)).mul (ih (fun j hj => hp j (Finset.mem_insert_of_mem hj)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffsHom.prod {κ : Type} (s : Finset κ) (a : ℕ) (p : κ → Polynomial (MvPolynomial σ R))
     (hp : ∀ i ∈ s, CoeffsHom a (p i)) : CoeffsHom (s.card * a) (∏ i ∈ s, p i) := by
@@ -271,7 +267,7 @@ theorem CoeffsHom.prod {κ : Type} (s : Finset κ) (a : ℕ) (p : κ → Polynom
       (ih (fun j hj => hp j (Finset.mem_insert_of_mem hj)))
 
 /- English proof (translation)
-Introduce `d hd`. Apply `h` to reduce the goal to its premises. Rewrite using `[MvPolynomial.coeff_map]`. Conclude with `(map_ne_zero_iff f hf).mpr hd`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHomogeneous_of_map_injective {f : R →+* S} (hf : Function.Injective f)
     {p : MvPolynomial σ R} {n : ℕ} (h : (MvPolynomial.map f p).IsHomogeneous n) :
@@ -282,7 +278,7 @@ theorem isHomogeneous_of_map_injective {f : R →+* S} (hf : Function.Injective 
   exact (map_ne_zero_iff f hf).mpr hd
 
 /- English proof (translation)
-Introduce `i`. Use `h i` as an intermediate fact. Rewrite `this` using `[Polynomial.coeff_map]`. Conclude with `isHomogeneous_of_map_injective hf this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CoeffsHom.of_map_injective {f : R →+* S} (hf : Function.Injective f)
     {p : Polynomial (MvPolynomial σ R)} {a : ℕ}
@@ -293,7 +289,7 @@ theorem CoeffsHom.of_map_injective {f : R →+* S} (hf : Function.Injective f)
   exact isHomogeneous_of_map_injective hf this
 
 /- English proof (translation)
-Use `⟨∑ m ∈ q.support, MvPolynomial.monomial m (h m).choose, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [MvPolynomial.map_monomial, (h _).choose_spec]`. Conclude with `MvPolynomial.support_sum_monomial_coeff q`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_map_eq_of_coeff_mem_range (f : R →+* S) (q : MvPolynomial σ S)
     (h : ∀ m, ∃ r, f r = q.coeff m) : ∃ q₀ : MvPolynomial σ R, MvPolynomial.map f q₀ = q := by
@@ -304,9 +300,9 @@ theorem exists_map_eq_of_coeff_mem_range (f : R →+* S) (q : MvPolynomial σ S)
   exact MvPolynomial.support_sum_monomial_coeff q
 
 /- English proof (translation)
-Establish `: P ∈ (Polynomial.mapRingHom (MvPolynomial.map f)).range`. Rewrite using `[Polynomial.mem_map_range]`. Introduce `i`. Take `⟨q₀, hq₀⟩` from `exists_map_eq_of_coeff_mem_range f (P.coeff i) (h i)`. Conclude with `⟨q₀, hq₀⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨P₀, hP₀⟩` from `this`. Conclude with `⟨P₀, hP₀⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_map_eq_of_coeff_mem_range' (f : R →+* S) (P : Polynomial (MvPolynomial σ S))
     (h : ∀ i m, ∃ r, f r = (P.coeff i).coeff m) :
@@ -333,7 +329,7 @@ noncomputable def pack (e : J → ℕ) (ℓ : J → σ → A') : Polynomial (MvP
   ∑ j, Polynomial.monomial (e j) (∑ s, MvPolynomial.C (ℓ j s) * MvPolynomial.X s)
 
 /- English proof (translation)
-Simplify using `[pack, Polynomial.map_sum, Polynomial.map_monomial, map_sum, map_mul, MvPolynomial.map_C, MvPolynomial.map_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_pack (e : J → ℕ) (ℓ : J → σ → A') (f : A' →+* R) :
     Polynomial.map (MvPolynomial.map f) (pack e ℓ) = pack e (fun j s => f (ℓ j s)) := by
@@ -341,7 +337,7 @@ theorem map_pack (e : J → ℕ) (ℓ : J → σ → A') (f : A' →+* R) :
     MvPolynomial.map_X]
 
 /- English proof (translation)
-Simplify using `[pack, Polynomial.map_sum, Polynomial.map_monomial, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_C, MvPolynomial.eval₂_X]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_eval_pack (e : J → ℕ) (ℓ : J → σ → A') (f : A' →+* C) (T : σ → C) :
     Polynomial.map (MvPolynomial.eval₂Hom f T) (pack e ℓ) =
@@ -349,9 +345,9 @@ theorem map_eval_pack (e : J → ℕ) (ℓ : J → σ → A') (f : A' →+* C) (
   simp [pack, Polynomial.map_sum, Polynomial.map_monomial, MvPolynomial.eval₂_mul, MvPolynomial.eval₂_C, MvPolynomial.eval₂_X]
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[pack, Polynomial.finsetSum_coeff]`. Simplify using `only [Polynomial.coeff_monomial]`. Apply `MvPolynomial.IsHomogeneous.sum` to reduce the goal to its premises. Introduce `j _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs`. Apply `MvPolynomial.IsHomogeneous.sum` to reduce the goal to its premises. Introduce `s _`. Conclude with `(MvPolynomial.isHomogeneous_X _ _).C_mul _`. Conclude with `MvPolynomial.isHomogeneous_zero _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coeffsHom_pack (e : J → ℕ) (ℓ : J → σ → A') : CoeffsHom 1 (pack e ℓ) := by
   classical
@@ -368,7 +364,7 @@ theorem coeffsHom_pack (e : J → ℕ) (ℓ : J → σ → A') : CoeffsHom 1 (pa
 
 omit [Fintype σ] in
 /- English proof (translation)
-Rewrite using `[Polynomial.map_map]`. Use `congr 1`. Conclude with `RingHom.ext fun q => MvPolynomial.map_map f g q`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_map_mv {R₁ R₂ R₃ : Type} [CommRing R₁] [CommRing R₂] [CommRing R₃] (f : R₁ →+* R₂)
     (g : R₂ →+* R₃) (p : Polynomial (MvPolynomial σ R₁)) :
@@ -380,7 +376,7 @@ theorem map_map_mv {R₁ R₂ R₃ : Type} [CommRing R₁] [CommRing R₂] [Comm
 
 omit [Fintype σ] in
 /- English proof (translation)
-Rewrite using `[Polynomial.map_map]`. Use `congr 1`. Conclude with `RingHom.ext fun q => by simp [MvPolynomial.eval₂_map]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem map_evalHom_map (f : A' →+* R) (y : R →+* C) (T : σ → C)
     (p : Polynomial (MvPolynomial σ A')) :
@@ -397,39 +393,37 @@ end GlobalTheory.NormFam
 namespace GlobalTheory.NormFam
 
 /- English proof (translation)
-Introduce `A A' _ _ _ _ _ _ _ _ hinj σ J _ _ ℓ`. Set `K` to `FractionRing A`. Set `E` to `AlgebraicClosure K`. Set `R : Subalgebra A E` to `integralClosure A E`. Establish `hAE : Function.Injective (algebraMap A E)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[IsScalarTower.algebraMap_eq A K E]`. Conclude with `(algebraMap K E).injective.comp (IsFractionRing.injective A K)`. Establish `hAR : Function.Injective (algebraMap A R)`. Introduce `a b h`. Apply `hAE` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `congrArg (fun r : R => (r : E)) h` as an intermediate fact. Simplify using `using this`. Establish `: Module.IsTorsionFree A A'` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hinj`. Establish `: Module.IsTorsionFree A E` using `Module.isTorsionFree_iff_algebraMap_injective.mpr hAE`. Establish `: Algebra.IsIntegral A A'` using `Algebra.IsIntegral.of_finite A A'`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Finite (A' →ₐ[A] E)` using `finite_algHom A A' E`. Set `_ : Fintype (A' →ₐ[A] E)` to `Fintype.ofFinite _`. Establish `: Nonempty (A' →ₐ[A] E)` using `⟨IsAlgClosed.lift⟩`. Set `res : (A' →ₐ[A] E) → (A' →+* R)` to `fun τ => τ.toRingHom.codRestrict R (fun a => (mem_integralClosure_iff A E).mpr ((Algebra.IsIntegral.isIntegral (R := A) a).map τ))`. Establish `hres : ∀ τ, (algebraMap R E).comp (res τ) = τ.toRingHom` using `fun τ => RingHom.ext fun a => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hresA : ∀ τ, (res τ).comp (algebraMap A A') = algebraMap A R`. Introduce `τ`. Use extensionality with `a`. Simplify using `[res]`. Set `e` to `Fintype.equivFin J`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `α` to `pack (fun j => (e j : ℕ)) ℓ`. Set `P : Polynomial (MvPolynomial σ R)` to `∏ τ, Polynomial.map (MvPolynomial.map (res τ)) α`. Set `PE : Polynomial (MvPolynomial σ E)` to `Polynomial.map (MvPolynomial.map (algebraMap R E)) P`. Establish `hPE : PE = ∏ τ : A' →ₐ[A] E, Polynomial.map (MvPolynomial.map τ.toRingHom) α`. Simplify using `only [PE, P, Polynomial.map_prod, map_map_mv, hres]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinv : ∀ ρ : E ≃ₐ[K] E, Polynomial.map (MvPolynomial.map ρ.toRingHom) PE = PE`. Introduce `ρ`. Rewrite using `[hPE, Polynomial.map_prod]`. Simplify using `only [map_map_mv]`. Set `φ : (A' →ₐ[A] E) ≃ (A' →ₐ[A] E)` to `{ toFun := fun τ => (ρ.restrictScalars A).toAlgHom.comp τ invFun := fun τ => (ρ.symm.restrictScalars A).toAlgHom.comp τ left_inv := fun τ => by ext a; simp right_inv := fun τ => by ext a; simp }`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Fintype.prod_equiv φ _ _ (fun τ => rfl)`. Establish `hfix : ∀ i m (ρ : E ≃ₐ[K] E), ρ (((P.coeff i).coeff m : R) : E) = (((P.coeff i).coeff m : R) : E)`. Introduce `i m ρ`. Establish `h1 : (PE.coeff i).coeff m = (((P.coeff i).coeff m : R) : E)`. Simplify using `only [PE, Polynomial.coeff_map, MvPolynomial.coeff_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `h2` using `congrArg (fun Q : Polynomial (MvPolynomial σ E) => (Q.coeff i).coeff m) (hinv ρ)`. Simplify using `only [Polynomial.coeff_map, MvPolynomial.coeff_map] at h2`. Rewrite `h2` using `[h1]`. Conclude with `h2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hcoef : ∀ i m, ∃ a : A, algebraMap A R a = (P.coeff i).coeff m`. Introduce `i m`. Take `⟨a, ha⟩` from `exists_eq_algebraMap_of_fixed A (((P.coeff i).coeff m : R) : E) (hfix i m) ((mem_integralClosure_iff A E).mp ((P.coeff i).coeff m).2)`. Conclude with `⟨a, Subtype.ext (by simpa using ha)⟩`. Take `⟨P₀, hP₀⟩` from `exists_map_eq_of_coeff_mem_range' (algebraMap A R) P hcoef`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `d : ℕ+` to `⟨Fintype.card (A' →ₐ[A] E), Fintype.card_pos⟩`. Establish `hPhom : CoeffsHom (d : ℕ) P`. Use `CoeffsHom.prod Finset.univ 1 (fun τ => Polynomial.map (MvPolynomial.map (res τ)) α) (fun τ _ => by rw [map_pack]; exact coeffsHom_pack _ _)` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, _root_.mul_one]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hP₀hom : CoeffsHom (d : ℕ) P₀` using `CoeffsHom.of_map_injective hAR (hP₀ ▸ hPhom)`. Use `⟨d, P₀.natDegree + 1, fun i => P₀.coeff i, fun i => hP₀hom i, ?_⟩` and prove the remaining obligations. Introduce `C _ _ _ x T N hN`. Take `⟨y, hy⟩` from `exists_lift_of_isIntegral A R C hAR x`. Establish `hlift : ∀ τ, (y.comp (res τ)).comp (algebraMap A A') = x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `τ`. Rewrite using `[RingHom.comp_assoc, hresA, hy]`. Set `ev : Polynomial (MvPolynomial σ R) →+* Polynomial C` to `Polynomial.mapRingHom (MvPolynomial.eval₂Hom y T)`. Establish `hev1 : ev P = ∏ τ, ∑ j, Polynomial.monomial (e j : ℕ) (∑ s, (y.comp (res τ)) (ℓ j s) * T s)`. Simplify using `only [ev, P, Polynomial.coe_mapRingHom, Polynomial.map_prod]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl (fun τ _ => ?_)` and prove the remaining obligations. Rewrite using `[map_evalHom_map, map_eval_pack]`. Establish `hev2 : ev P = Polynomial.map (MvPolynomial.eval₂Hom x T) P₀`. Rewrite using `[← hP₀]`. Simplify using `only [ev, Polynomial.coe_mapRingHom]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_evalHom_map, hy]`. Establish `he : Function.Injective (fun j => (e j : ℕ))` using `fun a b h => e.injective (Fin.ext h)`. Establish `hG1 : Polynomial.gaussNorm (NormedField.toAbsoluteValue C) 1 (ev P) = N ^ (d : ℕ)`. Establish `: ∀ τ ∈ (Finset.univ : Finset (A' →ₐ[A] E)), Polynomial.gaussNorm (NormedField.toAbsoluteValue C) 1 (∑ j, Polynomial.monomial (e j : ℕ) (∑ s, (y.comp (res τ)) (ℓ j s) * T s)) = N`. Introduce `τ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[gaussNorm_sum_monomial _ he]`. Conclude with `hN _ (hlift τ)`. Rewrite using `[hev1, gaussNorm_prod, Finset.prod_congr rfl this, Finset.prod_const, Finset.card_univ]`. Both sides reduce to the same expression. Establish `hG2 : Polynomial.gaussNorm (NormedField.toAbsoluteValue C) 1 (ev P) = ⨆ i : Fin (P₀.natDegree + 1), ‖MvPolynomial.eval₂ x T (P₀.coeff i)‖`.
-
-Rewrite using `[hev2, gaussNorm_eq_iSup_fin _ (P₀.natDegree + 1) (Nat.lt_succ_of_le (Polynomial.natDegree_map_le))]`. Simplify using `only [Polynomial.coeff_map, MvPolynomial.coe_eval₂Hom]`. Rewrite using `[← hG1, hG2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_of_family : ∀ (A A' : Type) [CommRing A] [IsDomain A] [IsIntegrallyClosed A]
     [CharZero A] [CommRing A'] [IsDomain A'] [Algebra A A'] [Module.Finite A A'],

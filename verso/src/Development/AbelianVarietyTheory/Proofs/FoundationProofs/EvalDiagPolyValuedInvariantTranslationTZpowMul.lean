@@ -8,9 +8,9 @@ open scoped Manifold
 namespace GlobalTheory.HeckeFamilyMatrices
 
 /- English proof (translation)
-Establish `hm : mat (ModularGroup.T ^ (n : ℤ)) = !![1, (n : ℤ); 0, 1]` using `ModularGroup.coe_T_zpow _`. Establish `hc : ((ModularGroup.T ^ (n : ℤ) • τ : ℍ) : ℂ) = (τ : ℂ) + n`. Rewrite using `[UpperHalfPlane.modular_T_zpow_smul, UpperHalfPlane.coe_vadd]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hT τ, eval_polySlash w _ _ _ (hV _), hm, hc]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.empty_val', Matrix.cons_val_fin_one, Matrix.head_cons, Matrix.head_fin_const]`. Use `push_cast`. Simplify using the standard rewrite rules. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -31,11 +31,11 @@ theorem evalDiag_T_step (w n : ℕ) (V : ℍ → ℂ[X]) (hV : ∀ τ, V τ ∈ 
     simp
 
 /- English proof (translation)
-Introduce `w n V hV hT m`. Establish `step` using `evalDiag_T_step w n V hV hT`. Simplify using `only [zpow_mul]`. Proceed by induction on `m using Int.induction_on with`. Consider the case `zero => intro τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `τ`. Rewrite using `[zpow_add_one, mul_smul, ih, step]`. Consider the case `pred k ih`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Introduce `τ`. Establish `e : (ModularGroup.T ^ (n : ℤ)) ^ (-(k : ℤ) - 1) • τ = (ModularGroup.T ^ (n : ℤ)) ^ (-(k : ℤ)) • ((ModularGroup.T ^ (n : ℤ))⁻¹ • τ)`. Rewrite using `[zpow_sub_one, mul_smul]`. Rewrite using `[e, ih, ← step ((ModularGroup.T ^ (n : ℤ))⁻¹ • τ), smul_inv_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem evalDiag_T_invariant : ∀ (w n : ℕ) (V : ℍ → ℂ[X]), (∀ τ, V τ ∈ degreeLT ℂ (w + 1)) → (∀ τ : ℍ, slP w (mat (ModularGroup.T ^ (n : ℤ))) (V (ModularGroup.T ^ (n : ℤ) • τ)) = V τ) → ∀ (m : ℤ) (τ : ℍ), (V (ModularGroup.T ^ ((n : ℤ) * m) • τ)).eval ((ModularGroup.T ^ ((n : ℤ) * m) • τ : ℍ) : ℂ) = (V τ).eval (τ : ℂ) := by
   intro w n V hV hT m

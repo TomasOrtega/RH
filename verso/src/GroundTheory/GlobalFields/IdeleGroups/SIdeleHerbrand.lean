@@ -19,7 +19,7 @@ variable {K L : Type*} [Field K] [NumberField K] [Field L] [NumberField L] [Alge
 open SemiLocal in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nonempty_iff]`. Use `sum_finrank_eq L v` as an intermediate fact. Rewrite `this` using `[Finset.univ_eq_empty, Finset.sum_empty]`. Conclude with `(Module.finrank_pos (R := K) (M := L)).ne this`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_placesOver_of_finite (v : HeightOneSpectrum (𝓞 K)) :
     Nonempty (PlacesOver L v) := by
@@ -32,7 +32,7 @@ theorem nonempty_placesOver_of_finite (v : HeightOneSpectrum (𝓞 K)) :
 variable [IsGalois K L] [Fintype Gal(L/K)]
 
 /- English proof (translation)
-Establish `h : ∀ v : ↥Sᶜ, Subsingleton (CycTateZero (Representation.ofMulDistribMulAction Gal(L/K) ((w : PlacesOver L v.1) → (w.1.adicCompletionIntegers L)ˣ)) σ)` using `fun v ↦ by`. Take `⟨w⟩` from `nonempty_placesOver_of_finite (L := L) v.1`. Conclude with `subsingleton_cycTateZero_integerUnitsAbove v.1 σ hσ w (hS v.1 v.2 w)`. Conclude with `(cycTateZeroMulPiEquiv (fun v : ↥Sᶜ ↦ (w : PlacesOver L v.1) → (w.1.adicCompletionIntegers L)ˣ) σ).toEquiv.subsingleton`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subsingleton_cycTateZero_integerUnitsOutside (S : Set (HeightOneSpectrum (𝓞 K)))
     (hS : ∀ v ∉ S, ∀ w : PlacesOver L v, w.1.asIdeal.ramificationIdx (𝓞 K) = 1)
@@ -47,7 +47,7 @@ theorem subsingleton_cycTateZero_integerUnitsOutside (S : Set (HeightOneSpectrum
     (fun v : ↥Sᶜ ↦ (w : PlacesOver L v.1) → (w.1.adicCompletionIntegers L)ˣ) σ).toEquiv.subsingleton
 
 /- English proof (translation)
-Establish `h : ∀ v : ↥Sᶜ, Subsingleton (CycTateNegOne (Representation.ofMulDistribMulAction Gal(L/K) ((w : PlacesOver L v.1) → (w.1.adicCompletionIntegers L)ˣ)) σ)` using `fun v ↦ by`. Take `⟨w⟩` from `nonempty_placesOver_of_finite (L := L) v.1`. Conclude with `subsingleton_cycTateNegOne_integerUnitsAbove v.1 σ hσ w (hS v.1 v.2 w)`. Conclude with `(cycTateNegOneMulPiEquiv (fun v : ↥Sᶜ ↦ (w : PlacesOver L v.1) → (w.1.adicCompletionIntegers L)ˣ) σ).toEquiv.subsingleton`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subsingleton_cycTateNegOne_integerUnitsOutside (S : Set (HeightOneSpectrum (𝓞 K)))
     (hS : ∀ v ∉ S, ∀ w : PlacesOver L v, w.1.asIdeal.ramificationIdx (𝓞 K) = 1)
@@ -62,7 +62,7 @@ theorem subsingleton_cycTateNegOne_integerUnitsOutside (S : Set (HeightOneSpectr
     (fun v : ↥Sᶜ ↦ (w : PlacesOver L v.1) → (w.1.adicCompletionIntegers L)ˣ) σ).toEquiv.subsingleton
 
 /- English proof (translation)
-Establish `h0` using `subsingleton_cycTateZero_integerUnitsOutside S hS σ hσ`. Establish `h1` using `subsingleton_cycTateNegOne_integerUnitsOutside S hS σ hσ`. Rewrite using `[cycHerbrand_eq, Nat.card_eq_one_iff_unique.2 ⟨h0, ⟨0⟩⟩, Nat.card_eq_one_iff_unique.2 ⟨h1, ⟨0⟩⟩]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem cycHerbrand_integerUnitsOutside (S : Set (HeightOneSpectrum (𝓞 K)))
     (hS : ∀ v ∉ S, ∀ w : PlacesOver L v, w.1.asIdeal.ramificationIdx (𝓞 K) = 1)
@@ -78,11 +78,11 @@ theorem cycHerbrand_integerUnitsOutside (S : Set (HeightOneSpectrum (𝓞 K)))
 open AdicLiesOver in
 
 /- English proof (translation)
-Set `_ : Fintype S` to `hSf.fintype`. Establish `key : cycHerbrand (Representation.ofMulDistribMulAction Gal(L/K) (sIdeles (placesAbove L S))) σ = (∏ v : InfinitePlace K, (Module.finrank v.Completion (wInf v).1.Completion : ℚ)) * ∏ v ∈ hSf.toFinset, (Module.finrank (v.adicCompletion K) ((wFin v).1.adicCompletion L) : ℚ)`. Establish `hcompat : ∀ (g : Gal(L/K)) (x : Additive (sIdeles (placesAbove L S))), (sIdelesEquivProduct S hSf).toAdditive (Representation.ofMulDistribMulAction Gal(L/K) (sIdeles (placesAbove L S)) g x) = Representation.ofMulDistribMulAction Gal(L/K) (SIdelesProduct L S) g ((sIdelesEquivProdu …` using `fun g x ↦ by`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Conclude with `sIdelesEquivProduct_smul S hSf g x.toMul`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cycHerbrand_congr (sIdelesEquivProduct S hSf).toAdditive hcompat σ]`. Rewrite using `[cycHerbrand_mulProd, cycHerbrand_mulProd, cycHerbrand_integerUnitsOutside S hS σ hσ, mul_one, cycHerbrand_mulPi, cycHerbrand_mulPi, Finset.prod_subtype hSf.toFinset (fun v ↦ hSf.mem_toFinset)]`. Use `congr 1`. Conclude with `Finset.prod_congr rfl fun v _ ↦ cycHerbrand_infiniteUnitsAbove v σ hσ (wInf v)`. Conclude with `Finset.prod_congr rfl fun v _ ↦ cycHerbrand_finiteUnitsAbove v.1 σ hσ (wFin v.1)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hasHerbrandQuotient_of_cycHerbrand_ne_zero ?_, key⟩` and prove the remaining obligations. Rewrite using `[key]`. Use `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun v _ ↦ ?_) (Finset.prod_ne_zero_iff.2 fun v _ ↦ ?_)` and prove the remaining obligations. Conclude with `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`. Conclude with `Nat.cast_ne_zero.2 Module.finrank_pos.ne'`.
+A detailed English derivation is pending.
 -/
 theorem cycHerbrand_sIdeles (S : Set (HeightOneSpectrum (𝓞 K))) (hSf : S.Finite)
     (hS : ∀ v ∉ S, ∀ w : PlacesOver L v, w.1.asIdeal.ramificationIdx (𝓞 K) = 1)

@@ -3,29 +3,27 @@ import Mathlib
 open Polynomial Matrix IsLocalRing TensorProduct
 
 /- English proof (translation)
-Introduce `k _ _ l _ _ m`. Set `I : Ideal (PowerSeries k)` to `Ideal.span {(PowerSeries.X : PowerSeries k) ^ (m + 1)}`. Establish `hmem : ∀ f : PowerSeries k, f ∈ I ↔ ∀ j, j < m + 1 → PowerSeries.coeff j f = 0`. Introduce `f`. Rewrite using `[Ideal.mem_span_singleton, PowerSeries.X_pow_dvd_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hW : ∀ f g : PowerSeries k, Ideal.Quotient.mk I f = Ideal.Quotient.mk I g → ∀ j, j < m + 1 → PowerSeries.coeff j f = PowerSeries.coeff j g`. Introduce `f g h j hj`. Rewrite `h` using `[Ideal.Quotient.eq, hmem]`. Use `h j hj` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Set `s` to `Function.surjInv (Ideal.Quotient.mk_surjective (I := I))`. Establish `hs : ∀ x, Ideal.Quotient.mk I (s x) = x` using `Function.surjInv_eq _`. Set `L : (PowerSeries k ⧸ I) → ZMod l` to `fun x => Algebra.trace (ZMod l) k (PowerSeries.coeff m (s x))`. Establish `hL : ∀ f, L (Ideal.Quotient.mk I f) = Algebra.trace (ZMod l) k (PowerSeries.coeff m f)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `f`. Simplify using `only [L]`. Rewrite using `[hW _ _ (hs _) m (Nat.lt_succ_self m)]`. Set `lam : (PowerSeries k ⧸ I) →+ ZMod l` to `{ toFun := L map_zero' := by`. Use `hL 0` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_zero, map_zero, map_zero]`. Conclude with `this`. Use the proof step `map_add' := by`. Introduce `x y`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Rewrite using `[← map_add, hL, hL, hL, map_add, map_add] }`. Use `⟨lam, hL, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Take `⟨f, rfl⟩` from `Ideal.Quotient.mk_surjective x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Establish `hnot : f ∉ I` using `fun h => hne (Ideal.Quotient.eq_zero_iff_mem.2 h)`. Rewrite `hnot` using `[hmem]`. Use `push_neg at hnot`. Take `⟨j, hj, hfj⟩` from `hnot`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `hnd` using `(traceForm_nondegenerate (ZMod l) k).1 (PowerSeries.coeff j f)`. Establish `hex : ∃ b : k, Algebra.trace (ZMod l) k (PowerSeries.coeff j f * b) ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hfj (hnd fun b => by rw [Algebra.traceForm_apply]; exact hc b)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, hb⟩` from `hex`. Apply `hb` to reduce the goal to its premises. Use `hx (Ideal.Quotient.mk I (PowerSeries.C b * PowerSeries.X ^ (m - j)))` as an intermediate fact. Rewrite `this` using `[← map_mul]`. Express the relevant statement in the definitionally equal form `L _ = 0 at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hL]`. Establish `hjm : j ≤ m` using `Nat.lt_succ_iff.mp hj`. Establish `hc : PowerSeries.coeff m (f * (PowerSeries.C b * PowerSeries.X ^ (m - j))) = PowerSeries.coeff j f * b`. Rewrite using `[show f * (PowerSeries.C b * PowerSeries.X ^ (m - j)) = PowerSeries.C b * (PowerSeries.X ^ (m - j) * f) by ring]`. Rewrite using `[PowerSeries.coeff_C_mul, PowerSeries.coeff_X_pow_mul', if_pos (Nat.sub_le m j), Nat.sub_sub_self hjm, mul_comm]`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[hc]`. Conclude with `this`. Set `e : (PowerSeries k ⧸ I) → (Fin (m + 1) → k)` to `fun x j => PowerSeries.coeff j (s x)`. Apply `Finite.of_injective e` to reduce the goal to its premises. Introduce `x y hxy`.
-
-Rewrite using `[← hs x, ← hs y, Ideal.Quotient.eq, hmem]`. Introduce `j hj`. Use `congrFun hxy ⟨j, hj⟩` as an intermediate fact. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.frob_form_trunc :
     ∀ {k : Type} [Field k] [Finite k] (l : ℕ) [Fact l.Prime] [Algebra (ZMod l) k] (m : ℕ), ∃ lam : (PowerSeries k ⧸ Ideal.span {(PowerSeries.X : PowerSeries k) ^ (m + 1)}) →+ ZMod l, (∀ f, lam (Ideal.Quotient.mk _ f) = Algebra.trace (ZMod l) k (PowerSeries.coeff m f)) ∧ (∀ x, (∀ y, lam (x * y) = 0) → x = 0) ∧ Finite (PowerSeries k ⧸ Ideal.span {(PowerSeries.X : PowerSeries k) ^ (m + 1)}) := by

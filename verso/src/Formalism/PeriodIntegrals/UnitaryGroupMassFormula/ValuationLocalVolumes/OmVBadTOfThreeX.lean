@@ -22,27 +22,25 @@ def LeftInvO (a : ℕ) : Prop :=
     ∃ N : Matrix (Fin a) (Fin n) (Fv F v ⊗[F] E), (∀ i k, N i k ∈ OEv (E := E) v) ∧ N * M = 1
 
 /- English proof (translation)
-Introduce `hS hSD hUn hL y hy`. Establish `hσ : ∀ x, σ (σ x) = x` using `PI.VolStabSW.sigma_invol σ hS.1.2.2.2`. Take `⟨e, he, hg⟩` from `hB hS hL hSD hUn`. Establish `hee : ∀ k l, hR (Fv F v) σ J (e k) (e l) = if k = l then 1 else 0`. Introduce `k l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun (congrFun hg k) l` as an intermediate fact. Simplify `this` using `[gramR, Matrix.one_apply]`. Establish `hcoord : ∀ i, ∃ c : Fin n → Fv F v ⊗[F] E, (∀ k, c k ∈ OEv (E` using `E) v) ∧ y i = ∑ k, c k • e k := fun i => (he (y i)).1 (hy.1 i)`. Use `choose M hM hyM using hcoord`. Take `⟨N, hN, hNM⟩` from `hLI hS hUn (Matrix.of fun k i => M i k) (fun k i => hM i k) (by`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c hc i`. Apply `hy.2 c _ i` to reduce the goal to its premises. Establish `e1 : ∑ i, c i • y i = ∑ k, Matrix.mulVec (Matrix.of fun k i => M i k) c k • e k`. Simplify using `only [hyM, Finset.smul_sum, smul_smul, Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.sum_smul]`. Rewrite using `[Finset.sum_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`. Rewrite using `[e1]`. Conclude with `(he _).2 ⟨_, hc, rfl⟩)`. Establish `hNM' : ∀ j i, ∑ l, N j l * M i l = if j = i then 1 else 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j i`. Use `congrFun (congrFun hNM j) i` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Use `⟨fun j => ∑ l, sigR (Fv F v) σ (N j l) • e l, fun j => (he _).2 ⟨_, fun l => UnN.sigR_mem σ v (hN j l), rfl⟩, fun i j => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1 : ∀ l, hR (Fv F v) σ J (y i) (e l) = sigR (Fv F v) σ (M i l)`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `l`. Rewrite using `[hyM i, hR_sum_smul_left]`. Simplify using `[hee]`. Rewrite using `[hR_sum_smul_right]`. Simplify using `only [h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : ∑ l, sigR (Fv F v) σ (N j l) * sigR (Fv F v) σ (M i l) = sigR (Fv F v) σ (∑ l, N j l * M i l)`. Rewrite using `[map_sum]`. Simplify using `only [map_mul]`. Rewrite using `[e2, hNM' j i]`. Distinguish the cases in `hij : i = j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij, Ne.symm hij]`. Establish `h2 : ∀ k, hR (Fv F v) σ J (∑ l, sigR (Fv F v) σ (N j l) • e l) (e k) = N j k`. Introduce `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hR_sum_smul_left]`. Simplify using `only [hee, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Conclude with `PI.VolStabSW.sigR_invol (Fv F v) σ hσ (N j k)`. Rewrite using `[hyM i, hR_sum_smul_right]`. Simplify using `only [h2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `e3 : ∑ k, M i k * N j k = ∑ k, N j k * M i k` using `Finset.sum_congr rfl fun k _ => mul_comm _ _`. Rewrite using `[e3, hNM' j i]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
-
-Simplify using `[hij, Ne.symm hij]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem primDual_of (a : ℕ) (hB : Red.OBas1 σ J ψ v Λ) (hLI : LeftInvO σ J ψ v (n := n) a) :
     PrimDual σ J ψ v Λ a := by
@@ -101,7 +99,7 @@ theorem primDual_of (a : ℕ) (hB : Red.OBas1 σ J ψ v Λ) (hLI : LeftInvO σ J
     · simp [hij, Ne.symm hij]
 
 /- English proof (translation)
-Establish `hR : Red.ResAlg σ J ψ v` using `Red.resAlg_of_sp σ J ψ v (Red.etaSp_holds σ J ψ v)`. Conclude with `Red.oBas1_of_unitV σ J ψ v Λ (Orb.unitV_of σ J ψ v Λ (PI.OmLocU.NormOneUnitFixedPoints.normOne_of σ J ψ v hR) (UnN.unitNorm_of_res σ J ψ v Λ hR))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem oBas1_holds : Red.OBas1 σ J ψ v Λ := by
   have hR : Red.ResAlg σ J ψ v := Red.resAlg_of_sp σ J ψ v (Red.etaSp_holds σ J ψ v)
@@ -109,7 +107,7 @@ theorem oBas1_holds : Red.OBas1 σ J ψ v Λ := by
     (Orb.unitV_of σ J ψ v Λ (PI.OmLocU.NormOneUnitFixedPoints.normOne_of σ J ψ v hR) (UnN.unitNorm_of_res σ J ψ v Λ hR))
 
 /- English proof (translation)
-The claim follows from `primDual_of σ J ψ v Λ a (oBas1_holds σ J ψ v Λ) hLI`.
+A detailed English derivation is pending.
 -/
 theorem primDual_of_left (a : ℕ) (hLI : LeftInvO σ J ψ v (n := n) a) : PrimDual σ J ψ v Λ a :=
   primDual_of σ J ψ v Λ a (oBas1_holds σ J ψ v Λ) hLI
@@ -123,7 +121,7 @@ open Formalism.L2.SG.Pf.NcVal.OmVSt Formalism.BasicNotions Formalism.L2.SG.HidaS
 variable {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
 
 /- English proof (translation)
-The claim follows from `omVBadT_of_primDual_cls X u' ψ hStd hLat hGram hExt (fun v => primCos_of _ _ _ _ _ _ (primDual_of_left _ _ _ _ _ _ (hLI v))) (fun v => primDual_of_left _ _ _ _ _ _ (hLI v)) hCl`.
+A detailed English derivation is pending.
 -/
 theorem omVBadT_of_std_lat_gram (hStd : OmVStd X ψ) (hLat : OmVLat X) (hGram : OmVGram X u')
     (hExt : ∀ v : PlX X, ((Tw u' : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal →

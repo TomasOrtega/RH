@@ -6,7 +6,7 @@ namespace GlobalTheory
 
 open scoped BigOperators in
 /- English proof (translation)
-Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]`. Rewrite using `[← Finset.prod_pow_eq_pow_sum, map_prod, map_prod]`. Use `Finset.prod_congr rfl fun q _ => ?_` and prove the remaining obligations. Establish `hq` using `Ideal.Quotient.eq.2 (Ideal.mem_span_singleton.2 (hg q))`. Rewrite using `[map_pow, hq, ← map_pow, ← pow_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem C_dvd_prod_pow_sub_X_pow_sum_of_C_dvd {O σ : Type} [CommRing O] [Fintype σ] (ϖ : O)
     (g : σ → Polynomial O) (k : σ → ℕ) (hg : ∀ q, Polynomial.C ϖ ∣ g q - Polynomial.X ^ k q)
@@ -20,11 +20,11 @@ private theorem C_dvd_prod_pow_sub_X_pow_sum_of_C_dvd {O σ : Type} [CommRing O]
 
 open scoped BigOperators in
 /- English proof (translation)
-Rewrite using `[Polynomial.C_dvd_iff_dvd_coeff]`. Introduce `i`. Simplify using `only [Polynomial.coeff_sub, Polynomial.coeff_one_add_X_pow, Polynomial.coeff_one, Polynomial.coeff_X_pow]`. Establish `hN : l ^ e ≠ 0` using `(pow_pos hl.pos _).ne'`. Distinguish the cases in `h0 : i = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `h0` using the available equality. Simplify using `[hN.symm]`. Distinguish the cases in `hN' : i = l ^ e`. Substitute `hN'` using the available equality. Simplify using `[h0, hl.ne_zero]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [h0, hN', if_false, sub_zero]`. Conclude with `h.trans (Nat.cast_dvd_cast (hl.dvd_choose_pow h0 hN'))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem C_dvd_one_add_X_pow_prime_pow_sub_one_sub_X_pow {O : Type} [CommRing O] (ϖ : O) (l e : ℕ)
     (hl : l.Prime) (h : ϖ ∣ (l : O)) :
@@ -46,27 +46,21 @@ private theorem C_dvd_one_add_X_pow_prime_pow_sub_one_sub_X_pow {O : Type} [Comm
 open scoped BigOperators in
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ _ σ _ l μ hl hϖl F e m₀ hlow hm₀ hoth`. Use `set W := ∑ q, m₀ q * l ^ e q with hW`. Use `set g : σ → Polynomial O := fun q => (1 + Polynomial.X : Polynomial O) ^ (l ^ e q) - 1 with hgdef`. Use `set c : (σ →₀ ℕ) → O := fun m => (∏ q, g q ^ m q).coeff W with hc`. Establish `hexp : (MvPolynomial.aeval g F).coeff W = ∑ m ∈ F.support, F.coeff m * c m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', Polynomial.finset_sum_coeff]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.algebraMap_eq, Polynomial.coeff_C_mul]`. Establish `hcong : ∀ m : σ →₀ ℕ, ϖ ∣ c m - if W = ∑ q, m q * l ^ e q then 1 else 0`. Introduce `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `(Polynomial.C_dvd_iff_dvd_coeff _ _).1 (C_dvd_prod_pow_sub_X_pow_sum_of_C_dvd ϖ g (fun q => l ^ e q) (fun q => by simpa [g] using C_dvd_one_add_X_pow_prime_pow_sub_one_sub_X_pow ϖ l (e q) hl hϖl) m) W`. Simplify `h` using `[Polynomial.coeff_X_pow]`. Establish `hvanish : ∀ m : σ →₀ ℕ, W < m.degree → c m = 0`. Introduce `m hm`. Establish `hX : ∀ q, Polynomial.X ∣ g q` using `fun q => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.X_dvd_iff]`. Simplify using `[g, Polynomial.coeff_one_add_X_pow]`. Establish `hdvd : Polynomial.X ^ (∑ q, m q) ∣ ∏ q, g q ^ m q`. Rewrite using `[← Finset.prod_pow_eq_pow_sum]`. Conclude with `Finset.prod_dvd_prod_of_dvd _ _ fun q _ => pow_dvd_pow_of_dvd (hX q) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[Finsupp.degree_eq_sum]`. Conclude with `(Polynomial.X_pow_dvd_iff.1 hdvd) W hm`. Establish `hdeg : ∀ m : σ →₀ ℕ, m.degree ≤ ∑ q, m q * l ^ e q`. Introduce `m`. Rewrite using `[Finsupp.degree_eq_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Conclude with `Finset.sum_le_sum fun q _ => Nat.le_mul_of_pos_right _ (pow_pos hl.pos _)`. Establish `hterm : ∀ m, m ≠ m₀ → ϖ ^ (μ + 1) ∣ F.coeff m * c m`. Introduce `m hne`. Distinguish the cases in `hw : ∑ q, m q * l ^ e q ≤ W`. Conclude with `dvd_mul_of_dvd_left (hoth m hne hw) _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hd : m.degree ≤ W`. Establish `h1` using `hcong m`. Rewrite `h1` using `[if_neg (by omega), sub_zero]`. Rewrite using `[pow_succ]`. Conclude with `mul_dvd_mul (hlow m hd) h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hvanish m (by omega), mul_zero]`. Conclude with `dvd_zero _`. Establish `hmain : ϖ ^ (μ + 1) ∣ F.coeff m₀ * c m₀ - F.coeff m₀`. Establish `h1` using `hcong m₀`. Rewrite `h1` using `[if_pos rfl]`.
-
-Rewrite using `[← mul_sub_one, pow_succ]`. Conclude with `mul_dvd_mul (hlow m₀ (hdeg m₀)) h1`. Establish `hmem : m₀ ∈ F.support`. Rewrite using `[MvPolynomial.mem_support_iff]`. Introduce `h0`.
-
-Conclude with `hm₀ (h0 ▸ dvd_zero _)`. Introduce `hdiv`. Rewrite `hdiv` using `[hexp, ← Finset.add_sum_erase _ _ hmem]`. Establish `hrest : ϖ ^ (μ + 1) ∣ ∑ m ∈ F.support.erase m₀, F.coeff m * c m` using `Finset.dvd_sum fun m hm => hterm m (Finset.ne_of_mem_erase hm)`. Establish `h2` using `(dvd_add_left hrest).1 hdiv`.
-
-Conclude with `hm₀ (by simpa using dvd_sub h2 hmain)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.not_dvd_coeff_aeval_oneAddX_pow_sub_one :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ → ∀ (σ : Type) [Fintype σ] (l μ : ℕ), l.Prime → ϖ ∣ (l : O) → ∀ (F : MvPolynomial σ O) (e : σ → ℕ) (m₀ : σ →₀ ℕ), (∀ m : σ →₀ ℕ, m.degree ≤ ∑ q, m₀ q * l ^ e q → ϖ ^ μ ∣ F.coeff m) → ¬ ϖ ^ (μ + 1) ∣ F.coeff m₀ → (∀ m : σ →₀ ℕ, m ≠ m₀ → ∑ q, m q * l ^ e q ≤ ∑ q, m₀ q * l ^ e q → ϖ ^ (μ + 1) ∣ F.coeff m) → ¬ ϖ ^ (μ + 1) ∣ (MvPolynomial.aeval (fun q => (1 + Polynomial.X : Polynomial O) ^ (l ^ e q) - 1) F).coeff (∑ q, m₀ q * l ^ e q) := by

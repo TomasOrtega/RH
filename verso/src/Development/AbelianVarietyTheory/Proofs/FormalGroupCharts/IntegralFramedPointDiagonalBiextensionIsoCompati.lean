@@ -19,9 +19,9 @@ open MvPolynomial (X)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c T io y I wPT hT`. Take `⟨wP, hP⟩` from `GermB.exists_wP Xo.univ.t`. Take `⟨w₁, hw₁, h₁⟩` from `GlobalTheory.T.primitiveIsoG_passes_to_pullback E H _ _ _ _ _ I.m1 I.w1 I.rig1 wP hP`. Take `⟨w₂, hw₂, h₂⟩` from `GlobalTheory.T.primitiveIsoG_passes_to_pullback E H _ _ _ _ _ I.m2 I.w2 I.rig2 wPT hT`. Establish `hab` using `GlobalTheory.isAbelianScheme_of_pullback_univ E H Dw l Xo _ _ _ I.m1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : w₁ = w₂` using `GlobalTheory.T.primitiveIsoG_unique_on_abelian GlobalTheory.firstFiveLaws.1.globalFns E H _ I.t' hab w₁ w₂ hw₁ hw₂`. Substitute `e` using the available equality. Conclude with `⟨wP, (isPrim_iff wP).2 hP, w₁, hw₁.1, h₂, h₁⟩`.
+Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem chartPrimTr_holds : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ChartPrimTrSt Xo c := by
   intro E _ _ _ H Dw l Xo c T io y I wPT hT

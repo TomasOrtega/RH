@@ -21,7 +21,7 @@ def builtA_add {K : Ctx} {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f
   { b with nx := ⟨b.nx.1, b.nx.2, PLift.up a⟩ }
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, Z, c', ⟨b, hb⟩, he⟩`. Conclude with `⟨⟨w, Z, c', ⟨builtA_drop b, hb⟩, he⟩, b.nx.2.2.down⟩`. Introduce and unpack `⟨⟨w, Z, c', ⟨b, hb⟩, he⟩, a⟩`. Conclude with `⟨w, Z, c', ⟨builtA_add b a, hb⟩, he⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isBuiltE_prmA_iff (K X f T c) :
     IsBuiltE (prmR (NEa hL N A) S Γ).s K X f T c ↔ IsBuiltE (prmR N S Γ).s K X f T c ∧ A K X.B f T := by
@@ -32,7 +32,7 @@ theorem isBuiltE_prmA_iff (K X f T c) :
     exact ⟨w, Z, c', ⟨builtA_add b a, hb⟩, he⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, Z, c', ⟨⟨b, hb⟩, g⟩, he⟩`. Conclude with `⟨⟨w, Z, c', ⟨⟨builtA_drop b, hb⟩, g⟩, he⟩, b.nx.2.2.down⟩`. Introduce and unpack `⟨⟨w, Z, c', ⟨⟨b, hb⟩, g⟩, he⟩, a⟩`. Conclude with `⟨w, Z, c', ⟨⟨builtA_add b a, hb⟩, g⟩, he⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isGoodE_prmA_iff (K X f T c) :
     IsGoodE (prmR (NEa hL N A) S Γ).s K X f T c ↔ IsGoodE (prmR N S Γ).s K X f T c ∧ A K X.B f T := by
@@ -43,11 +43,11 @@ theorem isGoodE_prmA_iff (K X f T c) :
     exact ⟨w, Z, c', ⟨⟨builtA_add b a, hb⟩, g⟩, he⟩
 
 /- English proof (translation)
-Introduce `hL N S Γ A hA ⟨hB, h1, hE, h2⟩`. Use `⟨hB, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `Step.and (KP := KPx) h1 (Step.of_evLgG (p := fun _ B _ T => T = TwDat.untw B T.pl) hA)`. Use `EvG.imp h fun K _ _ _ _ H => H.imp fun B f T _ G k u v => ?_` and prove the remaining obligations. Take `⟨⟨C, W, V, S, N, Gs, c, q⟩, a⟩` from `G k u v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨C, W, V, S, N, Gs, c, (isBuiltE_prmA_iff K ⟨B, C, W, V, S, N, Gs⟩ f T c).2 ⟨q, a⟩⟩`. Conclude with `EvG.imp hE fun K _ _ _ _ H => H.imp fun B f T _ G k u C W V S N Gs c q => G k u C W V S N Gs c ((isBuiltE_prmA_iff K ⟨B, C, W, V, S, N, Gs⟩ f T c).1 q).1`. Establish `hR : LargeBaseConditionG KPx (IsBuiltE (prmR N S Γ).s) (fun K X f T _ => A K X.B f T)` using `EvG.imp hA fun K _ _ _ _ H => H.imp fun B f T _ a _ C W V S N Gs c _ => a`. Establish `h2'` using `SecondG.sAnd_of_largeBase KPx _ _ _ hB hR h2`. Use `EvG.imp h2' fun K _ _ _ _ H => H.imp fun B f T _ G k u C W V S N Gs c q e Av S₂ hS₂ => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨B', f', T', a1, a2, a3, a4, a5, C', W', V', S', N', G', c', q', tw, g', a⟩` from `G k u C W V S N Gs c ((isBuiltE_prmA_iff K ⟨B, C, W, V, S, N, Gs⟩ f T c).1 q).1 e Av S₂ hS₂`. Conclude with `⟨B', f', T', a1, a2, a3, a4, a5, C', W', V', S', N', G', c', (isBuiltE_prmA_iff K ⟨B', C', W', V', S', N', G'⟩ f' T' c').2 ⟨q', a⟩, tw, (isGoodE_prmA_iff K ⟨B', C', W', V', S', N', G'⟩ f' T' c').2 ⟨g', a⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem memberE_prmR_NEa : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP) (A : AtP), EvLgG A →
     MemberE (prmR N S Γ).s → MemberE (prmR (NEa hL N A) S Γ).s := by

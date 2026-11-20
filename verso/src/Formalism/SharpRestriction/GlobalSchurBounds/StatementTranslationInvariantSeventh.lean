@@ -383,7 +383,7 @@ def TheoremBEvenRanks (D : D7) (T : Tor D) (e : FamE D) {l : ℕ} [Fact l.Prime]
         TaylorLogMetric.admitted D N N' L L' → b0B D lam ep be L L' (IsComb D T e lam L L')
 
 /- English proof (translation)
-Introduce `hf`. Take `⟨h1, h2, be, hb, h3⟩` from `h hf`. Conclude with `⟨h1, h2, be, 1, -1, norm_one, Or.inr rfl, hb, fun N N' L L' P P' F hA hP hP' hF => h3 N N' L L' hA P P' F hP hP' hF⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem TheoremBEvenRanks.toB {D : D7} {T : Tor D} {e : FamE D} {l : ℕ} [Fact l.Prime] {lam : Qbar →+* ℂ_[l]}
     {ep : ℂ_[l]} (h : TheoremBEvenRanks D T e lam ep) : caseB D T e lam ep := by
@@ -418,7 +418,7 @@ def caseBO (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D) {l : �
       forOdd D cc δ lam fun N N' Cmb => b0B D lam ep be (stdL D N) (stdL D N') Cmb
 
 /- English proof (translation)
-Introduce `d _ Po`. Take `⟨h1, h2, be, hb, h3, -⟩` from `h d Po`. Conclude with `⟨h1, h2, be, -1, Or.inr rfl, hb, fun N N' L L' P P' F hA hP hP' hF => h3 N N' L L' hA P P' F hP hP' hF⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem caseAO.toA {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {l : ℕ} [Fact l.Prime]
     {lam : Qbar →+* ℂ_[l]} {ep : ℂ_[l]} (h : caseAO D cc δ e lam ep) :
@@ -429,7 +429,7 @@ theorem caseAO.toA {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D}
     fun N N' L L' P P' F hA hP hP' hF => h3 N N' L L' hA P P' F hP hP' hF⟩
 
 /- English proof (translation)
-Introduce `hf`. Take `⟨h1, h2, be, hb, h3, -⟩` from `h hf`. Conclude with `⟨h1, h2, be, hb, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem caseBO.case_B_of_case_B_pair {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} {l : ℕ} [Fact l.Prime]
     {lam : Qbar →+* ℂ_[l]} {ep : ℂ_[l]} (h : caseBO D cc δ e lam ep) :
@@ -444,7 +444,7 @@ def ThetaTheoremsAB (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) (e : FamE D
     ∃ ep : ℂ_[l], InW ep ∧ ‖ep‖ = 1 ∧ caseAO D cc δ e lam ep ∧ caseBO D cc δ e lam ep
 
 /- English proof (translation)
-Introduce `l _ lam h5 hc`. Take `⟨ep, h1, h2, hA, hB⟩` from `h l lam h5 hc`. Conclude with `⟨ep, h1, h2, hA.toA, hB.case_B_of_case_B_pair.toB⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ThetaTheoremsAB.toE {D : D7} {cc : Ideal (𝓞 D.host.K)} {δ : ℂ} {e : FamE D} (h : ThetaTheoremsAB D cc δ e) :
     ConclusionE₂ D (tor0 D cc δ) e := by
@@ -457,7 +457,7 @@ def StatementThetaAB (D : D7) : Prop :=
     IsCurveIdeal D cc → IsDiscriminantTwelfthRootOfIdealLattice D cc δ → LargePrimeLengthVanishing D (tor0 D cc δ) χ e → ThetaTheoremsAB D cc δ e
 
 /- English proof (translation)
-Introduce `ha cc δ χ e hc hd he` and use `(h ha cc δ χ e hc hd he).toE`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem StatementThetaAB.to {D : D7} (h : StatementThetaAB D) : FormalGroupJets.Stmt D :=
   fun ha cc δ χ e hc hd he => (h ha cc δ χ e hc hd he).toE
@@ -469,7 +469,7 @@ def transInv7 (D : D7) : Prop :=
         U1 (lamOf D cc δ) x (sgStar (lamOf D cc δ))
 
 /- English proof (translation)
-Establish `: (m : ℂ) * x = (m : ℂ) * (x / 2) + (m : ℂ) * (x / 2)` using `by ring`. Rewrite using `[this]`. Conclude with `A.add_mem hx hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_half {A : AddSubgroup ℂ} {m : ℕ} {x : ℂ} (hx : (m : ℂ) * (x / 2) ∈ A) : (m : ℂ) * x ∈ A := by
   have : (m : ℂ) * x = (m : ℂ) * (x / 2) + (m : ℂ) * (x / 2) := by ring
@@ -477,7 +477,7 @@ theorem mem_of_half {A : AddSubgroup ℂ} {m : ℕ} {x : ℂ} (hx : (m : ℂ) * 
   exact A.add_mem hx hx
 
 /- English proof (translation)
-Introduce `cc δ hc x ω m hm hx hω` and use `h cc δ hc x ω m hm (mem_of_half hx) hω`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem transInv7.to {D : D7} (h : transInv7 D) : transInv D :=
   fun cc δ hc x ω m hm hx hω => h cc δ hc x ω m hm (mem_of_half hx) hω
@@ -493,7 +493,7 @@ def gal1v7 (D : D7) : Prop :=
           coef1 (U1 (lamConj M ρ (lamOf D cc δ)) x' (sgStar (lamConj M ρ (lamOf D cc δ)))) n
 
 /- English proof (translation)
-Introduce `cc δ hc M ρ hK h2 h3 x x' m hm hx` and use `h cc δ hc M ρ hK h2 h3 x x' m hm (mem_of_half hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem gal1v7.to {D : D7} (h : gal1v7 D) : gal1 D :=
   fun cc δ hc M ρ hK h2 h3 x x' m hm hx => h cc δ hc M ρ hK h2 h3 x x' m hm (mem_of_half hx)
@@ -518,7 +518,7 @@ def odd4v7 (D : D7) : Prop :=
         Mod1All c ∧ ‖lamC lam c‖ = 1
 
 /- English proof (translation)
-Introduce `cc δ hc N N' hN e0 he hne W g g' L₁ L₁' c hm hm' hO`. Take `⟨h1, h2⟩` from `h cc δ hc N N' hN e0 he hne W g g' L₁ L₁' c hm hm' hO`. Use `⟨fun z z' x x' a b c' d => ⟨1, Or.inl rfl, by rw [one_mul]; exact h1 z z' x x' a b c' d⟩, ?_⟩` and prove the remaining obligations. Introduce `p _ lam a b`. Conclude with `⟨(h2 p lam a b).1.1, (h2 p lam a b).2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem odd4v7.to {D : D7} (h : odd4v7 D) : odd4 D := by
   intro cc δ hc N N' hN e0 he hne W g g' L₁ L₁' c hm hm' hO
@@ -554,7 +554,7 @@ def odd7 (D : D7) : Prop :=
         oddEq D cc δ N N' e0 ∧ oddMomC D cc δ N N' e0 ∧ genOdd D cc δ N N' e0 ∧ oddPrim D cc δ N N' e0
 
 /- English proof (translation)
-Introduce `cc δ hc t0 ht N N' hN`. Take `⟨e0, h1, h2, h3, h4, h5, -⟩` from `h cc δ hc t0 ht N N' hN`. Conclude with `⟨e0, h1, h2, h3, h4, h5⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem odd7.to {D : D7} (h : odd7 D) : odd D := by
   intro cc δ hc t0 ht N N' hN
@@ -564,7 +564,7 @@ theorem odd7.to {D : D7} (h : odd7 D) : odd D := by
 def OddThetaSeventhForm (D : D7) : Prop := transInv7 D ∧ gal1v7 D ∧ odd4v7 D ∧ odd7 D
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1.to, h.2.1.to, h.2.2.1.to, h.2.2.2.to⟩`.
+Supply the required witnesses or components.
 -/
 theorem OddThetaSeventhForm.to {D : D7} (h : OddThetaSeventhForm D) : transInv D ∧ gal1 D ∧ odd4 D ∧ odd D :=
   ⟨h.1.to, h.2.1.to, h.2.2.1.to, h.2.2.2.to⟩
@@ -574,7 +574,7 @@ def OddThetaSeventhFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Pr
 def StatementThetaABFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := ∀ x (i : Fm.Ix x), StatementThetaAB (Fm.D x i)
 
 /- English proof (translation)
-Introduce `x i` and use `(h x i).to`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem StatementThetaABFamily.to {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} (h : StatementThetaABFamily Fm) : FormalGroupJets.KudlaFamilyStatement Fm :=
   fun x i => (h x i).to
@@ -589,13 +589,13 @@ def TwistedThetaSeventhForm (D : D7) : Prop :=
   GL3Theta.TwistedThetaTheorem D (1 / 2) fun cc δ e => StandardLatticesGL3.natTie D cc δ e ∧ famItems7 D cc δ e ∧ ThetaTheoremsAB D cc δ e
 
 /- English proof (translation)
-The claim follows from `GL3Theta.TwistedThetaTheorem.mono (fun _ _ _ hx => hx.1) h`.
+A detailed English derivation is pending.
 -/
 theorem TwistedThetaSeventhForm.toEd {D : D7} (h : TwistedThetaSeventhForm D) : TwistedThetaFamilies.TwistedThetaFamily D (1 / 2) :=
   GL3Theta.TwistedThetaTheorem.mono (fun _ _ _ hx => hx.1) h
 
 /- English proof (translation)
-Use `⟨fun hp F hF => H.1 hp F (h F hF), fun hp => ?_⟩` and prove the remaining obligations. Take `⟨S, hS, u, hu, hu', H2⟩` from `H.2 hp`. Conclude with `⟨S, hS, u, hu, hu', fun P P' a b c d F hF => H2 P P' a b c d F (h F hF)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IntAt.mono {D : D7} {T : Tor D} {p : ℕ} [Fact p.Prime] {lam : Qbar →+* ℂ_[p]} {N N' : ℕ}
     {L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)} {L' : Submodule (𝓞 D.host.E) (Fin N' → D.host.E)}
@@ -609,7 +609,7 @@ def division_rows_rational_lattice (D : D7) : Prop :=
   items7 D ∧ transInv7 D ∧ gal1v7 D ∧ odd4v7 D ∧ odd7 D ∧ TwistedThetaSeventhForm D
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.2.1.to, h.2.2.1.to, h.2.2.2.1.to, h.2.2.2.2.1.to, h.2.2.2.2.2.toEd⟩`.
+Supply the required witnesses or components.
 -/
 theorem division_rows_rational_lattice.where₂ {D : D7} (h : division_rows_rational_lattice D) :
     StandardLatticesGL3.transInv D ∧ StandardLatticesGL3.gal1 D ∧ StandardLatticesGL3.odd4 D ∧ StandardLatticesGL3.odd D ∧ TwistedThetaFamilies.TwistedThetaFamily D (1 / 2) :=
@@ -621,7 +621,7 @@ def DivisionRowsRationalLatticeOnFamily {eps : ℝ} (Fm : Formalism.MainNotions.
 def StatementSeventhFamily {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop := TwistedThetaFamilies.AdmF Fm → GL3Theta.ConclusionOnFamily Fm ∧ DivisionRowsRationalLatticeOnFamily Fm
 
 /- English proof (translation)
-Introduce `x i` and use `(h x i).2.2.2.2.2.toEd`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DivisionRowsRationalLatticeOnFamily.toEd {eps : ℝ} {Fm : Formalism.MainNotions.FamP eps} (h : DivisionRowsRationalLatticeOnFamily Fm) : TwistedThetaFamilies.TwistedThetaOnFamily Fm (1 / 2) :=
   fun x i => (h x i).2.2.2.2.2.toEd

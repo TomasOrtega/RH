@@ -14,33 +14,29 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D Ω₁ Ω₂ _ _ _ _ m₁ m₂ _ _ V hV G hGV hmeas hCw`. Take `⟨C, w, hw, hbd⟩` from `hCw`. Set `Ψ : ∀ S : Finset D, V →ₗ[ℂ] (S → ℂ)` to `fun S => LinearMap.pi fun s => { toFun := fun f => (f : SchwartzMap D ℂ) s map_add' := fun f g => by simp map_smul' := fun c f => by simp }`. Take `⟨_, ⟨S, rfl⟩, hmin⟩` from `(wellFounded_lt (α := Submodule ℂ V)).has_min (Set.range fun S => LinearMap.ker (Ψ S)) ⟨_, ⟨∅, rfl⟩⟩`. Establish `hker : LinearMap.ker (Ψ S) = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Take `⟨f, hf, hf0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hf1 : (f : SchwartzMap D ℂ) ≠ 0` using `fun h => hf0 (Subtype.ext h)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, (f : SchwartzMap D ℂ) y ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Conclude with `hf1 (SchwartzMap.ext h)`. Apply `hmin _ ⟨insert y S, rfl⟩` to reduce the goal to its premises. Use `lt_of_le_of_ne ?_ ?_` and prove the remaining obligations. Introduce `g hg`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [LinearMap.mem_ker] at hg ⊢`. Use function extensionality and compare the values at `s`. Use `congrFun hg ⟨s, Finset.mem_insert_of_mem s.2⟩` as an intermediate fact. Simplify `this` using `[Ψ]`. Introduce `h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : LinearMap.ker (Ψ (insert y S)) = LinearMap.ker (Ψ S)` using `h`. Establish `hf' : f ∈ LinearMap.ker (Ψ (insert y S))` using `by rw [h']; exact hf`. Simplify using `only [LinearMap.mem_ker] at hf'`. Use `congrFun hf' ⟨y, Finset.mem_insert_self y S⟩` as an intermediate fact. Conclude with `hy (by simpa [Ψ] using this)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨L, hL⟩` from `LinearMap.exists_leftInverse_of_injective (Ψ S) hker`. Set `F : Ω₁ → Ω₂ → (S → ℂ)` to `fun k l s => G k l s`. Establish `hLF : ∀ k l, ((L (F k l) : V) : SchwartzMap D ℂ) = G k l`. Introduce `k l`. Use `LinearMap.congr_fun hL ⟨G k l, hGV k l⟩` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `congrArg Subtype.val this`. Establish `hval : ∀ y, StronglyMeasurable (Function.uncurry fun k l => G k l y)`. Introduce `y`. Establish `hc : Continuous fun m : ContinuousMultilinearMap ℝ (fun _ : Fin 0 => D) ℂ => m 0` using `continuous_eval_const _`. Use `hc.comp_stronglyMeasurable (hmeas y)` as an intermediate fact.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `p`. Simplify using `[Function.uncurry, iteratedFDeriv_zero_apply]`. Establish `hFm : StronglyMeasurable (Function.uncurry F)`. Establish `: Measurable (Function.uncurry F)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `measurable_pi_lambda` to reduce the goal to its premises. Introduce `s`. Conclude with `(hval s).measurable`. Conclude with `this.stronglyMeasurable`. Establish `hnorm : ∀ k l, ‖F k l‖ ≤ C * w l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `k l`. Use `(pi_norm_le_iff_of_nonneg ?_).2 fun s => ?_` and prove the remaining obligations. Conclude with `(norm_nonneg _).trans ((SchwartzMap.norm_le_seminorm ℂ (G k l) 0).trans (hbd k l))`. Conclude with `(SchwartzMap.norm_le_seminorm ℂ (G k l) (s : D)).trans (hbd k l)`. Establish `hint_l : ∀ k, Integrable (F k) m₂`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `k`. Use `Integrable.mono' (hw.const_mul C) ?_ (Eventually.of_forall (hnorm k))` and prove the remaining obligations. Conclude with `(hFm.comp_measurable measurable_prodMk_left).aestronglyMeasurable`. Establish `hint_k : Integrable (fun k => ∫ l, F k l ∂m₂) m₁`. Use `Integrable.mono' (integrable_const (∫ l, C * w l ∂m₂)) (hFm.integral_prod_right).aestronglyMeasurable (Eventually.of_forall fun k => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_integral_le_of_norm_le (hw.const_mul C) (Eventually.of_forall (hnorm k))`. Use `⟨((L (∫ k, ∫ l, F k l ∂m₂ ∂m₁) : V) : SchwartzMap D ℂ), (L _).2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `y`. Set `ev : (S → ℂ) →ₗ[ℂ] ℂ` to `{ toFun := fun v => ((L v : V) : SchwartzMap D ℂ) y map_add' := fun a b => by simp map_smul' := fun c a => by simp }`. Set `evc : (S → ℂ) →L[ℂ] ℂ` to `LinearMap.toContinuousLinearMap ev`.
-
-Establish `hev : ∀ v, evc v = ((L v : V) : SchwartzMap D ℂ) y` using `fun v => rfl`. Rewrite using `[← hev, ← evc.integral_comp_comm hint_k]`. Use `integral_congr_ae (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← evc.integral_comp_comm (hint_l k)]`.
-
-Use `integral_congr_ae (Eventually.of_forall fun l => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[hev, hLF]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdint_mem_finiteDimensional : ∀ {D Ω₁ Ω₂ : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] [MeasurableSpace Ω₁] [MeasurableSpace Ω₂]
     (m₁ : Measure Ω₁) (m₂ : Measure Ω₂) [IsFiniteMeasure m₁] [SFinite m₂] (V : Submodule ℂ (SchwartzMap D ℂ)),

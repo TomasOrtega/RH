@@ -24,9 +24,9 @@ section Bundle
 variable {B Y : Scheme.{0}} {M M' : B.Modules} {r : ℕ}
 
 /- English proof (translation)
-Establish `e (a : Fin r) : (hf.pullback π).basis h a = QCoh.pullbackSections π M h (f a)`. Rewrite using `[IsFrame.basis_apply]`. Conclude with `QCoh.res_pullbackSections π M _ _ _`. Use `conv_lhs => rw [← ((hf.pullback π).basis h).sum_repr s]`. Rewrite using `[← QCoh.appLinear_apply, map_sum, map_sum, Finsupp.finsetSum_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, map_smul, Finsupp.smul_apply, smul_eq_mul, e, QCoh.appLinear_apply, QCoh.pullback_map_app_pullbackSections, Twist.resM_self]`. Conclude with `congrArg (_ * ·) (hf'.pullback_basis_repr π le_rfl h _ b)`.
+A detailed English derivation is pending.
 -/
 theorem repr_map [M.IsQuasicoherent] [M'.IsQuasicoherent] (π : Y ⟶ B) (g : M ⟶ M') {V : B.Opens}
     {f : Fin r → Γ(M, V)} {f' : Fin r → Γ(M', V)} (hf : IsFrame f) (hf' : IsFrame f') {W : Y.Opens}
@@ -45,21 +45,19 @@ theorem repr_map [M.IsQuasicoherent] [M'.IsQuasicoherent] (π : Y ⟶ B) (g : M 
   exact congrArg (_ * ·) (hf'.pullback_basis_repr π le_rfl h _ b)
 
 /- English proof (translation)
-Use `hM.isQuasicoherent` as an intermediate fact. Use `hM'.isQuasicoherent` as an intermediate fact. Take `⟨W, s, hWV, hp, hs⟩` from `exists_adapted Y _ r F (y (IsLocalRing.closedPoint K)) (π ⁻¹ᵁ V) (hV (Set.mem_univ (IsLocalRing.closedPoint K)))`. Establish `hy : ⊤ ≤ y ⁻¹ᵁ W` using `(Scheme.preimage_eq_top_of_closedPoint_mem y hp).ge`. Take `⟨T, hT, eT⟩` from `hd.adapted_eq hWV hy hs`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `uS : IsUnit (T * d).det` using `eT ▸ AdaptMat.isUnit_det (hf.pullback π) hWV hs.1 (evalPt y W hy)`. Take `⟨A, hA⟩` from `(flagMat_local B Y M' r hM' π F' V f' hf' K y hV).1`. Establish `h : ∀ i : Fin r, ∃ cf : Fin r → K, (∀ l : Fin r, i < l → cf l = 0) ∧ Matrix.vecMul (coordAt hM π hf y hWV hy (s i)) U = Matrix.vecMul cf A`. Introduce `i`. Take `⟨t, -, ht⟩` from `hs.2 i.succ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨τ, hτ⟩` from `hc i.succ`. Take `⟨cf, h1, h2⟩` from `hA.2 i.succ W hWV (τ.app W (t (Fin.last i))) hy`. Use `⟨cf, fun l hl => h1 l hl, ?_⟩` and prove the remaining obligations. Establish `e : (F'.ι i.succ).app W (τ.app W (t (Fin.last i))) = ((Scheme.Modules.pullback π).map g).app W (s i)`. Use `(QCoh.app_app _ _ _ _).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hτ]`. Conclude with `(QCoh.app_app _ _ _ _).symm.trans (congrArg _ (ht (Fin.last i)))`. Rewrite using `[← h2, e]`. Use function extensionality and compare the values at `b`. Simplify using `only [coordAt, Matrix.vecMul, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[repr_map π g hf hf', map_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, FlagSec.evalPt_appLE π y _ _ hWV hy hV, hU']`. Use `choose T' h1 h2 using h`. Establish `e : T * d * U = Matrix.of T' * A`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[← eT]`. Use extensionality with `i j`. Conclude with `congrFun (h2 i) j`. Establish `uT : IsUnit T.det`. Rewrite `uS` using `[Matrix.det_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_of_mul_isUnit_left uS`. Establish `uT' : IsUnit (Matrix.of T').det`. Use `uS.mul hU` as an intermediate fact. Rewrite `this` using `[← Matrix.det_mul, e, Matrix.det_mul]`. Conclude with `isUnit_of_mul_isUnit_left this`.
-
-Use `(hA.mul uT' h1).mul (Matrix.isUnit_nonsing_inv_det _ uT) (lower_inv uT hT)` as an intermediate fact. Rewrite `this` using `[← e, Matrix.mul_assoc T, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ uT, Matrix.one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem flagMat_map (hM : IsVB M r) (hM' : IsVB M' r) (π : Y ⟶ B) (g : M ⟶ M')
     {F : Vert.Flag ((Scheme.Modules.pullback π).obj M) r} {F' : Vert.Flag ((Scheme.Modules.pullback π).obj M') r}
@@ -124,7 +122,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Use `⟨comb_tan (fun j => (hu j).1) h, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← (isCombAtG_iff Z.t _ (fun j => ovT (hu j).1) _ _).1 h]`. Use `Z.t.act.hom a` as an intermediate fact. Conclude with `congrArg (fun f => f.left) (combT_eig _ (fun j => ovT (hu j).1) (Z.t.act.act a) _ (fun j => Over.OverMorphism.ext ((hu j).2 a)) cf)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isEigTan_comb (hu : ∀ j, IsEigTan Z φ x τ (u j)) {cf : Fin m → K} {w : Sp (DualNumber K) ⟶ Z.t.G.left}
     (h : IsCombAtG Z.t x u cf w) : IsEigTan Z φ x τ w := by
@@ -135,7 +133,7 @@ theorem isEigTan_comb (hu : ∀ j, IsEigTan Z φ x τ (u j)) {cf : Fin m → K} 
     (fun j => Over.OverMorphism.ext ((hu j).2 a)) cf)
 
 /- English proof (translation)
-Take `⟨d, hd, -⟩` from `hu.2 w (isEigTan_comb hu'.1 h)`. Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Use `tanLinG u' (fun j => (hu'.1 j).1) u U.transpose d w hU hd` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_transpose]`. Conclude with `FlagSec.indep_of_isEigBasis hu' _ _ _ h this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coord (hu : IsEigBasis Z φ x τ u) (hu' : IsEigBasis Z φ x τ u') {U : Matrix (Fin m) (Fin m) K}
     (hU : ∀ a, IsCombAtG Z.t x u' (U a) (u a)) {cf : Fin m → K} {w : Sp (DualNumber K) ⟶ Z.t.G.left}
@@ -147,7 +145,7 @@ theorem exists_coord (hu : IsEigBasis Z φ x τ u) (hu' : IsEigBasis Z φ x τ u
   exact FlagSec.indep_of_isEigBasis hu' _ _ _ h this
 
 /- English proof (translation)
-Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.vecMul_surjective_iff_isUnit]`. Introduce `cf`. Take `⟨w, -, hw⟩` from `exists_comb (fun j => (hu'.1 j).1) cf`. Take `⟨d, -, hd⟩` from `exists_coord hu hu' hU hw`. Conclude with `⟨d, hd.symm⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isUnit_det_trans (hu : IsEigBasis Z φ x τ u) (hu' : IsEigBasis Z φ x τ u') {U : Matrix (Fin m) (Fin m) K}
     (hU : ∀ a, IsCombAtG Z.t x u' (U a) (u a)) : IsUnit U.det := by
@@ -158,7 +156,7 @@ theorem isUnit_det_trans (hu : IsEigBasis Z φ x τ u) (hu' : IsEigBasis Z φ x 
   exact ⟨d, hd.symm⟩
 
 /- English proof (translation)
-Use `choose d h1 h2 using fun i => exists_coord hu hu' hU (h i)`. Use `⟨Matrix.of d, h1, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `congrFun (h2 i) j`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_mat (hu : IsEigBasis Z φ x τ u) (hu' : IsEigBasis Z φ x τ u') {U : Matrix (Fin m) (Fin m) K}
     (hU : ∀ a, IsCombAtG Z.t x u' (U a) (u a)) {d' : Matrix (Fin m) (Fin m) K}
@@ -172,21 +170,21 @@ theorem exists_mat (hu : IsEigBasis Z φ x τ u) (hu' : IsEigBasis Z φ x τ u')
 end Eig
 
 /- English proof (translation)
-Introduce `D O c Bs Bg jB πB Y X Gs _ _ π ρ j πG φ jG _ h1 _ σ M hM t ht F M' hM' t' ht' F' u hm hc H V f' hf' hxV d' hd'`. Use `hM.isQuasicoherent` as an intermediate fact. Use `hM'.isQuasicoherent` as an intermediate fact. Establish `hz : ((genPt Gs ≫ j) ≫ ρ) ≫ π = (genPt Gs ≫ jG) ≫ jB` using `by simp only [Category.assoc, h1]`. Take `⟨V₁, f, -, hp, hV, hf⟩` from `hM.exists_affine (hxV (Set.mem_univ (IsLocalRing.closedPoint Gs.functionField)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hx₁ : ⊤ ≤ ((genPt Gs ≫ jG) ≫ jB) ⁻¹ᵁ V₁` using `(Scheme.preimage_eq_top_of_closedPoint_mem _ hp).ge`. Establish `hxx : ⊤ ≤ ((genPt Gs ≫ jG) ≫ jB) ⁻¹ᵁ (V ⊓ V₁)` using `fun p hp => ⟨hxV hp, hx₁ hp⟩`. Establish `hg` using `hf'.res hV`. Establish `hψ : (genPt Gs ≫ jG) ≫ πB ≫ genStr O.s.T.Z ≫ spMap O.κ.e.toRingHom = spMap (Spec.preimage ((genPt Gs ≫ jG) ≫ πB ≫ genStr O.s.T.Z ≫ spMap O.κ.e.toRingHom)).hom` using `(Spec.map_preimage _).symm`. Establish `b₁` using `ht.1 V₁ f hf _ _ hx₁ _ hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b₂` using `ht'.1 V₁ _ hg _ _ hx₁ _ hψ`. Establish `b₃` using `ht'.1 V f' hf' _ _ hxV _ hψ`. Establish `m₁` using `hm V₁ f _ hf hg _ _ hx₁`. Establish `m₂` using `ht'.2.1 V V₁ f' _ hf' hg _ _ hxV hx₁ hxx`. Rewrite `b₁`, `b₂`, `b₃`, `m₁`, `m₂` using `[Category.assoc _ jG (πB ≫ genι _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨d₁, hd₁, rfl⟩` from `exists_mat b₂ b₃ (U := Matrix.of fun a b => evalPt _ (V ⊓ V₁) hxx (trCo hf' _ b a)) m₂ hd'`. Take `⟨d, hd, rfl⟩` from `exists_mat b₁ b₂ (U := Matrix.of _) m₁ hd₁`. Establish `hy₁ : ⊤ ≤ ((genPt Gs ≫ j) ≫ ρ) ⁻¹ᵁ (π ⁻¹ᵁ V₁)` using `by rw [← Scheme.Hom.comp_preimage, hz]; exact hx₁`. Establish `hy : ⊤ ≤ ((genPt Gs ≫ j) ≫ ρ) ⁻¹ᵁ (π ⁻¹ᵁ V)` using `by rw [← Scheme.Hom.comp_preimage, hz]; exact hxV`. Establish `hyy : ⊤ ≤ ((genPt Gs ≫ j) ≫ ρ) ⁻¹ᵁ (π ⁻¹ᵁ V ⊓ π ⁻¹ᵁ V₁)` using `fun p hp => ⟨hy hp, hy₁ hp⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key (U : Bs.Opens) (W : Y.Opens) (e : W ≤ π ⁻¹ᵁ U) (hW : ⊤ ≤ ((genPt Gs ≫ j) ≫ ρ) ⁻¹ᵁ W) (hU : ⊤ ≤ ((genPt Gs ≫ jG) ≫ jB) ⁻¹ᵁ U) (a : Γ(Bs, U)) : evalPt _ W hW (π.appLE U W e a) = evalPt _ U hU a` using `by revert hU`. Rewrite using `[← hz]`. Conclude with `fun hU => FlagSec.evalPt_appLE π _ U W e hW hU a`. Establish `k₁` using `flagMat_map (hM.pullback π) (hM'.pullback π) ρ _ hc (hf.pullback π) (hg.pullback π) _ hy₁ (H V₁ f hf hx₁ d hd) (isUnit_det_trans b₁ b₂ (U := Matrix.of _) m₁) (fun a b => by`. Rewrite using `[Matrix.of_apply, QCoh.pullback_map_app_pullbackSections, Twist.resM_self, Twist.resM_self, hg.pullback_basis_repr π le_rfl le_rfl, key _ _ _ _ hx₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `rfl)`. Establish `k₂` using `(flagMat_change_frame Y X _ _ (hM'.pullback π) ρ F' _ _ (hf'.pullback π) _ _ (hg.pullback π) _ _ _ hyy _`. Use `rfl k₁).2`. Use `k₂ using 3` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `a b`.
+Establish an intermediate fact. Both sides reduce to the same expression. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h'' : π ⁻¹ᵁ V ⊓ π ⁻¹ᵁ V₁ ≤ π ⁻¹ᵁ (V ⊓ V₁)` using `fun p hp => hp`. Rewrite using `[← key _ _ h'' hyy]`. Use `congr 1`. Unfold `trCo`. Rewrite using `[← hf'.pullback_basis_repr π inf_le_left h'']`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Conclude with `(QCoh.pullbackSections_res π M' h'' inf_le_right _).trans (QCoh.res_pullbackSections π M' _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem flagMat_move : ∀ (D : D7) (O : Setup D) (c : O.s.Comp) (Bs Bg : Scheme.{0}) (jB : Bg ⟶ Bs) (πB : Bg ⟶ gen O.s.T.Z)
     (Y X Gs : Scheme.{0}) [IsIntegral X] [IsIntegral Gs] (π : Y ⟶ Bs) (ρ : X ⟶ Y) (j : Gs ⟶ X)

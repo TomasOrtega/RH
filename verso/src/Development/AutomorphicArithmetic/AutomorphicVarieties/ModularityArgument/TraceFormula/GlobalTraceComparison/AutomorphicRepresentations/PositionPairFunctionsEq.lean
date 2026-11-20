@@ -17,9 +17,9 @@ namespace UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `h` using `(PositivityTheory.Rg.BcB.E1.kerLin (PositivityTheory.Rg.BcB.E1.ctx PositivityTheory.Rg.BcB.E1.ratProper_holds D) (ι × ι) (fun p => Φ p.1 p.2) (fun p => M p.2 p.1) (fun p => hΦ p.1 p.2)).1`. Establish `e : trM Φ M = fun y => ∑ p : ι × ι, Φ p.1 p.2 y * M p.2 p.1`. Use function extensionality and compare the values at `y`. Rewrite using `[Fintype.sum_prod_type]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem tst_trM (D : Dom E n 0) {ι : Type} [Fintype ι] {Φ : Matrix ι ι (H E n 0 → ℂ)} (hΦ : IsTestM Φ)
     (M : Matrix ι ι ℂ) : PositivityTheory.Rg.BcB.E1.Tst (G := (PositivityTheory.Rg.BcB.E1.ctx PositivityTheory.Rg.BcB.E1.ratProper_holds D).G) (trM Φ M) := by
@@ -33,9 +33,9 @@ private theorem tst_trM (D : Dom E n 0) {ι : Type} [Fintype ι] {Φ : Matrix ι
   exact h
 
 /- English proof (translation)
-Establish `hvec : IsPiVec D π (vecM v fun _ : Unit => (1 : ℂ))` using `fun _ => ⟨ψ, hψ, w, hw, hws, by`. Establish `e : (vecM v fun _ : Unit => (1 : ℂ)) () = v` using `one_smul ℂ v`. Simplify `hv⟩` using `[e]`. Establish `hmem : (vecM v fun _ : Unit => (1 : ℂ)) ∈ piSp D π Unit` using `Submodule.le_topologicalClosure _ (Submodule.subset_span hvec)`. Unfold `P0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[Submodule.starProjection_eq_self_iff.2 hmem]`. Conclude with `one_smul ℂ v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cusp_projection_self (D : Dom E n 0) (π : CuspSub E n) {ψ : Sm E n} (hψ : ψ ∈ π.V) {w : ℝ → ℂ}
     (hw : Continuous w) (hws : HasCompactSupport w) (v : Lp ℂ 2 D.ν)
@@ -52,27 +52,25 @@ private theorem cusp_projection_self (D : Dom E n 0) (π : CuspSub E n) {ψ : Sm
 end UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi
 
 /- English proof (translation)
-Introduce `hB hTI hK _ hKer E _ _ _ n ι _ s m ψ hψ u hu hus x₀`. Take `⟨-, bMul, -, -, -, -, bThL, bThTh, bThMul, bRat, -, -⟩` from `hB E n s.pos`. Take `⟨ψ₁, hψ₁, hψe⟩` from `s.fix.2 ψ hψ`. Establish `hw : Continuous fun t : ℝ => u (-t)` using `hu.comp continuous_neg`. Establish `hws : HasCompactSupport fun t : ℝ => u (-t)` using `hus.comp_homeomorph (Homeomorph.neg ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f : H E n 0 → ℂ := fun x => ψ₁.1 x.1 * u (-ldet x) with hf`. Establish `hmem : MemLp f 2 s.D.ν` using `(DiscreteGroups.T1.G.Dcy.piVecEx_holds E n s.pos s.D s.π s.fix ψ₁ hψ₁ _ hw hws).1`. Use `set v : Lp ℂ 2 s.D.ν := hmem.toLp f with hvdef`. Establish `hv : (v : H E n 0 → ℂ) =ᵐ[s.D.ν] f` using `hmem.coeFn_toLp`. Establish `hP : P0 s.D s.π v = v` using `cusp_projection_self s.D s.π hψ₁ hw hws v hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨kI, kE⟩` from `hKer E n ι s m v x₀`. Rewrite `kE` using `[hP]`. Establish `hψinv : ∀ (γ : ratH E n 0) (y : H E n 0), ψ₁.1 ((γ : H E n 0) * y).1 = ψ₁.1 y.1`. Introduce `γ y`. Take `⟨⟨γ₁, γ₂⟩, hγ⟩` from `γ.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (γ : H E n 0).1 = ratGL E n γ₁` using `by rw [← hγ]; rfl`. Rewrite using `[Prod.fst_mul, h1]`. Conclude with `(s.π.cusp ψ₁ hψ₁).1.left γ₁ y.1`. Establish `hfinv : ∀ (γ : ratH E n 0) (y : H E n 0), f ((γ : H E n 0) * y) = f y`. Introduce `γ y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hf]`. Rewrite using `[hψinv γ y, bMul, (bRat γ).1, zero_add]`. Establish `hGinv : ∀ (γ : ratH E n 0) (y : H E n 0), m.G x₀ (th ((γ : H E n 0) * y)) = m.G x₀ (th y)`. Introduce `γ y`. Establish `h2` using `hK E n ι s |>.2 ⟨th (γ : H E n 0), (bRat γ).2⟩ (th y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Mid.G, Gk]`. Rewrite using `[bThMul, h2]`. Use `set F : H E n 0 → ℂ := fun y => f y * m.G x₀ (th y) with hF`. Establish `hFinv : Inv F` using `fun γ y => by`. Simplify using `only [hF]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hfinv, hGinv]`. Establish `hFint : Integrable F s.D.ν` using `kI.congr (hv.mono fun y hy => by simp only [hF, hy])`. Take `⟨tI, tE⟩` from `hTI E n s.D F hFinv hFint`. Establish `hFth : ∀ x, F (th x) = ψ.1 x.1 * m.G x₀ x * u (ldet x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : ψ₁.1 (th x).1 = ψ.1 x.1`. Establish `e : thetaA E n (th x).1 = x.1` using `congrArg Prod.fst (bThTh x)`. Rewrite using `[hψe, e]`. Simplify using `only [hF, hf]`. Rewrite using `[h1, bThL, neg_neg, bThTh]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨tI.congr (Filter.Eventually.of_forall hFth), ?_⟩` and prove the remaining obligations. Establish `hμl : s.D.μ.IsMulLeftInvariant` using `s.D.haar.1`. Use `haveI hmm : MeasurableMul (H E n 0) := (inferInstance : MeasurableMul (PositivityTheory.Rg.BcB.E1.ctx PositivityTheory.Rg.BcB.E1.ratProper_holds s.D).G)`. Establish `hun` using `(DiscreteGroups.T1.G.unfold (PositivityTheory.Rg.BcB.E1.ctx PositivityTheory.Rg.BcB.E1.ratProper_holds s.D) PositivityTheory.Rg.BcB.E1.kerBasic PositivityTheory.Rg.BcB.E1.kernel_rows_columns_square_integrable (tst_trM s.D m.t s.M) (f := f) hfinv hmem x₀).2`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hun' : ∫ y, kerH m.φ x₀ y * f y ∂s.D.ν = ∫ y, m.φ (x₀⁻¹ * y) * f y ∂s.D.μ` using `hun`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only [hf]`. Rewrite using `[inv_mul_cancel_left, bMul, Prod.fst_mul, hψe]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.rep_pf :
     Basic → ThetaInt → KInv → PDiag → Ker → Rep := by

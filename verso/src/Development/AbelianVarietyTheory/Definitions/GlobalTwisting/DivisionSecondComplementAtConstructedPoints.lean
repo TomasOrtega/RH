@@ -36,7 +36,7 @@ structure All (𝒜 : FamClass) : Prop where
   aC2 : DivisionSecondComplementAdmissible 𝒜
 
 /- English proof (translation)
-The claim follows from `Row.imp (Row.and hh (Row.and hInstR aC2)) fun _ _ _ ⟨a0, a1, a2⟩ => ⟨a0, a1, a2⟩`.
+A detailed English derivation is pending.
 -/
 theorem row_all {Bd : BdT} {Q : V4.Slot} {Lk : LkT Bd}
     (hh : HeightConditionAtConstructedPoints Q Lk) (hInstR : InstanceRankAtConstructedPoints Q Lk) (aC2 : DivisionSecondComplementAtConstructedPoints Q Lk) :

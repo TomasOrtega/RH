@@ -6,9 +6,9 @@ open scoped MatrixGroups TensorProduct
 namespace GlobalTheory.KZ.H3
 
 /- English proof (translation)
-Rewrite using `[← Complex.exp_nat_mul]`. Establish `hl' : (l : ℂ) ≠ 0` using `by exact_mod_cast hl`. Establish `hv : (v : ℂ) = ((v % l ^ n : ℕ) : ℂ) + (l : ℂ) ^ n * ((v / l ^ n : ℕ) : ℂ)`. Conclude with `(Nat.mod_add_div v (l ^ n)).symm` after adjusting the coercions. Establish `e : (l : ℂ) * (2 * Real.pi * Complex.I * (v : ℂ) / ((l : ℂ) ^ (n + 1))) = 2 * Real.pi * Complex.I * ((v % l ^ n : ℕ) : ℂ) / ((l : ℂ) ^ n) + ((v / l ^ n : ℕ) : ℂ) * (2 * Real.pi * Complex.I)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Complex.exp_add, Complex.exp_nat_mul_two_pi_mul_I, mul_one]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_pow_reduce (l n v : ℕ) (hl : l ≠ 0) :
     Complex.exp (2 * Real.pi * Complex.I * (v : ℂ) / ((l : ℂ) ^ (n + 1))) ^ l =
@@ -24,17 +24,15 @@ theorem exp_pow_reduce (l n v : ℕ) (hl : l ≠ 0) :
   rw [e, Complex.exp_add, Complex.exp_nat_mul_two_pi_mul_I, mul_one]
 
 /- English proof (translation)
-Introduce `Ω _ _ ε X l _ n x χ ⟨f, a, b, M, hM, hx, ⟨ha, hb, hb0, hab⟩, hrel⟩`. Establish `hl0 : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Use `haveI : NeZero (l ^ (n + 1)) := ⟨pow_ne_zero _ hl0⟩`. Use `haveI : NeZero (l ^ n) := ⟨pow_ne_zero _ hl0⟩`. Use `⟨f, fun z => a z ^ l, fun z => b z ^ l, M, hM, ?_, ⟨ha.pow l, hb.pow l, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `h` using `AdicCompletion.transitionMap_comp_eval_apply (idl l) (X.Kl l) (Nat.le_succ n) x`. Express the relevant statement in the definitionally equal form `x.val n = _`. Rewrite using `[← h]`. Express the relevant statement in the definitionally equal form `AdicCompletion.transitionMap (idl l) (X.Kl l) (Nat.le_succ n) (AdicCompletion.eval (idl l) (X.Kl l) (n + 1) x) = _`. Rewrite using `[hx]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Introduce `h`. Apply `hb0` to reduce the goal to its premises. Rewrite `h`, the goal using `[← Filter.Germ.coe_zero, Filter.Germ.coe_eq]`. Conclude with `h.mono fun z hz => (pow_eq_zero_iff hl0).1 hz`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((fun z => b z ^ l : ℂ → ℂ) : Mero) = (b : Mero) ^ l` using `Filter.Germ.coe_pow b l`. Establish `e2 : ((fun z => a z ^ l : ℂ → ℂ) : Mero) = (a : Mero) ^ l` using `Filter.Germ.coe_pow a l`. Rewrite using `[e1, e2, ← pow_mul, ← pow_mul, ← pow_succ', hab]`. Introduce `δ hδ z hz`. Establish `h1` using `congrArg (fun t : ℂ => t ^ l) (hrel δ hδ z hz)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [mul_pow] at h1`. Rewrite `h1` using `[exp_pow_reduce l n _ hl0]`. Establish `hv : (ZMod.castHom (pow_dvd_pow l (Nat.le_succ n)) (ZMod (l ^ n)) (χ δ)).val = (χ δ).val % l ^ n`. Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast]`. Rewrite using `[hv]`.
-
-Simplify `h1` using `only [mul_pow, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem kum_succ_reduce : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (l : ℕ) [Fact l.Prime],
     ∀ n : ℕ, ∀ (x : X.Khat l) (χ : SL(2, ℤ) → ZMod (l ^ (n + 1))), Kum X l (n + 1) x χ →

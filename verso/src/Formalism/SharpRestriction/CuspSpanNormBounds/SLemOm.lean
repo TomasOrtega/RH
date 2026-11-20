@@ -9,7 +9,7 @@ import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.StabBig
 namespace Formalism.MainNotions.S.Lem
 
 /- English proof (translation)
-The claim follows from `stabilizer_large`.
+A detailed English derivation is pending.
 -/
 theorem orbRStabBig : Formalism.MainNotions.S.OrbRStabBig := stabilizer_large
 

@@ -24,7 +24,7 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws
   {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : B.Word}
   {a : _root_.GlobalTheory.Fam.GeometricFamily W u} {t : W.P.T}
 /- English proof (translation)
-Establish `h1` using `(J.G i).hs`. Establish `h2 : (I.rec7 l Z).R.m = B.R.m` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eq_s_succ_of_succ_eq_m (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) {j : ℕ} (hj : j + 1 = B.R.m) (i : Fin J.r) : j = (J.G i).s + 1 := by
   have h1 := (J.G i).hs
@@ -54,7 +54,7 @@ variable {B : GlobalTheory.Mem.Base} {X : PreX B.toPre} {I : TC B X} {l : I.Laws
   {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} {W : _root_.GlobalTheory.MiS.RealPackAlt ex} {u : B.Word}
   {a : _root_.GlobalTheory.Fam.GeometricFamily W u} {t : W.P.T}
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `fun y => (J.G i).latX _ le_rfl y`.
+Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem int_in_frame_at_level (J : _root_.GlobalTheory.Fam.QuadraticExtensionData a t) (j : ℕ) (i : Fin J.r) (e : j = (J.G i).s + 1) :
     IntIn (J.G i).q ((I.rec7 l Z).sp.X j) (_root_.GlobalTheory.PenBridge.frameAtLevel J j i e) (a.g.x j).L := by

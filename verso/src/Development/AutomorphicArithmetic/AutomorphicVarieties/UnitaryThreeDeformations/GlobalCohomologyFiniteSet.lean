@@ -6,13 +6,13 @@ import Development.AbelianVarietyTheory.PublishedTheorems.GaloisCohomology₂.Co
 open Matrix IsLocalRing ReciprocityTheory.Gal UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Alg UpperTheory.V.UnitaryThreeInertia Module
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `y`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h1 : twDual μ (GlobalTheory.Published.zmodRep N ρ) g φ = φ` using `hφ _`. Use `show φ = 0`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `set m : M := (a - (n : k))⁻¹ • x with hm`. Establish `hx : x = a • m - n • m`. Rewrite using `[← Nat.cast_smul_eq_nsmul k, ← sub_smul, hm, smul_smul, mul_inv_cancel₀ (sub_ne_zero.2 han), one_smul]`. Establish `h3` using `congrArg (fun ψ : TDual (ZMod N) M => ψ (GlobalTheory.Published.zmodRep N ρ g m)) h1`. Simplify using `only [twDual_apply] at h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply, ← hn]`. Establish `h4 : GlobalTheory.Published.zmodRep N ρ g m = a • m` using `hg m`. Rewrite `h3` using `[h4]`. Use `show φ x = 0`. Rewrite using `[hx]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(LinearMap.map_sub (φ : Module.Dual (ZMod N) M) _ _).trans (sub_eq_zero.mpr ?_)` and prove the remaining obligations. Use `h3.symm.trans ?_` and prove the remaining obligations. Rewrite using `[← nsmul_eq_mul]`. Conclude with `(map_nsmul (F := Module.Dual (ZMod N) M) φ n m).symm`.
+A detailed English derivation is pending.
 -/
 private theorem twDual_inv_eq_zero {Γ k M : Type} [Group Γ] [Field k] [AddCommGroup M] [Module k M]
     (N : ℕ) [Module (ZMod N) M] (μ : Γ →* (ZMod N)ˣ) (ρ : Representation k Γ M)
@@ -41,15 +41,13 @@ private theorem twDual_inv_eq_zero {Γ k M : Type} [Group Γ] [Field k] [AddComm
   exact (map_nsmul (F := Module.Dual (ZMod N) M) φ n m).symm
 
 /- English proof (translation)
-Introduce `hPT Ω _ _ _ l _ hl k M _ _ _ _ _ _ _ _ S A ρ hS hA hρ hσ κ`. Take `⟨σ, a, n, hσa, hn, han⟩` from `hσ`. Establish `hM : ∀ m : M, (l ^ 1) • m = 0` using `fun m => by`. Rewrite using `[pow_one, ← Nat.cast_smul_eq_nsmul k, CharP.cast_eq_zero, zero_smul]`. Use `letI : Module (ZMod (l ^ 1)) M := AddCommGroup.zmodModule hM`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : NeZero (l ^ 1) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω (l ^ 1)`. Take `⟨μ, hμ⟩` from `GlobalTheory.Published.PoitouTate.exists_lift_cycMod (F := ℚ) (Ω := Ω) (l := l) (r := 1) hS`. Take `⟨inv, -, h⟩` from `hPT ℚ Ω l 1 (Or.inl hl) Nat.one_pos ζ hζ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex` using `(h S hS A hA μ hμ M (GlobalTheory.Published.zmodRep (l ^ 1) ρ) hρ).1`. Establish `hμσ : μ (toGS Ω _ σ) = cycMod ℚ Ω l 1 σ` using `DFunLike.congr_fun hμ σ`. Take `⟨z, hz⟩` from `(hex.mem_range_localization_H2_iff (fun v => Submodule.Quotient.mk ⟨(κ v).1, (κ v).2⟩)).2 (fun y => by`. Rewrite using `[twDual_inv_eq_zero (l ^ 1) μ ρ _ a n hσa (by rw [hμσ]; exact hn) han y]`. Simplify using `only [map_zero, Finset.sum_const_zero])`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `z using Submodule.Quotient.induction_on with`. Consider the case `H z`. Use `⟨⟨z.1, z.2⟩, fun v => ?_⟩` and prove the remaining obligations. Establish `e : (Submodule.Quotient.mk (restrictCocycles2 (GlobalTheory.Published.zmodRep (l ^ 1) ρ) (locFam S A v) (continuous_locFam S A v) z) : H2 ((GlobalTheory.Published.zmodRep (l ^ 1) ρ).comp (locFam S A v))) = Submodule.Quotient.mk ⟨(κ v).1, (κ v).2⟩` using `congrFun hz v`. Take `⟨c, hc, hcf⟩` from `(separated_dvr_second_cohomology_mem _ _).1 ((Submodule.Quotient.eq _).1 e)`.
-
-Conclude with `(separated_dvr_second_cohomology_mem _ _).2 ⟨c, hc, hcf⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.global_cohomology_finite_set :
     GlobalTheory.Published.PoitouTateNormalised → ∀ (Ω : Type) [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] (l : ℕ) [Fact l.Prime], l ≠ 2 → ∀ (k M : Type) [Field k] [Finite k] [CharP k l] [AddCommGroup M] [Module k M] [Finite M] [TopologicalSpace M] [DiscreteTopology M] (S : Finset Pl) (A : S → ValuationSubring Ω) (ρ : Representation k (Gam Ω S) M),

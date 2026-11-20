@@ -8,9 +8,7 @@ namespace GlobalTheory.FinGL.Transport
 open Formalism.L2.DIV
 
 /- English proof (translation)
-Set `Φ : Subrepresentation (σ.comp f : Representation ℂ G' V) ≃o Subrepresentation σ` to `{ toFun := fun U => ⟨U.toSubmodule, fun g v hv => by`. Take `⟨g', rfl⟩` from `hf g`. Conclude with `U.apply_mem_toSubmodule g' hv⟩`. Use `invFun := fun U => ⟨U.toSubmodule, fun g v hv => U.apply_mem_toSubmodule (f g) hv⟩`. Use `left_inv := fun _ => rfl`.
-
-Use `right_inv := fun _ => rfl`. Use the proof step `map_rel_iff' := Iff.rfl }`. Conclude with `Φ.isSimpleOrder`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp {G G' V : Type} [Group G] [Group G'] [AddCommGroup V] [Module ℂ V]
     (σ : Representation ℂ G V) (f : G' →* G) (hf : Function.Surjective f) (h : σ.IsIrreducible) :
@@ -26,13 +24,9 @@ theorem isIrreducible_comp {G G' V : Type} [Group G] [Group G'] [AddCommGroup V]
   exact Φ.isSimpleOrder
 
 /- English proof (translation)
-Set `L : Representation.coindV i σ ≃ₗ[ℂ] Representation.coindV i' (σ.comp f : Representation ℂ P' V)` to `{ toFun := fun φ => ⟨fun y => φ.1 (F y), fun p y => by show φ.1 (F (i' p * y)) = σ (f p) (φ.1 (F y))`. Rewrite using `[map_mul, hc]`. Conclude with `φ.2 _ _⟩`. Use `invFun := fun φ => ⟨fun y => φ.1 (F.symm y), fun p y => by`. Take `⟨p', rfl⟩` from `hf p`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `show φ.1 (F.symm (i (f p') * y)) = σ (f p') (φ.1 (F.symm y))`. Rewrite using `[map_mul, ← hc, MulEquiv.symm_apply_apply]`. Conclude with `φ.2 _ _⟩`. Use the proof step `map_add' := fun _ _ => rfl`. Use the proof step `map_smul' := fun _ _ => rfl`.
-
-Use `left_inv := fun φ => Subtype.ext (funext fun y => congrArg φ.1 (F.apply_symm_apply y))`. Use `right_inv := fun φ => Subtype.ext (funext fun y => congrArg φ.1 (F.symm_apply_apply y)) }`. Unfold `Representation.character`. Rewrite using `[← LinearMap.trace_conj' _ L]`. Use `congr 1`.
-
-Use `LinearMap.ext fun φ => Subtype.ext (funext fun y => ?_)` and prove the remaining obligations. Use `show φ.1 (y * x) = φ.1 (F.symm (F y * F x))`. Rewrite using `[← map_mul, MulEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem character_coind {G G' P P' V : Type} [Group G] [Group G'] [Group P] [Group P'] [AddCommGroup V] [Module ℂ V]
     (i : P →* G) (i' : P' →* G') (σ : Representation ℂ P V) (F : G' ≃* G) (f : P' →* P) (hf : Function.Surjective f)
@@ -86,7 +80,7 @@ theorem triMap_apply (e : κ' →+* κ) (b : Fin r → ℕ) (p : blockTri (κ :=
       e (((p : GL (Fin r) κ') : Matrix (Fin r) (Fin r) κ') i j) := rfl
 
 /- English proof (translation)
-Introduce `p` and use `⟨triMap (e.symm : κ →+* κ') b p, by ext i j simp [triMap_apply]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem triMap_surjective (e : κ' ≃+* κ) (b : Fin r → ℕ) : Function.Surjective (triMap (e : κ' →+* κ) b) := fun p =>
   ⟨triMap (e.symm : κ →+* κ') b p, by
@@ -94,7 +88,7 @@ theorem triMap_surjective (e : κ' ≃+* κ) (b : Fin r → ℕ) : Function.Surj
     simp [triMap_apply]⟩
 
 /- English proof (translation)
-Establish `h1 : (1 : Matrix (Fin r) (Fin r) κ) i j = e ((1 : Matrix (Fin r) (Fin r) κ') i j)`. Apply the tactic sequence `by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Rewrite using `[triMap_apply, h1, e.injective.eq_iff]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem triMap_eq_one_iff (e : κ' →+* κ) (b : Fin r → ℕ) (p : blockTri (κ := κ') b) (i j : Fin r) :
     ((triMap e b p : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) i j = (1 : Matrix (Fin r) (Fin r) κ) i j ↔
@@ -104,7 +98,7 @@ theorem triMap_eq_one_iff (e : κ' →+* κ) (b : Fin r → ℕ) (p : blockTri (
   rw [triMap_apply, h1, e.injective.eq_iff]
 
 /- English proof (translation)
-The claim follows from `h.mono irr := isIrreducible_comp σ _ (triMap_surjective e b) h.irr infl := fun p hp => h.infl _ fun i j hij => (triMap_eq_one_iff _ b p i j).2 (hp i j hij) cusp := fun S hS y hy => h.cusp S hS y fun u hu => by obtain ⟨u', rfl⟩ := triMap_surjective e b u exact hy u' fun i j hij => …`.
+A detailed English derivation is pending.
 -/
 theorem isCuspDatum_comp {V : Type} [AddCommGroup V] [Module ℂ V] (e : κ' ≃+* κ) (b : Fin r → ℕ)
     (σ : Representation ℂ (blockTri (κ := κ) b) V) (h : IsCuspDatum b σ) :
@@ -117,7 +111,7 @@ theorem isCuspDatum_comp {V : Type} [AddCommGroup V] [Module ℂ V] (e : κ' ≃
     exact hy u' fun i j hij => hu i j fun h' => hij ((triMap_eq_one_iff _ b u' i j).1 h')
 
 /- English proof (translation)
-Introduce and unpack `κ κ' _ _ e r θ ⟨d, b, σ, hσ, hθ⟩`. Use `⟨d, b, σ.comp (triMap (e.symm : κ' →+* κ) b), isCuspDatum_comp e.symm b σ hσ, fun x => ?_⟩` and prove the remaining obligations. Use `show θ _ = _`. Rewrite using `[hθ]`. Conclude with `(character_coind _ _ σ (glEquiv e.symm r) _ (triMap_surjective e.symm b) (fun _ => rfl) x).symm`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCuspProdChar_transport : ∀ (κ κ' : Type) [Field κ] [Field κ'] (e : κ ≃+* κ') (r : ℕ) (θ : GL (Fin r) κ → ℂ),
     GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.IsCuspProdChar θ → GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.IsCuspProdChar

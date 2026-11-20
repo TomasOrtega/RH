@@ -16,13 +16,11 @@ namespace GlobalTheory.TorsionForm
 open TorsionZero in
 
 /- English proof (translation)
-Take `⟨R, _, _, _, 𝒜, _, Φ, -, -, -, hρ⟩` from `SectionRing.exists_sectionRing K X p L hL`. Establish `hm` using `aeval_mem_of_isHomogeneous 𝒜 (fun j => (Φ N (s j)).2) hF`. Take `⟨u, hu⟩` from `(Φ (N * d)).surjective ⟨_, hm⟩`. Establish `hu' : (Φ _ u : R) = MvPolynomial.aeval (fun j => (Φ N (s j) : R)) F` using `congrArg Subtype.val hu`. Use `⟨u, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `z v hz ⟨l, c, hl, hv⟩`. Take `⟨ρ, hρc, hρ⟩` from `hρ l`. Set `ev : R →ₐ[K] K` to `{ (TorsionZero.val z ((lbPow L 0).U l) hl).comp ρ with commutes' := fun a => (congrArg (TorsionZero.val z ((lbPow L 0).U l) hl) (hρc a)).trans (val_const p z hz _ hl a) }`. Establish `e₁ : ev (Φ _ u) = TorsionZero.val z ((lbPow L (N * d)).U l) hl (u.f l)` using `congrArg (TorsionZero.val z ((lbPow L 0).U l) hl) (hρ _ u)`. Establish `e₂ : v = fun j => ev (Φ N (s j)) * c` using `funext fun j => by`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hv, _root_.mul_comm, CrdCalc.valR_eq z _ hl]`. Conclude with `congrArg (· * (c : K)) (congrArg (TorsionZero.val z ((lbPow L 0).U l) hl) (hρ _ (s j))).symm`. Rewrite using `[EndOnTorsion.le_nonzeroLocus_iff u z l hl, ← e₁, hu', MvPolynomial.comp_aeval_apply, ← MvPolynomial.coe_aeval_eq_eval]`. Express the relevant statement in the definitionally equal form `_ ↔ MvPolynomial.aeval v F ≠ 0`. Rewrite using `[e₂, aeval_mul_of_isHomogeneous _ _ hF, mul_ne_zero_iff]`.
-
-Conclude with `(and_iff_left (pow_ne_zero _ c.ne_zero)).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_form {K : Type} [Field K] {X : Scheme.{0}} [IsIntegral X] (p : X ⟶ Sp K) {L : LB X}
     (hL : L.IsLB) {N d : ℕ} {J : Type} (s : J → (lbPow L N).Sec) {F : MvPolynomial J K}
@@ -52,15 +50,13 @@ theorem exists_sec_of_form {K : Type} [Field K] {X : Scheme.{0}} [IsIntegral X] 
   exact (and_iff_left (pow_ne_zero _ c.ne_zero)).symm
 
 /- English proof (translation)
-Introduce `h K _ _ P N d k J s F hN hk hd hF hx`. Use `polAV_isIntegral_of_isAlgClosed K P` as an intermediate fact. Take `⟨u, hu⟩` from `exists_sec_of_form P.A.hom P.isLB s hF`. Establish `h₅ : ∀ x : Out.baseOver (Sp K) ⟶ P.A, x ^ k = 1 → ¬ ⊤ ≤ x.left ⁻¹ᵁ Out.nonzeroLocus u` using `fun x e hx' => by`. Take `⟨v, hv, h0⟩` from `hx x e`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(hu x.left v (Over.w x) hv).1 hx' h0`. Introduce and unpack `v ⟨z, hz, hv⟩`. Assume the negation of the conclusion as `hne`. Establish `hzu` using `(hu z v hz hv).2 hne`. Break down `Nat.eq_zero_or_pos P.g with hg | hg` into its components or cases.
+Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression.
 
-Set `x : Out.baseOver (Sp K) ⟶ P.A` to `Over.homMk z hz`. Establish `e : 𝟙 P.A = 1` using `EndOnTorsion.eq_of_dim_zero P P hg _ _ (by rw [Category.comp_id, MonObj.comp_one])`. Establish `e' : x = 1` using `by rw [← Category.comp_id x, e, MonObj.comp_one]`. Conclude with `h₅ x (by rw [e', one_pow]) hzu`. Take `⟨j, hj⟩` from `TopologicalSpace.Opens.mem_iSup.1 ((TorsionZero.top_le_iff z _).1 hzu)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM1 : 1 ≤ k` using `Nat.pos_of_ne_zero fun e => hk (by rw [e, Nat.cast_zero])`. Establish `hcard` using `(h.mulN (Sp K) P _ hM1).2.2.2.2 K (𝟙 _) hk`. Establish `h₄` using `card_zeros_on_torsion_coset_le h.mulN SectionRing.exists_sectionRing (PowSec.exists_basis_sections h.globalSectionsRank) (veryAmple_lbPow h.ample) (exists_mulPull_sec h.mulPull) SmoothDim.ringKrullDim_affineOpen polAV_isIntegral_of_isAlgClosed isIntegral_adjoin_of_mul_pow_mem gra …`. Establish `e : k ^ (2 * P.g) = k ^ 2 * k ^ (2 * P.g - 2)` using `by rw [← pow_add]; congr 1; omega`. Rewrite `h₄` using `[Nat.card_congr (Equiv.subtypeEquivRight fun x => and_iff_left_of_imp (h₅ x)), hcard, e]`.
-
-Conclude with `absurd (Nat.le_of_mul_le_mul_right h₄ (pow_pos hM1 _)) (not_le.2 hd)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_vanishingIdeal_of_vanish_on_torsion :
     Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (N d k : ℕ) (J : Type) (s : J → (lbPow P.L N).Sec) (F : MvPolynomial J K), 4 ≤ N → (k : K) ≠ 0 → N ^ P.g * P.g.factorial * d < k ^ 2 → F.IsHomogeneous d → (∀ x : (Out.baseOver (Sp K)) ⟶ P.A, x ^ k = 1 → ∃ v : J → K, Crd (lbPow P.L N) s (x.left : Sp K ⟶ P.A.left) v ∧ MvPolynomial.eval v F = 0) → F ∈ MvPolynomial.vanishingIdeal K (cone P.A.hom (lbPow P.L N) s) := by

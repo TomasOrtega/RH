@@ -25,24 +25,24 @@ def LetterCoprime (x z : LetA O n) : Prop :=
   ∃ m : ℕ, ∃ r ∈ W.AΔ, ∃ s ∈ W.AΔ, lA W ^ m = r * x + s * z
 
 /- English proof (translation)
-The claim follows from `W.AΔ.pow_mem (W.AΔ.natCast_mem _) m`.
+A detailed English derivation is pending.
 -/
 theorem l_pow_mem_invariants (m : ℕ) : lA W ^ m ∈ W.AΔ :=
   W.AΔ.pow_mem (W.AΔ.natCast_mem _) m
 
 /- English proof (translation)
-Take `⟨m, r, hr, s, hs, e⟩` from `h`. Conclude with `⟨m, s, hs, r, hr, by rw [e]; ring⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Coprime_symm {x z : LetA O n} (h : LetterCoprime W x z) : LetterCoprime W z x := by
   obtain ⟨m, r, hr, s, hs, e⟩ := h
   exact ⟨m, s, hs, r, hr, by rw [e]; ring⟩
 
 /- English proof (translation)
-Take `⟨a, r, hr, s, hs, e1⟩` from `h1`. Take `⟨b, r', hr', s', hs', e2⟩` from `h2`. Use `⟨a + b, r * r', W.AΔ.mul_mem hr hr', r * x * s' + s * r' * y + s * s' * z, ?_, ?_⟩` and prove the remaining obligations. Establish `hy : r' * y ∈ W.AΔ`. Establish `: r' * y = lA W ^ b - s' * z` using `by rw [e2]; ring`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `W.AΔ.sub_mem (l_pow_mem_invariants W b) (W.AΔ.mul_mem hs' hz)`. Use `W.AΔ.add_mem (W.AΔ.add_mem (W.AΔ.mul_mem (W.AΔ.mul_mem hr hx) hs') ?_) (W.AΔ.mul_mem (W.AΔ.mul_mem hs hs') hz)` and prove the remaining obligations. Rewrite using `[mul_assoc]`. Conclude with `W.AΔ.mul_mem hs hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[pow_add, e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem Coprime_mul {x y z : LetA O n} (hx : x ∈ W.AΔ) (hz : z ∈ W.AΔ)
     (h1 : LetterCoprime W x z) (h2 : LetterCoprime W y z) : LetterCoprime W (x * y) z := by
@@ -58,7 +58,7 @@ theorem Coprime_mul {x y z : LetA O n} (hx : x ∈ W.AΔ) (hz : z ∈ W.AΔ)
   · rw [pow_add, e1, e2]; ring
 
 /- English proof (translation)
-Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => exact ⟨0, 1, W.AΔ.one_mem, 0, W.AΔ.zero_mem, by simp⟩`. Consider the case `succ N ih => rw [pow_succ]`. Conclude with `Coprime_mul W (W.AΔ.pow_mem hx N) hz ih h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Coprime_pow {x z : LetA O n} (hx : x ∈ W.AΔ) (hz : z ∈ W.AΔ)
     (h : LetterCoprime W x z) : ∀ N : ℕ, LetterCoprime W (x ^ N) z := by
@@ -68,7 +68,7 @@ theorem Coprime_pow {x z : LetA O n} (hx : x ∈ W.AΔ) (hz : z ∈ W.AΔ)
   | succ N ih => rw [pow_succ]; exact Coprime_mul W (W.AΔ.pow_mem hx N) hz ih h
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, 1, W.AΔ.one_mem, 0, W.AΔ.zero_mem, by simp⟩`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, mul_comm]`. Conclude with `Coprime_mul W (W.AΔ.prod_mem fun i _ => hx i) hz (ih fun i hi => h i (Finset.mem_insert_of_mem hi)) (h a (Finset.mem_insert_self a s))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Coprime_prod (s : Finset ℕ) (x : ℕ → LetA O n) {z : LetA O n}
     (hx : ∀ i, x i ∈ W.AΔ) (hz : z ∈ W.AΔ) (h : ∀ i ∈ s, LetterCoprime W (x i) z) :
@@ -81,33 +81,31 @@ theorem Coprime_prod (s : Finset ℕ) (x : ℕ → LetA O n) {z : LetA O n}
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi)) (h a (Finset.mem_insert_self a s))
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.UnusedSlot80.UnivC.ps_mem W s`.
+A detailed English derivation is pending.
 -/
 theorem level_mem_invariants (s : ℕ) : ps W s ∈ W.AΔ :=
   Formalism.MainNotions.UnusedSlot80.UnivC.ps_mem W s
 
 /- English proof (translation)
-Establish `hps` using `level_mem_invariants W`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => exact absurd hS Finset.not_nonempty_empty`. Consider the case `insert a s ha ih`. Break down `s.eq_empty_or_nonempty with h0 | hne` into its components or cases.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `h0` using the available equality. Use `⟨0, fun _ => 1, fun _ => W.AΔ.one_mem, fun t ht => ⟨1, W.AΔ.one_mem, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h1 : t = a` using `by simpa using ht`. Substitute `h1` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Take `⟨m, ε, hεΔ, hεd, hsum⟩` from `ih hne`. Use `set P := ∏ t ∈ s, ps W t ^ N with hP`. Establish `hPΔ : P ∈ W.AΔ` using `W.AΔ.prod_mem fun t _ => W.AΔ.pow_mem (hps t) N`. Establish `hcop : LetterCoprime W (ps W a ^ N) P`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Coprime_symm W (Coprime_prod W s _ (fun t => W.AΔ.pow_mem (hps t) N) (W.AΔ.pow_mem (hps a) N) fun t ht => ?_)` and prove the remaining obligations. Establish `hta : t ≠ a` using `fun h => ha (h ▸ ht)`. Take `⟨κ, x, hx, y, hy, hxy⟩` from `hC t a hta`. Establish `h1 : LetterCoprime W (ps W t) (ps W a)` using `⟨κ, x, hx, y, hy, hxy⟩`. Establish `h2` using `Coprime_pow W (hps t) (hps a) h1 N`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Coprime_symm W (Coprime_pow W (hps a) (W.AΔ.pow_mem (hps t) N) (Coprime_symm W h2) N)`. Take `⟨m', r, hr, q, hq, he⟩` from `hcop`. Use `⟨m + m', fun t => if t = a then lA W ^ m * q * P else ε t * r * ps W a ^ N, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t`. Distinguish the cases in `h : t = a`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, if_true]`. Conclude with `W.AΔ.mul_mem (W.AΔ.mul_mem (l_pow_mem_invariants W m) hq) hPΔ`. Simplify using `only [h, if_false]`. Conclude with `W.AΔ.mul_mem (W.AΔ.mul_mem (hεΔ t) hr) (W.AΔ.pow_mem (hps a) N)`. Introduce `t ht`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : t = a`. Substitute `h` using the available equality. Use `⟨lA W ^ m * q, W.AΔ.mul_mem (l_pow_mem_invariants W m) hq, ?_⟩` and prove the remaining obligations. Simplify using `only [if_true, Finset.erase_insert ha]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hts : t ∈ s`. Break down `Finset.mem_insert.1 ht with h' | h'` into its components or cases. Conclude with `absurd h' h`. Conclude with `h'`. Take `⟨r₁, hr₁, he₁⟩` from `hεd t hts`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨r₁ * r, W.AΔ.mul_mem hr₁ hr, ?_⟩` and prove the remaining obligations. Establish `hat : a ∉ s.erase t` using `fun h' => ha (Finset.mem_of_mem_erase h')`. Simplify using `only [h, if_false, Finset.erase_insert_of_ne (Ne.symm h), Finset.prod_insert hat, he₁]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_insert ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [if_true]`. Establish `hs2 : ∑ t ∈ s, (if t = a then lA W ^ m * q * P else ε t * r * ps W a ^ N) = ∑ t ∈ s, ε t * r * ps W a ^ N` using `Finset.sum_congr rfl fun t ht => by`. Establish `: t ≠ a` using `fun h' => ha (h' ▸ ht)`. Simplify using `[this]`. Rewrite using `[hs2, ← Finset.sum_mul, ← Finset.sum_mul, hsum, pow_add, he]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_partition_of_l_pow_levels (hC : Formalism.MainNotions.UnusedSlot80.KL.PsCoprime W)
     (N : ℕ) (S : Finset ℕ) (hS : S.Nonempty) :
@@ -170,7 +168,7 @@ theorem exists_partition_of_l_pow_levels (hC : Formalism.MainNotions.UnusedSlot8
       ring
 
 /- English proof (translation)
-Take `⟨h3, h6⟩` from `Formalism.MainNotions.UnusedSlot80.SatW.ring_clauses W hR`. Use `Formalism.MainNotions.UnusedSlot80.SatW.isUnit_EE_of_UPi W (Formalism.MainNotions.UnusedSlot80.SatW.UPi_qpow W h3 h6 s)` as an intermediate fact. Simplify `this` using `[ps, qA, lA]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_algebraMap_ps_of_ringP (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) (s : ℕ) :
     IsUnit (algebraMap (LetA O n) W.EE (ps W s)) := by
@@ -186,19 +184,15 @@ theorem toNat_add_neg_identity (x : ℤ) (N : ℕ) :
   omega
 
 /- English proof (translation)
-Take `⟨u, hu, he⟩` from `hg`. Use `set α' : ℕ → ℤ := fun t => if t = s then α t else α t + N with hα'`. Use `set D := ∏ t ∈ Finset.range e, ps W t ^ (-(α t)).toNat with hD`. Use `set Nm := ∏ t ∈ Finset.range e, ps W t ^ (α t).toNat with hNm`. Use `set D' := ∏ t ∈ Finset.range e, ps W t ^ (-(α' t)).toNat with hD'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set Nm' := ∏ t ∈ Finset.range e, ps W t ^ (α' t).toNat with hNm'`. Use `set Pz := ∏ t ∈ (Finset.range e).erase s, ps W t ^ N with hPzDef`. Establish `hδ : ∏ t ∈ Finset.range e, ps W t ^ (if t = s then 0 else N) = Pz`. Rewrite using `[← Finset.mul_prod_erase _ _ (Finset.mem_range.2 hs)]`. Simplify using `only [if_true, pow_zero, one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_congr rfl fun t ht => by simp [Finset.ne_of_mem_erase ht]`. Establish `key : Nm' * D = Nm * Pz * D'`. Rewrite using `[← hδ, hNm', hD, hNm, hD', ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_add, ← pow_add, ← pow_add]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `congr 1`. Simplify using `only [hα']`. Distinguish the cases in `h : t = s`. Rewrite using `[if_pos h, if_pos h]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[if_neg h, if_neg h]`. Conclude with `toNat_add_neg_identity (α t) N`. Establish `hDU : IsUnit (algebraMap (LetA O n) W.EE D)`. Rewrite using `[hD, map_prod]`. Conclude with `Finset.prod_induction _ IsUnit (fun _ _ ha hb => ha.mul hb) isUnit_one fun t _ => by`.
-
-Rewrite using `[map_pow]`. Conclude with `(isUnit_algebraMap_ps_of_ringP W hR t).pow _`. Use `show ∃ u ∈ W.AΔ, algebraMap (LetA O n) W.EE D' * (algebraMap (LetA O n) W.EE (Pz * x) * g) = algebraMap (LetA O n) W.EE (letE a * Nm' * u)`. Use `⟨x * u, W.AΔ.mul_mem hx hu, ?_⟩` and prove the remaining obligations. Apply `hDU.mul_left_cancel` to reduce the goal to its premises.
-
-Establish `e1 : algebraMap (LetA O n) W.EE D * (algebraMap (LetA O n) W.EE D' * (algebraMap (LetA O n) W.EE (Pz * x) * g)) = algebraMap (LetA O n) W.EE D' * algebraMap (LetA O n) W.EE (Pz * x) * (algebraMap (LetA O n) W.EE D * g)` using `by ring`. Rewrite using `[e1, he]`. Rewrite using `[← map_mul, ← map_mul, ← map_mul]`. Use `congr 1`. Take the linear combination `(-(letE a * x * u)) * key`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem inId_shift_levels (hR : Formalism.MainNotions.UnusedSlot80.ToolsR.RingP W) {a : ZMod n} {e s N : ℕ}
     (hs : s < e) {α : ℕ → ℤ} {g : W.EE} (hg : InId W a e α g) {x : LetA O n} (hx : x ∈ W.AΔ) :

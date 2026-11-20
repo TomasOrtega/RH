@@ -12,41 +12,37 @@ open scoped Classical
 namespace GlobalTheory.Shin
 
 /- English proof (translation)
-Introduce `G Γ _ _ _ _ φ s hl hs χ hχ`. Use `haveI : Finite (G ⋊[φ] Γ) := Finite.of_equiv _ SemidirectProduct.equivProd.symm`. Use `haveI := Fintype.ofFinite (G ⋊[φ] Γ)`. Establish `hH : Nat.card (G ⋊[φ] Γ) = Nat.card G * Nat.card Γ`. Rewrite using `[Nat.card_congr SemidirectProduct.equivProd, Nat.card_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHne : (Nat.card (G ⋊[φ] Γ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `hord : orderOf s = Nat.card Γ`. Break down `(Nat.dvd_prime hl).1 (orderOf_dvd_natCard s) with h | h` into its components or cases. Conclude with `absurd (orderOf_eq_one_iff.1 h) hs`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hgen : ∀ t : Γ, t ∈ Subgroup.zpowers s`. Establish `htop : Subgroup.zpowers s = ⊤` using `Subgroup.eq_top_of_card_eq _ (by rw [Nat.card_zpowers, hord])`. Introduce `t`. Rewrite using `[htop]`. Discharge the goal by the elementary cases of `trivial`.
+Check the elementary cases of the proposition. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl0 : Nat.card Γ ≠ 0` using `hl.ne_zero`. Establish `hζ : IsPrimitiveRoot (Complex.exp (2 * Real.pi * Complex.I / (Nat.card Γ : ℂ))) (Nat.card Γ)` using `Complex.isPrimitiveRoot_exp _ hl0`. Take `⟨η, hη1, hηs, hF⟩` from `GlobalTheory.Shin.CosetFourier.fourier_coset_sums G Γ φ s hgen _ hζ`. Use `set ζ := Complex.exp (2 * Real.pi * Complex.I / (Nat.card Γ : ℂ)) with hζdef`. Establish `hχchar : IsChar ℂ ℂ χ`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, ρ, -, h⟩` from `hχ`. Conclude with `⟨n, ρ, h⟩`. Establish `hVR` using `virt_mul_comap_conj_ind_linear (G ⋊[φ] Γ)`. Establish `hnorm : ∑ᶠ x, χ x * star (χ x) = (Nat.card (G ⋊[φ] Γ) : ℂ)`. Take `⟨n, ρ, hρ, h⟩` from `hχ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI := hρ`. Use `haveI : Invertible (Nat.card (G ⋊[φ] Γ) : ℂ) := invertibleOfNonzero hHne`. Establish `ho` using `Representation.char_orthonormal ρ ρ`. Rewrite `ho` using `[if_pos ⟨Representation.Equiv.refl ρ⟩]`. Establish `hc : χ = ρ.character` using `funext fun g => by simpa using h g`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[finsum_eq_sum_of_fintype]`. Establish `hst : ∀ x, star (χ x) = χ x⁻¹` using `star_virt_eq_inv _ χ (isChar_mem_virt_complex hχchar)`. Repeatedly rewrite using `[hst]`. Rewrite using `[hc]`. Conclude with `((inv_mul_eq_one₀ hHne).1 (by simpa using ho)).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hηstar : ∀ x, (η x : ℂ) * star (η x : ℂ) = 1`. Introduce `x`. Establish `h` using `star_virt_eq_inv _ (fun x => (η x : ℂ)) (hVR.2.2.2.2 η) x`. Rewrite using `[h, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Establish `hψchar : ∀ a : ℕ, IsChar ℂ ℂ (fun x => χ x * (η x : ℂ) ^ a)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Establish `h` using `isChar_mul_complex hχchar (isChar_monoidHom_complex (η ^ a))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Simplify using `[Pi.mul_apply]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hψnorm : ∀ a : ℕ, ∑ᶠ x, (fun x => χ x * (η x : ℂ) ^ a) x * star ((fun x => χ x * (η x : ℂ) ^ a) x) = (Nat.card (G ⋊[φ] Γ) : ℂ)`. Introduce `a`. Rewrite using `[← hnorm]`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[star_mul, star_pow]`. Combine the equalities or inequalities in the displayed calculation. Establish `hψirr : ∀ a : ℕ, IsIrrChar ℂ ℂ (fun x => χ x * (η x : ℂ) ^ a)` using `fun a => ((irr_of_norm_one _ _ (isChar_mem_virt_complex (hψchar a)) (hψnorm a)).2 (hψchar a)).1`. Distinguish the cases in `hcase : ∃ a, 0 < a ∧ a < Nat.card Γ ∧ (fun x => χ x * (η x : ℂ) ^ a) = χ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `left`. Take `⟨a, ha0, hal, he⟩` from `hcase`. Introduce `δ`. Establish `h1` using `congrFun he (inl δ * inr s)`. Establish `hv : (η (inl δ * inr s) : ℂ) = ζ` using `by rw [map_mul, hη1, one_mul, hηs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Rewrite `h1` using `[hv]`. Establish `hζa : ζ ^ a ≠ 1` using `hζ.pow_ne_one_of_pos_of_lt ha0.ne' hal`. Establish `h2 : χ (inl δ * inr s) * (ζ ^ a - 1) = 0` using `by rw [mul_sub, h1, mul_one, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_right (sub_ne_zero.2 hζa)`. Use `right push_neg at hcase`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNa : ∀ a ∈ Finset.range (Nat.card Γ), a ≠ 0 → ∑ᶠ x, χ x * star (χ x * (η x : ℂ) ^ a) = 0`. Introduce `a ha ha0`. Establish `hne` using `hcase a (Nat.pos_of_ne_zero ha0) (Finset.mem_range.1 ha)`. Establish `hp` using `pair_eq_zero_of_isIrrChar_ne _ χ _ hχ (hψirr a) (Ne.symm hne)`. Unfold `pair at hp`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs0` using `(mul_eq_zero.1 hp).resolve_left (inv_ne_zero hHne)`. Rewrite using `[← hs0]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `h` using `star_virt_eq_inv _ _ (isChar_mem_virt_complex (hψchar a)) x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h]`. Establish `hN0 : ∑ᶠ x, χ x * star (χ x * (η x : ℂ) ^ 0) = (Nat.card (G ⋊[φ] Γ) : ℂ)`. Simplify using `using hnorm`. Establish `h0mem : 0 ∈ Finset.range (Nat.card Γ)` using `Finset.mem_range.2 (Nat.pos_of_ne_zero hl0)`. Take `⟨hA, hB⟩` from `hF χ χ`.
-
-Rewrite `hA` using `[Finset.sum_eq_single 0 (fun a ha ha0 => hNa a ha ha0) (fun h => absurd h0mem h), hN0, hH]`. Rewrite `hB` using `[Finset.sum_eq_single 0 (fun a ha ha0 => by rw [hNa a ha ha0, mul_zero]) (fun h => absurd h0mem h), pow_zero, one_mul, hN0, hH]`. Establish `hlc : (Nat.card Γ : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hl0`. Move the coercions through the operations in `at hA hB`. Establish `hSG : ∑ᶠ g, χ (inl g) * star (χ (inl g)) = (Nat.card G : ℂ)` using `mul_left_cancel₀ hlc (by rw [hA, mul_comm])`.
-
-Use `⟨?_, mul_left_cancel₀ hlc (by rw [hB, mul_comm])⟩` and prove the remaining obligations. Establish `hrchar : IsChar ℂ ℂ (fun g => χ (inl g))`. Take `⟨n, ρ, h⟩` from `hχchar`. Conclude with `⟨n, ρ.comp SemidirectProduct.inl, fun g => h _⟩`. Conclude with `((irr_of_norm_one G _ (isChar_mem_virt_complex hrchar) hSG).2 hrchar).1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem clifford_prime_index : ∀ (G Γ : Type) [Group G] [Finite G] [Group Γ] [Fintype Γ] (φ : Γ →* MulAut G) (s : Γ),
     (Nat.card Γ).Prime → s ≠ 1 → ∀ χ : G ⋊[φ] Γ → ℂ, IsIrrChar ℂ ℂ χ →

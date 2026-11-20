@@ -19,14 +19,14 @@ Both sides reduce to the same expression.
 theorem of_mulI (M N : LieI ι a) : Matrix.of (mulI M N) = Matrix.of M * Matrix.of N := rfl
 
 /- English proof (translation)
-Simplify using `[mulI, Matrix.mul_apply, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulI_apply (M N : LieI ι a) (i k : Fin a) (l : ι) :
     mulI M N i k l = ∑ j, M i j l * N j k l := by
   simp [mulI, Matrix.mul_apply, Finset.sum_apply]
 
 /- English proof (translation)
-Use `contDiff_pi.2 fun i => contDiff_pi.2 fun k => contDiff_pi.2 fun l => ?_` and prove the remaining obligations. Simplify using `only [mulI_apply]`. Use `ContDiff.sum fun j _ => ?_` and prove the remaining obligations. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem contDiff_mulI : ContDiff ℝ ∞ (fun p : LieI ι a × LieI ι a => mulI p.1 p.2) := by
   refine contDiff_pi.2 fun i => contDiff_pi.2 fun k => contDiff_pi.2 fun l => ?_
@@ -35,16 +35,16 @@ theorem contDiff_mulI : ContDiff ℝ ∞ (fun p : LieI ι a × LieI ι a => mulI
   fun_prop
 
 /- English proof (translation)
-Simplify using `only [Matrix.isUnit_iff_isUnit_det, IsUnit.mul_iff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isUnit_mul_iff' {A B : Matrix (Fin a) (Fin a) (ι → ℂ)} :
     IsUnit (A * B) ↔ IsUnit A ∧ IsUnit B := by
   simp only [Matrix.isUnit_iff_isUnit_det, IsUnit.mul_iff]
 
 /- English proof (translation)
-Establish `hc : Continuous fun M : LieI ι a => (Matrix.of M).det` using `Continuous.matrix_det continuous_id`. Establish `: {M : LieI ι a | IsUnit (Matrix.of M)} = (fun M : LieI ι a => (Matrix.of M).det) ⁻¹' {x | IsUnit x}`. Use extensionality with `M`. Simplify using `[Matrix.isUnit_iff_isUnit_det]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.isOpen.preimage hc`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_units : IsOpen {M : LieI ι a | IsUnit (Matrix.of M)} := by
   have hc : Continuous fun M : LieI ι a => (Matrix.of M).det := Continuous.matrix_det continuous_id
@@ -54,7 +54,7 @@ theorem isOpen_units : IsOpen {M : LieI ι a | IsUnit (Matrix.of M)} := by
   rw [this]; exact Units.isOpen.preimage hc
 
 /- English proof (translation)
-Simplify using `[oneI]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isUnit_oneI : IsUnit (Matrix.of (oneI ι a)) := by
   simp [oneI]
@@ -81,35 +81,35 @@ open Classical in
 def opI (M : LieI ι a) : X →L[ℂ] X := if h : IsUnit (Matrix.of M) then ρ h.unit else 0
 
 /- English proof (translation)
-Apply the tactic sequence `unfold orb opI; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem orb_eq (v : X) (M : LieI ι a) : orb ρ v M = opI ρ M v := by
   unfold orb opI; split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `M`. Simplify using `[orb_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem orb_add (v w : X) : orb ρ (v + w) = orb ρ v + orb ρ w := by
   funext M; simp [orb_eq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `M`. Simplify using `[orb_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem orb_smul (c : ℂ) (v : X) : orb ρ (c • v) = c • orb ρ v := by
   funext M; simp [orb_eq]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `M`. Simplify using `[orb_eq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem orb_zero : orb ρ (0 : X) = 0 := by
   funext M; simp [orb_eq]
 
 /- English proof (translation)
-Unfold `opI`. Distinguish the cases in `hM : IsUnit (Matrix.of M)`. Distinguish the cases in `hN : IsUnit (Matrix.of N)`. Establish `hMN : IsUnit (Matrix.of (mulI M N))` using `by rw [of_mulI]; exact hM.mul hN`. Rewrite using `[dif_pos hM, dif_pos hN, dif_pos hMN, ← ContinuousLinearMap.mul_apply, ← map_mul]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use extensionality with `: 1`. Simplify using `[of_mulI]`. Establish `hMN : ¬ IsUnit (Matrix.of (mulI M N))` using `by rw [of_mulI, isUnit_mul_iff']; tauto`. Rewrite using `[dif_neg hN, dif_neg hMN]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hMN : ¬ IsUnit (Matrix.of (mulI M N))` using `by rw [of_mulI, isUnit_mul_iff']; tauto`. Rewrite using `[dif_neg hM, dif_neg hMN]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem opI_mul (M N : LieI ι a) (v : X) : opI ρ M (opI ρ N v) = opI ρ (mulI M N) v := by
   unfold opI
@@ -140,7 +140,7 @@ def Good (𝒢 : Submodule ℂ (V → X)) (G : V → X) : Prop :=
 variable {ρ} {𝒢 : Submodule ℂ (V → X)}
 
 /- English proof (translation)
-Use `⟨continuous_const, fun N => ⟨0, fun y => by simp⟩, fun _ => 0, fun _ => zero_mem _, fun y => ⟨0, fun Z => by simp, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [Pi.zero_apply, orb_zero]`. Conclude with `hasFDerivAt_const _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem good_zero : Good ρ 𝒢 0 := by
   refine ⟨continuous_const, fun N => ⟨0, fun y => by simp⟩, fun _ => 0, fun _ => zero_mem _,
@@ -149,11 +149,11 @@ theorem good_zero : Good ρ 𝒢 0 := by
   exact hasFDerivAt_const _ _
 
 /- English proof (translation)
-Take `⟨c1, r1, D1, m1, d1⟩` from `h1`. Take `⟨c2, r2, D2, m2, d2⟩` from `h2`. Use `⟨c1.add c2, fun N => ?_, fun Z => D1 Z + D2 Z, fun Z => add_mem (m1 Z) (m2 Z), fun y => ?_⟩` and prove the remaining obligations. Take `⟨C1, hC1⟩` from `r1 N`. Take `⟨C2, hC2⟩` from `r2 N`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨C1 + C2, fun y => ?_⟩` and prove the remaining obligations. Establish `hp : 0 ≤ (1 + ‖y‖) ^ N` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Take `⟨E1, e1, f1⟩` from `d1 y`. Take `⟨E2, e2, f2⟩` from `d2 y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨E1 + E2, fun Z => by simp [e1, e2], ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, orb_add]`. Conclude with `f1.add f2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_add {G1 G2 : V → X} (h1 : Good ρ 𝒢 G1) (h2 : Good ρ 𝒢 G2) : Good ρ 𝒢 (G1 + G2) := by
   obtain ⟨c1, r1, D1, m1, d1⟩ := h1
@@ -174,9 +174,9 @@ theorem good_add {G1 G2 : V → X} (h1 : Good ρ 𝒢 G1) (h2 : Good ρ 𝒢 G2)
     exact f1.add f2
 
 /- English proof (translation)
-Take `⟨c0, r, D, m, d⟩` from `h`. Use `⟨c0.const_smul c, fun N => ?_, fun Z => c • D Z, fun Z => Submodule.smul_mem _ c (m Z), fun y => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `r N`. Use `⟨‖c‖ * C, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, mul_left_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hC y) (norm_nonneg c)`. Take `⟨E, e, f⟩` from `d y`. Use `⟨c • E, fun Z => by simp [e], ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, orb_smul]`. Conclude with `f.const_smul c`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_smul (c : ℂ) {G : V → X} (h : Good ρ 𝒢 G) : Good ρ 𝒢 (c • G) := by
   obtain ⟨c0, r, D, m, d⟩ := h
@@ -192,9 +192,9 @@ theorem good_smul (c : ℂ) {G : V → X} (h : Good ρ 𝒢 G) : Good ρ 𝒢 (c
     exact f.const_smul c
 
 /- English proof (translation)
-Introduce `G hG`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem G hG => exact h G hG`. Consider the case `zero => exact good_zero`. Consider the case `add G1 G2 _ _ h1 h2 => exact good_add h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c G _ h => exact good_smul c h`.
+Treat this case separately.
 -/
 theorem rapidFam_span {s : Set (V → X)} (h : ∀ G ∈ s, Good ρ (Submodule.span ℂ s) G) :
     RapidFam ρ (Submodule.span ℂ s) := by
@@ -210,9 +210,9 @@ end Rapid
 section Smooth
 
 /- English proof (translation)
-Use `contDiff_iff_contDiffAt.2 fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ O`. Conclude with `hη.contDiffAt.smul (hf.contDiffAt (hO.mem_nhds hx))`. Establish `h : η =ᶠ[𝓝 x] 0` using `notMem_tsupport_iff_eventuallyEq.1 fun h => hx (hηO h)`. Use `(contDiffAt_const (c := (0 : E))).congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [h] with y hy`. Simplify using `[hy]`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_smul_of_on {V E : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [NormedAddCommGroup E]
     [NormedSpace ℂ E] {O : Set V} (hO : IsOpen O) {η : V → ℂ} (hη : ContDiff ℝ ∞ η)
@@ -229,13 +229,13 @@ variable {ι : Type} [Fintype ι] {a : ℕ} {X : Type} [NormedAddCommGroup X] [N
   (ρ : GL (Fin a) (ι → ℂ) →* (X →L[ℂ] X)) {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V]
 
 /- English proof (translation)
-Introduce `q hq`. Use `ContDiffAt.contDiffWithinAt ?_` and prove the remaining obligations. Distinguish the cases in `hx : q.2 ∈ O`. Establish `hq1 : IsUnit (Matrix.of q.1)` using `(Set.mem_prod.1 hq).1`. Establish `hu : IsUnit (Matrix.of (mulI q.1 (σ q.2)))` using `by rw [of_mulI]; exact hq1.mul (hσu _ hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσx : ContDiffAt ℝ ∞ σ q.2` using `hσ.contDiffAt (hO.mem_nhds hx)`. Establish `h0 : ContDiffAt ℝ ∞ (fun q : LieI ι a × V => (q.1, σ q.2)) q` using `contDiffAt_fst.prodMk (ContDiffAt.comp (g := σ) (f := fun q : LieI ι a × V => q.2) q hσx contDiffAt_snd)`. Establish `h1 : ContDiffAt ℝ ∞ (fun q : LieI ι a × V => mulI q.1 (σ q.2)) q` using `ContDiffAt.comp (g := fun p : LieI ι a × LieI ι a => mulI p.1 p.2) (f := fun q : LieI ι a × V => (q.1, σ q.2)) q (contDiff_mulI.contDiffAt) h0`. Establish `hw' : ContDiffOn ℝ ∞ (orb ρ w) {M | IsUnit (Matrix.of M)}` using `hw`. Establish `hwu : ContDiffAt ℝ ∞ (orb ρ w) (mulI q.1 (σ q.2))` using `hw'.contDiffAt (isOpen_units.mem_nhds hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ContDiffAt ℝ ∞ (fun q : LieI ι a × V => orb ρ w (mulI q.1 (σ q.2))) q` using `ContDiffAt.comp (g := orb ρ w) (f := fun q : LieI ι a × V => mulI q.1 (σ q.2)) q hwu h1`. Establish `h3 : ContDiffAt ℝ ∞ (fun q : LieI ι a × V => η q.2) q` using `ContDiffAt.comp (g := η) (f := fun q : LieI ι a × V => q.2) q hη.contDiffAt contDiffAt_snd`. Conclude with `h3.smul h2`. Establish `h : η =ᶠ[𝓝 q.2] 0` using `notMem_tsupport_iff_eventuallyEq.1 fun h => hx (hηO h)`. Use `(contDiffAt_const (c := (0 : X))).congr_of_eventuallyEq ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [(continuous_snd.tendsto q).eventually h] with y hy`. Simplify using `[hy]`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_cut {O : Set V} (hO : IsOpen O) {η : V → ℂ} (hη : ContDiff ℝ ∞ η)
     (hηO : tsupport η ⊆ O) {σ : V → LieI ι a} (hσ : ContDiffOn ℝ ∞ σ O)
@@ -267,13 +267,13 @@ theorem contDiffOn_cut {O : Set V} (hO : IsOpen O) {η : V → ℂ} (hη : ContD
 
 variable {ρ} in
 /- English proof (translation)
-Establish `hTS : Matrix.of T * Matrix.of S = 1` using `mul_eq_one_comm.1 hST`. Establish `hm : ∀ M, mulI S (mulI T (mulI M S)) = mulI M S`. Introduce `M`. Apply `Matrix.of.injective` to reduce the goal to its premises. Simplify using `only [of_mulI]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, hST, one_mul]`. Establish `he : (fun M => orb ρ w (mulI M S)) = fun M => ((opI ρ S).restrictScalars ℝ) (orb ρ w (conjL T S M))`. Use function extensionality and compare the values at `M`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', orb_eq, opI_mul, conjL_apply, hm]`. Establish `h1 : conjL T S (oneI ι a) = oneI ι a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Matrix.of.injective` to reduce the goal to its premises. Simplify using `[conjL_apply, of_mulI, oneI, hTS]`. Establish `h2 : HasFDerivAt (fun M => orb ρ w (conjL T S M)) (Dw.comp (conjL T S)) (oneI ι a)`. Establish `hw2` using `hw`. Rewrite `hw2` using `[← h1]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hw2.comp (oneI ι a) (conjL T S).hasFDerivAt`. Rewrite using `[he]`. Conclude with `((opI ρ S).restrictScalars ℝ).hasFDerivAt.comp (oneI ι a) h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_orb_mul {w : X} {Dw : LieI ι a →L[ℝ] X} (hw : HasFDerivAt (orb ρ w) Dw (oneI ι a))
     {S T : LieI ι a} (hST : Matrix.of S * Matrix.of T = 1) :
@@ -308,14 +308,14 @@ variable {V P X : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimens
   [NormedAddCommGroup X] [NormedSpace ℂ X] (β : V →L[ℝ] V →L[ℝ] ℝ)
 
 /- English proof (translation)
-Establish `: Continuous fun x : V => β x y` using `β.continuous₂.comp (continuous_id.prodMk continuous_const)`. Use `fun_prop`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_ch (y : V) : Continuous fun x : V => Complex.exp (-(β x y : ℝ) * Complex.I) := by
   have : Continuous fun x : V => β x y := β.continuous₂.comp (continuous_id.prodMk continuous_const)
   fun_prop
 
 /- English proof (translation)
-The claim follows from `((continuous_ch β y).smul hF).integrable_of_hasCompactSupport (hc.smul_left (f := fun x => Complex.exp (-(β x y : ℝ) * Complex.I)))`.
+A detailed English derivation is pending.
 -/
 theorem integrable_ch {F : V → X} (hF : Continuous F) (hc : HasCompactSupport F) (y : V) :
     Integrable (fun x => Complex.exp (-(β x y : ℝ) * Complex.I) • F x) μ :=
@@ -323,19 +323,17 @@ theorem integrable_ch {F : V → X} (hF : Continuous F) (hc : HasCompactSupport 
     (hc.smul_left (f := fun x => Complex.exp (-(β x y : ℝ) * Complex.I)))
 
 /- English proof (translation)
-Use `set f : V → ℂ := fun t => Complex.exp (-(β t y : ℝ) * Complex.I) with hf_def`. Establish `hf : LocallyIntegrable f μ` using `(continuous_ch β y).locallyIntegrable`. Use `set g : P → V → X := fun p t => Ψ (p, -t) with hg_def`. Establish `hmaps : Set.MapsTo (fun q : P × V => (q.1, -q.2)) (s ×ˢ Set.univ) (s ×ˢ Set.univ)` using `fun q hq => ⟨hq.1, trivial⟩`. Establish `hg : ContDiffOn ℝ 1 (↿g) (s ×ˢ Set.univ)` using `hΨ.comp (contDiff_fst.prodMk contDiff_snd.neg).contDiffOn hmaps`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgs : ∀ p x, p ∈ s → x ∉ -k → g p x = 0` using `fun p x hp hx => h0 p hp (-x) (by simpa using hx)`. Establish `H` using `hasFDerivAt_convolution_right_with_param (μ := μ) (ContinuousLinearMap.lsmul ℝ ℂ) hs hk.neg hgs hf hg (p0, 0) hp0`. Simplify using `only at H`. Establish `hin : HasFDerivAt (fun p : P => (p, (0 : V))) ((ContinuousLinearMap.id ℝ P).prod 0) p0` using `(hasFDerivAt_id p0).prodMk (hasFDerivAt_const (0 : V) p0)`. Establish `H2` using `H.comp p0 hin`.
+Simplify by unfolding definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdiff : ∀ x Z, fderiv ℝ (↿g) (p0, x) (Z, 0) = L (-x) Z`. Introduce `x Z`. Establish `hd : DifferentiableAt ℝ (↿g) (p0, x)` using `(hg.contDiffAt ((hs.prod isOpen_univ).mem_nhds ⟨hp0, trivial⟩)).differentiableAt one_ne_zero`. Establish `h1 : HasFDerivAt (fun p => (↿g) (p, x)) ((fderiv ℝ (↿g) (p0, x)).comp ((ContinuousLinearMap.id ℝ P).prod 0)) p0` using `hd.hasFDerivAt.comp p0 (((hasFDerivAt_id p0).prodMk (hasFDerivAt_const x p0)) : HasFDerivAt (fun p : P => (p, x)) ((ContinuousLinearMap.id ℝ P).prod 0) p0)`. Establish `h2 : HasFDerivAt (fun p => (↿g) (p, x)) (L (-x)) p0` using `hL (-x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1.unique h2]`. Simplify using the standard rewrite rules. Establish `hcont : Continuous fun x : V => fderiv ℝ (↿g) (p0, x)` using `(hg.continuousOn_fderiv_of_isOpen (hs.prod isOpen_univ) le_rfl).comp_continuous (continuous_const.prodMk continuous_id) fun x => ⟨hp0, trivial⟩`. Establish `hcs : HasCompactSupport fun x : V => fderiv ℝ (↿g) (p0, x)`. Use `HasCompactSupport.intro hk.neg fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hasFDerivAt_zero_of_eventually_const 0 ?_).fderiv` and prove the remaining obligations. Establish `M2 : (-k)ᶜ ∈ 𝓝 x` using `hk.neg.isClosed.isOpen_compl.mem_nhds hx`. Rewrite using `[nhds_prod_eq]`. Use `filter_upwards [Filter.prod_mem_prod (hs.mem_nhds hp0) M2]`. Introduce and unpack `⟨p, t⟩ ⟨hp, ht⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgs p t hp ht`. Use `⟨_, fun Z => ?_, H2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun p => ?_)⟩` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.prod_apply, ContinuousLinearMap.id_apply, ContinuousLinearMap.zero_apply]`. Rewrite using `[convolution_precompR_apply _ hf hcs hcont, convolution_def]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
-
-Simplify using `only [zero_sub, ContinuousLinearMap.lsmul_apply, hdiff, neg_neg, hf_def]`. Simplify using `[Function.comp, convolution_def, FT, hg_def, hf_def]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_FT_param (y : V) {Ψ : P × V → X} {s : Set P} {k : Set V} (hs : IsOpen s)
     (hk : IsCompact k) (hΨ : ContDiffOn ℝ 1 Ψ (s ×ˢ Set.univ)) (h0 : ∀ p ∈ s, ∀ x ∉ k, Ψ (p, x) = 0)
@@ -396,27 +394,23 @@ variable {ι : Type} [Fintype ι] {a : ℕ} {X : Type} [NormedAddCommGroup X] [N
   [μ.IsAddHaarMeasure] (β : V →L[ℝ] V →L[ℝ] ℝ)
 
 /- English proof (translation)
-Establish `hσu : ∀ x ∈ O, IsUnit (Matrix.of (σ x))` using `fun x hx => ⟨⟨_, _, hστ x hx, mul_eq_one_comm.1 (hστ x hx)⟩, rfl⟩`. Establish `hη0 : ∀ x ∉ O, η x = 0` using `fun x hx => (notMem_tsupport_iff_eventuallyEq.1 fun h => hx (hηO h)).eq_of_nhds`. Establish `hF : ∀ (θ : V → ℂ) (v : X), ContDiff ℝ ∞ θ → tsupport θ ⊆ O → SmV ρ v → ContDiff ℝ ∞ (fun x => θ x • orb ρ v (σ x))` using `fun θ v hθ hθO hv => contDiff_smul_of_on hO hθ hθO ((show ContDiffOn ℝ ∞ (orb ρ v) {M | IsUnit (Matrix.of M)} from hv).comp hσ fun x hx => hσu x hx)`. Establish `hFc : ∀ (θ : V → ℂ) (v : X), HasCompactSupport θ → HasCompactSupport (fun x => θ x • orb ρ v (σ x))` using `fun θ v h => h.smul_right`. Take `⟨hGc, hGr⟩` from `hS4 V μ β hβ X _ (hF η w hη hηO hw) (hFc η w hηc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Dw, hDw, hDwS⟩` from `hD w hw`. Use `set b := Module.finBasis ℝ (LieI ι a)`. Use `set coef : V → LieI ι a → Fin (Module.finrank ℝ (LieI ι a)) → ℂ := fun x Z i => (Complex.ofRealCLM.comp (LinearMap.toContinuousLinearMap (b.coord i))) (conjL (τ x) (σ x) Z) with hcoef`. Establish `hcoefC : ∀ Z i, ContDiffOn ℝ ∞ (fun x => coef x Z i) O`. Introduce `Z i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ContDiffOn ℝ ∞ (fun x => mulI Z (σ x)) O` using `ContDiff.comp_contDiffOn (g := fun p : LieI ι a × LieI ι a => mulI p.1 p.2) (f := fun x => (Z, σ x)) contDiff_mulI (contDiffOn_const.prodMk hσ)`. Establish `h1 : ContDiffOn ℝ ∞ (fun x => conjL (τ x) (σ x) Z) O` using `ContDiff.comp_contDiffOn (g := fun p : LieI ι a × LieI ι a => mulI p.1 p.2) (f := fun x => (τ x, mulI Z (σ x))) contDiff_mulI (hτ.prodMk h0)`. Conclude with `ContDiff.comp_contDiffOn (g := ⇑(Complex.ofRealCLM.comp (LinearMap.toContinuousLinearMap (b.coord i)))) (f := fun x => conjL (τ x) (σ x) Z) (ContinuousLinearMap.contDiff _) h1`. Establish `hηi : ∀ Z i, ContDiff ℝ ∞ (fun x => η x * coef x Z i)` using `fun Z i => contDiff_smul_of_on hO hη hηO (hcoefC Z i)`. Establish `hηic : ∀ Z i, HasCompactSupport (fun x => η x * coef x Z i)` using `fun Z i => hηc.mul_right`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hηiO : ∀ Z i, tsupport (fun x => η x * coef x Z i) ⊆ O` using `fun Z i => (tsupport_mul_subset_left).trans hηO`. Use `⟨hGc, hGr, fun Z => ∑ i, FT μ β (fun x => (η x * coef x Z i) • orb ρ (Dw (b i)) (σ x)), fun Z => Submodule.sum_mem _ fun i _ => h𝒢 _ _ (hηi Z i) (hηic Z i) (hηiO Z i) (hDwS _), fun y => ?_⟩` and prove the remaining obligations. Use `set Ψ : LieI ι a × V → X := fun q => η q.2 • orb ρ w (mulI q.1 (σ q.2)) with hΨ`. Use `set Lx : V → LieI ι a →L[ℝ] X := fun x => η x • ((opI ρ (σ x)).restrictScalars ℝ).comp (Dw.comp (conjL (τ x) (σ x))) with hLx`. Establish `hL : ∀ x, HasFDerivAt (fun p => Ψ (p, x)) (Lx x) (oneI ι a)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x`. Distinguish the cases in `hx : x ∈ O`. Conclude with `(hasFDerivAt_orb_mul hDw (hστ x hx)).const_smul (η x)`. Establish `e : (fun p => Ψ (p, x)) = fun _ => 0` using `by funext p; simp [hΨ, hη0 x hx]`. Rewrite using `[e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hLx, hη0 x hx, zero_smul]`. Conclude with `hasFDerivAt_const _ _`. Establish `hΨ0 : ∀ p ∈ {M : LieI ι a | IsUnit (Matrix.of M)}, ∀ x ∉ tsupport η, Ψ (p, x) = 0`. Introduce `p _ x hx`. Simplify using `[hΨ, image_eq_zero_of_notMem_tsupport hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨D', hD', hder⟩` from `hasFDerivAt_FT_param μ β y isOpen_units hηc ((contDiffOn_cut ρ hO hη hηO hσ hσu hw).of_le (by simp)) hΨ0 isUnit_oneI Lx hL`. Use `⟨D', fun Z => ?_, ?_⟩` and prove the remaining obligations. Establish `key : ∀ x, Lx x Z = ∑ i, (η x * coef x Z i) • orb ρ (Dw (b i)) (σ x)`. Introduce `x`. Simplify using `only [hLx, hcoef, ContinuousLinearMap.smul_apply, Complex.ofRealCLM_apply, LinearMap.coe_toContinuousLinearMap', ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', orb_eq]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => rw [← b.sum_repr (conjL (τ x) (σ x) Z)]`. Simplify using `only [map_sum, map_smul, ContinuousLinearMap.map_smul_of_tower, Finset.smul_sum, mul_smul, Complex.coe_smul, Module.Basis.coord_apply]`. Rewrite using `[hD']`. Use `beta_reduce`. Rewrite using `[Finset.sum_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `FT`. Rewrite using `[← integral_finsetSum _ fun i _ => integrable_ch μ β ((hF _ _ (hηi Z i) (hηiO Z i) (hDwS _)).continuous) (hFc _ _ (hηic Z i)) y]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [key, Finset.smul_sum]`. Establish `e : orb ρ (FT μ β (fun x => η x • orb ρ w (σ x)) y) = fun p => FT μ β (fun x => Ψ (p, x)) y`.
-
-Use function extensionality and compare the values at `M`. Rewrite using `[orb_eq]`. Unfold `FT`. Rewrite using `[← ContinuousLinearMap.integral_comp_comm _ (integrable_ch μ β (hF η w hη hηO hw).continuous (hFc η w hηc) y)]`. Use `congr 1`.
-
-Use function extensionality and compare the values at `x`. Simplify using `only [map_smul, hΨ, orb_eq, opI_mul]`. Rewrite using `[e]`. Conclude with `hder`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_gen (hS4 : S4) (hβ : ∀ y, (∀ x, β x y = 0) → y = 0)
     (hD : ∀ v, SmV ρ v → ∃ D : LieI ι a →L[ℝ] X, HasFDerivAt (orb ρ v) D (oneI ι a) ∧ ∀ Z, SmV ρ (D Z))
@@ -515,9 +509,9 @@ end ConjugationOnUnits
 
 open ConjugationOnUnits in
 /- English proof (translation)
-Introduce `hS2 hS4 ι _ a X _ _ _ ρ hρ V _ _ _ _ _ μ _ β hβ O σ τ hO hσ hτ hστ`. Take `⟨-, -, -, -, -, hD⟩` from `hS2 ι a X ρ hρ`. Set `gen : Set (V → X)` to `{G | ∃ (η : V → ℂ) (w : X), ContDiff ℝ ∞ η ∧ HasCompactSupport η ∧ tsupport η ⊆ O ∧ SmV ρ w ∧ G = FT μ β (fun x => η x • orb ρ w (σ x))}`. Establish `hmem : ∀ (η : V → ℂ) (w : X), ContDiff ℝ ∞ η → HasCompactSupport η → tsupport η ⊆ O → SmV ρ w → FT μ β (fun x => η x • orb ρ w (σ x)) ∈ Submodule.span ℂ gen` using `fun η w h1 h2 h3 h4 => Submodule.subset_span ⟨η, w, h1, h2, h3, h4, rfl⟩`. Use `⟨Submodule.span ℂ gen, rapidFam_span fun G hG => ?_, hmem⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨η, w, h1, h2, h3, h4, rfl⟩` from `hG`. Conclude with `good_gen ρ μ β hS4 hβ hD hO hσ hτ hστ hmem h1 h2 h3 h4`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem conjugation_units_open : S2 → S4 → S6 := by
   intro hS2 hS4 ι _ a X _ _ _ ρ hρ V _ _ _ _ _ μ _ β hβ O σ τ hO hσ hτ hστ

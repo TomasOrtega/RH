@@ -9,11 +9,11 @@ namespace Formalism.L2.Pj
 open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.T0
 
 /- English proof (translation)
-Establish `h'` using `h`. Unfold `IsOver at h'`. Unfold `ramIdx`. Distinguish the cases in `hne : {n : ℤ | ∃ a ∈ la.asIdeal, a ≠ 0 ∧ v (algebraMap K Ω (a : K)) = n}.Nonempty`. Apply `le_csInf hne` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `n ⟨a, ha, -, hv⟩`. Establish `h0` using `(h' a).2 ha`. Rewrite `h0` using `[hv]`. Conclude with `h0.le` after adjusting the coercions. Rewrite `hne` using `[Set.not_nonempty_iff_eq_empty]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hne, Int.csInf_empty]`.
+A detailed English derivation is pending.
 -/
 theorem ramIdx_nonneg_of_isOver {K Ω : Type*} [Field K] [NumberField K] [Field Ω] [Algebra K Ω]
     {v : AddValuation Ω (WithTop ℤ)} {la : HeightOneSpectrum (𝓞 K)} (h : IsOver (K := K) v la) :
@@ -31,7 +31,7 @@ theorem ramIdx_nonneg_of_isOver {K Ω : Type*} [Field K] [NumberField K] [Field 
     rw [hne, Int.csInf_empty]
 
 /- English proof (translation)
-Establish `h1 : (0 : EReal) ≤ (((e : ℤ) : ℝ) : EReal) * w` using `EReal.mul_nonneg (by exact_mod_cast he) hw`. Rewrite `h1` using `[← h]`. Establish `h2 : (0 : ℝ) ≤ ((x : ℤ) : ℝ)` using `by exact_mod_cast h1`. Conclude with `h2` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem int_nonneg_of_ereal_eq {x e : ℤ} {w : EReal} (he : 0 ≤ e) (hw : 0 ≤ w)
     (h : (((x : ℤ) : ℝ) : EReal) = (((e : ℤ) : ℝ) : EReal) * w) : 0 ≤ x := by
@@ -44,7 +44,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Unfold `vAtV valSet`. Use `⟨⟨((y.1).1, ()), ?_⟩, rfl⟩` and prove the remaining obligations. Take `⟨T, io, e, hO, y1, hcl, eta, -, hy⟩` from `y.2`. Use `⟨T, io, e, hO, y1, hc T io y1 hcl, (), trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[hy]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -61,13 +61,13 @@ theorem vAtV_mem_valSet {cls cls' : ∀ (T : CDVR) (io : c.F →+* T.Fr), IntFr 
   rfl
 
 /- English proof (translation)
-Unfold `trivCls at h`. Unfold `vV`. Take `⟨u, hu⟩` from `h a ha`. Rewrite using `[← hu]`. Unfold `valV`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hnm : (u : T.V) ∉ (IsDiscreteValuationRing.maximalIdeal T.V).asIdeal`. Introduce `hm`. Conclude with `(IsLocalRing.mem_maximalIdeal _).mp hm u.isUnit`. Establish `hu1 : (IsDiscreteValuationRing.maximalIdeal T.V).valuation T.Fr (algebraMap T.V T.Fr u) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Use `first`. Consider the case `exact le_antisymm (HeightOneSpectrum.intValuation_le_one _ _) (not_lt.mp fun hlt => hnm ((HeightOneSpectrum.intValuation_lt_one_iff_mem _ _).mp hlt))`. Consider the case `exact (HeightOneSpectrum.intValuation_eq_one_iff_not_mem _ _).mpr hnm`. Consider the case `exact le_antisymm (HeightOneSpectrum.intValuation_le_one _ _) (not_lt.mp fun hlt => hnm ((HeightOneSpectrum.intValuation_lt_one_iff_dvd _ _).mp hlt))`. Consider the case `simp [HeightOneSpectrum.intValuation_def, Ideal.span_singleton_eq_top.mpr u.isUnit]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu1]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem vV_of_trivCls {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} (h : trivCls Xo c T io y)
     (a : c.F) (ha : a ≠ 0) : vV T.V (io a) = 0 := by
@@ -92,7 +92,7 @@ theorem vV_of_trivCls {T : CDVR} {io : c.F →+* T.Fr} {y : IntFr Xo c T io} (h 
   simp
 
 /- English proof (translation)
-Simplify using `only [valC, evC, evR]`. Rewrite using `[evalAt_add, AddMonoidAlgebra.single_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem valC_add (h : GenFrEx Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (f g : Rul Xo c) (Z : Comp Xo c) :
     valC h a n (f + g) Z = valC h a n f Z + valC h a n g Z := by
@@ -100,7 +100,7 @@ theorem valC_add (h : GenFrEx Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ)
   rw [evalAt_add, AddMonoidAlgebra.single_add]
 
 /- English proof (translation)
-Simplify using `only [valC, evC, evR]`. Rewrite using `[evalAt_zero, AddMonoidAlgebra.single_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem valC_zero (h : GenFrEx Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (Z : Comp Xo c) :
     valC h a n 0 Z = 0 := by
@@ -108,7 +108,7 @@ theorem valC_zero (h : GenFrEx Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ
   rw [evalAt_zero, AddMonoidAlgebra.single_zero]
 
 /- English proof (translation)
-Simplify using `only [valC, evC, evR]`. Rewrite using `[evalAt_smul, ← Algebra.smul_def, ← Algebra.smul_def, AddMonoidAlgebra.smul_single]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem valC_smul_ct (h : GenFrEx Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (t : c.F) (f : Rul Xo c) (Z : Comp Xo c) :
     valC h a n (t • f) Z = algebraMap c.F (AC Z) t * valC h a n f Z := by
@@ -116,7 +116,7 @@ theorem valC_smul_ct (h : GenFrEx Xo c) (a : (E →+* ℂ) × ℕ → ℕ) (n : 
   rw [evalAt_smul, ← Algebra.smul_def, ← Algebra.smul_def, AddMonoidAlgebra.smul_single]
 
 /- English proof (translation)
-Introduce `h0`. Apply `hf` to reduce the goal to its premises. Unfold `valC`. Rewrite using `[h0, AddMonoidAlgebra.single_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem evC_ne_zero_of_valC {h : GenFrEx Xo c} {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c} {Z : Comp Xo c}
     (hf : valC h a n f Z ≠ 0) : evC h Z f ≠ 0 := by

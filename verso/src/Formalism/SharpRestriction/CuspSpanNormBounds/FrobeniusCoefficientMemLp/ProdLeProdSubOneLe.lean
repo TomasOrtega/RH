@@ -29,9 +29,9 @@ theorem bsig_val (i : Fin d) :
     ((bsig c i : Fin d) : ℕ) = c.sizeUpTo (c.index i) + c.sizeUpTo ((c.index i : ℕ) + 1) - 1 - i := rfl
 
 /- English proof (translation)
-Establish `a1` using `c.sizeUpTo_index_le i`. Establish `a2` using `c.lt_sizeUpTo_index_succ i`. Simplify using `only [Fin.val_succ] at a2`. Apply `index_unique c (bsig c i) (c.index i)` to reduce the goal to its premises. Rewrite using `[bsig_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[bsig_val]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem bsig_index (i : Fin d) : c.index (bsig c i) = c.index i := by
   have a1 := c.sizeUpTo_index_le i
@@ -42,7 +42,7 @@ theorem bsig_index (i : Fin d) : c.index (bsig c i) = c.index i := by
   · rw [bsig_val]; omega
 
 /- English proof (translation)
-Establish `a1` using `c.sizeUpTo_index_le i`. Establish `a2` using `c.lt_sizeUpTo_index_succ i`. Simplify using `only [Fin.val_succ] at a2`. Apply `Fin.ext` to reduce the goal to its premises. Rewrite using `[bsig_val, bsig_index, bsig_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -65,7 +65,7 @@ variable {E : Type} [Field E] {d : ℕ}
 end Minor
 
 /- English proof (translation)
-Establish `h1 : (1 : ℝ) ≤ max 1 x` using `le_max_left _ _`. Establish `h2 : (1 : ℝ) ≤ max 1 z` using `le_max_left _ _`. Apply `max_le` to reduce the goal to its premises. Use the polynomial consequences of the given equalities and inequalities. Conclude with `mul_le_mul (le_max_right _ _) (le_max_right _ _) hz (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem max_mul_le {x z : ℝ} (hx : 0 ≤ x) (hz : 0 ≤ z) : max 1 (x * z) ≤ max 1 x * max 1 z := by
   have h1 : (1 : ℝ) ≤ max 1 x := le_max_left _ _

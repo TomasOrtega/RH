@@ -11,7 +11,7 @@ def Linnik : Prop :=
     (leastPrimeMod a q : ℝ) ≤ C * (q : ℝ) ^ L
 
 /- English proof (translation)
-Use `haveI : NeZero q := ⟨by omega⟩`. Establish `hu : IsUnit (a : ZMod q)` using `(ZMod.isUnit_iff_coprime a q).2 h`. Take `⟨p, -, hp, hpa⟩` from `Nat.forall_exists_prime_gt_and_eq_mod hu 0`. Conclude with `⟨p, hp, (ZMod.natCast_eq_natCast_iff p a q).1 hpa⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_prime_modEq_of_coprime (a q : ℕ) (hq : 1 ≤ q) (h : a.Coprime q) :
     ∃ p : ℕ, p.Prime ∧ p ≡ a [MOD q] := by
@@ -21,11 +21,11 @@ private theorem exists_prime_modEq_of_coprime (a q : ℕ) (hq : 1 ≤ q) (h : a.
   exact ⟨p, hp, (ZMod.natCast_eq_natCast_iff p a q).1 hpa⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨C, L, hC, hL, hb⟩`. Use `⟨C, L, hC, hL, fun a q ha hq h => ?_⟩` and prove the remaining obligations. Establish `hne : (_root_.GlobalTheory.Published.primesInProgression a q).Nonempty` using `exists_prime_modEq_of_coprime a q hq h`. Establish `hmem` using `Nat.sInf_mem hne`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨_, hmem.1, hmem.2, hb a q ha hq h⟩`. Introduce and unpack `⟨C, L, hC, hL, hb⟩`. Use `⟨C, L, hC, hL, fun a q ha hq h => ?_⟩` and prove the remaining obligations. Take `⟨p, hp, hpa, hpC⟩` from `hb a q ha hq h`. Establish `hle : _root_.GlobalTheory.Published.leastPrimeMod a q ≤ p` using `Nat.sInf_le ⟨hp, hpa⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `le_trans (by exact_mod_cast hle) hpC`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Published.linnik_iff_exists_prime : _root_.GlobalTheory.Published.Linnik ↔
     ∃ C L : ℝ, 0 < C ∧ 0 < L ∧ ∀ a q : ℕ, 1 ≤ a → 1 ≤ q → a.Coprime q →

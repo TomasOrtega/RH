@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.RestDegree
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Use `h (i + n)` as an intermediate fact. Rewrite using `[← add_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem telescope (T : ℝ) (A K : ℕ → ℝ) (h : ∀ i, T * (A i - A (i + 1)) ≤ K i - K (i + 1) + 2) (i n : ℕ) :
     T * (A i - A (i + n)) ≤ K i - K (i + n) + 2 * n := by
@@ -28,7 +28,7 @@ theorem telescope (T : ℝ) (A K : ℕ → ℝ) (h : ∀ i, T * (A i - A (i + 1)
     linarith
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Unfold `ext0`. Rewrite using `[dif_pos i.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_extendByZero_fin_eq_sum_of_eq {p : ℕ} (l : Fin p → ℕ) : (∑ i, (l i : ℝ)) = ∑ i ∈ Finset.range p, (ext0 l i : ℝ) := by
   rw [Finset.sum_range]
@@ -37,9 +37,9 @@ theorem sum_extendByZero_fin_eq_sum_of_eq {p : ℕ} (l : Fin p → ℕ) : (∑ i
   rw [dif_pos i.2]
 
 /- English proof (translation)
-Establish `hp : (0 : ℤ) < T'` using `by exact_mod_cast hT'`. Establish `hT2 : (T : ℤ) ≤ T'` using `by exact_mod_cast hT`. Rewrite using `[Int.fdiv_eq_ediv_of_nonneg _ hp.le]`. Break down `le_total (c / T') 0 with h | h` into its components or cases. Rewrite using `[Int.toNat_of_nonpos h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h0`. Rewrite using `[Int.toNat_of_nonneg h]`. Use `Int.mul_ediv_self_le (x := c) hp.ne'` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem floor_le (T T' : ℕ) (hT : T ≤ T') (hT' : 0 < T') (c c' : ℤ) (h0 : 0 ≤ c') (hc : c ≤ c') :
     (T : ℤ) * ((Int.fdiv c T').toNat : ℤ) ≤ c' := by
@@ -53,11 +53,11 @@ theorem floor_le (T T' : ℕ) (hT : T ≤ T') (hT' : 0 < T') (c c' : ℤ) (h0 : 
     nlinarith
 
 /- English proof (translation)
-Unfold `ext0`. Distinguish the cases in `hi : i < p`. Establish `h1` using `h ⟨i, hi⟩`. Rewrite `h1` using `[← gapZ_ofGaps g]`. Unfold `WeightAlgebra.gapZ at h1`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Distinguish the cases in `hi' : i + 1 < p`. Simplify using `only [dif_pos hi, dif_pos hi'] at h1 ⊢`. Conclude with `h1` after adjusting the coercions. Simplify using `only [dif_pos hi, dif_neg hi'] at h1 ⊢`. Use `push_cast`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Simplify using `only [sub_zero]`. Conclude with `h1` after adjusting the coercions. Establish `hi' : ¬ i + 1 < p` using `by omega`. Simplify using `[dif_neg hi, dif_neg hi']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem step {p : ℕ} (T : ℕ) (g κ : Fin p → ℕ) (h : ∀ i, (T : ℤ) * g i ≤ WeightAlgebra.gapZ κ i + 2) (i : ℕ) :
     (T : ℝ) * ((ext0 (ofGaps g) i : ℝ) - ext0 (ofGaps g) (i + 1)) ≤ (ext0 κ i : ℝ) - ext0 κ (i + 1) + 2 := by
@@ -77,7 +77,7 @@ theorem step {p : ℕ} (T : ℕ) (g κ : Fin p → ℕ) (h : ∀ i, (T : ℤ) * 
     simp [dif_neg hi, dif_neg hi']
 
 /- English proof (translation)
-Unfold `WeightAlgebra.gapZ`. Use `split_ifs with hi`. Establish `: κ ⟨i.1 + 1, hi⟩ ≤ κ i` using `h (by simp [Fin.le_def])`. Use linear arithmetic over natural numbers and integers. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem gap_nonneg {p : ℕ} {κ : Fin p → ℕ} (h : Antitone κ) (i : Fin p) : 0 ≤ WeightAlgebra.gapZ κ i := by
   unfold WeightAlgebra.gapZ
@@ -87,7 +87,7 @@ theorem gap_nonneg {p : ℕ} {κ : Fin p → ℕ} (h : Antitone κ) (i : Fin p) 
   · positivity
 
 /- English proof (translation)
-Use `telescope T (fun i => (ext0 (ofGaps g) i : ℝ)) (fun i => (ext0 κ i : ℝ)) (step T g κ h) i p` as an intermediate fact. Establish `e1 : ext0 (ofGaps g) (i + p) = 0` using `by unfold ext0; rw [dif_neg (by omega)]`. Establish `e2 : ext0 κ (i + p) = 0` using `by unfold ext0; rw [dif_neg (by omega)]`. Simplify `this` using `[e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem entry_le {p : ℕ} (T : ℕ) (g κ : Fin p → ℕ) (h : ∀ i, (T : ℤ) * g i ≤ WeightAlgebra.gapZ κ i + 2) (i : ℕ) (hi : i ≤ p) :
     (T : ℝ) * (ext0 (ofGaps g) i : ℝ) ≤ (ext0 κ i : ℝ) + 2 * p := by
@@ -97,11 +97,11 @@ theorem entry_le {p : ℕ} (T : ℕ) (g κ : Fin p → ℕ) (h : ∀ i, (T : ℤ
   simpa [e1, e2] using this
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_range_add]`. Establish `a1 : ∑ i ∈ Finset.range (n + 1), A i ≤ (n + 1 : ℕ) • A 0`. Use `Finset.sum_le_card_nsmul (Finset.range (n + 1)) A (A 0) (fun i _ => hA (Nat.zero_le i))` as an intermediate fact. Rewrite `this` using `[Finset.card_range]`. Then use the resulting hypothesis. Establish `a2 : (n + 1 : ℕ) • A n ≤ ∑ i ∈ Finset.range (n + 1), A i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `Finset.card_nsmul_le_sum (Finset.range (n + 1)) A (A n) (fun i hi => hA (by have := Finset.mem_range.1 hi; omega))` as an intermediate fact. Rewrite `this` using `[Finset.card_range]`. Then use the resulting hypothesis. Establish `a3 : ∑ i ∈ Finset.range q, A (n + 1 + i) ≤ q • A (n + 1)`. Use `Finset.sum_le_card_nsmul (Finset.range q) (fun i => A (n + 1 + i)) (A (n + 1)) (fun i _ => hA (Nat.le_add_right _ i))` as an intermediate fact. Rewrite `this` using `[Finset.card_range]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `a4 : 0 ≤ ∑ i ∈ Finset.range q, A (n + 1 + i)` using `Finset.sum_nonneg fun i _ => h0 _`. Simplify using `only [nsmul_eq_mul] at a1 a2 a3`. Move the coercions through the operations in `at a1 a2`. Establish `a5 : 0 ≤ ((n : ℝ) + 1) * A (n + 1)` using `mul_nonneg (by positivity) (h0 _)`. Apply the tactic sequence `constructor <;> nlinarith`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem rest_bounds (A : ℕ → ℝ) (hA : Antitone A) (h0 : ∀ i, 0 ≤ A i) (n q : ℕ) :
     0 ≤ (∑ i ∈ Finset.range (n + 1 + q), A i) - ((n : ℝ) + 1) * (A n - A (n + 1)) ∧
@@ -130,9 +130,9 @@ section Place
 variable {D : D7} {L : SizeData₂ D} {Pm : ParameterChoice' D L} (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (j : ℕ)
 
 /- English proof (translation)
-Establish `g0` using `gap_nonneg ((kaR Tp hK j).aPlus_antitone τ) i`. Unfold `lGapP`. Use `split_ifs with h`. Conclude with `floor_le _ _ (by unfold WeightAlgebra.Tp; omega) (by unfold WeightAlgebra.Tp; omega) _ _ (by omega) le_rfl`. Use `floor_le _ _ (by unfold WeightAlgebra.Tp; omega) (by unfold WeightAlgebra.Tp; omega) _ _ (by omega) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `WeightAlgebra.gapZ`. Rewrite using `[dif_neg h]`. Establish `: (0 : ℤ) ≤ ((WeightFamilies.dimY D j : ℤ) + 2) * Tp.nWn` using `by positivity`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mul_lGapP_le_gapZ_add_two (τ : D.what₂.Tau) (i : Fin (D.R.sigW j).1) :
     (Tp.TO : ℤ) * lGapP D (kaR Tp hK j) Tp.TO Tp.nWn τ i ≤ WeightAlgebra.gapZ ((kaR Tp hK j).aP τ) i + 2 := by
@@ -147,9 +147,9 @@ theorem mul_lGapP_le_gapZ_add_two (τ : D.what₂.Tau) (i : Fin (D.R.sigW j).1) 
     omega
 
 /- English proof (translation)
-Establish `g0` using `gap_nonneg ((kaR Tp hK j).aM_anti τ) i`. Unfold `lGapM`. Use `split_ifs with h`. Conclude with `floor_le _ _ (by unfold WeightAlgebra.Tp; omega) (by unfold WeightAlgebra.Tp; omega) _ _ (by omega) le_rfl`. Use `floor_le _ _ (by unfold WeightAlgebra.Tp; omega) (by unfold WeightAlgebra.Tp; omega) _ _ (by omega) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `WeightAlgebra.gapZ`. Rewrite using `[dif_neg h]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem gapM_le (τ : D.what₂.Tau) (i : Fin (D.R.sigW j).2) :
     (Tp.TO : ℤ) * lGapM D (kaR Tp hK j) Tp.TO τ i ≤ WeightAlgebra.gapZ ((kaR Tp hK j).aM τ) i + 2 := by
@@ -163,15 +163,15 @@ theorem gapM_le (τ : D.what₂.Tau) (i : Fin (D.R.sigW j).2) :
     omega
 
 /- English proof (translation)
-Establish `h1` using `hj.1`. Establish `h2` using `hj.2`. Establish `hk : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; have := D.R.two_le_m; omega`. Establish `hs : (D.R.sigW j).1 = D.R.k + j - 1` using `rfl`. Establish `big : ∀ (i : ℕ) (hi : i < D.R.k - 1), (ext0 ((kaR Tp hK j).aP τ) i : ℝ) = (((D.hc τ).v ⟨i, hi⟩ : ℚ) : ℝ) + ((DV.eQ D j τ : ℚ) : ℝ) - ((D.R.k : ℝ) + j - 1 - 1 - i) - ((D.R.t : ℝ) + 1) / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i hi`. Establish `hi' : i < (D.R.sigW j).1` using `by omega`. Establish `e1` using `kaWt_big D hK (even_nV Tp) j h1 h2 τ ⟨i, hi'⟩`. Establish `e2` using `(hK j h1 h2 τ).1 ⟨i, hi'⟩`. Rewrite `e2` using `[← e1, DV.aPlusQ_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Unfold `DV.sigPar at e2`. Rewrite `e2` using `[dif_pos hi]`. Establish `e3` using `congrArg (fun q : ℚ => (q : ℝ)) e2`. Move the coercions through the operations in `at e3`. Unfold `ext0 kaR`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hi']`. Conclude with `e3`. Rewrite using `[big 0 (by omega), big (D.R.k - 2) (by omega)]`. Establish `a1` using `(L.cloud_v τ ⟨0, by omega⟩).2`. Establish `a2` using `(L.cloud_v τ ⟨D.R.k - 2, by omega⟩).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : (0 : ℝ) ≤ ((D.R.k - 2 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Move the coercions through the operations in `at a1 a2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem kappa_spread (hj : InR D j) (τ : D.what₂.Tau) :
     (ext0 ((kaR Tp hK j).aP τ) 0 : ℝ) - ext0 ((kaR Tp hK j).aP τ) (D.R.k - 2) ≤ L.Sc := by
@@ -205,27 +205,27 @@ def restAt {j : ℕ} (w : WeightFamilies.Wt D j) (τ : D.what₂.Tau) : ℝ :=
     ((D.R.k : ℝ) - 1) * ((ext0 (w.aP τ) (D.R.k - 2) : ℝ) - ext0 (w.aP τ) (D.R.k - 1))
 
 /- English proof (translation)
-Establish `h1` using `hj.1`. Establish `h2` using `hj.2`. Establish `hmk` using `D.R.m_add_three_le_k`. Establish `hk : 5 ≤ D.R.k` using `by have := D.R.two_le_m; omega`. Establish `hs : (D.R.sigW j).1 = D.R.k - 2 + 1 + j` using `by show D.R.k + j - 1 = _; omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs2 : (D.R.sigW j).2 = D.R.m - j` using `rfl`. Establish `hk1 : D.R.k - 1 = D.R.k - 2 + 1` using `by omega`. Establish `hkr : (D.R.k : ℝ) - 1 = ((D.R.k - 2 : ℕ) : ℝ) + 1`. Rewrite using `[Nat.cast_sub (by omega)]; push_cast; ring`. Establish `hA : Antitone fun i => (ext0 ((lR Tp hK j).aP τ) i : ℝ)` using `fun a b hab => Nat.cast_le.2 (partitionExtendByZero_antitone ((lR Tp hK j).aPlus_antitone τ) hab)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB : Antitone fun i => (ext0 ((lR Tp hK j).aM τ) i : ℝ)` using `fun a b hab => Nat.cast_le.2 (partitionExtendByZero_antitone ((lR Tp hK j).aM_anti τ) hab)`. Take `⟨r1, r2⟩` from `rest_bounds _ hA (fun i => Nat.cast_nonneg _) (D.R.k - 2) j`. Rewrite `r1`, `r2` using `[← hs, ← sum_extendByZero_fin_eq_sum_of_eq, ← hkr, ← hk1]`. Establish `m0 : (0 : ℝ) ≤ ∑ i, ((lR Tp hK j).aM τ i : ℝ)` using `Finset.sum_nonneg fun i _ => Nat.cast_nonneg _`. Establish `m1 : ∑ i, ((lR Tp hK j).aM τ i : ℝ) ≤ ((D.R.sigW j).2 : ℝ) * ext0 ((lR Tp hK j).aM τ) 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sum_extendByZero_fin_eq_sum_of_eq]`. Use `Finset.sum_le_card_nsmul (Finset.range (D.R.sigW j).2) _ _ (fun i _ => hB (Nat.zero_le i))` as an intermediate fact. Rewrite `this` using `[Finset.card_range, nsmul_eq_mul]`. Then use the resulting hypothesis. Take `⟨-, w2, w3⟩` from `GlobalTheory.WeightRows.kappa_entries_le D L Pm Tp hK j hj τ`. Establish `he` using `L.etaSz_pos`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hS` using `L.Sc_pos`. Establish `t1` using `telescope _ _ _ (step Tp.TO _ _ (mul_lGapP_le_gapZ_add_two Tp hK j τ)) 0 (D.R.k - 2)`. Establish `t2` using `entry_le Tp.TO _ _ (mul_lGapP_le_gapZ_add_two Tp hK j τ) (D.R.k - 1) (by omega)`. Establish `t3` using `entry_le Tp.TO _ _ (gapM_le Tp hK j τ) 0 (Nat.zero_le _)`. Establish `s1` using `kappa_spread Tp hK j hj τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s2 : (ext0 ((kaR Tp hK j).aP τ) (D.R.k - 1) : ℝ) ≤ L.etaSz`. Unfold `ext0`. Use `split_ifs with h`. Conclude with `w2 _ le_rfl`. Simplify using `using he.le`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `s3 : (ext0 ((kaR Tp hK j).aM τ) 0 : ℝ) ≤ L.etaSz`. Unfold `ext0`. Use `split_ifs with h`. Conclude with `w3 _`. Simplify using `using he.le`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `t1` using `[zero_add]`. Express the relevant statement in the definitionally equal form `(Tp.TO : ℝ) * ((ext0 ((lR Tp hK j).aP τ) 0 : ℝ) - ext0 ((lR Tp hK j).aP τ) (D.R.k - 2)) ≤ _ at t1`. Express the relevant statement in the definitionally equal form `(Tp.TO : ℝ) * (ext0 ((lR Tp hK j).aP τ) (D.R.k - 1) : ℝ) ≤ _ at t2`. Express the relevant statement in the definitionally equal form `(Tp.TO : ℝ) * (ext0 ((lR Tp hK j).aM τ) 0 : ℝ) ≤ _ at t3`. Establish `c0 : (5 : ℝ) ≤ D.R.k` using `by exact_mod_cast hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c1 : ((D.R.k - 2 : ℕ) : ℝ) ≤ D.R.k` using `by exact_mod_cast Nat.sub_le _ _`. Establish `c2 : ((D.R.sigW j).1 : ℝ) ≤ 2 * D.R.k` using `by exact_mod_cast (by omega : (D.R.sigW j).1 ≤ 2 * D.R.k)`. Establish `c3 : ((D.R.sigW j).2 : ℝ) ≤ D.R.k` using `by exact_mod_cast (by omega : (D.R.sigW j).2 ≤ D.R.k)`. Establish `c4 : (j : ℝ) ≤ D.R.k` using `by exact_mod_cast (by omega : j ≤ D.R.k)`. Establish `c5 : (0 : ℝ) ≤ j` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c6 : (0 : ℝ) ≤ ((D.R.sigW j).2 : ℝ)` using `Nat.cast_nonneg _`. Establish `hT : (0 : ℝ) ≤ Tp.TO` using `Nat.cast_nonneg _`. Unfold `restAt`. Use `⟨by linarith, ?_⟩` and prove the remaining obligations. Establish `u1 : ((D.R.k : ℝ) - 1) * ((Tp.TO : ℝ) * ((ext0 ((lR Tp hK j).aP τ) 0 : ℝ) - ext0 ((lR Tp hK j).aP τ) (D.R.k - 2))) ≤ D.R.k * (L.Sc + 2 * D.R.k)` using `(mul_le_mul_of_nonneg_left (show _ ≤ L.Sc + 2 * D.R.k by linarith) (by linarith)).trans (mul_le_mul_of_nonneg_right (by linarith) (by linarith))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u2 : ((D.R.k : ℝ) - 1 + j) * ((Tp.TO : ℝ) * (ext0 ((lR Tp hK j).aP τ) (D.R.k - 1) : ℝ)) ≤ (2 * D.R.k) * (L.etaSz + 4 * D.R.k)` using `(mul_le_mul_of_nonneg_left (show _ ≤ L.etaSz + 4 * D.R.k by linarith) (by linarith)).trans (mul_le_mul_of_nonneg_right (by linarith) (by linarith))`. Establish `u3 : ((D.R.sigW j).2 : ℝ) * ((Tp.TO : ℝ) * (ext0 ((lR Tp hK j).aM τ) 0 : ℝ)) ≤ D.R.k * (L.etaSz + 2 * D.R.k)` using `(mul_le_mul_of_nonneg_left (show _ ≤ L.etaSz + 2 * D.R.k by linarith) c6).trans (mul_le_mul_of_nonneg_right c3 (by linarith))`. Establish `v1` using `mul_le_mul_of_nonneg_left r2 hT`. Establish `v2` using `mul_le_mul_of_nonneg_left m1 hT`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem restAt_bounds (hj : InR D j) (τ : D.what₂.Tau) :
     0 ≤ restAt (lR Tp hK j) τ ∧
@@ -298,7 +298,7 @@ theorem restAt_bounds (hj : InR D j) (τ : D.what₂.Tau) :
   nlinarith
 
 /- English proof (translation)
-Establish `h1 : 1 ≤ ⌊x⌋₊` using `Nat.le_floor (by exact_mod_cast h)`. Establish `h2 : (1 : ℝ) ≤ (⌊x⌋₊ : ℝ)` using `by exact_mod_cast h1`. Establish `h3` using `Nat.lt_floor_add_one x`. Conclude with `⟨h2, by linarith⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem le_two_floor {x : ℝ} (h : 1 ≤ x) : 1 ≤ (⌊x⌋₊ : ℝ) ∧ x ≤ 2 * (⌊x⌋₊ : ℝ) := by
   have h1 : 1 ≤ ⌊x⌋₊ := Nat.le_floor (by exact_mod_cast h)
@@ -308,11 +308,11 @@ theorem le_two_floor {x : ℝ} (h : 1 ≤ x) : 1 ≤ (⌊x⌋₊ : ℝ) ∧ x �
 
 include Tp in
 /- English proof (translation)
-Establish `hT : (1 : ℝ) ≤ Tp.TO` using `by exact_mod_cast TO_pos Tp`. Establish `ht : (0 : ℝ) ≤ D.R.t` using `Nat.cast_nonneg _`. Establish `hk : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `hm : (0 : ℝ) < D.R.m` using `by exact_mod_cast (by have := D.R.two_le_m; omega : 0 < D.R.m)`. Take `⟨d1, d2⟩` from `le_two_floor (x := ((D.s.Del : ℚ) : ℝ)) (by have := Tp.Del_TO; nlinarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨-, e2⟩` from `le_two_floor (x := LevelStarExponents.h0 L) (by have := Tp.heightBound_ge_order_sq; nlinarith)`. Establish `e3 : L.etaSz = D.R.m * LevelStarExponents.h0 L` using `by unfold LevelStarExponents.h0; field_simp`. Establish `x1 : (numOf D L).Sc = D.R.k * (4 * (⌊((D.s.Del : ℚ) : ℝ)⌋₊ : ℝ))` using `rfl`. Establish `x2 : (numOf D L).eta = D.R.m * (⌊LevelStarExponents.h0 L⌋₊ : ℝ)` using `rfl`. Rewrite using `[x1, x2, L.Sc_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by nlinarith, ?_, by nlinarith⟩` and prove the remaining obligations. Rewrite using `[e3]`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sizes_le : L.Sc ≤ 2 * (numOf D L).Sc ∧ L.etaSz ≤ 2 * (numOf D L).eta ∧ (D.R.k : ℝ) ≤ (numOf D L).Sc := by
   have hT : (1 : ℝ) ≤ Tp.TO := by exact_mod_cast TO_pos Tp
@@ -332,15 +332,15 @@ theorem sizes_le : L.Sc ≤ 2 * (numOf D L).Sc ∧ L.etaSz ≤ 2 * (numOf D L).e
 end Place
 
 /- English proof (translation)
-Introduce `D L Pm Tp hK T hp j hj`. Take `⟨hD, -, -, -, hw⟩` from `GlobalTheory.WeightExponents.weight_exponents D T.Q hp j hj (lR Tp hK j)`. Take `⟨hb, hc⟩` from `plOf_bijective_card D`. Establish `key : restOf (numOf D L) (T.Q.Dw j) (fun z => DV.tauEmb D (plOf D z)) (wtA (lR Tp hK j)) = ∑ τ, restAt (lR Tp hK j) τ`. Establish `e1 : (∑ z : RPl D.R, (gapW (numOf D L) (fun z => DV.tauEmb D (plOf D z)) (wtA (lR Tp hK j)) z : ℝ)) = ∑ τ, ((ext0 ((lR Tp hK j).aP τ) (D.R.k - 2) : ℝ) - ext0 ((lR Tp hK j).aP τ) (D.R.k - 1))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Fintype.sum_bijective _ hb _ _ fun z => ?_` and prove the remaining obligations. Use `show ((wtA (lR Tp hK j) (DV.tauEmb D (plOf D z), D.R.k - 2) - wtA (lR Tp hK j) (DV.tauEmb D (plOf D z), D.R.k - 1) : ℕ) : ℝ) = _`. Rewrite using `[(hw _ _).1, (hw _ _).1, Nat.cast_sub (partitionExtendByZero_antitone ((lR Tp hK j).aPlus_antitone _) (by omega))]`. Unfold `restOf restAt`. Rewrite using `[hD, Finset.sum_sub_distrib, ← Finset.mul_sum, ← e1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `WeightAlgebra.DF WeightAlgebra.degP`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[key, Finset.mul_sum]`. Use `⟨Finset.sum_nonneg fun τ _ => (restAt_bounds Tp hK j hj τ).1, ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `Finset.sum_le_card_nsmul Finset.univ _ _ (fun τ _ => (restAt_bounds Tp hK j hj τ).2)`. Rewrite `h1` using `[Finset.card_univ, hc, nsmul_eq_mul]`. Take `⟨s1, s2, s3⟩` from `sizes_le Tp`. Establish `hk : (0 : ℝ) ≤ D.R.k` using `Nat.cast_nonneg _`. Establish `he` using `L.etaSz_pos`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : L.Sc + 3 * L.etaSz + 12 * D.R.k ≤ 100 * ((numOf D L).Sc + (numOf D L).eta)` using `by linarith`. Establish `h3` using `mul_le_mul_of_nonneg_left h2 (by positivity : (0 : ℝ) ≤ (D.R.f : ℝ) * D.R.k)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem rest_degree_bounds : ∀ (D : D7) (L : SizeData₂ D) (Pm : ParameterChoice' D L) (Tp : ParamsT D L Pm) (hK : DV.KapDef D) (T : Core D), T.Q.Pins → ∀ j : ℕ, InR D j →
   0 ≤ restOf (numOf D L) (T.Q.Dw j) (fun z => DV.tauEmb D (plOf D z)) (wtA (lR Tp hK j)) ∧

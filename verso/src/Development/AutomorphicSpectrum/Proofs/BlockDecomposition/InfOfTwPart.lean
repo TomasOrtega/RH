@@ -21,7 +21,7 @@ def infOf (τ : E →+* ℂ) (x : Σ M : ℕ, Submodule ℂ (Sm E M)) : Multiset
   if h : ∃ m, HasInfCharGL x.2 τ m then h.choose else 0
 
 /- English proof (translation)
-Establish `hex : ∃ m, HasInfCharGL x.2 τ m` using `⟨m, h⟩`. Unfold `infOf`. Rewrite using `[dif_pos hex]`. Conclude with `GlobalTheory.BcSpehProof.hasInfCharGL_unique h0 hex.choose_spec h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infOf_eq {τ : E →+* ℂ} {x : Σ M : ℕ, Submodule ℂ (Sm E M)} (h0 : x.2 ≠ ⊥) {m : Multiset ℂ}
     (h : HasInfCharGL x.2 τ m) : infOf τ x = m := by
@@ -31,7 +31,7 @@ theorem infOf_eq {τ : E →+* ℂ} {x : Σ M : ℕ, Submodule ℂ (Sm E M)} (h0
   exact GlobalTheory.BcSpehProof.hasInfCharGL_unique h0 hex.choose_spec h
 
 /- English proof (translation)
-Rewrite using `[PositivityTheory.Rg.BcB.F.RS.parts, List.map_ofFn, List.sum_ofFn]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(infOf_eq (P.discrete i).ne_bot (P.inf i τ)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_m {n : ℕ} (P : Pre E n) (τ : E →+* ℂ) : ∑ i, P.m i τ = ((parts P).map (infOf τ)).sum := by
   rw [PositivityTheory.Rg.BcB.F.RS.parts, List.map_ofFn, List.sum_ofFn]
@@ -39,7 +39,7 @@ theorem sum_m {n : ℕ} (P : Pre E n) (τ : E →+* ℂ) : ∑ i, P.m i τ = ((p
   exact (infOf_eq (P.discrete i).ne_bot (P.inf i τ)).symm
 
 /- English proof (translation)
-Establish `hne : Submodule.map ((GlobalTheory.CuspRep.mulChi (P.N i) χ : Sm E (P.N i) ≃ₗ[ℂ] Sm E (P.N i)) : Sm E (P.N i) →ₗ[ℂ] Sm E (P.N i)) (P.V i) ≠ ⊥`. Introduce `hb`. Conclude with `(P.discrete i).ne_bot (Submodule.map_eq_bot_iff.1 hb)`. Conclude with `infOf_eq hne (GlobalTheory.BCT.TwistDisc.hasInfCharGL_map (P.inf i τ) χ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem infOf_twPart {n : ℕ} (P : Pre E n) (χ : HChar E) (τ : E →+* ℂ) (i : Fin P.c) :
     infOf τ (twPart χ ⟨P.N i, P.V i⟩) = (P.m i τ).map (· + expo χ τ) := by
@@ -50,9 +50,9 @@ theorem infOf_twPart {n : ℕ} (P : Pre E n) (χ : HChar E) (τ : E →+* ℂ) (
   exact infOf_eq hne (GlobalTheory.BCT.TwistDisc.hasInfCharGL_map (P.inf i τ) χ)
 
 /- English proof (translation)
-Rewrite using `[PositivityTheory.Rg.BcB.F.RS.parts, List.map_ofFn, List.map_ofFn, List.sum_ofFn]`. Establish `hmap : ∀ s : Finset (Fin P.c), (∑ i ∈ s, P.m i τ).map (· + expo χ τ) = ∑ i ∈ s, (P.m i τ).map (· + expo χ τ)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Multiset.map_add, ih]`. Rewrite using `[hmap Finset.univ]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `infOf_twPart P χ τ i`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_tw {n : ℕ} (P : Pre E n) (χ : HChar E) (τ : E →+* ℂ) :
     (((parts P).map (twPart χ)).map (infOf τ)).sum = (∑ i, P.m i τ).map (· + expo χ τ) := by
@@ -70,7 +70,7 @@ theorem sum_tw {n : ℕ} (P : Pre E n) (χ : HChar E) (τ : E →+* ℂ) :
 end GlobalTheory.CompanionTheory.JoinInfProof
 
 /- English proof (translation)
-Introduce `E _ _ _ n a b χ₁ χ₂ Pa Pb D hJ τ`. Rewrite using `[sum_m D τ, hJ, List.map_append, List.sum_append, sum_tw Pa χ₁ τ, sum_tw Pb χ₂ τ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.CompanionTheory.JoinInfProof.joinInf : PositivityTheory.Rg.BcB.F.RS.JoinInf := by
   intro E _ _ _ n a b χ₁ χ₂ Pa Pb D hJ τ

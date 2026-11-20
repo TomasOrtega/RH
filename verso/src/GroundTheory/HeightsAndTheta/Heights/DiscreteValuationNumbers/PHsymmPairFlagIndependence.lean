@@ -10,13 +10,13 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ Ω _ _ K _ _ ι _ y d hV N E _ _ B B' hBB' w w' v v' x x' u u' f g f₂ g₂ hF1 hF2 n z z' fz gz hz a r R hR As Bs hAs hBs Q hQ`. Establish `hA : (hsymmTimes N n a R).IsHomogeneous (a + r)` using `(isHomogeneous_hsymm N a).rename_isHomogeneous.mul hR.rename_isHomogeneous`. Break down `Nat.eq_zero_or_pos N with rfl | hN` into its components or cases. Take `rfl : x = u` from `funext fun i => i.elim0`. Take `rfl : x' = u'` from `funext fun i => i.elim0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : f = f₂` from `funext fun i => i.elim0`. Take `rfl : g = g₂` from `funext fun i => i.elim0`. Use `hExp O ϖ hϖ K ι (pointIdeal O y) d hV (0 + n) _ _ _ _ (fun i => ?_) (a + r) _ hA As Bs hAs hBs Q hQ` and prove the remaining obligations. Use `Fin.addCases (fun i => i.elim0) (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [Fin.append_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hz j`. Set `Φ` to `FractionRing (MvPolynomial (Fin N) Ω)`. Set `t : Fin N → Φ` to `fun i => algebraMap (MvPolynomial (Fin N) Ω) Φ (X i)`. Establish `ht : AlgebraicIndependent Ω t` using `(MvPolynomial.algebraicIndependent_X (Fin N) Ω).map' (f := IsScalarTower.toAlgHom Ω (MvPolynomial (Fin N) Ω) Φ) (IsFractionRing.injective (MvPolynomial (Fin N) Ω) Φ)`. Take `⟨M, M', a₀, a₀', φ, φ', hφ, hφ', hZ, f₀, g₀, hD₀, hD₀gen⟩` from `hClos O ϖ hϖ Ω K ι y d hV N hN E B B' hBB' Φ w t ht`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC : (zetaPowTimes n (N - 1 + a) R).IsHomogeneous (N - 1 + a + r)`. Establish `h` using `((isHomogeneous_X ℤ (Fin.castAdd n (0 : Fin 1))).pow (N - 1 + a)).mul (hR.rename_isHomogeneous (f := (Fin.natAdd 1 : Fin n → Fin (1 + n))))`. Rewrite `h` using `[one_mul]`. Then use the resulting hypothesis. Take `⟨Cs, hCs⟩` from `exists_isPairExpansion hC`. Rewrite using `[hSeg O ϖ hϖ Ω K ι y d hV N hN E B B' hBB' w w' x x' f g hF1 M M' a₀ a₀' φ φ' hφ hφ' Φ w t ht hZ f₀ g₀ hD₀ hD₀gen n z z' fz gz hz a r R hR As hAs Cs hCs Q hQ, hSeg O ϖ hϖ Ω K ι y d hV N hN E B B' hBB' v v' u u' f₂ g₂ hF2 M M' a₀ a₀' φ φ' hφ hφ' Φ w t ht hZ f₀ g₀ hD₀ hD₀gen n z z' …`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HsymmPairFlagIndependence.proof (hExp : PairNumberExpansionIndependence.Statement)
     (hClos : GenericProjClosureModel.Statement) (hSeg : SegreClosureNumber.Statement) :

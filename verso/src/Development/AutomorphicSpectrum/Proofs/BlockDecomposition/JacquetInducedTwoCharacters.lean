@@ -10,9 +10,9 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.SmGL.Bernstein
 
 /- English proof (translation)
-Break down `h (φ.comp E.symm.toIntertwiningMap) (ψ.comp E.symm.toIntertwiningMap) with h0 | ⟨c, hc⟩` into its components or cases. Use `left`. Use extensionality with `v`. Use `LinearMap.congr_fun h0 (E v)` as an intermediate fact. Simplify using `using this`.
+Separate the alternatives or extract the components of the hypothesis. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `right`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Use `LinearMap.congr_fun hc (E v)` as an intermediate fact. Simplify using `using this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem proportional_of_equiv {G V V' W : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V'] [Module ℂ V'] [AddCommGroup W] [Module ℂ W]
@@ -33,7 +33,7 @@ theorem proportional_of_equiv {G V V' W : Type} [Group G] [AddCommGroup V] [Modu
     simpa using this
 
 /- English proof (translation)
-Use extensionality with `v`. Use `LinearMap.congr_fun (h (φ.comp E.symm.toIntertwiningMap)) (E v)` as an intermediate fact. Simplify using `using this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_equiv {G V V' W : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup V'] [Module ℂ V'] [AddCommGroup W] [Module ℂ W]
@@ -45,13 +45,13 @@ theorem eq_zero_of_equiv {G V V' W : Type} [Group G] [AddCommGroup V] [Module �
   simpa using this
 
 /- English proof (translation)
-Establish `card_f : Fintype.card (Two (Fin a) (Fin b) false) = a` using `Fintype.card_fin a`. Establish `card_t : Fintype.card (Two (Fin a) (Fin b) true) = b` using `Fintype.card_fin b`. Use `⟨⟨fun i j => if i = j then (if i then b else a) else 0, ?_, ?_⟩, fun B => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Apply the tactic sequence `intro i; cases i <;> simp [card_f, card_t]`. Apply the tactic sequence `intro j; cases j <;> simp [card_f, card_t]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce and unpack `rfl`. Simplify using the standard rewrite rules. Introduce `hB`. Establish `r0` using `B.2.1 false`. Establish `r1` using `B.2.1 true`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c0` using `B.2.2 false`. Establish `c1` using `B.2.2 true`. Simplify using `only [Fintype.sum_bool, card_f, card_t] at r0 r1 c0 c1`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Apply the tactic sequence `cases i <;> cases j <;> simp <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_diagonal_sizeMatrix (a b : ℕ) :
     ∃ D : SizeMatrix (Two (Fin a) (Fin b)) (Two (Fin a) (Fin b)),
@@ -75,11 +75,9 @@ theorem exists_diagonal_sizeMatrix (a b : ℕ) :
 set_option maxHeartbeats 600000 in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a b χ₁ χ₂ hJ h₁ h₂ u₁ u₂ hne`. Establish `hc : Continuous (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom` using `continuous_prodMk.2 ⟨continuous_apply _, continuous_apply _⟩`. Establish `hsm : IsSmooth ((extTensor (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom)` using `isSmooth_comp (isSmooth_extTensor ((isSmooth_ofChar_iff _).2 h₁.detChar) ((isSmooth_ofChar_iff _).2 h₂.detChar)) _ hc`. Take `⟨N, bb, hb⟩` from `hJ Bool Bool (Fin (a + b)) (Two (Fin a) (Fin b)) (Two (Fin a) (Fin b)) (two (stdSum (rfl : a + b = a + b))) (two (stdSum (rfl : a + b = a + b)))`. Take `⟨S, hm, hbot, htop, hE⟩` from `hb (TensorProduct ℂ ℂ ℂ) _ hsm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨D, hD⟩` from `exists_diagonal_sizeMatrix a b`. Take `⟨t₀, ht₀⟩` from `bb.surjective D`. Use `GlobalTheory.T.filtration_unique_subquotient _ ((extTensor (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom) N S hm hbot htop t₀ ?_ ?_` and prove the remaining obligations. Conclude with `proportional_of_equiv (hE t₀ (SizeMatrix.nonempty_rows (bb t₀)).some (SizeMatrix.nonempty_cols (bb t₀)).some).some (GlobalTheory.T.cell_functor_scalar_diagonal k a b χ₁ χ₂ (bb t₀) _ _ ((hD _).1 ht₀))`. Introduce `t ht`.
-
-Conclude with `eq_zero_of_equiv (hE t (SizeMatrix.nonempty_rows (bb t)).some (SizeMatrix.nonempty_cols (bb t)).some).some (GlobalTheory.T.cell_functor_nonscalar_offdiag k a b χ₁ χ₂ h₁ h₂ u₁ u₂ hne (bb t) _ _ fun h0 => ht (bb.injective (((hD _).2 h0).trans ht₀.symm)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mackey_maps_proportional : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (a b : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ), JacquetOfInducedFiltration k → IsSmoothChar χ₁ → IsSmoothChar χ₂ → IsUnitaryChar χ₁ → IsUnitaryChar χ₂ → (a ≠ b ∨ χ₁ ≠ χ₂) → (∀ φ ψ : (jac (two (stdSum (rfl : a + b = a + b))) (parInd (two (stdSum (rfl : a + b = a + b))) ((extTensor (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom))).IntertwiningMap (((extTensor (detRep (Fin a) χ₁) (detRep (Fin b) χ₂)).comp (leviTwo k (Fin a) (Fin b)).symm.toMonoidHom)), φ.toLinearMap = 0 ∨ ∃ c : ℂ, ψ.toLinearMap = c • φ.toLinearMap) := by
   intro k _ _ _ _ a b χ₁ χ₂ hJ h₁ h₂ u₁ u₂ hne

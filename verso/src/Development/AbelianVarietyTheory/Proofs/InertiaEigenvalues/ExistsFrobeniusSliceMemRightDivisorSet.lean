@@ -12,19 +12,19 @@ noncomputable section
 namespace GlobalTheory.BK.RdivSlice
 
 /- English proof (translation)
-Establish `hl : 0 < l` using `(Fact.out : l.Prime).pos`. Use extensionality with `n`. Rewrite using `[coeff_frobSlice, coeff_mul, coeff_mul]`. Use `symm`. Use `Finset.sum_of_injOn (fun p : ℕ × ℕ => (l * p.1, l * p.2 + i)) ?_ ?_ ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨p, q⟩ - ⟨p', q'⟩ - h`. Simplify using `only [Prod.mk.injEq, add_left_inj] at h ⊢`. Conclude with `⟨Nat.eq_of_mul_eq_mul_left hl h.1, Nat.eq_of_mul_eq_mul_left hl h.2⟩`. Introduce and unpack `⟨p, q⟩ h`. Simplify using `only [Finset.mem_coe, Finset.HasAntidiagonal.mem_antidiagonal] at h ⊢`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h]`. Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `⟨p, q⟩ h hn`. Rewrite using `[coeff_frob]`. Use `split_ifs with hd`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Take `⟨t, rfl⟩` from `hd`. Simplify using `only [Finset.HasAntidiagonal.mem_antidiagonal] at h`. Establish `ht : t ≤ n`. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `: l * (n + 1) ≤ l * t` using `Nat.mul_le_mul_left l (by omega)`. Rewrite `this` using `[mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers. Take `⟨s, rfl⟩` from `Nat.exists_eq_add_of_le ht`. Use `hn ⟨(t, s), by simp, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[mul_add]`. Simplify using `only [Prod.mk.injEq, true_and]`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Introduce and unpack `⟨p, q⟩ -`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [coeff_frob, coeff_frobSlice, dvd_mul_right, if_true, Nat.mul_div_cancel_left _ hl]`.
+A detailed English derivation is pending.
 -/
 theorem frobSlice_frob_mul {K : Type} [NormedField K] (l : ℕ) [Fact l.Prime] {i : ℕ} (hi : i < l)
     (f z : K⟦X⟧) : frobSlice l i (frob K l f * z) = f * frobSlice l i z := by
@@ -60,7 +60,7 @@ theorem frobSlice_frob_mul {K : Type} [NormedField K] (l : ℕ) [Fact l.Prime] {
     simp only [coeff_frob, coeff_frobSlice, dvd_mul_right, if_true, Nat.mul_div_cancel_left _ hl]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [coeff_frobSlice, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem frobSlice_sum {K : Type} [Field K] (l i : ℕ) {μ : Type} (s : Finset μ) (f : μ → K⟦X⟧) :
     frobSlice l i (∑ j ∈ s, f j) = ∑ j ∈ s, frobSlice l i (f j) := by
@@ -68,9 +68,9 @@ theorem frobSlice_sum {K : Type} [Field K] (l i : ℕ) {μ : Type} (s : Finset �
   simp only [coeff_frobSlice, map_sum]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hY`. Take `⟨b, hb⟩` from `hZ`. Use `⟨max a 0 * max b 0, fun i j n => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (by positivity) fun k _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using norm_coeff_mul_le (w := fun _ => 1) (fun _ => zero_le_one) (fun _ _ => by simp) (le_max_right a 0) (le_max_right b 0) (f := Y i k) (g := Z k j) (fun m => by rw [mul_one]; exact (ha i k m).trans (le_max_left _ _)) (fun m => by rw [mul_one]; exact (hb k j m).trans (le_max_lef …`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem bdd_matrix_mul {K : Type} [NormedField K] [IsUltrametricDist K] {μ ν ρ : Type} [Fintype ν]
     {Y : Matrix μ ν K⟦X⟧} {Z : Matrix ν ρ K⟦X⟧} (hY : ∃ c : ℝ, ∀ i j n, ‖coeff n (Y i j)‖ ≤ c)
@@ -87,7 +87,7 @@ theorem bdd_matrix_mul {K : Type} [NormedField K] [IsUltrametricDist K] {μ ν �
     (fun m => by rw [mul_one]; exact (hb k j m).trans (le_max_left _ _)) n
 
 /- English proof (translation)
-Use `choose n hn using fun p : ZMod a × μ × μ => hY p.1 p.2.1 p.2.2`. Use `⟨Finset.univ.sup n, fun τ i j => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `Nat.exists_eq_add_of_le' (Finset.le_sup (f := n) (Finset.mem_univ (τ, i, j)))`. Rewrite using `[Matrix.smul_apply, smul_eq_mul, hc, pow_add, mul_assoc]`. Conclude with `mem_A.1 (mul_mem (pow_mem (E_mem l e (A O K)) c) (hn (τ, i, j)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_bdd {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K]
     [Algebra O K] [IsUnitBall O K] {l e a : ℕ} [NeZero a] {μ : Type} [Fintype μ]
@@ -100,15 +100,15 @@ theorem exists_pow_smul_bdd {O K : Type} [CommRing O] [NormedField K] [IsUltrame
   exact mem_A.1 (mul_mem (pow_mem (E_mem l e (A O K)) c) (hn (τ, i, j)))
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ κ _ _ P Q F`. Take `⟨α, hα⟩` from `exists_pow_smul_bdd P.mxInv P.mxInv_mem`. Take `⟨β, hβ⟩` from `exists_pow_smul_bdd Q.mx Q.mx_mem`. Use `⟨α + β, fun τ h hh i hi => ?_⟩` and prove the remaining obligations. Take `⟨hb, Y, hY, hFY⟩` from `hh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `GlobalTheory.BK.Hom.bdd_mul (f := E K l e ^ (α + β)) ⟨1, mem_A.1 (pow_mem (E_mem l e (A O K)) _)⟩ hb`. Take `⟨d, hd⟩` from `bdd_matrix_mul (bdd_matrix_mul ⟨1, hα τ⟩ hY) ⟨1, hβ τ⟩`. Establish `h1 : (F.mat (τ - 1)).map (frob K l) * P.mxInv τ = Q.mxInv τ * F.mat τ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Matrix.mul_assoc, Q.mxInv_mul_mx, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `_ = _ := by`. Rewrite using `[← F.comm, Matrix.mul_assoc, Matrix.mul_assoc, P.mx_mul_mxInv, Matrix.mul_one]`. Establish `h2 : (F.mat (τ - 1)).map (frob K l) * ((E K l e ^ α • P.mxInv τ) * Y * (E K l e ^ β • Q.mx τ)) = (E K l e ^ (α + β) * h) • (1 : Matrix κ κ K⟦X⟧)`. Rewrite using `[Matrix.smul_mul, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_smul, Matrix.mul_smul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, h1, Matrix.mul_assoc (Q.mxInv τ), hFY, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, Q.mxInv_mul_mx, smul_smul, smul_smul, pow_add]`. Use `⟨⟨c, fun n => by rw [coeff_frobSlice]; exact hc _⟩, ((E K l e ^ α • P.mxInv τ) * Y * (E K l e ^ β • Q.mx τ)).map (frobSlice l i), ⟨d, fun s t n => by rw [Matrix.map_apply, coeff_frobSlice]; exact hd _ _ _⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `ext1 s t`. Establish `h3` using `congrArg (fun M : Matrix κ κ K⟦X⟧ => frobSlice l i (M s t)) h2`. Simplify using `only [Matrix.mul_apply (M := (F.mat (τ - 1)).map (frob K l)), frobSlice_sum, Matrix.map_apply, frobSlice_frob_mul l hi] at h3`. Rewrite using `[Matrix.mul_apply]`. Simplify using `only [Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h3, Matrix.smul_apply, Matrix.smul_apply, Matrix.one_apply]`. Use `split_ifs`. Simplify using the standard rewrite rules. Use extensionality with `n`. Simplify using `[coeff_frobSlice]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_frobSlice_mem_rdivSet : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (κ : Type) [Fintype κ] [DecidableEq κ] (P : PhiMod O K l e a ι) (Q : PhiMod O K l e a κ) (F : GlobalTheory.BK.Hom P Q), ∃ M : ℕ, ∀ τ, ∀ h ∈ F.rdivSet τ, ∀ i < l, frobSlice l i (E K l e ^ M * h) ∈ F.rdivSet (τ - 1) := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ κ _ _ P Q F

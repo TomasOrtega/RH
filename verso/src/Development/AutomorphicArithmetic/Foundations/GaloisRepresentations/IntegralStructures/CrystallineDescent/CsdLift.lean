@@ -11,15 +11,13 @@ open UpperTheory.V.Af.Bc (res)
 open UpperTheory.Gal.Int.Core
 
 /- English proof (translation)
-Introduce `hJ hG E M _ _ _ _ _ _ _ l a ha π P hL hS`. Establish `hF` using `GlobalTheory.automorphicFormsFiniteGL`. Take `⟨⟨χ', hreg', -⟩, -⟩` from `GlobalTheory.LiftPolar.main hF hJ hG E M l a ha π _ P hL hS`. Take `⟨-, hpol, -⟩` from `hS`. Use `⟨hreg', ⟨fun v => by rw [locInf_pow, quadChar_locInf], ?_⟩, trivial⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.CsdLift.compNorm_quadChar_pow]`. Use `UpperTheory.polOfSat_of_thetaSat UpperTheory.theta_satake_parameters_inverse hJ hG M a ha P 1 ?_` and prove the remaining obligations. Establish `hsd` using `GlobalTheory.T.polarizedPair_satakeParameter_conjugatePlace hF E a π _ hpol`. Establish `hun` using `GlobalTheory.CuspRep.UnrSat.eventually_hasSatGL_locRep hF E a π`. Use `filter_upwards [(GlobalTheory.LiftPolar.tendsto_under (K := E) (L := M)).eventually (hsd.and hun)] with w ⟨hs, B, hB⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[GlobalTheory.CsdLift.compNorm_quadChar_pow]`. Establish `e1` using `GlobalTheory.LiftPolar.cPl_under (E := E) w`. Establish `e2` using `GlobalTheory.LiftPolar.normV_cPl w`. Establish `e3` using `GlobalTheory.LiftPolar.normV_cPl (w.under (𝓞 E))`. Establish `hf` using `GlobalTheory.LiftPolar.normV_under (K := E) w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f := w.asIdeal.inertiaDeg (𝓞 E)`. Establish `hB0 : (CG.mk π).HasSat (w.under (𝓞 E)) B` using `(CG.hasSat_mk _ _ _).2 hB`. Establish `h1` using `hL.sat w f B hf hB0`. Establish `h2` using `hL.sat (UpperTheory.V.Af.Bc.cPl w) f _ (by rw [e1, e2, e3]; exact hf) (e1 ▸ hs B hB0)`. Use `⟨GlobalTheory.CsdLift.unrAt_one w, _, _, h1, h2, ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [GlobalTheory.CsdLift.val_one, Multiset.map_map, Function.comp_def, mul_one, inv_one, inv_pow, inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Core.csdLift_holds :
     CsdLift := by

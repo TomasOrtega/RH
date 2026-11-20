@@ -46,7 +46,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-The claim follows from `(s.projectionToBase_eq_toSequenceOfBlowups i).symm`.
+A detailed English derivation is pending.
 -/
 theorem toMarkedSequence_projectionToBase {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -55,7 +55,7 @@ theorem toMarkedSequence_projectionToBase {k : Type u} [Field k] {X : Scheme.{u}
   (s.projectionToBase_eq_toSequenceOfBlowups i).symm
 
 /- English proof (translation)
-Substitute `hp` using the available equality. Substitute `hI` using the available equality. Substitute `hm` using the available equality. Substitute `hE` using the available equality. Conclude with `h`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isPullbackBlowupSequence_congr (F : PrincipalizationAssignment.{u})
     {k₁ k₂ : Type u} [Field k₁] [Field k₂] {B Q : Scheme.{u}}
@@ -75,7 +75,7 @@ theorem isPullbackBlowupSequence_congr (F : PrincipalizationAssignment.{u})
   exact h
 
 /- English proof (translation)
-Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_length]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length {X : Scheme.{u}} (s : SequenceOfBlowups X) :
     (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.length = s.length := by
@@ -83,14 +83,14 @@ theorem BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length {X : S
   rfl
 
 /- English proof (translation)
-The claim follows from `(BlowupSequenceData.toSequenceOfBlowups_schemeAt _ j).trans (BlowupSequenceData.ofSequenceOfBlowups_schemeAt s j)`.
+A detailed English derivation is pending.
 -/
 private theorem ofSequenceOfBlowups_toSequenceOfBlowups_schemeAt {X : Scheme.{u}} (s : SequenceOfBlowups X) (j : ℕ) :
     (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.schemeAt j = s.schemeAt j :=
   (BlowupSequenceData.toSequenceOfBlowups_schemeAt _ j).trans (BlowupSequenceData.ofSequenceOfBlowups_schemeAt s j)
 
 /- English proof (translation)
-Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `hj`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_length_of_le_ofSequenceOfBlowups_length {X : Scheme.{u}} (s : SequenceOfBlowups X) {j : ℕ}
     (hj : j ≤ (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.length) : j ≤ s.length := by
@@ -98,7 +98,7 @@ private theorem le_length_of_le_ofSequenceOfBlowups_length {X : Scheme.{u}} (s :
   exact hj
 
 /- English proof (translation)
-Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `hj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_ofSequenceOfBlowups_length_of_le_length {X : Scheme.{u}} (s : SequenceOfBlowups X) {j : ℕ}
     (hj : j ≤ s.length) : j ≤ (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.length := by
@@ -106,7 +106,7 @@ private theorem le_ofSequenceOfBlowups_length_of_le_length {X : Scheme.{u}} (s :
   exact hj
 
 /- English proof (translation)
-The claim follows from `(BlowupSequenceData.toSequenceOfBlowups_projectionToBase (BlowupSequenceData.ofSequenceOfBlowups t) j).trans (BlowupSequenceData.ofSequenceOfBlowups_projectionToBase t j)`.
+A detailed English derivation is pending.
 -/
 theorem BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups {X : Scheme.{u}} (t : SequenceOfBlowups X) (j : ℕ) :
     (BlowupSequenceData.ofSequenceOfBlowups t).toSequenceOfBlowups.projectionToBase j = t.projectionToBase j :=
@@ -123,7 +123,7 @@ private def ofSequenceOfBlowupsMap (c : SequenceOfBlowupsPullback φ s' s) (j : 
     eqToHom (ofSequenceOfBlowups_toSequenceOfBlowups_schemeAt s (c.idx j)).symm
 
 /- English proof (translation)
-Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length s', BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length s]`. Conclude with `c.idx_length`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem index_ofSequenceOfBlowups_length (c : SequenceOfBlowupsPullback φ s' s) :
     c.idx (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length = (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.length := by
@@ -131,7 +131,7 @@ private theorem index_ofSequenceOfBlowups_length (c : SequenceOfBlowupsPullback 
   exact c.idx_length
 
 /- English proof (translation)
-Introduce `j hj`. Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `c.idx_lt j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem index_lt_ofSequenceOfBlowups_length (c : SequenceOfBlowupsPullback φ s' s) :
     ∀ j : ℕ, j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length →
@@ -142,7 +142,7 @@ private theorem index_lt_ofSequenceOfBlowups_length (c : SequenceOfBlowupsPullba
   exact c.idx_lt j hj
 
 /- English proof (translation)
-Introduce `j hj`. Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `c.idx_strictMono j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem index_lt_index_succ_of_lt_length_ofSequenceOfBlowups (c : SequenceOfBlowupsPullback φ s' s) :
     ∀ j : ℕ, j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length → c.idx j < c.idx (j + 1) := by
@@ -151,7 +151,7 @@ private theorem index_lt_index_succ_of_lt_length_ofSequenceOfBlowups (c : Sequen
   exact c.idx_strictMono j hj
 
 /- English proof (translation)
-Use `show 𝟙 (s'.schemeAt j) ≫ c.map j (le_length_of_le_ofSequenceOfBlowups_length s' hj) ≫ 𝟙 (s.schemeAt (c.idx j)) = c.map j (le_length_of_le_ofSequenceOfBlowups_length s' hj)`. Conclude with `(Category.id_comp _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 private theorem ofSequenceOfBlowups_map_eq (c : SequenceOfBlowupsPullback φ s' s) (j : ℕ)
     (hj : j ≤ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length) :
@@ -161,7 +161,7 @@ private theorem ofSequenceOfBlowups_map_eq (c : SequenceOfBlowupsPullback φ s' 
   exact (Category.id_comp _).trans (Category.comp_id _)
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Substitute `hg` using the available equality. Substitute `hh` using the available equality. Substitute `hk` using the available equality. Conclude with `H`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem isPullback_congr {A B C D : Scheme.{u}} {f f' : A ⟶ B} {g g' : A ⟶ C}
     {h h' : B ⟶ D} {k k' : C ⟶ D} (hf : f = f') (hg : g = g') (hh : h = h') (hk : k = k')
@@ -173,7 +173,7 @@ private theorem isPullback_congr {A B C D : Scheme.{u}} {f f' : A ⟶ B} {g g' :
   exact H
 
 /- English proof (translation)
-Introduce `j hj`. Conclude with `isPullback_congr (ofSequenceOfBlowups_map_eq c j hj).symm (BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups s' j).symm (BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups s (c.idx j)).symm rfl (c.isPullback j (le_length_of_le_of …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isPullback_projectionToBase_ofSequenceOfBlowups (c : SequenceOfBlowupsPullback φ s' s) :
     ∀ (j : ℕ) (hj : j ≤ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length),
@@ -186,13 +186,11 @@ private theorem isPullback_projectionToBase_ofSequenceOfBlowups (c : SequenceOfB
     (c.isPullback j (le_length_of_le_ofSequenceOfBlowups_length s' hj))
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `refl`. Establish `e1 : (BlowupSequenceData.ofSequenceOfBlowups t).transitionMap (le_refl i) = 𝟙 ((BlowupSequenceData.ofSequenceOfBlowups t).obj i)`. Rewrite using `[BlowupSequenceData.transitionMap_refl]`. Establish `e2 : t.transitionMap (le_refl i) = 𝟙 (t.schemeAt i)`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[SequenceOfBlowups.transitionMap_self_eq_id]`. Conclude with `e1.trans e2.symm`. Consider the case `@step m hm ih`. Establish `hmap : (BlowupSequenceData.ofSequenceOfBlowups t).transitionMap (Nat.le_succ m) = t.transitionMapSucc m` using `(BlowupSequenceData.transitionMap_succ (BlowupSequenceData.ofSequenceOfBlowups t) m).trans (BlowupSequenceData.ofSequenceOfBlowups_blowupMorphism t m)`. Establish `h1 : (BlowupSequenceData.ofSequenceOfBlowups t).transitionMap (Nat.le_trans hm (Nat.le_succ m)) = (BlowupSequenceData.ofSequenceOfBlowups t).transitionMap (Nat.le_succ m) ≫ (BlowupSequenceData.ofSequenceOfBlowups t).transitionMap hm` using `(BlowupSequenceData.transitionMap_comp_transitionMap (BlowupSequenceData.ofSequenceOfBlowups t) hm (Nat.le_succ m)).symm`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2a : (BlowupSequenceData.ofSequenceOfBlowups t).transitionMap (Nat.le_succ m) ≫ (BlowupSequenceData.ofSequenceOfBlowups t).transitionMap hm = t.transitionMapSucc m ≫ (BlowupSequenceData.ofSequenceOfBlowups t).transitionMap hm` using `congrArg (fun f : t.schemeAt (m + 1) ⟶ t.schemeAt m => f ≫ (BlowupSequenceData.ofSequenceOfBlowups t).transitionMap hm) hmap`. Establish `h2b : t.transitionMapSucc m ≫ (BlowupSequenceData.ofSequenceOfBlowups t).transitionMap hm = t.transitionMapSucc m ≫ t.transitionMap hm` using `congrArg (fun g : t.schemeAt m ⟶ t.schemeAt i => t.transitionMapSucc m ≫ g) ih`. Establish `h3 : t.transitionMapSucc m ≫ t.transitionMap hm = t.transitionMap (Nat.le_trans hm (Nat.le_succ m))`. Rewrite using `[SequenceOfBlowups.blowupMorphism_eq_transitionMap]`. Conclude with `SequenceOfBlowups.transitionMap_trans t hm (Nat.le_succ m)`.
-
-Conclude with `h1.trans (h2a.trans (h2b.trans h3))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ofSequenceOfBlowups_transitionMap {W : Scheme.{u}} (t : SequenceOfBlowups W) {i i' : ℕ}
     (h : i ≤ i') : (BlowupSequenceData.ofSequenceOfBlowups t).transitionMap h = t.transitionMap h := by
@@ -221,14 +219,14 @@ private theorem ofSequenceOfBlowups_transitionMap {W : Scheme.{u}} (t : Sequence
       exact h1.trans (h2a.trans (h2b.trans h3))
 
 /- English proof (translation)
-The claim follows from `(BlowupSequenceData.toSequenceOfBlowups_transitionMap (BlowupSequenceData.ofSequenceOfBlowups t) h).trans (ofSequenceOfBlowups_transitionMap t h)`.
+A detailed English derivation is pending.
 -/
 private theorem ofSequenceOfBlowups_toSequenceOfBlowups_transitionMap {W : Scheme.{u}} (t : SequenceOfBlowups W) {i i' : ℕ}
     (h : i ≤ i') : (BlowupSequenceData.ofSequenceOfBlowups t).toSequenceOfBlowups.transitionMap h = t.transitionMap h :=
   (BlowupSequenceData.toSequenceOfBlowups_transitionMap (BlowupSequenceData.ofSequenceOfBlowups t) h).trans (ofSequenceOfBlowups_transitionMap t h)
 
 /- English proof (translation)
-The claim follows from `(SequenceOfBlowups.blowupMorphism_eq_transitionMap ((BlowupSequenceData.ofSequenceOfBlowups t).toSequenceOfBlowups) i).trans ((ofSequenceOfBlowups_toSequenceOfBlowups_transitionMap t (Nat.le_succ i)).trans (SequenceOfBlowups.blowupMorphism_eq_transitionMap t i).symm)`.
+A detailed English derivation is pending.
 -/
 private theorem ofSequenceOfBlowups_toSequenceOfBlowups_blowupMorphism {W : Scheme.{u}} (t : SequenceOfBlowups W) (i : ℕ) :
     (BlowupSequenceData.ofSequenceOfBlowups t).toSequenceOfBlowups.transitionMapSucc i = t.transitionMapSucc i :=
@@ -237,9 +235,9 @@ private theorem ofSequenceOfBlowups_toSequenceOfBlowups_blowupMorphism {W : Sche
       (SequenceOfBlowups.blowupMorphism_eq_transitionMap t i).symm)
 
 /- English proof (translation)
-Introduce `j hj`. Establish `hlt : j < s'.length`. Establish `h` using `hj`. Rewrite `h` using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ofSequenceOfBlowups_map_eq c j (le_of_lt hj), ofSequenceOfBlowups_map_eq c (j + 1) hj, ofSequenceOfBlowups_toSequenceOfBlowups_blowupMorphism, ofSequenceOfBlowups_toSequenceOfBlowups_transitionMap]`. Conclude with `c.step j hlt`.
+A detailed English derivation is pending.
 -/
 private theorem ofSequenceOfBlowups_blowupMorphism_comp_map (c : SequenceOfBlowupsPullback φ s' s) :
     ∀ (j : ℕ) (hj : j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length),
@@ -256,14 +254,14 @@ private theorem ofSequenceOfBlowups_blowupMorphism_comp_map (c : SequenceOfBlowu
   exact c.step j hlt
 
 /- English proof (translation)
-Simplify using `only [eqToHom_refl, Category.id_comp, Category.comp_id]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem eqToHom_refl_comp_comp_eqToHom_refl {A B : Scheme.{u}} (hA : A = A) (hB : B = B)
     (f : A ⟶ B) : eqToHom hA ≫ f ≫ eqToHom hB = f := by
   simp only [eqToHom_refl, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-Introduce `j hj`. Establish `hj' : j < s'.length` using `lt_of_lt_of_le hj (le_of_eq (BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length s'))`. Establish `hmap : ofSequenceOfBlowupsMap c j (le_of_lt hj) = c.map j (le_of_lt hj')` using `eqToHom_refl_comp_comp_eqToHom_refl (ofSequenceOfBlowups_toSequenceOfBlowups_schemeAt s' j) (ofSequenceOfBlowups_toSequenceOfBlowups_schemeAt s (c.idx j)).symm (c.map j (le_length_of_le_ofSequenceOfBlowups_length s' (le_of_lt hj)))`. Rewrite using `[hmap]`. Conclude with `c.center_comap j hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem center_ofSequenceOfBlowups_eq_comap (c : SequenceOfBlowupsPullback φ s' s) :
     ∀ (j : ℕ) (hj : j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length),
@@ -278,7 +276,7 @@ private theorem center_ofSequenceOfBlowups_eq_comap (c : SequenceOfBlowupsPullba
   exact c.center_comap j hj'
 
 /- English proof (translation)
-Introduce `j hj`. Establish `hj' : j < s'.length` using `lt_of_lt_of_le hj (le_of_eq (BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length s'))`. Conclude with `c.center_ne_top j hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem center_ofSequenceOfBlowups_ne_top (c : SequenceOfBlowupsPullback φ s' s) :
     ∀ j : ℕ, j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length →
@@ -288,11 +286,9 @@ private theorem center_ofSequenceOfBlowups_ne_top (c : SequenceOfBlowupsPullback
   exact c.center_ne_top j hj'
 
 /- English proof (translation)
-Introduce `i hi hmiss z hz x'`. Establish `hi' : i < s.length`. Rewrite `hi` using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `hi`. Establish `hmiss' : ∀ j : ℕ, j < s'.length → c.idx j ≠ i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Use `hmiss j ?_` and prove the remaining obligations. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `hj`. Establish `h` using `c.omitted i hi' hmiss' z hz x'`.
-
-Rewrite using `[BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups s i]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ofSequenceOfBlowups_ne_of_mem_unmatched_center (c : SequenceOfBlowupsPullback φ s' s) :
     ∀ i : ℕ, i < (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.length →
@@ -333,7 +329,7 @@ private def transportedMap
     eqToHom (ofSequenceOfBlowups_toSequenceOfBlowups_schemeAt s (c.idx j))
 
 /- English proof (translation)
-Establish `h` using `c.idx_length`. Rewrite `h` using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length s', BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length s]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ofSequenceOfBlowups_index_length
     (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups) :
@@ -343,9 +339,9 @@ private theorem ofSequenceOfBlowups_index_length
   exact h
 
 /- English proof (translation)
-Introduce `j hj`. Establish `hj' : j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `hj`. Establish `h` using `c.idx_lt j hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 private theorem ofSequenceOfBlowups_index_lt_length
     (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups) :
@@ -359,7 +355,7 @@ private theorem ofSequenceOfBlowups_index_lt_length
   exact h
 
 /- English proof (translation)
-Introduce `j hj`. Use `c.idx_strictMono j ?_` and prove the remaining obligations. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `hj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem index_lt_index_succ_of_lt_length
     (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups) :
@@ -370,7 +366,7 @@ private theorem index_lt_index_succ_of_lt_length
   exact hj
 
 /- English proof (translation)
-The claim follows from `eqToHom_refl_comp_comp_eqToHom_refl (ofSequenceOfBlowups_toSequenceOfBlowups_schemeAt s' j).symm (ofSequenceOfBlowups_toSequenceOfBlowups_schemeAt s (c.idx j)) (c.map j (le_ofSequenceOfBlowups_length_of_le_length s' hj))`.
+A detailed English derivation is pending.
 -/
 private theorem transportedMap_eq_map
     (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups)
@@ -380,7 +376,7 @@ private theorem transportedMap_eq_map
     (c.map j (le_ofSequenceOfBlowups_length_of_le_length s' hj))
 
 /- English proof (translation)
-Introduce `j hj`. Conclude with `isPullback_congr (transportedMap_eq_map c j hj).symm (BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups s' j) (BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups s (c.idx j)) rfl (c.isPullback j (le_ofSequenceOfBlowups_length_of_ …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isPullback_transportedMap
     (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups) :
@@ -392,9 +388,9 @@ private theorem isPullback_transportedMap
     (c.isPullback j (le_ofSequenceOfBlowups_length_of_le_length s' hj))
 
 /- English proof (translation)
-Introduce `j hj`. Establish `hj' : j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `hj`. Establish `key` using `c.step j hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[ofSequenceOfBlowups_toSequenceOfBlowups_blowupMorphism, ofSequenceOfBlowups_toSequenceOfBlowups_transitionMap]`. Rewrite using `[transportedMap_eq_map c j (le_of_lt hj), transportedMap_eq_map c (j + 1) hj]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem blowupMorphism_comp_map_of_ofSequenceOfBlowups
     (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups) :
@@ -411,9 +407,9 @@ private theorem blowupMorphism_comp_map_of_ofSequenceOfBlowups
   exact key
 
 /- English proof (translation)
-Introduce `j hj`. Establish `hj' : j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `hj`. Establish `hmap : transportedMap c j (le_of_lt hj) = c.map j (le_of_lt hj')` using `eqToHom_refl_comp_comp_eqToHom_refl (ofSequenceOfBlowups_toSequenceOfBlowups_schemeAt s' j).symm (ofSequenceOfBlowups_toSequenceOfBlowups_schemeAt s (c.idx j)) (c.map j (le_ofSequenceOfBlowups_length_of_le_length s' (le_of_lt hj)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmap]`. Conclude with `c.center_comap j hj'`.
+A detailed English derivation is pending.
 -/
 private theorem center_eq_comap_transportedMap
     (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups) :
@@ -430,7 +426,7 @@ private theorem center_eq_comap_transportedMap
   exact c.center_comap j hj'
 
 /- English proof (translation)
-Introduce `j hj`. Establish `hj' : j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `hj`. Conclude with `c.center_ne_top j hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem center_ne_top_of_pullback_ofSequenceOfBlowups
     (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups) :
@@ -442,11 +438,9 @@ private theorem center_ne_top_of_pullback_ofSequenceOfBlowups
   exact c.center_ne_top j hj'
 
 /- English proof (translation)
-Introduce `i hi hmiss z hz x'`. Establish `hi' : i < (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups.length`. Rewrite using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `hi`. Establish `hmiss' : ∀ j : ℕ, j < (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups.length → c.idx j ≠ i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Use `hmiss j ?_` and prove the remaining obligations. Rewrite `hj` using `[BlowupSequenceData.toSequenceOfBlowups_ofSequenceOfBlowups_length]`. Conclude with `hj`. Establish `h` using `c.omitted i hi' hmiss' z hz x'`.
-
-Rewrite `h` using `[BlowupSequenceData.projectionToBase_toSequenceOfBlowups_ofSequenceOfBlowups s i]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ofSequenceOfBlowups_projectionToBase_ne
     (c : SequenceOfBlowupsPullback φ (BlowupSequenceData.ofSequenceOfBlowups s').toSequenceOfBlowups (BlowupSequenceData.ofSequenceOfBlowups s).toSequenceOfBlowups) :

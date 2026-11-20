@@ -20,7 +20,7 @@ local notation "ℚ̄" => AlgebraicClosure ℚ
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-The claim follows from `hS gsEulerRatio S T.X₂ ιr = gsEulerRatio S T.X₁ ιr * gsEulerRatio S T.X₃ ιr := by haveI : Finite S := hS haveI : Fintype S := Fintype.ofFinite S have hp : ℓ.Prime := Fact.out haveI : Nonempty S := nonempty_of_natCast_mem_of_ne_one (N := ℓ) S hp.one_lt.ne' hSℓ obtain ⟨r, hr⟩ := hℓ …`.
+A detailed English derivation is pending.
 -/
 theorem ratio_shortExact_prime (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (hS : S.Finite) (hSℓ : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
@@ -68,7 +68,7 @@ theorem ratio_shortExact_prime (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield)
   exact gsEulerRatio_shortExact_of_bijective S ιr hT hn' hA hB
 
 /- English proof (translation)
-The claim follows from `hS gsEulerRatio S T.X₂ ιr = gsEulerRatio S T.X₁ ιr * gsEulerRatio S T.X₃ ιr := by obtain ⟨n, hn⟩ := hc exact ratio_shortExact_prime ℓ K S hS hSℓ ιr T hT ⟨n, fun m => by rw [← hn]; exact card_nsmul_eq_zero'⟩`.
+A detailed English derivation is pending.
 -/
 theorem ratio_shortExact_prime_card (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (hS : S.Finite) (hSℓ : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)
@@ -82,19 +82,17 @@ theorem ratio_shortExact_prime_card (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubf
   exact ratio_shortExact_prime ℓ K S hS hSℓ ιr T hT ⟨n, fun m => by rw [← hn]; exact card_nsmul_eq_zero'⟩
 
 /- English proof (translation)
-Establish `: Finite S` using `hS`. Establish `hp : ℓ.Prime` using `Fact.out`. Set `P : ℕ → Prop` to `fun n => ∃ k, n = ℓ ^ k`. Establish `hPdvd : ∀ m n, m ∣ n → P n → P m`. Introduce and unpack `m n hmn ⟨k, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨j, -, rfl⟩` from `(Nat.dvd_prime_pow hp).1 hmn`. Conclude with `⟨j, rfl⟩`. Establish `hPmul : ∀ m n, P m → P n → P (m * n)`. Introduce and unpack `m n ⟨i, rfl⟩ ⟨j, rfl⟩`. Conclude with `⟨i + j, (pow_add ℓ i j).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `hχ : IsMultiplicativeOn P (fun (A : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)) [IsDiscreteRep A] => gsEulerRatio S A ιr)` using `{ iso := fun {A B} _ _ _ _ e => gsEulerRatio_eq_of_iso S A ιr e shortExact := fun {T} _ _ _ _ hT hP => by`. Take `⟨k, hk⟩` from `hP`. Conclude with `ratio_shortExact_prime ℓ K S hS hSℓ ιr T hT ⟨k, fun m => by`. Rewrite using `[← hk]`. Conclude with `card_nsmul_eq_zero'⟩ }`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcardM : P (Nat.card M)`. Use `⟨_, Nat.eq_prime_pow_of_unique_prime_dvd Nat.card_pos.ne' ?_⟩` and prove the remaining obligations. Introduce `d hd hdvd`. Use `haveI : Fact d.Prime := ⟨hd⟩`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' d hdvd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: addOrderOf x ∣ ℓ` using `addOrderOf_dvd_of_nsmul_eq_zero (hℓ x)`. Rewrite `this` using `[hx]`. Conclude with `(Nat.prime_dvd_prime_iff_eq hd hp).1 this`. Establish `hpow` using `hχ.coind_res_eq_pow hPdvd hPmul (gsOpenSubgroup S hL) hcard M hcardM hℓ`. Take `⟨ιrL, hsh⟩` from `exists_gsEulerRatio_coind_eq S hL ιr`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : Finite (Rep.res (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype M)` using `inferInstanceAs (Finite M)`. Establish `hsh1` using `hsh (Rep.res (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype M)`. Establish `he : gsEulerRatio S M ιr ^ (ℓ ^ a) = 1` using `hpow.symm.trans (hsh1.trans (hL1 ιrL))`. Establish `hpos : 0 < gsEulerRatio S M ιr`. Take `⟨k, hk⟩` from `hcardM`.
-
-Use `gsEulerRatio_pos S M ιr fun v hv => hSℓ v ?_` and prove the remaining obligations. Rewrite `hv` using `[hk, Nat.cast_pow]`. Conclude with `v.isPrime.mem_of_pow_mem k hv`. Conclude with `(pow_eq_one_iff_of_nonneg hpos.le (pow_ne_zero _ hp.ne_zero)).1 he`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_eq_one_of_cyclic_pow (ℓ : ℕ) [Fact ℓ.Prime]
     (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) (hS : S.Finite)
@@ -191,7 +189,7 @@ noncomputable def coindStagesEquiv {k G : Type} [CommRing k] [Group G] (U W : Su
   isIntertwining' h := LinearMap.ext fun F => Subtype.ext (funext fun g => rfl)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Rep.mkIso (coindStagesEquiv U W hUW A)⟩`.
+Supply the required witnesses or components.
 -/
 theorem coind_stages {k G : Type} [CommRing k] [Group G] (U W : Subgroup G) (hUW : U ≤ W) (A : Rep.{0} k G) :
     Nonempty (Rep.coind W.subtype (Rep.coind (U.subgroupOf W).subtype
@@ -202,13 +200,11 @@ theorem coind_stages {k G : Type} [CommRing k] [Group G] (U W : Subgroup G) (hUW
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hp : ℓ.Prime` using `Fact.out`. Use `exact`. Use the proof step `{ iso := fun {A B} _ _ _ _ e => gsEulerRatio_eq_of_iso S _ ιr ((Rep.coindFunctor (ULift.{0} ℤ) (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype).mapIso e) shortExact := fun {T} _ _ _ _ hT hP => by`. Establish `hT'` using `shortExact_coindShortComplexOf (G := (galUnramifiedOutside K.1 ℚ̄ S)) (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) hT`. Take `⟨k, hk⟩` from `hP`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc` using `card_coind_gsOpenSubgroup S hL' T.X₂`. Establish `hfin : Finite (Rep.coind (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype T.X₂)` using `Nat.finite_of_card_ne_zero (by rw [hcc, hk]; exact pow_ne_zero _ (pow_ne_zero _ hp.ne_zero))`. Establish `i1 : IsDiscreteRep (coindShortComplexOf (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) T).X₁` using `isDiscreteRep_coind (gsOpenSubgroup S hL') T.X₁`. Establish `i2 : IsDiscreteRep (coindShortComplexOf (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) T).X₂` using `isDiscreteRep_coind (gsOpenSubgroup S hL') T.X₂`. Establish `i3 : IsDiscreteRep (coindShortComplexOf (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) T).X₃` using `isDiscreteRep_coind (gsOpenSubgroup S hL') T.X₃`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin2 : Finite (coindShortComplexOf (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) T).X₂` using `hfin`. Establish `hcc2 : Nat.card (coindShortComplexOf (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) T).X₂ = ℓ ^ (k * Module.finrank K.1 L'.1)`. Rewrite using `[pow_mul, ← hk]`. Conclude with `hcc`. Establish `key` using `ratio_shortExact_prime_card ℓ K S hS hSℓ ιr (coindShortComplexOf (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) T) hT' ⟨_, hcc2⟩`.
-
-Conclude with `key }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isMultiplicativeOn_ratio_coind (ℓ : ℕ) [Fact ℓ.Prime]
     (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) (hS : S.Finite)
@@ -241,17 +237,15 @@ theorem isMultiplicativeOn_ratio_coind (ℓ : ℕ) [Fact ℓ.Prime]
       exact key }
 
 /- English proof (translation)
-Establish `hp : ℓ.Prime` using `Fact.out`. Set `W : OpenSubgroup (galUnramifiedOutside K.1 ℚ̄ S)` to `gsOpenSubgroup S hL'`. Use `haveI : CompactSpace (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) := compactSpace_openSubgroup (gsOpenSubgroup S hL')`. Set `H : OpenSubgroup (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))` to `⟨(gsOpenSubgroup S hK'' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subgroupOf (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)), (gsOpenSubgroup S hK'').isOpen.preimage continuous_subtype_val⟩`. Use `haveI : (H : Subgroup (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))).Normal := inferInstanceAs ((gsOpenSubgroup S hK'' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subgroupOf (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))).Normal`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsCyclic ((gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) ⧸ (H : Subgroup (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)))) := inferInstanceAs (IsCyclic ((gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) ⧸ (gsOpenSubgrou …`. Establish `hχ` using `isMultiplicativeOn_ratio_coind ℓ K S hS hSℓ ιr L' hL'`. Establish `hPdvd : ∀ m n, m ∣ n → (∃ k, n = ℓ ^ k) → (∃ k, m = ℓ ^ k)`. Introduce and unpack `m n hmn ⟨k, rfl⟩`. Take `⟨j, -, rfl⟩` from `(Nat.dvd_prime_pow hp).1 hmn`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨j, rfl⟩`. Establish `hPmul : ∀ m n, (∃ k, m = ℓ ^ k) → (∃ k, n = ℓ ^ k) → (∃ k, m * n = ℓ ^ k)`. Introduce and unpack `m n ⟨i, rfl⟩ ⟨j, rfl⟩`. Conclude with `⟨i + j, (pow_add ℓ i j).symm⟩`. Establish `hcM : ∃ k, Nat.card M = ℓ ^ k`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨_, Nat.eq_prime_pow_of_unique_prime_dvd Nat.card_pos.ne' ?_⟩` and prove the remaining obligations. Introduce `d hd hdvd`. Use `haveI : Fact d.Prime := ⟨hd⟩`. Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' d hdvd`. Establish `: addOrderOf x ∣ ℓ` using `addOrderOf_dvd_of_nsmul_eq_zero (hℓ x)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hx]`. Conclude with `(Nat.prime_dvd_prime_iff_eq hd hp).1 this`. Establish `: Finite (Rep.res (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype M)` using `inferInstanceAs (Finite M)`. Establish `hpow` using `hχ.coind_res_eq_pow hPdvd hPmul H (p := ℓ) hcard (Rep.res (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype M) hcM (fun m => hℓ m)`. Take `⟨e⟩` from `coind_stages (gsOpenSubgroup S hK'' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)) hle M`.
-
-Establish `e' : Rep.coind (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype (Rep.coind (H : Subgroup (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))).subtype (Rep.res (H : Subgroup (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))).s …` using `e`. Establish `hd1 : IsDiscreteRep (Rep.coind (H : Subgroup (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))).subtype (Rep.res (H : Subgroup (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))).subtype (Rep.res (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutsid …` using `isDiscreteRep_coind H _`. Establish `hd2 : IsDiscreteRep (Rep.coind (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype (Rep.coind (H : Subgroup (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S))).subtype (Rep.res (H : Subgroup (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutsi …` using `isDiscreteRep_coind (gsOpenSubgroup S hL') _`. Rewrite using `[← hpow]`. Conclude with `(gsEulerRatio_eq_of_iso S _ ιr e').symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_coind_stage_pow (ℓ : ℕ) [Fact ℓ.Prime]
     (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) (hS : S.Finite)
@@ -307,7 +301,7 @@ theorem ratio_coind_stage_pow (ℓ : ℕ) [Fact ℓ.Prime]
   exact (gsEulerRatio_eq_of_iso S _ ιr e').symm
 
 /- English proof (translation)
-The claim follows from `GlobalEulerCharacteristicAlt.exists_prime_to_part ℓ K S L hL L' hL' hle hcyc`.
+A detailed English derivation is pending.
 -/
 theorem exists_prime_to_part (ℓ : ℕ) [Fact ℓ.Prime]
     (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
@@ -327,7 +321,7 @@ theorem exists_prime_to_part (ℓ : ℕ) [Fact ℓ.Prime]
   GlobalEulerCharacteristicAlt.exists_prime_to_part ℓ K S L hL L' hL' hle hcyc
 
 /- English proof (translation)
-Take `⟨ιr', hsh⟩` from `exists_gsEulerRatio_coind_eq S hK' ιr`. Establish `: Finite (Rep.res (gsOpenSubgroup S hK' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype M)` using `inferInstanceAs (Finite M)`. Conclude with `⟨ιr', hsh _⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_ratio_coind_eq_resTo (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (ιr : ∀ v : {v : InfinitePlace K.1 // v.IsReal}, ℚ̄ →ₐ[K.1] AlgebraicClosure v.1.Completion)
@@ -341,17 +335,15 @@ theorem exists_ratio_coind_eq_resTo (K : FiniteSubfield) (S : Set (HeightOneSpec
   exact ⟨ιr', hsh _⟩
 
 /- English proof (translation)
-Establish `hp : ℓ.Prime` using `Fact.out`. Use `haveI := hN`. Establish `: Finite S` using `hS`. Take `⟨K'', hKK'', hK'', hUle, hle'', hcyc'', hcop, hnorm, hcycW, a, hcard⟩` from `exists_prime_to_part ℓ K S L hL L' hL' hle hcyc`. Use `haveI := hKK''`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := hnorm`. Use `haveI := hcycW`. Take `⟨ιr'', h3⟩` from `exists_ratio_coind_eq_resTo K S ιr K'' hK'' M`. Establish `h1 : gsEulerRatio (placesOver S) (W_killed_a.resTo S K'' hK'' M) ιr'' = 1` using `hK K'' hK'' hUle hcyc'' hcop ιr''`. Establish `h2` using `ratio_coind_stage_pow ℓ K S hS hSℓ ιr L' hL' K'' hK'' hle'' hcard M hℓ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `he : gsEulerRatio S (Rep.coind (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype (Rep.res (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype M)) ιr ^ (ℓ ^ a) = 1` using `h2.symm.trans (h3.trans h1)`. Establish `hcM : ∃ k, Nat.card M = ℓ ^ k`. Use `⟨_, Nat.eq_prime_pow_of_unique_prime_dvd Nat.card_pos.ne' ?_⟩` and prove the remaining obligations. Introduce `d hd hdvd`. Use `haveI : Fact d.Prime := ⟨hd⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx⟩` from `exists_prime_addOrderOf_dvd_card' d hdvd`. Establish `: addOrderOf x ∣ ℓ` using `addOrderOf_dvd_of_nsmul_eq_zero (hℓ x)`. Rewrite `this` using `[hx]`. Conclude with `(Nat.prime_dvd_prime_iff_eq hd hp).1 this`. Take `⟨k, hk⟩` from `hcM`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcc` using `card_coind_gsOpenSubgroup S hL' (Rep.res (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype M)`. Establish `hcc' : Nat.card (Rep.coind (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype (Rep.res (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype M)) = ℓ ^ (k * Module.finrank K.1 L'.1)`. Rewrite using `[hcc, pow_mul, ← hk]`. Establish `: Finite (Rep.coind (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype (Rep.res (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype M))` using `Nat.finite_of_card_ne_zero (by rw [hcc']; exact pow_ne_zero _ hp.ne_zero)`. Establish `hpos : 0 < gsEulerRatio S (Rep.coind (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype (Rep.res (gsOpenSubgroup S hL' : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).subtype M)) ιr`.
-
-Use `gsEulerRatio_pos S _ ιr fun v hv => hSℓ v ?_` and prove the remaining obligations. Rewrite `hv` using `[hcc', Nat.cast_pow]`. Conclude with `v.isPrime.mem_of_pow_mem _ hv`. Conclude with `(pow_eq_one_iff_of_nonneg hpos.le (pow_ne_zero _ hp.ne_zero)).1 he`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratio_coind_cyclic (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1))) (hS : S.Finite)
     (hSℓ : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)

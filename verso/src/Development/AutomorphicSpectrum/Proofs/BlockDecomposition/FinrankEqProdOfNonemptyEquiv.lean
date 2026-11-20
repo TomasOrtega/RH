@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.WhitRank
 
 /- English proof (translation)
-Use `open Module in`. Rewrite using `[Module.finrank_eq_nat_card_basis (Basis.piTensorProduct fun i => Module.Free.chooseBasis ℂ (E i)), Nat.card_pi]`. Conclude with `Finset.prod_congr rfl fun i _ => (Module.finrank_eq_nat_card_basis (Module.Free.chooseBasis ℂ (E i))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_piTensorProduct_eq_prod {ι : Type} [Fintype ι] (E : ι → Type) [∀ i, AddCommGroup (E i)]
     [∀ i, Module ℂ (E i)] : Module.finrank ℂ (⨂[ℂ] i, E i) = ∏ i, Module.finrank ℂ (E i) := by
@@ -19,7 +19,7 @@ theorem finrank_piTensorProduct_eq_prod {ι : Type} [Fintype ι] (E : ι → Typ
   exact Finset.prod_congr rfl fun i _ => (Module.finrank_eq_nat_card_basis (Module.Free.chooseBasis ℂ (E i))).symm
 
 /- English proof (translation)
-Take `⟨f⟩` from `e`. Rewrite using `[f.finrank_eq, finrank_piTensorProduct_eq_prod]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_eq_prod_of_nonempty_equiv {ι A : Type} [Fintype ι] [AddCommGroup A] [Module ℂ A] (E : ι → Type)
     [∀ i, AddCommGroup (E i)] [∀ i, Module ℂ (E i)] (e : Nonempty (A ≃ₗ[ℂ] ⨂[ℂ] i, E i)) :
@@ -28,7 +28,7 @@ theorem finrank_eq_prod_of_nonempty_equiv {ι A : Type} [Fintype ι] [AddCommGro
   rw [f.finrank_eq, finrank_piTensorProduct_eq_prod]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hW ψ hψ hψ1 h N x hd`. Take `⟨f⟩` from `hW ψ hψ hψ1 h N (fun a => (x a).fst) hd (fun a => (x a).snd.rep.V) (fun a => (x a).rep) (fun a => (x a).snd.rep.smooth)`. Conclude with `finrank_eq_prod_of_nonempty_equiv _ ⟨f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem whitRankProd_of_heredity : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k], WhitHeredity k → WhitRankProd k := by

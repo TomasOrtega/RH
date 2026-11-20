@@ -13,9 +13,9 @@ noncomputable section
 namespace SuperlatticeRatio
 
 /- English proof (translation)
-Establish `h` using `AddSubgroup.relIndex_mul_relIndex (H := A.toAddSubgroup) (K := B.toAddSubgroup) (L := C.toAddSubgroup) (fun _ hx ↦ hAB hx) (fun _ hx ↦ hBC hx)`. Rewrite `h` using `[hidx]`. Break down `Nat.prime_mul_iff.1 (h ▸ hp) with ⟨-, h1⟩ | ⟨-, h1⟩` into its components or cases. Establish `h2` using `AddSubgroup.relIndex_eq_one.1 h1`. Conclude with `le_antisymm hBC (fun x hx ↦ h2 hx)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `AddSubgroup.relIndex_eq_one.1 h1`. Conclude with `absurd (fun x hx ↦ h2 hx) hne`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_le_of_relIndex {A B C : Submodule ℤ ℂ} {p : ℕ} (hp : p.Prime) (hAB : A ≤ B)
     (hBC : B ≤ C) (hidx : A.toAddSubgroup.relIndex C.toAddSubgroup = p) (hne : ¬ B ≤ A) :
@@ -30,14 +30,14 @@ theorem eq_of_le_of_relIndex {A B C : Submodule ℤ ℂ} {p : ℕ} (hp : p.Prime
     exact absurd (fun x hx ↦ h2 hx) hne
 
 /- English proof (translation)
-Simplify using `[Submodule.mem_span_pair, zsmul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_span_pair_iff {α β x : ℂ} :
     x ∈ Submodule.span ℤ ({α, β} : Set ℂ) ↔ ∃ m n : ℤ, (m : ℂ) * α + n * β = x := by
   simp [Submodule.mem_span_pair, zsmul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[PhScale.latticeDiscr_scaleLattice _ hc, latticeDiscr_lattice, discr_latticeOfTau]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem latticeDiscr_scale_latticeOfTau {c : ℂ} (hc : c ≠ 0) (σ : ℍ) :
     latticeDiscr (scaleLattice c (latticeOfTau σ).lattice) =
@@ -45,63 +45,59 @@ theorem latticeDiscr_scale_latticeOfTau {c : ℂ} (hc : c ≠ 0) (σ : ℍ) :
   rw [PhScale.latticeDiscr_scaleLattice _ hc, latticeDiscr_lattice, discr_latticeOfTau]
 
 /- English proof (translation)
-Introduce `L L' p hp hle hidx`. Take `⟨τ, c, hc, hL⟩` from `ClassMean.exists_eq_scaleLattice L`. Establish `hLs : L.lattice = Submodule.span ℤ {c * τ, c}`. Rewrite using `[hL, ClassMean.scaleLattice_latticeOfTau]`. Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hp.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpZ : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 hp`. Establish `hτ : (τ : ℂ).im ≠ 0` using `τ.im_pos.ne'`. Establish `hcτ : c * τ ∈ L'.lattice` using `hle (hLs ▸ Submodule.subset_span (by simp))`. Establish `hc' : c ∈ L'.lattice` using `hle (hLs ▸ Submodule.subset_span (by simp))`. Use `⟨τ, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← weierstrassCurve_latticeOfTau_j, eq_comm, weierstrassCurve_j_eq_iff]`. Use `⟨c, hc, ?_⟩` and prove the remaining obligations. Rewrite using `[hL, scaleLattice, Submodule.map_coe]`. Both sides reduce to the same expression. Establish `hne : ¬ L'.lattice ≤ L.lattice` using `fun h ↦ hp.one_lt.ne' (hidx ▸ AddSubgroup.relIndex_eq_one.2 (fun x hx ↦ h hx))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Take `⟨v, hvL', hvL⟩` from `SetLike.not_le_iff_exists.1 hne`. Establish `hpv : (p : ℂ) * v ∈ L.lattice`. Use `AddSubgroup.nsmul_relIndex_mem L.lattice.toAddSubgroup (K := L'.lattice.toAddSubgroup) (g := v) hvL'` as an intermediate fact. Rewrite `this` using `[hidx, nsmul_eq_mul]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpv` using `[hLs, mem_span_pair_iff]`. Take `⟨m, n, hmn⟩` from `hpv`. Establish `hLdiscr : latticeDiscr L.lattice = (c ^ 12)⁻¹ * ((2 * Real.pi) ^ 12 * discriminant τ)`. Rewrite using `[hL, latticeDiscr_scale_latticeOfTau hc]`. Establish `hπ : (2 * (Real.pi : ℂ)) ≠ 0` using `mul_ne_zero two_ne_zero (Complex.ofReal_ne_zero.2 Real.pi_ne_zero)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ (z : ℤ) {x : ℂ}, x ∈ L'.lattice → (z : ℂ) * x ∈ L'.lattice` using `fun z x hx ↦ by`. Rewrite using `[← zsmul_eq_mul]`. Conclude with `zsmul_mem hx z`. Distinguish the cases in `hm : (p : ℤ) ∣ m`. Take `⟨k, rfl⟩` from `hm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hn : ¬ (p : ℤ) ∣ n`. Introduce and unpack `⟨l, rfl⟩`. Apply `hvL` to reduce the goal to its premises. Rewrite using `[hLs, mem_span_pair_iff]`. Use `⟨k, l, mul_left_cancel₀ hp0 ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← hmn]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u, w, huw⟩` from `(hpZ.coprime_iff_not_dvd.2 hn).symm`. Use `set σ := mulPoint ⟨p, hp.pos⟩ τ`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσ : (σ : ℂ) = p * τ` using `coe_mulPoint _ _`. Establish `hcp : c / p ≠ 0` using `div_ne_zero hc hp0`. Establish `hM : scaleLattice (c / p) (latticeOfTau σ).lattice = Submodule.span ℤ {c * τ, c / p}`. Rewrite using `[ClassMean.scaleLattice_latticeOfTau, hσ, show c / p * (p * τ) = c * τ by field_simp]`. Establish `heq : scaleLattice (c / p) (latticeOfTau σ).lattice = L'.lattice`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `eq_of_le_of_relIndex hp ?_ ?_ hidx ?_` and prove the remaining obligations. Rewrite using `[hLs, hM, Submodule.span_le, Set.insert_subset_iff, Set.singleton_subset_iff]`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> rw [SetLike.mem_coe, mem_span_pair_iff]`. Conclude with `⟨1, 0, by simp⟩`. Establish `key2 : (p : ℂ) * (c / p) = c` using `by field_simp`.
+Supply the required witnesses or components. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨0, p, by push_cast; linear_combination key2⟩`. Rewrite using `[hM, Submodule.span_le, Set.insert_subset_iff, Set.singleton_subset_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `hcτ`. Establish `e : c / p = (u : ℂ) * v + ((-(u * k) : ℤ) : ℂ) * (c * τ) + (w : ℂ) * c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmn' : (p : ℂ) * v = p * k * (c * τ) + n * c` using `by rw [← hmn]; push_cast; ring`. Establish `huw' : (u : ℂ) * n + w * p = 1` using `by exact_mod_cast huw`. Use `push_cast`. Rewrite using `[div_eq_iff hp0]`. Take the linear combination `(-(u : ℂ)) * hmn' - c * huw'`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, e]`. Conclude with `add_mem (add_mem (hz u hvL') (hz _ hcτ)) (hz w hc')`. Introduce `h`. Establish `: c / p ∈ L.lattice` using `h (hM ▸ Submodule.subset_span (by simp))`. Rewrite `this` using `[hLs, mem_span_pair_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m', n', e⟩` from `this`. Establish `e2 : c * ((m' : ℂ) * τ + n' - 1 / p) = 0` using `by linear_combination e`. Establish `e' : (m' : ℂ) * τ + n' = 1 / p` using `sub_eq_zero.1 ((mul_eq_zero.1 e2).resolve_left hc)`. Establish `him : (m' : ℝ) * (τ : ℂ).im = 0`. Use `congrArg Complex.im e'` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hm0 : m' = 0`. Break down `mul_eq_zero.1 him with h0 | h0` into its components or cases. Conclude with `h0` after adjusting the coercions. Conclude with `absurd h0 hτ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `hm0` using the available equality. Establish `hre : (n' : ℂ) * p = 1`. Establish `e3 : (n' : ℂ) = 1 / p` using `by simpa using e'`. Rewrite using `[e3]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
 
-Establish `: (p * n' : ℤ) = 1` using `by rw [mul_comm]; exact_mod_cast hre`. Conclude with `hpZ.not_dvd_one ⟨n', this.symm⟩`. Use `Multiset.mem_cons.2 (Or.inl ?_)` and prove the remaining obligations. Rewrite using `[← heq, latticeDiscr_scale_latticeOfTau hcp, hLdiscr]`. Establish `hΔ` using `discriminant_ne_zero τ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [PNat.mk_coe]`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression. Take `⟨u, w, huw⟩` from `(hpZ.coprime_iff_not_dvd.2 hm).symm`. Establish `hpz : (0 : ℤ) < p` using `by exact_mod_cast hp.pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r := u * n % p with hr`. Use `set q := u * n / p`. Establish `hr0 : 0 ≤ r` using `Int.emod_nonneg _ hpz.ne'`. Establish `hrp : r < p` using `Int.emod_lt_of_pos _ hpz`. Establish `hrq : r + q * p = u * n` using `Int.emod_add_ediv_mul _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `set a := r.toNat`. Establish `ha : (a : ℤ) = r` using `Int.toNat_of_nonneg hr0`. Establish `hap : a < p` using `by omega`. Establish `haC : (a : ℂ) = r` using `by exact_mod_cast ha`. Use `set σ := divPoint ⟨p, hp.pos⟩ a τ`.
+Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hσ : (σ : ℂ) = (a + τ) / p` using `coe_divPoint _ _ _`. Establish `hM : scaleLattice c (latticeOfTau σ).lattice = Submodule.span ℤ {c * ((a + τ) / p), c}`. Rewrite using `[ClassMean.scaleLattice_latticeOfTau, hσ]`. Establish `heq : scaleLattice c (latticeOfTau σ).lattice = L'.lattice`. Use `eq_of_le_of_relIndex hp ?_ ?_ hidx ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hLs, hM, Submodule.span_le, Set.insert_subset_iff, Set.singleton_subset_iff]`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> rw [SetLike.mem_coe, mem_span_pair_iff]`. Establish `key : (p : ℂ) * (c * ((a + τ) / p)) = c * (a + τ)` using `by field_simp`. Conclude with `⟨p, -(a : ℤ), by push_cast; linear_combination key⟩`. Conclude with `⟨0, 1, by simp⟩`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hM, Submodule.span_le, Set.insert_subset_iff, Set.singleton_subset_iff]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `e : c * ((a + τ) / p) = (u : ℂ) * v + (w : ℂ) * (c * τ) + ((-q : ℤ) : ℂ) * c`. Establish `hmn' : (p : ℂ) * v = m * (c * τ) + n * c` using `hmn.symm`. Establish `huw' : (u : ℂ) * m + w * p = 1` using `by exact_mod_cast huw`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrq' : (r : ℂ) + q * p = u * n` using `by exact_mod_cast hrq`. Establish `haC' : (a : ℂ) - r = 0` using `by rw [haC]; ring`. Use `push_cast`. Rewrite using `[mul_div_assoc', div_eq_iff hp0]`. Take the linear combination `(-(u : ℂ)) * hmn' - c * τ * huw' + c * hrq' + c * haC'`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[SetLike.mem_coe, e]`. Conclude with `add_mem (add_mem (hz u hvL') (hz w hcτ)) (hz _ hc')`. Conclude with `hc'`. Introduce `h`. Establish `: c * ((a + τ) / p) ∈ L.lattice` using `h (hM ▸ Submodule.subset_span (by simp))`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[hLs, mem_span_pair_iff]`. Take `⟨m', n', e⟩` from `this`. Establish `hdiv : c * ((a + τ) / p) * p = c * (a + τ)` using `by field_simp`. Establish `e2 : c * ((a + τ) - p * (m' * τ + n')) = 0`. Take the linear combination `(-(p : ℂ)) * e - hdiv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
 
-Establish `e' : (a : ℂ) + τ - p * (m' * τ + n') = 0` using `(mul_eq_zero.1 e2).resolve_left hc`. Establish `him : τ.im * (1 - p * m') = 0`. Use `congrArg Complex.im e'` as an intermediate fact. Simplify using `at this`. Take the linear combination `this`.
-
-Establish `h1 : ((p * m' : ℤ) : ℝ) = 1`. Use `push_cast`. Combine the linear relations using `[(mul_eq_zero.1 him).resolve_left τ.im_pos.ne']`. Establish `h1' : (p * m' : ℤ) = 1` using `by exact_mod_cast h1`. Conclude with `hpZ.not_dvd_one ⟨m', h1'.symm⟩`.
-
-Use `Multiset.mem_cons_of_mem (Multiset.mem_map.2 ⟨a, Multiset.mem_range.2 hap, ?_⟩)` and prove the remaining obligations. Rewrite using `[← heq, latticeDiscr_scale_latticeOfTau hc, hLdiscr]`. Establish `hΔ` using `discriminant_ne_zero τ`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem proof : SuperlatticeRatio.Statement := by
   intro L L' p hp hle hidx

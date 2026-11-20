@@ -4,15 +4,13 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.WittDecomposition.Aniso
 namespace PI.Witt
 
 /- English proof (translation)
-Unfold `Anisotropic`. Introduce `K V _ _ _ _ _ B hB U hU`. Take `⟨x, hx, y, hy, hxy⟩` from `hU`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hz : x + star (B x y) • y ∈ U` using `U.add_mem hx (U.smul_mem _ hy)`. Establish `h0` using `hcon _ hz`. Establish `hxx` using `hcon x hx`. Establish `hyy` using `hcon _ (U.smul_mem (star (B x y)) hy)`. Establish `hyx : B y x = star (B x y)` using `(hB x y).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : B x (star (B x y) • y) = star (B x y) * B x y`. Rewrite using `[LinearMap.map_smul, smul_eq_mul]`. Establish `e2 : B (star (B x y) • y) x = B x y * star (B x y)`. Rewrite using `[LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, star_star, hyx]`. Establish `e3 : B (x + star (B x y) • y) (x + star (B x y) • y) = B x x + B x (star (B x y) • y) + (B (star (B x y) • y) x + B (star (B x y) • y) (star (B x y) • y))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.map_add₂, map_add, map_add]`. Rewrite `h0` using `[e3, hxx, hyy, e1, e2]`. Establish `h2 : (2 : K) * (B x y * star (B x y)) = 0` using `by linear_combination h0`. Break down `mul_eq_zero.mp h2 with h | h` into its components or cases. Conclude with `two_ne_zero h`.
-
-Break down `mul_eq_zero.mp h with h' | h'` into its components or cases. Conclude with `hxy h'`. Conclude with `hxy (star_eq_zero.mp h')`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem anisotropic' : Anisotropic := by
   unfold Anisotropic

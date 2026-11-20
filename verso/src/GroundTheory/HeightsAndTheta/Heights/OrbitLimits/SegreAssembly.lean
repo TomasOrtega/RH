@@ -11,19 +11,19 @@ namespace GroundTheory.Heights₂.Heights.Targets
 universe u v w
 
 /- English proof (translation)
-The claim follows from `SegreComponent.proof ChartDimBound.proof ChartFiniteIrrel.proof`.
+A detailed English derivation is pending.
 -/
 theorem SegreComponent.full : SegreComponent.Statement.{u, v, w} :=
   SegreComponent.proof ChartDimBound.proof ChartFiniteIrrel.proof
 
 /- English proof (translation)
-The claim follows from `SegreDivisor.proof SegreComponent.full`.
+A detailed English derivation is pending.
 -/
 theorem SegreDivisor.full : SegreDivisor.Statement.{u, v, w} :=
   SegreDivisor.proof SegreComponent.full
 
 /- English proof (translation)
-The claim follows from `Positivity.of_found SegreDivisor.full F ι`.
+A detailed English derivation is pending.
 -/
 theorem Positivity.full {K : Type u} [Fintype K] (F : Type w) [Field F] (ι : K → Type v)
     [∀ k, Fintype (ι k)] : ReciprocityTheory.ChartRestriction.G.AI.I1.PositivityStatement F ι :=

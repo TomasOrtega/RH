@@ -5,7 +5,7 @@ universe u_1
 namespace Bl.AddValuationProducts
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, Finset.sum_insert hj, IsDiscreteValuationRing.addVal_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private lemma addVal_prod_alt {O : Type u_1} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {ι : Type} (s : Finset ι) (a : ι → O) :
@@ -18,17 +18,17 @@ private lemma addVal_prod_alt {O : Type u_1} [CommRing O] [IsDomain O] [IsDiscre
     rw [Finset.prod_insert hj, Finset.sum_insert hj, IsDiscreteValuationRing.addVal_mul, ih]
 
 /- English proof (translation)
-Introduce `O _ _ _ ι _ _ N e`. Set `b` to `Pi.basisFun O ι`. Establish `h : Module.finrank O N = Module.finrank O (ι → O)` using `e.finrank_eq.symm`. Set `a` to `Submodule.smithNormalFormCoeffs b h`. Set `b'` to `Submodule.smithNormalFormTopBasis b h`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ab` to `Submodule.smithNormalFormBotBasis b h`. Establish `hab : ∀ i, (ab i : ι → O) = a i • b' i` using `Submodule.smithNormalFormBotBasis_def b h`. Establish `hL : Module.length O ((ι → O) ⧸ N) = ∑ i, IsDiscreteValuationRing.addVal O (a i)`. Rewrite using `[(N.quotientEquivPiSpan b h).length_eq, Module.length_pi_of_fintype]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Ring.ord_eq_addVal (a i)`. Set `u : (ι → O) ≃ₗ[O] N` to `b'.equiv ab (Equiv.refl ι)`. Establish `hgj : ∀ j, (N.subtype ∘ₗ u.toLinearMap) (b' j) = a j • b' j`. Introduce `j`. Rewrite using `[← hab j]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[u]`. Establish `hg : LinearMap.toMatrix b' b' (N.subtype ∘ₗ u.toLinearMap) = Matrix.diagonal a`. Use extensionality with `i j`. Rewrite using `[LinearMap.toMatrix_apply, hgj, map_smul, Module.Basis.repr_self, Matrix.diagonal_apply]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`. Establish `hdet : LinearMap.det (N.subtype ∘ₗ u.toLinearMap) = ∏ i, a i`. Rewrite using `[← LinearMap.det_toMatrix b', hg, Matrix.det_diagonal]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfac : N.subtype ∘ₗ e.toLinearMap = (N.subtype ∘ₗ u.toLinearMap) ∘ₗ (e.trans u.symm).toLinearMap`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[hfac, LinearMap.det_comp, hdet, IsDiscreteValuationRing.addVal_mul, addVal_prod_alt, IsDiscreteValuationRing.addVal_eq_zero_iff.2 (LinearEquiv.isUnit_det' _), add_zero, hL]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {O : Type u_1} [inst : CommRing.{u_1} O] [inst_1 : IsDomain.{u_1} O] [inst_2 : IsDiscreteValuationRing.{u_1} O]

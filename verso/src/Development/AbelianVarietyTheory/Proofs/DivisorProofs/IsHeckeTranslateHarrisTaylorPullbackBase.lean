@@ -14,13 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.UPel.HT.Hecke.PullHecke
 
 /- English proof (translation)
-Use `h.finite` as an intermediate fact. Use `choose σ hσ using up`. Use `Finite.of_injective σ fun a c e => inj' ?_` and prove the remaining obligations. Conclude with `hp.hom_ext (by rw [hσ, hσ, e]) (by rw [hπ, hπ])`. Use `one := one'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `mul := mul'`. Use `inv := hπ`. Use `fin := MorphismProperty.of_isPullback (P := @IsFinite) hp h.fin`. Use `etale := MorphismProperty.of_isPullback (P := @Etale) hp h.etale`. Use `onto := MorphismProperty.of_isPullback (P := @Surjective) hp h.onto`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Use `fibre K _ _ y y' e := by`. Take `⟨a, ha, ha'⟩` from `h.fibre K (y ≫ u) (y' ≫ u) (by simp only [Category.assoc, hp.w, reassoc_of% e])`. Take `⟨a', ea'⟩` from `down a`. Establish `ex : y ≫ ρ' a' = y'` using `hp.hom_ext (by rw [Category.assoc, ea', ← Category.assoc, ha]) (by rw [Category.assoc, hπ, e])`. Use `⟨a', ex, fun b' hb' => inj' ?_⟩` and prove the remaining obligations.
-
-Take `⟨b, eb⟩` from `up b'`. Establish `hb'' : y ≫ ρ' b' = y'` using `hb'`. Establish `hb : b = a` using `ha' b (by show (y ≫ u) ≫ ρ b = y' ≫ u; rw [Category.assoc, ← eb, ← Category.assoc, hb''])`. Substitute `hb` using the available equality. Conclude with `hp.hom_ext (by rw [eb, ea']) (by rw [hπ, hπ])`.
+A detailed English derivation is pending.
 -/
 theorem isGaloisCover_of_isPullback {X Y X' Y' : Scheme.{0}} {Ga Ga' : Type} [Group Ga] [Group Ga']
     {ρ : Ga → (X ⟶ X)} {π : X ⟶ Y} {ρ' : Ga' → (X' ⟶ X')} {π' : X' ⟶ Y'} {u : X' ⟶ X} {v : Y' ⟶ Y}
@@ -58,14 +56,14 @@ end GlobalTheory.UPel.HT.Hecke.PullHecke
 namespace GlobalTheory.UPel.HT.Hecke.PullHecke
 
 /- English proof (translation)
-Use `show 𝟙 A * (toUnit A ≫ 1) = 𝟙 A`. Rewrite using `[MonObj.comp_one, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transl_one {S : Scheme.{0}} {A : Over S} [GrpObj A] : transl (1 : 𝟙_ (Over S) ⟶ A) = 𝟙 A := by
   show 𝟙 A * (toUnit A ≫ 1) = 𝟙 A
   rw [MonObj.comp_one, _root_.mul_one]
 
 /- English proof (translation)
-Establish `e : transl a ≫ transl c = transl a * (toUnit A ≫ c)` using `by show transl a ≫ (𝟙 A * (toUnit A ≫ c)) = _`. Rewrite using `[MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (transl a ≫ toUnit A) (toUnit A)]`. Rewrite using `[e]`. Use `show 𝟙 A * (toUnit A ≫ (a * c)) = (𝟙 A * (toUnit A ≫ a)) * (toUnit A ≫ c)`. Rewrite using `[MonObj.comp_mul, _root_.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transl_mul {S : Scheme.{0}} {A : Over S} [GrpObj A] (a c : 𝟙_ (Over S) ⟶ A) :
     transl (a * c) = transl a ≫ transl c := by
@@ -77,7 +75,7 @@ theorem transl_mul {S : Scheme.{0}} {A : Over S} [GrpObj A] (a c : 𝟙_ (Over S
   rw [MonObj.comp_mul, _root_.mul_assoc]
 
 /- English proof (translation)
-Establish `h' : transl a = transl c` using `Over.OverMorphism.ext h`. Rewrite using `[← one_comp_transl a, h', one_comp_transl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem transl_injective {S : Scheme.{0}} {A : Over S} [GrpObj A] {a c : 𝟙_ (Over S) ⟶ A}
     (h : (transl a).left = (transl c).left) : a = c := by
@@ -85,9 +83,9 @@ theorem transl_injective {S : Scheme.{0}} {A : Over S} [GrpObj A] {a c : 𝟙_ (
   rw [← one_comp_transl a, h', one_comp_transl]
 
 /- English proof (translation)
-Establish `hw : u' ≫ (A ⊗ A).hom = u ≫ (A ⊗ A).hom`. Rewrite using `[← Over.w (fst A A), ← Category.assoc, ← h₁, Category.assoc]`. Set `U : Over.mk (u ≫ (A ⊗ A).hom) ⟶ A ⊗ A` to `Over.homMk u rfl`. Set `U' : Over.mk (u ≫ (A ⊗ A).hom) ⟶ A ⊗ A` to `Over.homMk u' hw`. Establish `: U = U'` using `CartesianMonoidalCategory.hom_ext _ _ (Over.OverMorphism.ext h₁) (Over.OverMorphism.ext h₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `congrArg (fun z => z.left) this`.
+A detailed English derivation is pending.
 -/
 theorem grpScheme_square_hom_ext {S : Scheme.{0}} {A : Over S} {X : Scheme.{0}} (u u' : X ⟶ (A ⊗ A).left)
     (h₁ : u ≫ (fst A A).left = u' ≫ (fst A A).left) (h₂ : u ≫ (snd A A).left = u' ≫ (snd A A).left) : u = u' := by
@@ -99,7 +97,7 @@ theorem grpScheme_square_hom_ext {S : Scheme.{0}} {A : Over S} {X : Scheme.{0}} 
   exact congrArg (fun z => z.left) this
 
 /- English proof (translation)
-Use `show (lift (fst A A ≫ ψ) (snd A A ≫ ψ)).left ≫ _ = _`. Rewrite using `[← Over.comp_left, lift_fst, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grpSchemeSquareProductMap_comp_fst {S : Scheme.{0}} {A A' : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A']
     (ψ : A ⟶ A') : sq2 ψ ≫ (fst A' A').left = (fst A A).left ≫ ψ.left := by
@@ -107,7 +105,7 @@ theorem grpSchemeSquareProductMap_comp_fst {S : Scheme.{0}} {A A' : Over S} [Grp
   rw [← Over.comp_left, lift_fst, Over.comp_left]
 
 /- English proof (translation)
-Use `show (lift (fst A A ≫ ψ) (snd A A ≫ ψ)).left ≫ _ = _`. Rewrite using `[← Over.comp_left, lift_snd, Over.comp_left]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grpSchemeSquareProductMap_comp_snd {S : Scheme.{0}} {A A' : Over S} [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A']
     (ψ : A ⟶ A') : sq2 ψ ≫ (snd A' A').left = (snd A A).left ≫ ψ.left := by
@@ -115,7 +113,7 @@ theorem grpSchemeSquareProductMap_comp_snd {S : Scheme.{0}} {A A' : Over S} [Grp
   rw [← Over.comp_left, lift_snd, Over.comp_left]
 
 /- English proof (translation)
-Unfold `GlobalTheory.UPel.HT.Hecke.lbPow at h ⊢`. Rewrite using `[GlobalTheory.CechPic.cls_linComb hL]`. Simplify using `[GlobalTheory.CechPic.pull_id]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cls_heckePow {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) (n : ℕ) (h : (GlobalTheory.UPel.HT.Hecke.lbPow L n).IsLB) :
     GlobalTheory.CechPic.cls (GlobalTheory.UPel.HT.Hecke.lbPow L n) h = n • GlobalTheory.CechPic.cls L hL := by
@@ -128,33 +126,31 @@ end GlobalTheory.UPel.HT.Hecke.PullHecke
 namespace GlobalTheory.UPel.HT.Hecke.PullHecke
 
 /- English proof (translation)
-Introduce `p _ D R _ b g c k N _ _ _ S S' s f o o' ψ o₁ o₁' hH m m'`. Take `⟨hmon, hlin, heta, hgal, ⟨hP⟩, hdvd⟩` from `hH`. Establish `w : (m.φ ≫ ψ.left) ≫ o'.A.hom = o₁.A.hom ≫ f`. Rewrite using `[Category.assoc, Over.w]`. Conclude with `m.cart.1.w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `ψ₁ : o₁.A ⟶ o₁'.A` to `Over.homMk (m'.cart.1.lift (m.φ ≫ ψ.left) o₁.A.hom w) (m'.cart.1.lift_snd _ _ _)`. Establish `hψ₁ : ψ₁.left ≫ m'.φ = m.φ ≫ ψ.left` using `m'.cart.1.lift_fst _ _ _`. Establish `ext' : ∀ {T : Over S'} (x y : T ⟶ o₁'.A), x.left ≫ m'.φ = y.left ≫ m'.φ → x = y` using `fun x y e => Over.OverMorphism.ext (m'.cart.1.hom_ext e (by rw [Over.w, Over.w]))`. Establish `pa : ∀ {T : Over S'} (x : T ⟶ o₁.A), pushPt m'.cart.1.w (x ≫ ψ₁) = pushPt m.cart.1.w x ≫ ψ` using `fun x => Over.OverMorphism.ext (by show (x ≫ ψ₁).left ≫ m'.φ = (x.left ≫ m.φ) ≫ ψ.left`. Rewrite using `[Over.comp_left, Category.assoc, hψ₁, Category.assoc])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `pm : ∀ {T : Over S'} (x y : T ⟶ o₁.A), pushPt m.cart.1.w (x * y) = pushPt m.cart.1.w x * pushPt m.cart.1.w y` using `fun x y => map_mul (pushHom m.cart _) x y`. Establish `pm' : ∀ {T : Over S'} (x y : T ⟶ o₁'.A), pushPt m'.cart.1.w (x * y) = pushPt m'.cart.1.w x * pushPt m'.cart.1.w y` using `fun x y => map_mul (pushHom m'.cart _) x y`. Establish `inj' : ∀ {T : Over S'} {x y : T ⟶ o₁'.A}, pushPt m'.cart.1.w x = pushPt m'.cart.1.w y → x = y` using `fun e => ext' _ _ (congrArg (fun z => z.left) e)`. Use `haveI := hmon`. Establish `hmon₁ : IsMonHom ψ₁`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `isMonHom_of_mul ψ₁ fun T x y => ?_` and prove the remaining obligations. Apply `inj'` to reduce the goal to its premises. Rewrite using `[pa, pm, MonObj.mul_comp, ← pa, ← pa, pm']`. Establish `tc : ∀ z, (transl (o₁.eta z)).left ≫ m.φ = m.φ ≫ (transl (o.eta z)).left`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : pushPt m.cart.1.w (toUnit o₁.A ≫ o₁.eta z) = toUnit _ ≫ o.eta z` using `Over.OverMorphism.ext (by show (toUnit o₁.A ≫ o₁.eta z).left ≫ m.φ = (toUnit (Over.mk (o₁.A.hom ≫ f)) ≫ o.eta z).left`. Rewrite using `[Over.comp_left, Over.comp_left, Category.assoc, m.eta]`. Use the proof step `simp)`. Establish `e : pushPt m.cart.1.w (transl (o₁.eta z)) = pushPt m.cart.1.w (𝟙 o₁.A) ≫ transl (o.eta z)` using `by show pushPt m.cart.1.w (𝟙 o₁.A * (toUnit o₁.A ≫ o₁.eta z)) = pushPt m.cart.1.w (𝟙 o₁.A) ≫ (𝟙 o.A * (toUnit o.A ≫ o.eta z))`. Rewrite using `[pm, hu, MonObj.comp_mul, Category.comp_id, ← Category.assoc, toUnit_unique (_ ≫ toUnit o.A) (toUnit _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e' : (transl (o₁.eta z)).left ≫ m.φ = ((𝟙 o₁.A : o₁.A ⟶ o₁.A).left ≫ m.φ) ≫ (transl (o.eta z)).left` using `congrArg (fun z => z.left) e`. Rewrite using `[e', Over.id_left, Category.id_comp]`. Establish `hp : IsPullback m.φ ψ₁.left ψ.left m'.φ`. Use `IsPullback.of_bot ?_ hψ₁.symm m'.cart.1` and prove the remaining obligations. Rewrite using `[Over.w ψ₁, Over.w ψ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `m.cart.1`. Use `⟨ψ₁, hmon₁, fun c' => ?_, fun x => ?_, ?_, ?_, hdvd⟩` and prove the remaining obligations. Apply `ext'` to reduce the goal to its premises. Establish `h₀` using `congrArg (fun z => m.φ ≫ z.left) (hlin c')`. Simplify using `only [Over.comp_left, Category.assoc] at h₀ ⊢`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hψ₁, m'.act, reassoc_of% hψ₁, reassoc_of% (m.act c')]`. Conclude with `h₀`. Apply `ext'` to reduce the goal to its premises. Rewrite using `[m'.eta, heta]`. Simplify using `only [Over.comp_left, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hψ₁, reassoc_of% (m.eta (g x))]`. Use `isGaloisCover_of_isPullback hgal hp ?_ (fun a c => ?_) (fun a c e => Subtype.ext (transl_injective e)) (fun a => ?_) (fun a => ?_) (fun a => ?_)` and prove the remaining obligations. Use `show (transl 1).left = _`. Rewrite using `[transl_one, Over.id_left]`. Use `show (transl (a.1 * c.1)).left = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[transl_mul, Over.comp_left]`. Take `⟨h, x, rfl⟩` from `a`. Establish `hi : (transl (o.eta (N • g x))).left ≫ ψ.left = ψ.left` using `hgal.inv ⟨_, mem_heckeSub o g N x⟩`. Use `show (transl (o₁.eta (N • g x))).left ≫ ψ₁.left = ψ₁.left`. Use `m'.cart.1.hom_ext ?_ ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hψ₁, ← Category.assoc, tc, Category.assoc, hi]`. Rewrite using `[Category.assoc, Over.w ψ₁, Over.w]`. Take `⟨h, x, rfl⟩` from `a`. Conclude with `⟨⟨_, mem_heckeSub o g N x⟩, tc _⟩`. Take `⟨h, x, rfl⟩` from `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨_, mem_heckeSub o₁ g N x⟩, tc _⟩`. Establish `hs1 : m.φ₂ ≫ (fst o.A o.A).left = (fst o₁.A o₁.A).left ≫ m.φ` using `m.sq.1`. Establish `hs2 : m.φ₂ ≫ (snd o.A o.A).left = (snd o₁.A o₁.A).left ≫ m.φ` using `m.sq.2`. Establish `hn₀ : (GlobalTheory.UPel.HT.Hecke.lbPow o.P (k ^ 2 / c)).IsLB` using `LB.isLB_linComb o.isLB _ _`. Establish `hn₁ : (GlobalTheory.UPel.HT.Hecke.lbPow o₁.P (k ^ 2 / c)).IsLB` using `LB.isLB_linComb o₁.isLB _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq : sq2 ψ₁ ≫ m'.φ₂ = m.φ₂ ≫ sq2 ψ`. Apply `grpScheme_square_hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, m'.sq.1, ← Category.assoc, grpSchemeSquareProductMap_comp_fst, Category.assoc, hψ₁, Category.assoc, grpSchemeSquareProductMap_comp_fst, ← Category.assoc m.φ₂, hs1, Category.assoc]`. Rewrite using `[Category.assoc, m'.sq.2, ← Category.assoc, grpSchemeSquareProductMap_comp_snd, Category.assoc, hψ₁, Category.assoc, grpSchemeSquareProductMap_comp_snd, ← Category.assoc m.φ₂, hs2, Category.assoc]`. Establish `c₁ : GlobalTheory.CechPic.cls o₁.P o₁.isLB = GlobalTheory.CechPic.pull m.φ₂ (GlobalTheory.CechPic.cls o.P o.isLB)` using `(GlobalTheory.CechPic.cls_eq_iff o₁.isLB (pull_isLB o.isLB _)).2 m.pol`.
-
-Establish `c₁' : GlobalTheory.CechPic.cls o₁'.P o₁'.isLB = GlobalTheory.CechPic.pull m'.φ₂ (GlobalTheory.CechPic.cls o'.P o'.isLB)` using `(GlobalTheory.CechPic.cls_eq_iff o₁'.isLB (pull_isLB o'.isLB _)).2 m'.pol`. Establish `c₀ : GlobalTheory.CechPic.pull (sq2 ψ) (GlobalTheory.CechPic.cls o'.P o'.isLB) = (k ^ 2 / c) • GlobalTheory.CechPic.cls o.P o.isLB`. Rewrite using `[← GlobalTheory.CechPic.cls_pull o'.isLB _ (pull_isLB o'.isLB _), ← (GlobalTheory.CechPic.cls_eq_iff hn₀ (pull_isLB o'.isLB _)).2 hP, cls_heckePow o.isLB]`. Use `⟨(GlobalTheory.CechPic.cls_eq_iff hn₁ (pull_isLB o₁'.isLB _)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[cls_heckePow o₁.isLB, GlobalTheory.CechPic.cls_pull o₁'.isLB, c₁, c₁', ← GlobalTheory.CechPic.pull_comp, hsq, GlobalTheory.CechPic.pull_comp, c₀, map_nsmul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHecke_pull : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R)
     (g : D.La →ₗ[D.O] D.La) (c k N : ℕ), k.Coprime p → 3 ≤ N → N.Coprime p → ∀ (S S' : Scheme.{0}) (s : S ⟶ Sp R)

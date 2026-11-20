@@ -13,7 +13,7 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 variable {k r : ℕ} {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Establish `h0 : ⟪l v₀, l v₀⟫_ℂ ≠ 0` using `inner_self_ne_zero.2 hne`. Rewrite using `[hl.2 u hu v₀ hv₀]`. Simplify using `only [rk1, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply, smul_smul]`. Rewrite using `[inv_mul_cancel₀ h0, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem l_eq (D : RealPlaceData k r Wp Wp) (X : SigData k r) {l : X.Hs → Wp} (hl : IsMultOneMap D X l) {v₀ : X.Hs}
     (hv₀ : v₀ ∈ Vfl X) (hne : l v₀ ≠ 0) {u : X.Hs} (hu : u ∈ Vfl X) :

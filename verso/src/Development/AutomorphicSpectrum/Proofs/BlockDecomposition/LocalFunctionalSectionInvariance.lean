@@ -5,9 +5,9 @@ open scoped ValuativeRel
 namespace GlobalTheory.CompanionTheory.LocalChar
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ν hν`. Use `⟨⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `continuous_inv.comp hν.1`. Introduce `x`. Rewrite using `[MonoidHom.inv_apply, Units.val_inv_eq_inv_val, norm_inv, hν.2 x, inv_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hu x hx`. Establish `h : ν x = 1` using `hu hx`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.inv_apply, h, inv_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sInv : Ad3.LFS.SInv := by
   intro F _ _ _ _ _ _ ν hν

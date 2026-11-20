@@ -35,23 +35,17 @@ open Formalism.MainNotions.KudlaSiegelWeil (Restr)
 namespace GlobalTheory.TrFinDense
 
 /- English proof (translation)
-Introduce `D V S M H _ _ _ π hπ hU N hN`. Use `set Sv : Set H := {z | ∃ Φ ∈ N.toSubmodule, ∃ y, z = ((Φ : homDS M π ⊤) : ContinuousMultilinearMap ℂ M.H H) y} with hSv`. Use `set W : Submodule ℂ H := Submodule.span ℂ Sv with hW`. Set `Mon : Submonoid (GA D V)` to `{ carrier := {g | Sv ⊆ W.comap (π g : H →ₗ[ℂ] H)} mul_mem' := by`. Introduce `a b ha hb z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbz : π b z ∈ W` using `hb hz`. Establish `: W ≤ W.comap (π a : H →ₗ[ℂ] H)` using `Submodule.span_le.2 ha`. Use `show π (a * b) z ∈ W`. Rewrite using `[map_mul]`. Conclude with `this hbz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use the proof step `one_mem' := by`. Introduce `z hz`. Use `show π 1 z ∈ W`. Rewrite using `[map_one]`. Conclude with `Submodule.subset_span hz }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Establish `hfin : ∀ g : GfC V, (g : GA D V) ∈ Mon`. Introduce and unpack `g _ ⟨Φ, hΦ, y, rfl⟩`. Use `Submodule.subset_span ⟨finPartDSSm M hU g Φ, N.apply_mem_toSubmodule g hΦ, y, rfl⟩` and prove the remaining obligations. Establish `hinf : ∀ w x, embW V w x ∈ Mon`. Introduce `w x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨τ, rfl⟩` from `(placeOf_bijective D).2 w`. Introduce and unpack `_ ⟨Φ, hΦ, y, rfl⟩`. Use `Submodule.subset_span ⟨Φ, hΦ, Function.update y τ (dsRep M τ x (y τ)), ?_⟩` and prove the remaining obligations. Conclude with `(((Φ : homDS M π ⊤).2).2 τ x y).symm`. Use `haveI : Submodule.IsLattice D.host.E (stdLattice D.host.E V.rank) := isLattice_stdLattice`.
+It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htop : Mon = ⊤` using `GlobalTheory.PlaceGen.eq_top_of_local D.sp.cm.sig V.gram (stdLattice D.host.E V.rank) Mon ∅ (fun v x => hfin (locFin V v x)) hinf (fun k hk => hfin ⟨k, (mem_levelOff.1 hk).1⟩)`. Establish `hinvW : ∀ g, ∀ v ∈ W, π g v ∈ W` using `fun g v hv => (Submodule.span_le.2 (show g ∈ Mon from htop ▸ trivial)) hv`. Establish `hsub` using `isSubrep_topologicalClosure (π := π) hinvW`. Break down `hπ.irred.2 _ hsub with h | h` into its components or cases. It suffices to derive a contradiction.
-
-Choose the witnesses or unpack the hypotheses as in `⟨Φ, hΦ, hΦ0⟩ : ∃ Φ ∈ N.toSubmodule, Φ ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hN (Subrepresentation.toSubmodule_injective (eq_bot_iff.2 fun Φ hΦ => (Submodule.mem_bot ℂ).2 (hc Φ hΦ)))`. Establish `: ((Φ : homDS M π ⊤) : ContinuousMultilinearMap ℂ M.H H) ≠ 0`.
-
-Introduce `e`. Conclude with `hΦ0 (Subtype.ext (Subtype.ext e))`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, ((Φ : homDS M π ⊤) : ContinuousMultilinearMap ℂ M.H H) y ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
-
-Conclude with `this (ContinuousMultilinearMap.ext hc)`. Establish `hmem : ((Φ : homDS M π ⊤) : ContinuousMultilinearMap ℂ M.H H) y ∈ W.topologicalClosure` using `W.le_topologicalClosure (Submodule.subset_span ⟨Φ, hΦ, y, rfl⟩)`. Rewrite `hmem` using `[h]`. Conclude with `hy ((Submodule.mem_bot ℂ).1 hmem)`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_values_dense : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (π : GA D V →* (H →L[ℂ] H)), IsIrrUnitary π → ∀ hU : IsSubrep π ⊤, ∀ N : Subrepresentation (finPartDSSm M hU), N ≠ ⊥ → (Submodule.span ℂ {z | ∃ Φ ∈ N.toSubmodule, ∃ y, z = ((Φ : homDS M π ⊤) : ContinuousMultilinearMap ℂ M.H H) y}).topologicalClosure = ⊤ := by
   intro D V S M H _ _ _ π hπ hU N hN

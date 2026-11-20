@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Polynomial UpperTheory.V.Alg UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Use `⟨(AlgEquiv.ofInjective j hj).symm.toAlgHom.comp (f.codRestrict j.range h), fun x => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val ((AlgEquiv.ofInjective j hj).apply_symm_apply ⟨f x, h x⟩)` as an intermediate fact. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem preLine_desc {Λ A T S : Type} [CommRing Λ] [CommRing A] [CommRing T] [CommRing S] [Algebra Λ A]
     [Algebra Λ T] [Algebra Λ S] (f : A →ₐ[Λ] S) (j : T →ₐ[Λ] S) (hj : Function.Injective j)
@@ -18,23 +18,19 @@ private theorem preLine_desc {Λ A T S : Type} [CommRing Λ] [CommRing A] [CommR
   exact this
 
 /- English proof (translation)
-Introduce `O Γ _ _ _ Φ Λ _ _ a Y Q hQ`. Use `haveI h0 : IsCO Λ (ResidueField Λ) := (co_res Λ).1`. Use `haveI hS : IsCO Λ (PowerSeries (ResidueField Λ)) := co_mvps Λ (ResidueField Λ) Unit`. Take `⟨h1, h2⟩` from `sxResLift Q hQ`. Take `⟨f, hf⟩` from `Y.univ _ _ _ h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `j : (ResidueField Λ)[X] →ₐ[Λ] PowerSeries (ResidueField Λ)` to `{ (Polynomial.coeToPowerSeries.ringHom : (ResidueField Λ)[X] →+* PowerSeries (ResidueField Λ)) with commutes' := fun x => by`. Simplify using `[Polynomial.algebraMap_apply, PowerSeries.algebraMap_apply] }`. Establish `hj : Function.Injective j` using `Polynomial.coe_injective _`. Establish `hf' : Y.P.map (f : Y.A →+* PowerSeries (ResidueField Λ)) = Q.map (j : (ResidueField Λ)[X] →+* PowerSeries (ResidueField Λ))` using `hf`. Establish `hr : ∀ g i l, f (Y.P.r g i l) = j (Q.r g i l)` using `fun g i l => congrArg (fun P : PD Φ.ι Γ _ => P.r g i l) hf'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : ∀ v i l, f (Y.P.n v i l) = j (Q.n v i l)` using `fun v i l => congrArg (fun P : PD Φ.ι Γ _ => P.n v i l) hf'`. Establish `hB : f.comp (IsScalarTower.toAlgHom Λ Y.B Y.A) = (j.comp Polynomial.CAlgHom).comp (res Λ Y.B)`. Use `Y.genB _ _ _ (fun g n => ?_) (fun v i s hs => ?_)` and prove the remaining obligations. Use `show (f : Y.A →+* PowerSeries (ResidueField Λ)) (algebraMap Y.B Y.A _) = (j : (ResidueField Λ)[X] →+* PowerSeries (ResidueField Λ)) ((C : ResidueField Λ →+* (ResidueField Λ)[X]) ((res Λ Y.B : Y.B →+* ResidueField Λ) _))`. Rewrite using `[← coeff_map, ← coeff_map, ← coeff_map, ← coeff_map, ← coeff_map, Y.cp_map, Y.cp_red, ← Matrix.charpoly_map]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e : (Y.P.r g).map (f : Y.A →+* PowerSeries (ResidueField Λ)) = (Q.r g).map (j : (ResidueField Λ)[X] →+* PowerSeries (ResidueField Λ))` using `by ext1 i l`. Conclude with `hr g i l`. Rewrite using `[e, Matrix.charpoly_map, sxCpRes _ Q hQ.res g]`. Simplify using `[Polynomial.map_prod]`. Use `show (f : Y.A →+* PowerSeries (ResidueField Λ)) (algebraMap Y.B Y.A _) = (j : (ResidueField Λ)[X] →+* PowerSeries (ResidueField Λ)) (C (res Λ Y.B _))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Y.ψ_map v i s hs, Y.ψ_red v i s hs, ← (sxPdMap ((algebraMap Λ Y.A).comp a) _ Y.P).1, hf', (sxPdMap (C.comp ((residue Λ).comp a)) _ Q).1, hQ.res.char v s hs]`. Both sides reduce to the same expression. Establish `hB' : ∀ b, f (algebraMap Y.B Y.A b) = j (C (res Λ Y.B b))` using `fun b => DFunLike.congr_fun hB b`. Establish `hrange : ∀ x, f x ∈ j.range`. Introduce `x`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `hx : x ∈ Algebra.adjoin Y.B _` using `Y.gen ▸ Algebra.mem_top`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨y, rfl⟩ | ⟨y, rfl⟩` into its components or cases. Conclude with `⟨_, (hr _ _ _).symm⟩`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, (hn _ _ _).symm⟩`. Consider the case `algebraMap b => exact ⟨_, (hB' b).symm⟩`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`.
-
-Conclude with `mul_mem hx hy`. Take `⟨g, hg⟩` from `preLine_desc f j hj hrange`. Use `⟨g, ?_, fun b hb => hj ?_⟩` and prove the remaining obligations. Use `PD.ext (MonoidHom.ext fun s => Matrix.ext fun i l => hj ?_) (funext fun v => Matrix.ext fun i l => hj ?_)` and prove the remaining obligations. Conclude with `(hg _).trans (hr s i l)`.
-
-Conclude with `(hg _).trans (hn v i l)`. Rewrite using `[hg, hB', (res_eq_zero_iff Λ Y.B b).2 hb, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.sxPreLine :
     ∀ {O Γ : Type} [CommRing O] [Group Γ] [TopologicalSpace Γ] {Φ : Fr O Γ} {Λ : Type} [CommRing Λ] [IsLocalRing Λ] {a : O →+* Λ} (Y : Pre Φ a), Y.Line := by

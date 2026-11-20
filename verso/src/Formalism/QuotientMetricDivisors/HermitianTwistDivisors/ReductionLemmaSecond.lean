@@ -27,14 +27,14 @@ Both sides reduce to the same expression.
 theorem tw_apply (σ : K →+* ℂ) (a : K) : tw σ a = starRingEnd ℂ (σ (star a)) := rfl
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[tw_apply, tw_apply, star_star, starRingEnd_self_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_tw (σ : K →+* ℂ) : tw (tw σ) = σ := by
   ext a
   rw [tw_apply, tw_apply, star_star, starRingEnd_self_apply]
 
 /- English proof (translation)
-Use extensionality with `a`. Rewrite using `[tw_apply, ComplexEmbedding.conjugate_coe_eq, ComplexEmbedding.conjugate_coe_eq, tw_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem tw_conjugate (σ : K →+* ℂ) :
     tw (ComplexEmbedding.conjugate σ) = ComplexEmbedding.conjugate (tw σ) := by
@@ -44,7 +44,7 @@ theorem tw_conjugate (σ : K →+* ℂ) :
 def plc (v : InfinitePlace K) : InfinitePlace K := InfinitePlace.mk (tw v.embedding)
 
 /- English proof (translation)
-Unfold `plc`. Break down `InfinitePlace.embedding_mk_eq (tw v.embedding) with h | h` into its components or cases. Rewrite using `[h, tw_tw, InfinitePlace.mk_embedding]`. Rewrite using `[h, tw_conjugate, tw_tw, InfinitePlace.mk_conjugate_eq, InfinitePlace.mk_embedding]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem plc_plc (v : InfinitePlace K) : plc (plc v) = v := by
   unfold plc
@@ -56,7 +56,7 @@ def Qd {n D : ℕ} (P : Matrix (Fin D) (Fin n) K) (H : Matrix (Fin n) (Fin n) K)
   ((P.map φ) * (H.map φ)⁻¹ * (P.map φ)ᴴ).det
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjT_map_conj {m k : Type} (X : Matrix m k ℂ) :
     (X.map (starRingEnd ℂ))ᴴ = Xᴴ.map (starRingEnd ℂ) := by
@@ -64,9 +64,9 @@ theorem conjT_map_conj {m k : Type} (X : Matrix m k ℂ) :
   simp [Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Establish `hP : P.map (ComplexEmbedding.conjugate φ) = (P.map φ).map (starRingEnd ℂ)`. Use extensionality with `i j`. Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Establish `hH : H.map (ComplexEmbedding.conjugate φ) = (H.map φ).map (starRingEnd ℂ)`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[ComplexEmbedding.conjugate_coe_eq]`. Unfold `Qd`. Rewrite using `[hP, hH, ← R0.map_inv_field, conjT_map_conj, ← Matrix.map_mul, ← Matrix.map_mul, RingHom.map_det, RingHom.mapMatrix_apply]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Qd_conjugate {n D : ℕ} (P : Matrix (Fin D) (Fin n) K) (H : Matrix (Fin n) (Fin n) K)
     (φ : K →+* ℂ) : Qd P H (ComplexEmbedding.conjugate φ) = starRingEnd ℂ (Qd P H φ) := by
@@ -79,7 +79,7 @@ theorem Qd_conjugate {n D : ℕ} (P : Matrix (Fin D) (Fin n) K) (H : Matrix (Fin
     RingHom.map_det, RingHom.mapMatrix_apply]
 
 /- English proof (translation)
-Break down `InfinitePlace.embedding_mk_eq φ with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[h, Qd_conjugate, Complex.conj_re]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Qd_re_mk {n D : ℕ} (P : Matrix (Fin D) (Fin n) K) (H : Matrix (Fin n) (Fin n) K)
     (φ : K →+* ℂ) : (Qd P H (InfinitePlace.mk φ).embedding).re = (Qd P H φ).re := by
@@ -88,7 +88,7 @@ theorem Qd_re_mk {n D : ℕ} (P : Matrix (Fin D) (Fin n) K) (H : Matrix (Fin n) 
   · rw [h, Qd_conjugate, Complex.conj_re]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.map_mul, R0.map_inv_field]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[Matrix.conjTranspose_apply, tw_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Cmap {n D : ℕ} (P : Matrix (Fin D) (Fin n) K) (H : Matrix (Fin n) (Fin n) K)
     (φ : K →+* ℂ) :
@@ -99,7 +99,7 @@ theorem Cmap {n D : ℕ} (P : Matrix (Fin D) (Fin n) K) (H : Matrix (Fin n) (Fin
   simp [Matrix.conjTranspose_apply, tw_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.map_apply, Matrix.map_apply, tw_apply, hK0 φ _ (hH i j), starRingEnd_self_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem Hmap_tw (K0 : Subfield K) (hK0 : IsCMSub K0) {n : ℕ} (H : Matrix (Fin n) (Fin n) K)
     (hH : ∀ i j, H i j ∈ K0) (φ : K →+* ℂ) : H.map (tw φ) = H.map φ := by
@@ -107,7 +107,7 @@ theorem Hmap_tw (K0 : Subfield K) (hK0 : IsCMSub K0) {n : ℕ} (H : Matrix (Fin 
   rw [Matrix.map_apply, Matrix.map_apply, tw_apply, hK0 φ _ (hH i j), starRingEnd_self_apply]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `only [gram, Formalism.HN.gramPl, Matrix.of_apply]`. Rewrite using `[majAt_eq, cv_single, cv_single, single_dot_single]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gramStd {d : ℕ} (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (v : InfinitePlace K) :
     gram X v (fun i => (Pi.single i 1 : Fin d → K)) = metMat X v := by
@@ -116,11 +116,11 @@ theorem gramStd {d : ℕ} (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (
   rw [majAt_eq, cv_single, cv_single, single_dot_single]
 
 /- English proof (translation)
-Unfold `gramR`. Use `congr 1`. Use extensionality with `a b`. Establish `hs : star (Pi.single a (1 : K) : Fin D → K) = Pi.single a 1`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : i = a`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[Matrix.of_apply, hs]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gramR_std {D : ℕ} (Γ : Matrix (Fin D) (Fin D) K) :
     gramR Γ (fun i => (Pi.single i 1 : Fin D → K)) = Γ.det := by
@@ -136,7 +136,7 @@ theorem gramR_std {D : ℕ} (Γ : Matrix (Fin D) (Fin D) K) :
   simp [Matrix.mulVec, dotProduct, Pi.single_apply]
 
 /- English proof (translation)
-Unfold `metMat`. Apply `Matrix.PosDef.conjTranspose_mul_self` to reduce the goal to its premises. Conclude with `Matrix.mulVec_injective_of_isUnit ((Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_nonsing_inv_det _ hX))`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem metMat_posDef {d : ℕ} (X : InfinitePlace K → Matrix (Fin d) (Fin d) ℂ) (v : InfinitePlace K)
     (hX : IsUnit (X v).det) : (metMat X v).PosDef := by
@@ -146,9 +146,9 @@ theorem metMat_posDef {d : ℕ} (X : InfinitePlace K → Matrix (Fin d) (Fin d) 
     ((Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_nonsing_inv_det _ hX))
 
 /- English proof (translation)
-Rewrite `h` using `[Complex.lt_def]`. Establish `h1 : 0 < z.re` using `by simpa using h.1`. Establish `h2 : z.im = 0`. Use `h.2` as an intermediate fact. Simplify using `only [Complex.zero_im] at this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`. Conclude with `⟨Complex.ext (by simp) (by simp [h2]), h1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pos_real {z : ℂ} (h : 0 < z) : z = ((z.re : ℝ) : ℂ) ∧ 0 < z.re := by
   rw [Complex.lt_def] at h
@@ -160,7 +160,7 @@ theorem pos_real {z : ℂ} (h : 0 < z) : z = ((z.re : ℝ) : ℂ) ∧ 0 < z.re :
   exact ⟨Complex.ext (by simp) (by simp [h2]), h1⟩
 
 /- English proof (translation)
-Establish `hm : metMat XQ u = ((P.map u.embedding) * (H.map u.embedding)⁻¹ * (P.map u.embedding)ᴴ)⁻¹` using `(hXQ u).2`. Rewrite using `[hm, Matrix.det_nonsing_inv, Ring.inverse_eq_inv', inv_inv]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Qd_place {n D : ℕ} (P : Matrix (Fin D) (Fin n) K) (H : Matrix (Fin n) (Fin n) K)
     (XQ : InfinitePlace K → Matrix (Fin D) (Fin D) ℂ) (hXQ : IsQuotMetric P H XQ)
@@ -171,7 +171,7 @@ theorem Qd_place {n D : ℕ} (P : Matrix (Fin D) (Fin n) K) (H : Matrix (Fin n) 
   rfl
 
 /- English proof (translation)
-Take `⟨hz, hr⟩` from `pos_real (metMat_posDef XQ u (hXQ u).1).det_pos`. Use `⟨?_, hr⟩` and prove the remaining obligations. Establish `e : ((metMat XQ u).det)⁻¹ = ((((metMat XQ u).det.re)⁻¹ : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_inv, ← hz]`. Rewrite using `[Qd_place P H XQ hXQ u, e, Complex.ofReal_re]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Qd_place_re {n D : ℕ} (P : Matrix (Fin D) (Fin n) K) (H : Matrix (Fin n) (Fin n) K)
     (XQ : InfinitePlace K → Matrix (Fin D) (Fin D) ℂ) (hXQ : IsQuotMetric P H XQ)
@@ -184,11 +184,11 @@ theorem Qd_place_re {n D : ℕ} (P : Matrix (Fin D) (Fin n) K) (H : Matrix (Fin 
   rw [Qd_place P H XQ hXQ u, e, Complex.ofReal_re]
 
 /- English proof (translation)
-Establish `hS : ((H.map v.embedding)⁻¹).PosDef` using `(hHpos v).inv`. Establish `h` using `hCS n D _ hS (P.map v.embedding) (P.map (tw v.embedding))`. Establish `e1 : v.embedding (P * H⁻¹ * Pᴴ).det = (P.map v.embedding * (H.map v.embedding)⁻¹ * (P.map (tw v.embedding))ᴴ).det`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Cmap]`. Establish `e2 : (P.map v.embedding * (H.map v.embedding)⁻¹ * (P.map v.embedding)ᴴ).det.re = ((metMat XQ v).det.re)⁻¹` using `(Qd_place_re P H XQ hXQ v).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : (P.map (tw v.embedding) * (H.map v.embedding)⁻¹ * (P.map (tw v.embedding))ᴴ).det.re = ((metMat XQ (plc v)).det.re)⁻¹`. Rewrite using `[← Hmap_tw K0 hK0 H hH v.embedding, ← (Qd_place_re P H XQ hXQ (plc v)).1]`. Conclude with `(Qd_re_mk P H (tw v.embedding)).symm`. Rewrite `h` using `[← e1, e2, e3, ← mul_inv]`. Establish `hr` using `(Qd_place_re P H XQ hXQ v).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr'` using `(Qd_place_re P H XQ hXQ (plc v)).2`. Establish `ha : 0 < ‖v.embedding (P * H⁻¹ * Pᴴ).det‖ ^ 2`. Establish `: v.embedding (P * H⁻¹ * Pᴴ).det ≠ 0` using `(map_ne_zero _).mpr hc`. Check the signs of the components of the expression. Conclude with `(le_inv_comm₀ ha (mul_pos hr hr')).mp h`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem place_ineq (hCS : DetCS) (K0 : Subfield K) (hK0 : IsCMSub K0) {n D : ℕ}
     (H : Matrix (Fin n) (Fin n) K) (hH : ∀ i j, H i j ∈ K0)
@@ -221,39 +221,37 @@ end Rb
 open Rb in
 
 /- English proof (translation)
-Introduce `K _ _ _ _ K0 hK0 v0 hv0 n D H hH hHpos P hP XQ hXQ M hM e he`. Establish `hΛ : Submodule.IsLattice K (matLat P M)`. Use `⟨(Submodule.IsLattice.fg (self := hM)).map _, ?_⟩` and prove the remaining obligations. Establish `: ((matLat P M : Submodule (𝓞 K) (Fin D → K)) : Set (Fin D → K)) = (Matrix.mulVecLin P) '' (M : Set (Fin n → K))`. Rewrite using `[matLat, Submodule.map_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, Submodule.IsLattice.span_eq_top (self := hM), Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `hP`. Establish `hli : LinearIndependent K (fun i => (Pi.single i 1 : Fin D → K))`. Establish `: (fun i => (Pi.single i 1 : Fin D → K)) = ⇑(Pi.basisFun K (Fin D))`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Simplify using `[Pi.basisFun_apply]`. Rewrite using `[this]`. Conclude with `(Pi.basisFun K (Fin D)).linearIndependent`. Take `⟨hfin, hlcv⟩` from `hLB K D XQ (fun v => (hXQ v).1) (matLat P M) hΛ _ hli`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG : gramR (quotGram P H) (fun i => (Pi.single i 1 : Fin D → K)) = (P * H⁻¹ * Pᴴ).det⁻¹`. Rewrite using `[gramR_std, quotGram, Matrix.det_nonsing_inv, Ring.inverse_eq_inv']`. Establish `hc : (P * H⁻¹ * Pᴴ).det ≠ 0`. Establish `htw0 : tw v0.embedding = v0.embedding`. Use extensionality with `a`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[tw_apply, hv0, starRingEnd_self_apply]`. Establish `h0 : v0.embedding (P * H⁻¹ * Pᴴ).det = Qd P H v0.embedding`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply, Cmap, htw0]`. Both sides reduce to the same expression. Rewrite `h0` using `[Qd_place P H XQ hXQ v0]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne : ((metMat XQ v0).det)⁻¹ ≠ 0` using `inv_ne_zero (metMat_posDef XQ v0 (hXQ v0).1).det_pos.ne'`. Introduce `hz`. Rewrite `h0` using `[hz, map_zero]`. Conclude with `hne h0.symm`. Establish `hG0 : gramR (quotGram P H) (fun i => (Pi.single i 1 : Fin D → K)) ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hG]`. Conclude with `inv_ne_zero hc`. Take `⟨hGfin, hGpf⟩` from `hPF K _ hG0`. Establish `hpt : ∀ v : InfinitePlace K, Real.log (metMat XQ v).det.re + Real.log (metMat XQ (plc v)).det.re ≤ 2 * Real.log ‖v.embedding (gramR (quotGram P H) (fun i => (Pi.single i 1 : Fin D → K)))‖`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `(Qd_place_re P H XQ hXQ v).2`. Establish `hr'` using `(Qd_place_re P H XQ hXQ (plc v)).2`. Establish `hi` using `place_ineq hCS K0 hK0 H hH hHpos P XQ hXQ hc v`. Establish `e2 : 2 * Real.log ‖v.embedding (gramR (quotGram P H) (fun i => (Pi.single i 1 : Fin D → K)))‖ = Real.log ((‖v.embedding (P * H⁻¹ * Pᴴ).det‖ ^ 2)⁻¹)`. Rewrite using `[hG, map_inv₀, norm_inv, Real.log_inv, Real.log_inv, Real.log_pow]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, ← Real.log_mul hr.ne' hr'.ne']`. Conclude with `Real.log_le_log (mul_pos hr hr') hi`. Establish `hsum` using `Finset.sum_le_sum (fun v (_ : v ∈ Finset.univ) => hpt v)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `hsum` using `[Finset.sum_add_distrib, ← Finset.mul_sum]`. Establish `hperm : ∑ v : InfinitePlace K, Real.log (metMat XQ (plc v)).det.re = ∑ v : InfinitePlace K, Real.log (metMat XQ v).det.re` using `Equiv.sum_comp (Function.Involutive.toPerm _ plc_plc) (fun v => Real.log (metMat XQ v).det.re)`. Rewrite `hsum` using `[hperm]`. Establish `hmean : ∑ v, Real.log (gram XQ v (fun i => (Pi.single i 1 : Fin D → K))).det.re ≤ ∑ v : InfinitePlace K, Real.log ‖v.embedding (gramR (quotGram P H) (fun i => (Pi.single i 1 : Fin D → K)))‖`. Simplify using `only [gramStd]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinf : (2 / (finrank ℚ K : ℝ)) * ∑ v, Real.log (gram XQ v (fun i => (Pi.single i 1 : Fin D → K))).det.re ≤ ∑ᶠ w, lw w * (vw w (gramR (quotGram P H) (fun i => (Pi.single i 1 : Fin D → K))) : ℝ)`. Rewrite using `[← hGpf]`. Conclude with `mul_le_mul_of_nonneg_left hmean (by positivity)`. Establish `hloc : ∀ w : HeightOneSpectrum (𝓞 K), lw w * (vw w (gramR (quotGram P H) (e w)) : ℝ) = lw w * (vw w (gramR (quotGram P H) (fun i => (Pi.single i 1 : Fin D → K))) : ℝ) + lw w * (idx w (Submodule.span (𝓞 K) (Set.range (fun i => (Pi.single i 1 : Fin D → K)))) (matLat P M) : ℝ) + lw …`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `w`. Take `⟨hmul, hstar, hlw, -, -, -, -⟩` from `hVB K w`. Set `γ : Matrix (Fin D) (Fin D) K` to `Matrix.of fun k i => e w i k`. Establish `hew : (fun i => ∑ k, γ k i • (Pi.single k (1 : K) : Fin D → K)) = e w`. Use function extensionality and compare the values at `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[γ, Finset.sum_apply, Pi.single_apply]`. Establish `hdet : γ.det ≠ 0`. Establish `hu : IsUnit (Matrix.of (e w))` using `Matrix.linearIndependent_rows_iff_isUnit.mp (he w).1`. Establish `: γ = (Matrix.of (e w))ᵀ` using `by ext k i; rfl`. Rewrite using `[this, Matrix.det_transpose]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`. Establish `hlb : IsLocBasis (matLat P M) w (fun i => ∑ k, γ k i • (Pi.single k (1 : K) : Fin D → K))`. Rewrite using `[hew]`. Conclude with `he w`. Take `⟨hi1, hi2⟩` from `hIC K D (matLat P M) hΛ _ hli w γ hlb`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgc : gramR (quotGram P H) (e w) = star γ.det * γ.det * gramR (quotGram P H) (fun i => (Pi.single i 1 : Fin D → K))`. Rewrite using `[← hew]`. Conclude with `hGC K D D _ _ γ`. Rewrite using `[hgc, hmul _ _ (mul_ne_zero (star_ne_zero.mpr hdet) hdet) hG0, hmul _ _ (star_ne_zero.mpr hdet) hdet, hstar, hi1, hi2, hlw]`. Use `push_cast`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hinj : Function.Injective (conjPl : HeightOneSpectrum (𝓞 K) → HeightOneSpectrum (𝓞 K))` using `fun a b h => by rw [← (hVB K a).2.2.2.1, h, (hVB K b).2.2.2.1]`. Establish `hfc : (Function.support fun w : HeightOneSpectrum (𝓞 K) => lw (conjPl w) * (idx (conjPl w) (Submodule.span (𝓞 K) (Set.range (fun i => (Pi.single i 1 : Fin D → K)))) (matLat P M) : ℝ)).Finite` using `hfin.preimage hinj.injOn`. Establish `hfun : (fun w => lw w * (vw w (gramR (quotGram P H) (e w)) : ℝ)) = fun w => lw w * (vw w (gramR (quotGram P H) (fun i => (Pi.single i 1 : Fin D → K))) : ℝ) + lw w * (idx w (Submodule.span (𝓞 K) (Set.range (fun i => (Pi.single i 1 : Fin D → K)))) (matLat P M) : ℝ) + lw (conjPl w) …` using `funext hloc`. Establish `hfin2` using `(hGfin.union hfin).subset (Function.support_add _ _)`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `(hfin2.union hfc).subset (Function.support_add _ _)`. Rewrite using `[hfun, finsum_add_distrib hfin2 hfc, finsum_add_distrib hGfin hfin, hFC K (fun w => lw w * (idx w (Submodule.span (𝓞 K) (Set.range (fun i => (Pi.single i 1 : Fin D → K)))) (matLat P M) : ℝ)), hlcv]`. Combine the linear relations using `[hinf]`.
+A detailed English derivation is pending.
 -/
 theorem lemmaRb_of (hPF : ProdFormula) (hCS : DetCS) (hLB : LcvBasis) (hIC : IdxChange)
     (hVB : ValBasic) (hGC : GramChange) (hFC : FinsumConj) : LemmaRb := by
@@ -381,7 +379,7 @@ theorem lemmaRb_of (hPF : ProdFormula) (hCS : DetCS) (hLB : LcvBasis) (hIC : Idx
     linarith [hinf]
 
 /- English proof (translation)
-The claim follows from `lemmaRb_of prod_formula' determinant_cauchy_schwarz covolume_via_basis index_change_formula valuation_basic_properties gram_matrix_change finite_sum_conjugation`.
+A detailed English derivation is pending.
 -/
 theorem reduction_lemma_second : LemmaRb :=
   lemmaRb_of prod_formula' determinant_cauchy_schwarz covolume_via_basis index_change_formula valuation_basic_properties

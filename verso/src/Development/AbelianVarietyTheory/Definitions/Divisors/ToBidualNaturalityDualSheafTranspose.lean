@@ -63,27 +63,25 @@ def homPresheaf : TopCat.Presheaf Ab.{0} X where
 variable (F G) in
 
 /- English proof (translation)
-Rewrite using `[TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]`. Introduce `ι U sf hsf`. Set `φ : ∀ i, homGroup F G (U i)` to `fun i => sf i`. Establish `hc : ∀ (i j : ι) (T : X.Opens) (hi : T ≤ U i) (hj : T ≤ U j), (φ i).1 ⟨T, hi⟩ = (φ j).1 ⟨T, hj⟩` using `fun i j T hi hj => congrArg (fun χ : homGroup F G (U i ⊓ U j) => χ.1 ⟨T, le_inf hi hj⟩) (hsf i j)`. Establish `hcov : ∀ W : X.Opens, W ≤ iSup U → W ≤ ⨆ i, W ⊓ U i` using `fun W hW => by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← inf_iSup_eq]`. Conclude with `le_inf le_rfl hW`. Establish `hex : ∀ (W : X.Opens) (hW : W ≤ iSup U) (s : Γ(F, W)), ∃ g : Γ(G, W), ∀ i, resM G (inf_le_left : W ⊓ U i ≤ W) g = (φ i).1 ⟨W ⊓ U i, inf_le_right⟩ (resM F (inf_le_left : W ⊓ U i ≤ W) s)`. Introduce `W hW s`. Establish `ht : ∀ (k : ι) (T : X.Opens) (hT : T ≤ W ⊓ U k), resM G hT ((φ k).1 ⟨W ⊓ U k, inf_le_right⟩ (resM F (inf_le_left : W ⊓ U k ≤ W) s)) = (φ k).1 ⟨T, hT.trans inf_le_right⟩ (resM F (hT.trans inf_le_left) s)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k T hT`. Rewrite using `[← (φ k).2 (W ⊓ U k) T inf_le_right hT, resM_resM]`. Apply the tactic sequence `obtain ⟨g, hg⟩ := exists_sec_of_cover (F := G) (fun i => W ⊓ U i) (fun i => inf_le_left) (hcov W hW) (fun k => (φ k).1 ⟨W ⊓ U k, inf_le_right⟩ (resM F (inf_le_left : W ⊓ U k ≤ W) s)) (fun k l => by try dsimp only`. Rewrite using `[ht, ht]`. Conclude with `LinearMap.congr_fun (hc k l _ _ _) _)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨g, hg⟩`. Use `choose g hg using hex`. Establish `key : ∀ (W : X.Opens) (hW : W ≤ iSup U) (s : Γ(F, W)) (i : ι) (T : X.Opens) (hT : T ≤ W) (hTi : T ≤ U i), resM G hT (g W hW s) = (φ i).1 ⟨T, hTi⟩ (resM F hT s)`. Introduce `W hW s i T hT hTi`. Establish `h1 : T ≤ W ⊓ U i` using `le_inf hT hTi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg W hW s i]`. Use `_ = (φ i).1 ⟨T, h1.trans inf_le_right⟩ (resM F h1 (resM F (inf_le_left : W ⊓ U i ≤ W) s)) := ((φ i).2 _ _ _ _ _).symm`. Use `_ = (φ i).1 ⟨T, hTi⟩ (resM F hT s) := by rw [resM_resM]`. Establish `gcomp : ∀ (W W' : X.Opens) (h : W ≤ iSup U) (h' : W' ≤ W) (s : Γ(F, W)), g W' (h'.trans h) (resM F h' s) = resM G h' (g W h s)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `W W' h h' s`. Use `sec_ext_of_cover (fun i => W' ⊓ U i) (fun i => inf_le_left) (hcov W' (h'.trans h)) fun i => ?_` and prove the remaining obligations. Simplify using `only [resM_resM]`. Rewrite using `[key W' (h'.trans h) (resM F h' s) i (W' ⊓ U i) inf_le_left inf_le_right, key W h s i (W' ⊓ U i) (inf_le_left.trans h') inf_le_right, resM_resM]`. Establish `gadd : ∀ (W : X.Opens) (hW : W ≤ iSup U) (s s' : Γ(F, W)), g W hW (s + s') = g W hW s + g W hW s'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W hW s s'`. Use `sec_ext_of_cover (fun i => W ⊓ U i) (fun i => inf_le_left) (hcov W hW) fun i => ?_` and prove the remaining obligations. Rewrite using `[map_add, key W hW (s + s') i (W ⊓ U i) inf_le_left inf_le_right, key W hW s i (W ⊓ U i) inf_le_left inf_le_right, key W hW s' i (W ⊓ U i) inf_le_left inf_le_right, map_add, map_add]`. Establish `gsmul : ∀ (W : X.Opens) (hW : W ≤ iSup U) (a : Γ(X, W)) (s : Γ(F, W)), g W hW (a • s) = a • g W hW s`. Introduce `W hW a s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `sec_ext_of_cover (fun i => W ⊓ U i) (fun i => inf_le_left) (hcov W hW) fun i => ?_` and prove the remaining obligations. Rewrite using `[resM_smul, key W hW (a • s) i (W ⊓ U i) inf_le_left inf_le_right, key W hW s i (W ⊓ U i) inf_le_left inf_le_right, resM_smul, map_smul]`. Set `ψ : homGroup F G (iSup U)` to `⟨fun W => { toFun := g W.1 W.2 map_add' := gadd W.1 W.2 map_smul' := gsmul W.1 W.2 }, fun W W' h h' s => gcomp W W' h h' s⟩`. Use `⟨ψ, fun i => ?_, fun ψ' hψ' => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `@Eq ↥(homGroup F G (U i)) (homRes F G (le_iSup U i) ψ) (φ i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Subtype.ext (funext fun T => LinearMap.ext fun s => ?_)` and prove the remaining obligations. Use `key T.1 (T.2.trans (le_iSup U i)) s i T.1 le_rfl T.2` as an intermediate fact. Rewrite `this` using `[resM_self, resM_self]`. Conclude with `this`. Express the relevant statement in the definitionally equal form `homGroup F G (iSup U) at ψ'`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `@Eq ↥(homGroup F G (iSup U)) ψ' ψ`. Use `Subtype.ext (funext fun W => LinearMap.ext fun s => ?_)` and prove the remaining obligations. Use `sec_ext_of_cover (fun i => W.1 ⊓ U i) (fun i => inf_le_left) (hcov W.1 W.2) fun i => ?_` and prove the remaining obligations. Establish `h1` using `ψ'.2 W.1 (W.1 ⊓ U i) W.2 inf_le_left s`. Establish `h2 : ψ'.1 ⟨W.1 ⊓ U i, inf_le_left.trans W.2⟩ (resM F (inf_le_left : W.1 ⊓ U i ≤ W.1) s) = (φ i).1 ⟨W.1 ⊓ U i, inf_le_right⟩ (resM F (inf_le_left : W.1 ⊓ U i ≤ W.1) s)` using `congrArg (fun χ : homGroup F G (U i) => χ.1 ⟨W.1 ⊓ U i, inf_le_right⟩ (resM F (inf_le_left : W.1 ⊓ U i ≤ W.1) s)) (hψ' i)`.
-
-Rewrite using `[← h1, h2]`. Conclude with `(key W.1 W.2 s i _ inf_le_left inf_le_right).symm`.
+A detailed English derivation is pending.
 -/
 theorem isSheaf_homPresheaf : (homPresheaf F G).IsSheaf := by
   rw [TopCat.Presheaf.isSheaf_iff_isSheafUniqueGluing]
@@ -180,7 +178,7 @@ def homApp (φ : Γ(homMod F G, V)) (h : W ≤ V) : Γ(F, W) →ₗ[Γ(X, W)] Γ
   (show homGroup F G V from φ).1 ⟨W, h⟩
 
 /- English proof (translation)
-Conclude with `(show homGroup F G V from φ).2 W T h h' s`.
+A detailed English derivation is pending.
 -/
 theorem homApp_resM (φ : Γ(homMod F G, V)) (h : W ≤ V) {T : X.Opens} (h' : T ≤ W) (s : Γ(F, W)) :
     homApp φ (h'.trans h) (resM F h' s) = resM G h' (homApp φ h s) := by
@@ -198,7 +196,7 @@ Both sides reduce to the same expression.
     (h : W ≤ V) : homApp (homMk φ hφ) h = φ W h := rfl
 
 /- English proof (translation)
-Establish `key` using `@Subtype.ext _ _ (show homGroup F G V from φ) (show homGroup F G V from ψ) (funext fun T => LinearMap.ext (e T.1 T.2))`. Conclude with `key`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 @[ext] theorem hom_ext {φ ψ : Γ(homMod F G, V)}
     (e : ∀ (W : X.Opens) (h : W ≤ V) (s : Γ(F, W)), homApp φ h s = homApp ψ h s) : φ = ψ := by
@@ -224,7 +222,7 @@ Both sides reduce to the same expression.
     homApp (a • φ) h = resG X h a • homApp φ h := rfl
 
 /- English proof (translation)
-Use `Finset.induction_on t (by simp only [Finset.sum_empty, homApp_zero]) ?_` and prove the remaining obligations. Introduce `a t ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, homApp_add, ih]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem homApp_sum {κ : Type*} (t : Finset κ) (φ : κ → Γ(homMod F G, V)) (h : W ≤ V) :
     homApp (∑ k ∈ t, φ k) h = ∑ k ∈ t, homApp (φ k) h := by
@@ -277,7 +275,7 @@ def dual : X.Modules := homMod F (structureModule X)
 def dualApp (l : Γ(dual F, V)) (h : W ≤ V) : Γ(F, W) →ₗ[Γ(X, W)] Γ(X, W) := homApp l h
 
 /- English proof (translation)
-Conclude with `homApp_resM l h h' s`.
+A detailed English derivation is pending.
 -/
 theorem dualApp_resM (l : Γ(dual F, V)) (h : W ≤ V) {T : X.Opens} (h' : T ≤ W) (s : Γ(F, W)) :
     dualApp l (h'.trans h) (resM F h' s) = resG X h' (dualApp l h s) := by
@@ -295,7 +293,7 @@ Both sides reduce to the same expression.
     (h : W ≤ V) : dualApp (dualMk l hl) h = l W h := rfl
 
 /- English proof (translation)
-Conclude with `hom_ext e`.
+A detailed English derivation is pending.
 -/
 @[ext] theorem dual_ext {l l' : Γ(dual F, V)}
     (e : ∀ (W : X.Opens) (h : W ≤ V) (s : Γ(F, W)), dualApp l h s = dualApp l' h s) : l = l' := by
@@ -319,7 +317,7 @@ Both sides reduce to the same expression.
     dualApp (a • l) h = resG X h a • dualApp l h := rfl
 
 /- English proof (translation)
-Conclude with `homApp_sum t l h`.
+A detailed English derivation is pending.
 -/
 theorem dualApp_sum {κ : Type*} (t : Finset κ) (l : κ → Γ(dual F, V)) (h : W ≤ V) :
     dualApp (∑ k ∈ t, l k) h = ∑ k ∈ t, dualApp (l k) h := by
@@ -350,7 +348,7 @@ Both sides reduce to the same expression.
 theorem dualMap_comp (φ : F ⟶ G) (ψ : G ⟶ H) : dualMap (φ ≫ ψ) = dualMap ψ ≫ dualMap φ := rfl
 
 /- English proof (translation)
-Use `Scheme.Modules.hom_ext _ _ fun V => ?_` and prove the remaining obligations. Use extensionality with `l W h s`. Use `first`. Consider the case `simp [dualApp_dualMap]`. Consider the case `(rw [dualApp_dualMap]; simp)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dualMap_add (φ ψ : F ⟶ G) : dualMap (φ + ψ) = dualMap φ + dualMap ψ := by
   refine Scheme.Modules.hom_ext _ _ fun V => ?_
@@ -360,7 +358,7 @@ theorem dualMap_add (φ ψ : F ⟶ G) : dualMap (φ + ψ) = dualMap φ + dualMap
   | (rw [dualApp_dualMap]; simp)
 
 /- English proof (translation)
-Use `Scheme.Modules.hom_ext _ _ fun V => ?_` and prove the remaining obligations. Use extensionality with `l W h s`. Use `first`. Consider the case `simp [dualApp_dualMap]`. Consider the case `(rw [dualApp_dualMap]; simp)`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 @[simp] theorem dualMap_zero : dualMap (0 : F ⟶ G) = 0 := by
   refine Scheme.Modules.hom_ext _ _ fun V => ?_
@@ -370,9 +368,9 @@ Use `Scheme.Modules.hom_ext _ _ fun V => ?_` and prove the remaining obligations
   | (rw [dualApp_dualMap]; simp)
 
 /- English proof (translation)
-Establish `key : ∀ (M : X.Modules) (T : X.Opens) (x : Γ(M, T)), (smulHom M a).app T x = restrictGlobal X T a • x` using `fun M T x => rfl`. Establish `key2 : ∀ T : X.Opens, restrictGlobal X T a = resG X le_top a` using `fun T => by first`. Consider the case `rfl`. Consider the case `simp [restrictGlobal, resG]`. Consider the case `(unfold restrictGlobal resG; rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `Scheme.Modules.hom_ext _ _ fun V => ?_` and prove the remaining obligations. Use extensionality with `l W h s`. Rewrite using `[dualApp_dualMap, key, key, dualApp_smul, map_smul, LinearMap.smul_apply, key2, key2, resG_resG]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem dualMap_smulHom (a : Γ(X, ⊤)) : dualMap (smulHom F a) = smulHom (dual F) a := by
   have key : ∀ (M : X.Modules) (T : X.Opens) (x : Γ(M, T)),
@@ -443,7 +441,7 @@ Both sides reduce to the same expression.
     dualApp ((cartierDualToBidual F).app V s) h l = dualApp l le_rfl (resM F h s) := rfl
 
 /- English proof (translation)
-Use `Scheme.Modules.hom_ext _ _ fun V => ?_` and prove the remaining obligations. Use extensionality with `s W h l`. Use `first`. Consider the case `simp [dualSheafSectionApply_toBidual, dualApp_dualMap, app_resM]`. Consider the case `(simp only [Scheme.Modules.Hom.comp_app, AddCommGrpCat.hom_comp, AddMonoidHom.comp_apply, dualSheafSectionApply_toBidual, dualApp_dualMap, app_resM])`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 @[reassoc] theorem toBidual_naturality_dualSheafTranspose (φ : F ⟶ G) :
     φ ≫ cartierDualToBidual G = cartierDualToBidual F ≫ dualMap (dualMap φ) := by
@@ -467,16 +465,16 @@ Both sides reduce to the same expression.
     dualApp (he.coord i) h s = (he.basis h).repr s i := rfl
 
 /- English proof (translation)
-Rewrite using `[he.dualApp_coord, ← he.basis_apply h j, Module.Basis.repr_self, Finsupp.single_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dualApp_coord_frame [DecidableEq ι] (he : IsFrame e) (i j : ι) (h : V ≤ U) :
     dualApp (he.coord i) h (resM F h (e j)) = if j = i then 1 else 0 := by
   rw [he.dualApp_coord, ← he.basis_apply h j, Module.Basis.repr_self, Finsupp.single_apply]
 
 /- English proof (translation)
-Use `VB.dual_ext fun W h' s => ?_` and prove the remaining obligations. Establish `key : ∀ m : Γ(VB.dual F, V), dualApp m h' s = ∑ i, (he.basis (h'.trans h)).repr s i * resG X h' (dualApp m le_rfl (resM F h (e i)))`. Introduce `m`. Use `conv_lhs => rw [← (he.basis (h'.trans h)).sum_repr s]`. Rewrite using `[map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, he.basis_apply, ← dualApp_resM m le_rfl h', resM_resM, smul_eq_mul]`. Rewrite using `[key l, key l']`. Simplify using `only [H]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dual_ext (he : IsFrame e) (h : V ≤ U) {l l' : Γ(dual F, V)}
     (H : ∀ i, dualApp l le_rfl (resM F h (e i)) = dualApp l' le_rfl (resM F h (e i))) : l = l' := by
@@ -492,7 +490,7 @@ theorem dual_ext (he : IsFrame e) (h : V ≤ U) {l l' : Γ(dual F, V)}
   simp only [H]
 
 /- English proof (translation)
-Rewrite using `[dualApp_sum, LinearMap.sum_apply]`. Simplify using `only [dualApp_smul, resG_self, dualApp_res, LinearMap.smul_apply, smul_eq_mul, he.dualApp_coord_frame]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem dualApp_sum_smul_coord_eq (he : IsFrame e) (h : V ≤ U) (c : ι → Γ(X, V)) (j : ι) :
     dualApp (∑ i, c i • resM (VB.dual F) h (he.coord i)) le_rfl (resM F h (e j)) = c j := by
@@ -503,11 +501,9 @@ private theorem dualApp_sum_smul_coord_eq (he : IsFrame e) (h : V ≤ U) (c : ι
   simp
 
 /- English proof (translation)
-Introduce `V h`. Prove the components needed by the constructor for the conclusion. Introduce `c c' hcc`. Use function extensionality and compare the values at `j`. Establish `hj` using `congrArg (fun l => dualApp l le_rfl (resM F h (e j))) hcc`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Fintype.linearCombination_apply, dualApp_sum_smul_coord_eq] at hj`. Conclude with `hj`. Introduce `l`. Use `⟨fun i => dualApp l le_rfl (resM F h (e i)), ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearCombination_apply]`.
-
-Conclude with `he.dual_ext h fun j => by rw [dualApp_sum_smul_coord_eq]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual (he : IsFrame e) : IsFrame he.coord := by
   intro V h
@@ -523,7 +519,7 @@ theorem dual (he : IsFrame e) : IsFrame he.coord := by
     exact he.dual_ext h fun j => by rw [dualApp_sum_smul_coord_eq]
 
 /- English proof (translation)
-Establish `h1` using `he.dual.basis_equivFun_symm h ((he.dual.basis h).equivFun l)`. Rewrite `h1` using `[LinearEquiv.symm_apply_apply]`. Use `conv_rhs => rw [h1]`. Rewrite using `[dualApp_sum_smul_coord_eq, Module.Basis.equivFun_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_basis_repr (he : IsFrame e) (h : V ≤ U) (l : Γ(VB.dual F, V)) (i : ι) :
     (he.dual.basis h).repr l i = dualApp l le_rfl (resM F h (e i)) := by
@@ -533,9 +529,9 @@ theorem dual_basis_repr (he : IsFrame e) (h : V ≤ U) (l : Γ(VB.dual F, V)) (i
   rw [dualApp_sum_smul_coord_eq, Module.Basis.equivFun_apply]
 
 /- English proof (translation)
-Use `he.dual.dual_ext le_rfl fun j => ?_` and prove the remaining obligations. Rewrite using `[he.dual.dualApp_coord_frame i j le_rfl, dualSheafSectionApply_toBidual, dualApp_res, he.dualApp_coord_frame j i]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hij, Ne.symm hij]`.
+Simplify using the standard rewrite rules.
 -/
 theorem toBidual_app (he : IsFrame e) (i : ι) : (cartierDualToBidual F).app U (e i) = he.dual.coord i := by
   classical
@@ -550,7 +546,7 @@ end IsFrame
 variable {r : ℕ}
 
 /- English proof (translation)
-Introduce `x`. Take `⟨U, e, hx, he⟩` from `h x`. Conclude with `⟨U, he.coord, hx, he.dual⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsVB.dual (h : IsVB F r) : IsVB (dual F) r := by
   intro x
@@ -558,11 +554,9 @@ theorem IsVB.dual (h : IsVB F r) : IsVB (dual F) r := by
   exact ⟨U, he.coord, hx, he.dual⟩
 
 /- English proof (translation)
-Establish `hb : ∀ x : X, Function.Bijective (QCoh.stalkLinear φ x)`. Introduce `x`. Take `⟨U, e, hx, he, he'⟩` from `h x`. Establish `key : QCoh.stalkLinear φ x = ((he.stalkBasis x hx).equiv (he'.stalkBasis x hx) (Equiv.refl ι)).toLinearMap`. Use `(he.stalkBasis x hx).ext fun i => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearEquiv.coe_coe, Module.Basis.equiv_apply, Equiv.refl_apply, IsFrame.stalkBasis_apply, IsFrame.stalkBasis_apply, QCoh.stalkLinear_germ]`. Rewrite using `[key]`. Conclude with `LinearEquiv.bijective _`. Establish `: Mono φ` using `(QCoh.mono_iff_stalkLinear_injective φ).2 fun x => (hb x).1`. Establish `: Epi φ` using `(QCoh.epi_iff_stalkLinear_surjective φ).2 fun x => (hb x).2`.
-
-Conclude with `isIso_of_mono_of_epi φ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_of_frames (φ : F ⟶ G) (h : ∀ x : X, ∃ (U : X.Opens) (e : ι → Γ(F, U)), x ∈ U ∧
     IsFrame e ∧ IsFrame fun i => φ.app U (e i)) : IsIso φ := by
@@ -581,7 +575,7 @@ theorem isIso_of_frames (φ : F ⟶ G) (h : ∀ x : X, ∃ (U : X.Opens) (e : ι
   exact isIso_of_mono_of_epi φ
 
 /- English proof (translation)
-Use `isIso_of_frames (ι := Fin r) _ fun x => ?_` and prove the remaining obligations. Take `⟨U, e, hx, he⟩` from `h x`. Use `⟨U, e, hx, he, ?_⟩` and prove the remaining obligations. Simplify using `only [he.toBidual_app]`. Conclude with `he.dual.dual`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsVB.isIso_toBidual_of_local_frames (h : IsVB F r) : IsIso (cartierDualToBidual F) := by
   refine isIso_of_frames (ι := Fin r) _ fun x => ?_
@@ -601,7 +595,7 @@ variable [DecidableEq ι] {U' U'' : X.Opens} {e : ι → Γ(F, U)} {e' : ι → 
   {e'' : ι → Γ(F, U'')}
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.det_apply, Module.Basis.det_apply, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Module.Basis.toMatrix_apply]`. Conclude with `(he.repr_resM h h' (s j) i).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem resG_det (he : IsFrame e) (h : V ≤ U) (h' : W ≤ V) (s : ι → Γ(F, V)) :
     resG X h' ((he.basis h).det s) = (he.basis (h'.trans h)).det fun i => resM F h' (s i) := by
@@ -618,7 +612,7 @@ def detUnit (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : V ≤ U') : 
   inv_val := by rw [Module.Basis.det_mul_det, Module.Basis.det_self]
 
 /- English proof (translation)
-Use `show (he.basis h).det (he'.basis h') = _`. Rewrite using `[he'.coe_basis h']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_detUnit (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : V ≤ U') :
     (he.detUnit he' h h' : Γ(X, V)) = (he.basis h).det fun i => resM F h' (e' i) := by
@@ -626,7 +620,7 @@ theorem val_detUnit (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : V �
   rw [he'.coe_basis h']
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_res, val_detUnit, val_detUnit, resG_det]`. Simplify using `only [resM_resM]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem res_detUnit (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : V ≤ U') (hW : W ≤ V) :
     Semi.res hW (he.detUnit he' h h') = he.detUnit he' (hW.trans h) (hW.trans h') := by
@@ -635,7 +629,7 @@ theorem res_detUnit (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : V �
   simp only [resM_resM]
 
 /- English proof (translation)
-Establish `hb : (he.res hT).basis h = he.basis (h.trans hT)` using `Module.Basis.eq_of_apply_eq fun i => by simp only [IsFrame.basis_apply, resM_resM]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_detUnit, val_detUnit, hb]`. Simplify using `only [resM_resM]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detUnit_res (he : IsFrame e) (he' : IsFrame e') {T T' : X.Opens} (hT : T ≤ U)
     (hT' : T' ≤ U') (h : V ≤ T) (h' : V ≤ T') :
@@ -647,13 +641,13 @@ theorem detUnit_res (he : IsFrame e) (he' : IsFrame e') {T T' : X.Opens} (hT : T
   simp only [resM_resM]
 
 /- English proof (translation)
-Conclude with `Units.ext (Module.Basis.det_self (he.basis h))`.
+A detailed English derivation is pending.
 -/
 theorem detUnit_self (he : IsFrame e) (h h' : V ≤ U) : he.detUnit he h h' = 1 := by
   exact Units.ext (Module.Basis.det_self (he.basis h))
 
 /- English proof (translation)
-Conclude with `Units.ext (Module.Basis.det_mul_det (he.basis h) (he'.basis h') (he''.basis h''))`.
+A detailed English derivation is pending.
 -/
 theorem detUnit_mul (he : IsFrame e) (he' : IsFrame e') (he'' : IsFrame e'') (h : V ≤ U)
     (h' : V ≤ U') (h'' : V ≤ U'') :
@@ -661,7 +655,7 @@ theorem detUnit_mul (he : IsFrame e) (he' : IsFrame e') (he'' : IsFrame e'') (h 
   exact Units.ext (Module.Basis.det_mul_det (he.basis h) (he'.basis h') (he''.basis h''))
 
 /- English proof (translation)
-Use `show (he.basis h).det s = (he.basis h).det (he'.basis h') * (he'.basis h').det s`. Rewrite using `[Module.Basis.det_apply, Module.Basis.det_apply, Module.Basis.det_apply, ← Matrix.det_mul, Module.Basis.toMatrix_mul_toMatrix]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_eq_detUnit_mul (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : V ≤ U')
     (s : ι → Γ(F, V)) :
@@ -671,9 +665,9 @@ theorem det_eq_detUnit_mul (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h'
     Module.Basis.toMatrix_mul_toMatrix]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show (he.dual.basis h).det (he'.dual.basis h') = (he'.basis h').det (he.basis h)`. Rewrite using `[Module.Basis.det_apply, Module.Basis.det_apply, ← Matrix.det_transpose (Module.Basis.toMatrix (he'.basis h') (he.basis h))]`. Use `congr 1`. Use extensionality with `i j`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.transpose_apply, Module.Basis.toMatrix_apply, Module.Basis.toMatrix_apply, dual_basis_repr he h, IsFrame.basis_apply, IsFrame.basis_apply, dualApp_res, dualApp_coord]`.
+A detailed English derivation is pending.
 -/
 theorem detUnit_dual (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : V ≤ U') :
     he.dual.detUnit he'.dual h h' = (he.detUnit he' h h')⁻¹ := by
@@ -687,9 +681,9 @@ theorem detUnit_dual (he : IsFrame e) (he' : IsFrame e') (h : V ≤ U) (h' : V �
     IsFrame.basis_apply, IsFrame.basis_apply, dualApp_res, dualApp_coord]
 
 /- English proof (translation)
-Establish `key : φ.app V s = ∑ j, (he.basis h).repr s j • ((he.map_iso φ).basis h) j` using `by conv_lhs => rw [← (he.basis h).sum_repr s]`. Rewrite using `[← appLinear_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, appLinear_apply]`. Simplify using `only [IsFrame.basis_apply, app_resM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key, Module.Basis.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem repr_map_iso_app_eq_repr (he : IsFrame e) (φ : F ⟶ G) [IsIso φ] (h : V ≤ U)
     (s : Γ(F, V)) (i : ι) :
@@ -703,9 +697,9 @@ private theorem repr_map_iso_app_eq_repr (he : IsFrame e) (φ : F ⟶ G) [IsIso 
   rw [key, Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[val_detUnit, val_detUnit, Module.Basis.det_apply, Module.Basis.det_apply]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [Module.Basis.toMatrix_apply, ← app_resM]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `repr_map_iso_app_eq_repr he φ h _ i`.
+A detailed English derivation is pending.
 -/
 theorem detUnit_map_iso (he : IsFrame e) (he' : IsFrame e') (φ : F ⟶ G) [IsIso φ] (h : V ≤ U)
     (h' : V ≤ U') : (he.map_iso φ).detUnit (he'.map_iso φ) h h' = he.detUnit he' h h' := by
@@ -717,7 +711,7 @@ theorem detUnit_map_iso (he : IsFrame e) (he' : IsFrame e') (φ : F ⟶ G) [IsIs
   exact repr_map_iso_app_eq_repr he φ h _ i
 
 /- English proof (translation)
-Rewrite using `[QCoh.pullbackSections_res f F hT h x, QCoh.res_pullbackSections f F (le_refl (f ⁻¹ᵁ U)) (hT.trans (f.preimage_mono h)) x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pullbackSections_resM [F.IsQuasicoherent] (f : Y ⟶ X) (h : V ≤ U) {T : Y.Opens}
     (hT : T ≤ f ⁻¹ᵁ V) (x : Γ(F, U)) :
@@ -729,7 +723,7 @@ private theorem pullbackSections_resM [F.IsQuasicoherent] (f : Y ⟶ X) (h : V �
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `key : QCoh.pullbackSections f F hT s = ∑ j, f.appLE V T hT ((he.basis h).repr s j) • ((he.pullback f).basis (hT.trans (f.preimage_mono h))) j` using `by conv_lhs => rw [← (he.basis h).sum_repr s]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[QCoh.pullbackSections_smul, IsFrame.basis_apply, IsFrame.basis_apply, pullbackSections_resM]`. Rewrite using `[key, Module.Basis.repr_sum_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullback_basis_repr [F.IsQuasicoherent] (he : IsFrame e) (f : Y ⟶ X) (h : V ≤ U)
     {T : Y.Opens} (hT : T ≤ f ⁻¹ᵁ V) (s : Γ(F, V)) (i : ι) :
@@ -744,9 +738,9 @@ theorem pullback_basis_repr [F.IsQuasicoherent] (he : IsFrame e) (f : Y ⟶ X) (
   rw [key, Module.Basis.repr_sum_self]
 
 /- English proof (translation)
-Rewrite using `[val_detUnit, val_detUnit, Module.Basis.det_apply, Module.Basis.det_apply, RingHom.map_det]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Module.Basis.toMatrix_apply]`. Rewrite using `[← pullbackSections_resM f h' hT (e' j), pullback_basis_repr he f h hT]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `try rfl`.
+A detailed English derivation is pending.
 -/
 theorem val_detUnit_pullback [F.IsQuasicoherent] (he : IsFrame e) (he' : IsFrame e') (f : Y ⟶ X)
     (h : V ≤ U) (h' : V ≤ U') {T : Y.Opens} (hT : T ≤ f ⁻¹ᵁ V) :
@@ -780,11 +774,11 @@ def det : LB X where
   g c c' := c.isFrame.detUnit c'.isFrame inf_le_left inf_le_right
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hL x`. Establish `hx : x ∈ (⨆ c, (det F r).U c)` using `by rw [hL.1]; trivial`. Take `⟨c, hc⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Conclude with `⟨c.U, c.e, hc, c.isFrame⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h`. Use `LB.IsLB.mk ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨U, e, hx, he⟩` from `h x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, e, he⟩, hx⟩`. Introduce `c`. Conclude with `(IsFrame.res_detUnit _ _ _ _ _).trans (IsFrame.detUnit_self _ _ _)`. Introduce `i j k`. Conclude with `(congrArg₂ (· * ·) (IsFrame.res_detUnit _ _ _ _ _) (IsFrame.res_detUnit _ _ _ _ _)).trans ((IsFrame.detUnit_mul _ _ _ _ _ _).trans (IsFrame.res_detUnit _ _ _ _ _).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isLB_det_iff : (det F r).IsLB ↔ IsVB F r := by
   constructor
@@ -805,7 +799,7 @@ theorem isLB_det_iff : (det F r).IsLB ↔ IsVB F r := by
         ((IsFrame.detUnit_mul _ _ _ _ _ _).trans (IsFrame.res_detUnit _ _ _ _ _).symm)
 
 /- English proof (translation)
-The claim follows from `isLB_det_iff.2 h`.
+A detailed English derivation is pending.
 -/
 theorem IsVB.isLB_det (h : IsVB F r) : (det F r).IsLB := isLB_det_iff.2 h
 
@@ -821,7 +815,7 @@ def wedgeFun (s : Fin r → Γ(F, V)) : Γ(toMod (det F r), V) :=
 def detCoord (t : Γ(toMod (det F r), V)) (c : Chart F r) : Γ(X, V ⊓ c.U) := LB.coord t c
 
 /- English proof (translation)
-The claim follows from `LB.sec_ext h`.
+A detailed English derivation is pending.
 -/
 theorem det_sec_ext {t t' : Γ(toMod (det F r), V)} (h : ∀ c, detCoord t c = detCoord t' c) :
     t = t' := LB.sec_ext h
@@ -874,7 +868,7 @@ theorem detCoord_wedge (s : Fin r → Γ(F, V)) (c : Chart F r) :
       (c.isFrame.basis (inf_le_right : V ⊓ c.U ≤ c.U)).det fun i => resM F inf_le_left (s i) := rfl
 
 /- English proof (translation)
-Use `det_sec_ext fun c => ?_` and prove the remaining obligations. Rewrite using `[detCoord_wedge (V := W)]`. Establish `e : detCoord (resM (toMod (det F r)) h (wedge F V r s)) c = resG X (inf_le_inf_right c.U h) (detCoord (wedge F V r s) c)` using `rfl`. Rewrite using `[e, detCoord_wedge, IsFrame.resG_det]`. Simplify using `only [resM_resM]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem resM_wedge (h : W ≤ V) (s : Fin r → Γ(F, V)) :
     resM _ h (wedge F V r s) = wedge F W r fun i => resM F h (s i) := by
@@ -886,9 +880,9 @@ theorem resM_wedge (h : W ≤ V) (s : Fin r → Γ(F, V)) :
   simp only [resM_resM]
 
 /- English proof (translation)
-Use `det_sec_ext fun c' => ?_` and prove the remaining obligations. Rewrite using `[detCoord_wedge]`. Use `Eq.trans ?_ (LB.coord_chartSec (L := det F r) h.isLB_det c c').symm` and prove the remaining obligations. Use `Eq.trans ?_ (congrArg (resG X _) (IsFrame.val_detUnit c'.isFrame c.isFrame inf_le_left inf_le_right)).symm` and prove the remaining obligations. Use `Eq.trans ?_ (IsFrame.resG_det c'.isFrame _ _ _).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Conclude with `(resM_resM _ _ (c.e i)).symm`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem wedge_frame (h : IsVB F r) (c : Chart F r) :
     wedge F c.U r c.e = LB.chartSec h.isLB_det c := by
@@ -902,7 +896,7 @@ theorem wedge_frame (h : IsVB F r) (c : Chart F r) :
   exact (resM_resM _ _ (c.e i)).symm
 
 /- English proof (translation)
-Establish `H` using `isFrame_chartSec h.isLB_det (⟨U, e, he⟩ : Chart F r)`. Rewrite `H` using `[← wedge_frame h (⟨U, e, he⟩ : Chart F r)]`. Conclude with `H`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFrame.wedge (h : IsVB F r) {e : Fin r → Γ(F, U)} (he : IsFrame e) :
     IsFrame fun _ : Fin 1 => wedge F U r e := by
@@ -911,9 +905,9 @@ theorem IsFrame.wedge (h : IsVB F r) {e : Fin r → Γ(F, U)} (he : IsFrame e) :
   exact H
 
 /- English proof (translation)
-Establish `hVB : IsVB F r` using `fun x => by`. Establish `hx : x ∈ (⨆ i, L.U i)` using `by rw [hL.1]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Conclude with `⟨L.U i, e i, hi, he i⟩`. Use `⟨hVB, CechPic.iso_of_chart hVB.isLB_det ⟨fun i => ⟨L.U i, e i, he i⟩, ?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Conclude with `fun x hx => hx`. Introduce `y i j _ _`. Rewrite using `[hg i j]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lbIso_det_of_frames {L : LB X} (hL : L.IsLB) (e : ∀ i, Fin r → Γ(F, L.U i))
     (he : ∀ i, IsFrame (e i))
@@ -931,23 +925,23 @@ theorem lbIso_det_of_frames {L : LB X} (hL : L.IsLB) (e : ∀ i, Fin r → Γ(F,
     rfl
 
 /- English proof (translation)
-The claim follows from `(lbIso_det_of_frames h.isLB_det _ (fun c => c.isFrame.map_iso φ.hom) (fun _ _ => (IsFrame.detUnit_map_iso _ _ _ _ _).symm)).2`.
+A detailed English derivation is pending.
 -/
 theorem IsVB.lbIso_det_of_iso (h : IsVB F r) (φ : F ≅ G) : LBIso (det F r) (det G r) := (lbIso_det_of_frames h.isLB_det _ (fun c => c.isFrame.map_iso φ.hom)
     (fun _ _ => (IsFrame.detUnit_map_iso _ _ _ _ _).symm)).2
 
 /- English proof (translation)
-The claim follows from `(lbIso_det_of_frames (CechPic.isLB_dual h.isLB_det) _ (fun c => c.isFrame.dual) (fun _ _ => (IsFrame.detUnit_dual _ _ _ _).symm)).2`.
+A detailed English derivation is pending.
 -/
 theorem IsVB.lbIso_det_dual (h : IsVB F r) : LBIso (CechPic.dual (det F r)) (det (VB.dual F) r) := (lbIso_det_of_frames (CechPic.isLB_dual h.isLB_det) _ (fun c => c.isFrame.dual)
     (fun _ _ => (IsFrame.detUnit_dual _ _ _ _).symm)).2
 
 /- English proof (translation)
-Establish `hle : ∀ j : ((det F r).pull f).ι, ((det F r).pull f).U j ≤ f ⁻¹ᵁ (j PUnit.unit).U` using `fun j y hy => Set.mem_iInter.1 hy PUnit.unit`. Establish `hpg : ∀ (j j' : ((det F r).pull f).ι) (hh : ((det F r).pull f).U j ⊓ ((det F r).pull f).U j' ≤ f ⁻¹ᵁ ((j PUnit.unit).U ⊓ (j' PUnit.unit).U)), (((det F r).pull f).g j j' : Γ(Y, ((det F r).pull f).U j ⊓ ((det F r).pull f).U j')) = (f.appLE _ _ hh).hom ((j PUnit.unit).isFrame.detUni …`. Introduce `j j' hh`. Unfold `LB.pull`. Unfold `LB.LinComb`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Simplify using `only`. Rewrite using `[Fintype.prod_unique]`. Simplify using `only [zpow_one]`. Both sides reduce to the same expression. Use `h.isQuasicoherent` as an intermediate fact.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hL : ((det F r).pull f).IsLB` using `LB.isLB_pull h.isLB_det f`. Use `(lbIso_det_of_frames hL (fun j i => resM ((Scheme.Modules.pullback f).obj F) (hle j) (QCoh.pullbackSections f F (le_refl (f ⁻¹ᵁ (j PUnit.unit).U)) ((j PUnit.unit).e i))) (fun j => ((j PUnit.unit).isFrame.pullback f).res (hle j)) fun j j' => ?_).2` and prove the remaining obligations. Establish `hh : ((det F r).pull f).U j ⊓ ((det F r).pull f).U j' ≤ f ⁻¹ᵁ ((j PUnit.unit).U ⊓ (j' PUnit.unit).U)` using `fun y hy => ⟨hle j hy.1, hle j' hy.2⟩`. Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[hpg j j' hh, IsFrame.detUnit_res ((j PUnit.unit).isFrame.pullback f) ((j' PUnit.unit).isFrame.pullback f), IsFrame.val_detUnit_pullback (j PUnit.unit).isFrame (j' PUnit.unit).isFrame f inf_le_left inf_le_right hh]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsVB.lbIso_det_pullback (h : IsVB F r) (f : Y ⟶ X) :
     LBIso ((det F r).pull f) (det ((Scheme.Modules.pullback f).obj F) r) := by
@@ -982,13 +976,13 @@ theorem IsVB.lbIso_det_pullback (h : IsVB F r) (f : Y ⟶ X) :
     IsFrame.val_detUnit_pullback (j PUnit.unit).isFrame (j' PUnit.unit).isFrame f inf_le_left inf_le_right hh]
 
 /- English proof (translation)
-Use `(lbIso_det_of_frames hL (fun i _ => LB.chartSec hL i) (fun i => isFrame_chartSec hL i) (fun i j => ?_)).2` and prove the remaining obligations. Establish `key : resM (toMod L) (inf_le_right : L.U i ⊓ L.U j ≤ L.U j) (LB.chartSec hL j) = ((L.g i j : Γ(X, L.U i ⊓ L.U j)ˣ) : Γ(X, L.U i ⊓ L.U j)) • resM (toMod L) (inf_le_left : L.U i ⊓ L.U j ≤ L.U i) (LB.chartSec hL i)`. Use `LB.sec_ext fun k => ?_` and prove the remaining obligations. Rewrite using `[LB.coord_smul]`. Express the relevant statement in the definitionally equal form `resG X _ (LB.coord (LB.chartSec hL j) k) = resG X _ ((L.g i j : Γ(X, L.U i ⊓ L.U j)ˣ) : Γ(X, L.U i ⊓ L.U j)) * resG X _ (LB.coord (LB.chartSec hL i) k)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[LB.coord_chartSec, LB.coord_chartSec, resG_resG, resG_resG]`. Establish `c0` using `congrArg Units.val (hL.3 k i j)`. Establish `c` using `congrArg (resG X (show (L.U i ⊓ L.U j) ⊓ L.U k ≤ _ by`. Introduce `x hx`. Simplify using `only [TopologicalSpace.Opens.mem_inf] at hx ⊢`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use the proof step `tauto)) c0`. Simplify using `only [Units.val_mul, map_mul, val_res, resG_resG] at c`. Rewrite using `[mul_comm]`. Conclude with `c.symm`. Use `Units.ext ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[IsFrame.val_detUnit]`. Simplify using `only [Module.Basis.det_apply, Matrix.det_unique, Module.Basis.toMatrix_apply]`. Rewrite using `[key, map_smul, ← IsFrame.basis_apply (isFrame_chartSec hL i) inf_le_left (default : Fin 1), Module.Basis.repr_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lbIso_det_toMod {L : LB X} (hL : L.IsLB) : LBIso L (det (toMod L) 1) := by
   refine (lbIso_det_of_frames hL (fun i _ => LB.chartSec hL i) (fun i => isFrame_chartSec hL i)
@@ -1030,7 +1024,7 @@ def IsVB.isoDet (h : IsVB F 1) : F ≅ toMod (det F 1) :=
   asIso φ
 
 /- English proof (translation)
-Establish `H` using `(lbIso_det_of_frames (LB.isLB_triv X) (fun _ => e) (fun _ => he) (fun _ _ => (IsFrame.detUnit_self he _ _).symm)).2`. Conclude with `((CechPic.cls_eq_iff (LB.isLB_triv X) h).2 H).symm.trans rfl`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem IsFrame.cls_det_eq_zero {e : Fin r → Γ(F, ⊤)} (he : IsFrame e) (h : (det F r).IsLB) :
     CechPic.cls _ h = 0 := by
@@ -1039,7 +1033,7 @@ theorem IsFrame.cls_det_eq_zero {e : Fin r → Γ(F, ⊤)} (he : IsFrame e) (h :
   exact ((CechPic.cls_eq_iff (LB.isLB_triv X) h).2 H).symm.trans rfl
 
 /- English proof (translation)
-Rewrite using `[IsFrame.val_detUnit]`. Use `(he.basis le_rfl).det.map_swap (he.basis le_rfl) (i := 0) (j := 1) (by decide)` as an intermediate fact. Rewrite `this` using `[Module.Basis.det_self, he.coe_basis]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example {e : Fin 2 → Γ(F, U)} (he : IsFrame e) :
     (he.detUnit (he.comp_equiv (Equiv.swap 0 1)) le_rfl le_rfl : Γ(X, U)) = -1 := by

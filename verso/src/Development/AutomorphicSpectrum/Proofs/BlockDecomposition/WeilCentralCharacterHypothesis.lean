@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilCentral
 
 /- English proof (translation)
-Establish `h0 : (m : ℂ) ≠ 0` using `by exact_mod_cast hm.ne'`. Establish `h1 : (((m * m : ℝ)) : ℂ) ^ (1 / 2 : ℂ) = (m : ℂ)`. Rewrite using `[Complex.ofReal_mul, Complex.mul_cpow_ofReal_nonneg hm.le hm.le, ← Complex.cpow_add _ _ h0]`. Evaluate the numerical expressions. Rewrite using `[show m ^ 2 * d = (m * m) * d by ring, Complex.ofReal_mul (m * m) d, Complex.mul_cpow_ofReal_nonneg (mul_nonneg hm.le hm.le) hd, h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem cpow_half_sq_mul (m d : ℝ) (hm : 0 < m) (hd : 0 ≤ d) :
     (((m ^ 2 * d : ℝ)) : ℂ) ^ (1 / 2 : ℂ) = (m : ℂ) * ((d : ℂ) ^ (1 / 2 : ℂ)) := by
@@ -23,49 +23,43 @@ theorem cpow_half_sq_mul (m d : ℝ) (hm : 0 < m) (hd : 0 ≤ d) :
     Complex.mul_cpow_ofReal_nonneg (mul_nonneg hm.le hm.le) hd, h1]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ hχc hχ E _ _ _ _ _ _ _ hd hc σ hσ η hη c Φ hΦ a g`. Use `set ae : Eˣ := Units.map (algebraMap F E).toMonoidHom a with hae`. Establish `hav : (ae : E) = algebraMap F E (a : F)` using `rfl`. Establish `hNa : Algebra.norm F (ae : E) = (a : F) ^ 2`. Rewrite using `[hav, Algebra.norm_algebraMap, hd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha0 : (a : F) ≠ 0` using `a.ne_zero`. Establish `hdet : ((dg2 a a * g).val).det = (a : F) ^ 2 * (g.val).det` using `by show ((dg2 a a).val * g.val).det = _`. Rewrite using `[Matrix.det_mul]`. Use `congr 1`. Simplify using `[dg2, Matrix.det_fin_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det`. Use `swap`. Establish `h' : ¬ ∃ t : Eˣ, Algebra.norm F (t : E) = ((dg2 a a * g).val).det`. Introduce and unpack `⟨t, ht⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h ⟨ae⁻¹ * t, ?_⟩` and prove the remaining obligations. Establish `e : (a : F) ^ 2 * Algebra.norm F ((ae⁻¹ * t : Eˣ) : E) = (a : F) ^ 2 * (g.val).det`. Rewrite using `[← hNa, ← map_mul, ← Units.val_mul, mul_inv_cancel_left, ht, hdet, hNa]`. Conclude with `mul_left_cancel₀ (pow_ne_zero 2 ha0) e`. Use `show Wc _ _ _ _ _ _ _ = _ * Wc _ _ _ _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Wc, Wc, dif_neg h, dif_neg h', mul_zero]`. Take `⟨t, ht⟩` from `h`. Establish `hN' : Algebra.norm F ((ae * t : Eˣ) : E) = ((dg2 a a * g).val).det`. Rewrite using `[Units.val_mul, map_mul, hNa, ht, hdet]`. Establish `L` using `GlobalTheory.CompanionTheory.WeilChoice.wchoice F χ hχc hχ E hd hc σ hσ η hη c Φ hΦ (dg2 a a * g) (ae * t) hN'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `R` using `GlobalTheory.CompanionTheory.WeilChoice.wchoice F χ hχc hχ E hd hc σ hσ η hη c Φ hΦ g t ht`. Rewrite using `[L, R]`. Establish `hD : (g.val).det ≠ 0`. Rewrite using `[← ht]`. Conclude with `(t.isUnit.map (Algebra.norm F : E →* F)).ne_zero`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e00 : (dg2 a a * g).val 0 0 = (a : F) * g.val 0 0` using `by show ((dg2 a a).val * g.val) 0 0 = _`. Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e01 : (dg2 a a * g).val 0 1 = (a : F) * g.val 0 1` using `by show ((dg2 a a).val * g.val) 0 1 = _`. Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e10 : (dg2 a a * g).val 1 0 = (a : F) * g.val 1 0` using `by show ((dg2 a a).val * g.val) 1 0 = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Establish `e11 : (dg2 a a * g).val 1 1 = (a : F) * g.val 1 1` using `by show ((dg2 a a).val * g.val) 1 1 = _`. Simplify using `[dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Rewrite using `[e00, e01, e10, e11, hdet]`. Use `set D : F := (g.val).det with hDdef`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `set g1 : Matrix (Fin 2) (Fin 2) F := !![g.val 0 0 / D, g.val 0 1; g.val 1 0 / D, g.val 1 1] with hg1def`. Establish `hg1 : g1.det = 1`. Establish `: D = g.val 0 0 * g.val 1 1 - g.val 0 1 * g.val 1 0`. Rewrite using `[hDdef, Matrix.det_fin_two]`. Rewrite using `[hg1def, Matrix.det_fin_two_of]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Conclude with `this.symm`. Establish `hΨ : (fun y => Φ (y * ((ae * t : Eˣ) : E))) ∈ SBE E`. Use `⟨hΦ.1.comp_continuous (continuous_id.mul continuous_const), ?_⟩` and prove the remaining obligations. Conclude with `hΦ.2.1.comp_homeomorph (Homeomorph.mulRight₀ (((ae * t : Eˣ) : E)) (Units.ne_zero _))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hrep` using `congrFun (GlobalTheory.CompanionTheory.WeilTorus.wRepM F χ hχc hχ E hd hc σ hσ η hη g1 hg1 a⁻¹ (fun y => Φ (y * ((ae * t : Eˣ) : E))) hΨ) 1`. Establish `hm : rWE E χ σ η !![((a⁻¹ : Fˣ) : F), 0; 0, (((a⁻¹)⁻¹ : Fˣ) : F)] (fun y => Φ (y * ((ae * t : Eˣ) : E))) = fun u => (nsg E ((a⁻¹ : Fˣ) : F) * ((modulus ((a⁻¹ : Fˣ) : F) : ℝ) : ℂ)) * Φ (u * (t : E))`. Use function extensionality and compare the values at `u`. Establish `e : algebraMap F E ((a⁻¹ : Fˣ) : F) * u * ((ae * t : Eˣ) : E) = u * (t : E)`. Establish `e1 : algebraMap F E ((a⁻¹ : Fˣ) : F) * (ae : E) = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hav, ← map_mul, Units.val_inv_eq_inv_val, inv_mul_cancel₀ ha0, map_one]`. Rewrite using `[Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `show rW χ σ (muE E χ) (lamE E χ η) ((a⁻¹ : Fˣ) : F) 0 0 (((a⁻¹)⁻¹ : Fˣ) : F) (fun y => Φ (y * ((ae * t : Eˣ) : E))) u = _`. Rewrite using `[rW, if_pos rfl, mul_zero, zero_mul, AddChar.map_zero_eq_one]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Circle.coe_one, one_mul, e]`. Use `set k : ℂ := nsg E ((a⁻¹ : Fˣ) : F) * ((modulus ((a⁻¹ : Fˣ) : F) : ℝ) : ℂ) with hkdef`. Establish `hr : rWE E χ σ η g1 (fun u => k * Φ (u * (t : E))) 1 = k * rW χ σ (muE E χ) (lamE E χ η) (g.val 0 0 / D) (g.val 0 1) (g.val 1 0 / D) (g.val 1 1) (fun y => Φ (y * (t : E))) 1` using `GlobalTheory.CompanionTheory.WeilChoice.rW_const_mul χ σ (muE E χ) (lamE E χ η) _ _ _ _ k (fun y => Φ (y * (t : E))) 1`. Establish `hl : rWE E χ σ η (g1 * !![((a⁻¹ : Fˣ) : F), 0; 0, (((a⁻¹)⁻¹ : Fˣ) : F)]) (fun y => Φ (y * ((ae * t : Eˣ) : E))) 1 = rW χ σ (muE E χ) (lamE E χ η) ((a : F) * g.val 0 0 / ((a : F) ^ 2 * D)) ((a : F) * g.val 0 1) ((a : F) * g.val 1 0 / ((a : F) ^ 2 * D)) ((a : F) * g.val 1 1) (fun y …`. Establish `f00 : (g1 * !![((a⁻¹ : Fˣ) : F), 0; 0, (((a⁻¹)⁻¹ : Fˣ) : F)]) 0 0 = (a : F) * g.val 0 0 / ((a : F) ^ 2 * D)`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hg1def, Matrix.mul_apply, Fin.sum_univ_two]`. Clear the denominators using the available nonvanishing facts. Establish `f01 : (g1 * !![((a⁻¹ : Fˣ) : F), 0; 0, (((a⁻¹)⁻¹ : Fˣ) : F)]) 0 1 = (a : F) * g.val 0 1`. Simplify using `[hg1def, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`. Establish `f10 : (g1 * !![((a⁻¹ : Fˣ) : F), 0; 0, (((a⁻¹)⁻¹ : Fˣ) : F)]) 1 0 = (a : F) * g.val 1 0 / ((a : F) ^ 2 * D)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hg1def, Matrix.mul_apply, Fin.sum_univ_two]`. Clear the denominators using the available nonvanishing facts. Establish `f11 : (g1 * !![((a⁻¹ : Fˣ) : F), 0; 0, (((a⁻¹)⁻¹ : Fˣ) : F)]) 1 1 = (a : F) * g.val 1 1`. Simplify using `[hg1def, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`. Simplify using `only [rWm]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[f00, f01, f10, f11]`. Rewrite `hrep` using `[hm, hl, hr]`. Rewrite using `[hrep]`. Establish `hmpos : 0 < (modulus (a : F) : ℝ)`. Conclude with `GroundTheory.LocalField.modulus_pos ha0` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hmod : (((modulus ((a : F) ^ 2 * D) : ℝ)) : ℂ) ^ (1 / 2 : ℂ) = ((modulus (a : F) : ℝ) : ℂ) * (((modulus D : ℝ) : ℂ) ^ (1 / 2 : ℂ))`. Establish `e : (modulus ((a : F) ^ 2 * D) : ℝ) = (modulus (a : F) : ℝ) ^ 2 * (modulus D : ℝ)`. Rewrite using `[modulus_mul, GlobalTheory.CompanionTheory.NormModulus.modulus_pow_nat]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[e]`. Conclude with `cpow_half_sq_mul _ _ hmpos (NNReal.coe_nonneg _)`. Establish `hinv : nsg E ((a⁻¹ : Fˣ) : F) = ((η a : ℂˣ) : ℂ)`. Establish `h1 : ((η a : ℂˣ) : ℂ) * ((η a : ℂˣ) : ℂ) = 1`. Rewrite using `[hη]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Unfold `nsg`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `h2 : ((η a⁻¹ : ℂˣ) : ℂ) * ((η a : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Rewrite using `[← hη a⁻¹]`.
-
-Conclude with `mul_right_cancel₀ (Units.ne_zero (η a)) (h2.trans h1.symm)`. Establish `hminv : ((modulus ((a⁻¹ : Fˣ) : F) : ℝ) : ℂ) = ((modulus (a : F) : ℝ) : ℂ)⁻¹`. Rewrite using `[Units.val_inv_eq_inv_val, GroundTheory.LocalField.modulus_inv]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Establish `hcen : (((resF (F` using `F) c * η) a : ℂˣ) : ℂ) = ((c ae : ℂˣ) : ℂ) * ((η a : ℂˣ) : ℂ) := by`. Rewrite using `[MonoidHom.mul_apply, Units.val_mul]`. Both sides reduce to the same expression. Establish `hm1 : ((modulus (a : F) : ℝ) : ℂ) * ((modulus (a : F) : ℝ) : ℂ)⁻¹ = 1` using `mul_inv_cancel₀ (by exact_mod_cast hmpos.ne')`. Rewrite using `[hmod, hkdef, hinv, hminv, hcen, map_mul, Units.val_mul]`.
-
-Generalize the expression as in `rW χ σ (muE E χ) (lamE E χ η) (g.val 0 0 / D) (g.val 0 1) (g.val 1 0 / D) (g.val 1 1) (fun y => Φ (y * (t : E))) 1 = X`. Take the linear combination `(((c ae : ℂˣ) : ℂ) * ((c t : ℂˣ) : ℂ) * (((modulus D : ℝ) : ℂ) ^ (1 / 2 : ℂ)) * ((η a : ℂˣ) : ℂ) * X) * hm1`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wCen : Ad3.K.GL2LocalData.WCen := by
   intro F _ _ _ _ _ _ _ χ hχc hχ E _ _ _ _ _ _ _ hd hc σ hσ η hη c Φ hΦ a g

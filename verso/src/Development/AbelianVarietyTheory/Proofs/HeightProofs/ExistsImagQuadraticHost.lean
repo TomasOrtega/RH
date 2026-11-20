@@ -14,23 +14,23 @@ open scoped IntermediateField
 namespace GlobalTheory.FieldSize
 
 /- English proof (translation)
-Introduce `R H`. Take `⟨-, hd, -, hd16, -⟩` from `H.hyp`. Establish `hb : (H.φ₀ H.sqrtMinusD) ^ 2 = -(H.d : ℂ)`. Establish `h : H.sqrtMinusD ^ 2 = -(H.d : H.E)` using `H.sqd_sq`. Rewrite using `[← map_pow, h, map_neg, map_natCast]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Set `σ : H.K →ₐ[ℚ] ℂ` to `H.φ₀.toRatAlgHom.comp H.K.val`. Set `e : H.K ≃ₐ[ℚ] σ.fieldRange` to `AlgEquiv.ofInjectiveField σ`. Establish `hfd : FiniteDimensional ℚ σ.fieldRange` using `e.toLinearEquiv.finiteDimensional`. Establish `hNF : NumberField σ.fieldRange` using `NumberField.mk`. Establish `h2 : Module.finrank ℚ σ.fieldRange = 2` using `e.toLinearEquiv.finrank_eq.symm.trans (Formalism.FrobeniusOrbits.SplitK.finrank_K hd.pos (H.sqd_sq))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `r : σ.fieldRange` to `⟨H.φ₀ H.sqrtMinusD, ⟨Formalism.FrobeniusOrbits.SplitK.bK H.sqrtMinusD, rfl⟩⟩`. Establish `hr : r ^ 2 = -(H.d : σ.fieldRange)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify `hb` using `[r]`. Establish `h4 : H.d % 4 = 3` using `by omega`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hD : discr σ.fieldRange = -(H.d : ℤ)` using `discr_eq_neg_of_sq_eq h2 hd.squarefree h4 hr`. Establish `hTC : IsTotallyComplex σ.fieldRange`. Use `⟨fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[← InfinitePlace.not_isReal_iff_isComplex]`. Introduce `hv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `ψ` to `InfinitePlace.embedding_of_isReal hv`. Establish `h1 : ψ r ^ 2 = -(H.d : ℝ)` using `by rw [← map_pow, hr, map_neg, map_natCast]`. Establish `h3 : (0 : ℝ) < H.d` using `by exact_mod_cast hd.pos`. Use polynomial arithmetic with `[sq_nonneg (ψ r)]`. Take `⟨x, -, hx, -, hgen, -⟩` from `ringOfIntegers_sqrt_neg_three_mod_four H.d hd.squarefree h4 σ.fieldRange h2 r hr`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Establish `hx' : ((x : σ.fieldRange) : ℂ) = (1 + H.φ₀ H.sqrtMinusD) / 2`. Use `congrArg (fun y : σ.fieldRange => (y : ℂ)) hx` as an intermediate fact. Simplify using `only [r] at this`. Move the coercions through the operations in `at this`. Establish `e2 : ((2 : σ.fieldRange) : ℂ) = 2` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Rewrite `this` using `[e2]`. Take the linear combination `this / 2`. Establish `hc : ∀ m n : ℤ, ((((m : 𝓞 σ.fieldRange) + n * x : 𝓞 σ.fieldRange) : σ.fieldRange) : ℂ) = m + n * ((1 + H.φ₀ H.sqrtMinusD) / 2)` using `fun m n => by`. Rewrite using `[← hx']`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨σ.fieldRange, hNF, hTC, h2, hD, by omega, ?_, fun z => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `⟨(y : H.E), rfl⟩`. Introduce and unpack `⟨s, rfl⟩`. Conclude with `⟨_, hc s.1 s.2⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, rfl⟩`. Take `⟨m, n, rfl⟩` from `hgen a`. Conclude with `⟨(m, n), hc m n⟩`. Rewrite using `[H.finrank_cmField]`. Unfold `Ranks.f Ranks.n`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

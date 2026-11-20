@@ -16,23 +16,21 @@ noncomputable section
 namespace GlobalTheory.MixXTorusValue
 
 /- English proof (translation)
-Introduce `l hl hinv p t hp φ hφ`. Establish `hl' : l ∘ₗ om g⁻¹ ∈ C.adm κ` using `hs.adm g⁻¹ l hl`. Establish `hgg : ((g⁻¹ : UG c JB) : GL β E).1 * (g : GL β E).1 = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, inv_mul_cancel]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hgg' : (g : GL β E).1 * ((g⁻¹ : UG c JB) : GL β E).1 = 1`. Rewrite using `[← Units.val_mul, ← Subgroup.coe_mul, mul_inv_cancel]`. Both sides reduce to the same expression. Establish `hSS : (S : Matrix ν ν E) * ((S⁻¹ : GL ν E) : Matrix ν ν E) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hgi : ((g⁻¹ : UG c JB) : GL β E).1 * Cy = Cy' * ((S⁻¹ : GL ν E) : Matrix ν ν E)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hg]`. Simplify using `only [Matrix.mul_assoc]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = Cy' * ((S⁻¹ : GL ν E) : Matrix ν ν E) := by rw [← Matrix.mul_assoc, hgg, Matrix.one_mul]`. Establish `hinv' : ∀ z : Matrix α ν E, ∀ φ ∈ C.sp κ, (l ∘ₗ om g⁻¹) (d.rho ψ (z * Cyᵀ) φ) = (l ∘ₗ om g⁻¹) φ`. Introduce `z φ hφ`. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[hs.impl g⁻¹ _ φ hφ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : actB c g⁻¹ (z * Cyᵀ) = (z * ((S⁻¹ : GL ν E) : Matrix ν ν E)ᵀ) * Cy'ᵀ`. Unfold `actB`. Rewrite using `[Matrix.mul_assoc, ← Matrix.transpose_mul, hgi, Matrix.transpose_mul, Matrix.mul_assoc]`. Rewrite using `[e1]`. Conclude with `hinv _ _ (hs.pres _ φ hφ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hp' : (((g * p * g⁻¹ : UG c JB) : GL β E) : Matrix β β E) * Cy = Cy * ((S * t * S⁻¹ : GL ν E) : Matrix ν ν E)`. Simplify using `only [Subgroup.coe_mul, Units.val_mul]`. Rewrite using `[Matrix.mul_assoc, hgi, ← Matrix.mul_assoc, Matrix.mul_assoc (g : GL β E).1, hp, ← Matrix.mul_assoc, hg]`. Simplify using `only [Matrix.mul_assoc]`. Establish `key` using `hS (l ∘ₗ om g⁻¹) hl' hinv' (g * p * g⁻¹) (S * t * S⁻¹) hp' (om g φ) (hs.pres g φ hφ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply] at key`. Establish `e2 : om g⁻¹ (om (g * p * g⁻¹) (om g φ)) = om p φ`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul]`. Use `congr 2`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : om g⁻¹ (om g φ) = φ`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`. Establish `e4 : Matrix.GeneralLinearGroup.det (S * t * S⁻¹) = Matrix.GeneralLinearGroup.det t`. Rewrite using `[map_mul, map_mul, map_inv, mul_comm (Matrix.GeneralLinearGroup.det S), mul_assoc, mul_inv_cancel, mul_one]`. Rewrite `key` using `[e2, e3, e4]`.
-
-Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegelRule_of_conj {R E : Type} [CommRing R] [Invertible (2 : R)] [CommRing E] [Algebra R E] {c : E →ₐ[R] E}
     {C : TestClass R} {ψ : AddChar R ℂ} {ξ : E} {α β : Type} [Fintype α] [DecidableEq α] [Fintype β] [DecidableEq β]
@@ -84,11 +82,11 @@ theorem siegelRule_of_conj {R E : Type} [CommRing R] [Invertible (2 : R)] [CommR
   exact key
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he t m hm k hk hne`. Take `⟨-, ⟨d', hd', hsp, dd, omd, hdd, ⟨-, hsd, hsieg⟩, hbox⟩, -⟩` from `hP.weil`. Take `⟨Cy, md, T, g, S, hCy, hmd, hmdT, hdetT, hgS⟩` from `GlobalTheory.T.adapted_plane_restriction_pair_real F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ t m hm`. Take `⟨l, hl, hinv, hfac, φ₁, hφ₁, φ₂, hφ₂, hL⟩` from `GlobalTheory.T.adapted_plane_restriction_pair_finite F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₁ om₁ r₁ s₁ hH hP₁ e he hne d' hd' dd hdd`. Establish `hS'` using `siegelRule_of_conj hsd.toIsSplitting hsieg g S hgS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key` using `hS' l hl (fun z φ hφ => by`. Take `⟨y₁, y₂, u, hz⟩` from `hCy z`. Rewrite using `[hz]`. Conclude with `hinv y₁ y₂ u φ hφ) md T hmdT (boxFun φ₁ φ₂)`. Use the proof step `(GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ₁ hφ₁ φ₂ hφ₂)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[hbox m md hmd φ₁ hφ₁ φ₂ hφ₂, hdetT, GlobalTheory.T.modulus_of_norm_eq_abs]`. Establish `h1 : l (boxFun ((om.comp (MonoidHom.inl _ _)) m φ₁) φ₂) = k * l (boxFun φ₁ φ₂)` using `hfac φ₁ hφ₁ _ (hsp.pres m φ₁ hφ₁) φ₂ hφ₂ k (hk φ₁ hφ₁)`. Rewrite `key` using `[h1]`. Establish `h2` using `mul_right_cancel₀ hL key`. Rewrite using `[h2, Fintype.card_fin]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torus_value : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d)
     (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

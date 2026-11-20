@@ -8,7 +8,7 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 namespace GlobalTheory.LocFlat.CellSupport
 
 /- English proof (translation)
-Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.val_det_apply, colE, upU, Matrix.det_fromBlocks_zero₂₁]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_colE {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] (c p : ℕ) (β : n → k) :
     Matrix.GeneralLinearGroup.det (colE c p β) = 1 := by
@@ -18,7 +18,7 @@ theorem det_colE {k : Type} [Field k] {n : Type} [Fintype n] [DecidableEq n] (c 
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [om, map_inv, hg, inv_one, map_one, nabs_one, inv_inv, Real.one_rpow, Units.val_one, Complex.ofReal_one, one_mul, Matrix.mul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem om_inv_of_det_one {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ)
     (g : GL b k) (hg : Matrix.GeneralLinearGroup.det g = 1) (Ψ : Matrix b a k → ℂ) :
@@ -28,7 +28,7 @@ theorem om_inv_of_det_one {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [
     one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [om, map_one, MonoidHom.one_apply, inv_one, Units.val_one]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem om_eq_mul_om_triv {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b] (μ : kˣ →* ℂˣ)
     (h : GL b k) (Ψ : Matrix b a k → ℂ) :
@@ -38,7 +38,7 @@ theorem om_eq_mul_om_triv {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [
   ring
 
 /- English proof (translation)
-Unfold `opE`. Rewrite using `[← integral_const_mul]`. Simplify using `only [mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem opE_const_mul [MeasurableSpace k] [BorelSpace k] {n n' : Type} [Fintype n] [DecidableEq n] [Fintype n']
     [DecidableEq n'] {c : ℕ} (ψ : AddChar k Circle) (ν : Measure k) (p : ℕ) (s : ℂ)
@@ -54,13 +54,11 @@ namespace GlobalTheory.LocFlat
 open GlobalTheory.LocFlat.CellSupport
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ψ hψc hψ ν hν n n' _ _ _ _ c p hp1 hpc μ J hJ Φ a`. Take `⟨T, -, hT⟩` from `GlobalTheory.PosOne.covers_opE_finite k n n' c p hp1 hpc ψ hψc hψ ν 1 (by rw [MonoidHom.ker_one]; exact isOpen_univ) J hJ ⟨om μ a 1 Φ.1, om_mem_SB μ a 1 Φ.2⟩`. Use `⟨T, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨X, hX⟩` from `Function.ne_iff.1 hx`. Rewrite `hX` using `[flCol_eq_opE_colE k ψ ν hψc hν n n' c p hp1 hpc _ (om_mem_SB μ a x Φ.2) X]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set β : n → k := fun r => X r (Sum.inr ()) with hβ`. Use `replace hX : opE ψ ν p (om μ 1 (colE c p β)⁻¹ (om μ a x Φ.1)) X.toCols₁ ≠ 0 := by`. Rewrite using `[om_inv_of_det_one μ _ (det_colE c p β)]`. Conclude with `hX`. Rewrite `hX` using `[← om_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : om μ (1 * a) ((colE c p β)⁻¹ * x) Φ.1 = om μ 1 ((colE c p β)⁻¹ * x) (om μ a 1 Φ.1)`. Rewrite using `[← om_mul, mul_one]`. Rewrite `hX` using `[e, om_eq_mul_om_triv, opE_const_mul]`. Take `⟨t, ht, hd⟩` from `hT ((colE c p β)⁻¹ * x) (Function.ne_iff.2 ⟨X.toCols₁, right_ne_zero_of_mul hX⟩)`. Take `⟨r, hr, j, hj, hx'⟩` from `(DoubleCoset.eq _ _ _ _).1 hd.symm`.
-
-Use `⟨β, r, hr, t, ht, j, hj, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, ← mul_assoc r, ← hx', mul_inv_cancel_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flCol_support_finite_cells : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ψ : AddChar k Circle), Continuous ψ → ψ ≠ 1 → ∀ (ν : Measure k),

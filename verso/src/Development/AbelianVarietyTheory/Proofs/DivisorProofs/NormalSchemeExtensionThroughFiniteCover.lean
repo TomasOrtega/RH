@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.NormalFiniteLift
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.FiniteSectionLift.lift_of_finite`. Consider the case `exact _root_.GlobalTheory.FiniteSectionLift.lift_of_finite`. Consider the case `(apply _root_.GlobalTheory.FiniteSectionLift.lift_of_finite <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FiniteSectionLift.lift_of_finite <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.FiniteSectionLift.lift_of_finite <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FiniteSectionLift.lift_of_finite ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem finite_lift_of_integral (R K : CommRingCat.{0}) (φ : R ⟶ K) (hinj : Function.Injective φ.hom)
     (H : ∀ x : K, φ.hom.IsIntegralElem x → ∃ r : R, φ.hom r = x)
@@ -32,9 +32,9 @@ theorem finite_lift_of_integral (R K : CommRingCat.{0}) (φ : R ⟶ K) (hinj : F
   | (intros; exact _root_.GlobalTheory.FiniteSectionLift.lift_of_finite ..)
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[DenseRange, dense_iff_inter_open]`. Introduce and unpack `O hO ⟨t, ht⟩`. Take `⟨t', ht', e⟩ : genericPoint S ∈ r '' O` from `((genericPoint_spec S).mem_open_set_iff (r.isOpenEmbedding.isOpenMap O hO)).2 ⟨r t, Set.mem_univ _, t, ht, rfl⟩`. Use `⟨w (IsLocalRing.closedPoint K), ?_, ⟨_, rfl⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← r.isOpenEmbedding.injective (e.trans hw.symm)]`. Conclude with `ht'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDominant_of_generic {T S : Scheme.{0}} [IsIntegral S] (r : T ⟶ S) [IsOpenImmersion r]
     (K : CommRingCat.{0}) [IsLocalRing K] (w : Spec K ⟶ T)
@@ -53,29 +53,27 @@ end GlobalTheory.NormalFiniteLift
 namespace GlobalTheory.NormalFiniteLift
 
 /- English proof (translation)
-Introduce `o _ N S' X Z U c i p h _ hN _ hU _ hp _ _ e`. Use `GlobalTheory.IsNormalScheme.of_pred hN` as an intermediate fact. Establish `hη : ∀ V : S'.Opens, (V : Set S').Nonempty → genericPoint S' ∈ V` using `fun V hV => ((genericPoint_spec S').mem_open_set_iff V.isOpen).2 (by simpa using hV)`. Establish `hηU : genericPoint S' ∈ U` using `hη U hU.nonempty`. Set `gS : Spec S'.functionField ⟶ S'` to `S'.fromSpecStalk (genericPoint S')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hgS : gS (IsLocalRing.closedPoint S'.functionField) = genericPoint S'` using `Scheme.fromSpecStalk_closedPoint`. Establish `hrO : ∀ O : S'.Opens, genericPoint S' ∈ O → Set.range gS ⊆ Set.range O.ι`. Introduce and unpack `O hO _ ⟨q, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Establish `: gS q ⤳ genericPoint S'` using `(S'.range_fromSpecStalk (x := genericPoint S')).le ⟨q, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this.mem_open O.isOpen hO`. Set `gO : ∀ O : S'.Opens, genericPoint S' ∈ O → (Spec S'.functionField ⟶ O.toScheme)` to `fun O hO => IsOpenImmersion.lift O.ι gS (hrO O hO)`. Establish `hgO : ∀ O hO, gO O hO ≫ O.ι = gS` using `fun O hO => IsOpenImmersion.lift_fac _ _ _`. Set `y : Spec S'.functionField ⟶ Z` to `gO U hηU ≫ c ≫ i`. Establish `hy : y ≫ p = gS ≫ h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [y, Category.assoc, ← e]`. Rewrite using `[← Category.assoc, hgO U hηU]`. Establish `loc : ∀ (V : S'.Opens) (hV : IsAffineOpen V) (hηV : genericPoint S' ∈ V), ∃ m : V.toScheme ⟶ Z, m ≫ p = V.ι ≫ h ∧ gO V hηV ≫ m = y`. Introduce `V hV hηV`. Establish `: Nonempty V` using `⟨⟨_, hηV⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIntegrallyClosed Γ(S', V)` using `GlobalTheory.IsNormalScheme.isIntegrallyClosed_of_isAffineOpen hV`. Establish `: IsFractionRing Γ(S', V) S'.functionField` using `functionField_isFractionRing_of_isAffineOpen S' V hV`. Establish `hsp : Spec.map (S'.germToFunctionField V) ≫ hV.fromSpec = gS` using `hV.fromSpecStalk_eq_fromSpecStalk hηV`. Take `⟨ξ, h1, h2⟩` from `finite_lift_of_integral Γ(S', V) S'.functionField (S'.germToFunctionField V) (S'.germToFunctionField_injective V) (fun x hx => IsIntegrallyClosed.isIntegral_iff.1 hx) Z _ p (hV.fromSpec ≫ h) y hp (by rw [hy, ← Category.assoc, hsp])`. Establish `hg : gO V hηV ≫ hV.isoSpec.hom = Spec.map (S'.germToFunctionField V)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_mono hV.fromSpec, Category.assoc, IsAffineOpen.isoSpec_hom_fromSpec, hgO V hηV, hsp]`. Use `⟨hV.isoSpec.hom ≫ ξ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h2, ← Category.assoc, IsAffineOpen.isoSpec_hom_fromSpec]`. Rewrite using `[← Category.assoc, hg, h1]`. Use `choose V hVa hxV _ using fun x : S' => exists_isAffineOpen_mem_and_subset (X := S') (U := ⊤) (x := x) (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcov : TopologicalSpace.IsOpenCover V` using `eq_top_iff.2 fun x _ => TopologicalSpace.Opens.mem_iSup.2 ⟨x, hxV x⟩`. Establish `hηV : ∀ x, genericPoint S' ∈ V x` using `fun x => hη (V x) ⟨x, hxV x⟩`. Use `choose m hm hmy using fun x => loc (V x) (hVa x) (hηV x)`. Set `𝒰` to `S'.openCoverOfIsOpenCover V hcov`. Establish `hc : ∀ a b, pullback.fst (V a).ι (V b).ι ≫ m a = pullback.snd (V a).ι (V b).ι ≫ m b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a b`. Set `r` to `pullback.fst (V a).ι (V b).ι ≫ (V a).ι`. Establish `: IsReduced (pullback (V a).ι (V b).ι)` using `isReduced_of_isOpenImmersion r`. Set `w : Spec S'.functionField ⟶ pullback (V a).ι (V b).ι` to `pullback.lift (gO (V a) (hηV a)) (gO (V b) (hηV b)) ((hgO (V a) (hηV a)).trans (hgO (V b) (hηV b)).symm)`. Establish `: IsDominant w` using `isDominant_of_generic r _ w (by show (w ≫ pullback.fst _ _ ≫ (V a).ι) (IsLocalRing.closedPoint _) = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullback.lift_fst_assoc, hgO (V a) (hηV a)]`. Conclude with `hgS)`. Use `ext_of_isDominant_of_isSeparated p ?_ w ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hm, hm, pullback.condition_assoc]`. Rewrite using `[pullback.lift_fst_assoc, pullback.lift_snd_assoc, hmy, hmy]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : ∀ a, (V a).ι ≫ 𝒰.glueMorphisms m hc = m a` using `fun a => 𝒰.ι_glueMorphisms m hc a`. Set `π` to `𝒰.glueMorphisms m hc`. Establish `hπp : π ≫ p = h` using `𝒰.hom_ext _ _ fun a => ((reassoc_of% hg a) p).trans (hm a)`. Use `⟨π, ?_, hπp⟩` and prove the remaining obligations. Establish `: IsReduced U.toScheme` using `isReduced_of_isOpenImmersion U.ι`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsDominant (gO U hηU)` using `isDominant_of_generic U.ι _ _ (by show (gO U hηU ≫ U.ι) (IsLocalRing.closedPoint _) = _`. Rewrite using `[hgO U hηU]`. Conclude with `hgS)`. Use `ext_of_isDominant_of_isSeparated p ?_ (gO U hηU) ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hπp, e]`.
-
-Simplify using `only [Category.assoc]`. Set `x` to `genericPoint S'`. Rewrite using `[← Category.assoc, hgO U hηU, ← hgO (V x) (hηV x), Category.assoc, hg, hmy]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_finite : ∀ (o : Type) [CommRing o] (N : ℕ) (S' X Z : Scheme.{0}) (U : S'.Opens)
     (c : U.toScheme ⟶ X) (i : X ⟶ Z) (p : Z ⟶ PSpace o N) (h : S' ⟶ PSpace o N), IsIntegral S' →

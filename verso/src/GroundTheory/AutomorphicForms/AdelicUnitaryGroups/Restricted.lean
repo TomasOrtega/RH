@@ -33,7 +33,7 @@ theorem finiteAdeleEval_apply (v : HeightOneSpectrum (𝓞 K)) (a : FiniteAdeleR
     finiteAdeleEval K v a = a v := rfl
 
 /- English proof (translation)
-The claim follows from `RestrictedProduct.continuous_eval (R := fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K) (A := fun v => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) v`.
+A detailed English derivation is pending.
 -/
 theorem continuous_finiteAdeleEval (v : HeightOneSpectrum (𝓞 K)) :
     Continuous (finiteAdeleEval K v) :=
@@ -45,7 +45,7 @@ abbrev localIntegral (v : HeightOneSpectrum (𝓞 K)) :
   latticeStabilizer H (v.adicCompletion K) b (v.adicCompletionIntegers K).toSubring
 
 /- English proof (translation)
-Establish `h : ∀ c : K, ∀ᶠ v : HeightOneSpectrum (𝓞 K) in cofinite, algebraMap K (v.adicCompletion K) c ∈ (v.adicCompletionIntegers K).toSubring` using `fun c => (algebraMap K (FiniteAdeleRing (𝓞 K) K) c).2`. Conclude with `(eventually_all.2 fun k => h _).and (eventually_all.2 fun k => eventually_all.2 fun l => eventually_all.2 fun m => h _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_isAdapted :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in cofinite,
@@ -57,7 +57,7 @@ theorem eventually_isAdapted :
     (eventually_all.2 fun k => eventually_all.2 fun l => eventually_all.2 fun m => h _)
 
 /- English proof (translation)
-Rewrite using `[unitaryCoords_unitaryMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitaryCoords_finiteAdeleEval (g : unitaryPoints K E H (FiniteAdeleRing (𝓞 K) K))
     (v : HeightOneSpectrum (𝓞 K)) (p : ι × ι × κ) :
@@ -67,9 +67,9 @@ theorem unitaryCoords_finiteAdeleEval (g : unitaryPoints K E H (FiniteAdeleRing 
   rfl
 
 /- English proof (translation)
-Establish `h₁ : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in cofinite, ∀ p, unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g p v ∈ v.adicCompletionIntegers K` using `eventually_all.2 fun p => (unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g p).2`. Establish `h₂ : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in cofinite, ∀ p, unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g⁻¹ p v ∈ v.adicCompletionIntegers K` using `eventually_all.2 fun p => (unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g⁻¹ p).2`. Use `filter_upwards [eventually_isAdapted b, h₁, h₂] with v hv hv₁ hv₂`. Rewrite using `[mem_latticeStabilizer_iff hv]`. Use `⟨fun p => ?_, fun p => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[unitaryCoords_finiteAdeleEval]`. Conclude with `hv₁ p`. Rewrite using `[← map_inv, unitaryCoords_finiteAdeleEval]`. Conclude with `hv₂ p`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_mem_localIntegral (g : unitaryPoints K E H (FiniteAdeleRing (𝓞 K) K)) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 K) in cofinite,
@@ -124,7 +124,7 @@ theorem restrictedCoord_apply (p : ι × ι × κ)
     restrictedCoord H b p y v = unitaryCoords H (v.adicCompletion K) b (y v) p := rfl
 
 /- English proof (translation)
-Unfold `restrictedCoord`. Conclude with `RestrictedProduct.mapAlong_continuous _ _ _ _ _ _ fun v => (continuous_apply p).comp (continuous_unitaryCoords H (HeightOneSpectrum.adicCompletion K v) b)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_restrictedCoord (p : ι × ι × κ) : Continuous (restrictedCoord H b p) := by
   unfold restrictedCoord
@@ -133,13 +133,13 @@ theorem continuous_restrictedCoord (p : ι × ι × κ) : Continuous (restricted
       (continuous_unitaryCoords H (HeightOneSpectrum.adicCompletion K v) b)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `g g' h`. Apply `unitaryCoords_injective H _ b` to reduce the goal to its premises. Use function extensionality and compare the values at `p`. Use `FiniteAdeleRing.ext K fun v => ?_` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun y => unitaryCoords H (v.adicCompletion K) b (y v) p) h` as an intermediate fact. Simplify `this` using `only [toRestrictedUnitary_apply, unitaryCoords_finiteAdeleEval]`. Introduce `y`. Set `M : Matrix ι ι (FiniteAdeleRing (𝓞 K) K ⊗[K] E)` to `(matrixCoords b (FiniteAdeleRing (𝓞 K) K)).symm fun p => restrictedCoord H b p y`. Establish `hMv : ∀ v : HeightOneSpectrum (𝓞 K), M.map (tensorMap E (finiteAdeleEval K v)) = unitaryMat (y v)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `v`. Apply `(matrixCoords b (v.adicCompletion K)).injective` to reduce the goal to its premises. Rewrite using `[matrixCoords_map, Equiv.apply_symm_apply]`. Both sides reduce to the same expression. Take `⟨g, hg⟩` from `exists_unitaryPoints_of_forall hH (fun v => finiteAdeleEval K v) (fun a ha => FiniteAdeleRing.ext K ha) M fun v => ⟨y v, (hMv v).symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `⟨g, RestrictedProduct.ext _ _ fun v => ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `unitaryMat (unitaryMap K E H _ g) = unitaryMat (y v)`. Rewrite using `[unitaryMat_unitaryMap, hg, hMv]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toRestrictedUnitary_bijective (hH : IsUnit H.det) :
     Function.Bijective (toRestrictedUnitary H b) := by
@@ -167,11 +167,11 @@ theorem toRestrictedUnitary_bijective (hH : IsUnit H.det) :
     rw [unitaryMat_unitaryMap, hg, hMv]
 
 /- English proof (translation)
-Establish `hW : IsOpen {a : FiniteAdeleRing (𝓞 K) K | ∀ v, v ∈ T → a v ∈ v.adicCompletionIntegers K}` using `RestrictedProduct.isOpen_forall_imp_mem (R := fun v : HeightOneSpectrum (𝓞 K) => v.adicCompletion K) (A := fun v => (v.adicCompletionIntegers K : Set (v.adicCompletion K))) (fun v => Valued.isOpen_valuationSubring _) (p := (· ∈ T))`. Establish `hc : Continuous (unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b)` using `continuous_unitaryCoords H _ b`. Establish `h : ∀ p, IsOpen {g : unitaryPoints K E H (FiniteAdeleRing (𝓞 K) K) | ∀ v ∈ T, unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g p v ∈ v.adicCompletionIntegers K ∧ unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g⁻¹ p v ∈ v.adicCompletionIntegers K}`. Introduce `p`. Establish `h₁` using `hW.preimage ((continuous_apply p).comp hc)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h₂` using `hW.preimage ((continuous_apply p).comp (hc.comp continuous_inv))`. Use `h₁.inter h₂ using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_preimage, Function.comp_apply]`. Conclude with `⟨fun h => ⟨fun v hv => (h v hv).1, fun v hv => (h v hv).2⟩, fun h v hv => ⟨h.1 v hv, h.2 v hv⟩⟩`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `isOpen_iInter_of_finite h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Simplify using `only [Set.mem_ofPred_eq, Set.mem_iInter]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem isOpen_setOf_coords_mem (T : Set (HeightOneSpectrum (𝓞 K))) :
     IsOpen {g : unitaryPoints K E H (FiniteAdeleRing (𝓞 K) K) | ∀ p, ∀ v ∈ T,
@@ -200,15 +200,13 @@ theorem isOpen_setOf_coords_mem (T : Set (HeightOneSpectrum (𝓞 K))) :
   simp only [Set.mem_ofPred_eq, Set.mem_iInter]
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Use `set T : Set (HeightOneSpectrum (𝓞 K)) := {v | IsAdapted b (v.adicCompletionIntegers K).toSubring ∧ ∀ p, unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g₀ p v ∈ v.adicCompletionIntegers K ∧ unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g₀⁻¹ p v ∈ v.adicCompletionIntegers K} with hTdef`. Establish `hT : cofinite ≤ 𝓟 T`. Rewrite using `[le_principal_iff]`. Establish `h₁ : ∀ᶠ v : HeightOneSpectrum (𝓞 K) in cofinite, ∀ p, unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g₀ p v ∈ v.adicCompletionIntegers K ∧ unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g₀⁻¹ p v ∈ v.adicCompletionIntegers K` using `eventually_all.2 fun p => (unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g₀ p).2.and (unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g₀⁻¹ p).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `(eventually_isAdapted b).and h₁`. Set `N : Set (unitaryPoints K E H (FiniteAdeleRing (𝓞 K) K))` to `{g | ∀ p, ∀ v ∈ T, unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g p v ∈ v.adicCompletionIntegers K ∧ unitaryCoords H (FiniteAdeleRing (𝓞 K) K) b g⁻¹ p v ∈ v.adicCompletionIntegers K}`. Establish `hNo : IsOpen N` using `isOpen_setOf_coords_mem H b T`. Establish `hgN : g₀ ∈ N` using `fun p v hv => hv.2 p`. Establish `hmem : ∀ g ∈ N, ∀ v ∈ T, unitaryMap K E H (finiteAdeleEval K v) g ∈ localIntegral H b v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg v hv`. Rewrite using `[mem_latticeStabilizer_iff hv.1]`. Use `⟨fun p => ?_, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[unitaryCoords_finiteAdeleEval]`. Conclude with `(hg p v hv).1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← map_inv, unitaryCoords_finiteAdeleEval]`. Conclude with `(hg p v hv).2`. Set `G : N → Πʳ v : HeightOneSpectrum (𝓞 K), [unitaryPoints K E H (v.adicCompletion K), localIntegral H b v]_[𝓟 T]` to `fun g => ⟨fun v => unitaryMap K E H (finiteAdeleEval K v) g.1, eventually_principal.2 fun v hv => hmem g.1 g.2 v hv⟩`. Establish `hG : Continuous G`. Rewrite using `[RestrictedProduct.continuous_rng_of_principal]`.
-
-Conclude with `continuous_pi fun v => (continuous_unitaryMap _ (continuous_finiteAdeleEval v)).comp continuous_subtype_val`. Establish `hFN : ContinuousOn (toRestrictedUnitary H b) N`. Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Conclude with `(RestrictedProduct.continuous_inclusion hT).comp hG`. Conclude with `hFN.continuousAt (hNo.mem_nhds hgN)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_toRestrictedUnitary : Continuous (toRestrictedUnitary H b) := by
   refine continuous_iff_continuousAt.2 fun g₀ => ?_

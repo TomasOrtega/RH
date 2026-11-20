@@ -12,29 +12,29 @@ section Transport
 variable {V : Type*} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_dualLat_iff (H : Sesq V) (Λ : AddSubgroup V) (x : V) :
     x ∈ dualLat H Λ ↔ ∀ y ∈ Λ, ∃ k : ℤ, altE H x y = k := by
   exact Iff.rfl
 
 /- English proof (translation)
-Simplify using `[imgLat, AddSubgroup.mem_map]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_imgLat_iff (g : V ≃ₗ[ℂ] V) (Λ : AddSubgroup V) (x : V) :
     x ∈ imgLat (g : V →ₗ[ℂ] V) Λ ↔ ∃ y ∈ Λ, g y = x := by
   simp [imgLat, AddSubgroup.mem_map]
 
 /- English proof (translation)
-Establish `hg' : ∀ a b, H (g a) (g b) = H a b` using `fun a b => by simpa using hg a b`. Unfold `IsSelfDual at hΛ ⊢`. Use extensionality with `x`. Rewrite using `[mem_dualLat_iff, mem_imgLat_iff]`. Take `⟨x₀, rfl⟩` from `g.surjective x`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `key : (∀ y ∈ imgLat (g : V →ₗ[ℂ] V) Λ, ∃ k : ℤ, altE H (g x₀) y = k) ↔ x₀ ∈ dualLat H Λ`. Rewrite using `[mem_dualLat_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Take `⟨k, hk⟩` from `h (g y) ((mem_imgLat_iff g Λ _).mpr ⟨y, hy, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨k, by rw [← hk]; simp only [altE]; rw [hg']⟩`. Introduce `h y' hy'`. Take `⟨y, hy, rfl⟩` from `(mem_imgLat_iff g Λ y').mp hy'`. Take `⟨k, hk⟩` from `h y hy`. Conclude with `⟨k, by simp only [altE]; rw [hg']; exact hk⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[key, hΛ]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨x₀, h, rfl⟩`. Introduce and unpack `⟨y, hy, hxy⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite `hy` using `[g.injective hxy]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma selfDual_img (H : Sesq V) (g : V ≃ₗ[ℂ] V) (hg : IsIsom H H (g : V →ₗ[ℂ] V)) {Λ : AddSubgroup V}
     (hΛ : IsSelfDual H Λ) : IsSelfDual H (imgLat (g : V →ₗ[ℂ] V) Λ) := by
@@ -61,7 +61,7 @@ lemma selfDual_img (H : Sesq V) (g : V ≃ₗ[ℂ] V) (hg : IsIsom H H (g : V �
     rwa [g.injective hxy] at hy
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (g : V →ₗ[ℂ] V).toAddMonoidHom` using `g.injective`. Establish `hm : ∀ A B : AddSubgroup V, relIdx (imgLat (g : V →ₗ[ℂ] V) A) (imgLat (g : V →ₗ[ℂ] V) B) = relIdx A B` using `fun A B => AddSubgroup.relIndex_map_map_of_injective A B hinj`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `AddSubgroup.relIndex_ne_zero_trans hg1 (by rw [← hm S Λ] at h1; exact h1)`. Conclude with `AddSubgroup.relIndex_ne_zero_trans (by rw [← hm Λ S] at h2; exact h2) hg2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma comm_img (g : V ≃ₗ[ℂ] V) {S Λ : AddSubgroup V}
     (hg1 : relIdx S (imgLat (g : V →ₗ[ℂ] V) S) ≠ 0) (hg2 : relIdx (imgLat (g : V →ₗ[ℂ] V) S) S ≠ 0)
@@ -75,9 +75,9 @@ lemma comm_img (g : V ≃ₗ[ℂ] V) {S Λ : AddSubgroup V}
   · exact AddSubgroup.relIndex_ne_zero_trans (by rw [← hm Λ S] at h2; exact h2) hg2
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [mem_imgLat_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨g y, ⟨y, hy, rfl⟩, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨y, hy, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma imgLat_trans (g σ : V ≃ₗ[ℂ] V) (Λ : AddSubgroup V) :
     imgLat ((g.trans σ : V ≃ₗ[ℂ] V) : V →ₗ[ℂ] V) Λ = imgLat (σ : V →ₗ[ℂ] V) (imgLat (g : V →ₗ[ℂ] V) Λ) := by
@@ -90,7 +90,7 @@ lemma imgLat_trans (g σ : V ≃ₗ[ℂ] V) (Λ : AddSubgroup V) :
     exact ⟨y, hy, rfl⟩
 
 /- English proof (translation)
-Introduce `x y`. Establish `h1` using `hσ (g x) (g y)`. Establish `h2` using `hg x y`. Simplify using `only [LinearEquiv.coe_coe] at h1 h2 ⊢`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma isom_trans (H : Sesq V) (g σ : V ≃ₗ[ℂ] V) (hg : IsIsom H H (g : V →ₗ[ℂ] V)) (hσ : IsIsom H H (σ : V →ₗ[ℂ] V)) :
     IsIsom H H ((g.trans σ : V ≃ₗ[ℂ] V) : V →ₗ[ℂ] V) := by
@@ -103,15 +103,15 @@ lemma isom_trans (H : Sesq V) (g σ : V ≃ₗ[ℂ] V) (hg : IsIsom H H (g : V �
 end Transport
 
 /- English proof (translation)
-Take `⟨hE, _, _, hd⟩` from `hok`. Assume the negation of the conclusion as `hcon`. Simplify using `only [not_exists, not_not] at hcon`. Establish `h1` using `hcon 1 0`. Establish `h2` using `hcon 0 1`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hcon 1 1`. Evaluate the numerical expressions using `at h1 h2 h3`. Establish `hb : (l : ℤ) ∣ b`. Establish `h4` using `dvd_sub (dvd_sub h3 h1) h2`. Establish `e : (a : ℤ) + b + c - a - c = b` using `by ring`.
+Establish an intermediate fact. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h4` using `[e]`. Then use the resulting hypothesis. Establish `hl2 : (l : ℤ) ^ 2 ∣ (d : ℤ)`. Establish `e : (d : ℤ) = 4 * a * c - b ^ 2` using `by linarith`. Rewrite using `[e]`. Use `dvd_sub ?_ (pow_dvd_pow_of_dvd hb 2)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_two]`. Conclude with `mul_dvd_mul (dvd_mul_of_dvd_right h1 4) h2`. Establish `hl2' : l ^ 2 ∣ d` using `by exact_mod_cast hl2`. Establish `hld : l ∣ d` using `(dvd_pow_self l two_ne_zero).trans hl2'`. Establish `hleq : l = d` using `(Nat.prime_dvd_prime_iff_eq hl hd).mp hld`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hleq` using the available equality. Establish `h5` using `Nat.le_of_dvd hd.pos hl2'`. Establish `h6` using `hd.two_le`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 lemma exists_good_form {a : ℕ} {b c : ℤ} {d : ℕ} (hok : CmOK a b c d) {l : ℕ} (hl : l.Prime) :
     ∃ x y : ℤ, ¬ (l : ℤ) ∣ a * x ^ 2 + b * x * y + c * y ^ 2 := by

@@ -14,9 +14,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 
 /- English proof (translation)
-Establish `h : ∀ x : F × F, Algebra.trace F (F × F) x = x.1 + x.2` using `fun x => by`. Rewrite using `[Algebra.trace_prod]`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Use `show u.2 * z.1 + u.1 * z.2 = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem trace_swap (u z : F × F) :
     Algebra.trace F (F × F) (swapE u * z) = z.1 * u.2 + z.2 * u.1 := by
@@ -27,7 +27,7 @@ theorem trace_swap (u z : F × F) :
   ring
 
 /- English proof (translation)
-Establish `h` using `integrable_mul_char_of_mem_schwartzBruhat (selfDualMeasure χ) hχ hf 0`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem integrable_sb {χ : AddChar F Circle} (hχ : Continuous χ) {f : F → ℂ}
     (hf : f ∈ schwartzBruhat F) : Integrable f (selfDualMeasure χ) := by
@@ -35,14 +35,14 @@ theorem integrable_sb {χ : AddChar F Circle} (hχ : Continuous χ) {f : F → �
   simpa using h
 
 /- English proof (translation)
-The claim follows from `continuous_subtype_val.comp (hχ.comp hk)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_char {χ : AddChar F Circle} (hχ : Continuous χ) {X : Type*} [TopologicalSpace X]
     {k : X → F} (hk : Continuous k) : Continuous fun x => (χ (k x) : ℂ) :=
   continuous_subtype_val.comp (hχ.comp hk)
 
 /- English proof (translation)
-Use `hh.mono ((continuous_char hχ hk).aestronglyMeasurable.mul hh.1) (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, Circle.norm_coe, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem integrable_char_mul {χ : AddChar F Circle} (hχ : Continuous χ) {ν : Measure (F × F)}
     {k : F × F → F} (hk : Continuous k) {h : F × F → ℂ} (hh : Integrable h ν) :
@@ -51,9 +51,9 @@ theorem integrable_char_mul {χ : AddChar F Circle} (hχ : Continuous χ) {ν : 
   rw [norm_mul, Circle.norm_coe, one_mul]
 
 /- English proof (translation)
-Establish `e : ∀ z : F × F, (∑ i, f i z.1 * g i z.2) * (χ (Algebra.trace F (F × F) (swapE u * z)) : ℂ) = ∑ i, (f i z.1 * (χ (z.1 * u.2) : ℂ)) * (g i z.2 * (χ (z.2 * u.1) : ℂ))`. Introduce `z`. Rewrite using `[trace_swap, AddChar.map_add_eq_mul, Circle.coe_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Unfold `FTs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `only [e]`. Rewrite using `[integral_finset_sum _ fun i _ => Integrable.mul_prod (integrable_mul_char_of_mem_schwartzBruhat _ hχ (hf i) u.2) (integrable_mul_char_of_mem_schwartzBruhat _ hχ (hg i) u.1)]`. Conclude with `Finset.sum_congr rfl fun i _ => integral_prod_mul (fun x => f i x * (χ (x * u.2) : ℂ)) (fun x => g i x * (χ (x * u.1) : ℂ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fts_sum {χ : AddChar F Circle} (hχ : Continuous χ) {n : ℕ} {f g : Fin n → F → ℂ}
     (hf : ∀ i, f i ∈ schwartzBruhat F) (hg : ∀ i, g i ∈ schwartzBruhat F) (u : F × F) :
@@ -74,13 +74,13 @@ theorem fts_sum {χ : AddChar F Circle} (hχ : Continuous χ) {n : ℕ} {f g : F
     integral_prod_mul (fun x => f i x * (χ (x * u.2) : ℂ)) (fun x => g i x * (χ (x * u.1) : ℂ))
 
 /- English proof (translation)
-Establish `hT` using `fun {h : F → ℂ} (hh : h ∈ schwartzBruhat F) => localFourier_mem_schwartzBruhat (selfDualMeasure χ) hχ hχ1 hh`. Establish `hb : Integrable (fun u : F × F => localFourier (selfDualMeasure χ) χ f u.2 * localFourier (selfDualMeasure χ) χ g u.1) (muS χ)`. Use `Integrable.mul_prod (integrable_sb hχ (hT hg)) (integrable_sb hχ (hT hf))` as an intermediate fact. Simplify `this` using `only [mul_comm]`. Establish `hI` using `integrable_char_mul hχ (k := fun u : F × F => a * (u.1 * u.2)) (by fun_prop) hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨hI, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_prod _ hI]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `h` using `localFourier_localFourier_selfDual hχ hχ1 hf (a * x)`. Use `show ∫ y, (χ (a * (x * y)) : ℂ) * (localFourier (selfDualMeasure χ) χ f y * localFourier (selfDualMeasure χ) χ g x) ∂selfDualMeasure χ = _ * f (-(a * x))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : localFourier (selfDualMeasure χ) χ (localFourier (selfDualMeasure χ) χ f) (a * x) = ∫ y, localFourier (selfDualMeasure χ) χ f y * (χ (y * (a * x)) : ℂ) ∂selfDualMeasure χ` using `rfl`. Rewrite using `[← h, h2, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Establish `e : a * (x * y) = y * (a * x)` using `by ring`. Simplify using `only [e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem left_term {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1) (a : F) {f g : F → ℂ}
     (hf : f ∈ schwartzBruhat F) (hg : g ∈ schwartzBruhat F) :
@@ -111,11 +111,11 @@ theorem left_term {χ : AddChar F Circle} (hχ : Continuous χ) (hχ1 : χ ≠ 1
   ring
 
 /- English proof (translation)
-Establish `hb : Integrable (fun z : F × F => f z.1 * g z.2) (muS χ)` using `Integrable.mul_prod (integrable_sb hχ hf) (integrable_sb hχ hg)`. Establish `hI` using `integrable_char_mul hχ (k := fun z : F × F => -(z.1 * z.2) / a) (by have : Continuous fun z : F × F => -(z.1 * z.2) * a⁻¹ := by fun_prop`. Simplify `this) hb` using `only [div_eq_mul_inv]`. Use `⟨hI, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_prod _ hI]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show ∫ y, (χ (-(x * y) / a) : ℂ) * (f x * g y) ∂selfDualMeasure χ = f x * localFourier (selfDualMeasure χ) χ g (-x / a)`. Establish `h2 : localFourier (selfDualMeasure χ) χ g (-x / a) = ∫ y, g y * (χ (y * (-x / a)) : ℂ) ∂selfDualMeasure χ` using `rfl`. Rewrite using `[h2, ← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : -(x * y) / a = y * (-x / a)` using `by ring`. Simplify using `only [e]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem right_term {χ : AddChar F Circle} (hχ : Continuous χ) {a : F} (ha : a ≠ 0) {f g : F → ℂ}
     (hf : f ∈ schwartzBruhat F) (hg : g ∈ schwartzBruhat F) :
@@ -141,9 +141,9 @@ theorem right_term {χ : AddChar F Circle} (hχ : Continuous χ) {a : F} (ha : a
   ring
 
 /- English proof (translation)
-Use `set h : F → ℂ := fun x => f x * localFourier (selfDualMeasure χ) χ g (-x / a) with hh`. Establish `e` using `integral_comp_mul_left (selfDualMeasure χ) ha (fun y => h (-y))`. Rewrite `e` using `[integral_neg_eq_self h, Complex.real_smul]`. Rewrite using `[← e]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : - -(a * x) / a = x` using `by field_simp`. Simplify using `only [hh, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem subst_term (χ : AddChar F Circle) {a : F} (ha : a ≠ 0) (f g : F → ℂ) :
     ∫ x, localFourier (selfDualMeasure χ) χ g x * f (-(a * x)) ∂selfDualMeasure χ =
@@ -159,15 +159,11 @@ theorem subst_term (χ : AddChar F Circle) {a : F} (ha : a ≠ 0) (f g : F → �
   ring
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ _ χ hχ hχ1 a Φ hΦ`. Take `⟨n, f, g, hf, hg, hfg⟩` from `GlobalTheory.CompanionTheory.PureTensor.exists_pure_sum hΦ.1 hΦ.2`. Establish `hf' : ∀ i, f i ∈ schwartzBruhat F` using `hf`. Establish `hg' : ∀ i, g i ∈ schwartzBruhat F` using `hg`. Take `rfl : Φ = fun z => ∑ i, f i z.1 * g i z.2` from `funext fun z => hfg z.1 z.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `ha : (a : F) ≠ 0` using `a.ne_zero`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (Filter.Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Use `show _ * _ = _`. Rewrite using `[fts_sum hχ hf' hg', Finset.mul_sum]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ i, ∫ x, localFourier (selfDualMeasure χ) χ (g i) x * f i (-((a : F) * x)) ∂selfDualMeasure χ := by`. Rewrite using `[integral_finset_sum _ fun i _ => (left_term hχ hχ1 a (hf' i) (hg' i)).1]`. Conclude with `Finset.sum_congr rfl fun i _ => (left_term hχ hχ1 a (hf' i) (hg' i)).2`. Use `_ = (((modulus (a : F) : ℝ)⁻¹ : ℝ) : ℂ) * ∑ i, ∫ x, f i x * localFourier (selfDualMeasure χ) χ (g i) (-x / a) ∂selfDualMeasure χ := by`. Rewrite using `[Finset.mul_sum]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => subst_term χ ha (f i) (g i)`. Use `_ = (((modulus (a : F) : ℝ)⁻¹ : ℝ) : ℂ) * ∫ z, (χ (-(z.1 * z.2) / a) : ℂ) * ∑ i, f i z.1 * g i z.2 ∂muS χ := by`. Use `congr 1`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[integral_finset_sum _ fun i _ => (right_term hχ ha (hf' i) (hg' i)).1]`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => (right_term hχ ha (hf' i) (hg' i)).2.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sGauss : SGauss := by
   intro F _ _ _ _ _ _ _ χ hχ hχ1 a Φ hΦ

@@ -12,11 +12,11 @@ variable {p : ℕ} {O Kf : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationR
   [CharZero Kf] (P : Places p O Kf) (hp : (p : Kf) ≠ 0)
 
 /- English proof (translation)
-Establish `hirr` using `(P.setting v).p_unif`. Assume the negation of the conclusion as `h`. Establish `hmax : (2 : P.W v) ∈ IsLocalRing.maximalIdeal (P.W v)` using `(IsLocalRing.mem_maximalIdeal _).mpr h`. Rewrite `hmax` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer _).mp hirr, Ideal.mem_span_singleton]`. Take `⟨y, hy⟩` from `hmax`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hodd : Odd p` using `(P.setting v).prime.odd_of_ne_two (by have := (P.setting v).five_le; omega)`. Take `⟨k, hk⟩` from `hodd`. Establish `h1 : (1 : P.W v) = (p : P.W v) * (1 - y * k)`. Establish `h0 : ((p : ℕ) : P.W v) = ((2 * k + 1 : ℕ) : P.W v)` using `congrArg _ hk`. Establish `: ((p : ℕ) : P.W v) = 2 * k + 1` using `by rw [h0]; push_cast; ring`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `hirr.not_isUnit (IsUnit.of_mul_eq_one _ h1.symm)`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isUnit_two_W (v : Fin P.nV) : IsUnit (2 : P.W v) := by
   have hirr := (P.setting v).p_unif
@@ -34,7 +34,7 @@ theorem isUnit_two_W (v : Fin P.nV) : IsUnit (2 : P.W v) := by
   exact hirr.not_isUnit (IsUnit.of_mul_eq_one _ h1.symm)
 
 /- English proof (translation)
-Establish `h1 : algebraMap O Kf ((u ^ z : Oˣ) : O) = ((Units.map (algebraMap O Kf).toMonoidHom (u ^ z) : Kfˣ) : Kf)` using `rfl`. Rewrite using `[h1, map_zpow, Units.val_zpow_eq_zpow_val]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem alg_units_zpow (u : Oˣ) (z : ℤ) : algebraMap O Kf ((u ^ z : Oˣ) : O) = (algebraMap O Kf (u : O)) ^ z := by
   have h1 : algebraMap O Kf ((u ^ z : Oˣ) : O) = ((Units.map (algebraMap O Kf).toMonoidHom (u ^ z) : Kfˣ) : Kf) := rfl
@@ -45,7 +45,7 @@ def dT (v0 : Fin P.nV) (a0 : Fin (P.m + 1)) (v : Fin P.nV) : Fin (P.m + 1) → P
   fun a => if v = v0 ∧ a = a0 then 2 else 1
 
 /- English proof (translation)
-Use `haveI := (P.setting v).frac_alt`. Use `(isUnit_two_W P v).map (algebraMap (P.W v) (P.Qq v))` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Conclude with `this.ne_zero`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_ne (v : Fin P.nV) : (2 : P.Qq v) ≠ 0 := by
   haveI := (P.setting v).frac_alt
@@ -54,7 +54,7 @@ theorem two_ne (v : Fin P.nV) : (2 : P.Qq v) ≠ 0 := by
   exact this.ne_zero
 
 /- English proof (translation)
-Unfold `dT`. Use `split_ifs`. Conclude with `two_ne P v`. Conclude with `one_ne_zero`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem dT_ne (v0 a0 v) (a : Fin (P.m + 1)) : dT P v0 a0 v a ≠ 0 := by
   unfold dT; split_ifs
@@ -66,9 +66,9 @@ def torM (v0 : Fin P.nV) (a0 : Fin (P.m + 1)) (v : Fin P.nV) : GL (Fin (P.m + 1)
     (by rw [Matrix.det_diagonal]; exact Finset.prod_ne_zero_iff.mpr fun a _ => dT_ne P v0 a0 v a)
 
 /- English proof (translation)
-Rewrite using `[Matrix.coe_units_inv]`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Use `show Matrix.diagonal _ * Matrix.diagonal (dT P v0 a0 v) = 1`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Conclude with `inv_mul_cancel₀ (dT_ne P v0 a0 v a)`.
+A detailed English derivation is pending.
 -/
 theorem torM_inv (v0 a0 v) : (((torM P v0 a0 v)⁻¹ : GL (Fin (P.m + 1)) (P.Qq v)) : Matrix _ _ _) =
     Matrix.diagonal fun a => (dT P v0 a0 v a)⁻¹ := by
@@ -79,7 +79,7 @@ theorem torM_inv (v0 a0 v) : (((torM P v0 a0 v)⁻¹ : GL (Fin (P.m + 1)) (P.Qq 
   congr 1; funext a; exact inv_mul_cancel₀ (dT_ne P v0 a0 v a)
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Places.gPos]`. Simplify using `[Places.gPos, Matrix.diagonal_apply_ne _ h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem gPos_diagonal (v : Fin P.nV) (s : Fin (P.n' v)) (e : Fin (P.m + 1) → P.Qq v) :
     P.gPos v s (Matrix.diagonal e) = Matrix.diagonal fun a => P.ι v ((P.σ v ^ s.val) (e a)) := by
@@ -89,13 +89,13 @@ theorem gPos_diagonal (v : Fin P.nV) (s : Fin (P.n' v)) (e : Fin (P.m + 1) → P
   · simp [Places.gPos, Matrix.diagonal_apply_ne _ h]
 
 /- English proof (translation)
-Use `⟨∏ v, ∏ s : Fin (P.n' v), (P.gPos v s (torM P v0 a0 v : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v))).det ^ (-(lamAt (P.lam0 v) s (Fin.last P.m))), IsZPow.prod two_ne_zero _ _ fun v _ => IsZPow.prod two_ne_zero _ _ fun s _ => ?_, ?_⟩` and prove the remaining obligations. Use `IsZPow.zpow ?_ _ show IsZPow 2 (P.gPos v s (Matrix.diagonal (dT P v0 a0 v))).det` and prove the remaining obligations. Rewrite using `[gPos_diagonal, Matrix.det_diagonal]`. Use `IsZPow.prod two_ne_zero _ _ fun a _ => ?_` and prove the remaining obligations. Unfold `dT`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Conclude with `⟨1, by rw [zpow_one, map_ofNat, map_ofNat]⟩`. Conclude with `⟨0, by rw [zpow_zero, map_one, map_one]⟩`. Unfold `Places.natAct`. Use `congr 2`.
+Supply the required witnesses or components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `v s`. Rewrite using `[torM_inv, gPos_diagonal]`. Unfold `Gtor dT`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Use `split_ifs`. Rewrite using `[map_inv₀, map_inv₀, map_ofNat, map_ofNat]`. Rewrite using `[inv_one, map_one, map_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natAct_tor (v0 a0) : ∃ c : Kf, IsZPow 2 c ∧ P.natAct (torM P v0 a0) = c • (P.subst (Gtor P v0 a0)).toLinearMap := by
   refine ⟨∏ v, ∏ s : Fin (P.n' v), (P.gPos v s (torM P v0 a0 v : Matrix (Fin (P.m + 1)) (Fin (P.m + 1)) (P.Qq v))).det ^
@@ -119,7 +119,7 @@ theorem natAct_tor (v0 a0) : ∃ c : Kf, IsZPow 2 c ∧ P.natAct (torM P v0 a0) 
     · rw [inv_one, map_one, map_one]
 
 /- English proof (translation)
-Use `prodF_isWH P _ _ fun v s => ?_` and prove the remaining obligations. Establish `h` using `hwRowWeight Kf (P.m + 1) (P.m + 1) le_rfl (nuV P v s) (nuV_anti P v s)`. Establish `: rowNu (r` using `P.m + 1) (nuV P v s) = nuV P v s := by funext a; unfold rowNu; rw [dif_pos a.2]`. Rewrite `h` using `[this]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem EV_isWH : IsWeightedHomogeneous (om P) (EV P) (LamTot P) := by
   refine prodF_isWH P _ _ fun v s => ?_
@@ -128,7 +128,7 @@ theorem EV_isWH : IsWeightedHomogeneous (om P) (EV P) (LamTot P) := by
   rwa [this] at h
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[subst_Gtor, coeff_aeval_scale, prod_tor, coeff_smul, smul_eq_mul]`. Distinguish the cases in `hm : coeff m (EV P) = 0`. Rewrite using `[hm, mul_zero, mul_zero]`. Rewrite using `[EV_isWH P hm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_Gtor_EV (v0 a0) :
     P.subst (Gtor P v0 a0) (EV P) = ((2 : Kf)⁻¹ ^ (LamTot P (v0, a0))) • EV P := by
@@ -139,11 +139,11 @@ theorem subst_Gtor_EV (v0 a0) :
   · rw [EV_isWH P hm]
 
 /- English proof (translation)
-Take `⟨c, ⟨N, rfl⟩, hc⟩` from `natAct_tor P v0 a0`. Establish `h2O : IsUnit (2 : O)`. Use `(isUnit_two_W P v0).map (P.j v0)` as an intermediate fact. Rewrite `this` using `[map_ofNat]`. Then use the resulting hypothesis. Take `⟨M, hM⟩ : ∃ M : ℤ, (2 : Kf) ^ N * (2 : Kf)⁻¹ ^ (LamTot P (v0, a0)) = (2 : Kf) ^ M` from `⟨N - LamTot P (v0, a0), by rw [zpow_sub₀ two_ne_zero, zpow_natCast, div_eq_mul_inv, inv_pow]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `refine ⟨h2O.unit ^ (-M), ?_, ?_⟩ <;>`. Establish `: P.natAct (torM P v0 a0) (EV P) = algebraMap O Kf ((((h2O.unit ^ (-M))⁻¹ : Oˣ)) : O) • EV P`. Rewrite using `[hc, LinearMap.smul_apply, AlgHom.toLinearMap_apply, subst_Gtor_EV, smul_smul, hM, zpow_neg, inv_inv, alg_units_zpow, IsUnit.unit_spec, map_ofNat]`. Use `first`. Consider the case `exact ⟨0, by rw [this, zpow_zero, one_mul]⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `exact this`.
+A detailed English derivation is pending.
 -/
 theorem tor_mem (v0 : Fin P.nV) (a0 : Fin (P.m + 1)) :
     ∃ u : Oˣ, (torM P v0 a0, u) ∈ Γsub P hp ∧
@@ -162,17 +162,13 @@ theorem tor_mem (v0 : Fin P.nV) (a0 : Fin (P.m + 1)) :
     | exact this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `v`. Use `show Formalism.L2.G.Cmp.gMap (P.W v) (torM P v0 a0 v) (Formalism.L2.G.Cmp.stdL (P.W v)) = Formalism.L2.G.Cmp.stdL (P.W v)`. Use `haveI := (P.setting v).frac_alt`. Use `(Formalism.L2.G.Cmp.stabStd_iff (P.W v) _).mpr ⟨fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Use `show Matrix.diagonal (dT P v0 a0 v) a b ∈ _`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`. Unfold `dT`. Use `split_ifs`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨2, map_ofNat _ 2⟩`. Conclude with `⟨1, map_one _⟩`. Rewrite using `[Matrix.diagonal_apply_ne _ h]`. Conclude with `Subring.zero_mem _`. Rewrite using `[torM_inv]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`. Unfold `dT`. Use `split_ifs`.
-
-Use `⟨((isUnit_two_W P v).unit⁻¹ : (P.W v)ˣ), ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg (algebraMap (P.W v) (P.Qq v)) ((isUnit_two_W P v).unit.inv_mul)`. Rewrite `h1` using `[map_mul, IsUnit.unit_spec, map_ofNat, map_one]`. Conclude with `eq_inv_of_mul_eq_one_left h1`. Conclude with `⟨1, by simp⟩`.
-
-Rewrite using `[Matrix.diagonal_apply_ne _ h]`. Conclude with `Subring.zero_mem _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tor_stab (v0 a0) (u : Oˣ) (hu : (torM P v0 a0, u) ∈ Γsub P hp) :
     (levB P hp).smul ⟨(torM P v0 a0, u), hu⟩ (standardTuple P) = standardTuple P := by

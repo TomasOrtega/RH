@@ -14,7 +14,7 @@ namespace UpperTheory.Gal.crystallineComparison.Br
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `Ideal.mem_span_singleton'.1 (ACris.periodT_pow_mem' (K := ℂ_[l]) (p := l) (untilt_epsilon (p := l)))`. Conclude with `⟨l - 1, u, by rw [tA, ← hu, mul_comm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem l_dvd : ∃ r : ℕ, (l : Acris l) ∣ tA l ^ r := by
   obtain ⟨u, hu⟩ := Ideal.mem_span_singleton'.1
@@ -25,20 +25,20 @@ private def cT {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI) : Acris
   T.eB.symm.toRingHom.comp (Formalism.Per6.cB l)
 
 /- English proof (translation)
-The claim follows from `T.eB.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 private theorem eB_cT {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI) (a : Acris l) :
     T.eB (cT T a) = Formalism.Per6.cB l a :=
   T.eB.apply_symm_apply _
 
 /- English proof (translation)
-The claim follows from `(Formalism.Per6.Loc2.isUnit_right (l : Acris l) (tA l)).map T.eB.symm`.
+A detailed English derivation is pending.
 -/
 private theorem cT_unit {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI) : IsUnit (cT T (tA l)) :=
   (Formalism.Per6.Loc2.isUnit_right (l : Acris l) (tA l)).map T.eB.symm
 
 /- English proof (translation)
-Take `⟨r, y, h⟩` from `(locFacts (Acris l) (l : Acris l) (tA l) l_dvd).1 (T.eB x)`. Use `⟨r, y, T.eB.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, eB_cT, eB_cT]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cT_loc {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI) (x : P.R.B) :
     ∃ (r : ℕ) (a : Acris l), cT T (tA l) ^ r * x = cT T a := by
@@ -48,7 +48,7 @@ private theorem cT_loc {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI)
   exact h
 
 /- English proof (translation)
-Use `(locFacts (Acris l) (l : Acris l) (tA l) l_dvd).2 a ?_` and prove the remaining obligations. Establish `h1` using `eB_cT T a`. Rewrite `h1` using `[h, map_zero]`. Conclude with `h1.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cT_ker {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI) (a : Acris l)
     (h : cT T a = 0) : ∃ r : ℕ, tA l ^ r * a = 0 := by
@@ -58,7 +58,7 @@ private theorem cT_ker {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI)
   exact h1.symm
 
 /- English proof (translation)
-Use `T.eB.injective ?_` and prove the remaining obligations. Rewrite using `[T.frob, eB_cT, eB_cT]`. Conclude with `PositivityTheory.LocInh.φB_cB a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cT_φ {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI) (a : Acris l) :
     P.φB (cT T a) = cT T (phiA l a) := by
@@ -67,7 +67,7 @@ private theorem cT_φ {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI) 
   exact PositivityTheory.LocInh.φB_cB a
 
 /- English proof (translation)
-Use `T.eB.injective ?_` and prove the remaining obligations. Rewrite using `[T.actB, eB_cT, eB_cT, ((actEq l).1 K g a)]`. Conclude with `PositivityTheory.LocInh.σB_cB _ a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cT_σ {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI)
     (K : IntermediateField ℚ_[l] (PadicAlgCl l)) (g : K.fixingSubgroup) (a : Acris l) :
@@ -77,7 +77,7 @@ private theorem cT_σ {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI)
   exact PositivityTheory.LocInh.σB_cB _ a
 
 /- English proof (translation)
-Use `T.eB.injective ?_` and prove the remaining obligations. Rewrite using `[T.zB, eB_cT]`. Conclude with `(actEq l).2 x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem algebraMap_padic_int_eq_period {P : LocPrime l} {AI : LocAinf l P} (T : LocTied6 l P AI) (x : ℤ_[l]) :
     algebraMap ℚ_[l] P.R.B (x : ℚ_[l]) = cT T (zA l x) := by
@@ -98,7 +98,7 @@ private def pullbackToFiniteExtension {P : LocPrime l} {AI : LocAinf l P} (T : L
   z_c := algebraMap_padic_int_eq_period T
 
 /- English proof (translation)
-Introduce `l _ P AI hT K`. Take `⟨T⟩` from `UpperTheory.Lit.Cmp.locTied6 l P AI hT`. Conclude with `⟨pullbackToFiniteExtension T K, AlgEquiv.refl, fun _ _ => rfl, fun _ => rfl, PositivityTheory.LocInh.tiedA_φ_injective P⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pBTied : PBTied := by
   intro l _ P AI hT K

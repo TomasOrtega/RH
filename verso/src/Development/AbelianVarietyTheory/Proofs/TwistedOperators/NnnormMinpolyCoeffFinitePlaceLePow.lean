@@ -10,13 +10,11 @@ namespace GlobalTheory.CoefHeight
 open Polynomial
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on generalizing j with`. Consider the case `empty`. Simplify using `only [Multiset.map_zero, Multiset.prod_zero, Multiset.card_zero, pow_zero, coeff_one]`. Apply the tactic sequence `split_ifs <;> simp`. Consider the case `cons a s ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately.
 
-Establish `ha : w a ≤ M` using `hs a (Multiset.mem_cons_self a s)`. Establish `hs' : ∀ z ∈ s, w z ≤ M` using `fun z hz => hs z (Multiset.mem_cons_of_mem hz)`. Rewrite using `[Multiset.map_cons, Multiset.prod_cons, Multiset.card_cons, sub_mul, coeff_sub, coeff_C_mul]`. Use `(w.map_sub _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Consider the cases of `j with`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => rw [coeff_X_mul_zero, map_zero]`. Conclude with `bot_le`. Consider the case `succ i => rw [coeff_X_mul]`. Conclude with `(ih hs' i).trans (pow_le_pow_right₀ hM (Nat.le_succ _))`. Rewrite using `[map_mul, pow_succ']`.
-
-Conclude with `mul_le_mul' ha (ih hs' j)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_coeff_prod_X_sub_C_le {K : Type} [Field K] (w : Valuation K ℝ≥0) {M : ℝ≥0} (hM : 1 ≤ M)
     (s : Multiset K) (hs : ∀ z ∈ s, w z ≤ M) (j : ℕ) :
@@ -37,17 +35,15 @@ theorem val_coeff_prod_X_sub_C_le {K : Type} [Field K] (w : Valuation K ℝ≥0)
       exact mul_le_mul' ha (ih hs' j)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `set M := max 1 (absFin F v ((1 : v.adicCompletion F) ⊗ₜ[F] x)) with hMdef`. Establish `hM : 1 ≤ M` using `le_max_left _ _`. Establish `hint : IsIntegral F x` using `Algebra.IsIntegral.isIntegral x`. Use `set p := minpoly F x with hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set q := p.map (algebraMap F (FvBar F v)) with hqdef`. Establish `hmon : q.Monic` using `(minpoly.monic hint).map _`. Establish `hsplit : q.Splits` using `IsAlgClosed.splits q`. Establish `hq : q = (q.roots.map fun a => X - C a).prod` using `hsplit.eq_prod_roots_of_monic hmon`. Establish `hroots : ∀ z ∈ q.roots, valBar F v z ≤ M`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z hz`. Establish `hq0 : q ≠ 0` using `hmon.ne_zero`. Establish `hz' : aeval z p = 0`. Rewrite `hz` using `[mem_roots hq0, IsRoot, hqdef, eval_map_algebraMap]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨τ, hτ⟩` from `IntermediateField.exists_algHom_of_splits_of_aeval (fun s => ⟨Algebra.IsIntegral.isIntegral s, IsAlgClosed.splits _⟩) hz'`. Establish `h1 : finEmb F v τ ((1 : v.adicCompletion F) ⊗ₜ[F] x) = z` using `by rw [finEmb_tmul, map_one, one_mul, hτ]`. Use `show absBar F v z ≤ M`. Rewrite using `[← h1]`. Conclude with `(le_absFin F v τ _).trans (le_max_right _ _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : Multiset.card q.roots ≤ Module.finrank F E`. Rewrite using `[IsAlgClosed.card_roots_eq_natDegree, hqdef, natDegree_map]`. Conclude with `minpoly.natDegree_le x`. Establish `key` using `val_coeff_prod_X_sub_C_le (valBar F v) hM q.roots hroots j`. Rewrite `key` using `[← hq]`.
-
-Establish `hc : valBar F v (q.coeff j) = ‖algebraMap F (v.adicCompletion F) (p.coeff j)‖₊` using `by show absBar F v _ = _`. Rewrite using `[hqdef, coeff_map, IsScalarTower.algebraMap_apply F (v.adicCompletion F) (FvBar F v), absBar_algebraMap]`. Rewrite using `[← hc]`. Conclude with `key.trans (pow_le_pow_right₀ hM hcard)`.
+A detailed English derivation is pending.
 -/
 theorem nnnorm_coeff_minpoly_le (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (x : E) (v : HeightOneSpectrum (𝓞 F)) (j : ℕ) :

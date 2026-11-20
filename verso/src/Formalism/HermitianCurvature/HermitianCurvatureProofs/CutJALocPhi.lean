@@ -13,7 +13,7 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA
 open NumberField Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-Rewrite using `[iteratedDeriv_succ', Real.deriv_log', iteratedDeriv_eq_iterate, iter_deriv_inv]`. Rewrite using `[norm_mul, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul, Real.norm_natCast]`. Use `congr 1`. Establish `e : (-1 - (m : ℤ)) = -((m + 1 : ℕ) : ℤ)` using `by push_cast; ring`. Rewrite using `[e, zpow_neg, zpow_natCast, norm_inv, norm_pow, Real.norm_of_nonneg hx.le]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem lphi_log_deriv (m : ℕ) {x : ℝ} (hx : 0 < x) :
     ‖iteratedDeriv (m + 1) Real.log x‖ = (m.factorial : ℝ) * (x ^ (m + 1))⁻¹ := by
@@ -24,21 +24,17 @@ theorem lphi_log_deriv (m : ℕ) {x : ℝ} (hx : 0 < x) :
   rw [e, zpow_neg, zpow_natCast, norm_inv, norm_pow, Real.norm_of_nonneg hx.le]
 
 /- English proof (translation)
-Use `choose C hC using hld`. Use `set Φ : ℝ → ℝ := fun u => φ (Real.exp u) with hΦdef`. Establish `hΦ : ContDiff ℝ ∞ Φ` using `hφ`. Use `set s : Set ℝ := Set.Ioi a with hs`. Establish `hso : IsOpen s` using `isOpen_Ioi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set K : ℝ := ∑ i ∈ Finset.range (j + 1), |C i| with hK`. Establish `hKi : ∀ i ≤ j, |C i| ≤ K` using `fun i hi => Finset.single_le_sum (f := fun i => |C i|) (fun _ _ => abs_nonneg _) (Finset.mem_range.2 (Nat.lt_succ_of_le hi))`. Use `set M : ℝ := max 1 a⁻¹ with hM`. Establish `hM1 : 1 ≤ M` using `le_max_left _ _`. Use `set Dd : ℝ := (j.factorial : ℝ) * M with hDd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(j.factorial : ℝ) * K * Dd ^ j, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx0 : 0 < x` using `ha.trans hx`. Establish `hxs : x ∈ s` using `hx`. Establish `hlogc : ContDiffOn ℝ ∞ Real.log s` using `Real.contDiffOn_log.mono fun y hy => ne_of_gt (ha.trans (show a < y from hy))`. Establish `hFdB` using `norm_iteratedFDerivWithin_comp_le (n := j) (N := ∞) (g := Φ) (f := Real.log) (t := Set.univ) hΦ.contDiffOn hlogc (by exact_mod_cast le_top) uniqueDiffOn_univ hso.uniqueDiffOn (Set.mapsTo_univ _ _) hxs (C := K) (D := Dd) (fun i hi => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[iteratedFDerivWithin_univ, norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Use `hC i x hx0` as an intermediate fact. Unfold `LE.ld at this`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `this.trans ((le_abs_self _).trans (hKi i hi)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `(fun i hi1 hij => by`. Rewrite using `[iteratedFDerivWithin_of_isOpen i hso hxs, norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Take `⟨m, rfl⟩ : ∃ m, i = m + 1` from `⟨i - 1, by omega⟩`. Rewrite using `[lphi_log_deriv m hx0]`. Establish `hxi : (x ^ (m + 1))⁻¹ ≤ M ^ (m + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← inv_pow]`. Conclude with `pow_le_pow_left₀ (inv_nonneg.2 hx0.le) ((inv_anti₀ ha hx.le).trans (le_max_right _ _)) _`. Establish `hf1 : (m.factorial : ℝ) ≤ (j.factorial : ℝ)` using `by exact_mod_cast Nat.factorial_le (by omega)`. Establish `hj1 : (1 : ℝ) ≤ (j.factorial : ℝ)` using `by exact_mod_cast Nat.one_le_iff_ne_zero.2 (Nat.factorial_ne_zero j)`. Establish `hjp : (j.factorial : ℝ) ≤ (j.factorial : ℝ) ^ (m + 1)` using `le_self_pow₀ hj1 (by omega)`.
-
-Rewrite using `[hDd, mul_pow]`. Conclude with `mul_le_mul (hf1.trans hjp) hxi (by positivity) (by positivity))`. Rewrite `hFdB` using `[iteratedFDerivWithin_of_isOpen j hso hxs, norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Establish `heq : (Φ ∘ Real.log) =ᶠ[nhds x] φ` using `by filter_upwards [isOpen_Ioi.mem_nhds hx0] with y hy`. Simplify using `[hΦdef, Real.exp_log (show (0 : ℝ) < y from hy)]`.
-
-Rewrite using `[← heq.iteratedDeriv_eq]`. Conclude with `hFdB`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lphi_deriv_bdd {φ : ℝ → ℝ} (hφ : LE.SmoothLog φ) (hld : ∀ p, ∃ C, ∀ x, 0 < x → |LE.ld p φ x| ≤ C)
     {a : ℝ} (ha : 0 < a) (j : ℕ) : ∃ D : ℝ, ∀ x, a < x → ‖iteratedDeriv j φ x‖ ≤ D := by
@@ -88,21 +84,19 @@ theorem lphi_deriv_bdd {φ : ℝ → ℝ} (hφ : LE.SmoothLog φ) (hld : ∀ p, 
   exact hFdB
 
 /- English proof (translation)
-Use `set χ₀ : ℝ → ℝ := fun y => Real.smoothTransition (2 * y - 1) with hχ₀`. Establish `hχ : C6.IsCut0 χ₀`. Use `⟨Real.smoothTransition.contDiff.comp ((contDiff_const.mul contDiff_id).sub contDiff_const), ⟨1 / 2, by norm_num, fun y hy => Real.smoothTransition.zero_of_nonpos (by linarith)⟩, fun y hy => Real.smoothTransition.one_of_one_le (by linarith)⟩` and prove the remaining obligations. Take `⟨δ₀, hδ₀, hcut, -⟩` from `Formalism.FourierDecayAlt.P.JCTx6.Lev0.isCutG_div hχ hδ`. Use `set ψ : ℝ → ℝ := fun x => χ₀ (x / δ) with hψ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hε : 0 < δ₀ * δ` using `mul_pos hδ₀ hδ`. Establish `hψ1 : ∀ x, δ ≤ x → ψ x = 1` using `fun x hx => hχ.2.2 _ (by rw [le_div_iff₀ hδ]; linarith)`. Establish `hψ0 : ∀ x, x < δ₀ * δ → ψ x = 0` using `hcut.2.2`. Establish `hφc` using `smoothLog_contDiffOn hφ`. Use `⟨fun x => ψ x * φ x, δ₀ * δ, ⟨?_, ?_, fun x hx => by simp [hψ0 x hx]⟩, fun x hx => by simp [hψ1 x hx]⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Distinguish the cases in `hx : x < δ₀ * δ`. Use `contDiffAt_const (c := (0 : ℝ)).congr_of_eventuallyEq ?_ filter_upwards [isOpen_Iio.mem_nhds hx] with y hy` and prove the remaining obligations. Simplify using `[hψ0 y hy]`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx0 : 0 < x` using `lt_of_lt_of_le hε (not_lt.1 hx)`. Conclude with `hcut.1.contDiffAt.mul (hφc.contDiffAt (isOpen_Ioi.mem_nhds hx0))`. Introduce `q set a : ℝ := δ₀ * δ / 2 with ha`. Establish `ha0 : 0 < a` using `by positivity`. Use `choose cψ hcψ using hcut.2.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `choose D hD using fun j => lphi_deriv_bdd hφ hld ha0 j`. Use `⟨∑ i ∈ Finset.range (q + 1), (q.choose i : ℝ) * |cψ i| * |D (q - i)|, fun x => ?_⟩` and prove the remaining obligations. Establish `hS0 : 0 ≤ ∑ i ∈ Finset.range (q + 1), (q.choose i : ℝ) * |cψ i| * |D (q - i)|` using `Finset.sum_nonneg fun i _ => by positivity`. Distinguish the cases in `hx : x < δ₀ * δ`. Establish `e : (fun x => ψ x * φ x) =ᶠ[nhds x] fun _ => (0 : ℝ)` using `by filter_upwards [isOpen_Iio.mem_nhds hx] with y hy`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `[hψ0 y hy]`. Rewrite using `[e.iteratedDeriv_eq]`. Simplify using `only [iteratedDeriv_const]`. Apply the tactic sequence `split_ifs <;> simpa using hS0`. Establish `hxa : a < x` using `by linarith [not_lt.1 hx] set s : Set ℝ := Set.Ioi a with hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hso : IsOpen s` using `isOpen_Ioi`. Establish `hxs : x ∈ s` using `hxa`. Establish `hφs : ContDiffOn ℝ ∞ φ s` using `hφc.mono fun y hy => ha0.trans (show a < y from hy)`. Establish `hL` using `norm_iteratedFDerivWithin_mul_le (N := ∞) (hcut.1.contDiffOn (s := s)) hφs hso.uniqueDiffOn hxs (n := q) (by exact_mod_cast le_top)`. Rewrite `hL` using `[iteratedFDerivWithin_of_isOpen q hso hxs, norm_iteratedFDeriv_eq_norm_iteratedDeriv]`.
-
-Use `hL.trans (Finset.sum_le_sum fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[iteratedFDerivWithin_of_isOpen i hso hxs, norm_iteratedFDeriv_eq_norm_iteratedDeriv, iteratedFDerivWithin_of_isOpen (q - i) hso hxs, norm_iteratedFDeriv_eq_norm_iteratedDeriv]`. Establish `h1 : ‖iteratedDeriv i ψ x‖ ≤ |cψ i|` using `(hcψ i x).trans (le_abs_self _)`. Establish `h2 : ‖iteratedDeriv (q - i) φ x‖ ≤ |D (q - i)|` using `(hD (q - i) x hxa).trans (le_abs_self _)`. Conclude with `mul_le_mul (mul_le_mul_of_nonneg_left h1 (by positivity)) h2 (norm_nonneg _) (by positivity)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lphi_cut {φ : ℝ → ℝ} (hφ : LE.SmoothLog φ) (hld : ∀ p, ∃ C, ∀ x, 0 < x → |LE.ld p φ x| ≤ C)
     {δ : ℝ} (hδ : 0 < δ) : ∃ (h : ℝ → ℝ) (ε' : ℝ), U.IsCutG ε' h ∧ ∀ x, δ ≤ x → h x = φ x := by
@@ -159,11 +153,11 @@ theorem lphi_cut {φ : ℝ → ℝ} (hφ : LE.SmoothLog φ) (hld : ∀ p, ∃ C,
       exact mul_le_mul (mul_le_mul_of_nonneg_left h1 (by positivity)) h2 (norm_nonneg _) (by positivity)
 
 /- English proof (translation)
-Use `⟨2, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T f χ ν' m₀ top Cb A₀ hB v φ Bg A J hφ hld hBg hJ hFF`. Use `⟨hFF, fun δ hδ => ?_⟩` and prove the remaining obligations. Take `⟨F, hF1, hF2, hF3⟩` from `hJ.2 δ hδ`. Take `⟨h, ε', hcut, hhφ⟩` from `lphi_cut hφ hld hδ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hck, hcc⟩` from `gcut_graded (T v).base.z (T v).base.z' h ε' hcut (A := A) hBg hF1 hF2`. Use `⟨fun g => ((h (GfP S T v g) : ℝ) : ℂ) • F g, hck, hcc, fun x hx hG => ?_⟩` and prove the remaining obligations. Establish `e1 : (fun g => ((h (GfP S T v g) : ℝ) : ℂ) • F g) = D.cutF (T v).base h F 1`. Use function extensionality and compare the values at `g`. Simplify using `[D.cutF, GfP]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, Formalism.FourierDecayAlt.P.JCTx2.JF_cutF, div_one, ← hF3 x hx hG]`. Simplify using `only [mulG]`. Unfold `GfP at hG`. Rewrite using `[hhφ _ hG]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem local_phi_transfer_holds : JALocPhi := by
   refine ⟨2, by norm_num, ?_⟩

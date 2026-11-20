@@ -3,19 +3,17 @@ import Development.AutomorphicArithmetic.Foundations.Convolution.TwistedLocalOrb
 open MeasureTheory ValuativeRel GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.IndefiniteRowSideFullHecke.IwahoriDoubleCosets UpperTheory.ConvolutionTheory.Loc
 
 /- English proof (translation)
-Introduce `V _ _ W hW B m hm hB hBW A hA`. Establish `hR : LinearMap.range (B ∘ₗ (A : V →ₗ[ℂ] V)) = W`. Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hB _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w hw`. Use `⟨A.symm (m⁻¹ • w), ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply]`. Rewrite using `[hBW _ (W.smul_mem _ hw), smul_smul, mul_inv_cancel₀ hm, one_smul]`. Establish `h1 : Module.finrank ℂ (LinearMap.range (B ∘ₗ (A : V →ₗ[ℂ] V))) = 1` using `by rw [hR, hW]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : FiniteDimensional ℂ (LinearMap.range (B ∘ₗ (A : V →ₗ[ℂ] V)))` using `Module.finite_of_finrank_eq_succ h1`. Use `⟨_, ?_, hfin, rfl⟩` and prove the remaining obligations. Use `set f := (B ∘ₗ (A : V →ₗ[ℂ] V)).restrict (p := LinearMap.range (B ∘ₗ (A : V →ₗ[ℂ] V))) (q := LinearMap.range (B ∘ₗ (A : V →ₗ[ℂ] V))) (fun v _ => LinearMap.mem_range_self (B ∘ₗ (A : V →ₗ[ℂ] V)) v) with hf`. Take `⟨v, hv, hgen⟩` from `finrank_eq_one_iff'.1 h1`. Take `⟨c, hc⟩` from `hgen (f v)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfc : f = c • LinearMap.id` using `by ext1 w`. Take `⟨a, rfl⟩` from `hgen w`. Rewrite using `[map_smul, ← hc, LinearMap.smul_apply, LinearMap.id_apply, smul_comm]`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((f v : LinearMap.range (B ∘ₗ (A : V →ₗ[ℂ] V))) : V) = 0`. Rewrite using `[← hc]`. Simplify using the standard rewrite rules. Establish `h3 : B (A (v : V)) = 0` using `h2`. Establish `hvW : (v : V) ∈ W` using `hR ▸ v.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h3` using `[hBW _ (hA _ hvW), smul_eq_zero]`. Break down `h3 with h3 | h3` into its components or cases. Conclude with `hm h3`. Conclude with `hv (Subtype.ext (by simpa using h3))`. Rewrite using `[hfc, map_smul, LinearMap.trace_id, h1]`.
-
-Simplify using `using hc0`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.L4.traceLine :
     ∀ (V : Type) [AddCommGroup V] [Module ℂ V] (W : Submodule ℂ V), Module.finrank ℂ W = 1 → ∀ (B : V →ₗ[ℂ] V) (m : ℂ), m ≠ 0 →

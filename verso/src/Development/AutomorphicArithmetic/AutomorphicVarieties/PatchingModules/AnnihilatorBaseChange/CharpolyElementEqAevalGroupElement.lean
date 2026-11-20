@@ -11,15 +11,15 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Apply `UpperTheory.V.CA.d_ch_ker D` to reduce the goal to its premises. Establish `h1` using `(UpperTheory.V.CA.d_chS D A).1 ((1 : A) ⊗ₜ[A] x)`. Establish `hchi : D.chiS A ((1 : A) ⊗ₜ[A] x) = D.chi x`. Unfold `Det.chiS Det.chi`. Simplify using `[Algebra.TensorProduct.map_tmul]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Rewrite `h1` using `[hchi]`. Establish `he : Polynomial.aeval x (D.chi x) = Algebra.TensorProduct.lid A E (Polynomial.aeval ((1 : A) ⊗ₜ[A] x) (D.chi x))`. Rewrite using `[← Polynomial.aeval_algHom_apply]`. Simplify using the standard rewrite rules. Rewrite using `[he]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ w ∈ Submodule.span A ((fun z : E => (1 : A) ⊗ₜ[A] z) '' (D.CH : Set E)), Algebra.TensorProduct.lid A E w ∈ D.CH`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨c, hc, rfl⟩` from `hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `using hc`. Consider the case `zero => simpa using TwoSidedIdeal.zero_mem _`. Consider the case `add a b _ _ ha hb`. Rewrite using `[map_add]`. Conclude with `TwoSidedIdeal.add_mem _ ha hb`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul a z _ hz`. Rewrite using `[map_smul, Algebra.smul_def]`. Conclude with `TwoSidedIdeal.mul_mem_left _ _ _ hz`. Conclude with `key _ h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ch_ker {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E] (D : Det n A E) (x : E) :
     Polynomial.aeval x (D.chi x) ∈ D.ker := by
@@ -51,7 +51,7 @@ private theorem ch_ker {n : ℕ} {A E : Type} [CommRing A] [Ring E] [Algebra A E
   exact key _ h1
 
 /- English proof (translation)
-Establish `hk` using `(UpperTheory.V.CA.d_ker D.toDet y).2.2 hy h 1 le_rfl hn`. Establish `htr : D.toDet.tr (h * y) = D.toDet.lam 1 (h * y)`. Unfold `Det.tr Det.lam`. Both sides reduce to the same expression. Rewrite using `[← (UpperTheory.V.CA.d_toDet D (h * y)).2.2.1, htr, hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem tr_ker {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (hn : 1 ≤ n)
     {y : MonoidAlgebra A G} (hy : y ∈ D.toDet.ker) (h : MonoidAlgebra A G) : D.tr (h * y) = 0 := by
@@ -62,9 +62,9 @@ private theorem tr_ker {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n
   rw [← (UpperTheory.V.CA.d_toDet D (h * y)).2.2.1, htr, hk]
 
 /- English proof (translation)
-Unfold `q1El`. Rewrite using `[← Fin.prod_ofFn, map_list_prod, List.map_ofFn]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[MonoidAlgebra.coe_algebraMap]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem charpoly_element_eq_aeval_group_element {n : ℕ} {A G : Type} [CommRing A] [Group G] (g : G) (U : Fin n → A) :
     q1El g U = Polynomial.aeval (MonoidAlgebra.single g (1 : A)) (∏ i, (Polynomial.X - Polynomial.C (U i))) := by
@@ -80,18 +80,18 @@ private noncomputable def push {R S H G : Type} [CommRing R] [CommRing S] [Group
   (MonoidAlgebra.mapDomainRingHom S φ).comp (MonoidAlgebra.mapRingHom H f)
 
 /- English proof (translation)
-Simplify using `[push, MonoidAlgebra.mapDomainRingHom, MonoidAlgebra.mapRingHom]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem push_single {R S H G : Type} [CommRing R] [CommRing S] [Group H] [Group G] (f : R →+* S)
     (φ : H →* G) (g : H) (a : R) : push f φ (MonoidAlgebra.single g a) = MonoidAlgebra.single (φ g) (f a) := by
   simp [push, MonoidAlgebra.mapDomainRingHom, MonoidAlgebra.mapRingHom]
 
 /- English proof (translation)
-Establish `key : MonoidAlgebra.mapDomainRingHom (Polynomial S) φ (MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom H Polynomial.C z) = MonoidAlgebra.single 1 Polynomial.X - MonoidAlgebra.mapRingHom G Polynomial.C (MonoidAlgebra.mapDomainRingHom S φ z)`. Rewrite using `[map_sub]`. Use `congr 1`. Simplify using `[MonoidAlgebra.mapDomainRingHom]`. Proceed by induction on `z using MonoidAlgebra.induction_linear with`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `single h s`. Simplify using `[MonoidAlgebra.mapDomainRingHom, MonoidAlgebra.mapRingHom, MonoidAlgebra.mapDomain_single]`. Unfold `GDet.lam GDet.map GDet.comap GDet.chi`.
+Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `only`. Rewrite using `[MonoidHom.comp_apply]`. Use `erw [key]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gDet_lam_map_comap_eq_lam_mapDomainRingHom {n : ℕ} {B S H G : Type} [CommRing B] [CommRing S] [Group H] [Group G]
     (D : GDet n B G) (a : B →+* S) (φ : H →* G) (i : ℕ) (z : MonoidAlgebra S H) :
@@ -114,7 +114,7 @@ private theorem gDet_lam_map_comap_eq_lam_mapDomainRingHom {n : ℕ} {B S H G : 
   erw [key]
 
 /- English proof (translation)
-Rewrite using `[← ((UpperTheory.V.CA.d_gmap E).2.2.1 f y).2 i, h, gDet_lam_map_comap_eq_lam_mapDomainRingHom]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem lam_push {n : ℕ} {R B S H G : Type} [CommRing R] [CommRing B] [CommRing S] [Group H] [Group G]
     {E : GDet n R H} {D : GDet n B G} {f : R →+* S} {a : B →+* S} {φ : H →* G}
@@ -124,45 +124,39 @@ private theorem lam_push {n : ℕ} {R B S H G : Type} [CommRing R] [CommRing B] 
   rfl
 
 /- English proof (translation)
-Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W m hn hAd`. Take `⟨hD, hψ, hs, hU, hy⟩` from `m.π_maps`. Establish `hL : ∀ i y, m.π.toRingHom (W.t.D.lam i y) = (u.D.map (algebraMap B (Spo A))).lam i (push m.π.toRingHom (Λ.h.p₀.comp (πo0 Λ)) y)` using `fun i y => lam_push hD i y`. Establish `hT : ∀ y, m.π (W.t.D.tr y) = (u.D.map (algebraMap B (Spo A))).tr (push m.π.toRingHom (Λ.h.p₀.comp (πo0 Λ)) y)` using `fun y => hL 1 y`. Establish `hz : ∀ h y, y ∈ (u.D.map (algebraMap B (Spo A))).toDet.ker → (u.D.map (algebraMap B (Spo A))).tr (h * y) = 0` using `fun h y hy => tr_ker _ hn hy h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz0 : (u.D.map (algebraMap B (Spo A))).tr 0 = 0`. Simplify using `using hz 1 0 (TwoSidedIdeal.zero_mem _)`. Establish `hmapTr : ∀ x, (u.D.map (algebraMap B (Spo A))).tr (MonoidAlgebra.mapRingHom _ (algebraMap B (Spo A)) x) = algebraMap B (Spo A) (u.D.tr x)` using `fun x => ((UpperTheory.V.CA.d_gmap u.D).2.2.1 (algebraMap B (Spo A)) x).2 1`. Establish `hc : (push m.π.toRingHom (Λ.h.p₀.comp (πo0 Λ))).comp (algebraMap W.R (MonoidAlgebra W.R (Ph0 Λ))) = (algebraMap (Spo A) (MonoidAlgebra (Spo A) G0.frame.G₀)).comp m.π.toRingHom`. Use extensionality with `c`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[push_single, MonoidAlgebra.coe_algebraMap]`. Rewrite using `[ii, Ideal.span_le]`. Introduce `x hx`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Proceed by induction on `hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Use `next h k hk =>`. Rewrite using `[hT, map_mul, map_sub, map_one, push_single, push_single]`. Simplify using `[hk, ← MonoidAlgebra.one_def, hz0]`. Use `next i g g' hg =>`. Establish `hL' : ∀ i y, m.π (W.t.D.lam i y) = (u.D.map (algebraMap B (Spo A))).lam i (push m.π.toRingHom (Λ.h.p₀.comp (πo0 Λ)) y)` using `hL`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlam : ∀ z, (u.D.map (algebraMap B (Spo A))).lam i (MonoidAlgebra.mapRingHom _ (algebraMap B (Spo A)) z) = algebraMap B (Spo A) (u.D.lam i z)` using `fun z => ((UpperTheory.V.CA.d_gmap u.D).2.2.1 (algebraMap B (Spo A)) z).2 i`. Establish `heps : ∀ (x : Λ.G.G₀) (k : ℤ), m.π (((Λ.G.frame.eps O W.R x ^ k : W.Rˣ)) : W.R) = (((G0.frame.eps O (Spo A) (Λ.h.p₀ x) ^ k : (Spo A)ˣ)) : Spo A)`. Introduce `x k`. Rewrite using `[Λ.h.eps_p₀]`. Establish `hu : Units.map (m.π : W.R →* Spo A) (Λ.G.frame.eps O W.R x) = Λ.G.frame.eps O (Spo A) x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `ext`. Simplify using `[GFrame.eps, pushCh]`. Rewrite using `[← hu]`. Conclude with `congrArg Units.val (map_zpow (Units.map (m.π : W.R →* Spo A)) (Λ.G.frame.eps O W.R x) k)`. Establish `hepsB : ∀ (y : G0.G₀) (k : ℤ), algebraMap B (Spo A) (((G0.frame.eps O B y ^ k : Bˣ)) : B) = (((G0.frame.eps O (Spo A) y ^ k : (Spo A)ˣ)) : Spo A)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Introduce `y k`. Establish `hu : Units.map (algebraMap B (Spo A) : B →* Spo A) (G0.frame.eps O B y) = G0.frame.eps O (Spo A) y`. Use `ext`. Simplify using `[GFrame.eps, pushCh, ← IsScalarTower.algebraMap_apply]`. Rewrite using `[← hu]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Units.val (map_zpow (Units.map (algebraMap B (Spo A) : B →* Spo A)) (G0.frame.eps O B y) k)`. Establish `hconj : πo0 Λ g' = Λ.G.frame.conj (πo0 Λ g)` using `by clear hL hT hz hz0 hmapTr hs hD hAd hy hU hc hψ hL' hlam heps hepsB`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show Λ.πo (g' : Λ.Ph) = Λ.G.c * Λ.πo (g : Λ.Ph) * Λ.G.c⁻¹`. Rewrite using `[hg, map_mul, map_mul, map_inv, Λ.ct_o]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : push m.π.toRingHom (Λ.h.p₀.comp (πo0 Λ)) (MonoidAlgebra.single g'⁻¹ (((Λ.G.frame.eps O W.R (πo0 Λ g) ^ (1 - (n : ℤ)) : W.Rˣ)) : W.R)) = MonoidAlgebra.mapRingHom _ (algebraMap B (Spo A)) (G0.frame.star O B n (MonoidAlgebra.single (Λ.h.p₀ (πo0 Λ g)) 1))`. Unfold `GFrame.star GFrame.starOp`. Rewrite using `[MonoidAlgebra.lift_single, one_smul]`. Simplify using `only [MonoidHom.coe_mk, OneHom.coe_mk, MulOpposite.unop_op]`. Rewrite using `[MonoidAlgebra.mapRingHom_single, push_single]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[map_inv, MonoidHom.comp_apply, hconj, Λ.h.p₀_conj]`. Rewrite using `[hepsB]`. Conclude with `heps _ _`. Establish `h2 : push m.π.toRingHom (Λ.h.p₀.comp (πo0 Λ)) (MonoidAlgebra.single g 1) = MonoidAlgebra.mapRingHom _ (algebraMap B (Spo A)) (MonoidAlgebra.single (Λ.h.p₀ (πo0 Λ g)) 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[push_single, MonoidAlgebra.mapRingHom_single, map_one, map_one, MonoidHom.comp_apply]`. Rewrite using `[map_sub, hL', hL', h1, h2, hlam, hlam, u.P, sub_self]`. Use `next v g ga h hga =>`. Establish `hpt : ∀ i, m.π.toRingHom ((W.t.ψ v i (g i) : W.R)) = algebraMap B (Spo A) ((u.ψ v i (g i) : B))`. Introduce `i`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (fun χ : L.Gv v →* (Spo A)ˣ => ((χ (g i) : (Spo A)ˣ) : Spo A)) (hψ v i)` as an intermediate fact. Simplify `this` using `[pushCh]`. Establish `hp : push m.π.toRingHom (Λ.h.p₀.comp (πo0 Λ)) (MonoidAlgebra.single h 1 * (List.ofFn fun i => MonoidAlgebra.single (ga i) 1 - MonoidAlgebra.single 1 ((W.t.ψ v i (g i) : W.R))).prod) = MonoidAlgebra.mapRingHom _ (algebraMap B (Spo A)) (MonoidAlgebra.single (Λ.h.p₀ (πo0 Λ h)) 1 * G …` using `by clear hL hT hz hz0 hmapTr hs hD hAd hy hU hc`. Unfold `GFrame.oEl`. Rewrite using `[map_mul, map_mul, push_single, map_list_prod, map_list_prod, List.map_ofFn, List.map_ofFn]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[MonoidAlgebra.mapRingHom_single, MonoidHom.comp_apply, map_one, map_one]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Establish `hpt' : m.π ((W.t.ψ v i (g i) : W.R)) = algebraMap B (Spo A) ((u.ψ v i (g i) : B))` using `hpt i`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.comp_apply, Function.comp_apply, map_sub, map_sub, push_single, push_single, MonoidAlgebra.mapRingHom_single, MonoidAlgebra.mapRingHom_single, MonoidHom.comp_apply, hga, Λ.h.p₀_φ, map_one, map_one]`. Conclude with `congrArg (fun c => MonoidAlgebra.single _ 1 - MonoidAlgebra.single 1 c) hpt'`. Rewrite using `[hT, hp, hmapTr, u.Ord, map_zero]`. Use `next w g ga h hg hga =>`. Establish `hp : push m.π.toRingHom (Λ.h.p₀.comp (πo0 Λ)) (MonoidAlgebra.single h 1 * (MonoidAlgebra.single ga 1 - 1)) = MonoidAlgebra.mapRingHom _ (algebraMap B (Spo A)) (MonoidAlgebra.single (Λ.h.p₀ (πo0 Λ h)) 1 * (MonoidAlgebra.single (G0.φu w g) 1 - 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_sub, map_one, push_single, MonoidAlgebra.mapRingHom_single, MonoidHom.comp_apply, hga, Λ.h.p₀_φu]`. Establish `hmem : G0.φu w g ∈ r.Ip w`. Rewrite using `[hAd.2 w]`. Conclude with `Subgroup.mem_map_of_mem _ hg`. Rewrite using `[hT, hp, hmapTr, u.I w _ hmem, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `next j ph h hph =>`. Establish `hchi : (u.D.map (algebraMap B (Spo A))).chi (MonoidAlgebra.single (T.sg j) 1) = Polynomial.map (algebraMap B (Spo A)) (u.D.chi (MonoidAlgebra.single (T.sg j) 1))`. Use `((UpperTheory.V.CA.d_gmap u.D).2.2.1 (algebraMap B (Spo A)) (MonoidAlgebra.single (T.sg j) 1)).1` as an intermediate fact. Simplify `this` using `[MonoidAlgebra.mapRingHom]`. Establish `hq : push m.π.toRingHom (Λ.h.p₀.comp (πo0 Λ)) (q1El ph (W.t.U j)) = Polynomial.aeval (MonoidAlgebra.single (T.sg j) (1 : Spo A)) ((u.D.map (algebraMap B (Spo A))).chi (MonoidAlgebra.single (T.sg j) 1))` using `by clear hL hT hz hz0 hmapTr hψ hs hD hAd hy`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[charpoly_element_eq_aeval_group_element, Polynomial.aeval_def, Polynomial.hom_eval₂, hc, ← Polynomial.eval₂_map, ← Polynomial.aeval_def, push_single, MonoidHom.comp_apply, hph, Λ.p_ph, map_one, hchi, Polynomial.map_prod]`. Simplify using `only [Polynomial.map_sub, Polynomial.map_X, Polynomial.map_C]`. Rewrite using `[← (spRoots B T.q n _ _ j).1]`. Use `congr 2`. Use function extensionality and compare the values at `i`.
-
-Conclude with `congrArg (fun c => Polynomial.X - Polynomial.C c) (hU j i)`. Rewrite using `[hT, map_mul, push_single, hq]`. Apply `hz` to reduce the goal to its premises. Use `ch_ker (u.D.map (algebraMap B (Spo A))).toDet (MonoidAlgebra.single (T.sg j) 1)` as an intermediate fact. Rewrite `this` using `[(UpperTheory.V.CA.d_toDet _ _).1]`. Then use the resulting hypothesis.
-
-Use `next j i ph ta h hph hta =>`. Establish `h0 : push m.π.toRingHom (Λ.h.p₀.comp (πo0 Λ)) (MonoidAlgebra.single ta 1 - 1 - MonoidAlgebra.single 1 (W.t.y j i)) = 0`. Rewrite using `[map_sub, map_sub, map_one, push_single, push_single, MonoidHom.comp_apply, hta, Λ.p_ta, map_one, hy, MonoidAlgebra.single_zero, sub_zero, ← MonoidAlgebra.one_def, sub_self]`. Rewrite using `[hT]`. Unfold `q2El`.
-
-Rewrite using `[map_mul, map_mul, h0, mul_zero, mul_zero, hz0]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.piKer :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) (m : RMaps W), 1 ≤ n → Adapted T (r := r) → ii W ≤ RingHom.ker m.π := by

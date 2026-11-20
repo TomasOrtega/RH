@@ -10,11 +10,9 @@ namespace GlobalTheory.FieldPair
 variable {k K L : Type} [Field k] [Field K] [Field L]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h | h⟩ hu`. Conclude with `hu.ne_zero (Subtype.ext h)`. Take `⟨y, hy⟩` from `hu.exists_right_inv`. Establish `e : (x : K) * y = 1` using `congrArg Subtype.val hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h ((eq_inv_of_mul_eq_one_right e) ▸ y.2)`. Introduce `h`. Use `⟨x.2, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `push Not at hc`.
-
-Conclude with `h (IsUnit.of_mul_eq_one ⟨_, hc.2⟩ (Subtype.ext (mul_inv_cancel₀ hc.1)))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem nonUnit_coe_iff {R : Subring K} (x : R) : NonUnit R (x : K) ↔ ¬ IsUnit x := by
   constructor
@@ -63,7 +61,7 @@ def incl : R →+* topRing R r := (algebraMap (MvPolynomial (Fin r) R) (topRing 
 def coord (i : Fin r) : topRing R r := algebraMap (MvPolynomial (Fin r) R) (topRing R r) (MvPolynomial.X i)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Conclude with `y.2 h`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem unit_const (y : (origin R r).primeCompl) :
     IsUnit (MvPolynomial.constantCoeff (y : MvPolynomial (Fin r) R)) := by
@@ -73,14 +71,14 @@ theorem unit_const (y : (origin R r).primeCompl) :
 def sect : topRing R r →+* R := IsLocalization.lift (S := topRing R r) (unit_const R r)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem sect_algebraMap (x : MvPolynomial (Fin r) R) :
     sect R r (algebraMap _ (topRing R r) x) = MvPolynomial.constantCoeff x :=
   IsLocalization.lift_eq _ _
 
 /- English proof (translation)
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[incl]`. Introduce `i`. Simplify using `[coord]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem eval_eq : MvPolynomial.eval₂Hom (incl R r) (coord R r) =
     algebraMap (MvPolynomial (Fin r) R) (topRing R r) := by
@@ -89,7 +87,7 @@ theorem eval_eq : MvPolynomial.eval₂Hom (incl R r) (coord R r) =
   · intro i; simp [coord]
 
 /- English proof (translation)
-Introduce `h`. Establish `e` using `congrArg Subtype.val h`. Rewrite `e` using `[coord, coe_algebraMap]`. Conclude with `MvPolynomial.X_ne_zero i ((IsFractionRing.to_map_eq_zero_iff).1 e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_ne_zero (i : Fin r) : coord R r i ≠ 0 := by
   intro h
@@ -102,7 +100,7 @@ end PolyTower
 open PolyTower in
 
 /- English proof (translation)
-The claim follows from `h normal := h' top := { const_mem := fun a => (incl R r _).2 isLocalRing := IsLocalization.AtPrime.isLocalRing _ (origin R r) essFiniteType := by have e1 : (MvPolynomial.C : R →+* MvPolynomial (Fin r) R).EssFiniteType := RingHom.essFiniteType_algebraMap.2 (inferInstance : Algebra …`.
+A detailed English derivation is pending.
 -/
 theorem IsEtTower.poly {c : k →+* K} {R : Subring K} [IsLocalRing R] (h : IsLocModel c R)
     (h' : IsIntegrallyClosed R) (r : ℕ) :
@@ -136,7 +134,7 @@ theorem IsEtTower.poly {c : k →+* K} {R : Subring K} [IsLocalRing R] (h : IsLo
     exact RingHom.formallyEtale_algebraMap.2 this
 
 /- English proof (translation)
-Rewrite using `[nonUnit_coe_iff]`. Introduce `hu`. Use `hu.map ψ` as an intermediate fact. Rewrite `this` using `[h.zero]`. Conclude with `not_isUnit_zero this`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEtTower.nonUnit_coord {cK : k →+* K} {R : Subring K} {cL : k →+* L} {T : Subring L}
     {r : ℕ} {ι : R →+* T} {ψ : T →+* R} {τ : Fin r → T} (h : IsEtTower cK R cL T ι ψ τ)
@@ -148,11 +146,11 @@ theorem IsEtTower.nonUnit_coord {cK : k →+* K} {R : Subring K} {cL : k →+* L
   exact not_isUnit_zero this
 
 /- English proof (translation)
-Introduce `t ht`. Take `⟨a, ha⟩` from `hR (ψ ⟨t, ht⟩) (ψ ⟨t, ht⟩).2`. Use `⟨a, ?_⟩` and prove the remaining obligations. Establish `e : t - cL a = ((⟨t, ht⟩ - ι ⟨cK a, h.base.const_mem a⟩ : T) : L)`. Rewrite using `[← h.const]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e, nonUnit_coe_iff]`. Introduce `hu`. Establish `hu'` using `hu.map ψ`. Rewrite `hu'` using `[map_sub, h.retr]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(nonUnit_coe_iff _).1 ha hu'`.
+A detailed English derivation is pending.
 -/
 theorem IsEtTower.ratRes {cK : k →+* K} {R : Subring K} {cL : k →+* L} {T : Subring L}
     {r : ℕ} {ι : R →+* T} {ψ : T →+* R} {τ : Fin r → T} (h : IsEtTower cK R cL T ι ψ τ)
@@ -169,9 +167,9 @@ theorem IsEtTower.ratRes {cK : k →+* K} {R : Subring K} {cL : k →+* L} {T : 
   exact (nonUnit_coe_iff _).1 ha hu'
 
 /- English proof (translation)
-Use `haveI : IsLocalRing (⊤ : Subring k) := (isLocModel_self (k := k)).isLocalRing`. Establish `hn : IsIntegrallyClosed (⊤ : Subring k)` using `IsIntegrallyClosed.of_equiv (Subring.topEquiv (R := k)).symm`. Establish `h` using `IsEtTower.poly (isLocModel_self (k := k)) hn 1`. Use `⟨_, _, _, _, _, _, _, h, PolyTower.coord_ne_zero _ _ 0, h.nonUnit_coord 0, h.ratRes fun x _ => ⟨x, trivial, Or.inl (sub_self x)⟩, fun f _ => ⟨h.top.const_mem f, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨_, rfl | hf⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨h.top.const_mem 0, Or.inl (map_zero _)⟩`. Conclude with `(hf trivial).elim`.
+A detailed English derivation is pending.
 -/
 theorem exists_isEtTower_line (k : Type) [Field k] :
     ∃ (L : Type) (_ : Field L) (cL : k →+* L) (T : Subring L) (ι : (⊤ : Subring k) →+* T)
@@ -189,7 +187,7 @@ theorem exists_isEtTower_line (k : Type) [Field k] :
   · exact (hf trivial).elim
 
 /- English proof (translation)
-Introduce `h` and use `by rcases ((h f hf.1).2 hf).2 with e | e · exact h0 ((map_eq_zero ρ).1 e) · exact e trivial`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_dominates_top (ρ : K →+* L) {O : Subring K} {f : K} (hf : NonUnit O f) (h0 : f ≠ 0) :
     ¬ Dominates ρ ⊤ O := fun h => by
@@ -198,13 +196,11 @@ theorem not_dominates_top (ρ : K →+* L) {O : Subring K} {f : K} (hf : NonUnit
   · exact e trivial
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h x`. Take `⟨x, rfl⟩` from `IsLocalRing.residue_surjective x`. Take `⟨a, ha⟩` from `h x x.2`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : ¬ IsUnit (x - ⟨c a, hc a⟩ : R)` using `(nonUnit_coe_iff _).1 ha`. Use `(IsLocalRing.residue_eq_zero_iff _).2 ((IsLocalRing.mem_maximalIdeal _).2 hn)` as an intermediate fact. Rewrite `this` using `[map_sub, sub_eq_zero]`. Conclude with `this.symm`. Introduce `h x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `h (IsLocalRing.residue R ⟨x, hx⟩)`. Use `⟨a, (nonUnit_coe_iff (⟨x, hx⟩ - ⟨c a, hc a⟩ : R)).2 ?_⟩` and prove the remaining obligations. Establish `: IsLocalRing.residue R (⟨x, hx⟩ - ⟨c a, hc a⟩) = 0`. Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `ha.symm`.
-
-Conclude with `(IsLocalRing.mem_maximalIdeal _).1 ((IsLocalRing.residue_eq_zero_iff _).1 this)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ratRes_iff_surjective {c : k →+* K} {R : Subring K} [IsLocalRing R] (hc : ∀ a, c a ∈ R) :
     RatRes c R ↔ Function.Surjective ((IsLocalRing.residue R).comp (c.codRestrict R hc)) := by
@@ -225,7 +221,7 @@ theorem ratRes_iff_surjective {c : k →+* K} {R : Subring K} [IsLocalRing R] (h
     exact (IsLocalRing.mem_maximalIdeal _).1 ((IsLocalRing.residue_eq_zero_iff _).1 this)
 
 /- English proof (translation)
-Introduce `h`. Take `⟨a, -, h | h⟩` from `h Complex.I trivial`. Simplify using `using congrArg Complex.im h`. Conclude with `h trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem not_ratRes_complex : ¬ RatRes (algebraMap ℝ ℂ) ⊤ := by
   intro h
@@ -234,15 +230,15 @@ theorem not_ratRes_complex : ¬ RatRes (algebraMap ℝ ℂ) ⊤ := by
   · exact h trivial
 
 /- English proof (translation)
-Introduce `r _` and use `⟨r, by rw [RingHom.id_apply, sub_self]; exact ⟨R.zero_mem, Or.inl rfl⟩⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 example (R : Subring K) : RatRes (RingHom.id K) R :=
   fun r _ => ⟨r, by rw [RingHom.id_apply, sub_self]; exact ⟨R.zero_mem, Or.inl rfl⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun f hf => (h f hf).1, ⟨fun a ha => ?_⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Conclude with `(nonUnit_coe_iff (ρ.restrict O B (fun f hf => (h f hf).1) a)).1 ((h a a.2).2 ((nonUnit_coe_iff a).2 hn)) ha`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h, hl⟩ f hf`. Use `⟨h f hf, fun hn => (nonUnit_coe_iff (ρ.restrict O B h ⟨f, hf⟩)).2 fun hu => ?_⟩` and prove the remaining obligations. Conclude with `(nonUnit_coe_iff (⟨f, hf⟩ : O)).1 hn (hl.map_nonunit _ hu)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dominates_iff_isLocalHom {ρ : K →+* L} {B : Subring L} {O : Subring K} :
     Dominates ρ B O ↔ ∃ h : ∀ f ∈ O, ρ f ∈ B, IsLocalHom (ρ.restrict O B h) := by
@@ -257,23 +253,21 @@ theorem dominates_iff_isLocalHom {ρ : K →+* L} {B : Subring L} {O : Subring K
     exact (nonUnit_coe_iff (⟨f, hf⟩ : O)).1 hn (hl.map_nonunit _ hu)
 
 /- English proof (translation)
-Set `P` to `MvPolynomial (Fin r) R`. Use `letI : Algebra P T := (MvPolynomial.eval₂Hom ι τ).toAlgebra`. Use `haveI : Algebra.FormallyEtale P T := h.etale`. Set `g : P →+* DualNumber R` to `MvPolynomial.eval₂Hom (algebraMap R (DualNumber R)) fun i => TrivSqZeroExt.inr (v i)`. Use `letI : Algebra P (DualNumber R) := g.toAlgebra`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra P R := (MvPolynomial.constantCoeff : P →+* R).toAlgebra`. Set `ψ' : T →ₐ[P] R` to `{ ψ with commutes' := fun x => by`. Establish `: ψ.comp (MvPolynomial.eval₂Hom ι τ) = MvPolynomial.constantCoeff`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[h.retr]`. Introduce `i`. Simplify using `[h.zero]`. Conclude with `RingHom.congr_fun this x }`. Set `f : DualNumber R →ₐ[P] R` to `{ (TrivSqZeroExt.fstHom R R R).toRingHom with commutes' := fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: (TrivSqZeroExt.fstHom R R R).toRingHom.comp g = MvPolynomial.constantCoeff`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[g]`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[g]`. Conclude with `RingHom.congr_fun this x }`. Establish `hs : Function.Surjective f` using `fun a => ⟨TrivSqZeroExt.inl a, rfl⟩`. Establish `hn : IsNilpotent (RingHom.ker (f : DualNumber R →+* R))`. Use `⟨2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[pow_two, Ideal.zero_eq_bot, eq_bot_iff, Ideal.mul_le]`. Introduce `x hx y hy`. Establish `hx' : x.fst = 0` using `hx`. Establish `hy' : y.fst = 0` using `hy`. Rewrite using `[Ideal.mem_bot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `ext <;> simp [hx', hy']`. Set `φ` to `Algebra.FormallySmooth.liftOfSurjective ψ' f hs hn`. Use `⟨φ.toRingHom, fun a => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `φ.commutes (MvPolynomial.C a)` as an intermediate fact. Express the relevant statement in the definitionally equal form `φ (MvPolynomial.eval₂Hom ι τ (MvPolynomial.C a)) = g (MvPolynomial.C a) at this`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[MvPolynomial.eval₂Hom_C, MvPolynomial.eval₂Hom_C]`. Conclude with `this`. Use `φ.commutes (MvPolynomial.X i)` as an intermediate fact. Express the relevant statement in the definitionally equal form `φ (MvPolynomial.eval₂Hom ι τ (MvPolynomial.X i)) = g (MvPolynomial.X i) at this`. Rewrite `this` using `[MvPolynomial.eval₂Hom_X', MvPolynomial.eval₂Hom_X']`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEtTower.exists_deriv {cK : k →+* K} {R : Subring K} {cL : k →+* L} {T : Subring L}
     {r : ℕ} {ι : R →+* T} {ψ : T →+* R} {τ : Fin r → T} (h : IsEtTower cK R cL T ι ψ τ)
@@ -323,7 +317,7 @@ theorem IsEtTower.exists_deriv {cK : k →+* K} {R : Subring K} {cL : k →+* L}
     exact this
 
 /- English proof (translation)
-Take `⟨φ, h1, h2⟩` from `h.exists_deriv (Pi.single j 1)`. Use `congrArg (fun x => (φ x).snd) ha` as an intermediate fact. Simplify using `only [map_sum, map_mul, h1, h2, map_zero, TrivSqZeroExt.snd_sum, TrivSqZeroExt.inl_mul_inr, TrivSqZeroExt.snd_inr] at this`. Simplify `this` using `[Pi.single_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsEtTower.coord_indep {cK : k →+* K} {R : Subring K} {cL : k →+* L} {T : Subring L}
     {r : ℕ} {ι : R →+* T} {ψ : T →+* R} {τ : Fin r → T} (h : IsEtTower cK R cL T ι ψ τ)
@@ -335,7 +329,7 @@ theorem IsEtTower.coord_indep {cK : k →+* K} {R : Subring K} {cL : k →+* L} 
   simpa [Pi.single_apply] using this
 
 /- English proof (translation)
-Introduce `e`. Take `⟨φ, -, h2⟩` from `h.exists_deriv (fun _ => 1)`. Use `congrArg TrivSqZeroExt.snd (h2 j)` as an intermediate fact. Simplify using `[e] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem IsEtTower.coord_ne_zero {cK : k →+* K} {R : Subring K} {cL : k →+* L} {T : Subring L}
     {r : ℕ} {ι : R →+* T} {ψ : T →+* R} {τ : Fin r → T} (h : IsEtTower cK R cL T ι ψ τ)
@@ -346,23 +340,19 @@ theorem IsEtTower.coord_ne_zero {cK : k →+* K} {R : Subring K} {cL : k →+* L
   simp [e] at this
 
 /- English proof (translation)
-Use `haveI := h.top.isLocalRing`. Use `haveI : IsNoetherianRing T := by`. Use `letI := (cL.codRestrict T h.top.const_mem).toAlgebra`. Use `haveI : Algebra.EssFiniteType k T := h.top.essFiniteType`. Conclude with `Algebra.EssFiniteType.isNoetherianRing k T`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `P` to `MvPolynomial (Fin r) R`. Use `letI : Algebra P T := (MvPolynomial.eval₂Hom ι τ).toAlgebra`. Use `haveI : Algebra.FormallyEtale P T := h.etale`. Use `set I := RingHom.ker ψ`. Use `set J : Ideal T := Ideal.span (Set.range τ)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hJI : J ≤ I` using `Ideal.span_le.2 (by rintro _ ⟨i, rfl⟩; exact h.zero i)`. Establish `hsub : ∀ x, x - ι (ψ x) ∈ I` using `fun x => by show ψ _ = 0`. Rewrite using `[map_sub, h.retr, sub_self]`. Set `Q : Ideal T` to `J ⊔ I * I`. Set `g : T →ₐ[P] T ⧸ Q` to `{ (Ideal.Quotient.mk Q).comp (ι.comp ψ) with commutes' := fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: ((Ideal.Quotient.mk Q).comp (ι.comp ψ)).comp (MvPolynomial.eval₂Hom ι τ) = (Ideal.Quotient.mk Q).comp (MvPolynomial.eval₂Hom ι τ)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[h.retr]`. Introduce `i`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: τ i ∈ Q` using `Ideal.mem_sup_left (Ideal.subset_span ⟨i, rfl⟩)`. Simplify using `[h.zero, Ideal.Quotient.eq_zero_iff_mem.2 this]`. Conclude with `RingHom.congr_fun this x }`. Establish `hn : IsNilpotent (I.map (Ideal.Quotient.mk Q))`. Use `⟨2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pow_two, ← Ideal.map_mul, Ideal.zero_eq_bot, Ideal.map_eq_bot_iff_le_ker, Ideal.mk_ker]`. Conclude with `le_sup_right`. Establish `he : Ideal.Quotient.mkₐ P Q = g`. Use `Algebra.FormallyUnramified.ext _ hn fun x => ?_` and prove the remaining obligations. Rewrite using `[Ideal.Quotient.eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Ideal.mem_map_of_mem (Ideal.Quotient.mk Q) (hsub x)` as an intermediate fact. Rewrite `this` using `[map_sub]`. Conclude with `this`. Establish `hIQ : I ≤ J ⊔ I • I` using `fun x hx => by`. Establish `e` using `AlgHom.congr_fun he x`.
-
-Establish `hx' : ψ x = 0` using `hx`. Establish `: Ideal.Quotient.mk Q x = 0`. Use `e.trans ?_` and prove the remaining obligations. Use `show Ideal.Quotient.mk Q (ι (ψ x)) = 0`. Rewrite using `[hx', map_zero, map_zero]`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.1 this`. Establish `hI : I ≤ Ideal.jacobson ⊥`. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Conclude with `IsLocalRing.le_maximalIdeal (RingHom.ker_ne_top ψ)`. Conclude with `le_antisymm (Submodule.le_of_le_smul_of_le_jacobson_bot (IsNoetherian.noetherian I) hI hIQ) hJI`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsEtTower.ker_eq_span {cK : k →+* K} {R : Subring K} {cL : k →+* L} {T : Subring L}
     {r : ℕ} {ι : R →+* T} {ψ : T →+* R} {τ : Fin r → T} (h : IsEtTower cK R cL T ι ψ τ) :
@@ -417,7 +407,7 @@ theorem IsEtTower.ker_eq_span {cK : k →+* K} {R : Subring K} {cL : k →+* L} 
   exact le_antisymm (Submodule.le_of_le_smul_of_le_jacobson_bot (IsNoetherian.noetherian I) hI hIQ) hJI
 
 /- English proof (translation)
-Use `⟨(RingHom.injective_iff_ker_eq_bot ψ).2 ?_, fun a => ⟨ι a, h.retr a⟩⟩` and prove the remaining obligations. Rewrite using `[h.ker_eq_span, Set.range_eq_empty, Ideal.span_empty]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsEtTower.bijective_of_zero {cK : k →+* K} {R : Subring K} {cL : k →+* L} {T : Subring L}
     {ι : R →+* T} {ψ : T →+* R} {τ : Fin 0 → T} (h : IsEtTower cK R cL T ι ψ τ) :

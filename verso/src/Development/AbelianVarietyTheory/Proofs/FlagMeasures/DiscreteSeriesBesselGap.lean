@@ -25,11 +25,9 @@ open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 
 /- English proof (translation)
-Establish `key : ∀ x, ENNReal.ofReal (‖f x‖ ^ 2) = (‖f x‖₊ : ℝ≥0∞) ^ 2`. Introduce `x`. Rewrite using `[ENNReal.ofReal_pow (norm_nonneg _), ofReal_norm_eq_enorm, enorm_eq_nnnorm]`. Establish `hm : AEStronglyMeasurable (fun x => ‖f x‖ ^ 2) ν` using `hf.norm.pow 2`. Use `⟨⟨hm, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hasFiniteIntegral_iff_ofReal (ae_of_all _ fun x => by positivity)]`. Repeatedly rewrite using `[key, h]`. Conclude with `ENNReal.ofReal_lt_top`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (ae_of_all _ fun x => by positivity) hm]`. Repeatedly rewrite using `[key, h]`.
-
-Conclude with `ENNReal.toReal_ofReal ha`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BesselPeriodNonzero.sq_int {X E : Type} [MeasurableSpace X] [NormedAddCommGroup E]
     {ν : Measure X} {f : X → E} {a : ℝ}
@@ -51,13 +49,13 @@ open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 
 /- English proof (translation)
-Establish `hb : ∀ x, ‖⟪f x, g x⟫_ℂ‖ ≤ ‖f x‖ ^ 2 + ‖g x‖ ^ 2`. Introduce `x`. Use `norm_inner_le_norm (𝕜 := ℂ) (f x) (g x)` as an intermediate fact. Use polynomial arithmetic with `[sq_nonneg (‖f x‖ - ‖g x‖), norm_nonneg (f x), norm_nonneg (g x)]`. Establish `hint : Integrable (fun x => ⟪f x, g x⟫_ℂ) ν` using `Integrable.mono' (h1.add h2) (hf.inner hg) (ae_of_all _ hb)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use `⟨hint, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← integral_add h1 h2]`. Conclude with `integral_mono hint.norm (h1.add h2) hb`. Establish `e : (fun x => ‖f x + g x‖ ^ 2) = fun x => ‖f x‖ ^ 2 + 2 * (⟪f x, g x⟫_ℂ).re + ‖g x‖ ^ 2`. Use function extensionality and compare the values at `fun x => norm_add_sq (𝕜 := ℂ) (f x) (g x)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hre : Integrable (fun x => 2 * (⟪f x, g x⟫_ℂ).re) ν` using `hint.re.const_mul 2`. Establish `hre' : ∫ x, (⟪f x, g x⟫_ℂ).re ∂ν = (∫ x, ⟪f x, g x⟫_ℂ ∂ν).re` using `integral_re hint`. Establish `s1 : ∫ x, (‖f x‖ ^ 2 + 2 * (⟪f x, g x⟫_ℂ).re + ‖g x‖ ^ 2) ∂ν = ∫ x, (‖f x‖ ^ 2 + 2 * (⟪f x, g x⟫_ℂ).re) ∂ν + ∫ x, ‖g x‖ ^ 2 ∂ν` using `integral_add (h1.add hre) h2`. Establish `s2 : ∫ x, (‖f x‖ ^ 2 + 2 * (⟪f x, g x⟫_ℂ).re) ∂ν = ∫ x, ‖f x‖ ^ 2 ∂ν + ∫ x, 2 * (⟪f x, g x⟫_ℂ).re ∂ν` using `integral_add h1 hre`. Rewrite using `[e, s1, s2, integral_const_mul, hre']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BesselPeriodNonzero.inner_int {X E : Type} [MeasurableSpace X] [NormedAddCommGroup E]
     [InnerProductSpace ℂ E] {ν : Measure X}
@@ -90,31 +88,27 @@ open Matrix MeasureTheory Finset in
 open scoped InnerProductSpace ENNReal in
 
 /- English proof (translation)
-Take `⟨hz, hzpos, ⟨u₀, hπ⟩, -, hW, hN, hG, hQ⟩` from `hS`. Establish `hB'` using `hB`. Unfold `_root_.BranchingSupport.IsBes _root_.PI.BesselMapUniq.IsBesselMapSm at hB'`. Take `⟨-, -, hEq, -⟩` from `hB'`. Take `⟨hσmul, -, -, hσsm, -⟩` from `_root_.GlobalTheory.rep_basic_of_isDS hK k r ε mu R hR`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, hPU, hE, -⟩` from `_root_.GlobalTheory.muSof_isHaar k r z μW μN hz hzpos hW hN`. Unfold `_root_.PI.IsHaarOnM at hE`. Unfold `_root_.PI.BesselPeriodGGP.IsHaarOn at hW hN hG`. Use `haveI : SigmaFinite μW := hW.1`. Use `haveI : SigmaFinite μN := hN.1`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SFinite (_root_.Formalism.FourierDecayAlt.ThreeDimData.muSof μW μN) := by unfold _root_.Formalism.FourierDecayAlt.ThreeDimData.muSof; infer_instance`. Use `set F : _root_.Formalism.QuantumDeterminants.Mt k r → ℂ := fun g => star ⟪v, R.σ (Matrix.of g) w⟫_ℂ * ⟪ξ, B (R.σ (Matrix.of g) w)⟫_ℂ with hFdef`. Use `set G := hi.1.mk F`. Establish `hGm : Measurable G` using `hi.1.stronglyMeasurable_mk.measurable`. Establish `hFG : F =ᵐ[μG] G` using `hi.1.ae_eq_mk`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[integral_congr_ae hFG]`. Use `_root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.quot_zero hQ G hGm (hi.congr hFG) ?_` and prove the remaining obligations. Use `set T := toMeasurable μG {g | F g ≠ G g}`. Establish `hT0 : μG T = 0` using `by rw [measure_toMeasurable]; exact ae_iff.mp hFG`. Establish `hTm : MeasurableSet T` using `measurableSet_toMeasurable _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmul : ∀ x : _root_.Formalism.QuantumDeterminants.Mt k r, Measurable fun s : _root_.Formalism.QuantumDeterminants.Mt k r => _root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.mulMt s x` using `fun x => (_root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.measurable_mulMt (k := k) (r := r)).comp (measurable_id.prodMk measurable_const)`. Establish `hnull : ∀ᵐ x ∂νq, ∀ᵐ s ∂(_root_.Formalism.FourierDecayAlt.ThreeDimData.muSof μW μN), _root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.mulMt s x ∉ T`. Establish `h0` using `hQ (T.indicator 1) (measurable_one.indicator hTm)`. Establish `hmeas : Measurable fun x : _root_.Formalism.QuantumDeterminants.Mt k r => ∫⁻ s, T.indicator 1 (fun i j => (Matrix.of s * Matrix.of x) i j) ∂(_root_.Formalism.FourierDecayAlt.ThreeDimData.muSof μW μN)` using `((measurable_one.indicator hTm).comp (_root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.measurable_mulMt (k := k) (r := r))).lintegral_prod_left'`. Rewrite `h0` using `[lintegral_indicator_one hTm, hT0, eq_comm, lintegral_eq_zero_iff hmeas]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [h0] with x hx`. Establish `hx' : ∫⁻ s, T.indicator 1 (_root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.mulMt s x) ∂(_root_.Formalism.FourierDecayAlt.ThreeDimData.muSof μW μN) = 0` using `hx`. Rewrite `hx'` using `[lintegral_eq_zero_iff (f := fun s => T.indicator 1 (_root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.mulMt s x)) ((measurable_one.indicator hTm).comp (hmul x))]`. Use `filter_upwards [hx'] with s hs hsT`. Simplify using `[Set.indicator_of_mem hsT] at hs`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Establish `hxU : ∀ᵐ x ∂νq, Matrix.of x ∈ _root_.BranchingSupport.GG k r` using `_root_.GlobalTheory.BesselNorm.quot_ae hQ (ae_iff.mpr hG.2.2.1) ((ae_iff.mpr hE.2.2.1).mono fun x hx => hPU hx) hE.2.1`. Establish `hpW : ∀ᵐ p ∂μW.prod μN, Matrix.of p.1 ∈ _root_.Formalism.QuantumDeterminants.UWset k r z ∧ Matrix.of p.2 ∈ _root_.Formalism.QuantumDeterminants.Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae (ae_iff.mpr hW.2.2.1)).and (Measure.quasiMeasurePreserving_snd.ae (ae_iff.mpr hN.2.2.1))`. Establish `hm : Measurable (fun p : _root_.Formalism.QuantumDeterminants.Mt k r × _root_.Formalism.QuantumDeterminants.Mt k r => fun i j => (Matrix.of p.1 * Matrix.of p.2) i j)`. Establish `hpair` using `_root_.GlobalTheory.IndefiniteRowSideFullHecke.SideNormalisedGap.measurable_mulP (k := k) (r := r)`. Unfold `_root_.GlobalTheory.IndefiniteRowSideFullHecke.SideNormalisedGap.mulP at hpair`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpair`. Use `filter_upwards [hnull, hxU] with x hx hxU'`. Establish `hy : R.σ (Matrix.of x) w ∈ R.sm` using `hσsm _ hxU' w hw`. Take `⟨hint, hbe0⟩` from `hbe _ hy`. Unfold `_root_.Formalism.FourierDecayAlt.ThreeDimData.muSof at hx ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[integral_map (f := fun s => G (_root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.mulMt s x)) hm.aemeasurable (hGm.comp (hmul x)).aestronglyMeasurable]`. Establish `hae : ∀ᵐ p ∂μW.prod μN, G (_root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.mulMt (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j) x) = (starRingEnd ℂ) ⟪B (R.σ (Matrix.of x) w), _root_.Formalism.FourierDecayAlt.ThreeDimData.beInt z _root_.Formalism.QuantumDetermi …` using `by filter_upwards [ae_of_ae_map hm.aemeasurable hx, hpW] with p hpT hp`. Establish `hFG' : F (_root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.mulMt (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j) x) = G (_root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.mulMt (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j) x)`. Assume the negation of the conclusion as `hne`. Conclude with `hpT (subset_toMeasurable _ _ hne)`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← hFG']`. Establish `hprod : Matrix.of p.1 * Matrix.of p.2 ∈ _root_.BranchingSupport.GG k r` using `hPU ⟨_, hp.1, _, hp.2, rfl⟩`. Establish `e1 : R.σ (Matrix.of (_root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.mulMt (fun i j => (Matrix.of p.1 * Matrix.of p.2) i j) x)) w = R.σ (Matrix.of p.1 * Matrix.of p.2) (R.σ (Matrix.of x) w)`. Rewrite using `[← hσmul _ hprod _ hxU' w]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e2` using `hEq _ hp.1 _ hp.2 _ hy`. Simplify using `only [F, e1, e2]`. Unfold `_root_.Formalism.FourierDecayAlt.ThreeDimData.beInt`. Rewrite using `[inner_smul_right, _root_.Formalism.FourierDecayAlt.P.MatrixMultiplicationContinuity.piW_inner hzpos hπ hp.1]`. Simplify using `only [ContinuousLinearMap.smul_apply, inner_smul_right, inner_smul_left, map_mul, Complex.star_def, inner_conj_symm, RCLike.conj_to_real, Complex.conj_conj]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hL` using `((innerSL ℂ (B (R.σ (Matrix.of x) w))).comp (ContinuousLinearMap.apply ℂ Wp ξ)).integral_comp_comm hint`. Simplify using `only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.apply_apply, innerSL_apply_apply] at hL`. Unfold `_root_.Formalism.FourierDecayAlt.ThreeDimData.be at hbe0`. Rewrite using `[integral_congr_ae hae, integral_conj, hL, hbe0]`.
-
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.BesselPeriodNonzero.unfold_zero {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ} {R : _root_.BranchingSupport.Rep k r}
     {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
@@ -202,65 +196,57 @@ theorem _root_.GlobalTheory.BesselPeriodNonzero.unfold_zero {k r : ℕ} {ε : Fi
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hK : PI.KFinSmooth` using `hy.1.2.2.1`. Take `⟨hmul, hone, hun, hsm, hTK, hTKs, hKT, -, hcont⟩` from `GlobalTheory.rep_basic_of_isDS hK k r ε mu R hR`. Establish `hwT` using `hKT w hwK`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw` using `hTK w hwT`. Establish `hΦ` using `fun v hv => (GlobalTheory.cwCont_continuousOn_hasDerivAt hK k r ε mu R hR Wp B hB.1 hB.2.1 hB.2.2.2 v hv).1`. Establish `hS'` using `hS`. Take `⟨hz, hT, ⟨u₀, hπ⟩, -, hWh, hNh, hGh, hq⟩` from `hS'`. Use `hWh.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hNh.1` as an intermediate fact. Use `hGh.1` as an intermediate fact. Establish `hGae : ∀ᵐ y ∂μG, Matrix.of y ∈ GG k r` using `ae_iff.mpr hGh.2.2.1`. Establish `hWae : ∀ᵐ p1 ∂μW, Matrix.of p1 ∈ UWset k r z` using `ae_iff.mpr hWh.2.2.1`. Establish `hNae : ∀ᵐ p2 ∂μN, Matrix.of p2 ∈ Nset k r` using `ae_iff.mpr hNh.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPae : ∀ᵐ p ∂(μW.prod μN), Matrix.of p.1 ∈ UWset k r z ∧ Matrix.of p.2 ∈ Nset k r` using `(Measure.quasiMeasurePreserving_fst.ae hWae).and (Measure.quasiMeasurePreserving_snd.ae hNae)`. Establish `hof : Continuous (fun y : Mt k r => (Matrix.of y : Formalism.FourierDecayAlt.ThreeDimData.Mx k r))` using `continuous_id`. Establish `hSeq : Formalism.FourierDecayAlt.ThreeDimData.muSof μW μN = (μW.prod μN).map (fun p => mulMt p.1 p.2)` using `rfl`. Establish `hsf : SFinite (Formalism.FourierDecayAlt.ThreeDimData.muSof μW μN)` using `by rw [hSeq]; infer_instance`. Establish `hGm : MeasurableSet {y : Mt k r | Matrix.of y ∈ GG k r}` using `(isClosed_UH.preimage hof).measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSae : ∀ᵐ s ∂(Formalism.FourierDecayAlt.ThreeDimData.muSof μW μN), Matrix.of s ∈ GG k r`. Rewrite using `[hSeq]`. Use `(ae_map_iff measurable_mulMt.aemeasurable hGm).2 ?_` and prove the remaining obligations. Use `filter_upwards [hPae] with p hp`. Conclude with `Formalism.FourierDecayAlt.P.DDSmoothness.uh_mul hp.1.1 hp.2.1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS0 : Formalism.FourierDecayAlt.ThreeDimData.muSof μW μN ≠ 0` using `GlobalTheory.SideCompare.muS_ne_zero hWh.2.1 hNh.2.1`. Establish `hνae` using `GlobalTheory.BesselNorm.quot_ae hq hGae hSae hS0`. Establish `hνs : SigmaFinite νq` using `GlobalTheory.SideCompare.sigmaFinite_of_isQuotMeas hS0 hq`. Establish `hSC : SecondCountableTopology Wp`. Use `FiniteDimensional.proper ℂ Wp` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Establish `one_mem : (1 : Formalism.FourierDecayAlt.ThreeDimData.Mx k r) ∈ GG k r` using `by show (1 : Formalism.FourierDecayAlt.ThreeDimData.Mx k r)ᴴ * Hpk k r * 1 = Hpk k r; simp`. Establish `memDD : ∀ g ∈ GG k r, R.σ g w ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w` using `fun g hg => Submodule.subset_span ⟨g, hg, rfl⟩`. Establish `wDD : w ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w`. Use `memDD 1 one_mem` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[hone]`. Then use the resulting hypothesis. Establish `DDsm : ∀ v ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w, v ∈ R.sm`. Introduce `v hv`. Use `hTK v (Submodule.span_le.2 ?_ hv)` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hTKs g hg w hwT`. Establish `hnorm : ∀ g ∈ GG k r, ‖R.σ g w‖ = ‖w‖` using `fun g hg => (sigma_facts hR.2).2 g hg w`. Establish `hcw : c * ‖w‖ ^ 2 ≠ 0`. Introduce `h1`. Apply `h0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hiso w wDD, h1, ENNReal.ofReal_zero]`. Establish `hmeas : ∀ v ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w, AEStronglyMeasurable (fun y : Mt k r => B (R.σ (Matrix.of y) v)) νq` using `fun v hv => aesm_of_contOn ((hΦ v (DDsm v hv)).comp hof.continuousOn fun y hy => hy) hGm hνae`. Establish `hsq : ∀ v ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w, Integrable (fun y : Mt k r => ‖B (R.σ (Matrix.of y) v)‖ ^ 2) νq ∧ ∫ y : Mt k r, ‖B (R.σ (Matrix.of y) v)‖ ^ 2 ∂νq = c * ‖v‖ ^ 2` using `fun v hv => sq_int (hmeas v hv) (by positivity) (hiso v hv)`. Establish `hpair : ∀ a ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w, ∀ b ∈ Formalism.FourierDecayAlt.ThreeDimData.DDsp R.σ w, Integrable (fun y : Mt k r => ⟪B (R.σ (Matrix.of y) a), B (R.σ (Matrix.of y) b)⟫_ℂ) νq ∧ ∫ y : Mt k r, ‖⟪B (R.σ (Matrix.of y) a), B (R.σ (Matrix.of y) b)⟫_ℂ‖ …`. Introduce `a ha b hb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨i1, i2, i3⟩` from `inner_int (hmeas a ha) (hmeas b hb) (hsq a ha).1 (hsq b hb).1`. Establish `e : ∫ y : Mt k r, ‖B (R.σ (Matrix.of y) a) + B (R.σ (Matrix.of y) b)‖ ^ 2 ∂νq = c * ‖a + b‖ ^ 2`. Rewrite using `[← (hsq (a + b) (Submodule.add_mem _ ha hb)).2]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hνae] with y hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[map_add, hB.1 _ (hsm _ hy a (DDsm a ha)) _ (hsm _ hy b (DDsm b hb))]`. Rewrite `i2`, `i3` using `[(hsq a ha).2, (hsq b hb).2]`. Rewrite `i3` using `[e, norm_add_sq (𝕜 := ℂ)]`. Use `⟨i1, i2, ?_⟩` and prove the remaining obligations. Simplify using `only [RCLike.re_to_complex] at i3`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set m : Mt k r → ℂ := fun g => ⟪w, R.σ (Matrix.of g) w⟫_ℂ with hm`. Establish `hmc : ContinuousOn m {y : Mt k r | Matrix.of y ∈ GG k r}` using `continuousOn_const.inner ((hcont w).comp hof.continuousOn fun y hy => hy)`. Establish `hmi : Integrable m μG`. Take `⟨C, Ws, -, hd⟩` from `GlobalTheory.BesselDecay.decay_TK hy k r ε mu h R hR hgap hok w hwT`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, -, t1, t2⟩` from `GlobalTheory.thresholds_of_gapOK k r h hok`. Establish `hg` using `GlobalTheory.gN_rpow_neg_integrable_haar k r μG (Formalism.FourierDecayAlt.ThreeDimData.aOf r h - 1) hGh (by linarith)`. Use `(hg.const_mul (C * (Ws.map fun W => ‖PI.UpqRep.dsigW (k := k) (r := r) R.σ W w‖).sum)).mono' (aesm_of_contOn hmc hGm hGae) ?_` and prove the remaining obligations. Use `filter_upwards [hGae] with y hy`. Rewrite using `[neg_sub]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd w hw _ hy`. Use `set F : Mt k r × Mt k r → ℂ := fun q => star (m q.1) * ⟪B (R.σ (Matrix.of q.2) w), B (R.σ (Matrix.of q.2 * Matrix.of q.1) w)⟫_ℂ with hF`. Establish `hFm : AEStronglyMeasurable F (μG.prod νq)`. Establish `c1 : Continuous (fun q : Mt k r × Mt k r => (Matrix.of q.1 : Formalism.FourierDecayAlt.ThreeDimData.Mx k r))` using `continuous_fst`. Establish `c2 : Continuous (fun q : Mt k r × Mt k r => (Matrix.of q.2 : Formalism.FourierDecayAlt.ThreeDimData.Mx k r))` using `continuous_snd`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `aesm_of_contOn (s := {q : Mt k r × Mt k r | Matrix.of q.1 ∈ GG k r ∧ Matrix.of q.2 ∈ GG k r}) ?_ ((isClosed_UH.preimage c1).inter (isClosed_UH.preimage c2)).measurableSet ((Measure.quasiMeasurePreserving_fst.ae hGae).and (Measure.quasiMeasurePreserving_snd.ae hνae))` and prove the remaining obligations. Conclude with `(continuous_star.comp_continuousOn (hmc.comp continuous_fst.continuousOn fun q hq => hq.1)).mul (((hΦ w hw).comp c2.continuousOn fun q hq => hq.2).inner ((hΦ w hw).comp (c2.matrix_mul c1).continuousOn fun q hq => Formalism.FourierDecayAlt.P.DDSmoothness.uh_mul hq.2 hq.1))`. Establish `hF1 : ∀ g : Mt k r, Matrix.of g ∈ GG k r → (fun y => F (g, y)) =ᵐ[νq] fun y => star (m g) * ⟪B (R.σ (Matrix.of y) w), B (R.σ (Matrix.of y) (R.σ (Matrix.of g) w))⟫_ℂ`. Introduce `g hg`. Use `filter_upwards [hνae] with y hy`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hF]`. Rewrite using `[hmul _ hy _ hg]`. Establish `hF2 : ∀ g : Mt k r, Matrix.of g ∈ GG k r → (fun y => F (g, y)) =ᵐ[νq] fun y => ⟪B (R.σ (Matrix.of y) (m g • w)), B (R.σ (Matrix.of y) (R.σ (Matrix.of g) w))⟫_ℂ`. Introduce `g hg`. Use `filter_upwards [hνae, hF1 g hg] with y hy h1`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h1, map_smul, hB.2.1 _ _ (hsm _ hy w hw), inner_smul_left]`. Both sides reduce to the same expression. Establish `hFi : Integrable F (μG.prod νq)`. Rewrite using `[integrable_prod_iff hFm]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [hGae] with g hg`. Conclude with `((hpair w wDD _ (memDD _ hg)).1.const_mul _).congr (hF1 g hg).symm`. Use `(hmi.norm.mul_const (c * ‖w‖ ^ 2 + c * ‖w‖ ^ 2)).mono' hFm.norm.integral_prod_right' ?_ filter_upwards [hGae] with g hg` and prove the remaining obligations. Rewrite using `[Real.norm_of_nonneg (integral_nonneg fun y => norm_nonneg _)]`. Establish `e : ∫ y, ‖F (g, y)‖ ∂νq = ‖m g‖ * ∫ y : Mt k r, ‖⟪B (R.σ (Matrix.of y) w), B (R.σ (Matrix.of y) (R.σ (Matrix.of g) w))⟫_ℂ‖ ∂νq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_const_mul]`. Apply `integral_congr_ae` to reduce the goal to its premises. Use `filter_upwards [hF1 g hg] with y hy`. Rewrite using `[hy, norm_mul, norm_star]`. Rewrite using `[e]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hpair w wDD _ (memDD _ hg)).2.1` as an intermediate fact. Rewrite `this` using `[hnorm _ hg]`. Conclude with `mul_le_mul_of_nonneg_left this (norm_nonneg _)`. Establish `hzero : ∫ q, F q ∂(μG.prod νq) = 0`. Rewrite using `[integral_prod_symm F hFi]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(integral_congr_ae ?_).trans (integral_zero _ _)` and prove the remaining obligations. Use `filter_upwards [hνae, hFi.prod_left_ae] with y hy hi`. Use `set f : Mt k r → ℂ := fun g => star ⟪R.σ (Matrix.of y) w, R.σ (Matrix.of g) w⟫_ℂ * ⟪B (R.σ (Matrix.of y) w), B (R.σ (Matrix.of g) w)⟫_ℂ with hf`. Establish `hfc : ContinuousOn f {y : Mt k r | Matrix.of y ∈ GG k r}` using `(continuous_star.comp_continuousOn (continuousOn_const.inner ((hcont w).comp hof.continuousOn fun y hy => hy))).mul (continuousOn_const.inner ((hΦ w hw).comp hof.continuousOn fun y hy => hy))`. Establish `hfm : AEStronglyMeasurable f (μG.map (lmulM (Matrix.of y)))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hGh.2.2.2 _ hy]`. Conclude with `aesm_of_contOn hfc hGm hGae`. Establish `hlm : Measurable (lmulM (k` using `k) (r := r) (Matrix.of y)) := measurable_mulMt.comp (measurable_const.prodMk measurable_id : Measurable fun x : Mt k r => (y, x))`. Establish `e : (fun g => F (g, y)) =ᵐ[μG] f ∘ lmulM (Matrix.of y)` using `by filter_upwards [hGae] with g hg show star ⟪w, R.σ (Matrix.of g) w⟫_ℂ * _ = star ⟪R.σ (Matrix.of y) w, R.σ (Matrix.of y * Matrix.of g) w⟫_ℂ * _`. Rewrite using `[hmul _ hy _ hg w, hun _ hy, ← hmul _ hy _ hg w]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hfi : Integrable f μG`. Rewrite using `[← hGh.2.2.2 _ hy]`. Conclude with `(integrable_map_measure hfm hlm.aemeasurable).2 (hi.congr e)`. Establish `e2 : ∫ g, F (g, y) ∂μG = ∫ g, f g ∂μG`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[integral_congr_ae e]`. Use `conv_rhs => rw [← hGh.2.2.2 _ hy]`. Conclude with `(integral_map hlm.aemeasurable hfm).symm`. Rewrite using `[e2]`. Use `unfold_zero hK hR hS hB hw (fun x hx => ?_) _ hfi` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j1, j2⟩` from `hl.2 x hx _ (hTKs _ hy w hwT)`. Use `⟨j1, ?_⟩` and prove the remaining obligations. Rewrite using `[j2, hcon x hx]`. Use extensionality with `ξ`. Simplify using the standard rewrite rules.
-
-Take `⟨d, hd, hSch⟩` from `GlobalTheory.BesselDegree.schur_fdeg hy k r ε μG hGh`. Take `⟨s1, s2⟩` from `(hSch mu R hR).2 w w w w`. Establish `hdpos : 0 < d * fdegHC mu` using `mul_pos hd (GlobalTheory.BesselNorm.fdegHC_pos mu hR.1.1.injective)`. Establish `hre : (∫ q, F q ∂(μG.prod νq)).re = c * (∫ g, m g * star (m g) ∂μG).re`. Rewrite using `[integral_prod F hFi]`.
-
-Establish `a1` using `integral_re hFi.integral_prod_left`. Establish `a2` using `integral_re s1`. Simplify using `only [RCLike.re_to_complex] at a1 a2`. Rewrite using `[← a1, ← a2, ← integral_const_mul]`. Apply `integral_congr_ae` to reduce the goal to its premises.
-
-Use `filter_upwards [hGae] with g hg`. Rewrite using `[integral_congr_ae (hF2 g hg), (hpair _ (Submodule.smul_mem _ _ wDD) _ (memDD _ hg)).2.2, inner_smul_left, mul_comm ((starRingEnd ℂ) (m g))]`. Both sides reduce to the same expression. Rewrite `hre` using `[hzero, s2, inner_self_eq_norm_sq_to_K]`. Establish `e3 : (((‖w‖ : ℂ) ^ 2 * (‖w‖ : ℂ) ^ 2 / ((d * fdegHC mu : ℝ) : ℂ))).re = ‖w‖ ^ 2 * ‖w‖ ^ 2 / (d * fdegHC mu)`.
-
-Rewrite using `[← Complex.ofReal_pow, ← Complex.ofReal_mul, ← Complex.ofReal_div, Complex.ofReal_re]`. Establish `hre' : 0 = c * (‖w‖ ^ 2 * ‖w‖ ^ 2 / (d * fdegHC mu))` using `by rw [← e3]; exact hre`. Establish `hw2 : ‖w‖ ^ 2 ≠ 0` using `right_ne_zero_of_mul hcw`. Establish `hc0 : c ≠ 0` using `left_ne_zero_of_mul hcw`. Conclude with `mul_ne_zero hc0 (div_ne_zero (mul_ne_zero hw2 hw2) hdpos.ne') hre'.symm`.
+A detailed English derivation is pending.
 -/
 theorem nzOn_of_mass (hy : Hyps) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {mu : Fin (2 * r + k + 1) → ℝ} {h : ℝ}
     {R : Rep k r}
@@ -455,7 +441,7 @@ theorem nzOn_of_mass (hy : Hyps) {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool}
   exact mul_ne_zero hc0 (div_ne_zero (mul_ne_zero hw2 hw2) hdpos.ne') hre'.symm
 
 /- English proof (translation)
-Introduce `hy k r ε mu h R Wp _ _ _ _ z π u μW μN μG νq B l w hR hgap hok hS hB hwK h0 hfin hl`. Establish `hK : PI.KFinSmooth` using `hy.1.2.2.1`. Establish `hw : w ∈ R.sm` using `hK k r ε mu R.H R.σ hR.1 hR.2 w hwK`. Take `⟨c, hc, hiso⟩` from `GlobalTheory.T.exists_l2SG_translates_eq_const_mul_norm_sq k r ε mu R Wp z π u μW μN μG νq B w hR hS hB hw hfin`. Conclude with `GlobalTheory.exists_kFin_ne_zero_of_cwCont hK k r ε mu R hR Wp l hl.1.1 hl.1.2.1 hl.1.2.2.2 (nzOn_of_mass hy hR hgap hok hS hB hwK hc hiso h0 hl)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_kFin_period_ne_zero : Hyps → ∀ (k r : ℕ) (ε : Fin (2 * r + k + 1) → Bool) (mu : Fin (2 * r + k + 1) → ℝ) (h : ℝ) (R : Rep k r) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (z : Fin (2 * r + k + 1) → ℂ) (π : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → (Wp →L[ℂ] Wp)) (u : ℕ → ℝ) (μW μN μG νq : Measure (Mt k r)) (B l : R.H → Wp) (w : R.H), R.IsDS ε mu → GapAtLeast ε mu h → Formalism.FourierDecayAlt.ThreeDimData.GapOK k r h → SideG k r z π u μW μN μG νq → IsBes R z π B → R.KFin w → PI.BesselPeriodGGP.l2SG νq (fun g => B (R.σ g w)) ≠ 0 → PI.BesselPeriodGGP.l2SG νq (fun g => B (R.σ g w)) ≠ ⊤ → IsBeL R z π μW μN l → ∃ v, R.KFin v ∧ l v ≠ 0 := by
   intro hy k r ε mu h R Wp _ _ _ _ z π u μW μN μG νq B l w hR hgap hok hS hB hwK h0 hfin hl

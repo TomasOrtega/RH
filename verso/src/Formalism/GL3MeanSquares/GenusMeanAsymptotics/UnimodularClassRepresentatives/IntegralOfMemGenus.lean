@@ -17,9 +17,9 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Establish `hex : ∃ s, Formalism.ThetaLiftIndependence.IsClassReps h L s` using `⟨s, hsr⟩`. Take `⟨sX, hsX, hX⟩` from `StabilizerLattices.exists_pairReps hs hd hL t`. Establish `e1` using `StabilizerLattices.sum_pairs_eq_rep hs hd t hsr hsX hX`. Establish `e2` using `StabilizerLattices.sum_pairs_eq_rep hs hd t hex.choose_spec hsX hX`. Simplify using `only [repMass, dif_pos hex]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e2, e1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem repMass_eq_sum {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h)
     {L : Submodule (𝓞 K) V} (hL : Submodule.IsLattice K L) {s : Finset (Submodule (𝓞 K) V)}
@@ -34,7 +34,7 @@ theorem repMass_eq_sum {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : 
   rw [← e2, e1]
 
 /- English proof (translation)
-Conclude with `Formalism.HermitianLatticesTheory.genusBasic_int (IsFractionRing.injective (𝓞 K) K) (fun r => Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range r) h L M hM.2 hLi`.
+A detailed English derivation is pending.
 -/
 theorem integral_of_mem_genus {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) {L M : Submodule (𝓞 K) V}
     (hL : Submodule.IsLattice K L) (hLi : Formalism.HermitianLatticesTheory.IsIntegralLat h L)
@@ -43,11 +43,11 @@ theorem integral_of_mem_genus {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm)
     (fun r => Formalism.HermitianLatticesTheory.star_algebraMap_ringOfIntegers_mem_range r) h L M hM.2 hLi
 
 /- English proof (translation)
-Establish `hsym : star (h x x) = h x x`. Rewrite using `[← starRingEnd_apply]`. Conclude with `hs.eq x x`. Take `⟨y, hy⟩` from `Submodule.mem_one.1 (hMi x hx x hx)`. Establish `hy' : star (algebraMap (𝓞 K) K y) = algebraMap (𝓞 K) K y` using `by rw [hy]; exact hsym`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `QuadraticExtensionConjugation.exists_int_of_star_eq hF y hy'`. Establish `hkey : h x x = algebraMap F K (n : F)`. Rewrite using `[← hy, ← hn]`. Both sides reduce to the same expression. Use `⟨n, fun φ => ?_, hkey⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hkey]`. Conclude with `⟨hd x hx0 φ, hxT φ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_mem_boxSet (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm)
     (hd : IsTotPosDef h) {M : Submodule (𝓞 K) V} (hMi : Formalism.HermitianLatticesTheory.IsIntegralLat h M) {T : ℝ} {x : V}
@@ -67,19 +67,19 @@ theorem exists_mem_boxSet (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (
   exact ⟨hd x hx0 φ, hxT φ⟩
 
 /- English proof (translation)
-Set `Fn : 𝓞 F → Finset V` to `fun n => (StabilizerLattices.finite_rep hd hM (algebraMap F K (n : F))).toFinset`. Establish `hset : {x : V | x ∈ M ∧ ∀ φ : K →+* ℂ, (φ (h x x)).re ≤ T} = ↑(insert 0 ((finite_boxSet hK hF T).toFinset.biUnion Fn))`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Finset.coe_insert, Set.mem_insert_iff, Finset.mem_coe, Finset.mem_biUnion, Set.Finite.mem_toFinset, Fn]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hx, hxT⟩`. Distinguish the cases in `hx0 : x = 0`. Conclude with `Or.inl hx0`. Take `⟨n, hn, he⟩` from `exists_mem_boxSet hF hs hd hMi hx hx0 hxT`. Conclude with `Or.inr ⟨n, hn, hx, he⟩`.
+Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative. Extract witnesses or component facts from the available result. Prove the second alternative.
 
-Introduce and unpack `(rfl | ⟨n, hn, hx, he⟩)`. Conclude with `⟨M.zero_mem, fun φ => by simp [hT]⟩`. Conclude with `⟨hx, fun φ => by rw [he]; exact (hn φ).2⟩`. Take `⟨φ0⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Establish `h0 : (0 : V) ∉ (finite_boxSet hK hF T).toFinset.biUnion Fn`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_biUnion, Set.Finite.mem_toFinset, Fn, Set.mem_setOf_eq, not_exists, not_and]`. Introduce `n hn _ he`. Establish `h1` using `(hn φ0).1`. Rewrite `h1` using `[← he]`. Simplify using `at h1`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hdisj : ∀ n ∈ (finite_boxSet hK hF T).toFinset, ∀ m ∈ (finite_boxSet hK hF T).toFinset, n ≠ m → Disjoint (Fn n) (Fn m)`. Introduce `n _ m _ hnm`. Rewrite using `[Finset.disjoint_left]`. Introduce `x hxn hxm`. Simplify using `only [Fn, Set.Finite.mem_toFinset, Set.mem_setOf_eq] at hxn hxm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `hnm` to reduce the goal to its premises. Conclude with `RingOfIntegers.ext ((algebraMap F K).injective (hxn.2.symm.trans hxm.2))`. Unfold `ballCount`. Rewrite using `[← Set.coe_setOf, Nat.card_coe_set_eq, hset, Set.ncard_coe_finset, Finset.card_insert_of_notMem h0, Finset.card_biUnion hdisj, add_comm]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun n _ => ?_` and prove the remaining obligations. Unfold `repCount`. Rewrite using `[← Set.coe_setOf, Nat.card_coe_set_eq, Set.ncard_eq_toFinset_card _ (StabilizerLattices.finite_rep hd hM _)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ballCount_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K}
     (hs : h.IsSymm) (hd : IsTotPosDef h) {M : Submodule (𝓞 K) V} (hM : Submodule.IsLattice K M)
@@ -126,9 +126,9 @@ theorem ballCount_eq (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
   rw [← Set.coe_setOf, Nat.card_coe_set_eq, Set.ncard_eq_toFinset_card _ (StabilizerLattices.finite_rep hd hM _)]
 
 /- English proof (translation)
-Take `⟨φ⟩ : Nonempty (K →+* ℂ)` from `inferInstance`. Rewrite using `[repCount, Nat.card_eq_one_iff_exists]`. Use `⟨⟨0, M.zero_mem, by simp⟩, fun y => Subtype.ext ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h1` using `hd y.1 hne φ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h1` using `[y.2.2]`. Simplify using `at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem repCount_zero_eq_one_of_isTotPosDef {h : V →ₗ⋆[K] V →ₗ[K] K} (hd : IsTotPosDef h) (M : Submodule (𝓞 K) V) :
     repCount h M 0 = 1 := by
@@ -141,13 +141,13 @@ private theorem repCount_zero_eq_one_of_isTotPosDef {h : V →ₗ⋆[K] V →ₗ
   simp at h1
 
 /- English proof (translation)
-Establish `hM : ∀ M ∈ s, Submodule.IsLattice K M ∧ Formalism.HermitianLatticesTheory.IsIntegralLat h M` using `fun M hMs => ⟨(hsr.1 M hMs).1, integral_of_mem_genus hs hL hLi (hsr.1 M hMs)⟩`. Establish `hmass : Formalism.HermitianLatticesTheory.mass h L = ∑ M ∈ s, ((Nat.card (Formalism.ThetaLiftIndependence.autL h M) : ℕ) : ℝ)⁻¹`. Establish `hex : ∃ s, Formalism.ThetaLiftIndependence.IsClassReps h L s` using `⟨s, hsr⟩`. Rewrite using `[Formalism.HermitianLatticesTheory.massBasic_mass_eq h L hex]`. Establish `e1` using `repMass_eq_sum hs hd hL hsr 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `repMass_eq_sum hs hd hL hex.choose_spec 0`. Simplify using `only [repCount_zero_eq_one_of_isTotPosDef hd, Nat.cast_one, one_div] at e1 e2`. Rewrite using `[← e2, e1]`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ (finite_boxSet hK hF T), hmass]`. Establish `hsplit : ∀ M ∈ s, (ballCount h M T : ℝ) / (Nat.card (Formalism.ThetaLiftIndependence.autL h M) : ℝ) = ((Nat.card (Formalism.ThetaLiftIndependence.autL h M) : ℕ) : ℝ)⁻¹ + ∑ n ∈ (finite_boxSet hK hF T).toFinset, (repCount h M (algebraMap F K (n : F)) : ℝ) / ((Nat.card (Formalism.Th …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `M hMs`. Rewrite using `[ballCount_eq hK hF hs hd (hM M hMs).1 (hM M hMs).2 hT]`. Use `push_cast`. Rewrite using `[add_div, one_div, Finset.sum_div]`. Rewrite using `[Finset.sum_congr rfl hsplit, Finset.sum_add_distrib, Finset.sum_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Finset.sum_congr rfl fun n _ => (repMass_eq_sum hs hd hL hsr _).symm`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sum_ballCount (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}

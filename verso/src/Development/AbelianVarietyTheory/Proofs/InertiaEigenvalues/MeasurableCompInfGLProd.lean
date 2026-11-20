@@ -18,9 +18,9 @@ open GlobalTheory.JSW
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {ω : HChar E}
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.ConstTermSmooth.continuousOn_chart (E := E) (a := a) hF`. Establish `e : (fun p : GA E a × Lie E a => chart F p.1 p.2) = (Set.univ ×ˢ invSet E a).piecewise (fun p : GA E a × Lie E a => chart F p.1 p.2) (fun _ => 0)`. Use function extensionality and compare the values at `p`. Distinguish the cases in `hp : p ∈ (Set.univ ×ˢ invSet E a : Set (GA E a × Lie E a))`. Rewrite using `[Set.piecewise_eq_of_mem _ _ _ hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.piecewise_eq_of_notMem _ _ _ hp]`. Conclude with `dif_neg fun h => hp ⟨Set.mem_univ _, h⟩`. Rewrite using `[e]`. Conclude with `h1.measurable_piecewise continuousOn_const (isOpen_univ.prod isOpen_invSet).measurableSet`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_chart_prod {F : GA E a → ℂ} (hF : Continuous F) :
     Measurable fun p : GA E a × Lie E a => chart F p.1 p.2 := by
@@ -37,7 +37,7 @@ theorem measurable_chart_prod {F : GA E a → ℂ} (hF : Continuous F) :
   exact h1.measurable_piecewise continuousOn_const (isOpen_univ.prod isOpen_invSet).measurableSet
 
 /- English proof (translation)
-Establish `h : Measurable fun x => toL (γ x).val` using `hγ`. Establish `e : (fun p : GA E a × X => F (p.1 * infGL E a (γ p.2))) = (fun q : GA E a × Lie E a => chart F q.1 q.2) ∘ fun p : GA E a × X => (p.1, toL (γ p.2).val)`. Use function extensionality and compare the values at `fun p => (chart_val F p.1 (γ p.2)).symm`. Rewrite using `[e]`. Conclude with `(measurable_chart_prod hF).comp (measurable_fst.prodMk (h.comp measurable_snd))`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_comp_infGL_prod {F : GA E a → ℂ} (hF : Continuous F) {X : Type} [MeasurableSpace X]
     {γ : X → GL (Fin a) (Cinf E)} (hγ : Measurable fun x => (γ x : Matrix (Fin a) (Fin a) (Cinf E))) :
@@ -50,7 +50,7 @@ theorem measurable_comp_infGL_prod {F : GA E a → ℂ} (hF : Continuous F) {X :
   exact (measurable_chart_prod hF).comp (measurable_fst.prodMk (h.comp measurable_snd))
 
 /- English proof (translation)
-Establish `h` using `(measurable_comp_infGL_prod hF hγ).comp (measurable_prodMk_left (x := g) (β := X))`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_comp_infGL' {F : GA E a → ℂ} (hF : Continuous F) (g : GA E a) {X : Type} [MeasurableSpace X]
     {γ : X → GL (Fin a) (Cinf E)} (hγ : Measurable fun x => (γ x : Matrix (Fin a) (Fin a) (Cinf E))) :
@@ -60,7 +60,7 @@ theorem measurable_comp_infGL' {F : GA E a → ℂ} (hF : Continuous F) (g : GA 
   exact h
 
 /- English proof (translation)
-Establish `h` using `hk.2.2 0`. Simplify using `only [pow_zero, mul_one] at h`. Conclude with `(integrable_norm_iff hk.1.aestronglyMeasurable).1 h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_of_isRapidInf {X : Type} [MeasurableSpace X] {ν : Measure X} {k : X → ℂ}
     {γ : X → GL (Fin a) (Cinf E)} (hk : IsRapidInf ν k γ) : Integrable k ν := by
@@ -69,11 +69,11 @@ theorem integrable_of_isRapidInf {X : Type} [MeasurableSpace X] {ν : Measure X}
   exact (integrable_norm_iff hk.1.aestronglyMeasurable).1 h
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h.2.2.2`. Establish `hki` using `integrable_of_isRapidInf hk`. Use `⟨?_, fun γ' g => ?_, fun z g => ?_, ∫ x, ‖k x‖ * C ∂ν, fun g => ?_⟩` and prove the remaining obligations. Use `continuous_of_dominated (bound := fun x => ‖k x‖ * C) (fun g => (hk.1.mul (measurable_comp_infGL' h.1 g hk.2.1)).aestronglyMeasurable) (fun g => .of_forall fun x => ?_) (hki.norm.mul_const C) (.of_forall fun x => continuous_const.mul (h.1.comp (continuous_id.mul continuous_const) …` and prove the remaining obligations. Rewrite using `[norm_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _)`. Simplify using `only [mul_assoc, h.2.1]`. Rewrite using `[← integral_const_mul] beta_reduce`. Use `congr 1`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, h.2.2.1]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `norm_integral_le_of_norm_le (hki.norm.mul_const C) (.of_forall fun x => (norm_mul _ _).trans_le (mul_le_mul_of_nonneg_left (hC _) (norm_nonneg _)))`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kerInf_mem_bddForms {X : Type} [MeasurableSpace X] {ν : Measure X} {k : X → ℂ}
     {γ : X → GL (Fin a) (Cinf E)} (hk : IsRapidInf ν k γ) {F : GA E a → ℂ} (h : F ∈ bddForms E a ω) :
@@ -98,13 +98,11 @@ section Lemmas
 variable (μ : Measure (GA E a)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.CovolGL.isFiniteMeasure_quotMeasure E a μ`. Establish `hD` using `isFundamentalDomain_stdDom (latticeGL E a) μ`. Use `haveI : IsFiniteMeasure (μ.restrict (stdDom (latticeGL E a))) := ⟨by rw [Measure.restrict_apply_univ, ← quotMeasure_univ hD]; exact measure_lt_top _ _⟩`. Take `⟨C, hC⟩` from `h.2.2.2`. Take `⟨D, hD'⟩` from `h'.2.2.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hki` using `integrable_of_isRapidInf hk`. Establish `hm : Measurable fun p : GA E a × X => k p.2 * F (p.1 * infGL E a (γ p.2)) * conj (ψ p.1)` using `((hk.1.comp measurable_snd).mul (measurable_comp_infGL_prod h.1 hk.2.1)).mul ((Complex.continuous_conj.comp h'.1).measurable.comp measurable_fst)`. Establish `hi : Integrable (fun p : GA E a × X => k p.2 * F (p.1 * infGL E a (γ p.2)) * conj (ψ p.1)) ((μ.restrict (stdDom (latticeGL E a))).prod ν)`. Use `((integrable_const (C * D)).mul_prod hki.norm).mono' hm.aestronglyMeasurable (.of_forall fun p => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, mul_assoc, Complex.norm_conj, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul (hC _) (hD' _) (norm_nonneg _) ((norm_nonneg _).trans (hC 1))) (norm_nonneg _)`. Rewrite using `[(pet_eq_setIntegral hω (kerInf_mem_bddForms hk h) h' hD).2]`. Simplify using `only [← integral_mul_const]`. Rewrite using `[integral_integral_swap hi]`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations.
-
-Simplify using `only [(pet_eq_setIntegral hω (mul_right_mem_bddForms h _) h' hD).2, ← integral_const_mul, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pet_kerInf_left (hω : ω.IsUnitary) {X : Type} [MeasurableSpace X] {ν : Measure X} [SFinite ν] {k : X → ℂ}
     {γ : X → GL (Fin a) (Cinf E)} (hk : IsRapidInf ν k γ) {F ψ : GA E a → ℂ}
@@ -135,18 +133,16 @@ theorem pet_kerInf_left (hω : ω.IsUnitary) {X : Type} [MeasurableSpace X] {ν 
   simp only [(pet_eq_setIntegral hω (mul_right_mem_bddForms h _) h' hD).2, ← integral_const_mul, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_sInf.2 fun S hS => hS.2.1 F (Submodule.mem_sInf.1 hF S hS) h`.
+A detailed English derivation is pending.
 -/
 theorem mul_right_mem_mspanR {π : CuspSub E a} {F : GA E a → ℂ} (hF : F ∈ mspanR π) (h : GA E a) :
     (fun g => F (g * h)) ∈ mspanR π :=
   Submodule.mem_sInf.2 fun S hS => hS.2.1 F (Submodule.mem_sInf.1 hF S hS) h
 
 /- English proof (translation)
-Set `S : Submodule ℂ (GA E a → ℂ)` to `{ carrier := {F | F ∈ bddForms E a ω ∧ ∀ G ∈ T, pet (latticeGL E a) μ F G = 0} add_mem' := fun {F F'} hF hF' => ⟨add_mem hF.1 hF'.1, fun G hG => by`. Rewrite using `[pet_add_left μ hω hF.1 hF'.1 (hT G hG), hF.2 G hG, hF'.2 G hG, add_zero]⟩`. Use the proof step `zero_mem' := ⟨zero_mem _, fun G _ => by simp [pet, descend]⟩`. Use the proof step `smul_mem' := fun c F hF => ⟨Submodule.smul_mem _ c hF.1, fun G hG => by`. Rewrite using `[pet_smul_left, hF.2 G hG, mul_zero]⟩ }`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htr : ∀ F ∈ S, ∀ h : GA E a, (fun g => F (g * h)) ∈ S` using `fun F hF h => ⟨mul_right_mem_bddForms hF.1 h, fun G hG => by`. Rewrite using `[pet_mul_right_left μ hω hF.1 (hT G hG) h]`. Conclude with `hF.2 _ (hTr G hG h⁻¹)⟩`. Use `Submodule.mem_sInf.1 hF S ⟨fun φ hφ => ⟨mem_bddForms_of_cuspSub GlobalTheory.CuspOrth.cuspFormsBounded hω hπ hφ, fun G hG => h0 φ hφ G hG⟩, htr, fun F hF X _ ν _ k γ hk => ⟨kerInf_mem_bddForms hk hF.1, fun G hG => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[pet_kerInf_left μ hω hk hF.1 (hT G hG)]`.
-
-Conclude with `integral_eq_zero_of_ae (.of_forall fun x => mul_eq_zero_of_right _ ((htr F hF _).2 G hG))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mspanR_pet_eq_zero (hω : ω.IsUnitary) {π : CuspSub E a} (hπ : π.HasCentChar ω) (T : Set (GA E a → ℂ))
     (hT : ∀ G ∈ T, G ∈ bddForms E a ω) (hTr : ∀ G ∈ T, ∀ h : GA E a, (fun g => G (g * h)) ∈ T)
@@ -170,13 +166,13 @@ theorem mspanR_pet_eq_zero (hω : ω.IsUnitary) {π : CuspSub E a} (hπ : π.Has
 end Lemmas
 
 /- English proof (translation)
-Introduce `E _ _ _ a _ π π'' ω hω hπ hπ'' μ _ h0 𝓕' h𝓕 F hF F'' hF''`. Establish `hB` using `GlobalTheory.CuspOrth.cuspFormsBounded`. Establish `base : ∀ φ ∈ π.V, ∀ ψ ∈ π''.V, ∀ h : GA E a, pet (latticeGL E a) μ φ.1 (fun g => ψ.1 (g * h)) = 0`. Introduce `φ hφ ψ hψ h`. Establish `e` using `pet_mul_right_left μ hω (mem_bddForms_of_cuspSub hB hω hπ hφ) (mem_bddForms_of_cuspSub hB hω hπ'' hψ) h⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `e` using `[inv_inv]`. Rewrite using `[← e]`. Take `⟨y, k, e'⟩ : ∃ y k, h⁻¹ = infGL E a y * finGL E a k` from `⟨_, _, (infGL_mul_finGL h⁻¹).symm⟩`. Rewrite using `[e']`. Establish `H` using `(GlobalTheory.KeepOrth.pet_eq_zero_of_orthogonal hB E a π π'' ω hω hπ hπ'' μ h0).1 (act (.fin k) φ) (π.stable (.fin k) φ hφ) ψ hψ y`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Eq.trans (congrArg (fun F => pet (latticeGL E a) μ F ψ.1) (funext fun g => ?_)) H` and prove the remaining obligations. Use `show φ.1 (g * (infGL E a y * finGL E a k)) = (act (.fin k) φ).1 (g * infGL E a y)`. Rewrite using `[← mul_assoc]`. Both sides reduce to the same expression. Establish `A1` using `fun {F} (hF : F ∈ mspanR π) => mspanR_pet_eq_zero μ hω hπ {G | ∃ ψ ∈ π''.V, ∃ h : GA E a, G = fun g => ψ.1 (g * h)} (by rintro _ ⟨ψ, hψ, h, rfl⟩; exact mul_right_mem_bddForms (mem_bddForms_of_cuspSub hB hω hπ'' hψ) h) (by rintro _ ⟨ψ, hψ, h, rfl⟩ k; exact ⟨ψ, hψ, k * h, funext fu …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `A2` using `fun {G} (hG : G ∈ mspanR π'') => mspanR_pet_eq_zero μ hω hπ'' (mspanR π : Set (GA E a → ℂ)) (fun F hF => (A1 hF).1) (fun F hF h => mul_right_mem_mspanR hF h) (fun ψ hψ F hF => by`. Rewrite using `[← conj_pet, (A1 hF).2 _ ⟨ψ, hψ, 1, funext fun g => by rw [mul_one]⟩, map_zero]) hG`. Take `⟨bF'', h2⟩` from `A2 hF''`. Rewrite using `[← (pet_eq_setIntegral hω (A1 hF).1 bF'' h𝓕).2, ← conj_pet, h2 F hF, map_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_mspanR_eq_zero : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ), 1 ≤ a →
     ∀ (π π'' : CuspSub E a) (ω : HChar E), ω.IsUnitary → π.HasCentChar ω → π''.HasCentChar ω →

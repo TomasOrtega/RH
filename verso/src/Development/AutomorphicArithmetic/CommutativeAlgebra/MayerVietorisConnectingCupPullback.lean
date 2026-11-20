@@ -18,7 +18,7 @@ private noncomputable abbrev pbz {E' E : Spc} (π : E' ⟶ E) {I : Cx R} {n : �
   zcomp (Cocycle.ofHom ((chains R).map π)) a (zero_add n)
 
 /- English proof (translation)
-Simplify using `only [pb, Functor.map_comp]`. Rewrite using `[Cochain.ofHom_comp]`. Conclude with `Cochain.comp_assoc_of_first_is_zero_cochain _ _ _ (zero_add n)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pb_comp {E'' E' E : Spc} (π : E'' ⟶ E') (ρ : E' ⟶ E) {I : Cx R} {n : ℤ}
     (a : Cochain ((chains R).obj E) I n) : pb (π ≫ ρ) a = pb π (pb ρ a) := by
@@ -27,14 +27,14 @@ private theorem pb_comp {E'' E' E : Spc} (π : E'' ⟶ E') (ρ : E' ⟶ E) {I : 
   exact Cochain.comp_assoc_of_first_is_zero_cochain _ _ _ (zero_add n)
 
 /- English proof (translation)
-The claim follows from `(ConcreteCategory.congr_hom (NatTrans.congr_app (π.naturality (SimplexCategory.subinterval j l h).op) (op U)) x).symm`.
+A detailed English derivation is pending.
 -/
 private theorem sub_map {E' E : Spc} (π : E' ⟶ E) {N : ℕ} {U : Scheme.{0}} (x : Sx E' N U) (j l : ℕ) (h : j + l ≤ N) :
     (x.map π).sub j l h = (x.sub j l h).map π :=
   (ConcreteCategory.congr_hom (NatTrans.congr_app (π.naturality (SimplexCategory.subinterval j l h).op) (op U)) x).symm
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := I) (n := n)).2.2.2.1 π a p s h U x`.
+A detailed English derivation is pending.
 -/
 private theorem ev_pb {E' E : Spc} (π : E' ⟶ E) {I : Cx R} {n : ℤ} (a : Cochain ((chains R).obj E) I n)
     (p : ℕ) (s : ℤ) (h : -(p : ℤ) + n = s) (U : Scheme.{0}) (x : Sx E' p U) :
@@ -42,7 +42,7 @@ private theorem ev_pb {E' E : Spc} (π : E' ⟶ E) {I : Cx R} {n : ℤ} (a : Coc
   (GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := I) (n := n)).2.2.2.1 π a p s h U x
 
 /- English proof (translation)
-Introduce `N w hw U x`. Rewrite using `[ev_pb, h N w hw U (x.map π)]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[ev_pb, ev_pb, sub_map, sub_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem aw_pb {I J K : Cx R} (μ : Pair I J K) {E' E : Spc} (π : E' ⟶ E) {n m k : ℤ} (hk : n + m = k)
     {a : Cochain ((chains R).obj E) I n} {b : Cochain ((chains R).obj E) J m} {c : Cochain ((chains R).obj E) K k}
@@ -53,7 +53,7 @@ private theorem aw_pb {I J K : Cx R} (μ : Pair I J K) {E' E : Spc} (π : E' ⟶
   rw [ev_pb, ev_pb, sub_map, sub_map]
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.isAW_existsUnique_biadditive_etale R μ hk).1 a b).unique h h'`.
+A detailed English derivation is pending.
 -/
 private theorem aw_unique {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m k : ℤ} (hk : n + m = k)
     {a : Cochain ((chains R).obj E) I n} {b : Cochain ((chains R).obj E) J m} {c c' : Cochain ((chains R).obj E) K k}
@@ -61,9 +61,9 @@ private theorem aw_unique {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m k : �
   ((GlobalTheory.T.isAW_existsUnique_biadditive_etale R μ hk).1 a b).unique h h'
 
 /- English proof (translation)
-Take `⟨z, hz, -⟩` from `(GlobalTheory.T.isAW_existsUnique_biadditive_etale R μ hk).1 a (0 : Cochain ((chains R).obj E) J m)`. Establish `h2` using `(GlobalTheory.T.isAW_existsUnique_biadditive_etale R μ hk).2.2 a 0 0 z z hz hz`. Rewrite `h2` using `[add_zero]`. Establish `h3 : z + z = z` using `aw_unique μ hk h2 hz`. Establish `h4 : z = 0` using `by simpa using h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h4 ▸ hz`.
+A detailed English derivation is pending.
 -/
 private theorem aw_zero {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m k : ℤ} (hk : n + m = k)
     (a : Cochain ((chains R).obj E) I n) : μ.IsAW hk a (0 : Cochain ((chains R).obj E) J m) 0 := by
@@ -75,9 +75,9 @@ private theorem aw_zero {I J K : Cx R} (μ : Pair I J K) {E : Spc} {n m k : ℤ}
   exact h4 ▸ hz
 
 /- English proof (translation)
-Establish `h3 : μ.IsAW hk (δ n (n + 1) a) (pbz π η).1 (pb π z')` using `ha ▸ aw_pb μ π hk h2`. Establish `h4 : μ.IsAW (by omega : n + (m + 1) = n + m + 1) a (δ m (m + 1) (pbz π η).1) 0`. Rewrite using `[Cocycle.δ_eq_zero]`. Conclude with `aw_zero μ _ a`. Establish `h5` using `GlobalTheory.T.alexanderWhitney_cup_leibniz_etale R μ rfl a (pbz π η).1 a' (pb π z') 0 h1 h3 h4`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h5`.
+A detailed English derivation is pending.
 -/
 private theorem aw_delta {I J K : Cx R} (μ : Pair I J K) {E' E : Spc} (π : E' ⟶ E) {n m : ℤ}
     {a : Cochain ((chains R).obj E') I n} {z : Cocycle ((chains R).obj E) I (n + 1)} {η : Cocycle ((chains R).obj E) J m}
@@ -92,13 +92,13 @@ private theorem aw_delta {I J K : Cx R} (μ : Pair I J K) {E' E : Spc} (π : E' 
   simpa using h5
 
 /- English proof (translation)
-Take `⟨γ', hγ'⟩` from `(GlobalTheory.T.cup_eq_class_of_isAW R μ rfl).1 γ (pbz (pullback.fst f g ≫ f) η)`. Take `⟨ζ', hζ'⟩` from `(GlobalTheory.T.cup_eq_class_of_isAW R μ hk).1 ζ η`. Take `⟨α', hα', -⟩` from `(GlobalTheory.T.isAW_existsUnique_biadditive_etale R μ rfl).1 α (pbz f η).1`. Take `⟨β', hβ', -⟩` from `(GlobalTheory.T.isAW_existsUnique_biadditive_etale R μ rfl).1 β (pbz g η).1`. Use `⟨γ', ζ', α', β', hγ', hζ', ?_, aw_delta μ f hk hα hα' hζ', aw_delta μ g hk hβ hβ' hζ'⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : pb (pullback.fst f g) (pbz f η).1 = (pbz (pullback.fst f g ≫ f) η).1` using `(pb_comp _ _ _).symm`. Establish `e2 : pb (pullback.snd f g) (pbz g η).1 = (pbz (pullback.fst f g ≫ f) η).1` using `(pb_comp _ _ _).symm.trans (by rw [pullback.condition]; rfl)`. Establish `a1` using `aw_pb μ (pullback.fst f g) rfl hα'`. Establish `a2` using `aw_pb μ (pullback.snd f g) rfl hβ'`. Rewrite `a1` using `[e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a2` using `[e2]`. Establish `a3` using `(GlobalTheory.T.isAW_existsUnique_biadditive_etale R μ rfl).2.1 _ _ _ _ _ hγ' a2`. Establish `e3 : γ.1 + pb (pullback.snd f g) β = pb (pullback.fst f g) α` using `by rw [← hγ, sub_add_cancel]`. Rewrite `a3` using `[e3]`. Establish `e4` using `aw_unique μ rfl a1 a3`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e4, add_sub_cancel_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mv_core {I J K : Cx R} (μ : Pair I J K) {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) {n m : ℤ}
     (γ : Cocycle ((chains R).obj (pullback f g)) I n) (ζ : Cocycle ((chains R).obj E) I (n + 1))
@@ -130,7 +130,7 @@ private theorem mv_core {I J K : Cx R} (μ : Pair I J K) {U V E : Spc} (f : U �
   rw [e4, add_sub_cancel_right]
 
 /- English proof (translation)
-Substitute `hk` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem cast_cup (q : ℕ) {E : Spc} {n m k i j : ℤ} (hk : n + m = k) (a : Ht q E n i) (b : Ht q E m j) :
     (cup q a b).cast hk rfl = (twPair q i j).cup E hk a b := by
@@ -141,9 +141,9 @@ end UpperTheory.MvLin
 
 open UpperTheory.MvLin in
 /- English proof (translation)
-Introduce `q _ U V E f g _ n m i j c x y h`. Take `⟨γ, ζ, α, β, rfl, rfl, hγ, hα, hβ⟩` from `h`. Take `⟨η, rfl⟩` from `y.mk_surjective`. Establish `hk : n + 1 + m = n + m + 1` using `by ring`. Take `⟨γ', ζ', α', β', h1, h2, h3, h4, h5⟩` from `mv_core (twPair q i j) f g γ ζ α β η hγ hα hβ hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨γ', ζ', α', β', ?_, ?_, h3, h4, h5⟩` and prove the remaining obligations. Conclude with `((GlobalTheory.T.cup_eq_class_of_isAW _ (twPair q i j) rfl).2 γ _ γ' h1).symm`. Rewrite using `[cast_cup q hk]`. Conclude with `((GlobalTheory.T.cup_eq_class_of_isAW _ (twPair q i j) hk).2 ζ η ζ' h2).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.mayerVietorisConnecting_cup_pullback :
     ∀ (q : ℕ) [NeZero q] {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E), Cover2 (ZMod q) f g → ∀ (n m i j : ℤ) (c : Ht q (pullback f g) n i)

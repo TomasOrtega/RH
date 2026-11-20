@@ -8,7 +8,7 @@ open scoped ComplexOrder
 namespace PositivityTheory.Xgf
 
 /- English proof (translation)
-Establish `h` using `M.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.mp h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pt_zero_lemma {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [GrpObj G] {x : Sp R ⟶ S}
     {U : Type} [AddCommGroup U] [Module R U] (M : LieModel G x U) : M.pt 0 = 1 := by
@@ -17,9 +17,9 @@ private theorem pt_zero_lemma {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over
   exact mul_eq_left.mp h.symm
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro v`. Simplify using `[pt_zero_lemma M]`. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `v`. Rewrite using `[Fin.sum_univ_succ, M.add, ih, List.ofFn_succ, List.prod_cons]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem LieModel_pt_sum_eq_prod {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [GrpObj G] {x : Sp R ⟶ S}
     {U : Type} [AddCommGroup U] [Module R U] (M : LieModel G x U) :
@@ -32,11 +32,11 @@ private theorem LieModel_pt_sum_eq_prod {S : Scheme.{0}} {R : Type} [CommRing R]
     rw [Fin.sum_univ_succ, M.add, ih, List.ofFn_succ, List.prod_cons]
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.Ar.Fl.IsComb`. Rewrite using `[LieModel_pt_sum_eq_prod M]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Establish `hv' : v = fun i => M.pt (c i • u i)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hv i, M.smul]`. Rewrite using `[hv']`. Introduce `h`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun i => M.pt (c i • u i), fun i => ?_, h⟩` and prove the remaining obligations. Rewrite using `[M.smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isComb_pt_iff_eq_pt_sum {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [GrpObj G] {x : Sp R ⟶ S}
     {U : Type} [AddCommGroup U] [Module R U] (M : LieModel G x U) (n : ℕ) (c : Fin n → R) (u : Fin n → U)
@@ -56,9 +56,9 @@ private theorem isComb_pt_iff_eq_pt_sum {S : Scheme.{0}} {R : Type} [CommRing R]
     rw [M.smul]
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.Ar.Fl.IsEigVec eigSp`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩ a`. Apply `M.inj` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hM a u, M.smul, h a]`. Introduce `h`. Use `⟨M.tan u, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← hM a u, h a, M.smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem isEigVec_pt_iff_mem_eigSp {S : Scheme.{0}} {R : Type} [CommRing R] {G : Over S} [GrpObj G] {x : Sp R ⟶ S}
     {U : Type} [AddCommGroup U] [Module R U] (M : LieModel G x U) {O : Type} [CommRing O] (act : OAct O G)
@@ -77,23 +77,21 @@ private theorem isEigVec_pt_iff_mem_eigSp {S : Scheme.{0}} {R : Type} [CommRing 
     rw [← hM a u, h a, M.smul]
 
 /- English proof (translation)
-Introduce `S R _ G _ x U _ _ M`. Use `⟨fun n c u w => isComb_pt_iff_eq_pt_sum M n c u w, fun O _ act ρ τ hM => ⟨fun u => isEigVec_pt_iff_mem_eigSp M act ρ τ hM u, fun n u => ?_⟩⟩` and prove the remaining obligations. Unfold `GlobalTheory.CompanionTheory.Ar.Fl.IsEigFrame`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hu, huniq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `hu' : ∀ i, u i ∈ eigSp ρ τ` using `fun i => (isEigVec_pt_iff_mem_eigSp M act ρ τ hM (u i)).mp (hu i)`. Establish `hex : ∀ e ∈ eigSp ρ τ, ∃! c : Fin n → R, e = ∑ k, c k • u k`. Introduce `e he`. Take `⟨c, hc, huq⟩` from `huniq (M.pt e) ((isEigVec_pt_iff_mem_eigSp M act ρ τ hM e).mpr he)`. Conclude with `⟨c, M.inj ((isComb_pt_iff_eq_pt_sum M n c u _).mp hc), fun c' hc' => huq c' ((isComb_pt_iff_eq_pt_sum M n c' u _).mpr (congrArg M.pt hc'))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Take `⟨c, -, huq⟩` from `hex 0 (Submodule.zero_mem _)`. Establish `hg0 : g = 0` using `(huq g hg.symm).trans (huq 0 (by simp)).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hg0]`. Both sides reduce to the same expression. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `hu' i`. Introduce `e he`. Take `⟨c, hc, -⟩` from `hex e he`. Rewrite using `[hc]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨hli, hsp⟩`. Establish `hu' : ∀ i, u i ∈ eigSp ρ τ` using `fun i => hsp ▸ Submodule.subset_span ⟨i, rfl⟩`. Use `⟨fun i => (isEigVec_pt_iff_mem_eigSp M act ρ τ hM (u i)).mpr (hu' i), fun w hw => ?_⟩` and prove the remaining obligations. Establish `ht : IsTanAt G x w`. Take `⟨h, -⟩` from `hw`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `h`. Take `⟨e, rfl⟩` from `M.onto w ht`. Establish `he : e ∈ eigSp ρ τ` using `(isEigVec_pt_iff_mem_eigSp M act ρ τ hM e).mp hw`. Rewrite `he` using `[← hsp]`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun R).mp he`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨c, (isComb_pt_iff_eq_pt_sum M n c u _).mpr (congrArg M.pt hc.symm), fun c' hc' => ?_⟩` and prove the remaining obligations. Establish `h1 : e = ∑ k, c' k • u k` using `M.inj ((isComb_pt_iff_eq_pt_sum M n c' u _).mp hc')`. Establish `h2 : ∑ k, (c' k - c k) • u k = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib]`. Rewrite using `[← h1, hc, sub_self]`.
-
-Use function extensionality and compare the values at `k`. Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hli _ h2 k)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem lie_model_eigenvectors_action : ∀ (S : Scheme.{0}) (R : Type) [CommRing R] (G : Over S) [GrpObj G] (x : Sp R ⟶ S) (U : Type) [AddCommGroup U] [Module R U] (M : LieModel G x U), (∀ (n : ℕ) (c : Fin n → R) (u : Fin n → U) w, IsComb c (fun k => M.pt (u k)) w ↔ w = M.pt (∑ k, c k • u k)) ∧ ∀ (O : Type) [CommRing O] (act : OAct O G) (ρ : O →+* Module.End R U) (τ : O →+* R), M.IsActOf act.act ρ → (∀ u, IsEigVec act x τ (M.pt u) ↔ u ∈ eigSp ρ τ) ∧ ∀ (n : ℕ) (u : Fin n → U), IsEigFrame act x τ (fun k => M.pt (u k)) ↔ LinearIndependent R u ∧ Submodule.span R (Set.range u) = eigSp ρ τ := by
   intro S R _ G _ x U _ _ M

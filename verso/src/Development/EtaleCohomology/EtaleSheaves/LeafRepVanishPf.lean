@@ -8,11 +8,9 @@ namespace LateralTheory.E.LeafRepVanishPf
 variable (R : Type) [CommRing R]
 
 /- English proof (translation)
-Establish `: Mono ((freeP R).map φ)`. Rewrite using `[NatTrans.mono_iff_mono_app]`. Introduce `Y`. Rewrite using `[ModuleCat.mono_iff_injective]`. Establish `hi : Function.Injective (φ.app Y)` using `(mono_iff_injective _).1 inferInstance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : Function.Injective (uliftFunctor.{1}.map (φ.app Y))`. Introduce `a b h`. Conclude with `ULift.ext _ _ (hi (congrArg ULift.down h))`. Conclude with `Finsupp.mapDomain_injective hu`. Unfold `free`.
-
-Simplify using `only [Functor.comp_map]`. Use `infer_instance`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem free_mono {P Q : PSh} (φ : P ⟶ Q) [Mono φ] : Mono ((free R).map φ) := by
   have : Mono ((freeP R).map φ) := by
@@ -28,14 +26,14 @@ theorem free_mono {P Q : PSh} (φ : P ⟶ Q) [Mono φ] : Mono ((free R).map φ) 
   infer_instance
 
 /- English proof (translation)
-Conclude with `(HomologicalComplex.extendMap_f ((chainsN R).map f) ComplexShape.embeddingDownNat (i := N) rfl).trans rfl`.
+A detailed English derivation is pending.
 -/
 theorem chains_f (E E' : Spc) (f : E ⟶ E') (N : ℕ) :
     ((chains R).map f).f (-(N : ℤ)) = (chainsXIso R E N).hom ≫ (free R).map (f.app (op (SimplexCategory.mk N))) ≫ (chainsXIso R E' N).inv := by
   exact (HomologicalComplex.extendMap_f ((chainsN R).map f) ComplexShape.embeddingDownNat (i := N) rfl).trans rfl
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun t => (t.app (op Y)).hom (ModuleCat.freeMk (ULift.up.{1} x))) (toSheafify_naturality Scheme.etaleTopology ((freeP R).map φ))`. Establish `e2 : (((freeP R).map φ).app (op Y)).hom (ModuleCat.freeMk (ULift.up.{1} x)) = ModuleCat.freeMk (ULift.up.{1} (φ.app _ x))` using `ModuleCat.free_map_apply _ _`. Simplify using `only [NatTrans.comp_app, ModuleCat.hom_comp] at e`. Use `e.symm.trans ?_` and prove the remaining obligations. Conclude with `congrArg (ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology ((freeP R).obj Q)).app (op Y))) e2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem freeGen_nat {P Q : PSh} (φ : P ⟶ Q) (Y : Scheme.{0}) (x : P.obj (op Y)) :
     (((free R).map φ).hom.app (op Y)).hom (freeGen R P Y x) = freeGen R Q Y (φ.app _ x) := by
@@ -48,7 +46,7 @@ theorem freeGen_nat {P Q : PSh} (φ : P ⟶ Q) (Y : Scheme.{0}) (x : P.obj (op Y
   exact congrArg (ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology ((freeP R).obj Q)).app (op Y))) e2
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v, chains_f]`. Simplify using `only [Category.assoc, Iso.inv_hom_id_assoc]`. Rewrite using `[← freeGen_nat]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_pull {U E : Spc} (f : U ⟶ E) {K : Cx R} {n : ℤ} (γ : Cochain ((chains R).obj E) K n) (N : ℕ) (w : ℤ)
     (h : -(N : ℤ) + n = w) (Y : Scheme.{0}) (y : Sx U N Y) :
@@ -60,9 +58,9 @@ theorem ev_pull {U E : Spc} (f : U ⟶ E) {K : Cx R} {n : ℤ} (γ : Cochain ((c
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `hp : p ≤ 0`. Take `⟨N, rfl⟩ : ∃ N : ℕ, p = -(N : ℤ)` from `⟨p.natAbs, by omega⟩`. Rewrite using `[chains_f]`. Use `free_mono R (f.app (op (SimplexCategory.mk N)))` as an intermediate fact. Use `infer_instance`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : IsZero (((chains R).obj U).X p)` using `HomologicalComplex.isZero_extend_X _ _ _ (fun i hi => by`. Express the relevant statement in the definitionally equal form `-(i : ℤ) = p at hi`. Use the proof step `omega)`. Conclude with `⟨fun a b _ => hz.eq_of_tgt a b⟩`.
+Express the relevant assertion in an equivalent form by its definition. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chains_mono {U E : Spc} (f : U ⟶ E) [Mono f] (p : ℤ) : Mono (((chains R).map f).f p) := by
   by_cases hp : p ≤ 0
@@ -76,17 +74,17 @@ theorem chains_mono {U E : Spc} (f : U ⟶ E) [Mono f] (p : ℤ) : Mono (((chain
     exact ⟨fun a b _ => hz.eq_of_tgt a b⟩
 
 /- English proof (translation)
-Introduce `R _ U E f hf F n a ha`. Take `⟨α, rfl⟩` from `CohomologyClass.mk_surjective a`. Establish `hg` using `chains_mono R f`. Establish `hinj : ∀ q, Injective ((res R F).X q)` using `fun q => (inferInstance : Injective ((injectiveResolution F).cochainComplex.X q))`. Establish `h1 : CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map f)) α (zero_add n)) = 0` using `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[CohomologyClass.mk_eq_zero_iff, mem_coboundaries_iff _ (n - 1) (by omega)]`. Take `⟨β', hβ'⟩` from `h1`. Set `β : Cochain ((chains R).obj E) (res R F) (n - 1)` to `Cochain.mk fun p q hpq => Injective.factorThru (β'.v p q hpq) (((chains R).map f).f p)`. Establish `hβ : (Cochain.ofHom ((chains R).map f)).comp β (zero_add _) = β'`. Use `Cochain.ext _ _ (fun p q hpq => ?_)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Cochain.zero_cochain_comp_v, Cochain.ofHom_v]`. Simplify using `only [β, Cochain.mk_v]`. Conclude with `Injective.comp_factorThru _ _`. Set `b : Cocycle ((chains R).obj E) (res R F) n` to `Cocycle.mk (δ (n - 1) n β) (n + 1) rfl (δ_δ _ _ _ _)`. Use `⟨α - b, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CohomologyClass.mk_sub, (CohomologyClass.mk_eq_zero_iff b).2 ((mem_coboundaries_iff b (n - 1) (by omega)).2 ⟨β, rfl⟩), sub_zero]`. Introduce `N w h Y y`. Rewrite using `[← ev_pull]`. Establish `e : (Cochain.ofHom ((chains R).map f)).comp (α - b).1 (zero_add n) = 0`. Rewrite using `[Cocycle.coe_sub, Cochain.comp_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (Cochain.ofHom ((chains R).map f)).comp (b : Cochain _ _ n) (zero_add n) = δ (n - 1) n β'`. Rewrite using `[← hβ]`. Simplify using `[b]`. Rewrite using `[this, hβ']`. Simplify using `[zcomp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Simplify using `[ev]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LeafRepVanish_of : LateralTheory.E.LeafA6suppPf.LeafRepVanish := by
   intro R _ U E f hf F n a ha

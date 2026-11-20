@@ -8,7 +8,7 @@ open GlobalTheory.ArLieBase
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L _ s hs Y w w' h`. Establish `hs' : Ideal.span (Set.range (Subtype.val : s → L)) = ⊤`. Rewrite using `[Subtype.range_coe]`. Conclude with `hs`. Conclude with `(Scheme.affineOpenCoverOfSpanRangeEqTop (R := CommRingCat.of L) (Subtype.val : s → L) hs').openCover.hom_ext _ _ h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem spec_hom_ext_of_span_eq_top : ∀ {L : Type} [CommRing L] {s : Set L}, Ideal.span s = ⊤ → ∀ {Y : Scheme.{0}} {w w' : Sp L ⟶ Y}, (∀ a : s, spMap (algebraMap L (Localization.Away (a : L))) ≫ w = spMap (algebraMap L (Localization.Away (a : L))) ≫ w') → w = w' := by
   intro L _ s hs Y w w' h

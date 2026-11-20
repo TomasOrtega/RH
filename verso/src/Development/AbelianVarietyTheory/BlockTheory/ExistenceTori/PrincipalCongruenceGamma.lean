@@ -64,13 +64,13 @@ def GamEq (T : Core D) : Prop :=
   ∀ j, InR D j → ∀ σ : T.Q.c.F →+* ℂ, GoodEmb T.Q.c σ → GamEqAt T j σ
 
 /- English proof (translation)
-Introduce `k` and use `(h k).ge`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GamEqAt.gamAt {T : Core D} {j : ℕ} {σ : T.Q.c.F →+* ℂ} (h : GamEqAt T j σ) : GamAt T j σ :=
   fun k => (h k).ge
 
 /- English proof (translation)
-Introduce `j hj σ hσ` and use `(h j hj σ hσ).gamAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GamEq.gam {T : Core D} (h : GamEq T) : Gam T := fun j hj σ hσ => (h j hj σ hσ).gamAt
 

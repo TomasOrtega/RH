@@ -5,7 +5,7 @@ open scoped LaurentPolynomial
 namespace GlobalTheory.CompanionTheory.SeqColim
 
 /- English proof (translation)
-The claim follows from `| 0, x => rfl | k + 1, x => by show ι (n + k + 1) (f (n + k) (tr f n k x)) = ι n x rw [h.comm, map_tr f ι h n k x]`.
+A detailed English derivation is pending.
 -/
 theorem map_tr {A : Type} [CommRing A] {G : ℕ → Type} [∀ n, CommRing (G n)] [∀ n, Algebra A (G n)]
     (f : ∀ n, G n →ₐ[A] G (n + 1)) {L : Type} [CommRing L] [Algebra A L] (ι : ∀ n, G n →ₐ[A] L)
@@ -16,17 +16,17 @@ theorem map_tr {A : Type} [CommRing A] {G : ℕ → Type} [∀ n, CommRing (G n)
       rw [h.comm, map_tr f ι h n k x]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `congrArg (ι 0) (hG 0).char` as an intermediate fact. Simplify using `using this`. Introduce `x y hxy`. Take `⟨n, z, hz⟩` from `h.surj 2 ![x, y]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h0 : ι n (z 0 ^ p - z 1 ^ p) = 0`. Establish `e0` using `hz 0`. Establish `e1` using `hz 1`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at e0 e1`. Simplify using `[map_sub, map_pow, e0, e1, hxy]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Take `⟨k, hk⟩` from `h.ker n 1 (fun _ => z 0 ^ p - z 1 ^ p) (fun _ => h0)`. Establish `hk0` using `hk 0`. Simplify using `only [map_sub, map_pow, sub_eq_zero] at hk0`. Establish `heq` using `(hG (n + k)).bij.1 hk0`. Establish `e0` using `hz 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `hz 1`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one] at e0 e1`. Use `congrArg (ι (n + k)) heq` as an intermediate fact. Rewrite `this` using `[map_tr f ι h, map_tr f ι h, e0, e1]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨n, z, hz⟩` from `h.surj 1 (fun _ => x)`. Take `⟨w, hw⟩` from `(hG n).bij.2 (z 0)`. Use `⟨ι n w, ?_⟩` and prove the remaining obligations. Simplify using `only at hw ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, hw, hz 0]`.
+A detailed English derivation is pending.
 -/
 theorem pf_of_stages (p : ℕ) {A : Type} [CommRing A] {G : ℕ → Type} [∀ n, CommRing (G n)] [∀ n, Algebra A (G n)]
     (f : ∀ n, G n →ₐ[A] G (n + 1)) {L : Type} [CommRing L] [Algebra A L] (ι : ∀ n, G n →ₐ[A] L)
@@ -59,9 +59,9 @@ theorem pf_of_stages (p : ℕ) {A : Type} [CommRing A] {G : ℕ → Type} [∀ n
     rw [← map_pow, hw, hz 0]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `hs`. Take `⟨N₀, z, hz⟩` from `h.surj n y`. Establish `hd : ∀ i, ι N₀ ((∑ j, a i j • z j) - algebraMap A (G N₀) (c i)) = 0`. Introduce `i`. Simplify using `only [map_sub, map_sum, map_smul, AlgHom.commutes, hz, hy i, sub_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨k, hk⟩` from `h.ker N₀ m _ hd`. Use `⟨N₀ + k, fun j => tr f N₀ k (z j), fun i => ?_⟩` and prove the remaining obligations. Use `hk i` as an intermediate fact. Simplify using `only [map_sub, map_sum, map_smul, AlgHom.commutes, sub_eq_zero] at this`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem solv_at_stage {A : Type} [CommRing A] {G : ℕ → Type} [∀ n, CommRing (G n)] [∀ n, Algebra A (G n)]
     (f : ∀ n, G n →ₐ[A] G (n + 1)) {L : Type} [CommRing L] [Algebra A L] (ι : ∀ n, G n →ₐ[A] L)
@@ -83,7 +83,7 @@ end GlobalTheory.CompanionTheory.SeqColim
 namespace GlobalTheory.CompanionTheory
 
 /- English proof (translation)
-Introduce `p _ A _ G _ _ f L _ _ ι h`. Conclude with `⟨SeqColim.pf_of_stages p f ι h, fun m n a c hs => SeqColim.solv_at_stage f ι h m n a c hs⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem colim_pf : ∀ (p : ℕ) [Fact p.Prime] (A : Type) [CommRing A](G : ℕ → Type) [∀ n, CommRing (G n)] [∀ n, Algebra A (G n)] (f : ∀ n, G n →ₐ[A] G (n + 1))(L : Type) [CommRing L] [Algebra A L] (ι : ∀ n, G n →ₐ[A] L), IsColim f ι → ((∀ n, Pf p (G n)) → Pf p L) ∧ ∀ (m n : ℕ) (a : Fin m → Fin n → A) (c : Fin m → A), Solv L a c → ∃ N, Solv (G N) a c := by
   intro p _ A _ G _ _ f L _ _ ι h

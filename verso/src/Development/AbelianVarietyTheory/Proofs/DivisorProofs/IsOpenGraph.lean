@@ -35,7 +35,7 @@ theorem Etale.mk_proj_val {P : Set X → (X → ℂ) → Prop} (e : Etale P) :
     Etale.mk P (Etale.proj P e) e.val = e := rfl
 
 /- English proof (translation)
-The claim follows from `TopologicalSpace.GenerateOpen.basic _ ⟨O, f, h, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem Etale.isOpen_graph {P : Set X → (X → ℂ) → Prop} {O : Set X} {f : X → ℂ} (h : P O f) :
     IsOpen ((fun y => Etale.mk P y (f y)) '' O) :=

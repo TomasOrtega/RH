@@ -13,7 +13,7 @@ namespace GlobalTheory.SS.WtRat
 variable {Y : Scheme.{0}}
 
 /- English proof (translation)
-Introduce `y _`. Establish `: Y.fromSpecStalk x y ∈ Set.range (Y.fromSpecStalk x)` using `⟨y, rfl⟩`. Rewrite `this` using `[Scheme.range_fromSpecStalk]`. Conclude with `this.mem_open V.isOpen hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem top_le_fromSpecStalk_preimage (x : Y) {V : Y.Opens} (hx : x ∈ V) :
     ⊤ ≤ Y.fromSpecStalk x ⁻¹ᵁ V := by
@@ -23,9 +23,9 @@ theorem top_le_fromSpecStalk_preimage (x : Y) {V : Y.Opens} (hx : x ∈ V) :
   exact this.mem_open V.isOpen hx
 
 /- English proof (translation)
-Establish `: (Y.fromSpecStalk x).appLE V ⊤ h ≫ (Scheme.ΓSpecIso (Y.presheaf.stalk x)).hom = Y.presheaf.germ V x hx`. Rewrite using `[Scheme.Hom.appLE, Scheme.fromSpecStalk_app hx]`. Simplify using `only [Category.assoc, ← Functor.map_comp]`. Rewrite using `[show ∀ q : (Opposite.op (⊤ : (Spec (Y.presheaf.stalk x)).Opens) ⟶ Opposite.op ⊤), (Spec (Y.presheaf.stalk x)).presheaf.map q = 𝟙 _ from fun q => by`. Rewrite using `[Subsingleton.elim q (𝟙 _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `CategoryTheory.Functor.map_id _ _]`. Simplify using the standard rewrite rules. Conclude with `congrArg (fun q => CommRingCat.Hom.hom q u) this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ev_fromSpecStalk (x : Y) {V : Y.Opens} (hx : x ∈ V)
     (h : ⊤ ≤ Y.fromSpecStalk x ⁻¹ᵁ V) (u : Γ(Y, V)) :
@@ -41,28 +41,26 @@ theorem ev_fromSpecStalk (x : Y) {V : Y.Opens} (hx : x ∈ V)
   exact congrArg (fun q => CommRingCat.Hom.hom q u) this
 
 /- English proof (translation)
-The claim follows from `((genericPoint_spec Y).mem_open_set_iff V.isOpen).mpr (by simpa using hV)`.
+A detailed English derivation is pending.
 -/
 theorem genericPoint_mem [IsIntegral Y] {V : Y.Opens} (hV : (V : Set Y).Nonempty) :
     genericPoint Y ∈ V :=
   ((genericPoint_spec Y).mem_open_set_iff V.isOpen).mpr (by simpa using hV)
 
 /- English proof (translation)
-Introduce `Y _`. Establish `hg : ∀ V : Y.Opens, (V : Set Y).Nonempty → ⊤ ≤ Y.fromSpecStalk (genericPoint Y) ⁻¹ᵁ V` using `fun V hV => top_le_fromSpecStalk_preimage _ (genericPoint_mem hV)`. Use `⟨Y.functionField, inferInstance, Y.fromSpecStalk (genericPoint Y), hg, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `V hV a b hab`. Establish `ha` using `ev_fromSpecStalk _ (genericPoint_mem hV) (hg V hV) a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb` using `ev_fromSpecStalk _ (genericPoint_mem hV) (hg V hV) b`. Conclude with `germ_injective_of_isIntegral Y (genericPoint Y) (genericPoint_mem hV) (ha.symm.trans (hab.trans hb))`. Introduce `τ`. Establish `e : τ.hom (genericPoint Y) = genericPoint Y` using `genericPoint_eq_of_isOpenImmersion τ.hom`. Establish `sp : τ.hom (genericPoint Y) ⤳ genericPoint Y` using `specializes_of_eq e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Y.presheaf.stalkSpecializes sp ≫ τ.hom.stalkMap (genericPoint Y)).hom, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Spec.map (Y.presheaf.stalkSpecializes sp ≫ τ.hom.stalkMap (genericPoint Y)) ≫ Y.fromSpecStalk (genericPoint Y) = Y.fromSpecStalk (genericPoint Y) ≫ τ.hom`. Rewrite using `[Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk, Scheme.SpecMap_stalkMap_fromSpecStalk]`. Introduce `U hU I _ x`. Establish `key : ∀ a : Y.functionField, ∃ (V : Y.Opens) (hV : genericPoint Y ∈ V) (s : Γ(Y, V)), (Y.presheaf.germ V _ hV).hom s = a ∧ (a ≠ 0 → IsUnit s)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Take `⟨V, hV, s, hs⟩` from `Y.presheaf.exists_germ_eq (x := genericPoint Y) a`. Distinguish the cases in `ha : a = 0`. Conclude with `⟨V, hV, s, hs, fun h => (h ha).elim⟩`. Establish `hm : genericPoint Y ∈ Y.basicOpen s`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.mem_basicOpen Y s _ hV]`. Establish `: IsUnit a` using `isUnit_iff_ne_zero.mpr ha`. Rewrite `this` using `[← hs]`. Conclude with `this`. Use `⟨Y.basicOpen s, hm, (Y.presheaf.map (homOfLE (Y.basicOpen_le s)).op).hom s, ?_, fun _ => Y.toRingedSpace.isUnit_res_basicOpen s⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hs]`. Conclude with `Y.presheaf.germ_res_apply (homOfLE (Y.basicOpen_le s)) _ hm s`. Use `choose V hV s hs hu using fun j => key (x j)`. Establish `hle : ∀ j, U ⊓ Finset.univ.inf V ≤ V j` using `fun j => inf_le_right.trans (Finset.inf_le (Finset.mem_univ j))`. Establish `hm : genericPoint Y ∈ U ⊓ Finset.univ.inf V`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨genericPoint_mem hU, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `genericPoint Y ∈ ((Finset.univ.inf V : Y.Opens) : Set Y)`. Rewrite using `[TopologicalSpace.Opens.coe_finset_inf, Finset.inf_set_eq_iInter]`. Simplify using `only [Set.mem_iInter]`. Conclude with `fun j _ => hV j`.
-
-Use `⟨U ⊓ Finset.univ.inf V, ⟨_, hm⟩, fun j => (Y.presheaf.map (homOfLE (hle j)).op).hom (s j), inf_le_left, fun j => ⟨?_, fun h => (hu j h).map _⟩⟩` and prove the remaining obligations. Use `(ev_fromSpecStalk _ hm _ _).trans ?_` and prove the remaining obligations. Rewrite using `[← hs j]`. Conclude with `Y.presheaf.germ_res_apply (homOfLE (hle j)) _ hm (s j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_generic_field_point : ∀ (Y : Scheme.{0}) [IsIntegral Y], ∃ (F : Type) (_ : Field F) (g : Sp F ⟶ Y) (hg : ∀ V : Y.Opens, (V : Set Y).Nonempty → ⊤ ≤ g ⁻¹ᵁ V), (∀ (V : Y.Opens) (hV : (V : Set Y).Nonempty), Function.Injective (WtRat.ev g V (hg V hV))) ∧ (∀ τ : Y ≅ Y, ∃ σ : F →+* F, spMap σ ≫ g = g ≫ τ.hom) ∧ ∀ U : Y.Opens, (U : Set Y).Nonempty → ∀ (I : Type) [Fintype I] (x : I → F), ∃ (U' : Y.Opens) (hU' : (U' : Set Y).Nonempty) (s : I → Γ(Y, U')), U' ≤ U ∧ ∀ j, WtRat.ev g U' (hg U' hU') (s j) = x j ∧ (x j ≠ 0 → IsUnit (s j)) := by
   intro Y _

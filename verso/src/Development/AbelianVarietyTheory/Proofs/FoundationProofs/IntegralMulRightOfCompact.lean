@@ -16,7 +16,7 @@ variable {K Q V W : Type} [Group K] [Group Q] [AddCommGroup V] [Module ℂ V] [A
   {κ : Representation ℂ K V} {r : K →* Q}
 
 /- English proof (translation)
-Use `mem_fixed.1 hv (b⁻¹ * a) (by simp [MonoidHom.mem_ker, h])` as an intermediate fact. Use `conv_rhs => rw [← this]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem apply_eq_of_map_eq {v : V} (hv : v ∈ fixed κ r.ker) {a b : K} (h : r a = r b) : κ a v = κ b v := by
   have := mem_fixed.1 hv (b⁻¹ * a) (by simp [MonoidHom.mem_ker, h])
@@ -24,7 +24,7 @@ theorem apply_eq_of_map_eq {v : V} (hv : v ∈ fixed κ r.ker) {a b : K} (h : r 
   rw [← Module.End.mul_apply, ← map_mul, mul_inv_cancel_left]
 
 /- English proof (translation)
-The claim follows from `mem_fixed.2 fun n hn => by rw [← Module.End.mul_apply, ← map_mul] exact apply_eq_of_map_eq hv (by rw [map_mul, MonoidHom.mem_ker.1 hn, one_mul])`.
+A detailed English derivation is pending.
 -/
 theorem apply_mem_fixed_ker {v : V} (hv : v ∈ fixed κ r.ker) (k : K) : κ k v ∈ fixed κ r.ker :=
   mem_fixed.2 fun n hn => by
@@ -42,22 +42,22 @@ def kerRep (hr : Function.Surjective r) : Representation ℂ Q (fixed κ r.ker) 
       (by simp only [Function.surjInv_eq hr, map_mul])).trans (by rw [map_mul]; rfl)
 
 /- English proof (translation)
-The claim follows from `apply_eq_of_map_eq x.2 (Function.surjInv_eq hr _)`.
+A detailed English derivation is pending.
 -/
 theorem kerRep_apply (hr : Function.Surjective r) (k : K) (x : fixed κ r.ker) :
     (kerRep κ hr (r k) x : V) = κ k x :=
   apply_eq_of_map_eq x.2 (Function.surjInv_eq hr _)
 
 /- English proof (translation)
-Establish `hx : ∀ x : fixed κ r.ker, P x = (charIdem (kerRep κ hr) τ x : V)` using `fun x => by`. Rewrite using `[hP]`. Use `congr 2`. Conclude with `Subtype.ext (h2 _ x.2)`. Establish `hR : LinearMap.range P = (isotypic κ (τ.comp r)).toSubmodule`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm ?_ (iSup_le fun f => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Rewrite using `[hP]`. Use `Submodule.iSup_induction _ (motive := fun y : fixed κ r.ker => (y : V) ∈ (isotypic κ (τ.comp r)).toSubmodule) (charIdem_mem (kerRep κ hr) τ ⟨A v, h1 v⟩) ?_ (zero_mem _) fun x y hx hy => add_mem hx hy` and prove the remaining obligations. Introduce and unpack `f _ ⟨w, rfl⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components.
 
-Conclude with `apply_mem_isotypic (σ := κ) (τ := τ.comp r) ⟨(fixed κ r.ker).subtype ∘ₗ f.toLinearMap, fun k => LinearMap.ext fun w => (congrArg Subtype.val (f.isIntertwining _ _ (r k) w)).trans (kerRep_apply hr k _)⟩ w`. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `hf : ∀ w, f w ∈ fixed κ r.ker` using `fun w => mem_fixed.2 fun n hn => by`. Rewrite using `[← f.isIntertwining]`. Simplify using `[MonoidHom.mem_ker.1 hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `f' : τ.IntertwiningMap (kerRep κ hr)` to `⟨f.toLinearMap.codRestrict _ hf, fun q => LinearMap.ext fun w => by`. Take `⟨k, rfl⟩` from `hr q`. Conclude with `Subtype.ext ((f.isIntertwining _ _ k w).trans (kerRep_apply hr k ⟨_, hf w⟩).symm)⟩`. Conclude with `⟨f w, (hx (f' w)).trans (congrArg Subtype.val (charIdem_of_mem hτ (apply_mem_isotypic f' w)))⟩`. Use `⟨fun k => LinearMap.ext fun v => ?_, LinearMap.ext fun v => ?_, hR, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (⟨A (κ k v), h1 _⟩ : fixed κ r.ker) = kerRep κ hr (r k) ⟨A v, h1 v⟩` using `Subtype.ext ((h3 k v).trans (kerRep_apply hr k ⟨_, h1 v⟩).symm)`. Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, hP, hP, e, charIdem_apply_rep, kerRep_apply]`. Rewrite using `[LinearMap.comp_apply, hP v, hx, charIdem_of_mem hτ (charIdem_mem _ _ _)]`. Rewrite using `[← isotypic_ne_bot_iff, Ne, ← LinearMap.range_eq_bot, hR]`. Conclude with `not_congr (Subrepresentation.toSubmodule_injective.eq_iff (b := ⊥))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_of_charIdem [Fintype Q] [FiniteDimensional ℂ W] (hr : Function.Surjective r)
     {τ : Representation ℂ Q W} (hτ : τ.IsIrreducible) {A P : V →ₗ[ℂ] V} (h1 : ∀ v, A v ∈ fixed κ r.ker)
@@ -96,7 +96,7 @@ theorem proj_of_charIdem [Fintype Q] [FiniteDimensional ℂ W] (hr : Function.Su
     exact not_congr (Subrepresentation.toSubmodule_injective.eq_iff (b := ⊥))
 
 /- English proof (translation)
-Use `congrArg (fun T => LinearMap.trace ℂ W (T * τ h)) (charIdem_self hτ)` as an intermediate fact. Simplify using `only [charIdem, smul_mul_assoc, Finset.sum_mul, map_smul, map_sum, one_mul, ← map_mul, smul_eq_mul] at this`. Rewrite using `[Representation.character, ← this]`. Use `congr 1`. Conclude with `Fintype.sum_equiv (Equiv.inv Q) _ _ fun q => by simp [Representation.character]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sum_character_mul [Fintype Q] [FiniteDimensional ℂ W] {τ : Representation ℂ Q W} (hτ : τ.IsIrreducible)
     (h : Q) : ((Module.finrank ℂ W : ℂ) / Fintype.card Q) * ∑ q, τ.character q * τ.character (q⁻¹ * h) =
@@ -119,7 +119,7 @@ omit [IsTopologicalGroup G] [μ.IsHaarMeasure] in
 include ho in
 
 /- English proof (translation)
-The claim follows from `(setIntegral_eq_integral_of_forall_compl_eq_zero (s := (K : Set G)) h0).symm.trans (integral_subtype_comap ho.measurableSet F).symm`.
+A detailed English derivation is pending.
 -/
 theorem integral_eq_subgroup (h0 : ∀ g ∉ K, F g = 0) : ∫ g, F g ∂μ = ∫ k : K, F k ∂(μ.comap K.subtype) :=
   (setIntegral_eq_integral_of_forall_compl_eq_zero (s := (K : Set G)) h0).symm.trans
@@ -128,7 +128,7 @@ theorem integral_eq_subgroup (h0 : ∀ g ∉ K, F g = 0) : ∫ g, F g ∂μ = �
 include ho hc
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hc`. Use `haveI : (μ.comap K.subtype).IsHaarMeasure := .comap (mH := inferInstance) μ ho.isOpenEmbedding_subtypeVal`. Use `haveI := GlobalTheory.isMulRightInvariant_of_compactSpace (μ.comap K.subtype)`. Rewrite using `[integral_eq_subgroup μ ho h0, integral_eq_subgroup μ ho fun g hg => h0 _ (by rwa [K.mul_mem_cancel_right k.2])]`. Conclude with `integral_mul_right_eq_self (fun x : K => F x) k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_mul_right_of_compact (h0 : ∀ g ∉ K, F g = 0) (k : K) : ∫ g, F (g * k) ∂μ = ∫ g, F g ∂μ := by
   haveI : CompactSpace K := isCompact_iff_compactSpace.1 hc
@@ -139,7 +139,7 @@ theorem integral_mul_right_of_compact (h0 : ∀ g ∉ K, F g = 0) (k : K) : ∫ 
   exact integral_mul_right_eq_self (fun x : K => F x) k
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hc`. Use `haveI : (μ.comap K.subtype).IsHaarMeasure := .comap (mH := inferInstance) μ ho.isOpenEmbedding_subtypeVal`. Use `haveI := GlobalTheory.isInvInvariant_of_compactSpace (μ.comap K.subtype)`. Rewrite using `[integral_eq_subgroup μ ho h0, integral_eq_subgroup μ ho fun g hg => h0 _ (by rwa [K.inv_mem_iff])]`. Conclude with `integral_inv_eq_self (fun x : K => F x) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_inv_of_compact (h0 : ∀ g ∉ K, F g = 0) : ∫ g, F g⁻¹ ∂μ = ∫ g, F g ∂μ := by
   haveI : CompactSpace K := isCompact_iff_compactSpace.1 hc
@@ -157,7 +157,7 @@ variable {r : K →* Q} (hr : Function.Surjective r) (hk : IsOpen (r.ker : Set K
 omit [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] ho hc in
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective.mem_set_image`.
+A detailed English derivation is pending.
 -/
 theorem coe_mem_kerSet {k : K} : (k : G) ∈ kerSet r ↔ r k = 1 := Subtype.val_injective.mem_set_image
 
@@ -165,7 +165,7 @@ omit [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] hc in
 include hk in
 
 /- English proof (translation)
-The claim follows from `ho.isOpenMap_subtype_val _ hk`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_kerSet : IsOpen (kerSet r) := ho.isOpenMap_subtype_val _ hk
 
@@ -173,7 +173,7 @@ omit [MeasurableSpace G] [BorelSpace G] ho in
 include hk in
 
 /- English proof (translation)
-The claim follows from `haveI : CompactSpace K := isCompact_iff_compactSpace.1 hc (r.ker.isClosed_of_isOpen hk).isCompact.image continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_kerSet : IsCompact (kerSet r) :=
   haveI : CompactSpace K := isCompact_iff_compactSpace.1 hc
@@ -183,11 +183,11 @@ omit hc in
 include hk in
 
 /- English proof (translation)
-Establish `hm` using `(isOpen_kerSet ho hk).measurableSet`. Establish `e : ∀ g, F g = ∑ q, ((((Function.surjInv hr q : K) : G)⁻¹ * ·) ⁻¹' kerSet r).indicator F g` using `fun g => by`. Distinguish the cases in `hg : g ∈ K`. Establish `: ∀ q, g ∈ (((Function.surjInv hr q : K) : G)⁻¹ * ·) ⁻¹' kerSet r ↔ q = r ⟨g, hg⟩` using `fun q => by`. Use `(coe_mem_kerSet (r := r) (k := (Function.surjInv hr q)⁻¹ * ⟨g, hg⟩)).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_inv, Function.surjInv_eq hr, inv_mul_eq_one]`. Simplify using `only [indicator_apply, this, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `[indicator_apply, h0 g hg]`. Rewrite using `[integral_congr_ae (.of_forall e), integral_finset_sum _ fun q _ => hF.indicator (hm.preimage (by fun_prop))]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← integral_mul_left_eq_self _ ((Function.surjInv hr q : K) : G), ← integral_indicator hm]`. Use `integral_congr_ae (.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `[indicator_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem integral_eq_sum_ker [Fintype Q] (hF : Integrable F μ) (h0 : ∀ g ∉ K, F g = 0) :
     ∫ g, F g ∂μ = ∑ q, ∫ x in kerSet r, F ((Function.surjInv hr q : K) * x) ∂μ := by
@@ -209,9 +209,9 @@ theorem integral_eq_sum_ker [Fintype Q] (hF : Integrable F μ) (h0 : ∀ g ∉ K
 include hr hk in
 
 /- English proof (translation)
-Establish `h` using `integral_eq_sum_ker μ ho hr hk (F := (K : Set G).indicator fun _ => 1) ((integrable_indicator_iff ho.measurableSet).2 (integrableOn_const hc.measure_ne_top)) fun g hg => indicator_of_notMem hg _`. Establish `e : ∀ q, ∫ x in kerSet r, (K : Set G).indicator (fun _ => (1 : ℂ)) (Function.surjInv hr q * x) ∂μ = μ.real (kerSet r)` using `fun q => by`. Rewrite using `[setIntegral_congr_fun (g := fun _ => 1) (isOpen_kerSet ho hk).measurableSet]`. Simplify using the standard rewrite rules. Introduce and unpack `_ ⟨k, -, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Conclude with `indicator_of_mem (K.mul_mem (Subtype.prop _) k.2) _`. Simplify `h` using `[e, integral_indicator ho.measurableSet]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem real_eq_card_mul [Fintype Q] : (μ.real K : ℂ) = Fintype.card Q * μ.real (kerSet r) := by
   have h := integral_eq_sum_ker μ ho hr hk (F := (K : Set G).indicator fun _ => 1)
@@ -228,7 +228,7 @@ theorem real_eq_card_mul [Fintype Q] : (μ.real K : ℂ) = Fintype.card Q * μ.r
 include hk in
 
 /- English proof (translation)
-Conclude with `ENNReal.toReal_ne_zero.2 ⟨((isOpen_kerSet ho hk).measure_pos μ ⟨1, 1, one_mem _, rfl⟩).ne', (isCompact_kerSet hc hk).measure_ne_top⟩` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem real_kerSet_ne_zero : (μ.real (kerSet r) : ℂ) ≠ 0 := by
   exact_mod_cast ENNReal.toReal_ne_zero.2 ⟨((isOpen_kerSet ho hk).measure_pos μ ⟨1, 1, one_mem _, rfl⟩).ne',
@@ -239,7 +239,7 @@ variable {W : Type} [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] (�
 include hr hk in
 
 /- English proof (translation)
-Use `real_kerSet_ne_zero μ ho hc hk` as an intermediate fact. Rewrite using `[typeIdem_coe, real_eq_card_mul μ ho hc hr hk]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem typeIdem_mul_real [Fintype Q] (k : K) : typeIdem μ r τ k * μ.real (kerSet r) =
     (Module.finrank ℂ W : ℂ) / Fintype.card Q * conj (τ.character (r k)) := by
@@ -250,15 +250,15 @@ theorem typeIdem_mul_real [Fintype Q] (k : K) : typeIdem μ r τ k * μ.real (ke
 include hr hk in
 
 /- English proof (translation)
-Use `Fintype.ofFinite Q` as an intermediate fact. Establish `he` using `typeIdem_mem_SB μ r τ ho hc hk`. Use function extensionality and compare the values at `y`. Distinguish the cases in `hy : y ∈ K`. Use `lift y to K using hy`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[conv, integral_eq_sum_ker μ ho hr hk (F := fun x => typeIdem μ r τ x * typeIdem μ r τ (x⁻¹ * y)) ((he.1.continuous.mul (he.1.continuous.comp (by fun_prop))).integrable_of_hasCompactSupport he.2.mul_right) fun g hg => by rw [typeIdem_of_notMem μ r τ hg, zero_mul]]`. Establish `e : ∀ q, ∫ x in kerSet r, typeIdem μ r τ (((Function.surjInv hr q : K) : G) * x) * typeIdem μ r τ ((((Function.surjInv hr q : K) : G) * x)⁻¹ * y) ∂μ = (Module.finrank ℂ W : ℂ) * (μ.real K : ℂ)⁻¹ * conj ((Module.finrank ℂ W : ℂ) / Fintype.card Q * (τ.character q * τ.character (q⁻¹ …` using `fun q => by`. Rewrite using `[setIntegral_congr_fun (g := fun _ => typeIdem μ r τ (Function.surjInv hr q : K) * typeIdem μ r τ ((Function.surjInv hr q)⁻¹ * y : K)) (isOpen_kerSet ho hk).measurableSet]`. Rewrite using `[setIntegral_const, Complex.real_smul, ← mul_assoc, mul_comm (μ.real _ : ℂ), typeIdem_mul_real μ ho hc hr hk, typeIdem_coe, map_mul r, map_inv, Function.surjInv_eq hr]`. Simplify using `only [map_mul, map_div₀, map_natCast]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce and unpack `_ ⟨k, hk1, rfl⟩`. Establish `h1` using `(typeIdem_mul_ker μ r τ (k := k⁻¹) (inv_mem hk1) ((Function.surjInv hr q)⁻¹ * y : K)).1`. Simplify using `only`. Rewrite using `[(typeIdem_mul_ker μ r τ hk1 _).2, ← h1]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_assoc]`. Simplify using `only [e]`. Rewrite using `[← Finset.mul_sum, ← map_sum, ← Finset.mul_sum, sum_character_mul hτ, typeIdem_coe]`. Rewrite using `[typeIdem_of_notMem μ r τ hy]`. Establish `: ∀ x, typeIdem μ r τ x * typeIdem μ r τ (x⁻¹ * y) = 0` using `fun x => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ K`. Rewrite using `[typeIdem_of_notMem μ r τ (g := x⁻¹ * y) (by rwa [K.mul_mem_cancel_left (inv_mem hx)]), mul_zero]`. Rewrite using `[typeIdem_of_notMem μ r τ hx, zero_mul]`. Simplify using `[conv, this]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conv_typeIdem [Finite Q] (hτ : τ.IsIrreducible) :
     conv μ (typeIdem μ r τ) (typeIdem μ r τ) = typeIdem μ r τ := by
@@ -296,11 +296,9 @@ theorem conv_typeIdem [Finite Q] (hτ : τ.IsIrreducible) :
 omit [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G] [BorelSpace G] ho hc in
 
 /- English proof (translation)
-Distinguish the cases in `hg : g ∈ K`. Use `lift g to K using hg`. Use `(coe_mem_kerSet (r := r) (k := k⁻¹ * (g * k))).trans (Iff.trans ?_ coe_mem_kerSet.symm)` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_inv, inv_mul_eq_one, right_eq_mul]`. Use `iff_of_false ?_ ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, -, e⟩`. Establish `: (k : G)⁻¹ * (g * k) ∈ K` using `e ▸ x.2`. Rewrite `this` using `[K.mul_mem_cancel_left (inv_mem k.2), K.mul_mem_cancel_right k.2]`. Conclude with `hg this`. Introduce and unpack `⟨x, -, rfl⟩`.
-
-Conclude with `hg x.2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem conj_mem_kerSet (k : K) (g : G) : (k : G)⁻¹ * (g * k) ∈ kerSet r ↔ g ∈ kerSet r := by
   by_cases hg : g ∈ K
@@ -318,23 +316,21 @@ theorem conj_mem_kerSet (k : K) (g : G) : (k : G)⁻¹ * (g * k) ∈ kerSet r �
 include hr hk in
 
 /- English proof (translation)
-Use `Fintype.ofFinite Q` as an intermediate fact. Establish `he` using `typeIdem_mem_SB μ r τ ho hc hk`. Establish `hm` using `(isOpen_kerSet ho hk).measurableSet`. Establish `h0` using `real_kerSet_ne_zero μ ho hc hk`. Establish `hB' : ∀ l ∈ L, ∀ v, l (B v) = ∫ g in kerSet r, l (ρ g v) ∂μ` using `fun l hl v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hB l hl, ← integral_indicator hm]`. Conclude with `integral_congr_ae (.of_forall fun g => by simp [indicator_apply])`. Establish `h1 : ∀ v, ((μ.real (kerSet r) : ℂ)⁻¹ • B) v ∈ fixed (ρ.comp K.subtype) r.ker` using `fun v => by`. Use `Submodule.smul_mem _ _ (mem_fixed.2 fun n hn => hsep _ _ fun l hl => ?_)` and prove the remaining obligations. Use `(hB _ (hst l hl n) v).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hB l hl, ← integral_mul_left_eq_self (fun g => (kerSet r).indicator (1 : G → ℂ) g * l (ρ g v)) (n : G)]`. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Establish `: (n : G) * g ∈ kerSet r ↔ g ∈ kerSet r` using `(r.ker.map K.subtype).mul_mem_cancel_left ⟨n, hn, rfl⟩`. Simplify using `[indicator_apply, this]`. Use `proj_of_charIdem (κ := ρ.comp K.subtype) hr hτ h1 (fun v hv => hsep _ _ fun l hl => ?_) (fun k v => hsep _ _ fun l hl => ?_) fun v => hsep _ _ fun l hl => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.smul_apply, map_smul, hB' l hl, setIntegral_congr_fun (g := fun _ => l v) hm, setIntegral_const, Complex.real_smul, smul_eq_mul, inv_mul_cancel_left₀ h0]`. Introduce and unpack `_ ⟨k, hk1, rfl⟩`. Conclude with `congrArg l (mem_fixed.1 hv k hk1)`. Simplify using `only [LinearMap.smul_apply, map_smul]`. Use `congr 1`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hB l hl _).trans (Eq.trans ?_ (hB _ (hst l hl k) v).symm)` and prove the remaining obligations. Establish `h2` using `integral_mul_right_of_compact μ ho hc (F := fun g => (kerSet r).indicator (1 : G → ℂ) ((k : G)⁻¹ * g) * l (ρ g v)) (fun g hg => by`. Rewrite using `[indicator_of_notMem, zero_mul]`. Introduce and unpack `⟨x, -, e⟩`. Conclude with `hg ((K.mul_mem_cancel_left (inv_mem k.2)).1 (e ▸ x.2))) k`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h2` using `[← integral_mul_left_eq_self (fun g => (kerSet r).indicator (1 : G → ℂ) ((k : G)⁻¹ * g) * l (ρ g v)) (k : G)]`. Simplify `h2` using `[indicator_apply, conj_mem_kerSet]`. Rewrite using `[hP l hl, integral_eq_sum_ker μ ho hr hk (F := fun g => typeIdem μ r τ g * l (ρ g v)) ((he.1.continuous.mul (hct l hl v)).integrable_of_hasCompactSupport he.2.mul_right) fun g hg => by rw [typeIdem_of_notMem μ r τ hg, zero_mul], charIdem_apply]`. Simplify using `only [Submodule.coe_smul, Submodule.coe_sum, map_smul, map_sum, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1 : l (kerRep (ρ.comp K.subtype) hr q ⟨_, h1 v⟩ : V) = (μ.real (kerSet r) : ℂ)⁻¹ * ∫ g in kerSet r, l (ρ (Function.surjInv hr q : K) (ρ g v)) ∂μ`. Use `Eq.trans ?_ (congrArg _ (hB' _ (hst l hl (Function.surjInv hr q : K)) v))` and prove the remaining obligations. Conclude with `(l ∘ₗ ρ (Function.surjInv hr q : K)).map_smul _ _`. Establish `e2` using `typeIdem_mul_real μ ho hc hr hk τ (Function.surjInv hr q)`. Establish `e3 : LinearMap.trace ℂ W (τ q⁻¹) = conj (τ.character q)` using `GlobalTheory.BadShare.ZCalc.character_inv (FDRep.of τ) q`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `e2` using `[Function.surjInv_eq hr]`. Rewrite using `[e1, e3, ← mul_assoc, ← e2, mul_assoc, mul_inv_cancel_left₀ h0, ← integral_const_mul]`. Use `setIntegral_congr_fun hm ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, hk1, rfl⟩`. Simplify using `only`.
-
-Rewrite using `[(typeIdem_mul_ker μ r τ hk1 _).2, map_mul, Module.End.mul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_of_weak [Finite Q] (hτ : τ.IsIrreducible) {V : Type} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ G V} {L : Set (V →ₗ[ℂ] ℂ)} (hsep : ∀ v w, (∀ l ∈ L, l v = l w) → v = w)
@@ -397,7 +393,7 @@ theorem proj_of_weak [Finite Q] (hτ : τ.IsIrreducible) {V : Type} [AddCommGrou
 include hr hk in
 
 /- English proof (translation)
-Establish `he` using `typeIdem_mem_SB μ r τ ho hc hk`. Establish `hb` using `indicator_mem_SB (isOpen_kerSet ho hk) (isCompact_kerSet hc hk)`. Conclude with `proj_of_weak μ ho hc hr hk τ hτ (L := univ) (fun v w h => eq_of_forall_dual fun l => h l trivial) (fun _ _ _ => trivial) (fun l _ v => ((hρ.isLocallyConstant_orbit v).comp l).continuous) (fun l _ v => hρ.map_smoothOp hb.1 hb.2 l v) fun l _ v => hρ.map_smoothOp he.1 he.2 l v`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smoothOp_typeIdem [T2Space G] [Finite Q] (hτ : τ.IsIrreducible) {V : Type} [AddCommGroup V] [Module ℂ V]
     {ρ : Representation ℂ G V} (hρ : IsSmooth ρ) :
@@ -428,11 +424,11 @@ Both sides reduce to the same expression.
 include hr hk in
 
 /- English proof (translation)
-Establish `he` using `typeIdem_mem_SB μ r τ ho hc hk`. Establish `hb` using `indicator_mem_SB (isOpen_kerSet ho hk) (isCompact_kerSet hc hk)`. Establish `hw : ∀ {f : G → ℂ}, f ∈ SB G → ∀ l ∈ {l : H →ₗ[ℂ] ℂ | Continuous l}, ∀ v, l ((repOp π μ f).toLinearMap v) = ∫ g, f g * l (linRep π g v) ∂μ` using `fun {f} hf l hl v => by`. Use `(⟨l, hl⟩ : H →L[ℂ] ℂ).integral_comp_comm (hπ.isRepOp (μ := μ) hf.1.continuous hf.2 v).1` as an intermediate fact. Rewrite `this` using `[← hπ.repOp_apply hf.1.continuous hf.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this.symm`. Take `⟨h1, h2, h3, h4⟩` from `proj_of_weak μ ho hc hr hk τ hτ (ρ := linRep π) (L := {l | Continuous l}) (fun v w h => ext_inner_left ℂ fun u => h (innerSL ℂ u).toLinearMap (innerSL ℂ u).continuous) (fun l hl g => Continuous.comp (g := l) hl (π g).continuous) (fun l hl v => Continuous.comp hl (hπ.continuous_ap …`. Use `⟨fun k => ContinuousLinearMap.coe_injective (h1 k), ContinuousLinearMap.coe_injective h2, ?_, h3, (ContinuousLinearMap.coe_injective.ne_iff (y := 0)).symm.trans h4⟩` and prove the remaining obligations. Use `ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.2 fun v w => ?_` and prove the remaining obligations. Establish `e : ∀ g, conj (typeIdem μ r τ g⁻¹) = typeIdem μ r τ g` using `congrFun (starFn_typeIdem μ r τ)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ContinuousLinearMap.coe_coe, ← inner_conj_symm, hπ.inner_repOp he.1.continuous he.2, hπ.inner_repOp he.1.continuous he.2, ← integral_conj, ← integral_inv_of_compact μ ho hc fun g hg => by rw [typeIdem_of_notMem μ r τ hg, zero_mul, map_zero]]`. Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[map_mul, e, inner_conj_symm, hπ.inner_apply_left, inv_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem repOp_typeIdem [T2Space G] [Finite Q] (hτ : τ.IsIrreducible) {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] {π : G →* (H →L[ℂ] H)} (hπ : IsUnitaryRep π) :
@@ -468,7 +464,7 @@ theorem repOp_typeIdem [T2Space G] [Finite Q] (hτ : τ.IsIrreducible) {H : Type
 end Integral
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨conv_typeIdem μ ho hc hr hk τ hτ, fun _ _ _ _ hρ => smoothOp_typeIdem μ ho hc hr hk τ hτ hρ, fun _ _ _ _ _ hπ => repOp_typeIdem μ ho hc hr hk τ hτ hπ⟩`.
+Supply the required witnesses or components.
 -/
 theorem typeIdem_projector {G Q W : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [T2Space G]
     [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] {K : Subgroup G} (ho : IsOpen (K : Set G))
@@ -504,7 +500,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : HeightOneSpectrum (𝓞 F)} (s : SplitAt σ J L v)
 
 /- English proof (translation)
-Rewrite using `[show (s.red.ker : Set (stabLoc σ J L v)) = (↑) ⁻¹' (stabLocOne σ J s.emb L : Set (GLoc σ J v)) from Set.ext s.red_eq_one_iff]`. Conclude with `(isOpen_stabLocOne J s.emb L s.cm).preimage continuous_subtype_val`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_red : IsOpen (s.red.ker : Set (stabLoc σ J L v)) := by
   rw [show (s.red.ker : Set (stabLoc σ J L v)) = (↑) ⁻¹' (stabLocOne σ J s.emb L : Set (GLoc σ J v)) from
@@ -512,7 +508,7 @@ theorem isOpen_ker_red : IsOpen (s.red.ker : Set (stabLoc σ J L v)) := by
   exact (isOpen_stabLocOne J s.emb L s.cm).preimage continuous_subtype_val
 
 /- English proof (translation)
-The claim follows from `typeIdem_projector μ (isOpen_stabLoc σ J L v) (isCompact_stabLoc σ J L v) s.red_surjective s.isOpen_ker_red hτ`.
+A detailed English derivation is pending.
 -/
 theorem idem_projector (μ : Measure (GLoc σ J v)) [μ.IsHaarMeasure] {W : Type} [AddCommGroup W] [Module ℂ W]
     [FiniteDimensional ℂ W] {τ : Representation ℂ (GL (Fin n) (ResF v)) W} (hτ : τ.IsIrreducible) :

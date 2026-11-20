@@ -45,7 +45,7 @@ section Local
 variable {L : SizeData₂ D} (X : G.Inst D L) (K : G.Consts) (a b : G.HH D → ℤ) (p j : ℕ)
 
 /- English proof (translation)
-Establish `e1 : G.Cand _ (ledTr Λ L) K p = G.Cand D L K p` using `rfl`. Establish `e2 : G.goodReps (instTr Λ X) p = G.goodReps X p` using `rfl`. Establish `e3 : G.Sig (instTr Λ X) K a b p = G.Sig X K a b p` using `rfl`. Unfold `G.VV`. Rewrite using `[e1, e2, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -56,31 +56,31 @@ theorem VV_tr : G.VV (instTr Λ X) K a b p = G.VV X K a b p := by
   unfold G.VV; rw [e1, e2, e3]; rfl
 
 /- English proof (translation)
-Unfold `G.tauP`. Rewrite using `[VV_tr]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tau_translate : G.tauP (instTr Λ X) K a b p = G.tauP X K a b p := by
   unfold G.tauP; rw [VV_tr]; rfl
 
 /- English proof (translation)
-Unfold `G.ioP`. Rewrite using `[VV_tr]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ioP_instTr : G.ioP (instTr Λ X) K a b p = G.ioP X K a b p := by
   unfold G.ioP; rw [VV_tr]; rfl
 
 /- English proof (translation)
-Unfold `G.gainP`. Rewrite using `[VV_tr]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gainP_instTr : G.gainP (instTr Λ X) K a b p j = G.gainP X K a b p j := by
   unfold G.gainP; rw [VV_tr]; rfl
 
 /- English proof (translation)
-Unfold `G.TTP`. Rewrite using `[VV_tr]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem TTP_tr : G.TTP (instTr Λ X) K a b p = G.TTP X K a b p := by
   unfold G.TTP; rw [VV_tr]; rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨H.1, H.2.1, H.2.2.1.trans (TTP_tr Λ X K _ _ _).symm, fun h1 h2 j hj => (H.2.2.2.1 h1 h2 j hj).trans (gainP_instTr Λ X K _ _ _ _).symm, H.2.2.2.2.1.trans (tau_translate Λ X K _ _ _).symm, H.2.2.2.2.2.1.trans (ioP_instTr Λ X K _ _ _).symm, H.2.2.2.2.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem fills_tr (w : D.what₂.places.Pl) (H : G.ParametersFill X K w) : G.ParametersFill (instTr Λ X) K w :=
   ⟨H.1, H.2.1, H.2.2.1.trans (TTP_tr Λ X K _ _ _).symm,
@@ -88,7 +88,7 @@ theorem fills_tr (w : D.what₂.places.Pl) (H : G.ParametersFill X K w) : G.Para
     H.2.2.2.2.1.trans (tau_translate Λ X K _ _ _).symm, H.2.2.2.2.2.1.trans (ioP_instTr Λ X K _ _ _).symm, H.2.2.2.2.2.2⟩
 
 /- English proof (translation)
-Establish `e0 : G.aL (ledTr Λ L) = G.aL L` using `rfl`. Establish `e1 : G.bL (ledTr Λ L) = G.bL L` using `rfl`. Establish `e2 : ∀ a b p t, G.Sv (instTr Λ X) K a b p t = G.Sv X K a b p t` using `fun _ _ _ _ => rfl`. Unfold `G.NP`. Simplify using `only [e0, e1, e2, VV_tr, tau_translate]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -147,9 +147,9 @@ def extraTr {L : SizeData₂ D} {gatT : GatTies D} {Gx : G.Inst D L} {Gy : G.Lat
 
 set_option smartUnfolding false in
 /- English proof (translation)
-Establish `e : (rowsEta D.what₂ Λ.η Λ.hη).sec D.what₂.mu0 = D.what₂.sec D.what₂.mu0` using `by first`. Consider the case `rfl`. Consider the case `with_unfolding_all rfl`. Introduce `u φ x`. Use `h u φ x` as an intermediate fact.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← e]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem buDefQ_eta (h : Rows.BuDefQ D.what₂) : Rows.BuDefQ (rowsEta D.what₂ Λ.η Λ.hη) := by
   have e : (rowsEta D.what₂ Λ.η Λ.hη).sec D.what₂.mu0 = D.what₂.sec D.what₂.mu0 := by
@@ -162,15 +162,15 @@ theorem buDefQ_eta (h : Rows.BuDefQ D.what₂) : Rows.BuDefQ (rowsEta D.what₂ 
   exact this
 
 /- English proof (translation)
-The claim follows from `{ h with bu_def := buDefQ_eta Λ h.bu_def, tw_cover := k }`.
+A detailed English derivation is pending.
 -/
 theorem tiesTr (h : Ties D) (k : TwCoverPair Λ.rec') : Ties Λ.rec' := { h with bu_def := buDefQ_eta Λ h.bu_def, tw_cover := k }
 
 set_option smartUnfolding false in
 /- English proof (translation)
-Establish `e : (rowsEta D.what₂ Λ.η Λ.hη).RRset = D.what₂.RRset` using `by first`. Consider the case `rfl`. Consider the case `with_unfolding_all rfl`. Introduce `x`. Use `h x` as an intermediate fact.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← e]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rrDefTr (h : DV.RRDef D) : DV.RRDef Λ.rec' := by
   have e : (rowsEta D.what₂ Λ.η Λ.hη).RRset = D.what₂.RRset := by

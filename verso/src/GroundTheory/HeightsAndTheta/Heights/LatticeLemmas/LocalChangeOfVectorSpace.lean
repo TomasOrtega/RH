@@ -43,7 +43,7 @@ def BAt (K : Type*) [Field K] [NumberField K] (r : ℕ) : Prop :=
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [coordInv, map_sum, Finset.sum_apply, coordMap_tmul, AlgEquiv.symm_apply_apply, Pi.single_apply]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem coordMap_coordInv (r : ℕ) (σ : K →+* ℂ) (w : Fin r → ℂ) :
     coordMap r σ (coordInv σ w) = w := by
@@ -53,9 +53,9 @@ theorem coordMap_coordInv (r : ℕ) (σ : K →+* ℂ) (w : Fin r → ℂ) :
   simp
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, star_zero]`. Consider the case `tmul z l`. Use extensionality with `i`. Rewrite using `[conjMap_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `coordMap r (conjugate σ) (conj σ z ⊗ₜ l) i = starRingEnd ℂ (coordMap r σ (z ⊗ₜ l) i)`. Rewrite using `[coordMap_tmul, coordMap_tmul, map_mul]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, star_add]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 -/
 theorem coordMap_conjMap (r : ℕ) (σ : K →+* ℂ) (t : Fibre σ (Fin r → K)) :
     coordMap r (conjugate σ) (conjMap σ (Fin r → K) t) = star (coordMap r σ t) := by
@@ -78,9 +78,9 @@ def fibreCoord (σ : K →+* ℂ) : Fibre σ V →ₗ[ℂ] (Fin r → ℂ) :=
   coordMap r σ ∘ₗ fibreMap σ (intEquiv φ).toLinearMap
 
 /- English proof (translation)
-Use `⟨(coordMap_injective σ).comp (fibreMap_injective σ (intEquiv φ).injective), ?_⟩` and prove the remaining obligations. Introduce `w`. Take `⟨t, ht⟩` from `LinearMap.lTensor_surjective (ComplexAt σ) (intEquiv φ).surjective (coordInv σ w)`. Use `⟨t, ?_⟩` and prove the remaining obligations. Use `show coordMap r σ (((intEquiv φ).toLinearMap).lTensor (ComplexAt σ) t) = w`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht, coordMap_coordInv]`.
+A detailed English derivation is pending.
 -/
 theorem fibreCoord_bijective (σ : K →+* ℂ) : Function.Bijective (fibreCoord φ σ) := by
   refine ⟨(coordMap_injective σ).comp (fibreMap_injective σ (intEquiv φ).injective), ?_⟩
@@ -91,7 +91,7 @@ theorem fibreCoord_bijective (σ : K →+* ℂ) : Function.Bijective (fibreCoord
   rw [ht, coordMap_coordInv]
 
 /- English proof (translation)
-Simplify using `only [fibreCoord, LinearMap.comp_apply]`. Rewrite using `[← conjMap_fibreMap, coordMap_conjMap]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem fibreCoord_conjMap (σ : K →+* ℂ) (x : Fibre σ V) :
     fibreCoord φ (conjugate σ) (conjMap σ V x) = star (fibreCoord φ σ x) := by
@@ -102,7 +102,7 @@ def fibreCoordEquiv (σ : K →+* ℂ) : Fibre σ V ≃ₗ[ℂ] (Fin r → ℂ) 
   LinearEquiv.ofBijective (fibreCoord φ σ) (fibreCoord_bijective φ σ)
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Express the relevant statement in the definitionally equal form `star w = fibreCoord φ (conjugate σ) (conjMap σ V _)`. Rewrite using `[fibreCoord_conjMap]`. Use `congr 1`. Conclude with `((fibreCoordEquiv φ σ).apply_symm_apply w).symm`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem fibreCoordEquiv_symm_star (σ : K →+* ℂ) (w : Fin r → ℂ) :
     (fibreCoordEquiv φ (conjugate σ)).symm (star w) = conjMap σ V ((fibreCoordEquiv φ σ).symm w) := by
@@ -133,7 +133,7 @@ theorem normsOf_inner (H : HermitianSpace K r) (σ : K →+* ℂ) (x y : V) :
       (H.form σ).inner (coordMap r σ ((1 : ComplexAt σ) ⊗ₜ φ x)) (coordMap r σ (1 ⊗ₜ φ y)) := rfl
 
 /- English proof (translation)
-Establish `h : ∀ z : V, (fibreCoordEquiv φ σ).symm (coordMap r σ ((1 : ComplexAt σ) ⊗ₜ φ z)) = (1 : ComplexAt σ) ⊗ₜ z` using `fun z ↦ by`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `_ = (Nm.form σ).inner ((fibreCoordEquiv φ σ).symm _) ((fibreCoordEquiv φ σ).symm _)`. Rewrite using `[h, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem spaceOf_inner (Nm : HermitianNorms K V) (σ : K →+* ℂ) (x y : V) :
     (Nm.form σ).inner ((1 : ComplexAt σ) ⊗ₜ x) (1 ⊗ₜ y) =
@@ -146,7 +146,7 @@ theorem spaceOf_inner (Nm : HermitianNorms K V) (σ : K →+* ℂ) (x y : V) :
   rw [h, h]
 
 /- English proof (translation)
-Unfold `HermitianBundle.deg deg degOf HermitianBundle.arithDegree`. Use `congr 1`. Use `GroundTheory.Heights₂.Heights.LatticeLemmas.arithDegree_congr _ _ (Submodule.equivMapOfInjective _ (intEquiv φ).injective L.carrier) fun σ x y ↦ ?_` and prove the remaining obligations. Conclude with `hrel σ (Subtype.val (p := (· ∈ L.carrier)) x) (Subtype.val (p := (· ∈ L.carrier)) y)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem deg_bundle_eq (Nm : HermitianNorms K V) (H : HermitianSpace K r)
     (hrel : ∀ (σ : K →+* ℂ) (x y : V), (Nm.form σ).inner ((1 : ComplexAt σ) ⊗ₜ x) (1 ⊗ₜ y) =
@@ -160,20 +160,20 @@ theorem deg_bundle_eq (Nm : HermitianNorms K V) (H : HermitianSpace K r)
   exact hrel σ (Subtype.val (p := (· ∈ L.carrier)) x) (Subtype.val (p := (· ∈ L.carrier)) y)
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem deg_lattice_congr (H : HermitianSpace K r) {M M' : Submodule (𝓞 K) (Fin r → K)} (e : M = M')
     (h : M.FG) (h' : M'.FG) : deg (H.lattice M h) = deg (H.lattice M' h') := by
   subst e; rfl
 
 /- English proof (translation)
-The claim follows from `hL.map _`.
+A detailed English derivation is pending.
 -/
 theorem fg_map (L : Submodule (𝓞 K) V) (hL : L.FG) : (L.map (intEquiv φ).toLinearMap).FG :=
   hL.map _
 
 /- English proof (translation)
-Rewrite using `[Submodule.map_coe]`. Express the relevant statement in the definitionally equal form `Submodule.span K (φ.toLinearMap '' (L : Set V)) = ⊤`. Rewrite using `[Submodule.span_image, hL, Submodule.map_top, LinearEquiv.range]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem span_map (L : Submodule (𝓞 K) V) (hL : Submodule.span K (L : Set V) = ⊤) :
     Submodule.span K ((L.map (intEquiv φ).toLinearMap : Submodule (𝓞 K) (Fin r → K)) :
@@ -183,7 +183,7 @@ theorem span_map (L : Submodule (𝓞 K) V) (hL : Submodule.span K (L : Set V) =
   rw [Submodule.span_image, hL, Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fg_map φ _ L.fg, span_map φ _ L.span_eq⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLattice_map (L : FullLattice K V) : IsLattice (L.carrier.map (intEquiv φ).toLinearMap) :=
   ⟨fg_map φ _ L.fg, span_map φ _ L.span_eq⟩
@@ -197,7 +197,7 @@ def pullLattice (M : Submodule (𝓞 K) (Fin r → K)) (hM : IsLattice M) : Full
     rw [Submodule.span_image, hM.2, Submodule.map_top, LinearEquiv.range]
 
 /- English proof (translation)
-Use `show Submodule.map (intEquiv φ).toLinearMap (Submodule.map (intEquiv φ).symm.toLinearMap M) = M`. Rewrite using `[← Submodule.map_comp]`. Establish `: (intEquiv φ).toLinearMap ∘ₗ (intEquiv φ).symm.toLinearMap = LinearMap.id` using `LinearMap.ext fun x ↦ (intEquiv φ).apply_symm_apply x`. Rewrite using `[this, Submodule.map_id]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_pullLattice (M : Submodule (𝓞 K) (Fin r → K)) (hM : IsLattice M) :
     (pullLattice φ M hM).carrier.map (intEquiv φ).toLinearMap = M := by
@@ -208,9 +208,9 @@ theorem map_pullLattice (M : Submodule (𝓞 K) (Fin r → K)) (hM : IsLattice M
   rw [this, Submodule.map_id]
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `M.fg`. Use `⟨⟨S, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← M.span_eq, Submodule.span_le]`. Introduce `x hx`. Rewrite `hx` using `[SetLike.mem_coe, ← hS]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Submodule.span_le_restrictScalars (𝓞 K) K (S : Set V) hx`.
+A detailed English derivation is pending.
 -/
 theorem finiteDimensional (M : FullLattice K V) : FiniteDimensional K V := by
   obtain ⟨S, hS⟩ := M.fg
@@ -227,18 +227,18 @@ def localEquiv : (v.adicCompletion K ⊗[K] V) ≃ₗ[v.adicCompletion K] (Fin r
     (TensorProduct.piScalarRight K (v.adicCompletion K) (v.adicCompletion K) (Fin r))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[localEquiv, Heights.toLocal, locVec, Algebra.algebraMap_eq_smul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem localEquiv_toLocal (x : V) : localEquiv φ v (Heights.toLocal v x) = locVec v (φ x) := by
   funext i
   simp [localEquiv, Heights.toLocal, locVec, Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Set `f` to `(localEquiv φ v).toLinearMap.restrictScalars (v.adicCompletionIntegers K)`. Establish `hf : ⇑(localEquiv φ v) = ⇑f` using `rfl`. Rewrite using `[hf, Heights.localLattice, ← Submodule.map_coe, Submodule.map_span, localLattice, Submodule.map_coe, Set.image_image]`. Use `congr 2`. Use extensionality with `w`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_image, SetLike.mem_coe]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `⟨φ x, ⟨x, hx, rfl⟩, (localEquiv_toLocal φ v x).symm⟩`. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, hx, localEquiv_toLocal φ v x⟩`.
+Supply the required witnesses or components.
 -/
 theorem image_localLattice (L : Submodule (𝓞 K) V) :
     localEquiv φ v '' (Heights.localLattice v L : Set (v.adicCompletion K ⊗[K] V)) =
@@ -271,14 +271,14 @@ theorem glEquiv_apply (g : Matrix.GeneralLinearGroup (Fin r) (v.adicCompletion K
     (x : Fin r → v.adicCompletion K) : glEquiv v g x = glMap v g x := rfl
 
 /- English proof (translation)
-Use extensionality with `x i`. Simplify using `[glEquiv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem glEquiv_one : glEquiv v (1 : Matrix.GeneralLinearGroup (Fin r) (v.adicCompletion K)) = 1 := by
   ext x i
   simp [glEquiv]
 
 /- English proof (translation)
-The claim follows from `LinearMap.det_toLin' _`.
+A detailed English derivation is pending.
 -/
 theorem det_glEquiv (g : Matrix.GeneralLinearGroup (Fin r) (v.adicCompletion K)) :
     LinearMap.det (glEquiv v g : (Fin r → v.adicCompletion K) →ₗ[v.adicCompletion K] _) =
@@ -299,7 +299,7 @@ def glOf (f : (Fin r → v.adicCompletion K) ≃ₗ[v.adicCompletion K] (Fin r �
     exact LinearMap.ext fun x ↦ f.symm_apply_apply x
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Matrix.toLin' (LinearMap.toMatrix' (f : _ →ₗ[v.adicCompletion K] _)) x = f x`. Rewrite using `[Matrix.toLin'_toMatrix']`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem glMap_glOf (f : (Fin r → v.adicCompletion K) ≃ₗ[v.adicCompletion K] (Fin r → v.adicCompletion K))
     (x : Fin r → v.adicCompletion K) : glMap v (glOf v f) x = f x := by
@@ -308,7 +308,7 @@ theorem glMap_glOf (f : (Fin r → v.adicCompletion K) ≃ₗ[v.adicCompletion K
   rfl
 
 /- English proof (translation)
-Use extensionality with `: 1`. Express the relevant statement in the definitionally equal form `LinearMap.toMatrix' LinearMap.id = 1`. Conclude with `LinearMap.toMatrix'_id`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem glOf_one : glOf v (1 : (Fin r → v.adicCompletion K) ≃ₗ[v.adicCompletion K] _) = 1 := by
   ext : 1
@@ -316,7 +316,7 @@ theorem glOf_one : glOf v (1 : (Fin r → v.adicCompletion K) ≃ₗ[v.adicCompl
   exact LinearMap.toMatrix'_id
 
 /- English proof (translation)
-The claim follows from `LinearMap.det_toMatrix' _`.
+A detailed English derivation is pending.
 -/
 theorem det_glOf (f : (Fin r → v.adicCompletion K) ≃ₗ[v.adicCompletion K] (Fin r → v.adicCompletion K)) :
     (glOf v f : Matrix (Fin r) (Fin r) (v.adicCompletion K)).det =
@@ -326,15 +326,15 @@ theorem det_glOf (f : (Fin r → v.adicCompletion K) ≃ₗ[v.adicCompletion K] 
 include φ in
 
 /- English proof (translation)
-Introduce `H M₁ M₂ h₁ h₂ g hg hloc`. Use `set gA : ∀ v : HeightOneSpectrum (𝓞 K), (v.adicCompletion K ⊗[K] V) ≃ₗ[v.adicCompletion K] (v.adicCompletion K ⊗[K] V) := fun v ↦ (localEquiv φ v).trans ((glEquiv v (g v)).trans (localEquiv φ v).symm) with hgA`. Establish `hfin : {v | gA v ≠ 1}.Finite`. Use `hg.subset fun v hv h1 ↦ hv ?_` and prove the remaining obligations. Use `LinearEquiv.ext fun x ↦ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `[hgA, h1, glEquiv_one]`. Establish `hloc' : ∀ v, (Heights.localLattice v (pullLattice φ M₂ h₂).carrier : Set (v.adicCompletion K ⊗[K] V)) = gA v '' Heights.localLattice v (pullLattice φ M₁ h₁).carrier`. Introduce `v`. Apply `Set.image_injective.mpr (localEquiv φ v).injective` to reduce the goal to its premises. Rewrite using `[image_localLattice, map_pullLattice, hloc v, Set.image_image]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: (fun x ↦ localEquiv φ v (gA v x)) = glMap v (g v) ∘ localEquiv φ v`. Use function extensionality and compare the values at `x`. Simplify using `only [hgA, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply, Function.comp_apply, glEquiv_apply]`. Rewrite using `[this, Set.image_comp, image_localLattice, map_pullLattice, Submodule.map_coe]`. Establish `key` using `hA (normsOf φ H) (pullLattice φ M₁ h₁) (pullLattice φ M₂ h₂) gA hfin hloc'`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[deg_bundle_eq φ _ H (normsOf_inner φ H) _ (isLattice_map φ _).1, deg_bundle_eq φ _ H (normsOf_inner φ H) _ (isLattice_map φ _).1, deg_lattice_congr H (map_pullLattice φ M₂ h₂) _ h₂.1, deg_lattice_congr H (map_pullLattice φ M₁ h₁) _ h₁.1]`. Establish `hdet : ∀ v, LinearMap.det (gA v : (v.adicCompletion K ⊗[K] V) →ₗ[v.adicCompletion K] (v.adicCompletion K ⊗[K] V)) = (g v : Matrix (Fin r) (Fin r) (v.adicCompletion K)).det`. Introduce `v`. Establish `: (gA v : (v.adicCompletion K ⊗[K] V) →ₗ[v.adicCompletion K] (v.adicCompletion K ⊗[K] V)) = ((localEquiv φ v).symm : (Fin r → v.adicCompletion K) →ₗ[v.adicCompletion K] _) ∘ₗ (glEquiv v (g v) : (Fin r → v.adicCompletion K) →ₗ[v.adicCompletion K] _) ∘ₗ ((localEquiv φ v).symm.symm …` using `LinearMap.ext fun x ↦ rfl`. Rewrite using `[this, LinearMap.det_conj, det_glEquiv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hdet] at key`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem bAt_of_aAt (hA : AAt K V) : BAt K r := by
   intro H M₁ M₂ h₁ h₂ g hg hloc
@@ -375,15 +375,15 @@ theorem bAt_of_aAt (hA : AAt K V) : BAt K r := by
 include φ in
 
 /- English proof (translation)
-Introduce `Nm L₁ L₂ g hg hloc`. Use `set gB : ∀ v : HeightOneSpectrum (𝓞 K), Matrix.GeneralLinearGroup (Fin r) (v.adicCompletion K) := fun v ↦ glOf v ((localEquiv φ v).symm.trans ((g v).trans (localEquiv φ v))) with hgB`. Establish `hfin : {v | gB v ≠ 1}.Finite`. Use `hg.subset fun v hv h1 ↦ hv ?_` and prove the remaining obligations. Establish `: (localEquiv φ v).symm.trans ((g v).trans (localEquiv φ v)) = 1` using `LinearEquiv.ext fun x ↦ by simp [h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hgB, this, glOf_one]`. Establish `hloc' : ∀ v, localLattice v (L₂.carrier.map (intEquiv φ).toLinearMap) = (localLattice v (L₁.carrier.map (intEquiv φ).toLinearMap)).map (glMap v (gB v))`. Introduce `v`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[Submodule.map_coe, ← image_localLattice, ← image_localLattice, hloc v, ← Set.image_comp, ← Set.image_comp]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `only [hgB, Function.comp_apply, glMap_glOf, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Establish `hM₁` using `isLattice_map φ L₁`. Establish `hM₂` using `isLattice_map φ L₂`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `hB (spaceOf φ Nm) _ _ hM₁ hM₂ gB hfin hloc'`. Rewrite using `[deg_bundle_eq φ Nm (spaceOf φ Nm) (spaceOf_inner φ Nm) L₂ hM₂.1, deg_bundle_eq φ Nm (spaceOf φ Nm) (spaceOf_inner φ Nm) L₁ hM₁.1, key]`. Establish `hdet : ∀ v, (gB v : Matrix (Fin r) (Fin r) (v.adicCompletion K)).det = LinearMap.det (g v : (v.adicCompletion K ⊗[K] V) →ₗ[v.adicCompletion K] (v.adicCompletion K ⊗[K] V))`. Introduce `v`. Simplify using `only [hgB]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_glOf]`. Establish `: ((localEquiv φ v).symm.trans ((g v).trans (localEquiv φ v)) : (Fin r → v.adicCompletion K) →ₗ[v.adicCompletion K] (Fin r → v.adicCompletion K)) = (localEquiv φ v : (v.adicCompletion K ⊗[K] V) →ₗ[v.adicCompletion K] _) ∘ₗ (g v : (v.adicCompletion K ⊗[K] V) →ₗ[v.adicCompletion K] …` using `LinearMap.ext fun x ↦ rfl`. Rewrite using `[this, LinearMap.det_conj]`. Simplify using `only [hdet]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aAt_of_bAt (hB : BAt K r) : AAt K V := by
   intro Nm L₁ L₂ g hg hloc
@@ -429,7 +429,7 @@ end LocalChangeEq
 open LocalChangeEq in
 
 /- English proof (translation)
-Introduce `K _ _ V _ _ _ _ Nm M₁ M₂ g hg hloc`. Establish `: FiniteDimensional K V` using `finiteDimensional M₁`. Conclude with `aAt_of_bAt (Module.finBasis K V).equivFun (hB K _) Nm M₁ M₂ g hg hloc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LocalChange.kleimanNef_field_of_alt (hB : LocalChange.Statement.{u}) :
     GroundTheory.Heights₂.Heights.LatticeLemmas.LocalChange.Statement.{u, v} := by
@@ -440,7 +440,7 @@ theorem LocalChange.kleimanNef_field_of_alt (hB : LocalChange.Statement.{u}) :
 open LocalChangeEq in
 
 /- English proof (translation)
-Introduce `K _ _ r`. Conclude with `bAt_of_aAt (V := ULift.{v} (Fin r → K)) ULift.moduleEquiv (hA K (ULift.{v} (Fin r → K)))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LocalChange.localChange_of_vectorSpace (hA : GroundTheory.Heights₂.Heights.LatticeLemmas.LocalChange.Statement.{u, max u v}) :
     LocalChange.Statement.{u} := by
@@ -448,7 +448,7 @@ theorem LocalChange.localChange_of_vectorSpace (hA : GroundTheory.Heights₂.Hei
   exact bAt_of_aAt (V := ULift.{v} (Fin r → K)) ULift.moduleEquiv (hA K (ULift.{v} (Fin r → K)))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨LocalChange.localChange_of_vectorSpace, LocalChange.kleimanNef_field_of_alt⟩`.
+Supply the required witnesses or components.
 -/
 theorem LocalChange.equiv :
     GroundTheory.Heights₂.Heights.LatticeLemmas.LocalChange.Statement.{u, max u v} ↔

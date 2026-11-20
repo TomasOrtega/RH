@@ -10,7 +10,7 @@ namespace GroundTheory.LocalField
 open Abstract ValuativeRel GroundTheory.LocalField.FormalGroup
 
 /- English proof (translation)
-Use `continuous_of_continuousAt_one f ?_` and prove the remaining obligations. Rewrite using `[ContinuousAt, map_one, nhds_discrete D, Filter.tendsto_pure]`. Conclude with `Filter.mem_of_superset (hf.mem_nhds f.ker.one_mem) fun x hx => hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_isOpen_ker {G D : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [Group D] [TopologicalSpace D] [DiscreteTopology D] (f : G →* D)
@@ -39,7 +39,7 @@ theorem localArtinMap_apply (x : Kˣ) :
 
 omit [ValuativeRel K] [TopologicalSpace K] [IsNonarchimedeanLocalField K] in
 /- English proof (translation)
-Take `⟨σ, rfl⟩` from `QuotientGroup.mk_surjective g`. Rewrite using `[restrictAb_topologicalAbelianizationEquiv]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem restrictAb_topologicalAbelianizationEquiv_eq_abelianRestrict (L : IntermediateField K Ω)
     [FiniteDimensional K L] [IsAbelianGalois K L] (g : TopologicalAbelianization (Ω ≃ₐ[K] Ω)) :
@@ -50,7 +50,7 @@ theorem restrictAb_topologicalAbelianizationEquiv_eq_abelianRestrict (L : Interm
   rfl
 
 /- English proof (translation)
-Rewrite using `[localArtinMap_apply, restrictAb_topologicalAbelianizationEquiv_eq_abelianRestrict, abelianRestrict_localReciprocityLimit]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictAb_localArtinMap (L : IntermediateField K Ω) [FiniteDimensional K L]
     [IsAbelianGalois K L] (x : Kˣ) :
@@ -60,7 +60,7 @@ theorem restrictAb_localArtinMap (L : IntermediateField K Ω) [FiniteDimensional
     abelianRestrict_localReciprocityLimit]
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[MonoidHom.mem_ker, MonoidHom.comp_apply, restrictAb_localArtinMap, MulEquiv.map_eq_one_iff, QuotientGroup.eq_one_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem ker_restrictAb_localArtinMap (L : IntermediateField K Ω) [FiniteDimensional K L]
     [IsAbelianGalois K L] :
@@ -71,7 +71,7 @@ theorem ker_restrictAb_localArtinMap (L : IntermediateField K Ω) [FiniteDimensi
     QuotientGroup.eq_one_iff]
 
 /- English proof (translation)
-Introduce `σ`. Take `⟨x, hx⟩` from `QuotientGroup.mk_surjective (localReciprocityAbelian L σ)`. Use `⟨x, ?_⟩` and prove the remaining obligations. Rewrite using `[MonoidHom.comp_apply, restrictAb_localArtinMap, hx, MulEquiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem surjective_restrictAb_localArtinMap (L : IntermediateField K Ω) [FiniteDimensional K L]
     [IsAbelianGalois K L] :
@@ -91,14 +91,14 @@ instance isAbelianGalois_maximalUnramifiedExtension :
       rw [map_mul, map_mul, mul_comm])⟩⟩ }
 
 /- English proof (translation)
-The claim follows from `le_maximalAbelianExtension _`.
+A detailed English derivation is pending.
 -/
 theorem maximalUnramifiedExtension_le_maximalAbelianExtension :
     maximalUnramifiedExtension K Ω ≤ maximalAbelianExtension K Ω :=
   le_maximalAbelianExtension _
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `QuotientGroup.mk_surjective (localReciprocityLimit K Ω π)`. Rewrite using `[localArtinMap_apply, ← hg, restrictAb_topologicalAbelianizationEquiv]`. Conclude with `restrictNormal_eq_frobenius_of_mk_eq_localReciprocityLimit hπ hg`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictAb_localArtinMap_uniformizer {π : Kˣ} (hπ : ord (π : K) = 1) :
     restrictAb (maximalUnramifiedExtension K Ω) maximalUnramifiedExtension_le_maximalAbelianExtension
@@ -108,7 +108,7 @@ theorem restrictAb_localArtinMap_uniformizer {π : Kˣ} (hπ : ord (π : K) = 1)
   exact restrictNormal_eq_frobenius_of_mk_eq_localReciprocityLimit hπ hg
 
 /- English proof (translation)
-Use `isAbelianGalois_of_le_maximalAbelianExtension L (hL.trans maximalUnramifiedExtension_le_maximalAbelianExtension)` as an intermediate fact. Apply `(bijective_abelianizationOf L).1` to reduce the goal to its premises. Rewrite using `[restrictAb_localArtinMap, of_localReciprocityAbelian_symm, localReciprocity_symm_mk_of_le_maximalUnramifiedExtension L hL, map_zpow]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem restrictAb_localArtinMap_of_le_maximalUnramifiedExtension (L : IntermediateField K Ω)
     [FiniteDimensional K L] [IsGalois K L] (hL : L ≤ maximalUnramifiedExtension K Ω) (x : Kˣ) :
@@ -121,7 +121,7 @@ theorem restrictAb_localArtinMap_of_le_maximalUnramifiedExtension (L : Intermedi
     localReciprocity_symm_mk_of_le_maximalUnramifiedExtension L hL, map_zpow]
 
 /- English proof (translation)
-Rewrite using `[← restrictAb_localArtinMap_uniformizer hπ, restrictAb_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem localArtinMap_uniformizer_apply {π : Kˣ} (hπ : ord (π : K) = 1) {y : Ω}
     (hy : y ∈ maximalUnramifiedExtension K Ω) :
@@ -135,7 +135,7 @@ end Unramified
 section Topology
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_restrictAb]`. Introduce `L _ _`. Use `continuous_of_isOpen_ker ((restrictAb L (le_maximalAbelianExtension L)).comp (localArtinMap K Ω)) ?_` and prove the remaining obligations. Rewrite using `[ker_restrictAb_localArtinMap]`. Conclude with `(isOpen_range_normUnits_and_finiteIndex (Ω := Ω) L).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_localArtinMap : Continuous (localArtinMap K Ω) := by
   rw [continuous_iff_restrictAb]
@@ -150,9 +150,9 @@ end Topology
 section Injective
 
 /- English proof (translation)
-Establish `hmem : (u : 𝒪[K]) - 1 ∈ ⨅ n : ℕ, 𝓂[K] ^ n`. Use `Ideal.mem_iInf.2 fun n => ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Conclude with `h n hn`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hmem` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ Ideal.IsPrime.ne_top', Ideal.mem_bot, sub_eq_zero]`. Conclude with `Units.ext hmem`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_forall_mem_unitFiltration {u : 𝒪[K]ˣ}
     (h : ∀ n, 1 ≤ n → u ∈ unitFiltration K n) : u = 1 := by
@@ -165,23 +165,21 @@ theorem eq_one_of_forall_mem_unitFiltration {u : 𝒪[K]ˣ}
   exact Units.ext hmem
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_one]`. Introduce `x hx`. Establish `hker : x ∈ (localReciprocityLimit K Ω).ker`. Rewrite using `[MonoidHom.mem_ker]`. Conclude with `(topologicalAbelianizationEquiv K Ω).injective (by rw [map_one]; exact hx)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hker` using `[ker_localReciprocityLimit, Subgroup.mem_iInf]`. Establish `hnorm : ∀ (L : IntermediateField K Ω) [FiniteDimensional K L], x ∈ (normUnits K L).range` using `fun L _ => hker ⟨L, inferInstance⟩`. Establish `hopen : ∀ (H : Subgroup Kˣ) [H.FiniteIndex], IsOpen (H : Set Kˣ) → x ∈ H`. Introduce `H _ hH`. Take `⟨L, hL, -, -, hLH⟩` from `exists_range_normUnits_eq (Ω := Ω) H hH`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hLH]`. Conclude with `hnorm L`. Take `⟨π, hπ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[K]`. Use `set e := unitsEquivIntProd hπ`. Establish `hk : (e x).1 = 1` using `by set k := Multiplicative.toAdd (e x).1 with hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `f : Kˣ →* Multiplicative (ZMod (k.natAbs + 1))` to `(AddMonoidHom.toMultiplicative (Int.castAddHom (ZMod (k.natAbs + 1)))).comp ((MonoidHom.fst _ _).comp e.toMonoidHom)`. Establish `hfo : IsOpen (f.ker : Set Kˣ)`. Use `Subgroup.isOpen_mono (H₁ := unitFiltrationUnits K 0) ?_ (isOpen_unitFiltrationUnits 0)` and prove the remaining obligations. Introduce and unpack `_ ⟨u, -, rfl⟩`. Simplify using `[f, e, unitsEquivIntProd_unitsIncl]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfx` using `hopen f.ker hfo`. Rewrite `hfx` using `[MonoidHom.mem_ker]`. Establish `h0 : ((k : ℤ) : ZMod (k.natAbs + 1)) = 0`. Simplify `hfx` using `[f, k]`. Rewrite `h0` using `[ZMod.intCast_zmod_eq_zero_iff_dvd]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: k = 0` using `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs h0 (by simp only [Int.natAbs_natCast]; omega)`. Rewrite using `[← ofAdd_toAdd (e x).1, ← hk, this, ofAdd_zero]`. Use `set u := (e x).2`. Establish `hxu : x = unitsIncl K u`. Apply `e.injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[unitsEquivIntProd_unitsIncl, ← hk]`. Set `` to `algebraicValuativeRel K Ω`. Set `` to `algebraicTopology K Ω`. Use `algebraicValuativeRel_valuativeExtension K Ω` as an intermediate fact. Use `algebraicTopology_isValuativeTopology K Ω` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: IsSepClosed Ω` using `IsSepClosure.sep_closed K`. Establish `hf` using `isLubinTateSeries_ltPoly π`. Establish `hu : u = 1`. Use `eq_one_of_forall_mem_unitFiltration fun n hn => ?_` and prove the remaining obligations. Use `mem_unitFiltration_of_mem_range_normUnits (Ω := Ω) hπ hf hn u 0 ?_` and prove the remaining obligations.
-
-Rewrite using `[unitUniformizerPow_eq, zpow_zero, one_mul, ← hxu]`. Conclude with `hnorm _`. Rewrite using `[hxu, hu, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injective_localArtinMap : Function.Injective (localArtinMap K Ω) := by
   rw [injective_iff_map_eq_one]

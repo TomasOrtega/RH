@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Establish `hw : w ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Establish `e : w⁻¹ - 1 = (1 - w) / w` using `by field_simp`. Rewrite `h` using `[e, norm_div, div_lt_one (norm_pos_iff.mpr hw)]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ‖1 - w‖ ^ 2 < ‖w‖ ^ 2`. Use `norm_nonneg (1 - w)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite `h2` using `[Complex.sq_norm, Complex.sq_norm, Complex.normSq_apply, Complex.normSq_apply]`. Simplify using `only [Complex.sub_re, Complex.sub_im, Complex.one_re, Complex.one_im] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -21,13 +21,13 @@ private theorem UpperTheory.Reformulated.B.Qk23.half_le_re {w : ℂ} (h : ‖w�
   nlinarith
 
 /- English proof (translation)
-Introduce `z h`. Assume the negation of the conclusion as `hz`. Establish `hd : 0 < ‖z - 1‖` using `norm_pos_iff.mpr (sub_ne_zero.mpr hz)`. Establish `hre : ∀ k : ℕ, (1 / 2 : ℝ) ≤ (z ^ k).re`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `UpperTheory.Reformulated.B.Qk23.half_le_re` to reduce the goal to its premises. Use `h (-(k : ℤ))` as an intermediate fact. Rewrite `this` using `[zpow_neg, zpow_natCast]`. Then use the resulting hypothesis. Take `⟨n, hn⟩` from `exists_nat_gt (2 / ‖z - 1‖)`. Rewrite `hn` using `[div_lt_iff₀ hd]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (n : ℝ) * (1 / 2) ≤ ‖∑ k ∈ Finset.range n, z ^ k‖`. Use `le_trans ?_ (Complex.re_le_norm _)` and prove the remaining obligations. Rewrite using `[Complex.re_sum]`. Use `Finset.card_nsmul_le_sum (Finset.range n) (fun k => (z ^ k).re) (1 / 2 : ℝ) (fun k _ => hre k)` as an intermediate fact. Rewrite `this` using `[Finset.card_range, nsmul_eq_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : ‖∑ k ∈ Finset.range n, z ^ k‖ * ‖z - 1‖ < 1`. Rewrite using `[← norm_mul, geom_sum_mul]`. Use `h (n : ℤ)` as an intermediate fact. Rewrite `this` using `[zpow_natCast]`. Then use the resulting hypothesis. Establish `h3` using `mul_le_mul_of_nonneg_right h1 hd.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/

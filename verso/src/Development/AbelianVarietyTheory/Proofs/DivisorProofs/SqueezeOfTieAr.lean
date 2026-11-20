@@ -14,13 +14,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.DV Formalism.MainNotions.Weig
 namespace GlobalTheory.Mean4O
 
 /- English proof (translation)
-Introduce `h1 h2 h3 D Y A hT L hs hn c e`. Take `⟨m, H, hsp, hnf, n, ν, r, hn0, hν, hSI, hg, hx₁, -, hr, hd⟩` from `hT.exists_rel hs hn c`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn0`. Establish `hpos : 0 < ν * (n : ℝ) ^ (dimY Y + 1)` using `by positivity`. Establish `key : ((dimY Y : ℝ) + 1) * (n * e) * gdeg H (dimY Y) = ν * (n : ℝ) ^ (dimY Y + 1) * (((dimY Y : ℝ) + 1) * e * Y.geoC L c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hg]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun hy => ?_, fun ⟨Z, hZ, hy⟩ => ?_⟩` and prove the remaining obligations. Use `GlobalTheory.T.self_intersection_lower_height h1 h3 m.k m.X m.p (dimY Y) m.av H _ (n * e) hsp hnf hSI (fun x hx => have ⟨y, h⟩ := hx₁ x hx ⟨_, (hr x y h).2.2, mul_le_mul_of_nonneg_left (hy _ (hr x y h).2.1) hn'.le⟩)` as an intermediate fact. Rewrite `this` using `[key]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `le_of_mul_le_mul_left this hpos`. Use `GlobalTheory.T.self_intersection_upper_dense_small h2 h3 m.k m.X m.p (dimY Y) m.av H _ (n * e) hsp hnf hSI (Dense.mono (fun x hx => by` as an intermediate fact. Take `⟨y, hyZ, h⟩` from `hx`. Conclude with `⟨(hr x y h).1, _, (hr x y h).2.2, mul_le_mul_of_nonneg_left (hy _ hyZ) hn'.le⟩) (hd Z hZ))`. Rewrite `this` using `[key]`.
-
-Conclude with `le_of_mul_le_mul_left this hpos`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem squeeze_of_tieAr : GlobalTheory.Published.VolNef → GlobalTheory.Published.VolGe → GlobalTheory.Published.ArCalc →
     ∀ (D : D7) (Y : ShimX D.what₂.Tau) (A : SlopeTestRemainingChoices Y), TieAr A → Squeeze A := by

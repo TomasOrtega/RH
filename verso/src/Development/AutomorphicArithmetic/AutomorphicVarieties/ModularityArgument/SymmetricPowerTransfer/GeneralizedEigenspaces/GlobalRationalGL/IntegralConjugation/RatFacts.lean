@@ -16,14 +16,14 @@ private theorem ratGL_val {L : Type} [Field L] [NumberField L] (n : ℕ) (g : GL
       (g : Matrix (Fin n) (Fin n) L).map (algebraMap L (Ad L)) := rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (ratGL_val n g)`.
+A detailed English derivation is pending.
 -/
 private theorem ratGL_map {L : Type} [Field L] [NumberField L] (n : ℕ) (g : GL (Fin n) L) :
     ratGL L n g = GeneralLinearGroup.map (algebraMap L (Ad L)) g :=
   Units.ext (ratGL_val n g)
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (L →+* ℂ)` from `inferInstance`. Introduce `x y h`. Establish `e` using `congrArg (fun z => coord τ (pInf L z)) h`. Simplify using `only [coord_algebraMap] at e`. Conclude with `τ.injective e`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem alg_inj {L : Type} [Field L] [NumberField L] [IsCMField L] :
     Function.Injective (algebraMap L (Ad L)) := by
@@ -42,23 +42,21 @@ private theorem loc_alg {L : Type} [Field L] [NumberField L] (w : Plc L) (x : L)
 end UpperTheory.V.Z.Sym.Dict.Br
 
 /- English proof (translation)
-Introduce `L _ _ _ n g`. Establish `hinj` using `alg_inj (L := L)`. Use `⟨?_, ?_, fun h => ⟨fun w => ?_, fun τ => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `key : Formalism.UG.cT (conjAd L) ((ratGL L n g : GL (Fin n) (Ad L)) : Matrix (Fin n) (Fin n) (Ad L)) * 1 * ((ratGL L n g : GL (Fin n) (Ad L)) : Matrix (Fin n) (Fin n) (Ad L)) = (((g : Matrix (Fin n) (Fin n) L).map (IsCMField.complexConj L))ᵀ * (g : Matrix (Fin n) (Fin n) L)).map …`. Rewrite using `[ratGL_val, mul_one, Formalism.UG.cT, Matrix.map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `i j`. Simplify using `[conjAd_algebraMap]`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (conjAd L) _ * 1 * _ = 1 ↔ _`. Rewrite using `[key]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Use extensionality with `i j`. Use `congrFun (congrFun e i) j` as an intermediate fact. Apply `hinj` to reduce the goal to its premises.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `this` using `[Matrix.map_apply]`. Rewrite using `[this, Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Introduce `e`. Rewrite using `[e]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `a b e`. Use extensionality with `i j`. Use `congrArg (fun x : GL (Fin n) (Ad L) => (x : Matrix (Fin n) (Fin n) (Ad L)) i j) e` as an intermediate fact. Simplify using `only [ratGL_val, Matrix.map_apply] at this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hinj this`. Conclude with `Matrix.ext fun i j => loc_alg w _`. Conclude with `Matrix.ext fun i j => coord_algebraMap τ _`. Establish `hd : ((GeneralLinearGroup.det (ratGL L n g) : (Ad L)ˣ) : Ad L) = algebraMap L (Ad L) ((GeneralLinearGroup.det g : Lˣ) : L)`. Rewrite using `[ratGL_map, GlobalTheory.CuspRep.det_map]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `e`. Rewrite `hd` using `[e]`. Apply `Units.ext` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hd]`. Simplify using the standard rewrite rules. Introduce `e`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hd, e]`.
-
-Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Dict.Br.ratFacts :
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (g : GL (Fin n) L), (ratGL L n g ∈ UA L n ↔ ((g : Matrix (Fin n) (Fin n) L).map (IsCMField.complexConj L))ᵀ * (g : Matrix (Fin n) (Fin n) L) = 1) ∧ Function.Injective (ratGL L n) ∧ ∀ h : ratGL L n g ∈ UA L n, (∀ w, mL w ⟨_, h⟩ = (g : Matrix (Fin n) (Fin n) L).map (algebraMap L (Kw w))) ∧ (∀ τ : L →+* ℂ, (cEmb τ ⟨_, h⟩ : Matrix (Fin n) (Fin n) ℂ) = (g : Matrix (Fin n) (Fin n) L).map τ) ∧ ((GeneralLinearGroup.det (ratGL L n g) = 1) ↔ GeneralLinearGroup.det g = 1) := by

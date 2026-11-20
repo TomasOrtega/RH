@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Apply the tactic sequence `simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.trace_fin_two, Matrix.det_fin_two] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ch2 {K : Type} [CommRing K] (M : Matrix (Fin 2) (Fin 2) K) :
     M * (M.trace • (1 : Matrix (Fin 2) (Fin 2) K) - M) = M.det • (1 : Matrix (Fin 2) (Fin 2) K) := by
@@ -12,13 +12,11 @@ private theorem ch2 {K : Type} [CommRing K] (M : Matrix (Fin 2) (Fin 2) K) :
     simp [Matrix.mul_apply, Fin.sum_univ_two, Matrix.trace_fin_two, Matrix.det_fin_two] <;> ring
 
 /- English proof (translation)
-Introduce `H K _ _ σ a c g t hu h x y`. Use `set P := σ x - a x • (1 : Matrix (Fin 2) (Fin 2) K) with hP`. Use `set M := σ g - t • (1 : Matrix (Fin 2) (Fin 2) K) with hM`. Establish `hQ : ∀ z, P * M * σ z = c z • (P * M)` using `fun z => by`. Use `h x z` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_sub, Matrix.mul_smul, mul_one, sub_eq_zero]`. Conclude with `this`. Establish `h0 : P * M * (σ y - c y • (1 : Matrix (Fin 2) (Fin 2) K)) = 0` using `h x y`. Establish `h1 : P * M * M = (c g - t) • (P * M)` using `by conv_lhs => rw [show P * M * M = P * M * (σ g - t • (1 : Matrix (Fin 2) (Fin 2) K)) from rfl]`. Rewrite using `[mul_sub, hQ, Matrix.mul_smul, mul_one, sub_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : M.det • P = (M.trace - (c g - t)) • (P * M)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ch2, Matrix.mul_smul, mul_one]`. Use `_ = _ := by rw [← mul_assoc, mul_sub, h1, Matrix.mul_smul, mul_one, ← sub_smul]`. Establish `h3 : M.det • (P * (σ y - c y • (1 : Matrix (Fin 2) (Fin 2) K))) = 0`.
-
-Rewrite using `[← Matrix.smul_mul, h2, Matrix.smul_mul, h0, smul_zero]`. Conclude with `(hu.smul_eq_zero).1 h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.frobenius_corner_order_skips :
     ∀ {H K : Type} [Group H] [CommRing K] (σ : H →* Matrix (Fin 2) (Fin 2) K) (a : H → K) (c : H →* K) (g₁ : H) (t : K), IsUnit (σ g₁ - t • (1 : Matrix (Fin 2) (Fin 2) K)).det → (∀ x y, (σ x - a x • (1 : Matrix (Fin 2) (Fin 2) K)) * (σ g₁ - t • (1 : Matrix (Fin 2) (Fin 2) K)) * (σ y - c y • (1 : Matrix (Fin 2) (Fin 2) K)) = 0) → ∀ x y, (σ x - a x • (1 : Matrix (Fin 2) (Fin 2) K)) * (σ y - c y • (1 : Matrix (Fin 2) (Fin 2) K)) = 0 := by

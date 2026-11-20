@@ -10,9 +10,9 @@ namespace GlobalTheory.JR.WeilQuad
 open scoped Pointwise
 
 /- English proof (translation)
-Use `haveI : IsTopologicalAddGroup A.L := IsModuleTopology.topologicalAddGroup F A.L`. Take `⟨Λ₀, ho, hc, hG⟩` from `h`. Take `⟨Λ₁, ho', hc', hG'⟩` from `h'`. Establish `hs : ((Λ₀ ⊔ Λ₁ : AddSubgroup A.L) : Set A.L) = (Λ₀ : Set A.L) + (Λ₁ : Set A.L)` using `AddSubgroup.add_normal Λ₀ Λ₁`. Establish `hO : IsOpen ((Λ₀ ⊔ Λ₁ : AddSubgroup A.L) : Set A.L)` using `AddSubgroup.isOpen_mono le_sup_left ho`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : IsCompact ((Λ₀ ⊔ Λ₁ : AddSubgroup A.L) : Set A.L)` using `by rw [hs]; exact hc.add hc'`. Rewrite using `[← hG _ hO hC le_sup_left, ← hG' _ hO hC le_sup_right]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isStableGauss_unique {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.K) (μ : Measure A.L) (u : A.K)
@@ -26,7 +26,7 @@ theorem isStableGauss_unique {F E : Type} [NontriviallyNormedField F] [Nontrivia
   rw [← hG _ hO hC le_sup_left, ← hG' _ hO hC le_sup_right]
 
 /- English proof (translation)
-Simplify using `[Et.absK]`.
+Simplify using the standard rewrite rules.
 -/
 theorem absK_units_mul {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] (A : Et F E) (a b : A.Kˣ) :
@@ -34,7 +34,7 @@ theorem absK_units_mul {F E : Type} [NontriviallyNormedField F] [NontriviallyNor
   simp [Et.absK]
 
 /- English proof (translation)
-Simplify using `only [Et.absK, Units.isUnit, dite_true, IsUnit.unit_of_val_units, ne_eq, NNReal.coe_eq_zero]`. Conclude with `((Group.isUnit a).map (distribHaarChar A.K)).ne_zero`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem absK_units_ne {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] (A : Et F E) (a : A.Kˣ) : A.absK (a : A.K) ≠ 0 := by
@@ -42,15 +42,15 @@ theorem absK_units_ne {F E : Type} [NontriviallyNormedField F] [NontriviallyNorm
   exact ((Group.isUnit a).map (distribHaarChar A.K)).ne_zero
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ x μ ω hH u G G₁ hG hG₁`. Establish `hω` using `hH.2.2.2.2`. Distinguish the cases in `hu : ∃ y, A.NL y = u`. Establish `h1` using `GlobalTheory.T.stableQuadraticGaussIntegral_mul_norm F E A ψ x μ ω hH 1 u hu G₁ (by simpa using hG₁)`. Rewrite `h1` using `[one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[isStableGauss_unique A ψ x μ _ hG h1, (hω u).1 hu]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨ϖ, hϖ, hGϖ⟩` from `GlobalTheory.T.exists_nonNorm_uniformizer_isStableGauss F E A ψ x μ ω hH G₁ hG₁`. Establish `hps : ϖ * (ϖ⁻¹ * u) = u` using `mul_inv_cancel_left ϖ u`. Establish `hs : ∃ y, A.NL y = ((ϖ⁻¹ * u : A.Kˣ) : A.K)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hs`. Establish `hm` using `(GlobalTheory.T.normGroupSign_mul_and_neg_one F E A ψ x μ ω hH).1 ϖ (ϖ⁻¹ * u)`. Rewrite `hm` using `[hps, (hω u).2 hu, (hω ϖ).2 hϖ, (hω _).2 hs]`. Evaluate the numerical expressions using `at hm`. Establish `h2` using `GlobalTheory.T.stableQuadraticGaussIntegral_mul_norm F E A ψ x μ ω hH ϖ (ϖ⁻¹ * u) hs _ hGϖ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite `h2` using `[hps]`. Rewrite using `[isStableGauss_unique A ψ x μ _ hG h2, (hω u).2 hu]`. Establish `e1` using `absK_units_ne A ϖ`. Establish `e2` using `absK_units_ne A (ϖ⁻¹ * u)`. Use `conv_rhs => rw [← hps, absK_units_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem gauss_transform : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (x : A.Kˣ) (μ : Measure A.L) (ω : A.K → ℂ), Hyp A ψ x μ ω → ∀ (u : A.Kˣ) (G G₁ : ℂ), IsStableGauss A ψ x μ u G → IsStableGauss A ψ x μ 1 G₁ → G = G₁ * ω u * ((A.absK u : ℂ))⁻¹ := by
   intro F E _ _ _ _ _ A ψ x μ ω hH u G G₁ hG hG₁

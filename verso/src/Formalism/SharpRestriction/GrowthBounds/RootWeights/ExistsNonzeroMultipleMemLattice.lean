@@ -10,7 +10,7 @@ namespace Formalism.MainNotions.G.GLWeightTheory
 open Formalism.MainNotions.G Formalism.MainNotions.CovariantDegrees
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hfg, hM⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_full_submodule_isLattice {O : Type} [CommRing O] [IsDomain O]
     {V : Type} [AddCommGroup V] [Module (KK O) V] [Module O V] [IsScalarTower O (KK O) V]
@@ -18,7 +18,7 @@ theorem finite_full_submodule_isLattice {O : Type} [CommRing O] [IsDomain O]
   ⟨hfg, hM⟩
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact Bl.general_b_fact_left_version.goal1 .. | (apply Bl.general_b_fact_left_version.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_version.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_version.goal1 <;> assumption) | (intros; apply @Bl.general_b_ …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_nonzero_multiple_mem_lattice {O : Type} [CommRing O] [IsDomain O]
     {V : Type} [AddCommGroup V] [Module (KK O) V] [Module O V] [IsScalarTower O (KK O) V]
@@ -26,15 +26,15 @@ theorem exists_nonzero_multiple_mem_lattice {O : Type} [CommRing O] [IsDomain O]
   first | exact Bl.general_b_fact_left_version.goal1 .. | (apply Bl.general_b_fact_left_version.goal1 <;> assumption) | (intros; apply Bl.general_b_fact_left_version.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_version.goal1 <;> assumption) | (intros; apply @Bl.general_b_fact_left_version.goal1 <;> assumption) | (apply @Bl.general_b_fact_left_version.goal1 <;> first | assumption | infer_instance)
 
 /- English proof (translation)
-Introduce `O _ _ _ V _ _ _ _ _ M hfg hM t z hz`. Establish `: Submodule.IsLattice (KK O) M` using `finite_full_submodule_isLattice M hfg hM`. Set `b` to `Module.finBasis O M`. Set `B` to `b.extendOfIsLattice (KK O)`. Establish `hB : ∀ i, B i = ((b i : M) : V)` using `fun i => Module.Basis.extendOfIsLattice_apply (KK O) b i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcoord : ∀ i, ∀ x ∈ M, ∃ o : O, B.coord i x = algebraMap O (KK O) o`. Introduce `i x hx`. Use `⟨b.repr ⟨x, hx⟩ i, ?_⟩` and prove the remaining obligations. Establish `h1 : x = ∑ j, (algebraMap O (KK O) (b.repr ⟨x, hx⟩ j)) • B j`. Establish `h2` using `congrArg (fun y : M => (y : V)) (b.sum_repr ⟨x, hx⟩)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h2`. Use `h2.symm.trans ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hB, algebraMap_smul]`. Use `conv_lhs => rw [h1]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[Module.Basis.coord_apply, Finsupp.single_apply, Algebra.algebraMap_eq_smul_one]`. Use `choose o ho using fun i => hz (B.coord i) (hcoord i)`. Use `⟨∑ i, o i • ((b i : M) : V), M.sum_mem fun i _ => M.smul_mem _ (b i).2, ?_⟩` and prove the remaining obligations. Rewrite using `[← B.sum_repr z, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `ho i` as an intermediate fact. Rewrite `this` using `[Module.Basis.coord_apply]`. Rewrite using `[this, hB, mul_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_lattice_values_mem_scaled : DualLatticeDivisibility := by
   intro O _ _ _ V _ _ _ _ _ M hfg hM t z hz
@@ -62,23 +62,21 @@ theorem dual_lattice_values_mem_scaled : DualLatticeDivisibility := by
   rw [this, hB, mul_smul, algebraMap_smul]
 
 /- English proof (translation)
-Introduce `O _ _ _ V _ _ _ _ _ M hfg hM H`. Set `N : Submodule O H` to `M.comap (H.subtype.restrictScalars O)`. Establish `hmemN : ∀ x : H, x ∈ N ↔ (x : V) ∈ M` using `fun x => Iff.rfl`. Establish `hNoeM : IsNoetherian O M` using `isNoetherian_of_fg_of_noetherian M hfg`. Set `φ : N →ₗ[O] M` to `{ toFun := fun x => ⟨((x : H) : V), (hmemN x.1).1 x.2⟩ map_add' := fun x y => rfl map_smul' := fun a x => rfl }`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ : Function.Injective φ`. Introduce `x y hxy`. Establish `: ((x : H) : V) = ((y : H) : V)` using `congrArg (fun w : M => (w : V)) hxy`. Conclude with `Subtype.ext (Subtype.ext this)`. Establish `hNoeN : IsNoetherian O N` using `isNoetherian_of_injective φ hφ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNfg : N.FG` using `(Module.Finite.iff_fg).1 inferInstance`. Establish `hNspan : Submodule.span (KK O) (N : Set H) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨a, ha, hax⟩` from `exists_nonzero_multiple_mem_lattice M hM (x : V)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ha1 : algebraMap O (KK O) a ≠ 0` using `(map_ne_zero_iff (algebraMap O (KK O)) (IsFractionRing.injective O (KK O))).2 ha`. Establish `hmem : a • x ∈ N` using `(hmemN _).2 (by simpa using hax)`. Establish `hx : x = (algebraMap O (KK O) a)⁻¹ • (a • x)`. Rewrite using `[← algebraMap_smul (KK O) a x, smul_smul, inv_mul_cancel₀ ha1, one_smul]`. Rewrite using `[hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`. Establish `: Submodule.IsLattice (KK O) N` using `⟨hNfg, hNspan⟩`. Set `b` to `Module.finBasis O N`. Set `B` to `b.extendOfIsLattice (KK O)`. Establish `hB : ∀ i, B i = ((b i : N) : H)` using `fun i => Module.Basis.extendOfIsLattice_apply (KK O) b i`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Module.finrank O N, fun j => (((b j : N) : H) : V), fun j => ⟨(hmemN _).1 (b j).2, (b j : H).2⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `B.linearIndependent.map' H.subtype (Submodule.ker_subtype H)`. Establish `h2 : (fun j => (((b j : N) : H) : V)) = (H.subtype ∘ B)`. Use function extensionality and compare the values at `j`. Simplify using `[hB]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[h2]`. Conclude with `h1`. Introduce `x hx`. Establish `h1` using `congrArg (fun y : H => (y : V)) (B.sum_repr ⟨x, hx⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1]`. Use `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, ?_⟩)` and prove the remaining obligations. Simplify using `[hB]`. Introduce `x hxM hxH`. Use `⟨fun j => b.repr ⟨⟨x, hxH⟩, (hmemN _).2 hxM⟩ j, ?_⟩` and prove the remaining obligations.
-
-Establish `h1` using `congrArg (fun y : N => ((y : H) : V)) (b.sum_repr ⟨⟨x, hxH⟩, (hmemN _).2 hxM⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h1`. Conclude with `h1.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lattice_inter_subspace_basis : LatticeSubspaceBasis := by
   intro O _ _ _ V _ _ _ _ _ M hfg hM H

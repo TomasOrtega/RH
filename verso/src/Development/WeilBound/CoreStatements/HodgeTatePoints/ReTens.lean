@@ -20,11 +20,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace PositivityTheory.HtPt.Re
 
 /- English proof (translation)
-Introduce `p _ C _ _ _ v R _ _ _ _ N₁ _ _ _ N₂ _ _ _ A₁ A₂`. Use `⟨PositivityTheory.HtPt.Re.hopfProd A₁ A₂, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[PositivityTheory.HtPt.Re.hopfProd_carrier]`. Both sides reduce to the same expression. Rewrite using `[PositivityTheory.HtPt.Re.hopfProd_carrier]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PositivityTheory.HtPt.Re.tn_inl A₁ A₂`. Rewrite using `[PositivityTheory.HtPt.Re.hopfProd_carrier]`. Conclude with `PositivityTheory.HtPt.Re.tn_inr A₁ A₂`. Rewrite using `[PositivityTheory.HtPt.Re.hopfProd_carrier]`. Conclude with `PositivityTheory.HtPt.Re.tn_stab₁ A₁ A₂`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PositivityTheory.HtPt.Re.hopfProd_carrier]`. Conclude with `PositivityTheory.HtPt.Re.tn_stab₂ A₁ A₂`. Introduce `c₁ c₂ h₁ h₂`. Rewrite using `[PositivityTheory.HtPt.Re.hopfProd_carrier]`. Conclude with `PositivityTheory.HtPt.Re.hasColen_tn h₁ h₂`.
+A detailed English derivation is pending.
 -/
 theorem tens_hopf : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (R : Type) [CommRing R] [Algebra R C], v.Integers R → v (p : C) < 1 → ∀ (N₁ : Type) [AddCommGroup N₁] [Fintype N₁] [DecidableEq N₁], ∀ (N₂ : Type) [AddCommGroup N₂] [Fintype N₂] [DecidableEq N₂], ∀ (A₁ : HopfOrder (C := C) R N₁) (A₂ : HopfOrder (C := C) R N₂), ∃ AA : HopfOrder (C := C) R (N₁ × N₂), AA.carrier = tens A₁.carrier A₂.carrier ∧ AA.carrier.map (LinearMap.funLeft R C (AddMonoidHom.inl N₁ N₂ : N₁ → N₁ × N₂)) = A₁.carrier ∧ AA.carrier.map (LinearMap.funLeft R C (AddMonoidHom.inr N₁ N₂ : N₂ → N₁ × N₂)) = A₂.carrier ∧ (∀ g ∈ AA.carrier, (fun z : N₁ × N₂ => g (z.1, 0)) ∈ AA.carrier) ∧ (∀ g ∈ AA.carrier, (fun z : N₁ × N₂ => g (0, z.2)) ∈ AA.carrier) ∧ ∀ c₁ c₂, HasColen R v A₁.carrier c₁ → HasColen R v A₂.carrier c₂ → HasColen R v AA.carrier (c₁ ^ Fintype.card N₂ * c₂ ^ Fintype.card N₁) := by
   intro p _ C _ _ _ v R _ _ _ _ N₁ _ _ _ N₂ _ _ _ A₁ A₂

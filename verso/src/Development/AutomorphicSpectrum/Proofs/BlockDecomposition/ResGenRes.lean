@@ -8,9 +8,9 @@ namespace GlobalTheory.CompanionTheory.EtRoot
 open CochainComplex CochainComplex.HomComplex
 
 /- English proof (translation)
-Unfold `twGen Sec.res ofRings.sec`. Establish `h` using `NatTrans.naturality_apply (toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)) g.op (Submodule.Quotient.mk (Finsupp.single ζ 1) : (Scheme.Γ ⋙ twF q i).obj (op U))`. Establish `h2 : ((Scheme.Γ ⋙ twF q i).map g.op).hom (Submodule.Quotient.mk (Finsupp.single ζ 1)) = (Submodule.Quotient.mk (Finsupp.single (primRes g ζ) 1) : (Scheme.Γ ⋙ twF q i).obj (op V))`. Simplify using `only [Functor.comp_map, twF, ModuleCat.hom_ofHom]`. Use `erw [Submodule.mapQ_apply, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `primRes`. Rewrite using `[Scheme.Γ_map_op]`. Conclude with `h.symm.trans (congrArg (ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op V))) h2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twGen_res {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (twGen i ζ) = twGen i (primRes g ζ) := by
@@ -26,7 +26,7 @@ theorem twGen_res {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Pri
   exact h.symm.trans (congrArg (ModuleCat.Hom.hom ((toSheafify Scheme.etaleTopology (Scheme.Γ ⋙ twF q i)).app (op V))) h2)
 
 /- English proof (translation)
-Unfold `resGen`. Rewrite using `[← twGen_res i g ζ]`. Unfold `Sec.res Sec.map`. Conclude with `(NatTrans.naturality_apply (resι (ZMod q) (tw q i)).hom g.op (twGen i ζ)).symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem resGen_res {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Prim q Γ(U, ⊤)) :
     Sec.res g (resGen i ζ) = resGen i (primRes g ζ) := by
@@ -36,9 +36,9 @@ theorem resGen_res {q : ℕ} (i : ℤ) {V U : Scheme.{0}} (g : V ⟶ U) (ζ : Pr
   exact (NatTrans.naturality_apply (resι (ZMod q) (tw q i)).hom g.op (twGen i ζ)).symm
 
 /- English proof (translation)
-Introduce `hC hZ q i X ζ`. Use `⟨fun V g => ⟨twGen_res i g ζ, resGen_res i g ζ⟩, ?_⟩` and prove the remaining obligations. Establish `hd : Sec.map ((res (ZMod q) (tw q i)).d 0 1) (resGen i ζ) = 0` using `((hZ (ZMod q) (tw q i) X).2.1 (resGen i ζ)).mpr ⟨twGen i ζ, rfl⟩`. Take `⟨α, hα⟩` from `(hC (ZMod q) (res (ZMod q) (tw q i)) X 0 (resGen i ζ)).1 hd`. Take `⟨β, hβ1, hβ2⟩` from `GlobalTheory.EtC.pick_spec (P := fun c => ∃ α : Cocycle ((chains (ZMod q)).obj (sch.obj X)) (res (ZMod q) (tw q i)) 0, CohomologyClass.mk α = c ∧ ∀ (U : Scheme) (x : U ⟶ X), ev (R := ZMod q) (E := sch.obj X) (I := res (ZMod q) (tw q i)) (n := 0) (↑α) 0 0 (by simp) U x = Sec.res x …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Unfold `CrystallineSemistableComparison.E.Rep GlobalTheory.EtC.rootClass`. Use `⟨β, hβ1, (hβ2 X (𝟙 X)).trans ?_⟩` and prove the remaining obligations. Unfold `Sec.res`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem repRoot : CrystallineSemistableComparison.E.RepConc → CrystallineSemistableComparison.E.ResZero → CrystallineSemistableComparison.E.RepRoot := by
   intro hC hZ q i X ζ

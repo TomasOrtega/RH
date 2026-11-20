@@ -7,11 +7,9 @@ open scoped ENNReal Classical
 open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi
 
 /- English proof (translation)
-Use `set y := A⁻¹.mulVec s with hy`. Establish `hs : A.mulVec y = s`. Rewrite using `[hy, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (Ne.isUnit hA), Matrix.one_mulVec]`. Establish `e : ∑ m, s m * v m = ∑ a, (∑ m, A m a * v m) * y a`. Rewrite using `[← hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun m _ => by ring`. Rewrite using `[e, GlobalTheory.ChowHt.frameNorm, Real.sq_sqrt (Finset.sum_nonneg fun _ _ => sq_nonneg _), ← hy]`. Use `le_trans ?_ (Finset.sum_mul_sq_le_sq_mul_sq _ _ _)` and prove the remaining obligations.
-
-Use `pow_le_pow_left₀ (norm_nonneg _) ((norm_sum_le _ _).trans (le_of_eq ?_)) 2` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun a _ => norm_mul _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cs_frame {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (hA : A.det ≠ 0) (s v : Fin N → ℂ) :
     ‖∑ m, s m * v m‖ ^ 2 ≤ (∑ a, ‖∑ m, A m a * v m‖ ^ 2) * GlobalTheory.ChowHt.frameNorm A s ^ 2 := by
@@ -29,21 +27,19 @@ private theorem cs_frame {N : ℕ} (A : Matrix (Fin N) (Fin N) ℂ) (hA : A.det 
   exact Finset.sum_congr rfl fun a _ => norm_mul _ _
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c r U x D V dict Z G hG σ hd hspan N n b g A hF κ hκ hκσ τ t f hf z hz`. Take `⟨hz1, hz2⟩` from `hz`. Establish `hz : z ∈ framesOn (U (goodOf c σ)) Z` using `⟨hz1, hz2⟩`. Establish `hN : ∀ (G' : WTZ E) (f' : Rul Xo c), homN (U (goodOf c σ)) x G' f' z = GlobalTheory.DegTop.normFac (U (goodOf c σ)) x G' z * ‖rdU (U (goodOf c σ)) f' z.1 z.2‖` using `fun G' f' => GlobalTheory.DegTop.homN_eq x _ G' f' z`. Establish `hpos` using `GlobalTheory.DegTop.normFac_pos x (U (goodOf c σ)) G hz1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set F := GlobalTheory.DegTop.normFac (U (goodOf c σ)) x G z with hFdef`. Use `set S := ∑ a, ‖∑ m, A σ m a * κ (rdU (U (goodOf c σ)) (b m : Rul Xo c) z.1 z.2)‖ ^ 2 with hS`. Establish `hS0 : 0 ≤ S` using `Finset.sum_nonneg fun _ _ => sq_nonneg _`. Establish `hB0 : 0 ≤ F ^ 2 * S` using `by positivity`. Establish `h1` using `hf.2 _ (goodEmb_goodOf c σ) ⟨z.1, z.2, hz1⟩ hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `GlobalTheory.CompHS.bergOn_le_bergCusp (x := x) hd hspan ⟨z.1, z.2, hz1⟩ hz`. Establish `h3 : GlobalTheory.CompHS.bergCusp U x V dict Z G σ z ≤ ENNReal.ofReal (F ^ 2 * S)`. Rewrite using `[GlobalTheory.CompHS.bergCusp_le_iff hB0]`. Introduce `f' hf'`. Establish `e1` using `hF.norm σ ⟨f', hf'⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : f' = ∑ m, b.repr ⟨f', hf'⟩ m • (b m : Rul Xo c)`. Use `congrArg Subtype.val (b.sum_repr ⟨f', hf'⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.symm`. Establish `e3 : κ (rdU (U (goodOf c σ)) f' z.1 z.2) = ∑ m, σ (b.repr ⟨f', hf'⟩ m) * κ (rdU (U (goodOf c σ)) (b m : Rul Xo c) z.1 z.2)` using `by conv_lhs => rw [e2]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, Finset.sum_apply, Finset.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, map_mul]`. Use `congr 1`. Conclude with `congrArg (fun φ : c.F →+* ℂ => φ (b.repr ⟨f', hf'⟩ m)) hκσ`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e4` using `cs_frame (A σ) (hF.herm σ) (fun m => σ (b.repr ⟨f', hf'⟩ m)) (fun m => κ (rdU (U (goodOf c σ)) (b m : Rul Xo c) z.1 z.2))`. Rewrite `e4` using `[← e3, hκ, e1]`. Rewrite using `[hN, mul_pow, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left e4 (sq_nonneg _)`. Establish `h4` using `h1.trans (mul_le_mul_right (pow_le_pow_left' (h2.trans h3) τ) _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5 : homN (U (goodOf c σ)) x (τ • G) f z = F ^ τ * ‖rdU (U (goodOf c σ)) (f : Rul Xo c) z.1 z.2‖`. Rewrite using `[hN, GlobalTheory.DegTop.normFac_nsmul x _ hG hz1]`. Establish `h6 : ENNReal.ofReal (homN (U (goodOf c σ)) x (τ • G) f z ^ 2) ≤ ENNReal.ofReal (Real.exp (2 * τ * t) * (F ^ 2 * S) ^ τ)`. Rewrite using `[ENNReal.ofReal_pow (homN_nonneg _ _ _ _ _), ENNReal.ofReal_mul (Real.exp_pos _).le, ENNReal.ofReal_pow hB0]`. Conclude with `h4`.
-
-Rewrite `h6` using `[ENNReal.ofReal_le_ofReal_iff (by positivity), h5]`. Use `le_of_mul_le_mul_left (a := (F ^ τ) ^ 2) ?_ (by positivity)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.even_weight_dictionary_frame :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (r : ℕ) (U : ∀ σ : c.F →+* ℂ, Unf Xo c σ r) (x : ℝ) (D : D7) (V : (c.F →+* ℂ) → HSp D) (dict : ∀ σ, GA D (V σ) → Σ k, Frame ((U σ).X k).Ψ r) (Z : Comp Xo c) (G : WTZ E), Even G.2 → ∀ (σ : c.F →+* ℂ), (∀ g, (dict (goodOf c σ) g).2 ∈ ((U (goodOf c σ)).X (dict (goodOf c σ) g).1).dom) → (∀ P ∈ holSub (U (goodOf c σ)).X (modelWt (U (goodOf c σ)) G), ∃ Q ∈ Submodule.span ℂ (rdU (U (goodOf c σ)) '' (cuspOn U Z G : Set (Rul Xo c))), ∀ w ∈ framesOn (U (goodOf c σ)) Z, P w.1 w.2 = Q w.1 w.2) → ∀ (N n : ℕ) (b : Module.Basis (Fin N) c.F (cuspOn U Z G)) (g : Matrix (Fin N) (Fin n) c.F) (A : (c.F →+* ℂ) → Matrix (Fin N) (Fin N) ℂ), GlobalTheory.CompHt.IsFrame (normOn U x V dict Z G) (latOn U Z G) b g A → ∀ (κ : ℂ →+* ℂ), (∀ a, ‖κ a‖ = ‖a‖) → κ.comp (goodOf c σ) = σ → ∀ (τ : ℕ) (t : ℝ), ∀ f ∈ smallL U x V dict Z G τ t, ∀ z ∈ framesOn (U (goodOf c σ)) Z, ‖rdU (U (goodOf c σ)) (f : Rul Xo c) z.1 z.2‖ ^ 2 ≤ Real.exp (2 * τ * t) * (∑ a, ‖∑ m, A σ m a * κ (rdU (U (goodOf c σ)) (b m : Rul Xo c) z.1 z.2)‖ ^ 2) ^ τ := by

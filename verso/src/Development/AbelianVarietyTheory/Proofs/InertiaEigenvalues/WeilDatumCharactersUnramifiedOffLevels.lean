@@ -25,15 +25,13 @@ open GlobalTheory.IdemSupport
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `u hu`. Establish `hΦ : Comp D (GlobalTheory.LFun.EulerTie.finComp D.host.F D.host.E)`. Take `⟨a, b, c, d, e⟩` from `(GlobalTheory.LFun.EulerTie.comp_finComp (F := D.host.F) (E := D.host.E))`. Conclude with `⟨a, b, c, d, e⟩`. Take `⟨e, f, hp⟩` from `exists_isPrimeIdem hΦ w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `hd` using `(of_isPrimeIdem hΦ hp).1`. Establish `hee : e * e = e` using `delta_idem hΦ hd`. Establish `hfe : f * e = e`. Break down `hp with ⟨hi, rfl⟩ | ⟨rfl, -, -⟩` into its components or cases. Establish `ho : e * cA D e = 0` using `hi.1.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Take the linear combination `hee + ho`. Conclude with `hee`. Take `⟨h1, h2⟩` from `(GlobalTheory.LFun.EulerTie.isUnitAt_iff w u).1 hu`. Establish `hg : e * ((GlobalTheory.LFun.locIdele D.host.F w u : (AE D)ˣ) : AE D) + (1 - e) = ((GlobalTheory.LFun.locIdele D.host.F w u : (AE D)ˣ) : AE D)` using `GlobalTheory.LFun.EulerTie.glue_eq_locIdele hd (GlobalTheory.LFun.EulerTie.finComp_locIdele_self w u)`. Establish `hx : f * (((GlobalTheory.LFun.locIdele D.host.F w u : (AE D)ˣ) : AE D) - 1) = ((GlobalTheory.LFun.locIdele D.host.F w u : (AE D)ˣ) : AE D) - 1`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(((GlobalTheory.LFun.locIdele D.host.F w u : (AE D)ˣ) : AE D) - 1) * hfe + (1 - f) * hg`. Establish `i1` using `(GlobalTheory.LFun.EulerTie.locIdele_int_iff (F := D.host.F) w u).2 h1`. Establish `i2` using `(GlobalTheory.LFun.EulerTie.locIdele_int_iff (F := D.host.F) w u⁻¹).2 h2`. Rewrite `i2` using `[map_inv]`. Use `h e f hp _ hx i1 i2` as an intermediate fact.
-
-Conclude with `(congrArg Circle.toUnits this).trans (map_one _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unrAt_of_unrPl {w : HeightOneSpectrum (𝓞 D.host.E)} {χ : (AE D)ˣ →* Circle} (h : GlobalTheory.Hk3.UnrPl w χ) :
     GlobalTheory.LFun.UnrAt χ w := by
@@ -63,11 +61,11 @@ theorem unrAt_of_unrPl {w : HeightOneSpectrum (𝓞 D.host.E)} {χ : (AE D)ˣ �
   exact (congrArg Circle.toUnits this).trans (map_one _)
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `exists_comp D`. Introduce `PP hPP`. Establish `key : PP.under (𝓞 D.host.F) ≠ v`. Introduce `hu`. Take `⟨e, f', hp⟩` from `exists_isPrimeIdem hΦ PP`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, ε, hε, hf'⟩` from `of_isPrimeIdem hΦ hp`. Take `⟨ε', hε', rfl⟩` from `hf`. Rewrite `hε` using `[hu]`. Conclude with `hv PP hPP e f' hp (by rw [hf', placeIdem_unique hε hε'])`. Use `⟨fun h => key (h ▸ hw), fun h => key ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hw, (isConjPl_iff PP w).1 h, under_cP]`.
+A detailed English derivation is pending.
 -/
 theorem good_of_ne {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (t : T) {v : HeightOneSpectrum (𝓞 D.host.F)}
@@ -86,7 +84,7 @@ theorem good_of_ne {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.
   rw [← hw, (isConjPl_iff PP w).1 h, under_cP]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F hL i t v f hf hv w hw`. Take `⟨he, hm⟩` from `GlobalTheory.UnrOffLevels.unrPl_of_good R F hL.lev t w (good_of_ne R t hf hv hw)`. Establish `a` using `unrAt_of_unrPl (hm ((i : ℕ) + 1) (by omega) (by have := i.isLt; omega))`. Establish `b` using `unrAt_of_unrPl he`. Conclude with `⟨a, a.mul b.inv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem chrTh_unrAt : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → ∀ (i : Fin D.R.m) (t : T) (v : HeightOneSpectrum (𝓞 D.host.F)) (f : AE D), IsFinIdem D v f → (∀ P, P ∈ R.Pg ∨ P ∈ R.Q t → ∀ e f', IsPrimeIdem P e f' → f' ≠ f) → ∀ w : HeightOneSpectrum (𝓞 D.host.E), w.under (𝓞 D.host.F) = v → GlobalTheory.LFun.UnrAt (Formalism.IndefR.Lift.chrTh (R.toLevCh.mu t) R.eta ((i : ℕ) + 1)).1 w ∧ GlobalTheory.LFun.UnrAt (Formalism.IndefR.Lift.chrTh (R.toLevCh.mu t) R.eta ((i : ℕ) + 1)).2 w := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F hL i t v f hf hv w hw

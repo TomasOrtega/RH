@@ -28,7 +28,7 @@ theorem tm_tmul {B : Type} [AddCommGroup B] [Module ℚ_[l] B] (f : V →ₗ[A] 
 variable (φ : G →* GQ l) {ρ : Representation A G V} {ρ' : Representation A G V'} (f : V →ₗ[A] V')
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => exact congrArg (· ⊗ₜ _) (hf v)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tm_actC (g : G) (hf : ∀ x, f (ρ g x) = ρ' g (f x)) (y : V ⊗[ℚ_[l]] Bcr l) :
     tm l _ f (actC φ ρ g y) = actC φ ρ' g (tm l _ f y) := by
@@ -38,7 +38,7 @@ theorem tm_actC (g : G) (hf : ∀ x, f (ρ g x) = ρ' g (f x)) (y : V ⊗[ℚ_[l
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => exact congrArg (· ⊗ₜ _) (hf v)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tm_actD (g : G) (hf : ∀ x, f (ρ g x) = ρ' g (f x)) (y : V ⊗[ℚ_[l]] Bdr l) :
     tm l _ f (actD φ ρ g y) = actD φ ρ' g (tm l _ f y) := by
@@ -48,16 +48,16 @@ theorem tm_actD (g : G) (hf : ∀ x, f (ρ g x) = ρ' g (f x)) (y : V ⊗[ℚ_[l
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-The claim follows from `(mem_Dcr _ _ _).2 fun g => by rw [← tm_actC φ f g (hf g), (mem_Dcr _ _ _).1 hy]`.
+A detailed English derivation is pending.
 -/
 theorem tm_Dcr (hf : ∀ g x, f (ρ g x) = ρ' g (f x)) {y : V ⊗[ℚ_[l]] Bcr l} (hy : y ∈ Dcr φ ρ) :
     tm l _ f y ∈ Dcr φ ρ' :=
   (mem_Dcr _ _ _).2 fun g => by rw [← tm_actC φ f g (hf g), (mem_Dcr _ _ _).1 hy]
 
 /- English proof (translation)
-Use `⟨(mem_Ddr _ _ _).2 fun g => by rw [← tm_actD φ f g (hf g), (mem_Ddr _ _ _).1 hy.1], ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `hy.2`. Use `⟨tm l _ f z, ?_⟩` and prove the remaining obligations. Use `clear hy`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tm_FilD (hf : ∀ g x, f (ρ g x) = ρ' g (f x)) {i : ℤ} {y : V ⊗[ℚ_[l]] Bdr l} (hy : y ∈ FilD φ ρ i) :
     tm l _ f y ∈ FilD φ ρ' i := by
@@ -71,9 +71,9 @@ theorem tm_FilD (hf : ∀ g x, f (ρ g x) = ρ' g (f x)) {i : ℤ} {y : V ⊗[�
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, LinearMap.zero_apply]`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul a k`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => exact congrArg (· ⊗ₜ _) (f.map_smul a v)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tm_smulC (K : FinExt l) (c : A ⊗[ℚ_[l]] ↥(K0 K)) (y : V ⊗[ℚ_[l]] Bcr l) :
     tm l _ f (smulC V K c y) = smulC V' K c (tm l _ f y) := by
@@ -87,9 +87,9 @@ theorem tm_smulC (K : FinExt l) (c : A ⊗[ℚ_[l]] ↥(K0 K)) (y : V ⊗[ℚ_[l
     | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `c using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, LinearMap.zero_apply]`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Consider the case `tmul a k`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => exact congrArg (· ⊗ₜ _) (f.map_smul a v)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tm_smulD (K : FinExt l) (c : A ⊗[ℚ_[l]] ↥K.1) (y : V ⊗[ℚ_[l]] Bdr l) :
     tm l _ f (smulD V K c y) = smulD V' K c (tm l _ f y) := by
@@ -103,7 +103,7 @@ theorem tm_smulD (K : FinExt l) (c : A ⊗[ℚ_[l]] ↥K.1) (y : V ⊗[ℚ_[l]] 
     | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, smul_zero]`. Consider the case `tmul v b => exact congrArg (_ ⊗ₜ ·) (one_smul ↥(K0 K) b)`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem smulC_one (K : FinExt l) (a : A) (y : V ⊗[ℚ_[l]] Bcr l) :
     smulC V K (a ⊗ₜ[ℚ_[l]] (1 : ↥(K0 K))) y = a • y := by
@@ -131,7 +131,7 @@ abbrev inc (B : Type) [AddCommGroup B] [Module ℚ_[l] B] (a : Fin n) :
 variable {B : Type} [AddCommGroup B] [Module ℚ_[l] B]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => by_cases h : a = b <;> simp [tm_tmul, h]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]; split_ifs <;> simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pr_inc (a b : Fin n) (x : A ⊗[ℚ_[l]] B) : pr l B a (inc l B b x) = if a = b then x else 0 := by
   induction x using TensorProduct.induction_on with
@@ -140,7 +140,7 @@ theorem pr_inc (a b : Fin n) (x : A ⊗[ℚ_[l]] B) : pr l B a (inc l B b x) = i
   | add x y hx hy => rw [map_add, map_add, hx, hy]; split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v c => simp [tm_tmul, ← sum_tmul, Finset.univ_sum_single]`. Consider the case `add x y hx hy => simp only [map_add, Finset.sum_add_distrib, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sum_inc_pr (y : (Fin n → A) ⊗[ℚ_[l]] B) : ∑ a, inc l B a (pr l B a y) = y := by
   induction y using TensorProduct.induction_on with
@@ -154,14 +154,14 @@ variable {ρ : G →* GL (Fin n) A} {κ : Fin n → G →* Aˣ}
 include hρ
 
 /- English proof (translation)
-Simplify using `[colRep, chRep, hρ, Matrix.mulVec_diagonal]`.
+Simplify using the standard rewrite rules.
 -/
 theorem proj_diag (a : Fin n) (g : G) (x : Fin n → A) :
     (LinearMap.proj a : (Fin n → A) →ₗ[A] A) (colRep ρ g x) = chRep (κ a) g (LinearMap.proj (R := A) a x) := by
   simp [colRep, chRep, hρ, Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Use extensionality with `b`. Apply the tactic sequence `by_cases h : b = a <;> simp [colRep, chRep, hρ, Matrix.mulVec_diagonal, h]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem single_diag (a : Fin n) (g : G) (x : A) :
     LinearMap.single A (fun _ => A) a (chRep (κ a) g x) = colRep ρ g (LinearMap.single A (fun _ => A) a x) := by
@@ -169,7 +169,7 @@ theorem single_diag (a : Fin n) (g : G) (x : A) :
   by_cases h : b = a <;> simp [colRep, chRep, hρ, Matrix.mulVec_diagonal, h]
 
 /- English proof (translation)
-Use `⟨fun h a => tm_FilD φ _ (proj_diag hρ a) h, fun h => ?_⟩` and prove the remaining obligations. Rewrite using `[← sum_inc_pr y]`. Conclude with `Submodule.sum_mem _ fun a _ => tm_FilD φ _ (single_diag hρ a) (h a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_FilD_diag (φ : G →* GQ l) (i : ℤ) (y : (Fin n → A) ⊗[ℚ_[l]] Bdr l) :
     y ∈ FilD φ (colRep ρ) i ↔ ∀ a, pr l _ a y ∈ FilD φ (chRep (κ a)) i := by
@@ -188,19 +188,17 @@ variable {A : Type} [CommRing A] [Algebra ℚ_[l] A] {n : ℕ} {K : FinExt l}
 include hρ
 
 /- English proof (translation)
-Establish `step : ∀ a i, w a ≠ i → ∀ y ∈ FilD (GK K).subtype (chRep (κ a)) i, y ∈ FilD (GK K).subtype (chRep (κ a)) (i + 1)`. Introduce `a i h y hy`. Break down `lt_or_gt_of_ne h with h | h` into its components or cases. Rewrite `hy` using `[(hF a i).2 h, Submodule.mem_bot]`. Conclude with `hy ▸ Submodule.zero_mem _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hF a _).1 (Int.add_one_le_of_lt h)]`. Conclude with `hy.1`. Introduce `i`. Distinguish the cases in `h : ∃ a, w a = i`. Take `⟨a, rfl⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx, hb⟩` from `hB a`. Rewrite using `[hm1]`. Use `⟨fun _ => inc l _ a x, fun _ => tm_FilD _ _ (single_diag hρ a) (by rwa [(hF a _).1 le_rfl]), fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy'` using `(mem_FilD_diag hρ _ _ _).1 hy`. Take `⟨c, hc, hcu⟩` from `hb _ (hy' a).1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun _ => c, (mem_FilD_diag hρ _ _ _).2 fun b => ?_, fun c' hc' => ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_one, map_sub, ← tm_smulD, pr_inc] split_ifs with hba`. Substitute `hba` using the available equality. Rewrite using `[← hc, sub_self]`. Conclude with `Submodule.zero_mem _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[sub_zero]`. Conclude with `step b _ (fun e => hba (hw e)) _ (hy' b)`. Establish `h1` using `(mem_FilD_diag hρ _ _ _).1 hc' a`. Rewrite `h1` using `[Fin.sum_univ_one, map_sub, ← tm_smulD, pr_inc, if_pos rfl, (hF a _).2 (lt_add_one _), Submodule.mem_bot, sub_eq_zero]`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subsingleton.elim j 0]`. Conclude with `hcu _ h1`. Use `push Not at h`. Rewrite using `[hm0 i h]`. Use `⟨Fin.elim0, fun a => a.elim0, fun y hy => ⟨Fin.elim0, ?_, fun _ _ => Subsingleton.elim _ _⟩⟩` and prove the remaining obligations.
-
-Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, sub_zero]`. Conclude with `(mem_FilD_diag hρ _ _ _).2 fun b => step b i (h b) _ ((mem_FilD_diag hρ _ _ _).1 hy b)`.
+A detailed English derivation is pending.
 -/
 theorem hodge_diag (w : Fin n → ℤ) (hw : Function.Injective w) (m : ℤ → ℕ)
     (hm1 : ∀ a, m (w a) = 1) (hm0 : ∀ i, (∀ a, w a ≠ i) → m i = 0)
@@ -247,11 +245,11 @@ theorem hodge_diag (w : Fin n → ℤ) (hw : Function.Injective w) (m : ℤ → 
     exact (mem_FilD_diag hρ _ _ _).2 fun b => step b i (h b) _ ((mem_FilD_diag hρ _ _ _).1 hy b)
 
 /- English proof (translation)
-Establish `key : ∀ (c : Fin n → A ⊗[ℚ_[l]] ↥(K0 L)) b, pr l _ b (∑ a, smulC (Fin n → A) L (c a) (inc l _ a (x a))) = smulC A L (c b) (x b)`. Introduce `c b`. Simplify using `only [map_sum, ← tm_smulC, pr_inc, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `⟨hN, hC, fun a => inc l _ a (x a), fun a => tm_Dcr _ _ (fun g => single_diag hρ a (incl h g)) (hx a), fun y hy => ?_, fun γ _ M hM => ?_⟩` and prove the remaining obligations. Use `choose c hc hcu using fun a => hB a _ (tm_Dcr _ _ (fun g => proj_diag hρ a (incl h g)) hy)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, ?_, fun c' hc' => funext fun b => hcu b _ ?_⟩` and prove the remaining obligations. Use `(sum_inc_pr y).symm.trans (Finset.sum_congr rfl fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[← tm_smulC]`. Conclude with `congrArg _ (hc a)`. Conclude with `(congrArg _ hc').trans (key c' b)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[sum_tmul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `h1` using `congrArg (pr l _ b) (hM b)`. Rewrite `h1` using `[key (fun a => M a b), tm_actC _ _ _ (proj_diag hρ b γ), pr_inc, if_pos rfl, ht]`. Conclude with `(hB b _ (Submodule.smul_mem _ (t b γ) (hx b))).unique h1 (smulC_one L _ _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem crys_diag {L : FinExt l} (h : K.1 ≤ L.1) (hN : ((GK L).subgroupOf (GK K)).Normal)
     (hC : Crys L ((colRep ρ).comp (incl h))) (t : Fin n → ↥(GK K) → A) (x : Fin n → A ⊗[ℚ_[l]] Bcr l)

@@ -17,61 +17,47 @@ noncomputable section
 namespace GlobalTheory.USepCov
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw _ l Xo c C J hJi S π hNB M _ g z₁ ζ hcov`. Take `⟨hMn, ⟨U, g', hg'fin, hg'U, hUF⟩, hζ, hgen⟩` from `hcov`. Use `haveI := hg'fin`. Use `haveI := C.ft`. Use `haveI : Algebra.FiniteType ℤ (CommRingCat.of C.o) := ‹Algebra.FiniteType ℤ C.o›`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsNoetherianRing C.o := Algebra.FiniteType.isNoetherianRing ℤ _`. Use `haveI := C.iF_open`. Take `⟨Z', b, hB, hBproj, -⟩` from `GlobalTheory.ProjBlowup.exists_blowup C.z C.proj J`. Use `haveI : IsProper C.z := by`. Take `⟨m, e, he, he'⟩` from `C.proj`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI := he`. Use `isProper_str C.o m` as an intermediate fact. Rewrite using `[← he']`. Use `infer_instance`. Use `haveI : IsProper (b ≫ C.z) := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨m, e, he, he'⟩` from `hBproj`. Use `haveI := he`. Use `isProper_str C.o m` as an intermediate fact. Rewrite using `[← he']`. Use `infer_instance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : IsProper b := IsProper.of_comp b C.z`. Take `⟨-, S₀, π₀, ν, -, hB₀, hνπ, -, -, -, -⟩` from `hNB`. Take `⟨ψ₀, hψ₀, -⟩` from `hB.2 S₀ (π₀ ≫ pullback.fst C.z (spMap C.b)) (by rw [Scheme.IdealSheafData.comap_comp]; exact hB₀.1)`. Establish `hψU : Set.range ψ₀ ⊆ Set.range (b ⁻¹ᵁ U).ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Introduce and unpack `_ ⟨s, rfl⟩`. Use `show b (ψ₀ s) ∈ U`. Rewrite using `[← Scheme.Hom.comp_apply, hψ₀, Scheme.Hom.comp_apply]`. Conclude with `hUF ⟨_, rfl⟩`. Set `ψU : S₀ ⟶ (b ⁻¹ᵁ U).toScheme` to `IsOpenImmersion.lift (b ⁻¹ᵁ U).ι ψ₀ hψU`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψUf : ψU ≫ (b ⁻¹ᵁ U).ι = ψ₀` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hψUb : ψU ≫ (b ∣_ U) ≫ U.ι = π₀ ≫ pullback.fst C.z (spMap C.b)`. Rewrite using `[morphismRestrict_ι, ← Category.assoc, hψUf, hψ₀]`. Establish `hpt : ∀ q : Sp (M.presheaf.stalk z₁), g (M.fromSpecStalk z₁ q) = pullback.fst C.z (spMap C.b) (ζ q)`. Introduce `q`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hζ]`. Use `haveI := hMn`. Use `haveI : IsDomain (M.presheaf.stalk z₁) := inferInstance`. Set `p0 : Sp (M.presheaf.stalk z₁)` to `⟨⊥, Ideal.isPrime_bot⟩`. Take `⟨y0, hy0⟩` from `hgen p0 rfl`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `m0 : M` to `M.fromSpecStalk z₁ p0`. Establish `hm0 : g m0 = C.i y0`. Rewrite using `[hpt, ← hy0]`. Both sides reduce to the same expression. Establish `hgm : ∀ m, g m ∈ Set.range C.i → (g' ≫ U.ι) m ∉ J.support`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `m ⟨y, hy⟩ hJ`. Rewrite `hJ` using `[hg'U]`. Conclude with `hJi _ hJ ⟨y, hy⟩`. Establish `hm0J : (g' ≫ U.ι) m0 ∉ J.support` using `hgm m0 ⟨y0, hm0.symm⟩`. Take `⟨S₁, hS₁i, p₁, ν₁, hS₁n, hp₁P, hν₁fin, hcomm, hEff, hrange, hlift⟩` from `GlobalTheory.T.exists_normalisation_blowup_pullback_finiteCover (o := CommRingCat.of C.o) C.z b J hB U g' ⟨m0, hm0J⟩`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `haveI := hν₁fin`. Use `haveI : IsPreimmersion (spMap C.b) := by`. Use `letI := C.b.toAlgebra`. Use `haveI := C.isFractionRing`. Conclude with `IsPreimmersion.of_isLocalization (nonZeroDivisors C.o)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Take `⟨W', hW'o, hW'⟩` from `((IsPreimmersion.isEmbedding (pullback.fst C.z (spMap C.b))).isInducing.isOpen_iff).mp C.iF.isOpenMap.isOpen_range`. Set `sM : M ⟶ Sp ℤ` to `g ≫ C.z ≫ Spec.map (CommRingCat.ofHom (algebraMap ℤ C.o))`. Take `⟨x0, hx0⟩` from `hrange m0 hm0J`. Use `haveI hSpecZ : LocallyOfFiniteType (Spec.map (CommRingCat.ofHom (algebraMap ℤ C.o))) := by`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `RingHom.finiteType_algebraMap.mpr inferInstance`. Use `⟨S₁, hS₁i, p₁, sM, (p₁ ≫ g) ⁻¹ᵁ ⟨W', hW'o⟩, ?_, ?_, ?_, hS₁n, hp₁P, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show LocallyOfFiniteType (g ≫ C.z ≫ Spec.map (CommRingCat.ofHom (algebraMap ℤ C.o)))`. Rewrite using `[← hg'U]`. Use `infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show QuasiCompact (g ≫ C.z ≫ Spec.map (CommRingCat.ofHom (algebraMap ℤ C.o))) haveI : IsLocallyNoetherian C.Z := LocallyOfFiniteType.isLocallyNoetherian (C.z ≫ Spec.map (CommRingCat.ofHom (algebraMap ℤ C.o)))`. Rewrite using `[← hg'U]`. Use `infer_instance`. Apply `GlobalTheory.T.flat_int_of_integral_scheme_generic_point _ x0` to reduce the goal to its premises. Establish `eM : C.i ≫ C.z ≫ Spec.map (CommRingCat.ofHom (algebraMap ℤ C.o)) = (C.iF ≫ pullback.snd C.z (spMap C.b)) ≫ Spec.map (CommRingCat.ofHom (C.b.comp (algebraMap ℤ C.o)))`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [UCompact.i, Category.assoc, pullback.condition_assoc]`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Establish `e : (p₁ ≫ sM) x0 = Spec.map (CommRingCat.ofHom (C.b.comp (algebraMap ℤ C.o))) ((C.iF ≫ pullback.snd C.z (spMap C.b)) y0)`. Rewrite using `[← Scheme.Hom.comp_apply, ← eM]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (C.z ≫ Spec.map (CommRingCat.ofHom (algebraMap ℤ C.o))) (g (p₁ x0)) = _`. Rewrite using `[hx0, hm0]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `show Ideal.comap _ _ = ⊥`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `haveI := ((C.iF ≫ pullback.snd C.z (spMap C.b)) y0).isPrime`. Rewrite using `[Ideal.eq_bot_of_prime (((C.iF ≫ pullback.snd C.z (spMap C.b)) y0).asIdeal), Ideal.comap_bot_of_injective]`. Conclude with `fun u v h => Int.cast_injective (α := c.F) (by simpa using h)`. Prove the components needed by the constructor for the conclusion. Establish `hVo : IsOpen {m : M | (g' ≫ U.ι) m ∉ J.support}` using `(g' ≫ U.ι).continuous.isOpen_preimage _ J.support.isClosed.isOpen_compl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Conclude with `(hVo.dense ⟨m0, hm0J⟩).mono fun m hm => hrange m hm`. Rewrite using `[← hg'U]`. Conclude with `hEff`. Use `⟨x0, ?_⟩ show g (p₁ x0) ∈ W'` and prove the remaining obligations. Rewrite using `[hx0, hpt]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show ζ p0 ∈ pullback.fst C.z (spMap C.b) ⁻¹' W'`. Rewrite using `[hW']`. Conclude with `⟨y0, hy0⟩`. Introduce `K _ x ev hx hxU`. Establish `hr : Set.range (spMap ev ≫ ζ) ⊆ Set.range C.iF`.
+Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨w, rfl⟩`. Rewrite using `[← hW']`. Use `show pullback.fst C.z (spMap C.b) (ζ (spMap ev w)) ∈ W'`. Rewrite using `[← hpt, ← Scheme.Hom.comp_apply (spMap ev), ← hx, Scheme.Hom.comp_apply]`. Conclude with `hxU ⟨w, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨IsOpenImmersion.lift C.iF _ hr, IsOpenImmersion.lift_fac _ _ _⟩`. Introduce `R _ _ _ _ a ev ha hgR`. Set `β : Sp R ⟶ M` to `spMap ev ≫ M.fromSpecStalk z₁`. Establish `hβg : β ≫ g = a ≫ π ≫ pullback.fst C.z (spMap C.b)`. Simplify using `only [β, Category.assoc, ← hζ]`.
-
-Rewrite using `[← Category.assoc a π, ha, Category.assoc]`. Establish `hab : (a ≫ ν ≫ ψU) ≫ (b ∣_ U) = β ≫ g'`. Rewrite using `[← cancel_mono U.ι, Category.assoc, Category.assoc, Category.assoc, hψUb, Category.assoc, hg'U, hβg, ← hνπ, Category.assoc]`. Establish `hgw : ∀ w, (jK R ≫ β ≫ g' ≫ U.ι) w ∉ J.support`. Introduce `w`.
-
-Establish `e : jK R ≫ β ≫ g' ≫ U.ι = (jK R ≫ a ≫ π) ≫ pullback.fst C.z (spMap C.b)`. Rewrite using `[hg'U, hβg]`. Simplify using `only [Category.assoc]`. Rewrite using `[e]`. Take `⟨y, hy⟩` from `hgR ⟨w, rfl⟩`.
-
-Introduce `hJ`. Use `hJi _ hJ ⟨y, ?_⟩` and prove the remaining obligations. Use `show _ = pullback.fst C.z (spMap C.b) ((jK R ≫ a ≫ π) w)`. Rewrite using `[← hy]`. Both sides reduce to the same expression.
-
-Take `⟨ξ₁, hξν, hξp⟩` from `hlift R (a ≫ ν ≫ ψU) β hab hgw`. Use `⟨ξ₁, hξp, ?_⟩` and prove the remaining obligations. Introduce `K _ _ ev' k₀ hk₀ hcl hdef`. Use `⟨fun p => ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : ∀ t, ν₁ (ξ₁ t) = ψU (ν (a t))` using `fun t => by`.
-
-Rewrite using `[← Scheme.Hom.comp_apply, hξν]`. Both sides reduce to the same expression. Apply `GlobalTheory.T.eq_of_specializes_same_fibre_isIntegralHom ν₁` to reduce the goal to its premises. Conclude with `(IsLocalRing.specializes_closedPoint _).map ξ₁.continuous`. Establish `e2` using `e1 (closedPoint R)`.
-
-Establish `e3 : a ((spMap ev') p) = a (closedPoint R)` using `hcl p`. Rewrite using `[Scheme.Hom.comp_apply, e1, e3]`. Conclude with `e2.symm`. Apply `GlobalTheory.T.pointDefinedOverSubfield_of_isIntegralHom ν₁ k₀ hk₀` to reduce the goal to its premises. Take `⟨P₀, hP₀⟩` from `hdef`.
-
-Use `⟨P₀ ≫ ν ≫ ψU, ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc, hξν]`. Rewrite using `[reassoc_of% hP₀]`.
+A detailed English derivation is pending.
 -/
 theorem exists_cover : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c), ∀ (J : C.Z.IdealSheafData), (∀ x ∈ J.support, x ∉ Set.range C.i) → ∀ (S : Scheme.{0}) (π : S ⟶ pullback C.z (spMap C.b)), IsNormBl π (J.comap (pullback.fst C.z (spMap C.b))) → ∀ (M : Scheme.{0}) [IsIntegral M] (g : M ⟶ C.Z) (z₁ : M) (ζ : Sp (M.presheaf.stalk z₁) ⟶ pullback C.z (spMap C.b)), IsCov C g z₁ ζ → ∃ (S₁ : Scheme.{0}) (_ : IsIntegral S₁) (p₁ : S₁ ⟶ M) (sM : M ⟶ Sp ℤ) (U₁ : S₁.Opens), LocallyOfFiniteType sM ∧ QuasiCompact sM ∧ Flat (p₁ ≫ sM) ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme S₁ ∧ IsProper p₁ ∧ IsDominant p₁ ∧ FinalTheorems.EffCartier (J.comap (p₁ ≫ g)) ∧ (U₁ : Set S₁).Nonempty ∧ (∀ (K : Type) [Field K] (x : Sp K ⟶ S₁) (ev : M.presheaf.stalk z₁ →+* K), x ≫ p₁ = spMap ev ≫ M.fromSpecStalk z₁ → Set.range x ⊆ (U₁ : Set S₁) → ∃ y : Sp K ⟶ Xo.XF c, y ≫ C.iF = spMap ev ≫ ζ) ∧ ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [IsIntegrallyClosed R] (a : Sp R ⟶ S) (ev : M.presheaf.stalk z₁ →+* R), a ≫ π = spMap ev ≫ ζ → Set.range (jK R ≫ a ≫ π) ⊆ Set.range C.iF → ∃ ξ₁ : Sp R ⟶ S₁, ξ₁ ≫ p₁ = spMap ev ≫ M.fromSpecStalk z₁ ∧ ∀ (K : Type) [Field K] [IsAlgClosed K] (ev' : R →+* K) (k₀ : Subfield K), IsAlgClosed k₀ → (∀ p, (spMap ev' ≫ a) p = a (closedPoint R)) → GlobalTheory.UChart.DefOver k₀ (spMap ev' ≫ a) → (∀ p, (spMap ev' ≫ ξ₁) p = ξ₁ (closedPoint R)) ∧ GlobalTheory.UChart.DefOver k₀ (spMap ev' ≫ ξ₁) := by
   intro E _ _ _ H Dw _ l Xo c C J hJi S π hNB M _ g z₁ ζ hcov

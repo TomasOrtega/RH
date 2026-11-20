@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V _ A L N M hN hM htf hAL hLA hfin k hk`. Take `⟨R₀, hR₀⟩` from `hfin (k * N * M) (by positivity)`. Set `P : V → Prop` to `fun r₀ => ∃ a ∈ A, ∃ w ∈ L, N • a = r₀ + (k * N * M) • w`. Set `f : V → V` to `fun r₀ => if h : P r₀ then h.choose else 0`. Use `⟨R₀.image f, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `u hu`. Take `⟨r₀, hr₀, v, hv, huv⟩` from `hR₀ (N • u) (hAL u hu)`. Establish `hP : P r₀` using `⟨u, hu, v, hv, huv⟩`. Establish `hf : f r₀ = hP.choose` using `dif_pos hP`. Take `⟨haA, w, hwL, haw⟩` from `hP.choose_spec`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨f r₀, Finset.mem_image_of_mem f hr₀, M • (v - w), hLA _ (L.sub_mem hv hwL), ?_⟩` and prove the remaining obligations. Rewrite using `[hf]`. Establish `key : N • (u - (hP.choose + k • M • (v - w))) = 0`. Establish `e : N • k • M • (v - w) = (k * N * M) • (v - w)`. Rewrite using `[smul_smul, smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[smul_sub, smul_add, huv, haw, e, smul_sub]`. Normalize the expressions using the abelian group laws. Conclude with `sub_eq_zero.mp (htf _ key)`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem addSubgroup_finite_quot_of_commensurable : ∀ (V : Type) [AddCommGroup V] (A L : AddSubgroup V) (N M : ℕ), 0 < N → 0 < M → (∀ v : V, N • v = 0 → v = 0) → (∀ a ∈ A, N • a ∈ L) → (∀ l ∈ L, M • l ∈ A) → (∀ j : ℕ, 0 < j → ∃ R : Finset V, ∀ u ∈ L, ∃ r ∈ R, ∃ v ∈ L, u = r + j • v) → ∀ k : ℕ, 0 < k → ∃ R : Finset V, ∀ u ∈ A, ∃ r ∈ R, ∃ v ∈ A, u = r + k • v := by
   classical

@@ -8,7 +8,7 @@ section
 variable {R Γ M : Type} [CommRing R] [Group Γ] [AddCommGroup M] [Module R M]
 
 /- English proof (translation)
-Establish `h` using `hz 1 1`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem coc_one {ρ : Representation R Γ M} {z : Γ → M} (hz : ∀ g h, z (g * h) = z g + ρ g (z h)) : z 1 = 0 := by
   have h := hz 1 1
@@ -31,9 +31,9 @@ private def killSub (ρ : Representation R Γ M) {z : Γ → M} (hz : ∀ g h, z
     simpa using h.symm
 
 /- English proof (translation)
-Introduce and unpack `g ⟨hg, hg'⟩ h`. Use `⟨by rw [map_mul, map_mul, hg, mul_one, ← map_mul, mul_inv_cancel, map_one], ?_⟩` and prove the remaining obligations. Establish `e` using `hz h h⁻¹`. Rewrite `e` using `[mul_inv_cancel, coc_one hz]`. Rewrite using `[hz, hz, hg', map_zero, add_zero, map_mul, hg, mul_one]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.symm`.
+A detailed English derivation is pending.
 -/
 private theorem killSub_normal (ρ : Representation R Γ M) {z : Γ → M} (hz : ∀ g h, z (g * h) = z g + ρ g (z h)) :
     (killSub ρ hz).Normal where
@@ -48,9 +48,7 @@ private theorem killSub_normal (ρ : Representation R Γ M) {z : Γ → M} (hz :
 variable [TopologicalSpace Γ]
 
 /- English proof (translation)
-Establish `e : (killSub ρ hz : Set Γ) = (⋂ m : M, {g | ρ g m = m}) ∩ {g | z g = 0}`. Use extensionality with `g`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_setOf_eq]`. Conclude with `and_congr_left' LinearMap.ext_iff`. Rewrite using `[e]`.
-
-Conclude with `IsClosed.inter (isClosed_iInter fun m => (hρ m).isClosed_fiber m) (hl.isClosed_fiber 0)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem killSub_closed (ρ : Representation R Γ M) (hρ : ∀ m, IsLocallyConstant fun g => ρ g m) {z : Γ → M}
     (hz : ∀ g h, z (g * h) = z g + ρ g (z h)) (hl : IsLocallyConstant z) : IsClosed (killSub ρ hz : Set Γ) := by
@@ -62,7 +60,7 @@ private theorem killSub_closed (ρ : Representation R Γ M) (hρ : ∀ m, IsLoca
   exact IsClosed.inter (isClosed_iInter fun m => (hρ m).isClosed_fiber m) (hl.isClosed_fiber 0)
 
 /- English proof (translation)
-Use `haveI : Finite (B1 ρ) := (Set.finite_range (d0 ρ)).to_subtype`. Use `haveI : Finite ((B1 ρ).comap (Z1 ρ).subtype) := Finite.of_injective (fun x => (⟨x.1.1, x.2⟩ : B1 ρ)) fun x y h => Subtype.ext (Subtype.ext (congrArg (fun z : B1 ρ => z.1) h))`. Use `haveI : Finite ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup := this`. Use `haveI : Finite (Z1 ρ ⧸ ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup) := ‹Finite (H1 ρ)›`. Conclude with `Finite.of_addSubgroup_quotient ((B1 ρ).comap (Z1 ρ).subtype).toAddSubgroup`.
+A detailed English derivation is pending.
 -/
 private theorem module_finite_z1_padicInt [TopologicalSpace M] [DiscreteTopology M] [Finite M] (ρ : Representation R Γ M) [Finite (H1 ρ)] :
     Finite (Z1 ρ) := by
@@ -77,17 +75,15 @@ private theorem module_finite_z1_padicInt [TopologicalSpace M] [DiscreteTopology
 end
 
 /- English proof (translation)
-Introduce `hGF Ω _ _ _ l _ S c s B hP R M _ _ _ _ ρ r hr hρ K hK hI P`. Take `⟨S', -, -, hS, -, -, -, hN⟩` from `UpperTheory.V.Ws.Bl.placeSet S B hP.prime hP.mem hP.ovl`. Use `letI : TopologicalSpace M := ⊥`. Use `haveI : DiscreteTopology M := ⟨rfl⟩`. Use `haveI : NeZero (l ^ (r + 1)) := ⟨pow_ne_zero _ (Fact.out : l.Prime).ne_zero⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr' : ∀ m : M, (l ^ (r + 1)) • m = 0` using `fun m => by rw [pow_succ', mul_smul, hr, smul_zero]`. Take `⟨inst⟩ : Nonempty (Module (ZMod (l ^ (r + 1))) M)` from `⟨AddCommGroup.zmodModule hr'⟩`. Establish `h0 : ∀ g h : G ℚ Ω, (0 : G ℚ Ω → M) (g * h) = (0 : G ℚ Ω → M) g + ρ g ((0 : G ℚ Ω → M) h)` using `by simp`. Establish `hker : NS Ω (S' : Set (HeightOneSpectrum (𝓞 ℚ))) ≤ killSub ρ h0` using `hN _ (killSub_normal ρ h0) (killSub_closed ρ hρ h0 (IsLocallyConstant.const 0)) fun A hA g hg => ⟨hK (hI A hA hg), rfl⟩`. Set `ρ' : Representation (ZMod (l ^ (r + 1))) (G ℚ Ω) M` to `{ toFun := fun g => (ρ g).toAddMonoidHom.toZModLinearMap (l ^ (r + 1)) map_one' := LinearMap.ext fun m => show ρ 1 m = m by rw [map_one]; rfl map_mul' := fun g h => LinearMap.ext fun m => show ρ (g * h) m = ρ g (ρ h m) by rw [map_mul]; rfl }`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ρS : Representation (ZMod (l ^ (r + 1))) (GS Ω (S' : Set (HeightOneSpectrum (𝓞 ℚ)))) M` to `QuotientGroup.lift _ ρ' fun g hg => LinearMap.ext fun m => show ρ g m = m by rw [(hker hg).1]; rfl`. Establish `hρS : ContAction ρS`. Use `continuous_prod_of_discrete_right.2 fun m => ?_` and prove the remaining obligations. Rewrite using `[← QuotientGroup.isOpenQuotientMap_mk.continuous_comp_iff]`. Conclude with `(hρ m).continuous`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨-, f1, -⟩` from `hGF ℚ Ω l (r + 1) M S' ρS r.succ_pos hS hρS`. Use `haveI := f1`. Use `haveI := module_finite_z1_padicInt ρS`. Use `(Set.finite_range fun z : Z1 ρS => z.1 ∘ toGS Ω (S' : Set (HeightOneSpectrum (𝓞 ℚ)))).subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨y, hz⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : NS Ω (S' : Set (HeightOneSpectrum (𝓞 ℚ))) ≤ killSub ρ hz.coc` using `hN _ (killSub_normal ρ _) (killSub_closed ρ hρ _ hz.lc) fun A hA g hg => ⟨hK (hI A hA hg), hz.kill g ⟨hI A hA hg, A, hA l hP.mem, hg⟩⟩`. Set `zS : GS Ω (S' : Set (HeightOneSpectrum (𝓞 ℚ))) → M` to `Quotient.lift z fun a b hab => by`. Establish `h` using `(hle (QuotientGroup.leftRel_apply.1 hab)).2`. Establish `e` using `hz.coc a (a⁻¹ * b)`. Rewrite `e` using `[mul_inv_cancel_left, h, map_zero, add_zero]`.
-
-Conclude with `e.symm`. Use `⟨⟨zS, hz.lc.continuous.quotient_lift _, fun x y => ?_⟩, rfl⟩` and prove the remaining obligations. Take `⟨a, rfl⟩` from `QuotientGroup.mk_surjective x`. Take `⟨b, rfl⟩` from `QuotientGroup.mk_surjective y`. Conclude with `hz.coc a b`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.Bl.zcFin :
     GlobalFiniteness → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] (S : Finset ℕ) (c s : G ℚ Ω) (B : ValuationSubring Ω), Pos l S c s B → ∀ (R M : Type) [CommRing R] [AddCommGroup M] [Module R M] [Finite M] (ρ : Representation R (G ℚ Ω) M) (r : ℕ), (∀ m : M, (l ^ r) • m = 0) → (∀ m, IsLocallyConstant fun g => ρ g m) →

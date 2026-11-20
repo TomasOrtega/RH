@@ -13,14 +13,14 @@ def UpMatchAll : Prop := ∀ (D : D7) (u : D.what₂.Word) (T : Forms0 D u), UpD
 def DnMatchAll : Prop := ∀ (D : D7) (u : D.what₂.Word) (T : Forms0 D u), DnDiaMatch0F T
 
 /- English proof (translation)
-Introduce `v v' h φ hφ a` and use `⟨diamond_commutes_U_distinct T hU v v' h a φ hφ, diamond_commutes_D_distinct T hD v v' h a φ hφ⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem crossDia0_of_forms0 {D : D7} {u : D.what₂.Word} (T : Forms0 D u) (hU : UpDiaMatch0F T)
     (hD : DnDiaMatch0F T) : CrossDia0 D u :=
   fun v v' h φ hφ a => ⟨diamond_commutes_U_distinct T hU v v' h a φ hφ, diamond_commutes_D_distinct T hD v v' h a φ hφ⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨Ch, chOf, T, -⟩ _ _`. Conclude with `crossDia0_of_forms0 T.to0 (hU D u T.to0) (hD D u T.to0)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem crossDia0T_of (hU : UpMatchAll) (hD : DnMatchAll) (D : D7) (u : D.what₂.Word) : CrossDia0T D u := by
   rintro ⟨Ch, chOf, T, -⟩ _ _

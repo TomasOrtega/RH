@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.UChart
 
 /- English proof (translation)
-Set `ξ : Spec (CommRingCat.of (FractionRing R))` to `IsLocalRing.closedPoint (FractionRing R)`. Introduce `y`. Establish `hs : jK R ξ ⤳ y` using `(PrimeSpectrum.le_iff_specializes _ _).1 fun a ha => by`. Establish `h₁ : algebraMap R (FractionRing R) a ∈ IsLocalRing.maximalIdeal (FractionRing R)` using `ha`. Rewrite `h₁` using `[IsLocalRing.maximalIdeal_eq_bot, Ideal.mem_bot]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `rfl : a = 0` from `IsFractionRing.injective R (FractionRing R) (h₁.trans (map_zero _).symm)`. Conclude with `Ideal.zero_mem _`. Conclude with `closure_mono (Set.singleton_subset_iff.2 (Set.mem_range_self (f := jK R) ξ)) (specializes_iff_mem_closure.1 hs)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem denseRange_jK (R : Type) [CommRing R] [IsDomain R] : DenseRange (jK R) := by
   let ξ : Spec (CommRingCat.of (FractionRing R)) := IsLocalRing.closedPoint (FractionRing R)
@@ -28,9 +28,9 @@ theorem denseRange_jK (R : Type) [CommRing R] [IsDomain R] : DenseRange (jK R) :
   exact closure_mono (Set.singleton_subset_iff.2 (Set.mem_range_self (f := jK R) ξ)) (specializes_iff_mem_closure.1 hs)
 
 /- English proof (translation)
-Establish `hd : IsDominant (pullback.fst p (jK R))`. Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[DenseRange, Scheme.Pullback.range_fst]`. Conclude with `(denseRange_jK R).preimage p.isOpenMap`. Establish `e : h.isoPullback.hom ≫ pullback.fst p (jK R) = φ` using `h.isoPullback_hom_fst`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isDominant_of_isPullback_jK {R : Type} [CommRing R] [IsDomain R] {X X' : Scheme.{0}}
     (p : X ⟶ Sp R) [Smooth p] (p' : X' ⟶ Sp (FractionRing R)) (φ : X' ⟶ X) (h : IsPullback φ p' p (jK R)) :
@@ -44,9 +44,9 @@ theorem isDominant_of_isPullback_jK {R : Type} [CommRing R] [IsDomain R] {X X' :
   infer_instance
 
 /- English proof (translation)
-Introduce `E _ _ _ H R _ _ tC S G _ _ ξ πC hG hP act tK a ψ hψ hφ u`. Use `haveI : IsSeparated G.hom := hG.separated`. Use `haveI : Smooth tC.G.hom := tC.semi.smooth`. Use `haveI : IsReduced tC.G.left := GlobalTheory.isReduced_of_smooth_of_isReduced tC.G.hom`. Use `haveI : IsDominant a.φ := isDominant_of_isPullback_jK tC.G.hom tK.G.hom a.φ a.cart.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw : πC ≫ G.hom = tC.G.hom ≫ ξ` using `hP.1.w`. Use `ext_of_isDominant_of_isSeparated G.hom ?_ a.φ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, hw, Over.w (act.act u), hw, ← Category.assoc, Over.w (tC.act.act u)]`. Establish `e : (tK.act.act u).left ≫ a.φ = a.φ ≫ (tC.act.act u).left` using `a.act u`. Rewrite using `[← Category.assoc, ← e, Category.assoc, hφ, hψ, ← hφ, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem act_chart_compat : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {R : Type} [CommRing R]
     [IsDomain R] (tC : SAB H (Sp R)) {S : Scheme.{0}} (G : Over S) [GrpObj G] [IsCommMonObj G] (ξ : Sp R ⟶ S)

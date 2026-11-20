@@ -6,20 +6,20 @@ section
 variable {O K : Type} [CommRing O] [Field K] [Algebra O K] {τ : K}
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_span_pair`.
+A detailed English derivation is pending.
 -/
 private theorem ord_mem {y z : Etau K τ} :
     z ∈ Ord O y ↔ ∃ a b : O, a • (1 : Etau K τ) + b • y = z :=
   Submodule.mem_span_pair
 
 /- English proof (translation)
-The claim follows from `ord_mem.2 ⟨1, 0, by simp⟩`.
+A detailed English derivation is pending.
 -/
 private theorem ord_one (y : Etau K τ) : (1 : Etau K τ) ∈ Ord O y :=
   ord_mem.2 ⟨1, 0, by simp⟩
 
 /- English proof (translation)
-Take `⟨a, b, rfl⟩` from `ord_mem.1 hz`. Take `⟨p, q, rfl⟩` from `ord_mem.1 hz'`. Use `ord_mem.2 ⟨a * p + b * q * c, a * q + b * p, ?_⟩` and prove the remaining obligations. Simplify using `only [Algebra.smul_def, map_add, map_mul]`. Take the linear combination `(-(algebraMap O (Etau K τ) b * algebraMap O (Etau K τ) q)) * hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem ord_mul {y : Etau K τ} {c : O} (hy : y * y = algebraMap O (Etau K τ) c)
     {z z' : Etau K τ} (hz : z ∈ Ord O y) (hz' : z' ∈ Ord O y) : z * z' ∈ Ord O y := by
@@ -30,9 +30,7 @@ private theorem ord_mul {y : Etau K τ} {c : O} (hy : y * y = algebraMap O (Etau
   linear_combination (-(algebraMap O (Etau K τ) b * algebraMap O (Etau K τ) q)) * hy
 
 /- English proof (translation)
-Establish `hw1 : ((w⁻¹ : (Etau K τ)ˣ) : Etau K τ) ∈ Ord O y`. Use `ord_one (O := O) y'` as an intermediate fact. Rewrite `this` using `[← hw, PS.mem_ml, mul_one]`. Conclude with `this`. Rewrite using `[← hw, PS.mem_ml]`.
-
-Conclude with `ord_mul hy hw1 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ord_sub {y y' : Etau K τ} {c c' : O} (hy : y * y = algebraMap O (Etau K τ) c)
     (hy' : y' * y' = algebraMap O (Etau K τ) c') {w : (Etau K τ)ˣ}
@@ -46,9 +44,9 @@ private theorem ord_sub {y y' : Etau K τ} {c c' : O} (hy : y * y = algebraMap O
 end
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `ord_mem.1 h`. Establish `him` using `congrArg QuadraticAlgebra.im hab`. Simplify using `only [yy, ← algebraMap_smul K a, ← algebraMap_smul K b, im_add, im_smul, im_one, mul_zero, zero_add, smul_eq_mul] at him`. Establish `hk : algebraMap O K (b * π ^ m') = algebraMap O K (π ^ m)`. Rewrite using `[map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_right_cancel₀ hx (by rw [← him]; ring)`. Establish `hd : π ^ m' ∣ π ^ m` using `⟨b, by rw [IsFractionRing.injective O K hk.symm, mul_comm]⟩`. Conclude with `(pow_dvd_pow_iff hπ.ne_zero hπ.not_isUnit).1 hd`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lvl_le {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K]
     [Algebra O K] [IsFractionRing O K] {τ : K} {π : O} (hπ : Irreducible π) {x : Etau K τ}
@@ -64,11 +62,11 @@ private theorem lvl_le {O K : Type} [CommRing O] [IsDomain O] [IsDiscreteValuati
   exact (pow_dvd_pow_iff hπ.ne_zero hπ.not_isUnit).1 hd
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ L hD π n e h x hc w m m' hw`. Use `haveI := L.frac`. Establish `hx : x.im ≠ 0` using `hc.gen.im_ne`. Establish `hsq : ∀ j : ℕ, yy π j x * yy π j x = algebraMap O (Etau K τ) (π ^ j * π ^ j * e)`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [yy, smul_mul_smul_comm, hc.sq]`. Rewrite using `[IsScalarTower.algebraMap_apply O K (Etau K τ), IsScalarTower.algebraMap_apply O K (Etau K τ), Algebra.smul_def, ← map_mul, map_mul (algebraMap O K) (π ^ j * π ^ j), map_mul (algebraMap O K) (π ^ j)]`. Establish `self_mem : ∀ j : ℕ, yy π j x ∈ Ord O (yy π j x)` using `fun j => ord_mem.2 ⟨0, 1, by simp⟩`. Establish `hw' : PS.ml w⁻¹ (Ord O (yy π m' x)) = Ord O (yy π m x)`. Rewrite using `[← hw, ← PS.ml_mul, inv_mul_cancel, PS.ml_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : m' ≤ m` using `lvl_le hc.irr hx (ord_sub (hsq m) (hsq m') hw (self_mem m))`. Establish `h2 : m ≤ m'` using `lvl_le hc.irr hx (ord_sub (hsq m') (hsq m) hw' (self_mem m'))`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.order_level_injective_of_smul_eq :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ → τ ^ 2 - 4 ≠ 0 → ∀ (π : O) (n : ℕ) (e : Oˣ) (h : O) (x : Etau K τ), Cond π n e h x → ∀ (w : (Etau K τ)ˣ) (m m' : ℕ), PS.ml w (Ord O (yy π m x)) = Ord O (yy π m' x) → m = m' := by

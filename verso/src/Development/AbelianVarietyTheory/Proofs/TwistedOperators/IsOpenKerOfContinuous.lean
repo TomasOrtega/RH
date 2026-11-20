@@ -11,13 +11,13 @@ noncomputable section
 namespace GlobalTheory.RootEx.UniformLattices
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Establish `hp : 0 < ‖z - 1‖` using `norm_pos_iff.2 (sub_ne_zero.2 hz)`. Take `⟨n, hn⟩` from `exists_nat_gt (1 / ‖z - 1‖)`. Establish `h1 : ‖(∑ k ∈ Finset.range n, z ^ k) - n‖ ≤ n / 2`. Establish `: (∑ k ∈ Finset.range n, z ^ k) - n = ∑ k ∈ Finset.range n, (z ^ k - 1)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_sub_distrib]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Use `(Finset.sum_le_sum fun k _ => (h k).le).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : (n : ℝ) / 2 ≤ ‖∑ k ∈ Finset.range n, z ^ k‖`. Use `norm_sub_norm_le (n : ℂ) (∑ k ∈ Finset.range n, z ^ k)` as an intermediate fact. Rewrite `this` using `[norm_sub_rev, Complex.norm_natCast]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `h n`. Rewrite `h3` using `[← geom_sum_mul, norm_mul]`. Rewrite `hn` using `[div_lt_iff₀ hp]`. Use the polynomial consequences of the given equalities and inequalities.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem eq_one_of_pow_near {z : ℂ} (h : ∀ n : ℕ, ‖z ^ n - 1‖ < 1 / 2) : z = 1 := by
   by_contra hz
@@ -43,7 +43,7 @@ section Lattices
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Establish `: (fun x : kˣ => (x : k) - 1) ⁻¹' cball s ∈ 𝓝 (1 : kˣ)` using `((isOpen_cball s).preimage (Units.continuous_val.sub continuous_const)).mem_nhds (by simp [cball])`. Conclude with `mem_of_superset this h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_of_cball (μ : kˣ →* ℂˣ) (s : kˣ) (h : ∀ x : kˣ, (x : k) - 1 ∈ cball s → μ x = 1) :
     IsOpen (μ.ker : Set kˣ) := by
@@ -53,15 +53,15 @@ theorem isOpen_ker_of_cball (μ : kˣ →* ℂˣ) (s : kˣ) (h : ∀ x : kˣ, (x
   exact mem_of_superset this h
 
 /- English proof (translation)
-Establish `hV : {u | ‖((μ u : ℂˣ) : ℂ) - 1‖ < 1 / 2} ∈ 𝓝 (1 : kˣ)`. Use `(isOpen_lt (((Units.continuous_val.comp hμ).sub continuous_const).norm) continuous_const).mem_nhds ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Rewrite `hV` using `[Units.isEmbedding_val₀.isInducing.nhds_eq_comap, Filter.mem_comap]`. Take `⟨T, hT, hTV⟩` from `hV`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (fun b : k => 1 + b) ⁻¹' T ∩ cball 1 ∈ 𝓝 (0 : k)` using `inter_mem ((continuous_const.add continuous_id).continuousAt.preimage_mem_nhds (by simpa using hT)) (cball_mem_nhds 1)`. Take `⟨s, hs⟩` from `exists_cball_subset h1`. Use `isOpen_ker_of_cball μ s fun x hx => Units.ext (eq_one_of_pow_near fun n => ?_)` and prove the remaining obligations. Establish `hx1 : valuation k (x : k) ≤ 1`. Use `add_mem_cball (hs hx).2 (show (1 : k) ∈ cball 1 by simp [cball])` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[cball]`. Establish `hn : (x : k) ^ n - 1 ∈ cball s`. Proceed by induction on `n with`. Consider the case `zero => simp [cball]`. Consider the case `succ n ih`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e : (x : k) ^ (n + 1) - 1 = x * (x ^ n - 1) + (x - 1)` using `by ring`. Rewrite using `[e]`. Use `add_mem_cball ?_ hx` and prove the remaining obligations. Use `show valuation k _ ≤ valuation k (s : k)`. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(mul_le_of_le_one_left' hx1).trans ih`. Use `hTV (a := x ^ n) (by simpa using (hs hn).1)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_of_continuous (μ : kˣ →* ℂˣ) (hμ : Continuous μ) : IsOpen (μ.ker : Set kˣ) := by
   have hV : {u | ‖((μ u : ℂˣ) : ℂ) - 1‖ < 1 / 2} ∈ 𝓝 (1 : kˣ) := by
@@ -102,17 +102,15 @@ def ballLat (m : Type) (s : kˣ) : Submodule 𝒪[k] (m → k) where
     exact (mul_le_of_le_one_left' ((Valuation.mem_integer_iff _ _).mp a.2)).trans (hx i)
 
 /- English proof (translation)
-Establish `hs : ∀ i : m, (Pi.single i (s : k) : m → k) ∈ ballLat m s` using `fun i j => by`. Apply the tactic sequence `rw [Pi.single_apply]; split_ifs <;> simp [cball]`. Prove the components needed by the constructor for the conclusion. Use `⟨Finset.univ.image fun i : m => (Pi.single i (s : k) : m → k), le_antisymm ?_ fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y hy`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hy`. Conclude with `hs i`. Rewrite using `[← Finset.univ_sum_single x]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : x i * (s : k)⁻¹ ∈ 𝒪[k]`. Rewrite using `[Valuation.mem_integer_iff, map_mul, map_inv₀, mul_inv_le_iff₀ (by simp [zero_lt_iff]), one_mul]`. Conclude with `hx i`. Establish `e : (Pi.single i (x i) : m → k) = (⟨_, h1⟩ : 𝒪[k]) • (Pi.single i (s : k) : m → k)`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `show _ = x i * (s : k)⁻¹ * (Pi.single i (s : k) : m → k) j`. Apply the tactic sequence `simp only [Pi.single_apply]; split_ifs <;> simp`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (by simp))`. Rewrite using `[eq_top_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x _`. Rewrite using `[← Finset.univ_sum_single x]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `e : (Pi.single i (x i) : m → k) = (x i * (s : k)⁻¹) • (Pi.single i (s : k) : m → k)`. Use function extensionality and compare the values at `j`.
-
-Apply the tactic sequence `simp only [Pi.single_apply, Pi.smul_apply, smul_eq_mul]; split_ifs <;> simp`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (hs i))`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ballLat_isLattice (s : kˣ) : (ballLat m s).IsLattice k := by
   classical
@@ -146,7 +144,7 @@ theorem ballLat_isLattice (s : kˣ) : (ballLat m s).IsLattice k := by
     exact Submodule.smul_mem _ _ (Submodule.subset_span (hs i))
 
 /- English proof (translation)
-Rewrite `hV` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, -, t, ht, h⟩` from `hV`. Take `⟨s, hs⟩` from `exists_cball_subset (U := ⋂ i, t i) (iInter_mem.2 ht)`. Conclude with `⟨s, fun x hx => h fun i _ => Set.mem_iInter.1 (hs (hx i)) i⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ballLat_subset {V : Set (m → k)} (hV : V ∈ 𝓝 (0 : m → k)) :
     ∃ s : kˣ, (ballLat m s : Set (m → k)) ⊆ V := by
@@ -156,9 +154,9 @@ theorem exists_ballLat_subset {V : Set (m → k)} (hV : V ∈ 𝓝 (0 : m → k)
   exact ⟨s, fun x hx => h fun i _ => Set.mem_iInter.1 (hs (hx i)) i⟩
 
 /- English proof (translation)
-Establish `hK' : IsCompact (⋃ i, (fun x : m → k => x i) '' K)` using `isCompact_iUnion fun i => hK.image (continuous_apply i)`. Take `⟨s, hs⟩` from `hK'.elim_directed_cover (fun s : kˣ => cball s) isOpen_cball (fun x _ => by`. Distinguish the cases in `h : x = 0`. Conclude with `Set.mem_iUnion.2 ⟨1, by simp [cball, h]⟩`. Conclude with `Set.mem_iUnion.2 ⟨Units.mk0 x h, by simp [cball]⟩) fun a b => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Break down `le_total (valuation k (a : k)) (valuation k (b : k)) with h | h` into its components or cases. Conclude with `⟨b, fun x (hx : x ∈ cball a) => le_trans (a := valuation k x) (c := valuation k (b : k)) hx h, subset_rfl⟩`. Conclude with `⟨a, subset_rfl, fun x (hx : x ∈ cball b) => le_trans (a := valuation k x) (c := valuation k (a : k)) hx h⟩`. Conclude with `⟨s, fun x hx i => hs (Set.mem_iUnion.2 ⟨i, x, hx, rfl⟩)⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_subset_ballLat {K : Set (m → k)} (hK : IsCompact K) :
     ∃ s : kˣ, K ⊆ (ballLat m s : Set (m → k)) := by
@@ -174,9 +172,9 @@ theorem exists_subset_ballLat {K : Set (m → k)} (hK : IsCompact K) :
   exact ⟨s, fun x hx i => hs (Set.mem_iUnion.2 ⟨i, x, hx, rfl⟩)⟩
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `hL.fg`. Take `⟨s, hs⟩` from `exists_subset_ballLat (K := (S : Set (m → k))) S.finite_toSet.isCompact`. Establish `h1 : L ≤ ballLat m s` using `hS ▸ Submodule.span_le.2 hs`. Establish `h2 : IsCompact (ballLat m s : Set (m → k))`. Use `isCompact_univ_pi fun _ : m => isCompact_cball s` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Conclude with `⟨fun h i _ => h i, fun h i => h i trivial⟩`. Conclude with `h2.of_isClosed_subset (LatPair.isClopen_lattice L).1 h1`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isCompact_lattice (L : Submodule 𝒪[k] (m → k)) (hL : L.IsLattice k) : IsCompact (L : Set (m → k)) := by
   obtain ⟨S, hS⟩ := hL.fg
@@ -191,7 +189,7 @@ theorem isCompact_lattice (L : Submodule 𝒪[k] (m → k)) (hL : L.IsLattice k)
 variable {ψ : AddChar k Circle}
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_cball_addChar_eq_one ψ hψ`. Use `IsCompact.eventually_forall_of_forall_eventually (isCompact_lattice L hL) (P := fun β u => ψ (u ⬝ᵥ β) = 1) fun u _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun q : (m → k) × (m → k) => q.2 ⬝ᵥ q.1` using `by fun_prop`. Use `filter_upwards [((isOpen_cball s).preimage hc).mem_nhds (x := (0, u)) (by simp [cball])] with q hq`. Conclude with `hs _ hq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem perp_mem_nhds (hψ : Continuous ψ) (L : Submodule 𝒪[k] (m → k)) (hL : L.IsLattice k) :
     (perp ψ L : Set (m → k)) ∈ 𝓝 (0 : m → k) := by
@@ -203,11 +201,11 @@ theorem perp_mem_nhds (hψ : Continuous ψ) (L : Submodule 𝒪[k] (m → k)) (h
   exact hs _ hq
 
 /- English proof (translation)
-Establish `h` using `ExchangeSupport.mem_SB_of hψ1 ((perp ψ L : Set (m → k)).indicator fun _ => (1 : ℂ)) ?_ ?_`. Establish `h2 : IsCompact (closure _)` using `h.2`. Rewrite `h2` using `[Set.support_indicator, Function.support_const one_ne_zero, Set.inter_univ, (AddSubgroup.isClosed_of_isOpen _ (AddSubgroup.isOpen_of_mem_nhds _ (perp_mem_nhds hψ L hL))).closure_eq]`. Then use the resulting hypothesis. Use `filter_upwards [perp_mem_nhds hψ L hL] with w hw u`. Distinguish the cases in `hu : u ∈ perp ψ L`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem (add_mem hu hw), Set.indicator_of_mem hu]`. Rewrite using `[Set.indicator_of_notMem (fun h => hu (by simpa using sub_mem h hw)), Set.indicator_of_notMem hu]`. Use `filter_upwards [(LatPair.isClopen_lattice L).2.mem_nhds L.zero_mem] with β hβ u`. Distinguish the cases in `hu : u ∈ perp ψ L`. Rewrite using `[dotProduct_comm, hu β hβ]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem hu, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_perp (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) [DecidableEq m] (L : Submodule 𝒪[k] (m → k))
     (hL : L.IsLattice k) : IsCompact (perp ψ L : Set (m → k)) := by
@@ -231,13 +229,11 @@ section Reps
 variable {V : Type} [AddCommGroup V] [TopologicalSpace V] [IsTopologicalAddGroup V]
 
 /- English proof (translation)
-Use `haveI : DiscreteTopology (V ⧸ B) := QuotientAddGroup.discreteTopology hB`. Establish `hfin : ((QuotientAddGroup.mk : V → V ⧸ B) '' D).Finite` using `(hD.image QuotientAddGroup.continuous_mk).finite_of_discrete`. Establish `hs : ∀ q : V ⧸ B, ∃ v : V, q ∈ (QuotientAddGroup.mk : V → V ⧸ B) '' D → v ∈ D ∧ (QuotientAddGroup.mk v : V ⧸ B) = q` using `fun q => by`. Distinguish the cases in `h : q ∈ (QuotientAddGroup.mk : V → V ⧸ B) '' D`. Take `⟨v, hv, e⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨v, fun _ => ⟨hv, e⟩⟩`. Conclude with `⟨0, fun h' => absurd h' h⟩`. Use `choose s hs using hs`. Use `⟨hfin.toFinset.image s, fun t ht => ?_, fun β hβ => ⟨s β, ⟨?_, ?_⟩, ?_⟩⟩` and prove the remaining obligations. Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 ht`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `(hs q (by simpa using hq)).1`. Conclude with `Finset.mem_image_of_mem _ (hfin.mem_toFinset.2 ⟨β, hβ, rfl⟩)`. Conclude with `QuotientAddGroup.eq_iff_sub_mem.1 (hs β ⟨β, hβ, rfl⟩).2.symm`. Introduce and unpack `t ⟨ht, h⟩`. Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 ht`.
-
-Rewrite using `[QuotientAddGroup.eq_iff_sub_mem.2 h, (hs q (hfin.mem_toFinset.1 hq)).2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isReps (D B : AddSubgroup V) (hD : IsCompact (D : Set V)) (hB : IsOpen (B : Set V)) :
     ∃ T, IsReps D B T := by
@@ -262,13 +258,13 @@ theorem exists_isReps (D B : AddSubgroup V) (hD : IsCompact (D : Set V)) (hB : I
     rw [QuotientAddGroup.eq_iff_sub_mem.2 h, (hs q (hfin.mem_toFinset.1 hq)).2]
 
 /- English proof (translation)
-Establish `hm : ∀ t : V, MeasurableSet ((fun β => -t + β) ⁻¹' (B : Set V))` using `fun t => (hB.preimage (by fun_prop)).measurableSet`. Establish `e : ∀ β, f β = ∑ t ∈ T, ((fun β => -t + β) ⁻¹' (B : Set V)).indicator (fun _ => f t) β`. Introduce `β`. Distinguish the cases in `hβ : β ∈ D`. Take `⟨t, ⟨ht, hb⟩, hu⟩` from `hT.2 β hβ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_eq_single_of_mem t ht, Set.indicator_of_mem (by simpa [neg_add_eq_sub] using hb), ← h1 t _ hb, add_sub_cancel]`. Introduce `t' ht' hne`. Conclude with `Set.indicator_of_notMem (fun h => hne (hu t' ⟨ht', by simpa [neg_add_eq_sub] using h⟩)) _`. Rewrite using `[h0 β hβ]`. Use `(Finset.sum_eq_zero fun t ht => Set.indicator_of_notMem (fun h => hβ ?_) _).symm` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using add_mem (hT.1 t ht) (hBD h)`. Rewrite using `[integral_congr_ae (Eventually.of_forall e), integral_finset_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[integral_indicator_const _ (hm t), Measure.real, measure_preimage_add, Complex.real_smul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t _`. Use `(integrable_indicator_iff (hm t)).2 (integrableOn_const ?_)` and prove the remaining obligations. Rewrite using `[measure_preimage_add]`. Conclude with `hBc.measure_lt_top.ne`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_eq_sum_reps [MeasurableSpace V] [BorelSpace V] (m : Measure V) [m.IsAddHaarMeasure]
     {D B : AddSubgroup V} (hBD : B ≤ D) (hB : IsOpen (B : Set V)) (hBc : IsCompact (B : Set V))

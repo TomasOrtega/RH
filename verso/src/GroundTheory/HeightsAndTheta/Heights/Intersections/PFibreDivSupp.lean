@@ -11,13 +11,13 @@ namespace GroundTheory.Heights₂.Heights.Inter
 open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction.G.AI.I1 ReciprocityTheory.ChartRestriction.G.AI.I4
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hQ hs hsQ hW W'`. Establish `hmin : ∀ Q ∈ (P' ⊔ Ideal.span {rename v s}).minimalPrimes, IsRelevant Q → IsMultiProjPrime Q` using `fun Q hQm hQr => ⟨hQm.1.1, cyc_isMultiHomogIdeal_of_mem_minimalPrimes hP'.2.1.2.1 (rename_isMultiHomog hv hs) hQm, hQr⟩`. Establish `hmem : ∀ Q ∈ (P' ⊔ Ideal.span {rename v s}).minimalPrimes, P' ≤ Q ∧ rename v s ∈ Q` using `fun Q hQm => ⟨le_sup_left.trans hQm.1.2, hQm.1.2 (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hW'p, hPW', himg⟩, hsW'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `hW'p.1` as an intermediate fact. Take `⟨Q, hQm, hQW'⟩` from `Ideal.exists_minimalPrimes_le (sup_le hPW' ((Ideal.span_singleton_le_iff_mem _).2 hsW'))`. Establish `hQr : IsRelevant Q` using `fun k => (hW'p.2.2 k).imp fun _ hi hq => hi (hQW' hq)`. Take `⟨hPQ, hsQ'⟩` from `hmem Q hQm`. Establish `hQi : imageZ v Q = W`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hQm.1.1` as an intermediate fact. Establish `hpr : (imageZ v Q).IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hle : imageZ v P' ⊔ Ideal.span {s} ≤ imageZ v Q` using `sup_le (Ideal.comap_mono hPQ) ((Ideal.span_singleton_le_iff_mem _).2 hsQ')`. Establish `hle2 : imageZ v Q ≤ W` using `himg ▸ Ideal.comap_mono hQW'`. Conclude with `le_antisymm hle2 (hW.1.2 ⟨hpr, hle⟩ hle2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQe` using `h K ι K' ι' κ v P' n s α W hv hP' hQ hs hsQ hW Q W' ⟨hmin Q hQm hQr, hPQ, hQi⟩ ⟨hW'p, hPW', himg⟩ hQW'`. Substitute `hQe` using the available equality. Conclude with `⟨⟨hQm, hQr⟩, hQi⟩`. Introduce and unpack `⟨⟨hW'm, hW'r⟩, himg⟩`. Conclude with `⟨⟨hmin W' hW'm hW'r, (hmem W' hW'm).1, himg⟩, (hmem W' hW'm).2⟩`.
+Substitute using the available equality. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem FibreDivSupp.proof (h : FibreIncomp.Statement) : FibreDivSupp.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' n s α W hv hP' hQ hs hsQ hW W'

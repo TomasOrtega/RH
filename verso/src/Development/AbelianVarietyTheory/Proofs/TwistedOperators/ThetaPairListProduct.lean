@@ -29,7 +29,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 namespace GlobalTheory.LineDerivSplit
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_add₀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f g : SInf F κ)
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) :
@@ -38,7 +38,7 @@ theorem pure_add₀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ
   simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, add_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_smul₀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (c : ℂ) (f : SInf F κ)
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) :
@@ -47,7 +47,7 @@ theorem pure_smul₀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype �
   simp [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => funext x`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure]`. Consider the case `cons a l ih => simp [pure_add₀, ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem pure_listSum {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] {ι : Type} (l : List ι)
     (h : ι → SInf F κ) (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) :
@@ -57,7 +57,7 @@ theorem pure_listSum {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype �
   | cons a l ih => simp [pure_add₀, ih]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons b l ih => simp [Finset.sum_add_distrib, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem sum_listSum {α ι : Type} [AddCommMonoid α] {m : ℕ} (l : List ι) (a : Fin m → ι → α) :
     ∑ j, (l.map (a j)).sum = (l.map fun i => ∑ j, a j i).sum := by
@@ -66,21 +66,17 @@ theorem sum_listSum {α ι : Type} [AddCommMonoid α] {m : ℕ} (l : List ι) (a
   | cons b l ih => simp [Finset.sum_add_distrib, ih]
 
 /- English proof (translation)
-Introduce `hPr F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hP ι l γs hγs γ hγ hprod ΦD hΦD Φ₁D hΦ₁`. Establish `hact` using `GlobalTheory.T.polynomial_datum_action_of_pair hPr F E σ B n d X W M χX χW om r s r' s' hP`. Use `choose Ds hDsP hDs using fun i => hact.1 (γs i) (hγs i)`. Take `⟨Dγ, -, hDγ⟩` from `hact.1 γ hγ`. Take `⟨m, c, g, hg⟩` from `(Submodule.mem_span_set').1 hΦD`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose f φ hf hSB hcof hgf using fun j => (g j).2`. Establish `hstd : ∀ j, ∀ᶠ v in Filter.cofinite, φ j v = Set.indicator {x : Fin n × Fin d → Fv F v | ∀ k, x k ∈ v.adicCompletionIntegers F} 1`. Introduce `j`. Use `filter_upwards [hcof j, hP.good.std] with v h1 h2`. Rewrite using `[h1, h2]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ j, c j • f j ∈ M.Pol B.ψ B.emb` using `fun j => Submodule.smul_mem _ _ (hf j)`. Establish `hΦ : ΦD = ∑ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c j • f j) (φ j)`. Rewrite using `[← hg]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hgf j, pure_smul₀]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Use `⟨fun i => ∑ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Ds i (c j • f j)) (φ j), fun i => ?_, fun i u => ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem _ fun j _ => Submodule.subset_span ?_` and prove the remaining obligations. Conclude with `⟨_, φ j, hDsP i _ (hmem j), hSB j, hcof j, rfl⟩`. Rewrite using `[hΦ]`. Conclude with `GlobalTheory.ThetaLineDerFirst.hasDerivAt_thetaSum_lineFirst hPr M B.ψ χX χW om hP.base.std hP.good hP.weil (γs i) (hγs i) m (fun j => c j • f j) (fun j => Ds i (c j • f j)) φ (fun j => ⟨hSB j, hcof j⟩) (fun j => (hDs i _ (hmem j) _).2 rfl) u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ x, Φ₁D x = ∑ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Dγ (c j • f j)) (φ j) x`. Introduce `x`. Establish `h2 : HasDerivAt (fun t : ℝ => om (γ (Multiplicative.ofAdd t), 1) ΦD x) (∑ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Dγ (c j • f j)) (φ j) x) 0`. Establish `e : (fun t : ℝ => om (γ (Multiplicative.ofAdd t), 1) ΦD x) = fun t => ∑ j, om (γ (Multiplicative.ofAdd t), 1) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (c j • f j) (φ j)) x`. Use function extensionality and compare the values at `t`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hΦ, map_sum, Finset.sum_apply]`. Rewrite using `[e]`. Establish `hs` using `HasDerivAt.sum (u := Finset.univ) fun j _ => GlobalTheory.ThetaFacInf.Fib.hasDerivAt_pure (φ j) (hSB j) (hstd j) ((hDγ _ (hmem j) _).2 rfl) x`. Simplify `hs` using `[Finset.sum_fn]`. Conclude with `(hΦ₁ x).unique h2`.
-
-Establish `hadd : ∀ j, Dγ (c j • f j) = (l.map fun i => Ds i (c j • f j)).sum` using `fun j => GlobalTheory.T.theta_pair_list_action hPr F E σ B n d X W M χX χW om r s r' s' hP l γs hγs γ hγ hprod _ (hmem j) _ _ ((hDγ _ (hmem j) _).2 rfl) (fun i => (hDs i _ (hmem j) _).2 rfl)`. Combine the equalities or inequalities in the displayed calculation. Use function extensionality and compare the values at `fun x => (hpt x).trans (Finset.sum_apply x _ _).symm`. Use `_ = ∑ j, (l.map fun i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Ds i (c j • f j)) (φ j)).sum := by`. Simplify using `only [hadd, pure_listSum]`.
-
-Use `_ = (l.map fun i => ∑ j, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Ds i (c j • f j)) (φ j)).sum := sum_listSum l (fun j i => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (Ds i (c j • f j)) (φ j))`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem derivSplit : GlobalTheory.FunPr.Hypotheses₂ → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) (n d : ℕ) (X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n) (W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d)

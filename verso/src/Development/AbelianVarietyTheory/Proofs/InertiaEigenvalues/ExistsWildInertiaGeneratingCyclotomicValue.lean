@@ -15,14 +15,14 @@ def ex {l : ℕ} (hl : l.Prime) (k : ℕ) : ℕ :=
     (Nat.coprime_ordCompl hl (Nat.factorial_ne_zero k))) 1 0).1
 
 /- English proof (translation)
-The claim follows from `(Nat.chineseRemainder (Nat.Coprime.pow_left (k + 1) (Nat.coprime_ordCompl hl (Nat.factorial_ne_zero k))) 1 0).2.1`.
+A detailed English derivation is pending.
 -/
 theorem ex_modEq {l : ℕ} (hl : l.Prime) (k : ℕ) : ex hl k ≡ 1 [MOD l ^ (k + 1)] :=
   (Nat.chineseRemainder (Nat.Coprime.pow_left (k + 1)
     (Nat.coprime_ordCompl hl (Nat.factorial_ne_zero k))) 1 0).2.1
 
 /- English proof (translation)
-The claim follows from `Nat.modEq_zero_iff_dvd.1 (Nat.chineseRemainder (Nat.Coprime.pow_left (k + 1) (Nat.coprime_ordCompl hl (Nat.factorial_ne_zero k))) 1 0).2.2`.
+A detailed English derivation is pending.
 -/
 theorem ex_dvd {l : ℕ} (hl : l.Prime) (k : ℕ) :
     (k.factorial / l ^ (k.factorial).factorization l) ∣ ex hl k :=
@@ -30,13 +30,13 @@ theorem ex_dvd {l : ℕ} (hl : l.Prime) (k : ℕ) :
     (Nat.coprime_ordCompl hl (Nat.factorial_ne_zero k))) 1 0).2.2
 
 /- English proof (translation)
-Use `set a := d.factorization l`. Use `set d' := d / l ^ a`. Establish `hdd : l ^ a * d' = d` using `Nat.ordProj_mul_ordCompl_eq_self d l`. Establish `hco : (l ^ a).Coprime d'` using `Nat.Coprime.pow_left a (Nat.coprime_ordCompl hl hd.ne')`. Establish `hla : l ^ a ≤ d` using `Nat.le_of_dvd hd (Nat.ordProj_dvd d l)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha : a < l ^ a` using `Nat.lt_pow_self hl.one_lt`. Establish `hdvd : ∀ k, d ≤ k → d' ∣ ex hl k` using `fun k hk => (Nat.ordCompl_dvd_ordCompl_of_dvd (Nat.dvd_factorial hd hk) l).trans (ex_dvd hl k)`. Establish `hmod1 : ∀ k, d ≤ k → ex hl k ≡ 1 [MOD l ^ a]` using `fun k hk => Nat.ModEq.of_dvd (Nat.pow_dvd_pow l (by omega)) (ex_modEq hl k)`. Establish `hord : orderOf x ∣ d` using `orderOf_dvd_of_pow_eq_one hx`. Use `⟨fun k hk => ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[pow_eq_pow_iff_modEq]`. Use `Nat.ModEq.of_dvd hord ?_` and prove the remaining obligations. Establish `h` using `(Nat.modEq_and_modEq_iff_modEq_mul hco).1 ⟨(hmod1 k hk).trans (hmod1 d le_rfl).symm, (Nat.modEq_zero_iff_dvd.2 (hdvd k hk)).trans (Nat.modEq_zero_iff_dvd.2 (hdvd d le_rfl)).symm⟩`. Rewrite `h` using `[hdd]`. Then use the resulting hypothesis. Take `⟨t, ht⟩` from `hdvd d le_rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ex hl d * l ^ a = d * t` using `by rw [ht, ← hdd]; ring`. Rewrite using `[e, pow_mul, hx, one_pow]`.
+A detailed English derivation is pending.
 -/
 theorem pow_ex {Q : Type*} [Group Q] {l : ℕ} (hl : l.Prime) (x : Q) {d : ℕ} (hd : 0 < d)
     (hx : x ^ d = 1) :
@@ -63,15 +63,15 @@ theorem pow_ex {Q : Type*} [Group Q] {l : ℕ} (hl : l.Prime) (x : Q) {d : ℕ} 
     rw [e, pow_mul, hx, one_pow]
 
 /- English proof (translation)
-Take `⟨g0, -, hg0⟩` from `isCompact_univ.exists_clusterPt (f := Filter.map (fun k => σ ^ ex hl k) Filter.atTop) (by simp)`. Establish `hmem : ∀ C : Set G, IsClosed C → (∀ᶠ k in Filter.atTop, σ ^ ex hl k ∈ C) → g0 ∈ C`. Introduce `C hC hev`. Establish `h` using `hg0.mem_closure_of_mem (s := C) hev`. Rewrite `h` using `[hC.closure_eq]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨g0, fun C hC h => hmem C hC (Filter.Eventually.of_forall h), fun N hN hNo => ?_⟩` and prove the remaining obligations. Establish `hfin` using `Subgroup.quotient_finite_of_isOpen N hNo`. Establish `hd : 0 < N.index` using `Nat.pos_of_ne_zero Subgroup.index_ne_zero_of_finite`. Establish `hx : ((σ : G ⧸ N)) ^ N.index = 1`. Rewrite using `[← QuotientGroup.mk_pow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(QuotientGroup.eq_one_iff _).2 (N.pow_index_mem σ)`. Take `⟨h1, h2⟩` from `pow_ex hl (σ : G ⧸ N) hd hx`. Establish `hC : IsClosed {τ : G | τ⁻¹ * σ ^ ex hl N.index ∈ N}` using `(N.isClosed_of_isOpen hNo).preimage (by fun_prop)`. Establish `hg : g0⁻¹ * σ ^ ex hl N.index ∈ N`. Use `hmem _ hC ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Filter.eventually_atTop]`. Use `⟨N.index, fun k hk => ?_⟩` and prove the remaining obligations. Use `show (σ ^ ex hl k)⁻¹ * σ ^ ex hl N.index ∈ N`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.mk_pow, QuotientGroup.mk_pow]`. Conclude with `h1 k hk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨N.index.factorization l, ?_⟩` and prove the remaining obligations. Establish `hq : (g0 : G ⧸ N) = (σ : G ⧸ N) ^ ex hl N.index`. Rewrite using `[QuotientGroup.eq.2 hg, QuotientGroup.mk_pow]`. Rewrite using `[← QuotientGroup.eq_one_iff, QuotientGroup.mk_pow, hq, ← pow_mul, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_proL {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     {l : ℕ} (hl : l.Prime) (σ : G) : ∃ g0 : G,
@@ -109,27 +109,25 @@ end GlobalTheory.WildCycGen
 namespace GlobalTheory.WildCycGen
 
 /- English proof (translation)
-Establish `hdec : σ ∈ Dec (F` using `E) A := hσ.1`. Establish `hvs : ∀ (j : ℕ) (z : Ω), A.valuation ((σ ^ j) z) = A.valuation z` using `fun j z => GlobalTheory.PrimeToInertia.valuation_apply_eq (pow_mem hdec j) z`. Use `set x := σ y / y with hx`. Establish `hy0 : A.valuation y ≠ 0` using `by simpa using hy`. Establish `hx1 : A.valuation x = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, map_div₀, show σ y = (σ ^ 1) y by rw [pow_one], hvs 1 y, div_self hy0]`. Establish `hxy : σ y = x * y` using `by rw [hx]; field_simp`. Establish `hprod : ∀ k : ℕ, (σ ^ k) y = (∏ j ∈ Finset.range k, (σ ^ j) x) * y`. Introduce `k`. Proceed by induction on `k with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, AlgEquiv.mul_apply, hxy, map_mul, ih, Finset.prod_range_succ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hj : ∀ j : ℕ, A.valuation ((σ ^ j) x - x) < 1` using `fun j => (pow_mem hσ j).2 x hx1.le`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpk : ∀ k : ℕ, A.valuation ((∏ j ∈ Finset.range k, (σ ^ j) x) - x ^ k) < 1`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_range_succ, pow_succ]`. Establish `e : (∏ j ∈ Finset.range k, (σ ^ j) x) * (σ ^ k) x - x ^ k * x = ((∏ j ∈ Finset.range k, (σ ^ j) x) - x ^ k) * (σ ^ k) x + x ^ k * ((σ ^ k) x - x)` using `by ring`. Rewrite using `[e]`. Use `Valuation.map_add_lt _ ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, hvs k x, hx1, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ih`. Rewrite using `[map_mul, map_pow, hx1, one_pow, one_mul]`. Conclude with `hj k`. Establish `hP : (∏ j ∈ Finset.range (l ^ n), (σ ^ j) x) = 1`. Establish `h` using `hprod (l ^ n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[hn]`. Conclude with `mul_right_cancel₀ hy (h.symm.trans (one_mul y).symm)`. Establish `hxN : A.valuation (x ^ (l ^ n) - 1) < 1`. Establish `h` using `hpk (l ^ n)`. Rewrite `h` using `[hP, ← Valuation.map_neg, neg_sub]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Establish `hxA : x ∈ A` using `(A.valuation_le_one_iff x).1 hx1.le`. Use `set xa : A := ⟨x, hxA⟩`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `hlm : ((l : A) : Ω) = (l : Ω)` using `by simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hl0 : ((l : ℕ) : IsLocalRing.ResidueField A) = 0`. Rewrite using `[← map_natCast (IsLocalRing.residue A), IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff, hlm]`. Conclude with `hA`. Use `haveI : CharP (IsLocalRing.ResidueField A) l := (CharP.charP_iff_prime_eq_zero hl).2 hl0`. Establish `h1 : IsLocalRing.residue A (xa ^ (l ^ n) - 1) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Simplify `hxN` using `[xa]`. Establish `h2 : IsLocalRing.residue A (xa - 1) = 0`. Rewrite `h1` using `[map_sub, map_pow, map_one]`. Establish `h3 : (IsLocalRing.residue A xa - 1) ^ (l ^ n) = 0`.
-
-Rewrite using `[sub_pow_char_pow, one_pow, h1]`. Rewrite using `[map_sub, map_one]`. Conclude with `pow_eq_zero_iff (pow_ne_zero _ hl.ne_zero) |>.1 h3`. Rewrite `h2` using `[IsLocalRing.residue_eq_zero_iff, ValuationSubring.valuation_lt_one_iff]`. Simplify `h2` using `[xa]`.
+A detailed English derivation is pending.
 -/
 theorem wild_of_pow {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {l : ℕ} (hl : l.Prime) (hA : A.valuation (l : Ω) < 1)
@@ -198,15 +196,15 @@ end GlobalTheory.WildCycGen
 namespace GlobalTheory.WildCycGen
 
 /- English proof (translation)
-Rewrite using `[← PadicInt.ker_toZModPow, RingHom.mem_ker]`. Simplify using `only [map_sub, map_pow, map_add, map_one, map_natCast]`. Take `⟨s', rfl⟩ : ∃ s', s = s' + 1` from `⟨s - 1, by omega⟩`. Use `set X : ZMod (l ^ (s' + 1 + 1)) := (l : ZMod (l ^ (s' + 1 + 1))) ^ (s' + 1) with hX`. Establish `hlx : (l : ZMod (l ^ (s' + 1 + 1))) * X = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX, ← pow_succ', ← Nat.cast_pow, ZMod.natCast_self]`. Establish `hX2 : X * X = 0`. Establish `e : X * X = ((l : ZMod (l ^ (s' + 1 + 1))) * X) * (l : ZMod (l ^ (s' + 1 + 1))) ^ s'`. Rewrite using `[hX]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hlx, zero_mul]`. Establish `hpow : ∀ m : ℕ, (1 + X) ^ m = 1 + (m : ZMod (l ^ (s' + 1 + 1))) * X`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ m ih`. Rewrite using `[pow_succ (1 + X) m, ih]`. Use `push_cast`. Take the linear combination `(m : ZMod (l ^ (s' + 1 + 1))) * hX2`. Rewrite using `[hpow]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc' : c = l * (c / l) + 1` using `by have := Nat.div_add_mod c l; omega`. Rewrite using `[hc']`. Use `push_cast`. Take the linear combination `((c / l : ℕ) : ZMod (l ^ (s' + 1 + 1))) * hlx`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem one_add_pow_sub_mem {l : ℕ} [Fact l.Prime] {s c : ℕ} (hs : 1 ≤ s) (hc : c % l = 1) :
     (1 + (l : ℤ_[l]) ^ s) ^ c - (1 + (l : ℤ_[l]) ^ s) ∈ Ideal.span {(l : ℤ_[l]) ^ (s + 1)} := by
@@ -235,7 +233,7 @@ theorem one_add_pow_sub_mem {l : ℕ} [Fact l.Prime] {s c : ℕ} (hs : 1 ≤ s) 
   linear_combination ((c / l : ℕ) : ZMod (l ^ (s' + 1 + 1))) * hlx
 
 /- English proof (translation)
-Establish `h` using `Nat.ModEq.of_dvd (dvd_pow_self l (Nat.succ_ne_zero k)) (ex_modEq hl k)`. Rewrite `h` using `[Nat.ModEq, Nat.mod_eq_of_lt hl.one_lt]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_mod {l : ℕ} (hl : l.Prime) (k : ℕ) : ex hl k % l = 1 := by
   have h := Nat.ModEq.of_dvd (dvd_pow_self l (Nat.succ_ne_zero k)) (ex_modEq hl k)
@@ -243,21 +241,19 @@ theorem ex_mod {l : ℕ} (hl : l.Prime) (k : ℕ) : ex hl k % l = 1 := by
   exact h
 
 /- English proof (translation)
-Introduce `D i k hk`. Establish `hl : (D.nd.l i).Prime` using `Fact.out`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : (placesOver D.host.E (D.nd.l i)).Nonempty := by`. Use `Set.nonempty_of_ncard_ne_zero ?_` and prove the remaining obligations. Rewrite using `[(GlobalTheory.TypeDegOne.degree_one D i k hk).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : D.R.f = 2 * D.R.ord` using `rfl`. Rewrite using `[h5]`. Check the signs of the components of the expression. Take `⟨σ, hσI, hσc⟩` from `GlobalTheory.PtCore.EpsAll.exists_generator (GlobalTheory.EpsInertia.epsAll D i) w hw`. Take `⟨g0, hC, hP⟩` from `exists_proL hl σ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hs : 1 ≤ D.nd.s0 i`. Conclude with `UpperTheory.KStar.S0.one_le_localLevel D.nd i`. Use `⟨g0, ⟨w, hw, hC _ (isClosed_Ine (F := D.host.E) (D.nd.plOm.1 w)) fun k => pow_mem hσI _⟩, ?_, ?_⟩` and prove the remaining obligations. Use `set L : ℤ_[D.nd.l i] := (D.nd.l i : ℤ_[D.nd.l i])`. Establish `hcont : Continuous fun τ : GE D.nd => ‖((cycZ (F` using `D.host.E) (Ω := D.nd.Om) (D.nd.l i) τ : ℤ_[D.nd.l i]ˣ) : ℤ_[D.nd.l i]) - (1 + L ^ D.nd.s0 i)‖ := continuous_norm.comp ((Units.continuous_val.comp (continuous_cycZ _ _ (D.nd.l i))).sub continuous_const)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg` using `hC _ (isClosed_le hcont continuous_const) fun k => by show ‖((cycZ (F := D.host.E) (Ω := D.nd.Om) (D.nd.l i) (σ ^ ex hl k) : ℤ_[D.nd.l i]ˣ) : ℤ_[D.nd.l i]) - (1 + L ^ D.nd.s0 i)‖ ≤ ((D.nd.l i : ℝ)) ^ (-((D.nd.s0 i + 1 : ℕ) : ℤ))`. Rewrite using `[PadicInt.norm_le_pow_iff_mem_span_pow, map_pow, Units.val_pow_eq_pow_val, hσc]`. Conclude with `one_add_pow_sub_mem hs (ex_mod hl k)`. Rewrite `hg` using `[Set.mem_setOf_eq, PadicInt.norm_le_pow_iff_mem_span_pow, Ideal.mem_span_singleton']`. Take `⟨t, ht⟩` from `hg`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu : IsUnit (1 + L * t)`. Rewrite using `[← sub_neg_eq_add]`. Use `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ fun h => ?_` and prove the remaining obligations. Conclude with `PadicInt.irreducible_p.not_isUnit (isUnit_of_mul_isUnit_left ((IsUnit.neg_iff _).1 h))`. Use `⟨hu.unit, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[IsUnit.unit_spec]`. Take the linear combination `(-1 : ℤ_[D.nd.l i]) * ht`. Introduce `w' hw' hine y hy`. Establish `hA : (D.nd.plOm.1 w').valuation ((D.nd.l i : ℕ) : D.nd.Om) < 1`. Establish `h` using `(D.nd.plOm.2 w' ((D.nd.l i : ℕ) : 𝓞 D.host.E)).2 hw'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `using h`. Establish `hfd : FiniteDimensional D.host.E (IntermediateField.adjoin D.host.E {y})` using `IntermediateField.adjoin.finiteDimensional (Algebra.IsIntegral.isIntegral y)`. Establish `ho` using `IntermediateField.fixingSubgroup_isOpen (IntermediateField.adjoin D.host.E {y})`. Take `⟨H, hH⟩` from `IsTopologicalGroup.exist_openNormalSubgroup_sub_clopen_nhds_of_one ⟨Subgroup.isClosed_of_isOpen _ ho, ho⟩ (IntermediateField.adjoin D.host.E {y}).fixingSubgroup.one_mem`. Take `⟨a, ha⟩` from `hP H.toSubgroup H.isNormal' H.isOpen`.
-
-Establish `hfix : (g0 ^ (D.nd.l i ^ a)) y = y` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 (hH ha) y (IntermediateField.subset_adjoin _ _ (Set.mem_singleton y))`. Conclude with `wild_of_pow hl hA hine hy hfix`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (i : D.nd.Loc) (k : Fin 2), D.nd.l i = D.host.g k → ∃ g0 : GE D.nd, (∃ w ∈ placesOver D.host.E (D.nd.l i), g0 ∈ Ine (F := D.host.E) (D.nd.plOm.1 w)) ∧ (∃ u : ℤ_[D.nd.l i]ˣ, ((cycZ (F := D.host.E) (Ω := D.nd.Om) (D.nd.l i) g0 : ℤ_[D.nd.l i]ˣ) : ℤ_[D.nd.l i]) = 1 + (D.nd.l i : ℤ_[D.nd.l i]) ^ D.nd.s0 i * (u : ℤ_[D.nd.l i])) ∧ ∀ w ∈ placesOver D.host.E (D.nd.l i), g0 ∈ Ine (F := D.host.E) (D.nd.plOm.1 w) → g0 ∈ wildSet D.nd (D.nd.plOm.1 w) := by
   intro D i k hk

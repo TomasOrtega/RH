@@ -37,7 +37,7 @@ theorem resCocycle_apply (f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ) (p : (
   rfl
 
 /- English proof (translation)
-Introduce `g h j`. Conclude with `hf (g.restrictScalars K) (h.restrictScalars K) (j.restrictScalars K)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isMulCocycle₂_resCocycle {f : (L ≃ₐ[K] L) × (L ≃ₐ[K] L) → Lˣ} (hf : IsMulCocycle₂ f) :
     IsMulCocycle₂ (resCocycle K E f) := by
@@ -64,14 +64,14 @@ theorem inclBase_apply (e : E) : inclBase E hf e = incl (algebraMap E L e) :=
   rfl
 
 /- English proof (translation)
-Rewrite using `[inclBase_apply, ← map_mul, mul_comm, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem incl_mul_inclBase (a : L) (e : E) :
     incl a * inclBase E hf e = inclBase E hf e * (incl a : CrossedProduct hf) := by
   rw [inclBase_apply, ← map_mul, mul_comm, map_mul]
 
 /- English proof (translation)
-Rewrite using `[inclBase_apply, u_mul_incl, AlgEquiv.restrictScalars_apply, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem u_mul_inclBase (τ : L ≃ₐ[E] L) (e : E) :
     u (τ.restrictScalars K) * inclBase E hf e = inclBase E hf e * (u (τ.restrictScalars K) : CrossedProduct hf) := by

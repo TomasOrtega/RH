@@ -22,15 +22,15 @@ private structure Good (H : Subgroup SL(2, ℤ)) (k : ℤ) (F : ℍ → ℂ) : P
 variable {H : Subgroup SL(2, ℤ)} {k : ℤ} {F G : ℍ → ℂ}
 
 /- English proof (translation)
-The claim follows from `petersson_continuous k hF.hol.continuous hG.hol.continuous`.
+A detailed English derivation is pending.
 -/
 private theorem Good.cont (hF : Good H k F) (hG : Good H k G) : Continuous (petersson k F G) :=
   petersson_continuous k hF.hol.continuous hG.hol.continuous
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `hF.bd`. Take `⟨B, hB⟩` from `hG.bd`. Use `⟨A + B, fun z => le_trans ?_ (add_le_add (hA z) (hB z))⟩` and prove the remaining obligations. Simplify using `only [petersson, norm_mul, Complex.norm_conj]`. Rewrite using `[← add_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_mul_of_nonneg_right ?_ (norm_nonneg _)` and prove the remaining obligations. Use polynomial arithmetic with `[sq_nonneg (‖F z‖ - ‖G z‖), norm_nonneg (F z), norm_nonneg (G z)]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem Good.pbd (hF : Good H k F) (hG : Good H k G) : ∃ C : ℝ, ∀ z, ‖petersson k F G z‖ ≤ C := by
   obtain ⟨A, hA⟩ := hF.bd
@@ -42,15 +42,15 @@ private theorem Good.pbd (hF : Good H k F) (hG : Good H k G) : ∃ C : ℝ, ∀ 
   nlinarith [sq_nonneg (‖F z‖ - ‖G z‖), norm_nonneg (F z), norm_nonneg (G z)]
 
 /- English proof (translation)
-Introduce `γ hγ z` and use `by rw [← petersson_slash_SL, hF.inv γ hγ, hG.inv γ hγ]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem Good.pinv (hF : Good H k F) (hG : Good H k G) : ∀ γ ∈ H, ∀ z, petersson k F G (γ • z) = petersson k F G z :=
   fun γ hγ z => by rw [← petersson_slash_SL, hF.inv γ hγ, hG.inv γ hγ]
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `hF.bd`. Use `⟨hF.hol.slash k α, ⟨‖((|α.det.val| : ℝ) : ℂ) ^ (k - 2)‖ * A, fun z => ?_⟩, fun γ hγ => ?_⟩` and prove the remaining obligations. Rewrite using `[petersson_slash, norm_mul, norm_σ]`. Conclude with `mul_le_mul_of_nonneg_left (hA _) (norm_nonneg _)`. Take `⟨y, hy, e⟩` from `mem_conjGL.1 (h hγ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : α * (γ : GL (Fin 2) ℝ) = (y : GL (Fin 2) ℝ) * α` using `by rw [e]; group`. Rewrite using `[SL_slash, ← SlashAction.slash_mul, e', SlashAction.slash_mul, ← SL_slash, hF.inv y hy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Good.slash {K : Subgroup SL(2, ℤ)} (hF : Good K k F) (α : GL (Fin 2) ℝ) (h : H ≤ conjGL K α) :
     Good H k (F ∣[k] α) := by
@@ -63,21 +63,21 @@ private theorem Good.slash {K : Subgroup SL(2, ℤ)} (hF : Good K k F) (α : GL 
     rw [SL_slash, ← SlashAction.slash_mul, e', SlashAction.slash_mul, ← SL_slash, hF.inv y hy]
 
 /- English proof (translation)
-Introduce `x hx` and use `mem_conjGL.2 ⟨_, hN.conj_mem x hx γ, by simp⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem le_conj [hN : H.Normal] (γ : SL(2, ℤ)) : H ≤ conjGL H (γ : GL (Fin 2) ℝ) := fun x hx =>
   mem_conjGL.2 ⟨_, hN.conj_mem x hx γ, by simp⟩
 
 /- English proof (translation)
-The claim follows from `hF.slash _ (le_conj γ)`.
+A detailed English derivation is pending.
 -/
 private theorem Good.slashSL [H.Normal] (hF : Good H k F) (γ : SL(2, ℤ)) : Good H k (F ∣[k] γ) :=
   hF.slash _ (le_conj γ)
 
 /- English proof (translation)
-Establish `e : ∀ z, petersson k (F ∣[k] α) (G ∣[k] α) z = (α.det.val : ℂ) ^ (k - 2) * petersson k F G (α • z)` using `fun z => by`. Rewrite using `[petersson_slash, σ, if_pos hα, abs_of_pos hα]`. Both sides reduce to the same expression. Establish `h0 : (α.det.val : ℂ) ^ (k - 2) ≠ 0` using `zpow_ne_zero _ (by exact_mod_cast hα.ne')`. Take `⟨C, hC⟩` from `hF.pbd hG`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[funext e, quotInt_mul, quotInt_conj H α h1 h2 (hF.cont hG) hC (hF.pinv hG) fun γ hγ z => ?_]`. Use `mul_left_cancel₀ h0 ?_` and prove the remaining obligations. Rewrite using `[← e, ← e, hF'.pinv hG' γ hγ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem B_slash [H.FiniteIndex] {α : GL (Fin 2) ℝ} (hα : 0 < α.det.val) (h1 : (conjGL H α).FiniteIndex)
     (h2 : (conjGL H α⁻¹).FiniteIndex) (hF : Good H k F) (hG : Good H k G) (hF' : Good H k (F ∣[k] α))
@@ -92,9 +92,9 @@ private theorem B_slash [H.FiniteIndex] {α : GL (Fin 2) ℝ} (hα : 0 < α.det.
   rw [← e, ← e, hF'.pinv hG' γ hγ]
 
 /- English proof (translation)
-Establish `hd : (γ : GL (Fin 2) ℝ).det.val = 1` using `by simp`. Establish `h2 : (conjGL H (γ : GL (Fin 2) ℝ)⁻¹).FiniteIndex`. Use `Subgroup.finiteIndex_of_le (le_conj (H := H) γ⁻¹)` as an intermediate fact. Rewrite `this` using `[map_inv, map_inv]`. Then use the resulting hypothesis. Use `B_slash (α := (γ : GL (Fin 2) ℝ)) (by rw [hd]; exact one_pos) (Subgroup.finiteIndex_of_le (le_conj γ)) h2 hF hG (hF.slashSL γ) (hG.slashSL γ)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[hd, Complex.ofReal_one, one_zpow, one_mul]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem B_slashSL [H.FiniteIndex] [H.Normal] (γ : SL(2, ℤ)) (hF : Good H k F) (hG : Good H k G) :
     quotInt H (petersson k (F ∣[k] γ) (G ∣[k] γ)) = quotInt H (petersson k F G) := by
@@ -108,21 +108,21 @@ private theorem B_slashSL [H.FiniteIndex] [H.Normal] (γ : SL(2, ℤ)) (hF : Goo
   exact this
 
 /- English proof (translation)
-Rewrite using `[← quotInt_mul]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `[petersson]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem B_smul_left [H.FiniteIndex] (c : ℂ) :
     quotInt H (petersson k (c • F) G) = conj c * quotInt H (petersson k F G) := by
   rw [← quotInt_mul]; congr 1; funext z; simp [petersson]; ring
 
 /- English proof (translation)
-Rewrite using `[← quotInt_mul]`. Use `congr 1`. Use function extensionality and compare the values at `z`. Simplify using `[petersson]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem B_smul_right [H.FiniteIndex] (c : ℂ) :
     quotInt H (petersson k F (c • G)) = c * quotInt H (petersson k F G) := by
   rw [← quotInt_mul]; congr 1; funext z; simp [petersson]; ring
 
 /- English proof (translation)
-Take `⟨A, hA⟩` from `hF.bd`. Use `⟨hF.hol.const_smul c, ⟨‖c‖ ^ 2 * A, fun z => ?_⟩, fun γ hγ => by rw [SL_smul_slash, hF.inv γ hγ]⟩` and prove the remaining obligations. Use `le_trans (le_of_eq ?_) (mul_le_mul_of_nonneg_left (hA z) (by positivity))` and prove the remaining obligations. Simplify using `[petersson]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem Good.smul (hF : Good H k F) (c : ℂ) : Good H k (c • F) := by
   obtain ⟨A, hA⟩ := hF.bd
@@ -131,7 +131,7 @@ private theorem Good.smul (hF : Good H k F) (c : ℂ) : Good H k (c • F) := by
   simp [petersson]; ring
 
 /- English proof (translation)
-Establish `h` using `B_slash (by rw [hβ]; exact_mod_cast hp) h1 h2 hF' hG (e ▸ hF.smul _) hG'`. Rewrite `h` using `[e, B_smul_left, hβ, map_zpow₀, map_natCast, Complex.ofReal_natCast]`. Conclude with `mul_left_cancel₀ (zpow_ne_zero _ (by exact_mod_cast hp.ne')) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem B_adj [H.FiniteIndex] {α β : GL (Fin 2) ℝ} {p : ℕ} (hp : 0 < p) (hβ : β.det.val = p)
     (h1 : (conjGL H β).FiniteIndex) (h2 : (conjGL H β⁻¹).FiniteIndex) (hF : Good H k F) (hG : Good H k G)
@@ -146,33 +146,33 @@ private def dg (m n : ℕ) (h : m * n ≠ 0) : GL (Fin 2) ℝ :=
     (by rw [Matrix.det_fin_two_of, mul_zero, sub_zero]; exact_mod_cast h)).map (Rat.castHom ℝ)
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dg_val (m n : ℕ) (h : m * n ≠ 0) : (dg m n h).1 = !![(m : ℝ), 0; 0, (n : ℝ)] := by
   ext i j
   fin_cases i <;> fin_cases j <;> simp [dg]
 
 /- English proof (translation)
-Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, dg_val]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem dg_det (m n : ℕ) (h : m * n ≠ 0) : (dg m n h).det.val = (m * n : ℕ) := by
   rw [Matrix.GeneralLinearGroup.val_det_apply, dg_val]; simp
 
 /- English proof (translation)
-The claim follows from `finiteIndex_conjGL_rat H _`.
+A detailed English derivation is pending.
 -/
 private theorem dg_fin (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] (m n : ℕ) (h : m * n ≠ 0) :
     (conjGL H (dg m n h)).FiniteIndex := finiteIndex_conjGL_rat H _
 
 /- English proof (translation)
-Rewrite using `[dg, ← map_inv]`. Conclude with `finiteIndex_conjGL_rat H _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem dg_fin' (H : Subgroup SL(2, ℤ)) [H.FiniteIndex] (m n : ℕ) (h : m * n ≠ 0) :
     (conjGL H (dg m n h)⁻¹).FiniteIndex := by
   rw [dg, ← map_inv]; exact finiteIndex_conjGL_rat H _
 
 /- English proof (translation)
-Establish `hpos : 0 < (dg m n h).det.val` using `by rw [dg_det]; exact_mod_cast Nat.pos_of_ne_zero h`. Rewrite using `[slash_apply, σ, if_pos hpos, dg_det, ← ofComplex_apply (dg m n h • z), coe_smul_of_det_pos hpos]`. Simplify using `[num, denom, dg_val]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem dg_slash (m n : ℕ) (h : m * n ≠ 0) (k : ℤ) (F : ℍ → ℂ) (z : ℍ) :
     (F ∣[k] dg m n h) z = ((m * n : ℕ) : ℂ) ^ (k - 1) * (n : ℂ) ^ (-k) * F (ofComplex (m * (z : ℂ) / n)) := by
@@ -182,9 +182,9 @@ private theorem dg_slash (m n : ℕ) (h : m * n ≠ 0) (k : ℤ) (F : ℍ → �
   ring
 
 /- English proof (translation)
-Establish `e : dg m n h * dg n m h' = dg (m * n) (m * n) (mul_ne_zero h h)`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `[dg_val, mul_comm]`. Establish `h0 : ((m * n : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast h`. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← SlashAction.slash_mul, e, dg_slash, mul_div_cancel_left₀ _ h0, ofComplex_apply, Nat.cast_mul (m * n), mul_zpow, ← zpow_add₀ h0, ← zpow_add₀ h0, Pi.smul_apply, smul_eq_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem dg_mul (m n : ℕ) (h : m * n ≠ 0) (h' : n * m ≠ 0) (k : ℤ) (F : ℍ → ℂ) :
     (F ∣[k] dg m n h) ∣[k] dg n m h' = ((m * n : ℕ) : ℂ) ^ (k - 2) • F := by
@@ -199,17 +199,17 @@ private theorem dg_mul (m n : ℕ) (h : m * n ≠ 0) (h' : n * m ≠ 0) (k : ℤ
   ring
 
 /- English proof (translation)
-Establish `hp0 : (p : ℂ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hp1 : (p : ℂ) - 1 ≠ 0` using `sub_ne_zero.2 (by exact_mod_cast hp.ne_one)`. Establish `h1 : (1 : ℝ) ∈ (Gamma1 M : Subgroup (GL (Fin 2) ℝ)).strictPeriods` using `by simp`. Establish `hsum : ∀ (f : CuspForm (Gamma1 M) (k : ℤ)) (τ : ℍ), HasSum (fun m => coef f m • Function.Periodic.qParam 1 τ ^ m) (f τ)` using `fun f τ => hasSum_qExpansion one_pos (SlashInvariantFormClass.periodic_comp_ofComplex f h1) f.holo' (ModularFormClass.bdd_at_infty f) τ`. Establish `h0 : ∀ f : CuspForm (Gamma1 M) (k : ℤ), coef f 0 = 0` using `fun f => CuspFormClass.qExpansion_coeff_zero f one_pos h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `hasSum_heckeOne 1 hp.pos (hsum f) z`. Establish `a2` using `hasSum_heckeOne 2 hp.pos (hsum f) z`. Establish `a3` using `a1.add ((a2.sub a1).mul_left ((c * (p : ℂ) ^ (k - 1) - 1) / (p - 1)))`. Establish `e` using `(hsum Tf z).unique (cast (congrArg (HasSum · _) (funext fun m => ?_)) a3)`. Establish `e1 : ∀ u : ℕ, ((⇑f ∣[(k : ℤ)] dg 1 p hb) ∣[(k : ℤ)] (ModularGroup.T ^ (u : ℤ))) z = (p : ℂ)⁻¹ * f (ofComplex (((z : ℂ) + u) / p))` using `fun u => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : denom (ModularGroup.T ^ (u : ℤ) : SL(2, ℤ)) z = 1`. Rewrite using `[ModularGroup.denom_apply, ModularGroup.coe_T_zpow]`. Simplify using the standard rewrite rules. Rewrite using `[SL_slash_apply, dg_slash, ModularGroup.coe_T_zpow_smul_eq, hd]`. Simplify using `[zpow_sub₀ hp0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `left`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, dg_slash]`. Simplify using `only [e1, heckeOne, ← Finset.mul_sum]`. Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`.
+Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Break down `Nat.eq_zero_or_pos m with rfl | hm` into its components or cases. Simplify using `[h0]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h m hm]`. Simplify using `only [smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem T_exp {M k : ℕ} [NeZero M] (hk : 1 ≤ k) {p : ℕ} (hp : p.Prime) (c : ℂ) (f Tf : CuspForm (Gamma1 M) (k : ℤ))
     (h : ∀ n, 1 ≤ n → coef Tf n = coef f (p * n) + c * (p : ℂ) ^ (k - 1) * (if p ∣ n then coef f (n / p) else 0))
@@ -250,18 +250,18 @@ private theorem T_exp {M k : ℕ} [NeZero M] (hk : 1 ≤ k) {p : ℕ} (hp : p.Pr
       ring
 
 /- English proof (translation)
-Use `haveI : Fintype (SL(2, ℤ) ⧸ H) := Fintype.ofFinite _`. Simplify using `only [quotInt, finsum_eq_sum_of_fintype, map_sum, ← integral_conj, ← petersson_symm]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem B_symm [H.FiniteIndex] : quotInt H (petersson k G F) = conj (quotInt H (petersson k F G)) := by
   haveI : Fintype (SL(2, ℤ) ⧸ H) := Fintype.ofFinite _
   simp only [quotInt, finsum_eq_sum_of_fintype, map_sum, ← integral_conj, ← petersson_symm]
 
 /- English proof (translation)
-Establish `e1 : petersson k F TF = fun z => petersson k F (c • A) z + ∑ u ∈ Finset.range p, petersson k F (B ∣[k] (ModularGroup.T ^ (u : ℤ))) z`. Use function extensionality and compare the values at `z`. Simplify using `only [petersson, e, Pi.smul_apply, smul_eq_mul, mul_add, add_mul, Finset.mul_sum, Finset.sum_mul]`. Establish `hc` using `fun u : ℕ => hF.cont (hB.slashSL (ModularGroup.T ^ (u : ℤ)))`. Establish `hb` using `fun u : ℕ => hF.pbd (hB.slashSL (ModularGroup.T ^ (u : ℤ)))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose C hC using hb`. Take `⟨D, hD⟩` from `hF.pbd (hA.smul c)`. Rewrite using `[e1, quotInt_add H (hF.cont (hA.smul c)) hD (continuous_finset_sum _ fun u _ => hc u) (C' := ∑ u ∈ Finset.range p, C u) fun z => (norm_sum_le _ _).trans (Finset.sum_le_sum fun u _ => hC u z), quotInt_sum H _ hc fun u => ⟨_, hC u⟩, B_smul_right]`. Use `congr 1`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => quotInt H (petersson k F B)) fun u _ => ?_]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[← B_slashSL (ModularGroup.T ^ (u : ℤ)) hF hB, hT]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem quotInt_petersson_eq_add_of_hecke_sum [H.FiniteIndex] [H.Normal] {p : ℕ} {c : ℂ} {A B TF : ℍ → ℂ} (hF : Good H k F) (hA : Good H k A)
     (hB : Good H k B) (hT : ∀ u : ℤ, F ∣[k] (ModularGroup.T ^ u) = F)
@@ -284,16 +284,16 @@ private theorem quotInt_petersson_eq_add_of_hecke_sum [H.FiniteIndex] [H.Normal]
   · rw [← B_slashSL (ModularGroup.T ^ (u : ℤ)) hF hB, hT]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨f.holo', CuspFormClass.petersson_bounded_left (k : ℤ) (Gamma1 M) f f, fun γ hγ => f.slash_action_eq' _ ⟨γ, h hγ, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 private theorem good_cusp {M k : ℕ} [NeZero M] (f : CuspForm (Gamma1 M) (k : ℤ)) (h : H ≤ Gamma1 M) : Good H k f :=
   ⟨f.holo', CuspFormClass.petersson_bounded_left (k : ℤ) (Gamma1 M) f f,
     fun γ hγ => f.slash_action_eq' _ ⟨γ, h hγ, rfl⟩⟩
 
 /- English proof (translation)
-Take `⟨r, s, h⟩ : IsCoprime (p : ℤ) (M : ℤ)` from `Nat.isCoprime_iff_coprime.2 hc`. Take `⟨δ, hδ⟩ : ∃ δ : SL(2, ℤ), δ.1 = !![r, -s; M, p]` from `⟨⟨_, by rw [Matrix.det_fin_two_of]; linear_combination h⟩, rfl⟩`. Take `⟨γ, hγ⟩ : ∃ γ : SL(2, ℤ), γ.1 = !![p * r, -s; M, 1]` from `⟨⟨_, by rw [Matrix.det_fin_two_of]; linear_combination h⟩, rfl⟩`. Use `⟨δ, by simp [Gamma0_mem, hδ], γ, ?_, by simp [hδ], ?_⟩` and prove the remaining obligations. Use `congrArg (Int.cast : ℤ → ZMod M) h` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Gamma1_mem]`. Simplify `this` using `[mul_comm, hγ]`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg_val, Matrix.mul_apply, Fin.sum_univ_two, mul_comm, hδ, hγ]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem dg_swap {M p : ℕ} (hc : p.Coprime M) (ha : p * 1 ≠ 0) (hb : 1 * p ≠ 0) :
     ∃ δ ∈ Gamma0 M, ∃ γ ∈ Gamma1 M, δ 1 1 = p ∧ dg p 1 ha * (δ : GL (Fin 2) ℝ) = (γ : GL (Fin 2) ℝ) * dg 1 p hb := by
@@ -314,19 +314,17 @@ end UpperTheory.V.Lit.KT
 
 open UpperHalfPlane ModularForm UpperTheory.V.Lit.KT in
 /- English proof (translation)
-Introduce `M k hM hk χ p hp hpM f g Tf Tg _ hg hTf hTg`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Establish `hc : p.Coprime M` using `(Nat.Prime.coprime_iff_not_dvd hp).2 hpM`. Establish `ha : p * 1 ≠ 0` using `by simpa using hp.ne_zero`. Establish `hb : 1 * p ≠ 0` using `by simpa using hp.ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := dg_fin (Gamma1 M) p 1 ha`. Use `haveI := dg_fin (Gamma1 M) 1 p hb`. Use `set H := (Gamma1 M ⊓ conjGL (Gamma1 M) (dg p 1 ha) ⊓ conjGL (Gamma1 M) (dg 1 p hb)).normalCore with hH`. Establish `hle` using `(Gamma1 M ⊓ conjGL (Gamma1 M) (dg p 1 ha) ⊓ conjGL (Gamma1 M) (dg 1 p hb)).normalCore_le`. Rewrite `hle` using `[← hH, le_inf_iff, le_inf_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨l1, la⟩, lb⟩` from `hle`. Establish `G0` using `fun f : CuspForm (Gamma1 M) (k : ℤ) => good_cusp f l1`. Establish `G1` using `fun f : CuspForm (Gamma1 M) (k : ℤ) => good_cusp f le_rfl`. Establish `Ga` using `fun f : CuspForm (Gamma1 M) (k : ℤ) => (G1 f).slash _ la`. Establish `Gb` using `fun f : CuspForm (Gamma1 M) (k : ℤ) => (G1 f).slash _ lb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT : ∀ (f : CuspForm (Gamma1 M) (k : ℤ)) (u : ℤ), ⇑f ∣[(k : ℤ)] (ModularGroup.T ^ u) = f` using `fun f u => (G1 f).inv _ (by rw [Gamma1_mem]; simp [ModularGroup.coe_T_zpow])`. Establish `tow : ∀ f g : CuspForm (Gamma1 M) (k : ℤ), quotInt H (petersson k f g) = (H.relIndex (Gamma1 M) : ℂ) * pet M k f g` using `fun f g => quotInt_tower l1 _ ((G1 f).pinv (G1 g))`. Establish `e1` using `quotInt_petersson_eq_add_of_hecke_sum (G0 f) (Ga g) (Gb g) (hT f) (T_exp hk hp _ g Tg hTg ha hb)`. Establish `e2` using `congrArg conj (quotInt_petersson_eq_add_of_hecke_sum (G0 g) (Ga f) (Gb f) (hT g) (T_exp hk hp _ f Tf hTf ha hb))`. Rewrite `e2` using `[map_add, map_mul, map_mul, ← B_symm, ← B_symm, ← B_symm, Complex.conj_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e3` using `B_adj hp.pos (by rw [dg_det, one_mul]) (dg_fin H 1 p hb) (dg_fin' H 1 p hb) (G0 f) (G0 g) (Ga f) (Gb g) (by rw [dg_mul, mul_one])`. Establish `e4` using `B_adj hp.pos (by rw [dg_det, mul_one]) (dg_fin H p 1 ha) (dg_fin' H p 1 ha) (G0 f) (G0 g) (Gb f) (Ga g) (by rw [dg_mul, one_mul])`. Take `⟨δ, hδ, γ, hγ, h11, hm⟩` from `dg_swap hc ha hb`. Establish `e5` using `B_slashSL δ (Ga f) (G0 g)`. Rewrite `e5` using `[hg δ hδ, h11, Int.cast_natCast, B_smul_right, SL_slash, ← SlashAction.slash_mul, hm, SlashAction.slash_mul, ← SL_slash, (G1 f).inv γ hγ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e6 : χ (p : ZMod M) * conj (χ (p : ZMod M)) = 1`. Use `χ.unit_norm_eq_one (ZMod.unitOfCoprime p hc)` as an intermediate fact. Rewrite `this` using `[ZMod.coe_unitOfCoprime]`. Rewrite using `[Complex.mul_conj', this]`. Simplify using the standard rewrite rules.
-
-Use `mul_left_cancel₀ (a := (H.relIndex (Gamma1 M) : ℂ)) (Nat.cast_ne_zero.2 Subgroup.FiniteIndex.index_ne_zero) ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← tow, ← tow, e1, e2, e3, e4, ← e5]`. Take the linear combination `(-(χ (p : ZMod M)) * quotInt H (petersson k (⇑f ∣[(k : ℤ)] dg 1 p hb) g)) * e6`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.KT.petAdj :
     ∀ (M k : ℕ), 0 < M → 1 ≤ k → ∀ (χ : DirichletCharacter ℂ M) (p : ℕ), p.Prime → ¬ p ∣ M → ∀ f g Tf Tg : CuspForm (Gamma1 M) (k : ℤ), HasChar k χ f → HasChar k χ g →

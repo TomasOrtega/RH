@@ -13,7 +13,7 @@ namespace ProjFrameImage
 variable {D : ℕ} {Ω : Type} [Field Ω] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Simplify using `only [linForm, projMat]`. Rewrite using `[Finset.sum_eq_single (e k).2]`. Simplify using the standard rewrite rules. Introduce `i _ hi`. Simplify using `[Ne.symm hi]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -33,9 +33,9 @@ def coneEval (x : Ix κ → Ω) :
     (fun _a ha => (RingHom.mem_ker).1 ha)) (fun _ => 1)
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp [graphMap, coneEval, coneMap]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`. Consider the case `mul_X p q hp`. Take `⟨⟨⟩, k⟩` from `q`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_mul, hp, rename_X]`. Use `congr 1`. Simplify using `[graphMap, inrV, coneEval, coneMap, linForm_projMat]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem coneEval_graphMap (x : Ix κ → Ω) (e : Fin (D + 1) → Ix κ) (f : MRing (GlobalTheory (Fin (D + 1)))) :
     coneEval x (graphMap (coordIdeal ℤ x) (linForm (ι := GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1))) (projMat e))
@@ -55,11 +55,11 @@ end ProjFrameImage
 open ProjFrameImage in
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ x e hP`. Use `le_antisymm (fun f hf => ?_) bot_le` and prove the remaining obligations. Establish `h0 : graphMap (coordIdeal ℤ x) (linForm (ι` using `GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1))) (projMat e)) (rename (inrV (ι := GlobalTheory κ) (ι₂ := GlobalTheory (Fin (D + 1)))) f) = 0 := (RingHom.mem_ker).1 (Ideal.mem_comap.1 hf)`. Establish `h1 : rename (fun q : Σ _ : Unit, Fin (D + 1) => q.2) f ∈ coordIdeal ℤ (x ∘ e)`. Rewrite using `[coordIdeal, RingHom.mem_ker, ← coneEval_graphMap x e f, h0, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h1` using `[hP.free, Ideal.mem_bot]`. Establish `hinj : Function.Injective (fun q : Σ _ : Unit, Fin (D + 1) => q.2)`. Introduce and unpack `⟨⟨⟩, a⟩ ⟨⟨⟩, b⟩ h`. Consider the cases of `h`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 
-Conclude with `(Ideal.mem_bot).2 (rename_injective _ hinj (by rw [h1, map_zero]))`.
+A detailed English derivation is pending.
 -/
 theorem ProjFrameImage.proof : ProjFrameImage.Statement := by
   intro D Ω _ _ κ _ x e hP

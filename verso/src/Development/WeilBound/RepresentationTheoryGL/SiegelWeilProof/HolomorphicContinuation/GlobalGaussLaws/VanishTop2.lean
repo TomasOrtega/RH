@@ -9,12 +9,12 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.ThetaAutomorphi
 namespace PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-The claim follows from `AbsSt.absThm_of lv (cyc_of fft) (lc_of fft) nullIff`.
+A detailed English derivation is pending.
 -/
 theorem absThm : AbsThm := AbsSt.absThm_of lv (cyc_of fft) (lc_of fft) nullIff
 
 /- English proof (translation)
-The claim follows from `top absThm hLF hAA hLi hTA hLC hDO hId PositivityTheory.Rg.SwEis.Hd.eisStrong hC wtc`.
+A detailed English derivation is pending.
 -/
 theorem top2 (hLF : LocFact) (hAA : AwayAct) (hLi : LocInst) (hTA : PositivityTheory.PfSWUS.ThetaAuto) (hLC : LieComm)
     (hDO : DerivOne) (hId : GIdil) (hC : PositivityTheory.PfSWUS.CoefND) :
@@ -23,7 +23,7 @@ theorem top2 (hLF : LocFact) (hAA : AwayAct) (hLi : LocInst) (hTA : PositivityTh
   top absThm hLF hAA hLi hTA hLC hDO hId PositivityTheory.Rg.SwEis.Hd.eisStrong hC wtc
 
 /- English proof (translation)
-The claim follows from `top2 hLF hAA hLi (GlobalTheory.T.theta_automorphic_of_convergence wtc) hLC hDO hId hC`.
+A detailed English derivation is pending.
 -/
 theorem top3 (hLF : LocFact) (hAA : AwayAct) (hLi : LocInst) (hLC : LieComm) (hDO : DerivOne) (hId : GIdil)
     (hC : PositivityTheory.PfSWUS.CoefND) :

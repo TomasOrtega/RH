@@ -5,35 +5,31 @@ namespace GlobalTheory
 
 open NumberField in
 /- English proof (translation)
-Take `⟨x, hx⟩ : ∃ x : E, x ∉ Set.range (algebraMap F E)` from `by by_contra! hx`. Establish `htop : (⊤ : IntermediateField F E) = ⊥`. Use extensionality with `x`. Simplify using `only [IntermediateField.mem_top, true_iff]`. Conclude with `IntermediateField.mem_bot.mpr (hx x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `IntermediateField.finrank_eq_one_iff.mpr htop`. Rewrite `h1` using `[IntermediateField.finrank_top']`. Use linear arithmetic over natural numbers and integers. Take `⟨n, hn, hnx⟩` from `exists_integral_multiples ℤ ℚ ({x} : Finset E)`. Establish `hint : IsIntegral ℤ (n • x)` using `hnx x (Finset.mem_singleton_self x)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, hθx⟩ : ∃ θ : 𝓞 E, (θ : E) = (n : E) * x` from `⟨⟨n • x, hint⟩, by rw [← zsmul_eq_mul]; rfl⟩`. Establish `hθ : (θ : E) ∉ Set.range (algebraMap F E)`. Introduce and unpack `⟨a, ha⟩`. Apply `hx` to reduce the goal to its premises. Use `⟨a / n, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hnE : (n : E) ≠ 0` using `by exact_mod_cast hn`. Rewrite using `[map_div₀, map_intCast, ha, hθx]`. Clear the denominators using the available nonvanishing facts. Establish `hli : LinearIndependent F ![(1 : E), (θ : E)]`. Rewrite using `[LinearIndependent.pair_iff]`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s t hst`. Distinguish the cases in `ht : t = 0`. Substitute `ht` using the available equality. Simplify using `only [zero_smul, add_zero] at hst`. Conclude with `⟨(smul_eq_zero.mp hst).resolve_right one_ne_zero, rfl⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Supply the required witnesses or components. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Apply `hθ` to reduce the goal to its premises. Use `⟨-s / t, ?_⟩` and prove the remaining obligations. Rewrite `hst` using `[Algebra.smul_def, Algebra.smul_def, mul_one]`. Establish `htE : algebraMap F E t ≠ 0` using `(map_ne_zero _).mpr ht`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_div₀, map_neg]`. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hst`. Take `⟨b, hb1⟩ : ∃ b : Module.Basis (Fin 2) F E, ⇑b = ![(1 : E), (θ : E)]` from `⟨basisOfLinearIndependentOfCardEqFinrank hli (by rw [h, Fintype.card_fin]), coe_basisOfLinearIndependentOfCardEqFinrank _ _⟩`. Establish `hb : ∀ z : E, z = algebraMap F E (b.repr z 0) + algebraMap F E (b.repr z 1) * θ`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Use `conv_lhs => rw [← b.sum_repr z]`. Rewrite using `[Fin.sum_univ_two, hb1]`. Simplify using `[Algebra.smul_def]`. Use `set B := RingOfIntegers.basis E`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨d, hd, hdint⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.image fun p : Module.Free.ChooseBasisIndex ℤ (𝓞 E) × Fin 2 => b.repr (B p.1 : E) p.2)`. Establish `hmem : ∀ i k, IsIntegral ℤ (d • b.repr (B i : E) k)` using `fun i k => hdint _ (Finset.mem_image_of_mem _ (Finset.mem_univ (i, k)))`. Use `⟨θ, hθ, (d : 𝓞 F), by exact_mod_cast hd, ?_⟩` and prove the remaining obligations. Set `M : Submodule ℤ (𝓞 E)` to `{ carrier := {z | ∃ u v : 𝓞 F, z = algebraMap (𝓞 F) (𝓞 E) u + algebraMap (𝓞 F) (𝓞 E) v * θ} add_mem' := by`. Introduce and unpack `_ _ ⟨u, v, rfl⟩ ⟨u', v', rfl⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨u + u', v + v', by simp only [map_add]; ring⟩`. Use the proof step `zero_mem' := ⟨0, 0, by simp⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨u, v, rfl⟩`. Conclude with `⟨c • u, c • v, by simp only [zsmul_eq_mul, map_mul, map_intCast]; ring⟩ }`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hall : ∀ y : 𝓞 E, algebraMap (𝓞 F) (𝓞 E) (d : 𝓞 F) * y ∈ M`. Introduce `y`. Establish `hspan : y ∈ Submodule.span ℤ (Set.range B)` using `by rw [B.span_eq]; trivial`. Proceed by induction on `hspan using Submodule.span_induction with`. Consider the case `mem z hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨i, rfl⟩` from `hz`. Use `⟨⟨_, hmem i 0⟩, ⟨_, hmem i 1⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[RingOfIntegers.ext_iff]`. Establish `e` using `hb (B i : E)`. Establish `key : algebraMap F E (d : F) * (B i : E) = algebraMap F E (d • b.repr (B i : E) 0) + algebraMap F E (d • b.repr (B i : E) 1) * θ`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [zsmul_eq_mul, map_mul, map_intCast]`. Take the linear combination `(d : E) * e`. Conclude with `key`. Consider the case `zero => simpa using M.zero_mem`. Consider the case `add z w _ _ hz hw => rw [mul_add]`.
-
-Conclude with `M.add_mem hz hw`. Consider the case `smul c z _ hz => rw [mul_smul_comm]`. Conclude with `M.smul_mem c hz`. Introduce `y`. Take `⟨u, v, huv⟩` from `hall y`.
-
-Conclude with `⟨u, v, huv⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_integral_generator_common_denom_of_finrank_two
     (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
@@ -127,7 +123,7 @@ private theorem exists_integral_generator_common_denom_of_finrank_two
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ h`. Take `⟨θ, -, D, hD, hy⟩` from `exists_integral_generator_common_denom_of_finrank_two F E h`. Conclude with `⟨θ, D, hD, hy⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.quadratic_ringOfIntegers_mul_mem_span_one_gen : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E], Module.finrank F E = 2 → ∃ (θ : 𝓞 E) (D : 𝓞 F), D ≠ 0 ∧ ∀ y : 𝓞 E, ∃ u v : 𝓞 F, algebraMap (𝓞 F) (𝓞 E) D * y = algebraMap (𝓞 F) (𝓞 E) u + algebraMap (𝓞 F) (𝓞 E) v * θ := by
   intro F E _ _ _ _ _ h

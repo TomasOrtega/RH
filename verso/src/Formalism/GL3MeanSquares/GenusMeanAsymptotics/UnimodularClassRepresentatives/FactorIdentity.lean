@@ -15,7 +15,7 @@ variable {V V' : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Mo
   [Module (𝓞 K) V'] [IsScalarTower (𝓞 K) K V']
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Unfold `alphaStd A5.eFac`. Rewrite using `[Finset.prod_Icc_succ_top (by omega)]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem alphaStd_succ (𝔭 : Ideal (𝓞 F)) {m : ℕ} (hm : 1 ≤ m) :
     alphaStd K 𝔭 m = alphaStd K 𝔭 (m - 1) * A5.eFac K m 𝔭 := by
@@ -25,7 +25,7 @@ theorem alphaStd_succ (𝔭 : Ideal (𝓞 F)) {m : ℕ} (hm : 1 ≤ m) :
   simp
 
 /- English proof (translation)
-Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem factor_identity (q aS e aL aN : ℝ) (m a b : ℕ) (hm : 1 ≤ m) (hq : q ≠ 0) (he : e ≠ 0)
     (hL : aL ≠ 0) :
@@ -37,25 +37,21 @@ theorem factor_identity (q aS e aL aN : ℝ) (m a b : ℕ) (hm : 1 ≤ m) (hq : 
   ring
 
 /- English proof (translation)
-Use `set U : Finset {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal} := (finite_vd_ne_zero (F := F) hK hF hs hd hL hLi).toFinset ∪ (A5.finite_primes_of_mem hn0).toFinset with hU`. Establish `hU1 : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, 𝔭 ∉ U → vd h L 𝔭.1 = 0`. Introduce `𝔭 h𝔭`. Rewrite `h𝔭` using `[hU, Finset.mem_union, not_or, Set.Finite.mem_toFinset]`. Conclude with `not_not.mp h𝔭.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU2 : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, 𝔭 ∉ U → n ∉ 𝔭.1`. Introduce `𝔭 h𝔭`. Rewrite `h𝔭` using `[hU, Finset.mem_union, not_or, Set.Finite.mem_toFinset, Set.Finite.mem_toFinset]`. Conclude with `h𝔭.2`. Establish `hU3 : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, 𝔭 ∉ U → vF 𝔭.1 n = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `𝔭 h𝔭`. Assume the negation of the conclusion as `hne`. Use `(A5.mem_pow_iff_le_vF 𝔭.2 hn0 1).mpr (Nat.one_le_iff_ne_zero.mpr hne)` as an intermediate fact. Rewrite `this` using `[pow_one]`. Conclude with `hU2 𝔭 h𝔭 this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hpt : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, psiP S L 𝔭.1 = ((Ideal.absNorm 𝔭.1 : ℝ) ^ vF 𝔭.1 n) ^ (finrank K V - 1) * lamP h L 𝔭.1 * ((Ideal.absNorm 𝔭.1 : ℝ) ^ vd h L 𝔭.1)⁻¹ * (alphaN h L 𝔭.1 n / (1 - etaF K F 𝔭.1 ^ finrank K V * (Ideal.absNorm 𝔭.1 : ℝ) ^ (-(finrank K V : ℤ))))`. Introduce `𝔭`. Rewrite using `[hLI K F hK hF V V' h h' S L 𝔭.1 n hs hd 𝔭.2 hn0 hn hL hLi]`. Unfold `lamP`. Rewrite using `[alphaStd_succ 𝔭.1 hm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Establish `hq : (Ideal.absNorm 𝔭.1 : ℝ) ≠ 0`. Use `A5.two_le_absNorm 𝔭.2` as an intermediate fact. Check the signs of the components of the expression. Conclude with `factor_identity _ _ _ _ _ _ _ _ hm hq (A5.eFac_pos 𝔭.2 hm).ne' (alphaL_pos hK hF hs hd hL hLi 𝔭.2).ne'`. Establish `e1 : (Ideal.absNorm (Ideal.span {n}) : ℝ) = ∏ 𝔭 ∈ U, (Ideal.absNorm 𝔭.1 : ℝ) ^ vF 𝔭.1 n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[absNorm_span_eq_prod n hn0]`. Conclude with `tprod_eq_prod fun 𝔭 h𝔭 => by rw [hU3 𝔭 h𝔭, pow_zero]`. Establish `e2 : lamG F h L = ∏ 𝔭 ∈ U, lamP h L 𝔭.1`. Unfold `lamG`. Conclude with `tprod_eq_prod fun 𝔭 h𝔭 => localMassFactor_of_valuation_eq_zero hK hF hs hd hL hLi 𝔭.2 (hU1 𝔭 h𝔭)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e3 : normD h L = ∏ 𝔭 ∈ U, (Ideal.absNorm 𝔭.1 : ℝ) ^ vd h L 𝔭.1`. Rewrite using `[normD_eq_prod hK hF hs hd hL hLi]`. Conclude with `tprod_eq_prod fun 𝔭 h𝔭 => by rw [hU1 𝔭 h𝔭, pow_zero]`. Establish `h4 : ∀ 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, 𝔭 ∉ U → alphaN h L 𝔭.1 n / (1 - etaF K F 𝔭.1 ^ finrank K V * (Ideal.absNorm 𝔭.1 : ℝ) ^ (-(finrank K V : ℤ))) = 1`. Introduce `𝔭 h𝔭`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[alphaN_of_vd_zero_unit hK hF hs hd hL hLi 𝔭.2 (hU1 𝔭 h𝔭) hm (hU2 𝔭 h𝔭)]`. Conclude with `div_self (A5.eFac_pos 𝔭.2 hm).ne'`. Establish `e4 : singS F h L n = ∏ 𝔭 ∈ U, alphaN h L 𝔭.1 n / (1 - etaF K F 𝔭.1 ^ finrank K V * (Ideal.absNorm 𝔭.1 : ℝ) ^ (-(finrank K V : ℤ)))`. Unfold `singS`. Conclude with `tprod_eq_prod h4`.
-
-Establish `e0 : ∏' 𝔭 : {𝔭 : Ideal (𝓞 F) // 𝔭.IsMaximal}, psiP S L 𝔭.1 = ∏ 𝔭 ∈ U, psiP S L 𝔭.1`. Use `tprod_eq_prod fun 𝔭 h𝔭 => ?_` and prove the remaining obligations. Rewrite using `[hpt 𝔭, hU3 𝔭 h𝔭, hU1 𝔭 h𝔭, h4 𝔭 h𝔭, localMassFactor_of_valuation_eq_zero hK hF hs hd hL hLi 𝔭.2 (hU1 𝔭 h𝔭)]`. Simplify using the standard rewrite rules. Rewrite using `[e0, e1, e2, e3, e4, ← Finset.prod_pow, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`.
-
-Conclude with `Finset.prod_congr rfl fun 𝔭 _ => hpt 𝔭`.
+A detailed English derivation is pending.
 -/
 theorem tprod_localPsi_eq (hLI : LIStat) (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h)
@@ -126,11 +122,11 @@ theorem tprod_localPsi_eq (hLI : LIStat) (hK : Formalism.HermitianLatticesTheory
   exact Finset.prod_congr rfl fun 𝔭 _ => hpt 𝔭
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0` using `A5.ne_zero_of_mem_boxSet hn`. Take `⟨x₀, hx₀⟩` from `exists_vec_of_hermRep hH hK hs hd hm (algebraMap F K (n : F)) ((hF _).mpr ⟨_, rfl⟩) (fun φ => (hn φ).1)`. Establish `hne : h x₀ x₀ ≠ 0`. Rewrite using `[hx₀]`. Introduce `e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hn0` to reduce the goal to its premises. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Conclude with `(algebraMap F K).injective (by rw [e]; simp)`. Establish `h1` using `repMass_eq_prod_psi (F := F) hK hF hs hd (vecSplitPerp h hne) hL hLi hc`. Establish `h2` using `tprod_localPsi_eq hLI hK hF hs hd (vecSplitPerp h hne) hL hLi (by omega) hn0 hx₀`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2]`. Establish `h3 : h (vecSplitPerp h hne).x₀ (vecSplitPerp h hne).x₀ = algebraMap F K (n : F)` using `hx₀`. Rewrite `h1` using `[h3]`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem repMass_eq (hH : HermRepUnram) (hLI : LIStat) (hK : Formalism.HermitianLatticesTheory.IsCMUnram K)
     (hF : IsFixF K F) {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h)

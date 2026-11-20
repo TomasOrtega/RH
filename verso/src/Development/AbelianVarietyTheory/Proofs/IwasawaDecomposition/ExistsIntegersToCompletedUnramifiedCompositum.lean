@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.HeightCounting.ToClC
 
 /- English proof (translation)
-Establish `h : IsIntegral ℤ_[l] ((x : ↥K.1) : PadicAlgCl l)` using `(isIntegral_algHom_iff (K.1.val.restrictScalars ℤ_[l]) K.1.val.toRingHom.injective).2 x.2`. Rewrite using `[← PadicAlgCl.spectralNorm_eq, spectralNorm, spectralValue_le_one_iff (minpoly.monic (Algebra.IsIntegral.isIntegral _))]`. Introduce `n`. Rewrite using `[minpoly.isIntegrallyClosed_eq_field_fractions' ℚ_[l] h, Polynomial.coeff_map]`. Conclude with `((minpoly ℤ_[l] _).coeff n).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem_OL (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l) (x : ↥(Loc.OL K)) :
     ‖((x : ↥K.1) : PadicAlgCl l)‖ ≤ 1 := by
@@ -23,9 +23,7 @@ theorem norm_le_one_of_mem_OL (l : ℕ) [Fact l.Prime] (K : Loc.FinExt l) (x : �
   exact ((minpoly ℤ_[l] _).coeff n).2
 
 /- English proof (translation)
-Use `⟨Subring.le_topologicalClosure _ ⟨((y : ↥K₀.1) : PadicAlgCl l), ?_, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show ((y : ↥K₀.1) : PadicAlgCl l) ∈ Kt l K₀ L`. Conclude with `(le_sup_left.trans (le_sup_left : K₀.1 ⊔ L.1 ≤ _)) (y : ↥K₀.1).2`. Express the relevant statement in the definitionally equal form `algebraMap (PadicAlgCl l) ℂ_[l] ((y : ↥K₀.1) : PadicAlgCl l) ∈ PadicComplexInt l`. Rewrite using `[PadicComplexInt, Valuation.mem_valuationSubring_iff, ← PadicComplex.coe_eq, PadicComplex.valuation_extends, ← NNReal.coe_le_one, PadicAlgCl.valuation_coe]`.
-
-Conclude with `norm_le_one_of_mem_OL l K₀ y`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_clC_of_OL (l : ℕ) [Fact l.Prime] (K₀ L : Loc.FinExt l) (y : ↥(Loc.OL K₀)) :
     algebraMap (PadicAlgCl l) ℂ_[l] ((y : ↥K₀.1) : PadicAlgCl l) ∈ clC l (Kt l K₀ L) := by
@@ -41,7 +39,7 @@ def toClC (l : ℕ) [Fact l.Prime] (K₀ L : Loc.FinExt l) : ↥(Loc.OL K₀) �
     fun y => mem_clC_of_OL l K₀ L y
 
 /- English proof (translation)
-Introduce `l _ K₀ L` and use `⟨toClC l K₀ L, fun _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_toClC : ∀ (l : ℕ) [Fact l.Prime] (K₀ L : Loc.FinExt l), ∃ f : ↥(Loc.OL K₀) →+* ↥(clC l (Kt l K₀ L)),
     ∀ y, (f y : ℂ_[l]) = algebraMap (PadicAlgCl l) ℂ_[l] ((y : ↥K₀.1) : PadicAlgCl l) :=

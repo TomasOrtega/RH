@@ -7,11 +7,11 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ ξ ξ' τ h h' hn`. Establish `key : ∀ x : E, cc x = -x → τ (x ^ 2) = -((‖τ x‖ ^ 2 : ℝ) : ℂ)`. Introduce `x hx`. Establish `h1 : τ (cc x) = (starRingEnd ℂ) (τ x)` using `IsCMField.complexEmbedding_complexConj E τ x`. Rewrite `h1` using `[hx, map_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `Complex.mul_conj' (τ x)`. Rewrite `h2` using `[← h1]`. Rewrite using `[map_pow]`. Use `push_cast`. Take the linear combination `-h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `h3 : τ (ξ' ^ 2) = τ (ξ ^ 2)` using `by rw [key ξ h, key ξ' h', hn]`. Conclude with `sq_eq_sq_iff_eq_or_eq_neg.mp (τ.injective h3)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_or_eq_neg_of_purelyImaginary_of_norm_eq :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (ξ ξ' : E) (τ : E →+* ℂ),

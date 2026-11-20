@@ -26,7 +26,7 @@ def Core.rh (X : Core) : Σ R : Ranks, Host R := ⟨X.1, X.2.1⟩
 def Core.wjv (X : Core) : ℕ → Bool → ℕ → ℝ := Inhab.wjv X.1 X.2.2
 
 /- English proof (translation)
-Use `show wj D j (tauOf D (c, t)) = if h : j - 1 < D.R.m then (((D.hc (D.eTau.symm (plPsi D.R.toFrame c (D.R.ofNat t.val)))).e ⟨j - 1, h⟩ : ℚ) : ℝ) else 0`. Rewrite using `[Formalism.HC.Frame.ofNat_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem wj_core (D : D7) (j : ℕ) (c : Bool) (t : G.HH D) : wj D j (tauOf D (c, t)) = (coreOf D).wjv j c t.val := by
   show wj D j (tauOf D (c, t)) =

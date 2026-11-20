@@ -17,9 +17,9 @@ namespace GlobalTheory.GEqBr
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hph hG`. Use `⟨fun t g v => hG.1 t g v, fun i t g v => ?_⟩` and prove the remaining obligations. Establish `h : cj (twAt D.what₂.embLL A3.A.v0) (R.phs i) • R.thG i t (R.jV i t (A3.A.leftGroupActionLift i t g v)) = R.gW i (sg0 D A3.A) g (cj (twAt D.what₂.embLL A3.A.v0) (R.phs i) • R.thG i t (R.jV i t v))` using `hG.2 i t g v`. Rewrite `h` using `[map_smul]`. Establish `hne : cj (twAt D.what₂.embLL A3.A.v0) (R.phs i) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Use `congrArg norm h0` as an intermediate fact. Rewrite `this` using `[norm_cj, (hph i).1, norm_zero]`. Conclude with `one_ne_zero this`. Conclude with `smul_right_injective _ hne h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geq_br : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.phase → R.PGEquiv F → (∀ t g (v : (A3.A.MtildeCSD t).Forms), R.Th t (R.jX t (A3.A.leftGroupActionRight t g v)) = R.gE g (R.Th t (R.jX t v))) ∧ ∀ i t g (v : (A3.A.MtCSD i t).Forms), R.thG i t (R.jV i t (A3.A.leftGroupActionLift i t g v)) = R.gW i (sg0 D A3.A) g (R.thG i t (R.jV i t v)) := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hph hG

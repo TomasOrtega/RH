@@ -11,9 +11,9 @@ namespace PositivityTheory.Lit1.GEN.W_split
 local notation "ℚ̄" => AlgebraicClosure ℚ
 
 /- English proof (translation)
-Use `⟨fun w => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hw`. Establish `hr` using `InfinitePlace.not_isComplex_iff_isReal.1 hw`. Establish `h` using `congrArg (InfinitePlace.embedding_of_isReal hr) hx`. Rewrite `h` using `[map_pow, map_neg, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use polynomial arithmetic with `[sq_nonneg (InfinitePlace.embedding_of_isReal hr x)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem isTotallyComplex_of_sq_eq_neg_one {E : Type*} [Field E] (x : E) (hx : x ^ 2 = -1) :
     NumberField.IsTotallyComplex E := by
@@ -26,7 +26,7 @@ theorem isTotallyComplex_of_sq_eq_neg_one {E : Type*} [Field E] (x : E) (hx : x 
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-The claim follows from `hKL ∃ hL : ∀ x : L.1, algebraMap L.1 ℚ̄ x ∈ maxUnramifiedOutside K.1 ℚ̄ S, (gsOpenSubgroup S hL : Subgroup (galUnramifiedOutside K.1 ℚ̄ S)).Normal ∧ (∃ ζ : L.1, IsPrimitiveRoot ζ ℓ) ∧ (ℓ ≠ 2 ∨ NumberField.IsTotallyComplex L.1) ∧ ∀ g ∈ (gsOpenSubgroup S hL : Subgroup (galUnramifie …`.
+A detailed English derivation is pending.
 -/
 theorem exists_split (ℓ : ℕ) [Fact ℓ.Prime] (K : FiniteSubfield) (S : Set (HeightOneSpectrum (𝓞 K.1)))
     (hS : S.Finite) (hSℓ : ∀ v : HeightOneSpectrum (𝓞 K.1), ((ℓ : ℕ) : 𝓞 K.1) ∈ v.asIdeal → v ∈ S)

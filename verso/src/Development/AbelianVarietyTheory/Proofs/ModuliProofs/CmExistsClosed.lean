@@ -17,7 +17,7 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cmPointObject_exists_of_laws GlobalTheory.T.exists_cmEllipticCurve_withPeriod GlobalTheory.cmPoint_closed GlobalTheory.thetaUnifAV_closed GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 (GlobalTheory.CM.homExtDvr_of_card_torsion GlobalTheo …`.
+A detailed English derivation is pending.
 -/
 theorem cmExists_closed : CMExistsSt :=
   GlobalTheory.T.cmPointObject_exists_of_laws GlobalTheory.T.exists_cmEllipticCurve_withPeriod GlobalTheory.cmPoint_closed GlobalTheory.thetaUnifAV_closed

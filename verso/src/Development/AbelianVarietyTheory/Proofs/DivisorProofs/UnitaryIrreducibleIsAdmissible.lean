@@ -7,15 +7,15 @@ open Formalism.MainNotions.S
 namespace GlobalTheory.IrrAdm
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ _ π hU hI`. Establish `hK : ∀ k ∈ Formalism.REAL.Kset ε, ∀ v, ‖π k v‖ = ‖v‖` using `fun k hk v => hU.2.1 k (GlobalTheory.GKModule.mem_UJset_of_mem_Kset hk) v`. Use `⟨inferInstance, ⟨hU.1, hU.2.2, hK, ?_⟩, hI⟩` and prove the remaining obligations. Introduce `Λ`. Distinguish the cases in `hne : ∃ S₀ : Submodule ℂ H, S₀ ≤ ⊤ ∧ IsKTypeOf ε π Λ S₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨S₀, -, hS₀⟩` from `hne haveI : FiniteDimensional ℂ S₀ := hS₀.1`. Establish `hY` using `(GlobalTheory.T.irreducible_K_stable_finite_subspace n ε H π hU hI).1 S₀ hS₀.1 hS₀.2.1`. Set `b` to `Module.finBasis ℂ S₀`. Use `choose Y hYf hvY hYB using fun i => hY (b i) (b i).2`. Use `haveI : ∀ i, FiniteDimensional ℂ (Y i) := hYf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Submodule.finiteDimensional_of_le (sSup_le fun S hS => ?_) (S₂ := ⨆ i, Y i)` and prove the remaining obligations. Take `⟨B, hB, rfl⟩` from `(GlobalTheory.T.maxCompact_irreducible_has_highest_weight_and_iso n ε H π hU.1 hU.2.2 hK).2 Λ S₀ S hS₀ hS.2`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Introduce `x hx`. Establish `hx' : (⟨x, hx⟩ : S₀) ∈ Submodule.span ℂ (Set.range b)` using `b.span_eq ▸ Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `Submodule.apply_mem_span_image_of_mem_span S₀.subtype hx'`. Rewrite `h2` using `[← Set.range_comp]`. Use `(Submodule.span_le.2 ?_) h2` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Simplify using `only [Submodule.mem_comap, ContinuousLinearMap.coe_coe, Function.comp_apply, Submodule.subtype_apply, SetLike.mem_coe]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_iSup_of_mem i (hYB i B hB _ (hvY i))`. Establish `: {S : Submodule ℂ H | S ≤ ⊤ ∧ IsKTypeOf ε π Λ S} = ∅` using `Set.eq_empty_of_forall_notMem fun S hS => hne ⟨S, hS⟩`. Rewrite using `[this, sSup_empty]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isIrrAdm_of_irred : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] [Nontrivial H] (π : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)),

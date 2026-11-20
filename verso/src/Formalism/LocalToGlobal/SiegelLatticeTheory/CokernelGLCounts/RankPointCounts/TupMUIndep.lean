@@ -13,19 +13,19 @@ namespace Formalism.L2.SG.NGCut.NormalVectorPairings
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T T' : E}
 
 /- English proof (translation)
-Use `set U := Submodule.span E (Set.range x) with hU`. Set `b : Basis ι E U` to `Basis.span hx`. Establish `hb : ∀ i, (b i : S.V) = x i` using `fun i => by show ((Basis.span hx i : U) : S.V) = x i`. Rewrite using `[Basis.span_apply]`. Set `f : U →ₗ[E] S.V` to `b.constr E y`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfu : ∀ u : U, f u = ∑ i, b.equivFun u i • y i` using `fun u => b.constr_apply_fintype E y u`. Establish `hu : ∀ u : U, (u : S.V) = ∑ i, b.equivFun u i • x i`. Introduce `u`. Use `congrArg Subtype.val (b.sum_repr u)` as an intermediate fact. Rewrite using `[← this, Submodule.coe_sum]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Submodule.coe_smul, hb, Basis.equivFun_apply]`. Establish `hexp : ∀ (z : ι → S.V) (c d : ι → E), S.hT (∑ i, c i • z i) (∑ j, d j • z j) = ∑ i, ∑ j, star (c i) * d j * S.hT (z i) (z j)`. Introduce `z c d`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hiso : ∀ u v : U, S.hT (f u) (f v) = S.hT u v`. Introduce `u v`. Rewrite using `[hfu, hfu, hu u, hu v, hexp, hexp]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hG]`. Establish `hinj : Function.Injective f`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `u hu0`. Rewrite `hu0` using `[LinearMap.mem_ker, hfu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc` using `Fintype.linearIndependent_iff.1 hy _ hu0`. Use `(Submodule.mem_bot E).2 (Subtype.ext ?_)` and prove the remaining obligations. Rewrite using `[hu u]`. Simplify using `[hc]`. Take `⟨g, hg, hgf⟩` from `witt_extension_theorem E S.V S.hT (fun x y => (hT_swap x y).symm) (fun x hx => S.nondeg.1 x hx) U f hinj hiso`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g, hg, fun i => ?_⟩` and prove the remaining obligations. Use `hgf (b i)` as an intermediate fact. Rewrite `this` using `[hb]`. Rewrite using `[this]`. Conclude with `b.constr_basis E y i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem witt_tuple {ι : Type} [Fintype ι] (x y : ι → S.V) (hx : LinearIndependent E x) (hy : LinearIndependent E y)
     (hG : ∀ i j, S.hT (x i) (x j) = S.hT (y i) (y j)) :
@@ -75,27 +75,25 @@ def tupMU (F : FlagG S r T) (F1 : FlagG S r T') (M U : Matrix (Fin (r + 1)) (Fin
   Sum.elim (fun a => ∑ c, M c a • F.fvec c) (fun b => ∑ c, U c b • F1.fvec c)
 
 /- English proof (translation)
-Establish `hexp : ∀ (z w : Fin (r + 1) → S.V) (c d : Fin (r + 1) → E), S.hT (∑ i, c i • z i) (∑ j, d j • w j) = ∑ i, ∑ j, star (c i) * d j * S.hT (z i) (w j)`. Introduce `z w c d`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, map_smul, smul_eq_mul, starRingEnd_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hFF : ∀ (G : FlagG S r T) c d, S.hT (G.fvec c) (G.fvec d) = if c = Fin.last r ∧ d = Fin.last r then -T else 0` using `fun G c d => by`. Use `brS_fvec G d c` as an intermediate fact. Simplify using `only [brS] at this`. Rewrite using `[this]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h1 : c = Fin.last r <;> by_cases h2 : d = Fin.last r <;> simp [h1, h2]`. Establish `hFF' : ∀ (G : FlagG S r T') c d, S.hT (G.fvec c) (G.fvec d) = if c = Fin.last r ∧ d = Fin.last r then -T' else 0` using `fun G c d => by`. Use `brS_fvec G d c` as an intermediate fact. Simplify using `only [brS] at this`. Rewrite using `[this]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h1 : c = Fin.last r <;> by_cases h2 : d = Fin.last r <;> simp [h1, h2]`. Establish `hdiag : ∀ (A : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (hA : IsUpUni A) (t : E) (a b : Fin (r + 1)), ∑ i, ∑ j, star (A i a) * A j b * (if i = Fin.last r ∧ j = Fin.last r then t else 0) = if a = Fin.last r ∧ b = Fin.last r then t else 0`. Introduce `A hA t a b`. Simplify using `only [mul_ite, mul_zero, ite_and]`. Rewrite using `[Finset.sum_eq_single (Fin.last r), Finset.sum_eq_single (Fin.last r)]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [if_true, upUni_last hA]`. Apply the tactic sequence `by_cases h1 : a = Fin.last r <;> by_cases h2 : b = Fin.last r <;> simp [h1, h2]`. Introduce `j _ hj`. Simplify using `[hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `i _ hi`. Simplify using `[hi]`. Simplify using the standard rewrite rules. Establish `hcross : ∀ a b, S.hT (tupMU F F1 M U (Sum.inl a)) (tupMU F F1 M U (Sum.inr b)) = S.hT (F.fvec a) (F2.fvec b)`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [tupMU, Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[hexp]`. Establish `h2 : S.hT (F.fvec a) (F2.fvec b) = Zhat F F2 a b` using `rfl`. Rewrite using `[h2, hZ, Matrix.mul_apply]`. Simplify using `only [Matrix.mul_apply, conjTranspose_apply, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Simplify using `only [Zhat, brS]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `rcases i with a | a <;> rcases j with b | b`. Simplify using `only [tupMU, Sum.elim_inl]`. Rewrite using `[hexp]`. Simplify using `only [hFF]`. Conclude with `hdiag M hM (-T) a b`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcross a b`. Rewrite using `[hT_swap, hcross b a, ← hT_swap]`. Both sides reduce to the same expression. Simplify using `only [tupMU, Sum.elim_inr]`. Rewrite using `[hexp]`.
-
-Simplify using `only [hFF']`. Conclude with `hdiag U hU (-T') a b`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_moved (F : FlagG S r T) (F1 F2 : FlagG S r T') (M U : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (hM : IsUpUni M) (hU : IsUpUni U) (hZ : Zhat F F2 = Mᴴ * Zhat F F1 * U) :
@@ -159,13 +157,13 @@ theorem gram_moved (F : FlagG S r T) (F1 F2 : FlagG S r T') (M U : Matrix (Fin (
     exact hdiag U hU (-T') a b
 
 /- English proof (translation)
-Establish `hli` using `PI.PairCorankPos.W.linIndep F F1 hG`. Rewrite `hli`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Establish `hsum : ∑ i, g i • tupMU F F1 M U i = ∑ s, (Sum.elim (M *ᵥ fun a => g (Sum.inl a)) (U *ᵥ fun b => g (Sum.inr b)) s) • Sum.elim F.fvec F1.fvec s`. Simplify using `only [Fintype.sum_sum_type, tupMU, Sum.elim_inl, Sum.elim_inr, Finset.smul_sum, smul_smul, mulVec, dotProduct, Finset.sum_smul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm, Finset.sum_comm (f := fun x y => (U x y * g (Sum.inr y)) • F1.fvec x)]`. Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => ?_ <;> rw [mul_comm]`. Rewrite `hg` using `[hsum]`. Establish `h0` using `hli _ hg`. Establish `hMd : M.det ≠ 0` using `by rw [upUni_det hM]; exact one_ne_zero`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUd : U.det ≠ 0` using `by rw [upUni_det hU]; exact one_ne_zero`. Establish `hl : (fun a => g (Sum.inl a)) = 0` using `Matrix.eq_zero_of_mulVec_eq_zero hMd (funext fun a => h0 (Sum.inl a))`. Establish `hr : (fun b => g (Sum.inr b)) = 0` using `Matrix.eq_zero_of_mulVec_eq_zero hUd (funext fun b => h0 (Sum.inr b))`. Introduce `s`. Break down `s with a | b` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `congrFun hl a`. Conclude with `congrFun hr b`.
+A detailed English derivation is pending.
 -/
 theorem tupMU_indep (F : FlagG S r T) (F1 : FlagG S r T') (M U : Matrix (Fin (r + 1)) (Fin (r + 1)) E)
     (hM : IsUpUni M) (hU : IsUpUni U) (hG : Gflag F F1 ≠ 0) : LinearIndependent E (tupMU F F1 M U) := by

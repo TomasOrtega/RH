@@ -12,37 +12,33 @@ open ReciprocityTheory.L2DbarEstimates (V)
 namespace GlobalTheory.CxForm.HolAtlas
 
 /- English proof (translation)
-Introduce `M _ _ _ _ _ _ n A α i K hα hK hKs h0`. Establish `hKm : MeasurableSet K` using `hK.isClosed.measurableSet`. Use `set r : A.ι → V n → ℝ := fun j v => (dens (A.loc α j v)).re with hr`. Establish `dens_zero : dens (0 : Alt n) = 0` using `by simp [dens]`. Establish `hc : ∀ j k y, y ∈ (A.e j).source → y ∈ (A.e k).source → r j (A.e j y) = ‖ChartGlue.transDet (A.e j) (A.e k) y‖ ^ 2 * r k (A.e k y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j k y hj hk`. Establish `h1` using `A.loc_crd α (⟨(j, y), hj⟩ : A.Pt)`. Establish `h2` using `A.loc_crd α (⟨(k, y), hk⟩ : A.Pt)`. Establish `h3` using `hα.compat (⟨(j, y), hj⟩ : A.Pt) ⟨(k, y), hk⟩ rfl`. Simplify using `only [hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `erw [h1, h2, h3, dens_pull]`. Rewrite using `[Complex.re_ofReal_mul]`. Both sides reduce to the same expression. Establish `hz : ∀ j y, y ∈ (A.e j).source → y ∉ K → r j (A.e j y) = 0`. Introduce `j y hj hy`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `A.loc_crd α (⟨(j, y), hj⟩ : A.Pt)`. Simplify using `only [hr]`. Use `erw [h1, h0 _ hy, dens_zero]`. Both sides reduce to the same expression. Establish `hpart : ∀ ε : ℤˣ, A.part α ε univ = ∫⁻ v in A.e i '' K, ENNReal.ofReal (((ε : ℤ) : ℝ) * r i v)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ε`. Use `set ρ : A.ι → M → ENNReal := fun j y => ENNReal.ofReal (((ε : ℤ) : ℝ) * r j (A.e j y)) with hρ`. Establish `hp : A.part α ε = ChartGlue.glueMeas A.e ρ` using `rfl`. Establish `hρc : ∀ j k y, y ∈ (A.e j).source → y ∈ (A.e k).source → ρ j y = ENNReal.ofReal (‖ChartGlue.transDet (A.e j) (A.e k) y‖ ^ 2) * ρ k y`. Introduce `j k y hj hk`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact.
 
-Simplify using `only [hρ]`. Rewrite using `[hc j k y hj hk, ← ENNReal.ofReal_mul (by positivity)]`. Put the polynomial expressions in normal form. Establish `hcompl : ChartGlue.glueMeas A.e ρ Kᶜ = 0`. Establish `key : ChartGlue.glueMeas A.e ρ ≤ (ChartGlue.glueMeas A.e ρ).restrict K` using `iSup_le fun j => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `e : ChartGlue.chartMeas (A.e j) (ρ j) Kᶜ = 0`. Rewrite using `[ChartGlue.chartMeas_apply _ _ hKm.compl]`. Use `setLIntegral_eq_zero (ChartGlue.measurableSet_image _ ((A.e j).open_source.measurableSet.inter hKm.compl) Set.inter_subset_left) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [hρ, (A.e j).left_inv hy.1, hz j y hy.1 hy.2, mul_zero, ENNReal.ofReal_zero, Pi.zero_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Measure.restrict_eq_self_of_ae_mem (s := K) (mem_ae_iff.2 e)]`. Conclude with `Measure.restrict_mono le_rfl (le_iSup (fun j => ChartGlue.chartMeas (A.e j) (ρ j)) j)`. Use `le_antisymm ((key Kᶜ).trans_eq ?_) bot_le` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply hKm.compl, Set.compl_inter_self, measure_empty]`. Rewrite using `[hp, ← measure_add_measure_compl hKm, hcompl, add_zero, ChartGlue.glueMeas_apply A.e ρ A.holo hρc i hKm hKs, ChartGlue.chartMeas_apply_of_subset _ _ hKm hKs]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `setLIntegral_congr_fun (ChartGlue.measurableSet_image _ hKm hKs) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Simplify using `only [hρ, (A.e i).left_inv (hKs hy)]`. Establish `hBc : IsCompact (A.e i '' K)` using `hK.image_of_continuousOn ((A.e i).continuousOn.mono hKs)`. Establish `hBt : A.e i '' K ⊆ (A.e i).target`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `(A.e i).map_source (hKs hy)`. Establish `hH0 : ∀ v ∉ A.e i '' K, r i v = 0`. Introduce `v hv`. Distinguish the cases in `ht : v ∈ (A.e i).target`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs` using `(A.e i).map_target ht`. Establish `hnK : (A.e i).symm v ∉ K` using `fun hk => hv ⟨_, hk, (A.e i).right_inv ht⟩`. Use `hz i _ hs hnK` as an intermediate fact. Rewrite `this` using `[(A.e i).right_inv ht]`. Then use the resulting hypothesis. Simplify using `[hr, loc, ht, dens_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcon : ContinuousOn (r i) (A.e i).target` using `Complex.continuous_re.comp_continuousOn ((hα.smooth i Finset.univ).continuousOn.div_const _)`. Establish `hHc : Continuous (r i)` using `continuous_iff_continuousAt.2 fun v => by`. Distinguish the cases in `ht : v ∈ (A.e i).target`. Conclude with `hcon.continuousAt ((A.e i).open_target.mem_nhds ht)`. Establish `: r i =ᶠ[𝓝 v] fun _ => 0` using `by filter_upwards [hBc.isClosed.isOpen_compl.mem_nhds (fun h => ht (hBt h))] with w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hH0 w hw`. Conclude with `continuousAt_const.congr this.symm`. Establish `hHi : Integrable (r i)` using `hHc.integrable_of_hasCompactSupport (HasCompactSupport.intro hBc hH0)`. Establish `hl : ∀ ε : ℤˣ, ∫⁻ v in A.e i '' K, ENNReal.ofReal (((ε : ℤ) : ℝ) * r i v) = ∫⁻ v, ENNReal.ofReal (((ε : ℤ) : ℝ) * r i v)`. Introduce `ε`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← lintegral_indicator hBc.measurableSet]`. Use `lintegral_congr fun v => ?_` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ A.e i '' K`. Rewrite using `[Set.indicator_of_mem hv]`. Rewrite using `[Set.indicator_of_notMem hv, hH0 v hv, mul_zero, ENNReal.ofReal_zero]`.
-
-Establish `e1` using `hpart 1`. Establish `e2` using `hpart (-1)`. Rewrite `e1`, `e2` using `[hl]`. Simplify using `only [Units.val_one, Int.cast_one, one_mul, Units.val_neg, Int.cast_neg, neg_one_mul] at e1 e2`. Simplify using `only [GlobalTheory.CxForm.HolAtlas.integral, Measure.real, e1, e2]`.
-
-Conclude with `(integral_eq_lintegral_pos_part_sub_lintegral_neg_part hHi).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_eq_integral_chart_of_support : ∀ {M : Type} [TopologicalSpace M] [CompactSpace M] [T2Space M]
     [SecondCountableTopology M] [MeasurableSpace M] [BorelSpace M] {n : ℕ} (A : GlobalTheory.CxForm.HolAtlas M n) (α : A.Fld)

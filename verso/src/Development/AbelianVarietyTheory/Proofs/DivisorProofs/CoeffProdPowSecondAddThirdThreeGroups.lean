@@ -10,7 +10,7 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog
 namespace GlobalTheory.BinomRight
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [monomial_zero_eq_C]`. Consider the case `insert j s hj ih`. Rewrite using `[Finset.prod_insert hj, ih, monomial_mul_monomial, Finset.sum_insert hj, Finset.prod_insert hj]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_monomial' {R σ ι : Type} [CommRing R] (s : Finset ι) (n : ι → σ →₀ ℕ) (c : ι → R) :
     ∏ i ∈ s, (monomial (n i) (c i) : MvPowerSeries σ R) =
@@ -22,7 +22,7 @@ theorem prod_monomial' {R σ ι : Type} [CommRing R] (s : Finset ι) (n : ι →
     rw [Finset.prod_insert hj, ih, monomial_mul_monomial, Finset.sum_insert hj, Finset.prod_insert hj]
 
 /- English proof (translation)
-Rewrite using `[add_pow]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[X_pow_eq, X_pow_eq, monomial_mul_monomial, ← map_natCast (C (σ := σ) (R := R)), ← monomial_zero_eq_C, monomial_mul_monomial, add_zero]`. Simplify using `only [one_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem add_pow_X' {R σ : Type} [CommRing R] (u v : σ) (k : ℕ) :
     ((X u + X v : MvPowerSeries σ R)) ^ k =
@@ -46,7 +46,7 @@ def expo (α : Fin d ⊕ Fin d →₀ ℕ) (J : Fin d → ℕ) : Fin d ⊕ (Fin 
       Finsupp.single (Sum.inr (Sum.inr i)) (α (Sum.inr i) - J i))
 
 /- English proof (translation)
-Simplify using `[expo, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem expo_inl (α : Fin d ⊕ Fin d →₀ ℕ) (J : Fin d → ℕ) (i : Fin d) :
     expo α J (Sum.inl i) = α (Sum.inl i) := by
@@ -54,7 +54,7 @@ theorem expo_inl (α : Fin d ⊕ Fin d →₀ ℕ) (J : Fin d → ℕ) (i : Fin 
   simp [expo, Finsupp.single_apply]
 
 /- English proof (translation)
-Simplify using `[expo, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem expo_inr_inl (α : Fin d ⊕ Fin d →₀ ℕ) (J : Fin d → ℕ) (i : Fin d) :
     expo α J (Sum.inr (Sum.inl i)) = J i := by
@@ -62,7 +62,7 @@ theorem expo_inr_inl (α : Fin d ⊕ Fin d →₀ ℕ) (J : Fin d → ℕ) (i : 
   simp [expo, Finsupp.single_apply]
 
 /- English proof (translation)
-Simplify using `[expo, Finsupp.single_apply]`. Rewrite using `[Finset.sum_eq_single i (fun x _ hx => by simp [hx]) (by simp)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem expo_inr_inr (α : Fin d ⊕ Fin d →₀ ℕ) (J : Fin d → ℕ) (i : Fin d) :
     expo α J (Sum.inr (Sum.inr i)) = α (Sum.inr i) - J i := by
@@ -72,7 +72,7 @@ theorem expo_inr_inr (α : Fin d ⊕ Fin d →₀ ℕ) (J : Fin d → ℕ) (i : 
   simp
 
 /- English proof (translation)
-Rewrite using `[Finsupp.prod_fintype _ _ (fun _ => pow_zero _), Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, x1, x2, x3, X_pow_eq, add_pow_X', prod_monomial']`. Rewrite using `[Finset.prod_univ_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun J _ => ?_` and prove the remaining obligations. Rewrite using `[prod_monomial', monomial_mul_monomial, Finset.prod_const_one, one_mul, expo]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_eq_sum (α : Fin d ⊕ Fin d →₀ ℕ) :
     (α.prod fun s k => (Sum.elim x1 (fun i => (x2 i + x3 i : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R)) s) ^ k) =
@@ -92,15 +92,15 @@ namespace GlobalTheory.BinomRight
 variable {R : Type} [CommRing R] {d : ℕ}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1` using `fun i => DFunLike.congr_fun h (Sum.inl i)`. Establish `h2` using `fun i => DFunLike.congr_fun h (Sum.inr (Sum.inl i))`. Establish `h3` using `fun i => DFunLike.congr_fun h (Sum.inr (Sum.inr i))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [expo_inl, expo_inr_inl, expo_inr_inr, Finsupp.sumElim_apply, Sum.elim_inl, Sum.elim_inr] at h1 h2 h3`. Establish `hJb : J = ⇑b` using `funext fun i => (h2 i).symm`. Use `⟨Finsupp.ext fun s => ?_, hJb⟩` and prove the remaining obligations. Break down `s with i | i` into its components or cases. Simplify using `[h1 i]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Use `h3 i` as an intermediate fact. Use `hJ i` as an intermediate fact. Use `h2 i` as an intermediate fact. Simplify using `only [Finsupp.sumElim_apply, Sum.elim_inr, Finsupp.add_apply]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce and unpack `⟨rfl, rfl⟩`. Use `Finsupp.ext fun s => ?_` and prove the remaining obligations. Break down `s with i | i | i` into its components or cases. Simplify using `[expo_inl]`. Simplify using `[expo_inr_inl]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[expo_inr_inr]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sumElim_eq_expo_iff (α : Fin d ⊕ Fin d →₀ ℕ) (a b e : Fin d →₀ ℕ) (J : Fin d → ℕ)
     (hJ : ∀ i, J i ≤ α (Sum.inr i)) :
@@ -132,13 +132,13 @@ end GlobalTheory.BinomRight
 namespace GlobalTheory.BinomRight
 
 /- English proof (translation)
-Rewrite using `[prod_eq_sum, map_sum]`. Simplify using `only [coeff_monomial]`. Establish `hmem : ∀ J ∈ Fintype.piFinset (fun i => Finset.range (α (Sum.inr i) + 1)), ∀ i, J i ≤ α (Sum.inr i)` using `fun J hJ i => Nat.lt_succ_iff.1 (Finset.mem_range.1 (Fintype.mem_piFinset.1 hJ i))`. Distinguish the cases in `hα : α = Finsupp.sumElim a (b + e)`. Rewrite using `[if_pos hα]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ⇑b ∈ Fintype.piFinset (fun i => Finset.range (α (Sum.inr i) + 1))`. Use `Fintype.mem_piFinset.2 fun i => Finset.mem_range.2 ?_` and prove the remaining obligations. Rewrite using `[hα]`. Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_eq_single_of_mem (⇑b) hb]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos ((sumElim_eq_expo_iff α a b e _ (hmem _ hb)).2 ⟨hα, rfl⟩)]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hα]`. Simplify using the standard rewrite rules. Introduce `J hJ hJb`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg fun h => hJb ((sumElim_eq_expo_iff α a b e J (hmem J hJ)).1 h).2]`. Rewrite using `[if_neg hα]`. Use `Finset.sum_eq_zero fun J hJ => ?_` and prove the remaining obligations. Rewrite using `[if_neg fun h => hα ((sumElim_eq_expo_iff α a b e J (hmem J hJ)).1 h).1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_prod_pow_second_add_third_threeGroups {R : Type} [CommRing R] {d : ℕ} (α : Fin d ⊕ Fin d →₀ ℕ)
     (a b e : Fin d →₀ ℕ) :

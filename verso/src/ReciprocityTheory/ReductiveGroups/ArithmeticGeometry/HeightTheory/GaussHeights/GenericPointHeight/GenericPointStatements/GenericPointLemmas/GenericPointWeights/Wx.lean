@@ -5,15 +5,13 @@ open NumberField
 namespace PI.HtGenericPt.Pf
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.T0.LeafSt.exists_generic`. Introduce `hd h`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI : Infinite K := Infinite.of_injective (Nat.cast : ℕ → K) Nat.cast_injective`. Establish `hL : ∀ (c : ι) (x : Fin (d.N + 1) → K), ((LinearMap.proj c : ((c : ι) → A c) →ₗ[K] A c) ∘ₗ (∑ j, (LinearMap.proj j : (Fin (d.N + 1) → K) →ₗ[K] K).smulRight (d.w j))) x = d.wx x c`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c x`. Simplify using `[ReciprocityTheory.ChartRestriction.G.T0.Data.wx, LinearMap.sum_apply, Finset.sum_apply]`. Establish `hne : ∀ c, LinearMap.ker ((LinearMap.proj c : ((c : ι) → A c) →ₗ[K] A c) ∘ₗ (∑ j, (LinearMap.proj j : (Fin (d.N + 1) → K) →ₗ[K] K).smulRight (d.w j))) ≠ ⊤`. Introduce `c htop`. Establish `hmem : (Pi.single (d.jc c) 1 : Fin (d.N + 1) → K) ∈ LinearMap.ker ((LinearMap.proj c : ((c : ι) → A c) →ₗ[K] A c) ∘ₗ (∑ j, (LinearMap.proj j : (Fin (d.N + 1) → K) →ₗ[K] K).smulRight (d.w j)))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Rewrite `hmem` using `[LinearMap.mem_ker, hL]`. Apply `hd.w_base c` to reduce the goal to its premises. Simplify `hmem` using `[ReciprocityTheory.ChartRestriction.G.T0.Data.wx, Pi.single_apply, Finset.sum_apply, ite_apply, Pi.zero_apply, Finset.sum_ite_eq']`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, hx⟩` from `Submodule.exists_forall_notMem_of_forall_ne_top _ hne`. Use `⟨x, fun c => ?_⟩` and prove the remaining obligations. Establish `hxc` using `hx c`. Rewrite `hxc` using `[LinearMap.mem_ker, hL]`. Conclude with `hxc`.
-
-Take `⟨e, he, -⟩` from `hd.a4`. Conclude with `⟨e, he⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem main {K : Type} [Field K] [NumberField K] {ι : Type} [Fintype ι] {Ω : ι → Type} [∀ c, Field (Ω c)] [∀ c, Algebra K (Ω c)] {WT : Type} [AddCommGroup WT] {A : ι → Type} [∀ c, CommRing (A c)] [∀ c, Algebra (Ω c) (A c)] [∀ c, Algebra K (A c)] [∀ c, Algebra (𝓞 K) (A c)] (𝒜 : (c : ι) → WT → Submodule (Ω c) (A c)) (d : ReciprocityTheory.ChartRestriction.G.T0.Data K ι Ω WT A) : ReciprocityTheory.ChartRestriction.G.T0.LeafSt.exists_generic 𝒜 d := by
   unfold ReciprocityTheory.ChartRestriction.G.T0.LeafSt.exists_generic

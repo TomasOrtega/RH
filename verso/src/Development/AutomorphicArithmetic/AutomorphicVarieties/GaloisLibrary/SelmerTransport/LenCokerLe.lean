@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
 /- English proof (translation)
-Establish `h1` using `Module.length_eq_add_of_exact (LinearMap.range f).subtype (LinearMap.range f).mkQ (Submodule.subtype_injective _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ _)`. Establish `h2` using `Module.length_eq_add_of_exact (LinearMap.ker f).subtype (LinearMap.ker f).mkQ (Submodule.subtype_injective _) (Submodule.mkQ_surjective _) (LinearMap.exact_subtype_mkQ _)`. Rewrite `h2` using `[(f.quotKerEquivRange).length_eq]`. Establish `h3 : Module.length R (LinearMap.range f) ≠ ⊤`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[h, top_add]`. Conclude with `hfin h1`. Rewrite `h2` using `[h1, add_comm]`. Conclude with `(WithTop.add_right_inj h3).1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem len_ker_eq_coker {R A : Type} [CommRing R] [AddCommGroup A] [Module R A]
     (f : A →ₗ[R] A) (hfin : Module.length R A ≠ ⊤) :
@@ -23,7 +23,7 @@ private theorem len_ker_eq_coker {R A : Type} [CommRing R] [AddCommGroup A] [Mod
   exact (WithTop.add_right_inj h3).1 h2
 
 /- English proof (translation)
-Establish `h` using `Module.length_le_of_surjective (S.subtype.coprod T.subtype).rangeRestrict (LinearMap.surjective_rangeRestrict _)`. Rewrite `h` using `[LinearMap.range_coprod, Submodule.range_subtype, Submodule.range_subtype, Module.length_prod]`. Conclude with `ne_top_of_le_ne_top (WithTop.add_ne_top.2 ⟨hS, hT⟩) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem len_sup_ne_top {R A : Type} [CommRing R] [AddCommGroup A] [Module R A]
     (S T : Submodule R A) (hS : Module.length R S ≠ ⊤) (hT : Module.length R T ≠ ⊤) :
@@ -35,13 +35,13 @@ private theorem len_sup_ne_top {R A : Type} [CommRing R] [AddCommGroup A] [Modul
   exact ne_top_of_le_ne_top (WithTop.add_ne_top.2 ⟨hS, hT⟩) h
 
 /- English proof (translation)
-Use `set P := LinearMap.range (a • (LinearMap.id : N →ₗ[R] N)) with hP`. Set `g : F →ₗ[R] F.map P.mkQ` to `P.mkQ.submoduleMap F`. Establish `hg : Function.Surjective g` using `LinearMap.submoduleMap_surjective _ _`. Establish `hle : LinearMap.range (a • (LinearMap.id : F →ₗ[R] F)) ≤ LinearMap.ker g`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Use `show P.mkQ (a • (x : N)) = 0`. Conclude with `(Submodule.Quotient.mk_eq_zero _).2 ⟨x, rfl⟩`. Establish `hg' : Function.Surjective (Submodule.liftQ _ g hle)`. Introduce `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `hg y`. Conclude with `⟨Submodule.Quotient.mk x, rfl⟩`. Use `(Module.length_le_of_surjective _ hg').trans ?_` and prove the remaining obligations. Rewrite using `[len_ker_eq_coker _ hF]`. Use `Module.length_le_of_injective (F.subtype.restrict (p := LinearMap.ker (a • (LinearMap.id : F →ₗ[R] F))) (q := LinearMap.ker (a • (LinearMap.id : N →ₗ[R] N))) ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x hx`. Conclude with `congrArg Subtype.val hx`. Introduce `x y h`. Establish `h'` using `congrArg Subtype.val h`. Conclude with `Subtype.ext (Subtype.ext h')`.
+A detailed English derivation is pending.
 -/
 private theorem len_map_le {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] (a : R)
     (F : Submodule R N) (hF : Module.length R F ≠ ⊤) :
@@ -71,21 +71,17 @@ private theorem len_map_le {R N : Type} [CommRing R] [AddCommGroup N] [Module R 
     exact Subtype.ext (Subtype.ext h')
 
 /- English proof (translation)
-Introduce `R N _ _ _ hN a`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Use `set P := LinearMap.range (a • (LinearMap.id : N →ₗ[R] N)) with hP`. Use `set K := LinearMap.ker (a • (LinearMap.id : N →ₗ[R] N)) with hK`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ k : ℕ, ∃ F : Submodule R N, Module.length R F ≠ ⊤ ∧ (k : ℕ∞) ≤ Module.length R (F.map P.mkQ)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨⊥, by simp, by simp⟩`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F, hF, hk⟩` from `ih`. Establish `h1 : Module.length R (F.map P.mkQ) ≤ Module.length R K` using `len_map_le a F hF`. Establish `h2 : F.map P.mkQ ≠ ⊤`. Introduce `h`. Rewrite `h1` using `[h, Module.length_top]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `absurd hlt (not_lt.2 h1)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, y ∉ F.map P.mkQ := by`. Assume the negation of the conclusion as `hh`. Conclude with `h2 (eq_top_iff.2 fun y _ => by_contra fun h => hh ⟨y, h⟩)`. Take `⟨x, rfl⟩` from `Submodule.mkQ_surjective P y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨F ⊔ Submodule.span R {x}, len_sup_ne_top _ _ hF (hN x), ?_⟩` and prove the remaining obligations. Establish `h3 : F.map P.mkQ < (F ⊔ Submodule.span R {x}).map P.mkQ`. Use `lt_of_le_of_ne (Submodule.map_mono le_sup_left) fun h => hy ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `Submodule.mem_map_of_mem (Submodule.mem_sup_right (Submodule.mem_span_singleton_self x))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : Order.height (F.map P.mkQ) < ⊤`. Rewrite using `[← Module.length_submodule]`. Conclude with `lt_of_le_of_lt h1 (lt_of_lt_of_le hlt le_top)`. Establish `h5` using `Order.height_strictMono h3 h4`. Rewrite `h5` using `[← Module.length_submodule, ← Module.length_submodule]`.
-
-Rewrite using `[Nat.cast_succ]`. Conclude with `Order.add_one_le_of_lt (lt_of_le_of_lt hk h5)`. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.1 (lt_of_lt_of_le hlt le_top).ne`. Take `⟨F, hF, hk⟩` from `key (n + 1)`. Establish `h` using `hk.trans (len_map_le a F hF)`.
-
-Rewrite `h` using `[← hK, ← hn]`. Conclude with `absurd (Nat.cast_le.1 h) (by omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.lenCokerLe :
     ∀ (R N : Type) [CommRing R] [AddCommGroup N] [Module R N], (∀ m : N, Module.length R (Submodule.span R {m}) ≠ ⊤) → ∀ a : R,

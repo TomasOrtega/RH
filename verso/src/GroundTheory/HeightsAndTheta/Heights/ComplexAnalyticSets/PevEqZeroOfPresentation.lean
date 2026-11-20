@@ -13,7 +13,7 @@ namespace IsGermCombination
 variable {σ : Type} [Fintype σ] {w : σ → ℂ} {k : ℕ} {p : Fin k → (σ → ℂ) → ℂ}
 
 /- English proof (translation)
-Take `⟨c, hc, he⟩` from `hf`. Conclude with `⟨c, hc, by filter_upwards [he, h] with z hz h' using h' ▸ hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem congr {f g : (σ → ℂ) → ℂ} (hf : IsGermCombination w p f) (h : ∀ᶠ z in 𝓝 w, f z = g z) :
     IsGermCombination w p g := by
@@ -21,13 +21,13 @@ theorem congr {f g : (σ → ℂ) → ℂ} (hf : IsGermCombination w p f) (h : �
   exact ⟨c, hc, by filter_upwards [he, h] with z hz h' using h' ▸ hz⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => 0, fun _ => analyticAt_const, Eventually.of_forall fun z => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem zero : IsGermCombination w p (fun _ => 0) :=
   ⟨fun _ _ => 0, fun _ => analyticAt_const, Eventually.of_forall fun z => by simp⟩
 
 /- English proof (translation)
-Use `⟨fun j _ => if j = i then 1 else 0, fun _ => analyticAt_const, Eventually.of_forall fun z => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem generator (i : Fin k) : IsGermCombination w p (p i) := by
   classical
@@ -35,7 +35,7 @@ theorem generator (i : Fin k) : IsGermCombination w p (p i) := by
   simp
 
 /- English proof (translation)
-Take `⟨c, hc, he⟩` from `hf`. Take `⟨c', hc', he'⟩` from `hg`. Use `⟨fun i => c i + c' i, fun i => (hc i).add (hc' i), ?_⟩` and prove the remaining obligations. Use `filter_upwards [he, he'] with z hz hz'`. Simplify using `only [Pi.add_apply, hz, hz', add_mul, Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem add {f g : (σ → ℂ) → ℂ} (hf : IsGermCombination w p f) (hg : IsGermCombination w p g) :
     IsGermCombination w p (fun z => f z + g z) := by
@@ -46,7 +46,7 @@ theorem add {f g : (σ → ℂ) → ℂ} (hf : IsGermCombination w p f) (hg : Is
   simp only [Pi.add_apply, hz, hz', add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Take `⟨c, hc, he⟩` from `hf`. Use `⟨fun i => g * c i, fun i => hg.mul (hc i), ?_⟩` and prove the remaining obligations. Use `filter_upwards [he] with z hz`. Simplify using `only [Pi.mul_apply, hz, Finset.mul_sum, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mul_left {f g : (σ → ℂ) → ℂ} (hg : AnalyticAt ℂ g w) (hf : IsGermCombination w p f) :
     IsGermCombination w p (fun z => g z * f z) := by
@@ -56,23 +56,23 @@ theorem mul_left {f g : (σ → ℂ) → ℂ} (hg : AnalyticAt ℂ g w) (hf : Is
   simp only [Pi.mul_apply, hz, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-The claim follows from `(mul_left (g := fun _ => (-1 : ℂ)) analyticAt_const hf).congr (Eventually.of_forall fun z => by ring)`.
+A detailed English derivation is pending.
 -/
 theorem neg {f : (σ → ℂ) → ℂ} (hf : IsGermCombination w p f) :
     IsGermCombination w p (fun z => - f z) :=
   (mul_left (g := fun _ => (-1 : ℂ)) analyticAt_const hf).congr (Eventually.of_forall fun z => by ring)
 
 /- English proof (translation)
-The claim follows from `(hf.add hg.neg).congr (Eventually.of_forall fun z => by ring)`.
+A detailed English derivation is pending.
 -/
 theorem sub {f g : (σ → ℂ) → ℂ} (hf : IsGermCombination w p f) (hg : IsGermCombination w p g) :
     IsGermCombination w p (fun z => f z - g z) :=
   (hf.add hg.neg).congr (Eventually.of_forall fun z => by ring)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using (zero : IsGermCombination w p fun _ => 0)`. Consider the case `insert a s ha ih`. Establish `h1` using `h a (Finset.mem_insert_self a s)`. Establish `h2` using `ih fun i hi => h i (Finset.mem_insert_of_mem hi)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(h1.add h2).congr (Eventually.of_forall fun z => by rw [Finset.sum_insert ha])`.
+A detailed English derivation is pending.
 -/
 theorem sum {ι : Type*} (s : Finset ι) {f : ι → (σ → ℂ) → ℂ} (h : ∀ i ∈ s, IsGermCombination w p (f i)) :
     IsGermCombination w p (fun z => ∑ i ∈ s, f i z) := by
@@ -85,7 +85,7 @@ theorem sum {ι : Type*} (s : Finset ι) {f : ι → (σ → ℂ) → ℂ} (h : 
     exact (h1.add h2).congr (Eventually.of_forall fun z => by rw [Finset.sum_insert ha])
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact zero.congr (Eventually.of_forall fun z => by simp)`. Consider the case `succ n ih`. Conclude with `((mul_left hf ih).add (mul_left (hg.pow n) h)).congr (Eventually.of_forall fun z => by simp only [Pi.pow_apply]; ring)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pow_sub_pow {f g : (σ → ℂ) → ℂ} (hf : AnalyticAt ℂ f w) (hg : AnalyticAt ℂ g w)
     (h : IsGermCombination w p (fun z => f z - g z)) (n : ℕ) :
@@ -97,7 +97,7 @@ theorem pow_sub_pow {f g : (σ → ℂ) → ℂ} (hf : AnalyticAt ℂ f w) (hg :
       (Eventually.of_forall fun z => by simp only [Pi.pow_apply]; ring)
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact zero.congr (Eventually.of_forall fun z => by simp)`. Consider the case `insert a s ha ih`. Establish `hgs : AnalyticAt ℂ (fun z => ∏ i ∈ s, g i z) w` using `Finset.analyticAt_fun_prod s fun i _ => hg i`. Conclude with `((mul_left (hf a) ih).add (mul_left hgs (h a))).congr (Eventually.of_forall fun z => by rw [Finset.prod_insert ha, Finset.prod_insert ha]; ring)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prod_sub_prod {ι : Type*} (s : Finset ι) {f g : ι → (σ → ℂ) → ℂ}
     (hf : ∀ i, AnalyticAt ℂ (f i) w) (hg : ∀ i, AnalyticAt ℂ (g i) w)
@@ -138,20 +138,20 @@ section pev
 variable {d : ℕ} {y₀ : Fin d → ℂ}
 
 /- English proof (translation)
-Simplify using `[pev]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem pev_C (y : Fin d → ℂ) (t : ℂ) (f : analyticSubring y₀) :
     pev y t (C f) = (f : (Fin d → ℂ) → ℂ) y := by
   simp [pev]
 
 /- English proof (translation)
-Simplify using `[pev]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem pev_X (y : Fin d → ℂ) (t : ℂ) : pev (y₀ := y₀) y t X = t := by
   simp [pev]
 
 /- English proof (translation)
-Simplify using `only [pev, RingHom.coe_comp, Function.comp_apply, coe_evalRingHom, coe_mapRingHom, eval_map]`. Rewrite using `[eval₂_eq_sum_range' _ hn]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pev_eq_sum_range (H : (analyticSubring y₀)[X]) {n : ℕ} (hn : H.natDegree < n) (y : Fin d → ℂ)
     (t : ℂ) : pev y t H = ∑ i ∈ Finset.range n, (H.coeff i : (Fin d → ℂ) → ℂ) y * t ^ i := by
@@ -160,7 +160,7 @@ theorem pev_eq_sum_range (H : (analyticSubring y₀)[X]) {n : ℕ} (hn : H.natDe
   rfl
 
 /- English proof (translation)
-Establish `e : (fun z => pev (A z) (ℓ z) H) = fun z => ∑ i ∈ Finset.range (H.natDegree + 1), (H.coeff i : (Fin d → ℂ) → ℂ) (A z) * ℓ z ^ i`. Use function extensionality and compare the values at `fun z => pev_eq_sum_range H (Nat.lt_succ_self _) _ _`. Rewrite using `[e]`. Use `Finset.analyticAt_fun_sum _ fun i _ => ?_` and prove the remaining obligations. Conclude with `(AnalyticAt.comp (g := ((H.coeff i : analyticSubring (A w)) : (Fin d → ℂ) → ℂ)) (H.coeff i).2 (A.analyticAt w)).mul ((ℓ.analyticAt w).pow i)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem analyticAt_pev_comp {σ : Type} [Fintype σ] (w : σ → ℂ) (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ))
     (ℓ : (σ → ℂ) →L[ℂ] ℂ) (H : (analyticSubring (A w))[X]) :
@@ -180,14 +180,14 @@ def presPoly {d N : ℕ} {y₀ : Fin d → ℂ} (c : Fin N → (Fin d → ℂ) �
   X ^ N + ∑ j : Fin N, C (⟨c j, hc j⟩ : analyticSubring y₀) * X ^ (j : ℕ)
 
 /- English proof (translation)
-The claim follows from `monic_X_pow_add (degree_sum_fin_lt _)`.
+A detailed English derivation is pending.
 -/
 theorem presPoly_monic {d N : ℕ} {y₀ : Fin d → ℂ} (c : Fin N → (Fin d → ℂ) → ℂ)
     (hc : ∀ j, AnalyticAt ℂ (c j) y₀) : (presPoly c hc).Monic :=
   monic_X_pow_add (degree_sum_fin_lt _)
 
 /- English proof (translation)
-Unfold `presPoly`. Apply the tactic sequence `rw [degree_add_eq_left_of_degree_lt] <;> rw [degree_X_pow]`. Conclude with `degree_sum_fin_lt _`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem presPoly_degree {d N : ℕ} {y₀ : Fin d → ℂ} (c : Fin N → (Fin d → ℂ) → ℂ)
     (hc : ∀ j, AnalyticAt ℂ (c j) y₀) : (presPoly c hc).degree = N := by
@@ -196,7 +196,7 @@ theorem presPoly_degree {d N : ℕ} {y₀ : Fin d → ℂ} (c : Fin N → (Fin d
   exact degree_sum_fin_lt _
 
 /- English proof (translation)
-Simplify using `[presPoly, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pev_presPoly {d N : ℕ} {y₀ : Fin d → ℂ} (c : Fin N → (Fin d → ℂ) → ℂ)
     (hc : ∀ j, AnalyticAt ℂ (c j) y₀) (y : Fin d → ℂ) (t : ℂ) :
@@ -204,17 +204,15 @@ theorem pev_presPoly {d N : ℕ} {y₀ : Fin d → ℂ} (c : Fin N → (Fin d �
   simp [presPoly, map_sum]
 
 /- English proof (translation)
-Take `⟨hc, -, h1, h2, -⟩` from `hP`. Break down `Nat.eq_zero_or_pos N with hN | hN` into its components or cases. Substitute `hN` using the available equality. Conclude with `Eventually.of_forall fun y t ht => by simp at ht`. Use `set F := presPoly c hc with hFdef`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmon : F.Monic` using `presPoly_monic c hc`. Use `set R := H %ₘ F with hRdef`. Use `set Q := H /ₘ F with hQdef`. Establish `hdec : ∀ y t, pev y t H = pev y t R + pev y t F * pev y t Q`. Introduce `y t`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_add, hRdef, hQdef, modByMonic_add_div]`. Establish `hRdeg : R.natDegree < N`. Distinguish the cases in `hR0 : R = 0`. Rewrite using `[hR0, natDegree_zero]`. Conclude with `hN`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[natDegree_lt_iff_degree_lt hR0, ← presPoly_degree c hc]`. Conclude with `degree_modByMonic_lt _ hmon`. Establish `hRsum : ∀ y t, pev y t R = ∑ j : Fin N, (R.coeff j : (Fin d → ℂ) → ℂ) y * t ^ (j : ℕ)`. Introduce `y t`. Rewrite using `[pev_eq_sum_range R hRdeg, Fin.sum_univ_eq_sum_range (fun i => (R.coeff i : (Fin d → ℂ) → ℂ) y * t ^ i)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hRP : IsGermCombination w p (fun z => ∑ j : Fin N, (R.coeff j : (Fin d → ℂ) → ℂ) (A z) * ℓ z ^ (j : ℕ))`. Use `(hH.sub (IsGermCombination.mul_left (analyticAt_pev_comp w A ℓ Q) h1)).congr (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Rewrite using `[← hRsum, hdec, pev_presPoly]`. Expand and normalize the polynomial expressions, which then agree. Establish `hzero` using `h2 (fun j => (R.coeff j : (Fin d → ℂ) → ℂ)) (fun j => (R.coeff j).2) hRP`.
-
-Use `filter_upwards [eventually_all.2 hzero] with y hy t ht`. Rewrite using `[hdec, hRsum, pev_presPoly, ht, zero_mul, add_zero]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [hy j, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem pev_eq_zero_of_presentation {σ : Type} [Fintype σ] {w : σ → ℂ} {k : ℕ} {p : Fin k → (σ → ℂ) → ℂ}
     {d : ℕ} {A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)} {ℓ : (σ → ℂ) →L[ℂ] ℂ} {N : ℕ} {c : Fin N → (Fin d → ℂ) → ℂ}
@@ -252,23 +250,19 @@ theorem pev_eq_zero_of_presentation {σ : Type} [Fintype σ] {w : σ → ℂ} {k
   exact Finset.sum_eq_zero fun j _ => by rw [hy j, zero_mul]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality. Conclude with `Eventually.of_forall fun y x hx => by simp at hx`. Use `set S : E → ℝ := fun y => ∑ j, ‖b j y‖ with hS`. Use `set B : ℝ := max 1 (S y₀ + 1) with hB`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB1 : 1 ≤ B` using `le_max_left _ _`. Establish `hB0 : 0 ≤ B` using `zero_le_one.trans hB1`. Establish `hSt : Tendsto S (𝓝 y₀) (𝓝 (S y₀))` using `tendsto_finsetSum _ fun j _ => (hb j).tendsto.norm`. Establish `hDt : Tendsto (fun y => ∑ j, ‖b j y₀ - b j y‖ * B ^ (j : ℕ)) (𝓝 y₀) (𝓝 0)`. Establish `: Tendsto (fun y => ∑ j, ‖b j y₀ - b j y‖ * B ^ (j : ℕ)) (𝓝 y₀) (𝓝 (∑ j : Fin n, ‖b j y₀ - b j y₀‖ * B ^ (j : ℕ)))` using `tendsto_finsetSum _ fun j _ => ((tendsto_const_nhds.sub (hb j).tendsto).norm).mul_const _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `hεn : (0 : ℝ) < ε ^ n` using `pow_pos hε n`. Use `filter_upwards [hSt.eventually (gt_mem_nhds (lt_add_one (S y₀))), hDt.eventually (gt_mem_nhds hεn)] with y hSy hDy x hx`. Establish `hxB : ‖x‖ ≤ B`. Distinguish the cases in `hx1 : ‖x‖ ≤ 1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hx1.trans hB1`. Use `replace hx1 := lt_of_not_ge hx1`. Establish `hxn : x ^ n = -∑ j, b j y * x ^ (j : ℕ)` using `eq_neg_of_add_eq_zero_left hx`. Establish `hle : ‖x‖ ^ n ≤ S y * ‖x‖ ^ (n - 1)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_right₀ hx1.le (by omega)) (norm_nonneg _)`. Use `_ = S y * ‖x‖ ^ (n - 1) := by rw [hS, Finset.sum_mul]`. Establish `hpos : 0 < ‖x‖ ^ (n - 1)` using `pow_pos (zero_lt_one.trans hx1) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: ‖x‖ * ‖x‖ ^ (n - 1) ≤ S y * ‖x‖ ^ (n - 1)`. Rewrite using `[← pow_succ', Nat.sub_add_cancel hn]`. Conclude with `hle`. Establish `hxS : ‖x‖ ≤ S y` using `le_of_mul_le_mul_right this hpos`. Conclude with `hxS.trans (hSy.le.trans (le_max_right _ _))`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hid : (x - u) ^ n = ∑ j, (b j y₀ - b j y) * x ^ (j : ℕ)`. Rewrite using `[← h0 x]`. Establish `: x ^ n = -∑ j, b j y * x ^ (j : ℕ)` using `eq_neg_of_add_eq_zero_left hx`. Rewrite using `[this]`. Simplify using `only [sub_mul, Finset.sum_sub_distrib]`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `hle : ‖x - u‖ ^ n ≤ ∑ j, ‖b j y₀ - b j y‖ * B ^ (j : ℕ)`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_pow]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (norm_nonneg _) hxB _) (norm_nonneg _)`. Establish `: ‖x - u‖ ^ n < ε ^ n` using `hle.trans_lt hDy`. Conclude with `lt_of_pow_lt_pow_left₀ n hε.le this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem roots_near_of_centred {E : Type*} [TopologicalSpace E] {n : ℕ} (b : Fin n → E → ℂ) (y₀ : E) (u : ℂ)
     (hb : ∀ j, ContinuousAt (b j) y₀) (h0 : ∀ T : ℂ, T ^ n + ∑ j, b j y₀ * T ^ (j : ℕ) = (T - u) ^ n)

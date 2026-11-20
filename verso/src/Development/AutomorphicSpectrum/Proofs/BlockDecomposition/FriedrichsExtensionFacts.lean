@@ -8,11 +8,11 @@ namespace GlobalTheory.CompanionTheory.FriedrichsFc
 open UniformSpace (Completion)
 
 /- English proof (translation)
-Set `f' : E →L[ℂ] F` to `f.mkContinuous 1 (by simpa using hf)`. Set `e : E →L[ℂ] Completion E` to `UniformSpace.Completion.toComplL`. Establish `hd : DenseRange e` using `UniformSpace.Completion.denseRange_coe`. Establish `hu : IsUniformInducing e` using `UniformSpace.Completion.isUniformInducing_coe E`. Establish `he : ∀ u : E, (f'.extend e) (u : Completion E) = f u` using `fun u => f'.extend_eq hd hu u`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨f'.extend e, he, ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using UniformSpace.Completion.induction_on with`. Consider the case `hp => exact isClosed_le (by fun_prop) (by fun_prop)`. Consider the case `ih u`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[he, UniformSpace.Completion.norm_coe, one_mul]`. Conclude with `hf u`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension {E F : Type} [SeminormedAddCommGroup E] [InnerProductSpace ℂ E]
     [NormedAddCommGroup F] [InnerProductSpace ℂ F] [CompleteSpace F]
@@ -32,9 +32,9 @@ theorem exists_extension {E F : Type} [SeminormedAddCommGroup E] [InnerProductSp
     exact hf u
 
 /- English proof (translation)
-Establish `key : ⟪V₀ u, V₀ u⟫_ℂ = ⟪u, u⟫_ℂ`. Establish `h2 : V' (V (ι u)) = ι u`. Use `congrArg (fun W : H →L[ℂ] H => W (ι u)) h1` as an intermediate fact. Simplify using `using this`. Rewrite using `[← hB, hBV, ← hι, hadj, h2, hB]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Establish `: ‖V₀ u‖ ^ 2 = ‖u‖ ^ 2`. Rewrite using `[@norm_sq_eq_re_inner ℂ, @norm_sq_eq_re_inner ℂ, key]`. Conclude with `le_of_eq ((sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_map_le {H E : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [SeminormedAddCommGroup E] [InnerProductSpace ℂ E]
@@ -53,27 +53,27 @@ theorem norm_map_le {H E : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H
   exact le_of_eq ((sq_eq_sq₀ (norm_nonneg _) (norm_nonneg _)).1 this)
 
 /- English proof (translation)
-Take `⟨g, hg, hgn⟩` from `exists_extension ι hι`. Set `S : H →L[ℂ] Completion E` to `ContinuousLinearMap.adjoint g`. Establish `hSi : ∀ h c, ⟪S h, c⟫_ℂ = ⟪h, g c⟫_ℂ` using `fun h c => ContinuousLinearMap.adjoint_inner_left g c h`. Establish `hS : ∀ u : E, S (B u) = (u : Completion E)`. Introduce `u`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ext_inner_right ℂ fun c => ?_` and prove the remaining obligations. Rewrite using `[hSi]`. Proceed by induction on `c using UniformSpace.Completion.induction_on with`. Consider the case `hp => exact isClosed_eq (by fun_prop) (by fun_prop)`. Consider the case `ih v => rw [hg, hB, UniformSpace.Completion.inner_coe]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hSn : ‖S‖ ≤ 1`. Establish `: ‖S‖ = ‖g‖` using `by simp [S]`. Rewrite using `[this]`. Conclude with `hgn`. Establish `hTpos : (g ∘L S).IsPositive` using `ContinuousLinearMap.isPositive_self_comp_adjoint g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨g ∘L S, hTpos.isSelfAdjoint, ?_, ?_, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Introduce `u`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[hS, hg]`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `U U' U₀ U₀' hUU' hU'U hadj hι₀ hι₀' hB₀ hB₀'`. Establish `hadj' : ∀ u v, ⟪U' u, v⟫_ℂ = ⟪u, U v⟫_ℂ` using `fun u v => by`. Rewrite using `[← inner_conj_symm, ← hadj, inner_conj_symm]`. Set `c : E →ₗ[ℂ] Completion E` to `(UniformSpace.Completion.toComplₗᵢ (𝕜 := ℂ) (E := E)).toLinearMap`. Establish `hc : ∀ u : E, c u = (u : Completion E)` using `fun _ => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨U₁, hU₁, -⟩` from `exists_extension (c ∘ₗ U₀) (fun u => by`. Simplify `norm_map_le ι B hB U U' U₀ hU'U hadj hι₀ hB₀ u)` using `[hc]`. Take `⟨U₁', hU₁', -⟩` from `exists_extension (c ∘ₗ U₀') (fun u => by`. Simplify `norm_map_le ι B hB U' U U₀' hUU' hadj' hι₀' hB₀' u)` using `[hc]`. Establish `h1 : ∀ x, g (U₁ x) = U (g x)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Proceed by induction on `x using UniformSpace.Completion.induction_on with`. Consider the case `hp => exact isClosed_eq (by fun_prop) (by fun_prop)`. Consider the case `ih u => rw [hU₁, LinearMap.comp_apply, hc, hg, hg, hι₀]`. Establish `h1' : ∀ x, g (U₁' x) = U' (g x)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Proceed by induction on `x using UniformSpace.Completion.induction_on with`. Consider the case `hp => exact isClosed_eq (by fun_prop) (by fun_prop)`. Consider the case `ih u => rw [hU₁', LinearMap.comp_apply, hc, hg, hg, hι₀']`. Establish `h3 : ∀ a x, ⟪U₁ a, x⟫_ℂ = ⟪a, U₁' x⟫_ℂ`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a x`. Proceed by induction on `a using UniformSpace.Completion.induction_on with`. Consider the case `hp => exact isClosed_eq (by fun_prop) (by fun_prop)`. Consider the case `ih u`. Proceed by induction on `x using UniformSpace.Completion.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `hp => exact isClosed_eq (by fun_prop) (by fun_prop)`. Consider the case `ih v`. Rewrite using `[hU₁, hU₁', LinearMap.comp_apply, LinearMap.comp_apply, hc, hc, UniformSpace.Completion.inner_coe, UniformSpace.Completion.inner_coe, ← hB, hB₀, hadj, hι₀', hB]`. Establish `h4 : ∀ h, S (U h) = U₁ (S h)`. Introduce `h`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_inner_right ℂ fun x => ?_` and prove the remaining obligations. Rewrite using `[hSi, hadj, ← h1', ← hSi, h3]`. Use extensionality with `h`. Simplify using `only [ContinuousLinearMap.mul_def, ContinuousLinearMap.comp_apply]`. Rewrite using `[h4, h1]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inverse_of_form {H E : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] [SeminormedAddCommGroup E] [InnerProductSpace ℂ E]
@@ -145,11 +145,9 @@ theorem exists_inverse_of_form {H E : Type} [NormedAddCommGroup H] [InnerProduct
     rw [h4, h1]
 
 /- English proof (translation)
-Use `letI core : PreInnerProductSpace.Core ℂ D := { inner := fun u v => ⟪B u, ι v⟫_ℂ conj_inner_symm := fun x y => by show (starRingEnd ℂ) ⟪B y, ι x⟫_ℂ = ⟪B x, ι y⟫_ℂ`. Rewrite using `[inner_conj_symm, hsym]`. Use `re_inner_nonneg := fun x => le_trans (sq_nonneg _) (hpos x)`. Use `add_left := fun x y z => by show ⟪B (x + y), ι z⟫_ℂ = ⟪B x, ι z⟫_ℂ + ⟪B y, ι z⟫_ℂ`. Rewrite using `[map_add, inner_add_left]`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure.
 
-Use `smul_left := fun x y r => by show ⟪B (r • x), ι y⟫_ℂ = (starRingEnd ℂ) r * ⟪B x, ι y⟫_ℂ`. Rewrite using `[map_smul, inner_smul_left] }`. Use `letI sn : SeminormedAddCommGroup D := InnerProductSpace.Core.toSeminormedAddCommGroup (c := core)`. Use `letI ips : InnerProductSpace ℂ D := InnerProductSpace.ofCore core`. Establish `hι : ∀ u : D, ‖ι u‖ ≤ ‖u‖` using `fun u => by`.
-
-Establish `h : ‖u‖ ^ 2 = (⟪B u, ι u⟫_ℂ).re` using `@norm_sq_eq_re_inner ℂ D _ sn ips u`. Conclude with `(sq_le_sq₀ (norm_nonneg _) (norm_nonneg _)).1 (h ▸ hpos u)`. Conclude with `exists_inverse_of_form ι B (fun _ _ => rfl) hι`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_inverse_of_coercive {H D : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] [AddCommGroup D] [Module ℂ D] (ι B : D →ₗ[ℂ] H)
@@ -180,13 +178,13 @@ theorem exists_inverse_of_coercive {H D : Type} [NormedAddCommGroup H] [InnerPro
   exact exists_inverse_of_form ι B (fun _ _ => rfl) hι
 
 /- English proof (translation)
-Introduce `H _ _ _ D A hsym hpos`. Take `⟨R, hR, hRn, hRA, hRU⟩` from `exists_inverse_of_coercive (D := D) D.subtype A (fun x y => hsym x y) (fun x => hpos x)`. Use `⟨R, hR, hRn, fun x => hRA x, ?_⟩` and prove the remaining obligations. Introduce `U hU1 hU2 hD hD'`. Establish `lift : ∀ (V : H →L[ℂ] H), (∀ x : D, ∃ y : D, (y : H) = V x ∧ A y = V (A x)) → ∃ V₀ : D →ₗ[ℂ] D, (∀ u, V (D.subtype u) = D.subtype (V₀ u)) ∧ ∀ u, A (V₀ u) = V (A u)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `V hV`. Establish `hmem : ∀ x : D, (V.toLinearMap ∘ₗ D.subtype) x ∈ D` using `fun x => by`. Take `⟨y, hy, -⟩` from `hV x`. Simplify `y.2` using `[← hy]`. Use `⟨LinearMap.codRestrict D (V.toLinearMap ∘ₗ D.subtype) hmem, fun u => rfl, fun u => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, hAy⟩` from `hV u`. Establish `: LinearMap.codRestrict D (V.toLinearMap ∘ₗ D.subtype) hmem u = y` using `Subtype.ext (by simp [hy])`. Rewrite using `[this, hAy]`. Take `⟨U₀, h1, h2⟩` from `lift U hD`. Take `⟨U₀', h1', h2'⟩` from `lift (ContinuousLinearMap.adjoint U) hD'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hRU U (ContinuousLinearMap.adjoint U) U₀ U₀' hU2 hU1 (fun u v => (ContinuousLinearMap.adjoint_inner_right U u v).symm) h1 h1' h2 h2'`.
+A detailed English derivation is pending.
 -/
 theorem friedrichs : PositivityTheory.RgBcC.Fc.Friedrichs := by
   intro H _ _ _ D A hsym hpos

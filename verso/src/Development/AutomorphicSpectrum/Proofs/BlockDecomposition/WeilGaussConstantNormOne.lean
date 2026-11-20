@@ -18,9 +18,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 omit [ValuativeRel E] in
 
 /- English proof (translation)
-Distinguish the cases in `h0 : d = 0`. Substitute `h0` using the available equality. Conclude with `zero_mem _`. Rewrite using `[mem_valBall_iff_le_ord h0]`. Rewrite `h` using `[modulus_of_ne_zero h0]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(zpow_lt_zpow_iff_right₀ one_lt_residueCard_nnreal).1 h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem mem_valBall_of_modulus_lt {d : F} {n : ℤ} (h : modulus d < (residueCard F : ℝ≥0) ^ (-n)) :
     d ∈ valBall F n := by
@@ -34,13 +34,11 @@ theorem mem_valBall_of_modulus_lt {d : F} {n : ℤ} (h : modulus d < (residueCar
 variable (F) in
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Establish `hc : Continuous (fun z : E => z * GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.conj F E z - x * GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.conj F E x)` using `(continuous_id.mul GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.continuous_conj).sub continuous_const`. Establish `hm` using `(continuous_modulus (K := E)).comp hc`. Rewrite using `[ContinuousAt, ← tendsto_sub_nhds_zero_iff, hasBasis_nhds_zero_valBall.tendsto_right_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `n _`. Establish `hq : (0 : ℝ≥0) < (residueCard F : ℝ≥0) ^ (-n)` using `zpow_pos (zero_lt_one.trans one_lt_residueCard_nnreal) _`. Establish `ht : Tendsto (fun z : E => modulus (z * GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.conj F E z - x * GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.conj F E x)) (𝓝 x) (𝓝 0)`. Simplify `hm.tendsto x` using `[Function.comp_def]`. Establish `hev` using `ht.eventually (gt_mem_nhds (pow_pos hq 2))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `filter_upwards [hev] with z hz`. Use `mem_valBall_of_modulus_lt ?_` and prove the remaining obligations. Establish `hz' : modulus (algebraMap F E (Algebra.norm F z - Algebra.norm F x)) < ((residueCard F : ℝ≥0) ^ (-n)) ^ 2`. Rewrite using `[map_sub, GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.algebraMap_norm_eq_mul_conj, GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.algebraMap_norm_eq_mul_conj]`. Conclude with `hz`.
-
-Rewrite `hz'` using `[GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.modulus_algebraMap]`. Conclude with `lt_of_pow_lt_pow_left₀ 2 zero_le hz'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_normE : Continuous (fun z : E => Algebra.norm F z) := by
   rw [continuous_iff_continuousAt]
@@ -83,13 +81,13 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   [Fact (Module.finrank F E = 2)]
 
 /- English proof (translation)
-Establish `hcomp : Continuous ((nsg E : F → ℂ) ∘ (Units.val : Fˣ → F))`. Establish `: ((nsg E : F → ℂ) ∘ (Units.val : Fˣ → F)) = fun u => ((η u : ℂˣ) : ℂ)`. Use function extensionality and compare the values at `u`. Conclude with `(hη u).symm`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Units.continuous_val.comp hηc`. Establish `hoe : IsOpenEmbedding (Units.val : Fˣ → F)`. Use `⟨Units.isEmbedding_val₀, ?_⟩` and prove the remaining obligations. Establish `hr : Set.range (Units.val : Fˣ → F) = {0}ᶜ`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Conclude with `u.ne_zero`. Introduce `h`. Conclude with `⟨Units.mk0 x h, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hr]`. Conclude with `isOpen_compl_singleton`. Use `hoe.continuousAt_iff (g := (nsg E : F → ℂ)) (x := Units.mk0 a ha)` as an intermediate fact. Simplify using `using this.1 hcomp.continuousAt`.
+A detailed English derivation is pending.
 -/
 theorem continuousAt_nsg {η : Fˣ →* ℂˣ} (hηc : Continuous η)
     (hη : ∀ a : Fˣ, ((η a : ℂˣ) : ℂ) = nsg E (a : F)) {a : F} (ha : a ≠ 0) :
@@ -114,15 +112,13 @@ theorem continuousAt_nsg {η : Fˣ →* ℂˣ} (hηc : Continuous η)
   simpa using this.1 hcomp.continuousAt
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce and unpack `⟨a, z⟩`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Establish `hopen : {b : F | g b = 0} ∈ 𝓝 (0 : F)` using `(hg.isOpen_fiber 0).mem_nhds hg0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hev : kern E χ g Φ =ᶠ[𝓝 ((0 : F), z)] fun _ => 0`. Use `continuous_fst.continuousAt (x := ((0 : F), z)) hopen` as an intermediate fact. Use `filter_upwards [this] with p hp`. Establish `hp' : g p.1 = 0` using `hp`. Simplify using `[kern, hp']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(continuousAt_const (y := (0 : ℂ))).congr hev.symm`. Establish `h1 : ContinuousAt (fun p : F × E => g p.1) (a, z)` using `(hg.continuous.comp continuous_fst).continuousAt`. Establish `h2 : ContinuousAt (fun p : F × E => nsg E p.1) (a, z)` using `ContinuousAt.comp (f := Prod.fst) (g := (nsg E : F → ℂ)) (continuousAt_nsg hηc hη ha) continuous_fst.continuousAt`. Establish `h3 : ContinuousAt (fun p : F × E => (((modulus p.1 : ℝ)⁻¹ : ℝ) : ℂ)) (a, z)`. Establish `hm : Continuous (fun p : F × E => ((modulus p.1 : ℝ≥0) : ℝ))` using `NNReal.continuous_coe.comp (continuous_modulus.comp continuous_fst)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ((modulus a : ℝ≥0) : ℝ) ≠ 0` using `by exact_mod_cast modulus_ne_zero ha`. Conclude with `Complex.continuous_ofReal.continuousAt.comp (hm.continuousAt.inv₀ hne)`. Establish `h4 : ContinuousAt (fun p : F × E => -(Algebra.norm F p.2) / p.1) (a, z)` using `(((continuous_normE F).comp continuous_snd).neg.continuousAt).div continuous_fst.continuousAt ha`. Establish `h5 : ContinuousAt (fun p : F × E => (χ (-(Algebra.norm F p.2) / p.1) : ℂ)) (a, z)` using `ContinuousAt.comp (g := fun x : F => (χ x : ℂ)) (continuous_subtype_val.comp hχ).continuousAt h4`. Establish `h6 : ContinuousAt (fun p : F × E => Φ p.2) (a, z)` using `(hΦ.comp continuous_snd).continuousAt`.
-
-Conclude with `((h1.mul h2).mul h3).mul (h5.mul h6)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_kern {χ : AddChar F Circle} (hχ : Continuous χ) {η : Fˣ →* ℂˣ}
     (hηc : Continuous η) (hη : ∀ a : Fˣ, ((η a : ℂˣ) : ℂ) = nsg E (a : F)) {Φ : E → ℂ}
@@ -161,9 +157,9 @@ theorem continuous_kern {χ : AddChar F Circle} (hχ : Continuous χ) {η : Fˣ 
     exact ((h1.mul h2).mul h3).mul (h5.mul h6)
 
 /- English proof (translation)
-Use `HasCompactSupport.intro (hg.isCompact.prod hΦ.isCompact) ?_` and prove the remaining obligations. Introduce and unpack `⟨a, z⟩ hp`. Simplify using `only [Set.mem_prod, not_and_or] at hp`. Break down `hp with h | h` into its components or cases. Simplify using `[kern, image_eq_zero_of_notMem_tsupport h]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[kern, image_eq_zero_of_notMem_tsupport h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hasCompactSupport_kern {χ : AddChar F Circle} {Φ : E → ℂ} (hΦ : HasCompactSupport Φ)
     {g : F → ℂ} (hg : HasCompactSupport g) : HasCompactSupport (kern E χ g Φ) := by
@@ -177,13 +173,13 @@ theorem hasCompactSupport_kern {χ : AddChar F Circle} {Φ : E → ℂ} (hΦ : H
 end Kernel
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχ hχ1 η hηc hη Φ hΦ g hg hg0`. Establish `hint : Integrable (kern E χ g Φ) ((selfDualMeasure χ).prod (muE E χ))` using `(continuous_kern hχ hηc hη hΦ.1.continuous hg.1 hg0).integrable_of_hasCompactSupport (hasCompactSupport_kern hΦ.2 hg.2)`. Establish `hsw` using `integral_integral_swap (f := fun a z => kern E χ g Φ (a, z)) hint`. Establish `hL : ∀ a : F, g a * (nsg E a * (((modulus a : ℝ)⁻¹ : ℝ) : ℂ) * ∫ z, (χ (-(Algebra.norm F z) / a) : ℂ) * Φ z ∂muE E χ) = ∫ z, kern E χ g Φ (a, z) ∂muE E χ`. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [kern]`. Rewrite using `[integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hR : ∀ z : E, Φ z * GlobalTheory.CompanionTheory.GaussLam.hAvg E χ g (Algebra.norm F z) = ∫ a, kern E χ g Φ (a, z) ∂selfDualMeasure χ`. Introduce `z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GlobalTheory.CompanionTheory.GaussLam.hAvg, ← integral_const_mul]`. Use `integral_congr_ae (Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Simplify using `only [kern]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hL, hR]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Conclude with `hsw`.
+A detailed English derivation is pending.
 -/
 theorem avg_fubini : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle), Continuous χ → χ ≠ 1 → ∀ η : Fˣ →* ℂˣ, Continuous η → (∀ a : Fˣ, ((η a : ℂˣ) : ℂ) = nsg E (a : F)) → ∀ Φ ∈ SBE E, ∀ g : F → ℂ, g ∈ schwartzBruhat F → g 0 = 0 → ∫ a, g a * (nsg E a * (((modulus a : ℝ)⁻¹ : ℝ) : ℂ) * ∫ z, (χ (-(Algebra.norm F z) / a) : ℂ) * Φ z ∂muE E χ) ∂selfDualMeasure χ = ∫ z, Φ z * GlobalTheory.CompanionTheory.GaussLam.hAvg E χ g (Algebra.norm F z) ∂muE E χ := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχ hχ1 η hηc hη Φ hΦ g hg hg0

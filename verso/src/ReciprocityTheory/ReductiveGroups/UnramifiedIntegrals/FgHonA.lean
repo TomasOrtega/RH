@@ -10,7 +10,7 @@ open PowerSeries Formalism.G Formalism.LT Formalism.L2.Th1.CM
 variable {K : Type} [NormedField K] [IsUltrametricDist K] [CharZero K] {l : ℕ} {σ : K →+* K}
 
 /- English proof (translation)
-Rewrite using `[finsum_def]`. Use `split_ifs with hs`. Conclude with `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg hC fun i _ => h i`. Simplify using `using hC`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem norm_finsum_le_of_forall_norm_le_univ_sort {α : Type*} (f : α → K) {C : ℝ} (hC : 0 ≤ C) (h : ∀ a, ‖f a‖ ≤ C) :
     ‖∑ᶠ a, f a‖ ≤ C := by
@@ -21,7 +21,7 @@ private theorem norm_finsum_le_of_forall_norm_le_univ_sort {α : Type*} (f : α 
   · simpa using hC
 
 /- English proof (translation)
-Introduce `e`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg ha hb) fun p _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hF _) (hG _) (norm_nonneg _) ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mvPowerSeries_norm_coeff_mul_le_mul {ι : Type} {F G : MvPowerSeries ι K} {a b : ℝ} (ha : 0 ≤ a) (hb : 0 ≤ b)
     (hF : ∀ e, ‖MvPowerSeries.coeff e F‖ ≤ a) (hG : ∀ e, ‖MvPowerSeries.coeff e G‖ ≤ b) :
@@ -34,9 +34,9 @@ private theorem mvPowerSeries_norm_coeff_mul_le_mul {ι : Type} {F G : MvPowerSe
   exact mul_le_mul (hF _) (hG _) (norm_nonneg _) ha
 
 /- English proof (translation)
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero`. Introduce `e`. Rewrite using `[pow_zero, pow_zero, MvPowerSeries.coeff_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Consider the case `succ m ih`. Rewrite using `[pow_succ, pow_succ]`. Conclude with `mvPowerSeries_norm_coeff_mul_le_mul (pow_nonneg hc m) hc ih hF`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mvPowerSeries_norm_coeff_pow_le_pow {ι : Type} {F : MvPowerSeries ι K} {c : ℝ} (hc : 0 ≤ c)
     (hF : ∀ e, ‖MvPowerSeries.coeff e F‖ ≤ c) :
@@ -53,7 +53,7 @@ private theorem mvPowerSeries_norm_coeff_pow_le_pow {ι : Type} {F : MvPowerSeri
     exact mvPowerSeries_norm_coeff_mul_le_mul (pow_nonneg hc m) hc ih hF
 
 /- English proof (translation)
-Simplify using `using mvPowerSeries_norm_coeff_pow_le_pow zero_le_one hF m e`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mvPowerSeries_norm_coeff_pow_le_one {ι : Type} {F : MvPowerSeries ι K}
     (hF : ∀ e, ‖MvPowerSeries.coeff e F‖ ≤ 1) (m : ℕ) (e : ι →₀ ℕ) :
@@ -61,9 +61,9 @@ private theorem mvPowerSeries_norm_coeff_pow_le_one {ι : Type} {F : MvPowerSeri
   simpa using mvPowerSeries_norm_coeff_pow_le_pow zero_le_one hF m e
 
 /- English proof (translation)
-Establish `hs : ∀ e, ‖MvPowerSeries.coeff e (∑ i ∈ Finset.range m, A ^ i * B ^ (m - 1 - i))‖ ≤ 1`. Introduce `e`. Rewrite using `[map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun i _ => ?_` and prove the remaining obligations. Simplify using `using mvPowerSeries_norm_coeff_mul_le_mul zero_le_one zero_le_one (mvPowerSeries_norm_coeff_pow_le_one hA i) (mvPowerSeries_norm_coeff_pow_le_one hB (m - 1 - i)) e`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[← geom_sum₂_mul]`. Simplify using `using mvPowerSeries_norm_coeff_mul_le_mul zero_le_one hc hs hAB e`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem mvPowerSeries_norm_coeff_pow_sub_pow_le {ι : Type} {A B : MvPowerSeries ι K} {c : ℝ} (hc : 0 ≤ c)
     (hA : ∀ e, ‖MvPowerSeries.coeff e A‖ ≤ 1) (hB : ∀ e, ‖MvPowerSeries.coeff e B‖ ≤ 1)
@@ -79,15 +79,15 @@ private theorem mvPowerSeries_norm_coeff_pow_sub_pow_le {ι : Type} {A B : MvPow
   simpa using mvPowerSeries_norm_coeff_mul_le_mul zero_le_one hc hs hAB e
 
 /- English proof (translation)
-Take `⟨D, rfl⟩ : ∃ D, A = D + B` from `⟨A - B, by ring⟩`. Simplify using `only [add_sub_cancel_right] at hAB`. Establish `hc1 : c ≤ 1` using `hcl.trans hl1.le`. Establish `hl2 : 2 ≤ l` using `hl.two_le`. Rewrite using `[add_pow, Finset.sum_range_succ']`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pow_zero, one_mul, Nat.sub_zero, Nat.choose_zero_right, Nat.cast_one, mul_one, add_sub_cancel_right]`. Rewrite using `[map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg (mul_nonneg hc (norm_nonneg _)) fun i hi => ?_` and prove the remaining obligations. Establish `hi' : i < l` using `Finset.mem_range.mp hi`. Rewrite using `[← Nat.cast_comm, ← nsmul_eq_mul, map_nsmul, nsmul_eq_mul, norm_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm : ‖MvPowerSeries.coeff e (D ^ (i + 1) * B ^ (l - (i + 1)))‖ ≤ c ^ (i + 1)`. Simplify using `using mvPowerSeries_norm_coeff_mul_le_mul (pow_nonneg hc _) zero_le_one (mvPowerSeries_norm_coeff_pow_le_pow hc hAB (i + 1)) (mvPowerSeries_norm_coeff_pow_le_one hB _) e`. Establish `hch : ‖((l.choose (i + 1) : ℕ) : K)‖ * c ^ (i + 1) ≤ c * ‖(l : K)‖`. Take `h | h : i + 1 < l ∨ i + 1 = l` from `by omega`. Take `⟨q, hq⟩` from `hl.dvd_choose_self (Nat.succ_ne_zero i) h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hq, Nat.cast_mul, norm_mul]`. Establish `hq1 : ‖(q : K)‖ ≤ 1` using `IsUltrametricDist.norm_natCast_le_one K q`. Establish `hpc : c ^ (i + 1) ≤ c` using `pow_le_of_le_one hc hc1 (Nat.succ_ne_zero i)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h, Nat.choose_self, Nat.cast_one, norm_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Take `⟨j, rfl⟩ : ∃ j, l = j + 2` from `⟨l - 2, by omega⟩`. Establish `hpc : c ^ (j + 1) ≤ c` using `pow_le_of_le_one hc hc1 (Nat.succ_ne_zero j)`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 private theorem mvPowerSeries_norm_coeff_pow_prime_sub_le_mul_norm {ι : Type} (hl : l.Prime) (hl1 : ‖(l : K)‖ < 1) {A B : MvPowerSeries ι K}
     {c : ℝ} (hc : 0 ≤ c) (hcl : c ≤ ‖(l : K)‖) (hB : ∀ e, ‖MvPowerSeries.coeff e B‖ ≤ 1)
@@ -127,9 +127,9 @@ private theorem mvPowerSeries_norm_coeff_pow_prime_sub_le_mul_norm {ι : Type} (
     _ ≤ c * ‖(l : K)‖ := hch
 
 /- English proof (translation)
-Introduce `v`. Proceed by induction on `v with`. Consider the case `zero => simpa using hPQ`. Consider the case `succ v ih`. Introduce `e`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_succ, pow_mul, pow_mul, pow_succ _ (v + 1)]`. Conclude with `mvPowerSeries_norm_coeff_pow_prime_sub_le_mul_norm hl hl1 (pow_nonneg (norm_nonneg _) _) (pow_le_of_le_one (norm_nonneg _) hl1.le (Nat.succ_ne_zero v)) (mvPowerSeries_norm_coeff_pow_le_one hQ _) ih e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mvPowerSeries_norm_coeff_pow_prime_pow_sub_le {ι : Type} (hl : l.Prime) (hl1 : ‖(l : K)‖ < 1) {P Q : MvPowerSeries ι K}
     (hQ : ∀ e, ‖MvPowerSeries.coeff e Q‖ ≤ 1)
@@ -145,13 +145,13 @@ private theorem mvPowerSeries_norm_coeff_pow_prime_pow_sub_le {ι : Type} (hl : 
       (pow_le_of_le_one (norm_nonneg _) hl1.le (Nat.succ_ne_zero v)) (mvPowerSeries_norm_coeff_pow_le_one hQ _) ih e
 
 /- English proof (translation)
-Establish `hcop : Nat.Coprime l m` using `(Nat.coprime_or_dvd_of_prime hl m).resolve_right hm`. Establish `h1` using `Nat.gcd_eq_gcd_ab l m`. Rewrite `h1` using `[hcop.gcd_eq_one]`. Establish `h2 : (1 : K) = (l : K) * (Nat.gcdA l m : K) + (m : K) * (Nat.gcdB l m : K)`. Establish `h3` using `congrArg (fun x : ℤ => (x : K)) h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at h3`. Conclude with `h3`. Use `le_antisymm (IsUltrametricDist.norm_natCast_le_one K m) (not_lt.mp fun hlt => ?_)` and prove the remaining obligations. Establish `h4 : ‖(1 : K)‖ < 1`. Rewrite using `[h2]`.
+Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `IsUltrametricDist.norm_intCast_le_one K _`. Use `_ < 1 := by simpa using hl1`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `IsUltrametricDist.norm_intCast_le_one K _`. Use `_ < 1 := by simpa using hlt`. Simplify using `at h4`.
+A detailed English derivation is pending.
 -/
 private theorem norm_natCast_eq_one_of_not_prime_dvd (hl : l.Prime) (hl1 : ‖(l : K)‖ < 1) {m : ℕ} (hm : ¬ l ∣ m) :
     ‖(m : K)‖ = 1 := by
@@ -179,23 +179,19 @@ private theorem norm_natCast_eq_one_of_not_prime_dvd (hl : l.Prime) (hl1 : ‖(l
   simp at h4
 
 /- English proof (translation)
-Establish `hPs : PowerSeries.HasSubst P` using `PowerSeries.HasSubst.of_constantCoeff_zero hP0`. Establish `hQs : PowerSeries.HasSubst Q` using `PowerSeries.HasSubst.of_constantCoeff_zero hQ0`. Establish `hPi : ∀ e, ‖MvPowerSeries.coeff e P‖ ≤ 1`. Unfold `IntegralMv at hP`. Conclude with `hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hQi : ∀ e, ‖MvPowerSeries.coeff e Q‖ ≤ 1`. Unfold `IntegralMv at hQ`. Conclude with `hQ`. Establish `hPQi : ∀ e, ‖MvPowerSeries.coeff e (P - Q)‖ ≤ ‖(l : K)‖`. Unfold `DivByMv at hPQ`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Conclude with `hPQ`. Establish `hzi : ∀ n, ‖PowerSeries.coeff n (derivative K z)‖ ≤ 1`. Unfold `IntegralPS at hz`. Conclude with `hz`. Establish `hpow` using `mvPowerSeries_norm_coeff_pow_prime_pow_sub_le hl hl1 hQi hPQi`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hterm : ∀ (d : ℕ) (e : ι →₀ ℕ), ‖PowerSeries.coeff d z • MvPowerSeries.coeff e (P ^ d) - PowerSeries.coeff d z • MvPowerSeries.coeff e (Q ^ d)‖ ≤ ‖(l : K)‖`. Introduce `d e`. Rewrite using `[← smul_sub, ← map_sub, norm_smul]`. Break down `d with _ | k` into its components or cases. Establish `h0 : PowerSeries.coeff 0 z = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Conclude with `hz0`. Rewrite using `[h0, norm_zero, zero_mul]`. Conclude with `norm_nonneg _`. Take `⟨v, m, hm, hkm0⟩` from `Nat.exists_eq_pow_mul_and_not_dvd (Nat.succ_ne_zero k) l hl.ne_one`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hkm : k + 1 = l ^ v * m` using `hkm0`. Establish `hz' : ‖PowerSeries.coeff (k + 1) z‖ * ‖((k + 1 : ℕ) : K)‖ ≤ 1`. Establish `h1` using `hzi k`. Rewrite `h1` using `[PowerSeries.coeff_derivative]`. Simplify `h1` using `[norm_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hn : ‖((k + 1 : ℕ) : K)‖ = ‖(l : K)‖ ^ v`. Rewrite using `[hkm, Nat.cast_mul, Nat.cast_pow, norm_mul, norm_pow, norm_natCast_eq_one_of_not_prime_dvd hl hl1 hm, mul_one]`. Establish `hPQn : ‖MvPowerSeries.coeff e (P ^ (k + 1) - Q ^ (k + 1))‖ ≤ ‖(l : K)‖ ^ (v + 1)`. Rewrite using `[hkm, pow_mul, pow_mul]`. Conclude with `mvPowerSeries_norm_coeff_pow_sub_pow_le (pow_nonneg (norm_nonneg _) _) (mvPowerSeries_norm_coeff_pow_le_one hPi _) (mvPowerSeries_norm_coeff_pow_le_one hQi _) (hpow v) m e`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hn, pow_succ, mul_assoc]`. Use `_ ≤ 1 * ‖(l : K)‖ := by gcongr`. Use `_ = ‖(l : K)‖ := one_mul _`. Unfold `DivByMv`.
-
-Introduce `e`. Rewrite using `[map_sub, PowerSeries.coeff_subst hPs, PowerSeries.coeff_subst hQs, ← finsum_sub_distrib (PowerSeries.coeff_subst_finite hPs z e) (PowerSeries.coeff_subst_finite hQs z e)]`. Conclude with `norm_finsum_le_of_forall_norm_le_univ_sort _ (norm_nonneg _) fun d => hterm d e`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qls {ι : Type} (hl : l.Prime) (hl1 : ‖(l : K)‖ < 1) (z : PowerSeries K)
     (hz0 : constantCoeff z = 0) (hz : IntegralPS (derivative K z)) (P Q : MvPowerSeries ι K)
@@ -254,15 +250,15 @@ theorem qls {ι : Type} (hl : l.Prime) (hl1 : ‖(l : K)‖ < 1) (z : PowerSerie
   exact norm_finsum_le_of_forall_norm_le_univ_sort _ (norm_nonneg _) fun d => hterm d e
 
 /- English proof (translation)
-Establish `key : ∀ (F : PowerSeries K) (d : Unit →₀ ℕ), MvPowerSeries.coeff d F = PowerSeries.coeff (d ()) F`. Introduce `F d`. Use `conv_lhs => rw [Finsupp.unique_single d]`. Both sides reduce to the same expression. Establish `hP' : IntegralMv P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `IntegralMv`. Introduce `d`. Rewrite using `[key]`. Conclude with `hP _`. Establish `hQ' : IntegralMv Q`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `IntegralMv`. Introduce `d`. Rewrite using `[key]`. Conclude with `hQ _`. Establish `hPQ' : DivByMv (l : K) (P - Q)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `DivByMv`. Introduce `d`. Rewrite using `[key]`. Conclude with `hPQ _`. Establish `h` using `qls hl hl1 z hz0 hz P Q hP0 hQ0 hP' hQ' hPQ'`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Unfold `DivBy`. Introduce `k`. Establish `hk` using `h (Finsupp.single () k)`. Rewrite `hk` using `[key, Finsupp.single_eq_same]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem qls1 (hl : l.Prime) (hl1 : ‖(l : K)‖ < 1) (z : PowerSeries K)
     (hz0 : constantCoeff z = 0) (hz : IntegralPS (derivative K z)) (P Q : PowerSeries K)

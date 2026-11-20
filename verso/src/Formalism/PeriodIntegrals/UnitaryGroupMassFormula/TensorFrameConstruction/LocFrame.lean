@@ -11,18 +11,18 @@ namespace PI.ScPiBuildW.Rv
 open PI.ScPiExists
 
 /- English proof (translation)
-Conclude with `I.cm.cmUnram.2.1 (I.φ v) a`.
+A detailed English derivation is pending.
 -/
 lemma phi_star (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) (a : I.E) :
     I.φ v (star a) = star (I.φ v a) := by
   exact I.cm.cmUnram.2.1 (I.φ v) a
 
 /- English proof (translation)
-Establish `hdet : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).1 (I.P_unit v)`. Establish `hJm : Formalism.REAL.Jm (I.ε v) * (I.P v)⁻¹ = (I.P v)ᴴ * I.J.map (I.φ v)`. Rewrite using `[← I.P_spec v, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hdet, Matrix.mul_one]`. Establish `hPP : ((I.P v)⁻¹)ᴴ * (I.P v)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, Matrix.mul_nonsing_inv _ hdet, Matrix.conjTranspose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set u : Fin I.n → ℂ := fun i => I.φ v (x i)`. Use `set w : Fin I.n → ℂ := fun i => I.φ v (y i)`. Establish `key : hJ (I.ε v) (rv I v x) (rv I v y) = star u ⬝ᵥ (I.J.map (I.φ v) *ᵥ w)`. Unfold `hJ rv`. Rewrite using `[Matrix.mulVec_mulVec, hJm, ← Matrix.mulVec_mulVec, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, hPP, Matrix.one_mulVec]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[key]`. Simplify using `only [u, w, Formalism.UG.hform, dotProduct, Matrix.mulVec, Matrix.map_apply, map_sum, map_mul, Pi.star_apply, Finset.mul_sum, starRingEnd_apply, phi_star, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 lemma hJ_rv (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) (x y : Fin I.n → I.E) :
     hJ (I.ε v) (rv I v x) (rv I v y) = I.φ v (Formalism.UG.hform (starRingEnd I.E) I.J x y) := by
@@ -42,7 +42,7 @@ lemma hJ_rv (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) (x y :
     Pi.star_apply, Finset.mul_sum, starRingEnd_apply, phi_star, mul_assoc]
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma phi_ite (I : Formalism.MainNotions.S.AutInst) (v : InfinitePlace I.F) {r : ℕ} (a b : Fin r) :
     I.φ v (if a = b then (1 : I.E) else 0) = if a = b then 1 else 0 := by

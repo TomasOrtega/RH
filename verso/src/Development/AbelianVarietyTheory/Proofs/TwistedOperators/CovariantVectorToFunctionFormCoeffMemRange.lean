@@ -7,15 +7,15 @@ open Formalism.L2.DIV MvPolynomial
 namespace GlobalTheory.RowFun
 
 /- English proof (translation)
-Take `⟨φ, hφ1, hφ2⟩` from `GlobalTheory.RowRat.exists_proj K'`. Set `g : MvPolynomial s ℂ` to `∑ m ∈ f.support, monomial m (φ (coeff m f))`. Establish `hg : ∀ m, coeff m g = φ (coeff m f)`. Introduce `m`. Simplify using `only [g, coeff_sum, coeff_monomial, Finset.sum_ite_eq']`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `split_ifs with hm`. Both sides reduce to the same expression. Rewrite using `[notMem_support_iff.mp hm, map_zero]`. Establish `key : g * P = f * P`. Use extensionality with `m`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `hfix : coeff m (f * P) = φ (coeff m (f * P))`. Rewrite using `[h]`. Conclude with `(hφ1 ⟨_, hQ m⟩).symm`. Rewrite using `[hfix, coeff_mul, coeff_mul, map_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hg]`. Establish `hs` using `φ.map_smul (⟨coeff x.2 P, hPK _⟩ : K') (coeff x.1 f)`. Rewrite `hs` using `[Subfield.smul_def, Subfield.smul_def, smul_eq_mul, smul_eq_mul]`. Rewrite using `[mul_comm, ← hs, mul_comm]`. Establish `hgf : g = f` using `mul_right_cancel₀ hP key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `m`. Rewrite using `[← hgf, hg]`. Conclude with `hφ2 _`.
+A detailed English derivation is pending.
 -/
 theorem coeff_mem_of_mul_eq {s : Type} (K' : Subfield ℂ) (f P Q : MvPolynomial s ℂ) (hP : P ≠ 0)
     (hPK : ∀ m, coeff m P ∈ K') (hQ : ∀ m, coeff m Q ∈ K') (h : f * P = Q) :
@@ -45,15 +45,13 @@ theorem coeff_mem_of_mul_eq {s : Type} (K' : Subfield ℂ) (f P Q : MvPolynomial
   exact hφ2 _
 
 /- English proof (translation)
-Establish `hf` using `hR.1 F`. Unfold `GlobalTheory.FunObj.IsFunForm at hf`. Set `G : MvPolynomial (ι × Fin n × Fin n) L` to `∑ m ∈ (F.1 : MvPolynomial (ι × Fin n × Fin n) ℂ).support, monomial m (Function.invFun κ (coeff m F.1))`. Establish `hG : MvPolynomial.map κ G = F.1`. Use extensionality with `m`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[coeff_map]`. Simplify using `only [G, coeff_sum, coeff_monomial, Finset.sum_ite_eq']`. Use `split_ifs with hm`. Conclude with `Function.invFun_eq (hF m)`. Simplify using `[notMem_support_iff.mp hm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : ∀ (p : MvPolynomial (ι × Fin n × Fin n) L) m, coeff m (MvPolynomial.map κ p) ∈ κ.fieldRange` using `fun p m => by`. Rewrite using `[coeff_map]`. Conclude with `RingHom.mem_fieldRange_self κ _`. Establish `hmem_eq₁ : MvPolynomial.map κ (∏ τ, Formalism.L2.Ker.frDet L n τ ^ ∑ a, (σ τ).natW a) = ∏ τ, Formalism.L2.Ker.frDet ℂ n τ ^ ∑ a, (σ τ).natW a`. Simplify using `only [map_prod, map_pow, GlobalTheory.BrRat.map_frDet]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem_eq₂ : MvPolynomial.map κ (GlobalTheory.FunObj.dualSubst L ι n G * ∏ τ, Formalism.L2.Ker.frDet L n τ ^ (-(σ τ).dual.detShift - (σ τ).detShift).toNat) = GlobalTheory.FunObj.dualSubst ℂ ι n F.1 * ∏ τ, Formalism.L2.Ker.frDet ℂ n τ ^ (-(σ τ).dual.detShift - (σ τ).detShift).toNat`. Simplify using `only [map_mul, map_prod, map_pow, GlobalTheory.BrRat.map_frDet, GlobalTheory.BrRat.map_dualSubst, hG]`. Introduce `m`. Use `coeff_mem_of_mul_eq κ.fieldRange _ _ _ (Finset.prod_ne_zero_iff.mpr fun τ _ => pow_ne_zero _ (GlobalTheory.FunObj.funFrDet_ne_zero τ)) (fun m => by` as an intermediate fact. Rewrite using `[← hmem_eq₁]`.
-
-Conclude with `hmem _ m)`. Use the proof step `(fun m => by`. Rewrite using `[← hmem_eq₂]`. Conclude with `hmem _ m) hf m`. Conclude with `RingHom.mem_fieldRange.mp this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_funOf_mem_range {ι : Type} [Fintype ι] {n : ℕ} (σ : ι → Formalism.BasicNotions.DomWeight n) {L : Type}
     [Field L] (κ : L →+* ℂ) (hR : GlobalTheory.FunObj.ReadOK σ) (F : VV ℂ σ)

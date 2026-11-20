@@ -12,11 +12,11 @@ namespace Formalism.MainNotions.J
 open Formalism.BasicNotions Formalism.MainNotions.PrimeDegreeVariant
 
 /- English proof (translation)
-Introduce `f0 hf0`. Unfold `delSq Formalism.GradedWeylDivisibility.weyl at hf0 ⊢`. Proceed by induction on `hf0 using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨w, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `Submodule.subset_span ⟨w, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← Formalism.GradedWeylDivisibility.lclosedeq_applyWord_map, Formalism.GradedWeylDivisibility.lclosedeq_hw_map]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx`. Rewrite using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem del_int {N : ℕ} (lam : DomWeight N) :
     ∀ f0 ∈ delSq ℤ N lam, MvPolynomial.map (Int.castRingHom ℂ) f0 ∈ delSq ℂ N lam := by
@@ -35,7 +35,7 @@ theorem del_int {N : ℕ} (lam : DomWeight N) :
     exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Introduce `i j hij`. Use `lam.anti hij` as an intermediate fact. Simplify using `only [DomWeight.natW]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem natW_anti {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   intro i j hij
@@ -44,11 +44,11 @@ theorem natW_anti {N : ℕ} (lam : DomWeight N) : Antitone lam.natW := by
   omega
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Formalism.GradedWeylDivisibility.weylLeDual ℂ N N le_rfl lam.natW (natW_anti lam)`. Unfold `nablaSq`. Rewrite using `[Formalism.GradedWeylDivisibility.standardMonomialSpanDomain ℂ N N lam.natW, Submodule.span_le]`. Introduce and unpack `_ ⟨K, sz, hsz, I, hsh, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `h1 : Formalism.GradedWeylDivisibility.bideterminant ℤ sz hsz I ∈ Formalism.GradedWeylDivisibility.dualWeyl ℤ N N lam.natW` using `hsh ▸ Formalism.GradedWeylDivisibility.bidetMem ℤ N N K sz hsz I`. Take `⟨c, hc, h2⟩` from `Formalism.GradedWeylDivisibility.weylRational N N le_rfl lam.natW (natW_anti lam) _ h1`. Establish `h3` using `del_int lam _ h2`. Rewrite `h3` using `[MvPolynomial.smul_eq_C_mul, map_mul, MvPolynomial.map_C, ← MvPolynomial.smul_eq_C_mul, Formalism.GradedWeylDivisibility.ldlat_map_bidet]`. Establish `hc' : ((Int.castRingHom ℂ) c) ≠ 0` using `by simpa using hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `Submodule.smul_mem (delSq ℂ N lam) ((Int.castRingHom ℂ) c)⁻¹ h3`. Rewrite `h4` using `[smul_smul, inv_mul_cancel₀ hc', one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem del_eq_nabla {N : ℕ} (lam : DomWeight N) : delSq ℂ N lam = nablaSq ℂ N lam := by
   apply le_antisymm
@@ -67,7 +67,7 @@ theorem del_eq_nabla {N : ℕ} (lam : DomWeight N) : delSq ℂ N lam = nablaSq �
     rwa [smul_smul, inv_mul_cancel₀ hc', one_smul] at h4
 
 /- English proof (translation)
-Introduce `g f hf`. Rewrite `hf`, the goal using `[del_eq_nabla]`. Conclude with `Submodule.smul_mem _ _ (Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ N N lam.natW _ f hf)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem del_stable {N : ℕ} (lam : DomWeight N) :
     ∀ g : GL (Fin N) ℂ, ∀ f ∈ delSq ℂ N lam, sqAct ℂ N lam g f ∈ delSq ℂ N lam := by
@@ -76,13 +76,11 @@ theorem del_stable {N : ℕ} (lam : DomWeight N) :
   exact Submodule.smul_mem _ _ (Formalism.GradedWeylDivisibility.dualWeylRowStable ℂ N N lam.natW _ f hf)
 
 /- English proof (translation)
-Take `⟨h1, h2, ⟨f3, hf3, h3⟩, h4, h5, h6⟩` from `hbr`. Establish `e1 : ∀ f ∈ delSq ℂ N lam, br' f = br f` using `fun f hf => e hf`. Establish `e2 : ∀ f0 ∈ delSq ℤ N lam, br' (MvPolynomial.map (Int.castRingHom ℂ) f0) = br (MvPolynomial.map (Int.castRingHom ℂ) f0)` using `fun f0 hf => e (del_int lam f0 hf)`. Establish `e3 : ∀ (g : GL (Fin n) ℂ), ∀ f0 ∈ delSq ℂ N lam, br' (sqAct ℂ N lam (embGL ℂ n N h g) f0) = br (sqAct ℂ N lam (embGL ℂ n N h g) f0)` using `fun g f0 hf => e (del_stable lam _ f0 hf)`. Establish `e4 : ∀ (a : ℂˣ), ∀ f0 ∈ delSq ℂ N lam, br' (sqAct ℂ N lam (lastGL ℂ N a) f0) = br (sqAct ℂ N lam (lastGL ℂ N a) f0)` using `fun a f0 hf => e (del_stable lam _ f0 hf)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun f hf => ?_, fun f hf => ?_, ⟨f3, hf3, ?_⟩, fun g f hf => ?_, fun a f hf => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[e2 f hf]`. Conclude with `h1 f hf`. Rewrite using `[e1 f hf]`. Conclude with `h2 f hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1 f3 hf3]`. Conclude with `h3`. Rewrite using `[e3 g f hf, e1 f hf]`. Conclude with `h4 g f hf`. Rewrite using `[e4 a f hf, e1 f hf]`.
-
-Conclude with `h5 a f hf`. Rewrite using `[e1 f hf]`. Conclude with `h6 f hf`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isBr_congr {n N : ℕ} {h : n + 1 = N} {lam : DomWeight N} {sg : DomWeight n}
     {br br' : MvPolynomial (Fin N × Fin N) ℂ →ₗ[ℂ] MvPolynomial (Fin n × Fin n) ℂ}
@@ -113,7 +111,7 @@ def BrTie (P : product_first_zeroth_parts.Pend D u) : Prop :=
     Set.EqOn (P.br τ) br (delSq ℂ _ (product_first_zeroth_parts.lamTr D u τ) : Set _)
 
 /- English proof (translation)
-Introduce `τ`. Take `⟨-, -, -, -, io, br, hio, hbr, htr⟩` from `H _ _ (product_first_zeroth_parts.Nm_succ D.R) (product_first_zeroth_parts.lamTr D u τ) (product_first_zeroth_parts.sgTr D u τ) (product_first_zeroth_parts.interlaceTr D u P.interlace τ)`. Conclude with `isBr_congr hbr (tie τ io br hio hbr htr)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pending_condition_of_sixth (P : product_first_zeroth_parts.Pend D u) (H : PrimeDegreeVariant.Conclusion6) (tie : BrTie P) : product_first_zeroth_parts.ArchimedeanSignatureMatching P := by
   intro τ

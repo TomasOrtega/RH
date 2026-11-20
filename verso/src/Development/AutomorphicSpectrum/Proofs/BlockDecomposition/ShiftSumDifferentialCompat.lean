@@ -25,9 +25,9 @@ def shIn (ς : ℤˣ) {k : ℕ} (C : Cx.{1} K) {m n : ℕ} (h : m + k = n) (x : 
     fun m' => (show m = m'.1 by have := m'.2; omega) ▸ x
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨m', h'⟩`. Consider the cases of `m' with`. Consider the case `zero => rfl`. Consider the case `succ m'`. Take `rfl : m' = m` from `by omega`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Express the relevant statement in the definitionally equal form `(ς : ℤ) • C.d m' x = 0`. Rewrite using `[hx, smul_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem shIn_d (ς : ℤˣ) {k : ℕ} (C : Cx.{1} K) {m n : ℕ} (h : m + k = n) (x : C.X m) (hx : C.d m x = 0) :
     (Sh ς k C).d n (shIn ς C h x) = 0 := by
@@ -55,7 +55,7 @@ def psi (n : ℕ) : (Sh ς k C).X n →ₗ[K] D.X n where
     · simp
 
 /- English proof (translation)
-Take `rfl : m = n - k` from `by omega`. Establish `hk : k ≤ n` using `by omega`. Simplify using `only [psi, LinearMap.coe_mk, AddHom.coe_mk, dif_pos hk]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem psi_eq {m n : ℕ} (h : m + k = n) (w : (Sh ς k C).X n) : psi ς g n w = g h (w ⟨m, h⟩) := by
   obtain rfl : m = n - k := by omega
@@ -63,18 +63,18 @@ theorem psi_eq {m n : ℕ} (h : m + k = n) (w : (Sh ς k C).X n) : psi ς g n w 
   simp only [psi, LinearMap.coe_mk, AddHom.coe_mk, dif_pos hk]
 
 /- English proof (translation)
-Establish `hk : ¬ k ≤ n` using `by omega`. Simplify using `only [psi, LinearMap.coe_mk, AddHom.coe_mk, dif_neg hk]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem psi_zero {n : ℕ} (h : n < k) (w : (Sh ς k C).X n) : psi ς g n w = 0 := by
   have hk : ¬ k ≤ n := by omega
   simp only [psi, LinearMap.coe_mk, AddHom.coe_mk, dif_neg hk]
 
 /- English proof (translation)
-Distinguish the cases in `h : k ≤ n`. Take `⟨m, rfl⟩ : ∃ m, n = m + k` from `⟨n - k, by omega⟩`. Establish `h' : m + 1 + k = m + k + 1` using `by omega`. Rewrite using `[psi_eq ς g rfl, psi_eq ς g h', hg rfl h']`. Express the relevant statement in the definitionally equal form `_ = g h' ((ς : ℤ) • C.d m (w ⟨m, _⟩))`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_zsmul]`. Rewrite using `[psi_zero ς g (by omega), map_zero]`. Distinguish the cases in `h2 : k = n + 1`. Establish `h0 : 0 + k = n + 1` using `by omega`. Rewrite using `[psi_eq ς g h0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `0 = g h0 0`. Rewrite using `[map_zero]`. Rewrite using `[psi_zero ς g (by omega)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_comm
     (hg : ∀ {m n : ℕ} (h : m + k = n) (h' : m + 1 + k = n + 1) (x : C.X m),
@@ -103,7 +103,7 @@ def shHom
 end Psi
 
 /- English proof (translation)
-Distinguish the cases in `h : k ≤ n`. Take `⟨m, rfl⟩ : ∃ m, n = m + k` from `⟨n - k, by omega⟩`. Rewrite using `[psi_eq ς g rfl, psi_eq ς g' rfl, hn]`. Both sides reduce to the same expression. Rewrite using `[psi_zero ς g (by omega), psi_zero ς g' (by omega), map_zero]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem psi_nat {k : ℕ} {C C' D D' : Cx.{1} K} (ς : ℤˣ) (g : ∀ {m n : ℕ}, m + k = n → C.X m →ₗ[K] D.X n)
     (g' : ∀ {m n : ℕ}, m + k = n → C'.X m →ₗ[K] D'.X n) (f : Cx.Hom C C' (RingHom.id K))
@@ -134,16 +134,16 @@ def sumHom {E : I → Cx.{1} K} {D : Cx.{1} K} (φ : ∀ i, Cx.Hom (E i) D (Ring
     | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-The claim follows from `DirectSum.toModule_lof _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sumHom_lof {E : I → Cx.{1} K} {D : Cx.{1} K} (φ : ∀ i, Cx.Hom (E i) D (RingHom.id K)) (n : ℕ) (i : I)
     (x : (E i).X n) : (sumHom φ).f n (DirectSum.lof K I (fun i => (E i).X n) i x) = (φ i).f n x :=
   DirectSum.toModule_lof _ _ _
 
 /- English proof (translation)
-Proceed by induction on `x using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of i x`. Establish `e : (Dsum.map a).f n (DirectSum.lof K I (fun i => (E i).X n) i x) = DirectSum.lof K I (fun i => (E' i).X n) i ((a i).f n x)` using `DirectSum.lmap_lof _ _ _`. Express the relevant statement in the definitionally equal form `(sumHom φ').f n ((Dsum.map a).f n (DirectSum.lof K I (fun i => (E i).X n) i x)) = b.f n ((sumHom φ).f n (DirectSum.lof K I (fun i => (E i).X n) i x))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, sumHom_lof, sumHom_lof, h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem sumHom_nat {E E' : I → Cx.{1} K} {D D' : Cx.{1} K} (φ : ∀ i, Cx.Hom (E i) D (RingHom.id K))
     (φ' : ∀ i, Cx.Hom (E' i) D' (RingHom.id K)) (a : ∀ i, Cx.Hom (E i) (E' i) (RingHom.id K))
@@ -163,7 +163,7 @@ def eSh (ς : ℤˣ) {k : ℕ} (C : Cx.{1} K) {m n : ℕ} (h : m + k = n) : C.H 
   Classical.choose ((GlobalTheory.T.shifted_complex_cohomology ς k C n).2 m h)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec ((GlobalTheory.T.shifted_complex_cohomology ς k C n).2 m h) y hy hy'`.
+A detailed English derivation is pending.
 -/
 theorem eSh_cls (ς : ℤˣ) {k : ℕ} (C : Cx.{1} K) {m n : ℕ} (h : m + k = n) (y : (Sh ς k C).X n)
     (hy : (Sh ς k C).d n y = 0) (hy' : C.d m (y ⟨m, h⟩) = 0) :
@@ -186,9 +186,9 @@ def reG : (⨁ u, (Sh (ς u) (k u) (C u)).H n) →ₗ[K] ⨁ v : Ix k n, (C v.1.
     else 0
 
 /- English proof (translation)
-Use `DirectSum.linearMap_ext K fun v => LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨⟨u, m⟩, h⟩` from `v`. Establish `h' : m + k u = n` using `h`. Take `rfl : m = n - k u` from `by omega`. Establish `hk : k u ≤ n` using `by omega`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [reF, reG, LinearMap.comp_apply, DirectSum.toModule_lof, LinearEquiv.coe_coe, dif_pos hk, LinearEquiv.symm_apply_apply, LinearMap.id_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem reG_reF : reG k ς C n ∘ₗ reF k ς C n = LinearMap.id := by
   refine DirectSum.linearMap_ext K fun v => LinearMap.ext fun y => ?_
@@ -200,7 +200,7 @@ theorem reG_reF : reG k ς C n ∘ₗ reF k ς C n = LinearMap.id := by
     LinearEquiv.symm_apply_apply, LinearMap.id_apply]
 
 /- English proof (translation)
-Use `DirectSum.linearMap_ext K fun u => LinearMap.ext fun y => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k u ≤ n`. Simplify using `only [reF, reG, LinearMap.comp_apply, DirectSum.toModule_lof, LinearEquiv.coe_coe, dif_pos hk, LinearEquiv.apply_symm_apply, LinearMap.id_apply]`. Establish `: Subsingleton ((Sh (ς u) (k u) (C u)).H n)` using `(GlobalTheory.T.shifted_complex_cohomology (ς u) (k u) (C u) n).1 (by omega)`. Rewrite using `[Subsingleton.elim y 0, map_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem reF_reG : reF k ς C n ∘ₗ reG k ς C n = LinearMap.id := by
   refine DirectSum.linearMap_ext K fun u => LinearMap.ext fun y => ?_
@@ -214,11 +214,11 @@ def reE : (⨁ v : Ix k n, (C v.1.1).H v.1.2) ≃ₗ[K] ⨁ u, (Sh (ς u) (k u) 
   LinearEquiv.ofLinear (reF k ς C n) (reG k ς C n) (reF_reG k ς C n) (reG_reF k ς C n)
 
 /- English proof (translation)
-Take `⟨e1, he1⟩` from `GlobalTheory.T.direct_sum_complex_cohomology (fun u => Sh (ς u) (k u) (C u)) n`. Use `⟨(reE k ς C n).trans e1, ?_⟩` and prove the remaining obligations. Introduce `v x hx hw`. Establish `hy` using `shIn_d (ς v.1.1) (C v.1.1) v.2 x hx`. Rewrite using `[LinearEquiv.trans_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : reE k ς C n (DirectSum.lof K (Ix k n) (fun v => (C v.1.1).H v.1.2) v ((C v.1.1).cls x hx)) = DirectSum.lof K I (fun u => (Sh (ς u) (k u) (C u)).H n) v.1.1 ((Sh (ς v.1.1) (k v.1.1) (C v.1.1)).cls (shIn (ς v.1.1) (C v.1.1) v.2 x) hy)`. Express the relevant statement in the definitionally equal form `reF k ς C n _ = _`. Rewrite using `[reF, DirectSum.toModule_lof]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[← eSh_cls (ς v.1.1) (C v.1.1) v.2 _ hy hx]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1]`. Conclude with `he1 v.1.1 _ hy hw`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_P : ∃ P : (⨁ v : Ix k n, (C v.1.1).H v.1.2) ≃ₗ[K] (Dsum fun u => Sh (ς u) (k u) (C u)).H n,
     ∀ (v : Ix k n) (x : (C v.1.1).X v.1.2) (hx : (C v.1.1).d v.1.2 x = 0)
@@ -249,24 +249,22 @@ variable {D : Cx.{1} K} (g : ∀ (u : I) {m n : ℕ}, m + k u = n → (C u).X m 
 
 include hg in
 /- English proof (translation)
-Rewrite using `[hg u h (by omega), hx, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem g_cocycle (u : I) {m n : ℕ} (h : m + k u = n) (x : (C u).X m) (hx : (C u).d m x = 0) :
     D.d n (g u h x) = 0 := by
   rw [hg u h (by omega), hx, map_zero, smul_zero]
 
 /- English proof (translation)
-Take `⟨P, hP⟩` from `exists_P k ς C n`. Establish `key : ∀ (v : Ix k n) (x : (C v.1.1).X v.1.2) (hx : (C v.1.1).d v.1.2 x = 0) (hz : D.d n (g v.1.1 v.2 x) = 0), (sumHom fun u => shHom (ς u) (g u) (hg u)).mapH n (P (DirectSum.lof K (Ix k n) (fun v => (C v.1.1).H v.1.2) v ((C v.1.1).cls x hx))) = D.cls (g v.1.1 v.2 x) hz`. Introduce `v x hx hz`. Establish `hw : (Dsum fun u => Sh (ς u) (k u) (C u)).d n (DirectSum.lof K I (fun u => (Sh (ς u) (k u) (C u)).X n) v.1.1 (shIn (ς v.1.1) (C v.1.1) v.2 x)) = 0`. Express the relevant statement in the definitionally equal form `DirectSum.lmap _ _ = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[DirectSum.lmap_lof, shIn_d _ _ _ _ hx, map_zero]`. Establish `hf : (sumHom fun u => shHom (ς u) (g u) (hg u)).f n (DirectSum.lof K I (fun u => (Sh (ς u) (k u) (C u)).X n) v.1.1 (shIn (ς v.1.1) (C v.1.1) v.2 x)) = g v.1.1 v.2 x`. Rewrite using `[sumHom_lof]`. Conclude with `psi_eq (ς v.1.1) (g v.1.1) v.2 _`. Rewrite using `[hP v x hx hw, CrystallineSemistableComparison.P.mapH_cls _ _ _ _ (by rw [hf]; exact hz)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `GlobalTheory.CompanionTheory.ConeKillC.cls_congr _ hf _ _`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Use `⟨P.trans (LinearEquiv.ofBijective _ hb), fun v x hx hz => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.ofBijective_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `key v x hx hz`. Introduce and unpack `⟨e, he⟩`. Establish `hEq : ((sumHom fun u => shHom (ς u) (g u) (hg u)).mapH n) ∘ₗ P.toLinearMap = e.toLinearMap`. Use `DirectSum.linearMap_ext K fun v => LinearMap.ext fun y => ?_` and prove the remaining obligations. Take `⟨x, hx, rfl⟩` from `GlobalTheory.CompanionTheory.ConeKillC.cls_surj _ _ y`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hz` using `g_cocycle k ς C g hg v.1.1 v.2 x hx`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[key v x hx hz, he v x hx hz]`. Establish `hb : Function.Bijective (((sumHom fun u => shHom (ς u) (g u) (hg u)).mapH n) ∘ P)`. Establish `: (((sumHom fun u => shHom (ς u) (g u) (hg u)).mapH n) ∘ P) = e`.
-
-Use function extensionality and compare the values at `y`. Conclude with `LinearMap.congr_fun hEq y`. Rewrite using `[this]`. Conclude with `e.bijective`. Conclude with `(Function.Bijective.of_comp_iff _ P.bijective).1 hb`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bij_iff : Function.Bijective ((sumHom fun u => shHom (ς u) (g u) (hg u)).mapH n) ↔
     ∃ e : (⨁ v : Ix k n, (C v.1.1).H v.1.2) ≃ₗ[K] D.H n,
@@ -331,7 +329,7 @@ def mvHom (k : I → ℕ) (ς : I → ℤˣ) (A : I → Sy.{1} K ι) (T : Sy.{1}
       (fun u n x => psi_nat (ς u) (g u S) (g u S') ((A u).res h) (T.res h) (fun h' x => hn u h h' x) n x) n x
 
 /- English proof (translation)
-Introduce `hMV K _ ι _ _ I _ k ς A T g hd hn hA hT hE n`. Establish `hiff : ∀ (S : Finset ι) (n : ℕ), Function.Bijective (((mvHom k ς A T g hd hn).φ S).mapH n) ↔ MvE k A T g S n` using `fun S n => bij_iff k ς (fun u => (A u).K S) n (fun u => g u S) (fun u => hd u S)`. Conclude with `(hiff ∅ n).1 (hMV K ι _ T (mvHom k ς A T g hd hn) (GlobalTheory.T.direct_sum_system_descends _ fun u => GlobalTheory.T.shifted_system_descends _ _ _ (hA u)) hT (fun S hS n => (hiff S n).2 (hE S hS n)) n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mvSum : MVBij → ∀ {K : Type} [Field K] {ι : Type} [DecidableEq ι] [Fintype ι] {I : Type 1} [DecidableEq I] (k : I → ℕ) (ς : I → ℤˣ) (A : I → Sy.{1} K ι) (T : Sy.{1} K ι) (g : ∀ (u : I) (S : Finset ι) {m n : ℕ}, m + k u = n → ((A u).K S).X m →ₗ[K] (T.K S).X n), (∀ (u : I) (S : Finset ι) {m n : ℕ} (h : m + k u = n) (h' : m + 1 + k u = n + 1) (x : ((A u).K S).X m), (T.K S).d n (g u S h x) = (ς u : ℤ) • g u S h' (((A u).K S).d m x)) → (∀ (u : I) {S S' : Finset ι} (hS : S ⊆ S') {m n : ℕ} (h : m + k u = n) (x : ((A u).K S).X m), (T.res hS).f n (g u S h x) = g u S' h (((A u).res hS).f m x)) → (∀ u, (A u).Desc) → T.Desc → (∀ S : Finset ι, S.Nonempty → ∀ n, MvE k A T g S n) → ∀ n, MvE k A T g ∅ n := by
   intro hMV K _ ι _ _ I _ k ς A T g hd hn hA hT hE n

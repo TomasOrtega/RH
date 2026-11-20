@@ -10,15 +10,13 @@ namespace GlobalTheory.PhiGam.CloseTw
 open GlobalTheory.PhiGam.Close
 
 /- English proof (translation)
-Introduce `k _ l n m hl _ _ R D h w N₁ N₂ h₁ h₂ c₁ c₂ i`. Establish `hex : ∀ i, ∃ a : ℕ, ∀ x ∈ N₁ i, vv k ^ a • x ∈ N₂ i` using `fun i => exists_pow (h₁ i).1 (h₂ i).2`. Establish `hrec : ∀ i, Nat.find (hex (i - 1)) ≤ (Nat.find (hex i) + h i) / l`. Introduce `i`. Use `Nat.find_min' _ fun x hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `key hl.out.pos R (D.φ i) (D.φ_semi i) (D.etale i) _ (h₂ _) _ x ?_` and prove the remaining obligations. Establish `e1 : vv k ^ (w i) • D.φ i x ∈ N₁ i`. Use `mem_sh_iff_smul_mem.1 ((c₁ i).1 (Submodule.subset_span ⟨x, hx, rfl⟩))` as an intermediate fact. Rewrite `this` using `[neg_neg]`. Then use the resulting hypothesis. Establish `e2` using `(c₂ i).2 (mem_sh_iff_exists.2 ⟨_, Nat.find_spec (hex i) _ e1, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hv` using `vv_ne_zero k`. Rewrite `e2` using `[smul_smul, smul_smul, ← zpow_natCast, ← zpow_add₀ hv, ← zpow_add₀ hv]`. Rewrite using `[← zpow_natCast]`. Use `e2 using 3` and compare the differences between its conclusion and the goal. Use `push_cast`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hle` using `le_sg hl.out.one_lt h (fun i => Nat.find (hex i)) (fun i => by`. Use `hrec (i + 1)` as an intermediate fact. Simplify using `only [add_sub_cancel_right] at this`. Conclude with `(Nat.mul_le_mul_left l this).trans (Nat.mul_div_le _ _)) i`.
-
-Conclude with `sh_le fun x hx => pow_smul_mem hle (Nat.find_spec (hex i) x hx)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ {k : Type} [Field k] {l n m : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l} (D : ModPG R n (Vc k m)) (h : ZMod n → ℕ) (w : ZMod n → ℤ) (N₁ N₂ : Lats k n m), (∀ i, IsLat (N₁ i)) → (∀ i, IsLat (N₂ i)) → CondAB D.φ w (fun i => (h i : ℤ) - w i) N₁ → CondAB D.φ w (fun i => (h i : ℤ) - w i) N₂ → ∀ i, sh (sg l h i) (N₁ i) ≤ N₂ i := by
   intro k _ l n m hl _ _ R D h w N₁ N₂ h₁ h₂ c₁ c₂ i

@@ -13,9 +13,9 @@ namespace GlobalTheory.CellDec.RatUnip
 variable {E : Type} [Field E] [NumberField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ k, algebraMap E (Ad E) (r k) * w k j = (if k < j then algebraMap E (Ad E) (r k) * w k j else 0) + (if j = k then algebraMap E (Ad E) (r k) else 0)`. Introduce `k`. Break down `lt_trichotomy k j with h | rfl | h` into its components or cases. Simplify using `[h, h.ne']`. Simplify using `[hd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[not_lt.2 h.le, h.ne, hl k j h]`. Rewrite using `[Finset.sum_congr rfl fun k _ => key k, Finset.sum_add_distrib, Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem row_mul_split (w : Matrix (Fin n) (Fin n) (Ad E))
     (hl : ∀ i j, j < i → w i j = 0) (hd : ∀ i, w i i = 1) (r : Fin n → E) (j : Fin n) :
@@ -33,17 +33,15 @@ theorem row_mul_split (w : Matrix (Fin n) (Fin n) (Ad E))
   simp
 
 /- English proof (translation)
-It suffices to establish `h : ∀ m : ℕ, ∀ j : Fin n, j.val < m → r j = r' j from`. Use function extensionality and compare the values at `fun j => h _ j j.val.lt_succ_self`. Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro j hj`.
+Reduce the argument to an intermediate assertion. Apply function extensionality and compare values at an arbitrary argument. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Conclude with `absurd hj (Nat.not_lt_zero _)`. Consider the case `succ m ih`. Introduce `j hj`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hj with hj | hj` into its components or cases. Conclude with `ih j hj`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `lt_trichotomy j i with h | rfl | h` into its components or cases. Rewrite using `[h0 j h, h0' j h]`. Rewrite using `[h1, h1']`. Establish `hs : (∑ k, if k < j then algebraMap E (Ad E) (r k) * w k j else 0) = ∑ k, if k < j then algebraMap E (Ad E) (r' k) * w k j else 0`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `split_ifs with hk`. Rewrite using `[ih k (by have := Fin.lt_def.1 hk; omega)]`. Both sides reduce to the same expression. Establish `a` using `hF j h`. Establish `b` using `hF' j h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `a`, `b` using `[row_mul_split w hl hd]`. Rewrite `a` using `[hs]`. Take `⟨c, -, hc⟩` from `GroundTheory.Global.existsUnique_sub_mem_fundamentalSet E (∑ k, if k < j then algebraMap E (Ad E) (r' k) * w k j else 0)`. Establish `e1` using `hc (-r j) (by simpa using a)`. Establish `e2` using `hc (-r' j) (by simpa using b)`.
-
-Conclude with `neg_injective (e1.trans e2.symm)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem row_unique (w : Matrix (Fin n) (Fin n) (Ad E))
     (hl : ∀ i j, j < i → w i j = 0) (hd : ∀ i, w i i = 1) (i : Fin n) (r r' : Fin n → E)
@@ -80,21 +78,19 @@ theorem row_unique (w : Matrix (Fin n) (Fin n) (Ad E))
       exact neg_injective (e1.trans e2.symm)
 
 /- English proof (translation)
-It suffices to establish `h : ∀ m : ℕ, ∃ r : Fin n → E, (∀ k, k < i → r k = 0) ∧ r i = 1 ∧ ∀ j : Fin n, i < j → j.val < m → ∑ k, algebraMap E (Ad E) (r k) * w k j ∈ GroundTheory.Global.fundamentalSet E by`. Take `⟨r, h0, h1, h2⟩` from `h n`. Conclude with `⟨r, h0, h1, fun j hj => h2 j hj j.isLt⟩`. Introduce `m`. Proceed by induction on `m with`.
+Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero`. Conclude with `⟨Pi.single i 1, fun k hk => by simp [Pi.single_apply, hk.ne], by simp, fun j _ hj => absurd hj (Nat.not_lt_zero _)⟩`. Consider the case `succ m ih`. Take `⟨r, h0, h1, h2⟩` from `ih`. Distinguish the cases in `hm : ∃ jm : Fin n, jm.val = m ∧ i < jm`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨jm, hjm, hijm⟩` from `hm`. Take `⟨c, hc, -⟩` from `GroundTheory.Global.existsUnique_sub_mem_fundamentalSet E (∑ k, algebraMap E (Ad E) (r k) * w k jm)`. Use `⟨r - Pi.single jm c, fun k hk => ?_, ?_, fun j hij hj => ?_⟩` and prove the remaining obligations. Simplify using `[h0 k hk, Pi.single_apply, (hk.trans hijm).ne]`. Simplify using `[h1, Pi.single_apply, hijm.ne]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hsum : ∑ k, algebraMap E (Ad E) ((r - Pi.single jm c : Fin n → E) k) * w k j = ∑ k, algebraMap E (Ad E) (r k) * w k j - algebraMap E (Ad E) c * w jm j`. Simplify using `only [Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single jm]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k _ hk`. Simplify using `[Pi.single_apply, hk]`. Simplify using the standard rewrite rules. Rewrite using `[hsum]`. Break down `Nat.lt_succ_iff_lt_or_eq.1 hj with hj | hj` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hlt : j < jm` using `by rw [Fin.lt_def]; omega`. Rewrite using `[hl jm j hlt, mul_zero, sub_zero]`. Conclude with `h2 j hij hj`. Establish `: j = jm` using `Fin.ext (hj.trans hjm.symm)`. Substitute `this` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd, mul_one]`. Conclude with `hc`. Use `⟨r, h0, h1, fun j hij hj => ?_⟩` and prove the remaining obligations. Break down `Nat.lt_succ_iff_lt_or_eq.1 hj with hj | hj` into its components or cases. Conclude with `h2 j hij hj`.
-
-Conclude with `absurd ⟨j, hj, hij⟩ hm`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem row_exists (w : Matrix (Fin n) (Fin n) (Ad E))
     (hl : ∀ i j, j < i → w i j = 0) (hd : ∀ i, w i i = 1) (i : Fin n) :
@@ -147,13 +143,13 @@ namespace GlobalTheory.CellDec
 open GlobalTheory.CellDec.RatUnip
 
 /- English proof (translation)
-Take `⟨hl, hd⟩` from `(GlobalTheory.SmGL.mem_unipB (Ad E)).1 hu`. Establish `hent : ∀ (γ : GL (Fin n) E) (i j : Fin n), ((ratGL E n γ * u : GA E n) : Matrix (Fin n) (Fin n) (Ad E)) i j = ∑ k, algebraMap E (Ad E) ((γ : Matrix (Fin n) (Fin n) E) i k) * (u : Matrix (Fin n) (Fin n) (Ad E)) k j`. Introduce `γ i j`. Simplify using `[ratGL, Matrix.mul_apply]`. Use `choose r h0 h1 hF using row_exists (u : Matrix (Fin n) (Fin n) (Ad E)) hl hd`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `M : Matrix (Fin n) (Fin n) E` to `Matrix.of fun i k => r i k`. Establish `hM : IsUnit M.det`. Rewrite using `[Matrix.det_of_upperTriangular (show M.BlockTriangular id from fun i j hij => h0 i j hij)]`. Simplify using `[M, h1]`. Use `⟨Matrix.nonsingInvUnit M hM, ⟨(GlobalTheory.SmGL.mem_unipB E).2 ⟨fun i j hij => h0 i j hij, fun i => h1 i⟩, fun i j hij => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hent]`. Conclude with `hF i j hij`. Introduce and unpack `γ ⟨hγ, hγF⟩`. Take `⟨gl, gd⟩` from `(GlobalTheory.SmGL.mem_unipB E).1 hγ`. Apply `Units.ext` to reduce the goal to its premises.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `i j`. Use `row_unique (u : Matrix (Fin n) (Fin n) (Ad E)) hl hd i (fun k => (γ : Matrix (Fin n) (Fin n) E) i k) (r i) (fun k hk => gl i k hk) (h0 i) (gd i) (h1 i) (fun j hij => by rw [← hent]; exact hγF i j hij) (hF i)` as an intermediate fact. Conclude with `congrFun this j`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_ratUnip_mul_mem_fundamentalSet (E : Type) [Field E] [NumberField E] (n : ℕ) (u : GA E n)
     (hu : u ∈ GlobalTheory.CellDec.NA E n) :

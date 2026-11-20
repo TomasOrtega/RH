@@ -45,7 +45,7 @@ variable {O A T' G : Type*} [CommRing O] [Ring A] [CommRing T'] [Algebra T' A] [
   {L : Type*} [AddCommGroup L] [Module A L] [Module O L] [SMulCommClass A O L]
 
 /- English proof (translation)
-Introduce `g p`. Use `show ev (uElt r χ (g : G) • p) = uElt r χ (g : G) • ev p`. Rewrite using `[hev, hev, map_smul, smul_eq_mul, mul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_equiv (r : G →* A) (χ : G →* T'ˣ) (Dl : Subgroup G) (inc : P →ₗ[A] A) (v₁ : L)
     (ev : P →ₗ[O] L) (hev : ∀ p, ev p = inc p • v₁) :
@@ -55,7 +55,7 @@ theorem ev_equiv (r : G →* A) (χ : G →* T'ˣ) (Dl : Subgroup G) (inc : P �
   rw [hev, hev, map_smul, smul_eq_mul, mul_smul]
 
 /- English proof (translation)
-Introduce `g p`. Use `show ev (uElt r χ (g : G) • p) = ev p`. Conclude with `hev g p`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ev_equiv_triv {N : Type*} [AddCommGroup N] [Module O N] (r : G →* A) (χ : G →* T'ˣ)
     (Dl : Subgroup G) (ev : P →ₗ[O] N) (hev : ∀ g p, ev (uElt r χ g • p) = ev p) :

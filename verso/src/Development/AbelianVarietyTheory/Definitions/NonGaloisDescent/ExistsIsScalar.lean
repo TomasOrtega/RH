@@ -56,7 +56,7 @@ def evW (j : Fin D.R.m) : S.WL ((j : ℕ) + 1) →+ (GA D (Wc D j) → ℂ) wher
   map_add' x y := by rw [map_add, map_add, map_add]; rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Rl.HW j (sg0 D A3.A)).e ((Rl.FW j).j (sg0 D A3.A) ((YS.fi j).e (c • x))) (v₀ j _) = _`. Rewrite using `[map_smul, map_smulₛₗ, map_smul, show sg0 D A3.A c = D.what₂.embLL c from congrArg (fun f : D.what₂.LL →+* ℂ => f c) (sgAt_mk _ Rl.hv0)]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evW_smul (j : Fin D.R.m) (c : D.what₂.LL) (x : S.WL ((j : ℕ) + 1)) :
     evW YS v₀ j (c • x) = D.what₂.embLL c • evW YS v₀ j x := by
@@ -107,7 +107,7 @@ def realRd (ν : ℂ) : Rd ρ D.nexp i j b where
     exact key c x
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ν⁻¹ • evK YS v₀ hρ i j b (YS.eF i _ b _ j.2 ((YS.eF i _ b _ j.2).symm _)) = _`. Rewrite using `[mul_smul]`. Conclude with `congrArg (fun x => ν⁻¹ • evK YS v₀ hρ i j b x) ((YS.eF i _ b (Nat.le_add_left _ _) j.2).apply_symm_apply _)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realRd_tmul (ν : ℂ) (a : NX.KB S i b) (f : NX.FmK S ((j : ℕ) + 1)) :
     realRd YS v₀ hρ i j b ν ((YS.eF i _ b (Nat.le_add_left _ _) j.2).symm (a ⊗ₜ[S.Ks] f : NX.KB S i b ⊗[S.Ks] _)) =
@@ -117,7 +117,7 @@ theorem realRd_tmul (ν : ℂ) (a : NX.KB S i b) (f : NX.FmK S ((j : ℕ) + 1)) 
   exact congrArg (fun x => ν⁻¹ • evK YS v₀ hρ i j b x) ((YS.eF i _ b (Nat.le_add_left _ _) j.2).apply_symm_apply _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = ν⁻¹ • (1 : ℂ)⁻¹ • evK YS v₀ hρ i j b (YS.eF i _ b (Nat.le_add_left _ _) j.2 f)`. Rewrite using `[inv_one, one_smul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem realRd_apply (ν : ℂ) (f : D.nexp.Fm i ((j : ℕ) + 1) b) :
     realRd YS v₀ hρ i j b ν f = ν⁻¹ • realRd YS v₀ hρ i j b 1 f := by
@@ -143,7 +143,7 @@ def IsNorm {j : Fin D.R.m} (B : Base (Vc D j) (Wc D j)) (ν : ℂ) : Prop :=
   ν ≠ 0 ∧ ∃ c, IsScale Rl v₀ B c ∧ ∃ n : ℕ, n ≠ 0 ∧ ν ^ n = (cj (twAt D.what₂.embLL A3.A.v0) (Rl.phs j) * c) ^ n
 
 /- English proof (translation)
-Use `forall₃_congr fun α R z => imp_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[realRd_apply YS v₀ hρ i j b ν, realRd_apply YS v₀ hρ i j b ν f, map_smul]`. Conclude with `(smul_right_injective _ (inv_ne_zero hν)).eq_iff`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckeAt_realRd {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) {ν : ℂ} (hν : ν ≠ 0) (k P f g) :
     HeckeAt (realRd YS v₀ hρ i j b ν) k P f g ↔ HeckeAt (realRd YS v₀ hρ i j b 1) k P f g := by
@@ -160,9 +160,9 @@ structure IsScalar {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.
   rat : RatRow YS v₀ hρ i j b → Rat hρ (realRd YS v₀ hρ i j b ν)
 
 /- English proof (translation)
-Distinguish the cases in `h : RatRow YS v₀ hρ i j b`. Take `⟨ν, h1, h2⟩` from `h`. Conclude with `⟨ν, h1.1, fun _ => h1, fun _ => h2⟩`. Distinguish the cases in `h' : ∃ ν', IsNorm Rl v₀ (ρ.B i j b) ν'`. Take `⟨ν, h1⟩` from `h'`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ν, h1.1, fun _ => h1, fun h2 => absurd h2 h⟩`. Conclude with `⟨1, one_ne_zero, fun h1 => absurd h1 h', fun h2 => absurd h2 h⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_isScalar {ρ : Setup D.ntw} (hρ : ρ.Good) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) :
     ∃ ν, IsScalar YS v₀ hρ i j b ν := by
@@ -200,14 +200,14 @@ abbrev rd : Rds D.nexp Z.ρ := fun i j b => realRd YS v₀ Z.good i j b (Z.ν i 
 def full : FullTie Z.good Z.rd := ⟨Z.tie, Z.hecke, Z.univ⟩
 
 /- English proof (translation)
-The claim follows from `(Z.hecke i j b).heckeRead h`.
+A detailed English derivation is pending.
 -/
 theorem heckeRead {i j b} (h : RatHecke (Z.rd i j b)) : HeckeRead (Z.rd i j b) := (Z.hecke i j b).heckeRead h
 
 include Z in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.UnivCharIne.delU_ine D Z.univ i Q M hQ P hP`.
+A detailed English derivation is pending.
 -/
 theorem delU_ine (i : D.ntw.Tw) (Q : Finset (Pl D.host.E)) (M : ℕ) (hQ : Formalism.MainNotions.NAdm.AdmQ D.ntw i Q M) (P : Pl D.host.E)
     (hP : P ∈ Q) : (∀ A : ValuationSubring D.nd.Om, IsPlaceOver A P →
@@ -219,19 +219,19 @@ theorem delU_ine (i : D.ntw.Tw) (Q : Finset (Pl D.host.E)) (M : ℕ) (hQ : Forma
 include Z in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.UnivChar.delUTie_of_isUnivChar _ hK Z.univ`.
+A detailed English derivation is pending.
 -/
 theorem delUTie (hK : GlobalTheory.TwSys.K1 D.ntw) : GlobalTheory.TwSys.DelUTie D.nexp := GlobalTheory.UnivChar.delUTie_of_isUnivChar _ hK Z.univ
 
 /- English proof (translation)
-The claim follows from `(Z.scalar i j b).rat h`.
+A detailed English derivation is pending.
 -/
 theorem rat {i j b} (h : RatRow YS v₀ Z.good i j b) : Rat Z.good (Z.rd i j b) := (Z.scalar i j b).rat h
 
 include Z in
 
 /- English proof (translation)
-Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' h1`. Conclude with `(Z.tie i ⟨n, h2⟩ b).thU_empty M d`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem thU_empty (i : D.ntw.Tw) (j : ℕ) (b : Bool) (M : ℕ) (d : D.nexp.Dat i j b) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m) :
     D.nexp.thU i j b ∅ M d = D.nexp.th i j b d ⊗ₜ[D.ntw.O i] 1 := by
@@ -239,7 +239,7 @@ theorem thU_empty (i : D.ntw.Tw) (j : ℕ) (b : Bool) (M : ℕ) (d : D.nexp.Dat 
   exact (Z.tie i ⟨n, h2⟩ b).thU_empty M d
 
 /- English proof (translation)
-Take `⟨d, -, rfl, rfl⟩` from `(Z.tie i j b).dat_onto s g P hd ((Z.rat h).1 s g P hd)`. Conclude with `⟨d, rfl, rfl, (Z.tie i j b).th_eq d⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_dat {i j b} (h : RatRow YS v₀ Z.good i j b) {s g P} (hd : Z.ρ.IsDatum i j b s g P) :
     ∃ d, (Z.tie i j b).cls d = g ∧ (Z.tie i j b).coef d = P ∧ Z.rd i j b (D.nexp.th i _ b d) = Z.ρ.theta i j b g P := by

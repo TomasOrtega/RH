@@ -19,18 +19,18 @@ variable (d : SD σ)
 def sc : (InfinitePlace F → ℂ) → AE F E := (Place.exists_sec d.cm d.B.emb).choose
 
 /- English proof (translation)
-The claim follows from `(Place.exists_sec d.cm d.B.emb).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem sc_cont : Continuous (sc d) := (Place.exists_sec d.cm d.B.emb).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(Place.exists_sec d.cm d.B.emb).choose_spec.2.1 x w`.
+A detailed English derivation is pending.
 -/
 theorem sc_pi (x : InfinitePlace F → ℂ) (w : InfinitePlace F) : piInf (d.B.emb w) (sc d x) = x w :=
   (Place.exists_sec d.cm d.B.emb).choose_spec.2.1 x w
 
 /- English proof (translation)
-The claim follows from `(Place.exists_sec d.cm d.B.emb).choose_spec.2.2.1 x`.
+A detailed English derivation is pending.
 -/
 theorem sc_fin (x : InfinitePlace F → ℂ) : finOne F • sc d x = 0 := (Place.exists_sec d.cm d.B.emb).choose_spec.2.2.1 x
 
@@ -44,48 +44,48 @@ def atM (w : InfinitePlace F) (Z : Matrix p p ℂ) : Matrix p p (AE F E) :=
   Matrix.of fun i j => sc d (fun w' => fam w Z w' i j) + finOne F • (1 : Matrix p p (AE F E)) i j
 
 /- English proof (translation)
-Use `show ((0 : Ainf F), (1 : Af F)) * ((0 : Ainf F), (1 : Af F)) = ((0 : Ainf F), (1 : Af F))`. Rewrite using `[Prod.mk_mul_mk, mul_zero, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fin_idem : finOne F * finOne F = finOne F := by
   show ((0 : Ainf F), (1 : Af F)) * ((0 : Ainf F), (1 : Af F)) = ((0 : Ainf F), (1 : Af F))
   rw [Prod.mk_mul_mk, mul_zero, mul_one]
 
 /- English proof (translation)
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, fin_idem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_mul {q : Type} [Fintype q] (A B : Matrix q q (AE F E)) :
     finOne F • (A * B) = (finOne F • A) * (finOne F • B) := by
   rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, fin_idem]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := piInf (d.B.emb w))`.
+A detailed English derivation is pending.
 -/
 theorem cw_mul {q : Type} [Fintype q] (w : InfinitePlace F) (A B : Matrix q q (AE F E)) :
     d.cw w (A * B) = d.cw w A * d.cw w B :=
   Matrix.map_mul (f := piInf (d.B.emb w))
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem cw_one {q : Type} [DecidableEq q] (w : InfinitePlace F) : d.cw w (1 : Matrix q q (AE F E)) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [SD.cw, Matrix.map_apply, atM, Matrix.of_apply, map_add, sc_pi, Place.piInf_finOne, add_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cw_atM (w w' : InfinitePlace F) (Z : Matrix p p ℂ) : d.cw w' (atM d w Z) = fam w Z w' := by
   ext i j
   simp only [SD.cw, Matrix.map_apply, atM, Matrix.of_apply, map_add, sc_pi, Place.piInf_finOne, add_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, atM, Matrix.of_apply, smul_add, sc_fin, zero_add, smul_smul, fin_idem]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem fin_atM (w : InfinitePlace F) (Z : Matrix p p ℂ) : finOne F • atM d w Z = finOne F • (1 : Matrix p p (AE F E)) := by
   ext i j
   simp only [Matrix.smul_apply, atM, Matrix.of_apply, smul_add, sc_fin, zero_add, smul_smul, fin_idem]
 
 /- English proof (translation)
-Use `Place.cw_ext d (fun w' => ?_) ?_` and prove the remaining obligations. Rewrite using `[cw_mul, cw_atM, cw_atM, cw_atM]`. Unfold `fam`. Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[fin_mul, fin_atM, fin_atM, fin_atM, ← fin_mul, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem atM_mul (w : InfinitePlace F) (Z Z' : Matrix p p ℂ) : atM d w (Z * Z') = atM d w Z * atM d w Z' := by
   refine Place.cw_ext d (fun w' => ?_) ?_
@@ -95,7 +95,7 @@ theorem atM_mul (w : InfinitePlace F) (Z Z' : Matrix p p ℂ) : atM d w (Z * Z')
   · rw [fin_mul, fin_atM, fin_atM, fin_atM, ← fin_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Use `Place.cw_ext d (fun w' => ?_) ?_` and prove the remaining obligations. Rewrite using `[cw_atM, cw_one]`. Unfold `fam`. Apply the tactic sequence `split_ifs <;> rfl`. Rewrite using `[fin_atM]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 -/
 theorem atM_one (w : InfinitePlace F) : atM d w (1 : Matrix p p ℂ) = 1 := by
   refine Place.cw_ext d (fun w' => ?_) ?_
@@ -105,9 +105,7 @@ theorem atM_one (w : InfinitePlace F) : atM d w (1 : Matrix p p ℂ) = 1 := by
   · rw [fin_atM]
 
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Use `Continuous.add ((sc_cont d).comp (continuous_pi fun w' => ?_)) continuous_const` and prove the remaining obligations. Unfold `fam`. Use `split_ifs`. Conclude with `(continuous_apply j).comp ((continuous_apply i).comp continuous_id)`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_atM (w : InfinitePlace F) : Continuous (atM (p := p) d w) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -124,25 +122,25 @@ section Iota
 variable (d : SD σ)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := inclR (F := F) (AF F))`.
+A detailed English derivation is pending.
 -/
 theorem incM_mul {p : Type} [Fintype p] (M N : Matrix p p E) : incM F (M * N) = incM F M * incM F N :=
   Matrix.map_mul (f := inclR (F := F) (AF F))
 
 /- English proof (translation)
-The claim follows from `Matrix.map_one _ (map_zero _) (map_one _)`.
+A detailed English derivation is pending.
 -/
 theorem incM_one {p : Type} [DecidableEq p] : incM F (1 : Matrix p p E) = 1 :=
   Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[← incM_mul, Units.mul_inv, incM_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bb : incM F d.b.1 * incM F (d.b⁻¹).1 = 1 := by
   rw [← incM_mul, Units.mul_inv, incM_one]
 
 /- English proof (translation)
-Rewrite using `[← incM_mul, Units.inv_mul, incM_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bb' : incM F (d.b⁻¹).1 * incM F d.b.1 = 1 := by
   rw [← incM_mul, Units.inv_mul, incM_one]
@@ -150,7 +148,7 @@ theorem bb' : incM F (d.b⁻¹).1 * incM F d.b.1 = 1 := by
 def Zm (ζ : ℂ) (y : GR d.n) : M2 d.n := dZ d.n ζ⁻¹ * mR y * dZ d.n ζ
 
 /- English proof (translation)
-Simplify using `only [Zm]`. Rewrite using `[show mR (y * y') = mR y * mR y' from rfl]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (dZ d.n ζ) (dZ d.n ζ⁻¹), dZ_mul_inv h, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Zm_mul {ζ : ℂ} (h : ζ ≠ 0) (y y' : GR d.n) : Zm d ζ (y * y') = Zm d ζ y * Zm d ζ y' := by
   simp only [Zm]
@@ -159,7 +157,7 @@ theorem Zm_mul {ζ : ℂ} (h : ζ ≠ 0) (y y' : GR d.n) : Zm d ζ (y * y') = Zm
   rw [← Matrix.mul_assoc (dZ d.n ζ) (dZ d.n ζ⁻¹), dZ_mul_inv h, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [Zm]`. Rewrite using `[show mR (1 : GR d.n) = 1 from rfl, Matrix.mul_one, dZ_inv_mul h]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Zm_one {ζ : ℂ} (h : ζ ≠ 0) : Zm d ζ 1 = 1 := by
   simp only [Zm]
@@ -169,20 +167,20 @@ def MxI (w : InfinitePlace F) (ζ : ℂ) (y : GR d.n) : Matrix (Fin d.n ⊕ Fin 
   incM F d.b.1 * atM d w (Zm d ζ y) * incM F (d.b⁻¹).1
 
 /- English proof (translation)
-Simplify using `only [MxI, Zm_mul d h, atM_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (incM F (d.b⁻¹).1) (incM F d.b.1), bb', Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem MxI_mul {ζ : ℂ} (h : ζ ≠ 0) (w : InfinitePlace F) (y y' : GR d.n) : MxI d w ζ (y * y') = MxI d w ζ y * MxI d w ζ y' := by
   simp only [MxI, Zm_mul d h, atM_mul, Matrix.mul_assoc]
   rw [← Matrix.mul_assoc (incM F (d.b⁻¹).1) (incM F d.b.1), bb', Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[MxI, Zm_one d h, atM_one, Matrix.mul_one, bb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem MxI_one {ζ : ℂ} (h : ζ ≠ 0) (w : InfinitePlace F) : MxI d w ζ 1 = 1 := by
   rw [MxI, Zm_one d h, atM_one, Matrix.mul_one, bb]
 
 /- English proof (translation)
-Simplify using `only [MxI, Matrix.mul_assoc]`. Rewrite using `[bb', Matrix.mul_one, ← Matrix.mul_assoc, bb', Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inFrame_MxI (w : InfinitePlace F) (ζ : ℂ) (y : GR d.n) :
     incM F (d.b⁻¹).1 * MxI d w ζ y * incM F d.b.1 = atM d w (Zm d ζ y) := by
@@ -190,7 +188,7 @@ theorem inFrame_MxI (w : InfinitePlace F) (ζ : ℂ) (y : GR d.n) :
   rw [bb', Matrix.mul_one, ← Matrix.mul_assoc, bb', Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [dbl, incM, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _)]`. Use `congr 1`. Use extensionality with `i j`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dbl_incM : dbl (incM F d.Y.J) = incM F (dbl d.Y.J) := by
   simp only [dbl, incM, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _)]
@@ -199,11 +197,9 @@ theorem dbl_incM : dbl (incM F d.Y.J) = incM F (dbl d.Y.J) := by
   simp
 
 /- English proof (translation)
-Establish `hD : D = biᵀ * Q * bi.map star`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hb, Matrix.transpose_one, mapStar_one, Matrix.one_mul, Matrix.mul_one]`. Use `_ = biᵀ * (bᵀ * D * b.map star) * bi.map star := by`. Rewrite using `[Matrix.transpose_mul, mapStar_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = biᵀ * Q * bi.map star := by rw [hQ]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.transpose_mul, Matrix.transpose_mul, mapStar_mul, mapStar_mul]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = D := by rw [hQ, hZ, ← hD]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_unit {ι : Type} [Fintype ι] [DecidableEq ι] (b bi Z D Q : Matrix ι ι ℂ) (hb : b * bi = 1)
     (hQ : bᵀ * D * b.map star = Q) (hZ : Zᵀ * Q * Z.map star = Q) : (b * Z * bi)ᵀ * D * (b * Z * bi).map star = D := by
@@ -218,19 +214,19 @@ theorem conj_unit {ι : Type} [Fintype ι] [DecidableEq ι] (b bi Z D Q : Matrix
     _ = D := by rw [hQ, hZ, ← hD]
 
 /- English proof (translation)
-The claim follows from `Matrix.transpose_map`.
+A detailed English derivation is pending.
 -/
 theorem cw_transpose {p q : Type} (w : InfinitePlace F) (A : Matrix p q (AE F E)) : d.cw w Aᵀ = (d.cw w A)ᵀ :=
   Matrix.transpose_map
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => PositivityTheory.ThKG.Tow.Levi.piInf_incl (d.B.emb w) (M i j)`.
+A detailed English derivation is pending.
 -/
 theorem cw_incM {p q : Type} (w : InfinitePlace F) (M : Matrix p q E) : d.cw w (incM F M) = M.map (d.B.emb w).1 :=
   Matrix.ext fun i j => PositivityTheory.ThKG.Tow.Levi.piInf_incl (d.B.emb w) (M i j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `d.cm.2.2.2 _ _`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_sig_emb {p q : Type} (w : InfinitePlace F) (M : Matrix p q E) :
     (M.map σ).map (d.B.emb w).1 = (M.map (d.B.emb w).1).map star := by
@@ -238,9 +234,9 @@ theorem map_sig_emb {p q : Type} (w : InfinitePlace F) (M : Matrix p q E) :
   exact d.cm.2.2.2 _ _
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun M => M.map (d.B.emb w).1) hε`. Simplify using `only [Matrix.map_mul (f := (d.B.emb w).1), map_sig_emb] at h`. Rewrite `h` using `[Matrix.transpose_map]`. Rewrite using `[h]`. Simplify using `only [Qc, Matrix.fromBlocks_map, Matrix.map_zero _ (map_zero _), Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hQ_w {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)
     (w : InfinitePlace F) :
@@ -255,24 +251,24 @@ theorem hQ_w {ε : ℤˣ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fr
   by_cases hij : i = j <;> simp [Matrix.one_apply, hij]
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `map_smul (cA σ) a (A i j)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem map_cA_smul {p q : Type} (a : AF F) (A : Matrix p q (AE F E)) : (a • A).map (cA σ) = a • A.map (cA σ) := by
   ext i j
   exact map_smul (cA σ) a (A i j)
 
 /- English proof (translation)
-Rewrite using `[MxI, fin_mul, fin_mul, fin_atM, ← fin_mul, ← fin_mul, Matrix.mul_one, bb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fin_MxI (w : InfinitePlace F) (ζ : ℂ) (y : GR d.n) : finOne F • MxI d w ζ y = finOne F • 1 := by
   rw [MxI, fin_mul, fin_mul, fin_atM, ← fin_mul, ← fin_mul, Matrix.mul_one, bb]
 
 /- English proof (translation)
-Use `Place.cw_ext d (fun w' => ?_) ?_` and prove the remaining obligations. Rewrite using `[cw_mul, cw_mul, Place.cw_cA, cw_transpose, dbl_incM, cw_incM]`. Establish `hM : d.cw w' (MxI d w ζ y) = d.b.1.map (d.B.emb w').1 * fam w (Zm d ζ y) w' * (d.b⁻¹).1.map (d.B.emb w').1`. Rewrite using `[MxI, cw_mul, cw_mul, cw_incM, cw_incM, cw_atM]`. Rewrite using `[hM]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `conj_unit _ _ _ _ _ ?_ (hQ_w d hε w') ?_` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _)]`. Unfold `fam split_ifs`. Conclude with `(unitary_iff hζ (mR y)).2 y.2`. Rewrite using `[Matrix.transpose_one, mapStar_one, Matrix.one_mul, Matrix.mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : (finOne F • (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E))).map (cA σ) = finOne F • 1`. Rewrite using `[map_cA_smul, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[fin_mul, fin_mul, ← Matrix.transpose_smul, fin_MxI, ← map_cA_smul, fin_MxI, e1, Matrix.transpose_smul, Matrix.transpose_one, ← fin_mul, ← fin_mul, Matrix.mul_one, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem MxI_unitary {ε : ℤˣ} {ζ : ℂ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)
     (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ = Complex.I) (w : InfinitePlace F) (y : GR d.n) :
@@ -305,7 +301,7 @@ def iota {ε : ℤˣ} {ζ : ℂ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Ma
   map_mul' a b := Subtype.ext (Units.ext (MxI_mul d (zeta_ne hζ) w a b))
 
 /- English proof (translation)
-The claim follows from `inFrame_MxI d w ζ y`.
+A detailed English derivation is pending.
 -/
 theorem inFrame_iota {ε : ℤˣ} {ζ : ℂ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)
     (hζ : ε = -1 ∧ ζ = 1 ∨ ε = 1 ∧ ζ = Complex.I) (w : InfinitePlace F) (y : GR d.n) :
@@ -313,9 +309,9 @@ theorem inFrame_iota {ε : ℤˣ} {ζ : ℂ} (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1
   inFrame_MxI d w ζ y
 
 /- English proof (translation)
-Establish `hm : Continuous fun y : GR d.n => mR y` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hz : Continuous fun y : GR d.n => Zm d ζ y` using `(continuous_const.matrix_mul hm).matrix_mul continuous_const`. Establish `hM : Continuous fun y : GR d.n => MxI d w ζ y` using `(continuous_const.matrix_mul ((continuous_atM d w).comp hz)).matrix_mul continuous_const`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Use `Units.continuous_iff.2 ⟨hM, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hM.comp continuous_inv`.
+A detailed English derivation is pending.
 -/
 theorem continuous_iota {ε : ℤˣ} {ζ : ℂ}
     (hε : d.b.1ᵀ * dbl d.Y.J * d.b.1.map σ = Matrix.fromBlocks 0 1 (((ε : ℤ) : E) • 1) 0)
@@ -329,9 +325,9 @@ theorem continuous_iota {ε : ℤˣ} {ζ : ℂ}
   exact hM.comp continuous_inv
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ d ε ζ hε hζ`. Use `⟨iota d hε hζ, continuous_iota d hε hζ, fun w y => ?_, fun w w' y hw => ?_, fun w y => ?_⟩` and prove the remaining obligations. Rewrite using `[inFrame_iota, cw_atM]`. Simplify using `only [fam, if_true, Zm]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, dZ_mul_inv (zeta_ne hζ), Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inFrame_iota, cw_atM]`. Simplify using `only [fam, if_neg hw]`. Rewrite using `[inFrame_iota, fin_atM]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem iotaEx : IotaEx := by
   intro F E _ _ _ _ _ σ d ε ζ hε hζ

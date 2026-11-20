@@ -23,11 +23,11 @@ def formInt (h : HermNorm n) (W : Ideal (MvPolynomial (Fin n) ℂ)) (e : ℕ)
   else 0
 
 /- English proof (translation)
-Establish `hc : (0 : ℝ) < h.dualNorm y ^ 2` using `by positivity`. Establish `hs : (0 : ℝ) < ‖∑ j, u j * y j‖` using `norm_pos_iff.mpr hu`. Establish `hcont : ContinuousAt (fun ε : ℝ => Real.log ((‖∑ j, u j * y j‖ ^ 2 + ε * h.dualNorm y ^ 2) / h.dualNorm y ^ 2) / 2) 0`. Use `ContinuousAt.div_const (ContinuousAt.log ?_ ?_) _` and prove the remaining obligations. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [zero_mul, add_zero]`. Check the signs of the components of the expression. Use `hcont.tendsto` as an intermediate fact. Simplify using `only [zero_mul, add_zero] at this`. Unfold `fsLogReg`.
+Check the signs of the components of the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `this using 2` and compare the differences between its conclusion and the goal. Rewrite using `[fsLog, ← div_pow, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem fsLogReg_tendsto (h : HermNorm n) (u y : Fin n → ℂ) (hy : 0 < h.dualNorm y)
     (hu : ∑ j, u j * y j ≠ 0) :

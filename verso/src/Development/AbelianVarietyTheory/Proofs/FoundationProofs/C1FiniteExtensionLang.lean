@@ -6,25 +6,23 @@ namespace GlobalTheory
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `F K _ _ _ _ hF n d f hf hd hdn`. Use `set m := Module.finrank F K with hm`. Establish `hm0 : 0 < m` using `Module.finrank_pos`. Set `b : Module.Basis (Fin m) F K` to `Module.finBasis F K`. Set `e : Fin n × Fin m ≃ Fin (n * m)` to `finProdFinEquiv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `g : Fin n → MvPolynomial (Fin (n * m)) K` to `fun i => ∑ j, MvPolynomial.C (b j) * MvPolynomial.X (e (i, j))`. Establish `hg : ∀ i, (g i).IsHomogeneous 1` using `fun i => IsHomogeneous.sum _ _ _ (fun j _ => isHomogeneous_C_mul_X _ _)`. Set `G : MvPolynomial (Fin (n * m)) K` to `aeval g f`. Establish `hG : G.IsHomogeneous d`. Establish `h1` using `hf.aeval g hg`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[one_mul]`. Then use the resulting hypothesis. Set `P : Fin m → MvPolynomial (Fin (n * m)) F` to `fun l => ∑ s ∈ G.support, monomial s (b.repr (G.coeff s) l)`. Establish `hP : ∀ l, (P l).IsHomogeneous d` using `fun l => IsHomogeneous.sum _ _ _ (fun s hs => isHomogeneous_monomial _ (by`. Rewrite using `[Finsupp.degree_eq_weight_one]`. Conclude with `hG (mem_support_iff.mp hs)))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt : m * d < n * m`. Rewrite using `[mul_comm n m]`. Conclude with `Nat.mul_lt_mul_of_pos_left hdn hm0`. Take `⟨y, hy0, hy⟩` from `hF (n * m) m d P hP hd hlt`. Set `x : Fin n → K` to `fun i => ∑ j, algebraMap F K (y (e (i, j))) * b j`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨x, ?_, ?_⟩` and prove the remaining obligations. Introduce `hx`. Apply `hy0` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Take `⟨⟨i, j⟩, rfl⟩` from `e.surjective k`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hxi : ∑ j, y (e (i, j)) • b j = 0`. Use `congrFun hx i` as an intermediate fact. Simplify `this` using `[x, Algebra.smul_def]`. Conclude with `Fintype.linearIndependent_iff.mp b.linearIndependent (fun j => y (e (i, j))) hxi j`. Establish `key : MvPolynomial.eval x f = MvPolynomial.eval (fun k => algebraMap F K (y k)) G`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← MvPolynomial.coe_aeval_eq_eval, ← MvPolynomial.coe_aeval_eq_eval]`. Use `show _ = MvPolynomial.aeval _ (MvPolynomial.bind₁ g f)`. Rewrite using `[MvPolynomial.aeval_bind₁]`. Establish `hxe : x = fun i => MvPolynomial.aeval (fun k => algebraMap F K (y k)) (g i)`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[g, x, mul_comm]`. Rewrite using `[hxe]`. Both sides reduce to the same expression. Establish `key2 : MvPolynomial.eval (fun k => algebraMap F K (y k)) G = ∑ l, algebraMap F K (MvPolynomial.eval y (P l)) * b l`. Simplify using `only [P, map_sum, MvPolynomial.eval_monomial, Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm, MvPolynomial.eval_eq]`. Use `Finset.sum_congr rfl (fun s hs => ?_)` and prove the remaining obligations. Use `conv_lhs => rw [← b.sum_repr (G.coeff s)]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun l _ => ?_)` and prove the remaining obligations.
-
-Simplify using `[Finsupp.prod, map_prod, map_pow, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, key2]`. Conclude with `Finset.sum_eq_zero (fun l _ => by rw [hy l, map_zero, zero_mul])`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem is_c1_of_finite_of_tsen_lang_systems : ∀ (F K : Type) [Field F] [Field K] [Algebra F K] [FiniteDimensional F K],
   (∀ (n r d : ℕ) (f : Fin r → MvPolynomial (Fin n) F), (∀ i, (f i).IsHomogeneous d) → 0 < d → r * d < n →

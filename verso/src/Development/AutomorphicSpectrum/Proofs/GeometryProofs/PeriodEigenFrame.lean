@@ -19,7 +19,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {σK : KA l →+* ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hw⟩`. Conclude with `⟨u, hu, by rw [hw]⟩`. Introduce and unpack `⟨u, hu, hw⟩`. Conclude with `⟨u, hu, Over.OverMorphism.ext hw.symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isComb_iff_isCombAt (x : Sp ℂ ⟶ Xo.X) {n : ℕ} (c : Fin n → ℂ) (v : Fin n → (epsAt x ⟶ Xo.univ.t.G))
     (w : epsAt x ⟶ Xo.univ.t.G) :
@@ -31,20 +31,20 @@ theorem isComb_iff_isCombAt (x : Sp ℂ ⟶ Xo.X) {n : ℕ} (c : Fin n → ℂ) 
     exact ⟨u, hu, Over.OverMorphism.ext hw.symm⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Over.w v, h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem isTanAt_of_isEigVec (x : Sp ℂ ⟶ Xo.X) (χ : 𝓞 E →+* ℂ) (v : epsAt x ⟶ Xo.univ.t.G)
     (h : GlobalTheory.CompanionTheory.Ar.Fl.IsEigVec Xo.univ.t.act x χ v) : Formalism.L2.Pj.IsTanAt x v.left :=
   ⟨Over.w v, h.1⟩
 
 /- English proof (translation)
-Take `⟨h1, -, -⟩` from `GlobalTheory.isDerivAt0_ex_isTanAt E H D l Xo σK g ty FU i P hP`. Establish `hhol : HolAt (fun z => (FU.ex i P z).left) 0` using `holAt_of_isHolTo (isHolTo_ex FU i hP) (Set.mem_univ 0)`. Establish `hv'` using `(isDerivAt0_iff _ _ _).1 hv`. Use `⟨(h1 _ _ hv).2, fun a => ?_⟩` and prove the remaining obligations. Set `L : (Fin g → ℂ) →L[ℂ] (Fin g → ℂ)` to `ContinuousLinearMap.pi fun k => ty k (a : E) • ContinuousLinearMap.proj k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `e1` using `hv'.comp (Xo.univ.t.act.act a).left`. Establish `e2 : (fun t => (FU.ex i P t).left ≫ (Xo.univ.t.act.act a).left) = fun t => (FU.ex i P (L t)).left`. Use function extensionality and compare the values at `t`. Rewrite using `[← Over.comp_left, ← FU.ex_lin i P hP a t]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite `e1` using `[e2]`. Establish `e3` using `isDerivAt_of_comp_linear hhol L e1`. Establish `e4 : L w = χ a • w`. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : w k = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Simplify using `[L, hk]`. Simplify using `[L, hw k hk, hχ a]`. Rewrite `e3` using `[e4]`. Conclude with `e3.unique (isDerivAt_epsMul hv' _)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isEigVec_of_isDerivAt0 (FU : FamilyUnif Xo σK ty) (i : Fin FU.n) (P : (FU.Di i).La →+ (Fin g → ℂ))
     (hP : IsPeriod (FU.Di i) ty P) (χ : 𝓞 E →+* ℂ) (τ : E →+* ℂ) (hχ : ∀ a : 𝓞 E, χ a = τ (a : E))
@@ -77,15 +77,13 @@ end GlobalTheory.CompanionTheory.Ar.Flat.EigDir
 open GlobalTheory.CompanionTheory.Ar.Flat.EigDir in
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σK g ty FU i P x χ τ n v hP hx hχ hF`. Substitute `hx` using the available equality. Take `⟨h1, h2, h3⟩` from `GlobalTheory.isDerivAt0_ex_isTanAt E H D l Xo σK g ty FU i P hP`. Establish `ht : ∀ a, Formalism.L2.Pj.IsTanAt (FU.u i P) (v a).left` using `fun a => isTanAt_of_isEigVec _ χ _ (hF.1 a)`. Use `choose V hV hVu using fun a => h3 _ (ht a)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `comb : ∀ (c : Fin n → ℂ) (w : epsAt (FU.u i P) ⟶ Xo.univ.t.G), GlobalTheory.CompanionTheory.Ar.Fl.IsComb c v w ↔ IsDerivAt0 (fun z => (FU.ex i P z).left) (∑ k, c k • V k) w.left` using `fun c w => (isComb_iff_isCombAt _ c v w).trans (GlobalTheory.DerLin.isCombAt_iff_isDerivAt0 E H D l Xo σK g ty FU i P hP n (fun k => (v k).left) V hV c w.left)`. Use `⟨V, fun a u => ⟨fun h => hVu a u h, fun h => h ▸ hV a⟩, ?_, fun z => ?_⟩` and prove the remaining obligations. Use `Fintype.linearIndependent_iff.2 fun c hc => ?_` and prove the remaining obligations. Take `⟨w, hw, -⟩` from `(FU.ex_diff i P hP).1 0`. Establish `hw' : GlobalTheory.CompanionTheory.Ar.Fl.IsEigVec Xo.univ.t.act (FU.u i P) χ w` using `isEigVec_of_isDerivAt0 FU i P hP χ τ hχ 0 (fun k hk => absurd rfl hk) w hw`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c₀, -, hu⟩` from `hF.2 w hw'`. Establish `a1` using `hu c ((comb c w).2 (by rw [hc]; exact hw))`. Establish `a2` using `hu 0 ((comb 0 w).2 (by simpa using hw))`. Introduce `k`. Conclude with `congrFun (a1.trans a2.symm) k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw, -⟩` from `(FU.ex_diff i P hP).1 (tyPart ty τ z)`. Establish `hw' : GlobalTheory.CompanionTheory.Ar.Fl.IsEigVec Xo.univ.t.act (FU.u i P) χ w` using `isEigVec_of_isDerivAt0 FU i P hP χ τ hχ _ (fun k hk => ?_) w hw`. Take `⟨c, hc, -⟩` from `hF.2 w hw'`. Establish `e` using `(h3 _ (isTanAt_of_isEigVec _ χ _ hw')).unique ((comb c w).1 hc) hw`. Rewrite using `[← e]`.
-
-Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`. Assume the negation of the conclusion as `hne`. Conclude with `hk (by simp [tyPart, hne])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.Flat.exists_directions_of_isEigFrame : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σK : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (FU : FamilyUnif Xo σK ty) (i : Fin FU.n) (P : (FU.Di i).La →+ (Fin g → ℂ)) (x : Sp ℂ ⟶ Xo.X) (χ : 𝓞 E →+* ℂ) (τ : E →+* ℂ) (n : ℕ) (v : Fin n → (epsAt x ⟶ Xo.univ.t.G)), IsPeriod (FU.Di i) ty P → x = FU.u i P → (∀ a : 𝓞 E, χ a = τ (a : E)) → IsEigFrame Xo.univ.t.act x χ v → ∃ V : Fin n → Fin g → ℂ, (∀ a u, IsDerivAt0 (fun z => (FU.ex i P z).left) u (v a).left ↔ u = V a) ∧ LinearIndependent ℂ V ∧ ∀ z, tyPart ty τ z ∈ Submodule.span ℂ (Set.range V) := by
   intro E _ _ _ H D l Xo σK g ty FU i P x χ τ n v hP hx hχ hF

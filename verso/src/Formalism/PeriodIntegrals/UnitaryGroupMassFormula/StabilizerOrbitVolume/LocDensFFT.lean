@@ -8,7 +8,7 @@ namespace PI.VolStabSW
 namespace FiniteFieldCounting
 
 /- English proof (translation)
-The claim follows from `|∏ j ∈ s, (1 + δ j) - 1| ≤ t * (2 ^ s.card - 1) := by classical induction s using Finset.induction_on with | empty => simp | insert j s hj ih => rw [Finset.prod_insert hj, Finset.card_insert_of_notMem hj] set P := ∏ j ∈ s, (1 + δ j) have hP : |P| ≤ 1 + |P - 1| := by have := abs_s …`.
+A detailed English derivation is pending.
 -/
 theorem prod_bound {ι : Type} (δ : ι → ℝ) (t : ℝ) (ht0 : 0 ≤ t) (ht1 : t ≤ 1)
     (h : ∀ j, |δ j| ≤ t) (s : Finset ι) :
@@ -34,7 +34,7 @@ theorem prod_bound {ι : Type} (δ : ι → ℝ) (t : ℝ) (ht0 : 0 ≤ t) (ht1 
     nlinarith [mul_nonneg (sub_nonneg.mpr ht1) h3]
 
 /- English proof (translation)
-Establish `ht0 : 0 ≤ (q⁻¹) ^ 2` using `by positivity`. Establish `ht1 : (q⁻¹) ^ 2 ≤ 1` using `pow_le_one₀ (inv_nonneg.mpr (by linarith)) (inv_le_one_of_one_le₀ hq)`. Use `prod_bound δ _ ht0 ht1 h Finset.univ` as an intermediate fact. Rewrite `this` using `[Finset.card_univ, Fintype.card_fin]`. Establish `h2 : (2 : ℝ) ^ a ≤ 2 ^ M` using `pow_le_pow_right₀ (by norm_num) ha`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
 Use the polynomial consequences of the given equalities and inequalities.
 -/
@@ -48,13 +48,13 @@ theorem ratio_bound (M a : ℕ) (ha : a ≤ M) (q : ℝ) (hq : 1 ≤ q) (δ : Fi
   nlinarith
 
 /- English proof (translation)
-The claim follows from `pow_le_pow_of_le_one (inv_nonneg.mpr (by linarith)) (inv_le_one_of_one_le₀ hq) hm`.
+A detailed English derivation is pending.
 -/
 theorem inv_pow_le (q : ℝ) (hq : 1 ≤ q) (m : ℕ) (hm : 2 ≤ m) : (q⁻¹) ^ m ≤ (q⁻¹) ^ 2 :=
   pow_le_pow_of_le_one (inv_nonneg.mpr (by linarith)) (inv_le_one_of_one_le₀ hq) hm
 
 /- English proof (translation)
-Establish `h1 : a ^ 2 ≤ 2 * M * a` using `by nlinarith`. Use `zify [h1, ha]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exp_id (M a : ℕ) (ha : a ≤ M) : M * a + a * (M - a) = 2 * M * a - a ^ 2 := by
   have h1 : a ^ 2 ≤ 2 * M * a := by nlinarith
@@ -62,11 +62,11 @@ theorem exp_id (M a : ℕ) (ha : a ≤ M) : M * a + a * (M - a) = 2 * M * a - a 
   ring
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => intro _`. Simplify using the standard rewrite rules. Consider the case `succ a ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `ha`. Rewrite using `[Finset.sum_range_succ, ih (by omega)]`. Establish `h1 : a ^ 2 ≤ 2 * M * a` using `by nlinarith`. Establish `h2 : (a + 1) ^ 2 ≤ 2 * M * (a + 1)` using `by nlinarith`. Establish `h3 : a ≤ M` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 1 ≤ 2 * (M - a)` using `by omega`. Use `zify [h1, h2, h3, h4]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_exp (M : ℕ) : ∀ a, a ≤ M →
     ∑ j ∈ Finset.range a, (2 * (M - j) - 1) = 2 * M * a - a ^ 2 := by
@@ -84,9 +84,9 @@ theorem sum_exp (M : ℕ) : ∀ a, a ≤ M →
     ring
 
 /- English proof (translation)
-Establish `hM : q ^ M ≠ 0` using `pow_ne_zero _ hq`. Establish `e1 : ∀ i : Fin a, q ^ M - q ^ (i : ℕ) = q ^ M * (1 + -(q ^ (i : ℕ) / q ^ M))`. Introduce `i`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.prod_congr rfl fun i _ ↦ e1 i, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← pow_mul, ← exp_id M a ha, pow_add]`. Establish `h1 : q ^ (M * a) ≠ 0` using `pow_ne_zero _ hq`. Establish `h2 : q ^ (a * (M - a)) ≠ 0` using `pow_ne_zero _ hq`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem split_ratio (M a : ℕ) (ha : a ≤ M) (q : ℝ) (hq : q ≠ 0) :
     (∏ i : Fin a, (q ^ M - q ^ (i : ℕ))) * q ^ (a * (M - a)) / q ^ (2 * M * a - a ^ 2) =
@@ -103,9 +103,9 @@ theorem split_ratio (M a : ℕ) (ha : a ≤ M) (q : ℝ) (hq : q ≠ 0) :
   field_simp
 
 /- English proof (translation)
-Establish `e1 : ∀ j : Fin a, q ^ (2 * (M - j) - 1) - (-1) ^ (M - j) * q ^ (M - j - 1) = q ^ (2 * (M - j) - 1) * (1 + -((-1) ^ (M - j) * q ^ (M - j - 1) / q ^ (2 * (M - j) - 1)))`. Introduce `j`. Establish `: q ^ (2 * (M - j) - 1) ≠ 0` using `pow_ne_zero _ hq`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.prod_congr rfl fun j _ ↦ e1 j, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Fin.sum_univ_eq_sum_range (fun j ↦ 2 * (M - j) - 1) a, sum_exp M a ha]`. Establish `h1 : q ^ (2 * M * a - a ^ 2) ≠ 0` using `pow_ne_zero _ hq`. Clear the denominators using the available nonvanishing facts.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem inert_ratio (M a : ℕ) (ha : a ≤ M) (q : ℝ) (hq : q ≠ 0) :
     (∏ j : Fin a, (q ^ (2 * (M - j) - 1) - (-1) ^ (M - j) * q ^ (M - j - 1))) /
@@ -124,7 +124,7 @@ theorem inert_ratio (M a : ℕ) (ha : a ≤ M) (q : ℝ) (hq : q ≠ 0) :
   field_simp
 
 /- English proof (translation)
-The claim follows from `|-(q ^ (i : ℕ) / q ^ M)| ≤ (q⁻¹) ^ 2 := by have hq0 : q ≠ 0 := by positivity have hMi : q ^ M = q ^ (i : ℕ) * q ^ (M - i) := by rw [← pow_add] congr 1 omega have hi : q ^ (i : ℕ) ≠ 0 := pow_ne_zero _ hq0 have e : q ^ (i : ℕ) / q ^ M = (q⁻¹) ^ (M - i) := by rw [hMi, inv_pow] field …`.
+A detailed English derivation is pending.
 -/
 theorem split_delta (M a : ℕ) (ha : a + 2 ≤ M) (q : ℝ) (hq : 1 ≤ q) (i : Fin a) :
     |-(q ^ (i : ℕ) / q ^ M)| ≤ (q⁻¹) ^ 2 := by
@@ -141,7 +141,7 @@ theorem split_delta (M a : ℕ) (ha : a + 2 ≤ M) (q : ℝ) (hq : 1 ≤ q) (i :
   exact inv_pow_le q hq _ (by omega)
 
 /- English proof (translation)
-The claim follows from `|-((-1) ^ (M - j) * q ^ (M - j - 1) / q ^ (2 * (M - j) - 1))| ≤ (q⁻¹) ^ 2 := by have hq0 : q ≠ 0 := by positivity have hexp : q ^ (2 * (M - j) - 1) = q ^ (M - j - 1) * q ^ (M - j) := by rw [← pow_add] congr 1 omega have hi : q ^ (M - j - 1) ≠ 0 := pow_ne_zero _ hq0 have e : |-((- …`.
+A detailed English derivation is pending.
 -/
 theorem inert_delta (M a : ℕ) (ha : a + 2 ≤ M) (q : ℝ) (hq : 1 ≤ q) (j : Fin a) :
     |-((-1) ^ (M - j) * q ^ (M - j - 1) / q ^ (2 * (M - j) - 1))| ≤ (q⁻¹) ^ 2 := by
@@ -164,15 +164,15 @@ Both sides reduce to the same expression.
 theorem swapR_apply (k : Type) [Field k] (y : k × k) : FiniteFieldSplitting.swapR k y = y.swap := rfl
 
 /- English proof (translation)
-Apply `Nat.card_congr` to reduce the goal to its premises. Use `Equiv.subtypeEquiv (p := fun X ↦ ffGram (σ : K →+* K) J X = T) (q := fun Y ↦ ffGram (FiniteFieldSplitting.swapR k) (J.map e) Y = T.map e) { toFun := fun X r i ↦ e (X r i) invFun := fun Y r i ↦ e.symm (Y r i) left_inv := fun X ↦ by` and prove the remaining obligations. Use function extensionality and compare the values at `r i`. Simplify using the standard rewrite rules. Use `right_inv := fun Y ↦ by`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `r i`. Simplify using `} ?_`. Introduce `X`. Establish `key : ∀ r s, ffGram (FiniteFieldSplitting.swapR k) (J.map e) (fun r i ↦ e (X r i)) r s = e (ffGram (σ : K →+* K) J X r s)`. Introduce `r s`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [ffGram, ffH, map_sum, map_mul, Matrix.map_apply, swapR_apply, ← he]`. Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `r s`.
+Both sides reduce to the same expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `ffGram (FiniteFieldSplitting.swapR k) (J.map e) (fun r i ↦ e (X r i)) r s = _`. Rewrite using `[key, h]`. Both sides reduce to the same expression. Introduce `h`. Use function extensionality and compare the values at `r s`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[← key]`. Conclude with `congrFun (congrFun h r) s`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_transport {k K : Type} [Field k] [CommRing K] [Algebra k K] (σ : K ≃ₐ[k] K)
     (e : K ≃ₐ[k] k × k) (he : ∀ x, e (σ x) = (e x).swap) {M a : ℕ}
@@ -212,15 +212,15 @@ theorem card_transport {k K : Type} [Field k] [CommRing K] [Algebra k K] (σ : K
 end FiniteFieldCounting
 
 /- English proof (translation)
-Introduce `M`. Use `⟨2 ^ M, ?_⟩` and prove the remaining obligations. Introduce `k K _ _ _ _ σ hσ h2 J hJ hJd a ha T hT hTd`. Establish `hq1 : (1 : ℝ) ≤ (Nat.card k : ℝ)` using `by exact_mod_cast Nat.card_pos (α := k)`. Establish `hq0 : (Nat.card k : ℝ) ≠ 0` using `by positivity`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `hσ.2 with ⟨hK, hdeg, hne⟩ | ⟨e, he⟩` into its components or cases. Use `letI : Field K := hK.toField`. Rewrite using `[hI k K σ hσ.1 hdeg hne h2 M a (by omega) J hJ hJd T hT hTd, FiniteFieldCounting.inert_ratio M a (by omega) _ hq0]`. Conclude with `FiniteFieldCounting.ratio_bound M a (by omega) _ hq1 _ (FiniteFieldCounting.inert_delta M a ha _ hq1)`. Establish `hJ' : ∀ i j, ((J.map e) j i).swap = (J.map e) i j`.
+Separate the alternatives or extract the components of the hypothesis. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Simplify using `only [Matrix.map_apply, ← he, hJ]`. Establish `hT' : ∀ i j, ((T.map e) j i).swap = (T.map e) i j`. Introduce `i j`. Simplify using `only [Matrix.map_apply, ← he, hT]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hJd' : IsUnit (J.map e).det`. Establish `hd : e J.det = (J.map e).det` using `(e : K →+* k × k).map_det J`. Rewrite using `[← hd]`. Conclude with `hJd.map e`. Establish `hTd' : IsUnit (T.map e).det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : e T.det = (T.map e).det` using `(e : K →+* k × k).map_det T`. Rewrite using `[← hd]`. Conclude with `hTd.map e`. Rewrite using `[FiniteFieldCounting.card_transport σ e he J T, hS k M a (by omega) _ hJ' hJd' _ hT' hTd', FiniteFieldCounting.split_ratio M a (by omega) _ hq0]`. Conclude with `FiniteFieldCounting.ratio_bound M a (by omega) _ hq1 _ (FiniteFieldCounting.split_delta M a ha _ hq1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fFCount_of (hS : FFSplit) (hI : FFInert) : FFCount := by
   intro M
@@ -254,7 +254,7 @@ theorem fFCount_of (hS : FFSplit) (hI : FFInert) : FFCount := by
       (FiniteFieldCounting.split_delta M a ha _ hq1)
 
 /- English proof (translation)
-The claim follows from `fFCount_of fFSplit_holds hI`.
+A detailed English derivation is pending.
 -/
 theorem fFCount_of_inert (hI : FFInert) : FFCount := fFCount_of fFSplit_holds hI
 

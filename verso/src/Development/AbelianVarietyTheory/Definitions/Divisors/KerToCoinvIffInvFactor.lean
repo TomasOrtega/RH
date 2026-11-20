@@ -77,9 +77,7 @@ def KSHigh : Prop :=
           ∀ (h : UG c JB) (f f₁ : secSpace om l), (∀ x, f₁.1 x = f.1 (x * h)) → ∀ x, (q f₁).1 x = (q f).1 (x * h)
 
 /- English proof (translation)
-Use `⟨fun h g φ hφ => ?_, fun h z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← map_sub]`. Conclude with `h _ (Submodule.subset_span ⟨g, φ, hφ, rfl⟩)`. Use `(Submodule.span_le (p := LinearMap.ker T)).2 ?_ hz` and prove the remaining obligations. Introduce and unpack `_ ⟨g, φ, hφ, rfl⟩`.
-
-Conclude with `LinearMap.mem_ker.2 (by rw [map_sub, h g φ hφ, sub_self])`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem vanish_locAug_iff {G H Y : Type} [Group G] [Group H] [TopologicalSpace Y] (om : G × H →* Module.End ℂ (Y → ℂ))
     (T : (Y → ℂ) →ₗ[ℂ] ℂ) : (∀ z ∈ locAug om, T z = 0) ↔ ∀ g : G, ∀ φ ∈ SB Y, T (om (g, 1) φ) = T φ := by
@@ -91,9 +89,9 @@ theorem vanish_locAug_iff {G H Y : Type} [Group G] [Group H] [TopologicalSpace Y
     exact LinearMap.mem_ker.2 (by rw [map_sub, h g φ hφ, sub_self])
 
 /- English proof (translation)
-Take `⟨φ, hφ, h0⟩` from `hl`. Introduce `e`. Establish `h : secMap om l φ ∈ secSpace om l` using `⟨φ, hφ, rfl⟩`. Rewrite `h` using `[e, Submodule.mem_bot]`. Use `congrFun h 1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[secMap_apply, show ((1 : G), (1 : H)) = 1 from rfl, map_one]`. Conclude with `h0 this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secSpace_ne_bot {G H Y : Type} [Group G] [Group H] [TopologicalSpace Y] (om : G × H →* Module.End ℂ (Y → ℂ))
     {l : (Y → ℂ) →ₗ[ℂ] ℂ} (hl : ∃ φ ∈ SB Y, l φ ≠ 0) : secSpace om l ≠ ⊥ := by
@@ -106,7 +104,7 @@ theorem secSpace_ne_bot {G H Y : Type} [Group G] [Group H] [TopologicalSpace Y] 
   exact h0 this
 
 /- English proof (translation)
-Take `⟨Cy, co, om, l, h, hl⟩` from `GlobalTheory.HypPair.exists_linPair k E c δ hq ψ h1 h2 h3`. Apply the tactic sequence `exact ⟨_, _, Cy, co, om, l, fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp, ⟨fun i j => by fin_cases i <;> fin_cases j <;> simp, by simp⟩, fun a => by simp, h, hl, (vanish_locAug_iff om l).2 (h.lin l hl.1), secSpace_ne_bot om hl.2⟩`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (k : Type) [Field k] [CharZero k] [Invertible (2 : k)] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (E : Type) [Field E] [Algebra k E] [TopologicalSpace E] [IsModuleTopology k E]
@@ -121,7 +119,7 @@ example (k : Type) [Field k] [CharZero k] [Invertible (2 : k)] [ValuativeRel k] 
     (vanish_locAug_iff om l).2 (h.lin l hl.1), secSpace_ne_bot om hl.2⟩
 
 /- English proof (translation)
-Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, φ, -, rfl⟩`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 example {G H Y : Type} [Group G] [Group H] [TopologicalSpace Y] : locAug (1 : G × H →* Module.End ℂ (Y → ℂ)) = ⊥ := by
   refine Submodule.span_eq_bot.2 ?_

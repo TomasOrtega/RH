@@ -28,13 +28,13 @@ variable {n : ℕ}
 open MeasureTheory
 
 /- English proof (translation)
-Take `⟨T⟩` from `HW.kType_exists ε lam hlam`. Take `⟨Ψ, h1, h2, h3, h4, -, h6, h7, h8⟩` from `S7.psiAll ε lam h T hlam hh hq`. Establish `hmax` using `hth`. Unfold `thrS at hmax`. Rewrite `hmax` using `[max_lt_iff]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsq : (0 : ℝ) ≤ Real.sqrt (2 * (S7.q0 ε : ℝ))` using `Real.sqrt_nonneg _`. Establish `hnq : (0 : ℝ) ≤ (n : ℝ) * S7.q0 ε` using `by positivity`. Establish `hL2 : 8 * (n : ℝ) * S7.q0 ε < h` using `by nlinarith [hmax.2]`. Establish `hw2 : 8 * (n : ℝ) * S7.q0 ε + 4 * 2 * Real.sqrt (2 * S7.q0 ε) < h` using `by nlinarith [hmax.2]`. Establish `hgap : StdGap ε lam` using `⟨hlam.1, h, hh, hmax.1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : IsPsiFor ε lam T Ψ` using `⟨h1, h2, h3, h4, fun μ hμ => (h6 μ hμ).2.1 hL2⟩`. Establish `hv₀ : T.w ≠ 0`. Introduce `h0`. Use `T.w_norm` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`. Take `⟨m, hm⟩` from `S7.exists_mu hlam`. Use `⟨T, Ψ, hgap, hP, hv₀, psi_exp_isPositive T Ψ m hm (h8 m hm), ?_, hasGelfandChar_sigLam hgap hP hv₀ h7⟩` and prove the remaining obligations. Conclude with `weighted_datum hgap hP hv₀ (fun μ hμ => (h6 μ hμ).2.2 2 (by norm_num) hw2)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cns_data {ε : Fin n → Bool} (hq : 1 ≤ S7.q0 ε) {lam : Fin n → ℝ} (hlam : S7.IsHCParam lam)
     {h : ℝ} (hh : GapAtLeast ε lam h) (hth : thrS ε < h) :
@@ -84,24 +84,22 @@ variable {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε l
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
 /- English proof (translation)
-The claim follows from `Submodule.le_topologicalClosure _ (Submodule.mem_map_of_mem hy)`.
+A detailed English derivation is pending.
 -/
 theorem cns_gen_mem_Hlam {y : smD ε (rreg ε)} (hy : y ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)) :
     (y : L2 ε) ∈ Hlam ε Ψ v₀ :=
   Submodule.le_topologicalClosure _ (Submodule.mem_map_of_mem hy)
 
 /- English proof (translation)
-Establish `hσ` using `rreg_isURepOn ε`. Establish `hD` using `isDerivedOn_smE hσ`. Establish `hE` using `hD.glRep`. Establish `hV` using `datumV_isKIrrHW hP hv₀`. Rewrite `hy` using `[genSub_eq_iSup_layer hE hV.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hdir : Directed (· ≤ ·) (fun k => layer ε (smE ε (rreg ε)) (datumV ε Ψ v₀) k)` using `fun i j => ⟨max i j, layer_mono (le_max_left i j), layer_mono (le_max_right i j)⟩`. Take `⟨k, hk⟩` from `(Submodule.mem_iSup_of_directed _ hdir).mp hy`. Use `set S0 := layer ε (smE ε (rreg ε)) (datumV ε Ψ v₀) k with hS0`. Use `haveI hS0f : FiniteDimensional ℂ S0 := finiteDimensional_layer hV.1 k`. Establish `hS0K` using `kStable_of_isKStableSub hσ hD S0 hS0f (layer_kStable hE hV.2.1 k)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set S : Submodule ℂ (Hlam ε Ψ v₀) := (S0.map (smD ε (rreg ε)).subtype).comap (Hlam ε Ψ v₀).subtype with hS`. Establish `hSf : FiniteDimensional ℂ S`. Establish `hinj : Function.Injective (Hlam ε Ψ v₀).subtype` using `Subtype.val_injective`. Establish `hle : S.map (Hlam ε Ψ v₀).subtype ≤ S0.map (smD ε (rreg ε)).subtype`. Introduce and unpack `_ ⟨a, ha, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `ha`. Use `haveI : FiniteDimensional ℂ (S0.map (smD ε (rreg ε)).subtype) := Module.Finite.map _ _`. Use `haveI := Submodule.finiteDimensional_of_le hle`. Conclude with `(Submodule.equivMapOfInjective _ hinj S).symm.finiteDimensional`. Use `⟨S, hSf, ⟨y, hk, hx.symm⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `g hg v hv`. Take `⟨u, hu, huv⟩` from `hv`. Establish `hgU : g ∈ UJset ε` using `cf_kset_sub hg`. Take `⟨w, hw, hwe⟩` from `hS0K g hg u hu`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations.
-
-Use `show (w : L2 ε) = ((sigLam ε Ψ v₀ g v : Hlam ε Ψ v₀) : L2 ε)`. Rewrite using `[sigLam_coe hgap hP hv₀ hgU, hwe]`. Simplify using `only [Submodule.coe_subtype] at huv`. Rewrite using `[huv]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cns_kfin (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {y : smD ε (rreg ε)}
     (hy : y ∈ genSub (smE ε (rreg ε)) (datumV ε Ψ v₀)) (x : Hlam ε Ψ v₀) (hx : (x : L2 ε) = y) :
@@ -144,11 +142,9 @@ section Term
 variable {ε : Fin n → Bool}
 
 /- English proof (translation)
-Use `haveI := Hlam_nontrivial hgap hP hv₀`. Use `haveI := Hlam_nontrivial hgap' hP' hv₀'`. Take `⟨w, hw⟩` from `exists_ne (0 : Hlam ε Ψ v₀)`. Take `⟨w', hw'⟩` from `exists_ne (0 : Hlam ε Ψ' v₀')`. Take `⟨⟨ι, hι, -, hsurj⟩, -⟩` from `cc_gk dual hgap hP hv₀ hgap' hP' hv₀' hh hth hh' hth' hpos hpos' hW hW' hG hG' s hlam' hw hw'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x', hx', rfl⟩` from `hsurj f hf he`. Establish `hσ` using `rreg_isURepOn ε`. Establish `hD` using `isDerivedOn_smE hσ`. Take `⟨z, hz, hzeq⟩` from `(coef_of_emb dual hσ hD hgap (datumV_isKIrrHW hP hv₀) (datumV_casimir hP v₀) (datumV_kStable hP v₀) hgap' (datumV_isKIrrHW hP' hv₀') (datumV_casimir hP' v₀') (datumV_kStable hP' v₀') hι).1 η hη x' hx'`. Use `⟨⟨(x' : L2 ε), cns_gen_mem_Hlam hx'⟩, ⟨(z : L2 ε), cns_gen_mem_Hlam hz⟩, cns_kfin hgap' hP' hv₀' hx' _ rfl, cns_kfin hgap' hP' hv₀' hz _ rfl, fun g hg => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hzeq g hg, Submodule.coe_inner, sigLam_coe hgap' hP' hv₀' hg]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cns_term (dual : Bool) {lam lam' : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {T' : S7.KType ε (lowK ε lam')} {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
@@ -205,7 +201,7 @@ variable {n : ℕ}
 open MeasureTheory
 
 /- English proof (translation)
-Rewrite using `[Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cns_single_bd (s x : Fin n) : 0 ≤ (Pi.single s (1 : ℝ) : Fin n → ℝ) x ∧
     (Pi.single s (1 : ℝ) : Fin n → ℝ) x ≤ 1 := by
@@ -213,7 +209,7 @@ theorem cns_single_bd (s x : Fin n) : 0 ≤ (Pi.single s (1 : ℝ) : Fin n → �
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Rewrite using `[Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cns_single_01 (s x : Fin n) : (Pi.single s (1 : ℝ) : Fin n → ℝ) x = 0 ∨
     (Pi.single s (1 : ℝ) : Fin n → ℝ) x = 1 := by
@@ -221,13 +217,13 @@ theorem cns_single_01 (s x : Fin n) : (Pi.single s (1 : ℝ) : Fin n → ℝ) x 
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h1` using `hh a b hab`. Take `⟨ha0, ha1⟩` from `cns_single_bd s a`. Take `⟨hb0, hb1⟩` from `cns_single_bd s b`. Establish `key : ∀ Y : ℝ, |Y| ≤ 1 → h - 1 ≤ |(μ a - μ b) + Y|`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `Y hY`. Establish `h2` using `abs_sub_abs_le_abs_sub (μ a - μ b) (-Y)`. Rewrite `h2` using `[abs_neg, sub_neg_eq_add]`. Combine the linear equalities and inequalities to obtain the conclusion. Consider the cases of `dual`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Split into cases according to the possible forms of the given data.
 
-Establish `e : shiftF false μ s a - shiftF false μ s b = (μ a - μ b) + ((Pi.single s (1 : ℝ) : Fin n → ℝ) a - (Pi.single s (1 : ℝ) : Fin n → ℝ) b)`. Simplify using `only [shiftF, cond_false, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `key _ (abs_le.mpr ⟨by linarith, by linarith⟩)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : shiftF true μ s a - shiftF true μ s b = (μ a - μ b) + -((Pi.single s (1 : ℝ) : Fin n → ℝ) a - (Pi.single s (1 : ℝ) : Fin n → ℝ) b)`. Simplify using `only [shiftF, cond_true, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `key _ (abs_le.mpr ⟨by linarith, by linarith⟩)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cns_shift_gap (dual : Bool) {ε : Fin n → Bool} {μ : Fin n → ℝ} {h : ℝ} (hh : GapAtLeast ε μ h)
     (s : Fin n) : GapAtLeast ε (shiftF dual μ s) (h - 1) := by
@@ -255,19 +251,19 @@ theorem cns_shift_gap (dual : Bool) {ε : Fin n → Bool} {μ : Fin n → ℝ} {
     exact key _ (abs_le.mpr ⟨by linarith, by linarith⟩)
 
 /- English proof (translation)
-Introduce `hinj`. Apply `hns` to reduce the goal to its premises. Take `⟨hanti, hint⟩` from `hμ`. Use `⟨fun a b hab => ?_, fun a => ?_⟩` and prove the remaining obligations. Take `⟨ma, hma⟩` from `hint a`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨mb, hmb⟩` from `hint b`. Establish `hlt : μ b < μ a` using `hanti hab`. Establish `hgap : 1 ≤ μ a - μ b`. Establish `e : μ a - μ b = ((ma - mb : ℤ) : ℝ)` using `by push_cast; linarith`. Establish `hpos : (0 : ℤ) < ma - mb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : (0 : ℝ) < ((ma - mb : ℤ) : ℝ)` using `by rw [← e]; linarith`. Conclude with `h0` after adjusting the coercions. Rewrite using `[e]`. Conclude with `(show (1 : ℤ) ≤ ma - mb by omega)` after adjusting the coercions. Establish `hne : shiftF dual μ s a ≠ shiftF dual μ s b` using `fun h => (ne_of_lt hab) (hinj h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ha0, ha1⟩` from `cns_single_bd s a`. Take `⟨hb0, hb1⟩` from `cns_single_bd s b`. Establish `hle : shiftF dual μ s b ≤ shiftF dual μ s a`. Apply the tactic sequence `cases dual <;> simp only [shiftF, cond_false, cond_true, Pi.add_apply, Pi.sub_apply] <;> linarith`. Conclude with `lt_of_le_of_ne hle (Ne.symm hne)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨m, hm⟩` from `hint a`. Break down `cns_single_01 s a with h0 | h1` into its components or cases. Use `⟨m, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `cases dual <;> simp only [shiftF, cond_false, cond_true, Pi.add_apply, Pi.sub_apply, h0] <;> linarith`. Consider the cases of `dual`.
+Apply the first step, then apply the next step to every resulting obligation. Split into cases according to the possible forms of the given data. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `⟨m + 1, ?_⟩` and prove the remaining obligations. Simplify using `only [shiftF, cond_false, Pi.add_apply, h1]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨m - 1, ?_⟩` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [shiftF, cond_true, Pi.sub_apply, h1]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem cns_sing (dual : Bool) {μ : Fin n → ℝ} (hμ : S7.IsHCParam μ) {s : Fin n}
     (hns : ¬ S7.IsHCParam (shiftF dual μ s)) : ¬ Function.Injective (shiftF dual μ s) := by
@@ -306,7 +302,7 @@ theorem cns_sing (dual : Bool) {μ : Fin n → ℝ} (hμ : S7.IsHCParam μ) {s :
         linarith
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h1` using `congrFun h s`. Apply the tactic sequence `cases dual <;> simp [shiftF, Pi.single_apply, hne, Ne.symm hne] at h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cns_shift_inj (dual : Bool) (μ : Fin n → ℝ) {s s' : Fin n} (h : shiftF dual μ s = shiftF dual μ s') :
     s = s' := by
@@ -315,7 +311,7 @@ theorem cns_shift_inj (dual : Bool) (μ : Fin n → ℝ) {s s' : Fin n} (h : shi
   cases dual <;> simp [shiftF, Pi.single_apply, hne, Ne.symm hne] at h1
 
 /- English proof (translation)
-Simplify using `only [tensGrp, cond_false, map_smul, inner_sum, inner_smul_left, inner_smul_right, dotProduct, Matrix.mulVec, Finset.mul_sum, Finset.sum_mul, Pi.star_apply, Complex.star_def]`. Use `Finset.sum_congr rfl (fun c _ => Finset.sum_congr rfl (fun d _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cns_coefV {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (g : Matrix (Fin n) (Fin n) ℂ) (a b : H) (x y : Fin n → ℂ) :
@@ -327,7 +323,7 @@ theorem cns_coefV {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   ring
 
 /- English proof (translation)
-Simplify using `only [tensGrp, cond_true, map_smul, inner_sum, inner_smul_left, inner_smul_right, dotProduct, Matrix.mulVec, Finset.mul_sum, Finset.sum_mul, Pi.star_apply, Complex.star_def, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl (fun c _ => Finset.sum_congr rfl (fun d _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cns_coefVd {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (g : Matrix (Fin n) (Fin n) ℂ) (a b : H) (x y : Fin n → ℂ) :
@@ -340,14 +336,14 @@ theorem cns_coefVd {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   ring
 
 /- English proof (translation)
-Simplify using `[dotProduct, Matrix.mulVec, Pi.single_apply, Pi.star_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cns_single_coef (g : Matrix (Fin n) (Fin n) ℂ) (c d : Fin n) :
     star (Pi.single c (1 : ℂ) : Fin n → ℂ) ⬝ᵥ (g *ᵥ Pi.single d 1) = g c d := by
   simp [dotProduct, Matrix.mulVec, Pi.single_apply, Pi.star_apply]
 
 /- English proof (translation)
-Simplify using `only [cns_single_coef, tensGrp, cond_false, inner_sum, inner_smul_right]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl (fun c _ => Finset.sum_congr rfl (fun d _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cns_expandV {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (g : Matrix (Fin n) (Fin n) ℂ) (f F : Fin n → H) :
@@ -359,7 +355,7 @@ theorem cns_expandV {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   ring
 
 /- English proof (translation)
-Simplify using `only [cns_single_coef, tensGrp, cond_true, inner_sum, inner_smul_right]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl (fun c _ => Finset.sum_congr rfl (fun d _ => ?_))` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cns_expandVd {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (g : Matrix (Fin n) (Fin n) ℂ) (f F : Fin n → H) :
@@ -371,7 +367,7 @@ theorem cns_expandVd {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H
   ring
 
 /- English proof (translation)
-Simplify using `only [tensGrp, Finset.sum_apply, Submodule.coe_sum, map_sum, Finset.smul_sum, inner_sum]`. Use `conv_lhs => enter [2, c]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cns_tens_sum {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (dual : Bool)
     (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (g : Matrix (Fin n) (Fin n) ℂ) {D : Submodule ℂ H}
@@ -383,11 +379,11 @@ theorem cns_tens_sum {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H
   exact Finset.sum_comm
 
 /- English proof (translation)
-Take `⟨S, hfin, hxS, hst⟩` from `hx`. Use `haveI := hfin`. Establish `hK : ∀ g ∈ PI.UpqRep.Kset ε, g ∈ UJset ε`. Introduce and unpack `g ⟨hu, hc⟩`. Use `show inUJ ε g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Unfold `inUJ`. Establish `h1 : star g * g = 1` using `Matrix.mem_unitaryGroup_iff'.mp hu`. Rewrite `h1` using `[Matrix.star_eq_conjTranspose]`. Establish `hJ : ReciprocityTheory.ChartRestriction.DS.Jm ε = PI.UpqRep.Jm ε` using `rfl`. Rewrite using `[hJ, Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, h1, Matrix.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨S.map U.toLinearEquiv.toLinearMap, inferInstance, Submodule.mem_map_of_mem hxS, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg _ ⟨v, hv, rfl⟩`. Use `⟨σ₁ g v, hst g hg v hv, ?_⟩` and prove the remaining obligations. Simplify using `[hU g (hK g hg) v]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cns_kfin_map {H₁ H₂ : Type*} [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [NormedAddCommGroup H₂]
     [InnerProductSpace ℂ H₂] {ε : Fin n → Bool} {σ₁ : Matrix (Fin n) (Fin n) ℂ → (H₁ →L[ℂ] H₁)}
@@ -410,7 +406,7 @@ theorem cns_kfin_map {H₁ H₂ : Type*} [NormedAddCommGroup H₁] [InnerProduct
   simp [hU g (hK g hg) v]
 
 /- English proof (translation)
-Introduce `g hg y`. Apply `U.injective` to reduce the goal to its premises. Rewrite using `[LinearIsometryEquiv.apply_symm_apply, hU g hg, LinearIsometryEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cns_symm_intertw {H₁ H₂ : Type*} [NormedAddCommGroup H₁] [InnerProductSpace ℂ H₁] [NormedAddCommGroup H₂]
     [InnerProductSpace ℂ H₂] {ε : Fin n → Bool} {σ₁ : Matrix (Fin n) (Fin n) ℂ → (H₁ →L[ℂ] H₁)}
@@ -427,7 +423,7 @@ variable {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε l
   {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)} {v₀ : T.V}
 
 /- English proof (translation)
-Take `⟨S, hSf, hxS, hSK⟩` from `hx`. Use `sigLam_kfin hgap hP hv₀ S hSf hSK hxS` as an intermediate fact. Take `⟨y, hy, hyx⟩` from `Submodule.mem_map.1 (Submodule.mem_comap.1 this)`. Conclude with `⟨y, hy, hyx⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cns_kfin_gen (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {x : Hlam ε Ψ v₀}
     (hx : PI.UpqRep.IsKFin ε (sigLam ε Ψ v₀) x) :
@@ -438,7 +434,7 @@ theorem cns_kfin_gen (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ :
   exact ⟨y, hy, hyx⟩
 
 /- English proof (translation)
-Rewrite using `[← hU g hg a, LinearIsometryEquiv.inner_map_map]`. Simplify using `only [sigLam, ContinuousLinearMap.comp_apply, Submodule.subtypeL_apply]`. Conclude with `Submodule.inner_orthogonalProjectionOnto_eq_of_mem_left b _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cns_inner_tr (hgap : StdGap ε lam) (hP : IsPsiFor ε lam T Ψ) (hv₀ : v₀ ≠ 0) {H : Type*}
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}

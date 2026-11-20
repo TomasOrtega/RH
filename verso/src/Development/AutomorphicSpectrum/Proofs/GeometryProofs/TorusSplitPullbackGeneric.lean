@@ -11,7 +11,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.CompanionTheory.Ar.TorusUnif
 
 /- English proof (translation)
-Conclude with `@PositivityTheory.Xgn.torus_uniformization_compare`.
+A detailed English derivation is pending.
 -/
 theorem torus_stratum_cocharacters_compare : ∀ (X Z' : Scheme.{0}) (G : Over X) [GrpObj G] (G' : Over Z') [GrpObj G'] (ρ : Z' ⟶ X)
     (Φ : G'.left ⟶ G.left), IsGrpPullback G' G ρ Φ → ∀ (Xc : Type) [AddCommGroup Xc] [Module.Free ℤ Xc] [Module.Finite ℤ Xc]

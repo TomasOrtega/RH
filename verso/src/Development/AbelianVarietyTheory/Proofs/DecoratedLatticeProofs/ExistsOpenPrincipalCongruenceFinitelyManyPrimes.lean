@@ -10,9 +10,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChainOnto.LevelOpen
 
 /- English proof (translation)
-Introduce `D V β Z`. Use `⟨_, GlobalTheory.DefiniteEnd.isOpen_Kg V β Z, fun k hk => ?_⟩` and prove the remaining obligations. Establish `hk' : Lev.finE V k ∈ Kg D.sp.cm V.gram β Z` using `hk`. Establish `h1 : Lev.finE V k ∈ ⨅ PP ∈ Z, princAt β PP` using `hk'.2`. Use `⟨hk'.1.2, fun PP hP => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(mem_princAt.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 h1 PP) hP)).2`.
+A detailed English derivation is pending.
 -/
 theorem exists_open_princ : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (Lev.EAf D)) (Z : Finset (Pl D.host.E)), ∃ U : Subgroup (GA D V), IsOpen (U : Set (GA D V)) ∧ ∀ k ∈ U, Lev.finE V k ∈ Formalism.L2.DIV.St β ∧ ∀ PP ∈ Z, Formalism.L2.DIV.redFn β PP (Lev.finE V k) = 1 := by
   intro D V β Z

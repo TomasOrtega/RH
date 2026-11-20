@@ -14,9 +14,9 @@ namespace GlobalTheory.LowRowAnti
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h` using `Formalism.L2.NTheta.lamAt_lt (D.hc τ) n hn`. Take `⟨a, ha⟩` from `Formalism.L2.NTheta.lamAt_int (D.hc τ) (n + 1)`. Take `⟨b, hb⟩` from `Formalism.L2.NTheta.lamAt_int (D.hc τ) n`. Rewrite `h`, the goal using `[ha, hb]`. Establish `: a < b` using `by exact_mod_cast h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: a + 1 ≤ b` using `this`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lam_step (τ : D.what₂.Tau) (n : ℕ) (hn : n + 1 < D.R.r) :
     Formalism.L2.NTheta.lamAt (D.hc τ) (n + 1) + 1 ≤ Formalism.L2.NTheta.lamAt (D.hc τ) n := by
@@ -29,7 +29,7 @@ theorem lam_step (τ : D.what₂.Tau) (n : ℕ) (hn : n + 1 < D.R.r) :
   exact_mod_cast this
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.pW_add_qW (D := D) i ρ`. Rewrite `h` using `[D.sp.W_rank _ (Nat.le_add_left _ _) i.2]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pq_eq (i : Fin D.R.m) (ρ : D.what₂.Tau) : pW D i ρ + qW D i ρ = D.R.r := by
   have h := GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.pW_add_qW (D := D) i ρ
@@ -37,11 +37,11 @@ theorem pq_eq (i : Fin D.R.m) (ρ : D.what₂.Tau) : pW D i ρ + qW D i ρ = D.R
   exact h
 
 /- English proof (translation)
-Use `antitone_nat_of_succ_le fun n => ?_` and prove the remaining obligations. Unfold `aPl`. Distinguish the cases in `h1 : n + 1 < p`. Rewrite using `[if_pos h1, if_pos (by omega : n < p)]`. Apply `Int.toNat_le_toNat` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Int.floor_le_floor` to reduce the goal to its premises. Use `lam_step τ n (by omega)` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg h1]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.zero_le _`.
+A detailed English derivation is pending.
 -/
 theorem aPl_anti (i : Fin D.R.m) (p : ℕ) (τ : D.what₂.Tau) (hp : p ≤ D.R.r) : Antitone (aPl D i p τ) := by
   refine antitone_nat_of_succ_le fun n => ?_
@@ -56,11 +56,11 @@ theorem aPl_anti (i : Fin D.R.m) (p : ℕ) (τ : D.what₂.Tau) (hp : p ≤ D.R.
   · rw [if_neg h1]; exact Nat.zero_le _
 
 /- English proof (translation)
-Use `antitone_nat_of_succ_le fun n => ?_` and prove the remaining obligations. Unfold `aMi`. Distinguish the cases in `h1 : n + 1 < q`. Rewrite using `[if_pos h1, if_pos (by omega : n < q)]`. Apply `Int.toNat_le_toNat` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Int.floor_le_floor` to reduce the goal to its premises. Establish `e1 : p + (q - n) - 1 = (p + (q - (n + 1)) - 1) + 1` using `by omega`. Use `lam_step τ (p + (q - (n + 1)) - 1) (by omega)` as an intermediate fact. Rewrite using `[e1]`. Establish `e2 : ((q - n : ℕ) : ℚ) = ((q - (n + 1) : ℕ) : ℚ) + 1`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[show q - n = (q - (n + 1)) + 1 by omega]; push_cast; ring`. Rewrite using `[e2]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[if_neg h1]`. Conclude with `Nat.zero_le _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aMi_anti (i : Fin D.R.m) (p q : ℕ) (τ : D.what₂.Tau) (hpq : p + q = D.R.r) : Antitone (aMi D i p q τ) := by
   refine antitone_nat_of_succ_le fun n => ?_
@@ -82,9 +82,7 @@ end GlobalTheory.LowRowAnti
 
 open GlobalTheory.LowRowAnti in
 /- English proof (translation)
-Introduce `D i σ ρ`. Establish `hpq` using `pq_eq (D := D) i ρ`. Use `⟨?_, ?_, GlobalTheory.IndefiniteRowSideFullHecke.HolomorphicLowestType.pW_add_qW (D := D) i ρ, ?_⟩` and prove the remaining obligations. Conclude with `aPl_anti i _ _ (by omega)`. Conclude with `aMi_anti i _ _ _ hpq`.
-
-Rewrite using `[D.sp.W_rank _ (Nat.le_add_left _ _) i.2]`. Conclude with `r_le_V i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LowRow.lift_rows_antitone : ∀ (D : D7) (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ) (ρ : D.what₂.Tau),
     Antitone (aPlAt D i σ ρ) ∧ Antitone (aMiAt D i σ ρ) ∧ pW D i ρ + qW D i ρ = (Wc D i).rank ∧

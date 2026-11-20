@@ -14,9 +14,9 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Fl GlobalTheory.CompanionTheory.Ar.Flat Filter Topology Metric
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `hp`. Take `⟨w, -, hw⟩` from `Scheme.Pullback.exists_preimage_pullback z p hz`. Establish `hsub : Subsingleton (Sp ℂ)` using `inferInstanceAs (Subsingleton (PrimeSpectrum ℂ))`. Establish `hs : Surjective (pullback.snd i x)` using `⟨fun q => ⟨w, by rw [hw]; exact Subsingleton.elim _ _⟩⟩`. Use `isIso_of_isClosedImmersion_of_surjective (pullback.snd i x)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨inv (pullback.snd i x) ≫ pullback.fst i x, by simp [pullback.condition]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lift_of_mem_range {X Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmersion i] (x : Sp ℂ ⟶ X)
     (p : Sp ℂ) (hp : x p ∈ Set.range i) : ∃ t : Sp ℂ ⟶ Z, t ≫ i = x := by
@@ -29,28 +29,26 @@ theorem exists_lift_of_mem_range {X Z : Scheme.{0}} (i : Z ⟶ X) [IsClosedImmer
   exact ⟨inv (pullback.snd i x) ≫ pullback.fst i x, by simp [pullback.condition]⟩
 
 /- English proof (translation)
-Rewrite using `[Hom.one_def, Over.comp_left, Over.toUnit_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem one_left_eq {S : Scheme.{0}} (G : Over S) [GrpObj G] (X : Over S) :
     (1 : X ⟶ G).left = X.hom ≫ η[G].left := by
   rw [Hom.one_def, Over.comp_left, Over.toUnit_left]
 
 /- English proof (translation)
-Introduce `R _ G _ _ g n M B ψ e hsep hψ b₀ hb₀ s hs hfr`. Use `haveI := hsep`. Assume the negation of the conclusion as `hne`. Establish `hid : η[G].left ≫ G.hom = 𝟙 _` using `Over.w _`. Establish `hη : IsClosedImmersion η[G].left`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsClosedImmersion (η[G].left ≫ G.hom)` using `by rw [hid]; infer_instance`. Conclude with `IsClosedImmersion.of_comp _ G.hom`. Set `V : G.left.Opens` to `⟨(Set.range η[G].left)ᶜ, hη.base_closed.isClosed_range.isOpen_compl⟩`. Establish `hV₀ : ⊤ ≤ (e.ex b₀ (s b₀)).left ⁻¹ᵁ V`. Introduce `p _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show (e.ex b₀ (s b₀)).left p ∉ Set.range η[G].left`. Introduce `hp`. Take `⟨t, ht⟩` from `exists_lift_of_mem_range η[G].left (e.ex b₀ (s b₀)).left p hp`. Apply `hne` to reduce the goal to its premises. Use `show e.ex b₀ (s b₀) = 1`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `h1 : t = spMap (ψ b₀)`. Establish `h2` using `Over.w (e.ex b₀ (s b₀))`. Establish `h4 : (t ≫ η[G].left) ≫ G.hom = spMap (ψ b₀)` using `by rw [ht]; exact h2`. Rewrite `h4` using `[Category.assoc, hid]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h4`. Rewrite using `[one_left_eq, ← ht, h1]`. Both sides reduce to the same expression. Establish `hopen` using `(e.hol V 0).1`. Establish `hmem : (b₀, s b₀) ∈ {bz : (Fin n → ℂ) × (Fin g → ℂ) | bz ∈ B ×ˢ Set.univ ∧ ⊤ ≤ (e.ex bz.1 bz.2).left ⁻¹ᵁ V}` using `⟨⟨hb₀, trivial⟩, hV₀⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcont : ContinuousAt (fun b => (b, s b)) b₀` using `continuousAt_id.prodMk hs`. Establish `hev` using `hcont.eventually (hopen.mem_nhds hmem)`. Take `⟨b, ⟨-, hper⟩, -, hb⟩` from `(hfr.and_eventually hev).exists`. Establish `hper' : e.ex b (s b) = 1` using `hper`. Establish `hb' : ⊤ ≤ (e.ex b (s b)).left ⁻¹ᵁ V` using `hb`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hb'` using `[hper']`. Set `p : Sp ℂ` to `(⊥ : PrimeSpectrum ℂ)`. Establish `hp : (1 : Over.mk (spMap (ψ b)) ⟶ G).left p ∉ Set.range η[G].left` using `hb' (show p ∈ ⊤ from trivial)`. Apply `hp` to reduce the goal to its premises. Rewrite using `[one_left_eq]`.
-
-Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_per_of_frequently : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (g n : ℕ) (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ)) (e : FamExp G M B ψ), IsSeparated G.hom → IsHolPts B ψ → ∀ b₀ ∈ B, ∀ (s : (Fin n → ℂ) → (Fin g → ℂ)), ContinuousAt s b₀ → (∃ᶠ b in 𝓝 b₀, b ∈ B ∧ s b ∈ e.per b) → s b₀ ∈ e.per b₀ := by
   intro R _ G _ _ g n M B ψ e hsep hψ b₀ hb₀ s hs hfr

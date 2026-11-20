@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.JR.EtMeas
 
 /- English proof (translation)
-Establish `: ProperSpace F` using `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace F`. Establish `: IsTopologicalAddGroup V` using `IsModuleTopology.topologicalAddGroup F V`. Set `b` to `Module.finBasis F V`. Establish `: T2Space V` using `.of_injective_continuous b.equivFun.injective (IsModuleTopology.continuous_of_linearMap b.equivFun.toLinearMap)`. Set `e` to `b.equivFunL.toHomeomorph`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨‹_›, ‹_›, e.isOpenEmbedding.locallyCompactSpace, e.secondCountableTopology, e ⁻¹' Metric.closedBall 0 1, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(IsUltrametricDist.isOpen_closedBall _ one_ne_zero).preimage e.continuous`. Conclude with `e.isCompact_preimage.2 (isCompact_closedBall _ _)`. Conclude with `⟨e.symm 0, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem top_facts (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [LocallyCompactSpace F]
     (V : Type) [AddCommGroup V] [Module F V] [Module.Finite F V] [TopologicalSpace V] [IsModuleTopology F V] :
@@ -36,7 +36,7 @@ theorem top_facts (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [
   · exact ⟨e.symm 0, by simp⟩
 
 /- English proof (translation)
-Take `⟨_, _, _, _, -⟩` from `top_facts F V`. Take `⟨hc, hl⟩` from `GlobalTheory.JR.exists_small_dual_lattices F ψ hψ V β hs hn`. Use `GlobalTheory.JR.exists_selfDual_of_dual_subgroups V (fun x y => ψ (β x y)) hc (fun x y => by rw [hs.eq]) (fun x x' y => ?_) (fun y => by simp) hl` and prove the remaining obligations. Simplify using `[AddChar.map_add_eq_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem exists_selfDual (F : Type) [NontriviallyNormedField F] [IsUltrametricDist F] [LocallyCompactSpace F]
     (ψ : AddChar F ℂ) (hψ : IsStdChar ψ)
@@ -50,11 +50,11 @@ theorem exists_selfDual (F : Type) [NontriviallyNormedField F] [IsUltrametricDis
   simp [AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Establish `: IsArtinianRing K` using `IsArtinianRing.of_finite F K`. Establish `: IsSemisimpleRing K` using `IsArtinianRing.isSemisimpleRing_of_isReduced K`. Take `⟨e, he, hI⟩` from `IsSemisimpleRing.ideal_eq_span_idempotent (Ideal.span {x})`. Establish `h1 : e ∈ Ideal.span {x}` using `hI ▸ Ideal.mem_span_singleton_self e`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2 : IsIdempotentElem (Algebra.lmul F K e)` using `he.map _`. Establish `h3 : LinearMap.trace F K (Algebra.lmul F K e) = 0`. Use `hx y` as an intermediate fact. Rewrite `this` using `[mul_comm, hy, Algebra.trace_apply]`. Then use the resulting hypothesis. Establish `h4` using `(LinearMap.IsIdempotentElem.trace_eq_zero_iff h2).1 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h5 : e = 0` using `by simpa using LinearMap.congr_fun h4 1`. Establish `h6 : x ∈ Ideal.span {e}` using `hI ▸ Ideal.mem_span_singleton_self x`. Simplify `h6` using `[h5]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_zero_of_trace (F : Type) [Field F] [CharZero F] (K : Type) [CommRing K] [Algebra F K]
     [Module.Finite F K] [IsReduced K] (x : K) (hx : ∀ y, Algebra.trace F K (x * y) = 0) : x = 0 := by
@@ -75,13 +75,13 @@ theorem eq_zero_of_trace (F : Type) [Field F] [CharZero F] (K : Type) [CommRing 
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, star_mul', A.star_K]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_smul_K (A : Et F E) (k : A.K) (y : A.L) : star (k • y) = k • star y := by
   rw [Algebra.smul_def, Algebra.smul_def, star_mul', A.star_K]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul A.K c y, star_smul_K, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem star_smul_F (A : Et F E) (c : F) (y : A.L) : star (c • y) = c • star y := by
   rw [← algebraMap_smul A.K c y, star_smul_K, algebraMap_smul]
@@ -92,7 +92,7 @@ def starF (A : Et F E) : A.L →ₗ[F] A.L where
   map_smul' := star_smul_F A
 
 /- English proof (translation)
-Take `⟨⟨b⟩, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Establish `: Module.Finite A.K A.L` using `Module.Finite.of_basis b`. Conclude with `Module.Finite.trans A.K A.L`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_L [Unram F E] (A : Et F E) : Module.Finite F A.L := by
   obtain ⟨⟨b⟩, -⟩ := GlobalTheory.JR.Et.quadratic_structure F E A
@@ -100,9 +100,9 @@ theorem finite_L [Unram F E] (A : Et F E) : Module.Finite F A.L := by
   exact Module.Finite.trans A.K A.L
 
 /- English proof (translation)
-Use `U.charZero` as an intermediate fact. Use `U.ultraF` as an intermediate fact. Use `U.lcF` as an intermediate fact. Establish `hs : (Algebra.traceForm F A.K).IsSymm` using `⟨fun x y => by simp [mul_comm]⟩`. Use `exists_selfDual F ψ hψ A.K (Algebra.traceForm F A.K) hs ⟨fun x hx => ?_, fun x hx => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `eq_zero_of_trace F A.K x fun y => by simpa using hx y`. Conclude with `eq_zero_of_trace F A.K x fun y => by simpa [mul_comm] using hx y`.
+A detailed English derivation is pending.
 -/
 theorem exists_selfDual_K [U : Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) :
     ∃ μ : Measure A.K, SelfDual μ (A.kerK ψ) := by
@@ -123,13 +123,13 @@ theorem formL_apply (A : Et F E) (x : A.K) (y' y : A.L) :
     formL A x y' y = Algebra.trace F A.K (x * Algebra.trace A.K A.L (star y' * y)) := rfl
 
 /- English proof (translation)
-Use `U.charZero` as an intermediate fact. Use `U.ultraF` as an intermediate fact. Use `U.lcF` as an intermediate fact. Use `finite_L A` as an intermediate fact. Take `⟨-, hinj, -, htr, hnd⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : (formL A x).IsSymm` using `⟨fun y y' => by`. Rewrite using `[formL_apply, formL_apply]`. Use `congr 2`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[htr, htr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[add_comm, mul_comm]⟩`. Establish `hl : ∀ y', (∀ y, formL A x y' y = 0) → y' = 0` using `fun y' h => hnd y' fun y => by`. Establish `h1 : (x : A.K) * Algebra.trace A.K A.L (star y' * y) = 0` using `eq_zero_of_trace F A.K _ fun k => by`. Use `h (k • y)` as an intermediate fact. Rewrite `this` using `[formL_apply, mul_smul_comm, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `using h1`. Conclude with `exists_selfDual F ψ hψ A.L (formL A x) hs ⟨hl, fun y h => hl y fun y' => by rw [hs.eq]; exact h y'⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_selfDual_L [U : Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (hψ : IsStdChar ψ) (x : A.Kˣ) :
     ∃ μ : Measure A.L, SelfDual μ (A.kerL ψ x) := by
@@ -150,13 +150,13 @@ theorem exists_selfDual_L [U : Unram F E] (A : Et F E) (ψ : AddChar F ℂ) (hψ
   exact exists_selfDual F ψ hψ A.L (formL A x) hs ⟨hl, fun y h => hl y fun y' => by rw [hs.eq]; exact h y'⟩
 
 /- English proof (translation)
-Set `H : Subgroup A.Kˣ` to `(Units.map (Algebra.norm A.K : A.L →* A.K)).range`. Establish `key : ∀ a x : A.Kˣ, (∃ y : A.L, IsUnit y ∧ (a : A.K) = x * A.NL y) ↔ (QuotientGroup.mk x : A.Kˣ ⧸ H) = QuotientGroup.mk a`. Introduce `a x`. Rewrite using `[QuotientGroup.eq]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, h⟩`. Use `⟨hy.unit, Units.ext ?_⟩` and prove the remaining obligations. Simplify using `[h, Et.NL]`. Introduce and unpack `⟨y, h⟩`. Use `⟨y, y.isUnit, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg Units.val h` as an intermediate fact. Simplify using `only [Units.coe_map, Units.val_mul] at this`. Rewrite using `[Et.NL, this]`. Simplify using the standard rewrite rules. Use `⟨Set.range (Quotient.out : A.Kˣ ⧸ H → A.Kˣ), fun a => ⟨Quotient.out (QuotientGroup.mk a : A.Kˣ ⧸ H), ⟨⟨_, rfl⟩, (key _ _).2 (QuotientGroup.out_eq' _)⟩, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨⟨q, rfl⟩, h⟩`. Rewrite using `[← (key _ _).1 h, QuotientGroup.out_eq']`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_isReps (A : Et F E) : ∃ S : Set A.Kˣ, A.IsReps S := by
   let H : Subgroup A.Kˣ := (Units.map (Algebra.norm A.K : A.L →* A.K)).range
@@ -179,7 +179,7 @@ theorem exists_isReps (A : Et F E) : ∃ S : Set A.Kˣ, A.IsReps S := by
   rw [← (key _ _).1 h, QuotientGroup.out_eq']
 
 /- English proof (translation)
-Establish `h` using `(IsOpenUnits.isOpenEmbedding_unitsVal (M := R)).isInducing`. Use `⟨?_⟩` and prove the remaining obligations. Establish `h1` using `@borel_comap Rˣ R Units.val inferInstance`. Rewrite `h1` using `[← BorelSpace.measurable_eq (α := R), ← h.eq_induced]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem borel_units (R : Type) [CommRing R] [TopologicalSpace R] [IsOpenUnits R] [MeasurableSpace R] [BorelSpace R] :
     BorelSpace Rˣ := by
@@ -190,17 +190,15 @@ theorem borel_units (R : Type) [CommRing R] [TopologicalSpace R] [IsOpenUnits R]
   exact h1.symm
 
 /- English proof (translation)
-Simplify using `[Et.absK]`.
+Simplify using the standard rewrite rules.
 -/
 theorem absK_unit (A : Et F E) (u : A.Kˣ) : A.absK u = distribHaarChar A.K u := by
   simp [Et.absK]
 
 /- English proof (translation)
-Use `finite_L A` as an intermediate fact. Take `⟨-, hinj, hN, -, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Establish `: IsTopologicalRing A.L` using `IsModuleTopology.isTopologicalRing F A.L`. Take `⟨r, hr⟩` from `LinearMap.exists_leftInverse_of_injective (IsScalarTower.toAlgHom F A.K A.L).toLinearMap (LinearMap.ker_eq_bot.2 hinj)`. Establish `h1 : A.NL = fun y => r (y * starF A y)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `y`. Use `LinearMap.congr_fun hr (A.NL y)` as an intermediate fact. Rewrite using `[← show _ = A.NL y from this]`. Conclude with `congrArg r (hN y)`. Rewrite using `[h1]`.
-
-Conclude with `(IsModuleTopology.continuous_of_linearMap r).comp (continuous_id.mul (IsModuleTopology.continuous_of_linearMap (starF A)))`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_NL [U : Unram F E] (A : Et F E) : Continuous A.NL := by
   have := finite_L A
@@ -225,11 +223,11 @@ Both sides reduce to the same expression.
 theorem normU_val (A : Et F E) (y : A.Lˣ) : (normU A y : A.K) = A.NL y := rfl
 
 /- English proof (translation)
-Use `U.charZero` as an intermediate fact. Use `U.lcF` as an intermediate fact. Establish `: ProperSpace F` using `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace F`. Take `⟨-, hinj, hN, -, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Take `⟨-, hsq⟩` from `GlobalTheory.isOpenUnits_and_eventually_sq F A.K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) ?_` and prove the remaining obligations. Establish `h1 : ∀ᶠ v : A.Kˣ in 𝓝 1, ∃ s : A.K, s ^ 2 = v` using `(Units.continuous_val.tendsto 1).eventually hsq`. Use `filter_upwards [h1] with v ⟨s, hs⟩`. Establish `hu : IsUnit s` using `(isUnit_pow_iff two_ne_zero).1 (hs ▸ v.isUnit)`. Use `⟨(hu.map (algebraMap A.K A.L)).unit, Units.ext (hinj ?_)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[normU_val, hN, IsUnit.unit_spec, A.star_K, ← map_mul, ← hs, sq]`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_range [U : Unram F E] (A : Et F E) : IsOpen ((normU A).range : Set A.Kˣ) := by
   have := U.charZero; have := U.lcF
@@ -244,19 +242,19 @@ theorem isOpen_range [U : Unram F E] (A : Et F E) : IsOpen ((normU A).range : Se
   rw [normU_val, hN, IsUnit.unit_spec, A.star_K, ← map_mul, ← hs, sq]
 
 /- English proof (translation)
-Use `U.charZero` as an intermediate fact. Use `U.ultraF` as an intermediate fact. Use `U.lcF` as an intermediate fact. Establish `: ProperSpace F` using `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace F`. Use `finite_L A` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨-, hinj, hN, -, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Take `⟨_, _, -, _, -⟩` from `top_facts F A.K`. Take `⟨_, _, _, _, -⟩` from `top_facts F A.L`. Establish `: IsTopologicalRing A.L` using `IsModuleTopology.isTopologicalRing F A.L`. Take `⟨_, -⟩` from `GlobalTheory.isOpenUnits_and_eventually_sq F A.K`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, -⟩` from `GlobalTheory.isOpenUnits_and_eventually_sq F A.L`. Establish `hK` using `IsOpenUnits.isOpenEmbedding_unitsVal (M := A.K)`. Establish `hL` using `IsOpenUnits.isOpenEmbedding_unitsVal (M := A.L)`. Establish `hc : Continuous (normU A)` using `Units.continuous_map (continuous_NL A)`. Establish `hker : ∀ y : A.Lˣ, normU A y = 1 ↔ y ∈ Set.range (Unitary.toUnits : unitary A.L →* A.Lˣ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h1 : (y : A.L) * star (y : A.L) = 1` using `by rw [← hN, ← normU_val, h]; simp`. Conclude with `⟨⟨y, by rw [mul_comm]; exact h1, h1⟩, Units.ext rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `⟨t, rfl⟩`. Use `Units.ext (hinj ?_)` and prove the remaining obligations. Rewrite using `[normU_val, hN]`. Simplify using the standard rewrite rules. Establish `: LocallyCompactSpace A.Lˣ` using `hL.locallyCompactSpace`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: LocallyCompactSpace A.Kˣ` using `hK.locallyCompactSpace`. Establish `: SecondCountableTopology A.Lˣ` using `hL.isEmbedding.secondCountableTopology`. Establish `: LocallyCompactSpace (normU A).range` using `(isOpen_range A).locallyCompactSpace`. Establish `hc' : Continuous (normU A).rangeRestrict` using `hc.subtype_mk _`. Use `⟨⟨?_, ?_⟩, ⟨(normU A).rangeRestrict_surjective, hc', MonoidHom.isOpenMap_of_sigmaCompact _ (normU A).rangeRestrict_surjective hc'⟩, fun y => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hL.isEmbedding.of_comp_iff.1 IsEmbedding.subtypeVal`. Rewrite using `[show Set.range (Unitary.toUnits : unitary A.L →* A.Lˣ) = normU A ⁻¹' {1} from Set.ext fun y => (hker y).symm]`. Conclude with `isClosed_singleton.preimage hc`. Rewrite using `[← hker y, Subtype.ext_iff]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isSES [U : Unram F E] (A : Et F E) :
     TopologicalGroup.IsSES (Unitary.toUnits : unitary A.L →* A.Lˣ) (normU A).rangeRestrict := by
@@ -296,31 +294,29 @@ theorem isSES [U : Unram F E] (A : Et F E) :
   · rw [← hker y, Subtype.ext_iff]; rfl
 
 /- English proof (translation)
-Use `U.charZero` as an intermediate fact. Use `U.ultraF` as an intermediate fact. Use `U.lcF` as an intermediate fact. Establish `: ProperSpace F` using `.of_nontriviallyNormedField_of_weaklyLocallyCompactSpace F`. Use `finite_L A` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨⟨b⟩, hinj, hN, -, -⟩` from `GlobalTheory.JR.Et.quadratic_structure F E A`. Take `⟨_, _, -, _, hSK⟩` from `top_facts F A.K`. Take `⟨_, _, _, _, hSL⟩` from `top_facts F A.L`. Establish `: IsTopologicalRing A.L` using `IsModuleTopology.isTopologicalRing F A.L`. Establish `: ContinuousStar A.L` using `⟨IsModuleTopology.continuous_of_linearMap (starF A)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, -⟩` from `GlobalTheory.isOpenUnits_and_eventually_sq F A.K`. Take `⟨_, -⟩` from `GlobalTheory.isOpenUnits_and_eventually_sq F A.L`. Establish `hK` using `IsOpenUnits.isOpenEmbedding_unitsVal (M := A.K)`. Establish `hL` using `IsOpenUnits.isOpenEmbedding_unitsVal (M := A.L)`. Establish `: LocallyCompactSpace A.Lˣ` using `hL.locallyCompactSpace`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: SecondCountableTopology A.Lˣ` using `hL.isEmbedding.secondCountableTopology`. Use `borel_units A.K` as an intermediate fact. Use `borel_units A.L` as an intermediate fact. Establish `: SecondCountableTopology A.Kˣ` using `hK.isEmbedding.secondCountableTopology`. Establish `hδ : ∀ y : A.Lˣ, ((A.absK (A.NL y) : ℝ) : ℂ) = ((distribHaarChar A.L y : ℝ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[← normU_val, absK_unit]`. Use `GlobalTheory.JR.ModuleNorm.distribHaarChar_eq_norm A.K A.L b.equivFun.symm (IsModuleTopology.continuous_of_linearMap (b.equivFun.symm.toLinearMap.restrictScalars F)) (IsModuleTopology.continuous_of_linearMap (b.equivFun.toLinearMap.restrictScalars F)) y (normU A y) (hN y)` as an intermediate fact. Rewrite using `[this]`. Take `⟨mK, hmK, hfK⟩` from `GlobalTheory.exists_isHaarMeasure_units_div_module A.K μK hμK hSK`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨mL, hmL, hfL⟩` from `GlobalTheory.exists_isHaarMeasure_units_div_module A.L μL hμL hSL`. Establish `hop` using `isOpen_range A`. Establish `hC : (mK.comap (normU A).range.subtype).IsHaarMeasure` using `Measure.IsHaarMeasure.comap (mH := inferInstance) mK hop.isOpenEmbedding_subtypeVal`. Take `⟨ν, hν, hf⟩` from `GlobalTheory.JR.exists_haar_quotient_integral_formula _ _ _ _ _ (isSES A) mL _ hmL hC`. Use `⟨ν, hν, fun s hs h hh hsupp => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hs' : ∀ c : (normU A).range, A.NL (s (c : A.Kˣ)) = (c : A.Kˣ)`. Introduce and unpack `⟨_, y, rfl⟩`. Conclude with `hs y y.isUnit`. Establish `hu : ∀ c : (normU A).range, IsUnit (s (c : A.Kˣ))` using `fun c => by`. Establish `h1` using `(c : A.Kˣ).isUnit.map (algebraMap A.K A.L)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← hs' c, hN]`. Conclude with `isUnit_of_mul_isUnit_left h1`. Establish `hcs : HasCompactSupport fun u : A.Lˣ => h u`. Use `HasCompactSupport.of_support_subset_isCompact (K := Units.val ⁻¹' tsupport h) ?_ fun u hu => subset_tsupport h hu` and prove the remaining obligations. Use `hL.isInducing.isCompact_preimage' hh.2 fun y hy => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hsupp hy`. Establish `e1` using `hf (fun u => h u) (hh.1.continuous.comp Units.continuous_val) hcs (fun c => (hu c).unit) (fun c => Subtype.ext (Units.ext (hs' c)))`. Establish `e2` using `hfL h (fun y => ((A.absK (A.NL y) : ℝ) : ℂ)) hδ Set.univ MeasurableSet.univ`. Establish `e3` using `hfK (fun a => A.orbL ν h (s a)) (fun a => ((A.absK a : ℝ) : ℂ)) (fun u => by rw [absK_unit]) _ hop.measurableSet`. Establish `hset : {a : A.K | ∃ y : A.L, IsUnit y ∧ A.NL y = a} = Units.val '' ((normU A).range : Set A.Kˣ)`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨_, ⟨hy.unit, rfl⟩, rfl⟩`. Introduce and unpack `⟨_, ⟨y, rfl⟩, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨y, y.isUnit, rfl⟩`. Rewrite using `[hset, ← e3, ← integral_subtype_comap hop.measurableSet, ← setIntegral_eq_integral_of_forall_compl_eq_zero (s := Units.val '' (Set.univ : Set A.Lˣ)), ← e2, Measure.restrict_univ, e1]`. Use `integral_congr_ae (Eventually.of_forall fun c => ?_)` and prove the remaining obligations. Simplify using `only [Et.orbL]`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg h (mul_comm _ _)`. Introduce `y hy`. Establish `: h y = 0` using `image_eq_zero_of_notMem_tsupport fun h1 => by`. Take `⟨u, hu⟩` from `hsupp h1`. Conclude with `hy ⟨u, trivial, hu⟩`.
-
-Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_isNat [U : Unram F E] (A : Et F E) (μK : Measure A.K) (μL : Measure A.L)
     (hμK : μK.IsAddHaarMeasure) (hμL : μL.IsAddHaarMeasure) : ∃ ν, A.IsNat μK μL ν := by
@@ -393,7 +389,7 @@ theorem exists_isNat [U : Unram F E] (A : Et F E) (μK : Measure A.K) (μL : Mea
     simp [this]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ A ψ hψ`. Take `⟨μK, hK⟩` from `exists_selfDual_K A ψ hψ`. Use `choose μL hL using exists_selfDual_L A ψ hψ`. Take `⟨ν, hν⟩` from `exists_isNat A μK (μL 1) hK.1 (hL 1).1`. Conclude with `⟨⟨⟨μK, μL, ν, hK, hL, hν⟩⟩, exists_isReps A⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_meas_and_reps : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [GlobalTheory.JR.Unram F E] (A : GlobalTheory.JR.Et F E) (ψ : AddChar F ℂ),

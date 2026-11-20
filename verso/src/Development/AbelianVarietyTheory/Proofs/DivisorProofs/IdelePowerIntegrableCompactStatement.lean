@@ -10,7 +10,7 @@ open GlobalTheory.Doubling (absE)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.LocTateConv.integrableOn_absE_pow | exact GlobalTheory.LocTateConv.integrableOn_absE_pow | (intros; apply GlobalTheory.LocTateConv.integrableOn_absE_pow <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.idele_power_integrable_compact : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : Pl F)
     (μ : Measure (idelesAt E (evFin F v))), μ.IsHaarMeasure → ∀ C : Set (Fv F v ⊗[F] E), IsCompact C →

@@ -11,9 +11,9 @@ namespace PI.Tr
 variable {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
 
 /- English proof (translation)
-Use extensionality with `y`. Rewrite using `[LinearMap.BilinForm.mem_dualSubmodule]`. Use `show (∀ x ∈ Λ, ∃ n : ℤ, inner ℝ x y = (n : ℝ)) ↔ _`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[innerₗ_apply_apply, real_inner_comm, Submodule.mem_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [algebraMap_int_eq, eq_intCast]`. Conclude with `⟨fun ⟨n, hn⟩ => ⟨n, hn.symm⟩, fun ⟨n, hn⟩ => ⟨n, hn.symm⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dualLat_eq (Λ : Submodule ℤ E) :
     dualLat Λ = LinearMap.BilinForm.dualSubmodule (innerₗ E) Λ := by
@@ -26,7 +26,7 @@ theorem dualLat_eq (Λ : Submodule ℤ E) :
   exact ⟨fun ⟨n, hn⟩ => ⟨n, hn.symm⟩, fun ⟨n, hn⟩ => ⟨n, hn.symm⟩⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Use `show (∀ y ∈ M, ∃ z : ℤ, inner ℝ x y = (z : ℝ)) ↔ (∀ y ∈ M, ∃ n : ℤ, inner ℝ y x = (n : ℝ))`. Simplify using `only [real_inner_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualZ_eq_dualLat {N : ℕ} (M : Submodule ℤ (EuclideanSpace ℝ (Fin N))) :
     PI.dualZ M = dualLat M := by
@@ -35,9 +35,9 @@ theorem dualZ_eq_dualLat {N : ℕ} (M : Submodule ℤ (EuclideanSpace ℝ (Fin N
   simp only [real_inner_comm]
 
 /- English proof (translation)
-Introduce `x hx`. Use `show ∀ y ∈ dualLat Λ, ∃ n : ℤ, inner ℝ y x = (n : ℝ)`. Introduce `y hy`. Establish `hy' : ∀ z ∈ Λ, ∃ n : ℤ, inner ℝ z y = (n : ℝ)` using `hy`. Take `⟨n, hn⟩` from `hy' x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨n, by rw [real_inner_comm]; exact hn⟩`.
+A detailed English derivation is pending.
 -/
 theorem le_dualLat_dualLat (Λ : Submodule ℤ E) : Λ ≤ dualLat (dualLat Λ) := by
   intro x hx
@@ -48,7 +48,7 @@ theorem le_dualLat_dualLat (Λ : Submodule ℤ E) : Λ ≤ dualLat (dualLat Λ) 
   exact ⟨n, by rw [real_inner_comm]; exact hn⟩
 
 /- English proof (translation)
-Introduce `_ hy x hx` and use `(show ∀ z ∈ Λ₂, ∃ n : ℤ, inner ℝ z _ = (n : ℝ) from hy) x (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem dualLat_anti {Λ₁ Λ₂ : Submodule ℤ E} (h : Λ₁ ≤ Λ₂) : dualLat Λ₂ ≤ dualLat Λ₁ :=
   fun _ hy x hx => (show ∀ z ∈ Λ₂, ∃ n : ℤ, inner ℝ z _ = (n : ℝ) from hy) x (h hx)
@@ -74,9 +74,9 @@ instance instIsZLatticeDualLat : IsZLattice ℝ (dualLat Λ) := by
   exact h2.span_top
 
 /- English proof (translation)
-Set `b` to `(Module.Free.chooseBasis ℤ Λ).ofZLatticeBasis ℝ Λ`. Establish `hspan : Submodule.span ℤ (Set.range b) = Λ` using `Module.Basis.ofZLatticeBasis_span ℝ Λ _`. Establish `hnd : LinearMap.BilinForm.Nondegenerate (innerₗ E)`. Rewrite using `[LinearMap.BilinForm.nondegenerate_iff_ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `m hm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0` using `congrArg (fun f => f m) hm`. Simplify using `only [innerₗ_apply_apply, LinearMap.zero_apply] at h0`. Conclude with `inner_self_eq_zero.1 h0`. Establish `hsym : LinearMap.BilinForm.IsSymm (innerₗ E)` using `LinearMap.BilinForm.isSymm_def.2 fun x y => by simp [innerₗ_apply_apply, real_inner_comm]`. Rewrite using `[dualLat_eq, dualLat_eq, ← hspan, LinearMap.BilinForm.dualSubmodule_dualSubmodule_of_basis _ hnd hsym]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualLat_dualLat : dualLat (dualLat Λ) = Λ := by
   classical

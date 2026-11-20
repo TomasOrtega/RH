@@ -5,11 +5,11 @@ open Finset
 namespace Formalism.CyclotomicNorms.PermutationFixedPoints
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => decide`. Consider the case `succ m ih`. Take `⟨h1, h2⟩` from `ih`. Use `⟨h2, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show 2 * numDerangements (m + 3) ≤ (m + 3).factorial`. Establish `e : numDerangements (m + 3) = (m + 2) * (numDerangements (m + 1) + numDerangements (m + 2))` using `numDerangements_add_two (m + 1)`. Establish `hf2 : (m + 2).factorial = (m + 2) * (m + 1).factorial` using `Nat.factorial_succ _`. Establish `hf3 : (m + 3).factorial = (m + 3) * (m + 2).factorial` using `Nat.factorial_succ _`. Rewrite using `[e, hf3, hf2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hf2]`. Establish `k1` using `Nat.mul_le_mul_left (m + 2) h1`. Establish `k2` using `Nat.mul_le_mul_left (m + 2) h2`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem two_mul_numDerangements_le_factorial (m : ℕ) :
     2 * numDerangements (m + 1) ≤ (m + 1).factorial ∧
@@ -32,7 +32,7 @@ theorem two_mul_numDerangements_le_factorial (m : ℕ) :
     nlinarith
 
 /- English proof (translation)
-Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Conclude with `(two_mul_numDerangements_le_factorial m).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem two_mul_numDerangements_le (k : ℕ) (hk : 1 ≤ k) :
     2 * numDerangements k ≤ k.factorial := by
@@ -40,9 +40,9 @@ theorem two_mul_numDerangements_le (k : ℕ) (hk : 1 ≤ k) :
   exact (two_mul_numDerangements_le_factorial m).1
 
 /- English proof (translation)
-Establish `hD` using `card_derangements_eq_numDerangements α`. Establish `hsplit` using `Finset.card_filter_add_card_filter_not (s := (univ : Finset (Equiv.Perm α))) (fun p => ∃ x, p x = x)`. Establish `hneg : (univ.filter (fun p : Equiv.Perm α => ¬ ∃ x, p x = x)).card = Fintype.card (derangements α)`. Rewrite using `[← Fintype.card_subtype]`. Conclude with `Fintype.card_congr (Equiv.subtypeEquivRight (fun p => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [not_exists]`. Conclude with `Iff.rfl))`. Rewrite `hsplit` using `[card_univ, Fintype.card_perm, hneg, hD]`. Use `two_mul_numDerangements_le _ h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem card_perm_with_fixed {α : Type*} [Fintype α] [DecidableEq α] (h : 1 ≤ Fintype.card α) :
     (Fintype.card α).factorial ≤
@@ -61,9 +61,9 @@ theorem card_perm_with_fixed {α : Type*} [Fintype α] [DecidableEq α] (h : 1 �
   omega
 
 /- English proof (translation)
-Rewrite using `[Finset.ext_iff]`. Simplify using `only [Finset.mem_map_equiv]`. Prove the components needed by the constructor for the conclusion. Introduce `h x`. Simplify using `using (h (σ x)).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h b`. Simplify using `using (h (σ.symm b)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem map_eq_iff {α : Type*} [DecidableEq α] (σ : Equiv.Perm α) (S : Finset α) :
     S.map σ.toEmbedding = S ↔ ∀ x, σ x ∈ S ↔ x ∈ S := by
@@ -76,7 +76,7 @@ theorem map_eq_iff {α : Type*} [DecidableEq α] (σ : Equiv.Perm α) (S : Finse
     simpa using (h (σ.symm b)).symm
 
 /- English proof (translation)
-Introduce `z`. Establish `e1 : σ z = y ↔ z = y` using `⟨fun h => σ.injective (h.trans hy.symm), fun h => h ▸ hy⟩`. Establish `e2 : σ z = x ↔ z = x` using `⟨fun h => σ.injective (h.trans hx.symm), fun h => h ▸ hx⟩`. Simplify using `only [Finset.mem_insert, Finset.mem_erase, ne_eq, e1, e2, hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem inv_exchange {α : Type*} [DecidableEq α] (σ : Equiv.Perm α) (S : Finset α)
     (hS : ∀ z, σ z ∈ S ↔ z ∈ S) (x y : α) (hx : σ x = x) (hy : σ y = y) :
@@ -92,7 +92,7 @@ def numInv (N a : ℕ) (σ : Equiv.Perm (Fin N)) : ℕ :=
   (((univ : Finset (Fin N)).powersetCard a).filter (fun S => ∀ x, σ x ∈ S ↔ x ∈ S)).card
 
 /- English proof (translation)
-Simplify using `only [numInv, Finset.card_filter]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_numInv (N a : ℕ) :
     ∑ σ : Equiv.Perm (Fin N), numInv N a σ =
@@ -102,9 +102,9 @@ theorem sum_numInv (N a : ℕ) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl (fun σ _ => ?_)` and prove the remaining obligations. Distinguish the cases in `h : 2 ≤ numInv N a σ`. Simplify using `only [h, if_true, and_true]`. Rewrite using `[numInv, Finset.card_filter]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[h]`. Use `_ = _ := by`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [Finset.card_filter]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_numInv_two (N a : ℕ) :
     ∑ σ : Equiv.Perm (Fin N), (if 2 ≤ numInv N a σ then numInv N a σ else 0) =
@@ -124,11 +124,11 @@ theorem sum_numInv_two (N a : ℕ) :
         simp only [Finset.card_filter]
 
 /- English proof (translation)
-Establish `hsub : univ.filter (fun σ : Equiv.Perm (Fin N) => ∀ x, σ x ∈ S ↔ x ∈ S) ⊆ (univ : Finset (Equiv.Perm {x // x ∈ S} × Equiv.Perm {x // x ∉ S})).image (Equiv.Perm.subtypeCongrHom (fun x => x ∈ S))`. Introduce `σ hσ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hσ`. Simplify using `only [Finset.mem_image, Finset.mem_univ, true_and]`. Use `⟨(σ.subtypePerm (p := fun x => x ∈ S) (fun x => hσ x), σ.subtypePerm (p := fun x => x ∉ S) (fun x => not_congr (hσ x))), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `z`. Rewrite using `[Equiv.Perm.subtypeCongrHom_apply]`. Distinguish the cases in `hz : z ∈ S`. Rewrite using `[Equiv.Perm.subtypeCongr.left_apply _ _ hz]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Equiv.Perm.subtypeCongr.right_apply _ _ hz]`. Both sides reduce to the same expression. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.card_univ, Fintype.card_prod, Fintype.card_perm, Fintype.card_perm, Fintype.card_subtype_compl, Fintype.card_coe, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_stab_le (N : ℕ) (S : Finset (Fin N)) :
     (univ.filter (fun σ : Equiv.Perm (Fin N) => ∀ x, σ x ∈ S ↔ x ∈ S)).card ≤
@@ -155,25 +155,23 @@ theorem card_stab_le (N : ℕ) (S : Finset (Fin N)) :
         Fintype.card_subtype_compl, Fintype.card_coe, Fintype.card_fin]
 
 /- English proof (translation)
-Use `set P := univ.filter (fun p : Equiv.Perm {x // x ∈ S} => ∃ x, p x = x) with hPdef`. Use `set Q := univ.filter (fun q : Equiv.Perm {x // x ∉ S} => ∃ y, q y = y) with hQdef`. Establish `hcS : Fintype.card {x // x ∈ S} = a` using `by rw [Fintype.card_coe, hS]`. Establish `hcT : Fintype.card {x // x ∉ S} = N - a`. Rewrite using `[Fintype.card_subtype_compl, Fintype.card_coe, Fintype.card_fin, hS]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `card_perm_with_fixed (α := {x // x ∈ S}) (by omega)`. Establish `hQ` using `card_perm_with_fixed (α := {x // x ∉ S}) (by omega)`. Rewrite `hP` using `[hcS]`. Rewrite `hQ` using `[hcT]`. Establish `hsub : (P ×ˢ Q).image (Equiv.Perm.subtypeCongrHom (fun x => x ∈ S)) ⊆ univ.filter (fun σ : Equiv.Perm (Fin N) => (∀ x, σ x ∈ S ↔ x ∈ S) ∧ 2 ≤ numInv N a σ)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `σ hσ`. Simplify using `only [Finset.mem_image, Finset.mem_product, hPdef, hQdef, Finset.mem_filter, Finset.mem_univ, true_and] at hσ`. Take `⟨⟨p, q⟩, ⟨⟨x, hx⟩, ⟨y, hy⟩⟩, rfl⟩` from `hσ`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Establish `hinv : ∀ z, (Equiv.Perm.subtypeCongrHom (fun x => x ∈ S) (p, q)) z ∈ S ↔ z ∈ S`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Rewrite using `[Equiv.Perm.subtypeCongrHom_apply]`. Distinguish the cases in `hz : z ∈ S`. Rewrite using `[Equiv.Perm.subtypeCongr.left_apply _ _ hz]`. Simplify using `[hz, (p ⟨z, hz⟩).2]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Equiv.Perm.subtypeCongr.right_apply _ _ hz]`. Simplify using `[hz, (q ⟨z, hz⟩).2]`. Establish `hxσ : (Equiv.Perm.subtypeCongrHom (fun x => x ∈ S) (p, q)) (x : Fin N) = x`. Rewrite using `[Equiv.Perm.subtypeCongrHom_apply, Equiv.Perm.subtypeCongr.left_apply _ _ x.2]`. Simplify using `[hx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyσ : (Equiv.Perm.subtypeCongrHom (fun x => x ∈ S) (p, q)) (y : Fin N) = y`. Rewrite using `[Equiv.Perm.subtypeCongrHom_apply, Equiv.Perm.subtypeCongr.right_apply _ _ y.2]`. Simplify using `[hy]`. Use `⟨hinv, ?_⟩` and prove the remaining obligations. Establish `hy' : (y : Fin N) ∉ S.erase x` using `fun h => y.2 (Finset.mem_of_mem_erase h)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.one_lt_card.2 ⟨S, ?_, insert (y : Fin N) (S.erase x), ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_powersetCard]`. Conclude with `⟨⟨Finset.subset_univ _, hS⟩, hinv⟩`. Simplify using `only [Finset.mem_filter, Finset.mem_powersetCard]`. Use `⟨⟨Finset.subset_univ _, ?_⟩, inv_exchange _ S hinv x y hxσ hyσ⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[Finset.card_insert_of_notMem hy', Finset.card_erase_of_mem x.2, hS]`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Establish `hm : (y : Fin N) ∈ insert (y : Fin N) (S.erase x)` using `Finset.mem_insert_self _ _`. Rewrite `hm` using `[← h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `y.2 hm`. Establish `hcard : ((P ×ˢ Q).image (Equiv.Perm.subtypeCongrHom (fun x => x ∈ S))).card = P.card * Q.card`. Rewrite using `[Finset.card_image_of_injective _ (Equiv.Perm.subtypeCongrHom_injective _), Finset.card_product]`. Establish `hle` using `Finset.card_le_card hsub`. Rewrite `hle` using `[hcard]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_good_ge (N a : ℕ) (ha : 0 < a) (haN : a < N) (S : Finset (Fin N))
     (hS : S.card = a) :
@@ -235,17 +233,17 @@ theorem card_good_ge (N a : ℕ) (ha : 0 < a) (haN : a < N) (S : Finset (Fin N))
     _ ≤ _ := Nat.mul_le_mul_left 4 hle
 
 /- English proof (translation)
-Introduce `N a ha haN`. Establish `hpt : ∀ σ : Equiv.Perm (Fin N), 8 * (if (∃ S : Finset (Fin N), S.card = a ∧ S.map σ.toEmbedding = S) then 1 else 0) + 4 * (if 2 ≤ numInv N a σ then numInv N a σ else 0) ≤ 8 * numInv N a σ`. Introduce `σ`. Distinguish the cases in `hA : ∃ S : Finset (Fin N), S.card = a ∧ S.map σ.toEmbedding = S`. Establish `h1 : 1 ≤ numInv N a σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Take `⟨S, hSc, hSm⟩` from `hA`. Unfold `numInv`. Apply `Finset.card_pos.2` to reduce the goal to its premises. Use `⟨S, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Finset.mem_powersetCard]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `⟨⟨Finset.subset_univ _, hSc⟩, (map_eq_iff σ S).1 hSm⟩`. Rewrite using `[if_pos hA]`. Apply the tactic sequence `split_ifs <;> omega`. Apply the tactic sequence `rw [if_neg hA] split_ifs <;> omega`. Establish `hsum` using `Finset.sum_le_sum (s := (univ : Finset (Equiv.Perm (Fin N)))) (fun σ _ => hpt σ)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite `hsum` using `[Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.mul_sum, ← Finset.card_filter]`. Establish `hconst : ∑ S ∈ (univ : Finset (Fin N)).powersetCard a, a.factorial * (N - a).factorial = N.factorial`. Rewrite using `[Finset.sum_const, smul_eq_mul, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin, ← mul_assoc, Nat.choose_mul_factorial_mul_factorial haN.le]`. Establish `hX : ∑ σ : Equiv.Perm (Fin N), numInv N a σ ≤ N.factorial`. Rewrite using `[sum_numInv, ← hconst]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum (fun S hS => ?_)` and prove the remaining obligations. Rewrite `hS` using `[Finset.mem_powersetCard]`. Use `card_stab_le N S` as an intermediate fact. Rewrite `this` using `[hS.2]`. Then use the resulting hypothesis. Establish `hX2 : N.factorial ≤ 4 * ∑ σ : Equiv.Perm (Fin N), (if 2 ≤ numInv N a σ then numInv N a σ else 0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[sum_numInv_two, Finset.mul_sum, ← hconst]`. Use `Finset.sum_le_sum (fun S hS => ?_)` and prove the remaining obligations. Rewrite `hS` using `[Finset.mem_powersetCard]`. Conclude with `card_good_ge N a ha haN S hS.2`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem main : PermFixedSet := by
   intro N a ha haN

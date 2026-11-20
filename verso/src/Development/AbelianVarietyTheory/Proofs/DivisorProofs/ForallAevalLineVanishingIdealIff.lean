@@ -17,9 +17,9 @@ def lineVanishingIdeal {k : Type} [Field k] {N : ℕ} (y : Fin N → k) : Ideal 
     (vanishingIdeal k (Submodule.span k {y} : Set (Fin N → k)))).toIdeal
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `h` using `hg (mem_support_iff.1 hs)`. Establish `hd : ∑ i, s i = d`. Rewrite using `[← h, Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hd]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aeval_smul_of_isHomogeneous {k K : Type} [Field k] [Field K] [Algebra k K] {N d : ℕ}
     {g : MvPolynomial (Fin N) k} (hg : g.IsHomogeneous d) (t : K) (z : Fin N → K) :
@@ -39,7 +39,7 @@ set_option autoImplicit false in
 open MvPolynomial NumberField in
 attribute [local instance] MvPolynomial.gradedAlgebra in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.ChowHt.Model.linForm`. Use `IsHomogeneous.sum _ _ _ fun j _ => ?_` and prove the remaining obligations. Simplify using `using (isHomogeneous_C (Fin 1 × Fin N) (c j)).mul (isHomogeneous_X K ((0 : Fin 1), j))`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma linForm_isHomogeneous_one' {K : Type} [Field K] {N : ℕ} (c : Fin N → K) :
     (_root_.GlobalTheory.ChowHt.Model.linForm c).IsHomogeneous 1 := by
@@ -51,11 +51,11 @@ set_option autoImplicit false in
 open MvPolynomial NumberField in
 attribute [local instance] MvPolynomial.gradedAlgebra in
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Function.ne_iff.mp hc`. Establish `hk' : (_root_.GlobalTheory.ChowHt.Model.linForm c).coeff (Finsupp.single (0, k) 1) ≠ 0`. Rewrite using `[_root_.GlobalTheory.ChowHt.Model.coeff_linForm]`. Conclude with `hk`. Establish `hne : _root_.GlobalTheory.ChowHt.Model.linForm c ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite `hk'` using `[h, coeff_zero]`. Conclude with `hk' rfl`. Use `irreducible_of_totalDegree_eq_one ((linForm_isHomogeneous_one' c).totalDegree hne) fun x hx => ?_` and prove the remaining obligations. Use `isUnit_iff_ne_zero.mpr fun hx0 => hk' ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hx (Finsupp.single (0, k) 1)` as an intermediate fact. Rewrite `this` using `[hx0]`. Conclude with `zero_dvd_iff.mp this`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ChowHt.irreducible_linForm {K : Type} [Field K] {N : ℕ} {c : Fin N → K}
     (hc : c ≠ 0) :

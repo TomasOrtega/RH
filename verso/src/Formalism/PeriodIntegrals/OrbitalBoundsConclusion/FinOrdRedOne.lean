@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.FiniteOrderReduction.Br
 open NumberField IsDedekindDomain PI.FinOrdRedOne
 
 /- English proof (translation)
-Introduce `E _ _ p hp hp3 hU P hpP N β hfin hred`. Conclude with `Core.eq_one_of_isOfFinOrder p hp hp3 (Bridge.natCast_ne_zero p hp hU P hpP) (Bridge.maximalIdeal_eq p hp hU P hpP) (Bridge.eq_zero_of_forall_dvd p hp hU P hpP) β hfin hred`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_order_reduction_one : PI.FinOrdRedOne := by
   intro E _ _ p hp hp3 hU P hpP N β hfin hred

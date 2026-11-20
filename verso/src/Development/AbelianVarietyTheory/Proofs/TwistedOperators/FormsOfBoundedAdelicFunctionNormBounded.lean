@@ -29,11 +29,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdSpan.BddForms
 
 /- English proof (translation)
-Take `⟨-, s, hcop, hs, -⟩` from `hL`. Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Rewrite `hcop` using `[Ideal.span_singleton_eq_bot.mpr rfl, Ideal.isCoprime_iff_sup_eq, bot_sup_eq]`. Establish `hle` using `Ideal.mul_le_left (I := Lv.𝔪) (J := conjI Lv.𝔪)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hle` using `[hcop]`. Conclude with `Lv.proper (top_le_iff.1 hle)`. Set `f : (Fin r → E) →ₗ[𝓞 E] (Fin r → E)` to `s • LinearMap.id`. Establish `hinj : Function.Injective f` using `fun v w h => smul_right_injective _ hs0 h`. Establish `hle : L.map f ≤ X.Λ`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `hs v hv`. Establish `: IsNoetherian (𝓞 E) X.Λ` using `isNoetherian_of_fg_of_noetherian X.Λ X.Λ_fg`. Conclude with `Submodule.fg_of_fg_map_injective f hinj (isNoetherian_submodule.1 this _ hle)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fg_of_mem_lats {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {X : Data E r}
     (Lv : SW.Level X) {L : Lt E r} (hL : L ∈ Lv.lats) : L.FG := by
@@ -53,7 +53,7 @@ theorem fg_of_mem_lats {E : Type} [Field E] [NumberField E] [IsCMField E] {r : �
   exact Submodule.fg_of_fg_map_injective f hinj (isNoetherian_submodule.1 this _ hle)
 
 /- English proof (translation)
-Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul ht.le]`. Rewrite using `[show ((2 : ℕ) : ℝ) * (-(l : ℝ) / 2) = -(l : ℝ) by push_cast; ring, Real.rpow_neg ht.le, Real.rpow_intCast]`. Conclude with `mul_inv_cancel₀ (zpow_ne_zero _ ht.ne')`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_mul_rpow_sq (t : ℝ) (ht : 0 < t) (l : ℤ) : t ^ l * (t ^ 2) ^ (-(l : ℝ) / 2) = 1 := by
   rw [← Real.rpow_natCast, ← Real.rpow_mul ht.le]
@@ -62,7 +62,7 @@ theorem zpow_mul_rpow_sq (t : ℝ) (ht : 0 < t) (l : ℤ) : t ^ l * (t ^ 2) ^ (-
   exact mul_inv_cancel₀ (zpow_ne_zero _ ht.ne')
 
 /- English proof (translation)
-Take `⟨hdet, hlow⟩` from `hb τ`. Establish `htri : (mat b τ).BlockTriangular id` using `fun a c hca => hlow a c hca`. Rewrite `hdet` using `[Matrix.det_of_isUpperTriangular htri, Finset.prod_ne_zero_iff]`. Conclude with `hdet i (Finset.mem_univ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diag_ne_zero {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r : ℕ} {b : Frame Ψ r}
     (hb : b ∈ Bor Ψ r) (τ : Ψ) (i : Fin r) : b τ i i ≠ 0 := by
@@ -72,13 +72,13 @@ theorem diag_ne_zero {E : Type} [Field E] {Ψ : Finset (E →+* ℂ)} {r : ℕ} 
   exact hdet i (Finset.mem_univ _)
 
 /- English proof (translation)
-Establish `key : ∀ x y : Matrix (Fin n) (Fin g) ℚ, SW.IntM y → (SW.IntM (x + y) ↔ SW.IntM x)`. Introduce `x y hy`. Prove the components needed by the constructor for the conclusion. Introduce `h k i`. Simplify using `using (h k i).sub (hy k i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h k i`. Simplify using `using (h k i).add (hy k i)`. Establish `h0 : SW.IntM (0 : Matrix (Fin n) (Fin g) ℚ)` using `fun k i => by`. Simplify using `using (isIntegral_zero : IsIntegral ℤ (0 : ℚ))`. Use `⟨fun x => if SW.IntM x then 1 else 0, ⟨1, one_pos, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Distinguish the cases in `h : SW.IntM x`. Simplify using `using h`. Simplify using `[h] at hx`. Introduce `x y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Nat.cast_one, one_smul, key x y hy]`. Introduce `h`. Use `congrFun h 0` as an intermediate fact. Simplify using `[h0] at this`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem exists_isSB_ne (n g : ℕ) : ∃ φ : TF n g, SW.IsSB φ ∧ φ ≠ 0 := by
   have key : ∀ x y : Matrix (Fin n) (Fin g) ℚ, SW.IntM y → (SW.IntM (x + y) ↔ SW.IntM x) := by
@@ -106,25 +106,23 @@ end GlobalTheory.AdSpan.BddForms
 namespace GlobalTheory.AdSpan.BddForms
 
 /- English proof (translation)
-Introduce `D S T C om hW Lv hn M hw hM hMm B hB f' _hbase c c' z φ hz _hγ _hk v₀ μ _hvac _hμ ep cf hepcf gL hgL F _hFd hFb hFφ hφb`. Take `⟨K, hKφ⟩` from `hφb`. Take `⟨o, b, -, -, hob, -⟩` from `GlobalTheory.Ker.exists_orthonormalisation D.host.E T.rank C.X`. Establish `hJ` using `(GlobalTheory.Ker.onBasis_frame_period D S T C).2`. Establish `hmv : ∀ a, C.IsB (C.mvB a B)` using `fun a => ((hJ B hB).2.2.2.2.2 a).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdom : ∀ a, C.xB (C.mvB a B) ∈ C.X.dom` using `fun a => (hJ _ (hmv a)).2.1`. Take `⟨φ₀, hφ₀, hφ₀ne⟩` from `exists_isSB_ne S.rank C.g`. Establish `hz1 : ∀ a ∈ GinfC T, ‖z a‖ = 1`. Introduce `a ha`. Take `⟨c0, hc0, hc0'⟩` from `GlobalTheory.Ker.RealScalar.om_real_Th D S T C om hW 1 (one_mem _) a ha B hB`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `e1 : om (1, a) (C.Th (C.xB B) φ₀) = z a • C.Th (C.xB (C.mvB a B)) φ₀` using `hz a ha φ₀ hφ₀`. Establish `e2` using `hc0' φ₀ hφ₀`. Establish `: z a = c0` using `RealChar.smul_cancel (RealChar.th_ne C (hdom a) hφ₀ hφ₀ne) (e1.symm.trans e2)`. Rewrite using `[this, hc0]`. Establish `hstdFG : (stdL D.host.E S.rank).FG` using `Submodule.fg_span (Set.finite_range _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hec : ∀ L ∈ Lv.lats, ‖ep 1 * cf (gL L)‖ = 1`. Introduce `L hL`. Take `⟨h1, h2, h3⟩` from `hgL L hL`. Take `⟨e1, e2, -⟩` from `hepcf 1 (stdL _ _) (gL L) L (one_mem _) (Red.trivAt_one _ _) hstdFG (by rw [Red.fmtC_one]; exact Red.isMov_one _) h1 h2 (fg_of_mem_lats Lv hL) h3`. Rewrite using `[norm_mul, e1, e2, one_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hFa : ∀ L ∈ Lv.lats, ∀ a ∈ GinfC T, ‖F L (C.xB (C.mvB a B))‖ ≤ K`. Introduce `L hL a ha`. Establish `h` using `hKφ (gL L * a)`. Rewrite `h` using `[hFφ L hL a ha, norm_mul, norm_mul, hz1 a ha, hec L hL, one_mul, one_mul]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨K, fun L hL x hx => ?_⟩` and prove the remaining obligations. Take `⟨hON, hbB, hxe, hdm, -⟩` from `hob x hx`. Take `⟨a, ha, hax⟩` from `(GlobalTheory.AdSpan.ConjHol.unitFr_conj_moved D S T C B hB).2.1 (o x) hON`. Establish `hox : o x ∈ C.X.dom` using `hax ▸ hdom a`. Establish `hFo : ‖F L (o x)‖ ≤ K` using `hax ▸ hFa L hL a ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set la := wtOf C.X C.hr c c' S.rank with hla`. Establish `hval : F L x = bchar la (b x) * F L (o x)`. Use `hFb L hL (o x) hox (b x) hbB` as an intermediate fact. Rewrite `this` using `[← hxe]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Establish `hprod : ‖bchar la (b x)‖ * ∏ τ, ∏ i, (‖b x τ i i‖ ^ 2) ^ (-(la τ i : ℝ) / 2) = 1`. Unfold `bchar`. Repeatedly rewrite using `[norm_prod, norm_zpow]`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun i _ => ?_` and prove the remaining obligations. Conclude with `zpow_mul_rpow_sq _ (norm_pos_iff.2 (diag_ne_zero hbB τ i)) _`. Simplify using `only [Data.pnorm]`. Simplify using `only [← hdm]`.
-
-Rewrite using `[hval, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem pnorm_le_of_bdd : ∀ (D : D7) (S T : HSp D) (C : Ctx S T) (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeak C.ψ S T om → ∀ (Lv : SW.Level C.X) (hn : T.rank ≤ S.rank) (M : ℕ), IdemTwo Lv.w → 0 < M → (M : 𝓞 D.host.E) ∈ Lv.𝔪 → ∀ B, C.IsB B → ∀ f', C.IsBase Lv B f' → ∀ (c : C.X.Ψ → Fin C.q0 → ℕ) (c' : C.X.Ψ → Fin C.X.p0 → ℕ) (z φ : GA D T → ℂ), (∀ a ∈ GinfC T, RealScal C om B a (z a)) → (∀ γ ∈ GQ T, ∀ g, φ (γ * g) = φ g) → (∀ (k : GA D T) (κ : Lv.J), C.LevK Lv k κ → om (1, k) (C.uVec Lv hn f') = C.uVec Lv hn f' ∧ ∀ g, φ (g * k) = φ g) → ∀ (v₀ : Lt D.host.E T.rank → TF S.rank C.g) (μ : GL (Fin T.rank) D.host.E → Lt D.host.E T.rank → ℂ), (∀ L ∈ Lv.lats, IsVac C.X C.bas Lv.w (tens (stdL D.host.E S.rank) (Lv.sh L)) (v₀ L)) → (∀ γ ∈ Lv.grp, ∀ L ∈ Lv.lats, ∀ k : Lv.J, Lv.Red (fun i => (γ : Matrix (Fin T.rank) (Fin T.rank) D.host.E) *ᵥ Lv.β i) k → wG C.X C.bas C.idx γ (v₀ L) = (μ γ L * (Lv.lam k : ℂˣ)) • v₀ (mapL γ L)) → ∀ (ep : GA D S → ℂ) (cf : GA D T → ℂ), (∀ (h : GA D S) (Λ : Lt D.host.E S.rank) (g : GA D T) (L : Lt D.host.E T.rank), h ∈ GfC S → TrivAt S (Ideal.span {(M : 𝓞 D.host.F)}) h → Λ.FG → IsMov (fmtC S h) (stdL D.host.E S.rank) Λ → g ∈ GfC T → TrivAt T (C.under Lv) g → L.FG → IsMov (fmt T g) C.X.Λ L → ‖ep h‖ = 1 ∧ ‖cf g‖ = 1 ∧ om (h, g) (C.Th (C.xB B) (Lv.phi C.bas hn v₀ C.X.Λ (stdL D.host.E S.rank))) = (ep h * cf g) • (C.Th (C.xB B) (Lv.phi C.bas hn v₀ L Λ))) → ∀ gL : Lt D.host.E T.rank → GA D T, (∀ L ∈ Lv.lats, gL L ∈ GfC T ∧ TrivAt T (C.under Lv) (gL L) ∧ IsMov (fmt T (gL L)) C.X.Λ L) → ∀ F : Lt D.host.E T.rank → Frame C.X.Ψ T.rank → ℂ, (∀ L ∈ Lv.lats, DifferentiableOn ℂ (F L) C.X.dom) → (∀ L ∈ Lv.lats, ∀ x ∈ C.X.dom, ∀ b ∈ Bor C.X.Ψ T.rank, F L (rmul x b) = bchar (wtOf C.X C.hr c c' S.rank) b * F L x) → (∀ L ∈ Lv.lats, ∀ a ∈ GinfC T, φ (gL L * a) = z a * (ep 1 * cf (gL L)) * F L (C.xB (C.mvB a B))) → (∃ K : ℝ, ∀ g, ‖φ g‖ ≤ K) → ∃ K : ℝ, ∀ L ∈ Lv.lats, ∀ x ∈ C.X.dom, C.X.pnorm (wtOf C.X C.hr c c' S.rank) (F L) x ≤ K := by
   intro D S T C om hW Lv hn M hw hM hMm B hB f' _hbase c c' z φ hz _hγ _hk v₀ μ _hvac _hμ ep cf hepcf gL hgL F

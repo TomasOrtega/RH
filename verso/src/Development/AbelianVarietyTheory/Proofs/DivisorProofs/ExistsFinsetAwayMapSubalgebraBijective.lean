@@ -5,27 +5,27 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R B _ _ _ g hg`. Establish `key : ∀ b ∈ g, ∃ t : Finset B, ∀ C : Subalgebra R B, (↑t : Set B) ⊆ ↑C → b ∈ C → ∀ x : B, ∃ m : ℕ, b ^ m * x ∈ C`. Introduce `b hb`. Take `⟨t, ht⟩` from `(hg b hb).out`. Use `⟨t.image fun z => (IsLocalization.sec (Submonoid.powers b) z).1, fun C hC hbC x => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `main : ∀ z : Localization.Away b, ∃ (m : ℕ) (c : B), c ∈ C ∧ z * algebraMap B _ b ^ m = algebraMap B _ c`. Introduce `z`. Establish `hz : z ∈ Algebra.adjoin R (t : Set (Localization.Away b))` using `ht ▸ Algebra.mem_top`. Proceed by induction on `hz using Algebra.adjoin_induction with`. Consider the case `mem z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Take `⟨m, hm⟩` from `(IsLocalization.sec (Submonoid.powers b) z).2.2`. Use `⟨m, (IsLocalization.sec (Submonoid.powers b) z).1, hC ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.coe_image]`. Conclude with `⟨z, hz, rfl⟩`. Rewrite using `[← map_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Use `IsLocalization.sec_spec (Submonoid.powers b) z` as an intermediate fact. Rewrite `this` using `[← hm]`. Conclude with `this`. Consider the case `algebraMap r`. Conclude with `⟨0, algebraMap R B r, C.algebraMap_mem r, by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero, mul_one, IsScalarTower.algebraMap_apply R B]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨m, c, hc, e⟩` from `hx`. Take `⟨n, d, hd, e'⟩` from `hy`. Use `⟨m + n, c * b ^ n + d * b ^ m, add_mem (mul_mem hc (pow_mem hbC _)) (mul_mem hd (pow_mem hbC _)), ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_mul, map_mul, map_pow, map_pow, ← e, ← e']`. Expand and normalize the polynomial expressions, which then agree. Consider the case `mul x y _ _ hx hy`. Take `⟨m, c, hc, e⟩` from `hx`. Take `⟨n, d, hd, e'⟩` from `hy`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨m + n, c * d, mul_mem hc hd, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, ← e, ← e']`. Expand and normalize the polynomial expressions, which then agree. Take `⟨m, c, hc, e⟩` from `main (algebraMap B _ x)`. Rewrite `e` using `[← map_pow, ← map_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨_, k, rfl⟩, hk⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers b) _).1 e`. Use `⟨k + m, ?_⟩` and prove the remaining obligations. Establish `: b ^ (k + m) * x = b ^ k * c`. Establish `hk' : b ^ k * (x * b ^ m) = b ^ k * c` using `hk`. Rewrite using `[← hk']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `mul_mem (pow_mem hbC _) hc`. Use `choose! t ht using key`. Use `⟨g ∪ g.biUnion t, by simp, fun C hC b hb hbC => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `(Localization.awayMap_injective_iff).2 fun a ha => ⟨0, ?_⟩` and prove the remaining obligations. Establish `: a = 0` using `Subtype.ext ha`. Simplify using `[this]`. Use `(Localization.awayMap_surjective_iff).2 fun x => ?_` and prove the remaining obligations. Take `⟨m, hm⟩` from `ht b hb C (fun y hy => hC (by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Prove the second alternative. Supply the required witnesses or components.
 
-Simplify using `only [Finset.coe_union, Finset.coe_biUnion, Set.mem_union, Set.mem_iUnion]`. Conclude with `Or.inr ⟨b, hb, hy⟩)) hbC x`. Conclude with `⟨⟨_, hm⟩, m, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_awayMap_subalgebra_bijective :
     ∀ (R B : Type) [CommRing R] [CommRing B] [Algebra R B] (g : Finset B),

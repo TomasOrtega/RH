@@ -12,13 +12,13 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace UpperTheory.Gal.InertialTypesAlt
 
 /- English proof (translation)
-Introduce `k _ _ _ _ s d V _ _ σ`. Use `⟨PiTensorProduct.map fun a => (fixed (σ a) (KOne k (Fin (d a)))).subtype, ?_, ?_⟩` and prove the remaining obligations. Introduce `u w h`. Establish `hl : ∀ a, ∃ g : V a →ₗ[ℂ] fixed (σ a) (KOne k (Fin (d a))), g ∘ₗ (fixed (σ a) (KOne k (Fin (d a)))).subtype = LinearMap.id` using `fun a => LinearMap.exists_leftInverse_of_injective _ (Submodule.ker_subtype _)`. Use `choose g hg using hl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : PiTensorProduct.map g ∘ₗ (PiTensorProduct.map fun a => (fixed (σ a) (KOne k (Fin (d a)))).subtype) = LinearMap.id`. Rewrite using `[← PiTensorProduct.map_comp]`. Simplify using `only [hg]`. Conclude with `PiTensorProduct.map_id`. Establish `h1` using `LinearMap.congr_fun e u`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `LinearMap.congr_fun e w`. Simplify using `only [LinearMap.comp_apply, LinearMap.id_apply] at h1 h2`. Rewrite using `[← h1, ← h2, h]`. Introduce `x z`. Establish `key : ∀ a, (fixed (σ a) (KOne k (Fin (d a)))).subtype ∘ₗ levelZero (σ a) (redLevi k (fun a => Fin (d a)) x a) = σ a ((x : (a : Fin s) → GL (Fin (d a)) k) a) ∘ₗ (fixed (σ a) (KOne k (Fin (d a)))).subtype` using `fun a => LinearMap.ext fun v => levelZero_apply (σ a) ⟨_, x.2 a (Set.mem_univ a)⟩ v`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(PiTensorProduct.map (fun a => (fixed (σ a) (KOne k (Fin (d a)))).subtype) ∘ₗ PiTensorProduct.map (fun a => levelZero (σ a) (redLevi k (fun a => Fin (d a)) x a))) z = (PiTensorProduct.map (fun a => σ a ((x : (a : Fin s) → GL (Fin (d a)) k) a)) ∘ₗ PiTensorProduct.map (fun a => (fi …`. Rewrite using `[← PiTensorProduct.map_comp, ← PiTensorProduct.map_comp]`. Simplify using `only [key]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tensInc : TensInc := by
   intro k _ _ _ _ s d V _ _ σ

@@ -13,7 +13,7 @@ open GlobalTheory.AdelicU (evFin splitPrime)
 attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, Prod.fst_add, Prod.snd_add, add_assoc]`. Use `congr 2`. Simplify using `only [add_dotProduct, dotProduct_add]`. Take the linear combination `(-(v.1 ⬝ᵥ w.2)) * invOf_mul_self (2 : R)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem schr_schr' {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (v w : (κ → R) × (κ → R)) (Φ : (κ → R) → ℂ) :
@@ -27,7 +27,7 @@ private theorem schr_schr' {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : Ad
   linear_combination (-(v.1 ⬝ᵥ w.2)) * invOf_mul_self (2 : R)
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.Darboux.rho, schr_schr', GlobalTheory.WeilM.thetaSum, map_add, Pi.smul_apply, smul_eq_mul, tsum_mul_left, co.form]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem thetaSum_rho_rho' {F : Type} [Field F] [NumberField F] {U : Type} [AddCommGroup U] [Module (AF F) U]
     {B : U → U → AF F} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar (AF F) ℂ)
@@ -38,19 +38,17 @@ private theorem thetaSum_rho_rho' {F : Type} [Field F] [NumberField F] {U : Type
     co.form]
 
 /- English proof (translation)
-Establish `hdet : IsUnit (sgn ε S).gram.det` using `(Formalism.L2.Theta.gram_det_ne (sgn ε S)).isUnit`. Establish `hG : ((sgn ε S).gram.map (incA D)).map (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) = ((sgn ε S).gram.map (incA D))ᵀ`. Use extensionality with `i j`. Use `show cA D (incA D ((sgn ε S).gram i j)) = incA D ((sgn ε S).gram j i)`. Rewrite using `[GlobalTheory.DualPairCheck.cA_incA, GlobalTheory.DualPairCheck.gram_star]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hVJ : Vs.J = -(sgn ε S).gram`. Rewrite using `[hX]`. Consider the cases of `ε`. Simplify using `[sgn]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[HSpace.gram]`. Take `⟨G, hGd⟩ : ∃ G : Matrix (Fin S.rank) (Fin S.rank) D.host.E, G = (sgn ε S).gram` from `⟨_, rfl⟩`. Rewrite `hdet`, `hG`, `hVJ`, the goal using `[← hGd]`. Establish `h1 : G.map (incA D) * (G⁻¹).map (incA D) = 1`. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hdet, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (G⁻¹).map (incA D) * G.map (incA D) = 1` using `mul_eq_one_comm.1 h1`. Establish `hp : ∀ x : Matrix (Fin X.rank) (Fin S.rank) (AE D), ptO G e x = ((x * (G⁻¹).map (incA D))ᵀ).submatrix id e` using `fun _ => rfl`. Establish `hr : ∀ x : Matrix (Fin X.rank) (Fin S.rank) (AE D), (ptO G e x)ᵀ.submatrix e.symm id * G.map (incA D) = x` using `fun x => by`. Establish `e1 : (ptO G e x)ᵀ.submatrix e.symm id = x * (G⁻¹).map (incA D)`. Rewrite using `[hp]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [submatrix_apply, transpose_apply, id, Equiv.apply_symm_apply]`. Rewrite using `[e1, Matrix.mul_assoc, h2, Matrix.mul_one]`. Set `T : Matrix (Fin S.rank) (Fin d) (AE D) ≃+ Matrix (Fin X.rank) (Fin S.rank) (AE D)` to `{ toFun := fun u => uᵀ.submatrix e.symm id * G.map (incA D) invFun := ptO G e left_inv := fun u => by`. Rewrite using `[hp, Matrix.mul_assoc, h1, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [submatrix_apply, transpose_apply, id, Equiv.symm_apply_apply]`. Use `right_inv := hr`. Use the proof step `map_add' := fun u v => by rw [← Matrix.add_mul]; rfl }`. Take `⟨co, hco⟩` from `GlobalTheory.SquareAgree.exists_darboux_transpose_mul (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA D.sp.cm.sig) e.symm (X.gram.map (incA D)) (incA D D.host.xi0) h2 hG (JV := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Vs.J) (JW := Global …`.
-
-Conclude with `⟨co, fun x => (congrArg co.e (hr x)).symm.trans (hco _)⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_co' {D : D7} {ε : Bool} {S X : HSp D} {d : ℕ} (e : Fin d ≃ Fin X.rank)
     {Vs : Spc D.host.F D.host.E S.rank} {Ws : Spc D.host.F D.host.E d} (M : Model D.sp.cm.sig Vs Ws)
@@ -100,15 +98,15 @@ private theorem exists_co' {D : D7} {ε : Bool} {S X : HSp D} {d : ℕ} (e : Fin
   exact ⟨co, fun x => (congrArg co.e (hr x)).symm.trans (hco _)⟩
 
 /- English proof (translation)
-Introduce `D ψ ε S X d e Bs Vs Ws M hP`. Establish `hψ : IsStdChar D ψ (-1)` using `GlobalTheory.StdCharFromIsStd.isStdChar_of_isStd D ψ (hP.psi ▸ hP.base.std)`. Take `⟨co, hco⟩` from `exists_co' e M hP.JV hP.JW`. Establish `hr : ∀ x, co.rho ψ x = M.co.rho ψ (ptO (sgn ε S).gram e x)` using `fun x => by`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, hco]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hth : ∀ Φ, thO M ψ (sgn ε S).gram e Φ = GlobalTheory.WeilSchrodinger.thetaTr D.host.F co ψ Φ` using `fun Φ => by`. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.WeilSchrodinger.thetaTr, hr]`. Both sides reduce to the same expression. Take `⟨h1, h2, h3⟩` from `GlobalTheory.ThetaTransform.thetaTr_bij (S := sgn ε S) (T := X) co hψ rfl (one_smul _ _) (fun x => by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨y, z, h⟩` from `hP.good.rat (((x * (sgn ε S).gram⁻¹)ᵀ).submatrix id e)`. Use `⟨y, z, Eq.trans ?_ h⟩` and prove the remaining obligations. Rewrite using `[hco]`. Use `congr 1`. Conclude with `(congrArg (fun m => (transpose m).submatrix id e) (Matrix.map_mul (f := incA D))).symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hs` using `GlobalTheory.ThetaTransform.symplO_eq_symp (S := sgn ε S) (T := X) (ξ := 1) rfl (one_smul _ _)`. Simplify using `only [hth]`. Use `⟨fun x y => ?_, fun Φ y => ?_, h1, GlobalTheory.ThetaTransform.thetaTr_smul co, h2, h3⟩` and prove the remaining obligations. Rewrite using `[hs, co.form, M.co.form, hco, hco]`. Use function extensionality and compare the values at `x`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hr]`. Use `show GlobalTheory.WeilM.thetaSum D.host.F (co.rho ψ x (co.rho ψ y Φ)) = _`. Rewrite using `[thetaSum_rho_rho', ← hs, GlobalTheory.ThetaTransform.invOf_two_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.thetaOperator_intertwines_heisenberg :
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (ε : Bool) (S X : HSp D) (d : ℕ) (e : Fin d ≃ Fin X.rank)

@@ -8,9 +8,9 @@ namespace GlobalTheory.CMTypeOrConjugate
 open NumberField
 
 /- English proof (translation)
-Establish `h1 : (starRingEnd ℂ z) ^ 2 = z ^ 2`. Rewrite using `[← map_pow, hz, map_neg, map_natCast]`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp h1 with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨x, rfl⟩` from `Complex.conj_eq_iff_real.mp h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `h2 : x ^ 2 = -(d : ℝ)` using `by exact_mod_cast hz`. Establish `h3 : (0 : ℝ) < d` using `by exact_mod_cast hd`. Use polynomial arithmetic with `[sq_nonneg x]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem conj_eq_neg_of_sq {z : ℂ} {d : ℕ} (hd : 0 < d) (hz : z ^ 2 = -(d : ℂ)) :
     starRingEnd ℂ z = -z := by
@@ -25,11 +25,9 @@ theorem conj_eq_neg_of_sq {z : ℂ} {d : ℕ} (hd : 0 < d) (hz : z ^ 2 = -(d : �
   · exact h
 
 /- English proof (translation)
-Establish `hE : (H.rt : E) ^ 2 = -(H.d : E)`. Establish `h` using `congrArg (algebraMap (𝓞 E) E) H.rt_sq`. Rewrite `h` using `[map_pow, map_neg, map_natCast]`. Conclude with `h`. Establish `hz : (τ (H.rt : E)) ^ 2 = -(H.d : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, hE, map_neg, map_natCast]`. Unfold `Formalism.L2.Pj.InPsi`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp (hz.trans H.sqrt_neg_disc_sq.symm) with h | h` into its components or cases. Conclude with `Or.inl h`. Use `right`.
-
-Rewrite using `[ComplexEmbedding.conjugate_coe_eq, conj_eq_neg_of_sq H.d_prime.pos hz, h, neg_neg]`.
+Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inPsi_or_inPsi_conjugate {E : Type} [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (τ : E →+* ℂ) :

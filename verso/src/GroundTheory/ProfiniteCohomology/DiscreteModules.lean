@@ -23,7 +23,7 @@ def stabilizer {V : Type*} [AddCommGroup V] [Module k V] (ρ : Representation k 
 
 @[simp]
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_stabilizer {V : Type*} [AddCommGroup V] [Module k V] (ρ : Representation k G V)
     (v : V) (g : G) : g ∈ stabilizer ρ v ↔ ρ g v = v :=
@@ -35,14 +35,14 @@ class IsDiscreteRep (A : Rep.{w} k G) : Prop where
   isOpen_stabilizer : ∀ a : A, IsOpen (stabilizer A.ρ a : Set G)
 
 /- English proof (translation)
-The claim follows from `IsDiscreteRep.isOpen_stabilizer a`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_stabilizer (A : Rep.{w} k G) [IsDiscreteRep A] (a : A) :
     IsOpen (stabilizer A.ρ a : Set G) :=
   IsDiscreteRep.isOpen_stabilizer a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.isOpen_stabilizer, fun h => ⟨h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isDiscreteRep_iff (A : Rep.{w} k G) :
     IsDiscreteRep A ↔ ∀ a : A, IsOpen (stabilizer A.ρ a : Set G) :=
@@ -54,7 +54,7 @@ def isDiscreteRep : ObjectProperty (Rep.{w} k G) := fun A => IsDiscreteRep A
 
 @[simp]
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isDiscreteRep_apply (A : Rep.{w} k G) : isDiscreteRep k G A ↔ IsDiscreteRep A :=
   Iff.rfl

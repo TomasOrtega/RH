@@ -5,31 +5,27 @@ open scoped Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G G' M H _ _ _ _ _ _ _ _ _ pr s om ω ε hcov hsurj hker hε hs hom hω hrel`. Take `⟨v₀, hv₀⟩` from `exists_ne (0 : H)`. Establish `huniq : ∀ g (g₁ g₂ : G') (a b : ℂ), pr g₁ = s g → pr g₂ = s g → (∀ v, ω g v = a • om g₁ v) → (∀ v, ω g v = b • om g₂ v) → a ^ 2 = b ^ 2`. Introduce `g g₁ g₂ a b h₁ h₂ ha hb`. Establish `hw : om g₁ v₀ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h`. Apply `hv₀` to reduce the goal to its premises. Conclude with `(om g₁).map_eq_zero_iff.mp h`. Establish `hk : pr (g₁⁻¹ * g₂) = 1` using `by simp [map_mul, map_inv, h₁, h₂]`. Break down `hker _ hk with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `h2 : g₂ = g₁` using `by rw [← mul_inv_cancel_left g₁ g₂, h, mul_one]`. Substitute `h2` using the available equality. Establish `: a • om g₂ v₀ = b • om g₂ v₀` using `by rw [← ha, ← hb]`. Establish `hab : a = b` using `smul_left_injective ℂ hw this`. Rewrite using `[hab]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : g₂ = g₁ * ε` using `by rw [← h, mul_inv_cancel_left]`. Establish `: a • om g₁ v₀ = (-b) • om g₁ v₀`. Rewrite using `[← ha, hb, h2, map_mul, LinearIsometryEquiv.coe_mul, Function.comp_apply, hε, map_neg, smul_neg, neg_smul]`. Establish `hab : a = -b` using `smul_left_injective ℂ hw this`. Rewrite using `[hab]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hlift : ∀ g, ∃ g', pr g' = s g` using `fun g => hsurj (s g)`. Use `choose L hL using hlift`. Use `choose A hA using fun g => hrel g (L g) (hL g)`. Use `⟨fun g => A g ^ 2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g h`. Establish `hmul : pr (L g * L h) = s (g * h)` using `by simp [map_mul, hL]`. Establish `hsc : ∀ v, ω (g * h) v = (A g * A h) • om (L g * L h) v`. Introduce `v`. Rewrite using `[map_mul, LinearIsometryEquiv.coe_mul, Function.comp_apply, hA h, LinearIsometryEquiv.map_smul, hA g, map_mul, LinearIsometryEquiv.coe_mul, Function.comp_apply, smul_smul, mul_comm (A h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `huniq (g * h) (L (g * h)) (L g * L h) _ _ (hL _) hmul (hA _) hsc` as an intermediate fact. Simplify using `only`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[continuous_iff_continuousAt]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `g₀`. Take `⟨e, he, hpe⟩` from `hcov.isLocalHomeomorph (L g₀)`. Establish `hopen : IsOpen (s ⁻¹' e.target)` using `e.open_target.preimage hs`. Establish `hmem : g₀ ∈ s ⁻¹' e.target` using `by show s g₀ ∈ e.target`. Rewrite using `[← hL g₀, hpe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.map_source he`. Set `f : G → ℂ` to `fun g => (inner ℂ (om (e.symm (s g)) v₀) (ω g v₀) / inner ℂ v₀ v₀) ^ 2`. Establish `hf : ContinuousAt f g₀`. Establish `h1 : ContinuousAt (fun g => om (e.symm (s g)) v₀) g₀` using `(hom v₀).continuousAt.comp ((e.continuousAt_symm hmem).comp hs.continuousAt)`. Conclude with `((h1.inner (hω v₀).continuousAt).div_const _).pow 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hf.congr ?_` and prove the remaining obligations. Use `filter_upwards [hopen.mem_nhds hmem] with g hg`. Establish `hpr : pr (e.symm (s g)) = s g` using `by rw [hpe]; exact e.right_inv hg`. Take `⟨c, hc⟩` from `hrel g _ hpr`. Establish `hcval : c = inner ℂ (om (e.symm (s g)) v₀) (ω g v₀) / inner ℂ v₀ v₀`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hc, inner_smul_right, LinearIsometryEquiv.inner_map_map, mul_div_assoc, div_self (inner_self_ne_zero.2 hv₀), mul_one]`. Use `show f g = A g ^ 2`. Simplify using `only [f]`. Rewrite using `[← hcval]`. Conclude with `huniq g _ _ c (A g) hpr (hL g) hc (hA g)`.
-
-Introduce `g`. Use `pow_ne_zero 2 ?_` and prove the remaining obligations. Introduce `h0`. Use `hA g v₀` as an intermediate fact. Rewrite `this` using `[h0, zero_smul]`.
-
-Conclude with `hv₀ ((ω g).map_eq_zero_iff.mp this)`. Introduce `g g' a hg' ha`. Conclude with `huniq g g' (L g) a (A g) hg' (hL g) ha (hA g)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sq_scalar_character : ∀ (G G' M H : Type) [Group G] [TopologicalSpace G] [Group G'] [TopologicalSpace G'] [Group M]
     [TopologicalSpace M] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Nontrivial H] (pr : G' →* M) (s : G →* M)

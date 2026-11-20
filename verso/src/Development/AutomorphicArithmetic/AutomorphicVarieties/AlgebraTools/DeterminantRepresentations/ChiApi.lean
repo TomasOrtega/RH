@@ -4,27 +4,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Deter
 open Polynomial UpperTheory.V.W
 
 /- English proof (translation)
-Introduce `n A G _ _ D y`. Establish `hsum : D.chi y = ∑ i ∈ Finset.range (n + 1), C ((-1) ^ i * D.lam i y) * X ^ (n - i)`. Establish `key` using `UpperTheory.V.AlgebraTools.Det.expand D y (Polynomial A) X (-1)`. Establish `h1 : MonoidAlgebra.single 1 (X : Polynomial A) + (-1 : Polynomial A) • (MonoidAlgebra.mapRingHom G (algebraMap A (Polynomial A))) y = MonoidAlgebra.single 1 X - (MonoidAlgebra.mapRingHom G C) y`. Rewrite using `[neg_one_smul, ← sub_eq_add_neg, Polynomial.algebraMap_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[h1]`. Unfold `UpperTheory.V.W.GDet.chi`. Rewrite using `[key]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Polynomial.algebraMap_eq, C_mul, C_pow, C_neg, C_1]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : D.lam 0 y = 1`. Establish `key` using `UpperTheory.V.AlgebraTools.Det.expand D y A 1 0`. Rewrite `key` using `[zero_smul, add_zero, ← MonoidAlgebra.one_def, map_one]`. Rewrite `key` using `[Finset.sum_eq_single 0]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using key.symm`. Introduce `b _ hb`. Simplify using `[zero_pow hb]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.mpr (Nat.succ_pos n)) h`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : D.lam n y = D.D A y`. Establish `key` using `UpperTheory.V.AlgebraTools.Det.expand D y A 0 1`. Rewrite `key` using `[Finset.sum_eq_single n]`. Simplify using `only [MonoidAlgebra.single_zero, zero_add, one_smul, Nat.sub_self, pow_zero, one_pow, mul_one, Algebra.algebraMap_self, RingHom.id_apply] at key`. Rewrite using `[← key]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `g`. Simplify using `[MonoidAlgebra.mapRingHom]`. Introduce `b hb hbn`. Establish `: n - b ≠ 0`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.mem_range.mp hb` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `[zero_pow this]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.mpr (Nat.lt_succ_self n)) h`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdeg : (D.chi y).natDegree ≤ n`. Rewrite using `[hsum]`. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ fun i _ => ?_` and prove the remaining obligations. Use `(Polynomial.natDegree_C_mul_X_pow_le _ _).trans ?_` and prove the remaining obligations. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcoeff : (D.chi y).coeff n = 1`. Rewrite using `[hsum, Polynomial.finset_sum_coeff, Finset.sum_eq_single 0]`. Simplify using `[h0]`. Introduce `b hb hb0`. Establish `: n ≠ n - b`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `Finset.mem_range.mp hb` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[Polynomial.coeff_C_mul_X_pow, if_neg this]`. Introduce `h`. Conclude with `absurd (Finset.mem_range.mpr (Nat.succ_pos n)) h`.
-
-Conclude with `⟨h0, hn, Polynomial.monic_of_natDegree_le_of_coeff_eq_one n hdeg hcoeff, hdeg, hsum⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Det.chiApi :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (y : MonoidAlgebra A G),

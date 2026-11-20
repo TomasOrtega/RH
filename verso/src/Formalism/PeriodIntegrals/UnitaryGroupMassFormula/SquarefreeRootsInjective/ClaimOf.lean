@@ -33,7 +33,7 @@ def Count : Prop :=
       (T.card : ℝ) ≤ 23 * Real.log g * (g : ℝ) ^ (-(1 / 2 : ℝ)) * (g : ℝ) ^ r
 
 /- English proof (translation)
-Introduce `g r _ hr hg T hT`. Conclude with `h2 g r hr hg T fun f hf => ⟨(hT f hf).1, h1 g r f (hT f hf)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem claim_of (h1 : Witness) (h2 : Count) : PI.SqfRootsInj.Claim := by
   intro g r _ hr hg T hT

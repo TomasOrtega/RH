@@ -9,9 +9,9 @@ open Formalism.L2.Th1.D
 open Formalism.L2.Th1.CM (cm4)
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, ⟨c, hc, e2, e3, es⟩, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, c, hc, hs2, e2, e3, es, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF ν r0 r1 _`. Take `⟨a1, a2, -⟩` from `FAux.ffs l first_level_on_curve g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: CompleteSpace (CM.MaximalUnramifiedExtension l)` using `kurComplete l`. Conclude with `thmSOfF (CM.MaximalUnramifiedExtension l) ℂ_[l] (CM.MaximalUnramifiedExtension l).subtype l ν r0 r1 σ (FAux.norm_coe l) hσ (FAux.exists_root2 l) F hF _ a1 a2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ThmSEveryInt_proof : ThmSEveryInt := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -25,11 +25,11 @@ theorem ThmSEveryInt_proof : ThmSEveryInt := by
     F hF _ a1 a2
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, ⟨c, hc, e2, e3, es⟩, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, c, hc, hs2, e2, e3, es, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF ν r0 r1 _`. Take `⟨a1, a2, -⟩` from `FAux.ffs l first_level_on_curve g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: CompleteSpace (CM.MaximalUnramifiedExtension l)` using `kurComplete l`. Take `⟨cS, h1, h2, h3⟩` from `thmSOfF (CM.MaximalUnramifiedExtension l) ℂ_[l] (CM.MaximalUnramifiedExtension l).subtype l ν r0 r1 σ (FAux.norm_coe l) hσ (FAux.exists_root2 l) F hF _ a1 a2`. Use `⟨cS, h1, h2, ?_⟩` and prove the remaining obligations. Introduce `om oms ϖ μ hϖ hO hT hμ0 hμ n _ f f' hH ω₀ hω hω2 κ _ r s N hr hN0 hlN hs`. Take `⟨U0, Φ, hU, hΦ, hsim, hΘ⟩` from `hS l h5 (Formalism.L2.Th1.F.scalePair L c hc) ι g2 g3 ε s2 e2 e3 es hg.2.2.1 hg.2.2.2.1 hg.2.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) r0 r1 (Fin ν) n f f' hH ω₀ hω hω2 κ r s N hr hN0 hlN hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hΘ]`. Conclude with `h3 om oms ϖ μ U0 Φ hϖ hO hT hμ0 hμ hU hΦ hsim`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThmSEveryOrth_of (hS : OrthShape) : ThmSEveryOrth := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth
@@ -50,11 +50,11 @@ theorem ThmSEveryOrth_of (hS : OrthShape) : ThmSEveryOrth := by
   exact h3 om oms ϖ μ U0 Φ hϖ hO hT hμ0 hμ hU hΦ hsim
 
 /- English proof (translation)
-Introduce `dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth`. Take `⟨s2, hs2, ⟨c, hc, e2, e3, es⟩, hN⟩` from `nrcmOfCM4 cm4 dK L hsq hd4 hcm l h5 hd hin ι g2 g3 ε hg hε hth`. Use `⟨s2, c, hc, hs2, e2, e3, es, ?_⟩` and prove the remaining obligations. Introduce `σ hσ F hF ν r0 r1 _`. Take `⟨a1, a2, -⟩` from `FAux.ffs l first_level_on_curve g2 g3 ε hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF s2 (hN σ hσ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: CompleteSpace (CM.MaximalUnramifiedExtension l)` using `kurComplete l`. Take `⟨cS, h1, h2, h3⟩` from `thmSOfF (CM.MaximalUnramifiedExtension l) ℂ_[l] (CM.MaximalUnramifiedExtension l).subtype l ν r0 r1 σ (FAux.norm_coe l) hσ (FAux.exists_root2 l) F hF _ a1 a2`. Use `⟨cS, h1, h2, ?_⟩` and prove the remaining obligations. Introduce `om oms ϖ μ hϖ hO hT hμ0 hμ n _ _ f f' hH Θ γ hγ hK1`. Establish `hInt` using `hK l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) n Θ γ hγ hK1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨U0, Φ, hU, hΦ, hsim, hΘ⟩` from `hS l h5 g2 g3 ε s2 hg.2.2.1 hg.2.2.2.1 hε hth σ hσ F hF (hN σ hσ) r0 r1 (Fin ν) n f f' hH Θ hInt`. Rewrite using `[hΘ]`. Conclude with `h3 om oms ϖ μ U0 Φ hϖ hO hT hμ0 hμ hU hΦ hsim`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem structureTheoremCM_of_uniformGaussModels_of_hypShape (hK : uniformGaussModelConditionReformulated) (hS : HypShape) : StructureTheoremCM := by
   intro dK L hsq hd4 hcm l _ h5 hd hin ι g2 g3 ε hg hε hth

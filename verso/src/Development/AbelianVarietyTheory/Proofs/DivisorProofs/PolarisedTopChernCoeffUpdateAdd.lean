@@ -9,11 +9,11 @@ set_option autoImplicit false
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Introduce `n r _ _ K j L L'`. Establish `key : ∀ (M : EndValuedForm11Coeffs n r) (p : Fin n → r) (π u : Equiv.Perm (Fin n)), (Matrix.of fun i b => Function.update K j M i (u i) b (p i) (p (π i))) = (Matrix.of fun i b => K i (u i) b (p i) (p (π i))).updateRow j (fun b => M (u j) b (p j) (p (π j)))`. Introduce `M p π u`. Use extensionality with `i b`. Distinguish the cases in `h : i = j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.updateRow_ne h, Function.update_of_ne h]`. Unfold `mixTop`. Rewrite using `[← mul_add]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun p _ => Finset.sum_congr rfl fun π _ => Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Rewrite using `[key, key, key, ← mul_add, ← Matrix.det_updateRow_add]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mixTop_update_add : ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (K : Fin n → EndValuedForm11Coeffs n r) (j : Fin n) (L L' : EndValuedForm11Coeffs n r), mixTop (Function.update K j (L + L')) = mixTop (Function.update K j L) + mixTop (Function.update K j L') := by
   intro n r _ _ K j L L'

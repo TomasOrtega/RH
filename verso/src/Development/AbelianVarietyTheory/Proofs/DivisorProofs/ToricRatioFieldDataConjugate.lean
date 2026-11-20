@@ -19,25 +19,23 @@ namespace GlobalTheory.ThmARatio
 open GlobalTheory.ToricDenom GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols Formalism.L2.Host
 
 /- English proof (translation)
-Establish `hp : ∀ x, ξ.1 x ^ m = 1` using `fun x => by`. Use `congrArg (fun c : HChar E => c.1 x) hord` as an intermediate fact. Simplify using `using this`. Establish `hχu : ∀ v ∈ belowSet Q, ∀ P, Over P v → χ.UnrAt P` using `fun v hv P hP => by`. Establish `e` using `(hχ.2.2.2 v P hP).2 (Finset.notMem_empty v)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[expIn, multiplicity_eq_zero.2 (hQ v hv).2, expAt_zero_iff]`. Then use the resulting hypothesis. Establish `hξu : ∀ v ∉ belowSet Q, ∀ P, Over P v → ξ.UnrAt P` using `fun v hv P hP => (hram P).2 fun h => hv (Finset.mem_image.2 ⟨P, h, HeightOneSpectrum.ext hP⟩)`. Establish `hv : IsValChar φ s κ 𝔣 (belowSet Q) (χ * ξ)`. Use `⟨hχ.1.mul (GlobalTheory.ToricDistribution.isUnitary_of_pow hm hp), hχ.2.1.mul htr, fun k => ?_, fun v P hP => ⟨fun hv => ?_, fun hv n => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[HChar.inf_mul, GlobalTheory.ToricDistribution.inf_of_pow hm hp, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hχ.2.2.1 k`. Introduce `x hx hx1`. Rewrite using `[HChar.loc_mul, hχu v hv P hP x hx, htame P x hx hx1, one_mul]`. Rewrite using `[← (hχ.2.2.2 v P hP).2 (Finset.notMem_empty v) n]`. Use `forall_congr' fun x => forall_congr' fun hx => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HChar.loc_mul, hξu v hv P hP x hx, mul_one]`. Choose the witnesses or unpack the hypotheses as in `⟨P₀⟩ : Nonempty (HeightOneSpectrum (𝓞 E)) := by`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 E)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (RingOfIntegers.not_isField _)⟩⟩`. Establish `hex : ∀ q : HeightOneSpectrum (OF E), ∃ P, q ∈ belowSet Q → P ∈ Q ∧ Over P q` using `fun q => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `e : q ∈ belowSet Q`. Take `⟨P, hP, rfl⟩` from `Finset.mem_image.1 e`. Conclude with `⟨P, fun _ => ⟨hP, over_below P⟩⟩`. Conclude with `⟨P₀, fun h => absurd h e⟩`. Use `choose Pq hPq using hex`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `t` using `GlobalTheory.ToricDistributionObj.toricSumFormula_holds E I φ hφ s κ 𝔣 (belowSet Q) (χ * ξ) Pq Λ hU hs hb hQ hv (fun q hq => (hPq q hq).2) hΛ`. Rewrite `t` using `[Finset.filter_false_of_mem, Finset.prod_empty, mul_one]`. Use `swap`. Introduce `q hq h`. Use `(hram (Pq q)).1 (fun x hx => ?_) (hPq q hq).1` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `h x hx` as an intermediate fact. Rewrite `this` using `[HChar.loc_mul, hχu q hq _ (hPq q hq).2 x hx, one_mul]`. Then use the resulting hypothesis. Establish `hker : princ ⊔ hatOUnits (condQ 𝔣 (belowSet Q)) ≤ (finPart ξ).ker`. Use `sup_le ?_ fun y hy => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `finPart_mul_inf ξ k` as an intermediate fact. Rewrite `this` using `[GlobalTheory.ToricDistribution.inf_of_pow hm hp, mul_one]`. Then use the resulting hypothesis. Use `GlobalTheory.CMVal.OrderUnits.finPart_eq_one_of_level htr (fun v => ?_) hy` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ belowSet Q`. Use `⟨1, ?_, fun P _ => htame P⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[pow_one]`. Conclude with `Dvd.dvd.mul_left (Finset.dvd_prod_of_mem (fun q : HeightOneSpectrum (OF E) => q.asIdeal) hv) _`. Conclude with `⟨0, by rw [pow_zero]; exact one_dvd _, fun P hP => (ξ.unrAt_iff P).1 (hξu v hv P hP)⟩`. Establish `hψ : ∀ y, finPart ξ y = QuotientGroup.lift _ (finPart ξ) hker (QuotientGroup.mk y)` using `fun _ => rfl`. Take `⟨hfin, S, hS, hT⟩` from `(isTwistedSum_iff_isToricSum hψ _).2 t`.
-
-Conclude with `⟨_, fun ψ => ∑ᶠ q : PicO (condQ 𝔣 (belowSet Q)), ((ψ q : ℂˣ) : ℂ)⁻¹ * (lamF χ s q.out)⁻¹ * S q 0, hψ, fun ψ => ⟨hfin, S, hS, rfl⟩, hT⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem twisted_value {E : Type} [Field E] [NumberField E] [IsCMField E] {I : Type} [Fintype I] {φ : I → E →+* ℂ}
     (hφ : IsCMType φ) {s : ℕ} {κ : I → ℕ} {𝔣 : Ideal (OF E)} {Q : Finset (HeightOneSpectrum (𝓞 E))} {χ ξ : HChar E}
@@ -100,11 +98,11 @@ theorem twisted_value {E : Type} [Field E] [NumberField E] [IsCMField E] {I : Ty
     fun ψ => ⟨hfin, S, hS, rfl⟩, hT⟩
 
 /- English proof (translation)
-Take `⟨u, hu, hd⟩` from `(v.prime.dvd_finset_prod_iff _).1 h`. Establish `e : v = u` using `HeightOneSpectrum.ext (associated_iff_eq.1 ((v.irreducible.dvd_irreducible_iff_associated u.irreducible).1 (v.prime.dvd_of_dvd_pow hd)))`. Substitute `e` using the available equality. Break down `P.mem_S0_of_sum_eq.1 hu with h0 | h1` into its components or cases. Establish `e : below (P.w P.v0) = v` using `(P.under_w (P.mem_S0_of_sum_eq.2 (Or.inl rfl))).trans h0.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Unfold `GlobalTheory.LamTie.cond0`. Rewrite using `[e]`. Conclude with `dvd_mul_left _ _`. Use `Dvd.dvd.mul_right (Dvd.dvd.pow (Ideal.dvd_span_singleton.2 ?_) two_ne_zero) _` and prove the remaining obligations. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `(GlobalTheory.ChiGrid.S1_mem_OmF D).1 h1 with h | h | h | h` into its components or cases. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ h))`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ h))`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mul_mem_left _ _ h)`. Conclude with `Ideal.mul_mem_left _ _ h`.
+A detailed English derivation is pending.
 -/
 theorem dvd_cond0 {D : D7} {T : Type} {Lc : Formalism.IndefR.Links.LevCh D T} (P : GlobalTheory.ChiGrid.Places Lc) (v : HeightOneSpectrum (OF D.host.E))
     (h : v.asIdeal ∣ GlobalTheory.FunObj.SqNum.condF P) : v.asIdeal ∣ GlobalTheory.LamTie.cond0 D.host (P.w P.v0) := by
@@ -128,11 +126,11 @@ theorem dvd_cond0 {D : D7} {T : Type} {Lc : Formalism.IndefR.Links.LevCh D T} (P
 end GlobalTheory.ThmARatio
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex Csz p CF d _ hfit _ hF hTor w hw i j s Λ Λd hs1 hs2 hΛ hΛd`. Take `⟨_, _, hfd, hb, -⟩` from `hF`. Establish `hχ : fam d.G p.P.A3.A.μ0 i j (some (decide (D.what₂.places.resChar w = D.host.pde))) = nuH d.G p.P.A3.A.μ0 i j * p.R.C.delAt (D.what₂.places.resChar w)`. Unfold `fam GlobalTheory.FunObj.SqNum.delOf Formalism.L2.Host.CharFrame.delAt`. Distinguish the cases in `h : D.what₂.places.resChar w = D.host.pde`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [h, decide_true, cond_true, if_true]`. Simplify using `only [h, decide_false, cond_false, if_false]`. Take `⟨T₀, ⟨hv, h0⟩, hne, hL, -⟩` from `hTor i j s hs1 hs2 (some (decide (D.what₂.places.resChar w = D.host.pde)))`. Rewrite `hv`, `h0`, `hL` using `[hχ]`. Establish `hP` using `p.Tp.psi_is w hw`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `hP.ord`. Establish `hQ` using `(GlobalTheory.ToricDenom.placesBelow_splitCoprimeConductor_of_admissible (hfit.1.cond w hw) (𝔣 := GlobalTheory.FunObj.SqNum.condF d.G.pl) fun P h => (hfit.1.list _ (hfit.1.setting.inW1 hw)).1 P (GlobalTheory.ThmARatio.dvd_cond0 d.G.pl _ h)).1`. Take `⟨ψc, T, h1, h2, h3⟩` from `GlobalTheory.ThmARatio.twisted_value hfd.2.2.2.2.2.2.1 hfd.2.2.1 hs1 hb hQ hv (pow_ne_zero a (D.what₂.places.resChar_prime w).ne_zero) ha hP.triv hP.tame hP.ram hΛ`. Conclude with `⟨T₀, ψc, T, hv, h0, hne, (hL Λd hΛd).symm, h1, h2, h3⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.ThmARatio.values_as_toric_sums : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (CF : ℝ) (d : FunIn p CF), p.Rows → Fitted (@Comparison₂) p CF d → GlobalTheory.IndefiniteRowSideFullHecke.ToricSymbols.ToricRatioConjugates → (∃ (_ : IsCMField D.host.E) (_ : IsAbelianGalois ℚ D.host.E), GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsFieldData D.host.d (GlobalTheory.FunObj.SqNum.cmPhi D) ∧
     GlobalTheory.CMVal.IsBaseCond (GlobalTheory.FunObj.SqNum.condF d.G.pl) ∧ ∃ Λ, GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsIntLattice D.host.d Λ) → (∀ (i j : Fin D.R.m) (s : ℕ), 1 ≤ s → s ≤ halfRank D i j → ∀ c : Option Bool,

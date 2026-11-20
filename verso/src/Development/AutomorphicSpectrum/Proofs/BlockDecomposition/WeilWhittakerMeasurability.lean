@@ -27,23 +27,21 @@ open scoped Topology
 namespace GlobalTheory.CompanionTheory.WcB.GaussSupport
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχ hχ1 σ hσ μ _ Φ hΦ hc`. Take `⟨C, hC0, hC⟩` from `GlobalTheory.T.weil_whittaker_support_quadratic_extension F E χ hχ hχ1 Φ hΦ hc`. Establish `hcont : Continuous fun u : E => (modulus u : ℝ)` using `NNReal.continuous_coe.comp continuous_modulus`. Take `⟨R₀, hR₀⟩` from `(hc.isCompact.image hcont).bddAbove`. Establish `hσm : ∀ u : E, modulus (σ u) = modulus u`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `u`. Break down `GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.eq_one_or_eq_conj (K := F) (E := E) σ with h | h` into its components or cases. Conclude with `absurd h hσ`. Rewrite using `[h]`. Conclude with `GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.modulus_conj (K := F) u`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨max R₀ C, fun κ ξ hne => ?_⟩` and prove the remaining obligations. Take `⟨M, hMc, hMo, hM1, hM2, hM3⟩` from `hC κ`. Establish `hI` using `GlobalTheory.T.weil_whittaker_bound_quadratic_extension F E χ hχ σ hσ μ Φ hΦ hc κ ξ M hMc hMo hM1 hM2`. Establish `hex : ∃ u : E, (∀ r ∈ M, χ (Algebra.trace F E ((algebraMap F E κ * σ u - ξ) * r)) = 1) ∧ Φ u ≠ 0`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises. Rewrite using `[hI]`. Apply `setIntegral_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `u hu`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hcon u hu, mul_zero]`. Take `⟨u, hu, hΦu⟩` from `hex`. Establish `b1 : (modulus u : ℝ) ≤ R₀` using `hR₀ ⟨u, subset_tsupport _ hΦu, rfl⟩`. Establish `b2` using `hM3 _ hu`. Establish `b3 : modulus (algebraMap F E κ * σ u) = modulus κ ^ 2 * modulus u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[modulus_mul, GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.modulus_algebraMap (K := F), hσm]`. Establish `b4 : modulus ξ ≤ max (modulus (algebraMap F E κ * σ u)) (modulus (algebraMap F E κ * σ u - ξ))`. Establish `e : ξ = algebraMap F E κ * σ u + -(algebraMap F E κ * σ u - ξ)` using `by ring`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← e]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `_ ≤ _ := GlobalTheory.CompanionTheory.GJTwo.WhitBound.modulus_add_le_max _ _`. Use `_ ≤ _ := max_le_max le_rfl (GlobalTheory.CompanionTheory.GJTwo.WhitBound.modulus_neg_le _)`. Establish `b5 : (modulus ξ : ℝ) ≤ max ((modulus κ : ℝ) ^ 2 * (modulus u : ℝ)) (modulus (algebraMap F E κ * σ u - ξ) : ℝ)`. Rewrite `b4` using `[b3]`. Conclude with `b4` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Establish `hm : (0 : ℝ) ≤ (modulus κ : ℝ)` using `NNReal.coe_nonneg _`. Establish `hT : 0 < max R₀ C` using `lt_max_of_lt_right hC0`. Establish `hmax : max 1 (modulus κ : ℝ) ≤ max 1 ((modulus κ : ℝ) ^ 2)`. Break down `le_total (modulus κ : ℝ) 1 with h | h` into its components or cases. Conclude with `max_le (le_max_left _ _) (h.trans (le_max_left _ _))`.
-
-Conclude with `max_le (le_max_left _ _) (le_max_of_le_right (by nlinarith))`. Use `b5.trans (max_le ?_ ?_)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem gauss_support : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle), Continuous χ → χ ≠ 1 → ∀ σ : E ≃ₐ[F] E, σ ≠ AlgEquiv.refl → ∀ (μ : Measure E) [μ.IsAddHaarMeasure] (Φ : E → ℂ), IsLocallyConstant Φ → HasCompactSupport Φ → ∃ R : ℝ, ∀ (κ : F) (ξ : E), gaussI χ μ Φ κ ξ ≠ 0 → (modulus ξ : ℝ) ≤ R * max 1 ((modulus κ : ℝ) ^ 2) := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ hχ hχ1 σ hσ μ _ Φ hΦ hc

@@ -16,7 +16,7 @@ open GlobalTheory.UTrans
 open scoped ComplexOrder
 
 /- English proof (translation)
-Simplify using `only [hf, dotProduct, mulVec, map_sum, map_mul, Matrix.map_apply, Pi.star_apply, RCLike.star_def, Complex.conj_conj, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hf_eq {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
     hf (starRingEnd ℂ) (H.map (starRingEnd ℂ)) x y = starRingEnd ℂ (star x ⬝ᵥ (H *ᵥ y)) := by
@@ -25,13 +25,13 @@ theorem hf_eq {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (x y : Fin n → ℂ) :
   ring
 
 /- English proof (translation)
-Set `i : Fin n` to `⟨0, hn⟩`. Establish `e` using `hH.mulVec_eigenvectorBasis i`. Establish `hl : hH.eigenvalues i ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hH.det_eq_prod_eigenvalues]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by rw [h0]; simp)`. Establish `hv : (hH.eigenvectorBasis i).ofLp ≠ 0`. Introduce `h0`. Use `hH.eigenvectorBasis.orthonormal.ne_zero i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `this` to reduce the goal to its premises. Rewrite using `[← WithLp.ofLp_eq_zero]`. Conclude with `h0`. Use `⟨(hH.eigenvectorBasis i).ofLp, ?_⟩` and prove the remaining obligations. Rewrite using `[e, dotProduct_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `h0`. Break down `smul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `hl h`. Conclude with `hv (dotProduct_star_self_eq_zero.1 h)`.
+A detailed English derivation is pending.
 -/
 theorem exists_aniso {n : ℕ} (hn : 0 < n) (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHermitian) (hd : H.det ≠ 0) :
     ∃ v : Fin n → ℂ, star v ⬝ᵥ (H *ᵥ v) ≠ 0 := by
@@ -56,11 +56,11 @@ theorem exists_aniso {n : ℕ} (hn : 0 < n) (H : Matrix (Fin n) (Fin n) ℂ) (hH
   · exact hv (dotProduct_star_self_eq_zero.1 h)
 
 /- English proof (translation)
-Establish `key : ∀ x y : Fin n → ℂ, hf (starRingEnd ℂ) (H.map (starRingEnd ℂ)) (g *ᵥ x) (g *ᵥ y) = starRingEnd ℂ (star x ⬝ᵥ ((gᴴ * H * g) *ᵥ y))` using `fun x y => by`. Rewrite using `[hf_eq, Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`. Prove the components needed by the constructor for the conclusion. Introduce `h show gᴴ * H * g = H`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use `h (Pi.single i 1) (Pi.single j 1)` as an intermediate fact. Rewrite `this` using `[key, hf_eq]`. Use `congrArg (starRingEnd ℂ) this` as an intermediate fact. Simplify `this` using `[Matrix.mulVec_single, Pi.single_apply]`. Introduce `h x y`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : gᴴ * H * g = H` using `h`. Rewrite using `[key, h', hf_eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isU_iff {n : ℕ} (H g : Matrix (Fin n) (Fin n) ℂ) :
     IsU (starRingEnd ℂ) (H.map (starRingEnd ℂ)) g ↔ g ∈ Formalism.QuantumDeterminants.UH H := by
@@ -80,7 +80,7 @@ theorem isU_iff {n : ℕ} (H g : Matrix (Fin n) (Fin n) ℂ) :
     rw [key, h', hf_eq]
 
 /- English proof (translation)
-The claim follows from `Complex.conj_conj a ne_id := ⟨Complex.I, by intro h have := congrArg Complex.im h norm_num at this⟩ herm a b := by simp only [Matrix.map_apply, Complex.conj_conj] have := congrFun (congrFun hH b) a simp only [Matrix.conjTranspose_apply, RCLike.star_def] at this rw [← this, Comple …`.
+A detailed English derivation is pending.
 -/
 theorem isHerm {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHermitian) (hd : H.det ≠ 0) :
     IsHerm (starRingEnd ℂ) (H.map (starRingEnd ℂ)) where
@@ -99,7 +99,7 @@ theorem isHerm {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHermitian) (
     exact (map_ne_zero _).2 hd
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.UTrans.real_isotropic_or_one_class ℝ ℂ (starRingEnd ℂ) Complex.I (fun a => by simp) Complex.I_ne_zero (by simp) (fun x => ⟨x.re, x.im, by simp [Complex.re_add_im]⟩) ⟨RingEquiv.refl ℝ⟩ n _ (isHerm H hH hd).herm`.
+A detailed English derivation is pending.
 -/
 theorem iso_or_one_class {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHermitian) (hd : H.det ≠ 0) :
     (∃ z : Fin n → ℂ, z ≠ 0 ∧ hf (starRingEnd ℂ) (H.map (starRingEnd ℂ)) z z = 0) ∨
@@ -113,7 +113,7 @@ theorem iso_or_one_class {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHe
     (isHerm H hH hd).herm
 
 /- English proof (translation)
-Establish `ha' : aᴴ * H * a = H` using `ha`. Establish `hb' : bᴴ * H * b = H` using `hb`. Use `show (a * b)ᴴ * H * (a * b) = H`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem mul_mem {n : ℕ} {H a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Formalism.QuantumDeterminants.UH H) (hb : b ∈ Formalism.QuantumDeterminants.UH H) :
     a * b ∈ Formalism.QuantumDeterminants.UH H := by
@@ -125,18 +125,18 @@ theorem mul_mem {n : ℕ} {H a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ Forma
     _ = H := by rw [ha', hb']
 
 /- English proof (translation)
-Use `show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * H * 1 = H`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ Formalism.QuantumDeterminants.UH H := by
   show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * H * 1 = H
   simp
 
 /- English proof (translation)
-Establish `hne : ∀ g ∈ Formalism.QuantumDeterminants.UH H, c g ≠ 0` using `fun g hg h0 => by`. Use `h1 g hg` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`. Set `X : Matrix (Fin n) (Fin n) ℂ → ℂˣ` to `fun g => if h : c g = 0 then 1 else Units.mk0 (c g) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hX : ∀ g ∈ Formalism.QuantumDeterminants.UH H, (X g : ℂ) = c g` using `fun g hg => by`. Simplify using `only [X, dif_neg (hne g hg), Units.val_mk0]`. Establish `key` using `GlobalTheory.UTrans.char_eq_one_of_det_eq_one ℂ n (starRingEnd ℂ) (H.map (starRingEnd ℂ)) (isHerm H hH hd) (iso_or_one_class H hH hd) ℂˣ X (fun a b ha hb => by`. Rewrite `ha`, `hb` using `[isU_iff]`. Apply `Units.ext` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, hX _ ha, hX _ hb, hX _ (mul_mem ha hb), hm _ ha _ hb])`. Use `γ ((isU_iff H γ).2 hγ) hdet`. Rewrite using `[← hX γ hγ, key, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kill {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHermitian) (hd : H.det ≠ 0) (c : Matrix (Fin n) (Fin n) ℂ → ℂ)
     (hm : ∀ g ∈ Formalism.QuantumDeterminants.UH H, ∀ g' ∈ Formalism.QuantumDeterminants.UH H, c (g * g') = c g * c g')
@@ -158,11 +158,11 @@ theorem kill {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHermitian) (hd
   rw [← hX γ hγ, key, Units.val_one]
 
 /- English proof (translation)
-Establish `hg' : gᴴ * H * g = H` using `hg`. Establish `e` using `congrArg Matrix.det hg'`. Rewrite `e` using `[Matrix.det_mul, Matrix.det_mul, Matrix.det_conjTranspose]`. Establish `e2 : star g.det * g.det = 1`. Apply `mul_right_cancel₀ hd` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `e`. Establish `e3 : Complex.normSq g.det = 1`. Use `Complex.mul_conj g.det` as an intermediate fact. Rewrite `this` using `[mul_comm]`. Conclude with `(this.symm.trans e2)` after adjusting the coercions.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e3` using `[Complex.normSq_eq_norm_sq]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 e3`.
+A detailed English derivation is pending.
 -/
 theorem norm_det {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hd : H.det ≠ 0) (hg : g ∈ Formalism.QuantumDeterminants.UH H) :
     ‖g.det‖ = 1 := by
@@ -180,25 +180,21 @@ theorem norm_det {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hd : H.det ≠ 0)
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 e3
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `⟨0, fun g hg => by rw [zpow_zero]; exact kill H hH hd c hm h1 g hg (Matrix.det_isEmpty)⟩`. Take `⟨v, hv⟩` from `exists_aniso hn H hH hd`. Use `set σ := starRingEnd ℂ`. Use `set G := H.map σ`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG` using `isHerm H hH hd`. Establish `hx : hf σ G v v ≠ 0`. Rewrite using `[hf_eq]`. Conclude with `(map_ne_zero _).2 hv`. Set `refl : Circle → Matrix (Fin n) (Fin n) ℂ` to `fun t => tv σ G v (((t : ℂ) - 1) / hf σ G v v)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : ∀ t : Circle, (t : ℂ) * σ t = 1` using `fun t => by`. Rewrite using `[Complex.mul_conj, Circle.normSq_coe, Complex.ofReal_one]`. Establish `hU : ∀ t, refl t ∈ Formalism.QuantumDeterminants.UH H` using `fun t => (isU_iff H _).1 (CharDet.isU_refl hG hx (hu t))`. Establish `hcont : Continuous refl`. Simplify using `only [refl, tv]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Use `fun_prop`. Establish `c1 : c 1 = 1` using `kill H hH hd c hm h1 1 (one_mem H) Matrix.det_one`. Set `ψ : Circle →* Circle` to `{ toFun := fun t => ⟨c (refl t), by simpa [Submonoid.unitSphere] using h1 _ (hU t)⟩ map_one' := by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show c (refl 1) = 1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [refl, Circle.coe_one]`. Rewrite using `[CharDet.refl_one, c1]`. Use the proof step `map_mul' := fun s t => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show c (refl (s * t)) = c (refl s) * c (refl t)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hm _ (hU s) _ (hU t)]`. Simplify using `only [refl, Circle.coe_mul]`. Rewrite using `[CharDet.refl_mul _ _ hx] }`. Establish `hψ : Continuous ψ` using `Continuous.subtype_mk (hc.comp_continuous hcont hU) _`. Take `⟨m, hm'⟩` from `GlobalTheory.circle_hom_eq_zpow ψ hψ`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ t : Circle, c (refl t) = (t : ℂ) ^ m` using `fun t => by`. Use `congrArg (fun s : Circle => (s : ℂ)) (hm' t)` as an intermediate fact. Rewrite `this` using `[Circle.coe_zpow]`. Conclude with `this`. Use `⟨m, fun g hg => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `e : Circle` to `⟨g.det, by simpa [Submonoid.unitSphere] using norm_det hd hg⟩`. Establish `hd0 : g.det ≠ 0` using `fun h0 => by`. Use `norm_det hd hg` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`. Conclude with `zero_ne_one this`.
-
-Establish `k` using `kill H hH hd c hm h1 _ (mul_mem (hU e⁻¹) hg) (by`. Rewrite using `[Matrix.det_mul]`. Simplify using `only [refl]`. Rewrite using `[CharDet.refl_det _ hx, Circle.coe_inv]`. Conclude with `inv_mul_cancel₀ hd0)`.
-
-Rewrite `k` using `[hm _ (hU _) _ hg, hr, Circle.coe_inv]`. Establish `k2` using `eq_inv_of_mul_eq_one_right k`. Rewrite using `[k2, _root_.inv_zpow, inv_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_eq_det_zpow {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ) (hH : H.IsHermitian) (hd : H.det ≠ 0)
     (c : Matrix (Fin n) (Fin n) ℂ → ℂ)
@@ -261,31 +257,27 @@ end GlobalTheory.UCharDet
 namespace GlobalTheory.AdSpan
 
 /- English proof (translation)
-Introduce `D θ V hθ _ z hz hz1 hzc`. Take `⟨L, hL1, hLmul, hLc, hLarch, hLinv, -, -, -, hHd⟩` from `GlobalTheory.RealLift.exists_real_lift D θ V hθ`. Establish `hsing : ∀ τ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), (Pi.mulSingle τ g : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) ∈ GlobalTheory.HolDict.UG (gramAt D V)`. Introduce `τ g hg ρ`. Distinguish the cases in `h : ρ = τ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]` and apply the resulting hypothesis. Rewrite using `[Pi.mulSingle_eq_of_ne h]`. Conclude with `GlobalTheory.UCharDet.one_mem _`. Establish `hc : ∀ τ, ∃ m : ℤ, ∀ g ∈ Formalism.QuantumDeterminants.UH (gramAt D V τ), z (L (Pi.mulSingle τ g)) = g.det ^ m`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Use `GlobalTheory.UCharDet.char_eq_det_zpow (gramAt D V τ) (hHd τ).1 (hHd τ).2 (fun g => z (L (Pi.mulSingle τ g))) (fun g hg g' hg' => ?_) (fun g hg => hz1 _ (hL1 _ (hsing τ g hg)).1) ?_` and prove the remaining obligations. Use `show z (L (Pi.mulSingle τ (g * g'))) = z (L (Pi.mulSingle τ g)) * z (L (Pi.mulSingle τ g'))`. Rewrite using `[Pi.mulSingle_mul, hLmul _ (hsing τ g hg) _ (hsing τ g' hg'), hz _ (hL1 _ (hsing τ g hg)).1 _ (hL1 _ (hsing τ g' hg')).1]`. Establish `hcs : Continuous fun g : Matrix (Fin V.rank) (Fin V.rank) ℂ => (Pi.mulSingle τ g : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `continuous_pi fun ρ => ?_` and prove the remaining obligations. Distinguish the cases in `h : ρ = τ`. Substitute `h` using the available equality. Simplify using `only [Pi.mulSingle_eq_same]`. Conclude with `continuous_id`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Pi.mulSingle_eq_of_ne h]`. Conclude with `continuous_const`. Conclude with `hzc.comp (hLc.comp hcs.continuousOn fun g hg => hsing τ g hg) fun g hg => (hL1 _ (hsing τ g hg)).1`. Use `choose m hm using hc`. Use `⟨m, fun a ha => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set u : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ := fun τ => Formalism.L2.Pj.archM V (θ τ) a with hu_def`. Establish `hu : u ∈ GlobalTheory.HolDict.UG (gramAt D V)` using `hLarch a`. Establish `hz0 : ∀ b ∈ GinfC V, z b ≠ 0` using `fun b hb h0 => by`. Use `hz1 b hb` as an intermediate fact. Rewrite `this` using `[h0, norm_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `zero_ne_one this`. Establish `hone : (1 : D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ) ∈ GlobalTheory.HolDict.UG (gramAt D V)` using `fun τ => GlobalTheory.UCharDet.one_mem _`. Establish `zL1 : z (L 1) = 1`. Establish `e1 : L 1 = L 1 * L 1` using `by simpa using hLmul 1 hone 1 hone`. Establish `m1` using `(hL1 _ hone).1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `e2` using `hz _ m1 _ m1`. Rewrite `e2` using `[← e1]`. Conclude with `(mul_eq_left₀ (hz0 _ m1)).1 e2.symm`. Set `fam : Finset D.what₂.Tau → D.what₂.Tau → Matrix (Fin V.rank) (Fin V.rank) ℂ` to `fun s τ => if τ ∈ s then u τ else 1`. Establish `hfam : ∀ s, fam s ∈ GlobalTheory.HolDict.UG (gramAt D V)` using `fun s τ => by`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [fam]`. Use `split_ifs`. Conclude with `hu τ`. Conclude with `GlobalTheory.UCharDet.one_mem _`. Establish `key : ∀ s : Finset D.what₂.Tau, z (L (fam s)) = ∏ τ ∈ s, (u τ).det ^ m τ`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Establish `: fam ∅ = 1` using `funext fun τ => by simp [fam]`. Rewrite using `[this, Finset.prod_empty]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `zL1`. Consider the case `insert b s hb ih`. Establish `e : fam (insert b s) = Pi.mulSingle b (u b) * fam s` using `funext fun τ => by`. Distinguish the cases in `h : τ = b`. Substitute `h` using the available equality.
-
-Simplify using `[fam, hb]`. Simplify using `[fam, h]`. Rewrite using `[e, hLmul _ (hsing b _ (hu b)) _ (hfam s), hz _ (hL1 _ (hsing b _ (hu b))).1 _ (hL1 _ (hfam s)).1, hm b _ (hu b), ih, Finset.prod_insert hb]`. Establish `hall : fam Finset.univ = u` using `funext fun τ => by simp [fam]`. Use `key Finset.univ` as an intermediate fact.
-
-Rewrite `this` using `[hall, hLinv a ha]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem char_eq_detPow : ∀ (D : D7) (θ : InfFam D) (V : HSp D), IsInfFam θ → V.SigOK → ∀ z : GA D V → ℂ, (∀ a ∈ GinfC V, ∀ a' ∈ GinfC V, z (a * a') = z a * z a') → (∀ a ∈ GinfC V, ‖z a‖ = 1) → ContinuousOn z (GinfC V : Set (GA D V)) → ∃ m : D.what₂.Tau → ℤ, ∀ a ∈ GinfC V, z a = detPow θ V m a := by
   intro D θ V hθ _ z hz hz1 hzc

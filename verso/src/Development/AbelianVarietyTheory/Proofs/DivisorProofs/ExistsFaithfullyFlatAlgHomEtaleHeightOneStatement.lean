@@ -6,7 +6,7 @@ open IsLocalRing Polynomial
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.GoodEtaleSection.exists_faithfullyFlat_algHom) | (exact GlobalTheory.GoodEtaleSection.exists_faithfullyFlat_algHom) | (intros; apply GlobalTheory.GoodEtaleSection.exists_faithfullyFlat_algHom <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_faithfullyFlat_algHom_etale_height_one : ∀ (A R C : Type) [CommRing A] [IsDomain A] [IsNoetherianRing A] [IsIntegrallyClosed A]
     [CommRing R] [IsNoetherianRing R] [IsLocalRing R] [Algebra A R] [CommRing C] [Algebra R C]

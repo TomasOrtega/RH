@@ -40,7 +40,7 @@ def fixedBy (K : Subgroup (UA σ X.J)) : Submodule ℂ (UA σ X.J → ℂ) where
     rw [congrFun (hx k hk) g]
 
 /- English proof (translation)
-Introduce `_ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 example (K : Subgroup (UA σ X.J)) (c : ℂ) : (fun _ => c) ∈ fixedBy σ X K := fun _ _ => rfl
 

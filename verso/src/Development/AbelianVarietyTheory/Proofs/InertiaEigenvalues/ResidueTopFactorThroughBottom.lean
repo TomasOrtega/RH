@@ -5,21 +5,21 @@ open scoped InnerProductSpace BigOperators
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `O _ _ r t U a ha g hg`. Set `res : (Fin r ⊕ Fin t → O) → (Fin r ⊕ Fin t → IsLocalRing.ResidueField O)` to `fun u j => IsLocalRing.residue O (u j)`. Set `Wsp : Submodule (IsLocalRing.ResidueField O) (Fin r ⊕ Fin t → IsLocalRing.ResidueField O)` to `{ carrier := {w | ∃ u ∈ U, res u = w} add_mem' := by`. Introduce and unpack `_ _ ⟨u, hu, rfl⟩ ⟨v, hv, rfl⟩`. Conclude with `⟨u + v, U.add_mem hu hv, by ext j; simp [res]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `zero_mem' := ⟨0, U.zero_mem, by ext j; simp [res]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨u, hu, rfl⟩`. Take `⟨o, rfl⟩` from `IsLocalRing.residue_surjective c`. Conclude with `⟨o • u, U.smul_mem o hu, by ext j; simp [res]⟩ }`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `top : (Fin r ⊕ Fin t → IsLocalRing.ResidueField O) →ₗ[IsLocalRing.ResidueField O] (Fin r → IsLocalRing.ResidueField O)` to `LinearMap.funLeft _ _ Sum.inl`. Set `bot : (Fin r ⊕ Fin t → IsLocalRing.ResidueField O) →ₗ[IsLocalRing.ResidueField O] (Fin t → IsLocalRing.ResidueField O)` to `LinearMap.funLeft _ _ Sum.inr`. Set `π : Wsp →ₗ[IsLocalRing.ResidueField O] (Fin t → IsLocalRing.ResidueField O)` to `bot.comp Wsp.subtype`. Set `f : Wsp →ₗ[IsLocalRing.ResidueField O] (Fin r → IsLocalRing.ResidueField O)` to `(LinearMap.id - Matrix.toLin' g).comp (top.comp Wsp.subtype)`. Establish `hker : LinearMap.ker π ≤ LinearMap.ker f`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce and unpack `⟨w, u, hu, rfl⟩ hw`. Rewrite `hw`, the goal using `[LinearMap.mem_ker]`. Establish `h2 : ∀ i, IsLocalRing.residue O (u (Sum.inr i)) = 0` using `fun i => congrFun hw i`. Establish `h3` using `hg _ (ha u hu h2)`. Simplify using `only [f, top, LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.sub_apply, LinearMap.id_apply, Matrix.toLin'_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[sub_eq_zero]`. Conclude with `h3.symm`. Set `b₀ : LinearMap.range π →ₗ[IsLocalRing.ResidueField O] (Fin r → IsLocalRing.ResidueField O)` to `((LinearMap.ker π).liftQ f hker).comp (π.quotKerEquivRange.symm.toLinearMap)`. Take `⟨B, hB⟩` from `LinearMap.exists_extend b₀`. Use `⟨LinearMap.toMatrix' B, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hw : res u ∈ Wsp` using `⟨u, hu, rfl⟩`. Establish `key : B (π ⟨res u, hw⟩) = f ⟨res u, hw⟩`. Establish `h1` using `LinearMap.congr_fun hB ⟨π ⟨res u, hw⟩, LinearMap.mem_range_self π _⟩`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply] at h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1]`. Use `show (LinearMap.ker π).liftQ f hker (π.quotKerEquivRange.symm ⟨π ⟨res u, hw⟩, LinearMap.mem_range_self π _⟩) = _`. Rewrite using `[LinearMap.quotKerEquivRange_symm_apply_image]`. Both sides reduce to the same expression. Establish `e : π ⟨res u, hw⟩ = fun i => IsLocalRing.residue O (u (Sum.inr i))` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `e2 : f ⟨res u, hw⟩ = (fun i => IsLocalRing.residue O (u (Sum.inl i))) - g.mulVec (fun i => IsLocalRing.residue O (u (Sum.inl i)))` using `rfl`. Rewrite `key` using `[e, e2]`. Rewrite using `[LinearMap.toMatrix'_mulVec, key]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem residue_top_factor_through_bottom : ∀ (O : Type) [CommRing O] [IsLocalRing O] (r t : ℕ) (U : Submodule O (Fin r ⊕ Fin t → O)) (a : Fin r → IsLocalRing.ResidueField O), (∀ u ∈ U, (∀ i, IsLocalRing.residue O (u (Sum.inr i)) = 0) → a ⬝ᵥ (fun i => IsLocalRing.residue O (u (Sum.inl i))) = 0) → ∀ g : Matrix (Fin r) (Fin r) (IsLocalRing.ResidueField O), (∀ v, a ⬝ᵥ v = 0 → g.mulVec v = v) → ∃ b : Matrix (Fin r) (Fin t) (IsLocalRing.ResidueField O), ∀ u ∈ U, g.mulVec (fun i => IsLocalRing.residue O (u (Sum.inl i))) + b.mulVec (fun i => IsLocalRing.residue O (u (Sum.inr i))) = (fun i => IsLocalRing.residue O (u (Sum.inl i))) := by
   intro O _ _ r t U a ha g hg

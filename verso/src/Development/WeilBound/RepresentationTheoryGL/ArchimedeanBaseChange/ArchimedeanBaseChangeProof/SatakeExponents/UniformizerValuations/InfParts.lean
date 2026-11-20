@@ -22,7 +22,7 @@ def LemD : Prop := ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (N : �
     ∑ i, P.m i τ = m
 
 /- English proof (translation)
-Introduce `E _ _ _ N t P τ m hg hu hp hm h0`. Conclude with `h1 E N t.space τ _ _ h0 (h3 E N t τ _ (h2 E N t P τ hg hu hp)) hm`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lemD_of (h1 : InfUniq) (h2 : InfParts) (h3 : InfTree) : LemD := by
   intro E _ _ _ N t P τ m hg hu hp hm h0

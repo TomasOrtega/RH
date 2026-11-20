@@ -15,15 +15,13 @@ noncomputable section
 namespace GlobalTheory.AVGood
 
 /- English proof (translation)
-Take `⟨y, hy, hy0⟩` from `(Submodule.ne_bot_iff _).1 (D.naut.typeV_ne i P)`. Establish `hiso : (M.loc i).real y ∈ NG.isoTyp (M.loc i).wt.ρ (av.S i P)`. Use `hy` as an intermediate fact. Rewrite `this` using `[av.typeV i P]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hty : (M.loc i).real y ∈ NG.TypeSp (M.loc i).wt.ρ (M.loc i).J (M.loc i).χ`. Rewrite using `[← (M.loc i).real_range]`. Conclude with `LinearMap.mem_range_self _ _`. Establish `hf0 : (M.loc i).real y ≠ 0` using `fun h => hy0 ((M.loc i).real_inj (h.trans (map_zero _).symm))`. Establish `hjr` using `D.nd.j_range i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `j : Fin D.R.m` to `⟨D.nd.j i - 1, by omega⟩`. Establish `hj : j.1 + 1 = D.nd.j i` using `by simp only [j]; omega`. Distinguish the cases in `hg : s.v ∈ gPl D`. Take `⟨k, v, s₀, hw, hv⟩` from `GlobalTheory.PlaceUnderFixed.exists_splitPlace_under_plGw D s hg`. Take `⟨ψ₀, ξ, hψ, hc, hU⟩` from `lv.uni i j hj k v s₀ hw`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hfix` using `GlobalTheory.UniDepthZero.main D.host.E D.R.nV (M.loc i).wt (av.S i P) (av.irr i P) (M.loc i).J (M.loc i).χ (M.loc i).J_open s₀ D.R.r ψ₀ ξ hU hψ (hT i j k v s₀ ξ hw hc) _ hiso hty hf0 s hv.symm σ hσ`. Conclude with `good_of_fixed_KOne hZ (GlobalTheory.SplitTypeCompl.exists_padic_equiv D s hg) _ hfix`. Distinguish the cases in `hp : s.v ∈ paraPl D tup i j`. Take `⟨s₀, ξ, hv, -, hP⟩` from `lv.para i j hj s.v hp`. Conclude with `good_of_toral (GlobalTheory.ParaToral.toral_of_levelPara hBZ hZ D.host.E D.R.nV (M.loc i).wt (av.S i P) (av.irr i P) (M.loc i).J (M.loc i).χ (M.loc i).J_open s₀ D.R.r ξ hP _ hiso hty hf0 s hv.symm σ hσ)`.
-
-Establish `hB : s.v ∉ gPl D ∪ paraPl D tup i j` using `fun h => h.elim hg hp`. Conclude with `good_of_isSpherical hBZ _ (GlobalTheory.SphHyp.isSpherical_of_hypOutside D.host.E D.R.nV (M.loc i).wt (av.S i P) (av.irr i P) (M.loc i).J (M.loc i).χ (M.loc i).J_open _ (lv.hyp i j hj) _ hiso hty hf0 s hB σ hσ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem members_good (hZ : GlobalTheory.Published.ZelevinskyPolynomialRing) (hBZ : GlobalTheory.Published.BernsteinZelevinskyFiniteness)
     (D : D7) (M : MtFam D) (tup : D.what₂.Tup → Fin D.R.m → HChar D.host.E) (av : AVTied D M)

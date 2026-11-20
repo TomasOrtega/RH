@@ -9,37 +9,35 @@ namespace Formalism.FourierDecayAlt.P.CutMP.JA.SSn.Rep.Core.TC
 noncomputable section
 
 /- English proof (translation)
-Introduce `hPR hMC hLN hPF`. Introduce `Wp Wq _ _ _ _ _ _ P Bs hk X d hAct l hl S hS Pr hPr Bw Bw' hBw hBw'`. Establish `main : ∀ π ρ : M.Ty P, M.Up P l π ρ → ∃ c : ℂ, ∀ ζ ∈ Gauge.GC.Ann P, ∀ Xf ∈ NF.Fib P.k P.r Bs.z Bs.z' Bs.μsec Bs.π Bs.π' ζ, (Pr π (SSn.nu0 P.k P.r Bs.z Bs.z' Bs.μsec ζ)).comp Xf = Xf → (Pr ρ (SSn.nu0 P.k P.r Bs.z Bs.z' Bs.μsec ζ)).comp (S ζ Xf) = c • (Pr ρ (SSn.nu0 P.k P.r Bs.z B …`. Introduce `π ρ hup`. Take `⟨n, q, hq⟩` from `hPR Wp Wq P Bs hk X d hAct l hl S hS Pr hPr Bw Bw' hBw hBw' π ρ hup`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c₁, c₂, hc⟩` from `hMC Wp Wq P Bs hk X d hAct l hl S hS Pr hPr Bw Bw' hBw hBw' π ρ hup`. Establish `hGG : ∀ ζ ∈ Gauge.GC.Ann P, (((Complex.normSq ζ - P.TT : ℝ) : ℂ) ^ n) ≠ 0`. Introduce `ζ hζ`. Establish `: (0 : ℝ) < Complex.normSq ζ - P.TT`. Use `hζ` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Gauge.GC.Ann, Set.mem_ofPred_eq] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `pow_ne_zero _ (by exact_mod_cast this.ne')`. Distinguish the cases in `hc2 : c₂ = 0`. Use `⟨0, fun ζ hζ Xf hXf hfix => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hB0` using `(hc ζ hζ Xf hXf hfix).2`. Rewrite `hB0` using `[hc2, zero_mul, sq_eq_zero_iff, norm_eq_zero]`. Establish `hB0'` using `tc_hsVec_eq_zero hB0`. Establish `h1` using `hq ζ hζ Xf hXf hfix`. Rewrite `h1` using `[hB0', smul_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_smul]`. Conclude with `(smul_eq_zero.1 h1).resolve_left (hGG ζ hζ)`. Establish `hTT : 0 ≤ P.TT`. Use `hAct.1.1` as an intermediate fact. Conclude with `mul_nonneg this.T_pos.le this.T'_pos.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmod : ∀ x : ℝ, 0 < x → Complex.normSq (q.eval (x : ℂ)) = (c₁ / c₂) * (x - 0) ^ (2 * (2 * n))`. Introduce `x hx`. Establish `hxx : 0 ≤ x ^ 2 + P.TT` using `by positivity`. Use `set ζ : ℂ := ((Real.sqrt (x ^ 2 + P.TT) : ℝ) : ℂ) with hζdef`. Establish `hnz : Complex.normSq ζ = x ^ 2 + P.TT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[hζdef, Complex.normSq_ofReal, ← sq, Real.sq_sqrt hxx]`. Establish `hζ : ζ ∈ Gauge.GC.Ann P` using `by show P.TT < Complex.normSq ζ`. Rewrite using `[hnz]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hgg : Complex.normSq ζ - P.TT = x ^ 2` using `by rw [hnz]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsq : Real.sqrt (Complex.normSq ζ - P.TT) = x` using `by rw [hgg, Real.sqrt_sq hx.le]`. Take `⟨Xf, hXf, hfix, hne⟩` from `hLN Wp Wq P Bs hAct.1 hk Pr hPr π ζ hζ`. Take `⟨hS1, hB1⟩` from `hc ζ hζ Xf hXf hfix`. Establish `h1` using `congrArg (fun w => ‖B.hsVec w‖ ^ 2) (hq ζ hζ Xf hXf hfix)`. Simplify using `only [tc_hsVec_smul, norm_smul, mul_pow] at h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Rewrite `h1` using `[hS1, hB1, hsq, hgg]`. Establish `hX : 0 < ‖B.hsVec Xf‖ ^ 2`. Establish `: B.hsVec Xf ≠ 0` using `fun h0 => hne (tc_hsVec_eq_zero h0)`. Check the signs of the components of the expression. Establish `hnq : ‖q.eval ((x : ℝ) : ℂ)‖ ^ 2 = Complex.normSq (q.eval (x : ℂ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form.
 
-Rewrite using `[Complex.normSq_eq_norm_sq]`. Establish `hng : ‖((x ^ 2 : ℝ) : ℂ) ^ n‖ ^ 2 = (x - 0) ^ (2 * (2 * n))`. Rewrite using `[norm_pow, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by positivity : (0 : ℝ) < x ^ 2), ← pow_mul, ← pow_mul, sub_zero]`. Put the polynomial expressions in normal form. Rewrite `h1` using `[hng]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (‖q.eval ((x : ℝ) : ℂ)‖ ^ 2 * c₂ - (x - 0) ^ (2 * (2 * n)) * c₁) * ‖B.hsVec Xf‖ ^ 2 = 0`. Take the linear combination `(-1 : ℝ) * h1`. Establish `h3` using `sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_right hX.ne')`. Rewrite using `[← hnq, div_mul_eq_mul_div, eq_div_iff hc2]`. Combine the linear relations using `[h3]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hcq⟩` from `hPF q (2 * n) 0 (c₁ / c₂) hmod`. Use `⟨c, fun ζ hζ Xf hXf hfix => ?_⟩` and prove the remaining obligations. Establish `h1` using `hq ζ hζ Xf hXf hfix`. Establish `hpos : 0 ≤ Complex.normSq ζ - P.TT`. Use `hζ` as an intermediate fact.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Gauge.GC.Ann, Set.mem_ofPred_eq] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hev : q.eval ((Real.sqrt (Complex.normSq ζ - P.TT) : ℝ) : ℂ) = c * (((Complex.normSq ζ - P.TT : ℝ) : ℂ) ^ n)`. Rewrite using `[hcq]`. Simplify using `only [Polynomial.eval_mul, Polynomial.eval_C, Polynomial.eval_pow, Polynomial.eval_sub, Polynomial.eval_X, Complex.ofReal_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[pow_mul, ← Complex.ofReal_pow, Real.sq_sqrt hpos]`. Rewrite `h1` using `[hev, mul_comm, mul_smul]`. Conclude with `smul_right_injective _ (hGG ζ hζ) h1`. Use `⟨fun π => if h : ∃ ρ, M.Up P l π ρ then (main π h.choose h.choose_spec).choose else 0, ?_⟩` and prove the remaining obligations. Introduce `ζ hζ π ρ hup Xf hXf hfix`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hex : ∃ ρ, M.Up P l π ρ` using `⟨ρ, hup⟩`. Establish `hρ : hex.choose = ρ` using `tc_up_unique hex.choose_spec hup`. Simplify using `only [dif_pos hex]`. Use `(main π hex.choose hex.choose_spec).choose_spec ζ hζ Xf hXf hfix` as an intermediate fact. Substitute `hρ` using the available equality.
-
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem theta_constancy_assembly_scalar : ThConstOfCutS := by
   intro hPR hMC hLN hPF

@@ -22,7 +22,7 @@ open GlobalTheory.Twist (resM resM_resM resM_self resM_smul coord mkSec coord_mk
 variable {Y : Scheme.{0}} (F G : Y.Modules) (M : LB Y)
 
 /- English proof (translation)
-Use `congrArg (fun ψ => homApp ψ (le_refl W) t) (coord_rel φ i j hi hj hij)` as an intermediate fact. Simplify `this` using `only [homApp_res, homApp_smul, resG_self, LinearMap.smul_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem homApp_coord_rel {V : Y.Opens} (φ : Γ(twist (homMod F G) M, V)) (i j : M.ι)
     {W : Y.Opens} (hi : W ≤ V ⊓ M.U i) (hj : W ≤ V ⊓ M.U j) (hij : W ≤ M.U i ⊓ M.U j)
@@ -93,7 +93,7 @@ def iso : twist (homMod F G) M ≅ homMod F (twist G M) :=
 end GlobalTheory.TwistHomMod
 
 /- English proof (translation)
-Introduce `_ F G M` and use `⟨GlobalTheory.TwistHomMod.iso F G M⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.TwistHomMod.nonempty_iso : ∀ (Y : Scheme.{0}) (F G : Y.Modules) (M : LB Y),
     Nonempty (twist (homMod F G) M ≅ homMod F (twist G M)) :=

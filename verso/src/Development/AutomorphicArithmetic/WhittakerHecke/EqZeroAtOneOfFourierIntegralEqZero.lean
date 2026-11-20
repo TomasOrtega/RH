@@ -3,13 +3,13 @@ import Mathlib
 open MeasureTheory FourierTransform
 
 /- English proof (translation)
-Introduce `G hG hc h`. Establish `hF : 𝓕 G = 0`. Use function extensionality and compare the values at `w`. Establish `h1` using `h (-w)`. Rewrite using `[Real.fourier_real_eq_integral_exp_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Pi.zero_apply]`. Rewrite using `[← h1]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Rewrite using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hint : Integrable (𝓕 G)` using `by rw [hF]; exact integrable_zero _ _ _`. Establish `key` using `hG.fourierInv_fourier_eq hint hc`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← key, hF]`. Simplify using `[Real.fourierInv_eq']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem UpperTheory.eq_zero_at_one_of_fourierIntegral_eq_zero :
     ∀ (G : ℝ → ℂ), MeasureTheory.Integrable G → ContinuousAt G 1 →

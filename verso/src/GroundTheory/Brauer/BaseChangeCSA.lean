@@ -11,9 +11,9 @@ section CentralSimple
 variable (K L A : Type*) [Field K] [Field L] [Algebra K L] [Ring A] [Algebra K A]
 
 /- English proof (translation)
-Use `le_antisymm (fun x hx ↦ ?_) bot_le` and prove the remaining obligations. Establish `hx' : x ∈ Subalgebra.center K (L ⊗[K] A)`. Rewrite `hx`, the goal using `[Subalgebra.mem_center_iff]`. Conclude with `hx`. Rewrite `hx'` using `[center_tensorProduct_eq_map_includeLeft]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨l, -, rfl⟩` from `hx'`. Conclude with `Algebra.mem_bot.mpr ⟨l, by simp [Algebra.TensorProduct.algebraMap_apply]⟩`.
+A detailed English derivation is pending.
 -/
 theorem center_baseChange_eq_bot [Algebra.IsCentral K A] :
     Subalgebra.center L (L ⊗[K] A) = ⊥ := by
@@ -33,13 +33,13 @@ instance isSimpleRing_baseChange [Algebra.IsCentral K A] [IsSimpleRing A] :
   isSimpleRing_tensorProduct_of_right (K := K) (A := A) (B := L)
 
 /- English proof (translation)
-The claim follows from `Module.finrank_baseChange`.
+A detailed English derivation is pending.
 -/
 theorem finrank_baseChange_eq : Module.finrank L (L ⊗[K] A) = Module.finrank K A :=
   Module.finrank_baseChange
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example [FiniteDimensional K A] : FiniteDimensional L (L ⊗[K] A) := inferInstance
 
@@ -75,7 +75,7 @@ noncomputable def baseChangeTower : M ⊗[L] (L ⊗[K] A) ≃ₐ[M] M ⊗[K] A :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem baseChangeTower_tmul (m : M) (l : L) (a : A) :
     baseChangeTower K L M A (m ⊗ₜ (l ⊗ₜ a)) = (l • m) ⊗ₜ a := rfl
@@ -111,7 +111,7 @@ noncomputable def baseChangeMatrix : L ⊗[K] Matrix n n A ≃ₐ[L] Matrix n n 
 
 @[simp]
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[baseChangeMatrix, matrixEquivTensorBaseChange, tmul_sum, map_sum, Matrix.sum_apply, Matrix.single_apply]`. Rewrite using `[Fintype.sum_eq_single (i, j) fun p hp ↦ if_neg fun h ↦ hp (Prod.ext h.1 h.2)]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem baseChangeMatrix_tmul (l : L) (x : Matrix n n A) :
     baseChangeMatrix K L A n (l ⊗ₜ x) = Matrix.of fun i j ↦ l ⊗ₜ x i j := by

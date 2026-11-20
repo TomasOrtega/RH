@@ -11,13 +11,13 @@ namespace ReciprocityTheory.ChartRestriction.G.TB.SCPf
 variable {k : Type} [CommRing k] {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Establish `h1 : ∀ l, ∑ l', g l l' = ∑ j, g l ((sideE s).symm (Sum.inr j))`. Introduce `l`. Rewrite using `[← Equiv.sum_comp (sideE s).symm (g l), Fintype.sum_sum_type]`. Establish `h0 : ∑ i, g l ((sideE s).symm (Sum.inl i)) = 0`. Use `Finset.sum_eq_zero (fun i _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `hne`. Establish `h2` using `(hg _ _ hne).2`. Rewrite `h2` using `[side_inl s i]`. Simplify using `at h2`. Rewrite using `[h0, zero_add]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl (fun l _ => h1 l), ← Equiv.sum_comp (sideE s).symm (fun l => ∑ j, g l ((sideE s).symm (Sum.inr j))), Fintype.sum_sum_type]`. Establish `h3 : ∑ j, ∑ j', g ((sideE s).symm (Sum.inr j)) ((sideE s).symm (Sum.inr j')) = 0`. Use `Finset.sum_eq_zero (fun j _ => Finset.sum_eq_zero (fun j' _ => ?_))` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `h2` using `(hg _ _ hne).1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h2` using `[side_inr s j]`. Simplify using `at h2`. Rewrite using `[h3, add_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_side {M : Type} [AddCommMonoid M] (s : ι → Bool) (g : ι → ι → M)
     (hg : ∀ l l', g l l' ≠ 0 → s l = true ∧ s l' = false) :
@@ -48,11 +48,11 @@ abbrev kapE (s : ι → Bool) (κ : ι → ι → k) (i : Fin (Fintype.card {l /
   κ ((sideE s).symm (Sum.inl i)) ((sideE s).symm (Sum.inr j))
 
 /- English proof (translation)
-Establish `hd : ∀ (x : Fin (Fintype.card {l // s l = true}) ⊕ Fin (Fintype.card {l // ¬ s l = true})) (Q : MvPolynomial ι k), pderiv x (rename (sideE s) Q) = rename (sideE s) (pderiv ((sideE s).symm x) Q)`. Introduce `x Q`. Use `conv_lhs => rw [← (sideE s).apply_symm_apply x]`. Conclude with `pderiv_rename (sideE s).injective _ _`. Rewrite using `[PI.WickFormula.delta_eq_gdelta, PI.WickFormula.Gen.gdelta_apply, show secondOrder k κ P = ∑ l, ∑ l', C (κ l l') * pderiv l (pderiv l' P) from rfl]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, map_mul, rename_C]`. Rewrite using `[sum_side s _ ?_]`. Use `Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => ?_))` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, hd, hd]`. Introduce `l l' hne`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hκ` to reduce the goal to its premises. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[h0, map_zero, zero_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem delta_rename (s : ι → Bool) (κ : ι → ι → k) (hκ : ∀ l l', κ l l' ≠ 0 → s l = true ∧ s l' = false)
     (P : MvPolynomial ι k) :
@@ -76,7 +76,7 @@ theorem delta_rename (s : ι → Bool) (κ : ι → ι → k) (hκ : ∀ l l', �
     rw [h0, map_zero, zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[pow_succ', Module.End.mul_apply, ih, delta_rename s κ hκ, Function.iterate_succ_apply']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem delta_pow_rename (s : ι → Bool) (κ : ι → ι → k)
     (hκ : ∀ l l', κ l l' ≠ 0 → s l = true ∧ s l' = false) (n : ℕ) (P : MvPolynomial ι k) :
@@ -92,11 +92,11 @@ section Van
 variable {π : Type} [Fintype π] [DecidableEq π]
 
 /- English proof (translation)
-Establish `key : ∀ q : π, min (∑ x ∈ Finset.univ.filter (fun x => c x = q ∧ s x = true), (n + Finsupp.single l 1 + Finsupp.single l' 1 : ι →₀ ℕ) x) (∑ x ∈ Finset.univ.filter (fun x => c x = q ∧ s x = false), (n + Finsupp.single l 1 + Finsupp.single l' 1 : ι →₀ ℕ) x) = min (∑ x ∈ Finset.univ …`. Introduce `q`. Simplify using `only [Finsupp.add_apply, Finset.sum_add_distrib, Finsupp.single_apply, Finset.sum_ite_eq, Finset.mem_filter, Finset.mem_univ, true_and]`. Distinguish the cases in `hq : c l = q`. Establish `hq' : c l' = q` using `hc ▸ hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `[hq, hq', hs, hs']`. Apply the tactic sequence `try omega`. Establish `hq' : ¬ c l' = q` using `hc ▸ hq`. Simplify using `only [hq, hq', false_and, if_false]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Simplify using `only [pairMin]`. Rewrite using `[Finset.sum_congr rfl (fun q _ => key q), Finset.sum_add_distrib, Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pairMin_step (c : ι → π) (s : ι → Bool) (n : ι →₀ ℕ) (l l' : ι) (hc : c l = c l')
     (hs : s l = true) (hs' : s l' = false) :
@@ -125,13 +125,13 @@ theorem pairMin_step (c : ι → π) (s : ι → Bool) (n : ι →₀ ℕ) (l l'
   simp
 
 /- English proof (translation)
-Introduce `n hn`. Rewrite `hn` using `[MvPolynomial.mem_support_iff]`. Establish `h1 : coeff n (secondOrder k κ Q) = ∑ l, ∑ l', κ l l' * coeff n (pderiv l (pderiv l' Q))`. Rewrite using `[show secondOrder k κ Q = ∑ l, ∑ l', C (κ l l') * pderiv l (pderiv l' Q) from rfl]`. Simplify using `only [MvPolynomial.coeff_sum, MvPolynomial.coeff_C_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hn` using `[h1]`. Take `⟨l, -, hl⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hn`. Take `⟨l', -, hl'⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hl`. Establish `hκ0 : κ l l' ≠ 0` using `left_ne_zero_of_mul hl'`. Establish `hc0 : coeff n (pderiv l (pderiv l' Q)) ≠ 0` using `right_ne_zero_of_mul hl'`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hc0` using `[MvPolynomial.coeff_pderiv, MvPolynomial.coeff_pderiv]`. Establish `hQn : n + Finsupp.single l 1 + Finsupp.single l' 1 ∈ Q.support`. Rewrite using `[MvPolynomial.mem_support_iff]`. Introduce `h0`. Apply `hc0` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h0, zero_mul, zero_mul]`. Take `⟨hcl, hsl, hsl'⟩` from `hκ l l' hκ0`. Establish `h2` using `hQ _ hQn`. Rewrite `h2` using `[pairMin_step c s n l l' hcl hsl hsl']`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem secondOrder_support (c : ι → π) (s : ι → Bool) (κ : ι → ι → k)
     (hκ : ∀ l l', κ l l' ≠ 0 → c l = c l' ∧ s l = true ∧ s l' = false) (Q : MvPolynomial ι k) (p j : ℕ)
@@ -159,11 +159,11 @@ theorem secondOrder_support (c : ι → π) (s : ι → Bool) (κ : ι → ι �
   omega
 
 /- English proof (translation)
-Establish `h : ∀ t, ∀ n ∈ ((secondOrder k κ)^[t] P).support, pairMin c s n + t ≤ e`. Introduce `t`. Proceed by induction on `t with`. Consider the case `zero => simpa using hP`. Consider the case `succ t ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[Function.iterate_succ_apply']`. Conclude with `secondOrder_support c s κ hκ _ e t ih`. Assume the negation of the conclusion as `hne`. Choose the witnesses or unpack the hypotheses as in `⟨n, hn⟩ : ((secondOrder k κ)^[j] P).support.Nonempty := by`. Rewrite using `[Finset.nonempty_iff_ne_empty, Ne, MvPolynomial.support_eq_empty]`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hne`. Establish `h2` using `h j n hn`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem secondOrder_iterate_eq_zero (c : ι → π) (s : ι → Bool) (κ : ι → ι → k)
     (hκ : ∀ l l', κ l l' ≠ 0 → c l = c l' ∧ s l = true ∧ s l' = false) (P : MvPolynomial ι k) (e : ℕ)

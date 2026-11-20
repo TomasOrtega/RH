@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.ZH.UFib
 
 /- English proof (translation)
-Establish `a : splitTorusPointsEquiv S X Z τ (Multiplicative.ofAdd 0) = pullU τ.left ⊤ (charUnit S X 0)` using `Units.ext (splitTorusPointsEquiv_val _ _ _ τ 0)`. Establish `b : pullU τ.left ⊤ (charUnit S X 0) = 1` using `a.symm.trans (map_one _)`. Establish `c` using `gm_pull (𝟙 Z.left) τ.left z ⊤ trivial (charUnit S X 0)`. Rewrite `c` using `[b, map_one, Category.id_comp]`. Conclude with `c.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gm_charUnit_zero_eq_one {S : Scheme.{0}} {X : Type} [AddCommGroup X] {Z : Over S} (τ : Z ⟶ splitTorus S X)
     (z : Z.left) : gm τ.left z ⊤ (charUnit S X 0) = 1 := by
@@ -49,7 +49,7 @@ def chartPullH {k : Type} [Field k] (Φ : FibPre k) {Y : Scheme.{0}} {L : LB Y} 
       rfl }
 
 /- English proof (translation)
-Simplify using `only [trF, Category.assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem trF_comp {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] (q : Y' ⟶ Y) (ψ : K → (Y ⟶ X))
     (ε : K → ℤ) (r : Z ⟶ Y') (z : Z) (j j' : K → L.ι) :
@@ -57,25 +57,23 @@ theorem trF_comp {X Y Y' Z : Scheme.{0}} {L : LB X} {K : Type} [Fintype K] (q : 
   simp only [trF, Category.assoc]
 
 /- English proof (translation)
-Introduce `k _ _ Φ Y L hL π N c K K' _ _ ψ ε φt εt t ht hF α hw φ hp`. Use `Φ.D.q_hom` as an intermediate fact. Use `Φ.D.q_flat` as an intermediate fact. Use `Φ.D.q_surjective` as an intermediate fact. Take `⟨s, hs⟩` from `exists_sec_of_refine _ _ _ (Φ.H_isLB 1) (DVR.linComb_isLB L hL _ _) (chartPullH Φ c) φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hF' : FormEq (Sum.elim (fun _ : Fin 1 => 𝟙 _ ≫ Φ.D.q.left ≫ π) φt) (Sum.elim (fun _ => (N : ℤ)) (fun a => - εt a)) (fun a => Φ.D.q.left ≫ ψ a) ε`. Introduce `U _ h`. Establish `e` using `hF U h`. Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Category.id_comp, zpow_neg, Finset.prod_inv_distrib] at e ⊢`. Rewrite using `[← e, mul_inv_cancel_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨σ, hσ⟩` from `exists_sec hL hF' (pullMulSec s (𝟙 _) (LB.invGen L _ _ t) (DVR.invGen_isGen _ _ _ _ ht))`. Establish `vσ : ∀ (Z : Scheme.{0}) (r : Z ⟶ Φ.G.left) (z : Z) (J : (Z ⟶ Y) → L.ι), Good L z J → ∀ l : Φ.N₀.ι, r z ∈ Φ.D.q.left ⁻¹ᵁ Φ.N₀.U l → J (r ≫ Φ.D.q.left ≫ π) = c.idx l → gs r z (Φ.D.q.left ⁻¹ᵁ Φ.N₀.U l) (φ.f l) = sval σ r z J * (val t r z J).val`. Introduce `Z r z J hJ l hl e`. Rewrite using `[hσ Z r z J hJ, sval_pullMulSec _ _ _ _ r z hJ, val_inv, Category.comp_id, Units.inv_mul_cancel_right, sval_of s r z J (fun _ => c.idx l) (fun _ => e)]`. Conclude with `hs l Z r z hl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `le : ∀ j : K → L.ι, Φ.D.q.left ⁻¹ᵁ LB.wchart L ψ j ≤ LB.wchart L (fun a => Φ.D.q.left ≫ ψ a) j` using `fun j y hy => Set.mem_iInter.2 fun a => Set.mem_iInter.1 hy a`. Establish `desc : ∀ j : K → L.ι, ∃ a : Γ(Φ.E.B.left, LB.wchart L ψ j), (Φ.D.q.left.app _).hom a = (Φ.G.left.presheaf.map (homOfLE (le j)).op).hom (σ.f j)`. Introduce `j`. Use `exists_app_eq_of_hasWt_zero k Φ.E Φ.G Φ.D _ _ fun Z τ g z hz => ?_` and prove the remaining obligations. Establish `hq : ((τ ≫ Φ.D.i) * g).left ≫ Φ.D.q.left = g.left ≫ Φ.D.q.left` using `congrArg (fun x => x.left) (GtBaseChange.translate_comp Φ.D.q Φ.D.i Φ.D.isKernel τ g)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz'` using `GtBaseChange.translate_mem Φ.D.q Φ.D.i Φ.D.isKernel τ g _ z hz`. Take `⟨l, hl⟩` from `exists_chart Φ.isLB (Φ.D.q.left (g.left z))`. Establish `hl'` using `GtBaseChange.translate_mem Φ.D.q Φ.D.i Φ.D.isKernel τ g _ z hl`. Take `⟨J, hJ, e⟩` from `exists_good L hL z (K := Unit) (fun _ => g.left ≫ Φ.D.q.left ≫ π) (fun _ => c.idx l) (fun _ _ _ => rfl) (fun _ => c.le l hl)`. Establish `hwt : HasWt Φ.D.i _ (φ.f l) α` using `(PureWt.hasWt_iff_weight k Φ.E Φ.G Φ.D (Φ.ch l) (Φ.N₀.U l) (Φ.aff l) (Φ.le l) (φ.f l) α).2 fun χ hne => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hne (hp ⟨l, h⟩)`. Establish `h₀` using `hwt Z τ g z hl`. Establish `h₁` using `vσ _ g.left z J hJ l hl (e ())`. Establish `h₂` using `vσ _ ((τ ≫ Φ.D.i) * g).left z J hJ l hl' (by rw [← Category.assoc, hq, Category.assoc]; exact e ())`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : sval σ ((τ ≫ Φ.D.i) * g).left z J = sval σ g.left z J`. Establish `h₄` using `h₂.symm.trans (h₀.trans (congrArg _ h₁))`. Rewrite `h₄` using `[hw Z τ g z J hJ, mul_left_comm, ← Units.val_mul]`. Conclude with `(Units.mul_left_inj _).1 h₄`. Rewrite using `[gm_charUnit_zero_eq_one, Units.val_one, _root_.one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gs_res _ z (le j) hz' _).trans (Eq.trans ?_ (gs_res _ z (le j) hz _).symm)` and prove the remaining obligations. Use `(sec_trans σ _ z (le j hz') (hJ.mem _ _)).trans (Eq.trans ?_ (sec_trans σ _ z (le j hz) (hJ.mem _ _)).symm)` and prove the remaining obligations. Use `congrArg₂ (· * ·) (congrArg Units.val ?_) h₃` and prove the remaining obligations. Simplify using `only [trF_comp, ← Category.assoc, hq]`. Use `choose a ha using desc`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : ∀ j (Z : Scheme.{0}) (r : Z ⟶ Φ.G.left) (z : Z), Φ.D.q.left (r z) ∈ LB.wchart L ψ j → gs (r ≫ Φ.D.q.left) z (LB.wchart L ψ j) (a j) = gs r z (LB.wchart L (fun a => Φ.D.q.left ≫ ψ a) j) (σ.f j)` using `fun j Z r z hz => (gs_pull r _ z _ hz _).symm.trans ((congrArg (gs r z _) (ha j)).trans (gs_res r z (le j) hz _))`. Use `⟨⟨a, fun j j' => FunDescent.app_injective Φ.D.q.left (LB.wchart L ψ j ⊓ LB.wchart L ψ j') (fn_ext fun y hy => ?_)⟩, fun Z r z J hJ l hl e => ?_⟩` and prove the remaining obligations. Establish `hy' : Φ.D.q.left y ∈ LB.wchart L ψ j ⊓ LB.wchart L ψ j'` using `hy`. Use `(gs_pull (𝟙 _) Φ.D.q.left y _ hy' _).trans (Eq.trans ?_ (gs_pull (𝟙 _) Φ.D.q.left y _ hy' _).symm)` and prove the remaining obligations. Use `((gs_res (𝟙 _ ≫ Φ.D.q.left) y _ hy' _).trans ((hv j _ _ y hy'.1).trans (sec_trans σ (𝟙 _) y (le j hy'.1) (le j' hy'.2)))).trans (Eq.symm ?_)` and prove the remaining obligations.
-
-Use `(gs_mul (𝟙 _ ≫ Φ.D.q.left) y _ hy' _ _).trans (congrArg₂ (· * ·) ((gs_unit (𝟙 _ ≫ Φ.D.q.left) y _ hy' _).trans (congrArg Units.val ((gm_linComb L ψ ε (𝟙 _ ≫ Φ.D.q.left) y j j' hy'.1 hy'.2).trans (trF_comp _ _ _ _ _ _ _).symm))) ((gs_res (𝟙 _ ≫ Φ.D.q.left) y _ hy' _).trans (hv j' …` and prove the remaining obligations. Use `(vσ Z r z J hJ l hl e).trans (congrArg₂ (· * ·) (Eq.symm ?_) rfl)` and prove the remaining obligations. Rewrite using `[sval_of _ (r ≫ Φ.D.q.left) z J (fun a => J (r ≫ Φ.D.q.left ≫ ψ a)) (fun a => by rw [Category.assoc])]`. Conclude with `hv _ Z r z (Set.mem_iInter.2 fun a => hJ (r ≫ Φ.D.q.left ≫ ψ a))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_red_of_pure : ∀ (k : Type) [Field k] [IsAlgClosed k] (Φ : FibPre k) (Y : Scheme.{0}) (L : LB Y), L.IsLB → ∀ (π : Φ.E.B.left ⟶ Y) (N : ℕ) (c : ChartPull Φ.N₀ (npw L N) π) (K K' : Type) [Fintype K] [Fintype K'] (ψ : K → (Φ.E.B.left ⟶ Y)) (ε : K → ℤ) (φt : K' → (Φ.G.left ⟶ Y)) (εt : K' → ℤ) (t : LB.Gen (LB.LinComb L φt εt)), t.IsGen → FormEq (Sum.elim (fun a => Φ.D.q.left ≫ ψ a) φt) (Sum.elim ε εt) (fun _ : Fin 1 => Φ.D.q.left ≫ π) (fun _ => (N : ℤ)) → ∀ α : Φ.E.X, UFib.GenWt Φ.D.i t α → ∀ φ : (Φ.H 1).Sec, Φ.Pure α φ → ∃ b : LB.Sec (LB.LinComb L ψ ε), UFib.Red Φ c t b φ := by
   intro k _ _ Φ Y L hL π N c K K' _ _ ψ ε φt εt t ht hF α hw φ hp

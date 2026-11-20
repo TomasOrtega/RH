@@ -13,15 +13,15 @@ open scoped CategoryTheory.Obj
 open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.LieTangent
 
 /- English proof (translation)
-Introduce `S G _ R R' _ _ c x E _ _ E' _ _ M M'`. Establish `hc : Spec.map (CommRingCat.ofHom c) ≫ x = spMap c ≫ x` using `rfl`. Establish `h : ∀ e, ∃ e', M'.pt e' = epsBase c hc ≫ M.pt e` using `fun e => M'.onto _ (isTanAt_base c hc (M.tan e))`. Use `choose a ha using h`. Use `⟨{ toFun := a, map_add' := ?_, map_smul' := ?_ }, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e e'`. Apply `M'.inj` to reduce the goal to its premises. Rewrite using `[M'.add, ha, ha, ha, M.add, MonObj.comp_mul]`. Introduce `r e`. Apply `M'.inj` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[M'.pt_smul, ha, ha, M.pt_smul, ← Category.assoc, base_scale, Category.assoc]`. Introduce `e`. Express the relevant statement in the definitionally equal form `(M'.pt (a e)).left ≫ 𝟙 G.left = spMap (dualMap c) ≫ (M.pt e).left`. Rewrite using `[Category.comp_id, ha]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Use extensionality with `e`. Use `M'.inj ((?_ : M'.pt (j e) = epsBase c hc ≫ M.pt e).trans (ha e).symm)` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `hj e` as an intermediate fact.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `LieModel.Lifts at this`. Rewrite `this` using `[Category.comp_id]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_semilinear_lifts :
     ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] (R R' : Type) [CommRing R] [CommRing R'] (c : R →+* R')

@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.InertPrimeJacobi.NotIsS
 open NumberField
 
 /- English proof (translation)
-Introduce `K _ _ hK b d p hb hp hj`. Conclude with `PI.InertPrimeWork.inert K hK b d p hb hp hj`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPrime_span_of_jacobi_neg_one : PI.InertPrime := by
   intro K _ _ hK b d p hb hp hj

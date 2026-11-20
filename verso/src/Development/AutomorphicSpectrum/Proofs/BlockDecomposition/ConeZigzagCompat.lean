@@ -24,32 +24,32 @@ def shift {K : DCx.{w} R} (B : ∀ p q, K.X p q →ₗ[R] K.X (p + 1) (q + 1)) (
 variable {K : DCx.{w} R} (B : ∀ p q, K.X p q →ₗ[R] K.X (p + 1) (q + 1))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p q`. Apply the tactic sequence `rcases p with _ | p <;> rcases q with _ | q <;> simp [shift, smul_sub]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shift_sub (x y : ∀ p q, K.X p q) : shift B (x - y) = shift B x - shift B y := by
   funext p q
   rcases p with _ | p <;> rcases q with _ | q <;> simp [shift, smul_sub]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p q`. Apply the tactic sequence `rcases p with _ | p <;> rcases q with _ | q <;> simp [shift]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shift_zero : shift B (0 : ∀ p q, K.X p q) = 0 := by
   funext p q
   rcases p with _ | p <;> rcases q with _ | q <;> simp [shift]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p q`. Apply the tactic sequence `rcases p with _ | p <;> rcases q with _ | q <;> simp [shift, smul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem shift_add (x y : ∀ p q, K.X p q) : shift B (x + y) = shift B x + shift B y := by
   funext p q
   rcases p with _ | p <;> rcases q with _ | q <;> simp [shift, smul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a b`. Break down `a with _ | a` into its components or cases. Rewrite using `[Pi.smul_apply, Pi.smul_apply, K.sgl_ne _ (Or.inl (by omega))]`. Simplify using `[shift]`. Break down `b with _ | b` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[Pi.smul_apply, Pi.smul_apply, K.sgl_ne _ (Or.inr (by omega))]`. Simplify using `[shift]`. Distinguish the cases in `h : a = p ∧ b = q`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `only [shift, Pi.smul_apply, K.sgl_self]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.smul_apply, Pi.smul_apply, K.sgl_ne _ (by omega)]`. Simplify using `only [shift]`. Rewrite using `[K.sgl_ne _ (by omega)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem shift_sgl (p q : ℕ) (x : K.X p q) :
     shift B (K.sgl p q x) = (-1 : ℤ) ^ q • K.sgl (p + 1) (q + 1) (B p q x) := by
@@ -69,9 +69,9 @@ theorem shift_sgl (p q : ℕ) (x : K.X p q) :
         simp
 
 /- English proof (translation)
-Introduce `p q h`. Break down `p with _ | p` into its components or cases. Both sides reduce to the same expression. Break down `q with _ | q` into its components or cases. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Simplify using `only [shift]`. Rewrite using `[hx p q (by omega)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem shift_mem (m : ℕ) (x : ∀ p q, K.X p q) (hx : x ∈ K.T m) : shift B x ∈ K.T (m + 2) := by
   intro p q h
@@ -84,15 +84,15 @@ theorem shift_mem (m : ℕ) (x : ∀ p q, K.X p q) (hx : x ∈ K.T m) : shift B 
       simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p q`. Rewrite using `[K.D_apply]`. Break down `p with _ | p` into its components or cases. Apply the tactic sequence `rcases q with _ | q <;> simp [DCx.Dh, DCx.Dv, shift]`. Break down `q with _ | q` into its components or cases.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis.
 
-Apply the tactic sequence `rcases p with _ | p <;> simp [DCx.Dh, DCx.Dv, shift]`. Establish `h1 : K.Dh (shift B x) (p + 1) (q + 1) = (-1 : ℤ) ^ q • B p q (K.Dh x p q)`. Break down `p with _ | p` into its components or cases. Simplify using `[DCx.Dh, shift]`. Simplify using `[DCx.Dh, shift, hh]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : K.Dv (shift B x) (p + 1) (q + 1) = (-1 : ℤ) ^ (q + 1) • B p q (K.Dv x p q)`. Break down `q with _ | q` into its components or cases. Simplify using `[DCx.Dv, shift]`. Simplify using `only [DCx.Dv, shift, map_zsmul, hv]`. Rewrite using `[pow_succ, pow_succ]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[h1, h2]`. Use `show _ = (-1 : ℤ) ^ q • B p q (K.D x p q)`. Rewrite using `[K.D_apply, map_add, map_zsmul, smul_add, smul_smul, smul_smul, pow_succ, pow_succ]`. Use `congr 2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem D_shift (hh : ∀ p q x, K.dh (p + 1) (q + 1) (B p q x) = B (p + 1) q (K.dh p q x))
     (hv : ∀ p q x, K.dv (p + 1) (q + 1) (B p q x) = B p (q + 1) (K.dv p q x)) (x : ∀ p q, K.X p q) :
@@ -120,15 +120,15 @@ theorem D_shift (hh : ∀ p q x, K.dh (p + 1) (q + 1) (B p q x) = B (p + 1) q (K
       ring
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Use `⟨0, fun _ _ _ => rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, hP0]`. Conclude with `(sub_self _).symm`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ k ih`. Take `⟨U, hU, hDU⟩` from `ih`. Use `⟨shift B U + K.sgl 0 (2 * k + 1) (g k), fun p q h => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.add_apply, Pi.add_apply, K.sgl_ne _ (by omega), add_zero]`. Break down `p with _ | p` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Break down `q with _ | q` into its components or cases. Both sides reduce to the same expression. Simplify using `only [shift]`. Rewrite using `[hU p q (by omega)]`.
+Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[map_add, D_shift B hh hv, hDU, shift_sub, shift_sgl, shift_sgl, K.D_sgl, hg1, hg2, hPs, map_neg, map_zsmul]`. Establish `e : ((-1 : ℤ) ^ (2 * k)) = 1` using `by rw [pow_mul]; simp`. Rewrite using `[e, one_smul, pow_zero, one_smul]`. Establish `e2 : K.sgl 0 (2 * k + 1 + 1) (a (k + 1)) = K.sgl 0 (2 * (k + 1)) (a (k + 1))` using `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cone_zigzag_compat (hh : ∀ p q x, K.dh (p + 1) (q + 1) (B p q x) = B (p + 1) q (K.dh p q x))
     (hv : ∀ p q x, K.dv (p + 1) (q + 1) (B p q x) = B p (q + 1) (K.dv p q x))
@@ -162,9 +162,9 @@ theorem cone_zigzag_compat (hh : ∀ p q x, K.dh (p + 1) (q + 1) (B p q x) = B (
       abel
 
 /- English proof (translation)
-Take `⟨U, hU, hDU⟩` from `cone_zigzag_compat B hh hv a g P hg1 hg2 hP0 hPs (n + 1)`. Use `GlobalTheory.CompanionTheory.ConeCech.stair F n hTop hV hE (P (n + 1)) hP (K.sgl 0 (2 * n + 1) v - U) ?_ ?_` and prove the remaining obligations. Use `sub_mem (fun p q h => K.sgl_ne _ (by omega)) (fun p q h => hU p q (by omega))` and prove the remaining obligations. Rewrite using `[map_sub, hDU, K.D_sgl, hv1, hv2, map_zero, zero_add, pow_zero, one_smul]`. Establish `e2 : K.sgl 0 (2 * n + 1 + 1) (a (n + 1)) = K.sgl 0 (2 * (n + 1)) (a (n + 1))` using `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem zig_stair (F : GlobalTheory.CompanionTheory.ConeCech.DFil K) (n : ℕ) (hTop : ∀ p q, F.L 0 p q = ⊤)
     (hV : ∀ p q, n + 1 < p → Subsingleton (K.X p q)) (hE : ∀ (r : ℕ) p q, q ≠ r → F.Ex (r : ℤ) p q)

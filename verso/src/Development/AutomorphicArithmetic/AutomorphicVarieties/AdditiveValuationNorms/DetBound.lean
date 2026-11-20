@@ -7,15 +7,13 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AdditiveValuationN
 open UpperTheory.V UpperTheory.V.PropA
 
 /- English proof (translation)
-Introduce `l _ u c hc j R S`. Set `φ : ℤ_[l] →+* PadicAlgCl l` to `(algebraMap ℚ_[l] (PadicAlgCl l)).comp PadicInt.Coe.ringHom`. Establish `hφ : ∀ x, ‖φ x‖ = ‖x‖`. Introduce `x`. Use `show ‖algebraMap ℚ_[l] (PadicAlgCl l) (x : ℚ_[l])‖ = ‖x‖`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PadicInt.padic_norm_e_of_padicInt]`. Conclude with `PadicAlgCl.norm_extends l (x : ℚ_[l])`. Take `⟨z, hz⟩` from `detFactor (PadicAlgCl l) R (S.map φ)`. Use `choose s hs using fun i => ball l u c hc j (z i)`. Use `⟨s, fun e => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `normVal l R (j + c) _ (fun i => s i - e)` to reduce the goal to its premises. Use `set a : ℤ_[l] := (u ^ l ^ j) ^ e with ha`. Establish `hdet : φ (a • S - 1).det = ∏ i, (φ a * z i - 1)`. Rewrite using `[RingHom.map_det, ← hz (φ a)]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use extensionality with `p q`. Simplify using `[Matrix.sub_apply, Matrix.one_apply, RingHom.mapMatrix_apply]`. Rewrite using `[← hφ, hdet, norm_prod]`. Apply `Finset.prod_le_prod` to reduce the goal to its premises. Introduce `i _`.
-
-Check the signs of the components of the expression. Introduce `i _`. Conclude with `hs i e`.
+Fix the arbitrary inputs or assume the hypotheses. Check the signs of the components of the expression. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.PropA.detBound :
     ∀ (l : ℕ) [Fact l.Prime] (u : ℤ_[l]) (c : ℕ), IsLevel l u c → ∀ (j R : ℕ) (S : Matrix (Fin R) (Fin R) ℤ_[l]),

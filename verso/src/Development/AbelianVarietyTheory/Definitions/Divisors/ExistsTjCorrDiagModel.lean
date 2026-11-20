@@ -16,29 +16,29 @@ variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Bas
 def uIdeal (D : Datum p) (r : ℤ) : Ideal (𝓞 D.F) := Ideal.span {(p : 𝓞 D.F), D.ω - (r : 𝓞 D.F)}
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span (Set.mem_insert _ _)`.
+A detailed English derivation is pending.
 -/
 theorem p_mem_uIdeal (D : Datum p) (r : ℤ) : (p : 𝓞 D.F) ∈ uIdeal D r :=
   Ideal.subset_span (Set.mem_insert _ _)
 
 /- English proof (translation)
-The claim follows from `Ideal.subset_span (Set.mem_insert_of_mem _ (Set.mem_singleton _))`.
+A detailed English derivation is pending.
 -/
 theorem sub_mem_uIdeal (D : Datum p) (r : ℤ) : D.ω - (r : 𝓞 D.F) ∈ uIdeal D r :=
   Ideal.subset_span (Set.mem_insert_of_mem _ (Set.mem_singleton _))
 
 /- English proof (translation)
-Take `⟨r, k, hk⟩` from `D.split`. Use `⟨r, Ideal.exists_le_maximal _ fun htop => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : 𝓞 D.F) ∈ uIdeal D r` using `htop ▸ Submodule.mem_top`. Take `⟨a, c, hac⟩` from `Ideal.mem_span_pair.1 h1`. Establish `hk' : ((r : 𝓞 D.F)) ^ 2 - (D.tr : 𝓞 D.F) * r + D.nm = (p : 𝓞 D.F) * k` using `by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 D.F) hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htr` using `D.tr_eq`. Establish `hnm` using `D.nm_eq`. Establish `hbb : D.bar (D.bar D.ω) = D.ω`. Use `congrArg D.bar htr` as an intermediate fact. Rewrite `this` using `[map_add, map_intCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `this - htr`. Establish `e1 : D.bar D.ω - r = (p : 𝓞 D.F) * (a * (D.bar D.ω - r) + c * k)`. Take the linear combination `(-(D.bar D.ω - r)) * hac + c * hk' + c * hnm - c * r * htr`. Use `set u := a * (D.bar D.ω - r) + c * k`. Establish `e2 : D.ω - r = (p : 𝓞 D.F) * D.bar u`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg D.bar e1` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_intCast, map_natCast, hbb]`. Then use the resulting hypothesis. Establish `e3 : ((D.tr ^ 2 - 4 * D.nm : ℤ) : 𝓞 D.F) = (p : 𝓞 D.F) * ((D.bar u - u) * (D.ω - D.bar D.ω))`. Use `push_cast`. Take the linear combination `(D.ω - D.bar D.ω) * (e2 - e1) - (D.ω + D.bar D.ω + D.tr) * htr + 4 * hnm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hp : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.1 Fact.out`. Take `⟨x, y, hxy⟩` from `(hp.coprime_iff_not_dvd.2 D.disc_p)`. Establish `hu : IsUnit (algebraMap ℤ (𝓞 D.F) (p : ℤ))`. Establish `h` using `congrArg (Int.cast : ℤ → 𝓞 D.F) hxy`. Rewrite `h` using `[Int.cast_add, Int.cast_mul, Int.cast_mul, e3, Int.cast_one, Int.cast_natCast]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsUnit.of_mul_eq_one ((x : 𝓞 D.F) + y * ((D.bar u - u) * (D.ω - D.bar D.ω))) ?_` and prove the remaining obligations. Simplify using `only [eq_intCast, Int.cast_natCast]`. Take the linear combination `h`. Conclude with `hp.not_unit (isUnit_of_map_unit _ _ hu)`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_prime_uIdeal_le (D : Datum p) : ∃ (r : ℤ) (w : Ideal (𝓞 D.F)), w.IsMaximal ∧ uIdeal D r ≤ w := by
   obtain ⟨r, k, hk⟩ := D.split
@@ -78,13 +78,13 @@ def IsPIsog {N : ℕ} {s : S ⟶ Sp R} (c : ℕ) (o o' : Obj b N s) (ψ : o.A �
     ∃ ψ' : o'.A ⟶ o.A, IsMonHom ψ' ∧ ψ ≫ ψ' = (𝟙 o.A) ^ c ∧ ψ' ≫ ψ = (𝟙 o'.A) ^ c
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem IsPIsog.exists_eq_pow {N : ℕ} {s : S ⟶ Sp R} {c : ℕ} {o o' : Obj b N s} {ψ : o.A ⟶ o'.A}
     (h : IsPIsog c o o' ψ) : ∃ k : ℕ, c = p ^ k := h.1
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h.1`. Conclude with `pow_pos (Fact.out : p.Prime).pos k`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsPIsog.pos {N : ℕ} {s : S ⟶ Sp R} {c : ℕ} {o o' : Obj b N s} {ψ : o.A ⟶ o'.A}
     (h : IsPIsog c o o' ψ) : 0 < c := by
@@ -131,33 +131,29 @@ structure TjCorr {N : ℕ} (F : RepFam b N) (r : ℤ) (w : Ideal (𝓞 D.F)) (j 
   sSurj : Surjective s
 
 /- English proof (translation)
-The claim follows from `T.uLe (p_mem_uIdeal D r)`.
+A detailed English derivation is pending.
 -/
 theorem TjCorr.p_mem {N : ℕ} {F : RepFam b N} {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} (T : TjCorr F r w j c) :
     (p : 𝓞 D.F) ∈ w :=
   T.uLe (p_mem_uIdeal D r)
 
 /- English proof (translation)
-The claim follows from `T.wPrime.ne_top`.
+A detailed English derivation is pending.
 -/
 theorem TjCorr.w_ne_top {N : ℕ} {F : RepFam b N} {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ} (T : TjCorr F r w j c) :
     w ≠ ⊤ :=
   T.wPrime.ne_top
 
 /- English proof (translation)
-Take `⟨_, ⟨V, hV, rfl⟩, hyV, hVU⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hy U.isOpen`. Use `haveI : Nonempty V := ⟨⟨y, hyV⟩⟩`. Establish `hnil : ¬ IsNilpotent (p : Γ(Y, V))`. Introduce and unpack `⟨n, hn⟩`. Proceed by induction on `n with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact one_ne_zero (by rwa [pow_zero] at hn)`. Consider the case `succ n ih => exact ih (hp V _ (by rwa [pow_succ'] at hn))`. Choose the witnesses or unpack the hypotheses as in `⟨P, hP, hpP⟩ : ∃ P : Ideal Γ(Y, V), P.IsPrime ∧ (p : Γ(Y, V)) ∉ P := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`.
+Treat this case separately. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `hnil (nilpotent_iff_mem_prime.2 h)`. Set `k` to `AlgebraicClosure P.ResidueField`. Set `φ : Γ(Y, V) →+* k` to `(algebraMap P.ResidueField k).comp (algebraMap _ P.ResidueField)`. Establish `hpk : (p : k) ≠ 0`. Rewrite using `[← map_natCast φ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Introduce `h`. Conclude with `hpP (Ideal.algebraMap_residueField_eq_zero.1 ((algebraMap P.ResidueField k).injective (h.trans (map_zero _).symm)))`. Set `x : Sp k ⟶ Y` to `Spec.map (CommRingCat.ofHom φ) ≫ hV.fromSpec`. Set `β : R →+* k` to `(Spec.preimage (x ≫ s)).hom`. Use `haveI : CharZero k := by haveI := ringChar.charP k`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Break down `CharP.char_is_prime_or_zero k (ringChar k) with hl | hl` into its components or cases. It suffices to derive a contradiction. Establish `h0 : ((ringChar k : ℕ) : k) = 0` using `CharP.cast_eq_zero k _`. Distinguish the cases in `h : ringChar k = p`. Conclude with `hpk (h ▸ h0)`.
-
-Use `(b.unit _ ((Nat.coprime_primes hl Fact.out).2 h)).map β` as an intermediate fact. Rewrite `this` using `[map_natCast, h0]`. Conclude with `not_isUnit_zero this`. Use `haveI : CharP k 0 := hl ▸ ringChar.charP k`. Conclude with `CharP.charP_to_charZero k`.
-
-Use `⟨k, inferInstance, inferInstance, inferInstance, x, fun q => hVU ?_⟩` and prove the remaining obligations. Rewrite using `[← hV.range_fromSpec]`. Conclude with `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_charZero_point (b : Base D R) {Y : Scheme.{0}} (s : Y ⟶ Sp R)
     (hp : ∀ (U : Y.Opens) (f : Γ(Y, U)), (p : Γ(Y, U)) * f = 0 → f = 0) (U : Y.Opens) (y : Y) (hy : y ∈ U) :
@@ -199,7 +195,7 @@ theorem exists_charZero_point (b : Base D R) {Y : Scheme.{0}} (s : Y ⟶ Sp R)
   exact ⟨_, rfl⟩
 
 /- English proof (translation)
-The claim follows from `ES.exists_charZero_point b (T.s ≫ F.s) T.pReg U y hy`.
+A detailed English derivation is pending.
 -/
 theorem TjCorr.exists_charZero_point {N : ℕ} {F : RepFam b N} {r : ℤ} {w : Ideal (𝓞 D.F)} {j c : ℕ}
     (T : TjCorr F r w j c) (U : T.Y.Opens) (y : T.Y) (hy : y ∈ U) :
@@ -207,9 +203,9 @@ theorem TjCorr.exists_charZero_point {N : ℕ} {F : RepFam b N} {r : ℤ} {w : I
   ES.exists_charZero_point b (T.s ≫ F.s) T.pReg U y hy
 
 /- English proof (translation)
-Take `⟨y, -⟩` from `T.sSurj.surj (Classical.arbitrary F.X)`. Take `⟨k, _, _, _, x, -⟩` from `T.exists_charZero_point ⊤ y trivial`. Establish `e` using `(h k x).2.symm.trans (T.tj k x).2`. Establish `h0 : Ideal.absNorm w ≠ 0` using `fun h0 => by`. Establish `hp` using `T.p_mem`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hp` using `[Ideal.absNorm_eq_zero_iff.1 h0, Ideal.mem_bot]`. Conclude with `(Nat.cast_ne_zero.2 (Fact.out : p.Prime).ne_zero) hp`. Establish `h1 : Ideal.absNorm w ≠ 1` using `fun h1 => T.w_ne_top (Ideal.absNorm_eq_one_iff.1 h1)`. Conclude with `Nat.eq_of_mul_eq_mul_left D.m_pos (Nat.pow_right_injective (by omega) e)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem TjCorr.eq_of_isTj {N : ℕ} {F : RepFam b N} [Nonempty F.X] {r : ℤ} {w : Ideal (𝓞 D.F)} {j c j' : ℕ}
     (T : TjCorr F r w j c) (h : IsTj r w j' T.o T.o' T.ψ) : j' = j := by
@@ -224,9 +220,9 @@ theorem TjCorr.eq_of_isTj {N : ℕ} {F : RepFam b N} [Nonempty F.X] {r : ℤ} {w
   exact Nat.eq_of_mul_eq_mul_left D.m_pos (Nat.pow_right_injective (by omega) e)
 
 /- English proof (translation)
-Establish `e : sq2 (𝟙 o.A) = 𝟙 (G2 o.A).left`. Simplify using `only [sq2, Category.comp_id, lift_fst_snd]`. Both sides reduce to the same expression. Use `⟨⟨0, (pow_zero p).symm⟩, inferInstance, fun c' => ?_, fun x => (Category.comp_id _).symm, ?_, 𝟙 o.A, inferInstance, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.comp_id, Category.id_comp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(GlobalTheory.PrimNorm.lbIso_iff o.isLB _ _ _ _).2 ?_⟩ show _ = ∏ _k : PUnit, GlobalTheory.PrimNorm.cls o.P (sq2 (𝟙 o.A)) ^ (1 : ℤ)` and prove the remaining obligations. Rewrite using `[e]`. Simplify using the standard rewrite rules. Rewrite using `[pow_one, Category.comp_id]`. Rewrite using `[pow_one, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsPIsog.id {N : ℕ} {s : S ⟶ Sp R} (o : Obj b N s) : IsPIsog 1 o o (𝟙 o.A) := by
   have e : sq2 (𝟙 o.A) = 𝟙 (G2 o.A).left := by
@@ -242,7 +238,7 @@ theorem IsPIsog.id {N : ℕ} {s : S ⟶ Sp R} (o : Obj b N s) : IsPIsog 1 o o (�
   · rw [pow_one, Category.comp_id]
 
 /- English proof (translation)
-Introduce `a _` and use `by haveI := o.act.hom (algebraMap (𝓞 D.F) D.O a) exact one_comp _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem KilledBy.one {N : ℕ} {s : S ⟶ Sp R} (o : Obj b N s) (v : Ideal (𝓞 D.F)) (T : Over S) :
     KilledBy o v (1 : T ⟶ o.A) := fun a _ => by
@@ -250,9 +246,9 @@ theorem KilledBy.one {N : ℕ} {s : S ⟶ Sp R} (o : Obj b N s) (v : Ideal (𝓞
   exact one_comp _
 
 /- English proof (translation)
-Introduce `k _ _ _ x`. Use `⟨fun g hg _ => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hg` using `[Category.comp_id]`. Substitute `hg` using the available equality. Conclude with `KilledBy.one o w _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.mul_zero, pow_zero, Nat.card_eq_one_iff_exists]`. Use `⟨⟨1, by rw [Category.comp_id], KilledBy.one o w _⟩, fun y => Subtype.ext ?_⟩` and prove the remaining obligations. Use `y.2.1` as an intermediate fact. Rewrite `this` using `[Category.comp_id]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsTj.id {N : ℕ} {s : S ⟶ Sp R} (r : ℤ) (w : Ideal (𝓞 D.F)) (o : Obj b N s) :
     IsTj r w 0 o o (𝟙 o.A) := by
@@ -268,7 +264,7 @@ theorem IsTj.id {N : ℕ} {s : S ⟶ Sp R} (r : ℤ) (w : Ideal (𝓞 D.F)) (o :
     exact this
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨o, ⟨m⟩⟩ : ∃ o : Obj b N (𝟙 F.X ≫ F.s), Nonempty (ObjMap o F.univ (𝟙 F.X)) := by`. Rewrite using `[Category.id_comp]`. Conclude with `⟨F.univ, ⟨{ φ := 𝟙 _, φ₂ := 𝟙 _, cart := GlobalTheory.SiegLower.isGrpPullback_id F.univ.A sq := ⟨by simp, by simp⟩, act := fun c => by simp pol := GlobalTheory.SiegLower.lbIso_pull_id F.univ.isLB, eta := fun y => by simp }⟩⟩`. Conclude with `⟨⟨F.X, 𝟙 _, 𝟙 _, rfl, o, o, m, m, 𝟙 o.A, IsPIsog.id o, IsTj.id r w o, hw, hu, hp, inferInstance, inferInstance, inferInstance⟩, inferInstanceAs (IsIso (𝟙 F.X)), inferInstanceAs (IsIso (𝟙 F.X)), inferInstanceAs (IsIso (𝟙 o.A))⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_tjCorr_diag {N : ℕ} (F : RepFam b N) (r : ℤ) (w : Ideal (𝓞 D.F)) (hw : w.IsPrime)
     (hu : uIdeal D r ≤ w) (hp : ∀ (U : F.X.Opens) (f : Γ(F.X, U)), (p : Γ(F.X, U)) * f = 0 → f = 0) :
@@ -283,13 +279,13 @@ theorem exists_tjCorr_diag {N : ℕ} (F : RepFam b N) (r : ℤ) (w : Ideal (𝓞
     inferInstanceAs (IsIso (𝟙 o.A))⟩
 
 /- English proof (translation)
-Use `Y.sheaf.eq_of_locally_eq' (fun V : {V : Y.affineOpens // V.1 ≤ U} => V.1.1) U (fun V => homOfLE V.2) ?_ f 0 fun V => ?_` and prove the remaining obligations. Introduce `y hy`. Take `⟨_, ⟨V, hV, rfl⟩, hyV, hVU⟩` from `Y.isBasis_affineOpens.exists_subset_of_mem_open hy U.isOpen`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨⟨V, hV⟩, hVU⟩, hyV⟩`. Establish `hfl : (s.appLE ⊤ V.1.1 le_top).hom.Flat` using `HasRingHomProperty.appLE (P := @Flat) s inferInstance ⟨⊤, isAffineOpen_top _⟩ V.1 le_top`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : (p : Γ(Sp R, ⊤)) ∈ nonZeroDivisors Γ(Sp R, ⊤)`. Rewrite using `[mem_nonZeroDivisors_iff_left]`. Introduce `a ha`. Set `e` to `(Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv`. Use `e.injective ((hR _ ?_).trans (map_zero e).symm)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_natCast e, ← map_mul, ha, map_zero]`. Use `letI := (s.appLE ⊤ V.1.1 le_top).hom.toAlgebra`. Use `haveI : Module.Flat Γ(Sp R, ⊤) Γ(Y, V.1.1) := hfl`. Establish `hreg` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := Γ(Y, V.1.1)) hp`. Set `ρ : Γ(Y, U) →+* Γ(Y, V.1.1)` to `(Y.presheaf.map (homOfLE V.2).op).hom`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show ρ f = ρ 0`. Use `hreg ?_` and prove the remaining obligations. Simplify using `only [Algebra.smul_def, map_natCast, map_zero, mul_zero]`. Rewrite using `[← map_natCast ρ, ← map_mul, hf, map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pReg_of_flat {Y : Scheme.{0}} (s : Y ⟶ Sp R) [Flat s] (hR : ∀ a : R, (p : R) * a = 0 → a = 0)
     (U : Y.Opens) (f : Γ(Y, U)) (hf : (p : Γ(Y, U)) * f = 0) : f = 0 := by
@@ -316,7 +312,7 @@ theorem pReg_of_flat {Y : Scheme.{0}} (s : Y ⟶ Sp R) [Flat s] (hR : ∀ a : R,
     rw [← map_natCast ρ, ← map_mul, hf, map_zero]
 
 /- English proof (translation)
-Use `hR.map (((Scheme.ΓSpecIso (CommRingCat.of R)).inv ≫ s.appLE ⊤ U le_top).hom)` as an intermediate fact. Rewrite `this` using `[map_natCast]`. Conclude with `this.mul_right_eq_zero.1 hf`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pReg_of_isUnit {Y : Scheme.{0}} (s : Y ⟶ Sp R) (hR : IsUnit (p : R))
     (U : Y.Opens) (f : Γ(Y, U)) (hf : (p : Γ(Y, U)) * f = 0) : f = 0 := by
@@ -325,7 +321,7 @@ theorem pReg_of_isUnit {Y : Scheme.{0}} (s : Y ⟶ Sp R) (hR : IsUnit (p : R))
   exact this.mul_right_eq_zero.1 hf
 
 /- English proof (translation)
-Take `⟨r, w, hw, hu⟩` from `exists_prime_uIdeal_le D`. Use `haveI := M.smooth`. Use `haveI : Smooth M.s := SmoothOfRelativeDimension.smooth (D.a * (D.n - 1)) M.s`. Conclude with `⟨r, w, exists_tjCorr_diag M.toRepFam r w hw.isPrime hu (fun U f hf => pReg_of_flat (Y := M.X) M.s hR U f hf)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_tjCorr_diag_model {N : ℕ} (M : Model b N) (hR : ∀ a : R, (p : R) * a = 0 → a = 0) :
     ∃ (r : ℤ) (w : Ideal (𝓞 D.F)) (T : TjCorr M.toRepFam r w 0 1), IsIso T.s ∧ IsIso T.t ∧ IsIso T.ψ := by
@@ -340,7 +336,7 @@ def IsWOrd {N : ℕ} {s : S ⟶ Sp R} (o : Obj b N s) (w : Ideal (𝓞 D.F)) {k 
     Nat.card {g : Over.mk x ⟶ o.A // KilledBy o w g} = Ideal.absNorm w ^ (D.m * (D.n - 1))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.2.2.2, fun h => ⟨inferInstance, hw, hu (p_mem_uIdeal D r), h⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isWOrd_iff {N : ℕ} {s : S ⟶ Sp R} (o : Obj b N s) {r : ℤ} {w : Ideal (𝓞 D.F)} (hw : w.IsPrime)
     (hu : uIdeal D r ≤ w) {k : Type} [Field k] [IsAlgClosed k] [CharP k p] (x : Sp k ⟶ S) :
@@ -349,7 +345,7 @@ theorem isWOrd_iff {N : ℕ} {s : S ⟶ Sp R} (o : Obj b N s) {r : ℤ} {w : Ide
   ⟨fun h => h.2.2.2, fun h => ⟨inferInstance, hw, hu (p_mem_uIdeal D r), h⟩⟩
 
 /- English proof (translation)
-Rewrite using `[h, Nat.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 example (w : Ideal (𝓞 D.F)) (j : ℕ) (h : D.m = 1) : Ideal.absNorm w ^ (D.m * j) = Ideal.absNorm w ^ j := by
   rw [h, Nat.one_mul]
@@ -360,7 +356,7 @@ Simplify using the standard rewrite rules.
 example (w : Ideal (𝓞 D.F)) : Ideal.absNorm w ^ (D.m * 0) = 1 := by simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, (pow_zero p).symm⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ k : ℕ, (1 : ℕ) = p ^ k := ⟨0, (pow_zero p).symm⟩
 

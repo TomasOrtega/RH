@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR R' _ _ _ ρ hfin hgal D D' hD A' G' _ _ hG U'`. Establish `hex : ∀ σ : Gal ρ, ∃ a, GalMap hD U' σ a` using `GlobalTheory.T.exists_uniformisedGroup_galoisAutomorphism_map R hR R' ρ hfin D D' hD A' G' hG U'`. Use `choose act hact using hex`. Conclude with `⟨{ act := act cart := fun σ => (hact σ).1 act_one := GlobalTheory.T.uniformisedGroup_galoisMap_unique R hR R' ρ hfin D D' hD A' G' hG U' 1 _ _ (hact 1) (GlobalTheory.T.uniformisedGroup_galoisMap_one R hR R' ρ hfin D D' hD A' G' hG U') act_mul := fun σ τ => GlobalTheory.T.uniformi …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem galAct_nonempty : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsLocalRing R'] (ρ : R →+* R'), FinExt ρ → IsGal ρ → ∀ (D : DegData R (maximalIdeal R)) (D' : DegData R' (maximalIdeal R')) (hD : IsPullDeg ρ D.toPre D'.toPre) (A' : PolAV (Sp (FractionRing R'))) (G' : Over (Sp R')) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ (U' : Unif (maximalIdeal R') D' A' G'), Nonempty (GalAct ρ hD U') := by
   intro R _ _ _ hR R' _ _ _ ρ hfin hgal D D' hD A' G' _ _ hG U'

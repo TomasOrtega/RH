@@ -17,9 +17,9 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
   (I : In3 K G Pl0 I0 Ty T m)
 
 /- English proof (translation)
-Establish `hc : ∀ g : G, (idemOf I.A.fam.X).coeff g = ∑ χ ∈ I.A.fam.X, χ 1 / (Fintype.card G : K) * χ g⁻¹`. Introduce `g`. Simplify using `[idemOf, chiIdem, MonoidAlgebra.coeff_sum, MonoidAlgebra.coeff_single, Finsupp.finset_sum_apply, Finsupp.single_apply]`. Simplify using `only [eMat]`. Rewrite using `[GoodPlacesAlt.sum_chars_eq τ I.A.fam.X hinj hX (fun χ => (χ 1 / (Fintype.card G : K)) • ∑ x : G, χ x⁻¹ • I.ρf x)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hc, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_eMat_eq {S : Type} [Fintype S] {Ws : S → Type} [∀ s, AddCommGroup (Ws s)] [∀ s, Module K (Ws s)]
     (τ : ∀ s, Representation K G (Ws s))
@@ -38,7 +38,7 @@ theorem sum_eMat_eq {S : Type} [Fintype S] {Ws : S → Type} [∀ s, AddCommGrou
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Rewrite using `[CxData.iC_eq_comp, CxData.lin_uQ_cpt]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem iCg_cpt (x : Fin ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).dQ I.A3.fam3.base3.μ0) → K) :
     I.X.iC I.cg false I.A3.fam3.base3.μ0 (cpt I.A3.fam3.base3.v0.embedding x) =
@@ -48,9 +48,9 @@ theorem iCg_cpt (x : Fin ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X
   rfl
 
 /- English proof (translation)
-Establish `hgood : goodAt (I.A.fam.lvl ⊥ 1).X (I.A.fam.lvl ⊥ 1).P (I.A.fam.lvl ⊥ 1).ψ = idemOf I.A.fam.X` using `by show idemOf I.A.fam.X * lvlIdem ⊥ 1 = _`. Rewrite using `[level_idempotent_bot K G 1, mul_one]`. Establish `hidem : goodAt (I.A.fam.lvl ⊥ 1).X (I.A.fam.lvl ⊥ 1).P (I.A.fam.lvl ⊥ 1).ψ * goodAt (I.A.fam.lvl ⊥ 1).X (I.A.fam.lvl ⊥ 1).P (I.A.fam.lvl ⊥ 1).ψ = goodAt (I.A.fam.lvl ⊥ 1).X (I.A.fam.lvl ⊥ 1).P (I.A.fam.lvl ⊥ 1).ψ`. Rewrite using `[hgood]`. Conclude with `(idempotent_central K G I.A.fam.X hok.irr).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h : (I.A.fam.R I.A3.fam3.base3.μ0).S.gaOp (I.A.fam.R I.A3.fam3.base3.μ0).r (goodAt (I.A.fam.lvl ⊥ 1).X (I.A.fam.lvl ⊥ 1).P (I.A.fam.lvl ⊥ 1).ψ) ((I.A.fam.R I.A3.fam3.base3.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A3.fam3.base3.μ0) x) = (I.A.fam.R I.A3.fam3.base3.μ0).toF (I.A.fam.lvl …` using `BlockDat.gaOp_fix (I.A.fam.R I.A3.fam3.base3.μ0) (I.A.fam.lvl ⊥ 1) hidem (((I.A.fam.R I.A3.fam3.base3.μ0).zE (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A3.fam3.base3.μ0)).mulVec x)`. Rewrite `h` using `[hgood]`. Use `conv_rhs => rw [← h]`. Simplify using `only [CSD.gaOp, LinearMap.sum_apply, LinearMap.smul_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem idemOf_fix {s : ℕ} (hok : I.A.fam.Ok s)
     (x : Fin ((I.A.fam.R I.A3.fam3.base3.μ0).dZ (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A3.fam3.base3.μ0)) → K) :
@@ -76,9 +76,9 @@ theorem idemOf_fix {s : ℕ} (hok : I.A.fam.Ok s)
   simp only [CSD.gaOp, LinearMap.sum_apply, LinearMap.smul_apply]
 
 /- English proof (translation)
-Establish `hq : ∀ (g : G) (f : I.A3.fam3.amb3.FR I.A3.fam3.base3.μ0), I.gE g (I.X.Θ I.A3.fam3.base3.μ0 (I.X.jR I.A3.fam3.base3.μ0 f)) = I.X.Θ I.A3.fam3.base3.μ0 (I.X.jR I.A3.fam3.base3.μ0 ((I.A.fam.R I.A3.fam3.base3.μ0).r g f))` using `fun g f => (hH.gequiv I.A3.fam3.base3.μ0 g f).symm`. Establish `hq' : ∀ g : G, I.gE g (I.X.Θ I.A3.fam3.base3.μ0 (I.X.jR I.A3.fam3.base3.μ0 ((I.A.fam.R I.A3.fam3.base3.μ0).toF (I.A.fam.lvl ⊥ 1) (I.X.zs.Z I.A3.fam3.base3.μ0) x))) = I.X.Θ I.A3.fam3.base3.μ0 (I.X.jR I.A3.fam3.base3.μ0 ((I.A.fam.R I.A3.fam3.base3.μ0).r g ((I.A.fam.R I.A3.fam3.base …` using `fun g => hq g _`. Rewrite using `[I.iCg_cpt x]`. Repeatedly rewrite using `[hq']`. Use `conv_rhs => rw [← I.idemOf_fix hH.ok.ok2 x]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `erw [map_sum, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations. Use `erw [LinearMap.map_smulₛₗ, map_smul]`. Apply the tactic sequence `first | done | rfl`.
+A detailed English derivation is pending.
 -/
 theorem iCg_fix {s : ℕ} (hH : I.Hyp s)
     (x : Fin ((lv (faceOf3 I.A3 ⊥ 1 I.P1 I.ψ1 I.Dc I.Sp I.Zsc I.X.zs) false).dQ I.A3.fam3.base3.μ0) → K) :
@@ -102,7 +102,7 @@ theorem iCg_fix {s : ℕ} (hH : I.Hyp s)
   first | done | rfl
 
 /- English proof (translation)
-Introduce `s hH hG hX`. Rewrite using `[I.sum_eMat_eq τ hG.2.2.2 hX]`. Take `⟨-, -, hρg⟩` from `hρ s hH`. Conclude with `GoodPlacesAlt.sum_eq_one_of I.A3.fam3.base3.v0.embedding I.iCg hH.h2g.1 I.ρf (fun g => I.gE g) hρg (fun g => (idemOf I.A.fam.X).coeff g) (fun x => I.iCg_fix hH x)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pGood_of_rho (hρ : I.PRho) {S : Type} [Fintype S] {Ws : S → Type} [∀ s, AddCommGroup (Ws s)]
     [∀ s, Module K (Ws s)] (τ : ∀ s, Representation K G (Ws s)) : I.PGood τ := by
@@ -113,7 +113,7 @@ theorem pGood_of_rho (hρ : I.PRho) {S : Type} [Fintype S] {Ws : S → Type} [�
     (fun g => (idemOf I.A.fam.X).coeff g) (fun x => I.iCg_fix hH x)
 
 /- English proof (translation)
-The claim follows from `pGood_of_rho I hρ τ`.
+A detailed English derivation is pending.
 -/
 theorem pGood_of (_hJt : I.PJt) (hρ : I.PRho) {S : Type} [Fintype S] {Ws : S → Type} [∀ s, AddCommGroup (Ws s)]
     [∀ s, Module K (Ws s)] [∀ s, FiniteDimensional K (Ws s)] (τ : ∀ s, Representation K G (Ws s)) : I.PGood τ := pGood_of_rho I hρ τ

@@ -38,13 +38,13 @@ def WordConditionAt (C CLa : ℝ) : Prop :=
           (cPrime n' r TT.card c0 cpp cStar) (opWord l Fp)
 
 /- English proof (translation)
-Introduce `p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk F nb B hD G hG`. Rewrite using `[memAt_iff]`. Establish `hM : ∀ f ∈ Submodule.span (KK O) (Set.range fun b => symP p O hk hrk F (cPrime n' r TT.card c0 cpp cStar) (p ^ goodG' r de h x) (B b)), MemAtG 0 (1 / 8) p O hk F (flatDeg lam0) Y (orbitWindowCount r de h x) (goodG' r de h x) (cPrime n' r TT.card c0 cpp cStar) f`. Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨b, rfl⟩` from `hy`. Conclude with `h5 p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K hk hrk F nb B hD b`. Consider the case `zero => exact memAtG_zero _ _ _ _ _ _ _ _ _ _ _`. Consider the case `add y z _ _ hy hz => exact memAtG_add _ _ _ _ _ _ _ _ _ _ _ hy hz`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c y _ hy => exact memAtG_smul _ _ _ _ _ _ _ _ _ _ _ c hy`. Unfold `OpCl at hG`. Proceed by induction on `hG using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨f, hf, l, h1, h2, rfl⟩` from `hy`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Conclude with `hW p W Qq O Kf ι σ j w n' m r TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K hk hrk F nb B hD f (hM f hf) l h1 h2`. Consider the case `zero => exact memAtG_zero _ _ _ _ _ _ _ _ _ _ _`. Consider the case `add y z _ _ hy hz => exact memAtG_add _ _ _ _ _ _ _ _ _ _ _ hy hz`. Consider the case `smul c y _ hy => exact memAtG_smul _ _ _ _ _ _ _ _ _ _ _ c hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem memAt_of_wordConditionAt (C CLa : ℝ) (h5 : Lemma5aAt C CLa) (hW : WordConditionAt C CLa) : MemStep C CLa := by
   intro p W Qq O Kf _ _ _ _ _ _ _ _ _ _ ι σ j w n' m r _ _ TT L₁ L₂ de h x lam0 aT bT a Y cpp c0 Dp cStar K _ _ hk hrk
@@ -79,7 +79,7 @@ def RestWord (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) : Prop :=
   tableLineDegreeFive.admitted D CLa Ck Crk Cdeg → ∃ C₁ : ℝ, 0 < C₁ ∧ ∀ C : ℝ, C₁ ≤ C → WordConditionAt C CLa
 
 /- English proof (translation)
-Introduce `hA`. Take `⟨C₁, h1, h5'⟩` from `h5 hA`. Take `⟨C₂, _, hW'⟩` from `hW hA`. Use `⟨max C₁ C₂, lt_max_of_lt_left h1, fun C hC => ?_⟩` and prove the remaining obligations. Conclude with `memAt_of_wordConditionAt C CLa (h5' C (le_trans (le_max_left _ _) hC)) (hW' C (le_trans (le_max_right _ _) hC))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem memCondition_of_theoremII (D : Formalism.BasicNotions.D7) (CLa Ck Crk Cdeg : ℝ) (h5 : Lemma5aTheoremII D CLa Ck Crk Cdeg)
     (hW : RestWord D CLa Ck Crk Cdeg) : RestMEM D CLa Ck Crk Cdeg := by

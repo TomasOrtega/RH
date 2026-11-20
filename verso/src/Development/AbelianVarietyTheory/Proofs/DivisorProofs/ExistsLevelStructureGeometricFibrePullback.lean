@@ -17,7 +17,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.FibLevel
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero, pow_zero, MonObj.comp_one]`. Consider the case `succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem comp_pow_pt {S : Scheme.{0}} {A T T' : Over S} [GrpObj A] (ρ : T' ⟶ T) (x : T ⟶ A) (n : ℕ) :
     ρ ≫ x ^ n = (ρ ≫ x) ^ n := by
@@ -26,17 +26,15 @@ theorem comp_pow_pt {S : Scheme.{0}} {A T T' : Over S} [GrpObj A] (ρ : T' ⟶ T
   | succ n ih => rw [pow_succ, pow_succ, MonObj.comp_mul, ih]
 
 /- English proof (translation)
-Introduce `T K _ _ _ _ χ P Q ψ hpb hLB g M hg c ζK hM hcζ hζ y hy hw`. Take `⟨⟨hL, -, -⟩, -⟩` from `GlobalTheory.lawsAndExpansions`. Take `⟨e, he⟩` from `exists_mulEquiv_of_isGrpPullback hpb (𝟙 (Sp K)) (spMap χ) (Category.id_comp _).symm`. Set `h0 : Over.mk (spMap χ) ⟶ baseOver (Sp T)` to `Over.homMk (spMap χ) (Category.comp_id _)`. Set `x : Fin (2 * g) → (baseOver (Sp K) ⟶ Q.A)` to `fun i => e.symm (h0 ≫ y i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hex : ∀ i, e (x i) = h0 ≫ y i` using `fun i => e.apply_symm_apply _`. Establish `hxl : ∀ i, (h0 ≫ y i).left = (x i).left ≫ ψ` using `fun i => by rw [← hex, he]`. Establish `hxM : ∀ i, x i ^ M = 1` using `fun i => by show e.symm (h0 ≫ y i) ^ M = 1`. Rewrite using `[← map_pow, ← comp_pow_pt, hy, MonObj.comp_one, map_one]`. Establish `hv : ∀ n : ℤ, Units.map h0.left.appTop.hom.toMonoidHom (unitOn c ^ n) = unitOn ζK ^ n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `n`. Rewrite using `[map_zpow]`. Use `congr 1`. Rewrite using `[← hcζ]`. Apply `Units.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom χ)` as an intermediate fact. Conclude with `(congrArg (fun f => f.hom c.val) this).symm`. Establish `key : ∀ (s : Sp K ⟶ Sp T) (_ : s = 𝟙 _ ≫ spMap χ) (x y : baseOver (Sp K) ⟶ Q.A) (x₀ y₀ : Over.mk s ⟶ P.A) (u : Γ(Sp K, ⊤)ˣ), x₀.left = x.left ≫ ψ → y₀.left = y.left ≫ ψ → WeilIs P.A P.L M x₀ y₀ u → WeilIs Q.A Q.L M x y u`. Introduce and unpack `s rfl x y x₀ y₀ u hx hy h`. Use `Q.isAb.comm` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(weilIs_grpPullback_of_comm' _ _ _ _ _ ψ _ _ P.isLB Q.isLB hpb hLB (baseOver _) M x y x₀ y₀ u hx hy).2 h`. Establish `hxp : ∀ i j, WeilIs Q.A Q.L M (x i) (x j) (unitOn ζK ^ stdSymp g i j)` using `fun i j => by`. Establish `w` using `CommPairing.weilIs_pull hL.globalFns P.isAb P.isLB h0 (hw i j)`. Rewrite `w` using `[hv]`. Conclude with `key _ (Category.id_comp _).symm _ _ _ _ _ (hxl i) (hxl j) w`.
-
-Take `⟨lev, hlev⟩` from `GlobalTheory.Ex.FibIso.exists_level hL Q hg hM hζ x hxM hxp`. Conclude with `⟨lev, fun i => by rw [hlev]; exact (hxl i).symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_level_of_pullback : ∀ (T K : Type) [CommRing T] [IsNoetherianRing T] [Field K] [IsAlgClosed K] (χ : T →+* K) (P : PolAV (Sp T)) (Q : PolAV (Sp K)) (ψ : Q.A.left ⟶ P.A.left), IsGrpPullback Q.A P.A (spMap χ) ψ → LBIso Q.L (P.L.pull ψ) → ∀ (g M : ℕ) (hg : Q.g = g) (c : Tˣ) (ζK : Kˣ), (M : K) ≠ 0 → Units.map χ.toMonoidHom c = ζK → IsPrimitiveRoot ζK M → ∀ (y : Fin (2 * g) → (baseOver (Sp T) ⟶ P.A)), (∀ i, y i ^ M = 1) → (∀ i j, WeilIs P.A P.L M (y i) (y j) (unitOn c ^ stdSymp g i j)) → ∃ lev : Level Q M (unitOn ζK), ∀ i, (GlobalTheory.levelBasis lev hg i).left ≫ ψ = spMap χ ≫ (y i).left := by
   intro T K _ _ _ _ χ P Q ψ hpb hLB g M hg c ζK hM hcζ hζ y hy hw

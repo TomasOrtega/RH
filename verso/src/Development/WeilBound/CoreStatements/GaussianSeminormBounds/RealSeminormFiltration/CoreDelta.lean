@@ -14,7 +14,7 @@ section Gen
 variable {A B : Type} [CommRing A] [CommRing B] [Algebra ℂ A] [Algebra ℂ B]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => rw [mul_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mulL (x : A) (t : A ⊗[ℂ] B) : (x ⊗ₜ[ℂ] (1 : B)) * t = (LinearMap.mulLeft ℂ x).rTensor B t := by
   induction t using TensorProduct.induction_on with
@@ -23,7 +23,7 @@ theorem mulL (x : A) (t : A ⊗[ℂ] B) : (x ⊗ₜ[ℂ] (1 : B)) * t = (LinearM
   | add a b ha hb => rw [mul_add, map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add a b ha hb => rw [mul_add, map_add, ha, hb]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem mulR (y : B) (t : A ⊗[ℂ] B) : ((1 : A) ⊗ₜ[ℂ] y) * t = (LinearMap.mulLeft ℂ y).lTensor A t := by
   induction t using TensorProduct.induction_on with
@@ -32,9 +32,9 @@ theorem mulR (y : B) (t : A ⊗[ℂ] B) : ((1 : A) ⊗ₜ[ℂ] y) * t = (LinearM
   | add a b ha hb => rw [mul_add, map_add, ha, hb]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, LinearMap.rTensor_tmul, Derivation.coeFn_coe, Derivation.leibniz, smul_eq_mul, TensorProduct.add_tmul]`. Rewrite using `[add_comm, mul_comm x]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb => rw [add_mul, map_add, ha, hb, map_add, add_mul, add_mul]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Normalize the expressions using the abelian group laws.
 -/
 theorem derL (D : Derivation ℂ A A) (t : A ⊗[ℂ] B) (x : A) (y : B) :
     D.toLinearMap.rTensor B (t * (x ⊗ₜ[ℂ] y)) =
@@ -48,9 +48,9 @@ theorem derL (D : Derivation ℂ A A) (t : A ⊗[ℂ] B) (x : A) (y : B) :
   | add a b ha hb => rw [add_mul, map_add, ha, hb, map_add, add_mul, add_mul]; abel
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b`. Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, LinearMap.lTensor_tmul, Derivation.coeFn_coe, Derivation.leibniz, smul_eq_mul, TensorProduct.tmul_add]`. Rewrite using `[add_comm, mul_comm y]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add a b ha hb => rw [add_mul, map_add, ha, hb, map_add, add_mul, add_mul]`. Normalize the expressions using the abelian group laws.
+Treat this case separately. Normalize the expressions using the abelian group laws.
 -/
 theorem derR (D : Derivation ℂ B B) (t : A ⊗[ℂ] B) (x : A) (y : B) :
     D.toLinearMap.lTensor A (t * (x ⊗ₜ[ℂ] y)) =
@@ -74,27 +74,27 @@ def dv (p q r s : ℕ) : Ln p q r s → Pol p q r 0 ⊗[ℂ] Pol p q 0 s
 def dl (p q r s : ℕ) : Pol p q r s →ₐ[ℂ] Pol p q r 0 ⊗[ℂ] Pol p q 0 s := aeval (dv p q r s)
 
 /- English proof (translation)
-Simplify using `[dl, dv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dl_XL (a : Ix p q) (k : Fin r) :
     dl p q r s (X (a, Sum.inl k)) = (X (a, Sum.inl k) : Pol p q r 0) ⊗ₜ[ℂ] (1 : Pol p q 0 s) := by
   simp [dl, dv]
 
 /- English proof (translation)
-Simplify using `[dl, dv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dl_XR (a : Ix p q) (l : Fin s) :
     dl p q r s (X (a, Sum.inr l)) = (1 : Pol p q r 0) ⊗ₜ[ℂ] (X (a, Sum.inr l) : Pol p q 0 s) := by
   simp [dl, dv]
 
 /- English proof (translation)
-Rewrite using `[dl, aeval_C, Algebra.algebraMap_eq_smul_one, Algebra.TensorProduct.one_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dl_C (c : ℂ) : dl p q r s (C c) = c • ((1 : Pol p q r 0) ⊗ₜ[ℂ] (1 : Pol p q 0 s)) := by
   rw [dl, aeval_C, Algebra.algebraMap_eq_smul_one, Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Rewrite using `[map_mul, dl_XL, mulL]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dl_mulL (a : Ix p q) (k : Fin r) (f : Pol p q r s) :
     dl p q r s (X (a, Sum.inl k) * f) =
@@ -102,7 +102,7 @@ theorem dl_mulL (a : Ix p q) (k : Fin r) (f : Pol p q r s) :
   rw [map_mul, dl_XL, mulL]
 
 /- English proof (translation)
-Rewrite using `[map_mul, dl_XR, mulR]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dl_mulR (a : Ix p q) (l : Fin s) (f : Pol p q r s) :
     dl p q r s (X (a, Sum.inr l) * f) =
@@ -110,9 +110,9 @@ theorem dl_mulR (a : Ix p q) (l : Fin s) (f : Pol p q r s) :
   rw [map_mul, dl_XR, mulR]
 
 /- English proof (translation)
-Take `⟨b, m | m⟩` from `i`. Rewrite using `[dl_XL, LinearMap.rTensor_tmul]`. Distinguish the cases in `h : b = a ∧ m = k`. Take `⟨rfl, rfl⟩` from `h`. Simplify using `[Algebra.TensorProduct.one_def]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `h1 : ((b, Sum.inl m) : Ln p q r s) ≠ (a, Sum.inl k)` using `by simpa using h`. Establish `h2 : ((b, Sum.inl m) : Ln p q r 0) ≠ (a, Sum.inl k)` using `by simpa using h`. Simplify using `[pderiv_X, Pi.single_apply, h1, h2]`. Rewrite using `[dl_XR, LinearMap.rTensor_tmul]`. Simplify using `[pderiv_X, Pi.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem dl_pderiv_inl_X_eq_rTensor (a : Ix p q) (k : Fin r) (i : Ln p q r s) :
     dl p q r s (pderiv (a, Sum.inl k) (X i)) =
@@ -129,11 +129,11 @@ private theorem dl_pderiv_inl_X_eq_rTensor (a : Ix p q) (k : Fin r) (i : Ln p q 
     simp [pderiv_X, Pi.single_apply]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => simp [dl_C]`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f i hf`. Establish `h1 : pderiv (a, Sum.inl k) (f * X i) = pderiv (a, Sum.inl k) f * X i + f * pderiv (a, Sum.inl k) (X i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, map_add, map_mul, hf, dl_pderiv_inl_X_eq_rTensor]`. Take `⟨b, m | m⟩` from `i`. Rewrite using `[dl_XL, derL, LinearMap.rTensor_tmul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[dl_XR, derL, LinearMap.rTensor_tmul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dl_pdL (a : Ix p q) (k : Fin r) (f : Pol p q r s) :
     dl p q r s (pderiv (a, Sum.inl k) f) =
@@ -154,9 +154,9 @@ theorem dl_pdL (a : Ix p q) (k : Fin r) (f : Pol p q r s) :
       rfl
 
 /- English proof (translation)
-Take `⟨b, m | m⟩` from `i`. Rewrite using `[dl_XL, LinearMap.lTensor_tmul]`. Simplify using `[pderiv_X, Pi.single_apply]`. Rewrite using `[dl_XR, LinearMap.lTensor_tmul]`. Distinguish the cases in `h : b = a ∧ m = k`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨rfl, rfl⟩` from `h`. Simplify using `[Algebra.TensorProduct.one_def]`. Establish `h1 : ((b, Sum.inr m) : Ln p q r s) ≠ (a, Sum.inr k)` using `by simpa using h`. Establish `h2 : ((b, Sum.inr m) : Ln p q 0 s) ≠ (a, Sum.inr k)` using `by simpa using h`. Simplify using `[pderiv_X, Pi.single_apply, h1, h2]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 private theorem dl_pderiv_inr_X_eq_lTensor (a : Ix p q) (k : Fin s) (i : Ln p q r s) :
     dl p q r s (pderiv (a, Sum.inr k) (X i)) =
@@ -173,11 +173,11 @@ private theorem dl_pderiv_inr_X_eq_lTensor (a : Ix p q) (k : Fin s) (i : Ln p q 
       simp [pderiv_X, Pi.single_apply, h1, h2]
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C c => simp [dl_C]`. Consider the case `add f g hf hg => simp only [map_add, hf, hg]`. Consider the case `mul_X f i hf`. Establish `h1 : pderiv (a, Sum.inr k) (f * X i) = pderiv (a, Sum.inr k) f * X i + f * pderiv (a, Sum.inr k) (X i)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h1, map_add, map_mul, hf, dl_pderiv_inr_X_eq_lTensor]`. Take `⟨b, m | m⟩` from `i`. Rewrite using `[dl_XL, derR, LinearMap.lTensor_tmul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[dl_XR, derR, LinearMap.lTensor_tmul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dl_pdR (a : Ix p q) (k : Fin s) (f : Pol p q r s) :
     dl p q r s (pderiv (a, Sum.inr k) f) =
@@ -198,7 +198,7 @@ theorem dl_pdR (a : Ix p q) (k : Fin s) (f : Pol p q r s) :
       rfl
 
 /- English proof (translation)
-Apply the tactic sequence `obtain a | a := a <;> simp [lowB, linePos, dl_pdL, dl_mulL]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dl_lowL (a : Ix p q) (k : Fin r) (f : Pol p q r s) :
     dl p q r s (lowB (a, Sum.inl k) f) =
@@ -206,7 +206,7 @@ theorem dl_lowL (a : Ix p q) (k : Fin r) (f : Pol p q r s) :
   obtain a | a := a <;> simp [lowB, linePos, dl_pdL, dl_mulL]
 
 /- English proof (translation)
-Apply the tactic sequence `obtain a | a := a <;> simp [lowB, linePos, dl_pdR, dl_mulR]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dl_lowR (a : Ix p q) (k : Fin s) (f : Pol p q r s) :
     dl p q r s (lowB (a, Sum.inr k) f) =
@@ -214,7 +214,7 @@ theorem dl_lowR (a : Ix p q) (k : Fin s) (f : Pol p q r s) :
   obtain a | a := a <;> simp [lowB, linePos, dl_pdR, dl_mulR]
 
 /- English proof (translation)
-Apply the tactic sequence `obtain a | a := a <;> simp [raiB, linePos, dl_pdL, dl_mulL, LinearMap.rTensor_neg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dl_raiL (a : Ix p q) (k : Fin r) (f : Pol p q r s) :
     dl p q r s (raiB (a, Sum.inl k) f) =
@@ -222,7 +222,7 @@ theorem dl_raiL (a : Ix p q) (k : Fin r) (f : Pol p q r s) :
   obtain a | a := a <;> simp [raiB, linePos, dl_pdL, dl_mulL, LinearMap.rTensor_neg]
 
 /- English proof (translation)
-Apply the tactic sequence `obtain a | a := a <;> simp [raiB, linePos, dl_pdR, dl_mulR, LinearMap.lTensor_neg]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dl_raiR (a : Ix p q) (k : Fin s) (f : Pol p q r s) :
     dl p q r s (raiB (a, Sum.inr k) f) =
@@ -230,9 +230,9 @@ theorem dl_raiR (a : Ix p q) (k : Fin s) (f : Pol p q r s) :
   obtain a | a := a <;> simp [raiB, linePos, dl_pdR, dl_mulR, LinearMap.lTensor_neg]
 
 /- English proof (translation)
-Simplify using `only [omE, LinearMap.add_apply, Module.End.mul_apply, map_add, dl_raiL, dl_lowL, LinearMap.rTensor_add, LinearMap.rTensor_mul]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[LinearMap.rTensor_smul, Module.End.one_eq_id, LinearMap.rTensor_id]`. Establish `h' : ((a, Sum.inl k) : Ln p q r s) ≠ (b, Sum.inl k)` using `by simp [h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h'' : ((a, Sum.inl k) : Ln p q r 0) ≠ (b, Sum.inl k)` using `by simp [h]`. Simplify using `[h', h'']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dl_omL (a b : Ix p q) (k : Fin r) (f : Pol p q r s) :
     dl p q r s (omE (a, Sum.inl k) (b, Sum.inl k) f) =
@@ -247,9 +247,9 @@ theorem dl_omL (a b : Ix p q) (k : Fin r) (f : Pol p q r s) :
     simp [h', h'']
 
 /- English proof (translation)
-Simplify using `only [omE, LinearMap.add_apply, Module.End.mul_apply, map_add, dl_raiR, dl_lowR, LinearMap.lTensor_add, LinearMap.lTensor_mul]`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[LinearMap.lTensor_smul, Module.End.one_eq_id, LinearMap.lTensor_id]`. Establish `h' : ((a, Sum.inr k) : Ln p q r s) ≠ (b, Sum.inr k)` using `by simp [h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h'' : ((a, Sum.inr k) : Ln p q 0 s) ≠ (b, Sum.inr k)` using `by simp [h]`. Simplify using `[h', h'']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem dl_omR (a b : Ix p q) (k : Fin s) (f : Pol p q r s) :
     dl p q r s (omE (a, Sum.inr k) (b, Sum.inr k) f) =
@@ -264,11 +264,11 @@ theorem dl_omR (a b : Ix p q) (k : Fin s) (f : Pol p q r s) :
     simp [h', h'']
 
 /- English proof (translation)
-Simplify using `only [fockAct1, LinearMap.comp_apply, LinearMap.flip_apply, kroneckerMapBilinear_apply_apply, omAct, LinearMap.sum_apply, LinearMap.smulRight_apply, entryLinearMap_apply]`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using `only [kroneckerMap_apply, Eab, Matrix.single_apply, Matrix.one_apply, LinearMap.mul_apply']`. Rewrite using `[Finset.sum_eq_single a]`. Use `Finset.sum_congr rfl (fun c _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_eq_single (b, c)]`. Simplify using the standard rewrite rules. Introduce and unpack `⟨x2, d⟩ _ hl`. Apply the tactic sequence `by_cases h1 : b = x2 <;> by_cases h2 : c = d <;> simp_all`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Introduce `x1 _ hx`. Simplify using `[Ne.symm hx]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem act_unit (a b : Ix p q) :
     fockAct1 p q r s (Eab a b) = ∑ c : Ix r s, omE ((a, c) : Ln p q r s) (b, c) := by
@@ -292,9 +292,9 @@ section Form
 variable (b : Pol p q r 0 →ₗ[ℂ] Pol p q 0 s →ₗ[ℂ] ℂ)
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset ι, (∑ i ∈ S, F i).rTensor (Pol p q 0 s) t = ∑ i ∈ S, (F i).rTensor (Pol p q 0 s) t`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j S hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, LinearMap.rTensor_add, LinearMap.add_apply, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `key Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem sumL {ι : Type} [Fintype ι] (F : ι → Module.End ℂ (Pol p q r 0)) (t : Pol p q r 0 ⊗[ℂ] Pol p q 0 s) :
     (∑ i, F i).rTensor (Pol p q 0 s) t = ∑ i, (F i).rTensor (Pol p q 0 s) t := by
@@ -307,9 +307,9 @@ theorem sumL {ι : Type} [Fintype ι] (F : ι → Module.End ℂ (Pol p q r 0)) 
   exact key Finset.univ
 
 /- English proof (translation)
-Establish `key : ∀ S : Finset ι, (∑ i ∈ S, F i).lTensor (Pol p q r 0) t = ∑ i ∈ S, (F i).lTensor (Pol p q r 0) t`. Introduce `S`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert j S hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, LinearMap.lTensor_add, LinearMap.add_apply, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Conclude with `key Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem sumR {ι : Type} [Fintype ι] (F : ι → Module.End ℂ (Pol p q 0 s)) (t : Pol p q r 0 ⊗[ℂ] Pol p q 0 s) :
     (∑ i, F i).lTensor (Pol p q r 0) t = ∑ i, (F i).lTensor (Pol p q r 0) t := by
@@ -324,7 +324,7 @@ theorem sumR {ι : Type} [Fintype ι] (F : ι → Module.End ℂ (Pol p q 0 s)) 
 end Form
 
 /- English proof (translation)
-Rewrite using `[act_unit, act_unit, act_unit, sumL, sumR]`. Simplify using `only [Fintype.sum_sum_type, LinearMap.add_apply, map_add, LinearMap.sum_apply, map_sum, dl_omL, dl_omR, Finset.univ_eq_empty, Finset.sum_empty, add_zero, zero_add, Fin.sum_univ_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dl_unit (a b : Ix p q) (f : Pol p q r s) :
     dl p q r s (fockAct1 p q r s (Eab a b) f) =
@@ -335,7 +335,7 @@ theorem dl_unit (a b : Ix p q) (f : Pol p q r s) :
     Finset.univ_eq_empty, Finset.sum_empty, add_zero, zero_add, Fin.sum_univ_zero]
 
 /- English proof (translation)
-Use `conv_lhs => rw [Matrix.matrix_eq_sum_single Z]`. Use `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `[Eab, Matrix.single_apply]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_sum_units (Z : Mat p q) : Z = ∑ a, ∑ b, Z a b • Eab a b := by
   conv_lhs => rw [Matrix.matrix_eq_sum_single Z]
@@ -344,7 +344,7 @@ theorem eq_sum_units (Z : Mat p q) : Z = ∑ a, ∑ b, Z a b • Eab a b := by
   simp [Eab, Matrix.single_apply]
 
 /- English proof (translation)
-Rewrite using `[eq_sum_units Z]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, sumL, sumR, dl_unit, LinearMap.rTensor_smul, LinearMap.lTensor_smul, smul_add, Finset.sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dl_act (Z : Mat p q) (f : Pol p q r s) :
     dl p q r s (fockAct1 p q r s Z f) =
@@ -358,9 +358,9 @@ def iA (p q r s : ℕ) : Ln p q r 0 → Ln p q r s := fun l => (l.1, Sum.elim Su
 def iB (p q r s : ℕ) : Ln p q 0 s → Ln p q r s := fun l => (l.1, Sum.elim Fin.elim0 Sum.inr l.2)
 
 /- English proof (translation)
-Establish `h : (dl p q r s).comp (rename (iA p q r s)) = (Algebra.TensorProduct.includeLeft (R` using `ℂ) (S := ℂ) (A := Pol p q r 0) (B := Pol p q 0 s)) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, k | k⟩`. Simplify using `[iA, dl_XL]`. Conclude with `k.elim0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using DFunLike.congr_fun h u`.
+A detailed English derivation is pending.
 -/
 theorem dl_iA (u : Pol p q r 0) : dl p q r s (rename (iA p q r s) u) = u ⊗ₜ[ℂ] (1 : Pol p q 0 s) := by
   have h : (dl p q r s).comp (rename (iA p q r s)) =
@@ -372,9 +372,9 @@ theorem dl_iA (u : Pol p q r 0) : dl p q r s (rename (iA p q r s) u) = u ⊗ₜ[
   simpa using DFunLike.congr_fun h u
 
 /- English proof (translation)
-Establish `h : (dl p q r s).comp (rename (iB p q r s)) = (Algebra.TensorProduct.includeRight (R` using `ℂ) (A := Pol p q r 0) (B := Pol p q 0 s)) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce and unpack `⟨a, k | k⟩`. Conclude with `k.elim0`. Simplify using `[iB, dl_XR]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using DFunLike.congr_fun h v`.
+A detailed English derivation is pending.
 -/
 theorem dl_iB (v : Pol p q 0 s) : dl p q r s (rename (iB p q r s) v) = (1 : Pol p q r 0) ⊗ₜ[ℂ] v := by
   have h : (dl p q r s).comp (rename (iB p q r s)) =
@@ -389,15 +389,15 @@ end Delta
 
 open Delta in
 /- English proof (translation)
-Use `set B' : Pol p q r 0 ⊗[ℂ] Pol p q 0 s →ₗ[ℂ] ℂ := TensorProduct.lift b with hB'`. Establish `key : ∀ (Z : Mat p q) (t : Pol p q r 0 ⊗[ℂ] Pol p q 0 s), B' ((fockAct1 p q r 0 Z).rTensor _ t) + B' ((fockAct1 p q 0 s Z).lTensor _ t) = c * Z.trace * B' t`. Introduce `Z t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul u v => simpa [hB'] using hb Z u v`. Consider the case `add x y hx hy`. Simplify using `only [map_add]`. Take the linear combination `hx + hy`. Establish `hle : coinvSub (act1 p q r s) (chiTr c) ≤ LinearMap.ker (B' ∘ₗ (dl p q r s).toLinearMap)`.
+Treat this case separately. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun Z => ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨f, rfl⟩` from `LinearMap.mem_range.mp hx`. Rewrite using `[LinearMap.mem_ker]`. Simplify using `only [LinearMap.comp_apply, LinearMap.sub_apply, LinearMap.smul_apply, Module.End.one_apply, map_sub, map_smul, AlgHom.toLinearMap_apply, act1, chiTr, dl_act, map_add, key, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨Submodule.Quotient.mk (p := coinvSub (act1 p q r s) (chiTr c)) (rename (iA p q r s) u0 * rename (iB p q r s) v0), 0, ?_⟩⟩` and prove the remaining obligations. Introduce `h`. Rewrite `h` using `[Submodule.Quotient.mk_eq_zero]`. Establish `h2` using `hle h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[LinearMap.mem_ker, LinearMap.comp_apply, AlgHom.toLinearMap_apply, map_mul, dl_iA, dl_iB, Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul, hB', TensorProduct.lift.tmul]`. Conclude with `hne h2`.
+A detailed English derivation is pending.
 -/
 theorem nontrivial_of_form {p q r s : ℕ} (c : ℂ) (b : Pol p q r 0 →ₗ[ℂ] Pol p q 0 s →ₗ[ℂ] ℂ)
     (hb : ∀ Z u v, b (fockAct1 p q r 0 Z u) v + b u (fockAct1 p q 0 s Z v) = c * Z.trace * b u v)

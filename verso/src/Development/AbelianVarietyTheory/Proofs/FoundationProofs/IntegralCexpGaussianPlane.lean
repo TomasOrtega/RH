@@ -7,21 +7,21 @@ open scoped BigOperators ComplexConjugate Real Classical
 namespace GlobalTheory.UnitaryTheta
 
 /- English proof (translation)
-Introduce `l u v hl`. Establish `hl0 : l ≠ 0`. Introduce `h`. Simplify using `[h] at hl`. Establish `hpi : (π : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hb : (-(π : ℂ) * l).re < 0`. Use `mul_pos Real.pi_pos hl` as an intermediate fact. Simplify using `using this`. Use `set f : ℝ → ℂ := fun x => cexp ((-(π : ℂ) * l) * x ^ 2 + (π * (u + conj v)) * x + 0) with hf`. Use `set g : ℝ → ℂ := fun y => cexp ((-(π : ℂ) * l) * y ^ 2 + (π * I * (conj v - u)) * y + 0) with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfi : Integrable f` using `integrable_cexp_quadratic' hb _ _`. Establish `hgi : Integrable g` using `integrable_cexp_quadratic' hb _ _`. Establish `key : (fun z : ℂ => cexp (-(π : ℂ) * l * (z * conj z) + π * (u * conj z) + π * (z * conj v))) = (fun p : ℝ × ℝ => f p.1 * g p.2) ∘ Complex.measurableEquivRealProd`. Use function extensionality and compare the values at `z`. Simplify using `only [hf, hg, Function.comp, Complex.measurableEquivRealProd_apply, ← Complex.exp_add]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `congr 1`. Establish `hz : z = z.re + z.im * I` using `(Complex.re_add_im z).symm`. Establish `hc : conj z = z.re - z.im * I`. Apply the tactic sequence `apply Complex.ext <;> simp`. Rewrite using `[hc]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(z.re : ℂ) = a at hz ⊢`. Generalize the expression as in `(z.im : ℂ) = b at hz ⊢`. Substitute `hz` using the available equality. Take the linear combination `(π * l * b ^ 2) * Complex.I_sq`. Establish `hmp` using `Complex.volume_preserving_equiv_real_prod`.
+Substitute using the available equality. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key, hmp.integrable_comp_emb Complex.measurableEquivRealProd.measurableEmbedding]`. Conclude with `hfi.mul_prod hgi`. Rewrite using `[key]`. Establish `h1` using `hmp.integral_comp' (fun p : ℝ × ℝ => f p.1 * g p.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_def]`. Rewrite using `[h1, Measure.volume_eq_prod, integral_prod_mul, hf, hg, integral_cexp_quadratic hb, integral_cexp_quadratic hb]`. Establish `h2 : (π : ℂ) / -(-(π : ℂ) * l) = l⁻¹` using `by field_simp`. Establish `h3 : (l⁻¹ : ℂ) ^ (1 / 2 : ℂ) * (l⁻¹ : ℂ) ^ (1 / 2 : ℂ) = l⁻¹`. Rewrite using `[← Complex.cpow_add _ _ (inv_ne_zero hl0)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Evaluate the numerical expressions. Rewrite using `[h2, mul_mul_mul_comm, h3, ← Complex.exp_add]`. Use `congr 2`. Clear the denominators using the available nonvanishing facts. Take the linear combination `(π * (conj v - u) ^ 2) * Complex.I_sq`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem integral_cexp_gaussian_plane : ∀ l u v : ℂ, 0 < l.re → Integrable (fun z : ℂ => cexp (-(π : ℂ) * l * (z * conj z) + π * (u * conj z) + π * (z * conj v))) ∧ ∫ z : ℂ, cexp (-(π : ℂ) * l * (z * conj z) + π * (u * conj z) + π * (z * conj v)) = l⁻¹ * cexp (π * (u * conj v) / l) := by
   intro l u v hl

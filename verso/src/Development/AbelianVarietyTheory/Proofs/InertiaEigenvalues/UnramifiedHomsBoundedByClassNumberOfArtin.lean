@@ -14,9 +14,9 @@ noncomputable def homToH1 {O G M : Type} [CommRing O] [Group G] [AddCommGroup M]
     (show U ≤ NG.coZ1s (Representation.trivial O G M) from fun c hc g h => by simpa using hU c hc g h))
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `c hc`. Take `⟨v, hv⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hc`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h` using `congrFun hv g`. Establish `h2 : NG.coD0 (Representation.trivial O G M) v g = 0` using `by simp [NG.coD0]`. Conclude with `h.symm.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem homToH1_injective {O G M : Type} [CommRing O] [Group G] [AddCommGroup M] [Module O M]
     (U : Submodule O (G → M)) (hU : ∀ c ∈ U, ∀ g h, c (g * h) = c g + c h) :
@@ -31,7 +31,7 @@ theorem homToH1_injective {O G M : Type} [CommRing O] [Group G] [AddCommGroup M]
   exact h.symm.trans h2
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `NG.resH1 (Representation.trivial O G M) I (Submodule.Quotient.mk _) = 0`. Rewrite using `[NG.resH1, Submodule.mapQ_apply, Submodule.Quotient.mk_eq_zero]`. Establish `h : NG.restrictCocycles1 (Representation.trivial O G M) I (Submodule.inclusion (show U ≤ NG.coZ1s (Representation.trivial O G M) from fun c hc g h => by simpa using hU c hc g h) c) = 0` using `Subtype.ext (funext fun g => hc g g.2)`. Rewrite using `[h]`. Conclude with `Submodule.zero_mem _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homToH1_mem_unrH1 {O G M : Type} [CommRing O] [Group G] [AddCommGroup M] [Module O M]
     (U : Submodule O (G → M)) (hU : ∀ c ∈ U, ∀ g h, c (g * h) = c g + c h) (I : Subgroup G)
@@ -46,7 +46,7 @@ theorem homToH1_mem_unrH1 {O G M : Type} [CommRing O] [Group G] [AddCommGroup M]
   exact Submodule.zero_mem _
 
 /- English proof (translation)
-Establish `: CharZero (FractionRing (D.nd.O i))` using `charZero_of_injective_ringHom (D.nd.embK i).injective`. Introduce `h`. Establish `h2` using `congrArg (algebraMap (D.nd.O i) (FractionRing (D.nd.O i))) h`. Rewrite `h2` using `[map_natCast, map_zero]`. Conclude with `(Fact.out : (D.nd.l i).Prime).ne_zero (Nat.cast_eq_zero.1 h2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_ne_zero (D : D7) (i : D.nd.Loc) : ((D.nd.l i : ℕ) : D.nd.O i) ≠ 0 := by
   have : CharZero (FractionRing (D.nd.O i)) :=
@@ -57,9 +57,9 @@ theorem l_ne_zero (D : D7) (i : D.nd.Loc) : ((D.nd.l i : ℕ) : D.nd.O i) ≠ 0 
   exact (Fact.out : (D.nd.l i).Prime).ne_zero (Nat.cast_eq_zero.1 h2)
 
 /- English proof (translation)
-Establish `hcm : IsCMField D.host.E` using `D.host.isCMField_hostE`. Establish `hU : ∀ c ∈ TruncatedSeriesCountingIdentities.unrHom i, ∀ g h, c (g * h) = c g + c h` using `fun c hc => hc.2.1`. Rewrite using `[(LinearEquiv.ofInjective _ (homToH1_injective _ hU)).length_eq]`. Use `h D.host.E D.nd.Om D.nd.plOm.1 D.nd.plOm.2 (D.nd.l i) (D.nd.O i) (Or.inr (IsTotallyComplex.nrRealPlaces_eq_zero _)) (KmodO (D.nd.O i)) ⟨Submodule.quotEquivOfEq _ _ (Submodule.one_eq_range).symm⟩ _ (fun _ _ => rfl) _ ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, rfl, c.2.1⟩`. Introduce and unpack `v _ ⟨c, rfl⟩`. Conclude with `homToH1_mem_unrH1 _ hU _ c (c.2.2.2 v)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem length_unrHom_le (h : ReciprocityTheory.ChartRestriction.T2.VhE) (D : D7) (i : D.nd.Loc) :
     Module.length (D.nd.O i) ↥(TruncatedSeriesCountingIdentities.unrHom i) ≤
@@ -77,13 +77,11 @@ theorem length_unrHom_le (h : ReciprocityTheory.ChartRestriction.T2.VhE) (D : D7
     exact homToH1_mem_unrH1 _ hU _ c (c.2.2.2 v)
 
 /- English proof (translation)
-Introduce `hA D i`. Establish `h` using `length_unrHom_le (GlobalTheory.T.unramifiedGaloisHoms_bounded_classNumber_of_artinReciprocity hA) D i`. Establish `hfin : Module.length (D.nd.O i) (D.nd.O i ⧸ Ideal.span {((D.nd.l i : ℕ) : D.nd.O i)}) ≠ ⊤` using `Module.length_ne_top_iff.2 (isFiniteLength_quotient_span_singleton _ (mem_nonZeroDivisors_of_ne_zero (l_ne_zero D i)))`. Take `⟨e, he⟩` from `ENat.ne_top_iff_exists.1 hfin`. Establish `hlt : Module.length (D.nd.O i) ↥(TruncatedSeriesCountingIdentities.unrHom i) < ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `lt_of_le_of_lt h ?_` and prove the remaining obligations. Rewrite using `[← he, ← Nat.cast_mul]`. Conclude with `ENat.natCast_lt_top _`. Use `⟨hlt, ?_⟩` and prove the remaining obligations. Take `⟨n, hn⟩` from `ENat.ne_top_iff_exists.1 hlt.ne`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← he, ← hn, ← Nat.cast_mul, Nat.cast_le]`. Unfold `lenUnit`. Rewrite using `[← he, ← hn, ENat.toNat_natCast, ENat.toNat_natCast]`. Use `div_le_of_le_mul₀ (Nat.cast_nonneg _) (Nat.cast_nonneg _) ?_` and prove the remaining obligations. Rewrite using `[mul_comm]`.
-
-Conclude with `h` after adjusting the coercions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramified_homs_bounded_by_class_number_of_artin :
     GlobalTheory.Published.GlobalArtinReciprocity → ∀ (D : D7) (i : D.nd.Loc), TruncatedSeriesCountingIdentities.UnramifiedClassFieldBound i := by

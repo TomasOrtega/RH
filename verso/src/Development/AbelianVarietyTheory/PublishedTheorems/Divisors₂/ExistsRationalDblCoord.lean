@@ -19,7 +19,7 @@ variable {R A : Type} [CommRing R] [CommRing A] [Algebra R A] [Invertible (2 : R
 omit [Invertible (2 : R)] in
 
 /- English proof (translation)
-Simplify using `only [symp, hTens, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type, dblGram, blkMat, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, mu …`.
+Simplify using the standard rewrite rules.
 -/
 theorem symp_dblGram (c : A →ₐ[R] A) (ξ : A) (J : Matrix (Fin n) (Fin n) A) (J' : Matrix (Fin m) (Fin m) A)
     (u v : Matrix (Fin (n + n)) (Fin m) A) :
@@ -33,19 +33,17 @@ theorem symp_dblGram (c : A →ₐ[R] A) (ξ : A) (J : Matrix (Fin n) (Fin n) A)
     map_neg]
 
 /- English proof (translation)
-Establish `h2 : ⅟(2 : R) * 2 = 1` using `invOf_mul_self _`. Set `S : Matrix (Fin (n + n)) (Fin m) A ≃ₗ[R] Matrix (Fin n) (Fin m) A × Matrix (Fin n) (Fin m) A` to `(LinearEquiv.funCongrLeft R (Fin m → A) finSumFinEquiv).trans (LinearEquiv.sumArrowLequivProdArrow _ _ R _)`. Set `G : (Fin (n + n) × Fin m → R) ≃ₗ[R] (Fin n × Fin m → R) × (Fin n × Fin m → R)` to `(LinearEquiv.funCongrLeft R R ((Equiv.sumProdDistrib _ _ _).symm.trans (finSumFinEquiv.prodCongr (Equiv.refl _)))).trans (LinearEquiv.sumArrowLequivProdArrow _ _ R _)`. Set `T : (((Fin n × Fin m → R) × (Fin n × Fin m → R)) × ((Fin n × Fin m → R) × (Fin n × Fin m → R))) ≃ₗ[R] (((Fin n × Fin m → R) × (Fin n × Fin m → R)) × ((Fin n × Fin m → R) × (Fin n × Fin m → R)))` to `{ toFun := fun p => ((p.1.1 - p.2.1, p.1.2 - p.2.2), (⅟(2 : R) • (p.1.2 + p.2.2), -(⅟(2 : R) • (p.1.1 + p.2.1)))) invFun := fun q => ((⅟(2 : R) • q.1.1 - q.2.2, ⅟(2 : R) • q.1.2 + q.2.1), (-(⅟(2 : R) • q.1.1) - q.2.2, -(⅟(2 : R) • q.1.2) + q.2.1)) map_add' := fun p q => by`. Apply the tactic sequence `ext <;> simp only [Prod.fst_add, Prod.snd_add, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul] <;> ring`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Use the proof step `map_smul' := fun r p => by`. Apply the tactic sequence `ext <;> simp only [Prod.smul_fst, Prod.smul_snd, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, RingHom.id_apply] <;> ring`. Use `left_inv := fun p => by`. Apply the tactic sequence `ext k <;> simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul]`. Take the linear combination `p.1.1 k * h2`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `p.1.2 k * h2`. Take the linear combination `p.2.1 k * h2`. Take the linear combination `p.2.2 k * h2`. Use `right_inv := fun q => by`. Apply the tactic sequence `ext k <;> simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `q.1.1 k * h2`. Take the linear combination `q.1.2 k * h2`. Take the linear combination `q.2.1 k * h2`. Take the linear combination `q.2.2 k * h2 }`. Establish `hG : ∀ x y : Fin (n + n) × Fin m → R, x ⬝ᵥ y = (G x).1 ⬝ᵥ (G y).1 + (G x).2 ⬝ᵥ (G y).2` using `fun x y => by`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [dotProduct, Fintype.sum_prod_type, ← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`. Both sides reduce to the same expression. Establish `hl : ∀ p i j, G.symm p (finSumFinEquiv (.inl i), j) = p.1 (i, j)` using `fun p i j => congrArg (fun z => z.1 (i, j)) (G.apply_symm_apply p)`. Establish `hr : ∀ p i j, G.symm p (finSumFinEquiv (.inr i), j) = p.2 (i, j)` using `fun p i j => congrArg (fun z => z.2 (i, j)) (G.apply_symm_apply p)`. Use `⟨⟨S.trans ((d.e.prodCongr d.e).trans (T.trans (G.symm.prodCongr G.symm))), fun u v => ?_⟩, fun u i j => ⟨hl _ i j, hr _ i j, hl _ i j, hr _ i j⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[(symp_dblGram c ξ J J' u v).trans (congrArg₂ (· - ·) (d.form _ _) (d.form _ _)), hG, hG]`. Simplify using `only [LinearEquiv.trans_apply, LinearEquiv.prodCongr_apply, LinearEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `(d.e (S u).1).1 ⬝ᵥ (d.e (S v).1).2 - (d.e (S v).1).1 ⬝ᵥ (d.e (S u).1).2 - ((d.e (S u).2).1 ⬝ᵥ (d.e (S v).2).2 - (d.e (S v).2).1 ⬝ᵥ (d.e (S u).2).2) = _`. Generalize the expression as in `d.e (S u).1 = a, d.e (S u).2 = b, d.e (S v).1 = a', d.e (S v).2 = b'`. Simplify using `only [T, LinearEquiv.coe_mk, LinearMap.coe_mk, AddHom.coe_mk, sub_dotProduct, dotProduct_smul, dotProduct_add, dotProduct_neg, smul_eq_mul, dotProduct_comm a.2, dotProduct_comm b.2, dotProduct_comm a'.2, dotProduct_comm b'.2]`.
-
-Take the linear combination `(-(a.1 ⬝ᵥ a'.2) + a'.1 ⬝ᵥ a.2 + b.1 ⬝ᵥ b'.2 - b'.1 ⬝ᵥ b.2) * h2`.
+Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_dblCoord (c : A →ₐ[R] A) (ξ : A) (J : Matrix (Fin n) (Fin n) A) (J' : Matrix (Fin m) (Fin m) A)
     (d : Darboux (symp c ξ J J') (Fin n × Fin m)) :
@@ -111,19 +109,19 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `e : incM F J₂ = dblGram finSumFinEquiv (incM F J)`. Rewrite using `[hJ, incM, dblGram, blkMat_map _ _ (map_zero _), Matrix.map_neg _ (map_neg _)]`. Both sides reduce to the same expression. Rewrite using `[e]`. Take `⟨co, h⟩` from `exists_dblCoord (cA σ) (-1) (incM F J) (incM F J') d`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨co, fun x => ?_, fun u hu => funext fun p => ?_, fun u hu => funext fun p => ?_⟩` and prove the remaining obligations. Take `⟨y, z, h1⟩` from `hd fun i => x (finSumFinEquiv (.inl i))`. Take `⟨y', z', h2⟩` from `hd fun i => x (finSumFinEquiv (.inr i))`. Establish `h3 : ⅟(2 : AF F) = algebraMap F (AF F) 2⁻¹` using `invOf_eq_right_inv (by`. Rewrite using `[← map_ofNat (algebraMap F (AF F)) 2, ← map_mul, mul_inv_cancel₀ two_ne_zero, map_one])`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun p => pairVec finSumFinEquiv (fun i => y (i, p.2) - y' (i, p.2)) (fun i => z (i, p.2) - z' (i, p.2)) p.1, fun p => pairVec finSumFinEquiv (fun i => 2⁻¹ * (z (i, p.2) + z' (i, p.2))) (fun i => -(2⁻¹ * (y (i, p.2) + y' (i, p.2)))) p.1, ?_⟩` and prove the remaining obligations. Establish `h4` using `h (incM F x)`. Express the relevant statement in the definitionally equal form `d.e (fun i => incM F x (finSumFinEquiv (.inl i))) = _ at h1`. Express the relevant statement in the definitionally equal form `d.e (fun i => incM F x (finSumFinEquiv (.inr i))) = _ at h2`. Simplify using `only [h1, h2, h3] at h4`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine Prod.ext (funext fun ⟨k, j⟩ => ?_) (funext fun ⟨k, j⟩ => ?_) <;>`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective k <;>`. Simplify using `only [h4 i j, pairVec_inl, pairVec_inr, map_sub, map_add, map_mul, map_neg]`. Establish `h1 : (fun i => u (finSumFinEquiv (.inr i))) = fun i => u (finSumFinEquiv (.inl i))`. Use function extensionality and compare the values at `fun i => funext fun j => (congrFun (hu j) i).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨k, j⟩` from `p`. Take `⟨i | i, rfl⟩` from `finSumFinEquiv.surjective k`. Rewrite using `[(h u i j).1, h1, sub_self]`. Both sides reduce to the same expression. Rewrite using `[(h u i j).2.1, h1, sub_self]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h1 : d.e (fun i => u (finSumFinEquiv (.inl i))) = -d.e fun i => u (finSumFinEquiv (.inr i))`. Conclude with `(congrArg d.e (funext fun i => funext fun j => congrFun (hu j) i)).trans (map_neg d.e _)`. Take `⟨k, j⟩` from `p`. Take `⟨i | i, rfl⟩` from `finSumFinEquiv.surjective k`.
+Both sides reduce to the same expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(h u i j).2.2.1, h1]`. Simplify using the standard rewrite rules. Rewrite using `[(h u i j).2.2.2, h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_rational_dblCoord {J : Matrix (Fin n) (Fin n) E} {J' : Matrix (Fin m) (Fin m) E}
     {J₂ : Matrix (Fin (n + n)) (Fin (n + n)) E} (hJ : J₂ = dblGram finSumFinEquiv J)

@@ -18,9 +18,9 @@ open IsLocalRing
 variable {k S : Type} [Field k] [CommRing S] [IsLocalRing S] [Algebra k S]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hc`. Rewrite `h` using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `h ((isUnit_iff_ne_zero.mpr hc).map (algebraMap k S))`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem algebraMap_mem_maximalIdeal_iff (c : k) :
     algebraMap k S c ∈ maximalIdeal S ↔ c = 0 := by
@@ -33,9 +33,9 @@ theorem algebraMap_mem_maximalIdeal_iff (c : k) :
     simp
 
 /- English proof (translation)
-Establish `hm : algebraMap k S (π s - c) ∈ maximalIdeal S`. Use `sub_mem h (hπ s)` as an intermediate fact. Rewrite using `[map_sub]`. Use `this using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hm` using `[algebraMap_mem_maximalIdeal_iff]`. Conclude with `sub_eq_zero.mp hm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem residue_eq {π : S → k} (hπ : ∀ s, s - algebraMap k S (π s) ∈ maximalIdeal S)
     (s : S) (c : k) (h : s - algebraMap k S c ∈ maximalIdeal S) : π s = c := by
@@ -83,7 +83,7 @@ def tangentHom (π : S → k) (hπ : ∀ s, s - algebraMap k S (π s) ∈ maxima
     ext <;> simp [this, h0, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Simplify using `[tangentHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tangentHom_snd (π : S → k) (hπ : ∀ s, s - algebraMap k S (π s) ∈ maximalIdeal S)
     (f : S →ₗ[k] k) (hf1 : f 1 = 0) (hf2 : ∀ y ∈ maximalIdeal S ^ 2, f y = 0) (s : S) :
@@ -91,7 +91,7 @@ theorem tangentHom_snd (π : S → k) (hπ : ∀ s, s - algebraMap k S (π s) �
   simp [tangentHom]
 
 /- English proof (translation)
-Simplify using `[epsScaleR]`.
+Simplify using the standard rewrite rules.
 -/
 theorem epsScaleR_snd (c : k) (x : DualNumber k) : (epsScaleR c x).snd = c * x.snd := by
   simp [epsScaleR]
@@ -105,17 +105,17 @@ open IsLocalRing
 variable {k S : Type} [Field k] [CommRing S] [IsLocalRing S] [Algebra k S]
 
 /- English proof (translation)
-Set `P : Submodule k S` to `Submodule.span k {1, b} ⊔ (maximalIdeal S ^ 2).restrictScalars k`. Establish `haP : a ∉ P`. Introduce `hP`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp hP`. Take `⟨l, r, rfl⟩` from `Submodule.mem_span_pair.mp hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz2 : z ∈ maximalIdeal S ^ 2` using `hz`. Establish `hz' : z ∈ maximalIdeal S` using `Ideal.pow_le_self two_ne_zero hz2`. Establish `hl : l = 0`. Rewrite using `[← algebraMap_mem_maximalIdeal_iff (S := S)]`. Establish `e : algebraMap k S l = a - r • b - z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hyz, Algebra.algebraMap_eq_smul_one]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `sub_mem (sub_mem ha (Submodule.smul_of_tower_mem _ r hb)) hz'`. Apply `h r` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `e : a - r • b = z` using `by rw [← hyz, hl]; simp`. Rewrite using `[e]`. Conclude with `hz2`. Take `⟨g, hga, hgP⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem haP (by infer_instance)`. Establish `hg0 : ∀ y ∈ P, g y = 0` using `fun y hy => by`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: g y ∈ P.map g` using `Submodule.mem_map_of_mem hy`. Rewrite `this` using `[hgP]`. Conclude with `(Submodule.mem_bot k).mp this`. Use `⟨(g a)⁻¹ • g, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `[hg0 1 (Submodule.mem_sup_left (Submodule.subset_span (by simp)))]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `y hy`. Simplify using `[hg0 y (Submodule.mem_sup_right hy)]`. Simplify using `[hg0 b (Submodule.mem_sup_left (Submodule.subset_span (by simp)))]`. Simplify using `[hga]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_form {a b : S} (ha : a ∈ maximalIdeal S) (hb : b ∈ maximalIdeal S)
     (h : ∀ c : k, a - c • b ∉ maximalIdeal S ^ 2) :
@@ -148,11 +148,11 @@ theorem exists_form {a b : S} (ha : a ∈ maximalIdeal S) (hb : b ∈ maximalIde
   · simp [hga]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Use `choose π hπ using h1`. Take `⟨f₁, h11, h12, h13, h14⟩` from `exists_form ha hb (fun c => (hne c).1)`. Take `⟨f₂, h21, h22, h23, h24⟩` from `exists_form hb ha (fun c => (hne c).2)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc | hc⟩` from `h3 (tangentHom π hπ f₁ h11 h12) (tangentHom π hπ f₂ h21 h22)`. Use `congrArg (fun φ : S →+* DualNumber k => (φ a).snd) hc` as an intermediate fact. Simplify using `only [RingHom.coe_coe, RingHom.comp_apply, epsScaleR_snd, tangentHom_snd] at this`. Rewrite `this` using `[h14, h23, mul_zero]`. Conclude with `one_ne_zero this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg (fun φ : S →+* DualNumber k => (φ b).snd) hc` as an intermediate fact. Simplify using `only [RingHom.coe_coe, RingHom.comp_apply, epsScaleR_snd, tangentHom_snd] at this`. Rewrite `this` using `[h24, h13, mul_zero]`. Conclude with `one_ne_zero this`.
+A detailed English derivation is pending.
 -/
 theorem pair_dependent
     (h1 : ∀ a : S, ∃ c : k, a - algebraMap k S c ∈ maximalIdeal S)
@@ -177,21 +177,21 @@ theorem pair_dependent
     exact one_ne_zero this
 
 /- English proof (translation)
-Introduce `k _ S _ _ _ h1 hnil h3`. Use `set m := maximalIdeal S with hm`. Establish `hx : ∃ x ∈ m, m ≤ Ideal.span {x} ⊔ m ^ 2`. Distinguish the cases in `hle : m ≤ m ^ 2`. Conclude with `⟨0, zero_mem _, le_sup_of_le_right hle⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxm, hx2⟩` from `Set.not_subset.mp hle`. Use `⟨x, hxm, fun a ha => ?_⟩` and prove the remaining obligations. Establish `key : ∃ c : k, a - c • x ∈ m ^ 2`. Take `⟨c, hc | hc⟩` from `pair_dependent h1 h3 ha hxm`. Conclude with `⟨c, hc⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Apply `hx2` to reduce the goal to its premises. Simplify using `using hc`. Use `⟨c⁻¹, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : a - c⁻¹ • x = (-c⁻¹) • (x - c • a)`. Rewrite using `[smul_sub, smul_smul, neg_mul, inv_mul_cancel₀ hc0, neg_smul, neg_smul, one_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Conclude with `Submodule.smul_of_tower_mem _ _ hc`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `key`. Establish `e : a = c • x + (a - c • x)` using `by abel`. Rewrite using `[e]`. Use `Submodule.add_mem_sup ?_ hc` and prove the remaining obligations. Rewrite using `[Algebra.smul_def]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self x)`. Take `⟨x, hxm, hle⟩` from `hx`. Use `set I := Ideal.span {x}`. Establish `hstep : ∀ n : ℕ, m ≤ I ⊔ m ^ (n + 1)`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Chain the equalities or inequalities of the calculation.
 
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Combine the equalities or inequalities in the displayed calculation. Take `⟨n, hn⟩` from `hnil`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hmI : m ≤ I`. Use `hstep n` as an intermediate fact. Rewrite `this` using `[pow_succ, hn, zero_mul, Ideal.zero_eq_bot, sup_bot_eq]`. Then use the resulting hypothesis. Establish `hIm : I ≤ m` using `(Ideal.span_singleton_le_iff_mem _).mpr hxm`. Conclude with `⟨⟨x, le_antisymm hmI hIm⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem maximalIdeal_isPrincipal : ∀ (k : Type) [Field k] (S : Type) [CommRing S] [IsLocalRing S] [Algebra k S],
     (∀ a : S, ∃ c : k, a - algebraMap k S c ∈ IsLocalRing.maximalIdeal S) →

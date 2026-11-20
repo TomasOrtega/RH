@@ -20,7 +20,7 @@ def IsCcOn (U : Set V) (φ : V → ℝ) : Prop :=
   Continuous φ ∧ HasCompactSupport φ ∧ tsupport φ ⊆ U
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h φ hφ`. Conclude with `h φ hφ.1 hφ.2.1 hφ.2.2`. Introduce `h φ h1 h2 h3`. Conclude with `h φ ⟨h1, h2, h3⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem densAll_iff (μ : Measure V) (f : V → Y) (ι : X → Y) (ν : Measure X) (U : Set V) :
     DensAll μ f ι ν U ↔ DensOn (IsCcOn U) μ f ι ν := by
@@ -50,9 +50,9 @@ def DensApprox (P : (V → ℝ) → Prop) (μ : Measure V) (f : V → Y) (ι : X
   DensOn P μ f ι ν → DensOn (IsCcOn U) μ f ι ν
 
 /- English proof (translation)
-Introduce `φ hφ`. Take `⟨hc, hS⟩` from `h2 φ hφ (h1 φ hφ)`. Use `⟨fun b => (invT μ f ι χ ν φ b).re, Complex.continuous_re.comp hc, fun S hSc => ?_⟩` and prove the remaining obligations. Establish `e` using `hS S hSc`. Establish `hi : IntegrableOn (invT μ f ι χ ν φ) S ν` using `hc.continuousOn.integrableOn_compact hSc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∫ b in S, (invT μ f ι χ ν φ b).re ∂ν = (∫ b in S, invT μ f ι χ ν φ b ∂ν).re` using `integral_re hi`. Rewrite using `[h3, ← e, integral_complex_ofReal, Complex.ofReal_re]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem densOn_of [T2Space X] [OpensMeasurableSpace X] {P : (V → ℝ) → Prop} {μ : Measure V}
     {f : V → Y} {ι : X → Y} {χ : Y → X → ℂ} {ν : Measure X} [IsFiniteMeasureOnCompacts ν]
@@ -67,7 +67,7 @@ theorem densOn_of [T2Space X] [OpensMeasurableSpace X] {P : (V → ℝ) → Prop
   rw [h3, ← e, integral_complex_ofReal, Complex.ofReal_re]
 
 /- English proof (translation)
-The claim follows from `(densAll_iff μ f ι ν U).2 (h3 (densOn_of h1 h2))`.
+A detailed English derivation is pending.
 -/
 theorem densAll_of_four [T2Space X] [OpensMeasurableSpace X] {P : (V → ℝ) → Prop}
     {μ : Measure V} {f : V → Y} {ι : X → Y} {χ : Y → X → ℂ} {ν : Measure X}

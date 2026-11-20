@@ -11,13 +11,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Take `⟨⟨z, φ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField L X).symm.surjective y`. Take `⟨⟨z', α⟩, rfl⟩` from `(Scheme.SpecToEquivOfField K X).symm.surjective e`. Simplify using `only [Scheme.SpecToEquivOfField_symm_apply] at he hy h ⊢`. Establish `hz : z = z'` using `by simpa using h`. Substitute `hz` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨c, hc⟩` from `Spec.map_surjective (X.fromSpecResidueField z ≫ t)`. Rewrite `he` using `[Category.assoc, ← hc, ← Spec.map_comp, ← Spec.map_id]`. Rewrite `hy` using `[Category.assoc, ← hc, ← Spec.map_comp]`. Establish `h₁` using `Spec.map_injective he`. Establish `e₁ : ∀ k, α.hom (c.hom k) = k` using `fun k => congrArg (fun r => r.hom k) h₁`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hy` using the available equality. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Use `congr 1`. Use `congr 1`. Use extensionality with `w`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Establish `e₂ : c.hom (α.hom w) = w` using `α.hom.injective (e₁ _)`. Simplify using `[e₂]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem eq_comp_section_of_apply_eq {K L : Type} [Field K] [Field L] {X : Scheme.{0}} (t : X ⟶ Sp K)
     (e : Sp K ⟶ X) (he : e ≫ t = 𝟙 _) (q : Sp L ⟶ Sp K) (y : Sp L ⟶ X) (hy : y ≫ t = q)
@@ -41,13 +41,11 @@ theorem eq_comp_section_of_apply_eq {K L : Type} [Field K] [Field L] {X : Scheme
   simp [e₂]
 
 /- English proof (translation)
-Introduce `K _ A B f hf`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hf` to reduce the goal to its premises. Use `ext_of_pt_eq K A B f 0 fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_hom]`. Set `e : Sp K ⟶ B.X.left` to `(1 : Over.mk (𝟙 (Sp K)) ⟶ B.X).left`. Establish `he : e ≫ B.X.hom = 𝟙 _` using `Over.w (1 : Over.mk (𝟙 (Sp K)) ⟶ B.X)`. Establish `h1 : (x ≫ (1 : A.X ⟶ B.X)).left = (ptOver K (AlgebraicClosure K)).hom ≫ e`. Establish `hP : (toUnit (ptOver K (AlgebraicClosure K))).left = (ptOver K (AlgebraicClosure K)).hom`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Over.w (toUnit (ptOver K (AlgebraicClosure K)))`. Establish `hU : toUnit (Over.mk (𝟙 (Sp K))) = 𝟙 _` using `toUnit_unique _ _`. Simplify using `only [e, Hom.one_def, ← Category.assoc, comp_toUnit, hU, Category.id_comp, Over.comp_left, hP]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[h1]`.
-
-Conclude with `eq_comp_section_of_apply_eq B.X.hom e he _ _ (Over.w (x ≫ f.hom)) (IsLocalRing.closedPoint _) (IsLocalRing.closedPoint K) (hcon _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_apply_ne_origin : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B), f ≠ 0 →
     ∃ a : A.X.left, f.hom.left a ≠ B.origin := by

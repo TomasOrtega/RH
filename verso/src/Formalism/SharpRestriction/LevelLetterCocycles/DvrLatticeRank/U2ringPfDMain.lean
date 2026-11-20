@@ -23,137 +23,121 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 local notation "mkI" y => Ideal.Quotient.mk (DualFramesAlt.eigenRingInvariants.Ia y)
 
 /- English proof (translation)
-Take `⟨ν, hνΔ, hνeq⟩` from `u2ringPfC_nu W hR hs hK h'`. Take `⟨hπΔ, hsub, ⟨w, hw⟩, -, ⟨w₁, hq⟩, -, ⟨w₂, hγ⟩, -⟩` from `hR`. Establish `hπ0` using `constantCoeff_uniformiser_zero w hw hs`. Establish `hHS : ∀ i, PowerSeries.HasSubst (π' i)` using `fun i => PowerSeries.HasSubst.of_constantCoeff_zero' (hπ0 i)`. Use `set ψ : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom (hHS c) with hψdef`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hψ : ∀ F, ψ F = PowerSeries.subst (π' c) F` using `fun F => by`. Rewrite using `[hψdef, PowerSeries.coe_substAlgHom]`. Establish `hψX : ψ PowerSeries.X = π' c` using `by rw [hψ, PowerSeries.subst_X (hHS c)]`. Establish `hψC : ∀ x : O, ψ (PowerSeries.C x) = PowerSeries.C x` using `fun x => by`. Rewrite using `[hψ, PowerSeries.subst_C]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hψΔ : ∀ δ ∈ W.DelF, ∀ F, W.γ₀ δ (ψ F) = ψ F` using `fun δ hδ F => by`. Rewrite using `[hψ]`. Conclude with `u2ringPfC_subΔ W hπΔ hπ0 δ hδ c F`. Establish `hψinj : ∀ F F', ψ F = ψ F' → F = F'` using `fun F F' h => u2ringPfC_inj W hπΔ hsub hπ0 c F F' (by rwa [hψ, hψ] at h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hpre : ∀ x, (∀ δ ∈ W.DelF, W.γ₀ δ x = x) → ∃ F, ψ F = x` using `fun x hx => by`. Take `⟨F, hF⟩` from `u2ringPfC_pre W hsub c x hx`. Conclude with `⟨F, by rw [hψ]; exact hF⟩`. Establish `hsingle : ∀ F, (Pi.single c (ψ F) : LetA O n) ∈ W.AΔ` using `fun F => u2ringPfB_single_mem W c _ (fun δ hδ => hψΔ δ hδ F)`. Establish `halg : ∀ x : O, (algebraMap O (LetA O n) x) c = PowerSeries.C x` using `fun x => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Pi.algebraMap_apply, PowerSeries.algebraMap_apply]`. Both sides reduce to the same expression. Use `set EY : PowerSeries O := PowerSeries.C a * ∏ j, (PowerSeries.X - PowerSeries.C (r j)) with hEY`. Establish `hÊc : Formalism.MainNotions.DeltaInvariantLattices.Eat E π' c = ψ EY` using `by show Polynomial.aeval (π' c) (E c) = ψ EY`. Rewrite using `[hE, hEY, map_mul, map_prod, map_mul, map_prod, Polynomial.aeval_C, hψC]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, Polynomial.aeval_X, Polynomial.aeval_C, hψX, hψC]`. Both sides reduce to the same expression. Establish `hXC0 : ∀ y : O, (PowerSeries.X - PowerSeries.C y : PowerSeries O) ≠ 0` using `fun y h => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg (PowerSeries.coeff 1) h` as an intermediate fact. Simplify using `at this`. Establish `hEY0 : EY ≠ 0`. Rewrite using `[hEY]`. Use `mul_ne_zero (fun h => ha.ne_zero ?_) (Finset.prod_ne_zero_iff.2 fun j _ => hXC0 _)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using congrArg PowerSeries.constantCoeff h`. Establish `hψEY0 : ψ EY ≠ 0` using `fun h => hEY0 (hψinj _ _ (by rw [h, map_zero]))`. Establish `hπc0 : π' c ≠ 0`. Establish `: π' c = (w : LetA O n) c * PowerSeries.X ^ s'` using `by rw [hw]; rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (w.isUnit.map (Pi.evalMonoidHom (fun _ : ZMod n => PowerSeries O) c)).ne_zero (pow_ne_zero _ PowerSeries.X_ne_zero)`. Establish `hγc : W.γ₀ W.gam (π' c) = π' c + (w₂ : LetA O n) c * π' c * ψ EY`. Establish `e1 : W.γ₀ W.gam (π' c) - π' c = (w₂ : LetA O n) c * π' c * Formalism.MainNotions.DeltaInvariantLattices.Eat E π' c` using `congrFun hγ c`. Rewrite using `[← hÊc, ← e1]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw2Δ : ∀ δ ∈ W.DelF, W.γ₀ δ ((w₂ : LetA O n) c) = (w₂ : LetA O n) c`. Introduce `δ hδ`. Establish `hπc : W.γ₀ δ (π' c) = π' c` using `congrFun (hπΔ δ hδ) c`. Establish `h1` using `congrArg (W.γ₀ δ) hγc`. Rewrite `h1` using `[u2ringPfB_γ₀_comm, hπc, map_add, map_mul, map_mul, hπc, hψΔ δ hδ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : (W.γ₀ δ ((w₂ : LetA O n) c) - (w₂ : LetA O n) c) * (π' c * ψ EY) = 0`. Take the linear combination `h1.symm.trans hγc`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h2).resolve_right (mul_ne_zero hπc0 hψEY0))`. Take `⟨Ŵ, hŴ⟩` from `hpre _ hw2Δ`. Establish `hŴ0 : IsUnit (PowerSeries.constantCoeff Ŵ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : IsUnit ((w₂ : LetA O n) c)` using `w₂.isUnit.map (Pi.evalMonoidHom (fun _ : ZMod n => PowerSeries O) c)`. Rewrite `h1` using `[← hŴ, hψ, DualFramesAlt.EigenUniformiser.subst_eq_C_add (hπ0 c), PowerSeries.isUnit_iff_constantCoeff]`. Simplify `h1` using `[hπ0 c]`. Use `set Gt : PowerSeries O := 1 + Ŵ * EY with hGt`. Use `set XG : PowerSeries O := PowerSeries.X * Gt with hXG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hXG0 : PowerSeries.constantCoeff XG = 0`. Rewrite using `[hXG, map_mul, PowerSeries.constantCoeff_X, zero_mul]`. Establish `hHSXG` using `PowerSeries.HasSubst.of_constantCoeff_zero' hXG0`. Use `set Γ : PowerSeries O →ₐ[O] PowerSeries O := PowerSeries.substAlgHom hHSXG with hΓdef`. Establish `hΓ : ∀ F, Γ F = PowerSeries.subst XG F` using `fun F => by rw [hΓdef, PowerSeries.coe_substAlgHom]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hΓX : Γ PowerSeries.X = XG` using `by rw [hΓ, PowerSeries.subst_X hHSXG]`. Establish `hΓC : ∀ x : O, Γ (PowerSeries.C x) = PowerSeries.C x` using `fun x => by`. Rewrite using `[hΓ, PowerSeries.subst_C]`. Both sides reduce to the same expression. Establish `hγπc : W.γ₀ W.gam (π' c) = ψ XG`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[hγc, hXG, hGt]`. Simplify using `only [map_mul, map_add, map_one, hψX, hŴ]`. Expand and normalize the polynomial expressions, which then agree. Establish `hγψ : ∀ F, W.γ₀ W.gam (ψ F) = ψ (Γ F)`. Introduce `F`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hψ F, DualFramesAlt.EigenUniformiser.algHom_subst (W.γ₀ W.gam) (W.γ₀_X _).1 (hπ0 c), hγπc, hψ XG, hΓ F, hψ (PowerSeries.subst XG F), PowerSeries.subst_comp_subst_apply hHSXG (hHS c)]`. Set `θ : Fin e → PowerSeries O` to `fun j => 1 + PowerSeries.X * Ŵ * PowerSeries.C a * ∏ j' ∈ Finset.univ.erase j, (PowerSeries.X - PowerSeries.C (r j'))`. Establish `hEYsplit : ∀ j, EY = (PowerSeries.X - PowerSeries.C (r j)) * (PowerSeries.C a * ∏ j' ∈ Finset.univ.erase j, (PowerSeries.X - PowerSeries.C (r j')))`. Introduce `j`. Rewrite using `[hEY, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ j)]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hΓlin : ∀ j, Γ (PowerSeries.X - PowerSeries.C (r j)) = (PowerSeries.X - PowerSeries.C (r j)) * θ j`. Introduce `j`. Rewrite using `[map_sub, hΓX, hΓC, hXG, hGt, hEYsplit j]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hΓEY : Γ EY = EY * ∏ j, θ j` using `by conv_lhs => rw [hEY]`. Rewrite using `[map_mul, map_prod, hΓC, Finset.prod_congr rfl fun j _ => hΓlin j, Finset.prod_mul_distrib, hEY]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨nh, hnh⟩` from `hpre _ (u2ringPfB_letter_mem W hνΔ c)`. Establish `hnθ : nh * (∏ j, θ j) ^ h' = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ν c * W.γ₀ W.gamK (Formalism.MainNotions.DeltaInvariantLattices.Eat E π' c ^ h') = Formalism.MainNotions.DeltaInvariantLattices.Eat E π' c ^ h'` using `congrFun hνeq c`. Rewrite `h2` using `[hK, map_pow, hÊc, hγψ, ← hnh, ← map_pow ψ (Γ EY) h', ← map_pow ψ EY h', ← map_mul, hΓEY]`. Establish `h3` using `hψinj _ _ h2`. Establish `h4 : EY ^ h' * (nh * (∏ j, θ j) ^ h' - 1) = 0` using `by linear_combination h3`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h4).resolve_left (pow_ne_zero _ hEY0))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Establish `hm : 0 < 2 * h'` using `by omega`. Use `set m := 2 * h' with hmdef`. Use `set NR := m * e with hNR`. Set `rI : ℕ → O` to `fun k => if h : k < e then r ⟨k, h⟩ else 0`. Establish `hrI : ∀ j : Fin e, rI j = r j` using `fun j => by simp [rI, j.2]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdiv : ∀ k, k < NR → k / m < e` using `fun k hk => Nat.div_lt_of_lt_mul hk`. Set `root : ℕ → O` to `fun k => if k < NR then rI (k / m) else 0`. Establish `hrootm : ∀ k, root k ∈ IsLocalRing.maximalIdeal O`. Introduce `k`. Simplify using `only [root, rI]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `split_ifs`. Conclude with `hrm _`. Conclude with `Ideal.zero_mem _`. Conclude with `Ideal.zero_mem _`. Set `φY : ℕ → PowerSeries O` to `fun k => if k < NR then PowerSeries.X - PowerSeries.C (root k) else PowerSeries.C (a ^ m) * PowerSeries.X`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components.
 
-Set `θ' : ℕ → PowerSeries O` to `fun j => if h : j < e then θ ⟨j, h⟩ else 1`. Set `θY : ℕ → PowerSeries O` to `fun k => if k < NR then θ' (k / m) else Gt`. Set `f : ℕ → LetA O n` to `fun k => if k < NR then π' - algebraMap O (LetA O n) (root k) else algebraMap O (LetA O n) (a ^ m) * π'`. Establish `hfc : ∀ k, f k c = ψ (φY k)`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [f, φY]`. Use `split_ifs`. Rewrite using `[Pi.sub_apply, halg, map_sub, hψX, hψC]`. Rewrite using `[Pi.mul_apply, halg, map_mul, hψX, hψC]`. Establish `hfΔ : ∀ k, f k ∈ W.AΔ`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `k`. Simplify using `only [f]`. Use `split_ifs`. Conclude with `W.AΔ.sub_mem hπΔ (W.AΔ.algebraMap_mem _)`. Conclude with `W.AΔ.mul_mem (W.AΔ.algebraMap_mem _) hπΔ`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφroot : ∀ k, ∃ u : PowerSeries O, PowerSeries.X - PowerSeries.C (root k) = φY k * u`. Introduce `k`. Distinguish the cases in `hk : k < NR`. Conclude with `⟨1, by simp only [φY, if_pos hk, mul_one]⟩`. Use `⟨PowerSeries.C (((ha.unit⁻¹ : Oˣ) : O) ^ m), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [φY, root, if_neg hk, map_zero, sub_zero]`. Rewrite using `[mul_comm, ← mul_assoc, ← map_mul, ← mul_pow, ha.val_inv_mul, one_pow, map_one, one_mul]`. Establish `hΓφ : ∀ k, Γ (φY k) = φY k * θY k`. Introduce `k`. Distinguish the cases in `hk : k < NR`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hj` using `hdiv k hk`. Simplify using `only [φY, θY, θ', root, rI, if_pos hk, dif_pos hj]`. Conclude with `hΓlin ⟨k / m, hj⟩`. Simplify using `only [φY, θY, if_neg hk]`. Rewrite using `[map_mul, hΓC, hΓX, hXG]`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hPY : ∀ k, (∏ j ∈ Finset.range k, f j) c = ψ (∏ j ∈ Finset.range k, φY j)`. Introduce `k`. Rewrite using `[Finset.prod_apply, map_prod]`. Conclude with `Finset.prod_congr rfl fun j _ => hfc j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Consider separately whether the proposition holds or fails.
 
-Establish `hΓP : ∀ k, Γ (∏ j ∈ Finset.range k, φY j) = (∏ j ∈ Finset.range k, φY j) * ∏ j ∈ Finset.range k, θY j`. Introduce `k`. Rewrite using `[map_prod, Finset.prod_congr rfl fun j _ => hΓφ j, Finset.prod_mul_distrib]`. Establish `hprod : ∏ k ∈ Finset.range (NR + 1), φY k = PowerSeries.X * EY ^ m`. Establish `h0 : φY NR = PowerSeries.C (a ^ m) * PowerSeries.X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [φY, if_neg (lt_irrefl NR)]`. Establish `h1 : ∏ k ∈ Finset.range NR, φY k = ∏ k ∈ Finset.range NR, (PowerSeries.X - PowerSeries.C (rI (k / m)))` using `Finset.prod_congr rfl fun k hk => by simp only [φY, root, if_pos (Finset.mem_range.1 hk)]`. Establish `h3` using `DualFramesAlt.BlockProductRing.prod_div_block m hm (fun j => PowerSeries.X - PowerSeries.C (rI j)) e`. Establish `h2 : ∏ j ∈ Finset.range e, (PowerSeries.X - PowerSeries.C (rI j)) = ∏ j, (PowerSeries.X - PowerSeries.C (r j))`. Rewrite using `[← Fin.prod_univ_eq_prod_range]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun j _ => by rw [hrI j]`. Rewrite using `[Finset.prod_range_succ, h0, h1, hNR, h3, Finset.prod_pow, h2, hEY, mul_pow, map_pow]`. Expand and normalize the polynomial expressions, which then agree. Set `ρ : ℕ → PowerSeries O` to `fun k => nh * ∏ i ∈ Finset.range k, θY i`. Set `cc : ℕ → O` to `fun k => Classical.choose (DualFramesAlt.eigenRingInvariants.ev_exists (hrootm k) (ρ k))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hcc : ∀ k, (mkI (root k)) (ρ k) = (mkI (root k)) (PowerSeries.C (cc k))` using `fun k => Classical.choose_spec (DualFramesAlt.eigenRingInvariants.ev_exists (hrootm k) (ρ k))`. Establish `hmkΓ : ∀ k F, (mkI (root k)) (Γ F) = (mkI (root k)) F`. Introduce `k F`. Take `⟨c₀, hc₀⟩` from `DualFramesAlt.eigenRingInvariants.ev_exists (hrootm k) F`. Establish `hXGr : (mkI (root k)) XG = (mkI (root k)) (PowerSeries.C (root k))`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Apply `DualFramesAlt.BlockProductRing.mk_eq_of_mem` to reduce the goal to its premises. Distinguish the cases in `hkN : k < NR`. Establish `hj` using `hdiv k hkN`. Establish `hrk : root k = r ⟨k / m, hj⟩` using `by simp [root, rI, hkN, hj]`. Establish `key : XG - PowerSeries.C (root k) = (PowerSeries.X - PowerSeries.C (root k)) * (1 + PowerSeries.X * Ŵ * (PowerSeries.C a * ∏ j' ∈ Finset.univ.erase ⟨k / m, hj⟩, (PowerSeries.X - PowerSeries.C (r j'))))`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[hXG, hGt, hEYsplit ⟨k / m, hj⟩, hrk]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `DualFramesAlt.BlockProductRing.mem_of_factor _ _`. Establish `hrk : root k = 0` using `by simp [root, hkN]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key : XG - PowerSeries.C (root k) = (PowerSeries.X - PowerSeries.C (root k)) * Gt`. Rewrite using `[hXG, hrk, map_zero, sub_zero, sub_zero]`. Rewrite using `[key]`. Conclude with `DualFramesAlt.BlockProductRing.mem_of_factor _ _`. Rewrite using `[hΓ, DualFramesAlt.eigenRingInvariants.ev_subst hXG0 hXGr hc₀, hc₀]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `⟨?_, ?_, ⟨1 + (w₂ : LetA O n) * Formalism.MainNotions.DeltaInvariantLattices.Eat E π', ?_, ?_⟩, ν, hνΔ, hνeq, NR + 1, f, cc, hfΔ, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, map_mul, map_pow]`. Conclude with `(w.isUnit.map _).mul (W.EE_π.pow _)`. Establish `h1` using `Formalism.MainNotions.LiftingTheory.liftb_q_unit W`. Rewrite `h1` using `[hq, map_mul]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Conclude with `isUnit_of_mul_isUnit_right h1`. Conclude with `gradNPf_fΔ W s' w π' _ hw hπΔ (by linear_combination hγ)`. Rewrite using `[hK]`. Take the linear combination `hγ`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hi : i = c`. Rewrite using `[hi]`. Simplify using `only [Pi.mul_apply]`. Use `congr 1`. Rewrite using `[hPY, hprod, map_mul, map_pow, hψX, ← hÊc]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Both sides reduce to the same expression. Simplify using `[letE, hi]`. Introduce `k hk x hx`. Take `⟨F, hF⟩` from `hpre _ (u2ringPfB_letter_mem W hx c)`. Take `⟨a₀, ha₀⟩` from `DualFramesAlt.eigenRingInvariants.ev_exists (hrootm k) F`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨H, hH⟩` from `DualFramesAlt.BlockProductRing.dvd_of_mk_eq ha₀`. Take `⟨u, hu⟩` from `hφroot k`. Use `⟨a₀, Pi.single c (ψ (u * H)), hsingle _, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = c`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Rewrite using `[hi]`. Simplify using `only [Pi.mul_apply, Pi.add_apply, Pi.single_eq_same]`. Use `congr 1`. Rewrite using `[halg, hfc, ← hF, ← hψC, ← map_mul, ← map_add]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take the linear combination `hH + H * hu`. Simplify using `[letE, hi]`. Introduce `k hk x hx`. Take `⟨F, hF⟩` from `hpre _ (u2ringPfB_letter_mem W hx c)`. Establish `hZ0 : (mkI (root k)) (ρ k * Γ F - PowerSeries.C (cc k) * F) = (mkI (root k)) (PowerSeries.C 0)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_mul (Ideal.Quotient.mk (DualFramesAlt.eigenRingInvariants.Ia (root k))) (ρ k) (Γ F), map_mul (Ideal.Quotient.mk (DualFramesAlt.eigenRingInvariants.Ia (root k))) (PowerSeries.C (cc k)) F, hcc k, hmkΓ, map_zero, sub_self, map_zero]`. Take `⟨Z', hZ'⟩` from `DualFramesAlt.BlockProductRing.dvd_of_mk_eq hZ0`. Rewrite `hZ'` using `[map_zero, sub_zero]`. Take `⟨u, hu⟩` from `hφroot k`. Use `⟨Pi.single c (ψ (u * Z')), hsingle _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = c`. Rewrite using `[hi]`. Simplify using `only [Pi.mul_apply, Pi.sub_apply, Pi.single_eq_same]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hγA : ∀ (g : W.Gam) (y : LetA O n), (W.γA g y) c = W.γ₀ g (y c)` using `fun _ _ => rfl`. Rewrite using `[hγA, Pi.mul_apply, hK, hPY, ← hF, ← map_mul, hγψ, ← hnh, halg, ← hψC, hPY (k + 1), ← map_mul, ← map_mul, ← map_mul, ← map_sub]`. Use `congr 1`. Rewrite using `[map_mul, hΓP, Finset.prod_range_succ]`. Simplify using `only [ρ] at hZ'`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Take the linear combination `(∏ j ∈ Finset.range k, φY j) * hZ' + (∏ j ∈ Finset.range k, φY j) * Z' * hu`. Simplify using `[letE, hi]`. Establish `hθother : ∀ j j' : Fin e, j ≠ j' → (mkI (r j)) (θ j') = 1`. Introduce `j j' hjj'`. Rewrite using `[← map_one (Ideal.Quotient.mk (DualFramesAlt.eigenRingInvariants.Ia (r j)))]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `DualFramesAlt.BlockProductRing.mk_eq_of_mem` to reduce the goal to its premises. Establish `hjmem : j ∈ Finset.univ.erase j'` using `Finset.mem_erase.2 ⟨hjj', Finset.mem_univ j⟩`. Establish `key : θ j' - 1 = (PowerSeries.X - PowerSeries.C (r j)) * (PowerSeries.X * Ŵ * PowerSeries.C a * ∏ i ∈ (Finset.univ.erase j').erase j, (PowerSeries.X - PowerSeries.C (r i)))`. Simplify using `only [θ]`. Rewrite using `[← Finset.mul_prod_erase _ _ hjmem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `DualFramesAlt.BlockProductRing.mem_of_factor _ _`. Establish `hcval : ∀ j : Fin e, ∃ cj : O, IsUnit cj ∧ (∀ t : ℕ, 0 < t → cj ^ t ≠ 1) ∧ (mkI (r j)) (θ j) = (mkI (r j)) (PowerSeries.C cj)`. Introduce `j`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨wj, hwj⟩` from `DualFramesAlt.eigenRingInvariants.ev_exists (hrm j) Ŵ`. Establish `hwju : IsUnit wj`. Take `⟨H, hH⟩` from `DualFramesAlt.BlockProductRing.dvd_of_mk_eq hwj`. Establish `h0` using `congrArg PowerSeries.constantCoeff hH`. Simplify using `only [map_sub, map_mul, PowerSeries.constantCoeff_X, PowerSeries.constantCoeff_C, zero_sub] at h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hnu`. Establish `hwm : wj ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 hnu)`. Establish `hŴm : PowerSeries.constantCoeff Ŵ ∈ IsLocalRing.maximalIdeal O`. Establish `e0 : PowerSeries.constantCoeff Ŵ = wj + -r j * PowerSeries.constantCoeff H`. Take the linear combination `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e0]`. Conclude with `Ideal.add_mem _ hwm (Ideal.mul_mem_right _ _ ((Ideal.neg_mem_iff _).2 (hrm j)))`. Conclude with `(mem_nonunits_iff.1 ((IsLocalRing.mem_maximalIdeal _).1 hŴm)) hŴ0`. Use `⟨1 + r j * wj * a * ∏ j' ∈ Finset.univ.erase j, (r j - r j'), ?_, hnr j wj hwju, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnu`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : 1 + r j * wj * a * ∏ j' ∈ Finset.univ.erase j, (r j - r j') ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).2 (mem_nonunits_iff.2 hnu)`. Establish `h2 : r j * wj * a * ∏ j' ∈ Finset.univ.erase j, (r j - r j') ∈ IsLocalRing.maximalIdeal O` using `Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (Ideal.mul_mem_right _ _ (hrm j)))`. Establish `h3` using `Ideal.sub_mem _ h1 h2`. Rewrite `h3` using `[add_sub_cancel_right]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).2 h3)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [θ, map_add, map_one, map_mul, map_prod, map_sub, DualFramesAlt.eigenRingInvariants.mk_X, hwj]`. Establish `hcount : (Finset.range (NR + 1)).filter (fun k => cc k = 1) ⊆ ((Finset.range e).image fun j => m * j + h') ∪ {NR}`. Introduce `k hk`. Rewrite `hk` using `[Finset.mem_filter, Finset.mem_range]`. Take `⟨hkN, hk1⟩` from `hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Break down `Nat.lt_or_ge k NR with hlt | hge` into its components or cases. Apply `Finset.mem_union_left` to reduce the goal to its premises. Establish `hj` using `hdiv k hlt`. Take `⟨cj, hcju, hcjt, hcjmk⟩` from `hcval ⟨k / m, hj⟩`. Establish `hrk : root k = r ⟨k / m, hj⟩` using `by simp [root, rI, hlt, hj]`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hθY : ∀ i ∈ Finset.range k, (mkI (r ⟨k / m, hj⟩)) (θY i) = if i / m = k / m then (mkI (r ⟨k / m, hj⟩)) (PowerSeries.C cj) else 1`. Introduce `i hi`. Establish `hiN : i < NR` using `lt_trans (Finset.mem_range.1 hi) hlt`. Establish `hij` using `hdiv i hiN`. Simplify using `only [θY, θ', if_pos hiN, dif_pos hij]`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hik`. Establish `e0 : (⟨i / m, hij⟩ : Fin e) = ⟨k / m, hj⟩` using `Fin.ext hik`. Rewrite using `[e0]`. Conclude with `hcjmk`. Conclude with `hθother _ _ (fun h => hik (congrArg Fin.val h).symm)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hprodθ : (mkI (r ⟨k / m, hj⟩)) (∏ j, θ j) = (mkI (r ⟨k / m, hj⟩)) (PowerSeries.C cj)`. Rewrite using `[map_prod, Finset.prod_eq_single ⟨k / m, hj⟩ (fun j' _ hne => hθother _ _ (Ne.symm hne)) (fun h => absurd (Finset.mem_univ _) h)]`. Conclude with `hcjmk`. Establish `hn : (mkI (r ⟨k / m, hj⟩)) nh * (mkI (r ⟨k / m, hj⟩)) (PowerSeries.C cj) ^ h' = 1`. Establish `e0` using `congrArg (Ideal.Quotient.mk (DualFramesAlt.eigenRingInvariants.Ia (r ⟨k / m, hj⟩))) hnθ`.
-
-Rewrite `e0` using `[map_mul, map_pow, hprodθ, map_one]`. Then use the resulting hypothesis. Establish `hρ : (mkI (r ⟨k / m, hj⟩)) (ρ k) = (mkI (r ⟨k / m, hj⟩)) nh * (mkI (r ⟨k / m, hj⟩)) (PowerSeries.C cj) ^ (k % m)`. Rewrite using `[show ρ k = nh * ∏ i ∈ Finset.range k, θY i from rfl, map_mul, map_prod, Finset.prod_congr rfl hθY, DualFramesAlt.BlockProductRing.prod_ite_block m hm _ k]`. Establish `hkey : cc k * cj ^ h' = cj ^ (k % m)`. Apply `DualFramesAlt.eigenRingInvariants.ev_inj (hrm ⟨k / m, hj⟩)` to reduce the goal to its premises.
-
-Establish `h1` using `hcc k`. Rewrite `h1` using `[hrk, hρ]`. Establish `e1 : (mkI (r ⟨k / m, hj⟩)) (PowerSeries.C (cc k * cj ^ h')) = (mkI (r ⟨k / m, hj⟩)) (PowerSeries.C (cc k)) * (mkI (r ⟨k / m, hj⟩)) (PowerSeries.C cj) ^ h'`. Simplify using `only [map_mul, map_pow]`. Establish `e2 : (mkI (r ⟨k / m, hj⟩)) (PowerSeries.C (cj ^ (k % m))) = (mkI (r ⟨k / m, hj⟩)) (PowerSeries.C cj) ^ (k % m)`.
-
-Simplify using `only [map_pow]`. Rewrite using `[e1, e2, ← h1]`. Take the linear combination `(mkI (r ⟨k / m, hj⟩)) (PowerSeries.C cj) ^ (k % m) * hn`. Rewrite `hkey` using `[hk1, one_mul]`. Establish `ht : k % m = h'`.
-
-Break down `lt_trichotomy (k % m) h' with h1 | h1 | h1` into its components or cases. It suffices to derive a contradiction. Apply `hcjt (h' - k % m) (by omega)` to reduce the goal to its premises. Establish `e0 : cj ^ (k % m) * (cj ^ (h' - k % m) - 1) = 0`. Rewrite using `[mul_sub, mul_one, ← pow_add, Nat.add_sub_cancel' h1.le, hkey, sub_self]`.
-
-Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 e0).resolve_left (pow_ne_zero _ hcju.ne_zero))`. Conclude with `h1`. It suffices to derive a contradiction. Apply `hcjt (k % m - h') (by omega)` to reduce the goal to its premises. Establish `e0 : cj ^ h' * (cj ^ (k % m - h') - 1) = 0`.
-
-Rewrite using `[mul_sub, mul_one, ← pow_add, Nat.add_sub_cancel' h1.le, hkey, sub_self]`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 e0).resolve_left (pow_ne_zero _ hcju.ne_zero))`. Rewrite using `[Finset.mem_image]`. Use `⟨k / m, Finset.mem_range.2 hj, ?_⟩` and prove the remaining obligations. Establish `e0` using `Nat.div_add_mod k m`.
-
-Rewrite `e0` using `[ht]`. Conclude with `e0`. Establish `e0 : k = NR` using `by omega`. Conclude with `Finset.mem_union_right _ (Finset.mem_singleton.2 e0)`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.card_singleton]`. Conclude with `Nat.add_le_add_right (Finset.card_image_le.trans (by rw [Finset.card_range])) 1`. Use `_ ≤ finrank K₀ K + 1 := by omega`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u2ringPfD_main [IsDomain O] [IsDiscreteValuationRing O] [CharZero O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O]

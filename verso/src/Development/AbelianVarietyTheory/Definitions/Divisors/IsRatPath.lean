@@ -70,7 +70,7 @@ def IsGenOver (k : Type) {K : Type} [Field k] [Field K] [Algebra k K] {C : Schem
   NeronCurve.IsCurve k C ∧ NeronCurve.IsGen x ∧ x ≫ strHom k C = spMap (algebraMap k K)
 
 /- English proof (translation)
-Rewrite using `[triv, Category.assoc, Category.assoc, sec_hom, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem triv_over {S : Scheme.{0}} (G : Over S) [GrpObj G] {R : Type} [CommRing R] (b : Sp R ⟶ S) :
     triv G b ≫ G.hom = spMap (PowerSeries.C (R := R)) ≫ b := by

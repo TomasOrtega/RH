@@ -23,7 +23,7 @@ Both sides reduce to the same expression.
 theorem ip_eq_ipLin (R : RiemLat E g Λ) (x y : Fin g → ℂ) : R.ip x y = ipLin R x y := rfl
 
 /- English proof (translation)
-Use `show star (y ⬝ᵥ R.Hm *ᵥ star x) = x ⬝ᵥ R.Hm *ᵥ star y`. Rewrite using `[← star_dotProduct_star, star_mulVec, star_star, R.herm.eq, dotProduct_mulVec]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_ip (R : RiemLat E g Λ) (x y : Fin g → ℂ) : starRingEnd ℂ (R.ip x y) = R.ip y x := by
   show star (y ⬝ᵥ R.Hm *ᵥ star x) = x ⬝ᵥ R.Hm *ᵥ star y
@@ -52,11 +52,11 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] (R : RiemLat E g Λ) (e : ι 
 include e
 
 /- English proof (translation)
-Establish `hli : LinearIndependent ℂ c`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `a ha k`. Establish `h` using `congrArg (ipLin R (c k)) ha`. Rewrite `h` using `[map_zero, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [map_smul, ← ip_eq_ipLin, hc, smul_eq_mul] at h`. Simplify using `using h`. Establish `hspan : Submodule.span ℂ (Set.range c) = ⊤` using `hli.span_eq_top_of_card_eq_finrank' (by simp [Fintype.card_congr e])`. Establish `hz : z ∈ Submodule.span ℂ (Set.range c)` using `hspan ▸ Submodule.mem_top`. Take `⟨a, rfl⟩` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 hz`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[ip_eq_ipLin, map_sum]`. Simplify using `only [map_smul, ← ip_eq_ipLin, hc, smul_eq_mul]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sum_ip_smul (hc : ∀ i i', R.ip (c i) (c i') = if i = i' then 1 else 0) (z : Fin g → ℂ) :
     ∑ i, R.ip (c i) z • c i = z := by
@@ -78,7 +78,7 @@ theorem sum_ip_smul (hc : ∀ i i', R.ip (c i) (c i') = if i = i' then 1 else 0)
   simp
 
 /- English proof (translation)
-Use `conv_rhs => rw [← sum_ip_smul R e c hc u]`. Rewrite using `[ip_eq_ipLin, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← ip_eq_ipLin, conj_ip, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_ip_mul_conj (hc : ∀ i i', R.ip (c i) (c i') = if i = i' then 1 else 0) (u v : Fin g → ℂ) :
     ∑ i, R.ip (c i) u * starRingEnd ℂ (R.ip (c i) v) = R.ip v u := by
@@ -88,9 +88,9 @@ theorem sum_ip_mul_conj (hc : ∀ i i', R.ip (c i) (c i') = if i = i' then 1 els
   rw [map_smul, ← ip_eq_ipLin, conj_ip, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hB : ∀ l, R.B a (c l) = s l a • c l` using `fun l => by`. Establish `h` using `(Submodule.mem_iInf _).1 (hs l) a`. Establish `h'` using `LinearMap.mem_ker.1 h`. Simplify `h'` using `[sub_eq_zero]`. Use `conv_lhs => rw [← sum_ip_smul R e c hc z]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum, ip_eq_ipLin, map_sum]`. Simplify using `only [map_smul, hB, ← ip_eq_ipLin, hc, smul_eq_mul]`. Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ip_act (hc : ∀ i i', R.ip (c i) (c i') = if i = i' then 1 else 0) (s : ι → (𝓞 E →+* ℂ))
     (hs : ∀ i, c i ∈ eigSp R.B (s i)) (a : 𝓞 E) (i : ι) (z : Fin g → ℂ) :
@@ -109,15 +109,13 @@ end Frame
 variable {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {j j' : ℕ}
 
 /- English proof (translation)
-Set `P : Λ →+ (Fin g → ℂ)` to `{ toFun := fun x k => R₀.ip (c (e.symm k)) (R₀.P x) map_zero' := funext fun k => by simp [ip_eq_ipLin] map_add' := fun x y => funext fun k => by simp [ip_eq_ipLin] }`. Establish `hP : ∀ x k, P x k = R₀.ip (c (e.symm k)) (R₀.P x)` using `fun _ _ => rfl`. Use `⟨{ free := R₀.free, fin := R₀.fin, rank := R₀.rank, form := R₀.form, alt := R₀.alt, unimod := R₀.unimod, adj := R₀.adj, P := P, Hm := 1, herm := isHermitian_one, pos := ?_, im := ?_, B := diagAct fun k => emb σ (e.symm k), act := ?_ }, rfl, rfl, fun _ _ _ => rfl⟩` and prove the remaining obligations. Introduce `z hz`. Take `⟨k, hk⟩` from `Function.ne_iff.1 hz`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hk' : z k ≠ 0` using `hk`. Establish `: (z ⬝ᵥ (1 : Matrix (Fin g) (Fin g) ℂ) *ᵥ star z).re = ∑ l, Complex.normSq (z l)`. Simplify using `[dotProduct, Complex.mul_conj]`. Rewrite using `[this]`. Conclude with `Finset.sum_pos' (fun l _ => Complex.normSq_nonneg _) ⟨k, Finset.mem_univ _, Complex.normSq_pos.2 hk'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Establish `key : P x ⬝ᵥ (1 : Matrix (Fin g) (Fin g) ℂ) *ᵥ star (P y) = R₀.P x ⬝ᵥ R₀.Hm *ᵥ star (R₀.P y)`. Establish `h` using `sum_ip_mul_conj R₀ e c hc (R₀.P x) (R₀.P y)`. Rewrite `h` using `[← e.symm.sum_comp]`. Rewrite using `[one_mulVec]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Rewrite using `[key]`. Conclude with `R₀.im x y`. Introduce `a x`. Use function extensionality and compare the values at `k`.
-
-Rewrite using `[diagAct_apply, hP, hP, R₀.act]`. Conclude with `ip_act R₀ e c hc (emb σ) hs a (e.symm k) (R₀.P x)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_riemLat_coord (R₀ : RiemLat E g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) (e : Ix Ψ j j' ≃ Fin g)
     (c : Ix Ψ j j' → Fin g → ℂ) (hs : ∀ i, c i ∈ eigSp R₀.B (emb σ i))
@@ -152,7 +150,7 @@ theorem exists_riemLat_coord (R₀ : RiemLat E g Λ) (σ : Ψ → (𝓞 E →+* 
     exact ip_act R₀ e c hc (emb σ) hs a (e.symm k) (R₀.P x)
 
 /- English proof (translation)
-Introduce `R₀ σ e c hs hc` and use `exists_riemLat_coord R₀ σ e c hs hc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem coord_lat : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {j j' g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] (R₀ : RiemLat E g Λ) (σ : Ψ → (𝓞 E →+* ℂ)) (e : Ix Ψ j j' ≃ Fin g) (c : Ix Ψ j j' → Fin g → ℂ), (∀ i, c i ∈ eigSp R₀.B (emb σ i)) → (∀ i i', R₀.ip (c i) (c i') = if i = i' then 1 else 0) → ∃ R₁ : RiemLat E g Λ, R₁.form = R₀.form ∧ R₁.Hm = 1 ∧ ∀ a x k, R₁.B a x k = emb σ (e.symm k) a * x k :=
   fun R₀ σ e c hs hc => exists_riemLat_coord R₀ σ e c hs hc

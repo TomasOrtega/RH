@@ -10,7 +10,7 @@ inductive Alt : ℚ → List ℚ → List ℚ → ℚ → Prop
   | cons {x s b y : ℚ} {sm bg : List ℚ} : x > s → s > b → Alt b sm bg y → Alt x (s :: sm) (b :: bg) y
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil x => simpa using h'`. Consider the case `cons h1 h2 _ ih => exact Alt.cons h1 h2 (ih h')`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem Alt.append {x y z : ℚ} {s b s' b' : List ℚ} (h : Alt x s b y) (h' : Alt y s' b' z) :
     Alt x (s ++ s') (b ++ b') z := by
@@ -19,9 +19,9 @@ theorem Alt.append {x y z : ℚ} {s b s' b' : List ℚ} (h : Alt x s b y) (h' : 
   | cons h1 h2 _ ih => exact Alt.cons h1 h2 (ih h')
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil x => exact ⟨rfl, fun i h => absurd h (by simp)⟩`. Consider the case `cons h1 h2 _ ih`. Use `⟨by simpa using ih.1, fun i h h' => ?_⟩` and prove the remaining obligations. Consider the cases of `i with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero => exact ⟨h1, h2⟩`. Consider the case `succ i => exact ih.2 i (by simpa using h) (by simpa using h')`.
+Treat this case separately. Treat this case separately.
 -/
 theorem Alt.interlace {x y : ℚ} {s b : List ℚ} (h : Alt x s b y) : Interlace (x :: b) s := by
   induction h with
@@ -35,9 +35,9 @@ theorem Alt.interlace {x y : ℚ} {s b : List ℚ} (h : Alt x s b y) : Interlace
 def Above (x : ℚ) (L : List ℚ) : Prop := ∀ z : ℤ, (z : ℚ) ∈ L → x > z
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => intro x _ hx; exact ⟨x, Alt.nil x, by simpa using hx⟩`. Consider the case `cons i l ih`. Introduce `x hp hx`. Rewrite `hp`, `hx` using `[List.flatMap_cons, List.append_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, h1, h2⟩` from `seg i x _ hp hx`. Take `⟨z, h3, h4⟩` from `ih y (List.pairwise_append.1 hp).2.1 h2`. Conclude with `⟨z, by simpa only [List.flatMap_cons] using h1.append h3, h4⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem alt_flatMap {ι : Type} (f g h : ι → List ℚ)
     (seg : ∀ i x L, (f i ++ L).Pairwise (· > ·) → Above x (f i ++ L) → ∃ y, Alt x (g i) (h i) y ∧ Above y L)
@@ -53,9 +53,9 @@ theorem alt_flatMap {ι : Type} (f g h : ι → List ℚ)
     exact ⟨z, by simpa only [List.flatMap_cons] using h1.append h3, h4⟩
 
 /- English proof (translation)
-Simplify using `only [block, List.range_succ_eq_map, List.map_cons, List.map_map]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `List.map_congr_left fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem block_succ (c : ℚ) (n : ℕ) : block c (n + 1) = (c + n / 2) :: block (c - 1 / 2) n := by
   simp only [block, List.range_succ_eq_map, List.map_cons, List.map_map]
@@ -66,15 +66,15 @@ theorem block_succ (c : ℚ) (n : ℕ) : block c (n + 1) = (c + n / 2) :: block 
     push_cast; ring
 
 /- English proof (translation)
-The claim follows from `List.mem_map.2 ⟨i, List.mem_range.2 hi, hx.symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_block (c : ℚ) {n i : ℕ} (hi : i < n) {x : ℚ} (hx : x = c + ((n : ℚ) - 1) / 2 - i) : x ∈ block c n :=
   List.mem_map.2 ⟨i, List.mem_range.2 hi, hx.symm⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `c x h1 h2`. Rewrite using `[block_succ]`. Conclude with `Alt.cons h1 (by simpa using h2) (Alt.nil a)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `c x h1 h2`. Rewrite using `[block_succ c (n + 1), block_succ c n]`. Move the coercions through the operations in `at h1 h2 ⊢`. Conclude with `Alt.cons h1 (by linarith) (ih _ _ (by linarith) (by linarith))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem alt_block_upper (n : ℕ) (a : ℚ) : ∀ c x : ℚ, x > c + n / 2 → c - n / 2 > a →
     Alt x (block c (n + 1)) (block c n ++ [a]) a := by
@@ -90,9 +90,9 @@ theorem alt_block_upper (n : ℕ) (a : ℚ) : ∀ c x : ℚ, x > c + n / 2 → c
     exact Alt.cons h1 (by linarith) (ih _ _ (by linarith) (by linarith))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => intro c`. Simplify `Alt.nil c` using `[block]`. Consider the case `succ n ih`. Introduce `c`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[block_succ c n, block_succ (c - 1 / 2) n]`. Establish `e : c - ((n + 1 : ℕ) : ℚ) / 2 = c - 1 / 2 - n / 2` using `by push_cast; ring`. Rewrite using `[e]`. Use `Alt.cons ?_ (by linarith) (ih _)` and prove the remaining obligations. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -108,9 +108,9 @@ theorem alt_block_lower (n : ℕ) : ∀ c : ℚ, Alt (c + n / 2) (block c n) (bl
     push_cast; linarith
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `hs`. Take `⟨h1, -, h2⟩` from `List.pairwise_append.1 hp`. Use `⟨a, alt_block_upper (2 * r) a c x ?_ ?_, fun z hz => h2 a (by simp) _ hz⟩` and prove the remaining obligations. Use `hx (c + r) (List.mem_append_left _ (List.mem_append_left _ (mem_block (i := 0) _ (by omega) (by push_cast; ring))))` as an intermediate fact. Move the coercions through the operations in `at this ⊢`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(List.pairwise_append.1 h1).2.2 _ (mem_block (i := 2 * r) _ (by omega) (by push_cast; ring)) a (by simp)`.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem seg_upper (c : ℤ) (a : ℚ) {s : ℕ} (hs : Odd s) (x : ℚ) (L : List ℚ)
     (hp : (block c s ++ [a] ++ L).Pairwise (· > ·)) (hx : Above x (block c s ++ [a] ++ L)) :
@@ -124,7 +124,7 @@ theorem seg_upper (c : ℤ) (a : ℚ) {s : ℕ} (hs : Odd s) (x : ℚ) (L : List
   · exact (List.pairwise_append.1 h1).2.2 _ (mem_block (i := 2 * r) _ (by omega) (by push_cast; ring)) a (by simp)
 
 /- English proof (translation)
-Take `⟨h1, -, h2⟩` from `List.pairwise_append.1 hp`. Conclude with `⟨u, Alt.cons (hx v (by simp)) (by simpa using h1) (Alt.nil u), fun z hz => h2 u (by simp) _ hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem seg_middle (v : ℤ) (u : ℚ) (x : ℚ) (L : List ℚ)
     (hp : ([(v : ℚ), u] ++ L).Pairwise (· > ·)) (hx : Above x ([(v : ℚ), u] ++ L)) :
@@ -133,13 +133,11 @@ theorem seg_middle (v : ℤ) (u : ℚ) (x : ℚ) (L : List ℚ)
   exact ⟨u, Alt.cons (hx v (by simp)) (by simpa using h1) (Alt.nil u), fun z hz => h2 u (by simp) _ hz⟩
 
 /- English proof (translation)
-Take `⟨r, rfl⟩` from `ht`. Take `⟨h1, -, h2⟩` from `List.pairwise_append.1 hp`. Rewrite using `[block_succ (-e) (2 * r + 1)]`. Use `⟨_, Alt.cons ?_ ?_ (alt_block_lower _ _), fun z hz => ?_⟩` and prove the remaining obligations. Use `hx (-b) (by simp)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this` after adjusting the coercions. Establish `h3 : (-b : ℚ) > ((-e + r : ℤ) : ℚ)` using `(List.pairwise_cons.1 h1).1 _ (mem_block (i := 0) _ (by omega) (by push_cast; ring))`. Establish `h4 : -e + r < -b` using `by exact_mod_cast h3`. Establish `h5 : ((-e + r + 1 : ℤ) : ℚ) ≤ ((-b : ℤ) : ℚ)` using `by exact_mod_cast h4`. Move the coercions through the operations in `at h5 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ((-e - r : ℤ) : ℚ) > z` using `h2 _ (List.mem_cons_of_mem _ (mem_block (i := 2 * r) _ (by omega) (by push_cast; ring))) _ hz`. Establish `h4 : z < -e - r` using `by exact_mod_cast h3`. Establish `h5 : ((z + 1 : ℤ) : ℚ) ≤ ((-e - r : ℤ) : ℚ)` using `by exact_mod_cast h4`. Move the coercions through the operations in `at h5 ⊢`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem seg_lower (b e : ℤ) {t : ℕ} (ht : Odd t) (x : ℚ) (L : List ℚ)
     (hp : (((-b : ℚ) :: block (-e) t) ++ L).Pairwise (· > ·)) (hx : Above x (((-b : ℚ) :: block (-e) t) ++ L)) :
@@ -162,9 +160,9 @@ theorem seg_lower (b e : ℤ) {t : ℕ} (ht : Odd t) (x : ℚ) (L : List ℚ)
     push_cast at h5 ⊢; linarith
 
 /- English proof (translation)
-Establish `ho` using `hQ.order`. Rewrite `ho` using `[Entries.orderList, List.cons_append, List.cons_append, List.append_assoc]`. Take `⟨h0, ho⟩` from `List.pairwise_cons.1 ho`. Take `⟨y1, a1, b1⟩` from `alt_flatMap _ _ _ (fun i => seg_upper (Q.c i) (Q.a i.succ) S.s_odd) _ _ (Q.a 0) ho (fun z hz => h0 _ hz)`. Establish `ho2` using `(List.pairwise_append.1 ho).2.1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y2, a2, b2⟩` from `alt_flatMap _ _ _ (fun i => seg_middle (Q.v i) (Q.u i)) _ _ y1 ho2 b1`. Establish `ho3` using `(List.pairwise_append.1 ho2).2.1`. Take `⟨y3, a3, -⟩` from `alt_flatMap _ _ _ (fun i => seg_lower (Q.b i) (Q.e i) S.t_odd) (List.finRange S.m) [] y2 (by simpa only [List.append_nil] using ho3) (by simpa only [List.append_nil] using b2)`. Use `(a1.append (a2.append a3)).interlace` as an intermediate fact. Simplify `this` using `only [Entries.bigPar, Entries.psiPar, Entries.smallPar, Entries.basePar, List.cons_append, List.append_assoc, List.map_eq_flatMap]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem interlace_big_small (S : Sizes) (Q : Entries S) (hQ : Q.Good) : Interlace Q.bigPar Q.smallPar := by
   have ho := hQ.order

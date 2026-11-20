@@ -7,9 +7,9 @@ open GlobalTheory.PRep
 namespace DiscreteGroups.sglob.LConv
 
 /- English proof (translation)
-Establish `hdep : ¬ LinearIndependent ℂ b` using `fun h => by`. Use `h.fintype_card_le_finrank` as an intermediate fact. Rewrite `this` using `[Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers. Establish `h` using `(MultilinearMap.alternatization (MultilinearMap.mkPiAlgebraFin ℂ M A)).map_linearDependent b hdep`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h` using `[MultilinearMap.alternatization_apply]`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[MultilinearMap.domDomCongr_apply, MultilinearMap.mkPiAlgebraFin_apply, Units.smul_def, Int.cast_smul_eq_zsmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem alt_std_eq_zero {A : Type} [Ring A] [Algebra ℂ A] [Module.Finite ℂ A] {M : ℕ}
     (hM : Module.finrank ℂ A < M) (b : Fin M → A) :
@@ -26,9 +26,9 @@ theorem alt_std_eq_zero {A : Type} [Ring A] [Algebra ℂ A] [Module.Finite ℂ A
     Int.cast_smul_eq_zsmul]
 
 /- English proof (translation)
-Set `T : Subgroup G` to `{ carrier := {g | ρ g v = v} mul_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, map_mul, Module.End.mul_apply] at ha hb ⊢`. Rewrite using `[hb, ha]`. Use the proof step `one_mem' := by simp`. Use the proof step `inv_mem' := fun {a} ha => by`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq] at ha ⊢`. Use `conv_lhs => rw [← ha]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Conclude with `Subgroup.isOpen_mono (H₁ := U) (H₂ := T) (fun u hu => h u hu) hU`.
+A detailed English derivation is pending.
 -/
 theorem alt_isOpen_fix {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V]
     [Module ℂ V] (ρ : Representation ℂ G V) (v : V) (U : Subgroup G) (hU : IsOpen (U : Set G))
@@ -46,9 +46,9 @@ theorem alt_isOpen_fix {G V : Type} [Group G] [TopologicalSpace G] [IsTopologica
   exact Subgroup.isOpen_mono (H₁ := U) (H₂ := T) (fun u hu => h u hu) hU
 
 /- English proof (translation)
-Establish `hin : ∀ x y, inner ℂ (π g x) (π g y) = inner ℂ x y` using `fun x y => LinearIsometry.inner_map_map ⟨(π g : H →ₗ[ℂ] H), hπ g⟩ x y`. Establish `h1 : star (π g) * π g = 1`. Use extensionality with `x`. Use `ext_inner_left ℂ fun v => ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.mul_apply, ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.adjoint_inner_right, hin, ContinuousLinearMap.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem alt_star_eq {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (π : G →* (H →L[ℂ] H)) (hπ : ∀ g x, ‖π g x‖ = ‖x‖) (g : G) : star (π g) = π g⁻¹ := by
@@ -63,21 +63,19 @@ theorem alt_star_eq {G H : Type} [Group G] [NormedAddCommGroup H] [InnerProductS
     _ = π g⁻¹ := by rw [← mul_assoc, h1, one_mul]
 
 /- English proof (translation)
-Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hKc`. Establish `hU'o : IsOpen ((U.subgroupOf K : Subgroup K) : Set K)`. Rewrite using `[Subgroup.coe_subgroupOf]`. Conclude with `hUo.preimage continuous_subtype_val`. Use `haveI : Finite (K ⧸ U.subgroupOf K) := Subgroup.quotient_finite_of_isOpen _ hU'o`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `haveI : Fintype (K ⧸ U.subgroupOf K) := Fintype.ofFinite _`. Set `F : K ⧸ U.subgroupOf K → (H →L[ℂ] H)` to `fun q => Quotient.liftOn' q (fun κ : K => π κ * y) (by`. Introduce `a b hab`. Establish `hab' : a⁻¹ * b ∈ U.subgroupOf K` using `QuotientGroup.leftRel_apply.mp hab`. Establish `hu : ((a⁻¹ * b : K) : G) ∈ U` using `Subgroup.mem_subgroupOf.mp hab'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (b : G) = (a : G) * ((a⁻¹ * b : K) : G)` using `by simp`. Use `show π a * y = π b * y`. Rewrite using `[hb, map_mul, mul_assoc, hU _ hu])`. Establish `hF : ∀ κ : K, F (κ : K ⧸ U.subgroupOf K) = π κ * y` using `fun κ => rfl`. Establish `hFZ : ∀ q, F q ∈ Z` using `fun q => QuotientGroup.induction_on q fun κ => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF]`. Conclude with `hZ κ κ.2 y hy`. Establish `hFe : ∀ q, e * F q = e * y` using `fun q => QuotientGroup.induction_on q fun κ => by`. Rewrite using `[hF, ← mul_assoc, heK κ κ.2]`. Establish `hFs : ∀ (κ : K) q, π κ * F q = F (κ • q)` using `fun κ q => QuotientGroup.induction_on q fun a => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MulAction.Quotient.smul_mk, hF, hF, smul_eq_mul, Subgroup.coe_mul, map_mul, mul_assoc]`. Establish `hwK : ∀ κ : K, π κ * ∑ q, F q = ∑ q, F q`. Introduce `κ`. Rewrite using `[Finset.mul_sum]`. Repeatedly rewrite using `[hFs κ]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `Equiv.sum_comp (MulAction.toPerm κ) F`. Establish `hew : e * ∑ q, F q = ∑ q, F q`. Use extensionality with `x`. Rewrite using `[ContinuousLinearMap.mul_apply]`. Conclude with `hfix _ fun κ hκ => congrArg (fun T : H →L[ℂ] H => T x) (hwK ⟨κ, hκ⟩)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcard : e * ∑ q, F q = (Fintype.card (K ⧸ U.subgroupOf K) : ℂ) • (e * y)`. Rewrite using `[Finset.mul_sum]`. Repeatedly rewrite using `[hFe]`. Rewrite using `[Finset.sum_const, Finset.card_univ, Nat.cast_smul_eq_nsmul]`. Establish `hn : (Fintype.card (K ⧸ U.subgroupOf K) : ℂ) ≠ 0` using `Nat.cast_ne_zero.mpr Fintype.card_ne_zero`.
-
-Establish `: e * y = (Fintype.card (K ⧸ U.subgroupOf K) : ℂ)⁻¹ • ∑ q, F q`. Rewrite using `[← hew, hcard, smul_smul, inv_mul_cancel₀ hn, one_smul]`. Rewrite using `[this]`. Conclude with `Z.smul_mem _ (Z.sum_mem fun q _ => hFZ q)`.
+A detailed English derivation is pending.
 -/
 theorem alt_avg {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (K : Subgroup G)
     (hKc : IsCompact (K : Set G)) {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

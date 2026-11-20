@@ -22,13 +22,13 @@ namespace GlobalTheory.TgtCoreSplit
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `v` and use `by rw [map_one]; exact one_mem _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem one_mem_intAf : (1 : Af D.host.F) ∈ intAf D.host.F := fun v => by
   rw [map_one]; exact one_mem _
 
 /- English proof (translation)
-Unfold `finPart`. Rewrite using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem finPart_pure (α : Af D.host.F) (e : D.host.E) :
     finPart D ((pairA D.host.F 0 α) ⊗ₜ[D.host.F] e) = α ⊗ₜ[D.host.F] e := by
@@ -37,7 +37,7 @@ theorem finPart_pure (α : Af D.host.F) (e : D.host.E) :
   rfl
 
 /- English proof (translation)
-Unfold `toEAf`. Rewrite using `[RingHom.comp_apply, finPart_pure]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toEAf_pure (e : D.host.E) :
     toEAf D ((pairA D.host.F 0 1) ⊗ₜ[D.host.F] e) =
@@ -47,7 +47,7 @@ theorem toEAf_pure (e : D.host.E) :
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, rat, Matrix.map_apply, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ((1 : AF D.host.F) ⊗ₜ[D.host.F] M i k) * _ = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_mulVec_pure {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (α : Af D.host.F) (t : Fin n → D.host.E) :
     rat M *ᵥ (fun i => (pairA D.host.F 0 α) ⊗ₜ[D.host.F] t i) =
@@ -59,11 +59,9 @@ theorem rat_mulVec_pure {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (α : 
   rw [Algebra.TensorProduct.tmul_mul_tmul, one_mul]
 
 /- English proof (translation)
-Establish `hy : (fun i => (pairA D.host.F 0 1) ⊗ₜ[D.host.F] t i) ∈ latV S L (fun _ => True)` using `AddSubgroup.subset_closure ⟨1, one_mem_intAf, fun v hv => (hv trivial).elim, 1, rfl, t, ht, by`. Use function extensionality and compare the values at `i`. Rewrite using `[one_mul]⟩`. Establish `h2` using `GlobalTheory.FinPl.ExtZeroAt.wittCoreInclusion_mem_latticeCompletionAtPlace d hL (fun v _ => hm v) (GlobalTheory.FinPl.ExtZeroAt.wittProjectionZero_mem_latticeCompletion_of_splits d hL₀ (fun v _ => hm v) hy)`. Establish `e : d.j0 *ᵥ (d.p0 *ᵥ (fun i => (pairA D.host.F 0 1) ⊗ₜ[D.host.F] t i)) = fun i => (pairA D.host.F 0 1) ⊗ₜ[D.host.F] ((d.i₀ * d.q0) *ᵥ t) i`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_mulVec, show d.j0 * d.p0 = rat (d.i₀ * d.q0) by rw [rat_mul]; rfl]`. Conclude with `rat_mulVec_pure _ _ _`. Rewrite `h2` using `[e]`. Establish `h3` using `(GlobalTheory.Core.Mi.LatMatch.TraceX.latV_iff_hatL S L _ _ (GlobalTheory.FinPlLoc.latV_idAt h2)).1 h2`. Simplify using `only [toEAf_pure] at h3`.
-
-Conclude with `(GlobalTheory.Mem.Col2.PtUniq.mem_iff_hatL (F := D.host.F) hL _).2 h3`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proj_mem {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} {L₀ : Lat S₀}
     (hL : Submodule.IsLattice D.host.E L) (hL₀ : Submodule.IsLattice D.host.E L₀) (hm : ∀ v, MonoAt d L L₀ v)
@@ -83,13 +81,13 @@ theorem proj_mem {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) {L : Lat S} 
   exact (GlobalTheory.Mem.Col2.PtUniq.mem_iff_hatL (F := D.host.F) hL _).2 h3
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨α, hα, hαP, a, ha, s, hs, t, ht, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨α, hα, hαP, a, ha, s, hs, M *ᵥ t, hM t ht, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply, rat, Matrix.map_apply]`. Generalize the expression as in `(∑ k, star (s k) * S.gram k j) = c`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ((1 : AF D.host.F) ⊗ₜ[D.host.F] M i k) * _ = _`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [Matrix.mul_zero]`. Conclude with `zero_mem _`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [Matrix.mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mul_neg]`. Conclude with `neg_mem hx`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_latO {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : Lat T} {P : GlobalTheory.FinPl.Pl D → Prop}
     (M : Matrix (Fin T.rank) (Fin T.rank) D.host.E) (hM : ∀ t ∈ LT, M *ᵥ t ∈ LT) {u : WO S T}
@@ -112,9 +110,9 @@ theorem mul_mem_latO {S T : HSp D} {LS : Set (Fin S.rank → D.host.E)} {LT : La
   | neg x _ hx => rw [Matrix.mul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hx (fun r hr y hy => ?_) (fun a b ha hb => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.mul_smul]`. Use `Submodule.smul_mem_smul hr fun z hz => ?_` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `hM _ (hy z hz)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_add]`. Conclude with `add_mem ha hb`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_smul_homLat {m n : ℕ} (I : Ideal (𝓞 D.host.E)) {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} (M : Matrix (Fin m) (Fin m) D.host.E)
@@ -128,11 +126,11 @@ theorem mul_mem_smul_homLat {m n : ℕ} (I : Ideal (𝓞 D.host.E)) {Λ : Submod
   · rw [Matrix.mul_add]; exact add_mem ha hb
 
 /- English proof (translation)
-Proceed by induction on `hu using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨α, hα, x, hx, rfl⟩` from `hz`. Use `AddSubgroup.subset_closure ⟨α, hα, M * x, hM x hx, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply, rat, Matrix.map_apply, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `show ((1 : AF D.host.F) ⊗ₜ[D.host.F] M i k) * _ = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul]`. Consider the case `zero => rw [Matrix.mul_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [Matrix.mul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Matrix.mul_neg]`. Conclude with `neg_mem hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_mem_hatMx {m n : ℕ} (N : Submodule (𝓞 D.host.E) (Matrix (Fin m) (Fin n) D.host.E))
     (M : Matrix (Fin m) (Fin m) D.host.E) (hM : ∀ x ∈ N, M * x ∈ N) {u : Mx D m n} (hu : u ∈ hatMx N) :
@@ -155,13 +153,11 @@ end GlobalTheory.TgtCoreSplit
 open GlobalTheory.TgtCoreSplit in
 
 /- English proof (translation)
-Introduce `D hD T L μ0 hL sc G W M hM F hF ρ h w hw`. Establish `hI` using `GlobalTheory.T.grid_lattices_compact_selfDual_splitting D hD T L μ0 hL sc G W M hM F hF`. Establish `hm : ∀ v, MonoAt (F.dJ ρ h) (G.Λ (.grid (2 * ρ + 1) 0)) (G.Λ (.core (2 * ρ + 1))) v` using `fun v => ((hI.2.1 ρ h).2.1 v).2`. Establish `hL1 : Submodule.IsLattice D.host.E (G.Λ (.grid (2 * ρ + 1) 0))` using `(node_isV G hL (X := .grid (2 * ρ + 1) 0) ⟨by omega, Nat.zero_le _⟩).sd.1`. Establish `hL0 : Submodule.IsLattice D.host.E (G.Λ (.core (2 * ρ + 1)))` using `(node_isV G hL (X := .core (2 * ρ + 1)) (show 2 * ρ + 1 ≤ D.R.m by omega)).sd.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : ∀ t ∈ G.Λ (.grid (2 * ρ + 1) 0), ((F.dJ ρ h).i₀ * (F.dJ ρ h).q0) *ᵥ t ∈ G.Λ (.grid (2 * ρ + 1) 0)` using `fun t ht => proj_mem _ hL1 hL0 hm ht`. Establish `e : (F.dB ρ h).ext0 (G.V (.grid (2 * ρ + 1) 0)) ((F.dJ ρ h).inc0 (F.V₀ ρ) ((F.dJ ρ h).p0 * w)) = rat ((F.dJ ρ h).i₀ * (F.dJ ρ h).q0) * (F.dB ρ h).ext0 (G.V (.grid (2 * ρ + 1) 0)) w`. Rewrite using `[HypDec.matrixExtendByZero_apply, HypDec.matrixExtendByZero_apply, HypDec.wittDecomp_inclAnisotropicHom_apply, rat_mul]`. Use `show (F.dJ ρ h).j0 * ((F.dJ ρ h).p0 * w) * (F.dB ρ h).p0 = (F.dJ ρ h).j0 * (F.dJ ρ h).p0 * (w * (F.dB ρ h).p0)`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hw' : (F.dB ρ h).ext0 (G.V (.grid (2 * ρ + 1) 0)) w ∈ latO (G.pS (.chi (2 * ρ + 1) 0 : Pair T)) (G.pT (.chi (2 * ρ + 1) 0 : Pair T)) (G.latS (.chi (2 * ρ + 1) 0 : Pair T) : Set _) (G.latT (.chi (2 * ρ + 1) 0 : Pair T) : Set _) (fun _ => True) ∧ ∀ a : AE D, IsIdemSum a G.pl.W0 → a …` using `hw`. Rewrite using `[e]`. Use `show (rat ((F.dJ ρ h).i₀ * (F.dJ ρ h).q0) * (F.dB ρ h).ext0 (G.V (.grid (2 * ρ + 1) 0)) w) ∈ latO (G.pS (.chi (2 * ρ + 1) 0 : Pair T)) (G.pT (.chi (2 * ρ + 1) 0 : Pair T)) (G.latS (.chi (2 * ρ + 1) 0 : Pair T) : Set _) (G.latT (.chi (2 * ρ + 1) 0 : Pair T) : Set _) (fun _ => True …`. Use `⟨mul_mem_latO _ hP hw'.1, fun a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_smul]`.
-
-Conclude with `mul_mem_hatMx _ _ (fun x hx => mul_mem_smul_homLat _ _ hP hx) (hw'.2 a ha)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AscFin.latRow_bessel_core_split : OnStd fun {D} _ _ {sc} {G} W F => ∀ ρ (h : 2 * ρ + 2 ≤ D.R.m), ∀ w : WO (F.V₀ ρ) (G.V (.grid (2 * ρ + 1) 0)), (F.dB ρ h).ext0 (G.V (.grid (2 * ρ + 1) 0)) w ∈ latRow G (2 * ρ + 1) → (F.dB ρ h).ext0 (G.V (.grid (2 * ρ + 1) 0)) ((F.dJ ρ h).inc0 (F.V₀ ρ) ((F.dJ ρ h).p0 ⬝ w)) ∈ latRow G (2 * ρ + 1) := by
   intro D hD T L μ0 hL sc G W M hM F hF ρ h w hw

@@ -14,7 +14,7 @@ open Formalism.REAL (KHighest IsWeight)
 def ht {n : ℕ} (w : Fin n → ℝ) : ℝ := ∑ c : Fin n, ((n : ℝ) - (c : ℕ)) * w c
 
 /- English proof (translation)
-Establish `hcd : ((c : ℕ) : ℝ) < ((d : ℕ) : ℝ)` using `by exact_mod_cast h`. Establish `: ht (w + Pi.single c 1 - Pi.single d 1) = ht w + ((n : ℝ) - (c : ℕ)) - ((n : ℝ) - (d : ℕ))`. Simplify using `[ht, mul_add, mul_sub, Finset.sum_add_distrib, Finset.sum_sub_distrib, Pi.single_apply]`. Rewrite using `[this]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem ht_add_root {n : ℕ} (w : Fin n → ℝ) (c d : Fin n) (h : c < d) :
     ht w < ht (w + Pi.single c 1 - Pi.single d 1) := by
@@ -26,23 +26,21 @@ theorem ht_add_root {n : ℕ} (w : Fin n → ℝ) (c d : Fin n) (h : c < d) :
   linarith
 
 /- English proof (translation)
-Introduce `n ε V _ _ E γ x hx hK`. Take `⟨g, hg, -, hwt, hdiag, -⟩` from `hG n ε`. Establish `hne : (univ.filter fun A : Finset (NC ε) => x A ≠ 0).Nonempty`. Assume the negation of the conclusion as `hc`. Apply `hx` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `A`. Assume the negation of the conclusion as `hA`. Conclude with `hc ⟨A, by simpa using hA⟩`. Take `⟨A, hA, hmin⟩` from `Finset.exists_min_image _ (fun A : Finset (NC ε) => ht (wtA A)) hne`. Establish `hA0 : x A ≠ 0` using `by simpa using hA`.
+Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨A, hA0, ?_⟩` and prove the remaining obligations. Establish `hF : ∀ c d, Fop ε E c d x A = E c d (x A) + ∑ B, (g c d A B : ℂ) • x B`. Introduce `c d`. Rewrite using `[← hg V c d x A]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a => ?_, fun a b hab hε => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (hK.1 a) A`. Rewrite `h1` using `[hF]`. Establish `h2 : ∑ B, (g a a A B : ℂ) • x B = (wtA A a : ℂ) • x A`. Rewrite using `[Finset.sum_eq_single A]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hdiag]`. Introduce `B _ hB`. Simplify using `[hdiag, Ne.symm hB]`. Simplify using the standard rewrite rules. Rewrite `h1` using `[h2, Pi.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.sub_apply, Complex.ofReal_sub, sub_smul, ← h1, add_sub_cancel_right]`. Establish `h1` using `congrFun (hK.2 a b hab hε) A`. Rewrite `h1` using `[hF]`. Establish `h2 : ∑ B, (g a b A B : ℂ) • x B = 0`. Use `Finset.sum_eq_zero fun B _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hgB : g a b A B = 0`. Simplify using `[hgB]`. Distinguish the cases in `hxB : x B = 0`. Simplify using `[hxB]`. It suffices to derive a contradiction.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h3` using `hmin B (by simpa using hxB)`. Establish `h4` using `ht_add_root (wtA B) a b hab`. Rewrite `h4` using `[← (hwt a b A B hgB).2]`. Conclude with `absurd h3 (not_le.mpr h4)`. Rewrite `h1` using `[h2, add_zero]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wlem_of_gfacts (hG : GFacts) : WLem := by
   intro n ε V _ _ E γ x hx hK

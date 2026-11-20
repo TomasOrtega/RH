@@ -9,9 +9,9 @@ open Polynomial
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `PowerSeries.X_dvd_iff.mpr h0`. Use `⟨u, ?_, hu⟩` and prove the remaining obligations. Establish `hc : PowerSeries.coeff 1 s = PowerSeries.constantCoeff u`. Rewrite using `[hu]`. Use `first`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `simp [PowerSeries.coeff_succ_X_mul]`. Consider the case `exact PowerSeries.coeff_succ_X_mul 0 u`. Rewrite using `[PowerSeries.isUnit_iff_constantCoeff]`. Rewrite `h1` using `[hc]`. Conclude with `isUnit_iff_ne_zero.mpr h1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_X_mul_unit (s : PowerSeries K) (h0 : PowerSeries.constantCoeff s = 0)
     (h1 : PowerSeries.coeff 1 s ≠ 0) : ∃ u : PowerSeries K, IsUnit u ∧ s = PowerSeries.X * u := by
@@ -27,7 +27,7 @@ theorem eq_X_mul_unit (s : PowerSeries K) (h0 : PowerSeries.constantCoeff s = 0)
   exact isUnit_iff_ne_zero.mpr h1
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `(rw [Algebra.algebraMap_eq_smul_one, PowerSeries.smul_eq_C_mul, mul_one])`. Consider the case `simp [PowerSeries.algebraMap_apply']`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem algebraMap_powerSeries_self_eq_C {R : Type} [CommRing R] (a : R) :
     algebraMap R (PowerSeries R) a = PowerSeries.C a := by
@@ -37,7 +37,7 @@ private theorem algebraMap_powerSeries_self_eq_C {R : Type} [CommRing R] (a : R)
   | simp [PowerSeries.algebraMap_apply']
 
 /- English proof (translation)
-Use `Polynomial.induction_on' r (fun p q hp hq => ?_) (fun n a => ?_)` and prove the remaining obligations. Rewrite using `[map_add, map_add, hp, hq, Polynomial.eval_add]`. Rewrite using `[Polynomial.aeval_monomial, map_mul, map_pow, algebraMap_powerSeries_self_eq_C, PowerSeries.constantCoeff_C, Polynomial.eval_monomial]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem constantCoeff_aeval_eq_eval_constantCoeff (y : PowerSeries K) (r : K[X]) :
     PowerSeries.constantCoeff (Polynomial.aeval y r) = r.eval (PowerSeries.constantCoeff y) := by
@@ -47,13 +47,13 @@ private theorem constantCoeff_aeval_eq_eval_constantCoeff (y : PowerSeries K) (r
       Polynomial.eval_monomial]
 
 /- English proof (translation)
-Take `⟨u, hu, hsu⟩` from `eq_X_mul_unit s h0 h1`. Establish `hsub : Polynomial.aeval (PowerSeries.C c + s) (Polynomial.X - Polynomial.C c) = s`. Rewrite using `[map_sub, Polynomial.aeval_X, Polynomial.aeval_C, algebraMap_powerSeries_self_eq_C, add_sub_cancel_left]`. Proceed by induction on `b generalizing r with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `succ b ih`. Establish `hX : (PowerSeries.X : PowerSeries K) ∣ Polynomial.aeval (PowerSeries.C c + s) r` using `(dvd_pow_self _ (Nat.succ_ne_zero b)).trans hb`. Establish `hroot : r.IsRoot c`. Rewrite `hX` using `[PowerSeries.X_dvd_iff, constantCoeff_aeval_eq_eval_constantCoeff, map_add, PowerSeries.constantCoeff_C, h0, add_zero]`. Conclude with `hX`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, rfl⟩` from `Polynomial.dvd_iff_isRoot.mpr hroot`. Rewrite `hb` using `[map_mul, hsub]`. Establish `hb' : (PowerSeries.X : PowerSeries K) * PowerSeries.X ^ b ∣ PowerSeries.X * (u * Polynomial.aeval (PowerSeries.C c + s) q)`. Rewrite using `[← mul_assoc, ← hsu, ← pow_succ']`. Conclude with `hb`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : (PowerSeries.X : PowerSeries K) ^ b ∣ Polynomial.aeval (PowerSeries.C c + s) q` using `hu.dvd_mul_left.mp ((mul_dvd_mul_iff_left PowerSeries.X_ne_zero).mp hb')`. Rewrite using `[pow_succ']`. Conclude with `mul_dvd_mul_left _ (ih q hq)`.
+A detailed English derivation is pending.
 -/
 theorem pow_dvd_of_order (r : K[X]) (c : K) (s : PowerSeries K)
     (h0 : PowerSeries.constantCoeff s = 0) (h1 : PowerSeries.coeff 1 s ≠ 0) (b : ℕ)
@@ -83,9 +83,9 @@ theorem pow_dvd_of_order (r : K[X]) (c : K) (s : PowerSeries K)
     exact mul_dvd_mul_left _ (ih q hq)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hr`. Establish `hprod : (∏ c ∈ cs, (Polynomial.X - Polynomial.C c) ^ b) ∣ r`. Use `Finset.prod_dvd_of_coprime ?_ h` and prove the remaining obligations. Introduce `x _ y _ hxy`. Conclude with `(Polynomial.isCoprime_X_sub_C_of_isUnit_sub (sub_ne_zero.mpr hxy).isUnit).pow`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdeg' : (∏ c ∈ cs, (Polynomial.X - Polynomial.C c) ^ b).natDegree = cs.card * b`. Rewrite using `[Polynomial.natDegree_prod _ _ (fun c _ => pow_ne_zero _ (Polynomial.X_sub_C_ne_zero c))]`. Simplify using `[Polynomial.natDegree_pow, Polynomial.natDegree_X_sub_C, mul_comm]`. Use `Polynomial.natDegree_le_of_dvd hprod hr` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pow_dvd (r : K[X]) (cs : Finset K) (b : ℕ)
     (h : ∀ c ∈ cs, (Polynomial.X - Polynomial.C c) ^ b ∣ r) (hdeg : r.natDegree < cs.card * b) : r = 0 := by
@@ -101,7 +101,7 @@ theorem eq_zero_of_pow_dvd (r : K[X]) (cs : Finset K) (b : ℕ)
   omega
 
 /- English proof (translation)
-Use `Polynomial.induction_on r (fun a => ?_) (fun p q hp hq => ?_) (fun n a _ => ?_)` and prove the remaining obligations. Rewrite using `[Polynomial.coe_C, Polynomial.aeval_C, ← algebraMap_powerSeries_self_eq_C, φ.commutes]`. Rewrite using `[Polynomial.coe_add, map_add, map_add, hp, hq]`. Rewrite using `[Polynomial.coe_mul, Polynomial.coe_pow, Polynomial.coe_C, Polynomial.coe_X, map_mul, map_pow, ← algebraMap_powerSeries_self_eq_C, φ.commutes, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem algHom_coe {O A : Type} [CommRing O] [CommRing A] [Algebra O A]
     (φ : PowerSeries O →ₐ[O] A) (r : O[X]) :
@@ -113,9 +113,9 @@ theorem algHom_coe {O A : Type} [CommRing O] [CommRing A] [Algebra O A]
       ← algebraMap_powerSeries_self_eq_C, φ.commutes, map_mul, map_pow, Polynomial.aeval_C, Polynomial.aeval_X]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Polynomial.aeval_map_algebraMap K y r`. Consider the case `(refine Polynomial.induction_on r (fun a => ?_) (fun p q hp hq => ?_) (fun n a _ => ?_)`. Simplify using `[algebraMap_powerSeries_self_eq_C, PowerSeries.algebraMap_apply']`. Simplify using `only [Polynomial.map_add, map_add, hp, hq]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[algebraMap_powerSeries_self_eq_C, PowerSeries.algebraMap_apply'])`.
+A detailed English derivation is pending.
 -/
 private theorem aeval_map_algebraMap_eq_aeval {O : Type} [CommRing O] [Algebra O K] (y : PowerSeries K)
     (r : O[X]) : Polynomial.aeval y (r.map (algebraMap O K)) = Polynomial.aeval y r := by
@@ -127,19 +127,17 @@ private theorem aeval_map_algebraMap_eq_aeval {O : Type} [CommRing O] [Algebra O
      · simp [algebraMap_powerSeries_self_eq_C, PowerSeries.algebraMap_apply'])
 
 /- English proof (translation)
-Establish `hmap : PowerSeries.map (IsLocalRing.residue O) (f ^ b) = PowerSeries.X ^ (N * b)`. Rewrite using `[map_pow, hres, ← pow_mul]`. Establish `hne : PowerSeries.map (IsLocalRing.residue O) (f ^ b) ≠ 0`. Rewrite using `[hmap]`. Conclude with `pow_ne_zero _ PowerSeries.X_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, r, hqr⟩` from `PowerSeries.exists_isWeierstrassDivision g hne`. Establish `hord : (PowerSeries.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O)) (f ^ b)).order.toNat = N * b`. Establish `hm : PowerSeries.map (Ideal.Quotient.mk (IsLocalRing.maximalIdeal O)) (f ^ b) = PowerSeries.X ^ (N * b)` using `hmap`. Rewrite using `[hm, PowerSeries.order_X_pow]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hdeg : r.degree < (N * b : ℕ)`. Use `hqr.degree_lt` as an intermediate fact. Rewrite `this` using `[hord]`. Then use the resulting hypothesis. Establish `hg_eq : g = f ^ b * q + (r : PowerSeries O)` using `hqr.eq_mul_add`. Establish `hr : r = 0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hr0`. Establish `hnat : r.natDegree < N * b` using `(Polynomial.natDegree_lt_iff_degree_lt hr0).mpr hdeg`. Establish `hdvd : ∀ c ∈ Z, (Polynomial.X - Polynomial.C c) ^ b ∣ r.map (algebraMap O K)`. Introduce `c hc`. Apply `pow_dvd_of_order _ c (s c) (hs0 c hc) (hs1 c hc) b` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : φ c g = (φ c f) ^ b * φ c q + Polynomial.aeval (PowerSeries.C c + s c) r`. Rewrite using `[hg_eq, map_add, map_mul, map_pow, algHom_coe, hφX c hc]`. Establish `h2 : (PowerSeries.X : PowerSeries K) ^ b ∣ (φ c f) ^ b * φ c q` using `dvd_mul_of_dvd_left (pow_dvd_pow_of_dvd (hf c hc) b) _`. Establish `h4` using `hg c hc`. Rewrite `h4` using `[h1]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[aeval_map_algebraMap_eq_aeval]`. Conclude with `(dvd_add_right h2).mp h4`. Establish `hK : r.map (algebraMap O K) = 0`. Use `eq_zero_of_pow_dvd _ Z b hdvd ?_` and prove the remaining obligations. Rewrite using `[hZ]`.
-
-Conclude with `lt_of_le_of_lt Polynomial.natDegree_map_le hnat`. Conclude with `hr0 (Polynomial.map_injective _ hinj (by rw [hK, Polynomial.map_zero]))`. Conclude with `⟨q, by rw [hg_eq, hr, Polynomial.coe_zero, add_zero]⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dvd_of_vanish {O : Type} [CommRing O] [IsLocalRing O]
     [IsAdicComplete (IsLocalRing.maximalIdeal O) O] [Algebra O K]

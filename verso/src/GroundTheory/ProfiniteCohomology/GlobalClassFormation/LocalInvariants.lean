@@ -23,7 +23,7 @@ section Infinite
 variable (v : InfinitePlace K.1)
 
 /- English proof (translation)
-Take `⟨ι⟩ : Nonempty (ℚ̄ →ₐ[K.1] AlgebraicClosure v.Completion)` from `nonempty_algHom_of_isSepClosed`. Take `⟨p, hp⟩` from `exists_level_infCompletionEmbedding_surjective ι`. Conclude with `⟨p.1, inferInstance, infPlaceOfEmbedding ι p.1, ⟨AlgEquiv.ofBijective (infCompletionEmbedding ι p.1) ⟨(infCompletionEmbedding ι p.1).toRingHom.injective, hp p le_rfl⟩⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_infCompletion_algEquiv : ∃ (F : FiniteSubfield) (_ : Fact (K ≤ F)) (w : v.placesOver F.1),
     Nonempty ((w : InfinitePlace F.1).Completion ≃ₐ[v.Completion] AlgebraicClosure v.Completion) := by
@@ -45,9 +45,9 @@ instance isGalois_infAlgClosure : IsGalois v.Completion (AlgebraicClosure v.Comp
   inferInstance
 
 /- English proof (translation)
-Take `⟨F, _, w, ⟨e⟩⟩` from `exists_infCompletion_algEquiv v`. Establish `: (w : InfinitePlace F.1).LiesOver v` using `w.2`. Rewrite using `[← e.toLinearEquiv.finrank_eq]`. Distinguish the cases in `h : v.IsReal ∧ (w : InfinitePlace F.1).IsComplex`. Conclude with `((InfinitePlace.finrank_completion_eq_two_iff (w : InfinitePlace F.1)).2 h).le`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(InfinitePlace.finrank_completion_eq_one_iff (w : InfinitePlace F.1)).2 h]`. Evaluate the numerical expressions.
+Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem infAlgClosure_finrank_le_two :
     Module.finrank v.Completion (AlgebraicClosure v.Completion) ≤ 2 := by
@@ -60,17 +60,17 @@ theorem infAlgClosure_finrank_le_two :
     norm_num
 
 /- English proof (translation)
-Take `⟨F, _, w, ⟨e⟩⟩` from `exists_infCompletion_algEquiv v`. Establish `: (w : InfinitePlace F.1).LiesOver v` using `w.2`. Establish `hrange : Set.range (Algebra.norm v.Completion : AlgebraicClosure v.Completion → v.Completion) = Set.range (Algebra.norm v.Completion : (w : InfinitePlace F.1).Completion → v.Completion)`. Use extensionality with `c`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨e.symm y, Algebra.norm_eq_of_algEquiv e.symm y⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨e y, Algebra.norm_eq_of_algEquiv e y⟩`. Establish `hmem : ∀ c : v.Completionˣ, (c : v.Completion) ∈ Set.range (Algebra.norm v.Completion : (w : InfinitePlace F.1).Completion → v.Completion) ↔ c ∈ InfinitePlace.normSubgroup v (w : InfinitePlace F.1)`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `c`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hy` using `[Algebra.norm_zero]`. Conclude with `c.ne_zero hy.symm`. Conclude with `⟨Units.mk0 y hy0, Units.ext hy⟩`. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, congrArg Units.val hy⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb`. Rewrite `ha`, `hb`, the goal using `[hrange, hmem]`. Distinguish the cases in `h : v.IsReal ∧ (w : InfinitePlace F.1).IsComplex`. Rewrite `ha`, `hb`, the goal using `[InfinitePlace.mem_normSubgroup_iff h.1 h.2]`. Establish `ha' : InfinitePlace.Completion.extensionEmbeddingOfIsReal h.1 (a : v.Completion) < 0` using `lt_of_le_of_ne (not_lt.1 ha) ((map_ne_zero _).2 a.ne_zero)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb' : InfinitePlace.Completion.extensionEmbeddingOfIsReal h.1 (b : v.Completion) < 0` using `lt_of_le_of_ne (not_lt.1 hb) ((map_ne_zero _).2 b.ne_zero)`. Rewrite using `[Units.val_mul, map_mul]`. Conclude with `mul_pos_of_neg_of_neg ha' hb'`. Conclude with `absurd (InfinitePlace.normSubgroup_eq_top (w : InfinitePlace F.1) h ▸ Subgroup.mem_top a) ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infAlgClosure_mul_mem_range_norm : ∀ a b : v.Completionˣ,
     (a : v.Completion) ∉ Set.range (Algebra.norm v.Completion : AlgebraicClosure v.Completion → v.Completion) →
@@ -120,7 +120,7 @@ def placeInv : ∀ v : Place K.1, localGaloisCohomology K 2 v →+ QZ
   | .inr v => brauerInvZOfIsSepClosure (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))
 
 /- English proof (translation)
-The claim follows from `| .inl v => quadraticInv_injective v.Completion (AlgebraicClosure v.Completion) (infAlgClosure_finrank_le_two v) (infAlgClosure_mul_mem_range_norm v) | .inr v => (brauerInvZOfIsSepClosure_bijective (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))).1`.
+A detailed English derivation is pending.
 -/
 theorem placeInv_injective : ∀ v : Place K.1, Function.Injective (placeInv v)
   | .inl v => quadraticInv_injective v.Completion (AlgebraicClosure v.Completion)
@@ -129,7 +129,7 @@ theorem placeInv_injective : ∀ v : Place K.1, Function.Injective (placeInv v)
       (AlgebraicClosure (v.adicCompletion K.1))).1
 
 /- English proof (translation)
-The claim follows from `brauerInvZOfIsSepClosure_bijective (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))`.
+A detailed English derivation is pending.
 -/
 theorem placeInv_bijective_inr (v : HeightOneSpectrum (𝓞 K.1)) :
     Function.Bijective (placeInv (K := K) (.inr v)) :=
@@ -143,7 +143,7 @@ def sumPlaceInv : (⨁ v : Place K.1, localGaloisCohomology K 2 v) →+ QZ :=
 open Classical in
 
 /- English proof (translation)
-Unfold `sumPlaceInv`. Use `DirectSum.toAddMonoid_of (fun v => placeInv (K := K) v) v t` and compare the differences between its conclusion and the goal.
+Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem sumPlaceInv_of (v : Place K.1) (t : localGaloisCohomology K 2 v) :
     sumPlaceInv K (DirectSum.of _ v t) = placeInv v t := by

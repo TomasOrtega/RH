@@ -17,11 +17,11 @@ noncomputable section
 namespace GlobalTheory.LengthH0Bound
 
 /- English proof (translation)
-Break down `eq_or_ne B ⊤ with hB | hB` into its components or cases. Rewrite using `[hB, ENat.toNat_top, Nat.cast_zero, div_zero]`. Check the signs of the components of the expression. Take `⟨b, rfl⟩` from `ENat.ne_top_iff_exists.mp hB`. Establish `h' : A ≤ ((r * c * b : ℕ) : ℕ∞)` using `by push_cast; exact h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, ha, hle⟩` from `ENat.le_natCast_iff.mp h'`. Substitute `ha` using the available equality. Rewrite using `[ENat.toNat_coe, ENat.toNat_coe]`. Break down `Nat.eq_zero_or_pos b with rfl | hb` into its components or cases. Rewrite using `[Nat.cast_zero, div_zero]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Rewrite using `[div_le_iff₀ (by exact_mod_cast hb)]`. Conclude with `hle` after adjusting the coercions.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toNat_div_le (A B : ℕ∞) (r c : ℕ) (h : A ≤ (r : ℕ∞) * (c : ℕ∞) * B) :
     ((A.toNat : ℚ) / (B.toNat : ℚ)) ≤ (r : ℚ) * c := by
@@ -38,7 +38,7 @@ theorem toNat_div_le (A B : ℕ∞) (r c : ℕ) (h : A ≤ (r : ℕ∞) * (c : �
   exact_mod_cast hle
 
 /- English proof (translation)
-Establish `hlen` using `length_le_of_killed (LL := FractionRing O) (stdG O (FractionRing O) k) _ (GlobalTheory.FiniteTwistInvariants.stdG_eq_span k) (p : O) hp c W hW`. Conclude with `toNat_div_le _ _ k c hlen`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lenUnit_le_of_kill {O : Type} [CommRing O] [IsDomain O] (k p c : ℕ)
     (hp : algebraMap O (FractionRing O) (p : O) ≠ 0) (W : Submodule O (KOG O k))
@@ -55,7 +55,7 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
   (Bw : LocBridge l E Ω Gw O)
 
 /- English proof (translation)
-Rewrite using `[Br.toLLK_alg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem locM_entry {k : ℕ} (M : ↥Gw →* Matrix (Fin k) (Fin k) O)
     (g : ↥(GK Bw.Kw)) (i j : Fin k) :
@@ -63,7 +63,7 @@ theorem locM_entry {k : ℕ} (M : ↥Gw →* Matrix (Fin k) (Fin k) O)
   rw [Br.toLLK_alg]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `Br.toLLK Bw (∑ j, algebraMap O (FractionRing O) (M (Br.ι Bw g) i j) * u j) = ∑ j, Br.locM Bw M g i j * Br.toLLK Bw (u j)`. Simplify using `only [map_sum, map_mul, locM_entry]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem vecS_mulVec' {k : ℕ} (M : ↥Gw →* Matrix (Fin k) (Fin k) O)
     (g : ↥(GK Bw.Kw)) (u : Fin k → FractionRing O) :
@@ -77,11 +77,11 @@ theorem vecS_mulVec' {k : ℕ} (M : ↥Gw →* Matrix (Fin k) (Fin k) O)
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (Br.vecS Bw k y) : (Fin k → Br.LLw Bw) ⧸ stdG (Br.Ow Bw) (Br.LLw Bw) k) = 0 at hz`. Rewrite `hz` using `[Submodule.Quotient.mk_eq_zero]`. Take `⟨b, hb⟩` from `hz`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun j => Bw.eO.symm (b j), funext fun j => ?_⟩` and prove the remaining obligations. Apply `(Br.toLLK Bw).injective` to reduce the goal to its premises. Establish `hbj` using `congrFun hb j`. Simplify using `only [LinearMap.compLeft_apply, Function.comp_apply, Algebra.linearMap_apply] at hbj ⊢`. Rewrite using `[Br.toLLK_alg, RingEquiv.apply_symm_apply]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hbj`.
+A detailed English derivation is pending.
 -/
 theorem phi_eq_zero {k : ℕ} (z : KOG O k) (hz : Br.phi Bw k z = 0) : z = 0 := by
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ z
@@ -100,7 +100,7 @@ theorem phi_eq_zero {k : ℕ} (z : KOG O k) (hz : Br.phi Bw k z = 0) : z = 0 := 
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h` using `vecS_mulVec' Bw (M.comp f) gK y`. Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (((Br.locM Bw (M.comp f)) gK).mulVec (Br.vecS Bw k y)) : (Fin k → Br.LLw Bw) ⧸ stdG (Br.Ow Bw) (Br.LLw Bw) k) = Submodule.Quotient.mk (Br.vecS Bw k (((mapM (algebraMap O (FractionRing O)) (M.comp f)) (Br.ι Bw gK)).mulVec y))`. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem actD_phi {Γ : Type} [Group Γ] {k : ℕ} (M : Γ →* Matrix (Fin k) (Fin k) O) (f : ↥Gw →* Γ)
     (gK : ↥(GK Bw.Kw)) (x : KOG O k) :
@@ -116,9 +116,9 @@ theorem actD_phi {Γ : Type} [Group Γ] {k : ℕ} (M : Γ →* Matrix (Fin k) (F
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `x hx`. Establish `hfix : ∀ gK, actD (Br.lat Bw (M.comp f)) gK (Br.phi Bw k x) = Br.phi Bw k x`. Introduce `gK`. Rewrite using `[actD_phi, hx (Br.ι Bw gK)]`. Establish `hk` using `h _ hfix`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `phi_eq_zero Bw` to reduce the goal to its premises. Rewrite using `[LinearMap.map_smulₛₗ]`. Simplify using `only [map_pow, map_natCast]`. Conclude with `hk`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_killed {Γ : Type} [Group Γ] {k : ℕ} (M : Γ →* Matrix (Fin k) (Fin k) O) (f : ↥Gw →* Γ) (p c : ℕ)
     (h : ∀ y : (Fin k → Br.LLw Bw) ⧸ stdG (Br.Ow Bw) (Br.LLw Bw) k,
@@ -137,9 +137,9 @@ theorem inv_killed {Γ : Type} [Group Γ] {k : ℕ} (M : Γ →* Matrix (Fin k) 
 include Bw in
 
 /- English proof (translation)
-Introduce `h`. Establish `h2` using `congrArg (Br.toLLK Bw) h`. Rewrite `h2` using `[map_natCast, map_natCast, map_zero]`. Establish `hQ : ((l : ℕ) : ℚ_[l]) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : l.Prime).ne_zero`. Apply `hQ` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(algebraMap ℚ_[l] (Br.LLw Bw)).injective` to reduce the goal to its premises. Rewrite using `[map_natCast, map_zero]`. Conclude with `h2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_ne_zero : algebraMap O (FractionRing O) ((l : ℕ) : O) ≠ 0 := by
   intro h
@@ -156,9 +156,9 @@ end Bridge
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D HW i ρ π u hu s hs hc c S T hT hkill`. Substitute `hT` using the available equality. Establish `hp : LocalSituation.ell S = D.nd.l i` using `(D.loc (D.nd.l i)).PD_p _`. Establish `hK` using `inv_killed (D.nbr i u hu) (WpO D.nd i ρ π) (decS D.nd u) (D.nd.l i) c (fun y hy => by`. Use `hkill y hy` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hp] at this)` and apply the resulting hypothesis. Establish `hq` using `lenUnit_le_of_kill D.R.r (D.nd.l i) c (natCast_ne_zero (D.nbr i u hu)) _ hK`. Conclude with `hq` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (HW : HWOf D.loc) (i : D.nd.Loc) (ρ : D.nd.X i → (GE D.nd →* GL (Fin D.R.r) (D.nd.O i))) (π : D.nd.X i)
     (u : HeightOneSpectrum (𝓞 D.host.E)) (hu : u ∈ placesOver D.host.E (D.nd.l i)) (s : ℕ)

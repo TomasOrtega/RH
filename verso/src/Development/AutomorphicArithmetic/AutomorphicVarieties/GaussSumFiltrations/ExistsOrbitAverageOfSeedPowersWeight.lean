@@ -20,21 +20,21 @@ section Gen
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [sl, sl0, Finset.sum_apply, Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sl_sum (k : ℕ) (h : GL (Fin 2) (InfinitePlace F → ℝ)) {α : Type} (T : Finset α) (u : α → Hn F → ℂ) :
     sl k h (∑ a ∈ T, u a) = ∑ a ∈ T, sl k h (u a) := by
   funext z; simp only [sl, sl0, Finset.sum_apply, Finset.mul_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [sl0, Finset.sum_apply, Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem det_free_slash_finset_sum (k : ℕ) (h : GL (Fin 2) (InfinitePlace F → ℝ)) {α : Type} (T : Finset α) (u : α → Hn F → ℂ) :
     sl0 k h (∑ a ∈ T, u a) = ∑ a ∈ T, sl0 k h (u a) := by
   funext z; simp only [sl0, Finset.sum_apply, Finset.mul_sum]
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => rw [pow_zero]`. Conclude with `differentiableOn_const _`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `(HolKeep.main F 0 _ _ 0 ih hf).2.2.1`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hol_pow {f : Hn F → ℂ} (hf : Hol f) (M : ℕ) : Hol (f ^ M) := by
   induction M with
@@ -42,9 +42,7 @@ theorem hol_pow {f : Hn F → ℂ} (hf : Hol f) (M : ℕ) : Hol (f ^ M) := by
   | succ n ih => rw [pow_succ]; exact (HolKeep.main F 0 _ _ 0 ih hf).2.2.1
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `differentiableOn_const _`. Consider the case `insert a T ha ih`. Rewrite using `[Finset.sum_insert ha]`.
-
-Conclude with `(HolKeep.main F 0 _ _ 0 (hu a (Finset.mem_insert_self a T)) (ih fun b hb => hu b (Finset.mem_insert_of_mem hb))).1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hol_sum {α : Type} (T : Finset α) (u : α → Hn F → ℂ) (hu : ∀ a ∈ T, Hol (u a)) :
     Hol (∑ a ∈ T, u a) := by
@@ -57,7 +55,7 @@ theorem hol_sum {α : Type} (T : Finset α) (u : α → Hn F → ℂ) (hu : ∀ 
       (ih fun b hb => hu b (Finset.mem_insert_of_mem hb))).1
 
 /- English proof (translation)
-Proceed by induction on `M with`. Consider the case `zero => rw [pow_zero]`. Conclude with `Growth.gr_const 1`. Consider the case `succ n ih => rw [pow_succ]`. Conclude with `Growth.gr_mul ih hf`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gr_pow {f : Hn F → ℂ} (hf : Gr f) (M : ℕ) : Gr (f ^ M) := by
   induction M with
@@ -65,9 +63,7 @@ theorem gr_pow {f : Hn F → ℂ} (hf : Gr f) (M : ℕ) : Gr (f ^ M) := by
   | succ n ih => rw [pow_succ]; exact Growth.gr_mul ih hf
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `Growth.gr_const 0`. Consider the case `insert a T ha ih`. Rewrite using `[Finset.sum_insert ha]`.
-
-Conclude with `Growth.gr_add (hu a (Finset.mem_insert_self a T)) (ih fun b hb => hu b (Finset.mem_insert_of_mem hb))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gr_sum {α : Type} (T : Finset α) (u : α → Hn F → ℂ) (hu : ∀ a ∈ T, Gr (u a)) :
     Gr (∑ a ∈ T, u a) := by
@@ -85,7 +81,7 @@ section Small
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {p : ℕ} [Fact p.Prime] (ι : Qbar p ≃+* ℂ)
 
 /- English proof (translation)
-Use `⟨0, ⟨⟨1, one_pos, fun ξ h => absurd rfl h⟩, fun z => ?_⟩, fun ξ => ?_⟩` and prove the remaining obligations. Simplify using `using (hasSum_zero : HasSum (fun _ : F => (0 : ℂ)) 0)`. Simplify using `using hs`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem small_zero {s : ℝ} (hs : 0 ≤ s) : Small ι s (0 : Hn F → ℂ) := by
   refine ⟨0, ⟨⟨1, one_pos, fun ξ h => absurd rfl h⟩, fun z => ?_⟩, fun ξ => ?_⟩
@@ -93,9 +89,9 @@ theorem small_zero {s : ℝ} (hs : 0 ≤ s) : Small ι s (0 : Hn F → ℂ) := b
   · simpa using hs
 
 /- English proof (translation)
-Proceed by induction on `T using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty]`. Conclude with `hz`. Consider the case `insert a T ha ih`. Rewrite using `[Finset.sum_insert ha]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `hu a (Finset.mem_insert_self a T)`. Establish `h2` using `ih fun b hb => hu b (Finset.mem_insert_of_mem hb)`. Simplify using `using (GlobalTheory.T.hilbertQExp_padicBound_algebra_properties F p ι r r _ _ 0 h1 h2).1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem small_sum' {α : Type} (T : Finset α) (u : α → Hn F → ℂ) {r : ℝ} (hz : Small ι r (0 : Hn F → ℂ))
     (hu : ∀ a ∈ T, Small ι r (u a)) : Small ι r (∑ a ∈ T, u a) := by
@@ -109,7 +105,7 @@ theorem small_sum' {α : Type} (T : Finset α) (u : α → Hn F → ℂ) {r : �
     simpa using (GlobalTheory.T.hilbertQExp_padicBound_algebra_properties F p ι r r _ _ 0 h1 h2).1
 
 /- English proof (translation)
-Take `⟨a0, ha0⟩` from `hT`. Establish `hr : 0 ≤ r` using `(GlobalTheory.T.hilbertQExp_padicBound_algebra_properties F p ι r r _ _ 0 (hu a0 ha0) (hu a0 ha0)).2.2.2.2.1`. Conclude with `small_sum' ι T u (small_zero ι hr) hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem small_sum {α : Type} (T : Finset α) (u : α → Hn F → ℂ) {r : ℝ} (hT : T.Nonempty)
     (hu : ∀ a ∈ T, Small ι r (u a)) : Small ι r (∑ a ∈ T, u a) := by
@@ -120,9 +116,9 @@ theorem small_sum {α : Type} (T : Finset α) (u : α → Hn F → ℂ) {r : ℝ
 end Small
 
 /- English proof (translation)
-Establish `e : ((n : ℕ) : Qbar p) = algebraMap ℚ_[p] (PadicAlgCl p) (n : ℚ_[p])` using `(map_natCast _ n).symm`. Establish `h1` using `Nat.ordProj_mul_ordCompl_eq_self n p`. Establish `hc : ‖((ordCompl[p] n : ℕ) : ℚ_[p])‖ = 1` using `(Padic.norm_natCast_eq_one_iff).2 (Nat.coprime_ordCompl hp.out hn)`. Establish `h2 : ‖(n : ℚ_[p])‖ = (p : ℝ) ^ (-(n.factorization p : ℤ))` using `by conv_lhs => rw [← h1]`. Rewrite using `[Nat.cast_mul, norm_mul, hc, mul_one, Nat.cast_pow, Padic.norm_p_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_inv, e, PadicAlgCl.norm_extends, h2, zpow_neg, inv_inv, zpow_natCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_natCast_inv_le (p : ℕ) [hp : Fact p.Prime] (n : ℕ) (hn : n ≠ 0) :
     ‖((n : Qbar p))⁻¹‖ ≤ (p : ℝ) ^ (n.factorization p) := by
@@ -140,7 +136,7 @@ end GlobalTheory.HilbertThetaSeries.OrbitAvg
 namespace GlobalTheory.HilbertThetaSeries.OrbitAvg
 
 /- English proof (translation)
-Establish `H` using `SlashCocycle.slash_cocycle F k h h' f hh hh'`. Rewrite using `[← H.2.2.2.1, e, H.2.2.2.2.2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sl_cancel {F : Type} [Field F] [NumberField F] (k : ℕ) (h h' : GL (Fin 2) (InfinitePlace F → ℝ))
     (hh : Pos h) (hh' : Pos h') (e : h * h' = 1) (f : Hn F → ℂ) : sl k h' (sl k h f) = f := by
@@ -148,29 +144,25 @@ theorem sl_cancel {F : Type} [Field F] [NumberField F] (k : ℕ) (h h' : GL (Fin
   rw [← H.2.2.2.1, e, H.2.2.2.2.2]
 
 /- English proof (translation)
-Introduce `F _ _ _ p _ ι hp2 δ hδ θ hθ y hy`. Take `⟨hfin, hone, h1, hgrp⟩` from `GlobalTheory.T.hilbert_seed_orbit_finite_and_congruence F p ι hp2 δ hδ θ hθ y hy`. Use `set g0 := aff y (0 : Af F) with hg0`. Use `set T := hfin.toFinset with hT`. Establish `hmem : ∀ g, g ∈ T ↔ ∃ γ, Stab g0 γ ∧ g = sl (p - 1) (toInf γ) θ` using `fun g => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hT, Set.Finite.mem_toFinset]`. Both sides reduce to the same expression. Establish `hpos : ∀ γ, Stab g0 γ → Pos (toInf γ)` using `fun γ hγ => ((GlobalTheory.HilbertThetaSeries.RatSlash.rat_slash F 0 θ).2.1 γ).1.2 hγ.1`. Establish `hθT : sl (p - 1) (toInf 1) θ ∈ T` using `(hmem _).2 ⟨1, h1, rfl⟩`. Establish `hTne : T.Nonempty` using `⟨_, hθT⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : (T.card : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (Finset.card_ne_zero.2 hTne)`. Establish `hmap : ∀ γ, Stab g0 γ → ∀ g ∈ T, sl (p - 1) (toInf γ) g ∈ T`. Introduce `γ hγ g hg`. Take `⟨γ', hγ', rfl⟩` from `(hmem g).1 hg`. Use `(hmem _).2 ⟨γ' * γ, (hgrp γ' γ hγ' hγ).1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, (SlashCocycle.slash_cocycle F (p - 1) _ _ θ (hpos γ' hγ') (hpos γ hγ)).2.2.2.1]`. Establish `hperm : ∀ γ, Stab g0 γ → ∀ M : ℕ, ∑ g ∈ T, (sl (p - 1) (toInf γ) g) ^ M = ∑ g ∈ T, g ^ M`. Introduce `γ hγ M`. Establish `hγi` using `(hgrp γ γ hγ hγ).2`. Use `Finset.sum_nbij' (fun g => sl (p - 1) (toInf γ) g) (fun g => sl (p - 1) (toInf γ⁻¹) g) (fun g hg => hmap γ hγ g hg) (fun g hg => hmap γ⁻¹ hγi g hg) (fun g _ => ?_) (fun g _ => ?_) (fun g _ => rfl)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `sl_cancel _ _ _ (hpos γ hγ) (hpos _ hγi) (by rw [← map_mul, mul_inv_cancel, map_one]) g`. Conclude with `sl_cancel _ _ _ (hpos _ hγi) (hpos γ hγ) (by rw [← map_mul, inv_mul_cancel, map_one]) g`. Establish `hholT : ∀ g ∈ T, Hol g`. Introduce `g hg`. Take `⟨γ, hγ, rfl⟩` from `(hmem g).1 hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(HolKeep.main F (p - 1) θ θ 0 hθ.hol hθ.hol).2.2.2.2.2 _ (hpos γ hγ) |>.2`. Establish `hgrT : ∀ g ∈ T, Gr g`. Introduce `g hg`. Take `⟨γ, hγ, rfl⟩` from `(hmem g).1 hg`. Conclude with `Growth.gr_sl _ _ hθ.gr`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨T.card.factorization p, ?_⟩` and prove the remaining obligations. Introduce and unpack `M ⟨m, rfl⟩`. Use `set c : ℂ := (T.card : ℂ)⁻¹ with hc`. Use `⟨c • ∑ g ∈ T, g ^ (p ^ T.card.factorization p * m), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(HolKeep.main F 0 _ θ c (hol_sum T (fun g => g ^ (p ^ T.card.factorization p * m)) fun g hg => hol_pow (hholT g hg) _) hθ.hol).2.1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Growth.gr_smul c (gr_sum T (fun g => g ^ (p ^ T.card.factorization p * m)) fun g hg => gr_pow (hgrT g hg) _)`. Introduce `γ hγ`. Establish `L` using `fun (f : Hn F → ℂ) => GlobalTheory.HilbertThetaSeries.slash_add_smul_pow F (p - 1) (p ^ T.card.factorization p * m) (toInf γ) f f c`. Rewrite using `[(GlobalTheory.HilbertThetaSeries.slash_add_smul_pow F _ 0 (toInf γ) _ θ c).2.2.2.2.1, sl_sum]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hperm γ hγ]`. Conclude with `Finset.sum_congr rfl fun g _ => (L g).2.2.2.2.2`. Introduce `γ hγ set N := T.card.factorization p`. Establish `L` using `fun (f : Hn F → ℂ) => GlobalTheory.HilbertThetaSeries.slash_add_smul_pow F (p - 1) (p ^ N * m) (toInf γ) f f c`. Establish `e : sl0 ((p - 1) * (p ^ N * m)) (toInf γ) (c • ∑ g ∈ T, g ^ (p ^ N * m)) - 1 = c • ∑ g ∈ T, ((sl0 (p - 1) (toInf γ) g) ^ (p ^ N * m) - 1)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(GlobalTheory.HilbertThetaSeries.slash_add_smul_pow F _ 0 (toInf γ) _ θ c).2.1, det_free_slash_finset_sum, Finset.sum_congr rfl fun g _ => (L g).2.2.1, Finset.sum_sub_distrib, smul_sub, Finset.sum_const, ← Nat.cast_smul_eq_nsmul ℂ, smul_smul, hc, inv_mul_cancel₀ hcard, one_smul]`. Rewrite using `[e]`. Establish `hS : Small ι ((p : ℝ)⁻¹ ^ (N + 1)) (∑ g ∈ T, ((sl0 (p - 1) (toInf γ) g) ^ (p ^ N * m) - 1))`. Use `small_sum ι T _ hTne fun g hg => ?_` and prove the remaining obligations. Take `⟨γ', hγ', rfl⟩` from `(hmem g).1 hg`.
-
-Conclude with `GlobalTheory.T.hilbertQExp_padicCongruence_pow_prime_pow F p ι _ (hone γ' hγ' γ hγ) N m`. Establish `H` using `(GlobalTheory.T.hilbertQExp_padicBound_algebra_properties F p ι _ _ _ _ c hS hS).2.2.1`. Establish `hθ1` using `hone 1 h1 γ hγ`. Use `(GlobalTheory.T.hilbertQExp_padicBound_algebra_properties F p ι _ _ _ _ c H hθ1).2.2.2.1 ?_` and prove the remaining obligations. Establish `hp0 : (0 : ℝ) < p` using `by exact_mod_cast (Fact.out : p.Prime).pos`.
-
-Establish `hn : ‖ι.symm c‖ ≤ (p : ℝ) ^ N`. Rewrite using `[hc, map_inv₀, map_natCast]`. Conclude with `norm_natCast_inv_le p T.card (Finset.card_ne_zero.2 hTne)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem avg_pow : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ), p ≠ 2 → ∀ δ : F, IsDel p δ → ∀ θ : Hn F → ℂ, Seed ι δ θ → ∀ y : (Af F)ˣ, AtP p δ y → ∃ N : ℕ, ∀ M : ℕ, p ^ N ∣ M → ∃ f : Hn F → ℂ, Comp ι δ ((p - 1) * M) (aff y 0) f := by
   intro F _ _ _ p _ ι hp2 δ hδ θ hθ y hy
@@ -247,7 +239,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.OrbitAvg.avg_pow | exact GlobalTheory.HilbertThetaSeries.OrbitAvg.avg_pow | (intros; apply GlobalTheory.HilbertThetaSeries.OrbitAvg.avg_pow <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_orbit_average_of_seed_powers_weight : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (p : ℕ) [Fact p.Prime] (ι : Qbar p ≃+* ℂ), p ≠ 2 → ∀ δ : F, IsDel p δ → ∀ θ : Hn F → ℂ, Seed ι δ θ → ∀ y : (Af F)ˣ, AtP p δ y → ∃ N : ℕ, ∀ M : ℕ, p ^ N ∣ M → ∃ f : Hn F → ℂ, Comp ι δ ((p - 1) * M) (aff y 0) f := by
   first | exact @GlobalTheory.HilbertThetaSeries.OrbitAvg.avg_pow | exact GlobalTheory.HilbertThetaSeries.OrbitAvg.avg_pow | (intros; apply GlobalTheory.HilbertThetaSeries.OrbitAvg.avg_pow <;> assumption)

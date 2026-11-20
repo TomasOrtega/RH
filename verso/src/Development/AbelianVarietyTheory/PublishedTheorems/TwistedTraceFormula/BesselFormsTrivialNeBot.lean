@@ -91,17 +91,17 @@ variable {J : Matrix (Fin n) (Fin n) ℂ} {J₀ : Matrix (Fin m) (Fin m) ℂ} {F
   {e : Matrix (Fin n) (Fin r) ℂ} {z : Fin n → ℂ}
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det J₀).1 hf.unit₀`. Establish `hh' : hᴴ * J₀ * h = J₀` using `hh`. Establish `h0 : J₀ᴴ = J₀`. Rewrite using `[← hf.gram]`. Simplify using `only [conjTranspose_mul, conjTranspose_conjTranspose, hf.herm, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨P, hP⟩ : ∃ P, P = J₀⁻¹ * (Fᴴ * J)` from `⟨_, rfl⟩`. Establish `h1 : Fᴴ * J = J₀ * P` using `by rw [hP, ← Matrix.mul_assoc, mul_nonsing_inv _ hd, Matrix.one_mul]`. Establish `h2 : J * F = Pᴴ * J₀`. Use `congrArg conjTranspose h1` as an intermediate fact. Rewrite `this` using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, hf.herm, h0]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h3 : P * F = 1` using `by rw [hP, Matrix.mul_assoc, hf.gram, nonsing_inv_mul _ hd]`. Use `⟨1 + F * (h - 1) * P, ?_, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show _ * J * _ = J`. Establish `e1 : (1 + F * (h - 1) * P)ᴴ * J * (1 + F * (h - 1) * P) = J + (J * F) * (h - 1) * P + Pᴴ * (hᴴ - 1) * (Fᴴ * J) + Pᴴ * (hᴴ - 1) * (Fᴴ * J * F) * (h - 1) * P`. Simplify using `only [conjTranspose_add, conjTranspose_mul, conjTranspose_sub, conjTranspose_one, Matrix.add_mul, Matrix.mul_add, Matrix.one_mul, Matrix.mul_one, Matrix.mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `e2 : J₀ * (h - 1) + (hᴴ - 1) * J₀ + (hᴴ - 1) * J₀ * (h - 1) = 0`. Simplify using `only [Matrix.mul_sub, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_one, hh']`. Normalize the expressions using the abelian group laws. Establish `e3 : Pᴴ * (J₀ * (h - 1) + (hᴴ - 1) * J₀ + (hᴴ - 1) * J₀ * (h - 1)) * P = 0` using `by rw [e2]; simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, hf.gram, h2, h1, add_assoc, add_assoc, add_eq_left, ← e3]`. Simplify using `only [Matrix.add_mul, Matrix.mul_add, Matrix.mul_assoc, add_assoc]`. Rewrite using `[Matrix.add_mul, Matrix.mul_assoc, h3, Matrix.mul_sub]`. Simplify using the standard rewrite rules. Rewrite using `[add_mulVec, ← mulVec_mulVec, hP, ← mulVec_mulVec x J₀⁻¹, hx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem IsFrame.exists_emb (hf : IsFrame J J₀ F e z) {h : Matrix (Fin m) (Fin m) ℂ} (hh : h ∈ UH J₀) :
     ∃ g ∈ UH J, IsEmb J F g h := by
@@ -132,9 +132,9 @@ theorem IsFrame.exists_emb (hf : IsFrame J J₀ F e z) {h : Matrix (Fin m) (Fin 
   · rw [add_mulVec, ← mulVec_mulVec, hP, ← mulVec_mulVec x J₀⁻¹, hx]; simp
 
 /- English proof (translation)
-Establish `: ∀ i : Fin (r + 1), ∃ a, (u - 1) *ᵥ flagVec e z i = e *ᵥ a` using `fun i => by`. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify `hu.2.2 z hf.z_perpE` using `[flagVec]`. Take `⟨a, -, ha⟩` from `hu.2.1 j`. Conclude with `⟨a, by simpa [flagVec] using ha⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨fun j => (this j.succ).choose, fun j => (this j.succ).choose_spec⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsFrame.exists_coords (hf : IsFrame J J₀ F e z) {u : Matrix (Fin n) (Fin n) ℂ} (hu : u ∈ unipRad J e) :
     ∃ a : Fin r → Fin r → ℂ, ∀ j : Fin r, (u - 1) *ᵥ flagVec e z j.succ = e *ᵥ a j := by
@@ -164,7 +164,7 @@ def BesselUniquenessReal : Prop :=
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.IndefR.Mult in
 
 /- English proof (translation)
-Take `⟨hc, -, hU, hI, -⟩` from `M.ds τ`. Rewrite using `[sm_eq M τ]`. Conclude with `hB _ _ _ _ _ _ _ _ hf χ hχ _ _ (isURepOn_trRep (M.fr_unit τ) (M.fr_gram τ) hU) (isIrredOn_trRep (M.fr_unit τ) (M.fr_gram τ) hI) W π₀ hπ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BesselUniquenessReal.model (hB : BesselUniquenessReal) {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar}
     (M : DSModel V S) (τ : D.what₂.Tau) {m r : ℕ} {J₀ : Matrix (Fin m) (Fin m) ℂ} {F : Matrix (Fin V.rank) (Fin m) ℂ}

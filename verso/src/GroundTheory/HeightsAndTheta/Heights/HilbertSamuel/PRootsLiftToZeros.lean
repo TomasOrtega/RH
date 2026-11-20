@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights.HilbertSamuel
 open MvPolynomial
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qi28.exists_extend ev hker`.
+A detailed English derivation is pending.
 -/
 theorem RootsLiftToZeros.exists_extend {R A : Type*} [CommRing R] [CommRing A] [Algebra R A]
     [Algebra.IsIntegral R A] (ev : R →+* ℂ) (hker : RingHom.ker (algebraMap R A) ≤ RingHom.ker ev) :
@@ -16,21 +16,21 @@ theorem RootsLiftToZeros.exists_extend {R A : Type*} [CommRing R] [CommRing A] [
   _root_.UpperTheory.Reformulated.B.Qi28.exists_extend ev hker
 
 /- English proof (translation)
-Introduce `σ P e ℓ u G hint hG y t ht`. Set `A` to `MvPolynomial σ ℚ ⧸ P`. Set `α : Polynomial (MvPolynomial (Fin e) ℚ) →+* A` to `(Ideal.Quotient.mk P).comp (Polynomial.eval₂RingHom (aeval ℓ).toRingHom u)`. Use `letI : Algebra (Polynomial (MvPolynomial (Fin e) ℚ)) A := α.toAlgebra`. Establish `hα : ∀ Q, algebraMap (Polynomial (MvPolynomial (Fin e) ℚ)) A Q = Ideal.Quotient.mk P (Q.eval₂ (aeval ℓ).toRingHom u)` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `_ : Algebra.IsIntegral (Polynomial (MvPolynomial (Fin e) ℚ)) A`. Prove the components needed by the constructor for the conclusion. Introduce `a`. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨p, hpm, hp⟩` from `hint g`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨p.map Polynomial.C, hpm.map _, ?_⟩` and prove the remaining obligations. Establish `hc : (algebraMap (Polynomial (MvPolynomial (Fin e) ℚ)) A).comp Polynomial.C = (Ideal.Quotient.mk P).comp (aeval ℓ).toRingHom` using `RingHom.ext fun r => by simp [hα]`. Rewrite using `[Polynomial.eval₂_map, hc, ← Polynomial.hom_eval₂, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hp`. Set `ev : Polynomial (MvPolynomial (Fin e) ℚ) →+* ℂ` to `Polynomial.eval₂RingHom (aeval y).toRingHom t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hker : RingHom.ker (algebraMap (Polynomial (MvPolynomial (Fin e) ℚ)) A) ≤ RingHom.ker ev`. Introduce `Q hQ`. Rewrite `hQ` using `[RingHom.mem_ker, hα, Ideal.Quotient.eq_zero_iff_mem]`. Take `⟨H, rfl⟩` from `hG Q hQ`. Rewrite using `[RingHom.mem_ker, map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Polynomial.eval₂ (aeval y).toRingHom t G * ev H = 0`. Rewrite using `[ht, zero_mul]`. Take `⟨ψ, hψ⟩` from `RootsLiftToZeros.exists_extend ev hker`. Set `χ : MvPolynomial σ ℚ →+* ℂ` to `ψ.comp (Ideal.Quotient.mk P)`. Establish `hχ : χ = (aeval fun i => χ (X i)).toRingHom` using `MvPolynomial.ringHom_ext (fun r => RingHom.congr_fun (Subsingleton.elim (χ.comp C) ((aeval fun i => χ (X i)).toRingHom.comp C)) r) (fun i => by simp)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ Q, χ (Q.eval₂ (aeval ℓ).toRingHom u) = ev Q` using `fun Q => RingHom.congr_fun hψ Q`. Establish `hz : ∀ g, aeval (fun i => χ (X i)) g = χ g` using `fun g => (RingHom.congr_fun hχ g).symm`. Use `⟨fun i => χ (X i), fun g hg => ?_, funext fun j => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hz]`. Express the relevant statement in the definitionally equal form `ψ (Ideal.Quotient.mk P g) = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.mpr hg, map_zero]`. Use `key (Polynomial.C (X j))` as an intermediate fact. Simplify using `only [Polynomial.eval₂_C, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X] at this`. Rewrite using `[hz, this]`. Simplify using `[ev]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `key Polynomial.X` as an intermediate fact. Simplify using `only [Polynomial.eval₂_X] at this`. Rewrite using `[hz, this]`. Simplify using `[ev]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem RootsLiftToZeros.proof : RootsLiftToZeros.Statement := by
   intro σ P e ℓ u G hint hG y t ht

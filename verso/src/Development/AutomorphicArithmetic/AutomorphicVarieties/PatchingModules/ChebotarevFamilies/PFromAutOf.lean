@@ -13,7 +13,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 namespace UpperTheory.V.Pa
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ (Polynomial A) _).det = _`. Rewrite using `[map_sub, MonoidAlgebra.mapRingHom_single, Matrix.charpoly]`. Use `congr 1`. Use extensionality with `i j : 2`. Apply the tactic sequence `by_cases h : i = j <;> simp [GDet.repAlg, Matrix.charmatrix, h, Matrix.one_apply, Matrix.diagonal_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem chi_ofRep {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) A) (g : G) :
     (GDet.ofRep ρ).chi (MonoidAlgebra.single g 1) = (ρ g).charpoly := by
@@ -24,7 +24,7 @@ private theorem chi_ofRep {n : ℕ} {A G : Type} [CommRing A] [Group G] (ρ : G 
   by_cases h : i = j <;> simp [GDet.repAlg, Matrix.charmatrix, h, Matrix.one_apply, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Use `GDet.ext fun C _ _ x => ?_` and prove the remaining obligations. Use `letI : Algebra A C := ((algebraMap B C).comp f).toAlgebra`. Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ C x).det = (GDet.repAlg _ C x).det`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 -/
 private theorem map_ofRep {n : ℕ} {A B G : Type} [CommRing A] [CommRing B] [Group G] (ρ : G →* Matrix (Fin n) (Fin n) A)
     (f : A →+* B) : (GDet.ofRep ρ).map f = GDet.ofRep (f.mapMatrix.toMonoidHom.comp ρ) := by
@@ -34,31 +34,25 @@ private theorem map_ofRep {n : ℕ} {A B G : Type} [CommRing A] [CommRing B] [Gr
   congr 2
 
 /- English proof (translation)
-Use `haveI := IsCoef.char (l := l) (O := O)`. Use `haveI := IsCoef.finite (l := l) (O := O)`. Use `haveI := IsCoef.complete (l := l) (O := O)`. Take `⟨hΦ, hT⟩` from `hP P l L Ω s V0 O n r hS`. Establish `hI` using `(ipEq l L Ω s V0 O n r).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose y j jinj jloc _ jD jψ y3 y4 yI using fun i => hN l V0.frame O n r (x i) (globOf r V0).frame.Iu s.odd hn (fun u => ((hI u).2.symm.trans (hI u).1).le) (hx i)`. Take `⟨q, sg, z, j', k, al, hsg, hE, hcard, hdet, heig⟩` from `hC l (globOf r V0).frame n h y s.odd hΦ hμ y3`. Take `⟨T, ⟨Pl⟩, rfl, hTs⟩` from `hT q sg hsg`. Take `rfl : T.sg = sg` from `funext hTs`. Take `⟨A⟩` from `hA T Pl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `choose ι hι using fun i => Det.constMap ((j' i).comp (j i))`. Establish `hD : ∀ i, GDet.ofRep (mat (z i).ρ) = (GDet.ofRep (mat (x i).ρ)).map ((j' i).comp (j i))` using `fun i => by`. Conclude with `(Det.coefficientExtension_preserves_conditions_and_det _ _ _ (hE i)).2.2.trans (congrArg (·.map (j' i)) (jD i))`. Establish `hker : ∀ i, ∀ g : V0.frame.G₀, (g : V0.frame.Γ) ∈ PL l T.H.toSubgroup → (z i).ρ g = 1` using `fun i => by`. Use `rhoPL l (globOf r V0).frame n (z i) T.H fun g hg => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨e1, e2, -⟩` from `(Pl.H_eq g).1 hg`. Use `⟨e1, ?_⟩` and prove the remaining obligations. Establish `hcc : (PowerSeries.constantCoeff : (z i).A →+* (z i).K).comp ((j' i).comp (j i)) = (ι i).comp PowerSeries.constantCoeff` using `RingHom.ext fun a => by haveI := jloc i haveI := (hE i).2.1`. Establish `m1 : ¬ IsUnit (a - PowerSeries.C (PowerSeries.constantCoeff a))`. Simplify using `[PowerSeries.isUnit_iff_constantCoeff]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `m2 : ¬ IsUnit (j' i (j i (a - PowerSeries.C (PowerSeries.constantCoeff a))))` using `fun u => m1 (IsLocalHom.map_nonunit _ (IsLocalHom.map_nonunit _ u))`. Rewrite `m2` using `[PowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero, not_not, map_sub, map_sub, map_sub, sub_eq_zero]`. Establish `m3` using `congrArg PowerSeries.constantCoeff (hι i (PowerSeries.constantCoeff a))`. Conclude with `m2.trans (m3.trans (PowerSeries.constantCoeff_C _))`. Establish `e3 : (GDet.ofRep (mat (z i).ρ)).map (PowerSeries.constantCoeff : (z i).A →+* (z i).K) = r.Dbar.map ((ι i).comp (algebraMap (ResidueField O) (x i).K))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hD i]`. Use `Eq.trans (b := (GDet.ofRep (mat (x i).ρ)).map ((ι i).comp PowerSeries.constantCoeff)) (by rw [← hcc]; rfl) ?_` and prove the remaining obligations. Conclude with `congrArg (·.map (ι i)) (x i).red`. Rewrite `e3` using `[map_ofRep, Resid.Dbar, map_ofRep]`. Establish `e4` using `congrArg (·.chi (MonoidAlgebra.single ⟨g, e1⟩ 1)) e3`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [chi_ofRep] at e4`. Use `e4.trans ?_` and prove the remaining obligations. Establish `e5 : W.diagRep r.chib ⟨g, e1⟩ = 1`. Express the relevant statement in the definitionally equal form `Matrix.diagonal _ = _`. Simplify using `only [e2, Units.val_one, Matrix.diagonal_one]`.
+Introduce a local definition for the expression. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(chi_ofRep _ _).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((RingHom.mapMatrix ((ι i).comp (algebraMap (ResidueField O) (x i).K))) (W.diagRep r.chib ⟨g, e1⟩)).charpoly = _`. Rewrite using `[e5, map_one, Matrix.charpoly_one, Fintype.card_fin]`. Set `pt : ∀ i, Pt T (pairOf B.u) (n * Module.finrank ℚ (Lp L) + n * T.q)` to `fun i =>`. Use `letI : Algebra O (z i).K := ((ι i).comp (algebraMap O (x i).K)).toAlgebra`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `{ x := z i k := k i al := al i eig := heig i b1 := h1 P l L Ω s V0 O n r T Pl (z i) (k i) (al i) hS hL hμ (hker i) ((Det.coefficientExtension_preserves_conditions_and_det _ _ _ (hE i)).1 _ (y4 i)) (heig i) (hdet i) b2 := h2 P l L Ω s V0 O n r T Pl (z i) (k i) (al i) hS hμ (hker i …`. Express the relevant statement in the definitionally equal form `((j' i).comp (j i)) (f i (algebraMap O B.B a)) = _`. Rewrite using `[AlgHom.commutes]`. Rewrite using `[PowerSeries.algebraMap_apply, PowerSeries.algebraMap_apply]`. Conclude with `hι i _ }`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `maps := ⟨by rw [hD i, ← (hf i).1]; rfl, fun v a => by`. Rewrite using `[(hE i).2.2.2.2.2 v a, jψ i v a, ← (hf i).2 v a]`. Use the proof step `rfl⟩ }`. Establish `hk : ∀ i, RingHom.ker (pt i).f = RingHom.ker (f i)` using `fun i => by`. Use extensionality with `b`.
-
-Express the relevant statement in the definitionally equal form `j' i (j i (f i b)) = 0 ↔ f i b = 0`. Rewrite using `[map_eq_zero_iff _ (hE i).1, map_eq_zero_iff _ (jinj i)]`. Use `⟨?_, fun i hi q hq => ?_⟩` and prove the remaining obligations. Use `hR l _ (globOf r V0) T n O (residOf r) B.B (pairOf B.u) J _ A s.odd ⟨fun g hg a => ((Pl.H_eq g).1 hg).2.1 a, fun u => (hI u).2⟩ (fun N b => by` as an intermediate fact. Take `⟨c, hc, hb⟩` from `CA.exists_adjoin_coeff_character_sub_mem_maximalIdeal_pow r B N b`.
-
-Use `⟨c, Algebra.adjoin_mono ?_ hc, hb⟩` and prove the remaining obligations. Introduce and unpack `_ (⟨a, g, -, -, rfl⟩ | e)`. Conclude with `Or.inl ⟨a, g, rfl⟩`. Conclude with `Or.inr e) h pt hcard`. Simplify `this` using `only [hk]`.
-
-Conclude with `Det.typeIDisc (z i) B.u.D (((j' i).comp (j i)).comp (f i : B.B →+* (x i).A)) ((hE i).2.2.2.2.1.trans (yI i hi)) (pt i).maps.1 q (hq.trans (hk i).ge)`.
+Prove the first alternative. Prove the second alternative. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem chain_of (hN : Norm) (hC : Choice) (hP : ArPl) (h1 : FirstOrderDualArithmeticBound) (h2 : TaylorWilesObstructionBound) (hR : Raw) (P : CohP)
     (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
@@ -147,11 +141,11 @@ theorem chain_of (hN : Norm) (hC : Choice) (hP : ArPl) (h1 : FirstOrderDualArith
   · exact Det.typeIDisc (z i) B.u.D (((j' i).comp (j i)).comp (f i : B.B →+* (x i).A)) ((hE i).2.2.2.2.1.trans (yI i hi)) (pt i).maps.1 q (hq.trans (hk i).ge)
 
 /- English proof (translation)
-Introduce `P l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ _ _ n r B J hn hS hL hμ hA`. Establish `key` using `chain_of hN hC hP h1 h2 hR P l L Ω s V0 O n r B J hn hS hL hμ hA`. Establish `hE : augmentationIdealKernel (pairOf B.u) = augmentationIdealKernel B.u`. Rewrite using `[(ipEq l L Ω s V0 O n r).2 B]`. Use extensionality with `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [augmentationIdealKernel, UniversalOrdinaryDeterminantRing.GroupAlgebraKernelIdeal, GDet.chBar, pairGens, UniversalOrdinaryDeterminantRing.E0gens, Set.mem_setOf_eq, Set.union_assoc]`. Use `⟨fun x f hx hf hJ q hq => ?_, fun h x f e hx hf he h₁ q hq hs => ?_⟩` and prove the remaining obligations. Take `⟨k1, k2⟩` from `key 0 (fun _ => x) (fun _ => f) (fun _ => Or.inl hx) fun _ => hf`. Conclude with `k1 Fin.elim0 (fun i => i.elim0) ⟨_, RingHom.ker_isPrime f, k2 0 hx.2.1 _ le_rfl, hJ, le_rfl⟩ q.asIdeal q.isPrime hq (Or.inl (k2 0 hx.2.1 _ hq))`. Take `⟨k1, -⟩` from `key h x f (fun i => Or.inr (hx i)) hf`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨q₁, a1, a2, a3⟩` from `h₁`. Use `k1 (fun i => (e i).asIdeal) (fun i => ⟨(e i).isPrime, hE ▸ Det.thickNonSS B _ (he i).1, (he i).2⟩) ⟨_, q₁.isPrime, (Det.stableIff B _).1 a1, a2, a3⟩ q.asIdeal q.isPrime hq ?_` and prove the remaining obligations. Conclude with `hs.imp (Det.stableIff B _).1 fun t => hE ▸ Det.thickNonSS B _ t`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pFromAut_of (hN : Norm) (hC : Choice) (hP : ArPl) (h1 : FirstOrderDualArithmeticBound) (h2 : TaylorWilesObstructionBound) (hR : Raw) : PfromAut := by
   intro P l _ L Ω _ _ _ _ _ _ s V0 O _ _ _ _ _ n r B J hn hS hL hμ hA

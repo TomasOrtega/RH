@@ -136,19 +136,19 @@ def CollapseExact : Prop :=
         z = (((μG P.J).toReal / (m (prX (Cgrp P.J 1))).toReal : ℝ) : ℂ) * b (θ φ Ξ) v
 
 /- English proof (translation)
-Simplify using `[FreeTop]`.
+Simplify using the standard rewrite rules.
 -/
 example : FreeTop 1 (κ := 1) (l := 3) (.inr 0) (.inl 0) ∧ ¬ FreeTop 1 (κ := 1) (l := 3) (.inr 1) (.inl 0) := by
   simp [FreeTop]
 
 /- English proof (translation)
-Simplify using `[FreeTop]`.
+Simplify using the standard rewrite rules.
 -/
 example : FreeTop 1 (κ := 1) (l := 3) (.inl 0) (.inr 2) ∧ ¬ FreeTop 1 (κ := 1) (l := 3) (.inl 0) (.inr 1) := by
   simp [FreeTop]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> simp [FreeTop]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (ρ : ℕ) {κ l : ℕ} (a : Fin κ ⊕ Fin (l + 1)) : ¬ FreeTop ρ a (.inr 0) := by
   rcases a with a | a <;> simp [FreeTop]

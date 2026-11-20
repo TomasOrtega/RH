@@ -35,9 +35,9 @@ def scale (t : Spec (CommRingCat.of k) ⟶ S) (c : k) : dualObj t ⟶ dualObj t 
     rw [this])
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Use `congr 2`. Use `RingHom.ext fun x => ?_` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[scaleAlg]`.
+Simplify using the standard rewrite rules.
 -/
 lemma origin_scale (t : Spec (CommRingCat.of k) ⟶ S) (c : k) : origin t ≫ scale t c = origin t := by
   apply Over.OverMorphism.ext
@@ -112,9 +112,9 @@ def DetCond [IsAlgClosed k] [CharZero k] (ρ : OAct O G) (t : Spec (CommRingCat.
       HasCharpoly ρ t fun a => (∏ τ ∈ Ψ, (X - C (τ a)) ^ p) * ∏ τ ∈ Ψ', (X - C (τ a)) ^ q
 
 /- English proof (translation)
-Take `⟨d, hd, hs, hδ⟩` from `h`. Establish `h0 : δ ≠ 0`. Introduce and unpack `rfl`. Establish `: (d : k) = 0` using `by simpa using hδ`. Conclude with `hd.ne' (by exact_mod_cast this)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (τ s) ^ 2 = δ ^ 2` using `by rw [← map_pow, hs, hδ]; simp`. Establish `h2 : δ ≠ -δ` using `fun h => h0 (by linear_combination h / 2)`. Break down `sq_eq_sq_iff_eq_or_eq_neg.mp h1 with h | h` into its components or cases. Conclude with `Or.inl ⟨h, fun h' => h2 (h.symm.trans h')⟩`. Conclude with `Or.inr ⟨h, fun h' => h2 (h'.symm.trans h)⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 lemma IsRootPair.side [CharZero k] {s : O} {δ : k} (h : IsRootPair s δ) (τ : O →+* k) :
     Xor' (τ s = δ) (τ s = -δ) := by
@@ -130,7 +130,7 @@ lemma IsRootPair.side [CharZero k] {s : O} {δ : k} (h : IsRootPair s δ) (τ : 
   · exact Or.inr ⟨h, fun h' => h2 (h'.symm.trans h)⟩
 
 /- English proof (translation)
-Take `⟨⟨d, hd, hs, hδ⟩, Ψ, Ψ', h1, h2, h3⟩` from `h`. Use `⟨⟨d, hd, hs, by simpa using hδ⟩, Ψ', Ψ, h2, by simpa using h1, ?_⟩` and prove the remaining obligations. Simplify `h3` using `only [mul_comm]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma DetCond.swap [IsAlgClosed k] [CharZero k] {ρ : OAct O G} {t : Spec (CommRingCat.of k) ⟶ S}
     {s : O} {δ : k} {p q : ℕ} (h : DetCond ρ t s δ p q) : DetCond ρ t s (-δ) q p := by

@@ -12,9 +12,9 @@ variable {G X : Type*} [Group G] [MulAction G X]
 @[to_additive
 ]
 /- English proof (translation)
-Break down `eq_empty_or_nonempty {g : G | g • x ∈ B} with h | ⟨g₀, hg₀⟩` into its components or cases. Simplify using `[h]`. Use `Set.encard_le_encard_of_injOn (f := fun g => g * g₀⁻¹) ?_ ?_` and prove the remaining obligations. Introduce `g hg`. Use `⟨g • x, ⟨g₀ • x, hg₀, ?_⟩, hg⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[smul_smul]`. Introduce `a _ b _ hab`. Conclude with `mul_right_cancel hab`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem encard_smul_mem_le_encard_smul_inter_nonempty (B : Set X) (x : X) :
     {g : G | g • x ∈ B}.encard ≤ {g : G | (g • B ∩ B).Nonempty}.encard := by
@@ -35,7 +35,7 @@ omit [MeasurableSpace X] [MeasurableConstSMul G X] [Countable G] in
 @[to_additive
 ]
 /- English proof (translation)
-Rewrite using `[← ENNReal.tsum_set_one, tsum_subtype {g : G | g • x ∈ B} (fun _ => (1 : ℝ≥0∞))]`. Use `tsum_congr fun g => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : g • x ∈ B <;> simp [Set.indicator, h]`. Use the proof step `@[to_additive`. Use the proof step `]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem tsum_indicator_smul_eq_encard (B : Set X) (x : X) :
     ∑' g : G, ((fun y => g • y) ⁻¹' B).indicator (fun _ => (1 : ℝ≥0∞)) x
@@ -47,11 +47,11 @@ theorem tsum_indicator_smul_eq_encard (B : Set X) (x : X) :
 @[to_additive
 ]
 /- English proof (translation)
-Establish `hB' : ∀ g : G, NullMeasurableSet ((fun y => g • y) ⁻¹' B) (μ.restrict D)` using `fun g => (hB.preimage (measurePreserving_smul g μ).quasiMeasurePreserving).mono Measure.restrict_le_self`. Rewrite using `[Measure.le_iff]`. Introduce `A hA`. Rewrite using `[Measure.sum_apply _ hA, Measure.smul_apply, smul_eq_mul]`. Establish `h1 : ∀ g : G, ((μ.restrict D).restrict ((fun y => g • y) ⁻¹' B)) A = ∫⁻ x in A, ((fun y => g • y) ⁻¹' B).indicator (fun _ => (1 : ℝ≥0∞)) x ∂(μ.restrict D)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g`. Rewrite using `[lintegral_indicator₀ ((hB' g).mono Measure.restrict_le_self), setLIntegral_one, Measure.restrict_apply hA, Measure.restrict_apply₀ ((hB' g).mono Measure.restrict_le_self), inter_comm]`. Repeatedly rewrite using `[h1]`. Rewrite using `[← lintegral_tsum fun g => (aemeasurable_const.indicator₀ ((hB' g).mono Measure.restrict_le_self))]`. Repeatedly rewrite using `[tsum_indicator_smul_eq_encard]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Use the proof step `@[to_additive setLIntegral_le_mul_of_ae_covers_vadd`. Use the proof step `]`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_restrict_preimage_smul_le (hB : NullMeasurableSet B μ) {m : ℝ≥0∞}
     (hm : ∀ᵐ x ∂μ.restrict D, ({g : G | g • x ∈ B}.encard : ℝ≥0∞) ≤ m) :
@@ -81,11 +81,9 @@ theorem sum_restrict_preimage_smul_le (hB : NullMeasurableSet B μ) {m : ℝ≥0
 @[to_additive setLIntegral_le_mul_of_ae_covers_vadd
 ]
 /- English proof (translation)
-Establish `hcov : B ≤ᵐ[μ] (⋃ g : G, g • (((fun y => g • y) ⁻¹' B) ∩ D) : Set X)` using `by filter_upwards [hD] with x ⟨g, hg⟩ hx`. Use `mem_iUnion.2 ⟨g⁻¹, g • x, ⟨?_, hg⟩, by simp⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g⁻¹ • g • x ∈ B`. Rewrite using `[inv_smul_smul]`. Conclude with `hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hB' : ∀ g : G, NullMeasurableSet ((fun y => g • y) ⁻¹' B) (μ.restrict D)` using `fun g => (hB.preimage (measurePreserving_smul g μ).quasiMeasurePreserving).mono Measure.restrict_le_self`. Combine the equalities or inequalities in the displayed calculation. Use `tsum_congr fun g => ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_restrict₀ (hB' g), ← image_smul, ← (measurePreserving_smul g μ).setLIntegral_comp_emb (measurableEmbedding_const_smul g)]`. Simplify using `only [hu]`.
-
-Use `_ = ∫⁻ x, u x ∂(Measure.sum fun g : G => (μ.restrict D).restrict ((fun y => g • y) ⁻¹' B)) := (lintegral_sum_measure _ _).symm`. Use `_ ≤ ∫⁻ x, u x ∂(m • μ.restrict D) := lintegral_mono' (sum_restrict_preimage_smul_le hB hm) le_rfl`. Use `_ = m * ∫⁻ x in D, u x ∂μ := by rw [lintegral_smul_measure, smul_eq_mul]`. Use the proof step `@[to_additive setIntegral_le_mul_of_ae_covers_vadd`. Use the proof step `]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setLIntegral_le_mul_of_ae_covers (hD : ∀ᵐ x ∂μ, ∃ g : G, g • x ∈ D)
     (hB : NullMeasurableSet B μ) {u : X → ℝ≥0∞} (hu : ∀ (g : G) (x : X), u (g • x) = u x)
@@ -118,11 +116,9 @@ theorem setLIntegral_le_mul_of_ae_covers (hD : ∀ᵐ x ∂μ, ∃ g : G, g • 
 @[to_additive setIntegral_le_mul_of_ae_covers_vadd
 ]
 /- English proof (translation)
-Establish `key : ∫⁻ x in B, ENNReal.ofReal (u x) ∂μ ≤ m * ∫⁻ x in D, ENNReal.ofReal (u x) ∂μ`. Use `setLIntegral_le_mul_of_ae_covers hD hB (fun g x => by rw [hu]) ?_` and prove the remaining obligations. Use `filter_upwards [hm] with x hx`. Conclude with `ENat.toENNReal_le.2 hx` after adjusting the coercions. Establish `hfin : ∫⁻ x in D, ENNReal.ofReal (u x) ∂μ ≠ ⊤` using `((hasFiniteIntegral_iff_ofReal (.of_forall hu0)).1 huD.2).ne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hfin' : (m : ℝ≥0∞) * ∫⁻ x in D, ENNReal.ofReal (u x) ∂μ ≠ ⊤` using `ENNReal.mul_ne_top (ENNReal.natCast_ne_top m) hfin`. Use `⟨⟨huB, (hasFiniteIntegral_iff_ofReal (.of_forall hu0)).2 (key.trans_lt hfin'.lt_top)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (.of_forall hu0) huB, integral_eq_lintegral_of_nonneg_ae (.of_forall hu0) huD.1]`. Simplify `ENNReal.toReal_mono hfin' key` using `[ENNReal.toReal_mul]`. Use the proof step `@[to_additive setLIntegral_le_mul_of_isAddFundamentalDomain`.
-
-Use the proof step `]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem setIntegral_le_mul_of_ae_covers (hD : ∀ᵐ x ∂μ, ∃ g : G, g • x ∈ D)
     (hB : NullMeasurableSet B μ) {u : X → ℝ} (hu : ∀ (g : G) (x : X), u (g • x) = u x)
@@ -146,7 +142,7 @@ theorem setIntegral_le_mul_of_ae_covers (hD : ∀ᵐ x ∂μ, ∃ g : G, g • x
 @[to_additive setLIntegral_le_mul_of_isAddFundamentalDomain
 ]
 /- English proof (translation)
-The claim follows from `setLIntegral_le_mul_of_ae_covers hD.ae_covers hB hu (.of_forall hm) @[to_additive setLIntegral_le_encard_mul_of_ae_covers_vadd ]`.
+A detailed English derivation is pending.
 -/
 theorem setLIntegral_le_mul_of_isFundamentalDomain (hD : IsFundamentalDomain G D μ)
     (hB : NullMeasurableSet B μ) {u : X → ℝ≥0∞} (hu : ∀ (g : G) (x : X), u (g • x) = u x)
@@ -157,7 +153,7 @@ theorem setLIntegral_le_mul_of_isFundamentalDomain (hD : IsFundamentalDomain G D
 @[to_additive setLIntegral_le_encard_mul_of_ae_covers_vadd
 ]
 /- English proof (translation)
-The claim follows from `setLIntegral_le_mul_of_ae_covers hD hB hu (.of_forall fun x => ENat.toENNReal_le.2 (encard_smul_mem_le_encard_smul_inter_nonempty B x))`.
+A detailed English derivation is pending.
 -/
 theorem setLIntegral_le_encard_mul_of_ae_covers (hD : ∀ᵐ x ∂μ, ∃ g : G, g • x ∈ D)
     (hB : NullMeasurableSet B μ) {u : X → ℝ≥0∞} (hu : ∀ (g : G) (x : X), u (g • x) = u x) :
@@ -171,13 +167,11 @@ omit [MeasurableConstSMul G X] [SMulInvariantMeasure G X μ] in
 @[to_additive ae_encard_vadd_mem_le_one
 ]
 /- English proof (translation)
-Establish `h : ∀ᵐ x ∂μ, ∀ g₁ g₂ : G, g₁ ≠ g₂ → x ∉ g₁ • D ∩ g₂ • D`. Use `ae_all_iff.2 fun g₁ => ae_all_iff.2 fun g₂ => ?_` and prove the remaining obligations. Distinguish the cases in `h : g₁ = g₂`. Simplify using `[h]`. Use `filter_upwards [measure_eq_zero_iff_ae_notMem.1 (hD.aedisjoint h)] with x hx _ using hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [h] with x hx`. Rewrite using `[encard_le_one_iff]`. Introduce `a b ha hb`. Assume the negation of the conclusion as `hab`. Use `hx a⁻¹ b⁻¹ (by simpa using hab) ⟨?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `ha`. Rewrite using `[mem_smul_set_iff_inv_smul_mem, inv_inv]`. Conclude with `hb`. Use the proof step `@[to_additive setLIntegral_le_of_isAddFundamentalDomain_of_ae_covers`.
-
-Use the proof step `]`.
+A detailed English derivation is pending.
 -/
 theorem ae_encard_smul_mem_le_one (hD : IsFundamentalDomain G D μ) :
     ∀ᵐ x ∂μ, {g : G | g • x ∈ D}.encard ≤ 1 := by
@@ -197,7 +191,7 @@ theorem ae_encard_smul_mem_le_one (hD : IsFundamentalDomain G D μ) :
 @[to_additive setLIntegral_le_of_isAddFundamentalDomain_of_ae_covers
 ]
 /- English proof (translation)
-Use `setLIntegral_le_mul_of_ae_covers hD' hD.nullMeasurableSet hu (m := 1) (by filter_upwards [ae_restrict_of_ae (ae_encard_smul_mem_le_one hD)] with x hx` as an intermediate fact. Conclude with `ENat.toENNReal_le.2 hx)` after adjusting the coercions. Simplify using `using this`. Use the proof step `@[to_additive measure_le_of_isAddFundamentalDomain_of_ae_covers`. Use the proof step `]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem setLIntegral_le_of_isFundamentalDomain_of_ae_covers {D' : Set X}
     (hD : IsFundamentalDomain G D μ) (hD' : ∀ᵐ x ∂μ, ∃ g : G, g • x ∈ D')
@@ -211,7 +205,7 @@ theorem setLIntegral_le_of_isFundamentalDomain_of_ae_covers {D' : Set X}
 @[to_additive measure_le_of_isAddFundamentalDomain_of_ae_covers
 ]
 /- English proof (translation)
-Simplify using `using setLIntegral_le_of_isFundamentalDomain_of_ae_covers hD hD' (u := fun _ => 1) (fun _ _ => rfl)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem measure_le_of_isFundamentalDomain_of_ae_covers {D' : Set X}
     (hD : IsFundamentalDomain G D μ) (hD' : ∀ᵐ x ∂μ, ∃ g : G, g • x ∈ D') : μ D ≤ μ D' := by
@@ -230,7 +224,7 @@ omit [Countable G] [MeasurableConstSMul G X] [SMulInvariantMeasure G X μ] in
 
 @[to_additive  ]
 /- English proof (translation)
-Introduce `q₁ q₂ h`. Use `hD.aedisjoint fun h' => h ?_` and prove the remaining obligations. Rewrite using `[← q₁.out_eq, ← q₂.out_eq, inv_injective h']`. Use the proof step `@[to_additive isAddFundamentalDomain_iUnion_out_neg_vadd`. Use the proof step `]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairwise_aedisjoint_out_inv_smul (hD : IsFundamentalDomain G D μ) (K : Subgroup G) :
     Pairwise (Function.onFun (AEDisjoint μ) fun q : G ⧸ K => (q.out)⁻¹ • D) := by
@@ -241,15 +235,13 @@ theorem pairwise_aedisjoint_out_inv_smul (hD : IsFundamentalDomain G D μ) (K : 
 @[to_additive isAddFundamentalDomain_iUnion_out_neg_vadd
 ]
 /- English proof (translation)
-Establish `: Countable (G ⧸ K)` using `QuotientGroup.mk_surjective.countable`. Conclude with `.iUnion fun q => hD.nullMeasurableSet_smul _`. Use `ae_covers := by filter_upwards [hD.ae_covers] with x ⟨g, hg⟩`. Establish `hk : ((g : G ⧸ K).out)⁻¹ * g ∈ K` using `QuotientGroup.eq.1 (QuotientGroup.out_eq' _)`. Use `⟨⟨_, hk⟩, mem_iUnion.2 ⟨(g : G ⧸ K), g • x, hg, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Subgroup.smul_def, smul_smul]`. Use `aedisjoint := by`. Establish `: Countable (G ⧸ K)` using `QuotientGroup.mk_surjective.countable`. Introduce `k₁ k₂ hk`. Simplify using `only [Function.onFun, Subgroup.smul_def, smul_set_iUnion, smul_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `AEDisjoint.iUnion_left_iff.2 fun q₁ => AEDisjoint.iUnion_right_iff.2 fun q₂ => ?_` and prove the remaining obligations. Use `hD.aedisjoint fun h => hk ?_` and prove the remaining obligations. Establish `hq : q₁ = q₂`. Rewrite using `[← q₁.out_eq, ← q₂.out_eq]`. Use `QuotientGroup.eq.2 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: (q₁.out)⁻¹ * q₂.out = (k₁ : G)⁻¹ * k₂`. Rewrite using `[eq_inv_mul_iff_mul_eq, ← mul_assoc, h, inv_mul_cancel_right]`. Rewrite using `[this]`. Conclude with `K.mul_mem (K.inv_mem k₁.2) k₂.2`. Substitute `hq` using the available equality.
-
-Conclude with `Subtype.ext (mul_right_cancel h)`. Use the proof step `@[to_additive`. Use the proof step `]`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_iUnion_out_inv_smul (hD : IsFundamentalDomain G D μ)
     (K : Subgroup G) : IsFundamentalDomain K (⋃ q : G ⧸ K, (q.out)⁻¹ • D) μ where
@@ -280,7 +272,7 @@ theorem isFundamentalDomain_iUnion_out_inv_smul (hD : IsFundamentalDomain G D μ
 @[to_additive
 ]
 /- English proof (translation)
-Establish `: Countable (G ⧸ K)` using `QuotientGroup.mk_surjective.countable`. Rewrite using `[hD'.setLIntegral_eq (isFundamentalDomain_iUnion_out_inv_smul hD K) u fun k x => hu k x, lintegral_iUnion₀ (fun q => hD.nullMeasurableSet_smul _) (pairwise_aedisjoint_out_inv_smul hD K)]`. Conclude with `tsum_congr fun q => (hD.smul _).setLIntegral_eq hD u hu`. Use the proof step `@[to_additive setLIntegral_addSubgroup_eq_index_mul`. Use the proof step `]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_subgroup_eq_tsum (hD : IsFundamentalDomain G D μ)
     (hD' : IsFundamentalDomain K D' μ) {u : X → ℝ≥0∞}
@@ -295,7 +287,7 @@ theorem setLIntegral_subgroup_eq_tsum (hD : IsFundamentalDomain G D μ)
 @[to_additive setLIntegral_addSubgroup_eq_index_mul
 ]
 /- English proof (translation)
-Use `Fintype.ofFinite (G ⧸ K)` as an intermediate fact. Rewrite using `[setLIntegral_subgroup_eq_tsum hD hD' hu, tsum_fintype, Finset.sum_const, nsmul_eq_mul, Subgroup.index, Nat.card_eq_fintype_card, Finset.card_univ]`. Use the proof step `@[to_additive measure_addSubgroup_eq_index_mul`. Use the proof step `]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_subgroup_eq_index_mul [K.FiniteIndex] (hD : IsFundamentalDomain G D μ)
     (hD' : IsFundamentalDomain K D' μ) {u : X → ℝ≥0∞}
@@ -308,7 +300,7 @@ theorem setLIntegral_subgroup_eq_index_mul [K.FiniteIndex] (hD : IsFundamentalDo
 @[to_additive measure_addSubgroup_eq_index_mul
 ]
 /- English proof (translation)
-Simplify using `using setLIntegral_subgroup_eq_index_mul hD hD' (u := fun _ => 1) (fun _ _ => rfl)`. Use the proof step `@[to_additive`. Use the proof step `]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem measure_subgroup_eq_index_mul [K.FiniteIndex] (hD : IsFundamentalDomain G D μ)
     (hD' : IsFundamentalDomain K D' μ) : μ D' = (K.index : ℝ≥0∞) * μ D := by
@@ -317,7 +309,7 @@ theorem measure_subgroup_eq_index_mul [K.FiniteIndex] (hD : IsFundamentalDomain 
 @[to_additive
 ]
 /- English proof (translation)
-Rewrite using `[setLAverage_eq, setLAverage_eq, setLIntegral_subgroup_eq_index_mul hD hD' hu, measure_subgroup_eq_index_mul hD hD', ENNReal.mul_div_mul_left]`. Conclude with `Subgroup.FiniteIndex.index_ne_zero` after adjusting the coercions. Conclude with `ENNReal.natCast_ne_top _`. Use the proof step `@[to_additive`. Use the proof step `]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLAverage_subgroup_eq [K.FiniteIndex] (hD : IsFundamentalDomain G D μ)
     (hD' : IsFundamentalDomain K D' μ) {u : X → ℝ≥0∞}
@@ -331,7 +323,7 @@ theorem setLAverage_subgroup_eq [K.FiniteIndex] (hD : IsFundamentalDomain G D μ
 @[to_additive
 ]
 /- English proof (translation)
-The claim follows from `measure_le_of_isFundamentalDomain_of_ae_covers hD (hD'.ae_covers.mono fun _ ⟨k, hk⟩ => ⟨k, hk⟩)`.
+A detailed English derivation is pending.
 -/
 theorem measure_le_measure_subgroup (hD : IsFundamentalDomain G D μ)
     (hD' : IsFundamentalDomain K D' μ) : μ D ≤ μ D' :=
@@ -343,7 +335,7 @@ variable {E : Type*} [NormedAddCommGroup E]
 @[to_additive
 ]
 /- English proof (translation)
-Rewrite using `[hD'.integrableOn_iff (isFundamentalDomain_iUnion_out_inv_smul hD K) fun k x => hf k x, integrableOn_finite_iUnion]`. Simplify using `only [fun g : G => (hD.smul g).integrableOn_iff hD hf, forall_const]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem integrableOn_subgroup_iff [K.FiniteIndex] (hD : IsFundamentalDomain G D μ)
     (hD' : IsFundamentalDomain K D' μ) {f : X → E}
@@ -357,9 +349,9 @@ variable [NormedSpace ℝ E]
 @[to_additive setIntegral_addSubgroup_eq_index_smul
 ]
 /- English proof (translation)
-Distinguish the cases in `hi : IntegrableOn f D μ`. Use `Fintype.ofFinite (G ⧸ K)` as an intermediate fact. Establish `hE` using `isFundamentalDomain_iUnion_out_inv_smul hD K`. Rewrite using `[hD'.setIntegral_eq hE fun k x => hf k x, integral_iUnion_ae (fun q => hD.nullMeasurableSet_smul _) (pairwise_aedisjoint_out_inv_smul hD K) ((integrableOn_subgroup_iff hD hE hf).2 hi)]`. Simplify using `only [fun g : G => (hD.smul g).setIntegral_eq hD hf]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[tsum_fintype, Finset.sum_const, Subgroup.index, Nat.card_eq_fintype_card, Finset.card_univ, Nat.cast_smul_eq_nsmul]`. Rewrite using `[integral_undef hi, integral_undef (mt (integrableOn_subgroup_iff hD hD' hf).1 hi), smul_zero]`. Use the proof step `@[to_additive`. Use the proof step `]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_subgroup_eq_index_smul [K.FiniteIndex] (hD : IsFundamentalDomain G D μ)
     (hD' : IsFundamentalDomain K D' μ) {f : X → E}
@@ -380,7 +372,7 @@ theorem setIntegral_subgroup_eq_index_smul [K.FiniteIndex] (hD : IsFundamentalDo
 @[to_additive
 ]
 /- English proof (translation)
-Establish `h0 : (K.index : ℝ) ≠ 0` using `by exact_mod_cast Subgroup.FiniteIndex.index_ne_zero`. Rewrite using `[setAverage_eq, setAverage_eq, setIntegral_subgroup_eq_index_smul hD hD' hf, smul_smul, measureReal_def, measureReal_def, measure_subgroup_eq_index_mul hD hD', ENNReal.toReal_mul, ENNReal.toReal_natCast, mul_inv, mul_right_comm, inv_mul_cancel₀ h0, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem setAverage_subgroup_eq [K.FiniteIndex] (hD : IsFundamentalDomain G D μ)
     (hD' : IsFundamentalDomain K D' μ) {f : X → E}
@@ -400,7 +392,7 @@ variable {G H X : Type*} [Group G] [Group H] [MulAction G X] [MulAction H X] [Me
 
 @[to_additive  ]
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `hφ h`. Simplify `measurable_const_smul g` using `only [hφs]`. Use the proof step `@[to_additive ]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem measurableConstSMul_of_surjective [MeasurableConstSMul G X]
     (hφ : Function.Surjective φ) (hφs : ∀ (g : G) (x : X), φ g • x = g • x) :
@@ -411,7 +403,7 @@ theorem measurableConstSMul_of_surjective [MeasurableConstSMul G X]
 
 @[to_additive  ]
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `hφ h`. Simplify `SMulInvariantMeasure.measure_preimage_smul g hs` using `only [hφs]`. Use the proof step `@[to_additive ]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem smulInvariantMeasure_of_surjective [SMulInvariantMeasure G X μ]
     (hφ : Function.Surjective φ) (hφs : ∀ (g : G) (x : X), φ g • x = g • x) :
@@ -422,7 +414,7 @@ theorem smulInvariantMeasure_of_surjective [SMulInvariantMeasure G X μ]
 
 @[to_additive  ]
 /- English proof (translation)
-Use `filter_upwards [hD.ae_covers] with x ⟨h, hh⟩`. Take `⟨g, rfl⟩` from `hφ h`. Conclude with `⟨g, hφs g x ▸ hh⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ae_exists_smul_mem_of_surjective (hφ : Function.Surjective φ)
     (hφs : ∀ (g : G) (x : X), φ g • x = g • x) (hD : IsFundamentalDomain H D μ) :
@@ -436,7 +428,7 @@ variable [MeasurableConstSMul G X] [SMulInvariantMeasure G X μ] [Countable G]
 @[to_additive setLIntegral_le_mul_of_surjective_vadd
 ]
 /- English proof (translation)
-The claim follows from `setLIntegral_le_mul_of_ae_covers (ae_exists_smul_mem_of_surjective hφ hφs hD) hB hu (.of_forall hm)`.
+A detailed English derivation is pending.
 -/
 theorem setLIntegral_le_mul_of_surjective (hφ : Function.Surjective φ)
     (hφs : ∀ (g : G) (x : X), φ g • x = g • x) (hD : IsFundamentalDomain H D μ)
@@ -451,7 +443,7 @@ variable {K : Subgroup G} {H' : Type*} [Group H'] [MulAction H' X] {φ' : K →*
 @[to_additive isAddFundamentalDomain_map_of_surjective
 ]
 /- English proof (translation)
-The claim follows from `hD'.nullMeasurableSet ae_covers := by filter_upwards [ae_exists_smul_mem_of_surjective hφ' hφs' hD'] with x ⟨k, hk⟩ refine ⟨⟨φ k, k, k.2, rfl⟩, ?_⟩ rw [Subgroup.smul_def, hφs] exact hk aedisjoint := by have := measurableConstSMul_of_surjective hφ hφs have : SMulInvariantMeasure H …`.
+A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_map_of_surjective (hφ : Function.Surjective φ)
     (hφs : ∀ (g : G) (x : X), φ g • x = g • x) (hD : IsFundamentalDomain H D μ)
@@ -490,7 +482,7 @@ omit [MeasurableSpace X] [MulAction G X] [MulAction H X] [MeasurableConstSMul G 
 @[to_additive finiteIndex_addSubgroup_map_of_surjective
 ]
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨ne_zero_of_dvd_ne_zero Subgroup.FiniteIndex.index_ne_zero (K.index_map_dvd hφ)⟩ @[to_additive setLIntegral_eq_index_map_mul_vadd ]`.
+Supply the required witnesses or components.
 -/
 theorem finiteIndex_map_of_surjective [K.FiniteIndex] (hφ : Function.Surjective φ) :
     (K.map φ).FiniteIndex :=
@@ -499,9 +491,9 @@ theorem finiteIndex_map_of_surjective [K.FiniteIndex] (hφ : Function.Surjective
 @[to_additive setLIntegral_eq_index_map_mul_vadd
 ]
 /- English proof (translation)
-Use `measurableConstSMul_of_surjective hφ hφs` as an intermediate fact. Establish `: SMulInvariantMeasure H X μ` using `smulInvariantMeasure_of_surjective hφ hφs`. Establish `: Countable H` using `hφ.countable`. Use `finiteIndex_map_of_surjective (K := K) hφ` as an intermediate fact. Use `setLIntegral_subgroup_eq_index_mul hD (isFundamentalDomain_map_of_surjective hφ hφs hD hφ' hφs' hD') fun h x => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨g, rfl⟩` from `hφ h`. Rewrite using `[hφs, hu]`. Use the proof step `@[to_additive measure_eq_index_map_mul_vadd`. Use the proof step `]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLIntegral_eq_index_map_mul [K.FiniteIndex] (hφ : Function.Surjective φ)
     (hφs : ∀ (g : G) (x : X), φ g • x = g • x) (hD : IsFundamentalDomain H D μ)
@@ -521,7 +513,7 @@ theorem setLIntegral_eq_index_map_mul [K.FiniteIndex] (hφ : Function.Surjective
 @[to_additive measure_eq_index_map_mul_vadd
 ]
 /- English proof (translation)
-Simplify using `using setLIntegral_eq_index_map_mul hφ hφs hD hφ' hφs' hD' (u := fun _ => 1) (fun _ _ => rfl)`. Use the proof step `@[to_additive setLAverage_eq_of_surjective_vadd`. Use the proof step `]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem measure_eq_index_map_mul [K.FiniteIndex] (hφ : Function.Surjective φ)
     (hφs : ∀ (g : G) (x : X), φ g • x = g • x) (hD : IsFundamentalDomain H D μ)
@@ -533,9 +525,7 @@ theorem measure_eq_index_map_mul [K.FiniteIndex] (hφ : Function.Surjective φ)
 @[to_additive setLAverage_eq_of_surjective_vadd
 ]
 /- English proof (translation)
-Use `finiteIndex_map_of_surjective (K := K) hφ` as an intermediate fact. Rewrite using `[setLAverage_eq, setLAverage_eq, setLIntegral_eq_index_map_mul hφ hφs hD hφ' hφs' hD' hu, measure_eq_index_map_mul hφ hφs hD hφ' hφs' hD', ENNReal.mul_div_mul_left]`. Conclude with `Subgroup.FiniteIndex.index_ne_zero` after adjusting the coercions. Conclude with `ENNReal.natCast_ne_top _`. Use the proof step `@[to_additive measure_le_measure_of_surjective_vadd`.
-
-Use the proof step `]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setLAverage_eq_of_surjective [K.FiniteIndex] (hφ : Function.Surjective φ)
     (hφs : ∀ (g : G) (x : X), φ g • x = g • x) (hD : IsFundamentalDomain H D μ)
@@ -552,9 +542,7 @@ theorem setLAverage_eq_of_surjective [K.FiniteIndex] (hφ : Function.Surjective 
 @[to_additive measure_le_measure_of_surjective_vadd
 ]
 /- English proof (translation)
-Use `measurableConstSMul_of_surjective hφ hφs` as an intermediate fact. Establish `: SMulInvariantMeasure H X μ` using `smulInvariantMeasure_of_surjective hφ hφs`. Establish `: Countable H` using `hφ.countable`. Conclude with `measure_le_measure_subgroup hD (isFundamentalDomain_map_of_surjective hφ hφs hD hφ' hφs' hD')`. Use the proof step `@[to_additive setAverage_eq_of_surjective_vadd`.
-
-Use the proof step `]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measure_le_measure_of_surjective (hφ : Function.Surjective φ)
     (hφs : ∀ (g : G) (x : X), φ g • x = g • x) (hD : IsFundamentalDomain H D μ)
@@ -569,9 +557,9 @@ theorem measure_le_measure_of_surjective (hφ : Function.Surjective φ)
 @[to_additive setAverage_eq_of_surjective_vadd
 ]
 /- English proof (translation)
-Use `measurableConstSMul_of_surjective hφ hφs` as an intermediate fact. Establish `: SMulInvariantMeasure H X μ` using `smulInvariantMeasure_of_surjective hφ hφs`. Establish `: Countable H` using `hφ.countable`. Use `finiteIndex_map_of_surjective (K := K) hφ` as an intermediate fact. Establish `hD''` using `isFundamentalDomain_map_of_surjective hφ hφs hD hφ' hφs' hD'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf' : ∀ (h : H) (x : X), f (h • x) = f x` using `fun h x => by`. Take `⟨g, rfl⟩` from `hφ h`. Rewrite using `[hφs, hf]`. Conclude with `⟨integrableOn_subgroup_iff hD hD'' hf', setIntegral_subgroup_eq_index_smul hD hD'' hf', setAverage_subgroup_eq hD hD'' hf'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem setAverage_eq_of_surjective [K.FiniteIndex] (hφ : Function.Surjective φ)
     (hφs : ∀ (g : G) (x : X), φ g • x = g • x) (hD : IsFundamentalDomain H D μ)
@@ -593,7 +581,7 @@ theorem setAverage_eq_of_surjective [K.FiniteIndex] (hφ : Function.Surjective �
     setAverage_subgroup_eq hD hD'' hf'⟩
 
 /- English proof (translation)
-Use `⟨fun B hB m hm => setLIntegral_le_mul_of_surjective hφ hφs hD hB hu hm, fun B hB => setLIntegral_le_encard_mul_of_ae_covers (ae_exists_smul_mem_of_surjective hφ hφs hD) hB hu, fun hφ' hφs' hD' => ⟨measure_le_measure_of_surjective hφ hφs hD hφ' hφs' hD', fun _ => ⟨⟨(K.map φ).index …` and prove the remaining obligations. Conclude with `Nat.pos_of_ne_zero (finiteIndex_map_of_surjective (K := K) hφ).index_ne_zero`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unfolding_isFundamentalDomain (hφ : Function.Surjective φ)
     (hφs : ∀ (g : G) (x : X), φ g • x = g • x) (hD : IsFundamentalDomain H D μ)
@@ -627,7 +615,7 @@ variable {G X : Type*} [Group G] [MulAction G X] [MeasurableSpace X] {μ : Measu
   {K : Subgroup G}
 
 /- English proof (translation)
-The claim follows from `setLIntegral_le_mul_of_surjective (MulAction.toPermHom G X).rangeRestrict_surjective (fun _ _ => rfl) hD hB hu hm`.
+A detailed English derivation is pending.
 -/
 theorem setLIntegral_le_mul_of_range_toPermHom
     (hD : IsFundamentalDomain (MulAction.toPermHom G X).range D μ)
@@ -638,7 +626,7 @@ theorem setLIntegral_le_mul_of_range_toPermHom
     (fun _ _ => rfl) hD hB hu hm
 
 /- English proof (translation)
-The claim follows from `measure_le_measure_of_surjective (MulAction.toPermHom G X).rangeRestrict_surjective (fun _ _ => rfl) hD (MulAction.toPermHom K X).rangeRestrict_surjective (fun _ _ => rfl) hD'`.
+A detailed English derivation is pending.
 -/
 theorem measure_le_measure_of_range_toPermHom
     (hD : IsFundamentalDomain (MulAction.toPermHom G X).range D μ)
@@ -647,7 +635,7 @@ theorem measure_le_measure_of_range_toPermHom
     (fun _ _ => rfl) hD (MulAction.toPermHom K X).rangeRestrict_surjective (fun _ _ => rfl) hD'
 
 /- English proof (translation)
-The claim follows from `setLAverage_eq_of_surjective (MulAction.toPermHom G X).rangeRestrict_surjective (fun _ _ => rfl) hD (MulAction.toPermHom K X).rangeRestrict_surjective (fun _ _ => rfl) hD' hu`.
+A detailed English derivation is pending.
 -/
 theorem setLAverage_eq_of_range_toPermHom [K.FiniteIndex]
     (hD : IsFundamentalDomain (MulAction.toPermHom G X).range D μ)

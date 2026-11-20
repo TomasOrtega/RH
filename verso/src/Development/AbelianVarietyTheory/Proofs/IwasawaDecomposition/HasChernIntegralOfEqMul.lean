@@ -17,9 +17,9 @@ section General
 variable {α : Type*} [MeasurableSpace α] {κ : Sort*}
 
 /- English proof (translation)
-Use `le_antisymm ?_ (iSup_le fun i => Measure.restrict_mono subset_rfl (le_iSup μ i))` and prove the remaining obligations. Establish `h : (⨆ i, μ i) ≤ (⨆ i, (μ i).restrict S) + (⨆ i, μ i).restrict Sᶜ`. Use `iSup_le fun i => Measure.le_iff.2 fun B hB => ?_` and prove the remaining obligations. Rewrite using `[← Measure.restrict_add_restrict_compl (μ := μ i) hS, Measure.add_apply, Measure.add_apply]`. Conclude with `add_le_add (Measure.le_iff'.1 (le_iSup (fun i => (μ i).restrict S) i) B) (Measure.le_iff'.1 (Measure.restrict_mono subset_rfl (le_iSup μ i)) B)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Measure.restrict_add, Measure.restrict_restrict hS, Set.inter_compl_self, Measure.restrict_empty, add_zero]`. Use `_ ≤ _ := Measure.restrict_le_self`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrict_iSup_eq (μ : κ → Measure α) {S : Set α} (hS : MeasurableSet S) :
     (⨆ i, μ i).restrict S = ⨆ i, (μ i).restrict S := by
@@ -37,9 +37,9 @@ theorem restrict_iSup_eq (μ : κ → Measure α) {S : Set α} (hS : MeasurableS
     _ ≤ _ := Measure.restrict_le_self
 
 /- English proof (translation)
-Establish `mono : ∀ (d : ℝ≥0∞) {μ μ' : Measure α}, μ ≤ μ' → d • μ ≤ d • μ'` using `fun d μ μ' h => Measure.le_iff.2 fun s _ => by`. Simplify using `only [Measure.smul_apply, smul_eq_mul]`. Conclude with `mul_le_mul' le_rfl <| Measure.le_iff'.1 h s`. Break down `eq_or_ne c 0 with rfl | h0` into its components or cases. Simplify using `only [zero_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(le_antisymm (iSup_le fun _ => le_rfl) (Measure.zero_le _)).symm`. Use `le_antisymm ?_ (iSup_le fun i => mono c (le_iSup ν i))` and prove the remaining obligations. Establish `key : (⨆ i, ν i) ≤ c⁻¹ • ⨆ i, c • ν i` using `iSup_le fun i => by`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem smul_iSup_eq (ν : κ → Measure α) {c : ℝ≥0∞} (hc : c ≠ ⊤) :
     c • (⨆ i, ν i) = ⨆ i, c • ν i := by
@@ -60,9 +60,9 @@ theorem smul_iSup_eq (ν : κ → Measure α) {c : ℝ≥0∞} (hc : c ≠ ⊤) 
 variable {X : Type*} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `B hB`. Rewrite using `[Measure.smul_apply, Measure.restrict_apply hB, Measure.restrict_apply hB, smul_eq_mul, chartMeas_apply e ρ (hB.inter hS), chartMeas_apply e ρ' (hB.inter hS), ← lintegral_const_mul' c _ hc]`. Use `setLIntegral_congr_fun (measurableSet_image e (e.open_source.measurableSet.inter (hB.inter hS)) Set.inter_subset_left) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Use `show ρ (e.symm (e y)) = c * ρ' (e.symm (e y))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e.left_inv hy.1]`. Conclude with `h y hy.1 hy.2.2`.
+A detailed English derivation is pending.
 -/
 theorem chartMeas_restrict_eq (e : OpenPartialHomeomorph X (V n)) {ρ ρ' : X → ℝ≥0∞} {c : ℝ≥0∞}
     (hc : c ≠ ⊤) {S : Set X} (hS : MeasurableSet S) (h : ∀ y ∈ e.source, y ∈ S → ρ y = c * ρ' y) :
@@ -78,7 +78,7 @@ theorem chartMeas_restrict_eq (e : OpenPartialHomeomorph X (V n)) {ρ ρ' : X �
   exact h y hy.1 hy.2.2
 
 /- English proof (translation)
-Rewrite using `[glueMeas, glueMeas, restrict_iSup_eq _ hS, restrict_iSup_eq _ hS, smul_iSup_eq _ hc]`. Conclude with `iSup_congr fun i => chartMeas_restrict_eq (e i) hc hS (h i)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glueMeas_restrict_eq {ι : Type*} (e : ι → OpenPartialHomeomorph X (V n)) {ρ ρ' : ι → X → ℝ≥0∞}
     {c : ℝ≥0∞} (hc : c ≠ ⊤) {S : Set X} (hS : MeasurableSet S)
@@ -96,15 +96,13 @@ namespace GlobalTheory.GoodMetric
 open GlobalTheory.ChernScale
 
 /- English proof (translation)
-Introduce `F _ σ X ι m E O H R R₀ t v hRt hv`. Establish `hP : MeasurableSet (ptsIn X.str σ O)` using `(isOpen_ptsIn O).measurableSet`. Establish `key : ∀ (ε ε' : ℤˣ) (c : ℝ), 0 ≤ c → (∀ x : ℝ, ((ε : ℤ) : ℝ) * (t * x) = c * (((ε' : ℤ) : ℝ) * x)) → chernTopPart E H R ε (ptsIn X.str σ O) = ENNReal.ofReal c * chernTopPart E H R₀ ε' (ptsIn X.str σ O)`. Introduce `ε ε' c hc hx`. Establish `hm : (chernTopPart E H R ε).restrict (ptsIn X.str σ O) = ENNReal.ofReal c • (chernTopPart E H R₀ ε').restrict (ptsIn X.str σ O)` using `glueMeas_restrict_eq _ ENNReal.ofReal_ne_top hP fun a y hy hyS => ?_`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun μ : Measure (CxPts X.str σ) => μ (ptsIn X.str σ O)) hm` as an intermediate fact. Simplify `this` using `only [Measure.smul_apply, smul_eq_mul, Measure.restrict_apply_self]`. Establish `e1` using `hRt y hyS a hy _ (E.nonempty (under y)).choose_spec beta_reduce`. Rewrite using `[e1, hx, ENNReal.ofReal_mul hc]`. Break down `le_or_gt 0 t with ht | ht` into its components or cases.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `⟨fun ε => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key ε ε t ht (fun x => by ring)]`. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hv.1 ε)`. Rewrite using `[← hv.2, measureReal_def, measureReal_def, measureReal_def, measureReal_def, key 1 1 t ht (fun x => by ring), key (-1) (-1) t ht (fun x => by ring), ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal ht]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `ht' : 0 ≤ -t` using `by linarith`. Use `⟨fun ε => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key ε (-ε) (-t) ht' (fun x => by rw [Units.val_neg, Int.cast_neg]; ring)]`. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top (hv.1 _)`. Rewrite using `[← hv.2, measureReal_def, measureReal_def, measureReal_def, measureReal_def, key 1 (-1) (-t) ht' (fun x => by push_cast; ring), key (-1) 1 (-t) ht' (fun x => by push_cast; ring), ENNReal.toReal_mul, ENNReal.toReal_mul, ENNReal.toReal_ofReal ht']`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasChernIntegral_of_eq_mul : ∀ {F : Type} [Field F] {σ : F →+* ℂ} {X : Var F} {ι : Type} {m : ι → ℕ}
     (E : Fr (ratOf X) m 0) (O : X.X.Opens) (H : Mat m X.Fn → CxPts X.str σ → Mat m ℂ)

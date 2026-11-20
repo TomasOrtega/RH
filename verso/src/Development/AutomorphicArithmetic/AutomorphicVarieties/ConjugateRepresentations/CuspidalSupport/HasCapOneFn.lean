@@ -19,7 +19,7 @@ def HasCap (φ : Sm E a) (m : (E →+* ℂ) → Multiset ℂ) : Prop :=
   ∀ t, Multiset.card (m t) = a ∧ ∀ u, cap t u φ = ((m t).map (u + ·)).prod • φ
 
 /- English proof (translation)
-Introduce `t` and use `⟨by simp, fun u => by rw [cap_oneFn, Multiset.map_map]; rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem hasCap_oneFn : HasCap (oneFn E a) fun _ => Finset.univ.val.map fun k : Fin a => ((a : ℂ) - 1) / 2 - (k : ℕ) :=
   fun t => ⟨by simp, fun u => by rw [cap_oneFn, Multiset.map_map]; rfl⟩

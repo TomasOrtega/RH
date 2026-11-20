@@ -16,7 +16,7 @@ variable {F : Type} [Field F] [NumberField F]
 def placeAt (v : HeightOneSpectrum (𝓞 F)) (x : Fv F v) : AF F := pairA F 0 (GlobalTheory.AdelicU.singleFin v x)
 
 /- English proof (translation)
-Unfold `placeAt pairA`. Rewrite using `[map_add]`. Conclude with `Prod.ext (add_zero 0).symm rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem placeAt_add (v : HeightOneSpectrum (𝓞 F)) (x y : Fv F v) :
     placeAt v (x + y) = placeAt v x + placeAt v y := by
@@ -25,7 +25,7 @@ theorem placeAt_add (v : HeightOneSpectrum (𝓞 F)) (x y : Fv F v) :
   exact Prod.ext (add_zero 0).symm rfl
 
 /- English proof (translation)
-Introduce `x y h`. Establish `h2` using `congrArg (fun c : AF F => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v c.2) h`. Simplify `h2` using `only [placeAt, pairA, GlobalTheory.AdelicU.evalV_singleFin_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem placeAt_injective (v : HeightOneSpectrum (𝓞 F)) : Function.Injective (placeAt v) := by
   intro x y h
@@ -33,18 +33,18 @@ theorem placeAt_injective (v : HeightOneSpectrum (𝓞 F)) : Function.Injective 
   simpa only [placeAt, pairA, GlobalTheory.AdelicU.evalV_singleFin_self] using h2
 
 /- English proof (translation)
-Unfold `placeAt pairA`. Conclude with `continuous_const.prodMk (GlobalTheory.AdelicU.continuous_singleFin v)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_placeAt (v : HeightOneSpectrum (𝓞 F)) : Continuous (placeAt v) := by
   unfold placeAt pairA
   exact continuous_const.prodMk (GlobalTheory.AdelicU.continuous_singleFin v)
 
 /- English proof (translation)
-Establish `h1 : c.1 = 0`. Use `congrArg Prod.fst hc` as an intermediate fact. Rewrite using `[← this]`. Conclude with `zero_mul _`. Establish `h2 : α * c.2 = c.2` using `congrArg Prod.snd hc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext h1 ?_` and prove the remaining obligations. Use `show c.2 = GlobalTheory.AdelicU.singleFin v _`. Use `GlobalTheory.AdelicU.af_ext fun u => ?_` and prove the remaining obligations. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_self]`. Rewrite using `[GlobalTheory.AdelicU.evalV_singleFin_ne hu, ← h2, map_mul, hα0 u hu, zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem eq_placeAt_of_mul {v : HeightOneSpectrum (𝓞 F)} {α : Af F} (hα1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v α = 1)
     (hα0 : ∀ v', v' ≠ v → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v' α = 0) {c : AF F} (hc : pairA F 0 α * c = c) :
@@ -67,25 +67,21 @@ end GlobalTheory.PlaceCoordsF
 namespace GlobalTheory.PlaceCoordsF
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ v ε hε nS nT`. Take `⟨α, rfl, hα1, hα0⟩` from `hε`. Use `haveI : Module.Finite F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsModuleTopology (AF F) (AEF F E) := ⟨rfl⟩`. Use `haveI := GlobalTheory.HeisThetaF.isTopologicalRing_AEF (F := F) (E := E)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `B : Module.Basis (Fin (Module.finrank F E)) (AF F) (AEF F E)` to `Algebra.TensorProduct.basis (AF F) (Module.finBasis F E)`. Set `e` to `Fintype.equivFin (Fin nT × Fin nS × Fin (Module.finrank F E))`. Set `f : (Fin (Fintype.card (Fin nT × Fin nS × Fin (Module.finrank F E))) → v.adicCompletion F) → WOF F E nS nT` to `fun t i j => B.equivFun.symm (fun l => placeAt v (t (e (i, j, l))))`. Establish `hadd : ∀ s t, f (s + t) = f s + f t`. Introduce `s t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i j`. Use `show B.equivFun.symm _ = B.equivFun.symm _ + B.equivFun.symm _`. Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `l`.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `placeAt_add v _ _`. Set `Φ` to `AddMonoidHom.mk' f hadd`. Use `⟨_, Φ, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hB : Continuous B.equivFun.symm` using `IsModuleTopology.continuous_of_linearMap B.equivFun.symm.toLinearMap`. Conclude with `continuous_pi fun i => continuous_pi fun j => hB.comp (continuous_pi fun l => (continuous_placeAt v).comp (continuous_apply _))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `s t hst`. Establish `key : ∀ i j l, s (e (i, j, l)) = t (e (i, j, l))`. Introduce `i j l`. Establish `h1 : f s i j = f t i j` using `congrFun (congrFun hst i) j`. Establish `h2` using `congrFun (B.equivFun.symm.injective h1) l`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `placeAt_injective v h2`. Use function extensionality and compare the values at `k`. Use `key (e.symm k).1 (e.symm k).2.1 (e.symm k).2.2` as an intermediate fact. Simplify `this` using `only [Prod.mk.eta, Equiv.apply_symm_apply]`. Introduce `y hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : ∀ i j l, B.equivFun (y i j) l = placeAt v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (B.equivFun (y i j) l).2)`. Introduce `i j l`. Use `eq_placeAt_of_mul hα1 hα0 ?_` and prove the remaining obligations. Establish `h1 : pairA F 0 α • y i j = y i j` using `by rw [Algebra.smul_def]; exact hy i j`. Establish `h2` using `congrFun (congrArg B.equivFun h1) l`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite `h2` using `[map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `h2`. Use `⟨fun k => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (B.equivFun (y (e.symm k).1 (e.symm k).2.1) (e.symm k).2.2).2, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Use `show B.equivFun.symm _ = y i j`.
-
-Simplify using `only [Equiv.symm_apply_apply]`. Rewrite using `[← B.equivFun.symm_apply_apply (y i j)]`. Use `congr 1`. Use function extensionality and compare the values at `l`. Rewrite using `[B.equivFun.symm_apply_apply]`.
-
-Conclude with `(hc i j l).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords_at_place : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (ε : AF F), IsPlaceIdemF F v ε → ∀ nS nT : ℕ,

@@ -10,19 +10,19 @@ namespace UpperTheory.V.Z.Kato.Nb.HG
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω] {ε : Ω →+* ℂ}
 
 /- English proof (translation)
-Simplify using `[ent, toGQ, h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem ent_toGQ (m : Matrix (Fin 2) (Fin 2) ℤ) (h : 0 < m.det) (i j : Fin 2) : ent (toGQ m) i j = (m i j : ℚ) := by
   simp [ent, toGQ, h]
 
 /- English proof (translation)
-Establish `hd : 0 < (!![a, 0; 0, b] : Matrix (Fin 2) (Fin 2) ℤ).det`. Rewrite using `[Matrix.det_fin_two_of]`. Simplify using `using mul_pos ha hb`. Establish `h1 : eOm ε 0 = 1`. Use `Function.leftInverse_invFun ε.injective 1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[eOm]`. Establish `ha' : (a : ℚ) ≠ 0` using `by exact_mod_cast ha.ne'`. Establish `hb' : (b : ℚ) ≠ 0` using `by exact_mod_cast hb.ne'`. Establish `key : ∀ (f : X.K) (r : ℚ), (X.exp (X.sl (toGQ !![a, 0; 0, b]) f)).coeff r = (X.exp f).coeff (r * b / a)`. Introduce `f r`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `X.exp_upper (toGQ !![a, 0; 0, b]) (by rw [ent_toGQ _ hd]; simp) f (r * b / a)` as an intermediate fact. Rewrite `this` using `[ent_toGQ _ hd, ent_toGQ _ hd, ent_toGQ _ hd]`. Simplify using `only [Matrix.of_apply, Matrix.cons_val', Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_fin_one, Int.cast_zero, mul_zero, zero_div, h1, one_mul] at this`. Rewrite using `[← this]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Clear the denominators using the available nonvanishing facts. Apply `X.exp.toRingHom.injective` to reduce the goal to its premises. Use extensionality with `r`. Use `show (X.exp _).coeff r = (X.exp _).coeff r`. Rewrite using `[X.gal_exp, key, key, X.gal_exp]`.
+Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gal_diag (X : Tower Ω ε) (a b : ℤ) (ha : 0 < a) (hb : 0 < b) (s : Ω ≃ₐ[ℚ] Ω) (f : X.K) :
     X.gal s (X.sl (toGQ !![a, 0; 0, b]) f) = X.sl (toGQ !![a, 0; 0, b]) (X.gal s f) := by
@@ -46,9 +46,9 @@ private theorem gal_diag (X : Tower Ω ε) (a b : ℤ) (ha : 0 < a) (hb : 0 < b)
   rw [X.gal_exp, key, key, X.gal_exp]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `u`. Use `show X.kmap l _ (X.kmap l _ (b _)) = X.kmap l _ (X.kmap l _ (b _))`. Rewrite using `[X.kmap_kmap, X.kmap_kmap]`. Use `congr 2`. Use extensionality with `f`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `gal_diag X p 1 hp one_pos s f`. Apply the tactic sequence `funext i fin_cases i <;> simp [mZl, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`.
+A detailed English derivation is pending.
 -/
 private theorem galB_diag (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (p : ℤ) (hp : 0 < p) (s : Ω ≃ₐ[ℚ] Ω) (b : X.Fn l) :
     X.galB l s (X.act l !![p, 0; 0, 1] b) = X.act l !![p, 0; 0, 1] (X.galB l s b) := by
@@ -63,7 +63,7 @@ private theorem galB_diag (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (p : ℤ) (
 private def tr (t : ℤ) : SL(2, ℤ) := ⟨!![1, t; 0, 1], by simp [Matrix.det_fin_two_of]⟩
 
 /- English proof (translation)
-Rewrite using `[← X.sl_mul, ← Betti.toGQ_sl, ← toGQ_mul_of_pos _ _ (by simpa [Matrix.det_fin_two_of] using hp) (by rw [(tr j).det_coe]; exact one_pos)]`. Use `congr 3`. Simplify using `[tr]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 private theorem sl_up (X : Tower Ω ε) (p : ℤ) (hp : 0 < p) (j : ℤ) (f : X.K) :
     X.sl (toGQ !![1, j; 0, p]) f = X.sl (ofSL (tr j)) (X.sl (toGQ !![1, 0; 0, p]) f) := by
@@ -73,13 +73,13 @@ private theorem sl_up (X : Tower Ω ε) (p : ℤ) (hp : 0 < p) (j : ℤ) (f : X.
   simp [tr]
 
 /- English proof (translation)
-Establish `hc` using `GlobalTheory.KZ.H3.cls_props Ω ε X l n`. Take `⟨f, hf⟩` from `hc.1 (AdicCompletion.eval (idl l) (X.Kl l) n x)`. Take `⟨M₀, h0, hl⟩` from `X.level (X.sl (toGQ !![1, 0; 0, p]) (f : X.K))`. Use `⟨M₀, h0, fun M ζ e hM hd hζ hs j => ?_⟩` and prove the remaining obligations. Establish `hF` using `hc.2.2.2.2.2.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hF _ _ _ (hF _ _ _ hf.symm), hF _ _ _ (hF _ _ _ hf.symm)]`. Use `congr 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show X.gal s (X.sl _ (f : X.K)) = X.sl _ (X.gal s (f : X.K))`. Rewrite using `[sl_up X p hp j, sl_up X p hp (j * e), ← gal_diag X 1 p one_pos hp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hd`. Establish `hk0 : 0 < k` using `Nat.pos_of_mul_pos_left (hk ▸ hM)`. Establish `hζ' : IsPrimitiveRoot (ζ ^ k) M₀` using `hζ.pow hM (by rw [hk, mul_comm])`. Use `X.recip M₀ _ h0 hl (ζ ^ k) hζ' s e ?_ _ _ ?_` and prove the remaining obligations. Rewrite using `[map_pow, hs, zpow_natCast, ← pow_mul, ← pow_mul, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[en, tr, mul_comm]`.
+A detailed English derivation is pending.
 -/
 private theorem recip_up (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (p : ℤ) (hp : 0 < p) (s : Ω ≃ₐ[ℚ] Ω) (x : X.Khat l) :
     ∃ M₀ : ℕ, 0 < M₀ ∧ ∀ (M : ℕ) (ζ : Ω) (e : ℕ), 0 < M → M₀ ∣ M → IsPrimitiveRoot ζ M → s ζ = ζ ^ e → ∀ j : ℤ,
@@ -103,13 +103,11 @@ private theorem recip_up (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (p
   · simp [en, tr, mul_comm]
 
 /- English proof (translation)
-Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Use `haveI : CharZero Ω := algebraRat.charZero Ω`. Use `haveI : NeZero M := ⟨hM.ne'⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot Ω M`. Establish `hs : IsPrimitiveRoot (s ζ) M` using `hζ.map_of_injective s.injective`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨e, -, he⟩` from `hζ.eq_pow_of_pow_eq_one hs.pow_eq_one`. Use `⟨ζ, e, hζ, he.symm, (hζ.pow_iff_coprime hM e).1 (he ▸ hs), ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `hd`. Establish `ht : IsPrimitiveRoot (ζ ^ k) (l ^ n)` using `hζ.pow hM (by rw [hk, mul_comm])`. Establish `h1` using `cyclotomicCharacter.spec l (n := n) s.toRingEquiv (ζ ^ k) ht.pow_eq_one`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : s.toRingEquiv (ζ ^ k) = (ζ ^ k) ^ e` using `by show s (ζ ^ k) = _`. Rewrite using `[map_pow, ← he, ← pow_mul, ← pow_mul, mul_comm]`. Rewrite `h1` using `[h2]`. Establish `h3` using `(ht.isOfFinOrder (pow_pos (Fact.out : l.Prime).pos n).ne').pow_eq_pow_iff_modEq.1 h1`. Rewrite `h3` using `[← ht.eq_orderOf]`.
-
-Rewrite using `[← Ideal.mem_span_singleton, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_natCast, (ZMod.natCast_eq_natCast_iff _ _ _).2 h3, ZMod.natCast_zmod_val, sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem expo [IsAlgClosure ℚ Ω] (l n M : ℕ) [Fact l.Prime] (hM : 0 < M) (hd : l ^ n ∣ M) (s : Ω ≃ₐ[ℚ] Ω) :
     ∃ (ζ : Ω) (e : ℕ), IsPrimitiveRoot ζ M ∧ s ζ = ζ ^ e ∧ Nat.Coprime e M ∧
@@ -134,11 +132,11 @@ private theorem expo [IsAlgClosure ℚ Ω] (l n M : ℕ) [Fact l.Prime] (hM : 0 
     (ZMod.natCast_eq_natCast_iff _ _ _).2 h3, ZMod.natCast_zmod_val, sub_self]
 
 /- English proof (translation)
-Use `haveI : NeZero p := ⟨hp.ne'⟩`. Establish `h1 : ∀ k : ℤ, F k = F ((k : ZMod p).val)`. Introduce `k`. Rewrite using `[ZMod.val_intCast, ← hF (k % p) (k / p)]`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm]`. Conclude with `(Int.emod_add_mul_ediv k p).symm`. Establish `h2 : ∀ G : ZMod p → Q, ∑ j ∈ Finset.range p, G j = ∑ x, G x` using `fun G => Finset.sum_nbij' (fun j => (j : ZMod p)) ZMod.val (by simp) (by simp [ZMod.val_lt]) (fun j hj => ZMod.val_cast_of_lt (by simpa using hj)) (by simp) (by simp)`. Establish `h3` using `h2 fun x => F (x * e).val`. Establish `h4` using `h2 fun x => F x.val`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Finset.sum_congr rfl fun (j : ℕ) _ => h1 (j * e), Finset.sum_congr rfl fun (j : ℕ) _ => h1 j]`. Use `push_cast`. Rewrite using `[h3, h4]`. Conclude with `Equiv.sum_comp (ZMod.unitOfCoprime e he).mulRight fun x => F x.val`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_perm {Q : Type} [AddCommMonoid Q] (p e : ℕ) (hp : 0 < p) (he : Nat.Coprime e p) (F : ℤ → Q)
     (hF : ∀ k t : ℤ, F (k + t * p) = F k) : ∑ j ∈ Finset.range p, F (j * e) = ∑ j ∈ Finset.range p, F j := by
@@ -159,7 +157,7 @@ private theorem sum_perm {Q : Type} [AddCommMonoid Q] (p e : ℕ) (hp : 0 < p) (
   exact Equiv.sum_comp (ZMod.unitOfCoprime e he).mulRight fun x => F x.val
 
 /- English proof (translation)
-Establish `hc` using `GlobalTheory.KZ.H3.cls_props Ω ε X l n`. Take `⟨f, hf⟩` from `hc.1 (AdicCompletion.eval (idl l) (X.Kl l) n y)`. Rewrite using `[hc.2.2.2.2.2.1 φ x f (h.trans hf.symm), hc.2.2.2.2.2.1 φ y f hf.symm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eval_kmap (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (φ : X.K ≃+* X.K) {x y : X.Khat l}
     (h : AdicCompletion.eval (idl l) (X.Kl l) n x = AdicCompletion.eval (idl l) (X.Kl l) n y) :
@@ -169,11 +167,11 @@ private theorem eval_kmap (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (
   rw [hc.2.2.2.2.2.1 φ x f (h.trans hf.symm), hc.2.2.2.2.2.1 φ y f hf.symm]
 
 /- English proof (translation)
-Take `⟨c, -, hc⟩` from `ht`. Establish `hu` using `h u`. Establish `hv` using `h v`. Rewrite `hu`, `hv` using `[map_sub, sub_eq_zero]`. Rewrite using `[hu, hv, hc, hc, map_sum, map_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `Submodule.Quotient.mk_surjective _ (AdicCompletion.eval (idl l) (X.Kl l) n (c i))`. Rewrite using `[map_smul, map_smul, ← hx, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq, ← sub_smul]`. Use `Submodule.smul_mem_smul ?_ Submodule.mem_top` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_pow, Ideal.mem_span_singleton, h1, ← sub_mul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h0.trans (sub_dvd_pow_sub_pow _ _ _)).mul_right _`.
+A detailed English derivation is pending.
 -/
 private theorem poly_cg (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) (a t : X.Fn l)
     (ht : PolMod X l w n t) (h : CgF X l n a t) (u v : Fin 2 → ℤ_[l]) (h0 : (l : ℤ_[l]) ^ n ∣ u 0 - v 0) (h1 : u 1 = v 1) :
@@ -192,7 +190,7 @@ private theorem poly_cg (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (w n : ℕ) (
   exact (h0.trans (sub_dvd_pow_sub_pow _ _ _)).mul_right _
 
 /- English proof (translation)
-Introduce `u`. Use `h (mZl l m *ᵥ u)` as an intermediate fact. Rewrite `this`, the goal using `[map_sub, sub_eq_zero]`. Conclude with `eval_kmap X l n _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cg_act (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (m : Matrix (Fin 2) (Fin 2) ℤ) {a b : X.Fn l}
     (h : CgF X l n a b) : CgF X l n (X.act l m a) (X.act l m b) := by
@@ -202,7 +200,7 @@ private theorem cg_act (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) (m :
   exact eval_kmap X l n _ this
 
 /- English proof (translation)
-Introduce `u`. Rewrite using `[Pi.add_apply, Pi.add_apply, add_sub_add_comm, map_add, h u, h' u, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cg_add (X : Tower Ω ε) (l : ℕ) [Fact l.Prime] (n : ℕ) {a b a' b' : X.Fn l}
     (h : CgF X l n a b) (h' : CgF X l n a' b') : CgF X l n (a + a') (b + b') := by
@@ -213,19 +211,19 @@ end UpperTheory.V.Z.Kato.Nb.HG
 
 open UpperTheory.V.Z.Kato.Nb.HG in
 /- English proof (translation)
-Introduce `Ω _ _ _ ε X l hl N w n p hN hp hc s a ha`. Take `⟨ha', hG⟩` from `sGalAct Ω ε X l N w n hN s a ha`. Establish `hp' : (0 : ℤ) < p` using `by exact_mod_cast hp.pos`. Establish `hσ` using `(Betti.isDiam_sgD hN.ne' hl.out.ne_zero (Nat.Coprime.coprime_mul_left_right hc)).1`. Establish `hD : 0 < (!![(p : ℤ), 0; 0, 1] : Matrix (Fin 2) (Fin 2) ℤ).det` using `by simpa [Matrix.det_fin_two_of] using hp.pos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : ∀ γ : SL(2, ℤ), 0 < (γ : Matrix (Fin 2) (Fin 2) ℤ).det` using `fun γ => by rw [γ.det_coe]; exact one_pos`. Unfold `Tower.heckeT`. Rewrite using `[LinearMap.add_apply, LinearMap.add_apply, map_add]`. Use `cg_add X l n ?_ ?_` and prove the remaining obligations. Introduce `u set χ : ℤ_[l] := (cyclotomicCharacter Ω l s.toRingEquiv : ℤ_[l]) with hχ choose M₀ hM₀ hR using fun j : ℕ => recip_up X l n p hp' s (a (mZl l !![1, (j : ℤ); 0, (p : ℤ)] *ᵥ ![u 0, χ * u 1]))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hM : 0 < (∏ j ∈ Finset.range p, M₀ j) * (l ^ n * p)` using `Nat.mul_pos (Finset.prod_pos fun j _ => hM₀ j) (Nat.mul_pos (pow_pos hl.out.pos n) hp.pos)`. Take `⟨ζ, e, hζ, hs, he, hχe⟩` from `expo l n _ hM ((Dvd.intro _ rfl : l ^ n ∣ _).mul_left _) s`. Take `⟨t, ht, hat⟩` from `ha.1`. Establish `hper : ∀ k t : ℤ, AdicCompletion.eval (idl l) (X.Kl l) n (X.act l !![1, k + t * p; 0, (p : ℤ)] (X.galB l s a) u) = AdicCompletion.eval (idl l) (X.Kl l) n (X.act l !![1, k; 0, (p : ℤ)] (X.galB l s a) u)`. Introduce `k t`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg : tr t ∈ Gam N l` using `⟨(CongruenceSubgroup.Gamma1_mem N _).2 (by simp [tr]), CongruenceSubgroup.Gamma0_mem.2 (by simp [tr])⟩`. Use `cg_act X l n !![1, k; 0, (p : ℤ)] (ha'.2.1 _ hg) u` as an intermediate fact. Rewrite `this` using `[Tower.act_act Ω ε X l _ _ (hS _) (by simpa [Matrix.det_fin_two_of] using hp.pos), map_sub, sub_eq_zero]`. Rewrite using `[← this]`. Use `congr 3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `[tr]`. Establish `hsum` using `sum_perm p e hp.pos (he.coprime_dvd_right ((Dvd.intro_left _ rfl : p ∣ _).mul_left _)) (fun k => AdicCompletion.eval (idl l) (X.Kl l) n (X.act l !![1, k; 0, (p : ℤ)] (X.galB l s a) u)) hper`. Rewrite using `[map_sub, sub_eq_zero, LinearMap.sum_apply, LinearMap.sum_apply, map_sum, Finset.sum_apply, Finset.sum_apply, map_sum, map_sum, ← hsum]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Use `(hR j _ ζ e hM ((Finset.dvd_prod_of_mem _ hj).mul_right _) hζ hs j).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `eval_kmap X l n _ (eval_kmap X l n _ (poly_cg X l w n a t ht hat _ _ ?_ ?_))` and prove the remaining obligations. Establish `: (l : ℤ_[l]) ^ n ∣ j * u 1 * (χ - e)` using `hχe.mul_left _`. Use `this using 1` and compare the differences between its conclusion and the goal. Simplify using `[mZl, Matrix.mulVec, dotProduct, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `[mZl, Matrix.mulVec, dotProduct, Fin.sum_univ_two, hχ]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← Tower.act_act Ω ε X l _ _ (hS _) hD, ← Tower.act_act Ω ε X l _ _ (hS _) hD, galB_diag X l p hp']`. Conclude with `cg_act X l n _ (hG _ hσ).2`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Kato.Nb.sHeckeGal :
     UpperTheory.V.Z.Kato.Nb.SHeckeGal := by

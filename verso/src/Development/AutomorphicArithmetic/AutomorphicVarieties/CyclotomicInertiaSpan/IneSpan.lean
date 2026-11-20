@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PlacesOfRationals.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.B1
 
 /- English proof (translation)
-Introduce `Ω _ _ _ N S B ho hc hB hI`. Establish `hle : ∀ p ∈ S, Ine (F` using `ℚ) (B p) ≤ N ⊔ (⨆ p ∈ S, Ine (F := ℚ) (B p)) := fun p hp => (le_iSup₂ (f := fun p (_ : p ∈ S) => Ine (F := ℚ) (B p)) p hp).trans le_sup_right`. Establish `hN : N ≤ N ⊔ (⨆ p ∈ S, Ine (F` using `ℚ) (B p)) := le_sup_left`. Generalize the expression as in `N ⊔ (⨆ p ∈ S, Ine (F := ℚ) (B p)) = M at hle hN`. Establish `hn : M.Normal` using `Subgroup.Normal.of_commutator_le _ (hc.trans hN)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Use `B3.minkowski Ω M hn (Subgroup.isOpen_mono hN ho) fun B' => ?_` and prove the remaining obligations. Distinguish the cases in `h : ∀ p ∈ S, ¬ B'.valuation (p : Ω) < 1`. Conclude with `(hI B' h).trans hN`. Use `push Not at h`. Take `⟨p, hp, hv⟩` from `h`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg⟩` from `(B3.placesQ Ω).2.2 p (B p) B' (hB p hp).1 (hB p hp).2 hv`. Introduce `x hx`. Use `hn.conj_mem _ (hle p hp (hg x hx)) g` as an intermediate fact. Simplify `this` using `[mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.B1.ineSpan :
     ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (N : Subgroup (G ℚ Ω)) (S : Finset ℕ) (B : ℕ → ValuationSubring Ω), IsOpen (N : Set (G ℚ Ω)) → commutator (G ℚ Ω) ≤ N →

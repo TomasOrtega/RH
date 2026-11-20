@@ -12,20 +12,20 @@ noncomputable section
 namespace GlobalTheory.RgGu.Holds
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RgGu.genericUnlinkedGL_of_segRep2 PositivityTheory.RgGu.segmentRepresentation`.
+A detailed English derivation is pending.
 -/
 theorem genericUnlinkedGL_holds : GlobalTheory.Published.GenericUnlinkedGL :=
   GlobalTheory.RgGu.genericUnlinkedGL_of_segRep2 PositivityTheory.RgGu.segmentRepresentation
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RgGu.Unl.lUnlinkedIrr_pole PositivityTheory.RgGu.segmentRepresentation`.
+A detailed English derivation is pending.
 -/
 theorem lUnlinkedIrr_holds :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.BZSeg.LUnlinkedIrr k :=
   GlobalTheory.RgGu.Unl.lUnlinkedIrr_pole PositivityTheory.RgGu.segmentRepresentation
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RgGu.Unl.lUnlinkedComm_pole PositivityTheory.RgGu.segmentRepresentation`.
+A detailed English derivation is pending.
 -/
 theorem lUnlinkedComm_holds :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.BZSeg.LUnlinkedComm k :=

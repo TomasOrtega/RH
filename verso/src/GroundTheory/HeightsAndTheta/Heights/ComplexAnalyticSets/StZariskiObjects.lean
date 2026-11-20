@@ -29,9 +29,9 @@ theorem holGermValue_polyGerm {σ : Type} [Fintype σ] (w : σ → ℂ) (q : MvP
     holGermValue w (polyGerm w q) = eval w q := rfl
 
 /- English proof (translation)
-Establish `hmax : (RingHom.ker (MvPolynomial.eval w)).IsMaximal` using `RingHom.ker_isMaximal_of_surjective _ fun a => ⟨C a, eval_C a⟩`. Establish `hle : I ≤ RingHom.ker (MvPolynomial.eval w)` using `fun q hq => RingHom.mem_ker.2 (hw q hq)`. Use `(Ideal.map_eq_top_or_isMaximal_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective hmax).resolve_left ?_` and prove the remaining obligations. Introduce `htop`. Establish `h` using `Ideal.comap_map_of_surjective (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective (RingHom.ker (MvPolynomial.eval w))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[htop, Ideal.comap_top, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.2 hle]`. Conclude with `hmax.ne_top h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyPointIdeal_isMaximal {σ : Type} [Fintype σ] (I : Ideal (MvPolynomial σ ℂ)) (w : σ → ℂ)
     (hw : w ∈ zeroSetIn I) : (polyPointIdeal I w).IsMaximal := by

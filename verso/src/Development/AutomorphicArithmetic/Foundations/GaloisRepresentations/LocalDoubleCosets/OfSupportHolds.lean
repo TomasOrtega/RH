@@ -22,26 +22,26 @@ import Development.AutomorphicArithmetic.Foundations.GaloisRepresentations.Local
 namespace UpperTheory.Gal.LocD
 
 /- English proof (translation)
-Establish `dist` using `distInv (distZero (cellStep stabSub))`. Conclude with `funInv (biInv dist) prMem prLeft prAuto prSurj etaEx`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem funInv_holds : FunInv := by
   have dist := distInv (distZero (cellStep stabSub))
   exact funInv (biInv dist) prMem prLeft prAuto prSurj etaEx
 
 /- English proof (translation)
-Establish `fi` using `funInv_holds`. Conclude with `scalar_of (eig eigZero) toBorel jacSemi (core fi gLCells gLFacts)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem scalar_holds : Scalar := by
   have fi := funInv_holds
   exact scalar_of (eig eigZero) toBorel jacSemi (core fi gLCells gLFacts)
 
 /- English proof (translation)
-The claim follows from `locDesc_of scalar_holds tracePow`.
+A detailed English derivation is pending.
 -/
 theorem locDesc_holds : LocDesc := locDesc_of scalar_holds tracePow
 
 /- English proof (translation)
-The claim follows from `ofSupport`.
+A detailed English derivation is pending.
 -/
 theorem ofSupport_holds : OfSupport := ofSupport
 

@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.Domination
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `h : ((u : D) : K) * (((u⁻¹ : Dˣ) : D) : K) = 1`. Conclude with `congrArg Subtype.val u.mul_inv` after adjusting the coercions. Use `⟨left_ne_zero_of_mul_eq_one h, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_eq_of_mul_eq_one_right h]`. Conclude with `((u⁻¹ : Dˣ) : D).2`. Introduce and unpack `⟨h0, h⟩`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨_, h⟩, Subtype.ext (by simp [h0])⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem isUnit_subring_iff {K : Type} [Field K] (D : Subring K) (d : D) :
     IsUnit d ↔ (d : K) ≠ 0 ∧ (d : K)⁻¹ ∈ D := by
@@ -20,7 +20,7 @@ theorem isUnit_subring_iff {K : Type} [Field K] (D : Subring K) (d : D) :
     exact isUnit_iff_exists_inv.2 ⟨⟨_, h⟩, Subtype.ext (by simp [h0])⟩
 
 /- English proof (translation)
-Set `_ : Algebra R T` to `(Subring.inclusion hRT).toAlgebra`. Establish `: Algebra.IsIntegral R T` using `⟨fun t ↦ by`. Set `f : T →ₐ[R] K` to `{ T.subtype with commutes' := fun r ↦ rfl }`. Conclude with `(isIntegral_algHom_iff f Subtype.val_injective).1 (hint t t.2)⟩`. Conclude with `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap P hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem isMaximal_of_comap {K : Type} [Field K] (R T : Subring K) (hRT : R ≤ T)
     (hint : ∀ t ∈ T, IsIntegral R t) (P : Ideal T) [P.IsPrime]
@@ -32,17 +32,15 @@ theorem isMaximal_of_comap {K : Type} [Field K] (R T : Subring K) (hRT : R ≤ T
   exact Ideal.isMaximal_of_isIntegral_of_isMaximal_comap P hc
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `only [LocalSubring.ofPrime, LocalSubring.range_toSubring]`. Use `show a ∈ D ↔ a ∈ Set.range _`. Rewrite using `[Set.mem_range]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ha`. Take `⟨u, hu, v, hv, h0, hvD, rfl⟩` from `gen a ha`. Establish `hvP : (⟨v, hv⟩ : T) ∈ P.primeCompl` using `by show (⟨v, hv⟩ : T) ∉ P`. Rewrite using `[hP]`. Conclude with `not_not.2 ⟨h0, hvD⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨IsLocalization.mk' _ (⟨u, hu⟩ : T) (⟨⟨v, hv⟩, hvP⟩ : P.primeCompl), ?_⟩` and prove the remaining obligations. Rewrite using `[IsLocalization.lift_mk'_spec]`. Use `show u = v * (u / v)`. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨y, rfl⟩`.
+Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨⟨u, s⟩, rfl⟩` from `IsLocalization.mk'_surjective P.primeCompl y`. Establish `hs : ¬ ((s : T) ∈ P)` using `s.2`. Rewrite `hs` using `[hP, not_not]`. Establish `key : ∀ z : K, ((u : T) : K) = ((s : T) : K) * z → z ∈ D`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hz' : z = (u : K) * ((s : T) : K)⁻¹`. Rewrite using `[hz]`. Clear denominators, using `[hs.1]` for the nonvanishing conditions. Rewrite using `[hz']`. Conclude with `D.mul_mem (hTD u.2) hs.2`.
-
-Simplify using `only`. Apply `key` to reduce the goal to its premises. Conclude with `(IsLocalization.lift_mk'_spec (S := Localization.AtPrime P) (g := T.subtype) _ _ _ _).1 rfl`.
+Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem eq_ofPrime {K : Type} [Field K] (T D : Subring K) (P : Ideal T) [P.IsPrime]
     (hP : ∀ t : T, t ∈ P ↔ ¬ ((t : K) ≠ 0 ∧ (t : K)⁻¹ ∈ D)) (hTD : T ≤ D)
@@ -79,15 +77,13 @@ theorem eq_ofPrime {K : Type} [Field K] (T D : Subring K) (P : Ideal T) [P.IsPri
     exact (IsLocalization.lift_mk'_spec (S := Localization.AtPrime P) (g := T.subtype) _ _ _ _).1 rfl
 
 /- English proof (translation)
-Introduce `K _ R D B _ _ hRD hdom hTD hBT gen`. Set `P : Ideal (integralClosure R K).toSubring` to `(IsLocalRing.maximalIdeal D).comap (Subring.inclusion hTD)`. Establish `hP : ∀ t : (integralClosure R K).toSubring, t ∈ P ↔ ¬ ((t : K) ≠ 0 ∧ (t : K)⁻¹ ∈ D)`. Introduce `t`. Use `show Subring.inclusion hTD t ∈ IsLocalRing.maximalIdeal D ↔ _`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_subring_iff]`. Both sides reduce to the same expression. Establish `: P.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `hRT : R ≤ (integralClosure R K).toSubring` using `fun r hr ↦ by show IsIntegral R (algebraMap R K ⟨r, hr⟩)`. Conclude with `isIntegral_algebraMap`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint : ∀ t ∈ (integralClosure R K).toSubring, IsIntegral R t` using `fun t ht ↦ ht`. Establish `hPmax : P.IsMaximal`. Apply `isMaximal_of_comap R _ hRT hint P` to reduce the goal to its premises. Establish `hc : P.comap (Subring.inclusion hRT) = IsLocalRing.maximalIdeal R`. Use extensionality with `r`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mem_comap, hP, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_subring_iff]`. Use `show ¬ ((r : K) ≠ 0 ∧ (r : K)⁻¹ ∈ D) ↔ ¬ ((r : K) ≠ 0 ∧ (r : K)⁻¹ ∈ R)`. Conclude with `not_congr ⟨fun ⟨h0, h⟩ ↦ ⟨h0, hdom _ r.2 h0 h⟩, fun ⟨h0, h⟩ ↦ ⟨h0, hRD h⟩⟩`. Rewrite using `[hc]`. Conclude with `IsLocalRing.maximalIdeal.isMaximal R`.
-
-Use `⟨P, hPmax, ?_, hP⟩` and prove the remaining obligations. Use `eq_ofPrime _ D P hP hTD fun a ha ↦ ?_` and prove the remaining obligations. Take `⟨u, hu, v, hv, h0, hvD, rfl⟩` from `gen a ha`. Conclude with `⟨u, hBT hu, v, hBT hv, h0, hvD, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eq_localisation_integralClosure :
     ∀ {K : Type} [Field K] (R D B : Subring K) [IsLocalRing R] [IsLocalRing D], R ≤ D →

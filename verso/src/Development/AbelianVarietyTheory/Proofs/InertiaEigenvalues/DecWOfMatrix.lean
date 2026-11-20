@@ -16,7 +16,7 @@ namespace GlobalTheory.DecomplRed
 open GlobalTheory.WachTensor
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a m`. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.map_tmul, TensorProduct.map_tmul, TensorProduct.smul_tmul', AlgHom.toLinearMap_apply, AlgHom.toLinearMap_apply, smul_eq_mul, smul_eq_mul, map_mul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy, map_add, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 private theorem tensorProduct_map_algHom_smul {O A M N : Type} [CommRing O] [CommRing A] [Algebra O A]
     [AddCommGroup M] [Module O M] [AddCommGroup N] [Module O N]
@@ -31,7 +31,7 @@ private theorem tensorProduct_map_algHom_smul {O A M N : Type} [CommRing O] [Com
   | add x y hx hy => rw [smul_add, map_add, hx, hy, map_add, smul_add]
 
 /- English proof (translation)
-Establish `hs : Function.Surjective (Fintype.linearCombination R c)`. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, hc]`. Establish `hi : Function.Injective (B.equivFun.toLinearMap ∘ₗ Fintype.linearCombination R c)` using `OrzechProperty.injective_of_surjective_endomorphism _ (B.equivFun.surjective.comp hs)`. Apply `hi` to reduce the goal to its premises. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, Fintype.linearCombination_apply, hvw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 private theorem coeffs_eq_of_sum_smul_eq_of_span_eq {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {n : ℕ}
     (B : Module.Basis (Fin n) R M) (c : Fin n → M) (hc : Submodule.span R (Set.range c) = ⊤)
@@ -44,45 +44,39 @@ private theorem coeffs_eq_of_sum_smul_eq_of_span_eq {R M : Type} [CommRing R] [A
   simp only [LinearMap.comp_apply, LinearEquiv.coe_coe, Fintype.linearCombination_apply, hvw]
 
 /- English proof (translation)
-Unfold `DecW`. Introduce `T`. Establish `memH : ∀ x, x ∈ Htl S T ↔ ∀ g ∈ Hker S, TWact (S.gR g) T g x = x` using `fun x => Iff.rfl`. Establish `hH : ∀ g ∈ Hker S, S.W.resΓ g = 1` using `fun g hg => MonoidHom.mem_ker.1 hg`. Distinguish the cases in `hsub : Subsingleton (TW S.RW T)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `key : ∀ x : TW S.RW T, x ∈ LinearMap.range (E.jD T)` using `fun x => ⟨0, Subsingleton.elim _ _⟩`. Conclude with `⟨fun y _ => ⟨0, (Htl S T).zero_mem, key _⟩, fun z _ _ => key z⟩`. Establish `: Nontrivial (TW S.RW T)` using `not_subsingleton_iff_nontrivial.1 hsub`. Establish `: Nontrivial S.RW`. Assume the negation of the conclusion as `hR`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hR` using `[not_nontrivial_iff_subsingleton]`. Conclude with `hsub (Module.subsingleton S.RW _)`. Establish `: Nontrivial S.O` using `RingHom.domain_nontrivial (algebraMap S.O S.RW)`. Establish `: Nontrivial S.W.EE` using `RingHom.domain_nontrivial E.ioE.toRingHom`. Establish `: Module.Free S.O ↥T.L.T` using `T.L.free`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Module.Finite S.O ↥T.L.T` using `Module.Finite.iff_fg.2 T.L.fg`. Establish `bW : Module.Basis (Fin (Module.finrank S.O ↥T.L.T)) S.RW (TW S.RW T)` using `(Module.finBasis S.O ↥T.L.T).baseChange S.RW`. Establish `hr : 0 < Module.finrank S.O ↥T.L.T`. Rewrite using `[Nat.pos_iff_ne_zero]`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, y, hxy⟩` from `exists_pair_ne (TW S.RW T)`. Conclude with `hxy (bW.repr.injective (Finsupp.ext fun i => absurd i.isLt (by omega)))`. Establish `hdr` using `(S.W.DD_free T).2`. Establish `: Module.Free S.W.EE (S.W.DD T)` using `(S.W.DD_free T).1`. Establish `: Module.Finite S.W.EE (S.W.DD T)` using `Module.finite_of_finrank_pos (by rw [hdr]; exact hr)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨d, ⟨bD⟩, ⟨bW'⟩⟩ : ∃ d, Nonempty (Module.Basis (Fin d) S.W.EE (S.W.DD T)) ∧ Nonempty (Module.Basis (Fin d) S.RW (TW S.RW T))` from `⟨_, ⟨Module.finBasis _ _⟩, ⟨bW.reindex (finCongr hdr.symm)⟩⟩`. Establish `hexp : ∀ x : S.W.DD T, E.jD T x = ∑ i, E.ioE (bD.repr x i) • E.jD T (bD i)`. Introduce `x`. Use `conv_lhs => rw [← bD.sum_repr x]`. Rewrite using `[map_sum]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Finset.sum_congr rfl fun i _ => E.jD_smul T _ _`. Establish `hspan : Submodule.span S.RW (Set.range fun i => E.jD T (bD i)) = ⊤`. Rewrite using `[eq_top_iff, ← E.jD_span T, Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[hexp x]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `hinj : ∀ v w : Fin d → S.RW, ∑ i, v i • E.jD T (bD i) = ∑ i, w i • E.jD T (bD i) → v = w` using `fun v w hvw => coeffs_eq_of_sum_smul_eq_of_span_eq bW' _ hspan hvw`. Establish `hsurj : ∀ y : TW S.RW T, ∃ v : Fin d → S.RW, y = ∑ i, v i • E.jD T (bD i)`. Introduce `y`. Establish `hy : y ∈ Submodule.span S.RW (Set.range fun i => E.jD T (bD i))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Take `⟨v, hv⟩` from `(Submodule.mem_span_range_iff_exists_fun S.RW).1 hy`. Conclude with `⟨v, hv.symm⟩`. Establish `actS : ∀ g (r : S.RW) (x : TW S.RW T), TWact (S.gR g) T g (r • x) = S.gR g r • TWact (S.gR g) T g x` using `fun g r x => tensorProduct_map_algHom_smul (S.gR g) (T.actT g) r x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `mapS : ∀ (r : S.RW) (x : TW S.RW T), TWmap S.φR T (r • x) = S.φR r • TWmap S.φR T x` using `fun r x => tensorProduct_map_algHom_smul S.φR LinearMap.id r x`. Establish `hfix : ∀ g ∈ Hker S, ∀ x, TWact (S.gR g) T g (E.jD T x) = E.jD T x`. Introduce `g hg x`. Rewrite using `[← E.jD_act, hH g hg, S.W.γD_one]`. Establish `hact : ∀ g ∈ Hker S, ∀ v : Fin d → S.RW, TWact (S.gR g) T g (∑ i, v i • E.jD T (bD i)) = ∑ i, S.gR g (v i) • E.jD T (bD i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `g hg v`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [actS, hfix g hg]`. Establish `hinv : ∀ v : Fin d → S.RW, (∑ i, v i • E.jD T (bD i)) ∈ Htl S T ↔ ∀ i, ∀ g ∈ Hker S, S.gR g (v i) = v i`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[memH]`. Prove the components needed by the constructor for the conclusion. Introduce `hv i g hg`. Conclude with `congrFun (hinj _ _ ((hact g hg v).symm.trans (hv g hg))) i`. Introduce `hv g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hact g hg v]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [hv i g hg]`. Establish `hk : ∀ k, TWmap S.φR T (E.jD T (bD k)) = ∑ i, E.ioE (bD.repr (S.W.φD T (bD k)) i) • E.jD T (bD i)` using `fun k => by`. Rewrite using `[← E.jD_φ]`. Conclude with `hexp _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Establish `hφ : ∀ z : Fin d → S.RW, TWmap S.φR T (∑ k, z k • E.jD T (bD k)) = ∑ i, (∑ k, E.ioE (bD.repr (S.W.φD T (bD k)) i) * S.φR (z k)) • E.jD T (bD i)`. Introduce `z`. Rewrite using `[map_sum]`. Simplify using `only [mapS, hk, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_smul]`. Conclude with `Finset.sum_congr rfl fun k _ => by rw [mul_comm]`. Establish `hrng : ∀ v : Fin d → S.RW, (∑ i, v i • E.jD T (bD i)) ∈ LinearMap.range (E.jD T) ↔ ∀ i, ∃ e, v i = E.ioE e`. Introduce `v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Rewrite `hx` using `[hexp]`. Establish `hv` using `hinj _ _ hx`. Conclude with `fun i => ⟨bD.repr x i, (congrFun hv i).symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `hv choose e he using hv`. Use `⟨∑ i, e i • bD i, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [E.jD_smul, he i]`. Take `⟨h1, h2⟩` from `h d (Matrix.of fun i k => bD.repr (S.W.φD T (bD k)) i)`.
-
-Simplify using `only [Matrix.of_apply] at h1 h2`. Use `⟨fun y hy => ?_, fun z hz hφz => ?_⟩` and prove the remaining obligations. Take `⟨v, rfl⟩` from `hsurj y`. Take `⟨z, hzH, hz⟩` from `h1 v ((hinv v).1 hy)`. Use `⟨∑ i, z i • E.jD T (bD i), (hinv z).2 hzH, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hφ z, ← Finset.sum_sub_distrib, ← Finset.sum_sub_distrib]`. Simplify using `only [← sub_smul]`. Conclude with `(hrng _).2 hz`. Take `⟨u, rfl⟩` from `hsurj z`. Establish `hu` using `(hinv u).1 hz`.
-
-Rewrite `hφz` using `[hφ u, ← Finset.sum_sub_distrib]`. Simplify using `only [← sub_smul] at hφz`. Conclude with `(hrng u).2 (h2 u hu ((hrng _).1 hφz))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem decW_of_matrix (S : Sit) (E : S.Comparison₂)
     (h : ∀ (d : ℕ) (Pm : Matrix (Fin d) (Fin d) S.W.EE),

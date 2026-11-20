@@ -16,9 +16,9 @@ attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toI
 open NumberField Formalism.ConjugateSelfDual Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal GlobalTheory.GalOfCusp IsLocalRing Topology UpperTheory.V UpperTheory.V.HV UpperTheory.V.U3 UpperTheory.V.Base UpperTheory.V.Af UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pr UpperTheory.V.Z.J UpperTheory.V.Loc
 
 /- English proof (translation)
-Establish `ht : Continuous fun s => (t s : Matrix (Fin 3) (Fin 3) E)`. Simplify using `only [h, Units.val_mul]`. Conclude with `(continuous_const.matrix_mul hr).matrix_mul continuous_const`. Establish `hψ : IsOpenEmbedding (φ.comp U.subtype)` using `hφ.comp hU.isOpenEmbedding_subtypeVal`. Establish `hr' : Continuous fun s : U => ((r.comp U.subtype) s : Matrix (Fin 3) (Fin 3) E)` using `hr.comp continuous_subtype_val`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht' : Continuous fun s : U => ((t.comp U.subtype) s : Matrix (Fin 3) (Fin 3) E)` using `ht.comp continuous_subtype_val`. Use `((isCrys_isDR_sub_quot (φ.comp U.subtype) hψ (colRep (r.comp U.subtype)) (colRep (t.comp U.subtype)) (contAction_colRep hr') (contAction_colRep ht') ((Matrix.toLin' (g : Matrix (Fin 3) (Fin 3) E)).restrictScalars ℚ_[l]) (fun s x => ?_)).2 (fun y => ?_)).1 hc` and prove the remaining obligations. Simplify using `only [LinearMap.restrictScalars_apply, Matrix.toLin'_apply, colRep_apply, Matrix.mulVec_mulVec, MonoidHom.comp_apply, Subgroup.subtype_apply, h, ← Units.val_mul, inv_mul_cancel_right]`. Use `⟨((g⁻¹ : GL (Fin 3) E) : Matrix (Fin 3) (Fin 3) E).mulVec y, ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.restrictScalars_apply, Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem crConj {l : ℕ} [Fact l.Prime] {D : Type} [Group D] [TopologicalSpace D] [IsTopologicalGroup D] (φ : D →* GQ l) (hφ : IsOpenEmbedding φ)
     {E : Type} [Field E] [Algebra ℚ_[l] E] [FiniteDimensional ℚ_[l] E] [TopologicalSpace E] [IsModuleTopology ℚ_[l] E] [IsTopologicalRing E]
@@ -38,11 +38,11 @@ private theorem crConj {l : ℕ} [Fact l.Prime] {D : Type} [Group D] [Topologica
     simp only [LinearMap.restrictScalars_apply, Matrix.toLin'_apply, Matrix.mulVec_mulVec, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `key : ∀ i j : Fin 3, Fr.w 3 i - Fr.w 3 j = 1 → ∃ i' : Fin 2, i = i'.castSucc ∧ j = i'.succ` using `by decide`. Use `key i j ?_` and prove the remaining obligations. Use `set d : ℤ := Fr.w 3 i - Fr.w 3 j with hd`. Establish `h0 : x ^ ((e : ℤ) * d) * y ^ d = x` using `by rw [zpow_mul, ← mul_zpow]; exact h`. Establish `h1 : x ^ ((e : ℤ) * d - 1) = (y ^ d)⁻¹`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_sub, zpow_one, eq_mul_inv_of_mul_eq h0, mul_comm, inv_mul_cancel_left]`. Establish `h2 : (e : ℤ) * d = 1`. Assume the negation of the conclusion as `hne`. Apply `hx` to reduce the goal to its premises. Take `⟨n, hn, hyn⟩` from `isOfFinOrder_iff_pow_eq_one.1 hy`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `isOfFinOrder_iff_zpow_eq_one.2 ⟨((e : ℤ) * d - 1) * n, mul_ne_zero (sub_ne_zero.2 hne) (by exact_mod_cast hn.ne'), ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_mul, h1, zpow_natCast, inv_pow, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hyn, one_zpow, inv_one]`. Break down `Int.eq_one_or_neg_one_of_mul_eq_one' h2 with ⟨-, h3⟩ | ⟨h3, -⟩` into its components or cases. Conclude with `h3`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem idxStep (e : ℕ) (he : 1 ≤ e) {A : Type} [CommGroup A] (x y : A) (hy : IsOfFinOrder y) (hx : ¬ IsOfFinOrder x)
     (i j : Fin 3) (h : (x ^ (e : ℤ) * y) ^ (Fr.w 3 i - Fr.w 3 j) = x) : ∃ i' : Fin 2, i = i'.castSucc ∧ j = i'.succ := by
@@ -63,15 +63,15 @@ private theorem idxStep (e : ℕ) (he : 1 ≤ e) {A : Type} [CommGroup A] (x y :
   · omega
 
 /- English proof (translation)
-Use `haveI := E.2`. Use `haveI : IsModuleTopology ℚ_[l] ↥E.1 := isModuleTopologyOfFiniteDimensional`. Establish `hinv : ∀ s a b, ((((t' s)⁻¹ : GL (Fin 3) ↥E.1) : Matrix (Fin 3) (Fin 3) ↥E.1) a b : PadicAlgCl l) = ((((t s)⁻¹ : GL (Fin 3) c.O) : Matrix (Fin 3) (Fin 3) c.O) a b : c.O).1` using `fun s a b => by`. Rewrite using `[← map_inv, ← map_inv]`. Conclude with `ht _ a b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcy : ∀ s, ((algebraMap ℤ_[l] c.O (cyc l l (φ s)) : c.O) : PadicAlgCl l) = (((cycA l l ↥E.1 (φ s) : (↥E.1)ˣ) : ↥E.1) : PadicAlgCl l)` using `fun s => rfl`. Establish `hZ` using `stepF φ hφ t' hc (fun g a b hab => Subtype.ext (by`. Rewrite using `[ht, hup g a b hab]; rfl)) U hU hcr i (fun g => Subtype.ext (by`. Rewrite using `[ht, hlink g, MulMemClass.coe_mul, MulMemClass.coe_mul, ht]`. Conclude with `congrArg (· * _) (hcy g)))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨u, β, cu, cβ, ua, ui, ⟨s₀, hs₀⟩, ub⟩` from `cupUnr hP φ hφ _ hZ`. Establish `bd : ∀ x : ↥E.1, ∃ (m : ℕ) (a : c.O), (l : PadicAlgCl l) ^ m * (x : PadicAlgCl l) = a.1` using `fun x => hE _ x.2`. Take `⟨m, u', β', au, aβ, hu, hβ⟩` from `clearDen c (fun s => (u s : PadicAlgCl l)) (fun s => (β s : PadicAlgCl l)) (continuous_subtype_val.comp cu) (continuous_subtype_val.comp cβ) (fun s => bd _) (fun s => bd _)`. Establish `hl : (l : PadicAlgCl l) ^ m ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Use `⟨hlink, u', β', au, aβ, fun s s' => Subtype.ext ?_, fun s hs => Subtype.ext ?_, ⟨s₀, fun h => hs₀ ?_⟩, fun s s' => Subtype.ext ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[AddMemClass.coe_add, hu, hu, hu, ua, AddMemClass.coe_add, mul_add]`. Rewrite using `[hu, ui s (hI s hs)]`. Simplify using the standard rewrite rules. Establish `h1` using `hu s₀`. Rewrite `h1` using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `Subtype.ext ((mul_eq_zero.1 (h1.symm.trans rfl)).resolve_left hl)`. Establish `e` using `congrArg (Subtype.val) (ub s s')`. Simplify using `only [AddMemClass.coe_add, AddSubgroupClass.coe_sub, MulMemClass.coe_mul] at e ⊢`. Rewrite using `[hβ, hβ, hβ, hu, e, ht, hinv, MonoidHom.comp_apply, hcy]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem stepCore (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] (c : Coef l) [Fr.IsCoef l c.O] {D : Type} [Group D] [TopologicalSpace D]
     [IsTopologicalGroup D] [CompactSpace D] (φ : D →* GQ l) (hφ : IsOpenEmbedding φ) (E : FinExt l)
@@ -111,23 +111,23 @@ private theorem stepCore (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] 
     ring
 
 /- English proof (translation)
-Establish `hlc : ∀ m : ℕ, (l : PadicAlgCl l) ^ m ∈ c.O` using `fun m => pow_mem (natCast_mem c.O l) m`. Set `T : Subalgebra ℚ_[l] (PadicAlgCl l)` to `{ carrier := {x | ∃ (m : ℕ) (a : c.O), (l : PadicAlgCl l) ^ m * x = a.1} mul_mem' := by`. Introduce and unpack `x y ⟨m, a, ha⟩ ⟨n, b, hb⟩`. Use `⟨m + n, a * b, ?_⟩` and prove the remaining obligations. Rewrite using `[MulMemClass.coe_mul, ← ha, ← hb, pow_add]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use the proof step `add_mem' := by`. Introduce and unpack `x y ⟨m, a, ha⟩ ⟨n, b, hb⟩`. Use `⟨m + n, ⟨_, hlc n⟩ * a + ⟨_, hlc m⟩ * b, ?_⟩` and prove the remaining obligations. Rewrite using `[AddMemClass.coe_add, MulMemClass.coe_mul, MulMemClass.coe_mul, ← ha, ← hb, pow_add]`.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use the proof step `algebraMap_mem' := fun q => by`. Establish `hlt : ‖((l : ℚ_[l]))‖ < 1` using `Padic.norm_p_lt_one`. Take `⟨m, hm⟩` from `exists_pow_lt_of_lt_one (show (0 : ℝ) < (max ‖q‖ 1)⁻¹ by positivity) hlt`. Establish `h1 : ‖(l : ℚ_[l]) ^ m * q‖ ≤ 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_mul, norm_pow]`. Combine the equalities or inequalities in the displayed calculation. Set `a : ℤ_[l]` to `⟨_, h1⟩`. Establish `ha : algebraMap ℤ_[l] ℚ_[l] a = (l : ℚ_[l]) ^ m * q` using `rfl`. Use `⟨m, algebraMap ℤ_[l] c.O a, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((algebraMap ℤ_[l] c.O a : c.O) : PadicAlgCl l) = algebraMap ℤ_[l] (PadicAlgCl l) a` using `rfl`. Rewrite using `[e, IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), ha, map_mul, map_pow, map_natCast] }`. Take `⟨s, hs⟩` from `(Module.Finite.fg_top : (⊤ : Submodule ℤ_[l] c.O).FG)`. Set `S : Set (PadicAlgCl l)` to `(fun x : c.O => x.1) '' (s : Set c.O)`. Establish `hS : S.Finite` using `s.finite_toSet.image _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `halg : ∀ x ∈ S, IsIntegral ℚ_[l] x` using `fun x _ => Algebra.IsIntegral.isIntegral x`. Use `haveI : FiniteDimensional ℚ_[l] (IntermediateField.adjoin ℚ_[l] S) := IntermediateField.finiteDimensional_adjoin (S := S) halg`. Use `⟨⟨IntermediateField.adjoin ℚ_[l] S, inferInstance⟩, fun x => ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span ℤ_[l] (s : Set c.O)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mem y hy => exact IntermediateField.subset_adjoin _ _ ⟨y, hy, rfl⟩`. Consider the case `zero => exact zero_mem _`. Consider the case `add y z _ _ hy hz => exact add_mem hy hz`. Consider the case `smul a y _ hy`. Establish `e : (a • y).1 = algebraMap ℚ_[l] (PadicAlgCl l) (algebraMap ℤ_[l] ℚ_[l] a) * y.1`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IsScalarTower.algebraMap_apply ℤ_[l] ℚ_[l] (PadicAlgCl l), ← Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `mul_mem (IntermediateField.algebraMap_mem _ _) hy`. Establish `h1 : Algebra.adjoin ℚ_[l] S ≤ T` using `Algebra.adjoin_le (by`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `_ ⟨y, -, rfl⟩`. Conclude with `⟨0, y, by simp⟩)`. Establish `h2 : x ∈ (IntermediateField.adjoin ℚ_[l] S).toSubalgebra` using `hx`. Rewrite `h2` using `[IntermediateField.adjoin_toSubalgebra_of_isAlgebraic (fun y hy => (halg y hy).isAlgebraic)]`. Conclude with `h1 h2`.
+A detailed English derivation is pending.
 -/
 private theorem fieldOf {l : ℕ} [Fact l.Prime] (c : Coef l) : ∃ E : FinExt l, (∀ x : c.O, x.1 ∈ E.1) ∧
     ∀ x ∈ E.1, ∃ (m : ℕ) (a : c.O), (l : PadicAlgCl l) ^ m * x = a.1 := by
@@ -182,19 +182,17 @@ private theorem fieldOf {l : ℕ} [Fact l.Prime] (c : Coef l) : ∃ E : FinExt l
     exact h1 h2
 
 /- English proof (translation)
-Set `y₀ : S.R →ₐ[c₁.O] Qbar l` to `(Algebra.ofId c₁.O (Qbar l)).comp ξ`. Establish `hcont : ∀ a b, Continuous fun g => y₀ (S.ρ.r g a b)` using `fun a b => Hi.Up.pt_cont y₀ (S.lift.1.1 a b)`. Take `⟨E, hE1, hE2⟩` from `fieldOf c₁`. Use `haveI := E.2`. Use `haveI : IsModuleTopology ℚ_[l] ↥E.1 := isModuleTopologyOfFiniteDimensional`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `f₀ : S.A →+* c₁.O` to `(ξ : S.R →+* c₁.O).comp (S.A.val : S.A →+* S.R)`. Take `⟨g, hg⟩` from `Fr.flag hF (Or.inr rfl) S c₁.O f₀ v`. Set `ρ₀ : F.Gv v →* GL (Fin 3) c₁.O` to `(((S.u.map f₀).r.comp (F.loc0 v))).toHomUnits`. Set `t : F.Gv v →* GL (Fin 3) c₁.O` to `(MulAut.conj g).toMonoidHom.comp ρ₀`. Establish `ht : ∀ s, t s = g * ρ₀ s * g⁻¹` using `fun s => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ιE : c₁.O →+* ↥E.1` to `(c₁.O.val : c₁.O →+* PadicAlgCl l).codRestrict E.1.toSubfield.toSubring hE1`. Set `m : GL (Fin 3) c₁.O →* GL (Fin 3) ↥E.1` to `Matrix.GeneralLinearGroup.map ιE`. Set `r' : F.Gv v →* GL (Fin 3) ↥E.1` to `m.comp ρ₀`. Set `t' : F.Gv v →* GL (Fin 3) ↥E.1` to `m.comp t`. Establish `hm : ∀ (x : GL (Fin 3) c₁.O) a b, (((m x : Matrix (Fin 3) (Fin 3) ↥E.1) a b : ↥E.1) : PadicAlgCl l) = ((x : Matrix (Fin 3) (Fin 3) c₁.O) a b : c₁.O).1` using `fun x a b => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr'c : Continuous fun s => (r' s : Matrix (Fin 3) (Fin 3) ↥E.1)`. Use `continuous_matrix fun a b => Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(hcont a b).comp (hF.loc_cont v)`. Establish `hht' : ∀ s, t' s = m g * r' s * (m g)⁻¹` using `fun s => by show m (t s) = _`. Rewrite using `[ht, map_mul, map_mul, map_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `ht'c : Continuous fun s => (t' s : Matrix (Fin 3) (Fin 3) ↥E.1)`. Simplify using `only [hht', Units.val_mul]`. Conclude with `(continuous_const.matrix_mul hr'c).matrix_mul continuous_const`. Take `⟨U, hUn, hUo, hCr⟩` from `hcr E r' (fun s a b => rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCr'` using `crConj φ hφ r' t' (m g) hr'c hht' U hUo hCr`. Establish `hε : (cyc l l).comp φ = F.eps.comp (F.loc v)` using `MonoidHom.ext hcy`. Establish `hdiag : ∀ s a, (t s : Matrix (Fin 3) (Fin 3) c₁.O) a a = (S.ρ.map (ξ : S.R →+* c₁.O)).ψ v a s` using `fun s a => (hg s).2 a`. Establish `hup : ∀ s, Fr.UpT (t s : Matrix (Fin 3) (Fin 3) c₁.O)` using `fun s a b hab => (hg s).1 a b hab`. Use `⟨g, t, fun s => rfl, hup, hdiag, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hε]`. Use `stepCore hP c₁ φ hφ E hE2 t t' (fun s a b => hm _ a b) ht'c hup U hUo hCr' i' (fun s => Subtype.ext ?_) _ hIq` and prove the remaining obligations. Rewrite using `[hdiag, hdiag, MulMemClass.coe_mul, mul_comm]`. Conclude with `hlink s`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem flagStep (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] (c₁ : Coef l) [Fr.IsCoef l c₁.O] {F : Fr.Frame l (ResidueField c₁.O)} {C₀ : ℕ}
     (hF : F.Ok C₀) (S : Fr.Space c₁.O F 3) (ξ : S.R →ₐ[c₁.O] c₁.O) (v : F.V) (φ : F.Gv v →* GQ l) (hφ : IsOpenEmbedding φ)
@@ -242,27 +240,23 @@ private theorem flagStep (hP : LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] 
   exact hlink s
 
 /- English proof (translation)
-Establish `hE` using `(galEmbTop ℚ L Ω).1`. Take `⟨hDI, -, hcyc, -⟩` from `galEmbFam ℚ L Ω l`. Establish `hmem : ∀ s, (k.j v s).1 ∈ galOf ℚ L Ω` using `fun s => by`. Rewrite using `[k.gal]`. Use `⟨(k.j v s).2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `k.del (k.j v s)`. Rewrite `h1` using `[← k.j_loc]`. Conclude with `h1.symm.trans (Φ.loc0 v s).2`. Establish `hr` using `range_galEmb ℚ L Ω`. Set `e : G L Ω ≃* galOf ℚ L Ω` to `(MonoidHom.ofInjective hE.injective).trans (MulEquiv.subgroupCongr hr)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `m : Φ.Gv v →* galOf ℚ L Ω` to `((upl Ω L).subtype.comp (k.j v)).codRestrict _ hmem`. Set `ψ : Φ.Gv v →* G L Ω` to `e.symm.toMonoidHom.comp m`. Establish `hψ : ∀ s, galEmb ℚ L Ω (ψ s) = (k.j v s).1` using `fun s => congrArg Subtype.val (e.apply_symm_apply (m s))`. Establish `hψc : Continuous ψ`. Use `hE.continuous_iff.2 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (galEmb ℚ L Ω) ∘ ψ = fun s => (k.j v s).1` using `funext hψ`. Rewrite using `[this]`. Conclude with `continuous_subtype_val.comp (k.j_cont v)`. Establish `hψi : Function.Injective ψ` using `fun a b h => by`. Establish `h1` using `congrArg (galEmb ℚ L Ω) h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[hψ, hψ]`. Conclude with `k.j_inj v (Subtype.ext h1)`. Establish `hD : ∀ x : G L Ω, x ∈ Dec (F` using `L) (placeJ j) ↔ galEmb ℚ L Ω x ∈ Dec (F := ℚ) (k.pl v) := fun x => by`. Rewrite using `[hj, ← (hDI (k.pl v)).1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hI : ∀ x : G L Ω, x ∈ Ine (F` using `L) (placeJ j) ↔ galEmb ℚ L Ω x ∈ Ine (F := ℚ) (k.pl v) := fun x => by`. Rewrite using `[hj, ← (hDI (k.pl v)).2]`. Both sides reduce to the same expression. Set `τ : Φ.Gv v →* Dec (F` to `L) (placeJ j) := ψ.codRestrict _ fun s => by`. Rewrite using `[hD, hψ]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(k.j_range v _).1 ⟨s, rfl⟩`. Establish `hτ : IsOpenEmbedding τ`. Use `(isHomeomorph_iff_continuous_bijective.2 ⟨hψc.subtype_mk _, fun a b h => hψi (congrArg Subtype.val h), fun x => ?_⟩).isOpenEmbedding` and prove the remaining obligations. Establish `h1 : galEmb ℚ L Ω x.1 ∈ upl Ω L`. Use `galEmb_mem ℚ L Ω x.1` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[k.gal]`. Conclude with `this.1`. Take `⟨s, hs⟩` from `(k.j_range v ⟨_, h1⟩).2 ((hD x.1).1 x.2)`. Use `⟨s, Subtype.ext (hE.injective ?_)⟩` and prove the remaining obligations. Use `show galEmb ℚ L Ω (ψ s) = _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ, hs]`. Take `⟨-, φL, hφL, hcomp, -, hIne, hcy, -⟩` from `(@Loc.decEmb L Ω _ _ _ _ _ _ l _).2 j`. Use `⟨φL.comp τ, ψ, hφL.comp hτ, fun h y => hcomp (τ h) y, fun s => Subtype.ext ?_, fun s => ?_, fun s => ?_⟩` and prove the remaining obligations. Use `show k.p ⟨galEmb ℚ L Ω (ψ s), _⟩ = Φ.loc v s`. Rewrite using `[k.j_loc]`.
-
-Conclude with `congrArg k.p (Subtype.ext (hψ s))`. Use `(hIne (τ s)).trans ?_ show ψ s ∈ _ ↔ _` and prove the remaining obligations. Rewrite using `[hI, hψ, k.j_ine]`. Use `(hcy l (τ s)).trans ?_` and prove the remaining obligations. Rewrite using `[k.j_loc, k.eps]`.
-
-Use `show cycZ L Ω l (ψ s) = _`. Rewrite using `[← hcyc, MonoidHom.comp_apply, hψ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem locEmb {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O]
     {η : G ℚ Ω →* ℤˣ} {Ψ : G ℚ Ω →* Oˣ} {σ g₁ : G ℚ Ω} {B : ValuationSubring Ω} {M : ℕ} {L : Type} [Field L] [NumberField L] [Algebra L Ω]
@@ -323,29 +317,27 @@ private theorem locEmb {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω
     rw [← hcyc, MonoidHom.comp_apply, hψ]
 
 /- English proof (translation)
-Introduce `hP Ω _ _ _ l _ ι c _ N _ e ψ η σ g₁ B M hL L _ _ _ _ _ Φ k c₁ _ f R ξ r hr hI v hc i j hij`. Set `y₀ : R.S.R →ₐ[c₁.O] Qbar l` to `(Algebra.ofId c₁.O (Qbar l)).comp ξ`. Establish `hy₀ : ∀ a, y₀ a = (ξ a).1` using `fun a => rfl`. Establish `hcont : ∀ a b, Continuous fun g => y₀ (R.S.ρ.r g a b)` using `fun a b => Hi.Up.pt_cont y₀ (R.S.lift.1.1 a b)`. Establish `hp0 : Continuous k.p0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Continuous.subtype_mk (k.p_cont.comp (Continuous.subtype_mk (galEmbTop ℚ L Ω).1.continuous _)) _` and prove the remaining obligations. Establish `hrv : Continuous fun s => (r s : Matrix (Fin 3) (Fin 3) (Qbar l))`. Use `continuous_matrix fun a b => ?_` and prove the remaining obligations. Establish `: (fun s => (r s : Matrix (Fin 3) (Fin 3) (Qbar l)) a b) = fun s => y₀ (R.S.ρ.r (k.p0 s) a b)` using `funext fun s => by`. Rewrite using `[hr]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `(hcont a b).comp hp0`. Establish `hrc : Continuous r`. Use `Units.continuous_iff.2 ⟨hrv, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [← map_inv]`. Conclude with `hrv.comp continuous_inv`. Take `⟨jj, hjj, hcr⟩` from `crOfPot (k.pl v) r hrc hc`. Take `⟨φ, ψ', hφ, hcomp, hp, hIq, hcy⟩` from `locEmb k v jj hjj`. Establish `hcb : ∀ s : Φ.Gv v, (cycBar ℚ Ω l (k.j v s).1 : Qbar l) = algebraMap ℤ_[l] (Qbar l) (Loc.cyc l l (φ s))` using `fun s => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hcy, k.j_loc, k.eps]`. Both sides reduce to the same expression. Establish `hinj : Function.Injective (algebraMap ℤ_[l] (Qbar l))`. Rewrite using `[IsScalarTower.algebraMap_eq ℤ_[l] ℚ_[l] (Qbar l)]`. Conclude with `(algebraMap ℚ_[l] (Qbar l)).injective.comp (IsFractionRing.injective ℤ_[l] ℚ_[l])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨-, ⟨g₀, rfl⟩, hnf⟩ : ∃ s, s ∈ φ.range ∧ s ∈ Iq l ∧ ¬ IsOfFinOrder (Loc.cyc l l s) := by`. Take `⟨s, ⟨h1, h2⟩, h3⟩` from `((cycInertia l).2 φ.range (by simpa using hφ.isOpen_range)).2`. Conclude with `⟨s, h1, h2, h3⟩`. Take `⟨hgI, hnf⟩` from `hnf`. Establish `hg₀ : g₀ ∈ Φ.Iv v` using `(hIq g₀).1 hgI`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `μ : c.Oˣ →* (Qbar l)ˣ` to `Units.map (c.O.val : c.O →* Qbar l)`. Set `x : (Qbar l)ˣ` to `cycBar ℚ Ω l (k.j v g₀).1`. Set `y : (Qbar l)ˣ` to `μ (Chr.dirG ℚ Ω ψ (k.j v g₀).1)`. Establish `hx : ¬ IsOfFinOrder x` using `fun h => hnf (by`. Take `⟨n, hn, h1⟩` from `isOfFinOrder_iff_pow_eq_one.1 h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `isOfFinOrder_iff_pow_eq_one.2 ⟨n, hn, Units.ext (hinj ?_)⟩` and prove the remaining obligations. Establish `h2` using `congrArg Units.val h1`. Rewrite `h2` using `[Units.val_pow_eq_pow_val, hcb, Units.val_one]`. Rewrite using `[Units.val_pow_eq_pow_val, map_pow]`. Simplify using `using h2)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : IsOfFinOrder y`. Conclude with `MonoidHom.isOfFinOrder μ (MonoidHom.isOfFinOrder ψ.toUnitHom (isOfFinOrder_of_finite (Chr.cls ℚ Ω N (k.j v g₀).1)))`. Establish `hPsi : μ (Chr.Psi l e (Chr.dirG ℚ Ω ψ) (k.j v g₀).1) = x ^ (e : ℤ) * y`. Establish `h1 : μ (chiO ℚ Ω l c.O (k.j v g₀).1) = x` using `Units.ext rfl`. Establish `h2 : Chr.Psi l e (Chr.dirG ℚ Ω ψ) (k.j v g₀).1 = chiO ℚ Ω l c.O (k.j v g₀).1 ^ (e : ℤ) * Chr.dirG ℚ Ω ψ (k.j v g₀).1` using `rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h2, map_mul, map_zpow, h1]`. Establish `hrel : (x ^ (e : ℤ) * y) ^ (Fr.w 3 i - Fr.w 3 j) = x`. Establish `h1` using `hij g₀`. Rewrite `h1` using `[hI v i g₀ hg₀, hI v j g₀ hg₀]`. Rewrite using `[← hPsi, zpow_sub, ← map_zpow μ, ← map_zpow μ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[mul_inv_eq_iff_eq_mul, mul_comm]`. Conclude with `Units.ext h1`. Take `⟨i', rfl, rfl⟩` from `idxStep e hL.e_pos x y hy hx i j hrel`. Use `⟨i', flagStep hP c₁ R.ok R.S ξ v φ hφ hcy (fun s hs => (hIq s).2 hs) i' (fun s => ?_) fun E r' h => ?_⟩` and prove the remaining obligations. Establish `h1` using `hij s`.
-
-Rewrite `h1` using `[hcb s]`. Conclude with `h1`. Use `hcr φ ψ' hφ hcomp E r' fun s a b => ?_` and prove the remaining obligations. Rewrite using `[hr, hp]`. Conclude with `h s a b`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.J.unitOf :
     Loc.LocalPublishedTheorems → UpperTheory.V.J.UnitOfP := by

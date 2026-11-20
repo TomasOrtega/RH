@@ -16,7 +16,7 @@ def urChar (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNona
   GroundTheory.LocalField.Abstract.ProfiniteInteger.proj N (Multiplicative.toAdd (unramifiedDegree K Ω σ))
 
 /- English proof (translation)
-Use `conv_lhs => rw [← ZMod.natCast_zmod_val c]`. Rewrite using `[← nsmul_one, map_nsmul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zmodToQZ_eq_nsmul {n : ℕ} [NeZero n] (c : ZMod n) :
     zmodToQZ n c = c.val • zmodToQZ n 1 := by

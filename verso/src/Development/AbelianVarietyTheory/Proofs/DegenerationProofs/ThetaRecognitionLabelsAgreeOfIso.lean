@@ -30,7 +30,7 @@ def toHom : NumD.Hom (RingHom.id O) N N' where
   ψ_eq := J.ψ_eq
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem rel_iff (g : N.Gt) (g' : N'.Gt) : (toHom J).Rel g g' ↔ J.Rel g g' := Iff.rfl
 
@@ -38,19 +38,19 @@ def TR {k : ℕ} (p : N.QT k) (p' : N'.QT k) : Prop :=
   p'.1.1.toAdd = J.e p.1.1.toAdd ∧ J.Rel p.1.2 p'.1.2
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).1 g).unique ha hb`.
+A detailed English derivation is pending.
 -/
 theorem rel_unique {g : N.Gt} {a b : N'.Gt} (ha : J.Rel g a) (hb : J.Rel g b) : a = b :=
   ((GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).1 g).unique ha hb
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).2.1 g h a b ha hb`.
+A detailed English derivation is pending.
 -/
 theorem rel_mul {g h : N.Gt} {a b : N'.Gt} (ha : J.Rel g a) (hb : J.Rel h b) : J.Rel (g * h) (a * b) :=
   (GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).2.1 g h a b ha hb
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using J.rel_one`. Consider the case `succ k ih => rw [pow_succ, pow_succ]`. Conclude with `rel_mul J ih ha`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem rel_pow {g : N.Gt} {a : N'.Gt} (ha : J.Rel g a) (k : ℕ) : J.Rel (g ^ k) (a ^ k) := by
   induction k with
@@ -58,7 +58,7 @@ theorem rel_pow {g : N.Gt} {a : N'.Gt} (ha : J.Rel g a) (k : ℕ) : J.Rel (g ^ k
   | succ k ih => rw [pow_succ, pow_succ]; exact rel_mul J ih ha
 
 /- English proof (translation)
-Take `⟨g', hg'⟩` from `((GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).1 p.1.2).exists`. Establish `h1` using `rel_pow J hg' k`. Rewrite `h1` using `[N.mem_QT.1 p.2]`. Establish `h2 : J.Rel (N.io p.1.1.toAdd) (N'.io (J.e p.1.1.toAdd))` using `(GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).2.2.1 _`. Conclude with `⟨⟨(Multiplicative.ofAdd (J.e p.1.1.toAdd), g'), rel_unique J h1 h2⟩, rfl, hg'⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem tr_exists {k : ℕ} (p : N.QT k) : ∃ p', TR J p p' := by
   obtain ⟨g', hg'⟩ := ((GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).1 p.1.2).exists
@@ -68,13 +68,13 @@ theorem tr_exists {k : ℕ} (p : N.QT k) : ∃ p', TR J p p' := by
   exact ⟨⟨(Multiplicative.ofAdd (J.e p.1.1.toAdd), g'), rel_unique J h1 h2⟩, rfl, hg'⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Prod.ext (ha.1.trans hb.1.symm) (rel_unique J ha.2 hb.2))`.
+A detailed English derivation is pending.
 -/
 theorem tr_unique {k : ℕ} {p : N.QT k} {a b : N'.QT k} (ha : TR J p a) (hb : TR J p b) : a = b :=
   Subtype.ext (Prod.ext (ha.1.trans hb.1.symm) (rel_unique J ha.2 hb.2))
 
 /- English proof (translation)
-Use `⟨?_, rel_mul J ha.2 hb.2⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a.1.1.toAdd + b.1.1.toAdd = J.e (p.1.1.toAdd + q.1.1.toAdd)`. Rewrite using `[map_add, ha.1, hb.1]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_mul {k : ℕ} {p q : N.QT k} {a b : N'.QT k} (ha : TR J p a) (hb : TR J q b) :
     TR J (p * q) (a * b) := by
@@ -83,23 +83,23 @@ theorem tr_mul {k : ℕ} {p q : N.QT k} {a b : N'.QT k} (ha : TR J p a) (hb : TR
   rw [map_add, ha.1, hb.1]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).2.2.2.1 k p q a b ha.1 ha.2 hb.1 hb.2`.
+A detailed English derivation is pending.
 -/
 theorem tr_wp {k : ℕ} {p q : N.QT k} {a b : N'.QT k} (ha : TR J p a) (hb : TR J q b) :
     N'.wp a b = N.wp p q :=
   (GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).2.2.2.1 k p q a b ha.1 ha.2 hb.1 hb.2
 
 /- English proof (translation)
-The claim follows from `((GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).2.2.2.2 m hm p a ha.1 ha.2 χ).1`.
+A detailed English derivation is pending.
 -/
 theorem tr_txT {m : ℕ} (hm : Odd m) {p : N.QT (m ^ 2)} {a : N'.QT (m ^ 2)} (ha : TR J p a) (χ : N.X) :
     N'.txT m a (J.e χ) = J.lam * N.txT m p χ :=
   ((GlobalTheory.T.hom_transport_alt _ _ _ _ _ (toHom J)).2.2.2.2 m hm p a ha.1 ha.2 χ).1
 
 /- English proof (translation)
-Take `⟨z, h1, h2⟩` from `h`. Establish `hz : k • z = 0` using `by rw [hy] at h1; exact left_eq_add.1 h1`. Establish `hz0 : z = 0`. Use `TorsionFourier.add_nsmul_injective (Nat.pos_of_ne_zero hk) (0 : N.X) (a₁ := z) (a₂ := 0) (by simp [hz])` as an intermediate fact. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hz0, N.io_zero, mul_one]`. Conclude with `Subtype.ext (Prod.ext hy h2.symm)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_qEq {k : ℕ} (hk : k ≠ 0) {p q : N.QT k} (h : N.QEq p q) (hy : p.1.1 = q.1.1) : p = q := by
   obtain ⟨z, h1, h2⟩ := h
@@ -112,19 +112,19 @@ theorem eq_of_qEq {k : ℕ} (hk : k ≠ 0) {p q : N.QT k} (h : N.QEq p q) (hy : 
   exact Subtype.ext (Prod.ext hy h2.symm)
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.degenerationWeilPairing_properties _ N k p p' q).1`.
+A detailed English derivation is pending.
 -/
 theorem wp_mul_left {k : ℕ} (p p' q : N.QT k) : N.wp (p * p') q = N.wp p q * N.wp p' q :=
   (GlobalTheory.T.degenerationWeilPairing_properties _ N k p p' q).1
 
 /- English proof (translation)
-Rewrite using `[N.wp_swap, wp_mul_left, mul_inv, ← N.wp_swap, ← N.wp_swap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wp_mul_right {k : ℕ} (p q q' : N.QT k) : N.wp p (q * q') = N.wp p q * N.wp p q' := by
   rw [N.wp_swap, wp_mul_left, mul_inv, ← N.wp_swap, ← N.wp_swap]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.T.degenerationWeilPairing_properties _ N k d q q).2.2.2.2.2.1 h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem wp_tor {k : ℕ} {d : N.QT k} (h1 : d.1.1 = 1) (h2 : d.1.2.b = 1) (q : N.QT k) :
     N.wp d q = d.1.2.s q.1.1.toAdd :=
@@ -133,11 +133,11 @@ theorem wp_tor {k : ℕ} {d : N.QT k} (h1 : d.1.1 = 1) (h2 : d.1.2.b = 1) (q : N
 end Transport
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℤ X`. Establish `h : ∀ x : Cˣ, ∃ y : Cˣ, y ^ k = x` using `fun x => by`. Take `⟨y, hy⟩` from `IsAlgClosed.exists_pow_nat_eq (x : C) (Nat.pos_of_ne_zero hk)`. Establish `hy0 : y ≠ 0`. Introduce and unpack `rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hy` using `[zero_pow hk]`. Conclude with `x.ne_zero hy.symm`. Conclude with `⟨Units.mk0 y hy0, Units.ext (by simpa using hy)⟩`. Use `choose r hr using h`. Use `⟨TorsionFourier.charOfValues b fun i => r (u (Multiplicative.ofAdd (b i))), MonoidHom.ext fun x => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(∏ i, r (u (Multiplicative.ofAdd (b i))) ^ (b.repr x.toAdd i)) ^ k = u (Multiplicative.ofAdd x.toAdd)`. Rewrite using `[TorsionFourier.char_apply_eq_prod b u, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, hr]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_char_root {C X : Type} [Field C] [IsAlgClosed C] [AddCommGroup X] [Module.Free ℤ X]
     [Module.Finite ℤ X] (u : Multiplicative X →* Cˣ) {k : ℕ} (hk : k ≠ 0) : ∃ t : Multiplicative X →* Cˣ, t ^ k = u := by
@@ -160,7 +160,7 @@ section Level
 variable {C : Type} [NormedField C] {N N' : NumD C} {n : ℕ} (μ : Match N N' n) (J : NumD.Iso N N')
 
 /- English proof (translation)
-Take `⟨p', hp'⟩` from `μ.tot j p`. Take `⟨z, hz⟩` from `hB j p p' hp'`. Use `⟨p' * N'.qTriv _ (-z), (μ.eqv _ p p p' _ hp' ((N.qEq_equivalence _).refl p)).2 ((N'.qEq_iff _ _).2 ⟨-z, rfl⟩), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `p'.1.1.toAdd + n ^ j • (-z) = _`. Rewrite using `[hz, smul_neg, add_neg_cancel_right]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_norm (hB : μ.B J.e) (j : ℕ) (p : N.QT (n ^ j)) :
     ∃ p', μ.r (n ^ j) p p' ∧ p'.1.1.toAdd = J.e p.1.1.toAdd := by
@@ -172,16 +172,14 @@ theorem exists_norm (hB : μ.B J.e) (j : ℕ) (p : N.QT (n ^ j)) :
   rw [hz, smul_neg, add_neg_cancel_right]
 
 /- English proof (translation)
-The claim follows from `eq_of_qEq hk ((μ.eqv _ p p a b ha ((N.qEq_equivalence _).refl p)).1 hb) hy`.
+A detailed English derivation is pending.
 -/
 theorem r_unique {k : ℕ} (hk : k ≠ 0) {p : N.QT k} {a b : N'.QT k} (ha : μ.r k p a) (hb : μ.r k p b)
     (hy : a.1.1 = b.1.1) : a = b :=
   eq_of_qEq hk ((μ.eqv _ p p a b ha ((N.qEq_equivalence _).refl p)).1 hb) hy
 
 /- English proof (translation)
-Take `⟨p', h1, h2⟩` from `exists_norm μ J hB j p`. Establish `h3 : p'.1.1 = 1`. Rewrite `h2` using `[hp, toAdd_one, map_zero]`. Conclude with `h2`. Rewrite using `[tr_unique J ha ⟨h2, hG j p p' h1 hp h3⟩]`.
-
-Conclude with `h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem r_of_tr_zero (hB : μ.B J.e) (hG : μ.OnG J) {j : ℕ} {p : N.QT (n ^ j)} {a : N'.QT (n ^ j)}
     (hp : p.1.1 = 1) (ha : TR J p a) : μ.r (n ^ j) p a := by
@@ -193,9 +191,9 @@ theorem r_of_tr_zero (hB : μ.B J.e) (hG : μ.OnG J) {j : ℕ} {p : N.QT (n ^ j)
   exact h1
 
 /- English proof (translation)
-Take `⟨p₀, h₀⟩` from `μ.cotot j a`. Take `⟨z, hz⟩` from `(hA.2 j p₀ a h₀).1.2 ⟨0, by rw [ha]; simp⟩`. Establish `h1 : μ.r (n ^ j) (p₀ * N.qTriv _ (-z)) a` using `(μ.eqv _ p₀ _ a a h₀ ((N.qEq_iff _ _).2 ⟨-z, rfl⟩)).2 ((N'.qEq_equivalence _).refl a)`. Establish `h2 : (p₀ * N.qTriv _ (-z)).1.1 = 1`. Express the relevant statement in the definitionally equal form `p₀.1.1.toAdd + n ^ j • (-z) = 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hz, smul_neg, add_neg_cancel]`. Use `⟨_, h1, ?_, hG j _ _ h1 h2 ha⟩` and prove the remaining obligations. Rewrite using `[h2, ha, toAdd_one, toAdd_one, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pre_zero (hA : μ.A) (hG : μ.OnG J) {j : ℕ} {a : N'.QT (n ^ j)} (ha : a.1.1 = 1) :
     ∃ p, μ.r (n ^ j) p a ∧ TR J p a := by
@@ -213,15 +211,15 @@ def Defect (k : ℕ) (x : N.X) (d : N'.QT k) : Prop :=
   d.1.1 = 1 ∧ d.1.2.b = 1 ∧ ∀ p a, p.1.1.toAdd = x → TR J p a → μ.r k p (a * d)
 
 /- English proof (translation)
-Establish `hn0 : n ^ j ≠ 0` using `pow_ne_zero _ (by rintro rfl; simp at hn)`. Take `⟨p₀, hp₀⟩` from `(GlobalTheory.Ex.QStr.qStructure C N n g hn hT j).2.2.1 x`. Take `⟨p', h1, h2⟩` from `exists_norm μ J hB j p₀`. Take `⟨a₀, ha₀⟩` from `tr_exists J p₀`. Establish `e : p' = a₀ * (p' / a₀)` using `by simp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd : (p' / a₀).1.1 = 1`. Express the relevant statement in the definitionally equal form `p'.1.1.toAdd - a₀.1.1.toAdd = 0`. Rewrite using `[h2, ha₀.1, sub_self]`. Use `⟨p' / a₀, hd, ?_, fun p a hp ha => ?_⟩` and prove the remaining obligations. Take `⟨d₀, q1, q2, q3⟩` from `((GlobalTheory.Ex.QStr.qStructure C N' n g' hn hT' j).2.2.2.2.1 (p' / a₀)).1 fun q' hq' => by`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨q, r1, r2⟩` from `exists_pre_zero μ J hA hG hq'`. Establish `w1` using `μ.wp _ _ _ _ _ h1 r1`. Rewrite `w1` using `[e, wp_mul_left, tr_wp J ha₀ r2]`. Conclude with `mul_eq_left.1 w1`. Rewrite using `[eq_of_qEq hn0 q1 (hd.trans q2.symm)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `q3`. Take `⟨u, hu⟩` from `tr_exists J (p / p₀)`. Establish `h3 : (p / p₀).1.1 = 1`. Express the relevant statement in the definitionally equal form `p.1.1.toAdd - p₀.1.1.toAdd = 0`. Rewrite using `[hp, hp₀, sub_self]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `μ.mul _ _ _ _ _ h1 (r_of_tr_zero μ J hB hG h3 hu)`. Establish `h5` using `tr_mul J ha₀ hu`. Rewrite `h4`, `h5` using `[mul_div_cancel]`. Rewrite using `[tr_unique J ha h5, mul_right_comm, ← e]`. Conclude with `h4`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_defect [IsAlgClosed C] {g g' : ℕ} (hn : (n : C) ≠ 0) (hT : N.Tors n g) (hT' : N'.Tors n g')
     (hA : μ.A) (hB : μ.B J.e) (hG : μ.OnG J) (j : ℕ) (x : N.X) : ∃ d, Defect μ J (n ^ j) x d := by
@@ -252,9 +250,9 @@ theorem exists_defect [IsAlgClosed C] {g g' : ℕ} (hn : (n : C) ≠ 0) (hT : N.
     exact h4
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `tr_exists J p`. Take `⟨a', ha'⟩` from `tr_exists J p'`. Establish `h1` using `μ.mul _ _ _ _ _ (h.2.2 p a hp ha) (h'.2.2 p' a' hp' ha')`. Rewrite `h1` using `[mul_mul_mul_comm]`. Establish `h2` using `h''.2.2 (p * p') (a * a') (by rw [← hp, ← hp']; rfl) (tr_mul J ha ha')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `mul_left_cancel (r_unique μ hk h2 h1 ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `a.1.1 * a'.1.1 * d''.1.1 = a.1.1 * a'.1.1 * (d.1.1 * d'.1.1)`. Rewrite using `[h.1, h'.1, h''.1, mul_one (1 : Multiplicative N'.X)]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem defect_add {k : ℕ} (hk : k ≠ 0) {x x' : N.X} (p p' : N.QT k) (hp : p.1.1.toAdd = x)
     (hp' : p'.1.1.toAdd = x') {d d' d'' : N'.QT k}
@@ -269,9 +267,9 @@ theorem defect_add {k : ℕ} (hk : k ≠ 0) {x x' : N.X} (p p' : N.QT k) (hp : p
   rw [h.1, h'.1, h''.1, mul_one (1 : Multiplicative N'.X)]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `tr_exists J p`. Take `⟨a', ha'⟩` from `tr_exists J p'`. Establish `h1` using `μ.wp _ _ _ _ _ (h.2.2 p a hp ha) (h'.2.2 p' a' hp' ha')`. Rewrite `h1` using `[wp_mul_left, wp_mul_right, tr_wp J ha ha', mul_assoc, mul_eq_left, N'.wp_swap, wp_tor h'.1 h'.2.1, wp_tor h.1 h.2.1, inv_mul_eq_one]`. Establish `e : (a' * d').1.1.toAdd = J.e x'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(a'.1.1 * d'.1.1).toAdd = _`. Rewrite using `[h'.1, mul_one, ha'.1, hp']`. Rewrite using `[← e, ← h1, ha.1, hp]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem defect_symm {k : ℕ} {x x' : N.X} (p p' : N.QT k) (hp : p.1.1.toAdd = x)
     (hp' : p'.1.1.toAdd = x') {d d' : N'.QT k}
@@ -289,15 +287,15 @@ theorem defect_symm {k : ℕ} {x x' : N.X} (p p' : N.QT k) (hp : p.1.1.toAdd = x
 end Level
 
 /- English proof (translation)
-Establish `hn0 : (n ^ j) ^ 2 ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ (by rintro rfl; simp at hn))`. Establish `root : ∀ (i : ℕ) (a : N.A), ∃ b, b ^ n ^ i = a`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => exact fun a => ⟨a, by simp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ i ih`. Introduce `a`. Take `⟨b, rfl⟩` from `hT.div a`. Take `⟨b', rfl⟩` from `ih b`. Conclude with `⟨b', by rw [pow_succ, pow_mul]⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨a, ha⟩` from `root j (N.c x)`. Take `⟨t, ht, hth⟩` from `hT.good a`. Take `⟨b, hb⟩` from `root j (a * t)`. Take `⟨γ, hγ⟩` from `(GlobalTheory.Ex.QStr.qStructure C N n g hn hT j).1 b`. Establish `ht' : t ^ n ^ j = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hj`. Rewrite using `[pow_succ', pow_mul, ht, one_pow]`. Take `⟨u, hu⟩` from `(N.exists_tor_iff (N.io x * (γ ^ (n ^ j) ^ 2)⁻¹)).2 (by`. Rewrite using `[NumD.Gt.mul_b, NumD.Gt.inv_b, NumD.Gt.pow_b, hγ, sq, pow_mul, hb, mul_pow, ht', ha, mul_one, N.io_b, mul_inv_cancel])`. Take `⟨v, hv⟩` from `exists_char_root u hn0`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨(Multiplicative.ofAdd x, N.tor v * γ), ?_⟩, rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[N.mem_QT, mul_pow, ← N.tor_pow, hv, hu, inv_mul_cancel_right]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `‖N.th ((1 * γ.b) ^ n ^ j)‖ = 1`. Rewrite using `[one_mul, hγ, hb, hth]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_good {C : Type} [NormedField C] [IsAlgClosed C] {N : NumD C} {n g : ℕ} (hn : (n : C) ≠ 0)
     (hT : N.Tors n g) {j : ℕ} (hj : j ≠ 0) (x : N.X) :
@@ -330,9 +328,9 @@ theorem exists_good {C : Type} [NormedField C] [IsAlgClosed C] {N : NumD C} {n g
     rw [one_mul, hγ, hb, hth]
 
 /- English proof (translation)
-Establish `hm0 : 0 < m` using `hm.pos`. Establish `h1` using `hI.pos.comp (TorsionFourier.add_nsmul_injective hm0 p.1.1.toAdd).tendsto_cofinite`. Establish `h2` using `Real.tendsto_exp_neg_atTop_nhds_zero.comp (h1.atTop_div_const (r := (m : ℝ) ^ 2) (by positivity))`. Use `squeeze_zero_norm (fun χ => ?_) h2` and prove the remaining obligations. Rewrite using `[(GlobalTheory.T.norm_rep_generators_and_thetaSeriesTerm C N q hI).2 m hm p χ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_right (Real.exp_pos _).le (hI.th _)`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_txT {C : Type} [NormedField C] {N : NumD C} {q : QuadraticMap ℤ N.X ℝ} (hI : N.Int q) {m : ℕ}
     (hm : Odd m) (p : N.QT (m ^ 2)) : Filter.Tendsto (N.txT m p) Filter.cofinite (nhds 0) := by
@@ -345,7 +343,7 @@ theorem tendsto_txT {C : Type} [NormedField C] {N : NumD C} {q : QuadraticMap �
   exact mul_le_of_le_one_right (Real.exp_pos _).le (hI.th _)
 
 /- English proof (translation)
-Establish `h1 : ‖(t x : C)‖ ^ k = 1`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, TorsionFourier.apply_pow_eq_one ht, Units.val_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hk).1 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_char {C X : Type} [NormedField C] [AddCommGroup X] {k : ℕ} (hk : k ≠ 0) {t : Multiplicative X →* Cˣ}
     (ht : t ^ k = 1) (x : Multiplicative X) : ‖(t x : C)‖ = 1 := by
@@ -354,15 +352,13 @@ theorem norm_char {C X : Type} [NormedField C] [AddCommGroup X] {k : ℕ} (hk : 
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hk).1 h1
 
 /- English proof (translation)
-Establish `hmC : (m : C) ≠ 0`. Introduce `h`. Rewrite `hm` using `[h, norm_zero]`. Conclude with `zero_ne_one hm`. Establish `hm0 : m ≠ 0` using `by rintro rfl; simp at hmC`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : NeZero (m : C) := ⟨hmC⟩`. Take `⟨ζ, hζ⟩` from `HasEnoughRootsOfUnity.exists_primitiveRoot C m`. Establish `hT' : Filter.Tendsto (fun χ => w * (τ (Multiplicative.ofAdd χ) : C) * T χ) Filter.cofinite (nhds 0)`. Rewrite `hT`, the goal using `[tendsto_zero_iff_norm_tendsto_zero]`. Simplify `hT.const_mul ‖w‖` using `only [norm_mul, norm_char hm0 hτ, mul_one, mul_zero]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, a1, a2⟩` from `fourier_extraction_tsum_class C X m ζ (Nat.pos_of_ne_zero hm0) hm hζ T hT 0`. Take `⟨-, b1, -⟩` from `fourier_extraction_tsum_class C X m ζ (Nat.pos_of_ne_zero hm0) hm hζ _ hT' 0`. Simplify using `only [zero_add] at a1 a2 b1`. Rewrite `b1` using `[finsum_congr fun u => by rw [h u.1 u.2], a1]`. Establish `e : ∀ z : X, (τ (Multiplicative.ofAdd (m • z)) : C) = 1` using `fun z => by`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ofAdd_nsmul, map_pow, TorsionFourier.apply_pow_eq_one hτ, Units.val_one]`. Simplify using `only [e, mul_one, tsum_mul_left] at b1`. Establish `b2` using `mul_left_cancel₀ (pow_ne_zero _ hmC) b1`. Establish `hS : ∑' z, T (m • z) ≠ 0`. Rewrite using `[← norm_ne_zero_iff, a2 hdom, norm_ne_zero_iff]`.
-
-Conclude with `h0`. Conclude with `(mul_eq_right₀ hS).1 b2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_sums {C X : Type} [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C]
     [IsAlgClosed C] [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] {m : ℕ} (hm : ‖(m : C)‖ = 1)
@@ -392,27 +388,25 @@ theorem eq_one_of_sums {C X : Type} [NontriviallyNormedField C] [IsUltrametricDi
   exact (mul_eq_right₀ hS).1 b2.symm
 
 /- English proof (translation)
-Establish `hnC : (n : C) ≠ 0`. Introduce `h`. Rewrite `hn` using `[h, norm_zero]`. Conclude with `zero_ne_one hn`. Take `⟨p, hp, hth⟩` from `exists_good hnC hT hj x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htx` using `μ.tx j`. Establish `hmn : ‖((n ^ j : ℕ) : C)‖ = 1` using `by rw [Nat.cast_pow, norm_pow, hn, one_pow]`. Establish `hm : Odd (n ^ j)` using `ho.pow`. Generalize the expression as in `n ^ j = m at *`. Establish `hm0 : m ≠ 0` using `hm.pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t', ht'⟩` from `(N'.exists_tor_iff d.1.2).2 hd.2.1`. Establish `ht'k : t' ^ m ^ 2 = 1`. Apply `N'.tor_injective` to reduce the goal to its premises. Rewrite using `[N'.tor_pow, ht', N'.mem_QT.1 d.2, hd.1, toAdd_one, N'.io_zero, N'.tor_one]`. Set `τ : Multiplicative N.X →* Cˣ` to `(t'.comp (AddMonoidHom.toMultiplicative J.e.toAddMonoidHom)) ^ m`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτ : ∀ χ, τ (Multiplicative.ofAdd χ) = t' (Multiplicative.ofAdd (J.e χ)) ^ m` using `fun _ => rfl`. Establish `hτm : τ ^ m = 1` using `MonoidHom.ext fun χ => by`. Express the relevant statement in the definitionally equal form `(t' (Multiplicative.ofAdd (J.e χ.toAdd)) ^ m) ^ m = 1`. Rewrite using `[← pow_mul, ← sq, TorsionFourier.apply_pow_eq_one ht'k]`. Establish `hnorm` using `(GlobalTheory.T.norm_rep_generators_and_thetaSeriesTerm C N q hI).2 m hm p`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h00 : ‖N.txT m p 0‖ = Real.exp (-(q x / (m : ℝ) ^ 2))`. Rewrite using `[hnorm, N.c_zero, one_mul, hth, mul_one, smul_zero, add_zero, hp]`. Rewrite using `[← ht', NumD.torus_generator_apply]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_one_of_sums hmn (N.txT m p) (tendsto_txT hI hm p) ?_ (fun z hz => ?_) _ τ hτm fun u hu => ?_` and prove the remaining obligations. Rewrite using `[← norm_pos_iff, h00]`. Conclude with `Real.exp_pos _`. Rewrite using `[h00, hnorm, hp, smul_smul, ← sq]`. Use `(mul_le_of_le_one_right (Real.exp_pos _).le (hI.th _)).trans_lt (Real.exp_lt_exp.2 (neg_lt_neg ?_))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `div_lt_div_of_pos_right (hx z hz) (by positivity)`. Take `⟨t, rfl⟩` from `exists_char_root u hm0`. Establish `ht : t ^ m ^ 2 = 1` using `by rw [sq, pow_mul, hu]`. Take `⟨a, ha⟩` from `tr_exists J (p * N.qTor t ht)`. Establish `hpx : (p * N.qTor t ht).1.1 = p.1.1` using `mul_one _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `htx _ _ (hd.2.2 _ a (by rw [hpx, hp]) ha)`. Establish `hay : a.1.1 = Multiplicative.ofAdd (J.e x)`. Rewrite using `[← hp, ← hpx, ← ha.1]`. Both sides reduce to the same expression. Establish `hpy : p.1.1 = Multiplicative.ofAdd x` using `by rw [← hp]; rfl`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `h2 : ∀ χ, N.txT m (p * N.qTor t ht) χ = (t (Multiplicative.ofAdd x) ^ ((m ^ 2 - 1) / 2 + 1) : Cˣ) * (N.txT m p χ * ((t ^ m) (Multiplicative.ofAdd χ) : C))` using `fun χ => by`. Rewrite using `[(GlobalTheory.Ex.txT_shift C N m hm p (p * N.qTor t ht) χ).2 t hpx rfl, hpy, toAdd_ofAdd, ofAdd_add, ofAdd_nsmul, map_mul, map_pow, MonoidHom.pow_apply]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ∀ χ, N'.txT m (a * d) (J.e χ) = μ.c₀ * ((t (Multiplicative.ofAdd x) ^ ((m ^ 2 - 1) / 2 + 1) : Cˣ) * (((t' (Multiplicative.ofAdd (J.e x)) ^ ((m ^ 2 - 1) / 2 + 1) : Cˣ) : C) * (τ (Multiplicative.ofAdd χ) : C) * N.txT m p χ * ((t ^ m) (Multiplicative.ofAdd χ) : C)))` using `fun χ => by`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[(GlobalTheory.Ex.txT_shift C N' m hm a (a * d) (J.e χ)).2 t' (by change a.1.1 * d.1.1 = _; rw [hd.1, mul_one]) (by rw [ht']; rfl), tr_txT J hm ha, h2, hl, hay, toAdd_ofAdd, ofAdd_add, ofAdd_nsmul, map_mul, map_pow, hτ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h1` using `[NumD.tx, NumD.tx, ← J.e.toEquiv.tsum_eq]`. Simplify using `only [AddEquiv.toEquiv_eq_coe, EquivLike.coe_coe, h2, h3, tsum_mul_left] at h1`.
-
-Conclude with `mul_left_cancel₀ (Units.ne_zero _) (mul_left_cancel₀ μ.c₀_ne h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem defect_diag {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C] [CompleteSpace C] [IsAlgClosed C]
     {N N' : NumD C} {q : QuadraticMap ℤ N.X ℝ} {n g : ℕ} (ho : Odd n) (hn : ‖(n : C)‖ = 1) (hI : N.Int q)
@@ -474,29 +468,23 @@ theorem defect_diag {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
     exact mul_left_cancel₀ (Units.ne_zero _) (mul_left_cancel₀ μ.c₀_ne h1)
 
 /- English proof (translation)
-Introduce `C _ _ _ _ N N' q q' n g g' hp ho hn hI _ hT hT' μ hA J hB hG hl i p p' h1 h2`. Establish `hnC : (n : C) ≠ 0`. Introduce `h`. Rewrite `hn` using `[h, norm_zero]`. Conclude with `zero_ne_one hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hn0 : n ≠ 0` using `hp.ne_zero`. Take `⟨j₀, hj₀⟩` from `pow_unbounded_of_one_lt (1 + 4 * (Module.finrank ℤ N.X : ℝ) * (2 : ℝ) ^ ((Module.finrank ℤ N.X : ℝ) / 2)) (show (1 : ℝ) < n by exact_mod_cast hp.one_lt)`. Use `set j := i + j₀ + 1 with hj`. Establish `hk : (n ^ j) ^ 2 ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ hn0)`. Take `⟨e, he⟩` from `exists_basis_unique_min_pair_sums N.X q hI.pos _ _ ((n ^ j) ^ 2) rfl le_rfl (hj₀.trans_le (by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_mul, Nat.cast_pow]`. Conclude with `pow_le_pow_right₀ (by exact_mod_cast hp.one_le) (by omega)))`. Establish `hd : ∀ x, ∃ d, Defect μ J ((n ^ j) ^ 2) x d`. Rewrite using `[← pow_mul]`. Conclude with `exists_defect μ J hnC hT hT' hA hB hG _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hs : ∀ x, ∃ s : N.QT ((n ^ j) ^ 2), s.1.1.toAdd = x` using `fun x => (exists_good hnC hT (Nat.succ_ne_zero _) x).imp fun _ h => h.1`. Use `choose d hd using hd`. Use `choose s hs using hs`. Establish `hodd : Odd ((n ^ j) ^ 2)` using `ho.pow.pow`. Establish `key` using `symm_pairing_eq_one_of_odd_of_diag N.X Cˣ _ ((n ^ j) ^ 2) e ((((n ^ j) ^ 2 - 1) / 2 + 1 : ℕ) : ℤ) hodd (by`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `hodd`. Rewrite using `[hc]`. Conclude with `⟨1, by omega⟩)`. Use the proof step `(fun x y => (d x).1.2.s (J.e y))`. Use the proof step `(fun x x' y => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[defect_add μ J hk (s x) (s x') (hs x) (hs x') (hd x) (hd x') (hd (x + x'))]`. Express the relevant statement in the definitionally equal form `((d x).1.2 * (d x').1.2).s _ = _`. Rewrite using `[NumD.Gt.mul_s, (hd x').2.1, N'.cub.face₃, div_one])`. Use the proof step `(fun x y => defect_symm μ J (s x) (s y) (hs x) (hs y) (hd x) (hd y))`. Use the proof step `(fun x y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `tr_exists J (s y)`. Use `(GlobalTheory.T.degenerationWeilPairing_properties _ N' _ (d x) a a).2.2.2.1` as an intermediate fact. Rewrite using `[wp_tor (hd x).1 (hd x).2.1, ha.1, hs] at this)` and apply the resulting hypothesis. Use the proof step `(fun a => by`. Rewrite using `[zpow_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Conclude with `defect_diag ho hn hI hT μ J hl (Nat.succ_ne_zero _) (fun z hz => (he a a z hz).1) (hd _))`. Use the proof step `(fun a b => by`. Rewrite using `[zpow_natCast]`. Conclude with `defect_diag ho hn hI hT μ J hl (Nat.succ_ne_zero _) (fun z hz => (he a b z hz).2) (hd _))`. Establish `hd1 : ∀ x, d x = 1` using `fun x => Subtype.ext (Prod.ext (hd x).1 (NumD.Gt.ext (hd x).2.1 (funext fun χ => by`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `key x (J.e.symm χ)` as an intermediate fact. Rewrite using `[AddEquiv.apply_symm_apply] at this)))` and apply the resulting hypothesis. Establish `top : ∀ (a : N.QT ((n ^ j) ^ 2)) (a' : N'.QT ((n ^ j) ^ 2)), TR J a a' → μ.r _ a a'` using `fun a a' h => by`. Use `(hd _).2.2 a a' rfl h` as an intermediate fact. Rewrite `this` using `[hd1, mul_one]`. Then use the resulting hypothesis.
-
-Establish `hkk : (n ^ j) ^ 2 = n ^ i * n ^ (i + 2 * j₀ + 2)` using `by rw [hj]; ring`. Rewrite `top` using `[hkk]`. Generalize the expression as in `hk' : n ^ (i + 2 * j₀ + 2) = k' at top`. Establish `hk'0 : k' ≠ 0` using `hk' ▸ pow_ne_zero _ hn0`. Set `a : N.QT (n ^ i * k')` to `⟨(p.1.1 ^ k', p.1.2), by`.
-
-Rewrite using `[N.mem_QT, pow_mul, N.mem_QT.1 p.2, toAdd_pow, N.io_nsmul]⟩`. Set `a' : N'.QT (n ^ i * k')` to `⟨(p'.1.1 ^ k', p'.1.2), by`. Rewrite using `[N'.mem_QT, pow_mul, N'.mem_QT.1 p'.2, toAdd_pow, N'.io_nsmul]⟩`. Use `(μ.incl _ k' p p' a a' hk'0 rfl rfl rfl rfl).2 (top a a' ⟨?_, h2⟩)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(p'.1.1 ^ k').toAdd = J.e (p.1.1 ^ k').toAdd`.
-
-Rewrite using `[toAdd_pow, toAdd_pow, map_nsmul, h1]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : AllMatch fun {_} _ {N} {N'} {_} μ _ _ =>
     μ.A → ∀ J : NumD.Iso N N', μ.B J.e → μ.OnG J → (J.lam : _) = μ.c₀ → μ.OnQ J := by

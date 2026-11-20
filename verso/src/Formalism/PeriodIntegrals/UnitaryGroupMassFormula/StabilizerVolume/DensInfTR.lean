@@ -10,9 +10,9 @@ open scoped TensorProduct
 open PI.AdicCompletionValuation
 
 /- English proof (translation)
-Set `L : (κ → Fin k → ℝ) ≃L[ℝ] (Fin (Module.finrank ℝ (κ → Fin k → ℝ)) → ℝ)` to `ContinuousLinearEquiv.ofFinrankEq (by simp)`. Use `⟨Module.finrank ℝ (κ → Fin k → ℝ), (Homeomorph.piCongrRight fun _ => e).trans L.toHomeomorph, ?_⟩` and prove the remaining obligations. Introduce `x y`. Simplify using `only [Homeomorph.trans_apply, Homeomorph.piCongrRight_apply, ContinuousLinearEquiv.coe_toHomeomorph]`. Rewrite using `[← map_add]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `[he]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem exists_coord_pi {X : Type} [AddCommGroup X] [TopologicalSpace X] {k : ℕ}
     (e : X ≃ₜ (Fin k → ℝ)) (he : ∀ x y, e (x + y) = e x + e y) (κ : Type) [Fintype κ] :
@@ -29,11 +29,11 @@ theorem exists_coord_pi {X : Type} [AddCommGroup X] [TopologicalSpace X] {k : �
   simp [he]
 
 /- English proof (translation)
-Establish `hreal : ∀ v : NumberField.InfinitePlace F, v.IsReal` using `fun v => NumberField.IsTotallyReal.isReal v`. Set `e1 : Ainf F ≃ₜ (NumberField.InfinitePlace F → ℝ)` to `Homeomorph.piCongrRight fun v => (NumberField.InfinitePlace.Completion.isometryEquivRealOfIsReal (hreal v)).toHomeomorph`. Set `L : (NumberField.InfinitePlace F → ℝ) ≃L[ℝ] (Fin (Module.finrank ℝ (NumberField.InfinitePlace F → ℝ)) → ℝ)` to `ContinuousLinearEquiv.ofFinrankEq (by simp)`. Use `⟨Module.finrank ℝ (NumberField.InfinitePlace F → ℝ), e1.trans L.toHomeomorph, ?_⟩` and prove the remaining obligations. Introduce `x y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Homeomorph.trans_apply, ContinuousLinearEquiv.coe_toHomeomorph]`. Rewrite using `[← map_add]`. Use `congr 1`. Use function extensionality and compare the values at `v`. Establish `hx : e1 (x + y) v = NumberField.InfinitePlace.Completion.ringEquivRealOfIsReal (hreal v) (x v + y v)` using `rfl`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hx1 : e1 x v = NumberField.InfinitePlace.Completion.ringEquivRealOfIsReal (hreal v) (x v)` using `rfl`. Establish `hx2 : e1 y v = NumberField.InfinitePlace.Completion.ringEquivRealOfIsReal (hreal v) (y v)` using `rfl`. Rewrite using `[Pi.add_apply, hx, hx1, hx2, map_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_coord_Ainf (F : Type) [Field F] [NumberField F] [IsTotallyReal F] :
     ∃ (k : ℕ) (e : Ainf F ≃ₜ (Fin k → ℝ)), ∀ x y, e (x + y) = e x + e y := by
@@ -57,11 +57,11 @@ theorem exists_coord_Ainf (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
   rw [Pi.add_apply, hx, hx1, hx2, map_add]
 
 /- English proof (translation)
-Take `⟨k, eA, heA⟩` from `exists_coord_Ainf F`. Set `b : Module.Basis (Fin (Module.finrank F E)) F E` to `Module.finBasis F E`. Set `bR` to `Algebra.TensorProduct.basis (Ainf F) b`. Set `ℓ : (Ainf F ⊗[F] E) ≃ₗ[Ainf F] (Fin (Module.finrank F E) → Ainf F)` to `bR.equivFun`. Establish `hc1 : Continuous ℓ` using `IsModuleTopology.continuous_of_linearMap ℓ.toLinearMap`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc2 : Continuous ℓ.symm` using `IsModuleTopology.continuous_of_linearMap ℓ.symm.toLinearMap`. Set `h1 : (Ainf F ⊗[F] E) ≃ₜ (Fin (Module.finrank F E) → Ainf F)` to `{ toEquiv := ℓ.toEquiv, continuous_toFun := hc1, continuous_invFun := hc2 }`. Take `⟨n, e', he'⟩` from `exists_coord_pi eA heA (Fin (Module.finrank F E))`. Use `⟨n, h1.trans e', ?_⟩` and prove the remaining obligations. Introduce `x y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Homeomorph.trans_apply]`. Rewrite using `[show h1 (x + y) = h1 x + h1 y from map_add ℓ x y, he']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_coord_tens (F E : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E]
     [NumberField E] [Algebra F E] :
@@ -82,23 +82,21 @@ theorem exists_coord_tens (F E : Type) [Field F] [NumberField F] [IsTotallyReal 
   rw [show h1 (x + y) = h1 x + h1 y from map_add ℓ x y, he']
 
 /- English proof (translation)
-Establish `e0 : e 0 = 0` using `by simpa using he 0 0`. Set `eA : X →+ (Fin N → ℝ)` to `{ toFun := e, map_zero' := e0, map_add' := he }`. Establish `hcl : IsClosed (e '' (H : Set X))` using `e.isClosed_image.mpr hH`. Establish `hrat : ∀ x ∈ H, ∀ q : ℚ, (q : ℝ) • e x ∈ e '' (H : Set X)`. Introduce `x hx q`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy, hyx⟩` from `hdiv q.den q.pos x hx`. Use `⟨q.num • y, H.zsmul_mem hy _, ?_⟩` and prove the remaining obligations. Establish `h1 : e (q.num • y) = q.num • e y` using `map_zsmul eA q.num y`. Establish `h2 : (q.den : ℝ) • e y = e x`. Rewrite using `[← hyx]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `map_nsmul eA q.den y` as an intermediate fact. Simplify using `only [eA, AddMonoidHom.coe_mk, ZeroHom.coe_mk] at this`. Rewrite using `[this, Nat.cast_smul_eq_nsmul]`. Rewrite using `[h1, ← h2, smul_smul, ← Int.cast_smul_eq_zsmul ℝ]`. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hd : (q.den : ℝ) ≠ 0` using `by exact_mod_cast q.den_nz`. Rewrite using `[Rat.cast_def]`. Clear the denominators using the available nonvanishing facts. Establish `hreal : ∀ x ∈ H, ∀ r : ℝ, r • e x ∈ e '' (H : Set X)`. Introduce `x hx r`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hS : IsClosed {t : ℝ | t • e x ∈ e '' (H : Set X)}` using `hcl.preimage (continuous_id.smul continuous_const)`. Establish `hsub : Set.range (Rat.cast : ℚ → ℝ) ⊆ {t : ℝ | t • e x ∈ e '' (H : Set X)}`. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `hrat x hx q`. Use `hS.closure_subset_iff.mpr hsub` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Rat.denseRange_cast.closure_range]`. Conclude with `this (Set.mem_univ r)`. Set `V : Submodule ℝ (Fin N → ℝ)` to `{ carrier := e '' (H : Set X) add_mem' := by`. Introduce and unpack `_ _ ⟨a, ha, rfl⟩ ⟨b, hb, rfl⟩`. Conclude with `⟨a + b, H.add_mem ha hb, he a b⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Use the proof step `zero_mem' := ⟨0, H.zero_mem, e0⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r _ ⟨a, ha, rfl⟩`. Conclude with `hreal a ha r }`. Set `L : V ≃L[ℝ] (Fin (Module.finrank ℝ V) → ℝ)` to `ContinuousLinearEquiv.ofFinrankEq (by simp)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `eI : H ≃ₜ V` to `e.image (H : Set X)`. Use `⟨Module.finrank ℝ V, eI.trans L.toHomeomorph, ?_⟩` and prove the remaining obligations. Introduce `x y`. Simplify using `only [Homeomorph.trans_apply, ContinuousLinearEquiv.coe_toHomeomorph]`. Rewrite using `[← map_add]`.
-
-Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show e ((x : X) + (y : X)) = e x + e y`. Conclude with `he x y`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem exists_coord_sub {X : Type} [AddCommGroup X] [TopologicalSpace X] {N : ℕ}
     (e : X ≃ₜ (Fin N → ℝ)) (he : ∀ x y, e (x + y) = e x + e y) (H : AddSubgroup X)

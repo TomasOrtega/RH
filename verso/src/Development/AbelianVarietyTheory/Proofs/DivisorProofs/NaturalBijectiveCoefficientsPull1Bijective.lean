@@ -16,19 +16,17 @@ noncomputable section
 namespace GlobalTheory.Obs.BC
 
 /- English proof (translation)
-Introduce `hb`. Set `β : ∀ T, F'.obj T →+* F.obj T` to `fun T ↦ (RingEquiv.ofBijective (α T) (hb T)).symm.toRingHom`. Establish `hαβ : ∀ T (b : F'.obj T), α T (β T b) = b` using `fun T b ↦ (RingEquiv.ofBijective (α T) (hb T)).apply_symm_apply b`. Establish `hβα : ∀ T (b : F.obj T), β T (α T b) = b` using `fun T b ↦ (RingEquiv.ofBijective (α T) (hb T)).symm_apply_apply b`. Establish `natβ : ∀ {T T' : C} (a : T ⟶ T') (b : F'.obj T), β T' (mp F' a b) = mp F a (β T b)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `T T' a b`. Apply `(hb T').1` to reduce the goal to its premises. Rewrite using `[hαβ, nat, hαβ]`. Establish `smulβ : ∀ T (r : R) (b : F'.obj T), β T (r • b) = r • β T b`. Introduce `T r b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(hb T).1` to reduce the goal to its premises. Rewrite using `[hαβ, smul, hαβ]`. Set `m` to `GlobalTheory.Obs.BC.natCoef α nat smul`. Set `n` to `GlobalTheory.Obs.BC.natCoef β natβ smulβ`. Establish `left : ∀ c, n.pull1 (m.pull1 c) = c`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `c`. Take `⟨f, rfl⟩` from `H1.mk_surjective F c`. Rewrite using `[CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class]`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `T T' φ`. Conclude with `hβα T' _`. Establish `right : ∀ c, m.pull1 (n.pull1 c) = c`. Introduce `c`. Take `⟨f, rfl⟩` from `H1.mk_surjective F' c`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[CoefMap.pullCohomologyOne_class, CoefMap.pullCohomologyOne_class]`. Use `congr 1`. Use `Subtype.ext ?_` and prove the remaining obligations. Use function extensionality and compare the values at `T T' φ`. Conclude with `hαβ T' _`.
-
-Conclude with `⟨Function.LeftInverse.injective left, Function.RightInverse.surjective right⟩`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem natCoef_pull1_bijective (R : Type) [CommRing R] (C : Type) [Category.{0} C] (F F' : C ⥤ CommAlgCat.{0} R)
     (α : ∀ T, F.obj T →+* F'.obj T)

@@ -7,11 +7,11 @@ namespace GlobalTheory.ComplexEmbedding
 open Cardinal IsLocalRing
 
 /- English proof (translation)
-Establish `hfin : ∀ n : ℕ, Finite (V ⧸ maximalIdeal V ^ n)` using `fun n => haveI : Finite (V ⧸ maximalIdeal V) := inferInstanceAs (Finite (ResidueField V)) Ideal.finite_quotient_pow (maximalIdeal V).fg_of_isNoetherianRing n`. Set `f : V → ∀ n : ℕ, V ⧸ maximalIdeal V ^ n` to `fun x n => Ideal.Quotient.mk _ x`. Establish `hinj : Function.Injective f`. Introduce `x y hxy`. Establish `: x - y ∈ ⨅ n : ℕ, maximalIdeal V ^ n` using `Ideal.mem_iInf.2 fun n => Ideal.Quotient.eq.1 (congrFun hxy n)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[Ideal.iInf_pow_eq_bot_of_isLocalRing _ (maximalIdeal.isMaximal V).ne_top]`. Conclude with `sub_eq_zero.1 this`. Use `(mk_le_of_injective hinj).trans ?_` and prove the remaining obligations. Rewrite using `[mk_pi]`. Use `(prod_le_prod _ (fun _ => ℵ₀) fun n => mk_le_aleph0).trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem mk_le_continuum_of_finite_residueField (V : Type) [CommRing V] [IsLocalRing V]
     [IsNoetherianRing V] [Finite (ResidueField V)] : #V ≤ 𝔠 := by
@@ -31,13 +31,13 @@ theorem mk_le_continuum_of_finite_residueField (V : Type) [CommRing V] [IsLocalR
   simp
 
 /- English proof (translation)
-Set `_ : Algebra K ℂ` to `σ.toAlgebra`. Establish `hK : #K ≤ ℵ₀`. Use `Algebra.IsAlgebraic.cardinalMk_le_max ℚ K` as an intermediate fact. Simplify `this` using `[Cardinal.mkRat]`. Take `⟨s, hs⟩` from `exists_isTranscendenceBasis K Ω`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `exists_isTranscendenceBasis K ℂ`. Establish `hst : #s ≤ #t`. Establish `h1` using `IsAlgClosed.cardinal_eq_cardinal_transcendence_basis_of_aleph0_lt' _ ht hK (by rw [Cardinal.mk_complex]; exact Cardinal.aleph0_lt_continuum)`. Rewrite using `[← h1, Cardinal.mk_complex]`. Conclude with `(Cardinal.mk_subtype_le _).trans hΩ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨e⟩` from `hst`. Establish `hv : AlgebraicIndependent K (((↑) : t → ℂ) ∘ e)` using `ht.1.comp e e.injective`. Set `f : IntermediateField.adjoin K (Set.range ((↑) : s → Ω)) →ₐ[K] ℂ` to `(IntermediateField.val _).comp (hv.aevalEquivField.toAlgHom.comp hs.1.reprField)`. Establish `halg` using `hs.isAlgebraic_field`. Take `⟨φ, -⟩` from `IntermediateField.exists_algHom_of_splits' f (fun (x : Ω) => ⟨(Algebra.IsAlgebraic.isAlgebraic (R := IntermediateField.adjoin K (Set.range ((↑) : s → Ω))) x).isIntegral, IsAlgClosed.splits _⟩)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨φ.toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Conclude with `φ.commutes x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_embedding_of_mk_le_continuum {K Ω : Type} [Field K] [NumberField K] [Field Ω]
     [Algebra K Ω] (hΩ : #Ω ≤ 𝔠) (σ : K →+* ℂ) :
@@ -66,9 +66,7 @@ theorem exists_embedding_of_mk_le_continuum {K Ω : Type} [Field K] [NumberField
   exact φ.commutes x
 
 /- English proof (translation)
-Introduce `K _ _ σ T hT io`. Use `haveI : Finite (ResidueField T.V) := hT`. Establish `hV` using `mk_le_continuum_of_finite_residueField T.V`. Establish `hF : #T.Fr ≤ 𝔠`. Rewrite using `[show #T.Fr = #T.V from IsFractionRing.cardinalMk T.V T.Fr]`.
-
-Conclude with `hV`. Conclude with `@exists_embedding_of_mk_le_continuum K T.Fr _ _ _ io.toAlgebra hF σ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_embedding_fractionField :
     ∀ (K : Type) [Field K] [NumberField K] (σ : K →+* ℂ) (T : CDVR), T.FinRes →

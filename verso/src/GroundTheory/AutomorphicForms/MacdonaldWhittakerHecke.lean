@@ -19,7 +19,7 @@ variable [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)]
   {μ : Measure (GL (Fin n) F)} [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Use `Continuous.integrable_of_hasCompactSupport ?_ (h : HeckeAlgebra μ).mem.2.mul_right` and prove the remaining obligations. Conclude with `(h : HeckeAlgebra μ).mem.1.continuous.mul ((continuous_of_mul_right_invariant hf).comp (continuous_mul_left g))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_hecke_mul {f : GL (Fin n) F → ℂ}
     (hf : ∀ g, ∀ k ∈ integralGL F n, f (g * k) = f g) (h : SphericalHecke μ (F := F) (n := n))
@@ -30,9 +30,9 @@ theorem integrable_hecke_mul {f : GL (Fin n) F → ℂ}
     ((continuous_of_mul_right_invariant hf).comp (continuous_mul_left g))
 
 /- English proof (translation)
-Establish `hK : (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (measureReal_compactOpen_pos μ (isCompact_integralGL F n) (isOpen_integralGL F n)).ne'`. Establish `: (fun x => ((1 : SphericalHecke μ (F` using `F) (n := n)) : HeckeAlgebra μ) x * f (g * x)) = (integralGL F n : Set (GL (Fin n) F)).indicator (fun _ => (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ)⁻¹ * f g) := by`. Use function extensionality and compare the values at `x`. Rewrite using `[HeckeAlgebraLevel.val_one, idem_apply]`. Distinguish the cases in `hx : x ∈ integralGL F n`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem (show x ∈ (integralGL F n : Set (GL (Fin n) F)) from hx), Set.indicator_of_mem (show x ∈ (integralGL F n : Set (GL (Fin n) F)) from hx), hf g x hx]`. Rewrite using `[Set.indicator_of_notMem (show x ∉ (integralGL F n : Set (GL (Fin n) F)) from hx), Set.indicator_of_notMem (show x ∉ (integralGL F n : Set (GL (Fin n) F)) from hx), zero_mul]`. Rewrite using `[this, integral_indicator (isOpen_integralGL F n).measurableSet, setIntegral_const, Complex.real_smul, ← mul_assoc, mul_inv_cancel₀ hK, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_one_mul {f : GL (Fin n) F → ℂ}
     (hf : ∀ g, ∀ k ∈ integralGL F n, f (g * k) = f g) (g : GL (Fin n) F) :
@@ -54,19 +54,19 @@ theorem integral_one_mul {f : GL (Fin n) F → ℂ}
     Complex.real_smul, ← mul_assoc, mul_inv_cancel₀ hK, one_mul]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul]`. Establish `hconv : ∀ x, (((h₁ * h₂ : SphericalHecke μ (F` using `F) (n := n)) : HeckeAlgebra μ) x) = ∫ y, (h₁ : HeckeAlgebra μ) y * (h₂ : HeckeAlgebra μ) (y⁻¹ * x) ∂μ := by`. Introduce `x`. Rewrite using `[HeckeAlgebraLevel.val_mul, HeckeAlgebra.coe_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `only [hconv, ← integral_mul_const]`. Use `set B := tsupport ((h₁ : HeckeAlgebra μ) : GL (Fin n) F → ℂ)`. Use `set C := tsupport ((h₂ : HeckeAlgebra μ) : GL (Fin n) F → ℂ)`. Establish `hB : IsCompact B` using `(h₁ : HeckeAlgebra μ).mem.2`. Establish `hC : IsCompact C` using `(h₂ : HeckeAlgebra μ).mem.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hswap` using `integral_integral_swap_of_coset μ (integralOpen F n) (isCompact_integralGL F n) (hB.mul hC) hB (F := fun x y => (h₁ : HeckeAlgebra μ) y * (h₂ : HeckeAlgebra μ) (y⁻¹ * x) * f (g * x)) (by`. Introduce `x y hxy`. Establish `hy : y ∈ B` using `subset_tsupport _ (left_ne_zero_of_mul (left_ne_zero_of_mul hxy))`. Establish `hx : y⁻¹ * x ∈ C` using `subset_tsupport _ (right_ne_zero_of_mul (left_ne_zero_of_mul hxy))`. Conclude with `⟨Set.mem_mul.2 ⟨y, hy, y⁻¹ * x, hx, by group⟩, hy⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(by`. Introduce `x y k hk`. Rewrite using `[← mul_assoc, (HeckeAlgebraLevel.val_mem _ _ h₂ k hk _).2, ← mul_assoc, hf _ k hk])`. Use the proof step `(by`. Introduce `x y k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(HeckeAlgebraLevel.val_mem _ _ h₁ k hk y).2, _root_.mul_inv_rev, show k⁻¹ * y⁻¹ * x = k⁻¹ * (y⁻¹ * x) from mul_assoc _ _ _, HeckeAlgebraLevel.apply_mul_left _ _ h₂ ((integralGL F n).inv_mem hk)])`. Rewrite using `[hswap]`. Establish `hinner : ∀ y, ∫ x, (h₁ : HeckeAlgebra μ) y * (h₂ : HeckeAlgebra μ) (y⁻¹ * x) * f (g * x) ∂μ = (h₁ : HeckeAlgebra μ) y * f (g * y) * evalAt z (satakeTransform μ h₂)`. Introduce `y`. Establish `e` using `integral_mul_left_eq_self (μ := μ) (fun x => (h₁ : HeckeAlgebra μ) y * (h₂ : HeckeAlgebra μ) (y⁻¹ * x) * f (g * x)) y`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [inv_mul_cancel_left] at e`. Rewrite using `[← e]`. Establish `hpt : ∀ x, (h₁ : HeckeAlgebra μ) y * (h₂ : HeckeAlgebra μ) x * f (g * (y * x)) = (h₁ : HeckeAlgebra μ) y * ((h₂ : HeckeAlgebra μ) x * f ((g * y) * x))`. Introduce `x`. Rewrite using `[mul_assoc g y x]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hpt), integral_const_mul, hh₂ (g * y)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[integral_congr_ae (Filter.Eventually.of_forall hinner), integral_mul_const, hh₁ g]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_mul_mul_eigen (z : Fin n → ℂˣ) {f : GL (Fin n) F → ℂ}
     (hf : ∀ g, ∀ k ∈ integralGL F n, f (g * k) = f g) {h₁ h₂ : SphericalHecke μ (F := F) (n := n)}
@@ -145,7 +145,7 @@ def eigenSubalgebra (z : Fin n → ℂˣ) (f : GL (Fin n) F → ℂ)
 
 omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
 /- English proof (translation)
-Rewrite using `[MvPolynomial.esymm, map_sum, esymmL]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_prod]`. Simplify using `only [polyEmb_X, monomial]`. Rewrite using `[AddMonoidAlgebra.prod_single, Finset.prod_const_one, sum_single_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem polyEmb_esymm (k : ℕ) : polyEmb n (MvPolynomial.esymm (Fin n) ℂ k) = esymmL n k := by
   rw [MvPolynomial.esymm, map_sum, esymmL]
@@ -156,16 +156,16 @@ theorem polyEmb_esymm (k : ℕ) : polyEmb n (MvPolynomial.esymm (Fin n) ℂ k) =
 
 omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
 /- English proof (translation)
-Rewrite using `[esymmL, Finset.powersetCard_eq_empty.2 (by simpa using hk), Finset.sum_empty]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem esymmL_eq_zero {k : ℕ} (hk : n < k) : esymmL n k = 0 := by
   rw [esymmL, Finset.powersetCard_eq_empty.2 (by simpa using hk), Finset.sum_empty]
 
 omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun i => (n : ℤ) - 1 - 2 * (i : ℤ)) n, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_range, ← Finset.mul_sum]`. Establish `h` using `Finset.sum_range_id_mul_two n`. Establish `h' : (∑ i ∈ Finset.range n, (i : ℤ)) * 2 = (n : ℤ) * ((n : ℤ) - 1)`. Break down `Nat.eq_zero_or_pos n with hn | hn` into its components or cases. Substitute `hn` using the available equality.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `: (((∑ i ∈ Finset.range n, i) * 2 : ℕ) : ℤ) = ((n * (n - 1) : ℕ) : ℤ)` using `by rw [h]`. Move the coercions through the operations in `[Nat.cast_sub hn] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [nsmul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -186,14 +186,14 @@ theorem sum_rho_coeff : ∑ i : Fin n, ((n : ℤ) - 1 - 2 * (i : ℕ)) = 0 := by
 omit [MeasurableSpace (GL (Fin n) F)] [BorelSpace (GL (Fin n) F)] in
 
 /- English proof (translation)
-Rewrite using `[halfModulus_eq, rhoPair]`. Simplify using `only [mul_comm _ c, ← Finset.mul_sum, sum_rho_coeff, mul_zero, neg_zero, zpow_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem halfModulus_const (c : ℤ) : halfModulus F (fun _ : Fin n => c) = 1 := by
   rw [halfModulus_eq, rhoPair]
   simp only [mul_comm _ c, ← Finset.mul_sum, sum_rho_coeff, mul_zero, neg_zero, zpow_zero]
 
 /- English proof (translation)
-Use `eq_of_forall_evalAt fun w => ?_` and prove the remaining obligations. Rewrite using `[evalAt_satakeTransform_minusculeHecke w hk, map_smul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem satakeTransform_minusculeHecke {k : ℕ} (hk : k ≤ n) :
     satakeTransform μ (minusculeHecke μ k) =
@@ -202,7 +202,7 @@ theorem satakeTransform_minusculeHecke {k : ℕ} (hk : k ≤ n) :
   rw [evalAt_satakeTransform_minusculeHecke w hk, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[satakeTransform_apply, satake_centralHecke, map_smul, monomial, normalize_single, halfModulus_const, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem satakeTransform_centralHecke :
     satakeTransform μ (centralHecke μ) =
@@ -211,13 +211,13 @@ theorem satakeTransform_centralHecke :
     halfModulus_const, one_mul]
 
 /- English proof (translation)
-Use `set E := eigenSubalgebra μ z f hf`. Use `set A := E.map (satakeTransform μ)`. Establish `hK : (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (measureReal_compactOpen_pos μ (isCompact_integralGL F n) (isOpen_integralGL F n)).ne'`. Establish `h1 : ∀ k, polyEmb n (MvPolynomial.esymm (Fin n) ℂ k) ∈ A`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[polyEmb_esymm]`. Distinguish the cases in `hk : k ≤ n`. Establish `hc' : (μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) * sqrtQ F ^ (k * (n - k)) ≠ 0` using `mul_ne_zero hK (pow_ne_zero _ sqrtQ_ne_zero)`. Use `Subalgebra.mem_map.2 ⟨((μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ) * sqrtQ F ^ (k * (n - k)))⁻¹ • minusculeHecke μ k, E.smul_mem (hT k hk) _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, satakeTransform_minusculeHecke hk, smul_smul, inv_mul_cancel₀ hc', one_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[esymmL_eq_zero (by omega)]`. Conclude with `A.zero_mem`. Establish `h2 : monomial (fun _ : Fin n => (-1 : ℤ)) ∈ A`. Use `Subalgebra.mem_map.2 ⟨((μ.real (integralGL F n : Set (GL (Fin n) F)) : ℂ))⁻¹ • centralHecke μ, E.smul_mem hc _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_smul, satakeTransform_centralHecke, smul_smul, inv_mul_cancel₀ hK, one_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsym` using `symmetricLaurent_le h1 h2`. Rewrite using `[Algebra.eq_top_iff]`. Introduce `h`. Take `⟨e, he, hSe⟩` from `Subalgebra.mem_map.1 (hsym (satakeTransform_mem_symmetric h))`. Rewrite using `[← satakeTransform_injective hSe]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eigenSubalgebra_eq_top (z : Fin n → ℂˣ) {f : GL (Fin n) F → ℂ}
     (hf : ∀ g, ∀ k ∈ integralGL F n, f (g * k) = f g)
@@ -250,9 +250,9 @@ theorem eigenSubalgebra_eq_top (z : Fin n → ℂˣ) {f : GL (Fin n) F → ℂ}
   rwa [← satakeTransform_injective hSe]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j hij`. Use `h hij` as an intermediate fact. Simplify using `only [Pi.add_apply] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `h i j hij`. Simplify using `only [Pi.add_apply]`. Combine the linear relations using `[h hij]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem antitone_add_const_iff (l : Fin n → ℤ) (c : ℤ) :
     Antitone (l + fun _ => c) ↔ Antitone l := by
@@ -266,7 +266,7 @@ theorem antitone_add_const_iff (l : Fin n → ℤ) (c : ℤ) :
     linarith [h hij]
 
 /- English proof (translation)
-Rewrite using `[schur, schur, show l + (fun _ => c) + staircase n = (fun _ => c) + (l + staircase n) by abel, monomial_add, altQuot_mul_of_symm (permAct_monomial_const c)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem schur_add_const (l : Fin n → ℤ) (c : ℤ) :
     schur (l + fun _ => c) = monomial (fun _ : Fin n => c) * schur l := by
@@ -274,11 +274,11 @@ theorem schur_add_const (l : Fin n → ℤ) (c : ℤ) :
     monomial_add, altQuot_mul_of_symm (permAct_monomial_const c)]
 
 /- English proof (translation)
-Establish `hg` using `eq_iwasawa g`. Establish `hu` using `iwasawaUnip_mem g`. Establish `hk` using `iwasawaInt_mem g`. Use `set u := iwasawaUnip g`. Use `set e := iwasawaExponent F n g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set k := iwasawaInt g`. Establish `: g * torusPow F n (fun _ => c) = u * torusPow F n (e + fun _ => c) * k`. Rewrite using `[hg, torusPow_add, mul_assoc, ← torusPow_const_comm c k]`. Use `group`. Rewrite using `[this, sphericalWhittaker_apply hψ₀ z hu hk, hg, sphericalWhittaker_apply hψ₀ z hu hk]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `he : Antitone e`. Rewrite using `[if_pos ((antitone_add_const_iff e c).2 he), if_pos he, halfModulus_add, halfModulus_const, schur_add_const, map_mul, monomial, evalAt_single, one_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (fun h => he ((antitone_add_const_iff e c).1 h)), if_neg he, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem sphericalWhittaker_mul_const {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (z : Fin n → ℂˣ) (g : GL (Fin n) F) (c : ℤ) :
@@ -301,13 +301,11 @@ theorem sphericalWhittaker_mul_const {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈
   · rw [if_neg (fun h => he ((antitone_add_const_iff e c).1 h)), if_neg he, mul_zero]
 
 /- English proof (translation)
-Use `set g₀ := torusPow F n (fun _ : Fin n => (-1 : ℤ))`. Establish `e` using `integral_mul_left_eq_self (μ := μ) (fun x => (centralHecke μ : HeckeAlgebra μ) x * sphericalWhittaker ψ₀ z (g * x)) g₀`. Rewrite using `[← e]`. Establish `hpt : (fun y => (centralHecke μ : HeckeAlgebra μ) (g₀ * y) * sphericalWhittaker ψ₀ z (g * (g₀ * y))) = (integralGL F n : Set (GL (Fin n) F)).indicator (fun _ => sphericalWhittaker ψ₀ z (g * g₀))`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[centralHecke_apply]`. Distinguish the cases in `hy : y ∈ integralGL F n`. Establish `hm : g₀ * y ∈ centralSet F n`. Rewrite using `[mem_centralSet, inv_mul_cancel_left]`. Conclude with `hy`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_mem hm, Set.indicator_of_mem (show y ∈ (integralGL F n : Set (GL (Fin n) F)) from hy), one_mul, ← mul_assoc, sphericalWhittaker_mul_right hψ₀ z _ hy]`. Establish `hm : g₀ * y ∉ centralSet F n`. Rewrite using `[mem_centralSet, inv_mul_cancel_left]`. Conclude with `hy`. Rewrite using `[Set.indicator_of_notMem hm, Set.indicator_of_notMem (show y ∉ (integralGL F n : Set (GL (Fin n) F)) from hy), zero_mul]`.
-
-Rewrite using `[hpt, integral_indicator (isOpen_integralGL F n).measurableSet, setIntegral_const, Complex.real_smul, sphericalWhittaker_mul_const hψ₀, satakeTransform_centralHecke, map_smul, monomial, evalAt_single, one_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_centralHecke_mul_sphericalWhittaker {ψ₀ : AddChar F ℂ}
     (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1) (z : Fin n → ℂˣ) (g : GL (Fin n) F) :
@@ -339,7 +337,7 @@ theorem integral_centralHecke_mul_sphericalWhittaker {ψ₀ : AddChar F ℂ}
   ring
 
 /- English proof (translation)
-Establish `htop` using `eigenSubalgebra_eq_top (μ := μ) z (fun g k hk => sphericalWhittaker_mul_right hψ₀ z g hk) (fun r hr g => integral_minusculeHecke_mul_sphericalWhittaker hψ₀ hψ₁ z hr g) (fun g => integral_centralHecke_mul_sphericalWhittaker hψ₀ z g)`. Establish `hmem : h ∈ eigenSubalgebra μ z (sphericalWhittaker ψ₀ z) (fun g k hk => sphericalWhittaker_mul_right hψ₀ z g hk)`. Rewrite using `[htop]`. Conclude with `Algebra.mem_top`. Conclude with `hmem g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_mul_sphericalWhittaker {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (hψ₁ : ∃ x : F, π * x ∈ 𝒪[F] ∧ ψ₀ x ≠ 1) (z : Fin n → ℂˣ)
@@ -357,7 +355,7 @@ theorem integral_mul_sphericalWhittaker {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x 
   exact hmem g
 
 /- English proof (translation)
-Establish `hg` using `eq_iwasawa g`. Establish `hu` using `iwasawaUnip_mem g`. Establish `hk` using `iwasawaInt_mem g`. Rewrite using `[hg, sphericalWhittaker_apply hψ₀ z hu hk, hWK _ _ hk, mul_assoc, hWN _ hu, casselman_shalika ψ₀ hψ₀ hψ₁ z hWN hWK heig]`. Apply the tactic sequence `split_ifs <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eq_smul_sphericalWhittaker {ψ₀ : AddChar F ℂ} (hψ₀ : ∀ x ∈ 𝒪[F], ψ₀ x = 1)
     (hψ₁ : ∃ x : F, π * x ∈ 𝒪[F] ∧ ψ₀ x ≠ 1) (z : Fin n → ℂˣ) {W : GL (Fin n) F → ℂ}

@@ -7,7 +7,7 @@ open MeasureTheory NumberField Matrix Finset Formalism.MainNotions.S GlobalTheor
 namespace GlobalTheory.LeviIso
 
 /- English proof (translation)
-Unfold `IsRadial at *`. Use `h.congr fun r => ?_` and prove the remaining obligations. Rewrite using `[← he.measure_preimage_equiv]`. Simplify using `only [hq, Set.preimage_ofPred_eq]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem IsRadial.comp_measurableEquiv {X Y : Type} [MeasurableSpace X] [MeasurableSpace Y] {μ : Measure X}
     {ν : Measure Y} (e : X ≃ᵐ Y) (he : MeasurePreserving e μ ν) {q : X → ℝ} {p : Y → ℝ} {d : ℕ}
@@ -18,13 +18,13 @@ theorem IsRadial.comp_measurableEquiv {X Y : Type} [MeasurableSpace X] [Measurab
   simp only [hq, Set.preimage_ofPred_eq]
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `X _ μ _ q d _ _ _`. Rewrite using `[Fin.sum_univ_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsRadial`. Rewrite using `[volume_euclideanSpace_eq_dirac, Measure.dirac_apply_of_mem (Metric.mem_ball_self one_pos)]`. Use `tendsto_const_nhds.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with r hr`. Establish `hr' : (0 : ℝ) ≤ r` using `le_of_lt hr`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.pi_of_empty, Measure.dirac_apply_of_mem (by simpa using hr')]`. Simplify using the standard rewrite rules. Consider the case `succ a ih`. Introduce `X _ μ _ q d hm h0 hr`. Establish `h` using `GlobalTheory.T.hasEuclideanBallVolumeSublevelAsymptotics_prod _ _ (μ 0) (Measure.pi fun j => μ (Fin.succAbove 0 j)) (q 0) (fun x => ∑ j, q (Fin.succAbove 0 j) (x j)) (d 0) (∑ j, d (Fin.succAbove 0 j)) (hm 0) (Finset.measurable_sum _ fun j _ => (hm _).comp (measurable_pi_apply j)) …`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.sum_univ_succAbove d 0]`. Conclude with `h.comp_measurableEquiv _ (measurePreserving_piFinSuccAbove μ 0) fun x => Fin.sum_univ_succAbove (fun i => q i (x i)) 0`.
+A detailed English derivation is pending.
 -/
 theorem isRadial_pi : ∀ (a : ℕ) (X : Fin a → Type) [∀ i, MeasurableSpace (X i)] (μ : ∀ i, Measure (X i))
     [∀ i, SigmaFinite (μ i)] (q : ∀ i, X i → ℝ) (d : Fin a → ℕ), (∀ i, Measurable (q i)) →

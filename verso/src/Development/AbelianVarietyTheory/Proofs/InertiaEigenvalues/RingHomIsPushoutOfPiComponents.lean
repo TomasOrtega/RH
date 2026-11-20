@@ -4,9 +4,9 @@ open TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hpi` using `IsBaseChange.pi (S := A') (fun i => (IsScalarTower.toAlgHom A (Q i) (Q' i)).toLinearMap) (fun i => (H i).out)`. Set `e : P ≃ₗ[A] (∀ i, Q i)` to `LinearEquiv.ofBijective (LinearMap.pi fun i => (g i).toLinearMap) hg`. Set `e' : P' ≃ₗ[A'] (∀ i, Q' i)` to `LinearEquiv.ofBijective (LinearMap.pi fun i => (g' i).toLinearMap) hg'`. Use `⟨IsBaseChange.of_equiv (LinearEquiv.baseChange A A' _ _ e ≪≫ₗ hpi.equiv ≪≫ₗ e'.symm) fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, LinearEquiv.symm_apply_eq, LinearEquiv.baseChange_tmul, IsBaseChange.equiv_tmul, one_smul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Conclude with `(hk i x).symm`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isPushout_of_pi_components_alg {A P A' P' : Type} [CommRing A] [CommRing P] [CommRing A']
     [CommRing P'] {n : ℕ} {Q Q' : Fin n → Type} [∀ i, CommRing (Q i)] [∀ i, CommRing (Q' i)]
@@ -33,15 +33,13 @@ theorem isPushout_of_pi_components_alg {A P A' P' : Type} [CommRing A] [CommRing
   exact (hk i x).symm
 
 /- English proof (translation)
-Introduce `A P A' P' _ _ _ _ n Q Q' _ _ f k k' h' g g' kk hh hg hg' hk hh' H`. Establish `hw : ∀ i a, kk i (g i (f a)) = hh i (k a)` using `fun i a => congrArg (fun φ : CommRingCat.of A ⟶ CommRingCat.of (Q' i) => φ.hom a) (H i).w`. Establish `hk1 : ∀ i x, g' i (k' x) = kk i (g i x)` using `fun i x => RingHom.congr_fun (hk i) x`. Establish `hh1 : ∀ i x, g' i (h' x) = hh i x` using `fun i x => RingHom.congr_fun (hh' i) x`. Establish `hc : ∀ a, k' (f a) = h' (k a)` using `fun a => hg'.1 (funext fun i => by show g' i (k' (f a)) = g' i (h' (k a))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hk1, hh1, hw])`. Use `letI : Algebra A P := f.toAlgebra`. Use `letI : Algebra A A' := k.toAlgebra`. Use `letI : Algebra P P' := k'.toAlgebra`. Use `letI : Algebra A' P' := h'.toAlgebra`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : Algebra A P' := (k'.comp f).toAlgebra`. Use `haveI : IsScalarTower A P P' := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower A A' P' := IsScalarTower.of_algebraMap_eq fun a => hc a`. Use `letI : ∀ i, Algebra A (Q i) := fun i => ((g i).comp f).toAlgebra`. Use `letI : ∀ i, Algebra (Q i) (Q' i) := fun i => (kk i).toAlgebra`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI : ∀ i, Algebra A' (Q' i) := fun i => (hh i).toAlgebra`. Use `letI : ∀ i, Algebra A (Q' i) := fun i => ((kk i).comp ((g i).comp f)).toAlgebra`. Use `haveI : ∀ i, IsScalarTower A (Q i) (Q' i) := fun i => IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : ∀ i, IsScalarTower A A' (Q' i) := fun i => IsScalarTower.of_algebraMap_eq fun a => hw i a`. Establish `H' : ∀ i, Algebra.IsPushout A A' (Q i) (Q' i)` using `fun i => (CommRingCat.isPushout_iff_isPushout.mp (H i)).symm`.
-
-Use `isPushout_of_pi_components_alg (A := A) (P := P) (A' := A') (P' := P') (Q := Q) (Q' := Q') (fun i => { g i with commutes' := fun _ => rfl }) (fun i => { g' i with commutes' := fun a => hh1 i a }) hg hg' hk1 H'` as an intermediate fact. Conclude with `CommRingCat.isPushout_iff_isPushout.mpr this.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPushout_of_pi_components : ∀ {A P A' P' : Type} [CommRing A] [CommRing P] [CommRing A'] [CommRing P'] {n : ℕ}
     {Pi P'i : Fin n → Type} [∀ i, CommRing (Pi i)] [∀ i, CommRing (P'i i)]

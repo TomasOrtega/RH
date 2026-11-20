@@ -52,7 +52,7 @@ def GoodH (H : Host R) (s : Scale) (p : ℕ) (t0 : R.A) : Prop :=
     (logPowerBoundClassPrimes H s) (G.KG s) (G.rG s) s.delta1 (G.hG s) s.x
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example {D : D7} {L : SizeData₂ D} (X : G.Inst D L) (p : ℕ) (t0 : G.HH D) :
     GoodH D.host L.sc p t0 ↔ G.Good X p t0 := Iff.rfl
@@ -61,7 +61,7 @@ def IsOrigins {φ : Formalism.HC.Frame} (bs : φ.A → φ.A → φ.A) : Prop :=
   (∀ h t, ∃ i : ℕ, bs h t + i • h = t) ∧ ∀ h t, bs h (t + h) = bs h t
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X.bs_orb, X.bs_step⟩`.
+Supply the required witnesses or components.
 -/
 example {D : D7} {L : SizeData₂ D} (X : G.Inst D L) : IsOrigins (φ := D.R.toFrame) X.bs := ⟨X.bs_orb, X.bs_step⟩
 
@@ -78,7 +78,7 @@ def CharOf (H : Host R) {N : ℕ} (χ : DirichletCharacter ℂ N) : Prop :=
     χ (a : ZMod N) = ((ψ (H.art (ZMod.unitOfCoprime a h)) : ℂˣ) : ℂ)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example (D : D7) {N : ℕ} (χ : DirichletCharacter ℂ N) : CharOf D.host χ ↔ GlobalTheoryTheory.IsCharED D χ := Iff.rfl
 
@@ -88,7 +88,7 @@ def RealBoxes (H : Host R) (Y eps : ℝ) : Prop :=
     (H.q ∣ N → ¬ H.d ∣ N → GlobalTheoryTheory.GoodFor (8 * ((ordCompl[2] H.QS : ℕ) : ℝ) * GlobalTheoryTheory.X1 Y eps) χ)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example (D : D7) (Y eps : ℝ) : RealBoxes D.host Y eps ↔ GlobalTheoryTheory.BoxE D Y eps := Iff.rfl
 
@@ -96,13 +96,13 @@ def BoxesInWindow (s : Scale) (H : Host R) : Prop :=
   ∃ Y : ℝ, PairWin s Y ∧ PairRow Y s.eps H ∧ Boxq Y s.eps H.q H.d ∧ RealBoxes H Y s.eps
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example (s : Scale) (D : D7) : BoxesInWindow s D.host ↔
     ∃ Y : ℝ, PairWin s Y ∧ QDRows_at D Y s.eps ∧ Boxes_at D Y s.eps ∧ GlobalTheoryTheory.BoxE D Y s.eps := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `let ⟨Y, h1, h2, h3, h4⟩ := h ⟨⟨Y, h1, h3, h4⟩, Y, h1, h2⟩`.
+A detailed English derivation is pending.
 -/
 example (s : Scale) (D : D7) (h : BoxesInWindow s D.host) : BoxesW D s ∧ QDRowsW D s :=
   let ⟨Y, h1, h2, h3, h4⟩ := h
@@ -133,7 +133,7 @@ def hostAt (H : Host R) (hc : H.ccK = ⊤) (u0 : R.A) (S : Finset ℕ) (hS : ∀
     level_coprimeS := fun p hp => (Finset.mem_union.1 hp).elim (H.level_coprimeS p) (hS p) }
 
 /- English proof (translation)
-Establish `h1` using `h.1`. Unfold `HostVal at h1`. Use the proof step `casesm* _ ∧ _`. Use the matching hypothesis.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use the matching hypothesis. A detailed English derivation is pending.
 -/
 theorem ArithData.ccK_eq {C : FC} {s : Scale} {H : Host R} {q0 : ℕ}
     {bs : R.A → R.A → R.A} (h : ArithData C s H q0 bs) : H.ccK = ⊤ := by
@@ -178,11 +178,11 @@ def ObjectsExist (Q : PtProp) : Prop :=
             FactDGam p.D Cdg
 
 /- English proof (translation)
-Take `⟨Cdg, h0, h⟩` from `h`. Use `⟨Cdg, h0, fun eps h1 h2 C8 h8 => ?_⟩` and prove the remaining obligations. Take `⟨K0, h⟩` from `h eps h1 h2 C8 h8`. Use `⟨K0, fun C hC hP hL => ?_⟩` and prove the remaining obligations. Take `⟨c1, h⟩` from `h C hC hP hL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨c1, fun cD hcD => ?_⟩` and prove the remaining obligations. Take `⟨c2, h⟩` from `h cD hcD`. Use `⟨c2, fun ch hch => ?_⟩` and prove the remaining obligations. Take `⟨x0, h⟩` from `h ch hch`. Use `⟨x0, fun s hs hx R hR H q0 bs hH a b hw code hc => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨off, h⟩` from `h s hs hx R hR H q0 bs hH a b hw code hc`. Use `⟨off, fun u0 => ?_⟩` and prove the remaining obligations. Take `⟨T, p, h3, h4, h5, h6, h7⟩` from `h u0`. Conclude with `⟨T, p, h3, h4, h5, hQ _ _ _ _ _ _ _ _ _ h6, h7⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example {Q Q' : PtProp} (hQ : ∀ D L g x y K X c e, Q D L g x y K X c e → Q' D L g x y K X c e)
     (h : ObjectsExist Q) : ObjectsExist Q' := by

@@ -11,43 +11,39 @@ open GlobalTheory.EtC
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `T _ A _ _ _ _ hSH hA`. Take `⟨hHA, hsepA⟩` from `hSH`. Set `y : Ideal (Polynomial T)` to `(maximalIdeal A).comap (algebraMap (Polynomial T) A)`. Use `haveI : y.IsPrime := Ideal.comap_isPrime _ _`. Take `⟨O, _, algRO, _, hloc, hsc, -, -, -, hind⟩` from `GlobalTheory.exists_strictHenselisation (Localization.AtPrime y) (SeparableClosure (ResidueField (Localization.AtPrime y)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI algPO : Algebra (Polynomial T) O := ((algebraMap (Localization.AtPrime y) O).comp (algebraMap (Polynomial T) (Localization.AtPrime y))).toAlgebra`. Use `letI algTO : Algebra T O := ((algebraMap (Polynomial T) O).comp (algebraMap T (Polynomial T))).toAlgebra`. Use `haveI t1 : IsScalarTower T (Polynomial T) O := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI t2 : IsScalarTower (Polynomial T) (Localization.AtPrime y) O := IsScalarTower.of_algebraMap_eq' rfl`. Establish `hP` using `GlobalTheory.indEtale_localPieces_trans (Polynomial T) (Localization.AtPrime y) O ⟨Unit, inferInstance, inferInstance, inferInstance, fun _ => ⊤, monotone_const, fun _ => ⟨(), Algebra.mem_top⟩, fun _ => ⟨Polynomial T, inferInstance, inferInstance, inferInstance, y, inferInstance, …`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hRO : (maximalIdeal O).comap (algebraMap (Localization.AtPrime y) O) = maximalIdeal (Localization.AtPrime y)`. Use extensionality with `x`. Simplify using `only [Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, isUnit_map_iff]`. Establish `hyO : (maximalIdeal O).comap (algebraMap (Polynomial T) O) = y`. Rewrite using `[IsScalarTower.algebraMap_eq (Polynomial T) (Localization.AtPrime y) O, ← Ideal.comap_comap, hRO]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Localization.AtPrime.comap_maximalIdeal`. Establish `hkO : ∀ r : Polynomial T, algebraMap (Polynomial T) (ResidueField O) r = 0 ↔ r ∈ y`. Introduce `r`. Rewrite using `[IsScalarTower.algebraMap_apply (Polynomial T) O (ResidueField O), ResidueField.algebraMap_eq, residue_eq_zero_iff, ← hyO, Ideal.mem_comap]`. Establish `hkA : ∀ r : Polynomial T, algebraMap (Polynomial T) (ResidueField A) r = 0 ↔ r ∈ y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure.
 
-Introduce `r`. Rewrite using `[IsScalarTower.algebraMap_apply (Polynomial T) A (ResidueField A), ResidueField.algebraMap_eq, residue_eq_zero_iff]`. Both sides reduce to the same expression. Use `letI algyO : Algebra y.ResidueField (ResidueField O) := (Ideal.ResidueField.lift y (algebraMap (Polynomial T) (ResidueField O)) (fun r hr => (hkO r).2 hr) (fun r hr => by`. Simplify using `only [Submonoid.mem_comap, IsUnit.mem_submonoid_iff]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_iff_ne_zero.mpr (fun h => hr ((hkO r).1 h)))).toAlgebra`. Use `haveI : IsScalarTower (Polynomial T) y.ResidueField (ResidueField O) := .of_algebraMap_eq fun r => by`. Rewrite using `[RingHom.algebraMap_toAlgebra]`. Conclude with `(Ideal.ResidueField.lift_algebraMap y _ _ _ r).symm`. Use `letI algyA : Algebra y.ResidueField (ResidueField A) := (Ideal.ResidueField.lift y (algebraMap (Polynomial T) (ResidueField A)) (fun r hr => (hkA r).2 hr) (fun r hr => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Submonoid.mem_comap, IsUnit.mem_submonoid_iff]`. Conclude with `isUnit_iff_ne_zero.mpr (fun h => hr ((hkA r).1 h)))).toAlgebra`. Use `haveI : IsScalarTower (Polynomial T) y.ResidueField (ResidueField A) := .of_algebraMap_eq fun r => by`. Rewrite using `[RingHom.algebraMap_toAlgebra]`. Conclude with `(Ideal.ResidueField.lift_algebraMap y _ _ _ r).symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsepO : ∀ s : O, IsSeparable y.ResidueField (algebraMap O (ResidueField O) s)`. Introduce `s`. Take `⟨ι, _, _, _, Si, -, hcov, hpc⟩` from `hP`. Take `⟨i, hi⟩` from `hcov s`. Take `⟨B, _, _, _, q, _, ⟨e⟩⟩` from `hpc i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `F : Localization.AtPrime q →ₐ[Polynomial T] ResidueField O` to `(IsScalarTower.toAlgHom (Polynomial T) O (ResidueField O)).comp ((Si i).val.comp e.toAlgHom)`. Set `f : B →ₐ[Polynomial T] ResidueField O` to `F.comp (IsScalarTower.toAlgHom (Polynomial T) B (Localization.AtPrime q))`. Take `⟨⟨a, t⟩, hat⟩` from `IsLocalization.mk'_surjective q.primeCompl (e.symm ⟨s, hi⟩)`. Establish `hs : algebraMap O (ResidueField O) s = F (IsLocalization.mk' _ a t)`. Simplify using `only [F, AlgHom.comp_apply, hat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Establish `hft : f t ≠ 0`. Establish `: IsUnit (f t)` using `(IsLocalization.map_units (Localization.AtPrime q) t).map F`. Conclude with `this.ne_zero`. Establish `hmul : F (IsLocalization.mk' _ a t) * f t = f a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Simplify using `only [f, AlgHom.comp_apply, IsScalarTower.coe_toAlgHom', ← map_mul, IsLocalization.mk'_spec]`. Establish `hx : algebraMap O (ResidueField O) s = f a * (f t)⁻¹`. Rewrite using `[hs, eq_mul_inv_iff_mul_eq₀ hft, hmul]`. Rewrite using `[hx, ← mem_separableClosure_iff]`. Apply the tactic sequence `refine mul_mem ?_ (inv_mem ?_) <;> rw [mem_separableClosure_iff] <;>`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.Specialise.sepEtale (Polynomial T) B y _ f _`. Use `haveI : Algebra.IsSeparable y.ResidueField (ResidueField O) := ⟨fun x => by`. Take `⟨s, rfl⟩` from `residue_surjective x`. Use `hsepO s` as an intermediate fact. Rewrite using `[ResidueField.algebraMap_eq] at this⟩` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI : IsSepClosure y.ResidueField (ResidueField O) := ⟨hsc, inferInstance⟩`. Set `L` to `separableClosure y.ResidueField (ResidueField A)`. Set `e : ResidueField O ≃ₐ[y.ResidueField] L` to `IsSepClosure.equiv y.ResidueField (ResidueField O) L`. Set `ι : ResidueField O →ₐ[y.ResidueField] ResidueField A` to `L.val.comp e.toAlgHom`. Set `ψ₀ : O →ₐ[Polynomial T] ResidueField A` to `(ι.restrictScalars (Polynomial T)).comp (IsScalarTower.toAlgHom (Polynomial T) O (ResidueField O))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨π, hπ⟩` from `(GlobalTheory.IndEtaleHensel.bijective_residue_comp (Polynomial T) O A hP).2 ψ₀`. Use `⟨O, inferInstance, algTO, algPO, t1, inferInstance, hsc, π, ?_, hP⟩` and prove the remaining obligations. Introduce `b`. Take `⟨E, _, _, _, φ, hb⟩` from `hA b`. Take `⟨e0, rfl⟩` from `(AlgHom.mem_range φ).1 hb`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `f : E →ₐ[Polynomial T] ResidueField A` to `(IsScalarTower.toAlgHom (Polynomial T) A (ResidueField A)).comp φ`. Establish `hfL : ∀ x, f x ∈ L` using `fun x => mem_separableClosure_iff.2 (GlobalTheory.Specialise.sepEtale (Polynomial T) E y (ResidueField A) f x)`. Set `g : E →ₐ[Polynomial T] ResidueField O` to `{ toRingHom := (e.symm : L →+* ResidueField O).comp (f.toRingHom.codRestrict L hfL) commutes' := fun r => by`. Apply `e.injective` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `e (e.symm ⟨f (algebraMap _ E r), hfL _⟩) = _`.
+Simplify by unfolding definitions. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[AlgEquiv.apply_symm_apply]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[IsScalarTower.algebraMap_apply (Polynomial T) y.ResidueField (ResidueField O), AlgEquiv.commutes]`. Express the relevant statement in the definitionally equal form `f (algebraMap _ E r) = _`. Rewrite using `[AlgHom.commutes, IsScalarTower.algebraMap_apply (Polynomial T) y.ResidueField (ResidueField A)]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `rfl }`. Take `⟨ψ, hψ⟩` from `(GlobalTheory.EtaleHensel.bijective_residue_comp (Polynomial T) E O).2 g`. Establish `hcomp : π.comp ψ = φ`. Apply `(GlobalTheory.EtaleHensel.bijective_residue_comp (Polynomial T) E A).1` to reduce the goal to its premises. Simplify using `only`.
-
-Use extensionality with `x`. Establish `h1` using `DFunLike.congr_fun hπ (ψ x)`. Establish `h2` using `DFunLike.congr_fun hψ x`. Simplify using `only [AlgHom.comp_apply] at h1 h2 ⊢`. Rewrite using `[h1]`.
-
-Express the relevant statement in the definitionally equal form `ι (IsScalarTower.toAlgHom (Polynomial T) O (ResidueField O) (ψ x)) = f x`. Rewrite using `[h2]`. Express the relevant statement in the definitionally equal form `((e (e.symm ⟨f x, hfL x⟩) : L) : ResidueField A) = f x`. Rewrite using `[AlgEquiv.apply_symm_apply]`. Conclude with `⟨ψ e0, DFunLike.congr_fun hcomp e0⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem surj_of_strictHenselisation_polynomial : ∀ (T : Type) [CommRing T] (A : Type) [CommRing A]
     [Algebra (Polynomial T) A] [Algebra T A] [IsScalarTower T (Polynomial T) A], SH A →

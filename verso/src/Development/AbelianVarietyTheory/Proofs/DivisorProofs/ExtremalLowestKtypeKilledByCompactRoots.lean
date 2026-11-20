@@ -14,9 +14,7 @@ variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] {
   {σ : Mt n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Take `⟨hu, hc⟩` from `hg`. Establish `hgg : gᴴ * g = 1`. Rewrite using `[← Matrix.star_eq_conjTranspose]`. Conclude with `Matrix.mem_unitaryGroup_iff'.mp hu`. Use `show gᴴ * Formalism.REAL.Jm ε * g = Formalism.REAL.Jm ε`.
-
-Rewrite using `[Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, hgg, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_UJset_of_mem_Kset_divisor {g : Mt n} (hg : g ∈ Formalism.REAL.Kset ε) : g ∈ UJset ε := by
   obtain ⟨hu, hc⟩ := hg
@@ -26,7 +24,7 @@ private theorem mem_UJset_of_mem_Kset_divisor {g : Mt n} (hg : g ∈ Formalism.R
   rw [Matrix.mul_assoc, ← hc, ← Matrix.mul_assoc, hgg, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hn : ∀ v : H, ‖σ g v‖ = ‖v‖` using `hσ.2.1 g (mem_UJset_of_mem_Kset_divisor hg)`. Set `L : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ g : H →ₗ[ℂ] H), norm_map' := hn }`. Conclude with `L.inner_map_map x y`.
+Establish an intermediate fact. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem inner_rep (hσ : IsURepOn (UJset ε) σ) {g : Mt n} (hg : g ∈ Formalism.REAL.Kset ε) (x y : H) :
     ⟪σ g x, σ g y⟫_ℂ = ⟪x, y⟫_ℂ := by
@@ -35,21 +33,21 @@ theorem inner_rep (hσ : IsURepOn (UJset ε) σ) {g : Mt n} (hg : g ∈ Formalis
   exact L.inner_map_map x y
 
 /- English proof (translation)
-Simplify using `[dRepC, dRep]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dRepC_zero_right (Z : Mt n) : dRepC (Formalism.REAL.Jm ε) σ Z (0 : H) = 0 := by
   simp [dRepC, dRep]
 
 /- English proof (translation)
-Simplify using `[dRepC, conjH, dRep]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem dRepC_zero_left (v : H) : dRepC (Formalism.REAL.Jm ε) σ 0 v = 0 := by
   simp [dRepC, conjH, dRep]
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, Matrix.diagonal_conjTranspose, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[Pi.star_apply, Complex.star_def, ← Complex.exp_conj, ← Complex.exp_add, map_mul, Complex.conj_ofReal, Complex.conj_I]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `b`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -70,13 +68,13 @@ private theorem diagonal_exp_mem_Kset (φ : Fin n → ℝ) :
     ring
 
 /- English proof (translation)
-Introduce `θ hθ`. Establish `hw'` using `hw θ hθ`. Establish `hSt : ∀ v ∈ S, σ (Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)) v ∈ S` using `hS _ hθ`. Set `f : S →ₗ[ℂ] S` to `(σ (Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)) : H →ₗ[ℂ] H).restrict hSt`. Establish `hfi : Function.Injective f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `x y hxy`. Establish `h1 : σ (Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)) (x : H) = σ (Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)) (y : H)` using `congrArg Subtype.val hxy`. Establish `h2` using `hσ.2.1 _ (mem_UJset_of_mem_Kset_divisor hθ) ((x : H) - y)`. Rewrite `h2` using `[map_sub, h1, sub_self, norm_zero]`. Conclude with `Subtype.ext (sub_eq_zero.mp (norm_eq_zero.mp h2.symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfs : Function.Surjective f` using `LinearMap.injective_iff_surjective.mp hfi`. Establish `key : S.starProjection (σ (Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)) w) = σ (Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)) (S.starProjection w)`. Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hSt _ (by rw [Submodule.starProjection_apply]; exact Submodule.coe_mem _))` to reduce the goal to its premises. Introduce `y hy`. Take `⟨y', hy'⟩` from `hfs ⟨y, hy⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy'' : σ (Matrix.diagonal fun a => Complex.exp ((θ a : ℂ) * Complex.I)) (y' : H) = y` using `congrArg Subtype.val hy'`. Rewrite using `[← hy'', ← map_sub, inner_rep hσ hθ]`. Conclude with `S.starProjection_inner_eq_zero w y' y'.2`. Rewrite using `[← key, hw', map_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isWtOn_proj (hσ : IsURepOn (UJset ε) σ) (S : Submodule ℂ H) [FiniteDimensional ℂ S] (hS : IsKStableOn ε σ S)
     {μ : Fin n → ℝ} {w : H} (hw : IsWtOn (Formalism.REAL.Kset ε) σ μ w) :
@@ -105,11 +103,11 @@ theorem isWtOn_proj (hσ : IsURepOn (UJset ε) σ) (S : Submodule ℂ H) [Finite
   rw [← key, hw', map_smul]
 
 /- English proof (translation)
-Establish `hle : sSup {S | IsKTypeOf ε σ Λ S} ≤ (ℂ ∙ w)ᗮ`. Apply `sSup_le` to reduce the goal to its premises. Introduce `S hS x hx`. Take `⟨hfd, hst, -, -, hmax⟩` from `hS`. Use `haveI := hfd`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp` using `isWtOn_proj hσ S hst hw`. Rewrite using `[Submodule.mem_orthogonal_singleton_iff_inner_right]`. Distinguish the cases in `h0 : S.starProjection w = 0`. Establish `h3` using `S.starProjection_inner_eq_zero w x hx`. Rewrite `h3` using `[h0, sub_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (hmax μ _ (by rw [Submodule.starProjection_apply]; exact Submodule.coe_mem _) h0 hp) hμ`. Introduce `x hx`. Conclude with `Submodule.mem_orthogonal_singleton_iff_inner_right.mp (hle hx)`.
+A detailed English derivation is pending.
 -/
 theorem orth_of_not_cdom (hσ : IsURepOn (UJset ε) σ) {Λ μ : Fin n → ℝ} {w : H}
     (hw : IsWtOn (Formalism.REAL.Kset ε) σ μ w) (hμ : ¬ CDom ε μ Λ) :
@@ -129,9 +127,7 @@ theorem orth_of_not_cdom (hσ : IsURepOn (UJset ε) σ) {Λ μ : Fin n → ℝ} 
   exact Submodule.mem_orthogonal_singleton_iff_inner_right.mp (hle hx)
 
 /- English proof (translation)
-Introduce `g hg v hv`. Establish `hle : sSup {S | IsKTypeOf ε σ Λ S} ≤ (sSup {S | IsKTypeOf ε σ Λ S}).comap (σ g : H →ₗ[ℂ] H)`. Apply `sSup_le` to reduce the goal to its premises. Introduce `S hS x hx`. Conclude with `(le_sSup hS : S ≤ sSup {S | IsKTypeOf ε σ Λ S}) (hS.2.1 g hg x hx)`.
-
-Conclude with `hle hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem stable_sSup {Λ : Fin n → ℝ} : IsKStableOn ε σ (sSup {S | IsKTypeOf ε σ Λ S}) := by
   intro g hg v hv
@@ -143,24 +139,24 @@ theorem stable_sSup {Λ : Fin n → ℝ} : IsKStableOn ε σ (sSup {S | IsKTypeO
   exact hle hv
 
 /- English proof (translation)
-Simplify using `[Formalism.REAL.root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sum_index_mul_root_eq_sub (x y : Fin n) :
     ∑ i : Fin n, ((i : ℕ) : ℝ) * Formalism.REAL.root x y i = ((x : ℕ) : ℝ) - ((y : ℕ) : ℝ) := by
   simp [Formalism.REAL.root, mul_sub, Finset.sum_sub_distrib, Pi.single_apply]
 
 /- English proof (translation)
-Introduce and unpack `⟨k, hk, heq⟩`. Establish `key` using `congrArg (fun x : Fin n → ℝ => ∑ i : Fin n, ((i : ℕ) : ℝ) * x i) heq`. Establish `lhs : ∑ i : Fin n, ((i : ℕ) : ℝ) * (Λ - (Λ + Formalism.REAL.root a c)) i = ((c : ℕ) : ℝ) - ((a : ℕ) : ℝ)`. Establish `e : ∀ i, (Λ - (Λ + Formalism.REAL.root a c)) i = -(Formalism.REAL.root a c i)` using `fun i => by simp`. Simplify using `only [e, mul_neg, Finset.sum_neg_distrib, sum_index_mul_root_eq_sub]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `rhs : ∑ i : Fin n, ((i : ℕ) : ℝ) * (∑ x, ∑ y, (k x y : ℝ) • Formalism.REAL.root x y) i = ∑ x, ∑ y, (k x y : ℝ) * (((x : ℕ) : ℝ) - ((y : ℕ) : ℝ))`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Rewrite using `[← sum_index_mul_root_eq_sub, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Establish `hle : ∑ x, ∑ y, (k x y : ℝ) * (((x : ℕ) : ℝ) - ((y : ℕ) : ℝ)) ≤ 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Finset.sum_nonpos` to reduce the goal to its premises. Introduce `x _`. Apply `Finset.sum_nonpos` to reduce the goal to its premises. Introduce `y _`. Distinguish the cases in `h0 : k x y = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Establish `h1 : (x : ℕ) < (y : ℕ)` using `(hk x y h0).1`. Establish `h2 : ((x : ℕ) : ℝ) < ((y : ℕ) : ℝ)` using `by exact_mod_cast h1`. Establish `h3 : (0 : ℝ) ≤ (k x y : ℝ)` using `Nat.cast_nonneg _`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hca : ((a : ℕ) : ℝ) < ((c : ℕ) : ℝ)` using `by exact_mod_cast (show (a : ℕ) < (c : ℕ) from h)`. Rewrite `key` using `[lhs, rhs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem not_cdom (Λ : Fin n → ℝ) {a c : Fin n} (h : a < c) :
     ¬ CDom ε (Λ + Formalism.REAL.root a c) Λ := by
@@ -195,11 +191,11 @@ theorem not_cdom (Λ : Fin n → ℝ) {a c : Fin n} (h : a < c) :
   linarith
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, ← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, h1, star_trivial, smul_neg, ← Matrix.exp_add_of_commute (-(t • X)) (t • X) ((Commute.refl _).neg_left), neg_add_cancel]`. Conclude with `NormedSpace.exp_zero`. Set `U : (Mt n)ˣ` to `⟨Formalism.REAL.Jm ε, Formalism.REAL.Jm ε, Formalism.REAL.Jm_mul_self ε, Formalism.REAL.Jm_mul_self ε⟩`. Establish `h3 : Formalism.REAL.Jm ε * (t • X) * Formalism.REAL.Jm ε = t • X`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, ← h2.eq, Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one]`. Establish `h4` using `Matrix.exp_units_conj U (t • X)`. Express the relevant statement in the definitionally equal form `NormedSpace.exp (Formalism.REAL.Jm ε * (t • X) * Formalism.REAL.Jm ε) = Formalism.REAL.Jm ε * NormedSpace.exp (t • X) * Formalism.REAL.Jm ε at h4`. Rewrite `h4` using `[h3]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem exp_mem_kset {X : Mt n} (h1 : Xᴴ = -X) (h2 : Commute X (Formalism.REAL.Jm ε)) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ Formalism.REAL.Kset ε := by
@@ -221,9 +217,9 @@ theorem exp_mem_kset {X : Mt n} (h1 : Xᴴ = -X) (h2 : Commute X (Formalism.REAL
         rw [Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hz : ∀ t : ℝ, ⟪w, σ (NormedSpace.exp (t • X)) v⟫_ℂ = 0` using `fun t => hw _ (hS _ (exp_mem_kset h1 h2 t) v hv)`. Unfold `dRep`. Distinguish the cases in `hd : DifferentiableAt ℝ (fun t : ℝ => σ (NormedSpace.exp (t • X)) v) 0`. Establish `h3` using `((innerSL ℂ w).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hd.hasDerivAt`. Establish `h5 : HasDerivAt (fun _ : ℝ => (0 : ℂ)) (((innerSL ℂ w).restrictScalars ℝ) (deriv (fun t : ℝ => σ (NormedSpace.exp (t • X)) v) 0)) 0` using `h3.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => by simp [hz t])`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h6` using `h5.unique (hasDerivAt_const (0 : ℝ) (0 : ℂ))`. Simplify using `using h6`. Rewrite using `[deriv_zero_of_not_differentiableAt hd, inner_zero_right]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_dRep {S : Submodule ℂ H} (hS : IsKStableOn ε σ S) {w v : H} (hw : ∀ x ∈ S, ⟪w, x⟫_ℂ = 0) (hv : v ∈ S)
     {X : Mt n} (h1 : Xᴴ = -X) (h2 : Commute X (Formalism.REAL.Jm ε)) : ⟪w, dRep σ X v⟫_ℂ = 0 := by
@@ -240,16 +236,16 @@ theorem inner_dRep {S : Submodule ℂ H} (hS : IsKStableOn ε σ S) {w v : H} (h
   · rw [deriv_zero_of_not_differentiableAt hd, inner_zero_right]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (Formalism.REAL.Jm_mul_self ε)`.
+A detailed English derivation is pending.
 -/
 theorem Jm_inv : (Formalism.REAL.Jm ε)⁻¹ = Formalism.REAL.Jm ε := Matrix.inv_eq_left_inv (Formalism.REAL.Jm_mul_self ε)
 
 /- English proof (translation)
-Use `show Matrix.single a c (1 : ℂ) * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * Matrix.single a c (1 : ℂ)`. Unfold `Formalism.REAL.Jm`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [Matrix.single, Matrix.of_apply]`.
+Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : a = i`. Distinguish the cases in `hj : c = j`. Substitute `hi hj` using the available equality. Simplify using `[h]`. Simplify using `[hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hi]`.
+A detailed English derivation is pending.
 -/
 theorem commute_single {a c : Fin n} (h : ε a = ε c) : Commute (Matrix.single a c (1 : ℂ)) (Formalism.REAL.Jm ε) := by
   show Matrix.single a c (1 : ℂ) * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * Matrix.single a c (1 : ℂ)
@@ -264,7 +260,7 @@ theorem commute_single {a c : Fin n} (h : ε a = ε c) : Commute (Matrix.single 
   · simp [hi]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.conjTranspose_apply, Matrix.single, Matrix.of_apply]`. Distinguish the cases in `h : c = i ∧ a = j`. Rewrite using `[if_pos ⟨h.2, h.1⟩, if_pos h, star_one]`. Rewrite using `[if_neg (fun h' => h ⟨h'.2, h'.1⟩), if_neg h, star_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem single_ct_lemma (a c : Fin n) : (Matrix.single a c (1 : ℂ))ᴴ = Matrix.single c a 1 := by
   ext i j
@@ -274,7 +270,7 @@ private theorem single_ct_lemma (a c : Fin n) : (Matrix.single a c (1 : ℂ))ᴴ
   · rw [if_neg (fun h' => h ⟨h'.2, h'.1⟩), if_neg h, star_zero]
 
 /- English proof (translation)
-Unfold `conjH`. Rewrite using `[Jm_inv, single_ct_lemma, Matrix.mul_assoc, (commute_single h.symm).eq, ← Matrix.mul_assoc, Formalism.REAL.Jm_mul_self, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem conjH_single {a c : Fin n} (h : ε a = ε c) :
     conjH (Formalism.REAL.Jm ε) (Matrix.single a c 1) = -Matrix.single c a 1 := by
@@ -288,17 +284,17 @@ Simplify using the standard rewrite rules.
 private theorem star_one_div_two : star (1 / 2 : ℂ) = 1 / 2 := by simp
 
 /- English proof (translation)
-Rewrite using `[Complex.star_def, map_div₀, map_one, map_mul, Complex.conj_I, map_ofNat, mul_neg, div_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem star_one_div_two_mul_I : star (1 / (2 * Complex.I)) = -(1 / (2 * Complex.I)) := by
   rw [Complex.star_def, map_div₀, map_one, map_mul, Complex.conj_I, map_ofNat, mul_neg, div_neg]
 
 /- English proof (translation)
-Unfold `dRepC`. Rewrite using `[conjH_single h]`. Establish `hc` using `commute_single (ε := ε) h`. Establish `hc'` using `commute_single (ε := ε) h.symm`. Establish `k1 : ((1 / 2 : ℂ) • (Matrix.single a c (1 : ℂ) + -Matrix.single c a 1))ᴴ = -((1 / 2 : ℂ) • (Matrix.single a c (1 : ℂ) + -Matrix.single c a 1))`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_add, Matrix.conjTranspose_neg, single_ct_lemma, single_ct_lemma, star_one_div_two, ← smul_neg]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `k2 : ((1 / (2 * Complex.I)) • (Matrix.single a c (1 : ℂ) - -Matrix.single c a 1))ᴴ = -((1 / (2 * Complex.I)) • (Matrix.single a c (1 : ℂ) - -Matrix.single c a 1))`. Rewrite using `[Matrix.conjTranspose_smul, Matrix.conjTranspose_sub, Matrix.conjTranspose_neg, single_ct_lemma, single_ct_lemma, star_one_div_two_mul_I, neg_smul, sub_neg_eq_add, sub_neg_eq_add, add_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `c1 : Commute ((1 / 2 : ℂ) • (Matrix.single a c (1 : ℂ) + -Matrix.single c a 1)) (Formalism.REAL.Jm ε)` using `(hc.add_left hc'.neg_left).smul_left _`. Establish `c2 : Commute ((1 / (2 * Complex.I)) • (Matrix.single a c (1 : ℂ) - -Matrix.single c a 1)) (Formalism.REAL.Jm ε)` using `(hc.sub_left hc'.neg_left).smul_left _`. Rewrite using `[inner_add_right, inner_smul_right, inner_dRep hS hw hv k1 c1, inner_dRep hS hw hv k2 c2, mul_zero, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_dRepC {S : Submodule ℂ H} (hS : IsKStableOn ε σ S) {w v : H} (hw : ∀ x ∈ S, ⟪w, x⟫_ℂ = 0) (hv : v ∈ S)
     {a c : Fin n} (h : ε a = ε c) : ⟪w, dRepC (Formalism.REAL.Jm ε) σ (Matrix.single a c 1) v⟫_ℂ = 0 := by
@@ -323,25 +319,25 @@ theorem inner_dRepC {S : Submodule ℂ H} (hS : IsKStableOn ε σ S) {w v : H} (
   rw [inner_add_right, inner_smul_right, inner_dRep hS hw hv k1 c1, inner_dRep hS hw hv k2 c2, mul_zero, add_zero]
 
 /- English proof (translation)
-Unfold `dRepC`. Rewrite using `[conjH_single rfl]`. Establish `e1 : (1 / 2 : ℂ) • (Matrix.single a a (1 : ℂ) + -Matrix.single a a 1) = 0` using `by simp`. Establish `e2 : (1 / (2 * Complex.I)) • (Matrix.single a a (1 : ℂ) - -Matrix.single a a 1) = (-Complex.I) • Matrix.single a a 1`. Establish `hc2 : (1 / (2 * Complex.I)) * 2 = -Complex.I`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[one_div, mul_inv, Complex.inv_I]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sub_neg_eq_add, ← two_smul ℂ, smul_smul, hc2]`. Rewrite using `[e1, e2]`. Establish `d0 : dRep σ (0 : Mt n) v = 0` using `by unfold dRep; simp`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[d0, zero_add]`. Establish `hskew : ((-Complex.I) • Matrix.single a a (1 : ℂ))ᴴ = -((-Complex.I) • Matrix.single a a (1 : ℂ))`. Rewrite using `[Matrix.conjTranspose_smul, single_ct_lemma, Complex.star_def, map_neg, Complex.conj_I]`. Simplify using `only [neg_smul, neg_neg]`. Establish `hcomm : Commute ((-Complex.I) • Matrix.single a a (1 : ℂ)) (Formalism.REAL.Jm ε)` using `(commute_single rfl).smul_left _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hexp : ∀ t : ℝ, NormedSpace.exp (t • ((-Complex.I) • Matrix.single a a (1 : ℂ))) = Matrix.diagonal (fun b => Complex.exp (((if b = a then -t else 0 : ℝ) : ℂ) * Complex.I))`. Introduce `t`. Establish `hs : t • ((-Complex.I) • Matrix.single a a (1 : ℂ)) = Matrix.diagonal (fun b => (((if b = a then -t else 0 : ℝ)) : ℂ) * Complex.I)`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`. Distinguish the cases in `hia : i = a`. Apply the tactic sequence `subst hia; simp [Matrix.single, Complex.real_smul] <;> ring`. Simplify using `[Matrix.single, hia, Ne.symm hia]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.diagonal_apply_ne _ hij]`. Simplify using `only [Matrix.smul_apply, Matrix.single, Matrix.of_apply]`. Rewrite using `[if_neg (fun h' => hij (h'.1.symm.trans h'.2))]`. Simplify using the standard rewrite rules. Rewrite using `[hs, Matrix.exp_diagonal]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `b`. Rewrite using `[Pi.coe_exp]`. Conclude with `(congrFun Complex.exp_eq_exp_ℂ _).symm`. Establish `hvt7 : ∀ t : ℝ, σ (NormedSpace.exp (t • ((-Complex.I) • Matrix.single a a (1 : ℂ)))) v = Complex.exp ((((-(μ a * t)) : ℝ) : ℂ) * Complex.I) • v`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Establish `hm` using `exp_mem_kset (ε := ε) hskew hcomm t`. Rewrite `hm`, the goal using `[hexp t]`. Establish `hs2 : (∑ b, μ b * (if b = a then -t else 0)) = -(μ a * t)`. Simplify using `[mul_ite, Finset.sum_ite_eq']`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv _ hm, hs2]`. Unfold `dRep`. Repeatedly rewrite using `[hvt7]`. Establish `hd : HasDerivAt (fun t : ℝ => Complex.exp ((((-(μ a * t)) : ℝ) : ℂ) * Complex.I) • v) _ 0` using `((((hasDerivAt_id' (0 : ℝ)).const_mul (μ a)).neg.ofReal_comp).mul_const Complex.I).cexp.smul_const v`. Rewrite using `[hd.deriv, smul_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `first`. Consider the case `(simp only [mul_zero, neg_zero, Complex.ofReal_zero, zero_mul, Complex.exp_zero, one_mul, mul_one, Complex.ofReal_neg, Complex.ofReal_mul, Complex.ofReal_one]`. Take the linear combination `(-(μ a : ℂ)) * Complex.I_mul_I)`. Consider the case `simp [Complex.ext_iff]`.
+Treat this case separately. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem dRepC_diag (hσ : IsURepOn (UJset ε) σ) {μ : Fin n → ℝ} {v : H} (hv : IsWtOn (Formalism.REAL.Kset ε) σ μ v) (a : Fin n) :
     dRepC (Formalism.REAL.Jm ε) σ (Matrix.single a a 1) v = ((μ a : ℝ) : ℂ) • v := by
@@ -404,7 +400,7 @@ theorem dRepC_diag (hσ : IsURepOn (UJset ε) σ) {μ : Fin n → ℝ} {v : H} (
     | simp [Complex.ext_iff]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg Matrix.det (Formalism.REAL.Jm_mul_self ε)`. Rewrite `h1` using `[Matrix.det_mul, h, zero_mul, Matrix.det_one]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_Jm : (Formalism.REAL.Jm ε).det ≠ 0 := by
   intro h
@@ -413,21 +409,21 @@ theorem det_Jm : (Formalism.REAL.Jm ε).det ≠ 0 := by
   exact zero_ne_one h1
 
 /- English proof (translation)
-Establish `h0 : SmoothVec (lieH (Formalism.REAL.Jm ε)) σ (0 : H)` using `fun k Xs _ => by`. Simplify using `only [map_zero]`. Conclude with `contDiff_const`. Take `⟨hlin, -, hequiv, -⟩` from `GlobalTheory.T.complexifiedDerivedAction_isLieAction n (Formalism.REAL.Jm ε) H σ (Formalism.REAL.Jm_conjTranspose ε) det_Jm hσ v 0 hs h0`. Introduce `θ hθ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hg : Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)) ∈ Formalism.QuantumDeterminants.UH (Formalism.REAL.Jm ε)` using `mem_UJset_of_mem_Kset_divisor hθ`. Establish `htinv : (Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)))⁻¹ = Matrix.diagonal (fun b => Complex.exp (-((θ b : ℂ) * Complex.I)))`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `b`. Rewrite using `[← Complex.exp_add, add_neg_cancel, Complex.exp_zero]`. Establish `hconj : Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)) * Matrix.single a c 1 * (Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)))⁻¹ = (Complex.exp ((θ a : ℂ) * Complex.I) * Complex.exp (-((θ c : ℂ) * Complex.I))) • Matrix.single a c (1 : ℂ)`. Rewrite using `[htinv]`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [Matrix.smul_apply, Matrix.single, Matrix.of_apply, smul_eq_mul]`. Distinguish the cases in `hij : a = i ∧ c = j`. Take `⟨rfl, rfl⟩` from `hij`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hij]`. Rewrite using `[hequiv _ hg, hconj, hv θ hθ]`. Establish `s1 : ∀ (α β : ℂ), dRepC (Formalism.REAL.Jm ε) σ (α • Matrix.single a c (1 : ℂ)) (β • v) = β • dRepC (Formalism.REAL.Jm ε) σ (α • Matrix.single a c (1 : ℂ)) v`. Introduce `α β`. Establish `h1` using `(hlin β (α • Matrix.single a c (1 : ℂ)) 0).2.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h1` using `[add_zero, dRepC_zero_right, add_zero]`. Then use the resulting hypothesis. Establish `s2 : ∀ α : ℂ, dRepC (Formalism.REAL.Jm ε) σ (α • Matrix.single a c (1 : ℂ)) v = α • dRepC (Formalism.REAL.Jm ε) σ (Matrix.single a c (1 : ℂ)) v`. Introduce `α`. Establish `h1` using `(hlin α (Matrix.single a c (1 : ℂ)) 0).1`. Rewrite `h1` using `[add_zero, dRepC_zero_left, add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hsum : (∑ b, (μ + Formalism.REAL.root a c) b * θ b) = (∑ b, μ b * θ b) + (θ a - θ c)`. Simplify using `[Formalism.REAL.root, add_mul, sub_mul, Finset.sum_add_distrib, Finset.sum_sub_distrib, Pi.single_apply]`. Rewrite using `[s1, s2, smul_smul]`. Use `congr 1`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add, hsum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isWtOn_root [CompleteSpace H] (hσ : IsURepOn (UJset ε) σ) {μ : Fin n → ℝ} {v : H}
     (hs : SmoothVec (lieH (Formalism.REAL.Jm ε)) σ v) (hv : IsWtOn (Formalism.REAL.Kset ε) σ μ v) (a c : Fin n) :
@@ -478,43 +474,41 @@ theorem isWtOn_root [CompleteSpace H] (hσ : IsURepOn (UJset ε) σ) {μ : Fin n
   ring
 
 /- English proof (translation)
-Introduce `n ε lam H _ _ σ hDS v hvL hs hv`. Take `⟨hC, -, hσ, -⟩` from `hDS`. Use `haveI := hC`. Use `⟨fun a => dRepC_diag hσ hv a, ?_⟩` and prove the remaining obligations. Introduce `a c hac hlt`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Use `set s := revNeg ε with hs_def`. Set `P : Mt n` to `Matrix.of fun i j => if s j = i then (1 : ℂ) else 0`. Set `Q : Mt n` to `Matrix.of fun i j => if s i = j then (1 : ℂ) else 0`. Establish `hPQ : Pᴴ = Q`. Use extensionality with `i j`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [Matrix.conjTranspose_apply, P, Q, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `E1 : ∀ (M : Mt n) (i j : Fin n), (P * M) i j = M (s.symm i) j`. Introduce `M i j`. Simplify using `[Matrix.mul_apply, P, Equiv.apply_eq_iff_eq_symm_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `E2 : ∀ (M : Mt n) (i j : Fin n), (M * Q) i j = M i (s.symm j)`. Introduce `M i j`. Simplify using `[Matrix.mul_apply, Q, Equiv.apply_eq_iff_eq_symm_apply]`. Establish `E3 : ∀ (M : Mt n) (i j : Fin n), (M * P) i j = M i (s j)`. Introduce `M i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[Matrix.mul_apply, P]`. Establish `E4 : ∀ (M : Mt n) (i j : Fin n), (Q * M) i j = M (s i) j`. Introduce `M i j`. Simplify using `[Matrix.mul_apply, Q]`. Establish `hQP : Q * P = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[E4]`. Simplify using `only [P, Matrix.of_apply, Matrix.one_apply, s.injective.eq_iff]`. Distinguish the cases in `hij : i = j`. Simplify using `[hij]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hij, Ne.symm hij]`. Establish `hPQ1 : P * Q = 1`. Use extensionality with `i j`. Rewrite using `[E1]`. Simplify using `[Q, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hPK : P ∈ Formalism.REAL.Kset ε`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mem_unitaryGroup_iff', Matrix.star_eq_conjTranspose, hPQ, hQP]`. Unfold `Formalism.REAL.Jm`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Simplify using `only [P, Matrix.of_apply]`. Distinguish the cases in `hij : s j = i`. Substitute `hij` using the available equality. Simplify using `[hs_def, eps_revNeg]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hij]`. Establish `hPU : P ∈ UJset ε` using `mem_UJset_of_mem_Kset_divisor hPK`. Establish `hPinv : P⁻¹ = Q` using `by rw [← hPQ]; exact Matrix.inv_eq_left_inv (by rw [hPQ, hQP])`. Establish `hconjP : P * Matrix.single a c (1 : ℂ) * P⁻¹ = Matrix.single (s a) (s c) 1`. Rewrite using `[hPinv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[E2, E1]`. Simplify using `[Matrix.single, Equiv.eq_symm_apply]`. Establish `hwtP : ∀ (ν : Fin n → ℝ) (x : H), IsWtOn (Formalism.REAL.Kset ε) σ ν x → IsWtOn (Formalism.REAL.Kset ε) σ (fun b => ν (s.symm b)) (σ P x)`. Introduce `ν x hx θ hθ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hD' : Q * Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)) * P = Matrix.diagonal (fun b => Complex.exp ((θ (s b) : ℂ) * Complex.I))`. Use extensionality with `i j`. Rewrite using `[E3, E4]`. Simplify using `[Matrix.diagonal_apply, s.injective.eq_iff]`. Establish `hmulDP` using `hσ.1.2 _ (mem_UJset_of_mem_Kset_divisor hθ) P hPU`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmulP` using `hσ.1.2 P hPU (Q * Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)) * P) (by rw [hD']; exact mem_UJset_of_mem_Kset_divisor (diagonal_exp_mem_Kset _))`. Establish `hPD : P * (Q * Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)) * P) = Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)) * P`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hPQ1, Matrix.one_mul]`. Establish `hsumP : ∑ b, ν b * θ (s b) = ∑ b, ν (s.symm b) * θ b`. Rewrite using `[← Equiv.sum_comp s (fun c => ν (s.symm c) * θ c)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Equiv.symm_apply_apply]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmulDP]`. Both sides reduce to the same expression. Use `_ = σ P (σ (Q * Matrix.diagonal (fun b => Complex.exp ((θ b : ℂ) * Complex.I)) * P) x) := by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hPD, hmulP]`. Both sides reduce to the same expression. Use `_ = Complex.exp (((∑ b, ν (s.symm b) * θ b : ℝ) : ℂ) * Complex.I) • σ P x := by`. Rewrite using `[hD', hx (fun b => θ (s b)) (diagonal_exp_mem_Kset _), map_smul, hsumP]`. Establish `h0 : SmoothVec (lieH (Formalism.REAL.Jm ε)) σ (0 : H)` using `fun k Xs _ => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_zero]`. Conclude with `contDiff_const`. Take `⟨-, -, hequiv, -⟩` from `GlobalTheory.T.complexifiedDerivedAction_isLieAction n (Formalism.REAL.Jm ε) H σ (Formalism.REAL.Jm_conjTranspose ε) det_Jm hσ v 0 hs h0`. Establish `hw2` using `hwtP _ _ (isWtOn_root hσ hs hv a c)`. Establish `hfun : (fun b => ((fun a => Formalism.QuantumDeterminants.lowK ε lam (s a)) + Formalism.REAL.root a c) (s.symm b)) = Formalism.QuantumDeterminants.lowK ε lam + Formalism.REAL.root (s a) (s c)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `b`. Simplify using `[Formalism.REAL.root, Pi.single_apply, Equiv.symm_apply_eq]`. Rewrite `hw2` using `[hfun]`. Establish `horth` using `orth_of_not_cdom hσ hw2 (not_cdom (ε := ε) _ hlt)`. Establish `hPv : σ P v ∈ lowKSub ε lam σ` using `stable_sSup P hPK v hvL`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq : σ P (dRepC (Formalism.REAL.Jm ε) σ (Matrix.single a c 1) v) = dRepC (Formalism.REAL.Jm ε) σ (Matrix.single (s a) (s c) 1) (σ P v)`. Rewrite using `[hequiv P hPU, hconjP]`. Rewrite `horth` using `[heq]`. Establish `hε' : ε (s a) = ε (s c)` using `by simp only [hs_def, eps_revNeg]; exact hac`. Establish `hzero` using `inner_dRepC (stable_sSup (Λ := Formalism.QuantumDeterminants.lowK ε lam)) horth hPv hε'`.
-
-Establish `hD0` using `inner_self_eq_zero.mp hzero`. Establish `hPw : σ P (dRepC (Formalism.REAL.Jm ε) σ (Matrix.single a c 1) v) = 0` using `heq.trans hD0`. Establish `hn` using `hσ.2.1 P hPU (dRepC (Formalism.REAL.Jm ε) σ (Matrix.single a c 1) v)`. Rewrite `hn` using `[hPw, norm_zero]`. Conclude with `norm_eq_zero.mp hn.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extremal_killed : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Mt n → (H →L[ℂ] H)), IsDS ε lam σ → ∀ v ∈ lowKSub ε lam σ, SmoothVec (lieH (Formalism.REAL.Jm ε)) σ v → IsWtOn (Formalism.REAL.Kset ε) σ (fun a => Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a)) v → (∀ a, dRepC (Formalism.REAL.Jm ε) σ (Matrix.single a a 1) v = ((Formalism.QuantumDeterminants.lowK ε lam (revNeg ε a) : ℝ) : ℂ) • v) ∧ ∀ a c : Fin n, ε a = ε c → revNeg ε a < revNeg ε c → dRepC (Formalism.REAL.Jm ε) σ (Matrix.single a c 1) v = 0 := by
   intro n ε lam H _ _ σ hDS v hvL hs hv

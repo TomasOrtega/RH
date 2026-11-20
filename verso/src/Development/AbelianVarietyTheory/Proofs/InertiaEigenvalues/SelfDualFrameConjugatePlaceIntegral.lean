@@ -25,13 +25,13 @@ namespace GlobalTheory.ConjInt
 open GlobalTheory.StdFrames GlobalTheory.AdIsom GlobalTheory.IdemSupport
 
 /- English proof (translation)
-Introduce `D V β Λ N hSD g Q h a b`. Take `⟨hGi, U', hU'i, hU'⟩` from `unimod_of_isSD hSD`. Establish `hX : Formalism.UG.cT (sg D) (finE V g).val * GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.ratM V.gram * (finE V g).val = GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.ratM V.gram` using `GlobalTheory.LevSplit.finE_mem_UA V g`. Establish `hYsub` using `GlobalTheory.ConjLt.conj_sub_one (sg D) β (finE V g) _ U' hX hU'`. Establish `hY : (β⁻¹ * finE V g * β).val = U' * Formalism.UG.cT (sg D) (β⁻¹ * (finE V g)⁻¹ * β).val * (Formalism.UG.cT (sg D) β.val * GlobalTheory.IndefiniteRowSideFullHecke.ChainMatrices.ratM V.gram * β.val)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hYsub` using `[Matrix.mul_sub, Matrix.mul_one, Matrix.sub_mul, hU']`. Conclude with `sub_left_inj.1 hYsub`. Establish `hM : ∀ i j, Valued.v (cpt (GlobalTheory.IdemSupport.cP Q) ((Formalism.UG.cT (sg D) (β⁻¹ * (finE V g)⁻¹ * β).val) i j)) ≤ 1`. Introduce `i j`. Conclude with `(cpt_cjA_le_iff Q _).2 (h j i)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hint : ∀ x ∈ GlobalTheory.StdFrames.OA D, Valued.v (cpt (GlobalTheory.IdemSupport.cP Q) x) ≤ 1` using `fun x hx => (mem_OA x).1 hx (GlobalTheory.IdemSupport.cP Q)`. Rewrite using `[hY, Matrix.mul_apply, map_sum]`. Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Valuation.map_mul, Matrix.mul_apply, map_sum]`. Use `mul_le_one' ?_ (hint _ (hGi j b))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_sum_le _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Valuation.map_mul]`. Conclude with `mul_le_one' (hint _ (hU'i a i)) (hM i j)`.
+A detailed English derivation is pending.
 -/
 theorem frame_mat_le_one : ∀ (D : D7) (V : HSp D) (β : GL (Fin V.rank) (EAf D)) (Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) (N : ℕ), IsSDFrame V β Λ N → ∀ (g : GA D V) (Q : Formalism.L2.DIV.Pl D.host.E), (∀ a b : Fin V.rank, Valued.v (GlobalTheory.StdFrames.cpt Q ((β⁻¹ * (finE V g)⁻¹ * β).val a b)) ≤ 1) → ∀ a b : Fin V.rank, Valued.v (GlobalTheory.StdFrames.cpt (GlobalTheory.IdemSupport.cP Q) ((β⁻¹ * finE V g * β).val a b)) ≤ 1 := by
   intro D V β Λ N hSD g Q h a b

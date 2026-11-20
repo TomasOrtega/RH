@@ -108,7 +108,7 @@ end Banach
 variable {ε : Fin n → Bool} {σ : Mx n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-The claim follows from `IsUnit.of_mul_eq_one _ (Jm_mul_self ε)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_Jm (ε : Fin n → Bool) : IsUnit (Jm ε) := IsUnit.of_mul_eq_one _ (Jm_mul_self ε)
 
@@ -128,19 +128,19 @@ Both sides reduce to the same expression.
 theorem UJset_eq (ε : Fin n → Bool) : UJset ε = Formalism.QuantumDeterminants.UH (Jm ε) := rfl
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem sm_iff {w : H} : Sm ε σ w ↔ w ∈ smooth (Jm ε) σ := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `(1 : UJ ε).2`.
+A detailed English derivation is pending.
 -/
 theorem one_mem_UJ (ε : Fin n → Bool) : (1 : Mx n) ∈ UJset ε := (1 : UJ ε).2
 
 /- English proof (translation)
-Use `GlobalTheory.GardingVec.list_prod_mem (G := Jm ε) [a, b] (by` as an intermediate fact. Introduce `y hy`. Simplify using `only [List.mem_cons, List.not_mem_nil, or_false] at hy`. Break down `hy with rfl | rfl` into its components or cases. Use `exacts [ha, hb])`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[List.prod_cons, List.prod_singleton]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_UJ {a b : Mx n} (ha : a ∈ UJset ε) (hb : b ∈ UJset ε) : a * b ∈ UJset ε := by
   have := GlobalTheory.GardingVec.list_prod_mem (G := Jm ε) [a, b] (by
@@ -151,32 +151,30 @@ theorem mul_mem_UJ {a b : Mx n} (ha : a ∈ UJset ε) (hb : b ∈ UJset ε) : a 
   rwa [List.prod_cons, List.prod_singleton] at this
 
 /- English proof (translation)
-The claim follows from `isUnit_of_mem (isUnit_Jm ε) hg`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_of_UJ {g : Mx n} (hg : g ∈ UJset ε) : IsUnit g := isUnit_of_mem (isUnit_Jm ε) hg
 
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv _ ((isUnit_iff_isUnit_det _).1 (isUnit_of_UJ hg))`.
+A detailed English derivation is pending.
 -/
 theorem mul_inv_UJ {g : Mx n} (hg : g ∈ UJset ε) : g * g⁻¹ = 1 :=
   Matrix.mul_nonsing_inv _ ((isUnit_iff_isUnit_det _).1 (isUnit_of_UJ hg))
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 (isUnit_of_UJ hg))`.
+A detailed English derivation is pending.
 -/
 theorem inv_mul_UJ {g : Mx n} (hg : g ∈ UJset ε) : g⁻¹ * g = 1 :=
   Matrix.nonsing_inv_mul _ ((isUnit_iff_isUnit_det _).1 (isUnit_of_UJ hg))
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (indefinite_unitary_inv_closed n ε g hg).1`.
+A detailed English derivation is pending.
 -/
 theorem inv_eq_UJ {g : Mx n} (hg : g ∈ UJset ε) : g⁻¹ = Jm ε * gᴴ * Jm ε :=
   Matrix.inv_eq_right_inv (indefinite_unitary_inv_closed n ε g hg).1
 
 /- English proof (translation)
-Use `conj_inv_mem (ε := ε) (P := g) (G := Jm ε) (isUnit_of_UJ hg) hg (one_mem_UJ ε)` as an intermediate fact. Establish `e : gᴴ * Jm ε * g = Jm ε` using `hg`. Use `show (g⁻¹)ᴴ * Jm ε * g⁻¹ = Jm ε`. Use `conv_lhs => rw [← e]`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `only [conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = _ := by rw [mul_inv_UJ hg]; simp`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inv_mem_UJ {g : Mx n} (hg : g ∈ UJset ε) : g⁻¹ ∈ UJset ε := by
   have := conj_inv_mem (ε := ε) (P := g) (G := Jm ε) (isUnit_of_UJ hg) hg (one_mem_UJ ε)
@@ -188,23 +186,23 @@ theorem inv_mem_UJ {g : Mx n} (hg : g ∈ UJset ε) : g⁻¹ ∈ UJset ε := by
     _ = _ := by rw [mul_inv_UJ hg]; simp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.GardingVec.exp_mem (isUnit_Jm ε) hX t`.
+A detailed English derivation is pending.
 -/
 theorem exp_mem_UJ {X : Mx n} (hX : X ∈ lieSet ε) (t : ℝ) : NormedSpace.exp (t • X) ∈ UJset ε :=
   GlobalTheory.GardingVec.exp_mem (isUnit_Jm ε) hX t
 
 /- English proof (translation)
-The claim follows from `k.2`.
+A detailed English derivation is pending.
 -/
 theorem toMK_mem_K (k : KG ε) : toMK k ∈ Kset ε := k.2
 
 /- English proof (translation)
-The claim follows from `(maximal_compact_facts n ε).1 k hk`.
+A detailed English derivation is pending.
 -/
 theorem K_le_UJ {k : Mx n} (hk : k ∈ Kset ε) : k ∈ UJset ε := (maximal_compact_facts n ε).1 k hk
 
 /- English proof (translation)
-The claim follows from `(isClosedEmbeddingMatrix n ε).1.continuous.comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toMK (ε : Fin n → Bool) : Continuous fun k : KG ε => toMK k :=
   (isClosedEmbeddingMatrix n ε).1.continuous.comp continuous_subtype_val
@@ -213,20 +211,20 @@ def adInv {g : Mx n} (hg : g ∈ UJset ε) (X : lie (Jm ε)) : lie (Jm ε) :=
   ⟨g⁻¹ * X * g, conj_mem_lie (isUnit_Jm ε) hg X.2⟩
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity`.
+A detailed English derivation is pending.
 -/
 theorem hs_nonneg (g : Mx n) : 0 ≤ hs g := Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => by positivity
 
 /- English proof (translation)
-Unfold `hs`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_hs : Continuous (hs : Mx n → ℝ) := by
   unfold hs; fun_prop
 
 /- English proof (translation)
-Unfold `hs`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm, Finset.mul_sum]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Use `pow_le_pow_left₀ (norm_nonneg _) ?_ 2` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `(norm_sum_le _ _).trans (le_of_eq (by simp))`. Use `_ ≤ _ := Finset.sum_mul_sq_le_sq_mul_sq _ _ _`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hs_mul_le (a b : Mx n) : hs (a * b) ≤ hs a * hs b := by
   unfold hs
@@ -241,13 +239,13 @@ theorem hs_mul_le (a b : Mx n) : hs (a * b) ≤ hs a * hs b := by
     _ ≤ _ := Finset.sum_mul_sq_le_sq_mul_sq _ _ _
 
 /- English proof (translation)
-Use polynomial arithmetic with `[hs_mul_le a b, hs_nonneg a, hs_nonneg b]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem one_add_hs_mul_le (a b : Mx n) : 1 + hs (a * b) ≤ (1 + hs a) * (1 + hs b) := by
   nlinarith [hs_mul_le a b, hs_nonneg a, hs_nonneg b]
 
 /- English proof (translation)
-Establish `hJ` using `(maximal_compact_facts n ε).2.2.1`. Rewrite using `[inv_eq_UJ hg, ((hermitian_small_ball n ε).2 _ _ hJ).1, ((hermitian_small_ball n ε).2 _ _ hJ).2]`. Unfold `hs`. Rewrite using `[Finset.sum_comm]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hs_inv {g : Mx n} (hg : g ∈ UJset ε) : hs g⁻¹ = hs g := by
   have hJ := (maximal_compact_facts n ε).2.2.1
@@ -257,7 +255,7 @@ theorem hs_inv {g : Mx n} (hg : g ∈ UJset ε) : hs g⁻¹ = hs g := by
   simp
 
 /- English proof (translation)
-The claim follows from `List.sum_nonneg fun x hx => by obtain ⟨l, -, rfl⟩ := List.mem_map.1 hx exact norm_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem sobNorm_nonneg (σ : Mx n → (H →L[ℂ] H)) (S : List (List (Mx n))) (w : H) : 0 ≤ sobNorm σ S w :=
   List.sum_nonneg fun x hx => by
@@ -265,14 +263,14 @@ theorem sobNorm_nonneg (σ : Mx n → (H →L[ℂ] H)) (S : List (List (Mx n))) 
     exact norm_nonneg _
 
 /- English proof (translation)
-Simplify using `[sobNorm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sobNorm_append (σ : Mx n → (H →L[ℂ] H)) (S S' : List (List (Mx n))) (w : H) :
     sobNorm σ (S ++ S') w = sobNorm σ S w + sobNorm σ S' w := by
   simp [sobNorm]
 
 /- English proof (translation)
-The claim follows from `List.single_le_sum (fun x hx => by obtain ⟨l, -, rfl⟩ := List.mem_map.1 hx exact norm_nonneg _) _ (List.mem_map.2 ⟨l, hl, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem norm_Dw_le_sobNorm (σ : Mx n → (H →L[ℂ] H)) {S : List (List (Mx n))} {l : List (Mx n)} (hl : l ∈ S) (w : H) :
     ‖Dw σ l w‖ ≤ sobNorm σ S w :=
@@ -281,30 +279,30 @@ theorem norm_Dw_le_sobNorm (σ : Mx n → (H →L[ℂ] H)) {S : List (List (Mx n
     exact norm_nonneg _) _ (List.mem_map.2 ⟨l, hl, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `List.foldr_append`.
+A detailed English derivation is pending.
 -/
 theorem Dw_append (σ : Mx n → (H →L[ℂ] H)) (l l' : List (Mx n)) (w : H) : Dw σ (l ++ l') w = Dw σ l (Dw σ l' w) :=
   List.foldr_append
 
 /- English proof (translation)
-Introduce `l hl` and use `(List.mem_append.1 hl).elim (h l) (h' l)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem words_append {Lie : Set (Mx n)} {S S' : List (List (Mx n))} (h : Words Lie S) (h' : Words Lie S') :
     Words Lie (S ++ S') := fun l hl => (List.mem_append.1 hl).elim (h l) (h' l)
 
 /- English proof (translation)
-Rewrite using `[hσ.1.2 a ha b hb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sigma_mul (hσ : IsURepOn (UJset ε) σ) {a b : Mx n} (ha : a ∈ UJset ε) (hb : b ∈ UJset ε) (w : H) :
     σ (a * b) w = σ a (σ b w) := by rw [hσ.1.2 a ha b hb]; rfl
 
 /- English proof (translation)
-Rewrite using `[hσ.1.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sigma_one (hσ : IsURepOn (UJset ε) σ) (w : H) : σ 1 w = w := by rw [hσ.1.1]; rfl
 
 /- English proof (translation)
-Establish `h` using `LinearIsometry.inner_map_map ⟨(σ g : H →ₗ[ℂ] H), hσ.2.1 _ hg⟩ (σ g⁻¹ x) w`. Establish `e : σ g (σ g⁻¹ x) = x` using `by rw [← sigma_mul hσ hg (inv_mem_UJ hg), mul_inv_UJ hg, sigma_one hσ]`. Rewrite using `[← h]`. Conclude with `congrArg (fun z => ⟪z, σ g w⟫_ℂ) e.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_sigma (hσ : IsURepOn (UJset ε) σ) {g : Mx n} (hg : g ∈ UJset ε) (x w : H) :
     ⟪x, σ g w⟫_ℂ = ⟪σ g⁻¹ x, w⟫_ℂ := by
@@ -314,19 +312,19 @@ theorem inner_sigma (hσ : IsURepOn (UJset ε) σ) {g : Mx n} (hg : g ∈ UJset 
   exact congrArg (fun z => ⟪z, σ g w⟫_ℂ) e.symm
 
 /- English proof (translation)
-The claim follows from `translate_mem (isUnit_Jm ε) hσ hg hw`.
+A detailed English derivation is pending.
 -/
 theorem Sm.translate (hσ : IsURepOn (UJset ε) σ) {w : H} (hw : Sm ε σ w) {g : Mx n} (hg : g ∈ UJset ε) :
     Sm ε σ (σ g w) := translate_mem (isUnit_Jm ε) hσ hg hw
 
 /- English proof (translation)
-The claim follows from `word_mem (isUnit_Jm ε) hσ l hl hw`.
+A detailed English derivation is pending.
 -/
 theorem Sm.word (hσ : IsURepOn (UJset ε) σ) {w : H} (hw : Sm ε σ w) {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ lieSet ε) :
     Sm ε σ (Dw σ l w) := word_mem (isUnit_Jm ε) hσ l hl hw
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_word (isUnit_Jm ε) hσ l hl`. Use `congrArg Subtype.val (L.map_add ⟨x, hx⟩ ⟨y, hy⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_add, hL, hL, hL]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dw_add (hσ : IsURepOn (UJset ε) σ) {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ lieSet ε) {x y : H} (hx : Sm ε σ x)
     (hy : Sm ε σ y) : Dw σ l (x + y) = Dw σ l x + Dw σ l y := by
@@ -336,7 +334,7 @@ theorem Dw_add (hσ : IsURepOn (UJset ε) σ) {l : List (Mx n)} (hl : ∀ X ∈ 
   exact this
 
 /- English proof (translation)
-Take `⟨L, hL⟩` from `exists_word (isUnit_Jm ε) hσ l hl`. Use `congrArg Subtype.val (L.map_smul c ⟨x, hx⟩)` as an intermediate fact. Rewrite `this` using `[Submodule.coe_smul, hL, hL]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Dw_smul (hσ : IsURepOn (UJset ε) σ) {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ lieSet ε) (c : ℂ) {x : H}
     (hx : Sm ε σ x) : Dw σ l (c • x) = c • Dw σ l x := by
@@ -346,7 +344,7 @@ theorem Dw_smul (hσ : IsURepOn (UJset ε) σ) {l : List (Mx n)} (hl : ∀ X ∈
   exact this
 
 /- English proof (translation)
-Rewrite using `[Dw, word_translate (isUnit_Jm ε) hσ hg hw l hl, Dw, List.foldr_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Dw_translate (hσ : IsURepOn (UJset ε) σ) {g : Mx n} (hg : g ∈ UJset ε) {w : H} (hw : Sm ε σ w)
     {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ lieSet ε) :
@@ -354,11 +352,11 @@ theorem Dw_translate (hσ : IsURepOn (UJset ε) σ) {g : Mx n} (hg : g ∈ UJset
   rw [Dw, word_translate (isUnit_Jm ε) hσ hg hw l hl, Dw, List.foldr_map]
 
 /- English proof (translation)
-Proceed by induction on `l generalizing y with`. Consider the case `nil => simp`. Consider the case `cons X l ih`. Establish `hX` using `hl X List.mem_cons_self`. Establish `hl'` using `fun Y hY => hl Y (List.mem_cons_of_mem _ hY)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `inner_dRep (isUnit_Jm ε) hσ hy (hw.word hσ hl') hX`. Rewrite using `[List.reverse_cons, Dw_append, List.length_cons, pow_succ]`. Establish `h2` using `ih hl' (dRep_mem (isUnit_Jm ε) hσ hy hX)`. Use `show ⟪y, dRep σ X (Dw σ l w)⟫_ℂ = _ * ⟪Dw σ l.reverse (dRep σ X y), w⟫_ℂ`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem inner_Dw (hσ : IsURepOn (UJset ε) σ) {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ lieSet ε) {y w : H}
     (hy : Sm ε σ y) (hw : Sm ε σ w) : ⟪y, Dw σ l w⟫_ℂ = (-1) ^ l.length * ⟪Dw σ l.reverse y, w⟫_ℂ := by
@@ -374,9 +372,9 @@ theorem inner_Dw (hσ : IsURepOn (UJset ε) σ) {l : List (Mx n)} (hl : ∀ X �
     rw [h1, h2]; ring
 
 /- English proof (translation)
-Unfold `sobNorm`. Rewrite using `[List.map_map]`. Use `congr 1`. Use `List.map_congr_left fun l hl => ?_` and prove the remaining obligations. Use `show ‖Dw σ l (σ g w)‖ = _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Dw_translate hσ hg hw (hS l hl), hσ.2.1 g hg]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sobNorm_translate (hσ : IsURepOn (UJset ε) σ) {g : Mx n} (hg : g ∈ UJset ε) {w : H} (hw : Sm ε σ w)
     {S : List (List (Mx n))} (hS : Words (lieSet ε) S) :
@@ -389,7 +387,7 @@ theorem sobNorm_translate (hσ : IsURepOn (UJset ε) σ) {g : Mx n} (hg : g ∈ 
   rw [Dw_translate hσ hg hw (hS l hl), hσ.2.1 g hg]; rfl
 
 /- English proof (translation)
-Set `f : smooth (Jm ε) σ →ₗ[ℂ] ℂ` to `{ toFun := fun w => ξ w map_add' := fun x y => h.1 _ _ x.2 y.2 map_smul' := fun c x => h.2.1 c _ x.2 }`. Take `⟨g, hg⟩` from `LinearMap.exists_extend f`. Establish `e : ∀ w, Sm ε σ w → g w = ξ w` using `fun w hw => LinearMap.congr_fun hg ⟨w, hw⟩`. Take `⟨S, C, hS, hC⟩` from `h.2.2`. Conclude with `⟨g, ⟨S, C, hS, fun w hw => by rw [e w hw]; exact hC w hw⟩, e⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SobFun.exists_ext {ξ : H → ℂ} (h : SobFun ε σ ξ) :
     ∃ ℓ : H →ₗ[ℂ] ℂ, Sobolev₂ (lieSet ε) σ ℓ ∧ ∀ w, Sm ε σ w → ℓ w = ξ w := by
@@ -403,15 +401,15 @@ theorem SobFun.exists_ext {ξ : H → ℂ} (h : SobFun ε σ ξ) :
   exact ⟨g, ⟨S, C, hS, fun w hw => by rw [e w hw]; exact hC w hw⟩, e⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ => map_add _ _ _, fun _ _ _ => map_smul _ _ _, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem sobFun_of_sobCont {ℓ : H →ₗ[ℂ] ℂ} (h : Sobolev₂ (lieSet ε) σ ℓ) : SobFun ε σ ℓ :=
   ⟨fun _ _ _ _ => map_add _ _ _, fun _ _ _ => map_smul _ _ _, h⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, S, C, hS, hC⟩` from `h`. Use `⟨fun x y hx hy => by beta_reduce; rw [map_add, h1 _ _ (hx.translate hσ hg) (hy.translate hσ hg)], fun c x hx => by beta_reduce; rw [map_smul, h2 _ _ (hx.translate hσ hg)], S.map fun l => l.map fun X => g⁻¹ * X * g, C, ?_, fun w hw => by rw [← sobNorm_translate hσ hg hw hS]; exact …` and prove the remaining obligations. Introduce `l hl X hX`. Take `⟨l', hl', rfl⟩` from `List.mem_map.1 hl`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.1 hX`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `conj_mem_lie (isUnit_Jm ε) hg (hS l' hl' Y hY)`.
+A detailed English derivation is pending.
 -/
 theorem SobFun.translate (hσ : IsURepOn (UJset ε) σ) {ξ : H → ℂ} (h : SobFun ε σ ξ) {g : Mx n} (hg : g ∈ UJset ε) :
     SobFun ε σ fun w => ξ (σ g w) := by
@@ -425,9 +423,9 @@ theorem SobFun.translate (hσ : IsURepOn (UJset ε) σ) {ξ : H → ℂ} (h : So
   exact conj_mem_lie (isUnit_Jm ε) hg (hS l' hl' Y hY)
 
 /- English proof (translation)
-Take `⟨h1, h2, S, C, hS, hC⟩` from `h`. Use `⟨fun x y hx hy => by beta_reduce; rw [Dw_add hσ hl hx hy, h1 _ _ (hx.word hσ hl) (hy.word hσ hl)], fun c x hx => by beta_reduce; rw [Dw_smul hσ hl c hx, h2 _ _ (hx.word hσ hl)], S.map (· ++ l), C, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Introduce `l₁ hl₁ X hX`. Take `⟨l', hl', rfl⟩` from `List.mem_map.1 hl₁`. Conclude with `(List.mem_append.1 hX).elim (hS l' hl' X) (hl X)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hC _ (hw.word hσ hl)` as an intermediate fact. Simplify `this` using `[sobNorm, List.map_map, Function.comp_def, List.foldr_append]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem SobFun.word (hσ : IsURepOn (UJset ε) σ) {ξ : H → ℂ} (h : SobFun ε σ ξ) {l : List (Mx n)}
     (hl : ∀ X ∈ l, X ∈ lieSet ε) : SobFun ε σ fun w => ξ (Dw σ l w) := by
@@ -441,20 +439,20 @@ theorem SobFun.word (hσ : IsURepOn (UJset ε) σ) {ξ : H → ℂ} (h : SobFun 
     simpa [sobNorm, List.map_map, Function.comp_def, List.foldr_append] using this
 
 /- English proof (translation)
-The claim follows from `((sobFun_of_sobCont h).translate hσ hg).2.2`.
+A detailed English derivation is pending.
 -/
 theorem sobCont_translate (hσ : IsURepOn (UJset ε) σ) {ℓ : H →ₗ[ℂ] ℂ} (h : Sobolev₂ (lieSet ε) σ ℓ) {g : Mx n}
     (hg : g ∈ UJset ε) : Sobolev₂ (lieSet ε) σ (ℓ ∘ₗ (σ g : H →ₗ[ℂ] H)) :=
   ((sobFun_of_sobCont h).translate hσ hg).2.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨[[]], ‖x‖, by simp, fun w _ => by simpa using norm_inner_le_norm x w⟩`.
+Supply the required witnesses or components.
 -/
 theorem sobCont_inner (x : H) : Sobolev₂ (lieSet ε) σ (innerSL ℂ x : H →ₗ[ℂ] ℂ) :=
   ⟨[[]], ‖x‖, by simp, fun w _ => by simpa using norm_inner_le_norm x w⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨S, C i, hS, h.2.2.1 i⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsExpn.sobCont {Lie Gs : Set (Mx n)} {S : List (List (Mx n))} {v : ℕ → H} {ℓ : ℕ → (H →ₗ[ℂ] ℂ)} {C : ℕ → ℝ}
     {f : Mx n → ℂ} (h : IsExpn Lie Gs σ S v ℓ C f) (hS : Words Lie S) (i : ℕ) : Sobolev₂ Lie σ (ℓ i) :=
@@ -464,12 +462,12 @@ def kfin (ε : Fin n → Bool) (σ : Mx n → (H →L[ℂ] H)) : Submodule ℂ H
   GlobalTheory.KFiniteVectors.kFiniteVectors ε σ
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_kfin {v : H} : v ∈ kfin ε σ ↔ IsKFin ε σ v := Iff.rfl
 
 /- English proof (translation)
-Take `⟨S, h1, h2, h3⟩` from `hv`. Conclude with `⟨S, h1, h3 k hk v h2, h3⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isKFin_translate {v : H} (hv : IsKFin ε σ v) {k : Mx n} (hk : k ∈ Kset ε) : IsKFin ε σ (σ k v) := by
   obtain ⟨S, h1, h2, h3⟩ := hv
@@ -481,7 +479,7 @@ Simplify using the standard rewrite rules.
 theorem conj_one_eq (σ : Mx n → (H →L[ℂ] H)) : (fun g => σ (1 * g * (1 : Mx n)⁻¹)) = σ := by simp
 
 /- English proof (translation)
-Take `⟨_, _, hU, hI, hQ, ⟨S, h1, h2, -, ⟨v, hv, hv0, -⟩, -⟩, -⟩` from `hD`. Use `⟨hU, hI, fun w hw => ?_, GlobalTheory.schur_orthogonality_unitary n ε H σ hU hI hQ, v, ⟨S, h1, hv, h2⟩, hv0⟩` and prove the remaining obligations. Use `h.smoothVec hU hI hw (P := 1) (G := Jm ε) isUnit_one (by simp)` as an intermediate fact. Rewrite `this` using `[conj_one_eq]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem std_of_isDS (h : GlobalTheory.Published.HarishChandraModules) {lam : Fin n → ℝ} (hD : IsDS ε lam σ) : Std ε σ := by
   obtain ⟨_, _, hU, hI, hQ, ⟨S, h1, h2, -, ⟨v, hv, hv0, -⟩, -⟩, -⟩ := hD
@@ -492,9 +490,9 @@ theorem std_of_isDS (h : GlobalTheory.Published.HarishChandraModules) {lam : Fin
 variable [CompleteSpace H]
 
 /- English proof (translation)
-Take `⟨hσ, hi, -, -, u, -, hu0⟩` from `h`. Use `haveI : Nontrivial H := ⟨u, 0, hu0⟩`. Use `dense_of_irred hi (fun g hg v hv k x hx hxG => ?_) ?_` and prove the remaining obligations. Use `letI := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)`. Use `letI := Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin n) (α := ℂ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h1` using `hv k (fun t => x t * g) (hx.mul contDiff_const) fun t => mul_mem_UJ (hxG t) hg`. Use `h1 using 2 with t` and compare the differences between its conclusion and the goal. Conclude with `(sigma_mul hσ (hxG t) hg v).symm`. Take `⟨v, hv, hs⟩` from `GlobalTheory.GardingVec.exists_garding hσ`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨v, hs, hv⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Std.dense_smoothAll (h : Std ε σ) : Dense (smoothAll (Jm ε) σ : Set H) := by
   obtain ⟨hσ, hi, -, -, u, -, hu0⟩ := h
@@ -509,13 +507,13 @@ theorem Std.dense_smoothAll (h : Std ε σ) : Dense (smoothAll (Jm ε) σ : Set 
     exact (Submodule.ne_bot_iff _).2 ⟨v, hs, hv⟩
 
 /- English proof (translation)
-The claim follows from `h.dense_smoothAll.mono (smoothAll_le (isUnit_Jm ε))`.
+A detailed English derivation is pending.
 -/
 theorem Std.dense_smooth (h : Std ε σ) : Dense (smooth (Jm ε) σ : Set H) :=
   h.dense_smoothAll.mono (smoothAll_le (isUnit_Jm ε))
 
 /- English proof (translation)
-The claim follows from `continuousOn_iff_continuous_restrict.2 (continuous_word_orbit (isUnit_Jm ε) h.1 h.dense_smoothAll continuous_subtype_val (fun t => t.2) l hl hw)`.
+A detailed English derivation is pending.
 -/
 theorem Std.continuousOn_Dw (h : Std ε σ) {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ lieSet ε) {w : H} (hw : Sm ε σ w) :
     ContinuousOn (fun g => Dw σ l (σ g w)) (UJset ε) :=
@@ -523,7 +521,7 @@ theorem Std.continuousOn_Dw (h : Std ε σ) {l : List (Mx n)} (hl : ∀ X ∈ l,
     (continuous_word_orbit (isUnit_Jm ε) h.1 h.dense_smoothAll continuous_subtype_val (fun t => t.2) l hl hw)
 
 /- English proof (translation)
-Take `⟨m, S, Λ, hS, hΛ⟩` from `exists_factor (isUnit_Jm ε) h.1 hℓ`. Use `ContinuousOn.congr (f := fun g => ∑ i, Λ i (Dw σ (S i) (σ g w))) ?_ fun g hg => hΛ _ (hw.translate h.1 hg)` and prove the remaining obligations. Conclude with `continuousOn_finset_sum _ fun i _ => (Λ i).continuous.comp_continuousOn (h.continuousOn_Dw (hS i) hw)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Std.continuousOn_coef (h : Std ε σ) {ℓ : H →ₗ[ℂ] ℂ} (hℓ : Sobolev₂ (lieSet ε) σ ℓ) {w : H} (hw : Sm ε σ w) :
     ContinuousOn (fun g => ℓ (σ g w)) (UJset ε) := by
@@ -532,7 +530,7 @@ theorem Std.continuousOn_coef (h : Std ε σ) {ℓ : H →ₗ[ℂ] ℂ} (hℓ : 
   exact continuousOn_finset_sum _ fun i _ => (Λ i).continuous.comp_continuousOn (h.continuousOn_Dw (hS i) hw)
 
 /- English proof (translation)
-Apply the tactic sequence `refine eq_zero_of_translates (P := 1) (G := Jm ε) h.1 h.2.1 isUnit_one (by simp) ?_ ?_ hu0 h0 ?_ <;>`. Rewrite using `[conj_one_eq]`. Use `exacts [hℓ, hu, hw]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Std.eq_zero_of_orbit (h : Std ε σ) {ℓ : H →ₗ[ℂ] ℂ} (hℓ : Sobolev₂ (lieSet ε) σ ℓ) {u : H} (hu : Sm ε σ u)
     (hu0 : u ≠ 0) (h0 : ∀ g ∈ UJset ε, ℓ (σ g u) = 0) {w : H} (hw : Sm ε σ w) : ℓ w = 0 := by
@@ -541,14 +539,14 @@ theorem Std.eq_zero_of_orbit (h : Std ε σ) {ℓ : H →ₗ[ℂ] ℂ} (hℓ : S
   exacts [hℓ, hu, hw]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LowTypeDetermined.dRep_sum (isUnit_Jm ε) h.1 h.dense_smoothAll hB hw c`.
+A detailed English derivation is pending.
 -/
 theorem Std.dRep_sum (h : Std ε σ) {k : ℕ} {B : Fin k → Mx n} (hB : ∀ i, B i ∈ lieSet ε) {w : H} (hw : Sm ε σ w)
     (c : Fin k → ℝ) : dRep σ (∑ i, c i • B i) w = ∑ i, (c i : ℂ) • dRep σ (B i) w :=
   GlobalTheory.LowTypeDetermined.dRep_sum (isUnit_Jm ε) h.1 h.dense_smoothAll hB hw c
 
 /- English proof (translation)
-Rewrite using `[add_smul]`. Conclude with `Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left s).smul_right t)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_add_smul (X : Mx n) (s t : ℝ) :
     NormedSpace.exp ((s + t) • X) = NormedSpace.exp (s • X) * NormedSpace.exp (t • X) := by
@@ -556,14 +554,14 @@ theorem exp_add_smul (X : Mx n) (s t : ℝ) :
   exact Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left s).smul_right t)
 
 /- English proof (translation)
-Simplify `continuous_exp_real_smul X` using `only [Complex.coe_smul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem continuous_exp_smul (X : Mx n) : Continuous fun t : ℝ => NormedSpace.exp (t • X) := by
   simpa only [Complex.coe_smul] using continuous_exp_real_smul X
 
 omit [CompleteSpace H] in
 /- English proof (translation)
-Establish `h1` using `((σ (NormedSpace.exp (s • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 (hasDerivAt_dRep (G := Jm ε) hw hX)`. Establish `h2` using `HasDerivAt.comp_sub_const s s (by rw [sub_self]; exact h1)`. Use `HasDerivAt.congr_of_eventuallyEq h2 (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `show _ = σ _ (σ _ w)`. Rewrite using `[← sigma_mul hσ (exp_mem_UJ hX _) (exp_mem_UJ hX _), ← exp_add_smul, add_sub_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_orbit (hσ : IsURepOn (UJset ε) σ) {w : H} (hw : Sm ε σ w) {X : Mx n} (hX : X ∈ lieSet ε) (s : ℝ) :
     HasDerivAt (fun t : ℝ => σ (NormedSpace.exp (t • X)) w) (σ (NormedSpace.exp (s • X)) (dRep σ X w)) s := by
@@ -575,13 +573,13 @@ theorem hasDerivAt_orbit (hσ : IsURepOn (UJset ε) σ) {w : H} (hw : Sm ε σ w
   rw [← sigma_mul hσ (exp_mem_UJ hX _) (exp_mem_UJ hX _), ← exp_add_smul, add_sub_cancel]
 
 /- English proof (translation)
-Establish `hw' : Sm ε σ (dRep σ X w)` using `dRep_mem (isUnit_Jm ε) h.1 hw hX`. Establish `hc : ∀ l : List (Mx n), (∀ X ∈ l, X ∈ lieSet ε) → Continuous fun t : ℝ => Dw σ l (σ (NormedSpace.exp (t • X)) (dRep σ X w))` using `fun l hl => (h.continuousOn_Dw hl hw').comp_continuous (continuous_exp_smul X) (exp_mem_UJ hX)`. Establish `e0 : ∀ z, σ (NormedSpace.exp ((0 : ℝ) • X)) z = z` using `fun z => by`. Rewrite using `[zero_smul, NormedSpace.exp_zero, sigma_one h.1]`. Establish `key : ∀ t : ℝ, Dw σ l (σ (NormedSpace.exp (t • X)) w) = Dw σ l w + ∫ s in (0 : ℝ)..t, Dw σ l (σ (NormedSpace.exp (s • X)) (dRep σ X w))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `t`. Establish `h0` using `intervalIntegral.integral_eq_sub_of_hasDerivAt (a := 0) (b := t) (fun s _ => hasDerivAt_orbit h.1 hw hX s) ((hc [] (by simp)).intervalIntegrable 0 t)`. Rewrite `h0` using `[e0]`. Use `h.dense_smooth.eq_of_inner_right ℂ fun y hy => ?_` and prove the remaining obligations. Establish `i1` using `fun (z : H) (l : List (Mx n)) (hl : ∀ X ∈ l, X ∈ lieSet ε) => (innerSL ℂ z).intervalIntegral_comp_comm ((hc l hl).intervalIntegrable (μ := volume) 0 t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [innerSL_apply_apply] at i1`. Establish `i2` using `i1 (Dw σ l.reverse y) [] (by simp)`. Simplify using `only [Dw, List.foldr_nil] at i2`. Rewrite using `[inner_add_right, ← i1 y l hl, inner_Dw h.1 hl hy (hw.translate h.1 (exp_mem_UJ hX t)), inner_Dw h.1 hl hy hw]`. Simplify using `only [fun s => inner_Dw h.1 hl hy (hw'.translate h.1 (exp_mem_UJ hX s))]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[intervalIntegral.integral_const_mul, i2, h0, inner_sub_right]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [key]`. Use `((hc l hl).integral_hasStrictDerivAt 0 0).hasDerivAt.const_add (Dw σ l w)` as an intermediate fact. Rewrite `this` using `[e0]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Std.hasDerivAt_Dw (h : Std ε σ) {l : List (Mx n)} (hl : ∀ X ∈ l, X ∈ lieSet ε) {w : H} (hw : Sm ε σ w)
     {X : Mx n} (hX : X ∈ lieSet ε) :
@@ -613,7 +611,7 @@ theorem Std.hasDerivAt_Dw (h : Std ε σ) {l : List (Mx n)} (hl : ∀ X ∈ l, X
   rwa [e0] at this
 
 /- English proof (translation)
-Take `⟨ℓ, hℓ, e⟩` from `hξ.exists_ext`. Establish `hw' : Sm ε σ (dRep σ X w)` using `dRep_mem (isUnit_Jm ε) h.1 hw hX`. Take `⟨m, S, Λ, hS, hΛ⟩` from `exists_factor (isUnit_Jm ε) h.1 hℓ`. Simplify using `only [fun t => (e _ (hw.translate h.1 (exp_mem_UJ hX t))).symm.trans (hΛ _ (hw.translate h.1 (exp_mem_UJ hX t))), (e _ hw').symm.trans (hΛ _ hw')]`. Conclude with `HasDerivAt.fun_sum fun i _ => ((Λ i).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt 0 (h.hasDerivAt_Dw (hS i) hw hX)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Std.hasDerivAt_sobFun (h : Std ε σ) {ξ : H → ℂ} (hξ : SobFun ε σ ξ) {w : H} (hw : Sm ε σ w)
     {X : Mx n} (hX : X ∈ lieSet ε) :

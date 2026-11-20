@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.DS.S7
 variable {n : ℕ}
 
 /- English proof (translation)
-Take `⟨hd0, hd⟩` from `hd`. Use `⟨div_pos hd0 hc, fun v w v' w' => ?_⟩` and prove the remaining obligations. Take `⟨hi, he⟩` from `hd v w v' w'`. Use `⟨hi.smul_measure ENNReal.ofReal_ne_top, ?_⟩` and prove the remaining obligations. Rewrite using `[integral_smul_measure, he, ENNReal.toReal_ofReal hc.le, Complex.real_smul, Complex.ofReal_div, div_div_eq_mul_div]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -28,9 +28,9 @@ theorem isFdeg_smul {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [In
   ring
 
 /- English proof (translation)
-Use `haveI := muCD_isHaar ε`. Take `⟨c, hcpos, hsm⟩ : ∃ c : NNReal, 0 < c ∧ muCD ε = c • μ` from `⟨_, Measure.haarScalarFactor_pos_of_isHaarMeasure (muCD ε) μ, Measure.isMulLeftInvariant_eq_smul (muCD ε) μ⟩`. Establish `hsm' : muCD ε = ((c : NNReal) : ENNReal) • μ`. Rewrite using `[hsm]`. Use extensionality with `s _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.smul_apply, Measure.smul_apply, ENNReal.smul_def]`. Establish `h` using `isFdeg_smul (NNReal.coe_pos.mpr hcpos) hd`. Rewrite `h` using `[ENNReal.ofReal_coe_nnreal, ← hsm']`. Conclude with `⟨_, h⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isFdeg_muCD {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {μ : Measure (Formalism.REAL.UJ ε)} [μ.IsHaarMeasure] {d : ℝ}
@@ -48,11 +48,11 @@ theorem isFdeg_muCD {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [In
   exact ⟨_, h⟩
 
 /- English proof (translation)
-Take `⟨hd0, hd⟩` from `hd`. Take `⟨-, he⟩` from `hd w w w w`. Establish `h1 : (fun g : Formalism.REAL.UJ ε => Formalism.MainNotions.S.coefOn σ w w g * star (Formalism.MainNotions.S.coefOn σ w w g)) = fun g : Formalism.REAL.UJ ε => ((‖Formalism.MainNotions.S.coefOn σ w w g‖ ^ 2 : ℝ) : ℂ)`. Use function extensionality and compare the values at `g`. Rewrite using `[← starRingEnd_apply, Complex.mul_conj, Complex.normSq_eq_norm_sq]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hw2 : ⟪w, w⟫_ℂ = ((‖w‖ : ℝ) : ℂ) ^ 2` using `inner_self_eq_norm_sq_to_K w`. Rewrite `he` using `[h1, integral_complex_ofReal, hw2]`. Establish `hint : (∫ g, ‖Formalism.MainNotions.S.coefOn σ w w g‖ ^ 2 ∂μ) = ‖w‖ ^ 4 / d`. Establish `h2 : ((∫ g, ‖Formalism.MainNotions.S.coefOn σ w w g‖ ^ 2 ∂μ : ℝ) : ℂ) = ((‖w‖ ^ 4 / d : ℝ) : ℂ)`. Rewrite using `[he]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h2` after adjusting the coercions. Establish `hw' : ‖w‖ ≠ 0` using `norm_ne_zero_iff.mpr hw`. Rewrite using `[Formalism.MainNotions.S.fdegOf, hint, div_div_cancel₀ (pow_ne_zero 4 hw')]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fdegOf_of_isFdeg' {ε : Fin n → Bool} {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {μ : Measure (Formalism.REAL.UJ ε)} {d : ℝ}

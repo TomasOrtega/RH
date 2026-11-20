@@ -15,7 +15,7 @@ section Pt
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Establish `hz : ∑ k : {x : Fin d // ¬ (x : ℕ) < q}, A i.1 k.1 * B k.1 j.1 = 0` using `Finset.sum_eq_zero (fun k _ => h _ _ _ i.2 j.2 (not_lt.mp k.2))`. Rewrite using `[← Fintype.sum_subtype_add_sum_subtype (fun k : Fin d => (k : ℕ) < q), hz, add_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sub_mul_lemma {R : Type*} [CommRing R] {d : ℕ} (A B : Matrix (Fin d) (Fin d) R) (q : ℕ)
     (h : ∀ i j k : Fin d, (i : ℕ) < q → (j : ℕ) < q → q ≤ (k : ℕ) → A i k * B k j = 0) :
@@ -29,7 +29,7 @@ private theorem sub_mul_lemma {R : Type*} [CommRing R] {d : ℕ} (A B : Matrix (
   rw [← Fintype.sum_subtype_add_sum_subtype (fun k : Fin d => (k : ℕ) < q), hz, add_zero]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular _ (fun i j hij => (hL i.1 j.1).1 (OrderDual.toDual_lt_toDual.mp hij))]`. Conclude with `Finset.prod_eq_one (fun i _ => (hL i.1 i.1).2 rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_lo_lemma_2 {R : Type*} [CommRing R] {d : ℕ} (L : Matrix (Fin d) (Fin d) R)
     (hL : ∀ i j : Fin d, (i < j → L i j = 0) ∧ (i = j → L i j = 1)) (q : ℕ) :
@@ -38,7 +38,7 @@ private theorem det_lo_lemma_2 {R : Type*} [CommRing R] {d : ℕ} (L : Matrix (F
   exact Finset.prod_eq_one (fun i _ => (hL i.1 i.1).2 rfl)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (fun i j hij => (hU i.1 j.1).1 hij)]`. Conclude with `Finset.prod_eq_one (fun i _ => (hU i.1 i.1).2 rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_up_lemma_3 {R : Type*} [CommRing R] {d : ℕ} (U : Matrix (Fin d) (Fin d) R)
     (hU : ∀ i j : Fin d, (j < i → U i j = 0) ∧ (i = j → U i j = 1)) (q : ℕ) :
@@ -47,9 +47,9 @@ private theorem det_up_lemma_3 {R : Type*} [CommRing R] {d : ℕ} (U : Matrix (F
   exact Finset.prod_eq_one (fun i _ => (hU i.1 i.1).2 rfl)
 
 /- English proof (translation)
-Take `⟨L, U, hL, hU, rfl⟩` from `h`. Unfold `leadingPrincipalMinor`. Rewrite using `[sub_mul_lemma (L * ptMat w) U q ?_, sub_mul_lemma L (ptMat w) q ?_, Matrix.det_mul, Matrix.det_mul, det_lo_lemma_2 L hL q, det_up_lemma_3 U hU q, one_mul, mul_one]`. Introduce `i j k _ _ hk`. Rewrite using `[(hL i k).1 (show (i : ℕ) < (k : ℕ) by omega), zero_mul]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i j k _ hj hk`. Rewrite using `[(hU k j).1 (show (j : ℕ) < (k : ℕ) by omega), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem lead_cell {d : ℕ} (Z : Matrix (Fin d) (Fin d) K) (w : Point K d) (h : IsInCell Z w) (q : ℕ) :
     leadingPrincipalMinor (ptMat w) q = leadingPrincipalMinor Z q := by
@@ -63,7 +63,7 @@ theorem lead_cell {d : ℕ} (Z : Matrix (Fin d) (Fin d) K) (w : Point K d) (h : 
     rw [(hU k j).1 (show (j : ℕ) < (k : ℕ) by omega), mul_zero]
 
 /- English proof (translation)
-Unfold `endMin endIdx`. Rewrite using `[ptMat_eq]`. Conclude with `E5minor_eq (toComp w) (toT w) a`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem endMin_eq {r : ℕ} (w : Point K (r + 1)) (a : Fin (toPts w).1.length) :
     endMin (toPts w) a = leadingPrincipalMinor (ptMat w) (endIdx (toPts w) a) := by
@@ -72,9 +72,9 @@ theorem endMin_eq {r : ℕ} (w : Point K (r + 1)) (a : Fin (toPts w).1.length) :
   exact E5minor_eq (toComp w) (toT w) a
 
 /- English proof (translation)
-Establish `hl : 0 < (toPts w).1.length` using `Composition.length_pos_of_pos (toPts w).1 (Nat.succ_pos r)`. Unfold `DlastPt`. Rewrite using `[dif_pos hl, endMin_eq]`. Use `congr 1`. Use `show (toPts w).1.sizeUpTo ((toPts w).1.length - 1 + 1) = r + 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.sub_add_cancel hl, Composition.sizeUpTo_length]`.
+A detailed English derivation is pending.
 -/
 theorem dlast_eq {r : ℕ} (w : Point K (r + 1)) : DlastPt (toPts w) = leadingPrincipalMinor (ptMat w) (r + 1) := by
   have hl : 0 < (toPts w).1.length := Composition.length_pos_of_pos (toPts w).1 (Nat.succ_pos r)
@@ -85,19 +85,17 @@ theorem dlast_eq {r : ℕ} (w : Point K (r + 1)) : DlastPt (toPts w) = leadingPr
   rw [Nat.sub_add_cancel hl, Composition.sizeUpTo_length]
 
 /- English proof (translation)
-Establish `hlen : 0 < (toPts w).1.length` using `(toPts w).1.length_pos_of_pos (Nat.succ_pos r)`. Establish `hsum` using `(toPts w).1.sizeUpTo_succ' ⟨(toPts w).1.length - 1, by omega⟩`. Simplify using `only [Nat.sub_add_cancel hlen, Composition.sizeUpTo_length] at hsum`. Unfold `DrPt`. Rewrite using `[dif_pos hlen]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h1 h2`. Rewrite using `[endMin_eq]`. Use `congr 1`. Use `show (toPts w).1.sizeUpTo (((toPts w).1.length - 2) + 1) = r`. Establish `e : (toPts w).1.length - 2 + 1 = (toPts w).1.length - 1` using `by omega`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[e]`. Use linear arithmetic over natural numbers and integers. Establish `hl1 : (toPts w).1.length = 1` using `by omega`. Establish `h0 : (toPts w).1.sizeUpTo ((toPts w).1.length - 1) = 0`. Rewrite using `[hl1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `Composition.sizeUpTo_zero _`. Establish `hr : r = 0` using `by omega`. Substitute `hr` using the available equality. Unfold `leadingPrincipalMinor`. Establish `: IsEmpty {i : Fin 1 // (i : ℕ) < 0}` using `⟨fun i => Nat.not_lt_zero _ i.2⟩`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_isEmpty]`. Use `symm`. Rewrite using `[ptMat_eq]`. Use `Formalism.HermitianLatticeCounting.Final.ExpansionTerms.e4aVanish K (r + 1) (toComp w) (toT w) r (by omega) fun p hp => ?_` and prove the remaining obligations. Establish `hb` using `(toPts w).1.one_le_blocksFun ⟨(toPts w).1.length - 1, by omega⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hb2 : 2 ≤ (toPts w).1.blocksFun ⟨(toPts w).1.length - 1, by omega⟩` using `by omega`. Distinguish the cases in `hpl : (toPts w).1.length ≤ p`. Use `Composition.sizeUpTo_ofLength_le (toComp w) p hpl` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hmono` using `(toComp w).monotone_sizeUpTo (show p ≤ (toPts w).1.length - 1 by omega)`.
-
-Establish `e : (toComp w).sizeUpTo ((toPts w).1.length - 1) = (toPts w).1.sizeUpTo ((toPts w).1.length - 1)` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem dr_eq {r : ℕ} (w : Point K (r + 1)) : DrPt (toPts w) = leadingPrincipalMinor (ptMat w) r := by
   have hlen : 0 < (toPts w).1.length := (toPts w).1.length_pos_of_pos (Nat.succ_pos r)
@@ -141,7 +139,7 @@ variable {D : D7}
 local notation "FI" => FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E
 
 /- English proof (translation)
-Unfold `leadingPrincipalMinor`. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem leadingMinor_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {d : ℕ} (M : Matrix (Fin d) (Fin d) R)
     (q : ℕ) : leadingPrincipalMinor (M.map f) q = f (leadingPrincipalMinor M q) := by
@@ -150,15 +148,13 @@ theorem leadingMinor_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `a using Fin.lastCases with`. Consider the case `last`. Introduce `x hx`. Simplify using `only [Fin.val_last, Nat.sub_self, pow_zero, Ideal.one_eq_top, FractionalIdeal.coeIdeal_top, inv_one] at hx`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 hx`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Formalism.MainNotions.LatticeGluingRadicals.a_frame_last, algebraMap_smul]`. Conclude with `Λ.smul_mem o hz`. Consider the case `cast a`. Introduce `x hx`. Rewrite using `[Formalism.MainNotions.LatticeGluingRadicals.a_frame_castSucc]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha : (a : ℕ) ≤ D.R.rS` using `a.2.le`. Establish `hx' : x ∈ ddS D ^ (-((D.R.rS : ℤ) - (a : ℕ)))`. Establish `e : -((D.R.rS : ℤ) - (a : ℕ)) = -(((D.R.rS - (a : ℕ) : ℕ) : ℤ))`. Move the coercions through the operations in `[Nat.cast_sub ha]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, zpow_neg, zpow_natCast, show ddS D = ((dI D : Ideal (𝓞 D.host.E)) : FI) from rfl, ← FractionalIdeal.coeIdeal_pow]`. Simplify using `using hx`. Establish `h : x • F.fl.e a ∈ XLam Λ F`. Rewrite using `[hX]`. Conclude with `Submodule.subset_span ⟨a, x, hx', rfl⟩`.
-
-Conclude with `h.1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_smul_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T : D.host.E} (F : LFlag (VS D) D.R.rS T)
     (hz : F.fl.z ∈ Λ) (hX : XLam Λ F = XS D F.fl) (a : Fin (D.R.rS + 1)) :
@@ -186,9 +182,9 @@ theorem frame_smul_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} {T : D.host.E} 
     exact h.1
 
 /- English proof (translation)
-Take `⟨o, ho, e⟩` from `hT_mem hun _ _ (frame F a) (frame F' b) (frame_smul_mem F hz hX a) (frame_smul_mem F' hz' hX' b)`. Use `⟨(-1) ^ (D.R.rS - (b : ℕ)) * o, Ideal.mul_mem_left _ _ ho, ?_⟩` and prove the remaining obligations. Establish `hZ : ZhatL F F' a b = (VS D).hT (frame F a) (frame F' b)` using `rfl`. Use `show _ = (-1 : D.host.E) ^ (D.R.rS - b.val) * ZhatL F F' a b`. Rewrite using `[hZ, ← e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem zhatOM_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ)
     {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
@@ -205,9 +201,9 @@ theorem zhatOM_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.He
   rfl
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => simp`. Consider the case `succ q ih`. Rewrite using `[Finset.sum_range_succ, mul_add, ih (by omega)]`. Take `⟨k, rfl⟩ : ∃ k, r = q + k` from `⟨r - q, by omega⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[show 2 * (q + k) + 1 - q = q + 2 * k + 1 by omega, show q + k - q = k by omega, show 2 * (q + k) + 1 - (q + 1) = q + 2 * k by omega]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem gauss_lemma_5 (r q : ℕ) (hq : q ≤ r + 1) :
     2 * ∑ i ∈ Finset.range q, (r - i) = q * (2 * r + 1 - q) := by
@@ -221,7 +217,7 @@ private theorem gauss_lemma_5 (r q : ℕ) (hq : q ≤ r + 1) :
     ring
 
 /- English proof (translation)
-Unfold `leadingPrincipalMinor`. Set `e : Fin q ≃ {i : Fin N // (i : ℕ) < q}` to `{ toFun := fun k => ⟨Fin.castLE hq k, k.2⟩, invFun := fun i => ⟨i.1, i.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl }`. Rewrite using `[← Matrix.det_submatrix_equiv_self e]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem e4_cast_lemma_6 {R : Type*} [CommRing R] {N : ℕ} (A : Matrix (Fin N) (Fin N) R) (q : ℕ) (hq : q ≤ N) :
     leadingPrincipalMinor A q = (A.submatrix (Fin.castLE hq) (Fin.castLE hq)).det := by
@@ -233,13 +229,11 @@ private theorem e4_cast_lemma_6 {R : Type*} [CommRing R] {N : ℕ} (A : Matrix (
   rfl
 
 /- English proof (translation)
-Use `choose O hO hOe using fun a b => zhatOM_mem hun F F' hz hX hz' hX' a b`. Use `⟨leadingPrincipalMinor (Matrix.of O) q, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e4_cast_lemma_6 _ q hq, Matrix.det_apply']`. Use `Ideal.sum_mem _ (fun σ _ => ?_)` and prove the remaining obligations. Establish `hp` using `Ideal.prod_mem_prod (s := Finset.univ) (I := fun i : Fin q => dI D ^ ((D.R.rS - ((σ i : Fin q) : ℕ)) + (D.R.rS - (i : ℕ)))) (x := fun i : Fin q => O (Fin.castLE hq (σ i)) (Fin.castLE hq i)) (fun i _ => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0` using `hO (Fin.castLE hq (σ i)) (Fin.castLE hq i)`. Simplify `h0)` using `only [Fin.coe_castLE]`. Rewrite `hp` using `[Finset.prod_pow_eq_pow_sum]`. Establish `he : ∑ i : Fin q, ((D.R.rS - ((σ i : Fin q) : ℕ)) + (D.R.rS - (i : ℕ))) = q * (2 * D.R.rS + 1 - q)`. Rewrite using `[Finset.sum_add_distrib, Equiv.sum_comp σ (fun i : Fin q => D.R.rS - (i : ℕ)), ← two_mul, Fin.sum_univ_eq_sum_range (fun i => D.R.rS - i) q]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `gauss_lemma_5 _ _ hq`. Rewrite `hp` using `[he]`. Conclude with `Ideal.mul_mem_left _ _ hp`. Use `show algebraMap (𝓞 D.host.E) D.host.E (leadingPrincipalMinor (Matrix.of O) q) = _`. Rewrite using `[← leadingMinor_map]`.
-
-Use `congr 1`. Use extensionality with `a b`. Conclude with `hOe a b`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem lead_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ)
     {T T' : D.host.E} (F : LFlag (VS D) D.R.rS T) (F' : LFlag (VS D) D.R.rS T')
@@ -270,7 +264,7 @@ theorem lead_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} (hun : Formalism.Herm
     exact hOe a b
 
 /- English proof (translation)
-Unfold `leadingPrincipalMinor leadMinorE`. Rewrite using `[dif_pos hq]`. Set `e : Fin q ≃ {i : Fin N // (i : ℕ) < q}` to `{ toFun := fun k => ⟨Fin.castLE hq k, k.2⟩, invFun := fun i => ⟨i.1, i.2⟩, left_inv := fun _ => rfl, right_inv := fun _ => rfl }`. Rewrite using `[← Matrix.det_submatrix_equiv_self e]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem e4_lm_lemma_4 {N : ℕ} (A : Matrix (Fin N) (Fin N) D.host.E) (q : ℕ) (hq : q ≤ N) :
     leadingPrincipalMinor A q = leadMinorE A q := by
@@ -283,9 +277,9 @@ private theorem e4_lm_lemma_4 {N : ℕ} (A : Matrix (Fin N) (Fin N) D.host.E) (q
   rfl
 
 /- English proof (translation)
-Rewrite using `[e4_lm_lemma_4 _ q hq]`. Unfold `leadMinorE`. Rewrite using `[dif_pos hq, dif_pos hq]`. Establish `hM : (ZhatOM Z).submatrix (Fin.castLE hq) (Fin.castLE hq) = Z.submatrix (Fin.castLE hq) (Fin.castLE hq) * Matrix.diagonal (fun b : Fin q => (-1 : D.host.E) ^ (r - (b : ℕ)))`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[ZhatOM, Matrix.mul_diagonal, mul_comm]`. Rewrite using `[hM, Matrix.det_mul, Matrix.det_diagonal, mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem lead_ZhatOM {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) D.host.E) (q : ℕ) (hq : q ≤ r + 1) :
     leadingPrincipalMinor (ZhatOM Z) q = (∏ b : Fin q, (-1 : D.host.E) ^ (r - (b : ℕ))) * leadMinorE Z q := by
@@ -299,7 +293,7 @@ theorem lead_ZhatOM {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) D.host.E) 
   rw [hM, Matrix.det_mul, Matrix.det_diagonal, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[star_prod, ← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_one (fun b _ => by rw [star_pow, star_neg, star_one, ← mul_pow, neg_one_mul, neg_neg, one_pow])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sign_mul_star {r q : ℕ} :
     (∏ b : Fin q, (-1 : D.host.E) ^ (r - (b : ℕ))) * star (∏ b : Fin q, (-1 : D.host.E) ^ (r - (b : ℕ))) = 1 := by
@@ -307,9 +301,9 @@ theorem sign_mul_star {r q : ℕ} :
   exact Finset.prod_eq_one (fun b _ => by rw [star_pow, star_neg, star_one, ← mul_pow, neg_one_mul, neg_neg, one_pow])
 
 /- English proof (translation)
-Establish `h1 : DlastPt (toPts w) = (∏ b : Fin (D.R.rS + 1), (-1 : D.host.E) ^ (D.R.rS - (b : ℕ))) * leadMinorE (ZhatL F F') (D.R.rS + 1)`. Rewrite using `[dlast_eq w, lead_cell _ w h (D.R.rS + 1), lead_ZhatOM _ (D.R.rS + 1) le_rfl]`. Establish `h2 : DrPt (toPts w) = (∏ b : Fin D.R.rS, (-1 : D.host.E) ^ (D.R.rS - (b : ℕ))) * leadMinorE (ZhatL F F') D.R.rS`. Rewrite using `[dr_eq w, lead_cell _ w h D.R.rS, lead_ZhatOM _ D.R.rS (Nat.le_succ _)]`. Establish `s1` using `sign_mul_star (D := D) (r := D.R.rS) (q := D.R.rS + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `s2` using `sign_mul_star (D := D) (r := D.R.rS) (q := D.R.rS)`. Unfold `GPt Gval Gflag Dl`. Rewrite using `[h1, h2, star_mul', star_mul']`. Use `push_cast`. Take the linear combination `(leadMinorE (ZhatL F F') (D.R.rS + 1) * star (leadMinorE (ZhatL F F') (D.R.rS + 1))) * s1 - ((T : D.host.E) * T' * (leadMinorE (ZhatL F F') D.R.rS * star (leadMinorE (ZhatL F F') D.R.rS))) * s2`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem gpt_eq {T T' : ℕ} (F : LFlag (VS D) D.R.rS (T : D.host.E)) (F' : LFlag (VS D) D.R.rS (T' : D.host.E))
     (w : Point D.host.E (D.R.rS + 1)) (h : IsInCell (ZhatOM (ZhatL F F')) w) :
@@ -335,11 +329,11 @@ section Bounds
 variable {D : D7}
 
 /- English proof (translation)
-Unfold `NGPt`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Formalism.MainNotions.LatticeGluingRadicals.d_card D]`. Establish `hsq` using `prod_sq_ge _ o ho (by rw [hG]; exact h0)`. Rewrite `hsq` using `[hG, Finset.prod_pow]`. Establish `hP0 : 0 ≤ ∏ w : InfinitePlace D.host.E, w (GPt TT γ)` using `Finset.prod_nonneg fun w _ => w.1.nonneg _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hrd` using `rd_pos (D := D)`. Establish `hX : (D.host.rdE ^ D.R.f) ^ (2 * D.R.rS * (D.R.rS + 1)) ≤ ∏ w : InfinitePlace D.host.E, w (GPt TT γ)`. Use `(pow_le_pow_iff_left₀ (by positivity) hP0 two_ne_zero).1 ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm _ 2]`. Conclude with `hsq`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (D.host.rdE ^ (2 * D.R.rS * (D.R.rS + 1))) ^ D.R.f = (D.host.rdE ^ D.R.f) ^ (2 * D.R.rS * (D.R.rS + 1))`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`. Rewrite using `[inv_pow, ← div_eq_inv_mul, one_le_div (by positivity), e]`. Conclude with `hX`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_NGPt (TT : ℕ) (γ : Formalism.FourierDecayAlt.PN.Pts D.host.E D.R.rS) (o : 𝓞 D.host.E)
     (ho : o ∈ dI D ^ (2 * D.R.rS * (D.R.rS + 1))) (hG : (o : D.host.E) = GPt TT γ) (h0 : GPt TT γ ≠ 0) :
@@ -360,11 +354,11 @@ theorem one_le_NGPt (TT : ℕ) (γ : Formalism.FourierDecayAlt.PN.Pts D.host.E D
   exact hX
 
 /- English proof (translation)
-Unfold `NDPt`. Rewrite using `[← Finset.prod_const_one (s := (Finset.univ : Finset (Fin γ.1.length)))]`. Use `Finset.prod_le_prod (fun _ _ => zero_le_one) fun a _ => ?_` and prove the remaining obligations. Take `⟨o, ho, e, h0⟩` from `hmin a`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Formalism.MainNotions.LatticeGluingRadicals.d_card D]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hsq` using `prod_sq_ge _ o ho (by rw [e]; exact h0)`. Rewrite `hsq` using `[e]`. Establish `hrd` using `rd_pos (D := D)`. Establish `e2 : (D.host.rdE ^ (2 * (endIdx γ a * (2 * D.R.rS + 1 - endIdx γ a)))) ^ D.R.f = (D.host.rdE ^ D.R.f) ^ (2 * (endIdx γ a * (2 * D.R.rS + 1 - endIdx γ a)))`. Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_pow, ← div_eq_inv_mul, one_le_div (by positivity), e2]`. Conclude with `hsq`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_NDPt (γ : Formalism.FourierDecayAlt.PN.Pts D.host.E D.R.rS)
     (hmin : ∀ a, ∃ o ∈ dI D ^ (endIdx γ a * (2 * D.R.rS + 1 - endIdx γ a)),
@@ -389,31 +383,29 @@ end Bounds
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.TermOp Formalism.L2.SG.Full Formalism.FourierDecayAlt Formalism.L2.SG.NGData Formalism.L2.SG.NGCut in
 
 /- English proof (translation)
-Introduce `Cg cb Cw cT CT C0`. Use `⟨0, 0, fun C' Cl _ _ D large₂ X Y u u' _ νL νB ng γ hγ => ?_⟩` and prove the remaining obligations. Take `⟨c, ν, t, ht, hv, -, hpt, -⟩` from `hγ`. Establish `hG : t.toTerm.G ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `ht.1` to reduce the goal to its premises. Use `show Gt t = 0`. Establish `h' : t.G = 0` using `h`. Simplify using `[Gt, h']`. Establish `hrel : t.toTerm.relevant`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hr`. Apply `hv` to reduce the goal to its premises. Establish `h0 : OOt t = 0` using `hOV D X Y u u' t hr`. Use `show vec (Y.cs u) (Y.cs u') (Y.FN u) (Y.FN u') t = 0`. Unfold `vec ampN`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Take `⟨w, hw⟩` from `hAt D X Y u u' t.toTerm hG hrel`. Establish `hat` using `Formalism.L2.SG.PairVal.ptOf_spec t.toTerm ⟨w, hw, hrel⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨F', ⟨hP, -⟩, hGv, hcell⟩` from `hat`. Establish `hrow` using `(Y.rowsOK u).1 t.toTerm.lam t.toTerm.mem`. Establish `hun` using `hrow.2.1.2.1`. Establish `hz` using `hrow.2.1.2.2.1.1`. Establish `hX` using `hrow.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz'` using `hP.1.1`. Establish `hX'` using `hP.2.2.2`. Establish `hF : ∀ b, frame (lf D (X.Fu u)) b ∈ t.toTerm.lam` using `PtPf.frame_mem _ hz hX`. Establish `hF' : ∀ b, frame F' b ∈ t.toTerm.lam` using `PtPf.frame_mem _ hz' hX'`. Rewrite using `[← hpt]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show 1 ≤ NGPt D.host.rdE ((Tu D u : ℕ) * (Tu D u' : ℕ)) (toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm)) ∧ 1 ≤ NDPt D.host.rdE (toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm))`. Establish `hlead : ∀ q, q ≤ D.R.rS + 1 → ∃ o ∈ dI D ^ (q * (2 * D.R.rS + 1 - q)), (o : D.host.E) = leadingPrincipalMinor (ptMat (Formalism.L2.SG.PairVal.ptOf t.toTerm)) q` using `fun q hq => by`. Take `⟨o, ho, e⟩` from `lead_mem hun (lf D (X.Fu u)) F' hz hX hz' hX' q hq`. Conclude with `⟨o, ho, e.trans (lead_cell _ _ hcell q).symm⟩`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hGeq` using `gpt_eq (T := Tu D u) (T' := Tu D u') (lf D (X.Fu u)) F' _ hcell`. Take `⟨o1, ho1, e1⟩` from `hlead (D.R.rS + 1) le_rfl`. Take `⟨o0, ho0, e0⟩` from `hlead D.R.rS (Nat.le_succ _)`. Take `⟨o1', ho1', e1'⟩` from `star_mem_pow _ o1 ho1`. Take `⟨o0', ho0', e0'⟩` from `star_mem_pow _ o0 ho0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ex1 : (D.R.rS + 1) * (2 * D.R.rS + 1 - (D.R.rS + 1)) + (D.R.rS + 1) * (2 * D.R.rS + 1 - (D.R.rS + 1)) = 2 * D.R.rS * (D.R.rS + 1)`. Rewrite using `[show 2 * D.R.rS + 1 - (D.R.rS + 1) = D.R.rS by omega]; ring`. Establish `ex0 : D.R.rS * (2 * D.R.rS + 1 - D.R.rS) + D.R.rS * (2 * D.R.rS + 1 - D.R.rS) = 2 * D.R.rS * (D.R.rS + 1)`. Rewrite using `[show 2 * D.R.rS + 1 - D.R.rS = D.R.rS + 1 by omega]; ring`. Establish `hm1 : o1 * o1' ∈ dI D ^ (2 * D.R.rS * (D.R.rS + 1))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ex1, pow_add]`. Conclude with `Ideal.mul_mem_mul ho1 ho1'`. Establish `hm0 : o0 * o0' ∈ dI D ^ (2 * D.R.rS * (D.R.rS + 1))`. Rewrite using `[← ex0, pow_add]`. Conclude with `Ideal.mul_mem_mul ho0 ho0'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `one_le_NGPt _ _ (o1 * o1' - (((Tu D u : ℕ) * (Tu D u' : ℕ) : ℕ) : 𝓞 D.host.E) * (o0 * o0')) (Ideal.sub_mem _ hm1 (Ideal.mul_mem_left _ _ hm0)) ?_ (by rw [hGeq]; exact hGv)` and prove the remaining obligations. Establish `e1a : algebraMap (𝓞 D.host.E) D.host.E o1 = leadingPrincipalMinor (ptMat (Formalism.L2.SG.PairVal.ptOf t.toTerm)) (D.R.rS + 1)` using `e1`. Establish `e0a : algebraMap (𝓞 D.host.E) D.host.E o0 = leadingPrincipalMinor (ptMat (Formalism.L2.SG.PairVal.ptOf t.toTerm)) D.R.rS` using `e0`. Establish `e1b : algebraMap (𝓞 D.host.E) D.host.E o1' = star (algebraMap (𝓞 D.host.E) D.host.E o1)` using `e1'`. Establish `e0b : algebraMap (𝓞 D.host.E) D.host.E o0' = star (algebraMap (𝓞 D.host.E) D.host.E o0)` using `e0'`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `show algebraMap (𝓞 D.host.E) D.host.E _ = _`. Unfold `GPt`. Rewrite using `[dlast_eq, dr_eq, map_sub, map_mul, map_mul, map_mul, map_natCast, e1b, e0b, e1a, e0a]`. Use `one_le_NDPt _ fun a => ?_` and prove the remaining obligations. Establish `hj : endIdx (toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm)) a ≤ D.R.rS + 1` using `(toPts (Formalism.L2.SG.PairVal.ptOf t.toTerm)).1.sizeUpTo_le _`.
-
-Take `⟨o, ho, e⟩` from `hlead _ hj`. Establish `hE` using `PtPf.blockEndMinors_of_cell _ (PtPf.zhatOM_isIntegral _ _ hun hF hF') _ hcell`. Conclude with `⟨o, ho, by rw [e, endMin_eq], (hE a).2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem stepNormOne_of
     (hOV : ∀ (D : D7) (X : HidaSetting D) (Y : Full X) (u u' : D.what₂.Word),
@@ -492,7 +484,7 @@ theorem stepNormOne_of
 open Formalism.L2.SG.TermOp.Vanish in
 
 /- English proof (translation)
-The claim follows from `stepNormOne_of (fun _ _ Y _ _ t ht => ooVanish_of hA hU hN hC hG h1 h2 h3 h4 Y t ht) hAt`.
+A detailed English derivation is pending.
 -/
 theorem stepNormOne_of_leaves (hA : AvgCore) (hU : GinfUnimod) (hN : NLamNinf) (hC : ChiTrivialC) (hG : PsiInfChar)
     (h1 : RClosedC) (h2 : RODiscreteC) (h3 : RCocompactC) (h4 : NonRelCharC)

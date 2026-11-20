@@ -18,7 +18,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.ChartDer
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ChartConst.isConstAlong_of_ks_mem` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FDegenerationConstantOfLogKodairaSpencerMem.lean&line=62#L62)
 -/

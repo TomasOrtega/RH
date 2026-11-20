@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FormalAlg.Lift
 
 /- English proof (translation)
-Simplify using `only [rs]`. Rewrite using `[← RingHom.comp_apply, ← CommRingCat.hom_comp, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem rs_rs' {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V)
     (z : ↑(X.presheaf.obj (Opposite.op U))) : rs X h₂ (rs X h₁ z) = rs X (h₂.trans h₁) z := by
@@ -18,17 +18,15 @@ private theorem rs_rs' {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hMc : ((pw N' (a + b)).pull π).IsLB` using `LB.isLB_pull (isLB_pw hN' (a + b)) π`. Establish `key : ∀ (p : ((pw N' (a + b)).pull π).ι) (q : N.ι) {O : X.Opens} (hp : O ≤ V ⊓ ((pw N' (a + b)).pull π).U p) (hq : O ≤ V ⊓ (pw N (a + b)).U q) (hpq : O ≤ ((pw N' (a + b)).pull π).U p ⊓ (pw N (a + b)).U q), rs X hp (GlobalTheory.LB.coord (SecOn.congr (isLB_pw hN (a + b)) (LB.isLB_ …`. Introduce `p q O hp hq hpq`. Establish `ha` using `SecOn.coord_congr (isLB_pw hN a) (LB.isLB_pull (isLB_pw hN' a) π) (pullPow v a) (pullPow_isGen v a hv) s p q hp hq hpq`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hb` using `SecOn.coord_congr (isLB_pw hN b) (LB.isLB_pull (isLB_pw hN' b) π) (pullPow v b) (pullPow_isGen v b hv) t p q hp hq hpq`. Rewrite `ha` using `[hs, SecOn.coord_pullLE π e x p]`. Rewrite `hb` using `[ht, SecOn.coord_pullLE π e y p]`. Rewrite using `[SecOn.coord_congr (isLB_pw hN (a + b)) (LB.isLB_pull (isLB_pw hN' (a + b)) π) (pullPow v (a + b)) (pullPow_isGen v (a + b) hv) _ p q hp hq hpq, SecOn.coord_pullLE π e (secMulOn rfl x y) p, coord_secMulOn, coord_secMulOn rfl x y (p PUnit.unit)]`. Use `erw [map_mul, map_mul, map_mul, ha, hb]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions.
 
-Simplify using `only [pullPow]`. Use `erw [zpow_add, Units.val_mul, map_mul]`. Conclude with `mul_mul_mul_comm _ _ _ _`. Establish `hcov : V ≤ ⨆ a' : ((pw N' (a + b)).pull π).ι × N.ι, V ⊓ ((pw N' (a + b)).pull π).U a'.1 ⊓ N.U a'.2`. Introduce `z hz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1 : z ∈ (⨆ i, ((pw N' (a + b)).pull π).U i)` using `by rw [hMc.cover]; trivial`. Establish `h2 : z ∈ (⨆ i, N.U i)` using `by rw [hN.cover]; trivial`. Rewrite `h1`, `h2`, the goal using `[TopologicalSpace.Opens.mem_iSup]`. Take `⟨p, hp⟩` from `h1`. Take `⟨q, hq⟩` from `h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨(p, q), ⟨⟨hz, hp⟩, hq⟩⟩`. Use `SecOn.ext_of_cover (fun a' : ((pw N' (a + b)).pull π).ι × N.ι => V ⊓ ((pw N' (a + b)).pull π).U a'.1 ⊓ N.U a'.2) (fun a' => inf_le_left.trans inf_le_left) hcov ?_` and prove the remaining obligations. Introduce `a'`. Apply `(SecOn.chart hMc a'.1 (inf_le_left.trans inf_le_right)).injective` to reduce the goal to its premises. Rewrite using `[SecOn.chart_apply, SecOn.chart_apply, SecOn.coord_restrict, SecOn.coord_restrict, rs_rs', rs_rs']`.
-
-Conclude with `key a'.1 a'.2 _ (le_inf (inf_le_left.trans inf_le_left) inf_le_right) (le_inf (inf_le_left.trans inf_le_right) inf_le_right)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem congr_secMulOn {X X' : Scheme.{0}} {π : X ⟶ X'} {N : LB X} {N' : LB X'}
     (v : LB.Iso N (N'.pull π)) (hN : N.IsLB) (hN' : N'.IsLB) (hv : v.IsGen) {a b c : ℤ}
@@ -83,7 +81,7 @@ theorem congr_secMulOn {X X' : Scheme.{0}} {π : X ⟶ X'} {N : LB X} {N' : LB X
     (le_inf (inf_le_left.trans inf_le_right) inf_le_right)
 
 /- English proof (translation)
-Rewrite using `[LinearEquiv.symm_apply_eq, SecOnR.linEquiv_of, LinearEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem secOnR_linEquiv_symm_of {X : Scheme.{0}} {R : Type} [CommRing R] (f : X ⟶ Spec (CommRingCat.of R))
     {L M : LB X} {V : X.Opens} (φ : SecOn L V ≃ₗ[↑(X.presheaf.obj (Opposite.op V))] SecOn M V) (m : SecOn M V) :
@@ -91,7 +89,7 @@ private theorem secOnR_linEquiv_symm_of {X : Scheme.{0}} {R : Type} [CommRing R]
   rw [LinearEquiv.symm_apply_eq, SecOnR.linEquiv_of, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `R _ I Y β hβ N v hN ι D hDβ a b c h e S x y`. Simplify using `only [red, redL, LinearMap.coe_comp, LinearEquiv.coe_coe, Function.comp_apply, SecOnR.pull_of, secOnR_linEquiv_symm_of, LinearEquiv.symm_apply_apply]`. Use `congrArg (SecOnR.of _ _ _) ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.symm_apply_eq]`. Conclude with `(congr_secMulOn (v e) (hN e).1 (hN (e + 1)).1 (hN e).2 h (hDβ e S) x y _ _ (LinearEquiv.apply_symm_apply _ _) (LinearEquiv.apply_symm_apply _ _)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_secMulOn : ∀ (R : Type) [CommRing R] (I : Ideal R) (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (R ⧸ I ^ (e + 1))))) (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left) (hβ : ∀ e, IsPullback (β e) (Y e).hom (Y (e + 1)).hom (thickTrans R I e)) (N : ∀ e, LB (Y e).left) (v : ∀ e, LB.Iso (N e) ((N (e + 1)).pull (β e))) (hN : ∀ e, (N e).IsLB ∧ (v e).IsGen) (ι : Type) (D : ∀ e, Finset ι → (Y e).left.Opens) (hDβ : ∀ e S, D e S ≤ β e ⁻¹ᵁ D (e + 1) S) (a b c : ℤ) (h : a + b = c) (e : ℕ) (S : Finset ι) (x : SecOn (pw (N (e + 1)) a) (D (e + 1) S)) (y : SecOn (pw (N (e + 1)) b) (D (e + 1) S)), red I Y N D β hβ v hN hDβ c e S (SecOnR.of _ _ _ (secMulOn h x y)) = SecOnR.of _ _ _ (secMulOn h ((SecOnR.of _ _ _).symm (red I Y N D β hβ v hN hDβ a e S (SecOnR.of _ _ _ x))) ((SecOnR.of _ _ _).symm (red I Y N D β hβ v hN hDβ b e S (SecOnR.of _ _ _ y)))) := by
   intro R _ I Y β hβ N v hN ι D hDβ a b c h e S x y

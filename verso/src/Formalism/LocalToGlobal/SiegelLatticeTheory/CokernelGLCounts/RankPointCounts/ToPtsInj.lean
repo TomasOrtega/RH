@@ -12,9 +12,9 @@ namespace Formalism.L2.SG.NGCut.NormalVectorPairings
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `key : ∀ r : Point K (i + 1), List.ofFn (fun a : Fin (toPts r).1.length => ((toPts r).2 a, (toPts r).1.blocks.get ⟨a.1, a.2⟩)) = r.1`. Introduce `r`. Apply `List.ext_get` to reduce the goal to its premises. Simplify using `[toPts, Composition.length]`. Introduce `n h1 h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[toPts]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← key p, ← key q, h]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem toPts_inj {K : Type} [Zero K] {i : ℕ} (p q : Point K (i + 1)) (h : toPts p = toPts q) : p = q := by
   have key : ∀ r : Point K (i + 1),
@@ -31,11 +31,11 @@ theorem toPts_inj {K : Type} [Zero K] {i : ℕ} (p q : Point K (i + 1)) (h : toP
 variable {D : D7} {X : HidaSetting D} (Y : Full X) {u u' : D.what₂.Word}
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ w, t.toTerm.atPt w ∧ t.toTerm.relevant`. Conclude with `Formalism.L2.SG.PairVal.ptOf_spec _ hex`. It suffices to derive a contradiction. Establish `hj : Formalism.L2.SG.PairVal.ptOf t.toTerm = Formalism.L2.SG.PairVal.junkPoint D u u'`. Unfold `Formalism.L2.SG.PairVal.ptOf`.
+Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hex]`. Establish `h0 : NGPt D.host.rdE ((Tu D u : ℕ) * (Tu D u' : ℕ)) (ptPN t) = 0`. Unfold `ptPN`. Rewrite using `[hj]`. Unfold `NGPt`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `obtain ⟨w0⟩ : Nonempty (InfinitePlace D.host.E) := by first | exact inferInstance | infer_instance`. Apply `Finset.prod_eq_zero (Finset.mem_univ w0)` to reduce the goal to its premises. Rewrite using `[GPt_junk]`. Apply the tactic sequence `first | simp | rw [map_zero, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem at_ptOf (t : TauC Y u u') (hG : 1 ≤ NGPt D.host.rdE ((Tu D u : ℕ) * (Tu D u' : ℕ)) (ptPN t)) :
     t.toTerm.atPt (Formalism.L2.SG.PairVal.ptOf t.toTerm) := by

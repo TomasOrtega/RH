@@ -23,11 +23,11 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE 
   {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} {Φ : WO S T → ℂ}
 
 /- English proof (translation)
-Use `⟨fun γ w => ?_, ?_, continuous_const.mul hΦ.cont, fun k L hL hf w => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, hΦ.quasi γ w]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨U, hU, h⟩` from `hΦ.level`. Use `⟨U, hU, fun u hu hu' => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `w`. Use `congrFun (h u hu hu') w` as an intermediate fact. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul] at this ⊢`. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `contDiff_const.mul (hΦ.smooth k L hL hf w)`.
+A detailed English derivation is pending.
 -/
 theorem isThetaFunO_smul (hΦ : IsThetaFunO ψ S T Φ) (c : ℂ) : IsThetaFunO ψ S T (c • Φ) := by
   refine ⟨fun γ w => ?_, ?_, continuous_const.mul hΦ.cont, fun k L hL hf w => ?_⟩
@@ -41,7 +41,7 @@ theorem isThetaFunO_smul (hΦ : IsThetaFunO ψ S T Φ) (c : ℂ) : IsThetaFunO �
   · exact contDiff_const.mul (hΦ.smooth k L hL hf w)
 
 /- English proof (translation)
-Establish `e : ((g, γ * h) : GA D S × GA D T) = (1, γ) * (g, h)` using `by simp`. Unfold `thetaKO`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Conclude with `hW.om_aut 1 (one_mem _) γ hγ _ (hW.om_pres _ _ hΦ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_left (hW : IsWeilDatumO ψ S T χS χT om) (hΦ : IsThetaFunO ψ S T Φ) (g : GA D S) {γ : GA D T}
     (hγ : γ ∈ GQ T) (h : GA D T) : thetaKO om g (γ * h) Φ = thetaKO om g h Φ := by
@@ -51,7 +51,7 @@ theorem kernel_left (hW : IsWeilDatumO ψ S T χS χT om) (hΦ : IsThetaFunO ψ 
   exact hW.om_aut 1 (one_mem _) γ hγ _ (hW.om_pres _ _ hΦ)
 
 /- English proof (translation)
-Establish `e : ((g, h * k) : GA D S × GA D T) = (g, h) * (1, k)` using `by simp`. Unfold `thetaKO`. Rewrite using `[e, map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem kernel_right (g : GA D S) (h k : GA D T) : thetaKO om g (h * k) Φ = thetaKO om g h (om (1, k) Φ) := by
   have e : ((g, h * k) : GA D S × GA D T) = (g, h) * (1, k) := by simp
@@ -59,7 +59,7 @@ theorem kernel_right (g : GA D S) (h k : GA D T) : thetaKO om g (h * k) Φ = the
   rw [e, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Use `GlobalTheory.ThetaIntegralCont.continuous_theta_integral_vector ψ S T χS χT om hW hS ν 𝓕 hν h𝓕 ℂ (LinearMap.toSpanSingleton ℂ _ Φ) (fun x => isThetaFunO_smul hΦ x) φ hφ.cont hφ.left` as an intermediate fact. Use `this.congr fun h => ?_` and prove the remaining obligations. Use `integral_congr_ae (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Simplify using `only [LinearMap.toSpanSingleton_apply, thetaKO, map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lift_continuous (hW : IsWeilDatumO ψ S T χS χT om) (hΦ : IsThetaFunO ψ S T Φ)
     (hS : ∀ τ, (gramAt D S τ).PosDef) {ν : Measure (GA D S)} {𝓕 : Set (GA D S)} (hν : ν.IsHaarMeasure)
@@ -72,7 +72,7 @@ theorem lift_continuous (hW : IsWeilDatumO ψ S T χS χT om) (hΦ : IsThetaFunO
   simp only [LinearMap.toSpanSingleton_apply, thetaKO, map_smul, Pi.smul_apply, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Use `⟨fun γ hγ h => ?_, ?_, lift_continuous hW hΦ hS hν h𝓕 hφ⟩` and prove the remaining obligations. Simplify using `only [kernel_left hW hΦ _ hγ]`. Take `⟨U, hU, hk⟩` from `GlobalTheory.T.theta_function_open_stabilizer ψ S T χS χT om Φ hP hW hΦ`. Use `⟨U, hU, fun k hkU hkf h => ?_⟩` and prove the remaining obligations. Simplify using `only [kernel_right, hk k hkU hkf]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem lift_isAutFun (hP : GlobalTheory.FunPr.Hypotheses₂) (hW : IsWeilDatumO ψ S T χS χT om) (hΦ : IsThetaFunO ψ S T Φ)
     (hS : ∀ τ, (gramAt D S τ).PosDef) {ν : Measure (GA D S)} {𝓕 : Set (GA D S)} (hν : ν.IsHaarMeasure)
@@ -85,7 +85,7 @@ theorem lift_isAutFun (hP : GlobalTheory.FunPr.Hypotheses₂) (hW : IsWeilDatumO
     simp only [kernel_right, hk k hkU hkf]
 
 /- English proof (translation)
-The claim follows from `{ toIsAutFun := lift_isAutFun hP hW hΦ hS hν h𝓕 hφ.toIsAutFun smooth := GlobalTheory.T.theta_integral_convergent_definite ψ θ S T χS χT om Φ φ ν 𝓕 hP hW hθ hΦ hS hT hν h𝓕 hφ zfin := GlobalTheory.T.theta_integral_measurable_definite ψ θ S T χS χT om Φ φ ν 𝓕 hP hW hθ hΦ hS hT hν h𝓕 …`.
+A detailed English derivation is pending.
 -/
 theorem lift_isAutFunSm (θ : InfFam D) (hP : GlobalTheory.FunPr.Hypotheses₂) (hW : IsWeilDatumO ψ S T χS χT om) (hθ : IsInfFam θ)
     (hΦ : IsThetaFunO ψ S T Φ) (hS : ∀ τ, (gramAt D S τ).PosDef) (hT : ∀ τ, (gramAt D T τ).PosDef)
@@ -102,16 +102,16 @@ end GlobalTheory.ColLiftAut
 namespace GlobalTheory.ColLiftAut
 
 /- English proof (translation)
-Introduce `τ` and use `GlobalTheory.RepsObj.gramAt_posDef (fun σ => by rw [h.sig σ, h.rank, hq]; simp) h.sigOK τ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem posDef_of_nodeIs {D : D7} {N : GlobalTheory.Grid.Node D} {ν q : ℕ} {Sp : D.what₂.Tau → SPar} (h : N.Is ν q Sp) (hq : q = 0) :
     ∀ τ, (gramAt D N.V τ).PosDef := fun τ =>
   GlobalTheory.RepsObj.gramAt_posDef (fun σ => by rw [h.sig σ, h.rank, hq]; simp) h.sigOK τ
 
 /- English proof (translation)
-Introduce `_ hPr D _ G₀ _ _ Pl0 T A Ks _ _ _ R G hRB hG t j hj Φ hΦ φ hφ _`. Establish `hW : IsWeilDatumO R.ψ (G.Xp j).V (G.Xp (j + 1)).V (R.toLevCh.mu t (j + 1)) (R.toLevCh.mu t (j + 1)) (G.col t j).ω` using `(hG.arrows.col t j hj).weil`. Establish `hT : ∀ τ, (gramAt D (G.Xp (j + 1)).V τ).PosDef` using `posDef_of_nodeIs (hG.spaces.X j (by omega)) rfl`. Establish `hSm : (∀ τ, (gramAt D (G.Xp j).V τ).PosDef) ∧ (G.measX j).ν.IsHaarMeasure ∧ IsFundamentalDomain (GQ (G.Xp j).V) (G.measX j).fd (G.measX j).ν`. Consider the cases of `j with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Conclude with `⟨posDef_of_nodeIs (hG.spaces.P D.R.m le_rfl) (by simp), ((hG.meas.P D.R.m le_rfl).1 rfl).1.1, ((hG.meas.P D.R.m le_rfl).1 rfl).2⟩`. Consider the case `succ j'`. Conclude with `⟨posDef_of_nodeIs (hG.spaces.X j' (by omega)) rfl, ((hG.meas.X j' (by omega)).1 trivial).1.1, ((hG.meas.X j' (by omega)).1 trivial).2⟩`. Conclude with `lift_isAutFunSm R.θ hPr hW hRB.inf hΦ hSm.1 hT hSm.2.1 hSm.2.2 hφ.1`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem colLift_isAutFunSm : GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.LiftsCuspidal → GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.Sizes D → ∀ (G₀ : Type) [Group G₀] [Fintype G₀] (Pl0 T : Type) (A : FamIn D.what₂.LL G₀ Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (G : GlobalTheory.Grid.GridPre R), GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.RowBase R → G.Is → ∀ t j, j < D.R.m → ∀ Φ, IsThetaFunO R.ψ (G.Xp j).V (G.Xp (j + 1)).V Φ → ∀ φ, GlobalTheory.IndefiniteRowSideFullHecke.CuspAlongSmoothLifts.IsCuspOfType R.θ (G.Xp j) φ → (∀ h, IntegrableOn (fun g => thetaKO (G.col t j).ω g h Φ * φ g) (G.measX j).fd (G.measX j).ν) → IsAutFunSm R.θ (G.Xp (j + 1)).V (fun h => ∫ g in (G.measX j).fd, thetaKO (G.col t j).ω g h Φ * φ g ∂(G.measX j).ν) := by
   intro _ hPr D _ G₀ _ _ Pl0 T A Ks _ _ _ R G hRB hG t j hj Φ hΦ φ hφ _

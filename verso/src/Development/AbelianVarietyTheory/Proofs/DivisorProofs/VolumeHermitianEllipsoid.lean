@@ -8,7 +8,7 @@ open Matrix
 open scoped MatrixOrder
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ G` using `hG.posSemidef.nonneg`. Use `⟨CFC.sqrt G, ?_⟩` and prove the remaining obligations. Establish `hs : IsSelfAdjoint (CFC.sqrt G)` using `(CFC.sqrt_nonneg G).isSelfAdjoint`. Rewrite using `[show (CFC.sqrt G)ᴴ = CFC.sqrt G from hs.star_eq, CFC.sqrt_mul_sqrt_self G h0]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma ellvol_factor {g : ℕ} {G : Matrix (Fin g) (Fin g) ℂ} (hG : G.PosDef) :
     ∃ B : Matrix (Fin g) (Fin g) ℂ, G = Bᴴ * B := by
@@ -18,9 +18,9 @@ private lemma ellvol_factor {g : ℕ} {G : Matrix (Fin g) (Fin g) ℂ} (hG : G.P
   rw [show (CFC.sqrt G)ᴴ = CFC.sqrt G from hs.star_eq, CFC.sqrt_mul_sqrt_self G h0]
 
 /- English proof (translation)
-Establish `h1 : w ⬝ᵥ Hm *ᵥ star w = star (B *ᵥ w) ⬝ᵥ (B *ᵥ w)`. Rewrite using `[dotProduct_mulVec, ← mulVec_transpose, dotProduct_comm, hB, ← mulVec_mulVec, dotProduct_mulVec, star_mulVec]`. Rewrite using `[h1, dotProduct, Complex.re_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.star_apply, Complex.star_def, Complex.conj_mul']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `norm_cast`.
+Put the expressions in a common number system so they can be compared.
 -/
 private lemma ellvol_form {g : ℕ} (Hm B : Matrix (Fin g) (Fin g) ℂ) (hB : Hmᵀ = Bᴴ * B)
     (w : Fin g → ℂ) : (w ⬝ᵥ Hm *ᵥ star w).re = ∑ k, ‖(B *ᵥ w) k‖ ^ 2 := by
@@ -33,11 +33,11 @@ private lemma ellvol_form {g : ℕ} (Hm B : Matrix (Fin g) (Fin g) ℂ) (hB : Hm
   norm_cast
 
 /- English proof (translation)
-Use `haveI : Nonempty (Fin g) := ⟨⟨0, hg⟩⟩`. Establish `hset : {v : Fin g → ℂ | ∑ k, ‖v k‖ ^ 2 < r ^ 2} = {x : Fin g → ℂ | (∑ i, ‖x i‖ ^ (2:ℝ)) ^ (1 / (2:ℝ)) < r}`. Use extensionality with `v`. Simplify using `only [Set.mem_setOf_eq, Real.rpow_two]`. Establish `h0 : 0 ≤ ∑ i, ‖v i‖ ^ 2` using `by positivity`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.sqrt_eq_rpow, Real.sqrt_lt' hr]`. Rewrite using `[hset, Complex.volume_sum_rpow_lt (Fin g) (by norm_num) r]`. Establish `e1 : (2:ℝ) / 2 + 1 = 2` using `by norm_num`. Establish `e2 : 2 * (Fintype.card (Fin g) : ℝ) / 2 + 1 = (g : ℝ) + 1`. Rewrite using `[Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, e2, Real.Gamma_two, Real.Gamma_nat_eq_factorial, Fintype.card_fin, mul_one, ← ENNReal.ofReal_pow hr.le, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma ellvol_ball {g : ℕ} (hg : 0 < g) {r : ℝ} (hr : 0 < r) :
     volume {v : Fin g → ℂ | ∑ k, ‖v k‖ ^ 2 < r ^ 2} =
@@ -59,15 +59,15 @@ private lemma ellvol_ball {g : ℕ} (hg : 0 < g) {r : ℝ} (hr : 0 < r) :
   ring
 
 /- English proof (translation)
-Introduce `g Hm r hH hr`. Take `⟨B, hB⟩` from `ellvol_factor hH.transpose`. Establish `hdet : Hm.det = (Complex.normSq B.det : ℂ)`. Rewrite using `[← det_transpose, hB, det_mul, det_conjTranspose, Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hd : 0 < Complex.normSq B.det`. Use `hH.det_pos` as an intermediate fact. Rewrite `this` using `[hdet, Complex.zero_lt_real]`. Then use the resulting hypothesis. Establish `hre : Hm.det.re = Complex.normSq B.det` using `by rw [hdet, Complex.ofReal_re]`. Establish `hset : {w : Fin g → ℂ | (w ⬝ᵥ Hm.mulVec (star w)).re < r ^ 2} = ((Matrix.toLin' B).restrictScalars ℝ) ⁻¹' {v : Fin g → ℂ | ∑ k, ‖v k‖ ^ 2 < r ^ 2}`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `w`. Simplify using `[ellvol_form Hm B hB w, Matrix.toLin'_apply]`. Establish `hdetL : LinearMap.det ((Matrix.toLin' B).restrictScalars ℝ) = Complex.normSq B.det`. Rewrite using `[LinearMap.det_restrictScalars, LinearMap.det_toLin', Algebra.norm_complex_apply]`. Rewrite using `[hset, Measure.addHaar_preimage_linearMap _ (by rw [hdetL]; exact hd.ne'), hdetL, hre]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos g with rfl | hg` into its components or cases. Establish `hu : {v : Fin 0 → ℂ | ∑ k, ‖v k‖ ^ 2 < r ^ 2} = Set.univ`. Use extensionality with `v`. Simplify using `[hr.ne', sq_pos_of_pos hr]`. Establish `h1 : Complex.normSq B.det = 1` using `by simp`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hu, h1, ← Set.pi_univ Set.univ, volume_pi_pi]`. Simplify using the standard rewrite rules. Rewrite using `[ellvol_ball hg hr, ← ENNReal.ofReal_mul (abs_nonneg _)]`. Use `congr 1`. Rewrite using `[abs_of_pos (inv_pos.mpr hd)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/

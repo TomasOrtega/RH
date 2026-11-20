@@ -11,19 +11,19 @@ section Local
 variable {p : ℕ} {G : Formalism.MainNotions.G.GAtP p} (Fl : Formalism.MainNotions.G.Fills G) (v : Fin G.P.nV)
 
 /- English proof (translation)
-Unfold `lamI; rw [dif_pos ⟨le_rfl, by omega⟩]`.
+Replace the relevant objects with their definitions.
 -/
 theorem lambda_index_one (s : Fin (G.P.n' v)) (hm : 2 ≤ G.P.m) : lamI (G.P.lam0 v) s 1 = G.P.lam0 v s ⟨0, by omega⟩ := by
   unfold lamI; rw [dif_pos ⟨le_rfl, by omega⟩]
 
 /- English proof (translation)
-Unfold `lamI; rw [dif_pos ⟨by omega, by omega⟩]`.
+Replace the relevant objects with their definitions.
 -/
 theorem lambda_index_two (s : Fin (G.P.n' v)) (hm : 2 ≤ G.P.m) : lamI (G.P.lam0 v) s 2 = G.P.lam0 v s ⟨1, by omega⟩ := by
   unfold lamI; rw [dif_pos ⟨by omega, by omega⟩]
 
 /- English proof (translation)
-Proceed by induction on `j, hj using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ l hl ih => exact le_trans ih (Fl.w_mono v s l hl)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem nc_w_ge (s : Fin (G.P.n' v)) (j : ℕ) (hj : 1 ≤ j) : Fl.w v 1 s ≤ Fl.w v j s := by
   induction j, hj using Nat.le_induction with

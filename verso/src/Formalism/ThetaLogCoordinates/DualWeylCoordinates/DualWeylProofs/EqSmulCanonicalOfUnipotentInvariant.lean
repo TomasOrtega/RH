@@ -12,9 +12,9 @@ open Formalism.GradedWeylDivisibility
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h : (evGLR (R` using `ℚ) x).comp (mapCoord ℚ) = evGL x := by`. Apply `IsLocalization.ringHom_ext (Submonoid.powers (genMat ℤ n).det)` to reduce the goal to its premises. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `v`. Simplify using `[evGLR, mapCoord, evGL, IsLocalization.Away.lift_eq]`. Conclude with `congrArg (fun φ => φ z) h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma qd_evGLR_mapCoord {R' : Type} [CommRing R'] [Algebra ℚ R'] (x : GL (Fin n) R') (z : GLCoord ℤ n) :
     evGLR (R := ℚ) x (mapCoord ℚ z) = evGL x z := by
@@ -31,16 +31,16 @@ def qd_sig (n : ℕ) : MvPolynomial (Fin n × Fin n) ℚ →ₐ[ℚ] GLCoord ℚ
   (IsScalarTower.toAlgHom ℚ (MvPolynomial (Fin n × Fin n) ℚ) (GLCoord ℚ n)).comp (rename Prod.swap)
 
 /- English proof (translation)
-Simplify using `[qd_sig, Prod.swap]`.
+Simplify using the standard rewrite rules.
 -/
 lemma qd_sig_X (v : Fin n × Fin n) :
     qd_sig n (X v) = algebraMap (MvPolynomial (Fin n × Fin n) ℚ) (GLCoord ℚ n) (X (v.2, v.1)) := by
   simp [qd_sig, Prod.swap]
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg (MvPolynomial.eval (fun ab : Fin n × Fin n => if ab.1 = ab.2 then (1 : ℚ) else 0)) h` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Establish `h1 : (MvPolynomial.eval (fun ab : Fin n × Fin n => if ab.1 = ab.2 then (1 : ℚ) else 0)).mapMatrix (genMat ℚ n) = 1`. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[genMat, Matrix.one_apply]`. Rewrite `this` using `[h1]`. Simplify using `at this`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma qd_genDet_ne (n : ℕ) : (genMat ℚ n).det ≠ 0 := by
   intro h
@@ -53,7 +53,7 @@ lemma qd_genDet_ne (n : ℕ) : (genMat ℚ n).det ≠ 0 := by
   simp at this
 
 /- English proof (translation)
-Establish `h1 : Function.Injective (algebraMap (MvPolynomial (Fin n × Fin n) ℚ) (GLCoord ℚ n))` using `IsLocalization.injective (GLCoord ℚ n) (powers_le_nonZeroDivisors_of_noZeroDivisors (qd_genDet_ne n))`. Establish `h2 : Function.Injective (rename (R` using `ℚ) (Prod.swap : Fin n × Fin n → Fin n × Fin n)) := rename_injective _ Prod.swap_injective`. Introduce `p q hpq`. Conclude with `h2 (h1 hpq)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma qd_sig_inj (n : ℕ) : Function.Injective (qd_sig n) := by
   have h1 : Function.Injective (algebraMap (MvPolynomial (Fin n × Fin n) ℚ) (GLCoord ℚ n)) :=
@@ -65,9 +65,9 @@ lemma qd_sig_inj (n : ℕ) : Function.Injective (qd_sig n) := by
   exact h2 (h1 hpq)
 
 /- English proof (translation)
-Establish `h : (evGLR (R` using `ℚ) x).comp (qd_sig n).toRingHom = (aeval (R := ℚ) (fun v : Fin n × Fin n => x.val v.2 v.1)).toRingHom := by`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using the standard rewrite rules. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[qd_sig, evGLR, IsLocalization.Away.lift_eq]`. Conclude with `congrArg (fun φ => φ P) h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma qd_ev_sig {R' : Type} [CommRing R'] [Algebra ℚ R'] (x : GL (Fin n) R')
     (P : MvPolynomial (Fin n × Fin n) ℚ) :
@@ -82,7 +82,7 @@ lemma qd_ev_sig {R' : Type} [CommRing R'] [Algebra ℚ R'] (x : GL (Fin n) R')
   exact congrArg (fun φ => φ P) h
 
 /- English proof (translation)
-Establish `h : Units.map (evGL x).toMonoidHom (detU n) = Matrix.GeneralLinearGroup.det x`. Use `ext`. Simplify using `only [Units.coe_map, detU, IsUnit.unit_spec, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[evGL, IsLocalization.Away.lift_eq, RingHom.map_det, genMat_map_eval]`. Rewrite using `[← h, ← map_zpow]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -104,7 +104,7 @@ def qd_P (mu : Fin n → ℤ) (I : TIdx mu) : MvPolynomial (Fin n × Fin n) ℚ 
 def qd_U (mu : Fin n → ℤ) : GLCoord ℚ n := mapCoord ℚ ((detU n ^ mu (lastIdx n) : (GLCoord ℤ n)ˣ) : GLCoord ℤ n)
 
 /- English proof (translation)
-Use `Finset.orderEmbOfFin_unique (s := (canT mu c).1) (canT mu c).2 (f := Fin.castLE (colH_le mu c)) (by intro x; simp [canT]) (Fin.strictMono_castLE _)` as an intermediate fact. Rewrite using `[← this]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma qd_can_emb (mu : Fin n → ℤ) (c : ↥(TCols mu)) (a : Fin (colH mu c)) :
     (canT mu c).1.orderEmbOfFin (canT mu c).2 a = Fin.castLE (colH_le mu c) a := by
@@ -113,9 +113,9 @@ lemma qd_can_emb (mu : Fin n → ℤ) (c : ↥(TCols mu)) (a : Fin (colH mu c)) 
   rw [← this]
 
 /- English proof (translation)
-Unfold `brk TMat qd_U qd_P`. Rewrite using `[map_mul, map_prod, map_prod]`. Use `congr 1`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Unfold `minorC initMinor`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Rewrite using `[mapCoord, IsLocalization.Away.lift_eq, RingHom.comp_apply, RingHom.map_det, AlgHom.map_det, RingHom.map_det, ← Matrix.det_transpose]`. Use `congr 1`. Use extensionality with `a b`. Simplify using `[genMat, qd_can_emb, qd_sig_X]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma qd_brk (mu : Fin n → ℤ) (I : TIdx mu) :
     mapCoord ℚ (brk mu I) = qd_U mu * qd_sig n (qd_P mu I) := by
@@ -133,9 +133,9 @@ lemma qd_brk (mu : Fin n → ℤ) (I : TIdx mu) :
 def qd_nu (mu : Fin n → ℤ) : Fin n → ℕ := ∑ c : ↥(TCols mu), initW n (colH mu c)
 
 /- English proof (translation)
-Introduce `s t hst`. Unfold `qd_nu`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_le_sum fun c _ => ?_` and prove the remaining obligations. Establish `: s.val ≤ t.val` using `hst`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `initW`. Apply the tactic sequence `split_ifs <;> omega`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma qd_nu_anti (mu : Fin n → ℤ) : Antitone (qd_nu mu) := by
   intro s t hst
@@ -147,7 +147,7 @@ lemma qd_nu_anti (mu : Fin n → ℤ) : Antitone (qd_nu mu) := by
   split_ifs <;> omega
 
 /- English proof (translation)
-The claim follows from `dualWeyl_prod univ _ _ (fun _ _ => initMinor_mem _ _)`.
+A detailed English derivation is pending.
 -/
 lemma tableauBideterminant_mem_dualWeyl' (mu : Fin n → ℤ) (I : TIdx mu) : qd_P mu I ∈ dualWeyl ℚ n n (qd_nu mu) :=
   dualWeyl_prod univ _ _ (fun _ _ => initMinor_mem _ _)
@@ -162,13 +162,13 @@ lemma qd_L_apply (mu : Fin n → ℤ) (P : MvPolynomial (Fin n × Fin n) ℚ) :
     qd_L mu P = qd_U mu * qd_sig n P := rfl
 
 /- English proof (translation)
-The claim follows from `(qd_brk mu I).symm`.
+A detailed English derivation is pending.
 -/
 lemma qd_L_P (mu : Fin n → ℤ) (I : TIdx mu) : qd_L mu (qd_P mu I) = mapCoord ℚ (brk mu I) :=
   (qd_brk mu I).symm
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨I, rfl⟩`. Conclude with `⟨qd_P mu I, tableauBideterminant_mem_dualWeyl' mu I, qd_L_P mu I⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 lemma qd_span_le (mu : Fin n → ℤ) :
     Submodule.span ℚ (Set.range fun I : TIdx mu => mapCoord ℚ (brk mu I)) ≤
@@ -179,7 +179,7 @@ lemma qd_span_le (mu : Fin n → ℤ) :
 
 omit [NeZero n] in
 /- English proof (translation)
-Establish `: (Matrix.of fun a b : Fin n => Polynomial.C (algebraMap (MvPolynomial (Fin n × Fin n) ℚ) (GLCoord ℚ n) (X (a, b)))) = (Polynomial.C.comp (algebraMap (MvPolynomial (Fin n × Fin n) ℚ) (GLCoord ℚ n))).mapMatrix (genMat ℚ n)`. Use extensionality with `a b : 2`. Simplify using `[genMat]`. Rewrite using `[this, ← RingHom.map_det]`. Conclude with `(IsLocalization.Away.algebraMap_isUnit (S := GLCoord ℚ n) (genMat ℚ n).det).map Polynomial.C`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma generic_point_det_isUnit (n : ℕ) : IsUnit (Matrix.of fun a b : Fin n =>
     Polynomial.C (algebraMap (MvPolynomial (Fin n × Fin n) ℚ) (GLCoord ℚ n) (X (a, b)))).det := by
@@ -206,7 +206,7 @@ def qd_trans {R : Type} [CommRing R] (a b : Fin n) (hab : a ≠ b) (t : R) : GL 
 
 omit [NeZero n] in
 /- English proof (translation)
-Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `Matrix.det_transvection_of_ne _ _ hab t`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qd_trans_det {R : Type} [CommRing R] (a b : Fin n) (hab : a ≠ b) (t : R) :
     Matrix.GeneralLinearGroup.det (qd_trans a b hab t) = 1 := by
@@ -216,9 +216,9 @@ lemma qd_trans_det {R : Type} [CommRing R] (a b : Fin n) (hab : a ≠ b) (t : R)
 
 omit [NeZero n] in
 /- English proof (translation)
-Establish `: (x * qd_trans a b hab t).val = x.val * Matrix.transvection a b t` using `rfl`. Rewrite using `[this]`. Use `split_ifs with h`. Substitute `h` using the available equality. Rewrite using `[Matrix.mul_transvection_apply_same]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_transvection_apply_of_ne _ _ _ _ h, add_zero]`.
+A detailed English derivation is pending.
 -/
 lemma qd_mul_trans {R : Type} [CommRing R] (x : GL (Fin n) R) (a b : Fin n) (hab : a ≠ b) (t : R) (i j : Fin n) :
     (x * qd_trans a b hab t).val i j = x.val i j + if j = b then t * x.val i a else 0 := by
@@ -230,7 +230,7 @@ lemma qd_mul_trans {R : Type} [CommRing R] (x : GL (Fin n) R) (a b : Fin n) (hab
 
 omit [NeZero n] in
 /- English proof (translation)
-Establish `: (qd_trans a b hab t).val = Matrix.transvection a b t` using `rfl`. Rewrite using `[this, Matrix.transvection, Matrix.add_apply, Matrix.one_apply_eq, Matrix.single_apply]`. Rewrite using `[if_neg (by rintro ⟨rfl, h⟩; exact hab h.symm), add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma qd_trans_diag {R : Type} [CommRing R] (a b : Fin n) (hab : a ≠ b) (t : R) (i : Fin n) :
     (qd_trans a b hab t).val i i = 1 := by
@@ -240,7 +240,7 @@ lemma qd_trans_diag {R : Type} [CommRing R] (a b : Fin n) (hab : a ≠ b) (t : R
 
 omit [NeZero n] in
 /- English proof (translation)
-Establish `: (qd_trans a b hab.ne t).val = Matrix.transvection a b t` using `rfl`. Rewrite using `[this, Matrix.transvection, Matrix.add_apply, Matrix.one_apply_ne hji.ne', Matrix.single_apply]`. Rewrite using `[if_neg (by rintro ⟨rfl, rfl⟩; exact absurd hab (not_lt.mpr hji.le)), add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma qd_trans_low {R : Type} [CommRing R] (a b : Fin n) (hab : a < b) (t : R) (i j : Fin n) (hji : j < i) :
     (qd_trans a b hab.ne t).val i j = 0 := by
@@ -250,7 +250,7 @@ lemma qd_trans_low {R : Type} [CommRing R] (a b : Fin n) (hab : a < b) (t : R) (
 
 omit [NeZero n] in
 /- English proof (translation)
-Establish `h : (aeval (R` using `ℚ) (fun v : Fin n × Fin n => (qd_genPt n).val v.2 v.1)) = (Polynomial.CAlgHom (R := ℚ) (A := GLCoord ℚ n)).comp (qd_sig n) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `[qd_sig_X, qd_genPt_val]`. Conclude with `congrArg (fun φ => φ P) h`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma aeval_generic_point (P : MvPolynomial (Fin n × Fin n) ℚ) :
     aeval (fun v : Fin n × Fin n => (qd_genPt n).val v.2 v.1) P = Polynomial.C (qd_sig n P) := by
@@ -263,9 +263,9 @@ lemma aeval_generic_point (P : MvPolynomial (Fin n × Fin n) ℚ) :
 
 omit [NeZero n] in
 /- English proof (translation)
-Establish `h : (aeval (R` using `ℚ) (fun v : Fin n × Fin n => (qd_genPt n * qd_trans a b hab Polynomial.X).val v.2 v.1)) = (Polynomial.mapAlgHom (qd_sig n)).comp (rowGen ℚ a b) := by`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [aeval_X, AlgHom.comp_apply, rowGen_X, qd_mul_trans, Polynomial.coe_mapAlgHom]`. Apply the tactic sequence `split_ifs <;> simp [qd_sig_X, qd_genPt_val]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `congrArg (fun φ => φ P) h`.
+A detailed English derivation is pending.
 -/
 lemma qd_aeval_xu (a b : Fin n) (hab : a ≠ b) (P : MvPolynomial (Fin n × Fin n) ℚ) :
     aeval (fun v : Fin n × Fin n => (qd_genPt n * qd_trans a b hab Polynomial.X).val v.2 v.1) P
@@ -280,7 +280,7 @@ lemma qd_aeval_xu (a b : Fin n) (hab : a ≠ b) (P : MvPolynomial (Fin n × Fin 
   exact congrArg (fun φ => φ P) h
 
 /- English proof (translation)
-Unfold `qd_U`. Rewrite using `[qd_evGLR_mapCoord, qd_evGL_detU]`. Conclude with `Units.isUnit _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma qd_U_unit {R' : Type} [CommRing R'] [Algebra ℚ R'] (x : GL (Fin n) R') (mu : Fin n → ℤ) :
     IsUnit (evGLR (R := ℚ) x (qd_U mu)) := by
@@ -289,7 +289,7 @@ lemma qd_U_unit {R' : Type} [CommRing R'] [Algebra ℚ R'] (x : GL (Fin n) R') (
   exact Units.isUnit _
 
 /- English proof (translation)
-Unfold `qd_U`. Rewrite using `[qd_evGLR_mapCoord, qd_evGLR_mapCoord, qd_evGL_detU, qd_evGL_detU, map_mul, hu, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma qd_U_inv {R' : Type} [CommRing R'] [Algebra ℚ R'] (x u : GL (Fin n) R') (mu : Fin n → ℤ)
     (hu : Matrix.GeneralLinearGroup.det u = 1) :
@@ -298,7 +298,7 @@ lemma qd_U_inv {R' : Type} [CommRing R'] [Algebra ℚ R'] (x u : GL (Fin n) R') 
   rw [qd_evGLR_mapCoord, qd_evGLR_mapCoord, qd_evGL_detU, qd_evGL_detU, map_mul, hu, mul_one]
 
 /- English proof (translation)
-Rewrite `h` using `[qd_L_apply, map_mul, map_mul, qd_U_inv _ _ _ (qd_trans_det a b hab _)]`. Establish `h2` using `(qd_U_unit (qd_genPt n) mu).mul_left_cancel h`. Rewrite `h2` using `[qd_ev_sig, qd_ev_sig, aeval_generic_point, qd_aeval_xu]`. Apply `Polynomial.map_injective (qd_sig n).toRingHom (qd_sig_inj n)` to reduce the goal to its premises. Rewrite using `[h2, Polynomial.map_C]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -314,7 +314,7 @@ lemma qd_raise (mu : Fin n → ℤ) (P : MvPolynomial (Fin n × Fin n) ℚ) (a b
   rfl
 
 /- English proof (translation)
-Unfold `qd_P`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Unfold `initMinor lpMinor`. Simplify using `only [qd_can_emb]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma tableauBideterminant_canonical_eq_prod_leadingMinor (mu : Fin n → ℤ) :
     qd_P mu (canT mu) = ∏ c : ↥(TCols mu), lpMinor ℚ (colH mu c) (colH_le mu c) (colH_le mu c) := by
@@ -324,11 +324,11 @@ lemma tableauBideterminant_canonical_eq_prod_leadingMinor (mu : Fin n → ℤ) :
   simp only [qd_can_emb]
 
 /- English proof (translation)
-Take `⟨c0, h0⟩` from `hwLine ℚ n n le_rfl (qd_nu mu) (qd_nu_anti mu) _ (tableauBideterminant_mem_dualWeyl' mu (canT mu)) (by`. Introduce `a b hab k hk`. Unfold `rowDiv`. Rewrite using `[tableauBideterminant_canonical_eq_prod_leadingMinor, map_prod]`. Simplify using `only [rowGen_lpMinor ℚ a b hab]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← map_prod, Polynomial.coeff_C, if_neg (by omega)])`. Use `⟨c0, ?_, h0⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Rewrite `h0` using `[zero_smul, tableauBideterminant_canonical_eq_prod_leadingMinor]`. Use `congrArg (eval (idPoint ℚ n n)) h0` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[eval_idPoint_lpMinor] at this`.
+Simplify using the standard rewrite rules.
 -/
 lemma tableauBideterminant_canonical_eq_smul_highestWeight (mu : Fin n → ℤ) : ∃ c0 : ℚ, c0 ≠ 0 ∧ qd_P mu (canT mu) = c0 • hw ℚ le_rfl (qd_nu mu) := by
   obtain ⟨c0, h0⟩ := hwLine ℚ n n le_rfl (qd_nu mu) (qd_nu_anti mu) _ (tableauBideterminant_mem_dualWeyl' mu (canT mu)) (by
@@ -344,9 +344,9 @@ lemma tableauBideterminant_canonical_eq_smul_highestWeight (mu : Fin n → ℤ) 
   simp [eval_idPoint_lpMinor] at this
 
 /- English proof (translation)
-Take `⟨P, hP, rfl⟩` from `qd_span_le mu hf`. Take `⟨c, hc⟩` from `hwLine ℚ n n le_rfl (qd_nu mu) (qd_nu_anti mu) P hP (by`. Introduce `a b hab k hk`. Unfold `rowDiv`. Rewrite using `[qd_raise mu P a b hab.ne (hinv _ _ _ (qd_trans_diag a b hab.ne _) (qd_trans_low a b hab _)), Polynomial.coeff_C, if_neg (by omega)])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c0, hc0, h0⟩` from `tableauBideterminant_canonical_eq_smul_highestWeight mu`. Use `⟨c / c0, ?_⟩` and prove the remaining obligations. Rewrite using `[← qd_L_P, ← map_smul, h0, hc, smul_smul, div_mul_cancel₀ _ hc0]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_smul_canonical_of_unipotent_invariant (mu : Fin n → ℤ) (f : GLCoord ℚ n)
     (hf : f ∈ Submodule.span ℚ (Set.range fun I : TIdx mu => mapCoord ℚ (brk mu I)))

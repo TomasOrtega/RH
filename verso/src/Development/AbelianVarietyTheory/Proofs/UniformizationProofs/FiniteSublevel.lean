@@ -32,7 +32,7 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {ϖ : 
   {F : Type} [Field F] [Algebra (FractionRing V) F] {v : AddValuation F (WithTop ℚ)} (hv : ValOver ϖ F v)
 
 /- English proof (translation)
-Establish `H₁ : IsPullback (snd (TO hϖ hv) D.toPre.P.A).left (fst (TO hϖ hv) D.toPre.P.A).left D.toPre.P.A.hom (TO hϖ hv).hom` using `(IsPullback.of_hasPullback (TO hϖ hv).hom D.toPre.P.A.hom).flip`. Establish `H₀ : IsPullback (DegPre.prB D.toPre F).left (fst (TF (R` using `V) F) D.toPre.P.A).left D.toPre.P.A.hom (TF (R := V) F).hom := (IsPullback.of_hasPullback (TF (R := V) F).hom D.toPre.P.A.hom).flip`. Rewrite `H₀` using `[← jO_snd hϖ hv, ← Over.w (ιS hϖ hv)]`. Conclude with `H₀.of_right (jO_fst hϖ hv) H₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPullback_jO : IsPullback (jO hϖ hv (D := D)).left (fst (TF (R := V) F) D.toPre.P.A).left
     (fst (TO hϖ hv) D.toPre.P.A).left (Spec.map (CommRingCat.ofHom (algebraMap (Ov v) F))) := by
@@ -46,19 +46,19 @@ theorem isPullback_jO : IsPullback (jO hϖ hv (D := D)).left (fst (TF (R := V) F
 include hϖ hv in
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Use `D.toPre.P.isAb.proper` as an intermediate fact. Establish `hp : IsProper (fst (TO hϖ hv) D.toPre.P.A).left` using `inferInstanceAs (IsProper (pullback.fst (TO hϖ hv).hom D.toPre.P.A.hom))`. Establish `: CompactSpace (TO hϖ hv).left` using `inferInstanceAs (CompactSpace (Spec (CommRingCat.of (Ov v))))`. Establish `: QuasiSeparatedSpace (TO hϖ hv).left` using `inferInstanceAs (QuasiSeparatedSpace (Spec (CommRingCat.of (Ov v))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: CompactSpace (TO hϖ hv ⊗ D.toPre.P.A).left` using `QuasiCompact.compactSpace_of_compactSpace (fst (TO hϖ hv) D.toPre.P.A).left`. Establish `: QuasiSeparatedSpace (TO hϖ hv ⊗ D.toPre.P.A).left` using `(quasiSeparated_iff_quasiSeparatedSpace (fst (TO hϖ hv) D.toPre.P.A).left).mp inferInstance`. Take `⟨s₁, hs₁⟩` from `exists_sec hL (φ' := fun i => (jO hϖ hv (D := D)).left ≫ (snd (TO hϖ hv) D.toPre.P.A).left ≫ D.toPre.famφB α i) (ε' := DegPre.famε k) (fun U _ h => Finset.prod_congr rfl fun i _ => by`. Rewrite using `[GC.famφ_eq, ← jO_snd hϖ hv, Category.assoc]) s`. Take `⟨t, ht, S, hS⟩` from `TwistLoc.exists_clear_denominator (nonZeroDivisors (Ov v)) (isPullback_jO hϖ hv (D := D)) hL (fun i => (snd (TO hϖ hv) D.toPre.P.A).left ≫ D.toPre.famφB α i) (DegPre.famε k) s₁`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rr, σ, hσ⟩` from `hTW V D.toPre k hk α (Ov v) (fO v hϖ hv) inferInstance S`. Use `choose σF hσF using fun i => FamInt.exists_pull (D := D) (F := F) (σ i)`. Establish `ht0 : (t : F) ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (K := F) ht`. Take `⟨r, hr⟩` from `wt_coe_of_ne (v := v) (inv_ne_zero ht0)`. Use `⟨r, n, fun i => (t : F)⁻¹ * ιr (v := v) (rr i), σ, σF, hσF, fun i => ?_, fun j => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddValuation.map_mul, hr]`. Conclude with `le_add_of_nonneg_right (v_ιr _)`. Use `(sec_ext_val hL (s' := FamInt.secLin (fun i => gF D.toPre F ((t : F)⁻¹ * ιr (v := v) (rr i))) σF) (fun y J hJ => ?_) j).trans rfl` and prove the remaining obligations. Rewrite using `[sval_lin (s := FamInt.secLin _ _) (fun i => gF D.toPre F ((t : F)⁻¹ * ιr (v := v) (rr i))) σF (fun _ => rfl) _ y hJ]`. Establish `e₁ : sval S (𝟙 _ ≫ (jO hϖ hv (D` using `D)).left) y J = gs (𝟙 _) y ⊤ (gF D.toPre F t) * sval s (𝟙 _) y J := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hs₁ _ _ y J hJ, sval_of S (𝟙 _ ≫ (jO hϖ hv (D := D)).left) y J (fun a => J (𝟙 _ ≫ (jO hϖ hv (D := D)).left ≫ (snd (TO hϖ hv) D.toPre.P.A).left ≫ D.toPre.famφB α a)) (fun a => by rw [Category.assoc])]`. Use `(hS _ (𝟙 _) y _ (hJ.mem (fun a => (jO hϖ hv (D := D)).left ≫ (snd (TO hϖ hv) D.toPre.P.A).left ≫ D.toPre.famφB α a) (𝟙 _))).trans (congrArg₂ (· * ·) ?_ rfl)` and prove the remaining obligations. Establish `e` using `gs_jO hϖ hv (D := D) (𝟙 _) y ((Scheme.ΓSpecIso (CommRingCat.of (Ov v))).inv.hom t)`. Rewrite `e` using `[show ιr (v := v) ((Scheme.ΓSpecIso (CommRingCat.of (Ov v))).inv.hom t) = (t : F) by simp [ιr]]`. Rewrite using `[← e, ← Category.assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(gs_pull _ _ y ⊤ trivial _).symm`. Establish `e₂` using `sval_lin (fun l => (fst (TO hϖ hv) D.toPre.P.A).left.appTop.hom (rr l)) (fun l => pullSec D.toPre.P.L _ _ (σ l) (snd (TO hϖ hv) D.toPre.P.A).left) (fun j => hσ j) (𝟙 _ ≫ (jO hϖ hv).left) y hJ`. Establish `g : ∀ a b : F, gs (𝟙 _) y ⊤ (gF D.toPre F (a * b)) = gs (𝟙 _) y ⊤ (gF D.toPre F a) * gs (𝟙 _) y ⊤ (gF D.toPre F b)` using `fun a b => by`. Rewrite using `[map_mul, gs_mul _ y ⊤ trivial]`. Establish `g₁ : gs (𝟙 _) y ⊤ (gF D.toPre F (t : F)⁻¹) * gs (𝟙 _) y ⊤ (gF D.toPre F t) = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← g, inv_mul_cancel₀ ht0, map_one, gs_eq _ _ ⊤ trivial, map_one, map_one]`. Rewrite using `[← _root_.one_mul (sval s _ y J), ← g₁, _root_.mul_assoc, ← e₁, e₂, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[g, gs_jO, sval_pullSec _ _ _ _ _ y hJ, Category.assoc, jO_snd, secScal_sval (hσF i) _ y hJ, _root_.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_vge (hTW : TwistBCSpanStatement) {k : ℕ} (hk : 1 ≤ k) {α : D.toPre.X}
     (s : LB.Sec (LB.LinComb D.toPre.P.L (DegPre.famφ D.toPre F α) (DegPre.famε k))) : ∃ r : ℚ, VGe D F v k α s r := by
@@ -112,11 +112,9 @@ theorem exists_vge (hTW : TwistBCSpanStatement) {k : ℕ} (hk : 1 ≤ k) {α : D
 include hϖ hv in
 
 /- English proof (translation)
-Take `⟨-, e, he⟩` from `exists_representatives_mod_nsmul D.toPre.X k hk`. Use `choose r hr using fun i => exists_vge hϖ hv hTW hk (s.s (e i))`. Take `⟨m, hm⟩` from `(Set.finite_range fun i => (Q (e i) : ℚ) / k - r i).bddAbove`. Use `⟨-m, ?_⟩` and prove the remaining obligations. Rewrite using `[n1a V ϖ hϖ D Q hQ _ _ hv k hk (Finset.univ.image e) (fun χ => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi, -⟩` from `he χ`. Conclude with `⟨e i, Finset.mem_image_of_mem _ (Finset.mem_univ i), hi⟩) s]`. Introduce `α hα`. Take `⟨i, -, rfl⟩` from `Finset.mem_image.1 hα`. Use `hm ⟨i, rfl⟩` as an intermediate fact.
-
-Conclude with `VGe.mono (hr i) (by linarith)`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_nuGe (hTW : TwistBCSpanStatement) {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q) {k : ℕ} (hk : 1 ≤ k)
     (s : Fam D.toPre F k) : ∃ r : ℚ, NuGe D Q F v k s r := by
@@ -136,9 +134,9 @@ theorem exists_nuGe (hTW : TwistBCSpanStatement) {Q : D.toPre.X → ℤ} (hQ : Q
 include hϖ in
 
 /- English proof (translation)
-Set `β : LinearMap.BilinForm ℤ D.toPre.X` to `LinearMap.mk₂ ℤ (fun a b => QForm.bHom hϖ D hQ a b) (fun a a' b => by simp) (fun c a b => by simp) (fun a b b' => by simp) (fun c a b => by simp)`. Establish `hβ : ∀ a, β a a = 2 * Q a` using `fun a => (QForm.two_Q_eq hϖ D hQ a).symm`. Establish `hk' : (0 : ℝ) < k` using `by exact_mod_cast hk`. Use `(ClassMin.finite_affine_sublevel (ClassMin.realExtension_ofIntBilin_posDef (β := β) (fun a b => QForm.bOf_comm D a b) (fun a ha => by have := QForm.Q_pos hϖ D hQ ha; rw [hβ]; omega)) (inv_pos.2 hk') ((Rat.castHom ℝ).toAddMonoidHom.comp l) q).subset fun χ hχ => ?_` and prove the remaining obligations. Establish `h : (((Q χ : ℚ) / k + l χ : ℚ) : ℝ) ≤ (q : ℝ)` using `by exact_mod_cast hχ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `show (k : ℝ)⁻¹ * ClassMin.ofIntBilin β χ + (l χ : ℝ) ≤ q`. Rewrite using `[ClassMin.ofIntBilin_apply, hβ]`. Move the coercions through the operations in `at h ⊢`. Use `le_of_eq_of_le ?_ h` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem finite_sublevel {Q : D.toPre.X → ℤ} (hQ : QForm.IsQ D.toPre ϖ Q) {k : ℕ} (hk : 1 ≤ k) (l : D.toPre.X →+ ℚ)
     (q : ℚ) : {χ | (Q χ : ℚ) / k + l χ ≤ q}.Finite := by

@@ -13,7 +13,7 @@ namespace GlobalTheory.TypeSum.SmoothFrechet
 variable {n : ℕ} {ε : Fin n → Bool} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {ρ : Mx n → (E →L[ℂ] E)}
 
 /- English proof (translation)
-The claim follows from `(continuous_apply l).comp continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem continuous_eval (l : List (lie (Jm ε))) : Continuous fun v : Fam ε ρ => v.1 l :=
   (continuous_apply l).comp continuous_subtype_val
@@ -32,20 +32,20 @@ Both sides reduce to the same expression.
 theorem der_apply (X : lie (Jm ε)) (v : Fam ε ρ) (l : List (lie (Jm ε))) : (der ρ X v).1 l = v.1 (l ++ [X]) := rfl
 
 /- English proof (translation)
-Rewrite using `[h.2.1 a ha b hb]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_mul (h : ModRep ε ρ) {a b : Mx n} (ha : a ∈ UJset ε) (hb : b ∈ UJset ε) (w : E) :
     ρ (a * b) w = ρ a (ρ b w) := by rw [h.2.1 a ha b hb]; rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| by simp [adInv, mul_add, add_mul]`.
+A detailed English derivation is pending.
 -/
 theorem adInv_lin {g : Mx n} (hg : g ∈ UJset ε) (a : ℝ) (X Y : lie (Jm ε)) :
     adInv hg (a • X + Y) = a • adInv hg X + adInv hg Y :=
   Subtype.ext <| by simp [adInv, mul_add, add_mul]
 
 /- English proof (translation)
-Establish `e : ∀ A : Mx n, g * (g⁻¹ * A) = A` using `fun A => by rw [← mul_assoc, mul_inv_UJ hg, one_mul]`. Simplify using `only [adInv, h, mul_sub, sub_mul, mul_assoc, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem adInv_br {g : Mx n} (hg : g ∈ UJset ε) {X Y Z : lie (Jm ε)} (h : (Z : Mx n) = X * Y - Y * X) :
     (adInv hg Z : Mx n) = adInv hg X * adInv hg Y - adInv hg Y * adInv hg X := by
@@ -75,7 +75,7 @@ theorem act_apply (h : ModRep ε ρ) {g : Mx n} (hg : g ∈ UJset ε) (v : Fam �
     (act h hg v).1 l = ρ g (v.1 (l.map (adInv hg))) := rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `Subtype.ext <| funext fun l => ?_` and prove the remaining obligations. Establish `: adInv hg = id` using `funext fun X => Subtype.ext <| by simp [adInv]`. Rewrite using `[act_apply, this, h.1, List.map_id]`. Both sides reduce to the same expression.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem act_one (h : ModRep ε ρ) {g : Mx n} (hg : g ∈ UJset ε) (e : g = 1) (v : Fam ε ρ) : act h hg v = v := by
   subst e
@@ -84,7 +84,7 @@ theorem act_one (h : ModRep ε ρ) {g : Mx n} (hg : g ∈ UJset ε) (e : g = 1) 
   rw [act_apply, this, h.1, List.map_id]; rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Use `Subtype.ext <| funext fun l => ?_` and prove the remaining obligations. Establish `: adInv hc = adInv hb ∘ adInv ha` using `funext fun X => Subtype.ext <| by`. Simplify using `[adInv, Matrix.mul_inv_rev, mul_assoc]`. Rewrite using `[act_apply, act_apply, act_apply, this, rho_mul h ha hb, List.map_map]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem act_mul (h : ModRep ε ρ) {a b c : Mx n} (ha : a ∈ UJset ε) (hb : b ∈ UJset ε) (hc : c ∈ UJset ε)
     (e : c = a * b) (v : Fam ε ρ) : act h hc v = act h ha (act h hb v) := by
@@ -95,20 +95,20 @@ theorem act_mul (h : ModRep ε ρ) {a b c : Mx n} (ha : a ∈ UJset ε) (hb : b 
   rw [act_apply, act_apply, act_apply, this, rho_mul h ha hb, List.map_map]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun l => by simp only [der_apply, act_apply, List.map_append, List.map_cons, List.map_nil]`.
+A detailed English derivation is pending.
 -/
 theorem der_act (h : ModRep ε ρ) {g : Mx n} (hg : g ∈ UJset ε) (X : lie (Jm ε)) (v : Fam ε ρ) :
     der ρ X (act h hg v) = act h hg (der ρ (adInv hg X) v) :=
   Subtype.ext <| funext fun l => by simp only [der_apply, act_apply, List.map_append, List.map_cons, List.map_nil]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun l => v.2.2.1 l [] a X Y`.
+A detailed English derivation is pending.
 -/
 theorem der_lin (a : ℝ) (X Y : lie (Jm ε)) (v : Fam ε ρ) : der ρ (a • X + Y) v = (a : ℂ) • der ρ X v + der ρ Y v :=
   Subtype.ext <| funext fun l => v.2.2.1 l [] a X Y
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using der_lin 1 0 0 v`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, der_lin, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem der_sum {ι : Type} (s : Finset ι) (c : ι → ℝ) (b : ι → lie (Jm ε)) (v : Fam ε ρ) :
     der ρ (∑ j ∈ s, c j • b j) v = ∑ j ∈ s, (c j : ℂ) • der ρ (b j) v := by
@@ -118,7 +118,7 @@ theorem der_sum {ι : Type} (s : Finset ι) (c : ι → ℝ) (b : ι → lie (Jm
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, der_lin, ih]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℝ (lie (Jm ε))`. Use `choose φ hφ using fun j => LinearMap.exists_extend (b.coord j)`. Use `⟨_, b, φ, fun X => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← b.sum_repr X]`. Conclude with `Finset.sum_congr rfl fun j _ => by rw [show φ j X = _ from LinearMap.congr_fun (hφ j) X]; rfl`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_frame (ε : Fin n → Bool) : ∃ (d : ℕ) (b : Fin d → lie (Jm ε)) (φ : Fin d → (Mx n →ₗ[ℝ] ℝ)),
     ∀ X : lie (Jm ε), ∑ j, φ j X • b j = X := by
@@ -143,7 +143,7 @@ Both sides reduce to the same expression.
 theorem sn_zero (b : Fin d → lie (Jm ε)) (v : Fam ε ρ) : sn ρ b 0 v = ‖v.1 []‖ := rfl
 
 /- English proof (translation)
-Use `show (∑ j, (sn ρ b k).comp (der ρ (b j) : Fam ε ρ →ₗ[ℂ] Fam ε ρ)) v = _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sn_succ (b : Fin d → lie (Jm ε)) (k : ℕ) (v : Fam ε ρ) :
     sn ρ b (k + 1) v = ∑ j, sn ρ b k (der ρ (b j) v) := by
@@ -151,7 +151,7 @@ theorem sn_succ (b : Fin d → lie (Jm ε)) (k : ℕ) (v : Fam ε ρ) :
   simp
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact (continuous_eval []).norm`. Consider the case `succ k ih`. Rewrite using `[show ⇑(sn ρ b (k + 1)) = _ from funext (sn_succ b k)]`. Conclude with `continuous_finset_sum _ fun j _ => ih.comp (der ρ (b j)).continuous`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_sn (b : Fin d → lie (Jm ε)) (k : ℕ) : Continuous (sn ρ b k) := by
   induction k with
@@ -163,20 +163,20 @@ theorem continuous_sn (b : Fin d → lie (Jm ε)) (k : ℕ) : Continuous (sn ρ 
 def sz (φ : Fin d → (Mx n →ₗ[ℝ] ℝ)) (X : Mx n) : ℝ := ∑ j, |φ j X|
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem sz_nonneg (φ : Fin d → (Mx n →ₗ[ℝ] ℝ)) (X : Mx n) : 0 ≤ sz φ X := Finset.sum_nonneg fun _ _ => abs_nonneg _
 
 /- English proof (translation)
-The claim follows from `continuous_finset_sum _ fun j _ => (φ j).continuous_of_finiteDimensional.abs`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sz (φ : Fin d → (Mx n →ₗ[ℝ] ℝ)) : Continuous (sz φ) :=
   continuous_finset_sum _ fun j _ => (φ j).continuous_of_finiteDimensional.abs
 
 /- English proof (translation)
-Use `letI : NormedAddCommGroup (Mx n) := Matrix.normedAddCommGroup`. Use `letI : NormedSpace ℝ (Mx n) := Matrix.normedSpace`. Establish `h1 : ∀ X : Mx n, ‖X‖ ≤ 1 + hs X` using `fun X => (Matrix.norm_le_iff (by linarith [hs_nonneg X])).2 fun i j => by`. Establish `: ‖X i j‖ ^ 2 ≤ hs X` using `(Finset.single_le_sum (f := fun j => ‖X i j‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, ‖X i j‖ ^ 2) (fun _ _ => Finset.sum_nonneg fun _ _ => by positivity) (Finset.mem_univ i))`. Use polynomial arithmetic with `[sq_nonneg (‖X i j‖ - 1), norm_nonneg (X i j)]`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2 : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (f : V →ₗ[ℝ] ℝ), ∃ C, 0 ≤ C ∧ ∀ x, |f x| ≤ C * ‖x‖` using `fun V _ _ _ f => ⟨‖LinearMap.toContinuousLinearMap f‖, norm_nonneg _, (LinearMap.toContinuousLinearMap f).le_opNorm⟩`. Use `choose C hC h using fun j => h2 (Mx n) (φ j)`. Use `⟨∑ j, C j, Finset.sum_nonneg fun j _ => hC j, fun X => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_le_sum fun j _ => (h j X).trans (mul_le_mul_of_nonneg_left (h1 X) (hC j))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sz_le (φ : Fin d → (Mx n →ₗ[ℝ] ℝ)) : ∃ C, 0 ≤ C ∧ ∀ X, sz φ X ≤ C * (1 + hs X) := by
   letI : NormedAddCommGroup (Mx n) := Matrix.normedAddCommGroup
@@ -199,13 +199,13 @@ theorem exists_sz_le (φ : Fin d → (Mx n →ₗ[ℝ] ℝ)) : ∃ C, 0 ≤ C �
 variable {b : Fin d → lie (Jm ε)} {φ : Fin d → (Mx n →ₗ[ℝ] ℝ)}
 
 /- English proof (translation)
-Rewrite using `[← der_sum, hb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem der_eq (hb : ∀ X : lie (Jm ε), ∑ j, φ j X • b j = X) (X : lie (Jm ε)) (v : Fam ε ρ) :
     der ρ X v = ∑ j, (φ j X : ℂ) • der ρ (b j) v := by rw [← der_sum, hb]
 
 /- English proof (translation)
-Rewrite using `[der_eq hb, sz, Finset.sum_mul]`. Use `(Finset.le_sum_of_subadditive _ (map_zero _).le (map_add_le_add _) _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul_eq_mul, Complex.norm_real, Real.norm_eq_abs, sn_succ]`. Conclude with `mul_le_mul_of_nonneg_left (Finset.single_le_sum (f := fun j => sn ρ b k (der ρ (b j) v)) (fun _ _ => apply_nonneg _ _) (Finset.mem_univ j)) (abs_nonneg _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sn_der_le (hb : ∀ X : lie (Jm ε), ∑ j, φ j X • b j = X) (k : ℕ) (X : lie (Jm ε)) (v : Fam ε ρ) :
     sn ρ b k (der ρ X v) ≤ sz φ X * sn ρ b (k + 1) v := by
@@ -217,9 +217,9 @@ theorem sn_der_le (hb : ∀ X : lie (Jm ε), ∑ j, φ j X • b j = X) (k : ℕ
     (fun _ _ => apply_nonneg _ _) (Finset.mem_univ j)) (abs_nonneg _)
 
 /- English proof (translation)
-Proceed by induction on `l using List.reverseRecOn with`. Consider the case `nil => exact ⟨1, zero_le_one, fun v => by rw [one_mul]; rfl⟩`. Consider the case `append_singleton l X ih`. Take `⟨C, hC, h⟩` from `ih`. Use `⟨C * sz φ X, mul_nonneg hC (sz_nonneg _ _), fun v => (h (der ρ X v)).trans ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc, List.length_append]`. Conclude with `mul_le_mul_of_nonneg_left (sn_der_le hb _ X v) hC`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_sn (hb : ∀ X : lie (Jm ε), ∑ j, φ j X • b j = X) (l : List (lie (Jm ε))) :
     ∃ C, 0 ≤ C ∧ ∀ v : Fam ε ρ, ‖v.1 l‖ ≤ C * sn ρ b l.length v := by
@@ -232,11 +232,11 @@ theorem norm_le_sn (hb : ∀ X : lie (Jm ε), ∑ j, φ j X • b j = X) (l : Li
     exact mul_le_mul_of_nonneg_left (sn_der_le hb _ X v) hC
 
 /- English proof (translation)
-Establish `h1 : WithSeminorms fun l : List (lie (Jm ε)) => (normSeminorm ℂ E).comp (ev ρ l)`. Rewrite using `[SeminormFamily.withSeminorms_iff_nhds_eq_iInf, nhds_subtype, nhds_pi, Filter.pi, comap_iInf]`. Use `iInf_congr fun l => ?_` and prove the remaining obligations. Rewrite using `[comap_comap]`. Use `show comap (fun v : Fam ε ρ => v.1 l) (𝓝 0) = comap (norm ∘ fun v : Fam ε ρ => v.1 l) (𝓝 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← comap_comap, comap_norm_nhds_zero]`. Use `h1.congr (fun k => ?_) (fun l => ?_)` and prove the remaining obligations. Take `⟨s, C, -, h⟩` from `Seminorm.bound_of_continuous h1 _ (continuous_sn (ρ := ρ) b k)`. Conclude with `⟨s, C, h⟩`. Take `⟨C, hC, h⟩` from `norm_le_sn (ρ := ρ) hb l`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{l.length}, ⟨C, hC⟩, fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sup_singleton]`. Conclude with `h v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem withSeminorms_sn (hb : ∀ X : lie (Jm ε), ∑ j, φ j X • b j = X) : WithSeminorms (sn ρ b) := by
   have h1 : WithSeminorms fun l : List (lie (Jm ε)) => (normSeminorm ℂ E).comp (ev ρ l) := by
@@ -254,13 +254,13 @@ theorem withSeminorms_sn (hb : ∀ X : lie (Jm ε), ∑ j, φ j X • b j = X) :
     exact h v
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero`. Take `⟨C, N, hC⟩` from `h.2.2`. Use `⟨|C|, N, abs_nonneg _, fun g hg v => ((ρ g).le_opNorm _).trans ?_⟩` and prove the remaining obligations. Use `hs_nonneg g` as an intermediate fact.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right ((hC g hg).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity))) (norm_nonneg _)`. Consider the case `succ k ih`. Take `⟨C, N, hC, ih⟩` from `ih`. Take `⟨A, hA, hsz⟩` from `exists_sz_le φ`. Use `⟨∑ j, C * (A * (1 + hs (b j : Mx n))), N + 2, Finset.sum_nonneg fun j _ => by have := hs_nonneg (b j : Mx n); positivity, fun g hg v => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sn_succ, Finset.sum_mul, Finset.sum_mul]`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Establish `hg0` using `hs_nonneg g`. Establish `h1 : 1 + hs (adInv hg (b j) : Mx n) ≤ (1 + hs g) * (1 + hs (b j : Mx n)) * (1 + hs g)`. Use `(one_add_hs_mul_le _ _).trans (mul_le_mul_of_nonneg_right ?_ (by positivity))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs_inv hg]`. Conclude with `one_add_hs_mul_le _ _`. Rewrite using `[der_act]`. Use `(ih g hg _).trans ((mul_le_mul_of_nonneg_left ((sn_der_le hb k _ v).trans (mul_le_mul_of_nonneg_right ((hsz _).trans (mul_le_mul_of_nonneg_left h1 hA)) (apply_nonneg _ _))) (by positivity)).trans_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sn_act_le (h : ModRep ε ρ) (hb : ∀ X : lie (Jm ε), ∑ j, φ j X • b j = X) (k : ℕ) :
     ∃ (C : ℝ) (N : ℕ), 0 ≤ C ∧ ∀ (g : Mx n) (hg : g ∈ UJset ε) (v : Fam ε ρ),
@@ -291,9 +291,9 @@ theorem sn_act_le (h : ModRep ε ρ) (hb : ∀ X : lie (Jm ε), ∑ j, φ j X �
     ring
 
 /- English proof (translation)
-Use `letI := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)`. Use `letI := Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin n) (α := ℂ)`. Establish `h2 : ∀ (V : Type) [NormedAddCommGroup V] [NormedSpace ℝ V] [FiniteDimensional ℝ V] (f : V →ₗ[ℝ] ℝ) (c : ℝ → V) (c' : V), HasDerivAt c c' 0 → HasDerivAt (fun t => f (c t)) (f c') 0` using `fun V _ _ _ f c c' h => (LinearMap.toContinuousLinearMap f).hasFDerivAt.comp_hasDerivAt 0 h`. Use `h2 (Mx n) f _ _ ?_` and prove the remaining obligations. Establish `h1` using `((hasDerivAt_exp_smul_const (𝕂 := ℝ) (-X) 0).mul_const Y).fun_mul (hasDerivAt_exp_smul_const (𝕂 := ℝ) X 0)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ∀ t : ℝ, (NormedSpace.exp (t • X))⁻¹ = NormedSpace.exp (t • (-X))` using `fun t => by`. Rewrite using `[smul_neg, Matrix.exp_neg]`. Rewrite using `[show (fun t : ℝ => (NormedSpace.exp (t • X))⁻¹ * Y * NormedSpace.exp (t • X)) = fun t : ℝ => NormedSpace.exp (t • (-X)) * Y * NormedSpace.exp (t • X) from funext fun t => by rw [e]]`. Conclude with `h1.congr_deriv (by simp [sub_eq_add_neg, add_comm])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_conj (f : Mx n →ₗ[ℝ] ℝ) (X Y : Mx n) :
     HasDerivAt (fun t : ℝ => f ((NormedSpace.exp (t • X))⁻¹ * Y * NormedSpace.exp (t • X))) (f (Y * X - X * Y)) 0 := by
@@ -312,7 +312,7 @@ theorem hasDerivAt_conj (f : Mx n →ₗ[ℝ] ℝ) (X Y : Mx n) :
   exact h1.congr_deriv (by simp [sub_eq_add_neg, add_comm])
 
 /- English proof (translation)
-Establish `h1 : (X : Mx n)ᴴ * Jm ε = -(Jm ε * X)` using `eq_neg_of_add_eq_zero_left X.2`. Establish `h2 : (Y : Mx n)ᴴ * Jm ε = -(Jm ε * Y)` using `eq_neg_of_add_eq_zero_left Y.2`. Use `show (Y * X - X * Y : Mx n)ᴴ * Jm ε + Jm ε * (Y * X - X * Y) = 0`. Rewrite using `[conjTranspose_sub, conjTranspose_mul, conjTranspose_mul, sub_mul, mul_assoc, mul_assoc, h1, h2, mul_neg, mul_neg, ← mul_assoc, ← mul_assoc, h1, h2]`. Use `noncomm_ring`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem br_mem (X Y : lie (Jm ε)) : (Y * X - X * Y : Mx n) ∈ lie (Jm ε) := by
   have h1 : (X : Mx n)ᴴ * Jm ε = -(Jm ε * X) := eq_neg_of_add_eq_zero_left X.2
@@ -323,7 +323,7 @@ theorem br_mem (X Y : lie (Jm ε)) : (Y * X - X * Y : Mx n) ∈ lie (Jm ε) := b
   noncomm_ring
 
 /- English proof (translation)
-Rewrite using `[der_eq hb, map_sum]`. Simplify using `only [map_smul, Submodule.coe_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply]`. Simplify using `only [Complex.coe_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem map_der_eq (hb : ∀ X : lie (Jm ε), ∑ j, φ j X • b j = X) (T : Fam ε ρ →L[ℂ] Fam ε ρ) (X : lie (Jm ε))
     (v : Fam ε ρ) (l : List (lie (Jm ε))) : (T (der ρ X v)).1 l = ∑ j, φ j X • (T (der ρ (b j) v)).1 l := by
@@ -332,13 +332,13 @@ theorem map_der_eq (hb : ∀ X : lie (Jm ε), ∑ j, φ j X • b j = X) (T : Fa
   simp only [Complex.coe_smul]
 
 /- English proof (translation)
-Take `⟨d, b, φ, hb⟩` from `exists_frame ε`. Proceed by induction on `l using List.reverseRecOn generalizing v with`. Consider the case `nil => exact v.2.1 [] X`. Consider the case `append_singleton l Y ih`. Establish `e : ∀ t : ℝ, (act h (exp_mem_UJ X.2 t) v).1 (l ++ [Y]) = ∑ j, φ j ((NormedSpace.exp (t • (X : Mx n)))⁻¹ * Y * NormedSpace.exp (t • (X : Mx n))) • (act h (exp_mem_UJ X.2 t) (der ρ (b j) v)).1 l` using `fun t => by`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← der_apply, der_act, map_der_eq hb]`. Both sides reduce to the same expression. Simplify using `only [e]`. Use `HasDerivAt.fun_sum fun j (_ : j ∈ Finset.univ) => (hasDerivAt_conj (φ j) X Y).fun_smul (ih (der ρ (b j) v)) using 1` and compare the differences between its conclusion and the goal. Establish `e1 : v.1 (l ++ [⟨_, br_mem X Y⟩]) = ∑ j, φ j (Y * X - X * Y) • (der ρ (b j) v).1 l` using `map_der_eq hb 1 ⟨_, br_mem X Y⟩ v l`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Establish `e2` using `map_der_eq hb (der ρ X) Y v l`. Establish `e3` using `v.2.2.2 l [] Y X ⟨_, br_mem X Y⟩ rfl`. Establish `e4 : ∀ hg : NormedSpace.exp ((0 : ℝ) • (X : Mx n)) ∈ UJset ε, ∀ w, act h hg w = w` using `fun hg => act_one h hg (by simp)`. Simplify using `only [e4]`. Simplify using `only [zero_smul, NormedSpace.exp_zero, inv_one, one_mul, mul_one, Finset.sum_add_distrib, ← e1, ← e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [der_apply, List.append_assoc, List.cons_append, List.nil_append, ← e3]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem hasDerivAt_act_zero (h : ModRep ε ρ) (X : lie (Jm ε)) (l : List (lie (Jm ε))) (v : Fam ε ρ) :
     HasDerivAt (fun t : ℝ => (act h (exp_mem_UJ X.2 t) v).1 l) ((der ρ X v).1 l) 0 := by
@@ -366,9 +366,9 @@ theorem hasDerivAt_act_zero (h : ModRep ε ρ) (X : lie (Jm ε)) (l : List (lie 
     abel
 
 /- English proof (translation)
-Establish `h1` using `hasDerivAt_act_zero h X l (act h (exp_mem_UJ X.2 s) v)`. Establish `e : adInv (exp_mem_UJ X.2 s) X = X` using `Subtype.ext <| by`. Establish `hc : Commute (X : Mx n) (NormedSpace.exp (s • (X : Mx n)))` using `((Commute.refl _).smul_right s).exp_right`. Use `show _ * _ * _ = _`. Rewrite using `[mul_assoc, hc.eq, ← mul_assoc, inv_mul_UJ (exp_mem_UJ X.2 s), one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[der_act, e]`. Establish `h2` using `HasDerivAt.comp_sub_const s s (by rw [sub_self]; exact h1)`. Use `HasDerivAt.congr_of_eventuallyEq h2 (Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Conclude with `congrArg (fun w : Fam ε ρ => w.1 l) (act_mul h _ _ _ (by rw [← exp_add_smul, sub_add_cancel]) v)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_act (h : ModRep ε ρ) (X : lie (Jm ε)) (l : List (lie (Jm ε))) (v : Fam ε ρ) (s : ℝ) :
     HasDerivAt (fun t : ℝ => (act h (exp_mem_UJ X.2 t) v).1 l) ((act h (exp_mem_UJ X.2 s) (der ρ X v)).1 l) s := by
@@ -383,7 +383,7 @@ theorem hasDerivAt_act (h : ModRep ε ρ) (X : lie (Jm ε)) (l : List (lie (Jm �
   exact congrArg (fun w : Fam ε ρ => w.1 l) (act_mul h _ _ _ (by rw [← exp_add_smul, sub_add_cancel]) v)
 
 /- English proof (translation)
-Use `letI := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)`. Use `letI := Matrix.linftyOpNormedAlgebra (R := ℝ) (n := Fin n) (α := ℂ)`. Conclude with `continuous_iff_continuousAt.2 fun x => (NormedSpace.exp_analytic (𝕂 := ℝ) x).continuousAt`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem continuous_mexp : Continuous (NormedSpace.exp : Mx n → Mx n) := by
   letI := Matrix.linftyOpNormedRing (n := Fin n) (α := ℂ)
@@ -400,25 +400,25 @@ def dpiOp (ε : Fin n → Bool) (ρ : Mx n → (E →L[ℂ] E)) (X : Mx n) : Fam
   if hX : X ∈ lie (Jm ε) then der ρ ⟨X, hX⟩ else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos hg`.
+A detailed English derivation is pending.
 -/
 theorem piOp_eq (h : ModRep ε ρ) {g : Mx n} (hg : g ∈ UJset ε) : piOp h g = act h hg := dif_pos hg
 
 /- English proof (translation)
-The claim follows from `dif_pos X.2`.
+A detailed English derivation is pending.
 -/
 theorem dpiOp_eq (X : lie (Jm ε)) : dpiOp ε ρ X = der ρ X := dif_pos X.2
 
 /- English proof (translation)
-Take `⟨d, b, φ, hb⟩` from `exists_frame ε`. Take `⟨L, hL, hL1, hLe⟩` from `GlobalTheory.LocalLog.local_log_UJ n ε`. Use `tendsto_subtype_rng.2 (tendsto_pi_nhds.2 fun l => ?_)` and prove the remaining obligations. Take `⟨A, hA, h1⟩` from `norm_le_sn (ρ := ρ) hb l`. Take `⟨C, N, hC, h2⟩` from `sn_act_le h hb l.length`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h3 : ∀ᶠ X in 𝓝 (0 : Mx n), ∀ t ∈ Set.Icc (0 : ℝ) 1, hs (NormedSpace.exp (t • X)) < hs (1 : Mx n) + 1`. Use `isCompact_Icc.eventually_forall_of_forall_eventually fun t _ => ?_` and prove the remaining obligations. Establish `hc : Continuous fun z : Mx n × ℝ => hs (NormedSpace.exp (z.2 • z.1))` using `continuous_hs.comp (continuous_mexp.comp (continuous_snd.smul continuous_fst))`. Conclude with `hc.continuousAt.eventually_lt continuousAt_const (by simp)`. Establish `hL0 : Tendsto L (𝓝 1) (𝓝 0)` using `hL1 ▸ hL.tendsto`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : Tendsto (fun g => A * (C * (1 + (hs (1 : Mx n) + 1)) ^ N * (sz φ (L g) * sn ρ b (l.length + 1) v))) (𝓝 1) (𝓝 0)`. Use `((((continuous_sz φ).tendsto 0).comp hL0).mul_const (sn ρ b (l.length + 1) v)).const_mul (C * (1 + (hs (1 : Mx n) + 1)) ^ N) |>.const_mul A` as an intermediate fact. Simplify `this` using `[sz]`. Rewrite using `[tendsto_iff_norm_sub_tendsto_zero]`. Use `squeeze_zero' (Eventually.of_forall fun _ => norm_nonneg _) ?_ (h4.mono_left nhdsWithin_le_nhds)` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds hLe, nhdsWithin_le_nhds (hL0.eventually h3)] with g hg h5 h6`. Take `⟨hX, hg'⟩` from `h5 hg`. Establish `h7` using `norm_image_sub_le_of_norm_deriv_le_segment_01' (fun t _ => (hasDerivAt_act h ⟨L g, hX⟩ l v t).hasDerivWithinAt) (C := A * (C * (1 + (hs (1 : Mx n) + 1)) ^ N * (sz φ (L g) * sn ρ b (l.length + 1) v))) fun t ht => by`. Use `(h1 _).trans (mul_le_mul_of_nonneg_left ((h2 _ _ _).trans ?_) hA)` and prove the remaining obligations. Use `hs_nonneg (NormedSpace.exp (t • L g))` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hs_nonneg (1 : Mx n)` as an intermediate fact. Use `(h6 t (Set.Ico_subset_Icc_self ht)).le` as an intermediate fact. Conclude with `mul_le_mul (by gcongr) (sn_der_le hb _ _ v) (apply_nonneg _ _) (by positivity)`. Rewrite `h7` using `[act_one h (exp_mem_UJ hX 0) (by simp), ← piOp_eq]`. Simplify `h7` using `only [one_smul, hg']`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tendsto_piOp_one (h : ModRep ε ρ) (v : Fam ε ρ) :
     Tendsto (fun g => piOp h g v) (𝓝[UJset ε] 1) (𝓝 v) := by
@@ -455,9 +455,9 @@ theorem tendsto_piOp_one (h : ModRep ε ρ) (v : Fam ε ρ) :
   simpa only [one_smul, hg'] using h7
 
 /- English proof (translation)
-Introduce `a ha`. Establish `h1 : Tendsto (fun g => a⁻¹ * g) (𝓝[UJset ε] a) (𝓝[UJset ε] 1)`. Use `tendsto_nhdsWithin_iff.2 ⟨?_, eventually_mem_nhdsWithin.mono fun g hg => mul_mem_UJ (inv_mem_UJ ha) hg⟩` and prove the remaining obligations. Rewrite using `[← inv_mul_UJ ha]`. Conclude with `((continuous_const.mul continuous_id).tendsto a).mono_left nhdsWithin_le_nhds`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(((piOp h a).continuous.tendsto v).comp ((tendsto_piOp_one h v).comp h1)).congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with g hg`. Simplify using `only [Function.comp, piOp_eq h ha, piOp_eq h hg, piOp_eq h (mul_mem_UJ (inv_mem_UJ ha) hg)]`. Conclude with `(act_mul h _ _ _ (by rw [← mul_assoc, mul_inv_UJ ha, one_mul]) v).symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuousOn_piOp (h : ModRep ε ρ) (v : Fam ε ρ) : ContinuousOn (fun g => piOp h g v) (UJset ε) := by
   intro a ha
@@ -471,7 +471,7 @@ theorem continuousOn_piOp (h : ModRep ε ρ) (v : Fam ε ρ) : ContinuousOn (fun
   exact (act_mul h _ _ _ (by rw [← mul_assoc, mul_inv_UJ ha, one_mul]) v).symm
 
 /- English proof (translation)
-Use `tendsto_subtype_rng.2 (tendsto_pi_nhds.2 fun l => ?_)` and prove the remaining obligations. Use `(hasDerivAt_iff_tendsto_slope_zero.1 (hasDerivAt_act_zero h X l v)).congr fun t => ?_` and prove the remaining obligations. Rewrite using `[act_one h (exp_mem_UJ X.2 0) (by simp), piOp_eq h (exp_mem_UJ X.2 t), ← Complex.ofReal_inv]`. Simplify using `only [zero_add, Submodule.coe_smul, Pi.smul_apply, Submodule.coe_sub, Pi.sub_apply]`. Simplify using `only [Complex.coe_smul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hasDRep_piOp (h : ModRep ε ρ) (X : lie (Jm ε)) (v : Fam ε ρ) : HasDRep (piOp h) X v (der ρ X v) := by
   refine tendsto_subtype_rng.2 (tendsto_pi_nhds.2 fun l => ?_)
@@ -481,11 +481,9 @@ theorem hasDRep_piOp (h : ModRep ε ρ) (X : lie (Jm ε)) (v : Fam ε ρ) : HasD
   simp only [Complex.coe_smul]
 
 /- English proof (translation)
-Take `⟨d, b, φ, hb⟩` from `exists_frame ε`. Use `⟨GlobalTheory.T.isClosed_derivativeFamilies_moderateGrowth n ε E ρ h, sn ρ b, piOp h, dpiOp ε ρ, ⟨withSeminorms_sn hb, ?_, fun a ha c hc => ?_, continuousOn_piOp h, fun X hX v => ?_, fun k => ?_⟩, fun g hg v l => by rw [piOp_eq h hg]; rfl, fun X v l => by rw [dpiOp_eq]; rfl, fun …` and prove the remaining obligations. Conclude with `ContinuousLinearMap.ext fun v => by rw [piOp_eq h (one_mem_UJ ε), act_one h _ rfl]; rfl`. Conclude with `ContinuousLinearMap.ext fun v => by`. Rewrite using `[piOp_eq h ha, piOp_eq h hc, piOp_eq h (mul_mem_UJ ha hc)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `act_mul h _ _ _ rfl v`. Rewrite using `[dpiOp_eq ⟨X, hX⟩]`. Conclude with `hasDRep_piOp h ⟨X, hX⟩ v`. Take `⟨C, N, hC, h1⟩` from `sn_act_le h hb k lift C to NNReal using hC`. Use `⟨C • sn ρ b k, N, (continuous_sn b k).const_smul C, fun g hg v => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[piOp_eq h hg]`. Use `(h1 g hg v).trans_eq ?_` and prove the remaining obligations. Use `show _ = _ * ((C : ℝ) * _)`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem smooth_frechet_rep (n : ℕ) (ε : Fin n → Bool) (E : Type) [NormedAddCommGroup E] [NormedSpace ℂ E]
     [CompleteSpace E] (ρ : Mx n → (E →L[ℂ] E)) (h : ModRep ε ρ) :

@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.ConeIntegrand
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT K μK hK hμK`. Take `⟨K', μK', μ', hK', hc, -, -⟩` from `GlobalTheory.T.theta_stabilizer_exists hKP.base F E σ B a G.V _ _ hT.base hT.geo.hV`. Establish `hKK : K = K'`. Use extensionality with `g`. Rewrite using `[hK g, hK' g]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Substitute `hKK` using the available equality. Use `haveI : CompactSpace K := isCompact_iff_compactSpace.mp hc`. Use `infer_instance`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem finK : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a')
     (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →
@@ -32,11 +32,11 @@ theorem finK : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F
   infer_instance
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ φ hφ`. Introduce `μY hμY`. Use `letI : MeasurableSpace (Fin b × Fin (b + a') → AF F) := borel _`. Take `⟨A, hA, hAb⟩` from `GlobalTheory.T.config_a_evaluation_stabilizer_integral hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ`. Establish `hM` using `GlobalTheory.T.config_a_evaluation_stabilizer_vanishing hKP F E σ B b a' G G₁ H H' hC e he K μK μ hK hμK hμ X om om' om₁ om₁' hT hT₁ Ψ hΨ μY hμY`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hφi : Integrable φ μY` using `GlobalTheory.T.schwartz_bruhat_integrable F _ μY hμY φ hφ`. Use `haveI := finK hKP F E σ B (b + 2) a' G X om om' hT K μK hK hμK`. Establish `h1 : Integrable (fun q : (AE F E)ˣ × (Fin b × Fin (b + a') → AF F) => A q.1 * ‖φ q.2‖) (μ.prod μY)` using `hA.mul_prod hφi.norm`. Establish `h2 : Integrable (fun p : K × ((AE F E)ˣ × (Fin b × Fin (b + a') → AF F)) => (1 : ℝ) * (A p.2.1 * ‖φ p.2.2‖)) (μK.prod (μ.prod μY))` using `(integrable_const (1 : ℝ)).mul_prod h1`. Use `haveI : BorelSpace (Fin b × Fin (b + a') → AF F) := ⟨rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφc : Continuous φ` using `GlobalTheory.ThetaTransformMeas.continuous_of_mem_schA F hφ`. Establish `hφm : AEStronglyMeasurable (fun p : K × ((AE F E)ˣ × (Fin b × Fin (b + a') → AF F)) => starRingEnd ℂ (φ p.2.2)) (μK.prod (μ.prod μY))` using `((continuous_star.comp hφc).measurable.comp (measurable_snd.comp measurable_snd)).aestronglyMeasurable`. Use `h2.mono' (hM.mul hφm) (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, RCLike.norm_conj, one_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hAb p.1 p.2.1 p.2.2) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_cone_pair : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

@@ -17,29 +17,27 @@ namespace GlobalTheory.Mem.SRe
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hDS hCusp hU hFin D G' _ _ Pl0 T A Ks _ _ _ R F X h t hE hGap hl hi hν hsee`. Take `⟨cc, hcc, hsm⟩` from `GlobalTheory.T.contragredientModel_conjDiscreteSeries_of_gap hDS hCusp hU hFin D G' Pl0 T A Ks R F X h t hE hGap hl hi hν hsee`. Set `v₀ : (MP R).Vec` to `fun τ => ⟨(cc τ).symm (X.B.w (X.pl.symm τ)), hsm τ⟩`. Establish `hv₀ : ∀ τ, cc τ (v₀ τ : (MP R).H τ) = X.B.w (X.pl.symm τ)` using `fun τ => by simp [v₀]`. Establish `hnorm : ∀ τ, ‖(v₀ τ : (MP R).H τ)‖ = 1` using `fun τ => by show ‖(cc τ).symm (X.B.w (X.pl.symm τ))‖ = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearIsometryEquiv.norm_map]`. Conclude with `(X.low _).1`. Take `⟨c0, hc0, hN⟩` from `GlobalTheory.T.translatedEvaluation_squareIntegrable_norm_all_rows hDS hCusp hU hFin D G' Pl0 T A Ks R F X h t hE hGap hl hi hν hsee`. Establish `hI` using `GlobalTheory.T.conj_translated_level_row_evaluation_mem_all_rows hDS hCusp hU hFin D G' Pl0 T A Ks R F X h t hE hGap hl hi hν hsee cc v₀ hcc hv₀`. Establish `hO` using `GlobalTheory.T.exists_rowLevel_translatedEvaluation_of_conj_row hDS hCusp hU hFin D G' Pl0 T A Ks R F X h t hE hGap hl hi hν hsee cc v₀ hcc hv₀`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨v₀, hnorm, c0, hc0, ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ S : MultR R F, MemLp (fun x => ev (MP R) v₀ (S : MMap (MP R)) ((iotaX X h).symm x * t)) 2 (muX X)` using `fun S => (hN v₀ hnorm S S.2).1`. Set `Φ : MultR R F → conjRows X` to `fun S => ⟨(hmem S).toLp _, hI S S.2 _ (hmem S).coeFn_toLp⟩`. Establish `hΦ : ∀ S, ((Φ S : conjRows X) : L2X X) =ᵐ[muX X] (fun x => ev (MP R) v₀ (S : MMap (MP R)) ((iotaX X h).symm x * t))` using `fun S => (hmem S).coeFn_toLp`. Establish `key : ∀ (S : MultR R F) (Fx : conjRows X), ((Fx : L2X X) =ᵐ[muX X] fun x => ev (MP R) v₀ (S : MMap (MP R)) ((iotaX X h).symm x * t)) → Φ S = Fx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S Fx hF`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Lp.ext` to reduce the goal to its premises. Conclude with `(hΦ S).trans hF.symm`. Set `L : MultR R F →ₗ[ℂ] conjRows X` to `{ toFun := Φ map_add' := fun S S' => by`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `key` to reduce the goal to its premises. Establish `h1` using `hΦ S`. Establish `h2` using `hΦ S'`. Establish `h3` using `Lp.coeFn_add ((Φ S : conjRows X) : L2X X) ((Φ S' : conjRows X) : L2X X)`. Use `(Filter.EventuallyEq.trans ?_ (h3.trans (h1.add h2))).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [Submodule.coe_add]`. Both sides reduce to the same expression. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Simplify using `[ev_apply]`. Use the proof step `map_smul' := fun a S => by`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[RingHom.id_apply]`. Apply `key` to reduce the goal to its premises. Establish `h1` using `hΦ S`. Establish `h3` using `Lp.coeFn_smul a ((Φ S : conjRows X) : L2X X)`. Use `(Filter.EventuallyEq.trans ?_ (h3.trans (h1.const_smul a))).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Submodule.coe_smul]`. Both sides reduce to the same expression. Use `Filter.Eventually.of_forall fun x => ?_` and prove the remaining obligations. Simplify using `[ev_apply] }`. Establish `hLn : ∀ S : MultR R F, ‖((L S : conjRows X) : L2X X)‖ ^ 2 = c0 * (ipM (MP R) R.ν0 R.fd0 (S : MMap (MP R)) (S : MMap (MP R))).re`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `S`. Use `show ‖((hmem S).toLp _ : L2X X)‖ ^ 2 = _`. Rewrite using `[Formalism.IndefR.AutomorphicEvaluation.norm_sq_toLp (hmem S)]`. Conclude with `(hN v₀ hnorm S S.2).2.1`. Establish `hinj : Function.Injective L`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `S hS`. Establish `h1` using `hLn S`. Rewrite `h1` using `[hS]`. Simplify using `only [ZeroMemClass.coe_zero, norm_zero] at h1`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (ipM (MP R) R.ν0 R.fd0 (S : MMap (MP R)) (S : MMap (MP R))).re = 0`. Break down `mul_eq_zero.mp (by rw [← h1]; ring : c0 * (ipM (MP R) R.ν0 R.fd0 (S : MMap (MP R)) (S : MMap (MP R))).re = 0) with h' | h'` into its components or cases. Conclude with `absurd h' hc0.ne'`. Conclude with `h'`. Conclude with `Subtype.ext ((hN v₀ hnorm S S.2).2.2 h2)`.
-
-Establish `hsurj : Function.Surjective L`. Introduce `Fx`. Take `⟨S, hS, hF⟩` from `hO (Fx : L2X X) Fx.2`. Conclude with `⟨⟨S, hS⟩, key ⟨S, hS⟩ Fx hF⟩`. Use `⟨LinearEquiv.ofBijective L ⟨hinj, hsurj⟩, fun S => ⟨hΦ S, hLn S⟩⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem evalOn_all : GlobalTheory.Dec.DSInfChar → GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.DiscreteSeriesUpqUnique → Formalism.L2.SG.RowsDef.RowsFinDim → ∀ (D : D7) (G' : Type) [Group G'] [Fintype G'] (Pl0 T : Type) (A : FamIn D.what₂.LL G' Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) (X : HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (t : GA D (D.sp.Y 0)), (∀ x : X.B.I.E, HEq (X.ιE x) x) → GapHyp D → R.toLevCh.Is A.μ0 → R.models_inf → R.models_ν0 → SeeAt R F X h t → ∃ v₀ : (MP R).Vec, (∀ τ, ‖(v₀ τ : (MP R).H τ)‖ = 1) ∧ ∃ c : ℝ, 0 < c ∧ EvalOn R X h t v₀ c (MultR R F) (conjRows X) := by
   intro hDS hCusp hU hFin D G' _ _ Pl0 T A Ks _ _ _ R F X h t hE hGap hl hi hν hsee

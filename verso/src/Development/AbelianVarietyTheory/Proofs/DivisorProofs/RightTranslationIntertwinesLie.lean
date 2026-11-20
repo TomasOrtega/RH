@@ -9,7 +9,7 @@ namespace GlobalTheory.TorFin.RightTr
 variable {n : ℕ} {G : Type} [Group G] {J : Matrix (Fin n) (Fin n) ℂ} {s : Matrix (Fin n) (Fin n) ℂ → G}
 
 /- English proof (translation)
-Establish `h1 : Xᴴ = J * (-X) * J⁻¹`. Rewrite using `[mul_neg, ← eq_neg_of_add_eq_zero_left hX, mul_nonsing_inv_cancel_right _ _ hJ]`. Express the relevant statement in the definitionally equal form `(NormedSpace.exp X)ᴴ * J * NormedSpace.exp X = J`. Rewrite using `[← Matrix.exp_conjTranspose, h1, Matrix.exp_conj _ _ ((isUnit_iff_isUnit_det J).2 hJ), nonsing_inv_mul_cancel_right _ _ hJ, mul_assoc, ← Matrix.exp_add_of_commute _ _ (Commute.refl X).neg_left, neg_add_cancel, NormedSpace.exp_zero, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem isUni_exp (hJ : IsUnit J.det) {X : Matrix (Fin n) (Fin n) ℂ} (hX : IsSkew J X) :
     IsUni J (NormedSpace.exp X) := by
@@ -21,14 +21,14 @@ theorem isUni_exp (hJ : IsUnit J.det) {X : Matrix (Fin n) (Fin n) ℂ} (hX : IsS
     neg_add_cancel, NormedSpace.exp_zero, mul_one]
 
 /- English proof (translation)
-Unfold `IsSkew at *`. Rewrite using `[conjTranspose_smul, star_trivial, smul_mul_assoc, mul_smul_comm, ← smul_add, hZ, smul_zero]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSkew_smul {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : IsSkew J Z) (t : ℝ) : IsSkew J (t • Z) := by
   unfold IsSkew at *
   rw [conjTranspose_smul, star_trivial, smul_mul_assoc, mul_smul_comm, ← smul_add, hZ, smul_zero]
 
 /- English proof (translation)
-Establish `h : (uᴴ * J * u).det = J.det` using `congrArg Matrix.det hu`. Rewrite `h` using `[det_mul]`. Conclude with `isUnit_of_mul_isUnit_right (h ▸ hJ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_isUni (hJ : IsUnit J.det) {u : Matrix (Fin n) (Fin n) ℂ} (hu : IsUni J u) : IsUnit u.det := by
   have h : (uᴴ * J * u).det = J.det := congrArg Matrix.det hu
@@ -36,7 +36,7 @@ theorem isUnit_det_of_isUni (hJ : IsUnit J.det) {u : Matrix (Fin n) (Fin n) ℂ}
   exact isUnit_of_mul_isUnit_right (h ▸ hJ)
 
 /- English proof (translation)
-Establish `h' : uᴴ * Wᴴ = Zᴴ * uᴴ` using `by rw [← conjTranspose_mul, h, conjTranspose_mul]`. Unfold `IsUni at hu`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 theorem isSkew_conj_of {u Z W : Matrix (Fin n) (Fin n) ℂ} (hu : IsUni J u) (h : W * u = u * Z) :
     uᴴ * (Wᴴ * J + J * W) * u = Zᴴ * J + J * Z := by
@@ -47,7 +47,7 @@ theorem isSkew_conj_of {u Z W : Matrix (Fin n) (Fin n) ℂ} (hu : IsUni J u) (h 
     _ = _ := by rw [hu]
 
 /- English proof (translation)
-Establish `hd` using `isUnit_det_of_isUni hJ hu`. Use `isSkew_conj_of (W := Z) (Z := u⁻¹ * Z * u) hu (by rw [mul_assoc, mul_nonsing_inv_cancel_left _ _ hd])` as an intermediate fact. Unfold `IsSkew at *`. Rewrite using `[← this, hZ, mul_zero, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSkew_inv_conj (hJ : IsUnit J.det) {u Z : Matrix (Fin n) (Fin n) ℂ} (hu : IsUni J u) (hZ : IsSkew J Z) :
     IsSkew J (u⁻¹ * Z * u) := by
@@ -58,9 +58,9 @@ theorem isSkew_inv_conj (hJ : IsUnit J.det) {u Z : Matrix (Fin n) (Fin n) ℂ} (
   rw [← this, hZ, mul_zero, zero_mul]
 
 /- English proof (translation)
-Establish `hd` using `isUnit_det_of_isUni hJ hu`. Establish `hd' : IsUnit uᴴ.det` using `by rw [det_conjTranspose]; exact hd.star`. Use `isSkew_conj_of (W := u * Z * u⁻¹) (Z := Z) hu (by rw [nonsing_inv_mul_cancel_right _ _ hd])` as an intermediate fact. Unfold `IsSkew at *`. Rewrite `this` using `[hZ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `congrArg (fun M => (uᴴ)⁻¹ * M * u⁻¹) this`. Simplify using `only [mul_zero, zero_mul] at h2`. Rewrite `h2` using `[mul_assoc uᴴ, nonsing_inv_mul_cancel_left _ _ hd', mul_nonsing_inv_cancel_right _ _ hd]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isSkew_conj (hJ : IsUnit J.det) {u Z : Matrix (Fin n) (Fin n) ℂ} (hu : IsUni J u) (hZ : IsSkew J Z) :
     IsSkew J (u * Z * u⁻¹) := by
@@ -75,7 +75,7 @@ theorem isSkew_conj (hJ : IsUnit J.det) {u Z : Matrix (Fin n) (Fin n) ℂ} (hu :
   rwa [mul_assoc uᴴ, nonsing_inv_mul_cancel_left _ _ hd', mul_nonsing_inv_cancel_right _ _ hd] at h2
 
 /- English proof (translation)
-Establish `h1 : IsUni J 1` using `by simp [IsUni]`. Use `hs 1 1 h1 h1` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[lineOf, zero_smul, NormedSpace.exp_zero]`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineOf_zero (hs : IsMulOn J s) (Z : Matrix (Fin n) (Fin n) ℂ) : lineOf s Z 0 = 1 := by
   have h1 : IsUni J 1 := by simp [IsUni]
@@ -85,9 +85,9 @@ theorem lineOf_zero (hs : IsMulOn J s) (Z : Matrix (Fin n) (Fin n) ℂ) : lineOf
   exact left_eq_mul.1 this
 
 /- English proof (translation)
-Establish `hd` using `isUnit_det_of_isUni hJ hu`. Establish `h1` using `isUni_exp hJ (isSkew_smul hZ t)`. Establish `h2` using `isUni_exp hJ (isSkew_smul (isSkew_inv_conj hJ hu hZ) t)`. Establish `e : t • (u⁻¹ * Z * u) = u⁻¹ * (t • Z) * u` using `by rw [mul_smul_comm, smul_mul_assoc]`. Unfold `lineOf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[mul_assoc (s u), hb _ h2, ← mul_assoc, ← mul_assoc, ← hs _ _ h1 hu, ← hs _ _ hu h2, e, Matrix.exp_conj' _ _ ((isUnit_iff_isUnit_det u).2 hd), mul_assoc u⁻¹, mul_nonsing_inv_cancel_left _ _ hd]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lineOf_mul (hJ : IsUnit J.det) (hs : IsMulOn J s) {u : Matrix (Fin n) (Fin n) ℂ} {b : G} (hu : IsUni J u)
     (hb : ∀ v, IsUni J v → b * s v = s v * b) {Z : Matrix (Fin n) (Fin n) ℂ} (hZ : IsSkew J Z) (t : ℝ) :
@@ -101,9 +101,9 @@ theorem lineOf_mul (hJ : IsUnit J.det) (hs : IsMulOn J s) {u : Matrix (Fin n) (F
     Matrix.exp_conj' _ _ ((isUnit_iff_isUnit_det u).2 hd), mul_assoc u⁻¹, mul_nonsing_inv_cancel_left _ _ hd]
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x y _`. Simplify using the standard rewrite rules. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `x y h`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, mul_assoc, ih _ _ (fun i => h i.succ), ← mul_assoc, h, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_ofFn_mul (c : G) : ∀ (k : ℕ) (x y : Fin k → G), (∀ i, x i * c = c * y i) →
     (List.ofFn x).prod * c = c * (List.ofFn y).prod := by
@@ -116,13 +116,13 @@ theorem prod_ofFn_mul (c : G) : ∀ (k : ℕ) (x y : Fin k → G), (∀ i, x i *
       ih _ _ (fun i => h i.succ), ← mul_assoc, h, mul_assoc]
 
 /- English proof (translation)
-Establish `e1 : (J⁻¹ * Yᴴ * J)ᴴ * J = J * Y`. Rewrite using `[conjTranspose_mul, conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_nonsing_inv, hH, ← mul_assoc, nonsing_inv_mul_cancel_right _ _ hJ]`. Establish `e2 : J * (J⁻¹ * Yᴴ * J) = Yᴴ * J`. Rewrite using `[mul_assoc, mul_nonsing_inv_cancel_left _ _ hJ]`. Generalize the expression as in `J⁻¹ * Yᴴ * J = Y' at e1 e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use `⟨(1 / 2 : ℂ) • (Y - Y'), (-Complex.I / 2) • (Y + Y'), ?_, ?_, ?_⟩` and prove the remaining obligations. Unfold `IsSkew`. Establish `: star (1 / 2 : ℂ) = 1 / 2` using `by simp`. Rewrite using `[conjTranspose_smul, this, conjTranspose_sub, smul_mul_assoc, mul_smul_comm, sub_mul, mul_sub, e1, e2]`. Use `module`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `IsSkew`. Establish `: star (-Complex.I / 2 : ℂ) = -(-Complex.I / 2)` using `by simp; ring`. Rewrite using `[conjTranspose_smul, this, conjTranspose_add, smul_mul_assoc, mul_smul_comm, add_mul, mul_add, e1, e2]`. Use `module`. Establish `: Complex.I * (-Complex.I / 2) = 1 / 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-1 / 2 : ℂ) * Complex.I_mul_I`. Rewrite using `[smul_smul, this]`. Use `module`.
+A detailed English derivation is pending.
 -/
 theorem exists_skew_add (hH : Jᴴ = J) (hJ : IsUnit J.det) (Y : Matrix (Fin n) (Fin n) ℂ) :
     ∃ A B, IsSkew J A ∧ IsSkew J B ∧ Y = A + Complex.I • B := by
@@ -147,15 +147,13 @@ theorem exists_skew_add (hH : Jᴴ = J) (hJ : IsUnit J.det) (Y : Matrix (Fin n) 
     module
 
 /- English proof (translation)
-Introduce `n G _ J s hH hJ hs ρ hρ u b hu hb`. Establish `hd` using `isUnit_det_of_isUni hJ hu`. Set `r : Module.End ℂ (smLoc J s)` to `{ toFun := fun f => ⟨fun g => f.1 (g * (s u * b)), fun k Z hZ g => by`. Establish `h` using `f.2 k (fun i => u⁻¹ * Z i * u) (fun i => isSkew_inv_conj hJ hu (hZ i)) (g * (s u * b))`. Use `h using 2 with t` and compare the differences between its conclusion and the goal.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `beta_reduce`. Rewrite using `[mul_assoc g, mul_assoc g, prod_ofFn_mul _ _ _ _ fun i => lineOf_mul hJ hs hu hb (hZ i) (t i)]⟩`. Use the proof step `map_add' := fun _ _ => rfl`. Use the proof step `map_smul' := fun _ _ => rfl }`. Establish `key : ∀ Z, IsSkew J Z → r * ρ Z = ρ (u * Z * u⁻¹) * r`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `Z hZ`. Use `LinearMap.ext fun f => Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Establish `h1` using `hρ Z hZ f (g * (s u * b)) 0`. Establish `h2` using `hρ _ (isSkew_conj hJ hu hZ) (r f) g 0`. Rewrite `h1`, `h2` using `[lineOf_zero hs, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `h1.unique ?_` and prove the remaining obligations. Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun τ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f.1 (g * (s u * b) * lineOf s Z τ) = f.1 (g * lineOf s (u * Z * u⁻¹) τ * (s u * b))`. Rewrite using `[mul_assoc g (lineOf _ _ _), lineOf_mul hJ hs hu hb (isSkew_conj hJ hu hZ), ← mul_assoc u⁻¹, nonsing_inv_mul_cancel_right _ _ hd, nonsing_inv_mul_cancel_left _ _ hd, mul_assoc g]`. Use `⟨r, fun _ _ => rfl, fun Y => ?_⟩` and prove the remaining obligations.
-
-Take `⟨A, B, hA, hB, rfl⟩` from `exists_skew_add hH hJ Y`. Rewrite using `[mul_add u, add_mul, mul_smul_comm, smul_mul_assoc, map_add, map_add, map_smul, map_smul, mul_add, add_mul, mul_smul_comm, smul_mul_assoc, key A hA, key B hB]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rightTranslation : ∀ (n : ℕ) (G : Type) [Group G] (J : Matrix (Fin n) (Fin n) ℂ) (s : Matrix (Fin n) (Fin n) ℂ → G), Jᴴ = J → IsUnit J.det → IsMulOn J s → ∀ ρ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.End ℂ (smLoc J s), IsRightDer J s ρ → ∀ (u : Matrix (Fin n) (Fin n) ℂ) (b : G), IsUni J u → (∀ v, IsUni J v → b * s v = s v * b) → ∃ r : Module.End ℂ (smLoc J s), (∀ (f : smLoc J s) (g : G), (r f).1 g = f.1 (g * (s u * b))) ∧ ∀ Y, r * ρ Y = ρ (u * Y * u⁻¹) * r := by
   intro n G _ J s hH hJ hs ρ hρ u b hu hb

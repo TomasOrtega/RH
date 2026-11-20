@@ -16,12 +16,12 @@ abbrev affOver : Over Z := Over.mk (hU.fromSpec ≫ W.hom)
 def taut : affOver hU ⟶ W := Over.homMk hU.fromSpec rfl
 
 /- English proof (translation)
-The claim follows from `(top_le_iff_mem _ _).2 (fromSpec_mem hU)`.
+A detailed English derivation is pending.
 -/
 theorem taut_mem : ⊤ ≤ (taut hU).left ⁻¹ᵁ U := (top_le_iff_mem _ _).2 (fromSpec_mem hU)
 
 /- English proof (translation)
-Establish `e` using `spec_valHom_fromSpec (B := Γ(W.left, U)) (taut hU).left hU h`. Establish `e2 : Spec.map (CommRingCat.ofHom (valHom (B` using `Γ(W.left, U)) (taut hU).left U h)) = Spec.map (𝟙 _) := by`. Rewrite using `[← cancel_mono hU.fromSpec, e, Spec.map_id, Category.id_comp]`. Both sides reduce to the same expression. Conclude with `congrArg (fun f => f.hom s) (Spec.map_injective e2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem val_taut (h : ⊤ ≤ (taut hU).left ⁻¹ᵁ U) (s : Γ(W.left, U)) :
     valHom (B := Γ(W.left, U)) (taut hU).left U h s = s := by
@@ -40,7 +40,7 @@ def fac {B : Type} [CommRing B] {f : Spec (CommRingCat.of B) ⟶ Z} (z : Over.mk
     exact (congrArg (· ≫ W.hom) e).trans (Over.w z))
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (spec_valHom_fromSpec (B := B) z.left hU h)`.
+A detailed English derivation is pending.
 -/
 theorem fac_taut {B : Type} [CommRing B] {f : Spec (CommRingCat.of B) ⟶ Z} (z : Over.mk f ⟶ W)
     (h : ⊤ ≤ z.left ⁻¹ᵁ U) : fac hU z h ≫ taut hU = z :=
@@ -49,7 +49,7 @@ theorem fac_taut {B : Type} [CommRing B] {f : Spec (CommRingCat.of B) ⟶ Z} (z 
 include hU in
 
 /- English proof (translation)
-Establish `e : b.left = Spec.map (CommRingCat.ofHom φ) ≫ a.left` using `by rw [hb, Over.comp_left, hq]`. Conclude with `(DFunLike.congr_fun (valHom_congr (B := C) e U h' (e ▸ h')) s).trans (valHom_comp (B := B) a.left hU h φ _ s)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_comp {B C : Type} [CommRing B] [CommRing C] {f : Spec (CommRingCat.of B) ⟶ Z}
     {g : Spec (CommRingCat.of C) ⟶ Z} (q : Over.mk g ⟶ Over.mk f) (φ : B →+* C)
@@ -61,7 +61,7 @@ theorem val_comp {B C : Type} [CommRing B] [CommRing C] {f : Spec (CommRingCat.o
     (valHom_comp (B := B) a.left hU h φ _ s)
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Conclude with `fun z _ => h (Set.mem_univ (q.left z))`.
+Substitute using the available equality. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem comp_mem {Y Y' : Over Z} (q : Y' ⟶ Y) (a : Y ⟶ W) (h : ⊤ ≤ a.left ⁻¹ᵁ U) (b : Y' ⟶ W) (hb : b = q ≫ a) :
     ⊤ ≤ b.left ⁻¹ᵁ U := by
@@ -69,7 +69,7 @@ theorem comp_mem {Y Y' : Over Z} (q : Y' ⟶ Y) (a : Y ⟶ W) (h : ⊤ ≤ a.lef
   exact fun z _ => h (Set.mem_univ (q.left z))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨comp_mem _ k hk b hb, fun s => val_comp (B := Γ(W.left, U)) hU' (fac hU z h) _ rfl k hk b hb _ s⟩`.
+Supply the required witnesses or components.
 -/
 theorem val_fac {W' : Over Z} {U' : W'.left.Opens} (hU' : IsAffineOpen U') (k : affOver hU ⟶ W')
     (hk : ⊤ ≤ k.left ⁻¹ᵁ U') {B : Type} [CommRing B] {f : Spec (CommRingCat.of B) ⟶ Z} (z : Over.mk f ⟶ W)
@@ -81,7 +81,7 @@ theorem val_fac {W' : Over Z} {U' : W'.left.Opens} (hU' : IsAffineOpen U') (k : 
 include hU in
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `e1` using `spec_valHom_fromSpec (B := B) a.left hU ha`. Establish `e2` using `spec_valHom_fromSpec (B := B) b.left hU hb`. Rewrite `e1` using `[RingHom.ext h]`. Conclude with `e1.symm.trans e2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_ext {B : Type} [CommRing B] {f : Spec (CommRingCat.of B) ⟶ Z} (a b : Over.mk f ⟶ W)
     (ha : ⊤ ≤ a.left ⁻¹ᵁ U) (hb : ⊤ ≤ b.left ⁻¹ᵁ U)
@@ -93,7 +93,7 @@ theorem pt_ext {B : Type} [CommRing B] {f : Spec (CommRingCat.of B) ⟶ Z} (a b 
   exact e1.symm.trans e2
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem val_congr {B : Type} [CommRing B] {f : Spec (CommRingCat.of B) ⟶ Z} {a b : Over.mk f ⟶ W} (e : a = b)
     (ha : ⊤ ≤ a.left ⁻¹ᵁ U) (hb : ⊤ ≤ b.left ⁻¹ᵁ U) (s : Γ(W.left, U)) :
@@ -101,7 +101,7 @@ theorem val_congr {B : Type} [CommRing B] {f : Spec (CommRingCat.of B) ⟶ Z} {a
   subst e; rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `IsFinite (hU.fromSpec ≫ W.hom)`. Rewrite using `[← hU.isoSpec_inv_ι, Category.assoc]`. Use `infer_instance`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem affOver_finite (h : IsFinite (U.ι ≫ W.hom)) : IsFinite (affOver hU).hom := by
   change IsFinite (hU.fromSpec ≫ W.hom)
@@ -115,35 +115,33 @@ variable {R : Type} [CommRing R] [IsLocalRing R] {W W' : Over (Spec (CommRingCat
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Establish `hA : IsAffineOpen U` using `isAffine_of_isAffineHom (U.ι ≫ W.hom)`. Establish `hA' : IsAffineOpen U'` using `isAffine_of_isAffineHom (U'.ι ≫ W'.hom)`. Establish `hY` using `affOver_finite hA hF`. Establish `hY'` using `affOver_finite hA' hF'`. Establish `m1 : ∀ a : affOver hA ⟶ W', ⊤ ≤ a.left ⁻¹ᵁ U'` using `fun a z _ => mem_of_finite U' hU' _ hY a z`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m2 : ∀ a : affOver hA' ⟶ W', ⊤ ≤ a.left ⁻¹ᵁ U'` using `fun a z _ => mem_of_finite U' hU' _ hY' a z`. Set `r : Γ(W'.left, U') →+* Γ(W.left, U)` to `valHom (B := Γ(W.left, U)) (taut hA ≫ j).left U' (m1 _)`. Establish `hr : ∀ {B : Type} [CommRing B] {f : Spec (CommRingCat.of B) ⟶ _} (z : Over.mk f ⟶ W) h, ∃ h', ∀ s, valHom (B` using `B) z.left U h (r s) = valHom (B := B) (z ≫ j).left U' h' s := by`. Introduce `B _ f z h`. Establish `e : z ≫ j = fac hA z h ≫ taut hA ≫ j` using `by rw [← Category.assoc, fac_taut]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨h', e'⟩` from `val_fac hA hA' _ (m1 _) z h _ e`. Conclude with `⟨h', fun s => (e' s).symm⟩`. Set `δ : Γ(W'.left, U') → Γ(W'.left, U')` to `fun s => valHom (B := Γ(W'.left, U')) (taut hA' ^ N).left U' (m2 _) s - valHom (B := Γ(W'.left, U')) (1 : affOver hA' ⟶ W').left U' (m2 _) s`. Establish `hδ : ∀ {B : Type} [CommRing B] {f : Spec (CommRingCat.of B) ⟶ _} (z : Over.mk f ⟶ W') h, ∃ hN h1, ∀ s, valHom (B` using `B) z.left U' h (δ s) = valHom (B := B) (z ^ N).left U' hN s - valHom (B := B) (1 : Over.mk f ⟶ W').left U' h1 s := by`. Introduce `B _ f z h`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : z ^ N = fac hA' z h ≫ taut hA' ^ N` using `by rw [MonObj.comp_pow, fac_taut]`. Establish `e1 : (1 : Over.mk f ⟶ W') = fac hA' z h ≫ 1` using `(MonObj.comp_one _).symm`. Take `⟨hN, eN⟩` from `val_fac hA' hA' _ (m2 _) z h _ e`. Take `⟨h1, e1⟩` from `val_fac hA' hA' _ (m2 _) z h _ e1`. Conclude with `⟨hN, h1, fun s => (map_sub _ _ _).trans (congrArg₂ (· - ·) (eN s).symm (e1 s).symm)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `I₀ : Ideal Γ(W'.left, U')` to `Ideal.span (Set.range δ)`. Set `π` to `Ideal.Quotient.mk I₀`. Set `f₀` to `Spec.map (CommRingCat.ofHom π) ≫ hA'.fromSpec ≫ W'.hom`. Set `q : Over.mk f₀ ⟶ affOver hA'` to `Over.homMk (Spec.map (CommRingCat.ofHom π)) rfl`. Establish `hf₀ : IsFinite (Over.mk f₀).hom`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsFinite (Spec.map (CommRingCat.ofHom π))` using `(IsFinite.SpecMap_iff _).2 (RingHom.Finite.of_surjective π Ideal.Quotient.mk_surjective)`. Establish `: IsFinite (hA'.fromSpec ≫ W'.hom)` using `hY'`. Conclude with `inferInstanceAs (IsFinite (Spec.map (CommRingCat.ofHom π) ≫ hA'.fromSpec ≫ W'.hom))`. Establish `hqm` using `comp_mem q _ (taut_mem hA') _ rfl`. Establish `hq : ∀ s, valHom (B` using `_ ⧸ I₀) (q ≫ taut hA').left U' hqm s = π s := fun s => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[val_comp (B := Γ(W'.left, U')) hA' q π rfl _ (taut_mem hA') _ rfl _ s, val_taut]`. Establish `hqN : (q ≫ taut hA') ^ N = 1`. Take `⟨hN, h1, e⟩` from `hδ (q ≫ taut hA') hqm`. Use `pt_ext hA' _ _ hN h1 fun s => ?_` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← e, hq]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.2 (Ideal.subset_span ⟨s, rfl⟩)`. Take `⟨y, hy⟩` from `(hker _ _).1 hqN`. Establish `hym : ⊤ ≤ y.left ⁻¹ᵁ U` using `fun z _ => mem_of_finite U hU _ hf₀ y z`. Establish `hyr : ∀ s, valHom (B` using `_ ⧸ I₀) y.left U hym (r s) = π s := fun s => by`. Take `⟨h', e⟩` from `hr (B := _ ⧸ I₀) (f := f₀) y hym`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(e s).trans ((val_congr hy h' hqm s).trans (hq s))`. Use `⟨r, fun s => ?_, fun z h => hr z h, fun I hI s hs => ?_⟩` and prove the remaining obligations. Establish `h0 : ∀ a ∈ I₀, r a = 0`. Introduce `a ha`. Use `(show I₀ ≤ RingHom.ker r from Ideal.span_le.2 ?_) ha` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨t, rfl⟩`. Take `⟨hN, h1, e⟩` from `hδ (B := Γ(W.left, U)) (taut hA ≫ j) (m1 _)`. Establish `e1 : (taut hA ≫ j) ^ N = 1` using `(hker _ _).2 ⟨_, rfl⟩`. Use `(e t).trans (sub_eq_zero.2 ?_)` and prove the remaining obligations. Conclude with `val_congr (B := Γ(W.left, U)) e1 hN h1 t`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `rb` to `Ideal.Quotient.lift I₀ r h0`. Establish `e0 : Spec.map (CommRingCat.ofHom rb) ≫ Spec.map (CommRingCat.ofHom π) = Spec.map (CommRingCat.ofHom r)`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Set `v : affOver hA ⟶ Over.mk f₀` to `Over.homMk (Spec.map (CommRingCat.ofHom rb)) (by`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `_ ≫ Spec.map (CommRingCat.ofHom π) ≫ _ = _`. Rewrite using `[← Category.assoc, e0]`. Conclude with `Over.w (fac (B := Γ(W.left, U)) hA' (taut hA ≫ j) (m1 _)))`. Establish `e1 : v ≫ q = fac (B` using `Γ(W.left, U)) hA' (taut hA ≫ j) (m1 _) := Over.OverMorphism.ext e0`. Establish `e2 : taut hA = v ≫ y` using `hinj _ _ _ (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite using `[Category.assoc, hy, ← Category.assoc, e1, fac_taut])`. Establish `e3` using `val_comp (C := Γ(W.left, U)) hA v rb rfl y hym _ e2 (taut_mem hA) s`. Rewrite `e3` using `[val_taut]`. Take `⟨s', hs'⟩` from `Ideal.Quotient.mk_surjective (valHom (B := _ ⧸ I₀) y.left U hym s)`. Conclude with `⟨s', by rw [e3, ← hs']; rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : s ∈ I₀`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Use `hyr s` as an intermediate fact. Rewrite `this` using `[(RingHom.mem_ker).1 hs, map_zero]`. Conclude with `this.symm`.
-
-Use `(show I₀ ≤ I from Ideal.span_le.2 ?_) h1` and prove the remaining obligations. Introduce and unpack `_ ⟨t, rfl⟩`. Use `hI t _ fun z h => ?_` and prove the remaining obligations. Take `⟨hN, h1, e⟩` from `hδ z h`. Conclude with `⟨hN, h1, e t⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem core {N : ℕ} (j : W ⟶ W') (hinj : ∀ (Y) (y y' : Y ⟶ W), y ≫ j = y' ≫ j → y = y')
     (hker : ∀ (Y) (z : Y ⟶ W'), z ^ N = 1 ↔ ∃ y, y ≫ j = z) (U : W.left.Opens) (U' : W'.left.Opens)

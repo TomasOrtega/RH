@@ -42,7 +42,7 @@ def colsHermSet (C : ColsHerm D) : ColsHerm (setGat D g' hd') where
 
 set_option maxHeartbeats 8000000 in
 /- English proof (translation)
-The claim follows from `{ h with }`.
+A detailed English derivation is pending.
 -/
 theorem jointSet' (C : ColsHerm D) {u : D.what₂.Word} (T : FormsTied D u) (h : Joint C u T) :
     Joint (colsHermSet D g' hd' C) u (formsSet D g' hd' T) := { h with }

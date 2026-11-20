@@ -21,85 +21,85 @@ namespace GroundTheory.Heights₂.Heights.LowerBound
 universe u
 
 /- English proof (translation)
-The claim follows from `ReductionSmallLast.proof`.
+A detailed English derivation is pending.
 -/
 theorem ReductionSmallLast.full : ReductionSmallLast.Statement :=
   ReductionSmallLast.proof
 
 /- English proof (translation)
-The claim follows from `ReductionSmallFirst.proof`.
+A detailed English derivation is pending.
 -/
 theorem ReductionSmallFirst.full : ReductionSmallFirst.Statement :=
   ReductionSmallFirst.proof
 
 /- English proof (translation)
-The claim follows from `InteriorDichotomy.proof`.
+A detailed English derivation is pending.
 -/
 theorem InteriorDichotomy.full : InteriorDichotomy.Statement :=
   InteriorDichotomy.proof
 
 /- English proof (translation)
-The claim follows from `AvoidMatrixLemma.proof`.
+A detailed English derivation is pending.
 -/
 theorem AvoidMatrixLemma.full : AvoidMatrixLemma.Statement :=
   AvoidMatrixLemma.proof
 
 /- English proof (translation)
-The claim follows from `MinkowskiCovolumeBound.proof`.
+A detailed English derivation is pending.
 -/
 theorem MinkowskiCovolumeBound.full : MinkowskiCovolumeBound.Statement.{u} :=
   MinkowskiCovolumeBound.proof
 
 /- English proof (translation)
-The claim follows from `CuspWeightBound.proof`.
+A detailed English derivation is pending.
 -/
 theorem CuspWeightBound.full : CuspWeightBound.Statement :=
   CuspWeightBound.proof
 
 /- English proof (translation)
-The claim follows from `ShortVectorsOrthogonal.proof`.
+A detailed English derivation is pending.
 -/
 theorem ShortVectorsOrthogonal.full : ShortVectorsOrthogonal.Statement :=
   ShortVectorsOrthogonal.proof
 
 /- English proof (translation)
-The claim follows from `PackingCount.proof`.
+A detailed English derivation is pending.
 -/
 theorem PackingCount.full : PackingCount.Statement :=
   PackingCount.proof
 
 /- English proof (translation)
-The claim follows from `MeanCountBound.proof`.
+A detailed English derivation is pending.
 -/
 theorem MeanCountBound.full : MeanCountBound.Statement.{u} :=
   MeanCountBound.proof
 
 /- English proof (translation)
-The claim follows from `TailBound.proof MeanCountBound.full`.
+A detailed English derivation is pending.
 -/
 theorem TailBound.full : TailBound.Statement.{u} :=
   TailBound.proof MeanCountBound.full
 
 /- English proof (translation)
-The claim follows from `MeanLogPlus.proof TailBound.full`.
+A detailed English derivation is pending.
 -/
 theorem MeanLogPlus.full : MeanLogPlus.Statement.{u} :=
   MeanLogPlus.proof TailBound.full
 
 /- English proof (translation)
-The claim follows from `MeanCuspWeight.proof`.
+A detailed English derivation is pending.
 -/
 theorem MeanCuspWeight.full : MeanCuspWeight.Statement :=
   MeanCuspWeight.proof
 
 /- English proof (translation)
-The claim follows from `TelescopeMetric.proof`.
+A detailed English derivation is pending.
 -/
 theorem TelescopeMetric.full : TelescopeMetric.Statement :=
   TelescopeMetric.proof
 
 /- English proof (translation)
-The claim follows from `LimitInEpsilon.proof`.
+A detailed English derivation is pending.
 -/
 theorem LimitInEpsilon.full : LimitInEpsilon.Statement :=
   LimitInEpsilon.proof

@@ -6,21 +6,17 @@ open MvPowerSeries ReciprocityTheory.PGsh GlobalTheory.FGDepth
 namespace GlobalTheory.FGDepth
 
 /- English proof (translation)
-Proceed by induction on `Q using MvPolynomial.induction_on with`. Consider the case `C c`. Distinguish the cases in `hc : v c = ⊤`. Conclude with `⟨0, fun a _ => by simp [hc], fun M a a' _ _ _ => by simp⟩`. Take `⟨r, hr⟩` from `WithTop.ne_top_iff_exists.mp hc`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨-r, fun a _ => by simp [hr], fun M a a' _ _ _ => by simp⟩`. Consider the case `add p q hp hq`. Take `⟨K₁, h₁, h₁'⟩` from `hp`. Take `⟨K₂, h₂, h₂'⟩` from `hq`. Use `⟨max K₁ K₂, fun a ha => ?_, fun M a a' ha ha' hM => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add]`. Use `v.map_le_add (le_trans ?_ (h₁ a ha)) (le_trans ?_ (h₂ a ha))` and prove the remaining obligations. Conclude with `WithTop.coe_le_coe.mpr (neg_le_neg (le_max_left _ _))`. Conclude with `WithTop.coe_le_coe.mpr (neg_le_neg (le_max_right _ _))`. Rewrite using `[map_add, map_add, add_sub_add_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Use `v.map_le_add (le_trans ?_ (h₁' M a a' ha ha' hM)) (le_trans ?_ (h₂' M a a' ha ha' hM))` and prove the remaining obligations. Conclude with `WithTop.coe_le_coe.mpr (sub_le_sub_left (le_max_left _ _) _)`. Conclude with `WithTop.coe_le_coe.mpr (sub_le_sub_left (le_max_right _ _) _)`. Consider the case `mul_X p i hp`. Take `⟨K, h, h'⟩` from `hp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨K, fun a ha => ?_, fun M a a' ha ha' hM => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, MvPolynomial.eval_X, v.map_mul]`. Conclude with `le_add_of_le_of_nonneg (h a ha) (ha i)`. Rewrite using `[map_mul, map_mul, MvPolynomial.eval_X, MvPolynomial.eval_X]`. Establish `e : MvPolynomial.eval a p * a i - MvPolynomial.eval a' p * a' i = (MvPolynomial.eval a p - MvPolynomial.eval a' p) * a i + MvPolynomial.eval a' p * (a i - a' i)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Use `v.map_le_add ?_ ?_` and prove the remaining obligations. Rewrite using `[v.map_mul]`. Conclude with `le_add_of_le_of_nonneg (h' M a a' ha ha' hM) (ha i)`. Rewrite using `[v.map_mul]`.
-
-Establish `e2 : ((M - K : ℝ) : WithTop ℝ) = ((-K : ℝ) : WithTop ℝ) + ((M : ℝ) : WithTop ℝ)`. Rewrite using `[← WithTop.coe_add]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2]`.
-
-Conclude with `add_le_add (h a' ha') (hM i)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lipschitz_eval {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {ι : Type}
     (Q : MvPolynomial ι C) :
@@ -68,11 +64,11 @@ theorem exists_lipschitz_eval {C : Type} [Field C] (v : AddValuation C (WithTop 
         exact add_le_add (h a' ha') (hM i)
 
 /- English proof (translation)
-Set `u : σ → MvPowerSeries Λ (MvPolynomial (σ × Λ) C)` to `fun s => ∑ l, (MvPolynomial.X (s, l) : MvPolynomial (σ × Λ) C) • MvPowerSeries.X l`. Establish `hu : HasSubst u` using `hasSubst_of_constantCoeff_zero fun s => by simp [u]`. Introduce the local definition `Zu : MvPowerSeries Λ (MvPolynomial (σ × Λ) C)`. Substitute `u (MvPowerSeries.map (MvPolynomial.C : C →+* MvPolynomial (σ × Λ) C) Z)` using the available equality. Use `⟨∑ α ∈ P.support, MvPolynomial.C (P.coeff α * mfact α) * coeff α Zu, fun a => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : MvPowerSeries.map (MvPolynomial.eval (fun x : σ × Λ => a x.1 x.2)) Zu = MvPowerSeries.subst (fun s => ∑ l, a s l • (MvPowerSeries.X l : MvPowerSeries Λ C)) Z`. Rewrite using `[MvPowerSeries.map_subst hu]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Simplify using `[u, MvPowerSeries.smul_eq_C_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use extensionality with `d`. Simplify using the standard rewrite rules. Rewrite using `[← key, derivAt0, map_sum]`. Use `Finset.sum_congr rfl fun α _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, MvPolynomial.eval_C, coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_poly_derivAt0_subst {C : Type} [Field C] {σ Λ : Type} [Fintype σ] [Fintype Λ]
     (P : MvPolynomial Λ C) (Z : MvPowerSeries σ C) :
@@ -99,9 +95,9 @@ theorem exists_poly_derivAt0_subst {C : Type} [Field C] {σ Λ : Type} [Fintype 
   rw [map_mul, MvPolynomial.eval_C, coeff_map]
 
 /- English proof (translation)
-Introduce `C _ v σ Λ _ _ P Z`. Take `⟨Q, hQ⟩` from `exists_poly_derivAt0_subst P Z`. Take `⟨K, -, hK⟩` from `exists_lipschitz_eval v Q`. Use `⟨K, fun M a a' ha ha' hM => ?_⟩` and prove the remaining obligations. Rewrite using `[hQ, hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hK M _ _ (fun x => ha x.1 x.2) (fun x => ha' x.1 x.2) (fun x => hM x.1 x.2)`.
+A detailed English derivation is pending.
 -/
 theorem derivAt0_subst_linear_lipschitz :
     ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (σ Λ : Type) [Fintype σ] [Fintype Λ] (P : MvPolynomial Λ C) (Z : MvPowerSeries σ C), ∃ K : ℝ, ∀ (M : ℝ) (a a' : σ → Λ → C), (∀ s l, IsIntV v (a s l)) → (∀ s l, IsIntV v (a' s l)) → (∀ s l, ((M : ℝ) : WithTop ℝ) ≤ v (a s l - a' s l)) → ((M - K : ℝ) : WithTop ℝ) ≤ v (derivAt0 P (MvPowerSeries.subst (fun s => ∑ l, a s l • (MvPowerSeries.X l : MvPowerSeries Λ C)) Z) - derivAt0 P (MvPowerSeries.subst (fun s => ∑ l, a' s l • (MvPowerSeries.X l : MvPowerSeries Λ C)) Z)) := by

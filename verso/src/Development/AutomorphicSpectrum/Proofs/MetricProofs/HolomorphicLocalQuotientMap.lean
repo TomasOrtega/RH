@@ -7,11 +7,11 @@ open NumberField Matrix Filter Topology GlobalTheory.CompanionTheory.Ar GlobalTh
 namespace GlobalTheory.CompanionTheory.Metric.QuotHol
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply]`. Use `DifferentiableOn.fun_sum fun σ _ => ?_` and prove the remaining obligations. Use `DifferentiableOn.const_smul ?_ _` and prove the remaining obligations. Establish `hs : ∀ s : Finset (Fin m), DifferentiableOn ℂ (fun t => ∏ i ∈ s, A t (σ i) i) V`. Introduce `s`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.prod_empty]`. Conclude with `differentiableOn_const _`. Consider the case `insert a s ha ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.prod_insert ha]`. Conclude with `(hA _ _).fun_mul ih`. Conclude with `hs Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem differentiableOn_det {m n : ℕ} {A : (Fin n → ℂ) → Matrix (Fin m) (Fin m) ℂ}
     {V : Set (Fin n → ℂ)} (hA : ∀ i j, DifferentiableOn ℂ (fun t => A t i j) V) :
@@ -31,13 +31,13 @@ theorem differentiableOn_det {m n : ℕ} {A : (Fin n → ℂ) → Matrix (Fin m)
   exact hs Finset.univ
 
 /- English proof (translation)
-Take `⟨W', hW'⟩` from `Submodule.exists_isCompl (Submodule.span ℂ (Set.range v))`. Establish `hfr : Module.finrank ℂ W' = g'`. Establish `h1` using `Submodule.finrank_add_eq_of_isCompl hW'`. Establish `h2` using `finrank_span_eq_card hv`. Simplify using `only [Module.finrank_fintype_fun_eq_card, Fintype.card_fin] at h1 h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Set `bW` to `Module.finBasisOfFinrankEq ℂ W' hfr`. Set `f : Fin g' → Fin (k + g') → ℂ` to `fun j => (bW j : Fin (k + g') → ℂ)`. Establish `hf : LinearIndependent ℂ f` using `bW.linearIndependent.map' W'.subtype (Submodule.ker_subtype W')`. Establish `hdisj : Disjoint (Submodule.span ℂ (Set.range v)) (Submodule.span ℂ (Set.range f))`.
+Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hW'.disjoint.mono_right ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `(bW j).2`. Establish `hs : LinearIndependent ℂ (Sum.elim v f)` using `hv.sum_type hf hdisj`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `hs.comp _ (finSumFinEquiv.symm.injective)`. Use `⟨f, ?_⟩` and prove the remaining obligations. Establish `hu` using `Matrix.linearIndependent_cols_iff_isUnit (A := (Matrix.of fun i j => Sum.elim v f (finSumFinEquiv.symm j) i : Matrix (Fin (k + g')) (Fin (k + g')) ℂ)) |>.1 hc`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 hu).ne_zero`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_complement {k g' : ℕ} (v : Fin k → Fin (k + g') → ℂ)
     (hv : LinearIndependent ℂ v) :
@@ -69,39 +69,37 @@ theorem exists_complement {k g' : ℕ} (v : Fin k → Fin (k + g') → ℂ)
   exact ((Matrix.isUnit_iff_isUnit_det _).1 hu).ne_zero
 
 /- English proof (translation)
-Substitute `hg` using the available equality. Take `⟨f, hf⟩` from `exists_complement (fun i => e i t₀) hli`. Set `M : (Fin n → ℂ) → Matrix (Fin (k + g')) (Fin (k + g')) ℂ` to `fun t => Matrix.of fun i j => Sum.elim (fun a => e a t) f (finSumFinEquiv.symm j) i`. Establish `hMc : ∀ t a i, M t i (Fin.castAdd g' a) = e a t i`. Introduce `t a i`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[M]`. Establish `hMn : ∀ t b i, M t i (Fin.natAdd k b) = f b i`. Introduce `t b i`. Simplify using `[M]`. Establish `hMent : ∀ i j, DifferentiableOn ℂ (fun t => M t i j) U`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i j`. Take `⟨s, rfl⟩` from `finSumFinEquiv.surjective j`. Break down `s with a | c` into its components or cases. Simplify using `only [finSumFinEquiv_apply_left, hMc]`. Conclude with `(differentiableOn_pi.1 (he a)) i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [finSumFinEquiv_apply_right, hMn]`. Conclude with `differentiableOn_const _`. Establish `hdet : DifferentiableOn ℂ (fun t => (M t).det) U` using `differentiableOn_det hMent`. Set `V : Set (Fin n → ℂ)` to `U ∩ (fun t => (M t).det) ⁻¹' {0}ᶜ`. Establish `hVo : IsOpen V` using `hdet.continuousOn.isOpen_inter_preimage hU isOpen_compl_singleton`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVU : V ⊆ U` using `Set.inter_subset_left`. Establish `hinv : ∀ i j, DifferentiableOn ℂ (fun t => (M t)⁻¹ i j) V`. Introduce `i j`. Establish `h1 : DifferentiableOn ℂ (fun t => ((M t).det)⁻¹) V` using `(hdet.mono hVU).inv (fun t ht => ht.2)`. Establish `h2 : DifferentiableOn ℂ (fun t => (M t).adjugate i j) V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.adjugate_apply]`. Use `differentiableOn_det fun a b => ?_` and prove the remaining obligations. Distinguish the cases in `h : a = j`. Substitute `h` using the available equality. Simplify using `only [Matrix.updateRow_self]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `differentiableOn_const _`. Simplify using `only [Matrix.updateRow_ne h]`. Conclude with `(hMent a b).mono hVU`. Simplify `h1.fun_mul h2` using `[Matrix.inv_def, Ring.inverse_eq_inv']`. Set `q : (Fin n → ℂ) → (Fin (k + g') → ℂ) →ₗ[ℂ] (Fin g' → ℂ)` to `fun t => LinearMap.funLeft ℂ ℂ (Fin.natAdd k) ∘ₗ ((M t)⁻¹).mulVecLin`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hq : ∀ t x j, q t x j = ((M t)⁻¹ *ᵥ x) (Fin.natAdd k j)`. Introduce `t x j`. Simplify using `[q, LinearMap.funLeft_apply]`. Use `⟨V, hVo, ⟨ht₀, hf⟩, hVU, q, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `differentiableOn_pi.2 fun j => ?_` and prove the remaining obligations. Simplify using `only [hq, Matrix.mulVec, dotProduct]`. Conclude with `DifferentiableOn.fun_sum fun l _ => (hinv _ l).mul_const _`. Introduce `t ht`. Establish `hu : IsUnit (M t).det` using `isUnit_iff_ne_zero.2 ht.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `hMi : M t * (M t)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hu`. Establish `hiM : (M t)⁻¹ * M t = 1` using `Matrix.nonsing_inv_mul _ hu`. Use `⟨fun y => ?_, ?_⟩` and prove the remaining obligations. Use `⟨M t *ᵥ (fun j => Sum.elim 0 y (finSumFinEquiv.symm j)), ?_⟩` and prove the remaining obligations. Use extensionality with `j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hq, Matrix.mulVec_mulVec, hiM, Matrix.one_mulVec]`. Simplify using the standard rewrite rules. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Establish `hx0 : ∀ j, ((M t)⁻¹ *ᵥ x) (Fin.natAdd k j) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[← hq, LinearMap.mem_ker.1 hx]`. Both sides reduce to the same expression. Establish `hxc : x = M t *ᵥ ((M t)⁻¹ *ᵥ x)`. Rewrite using `[Matrix.mulVec_mulVec, hMi, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Take `⟨c, hc⟩ : ∃ c, c = (M t)⁻¹ *ᵥ x` from `⟨_, rfl⟩`. Rewrite `hx0`, `hxc` using `[← hc]`. Establish `hsum : x = ∑ a, c (Fin.castAdd g' a) • e a t` using `by conv_lhs => rw [hxc]`. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Fin.sum_univ_add, hx0, mul_zero, Finset.sum_const_zero, add_zero, hMc, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Rewrite using `[hsum]`. Conclude with `Submodule.sum_mem _ fun a _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨a, rfl⟩)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨a, rfl⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hcol : e a t = M t *ᵥ Pi.single (Fin.castAdd g' a) 1`. Use extensionality with `i`. Simplify using `[hMc]`. Use `LinearMap.mem_ker.2 ?_` and prove the remaining obligations. Use extensionality with `j`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hq]`. Use `show ((M t)⁻¹ *ᵥ e a t) (Fin.natAdd k j) = 0`. Rewrite using `[hcol, Matrix.mulVec_mulVec, hiM, Matrix.one_mulVec]`. Use `Pi.single_eq_of_ne ?_ _` and prove the remaining obligations. Introduce `h`.
-
-Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [Fin.val_natAdd, Fin.val_castAdd] at this`. Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_holomorphic_quotient (g' k g n : ℕ) (U : Set (Fin n → ℂ))
     (e : Fin k → (Fin n → ℂ) → Fin g → ℂ) (t₀ : Fin n → ℂ) (hU : IsOpen U) (ht₀ : t₀ ∈ U)

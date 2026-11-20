@@ -9,21 +9,19 @@ open NumberField Matrix
 noncomputable section
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `F.fg`. Set `ev : (Fin (r + 1) → K) →ₗ[ℤ] (s → K)` to `{ toFun := fun φ v ↦ φ ⬝ᵥ (v : Fin (r + 1) → K) map_add' := by`. Introduce `φ ψ`. Use function extensionality and compare the values at `v`. Simplify using `[add_dotProduct]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use the proof step `map_smul' := by`. Introduce `c φ`. Use function extensionality and compare the values at `v`. Conclude with `smul_dotProduct c φ (v : Fin (r + 1) → K) }`. Establish `hspan : Submodule.span K (s : Set (Fin (r + 1) → K)) = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.span_span_of_tower (R := 𝓞 K), hs, F.span_eq]`. Establish `hinj : Function.Injective ev`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `φ hφ`. Establish `h0 : ∀ w ∈ Submodule.span K (s : Set (Fin (r + 1) → K)), φ ⬝ᵥ w = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact congrFun hφ ⟨x, hx⟩`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [dotProduct_add, hx, hy, add_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Consider the case `smul c x _ hx => rw [dotProduct_smul, hx, smul_zero]`. Use function extensionality and compare the values at `j`. Use `h0 (Pi.single j 1) (by rw [hspan]; exact Submodule.mem_top)` as an intermediate fact. Simplify using `using this`. Set `T : Submodule ℤ (s → K)` to `LinearMap.range (LinearMap.compLeft ((Algebra.linearMap (𝓞 K) K).restrictScalars ℤ) s)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Establish `hle : ((latticeDual F.lattice).restrictScalars ℤ).map ev ≤ T`. Introduce and unpack `_ ⟨φ, hφ, rfl⟩`. Establish `hv : ∀ v : s, (v : Fin (r + 1) → K) ∈ F.lattice`. Introduce `v`. Rewrite using `[← hs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Submodule.subset_span v.2`. Use `⟨fun v ↦ (hφ v (hv v)).choose, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `v`. Conclude with `(hφ v (hv v)).choose_spec`. Establish `: IsNoetherian ℤ T` using `isNoetherian_of_isNoetherianRing_of_finite ℤ T`.
-
-Conclude with `Submodule.fg_of_fg_map_injective ev hinj (isNoetherian_submodule.mp inferInstance _ hle)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem latticeDual_int_fg {K : Type*} [Field K] [NumberField K] {r : ℕ} (F : HermLattice K (r + 1)) :
     ((latticeDual F.lattice).restrictScalars ℤ).FG := by
@@ -71,13 +69,13 @@ theorem latticeDual_int_fg {K : Type*} [Field K] [NumberField K] {r : ℕ} (F : 
   exact Submodule.fg_of_fg_map_injective ev hinj (isNoetherian_submodule.mp inferInstance _ hle)
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `F.fg`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 K)) (s.image fun v ↦ v 0)`. Establish `hbne : algebraMap (𝓞 K) K b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors b.2`. Use `⟨Pi.single 0 (algebraMap (𝓞 K) K b), ?_, fun h ↦ hbne (by simpa using congrFun h 0)⟩` and prove the remaining obligations. Introduce `v hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv` using `[← hs]`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, ha⟩` from `hb (x 0) (Finset.mem_image_of_mem _ hx)`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ha, Algebra.smul_def]`. Simplify using the standard rewrite rules. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hy`. Conclude with `⟨a + c, by rw [map_add, ha, hc, dotProduct_add]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`. Conclude with `⟨c * a, by rw [map_mul, ha, dotProduct_smul, Algebra.smul_def]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem latticeDual_ne_bot {K : Type*} [Field K] [NumberField K] {r : ℕ} (F : HermLattice K (r + 1)) :
     ∃ ψ ∈ latticeDual F.lattice, ψ ≠ 0 := by
@@ -106,11 +104,11 @@ theorem latticeDual_ne_bot {K : Type*} [Field K] [NumberField K] {r : ℕ} (F : 
     exact ⟨c * a, by rw [map_mul, ha, dotProduct_smul, Algebra.smul_def]⟩
 
 /- English proof (translation)
-Introduce `K _ _ r F`. Set `M : Submodule ℤ (Fin (r + 1) → K)` to `(latticeDual F.lattice).restrictScalars ℤ`. Establish `: Module.Finite ℤ M` using `Module.Finite.iff_fg.mpr (latticeDual_int_fg F)`. Establish `: Module.Free ℤ M` using `inferInstance`. Take `⟨ψ, hψ, hψ0⟩` from `latticeDual_ne_bot F`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Nontrivial M` using `⟨⟨⟨ψ, hψ⟩, 0, fun h ↦ hψ0 (congrArg Subtype.val h)⟩⟩`. Establish `hpos : 0 < Module.finrank ℤ M` using `Module.finrank_pos`. Take `⟨N, hN⟩ : ∃ N, Module.finrank ℤ M = N + 1` from `⟨Module.finrank ℤ M - 1, (Nat.succ_pred_eq_of_pos hpos).symm⟩`. Set `bas` to `Module.finBasisOfFinrankEq ℤ M hN`. Use `⟨N, fun i ↦ (bas i : Fin (r + 1) → K), ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `bas.linearIndependent.map' M.subtype (Submodule.ker_subtype _)`. Establish `: Set.range (fun i ↦ (bas i : Fin (r + 1) → K)) = M.subtype '' Set.range bas`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, bas.span_eq, Submodule.map_top, Submodule.range_subtype]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem DualBasisExists.proof : DualBasisExists.Statement := by
   intro K _ _ r F

@@ -36,9 +36,7 @@ def GapCond (γ : ℕ) : Prop :=
 def gap : ℕ := sInf {γ | GapCond D γ}
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `(Set.finite_range fun τ : D.what₂.Tau => (bigN D : ℝ) ^ 3 + ((D.R.r : ℝ) + 1) ^ 7 + ((D.R.r : ℝ) + 1) ^ 3 * Real.sqrt (((gridOf D 0 0 τ).v 2 - (gridOf D 0 0 τ).v D.R.k : ℤ) : ℝ)).bddAbove`. Use `⟨⌈B⌉₊ + (2 * bigN D ^ 3 + 2 * sLen D + 3) + ⌈48 * ((D.R.r : ℝ) + 1) ^ 2 * Real.sqrt D.R.m⌉₊, fun τ => ?_, by omega, ?_⟩` and prove the remaining obligations. Use `((hB ⟨τ, rfl⟩).trans (Nat.le_ceil B)).trans ?_` and prove the remaining obligations. Conclude with `(by omega)` after adjusting the coercions. Use `(Nat.le_ceil _).trans ?_` and prove the remaining obligations.
-
-Conclude with `(by omega)` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem exists_gapCond : ∃ γ, GapCond D γ := by
   obtain ⟨B, hB⟩ := (Set.finite_range fun τ : D.what₂.Tau => (bigN D : ℝ) ^ 3 + ((D.R.r : ℝ) + 1) ^ 7 + ((D.R.r : ℝ) + 1) ^ 3 *
@@ -50,7 +48,7 @@ theorem exists_gapCond : ∃ γ, GapCond D γ := by
     exact_mod_cast (by omega)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Nat.sInf_mem (exists_gapCond D), fun _ h => Nat.sInf_le h⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLeast_gap : IsLeast {γ | GapCond D γ} (gap D) :=
   ⟨Nat.sInf_mem (exists_gapCond D), fun _ h => Nat.sInf_le h⟩
@@ -60,7 +58,7 @@ def cen (τ : D.what₂.Tau) (i : ℕ) : ℤ := ⌊(gridOf D (gap D) 0 τ).mid i
 def grid (τ : D.what₂.Tau) : GridData := gridOf D (gap D) (cen D τ) τ
 
 /- English proof (translation)
-The claim follows from `(grid D τ).nearMid_of_floor fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem grid_nearMid (τ : D.what₂.Tau) : (grid D τ).NearMid := (grid D τ).nearMid_of_floor fun _ _ => rfl
 
@@ -71,7 +69,7 @@ def rkP (i : ℕ) : ℕ := D.R.r + 1 + i * (sLen D - 1)
 def rkX (j : ℕ) : ℕ := rkP D D.R.m + j * (D.R.t + 1)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem rk_eq (τ : D.what₂.Tau) (i j : ℕ) :
     rkV D i j = (grid D τ).rankD i j ∧ rkP D i = (grid D τ).rankP i ∧ rkX D j = (grid D τ).rankX j := ⟨rfl, rfl, rfl⟩
@@ -84,7 +82,7 @@ def parP (i : ℕ) (τ : D.what₂.Tau) : SPar := (grid D τ).parPi i
 def parXp (j : ℕ) (τ : D.what₂.Tau) : SPar := (grid D τ).parX j
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Take `⟨h1, h2, h3⟩` from `GridData.ofHCParam_spec (D.hc τ) (sLen D) (gap D) (cen D τ)`. Use `(grid D τ).dpar_eq (Ptw D) τ rfl rfl rfl h1 h2 h3 hj` as an intermediate fact. Rewrite using `[parV, parB, this, zero_add]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem parV_zero {j : ℕ} (hj : j ≤ D.R.m) : parV D 0 j = parB (Ptw D) j := by
   funext τ
@@ -94,7 +92,7 @@ theorem parV_zero {j : ℕ} (hj : j ≤ D.R.m) : parV D 0 j = parB (Ptw D) j := 
   rfl
 
 /- English proof (translation)
-The claim follows from `funext fun τ => (grid D τ).parPi_m`.
+A detailed English derivation is pending.
 -/
 theorem parP_m : parP D D.R.m = parXp D 0 := funext fun τ => (grid D τ).parPi_m
 
@@ -130,7 +128,7 @@ def S0 : Finset (HeightOneSpectrum (𝓞 D.host.F)) := by
   classical exact (Z.W Pg).image fun w => w.under (𝓞 D.host.F)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ w.ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem ideal_ne_bot : Z.ideal Pg ≠ ⊥ :=
   Finset.prod_ne_zero_iff.2 fun w _ => pow_ne_zero _ w.ne_bot
@@ -196,7 +194,7 @@ def row0 : ℕ → Node D
   | j + 1 => if j + 1 < D.R.m then nodeY R (j + 1) else nodeX R
 
 /- English proof (translation)
-Consider the cases of `j with`. Consider the case `zero => rfl`. Consider the case `succ j => simp only [row0, if_pos h]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem nodeY_eq_chainVertexAtRowZero_of_lt {j : ℕ} (h : j < D.R.m) : nodeY R j = row0 R j := by
   cases j with
@@ -204,12 +202,12 @@ theorem nodeY_eq_chainVertexAtRowZero_of_lt {j : ℕ} (h : j < D.R.m) : nodeY R 
   | succ j => simp only [row0, if_pos h]
 
 /- English proof (translation)
-Simplify using `only [row0, if_neg h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nodeX_eq_chainVertexAtRowZero_of_ge {j : ℕ} (h : ¬ j + 1 < D.R.m) : nodeX R = row0 R (j + 1) := by simp only [row0, if_neg h]
 
 /- English proof (translation)
-Establish `h` using `D.R.two_le_m`. Establish `e : D.R.m - 1 + 1 = D.R.m` using `by omega`. Rewrite using `[← e]; exact nodeX_eq_chainVertexAtRowZero_of_ge R (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nodeX_eq_chainVertexAtRowZero_top : nodeX R = row0 R D.R.m := by
   have h := D.R.two_le_m
@@ -221,7 +219,7 @@ def stepY (t : T) (k : ℕ) : ArrS (nodeY R k) (nodeY R (k + 1)) := ⟨R.ωY t k
 def stepX (t : T) : ArrS (nodeY R (D.R.m - 1)) (nodeX R) := ⟨R.ωX t, R.vacX, R.ItX⟩
 
 /- English proof (translation)
-Rewrite using `[show D.R.m - 1 = j by omega]; exact nodeY_eq_chainVertexAtRowZero_of_lt R (by omega)`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nodeY_pred_eq_chainVertexAtRowZero_last {j : ℕ} (h : j + 1 = D.R.m) : nodeY R (D.R.m - 1) = row0 R j := by
   rw [show D.R.m - 1 = j by omega]; exact nodeY_eq_chainVertexAtRowZero_of_lt R (by omega)
@@ -343,7 +341,7 @@ def meas (t : T) : ∀ i j, (G.V i j).MeasDat
   | i + 1, j => G.mV i j
 
 /- English proof (translation)
-Apply the tactic sequence `cases i <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem meas_zero (t : T) (i : ℕ) : G.meas t i 0 = G.measCol i := by cases i <;> rfl
 
@@ -356,9 +354,7 @@ def decRow : ∀ j, HermitianOrthogonalExtensionData (G.Xp j) (G.V D.R.m j) (D.R
   | j + 1 => G.decX j
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `succ i => rfl`. Consider the case `zero => show (th0 R t j).It = (th0 R t' j).It`. Unfold `th0`. Use `split_ifs`.
-
-Use `exacts [ArrS.cast_It_congr _ _ rfl, ArrS.cast_It_congr _ _ rfl, rfl]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem th_It (t t' : T) (i j : ℕ) : (G.th t i j).It = (G.th t' i j).It := by
   cases i with
@@ -580,7 +576,7 @@ Both sides reduce to the same expression.
 theorem chiLift_eq (t : T) (Φ : G.Data R) (n : ℕ) : G.chiLift Φ n = G.colLift t 0 (G.datum Φ) n := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun t i j a b f c => ⟨_, h.X t i j a b f c⟩, fun t i j a b f c => ⟨_, h.th t i j a b f c⟩, fun t j a f c => ⟨_, h.col t j a f c⟩, fun i a f c => ⟨_, h.dn i a f c⟩, fun i a f c => ⟨_, h.up i a f c⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsLifts.hasLifts {G : GridDat R} (h : G.IsLifts) : G.toGridPre.HasLifts :=
   ⟨fun t i j a b f c => ⟨_, h.X t i j a b f c⟩, fun t i j a b f c => ⟨_, h.th t i j a b f c⟩,
@@ -589,13 +585,11 @@ theorem IsLifts.hasLifts {G : GridDat R} (h : G.IsLifts) : G.toGridPre.HasLifts 
 end GridDat
 
 /- English proof (translation)
-Establish `ex : ∀ {α : Type} [Zero α] {p : Prop} {q : α → Prop}, (p → ∃ a, q a) → ∃ a, p → q a` using `fun {α} _ {p} {q} H => by`. Distinguish the cases in `hp : p`. Conclude with `(H hp).imp fun _ ha _ => ha`. Conclude with `⟨0, fun h => absurd h hp⟩`. Use `choose x0 hx0 using fun i f => ex fun c : i < D.R.m ∧ IsFinVec R.ψ R.θ true (G.V (i + 1) 0) (G.V i 0) f => h.X A.μ0 i 0 c.1 (Nat.zero_le _) f c.2`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Use `choose x1 hx1 using fun t i j f => ex fun c : i < D.R.m ∧ j + 1 ≤ D.R.m ∧ IsFinVec R.ψ R.θ true (G.V (i + 1) (j + 1)) (G.V i (j + 1)) f => h.X t i (j + 1) c.1 c.2.1 f c.2.2`. Use `choose th hth using fun t i j f => ex fun c : i ≤ D.R.m ∧ j < D.R.m ∧ IsFinVec R.ψ R.θ false (G.V i j) (G.V i (j + 1)) f => h.th t i j c.1 c.2.1 f c.2.2`. Use `choose cl hcl using fun t j f => ex fun c : j < D.R.m ∧ IsFinVec R.ψ R.θ false (G.Xp j) (G.Xp (j + 1)) f => h.col t j c.1 f c.2`. Use `choose dn hdn using fun i f => ex fun c : i < D.R.m ∧ IsFinVec R.ψ R.θ true (G.P (i + 1)) (G.P i) f => h.dn i c.1 f c.2`. Use `choose up hup using fun i f => ex fun c : i < D.R.m ∧ IsFinVec R.ψ R.θ true (G.P (i + 1)) (G.P i) f => h.up i c.1 f c.2`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Treat this case separately.
 
-Use `⟨⟨G, x0, x1, th, cl, dn, up⟩, rfl, hG, fun t i j a b f c => ?_, fun t i j a b f c => hth t i j f ⟨a, b, c⟩, fun t j a f c => hcl t j f ⟨a, c⟩, fun i a f c => hdn i f ⟨a, c⟩, fun i a f c => hup i f ⟨a, c⟩⟩` and prove the remaining obligations. Consider the cases of `j with`. Consider the case `zero`. Use `hx0 i f ⟨a, c⟩` as an intermediate fact. Rewrite `this` using `[G.meas_zero]`.
-
-Use `show (G.X i 0).IsLift R.ψ R.θ true (G.meas t i 0) f (x0 i f)`. Rewrite using `[G.meas_zero]` and apply the resulting hypothesis. Consider the case `succ j => exact hx1 t i j f ⟨a, b, c⟩`.
+A detailed English derivation is pending.
 -/
 theorem GridPre.exists_gridDat {R : RealDat D A Ks} (G : GridPre R) (hG : G.Is) (h : G.HasLifts) :
     ∃ G' : GridDat R, G'.toGridPre = G ∧ G'.Is := by
@@ -625,14 +619,14 @@ theorem GridPre.exists_gridDat {R : RealDat D A Ks} (G : GridPre R) (hG : G.Is) 
   | succ j => exact hx1 t i j f ⟨a, b, c⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 example (G : GridPre R) : (G.V 0 0).V = Yc D 0 ∧ (G.V 0 0).M = R.MY 0 := ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Establish `hr : Odd D.R.r`. Establish `h1` using `D.R.k_even`. Establish `h2` using `D.R.m_even`. Establish `h3` using `D.R.two_le_m`. Unfold `Ranks.r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `grind`. Rewrite using `[Lift.chrStep_eq_att _ _ hr D.R.t_odd (Nat.le_add_left 1 j)]`. Simplify using `[rkV]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example (t : T) (j : ℕ) : (GridPre.muAt R t (j + 1) (rkV D 0 j), GridPre.muAt R t (j + 1) (rkV D 0 (j + 1))) =
     Lift.chrStep (R.toLevCh.mu t) R.eta (j + 1) := by
@@ -643,7 +637,7 @@ example (t : T) (j : ℕ) : (GridPre.muAt R t (j + 1) (rkV D 0 j), GridPre.muAt 
   simp [rkV]
 
 /- English proof (translation)
-Establish `e : sLen D - 1 = D.R.r + 5` using `rfl`. Apply the tactic sequence `refine ⟨?_, ?_⟩ <;> simp only [rkP, rkV, rkX, e] <;> simp only [sLen] <;> ring`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 example (i : ℕ) : rkP D (i + 1) + i = rkV D (i + 1) 0 ∧ rkV D D.R.m D.R.m + 1 = rkX D D.R.m := by
   have e : sLen D - 1 = D.R.r + 5 := rfl

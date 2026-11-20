@@ -14,9 +14,9 @@ namespace GlobalTheory.QPl.ThetaPin
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h0 : infPart D (algebraMap (AF D.host.F) (AE D) ε) = 0`. Take `⟨α, rfl, -, -⟩` from `hε`. Use `show infPart D (pairA D.host.F 0 α ⊗ₜ[D.host.F] (1 : D.host.E)) = 0`. Simplify using `only [infPart, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, Algebra.TensorProduct.map_tmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (fstA D.host.F (pairA D.host.F 0 α)) ⊗ₜ[D.host.F] _ = 0`. Rewrite using `[show fstA D.host.F (pairA D.host.F 0 α) = 0 from rfl, TensorProduct.zero_tmul]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.zero_apply]`. Rewrite using `[← hc u hu i j, map_mul, h0, zero_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFinComb_of_half {S T : HSp D} {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F} (hε : IsPlaceIdem D v ε) (c : WO S T →₀ ℂ)
     (hc : ∀ u ∈ c.support, IsHalf (algebraMap (AF D.host.F) (AE D) ε) u) : IsFinComb c := by
@@ -32,7 +32,7 @@ theorem isFinComb_of_half {S T : HSp D} {v : HeightOneSpectrum (𝓞 D.host.F)} 
   rw [← hc u hu i j, map_mul, h0, zero_mul]
 
 /- English proof (translation)
-The claim follows from `| [], _, g, hg => by have : g = 0 := by simpa [aconv] using Finsupp.support_single_subset hg rw [this]; exact P.zero_mem | e :: l, hl, g, hg => by classical have ih := aconv_support P l (fun e' he' => hl e' (List.mem_cons_of_mem _ he')) have he := hl e List.mem_cons_self change g …`.
+A detailed English derivation is pending.
 -/
 theorem aconv_support {G : Type} [AddMonoid G] (P : AddSubmonoid G) :
     ∀ (l : List (G →₀ ℂ)), (∀ e ∈ l, ∀ g ∈ e.support, g ∈ P) → ∀ g ∈ (aconv l).support, g ∈ P
@@ -60,13 +60,13 @@ def finSub (S T : HSp D) : AddSubmonoid (WO S T) where
     rw [Matrix.map_add (infPart D) (fun x y => RingHom.map_add (infPart D) x y) a b, ha, hb, add_zero]
 
 /- English proof (translation)
-The claim follows from `aconv_support (finSub S T) l hl`.
+A detailed English derivation is pending.
 -/
 theorem isFinComb_aconv {S T : HSp D} (l : List (WO S T →₀ ℂ)) (hl : ∀ e ∈ l, IsFinComb e) : IsFinComb (aconv l) :=
   aconv_support (finSub S T) l hl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `hx`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isFinComb_cast {c : Comm D} {a b : ℕ} (e : a = b) (x : WO (c.V (a + 1)) c.T →₀ ℂ) (hx : IsFinComb x) :
     IsFinComb (e ▸ x : WO (c.V (b + 1)) c.T →₀ ℂ) := by
@@ -76,13 +76,13 @@ end GlobalTheory.QPl.ThetaPin
 
 open GlobalTheory.QPl.ThetaPin in
 /- English proof (translation)
-Introduce `D c v t w F hc hP j h Ψ₁ Ψ₂ h1 h2`. Establish `hs : ∀ i, (F.Q i).s = j` using `fun i => by have := (F.Q i).hs; omega`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hP.eQ j (by omega)]`. Use `(GlobalTheory.HeisComb.main D c.ψ _ _).2.2.1 _ _ h1 ?_ hc.std` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `isFinComb_aconv _ fun e he => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 he`. Take `⟨ε, hε, hsum⟩` from `(F.Q i).q.above`. Establish `hat` using `((F.Q i).eL_at j 0 (by have := hs i; omega)).1`. Conclude with `isFinComb_of_half hε _ fun u hu => hsum ▸ hat u hu`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP.eQT j h]`. Use `(GlobalTheory.HeisComb.main D c.ψ _ _).2.2.1 _ _ h2 ?_ hc.std` and prove the remaining obligations. Use `isFinComb_aconv _ fun e he => ?_` and prove the remaining obligations. Take `⟨i, rfl⟩` from `List.mem_ofFn.1 he`. Take `⟨ε, hε, hsum⟩` from `(F.Q i).q.above`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hat` using `(F.Q i).eLT_at.1`. Unfold `QAt.eT`. Conclude with `isFinComb_cast _ _ (isFinComb_of_half hε _ fun u hu => hsum ▸ hat u hu)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.QPl.pins_keep_theta : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t) (F : QFam v t), c.Is → F.Pins w → ∀ j (h : j + 2 * 0 + 2 = D.R.m) (Ψ₁ : WO (c.V j) (c.V (j + 1)) → ℂ) (Ψ₂ : WO (c.V (j + 1)) c.T → ℂ), IsThetaFunO c.ψ _ _ Ψ₁ → IsThetaFunO c.ψ _ _ Ψ₂ → IsThetaFunO c.ψ _ _ (comb c.ψ _ _ (w.eQ j) Ψ₁) ∧ IsThetaFunO c.ψ _ _ (comb c.ψ _ _ (w.eQT j h) Ψ₂) := by
   intro D c v t w F hc hP j h Ψ₁ Ψ₂ h1 h2

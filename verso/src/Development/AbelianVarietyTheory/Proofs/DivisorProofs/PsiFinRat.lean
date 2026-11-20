@@ -38,9 +38,9 @@ def boxLat (a : F) : Submodule ℤ (κ → mixedEmbedding.mixedSpace F) where
 variable {F κ}
 
 /- English proof (translation)
-Establish `e1 : ratFin F κ ρ ⬝ᵥ ratFin F κ z = algebraMap F (FiniteAdeleRing (𝓞 F) F) (ρ ⬝ᵥ z)`. Simplify using `[ratFin, dotProduct, map_sum, map_mul]`. Establish `e2 : GlobalTheory.VacLn.trPair F κ (ratInf F κ ρ) (ratInf F κ z) = ((Algebra.trace ℚ F (ρ ⬝ᵥ z) : ℚ) : ℝ)`. Rewrite using `[GlobalTheory.VacLn.trPair_apply, ← GlobalTheory.PsiNontriv.trace_mixedEmbedding]`. Simplify using `[ratInf, dotProduct, map_sum, map_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2]`. Conclude with `GlobalTheory.PsiNontriv.isStd_fin_rat hψ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_fin_rat {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) [Fintype κ] (ρ z : κ → F) :
     ψ (pairA F 0 (ratFin F κ ρ ⬝ᵥ ratFin F κ z)) =

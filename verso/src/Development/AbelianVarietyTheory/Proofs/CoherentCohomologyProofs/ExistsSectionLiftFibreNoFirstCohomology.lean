@@ -20,11 +20,9 @@ theorem id_appLE {Y : Scheme.{0}} {U V : Y.Opens} (e : V ≤ (𝟙 Y : Y ⟶ Y) 
     ((𝟙 Y : Y ⟶ Y).appLE U V e).hom a = rs Y e a := rfl
 
 /- English proof (translation)
-Establish `h : IsPullback (𝟙 Y) f f (Spec.map (CommRingCat.ofHom (RingHom.id R)))`. Rewrite using `[CommRingCat.ofHom_id, Spec.map_id]`. Conclude with `IsPullback.of_horiz_isIso ⟨by simp⟩`. Take `⟨E, hE⟩` from `P.sec R (RingHom.id R) Y (𝟙 Y) f h`. Set `t` to `E ⟨v, hv⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `le : ∀ j, M.U j ≤ (M.pull (𝟙 Y)).U (fun _ => j)` using `fun j => le_pull M (𝟙 Y) le_rfl`. Use `⟨⟨fun j => rs Y (le j) (t.f fun _ => j), fun i j => ?_⟩, fun i => ?_⟩` and prove the remaining obligations. Establish `e` using `GlobalTheory.LB.sec_rel t (fun _ => i) (fun _ => j) (inf_le_left.trans (le i)) (inf_le_right.trans (le j)) (inf_le_inf (le i) (le j))`. Establish `e'` using `(GlobalTheory.LB.resG_pull_g (L := M) (𝟙 Y) (fun _ => i) (fun _ => j) (inf_le_inf (le i) (le j))).trans ((id_appLE _ _).trans (rs_self _ _))`. Conclude with `(rs_rs _ _ _).trans (e.trans (congrArg₂ (· * ·) e' (rs_rs _ _ _).symm))`.
-
-Conclude with `(rs_rs _ _ _).trans (hE ⟨v, hv⟩ i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_ker {R : Type} [CommRing R] {Y : Scheme.{0}} {f : Y ⟶ Spec (CommRingCat.of R)}
     {M : LB Y} (P : Perf f M) (v : Fin P.a → R) (hv : P.D₀.mulVec v = 0) :
@@ -44,7 +42,7 @@ theorem exists_sec_of_ker {R : Type} [CommRing R] {Y : Scheme.{0}} {f : Y ⟶ Sp
   · exact (rs_rs _ _ _).trans (hE ⟨v, hv⟩ i)
 
 /- English proof (translation)
-Rewrite using `[SecOnR.topEquiv_f, SecOnR.topEquiv_f, SecOnR.coord_base_smul, rs_rs, rs_rs, map_mul, rs_cst]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rs_topEquiv_smul {R : Type} [CommRing R] {Y : Scheme.{0}} (f : Y ⟶ Spec (CommRingCat.of R))
     (M : LB Y) (c : R) (x : SecOnR f M ⊤) (j : M.ι) {V : Y.Opens} (h : V ≤ M.U j) :
@@ -53,9 +51,9 @@ theorem rs_topEquiv_smul {R : Type} [CommRing R] {Y : Scheme.{0}} (f : Y ⟶ Spe
   rw [SecOnR.topEquiv_f, SecOnR.topEquiv_f, SecOnR.coord_base_smul, rs_rs, rs_rs, map_mul, rs_cst]
 
 /- English proof (translation)
-Use `choose a b hb hab using fun i => hg (z i)`. Use `⟨∏ i, b i, fun i => a i * ∏ j ∈ Finset.univ.erase i, b j, ?_, funext fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod]`. Conclude with `Finset.prod_ne_zero_iff.2 fun i _ => hb i`. Rewrite using `[← Finset.mul_prod_erase _ b (Finset.mem_univ i)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Function.comp_apply, map_mul, Pi.smul_apply, smul_eq_mul, ← hab]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_common_denominator {R K : Type} [CommRing R] [Field K] (g : R →+* K)
     (hg : ∀ y : K, ∃ a b : R, g b ≠ 0 ∧ y * g b = g a) {n : ℕ} (z : Fin n → K) :
@@ -70,15 +68,15 @@ theorem exists_common_denominator {R K : Type} [CommRing R] [Field K] (g : R →
     ring
 
 /- English proof (translation)
-Introduce `R _ _ Y f M hf hp hM K _ g hg Y₀ π f₀ h hH x₀`. Take `⟨P⟩` from `nonempty_perf_of_noetherian R Y f hf hp M hM`. Take `⟨r, n, B, hr, hB, hu⟩` from `exists_matrix_basis_ker_of_exact_at_point R K g _ _ _ P.D₀ P.D₁ P.comp (P.exact K g Y₀ π f₀ h hH)`. Take `⟨E, hE⟩` from `P.sec K g Y₀ π f₀ h`. Take `⟨v₀, hv₀⟩` from `E.surjective (SecOnR.topEquiv f₀ _ x₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, -⟩` from `hu K g hr.isUnit v₀.1 v₀.2`. Take `⟨c, w, hc, hw⟩` from `exists_common_denominator g hg z`. Establish `hv : g ∘ B.mulVec w = g c • v₀.1`. Rewrite using `[← hz, ← Matrix.mulVec_smul, ← hw]`. Conclude with `funext fun j => RingHom.map_mulVec g _ _ j`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `exists_sec_of_ker P (B.mulVec w) (by rw [Matrix.mulVec_mulVec, hB, Matrix.zero_mulVec])`. Use `⟨c, (SecOnR.topEquiv f M).symm s, hc, (SecOnR.topEquiv f₀ _).injective ?_⟩` and prove the remaining obligations. Use `Seesaw.sec_ext _ _ (fun i => π ⁻¹ᵁ P.W i) (fun i _ => P.ch i) (fun i => le_pull M π (P.le i)) (fun y => Seesaw.exists_mem P (π y)) fun i => ?_` and prove the remaining obligations. Establish `e₁` using `Seesaw.loc_comp P h (B.mulVec w) i`. Rewrite `e₁` using `[hv, Seesaw.loc_smul, ← hs]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e₂ : Seesaw.loc P π f₀ v₀.1 i = _` using `(hE v₀ i).symm`. Rewrite `e₁` using `[e₂, hv₀]`. Use `Eq.trans ?_ ((rs_topEquiv_smul f₀ _ (g c) x₀ _ _).trans e₁).symm` and prove the remaining obligations. Use `(rs_rs _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (rs Y₀ _) (SecOn.coord_pullLE π le_top _ _)).trans ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(GlobalTheory.LB.resG_appLE π _ _ _).trans ?_` and prove the remaining obligations. Use `(GlobalTheory.LB.appLE_resG π inf_le_right _ (s.f (P.ch i))).trans ?_` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.appLE_eq_app]`. Conclude with `(GlobalTheory.LB.appLE_resG π (P.le i) le_rfl _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pull_eq_smul : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (M : LB Y), Flat f → IsProjBy f → M.IsLB → ∀ (K : Type) [Field K] (g : R →+* K), (∀ y : K, ∃ a b : R, g b ≠ 0 ∧ y * g b = g a) → ∀ (Y₀ : Scheme.{0}) (π : Y₀ ⟶ Y) (f₀ : Y₀ ⟶ Spec (CommRingCat.of K)) (h : IsPullback π f₀ f (Spec.map (CommRingCat.ofHom g))), FirstCohomologyVanishes (M.pull π) → ∀ x₀ : SecOnR f₀ (M.pull π) ⊤, ∃ (c : R) (x : SecOnR f M ⊤), g c ≠ 0 ∧ SecOnR.pull M h.w ⊤ ⊤ le_top x = g c • x₀ := by
   intro R _ _ Y f M hf hp hM K _ g hg Y₀ π f₀ h hH x₀

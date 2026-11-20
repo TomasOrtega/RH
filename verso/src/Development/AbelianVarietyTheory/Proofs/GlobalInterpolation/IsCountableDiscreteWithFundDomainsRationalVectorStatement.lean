@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.BlockTheory.GlobalSignature.AdelicUnitar
 open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryHaarMeasure
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.RationalStabiliserDomains.isDiscreteWithDomains_HstabFin` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FGlobalInterpolation%2FIsCountableDiscreteWithFundDomainsRationalVector.lean&line=23#L23)
 -/

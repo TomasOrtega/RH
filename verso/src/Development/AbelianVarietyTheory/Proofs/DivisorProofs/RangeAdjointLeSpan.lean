@@ -27,15 +27,13 @@ variable {K V H E : Type} [Field K] [AddCommGroup V] [Module K V]
   {σ : K →+* ℂ} {j : V →ₛₗ[σ] H} {ι : Type} [Fintype ι] {b : Module.Basis ι K V}
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `exists_cx hli hsp e`. Establish `h1 : Θ ∘ₗ U = Θ` using `ext_of_span hsp fun v => by simp only [LinearMap.comp_apply, hU, hΘ]`. Establish `h2 : ∀ w y, inner ℂ (U y) (j w) = inner ℂ y (U (j w))` using `fun w y => by`. Establish `: innerₛₗ ℂ (j w) ∘ₗ U = innerₛₗ ℂ (U (j w))` using `ext_of_span hsp fun v => by`. Simplify using `only [LinearMap.comp_apply, innerₛₗ_apply_apply, hU, he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `LinearMap.congr_fun this y`. Simplify using `only [LinearMap.comp_apply, innerₛₗ_apply_apply] at h`. Rewrite using `[← inner_conj_symm, h, inner_conj_symm]`. Establish `h3 : ∀ y, U y ∈ Submodule.span ℂ (j '' (LinearMap.range e : Set V))` using `fun y => by`. Establish `hy : y ∈ Submodule.span ℂ (Set.range j)` using `hsp ▸ Submodule.mem_top`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Submodule.span_le (p := (Submodule.span ℂ (j '' (LinearMap.range e : Set V))).comap U)).2 ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Use `show U (j v) ∈ Submodule.span ℂ (j '' (LinearMap.range e : Set V))`. Rewrite using `[hU]`. Conclude with `Submodule.subset_span ⟨e v, ⟨v, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨u, rfl⟩`. Establish `h4 : innerₛₗ ℂ (U (LinearMap.adjoint Θ u)) = innerₛₗ ℂ (LinearMap.adjoint Θ u)` using `ext_of_span hsp fun w => by`. Simplify using `only [innerₛₗ_apply_apply]`. Rewrite using `[h2, LinearMap.adjoint_inner_left, LinearMap.adjoint_inner_left, hU, hΘ]`. Rewrite using `[← (ext_inner_right ℂ fun w => LinearMap.congr_fun h4 w : U (LinearMap.adjoint Θ u) = LinearMap.adjoint Θ u)]`.
-
-Conclude with `h3 _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_adjoint_le_span [FiniteDimensional ℂ H] [FiniteDimensional ℂ E]
     (hli : LinearIndependent ℂ fun i => j (b i))
@@ -78,9 +76,9 @@ variable {G Γ W K : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerPro
 include hM hj
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `model_form P M hM hj`. Rewrite using `[goodAt, level_idempotent_bot, mul_one]`. Use `range_adjoint_le_span h1 h2 (sum_selfAdj r _ (fun g => ?_) fun g v w => ?_) fun v => ?_` and prove the remaining obligations. Simplify using `only [coeff_idemOf, map_sum, map_mul, map_div₀, map_natCast, inv_inv]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (hX c hc).map_inv σ, ← (hX c hc).map_inv σ, inv_one, inv_inv]`. Rewrite using `[h3, h3, hr.unitary]`. Rewrite using `[← he (j v)]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smulₛₗ, hΘ, RingHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem model_good_span {G0 E : Type} [Group G0] [Fintype G0] [NormedAddCommGroup E] [InnerProductSpace ℂ E]
     [FiniteDimensional ℂ E] {r : Representation K G0 S.Forms} (hr : S.ActGood r) {X : Finset (G0 → K)}
@@ -105,9 +103,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `h1 : R.thF i t y ∈ LinearMap.range (R.HW i (sg0 D A)).e` using `(hC.models.HW i (sg0 D A)).2.1.ge (hC.thP.thF_mem i t y)`. Take `⟨z, hz⟩` from `h1`. Establish `hs : ∀ a, sg0 D A a = D.what₂.embLL a` using `fun a => by rw [sg0, sgAt_mk _ R.hv0]`. Establish `h2 : R.thG i t y = ∑ g, D.what₂.embLL ((idemOf A.X).coeff g) • R.gW i (sg0 D A) g z`. Use `(hC.models.HW i _).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hC.thP.thG, ← hz, map_sum]`. Use `(postOn_gaL (R.MW i (sg0 D A)) (R.βW i) (R.datWp i R.triv) R.eG _ _).trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun g _ => by rw [map_smul, hC.models.gW, RealDat.eC, hs]; rfl`. Rewrite using `[h2]`. Conclude with `idem_idem _ hOk.irr _ z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_lifts_core {R : RealDat D A Ks} {F : Face D A} {s : ℕ} (hC : Core R F) (hOk : A.fam.Ok s) (i : Fin D.R.m) (t : T)
     (y : (R.HV i t).H) :
@@ -125,7 +123,7 @@ theorem proj_lifts_core {R : RealDat D A Ks} {F : Face D A} {s : ℕ} (hC : Core
   exact idem_idem _ hOk.irr _ z
 
 /- English proof (translation)
-The claim follows from `model_good_span (W := (R.cV i).W) (ι := Bridge.ratF (Vc D i)) (ρ := (R.cV i).coef.ρ) (J := (levEnv _ (R.βV i) (R.datVt i t)).J) (χ := (levEnv _ (R.βV i) (R.datVt i t)).χ) (R.B.L i t).pres (R.HV i t) (hC.models.HV i t) (hC.models.jV i t) (hOk.lifts i t).act hOk.irr (R.gW i (sg0 D …`.
+A detailed English derivation is pending.
 -/
 theorem range_adjoint_lift_le (R : RealDat D A Ks) (F : Face D A) {s : ℕ} (hOk : A.fam.Ok s) (hC : Core R F)
     (hG : ∀ i t g (v : (A.MtCSD i t).Forms),

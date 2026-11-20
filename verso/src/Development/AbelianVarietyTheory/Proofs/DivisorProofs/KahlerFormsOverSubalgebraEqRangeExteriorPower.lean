@@ -10,11 +10,9 @@ noncomputable section
 namespace GlobalTheory.PD
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, v, hv, rfl⟩` from `hy`. Apply `Submodule.subset_span` to reduce the goal to its premises. Use `⟨b * c, B.mul_mem hb hc, v, hv, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_smul]`. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => rw [smul_add]`. Conclude with `add_mem h1 h2`.
-
-Consider the case `smul r y _ h => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ r h`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem smul_mem_omB_regForms {k K : Type} [Field k] [Field K] [Algebra k K] (B : Subalgebra k K) (q : ℕ)
     {b : K} (hb : b ∈ B) {y : DR k K} (hy : y ∈ omB k K B q) : b • y ∈ omB k K B q := by
@@ -29,7 +27,7 @@ theorem smul_mem_omB_regForms {k K : Type} [Field k] [Field K] [Algebra k K] (B 
   | smul r y _ h => rw [smul_comm]; exact Submodule.smul_mem _ r h
 
 /- English proof (translation)
-Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨1, B.one_mem, fun j => (w j : K), fun j => (w j).2, (one_smul K _).symm⟩`.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 -/
 theorem ιMulti_D_mem_omB_regForms {k K : Type} [Field k] [Field K] [Algebra k K] (B : Subalgebra k K) (q : ℕ)
     (w : Fin q → B) : (ExteriorAlgebra.ιMulti K q fun j => D k K (w j : K)) ∈ omB k K B q := by
@@ -37,27 +35,23 @@ theorem ιMulti_D_mem_omB_regForms {k K : Type} [Field k] [Field K] [Algebra k K
   exact ⟨1, B.one_mem, fun j => (w j : K), fun j => (w j).2, (one_smul K _).symm⟩
 
 /- English proof (translation)
-Introduce `k K _ _ _ B _ _ q`. Use `haveI : Algebra.FormallyEtale B K := .of_isLocalization (nonZeroDivisors B)`. Set `φ : Ω[B⁄k] →ₗ[B] Ω[K⁄k]` to `KaehlerDifferential.map k k B K`. Establish `hD : ∀ x : B, φ (D k B x) = D k K (x : K)` using `fun x => KaehlerDifferential.map_D k k B K x`. Establish `hφ : IsBaseChange K φ` using `IsBaseChange.of_equiv (tensorKaehlerEquivOfFormallyEtale k B K) fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tensorKaehlerEquivOfFormallyEtale_apply, mapBaseChange_tmul, one_smul]`. Both sides reduce to the same expression. Set `E` to `GlobalTheory.exteriorPowerMapOver K q φ`. Establish `hE : IsLocalizedModule (nonZeroDivisors B) E` using `(isLocalizedModule_iff_isBaseChange _ K E).2 (GlobalTheory.TopForm.isBaseChange_exteriorPower hφ q)`. Use `haveI : Module.Projective B (⋀[B]^q Ω[B⁄k]) := by`.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `Module.projective_def'.1 (inferInstance : Module.Projective B Ω[B⁄k])`. Conclude with `Module.Projective.of_split (exteriorPower.map q s) (exteriorPower.map q (Finsupp.linearCombination B id)) (by rw [← exteriorPower.map_comp, hs, exteriorPower.map_id])`. Use `haveI : Module.Flat B (⋀[B]^q Ω[B⁄k]) := inferInstance`. Use `haveI : Module.IsTorsionFree B (⋀[B]^q Ω[B⁄k]) := Module.Flat.isTorsionFree`. Establish `hEinj : Function.Injective E`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y hxy`. Take `⟨c, hc⟩` from `IsLocalizedModule.exists_of_eq (S := nonZeroDivisors B) hxy`. Conclude with `(Module.IsTorsionFree.isSMulRegular (M := ⋀[B]^q Ω[B⁄k]) (isRegular_of_ne_zero (nonZeroDivisors.coe_ne_zero c))) hc`. Set `e : (⋀[B]^q Ω[B⁄k]) →ₗ[B] DR k K` to `((⋀[K]^q Ω[K⁄k]).subtype.restrictScalars B) ∘ₗ E`. Establish `hι : ∀ a : Fin q → Ω[B⁄k], e (exteriorPower.ιMulti B q a) = ExteriorAlgebra.ιMulti K q fun j => φ (a j)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Express the relevant statement in the definitionally equal form `((E (exteriorPower.ιMulti B q a) : ⋀[K]^q Ω[K⁄k]) : DR k K) = _`. Rewrite using `[GlobalTheory.exteriorPowerMapOver_ιMulti, exteriorPower.ιMulti_apply_coe]`. Establish `hιD : ∀ v : Fin q → B, e (exteriorPower.ιMulti B q fun j => D k B (v j)) = ExteriorAlgebra.ιMulti K q fun j => D k K (v j : K)`. Introduce `v`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hι]`. Simplify using `only [hD]`. Establish `hB : ∀ (b : B) (y : DR k K), b • y = (b : K) • y` using `fun b y => (algebraMap_smul K b y).symm`. Use `⟨e, Subtype.val_injective.comp hEinj, fun y => ⟨fun hy => ?_, ?_⟩, hιD⟩` and prove the remaining obligations. Establish `: omB k K B q ≤ LinearMap.range (e.restrictScalars k)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, hb, v, hv, rfl⟩`. Use `⟨(⟨b, hb⟩ : B) • exteriorPower.ιMulti B q (fun j => D k B ⟨v j, hv j⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.restrictScalars_apply, map_smul, hιD, hB]`. Take `⟨z, hz⟩` from `this hy`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Conclude with `⟨z, hz⟩`. Introduce and unpack `⟨z, rfl⟩`. Establish `htop` using `exteriorPower.ιMulti_span_of_span B q Ω[B⁄k] (span_range_derivation k B)`. Establish `hz : z ∈ Submodule.span B (⇑(exteriorPower.ιMulti B q) '' {a | Set.range a ⊆ Set.range (D k B)})`. Rewrite using `[htop]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, rfl⟩` from `hz`. Use `choose w hw using fun j => ha ⟨j, rfl⟩`.
-
-Establish `ha' : a = fun j => D k B (w j)` using `funext fun j => (hw j).symm`. Substitute `ha'` using the available equality. Rewrite using `[hιD]`. Conclude with `ιMulti_D_mem_omB_regForms B q w`. Consider the case `zero => rw [map_zero]`.
-
-Conclude with `Submodule.zero_mem _`. Consider the case `add _ _ _ _ h1 h2 => rw [map_add]`. Conclude with `add_mem h1 h2`. Consider the case `smul b z _ h => rw [map_smul, hB]`. Conclude with `smul_mem_omB_regForms B q b.2 h`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem omB_eq_range_exteriorPower : ∀ (k K : Type) [Field k] [Field K] [Algebra k K] (B : Subalgebra k K)
     [IsFractionRing B K] [Algebra.Smooth k B] (q : ℕ), ∃ e : (⋀[B]^q Ω[B⁄k]) →ₗ[B] DR k K,

@@ -24,14 +24,14 @@ variable {n : ℕ} {ε : Fin n → Bool} {H H' : Type} [NormedAddCommGroup H] [I
   {σ : Mx n → (H →L[ℂ] H)} {σ' : Mx n → (H' →L[ℂ] H')}
 
 /- English proof (translation)
-Use `show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Formalism.REAL.Jm ε * 1 = Formalism.REAL.Jm ε`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem one_mem_UJset' : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε := by
   show (1 : Matrix (Fin n) (Fin n) ℂ)ᴴ * Formalism.REAL.Jm ε * 1 = Formalism.REAL.Jm ε
   simp
 
 /- English proof (translation)
-Establish `ha' : aᴴ * Formalism.REAL.Jm ε * a = Formalism.REAL.Jm ε` using `ha`. Establish `hb' : bᴴ * Formalism.REAL.Jm ε * b = Formalism.REAL.Jm ε` using `hb`. Use `show (a * b)ᴴ * Formalism.REAL.Jm ε * (a * b) = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem mul_mem_UH_Hpk' {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ UJset ε) (hb : b ∈ UJset ε) :
     a * b ∈ UJset ε := by
@@ -43,11 +43,11 @@ private theorem mul_mem_UH_Hpk' {a b : Matrix (Fin n) (Fin n) ℂ} (ha : a ∈ U
     _ = Formalism.REAL.Jm ε := by rw [ha', hb']
 
 /- English proof (translation)
-Establish `hX' : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0` using `hX`. Establish `hJJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `Formalism.REAL.Jm_mul_self ε`. Establish `hJinv : (Formalism.REAL.Jm ε)⁻¹ = Formalism.REAL.Jm ε` using `Matrix.inv_eq_left_inv hJJ`. Establish `hJu : IsUnit (Formalism.REAL.Jm ε)` using `(Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_left_inverse hJJ)`. Establish `hXh : Xᴴ = -(Formalism.REAL.Jm ε * X * Formalism.REAL.Jm ε)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Xᴴ * Formalism.REAL.Jm ε = -(Formalism.REAL.Jm ε * X)` using `eq_neg_of_add_eq_zero_left hX'`. Combine the equalities or inequalities in the displayed calculation. Establish `hYh : (t • X)ᴴ = Formalism.REAL.Jm ε * (-(t • X)) * (Formalism.REAL.Jm ε)⁻¹`. Rewrite using `[Matrix.conjTranspose_smul, star_trivial, hXh, hJinv]`. Simplify using `only [Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_smul, Matrix.smul_mul, smul_neg]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hEu : IsUnit (NormedSpace.exp (t • X)).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (Matrix.isUnit_exp _)`. Use `show (NormedSpace.exp (t • X))ᴴ * Formalism.REAL.Jm ε * NormedSpace.exp (t • X) = Formalism.REAL.Jm ε`. Rewrite using `[← Matrix.exp_conjTranspose, hYh, Matrix.exp_conj _ _ hJu, hJinv, Matrix.exp_neg]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε), hJJ, Matrix.one_mul, Matrix.nonsing_inv_mul _ hEu, Matrix.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exp_smul_mem_UJset' {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieSet ε) (t : ℝ) :
     NormedSpace.exp (t • X) ∈ UJset ε := by
@@ -72,11 +72,11 @@ private theorem exp_smul_mem_UJset' {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈
     Matrix.nonsing_inv_mul _ hEu, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `key : ∀ l : List (Matrix (Fin n) (Fin n) ℂ), (∀ a ∈ l, a ∈ UJset ε) → l.prod ∈ UJset ε`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil => intro _`. Simplify using `using (one_mem_UJset' (ε := ε))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `cons a l ih`. Introduce `h`. Rewrite using `[List.prod_cons]`. Conclude with `mul_mem_UH_Hpk' (h a (by simp)) (ih fun b hb => h b (by simp [hb]))`. Apply `key` to reduce the goal to its premises.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Rewrite `ha` using `[List.mem_ofFn]`. Take `⟨i, rfl⟩` from `ha`. Conclude with `exp_smul_mem_UJset' (hX i) (t i)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prod_mem {k : ℕ} {Xs : Fin k → Mx n} (hX : ∀ i, Xs i ∈ lieSet ε) (t : Fin k → ℝ) :
     (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod ∈ UJset ε := by
@@ -105,7 +105,7 @@ Both sides reduce to the same expression.
 theorem toReal_apply (U : H' ≃ₗᵢ[ℂ] H) (x : H') : toReal U x = U x := rfl
 
 /- English proof (translation)
-Introduce `g hg w`. Apply `U.injective` to reduce the goal to its premises. Rewrite using `[hU g hg, LinearIsometryEquiv.apply_symm_apply, LinearIsometryEquiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem symm_intertwines (U : H' ≃ₗᵢ[ℂ] H) (hU : ∀ g ∈ UJset ε, ∀ w, U (σ' g w) = σ g (U w)) :
     ∀ g ∈ UJset ε, ∀ w, U.symm (σ g w) = σ' g (U.symm w) := by
@@ -114,9 +114,9 @@ theorem symm_intertwines (U : H' ≃ₗᵢ[ℂ] H) (hU : ∀ g ∈ UJset ε, ∀
   rw [hU g hg, LinearIsometryEquiv.apply_symm_apply, LinearIsometryEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Establish `h` using `hw k Xs hXs`. Establish `e : (fun t : Fin k → ℝ => σ ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod) (U w)) = fun t => (toReal U) (σ' ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod) w)`. Use function extensionality and compare the values at `t`. Rewrite using `[toReal_apply, hU _ (prod_mem hXs t)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(toReal U).contDiff.comp h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smooth_map (U : H' ≃ₗᵢ[ℂ] H) (hU : ∀ g ∈ UJset ε, ∀ w, U (σ' g w) = σ g (U w)) {w : H'}
     (hw : SmoothVec (lieSet ε) σ' w) : SmoothVec (lieSet ε) σ (U w) := by
@@ -130,11 +130,11 @@ theorem smooth_map (U : H' ≃ₗᵢ[ℂ] H) (hU : ∀ g ∈ UJset ε, ∀ w, U 
   exact (toReal U).contDiff.comp h
 
 /- English proof (translation)
-Distinguish the cases in `hf : DifferentiableAt ℝ f 0`. Conclude with `((A.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) hf.hasDerivAt).deriv`. Establish `hg : ¬ DifferentiableAt ℝ (fun t => A (f t)) 0`. Introduce `h`. Apply `hf` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2` using `(B.restrictScalars ℝ).differentiableAt.comp (0 : ℝ) h`. Establish `heq : f = (B.restrictScalars ℝ) ∘ fun t => A (f t)`. Use function extensionality and compare the values at `t`. Simplify using `[hBA]`. Rewrite using `[heq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Rewrite using `[deriv_zero_of_not_differentiableAt hf, deriv_zero_of_not_differentiableAt hg, map_zero]`.
+A detailed English derivation is pending.
 -/
 private theorem deriv_continuousLinearMap_comp_zero {E E' : Type} [NormedAddCommGroup E] [NormedSpace ℂ E]
     [NormedAddCommGroup E'] [NormedSpace ℂ E'] (A : E →L[ℂ] E') (B : E' →L[ℂ] E) (hBA : ∀ x, B (A x) = x)
@@ -153,9 +153,7 @@ private theorem deriv_continuousLinearMap_comp_zero {E E' : Type} [NormedAddComm
     rw [deriv_zero_of_not_differentiableAt hf, deriv_zero_of_not_differentiableAt hg, map_zero]
 
 /- English proof (translation)
-Use `show deriv (fun t : ℝ => σ (NormedSpace.exp (t • X)) (U w)) 0 = U (deriv (fun t : ℝ => σ' (NormedSpace.exp (t • X)) w) 0)`. Establish `e : (fun t : ℝ => σ (NormedSpace.exp (t • X)) (U w)) = fun t => (U.toContinuousLinearEquiv : H' →L[ℂ] H) (σ' (NormedSpace.exp (t • X)) w)`. Use function extensionality and compare the values at `t`. Conclude with `(hU _ (exp_smul_mem_UJset' hX t) w).symm`. Rewrite using `[e]`.
-
-Conclude with `deriv_continuousLinearMap_comp_zero _ (U.symm.toContinuousLinearEquiv : H →L[ℂ] H') (fun x => U.symm_apply_apply x) _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dRep_map (U : H' ≃ₗᵢ[ℂ] H) (hU : ∀ g ∈ UJset ε, ∀ w, U (σ' g w) = σ g (U w)) {X : Mx n}
     (hX : X ∈ lieSet ε) (w : H') : dRep σ X (U w) = U (dRep σ' X w) := by
@@ -169,7 +167,7 @@ theorem dRep_map (U : H' ≃ₗᵢ[ℂ] H) (hU : ∀ g ∈ UJset ε, ∀ w, U (�
   exact deriv_continuousLinearMap_comp_zero _ (U.symm.toContinuousLinearEquiv : H →L[ℂ] H') (fun x => U.symm_apply_apply x) _
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[ih (fun Y hY => hl Y (List.mem_cons_of_mem _ hY)), dRep_map U hU (hl X (by simp))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem word_map (U : H' ≃ₗᵢ[ℂ] H) (hU : ∀ g ∈ UJset ε, ∀ w, U (σ' g w) = σ g (U w)) (l : List (Mx n))
     (hl : ∀ X ∈ l, X ∈ lieSet ε) (w : H') : l.foldr (dRep σ) (U w) = U (l.foldr (dRep σ') w) := by
@@ -180,7 +178,7 @@ theorem word_map (U : H' ≃ₗᵢ[ℂ] H) (hU : ∀ g ∈ UJset ε, ∀ w, U (�
     rw [ih (fun Y hY => hl Y (List.mem_cons_of_mem _ hY)), dRep_map U hU (hl X (by simp))]
 
 /- English proof (translation)
-Use `congr 1`. Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `l hl`. Rewrite using `[word_map U hU l (hS l hl), LinearIsometryEquiv.norm_map]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem sobNorm_map (U : H' ≃ₗᵢ[ℂ] H) (hU : ∀ g ∈ UJset ε, ∀ w, U (σ' g w) = σ g (U w))
     {S : List (List (Mx n))} (hS : ∀ l ∈ S, ∀ X ∈ l, X ∈ lieSet ε) (w : H') :
@@ -191,9 +189,9 @@ theorem sobNorm_map (U : H' ≃ₗᵢ[ℂ] H) (hU : ∀ g ∈ UJset ε, ∀ w, U
   rw [word_map U hU l (hS l hl), LinearIsometryEquiv.norm_map]
 
 /- English proof (translation)
-Take `⟨S, C, hS, hb⟩` from `hℓ`. Use `⟨S, C, hS, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hw' : SmoothVec (lieSet ε) σ' (U.symm w)` using `smooth_map U.symm (symm_intertwines U hU) hw`. Establish `h1` using `hb (U.symm w) hw'`. Establish `e` using `sobNorm_map U hU hS (U.symm w)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[LinearIsometryEquiv.apply_symm_apply]`. Use `show ‖ℓ (U.symm w)‖ ≤ _`. Rewrite using `[e]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sobCont_map (U : H' ≃ₗᵢ[ℂ] H) (hU : ∀ g ∈ UJset ε, ∀ w, U (σ' g w) = σ g (U w)) {ℓ : H' →ₗ[ℂ] ℂ}
     (hℓ : Sobolev₂ (lieSet ε) σ' ℓ) :
@@ -209,9 +207,9 @@ theorem sobCont_map (U : H' ≃ₗᵢ[ℂ] H) (hU : ∀ g ∈ UJset ε, ∀ w, U
   exact h1
 
 /- English proof (translation)
-Establish `hd` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`. Use `show (P' * P⁻¹)ᴴ * Formalism.REAL.Jm ε * (P' * P⁻¹) = Formalism.REAL.Jm ε`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [Matrix.mul_nonsing_inv _ hd]; simp`.
+A detailed English derivation is pending.
 -/
 private theorem mul_inv_mem_UJset_of_conjTranspose_Jm_eq {P P' G : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P)
     (hG : Pᴴ * Formalism.REAL.Jm ε * P = G) (hG' : P'ᴴ * Formalism.REAL.Jm ε * P' = G) : P' * P⁻¹ ∈ UJset ε := by
@@ -225,11 +223,11 @@ private theorem mul_inv_mem_UJset_of_conjTranspose_Jm_eq {P P' G : Matrix (Fin n
     _ = Formalism.REAL.Jm ε := by rw [Matrix.mul_nonsing_inv _ hd]; simp
 
 /- English proof (translation)
-Establish `hQ' : Qᴴ * Formalism.REAL.Jm ε * Q = Formalism.REAL.Jm ε` using `hQ`. Establish `hR' : Rᴴ * Formalism.REAL.Jm ε * R = Formalism.REAL.Jm ε` using `hR`. Establish `hX' : Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0` using `hX`. Establish `e1 : Rᴴ * Formalism.REAL.Jm ε = Formalism.REAL.Jm ε * Q`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `e2 : Formalism.REAL.Jm ε * R = Qᴴ * Formalism.REAL.Jm ε`. Combine the equalities or inequalities in the displayed calculation. Use `show (R * X * Q)ᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * (R * X * Q) = 0`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Qᴴ * (Xᴴ * (Formalism.REAL.Jm ε * Q)) + Qᴴ * Formalism.REAL.Jm ε * X * Q := by rw [e1, e2]`. Use `_ = Qᴴ * (Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X) * Q := by`. Simplify using `only [Matrix.mul_add, Matrix.add_mul, Matrix.mul_assoc]`. Use `_ = 0 := by rw [hX', Matrix.mul_zero, Matrix.zero_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem mul_mul_mem_lieSet_of_mem_UJset_of_mem_lieSet {Q R X : Matrix (Fin n) (Fin n) ℂ} (hQ : Q ∈ UJset ε) (hR : R ∈ UJset ε)
     (hQR : Q * R = 1) (hRQ : R * Q = 1) (hX : X ∈ lieSet ε) : R * X * Q ∈ lieSet ε := by
@@ -254,9 +252,9 @@ private theorem mul_mul_mem_lieSet_of_mem_UJset_of_mem_lieSet {Q R X : Matrix (F
     _ = 0 := by rw [hX', Matrix.mul_zero, Matrix.zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [hRQ]`. Consider the case `cons a l ih`. Rewrite using `[List.prod_cons, List.map_cons, List.prod_cons, ← ih]`. Simplify using `only [Matrix.mul_assoc]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Matrix.mul_assoc Q R, hQR, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem mul_list_prod_mul_eq_prod_map_conj {Q R : Matrix (Fin n) (Fin n) ℂ} (hQR : Q * R = 1) (hRQ : R * Q = 1)
     (l : List (Matrix (Fin n) (Fin n) ℂ)) : R * l.prod * Q = (l.map fun a => R * a * Q).prod := by
@@ -268,7 +266,7 @@ private theorem mul_list_prod_mul_eq_prod_map_conj {Q R : Matrix (Fin n) (Fin n)
     rw [← Matrix.mul_assoc Q R, hQR, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `hRi : R⁻¹ = Q` using `Matrix.inv_eq_left_inv hQR`. Establish `hRu : IsUnit R` using `(Matrix.isUnit_iff_isUnit_det _).mpr (Matrix.isUnit_det_of_left_inverse hQR)`. Rewrite using `[show t • (R * X * Q) = R * (t • X) * R⁻¹ by rw [hRi, Matrix.mul_smul, Matrix.smul_mul], Matrix.exp_conj _ _ hRu, hRi]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 private theorem mul_exp_smul_mul_eq_exp_smul_conj {Q R : Matrix (Fin n) (Fin n) ℂ} (hQR : Q * R = 1)
     (X : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
@@ -279,7 +277,7 @@ private theorem mul_exp_smul_mul_eq_exp_smul_conj {Q R : Matrix (Fin n) (Fin n) 
     Matrix.exp_conj _ _ hRu, hRi]
 
 /- English proof (translation)
-Rewrite using `[mul_list_prod_mul_eq_prod_map_conj hQR hRQ, List.map_ofFn]`. Conclude with `congrArg List.prod (congrArg List.ofFn (funext fun i => mul_exp_smul_mul_eq_exp_smul_conj hQR (Xs i) (t i)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mul_prod_ofFn_exp_smul_mul_eq_prod_exp_smul_conj {Q R : Matrix (Fin n) (Fin n) ℂ} (hQR : Q * R = 1) (hRQ : R * Q = 1) {k : ℕ}
     (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ) (t : Fin k → ℝ) :
@@ -289,11 +287,11 @@ private theorem mul_prod_ofFn_exp_smul_mul_eq_prod_exp_smul_conj {Q R : Matrix (
   exact congrArg List.prod (congrArg List.ofFn (funext fun i => mul_exp_smul_mul_eq_exp_smul_conj hQR (Xs i) (t i)))
 
 /- English proof (translation)
-Introduce `k Xs hXs`. Establish `hXs' : ∀ i, R * Xs i * Q ∈ lieSet ε` using `fun i => mul_mul_mem_lieSet_of_mem_UJset_of_mem_lieSet hQ hR hQR hRQ (hXs i)`. Establish `h` using `hv k (fun i => R * Xs i * Q) hXs'`. Establish `e : (fun t : Fin k → ℝ => σ ((List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod) (σ Q v)) = fun t => ((σ Q).restrictScalars ℝ) (σ ((List.ofFn fun i => NormedSpace.exp (t i • (R * Xs i * Q))).prod) v)`. Use function extensionality and compare the values at `t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← mul_prod_ofFn_exp_smul_mul_eq_prod_exp_smul_conj hQR hRQ Xs t]`. Establish `hA` using `prod_mem hXs t`. Use `set A := (List.ofFn fun i => NormedSpace.exp (t i • Xs i)).prod with hAdef`. Establish `hB` using `mul_mem_UH_Hpk' (mul_mem_UH_Hpk' hR hA) hQ`. Establish `hm : A * Q = Q * (R * A * Q)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hQR, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e]`. Conclude with `((σ Q).restrictScalars ℝ).contDiff.comp h`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem smoothVec_translate_of_smoothVec (hσ : IsURepOn (UJset ε) σ) {Q R : Matrix (Fin n) (Fin n) ℂ}
     (hQ : Q ∈ UJset ε) (hR : R ∈ UJset ε) (hQR : Q * R = 1) (hRQ : R * Q = 1) {v : H}
@@ -318,13 +316,11 @@ private theorem smoothVec_translate_of_smoothVec (hσ : IsURepOn (UJset ε) σ) 
   exact ((σ Q).restrictScalars ℝ).contDiff.comp h
 
 /- English proof (translation)
-Use `show deriv (fun t : ℝ => σ (NormedSpace.exp (t • X)) (σ Q x)) 0 = σ Q (deriv (fun t : ℝ => σ (NormedSpace.exp (t • (R * X * Q))) x) 0)`. Establish `e : (fun t : ℝ => σ (NormedSpace.exp (t • X)) (σ Q x)) = fun t => σ Q (σ (NormedSpace.exp (t • (R * X * Q))) x)`. Use function extensionality and compare the values at `t`. Establish `hA` using `exp_smul_mem_UJset' hX t`. Establish `hB` using `mul_mem_UH_Hpk' (mul_mem_UH_Hpk' hR hA) hQ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : NormedSpace.exp (t • X) * Q = Q * (R * NormedSpace.exp (t • X) * Q)`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hQR, Matrix.one_mul]`. Rewrite using `[← mul_exp_smul_mul_eq_exp_smul_conj hQR X t]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hσ.1.2 _ hA _ hQ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Use `_ = σ (Q * (R * NormedSpace.exp (t • X) * Q)) x := by rw [hm]`. Use `_ = σ Q (σ (R * NormedSpace.exp (t • X) * Q) x) := by rw [hσ.1.2 _ hQ _ hB]; rfl`. Rewrite using `[e]`. Use `deriv_continuousLinearMap_comp_zero (σ Q) (σ R) (fun y => ?_) _` and prove the remaining obligations.
-
-Rewrite using `[show σ R (σ Q y) = ((σ R).comp (σ Q)) y from rfl, ← hσ.1.2 _ hR _ hQ, hRQ, hσ.1.1]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem dRep_apply_translate_eq_translate_dRep_conj (hσ : IsURepOn (UJset ε) σ) {Q R : Matrix (Fin n) (Fin n) ℂ}
     (hQ : Q ∈ UJset ε) (hR : R ∈ UJset ε) (hQR : Q * R = 1) (hRQ : R * Q = 1) {X : Matrix (Fin n) (Fin n) ℂ}
@@ -349,7 +345,7 @@ private theorem dRep_apply_translate_eq_translate_dRep_conj (hσ : IsURepOn (UJs
   rfl
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Simplify using `only [List.foldr_cons, List.map_cons]`. Rewrite using `[ih (fun Y hY => hl Y (List.mem_cons_of_mem _ hY)), dRep_apply_translate_eq_translate_dRep_conj hσ hQ hR hQR hRQ (hl X (by simp))]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem foldr_dRep_translate_eq_translate_foldr_conj (hσ : IsURepOn (UJset ε) σ) {Q R : Matrix (Fin n) (Fin n) ℂ}
     (hQ : Q ∈ UJset ε) (hR : R ∈ UJset ε) (hQR : Q * R = 1) (hRQ : R * Q = 1)
@@ -363,13 +359,11 @@ private theorem foldr_dRep_translate_eq_translate_foldr_conj (hσ : IsURepOn (UJ
       dRep_apply_translate_eq_translate_dRep_conj hσ hQ hR hQR hRQ (hl X (by simp))]
 
 /- English proof (translation)
-Take `⟨S, C, hS, hb⟩` from `hℓ`. Use `⟨S.map (List.map fun X => R * X * Q), C, ?_, fun w hw => ?_⟩` and prove the remaining obligations. Introduce `l hl X hX`. Take `⟨l₀, hl₀, rfl⟩` from `List.mem_map.mp hl`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.mp hX`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_mul_mem_lieSet_of_mem_UJset_of_mem_lieSet hQ hR hQR hRQ (hS l₀ hl₀ Y hY)`. Establish `h1` using `hb (σ Q w) (smoothVec_translate_of_smoothVec hσ hQ hR hQR hRQ hw)`. Establish `e : (S.map fun l => ‖l.foldr (dRep σ) (σ Q w)‖).sum = ((S.map (List.map fun X => R * X * Q)).map fun l => ‖l.foldr (dRep σ) w‖).sum`. Rewrite using `[List.map_map]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `List.map_congr_left` to reduce the goal to its premises. Introduce `l hl`. Simplify using `only [Function.comp_apply]`. Rewrite using `[foldr_dRep_translate_eq_translate_foldr_conj hσ hQ hR hQR hRQ l (hS l hl), hσ.2.1 Q hQ]`. Use `show ‖ℓ (σ Q w)‖ ≤ _`.
-
-Rewrite using `[← e]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sobCont_comp_translate_of_sobCont (hσ : IsURepOn (UJset ε) σ) {Q R : Matrix (Fin n) (Fin n) ℂ}
     (hQ : Q ∈ UJset ε) (hR : R ∈ UJset ε) (hQR : Q * R = 1) (hRQ : R * Q = 1) {ℓ : H →ₗ[ℂ] ℂ}
@@ -394,15 +388,15 @@ private theorem sobCont_comp_translate_of_sobCont (hσ : IsURepOn (UJset ε) σ)
     exact h1
 
 /- English proof (translation)
-Introduce `hDS n ε lam hlam H H' _ _ _ _ σ σ' hσ hσ' P P' G hP hP' hG hG' F ℓ v hℓ hv hF`. Take `⟨U, hU⟩` from `hDS n ε lam hlam H' H σ' σ hσ' hσ`. Establish `hdP` using `(Matrix.isUnit_iff_isUnit_det P).mp hP`. Establish `hdP'` using `(Matrix.isUnit_iff_isUnit_det P').mp hP'`. Establish `hQ : P' * P⁻¹ ∈ UJset ε` using `mul_inv_mem_UJset_of_conjTranspose_Jm_eq hP hG hG'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hR : P * P'⁻¹ ∈ UJset ε` using `mul_inv_mem_UJset_of_conjTranspose_Jm_eq hP' hG' hG`. Establish `hQR : P' * P⁻¹ * (P * P'⁻¹) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc P⁻¹ P, Matrix.nonsing_inv_mul _ hdP, Matrix.one_mul, Matrix.mul_nonsing_inv _ hdP']`. Establish `hRQ : P * P'⁻¹ * (P' * P⁻¹) = 1`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc P'⁻¹ P', Matrix.nonsing_inv_mul _ hdP', Matrix.one_mul, Matrix.mul_nonsing_inv _ hdP]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hσ'U : IsURepOn (UJset ε) σ'` using `hσ'.2.2.1`. Use `⟨(ℓ ∘ₗ (σ' (P' * P⁻¹) : H' →ₗ[ℂ] H')) ∘ₗ (U.symm.toLinearEquiv : H →ₗ[ℂ] H'), U (σ' (P * P'⁻¹) v), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `sobCont_map U hU (sobCont_comp_translate_of_sobCont hσ'U hQ hR hQR hRQ hℓ)`. Conclude with `smooth_map U hU (smoothVec_translate_of_smoothVec hσ'U hR hQ hRQ hQR hv)`. Introduce `y hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy' : P' * P⁻¹ * y * (P * P'⁻¹) ∈ UJset ε` using `mul_mem_UH_Hpk' (mul_mem_UH_Hpk' hQ hy) hR`. Establish `hm : P'⁻¹ * (P' * P⁻¹ * y * (P * P'⁻¹)) * P' = P⁻¹ * y * P`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P'⁻¹ P', Matrix.nonsing_inv_mul _ hdP', Matrix.one_mul, Matrix.mul_one]`. Rewrite using `[← hm, hF _ hy']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show ℓ (σ' (P' * P⁻¹ * y * (P * P'⁻¹)) v) = ℓ (σ' (P' * P⁻¹) (U.symm (σ y (U (σ' (P * P'⁻¹) v)))))`. Rewrite using `[symm_intertwines U hU y hy, LinearIsometryEquiv.symm_apply_apply, hσ'U.1.2 _ (mul_mem_UH_Hpk' hQ hy) _ hR, hσ'U.1.2 _ hQ _ hy]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem coef_frame_change : GlobalTheory.Published.DiscreteSeriesUpqUnique → ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ),
     Formalism.QuantumDeterminants.IsHCParam lam →

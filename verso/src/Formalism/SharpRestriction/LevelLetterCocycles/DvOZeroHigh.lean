@@ -20,9 +20,9 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 open Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.UnusedSlot80.PhiPowers
 
 /- English proof (translation)
-Set `E : K₀ ≃ₐ[Qp] K` to `AlgEquiv.ofBijective (IsScalarTower.toAlgHom Qp K₀ K) hbij`. Use `⟨(W.emb c).comp E.symm.toAlgHom, ?_, fun x => ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using `only [AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe]`. Use `congr 1`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `E.symm_apply_apply x`. Simplify using `only [AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe]`. Use `congr 1`. Conclude with `E.symm_apply_apply x`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem tau_over (hbij : Function.Bijective (algebraMap K₀ K)) (c : ZMod n) :
     ∃ τ : K →ₐ[Qp] LL, Formalism.MainNotions.LiftingTheory.Over W τ c ∧ ∀ x : K₀, τ (algebraMap K₀ K x) = W.emb c x := by
@@ -37,9 +37,9 @@ theorem tau_over (hbij : Function.Bijective (algebraMap K₀ K)) (c : ZMod n) :
     exact E.symm_apply_apply x
 
 /- English proof (translation)
-Unfold `dvO dv`. Use `Submodule.sum_mem _ fun m _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hbN : b m ∈ W.N T` using `(hb.1 m).1.1`. Establish `hbl : (letE c' : LetA O n) • b m = b m` using `Formalism.MainNotions.UnusedSlot80.ArcF.letter_of_Nl W T c' (hb.1 m).2`. Establish `hcl : cmpD W T (b m) ∈ DcrisL PD T.ρ (W.emb c')`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Formalism.MainNotions.UnusedSlot80.ArcF.cmpD_of_mem W T hbN]`. Conclude with `Formalism.MainNotions.UnusedSlot80.ArcF.cmp_mem_letter W T c' hbN hbl`. Conclude with `Formalism.MainNotions.UnusedSlot80.ArcF.φVB_pow_letter W T c' hcl e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvO_letter (T : LocLat G Qp LL O) (c' : ZMod n) {d : ℕ} (b : Fin d → W.DD T)
     (hb : Formalism.MainNotions.LiftingTheory.IsFrameΔ W T c' b) (e : ℕ) (c₀ : Fin d → O) :
@@ -55,11 +55,11 @@ theorem dvO_letter (T : LocLat G Qp LL O) (c' : ZMod n) {d : ℕ} (b : Fin d →
 variable [IsDomain O]
 
 /- English proof (translation)
-Use `set i : ZMod n := c' + ((e - s : ℕ) : ZMod n) with hidef`. Take `⟨τ, hτ, hover⟩` from `tau_over W hbij i`. Establish `hJ : ∀ a, IsJumpV PD T.ρ τ a → -(A.Hs (c' + (e : ZMod n)) e s : ℤ) ≤ a`. Introduce `a ha`. Establish `hw` using `Formalism.MainNotions.UnusedSlot80.PhiPowers.win_sub A.G₀ A.S A.η (A.ty i) (hA.2.2.2.2.1 i) (hT.2 i τ hτ a ha)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle` using `Formalism.MainNotions.UnusedSlot80.ArcC.hs_ge A hA c' hc' e (e - s) (by omega) (by omega)`. Rewrite `hle` using `[show e - (e - s) = s by omega, ← hidef]`. Use `hw.1` as an intermediate fact. Move the coercions through the operations in `at this ⊢`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hy` using `fil_low W T i τ hover hbij.2 _ hJ (dvO_letter W T c' b hb (e - s) c₀)`. Use `⟨dvO W T (e - s) b c₀, ⟨hy, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[show c' + (e : ZMod n) - (s : ZMod n) = i by rw [hidef]; push_cast [Nat.cast_sub hse.le]; ring]`. Conclude with `dvO_letter W T c' b hb (e - s) c₀`. Rewrite using `[← dvO_add, Nat.sub_add_cancel hse.le]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvO_filLow (hbij : Function.Bijective (algebraMap K₀ K)) (A : ArcP n) (hA : A.OK) (c' : ZMod n)
     (hc' : c' ∈ A.cuts) (T : LocLat G Qp LL O) (hT : Win W A T) {d : ℕ} (b : Fin d → W.DD T)
@@ -82,13 +82,13 @@ theorem dvO_filLow (hbij : Function.Bijective (algebraMap K₀ K)) (A : ArcP n) 
   · rw [← dvO_add, Nat.sub_add_cancel hse.le]
 
 /- English proof (translation)
-Take `⟨y, ⟨hyF, hyD⟩, hye⟩` from `h`. Use `set i : ZMod n := c' + (e : ZMod n) - (s : ZMod n) with hidef`. Take `⟨τ, hτ, hover⟩` from `tau_over W hbij i`. Establish `hHw : Hw A.G₀ A.S A.η (A.ty i) ≤ A.Hs (c' + (e : ZMod n)) e s` using `Formalism.MainNotions.UnusedSlot80.ArcC.hw_le_hs A hA c' hc' e s hse`. Establish `hJ : ∀ a, IsJumpV PD T.ρ τ a → a ≤ (Hw A.G₀ A.S A.η (A.ty i) : ℤ)` using `fun a ha => (Formalism.MainNotions.UnusedSlot80.PhiPowers.win_sub A.G₀ A.S A.η (A.ty i) (hA.2.2.2.2.1 i) (hT.2 i τ hτ a ha)).2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0` using `fil_high W T i τ hover hbij.2 _ hJ u (by omega) hyD hyF`. Rewrite `hye` using `[hy0, map_zero]`. Establish `hfb` using `(Formalism.MainNotions.UnusedSlot80.ArcF.frame_basis W hs hV T h3 (h5 T _ _ hT.1 (jumpsLet_of_win W A hA T hT)) hmod c' e b hb).1`. Establish `hdv : dvO W T e b c₀ = ∑ m, algebraMap O LL (c₀ m) • dv W T e b (Pi.single m 1)`. Simplify using `only [Formalism.MainNotions.UnusedSlot80.ArcF.dv_single]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hsum : ∑ m, algebraMap O LL (c₀ m) • dv W T e b (Pi.single m 1) = 0` using `by rw [← hdv, ← hye]`. Use function extensionality and compare the values at `m`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[Fintype.linearIndependent_iff.1 hfb _ hsum m]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem dvO_zero_high [NeZero n] (hbij : Function.Bijective (algebraMap K₀ K))
     (hinj : Function.Injective (algebraMap O LL)) (hV : Formalism.MainNotions.WachCoordinates.Br.ValRing (LL := LL) O v)
@@ -119,11 +119,11 @@ theorem dvO_zero_high [NeZero n] (hbij : Function.Bijective (algebraMap K₀ K))
   simp
 
 /- English proof (translation)
-Use `⟨d, h, fun i => Pi.single i 1, fun _ s => (A.Hs a e s : ℤ), fun i => ⟨?_, ?_⟩, fun k => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, hhu⟩` from `hh i`. Use `⟨W.π₀ * u, W.AΔ.mul_mem hπ hu, ?_⟩` and prove the remaining obligations. Establish `hnum : ∏ s ∈ Finset.range e, ps W s ^ ((A.Hs a e s : ℤ)).toNat = abelian₂ W A a e`. Simplify using `[abelian₂]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hden : ∏ s ∈ Finset.range e, ps W s ^ (-(A.Hs a e s : ℤ)).toNat = 1` using `Finset.prod_eq_one fun s _ => by rw [Int.toNat_eq_zero.2 (by omega), pow_zero]`. Use `show algebraMap (LetA O n) W.EE (∏ s ∈ Finset.range e, ps W s ^ (-(A.Hs a e s : ℤ)).toNat) * h i = algebraMap (LetA O n) W.EE ((letE a * ∏ s ∈ Finset.range e, ps W s ^ ((A.Hs a e s : ℤ)).toNat) * (W.π₀ * u))`. Rewrite using `[hden, hnum, ← one_mul (h i), ← map_one (algebraMap (LetA O n) W.EE), hhu, map_one, one_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Conclude with `hlow _ s hs`. Simplify using `[Pi.single_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secIn_piLam (hπ : W.π₀ ∈ W.AΔ) (A : ArcP n) (a : ZMod n) (e : ℕ) (T : LocLat G Qp LL O) {d : ℕ}
     (b : Fin d → W.DD T)

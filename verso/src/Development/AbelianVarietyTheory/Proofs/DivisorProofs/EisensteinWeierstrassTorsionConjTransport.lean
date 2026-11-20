@@ -18,17 +18,17 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.WpFam.Transp
 
 /- English proof (translation)
-Introduce `K _ _ d δ ι g t Λ₀ Λ₁ Ω₀ Ω₁ hd hδ hT c₀ c₁ τ₀ τ₁ h₀ h₁ ω₀ ω₁ hω₀ hω₁`. Substitute `hω₀ hω₁` using the available equality. Establish `hT'` using `hT`. Take `⟨hΩ₀, hΩ₁, -, -, -, hg₂, hg₃, hwp⟩` from `hT'`. Establish `h2πi : (2 * (Real.pi : ℂ) * Complex.I) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: (Real.pi : ℂ) ≠ 0` using `by exact_mod_cast Real.pi_ne_zero`. Simplify using `[this, Complex.I_ne_zero]`. Establish `hE` using `map_eisenstein_div_period g Λ₀ Λ₁ c₀ c₁ Ω₀ Ω₁ τ₀ τ₁ h₀ h₁ hg₂ hg₃`. Establish `hs₀` using `GlobalTheory.T.eisensteinWeierstrass_values_lattice_tau Λ₀ c₀ Ω₀ τ₀ h₀`. Establish `hs₁` using `GlobalTheory.T.eisensteinWeierstrass_values_lattice_tau Λ₁ c₁ Ω₁ τ₁ h₁`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `GlobalTheory.T.galois_transport_second_eisenstein_cm K d δ ι g t Λ₀ Λ₁ Ω₀ Ω₁ hd hδ hT`. Use `⟨div_ne_zero (mul_ne_zero hΩ₀ h₀.1) h2πi, div_ne_zero (mul_ne_zero hΩ₁ h₁.1) h2πi, hE.1, hE.2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hs₀.1, hs₁.1, hs]`. Introduce `N _`. Take `⟨A, hA⟩` from `GlobalTheory.T.exists_torsion_matrix_of_conjugateTransport K ι g t Λ₀ Λ₁ Ω₀ Ω₁ hT c₀ c₁ τ₀ τ₁ h₀ h₁ N`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨A, hA, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[(hs₀.2 N x).1, (hs₀.2 N x).2, (hs₁.2 N (vmul x A)).1, (hs₁.2 N (vmul x A)).2]`. Distinguish the cases in `hx : x = 0`. Establish `hv : vmul x A = 0` using `((GlobalTheory.WpFam.Act.rightActions N).2.2.2.2.1 x A).2 hx`. Establish `ht : ∀ τ : ℍ, tors N τ 0 = 0` using `by intro τ; simp [tors]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hv, hx, ht, ht, mul_zero, mul_zero]`. Simplify using `[PeriodPair.weierstrassP_zero, PeriodPair.derivWeierstrassP_zero]`. Take `⟨k, k', hk, hk', htr⟩` from `hA x`. Establish `hnot : ι k ∉ Λ₀.lattice`. Rewrite using `[hk, ((GlobalTheory.T.weierstrassP_homogeneity_of_isTauOf Λ₀ c₀ τ₀ h₀).1 _), ((GlobalTheory.WpFam.TorsMem.main N τ₀).2.2.1 x)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Rewrite using `[← hk, ← hk']`. Conclude with `hwp k k' hnot htr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (ι : K →+* ℂ) (g : ℂ ≃+* ℂ) (t : (Af K)ˣ) (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ), 0 < d → δ ^ 2 = -(d : K) → TorsTransport ι g t Λ₀ Λ₁ Ω₀ Ω₁ → ∀ (c₀ c₁ : ℂ) (τ₀ τ₁ : ℍ), IsTauOf Λ₀ c₀ τ₀ → IsTauOf Λ₁ c₁ τ₁ → ∀ ω₀ ω₁ : ℂ, ω₀ = Ω₀ * c₀ / (2 * Real.pi * Complex.I) → ω₁ = Ω₁ * c₁ / (2 * Real.pi * Complex.I) → ω₀ ≠ 0 ∧ ω₁ ≠ 0 ∧ g (E₄ τ₀ / ω₀ ^ 4) = E₄ τ₁ / ω₁ ^ 4 ∧ g (E₆ τ₀ / ω₀ ^ 6) = E₆ τ₁ / ω₁ ^ 6 ∧ g (G2s τ₀ / (2 * (Real.pi : ℂ) * Complex.I) ^ 2 / ω₀ ^ 2) = G2s τ₁ / (2 * (Real.pi : ℂ) * Complex.I) ^ 2 / ω₁ ^ 2 ∧ ∀ (N : ℕ) [NeZero N], ∃ A : GL (Fin 2) (ZMod N), (∀ x, ∃ k k' : K, ι k = c₀ * tors N τ₀ x ∧ ι k' = c₁ * tors N τ₁ (vmul x A) ∧ Tr t k k') ∧ ∀ x, g (wp N x τ₀ / ω₀ ^ 2) = wp N (vmul x A) τ₁ / ω₁ ^ 2 ∧ g (wpd N x τ₀ / ω₀ ^ 3) = wpd N (vmul x A) τ₁ / ω₁ ^ 3 := by
   intro K _ _ d δ ι g t Λ₀ Λ₁ Ω₀ Ω₁ hd hδ hT c₀ c₁ τ₀ τ₁ h₀ h₁ ω₀ ω₁ hω₀ hω₁

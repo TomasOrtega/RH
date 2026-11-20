@@ -32,7 +32,7 @@ section PullbackFacts
 variable {A B C D : Scheme.{0}}
 
 /- English proof (translation)
-The claim follows from `Functor.Faithful.of_comp_iso (G := Scheme.Modules.pullback (inv ψ)) ((Scheme.Modules.pullbackComp (inv ψ) ψ) ≪≫ Scheme.Modules.pullbackCongr (IsIso.inv_hom_id ψ) ≪≫ Scheme.Modules.pullbackId B) @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem faithful_pullback_of_isIso (ψ : A ⟶ B) [IsIso ψ] :
     (Scheme.Modules.pullback ψ).Faithful :=
@@ -42,7 +42,7 @@ theorem faithful_pullback_of_isIso (ψ : A ⟶ B) [IsIso ψ] :
 
 @[reassoc]
 /- English proof (translation)
-Substitute `e` using the available equality. Simplify using `[Scheme.Modules.pullbackCongr]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem pullbackComp_inv_congr {G : Scheme.{0}} (ψ : G ⟶ A) {a b : A ⟶ D} (e : a = b)
     (M : D.Modules) (E' : (Scheme.Modules.pullback (ψ ≫ a)).obj M =
@@ -54,13 +54,13 @@ theorem pullbackComp_inv_congr {G : Scheme.{0}} (ψ : G ⟶ A) {a b : A ⟶ D} (
   simp [Scheme.Modules.pullbackCongr]
 
 /- English proof (translation)
-Establish `a1` using `congr_arg (fun τ => τ.app M) (Scheme.Modules.pseudofunctor_associativity ψ t j)`. Establish `a2` using `congr_arg (fun τ => τ.app M) (Scheme.Modules.pseudofunctor_associativity ψ k r)`. Simplify using `only [NatTrans.comp_app, Functor.whiskerRight_app, Functor.associator_hom_app, Functor.whiskerLeft_app, Category.id_comp, eqToHom_app] at a1 a2`. Establish `c2 : (Scheme.Modules.pullbackComp (ψ ≫ k) r).inv.app M = eqToHom (by simp) ≫ (Scheme.Modules.pullbackComp ψ (k ≫ r)).inv.app M ≫ (Scheme.Modules.pullback ψ).map ((Scheme.Modules.pullbackComp k r).inv.app M) ≫ (Scheme.Modules.pullbackComp ψ k).hom.app ((Scheme.Modules.pullback r). …`. Rewrite using `[← cancel_mono ((Scheme.Modules.pullbackComp (ψ ≫ k) r).hom.app M)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc, Iso.inv_hom_id_app]`. Rewrite using `[a2]`. Simplify using the standard rewrite rules. Simplify using `only [pbSquare, Iso.trans_hom, Iso.app_hom, Iso.symm_hom, Iso.app_inv, Functor.map_comp, Category.assoc]`. Rewrite using `[c2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi ((Scheme.Modules.pullbackComp ψ (t ≫ j)).inv.app M ≫ (Scheme.Modules.pullback ψ).map ((Scheme.Modules.pullbackComp t j).inv.app M) ≫ (Scheme.Modules.pullbackComp ψ t).hom.app ((Scheme.Modules.pullback j).obj M))]`. Simplify using `only [Category.assoc]`. Rewrite using `[reassoc_of% a1]`. Simplify using `only [Iso.hom_inv_id_app_assoc, ← Functor.map_comp_assoc, Iso.inv_hom_id_app_assoc]`. Simplify using `only [Scheme.Modules.pullbackCongr, eqToIso.hom, eqToHom_app, eqToHom_trans_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[pullbackComp_inv_congr_assoc ψ h]`. Simplify using `[Scheme.Modules.pullbackCongr]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pbSquare_comp {G : Scheme.{0}} (ψ : G ⟶ A) (t : A ⟶ B) (j : B ⟶ D) (k : A ⟶ C)
     (r : C ⟶ D) (h : t ≫ j = k ≫ r) (h' : (ψ ≫ t) ≫ j = (ψ ≫ k) ≫ r) (M : D.Modules) :
@@ -102,7 +102,7 @@ section Transport
 variable {X : Scheme.{0}} {ι : Type} (U : X.Opens) (Xp : ι → Scheme.{0}) (q : ∀ p, Xp p ⟶ X)
 
 /- English proof (translation)
-Rewrite using `[← Functor.comp_map (Scheme.Modules.pullback r) (Scheme.Modules.pullback ψ), (Scheme.Modules.pullbackComp ψ r).hom.naturality x]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pullback_comp_map {G A D : Scheme.{0}} (ψ : G ⟶ A) (r : A ⟶ D) {M N : D.Modules}
     (x : M ⟶ N) : (Scheme.Modules.pullback (ψ ≫ r)).map x =
@@ -114,9 +114,9 @@ theorem pullback_comp_map {G A D : Scheme.{0}} (ψ : G ⟶ A) (r : A ⟶ D) {M N
   simp
 
 /- English proof (translation)
-Introduce `E₀ Ep h0 hp γ`. Take `⟨E, hE, α, β, hc⟩` from `H E₀ Ep h0 hp (fun p => ((Scheme.Modules.pullbackComp ψ (r p)).app (Ep p)).symm ≪≫ (Scheme.Modules.pullback ψ).mapIso (γ p) ≪≫ (Scheme.Modules.pullbackComp ψ t).app E₀)`. Use `⟨E, hE, α, β, fun p => (Scheme.Modules.pullback ψ).map_injective ?_⟩` and prove the remaining obligations. Establish `hp'` using `hc p`. Rewrite `hp'` using `[pbSquare_comp ψ t U.ι (r p) (q p) (h p), pullback_comp_map, pullback_comp_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Iso.trans_hom, Iso.symm_hom, Iso.app_inv, Iso.app_hom, Functor.mapIso_hom, Category.assoc, Iso.hom_inv_id_app_assoc] at hp'`. Rewrite using `[← cancel_epi ((Scheme.Modules.pullbackComp ψ t).inv.app _), ← cancel_mono ((Scheme.Modules.pullbackComp ψ t).hom.app _)]`. Simplify `hp'` using `only [Functor.map_comp, Category.assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GlueFrame.of_comp {G₁ G₂ : Scheme.{0}} (ψ : G₁ ⟶ G₂)
     [(Scheme.Modules.pullback ψ).Faithful] (t : G₂ ⟶ U) (r : ∀ p, G₂ ⟶ Xp p)
@@ -142,7 +142,7 @@ section Congr
 variable {X : Scheme.{0}} {ι : Type}
 
 /- English proof (translation)
-Substitute `ht hr` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem GlueFrame.congr (U : X.Opens) (Xp : ι → Scheme.{0}) (q : ∀ p, Xp p ⟶ X) {G : Scheme.{0}}
     {t t' : G ⟶ U} {r r' : ∀ p, G ⟶ Xp p} (ht : t = t') (hr : r = r')
@@ -152,7 +152,7 @@ theorem GlueFrame.congr (U : X.Opens) (Xp : ι → Scheme.{0}) (q : ∀ p, Xp p 
   rfl
 
 /- English proof (translation)
-Substitute `hU` using the available equality. Take `rfl : t = t'` from `(cancel_mono U.ι).1 ht`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem GlueFrame.congr_open (Xp : ι → Scheme.{0}) (q : ∀ p, Xp p ⟶ X) {U U' : X.Opens}
     (hU : U = U') {G : Scheme.{0}} (t : G ⟶ U) (t' : G ⟶ U') (ht : t ≫ U.ι = t' ≫ U'.ι)
@@ -163,7 +163,7 @@ theorem GlueFrame.congr_open (Xp : ι → Scheme.{0}) (q : ∀ p, Xp p ⟶ X) {U
   rfl
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Take `rfl : r = r'` from `funext fun p => pullback.hom_ext (hr₁ p) (hr₂ p)`. Both sides reduce to the same expression.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem GlueFrame.congr_rings (U : X.Opens) (f : X ⟶ Spec (.of ℤ)) (R : ι → CommRingCat.{0})
     {c c' : ∀ p, CommRingCat.of ℤ ⟶ R p} (hc : c = c') {G : Scheme.{0}} (t : G ⟶ U)
@@ -182,9 +182,9 @@ end Congr
 section Compat
 
 /- English proof (translation)
-Substitute `e` using the available equality. Rewrite using `[Iso.ext_iff]`. Simplify using `only [GroundTheory.Heights₂.Heights.Model.pullbackCompIso, pbSquare, Iso.trans_hom, Iso.symm_hom, Iso.app_inv, Iso.app_hom, Functor.mapIso_hom, Scheme.Modules.pullbackCongr, eqToIso.hom, eqToIso.inv, eqToHom_app, eqToHom_refl, Category.assoc]`. Prove the components needed by the constructor for the conclusion. Introduce `H`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `H'` using `congrArg ((Scheme.Modules.pullbackComp t j).hom.app E ≫ ·) H`. Simplify using `using H'.symm`. Introduce `H`. Rewrite using `[← H]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem GlueBundles.compat_iff {G V Y Z : Scheme.{0}} (t : G ⟶ V) (j : V ⟶ Z) (r : G ⟶ Y) (q : Y ⟶ Z)
     (g : G ⟶ Z) (e : t ≫ j = g) (e' : r ≫ q = g) (h : t ≫ j = r ≫ q) (E : Z.Modules)
@@ -215,13 +215,13 @@ section Concrete
 variable (X : Scheme.{0}) (S : Finset Nat.Primes)
 
 /- English proof (translation)
-Simplify using `[GroundTheory.Heights₂.Heights.Model.primeProd, primeProd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem GlueBundles.primeProd_cast : GroundTheory.Heights₂.Heights.Model.primeProd S = ((primeProd S : ℕ) : ℤ) := by
   simp [GroundTheory.Heights₂.Heights.Model.primeProd, primeProd]
 
 /- English proof (translation)
-Rewrite using `[GroundTheory.Heights₂.Heights.Model.invOpen, invOpen, GlueBundles.primeProd_cast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem GlueBundles.invOpen_eq :
     GroundTheory.Heights₂.Heights.Model.invOpen (toSpecZ X) (GroundTheory.Heights₂.Heights.Model.primeProd S) =
@@ -229,7 +229,7 @@ theorem GlueBundles.invOpen_eq :
   rw [GroundTheory.Heights₂.Heights.Model.invOpen, invOpen, GlueBundles.primeProd_cast]
 
 /- English proof (translation)
-Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Establish `hsub` using `GroundTheory.Heights₂.Heights.Model.range_baseChangeMap_subset (toSpecZ X) ℚ (GroundTheory.Heights₂.Heights.Model.primeProd S) (GroundTheory.Heights₂.Heights.Model.isUnit_intCast_rat _ (GroundTheory.Heights₂.Heights.Model.primeProd_ne_zero S)) ⟨x, rfl⟩`. Rewrite `hsub` using `[Scheme.Opens.range_ι, GlueBundles.invOpen_eq]`. Conclude with `hsub`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlueBundles.genOpen_eq_top : genOpen X (primeProd S) = ⊤ := by
   refine eq_top_iff.2 fun x _ => ?_
@@ -248,7 +248,7 @@ def GlueBundles.genToInv : genFib X ⟶ invOpen X (primeProd S) :=
   inv (genOpen X (primeProd S)).ι ≫ genRes X (primeProd S)
 
 /- English proof (translation)
-Establish `h` using `morphismRestrict_ι (genTo X) (invOpen X (primeProd S))`. Rewrite using `[GlueBundles.genToInv, Category.assoc]`. Conclude with `(congrArg (inv (genOpen X (primeProd S)).ι ≫ ·) h).trans (IsIso.inv_hom_id_assoc _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlueBundles.genToInv_ι : GlueBundles.genToInv X S ≫ (invOpen X (primeProd S)).ι = genTo X := by
   have h := morphismRestrict_ι (genTo X) (invOpen X (primeProd S))
@@ -256,11 +256,11 @@ theorem GlueBundles.genToInv_ι : GlueBundles.genToInv X S ≫ (invOpen X (prime
   exact (congrArg (inv (genOpen X (primeProd S)).ι ≫ ·) h).trans (IsIso.inv_hom_id_assoc _ _)
 
 /- English proof (translation)
-Establish `hsq : ∀ p : S, GlueBundles.genToInv X S ≫ (invOpen X (primeProd S)).ι = genToAtP X p ≫ atPTo X p` using `fun p => (GlueBundles.genToInv_ι X S).trans (genToAtP_atPTo X p).symm`. Establish `hM : ∀ p : S, GroundTheory.Heights₂.Heights.Model.toInvOpen (toSpecZ X) ℚ (GroundTheory.Heights₂.Heights.Model.primeProd S) (GroundTheory.Heights₂.Heights.Model.isUnit_intCast_rat _ (GroundTheory.Heights₂.Heights.Model.primeProd_ne_zero S)) ≫ (GroundTheory.Heights₂.Heights.Model. …` using `fun p => (GroundTheory.Heights₂.Heights.Model.toInvOpen_ι _ _ _ _).trans (genToAtP_atPTo X p).symm`. Establish `step1` using `GlueFrame.congr_rings (GroundTheory.Heights₂.Heights.Model.invOpen (toSpecZ X) (GroundTheory.Heights₂.Heights.Model.primeProd S)) (toSpecZ X) (fun p : S => CommRingCat.of (ZLoc p)) (c := fun p => CommRingCat.ofHom (Int.castRingHom (ZLoc p))) (c' := fun p => CommRingCat.ofHom (alg …`. Establish `step2` using `GlueFrame.congr_open (fun p : S => atP X p) (fun p => atPTo X p) (GlueBundles.invOpen_eq X S) (GroundTheory.Heights₂.Heights.Model.toInvOpen (toSpecZ X) ℚ (GroundTheory.Heights₂.Heights.Model.primeProd S) (GroundTheory.Heights₂.Heights.Model.isUnit_intCast_rat _ (GroundTheory.Hei …`. Use `step1.trans (step2.trans ⟨fun H => ?_, fun H => ?_⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `faithful_pullback_of_isIso (inv (genOpen X (primeProd S)).ι)` as an intermediate fact. Use `GlueFrame.of_comp _ _ _ (inv (genOpen X (primeProd S)).ι) _ _ _ (fun p => by` and prove the remaining obligations. Simplify using `only [Category.assoc]`. Rewrite using `[glue_square X _ p]`. Simplify using `only [Category.assoc]) ((GlueFrame.congr _ _ _ rfl ?_ _ _).1 H)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `p`. Simplify using the standard rewrite rules. Use `faithful_pullback_of_isIso (genOpen X (primeProd S)).ι` as an intermediate fact. Use `GlueFrame.of_comp _ _ _ (genOpen X (primeProd S)).ι _ _ hsq (fun p => by rw [Category.assoc, hsq p, Category.assoc]) ((GlueFrame.congr _ _ _ ?_ rfl _ _).1 H)` and prove the remaining obligations. Simplify using `[GlueBundles.genToInv]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem GlueBundles.frame_iff :
     GlueFrame (GroundTheory.Heights₂.Heights.Model.invOpen (toSpecZ X)
@@ -327,9 +327,9 @@ theorem GlueBundles.frame_iff :
 end Concrete
 
 /- English proof (translation)
-Introduce `X hX S D`. Use `hX.1` as an intermediate fact. Use `hX.2` as an intermediate fact. Use `(GlueBundles.frame_iff X S).1 (fun E₀ Ep h0 hp γ => ?_) D.E₀ D.E D.isVB₀ D.isVB D.γ` and prove the remaining obligations. Take `⟨E, hE, α, β, hc⟩` from `hA X (toSpecZ X) S E₀ Ep h0 hp γ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨E, hE, α, β, fun p => (GlueBundles.compat_iff _ _ _ _ _ _ _ _ E α (β p) (γ p)).1 (hc p)⟩`.
+Supply the required witnesses or components.
 -/
 theorem GlueBundles.glueBundles_second_of_first (hA : GroundTheory.Heights₂.Heights.Model.GlueBundles.Statement) :
     GlueBundles.Statement := by

@@ -10,14 +10,14 @@ open scoped ContDiff
 def lmajABump : ContDiffBump (0 : ℝ) := ⟨1, 2, one_pos, one_lt_two⟩
 
 /- English proof (translation)
-The claim follows from `((lmajABump.contDiff (n := ⊤)).continuous_iteratedFDeriv (mod_cast le_top)).bounded_above_of_compact_support (lmajABump.hasCompactSupport.iteratedFDeriv m)`.
+A detailed English derivation is pending.
 -/
 lemma lmajABump_bound (m : ℕ) : ∃ C, ∀ t : ℝ, ‖iteratedFDeriv ℝ m lmajABump t‖ ≤ C :=
   ((lmajABump.contDiff (n := ⊤)).continuous_iteratedFDeriv (mod_cast le_top)).bounded_above_of_compact_support
     (lmajABump.hasCompactSupport.iteratedFDeriv m)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `h1 : t ∈ tsupport (lmajABump : ℝ → ℝ)` using `support_iteratedFDeriv_subset m hne`. Rewrite `h1` using `[lmajABump.tsupport_eq, mem_closedBall, dist_zero_right, Real.norm_eq_abs]`. Conclude with `absurd h1 (by simp [lmajABump]; linarith)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lmajABump_deriv_zero (m : ℕ) (t : ℝ) (ht : 2 < |t|) : iteratedFDeriv ℝ m lmajABump t = 0 := by
   by_contra hne
@@ -26,31 +26,27 @@ lemma lmajABump_deriv_zero (m : ℕ) (t : ℝ) (ht : 2 < |t|) : iteratedFDeriv �
   exact absurd h1 (by simp [lmajABump]; linarith)
 
 /- English proof (translation)
-Use `choose C hC using lmajABump_bound`. Use `set φ : ℕ → ℝ → ℝ := fun n => b n • fun t => lmajABump (t - n) with hφ`. Establish `hφc : ∀ n, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (φ n)` using `fun n => ((lmajABump.contDiff).comp (contDiff_id.sub contDiff_const)).const_smul (b n)`. Establish `hD : ∀ m n t, iteratedFDeriv ℝ m (φ n) t = b n • iteratedFDeriv ℝ m lmajABump (t - n)`. Introduce `m n t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ContDiff ℝ m (fun t : ℝ => lmajABump (t - n))` using `(lmajABump.contDiff).comp (contDiff_id.sub contDiff_const)`. Rewrite using `[hφ]`. Simplify using `only`. Rewrite using `[iteratedFDeriv_const_smul_apply hc.contDiffAt, iteratedFDeriv_comp_sub]`. Establish `hs0 : Summable b` using `by simpa using hb 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : ∀ m : ℕ, ((m : ℕ∞)) ≤ (⊤ : ℕ∞) → Summable (fun n => b n * C m)` using `fun m _ => hs0.mul_right _`. Establish `hbd : ∀ (m : ℕ) (n : ℕ) (t : ℝ), ((m : ℕ∞)) ≤ (⊤ : ℕ∞) → ‖iteratedFDeriv ℝ m (φ n) t‖ ≤ b n * C m`. Introduce `m n t _`. Rewrite using `[hD, norm_smul, Real.norm_of_nonneg (hb0 n)]`. Conclude with `mul_le_mul_of_nonneg_left (hC m _) (hb0 n)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set g : ℝ → ℝ := fun t => ∑' n, φ n t with hg`. Establish `hgc : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) g` using `contDiff_tsum hφc hv hbd`. Establish `hφv : ∀ n t, φ n t = b n * lmajABump (t - n)` using `fun n t => rfl`. Establish `hφs : ∀ t, Summable (fun n => φ n t)`. Introduce `t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hs0.of_nonneg_of_le (fun n => ?_) (fun n => ?_)` and prove the remaining obligations. Rewrite using `[hφv]`. Conclude with `mul_nonneg (hb0 n) (lmajABump.nonneg)`. Rewrite using `[hφv]`. Conclude with `mul_le_of_le_one_right (hb0 n) (lmajABump.le_one)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hg0 : ∀ t, 0 ≤ g t` using `fun t => tsum_nonneg fun n => by`. Rewrite using `[hφv]`. Conclude with `mul_nonneg (hb0 n) (lmajABump.nonneg)`. Establish `hdecay : ∀ k m : ℕ, ∀ t : ℝ, ‖t‖ ^ k * ‖iteratedFDeriv ℝ m g t‖ ≤ ∑' n, b n * ((n : ℝ) + 2) ^ k * C m`. Introduce `k m t`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[hg, iteratedFDeriv_tsum_apply hφc hv hbd (mod_cast le_top) t]`. Establish `hsn : Summable (fun n => ‖iteratedFDeriv ℝ m (φ n) t‖)` using `(hv m le_top).of_nonneg_of_le (fun _ => norm_nonneg _) (fun n => hbd m n t le_top)`. Combine the equalities or inequalities in the displayed calculation. Use `(hsn.mul_left _).tsum_le_tsum (fun n => ?_) ((hb k).mul_right _)` and prove the remaining obligations. Rewrite using `[hD, norm_smul, Real.norm_of_nonneg (hb0 n)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Distinguish the cases in `htn : |t - n| ≤ 2`. Establish `h1 : ‖t‖ ≤ (n : ℝ) + 2`. Rewrite using `[Real.norm_eq_abs]`. Use `abs_sub_abs_le_abs_sub t n` as an intermediate fact. Rewrite `this` using `[Nat.abs_cast]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ‖t‖ ^ k ≤ ((n : ℝ) + 2) ^ k` using `pow_le_pow_left₀ (norm_nonneg _) h1 k`. Establish `hCm : 0 ≤ C m` using `(norm_nonneg _).trans (hC m 0)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lmajABump_deriv_zero m _ (not_le.mp htn), norm_zero, mul_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hCm : 0 ≤ C m` using `(norm_nonneg _).trans (hC m 0)`. Conclude with `mul_nonneg (mul_nonneg (hb0 n) (by positivity)) hCm`. Use `⟨⟨Complex.ofRealLI ∘ g, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Complex.ofRealLI.contDiff.comp hgc`. Introduce `k m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨∑' n, b n * ((n : ℝ) + 2) ^ k * C m, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearIsometry.norm_iteratedFDeriv_comp_left _ hgc.contDiffAt (mod_cast le_top)]`. Conclude with `hdecay k m t`. Introduce `t show 0 ≤ (Complex.ofRealLI (g t)).re ∧ (Complex.ofRealLI (g t)).im = 0`. Simplify using `[hg0 t]`.
-
-Introduce `n t ht`. Establish `h1 : (t - n) ∈ closedBall (0 : ℝ) lmajABump.rIn`. Rewrite using `[mem_closedBall, dist_zero_right, Real.norm_eq_abs]`. Simplify `ht` using `[lmajABump]`. Establish `h2 : φ n t = b n` using `by rw [hφv, lmajABump.one_of_mem_closedBall h1, mul_one]`.
-
-Use `show b n ≤ (Complex.ofRealLI (g t)).re`. Simplify using `only [Complex.ofRealLI_apply, Complex.ofReal_re]`. Rewrite using `[← h2]`. Conclude with `(hφs t).le_tsum n (fun j _ => by rw [hφv]; exact mul_nonneg (hb0 j) (lmajABump.nonneg))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lmajASeqSchwartz (b : ℕ → ℝ) (hb0 : ∀ n, 0 ≤ b n)
     (hb : ∀ k : ℕ, Summable (fun n : ℕ => b n * ((n : ℝ) + 2) ^ k)) :

@@ -9,29 +9,29 @@ open MvPolynomial
 universe u
 
 /- English proof (translation)
-Introduce `F _ K _ _ ι _ I x e hI hx hnzd m`. Distinguish the cases in `hm : ∀ k, 0 ≤ m k`. Use `set n : K → ℕ := fun k => (m k).toNat with hn`. Establish `hA` using `h1 F K ι (I ⊔ Ideal.span {x}) n`. Establish `hB` using `h1 F K ι I n`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `h2 F K ι I x e n hI hx hnzd`. Establish `hL : hilbFn (I ⊔ Ideal.span {x}) m = (Module.finrank F (gradedPiece (I ⊔ Ideal.span {x}) n) : ℤ)`. Unfold `hilbFn`. Rewrite using `[if_pos hm]`. Establish `hM : hilbFn I m = (Module.finrank F (gradedPiece I n) : ℤ)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `hilbFn`. Rewrite using `[if_pos hm]`. Rewrite using `[hL, hM, hA, hB]`. Distinguish the cases in `he : e ≤ n`. Establish `hme : ∀ k, 0 ≤ (m - fun k => (e k : ℤ)) k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Establish `h1k` using `he k`. Establish `h0` using `hm k`. Simplify using `only [Pi.sub_apply, hn] at h1k ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hq : (fun k => ((m - fun k => (e k : ℤ)) k).toNat) = n - e`. Use function extensionality and compare the values at `k`. Establish `h1k` using `he k`. Establish `h0` using `hm k`. Simplify using `only [Pi.sub_apply, hn] at h1k ⊢`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hN : hilbFn I (m - fun k => (e k : ℤ)) = (Module.finrank F (gradedPiece I (n - e)) : ℤ)`. Unfold `hilbFn`. Rewrite using `[if_pos hme, hq]`. Rewrite using `[hN, h1 F K ι I (n - e)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hC` using `[if_pos he]`. Rewrite using `[hC]`. Expand and normalize the polynomial expressions, which then agree. Establish `hme : ¬ ∀ k, 0 ≤ (m - fun k => (e k : ℤ)) k`. Introduce `hall`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `he` to reduce the goal to its premises. Introduce `k`. Establish `h1k` using `hall k`. Establish `h0` using `hm k`. Simplify using `only [Pi.sub_apply, hn] at h1k ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `hN : hilbFn I (m - fun k => (e k : ℤ)) = 0`. Unfold `hilbFn`. Rewrite using `[if_neg hme]`. Rewrite using `[hN]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hC` using `[if_neg he]`. Rewrite using `[hC]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, hk⟩` from `not_forall.mp hm`. Establish `hme : ¬ ∀ k, 0 ≤ (m - fun k => (e k : ℤ)) k`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hall`. Use `hall k` as an intermediate fact. Simplify using `only [Pi.sub_apply] at this`. Use linear arithmetic over natural numbers and integers. Unfold `hilbFn`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hm, if_neg hm, if_neg hme, sub_zero]`.
+A detailed English derivation is pending.
 -/
 theorem HilbFnCut.proof (h1 : GradedPieceQuot.Statement.{u}) (h2 : CutPieces.Statement.{u}) :
     HilbFnCut.Statement.{u} := by

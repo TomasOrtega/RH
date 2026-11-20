@@ -12,7 +12,7 @@ noncomputable section
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `hr : r = k + (r - k)` using `(Nat.add_sub_cancel' hk).symm`. Rewrite using `[← Equiv.sum_comp (finCongr hr.symm), Fin.sum_univ_add]`. Establish `h2 : ∑ a : Fin (r - k), f (finCongr hr.symm (Fin.natAdd k a)) = 0` using `Finset.sum_eq_zero fun a _ => hf _ (by simp)`. Rewrite using `[h2, add_zero]`. Conclude with `Finset.sum_congr rfl fun j _ => congrArg f (Fin.ext (by simp))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma sum_castLE_lemma {r k : ℕ} (hk : k ≤ r) (f : Fin r → ℂ)
     (hf : ∀ j : Fin r, k ≤ (j : ℕ) → f j = 0) : ∑ j, f j = ∑ j : Fin k, f (Fin.castLE hk j) := by
@@ -24,23 +24,23 @@ private lemma sum_castLE_lemma {r k : ℕ} (hk : k ≤ r) (f : Fin r → ℂ)
   exact Finset.sum_congr rfl fun j _ => congrArg f (Fin.ext (by simp))
 
 /- English proof (translation)
-Introduce `τ`. Take `⟨hz1, hz2⟩` from `hz τ`. Take `⟨hb1, hb2⟩` from `hb τ`. Establish `hmat : mat (rmul z b) τ = mat z τ * mat b τ` using `rfl`. Establish `hgram : ∀ M : Matrix (Fin r) (Fin r) ℂ, gram τ.1 X.Gm M = Mᵀ * X.Gm.map τ.1 * M.map (starRingEnd ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `M`. Use extensionality with `a c`. Simplify using `only [gram, hermC, col, Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Establish `hprod : gram τ.1 X.Gm (mat z τ * mat b τ) = (mat b τ)ᵀ * gram τ.1 X.Gm (mat z τ) * (mat b τ).map (starRingEnd ℂ)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hgram, hgram, Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `htri : ∀ (n : ℕ) (M : Matrix (Fin n) (Fin n) ℂ), (∀ a c : Fin n, c < a → M a c = 0) → M.det = ∏ a, M a a` using `fun n M h => Matrix.det_of_upperTriangular (fun a c hca => h a c hca)`. Establish `hdiag : ∀ a, mat b τ a a ≠ 0`. Establish `h0` using `hb1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h0` using `[htri r (mat b τ) hb2]`. Conclude with `fun a => Finset.prod_ne_zero_iff.mp h0 a (Finset.mem_univ a)`. Use `⟨by rw [hmat, Matrix.det_mul]; exact mul_ne_zero hz1 hb1, fun i => ?_⟩` and prove the remaining obligations. Establish `hk : (i : ℕ) ≤ r` using `Nat.le_of_lt_succ i.isLt`. Establish `hsub : ((mat b τ)ᵀ * gram τ.1 X.Gm (mat z τ) * (mat b τ).map (starRingEnd ℂ)).submatrix (Fin.castLE hk) (Fin.castLE hk) = ((mat b τ).submatrix (Fin.castLE hk) (Fin.castLE hk))ᵀ * (gram τ.1 X.Gm (mat z τ)).submatrix (Fin.castLE hk) (Fin.castLE hk) * ((mat b τ).submatrix (Fin.castL …`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `a c`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.map_apply]`. Use `(sum_castLE_lemma hk _ ?_).trans (Finset.sum_congr rfl fun l _ => ?_)` and prove the remaining obligations. Introduce `l hl`. Establish `hc` using `c.isLt`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : mat b τ l (Fin.castLE hk c) = 0` using `hb2 l (Fin.castLE hk c) (by rw [Fin.lt_iff_val_lt_val, Fin.coe_castLE]; omega)`. Conclude with `mul_eq_zero_of_right _ ((map_eq_zero _).mpr h0)`. Use `congrArg (fun s => s * _) (sum_castLE_lemma hk _ ?_)` and prove the remaining obligations. Introduce `j hj`. Establish `ha` using `a.isLt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : mat b τ j (Fin.castLE hk a) = 0` using `hb2 j (Fin.castLE hk a) (by rw [Fin.lt_iff_val_lt_val, Fin.coe_castLE]; omega)`. Conclude with `mul_eq_zero_of_left h0 _`. Use `set d := ((mat b τ).submatrix (Fin.castLE hk) (Fin.castLE hk)).det with hd`. Establish `hdne : d ≠ 0`. Rewrite using `[hd, htri (i : ℕ) ((mat b τ).submatrix (Fin.castLE hk) (Fin.castLE hk)) (fun a c h => hb2 _ _ (by rw [Fin.lt_iff_val_lt_val, Fin.coe_castLE, Fin.coe_castLE]; exact h))]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.prod_ne_zero_iff.mpr fun a _ => hdiag (Fin.castLE hk a)`. Establish `hdetmap : (((mat b τ).submatrix (Fin.castLE hk) (Fin.castLE hk)).map (starRingEnd ℂ)).det = starRingEnd ℂ d`. Rewrite using `[hd, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Establish `hclaim : dmin X.Gm (rmul z b) τ i = ((Complex.normSq d : ℝ) : ℂ) * dmin X.Gm z τ i`. Unfold `dmin lminor`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hmat, hprod, hsub, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, hdetmap, ← hd, mul_right_comm, Complex.mul_conj]`. Rewrite using `[hclaim, Complex.re_ofReal_mul]`. Establish `hpos : 0 < Complex.normSq d` using `Complex.normSq_pos.mpr hdne`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma rmul_mem_dom {z b : Frame X.Ψ r} (hz : z ∈ X.dom) (hb : b ∈ Bor X.Ψ r) : rmul z b ∈ X.dom := by
   intro τ
@@ -104,15 +104,15 @@ lemma rmul_mem_dom {z b : Frame X.Ψ r} (hz : z ∈ X.dom) (hb : b ∈ Bor X.Ψ 
     _ = _ := by ring
 
 /- English proof (translation)
-Unfold `Data.opN`. Establish `key : ∀ v : Fin n → ℂ, Real.sqrt (∑ i, ‖Matrix.mulVec (t • A) v i‖ ^ 2) / Real.sqrt (∑ j, ‖v j‖ ^ 2) = ‖t‖ * (Real.sqrt (∑ i, ‖Matrix.mulVec A v i‖ ^ 2) / Real.sqrt (∑ j, ‖v j‖ ^ 2))`. Introduce `v`. Establish `h1 : ∑ i, ‖Matrix.mulVec (t • A) v i‖ ^ 2 = ‖t‖ ^ 2 * ∑ i, ‖Matrix.mulVec A v i‖ ^ 2`. Rewrite using `[Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hmv : Matrix.mulVec (t • A) v i = t * Matrix.mulVec A v i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[hmv, norm_mul, mul_pow]`. Rewrite using `[h1, Real.sqrt_mul (by positivity), Real.sqrt_sq (norm_nonneg t), mul_div_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `open scoped Pointwise in`. Establish `hS : {s | ∃ v : Fin n → ℂ, v ≠ 0 ∧ s = Real.sqrt (∑ i, ‖Matrix.mulVec (t • A) v i‖ ^ 2) / Real.sqrt (∑ j, ‖v j‖ ^ 2)} = ‖t‖ • {s | ∃ v : Fin n → ℂ, v ≠ 0 ∧ s = Real.sqrt (∑ i, ‖Matrix.mulVec A v i‖ ^ 2) / Real.sqrt (∑ j, ‖v j‖ ^ 2)}`. Use extensionality with `s`. Simplify using `only [Set.mem_smul_set, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨v, hv, rfl⟩`. Use `⟨_, ⟨v, hv, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, key v]`. Introduce and unpack `⟨_, ⟨v, hv, rfl⟩, rfl⟩`. Conclude with `⟨v, hv, by rw [smul_eq_mul, key v]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_of_eq ?_` and prove the remaining obligations. Rewrite using `[hS, Real.sSup_smul_of_nonneg (norm_nonneg t), smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma opN_smul_le {m n : ℕ} (t : ℂ) (A : Matrix (Fin m) (Fin n) ℂ) :
     Data.opN (t • A) ≤ ‖t‖ * Data.opN A := by
@@ -145,7 +145,7 @@ lemma opN_smul_le {m n : ℕ} (t : ℂ) (A : Matrix (Fin m) (Fin n) ℂ) :
   rw [hS, Real.sSup_smul_of_nonneg (norm_nonneg t), smul_eq_mul]
 
 /- English proof (translation)
-Unfold `Data.opN`. Apply `Real.sSup_nonneg` to reduce the goal to its premises. Introduce and unpack `s ⟨v, _, rfl⟩`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Check the signs of the components of the expression.
 -/
 private lemma opN_nonneg' {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℂ) : 0 ≤ Data.opN A := by
   unfold Data.opN
@@ -154,14 +154,14 @@ private lemma opN_nonneg' {m n : ℕ} (A : Matrix (Fin m) (Fin n) ℂ) : 0 ≤ D
   positivity
 
 /- English proof (translation)
-Unfold `Data.zN`. Conclude with `Real.iSup_nonneg fun τ => opN_nonneg' _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma zN_nonneg (Z : X.Coord) : 0 ≤ X.zN Z := by
   unfold Data.zN
   exact Real.iSup_nonneg fun τ => opN_nonneg' _
 
 /- English proof (translation)
-Unfold `Data.zN`. Use `Real.iSup_le (fun τ => ?_) (mul_nonneg (norm_nonneg t) (zN_nonneg X Z))` and prove the remaining obligations. Establish `h1 : Data.opN (Matrix.of ((t • Z) τ)) ≤ ‖t‖ * Data.opN (Matrix.of (Z τ))` using `opN_smul_le t (Matrix.of (Z τ))`. Use `h1.trans (mul_le_mul_of_nonneg_left ?_ (norm_nonneg t))` and prove the remaining obligations. Conclude with `le_ciSup (f := fun τ : X.Ψ => Data.opN (Matrix.of (Z τ))) (Set.finite_range _).bddAbove τ`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma zN_smul_le (t : ℂ) (Z : X.Coord) : X.zN (t • Z) ≤ ‖t‖ * X.zN Z := by
   unfold Data.zN
@@ -172,11 +172,11 @@ lemma zN_smul_le (t : ℂ) (Z : X.Coord) : X.zN (t • Z) ≤ ‖t‖ * X.zN Z :
   exact le_ciSup (f := fun τ : X.Ψ => Data.opN (Matrix.of (Z τ))) (Set.finite_range _).bddAbove τ
 
 /- English proof (translation)
-Rewrite using `[differentiable_pi]`. Introduce `τ`. Rewrite using `[differentiable_pi]`. Introduce `a`. Rewrite using `[differentiable_pi]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Establish `hL : ∀ j, Differentiable ℂ fun Z : X.Coord => X.lowBlock Z τ j b`. Introduce `j`. Simplify using `only [Data.lowBlock, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> fun_prop`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `show Differentiable ℂ fun Z : X.Coord => ∑ j, mat x τ a j * X.lowBlock Z τ j b`. Use `first`. Consider the case `exact Differentiable.fun_sum (fun j _ => (hL j).const_mul _)`. Consider the case `exact Differentiable.sum (fun j _ => (hL j).const_mul _)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma xZ_diff (x : Frame X.Ψ r) : Differentiable ℂ fun Z : X.Coord => X.xZ x Z := by
   rw [differentiable_pi]
@@ -195,9 +195,9 @@ lemma xZ_diff (x : Frame X.Ψ r) : Differentiable ℂ fun Z : X.Coord => X.xZ x 
     | exact Differentiable.sum (fun j _ => (hL j).const_mul _)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `h1 : X.lowBlock 0 τ = 1`. Use extensionality with `a b`. Simplify using `[Data.lowBlock, Matrix.one_apply]`. Use `show mat x τ * X.lowBlock 0 τ = x τ`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Matrix.mul_one]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma xZ_zero (x : Frame X.Ψ r) : X.xZ x 0 = x := by
   funext τ
@@ -209,9 +209,9 @@ lemma xZ_zero (x : Frame X.Ψ r) : X.xZ x 0 = x := by
   rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `h25 : Real.exp 1 = Real.exp (1 / 25) ^ 25`. Rewrite using `[← Real.exp_nat_mul]`. Evaluate the numerical expressions.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `hpow : (3 / 2 : ℝ) ^ 25 ≤ Real.exp (1 / 25) ^ 25` using `pow_le_pow_left₀ (by norm_num) hcon 25`. Establish `he` using `Real.exp_one_lt_d9`. Evaluate the numerical expressions using `at hpow`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma exp_small : Real.exp (1 / 25) < 3 / 2 := by
   by_contra hcon

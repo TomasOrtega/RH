@@ -18,7 +18,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} (X : D
   (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r)
 
 /- English proof (translation)
-Unfold `hx`. Rewrite using `[Matrix.mulVec_sum, sum_dotProduct]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hx_sum_left (x : Frame X.Ψ r) (z : Fin n → Fin g → ℂ) (w : Fin g → ℂ) :
     hx X bas idx x (∑ k, z k) w = ∑ k, hx X bas idx x (z k) w := by
@@ -26,7 +26,7 @@ theorem hx_sum_left (x : Frame X.Ψ r) (z : Fin n → Fin g → ℂ) (w : Fin g 
   rw [Matrix.mulVec_sum, sum_dotProduct]
 
 /- English proof (translation)
-Unfold `hx`. Rewrite using `[Matrix.mulVec_sum, star_sum, Matrix.mulVec_sum, dotProduct_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem hx_sum_right (x : Frame X.Ψ r) (z : Fin g → ℂ) (w : Fin n → Fin g → ℂ) :
     hx X bas idx x z (∑ k, w k) = ∑ k, hx X bas idx x z (w k) := by
@@ -34,7 +34,7 @@ theorem hx_sum_right (x : Frame X.Ψ r) (z : Fin g → ℂ) (w : Fin n → Fin g
   rw [Matrix.mulVec_sum, star_sum, Matrix.mulVec_sum, dotProduct_sum]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Rewrite using `[Finset.sum_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hAct_eq_sum (h : Matrix (Fin n) (Fin n) E) (z : Fin n → Fin g → ℂ) (k : Fin n) :
     GlobalTheory.Dict.hAct X idx h z k = ∑ a, fun j => rowType X (idx j) (h k a) * z a j := by
@@ -43,7 +43,7 @@ theorem hAct_eq_sum (h : Matrix (Fin n) (Fin n) E) (z : Fin n → Fin g → ℂ)
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `only [GlobalTheory.Dict.hAct, Pi.add_apply, Pi.smul_apply, smul_eq_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hAct_add_smul (h : Matrix (Fin n) (Fin n) E) (z w : Fin n → Fin g → ℂ) (c : ℂ) (k : Fin n) :
     GlobalTheory.Dict.hAct X idx h (fun a => z a + c • w a) k =
@@ -56,17 +56,17 @@ theorem hAct_add_smul (h : Matrix (Fin n) (Fin n) E) (z w : Fin n → Fin g → 
   ring
 
 /- English proof (translation)
-Establish `key : ∀ k, hx X bas idx x (GlobalTheory.Dict.hAct X idx h z k) (GlobalTheory.Dict.hAct X idx h w k) = ∑ a, ∑ b, hx X bas idx x (z a) (fun j => rowType X (idx j) (cc (h k a) * h k b) * w b j)`. Introduce `k`. Rewrite using `[hAct_eq_sum, hAct_eq_sum, hx_sum_left]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[hx_sum_right]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[hadj]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[map_mul, _root_.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hcol : ∀ a b, ∑ k, cc (h k a) * h k b = (1 : Matrix (Fin n) (Fin n) E) a b`. Introduce `a b`. Rewrite using `[← hh, Matrix.mul_apply]`. Both sides reduce to the same expression. Simplify using `only [key]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← hx_sum_right]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `j`. Simplify using `only [Finset.sum_apply]`. Establish `hj : ∀ b, ∑ k, rowType X (idx j) (cc (h k a) * h k b) * w b j = rowType X (idx j) ((1 : Matrix (Fin n) (Fin n) E) a b) * w b j`. Introduce `b`. Rewrite using `[← Finset.sum_mul, ← map_sum, hcol]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hj, Matrix.one_apply, apply_ite, map_one, map_zero, ite_mul, _root_.one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_hx_hAct (x : Frame X.Ψ r)
     (hadj : ∀ (a : E) z w, hx X bas idx x (fun j => rowType X (idx j) a * z j) w =
@@ -107,9 +107,9 @@ theorem sum_hx_hAct (x : Frame X.Ψ r)
     Finset.sum_ite_eq, Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Establish `hrow : (h * y) k = ∑ a, h k a • y a`. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mul_apply, Finset.sum_apply]`. Establish `hadd : pv X idx x (∑ a, h k a • y a) = ∑ a, pv X idx x (h k a • y a)`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Finset.sum_apply]`. Conclude with `(congrFun (map_sum (perLin X x) (fun a => h k a • y a) Finset.univ) (idx j)).trans (Finset.sum_apply _ _ _)`. Rewrite using `[hrow, hadd, hAct_eq_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => hsm (h k a) (y a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pv_mul_row (x : Frame X.Ψ r)
     (hsm : ∀ (a : E) v, pv X idx x (a • v) = fun j => rowType X (idx j) a * pv X idx x v j)
@@ -132,13 +132,13 @@ end GlobalTheory.Dict.ColHeis
 open GlobalTheory.Dict.ColHeis in
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g bas idx n hS hn h hh φ φ' hφ hφ' t x hxd hrel y z`. Take `⟨-, -, -, hadj, hsm, -⟩` from `GlobalTheory.T.hermitianFormAtFrame_laws E r X g bas idx n hS hn x hxd`. Establish `HL` using `(heisG_laws E r X g bas idx n hS hn).2.2.2`. Rewrite using `[((HL (h * y) φ' hφ').2.2.2.2) x hxd (hAct X idx h z), ((HL y φ hφ).2.2.2.2) x hxd z]`. Establish `hP : ∀ k, per X x ((h * y) k) ∘ idx = hAct X idx h (fun a => pv X idx x (y a)) k` using `fun k => pv_mul_row X idx x hsm h y k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [hP]`. Establish `hT : thA X bas idx φ' x (fun k => hAct X idx h z k + hAct X idx h (fun a => pv X idx x (y a)) k) = t * thA X bas idx φ x (fun k => z k + per X x (y k) ∘ idx)`. Use `Eq.trans ?_ (hrel (fun k => z k + pv X idx x (y k)))` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `using (hAct_add_smul X idx h z (fun a => pv X idx x (y a)) 1 k).symm`. Rewrite using `[hT, mul_left_comm]`. Use `congrArg (t * ·) (congrArg (· * _) (congrArg cexp (congrArg (fun s : ℂ => -((Real.pi : ℂ) * s)) ?_)))` and prove the remaining obligations. Establish `hE : ∀ k, hAct X idx h z k + (1 / 2 : ℂ) • hAct X idx h (fun a => pv X idx x (y a)) k = hAct X idx h (fun a => z a + (1 / 2 : ℂ) • pv X idx x (y a)) k` using `fun k => (hAct_add_smul X idx h z _ _ k).symm`. Simplify using `only [hE]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `sum_hx_hAct X bas idx x hadj h hh (fun a => z a + (1 / 2 : ℂ) • pv X idx x (y a)) (fun a => pv X idx x (y a))`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Dict.thA_heisG_hAct : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g : ℕ) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ h : Matrix (Fin n) (Fin n) E, ccT h * h = 1 → ∀ φ φ' : TF n g, IsSB φ → IsSB φ' → ∀ t : ℂ, ∀ x ∈ X.dom, (∀ z, thA X bas idx φ' x (hAct X idx h z) = t * thA X bas idx φ x z) → ∀ (y : Matrix (Fin n) (Fin r) E) z, thA X bas idx (heisG X bas (h * y) φ') x (hAct X idx h z) = t * thA X bas idx (heisG X bas y φ) x z := by
   intro E _ _ _ r X g bas idx n hS hn h hh φ φ' hφ hφ' t x hxd hrel y z

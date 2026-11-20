@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.HeightParts.StepFromSlope
 
 /- English proof (translation)
-Establish `h` using `Submodule.finrank_le (Submodule.span K (W : Set (Fin m → K)))`. Simplify using `only [Module.finrank_fin_fun] at h`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem latRank_le {K : Type} [Field K] [NumberField K] {m : ℕ} (W : Submodule (𝓞 K) (Fin m → K)) :
     (latRank K W : ℝ) ≤ m := by
@@ -25,7 +25,7 @@ theorem latRank_le {K : Type} [Field K] [NumberField K] {m : ℕ} (W : Submodule
   exact_mod_cast h
 
 /- English proof (translation)
-Rewrite using `[← Real.log_mul (by linarith) (by linarith)]`. Conclude with `Real.log_le_log (by linarith) (by nlinarith)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_two_add_le {x a c : ℝ} (hx : 0 ≤ x) (ha : 0 ≤ a) (hc : 0 ≤ c) (h : x ≤ a + c) :
     Real.log (2 + x) ≤ Real.log (2 + a) + Real.log (1 + c) := by
@@ -33,9 +33,9 @@ theorem log_two_add_le {x a c : ℝ} (hx : 0 ≤ x) (ha : 0 ≤ a) (hc : 0 ≤ c
   exact Real.log_le_log (by linarith) (by nlinarith)
 
 /- English proof (translation)
-Establish `l2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `hc : 0 ≤ Real.log (1 + C₀)` using `Real.log_nonneg (by linarith)`. Establish `h1 : Real.log (1 + C₀) ≤ Real.log (1 + C₀) / Real.log 2 * l`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ l2]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h2 : C₀ ≤ C₀ / Real.log 2 * l`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ l2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3` using `mul_le_mul_of_nonneg_left h1 (mul_nonneg hk hC₁)`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem absorb {k C₁ C₀ l : ℝ} (hk : 0 ≤ k) (hC₁ : 0 ≤ C₁) (hC₀ : 0 ≤ C₀) (hl : Real.log 2 ≤ l) :
     k * C₁ * (l + Real.log (1 + C₀)) + C₀ ≤
@@ -56,21 +56,21 @@ namespace GlobalTheory.HeightParts
 open StepFromSlope in
 
 /- English proof (translation)
-Introduce `hS hP D O hc hf A T H hR`. Take `⟨C₀, hC₀⟩` from `hP D O hc hf A T H hR`. Take `⟨C₁, hC₁, hL⟩` from `hS (D.R.f * O.N)`. Establish `l2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `hm : (0 : ℝ) ≤ ((D.R.f * O.N : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨((D.R.f * O.N : ℕ) : ℝ) * C₁ * (1 + Real.log (1 + max C₀ 0) / Real.log 2) + max C₀ 0 / Real.log 2, by have : 0 ≤ Real.log (1 + max C₀ 0) := Real.log_nonneg (by linarith [le_max_right C₀ 0]) positivity, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Take `⟨K, _, _, F, h, hg, hH, hrd, hst⟩` from `hC₀ y hy`. Establish `hfalt : H.falt y = omHt O O.met.hm y` using `by rw [hR.ht.falt y hy]; rfl`. Take `⟨-, hmu⟩` from `hL K F hg.le h hH`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set φ := omHt O O.met.hm y with hφ`. Establish `hC0 : C₀ ≤ max C₀ 0` using `le_max_left _ _`. Establish `hC0' : 0 ≤ max C₀ 0` using `le_max_right _ _`. Establish `ha : 0 ≤ max φ 0` using `le_max_right _ _`. Establish `hl : Real.log 2 ≤ Real.log (2 + max φ 0)` using `Real.log_le_log (by norm_num) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab` using `abs_le.mp hrd`. Establish `hν : C₁ * Real.log (2 + max (F.falt h) 0) ≤ C₁ * (Real.log (2 + max φ 0) + Real.log (1 + max C₀ 0))`. Use `mul_le_mul_of_nonneg_left (log_two_add_le (le_max_right _ _) ha hC0' ?_) hC₁` and prove the remaining obligations. Use `max_le ?_ (by linarith)` and prove the remaining obligations. Simplify using `only [SemiFib.falt]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear relations using `[le_max_left φ 0]`. Establish `hν0 : 0 ≤ C₁ * Real.log (2 + max (F.falt h) 0)` using `mul_nonneg hC₁ (Real.log_nonneg (by linarith [le_max_right (F.falt h) 0]))`. Establish `hdeg : ∀ W ≤ F.lieLat, deg h W ≤ ((D.R.f * O.N : ℕ) : ℝ) * C₁ * (Real.log (2 + max φ 0) + Real.log (1 + max C₀ 0))`. Introduce `W hW`. Establish `h1` using `hmu W hW`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (latRank K W : ℝ) ≤ ((D.R.f * O.N : ℕ) : ℝ)` using `hg ▸ latRank_le W`. Combine the equalities or inequalities in the displayed calculation. Establish `key` using `absorb hm hC₁ hC0' hl`. Rewrite using `[hfalt]`. Use `⟨?_, fun τ k hk => ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hdeg F.lieLat le_rfl` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨W, hW, -, hWd⟩` from `hst τ k hk`. Use `hdeg W hW` as an intermediate fact. Use `(abs_le.mp hWd).1` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem stepInt_of_lieSlope : LieSlope → PtInt → StepInt := by
   intro hS hP D O hc hf A T H hR

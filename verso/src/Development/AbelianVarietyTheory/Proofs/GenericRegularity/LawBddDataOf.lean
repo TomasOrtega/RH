@@ -22,9 +22,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P))}
 
 /- English proof (translation)
-Unfold `nrmC`. Rewrite using `[← add_mul]`. Use `mul_le_mul_of_nonneg_right ?_ (Finset.prod_nonneg fun i _ => by positivity)` and prove the remaining obligations. Establish `hc : (x + y).coeff G = x.coeff G + y.coeff G` using `by rfl`. Rewrite using `[hc, map_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `norm_add_le _ _`.
+A detailed English derivation is pending.
 -/
 theorem nrm_add_le (Z : Comp Xo c) (G : WTZ E) (x y : AC Z) (P : Om Z →+* ℂ) :
     nrmC fn (yP Z) G (x + y) P ≤ nrmC fn (yP Z) G x P + nrmC fn (yP Z) G y P := by
@@ -36,7 +36,7 @@ theorem nrm_add_le (Z : Comp Xo c) (G : WTZ E) (x y : AC Z) (P : Om Z →+* ℂ)
   exact norm_add_le _ _
 
 /- English proof (translation)
-Unfold `nrmC`. Establish `hc : (a • x).coeff G = a * x.coeff G` using `by rfl`. Rewrite using `[hc, map_mul, norm_mul, mul_assoc]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_smul (Z : Comp Xo c) (G : WTZ E) (a : Om Z) (x : AC Z) (P : Om Z →+* ℂ) :
     nrmC fn (yP Z) G (a • x) P = ‖P a‖ * nrmC fn (yP Z) G x P := by
@@ -45,15 +45,15 @@ theorem nrm_smul (Z : Comp Xo c) (G : WTZ E) (a : Om Z) (x : AC Z) (P : Om Z →
   rw [hc, map_mul, norm_mul, mul_assoc]
 
 /- English proof (translation)
-Unfold `ValAtCx at hcx`. Take `⟨B, hBd⟩` from `hB sg`. Use `⟨B, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨Z, P⟩, rfl⟩`. Establish `hP : (P : Om Z →+* ℂ).comp (algebraMap c.F (Om Z)) = sg` using `P.2`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `key : ∀ (σ : c.F →+* ℂ), σ = sg → ∀ y : FrPt Xo c (CAt σ), cabs (evR Xo c f y) * ∏ i, |fn σ y i|⁻¹ ^ ex Dw a n i ≤ B`. Introduce and unpack `σ rfl y`. Conclude with `hBd ⟨y, rfl⟩`. Establish `hex : ∀ i, exZ Dw (wtZ a n) i = (ex Dw a n i : ℤ)`. Introduce `i`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `exZ wtZ ex`. Apply the tactic sequence `cases i <;> rfl`. Establish `hco : (valC h a n f Z).coeff (wtZ a n) = evC h Z f`. Unfold `valC`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Use `show nrmC fn (yP Z) (wtZ a n) (valC h a n f Z) (P : Om Z →+* ℂ) ≤ B`. Unfold `nrmC`. Rewrite using `[hco, hcx Z P a n f hS]`. Establish `hs : sgOf (P : Om Z →+* ℂ) = sg` using `hP`. Use `Eq.trans_le ?_ (key _ hs (yP Z P))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hex i, zpow_neg, zpow_natCast, inv_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdd_gen [Fintype (Comp Xo c)] (hcx : ValAtCx h yP) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {f : Rul Xo c}
     (hS : f ∈ sec Xo c a n) (hB : SupBdd Xo c fn a n f) (sg : c.F →+* ℂ) :
@@ -85,17 +85,15 @@ theorem bdd_gen [Fintype (Comp Xo c)] (hcx : ValAtCx h yP) {a : (E →+* ℂ) ×
   rw [hex i, zpow_neg, zpow_natCast, inv_pow]
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem x hx => exact hS x hx`. Consider the case `zero`. Use `⟨0, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨Z, P⟩, rfl⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `h0` using `nrm_smul (fn := fn) (yP := yP) Z G (0 : Om Z) (0 : AC Z) (P : Om Z →+* ℂ)`. Rewrite `h0` using `[zero_smul, map_zero, norm_zero, zero_mul]`. Conclude with `h0.le`. Consider the case `add x y _ _ hx hy`. Take `⟨A, hA⟩` from `hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B, hB⟩` from `hy`. Use `⟨A + B, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨Z, P⟩, rfl⟩`. Conclude with `(nrm_add_le Z G _ _ _).trans (add_le_add (hA ⟨⟨Z, P⟩, rfl⟩) (hB ⟨⟨Z, P⟩, rfl⟩))`. Consider the case `smul a x _ hx`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨A, hA⟩` from `hx`. Use `⟨‖sg (a : c.F)‖ * A, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨Z, P⟩, rfl⟩`. Establish `hP : (P : Om Z →+* ℂ).comp (algebraMap c.F (Om Z)) = sg` using `P.2`. Establish `hsm : (a • x) Z = (algebraMap c.F (Om Z) (a : c.F)) • x Z`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Pi.smul_apply, Algebra.smul_def, Algebra.smul_def]`. Use `congr 1`. Establish `hv : (P : Om Z →+* ℂ) (algebraMap c.F (Om Z) (a : c.F)) = sg (a : c.F)`. Conclude with `RingHom.congr_fun hP _`. Use `show nrmC fn (yP Z) G ((a • x) Z) (P : Om Z →+* ℂ) ≤ _`.
-
-Rewrite using `[hsm, nrm_smul, hv]`. Conclude with `mul_le_mul_of_nonneg_left (hA ⟨⟨Z, P⟩, rfl⟩) (norm_nonneg _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdd_span (G : WTZ E) (sg : c.F →+* ℂ) (S : Set (∀ Z : Comp Xo c, AC Z))
     (hS : ∀ f ∈ S, BddAbove (Set.range fun p : (Σ Z : Comp Xo c, ReciprocityTheory.ChartRestriction.G.T0.PT (Ω := Om Z) sg) =>
@@ -136,13 +134,11 @@ theorem bdd_span (G : WTZ E) (sg : c.F →+* ℂ) (S : Set (∀ Z : Comp Xo c, A
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ h δ fn yP Dd N T i g0 cc uL uF uka ude uet uta1 uta2 wR jc np thpR n0 th0R uF0 nk thkR MR etR ta1R ta2R nu ip wsize DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r hcx hw hth het hta1 hta2 e1 e2 e3`. Unfold `LawBdd`. Use `set D := dataOf h δ fn yP Dd N T i g0 cc uL uF uka ude uet uta1 uta2 wR jc np thpR n0 th0R uF0 nk thkR MR etR ta1R ta2R nu ip wsize DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r with hD`. Introduce `sg G F`. Introduce and unpack `(⟨hF, rfl⟩ | ⟨hF, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `bdd_span _ sg _ ?_ F hF` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `bdd_gen hcx (hw k).1 (hw k).2 sg`. Use `bdd_span _ sg _ ?_ F hF` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bdd_gen hcx (hth k).1 (hth k).2 sg`. Establish `hG : D.n1 • D.wde = wtZ uet.1 uet.2` using `by rw [hD]; exact e1.symm`. Rewrite using `[hG]`. Conclude with `bdd_gen hcx het.1 het.2 sg`. Establish `hG : 2 • D.G1 = wtZ uta1.1 uta1.2` using `by rw [hD]; exact e2.symm`.
-
-Rewrite using `[hG]`. Conclude with `bdd_gen hcx hta1.1 hta1.2 sg`. Establish `hG : D.G2 = wtZ uta2.1 uta2.2` using `by rw [hD]; exact e3.symm`. Rewrite using `[hG]`. Conclude with `bdd_gen hcx hta2.1 hta2.2 sg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lawBdd_dataOf : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), ∀ [Fintype (Comp Xo c)] (h : GenFrEx Xo c) (δ : ∀ Z : Comp Xo c, AddValuation (Om Z) (WithTop ℤ) → Ix Dw → ℤ) (fn : ∀ σ : c.F →+* ℂ, FrPt Xo c (CAt σ) → Ix Dw → ℝ) (yP : ∀ Z : Comp Xo c, ∀ P : Om Z →+* ℂ, FrPt Xo c (CAt (sgOf P))) (Dd N T i g0 : ℕ) (cc : ℝ) (uL uF uka ude uet uta1 uta2 : WtR E) (wR : Fin (N + 1) → Rul Xo c) (jc : Comp Xo c → Fin (N + 1)) (np : ℕ) (thpR : Fin np → Rul Xo c) (n0 : ℕ) (th0R : Fin n0 → Rul Xo c) (uF0 : WtR E) (nk : ℕ) (thkR : Fin nk → Rul Xo c) (MR : Set (Rul Xo c)) (etR ta1R ta2R : Rul Xo c) (nu : HeightOneSpectrum (𝓞 c.F) → ℝ) (ip : (c.F →+* ℂ) → (∀ Z : Comp Xo c, AC Z) → (∀ Z : Comp Xo c, AC Z) → ℂ) (wsize : WTZ E → ℝ) (DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r : ℝ), ValAtCx h yP → (∀ k, wR k ∈ sec Xo c uL.1 uL.2 ∧ SupBdd Xo c fn uL.1 uL.2 (wR k)) → (∀ k, thpR k ∈ sec Xo c uF.1 uF.2 ∧ SupBdd Xo c fn uF.1 uF.2 (thpR k)) → (etR ∈ sec Xo c uet.1 uet.2 ∧ SupBdd Xo c fn uet.1 uet.2 etR) → (ta1R ∈ sec Xo c uta1.1 uta1.2 ∧ SupBdd Xo c fn uta1.1 uta1.2 ta1R) → (ta2R ∈ sec Xo c uta2.1 uta2.2 ∧ SupBdd Xo c fn uta2.1 uta2.2 ta2R) → wtZ uet.1 uet.2 = (i * g0) • wtZ ude.1 ude.2 → wtZ uta1.1 uta1.2 = (2 : ℕ) • (wtZ uL.1 uL.2 - wtZ ude.1 ude.2) → wtZ uta2.1 uta2.2 = (Dd + 4 : ℕ) • wtZ uL.1 uL.2 - wtZ uF.1 uF.2 → LawBdd (dataOf h δ fn yP Dd N T i g0 cc uL uF uka ude uet uta1 uta2 wR jc np thpR n0 th0R uF0 nk thkR MR etR ta1R ta2R nu ip wsize DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r) := by
   intro E _ _ _ H Dw l Xo c _ h δ fn yP Dd N T i g0 cc uL uF uka ude uet uta1 uta2 wR jc np thpR n0 th0R uF0 nk thkR MR etR ta1R ta2R nu ip wsize DF PN PQ tableDegreeThreeBase PP0' Pd Gc PI4 Pet tableLineDegreeFive tableLineDegreeTwo Prw PO f r hcx hw hth het hta1 hta2 e1 e2 e3

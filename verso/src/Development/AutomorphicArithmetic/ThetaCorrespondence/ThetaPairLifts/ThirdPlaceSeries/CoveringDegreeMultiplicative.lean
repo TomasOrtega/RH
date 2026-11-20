@@ -23,17 +23,15 @@ set_option autoImplicit false
 namespace GlobalTheory.CovTop.DegProof
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hX h2 hS hT hG hQ hN hDG hSz hF`. Establish `hP` using `_root_.GlobalTheory.T.covering_topology_refinement h2`. Use `Closed.imp (Closed.and (Closed.and (_root_.GlobalTheory.T.valuation_multiplicity_run_estimate_alt h2 hG hQ hS hT hN hDG hSz hF) _root_.GlobalTheory.HSApp.wtBig_run_alt) (Closed.and (Closed.and (_root_.GlobalTheory.T.weight_parameter_strict_antitone_alt hSz) (_root_.GlobalTheory.T …` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨⟨_, -, a₁⟩, _, -, a₂⟩, ⟨⟨_, -, a₃⟩, _, -, a₄⟩, _, -, a₅⟩`. Take `⟨x0, a⟩` from `(a₁.and a₂).and ((a₃.and a₄).and a₅)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `clear a₁ a₂ a₃ a₄ a₅`. Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi Y hY u1 hu1 => ?_⟩` and prove the remaining obligations. Take `⟨⟨a₁, a₂⟩, ⟨a₃, a₄⟩, a₅⟩` from `a x hx hle ι p hp`. Use `clear a`. Take `⟨hp1, hq1, hE, hQuo, hAnti, -, -⟩` from `a₃ i hi`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hLaw, hIn, -⟩` from `a₄ i hi Y hY`. Take `⟨-, -, -, -, -, -, ⟨Z'⟩, -⟩` from `a₅ i hi Y hY`. Establish `hW` using `a₂ i hi`. Establish `hV` using `a₁ i hi Y hY`. Rewrite using `[hQuo u1 hu1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPr` using `_root_.GlobalTheory.T.proportionality_principle_compactification h2 hS hT hN _ p.T hLaw _ hp1 hq1 hE hIn Y _ _ hY.1`. Establish `hEq` using `_root_.GlobalTheory.T.compactification_top_chern_eq_volume h2 hS hT hN _ p.T hLaw _ hp1 hq1 hE hIn Y _ _ hY.1`. Establish `hBir` using `_root_.GlobalTheory.T.birOn_wtOf_of_consecutive_gap_bound hX hG hQ hS hP h2.q15 h2.q16 _ p.T hLaw _ hp1 hq1 Y _ _ hY.1 _ (fun τ a b hab => by`. Establish `hb` using `b.2`. Establish `h` using `hW.gaps τ a (by rw [← hab]; exact hb)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h` using `[gap_eq _ hab]`. Use `le_trans ?_ h` and prove the remaining obligations. Establish `e : ∀ d C N : ℕ, (d + 3) ^ 2 + 2 * N ≤ (d + 3) * (C + 4 * N + d + 3)` using `fun d C N => by nlinarith`. Rewrite using `[GlobalTheory.CompHS.dimFlag_eq]`. Conclude with `e _ _ _)` after adjusting the coercions.
-
-Establish `key` using `GlobalTheory.T.componentImageDegree_between_of_proportionality _ _ _ _ _ _ _ Y.U hY.1.unf hPr.1 hEq _ (fun τ => (hAnti τ).1) (fun τ => (hAnti τ).2) hBir hV`. Use `⟨CompHt.delPrime Y.U Z' _, ?_, fun Z => key Z Z'⟩` and prove the remaining obligations. Conclude with `mul_pos (hPr.2 Z') (Int.cast_pos.2 (CompHt.vdm_pos fun τ => (hAnti τ).2))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem covering_degree_eq_alt : HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.GrothendieckDeformation →
     GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoverDegree := by
@@ -80,7 +78,7 @@ open GlobalTheory.BadCount
 open scoped TensorProduct
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.DegProof.covering_degree_eq_alt | exact _root_.GlobalTheory.CovTop.DegProof.covering_degree_eq_alt | (intros; apply _root_.GlobalTheory.CovTop.DegProof.covering_degree_eq_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.coverDegree_of_grothendieck_deformation : GlobalTheory.CovTop.HypothesesX → _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SemiAbelianLieSeminegative → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.CovTop.CoverDegree := by
   first | exact @_root_.GlobalTheory.CovTop.DegProof.covering_degree_eq_alt | exact _root_.GlobalTheory.CovTop.DegProof.covering_degree_eq_alt | (intros; apply _root_.GlobalTheory.CovTop.DegProof.covering_degree_eq_alt <;> assumption)

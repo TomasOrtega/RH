@@ -7,9 +7,9 @@ open scoped Matrix
 namespace GlobalTheory.Ord2
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.CommutingExistence.main`. Consider the case `exact _root_.GlobalTheory.CommutingExistence.main`. Consider the case `(apply _root_.GlobalTheory.CommutingExistence.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.CommutingExistence.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.CommutingExistence.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.CommutingExistence.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem commutator_H0_has_no_eigenvalue_one : ∀ (l : ℕ) [Fact l.Prime] (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω]
     (e : ℕ) (S : Finset Pl) (A : ValuationSubring Ω) (W : R2 Ω l), Nf e S A W →

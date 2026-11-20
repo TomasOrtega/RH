@@ -5,23 +5,21 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G _ _ _ ν _ _ J α R R' hJ h0 htop hR hRu hR' hR'u`. Use `set S : Set G := {x | ∃ k₁ ∈ J, ∃ k₂ ∈ J, x = k₁ * α * k₂} with hS`. Establish `hA : ∀ γ ∈ R, ∀ x, γ⁻¹ * x ∈ J → x ∈ S`. Introduce `γ hγ x hx`. Take `⟨k₁, h₁, k₂, h₂, rfl⟩` from `hR γ hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨k₁, h₁, k₂ * ((k₁ * α * k₂)⁻¹ * x), J.mul_mem h₂ hx, by group⟩`. Establish `hB : ∀ γ ∈ R', ∀ x, x * γ ∈ J → x ∈ S`. Introduce `γ hγ x hx`. Take `⟨k₁, h₁, k₂, h₂, rfl⟩` from `hR' γ hγ`. Conclude with `⟨x * (k₁ * α⁻¹ * k₂) * k₂⁻¹, J.mul_mem hx (J.inv_mem h₂), k₁⁻¹, J.inv_mem h₁, by group⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hBu : ∀ x ∈ S, ∃! γ, γ ∈ R' ∧ x * γ ∈ J`. Introduce and unpack `x ⟨k₁, h₁, k₂, h₂, hx⟩`. Use `hR'u x⁻¹ ⟨k₂⁻¹, J.inv_mem h₂, k₁⁻¹, J.inv_mem h₁, by rw [hx]; group⟩` as an intermediate fact. Simplify `this` using `only [← mul_inv_rev, J.inv_mem_iff]`. Establish `e1 : S = ⋃ γ ∈ R, (fun x => γ⁻¹ * x) ⁻¹' (J : Set G)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe, exists_prop]`. Conclude with `⟨fun hx => (hRu x hx).exists, fun ⟨γ, h, h'⟩ => hA γ h x h'⟩`. Establish `e2 : S = ⋃ γ ∈ R', (fun x => x * γ) ⁻¹' (J : Set G)`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_iUnion, Set.mem_preimage, SetLike.mem_coe, exists_prop]`. Conclude with `⟨fun hx => (hBu x hx).exists, fun ⟨γ, h, h'⟩ => hB γ h x h'⟩`. Establish `m1 : ν S = R.card * ν J`. Rewrite using `[e1, measure_biUnion_finset]`. Simplify using `only [measure_preimage_mul, Finset.sum_const, nsmul_eq_mul]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha b hb hab`. Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `x hxa hxb`. Conclude with `hab ((hRu x (hA a ha x hxa)).unique ⟨ha, hxa⟩ ⟨hb, hxb⟩)`. Introduce `b _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `measurable_const_mul _ hJ`. Establish `m2 : ν S = R'.card * ν J`. Rewrite using `[e2, measure_biUnion_finset]`. Simplify using `only [measure_preimage_mul_right, Finset.sum_const, nsmul_eq_mul]`. Introduce `a ha b hb hab`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Function.onFun, Set.disjoint_left]`. Introduce `x hxa hxb`. Conclude with `hab ((hBu x (hB a ha x hxa)).unique ⟨ha, hxa⟩ ⟨hb, hxb⟩)`. Introduce `b _`. Conclude with `measurable_mul_const _ hJ`.
-
-Use `(ENNReal.mul_left_inj h0 htop).1 (m1.symm.trans m2)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_leftCosets_doubleCoset_inv_eq : ∀ {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (ν : Measure G) [ν.IsMulLeftInvariant] [ν.IsMulRightInvariant] (J : Subgroup G) (α : G) (R R' : Finset G), MeasurableSet (J : Set G) → ν J ≠ 0 → ν J ≠ ⊤ → (∀ γ ∈ R, ∃ k₁ ∈ J, ∃ k₂ ∈ J, γ = k₁ * α * k₂) → (∀ x : G, (∃ k₁ ∈ J, ∃ k₂ ∈ J, x = k₁ * α * k₂) → ∃! γ, γ ∈ R ∧ γ⁻¹ * x ∈ J) → (∀ γ ∈ R', ∃ k₁ ∈ J, ∃ k₂ ∈ J, γ = k₁ * α⁻¹ * k₂) → (∀ x : G, (∃ k₁ ∈ J, ∃ k₂ ∈ J, x = k₁ * α⁻¹ * k₂) → ∃! γ, γ ∈ R' ∧ γ⁻¹ * x ∈ J) → R.card = R'.card := by
   intro G _ _ _ ν _ _ J α R R' hJ h0 htop hR hRu hR' hR'u

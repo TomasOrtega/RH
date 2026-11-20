@@ -17,19 +17,19 @@ section SlopeTestRemainingChoices
 variable {R S : Type} [CommRing R] [CommRing S] {d : ℕ}
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_inl : HasSubst (fun i : Fin d => (X (Sum.inl i) : MvPowerSeries (Fin d ⊕ Fin d) R)) :=
   hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_inr : HasSubst (fun i : Fin d => (X (Sum.inr i) : MvPowerSeries (Fin d ⊕ Fin d) R)) :=
   hasSubst_of_constantCoeff_zero fun _ => constantCoeff_X _
 
 /- English proof (translation)
-Unfold `inL`. Rewrite using `[map_subst hasSubst_inl]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_inL (φ : R →+* S) (f : MvPowerSeries (Fin d) R) : map φ (inL f) = inL (map φ f) := by
   unfold inL
@@ -37,7 +37,7 @@ theorem map_inL (φ : R →+* S) (f : MvPowerSeries (Fin d) R) : map φ (inL f) 
   simp
 
 /- English proof (translation)
-Unfold `inR`. Rewrite using `[map_subst hasSubst_inr]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem map_inR (φ : R →+* S) (f : MvPowerSeries (Fin d) R) : map φ (inR f) = inR (map φ f) := by
   unfold inR
@@ -45,7 +45,7 @@ theorem map_inR (φ : R →+* S) (f : MvPowerSeries (Fin d) R) : map φ (inR f) 
   simp
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FormalCalc.constantCoeff_subst_of_zero ha ha0, hf, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem constantCoeff_subst_one {σ τ : Type} {a : σ → MvPowerSeries τ R} (ha : HasSubst a)
     (ha0 : ∀ i, constantCoeff (a i) = 0) {f : MvPowerSeries σ R} (hf : constantCoeff f = 1) :
@@ -53,14 +53,14 @@ theorem constantCoeff_subst_one {σ τ : Type} {a : σ → MvPowerSeries τ R} (
   rw [GlobalTheory.FormalCalc.constantCoeff_subst_of_zero ha ha0, hf, map_one]
 
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_one hasSubst_inl (fun _ => constantCoeff_X _) hf`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_inL {f : MvPowerSeries (Fin d) R} (hf : constantCoeff f = 1) :
     constantCoeff (inL f) = 1 :=
   constantCoeff_subst_one hasSubst_inl (fun _ => constantCoeff_X _) hf
 
 /- English proof (translation)
-The claim follows from `constantCoeff_subst_one hasSubst_inr (fun _ => constantCoeff_X _) hf`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_inR {f : MvPowerSeries (Fin d) R} (hf : constantCoeff f = 1) :
     constantCoeff (inR f) = 1 :=
@@ -69,27 +69,23 @@ theorem constantCoeff_inR {f : MvPowerSeries (Fin d) R} (hf : constantCoeff f = 
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `p _ B O Q _ _ _ _ _ θ hF d μ' hμ g hg hmul`. Establish `hsμ : HasSubst μ'` using `hasSubst_of_constantCoeff_zero hμ`. Establish `hμQ : ∀ i, constantCoeff (up Q μ' i) = 0` using `fun i => by`. Simplify using `[up, hμ i]`. Establish `hsμQ : HasSubst (up Q μ')` using `hasSubst_of_constantCoeff_zero hμQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set a : MvPowerSeries (Fin d ⊕ Fin d) B := subst μ' g with ha_def`. Use `set b : MvPowerSeries (Fin d ⊕ Fin d) B := inL g * inR g with hb_def`. Establish `ha1 : constantCoeff a = 1` using `constantCoeff_subst_one hsμ hμ hg`. Establish `hbL : constantCoeff (inL g) = 1` using `constantCoeff_inL hg`. Establish `hbR : constantCoeff (inR g) = 1` using `constantCoeff_inR hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : constantCoeff b = ((1 : Bˣ) : B)` using `by simp [hb_def, hbL, hbR]`. Use `set h : MvPowerSeries (Fin d ⊕ Fin d) B := a * invOfUnit b 1 with hh_def`. Establish `hab : a = h * b`. Rewrite using `[hh_def, mul_assoc, invOfUnit_mul b 1 hb1, mul_one]`. Establish `hh1 : constantCoeff h = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hh_def, map_mul, ha1, constantCoeff_invOfUnit]`. Simplify using the standard rewrite rules. Establish `hG : constantCoeff (map (algebraMap B Q) g) = 1` using `by simp [hg]`. Establish `key : cob1 (up Q μ') (formalLog (map (algebraMap B Q) g)) = formalLog (map (algebraMap B Q) h)`. Unfold `cob1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e1 : subst (up Q μ') (formalLog (map (algebraMap B Q) g)) = formalLog (map (algebraMap B Q) a)`. Rewrite using `[subst_formalLog hsμQ hG, ha_def, map_subst hsμ]`. Both sides reduce to the same expression. Establish `e2 : inL (formalLog (map (algebraMap B Q) g)) = formalLog (map (algebraMap B Q) (inL g))`. Rewrite using `[map_inL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `subst_formalLog hasSubst_inl hG`. Establish `e3 : inR (formalLog (map (algebraMap B Q) g)) = formalLog (map (algebraMap B Q) (inR g))`. Rewrite using `[map_inR]`. Conclude with `subst_formalLog hasSubst_inr hG`. Establish `hmh : constantCoeff (map (algebraMap B Q) h) = 1` using `by simp [hh1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hmL : constantCoeff (map (algebraMap B Q) (inL g)) = 1` using `by simp [hbL]`. Establish `hmR : constantCoeff (map (algebraMap B Q) (inR g)) = 1` using `by simp [hbR]`. Establish `e4 : formalLog (map (algebraMap B Q) a) = formalLog (map (algebraMap B Q) h) + formalLog (map (algebraMap B Q) (inL g)) + formalLog (map (algebraMap B Q) (inR g))`. Rewrite using `[hab, hb_def, ← mul_assoc, map_mul, map_mul, formalLog_mul (by rw [map_mul, hmh, hmL, mul_one]) hmR, formalLog_mul hmh hmL]`. Rewrite using `[e1, e2, e3, e4]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hθb : IsUnit (map θ b)` using `isUnit_iff_constantCoeff.mpr (by simp [hb_def, hbL, hbR])`. Establish `hθh : map θ h = 1`. Establish `h1 : map θ a = map θ b`. Rewrite using `[ha_def, map_subst hsμ, hmul, hb_def, map_mul, map_inL, map_inR]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `h1` using `[hab, map_mul]`. Conclude with `(IsUnit.mul_left_inj hθb).1 (h1.trans (one_mul _).symm)`. Establish `hJ : ∀ x ∈ RingHom.ker θ, ∃ y ∈ RingHom.ker θ, x ^ p = p * y`. Introduce `x hx`. Take `⟨y, hy, hxy⟩` from `hF.pd x (RingHom.mem_ker.1 hx)`.
-
-Conclude with `⟨y, RingHom.mem_ker.2 hy, hxy⟩`. Establish `hker : ∀ α, coeff α (h - 1) ∈ RingHom.ker θ`. Introduce `α`. Rewrite using `[RingHom.mem_ker, ← coeff_map, map_sub, hθh, map_one, sub_self, map_zero]`. Rewrite using `[key]`.
-
-Conclude with `GlobalTheory.T.formalLog_coeff_mem_of_sub_one_mem_dp p B O Q θ hF (RingHom.ker θ) hJ (Fin d ⊕ Fin d) h hh1 hker`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cob1_formalLog_mem_ker : ∀ (p : ℕ) [Fact p.Prime] (B O Q : Type) [CommRing B] [CommRing Q]
     [CommRing O] [Algebra B Q] [Algebra ℚ Q] (θ : B →+* O), IsFrame p Q θ → ∀ (d : ℕ)

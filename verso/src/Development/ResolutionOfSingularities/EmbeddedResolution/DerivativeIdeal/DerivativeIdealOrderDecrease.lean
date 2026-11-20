@@ -10,7 +10,7 @@ noncomputable def eulerDerivation (k : Type*) [CommRing k] {R : Type*} [CommRing
   ∑ i, x i • D i
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction with`. Consider the case `empty => simp`. Consider the case `@insert i s hi ih`. Rewrite using `[Finset.sum_insert hi, Finset.sum_insert hi, Derivation.add_apply, Derivation.smul_apply, smul_eq_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sum_smul_derivation_apply (k : Type*) [CommRing k] {R : Type*} [CommRing R]
     [Algebra k R] {ι : Type*} (s : Finset ι) (x : ι → R) (D : ι → Derivation k R R) (a : R) :
@@ -23,7 +23,7 @@ private theorem sum_smul_derivation_apply (k : Type*) [CommRing k] {R : Type*} [
         Derivation.smul_apply, smul_eq_mul, ih]
 
 /- English proof (translation)
-Use `show (∑ i, x i • D i) a = ∑ i, x i * D i a`. Conclude with `sum_smul_derivation_apply k Finset.univ x D a`.
+A detailed English derivation is pending.
 -/
 theorem eulerDerivation_apply (k : Type*) [CommRing k] {R : Type*} [CommRing R] [Algebra k R]
     {ι : Type*} [Fintype ι] (x : ι → R) (D : ι → Derivation k R R) (a : R) :
@@ -32,7 +32,7 @@ theorem eulerDerivation_apply (k : Type*) [CommRing k] {R : Type*} [CommRing R] 
   exact sum_smul_derivation_apply k Finset.univ x D a
 
 /- English proof (translation)
-Rewrite using `[eulerDerivation_apply]`. Conclude with `Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eulerDerivation_apply_mem_span (k : Type*) [CommRing k] {R : Type*} [CommRing R] [Algebra k R]
     {ι : Type*} [Fintype ι] (x : ι → R) (D : ι → Derivation k R R) (a : R) :
@@ -41,7 +41,7 @@ theorem eulerDerivation_apply_mem_span (k : Type*) [CommRing k] {R : Type*} [Com
   exact Ideal.sum_mem _ fun i _ => Ideal.mul_mem_right _ _ (Ideal.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[eulerDerivation_apply]`. Simplify using `[hD]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem eulerDerivation_apply_generator (k : Type*) [CommRing k] {R : Type*} [CommRing R] [Algebra k R]
     {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -51,15 +51,13 @@ theorem eulerDerivation_apply_generator (k : Type*) [CommRing k] {R : Type*} [Co
   simp [hD]
 
 /- English proof (translation)
-Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem g hg`. Take `⟨j, rfl⟩` from `hg`. Rewrite using `[eulerDerivation_apply_generator k x D hD j, sub_self]`. Conclude with `Submodule.zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero`. Rewrite using `[map_zero, sub_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ iha ihb`. Establish `key : eulerDerivation k x D (a + b) - (a + b) = (eulerDerivation k x D a - a) + (eulerDerivation k x D b - b)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ iha ihb`. Consider the case `smul c a ha iha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : eulerDerivation k x D (c • a) - c • a = c * (eulerDerivation k x D a - a) + a * eulerDerivation k x D c`. Rewrite using `[smul_eq_mul, Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Use `Submodule.add_mem _ (Ideal.mul_mem_left _ _ iha) ?_` and prove the remaining obligations.
-
-Establish `h2` using `Ideal.mul_mem_mul ha (eulerDerivation_apply_mem_span k x D c)`. Rewrite `h2` using `[← pow_two]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem eulerDerivation_sub_self_mem_sq (k : Type*) [CommRing k] {R : Type*} [CommRing R]
     [Algebra k R] {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -90,21 +88,19 @@ private theorem eulerDerivation_sub_self_mem_sq (k : Type*) [CommRing k] {R : Ty
       rwa [← pow_two] at h2
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Introduce `f _`. Establish `h` using `eulerDerivation_apply_mem_span k x D f`. Simplify using `using h`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ r ih`. Introduce `f hf`. Rewrite `hf` using `[pow_succ]`. Use `Submodule.mul_induction_on hf ?_ ?_` and prove the remaining obligations. Introduce `a ha b hb`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hEb` using `eulerDerivation_sub_self_mem_sq k x D hD hb`. Establish `hEa` using `ih a ha`. Establish `h1 : a * (eulerDerivation k x D b - b) ∈ Ideal.span (Set.range x) ^ (r + 2)`. Establish `h` using `Ideal.mul_mem_mul ha hEb`. Rewrite `h` using `[← pow_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2 : (eulerDerivation k x D a - (r : R) * a) * b ∈ Ideal.span (Set.range x) ^ (r + 2)`. Establish `hb1 : b ∈ Ideal.span (Set.range x) ^ 1` using `by rwa [pow_one]`. Establish `h` using `Ideal.mul_mem_mul hEa hb1`. Establish `e : r + 1 + 1 = r + 2` using `by omega`. Rewrite `h` using `[← pow_add, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `key : eulerDerivation k x D (a * b) - ((r + 1 : ℕ) : R) * (a * b) = a * (eulerDerivation k x D b - b) + (eulerDerivation k x D a - (r : R) * a) * b`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hres : eulerDerivation k x D (a * b) - ((r + 1 : ℕ) : R) * (a * b) ∈ Ideal.span (Set.range x) ^ (r + 2)`. Rewrite using `[key]`. Conclude with `Submodule.add_mem _ h1 h2`. Conclude with `hres`. Introduce `y z hy hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `key : eulerDerivation k x D (y + z) - ((r + 1 : ℕ) : R) * (y + z) = (eulerDerivation k x D y - ((r + 1 : ℕ) : R) * y) + (eulerDerivation k x D z - ((r + 1 : ℕ) : R) * z)`. Rewrite using `[map_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hres : eulerDerivation k x D (y + z) - ((r + 1 : ℕ) : R) * (y + z) ∈ Ideal.span (Set.range x) ^ (r + 1 + 1)`. Rewrite using `[key]`.
-
-Conclude with `Submodule.add_mem _ hy hz`. Conclude with `hres`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem forall_eulerDerivation_sub_natCast_mul_mem (k : Type*) [CommRing k] {R : Type*} [CommRing R]
     [Algebra k R] {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -155,7 +151,7 @@ private theorem forall_eulerDerivation_sub_natCast_mul_mem (k : Type*) [CommRing
         exact hres
 
 /- English proof (translation)
-The claim follows from `forall_eulerDerivation_sub_natCast_mul_mem k x D hD r f hf`.
+A detailed English derivation is pending.
 -/
 theorem eulerDerivation_sub_natCast_mul_mem_pow_succ (k : Type*) [CommRing k] {R : Type*} [CommRing R]
     [Algebra k R] {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -165,13 +161,13 @@ theorem eulerDerivation_sub_natCast_mul_mem_pow_succ (k : Type*) [CommRing k] {R
   forall_eulerDerivation_sub_natCast_mul_mem k x D hD r f hf
 
 /- English proof (translation)
-Establish `hgen : ∀ i, x i * D i f ∈ Ideal.span (Set.range x) ^ (r + 1)`. Introduce `i`. Establish `hx1 : x i ∈ Ideal.span (Set.range x) ^ 1`. Rewrite using `[pow_one]`. Conclude with `Ideal.subset_span ⟨i, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `Ideal.mul_mem_mul hx1 (hdf i)`. Rewrite `h` using `[← pow_add, Nat.add_comm 1 r]`. Conclude with `h`. Establish `h1 : eulerDerivation k x D f ∈ Ideal.span (Set.range x) ^ (r + 1)`. Rewrite using `[eulerDerivation_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Ideal.sum_mem _ fun i _ => hgen i`. Establish `h2` using `eulerDerivation_sub_natCast_mul_mem_pow_succ k x D hD r hf`. Establish `h3 : (r : R) * f ∈ Ideal.span (Set.range x) ^ (r + 1)`. Establish `h` using `Submodule.sub_mem _ h1 h2`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `hr`. Establish `key : (↑u⁻¹ : R) * ((r : R) * f) = f`. Rewrite using `[← hu, ← mul_assoc, u.inv_mul, one_mul]`. Rewrite using `[← key]`. Conclude with `Ideal.mul_mem_left _ _ h3`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_pow_succ_of_deriv_mem_pow (k : Type*) [CommRing k] {R : Type*} [CommRing R]
     [Algebra k R] {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -201,7 +197,7 @@ theorem mem_pow_succ_of_deriv_mem_pow (k : Type*) [CommRing k] {R : Type*} [Comm
   exact Ideal.mul_mem_left _ _ h3
 
 /- English proof (translation)
-Introduce `h`. Apply `h2` to reduce the goal to its premises. Introduce `f hf`. Conclude with `mem_pow_succ_of_deriv_mem_pow k x D hD hr (h1 hf) (fun i => h (derivation_apply_mem_derivIdeal k I (D i) hf))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem not_derivIdeal_le_pow (k : Type*) [CommRing k] {R : Type*} [CommRing R] [Algebra k R]
     {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -216,9 +212,9 @@ theorem not_derivIdeal_le_pow (k : Type*) [CommRing k] {R : Type*} [CommRing R] 
     (fun i => h (derivation_apply_mem_derivIdeal k I (D i) hf))
 
 /- English proof (translation)
-Break down `eq_top_or_lt_top a with rfl | hlt` into its components or cases. Conclude with `absurd le_top h2`. Use `lift a to ℕ using hlt.ne`. Establish `hn : n ≤ a` using `by exact_mod_cast h1`. Establish `hn2 : ¬ (n + 1 ≤ a)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hc`. Conclude with `h2 (by exact_mod_cast hc)`. Establish `ha : a = n` using `by omega`. Conclude with `ha` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 private theorem eq_natCast_of_le_of_not_succ_le (n : ℕ) (a : ℕ∞) (h1 : (n : ℕ∞) ≤ a)
     (h2 : ¬ ((n + 1 : ℕ) : ℕ∞) ≤ a) : a = (n : ℕ∞) := by
@@ -233,13 +229,13 @@ private theorem eq_natCast_of_le_of_not_succ_le (n : ℕ) (a : ℕ∞) (h1 : (n 
     exact_mod_cast ha
 
 /- English proof (translation)
-Establish `hIr : I ≤ IsLocalRing.maximalIdeal R ^ r` using `(le_idealOrder_iff I r).mp hI.ge`. Establish `hIr1 : ¬ I ≤ IsLocalRing.maximalIdeal R ^ (r + 1)`. Introduce `hc`. Establish `h` using `(le_idealOrder_iff I (r + 1)).mpr hc`. Rewrite `h` using `[hI]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h' : r + 1 ≤ r` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers. Establish `hunitr : IsUnit ((r : ℕ) : R)` using `hunit r hr`. Establish `hnot : ¬ derivIdeal k I ≤ Ideal.span (Set.range x) ^ r` using `not_derivIdeal_le_pow k x D hD hunitr (by rw [hx]; exact hIr) (by rw [hx]; exact hIr1)`. Establish `hle : derivIdeal k I ≤ IsLocalRing.maximalIdeal R ^ (r - 1)` using `derivIdeal_le_pow_of_le_pow k hIr`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ((r - 1 : ℕ) : ℕ∞) ≤ idealOrder (derivIdeal k I)` using `(le_idealOrder_iff _ (r - 1)).mpr hle`. Establish `h2 : ¬ (((r - 1) + 1 : ℕ) : ℕ∞) ≤ idealOrder (derivIdeal k I)`. Introduce `hc`. Establish `h` using `(le_idealOrder_iff _ ((r - 1) + 1)).mp hc`. Apply `hnot` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[hx]`. Establish `hrr : (r - 1) + 1 = r` using `by omega`. Rewrite `h` using `[hrr]`. Then use the resulting hypothesis. Conclude with `eq_natCast_of_le_of_not_succ_le (r - 1) _ h1 h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem idealOrder_derivIdeal_of_isUnit_natCast (k : Type*) [CommRing k] {R : Type*} [CommRing R] [IsLocalRing R]
     [Algebra k R] {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R) (D : ι → Derivation k R R)
@@ -272,11 +268,11 @@ theorem idealOrder_derivIdeal_of_isUnit_natCast (k : Type*) [CommRing k] {R : Ty
   exact eq_natCast_of_le_of_not_succ_le (r - 1) _ h1 h2
 
 /- English proof (translation)
-Use `revert hj`. Proceed by induction on `j with`. Consider the case `zero`. Introduce `_`. Rewrite using `[derivIdealIterate_zero, Nat.sub_zero]`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hI`. Consider the case `succ j ih`. Introduce `hj`. Establish `hj' : j ≤ r` using `by omega`. Establish `hprev` using `ih hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 ≤ r - j` using `by omega`. Establish `h` using `idealOrder_derivIdeal_of_isUnit_natCast k x D hD hx hunit h1 hprev`. Rewrite using `[derivIdealIterate_succ]`. Establish `heq : r - j - 1 = r - (j + 1)` using `by omega`. Rewrite `h` using `[heq]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem idealOrder_derivIdealIterate_of_isUnit_natCast (k : Type*) [CommRing k] {R : Type*} [CommRing R]
     [IsLocalRing R] [Algebra k R] {ι : Type*} [Fintype ι] [DecidableEq ι] (x : ι → R)

@@ -17,7 +17,7 @@ def intZ (σ : ℂ) (ν : ℝ) (a : ℤ) (b m : ℕ) (y : ℝ) : ℂ :=
   ∫ t : ℝ, qZ σ a b m y t * Complex.exp (-(2 * (Real.pi : ℂ) * I * (ν : ℂ) * (t : ℂ)))
 
 /- English proof (translation)
-Unfold `GlobalTheory.HeckeTwo.TermSmooth.term qZ`. Rewrite using `[zpow_neg, zpow_natCast, inv_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem term_eq_qZ (σ : ℂ) (ν : ℝ) (a b m : ℕ) (y t : ℝ) :
     GlobalTheory.HeckeTwo.TermSmooth.term σ ν a b m y t =
@@ -26,7 +26,7 @@ theorem term_eq_qZ (σ : ℂ) (ν : ℝ) (a b m : ℕ) (y t : ℝ) :
   rw [zpow_neg, zpow_natCast, inv_pow]
 
 /- English proof (translation)
-Unfold `GlobalTheory.HeckeTwo.TermSmooth.intT intZ`. Repeatedly rewrite using `[term_eq_qZ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem intT_eq_intZ (σ : ℂ) (ν : ℝ) (a b m : ℕ) (y : ℝ) :
     GlobalTheory.HeckeTwo.TermSmooth.intT σ ν a b m y = intZ σ ν (a : ℤ) b m y := by
@@ -34,9 +34,9 @@ theorem intT_eq_intZ (σ : ℂ) (ν : ℝ) (a b m : ℕ) (y : ℝ) :
   simp_rw [term_eq_qZ]
 
 /- English proof (translation)
-Rewrite using `[Real.fourier_real_eq_integral_exp_smul]`. Unfold `intZ`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[smul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Put the polynomial expressions in normal form.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem intZ_eq_fourier (σ : ℂ) (ν : ℝ) (a : ℤ) (b m : ℕ) (y : ℝ) :
     intZ σ ν a b m y = FourierTransform.fourier (qZ σ a b m y) ν := by

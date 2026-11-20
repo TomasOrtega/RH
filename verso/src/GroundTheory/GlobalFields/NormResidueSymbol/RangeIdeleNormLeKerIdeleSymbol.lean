@@ -25,7 +25,7 @@ def ideleSymbol : IdeleGroup K →* (L ≃ₐ[K] L) :=
 variable {K}
 
 /- English proof (translation)
-The claim follows from `IdeleMap.ideleMap_apply (G := L ≃ₐ[K] L) (fun v ↦ localSymbol L v) (fun w ↦ infiniteLocalSymbol L w) (eventually_units_le_ker_localSymbol L) x`.
+A detailed English derivation is pending.
 -/
 theorem ideleSymbol_apply (x : IdeleGroup K) :
     ideleSymbol K L x = (∏ᶠ v, localSymbol L v (finiteProj v x)) *
@@ -34,7 +34,7 @@ theorem ideleSymbol_apply (x : IdeleGroup K) :
     (eventually_units_le_ker_localSymbol L) x
 
 /- English proof (translation)
-The claim follows from `IdeleMap.hasFiniteMulSupport (G := L ≃ₐ[K] L) (fun v ↦ localSymbol L v) (eventually_units_le_ker_localSymbol L) x @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteMulSupport_localSymbol (x : IdeleGroup K) :
     Function.HasFiniteMulSupport fun v ↦ localSymbol L v (finiteProj v x) :=
@@ -43,7 +43,7 @@ theorem hasFiniteMulSupport_localSymbol (x : IdeleGroup K) :
 
 @[simp]
 /- English proof (translation)
-The claim follows from `IdeleMap.ideleMap_finiteEmbedding (G := L ≃ₐ[K] L) (fun v ↦ localSymbol L v) (fun w ↦ infiniteLocalSymbol L w) (eventually_units_le_ker_localSymbol L) v a @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem ideleSymbol_finiteEmbedding (v : HeightOneSpectrum (𝓞 K)) (a : (v.adicCompletion K)ˣ) :
     ideleSymbol K L (finiteEmbedding v a) = localSymbol L v a :=
@@ -52,7 +52,7 @@ theorem ideleSymbol_finiteEmbedding (v : HeightOneSpectrum (𝓞 K)) (a : (v.adi
 
 @[simp]
 /- English proof (translation)
-The claim follows from `IdeleMap.ideleMap_infiniteEmbedding (G := L ≃ₐ[K] L) (fun v ↦ localSymbol L v) (fun w ↦ infiniteLocalSymbol L w) (eventually_units_le_ker_localSymbol L) w a`.
+A detailed English derivation is pending.
 -/
 theorem ideleSymbol_infiniteEmbedding (w : InfinitePlace K) (a : (w.Completion)ˣ) :
     ideleSymbol K L (infiniteEmbedding w a) = infiniteLocalSymbol L w a :=
@@ -60,7 +60,7 @@ theorem ideleSymbol_infiniteEmbedding (w : InfinitePlace K) (a : (w.Completion)�
     (eventually_units_le_ker_localSymbol L) w a
 
 /- English proof (translation)
-The claim follows from `IdeleMap.continuous_ideleMap (G := L ≃ₐ[K] L) (fun v ↦ localSymbol L v) (fun w ↦ infiniteLocalSymbol L w) (eventually_units_le_ker_localSymbol L) (fun v ↦ continuous_localSymbol L v) (fun w ↦ continuous_infiniteLocalSymbol L w)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_ideleSymbol : Continuous (ideleSymbol K L) :=
   IdeleMap.continuous_ideleMap (G := L ≃ₐ[K] L) (fun v ↦ localSymbol L v) (fun w ↦ infiniteLocalSymbol L w)
@@ -68,14 +68,14 @@ theorem continuous_ideleSymbol : Continuous (ideleSymbol K L) :=
     (fun w ↦ continuous_infiniteLocalSymbol L w)
 
 /- English proof (translation)
-Rewrite using `[MonoidHom.coe_ker]`. Conclude with `(isOpen_discrete _).preimage (continuous_ideleSymbol L)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ker_ideleSymbol : IsOpen ((ideleSymbol K L).ker : Set (IdeleGroup K)) := by
   rw [MonoidHom.coe_ker]
   exact (isOpen_discrete _).preimage (continuous_ideleSymbol L)
 
 /- English proof (translation)
-The claim follows from `IdeleMap.eq_ideleMap (G := L ≃ₐ[K] L) (fun v ↦ localSymbol L v) (fun w ↦ infiniteLocalSymbol L w) (eventually_units_le_ker_localSymbol L) (fun v ↦ continuous_localSymbol L v) (fun w ↦ continuous_infiniteLocalSymbol L w) hψ (fun v ↦ MonoidHom.ext (hfin v)) (fun w ↦ MonoidHom.ext ( …`.
+A detailed English derivation is pending.
 -/
 theorem eq_ideleSymbol {ψ : IdeleGroup K →* (L ≃ₐ[K] L)} (hψ : Continuous ψ)
     (hfin : ∀ v a, ψ (finiteEmbedding v a) = localSymbol L v a)
@@ -87,7 +87,7 @@ theorem eq_ideleSymbol {ψ : IdeleGroup K →* (L ≃ₐ[K] L)} (hψ : Continuou
     (fun v ↦ MonoidHom.ext (hfin v)) (fun w ↦ MonoidHom.ext (hinf w))
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨hf, hi⟩` from `(IdeleNorm.mem_range_ideleNorm_iff_forall L x).1 hx`. Conclude with `IdeleMap.ideleMap_eq_one_of_forall_mem (G := L ≃ₐ[K] L) (fun v ↦ localSymbol L v) (fun w ↦ infiniteLocalSymbol L w) (eventually_units_le_ker_localSymbol L) (fun v ↦ (IdeleNorm.finiteLocalNorm L v).range) (fun w ↦ (IdeleNorm.infiniteLocalNorm L w).range) (fun v ↦ range_finiteLocal …`. Use the proof step `@[simp]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem range_ideleNorm_le_ker_ideleSymbol : (ideleNorm K L).range ≤ (ideleSymbol K L).ker := by
   intro x hx
@@ -101,7 +101,7 @@ theorem range_ideleNorm_le_ker_ideleSymbol : (ideleNorm K L).range ≤ (ideleSym
 
 @[simp]
 /- English proof (translation)
-The claim follows from `range_ideleNorm_le_ker_ideleSymbol L ⟨y, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem ideleSymbol_ideleNorm (y : IdeleGroup L) : ideleSymbol K L (ideleNorm K L y) = 1 :=
   range_ideleNorm_le_ker_ideleSymbol L ⟨y, rfl⟩

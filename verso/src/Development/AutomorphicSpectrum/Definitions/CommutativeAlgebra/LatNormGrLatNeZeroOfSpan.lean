@@ -79,15 +79,15 @@ variable {C : Type} [Field C] (v : Valuation C NNReal) {O : Type} [CommRing O] [
   {V : Type} [AddCommGroup V] [Module C V] [Module O V] [IsScalarTower O C V]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latIn {L : Submodule O V} {U : Submodule C V} {x : U} :
     x ∈ latIn L U ↔ (x : V) ∈ L := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨hy, y.2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨x, h2⟩, h1, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_latIn (L : Submodule O V) (U : Submodule C V) :
     (latIn L U).map (U.subtype.restrictScalars O) = L ⊓ U.restrictScalars O := by
@@ -99,16 +99,16 @@ theorem map_latIn (L : Submodule O V) (U : Submodule C V) :
     exact ⟨⟨x, h2⟩, h1, rfl⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_dualLat {V' : Type} [AddCommGroup V'] [Module C V'] [Module O V']
     [IsScalarTower O C V'] {B : V →ₗ[C] V' →ₗ[C] C} {L : Submodule O V} {y : V'} :
     y ∈ dualLat B L ↔ ∀ x ∈ L, B x y ∈ (algebraMap O C).range := Iff.rfl
 
 /- English proof (translation)
-Unfold `latNorm GlobalTheory.HTLat.latNorm`. Use `congr 1`. Use extensionality with `r`. Simplify using `only [Set.mem_setOf_eq, GlobalTheory.HTLat.mem_scaleLat]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a, h, y, hy, e⟩`. Conclude with `⟨a, ⟨y, hy, e.symm⟩, h⟩`. Introduce and unpack `⟨a, ⟨y, hy, e⟩, h⟩`. Conclude with `⟨a, h, y, hy, e.symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem latNorm_eq (L : Submodule O V) (x : V) : latNorm v L x = GlobalTheory.HTLat.latNorm v L x := by
   unfold latNorm GlobalTheory.HTLat.latNorm
@@ -122,29 +122,29 @@ theorem latNorm_eq (L : Submodule O V) (x : V) : latNorm v L x = GlobalTheory.HT
 omit [Algebra O C] [IsScalarTower O C V] in
 
 /- English proof (translation)
-The claim follows from `csInf_le (OrderBot.bddBelow _) ⟨a, rfl, y, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem latNorm_le {L : Submodule O V} (a : C) {y : V} (hy : y ∈ L) :
     latNorm v L (a • y) ≤ v a :=
   csInf_le (OrderBot.bddBelow _) ⟨a, rfl, y, hy, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[latNorm_eq, GlobalTheory.HTLat.latNorm_span_singleton hv hg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem latNorm_span (hv : v.Integers O) {g : V} (hg : g ≠ 0) (c : C) :
     latNorm v (Submodule.span O {g}) (c • g) = v c := by
   rw [latNorm_eq, GlobalTheory.HTLat.latNorm_span_singleton hv hg]
 
 /- English proof (translation)
-Establish `key : ∀ {a a' : C} {y : V}, a' ≠ 0 → v a ≤ v a' → a' • y ∈ L → a • y ∈ L`. Introduce `a a' y ha' hle hy`. Take `⟨o, ho⟩` from `hv.exists_of_le_one (r := a / a') (by`. Rewrite using `[map_div₀]`. Conclude with `div_le_one_of_le₀ hle zero_le)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `L.smul_mem o hy` as an intermediate fact. Rewrite `this` using `[← algebraMap_smul C o, ho, smul_smul, div_mul_cancel₀ _ ha']`. Then use the resulting hypothesis. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact ⟨1, one_ne_zero, by rwa [one_smul]⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, ha, hx⟩` from `hx`. Take `⟨a', ha', hy⟩` from `hy`. Break down `le_total (v a) (v a') with h | h` into its components or cases. Conclude with `⟨a, ha, by rw [smul_add]; exact L.add_mem hx (key ha' h hy)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨a', ha', by rw [smul_add]; exact L.add_mem (key ha h hx) hy⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha, hx⟩` from `hx`. Distinguish the cases in `hc : c = 0`. Conclude with `⟨1, one_ne_zero, by simp [hc]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨a / c, div_ne_zero ha hc, by rwa [smul_smul, div_mul_cancel₀ _ hc]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (hv : v.Integers O) {L : Submodule O V} {x : V}
     (hx : x ∈ Submodule.span C (L : Set V)) : ∃ a : C, a ≠ 0 ∧ a • x ∈ L := by
@@ -170,7 +170,7 @@ theorem exists_smul_mem (hv : v.Integers O) {L : Submodule O V} {x : V}
     · exact ⟨a / c, div_ne_zero ha hc, by rwa [smul_smul, div_mul_cancel₀ _ hc]⟩
 
 /- English proof (translation)
-Establish `h1` using `latNorm_span v hv hc c⁻¹`. Rewrite `h1` using `[smul_eq_mul, inv_mul_cancel₀ hc]`. Rewrite using `[grLog, h, h1, map_inv₀, NNReal.coe_inv, Real.log_inv]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem grLog_of_eq_span (hv : v.Integers O) {n : ℕ} {L : Submodule O V} {b : Basis (Fin n) C V}
     {i : Fin n} {c : C} (hc : c ≠ 0) (h : grLat L b i = Submodule.span O {c}) :
@@ -180,13 +180,13 @@ theorem grLog_of_eq_span (hv : v.Integers O) {n : ℕ} {L : Submodule O V} {b : 
   rw [grLog, h, h1, map_inv₀, NNReal.coe_inv, Real.log_inv]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, ⟨hx, -⟩, rfl⟩`. Express the relevant statement in the definitionally equal form `b.coord i x ∈ _`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `h`. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hj]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[LinearMap.map_smul_of_tower]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ a hx`. Rewrite using `[Submodule.span_singleton_le_iff_mem]`. Use `⟨c i • b i, ⟨Submodule.subset_span ⟨i, rfl⟩, ?_⟩, by simp⟩` and prove the remaining obligations. Conclude with `Submodule.smul_mem (b.flag i.succ) _ (b.self_mem_flag Fin.castSucc_lt_succ)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem grLat_diag {n : ℕ} (b : Basis (Fin n) C V) (c : Fin n → C) (i : Fin n) :
     grLat (Submodule.span O (Set.range fun j => c j • b j)) b i = Submodule.span O {c i} := by
@@ -208,7 +208,7 @@ theorem grLat_diag {n : ℕ} (b : Basis (Fin n) C V) (c : Fin n → C) (i : Fin 
     exact Submodule.smul_mem (b.flag i.succ) _ (b.self_mem_flag Fin.castSucc_lt_succ)
 
 /- English proof (translation)
-The claim follows from `grLog_of_eq_span v hv hc (grLat_diag b c i)`.
+A detailed English derivation is pending.
 -/
 example (hv : v.Integers O) {n : ℕ} (b : Basis (Fin n) C V) (c : Fin n → C) (i : Fin n)
     (hc : c i ≠ 0) :
@@ -216,11 +216,11 @@ example (hv : v.Integers O) {n : ℕ} (b : Basis (Fin n) C V) (c : Fin n → C) 
   grLog_of_eq_span v hv hc (grLat_diag b c i)
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨o, ho⟩` from `h c (Submodule.mem_span_singleton_self c)`. Use `Submodule.mem_span_singleton.2 ⟨o, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Algebra.smul_def, ho]`. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Introduce `h x hx`. Take `⟨o, rfl⟩` from `Submodule.mem_span_singleton.1 h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨o', rfl⟩` from `Submodule.mem_span_singleton.1 hx`. Use `⟨o' * o, ?_⟩` and prove the remaining obligations. Simplify using `[Algebra.smul_def]`. Clear the denominators using the available nonvanishing facts.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 example {c : C} (hc : c ≠ 0) :
     dualLat (LinearMap.mul C C) (Submodule.span O {c}) = Submodule.span O {c⁻¹} := by
@@ -249,7 +249,7 @@ variable {A : Type} [CommRing A] {K : Type} [Field K] [Algebra A K]
 omit [NumberField E] in
 
 /- English proof (translation)
-Simplify using `[eigSp, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eigSp {ρ : 𝓞 E →+* Module.End K V} {σ : E →+* K} {x : V} :
     x ∈ eigSp ρ σ ↔ ∀ a : 𝓞 E, ρ a x = σ (a : E) • x := by
@@ -258,7 +258,7 @@ theorem mem_eigSp {ρ : 𝓞 E →+* Module.End K V} {σ : E →+* K} {x : V} :
 omit [NumberField E] in
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[eigSp, GlobalTheory.EigenSplit.mem_eigenSub, sub_eq_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eigSp_eq (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) :
     eigSp ρ σ = GlobalTheory.EigenSplit.eigenSub ρ (σ.comp (algebraMap (𝓞 E) E)) := by
@@ -266,7 +266,7 @@ theorem eigSp_eq (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) :
   simp [eigSp, GlobalTheory.EigenSplit.mem_eigenSub, sub_eq_zero]
 
 /- English proof (translation)
-Use `LinearMap.BilinForm.apply_dualBasis_left (B := Algebra.traceForm ℚ E) (traceForm_nondegenerate ℚ E) (integralBasis E) k j` as an intermediate fact. Rewrite `this` using `[Algebra.traceForm_apply]`. Use `this using 1` and compare the differences between its conclusion and the goal. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Both sides reduce to the same expression.
 -/
 theorem trace_dualInt (k j) :
     Algebra.trace ℚ E (dualInt E k * integralBasis E j) = if j = k then 1 else 0 := by
@@ -278,7 +278,7 @@ theorem trace_dualInt (k j) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `((Algebra.traceForm ℚ E).dualBasis (traceForm_nondegenerate ℚ E) (integralBasis E)).sum_repr x`. Simplify using `only [LinearMap.BilinForm.dualBasis_repr_apply, Algebra.traceForm_apply] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expand_dual (x : E) :
     x = ∑ k, Algebra.trace ℚ E (x * integralBasis E k) • dualInt E k := by
@@ -289,7 +289,7 @@ theorem expand_dual (x : E) :
   exact h.symm
 
 /- English proof (translation)
-Use `conv_rhs => rw [← (RingOfIntegers.basis E).sum_repr a]`. Simplify using `only [map_sum, RingOfIntegers.coe_eq_algebraMap, Finset.mul_sum, map_zsmul, mul_smul_comm, ← integralBasis_apply, trace_dualInt]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem repr_eq_trace (a : 𝓞 E) (k) :
     (((RingOfIntegers.basis E).repr a k : ℤ) : ℚ) = Algebra.trace ℚ E (dualInt E k * (a : E)) := by
@@ -300,15 +300,15 @@ theorem repr_eq_trace (a : 𝓞 E) (k) :
   simp
 
 /- English proof (translation)
-Use `haveI : CharZero K := (RingHom.charZero_iff σ.injective).1 inferInstance`. Rewrite using `[mem_eigSp]`. Introduce `a`. Use `set b := RingOfIntegers.basis E`. Establish `e1 : ∀ k, ρ a (ρ (b k) x) = ∑ j, σ ((Algebra.trace ℚ E (dualInt E j * (a : E) * integralBasis E k) : ℚ) : E) • ρ (b j) x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `k`. Rewrite using `[← Module.End.mul_apply, ← map_mul, ← b.sum_repr (a * b k), map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `repr_eq_trace (a * b k) j` as an intermediate fact. Rewrite using `[map_zsmul, mul_assoc, integralBasis_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[RingOfIntegers.coe_eq_algebraMap, map_mul (algebraMap (𝓞 E) E)]`. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, ← this]`. Simplify using `[Int.cast_smul_eq_zsmul, b]`. Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul]`. Express the relevant statement in the definitionally equal form `∑ k, σ (dualInt E k) • ρ a (ρ (b k) x) = _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [e1, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_smul, ← map_mul, mul_comm (a : E), expand_dual (dualInt E j * (a : E)), map_sum]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← expand_dual, ← map_mul, Rat.smul_def, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem eigProj_mem (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) (x : V) :
     eigProj ρ σ x ∈ eigSp ρ σ := by
@@ -339,9 +339,9 @@ theorem eigProj_mem (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) (x : V) 
   rw [← expand_dual, ← map_mul, Rat.smul_def, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Apply `(traceForm_nondegenerate ℚ E).1` to reduce the goal to its premises. Introduce `y`. Rewrite using `[Algebra.traceForm_apply, sub_mul, one_mul, map_sub, sub_eq_zero, Finset.sum_mul, map_sum, Algebra.trace_eq_matrix_trace (integralBasis E) y, Matrix.trace]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.diag_apply, Algebra.leftMulMatrix_eq_repr_mul, mul_assoc, mul_comm _ y]`. Generalize the expression as in `y * integralBasis E k = z`. Use `conv_lhs => rw [← (integralBasis E).sum_repr z]`. Simplify using `only [Finset.mul_sum, map_sum, mul_smul_comm, map_smul, trace_dualInt]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_dualInt_mul : ∑ k, dualInt E k * integralBasis E k = 1 := by
   classical
@@ -358,9 +358,9 @@ theorem sum_dualInt_mul : ∑ k, dualInt E k * integralBasis E k = 1 := by
   simp
 
 /- English proof (translation)
-Rewrite `hx` using `[mem_eigSp]`. Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, hx, smul_smul]`. Rewrite using `[← Finset.sum_smul]`. Establish `: ∑ k, σ (dualInt E k) * σ ((RingOfIntegers.basis E k : 𝓞 E) : E) = 1`. Rewrite using `[← map_one σ, ← sum_dualInt_mul, map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem eigProj_of_mem {ρ : 𝓞 E →+* Module.End K V} {σ : E →+* K} {x : V} (hx : x ∈ eigSp ρ σ) :
     eigProj ρ σ x = x := by
@@ -373,9 +373,9 @@ theorem eigProj_of_mem {ρ : 𝓞 E →+* Module.End K V} {σ : E →+* K} {x : 
   rw [this, one_smul]
 
 /- English proof (translation)
-Establish `h1` using `eigProj_mem ρ σ x`. Establish `h2 : eigProj ρ σ x ∈ GlobalTheory.EigenSplit.eigenSub ρ χ`. Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, GlobalTheory.EigenSplit.mem_eigenSub.1 hx]`. Conclude with `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.smul_mem _ _ hx)`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `h (RingHom.ext fun a => ?_)` and prove the remaining obligations. Conclude with `smul_left_injective K hne ((mem_eigSp.1 h1 a).symm.trans (GlobalTheory.EigenSplit.mem_eigenSub.1 h2 a))`.
+A detailed English derivation is pending.
 -/
 theorem eigProj_of_eigenSub_ne {ρ : 𝓞 E →+* Module.End K V} {σ : E →+* K} {χ : 𝓞 E →+* K}
     (h : σ.comp (algebraMap (𝓞 E) E) ≠ χ) {x : V} (hx : x ∈ GlobalTheory.EigenSplit.eigenSub ρ χ) :
@@ -391,7 +391,7 @@ theorem eigProj_of_eigenSub_ne {ρ : 𝓞 E →+* Module.End K V} {σ : E →+* 
     ((mem_eigSp.1 h1 a).symm.trans (GlobalTheory.EigenSplit.mem_eigenSub.1 h2 a))
 
 /- English proof (translation)
-The claim follows from `eigProj_of_eigenSub_ne (fun e => h (IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) e)) (by rwa [← eigSp_eq])`.
+A detailed English derivation is pending.
 -/
 theorem eigProj_of_ne {ρ : 𝓞 E →+* Module.End K V} {σ σ' : E →+* K} (h : σ ≠ σ') {x : V}
     (hx : x ∈ eigSp ρ σ') : eigProj ρ σ x = 0 :=
@@ -399,7 +399,7 @@ theorem eigProj_of_ne {ρ : 𝓞 E →+* Module.End K V} {σ σ' : E →+* K} (h
     (by rwa [← eigSp_eq])
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, -, rfl⟩`. Conclude with `eigProj_mem ρ σ x`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem eigQuot_le_eigSp (ρ : 𝓞 E →+* Module.End K V) (σ : E →+* K) (X : Submodule A V) :
     eigQuot ρ σ X ≤ (eigSp ρ σ).restrictScalars A := by
@@ -412,7 +412,7 @@ def regAct (K : Type) [Field K] (E : Type) [Field E] [NumberField E] :
     (Algebra.TensorProduct.includeRight (R := ℤ) (A := K) (B := 𝓞 E)).toRingHom
 
 /- English proof (translation)
-Simplify using `[regAct, Algebra.TensorProduct.basis_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem regAct_basis (k) :
     regAct K E (RingOfIntegers.basis E k) 1 =
@@ -420,9 +420,9 @@ theorem regAct_basis (k) :
   simp [regAct, Algebra.TensorProduct.basis_apply]
 
 /- English proof (translation)
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [regAct_basis]`. Conclude with `(Algebra.TensorProduct.basis K (RingOfIntegers.basis E)).linearIndependent.comp (fun q : Fin 1 × _ => q.2) (fun p q h => Prod.ext (Subsingleton.elim _ _) h)`. Rewrite using `[Submodule.span_span_of_tower, Basis.span_eq]`. Simplify using `only [regAct_basis]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isFreeOn_reg :
     IsFreeOn (A := A) (regAct K E)
@@ -439,9 +439,9 @@ theorem isFreeOn_reg :
     simp
 
 /- English proof (translation)
-Introduce `h`. Set `φ : K ⊗[ℤ] 𝓞 E →ₐ[K] K` to `Algebra.TensorProduct.lift (AlgHom.id K K) (σ.comp (algebraMap (𝓞 E) E)).toIntAlgHom (fun _ _ => Commute.all _ _)`. Establish `h1` using `congrArg φ h`. Simplify using `only [eigProj, LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, regAct_basis, Algebra.TensorProduct.basis_apply, map_zero] at h1`. Establish `h2 : ∑ k, σ (dualInt E k * integralBasis E k) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `h1` using `[φ]`. Rewrite `h2` using `[← map_sum, sum_dualInt_mul, map_one]`. Conclude with `one_ne_zero h2`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 example (σ : E →+* K) : eigProj (regAct K E) σ 1 ≠ 0 := by
   intro h
@@ -458,28 +458,28 @@ example (σ : E →+* K) : eigProj (regAct K E) σ 1 ≠ 0 := by
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `(Valuation.integer.integers v).isIntegral_iff_v_le_one.1 ((map_isIntegral_int σ (RingOfIntegers.isIntegral_coe x)).tower_top)`.
+A detailed English derivation is pending.
 -/
 theorem val_le_one (v : Valuation K NNReal) (σ : E →+* K) (x : 𝓞 E) : v (σ (x : E)) ≤ 1 :=
   (Valuation.integer.integers v).isIntegral_iff_v_le_one.1
     ((map_isIntegral_int σ (RingOfIntegers.isIntegral_coe x)).tower_top)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by rintro _ ⟨x, rfl⟩; exact val_le_one v σ x⟩`.
+Supply the required witnesses or components.
 -/
 theorem bddAbove_diff (v : Valuation K NNReal) (σ : E →+* K) :
     BddAbove (Set.range fun x : differentIdeal ℤ (𝓞 E) => v (σ ((x : 𝓞 E) : E))) :=
   ⟨1, by rintro _ ⟨x, rfl⟩; exact val_le_one v σ x⟩
 
 /- English proof (translation)
-The claim follows from `le_ciSup (bddAbove_diff v σ) ⟨x, hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem le_diffAbs (v : Valuation K NNReal) (σ : E →+* K) {x : 𝓞 E}
     (hx : x ∈ differentIdeal ℤ (𝓞 E)) : v (σ (x : E)) ≤ diffAbs v σ :=
   le_ciSup (bddAbove_diff v σ) ⟨x, hx⟩
 
 /- English proof (translation)
-Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (differentIdeal_ne_bot (A := ℤ) (B := 𝓞 E))`. Use `lt_of_lt_of_le ?_ (le_diffAbs v σ hx)` and prove the remaining obligations. Rewrite using `[pos_iff_ne_zero, Valuation.ne_zero_iff, map_ne_zero]`. Conclude with `hx0` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diffAbs_pos (v : Valuation K NNReal) (σ : E →+* K) : 0 < diffAbs v σ := by
   obtain ⟨x, hx, hx0⟩ := Submodule.exists_mem_ne_zero_of_ne_bot
@@ -489,7 +489,7 @@ theorem diffAbs_pos (v : Valuation K NNReal) (σ : E →+* K) : 0 < diffAbs v σ
   exact_mod_cast hx0
 
 /- English proof (translation)
-Use `le_antisymm (ciSup_le fun x => ?_) (le_diffAbs v σ (h ▸ Ideal.mem_span_singleton_self δ))` and prove the remaining obligations. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 (h.le x.2)`. Rewrite using `[← hy, RingOfIntegers.coe_eq_algebraMap, map_mul, map_mul, map_mul]`. Conclude with `mul_le_of_le_one_left' (val_le_one v σ y)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem diffAbs_of_span (v : Valuation K NNReal) (σ : E →+* K) {δ : 𝓞 E}
     (h : differentIdeal ℤ (𝓞 E) = Ideal.span {δ}) : diffAbs v σ = v (σ (δ : E)) := by

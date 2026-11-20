@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.FrameM
 import Development.AutomorphicArithmetic.Foundations.BaseChangeIdentities.NarrowSwap
 
 /- English proof (translation)
-The claim follows from `UpperTheory.BaseChangeIdentities.baseChangeN_of UpperTheory.HeckeLevelFrameExistence.candFin`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.BaseChangeIdentities.baseChangeN : PositivityTheory.Rg.BcN.BaseChangeIsobaricN :=
   UpperTheory.BaseChangeIdentities.baseChangeN_of UpperTheory.HeckeLevelFrameExistence.candFin

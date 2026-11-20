@@ -25,11 +25,11 @@ namespace GlobalTheory.Poinc.Sep.Spz
 open GlobalTheory.TorusExt GlobalTheory.ZH.TorusPerp GlobalTheory.QkNumberField GlobalTheory.TorsionExt
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, m = n + 1` from `⟨m - 1, by omega⟩`. Use `IsPrimitiveRoot.mk_of_lt _ hm (by rw [← map_pow, hq.pow_eq_one, map_one]) fun l hl hlt h1 => ?_` and prove the remaining obligations. Establish `hp` using `congrArg φ hq.prod_one_sub_pow_eq_order`. Rewrite `hp` using `[map_prod]`. Establish `hz : ∏ k ∈ Finset.range n, φ (1 - q ^ (k + 1)) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.prod_eq_zero (i := l - 1) (Finset.mem_range.2 (by omega)) ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_one, map_pow, Nat.sub_add_cancel hl, h1, sub_self]`. Rewrite `hp` using `[hz]`. Establish `hu' : IsUnit (φ ((n : o) + 1))`. Use `hu.map φ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Conclude with `hu'.ne_zero hp.symm`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isPrimitiveRoot_map_of_isUnit_order {o K : Type} [CommRing o] [IsDomain o] [CommRing K] [IsDomain K] (φ : o →+* K)
     {m : ℕ} (hm : 0 < m) {q : o} (hq : IsPrimitiveRoot q m) (hu : IsUnit (m : o)) : IsPrimitiveRoot (φ q) m := by
@@ -46,9 +46,9 @@ theorem isPrimitiveRoot_map_of_isUnit_order {o K : Type} [CommRing o] [IsDomain 
   exact hu'.ne_zero hp.symm
 
 /- English proof (translation)
-Establish `hz0 : z ≠ 0` using `hz.ne_zero (NeZero.ne m)`. Establish `h1 : z ^ (a - (b.val : ℤ)) = 1` using `by rw [zpow_sub₀ hz0, h, div_self (zpow_ne_zero _ hz0)]`. Establish `h2` using `(hz.zpow_eq_one_iff_dvd _).1 h1`. Establish `h3 : ((a - (b.val : ℤ) : ℤ) : ZMod m) = 0` using `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 h2`. Rewrite `h3` using `[Int.cast_sub, sub_eq_zero, Int.cast_natCast, ZMod.natCast_zmod_val]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem intCast_eq_of_zpow_eq {K : Type} [Field K] {m : ℕ} [NeZero m] {z : K} (hz : IsPrimitiveRoot z m) {a : ℤ}
     {b : ZMod m} (h : z ^ a = z ^ (b.val : ℤ)) : (a : ZMod m) = b := by
@@ -60,21 +60,19 @@ theorem intCast_eq_of_zpow_eq {K : Type} [Field K] {m : ℕ} [NeZero m] {z : K} 
   exact h3
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ z₁ act`. Use `⟨1, ?_⟩` and prove the remaining obligations. Introduce `V _ _ _ ev X _ m t δ 𝔪 τ c x hT hxo a mu hY`. Use `haveI : CharZero V := 𝔪.cn.2.2.2`. Establish `hA : AdmBase V (maximalIdeal V)` using `⟨𝔪.cn.1, inferInstance, 𝔪.cn.2.1, 𝔪.cn.2.2.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : LL` using `GlobalTheory.firstFiveLaws`. Establish `hG : GlobalFnsSt` using `hL.1.globalFns`. Establish `hk : 1 ≤ X₁.S.r * X₁.S.N` using `Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by have := X₁.S.r_pos; omega) (by have := X₁.S.N_ge; omega))`. Take `⟨τ', q, hτv, hqy, hqt, hqx⟩` from `hT`. Take `⟨p', x', hp'y, hp'x, hx'o⟩` from `hY`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `W₁` using `weilQkIs_tor hG q p' hqy hqt`. Establish `W₂` using `(GlobalTheory.UT.weilQkIs_iff_weilIs hL V (maximalIdeal V) hA 𝔪.D 𝔪.A 𝔪.G 𝔪.semi 𝔪.U (AlgebraicClosure (FractionRing V)) _ hk q p' x x' hqx hp'x (τ' (Multiplicative.ofAdd p'.y))).1 W₁`. Use `X₁.ρ.P.isAb.comm` as an intermediate fact. Establish `hy : (TFK (R` using `V) (AlgebraicClosure (FractionRing V))).hom ≫ spMap 𝔪.yK = spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp 𝔪.yK) := (spMap_comp _ _).symm`. Set `h : Over.mk ((TFK (R` to `V) (AlgebraicClosure (FractionRing V))).hom ≫ spMap 𝔪.yK) ⟶ baseOver (Sp X₁.S.R) := Over.homMk ((TFK (R := V) (AlgebraicClosure (FractionRing V))).hom ≫ spMap 𝔪.yK) (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hh : h.left = spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp 𝔪.yK)` using `hy`. Establish `hζ : IsPrimitiveRoot (X₁.S.ζ ^ (X₁.S.r * X₁.S.N)) (X₁.S.r * X₁.S.N)` using `X₁.S.prim.pow (pow_pos hk 2) (pow_two _)`. Set `c₀ : (X₁.S.R)ˣ` to `Units.map (algebraMap X₁.o₁ X₁.S.R).toMonoidHom (hζ.isUnit (by omega)).unit`. Establish `w` using `GlobalTheory.CommPairing.weilIs_pull hG X₁.ρ.P.isAb X₁.ρ.P.isLB h (X₁.ρ.weil τ a (c₀ ^ (eStd X₁.S.g _ τ a).val) (by rw [pow_mul, map_pow]; rfl))`. Establish `W₃` using `(GlobalTheory.weilIs_iff_of_isGrpPullback_comm _ _ _ _ _ _ _ _ X₁.ρ.P.isLB 𝔪.A.isLB 𝔪.cart ⟨𝔪.wl, 𝔪.wl_gen⟩ (TFK (R := V) (AlgebraicClosure (FractionRing V))) _ x x' (h ≫ X₁.ρ.pt τ) (h ≫ X₁.ρ.pt a) _ ?_ ?_).2 w`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `W₃` using `[hh, map_unitOn]`. Establish `e` using `unitOn_injective (GlobalTheory.CommutatorPairing.weilIs_unique hG 𝔪.A.isAb 𝔪.A.isLB W₂ W₃)`. Rewrite `e` using `[hp'y]`. Establish `e'` using `congrArg Units.val e`. Simplify using `only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingHom.coe_comp, Function.comp_apply, Units.val_pow_eq_pow_val, c₀, IsUnit.unit_spec] at e'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e'` using `[hτv]`. Rewrite using `[Units.val_one, one_smul]`. Use `haveI : IsDomain X₁.o₁ := X₁.ar.ded.toIsDomain`. Use `haveI : NeZero (X₁.S.r * X₁.S.N) := ⟨by omega⟩`. Establish `hzp` using `isPrimitiveRoot_map_of_isUnit_order ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp (𝔪.yK.comp (algebraMap X₁.o₁ X₁.S.R))) (by omega) hζ X₁.S.unit`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `intCast_eq_of_zpow_eq hzp ?_` and prove the remaining obligations. Rewrite using `[zpow_natCast]`. Simplify using `only [RingHom.coe_comp, Function.comp_apply, map_pow] at e' ⊢`. Conclude with `e'`. Use `show h.left ≫ (X₁.ρ.pt τ).left = _`.
-
-Rewrite using `[hh, hxo]`. Use `show h.left ≫ (X₁.ρ.pt a).left = _`. Rewrite using `[hx'o, hh]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torAt_char_eq_weil : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (act : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), ∃ sg : ℤˣ, ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V) (X : Type) [AddCommGroup X] (m : ℕ) (t : Fin m → V) (δ : Fin m → LinearMap.BilinForm ℤ X) (𝔪 : UMem X₁ z₁ act V ev X t δ) (τ : X₁.S.Gam) (c : 𝔪.D.toPre.X →+ ℤ) (x : TFK (R := V) (AlgebraicClosure (FractionRing V)) ⟶ 𝔪.A.A), TorAt 𝔪.U (AlgebraicClosure (FractionRing V)) (X₁.S.r * X₁.S.N) (algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V)) (𝔪.yK (algebraMap X₁.o₁ X₁.S.R (X₁.S.ζ ^ (X₁.S.r * X₁.S.N))))) c x → x.left ≫ 𝔪.φ = spMap ((algebraMap (FractionRing V) (AlgebraicClosure (FractionRing V))).comp 𝔪.yK) ≫ (X₁.ρ.pt τ).left → ∀ a mu, 𝔪.YY a mu → ((c (𝔪.e₈ mu) : ℤ) : ZMod (X₁.S.r * X₁.S.N)) = ((sg : ℤˣ) : ℤ) • eStd X₁.S.g _ τ a := by
   intro g n F W Z i X₁ z₁ act

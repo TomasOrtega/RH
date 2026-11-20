@@ -26,27 +26,27 @@ def hermPair (x y : ι → E) : E :=
 variable {K H}
 
 /- English proof (translation)
-Simplify using `[hermPair, mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermPair_add_right (x y z : ι → E) :
     hermPair K H x (y + z) = hermPair K H x y + hermPair K H x z := by
   simp [hermPair, mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[hermPair, mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermPair_smul_right (x y : ι → E) (c : E) :
     hermPair K H x (c • y) = c * hermPair K H x y := by
   simp [hermPair, mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `[hermPair]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermPair_zero_right (x : ι → E) : hermPair K H x 0 = 0 := by
   simp [hermPair]
 
 /- English proof (translation)
-Simplify using `only [hermPair, Pi.add_apply, map_add]`. Rewrite using `[show (fun i => conj K E (x i) + conj K E (y i)) = (fun i => conj K E (x i)) + (fun i => conj K E (y i)) from rfl, add_dotProduct]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermPair_add_left (x y z : ι → E) :
     hermPair K H (x + y) z = hermPair K H x z + hermPair K H y z := by
@@ -55,7 +55,7 @@ theorem hermPair_add_left (x y z : ι → E) :
     (fun i => conj K E (x i)) + (fun i => conj K E (y i)) from rfl, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [hermPair, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[show (fun i => conj K E c * conj K E (x i)) = conj K E c • (fun i => conj K E (x i)) from rfl, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem hermPair_smul_left (x y : ι → E) (c : E) :
     hermPair K H (c • x) y = conj K E c * hermPair K H x y := by
@@ -64,15 +64,15 @@ theorem hermPair_smul_left (x y : ι → E) (c : E) :
     rfl, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `[hermPair]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermPair_zero_left (y : ι → E) : hermPair K H 0 y = 0 := by
   simp [hermPair]
 
 /- English proof (translation)
-Establish `hHij : ∀ i j, H j i = conj K E (H i j)` using `fun i j => by`. Use `congrFun (congrFun hH j) i` as an intermediate fact. Simplify using `only [transpose_apply, map_apply, conjHom, AlgHom.toRingHom_eq_coe, RingHom.coe_coe] at this`. Conclude with `this.symm`. Simplify using `only [hermPair, dotProduct, mulVec, map_sum, map_mul, conj_conj, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hHij]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hermPair_comm (hH : IsHermitianFor (conjHom K E) H) (x y : ι → E) :
     hermPair K H y x = conj K E (hermPair K H x y) := by
@@ -87,9 +87,9 @@ theorem hermPair_comm (hH : IsHermitianFor (conjHom K E) H) (x y : ι → E) :
   ring
 
 /- English proof (translation)
-Rewrite using `[hermPair_comm hH]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg (conj K E) h` as an intermediate fact. Rewrite `this` using `[conj_conj, map_zero]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h`. Rewrite using `[h, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem hermPair_eq_zero_comm (hH : IsHermitianFor (conjHom K E) H) {x y : ι → E} :
     hermPair K H y x = 0 ↔ hermPair K H x y = 0 := by
@@ -114,19 +114,19 @@ def orth (W : Submodule E (ι → E)) : Submodule E (ι → E) where
 variable {K H}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_orth {W : Submodule E (ι → E)} {y : ι → E} :
     y ∈ orth K H W ↔ ∀ x ∈ W, hermPair K H x y = 0 := Iff.rfl
 
 /- English proof (translation)
-Introduce `_ hy x hx` and use `hy x (h hx)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem orth_antitone {W W' : Submodule E (ι → E)} (h : W ≤ W') : orth K H W' ≤ orth K H W :=
   fun _ hy x hx => hy x (h hx)
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [mem_orth, Submodule.mem_bot, forall_eq, Submodule.mem_top, iff_true]`. Conclude with `hermPair_zero_left y`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem orth_bot : orth K H (⊥ : Submodule E (ι → E)) = ⊤ := by
   ext y
@@ -147,14 +147,14 @@ def wittIndex : ℕ :=
 variable {K H}
 
 /- English proof (translation)
-Introduce `y hy x hx` and use `hW x hx y hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsTotallyIsotropic.le_orth {W : Submodule E (ι → E)} (hW : IsTotallyIsotropic K H W) :
     W ≤ orth K H W :=
   fun y hy x hx => hW x hx y hy
 
 /- English proof (translation)
-Introduce `x hx y _`. Rewrite `hx` using `[Submodule.mem_bot]`. Rewrite using `[hx]`. Conclude with `hermPair_zero_left y`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTotallyIsotropic_bot : IsTotallyIsotropic K H (⊥ : Submodule E (ι → E)) := by
   intro x hx y _
@@ -163,7 +163,7 @@ theorem isTotallyIsotropic_bot : IsTotallyIsotropic K H (⊥ : Submodule E (ι �
   exact hermPair_zero_left y
 
 /- English proof (translation)
-Introduce `y hy z hz`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hy`. Take `⟨b, rfl⟩` from `Submodule.mem_span_singleton.1 hz`. Rewrite using `[hermPair_smul_left, hermPair_smul_right, hx, mul_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem isTotallyIsotropic_span_singleton {x : ι → E} (hx : hermPair K H x x = 0) :
     IsTotallyIsotropic K H (E ∙ x) := by
@@ -173,7 +173,7 @@ theorem isTotallyIsotropic_span_singleton {x : ι → E} (hx : hermPair K H x x 
   rw [hermPair_smul_left, hermPair_smul_right, hx, mul_zero, mul_zero]
 
 /- English proof (translation)
-Use `⟨Fintype.card ι, ?_⟩` and prove the remaining obligations. Introduce and unpack `d ⟨W, -, rfl⟩`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Chain the equalities or inequalities of the calculation.
 -/
 theorem bddAbove_wittIndex_set :
     BddAbove {d | ∃ W : Submodule E (ι → E), IsTotallyIsotropic K H W ∧ finrank E W = d} := by
@@ -183,20 +183,18 @@ theorem bddAbove_wittIndex_set :
     _ = Fintype.card ι := Module.finrank_fintype_fun_eq_card E
 
 /- English proof (translation)
-The claim follows from `le_csSup bddAbove_wittIndex_set ⟨W, hW, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem finrank_le_wittIndex {W : Submodule E (ι → E)} (hW : IsTotallyIsotropic K H W) :
     finrank E W ≤ wittIndex K H :=
   le_csSup bddAbove_wittIndex_set ⟨W, hW, rfl⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Apply `le_antisymm _ (Nat.zero_le _)` to reduce the goal to its premises. Use `csSup_le ⟨0, ⟨⊥, isTotallyIsotropic_bot, by simp⟩⟩ ?_` and prove the remaining obligations. Introduce and unpack `d ⟨W, hW, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `: W = ⊥`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Conclude with `(Submodule.mem_bot E).2 (h x (hW x hx x hx))`. Substitute `this` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `h x hx`. Assume the negation of the conclusion as `hne`. Establish `h1` using `finrank_le_wittIndex (isTotallyIsotropic_span_singleton (K := K) (H := H) hx)`. Rewrite `h1` using `[h, finrank_span_singleton hne]`.
-
-Conclude with `absurd h1 (by norm_num)`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem anisotropic_iff_wittIndex_eq_zero : IsAnisotropic K H ↔ wittIndex K H = 0 := by
   constructor
@@ -249,7 +247,7 @@ def ofIsotropicVector {x : ι → E} (hx : hermPair K H x x = 0) : IsotropicFlag
     exact isTotallyIsotropic_span_singleton hx
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨E ∙ x, Finset.mem_singleton_self _, by rwa [Ne, Submodule.span_singleton_eq_bot]⟩`.
+Supply the required witnesses or components.
 -/
 theorem ofIsotropicVector_isProper {x : ι → E} (hx : hermPair K H x x = 0) (hx0 : x ≠ 0) :
     (ofIsotropicVector hx).IsProper :=
@@ -259,7 +257,7 @@ theorem ofIsotropicVector_isProper {x : ι → E} (hx : hermPair K H x x = 0) (h
 end IsotropicFlag
 
 /- English proof (translation)
-Introduce and unpack `⟨W, hW, hne⟩`. Apply `hne` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Conclude with `(Submodule.mem_bot E).2 (h x (𝒲.isotropic W hW x hx x hx))`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isProper_of_isAnisotropic (h : IsAnisotropic K H) (𝒲 : IsotropicFlag K H) :
     ¬ 𝒲.IsProper := by
@@ -270,7 +268,7 @@ theorem not_isProper_of_isAnisotropic (h : IsAnisotropic K H) (𝒲 : IsotropicF
   exact (Submodule.mem_bot E).2 (h x (𝒲.isotropic W hW x hx x hx))
 
 /- English proof (translation)
-Simplify using `only [IsAnisotropic, not_forall] at h`. Take `⟨x, hx, hx0⟩` from `h`. Conclude with `⟨_, IsotropicFlag.ofIsotropicVector_isProper hx hx0⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isProper_of_not_isAnisotropic (h : ¬ IsAnisotropic K H) :
     ∃ 𝒲 : IsotropicFlag K H, 𝒲.IsProper := by
@@ -282,26 +280,26 @@ def fullChain (𝒲 : IsotropicFlag K H) : Finset (Submodule E (ι → E)) :=
   insert ⊥ (insert ⊤ (𝒲.members ∪ 𝒲.members.image (orth K H)))
 
 /- English proof (translation)
-The claim follows from `Finset.mem_insert_self _ _`.
+A detailed English derivation is pending.
 -/
 theorem bot_mem_fullChain (𝒲 : IsotropicFlag K H) : ⊥ ∈ fullChain 𝒲 :=
   Finset.mem_insert_self _ _
 
 /- English proof (translation)
-The claim follows from `Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)`.
+A detailed English derivation is pending.
 -/
 theorem top_mem_fullChain (𝒲 : IsotropicFlag K H) : ⊤ ∈ fullChain 𝒲 :=
   Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)
 
 /- English proof (translation)
-The claim follows from `Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_union_left _ hW))`.
+A detailed English derivation is pending.
 -/
 theorem mem_fullChain_of_mem {𝒲 : IsotropicFlag K H} {W : Submodule E (ι → E)}
     (hW : W ∈ 𝒲.members) : W ∈ fullChain 𝒲 :=
   Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_union_left _ hW))
 
 /- English proof (translation)
-The claim follows from `Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hW)))`.
+A detailed English derivation is pending.
 -/
 theorem orth_mem_fullChain_of_mem {𝒲 : IsotropicFlag K H} {W : Submodule E (ι → E)}
     (hW : W ∈ 𝒲.members) : orth K H W ∈ fullChain 𝒲 :=
@@ -309,7 +307,7 @@ theorem orth_mem_fullChain_of_mem {𝒲 : IsotropicFlag K H} {W : Submodule E (�
     (Finset.mem_union_right _ (Finset.mem_image_of_mem _ hW)))
 
 /- English proof (translation)
-Break down `eq_or_ne W W' with rfl | hne` into its components or cases. Conclude with `(𝒲.isotropic W hW).le_orth`. Break down `𝒲.isChain hW hW' hne with h | h` into its components or cases. Conclude with `h.trans (𝒲.isotropic W' hW').le_orth`. Conclude with `(𝒲.isotropic W hW).le_orth.trans (orth_antitone h)`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem le_orth_of_mem (𝒲 : IsotropicFlag K H) {W W' : Submodule E (ι → E)}
     (hW : W ∈ 𝒲.members) (hW' : W' ∈ 𝒲.members) : W ≤ orth K H W' := by
@@ -320,15 +318,15 @@ theorem le_orth_of_mem (𝒲 : IsotropicFlag K H) {W W' : Submodule E (ι → E)
   · exact (𝒲.isotropic W hW).le_orth.trans (orth_antitone h)
 
 /- English proof (translation)
-Establish `key : ∀ A ∈ fullChain 𝒲, ∀ B ∈ fullChain 𝒲, A ≤ B ∨ B ≤ A`. Introduce `A hA B hB`. Simplify using `only [fullChain, Finset.mem_insert, Finset.mem_union, Finset.mem_image] at hA hB`. Break down `hA with rfl | rfl | hA | ⟨W, hW, rfl⟩` into its components or cases. Conclude with `Or.inl bot_le`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inr le_top`. Break down `hB with rfl | rfl | hB | ⟨W', hW', rfl⟩` into its components or cases. Conclude with `Or.inr bot_le`. Conclude with `Or.inl le_top`. Break down `eq_or_ne A B with rfl | hne` into its components or cases.
+Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Or.inl le_rfl`. Conclude with `𝒲.isChain hA hB hne`. Conclude with `Or.inl (le_orth_of_mem 𝒲 hA hW')`. Break down `hB with rfl | rfl | hB | ⟨W', hW', rfl⟩` into its components or cases. Conclude with `Or.inr bot_le`.
+Prove the first alternative. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative.
 
-Conclude with `Or.inl le_top`. Conclude with `Or.inr (le_orth_of_mem 𝒲 hB hW)`. Break down `eq_or_ne W W' with rfl | hne` into its components or cases. Conclude with `Or.inl le_rfl`. Break down `𝒲.isChain hW hW' hne with h | h` into its components or cases.
+Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative.
 
-Conclude with `Or.inr (orth_antitone h)`. Conclude with `Or.inl (orth_antitone h)`. Introduce `A hA B hB _`. Conclude with `key A hA B hB`.
+Prove the first alternative. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isChain_fullChain (𝒲 : IsotropicFlag K H) :
     IsChain (· ≤ ·) (fullChain 𝒲 : Set (Submodule E (ι → E))) := by
@@ -362,7 +360,7 @@ def below (S : Finset (Submodule E (ι → E))) (B : Submodule E (ι → E)) :
   (S.filter (· < B)).sup id
 
 /- English proof (translation)
-Apply `Finset.sup_le` to reduce the goal to its premises. Introduce `A hA`. Conclude with `(Finset.mem_filter.1 hA).2.le`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem below_le (S : Finset (Submodule E (ι → E))) (B : Submodule E (ι → E)) :
     below S B ≤ B := by
@@ -385,14 +383,14 @@ def extendScalars (W : Submodule E (ι → E)) : Submodule (R ⊗[K] E) (ι → 
 variable {K R}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem toBase_mem_extendScalars {W : Submodule E (ι → E)} {x : ι → E} (hx : x ∈ W) :
     toBase K R x ∈ extendScalars K R W :=
   Submodule.subset_span ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono (Set.image_mono h)`.
+A detailed English derivation is pending.
 -/
 theorem extendScalars_mono {W W' : Submodule E (ι → E)} (h : W ≤ W') :
     extendScalars K R W ≤ extendScalars K R W' :=
@@ -439,7 +437,7 @@ def parabolic (𝒲 : IsotropicFlag K H) : Subgroup (unitaryPoints K E H R) wher
 
 variable {H R} in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_parabolic {𝒲 : IsotropicFlag K H} {g : unitaryPoints K E H R} :
     g ∈ parabolic H R 𝒲 ↔ ∀ W ∈ 𝒲.members, ∀ x ∈ extendScalars K R W,
@@ -480,7 +478,7 @@ def unipotentRadical (𝒲 : IsotropicFlag K H) : Subgroup (unitaryPoints K E H 
 
 variable {H R} in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unipotentRadical {𝒲 : IsotropicFlag K H} {g : unitaryPoints K E H R} :
     g ∈ unipotentRadical H R 𝒲 ↔ ∀ B ∈ fullChain 𝒲, ∀ x ∈ extendScalars K R B,
@@ -489,9 +487,9 @@ theorem mem_unipotentRadical {𝒲 : IsotropicFlag K H} {g : unitaryPoints K E H
   Iff.rfl
 
 /- English proof (translation)
-Introduce `g hg W hW x hx`. Establish `hB` using `mem_fullChain_of_mem hW`. Establish `hbelow` using `extendScalars_mono (K := K) (R := R) (below_le (fullChain 𝒲) W)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `using Submodule.add_mem _ (hbelow (hg W hB x hx).1) hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Submodule.add_mem _ (hbelow (hg W hB x hx).2) hx`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unipotentRadical_le_parabolic (𝒲 : IsotropicFlag K H) :
     unipotentRadical H R 𝒲 ≤ parabolic H R 𝒲 := by

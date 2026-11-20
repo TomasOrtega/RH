@@ -8,7 +8,7 @@ universe u
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[← Ideal.map_map]`. Establish `hd : Disjoint (m.primeCompl : Set R) (W : Set R)` using `Set.disjoint_left.2 fun a ha hW => ha (hWm hW)`. Use `IsLocalization.isPrime_of_isPrime_disjoint m.primeCompl (Localization.AtPrime m) W ‹_› hd` as an intermediate fact. Conclude with `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rw [Ideal.mk_ker]; exact Ideal.map_mono hIW)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isPrime_map_quotient_localization {R : Type*} [CommRing R] (m W I : Ideal R) [m.IsPrime] [W.IsPrime]
     (hWm : W ≤ m) (hIW : I ≤ W) :

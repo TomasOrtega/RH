@@ -6,19 +6,19 @@ open Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ l hl hd O _ _ _ _ K _ _ _ hlm σ y hy`. Establish `hmem : y ∈ Submodule.traceDual ℤ ℚ (1 : Submodule (𝓞 E) E)`. Rewrite using `[Submodule.mem_traceDual]`. Introduce `a ha`. Take `⟨x, rfl⟩` from `Submodule.mem_one.mp ha`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hy x`. Use `⟨k, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, hk]`. Simplify using the standard rewrite rules. Establish `hb : ∀ i, IsIntegral ℤ (integralBasis E i)` using `fun i => by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[integralBasis_apply]`. Conclude with `RingOfIntegers.isIntegral_coe _`. Establish `h1 : (1 : E) ∈ (1 : Submodule (𝓞 E) E)` using `Submodule.mem_one.mpr ⟨1, map_one _⟩`. Establish `hint0` using `isIntegral_discr_mul_of_mem_traceDual (A := ℤ) (K := ℚ) (1 : Submodule (𝓞 E) E) hb h1 hmem`. Rewrite `hint0` using `[← coe_discr, Algebra.smul_def, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hint : IsIntegral ℤ ((NumberField.discr E : E) * y)` using `by simpa using hint0`. Establish `hσ : IsIntegral ℤ (σ ((NumberField.discr E : E) * y))` using `hint.map σ.toIntAlgHom`. Establish `hO : IsIntegral O (σ ((NumberField.discr E : E) * y))` using `hσ.tower_top`. Take `⟨z, hz⟩` from `IsIntegrallyClosed.isIntegral_iff.mp hO`. Establish `hcop : IsCoprime (l : ℤ) (NumberField.discr E)` using `(Irreducible.coprime_iff_not_dvd (Nat.prime_iff_prime_int.mp hl).irreducible).mpr hd`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `hcop`. Establish `hu : IsUnit ((NumberField.discr E : ℤ) : O)`. Assume the negation of the conclusion as `hn`. Establish `hdm : ((NumberField.discr E : ℤ) : O) ∈ IsLocalRing.maximalIdeal O` using `(IsLocalRing.mem_maximalIdeal _).mpr hn`. Establish `hlm' : ((l : ℤ) : O) ∈ IsLocalRing.maximalIdeal O` using `by simpa using hlm`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1m : (1 : O) ∈ IsLocalRing.maximalIdeal O`. Establish `: ((a : O) * ((l : ℤ) : O) + (b : O) * ((NumberField.discr E : ℤ) : O)) = 1`. Conclude with `congrArg (Int.cast (R := O)) hab` after adjusting the coercions. Rewrite using `[← this]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hlm') (Ideal.mul_mem_left _ _ hdm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsLocalRing.maximalIdeal.isMaximal O).ne_top ((Ideal.eq_top_iff_one _).mpr h1m)`. Take `⟨u, hu'⟩` from `hu`. Use `⟨(u⁻¹ : Oˣ) * z, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hz, map_mul, map_intCast, ← map_intCast (algebraMap O K), ← hu', ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem traceDual_integral_of_not_dvd_discr : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (l : ℕ), l.Prime → ¬ (l : ℤ) ∣ discr E → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] (K : Type) [Field K] [Algebra O K] [IsFractionRing O K], (l : O) ∈ IsLocalRing.maximalIdeal O → ∀ (σ : E →+* K) (y : E), (∀ x : 𝓞 E, ∃ n : ℤ, Algebra.trace ℚ E (y * x) = n) → ∃ z : O, algebraMap O K z = σ y := by
   intro E _ _ _ l hl hd O _ _ _ _ K _ _ _ hlm σ y hy

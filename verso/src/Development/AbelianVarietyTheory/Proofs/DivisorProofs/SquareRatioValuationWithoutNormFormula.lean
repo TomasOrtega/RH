@@ -22,81 +22,75 @@ open GlobalTheory.SqTop.OneSqProof
 namespace GlobalTheory.SqTop.OneSqNoSmall
 
 /- English proof (translation)
-Introduce `hInp h1 h2 h3 h4 h5 h5' h6 h7 h8 h9 h10`. Take `⟨c, hc⟩` from `Model.gBig_and h1 (Model.gBig_and h2 (Model.gBig_and h3 (Model.gBig_and h4 (Model.gBig_and h5 (Model.gBig_and h5' (Model.gBig_and h6 (Model.gBig_and h7 (Model.gBig_and h8 (Model.gBig_and h9 h10)))))))))`. Use `⟨c, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x0, h⟩` from `hc ε CF hCF`. Use `⟨C0, x0, fun C hC D large₂ a b r T Lc μ₀ hL G => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨H1, H2, H3, H4, H5, H5', H6, H7, H8, H9, H10⟩` from `h C hC D large₂ a b r T Lc μ₀ hL G`. Use `clear h hc h1 h2 h3 h4 h5 h5' h6 h7 h8 h9 h10`. Introduce `W S ρ hstd hnum C' μ rq zA zA' zT zTd gT ch N0 Sd Se dl Bw hThA hSq w ij`. Take `⟨n1, n2, n3, n4, n5, n6, n7, n8, n9⟩` from `Model.tower_numbers ij.1 ij.2`. Establish `hN0 : ∀ s : ℤ, 1 ≤ s → s ≤ (halfRank D ij.1 ij.2 : ℤ) → ∀ l ∈ Sd, 0 ≤ N0 ij s l`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s h1 h2 l hl`. Take `⟨z, -, hz⟩` from `(hSq.inside ij s.toNat (by omega) (by omega)).2`. Establish `e : ((s.toNat : ℕ) : ℤ) = s` using `Int.toNat_of_nonneg (by omega)`. Rewrite `hz` using `[e]`. Rewrite using `[hz l ((hSq.den l).1 hl).1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `hdl : 0 ≤ dl w`. Take `⟨S', del, hE, -, -, e⟩` from `hSq.int`. Rewrite using `[e]`. Conclude with `wt_nonneg w fun l _ => hE.2.1 l`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEr : 0 ≤ wt Se (fun l => 1 / (l : ℝ) ^ 2) w` using `wt_nonneg w fun l _ => by positivity`. Establish `hlast : 0 ≤ ((D.R.m - 1 - ij.2 : ℕ) : ℝ) * (2 * ∑ q ∈ G.pl.S0, (condExp G.pl q : ℝ) * (vw w (Ideal.absNorm q.asIdeal : D.what₂.LL) : ℝ))` using `mul_nonneg (Nat.cast_nonneg _) (mul_nonneg (by norm_num) (sum_nonneg fun q _ => mul_nonneg (Nat.cast_nonneg _) (GlobalTheory.Square.TwoStep.vw_natCast_nonneg w _)))`. Distinguish the cases in `hne : μ w = μ₀`. Rewrite using `[hne, hSq.rq_base ij, Formalism.DivisionValues.ValuationRepresentative.vw_one]`. Use `⟨one_ne_zero, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1 : 0 ≤ ∑ s ∈ Icc (1 : ℤ) (halfRank D ij.1 ij.2), (|((vw w (zT ij s) + gT ij s w : ℤ) : ℝ)| + |((vw w (zTd ij (ch w) s) + gT ij s w : ℤ) : ℝ)|)` using `sum_nonneg fun _ _ => by positivity`. Establish `s2 : 0 ≤ ∑ s ∈ Icc (1 : ℤ) (halfRank D ij.1 ij.2), wt Sd (N0 ij s) w` using `sum_nonneg fun s hs => by`. Rewrite `hs` using `[mem_Icc]`. Conclude with `wt_nonneg w (hN0 s hs.1 hs.2)`. Establish `s3` using `mul_nonneg (Nat.cast_nonneg (2 * halfRank D ij.1 ij.2)) hEr`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Int.cast_zero]`. Establish `a1` using `abs_nonneg (vw w (zA ij) : ℝ)`. Establish `a2` using `abs_nonneg (vw w (zA' ij) : ℝ)`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set t := μ w with ht`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hQn, hThl⟩` from `hThA w hne`. Take `⟨l, hl, hlw⟩` from `exists_prime_mem' w`. Take `⟨HL1, HL2⟩` from `H1 ij.1 ij.2`. Take `⟨Λ, hΛ, hΛne⟩` from `HL1 t`. Take `⟨Λ₀, hΛ₀, hΛ₀ne⟩` from `HL1 μ₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨Λd, hΛd, hΛdne⟩` from `HL2 (some (ch w))`. Establish `hΛd' : IsHeckeL (nuH G μ₀ ij.1 ij.2 * Lc.C.delAt l) Λd`. Rewrite using `[← hSq.delOf_ch hl hlw]`. Conclude with `hΛd`. Establish `hTd : ∀ s : ℕ, 1 ≤ s → s ≤ halfRank D ij.1 ij.2 → D.what₂.embLL (zTd ij (ch w) s) * Λ₀ s = Λd s ∧ Λd s ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `s h1' h2'`. Take `⟨x, hx, hx0, hxc, -⟩` from `(hSq.inside ij s h1' h2').1`. Take `⟨y, hy, hy0, hyΛ, -⟩` from `H2 ij.1 ij.2 s h1' h2' none`. Take `⟨y', hy', hy'0, hy'Λ, -⟩` from `H2 ij.1 ij.2 s h1' h2' (some (ch w))`. Establish `e1 : x = y` using `hx.2.unique hy.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e2 : D.what₂.embLL (zTd ij (ch w) s) * x = y'` using `(hxc (ch w)).2.unique hy'.2`. Rewrite using `[← hyΛ Λ₀ hΛ₀, ← hy'Λ Λd hΛd, ← e1]`. Conclude with `⟨e2, e2 ▸ hy'0⟩`. Establish `hzψ : ∀ s : ℤ, ∃ z : D.what₂.LL, 1 ≤ s → s ≤ (halfRank D ij.1 ij.2 : ℤ) → D.what₂.embLL z * Λ₀ s = Λ s`. Introduce `s`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hs : 1 ≤ s ∧ s ≤ (halfRank D ij.1 ij.2 : ℤ)`. Establish `e : ((s.toNat : ℕ) : ℂ) = (s : ℂ)`. Rewrite using `[← Int.cast_natCast, Int.toNat_of_nonneg (by omega)]`. Establish `h0 : Λ₀ s ≠ 0` using `hΛ₀ne s (by omega) hs.2`. Take `⟨z, hz⟩` from `hnum.ratios ij.1 ij.2 t Λ Λ₀ hΛ hΛ₀ s.toNat (by omega) (by omega) (by rw [e]; exact h0)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨z, fun _ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hz, e, div_mul_cancel₀ _ h0]`. Conclude with `⟨0, fun h1' h2' => absurd ⟨h1', h2'⟩ hs⟩`. Use `choose zψ hzψ using hzψ`. Establish `hEp : ∀ s : ℤ, ∃ E : D.what₂.LL, 1 - (e0 D ij.1 ij.2 : ℤ) ≤ s → s ≤ 0 → GlobalTheory.Square.IsAwayUnit (Qn G t) E ∧ Λ s * Λ₀ ((1 - s : ℤ) : ℂ) = D.what₂.embLL E * (Λ ((1 - s : ℤ) : ℂ) * Λ₀ s)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `s`. Distinguish the cases in `hs : 1 - (e0 D ij.1 ij.2 : ℤ) ≤ s ∧ s ≤ 0`. Take `⟨E, hE⟩` from `H9 W S hnum ij.1 ij.2 t Λ Λ₀ hΛ hΛ₀ s hs.1 hs.2`. Conclude with `⟨E, fun _ _ => hE⟩`. Conclude with `⟨0, fun h1' h2' => absurd ⟨h1', h2'⟩ hs⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `choose Ep hEp using hEp`. Establish `hwSd : ∀ s, wt Sd (N0 ij s) w = N0 ij s l * (vw w (l : D.what₂.LL) : ℝ)` using `fun s => wt_at w (fun l' hl' => ((hSq.den l').1 hl').1) hl hlw fun h => by`. Assume the negation of the conclusion as `h'`. Conclude with `h ((hSq.den l).2 ⟨hl, ij, s, h'⟩)`. Establish `hwSe : wt Se (fun l => 1 / (l : ℝ) ^ 2) w = 1 / (l : ℝ) ^ 2 * (vw w (l : D.what₂.LL) : ℝ)` using `wt_at w (fun l' hl' => ((hSq.err l').1 hl').1) hl hlw fun h => absurd ((hSq.err l).2 ⟨hl, w, hne, hlw⟩) h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmid : ∀ s : ℤ, 1 ≤ s → s ≤ (halfRank D ij.1 ij.2 : ℤ) → zT ij s ≠ 0 ∧ zTd ij (ch w) s ≠ 0 ∧ D.what₂.embLL (zψ s) * Λ₀ s = D.what₂.embLL (zT ij s) * Λ s ∧ -(wt Sd (N0 ij s) w) ≤ ((vw w (zψ s) + gT ij s w : ℤ) : ℝ) ∧ (vw w (zψ s) : ℝ) ≤ (vw w (zTd ij (ch w) s) : ℝ) + wt Se (fun l …`. Introduce `s h1' h2'`. Establish `e : ((s.toNat : ℕ) : ℤ) = s` using `Int.toNat_of_nonneg (by omega)`. Establish `eC : ((s.toNat : ℕ) : ℂ) = (s : ℂ)` using `by rw [← Int.cast_natCast, e]`. Take `⟨hTd1, hTd2⟩` from `hTd s.toNat (by omega) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hTd1` using `[eC, e]`. Rewrite `hTd2` using `[eC]`. Establish `hψ` using `hzψ s h1' h2'`. Establish `hTd0 : zTd ij (ch w) s ≠ 0` using `fun h0 => hTd2 (by rw [← hTd1, h0, map_zero, zero_mul])`. Establish `hψ0 : zψ s ≠ 0` using `fun h0 => hΛne s (by omega) h2' (by rw [← hψ, h0, map_zero, zero_mul])`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `⟨by rw [hSq.base]; exact one_ne_zero, hTd0, by rw [hSq.base, map_one, one_mul]; exact hψ, ?_, ?_⟩` and prove the remaining obligations. Establish `hin` using `hSq.inside ij s.toNat (by omega) (by omega)`. Use `H10 ij.1 ij.2 s.toNat (by omega) (by omega) t Λ Λ₀ (zψ s) _ _ _ hΛ hΛ₀ (by rw [eC]; exact hψ) hin.1 hin.2 w l hl hlw hQn` as an intermediate fact. Rewrite `this` using `[e]`. Rewrite using `[hwSd]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `this`. Establish `hz` using `hThl l hl hlw ij.1 ij.2 s.toNat Λ Λd (zψ s / zTd ij (ch w) s) (by omega) (by omega) hΛ hΛd' (by`. Rewrite using `[eC, ← hTd1, ← hψ, map_div₀]`. Clear denominators, using `[(map_ne_zero _).2 hTd0])` for the nonvanishing conditions. Establish `hv` using `Formalism.DivisionValues.ValuationRepresentative.vw_mul w (zψ s / zTd ij (ch w) s) (zTd ij (ch w) s) (div_ne_zero hψ0 hTd0) hTd0`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hv` using `[div_mul_cancel₀ _ hTd0]`. Rewrite using `[hwSe, hv]`. Establish `: (vw w (l : D.what₂.LL) : ℝ) / (l : ℝ) ^ 2 = 1 / (l : ℝ) ^ 2 * (vw w (l : D.what₂.LL) : ℝ)` using `by ring`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨rr, hr1, hr2, hr3⟩` from `GlobalTheory.Square.Ratio.exists_ratios D.what₂.LL D.what₂.embLL w (Qn G t) hQn (e0 D ij.1 ij.2) (halfRank D ij.1 ij.2) (by omega) (fun s => Λ₀ s) (fun s => Λ s) (zT ij) (zTd ij (ch w)) zψ Ep (fun s => gT ij s w) (fun s => wt Sd (N0 ij s) w) (wt Se (fun l => 1 / (l : ℝ) ^ 2) w) ( …`. Establish `hrat : ∀ n : ℕ, 1 ≤ n → n ≤ halfRank D ij.1 ij.2 → Λ (n : ℂ) / Λ₀ (n : ℂ) = D.what₂.embLL (rr n)`. Introduce `n h1' h2'`. Use `(hr1 n (by omega) (by omega)).2` as an intermediate fact. Establish `h0` using `hΛ₀ne n (by omega) (by omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Int.cast_natCast] at this h0`. Rewrite using `[← this, mul_div_cancel_right₀ _ h0]`. Take `⟨cf, hcf0, hcf⟩` from `hSq.ratio ij`. Take `⟨sn, sc, hrq⟩` from `hcf t (Or.inr ⟨w, ht.symm⟩)`. Take `⟨sn₀, sc₀, -⟩` from `hcf μ₀ (Or.inl rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨A₁, A₁', WW, X, c0, hX, hXc⟩` from `H6 W hstd ij.1 ij.2`. Take `⟨u, hu, ζ, hζ, hT⟩` from `H7 W S ρ hstd hnum ij.1 ij.2 t (cf t) (cf μ₀) A₁ A₁' WW X c0 Λ Λ₀ sn sc sn₀ sc₀ hX hXc hΛ hΛ₀`. Take `⟨δ, t0, hN⟩` from `hSq.norms`. Take `⟨P₀, P₀', hB₀, hzA, hzA'⟩` from `hN ij`. Take `⟨P, P', hB⟩` from `H4 δ t0 (levQ G.pl) P₀ t ij.1 ij.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hmod : modT G μ₀ = SqNum.condE G.pl` using `(Model.base_tuple G hL).2.2`. Establish `hB₀' : IsBottom G μ₀ ij.1 ij.2 (modT G μ₀) P₀ P₀'` using `by rw [hmod]; exact hB₀`. Take `⟨A, hA, hNA⟩` from `H5 δ t0 ij.1 ij.2`. Establish `eP` using `hNA t _ P P' Λ hB hΛ`. Establish `eP₀` using `hNA μ₀ _ P₀ P₀' Λ₀ hB₀' hΛ₀`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hIcc : ∀ s ∈ Icc (1 - (e0 D ij.1 ij.2 : ℤ)) (h0 D ij.1 ij.2 : ℤ), 1 - (e0 D ij.1 ij.2 : ℤ) ≤ s ∧ s ≤ (halfRank D ij.1 ij.2 : ℤ)` using `fun s hs => by`. Rewrite `hs` using `[mem_Icc]`. Use linear arithmetic over natural numbers and integers. Use `set z : D.what₂.LL := zA ij * ∏ s ∈ Icc (1 - (e0 D ij.1 ij.2 : ℤ)) (h0 D ij.1 ij.2 : ℤ), rr s with hzdef`. Establish `hz : D.what₂.embLL z = (P.norm : ℂ)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eP, hzdef, map_mul, hzA, eP₀, map_prod, mul_assoc, ← prod_mul_distrib]`. Use `congr 1`. Use `prod_congr rfl fun s hs => ?_` and prove the remaining obligations. Take `⟨a1, a2⟩` from `hIcc s hs`. Rewrite using `[mul_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hr1 s a1 a2).2`. Establish `hzne : z ≠ 0`. Introduce `h0`. Establish `: (P.norm : ℂ) = 0` using `by rw [← hz, h0, map_zero]`. Rewrite `this` using `[eP]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `mul_ne_zero hA (prod_ne_zero_iff.2 fun s hs => ?_) this` and prove the remaining obligations. Take `⟨a1, a2⟩` from `hIcc s hs`. Conclude with `hΛne s a1 a2`. Establish `hzAne : zA ij ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: (P₀.norm : ℂ) = 0` using `by rw [← hzA, h0, map_zero]`. Rewrite `this` using `[eP₀]`. Use `mul_ne_zero hA (prod_ne_zero_iff.2 fun s hs => ?_) this` and prove the remaining obligations. Take `⟨a1, a2⟩` from `hIcc s hs`. Conclude with `hΛ₀ne s a1 a2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hz'ne : zA' ij ≠ 0`. Introduce `h0`. Establish `hne' : P₀'.norm ≠ 0` using `GlobalTheory.T.definiteThetaPair_norm_ne_zero_of_coord_ne_zero D (hInp D) δ t0 (levQ G.pl) P₀' (H5' δ t0 (levQ G.pl) P₀ P₀' ij.1 ij.2 hB₀).2`. Establish `: (P₀'.norm : ℂ) = 0` using `by rw [← hzA', h0, map_zero]`. Conclude with `hne' (by exact_mod_cast this)`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ0, hc00, hγc, hγv⟩` from `H8 W S hstd hnum ij.1 ij.2 t A₁ A₁' WW X c0 δ t0 P₀ P₀' P P' z (zA' ij) C' dl hX hXc hB₀ hB hz hzA' hzne hz'ne hSq.int`. Establish `hS0 : ∀ v ∈ G.pl.S0, 0 < Ideal.absNorm v.asIdeal` using `fun v _ => Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)`. Establish `htk` using `fun k => GlobalTheory.Square.stepRatio_vw_bound D.what₂.LL D.what₂.embLL w (Qn G t) hQn _ G.pl.S0 (condExp G.pl) (fun v => Ideal.absNorm v.asIdeal) hS0 (u k) 1 (hu k)`. Use `choose tk htk0 htku htkv using htk`. Take `⟨hζ0, hζv⟩` from `hζ.ne_zero_and_vw w hQn`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Establish `hq' : ∏ k ∈ range (qq D ij.2), Λ ((eTop D ij.1 ij.2 + k + 1 : ℕ) : ℂ) / Λ₀ ((eTop D ij.1 ij.2 + k + 1 : ℕ) : ℂ) = D.what₂.embLL (∏ k ∈ range (qq D ij.2), rr ((eTop D ij.1 ij.2 : ℤ) + k + 1))`. Rewrite using `[map_prod]`. Use `prod_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite `hk` using `[mem_range]`. Rewrite using `[hrat _ (by omega) (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hp' : ∏ k ∈ range (pp D ij.2), Λ ((eTop D ij.1 ij.2 + qq D ij.2 - k : ℕ) : ℂ) / Λ₀ ((eTop D ij.1 ij.2 + qq D ij.2 - k : ℕ) : ℂ) = D.what₂.embLL (∏ k ∈ range (pp D ij.2), rr ((eTop D ij.1 ij.2 : ℤ) + qq D ij.2 - k))`. Rewrite using `[map_prod]`. Use `prod_congr rfl fun k hk => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hk` using `[mem_range]`. Rewrite using `[hrat _ (by omega) (by omega)]`. Rewrite using `[Nat.cast_sub (by omega)]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc0 : cf μ₀ ≠ 0` using `hcf0`. Establish `e1 : cf t / cf μ₀ = D.what₂.embLL (rq t ij)` using `by rw [← hrq, mul_div_cancel_right₀ _ hc0]`. Establish `e2 : c0 t / c0 μ₀ = D.what₂.embLL γ` using `by rw [← hγc, mul_div_cancel_right₀ _ hc00]`. Establish `e3 : ∏ k, u k = D.what₂.embLL (∏ k, tk k)`. Rewrite using `[map_prod]; exact prod_congr rfl fun k _ => by rw [htku k, mul_one]`.
-
-Rewrite `hT` using `[e1, e2, e3, hq', hp']`. Establish `heqLL : rq t ij * ∏ k ∈ range (qq D ij.2), rr ((eTop D ij.1 ij.2 : ℤ) + k + 1) = ζ * (∏ k, tk k) * γ * ∏ k ∈ range (pp D ij.2), rr ((eTop D ij.1 ij.2 : ℤ) + qq D ij.2 - k)`. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Simplify using `only [map_mul]`. Conclude with `hT`.
-
-Establish `key` using `vw_ratio_le w (eTop D ij.1 ij.2) (pp D ij.2) (qq D ij.2) (e0 D ij.1 ij.2) (h0 D ij.1 ij.2) n1 n5.le (rq t ij) ζ γ (zA ij) (zA' ij) tk rr (fun s => |((vw w (zT ij s) + gT ij s w : ℤ) : ℝ)| + |((vw w (zTd ij (ch w) s) + gT ij s w : ℤ) : ℝ)|) (fun s => wt Sd (N0 ij s) w) (wt Se (fun …`. Establish `h2'' : s ≤ (halfRank D ij.1 ij.2 : ℤ)` using `by rw [n2]; push_cast; omega`. Take `⟨b1, b2⟩` from `hr2 s h1' h2''`. Use `⟨by positivity, wt_nonneg w (hN0 s h1' h2''), b1, ?_⟩` and prove the remaining obligations. Use `abs_nonneg ((vw w (zTd ij (ch w) s) + gT ij s w : ℤ) : ℝ)` as an intermediate fact.
-
-Use the proof step `linarith) hr3`. Rewrite using `[n2, ← n3]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem oneSqSt_of_claims' : (∀ D, GlobalTheory.NormSum.Inp D) → LNe → TorEx → BotSmall → BotExT → NormBig → BotNe → TriEx → Tower → BotConst → Refl → RhoLow → OneSqSt := by
   intro hInp h1 h2 h3 h4 h5 h5' h6 h7 h8 h9 h10

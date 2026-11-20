@@ -7,7 +7,7 @@ namespace GlobalTheory.LeftActionFrameMul
 open ReciprocityTheory.ChartRestriction.G.FD
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show ((γ' * γ : GL (Fin r) E) : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ = (γ' : Matrix (Fin r) (Fin r) E).map τ.1 * ((γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ)`. Rewrite using `[Units.val_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lact_mul_frame {E : Type} [Field E] {r : ℕ} {Ψ : Finset (E →+* ℂ)}
     (γ' γ : GL (Fin r) E) (x : Frame Ψ r) : lact (γ' * γ) x = lact γ' (lact γ x) := by

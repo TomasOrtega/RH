@@ -13,27 +13,25 @@ noncomputable section
 namespace GlobalTheory.DRMat
 
 /- English proof (translation)
-Introduce `l _ P K d ρ N hlow hhigh c hc hc0`. Set `b` to `Pi.basisFun ℚ_[l] (Fin d)`. Set `M : ↥(GK K) → Matrix (Fin d) (Fin d) P.R.BdR` to `fun g => (ρ g).val.map (fun z : ℤ_[l] => algebraMap ℚ_[l] P.R.BdR (z : ℚ_[l]))`. Set `e : (Fin d → ℚ_[l]) ⊗[ℚ_[l]] P.R.BdR ≃ₗ[ℚ_[l]] (Fin d → P.R.BdR)` to `TensorProduct.congr b.equivFun (LinearEquiv.refl ℚ_[l] P.R.BdR) ≪≫ₗ TensorProduct.comm ℚ_[l] (Fin d → ℚ_[l]) P.R.BdR ≪≫ₗ TensorProduct.piScalarRight ℚ_[l] ℚ_[l] P.R.BdR (Fin d)`. Establish `he_tmul : ∀ v β, e (v ⊗ₜ β) = fun i => v i • β`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `v β`. Simplify using `[e, b]`. Establish `he : ∀ (g : ↥(GK K)) x, e (actVdR (P.PD K) (qRep ρ) g x) = M g *ᵥ fun i => P.actQdR (g : GQ l) (e x i)`. Introduce `g x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp only [map_zero, Pi.zero_apply]`. Conclude with `(Matrix.mulVec_zero _).symm`. Consider the case `tmul v β`. Rewrite using `[GlobalTheory.DRFil.actVdR_tmul, P.PD_actdR, he_tmul, he_tmul]`. Use function extensionality and compare the values at `i`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [M, qRep, Matrix.mulVec, dotProduct, Matrix.map_apply, Algebra.smul_def, map_mul, AlgEquiv.commutes, MonoidHom.coe_comp, Function.comp_apply]`. Express the relevant statement in the definitionally equal form `algebraMap ℚ_[l] P.R.BdR ((((ρ g).val.map (algebraMap ℤ_[l] ℚ_[l])) *ᵥ v) i) * _ = _`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply, map_sum, map_mul, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[PadicInt.algebraMap_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add, hx, hy, ← Matrix.mulVec_add]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `set x : (Fin d → ℚ_[l]) ⊗[ℚ_[l]] P.R.BdR := ∑ i, Pi.single i (1 : ℚ_[l]) ⊗ₜ c i with hx`. Establish `hex : e x = c`. Rewrite using `[hx, map_sum]`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [he_tmul, Finset.sum_apply, Pi.single_apply, ite_smul, one_smul, zero_smul]`. Simplify using the standard rewrite rules. Establish `hxD : x ∈ DdR (P.PD K) (qRep ρ)`. Rewrite using `[GlobalTheory.DRFil.mem_DdR]`. Introduce `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, hex]`. Conclude with `hc g`. Establish `hcoord : ∀ (a : ℤ) (y : (Fin d → ℚ_[l]) ⊗[ℚ_[l]] P.R.BdR), y ∈ FilV (P.PD K) (LL` using `ℚ_[l]) (V := Fin d → ℚ_[l]) a → ∀ i, e y i ∈ (P.PD K).Fil a := by`. Introduce `a y hy i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `GlobalTheory.DRFil.FilV_induction (P.PD K) (p := fun y => e y i ∈ (P.PD K).Fil a) ?_ ?_ ?_ hy` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `v β hβ`. Rewrite using `[he_tmul]`. Conclude with `((P.PD K).Fil a |>.restrictScalars ℚ_[l]).smul_mem (v i) hβ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `y z hy hz`. Simplify `Submodule.add_mem _ hy hz` using `only [map_add, Pi.add_apply]`. Use `⟨fun i => ?_, fun hall => hc0 ?_⟩` and prove the remaining obligations. Simplify `hcoord _ x (hlow hxD) i` using `[hex]`. Establish `hxF : x ∈ FilV (P.PD K) (LL` using `ℚ_[l]) (V := Fin d → ℚ_[l]) ((N : ℤ) + 1) := Submodule.sum_mem _ fun i _ => GlobalTheory.DRFil.tmul_mem_FilV (P.PD K) _ (hall i)`.
-
-Establish `h0 : x ∈ DdR (P.PD K) (qRep ρ) ⊓ FilV (P.PD K) (LL` using `ℚ_[l]) (V := Fin d → ℚ_[l]) ((N : ℤ) + 1) := ⟨hxD, hxF⟩`. Rewrite `h0` using `[hhigh, Submodule.mem_bot]`. Rewrite using `[← hex, h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem invariant_coord_bounds : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (K : FinExt l) (d : ℕ) (ρ : ↥(GK K) →* GL (Fin d) ℤ_[l]) (N : ℕ), DdR (P.PD K) (qRep ρ) ≤ FilV (P.PD K) (LL := ℚ_[l]) (V := Fin d → ℚ_[l]) (-(N : ℤ)) → DdR (P.PD K) (qRep ρ) ⊓ FilV (P.PD K) (LL := ℚ_[l]) (V := Fin d → ℚ_[l]) ((N : ℤ) + 1) = ⊥ → ∀ c : Fin d → P.R.BdR, (∀ g : ↥(GK K), (ρ g).val.map (fun z : ℤ_[l] => algebraMap ℚ_[l] P.R.BdR (z : ℚ_[l])) *ᵥ (fun i => P.actQdR (g : GQ l) (c i)) = c) → c ≠ 0 → (∀ i, c i ∈ (P.PD K).Fil (-(N : ℤ))) ∧ ¬ ∀ i, c i ∈ (P.PD K).Fil ((N : ℤ) + 1) := by
   intro l _ P K d ρ N hlow hhigh c hc hc0

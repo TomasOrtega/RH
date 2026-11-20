@@ -21,11 +21,11 @@ open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 namespace GlobalTheory.PtTie
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c nab hnab T io y F _ _ φ hφ yF hm a n xx Pp hP Fs hFs f hf`. Use `letI := H.starRing`. Use `letI := io.toAlgebra`. Use `letI : Algebra c.F F := ((algebraMap T.Fr F).comp io).toAlgebra`. Establish `hyT` using `y.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Unfold `evI evR evalAt`. Rewrite using `[dif_pos hyT]`. Establish `hm0` using `hyT.choose_spec.choose_spec.choose_spec`. Establish `hv0` using `hf hyT.choose hyT.choose_spec.choose_spec.choose`. Establish `hvF : ThValAt Xo c nab yF xx Pp (thExpr Xo c nab yF Pp Fs)` using `⟨F, inferInstance, inferInstance, AlgHom.id c.F F, yF, Fs, ?_, GlobalTheory.FramedBaseChange.refl yF, hFs, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.ThetaField.thetaValue_natural_field E H Dw l Xo c nab hnab _ F (φ.comp _) _ yF (GlobalTheory.FramedBaseChange.trans _ φ hm0 hm) a n xx Pp hP _ _ hv0 hvF`. Use `Eq.trans ?_ key` and prove the remaining obligations. Conclude with `(congrArg (fun g : T.Fr →+* F => g _) hφ).symm`. Conclude with `RingHom.FaithfullyFlat.of_bijective Function.bijective_id`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem evI_eq_thExpr_ext : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (nab : NabV Xo c), IsNab Xo c nab → ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (F : Type) [Field F] [Algebra T.Fr F], letI := io.toAlgebra; letI : Algebra c.F F := ((algebraMap T.Fr F).comp io).toAlgebra; ∀ (φ : T.Fr →ₐ[c.F] F), φ.toRingHom = algebraMap T.Fr F → ∀ (yF : FrPt Xo c F), FrMap φ y.1 yF → ∀ (a : ((E →+* ℂ) × ℕ → ℕ)) (n : ℕ) (xx : Fin n → Dw.La) (Pp : MvPolynomial (LtN Dw n) c.F), Pp ∈ harmA c a n → ∀ Fs : Fin n → LB.Sec (LPow Xo.univ.t.G Xo.univ.t.PP.L ((l.M : ℤ) ^ 2) (ptO Xo yF.x)), (∀ i, IsVtOver Xo.univ.t.G Xo.univ.t.PP l.M (KilledBy Xo (l.Mb ^ 2)) yF.s (levPt Xo yF.x (xx i)) (Fs i)) → ∀ f, IsThRule Xo c nab xx Pp f → algebraMap T.Fr F (evI y f) = thExpr Xo c nab yF Pp Fs := by
   intro E _ _ _ H Dw l Xo c nab hnab T io y F _ _ φ hφ yF hm a n xx Pp hP Fs hFs f hf

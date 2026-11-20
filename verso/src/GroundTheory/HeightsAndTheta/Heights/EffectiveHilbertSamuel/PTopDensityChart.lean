@@ -16,13 +16,13 @@ namespace TopDensityChartProof
 variable {D : ℕ} {U : Type} [TopologicalSpace U]
 
 /- English proof (translation)
-Establish `hσ : DifferentiableAt ℂ (A.chart j ∘ (A.chart c).symm) (A.chart c x)` using `(A.holo c j (A.chart c x) ⟨(A.chart c).map_source hx.2, by`. Simplify using `[(A.chart c).left_inv hx.2, hx.1]⟩).differentiableAt`. Establish `hσx : (A.chart j ∘ (A.chart c).symm) (A.chart c x) = A.chart j x`. Simplify using `[(A.chart c).left_inv hx.2]`. Establish `hτ : DifferentiableAt ℂ (A.chart c ∘ (A.chart j).symm) ((A.chart j ∘ (A.chart c).symm) (A.chart c x))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hσx]`. Conclude with `(A.holo j c (A.chart j x) ⟨(A.chart j).map_source hx.1, by`. Simplify using `[(A.chart j).left_inv hx.1, hx.2]⟩).differentiableAt`. Establish `heq : (A.chart c ∘ (A.chart j).symm) ∘ (A.chart j ∘ (A.chart c).symm) =ᶠ[𝓝 (A.chart c x)] id`. Establish `hopen` using `(A.chart c).isOpen_inter_preimage_symm (A.chart j).open_source`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `filter_upwards [hopen.mem_nhds ⟨(A.chart c).map_source hx.2, by`. Simplify using `[(A.chart c).left_inv hx.2, hx.1]⟩] with y hy`. Simplify using `[(A.chart j).left_inv hy.2, (A.chart c).right_inv hy.1]`. Establish `h1` using `fderiv_comp (A.chart c x) hτ hσ`. Rewrite `h1` using `[heq.fderiv_eq, fderiv_id, hσx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (fun f : (Fin D → ℂ) →L[ℂ] (Fin D → ℂ) => LinearMap.det (f : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))) h1`. Simplify using `only [ContinuousLinearMap.coe_id, LinearMap.det_id] at h2`. Unfold `jac`. Rewrite using `[← LinearMap.det_comp]`. Conclude with `h2.symm`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jac_mul_jac (A : FinHolAtlas D U) (j c : Fin A.n) {x : U}
     (hx : x ∈ (A.chart j).source ∩ (A.chart c).source) : jac A j c x * jac A c j x = 1 := by
@@ -56,23 +56,23 @@ end TopDensityChartProof
 open TopDensityChartProof in
 
 /- English proof (translation)
-Introduce `D U _ A L₂ L m ψ G hψ hG c B _ hB`. Set `s : Fin A.n → Set (Fin D → ℂ)` to `fun j => piece A j ∩ ((A.chart j).target ∩ (A.chart j).symm ⁻¹' (A.chart c).source)`. Set `τ : Fin A.n → (Fin D → ℂ) → (Fin D → ℂ)` to `fun j => A.chart c ∘ (A.chart j).symm`. Establish `hcover : B ⊆ ⋃ j, τ j '' s j`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hyc` using `hB hy`. Establish `hxc : (A.chart c).symm y ∈ (A.chart c).source` using `(A.chart c).map_target hyc`. Take `⟨j, hj, hmin⟩` from `WellFounded.has_min wellFounded_lt {k | (A.chart c).symm y ∈ (A.chart k).source} ⟨c, hxc⟩`. Use `mem_iUnion.2 ⟨j, A.chart j ((A.chart c).symm y), ⟨⟨(A.chart j).map_source hj, fun k hk => ?_⟩, (A.chart j).map_source hj, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[(A.chart j).left_inv hj]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `fun h => hmin k h hk`. Simplify using `[(A.chart j).left_inv hj, hxc]`. Simplify using `[τ, (A.chart j).left_inv hj, (A.chart c).right_inv hyc]`. Combine the equalities or inequalities in the displayed calculation. Establish `hsm : MeasurableSet (s j)` using `(ExtensionProof.measurableSet_piece A j).inter ((A.chart j).isOpen_inter_preimage_symm (A.chart c).open_source).measurableSet`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hder : ∀ z ∈ s j, HasFDerivWithinAt (τ j) ((fderiv ℂ (τ j) z).restrictScalars ℝ) (s j) z` using `fun z hz => ((A.holo j c z hz.2).differentiableAt.hasFDerivAt.restrictScalars ℝ).hasFDerivWithinAt`. Establish `hinj : InjOn (τ j) (s j)`. Introduce `z₁ h₁ z₂ h₂ he`. Use `(A.chart c).injOn h₁.2.2 h₂.2.2 he` as an intermediate fact. Rewrite using `[← (A.chart j).right_inv h₁.2.1, ← (A.chart j).right_inv h₂.2.1, this]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hsm hder hinj]`. Use `le_trans (le_of_eq (setLIntegral_congr_fun hsm fun z hz => ?_)) (lintegral_mono_set inter_subset_left)` and prove the remaining obligations. Take `⟨x, hxj, rfl⟩ : ∃ x ∈ (A.chart j).source, A.chart j x = z` from `⟨_, (A.chart j).map_target hz.2.1, (A.chart j).right_inv hz.2.1⟩`. Establish `hxc : x ∈ (A.chart c).source` using `by simpa [(A.chart j).left_inv hxj] using hz.2.2`. Establish `hτx : (A.chart c).symm (τ j (A.chart j x)) = x`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[τ, (A.chart j).left_inv hxj, (A.chart c).left_inv hxc]`. Establish `hdet : ((fderiv ℂ (τ j) (A.chart j x)).restrictScalars ℝ : (Fin D → ℂ) →L[ℝ] (Fin D → ℂ)).det = ‖jac A j c x‖ ^ 2`. Express the relevant statement in the definitionally equal form `LinearMap.det (((fderiv ℂ (τ j) (A.chart j x) : (Fin D → ℂ) →ₗ[ℂ] (Fin D → ℂ))).restrictScalars ℝ) = _`. Rewrite using `[LinearMap.det_restrictScalars, Algebra.norm_complex_apply, Complex.normSq_eq_norm_sq]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hjj` using `jac_mul_jac A j c ⟨hxj, hxc⟩`. Establish `hab : ‖jac A j c x‖ * ‖jac A c j x‖ = 1` using `by rw [← norm_mul, hjj, norm_one]`. Establish `hh : 0 < ‖L₂.g c j x * L.g c j x ^ m‖` using `norm_pos_iff.2 (mul_ne_zero (L₂.ne_zero c j x ⟨hxc, hxj⟩) (pow_ne_zero _ (L.ne_zero c j x ⟨hxc, hxj⟩)))`. Establish `hGn : ‖G c x‖ = ‖jac A c j x‖ * ‖L₂.g c j x * L.g c j x ^ m‖ * ‖G j x‖`. Rewrite using `[hG c j x ⟨hxc, hxj⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [norm_mul, norm_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `hex : Real.exp (-ψ c x) = Real.exp (-ψ j x) * (‖L₂.g c j x * L.g c j x ^ m‖ ^ 2)⁻¹`. Rewrite using `[hψ c j x ⟨hxc, hxj⟩, neg_add, Real.exp_add, Real.exp_neg (Real.log _), Real.exp_log (by positivity)]`. Rewrite using `[hτx, hdet, (A.chart j).left_inv hxj, ← ENNReal.ofReal_mul (abs_nonneg _)]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[abs_of_nonneg (sq_nonneg _), hGn, hex]`. Establish `hh2 : ‖L₂.g c j x * L.g c j x ^ m‖ ^ 2 ≠ 0` using `by positivity`. Clear the denominators using the available nonvanishing facts. Take the linear combination `‖G j x‖ ^ 2 * (‖jac A j c x‖ * ‖jac A c j x‖ + 1) * hab`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem TopDensityChart.proof : TopDensityChart.Statement := by
   intro D U _ A L₂ L m ψ G hψ hG c B _ hB

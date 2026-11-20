@@ -11,13 +11,13 @@ namespace UpperTheory.Kd.C7.LocalUnitsRoots
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Unfold `Cg at *`. Rewrite using `[norm_sub_rev]` and apply the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem cg_symm {n : ℕ} {x y : Qbar l} (h : Cg n x y) : Cg n y x := by
   unfold Cg at *; rwa [norm_sub_rev]
 
 /- English proof (translation)
-Unfold `Cg at *`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 private theorem cg_trans {n : ℕ} {x y w : Qbar l} (h₁ : Cg n x y) (h₂ : Cg n y w) : Cg n x w := by
   unfold Cg at *
@@ -26,7 +26,7 @@ private theorem cg_trans {n : ℕ} {x y w : Qbar l} (h₁ : Cg n x y) (h₂ : Cg
     _ ≤ _ := max_le h₁ h₂
 
 /- English proof (translation)
-Unfold `Cg at *`. Use `h.trans ?_` and prove the remaining obligations. Rewrite using `[norm_pow, norm_pow]`. Conclude with `pow_le_pow_of_le_one (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ l) hn`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cg_mono {n n' : ℕ} (hn : n ≤ n') {x y : Qbar l} (h : Cg n' x y) : Cg n x y := by
   unfold Cg at *
@@ -35,7 +35,7 @@ private theorem cg_mono {n n' : ℕ} (hn : n ≤ n') {x y : Qbar l} (h : Cg n' x
   exact pow_le_pow_of_le_one (norm_nonneg _) (IsUltrametricDist.norm_natCast_le_one _ l) hn
 
 /- English proof (translation)
-Unfold `Cg at *`. Rewrite using `[← mul_sub, norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem cg_mul {n : ℕ} {t x y : Qbar l} (ht : ‖t‖ ≤ 1) (h : Cg n x y) : Cg n (t * x) (t * y) := by
   unfold Cg at *
@@ -44,9 +44,9 @@ private theorem cg_mul {n : ℕ} {t x y : Qbar l} (ht : ‖t‖ ≤ 1) (h : Cg n
     _ ≤ _ := by rw [one_mul]; exact h
 
 /- English proof (translation)
-Distinguish the cases in `hx : IsUnit x`. Take `⟨u, rfl⟩` from `hx`. Establish `h1 : (ψ (u : ZMod N)) ^ (Fintype.card (ZMod N)ˣ) = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, pow_card_eq_one, Units.val_one, map_one]`. Establish `h2 : ‖ψ (u : ZMod N)‖ ^ (Fintype.card (ZMod N)ˣ) = 1` using `by rw [← norm_pow, h1, norm_one]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Fintype.card (ZMod N)ˣ ≠ 0` using `Fintype.card_ne_zero`. Conclude with `le_of_eq ((pow_eq_one_iff_of_nonneg (norm_nonneg _) hc).mp h2)`. Rewrite using `[MulChar.map_nonunit ψ hx, norm_zero]`. Conclude with `zero_le_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem norm_char_le_one {N : ℕ} [NeZero N] (ψ : DirichletCharacter (Qbar l) N) (x : ZMod N) : ‖ψ x‖ ≤ 1 := by
   by_cases hx : IsUnit x
@@ -59,9 +59,9 @@ private theorem norm_char_le_one {N : ℕ} [NeZero N] (ψ : DirichletCharacter (
   · rw [MulChar.map_nonunit ψ hx, norm_zero]; exact zero_le_one
 
 /- English proof (translation)
-Establish `h1` using `norm_char_le_one ψ (d : ZMod N)`. Establish `h2` using `IsUltrametricDist.norm_natCast_le_one (Qbar l) d`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_eq_add_neg, ← norm_neg ((d : Qbar l) * _)]`. Conclude with `IsUltrametricDist.norm_add_le_max _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ 1 := by`. Use `max_le (by rw [norm_one]) ?_` and prove the remaining obligations. Rewrite using `[norm_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem norm_factor_le_one {N : ℕ} [NeZero N] (ψ : DirichletCharacter (Qbar l) N) (d : ℕ) :
     ‖(1 - (d : Qbar l) * ψ (d : ZMod N))‖ ≤ 1 := by
@@ -78,9 +78,9 @@ private theorem norm_factor_le_one {N : ℕ} [NeZero N] (ψ : DirichletCharacter
 variable {Ω : Type} [Field Ω] [Algebra ℚ Ω]
 
 /- English proof (translation)
-Establish `h1 : cycZ ℚ Ω l s = 1`. Establish `h2` using `congrArg (fun u : (Qbar l)ˣ => (u : Qbar l)) h`. Simplify using `only [cycBar, MonoidHom.comp_apply, Units.coe_map, RingHom.toMonoidHom_eq_coe, MonoidHom.coe_coe, RingHom.comp_apply, Units.val_one] at h2`. Establish `h3 : PadicInt.Coe.ringHom ((cycZ ℚ Ω l s : ℤ_[l]ˣ) : ℤ_[l]) = (1 : ℚ_[l])` using `(algebraMap ℚ_[l] (Qbar l)).injective (by rw [h2, map_one])`. Conclude with `Units.ext (Subtype.ext h3)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [cycMod, MonoidHom.comp_apply, h1, map_one]`.
+A detailed English derivation is pending.
 -/
 private theorem cycMod_eq_one {s : G ℚ Ω} (h : cycBar ℚ Ω l s = 1) (m : ℕ) : cycMod ℚ Ω l m s = 1 := by
   have h1 : cycZ ℚ Ω l s = 1 := by
@@ -93,9 +93,9 @@ private theorem cycMod_eq_one {s : G ℚ Ω} (h : cycBar ℚ Ω l s = 1) (m : �
   simp only [cycMod, MonoidHom.comp_apply, h1, map_one]
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le' hc`. Rewrite using `[Nat.add_sub_cancel]`. Use `clear hc`. Proceed by induction on `c with`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ c ih => rw [pow_succ', pow_mul, ← add_assoc, (h (k + c)).2, ih]`.
+A detailed English derivation is pending.
 -/
 private theorem roots_pow {ζ : ℕ → Ω} (h : Roots l ζ) (c m : ℕ) (hc : c ≤ m) : ζ m ^ l ^ c = ζ (m - c) := by
   obtain ⟨k, rfl⟩ := Nat.exists_eq_add_of_le' hc
@@ -106,13 +106,13 @@ private theorem roots_pow {ζ : ℕ → Ω} (h : Roots l ζ) (c m : ℕ) (hc : c
   | succ c ih => rw [pow_succ', pow_mul, ← add_assoc, (h (k + c)).2, ih]
 
 /- English proof (translation)
-Take `⟨hsI, hsc⟩` from `Subgroup.mem_inf.1 hs`. Rewrite `hsc` using `[MonoidHom.mem_ker]`. Establish `hsD` using `Ine_le_Dec A hsI`. Establish `hc` using `cycMod_eq_one hcy m`. Establish `coc` using `(hIw.2.1 m).2`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Z m 1 1 = 0`. Use `coc 1 (one_mem _) 1 (one_mem _) 1` as an intermediate fact. Rewrite `this` using `[hν 1 (one_mem _)]`. Simplify using `using this`. Establish `h1` using `coc σ hσ σ⁻¹ (inv_mem hσ) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2` using `coc σ hσ s hsD 1`. Establish `h3` using `coc (σ * s) (mul_mem hσ hsD) σ⁻¹ (inv_mem hσ) 1`. Rewrite `h3` using `[hIw.1 σ hσ s hsD, hν s hsI, map_mul, hc, hsc]`. Rewrite `h1` using `[mul_inv_cancel, h0, hc]`. Rewrite `h2` using `[hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [inv_one, mul_one] at h1 h2 h3`. Rewrite using `[h3, h2]`. Take the linear combination `-h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem conj_law {c : Coef l} {A : ValuationSubring Ω} {ν : G ℚ Ω → (Qbar l)ˣ} {Z : Sy Ω l}
     (hIw : IwSys2 c A ν Z) (hν : ∀ s ∈ Ine (F := ℚ) A, ν s = 1) {σ : G ℚ Ω} (hσ : σ ∈ Dec (F := ℚ) A)
@@ -138,27 +138,25 @@ private theorem conj_law {c : Coef l} {A : ValuationSubring Ω} {ν : G ℚ Ω �
   linear_combination -h1
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ ι e S A W g hN hS c y S' ν χ Z hSys hIw hSp hPin`. Take `⟨a, a', κ, v', j, Rhs, L, φ, m₀, c₀, n₀, hInu, ⟨σ₀, hσ₀, hF₀, hν₀⟩, ha, ha', hv', hκ, hj, hL, ⟨ζ, hζ, hHT⟩, hRhs, hχ, hNZ⟩` from `hPin`. Establish `hl2 : l ≠ 2` using `hN.l_odd`. Establish `he : 1 ≤ e` using `hN.e_pos`. Establish `hA : OverL l A` using `hN.atL`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl2' : ¬ l ∣ 2` using `fun h => hl2 ((Nat.prime_dvd_prime_iff_eq (Fact.out) Nat.prime_two).mp h)`. Establish `hR : Roots l ζ` using `hζ`. Assume the negation of the conclusion as `hnz`. Establish `hy : ∀ s ∈ Ine (F` using `ℚ) A, cycBar ℚ Ω l s = 1 → y s 1 = 0 := by`. Introduce `s hs hc`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hnz ⟨s, hs, hc, h50 l Ω ι e S A W g hN hS s hs hc, h0⟩`. Establish `hSZ : SpZero A φ e Z`. Introduce `n`. Take `⟨r₀, hr₀⟩` from `hSp n`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨max r₀ 1, fun r hr s hs hc => ?_⟩` and prove the remaining obligations. Establish `h1` using `hr₀ r (le_trans (le_max_left _ _) hr) s hs hc`. Establish `hr1 : 1 ≤ r` using `le_trans (le_max_right _ _) hr`. Establish `heq : (fun x : (ZMod (l ^ r))ˣ => ((((x : ZMod (l ^ r)).val : ℕ) : Qbar l) ^ e)⁻¹ * χ r x) = eta φ e r`. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hχ r hr1 x, mul_comm]`. Rewrite `h1` using `[heq, hy s hs hc]`. Conclude with `cg_symm h1`. Establish `hI : IwI c A Z`. Use `⟨fun r s _ x => (hIw.2.1 r).1 s x, fun r s hs t ht x => ?_, fun r s _ x => hIw.2.2 r s x⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hIw.2.1 r).2 s (Ine_le_Dec A hs) t (Ine_le_Dec A ht) x, hInu s hs, Units.val_one, one_mul]`. Establish `hFr : ∀ σ ∈ Dec (F` using `ℚ) A, IsFrob A l σ → cycBar ℚ Ω l σ = 1 → ∀ m, ∀ s ∈ Hm l A m, Z m (σ * s * σ⁻¹) 1 = a * Z m s 1 := by`. Introduce `σ hσ hF hc m s hs`. Establish `h1` using `(pFrobEx l hl2 Ω A hA).2.1 σ₀ hσ₀ σ hσ hF₀ hF`. Establish `h2` using `hIw.1 σ₀ hσ₀ _ (Ine_le_Dec A h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[mul_inv_cancel_left, hInu _ h1, mul_one]`. Rewrite using `[conj_law hIw hInu hσ hc m hs, h2, hν₀]`. Take `⟨Gs, v, c₁, m₁, hGs, hv, hrel, hint⟩` from `pCore l hl2 Ω A hA c Z a j 2 c₀ (max m₀ c₀) ζ hI ha hFr hj hl2' hR (by`. Introduce `m hm`. Take `⟨κι, hfin, P, o, hP, -⟩` from `hHT m (le_trans (le_max_left _ _) hm)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨κι, hfin, P, o, hP.2.1, hP.2.2.1, ?_⟩` and prove the remaining obligations. Rewrite using `[← roots_pow hR c₀ m (le_trans (le_max_right _ _) hm)]`. Conclude with `hP.2.2.2.2)`. Establish `hprim : ∀ m, IsPrimitiveRoot (j (ζ m)) (l ^ m)` using `fun m => (hζ m).1.map_of_injective j.injective`. Take `⟨n₁, r₂, hG⟩` from `h48 l c Gs L a a' κ v v' 2 (max (max m₀ c₀) (max m₁ 2)) (max c₀ c₁) n₀ φ e hl2 he (by omega) hGs hL ha ha' hκ hv hv' le_rfl hl2' (by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `m hm`. Establish `hm0 : m₀ ≤ m` using `by omega`. Take `⟨κι, hfin, P, o, hP, hlaw⟩` from `hHT m hm0`. Use `⟨j (ζ m), hprim m, fun ψ hψ => ?_⟩` and prove the remaining obligations. Establish `ht` using `norm_factor_le_one ψ⁻¹ 2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `cg_mul ht (cg_symm (hRhs m hm0 ψ hψ _ (hprim m)))`. Establish `e2` using `cg_mul ht (cg_symm (hlaw ψ hψ))`. Establish `e3` using `hrel m (by omega) κι hfin P o hP.2.1 hP.2.2.1 (by`. Rewrite using `[← roots_pow hR c₀ m (by omega)]`. Conclude with `hP.2.2.2.2) ψ`.
-
-Conclude with `cg_trans (cg_mono (by omega) (cg_trans e1 e2)) (cg_mono (by omega) e3)) hNZ`. Take `⟨r₃, hr₃⟩` from `hint φ e he hSZ n₁`. Conclude with `hG (max r₂ r₃) (le_max_left _ _) _ (hprim _) (hr₃ _ (le_max_right _ _) _ (hprim _))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem main
     (h48 : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (Gs L : PowerSeries (Qbar l)) (a a' κ : Qbar l) (v v' : ℕ → Qbar l) (c₀ m₀ c₁ n₀ : ℕ) (φ : DirichletCharacter (Qbar l) l) (e : ℕ), l ≠ 2 → 1 ≤ e → 2 ≤ m₀ → (∀ n, Gs.coeff n ∈ c.O) → (∀ n, L.coeff n ∈ c.O) → ‖a‖ = 1 → ‖a'‖ = 1 → κ ≠ 0 → (∀ m, ‖v m‖ = 1 ∧ Cg m (v (m + 1)) (v m)) → (∀ m, ‖v' m‖ = 1 ∧ Cg m (v' (m + 1)) (v' m)) → 2 ≤ c₀ → ¬ l ∣ c₀ → (∀ m, m₀ ≤ m → ∃ z : Qbar l, IsPrimitiveRoot z (l ^ m) ∧ ∀ ψ : DirichletCharacter (Qbar l) (l ^ m), ψ.IsPrimitive → Cg (m - c₁) ((1 - (c₀ : Qbar l) * ψ⁻¹ (c₀ : ZMod (l ^ m))) * (v' m * κ * a' ^ m * ∑ b : (ZMod (l ^ m))ˣ, ψ b * tval L (l ^ (3 * m)) (z ^ (b : ZMod (l ^ m)).val))) (v m * a ^ m * ∑ b : (ZMod (l ^ m))ˣ, ψ b * tval Gs (l ^ (3 * m)) (z ^ (b : ZMod (l ^ m)).val))) → (∃ r₁ : ℕ, ∀ r, r₁ ≤ r → 1 ≤ r → ∀ ξ : Qbar l, IsPrimitiveRoot ξ (l ^ r) → ¬ Cg (n₀ + r) (∑ x ∈ (Finset.range (l ^ r)).filter (fun x => ¬ l ∣ x), φ (x : ZMod l) * ((x : Qbar l) ^ e) * mass L r ξ x) 0) → ∃ n₁ r₁ : ℕ, ∀ r, r₁ ≤ r → ∀ ξ : Qbar l, IsPrimitiveRoot ξ (l ^ r) → ¬ Cg (n₁ + r) (∑ x ∈ (Finset.range (l ^ r)).filter (fun x => ¬ l ∣ x), φ (x : ZMod l) * ((x : Qbar l) ^ e) * mass Gs r ξ x) 0)
@@ -224,7 +222,7 @@ private theorem main
 end UpperTheory.Kd.C7.LocalUnitsRoots
 
 /- English proof (translation)
-The claim follows from `UpperTheory.Kd.C7.LocalUnitsRoots.main GlobalTheory.T.nonvanishing_transfer_characterSums_powerSeries GlobalTheory.T.quotient_char_trivial_inertia_cyclotomic_tower`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.C7.pLocu :
     GlobalTheory.KZ.ZetaEulerSystemNonvanishing GlobalTheory.KZ.Pin7 :=

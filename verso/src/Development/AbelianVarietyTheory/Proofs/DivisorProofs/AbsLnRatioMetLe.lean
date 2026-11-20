@@ -19,16 +19,16 @@ def Cmp (m : ℝ) (A B : Matrix (Fin n) (Fin n) ℂ) : Prop :=
   (((m : ℂ) • B) - A).PosSemidef ∧ (((m : ℂ) • A) - B).PosSemidef
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.2, h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem Cmp.symm {m : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A B) : Cmp m B A := ⟨h.2, h.1⟩
 
 /- English proof (translation)
-Rewrite using `[posSemidef_iff_dotProduct_mulVec]`. Establish `hH : ((m : ℂ) • B).IsHermitian`. Unfold `IsHermitian`. Rewrite using `[conjTranspose_smul, hB.isHermitian.eq, Complex.star_def, Complex.conj_ofReal]`. Use `⟨hH.sub hA.isHermitian, fun v => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha` using `Complex.nonneg_iff.1 (hA.posSemidef.dotProduct_mulVec_nonneg v)`. Establish `hb` using `Complex.nonneg_iff.1 (hB.posSemidef.dotProduct_mulVec_nonneg v)`. Establish `e : star v ⬝ᵥ (((m : ℂ) • B) - A) *ᵥ v = (m : ℂ) * (star v ⬝ᵥ B *ᵥ v) - star v ⬝ᵥ A *ᵥ v`. Rewrite using `[sub_mulVec, dotProduct_sub, smul_mulVec, dotProduct_smul, smul_eq_mul]`. Rewrite using `[e, Complex.nonneg_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Complex.sub_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Combine the linear relations using `[h v]`. Simplify using `only [Complex.sub_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, add_zero, ← ha.2, ← hb.2, mul_zero, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules.
 -/
 theorem psd_of_quad {m : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (hA : A.PosDef) (hB : B.PosDef)
     (h : ∀ v : Fin n → ℂ, (star v ⬝ᵥ A *ᵥ v).re ≤ m * (star v ⬝ᵥ B *ᵥ v).re) :
@@ -50,13 +50,13 @@ theorem psd_of_quad {m : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (hA : A.PosDef)
       mul_zero, sub_zero]
 
 /- English proof (translation)
-Establish `h0 : (0 : ℂ) ≤ (((1 - s) * (m - 1) : ℝ) : ℂ)` using `Complex.zero_le_real.2 (mul_nonneg (sub_nonneg.2 hs.2) (sub_nonneg.2 hm))`. Establish `h1 : (0 : ℂ) ≤ ((s : ℝ) : ℂ)` using `Complex.zero_le_real.2 hs.1`. Prove the components needed by the constructor for the conclusion. Establish `e : ((m : ℂ) • GradedNorm.mix s A B) - A = (((1 - s) * (m - 1) : ℝ) : ℂ) • A + ((s : ℝ) : ℂ) • (((m : ℂ) • B) - A)`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [GradedNorm.mix, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `(hA.posSemidef.smul h0).add (h.1.smul h1)`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ((m : ℂ) • A) - GradedNorm.mix s A B = (((1 - s) * (m - 1) : ℝ) : ℂ) • A + ((s : ℝ) : ℂ) • (((m : ℂ) • A) - B)`. Use extensionality with `i j`. Simplify using `only [GradedNorm.mix, Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(hA.posSemidef.smul h0).add (h.2.smul h1)`.
+A detailed English derivation is pending.
 -/
 theorem Cmp.mix {m s : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A B) (hA : A.PosDef) (hm : 1 ≤ m)
     (hs : s ∈ Set.Icc (0 : ℝ) 1) : Cmp m A (mix s A B) := by
@@ -82,14 +82,14 @@ theorem Cmp.mix {m s : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A B) (
     exact (hA.posSemidef.smul h0).add (h.2.smul h1)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.CompMetric.inv_sub_posSemidef hm hB hA h.2, GlobalTheory.CompMetric.inv_sub_posSemidef hm hA hB h.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem Cmp.inv {m : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A B) (hA : A.PosDef) (hB : B.PosDef) (hm : 0 < m) :
     Cmp m A⁻¹ B⁻¹ :=
   ⟨GlobalTheory.CompMetric.inv_sub_posSemidef hm hB hA h.2, GlobalTheory.CompMetric.inv_sub_posSemidef hm hA hB h.1⟩
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `h.1.transpose` as an intermediate fact. Rewrite `this` using `[transpose_sub, transpose_smul]`. Then use the resulting hypothesis. Use `h.2.transpose` as an intermediate fact. Rewrite `this` using `[transpose_sub, transpose_smul]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Cmp.transpose {m : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A B) : Cmp m Aᵀ Bᵀ := by
   refine ⟨?_, ?_⟩
@@ -99,14 +99,14 @@ theorem Cmp.transpose {m : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A 
     rwa [transpose_sub, transpose_smul] at this
 
 /- English proof (translation)
-The claim follows from `(h.inv hA hB hm).transpose`.
+A detailed English derivation is pending.
 -/
 theorem Cmp.dual {m : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A B) (hA : A.PosDef) (hB : B.PosDef) (hm : 0 < m) :
     Cmp m (dualGram A) (dualGram B) :=
   (h.inv hA hB hm).transpose
 
 /- English proof (translation)
-Establish `hm0 : 0 < m` using `lt_of_lt_of_le one_pos hm`. Establish `h1` using `(h.dual hA hB hm0).mix (dualGram_posDef hA) hm hs`. Establish `h2` using `h1.dual (dualGram_posDef hA) (mix_posDef hs (dualGram_posDef hA) (dualGram_posDef hB)) hm0`. Rewrite `h2` using `[dualGram_dualGram ((isUnit_iff_isUnit_det _).1 hA.isUnit)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem Cmp.mixDual {m s : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A B) (hA : A.PosDef) (hB : B.PosDef)
     (hm : 1 ≤ m) (hs : s ∈ Set.Icc (0 : ℝ) 1) : Cmp m A (GradedNorm.mixDual s A B) := by
@@ -116,7 +116,7 @@ theorem Cmp.mixDual {m s : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A 
   rwa [dualGram_dualGram ((isUnit_iff_isUnit_det _).1 hA.isUnit)] at h2
 
 /- English proof (translation)
-Unfold `lminor`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[mul_apply, conjTranspose_apply, Finset.sum_ite_eq', Finset.sum_ite_eq]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lminor_eq (M : Matrix (Fin n) (Fin n) ℂ) (k : Fin (n + 1)) :
     lminor M k = ((of fun (a : Fin n) (b : Fin k) => if a = Fin.castLE (Nat.le_of_lt_succ k.2) b then (1 : ℂ) else 0)ᴴ * M *
@@ -127,7 +127,7 @@ theorem lminor_eq (M : Matrix (Fin n) (Fin n) ℂ) (k : Fin (n + 1)) :
   simp [mul_apply, conjTranspose_apply, Finset.sum_ite_eq', Finset.sum_ite_eq]
 
 /- English proof (translation)
-Rewrite using `[lminor_eq, lminor_eq]`. Conclude with `GlobalTheory.CompMetric.det_re_le_of_sub hm hA h.1 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cmp.lminor_le {m : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A B) (hA : A.PosDef) (hm : 0 ≤ m)
     (k : Fin (n + 1)) : (lminor A k).re ≤ m ^ (k : ℕ) * (lminor B k).re := by
@@ -135,7 +135,7 @@ theorem Cmp.lminor_le {m : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A 
   exact GlobalTheory.CompMetric.det_re_le_of_sub hm hA h.1 _
 
 /- English proof (translation)
-Use `Complex.pos_iff.1 (lminor_pos h k)` as an intermediate fact. Conclude with `⟨this.1, Complex.ext (by simp) (by simp [this.2])⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem lminor_re_pos {M : Matrix (Fin n) (Fin n) ℂ} (h : M.PosDef) (k : Fin (n + 1)) :
     0 < (lminor M k).re ∧ ((lminor M k).re : ℂ) = lminor M k := by
@@ -143,7 +143,7 @@ theorem lminor_re_pos {M : Matrix (Fin n) (Fin n) ℂ} (h : M.PosDef) (k : Fin (
   exact ⟨this.1, Complex.ext (by simp) (by simp [this.2])⟩
 
 /- English proof (translation)
-Rewrite using `[grSq, ← (lminor_re_pos h i.succ).2, ← (lminor_re_pos h i.castSucc).2, ← Complex.ofReal_div, Complex.ofReal_re]`. Simplify using `only [Complex.ofReal_re]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem grSq_eq {M : Matrix (Fin n) (Fin n) ℂ} (h : M.PosDef) (i : Fin n) :
     grSq M i = (lminor M i.succ).re / (lminor M i.castSucc).re := by
@@ -151,7 +151,7 @@ theorem grSq_eq {M : Matrix (Fin n) (Fin n) ℂ} (h : M.PosDef) (i : Fin n) :
   simp only [Complex.ofReal_re]
 
 /- English proof (translation)
-The claim follows from `|Real.log (lminor A k).re - Real.log (lminor B k).re| ≤ (k : ℕ) * Real.log m := by have hm0 : 0 < m := lt_of_lt_of_le one_pos hm have pa := (lminor_re_pos hA k).1 have pb := (lminor_re_pos hB k).1 have hp : 0 < m ^ (k : ℕ) := pow_pos hm0 _ have l1 := Real.log_le_log pa (h.lminor_ …`.
+A detailed English derivation is pending.
 -/
 theorem Cmp.abs_log_lminor {m : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A B) (hA : A.PosDef) (hB : B.PosDef)
     (hm : 1 ≤ m) (k : Fin (n + 1)) :
@@ -168,7 +168,7 @@ theorem Cmp.abs_log_lminor {m : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp
   constructor <;> linarith
 
 /- English proof (translation)
-The claim follows from `|Real.log (grSq A i) - Real.log (grSq B i)| ≤ 2 * n * Real.log m := by have l0 := Real.log_nonneg hm rw [grSq_eq hA, grSq_eq hB, Real.log_div (lminor_re_pos hA _).1.ne' (lminor_re_pos hA _).1.ne', Real.log_div (lminor_re_pos hB _).1.ne' (lminor_re_pos hB _).1.ne'] have a1 := h.ab …`.
+A detailed English derivation is pending.
 -/
 theorem Cmp.abs_log_grSq {m : ℝ} {A B : Matrix (Fin n) (Fin n) ℂ} (h : Cmp m A B) (hA : A.PosDef) (hB : B.PosDef)
     (hm : 1 ≤ m) (i : Fin n) :
@@ -210,15 +210,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {F : Type} [Field F] [NumberField F] {e : F ≃+* c.F} {Y : FlagCpt Z e} {σ : F →+* ℂ}
 
 /- English proof (translation)
-Take `⟨q, h1, h2⟩` from `Y.exists_adapted p`. Use `⟨q.2, ?_⟩` and prove the remaining obligations. Establish `hm` using `FlagCpt.prodPow_mem n h1`. Establish `key : ∀ (G' : EigMet Z (embOf e σ)) (f : Y.Y.FnC σ), Y.Y.pn σ _ (Y.met G' n) f p = ‖Var.fval (prodPow q.1 n) f p‖ ^ 2 * Y.genSq G' n q.2` using `fun G' f => by`. Rewrite using `[Var.pn_eq hm, FlagCpt.met_h G' n h2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[prodPow]`. Establish `P1 : PosAt (C` using `cxSt F) (Y.met G n) p := posAt_of_posSet (FlagCpt.posSet_met G n) p`. Unfold `PosAt at P1`. Unfold `lnRatio lnN`. Express the relevant statement in the definitionally equal form `Real.log (Y.Y.pn σ _ (Y.met G n) _ p) / 2 - Real.log (Y.Y.pn σ _ (Y.met G₀ n) _ p) / 2 = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `0 < Y.Y.pn σ _ (Y.met G n) _ p at P1`. Generalize the expression as in `((cxSt F).cx Y.Y σ) (genAt (divOf Y n) (under p)) = f at P1 ⊢`. Use `erw [key G f] at P1`. Use `erw [key G f, key G₀ f]`. Establish `g1` using `FlagCpt.genSq_pos (Y := Y) G n q.2`.
+Express the relevant assertion in an equivalent form by its definition. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g0` using `FlagCpt.genSq_pos (Y := Y) G₀ n q.2`. Establish `hA : ‖Var.fval (prodPow q.1 n) f p‖ ^ 2 ≠ 0`. Introduce `h0`. Rewrite `P1` using `[h0, zero_mul]`. Conclude with `lt_irrefl _ P1`.
-
-Rewrite using `[Real.log_mul hA g1.ne', Real.log_mul hA g0.ne']`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lnRatio_met (G G₀ : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) (p : Y.Y.pts σ) :
     ∃ g : Y.FrameAt p, lnRatio (C := cxSt F) (Y.met G n) (Y.met G₀ n) p =
@@ -248,7 +246,7 @@ theorem lnRatio_met (G G₀ : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) (p 
   ring
 
 /- English proof (translation)
-Unfold `FlagCpt.genSq`. Rewrite using `[Real.log_prod (fun z _ => zpow_ne_zero _ (grSq_pos (G.pos _ _ _) _).ne')]`. Conclude with `Finset.sum_congr rfl fun z _ => Real.log_zpow _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_genSq (G : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) {p : Y.Y.pts σ} (g : Y.FrameAt p) :
     Real.log (Y.genSq G n g) = ∑ z : Letter Dw, (n z : ℝ) * Real.log (grSq (G.gram _ g z.1) z.2) := by
@@ -257,7 +255,7 @@ theorem log_genSq (G : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) {p : Y.Y.p
   exact Finset.sum_congr rfl fun z _ => Real.log_zpow _ _
 
 /- English proof (translation)
-The claim follows from `|lnRatio (C := cxSt F) (Y.met G n) (Y.met G₀ n) p| ≤ (∑ z : Letter Dw, |(n z : ℝ)| * (Dw.mult z.1 : ℝ)) * Real.log m := by obtain ⟨g, hg⟩ := lnRatio_met (Y := Y) G G₀ n p rw [hg, log_genSq, log_genSq, ← Finset.sum_sub_distrib, abs_div, abs_two, Finset.sum_mul] rw [div_le_iff₀ two …`.
+A detailed English derivation is pending.
 -/
 theorem abs_lnRatio_met_le (G G₀ : EigMet Z (embOf e σ)) (n : Letter Dw → ℤ) (p : Y.Y.pts σ) {m : ℝ} (hm : 1 ≤ m)
     (h : ∀ (g : Y.FrameAt p) (τ : E →+* ℂ), Cmp m (G.gram (Y.down p) g τ) (G₀.gram (Y.down p) g τ)) :

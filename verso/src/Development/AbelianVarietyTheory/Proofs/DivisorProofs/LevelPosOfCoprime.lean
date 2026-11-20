@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {S : Scheme.{0}}
 
 /- English proof (translation)
-Set `f : D.La →+ Additive Q` to `AddMonoidHom.mk' (fun x => Additive.ofMul (I.ev n x)) fun x y => by`. Simplify using `[I.add]`. Conclude with `congrArg Additive.toMul (map_nsmul f m x)`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem TateIsoO.ev_nsmul {k : Type} [Field k] {Q : Type} [Group Q] {act : D.O → Q → Q}
     {e : ℕ → Q → Q → kˣ → Prop} (I : TateIsoO D k Q act e) (n m : ℕ) (x : D.La) :
@@ -21,7 +21,7 @@ theorem TateIsoO.ev_nsmul {k : Type} [Field k] {Q : Type} [Group Q] {act : D.O �
   exact congrArg Additive.toMul (map_nsmul f m x)
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos N' with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `absurd ((Nat.coprime_zero_left p).1 hc) (Fact.out : p.Prime).one_lt.ne'`. Conclude with `h`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem levelPos_of_coprime {N' : ℕ} (hc : N'.Coprime p) : 0 < N' := by
   rcases Nat.eq_zero_or_pos N' with h | h

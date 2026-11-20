@@ -27,11 +27,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.PicField
 
 /- English proof (translation)
-Take `⟨p⟩ : Nonempty (Sp k)` from `inferInstance`. Take `⟨V, hV, hc⟩` from `exists_pull_eq_zero c p`. Establish `hV' : V = ⊤`. Establish `hs : Subsingleton (Sp k)`. Unfold `Sp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `infer_instance`. Use extensionality with `x`. Simplify using `only [TopologicalSpace.Opens.coe_top, Set.mem_univ, iff_true]`. Conclude with `(Subsingleton.elim x p) ▸ hV`. Substitute `hV'` using the available equality.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsIso (⊤ : (Sp k).Opens).ι` using `(Sp k).topIso.isIso_hom`. Establish `e : c = CechPic.pull (inv (⊤ : (Sp k).Opens).ι) (CechPic.pull (⊤ : (Sp k).Opens).ι c)`. Rewrite using `[← pull_comp, IsIso.inv_hom_id, pull_id]`. Rewrite using `[e, hc, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pic_eq_zero (k : Type) [Field k] (c : Pic (Sp k)) : c = 0 := by
   obtain ⟨p⟩ : Nonempty (Sp k) := inferInstance

@@ -19,9 +19,9 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.DualStepBound
 
 /- English proof (translation)
-Unfold `n1`. Establish `h1 : ∑ i, ((Pi.single s 1 : Fin n → ℤ) i).natAbs = 1`. Rewrite using `[Finset.sum_eq_single s]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Pi.single_eq_of_ne hb]`. Simplify using the standard rewrite rules. Rewrite using `[← h1, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_le_sum fun i _ => by`. Simplify using `using Int.natAbs_sub_le (ν i) ((Pi.single s 1 : Fin n → ℤ) i)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lOneNorm_sub_single_one_le {n : ℕ} (ν : Fin n → ℤ) (s : Fin n) :
     n1 (ν - Pi.single s 1 : Fin n → ℤ) ≤ n1 ν + 1 := by
@@ -37,34 +37,34 @@ theorem lOneNorm_sub_single_one_le {n : ℕ} (ν : Fin n → ℤ) (s : Fin n) :
     simpa using Int.natAbs_sub_le (ν i) ((Pi.single s 1 : Fin n → ℤ) i)
 
 /- English proof (translation)
-The claim follows from `R.smSub.sum_mem (fun c _ => hx c)`.
+A detailed English derivation is pending.
 -/
 theorem sum_mem_sm {k r : ℕ} (R : Rep k r) {ι : Type} [Fintype ι] (x : ι → R.H) (hx : ∀ c, x c ∈ R.sm) :
     ∑ c, x c ∈ R.sm :=
   R.smSub.sum_mem (fun c _ => hx c)
 
 /- English proof (translation)
-Introduce `hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν hν io pr ep hT hnz s κ₀ hκ`. Take `⟨hNum, hFam, hSide, hSF⟩` from `hS`. Establish `hν0 : n1 ν ≤ q0` using `by omega`. Establish `hν1 : ∀ t, n1 (ν - Pi.single t 1 : Fin (2 * r + k + 1) → ℤ) ≤ q0` using `fun t => (lOneNorm_sub_single_one_le ν t).trans hν`. Establish `hDS : (R ν).IsDS _ _` using `hFam ν hν0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDS1 : ∀ t, (R (ν - Pi.single t 1)).IsDS (PI.BesselPeriodGGP.eps48 k r) (fun a => lam a + ((ν - Pi.single t 1 : Fin (2 * r + k + 1) → ℤ) a : ℝ))` using `fun t => hFam _ (hν1 t)`. Establish `hpar : ∀ t, (fun a => lam a + ((ν - Pi.single t 1 : Fin (2 * r + k + 1) → ℤ) a : ℝ)) = (fun a => lam a + (ν a : ℝ)) - Pi.single t 1`. Introduce `t`. Use function extensionality and compare the values at `a`. Distinguish the cases in `hat : a = t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `hat` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[Pi.single_eq_of_ne hat]`. Establish `hDS2 : ∀ t, (R (ν - Pi.single t 1)).IsDS (PI.BesselPeriodGGP.eps48 k r) ((fun a => lam a + (ν a : ℝ)) - Pi.single t 1)` using `fun t => hpar t ▸ hDS1 t`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨hBe, hdg, hdeg⟩` from `hSF ν hν0`. Take `⟨hBe1, hdg1, hdeg1⟩` from `hSF _ (hν1 s)`. Take `⟨c, hc, hcv⟩` from `GlobalTheory.T.dual_tensor_bessel_moment hH k r _ _ (R ν) (fun s => R (ν - Pi.single s 1)) io pr Wp z π u μW μN μG νq (l ν) hNum.1 hDS hDS2 hT.raw hSide hBe.1 s`. Establish `hdual` using `(GlobalTheory.T.bessel_tensor_projection_scalar_and_adjoint hH k r _ _ dualM (Formalism.QuantumDeterminants.Hpk k r) 1 (R ν) (fun s => R (ν - Pi.single s 1)) io pr ep _ _ _ Wp z π u μW μN μG νq (flat k r (Formalism.QuantumDeterminants.fvec k r z 0)) (l ν) hDS hDS2 (GlobalTheory.i …`. Take `⟨v, hv, hv0⟩` from `hnz`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hy : ∑ d, pr s d (tm (R ν) (flat k r (Formalism.QuantumDeterminants.fvec k r z 0)) v d) ∈ (R (ν - Pi.single s 1)).sm` using `sum_mem_sm _ _ fun d => (hT.raw.pr_sm s d).mem _ ((R ν).smSub.smul_mem _ hv)`. Establish `e1` using `hdual _ hy`. Rewrite `e1` using `[hcv v hv, hκ v hv, smul_smul]`. Establish `e2 : c = (ep s : ℂ) * star κ₀ * κ₀` using `smul_left_injective ℂ hv0 e1`. Establish `hep : ‖(ep s : ℂ)‖ = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `rcases hT.ep_sq s with h' | h' <;> simp [h']`. Establish `e3 : ‖κ₀‖ ^ 2 = ‖c‖`. Rewrite using `[e2, norm_mul, norm_mul, hep, norm_star]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c₀, hc₀, hdegs⟩` from `GlobalTheory.BesselDegree.schur_fdeg hH k r (PI.BesselPeriodGGP.eps48 k r) μG hSide.2.2.2.2.2.2.1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `hKS : PI.KFinSmooth` using `hH.1.2.2.1`. Establish `d0 : dg ν = c₀ * Formalism.QuantumDeterminants.fdegHC (fun a => lam a + (ν a : ℝ))`. Take `⟨w, hw, -⟩` from `(GlobalTheory.rep_basic_of_isDS hKS k r _ _ _ hDS).2.2.2.2.2.2.2.1`. Establish `hw0 : w ≠ 0` using `by rintro rfl; simp at hw`. Rewrite using `[← hdeg w hw0, (hdegs _ _ hDS).1 w hw0]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `d1 : dg (ν - Pi.single s 1) = c₀ * Formalism.QuantumDeterminants.fdegHC (fun a => lam a + ((ν - Pi.single s 1 : Fin (2 * r + k + 1) → ℤ) a : ℝ))`. Take `⟨w, hw, -⟩` from `(GlobalTheory.rep_basic_of_isDS hKS k r _ _ _ (hDS1 s)).2.2.2.2.2.2.2.1`. Establish `hw0 : w ≠ 0` using `by rintro rfl; simp at hw`. Rewrite using `[← hdeg1 w hw0, (hdegs _ _ (hDS1 s)).1 w hw0]`. Establish `hratio` using `(GlobalTheory.FamilyDegreeRatio.degree_ratios k r lam u b bv ga h q0 hNum ν hν0).2.2 s`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp7` using `GlobalTheory.PieriBound.lowering_bound k r lam u b bv ga h q0 hNum ν hν0 s`. Establish `hgap` using `((GlobalTheory.NumFam.num_fam k r lam u b bv ga h q0 hNum).2 ν hν0).2.2.2`. Establish `hB : (∏ t ∈ univ.erase s, |lam s + (ν s : ℝ) - (lam t + (ν t : ℝ))|) ≠ 0`. Use `Finset.prod_ne_zero_iff.2 fun t ht => abs_ne_zero.2 ?_` and prove the remaining obligations. Break down `lt_or_gt_of_ne (Finset.ne_of_mem_erase ht) with h' | h'` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Use `hgap t s h'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `hgap s t h'` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hratio` using `[Finset.prod_div_distrib]`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq : dg ν / dg (ν - Pi.single s 1) = (∏ t ∈ univ.erase s, |lam s + (ν s : ℝ) - (lam t + (ν t : ℝ))|) / ∏ t ∈ univ.erase s, |lam s + (ν s : ℝ) - 1 - (lam t + (ν t : ℝ))|`. Rewrite using `[d0, d1, mul_div_mul_left _ _ hc₀.ne', ← inv_div, hratio, inv_div]`. Rewrite using `[mul_div_assoc, hq, e3, hc, mul_assoc, div_mul_div_cancel₀ hB]`. Conclude with `mul_le_mul_of_nonneg_left hp7 hSide.2.1.le`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dual_step_bound : Hyps → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r) (l : ∀ ν, (R ν).H → Wp) (dg : (Fin (2 * r + k + 1) → ℤ) → ℝ), Setup lam u b bv ga h q0 z π μW μN μG νq R l dg → ∀ ν, n1 ν + 1 ≤ q0 → ∀ io pr ep, TensH dualM (Formalism.QuantumDeterminants.Hpk k r) (R ν) (fun s => R (ν - Pi.single s 1)) io pr ep → NzOn (R ν) (l ν) → ∀ (s : Fin (2 * r + k + 1)) (κ₀ : ℂ), (∀ v ∈ (R ν).sm, l (ν - Pi.single s 1) (∑ c, pr s c (tm (R ν) (flat k r (Formalism.QuantumDeterminants.fvec k r z 0)) v c)) = κ₀ • l ν v) → ‖κ₀‖ ^ 2 * dg ν / dg (ν - Pi.single s 1) ≤ Formalism.QuantumDeterminants.Tz k r z * b ^ 4 := by
   intro hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R l dg hS ν hν io pr ep hT hnz s κ₀ hκ

@@ -12,9 +12,9 @@ namespace GlobalTheory.CompanionTheory.Ar.PB.WMan.LU
 variable {N j : ℕ}
 
 /- English proof (translation)
-Establish `ha` using `a.2`. Establish `hb` using `b.2`. Rewrite using `[Fin.le_def, stepCols, Finset.mem_filter]`. Establish `hv : ((stepOf N j b : Fin N) : ℕ) = if N - j ≤ (b : ℕ) then (b : ℕ) - (N - j) else (b : ℕ) + j` using `rfl`. Generalize the expression as in `((stepOf N j b : Fin N) : ℕ) = i at hv ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [Finset.mem_univ, true_and]`. Apply the tactic sequence `split_ifs at hv ⊢ <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mem_stepCols_stepOf (hj : j ≤ N) (a b : Fin N) :
     a ∈ stepCols N j (stepOf N j b) ↔ a ≤ b ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j) := by
@@ -27,7 +27,7 @@ theorem mem_stepCols_stepOf (hj : j ≤ N) (a b : Fin N) :
   split_ifs at hv ⊢ <;> omega
 
 /- English proof (translation)
-Set `e : Fin C.card ≃ {a // P a}` to `(C.orderIsoOfFin rfl).toEquiv.trans (Equiv.subtypeEquivRight hP)`. Rewrite using `[minorIJ, dif_pos rfl, ← Matrix.det_submatrix_equiv_self e (G.submatrix (Subtype.val : {a // P a} → Fin N) Subtype.val)]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_subtype_eq_minorIJ (G : Matrix (Fin N) (Fin N) ℂ) (C : Finset (Fin N)) (P : Fin N → Prop)
     [Fintype {a // P a}] [DecidableEq {a // P a}] (hP : ∀ a, a ∈ C ↔ P a) :
@@ -38,15 +38,15 @@ theorem det_subtype_eq_minorIJ (G : Matrix (Fin N) (Fin N) ℂ) (C : Finset (Fin
   rfl
 
 /- English proof (translation)
-Distinguish the cases in `hp : IsProperStep N j (stepOf N j b)`. Conclude with `hs _ hp`. Establish `hb` using `b.2`. Establish `hlast : (b : ℕ) + 1 = N ∨ (b : ℕ) + 1 = N - j`. Simplify using `only [IsProperStep, stepOf, not_and_or, not_not] at hp`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs at hp <;> omega`. Establish `hD` using `GlobalTheory.CompanionTheory.Ar.PB.CPts.detFac_ne_zero hj (⟨N - 1, by omega⟩ : Fin N) hG hd`. Rewrite `hD` using `[detFac, if_pos (by simp only; omega), if_pos (by simp only; omega)]`. Distinguish the cases in `h : N - j ≤ (b : ℕ)`. Establish `e : stepCols N j (stepOf N j b) = wIdx N j`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Establish `ha` using `a.2`. Rewrite using `[mem_stepCols_stepOf hj, Fin.le_def]`. Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `left_ne_zero_of_mul hD`. Establish `e : stepCols N j (stepOf N j b) = omIdx N j`. Use extensionality with `a`. Establish `ha` using `a.2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[mem_stepCols_stepOf hj, Fin.le_def]`. Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`. Conclude with `right_ne_zero_of_mul hD`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_stepOf_ne_zero (hj : j ≤ N) {G : Matrix (Fin N) (Fin N) ℂ} (hG : IsBlockDiag j G) (hd : G.det ≠ 0)
     (hs : ∀ i : Fin N, IsProperStep N j i → minorIJ G (stepCols N j i) (stepCols N j i) ≠ 0) (b : Fin N) :
@@ -78,13 +78,11 @@ theorem minor_stepOf_ne_zero (hj : j ≤ N) {G : Matrix (Fin N) (Fin N) ℂ} (hG
     exact right_ne_zero_of_mul hD
 
 /- English proof (translation)
-Introduce `N j G hj hG hd hs`. Establish `hu : ∀ b : Fin N, IsUnit (G.submatrix (Subtype.val : {a : Fin N // a ≤ b ∧ ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)} → Fin N) Subtype.val).det` using `fun b => by`. Rewrite using `[det_subtype_eq_minorIJ G (stepCols N j (stepOf N j b)) _ fun a => mem_stepCols_stepOf hj a b]`. Conclude with `(minor_stepOf_ne_zero hj hG hd hs b).isUnit`. Take `⟨B, hB, hBt, hL⟩` from `hG.exists_upper hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdB : B.det ≠ 0` using `fun h => by`. Use `hL.det` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h, mul_zero]`. Conclude with `zero_ne_one this`. Establish `huB : IsUnit B.det` using `hdB.isUnit`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `letI := Matrix.invertibleOfIsUnitDet B huB`. Use `⟨G * B, B⁻¹, hG.mul hB, hL, hB.inv huB, blockTriangular_inv_of_blockTriangular hBt, fun c => ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : (B⁻¹).det ≠ 0` using `(Matrix.isUnit_nonsing_inv_det B huB).ne_zero`. Rewrite `h1` using `[Matrix.det_of_upperTriangular (blockTriangular_inv_of_blockTriangular hBt)]`. Conclude with `(Finset.prod_ne_zero_iff.1 h1) c (Finset.mem_univ c)`.
-
-Rewrite using `[Matrix.mul_nonsing_inv_cancel_right _ _ huB]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lower_upper : ∀ (N j : ℕ) (G : Matrix (Fin N) (Fin N) ℂ), j ≤ N → IsBlockDiag j G → G.det ≠ 0 →
     (∀ i : Fin N, IsProperStep N j i → minorIJ G (stepCols N j i) (stepCols N j i) ≠ 0) →

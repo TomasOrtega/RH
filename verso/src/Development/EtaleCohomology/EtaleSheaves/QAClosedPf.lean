@@ -8,9 +8,9 @@ namespace LateralTheory.E.QAClosedPf
 open LateralTheory.E.t_E1Cut
 
 /- English proof (translation)
-Introduce `p hp hdeg`. Establish `hl : p ∈ lifts π` using `(lifts_iff_coeff_lifts p).2 fun n => hπ _`. Take `⟨q, hq, hqd, hqm⟩` from `lifts_and_natDegree_eq_and_monic hl hp`. Take `⟨a, ha⟩` from `hT q hqm (hqd ▸ hdeg)`. Use `⟨π a, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hq, eval_map, eval₂_at_apply, ha, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aic_of_surj {T S : Type} [CommRing T] [CommRing S] (π : T →+* S) (hT : AIC T)
     (hπ : Function.Surjective π) : AIC S := by
@@ -22,21 +22,19 @@ theorem aic_of_surj {T S : Type} [CommRing T] [CommRing S] (π : T →+* S) (hT 
   rw [← hq, eval_map, eval₂_at_apply, ha, map_zero]
 
 /- English proof (translation)
-Establish `: IsDomain (Localization.Away t)` using `IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors ht)`. Introduce `p hp hdeg`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (Submonoid.powers t) (p.support.image p.coeff)`. Use `set c : Localization.Away t := algebraMap T _ b`. Establish `hcu : IsUnit c` using `IsLocalization.map_units _ b`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : p.scaleRoots c ∈ lifts (algebraMap T (Localization.Away t))`. Use `(lifts_iff_coeff_lifts _).2 fun i => ?_` and prove the remaining obligations. Rewrite using `[coeff_scaleRoots]`. Distinguish the cases in `hi : i ∈ p.support`. Establish `hle : i ≤ p.natDegree` using `le_natDegree_of_mem_supp i hi`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_eq_of_le hle with hlt | heq` into its components or cases. Take `⟨z, hz⟩` from `hb _ (Finset.mem_image_of_mem _ hi)`. Use `⟨z * b ^ (p.natDegree - i - 1), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hz, Algebra.smul_def, map_pow]`. Rewrite using `[show c ^ (p.natDegree - i) = c * c ^ (p.natDegree - i - 1) by`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_succ']`. Use `congr 1`. Use the proof step `omega]`. Simplify using `only [c]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Substitute `heq` using the available equality. Use `⟨1, ?_⟩` and prove the remaining obligations. Rewrite using `[hp.coeff_natDegree, Nat.sub_self, pow_zero, one_mul, map_one]`. Rewrite using `[Polynomial.notMem_support_iff.1 hi]`. Conclude with `⟨0, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨q, hq, hqd, hqm⟩` from `lifts_and_natDegree_eq_and_monic hl ((monic_scaleRoots_iff c).2 hp)`. Rewrite `hqd` using `[natDegree_scaleRoots]`. Take `⟨a, ha⟩` from `hT q hqm (hqd ▸ hdeg)`. Use `⟨hcu.unit⁻¹ * algebraMap T _ a, ?_⟩` and prove the remaining obligations. Establish `h1 : eval (algebraMap T _ a) (p.scaleRoots c) = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hq, eval_map, eval₂_at_apply, ha, map_zero]`. Establish `h2 : algebraMap T (Localization.Away t) a = (RingHom.id _) c * (hcu.unit⁻¹ * algebraMap T _ a)`. Rewrite using `[RingHom.id_apply, ← mul_assoc, IsUnit.mul_val_inv, one_mul]`. Rewrite `h1` using `[eval, h2, scaleRoots_eval₂_mul]`. Rewrite using `[eval]`.
-
-Conclude with `(mul_eq_zero.1 h1).resolve_left (by simpa using (hcu.pow _).ne_zero)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aic_away {T : Type} [CommRing T] [IsDomain T] (hT : AIC T) (t : T) (ht : t ≠ 0) :
     AIC (Localization.Away t) := by
@@ -79,13 +77,13 @@ theorem aic_away {T : Type} [CommRing T] [IsDomain T] (hT : AIC T) (t : T) (ht :
   exact (mul_eq_zero.1 h1).resolve_left (by simpa using (hcu.pow _).ne_zero)
 
 /- English proof (translation)
-Introduce `S _ hS`. Take `⟨T, _, _, π, hT, hπ⟩` from `hS`. Use `⟨aic_of_surj π hT hπ, ?_, ?_⟩` and prove the remaining obligations. Introduce `f`. Take `⟨t, rfl⟩` from `hπ f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `ht : t = 0`. Establish `hu : IsUnit (algebraMap S (Localization.Away (π t)) (π t))` using `IsLocalization.Away.algebraMap_isUnit _`. Rewrite `hu` using `[show algebraMap S (Localization.Away (π t)) (π t) = 0 by rw [ht, map_zero, map_zero]]`. Establish `: Subsingleton (Localization.Away (π t))` using `subsingleton_of_zero_eq_one (isUnit_zero_iff.1 hu)`. Conclude with `⟨T, inferInstance, inferInstance, (algebraMap S _).comp π, hT, fun y => ⟨0, Subsingleton.elim _ _⟩⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `: IsDomain (Localization.Away t)` using `IsLocalization.isDomain_localization (powers_le_nonZeroDivisors_of_noZeroDivisors ht)`. Establish `: IsLocalization (Submonoid.map π (Submonoid.powers t)) (Localization.Away (π t))`. Rewrite using `[Submonoid.map_powers]`. Use `infer_instance`. Conclude with `⟨Localization.Away t, inferInstance, inferInstance, _, aic_away hT t ht, IsLocalization.map_surjective_of_surjective (Submonoid.powers t) (Localization.Away t) (Localization.Away (π t)) hπ⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `J`. Conclude with `⟨T, inferInstance, inferInstance, (Ideal.Quotient.mk J).comp π, hT, (Ideal.Quotient.mk_surjective).comp hπ⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem QAClosed_of : QAClosed := by
   intro S _ hS

@@ -9,49 +9,45 @@ namespace UpperTheory.Ru.crystallineComparison
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Establish `hb : ∀ r : B, b (fun _ => r) = fun _ => r` using `fun r => by conv_lhs => rw [← ha r]`. Conclude with `hba _`. Set `δ : Fin d → (Fin d → B)` to `fun k => Pi.single k 1`. Establish `δmul : ∀ (k : Fin d) (x : Fin d → B), δ k * x = (fun _ => x k) * δ k`. Introduce `k x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Distinguish the cases in `h : m = k`. Substitute `h` using the available equality. Simplify using `[δ, mul_comm]`. Simplify using `[δ, Pi.single_eq_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `δδ : ∀ k, δ k * δ k = δ k`. Introduce `k`. Use function extensionality and compare the values at `m`. Distinguish the cases in `h : m = k`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[δ]`. Simplify using `[δ, Pi.single_eq_of_ne h]`. Establish `δort : ∀ k m, k ≠ m → δ k * δ m = 0`. Introduce `k m hkm`. Use function extensionality and compare the values at `n`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h : n = k`. Substitute `h` using the available equality. Simplify using `[δ, Pi.single_eq_of_ne hkm]`. Simplify using `[δ, Pi.single_eq_of_ne h]`. Establish `δsum : ∑ k, δ k = 1`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Simplify using `[δ, Finset.sum_apply, Pi.single_apply]`. Set `E : Fin d → Fin d → B` to `fun i k => a (δ k) i`. Set `G : Fin d → Fin d → B` to `fun i k => b (δ i) k`. Establish `hGE : ∀ i k, G i k = E i k * G i k`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i k`. Establish `h1 : a (δ k) * δ i = (fun _ => E i k) * δ i`. Rewrite using `[mul_comm, δmul, mul_comm]`. Establish `h2` using `congrArg b h1`. Rewrite `h2` using `[map_mul, map_mul, hba, hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `congrFun h2 k`. Establish `h4` using `congrFun (δmul k (b (δ i))) k`. Simplify using `only [Pi.mul_apply] at h3 h4`. Simplify `h3` using `[δ, G]`. Establish `hEG : ∀ i k, E i k = G i k * E i k`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i k`. Establish `h1 : b (δ i) * δ k = (fun _ => G i k) * δ k`. Rewrite using `[mul_comm, δmul]`. Establish `h2` using `congrArg a h1`. Rewrite `h2` using `[map_mul, map_mul, hab, ha]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `congrFun h2 i`. Simplify using `only [Pi.mul_apply] at h3`. Simplify `h3` using `[δ, E]`. Establish `hEeqG : ∀ i k, E i k = G i k` using `fun i k => by`. Rewrite using `[hEG i k, mul_comm, ← hGE]`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `Eidem : ∀ i k, E i k * E i k = E i k`. Introduce `i k`. Use `congrFun (congrArg a (δδ k)) i` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `Erow : ∀ i k m, k ≠ m → E i k * E i m = 0`. Introduce `i k m h`. Use `congrFun (congrArg a (δort k m h)) i` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `Ecol : ∀ i j k, i ≠ j → E i k * E j k = 0`. Introduce `i j k h`. Use `congrFun (congrArg b (δort i j h)) k` as an intermediate fact. Rewrite `this` using `[map_mul, map_zero]`. Rewrite using `[hEeqG, hEeqG]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `this`. Establish `Esum : ∀ i, ∑ k, E i k = 1`. Introduce `i`. Use `congrFun (congrArg a δsum) i` as an intermediate fact. Rewrite `this` using `[map_sum, map_one, Finset.sum_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `Emul : ∀ i k (x : Fin d → B), E i k * (a x i - x k) = 0`. Introduce `i k x`. Use `congrFun (congrArg a (δmul k x)) i` as an intermediate fact. Rewrite `this` using `[map_mul, map_mul, ha]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Pi.mul_apply] at this`. Express the relevant statement in the definitionally equal form `E i k * a x i = x k * E i k at this`. Rewrite using `[mul_sub, this]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun σ => ∏ i, E i (σ i), ⟨⟨?_, ?_⟩, ?_⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `σ`. Express the relevant statement in the definitionally equal form `(∏ i, E i (σ i)) * (∏ i, E i (σ i)) = ∏ i, E i (σ i)`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun i _ => Eidem i _`. Introduce `σ τ hστ`.
+Assume the negation of the conclusion and derive a contradiction. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, σ i ≠ τ i := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hστ (Equiv.ext h)`. Express the relevant statement in the definitionally equal form `(∏ i, E i (σ i)) * (∏ i, E i (τ i)) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (Erow i _ _ hi)`. Establish `h1 : ∏ i : Fin d, ∑ k, E i k = 1` using `by simp [Esum]`. Rewrite `h1` using `[Finset.prod_univ_sum]`. Rewrite using `[← h1]`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : ∀ f ∈ Fintype.piFinset (fun _ : Fin d => (Finset.univ : Finset (Fin d))), f ∉ (Finset.univ.filter (fun f : Fin d → Fin d => Function.Bijective f)) → ∏ i, E i (f i) = 0`. Introduce `f _ hf`. Establish `hni : ¬ Function.Injective f`. Introduce `hinj`. Conclude with `hf (Finset.mem_filter.2 ⟨Finset.mem_univ _, Finite.injective_iff_bijective.1 hinj⟩)`.
-
-Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij, hne⟩ : ∃ i j, f i = f j ∧ i ≠ j := by`. Simplify `hni` using `[Function.Injective]`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i), ← Finset.mul_prod_erase (Finset.univ.erase i) _ (Finset.mem_erase.2 ⟨hne.symm, Finset.mem_univ j⟩), ← mul_assoc, hij, Ecol i j _ hne, zero_mul]`. Rewrite using `[← Finset.sum_subset (by simp) hz]`. Use `Finset.sum_bij (fun σ _ => (σ : Fin d → Fin d)) (fun σ _ => ?_) (fun σ _ τ _ h => Equiv.coe_fn_injective h) (fun f hf => ?_) (fun σ _ => rfl)` and prove the remaining obligations.
-
-Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ _, σ.bijective⟩`. Conclude with `⟨Equiv.ofBijective f (Finset.mem_filter.1 hf).2, Finset.mem_univ _, rfl⟩`. Introduce `σ i x`. Express the relevant statement in the definitionally equal form `(∏ j, E j (σ j)) * _ = 0`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ i), mul_comm (E i (σ i)), mul_assoc, Emul, mul_zero]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem perm_of_aut {B : Type} [CommRing B] {d : ℕ} (a b : (Fin d → B) →+* (Fin d → B))
     (hab : ∀ x, a (b x) = x) (hba : ∀ x, b (a x) = x) (ha : ∀ r : B, a (fun _ => r) = fun _ => r) :
@@ -175,7 +171,7 @@ private def pt {W : Scheme.{0}} {R : Type} [CommRing R] (m : Spec (CommRingCat.o
   (m.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom).hom
 
 /- English proof (translation)
-Establish `h` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f)`. Establish `: (Spec.map (CommRingCat.ofHom f) ≫ m).appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of R')).hom = (m.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom) ≫ CommRingCat.ofHom f`. Rewrite using `[Scheme.Hom.comp_appTop, Category.assoc, h, Category.assoc]`. Conclude with `congrArg CommRingCat.Hom.hom this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pt_comp {W : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R')
     (m : Spec (CommRingCat.of R) ⟶ W) : pt (Spec.map (CommRingCat.ofHom f) ≫ m) = f.comp (pt m) := by
@@ -186,7 +182,7 @@ private theorem pt_comp {W : Scheme.{0}} {R R' : Type} [CommRing R] [CommRing R'
   exact congrArg CommRingCat.Hom.hom this
 
 /- English proof (translation)
-Apply `ext_of_isAffine` to reduce the goal to its premises. Establish `: m.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom = m'.appTop ≫ (Scheme.ΓSpecIso (CommRingCat.of R)).hom` using `CommRingCat.hom_ext h`. Conclude with `(cancel_mono _).1 this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pt_inj {W : Scheme.{0}} [IsAffine W] {R : Type} [CommRing R] {m m' : Spec (CommRingCat.of R) ⟶ W}
     (h : pt m = pt m') : m = m' := by
@@ -196,13 +192,11 @@ private theorem pt_inj {W : Scheme.{0}} [IsAffine W] {R : Type} [CommRing R] {m 
   exact (cancel_mono _).1 this
 
 /- English proof (translation)
-Take `⟨hz, hiso⟩` from `h`. Set `R : Fin m → CommRingCat` to `fun _ => CommRingCat.of B`. Use `haveI : IsIso (sigmaSpec R) := inferInstance`. Set `D : ∐ (fun _ : Fin m => Spec (CommRingCat.of B)) ⟶ pullback p x` to `Sigma.desc fun i => pullback.lift (z i) (𝟙 _) (by rw [hz i, Category.id_comp])`. Set `s : (∐ fun _ : Fin m => Spec (CommRingCat.of B)) ⟶ Spec (CommRingCat.of (Fin m → B))` to `sigmaSpec R`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : IsIso s := inferInstanceAs (IsIso (sigmaSpec R))`. Establish `hs : ∀ i, Sigma.ι (fun _ : Fin m => Spec (CommRingCat.of B)) i ≫ s = Spec.map (CommRingCat.ofHom (Pi.evalRingHom (fun _ : Fin m => B) i))` using `fun i => ι_sigmaSpec R i`. Use `⟨hz, inv s ≫ D, inferInstance, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hs i, Category.assoc, IsIso.hom_inv_id_assoc]`. Simplify using `[D]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← cancel_epi s, Category.assoc, IsIso.hom_inv_id_assoc]`. Apply `Sigma.hom_ext` to reduce the goal to its premises. Introduce `i`. Establish `h1 : CommRingCat.ofHom (Pi.ringHom fun _ : Fin m => RingHom.id B) ≫ CommRingCat.ofHom (Pi.evalRingHom (fun _ : Fin m => B) i) = 𝟙 _` using `by ext; rfl`. Rewrite using `[← Category.assoc (Sigma.ι _ i) s, hs i, ← Spec.map_comp, h1, Spec.map_id]`.
-
-Simplify using `only [D, Sigma.ι_desc_assoc]`. Conclude with `pullback.lift_snd _ _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem splitOn_spec {Y Z : Scheme.{0}} (p : Z ⟶ Y) {B : Type} [CommRing B] (x : Spec (CommRingCat.of B) ⟶ Y)
     {m : ℕ} (z : Fin m → (Spec (CommRingCat.of B) ⟶ Z)) (h : SplitOn p x z) :
@@ -236,41 +230,37 @@ end UpperTheory.Ru.crystallineComparison
 
 open CategoryTheory Limits AlgebraicGeometry UpperTheory.Gal.crystallineComparison UpperTheory.Ru.crystallineComparison in
 /- English proof (translation)
-Introduce `l Y T U _ hl hint y z z' hz hz' hs hs'`. Use `haveI := T.fin`. Set `B` to `Localization.Away (l : U)`. Set `j` to `awayPt l U`. Set `alg : U →+* B` to `algebraMap U B`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `halg : Function.Injective alg` using `IsLocalization.injective B (Submonoid.powers_le.2 hl)`. Use `haveI : IsAffine (pullback T.p y) := isAffine_of_isAffineHom (pullback.snd T.p y)`. Set `sec : ∀ w : Spec (CommRingCat.of U) ⟶ T.Z, w ≫ T.p = y → (Spec (CommRingCat.of U) ⟶ pullback T.p y)` to `fun w hw => pullback.lift w (𝟙 _) (by rw [hw, Category.id_comp])`. Set `q : pullback T.p (j ≫ y) ⟶ pullback T.p y` to `pullback.lift (pullback.fst _ _) (pullback.snd _ _ ≫ j) (by rw [pullback.condition, Category.assoc])`. Take `⟨h1, Ψ, iΨ, hΨ, dΨ⟩` from `splitOn_spec T.p (j ≫ y) (fun i => j ≫ z i) hs`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨h2, Ψ', iΨ', hΨ', dΨ'⟩` from `splitOn_spec T.p (j ≫ y) (fun i => j ≫ z' i) hs'`. Set `dg` to `CommRingCat.ofHom (Pi.ringHom fun _ : Fin T.d => RingHom.id B)`. Set `a` to `Spec.preimage (Ψ' ≫ inv Ψ)`. Set `b` to `Spec.preimage (Ψ ≫ inv Ψ')`. Establish `ha : Spec.map a ≫ Ψ = Ψ'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[a, Spec.map_preimage]`. Establish `hb : Spec.map b ≫ Ψ' = Ψ`. Simplify using `[b, Spec.map_preimage]`. Establish `hab : b ≫ a = 𝟙 _`. Apply `Spec.map_injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Spec.map_comp, Spec.map_id, ← cancel_mono Ψ', Category.assoc, Category.id_comp, hb, ha]`. Establish `hba : a ≫ b = 𝟙 _`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_id, ← cancel_mono Ψ, Category.assoc, Category.id_comp, ha, hb]`. Establish `hda : dg ≫ a = dg`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `Spec.map_injective` to reduce the goal to its premises. Establish `hd : Spec.map dg = Ψ ≫ pullback.snd T.p (j ≫ y)` using `dΨ.symm`. Establish `hd' : Spec.map dg = Ψ' ≫ pullback.snd T.p (j ≫ y)` using `dΨ'.symm`. Combine the equalities or inequalities in the displayed calculation. Take `⟨e, he, hE⟩` from `perm_of_aut a.hom b.hom (fun x => congrArg (fun f => f.hom x) hab) (fun x => congrArg (fun f => f.hom x) hba) (fun r => congrArg (fun f => f.hom r) hda)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ζ : Fin T.d → (Γ(pullback T.p y, ⊤) →+* U)` to `fun i => pt (sec (z i) (hz i))`. Set `ζ' : Fin T.d → (Γ(pullback T.p y, ⊤) →+* U)` to `fun i => pt (sec (z' i) (hz' i))`. Set `θ : Γ(pullback T.p y, ⊤) →+* (Fin T.d → B)` to `pt (Ψ ≫ q)`. Establish `hsf : ∀ w hw, sec w hw ≫ pullback.fst T.p y = w` using `fun w hw => pullback.lift_fst _ _ _`. Establish `hss : ∀ w hw, sec w hw ≫ pullback.snd T.p y = 𝟙 _` using `fun w hw => pullback.lift_snd _ _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqf : q ≫ pullback.fst T.p y = pullback.fst _ _` using `pullback.lift_fst _ _ _`. Establish `hqs : q ≫ pullback.snd T.p y = pullback.snd _ _ ≫ j` using `pullback.lift_snd _ _ _`. Establish `hq : ∀ (w : Spec (CommRingCat.of U) ⟶ T.Z) (hw : w ≫ T.p = y) (h), pullback.lift (j ≫ w) (𝟙 _) h ≫ q = j ≫ sec w hw`. Introduce `w hw h`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Category.assoc, hqf, hsf w hw, pullback.lift_fst]`. Rewrite using `[Category.assoc, Category.assoc, hqs, hss w hw, ← Category.assoc, pullback.lift_snd, Category.id_comp, Category.comp_id]`. Establish `hθ : ∀ k s, θ s k = alg (ζ k s)`. Introduce `k s`. Establish `h3 : (Pi.evalRingHom (fun _ : Fin T.d => B) k).comp θ = pt (Spec.map (CommRingCat.ofHom (Pi.evalRingHom (fun _ : Fin T.d => B) k)) ≫ Ψ ≫ q)` using `(pt_comp _ _).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[← Category.assoc, hΨ k, hq _ (hz k)]`. Establish `h4 : pt (j ≫ sec (z k) (hz k)) = alg.comp (ζ k)` using `pt_comp alg _`. Conclude with `congrArg (fun f => f s) (h3.trans h4)`. Establish `hθ' : ∀ i s, a.hom (θ s) i = alg (ζ' i s)`. Introduce `i s`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ((Pi.evalRingHom (fun _ : Fin T.d => B) i).comp a.hom).comp θ = pt (Spec.map (CommRingCat.ofHom ((Pi.evalRingHom (fun _ : Fin T.d => B) i).comp a.hom)) ≫ Ψ ≫ q)` using `(pt_comp _ _).symm`. Establish `h5 : Spec.map (CommRingCat.ofHom ((Pi.evalRingHom (fun _ : Fin T.d => B) i).comp a.hom)) = Spec.map (CommRingCat.ofHom (Pi.evalRingHom (fun _ : Fin T.d => B) i)) ≫ Spec.map a`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite `h3` using `[h5, Category.assoc, ← Category.assoc (Spec.map a), ha, ← Category.assoc, hΨ' i, hq _ (hz' i)]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h4 : pt (j ≫ sec (z' i) (hz' i)) = alg.comp (ζ' i)` using `pt_comp alg _`. Conclude with `congrArg (fun f => f s) (h3.trans h4)`. Establish `hlift : ∀ σ, ∃ u : U, alg u = e σ`. Introduce `σ`. Use `hint _ ⟨Polynomial.X ^ (1 + 1) - Polynomial.X, Polynomial.monic_X_pow_sub (lt_of_le_of_lt Polynomial.degree_X_le (by norm_num)), ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hi : e σ * e σ = e σ` using `he.toOrthogonalIdempotents.idem σ`. Simplify using `[pow_two, hi]`. Use `choose u hu using hlift`. Use `⟨u, ?_, ?_⟩` and prove the remaining obligations. Establish `h6 : CompleteOrthogonalIdempotents (alg ∘ u)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: alg ∘ u = e` using `funext hu`. Rewrite using `[this]`. Conclude with `he`. Conclude with `(CompleteOrthogonalIdempotents.map_injective_iff alg halg).1 h6`. Introduce `σ V _ ρ hρ i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : ∀ s, ρ (ζ' i s) = ρ (ζ (σ i) s)`. Introduce `s`. Establish `h7` using `hE σ i (θ s)`. Rewrite `h7` using `[hθ', hθ, ← hu, ← map_sub, ← map_mul]`. Establish `h8 : u σ * (ζ' i s - ζ (σ i) s) = 0` using `halg (by rw [h7, map_zero])`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h9` using `congrArg ρ h8`. Rewrite `h9` using `[map_mul, hρ, one_mul, map_sub, map_zero]`. Conclude with `sub_eq_zero.1 h9`. Establish `h10 : Spec.map (CommRingCat.ofHom ρ) ≫ sec (z' i) (hz' i) = Spec.map (CommRingCat.ofHom ρ) ≫ sec (z (σ i)) (hz (σ i))`. Apply `pt_inj` to reduce the goal to its premises.
-
-Rewrite using `[pt_comp, pt_comp]`. Use extensionality with `s`. Conclude with `key s`. Establish `h11` using `congrArg (· ≫ pullback.fst T.p y) h10`. Simplify using `only [Category.assoc, hsf] at h11`.
-
-Conclude with `h11`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Ru.crystallineComparison.splitPerm :
     UpperTheory.Ru.crystallineComparison.SplitPerm := by

@@ -6,9 +6,9 @@ open scoped NNReal ENNReal Matrix
 namespace GlobalTheory.CompanionTheory.NullFr
 
 /- English proof (translation)
-Establish `h : IsCompact (Set.pi Set.univ (fun _ : Fin m => Set.pi Set.univ (fun _ : Fin n => C)))` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hC`. Establish `e : {M : Matrix (Fin m) (Fin n) A | ∀ p q, M p q ∈ C} = Set.pi Set.univ (fun _ : Fin m => Set.pi Set.univ (fun _ : Fin n => C))`. Use extensionality with `M`. Conclude with `⟨fun h p _ q _ => h p q, fun h p q => h p (Set.mem_univ p) q (Set.mem_univ q)⟩`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem entries_isCompact {A : Type} [TopologicalSpace A] {m n : ℕ} {C : Set A} (hC : IsCompact C) :
     IsCompact {M : Matrix (Fin m) (Fin n) A | ∀ p q, M p q ∈ C} := by
@@ -22,7 +22,7 @@ theorem entries_isCompact {A : Type} [TopologicalSpace A] {m n : ℕ} {C : Set A
   exact h
 
 /- English proof (translation)
-Establish `hK : IsCompact (C₁ ×ˢ ((Set.pi Set.univ (fun _ : Fin n => C₂)) ×ˢ (Set.pi Set.univ (fun _ : Fin n => C₃))))` using `h₁.prod ((isCompact_univ_pi fun _ => h₂).prod (isCompact_univ_pi fun _ => h₃))`. Establish `hc : Continuous (fun w : A × (Fin n → A) × (Fin n → A) => w.1 + ∑ k, w.2.1 k * w.2.2 k)` using `by fun_prop`. Use `⟨_, hK.image hc, fun x b d hx hb hd => ⟨(x, b, d), ⟨hx, ?_, ?_⟩, rfl⟩⟩` and prove the remaining obligations. Conclude with `fun k _ => hb k`. Conclude with `fun k _ => hd k`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_compact_comb {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] (n : ℕ)
     {C₁ C₂ C₃ : Set A} (h₁ : IsCompact C₁) (h₂ : IsCompact C₂) (h₃ : IsCompact C₃) :
@@ -38,17 +38,17 @@ theorem exists_compact_comb {A : Type} [CommRing A] [TopologicalSpace A] [IsTopo
   · exact fun k _ => hd k
 
 /- English proof (translation)
-Introduce `A _ _ _ a r t _ _ e f P i C hC h0 ν _`. Take `⟨D₃, hD₃, h₃⟩` from `exists_compact_comb (A := A) t hC hC hC`. Establish `hS : IsCompact ((fun w : A × A => w.1 + w.2) '' (C ×ˢ C))` using `(hC.prod hC).image continuous_add`. Take `⟨D, hD, hDm⟩` from `exists_compact_comb (A := A) r (hC.union hD₃) hC hS`. Use `lt_of_le_of_lt (measure_mono ?_) (((entries_isCompact (m := a) (n := r) hC).prod (entries_isCompact (m := a) (n := t) hD)).measure_lt_top)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `z ⟨-, hz, hy, hv, hvi, c, hci, hc, hcv⟩`. Use `⟨hz, fun p k => ?_⟩` and prove the remaining obligations. Establish `hyk : ∀ l, yc P z l k ∈ (fun w : A × A => w.1 + w.2) '' (C ×ˢ C)` using `fun l => ⟨(f * yc P z l k, (1 - f) * yc P z l k), ⟨(hy l k).1, (hy l k).2⟩, by simp only; ring⟩`. Establish `hvk : vc P z p k ∈ C ∪ D₃`. Distinguish the cases in `hk : k = i`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hk right` using the available equality. Establish `hmem` using `h₃ ((1 - f) * vc P z p k) c (fun j => if j = k then 0 else vc P z p j) (hvi p) (fun j => (hc j).2) (fun j => by`. Distinguish the cases in `hj : j = k`. Simplify `h0` using `[hj]`. Simplify `hv p j hj)` using `[hj]`.
+Substitute using the available equality. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hsum : ∑ j, c j * (if j = k then 0 else vc P z p j) = f * vc P z p k`. Rewrite using `[hcv p]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[hci]`. Simplify using `[hj]`. Rewrite `hmem` using `[hsum]`. Establish `hE : (1 - f) * vc P z p k + f * vc P z p k = vc P z p k` using `by ring`. Rewrite `hmem` using `[hE]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Or.inl (hv p k hk)`. Establish `hE : z.2 p k = vc P z p k + ∑ l, z.1 p l * yc P z l k`. Simplify using `[vc, Matrix.sub_apply, Matrix.mul_apply]`. Rewrite using `[hE]`. Conclude with `hDm _ _ _ hvk (fun l => hz p l) hyk`.
+Prove the first alternative. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piece_measure_lt_top : ∀ {A : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A] {a r t : ℕ}
     [MeasurableSpace (Fx A a r)] [MeasurableSpace (Fx A a t)] (e f : A) (P : Fx A a r → Fx A r a) (i : Fin t) (C : Set A)

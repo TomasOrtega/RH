@@ -16,20 +16,20 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq]
 
 /- English proof (translation)
-The claim follows from `(LinearMap.norm_map_iff_inner_map_map A).1 hA v v'`.
+A detailed English derivation is pending.
 -/
 theorem inner_map_of_norm (A : Wp →L[ℂ] Wp) (hA : ∀ v, ‖A v‖ = ‖v‖) (v v' : Wp) :
     inner ℂ (A v) (A v') = inner ℂ v v' := (LinearMap.norm_map_iff_inner_map_map A).1 hA v v'
 
 /- English proof (translation)
-Simplify using `only [Formalism.FourierDecayAlt.P.Topx1.hsInner_eq, ContinuousLinearMap.comp_apply, inner_map_of_norm A hA]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hsInner_comp_left [FiniteDimensional ℂ Wq] (A : Wp →L[ℂ] Wp) (hA : ∀ v, ‖A v‖ = ‖v‖)
     (U V : Wq →L[ℂ] Wp) : B.hsInner (A.comp U) (A.comp V) = B.hsInner U V := by
   simp only [Formalism.FourierDecayAlt.P.Topx1.hsInner_eq, ContinuousLinearMap.comp_apply, inner_map_of_norm A hA]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.trace_eq_sum_inner _ b]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[ContinuousLinearMap.adjoint_inner_right]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem sum_inner_onb [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {ι : Type} [Fintype ι]
     (b : OrthonormalBasis ι ℂ Wq) (U V : Wq →L[ℂ] Wp) :
@@ -40,9 +40,9 @@ theorem sum_inner_onb [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {ι 
   simp [ContinuousLinearMap.adjoint_inner_right]
 
 /- English proof (translation)
-Set `e : Wq ≃ₗᵢ[ℂ] Wq` to `LinearIsometry.toLinearIsometryEquiv ⟨Bm.toLinearMap, hB⟩ rfl`. Set `b` to `stdOrthonormalBasis ℂ Wq`. Establish `h1 : B.hsInner (U.comp Bm) (V.comp Bm) = ∑ i, inner ℂ (V ((b.map e) i)) (U ((b.map e) i))`. Rewrite using `[Formalism.FourierDecayAlt.P.Topx1.hsInner_eq]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[b, e, OrthonormalBasis.map_apply]`. Rewrite using `[h1, sum_inner_onb, ← sum_inner_onb b, ← Formalism.FourierDecayAlt.P.Topx1.hsInner_eq]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem hsInner_comp_right [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (Bm : Wq →L[ℂ] Wq)
     (hB : ∀ v, ‖Bm v‖ = ‖v‖) (U V : Wq →L[ℂ] Wp) :
@@ -60,7 +60,7 @@ end unit
 section lev0
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Use extensionality with `i j`. Establish `hj` using `j.isLt`. Use `hm.2.2 i j (by omega) (by omega) (by omega)` as an intermediate fact. Simplify `this` using `[Matrix.one_apply]`.
+Substitute using the available equality. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem unipotent_level_zero_eq_one {k r' : ℕ} (hr : r' = 0) (m : B.Mat k r') (hm : m ∈ Nset k r') : m = 1 := by
   subst hr
@@ -70,16 +70,16 @@ theorem unipotent_level_zero_eq_one {k r' : ℕ} (hr : r' = 0) (m : B.Mat k r') 
   simpa [Matrix.one_apply] using this
 
 /- English proof (translation)
-Simplify using `only [Q.zetaL, Zhat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zetaL_eq_zhat {k r' : ℕ} (z z' : Fin (2 * r' + k + 1) → ℂ) (g : B.Mat k r') :
     Q.zetaL k r' z z' (Fin.last r') g = Zhat k r' z z' g (Fin.last r') (Fin.last r') := by
   simp only [Q.zetaL, Zhat]
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Use extensionality with `a b`. Apply the tactic sequence `have ha : a = Fin.last 0 := Fin.ext (by have := a.isLt; first | simp | omega)`. Apply the tactic sequence `have hb : b = Fin.last 0 := Fin.ext (by have := b.isLt; first | simp | omega)`. Substitute `ha hb` using the available equality.
+Substitute using the available equality. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Rewrite using `[← zetaL_eq_zhat, ← zetaL_eq_zhat, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_matrix_level_zero_eq {k r' : ℕ} (hr : r' = 0) (z z' : Fin (2 * r' + k + 1) → ℂ) (g g' : B.Mat k r')
     (h : Q.zetaL k r' z z' (Fin.last r') g = Q.zetaL k r' z z' (Fin.last r') g') :
@@ -92,7 +92,7 @@ theorem corner_matrix_level_zero_eq {k r' : ℕ} (hr : r' = 0) (z z' : Fin (2 * 
   rw [← zetaL_eq_zhat, ← zetaL_eq_zhat, h]
 
 /- English proof (translation)
-Substitute `hr` using the available equality. Rewrite using `[gf_eq_gPoly k 0 z z' g, zetaL_eq_zhat]`. Unfold `gPoly`. Rewrite using `[Matrix.det_fin_one, Matrix.det_isEmpty]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_function_level_zero {k r' : ℕ} (hr : r' = 0) (z z' : Fin (2 * r' + k + 1) → ℂ) (g : B.Mat k r') :
     Gf k r' z z' g = Complex.normSq (Q.zetaL k r' z z' (Fin.last r') g) - Tz k r' z * Tz k r' z' := by
@@ -145,35 +145,35 @@ open Finset Formalism.QuantumDeterminants Formalism.FourierDecayAlt
 open scoped Matrix
 
 /- English proof (translation)
-Introduce `hAt Wp Wq _ _ _ _ _ _ P p F w X μ L st Cb ν'r m₀r hD hdd hF hcut hLev x hx γ₀ hγ hζ hfr`. Take `⟨hex0, hd0⟩` from `hAt Wp Wq P p F w X μ L st Cb ν'r m₀r hD hdd hF hcut hLev x hx γ₀ hγ hζ hfr`. Use `set Bs := p.T.bs P.r with hBs`. Establish `hr0 : P.r - P.r = 0` using `Nat.sub_self _`. Establish `hstd : C2.Std P.k (P.r - P.r) Bs.z Bs.z'` using `⟨Bs.k_pos, ⟨Bs.z_mem, Bs.T_pos⟩, ⟨Bs.z'_mem, Bs.T'_pos⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2G : x.2 ∈ B.GV P.k (P.r - P.r)` using `hx.2.1.1`. Establish `hGG : 0 < Complex.normSq (Q.zetaL P.k (P.r - P.r) Bs.z Bs.z' (Fin.last _) x.2) - Tz P.k (P.r - P.r) Bs.z * Tz P.k (P.r - P.r) Bs.z'` using `hx.2.2`. Establish `hGpos : 0 < Gf P.k (P.r - P.r) Bs.z Bs.z' γ₀`. Rewrite using `[PBI.gram_function_level_zero hr0, hζ]`. Conclude with `hGG`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hZ : Zhat P.k (P.r - P.r) Bs.z Bs.z' γ₀ = Zhat P.k (P.r - P.r) Bs.z Bs.z' x.2` using `PBI.corner_matrix_level_zero_eq hr0 _ _ _ _ hζ`. Take `⟨s0, hs0, s0', hs0', hgs⟩` from `Formalism.FourierDecayAlt.P.fibre_orbit_description P.k (P.r - P.r) Bs.z Bs.z' hstd γ₀ hγ x.2 hx2G hGpos hZ`. Take `⟨⟨h1, hh1, m1, hm1, rfl⟩, -⟩` from `hs0`. Take `⟨⟨h2, hh2, m2, hm2, rfl⟩, -⟩` from `hs0'`. Rewrite `hgs` using `[PBI.unipotent_level_zero_eq_one hr0 m1 hm1, PBI.unipotent_level_zero_eq_one hr0 m2 hm2, Matrix.mul_one, Matrix.mul_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed P.k (P.r - P.r) Bs.z`. Establish `hW'` using `Formalism.FourierDecayAlt.P.weyl_subgroup_closed P.k (P.r - P.r) Bs.z'`. Establish `hsi : h1⁻¹ ∈ UWset P.k (P.r - P.r) Bs.z` using `hW.inv_mem _ hh1`. Establish `hs'i : h2⁻¹ ∈ UWset P.k (P.r - P.r) Bs.z'` using `hW'.inv_mem _ hh2`. Establish `hu1 : IsUnit h1.det` using `hW.unit _ hh1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu2 : IsUnit h2.det` using `hW'.unit _ hh2`. Establish `hπ1 : ∀ v, Bs.π h1 (Bs.π h1⁻¹ v) = v`. Introduce `v`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← Bs.π_rep.2 _ hh1 _ hsi, Matrix.mul_nonsing_inv _ hu1, Bs.π_rep.1]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hπ2 : ∀ v, Bs.π h1⁻¹ (Bs.π h1 v) = v`. Introduce `v`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← Bs.π_rep.2 _ hsi _ hh1, Matrix.nonsing_inv_mul _ hu1, Bs.π_rep.1]`. Both sides reduce to the same expression. Establish `hπ'1 : ∀ v, Bs.π' h2 (Bs.π' h2⁻¹ v) = v`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← Bs.π'_rep.2 _ hh2 _ hs'i, Matrix.mul_nonsing_inv _ hu2, Bs.π'_rep.1]`. Both sides reduce to the same expression. Establish `hx0 : (x.1, γ₀) ∈ Q.DomR (JC.parLev P P.r).k (JC.parLev P P.r).r Bs.z Bs.z'`. Establish `hpr : (JC.parLev P P.r).r = 0` using `Nat.sub_self P.r`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨hx.1, ⟨hγ, fun a _ => absurd a.isLt (by omega)⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `0 < Complex.normSq (Q.zetaL P.k (P.r - P.r) Bs.z Bs.z' (Fin.last _) γ₀) - Tz P.k (P.r - P.r) Bs.z * Tz P.k (P.r - P.r) Bs.z'`. Rewrite using `[hζ]`. Conclude with `hGG`. Establish `heq : ∀ Ψ : Q.RadSp (JC.parLev P P.r).k (JC.parLev P P.r).r Bs.z Bs.z' Bs.π Bs.π', (Ψ : Q.Fn (JC.parLev P P.r).k (JC.parLev P P.r).r (Wq →L[ℂ] Wp)) x.1 x.2 = (Bs.π h1⁻¹).comp (((Ψ : Q.Fn (JC.parLev P P.r).k (JC.parLev P P.r).r (Wq →L[ℂ] Wp)) x.1 γ₀).comp (Bs.π' h2))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `Ψ`. Use `Ψ.2.2.2 (x.1, γ₀) hx0 h1⁻¹ hsi h2 hh2` as an intermediate fact. Rewrite using `[hgs]`. Conclude with `this`. Establish `hidem : ∀ ρ u, p.TP.E ρ (p.TP.E ρ u) = p.TP.E ρ u` using `fun ρ u => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ContinuousLinearMap.comp_apply, p.TP.idem ρ]`. Use `⟨fun U => (Bs.π h1).comp (U.comp (Bs.π' h2⁻¹)), fun ρ => (Bs.π h1⁻¹).comp ((p.TP.E ρ).comp (Bs.π h1)), ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `U V`. Rewrite using `[PBI.hsInner_comp_left _ (Bs.π_unitary _ hh1), PBI.hsInner_comp_right _ (Bs.π'_unitary _ hs'i)]`. Introduce `ρ U`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.comp_apply, hπ1]`. Introduce `ρ`. Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.comp_apply, hπ1, hidem]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ v v'`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Combine the equalities or inequalities in the displayed calculation. Introduce `y e`. Rewrite using `[heq (y e)]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.comp_apply, hπ1]`. Rewrite using `[← map_sum]`. Use `congr 1`. Use `congrArg (fun T : Wq →L[ℂ] Wp => T (Bs.π' h2 v)) (hex0 (y e))` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify `this` using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.comp_apply]`. Introduce `h hh y e`. Rewrite using `[heq (P5.act _ y e), hd0 h hh y e, heq (y e)]`. Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.smul_apply, map_sum, map_smul, hπ1]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `Ψ`. Rewrite using `[heq Ψ]`. Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.comp_apply, hπ1, hπ'1]`.
+A detailed English derivation is pending.
 -/
 theorem head_types_of_types_at : PBI.HeadTypesAt → PBI.HeadTypes := by
   intro hAt Wp Wq _ _ _ _ _ _ P p F w X μ L st Cb ν'r m₀r hD hdd hF hcut hLev x hx γ₀ hγ hζ hfr

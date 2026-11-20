@@ -12,9 +12,9 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.CapStepCol
 
 /- English proof (translation)
-Establish `h1 : ∀ i, ∃ j, a₂ j = a i` using `fun i => by`. Establish `: a i ∈ Set.range a₂` using `h ▸ Set.mem_range_self i`. Conclude with `this`. Use `choose f hf using h1`. Establish `hinj : Function.Injective f` using `fun i j hij => ha (by rw [← hf i, ← hf j, hij])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨Equiv.ofBijective f (Finite.injective_iff_bijective.mp hinj), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `[hf]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_perm_of_range_eq {n t : ℕ} (a a₂ : Fin t → Fin n) (ha : Function.Injective a)
     (h : Set.range a = Set.range a₂) : ∃ τ : Equiv.Perm (Fin t), a = a₂ ∘ τ := by
@@ -28,28 +28,28 @@ theorem exists_perm_of_range_eq {n t : ℕ} (a a₂ : Fin t → Fin n) (ha : Fun
   simp [hf]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> simp [h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_sign {t : ℕ} (τ : Equiv.Perm (Fin t)) :
     ‖(((Equiv.Perm.sign τ : ℤˣ) : ℤ) : ℂ)‖ = 1 := by
   rcases Int.units_eq_one_or (Equiv.Perm.sign τ) with h | h <;> simp [h]
 
 /- English proof (translation)
-Introduce `M Wp _ _ _ _ n t E l a b a' b' a0 b0 p hE ha hb ha' hb' hra ha0 hrb hb0 hba hl`. Take `⟨σ, hσ⟩` from `exists_perm_of_range_eq a (Fin.cons a0 a' : Fin (t + 1) → Fin n) ha (by rw [hra, Fin.range_cons])`. Take `⟨τ, hτ⟩` from `exists_perm_of_range_eq b (Fin.cons b0 b' : Fin (t + 1) → Fin n) hb (by rw [hrb, Fin.range_cons])`. Use `⟨(((Equiv.Perm.sign σ : ℤˣ) : ℤ) : ℂ) * (((Equiv.Perm.sign τ : ℤˣ) : ℤ) : ℂ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[norm_mul, norm_sign, norm_sign, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `u v`. Establish `hT : ∀ (j : Fin (t + 1)) (w : M), l (Formalism.REAL.Tm E u ((Fin.cons a0 a' : Fin (t + 1) → Fin n) j) b0 w) = (if j = 0 then p else 0) • l w`. Introduce `j w`. Establish `hmem : (Fin.cons a0 a' : Fin (t + 1) → Fin n) j ∈ Set.range a`. Rewrite using `[hra, ← Fin.range_cons]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.mem_range_self j`. Take `⟨i, hi⟩` from `hmem`. Establish `hne : a i ≠ b0` using `fun h => hba ⟨i, h⟩`. Establish `hiff : a i = a0 ↔ j = 0`. Rewrite using `[hi]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun k => ?_) j` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using `only [Fin.cons_succ, Fin.succ_ne_zero, iff_false]`. Conclude with `fun h => ha0 ⟨k, h⟩`. Rewrite using `[← hi, Formalism.REAL.Tm, if_neg hne, zero_add, hl]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hiff]`. Establish `key : l (Formalism.REAL.qminor E (Fin.cons a0 a' : Fin (t + 1) → Fin n) (Fin.cons b0 b' : Fin (t + 1) → Fin n) u v) = p • l (Formalism.REAL.qminor E a' b' (u - 1) v)`. Rewrite using `[PI.QmColExpWork.expFirst, LinearMap.sum_apply, map_sum, Finset.sum_eq_single 0]`. Establish `e1 : (Fin.cons a0 a' : Fin (t + 1) → Fin n) ∘ (0 : Fin (t + 1)).succAbove = a'`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e2 : (Fin.cons b0 b' : Fin (t + 1) → Fin n) ∘ Fin.succ = b'`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.val_zero, pow_zero, Int.cast_one, one_mul, Module.End.mul_apply]`. Use `hT 0 (Formalism.REAL.qminor E a' b' (u - 1) v)` as an intermediate fact. Simplify using `using this`. Introduce `j _ hj`. Rewrite using `[Module.End.mul_apply, Module.End.intCast_apply, map_zsmul, Module.End.mul_apply, Fin.cons_zero, hT, if_neg hj, zero_smul, smul_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hσ, hτ, Formalism.REAL.quantumMinorRowSkew_holds, Formalism.REAL.quantumMinorColSkew_holds _ _ _ E hE, Module.End.mul_apply, Module.End.mul_apply, Module.End.intCast_apply, Module.End.intCast_apply, map_zsmul, map_zsmul, key, mul_smul, mul_smul, Int.cast_smul_eq_zsmul, Int.cast_ …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cap_step_col : ∀ (M Wp : Type) [AddCommGroup M] [Module ℂ M] [AddCommGroup Wp] [Module ℂ Wp] (n t : ℕ) (E : Fin n → Fin n → Module.End ℂ M) (l : M →ₗ[ℂ] Wp) (a b : Fin (t + 1) → Fin n) (a' b' : Fin t → Fin n) (a0 b0 : Fin n) (p : ℂ), Formalism.REAL.GlRel E → Function.Injective a → Function.Injective b → Function.Injective a' → Function.Injective b' → Set.range a = insert a0 (Set.range a') → a0 ∉ Set.range a' → Set.range b = insert b0 (Set.range b') → b0 ∉ Set.range b' → b0 ∉ Set.range a → (∀ j v, l (E (a j) b0 v) = (if a j = a0 then p else 0) • l v) → ∃ e : ℂ, ‖e‖ = 1 ∧ ∀ u v, l (Formalism.REAL.qminor E a b u v) = (e * p) • l (Formalism.REAL.qminor E a' b' (u - 1) v) := by
   intro M Wp _ _ _ _ n t E l a b a' b' a0 b0 p hE ha hb ha' hb' hra ha0 hrb hb0 hba hl

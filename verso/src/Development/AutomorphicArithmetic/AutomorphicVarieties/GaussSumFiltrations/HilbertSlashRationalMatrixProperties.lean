@@ -10,7 +10,7 @@ namespace GlobalTheory.HilbertThetaSeries.RatSlash
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Use `congr 1`. Use extensionality with `i j`. Simplify using `[cmp, Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cmp_scalar_mul (t : (InfinitePlace F → ℝ)ˣ) (h : GL (Fin 2) (InfinitePlace F → ℝ)) (v : InfinitePlace F) :
     cmp v (Matrix.GeneralLinearGroup.scalar (Fin 2) t * h) = Matrix.GeneralLinearGroup.scalar (Fin 2)
@@ -22,7 +22,7 @@ theorem cmp_scalar_mul (t : (InfinitePlace F → ℝ)ˣ) (h : GL (Fin 2) (Infini
   split_ifs <;> simp
 
 /- English proof (translation)
-Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.det_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_scalar_mul (t : (InfinitePlace F → ℝ)ˣ) (h : GL (Fin 2) (InfinitePlace F → ℝ)) :
     ((Matrix.GeneralLinearGroup.scalar (Fin 2) t * h : GL (Fin 2) (InfinitePlace F → ℝ)) :
@@ -31,14 +31,14 @@ theorem det_scalar_mul (t : (InfinitePlace F → ℝ)ˣ) (h : GL (Fin 2) (Infini
   simp [Matrix.GeneralLinearGroup.scalar, Matrix.det_mul]
 
 /- English proof (translation)
-Introduce `h0` and use `by have := congrFun t.mul_inv v simp [h0] at this`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unit_ne (t : (InfinitePlace F → ℝ)ˣ) (v : InfinitePlace F) : (t : InfinitePlace F → ℝ) v ≠ 0 := fun h0 => by
   have := congrFun t.mul_inv v
   simp [h0] at this
 
 /- English proof (translation)
-Simplify using `[UpperHalfPlane.denom, Matrix.GeneralLinearGroup.scalar, Matrix.mul_apply, Fin.sum_univ_two]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem denom_scalar_mul (u : ℝˣ) (g : GL (Fin 2) ℝ) (z : ℂ) :
     UpperHalfPlane.denom (Matrix.GeneralLinearGroup.scalar (Fin 2) u * g) z = ((u : ℝ) : ℂ) * UpperHalfPlane.denom g z := by
@@ -46,17 +46,17 @@ theorem denom_scalar_mul (u : ℝˣ) (g : GL (Fin 2) ℝ) (z : ℂ) :
   ring
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hk`. Use function extensionality and compare the values at `z`. Establish `hact : act (Matrix.GeneralLinearGroup.scalar (Fin 2) t * h) z = act h z`. Unfold `act`. Use function extensionality and compare the values at `v`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[cmp_scalar_mul, mul_smul, UpperHalfPlane.glScalar_smul]`. Establish `hdet : ∏ v, |((Matrix.GeneralLinearGroup.scalar (Fin 2) t * h : GL (Fin 2) (InfinitePlace F → ℝ)) : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v| = (∏ v, (t : InfinitePlace F → ℝ) v) ^ 2 * ∏ v, |(h : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v|`. Rewrite using `[det_scalar_mul, ← Finset.prod_pow, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl (fun v _ => ?_)` and prove the remaining obligations. Simplify using `[abs_mul, sq_abs]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hden : ∏ v, UpperHalfPlane.denom (cmp v (Matrix.GeneralLinearGroup.scalar (Fin 2) t * h)) (z v) = ((∏ v, (t : InfinitePlace F → ℝ) v : ℝ) : ℂ) * ∏ v, UpperHalfPlane.denom (cmp v h) (z v)`. Repeatedly rewrite using `[cmp_scalar_mul, denom_scalar_mul]`. Rewrite using `[Finset.prod_mul_distrib]`. Use `push_cast`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Establish `hP : (∏ v, (t : InfinitePlace F → ℝ) v) ≠ 0` using `Finset.prod_ne_zero_iff.mpr (fun v _ => unit_ne t v)`. Establish `hQ : 0 ≤ ∏ v, |(h : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det v|` using `Finset.prod_nonneg (fun v _ => abs_nonneg _)`. Establish `hexp : (((m + m : ℕ) : ℝ) / 2) = ((m : ℕ) : ℝ)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `sl sl0`. Rewrite using `[hact, hdet, hden, Real.mul_rpow (by positivity) hQ, hexp, Real.rpow_natCast, ← pow_mul]`. Use `set P := ∏ v, (t : InfinitePlace F → ℝ) v`. Establish `hPC : (P : ℂ) ≠ 0` using `by exact_mod_cast hP`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv, mul_pow, inv_pow (P : ℂ)]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sl_scalar_mul {k : ℕ} (hk : Even k) (f : Hn F → ℂ) (t : (InfinitePlace F → ℝ)ˣ) (h : GL (Fin 2) (InfinitePlace F → ℝ)) :
     sl k (Matrix.GeneralLinearGroup.scalar (Fin 2) t * h) f = sl k h f := by
@@ -96,13 +96,13 @@ theorem sl_scalar_mul {k : ℕ} (hk : Even k) (f : Hn F → ℂ) (t : (InfiniteP
 variable [IsTotallyReal F]
 
 /- English proof (translation)
-The claim follows from `InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v) x`.
+A detailed English derivation is pending.
 -/
 theorem ofReal_rhom (v : InfinitePlace F) (x : F) : ((rhom x v : ℝ) : ℂ) = v.embedding x :=
   InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v) x
 
 /- English proof (translation)
-Unfold `rhom reAt`. Use `show InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal v) x = (v.embedding x).re`. Rewrite using `[← InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v) x, Complex.ofReal_re]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhom_apply (v : InfinitePlace F) (x : F) : rhom x v = reAt v x := by
   unfold rhom reAt
@@ -110,7 +110,7 @@ theorem rhom_apply (v : InfinitePlace F) (x : F) : rhom x v = reAt v x := by
   rw [← InfinitePlace.embedding_of_isReal_apply (IsTotallyReal.isReal v) x, Complex.ofReal_re]
 
 /- English proof (translation)
-Rewrite using `[← rhom_apply, ofReal_rhom]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ofReal_reAt (v : InfinitePlace F) (x : F) : ((reAt v x : ℝ) : ℂ) = v.embedding x := by
   rw [← rhom_apply, ofReal_rhom]
@@ -124,9 +124,9 @@ def embEquiv : InfinitePlace F ≃ (F →+* ℂ) where
   right_inv φ := InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal _))
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Repeatedly rewrite using `[ofReal_reAt]`. Establish `h1 : ∏ v : InfinitePlace F, v.embedding x = ∏ φ : F →+* ℂ, φ x` using `Equiv.prod_comp (embEquiv F) (fun φ => φ x)`. Establish `h2 : ∏ φ : F →+* ℂ, φ x = ∏ σ : F →ₐ[ℚ] ℂ, σ x` using `Equiv.prod_comp (RingHom.equivRatAlgHom F ℂ) (fun σ : F →ₐ[ℚ] ℂ => σ x)`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, ← Algebra.norm_eq_prod_embeddings ℚ ℂ x, eq_ratCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_reAt (x : F) : ∏ v, reAt v x = ((Algebra.norm ℚ x : ℚ) : ℝ) := by
   apply Complex.ofReal_injective
@@ -139,9 +139,9 @@ theorem prod_reAt (x : F) : ∏ v, reAt v x = ((Algebra.norm ℚ x : ℚ) : ℝ)
   rw [h1, h2, ← Algebra.norm_eq_prod_embeddings ℚ ℂ x, eq_ratCast]
 
 /- English proof (translation)
-Apply `Complex.ofReal_injective` to reduce the goal to its premises. Use `push_cast`. Repeatedly rewrite using `[ofReal_reAt]`. Establish `h1 : ∑ v : InfinitePlace F, v.embedding x = ∑ φ : F →+* ℂ, φ x` using `Equiv.sum_comp (embEquiv F) (fun φ => φ x)`. Establish `h2 : ∑ φ : F →+* ℂ, φ x = ∑ σ : F →ₐ[ℚ] ℂ, σ x` using `Equiv.sum_comp (RingHom.equivRatAlgHom F ℂ) (fun σ : F →ₐ[ℚ] ℂ => σ x)`.
+Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1, h2, ← trace_eq_sum_embeddings ℂ, eq_ratCast]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_reAt (x : F) : ∑ v, reAt v x = ((Algebra.trace ℚ F x : ℚ) : ℝ) := by
   apply Complex.ofReal_injective
@@ -154,14 +154,14 @@ theorem sum_reAt (x : F) : ∑ v, reAt v x = ((Algebra.trace ℚ F x : ℚ) : �
   rw [h1, h2, ← trace_eq_sum_embeddings ℂ, eq_ratCast]
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem det_toInf (γ : GL (Fin 2) F) :
     ((toInf γ : GL (Fin 2) (InfinitePlace F → ℝ)) : Matrix (Fin 2) (Fin 2) (InfinitePlace F → ℝ)).det = rhom γ.val.det := by
   rw [RingHom.map_det]; rfl
 
 /- English proof (translation)
-Use extensionality with `i j v`. Simplify using `[toInf, Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem toInf_scalar (η : Fˣ) : toInf (Matrix.GeneralLinearGroup.scalar (Fin 2) η) =
     Matrix.GeneralLinearGroup.scalar (Fin 2) (Units.map (rhom (F := F)).toMonoidHom η) := by
@@ -170,13 +170,13 @@ theorem toInf_scalar (η : Fˣ) : toInf (Matrix.GeneralLinearGroup.scalar (Fin 2
   split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `F _ _ _ k f`. Use `⟨rhom_apply, fun γ => ⟨?_, ?_⟩, fun hk t h hh => ⟨?_, sl_scalar_mul hk f t h⟩, toInf_scalar, fun x => ⟨prod_reAt x, sum_reAt x⟩⟩` and prove the remaining obligations. Unfold `Pos TP`. Rewrite using `[det_toInf]`. Simplify using `only [rhom_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `z`. Unfold `sl`. Rewrite using `[det_toInf]`. Simplify using `only [rhom_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[← Finset.abs_prod, prod_reAt]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Unfold `Pos at hh ⊢`. Introduce `v`. Rewrite using `[det_scalar_mul]`. Establish `h1` using `unit_ne t v`. Establish `h2` using `hh v`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Pi.mul_apply, Pi.pow_apply]`. Check the signs of the components of the expression.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 -/
 theorem rat_slash : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (f : Hn F → ℂ), (∀ v (x : F), rhom x v = reAt v x) ∧ (∀ γ : GL (Fin 2) F, (Pos (toInf γ) ↔ TP γ.val.det) ∧ sl k (toInf γ) f = ((|((Algebra.norm ℚ γ.val.det : ℚ) : ℝ)| ^ ((k : ℝ) / 2) : ℝ) : ℂ) • sl0 k (toInf γ) f) ∧ (Even k → ∀ (t : (InfinitePlace F → ℝ)ˣ) (h : GL (Fin 2) (InfinitePlace F → ℝ)), Pos h → Pos (Matrix.GeneralLinearGroup.scalar (Fin 2) t * h) ∧ sl k (Matrix.GeneralLinearGroup.scalar (Fin 2) t * h) f = sl k h f) ∧ (∀ η : Fˣ, toInf (Matrix.GeneralLinearGroup.scalar (Fin 2) η) = Matrix.GeneralLinearGroup.scalar (Fin 2) (Units.map (rhom (F := F)).toMonoidHom η)) ∧ ∀ x : F, ∏ v, reAt v x = ((Algebra.norm ℚ x : ℚ) : ℝ) ∧ ∑ v, reAt v x = ((Algebra.trace ℚ F x : ℚ) : ℝ) := by
   intro F _ _ _ k f
@@ -204,7 +204,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.L2.Host Formalism.Conjuga
 open scoped Matrix
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.HilbertThetaSeries.RatSlash.rat_slash | exact GlobalTheory.HilbertThetaSeries.RatSlash.rat_slash | (intros; apply GlobalTheory.HilbertThetaSeries.RatSlash.rat_slash <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.hilbert_slash_rational_matrix_properties : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (f : Hn F → ℂ), (∀ v (x : F), rhom x v = reAt v x) ∧ (∀ γ : GL (Fin 2) F, (Pos (toInf γ) ↔ TP γ.val.det) ∧ sl k (toInf γ) f = ((|((Algebra.norm ℚ γ.val.det : ℚ) : ℝ)| ^ ((k : ℝ) / 2) : ℝ) : ℂ) • sl0 k (toInf γ) f) ∧ (Even k → ∀ (t : (InfinitePlace F → ℝ)ˣ) (h : GL (Fin 2) (InfinitePlace F → ℝ)), Pos h → Pos (Matrix.GeneralLinearGroup.scalar (Fin 2) t * h) ∧ sl k (Matrix.GeneralLinearGroup.scalar (Fin 2) t * h) f = sl k h f) ∧ (∀ η : Fˣ, toInf (Matrix.GeneralLinearGroup.scalar (Fin 2) η) = Matrix.GeneralLinearGroup.scalar (Fin 2) (Units.map (rhom (F := F)).toMonoidHom η)) ∧ ∀ x : F, ∏ v, reAt v x = ((Algebra.norm ℚ x : ℚ) : ℝ) ∧ ∑ v, reAt v x = ((Algebra.trace ℚ F x : ℚ) : ℝ) := by
   first | exact @GlobalTheory.HilbertThetaSeries.RatSlash.rat_slash | exact GlobalTheory.HilbertThetaSeries.RatSlash.rat_slash | (intros; apply GlobalTheory.HilbertThetaSeries.RatSlash.rat_slash <;> assumption)

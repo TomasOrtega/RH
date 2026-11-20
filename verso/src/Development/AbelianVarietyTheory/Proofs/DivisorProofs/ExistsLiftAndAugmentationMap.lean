@@ -24,7 +24,7 @@ def PDPoly.liftAlg (Q : PDPoly B) {C : Type} [CommRing C] [Algebra B C] (c : ℕ
     exact congrArg (fun g ↦ g x y) key)
 
 /- English proof (translation)
-The claim follows from `Q.e.constr_basis B c n`.
+A detailed English derivation is pending.
 -/
 theorem PDPoly.liftAlg_e (Q : PDPoly B) {C : Type} [CommRing C] [Algebra B C] (c : ℕ → C) (h0 : c 0 = 1)
     (hm : ∀ m n, c m * c n = ((m + n).choose m : C) * c (m + n)) (n : ℕ) :
@@ -32,23 +32,21 @@ theorem PDPoly.liftAlg_e (Q : PDPoly B) {C : Type} [CommRing C] [Algebra B C] (c
   Q.e.constr_basis B c n
 
 /- English proof (translation)
-Introduce `B _ Q`. Use `⟨fun C _ f c h0 hm ↦ ?_, ?_⟩` and prove the remaining obligations. Use `letI := f.toAlgebra`. Conclude with `⟨(Q.liftAlg c h0 hm).toRingHom, fun b ↦ (Q.liftAlg c h0 hm).commutes b, fun n ↦ Q.liftAlg_e c h0 hm n⟩`. Set `d : ℕ → B` to `fun n ↦ if n = 0 then 1 else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `h0 : d 0 = 1` using `by simp [d]`. Establish `hm : ∀ m n, d m * d n = ((m + n).choose m : B) * d (m + n)`. Introduce `m n`. Apply the tactic sequence `by_cases hm : m = 0 <;> by_cases hn : n = 0 <;> simp [d, hm, hn]`. Set `ε` to `Q.liftAlg d h0 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Introduce a local definition for the expression.
 
-Establish `hε : ∀ n, ε (Q.e n) = d n` using `Q.liftAlg_e d h0 hm`. Establish `hmem : ∀ p, p - algebraMap B Q.P (ε p) ∈ Q.aug`. Introduce `p`. Establish `hp : p ∈ Submodule.span B (Set.range Q.e)` using `by rw [Q.e.span_eq]; trivial`. Proceed by induction on `hp using Submodule.span_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨n, rfl⟩` from `hx`. Rewrite using `[hε]`. Break down `n with _ | n` into its components or cases. Simplify using `[d, Q.e_zero]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify `Q.e_succ_mem_aug n` using `[d]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`. Establish `: x + y - algebraMap B Q.P (ε (x + y)) = (x - algebraMap B Q.P (ε x)) + (y - algebraMap B Q.P (ε y))`. Rewrite using `[map_add, map_add]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `smul b x _ hx`. Establish `: b • x - algebraMap B Q.P (ε (b • x)) = algebraMap B Q.P b * (x - algebraMap B Q.P (ε x))`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, smul_eq_mul, map_mul, Algebra.smul_def, mul_sub]`. Rewrite using `[this]`. Conclude with `Q.aug.mul_mem_left _ hx`. Use `⟨ε, fun p ↦ ⟨fun hp ↦ ?_, fun hp ↦ ?_⟩⟩` and prove the remaining obligations. Establish `hle : Q.aug ≤ RingHom.ker ε`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, rfl⟩`. Simplify using `[RingHom.mem_ker, hε, d]`. Conclude with `RingHom.mem_ker.1 (hle hp)`. Use `hmem p` as an intermediate fact.
-
-Rewrite `this` using `[hp, map_zero, sub_zero]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem PDPoly.exists_lift_and_aug : ∀ (B : Type) [CommRing B] (Q : PDPoly B),
     (∀ (C : Type) [CommRing C] (f : B →+* C) (c : ℕ → C), c 0 = 1 →

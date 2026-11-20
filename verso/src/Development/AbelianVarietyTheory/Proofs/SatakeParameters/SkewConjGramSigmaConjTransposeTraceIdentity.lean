@@ -7,15 +7,15 @@ open Matrix
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `L _ _ σ hσ n r JS M Γ hJ hΓ`. Establish `hmul : ∀ {a b c : ℕ} (A : Matrix (Fin a) (Fin b) L) (B : Matrix (Fin b) (Fin c) L), Formalism.UG.cT σ (A * B) = Formalism.UG.cT σ B * Formalism.UG.cT σ A`. Introduce `a b c A B`. Simplify using `only [Formalism.UG.cT, Matrix.map_mul, Matrix.transpose_mul]`. Establish `hcc : Formalism.UG.cT σ (Formalism.UG.cT σ M) = M`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hσ]`. Establish `hJ' : Formalism.UG.cT σ (JS : Matrix (Fin n) (Fin n) L) = JS`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hJ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hΓ' : Formalism.UG.cT σ Γ = -Γ`. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, hΓ]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, hmul, hmul, hcc, hJ', hΓ']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc, Matrix.neg_mul, Matrix.mul_neg]`. Introduce `n' JT y`. Rewrite using `[hmul, Matrix.mul_assoc (M * Γ * Formalism.UG.cT σ M), Units.mul_inv, Matrix.mul_one]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.trace_mul_comm M]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem skewConj_cT_mul_and_trace :
   ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (σ : L →+* L), (∀ x, σ (σ x) = x) →

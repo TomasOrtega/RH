@@ -7,7 +7,7 @@ open scoped BigOperators ComplexConjugate
 namespace Formalism.L2.Th1.H
 
 /- English proof (translation)
-Establish `h : ((Real.sqrt d : ℝ) : ℂ) * ((Real.sqrt d : ℝ) : ℂ) = (d : ℂ)`. Rewrite using `[← Complex.ofReal_mul, Real.mul_self_sqrt (Nat.cast_nonneg d)]`. Simplify using the standard rewrite rules. Take the linear combination `(Complex.I * Complex.I) * h + (d : ℂ) * Complex.I_mul_I`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sqrtNeg_sq (d : ℕ) :
     (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) * (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) = -(d : ℂ) := by
@@ -17,14 +17,14 @@ theorem sqrtNeg_sq (d : ℕ) :
   linear_combination (Complex.I * Complex.I) * h + (d : ℂ) * Complex.I_mul_I
 
 /- English proof (translation)
-Rewrite using `[map_mul, Complex.conj_I, Complex.conj_ofReal, neg_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sqrtNeg_conj (d : ℕ) :
     conj (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) = -(Complex.I * ((Real.sqrt d : ℝ) : ℂ)) := by
   rw [map_mul, Complex.conj_I, Complex.conj_ofReal, neg_mul]
 
 /- English proof (translation)
-Take `⟨p, q, rfl⟩` from `hz`. Use `⟨p, -q, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_mul, sqrtNeg_conj, map_ratCast, map_ratCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem InK.conj {d : ℕ} {z : ℂ} (hz : InK d z) : InK d (conj z) := by
   obtain ⟨p, q, rfl⟩ := hz

@@ -31,21 +31,21 @@ def IsNilOver {R K : LAlg R₀} (ρ : LHom R K) : Prop :=
   Function.Surjective ρ.1 ∧ ∀ a ∈ RingHom.ker ρ.1, IsNilpotent a
 
 /- English proof (translation)
-Rewrite using `[map_add, x.2, y.2, add_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma map_add_ker (B : BX R₀) {R K : LAlg R₀} (ρ : LHom R K) (x y : {x : B.G R // B.map ρ x = 0}) :
     B.map ρ (x.1 + y.1) = 0 := by
   rw [map_add, x.2, y.2, add_zero]
 
 /- English proof (translation)
-Rewrite using `[← B.map_comp, hf, x.2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma map_nat_ker (B : BX R₀) {R R' K : LAlg R₀} (ρ : LHom R K) (ρ' : LHom R' K) (f : LHom R R')
     (hf : ρ'.comp f = ρ) (x : {x : B.G R // B.map ρ x = 0}) : B.map ρ' (B.map f x.1) = 0 := by
   rw [← B.map_comp, hf, x.2]
 
 /- English proof (translation)
-Rewrite using `[← hfac, B.map_comp, (B.tg_ker π hπ _).2 ⟨w, rfl⟩, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma map_tg_ker (B : BX R₀) {R S K : LAlg R₀} (ρ : LHom R K) (π : LHom R S) (hπ : π.SqZero)
     (ρS : LHom S K) (hfac : ρS.comp π = ρ) (w : B.gg ⊗[R₀] π.ker) : B.map ρ (B.tg π hπ w) = 0 := by
@@ -114,12 +114,12 @@ def torP (B : BX R₀) (p : ℕ) (S : LAlg R₀) : AddSubgroup (B.G S) where
     rw [smul_neg, ha, neg_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_torP (B : BX R₀) (p : ℕ) {S : LAlg R₀} (z : B.G S) : z ∈ torP B p S ↔ p • z = 0 := Iff.rfl
 
 /- English proof (translation)
-Use `(mem_torP B p _).2 ?_` and prove the remaining obligations. Rewrite using `[← map_nsmul, (mem_torP B p _).1 x.2, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma map_torP (B : BX R₀) (p : ℕ) {S S' : LAlg R₀} (f : LHom S S') (x : torP B p S) :
     B.map f (x : B.G S) ∈ torP B p S' := by
@@ -127,7 +127,7 @@ lemma map_torP (B : BX R₀) (p : ℕ) {S S' : LAlg R₀} (f : LHom S S') (x : t
   rw [← map_nsmul, (mem_torP B p _).1 x.2, map_zero]
 
 /- English proof (translation)
-Use `(mem_torP B p _).2 ?_` and prove the remaining obligations. Rewrite using `[← map_nsmul, ← TensorProduct.tmul_smul, hi, TensorProduct.tmul_zero, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma tg_torP (B : BX R₀) (p : ℕ) {R S : LAlg R₀} (π : LHom R S) (hπ : π.SqZero) (w : B.gg)
     (i : π.ker) (hi : p • i = 0) : B.tg π hπ (w ⊗ₜ i) ∈ torP B p R := by

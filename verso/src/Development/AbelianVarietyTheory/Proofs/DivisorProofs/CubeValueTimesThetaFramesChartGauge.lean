@@ -22,7 +22,7 @@ section Val
 variable {F : Type} [Field F] {X : Scheme.{0}}
 
 /- English proof (translation)
-Unfold `valF`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valF_eq_hom (x : Sp F ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f : Γ(X, U)) :
     valF x U f = ((Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom.comp (x.appLE U ⊤ h).hom) f := by
@@ -31,7 +31,7 @@ theorem valF_eq_hom (x : Sp F ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (f
   rfl
 
 /- English proof (translation)
-Rewrite using `[valF_eq_hom x h, valF_eq_hom x h]`. Establish `e` using `congrArg Units.val (map_zpow (Units.map ((Scheme.ΓSpecIso (CommRingCat.of F)).hom.hom.comp (x.appLE U ⊤ h).hom).toMonoidHom) u n)`. Rewrite `e` using `[Units.val_zpow_eq_zpow_val]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valF_zpow (x : Sp F ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(X, U)ˣ) (n : ℤ) :
     valF x U (u ^ n).val = valF x U u.val ^ n := by
@@ -42,7 +42,7 @@ theorem valF_zpow (x : Sp F ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (u :
   exact e
 
 /- English proof (translation)
-Simplify using `only [valF_eq_hom x h, Units.coe_prod, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem valF_prod {K : Type} [Fintype K] (x : Sp F ⟶ X) {U : X.Opens} (h : ⊤ ≤ x ⁻¹ᵁ U) (u : K → Γ(X, U)ˣ) :
     valF x U (∏ k, u k).val = ∏ k, valF x U (u k).val := by
@@ -51,11 +51,11 @@ theorem valF_prod {K : Type} [Fintype K] (x : Sp F ⟶ X) {U : X.Opens} (h : ⊤
 end Val
 
 /- English proof (translation)
-Establish `p` using `GlobalTheory.FrameValue.prod_thK (fun s : Finset (Fin 3) => ((d.fr (∑ a ∈ s, ![x, y, z] a) : ℂˣ) : ℂ))`. Simplify using `only [GlobalTheory.FrameValue.sum_three, Finset.sum_singleton, Finset.sum_empty, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons, d.fr_zero, Units.val_one] at p`. Simplify using `only [wI]`. Rewrite using `[p, cubF, inv_one, _root_.mul_one]`. Establish `h1` using `(d.fr (x + y + z)).ne_zero`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(d.fr (x + y)).ne_zero`. Establish `h3` using `(d.fr (x + z)).ne_zero`. Establish `h4` using `(d.fr (y + z)).ne_zero`. Establish `h5` using `(d.fr x).ne_zero`. Establish `h6` using `(d.fr y).ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7` using `(d.fr z).ne_zero`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 -/
 theorem cubF_mul_prod_fr {B : NumB ℂ} {g : ℕ} (d : AB B g) (x y z : Fin g → ℂ) :
     cubF d x y z * ∏ I : thK, ((d.fr (wI x y z I) : ℂˣ) : ℂ) ^ thε I = (B.θ (d.ex x) (d.ex y) (d.ex z) : ℂ) := by
@@ -74,23 +74,19 @@ theorem cubF_mul_prod_fr {B : NumB ℂ} {g : ℕ} (d : AB B g) (x y z : Fin g �
   field_simp
 
 /- English proof (translation)
-Use `set r := pt3 ν d x y z with hr`. Use `set φ := thφ D.P.A (x3 D.P.A) with hφ`. Use `set J' : thK → D.P.L.ι := fun I => ν.J (r ≫ φ I) with hJ'`. Establish `hθ : (N.θ (d.ex x) (d.ex y) (d.ex z) : ℂ) = valF r (cubW D J') (D.cub.t.s J').val` using `ν.θ_eq _ _ _`. Establish `hgood : ⊤ ≤ r ⁻¹ᵁ cubW D J'` using `fun p _ => Set.mem_iInter.2 fun I => ν.good (r ≫ φ I) (x := p) trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hboth` using `GlobalTheory.ZH.TorsFrame.le_preimage_inf r hgood hj`. Establish `hg` using `D.cub.isGen J' j`. Establish `e2 : valF r (cubW D J') (D.cub.t.s J').val = valF r (cubW D J' ⊓ cubW D j) ((Theta D.P.A D.P.L).g J' j).val * valF r (cubW D j) (D.cub.t.s j).val` using `(GlobalTheory.ZH.TorsFrame.valF_res r (inf_le_left : cubW D J' ⊓ cubW D j ≤ cubW D J') hboth (D.cub.t.s J')).symm.trans ((congrArg (fun u => valF r (cubW D J' ⊓ cubW D j) (Units.val u)) hg).trans ((GlobalTheory.ZH.TorsFrame.valF_mul r hboth _ _).trans (congrArg (_ * ·) (GlobalThe …`. Establish `e3 : valF r (cubW D J' ⊓ cubW D j) ((Theta D.P.A D.P.L).g J' j).val = ∏ I : thK, valF (r ≫ φ I) (D.P.L.U (J' I) ⊓ D.P.L.U (j I)) (D.P.L.g (J' I) (j I)).val ^ thε I`. Use `(valF_prod r hboth _).trans (Finset.prod_congr rfl fun I _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `(valF_zpow r hboth _ _).trans ?_` and prove the remaining obligations. Use `congr 1`. Conclude with `(GlobalTheory.ZH.TorsFrame.valF_res r _ hboth _).trans (GlobalTheory.ZH.TorsFrame.valF_pullU r (φ I) (D.P.L.U (J' I) ⊓ D.P.L.U (j I)) (D.P.L.g (J' I) (j I)))`. Establish `hc : ∀ I : thK, valF (r ≫ φ I) (D.P.L.U (J' I) ⊓ D.P.L.U (j I)) (D.P.L.g (J' I) (j I)).val * geo.frG (j I) (wI x y z I) = d.fr (wI x y z I) * ν.rg`. Introduce `I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hin : ⊤ ≤ (r ≫ φ I) ⁻¹ᵁ (D.P.L.U (ν.J (r ≫ φ I)) ⊓ D.P.L.U (j I))` using `fun p _ => ⟨ν.good (r ≫ φ I) (x := p) trivial, Set.mem_iInter.1 (hj (x := p) trivial) I⟩`. Establish `hp : r ≫ φ I = (ν.eA (d.ex (wI x y z I))).left` using `complexCubeAbelianPoint_thetaFace_eq_partialSum ν d x y z I`. Use `show valF (r ≫ φ I) (D.P.L.U (ν.J (r ≫ φ I)) ⊓ D.P.L.U (j I)) (D.P.L.g (ν.J (r ≫ φ I)) (j I)).val * geo.frG (j I) (wI x y z I) = d.fr (wI x y z I) * ν.rg`. Rewrite `hin`, the goal using `[hp]`. Rewrite using `[geo.fr_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(geo.fr_compat _ _ _ hin).symm`. Establish `hrg : ν.rg ≠ 0` using `GlobalTheory.Ex.Arch.AbVal.rg_ne_zero ν`. Use `set a : thK → ℂ := fun I => valF (r ≫ φ I) (D.P.L.U (J' I) ⊓ D.P.L.U (j I)) (D.P.L.g (J' I) (j I)).val with ha_def`. Use `set fG : thK → ℂ := fun I => geo.frG (j I) (wI x y z I) with hfG`. Use `set V := valF r (cubW D j) (D.cub.t.s j).val with hV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts.
 
-Use `set θ : ℂ := (N.θ (d.ex x) (d.ex y) (d.ex z) : ℂ) with hθd`. Establish `hθ' : θ = (∏ I : thK, a I ^ thε I) * V` using `by rw [hθ, e2, e3]`. Establish `ha : ∀ I, a I ≠ 0` using `fun I h0 => by`. Use `hc I` as an intermediate fact. Rewrite `this` using `[show valF (r ≫ φ I) (D.P.L.U (J' I) ⊓ D.P.L.U (j I)) (D.P.L.g (J' I) (j I)).val = a I from rfl, h0, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_ne_zero (Units.ne_zero _) hrg this.symm`. Establish `hPa : (∏ I : thK, a I ^ thε I) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun I _ => zpow_ne_zero _ (ha I)`. Establish `hrg1 : (∏ _I : thK, ν.rg ^ thε _I) = 1`. Establish `p` using `GlobalTheory.FrameValue.prod_thK (fun _ : Finset (Fin 3) => ν.rg)`. Use `p.trans ?_` and prove the remaining obligations.
-
-Clear the denominators using the available nonvanishing facts. Establish `hP : (∏ I : thK, a I ^ thε I) * (∏ I : thK, fG I ^ thε I) = ∏ I : thK, ((d.fr (wI x y z I) : ℂˣ) : ℂ) ^ thε I`. Rewrite using `[← Finset.prod_mul_distrib]`. Establish `: ∀ I : thK, a I ^ thε I * fG I ^ thε I = ((d.fr (wI x y z I) : ℂˣ) : ℂ) ^ thε I * ν.rg ^ thε I` using `fun I => by rw [← mul_zpow, ← mul_zpow]; exact congrArg (· ^ thε I) (hc I)`. Rewrite using `[Finset.prod_congr rfl fun I _ => this I, Finset.prod_mul_distrib, hrg1, _root_.mul_one]`.
-
-Establish `hcub` using `cubF_mul_prod_fr d x y z`. Use `show cubF d x y z * ∏ I : thK, fG I ^ thε I = V`. Use `mul_left_cancel₀ hPa ?_` and prove the remaining obligations. Take the linear combination `cubF d x y z * hP + hcub + hθ'`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem cubF_mul_prod_frG {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} [Algebra (FractionRing R) ℂ] {N : NumD ℂ}
     {g : ℕ} (ν : NumOf D ℂ N) (d : AB N.toNumB g) (geo : Geo ν d) (x y z : Fin g → ℂ) (j : thK → D.P.L.ι)

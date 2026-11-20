@@ -9,7 +9,7 @@ universe u
 namespace GlobalTheory.CompanionTheory.SegmentWords
 
 /- English proof (translation)
-Introduce `T s hs hj L M hL hM hLM hML`. Assume the negation of the conclusion as `hne`. Establish `h1` using `GlobalTheory.T.shuffle_weight_square_length_lt s hs hj L (M : Multiset (ASeg T)) hL hLM (Ne.symm hne)`. Establish `h2` using `GlobalTheory.T.shuffle_weight_square_length_lt s hs hj M (L : Multiset (ASeg T)) hM hML hne`. Conclude with `lt_asymm h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wt_inSh_antisymm : ∀ {T : Type u} (s : T → T), Function.Injective s →
     (∀ (t : T) (j : ℕ), 0 < j → s^[j] t ≠ t) → ∀ (L M : List (ASeg T)), AOrdered s L →

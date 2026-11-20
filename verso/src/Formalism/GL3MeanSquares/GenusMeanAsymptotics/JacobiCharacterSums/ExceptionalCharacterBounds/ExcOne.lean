@@ -7,11 +7,11 @@ noncomputable section
 namespace Formalism.HermitianLattices.Ext.SupplyAP
 
 /- English proof (translation)
-Take `⟨cZ, hcZ, hZ⟩` from `zFRDirichlet`. Use `⟨min cZ (1 / 20), lt_min hcZ (by norm_num), min_le_right _ _, fun m _ => ?_⟩` and prove the remaining obligations. Establish `hex` using `fun χ : DirichletCharacter ℂ m => exists_exceptional_zero_set cZ (min cZ (1 / 20)) (min_le_left _ _) hZ m χ`. Use `⟨fun χ => Classical.choose (hex χ), fun χ => Classical.choose_spec (hex χ), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `χ χ' ⟨β, hβ⟩ ⟨β', hβ'⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨h1, hreg, hz, _⟩` from `(Classical.choose_spec (hex χ)).2.1 β hβ`. Take `⟨h1', hreg', hz', _⟩` from `(Classical.choose_spec (hex χ')).2.1 β' hβ'`. Use `(hZ m χ β (zero_free_region_mono (min_le_left _ _) hreg) ⟨Or.inl h1, hz⟩).2.2.2.2 χ' β' (zero_free_region_mono (min_le_left _ _) hreg') ⟨Or.inl h1', hz'⟩` as an intermediate fact. Conclude with `this.1.symm`. Introduce `χ β hβ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, hreg, hz, _⟩` from `(Classical.choose_spec (hex χ)).2.1 β hβ`. Establish `hZ1` using `hZ m χ β (zero_free_region_mono (min_le_left _ _) hreg) ⟨Or.inl h1, hz⟩`. Conclude with `⟨hZ1.1, h1, half_le_of_real_in_region (min_le_right _ _) hreg, hz⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem excOne : ∃ c₁ : ℝ, 0 < c₁ ∧ c₁ ≤ 1 / 20 ∧
     ∀ (m : ℕ) [NeZero m], ∃ B : DirichletCharacter ℂ m → Finset ℝ,

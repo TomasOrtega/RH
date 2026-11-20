@@ -13,7 +13,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.CuspRep.ParLawsT
 
 /- English proof (translation)
-Take `⟨_, _, H⟩` from `isRecT_locRecT hT h`. Conclude with `H.dim _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lpDim_locParT (hT : UpperTheory.Zero.LLC.RecTExists) (E Ω : Type) [Field E] [NumberField E] [IsTotallyComplex E]
     [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (a : ℕ)

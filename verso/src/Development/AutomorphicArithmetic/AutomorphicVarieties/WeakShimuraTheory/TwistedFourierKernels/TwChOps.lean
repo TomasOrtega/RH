@@ -3,25 +3,23 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.WeakShimuraTheory.
 open IsLocalRing Polynomial UpperTheory.V UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Ws.H5
 
 /- English proof (translation)
-Introduce `l _ F R _ _ γ hγ`. Establish `hq : ∀ g, Ideal.Quotient.mk (maximalIdeal R) (γ g : R) = 1` using `fun g => by`. Rewrite using `[← sub_eq_zero, ← map_one (Ideal.Quotient.mk _), ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `hγ.red g`. Use `⟨fun m => ⟨hγ.toAnti.mono ?_, ?_, ?_⟩, ⟨hγ.toAnti.mono ?_, ?_, ?_⟩, fun R' _ _ e he => ⟨hγ.toAnti.mono ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`. Simplify using `[hg]`. Introduce `N`. Establish `hc` using `(hγ.cont N).comp (fun x => x ^ m)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[Function.comp]`. Introduce `g`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, sub_eq_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[hq g]`. Introduce `g hg`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`. Simplify using `[hg]`. Introduce `N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hc` using `(hγ.cont N).comp Ring.inverse`. Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `only [Function.comp, MonoidHom.inv_apply]`. Establish `hu : Ideal.Quotient.mk (maximalIdeal R ^ N) (γ g : R) = ((Units.map (Ideal.Quotient.mk (maximalIdeal R ^ N) : R →* R ⧸ maximalIdeal R ^ N) (γ g) : _))` using `rfl`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, Ring.inverse_unit, Units.coe_map_inv]`. Both sides reduce to the same expression. Introduce `g`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, sub_eq_zero]`. Establish `h2` using `congrArg (Ideal.Quotient.mk (maximalIdeal R)) (γ g).inv_mul`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[map_mul, hq g, mul_one, map_one]`. Simplify using `using h2`. Introduce `g hg`. Rewrite `hg`, the goal using `[MonoidHom.mem_ker]`. Simplify using `[pushCh, hg]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N`. Establish `hle : maximalIdeal R ^ N ≤ Ideal.comap e (maximalIdeal R' ^ N)`. Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_pow]`. Conclude with `Ideal.pow_right_mono (Ideal.map_le_iff_le_comap.mpr (fun x hx => Ideal.mem_comap.mpr (map_nonunit e x hx))) N`. Establish `hc` using `(hγ.cont N).comp (Ideal.quotientMap _ e hle)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `hc using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using `[pushCh, Ideal.quotientMap_mk]`. Introduce `g`. Establish `h3` using `map_nonunit e _ (hγ.red g)`.
-
-Simplify `h3` using `[pushCh]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.H5.twChOps :
     ∀ {l : ℕ} [Fact l.Prime] (F : GFrame l) {R : Type} [CommRing R] [IsLocalRing R] (γ : F.G₀ →* Rˣ), TwCh F γ → (∀ m : ℕ, TwCh F (γ ^ m)) ∧ TwCh F γ⁻¹ ∧ ∀ (R' : Type) [CommRing R'] [IsLocalRing R'] (e : R →+* R'), IsLocalHom e → TwCh F (pushCh e γ) := by

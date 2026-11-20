@@ -15,13 +15,13 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 namespace GlobalTheory.Poinc.Sep.TraitLift
 
 /- English proof (translation)
-Set `P` to `pullback f y`. Use `haveI : Nonempty (Sp K) := ⟨⟨⊥, Ideal.isPrime_bot⟩⟩`. Take `⟨p, -⟩` from `(pullback.snd f y).surjective (Classical.arbitrary (Sp K))`. Take `⟨R, e, he, ⟨q, -⟩, -⟩` from `Scheme.exists_affine_mem_range_and_range_subset (X := P) (x := p) (U := ⊤) trivial`. Set `g' : Spec R ⟶ Sp K` to `e ≫ pullback.snd f y`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `haveI : LocallyOfFiniteType g' := inferInstance`. Take `⟨φ, hφ⟩` from `Spec.map_surjective g'`. Establish `hφf : φ.hom.FiniteType`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType), hφ]`. Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `haveI : Nontrivial R := PrimeSpectrum.nonempty_iff_nontrivial.1 ⟨q⟩`. Take `⟨I, hI⟩` from `Ideal.exists_maximal R`. Use `letI : Field (R ⧸ I) := Ideal.Quotient.field I`. Use `letI : Algebra K (R ⧸ I) := ((Ideal.Quotient.mk I).comp φ.hom).toAlgebra`. Use `haveI hft : Algebra.FiniteType K (R ⧸ I) := RingHom.FiniteType.comp (RingHom.FiniteType.of_surjective _ Ideal.Quotient.mk_surjective) hφf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨R ⧸ I, inferInstance, inferInstance, finite_of_finite_type_of_isJacobsonRing _ _, Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk I)) ≫ e ≫ pullback.fst f y, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc e]`. Express the relevant statement in the definitionally equal form `_ ≫ g' ≫ y = _`. Rewrite using `[← hφ, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_point_finite_ext {X Y : Scheme.{0}} (f : X ⟶ Y) [LocallyOfFiniteType f] [Surjective f]
     (K : Type) [Field K] (y : Sp K ⟶ Y) :
@@ -51,11 +51,11 @@ theorem exists_point_finite_ext {X Y : Scheme.{0}} (f : X ⟶ Y) [LocallyOfFinit
   rfl
 
 /- English proof (translation)
-Use `haveI := hV.2.2.1`. Use `haveI := hV.2.2.2`. Take `⟨L, _, _, _, x, hx⟩` from `exists_point_finite_ext f (FractionRing V) (spMap (algebraMap V (FractionRing V)) ≫ y)`. Take `⟨V', _, _, _, hc, _, _, _, hcomp, -, hinj, hloc, -⟩` from `GlobalTheory.SS.exists_complete_dvr_finite_extension V (FractionRing V) L`. Establish `hv : ValuativeCriterion f`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h : IsProper f` using `inferInstance`. Rewrite `h` using `[IsProper.eq_valuativeCriterion]`. Conclude with `h.1.1.1`. Establish `hsq : x ≫ f = spMap (algebraMap V' L) ≫ spMap (algebraMap V V') ≫ y`. Rewrite using `[hx, ← Category.assoc, ← Category.assoc, ← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hcomp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `S : ValuativeCommSq f` to `{ R := V', K := L, i₁ := x, i₂ := spMap (algebraMap V V') ≫ y, commSq := ⟨hsq⟩ }`. Take `⟨l, -, hl⟩` from `(hv S).some.default`. Conclude with `⟨V', inferInstance, inferInstance, inferInstance, algebraMap V V', l, ⟨inferInstance, inferInstance, hc, charZero_of_injective_ringHom hinj⟩, hinj, hloc, hl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift_of_proper {X Y : Scheme.{0}} (f : X ⟶ Y) [IsProper f] [Surjective f]
     (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (hV : IsCN V) (y : Sp V ⟶ Y) :
@@ -80,9 +80,7 @@ theorem exists_lift_of_proper {X Y : Scheme.{0}} (f : X ⟶ Y) [IsProper f] [Sur
     ⟨inferInstance, inferInstance, hc, charZero_of_injective_ringHom hinj⟩, hinj, hloc, hl⟩
 
 /- English proof (translation)
-Establish `h : Y.pt ≫ f = M.pt`. Rewrite using `[hf]`. Conclude with `(congrArg (· ≫ M.pt) (Spec.map_id _)).trans (Category.id_comp _)`. Use `haveI : IsDominant (Y.pt ≫ f) := h ▸ inferInstance`. Use `haveI : IsDominant f := IsDominant.of_comp Y.pt f`.
-
-Use `infer_instance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_of_isHom_id {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] {M Y : RatModel o Ω} {f : Y.Z ⟶ M.Z}
     (hf : M.IsHom Y (AlgHom.id o Ω) f) [IsProper f] : Surjective f := by
@@ -94,9 +92,9 @@ theorem surjective_of_isHom_id {o Ω : Type} [CommRing o] [Field Ω] [Algebra o 
   infer_instance
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ z₁ Y πY h V _ _ _ _ ev _ hV`. Take `⟨U₀, EE, -, -, -, hf, hp⟩` from `h`. Use `haveI := surjective_of_isHom_id hf`. Take `⟨V', _, _, _, j, ξ, h1, h2, h3, h4⟩` from `exists_lift_of_proper πY V hV (spMap ev ≫ X₁.M.Z.fromSpecStalk z₁)`. Use `⟨V', inferInstance, inferInstance, inferInstance, inferInstance, j, ξ, h1, h2, h3, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_lift : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z) (Y : RatModel X₁.o₁ X₁.Ω₁) (πY : Y.Z ⟶ X₁.M.Z), Cmp.ZHAbove X₁ Y πY → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] [IsDiscreteValuationRing V] (ev : X₁.M.Z.presheaf.stalk z₁ →+* V), IsLocalHom ev → IsCN V → ∃ (V' : Type) (_ : CommRing V') (_ : IsDomain V') (_ : IsLocalRing V') (_ : IsDiscreteValuationRing V') (j : V →+* V') (ξ : Sp V' ⟶ Y.Z), IsCN V' ∧ Function.Injective j ∧ IsLocalHom j ∧ ξ ≫ πY = spMap (j.comp ev) ≫ X₁.M.Z.fromSpecStalk z₁ := by
   intro g n F W Z i X₁ z₁ Y πY h V _ _ _ _ ev _ hV

@@ -9,9 +9,9 @@ open scoped ENNReal InnerProductSpace ComplexConjugate ContDiff
 noncomputable section
 
 /- English proof (translation)
-Use `⟨fun x => ?_⟩` and prove the remaining obligations. Take `⟨e, hx, -⟩` from `hz x`. Establish `ht : e x ∈ e.target` using `e.map_source hx`. Take `⟨r, hr, hsub⟩` from `Metric.isOpen_iff.mp e.open_target (e x) ht`. Use `⟨e.symm '' Metric.closedBall (e x) (r / 2), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(isCompact_closedBall _ _).image_of_continuousOn (e.continuousOn_symm.mono ((Metric.closedBall_subset_ball (by linarith)).trans hsub))`. Establish `h1 : e.source ∩ e ⁻¹' Metric.ball (e x) (r / 2) ∈ 𝓝 x` using `(e.isOpen_inter_preimage Metric.isOpen_ball).mem_nhds ⟨hx, Metric.mem_ball_self (by linarith)⟩`. Use `Filter.mem_of_superset h1 ?_` and prove the remaining obligations. Introduce and unpack `y ⟨hy1, hy2⟩`. Conclude with `⟨e y, Metric.ball_subset_closedBall hy2, e.left_inv hy1⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem loc_weaklyLocallyCompact {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) : WeaklyLocallyCompactSpace M := by
@@ -29,11 +29,11 @@ theorem loc_weaklyLocallyCompact {M : Type*} [TopologicalSpace M] (n : ℕ) (z :
     exact ⟨e y, Metric.ball_subset_closedBall hy2, e.left_inv hy1⟩
 
 /- English proof (translation)
-Distinguish the cases in `hc : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Simplify using `only [d, dif_pos hc] set e := Classical.choose hc with he_def`. Establish `he : IsChart n z e ∧ x ∈ e.source` using `Classical.choose_spec hc`. Establish `hzx : z x = e x` using `he.1 he.2`. Establish `ht : Tendsto e.symm (𝓝 (e x)) (𝓝 x)` using `by first`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact e.tendsto_symm he.2`. Consider the case `(have hc' : Tendsto e.symm (𝓝 (e x)) (𝓝 (e.symm (e x))) := e.continuousAt_symm (e.map_source he.2)`. Rewrite using `[e.left_inv he.2] at hc')` and apply the resulting hypothesis. Establish `hfg : f ∘ e.symm =ᶠ[𝓝 (z x)] g ∘ e.symm`. Rewrite using `[hzx]`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht.eventually h`. Unfold `wd`. Rewrite using `[hfg.fderiv_eq]`. Simplify using `only [d, dif_neg hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_d_congr {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (j : Fin n) (f g : M → ℂ) (x : M) (h : f =ᶠ[𝓝 x] g) :
@@ -56,11 +56,11 @@ theorem loc_d_congr {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   · simp only [d, dif_neg hc]
 
 /- English proof (translation)
-Distinguish the cases in `hc : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Simplify using `only [db, dif_pos hc] set e := Classical.choose hc with he_def`. Establish `he : IsChart n z e ∧ x ∈ e.source` using `Classical.choose_spec hc`. Establish `hzx : z x = e x` using `he.1 he.2`. Establish `ht : Tendsto e.symm (𝓝 (e x)) (𝓝 x)` using `by first`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact e.tendsto_symm he.2`. Consider the case `(have hc' : Tendsto e.symm (𝓝 (e x)) (𝓝 (e.symm (e x))) := e.continuousAt_symm (e.map_source he.2)`. Rewrite using `[e.left_inv he.2] at hc')` and apply the resulting hypothesis. Establish `hfg : f ∘ e.symm =ᶠ[𝓝 (z x)] g ∘ e.symm`. Rewrite using `[hzx]`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht.eventually h`. Unfold `wdb`. Rewrite using `[hfg.fderiv_eq]`. Simplify using `only [db, dif_neg hc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_db_congr {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (j : Fin n) (f g : M → ℂ) (x : M) (h : f =ᶠ[𝓝 x] g) :
@@ -83,7 +83,7 @@ theorem loc_db_congr {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
   · simp only [db, dif_neg hc]
 
 /- English proof (translation)
-Unfold `Ck at hf ⊢`. Introduce `e he`. Conclude with `(ContDiffOn.sum fun i _ => hf i e he : ContDiffOn ℝ _ (fun y => ∑ i ∈ s, (f i ∘ e.symm) y) e.target)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem loc_ck_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k : ℕ) {ι : Type*}
     (s : Finset ι) (f : ι → M → ℂ) (hf : ∀ i, Ck n z k (f i)) :
@@ -94,11 +94,11 @@ theorem loc_ck_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (k
     ContDiffOn ℝ _ (fun y => ∑ i ∈ s, (f i ∘ e.symm) y) e.target)
 
 /- English proof (translation)
-Distinguish the cases in `hc : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Simplify using `only [d, dif_pos hc] set e := Classical.choose hc with he_def`. Establish `he : IsChart n z e ∧ x ∈ e.source` using `Classical.choose_spec hc`. Establish `hdiff : ∀ i ∈ s, DifferentiableAt ℝ (f i ∘ e.symm) (z x)`. Introduce `i _`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[he.1 he.2]`. Apply the tactic sequence `exact ((hf i e he.1).contDiffAt (e.open_target.mem_nhds (e.map_source he.2))).differentiableAt (by first | simp | norm_num | exact le_rfl)`. Establish `hsum : ((fun y => ∑ i ∈ s, f i y) ∘ e.symm) = fun y => ∑ i ∈ s, (f i ∘ e.symm) y` using `rfl`. Unfold `wd`. Apply the tactic sequence `(first | rw [hsum, fderiv_fun_sum hdiff] | rw [hsum, ← Finset.sum_fn, fderiv_sum hdiff])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ L : ι → (V n →L[ℝ] ℂ), ((∑ i ∈ s, L i) (bas n j) - Complex.I * (∑ i ∈ s, L i) (Complex.I • bas n j)) / 2 = ∑ i ∈ s, (L i (bas n j) - Complex.I * L i (Complex.I • bas n j)) / 2`. Introduce `L`. Simplify using `only [ContinuousLinearMap.sum_apply, Finset.mul_sum, ← Finset.sum_sub_distrib, Finset.sum_div]`. Conclude with `key _`. Simplify using `only [d, dif_neg hc, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_d_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {ι : Type*}
     (s : Finset ι) (f : ι → M → ℂ) (hf : ∀ i, Ck n z 1 (f i)) (j : Fin n) (x : M) :
@@ -123,11 +123,11 @@ theorem loc_d_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {ι
   · simp only [d, dif_neg hc, Finset.sum_const_zero]
 
 /- English proof (translation)
-Distinguish the cases in `hc : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ x ∈ e.source`. Simplify using `only [db, dif_pos hc] set e := Classical.choose hc with he_def`. Establish `he : IsChart n z e ∧ x ∈ e.source` using `Classical.choose_spec hc`. Establish `hdiff : ∀ i ∈ s, DifferentiableAt ℝ (f i ∘ e.symm) (z x)`. Introduce `i _`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[he.1 he.2]`. Apply the tactic sequence `exact ((hf i e he.1).contDiffAt (e.open_target.mem_nhds (e.map_source he.2))).differentiableAt (by first | simp | norm_num | exact le_rfl)`. Establish `hsum : ((fun y => ∑ i ∈ s, f i y) ∘ e.symm) = fun y => ∑ i ∈ s, (f i ∘ e.symm) y` using `rfl`. Unfold `wdb`. Apply the tactic sequence `(first | rw [hsum, fderiv_fun_sum hdiff] | rw [hsum, ← Finset.sum_fn, fderiv_sum hdiff])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ L : ι → (V n →L[ℝ] ℂ), ((∑ i ∈ s, L i) (bas n j) + Complex.I * (∑ i ∈ s, L i) (Complex.I • bas n j)) / 2 = ∑ i ∈ s, (L i (bas n j) + Complex.I * L i (Complex.I • bas n j)) / 2`. Introduce `L`. Simplify using `only [ContinuousLinearMap.sum_apply, Finset.mul_sum, ← Finset.sum_add_distrib, Finset.sum_div]`. Conclude with `key _`. Simplify using `only [db, dif_neg hc, Finset.sum_const_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_db_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {ι : Type*}
     (s : Finset ι) (f : ι → M → ℂ) (hf : ∀ i, Ck n z 1 (f i)) (j : Fin n) (x : M) :
@@ -152,9 +152,9 @@ theorem loc_db_sum {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) {�
   · simp only [db, dif_neg hc, Finset.sum_const_zero]
 
 /- English proof (translation)
-Establish `h1 : ‖∑ i, a i‖ ≤ ∑ i, ‖a i‖` using `norm_sum_le _ _`. Establish `h2 : (∑ i, ‖a i‖) ^ 2 ≤ N * ∑ i, ‖a i‖ ^ 2` using `by first`. Consider the case `(have h3 := Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun _ => (1 : ℝ)) (fun i => ‖a i‖)`. Simplify using `using h3)`. Consider the case `(have h3 := sq_sum_le_card_mul_sum_sq (s := Finset.univ) (f := fun i => ‖a i‖)`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Simplify using `using h3)`. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 -/
 theorem loc_norm_sum_sq {E : Type*} [SeminormedAddCommGroup E] {N : ℕ} (a : Fin N → E) :
     ‖∑ i, a i‖ ^ 2 ≤ N * ∑ i, ‖a i‖ ^ 2 := by
@@ -169,9 +169,9 @@ theorem loc_norm_sum_sq {E : Type*} [SeminormedAddCommGroup E] {N : ℕ} (a : Fi
     _ ≤ N * ∑ i, ‖a i‖ ^ 2 := h2
 
 /- English proof (translation)
-Establish `h : ∀ j k, ‖∑ i, σ i j k‖ ^ 2 ≤ N * ∑ i, ‖σ i j k‖ ^ 2` using `fun j k => loc_norm_sum_sq (fun i => σ i j k)`. Establish `hs : ∑ i, ∑ j, ∑ k, ‖σ i j k‖ ^ 2 = ∑ j, ∑ k, ∑ i, ‖σ i j k‖ ^ 2`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun j _ => Finset.sum_comm`. Simplify using `only [sq2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_div, ← mul_div_assoc, hs, Finset.mul_sum]`. Use `gcongr with j _`. Rewrite using `[Finset.mul_sum]`. Use `gcongr with k _`. Conclude with `h j k`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem two_form_sq_finset_sum_le {n N : ℕ} (σ : Fin N → Fin n → Fin n → ℂ) :
     sq2 n (fun j k => ∑ i, σ i j k) ≤ N * ∑ i, sq2 n (σ i) := by
@@ -188,9 +188,9 @@ theorem two_form_sq_finset_sum_le {n N : ℕ} (σ : Fin N → Fin n → Fin n �
   exact h j k
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `(eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top (p := 2) (by norm_num) (by norm_num)).mp h.2` as an intermediate fact. Simplify `this` using `[ENNReal.rpow_two]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hf, ?_⟩` and prove the remaining obligations. Use `(eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top (p := 2) (by norm_num) (by norm_num)).mpr ?_` and prove the remaining obligations. Simplify `h` using `[ENNReal.rpow_two]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem loc_memLp_iff {M E : Type*} [MeasurableSpace M] [NormedAddCommGroup E] (ν : Measure M)
     (f : M → E) (hf : AEStronglyMeasurable f ν) :
@@ -205,9 +205,9 @@ theorem loc_memLp_iff {M E : Type*} [MeasurableSpace M] [NormedAddCommGroup E] (
     simpa [ENNReal.rpow_two] using h
 
 /- English proof (translation)
-Use `⟨hf, fun C hC => ?_⟩` and prove the remaining obligations. Establish `m1 : MemLp g₁ 2 (μ.restrict C)` using `(loc_memLp_iff _ _ h₁.1.restrict).mpr (h₁.2 C hC)`. Establish `m2 : MemLp g₂ 2 (μ.restrict C)` using `(loc_memLp_iff _ _ h₂.1.restrict).mpr (h₂.2 C hC)`. Establish `m3 : MemLp (fun x => c * (‖g₁ x‖ + ‖g₂ x‖)) 2 (μ.restrict C)` using `(m1.norm.add m2.norm).const_mul c`. Establish `m4 : MemLp f 2 (μ.restrict C)` using `m3.of_le hf.restrict (Filter.Eventually.of_forall fun x => by show ‖f x‖ ≤ ‖c * (‖g₁ x‖ + ‖g₂ x‖)‖`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.norm_eq_abs]`. Conclude with `(hle x).trans (le_abs_self _))`. Conclude with `(loc_memLp_iff _ _ hf.restrict).mp m4`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locL2_of_le_sum {M E F₁ F₂ : Type*} [TopologicalSpace M] [MeasurableSpace M]
     [NormedAddCommGroup E] [NormedAddCommGroup F₁] [NormedAddCommGroup F₂] (μ : Measure M)
@@ -236,9 +236,9 @@ def locS {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (η : M → 
     wedge (fun l => db n z l (fun y => (η y : ℂ)) x) (fun l => G x l) j k
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Finset.sum_apply j Finset.univ a`. Consider the case `simp [Finset.sum_apply]`. Consider the case `simp [WithLp.ofLp_sum]`. Consider the case `exact map_sum (EuclideanSpace.proj (𝕜 := ℂ) j) a Finset.univ`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using map_sum (EuclideanSpace.proj (𝕜 := ℂ) j) a Finset.univ`.
+A detailed English derivation is pending.
 -/
 theorem loc_sum_apply {n N : ℕ} (a : Fin N → V n) (j : Fin n) :
     (∑ i, a i) j = ∑ i, a i j := by
@@ -250,7 +250,7 @@ theorem loc_sum_apply {n N : ℕ} (a : Fin N → V n) (j : Fin n) :
   | simpa using map_sum (EuclideanSpace.proj (𝕜 := ℂ) j) a Finset.univ
 
 /- English proof (translation)
-Use `closure_minimal (fun x hx => ?_) hT` and prove the remaining obligations. Assume the negation of the conclusion as `hxT`. Conclude with `hx (h x hxT)`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem loc_tsupport_sub {M E : Type*} [TopologicalSpace M] [Zero E] (f : M → E) (T : Set M)
     (hT : IsClosed T) (h : ∀ x, x ∉ T → f x = 0) : tsupport f ⊆ T := by
@@ -259,9 +259,9 @@ theorem loc_tsupport_sub {M E : Type*} [TopologicalSpace M] [Zero E] (f : M → 
   exact hx (h x hxT)
 
 /- English proof (translation)
-Use `first`. Consider the case `(unfold wedge; fun_prop)`. Consider the case `(refine continuous_pi fun j => continuous_pi fun k => ?_`. Unfold `wedge`. Use the proof step `fun_prop)`.
+Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `(refine continuous_pi fun j => continuous_pi fun k => ?_`. Simplify using `only [wedge]`. Conclude with `(((continuous_apply j).comp continuous_fst).mul ((continuous_apply k).comp continuous_snd)).sub (((continuous_apply k).comp continuous_fst).mul ((continuous_apply j).comp continuous_snd)))`.
+A detailed English derivation is pending.
 -/
 theorem loc_continuous_wedge (n : ℕ) :
     Continuous (fun p : (Fin n → ℂ) × (Fin n → ℂ) => wedge p.1 p.2) := by
@@ -276,7 +276,7 @@ theorem loc_continuous_wedge (n : ℕ) :
        (((continuous_apply k).comp continuous_fst).mul ((continuous_apply j).comp continuous_snd)))
 
 /- English proof (translation)
-Use `show Continuous (fun σ : Fin n → Fin n → ℂ => (∑ j, ∑ k, ‖σ j k‖ ^ 2) / 2)`. Use `first`. Consider the case `fun_prop`. Consider the case `exact (continuous_finset_sum _ fun j _ => continuous_finset_sum _ fun k _ => (((continuous_apply k).comp (continuous_apply j)).norm.pow 2)).div_const 2`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem continuous_two_form_norm_sq (n : ℕ) : Continuous (sq2 n) := by
   show Continuous (fun σ : Fin n → Fin n → ℂ => (∑ j, ∑ k, ‖σ j k‖ ^ 2) / 2)
@@ -286,13 +286,11 @@ theorem continuous_two_form_norm_sq (n : ℕ) : Continuous (sq2 n) := by
       (((continuous_apply k).comp (continuous_apply j)).norm.pow 2)).div_const 2
 
 /- English proof (translation)
-Establish `hzy : z y = e y` using `he hy`. Establish `hzy' : z y = e' y` using `he' hy'`. Establish `h1 : ∀ᶠ w in 𝓝 (z y), w ∈ e.target`. Rewrite using `[hzy]`. Conclude with `e.open_target.mem_nhds (e.map_source hy)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ∀ᶠ w in 𝓝 (z y), w ∈ e'.target`. Rewrite using `[hzy']`. Conclude with `e'.open_target.mem_nhds (e'.map_source hy')`. Establish `ht : Tendsto e'.symm (𝓝 (z y)) (𝓝 y)`. Rewrite using `[hzy']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Use `first`. Consider the case `exact e'.tendsto_symm hy'`. Consider the case `(have hc' : Tendsto e'.symm (𝓝 (e' y)) (𝓝 (e'.symm (e' y))) := e'.continuousAt_symm (e'.map_source hy')`. Rewrite using `[e'.left_inv hy'] at hc')` and apply the resulting hypothesis. Establish `h3 : ∀ᶠ w in 𝓝 (z y), e'.symm w ∈ e.source` using `ht.eventually (e.open_source.mem_nhds hy)`.
-
-Use `filter_upwards [h1, h2, h3] with w hw hw' hw''`. Use `e.injOn hw'' (e.map_target hw) ?_` and prove the remaining obligations. Rewrite using `[e.right_inv hw, ← he hw'', he' (e'.map_target hw'), e'.right_inv hw']`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem chart_symm_eventuallyEq_at_chart_point {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (e e' : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (he' : IsChart n z e') (y : M)
@@ -317,9 +315,9 @@ private theorem chart_symm_eventuallyEq_at_chart_point {M : Type*} [TopologicalS
   rw [e.right_inv hw, ← he hw'', he' (e'.map_target hw'), e'.right_inv hw']
 
 /- English proof (translation)
-Establish `hc : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ y ∈ e.source` using `⟨e, he, hy⟩`. Simplify using `only [d, dif_pos hc]`. Establish `hs` using `Classical.choose_spec hc`. Establish `hfg : g ∘ (Classical.choose hc).symm =ᶠ[𝓝 (z y)] g ∘ e.symm` using `(chart_symm_eventuallyEq_at_chart_point n z e (Classical.choose hc) he hs.1 y hy hs.2).fun_comp g`. Rewrite using `[← he hy]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `wd`. Rewrite using `[hfg.fderiv_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem d_eq_wd_at_chart_image {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (g : M → ℂ)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (y : M) (hy : y ∈ e.source) (j : Fin n) :
@@ -334,9 +332,9 @@ private theorem d_eq_wd_at_chart_image {M : Type*} [TopologicalSpace M] (n : ℕ
   rw [hfg.fderiv_eq]
 
 /- English proof (translation)
-Establish `hc : ∃ e : OpenPartialHomeomorph M (V n), IsChart n z e ∧ y ∈ e.source` using `⟨e, he, hy⟩`. Simplify using `only [db, dif_pos hc]`. Establish `hs` using `Classical.choose_spec hc`. Establish `hfg : g ∘ (Classical.choose hc).symm =ᶠ[𝓝 (z y)] g ∘ e.symm` using `(chart_symm_eventuallyEq_at_chart_point n z e (Classical.choose hc) he hs.1 y hy hs.2).fun_comp g`. Rewrite using `[← he hy]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `wdb`. Rewrite using `[hfg.fderiv_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem db_eq_wdb_at_chart_image {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n) (g : M → ℂ)
     (e : OpenPartialHomeomorph M (V n)) (he : IsChart n z e) (y : M) (hy : y ∈ e.source) (j : Fin n) :
@@ -351,11 +349,11 @@ private theorem db_eq_wdb_at_chart_image {M : Type*} [TopologicalSpace M] (n : �
   rw [hfg.fderiv_eq]
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.mpr fun x => ?_` and prove the remaining obligations. Take `⟨e, hx, hze⟩` from `hz x`. Establish `he : IsChart n z e` using `fun y _ => by rw [hze]`. Apply the tactic sequence `have hF : ContinuousOn (fun w => fderiv ℝ (g ∘ e.symm) w) e.target := (hg e he).continuousOn_fderiv_of_isOpen e.open_target (by first | simp | exact_mod_cast le_top | norm_num)`. Establish `h0 : ContinuousOn (fun w => wd n j (g ∘ e.symm) w) e.target`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `wd`. Conclude with `((hF.clm_apply continuousOn_const).sub (continuousOn_const.mul (hF.clm_apply continuousOn_const))).div_const 2`. Establish `hW : ContinuousOn (fun y => wd n j (g ∘ e.symm) (e y)) e.source` using `h0.comp e.continuousOn (fun y hy => e.map_source hy)`. Establish `hc` using `hW.continuousAt (e.open_source.mem_nhds hx)`. Establish `hEv : (fun y => wd n j (g ∘ e.symm) (e y)) =ᶠ[𝓝 x] fun y => d n z j g y` using `by filter_upwards [e.open_source.mem_nhds hx] with y hy`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `(d_eq_wd_at_chart_image n z g e he y hy j).symm`. Use `first`. Consider the case `exact hc.congr hEv`. Consider the case `exact hc.congr_of_eventuallyEq hEv.symm`. Consider the case `exact (continuousAt_congr hEv).mp hc`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem continuous_d_of_smooth {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (g : M → ℂ) (hg : Smooth n z g) (j : Fin n) :
@@ -381,11 +379,11 @@ private theorem continuous_d_of_smooth {M : Type*} [TopologicalSpace M] (n : ℕ
   | exact (continuousAt_congr hEv).mp hc
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.mpr fun x => ?_` and prove the remaining obligations. Take `⟨e, hx, hze⟩` from `hz x`. Establish `he : IsChart n z e` using `fun y _ => by rw [hze]`. Apply the tactic sequence `have hF : ContinuousOn (fun w => fderiv ℝ (g ∘ e.symm) w) e.target := (hg e he).continuousOn_fderiv_of_isOpen e.open_target (by first | simp | exact_mod_cast le_top | norm_num)`. Establish `h0 : ContinuousOn (fun w => wdb n j (g ∘ e.symm) w) e.target`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `wdb`. Conclude with `((hF.clm_apply continuousOn_const).add (continuousOn_const.mul (hF.clm_apply continuousOn_const))).div_const 2`. Establish `hW : ContinuousOn (fun y => wdb n j (g ∘ e.symm) (e y)) e.source` using `h0.comp e.continuousOn (fun y hy => e.map_source hy)`. Establish `hc` using `hW.continuousAt (e.open_source.mem_nhds hx)`. Establish `hEv : (fun y => wdb n j (g ∘ e.symm) (e y)) =ᶠ[𝓝 x] fun y => db n z j g y` using `by filter_upwards [e.open_source.mem_nhds hx] with y hy`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `(db_eq_wdb_at_chart_image n z g e he y hy j).symm`. Use `first`. Consider the case `exact hc.congr hEv`. Consider the case `exact hc.congr_of_eventuallyEq hEv.symm`. Consider the case `exact (continuousAt_congr hEv).mp hc`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem continuous_db_apply_of_smooth {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (g : M → ℂ) (hg : Smooth n z g) (j : Fin n) :
@@ -411,11 +409,11 @@ private theorem continuous_db_apply_of_smooth {M : Type*} [TopologicalSpace M] (
   | exact (continuousAt_congr hEv).mp hc
 
 /- English proof (translation)
-Use `continuous_iff_continuousAt.mpr fun x => ?_` and prove the remaining obligations. Take `⟨e, hx, hze⟩` from `hz x`. Establish `he : IsChart n z e` using `fun y _ => by rw [hze]`. Establish `hW : ContinuousOn (fun y => (g ∘ e.symm) (e y)) e.source` using `(hg e he).continuousOn.comp e.continuousOn (fun y hy => e.map_source hy)`. Establish `hEv : (fun y => (g ∘ e.symm) (e y)) =ᶠ[𝓝 x] g` using `by filter_upwards [e.open_source.mem_nhds hx] with y hy`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, e.left_inv hy]`. Establish `hc` using `hW.continuousAt (e.open_source.mem_nhds hx)`. Use `first`. Consider the case `exact hc.congr hEv`. Consider the case `exact hc.congr_of_eventuallyEq hEv.symm`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact (continuousAt_congr hEv).mp hc`.
+A detailed English derivation is pending.
 -/
 private theorem continuous_of_smooth_localization {M : Type*} [TopologicalSpace M] (n : ℕ) (z : M → V n)
     (hz : IsLocalHomeomorph z) (g : M → ℂ) (hg : Smooth n z g) : Continuous g := by
@@ -434,53 +432,49 @@ private theorem continuous_of_smooth_localization {M : Type*} [TopologicalSpace 
   | exact (continuousAt_congr hEv).mp hc
 
 /- English proof (translation)
-Establish `hsm : Smooth n z (fun y => (η y : ℂ))` using `hη`. Establish `hCC : Continuous (fun y => (η y : ℂ))` using `continuous_of_smooth_localization n z hz _ hsm`. Establish `hz0 : ∀ x, x ∉ tsupport η → η x = 0` using `fun x hx => by`. Assume the negation of the conclusion as `hne`. Conclude with `hx (subset_tsupport η hne)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hev : ∀ x, x ∉ tsupport η → (fun y => (η y : ℂ)) =ᶠ[𝓝 x] fun _ => (0 : ℂ)`. Introduce `x hx`. Use `filter_upwards [(isClosed_tsupport η).isOpen_compl.mem_nhds hx] with y hy`. Simplify using `[hz0 y hy]`. Establish `hd0 : ∀ j x, x ∉ tsupport η → d n z j (fun y => (η y : ℂ)) x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j x hx`. Rewrite using `[loc_d_congr n z hz j _ _ x (hev x hx)]`. Unfold `d wd`. Apply the tactic sequence `split_ifs <;> simp [Function.comp_def]`. Establish `hdb0 : ∀ j x, x ∉ tsupport η → db n z j (fun y => (η y : ℂ)) x = 0`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j x hx`. Rewrite using `[loc_db_congr n z hz j _ _ x (hev x hx)]`. Unfold `db wdb`. Apply the tactic sequence `split_ifs <;> simp [Function.comp_def]`. Establish `hdc : ∀ j, Continuous (fun x => d n z j (fun y => (η y : ℂ)) x)` using `fun j => continuous_d_of_smooth n z hz _ hsm j`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdbc : ∀ j, Continuous (fun x => db n z j (fun y => (η y : ℂ)) x)` using `fun j => continuous_db_apply_of_smooth n z hz _ hsm j`. Establish `hbound : ∀ φ : M → ℂ, Continuous φ → (∀ x, x ∉ tsupport η → φ x = 0) → ∃ C, 0 ≤ C ∧ ∀ x, ‖φ x‖ ≤ C`. Introduce `φ hφ h0`. Establish `hsub : tsupport φ ⊆ tsupport η` using `loc_tsupport_sub φ _ (isClosed_tsupport η) h0`. Establish `hcs : HasCompactSupport φ` using `IsCompact.of_isClosed_subset hηc (isClosed_tsupport _) hsub`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Establish `hex : ∃ C, ∀ x, ‖φ x‖ ≤ C` using `by first`. Consider the case `exact hφ.bounded_above_of_compact_support hcs`. Consider the case `(obtain ⟨C, hC⟩ := (hcs.isCompact_range hφ).isBounded.exists_norm_le`. Conclude with `⟨C, fun x => hC _ ⟨x, rfl⟩⟩)`. Take `⟨C, hC⟩` from `hex`.
+Treat this case separately. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨max C 0, le_max_right _ _, fun x => (hC x).trans (le_max_left _ _)⟩`. Take `⟨Cη, hCη0, hCη⟩` from `hbound _ hCC (fun x hx => by simp [hz0 x hx])`. Take `⟨K, hK0, hKd, hKdb⟩ : ∃ K : ℝ, 0 ≤ K ∧ (∀ j x, ‖d n z j (fun y => (η y : ℂ)) x‖ ≤ K) ∧ (∀ j x, ‖db n z j (fun y => (η y : ℂ)) x‖ ≤ K)` from `by choose C1 hC10 hC1 using fun j => hbound _ (hdc j) (hd0 j) choose C2 hC20 hC2 using fun j => hbound _ (hdbc j) (hdb0 j)`. Use `⟨∑ j, (C1 j + C2 j), Finset.sum_nonneg fun j _ => add_nonneg (hC10 j) (hC20 j), ?_, ?_⟩` and prove the remaining obligations. Introduce `j x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hs : C1 j + C2 j ≤ ∑ i, (C1 i + C2 i)` using `Finset.single_le_sum (f := fun i => C1 i + C2 i) (fun i _ => add_nonneg (hC10 i) (hC20 i)) (Finset.mem_univ j)`. Combine the linear relations using `[hC1 j x, hC20 j]`. Introduce `j x`. Establish `hs : C1 j + C2 j ≤ ∑ i, (C1 i + C2 i)` using `Finset.single_le_sum (f := fun i => C1 i + C2 i) (fun i _ => add_nonneg (hC10 i) (hC20 i)) (Finset.mem_univ j)`. Combine the linear relations using `[hC2 j x, hC10 j]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcoord : ∀ (v : V n) (j : Fin n), ‖v j‖ ≤ ‖v‖`. Introduce `v j`. Use `first`. Consider the case `exact PiLp.norm_apply_le v j`. Consider the case `exact PiLp.norm_apply_le_norm v j`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `(rw [EuclideanSpace.norm_eq]`. Conclude with `(le_abs_self _).trans (Real.abs_le_sqrt (Finset.single_le_sum (f := fun i => ‖v i‖ ^ 2) (fun i _ => sq_nonneg _) (Finset.mem_univ j))))`. Establish `hcoordc : ∀ j : Fin n, Continuous (fun v : V n => v j)`. Introduce `j`. Use `first`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `fun_prop`. Consider the case `exact (EuclideanSpace.proj (𝕜 := ℂ) j).continuous`. Consider the case `exact PiLp.continuous_apply 2 _ j`. Consider the case `continuity`. Establish `hGj : ∀ j : Fin n, AEStronglyMeasurable (fun x => G x j) (vol n z)` using `fun j => (hcoordc j).comp_aestronglyMeasurable hG.1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Apply the tactic sequence `have hGm : LocalL2Isometry (vol n z) (locG η G) := by`. Use `locL2_of_le_sum (vol n z) (locG η G) G G Cη hG hG (hCC.aestronglyMeasurable.smul hG.1) fun x => ?_` and prove the remaining obligations. Use `show ‖(η x : ℂ) • G x‖ ≤ Cη * (‖G x‖ + ‖G x‖)`. Rewrite using `[norm_smul]`. Use `mul_le_mul_of_nonneg_right (hCη x) (norm_nonneg (G x))` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use polynomial arithmetic with `[mul_nonneg hCη0 (norm_nonneg (G x))]`. Establish `hDmeas : AEStronglyMeasurable (locD n z η G D) (vol n z)`. Establish `h2 : AEStronglyMeasurable (fun x => ∑ j, d n z j (fun y => (η y : ℂ)) x * G x j) (vol n z)` using `by first`. Consider the case `exact Finset.aestronglyMeasurable_sum _ fun j _ => (hdc j).aestronglyMeasurable.mul (hGj j)`. Consider the case `exact Finset.aestronglyMeasurable_fun_sum _ fun j _ => (hdc j).aestronglyMeasurable.mul (hGj j)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `exact Finset.aestronglyMeasurable_sum' _ fun j _ => (hdc j).aestronglyMeasurable.mul (hGj j)`. Conclude with `(hCC.aestronglyMeasurable.mul hD.1).add h2`. Apply the tactic sequence `have hDm : LocalL2Isometry (vol n z) (locD n z η G D) := by`. Use `locL2_of_le_sum (vol n z) (locD n z η G D) G D (Cη + (n : ℝ) * K) hG hD hDmeas fun x => ?_` and prove the remaining obligations. Use `show ‖(η x : ℂ) * D x + ∑ j, d n z j (fun y => (η y : ℂ)) x * G x j‖ ≤ (Cη + (n : ℝ) * K) * (‖G x‖ + ‖D x‖)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : ‖(η x : ℂ) * D x‖ ≤ Cη * ‖D x‖`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hCη x) (norm_nonneg _)`. Establish `e2 : ‖∑ j, d n z j (fun y => (η y : ℂ)) x * G x j‖ ≤ (n : ℝ) * K * ‖G x‖`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hj : ∀ j ∈ Finset.univ, ‖d n z j (fun y => (η y : ℂ)) x * G x j‖ ≤ K * ‖G x‖`. Introduce `j _`. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hKd j x) (hcoord (G x) j) (norm_nonneg _) hK0`. Use `(Finset.sum_le_sum hj).trans (le_of_eq ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hnK : 0 ≤ (n : ℝ) * K` using `mul_nonneg (Nat.cast_nonneg n) hK0`. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Use polynomial arithmetic with `[norm_nonneg (G x), norm_nonneg (D x), mul_nonneg hCη0 (norm_nonneg (G x)), mul_nonneg hnK (norm_nonneg (D x))]`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hSmeas : AEStronglyMeasurable (locS n z η G S) (vol n z)`. Establish `h1 : AEStronglyMeasurable (fun x => fun l => db n z l (fun y => (η y : ℂ)) x) (vol n z)` using `(continuous_pi fun l => hdbc l).aestronglyMeasurable`. Establish `h2 : AEStronglyMeasurable (fun x => fun l => G x l) (vol n z)` using `(continuous_pi fun l => hcoordc l).comp_aestronglyMeasurable hG.1`. Establish `hpair : AEStronglyMeasurable (fun x => ((fun l => db n z l (fun y => (η y : ℂ)) x), (fun l => G x l))) (vol n z)` using `by first`. Consider the case `exact h1.prodMk h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Consider the case `exact h1.prod_mk h2`. Establish `hW` using `(loc_continuous_wedge n).comp_aestronglyMeasurable hpair`. Conclude with `(hCC.aestronglyMeasurable.smul hS.1).add hW`. Apply the tactic sequence `have hSm : LocalL2Isometry (vol n z) (locS n z η G S) := by`. Use `locL2_of_le_sum (vol n z) (locS n z η G S) G S (Cη + 2 * K) hG hS hSmeas fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hc0 : 0 ≤ (Cη + 2 * K) * (‖G x‖ + ‖S x‖)` using `mul_nonneg (by linarith) (add_nonneg (norm_nonneg _) (norm_nonneg _))`. Use `(pi_norm_le_iff_of_nonneg hc0).mpr fun j => (pi_norm_le_iff_of_nonneg hc0).mpr fun k => ?_` and prove the remaining obligations. Use `show ‖(η x : ℂ) * S x j k + wedge (fun l => db n z l (fun y => (η y : ℂ)) x) (fun l => G x l) j k‖ ≤ _`. Establish `e1 : ‖(η x : ℂ) * S x j k‖ ≤ Cη * ‖S x‖`. Rewrite using `[norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_le_mul (hCη x) ((norm_le_pi_norm (S x j) k).trans (norm_le_pi_norm (S x) j)) (norm_nonneg _) hCη0`. Establish `e2 : ‖wedge (fun l => db n z l (fun y => (η y : ℂ)) x) (fun l => G x l) j k‖ ≤ 2 * K * ‖G x‖`. Simplify using `only [wedge]`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `a1` using `mul_le_mul (hKdb j x) (hcoord (G x) k) (norm_nonneg _) hK0`. Establish `a2` using `mul_le_mul (hKdb k x) (hcoord (G x) j) (norm_nonneg _) hK0`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Use polynomial arithmetic with `[norm_nonneg (G x), norm_nonneg (S x), mul_nonneg hCη0 (norm_nonneg (G x)), mul_nonneg hK0 (norm_nonneg (S x))]`.
-
-Establish `hsubG : tsupport (locG η G) ⊆ tsupport η` using `loc_tsupport_sub _ _ (isClosed_tsupport η) fun x hx => by show (η x : ℂ) • G x = 0`. Simplify using `[hz0 x hx]`. Establish `hsubD : tsupport (locD n z η G D) ⊆ tsupport η` using `loc_tsupport_sub _ _ (isClosed_tsupport η) fun x hx => by show (η x : ℂ) * D x + ∑ j, d n z j (fun y => (η y : ℂ)) x * G x j = 0`. Simplify using `[hz0 x hx, fun j => hd0 j x hx]`. Establish `hsubS : tsupport (locS n z η G S) ⊆ tsupport η` using `loc_tsupport_sub _ _ (isClosed_tsupport η) fun x hx => by`.
-
-Use function extensionality and compare the values at `j k`. Use `show (η x : ℂ) * S x j k + wedge (fun l => db n z l (fun y => (η y : ℂ)) x) (fun l => G x l) j k = 0`. Simplify using `[hz0 x hx, fun j => hdb0 j x hx, wedge]`. Conclude with `⟨hGm, hDm, hSm, hMD z hz η G D hη hG hD hGD, hMS z hz η G S hη hG hS hGS, IsCompact.of_isClosed_subset hηc (isClosed_tsupport _) hsubG, IsCompact.of_isClosed_subset hηc (isClosed_tsupport _) hsubD, IsCompact.of_isClosed_subset hηc (isClosed_tsupport _) hsubS, hsubG.trans hT, hsub …`.
+A detailed English derivation is pending.
 -/
 theorem loc_piece {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableTopology M]
     [MeasurableSpace M] [BorelSpace M] (n : ℕ) (z : M → V n) (hz : IsLocalHomeomorph z)
@@ -650,7 +644,7 @@ theorem loc_piece {M : Type*} [TopologicalSpace M] [T2Space M] [SecondCountableT
     hsubG.trans hT, hsubD.trans hT, hsubS.trans hT⟩
 
 /- English proof (translation)
-Unfold `sq2`. Use `first`. Consider the case `positivity`. Consider the case `exact div_nonneg (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun k _ => sq_nonneg _) (by norm_num)`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem two_form_norm_sq_nonneg (n : ℕ) (σ : Fin n → Fin n → ℂ) : 0 ≤ sq2 n σ := by
   unfold sq2
@@ -659,7 +653,7 @@ theorem two_form_norm_sq_nonneg (n : ℕ) (σ : Fin n → Fin n → ℂ) : 0 ≤
   | exact div_nonneg (Finset.sum_nonneg fun j _ => Finset.sum_nonneg fun k _ => sq_nonneg _) (by norm_num)
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_sum_of_nonneg (fun i _ => hb i), ENNReal.ofReal_natCast]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem loc_ofReal_le {N : ℕ} (b : Fin N → ℝ) (hb : ∀ i, 0 ≤ b i) (a : ℝ)
     (h : a ≤ N * ∑ i, b i) : ENNReal.ofReal a ≤ N * ∑ i, ENNReal.ofReal (b i) := by
@@ -669,9 +663,7 @@ theorem loc_ofReal_le {N : ℕ} (b : Fin N → ℝ) (hb : ∀ i, 0 ≤ b i) (a :
         ENNReal.ofReal_natCast]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[lintegral_const_mul' _ _ (ENNReal.natCast_ne_top N), lintegral_finset_sum' _ (fun i _ => hf i)]`. Use `_ ≤ N * ∑ _i : Fin N, δ' := by gcongr with i`. Conclude with `(hi i).le`. Use `_ = δ' * (N * N) := by`.
-
-Rewrite using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ < δ := hδ`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem loc_lintegral_sum_lt {M : Type*} [MeasurableSpace M] (μ : Measure M) {N : ℕ}
     (F : M → ℝ≥0∞) (f : Fin N → M → ℝ≥0∞) (hf : ∀ i, AEMeasurable (f i) μ)
@@ -689,7 +681,7 @@ theorem loc_lintegral_sum_lt {M : Type*} [MeasurableSpace M] (μ : Measure M) {N
     _ < δ := hδ
 
 /- English proof (translation)
-Simplify using `only [neg_zero, Real.exp_zero, mul_one]`. Conclude with `((continuous_norm.pow 2).comp_aestronglyMeasurable h).aemeasurable.ennreal_ofReal`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_aem {M E : Type*} [MeasurableSpace M] [NormedAddCommGroup E] (μ : Measure M)
     (a : M → E) (h : AEStronglyMeasurable a μ) :
@@ -698,7 +690,7 @@ theorem loc_aem {M E : Type*} [MeasurableSpace M] [NormedAddCommGroup E] (μ : M
   exact ((continuous_norm.pow 2).comp_aestronglyMeasurable h).aemeasurable.ennreal_ofReal
 
 /- English proof (translation)
-Simplify using `only [neg_zero, Real.exp_zero, mul_one]`. Conclude with `((continuous_two_form_norm_sq n).comp_aestronglyMeasurable h).aemeasurable.ennreal_ofReal`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem aemeasurable_unweighted_two_form {M : Type*} [MeasurableSpace M] {n : ℕ} (μ : Measure M)
     (σ : M → Fin n → Fin n → ℂ) (h : AEStronglyMeasurable σ μ) :

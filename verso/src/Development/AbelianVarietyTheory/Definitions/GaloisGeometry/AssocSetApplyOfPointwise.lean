@@ -61,7 +61,7 @@ abbrev cPre (X : Scheme.{0}) (ι : Type) : (Over X)ᵒᵖ ⥤ Type :=
   (Over.forget X).op ⋙ continuousMapPresheaf.{0} (ι → E)
 
 /- English proof (translation)
-Establish `h0 : Presheaf.IsSheaf Scheme.proetaleTopology.{0} (continuousMapPresheaf.{0} (ι → E))` using `.of_le Scheme.proetaleTopology_le_fpqcTopology (isSheaf_fpqcTopology_continuousMapPresheaf _)`. Conclude with `(isSheaf_iff_isSheaf_of_type _ _).1 (CategoryTheory.Sheaf.over (⟨_, h0⟩ : Sheaf Scheme.proetaleTopology.{0} Type) X).cond`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cPre_isSheaf (X : Scheme.{0}) (ι : Type) :
     Presieve.IsSheaf (Scheme.proetaleTopology.{0}.over X) (cPre E X ι) := by
@@ -74,7 +74,7 @@ section
 variable {E} (Q : RActPre X Γ) (ξ : Γ →* GL ι E)
 
 /- English proof (translation)
-The claim follows from `ContinuousMap.ext fun t => f.2.1 v u η t`.
+A detailed English derivation is pending.
 -/
 theorem assocSet_nat {T : Over X} (f : assocSet E Q ξ T) {T'' T' : Over X} (v : T'' ⟶ T') (u : T' ⟶ T)
     (η : Q.P.obj (op T')) :
@@ -84,27 +84,25 @@ theorem assocSet_nat {T : Over X} (f : assocSet E Q ξ T) {T'' T' : Over X} (v :
 end
 
 /- English proof (translation)
-Rewrite using `[Presheaf.isSheaf_iff_isSheaf_forget _ _ (CategoryTheory.forget _), isSheaf_iff_isSheaf_of_type]`. Introduce `T S hS x hx`. Establish `hC` using `cPre_isSheaf E X ι`. Set `xv : ∀ ⦃Y : Over X⦄ (f : Y ⟶ T), S f → assocSet E Q ξ Y` to `fun Y f h => x f h`. Establish `K : ∀ ⦃Y₁ Y₂ Z : Over X⦄ (f₁ : Y₁ ⟶ T) (f₂ : Y₂ ⟶ T) (h₁ : S f₁) (h₂ : S f₂) (a₁ : Z ⟶ Y₁) (a₂ : Z ⟶ Y₂), a₁ ≫ f₁ = a₂ ≫ f₂ → ∀ η, (xv f₁ h₁).1 Z a₁ η = (xv f₂ h₂).1 Z a₂ η`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `Y₁ Y₂ Z f₁ f₂ h₁ h₂ a₁ a₂ e η`. Use `hx a₁ a₂ h₁ h₂ e` as an intermediate fact. Establish `h` using `congrArg (fun z => (show assocSet E Q ξ Z from z).1 Z (𝟙 Z) η) this`. Express the relevant statement in the definitionally equal form `(xv f₁ h₁).1 Z (𝟙 Z ≫ a₁) η = (xv f₂ h₂).1 Z (𝟙 Z ≫ a₂) η at h`. Simplify `h` using `only [Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify to obtain the desired conclusion from the available facts.
 
-Set `fam : ∀ (T' : Over X) (_ : T' ⟶ T) (_ : Q.P.obj (op T')), Presieve.FamilyOfElements (cPre E X ι) (S.pullback ‹T' ⟶ T›).arrows` to `fun T' u η Y w hw => (xv (w ≫ u) hw).1 Y (𝟙 Y) (Q.P.map w.op η)`. Establish `famC : ∀ T' u η, (fam T' u η).Compatible`. Introduce `T' u η Y₁ Y₂ Z g₁ g₂ w₁ w₂ hw₁ hw₂ e`. Express the relevant statement in the definitionally equal form `(cPre E X ι).map g₁.op ((xv (w₁ ≫ u) hw₁).1 Y₁ (𝟙 Y₁) (Q.P.map w₁.op η)) = (cPre E X ι).map g₂.op ((xv (w₂ ≫ u) hw₂).1 Y₂ (𝟙 Y₂) (Q.P.map w₂.op η))`. Rewrite using `[← assocSet_nat, ← assocSet_nat, ← Functor.map_comp_apply, ← Functor.map_comp_apply, ← op_comp, ← op_comp, e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `K _ _ _ _ _ _ (by simp only [Category.comp_id, ← Category.assoc, e]) _`. Set `gl : ∀ (T' : Over X) (u : T' ⟶ T) (η : Q.P.obj (op T')), C(T'.left, ι → E)` to `fun T' u η => (hC _ (GrothendieckTopology.pullback_stable _ u hS)).amalgamate (fam T' u η) (famC T' u η)`. Establish `glv : ∀ T' (u : T' ⟶ T) η ⦃Y : Over X⦄ (w : Y ⟶ T') (hw : S (w ≫ u)), (cPre E X ι).map w.op (gl T' u η) = (xv (w ≫ u) hw).1 Y (𝟙 Y) (Q.P.map w.op η)` using `fun T' u η Y w hw => (hC _ (GrothendieckTopology.pullback_stable _ u hS)).valid_glue (famC T' u η) w hw`. Establish `sep : ∀ (T' : Over X) (u : T' ⟶ T) (c₁ c₂ : C(T'.left, ι → E)), (∀ ⦃Y : Over X⦄ (w : Y ⟶ T'), S (w ≫ u) → (cPre E X ι).map w.op c₁ = (cPre E X ι).map w.op c₂) → c₁ = c₂` using `fun T' u c₁ c₂ h => (hC _ (GrothendieckTopology.pullback_stable _ u hS)).isSeparatedFor.ext fun Y w hw => h w hw`. Establish `mem : (fun T' u η => gl T' u η) ∈ assocSet E Q ξ T`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun T'' T' v u η t => ?_, fun T' u η γ t => ?_⟩` and prove the remaining obligations. Establish `H : gl T'' (v ≫ u) (Q.P.map v.op η) = (cPre E X ι).map v.op (gl T' u η)`. Use `sep T'' (v ≫ u) _ _ fun Y w hw => ?_` and prove the remaining obligations. Rewrite using `[glv _ _ _ w hw, ← Functor.map_comp_apply (cPre E X ι), ← op_comp, glv T' u η (w ≫ v) (by simpa only [Category.assoc] using hw), op_comp, Functor.map_comp_apply]`. Conclude with `K _ _ _ _ _ _ (by simp only [Category.assoc]) _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `DFunLike.congr_fun H t`. Set `M : ∀ Z : Over X, C(Z.left, ι → E) → C(Z.left, ι → E)` to `fun Z c => ⟨fun t => ((ξ γ⁻¹ : GL ι E) : Matrix ι ι E) *ᵥ c t, continuous_const.matrix_mulVec c.continuous⟩`. Establish `hM : ∀ c t, M T' c t = ((ξ γ⁻¹ : GL ι E) : Matrix ι ι E) *ᵥ c t` using `fun _ _ => rfl`. Establish `hMn : ∀ ⦃Y⦄ (w : Y ⟶ T') c, (cPre E X ι).map w.op (M T' c) = M Y ((cPre E X ι).map w.op c)` using `fun _ _ _ => rfl`. Rewrite using `[← hM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `H : gl T' u ((Q.act γ).app (op T') η) = M T' (gl T' u η)`. Use `sep T' u _ _ fun Y w hw => ?_` and prove the remaining obligations. Rewrite using `[glv _ _ _ w hw, hMn, glv _ _ _ w hw]`. Establish `hn : Q.P.map w.op ((Q.act γ).app (op T') η) = (Q.act γ).app (op Y) (Q.P.map w.op η)` using `(NatTrans.naturality_apply (Q.act γ) w.op η).symm`. Rewrite using `[hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `ContinuousMap.ext fun t => (xv (w ≫ u) hw).2.2 (𝟙 Y) _ γ t`. Conclude with `DFunLike.congr_fun H t`. Use `⟨⟨_, mem⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `Y f hf`. Apply `Subtype.ext` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `Y' u η`. Express the relevant statement in the definitionally equal form `gl Y' (u ≫ f) η = (xv f hf).1 Y' u η`. Use `sep Y' (u ≫ f) _ _ fun Z w hw => ?_` and prove the remaining obligations. Rewrite using `[glv _ _ _ w hw, ← assocSet_nat]`. Conclude with `K _ _ _ _ _ _ (by simp only [Category.id_comp, Category.assoc]) _`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t' ht'`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `T' u η`. Establish `ht : ∀ ⦃Y : Over X⦄ (f : Y ⟶ T) (hf : S f) η', (show assocSet E Q ξ T from t').1 Y (𝟙 Y ≫ f) η' = (xv f hf).1 Y (𝟙 Y) η'` using `fun Y f hf η' => congrArg (fun z => (show assocSet E Q ξ Y from z).1 Y (𝟙 Y) η') (ht' f hf)`. Express the relevant statement in the definitionally equal form `(show assocSet E Q ξ T from t').1 T' u η = gl T' u η`.
-
-Use `sep T' u _ _ fun Y w hw => ?_` and prove the remaining obligations. Rewrite using `[glv _ _ _ w hw, ← assocSet_nat, ← ht _ hw, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem assocPre_isSheaf (Q : RActPre X Γ) (ξ : Γ →* GL ι E) :
     Presheaf.IsSheaf (Scheme.proetaleTopology.{0}.over X) (assocPre E Q ξ) := by
@@ -201,15 +199,15 @@ abbrev ptOver (T' : Over X) (t : T'.left) : Over X := Over.mk (T'.left.fromSpecR
 def ptHom (T' : Over X) (t : T'.left) : ptOver T' t ⟶ T' := Over.homMk (T'.left.fromSpecResidueField t) rfl
 
 /- English proof (translation)
-The claim follows from `Scheme.fromSpecResidueField_apply t y`.
+A detailed English derivation is pending.
 -/
 theorem ptHom_apply (T' : Over X) (t : T'.left) (y : (ptOver T' t).left) : (ptHom T' t).left.base y = t :=
   Scheme.fromSpecResidueField_apply t y
 
 /- English proof (translation)
-Set `y : (ptOver T' t).left` to `IsLocalRing.closedPoint _`. Establish `e1` using `f.2.1 (ptHom T' t) u η' y`. Establish `e2` using `f.2.1 (ptHom T' t) u η y`. Rewrite `e1`, `e2` using `[ptHom_apply]`. Rewrite using `[← e1, ← e2, h t]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `f.2.2 _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem assocSet_apply_of_pointwise (Q : RActPre X Γ) (ξ : Γ →* GL ι E) {T : Over X} (f : assocSet E Q ξ T)
     {T' : Over X} (u : T' ⟶ T) (η η' : Q.P.obj (op T')) (g : T'.left → Γ)

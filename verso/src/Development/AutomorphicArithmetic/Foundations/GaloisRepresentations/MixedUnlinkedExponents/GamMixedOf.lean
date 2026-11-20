@@ -57,11 +57,11 @@ def RkLiftOf : Prop := NormLoc → RkLift
 def UpThruOf : Prop := ChsFacts → UpThru
 
 /- English proof (translation)
-Introduce `K L _ _ _ _ _ _ _ _ hp n hn π P hW v w s s' hs hs'`. Distinguish the cases in `hw : ∀ u : PlacesOver L v, u = w`. Break down `hn.eq_or_lt with rfl | h` into its components or cases. Establish `e : CG.mk π = CG.ofChar _` using `(CG.ofChar_toChar _).symm`. Establish `e' : CG.mk P = CG.ofChar _` using `(CG.ofChar_toChar _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hW'` using `hW`. Rewrite `hW'` using `[e, e']`. Establish `: chs s' = up w s`. Rewrite using `[up, h4 K π _ e v s hs, h4 L P _ e' w.1 s' hs', h5 K L _ _ hW' v w, Multiset.map_singleton]`. Rewrite using `[this, h6]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1 K L hp n h π P hW v w hw s s' hs hs'`. Take `⟨i, hi', -, -, hN, H⟩` from `h2 K L hp n hn π P hW v w hw`. Establish `: chs s' = up w s` using `by rw [H s s' hs hs', h3, up, hN]`. Rewrite using `[this, h6]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gamMixed_of (h1 : GamOne) (h2 : SplitSupp) (h3 : ChsTr) (h4 : RkSupp) (h5 : RkLift) (h6 : UpThru) : GamMixed := by
   intro K L _ _ _ _ _ _ _ _ hp n hn π P hW v w s s' hs hs'

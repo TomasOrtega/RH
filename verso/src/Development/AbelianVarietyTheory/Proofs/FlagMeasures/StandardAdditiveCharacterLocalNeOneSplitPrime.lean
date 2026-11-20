@@ -12,23 +12,21 @@ open scoped TensorProduct
 namespace GlobalTheory.St.G.PsiLoc
 
 /- English proof (translation)
-Introduce `hdvd`. Establish `hp0 : (p : ℤ) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `((Ideal.span_singleton_prime hp0).2 (Nat.prime_iff_prime_int.1 hp)).isMaximal (by simpa using hp0)`. Establish `hlies : ∀ Q : Ideal (𝓞 E), Q.IsPrime → (p : 𝓞 E) ∈ Q → Q.LiesOver (Ideal.span {(p : ℤ)})`. Introduce `Q hQ hpQ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Use `hmax.eq_of_le (Ideal.comap_ne_top _ hQ.ne_top) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Use `show algebraMap ℤ (𝓞 E) (p : ℤ) ∈ Q`. Simplify using `using hpQ`.
+Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `haveI := hlies P hP hm`. Establish `hnorm` using `Ideal.absNorm_eq_pow_inertiaDeg' P hp`. Establish `hne1 : Ideal.absNorm P ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `hP.ne_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hf : (Ideal.span {(p : ℤ)}).inertiaDeg' P ≠ 0`. Introduce `h0`. Rewrite `hnorm` using `[h0, pow_zero]`. Conclude with `hne1 hnorm`. Establish `h1 : p ∣ Ideal.absNorm P` using `by rw [hnorm]; exact dvd_pow_self p hf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : Ideal.absNorm P ∣ (discr E).natAbs`. Rewrite using `[← NumberField.absNorm_differentIdeal E (𝓞 E)]`. Conclude with `map_dvd Ideal.absNorm hdvd`. Establish `h3 : (p : ℤ) ∣ discr E` using `Int.natCast_dvd.2 (h1.trans h2)`. Use `GlobalTheory.SplitEmbSep.not_dvd_discr_of_split hp E ?_ h3` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hset : Ideal.primesOver (Ideal.span {(p : ℤ)}) (𝓞 E) = (fun w : HeightOneSpectrum (𝓞 E) => w.asIdeal) '' placesOver E p`. Use extensionality with `Q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hQ, hQl⟩`. Establish `hpQ : (p : 𝓞 E) ∈ Q`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (p : ℤ) ∈ Q.under ℤ` using `hQl.over ▸ Ideal.mem_span_singleton_self _`. Simplify `this` using `[Ideal.under]`. Establish `hQbot : Q ≠ ⊥`. Introduce and unpack `rfl`. Rewrite `hpQ` using `[Ideal.mem_bot]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp.ne_zero (by exact_mod_cast hpQ)`. Conclude with `⟨⟨Q, hQ, hQbot⟩, hpQ, rfl⟩`. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `⟨w.isPrime, hlies _ w.isPrime hw⟩`. Unfold `SplitsIn at h`.
-
-Rewrite using `[hset, Set.ncard_image_of_injective _ (fun a b hab => HeightOneSpectrum.ext hab), h]`.
+A detailed English derivation is pending.
 -/
 theorem not_dvd_different {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) (h : SplitsIn E p)
     (P : Ideal (𝓞 E)) [hP : P.IsPrime] (hm : (p : 𝓞 E) ∈ P) : ¬ P ∣ differentIdeal ℤ (𝓞 E) := by
@@ -75,19 +73,19 @@ theorem not_dvd_different {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p
   rw [hset, Set.ncard_image_of_injective _ (fun a b hab => HeightOneSpectrum.ext hab), h]
 
 /- English proof (translation)
-Establish `hp0 : (p : E) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hcop : differentIdeal ℤ (𝓞 E) ⊔ Ideal.span {(p : 𝓞 E)} = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨P, hPmax, hle⟩` from `Ideal.exists_le_maximal _ hne`. Establish `hpP : (p : 𝓞 E) ∈ P` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `not_dvd_different hp h P hpP (Ideal.dvd_iff_le.2 (le_trans le_sup_left hle))`. Establish `hdual : (p : E)⁻¹ * x ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)`. Rewrite using `[FractionalIdeal.mem_dual (@one_ne_zero (FractionalIdeal (nonZeroDivisors (𝓞 E)) E) _ _ _)]`. Introduce `a ha`. Take `⟨y, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `hx y`. Use `⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.traceForm_apply, eq_intCast, hn]`. Establish `hmul : ∀ d ∈ differentIdeal ℤ (𝓞 E), ∃ b : 𝓞 E, (d : E) * ((p : E)⁻¹ * x) = b`. Introduce `d hd`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : (d : E) ∈ ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)` using `(FractionalIdeal.mem_coeIdeal _).2 ⟨d, hd, rfl⟩`. Rewrite `h1` using `[coeIdeal_differentIdeal ℤ ℚ]`. Establish `h2` using `FractionalIdeal.mul_mem_mul h1 hdual`. Rewrite `h2` using `[inv_mul_cancel₀ (FractionalIdeal.dual_ne_zero ℤ ℚ (@one_ne_zero (FractionalIdeal (nonZeroDivisors (𝓞 E)) E) _ _ _))]`. Take `⟨b, hb⟩` from `(FractionalIdeal.mem_one_iff _).1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b, hb.symm⟩`. Establish `h1 : (1 : 𝓞 E) ∈ differentIdeal ℤ (𝓞 E) ⊔ Ideal.span {(p : 𝓞 E)}` using `hcop ▸ Submodule.mem_top`. Take `⟨d, hd, q, hq, hdq⟩` from `Submodule.mem_sup.1 h1`. Take `⟨b, hb⟩` from `hmul d hd`. Establish `hdx : d * x = p * b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[show (p : E) * (b : E) = p * ((d : E) * ((p : E)⁻¹ * x)) by rw [hb]]`. Clear the denominators using the available nonvanishing facts. Establish `hxp : x ∈ Ideal.span {(p : 𝓞 E)}`.
+Move the embeddings inside the algebraic operations. Rewrite the hypotheses and the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: x = d * x + q * x` using `by rw [← add_mul, hdq, one_mul]`. Rewrite using `[this, hdx]`. Conclude with `add_mem (Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)) (Ideal.mul_mem_right _ _ hq)`. Take `⟨z, hz⟩` from `Ideal.mem_span_singleton'.1 hxp`. Conclude with `⟨z, by rw [← hz]; push_cast; ring⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_mul {E : Type} [Field E] [NumberField E] {p : ℕ} (hp : p.Prime) (h : SplitsIn E p)
     (x : 𝓞 E) (hx : ∀ y : 𝓞 E, ∃ n : ℤ, (n : ℚ) = Algebra.trace ℚ E ((p : E)⁻¹ * x * y)) :
@@ -135,15 +133,13 @@ section Ad
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `hgen : ∀ y ∈ v.adicCompletionIntegers F, ((1 : E) ⊗ₜ[F] Formalism.UG.P.afsplitI v y : E ⊗[F] Ad F) ∈ OAd F E` using `fun y hy => Subring.subset_closure (Or.inr ⟨⟨_, Formalism.UG.P.afsplitI_mem_intAd v y hy⟩, rfl⟩)`. Proceed by induction on `ha using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨⟨y, hy⟩, rfl⟩ | ⟨⟨y, hy⟩, rfl⟩` into its components or cases. Rewrite using `[Formalism.UG.P.afsplitIE_tmul]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `: (y ⊗ₜ[F] Formalism.UG.P.afsplitI v 1 : E ⊗[F] Ad F) = (y ⊗ₜ[F] (1 : Ad F)) * ((1 : E) ⊗ₜ[F] Formalism.UG.P.afsplitI v 1)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`. Rewrite using `[this]`. Conclude with `mul_mem (Subring.subset_closure (Or.inl ⟨⟨y, hy⟩, rfl⟩)) (hgen 1 (one_mem _))`. Rewrite using `[Formalism.UG.P.afsplitIE_tmul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `hgen y hy`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `one`. Rewrite using `[Algebra.TensorProduct.one_def, Formalism.UG.P.afsplitIE_tmul]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `hgen 1 (one_mem _)`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem hx`.
-
-Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `mul_mem hx hy`.
+A detailed English derivation is pending.
 -/
 theorem ie_mem (v : HeightOneSpectrum (𝓞 F)) {a : E ⊗[F] v.adicCompletion F} (ha : a ∈ intV E v) :
     Formalism.UG.P.afsplitIE v a ∈ OAd F E := by
@@ -170,7 +166,7 @@ theorem ie_mem (v : HeightOneSpectrum (𝓞 F)) {a : E ⊗[F] v.adicCompletion F
   | mul x y _ _ hx hy => rw [map_mul]; exact mul_mem hx hy
 
 /- English proof (translation)
-Rewrite using `[map_mul, Formalism.UG.P.afsplit_decomp, ← mul_assoc, mul_comm (Formalism.UG.P.afsplitIE v a), Formalism.UG.P.afsplit_eps_mul_IE]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ie_mul_prV (v : HeightOneSpectrum (𝓞 F)) (a : E ⊗[F] v.adicCompletion F) (y : E ⊗[F] Ad F) :
     Formalism.UG.P.afsplitIE v (a * prV (E := E) v y) = Formalism.UG.P.afsplitIE v a * y := by
@@ -178,17 +174,15 @@ theorem ie_mul_prV (v : HeightOneSpectrum (𝓞 F)) (a : E ⊗[F] v.adicCompleti
     Formalism.UG.P.afsplit_eps_mul_IE]
 
 /- English proof (translation)
-Establish `hq : (q : 𝓞 F) ∉ v.asIdeal`. Introduce `hq`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hpq`. Apply `v.isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[Ideal.eq_top_iff_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (a : 𝓞 F) * p + (b : 𝓞 F) * q = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 F) hab`. Rewrite using `[← h1]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ hv) (Ideal.mul_mem_left _ _ hq)`. Establish `hval : Valued.v (q : v.adicCompletion F) = 1`. Establish `hc : ∀ n : ℕ, ((n : F) : v.adicCompletion F) = (n : v.adicCompletion F)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rw [Nat.cast_zero, Nat.cast_zero, HeightOneSpectrum.adicCompletion.coe_zero]`. Consider the case `succ n ih`. Rewrite using `[Nat.cast_succ, Nat.cast_succ, ← ih, HeightOneSpectrum.adicCompletion.coe_add, HeightOneSpectrum.adicCompletion.coe_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hc q, HeightOneSpectrum.valuedAdicCompletion_eq_valuation', ← map_natCast (algebraMap (𝓞 F) F) q, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `hq`. Establish `hq0 : (q : v.adicCompletion F) ≠ 0`. Introduce `h0`. Rewrite `hval` using `[h0, map_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `zero_ne_one hval`. Use `⟨(1 : E) ⊗ₜ[F] (q : v.adicCompletion F)⁻¹, ?_, ?_⟩` and prove the remaining obligations. Apply `Subring.subset_closure` to reduce the goal to its premises. Use `Or.inr ⟨⟨_, ?_⟩, rfl⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v ((q : v.adicCompletion F)⁻¹) ≤ 1`.
-
-Rewrite using `[map_inv₀, hval, inv_one]`. Rewrite using `[Algebra.TensorProduct.natCast_def', Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_inv_cancel₀ hq0, Algebra.TensorProduct.one_def]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_inv (v : HeightOneSpectrum (𝓞 F)) {p q : ℕ} (hpq : p.Coprime q) (hv : (p : 𝓞 F) ∈ v.asIdeal) :
     ∃ u ∈ intV E v, (q : E ⊗[F] v.adicCompletion F) * u = 1 := by
@@ -223,15 +217,15 @@ theorem exists_inv (v : HeightOneSpectrum (𝓞 F)) {p q : ℕ} (hpq : p.Coprime
       mul_inv_cancel₀ hq0, Algebra.TensorProduct.one_def]
 
 /- English proof (translation)
-Take `⟨t, ht, hte⟩` from `hd`. Establish `hprops` using `GlobalTheory.St.G.IntAd.integral_adeles_properties F E`. Establish `hs : Formalism.UG.prV (E` using `E) v t ∈ intV E v := (hprops.1 t).1 ht v`. Establish `hes : e = (p : E ⊗[F] v.adicCompletion F) * Formalism.UG.prV (E` using `E) v t := by`. Establish `h1` using `congrArg (Formalism.UG.prV (E := E) v) hte`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Formalism.UG.P.afsplit_prV_IE, map_mul, map_natCast]`. Then use the resulting hypothesis. Establish `hidem : IsIdempotentElem e` using `hee`. Establish `hpow : ∀ k : ℕ, e = (p : E ⊗[F] v.adicCompletion F) ^ (k + 1) * (Formalism.UG.prV (E` using `E) v t) ^ (k + 1) := fun k => by`. Rewrite using `[← mul_pow, ← hes, hidem.pow_succ_eq]`. Establish `hzero : Formalism.UG.P.afsplitIE v e = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hprops.2.2.1 _ fun m hm => ?_` and prove the remaining obligations. Take `⟨k, m', hm', rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hm.ne' p hp.one_lt.ne'`. Take `⟨u, hu, hmu⟩` from `exists_inv (E := E) v ((Nat.Prime.coprime_iff_not_dvd hp).2 hm') hv`. Use `set s := Formalism.UG.prV (E := E) v t`. Establish `hw : u * (p : E ⊗[F] v.adicCompletion F) * s ^ (k + 1) ∈ intV E v` using `mul_mem (mul_mem hu (natCast_mem _ p)) (pow_mem hs _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he' : e = ((p ^ k * m' : ℕ) : E ⊗[F] v.adicCompletion F) * (u * (p : E ⊗[F] v.adicCompletion F) * s ^ (k + 1))`. Combine the equalities or inequalities in the displayed calculation. Use `⟨Formalism.UG.P.afsplitIE v (u * (p : E ⊗[F] v.adicCompletion F) * s ^ (k + 1)), ie_mem v hw, ?_⟩` and prove the remaining obligations. Use `conv_lhs => rw [he']`. Rewrite using `[← nsmul_eq_mul, map_nsmul, nsmul_eq_mul]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `Formalism.UG.P.afsplit_prV_IE (E := E) v e`. Rewrite `h2` using `[hzero, map_zero]`. Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 theorem idem_eq_zero (v : HeightOneSpectrum (𝓞 F)) {p : ℕ} (hp : p.Prime) (hv : (p : 𝓞 F) ∈ v.asIdeal)
     {e : E ⊗[F] v.adicCompletion F} (he : e ∈ intV E v) (hee : e * e = e)
@@ -274,23 +268,23 @@ end GlobalTheory.St.G.PsiLoc
 open GlobalTheory.St.G.PsiLoc in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ cm psi hadd hint hrat p hp hsp v hv e he hee hne`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Apply `hne` to reduce the goal to its premises. Establish `hprops` using `GlobalTheory.St.G.IntAd.integral_adeles_properties F E`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : (p : E) ≠ 0` using `by exact_mod_cast hp.ne_zero`. Establish `hincl : ∀ y : 𝓞 E, inclE (F` using `F) (Ad F) (y : E) ∈ OAd F E := fun y => (hprops.2.2.2.2 _).2 ⟨y, rfl⟩`. Establish `hinclv : ∀ y : 𝓞 E, inclE (F` using `F) (v.adicCompletion F) (y : E) ∈ intV E v := fun y => Subring.subset_closure (Or.inl ⟨⟨(y : E), ⟨y, rfl⟩⟩, rfl⟩)`. Establish `hcv : algebraMap F (E ⊗[F] v.adicCompletion F) ((p : F)⁻¹) = inclE (F` using `F) (v.adicCompletion F) ((p : E)⁻¹) := by`. Rewrite using `[Algebra.TensorProduct.algebraMap_apply, map_inv₀, map_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Apply `idem_eq_zero (E := E) v hp hv he hee` to reduce the goal to its premises. Take `⟨x, t, ht, hxt⟩` from `hprops.2.1 _ (ie_mem v he) p hp.pos`. Establish `htr : ∀ y : 𝓞 E, ∃ n : ℤ, (n : ℚ) = Algebra.trace ℚ E ((p : E)⁻¹ * x * y)`. Introduce `y`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `key : psi (inclE (F` using `F) (Ad F) ((p : E)⁻¹ * x * y)) = 1 := by`. Establish `h1` using `hcon _ (hinclv y)`. Establish `h2 : inclE (F` using `F) (v.adicCompletion F) ((p : E)⁻¹) * (e * inclE (F := F) (v.adicCompletion F) (y : E)) = e * Formalism.UG.prV (E := E) v (inclE (F := F) (Ad F) ((p : E)⁻¹ * y)) := by`. Rewrite using `[Formalism.UG.P.afsplit_prV_inclE, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hcv, h2, ie_mul_prV, hxt]`. Establish `hpp : inclE (F` using `F) (Ad F) (p : E) * inclE (F := F) (Ad F) ((p : E)⁻¹) = 1 := by`. Rewrite using `[← map_mul, mul_inv_cancel₀ hp0, map_one]`. Establish `h3 : (inclE (F` using `F) (Ad F) (x : E) + (p : E ⊗[F] Ad F) * t) * inclE (F := F) (Ad F) ((p : E)⁻¹ * y) = inclE (F := F) (Ad F) ((p : E)⁻¹ * x * y) + t * inclE (F := F) (Ad F) (y : E) := by`. Rewrite using `[← map_natCast (inclE (F := F) (Ad F)) p]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul]`. Take the linear combination `(t * inclE (F := F) (Ad F) (y : E)) * hpp`. Rewrite `h1` using `[h3, hadd, hint _ (mul_mem ht (hincl y)), mul_one]`. Conclude with `h1`. Establish `h4` using `hrat ((p : E)⁻¹ * x * y)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h4` using `[key, one_mul, Complex.exp_eq_one_iff]`. Take `⟨n, hn⟩` from `h4`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `hpi : (2 * Real.pi * Complex.I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, Complex.I_ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h5 : ((Algebra.trace ℚ E ((p : E)⁻¹ * x * y) : ℚ) : ℂ) = (n : ℂ)`. Apply `mul_left_cancel₀ hpi` to reduce the goal to its premises. Rewrite using `[hn]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `h5.symm` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨z, hz⟩` from `exists_eq_mul hp hsp x htr`. Use `⟨inclE (F := F) (Ad F) (z : E) + t, add_mem (hincl z) ht, ?_⟩` and prove the remaining obligations. Rewrite using `[hxt, hz, map_mul, map_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.St.G.psi_local_ne_one : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] (cm : CMData F E) (psi : E ⊗[F] Ad F → ℂ), (∀ x y, psi (x + y) = psi x * psi y) → (∀ x ∈ OAd F E, psi x = 1) → (∀ x : E, psi (inclE (F := F) (Ad F) x) * Complex.exp (2 * Real.pi * Complex.I * ((Algebra.trace ℚ E x : ℚ) : ℂ)) = 1) → ∀ (p : ℕ), p.Prime → SplitsIn E p → ∀ (v : HeightOneSpectrum (𝓞 F)), (p : 𝓞 F) ∈ v.asIdeal → ∀ e ∈ intV E v, e * e = e → e ≠ 0 → ∃ a ∈ intV E v, psi (Formalism.UG.P.afsplitIE v (algebraMap F (E ⊗[F] v.adicCompletion F) ((p : F)⁻¹) * (e * a))) ≠ 1 := by
   intro F E _ _ _ _ _ _ cm psi hadd hint hrat p hp hsp v hv e he hee hne

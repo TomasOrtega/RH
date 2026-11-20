@@ -14,21 +14,19 @@ noncomputable section
 namespace GlobalTheory.IwaCell
 
 /- English proof (translation)
-Introduce `k _ _ _ _ m ϖ hϖ g`. Take `⟨k₀, b, hb, hg⟩` from `GlobalTheory.ValIwasawa.iwasawa 𝒪[k] k m g⁻¹`. Establish `hg' : g = b⁻¹ * (GeneralLinearGroup.map (algebraMap 𝒪[k] k) k₀)⁻¹`. Rewrite using `[← _root_.mul_inv_rev, ← hg, inv_inv]`. Use `set c := b⁻¹ with hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcT : c.val.BlockTriangular id`. Establish `: c.val = b.val⁻¹` using `by rw [hc, Matrix.coe_units_inv]`. Rewrite using `[this]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hb`. Establish `hdet : c.val.det = ∏ i, c.val i i` using `Matrix.det_of_upperTriangular hcT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ∀ i, c.val i i ≠ 0` using `fun i h => by`. Use `Matrix.GeneralLinearGroup.det_ne_zero c` as an intermediate fact. Rewrite `this` using `[hdet]`. Conclude with `this (Finset.prod_eq_zero (Finset.mem_univ i) h)`. Set `d : Fin m → kˣ` to `fun i => Units.mk0 _ (hd i)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `a : Fin m → ℤ` to `fun i => ord k (d i)`. Set `e : Fin m → kˣ` to `fun i => d i / ϖ ^ a i`. Establish `he : ∀ i, valuation k (e i : k) = 1` using `fun i => by`. Apply `ord_eq_zero_iff.1` to reduce the goal to its premises. Simplify using `only [e, div_eq_mul_inv, ← _root_.zpow_neg, ord_mul, ord_zpow, hϖ, a]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hde : d = (fun i => ϖ ^ a i) * e`. Use function extensionality and compare the values at `i`. Simplify using `[e]`. Set `u` to `c * (diagT k (Fin m) d)⁻¹`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : u ∈ unipB k (Fin m)`. Rewrite using `[mem_unipB]`. Establish `hval : u.val = c.val * diagonal (fun i => (((d i)⁻¹ : kˣ) : k))`. Simplify using `only [u, ← map_inv, Units.val_mul, val_diagT, Pi.inv_apply]`. Use `⟨fun i j hij => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hval, mul_diagonal, hcT hij, zero_mul]`. Rewrite using `[hval, mul_diagonal]`. Simplify using `[d, mul_inv_cancel₀ (hd i)]`. Use `⟨a, u, hu, diagT k (Fin m) e * (GeneralLinearGroup.map (algebraMap 𝒪[k] k) k₀)⁻¹, mul_mem (GlobalTheory.LocalCartan.diagT_mem_KO he) (inv_mem ⟨k₀, rfl⟩), ?_⟩` and prove the remaining obligations. Rewrite using `[hg', tD, ← mul_assoc, mul_assoc u, ← map_mul, ← hde]`.
-
-Simplify using `[u]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_mem_cell : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (m : ℕ) (ϖ : kˣ), ord k ϖ = 1 → ∀ g : GL (Fin m) k, ∃ a : Fin m → ℤ, g ∈ GlobalTheory.IwaCell.cell ϖ a := by

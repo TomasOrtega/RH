@@ -28,15 +28,13 @@ section Generic
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Use `choose! a ha hae using h`. Establish `hone : (1 : E ⊗[F] Formalism.L2.Herm.Af F) - ε ∈ Formalism.L2.Herm.intAf F E` using `sub_mem (one_mem _) hε`. Use `set t : Formalism.L2.Herm.intAf F E := ⟨1 - ε, hone⟩ with ht`. Use `set b : Pl E → Formalism.L2.Herm.intAf F E := fun w => if hw : w ∈ P then ⟨1 - a w, (ha w hw).one_sub_mem⟩ else 1 with hb`. Establish `hbm : ∀ w ∈ P, b w ∈ Formalism.L2.DIV.idS F (w.asIdeal ^ d w)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `w hw`. Use `(ha w hw).one_sub_mem_idS (d w)` as an intermediate fact. Simplify `this` using `[hb, hw]`. Establish `hprod : ∏ w ∈ P, b w ∈ ∏ w ∈ P, Formalism.L2.DIV.idS F (w.asIdeal ^ d w)` using `Ideal.prod_mem_prod hbm`. Establish `hmap : ∏ w ∈ P, Formalism.L2.DIV.idS F (w.asIdeal ^ d w) = Formalism.L2.DIV.idS F (∏ w ∈ P, w.asIdeal ^ d w)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Formalism.L2.DIV.idS`. Conclude with `(map_prod (Ideal.mapHom (Formalism.L2.DIV.oToS F E)) _ P).symm`. Establish `hfix : t * ∏ w ∈ P, b w = t`. Use `Finset.prod_induction b (fun x => t * x = t) (fun x y hx hy => by rw [← mul_assoc, hx, hy]) (mul_one t) ?_` and prove the remaining obligations. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hb, hw, dif_pos, ht, Subring.coe_mul]`. Take the linear combination `(hae w hw)`. Use `⟨t, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[← hfix, ← hmap]`.
-
-Conclude with `Ideal.mul_mem_left _ _ hprod`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_sub_mem_idS_prod [StarRing E] (P : Finset (Pl E)) (d : Pl E → ℕ) {ε : E ⊗[F] Formalism.L2.Herm.Af F}
     (hε : ε ∈ Formalism.L2.Herm.intAf F E)
@@ -73,9 +71,9 @@ end GlobalTheory.IdemSumIdeal
 namespace GlobalTheory.IdemSumIdeal
 
 /- English proof (translation)
-Use `⟨by rw [← map_mul, h.1.1], fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[h.2 x hx]`. Establish `e : toEAf D (a * incA D ((x : D.host.E)⁻¹)) = toEAf D a * Formalism.L2.Col.iA D.host.F D.host.E ((x : D.host.E)⁻¹)`. Rewrite using `[map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← e]`. Conclude with `not_congr ⟨GlobalTheory.IdemIntegral.toEAf_mem_of_finPart_mem, GlobalTheory.PlaceDatum.finPart_mem_of_toEAf⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idemOf_toEAf {D : D7} {a : AE D} {w : Formalism.L2.DIV.Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt a w) :
     GlobalTheory.InertNbr.IdemOf D.host.F w (toEAf D a) := by
@@ -87,11 +85,9 @@ theorem idemOf_toEAf {D : D7} {a : AE D} {w : Formalism.L2.DIV.Pl D.host.E} (h :
   exact not_congr ⟨GlobalTheory.IdemIntegral.toEAf_mem_of_finPart_mem, GlobalTheory.PlaceDatum.finPart_mem_of_toEAf⟩
 
 /- English proof (translation)
-Introduce `D e P d h`. Take `⟨⟨es, hes, he⟩, -⟩` from `id h`. Establish `hint : toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E`. Rewrite using `[he, map_sum]`. Conclude with `sum_mem fun w hw => (idemOf_toEAf (hes w hw)).mem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, hint, ?_⟩` and prove the remaining obligations. Rewrite using `[he, map_sum]`. Conclude with `Finset.sum_eq_zero fun w hw => GlobalTheory.ExportSeries.SpecGood.infPart_eq_zero_of_isIdemAt D w (es w) (hes w hw)`. Use `one_sub_mem_idS_prod P d hint fun w hw => ?_` and prove the remaining obligations. Take `⟨a, ha, hae⟩` from `GlobalTheory.OffIdem.idemSum_mul_idemAt h hw`.
-
-Conclude with `⟨toEAf D a, idemOf_toEAf ha, by rw [← map_mul, hae]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isIdemSum_props : ∀ {D : D7} (e : AE D) (P : Finset (Formalism.L2.DIV.Pl D.host.E)) (d : Formalism.L2.DIV.Pl D.host.E → ℕ),
     IsIdemSum e P → infPart D e = 0 ∧ toEAf D e ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧

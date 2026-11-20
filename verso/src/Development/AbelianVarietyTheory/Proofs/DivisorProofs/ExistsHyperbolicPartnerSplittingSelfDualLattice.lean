@@ -31,31 +31,29 @@ noncomputable section
 namespace GlobalTheory.HypPairSelfDual
 
 /- English proof (translation)
-Introduce `D S Λ x hΛ hx0 hxx`. Use `set σ : D.host.E →ₐ[D.host.F] D.host.E := D.sp.cm.sig with hσdef`. Establish `hσs : ∀ e : D.host.E, σ e = star e` using `fun _ => rfl`. Establish `hσ : ∀ e, σ (σ e) = e` using `fun e => by rw [hσs, hσs, star_star]`. Use `set J : Matrix (Fin S.rank) (Fin S.rank) D.host.E := Matrix.transpose (HSpace.gram S) with hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set co : S.V ≃ₗ[D.host.E] (Fin S.rank → D.host.E) := S.frame.equivFun with hco`. Establish `hform : ∀ a b : S.V, S.hT a b = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J (co b) (co a)` using `fun a b => by`. Rewrite using `[GlobalTheory.RelFlag.hT_eq_form]`. Simplify using `only [GlobalTheory.SgAlg.form, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, GlobalTheory.IntPair.co, dotProduct, Matrix.mulVec, hJ, Matrix.transpose_apply, hσs, starRingEnd_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [hco]`. Expand and normalize the polynomial expressions, which then agree. Establish `hframe : ∀ i, co (S.frame i) = Pi.single i 1` using `fun i => by`. Use extensionality with `j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hco, Module.Basis.equivFun_apply, Finsupp.single_apply, Pi.single_apply, eq_comm]`. Establish `hherm : ∀ i j, σ (J j i) = J i j` using `fun i j => by`. Establish `h1` using `S.herm.eq (S.frame i) (S.frame j)`. Establish `e1 : S.hT (S.frame i) (S.frame j) = J j i`. Rewrite using `[hform, hframe, hframe]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, dotProduct, Matrix.mulVec, Pi.single_apply]`. Establish `e2 : S.hT (S.frame j) (S.frame i) = J i j`. Rewrite using `[hform, hframe, hframe]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, dotProduct, Matrix.mulVec, Pi.single_apply]`. Rewrite `h1` using `[e1, e2]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hσs]`. Simplify `h1` using `[starRingEnd_apply]`. Establish `hfg : Λ.FG` using `hΛ.1.fg`. Establish `hdual : ∀ w, w ∈ Λ ↔ ∀ v ∈ Λ, IsIntegral ℤ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J w v)` using `fun w => by`. Rewrite using `[hΛ.2 w]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `forall₂_congr fun v _ => ?_` and prove the remaining obligations. Establish `: GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J w v = ∑ i, ∑ j, star (v i) * S.gram i j * w j`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, dotProduct, Matrix.mulVec, hJ, Matrix.transpose_apply, hσs, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, ← GlobalTheory.PlaneSplit.mem_range_iff]`. Simplify using `[RingHom.mem_range, eq_comm]`. Establish `hfu : Algebra.FormallyUnramified (𝓞 D.host.F) (𝓞 D.host.E)` using `by haveI := GlobalTheory.HeckeAdjoint.unramified_host D; infer_instance`. Take `⟨θ, hθ⟩` from `GlobalTheory.exists_integer_add_conj_eq_one_of_formallyUnramified D.host.F D.host.E σ (GlobalTheory.AdelicU.isCMExt_host D) hfu`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcx0 : co x ≠ 0` using `fun h => hx0 (co.injective (by rw [h, map_zero]))`. Establish `hcxx : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J (co x) (co x) = 0` using `by rw [← hform]; exact hxx`. Take `⟨z0, hz0L, hz0⟩` from `GlobalTheory.T.selfDual_hermitianLattice_exists_nonzero_pairing D.host.F D.host.E σ hσ S.rank J Λ hfg hherm hdual (co x) hcx0`. Take `⟨y₀, hy₀1, hy₀L⟩` from `GlobalTheory.T.exists_section_hermitianLinearForm_fg_module D.host.F D.host.E σ S.rank J Λ hfg (co x) ⟨z0, hz0L, hz0⟩`. Take `⟨y, hyy, hxy, hL⟩` from `GlobalTheory.T.exists_isotropic_dual_partner_selfDual_hermitianLattice D.host.F D.host.E σ hσ S.rank J Λ hherm hdual θ hθ (co x) y₀ hcxx hy₀1 hy₀L`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hconj : ∀ a b, σ (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J a b) = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form σ J b a` using `fun a b => by`. Establish `hh' : ∀ i j, σ (J i j) = J j i` using `fun i j => hherm j i`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hh']`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Use `⟨co.symm y, ?_, ?_, fun z hz => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hform, co.apply_symm_apply]`. Conclude with `hyy`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hform, co.apply_symm_apply, ← hconj, hxy, map_one]`. Unfold `GlobalTheory.SqStepK.InLat`. Rewrite using `[map_smul, hform, co.apply_symm_apply]`. Conclude with `(hL _ hz).1`. Unfold `GlobalTheory.SqStepK.InLat`.
-
-Rewrite using `[map_smul, hform]`. Express the relevant statement in the definitionally equal form `_ • co (co.symm y) ∈ Λ`. Rewrite using `[co.apply_symm_apply]`. Conclude with `(hL _ hz).2`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_partner : ∀ (D : D7) (S : HSp D) (Λ : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E)) (x : S.V),
     IsSelfDualC S Λ → x ≠ 0 → S.hT x x = 0 →

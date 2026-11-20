@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.Invariant
 open Polynomial GlobalTheory.CuspGL
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CuspGL.MassMult.mass_mult` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FCharacterTheory%2FEndomorphismMassMulParabolicInductionTrivial.lean&line=109#L109)
 -/

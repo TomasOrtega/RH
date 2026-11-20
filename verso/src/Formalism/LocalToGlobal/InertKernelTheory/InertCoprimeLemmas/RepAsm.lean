@@ -15,7 +15,7 @@ open Formalism.L2.G.Pend (k0ToC wittFractionAlgebraCp OcC Frm thA thFOf)
 open Formalism.MainNotions.FormalGroupSystem (Sys)
 
 /- English proof (translation)
-Take `⟨hg2, hg3, hε, hθ, hN, hbe0, F, hF, hTie⟩` from `hC`. Take `⟨r, Θ, σ, f, f', hσ, hP, rfl, hI⟩` from `hO`. Establish `hInt` using `hyperbolic_of_orthogonal l h5 g2 g3 ε s2 hg2 hg3 hε hθ σ hσ F hF (hN σ hσ) ι (Fin r) f f' hP be hbe0 hTie Θ hI`. Conclude with `@first_kernel_of_sum l _ ι _ ℂ_[l] _ (wittFractionAlgebraCp l) (OcC l) be _ hB (sum_beta_even l (by omega) ι be hB) hInt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem k1gen_of_orth {l : ℕ} [Fact l.Prime] (h5 : 5 ≤ l) {be : MvPowerSeries (Fin 2) (K0 l)} (hB : BeProp l be)
     {g2 g3 ε s2 : MaximalUnramifiedExtension l} (hC : CurveAt l be g2 g3 ε s2) {ι : Type} [Fintype ι] [DecidableEq ι]
@@ -27,7 +27,7 @@ theorem k1gen_of_orth {l : ℕ} [Fact l.Prime] (h5 : 5 ≤ l) {be : MvPowerSerie
   exact @first_kernel_of_sum l _ ι _ ℂ_[l] _ (wittFractionAlgebraCp l) (OcC l) be _ hB (sum_beta_even l (by omega) ι be hB) hInt
 
 /- English proof (translation)
-Introduce `j _ L0 h0 La' hL' φ`. Conclude with `k1gen_of_orth h5 hB hC (hO j L0 h0 La' hL' φ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem representativeCondition_of_curve_orthAll {p : ℕ} [Fact p.Prime] (h5 : 5 ≤ p) (X : Sys p) [IsFractionRing X.G.O X.G.Kf]
     (E : Formalism.L2.G.Pend.CEmbC X.G) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (be : MvPowerSeries (Fin 2) (K0 p))
@@ -40,7 +40,7 @@ theorem representativeCondition_of_curve_orthAll {p : ℕ} [Fact p.Prime] (h5 : 
   exact k1gen_of_orth h5 hB hC (hO j L0 h0 La' hL' φ)
 
 /- English proof (translation)
-The claim follows from `(Formalism.L2.PairingIndexBounds.PowerSeriesNecessity.adm_two_pendant_iff_representative D X E hfin hst hLT pos F).2 (representativeCondition_of_curve_orthAll h5 X E hfin _ pos F hB g2 g3 ε s2 hC hO)`.
+A detailed English derivation is pending.
 -/
 theorem adm2b_of_prv (D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (h5 : 5 ≤ p) (X : Sys p) [IsFractionRing X.G.O X.G.Kf]
     (E : Formalism.L2.G.Pend.CEmbC X.G) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (hst : Formalism.L2.G.Pend.FinStab X.Lv)
@@ -53,7 +53,7 @@ theorem adm2b_of_prv (D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (h
     (representativeCondition_of_curve_orthAll h5 X E hfin _ pos F hB g2 g3 ε s2 hC hO)
 
 /- English proof (translation)
-Take `⟨-, ⟨F, hF⟩, g2, g3, ε, s2, h1, h2, h3, h4, h6, h7, h8⟩` from `H D cc δ l g hLT hA h5 hI hM`. Conclude with `⟨g2, g3, ε, s2, h1, h2, h3, h4, h6, h7, F, hF, h8 F hF⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem curveAt_of_beCob (H : Formalism.L2.KerInert.BeCob.BeCobTie) (D : Formalism.BasicNotions.D7)
     (cc : Ideal (NumberField.RingOfIntegers D.host.K)) (δ : ℂ) {l : ℕ} [Fact l.Prime] {g : Formalism.MainNotions.GL3Theta.G1 l}
@@ -68,7 +68,7 @@ section Glob
 open NumberField Formalism.BasicNotions Formalism.MainNotions.TaylorLogMetric Formalism.L2.Ker
 
 /- English proof (translation)
-Introduce `j L0 h0 La' hL' φ`. Take `⟨r, b, hLB, hON, σ, f, f', hσ, hP, hEq⟩` from `hFr j L0 h0 La' hL' φ`. Take `⟨C, wq, hM, hW, hDi⟩` from `hD`. Take `⟨hAdm, hCb⟩` from `hComb j L0 h0 La' hL'`. Conclude with `⟨r, thOrth D lam c b (F j L0 La'), σ, f, f', hσ, hP, hEq, hDi _ _ r b _ (hI _ _ _ _ hAdm (F j L0 La') hCb C wq r b hM hW hLB hON)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem orthAll_of {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : Formalism.L2.G.Pend.CEmbC X.G)
     (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7) (pos : (Σ v : X.Pl, Fin (X.G.P.n' v)) ≃ D.what₂.Tau)
@@ -93,7 +93,7 @@ theorem orthAll_of {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.
     hDi _ _ r b _ (hI _ _ _ _ hAdm (F j L0 La') hCb C wq r b hM hW hLB hON)⟩
 
 /- English proof (translation)
-The claim follows from `orthAll_of X E hfin D pos large₂ Lg' F B.tor (B.eNat χ) lam c g2 g3 s2 ε (fun N N' L L' hA => hInt D cc δ B hcc hδ χ hχ p h5 hin lam N N' L L' hA) S hComb hFr hD`.
+A detailed English derivation is pending.
 -/
 theorem orthAll_of_intInert (hInt : Formalism.L2.KerInert.IntInert) {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf]
     (E : Formalism.L2.G.Pend.CEmbC X.G) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (D : D7)
@@ -115,7 +115,7 @@ theorem orthAll_of_intInert (hInt : Formalism.L2.KerInert.IntInert) {p : ℕ} [F
     (fun N N' L L' hA => hInt D cc δ B hcc hδ χ hχ p h5 hin lam N N' L L' hA) S hComb hFr hD
 
 /- English proof (translation)
-Take `⟨g2, g3, ε, s2, h⟩` from `hCD D cc δ p g hLT hA h5 hIn hM`. Conclude with `⟨g2, g3, ε, s2, by tauto⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem curveDict_data (hCD : CurveDict) (D : D7) (cc : Ideal (𝓞 D.host.K)) (δ : ℂ) {p : ℕ} [Fact p.Prime]
     {g : Formalism.MainNotions.GL3Theta.G1 p} (hLT : Formalism.L2.G.Pend.LTIso g) (hA : Formalism.MainNotions.GL3Theta.At D cc δ g) (h5 : 5 ≤ p)
@@ -126,7 +126,7 @@ theorem curveDict_data (hCD : CurveDict) (D : D7) (cc : Ideal (𝓞 D.host.K)) (
   exact ⟨g2, g3, ε, s2, by tauto⟩
 
 /- English proof (translation)
-Take `⟨g2, g3, ε, s2, hC, hD⟩` from `curveDict_data hCD D cc δ hLT hA h5 hIn hM`. Establish `hD' : DictInt D g.lam B.tor.abelian₂ (((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * (Formalism.L2.KerInert.BeCob.eLT hLT)⁻¹) g2 g3 s2 ε`. Rewrite using `[← hLam]`. Conclude with `hD D`. Conclude with `adm2b_of_prv D h5 X E hfin hst hLT pos _ hB g2 g3 ε s2 hC (orthAll_of_intInert hInt X E hfin D pos large₂ Lg' F cc δ B hcc hδ χ hχ h5 hin g.lam _ g2 g3 s2 ε S hComb hFr hD')`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adm2b_of_curve_dictionary (hCD : CurveDict) (hInt : Formalism.L2.KerInert.IntInert) (D : D7) {p : ℕ} [Fact p.Prime] (h5 : 5 ≤ p)
     (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : Formalism.L2.G.Pend.CEmbC X.G) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses)
@@ -155,9 +155,9 @@ theorem adm2b_of_curve_dictionary (hCD : CurveDict) (hInt : Formalism.L2.KerIner
     (orthAll_of_intInert hInt X E hfin D pos large₂ Lg' F cc δ B hcc hδ χ hχ h5 hin g.lam _ g2 g3 s2 ε S hComb hFr hD')
 
 /- English proof (translation)
-Establish `ha : MvPowerSeries.HasSubst (fun k : D.what₂.Tau × Fin N' × Fin N => (MvPowerSeries.C c * MvPowerSeries.X k : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => by simp`. Establish `hb : MvPowerSeries.HasSubst (fun k : D.what₂.Tau × Fin N' × Fin N => ∑ i, MvPowerSeries.C ((1 : ℂ_[p]) * lamC lam (embT D k.1 (b i k.2.1 k.2.2))) * (MvPowerSeries.X i : MvPowerSeries (Fin r) ℂ_[p]))` using `MvPowerSeries.hasSubst_of_constantCoeff_zero fun k => by simp`. Unfold `thOrth sclY`. Rewrite using `[MvPowerSeries.subst_comp_subst_apply ha hb]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[← MvPowerSeries.coe_substAlgHom hb, map_mul, MvPowerSeries.coe_substAlgHom hb, MvPowerSeries.subst_C, MvPowerSeries.subst_X hb, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← map_mul, one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem thOrth_sclY {p : ℕ} [Fact p.Prime] {N N' r : ℕ} (D : D7) (lam : Qbar →+* ℂ_[p]) (c : ℂ_[p])
     (b : Fin r → Matrix (Fin N') (Fin N) D.host.E) (G : MvPowerSeries (D.what₂.Tau × Fin N' × Fin N) ℂ_[p]) :
@@ -179,11 +179,11 @@ theorem thOrth_sclY {p : ℕ} [Fact p.Prime] {N N' r : ℕ} (D : D7) (lam : Qbar
   rw [← mul_assoc, ← map_mul, one_mul]
 
 /- English proof (translation)
-Take `⟨g2, g3, ε, s2, hC, hD⟩` from `curveDict_data hCD D cc δ hLT hA h5 hIn hM`. Establish `hD' : DictInt D g.lam B.tor.abelian₂ (((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * (Formalism.L2.KerInert.BeCob.eLT hLT)⁻¹) g2 g3 s2 ε`. Rewrite using `[← hLam]`. Conclude with `hD D`. Take `⟨C, wq, hMod, hW, hDi⟩` from `hD'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `adm2b_of_prv D h5 X E hfin hst hLT pos _ hB g2 g3 ε s2 hC ?_` and prove the remaining obligations. Introduce `j L0 h0 La' hL' φ`. Take `⟨r, b, hLB, hON, σ, f, f', hσ, hP, hEq⟩` from `hFH j L0 h0 La' hL' φ`. Take `⟨hAdm, hCb⟩` from `hComb j L0 h0 La' hL'`. Use `⟨r, thOrth D g.lam (((g.C.u⁻¹ : ℂ_[p]ˣ) : ℂ_[p]) * (Formalism.L2.KerInert.BeCob.eLT hLT)⁻¹) b (F j L0 La'), σ, f, f', hσ, hP, ?_, hDi _ _ r b _ (hInt D cc δ B hcc hδ χ hχ p h5 hin g.lam _ _ _ _ hAdm (F j L0 La') hCb C wq r b hMod hW hLB hON)⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hEq, hFr, thOrth_sclY]`.
+A detailed English derivation is pending.
 -/
 theorem adm2b_of_curve_dictionary_one (hCD : CurveDict) (hInt : Formalism.L2.KerInert.IntInert) (D : D7) {p : ℕ} [Fact p.Prime] (h5 : 5 ≤ p)
     (X : Sys p) [IsFractionRing X.G.O X.G.Kf] (E : Formalism.L2.G.Pend.CEmbC X.G) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses)

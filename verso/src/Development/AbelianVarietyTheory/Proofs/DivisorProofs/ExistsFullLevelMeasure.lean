@@ -14,14 +14,14 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.MassFullLevel
 
 /- English proof (translation)
-Introduce `_ hx` and use `⟨hx.1, Subgroup.mem_top _⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem levW_le {D : D7} {Tu : Type} (Cl : LevCh D Tu) (i : Fin D.R.m) (P : LevelP Cl.Pg D.R.r ℂ) :
     GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i P ≤ GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i (LevelP.full Cl.Pg D.R.r ℂ) :=
   fun _ hx => ⟨hx.1, Subgroup.mem_top _⟩
 
 /- English proof (translation)
-Establish `hB : GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i (LevelP.full _ _ _) = parLev D.sp.cm (Wc D i).gram (Cl.βW i) (Cl.datWp i P)`. Establish `e : Cl.datWp i (LevelP.full _ _ _) = { Cl.datWp i P with P` using `LevelP.full (Cl.datWp i P).Pg (Cl.datWp i P).r ℂ } := by`. Simplify using `only [LevCh.datWp, Formalism.IndefR.Lev.datY, if_true]`. Rewrite using `[← GlobalTheory.CovTop.LevelIndex.lev_full, ← e]`. Conclude with `(GlobalTheory.CovTop.LevelIndex.relIndex_lev_le D.sp.cm (Wc D i).gram (Cl.βW i) (Cl.datWp i P) _ hB).1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero {D : D7} {Tu : Type} (Cl : LevCh D Tu) (i : Fin D.R.m) (P : LevelP Cl.Pg D.R.r ℂ) :
     (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i P).relIndex (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i (LevelP.full Cl.Pg D.R.r ℂ)) ≠ 0 := by
@@ -32,13 +32,11 @@ theorem relIndex_ne_zero {D : D7} {Tu : Type} (Cl : LevCh D Tu) (i : Fin D.R.m) 
   exact (GlobalTheory.CovTop.LevelIndex.relIndex_lev_le D.sp.cm (Wc D i).gram (Cl.βW i) (Cl.datWp i P) _ hB).1
 
 /- English proof (translation)
-Introduce `D Tu Cl t0 _ i P μ 𝓕 hμ`. Take `⟨ν, hν⟩` from `GlobalTheory.LevelMeasure.exists_isMeasLev D (Wc D i) (Cl.βW i) (Cl.datWp i (LevelP.full Cl.Pg D.R.r ℂ)) (D.sp.W_sig ((i : ℕ) + 1))`. Establish `hne` using `relIndex_ne_zero Cl i P`. Establish `hmeas : MeasurableSet {g : GA D (Wc D i) | Formalism.IndefR.Lev.finE (Wc D i) g ∈ GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i P}` using `by haveI : BorelSpace (GA D (Wc D i)) := ⟨rfl⟩`. Conclude with `(GlobalTheory.ParahoricCompact.isOpen_comap_lev (Wc D i) (Cl.βW i) (Cl.datWp i P)).measurableSet`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e` using `GlobalTheory.ChainTw.VolScale.scale (Wc D i) (fun _ m => Formalism.IndefR.Lev.IsMinf m) (fun _ _ h => h.1) _ _ μ ν (levW_le Cl i P) Formalism.L2.DIV.lev_le_UA hne hmeas hμ.1 hν`. Use `set n : ℝ≥0∞ := ((GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i P).relIndex (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i (LevelP.full Cl.Pg D.R.r ℂ)) : ℝ≥0∞) with hn`. Establish `hn0 : n ≠ 0` using `by rw [hn]; exact_mod_cast hne`. Establish `hnt : n ≠ ⊤` using `ENNReal.natCast_ne_top _`. Establish `hn1 : 1 ≤ n` using `by rw [hn]; exact_mod_cast Nat.one_le_iff_ne_zero.2 hne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `eν : ν = n⁻¹ • μ`. Rewrite using `[e, smul_smul, ENNReal.inv_mul_cancel hn0 hnt, one_smul]`. Use `⟨ν, ⟨hν, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[eν]`. Conclude with `hμ.2.mono Measure.smul_absolutelyContinuous`.
-
-Rewrite using `[e, Measure.smul_apply, smul_eq_mul]`. Conclude with `le_mul_of_one_le_left bot_le hn1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mass_le_of_full : ∀ (D : D7) (Tu : Type) (Cl : LevCh D Tu) (t0 : Tu), Cl.Is t0 → ∀ (i : Fin D.R.m) (P : LevelP Cl.Pg D.R.r ℂ) (μ : MeasureTheory.Measure (Formalism.L2.Theta.GA D (Wc D i))) (𝓕 : Set (Formalism.L2.Theta.GA D (Wc D i))), Formalism.IndefR.Lev.IsMeasFD (Wc D i) (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i P) μ 𝓕 → ∃ μ' : MeasureTheory.Measure (Formalism.L2.Theta.GA D (Wc D i)), Formalism.IndefR.Lev.IsMeasFD (Wc D i) (GlobalTheory.IndefiniteRowSideFullHecke.OneMeasureSizes.levW Cl i (LevelP.full Cl.Pg D.R.r ℂ)) μ' 𝓕 ∧ μ' 𝓕 ≤ μ 𝓕 := by
   intro D Tu Cl t0 _ i P μ 𝓕 hμ

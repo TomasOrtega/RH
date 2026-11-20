@@ -26,13 +26,13 @@ private def sr (l : W →ₗ[ℂ] ℂ) : W ⊗[ℂ] Z →ₗ[ℂ] Z :=
   (TensorProduct.lid ℂ Z).toLinearMap ∘ₗ LinearMap.rTensor Z l
 
 /- English proof (translation)
-Simplify using `[sl]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sl_tmul (l : Z →ₗ[ℂ] ℂ) (w : W) (z : Z) : sl l (w ⊗ₜ[ℂ] z) = l z • w := by
   simp [sl]
 
 /- English proof (translation)
-Simplify using `[sr]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sr_tmul (l : W →ₗ[ℂ] ℂ) (w : W) (z : Z) : sr l (w ⊗ₜ[ℂ] z) = l w • z := by
   simp [sr]

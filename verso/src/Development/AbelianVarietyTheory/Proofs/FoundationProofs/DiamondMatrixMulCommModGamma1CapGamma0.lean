@@ -7,9 +7,9 @@ open Matrix GlobalTheory.KZ GlobalTheory.KZ.StabHecke
 namespace GlobalTheory.KZ
 
 /- English proof (translation)
-Take `⟨⟨h0, h1⟩, -⟩` from `h`. Take `⟨⟨h0', h1'⟩, -⟩` from `h'`. Use `⟨σ' * σ * (σ * σ')⁻¹, ⟨?_, ?_⟩, by group⟩` and prove the remaining obligations. Use `set a : CongruenceSubgroup.Gamma0 N := ⟨σ, h0⟩ with ha set b : CongruenceSubgroup.Gamma0 N := ⟨σ', h0'⟩ with hb`. Establish `hu : (CongruenceSubgroup.Gamma0Map N).toHomUnits (b * a * (a * b)⁻¹) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv, map_mul, map_mul, mul_comm ((CongruenceSubgroup.Gamma0Map N).toHomUnits b), mul_inv_cancel]`. Establish `h3 : b * a * (a * b)⁻¹ ∈ CongruenceSubgroup.Gamma1' N`. Rewrite using `[CongruenceSubgroup.Gamma1_mem', ← MonoidHom.coe_toHomUnits, hu, Units.val_one]`. Conclude with `(CongruenceSubgroup.Gamma1_mem N _).2 ((CongruenceSubgroup.Gamma1_to_Gamma0_mem _).1 h3)`. Conclude with `Subgroup.mul_mem _ (Subgroup.mul_mem _ h1' h1) (Subgroup.inv_mem _ (Subgroup.mul_mem _ h1 h1'))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isDiam_mul_comm_mod_Gam (N l d d' : ℕ) (σ σ' : SL(2, ℤ)) (h : IsDiam N l d σ) (h' : IsDiam N l d' σ') :
     ∃ g : SL(2, ℤ), g ∈ Gam N l ∧ σ' * σ = g * (σ * σ') := by

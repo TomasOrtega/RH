@@ -13,13 +13,13 @@ open scoped TensorProduct
 namespace GlobalTheory.FormTies
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `w _ e`. Rewrite `e` using `[zero_smul, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `rfl` from `deg_inj e`. Rewrite using `[pow_zero, one_mul]`. Consider the case `succ t ih`. Introduce `w hr e`. Establish `hn : w.n + (t + 1) * wL.n = ka.n` using `congrArg (fun x : Deg D j => x.2.2) e`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[pow_succ, mul_assoc]`. Use `le_trans (mul_le_mul' le_rfl (step w hr fun h0 => ?_)) (ih (WeightAlgebra.wadd w wL) (hr.trans (Nat.le_add_right _ _)) ?_)` and prove the remaining obligations. Establish `h1 : (t + 1) * wL.n = 0` using `by omega`. Conclude with `(Nat.mul_eq_zero.1 h1).resolve_left (Nat.succ_ne_zero t)`. Rewrite using `[deg_wadd, ← e, succ_nsmul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem pow_mul_short_le {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P j)
     (ka wL : WeightFamilies.Wt D j) (hka : ka.n = D.R.nV)
@@ -45,7 +45,7 @@ theorem pow_mul_short_le {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegra
       abel
 
 /- English proof (translation)
-Rewrite using `[mul_comm, Submodule.mul_le]`. Introduce and unpack `_ ⟨G, hG, rfl⟩ _ ⟨F, hF, rfl⟩`. Conclude with `h G hG F hF`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem emb_mul_le {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P j)
     {w w' w'' : WeightFamilies.Wt D j} {N : Submodule (𝓞 B.KO) (B.Cusp j w)} {N' : Submodule (𝓞 B.KO) (B.Cusp j w')}
@@ -57,7 +57,7 @@ theorem emb_mul_le {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralChart
   exact h G hG F hF
 
 /- English proof (translation)
-Establish `hle : Submodule.span O s * Submodule.span O t ≤ N`. Rewrite using `[Submodule.span_mul_span, Submodule.span_le]`. Introduce and unpack `_ ⟨g, hg, f, hf, rfl⟩`. Conclude with `h g hg f hf`. Conclude with `hle (Submodule.mul_mem_mul hx hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mul_mem_span_of_gen {O R : Type} [CommRing O] [CommRing R] [Algebra O R] {s t : Set R} {N : Submodule O R}
     (h : ∀ g ∈ s, ∀ f ∈ t, g * f ∈ N) {x y : R} (hx : x ∈ Submodule.span O s) (hy : y ∈ Submodule.span O t) :
@@ -69,15 +69,15 @@ theorem mul_mem_span_of_gen {O R : Type} [CommRing O] [CommRing R] [Algebra O R]
   exact hle (Submodule.mul_mem_mul hx hy)
 
 /- English proof (translation)
-Introduce `hC D T h j hj hsh hone hA ka wL wF Tn hF hn hD hr hka`. Establish `step : ∀ w : WeightFamilies.Wt D j, D.R.r ≤ w.n → (w.n = D.R.nV → wL.n = 0) → (recPJ h j hj).emb wL ((recPJ h j hj).thAll wL) * (recPJ h j hj).emb w ((recPJ h j hj).shortTh w) ≤ (recPJ h j hj).emb (WeightAlgebra.wadd w wL) ((recPJ h j hj).shortTh (WeightAlgebra.wadd w wL))`. Introduce `w hw h0`. Use `emb_mul_le (recPJ h j hj) fun G hG F hF' => ?_` and prove the remaining obligations. Establish `hc : (G.1 : T.R j) * F.1 ∈ cutR T.C j (WeightAlgebra.wadd w wL)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[cutR_eq T.C hj]`. Conclude with `h.toLawsCore.mul j hj w wL _ (cutR_le T.C j w G.2) _ (cutR_le T.C j wL F.2)`. Use `⟨⟨_, hc⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mul_mem_span_of_gen (one hC D T h j hj hsh hone hA w wL hw h0) hG hF'`. Conclude with `(incG_mul deg (cutR T.C j) (deg_wadd w wL) G F _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key` using `pow_mul_short_le (recPJ h j hj) ka wL hka step`. Establish `hdeg : deg wF + Tn • deg wL = deg ka`. Take `⟨_, hP, hM⟩` from `hF`. Use `Prod.ext (funext fun τ => funext fun i => ?_) (Prod.ext (funext fun τ => funext fun i => ?_) hn.symm)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `wF.aP τ i + Tn * wL.aP τ i = ka.aP τ i`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Express the relevant assertion in an equivalent form by its definition.
 
-Use `hP τ i` as an intermediate fact. Use `zify`. Combine the linear equalities and inequalities to obtain the conclusion. Express the relevant statement in the definitionally equal form `wF.aM τ i + Tn * wL.aM τ i = ka.aM τ i`. Use `hM τ i` as an intermediate fact.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `zify`. Combine the linear equalities and inequalities to obtain the conclusion. Use `sup_le (sup_le (key Tn wF hr hdeg) (key _ _ (hr.trans (Nat.le_add_right _ _)) ?_)) le_rfl` and prove the remaining obligations. Establish `e : deg ((recPJ h j hj).wF0 wL wF) = deg wF + WeightFamilies.dimY D j • deg wL` using `rfl`. Rewrite using `[e, add_assoc, ← add_nsmul, Nat.add_sub_of_le hD, hdeg]`.
+A detailed English derivation is pending.
 -/
 theorem productsShort_of_oneFactor (one : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (_h : LawsP T) (j : ℕ) (_hj : InR D j), LawsSh T → OneCover T j → (T.dδ j 0).l₂.A = 1 → ∀ (w wL : WeightFamilies.Wt D j), D.R.r ≤ w.n → (w.n = D.R.nV → wL.n = 0) → ∀ g ∈ T.sh j w, ∀ f ∈ T.th j wL, g * f ∈ Submodule.span (𝓞 T.Q.c.F) (T.sh j (WeightAlgebra.wadd w wL))) : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j), LawsSh T → OneCover T j → (T.dδ j 0).l₂.A = 1 → ∀ (ka wL wF : WeightFamilies.Wt D j) (Tn : ℕ), WeightAlgebra.IsF' ka wL wF Tn wF.n → ka.n = wF.n + Tn * wL.n → WeightFamilies.dimY D j ≤ Tn → D.R.r ≤ wF.n → ka.n = D.R.nV → ProductsShort (recPJ h j hj) ka wL wF Tn := by
   intro hC D T h j hj hsh hone hA ka wL wF Tn hF hn hD hr hka

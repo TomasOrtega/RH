@@ -7,9 +7,9 @@ open scoped TensorProduct
 
 open scoped PowerSeries.WithPiTopology in
 /- English proof (translation)
-Introduce `R K _ _ x`. Use `letI : UniformSpace R := ⊥`. Use `letI : UniformSpace K := ⊥`. Use `haveI : DiscreteUniformity R := ⟨rfl⟩`. Use `haveI : DiscreteUniformity K := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨PowerSeries.eval₂Hom (φ := x) (a := PowerSeries.X) continuous_of_discreteTopology PowerSeries.HasEval.X, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[PowerSeries.coe_eval₂Hom, PowerSeries.eval₂_C]`. Rewrite using `[PowerSeries.coe_eval₂Hom, PowerSeries.eval₂_X]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.BC.ps_ev :
     ∀ (R K : Type) [CommRing R] [CommRing K] (x : R →+* PowerSeries K), ∃ f : PowerSeries R →+* PowerSeries K, (∀ a, f (PowerSeries.C a) = x a) ∧ f PowerSeries.X = PowerSeries.X := by

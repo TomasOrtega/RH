@@ -64,7 +64,7 @@ def divFun : AddSubgroup (I → G → A) where
 
 omit [IsTopologicalGroup G] in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_divFun {f : I → G → A} : f ∈ divFun φ A ↔ {i | f i ≠ 0}.Finite ∧
     ∀ i, IsLocallyConstant (f i) ∧ ∀ (h : H i) (x : G), f i (φ i h * x) = f i x :=
@@ -103,11 +103,11 @@ theorem coe_divFunAction_apply (g : G) (f : divFun φ A) (i : I) (x : G) :
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-Establish `hN : ∀ x : G, {w | f (x * w) = f x} ∈ nhds (1 : G)` using `fun x => ((hf.isOpen_fiber (f x)).preimage (continuous_const_mul x)).mem_nhds (by simp)`. Use `choose W hWo hW1 hWW using fun x => exists_open_nhds_one_split (hN x)`. Take `⟨t, ht⟩` from `isCompact_univ.elim_finite_subcover (fun x => (fun y => x⁻¹ * y) ⁻¹' W x) (fun x => (hWo x).preimage (continuous_const_mul x⁻¹)) (fun y _ => Set.mem_iUnion.2 ⟨y, by simpa using hW1 y⟩)`. Use `⟨⋂ x ∈ t, W x, (Filter.biInter_finset_mem t).2 fun x _ => (hWo x).mem_nhds (hW1 x), ?_⟩` and prove the remaining obligations. Introduce `y v hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxt, hyx⟩` from `Set.mem_iUnion₂.1 (ht (Set.mem_univ y))`. Establish `hv' : v ∈ W x` using `Set.mem_iInter₂.1 hv x hxt`. Establish `h1 : f (x * (x⁻¹ * y * v)) = f x` using `hWW x _ hyx _ hv'`. Establish `h2 : f (x * (x⁻¹ * y * 1)) = f x` using `hWW x _ hyx _ (hW1 x)`. Rewrite `h2` using `[mul_one, mul_inv_cancel_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[mul_assoc x⁻¹, mul_inv_cancel_left]`. Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_nhds_one_forall_mul_eq {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [CompactSpace G] {X : Type*} {f : G → X} (hf : IsLocallyConstant f) :
@@ -186,7 +186,7 @@ theorem coe_divFunMap_hom_apply {B : Type} [AddCommGroup B] (g : A →+ B) (f : 
 abbrev ratToQZ : ℚ →+ QZ := QuotientAddGroup.mk' (AddSubgroup.zmultiples (1 : ℚ))
 
 /- English proof (translation)
-Establish `: ratToQZ q = 0 ↔ q ∈ AddSubgroup.zmultiples (1 : ℚ)` using `QuotientAddGroup.eq_zero_iff q`. Rewrite using `[this, AddSubgroup.mem_zmultiples_iff]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ratToQZ_eq_zero_iff (q : ℚ) : ratToQZ q = 0 ↔ ∃ n : ℤ, (n : ℚ) = q := by
   have : ratToQZ q = 0 ↔ q ∈ AddSubgroup.zmultiples (1 : ℚ) := QuotientAddGroup.eq_zero_iff q
@@ -194,7 +194,7 @@ theorem ratToQZ_eq_zero_iff (q : ℚ) : ratToQZ q = 0 ↔ ∃ n : ℤ, (n : ℚ)
   simp
 
 /- English proof (translation)
-The claim follows from `QuotientAddGroup.mk'_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem ratToQZ_surjective : Function.Surjective ratToQZ := QuotientAddGroup.mk'_surjective _
 
@@ -218,25 +218,21 @@ instance isDiscreteRep_divFunSequence_X₃ [CompactSpace G] : IsDiscreteRep (div
   inferInstanceAs (IsDiscreteRep (divFunRep φ QZ))
 
 /- English proof (translation)
-Apply `shortComplex_exact_of_forall_exists` to reduce the goal to its premises. Introduce `f₀ hf`. Set `f : divFun φ ℚ` to `f₀`. Establish `hint : ∀ i x, ((⌊(f : I → G → ℚ) i x⌋ : ℤ) : ℚ) = (f : I → G → ℚ) i x` using `fun i x => by`. Use `congrArg (fun f : divFun φ QZ => (f : I → G → QZ) i x) (show (divFunMap φ ℚ ratToQZ).hom f = 0 from hf)` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨n, hn⟩` from `(ratToQZ_eq_zero_iff _).1 this`. Rewrite using `[← hn, Int.floor_intCast]`. Use `⟨⟨fun i x => ⌊(f : I → G → ℚ) i x⌋, ?_, fun i => ⟨(f.2.2 i).1.comp Int.floor, fun h x => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Use `f.2.1.subset fun i hi => ?_` and prove the remaining obligations. Introduce `hc`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hi` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show ⌊(f : I → G → ℚ) i x⌋ = 0`. Rewrite using `[hc]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show ⌊(f : I → G → ℚ) i (φ i h * x)⌋ = ⌊(f : I → G → ℚ) i x⌋`. Rewrite using `[(f.2.2 i).2]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i x`. Conclude with `hint i x`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `mono_f := (Rep.mono_iff_injective _).2 fun f₁ f₂ h => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i x`. Use `congrArg (fun f : divFun φ ℚ => (f : I → G → ℚ) i x) h` as an intermediate fact. Conclude with `Int.cast_injective this`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `epi_g := (Rep.epi_iff_surjective _).2 fun f₀ => by classical`. Set `f : divFun φ QZ` to `f₀`. Set `sec : QZ → ℚ` to `fun q => if q = 0 then 0 else Function.surjInv ratToQZ_surjective q`. Establish `hsec : ∀ q, ratToQZ (sec q) = q` using `fun q => by`. Distinguish the cases in `hq : q = 0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[sec, hq]`. Simplify using `only [sec, hq, if_false]`. Conclude with `Function.surjInv_eq ratToQZ_surjective q`. Use `⟨⟨fun i x => sec ((f : I → G → QZ) i x), ?_, fun i => ⟨(f.2.2 i).1.comp sec, fun h x => ?_⟩⟩, ?_⟩` and prove the remaining obligations. Use `f.2.1.subset fun i hi => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `hc`. Apply `hi` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show sec ((f : I → G → QZ) i x) = 0`. Rewrite using `[hc]`.
-
-Simplify using `[sec]`. Use `show sec ((f : I → G → QZ) i (φ i h * x)) = sec ((f : I → G → QZ) i x)`. Rewrite using `[(f.2.2 i).2]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i x`.
-
-Conclude with `hsec _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem divFunSequence_shortExact : (divFunSequence φ).ShortExact where
   exact := by
@@ -297,13 +293,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Compa
   [TotallyDisconnectedSpace G]
 
 /- English proof (translation)
-Use `@ModuleCat.isZero_of_subsingleton _ _ _ ⟨fun x y => ?_⟩` and prove the remaining obligations. It suffices to establish `h : ∀ x : cohomology M n, x = 0 by rw [h x, h y]`. Introduce `x`. Take `⟨m, hm, hx⟩` from `isOfFinAddOrder_iff_nsmul_eq_zero.1 (isTorsion_cohomology M hn x)`. Establish `hiso : IsIso (m • 𝟙 M)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `: Module (ULift.{0} ℤ) M.V` to `M.hV2`. Establish `hb : Function.Bijective (m • 𝟙 M).hom`. Establish `: ⇑(m • 𝟙 M).hom = fun a : M.V => m • a` using `funext fun a => nsmul_id_hom_apply M m a`. Rewrite using `[this]`. Conclude with `hM m hm.ne'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : (Rep.mkIso ((m • 𝟙 M).hom.ofBijective hb)).hom = m • 𝟙 M` using `Rep.hom_ext rfl`. Rewrite using `[← he]`. Use `infer_instance`. Establish `hinj : Function.Injective (cohomologyMap (m • 𝟙 M) n).hom`. Establish `hH : IsIso (cohomologyMap (m • 𝟙 M) n)` using `⟨cohomologyMap (inv (m • 𝟙 M)) n, by rw [← cohomologyMap_comp, IsIso.hom_inv_id, cohomologyMap_id], by rw [← cohomologyMap_comp, IsIso.inv_hom_id, cohomologyMap_id]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ModuleCat.mono_iff_injective _).1 inferInstance`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero, cohomologyMap_nsmul_id_apply]`. Conclude with `hx`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_of_bijective_nsmul_ulift (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M]
     (hM : ∀ n : ℕ, n ≠ 0 → Function.Bijective (fun m : M.V => n • m)) {n : ℕ} (hn : 1 ≤ n) :
@@ -333,13 +329,11 @@ theorem isZero_cohomology_of_bijective_nsmul_ulift (M : Rep.{0} (ULift.{0} ℤ) 
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `cohomologyπ_surjective M n x`. Use `set c := cochainOf M (cocycleι M n z) with hc`. Establish `hlc : IsLocallyConstant c` using `(cocycleι M n z : locallyConstantCochains M n).2`. Establish `hfin : (Set.range c).Finite` using `hlc.range_finite`. Use `choose N hNc hNm using hM`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨∏ m ∈ hfin.toFinset, N m, Nat.Coprime.prod_left fun m _ => hNc m, ?_⟩` and prove the remaining obligations. Establish `hz : (∏ m ∈ hfin.toFinset, N m) • z = 0`. Apply `cocycleι_injective` to reduce the goal to its premises. Apply `cochainOf_injective` to reduce the goal to its premises. Rewrite using `[map_nsmul, map_zero, cochainOf_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Establish `hmem : c g ∈ hfin.toFinset` using `hfin.mem_toFinset.2 ⟨g, rfl⟩`. Express the relevant statement in the definitionally equal form `(∏ m ∈ hfin.toFinset, N m) • c g = 0`. Take `⟨d, hd⟩` from `Finset.dvd_prod_of_mem N hmem`. Rewrite using `[hd, mul_comm, ← smul_smul, hNm, smul_zero]`.
-
-Rewrite using `[← map_nsmul, hz, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coprime_smul_cohomology_eq_zero (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M]
     (ℓ : ℕ) (hM : ∀ m : M.V, ∃ N : ℕ, N.Coprime ℓ ∧ N • m = 0) (n : ℕ) (x : cohomology M n) :
@@ -365,7 +359,7 @@ theorem exists_coprime_smul_cohomology_eq_zero (M : Rep.{0} (ULift.{0} ℤ) G) [
 omit [TotallyDisconnectedSpace G] in
 
 /- English proof (translation)
-Take `⟨N, hN, hNx⟩` from `exists_coprime_smul_cohomology_eq_zero M ℓ hM n x`. Establish `h1 : addOrderOf x ∣ N` using `addOrderOf_dvd_of_nsmul_eq_zero hNx`. Establish `h2 : addOrderOf x ∣ ℓ ^ k` using `addOrderOf_dvd_of_nsmul_eq_zero hx`. Establish `h3 : addOrderOf x = 1` using `Nat.Coprime.eq_one_of_dvd (Nat.Coprime.coprime_dvd_left h1 (hN.pow_right k)) h2`. Conclude with `AddMonoid.addOrderOf_eq_one_iff.1 h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_pow_smul_eq_zero_of_coprime (M : Rep.{0} (ULift.{0} ℤ) G) [IsDiscreteRep M] (ℓ : ℕ)
     (hM : ∀ m : M.V, ∃ N : ℕ, N.Coprime ℓ ∧ N • m = 0) (n : ℕ) (x : cohomology M n) (k : ℕ)
@@ -385,15 +379,13 @@ omit [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] [∀ i
   [∀ i, IsTopologicalGroup (H i)] [∀ i, CompactSpace (H i)] [∀ i, TotallyDisconnectedSpace (H i)] in
 
 /- English proof (translation)
-Establish `hn' : (n : ℚ) ≠ 0` using `by exact_mod_cast hn`. Prove the components needed by the constructor for the conclusion. Introduce `f g h`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i x`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congrArg (fun f : divFun φ ℚ => (f : I → G → ℚ) i x) h` as an intermediate fact. Simplify using `only [AddSubgroup.coe_nsmul, Pi.smul_apply, nsmul_eq_mul] at this`. Conclude with `mul_left_cancel₀ hn' this`. Introduce `f`. Use `⟨⟨fun i x => (f : I → G → ℚ) i x / n, f.2.1.subset fun i hi => ?_, fun i => ⟨(f.2.2 i).1.comp (· / (n : ℚ)), fun h x => ?_⟩⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hc`. Apply `hi` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show (f : I → G → ℚ) i x / n = 0`. Rewrite using `[hc]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `show (f : I → G → ℚ) i (φ i h * x) / n = (f : I → G → ℚ) i x / n`. Rewrite using `[(f.2.2 i).2]`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i x`.
-
-Simplify using `only [AddSubgroup.coe_nsmul, Pi.smul_apply, nsmul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem bijective_nsmul_divFun_rat {n : ℕ} (hn : n ≠ 0) :
     Function.Bijective (fun f : divFun φ ℚ => n • f) := by
@@ -425,19 +417,17 @@ omit [∀ i, TopologicalSpace (H i)] [∀ i, IsTopologicalGroup (H i)] [∀ i, C
   [∀ i, TotallyDisconnectedSpace (H i)] in
 
 /- English proof (translation)
-Establish `hS` using `divFunSequence_shortExact φ`. Establish `h1 : Subsingleton (cohomology (divFunSequence φ).X₂ 1)` using `ModuleCat.subsingleton_of_isZero (isZero_cohomology_of_bijective_nsmul_ulift (divFunSequence φ).X₂ (fun n hn => bijective_nsmul_divFun_rat φ hn) le_rfl)`. Use `@ModuleCat.isZero_of_subsingleton _ _ _ ⟨fun x y => ?_⟩` and prove the remaining obligations. It suffices to establish `h : ∀ x : cohomology (divFunSequence φ).X₁ 1, x = 0 from (h x).trans (h y).symm`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, rfl⟩` from `exists_δ_H0Iso_inv_eq hS h1 x`. Rewrite using `[δ_H0Iso_inv_eq_zero_iff]`. Set `a : divFun φ QZ` to `v.1`. Establish `hconst : ∀ i x, (a : I → G → QZ) i x = (a : I → G → QZ) i 1` using `fun i x => by`. Use `congrArg (fun f : divFun φ QZ => (f : I → G → QZ) i 1) (v.2 x)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(a : I → G → QZ) i (1 * x) = (a : I → G → QZ) i 1 at this`. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Set `sec : QZ → ℚ` to `fun q => if q = 0 then 0 else Function.surjInv ratToQZ_surjective q`. Establish `hsec : ∀ q, ratToQZ (sec q) = q` using `fun q => by`. Distinguish the cases in `hq : q = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `[sec, hq]`. Simplify using `only [sec, hq, if_false]`. Conclude with `Function.surjInv_eq ratToQZ_surjective q`. Set `b : divFun φ ℚ` to `⟨fun i _ => sec ((a : I → G → QZ) i 1), a.2.1.subset fun i hi => ?_, fun i => ⟨IsLocallyConstant.const _, fun _ _ => rfl⟩⟩`. Use `⟨⟨b, fun g => rfl⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i x`. Use `show ratToQZ (sec ((a : I → G → QZ) i 1)) = (a : I → G → QZ) i x`. Rewrite using `[hsec]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(hconst i x).symm`. Introduce `hc`. Apply `hi` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show sec ((a : I → G → QZ) i 1) = 0`.
-
-Rewrite using `[hc]`. Simplify using `[sec]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isZero_cohomology_one_divFunRep_int : IsZero (cohomology (divFunRep φ ℤ) 1) := by
   have hS := divFunSequence_shortExact φ
@@ -480,9 +470,9 @@ theorem isZero_cohomology_one_divFunRep_int : IsZero (cohomology (divFunRep φ �
 
 omit [CompactSpace G] [TotallyDisconnectedSpace G] in
 /- English proof (translation)
-Establish `hn' : (n : ℚ) ≠ 0` using `by exact_mod_cast hn`. Use `⟨fun a b hab => ?_, fun a => ⟨a / n, ?_⟩⟩` and prove the remaining obligations. Simplify using `only [nsmul_eq_mul] at hab`. Conclude with `mul_left_cancel₀ hn' hab`. Simplify using `only [nsmul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem bijective_nsmul_rat {n : ℕ} (hn : n ≠ 0) : Function.Bijective (fun q : ℚ => n • q) := by
   have hn' : (n : ℚ) ≠ 0 := by exact_mod_cast hn
@@ -511,9 +501,7 @@ def trivSequence : ShortComplex (Rep.{0} (ULift.{0} ℤ) Γ) :=
     exact (ratToQZ_eq_zero_iff _).2 ⟨(n : ℤ), rfl⟩)
 
 /- English proof (translation)
-Apply `shortComplex_exact_of_forall_exists` to reduce the goal to its premises. Introduce `q hq`. Take `⟨n, hn⟩` from `(ratToQZ_eq_zero_iff _).1 hq`. Conclude with `⟨n, hn⟩`. Use `mono_f := (Rep.mono_iff_injective _).2 fun a b h => Int.cast_injective (α := ℚ) h`.
-
-Use `epi_g := (Rep.epi_iff_surjective _).2 ratToQZ_surjective`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem trivSequence_shortExact : (trivSequence Γ).ShortExact where
   exact := by
@@ -556,31 +544,27 @@ def divFunEvalSequence (i : I) :
     rfl
 
 /- English proof (translation)
-Establish `hS` using `divFunSequence_shortExact φ`. Establish `h2 : IsZero (cohomology (divFunSequence φ).X₂ 2)` using `isZero_cohomology_of_bijective_nsmul_ulift (divFunSequence φ).X₂ (fun n hn => bijective_nsmul_divFun_rat φ hn) (by norm_num)`. Take `⟨y, rfl⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₁ hS 1 2 rfl) x ((ModuleCat.subsingleton_of_isZero h2).elim _ _)`. It suffices to establish `hy : y = 0 by`. Express the relevant statement in the definitionally equal form `(δ hS 1 2 rfl).hom y = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hy, map_zero]`. Take `⟨z, rfl⟩` from `cohomologyπ_surjective _ 1 y`. Use `set c : (Fin 1 → G) → divFun φ QZ := cocycleFun (divFunSequence φ).X₃ z with hc`. Establish `hloc : ∀ (i : I) (h : H i), ((c fun _ => φ i h : divFun φ QZ) : I → G → QZ) i 1 = 0`. Introduce `i h`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hT` using `trivSequence_shortExact (H i)`. Establish `e` using `congrArg (fun ψ => ψ.hom ((cohomologyπ _ 1) z)) (δ_comp_cohomologyMapAlong (φ i) (hφ i) (divFunEvalSequence φ i) hS hT 1 2 rfl)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.coe_comp, Function.comp_apply] at e`. Establish `hzero` using `e.symm.trans (hx i)`. Take `⟨w, hw⟩` from `(ShortComplex.moduleCat_exact_iff _).1 (cohomology_exact₃ hT 1 2 rfl) _ hzero`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hw0 : w = 0` using `(ModuleCat.subsingleton_of_isZero (isZero_cohomology_of_bijective_nsmul_ulift (trivSequence (H i)).X₂ (fun n hn => bijective_nsmul_rat hn) le_rfl)).elim _ _`. Rewrite `hw` using `[hw0, map_zero]`. Establish `hyi : (cohomologyπ _ 1).hom (cocyclesMapAlong (φ i) (hφ i) (divFunEvalSequence φ i).τ₃ 1 z) = 0`. Rewrite using `[show (cohomologyπ _ 1).hom (cocyclesMapAlong (φ i) (hφ i) (divFunEvalSequence φ i).τ₃ 1 z) = (cohomologyMapAlong (φ i) (hφ i) (divFunEvalSequence φ i).τ₃ 1).hom ((cohomologyπ _ 1).hom z) from (cohomologyMapAlong_cohomologyπ (φ i) (hφ i) (divFunEvalSequence φ i).τ₃ z).symm]`. Conclude with `hw.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hev` using `congrArg (H1Eval (trivSequence (H i)).X₃ h).hom hyi`. Rewrite `hev` using `[map_zero, H1Eval_cohomology_class_apply, Submodule.Quotient.mk_eq_zero]`. Take `⟨a, ha⟩` from `hev`. Establish `h0 : ((trivSequence (H i)).X₃.ρ h - 1) a = 0`. Rewrite using `[LinearMap.sub_apply, Module.End.one_apply, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `ha` using `[h0]`. Establish `key : cocycleFun (trivSequence (H i)).X₃ (cocyclesMapAlong (φ i) (hφ i) (divFunEvalSequence φ i).τ₃ 1 z) = fun g => (divFunEval φ QZ i).hom (c (⇑(φ i) ∘ g))` using `cochainOf_cocycleι_cocyclesMapAlong (φ i) (hφ i) (divFunEvalSequence φ i).τ₃ z`. Use `congrFun key fun _ => h` as an intermediate fact. Rewrite `this` using `[← ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `hd` using `d_cocycleFun (divFunSequence φ).X₃ z`. Establish `hmul : ∀ g h : G, c (fun _ => g * h) = divFunAction φ QZ g (c fun _ => h) + c fun _ => g` using `fun g h => cocycle_mul_of_d_eq_zero hd g h`. Establish `hlcc : IsLocallyConstant c` using `isLocallyConstant_cocycleFun _ z`. Establish `hfin : (Set.range c).Finite` using `hlcc.range_finite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hlcx : IsLocallyConstant fun x : G => c fun _ => x` using `hlcc.comp_continuous (continuous_pi fun _ => continuous_id)`. Set `b : divFun φ QZ` to `⟨fun i x => ((c fun _ => x : divFun φ QZ) : I → G → QZ) i 1, by`. Use `⟨(hfin.biUnion fun f _ => f.2.1).subset fun i hi => ?_, fun i => ⟨hlcx.comp fun f : divFun φ QZ => (f : I → G → QZ) i 1, fun h x => ?_⟩⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `Function.ne_iff.1 hi`. Use `Set.mem_iUnion₂.2 ⟨c fun _ => x, ⟨_, rfl⟩, fun hc => hx ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show ((c fun _ => x : divFun φ QZ) : I → G → QZ) i 1 = 0`. Rewrite using `[hc]`. Both sides reduce to the same expression. Use `show ((c fun _ => φ i h * x : divFun φ QZ) : I → G → QZ) i 1 = ((c fun _ => x : divFun φ QZ) : I → G → QZ) i 1`. Rewrite using `[hmul]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show ((c fun _ => x : divFun φ QZ) : I → G → QZ) i (1 * φ i h) + ((c fun _ => φ i h : divFun φ QZ) : I → G → QZ) i 1 = _`. Rewrite using `[hloc, add_zero, one_mul, ← mul_one (φ i h), ((c fun _ => x).2.2 i).2]⟩`. Set `b0 : (cochainsComplex (divFunSequence φ).X₃).X 0` to `(⟨fun _ => b, IsLocallyConstant.const _⟩ : locallyConstantCochains (divFunSequence φ).X₃ 0)`. Establish `hz : z = ((cochainsComplex _).toCycles 0 1).hom b0`. Apply `cocycleFun_injective` to reduce the goal to its premises.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[cocycleFun_toCycles]`. Use function extensionality and compare the values at `g`. Rewrite using `[inhomogeneousD_zero_apply]`. Establish `hg : g = fun _ => g 0` using `funext fun j => by rw [Subsingleton.elim j 0]`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Use function extensionality and compare the values at `i x`. Express the relevant statement in the definitionally equal form `((c g : divFun φ QZ) : I → G → QZ) i x = b.1 i (x * g 0) - b.1 i x`. Use `show _ = ((c fun _ => x * g 0 : divFun φ QZ) : I → G → QZ) i 1 - ((c fun _ => x : divFun φ QZ) : I → G → QZ) i 1`. Rewrite using `[hmul]`. Use `show _ = ((c fun _ => g 0 : divFun φ QZ) : I → G → QZ) i (1 * x) + ((c fun _ => x : divFun φ QZ) : I → G → QZ) i 1 - ((c fun _ => x : divFun φ QZ) : I → G → QZ) i 1`.
-
-Rewrite using `[add_sub_cancel_right, one_mul, ← hg]`. Rewrite using `[hz]`. Conclude with `cohomologyπ_toCycles _ 0 1 b0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_divFunEval_eq_zero (x : cohomology (divFunRep φ ℤ) 2)
     (hx : ∀ i, (cohomologyMapAlong (φ i) (hφ i) (divFunEval φ ℤ i) 2).hom x = 0) : x = 0 := by

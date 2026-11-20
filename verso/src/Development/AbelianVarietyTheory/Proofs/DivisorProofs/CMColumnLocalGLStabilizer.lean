@@ -12,39 +12,35 @@ noncomputable section
 namespace GlobalTheory.LeviBlockFrame
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J hJ r X hrn v t hcm B hB i g hg y hy`. Use `set h : GL (Fin n) (Fv F v) := B * g * B⁻¹ with hh`. Use `set x := (splitEquiv hcm hJ t).symm h with hx`. Establish `h1 : splitHom σ J t x = h` using `(splitEquiv hcm hJ t).apply_symm_apply h`. Establish `h2 : splitHom σ J (t.comp σ) x = dualConj (splitGram hJ t) h` using `by rw [splitHom_comp hJ, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set u := splitVec t y with hu`. Use `set u' := splitVec (t.comp σ) y with hu'`. Establish `hrow : ∀ (k : Fin n) (w : Fin n → Fv F v), (i : ℕ) < k → ((g.1 - 1) *ᵥ w) k = 0`. Introduce `k w hk`. Simplify using `only [Matrix.mulVec, dotProduct]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Use `hg k j (left_ne_zero_of_mul hne)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `set w := (g.1 - 1) *ᵥ ((B⁻¹).1 *ᵥ u) with hw`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set S := Finset.univ.filter (fun l : Fin r => l ≤ i) with hS`. Establish `key1 : h.1 *ᵥ u - u = ∑ l ∈ S, w (Fin.castLE hrn l) • (fun a => t (X a l))`. Establish `e : h.1 - 1 = B.1 * (g.1 - 1) * (B⁻¹).1`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, Units.mul_inv, hh, Units.val_mul, Units.val_mul]`. Establish `e' : h.1 *ᵥ u - u = B.1 *ᵥ w`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hw, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ← e, Matrix.sub_mulVec, Matrix.one_mulVec]`. Rewrite using `[e']`. Use function extensionality and compare the values at `a`. Simplify using `only [Matrix.mulVec, dotProduct, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Establish `hB' : ∀ l : Fin r, t (X a l) = B.1 a (Fin.castLE hrn l)` using `fun l => (hB l (Fin.castLE hrn l) rfl a).symm`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hB']`. Rewrite using `[show (∑ l ∈ S, w (Fin.castLE hrn l) * B.1 a (Fin.castLE hrn l)) = ∑ k ∈ S.map (Fin.castLEEmb hrn), B.1 a k * w k by`. Rewrite using `[Finset.sum_map]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _]`. Use `symm`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 
-Use `Finset.sum_subset (Finset.subset_univ _) fun k _ hk => ?_` and prove the remaining obligations. Distinguish the cases in `hki : (i : ℕ) < k`. Rewrite using `[hw, hrow k _ hki, mul_zero]`. It suffices to derive a contradiction. Use `hk (Finset.mem_map.2 ⟨⟨k, by omega⟩, Finset.mem_filter.2 ⟨Finset.mem_univ _, ?_⟩, Fin.ext rfl⟩)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(k : ℕ) ≤ i`. Use linear arithmetic over natural numbers and integers. Establish `key2 : (dualConj (splitGram hJ t) h).1 *ᵥ u' = u'` using `by set z := u' ᵥ* (splitGram hJ t).1 ᵥ* B.1 with hz`. Establish `hz0 : ∀ l : Fin n, (l : ℕ) ≤ i → z l = 0`. Introduce `l hli`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `set l' : Fin r := ⟨l, lt_of_le_of_lt hli i.2⟩`. Establish `hq` using `congrArg (splitProj (t.comp σ)) (hy l' (by change (l : ℕ) ≤ i; exact hli))`. Establish `hBl : ∀ a, B.1 a l = t (X a l')` using `hB l' l rfl`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Matrix.map_apply, splitProj_inclR, map_zero, Formalism.UG.cT, Matrix.mul_apply, Matrix.transpose_apply, AlgHom.comp_apply, RingHom.coe_coe, cm_conj_conj hcm, hJ.1] at hq`. Simplify using `only [hz, Matrix.vecMul, dotProduct, splitGram_val, Matrix.map_apply, hBl]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hq]`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by simp only [hu', splitVec]; ring`. Establish `hzg : z ᵥ* g.1 = z`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `: z ᵥ* (g.1 - 1) = 0`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.vecMul, dotProduct, Pi.zero_apply]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Distinguish the cases in `hl : (g.1 - 1) l j = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl, mul_zero]`. Rewrite using `[hz0 l (hg l j hl).1, zero_mul]`. Rewrite `this` using `[Matrix.vecMul_sub, Matrix.vecMul_one, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hzg' : z ᵥ* (g⁻¹).1 = z` using `by conv_lhs => rw [← hzg]`. Rewrite using `[Matrix.vecMul_vecMul, Units.mul_inv, Matrix.vecMul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhi : (h⁻¹).1 = B.1 * (g⁻¹).1 * (B⁻¹).1`. Rewrite using `[hh, _root_.mul_inv_rev, _root_.mul_inv_rev, inv_inv, Units.val_mul, Units.val_mul, Matrix.mul_assoc]`. Establish `e3 : u' ᵥ* (splitGram hJ t).1 ᵥ* (h⁻¹).1 = u' ᵥ* (splitGram hJ t).1`. Rewrite using `[hhi, ← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, ← hz, hzg', hz, Matrix.vecMul_vecMul _ B.1, Units.mul_inv, Matrix.vecMul_one]`. Rewrite using `[dualConj_val, Matrix.mulVec_transpose, ← Matrix.vecMul_vecMul, ← Matrix.vecMul_vecMul, e3, Matrix.vecMul_vecMul, Units.mul_inv, Matrix.vecMul_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `heq : (matHom _ σ J x).1 *ᵥ y - y = ∑ l ∈ S, (w (Fin.castLE hrn l) • splitIdem hcm t) • (fun a => inclR (F` using `F) (Fv F v) (X a l)) := by`. Use `splitVec_ext hcm t ?_ ?_` and prove the remaining obligations. Establish `e1 : splitVec t ((matHom _ σ J x).1 *ᵥ y) = h.1 *ᵥ u` using `by rw [splitVec_matHom_mulVec, h1]`. Establish `: splitVec t ((matHom _ σ J x).1 *ᵥ y - y) = splitVec t ((matHom _ σ J x).1 *ᵥ y) - u`. Use function extensionality and compare the values at `fun a => map_sub _ _ _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, e1, key1]`. Use function extensionality and compare the values at `a`. Simplify using `[splitVec, Finset.sum_apply, map_sum, splitProj_inclR]`. Establish `e2 : splitVec (t.comp σ) ((matHom _ σ J x).1 *ᵥ y) = u'` using `by rw [splitVec_matHom_mulVec, h2, key2]`. Establish `: splitVec (t.comp σ) ((matHom _ σ J x).1 *ᵥ y - y) = splitVec (t.comp σ) ((matHom _ σ J x).1 *ᵥ y) - u'`.
-
-Use function extensionality and compare the values at `fun a => map_sub _ _ _`. Rewrite using `[this, e2, sub_self]`. Use function extensionality and compare the values at `a`. Simplify using `[splitVec, Finset.sum_apply, map_sum]`. Rewrite using `[heq]`.
-
-Conclude with `Submodule.sum_mem _ fun l hl => Submodule.smul_mem _ _ (Submodule.subset_span ⟨l, (Finset.mem_filter.1 hl).2, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulVec_sub_mem_span_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (hJ : IsHermND σ J) (r : ℕ)
     (X : Matrix (Fin n) (Fin r) E), r ≤ n →

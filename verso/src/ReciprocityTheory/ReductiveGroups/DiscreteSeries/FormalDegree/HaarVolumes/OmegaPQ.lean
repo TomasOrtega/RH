@@ -19,7 +19,7 @@ def gToLieMat (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool} (s : GCo ε)
   Matrix.reindex e.symm e.symm (gMat s)
 
 /- English proof (translation)
-The claim follows from `(OmegaPQAux.mem_reindex_iff e he1 he2 (gMat s)).2 (OmegaPQAux.gMat_mem s)`.
+A detailed English derivation is pending.
 -/
 theorem gToLieMat_mem (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false) (s : GCo ε) :
@@ -47,11 +47,11 @@ def gToLieL (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     simp [gToLie, gToLieMat, gMat_smul]
 
 /- English proof (translation)
-Establish `hre : ∀ M : Matrix (Fin n) (Fin n) ℂ, Matrix.reindex e e (Matrix.reindex e.symm e.symm M) = M`. Introduce `M`. Rewrite using `[← Matrix.reindex_symm, Equiv.apply_symm_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `s t h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `congrArg (fun X : Formalism.BasicNotions.lieU P Q => Matrix.reindex e e (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)) h`. Simplify using `only [gToLieL, LinearMap.coe_mk, AddHom.coe_mk, gToLie, gToLieMat, hre] at h2`. Rewrite using `[← coordOf_gMat s, ← coordOf_gMat t, h2]`. Introduce `X set Y := Matrix.reindex e e (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) with hYdef`. Establish `hX : Matrix.reindex e.symm e.symm Y = X`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hYdef, ← Matrix.reindex_symm, Equiv.symm_apply_apply]`. Establish `hY` using `(mem_reindex_iff e he1 he2 Y).1 (by rw [hX]; exact X.2)`. Use `⟨coordOf Y, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Matrix.reindex e.symm e.symm (gMat (coordOf (ε := ε) Y)) = X`. Rewrite using `[gMat_coordOf Y hY, hX]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem gToLieL_bij (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false) :
@@ -77,19 +77,17 @@ theorem gToLieL_bij (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
 end OmegaPQAux
 
 /- English proof (translation)
-Establish `: BorelSpace (Formalism.BasicNotions.lieU P Q)` using `⟨rfl⟩`. Use `set Lin := LinearEquiv.ofBijective _ (OmegaPQAux.gToLieL_bij e he1 he2) with hLin`. Use `set CL := Lin.toContinuousLinearEquiv with hCL`. Establish `hcoe : (CL : GCo ε → Formalism.BasicNotions.lieU P Q) = gToLie e he1 he2` using `rfl`. Establish `hG : Measurable (gToLie e he1 he2)` using `by rw [← hcoe]; exact CL.continuous.measurable`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Establish `hd : (volume : Measure (Fin n → ℝ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `hk : (volume : Measure (KPair ε → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `hp : (volume : Measure (PCoord ε → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `hK : (volume : Measure (KCo ε)).IsAddHaarMeasure` using `Measure.prod.instIsAddHaarMeasure _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGv : (volume : Measure (GCo ε)).IsAddHaarMeasure` using `Measure.prod.instIsAddHaarMeasure _ _`. Establish `h1` using `ContinuousLinearEquiv.isAddHaarMeasure_map CL (volume : Measure (GCo ε))`. Rewrite `h1` using `[hcoe]`. Conclude with `Measure.IsAddHaarMeasure.smul _ (by simp) ENNReal.ofReal_ne_top`. Establish `hSF : SigmaFinite (volume : Measure (GCo ε))` using `Measure.prod.instSigmaFinite set c := ENNReal.ofReal (2 ^ (n * (n - 1) / 2)) with hc set E : Fin n × Fin n ≃ (Fin P ⊕ Fin Q) × (Fin P ⊕ Fin Q) := (e.prodCongr e).symm with hE set R := MeasurableEquiv.piCongrLeft (fun _ : (Fin P ⊕ Fin Q) × (Fin P ⊕ Fin Q) => ℂ) E`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hGl : Measurable (OmegaPQAux.Gl ε)` using `(LinearMap.continuous_of_finiteDimensional (OmegaPQAux.Gl ε)).measurable`. Establish `hPm : Measurable (OmegaPQAux.pairMap ε)`. Rewrite using `[OmegaPQAux.pairMap_eq]`. Conclude with `(OmegaPQAux.mp_Amap ε).measurable.comp (hGl.comp (OmegaPQAux.mp_Fmap ε).measurable)`. Establish `hcomp : (fun ab : Formalism.BasicNotions.lieU P Q × Formalism.BasicNotions.lieU P Q => Formalism.BasicNotions.entries ((ab.1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) + Complex.I • (ab.2 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ))) ∘ Prod.map (gToLie e he1 he2) (gToLie e he1 h …`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `st ij`. Take `⟨i, j⟩` from `ij`. Establish `hij : ((i, j) : (Fin P ⊕ Fin Q) × (Fin P ⊕ Fin Q)) = E (e i, e j)` using `by simp [hE]`. Use `conv_rhs => rw [hij]`. Simplify using `only [Function.comp_apply, R, MeasurableEquiv.coe_piCongrLeft, Equiv.piCongrLeft_apply_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[Formalism.BasicNotions.entries, gToLie, gToLieMat, OmegaPQAux.pairMap, Matrix.reindex_apply]`. Establish `hval : ∀ i j, Measurable (fun X : Formalism.BasicNotions.lieU P Q => (X : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) i j)` using `fun i j => (continuous_subtype_val.matrix_elem i j).measurable`. Establish `hFm : Measurable (fun ab : Formalism.BasicNotions.lieU P Q × Formalism.BasicNotions.lieU P Q => Formalism.BasicNotions.entries ((ab.1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) + Complex.I • (ab.2 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ)))`. Use `measurable_pi_lambda _ fun ij => ?_` and prove the remaining obligations. Establish `h1 : Measurable (fun ab : Formalism.BasicNotions.lieU P Q × Formalism.BasicNotions.lieU P Q => (ab.1 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) ij.1 ij.2)` using `(hval ij.1 ij.2).comp measurable_fst`.
-
-Establish `h2 : Measurable (fun ab : Formalism.BasicNotions.lieU P Q × Formalism.BasicNotions.lieU P Q => (ab.2 : Matrix (Fin P ⊕ Fin Q) (Fin P ⊕ Fin Q) ℂ) ij.1 ij.2)` using `(hval ij.1 ij.2).comp measurable_snd`. Conclude with `h1.add (measurable_const.mul h2)`. Rewrite using `[Measure.prod_smul_left, Measure.prod_smul_right, smul_smul, Measure.map_smul, Measure.map_prod_map _ _ hG hG, Measure.map_map hFm (hG.prodMap hG), hcomp, ← Measure.map_map R.measurable hPm, ← Measure.volume_eq_prod, OmegaPQAux.map_pairMap, Measure.map_smul, (volume_measurePreser …`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem isOmegaLeb_gToLie (e : Fin P ⊕ Fin Q ≃ Fin n) {ε : Fin n → Bool}
     (he1 : ∀ i, ε (e (Sum.inl i)) = true) (he2 : ∀ j, ε (e (Sum.inr j)) = false) :

@@ -17,49 +17,49 @@ section gen
 variable {n : ℕ} (H : Matrix (Fin n) (Fin n) ℂ)
 
 /- English proof (translation)
-The claim follows from `B2x8.herm_add_left H u u' v`.
+A detailed English derivation is pending.
 -/
 lemma h_add_left (u u' v : Fin n → ℂ) : herm H (u + u') v = herm H u v + herm H u' v := B2x8.herm_add_left H u u' v
 /- English proof (translation)
-The claim follows from `B2x8.herm_add_right H u v v'`.
+A detailed English derivation is pending.
 -/
 lemma h_add_right (u v v' : Fin n → ℂ) : herm H u (v + v') = herm H u v + herm H u v' := B2x8.herm_add_right H u v v'
 /- English proof (translation)
-The claim follows from `B2x8.herm_smul_left H c u v`.
+A detailed English derivation is pending.
 -/
 lemma h_smul_left (c : ℂ) (u v : Fin n → ℂ) : herm H (c • u) v = c * herm H u v := B2x8.herm_smul_left H c u v
 /- English proof (translation)
-The claim follows from `B2x8.herm_smul_right H c u v`.
+A detailed English derivation is pending.
 -/
 lemma h_smul_right (c : ℂ) (u v : Fin n → ℂ) : herm H u (c • v) = conj c * herm H u v := B2x8.herm_smul_right H c u v
 /- English proof (translation)
-The claim follows from `B2x8.al_herm_neg_left H u v`.
+A detailed English derivation is pending.
 -/
 lemma h_neg_left (u v : Fin n → ℂ) : herm H (-u) v = -herm H u v := B2x8.al_herm_neg_left H u v
 /- English proof (translation)
-The claim follows from `B2x8.al_herm_neg_right H u v`.
+A detailed English derivation is pending.
 -/
 lemma h_neg_right (u v : Fin n → ℂ) : herm H u (-v) = -herm H u v := B2x8.al_herm_neg_right H u v
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, h_add_left, h_neg_left, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma h_sub_left (u u' v : Fin n → ℂ) : herm H (u - u') v = herm H u v - herm H u' v := by
   rw [sub_eq_add_neg, h_add_left, h_neg_left, sub_eq_add_neg]
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, h_add_right, h_neg_right, sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma h_sub_right (u v v' : Fin n → ℂ) : herm H u (v - v') = herm H u v - herm H u v' := by
   rw [sub_eq_add_neg, h_add_right, h_neg_right, sub_eq_add_neg]
 /- English proof (translation)
-The claim follows from `B2x8.al_herm_zero_left H u`.
+A detailed English derivation is pending.
 -/
 lemma h_zero_left (u : Fin n → ℂ) : herm H 0 u = 0 := B2x8.al_herm_zero_left H u
 /- English proof (translation)
-The claim follows from `B2x8.al_herm_zero_right H u`.
+A detailed English derivation is pending.
 -/
 lemma h_zero_right (u : Fin n → ℂ) : herm H u 0 = 0 := B2x8.al_herm_zero_right H u
 /- English proof (translation)
-The claim follows from `B2x8.herm_conj H hH u v`.
+A detailed English derivation is pending.
 -/
 lemma h_conj (hH : Hᴴ = H) (u v : Fin n → ℂ) : conj (herm H u v) = herm H v u := B2x8.herm_conj H hH u v
 
@@ -67,9 +67,9 @@ def hs (p v : Fin n → ℂ) (σ : ℂ) : Matrix (Fin n) (Fin n) ℂ :=
   1 - Matrix.vecMulVec p (fun j => herm H (bvec j) v) + Matrix.vecMulVec (v + σ • p) (fun j => herm H (bvec j) p)
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [hs, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, Pi.add_apply, Pi.sub_apply, Pi.smul_apply, smul_eq_mul]`. Establish `h1 : ∀ (w φ : Fin n → ℂ), (Matrix.vecMulVec w φ *ᵥ u) i = (∑ j, φ j * u j) * w i`. Introduce `w φ`. Simplify using `only [mulVec, dotProduct, vecMulVec_apply, Finset.sum_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `j _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, h1, B2x6.herm_sum, B2x6.herm_sum]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma hs_act (p v u : Fin n → ℂ) (σ : ℂ) :
     hs H p v σ *ᵥ u = u - herm H u v • p + herm H u p • (v + σ • p) := by
@@ -84,9 +84,9 @@ lemma hs_act (p v u : Fin n → ℂ) (σ : ℂ) :
   simp only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Apply `B2x8.mem_UH_of` to reduce the goal to its premises. Introduce `u w`. Establish `hpv : herm H p v = 0` using `by rw [← h_conj H hH, hvp, map_zero]`. Establish `h1 : herm H p w = conj (herm H w p)` using `(h_conj H hH w p).symm`. Establish `h2 : herm H v w = conj (herm H w v)` using `(h_conj H hH w v).symm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hs_act, hs_act]`. Simplify using `only [h_add_left, h_add_right, h_sub_left, h_sub_right, h_smul_left, h_smul_right, hpp, hvp, hpv, h1, h2]`. Take the linear combination `(herm H u p * conj (herm H w p)) * hσ`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 lemma hs_mem (hH : Hᴴ = H) {p v : Fin n → ℂ} {σ : ℂ} (hpp : herm H p p = 0) (hvp : herm H v p = 0)
     (hσ : σ + conj σ + herm H v v = 0) : hs H p v σ ∈ UH H := by
@@ -100,7 +100,7 @@ lemma hs_mem (hH : Hᴴ = H) {p v : Fin n → ℂ} {σ : ℂ} (hpp : herm H p p 
   linear_combination (herm H u p * conj (herm H w p)) * hσ
 
 /- English proof (translation)
-The claim follows from `B2x6.mat_ext h`.
+A detailed English derivation is pending.
 -/
 lemma mat_ext {A B : Matrix (Fin n) (Fin n) ℂ} (h : ∀ u, A *ᵥ u = B *ᵥ u) : A = B := B2x6.mat_ext h
 
@@ -111,21 +111,21 @@ variable {k r : ℕ}
 local notation "⟪" u ", " v "⟫" => herm (Hpk k r) u v
 
 /- English proof (translation)
-The claim follows from `B2x8.Hpk_herm k r`.
+A detailed English derivation is pending.
 -/
 lemma Hh : (Hpk k r)ᴴ = Hpk k r := B2x8.Hpk_herm k r
 
 /- English proof (translation)
-Simplify using `[herm, bvec, Pi.star_single]`.
+Simplify using the standard rewrite rules.
 -/
 lemma herm_bvec_right (u : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) :
     ⟪u, bvec j⟫ = (Hpk k r *ᵥ u) j := by
   simp [herm, bvec, Pi.star_single]
 
 /- English proof (translation)
-Rewrite using `[herm_bvec_right, B2x6.hpk_mulVec]`. Establish `h1 : WeylGroupFacts.tau k r (eI k r a) = esI k r a`. Apply `Fin.ext; rw [B2x6.tau_out _ (by simp only [eI]; omega)]; simp [eI, esI]` to reduce the goal to its premises. Establish `h2 : WeylGroupFacts.sgn k r (eI k r a) = 1`. Unfold `WeylGroupFacts.sgn; rw [if_neg (by simp only [eI]; omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1, h2, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma herm_e_right (u : Fin (2 * r + k + 1) → ℂ) (a : Fin r) : ⟪u, bvec (eI k r a)⟫ = u (esI k r a) := by
   rw [herm_bvec_right, B2x6.hpk_mulVec]
@@ -136,9 +136,9 @@ lemma herm_e_right (u : Fin (2 * r + k + 1) → ℂ) (a : Fin r) : ⟪u, bvec (e
   rw [h1, h2, one_mul]
 
 /- English proof (translation)
-Rewrite using `[herm_bvec_right, B2x6.hpk_mulVec]`. Establish `h1 : WeylGroupFacts.tau k r (esI k r a) = eI k r a`. Apply `Fin.ext; rw [B2x6.tau_out _ (by simp only [esI]; omega)]; simp only [eI, esI]; omega` to reduce the goal to its premises. Establish `h2 : WeylGroupFacts.sgn k r (esI k r a) = 1`. Unfold `WeylGroupFacts.sgn; rw [if_neg (by simp only [esI]; omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1, h2, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma herm_es_right (u : Fin (2 * r + k + 1) → ℂ) (a : Fin r) : ⟪u, bvec (esI k r a)⟫ = u (eI k r a) := by
   rw [herm_bvec_right, B2x6.hpk_mulVec]
@@ -149,15 +149,15 @@ lemma herm_es_right (u : Fin (2 * r + k + 1) → ℂ) (a : Fin r) : ⟪u, bvec (
   rw [h1, h2, one_mul]
 
 /- English proof (translation)
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [eI, esI] at this`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma eI_ne_esI (a b : Fin r) : eI k r a ≠ esI k r b := by
   intro h; have := congrArg Fin.val h; simp only [eI, esI] at this; omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [eI] at this`. Conclude with `Fin.ext this`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma eI_inj {a b : Fin r} : eI k r a = eI k r b ↔ a = b := by
   constructor
@@ -165,7 +165,7 @@ lemma eI_inj {a b : Fin r} : eI k r a = eI k r b ↔ a = b := by
   · rintro rfl; rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h; have := congrArg Fin.val h; simp only [esI] at this; exact Fin.ext (by omega)`. Introduce and unpack `rfl`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 -/
 lemma esI_inj {a b : Fin r} : esI k r a = esI k r b ↔ a = b := by
   constructor
@@ -173,17 +173,17 @@ lemma esI_inj {a b : Fin r} : esI k r a = esI k r b ↔ a = b := by
   · rintro rfl; rfl
 
 /- English proof (translation)
-Rewrite using `[herm_e_right]`. Conclude with `Pi.single_eq_of_ne (eI_ne_esI a b).symm _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma h_e_e (a b : Fin r) : ⟪bvec (eI k r a), bvec (eI k r b)⟫ = 0 := by
   rw [herm_e_right]; exact Pi.single_eq_of_ne (eI_ne_esI a b).symm _
 /- English proof (translation)
-Rewrite using `[herm_es_right]`. Conclude with `Pi.single_eq_of_ne (eI_ne_esI b a) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma h_es_es (a b : Fin r) : ⟪bvec (esI k r a), bvec (esI k r b)⟫ = 0 := by
   rw [herm_es_right]; exact Pi.single_eq_of_ne (eI_ne_esI b a) _
 /- English proof (translation)
-Rewrite using `[herm_es_right]`. Simplify using `only [bvec, Pi.single_apply, eI_inj]`. Distinguish the cases in `h : a = b`. Simplify using `[h]`. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma h_e_es (a b : Fin r) : ⟪bvec (eI k r a), bvec (esI k r b)⟫ = if a = b then 1 else 0 := by
   rw [herm_es_right]; simp only [bvec, Pi.single_apply, eI_inj]
@@ -191,7 +191,7 @@ lemma h_e_es (a b : Fin r) : ⟪bvec (eI k r a), bvec (esI k r b)⟫ = if a = b 
   · simp [h]
   · rw [if_neg h, if_neg (Ne.symm h)]
 /- English proof (translation)
-Rewrite using `[herm_e_right]`. Simplify using `only [bvec, Pi.single_apply, esI_inj]`. Distinguish the cases in `h : a = b`. Simplify using `[h]`. Rewrite using `[if_neg h, if_neg (Ne.symm h)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 lemma h_es_e (a b : Fin r) : ⟪bvec (esI k r a), bvec (eI k r b)⟫ = if a = b then 1 else 0 := by
   rw [herm_e_right]; simp only [bvec, Pi.single_apply, esI_inj]
@@ -200,71 +200,71 @@ lemma h_es_e (a b : Fin r) : ⟪bvec (esI k r a), bvec (eI k r b)⟫ = if a = b 
   · rw [if_neg h, if_neg (Ne.symm h)]
 
 /- English proof (translation)
-The claim follows from `B2x8.al_one_mem k r`.
+A detailed English derivation is pending.
 -/
 lemma uh_one : (1 : Mx k r) ∈ UH (Hpk k r) := B2x8.al_one_mem k r
 /- English proof (translation)
-The claim follows from `B2x8.al_mul_mem hg hh`.
+A detailed English derivation is pending.
 -/
 lemma uh_mul {g h : Mx k r} (hg : g ∈ UH (Hpk k r)) (hh : h ∈ UH (Hpk k r)) : g * h ∈ UH (Hpk k r) :=
   B2x8.al_mul_mem hg hh
 /- English proof (translation)
-The claim follows from `B2x8.al_inv_mem hg`.
+A detailed English derivation is pending.
 -/
 lemma uh_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ ∈ UH (Hpk k r) := B2x8.al_inv_mem hg
 /- English proof (translation)
-The claim follows from `B2x8.al_unit hg`.
+A detailed English derivation is pending.
 -/
 lemma uh_unit {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : IsUnit g.det := B2x8.al_unit hg
 /- English proof (translation)
-The claim follows from `B2x8.herm_UH _ hg u v`.
+A detailed English derivation is pending.
 -/
 lemma uh_herm {g : Mx k r} (hg : g ∈ UH (Hpk k r)) (u v : Fin (2 * r + k + 1) → ℂ) : ⟪g *ᵥ u, g *ᵥ v⟫ = ⟪u, v⟫ :=
   B2x8.herm_UH _ hg u v
 /- English proof (translation)
-The claim follows from `Matrix.mul_nonsing_inv _ (uh_unit hg)`.
+A detailed English derivation is pending.
 -/
 lemma uh_mul_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g * g⁻¹ = 1 := Matrix.mul_nonsing_inv _ (uh_unit hg)
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_mul _ (uh_unit hg)`.
+A detailed English derivation is pending.
 -/
 lemma uh_inv_mul {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹ * g = 1 := Matrix.nonsing_inv_mul _ (uh_unit hg)
 /- English proof (translation)
-The claim follows from `B2x8.al_inv_mulVec (uh_unit hg) h`.
+A detailed English derivation is pending.
 -/
 lemma uh_inv_fix {g : Mx k r} (hg : g ∈ UH (Hpk k r)) {v w : Fin (2 * r + k + 1) → ℂ} (h : g *ᵥ v = w) : g⁻¹ *ᵥ w = v :=
   B2x8.al_inv_mulVec (uh_unit hg) h
 /- English proof (translation)
-Rewrite using `[← uh_herm hg u (g⁻¹ *ᵥ v), Matrix.mulVec_mulVec, uh_mul_inv hg, Matrix.one_mulVec]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma uh_herm_inv {g : Mx k r} (hg : g ∈ UH (Hpk k r)) (u v : Fin (2 * r + k + 1) → ℂ) : ⟪g *ᵥ u, v⟫ = ⟪u, g⁻¹ *ᵥ v⟫ := by
   rw [← uh_herm hg u (g⁻¹ *ᵥ v), Matrix.mulVec_mulVec, uh_mul_inv hg, Matrix.one_mulVec]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨uh_one, fun a _ => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩⟩`.
+Supply the required witnesses or components.
 -/
 lemma glev_one (i : Fin (r + 1)) : (1 : Mx k r) ∈ Glev k r i :=
   ⟨uh_one, fun a _ => ⟨Matrix.one_mulVec _, Matrix.one_mulVec _⟩⟩
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨uh_mul hg.1 hh.1, fun a ha => ⟨by rw [← Matrix.mulVec_mulVec, (hh.2 a ha).1, (hg.2 a ha).1], by rw [← Matrix.mulVec_mulVec, (hh.2 a ha).2, (hg.2 a ha).2]⟩⟩`.
+Supply the required witnesses or components.
 -/
 lemma glev_mul {i : Fin (r + 1)} {g h : Mx k r} (hg : g ∈ Glev k r i) (hh : h ∈ Glev k r i) : g * h ∈ Glev k r i :=
   ⟨uh_mul hg.1 hh.1, fun a ha => ⟨by rw [← Matrix.mulVec_mulVec, (hh.2 a ha).1, (hg.2 a ha).1],
     by rw [← Matrix.mulVec_mulVec, (hh.2 a ha).2, (hg.2 a ha).2]⟩⟩
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨uh_inv hg.1, fun a ha => ⟨uh_inv_fix hg.1 (hg.2 a ha).1, uh_inv_fix hg.1 (hg.2 a ha).2⟩⟩`.
+Supply the required witnesses or components.
 -/
 lemma glev_inv {i : Fin (r + 1)} {g : Mx k r} (hg : g ∈ Glev k r i) : g⁻¹ ∈ Glev k r i :=
   ⟨uh_inv hg.1, fun a ha => ⟨uh_inv_fix hg.1 (hg.2 a ha).1, uh_inv_fix hg.1 (hg.2 a ha).2⟩⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Use `⟨⟨hg.1, fun a ha => hg.2 a ?_⟩, (hg.2 l ?_).1, (hg.2 l ?_).2⟩` and prove the remaining obligations. Simplify using `only [Fin.val_castSucc, Fin.val_succ] at *`. Use linear arithmetic over natural numbers and integers.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Fin.val_succ]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Fin.val_succ]`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨hg, h1, h2⟩`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components.
 
-Use `⟨hg.1, fun a ha => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : a = l`. Substitute `h` using the available equality. Conclude with `⟨h1, h2⟩`. Apply `hg.2 a` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: a.val ≠ l.val` using `fun h' => h (Fin.ext h')`. Simplify using `only [Fin.val_castSucc, Fin.val_succ] at *`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 lemma glev_succ_iff (l : Fin r) (g : Mx k r) : g ∈ Glev k r l.succ ↔
     g ∈ Glev k r l.castSucc ∧ g *ᵥ bvec (eI k r l) = bvec (eI k r l) ∧ g *ᵥ bvec (esI k r l) = bvec (esI k r l) := by
@@ -283,7 +283,7 @@ lemma glev_succ_iff (l : Fin r) (g : Mx k r) : g ∈ Glev k r l.succ ↔
       simp only [Fin.val_castSucc, Fin.val_succ] at *; omega
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hh.1, fun a _ => hh.2.1 a⟩`.
+Supply the required witnesses or components.
 -/
 lemma uw_glev {z : Fin (2 * r + k + 1) → ℂ} {h : Mx k r} (hh : h ∈ UWset k r z) (i : Fin (r + 1)) : h ∈ Glev k r i :=
   ⟨hh.1, fun a _ => hh.2.1 a⟩
@@ -298,15 +298,15 @@ def UP (k r : ℕ) (l : Fin r) : Set (Mx k r) :=
     ∀ y, herm (Hpk k r) y (bvec (eI k r l)) = 0 → ∃ t : ℂ, u *ᵥ y = y + t • bvec (eI k r l)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨glev_one _, Matrix.one_mulVec _, fun y _ => ⟨0, by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 lemma up_one : (1 : Mx k r) ∈ UP k r l :=
   ⟨glev_one _, Matrix.one_mulVec _, fun y _ => ⟨0, by simp⟩⟩
 
 /- English proof (translation)
-Use `⟨glev_mul hu.1 hu'.1, by rw [← Matrix.mulVec_mulVec, hu'.2.1, hu.2.1], fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨t', ht'⟩` from `hu'.2.2 y hy`. Take `⟨t, ht⟩` from `hu.2.2 y hy`. Use `⟨t + t', ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ht', Matrix.mulVec_add, Matrix.mulVec_smul, hu.2.1, ht, add_smul]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_assoc _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma up_mul {u u' : Mx k r} (hu : u ∈ UP k r l) (hu' : u' ∈ UP k r l) : u * u' ∈ UP k r l := by
   refine ⟨glev_mul hu.1 hu'.1, by rw [← Matrix.mulVec_mulVec, hu'.2.1, hu.2.1], fun y hy => ?_⟩
@@ -317,7 +317,7 @@ lemma up_mul {u u' : Mx k r} (hu : u ∈ UP k r l) (hu' : u' ∈ UP k r l) : u *
   exact add_assoc _ _ _
 
 /- English proof (translation)
-Use `⟨glev_inv hu.1, uh_inv_fix hu.1.1 hu.2.1, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `hu.2.2 y hy`. Use `⟨-t, uh_inv_fix hu.1.1 ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_smul, hu.2.1, ht, neg_smul, add_neg_cancel_right]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma up_inv {u : Mx k r} (hu : u ∈ UP k r l) : u⁻¹ ∈ UP k r l := by
   refine ⟨glev_inv hu.1, uh_inv_fix hu.1.1 hu.2.1, fun y hy => ?_⟩
@@ -326,9 +326,9 @@ lemma up_inv {u : Mx k r} (hu : u ∈ UP k r l) : u⁻¹ ∈ UP k r l := by
   rw [Matrix.mulVec_add, Matrix.mulVec_smul, hu.2.1, ht, neg_smul, add_neg_cancel_right]
 
 /- English proof (translation)
-Take `⟨hp0, hp1, -⟩` from `(glev_succ_iff l p).1 hp`. Establish `hpi : p⁻¹ *ᵥ 𝐞 = 𝐞` using `uh_inv_fix hp0.1 hp1`. Use `⟨glev_mul (glev_mul hp0 hu.1) (glev_inv hp0), ?_, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, hpi, ← Matrix.mulVec_mulVec, hu.2.1, hp1]`. Establish `h1 : ⟪p⁻¹ *ᵥ y, 𝐞⟫ = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hpi, uh_herm (uh_inv hp0.1), hy]`. Take `⟨t, ht⟩` from `hu.2.2 _ h1`. Use `⟨t, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ht, Matrix.mulVec_add, Matrix.mulVec_smul, hp1, Matrix.mulVec_mulVec, uh_mul_inv hp0.1, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma up_conj {u p : Mx k r} (hu : u ∈ UP k r l) (hp : p ∈ Glev k r l.succ) : p * u * p⁻¹ ∈ UP k r l := by
   obtain ⟨hp0, hp1, -⟩ := (glev_succ_iff l p).1 hp
@@ -343,26 +343,26 @@ lemma up_conj {u p : Mx k r} (hu : u ∈ UP k r l) (hp : p ∈ Glev k r l.succ) 
       Matrix.mulVec_mulVec, uh_mul_inv hp0.1, Matrix.one_mulVec]
 
 /- English proof (translation)
-Use `up_conj hu (glev_inv hp)` as an intermediate fact. Rewrite `this` using `[Matrix.nonsing_inv_nonsing_inv _ (uh_unit hp.1)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma up_conj' {u p : Mx k r} (hu : u ∈ UP k r l) (hp : p ∈ Glev k r l.succ) : p⁻¹ * u * p ∈ UP k r l := by
   have := up_conj hu (glev_inv hp)
   rwa [Matrix.nonsing_inv_nonsing_inv _ (uh_unit hp.1)] at this
 
 /- English proof (translation)
-Rewrite using `[WeylGroupFacts.nset_iff]`. Use `⟨hu.1.1, fun i j hj hi => ?_⟩` and prove the remaining obligations. Rewrite using `[B2x6.ent u i j]`. Establish `hl` using `l.isLt`. Distinguish the cases in `hjl : j.val < l.val`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `e : eI k r ⟨j.val, by omega⟩ = j` using `Fin.ext rfl`. Use `(hu.1.2 ⟨j.val, by omega⟩ (by simpa using hjl)).1` as an intermediate fact. Rewrite `this` using `[e]`. Rewrite using `[this]`. Simplify using `only [bvec, Pi.single_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hjl' : j.val = l.val`. Establish `e : eI k r l = j` using `Fin.ext hjl'.symm`. Rewrite using `[← e, hu.2.1]`. Simplify using `only [bvec, Pi.single_apply]`. Establish `h0 : ⟪bvec j, 𝐞⟫ = 0`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[herm_e_right]`. Apply `Pi.single_eq_of_ne` to reduce the goal to its premises. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [esI] at this`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨t, ht⟩` from `hu.2.2 _ h0`. Rewrite using `[ht]`. Establish `: (bvec (eI k r l) : Fin (2 * r + k + 1) → ℂ) i = 0`. Apply `Pi.single_eq_of_ne` to reduce the goal to its premises.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [eI] at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[Pi.add_apply, Pi.smul_apply, this, smul_zero, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [bvec, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 lemma up_nset {u : Mx k r} (hu : u ∈ UP k r l) : u ∈ Nset k r := by
   rw [WeylGroupFacts.nset_iff]
@@ -389,7 +389,7 @@ lemma up_nset {u : Mx k r} (hu : u ∈ UP k r l) : u ∈ Nset k r := by
       rw [Pi.add_apply, Pi.smul_apply, this, smul_zero, add_zero]; simp only [bvec, Pi.single_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨up_nset hu, hu.1⟩`.
+Supply the required witnesses or components.
 -/
 lemma up_nlev {u : Mx k r} (hu : u ∈ UP k r l) : u ∈ Nlev k r l.castSucc := ⟨up_nset hu, hu.1⟩
 
@@ -398,7 +398,7 @@ def IsX (k r : ℕ) (l : Fin r) (x : Fin (2 * r + k + 1) → ℂ) : Prop :=
     ∀ a : Fin r, a.val < l.val → herm (Hpk k r) (bvec (eI k r a)) x = 0 ∧ herm (Hpk k r) (bvec (esI k r a)) x = 0
 
 /- English proof (translation)
-Use `⟨hs_mem _ Hh hpp hvp hσ, fun a ha => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hs_act, (hp a ha).1, (hv a ha).1]`. Simplify using the standard rewrite rules. Rewrite using `[hs_act, (hp a ha).2, (hv a ha).2]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma hs_glev {i : Fin (r + 1)} {p v : Fin (2 * r + k + 1) → ℂ} {σ : ℂ} (hpp : ⟪p, p⟫ = 0) (hvp : ⟪v, p⟫ = 0)
     (hσ : σ + conj σ + ⟪v, v⟫ = 0)
@@ -414,20 +414,20 @@ def hx (k r : ℕ) (l : Fin r) (x : Fin (2 * r + k + 1) → ℂ) : Mx k r :=
     (x - bvec (esI k r l) - herm (Hpk k r) x (bvec (esI k r l)) • bvec (eI k r l)) (herm (Hpk k r) x (bvec (esI k r l)))
 
 /- English proof (translation)
-Introduce `h'` and use `by rw [h'] at h; exact lt_irrefl _ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma ne_of_val_lt {a : Fin r} (h : a.val < l.val) : a ≠ l := fun h' => by rw [h'] at h; exact lt_irrefl _ h
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hx'`. Establish `h1' : ⟪𝐞, x⟫ = 1` using `by rw [← h_conj _ Hh, h1, map_one]`. Establish `h4 : ⟪𝐬, x⟫ = conj ⟪x, 𝐬⟫` using `(h_conj _ Hh _ _).symm`. Establish `hvp : ⟪x - 𝐬 - ⟪x, 𝐬⟫ • 𝐞, 𝐞⟫ = 0`. Simplify using `only [h_sub_left, h_smul_left, h1, h_es_e, h_e_e, if_true]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨hs_glev (h_e_e l l) hvp ?_ ?_ ?_, ?_, fun y hy => ?_⟩` and prove the remaining obligations. Simplify using `only [h_sub_left, h_sub_right, h_smul_left, h_smul_right, h1, h1', h2, h4, h_es_e, h_e_e, h_e_es, h_es_es, if_true]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a ha`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨h_e_e a l, by rw [h_es_e, if_neg (ne_of_val_lt ha)]⟩`. Introduce `a ha`. Simplify using `only [h_sub_right, h_smul_right, (h3 a ha).1, (h3 a ha).2, h_e_e, h_es_es, h_e_es, h_es_e, if_neg (ne_of_val_lt ha)]`. Apply the tactic sequence `constructor <;> ring`. Unfold `hx`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions.
 
-Rewrite using `[hs_act, h_e_e]`. Establish `: ⟪𝐞, x - 𝐬 - ⟪x, 𝐬⟫ • 𝐞⟫ = 0` using `by rw [← h_conj _ Hh, hvp, map_zero]`. Rewrite using `[this]`. Simplify using the standard rewrite rules. Unfold `hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[hs_act, hy]`. Conclude with `⟨-⟪y, x - 𝐬 - ⟪x, 𝐬⟫ • 𝐞⟫, by simp [sub_eq_add_neg]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma hx_up {x : Fin (2 * r + k + 1) → ℂ} (hx' : IsX k r l x) : hx k r l x ∈ UP k r l := by
   obtain ⟨h1, h2, h3⟩ := hx'
@@ -451,9 +451,9 @@ lemma hx_up {x : Fin (2 * r + k + 1) → ℂ} (hx' : IsX k r l x) : hx k r l x �
     exact ⟨-⟪y, x - 𝐬 - ⟪x, 𝐬⟫ • 𝐞⟫, by simp [sub_eq_add_neg]⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hx'`. Establish `h4 : ⟪𝐬, x⟫ = conj ⟪x, 𝐬⟫` using `(h_conj _ Hh _ _).symm`. Unfold `hx`. Rewrite using `[hs_act]`. Establish `: ⟪𝐬, x - 𝐬 - ⟪x, 𝐬⟫ • 𝐞⟫ = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [h_sub_right, h_smul_right, h4, h_es_es, h_es_e, if_true]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, h_es_e, if_pos rfl]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma hx_es {x : Fin (2 * r + k + 1) → ℂ} (hx' : IsX k r l x) : hx k r l x *ᵥ 𝐬 = x := by
   obtain ⟨h1, h2, h3⟩ := hx'
@@ -465,9 +465,9 @@ lemma hx_es {x : Fin (2 * r + k + 1) → ℂ} (hx' : IsX k r l x) : hx k r l x *
   simp
 
 /- English proof (translation)
-Use `⟨?_, ?_, fun a ha => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use `conv_lhs => rw [← he]`. Rewrite using `[uh_herm hg.1, h_es_e, if_pos rfl]`. Rewrite using `[uh_herm hg.1, h_es_es]`. Use `conv_lhs => rw [← (hg.2 a (by simpa using ha)).1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[uh_herm hg.1, h_e_es, if_neg (ne_of_val_lt ha)]`. Use `conv_lhs => rw [← (hg.2 a (by simpa using ha)).2]`. Rewrite using `[uh_herm hg.1, h_es_es]`.
+A detailed English derivation is pending.
 -/
 lemma isX_of_glev {g : Mx k r} (hg : g ∈ Glev k r l.castSucc) (he : g *ᵥ 𝐞 = 𝐞) : IsX k r l (g *ᵥ 𝐬) := by
   refine ⟨?_, ?_, fun a ha => ⟨?_, ?_⟩⟩
@@ -480,13 +480,13 @@ lemma isX_of_glev {g : Mx k r} (hg : g ∈ Glev k r l.castSucc) (he : g *ᵥ �
     rw [uh_herm hg.1, h_es_es]
 
 /- English proof (translation)
-Apply `mat_ext` to reduce the goal to its premises. Introduce `y`. Establish `hy0 : ⟪y - ⟪y, 𝐞⟫ • 𝐬, 𝐞⟫ = 0`. Simplify using `only [h_sub_left, h_smul_left, h_es_e, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨t, ht⟩` from `hu.2.2 _ hy0`. Take `⟨t', ht'⟩` from `hu'.2.2 _ hy0`. Establish `e1` using `uh_herm hu.1.1 (y - ⟪y, 𝐞⟫ • 𝐬) 𝐬`. Establish `e2` using `uh_herm hu'.1.1 (y - ⟪y, 𝐞⟫ • 𝐬) 𝐬`. Establish `e3 : ⟪𝐞, u' *ᵥ 𝐬⟫ = 1` using `by conv_lhs => rw [← hu'.2.1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[uh_herm hu'.1.1, h_e_es, if_pos rfl]`. Rewrite `e1` using `[ht, h, h_add_left, h_smul_left, e3]`. Rewrite `e2` using `[ht', h_add_left, h_smul_left, e3]`. Establish `htt : t = t'` using `by linear_combination e1 - e2`. Establish `hy : y = (y - ⟪y, 𝐞⟫ • 𝐬) + ⟪y, 𝐞⟫ • 𝐬` using `by simp`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hy, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, ht, ht', h, htt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma up_unique {u u' : Mx k r} (hu : u ∈ UP k r l) (hu' : u' ∈ UP k r l) (h : u *ᵥ 𝐬 = u' *ᵥ 𝐬) : u = u' := by
   apply mat_ext
@@ -507,15 +507,15 @@ lemma up_unique {u u' : Mx k r} (hu : u ∈ UP k r l) (hu' : u' ∈ UP k r l) (h
   rw [hy, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, ht, ht', h, htt]
 
 /- English proof (translation)
-The claim follows from `up_unique (hx_up (isX_of_glev hu.1 hu.2.1)) hu (hx_es (isX_of_glev hu.1 hu.2.1))`.
+A detailed English derivation is pending.
 -/
 lemma up_hx {u : Mx k r} (hu : u ∈ UP k r l) : hx k r l (u *ᵥ 𝐬) = u :=
   up_unique (hx_up (isX_of_glev hu.1 hu.2.1)) hu (hx_es (isX_of_glev hu.1 hu.2.1))
 
 /- English proof (translation)
-Establish `hX` using `isX_of_glev hg he`. Establish `hu` using `hx_up hX`. Use `⟨hx k r l (g *ᵥ 𝐬), hu, (hx k r l (g *ᵥ 𝐬))⁻¹ * g, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[glev_succ_iff]`. Use `⟨glev_mul (glev_inv hu.1) hg, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Matrix.mulVec_mulVec, he]`. Conclude with `uh_inv_fix hu.1.1 hu.2.1`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `uh_inv_fix hu.1.1 (hx_es hX)`. Rewrite using `[← Matrix.mul_assoc, uh_mul_inv hu.1.1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma stab_dec {g : Mx k r} (hg : g ∈ Glev k r l.castSucc) (he : g *ᵥ 𝐞 = 𝐞) :
     ∃ u ∈ UP k r l, ∃ g₁ ∈ Glev k r l.succ, g = u * g₁ := by
@@ -529,7 +529,7 @@ lemma stab_dec {g : Mx k r} (hg : g ∈ Glev k r l.castSucc) (he : g *ᵥ 𝐞 =
   · rw [← Matrix.mul_assoc, uh_mul_inv hu.1.1, Matrix.one_mul]
 
 /- English proof (translation)
-Take `⟨u, hu, g₁, hg₁, h⟩` from `stab_dec (glev_inv hg) (uh_inv_fix hg.1 he)`. Use `⟨u⁻¹, up_inv hu, g₁⁻¹, glev_inv hg₁, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_inv_rev, ← h, Matrix.nonsing_inv_nonsing_inv _ (uh_unit hg.1)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 lemma stab_dec' {g : Mx k r} (hg : g ∈ Glev k r l.castSucc) (he : g *ᵥ 𝐞 = 𝐞) :
     ∃ u ∈ UP k r l, ∃ g₁ ∈ Glev k r l.succ, g = g₁ * u := by
@@ -538,7 +538,7 @@ lemma stab_dec' {g : Mx k r} (hg : g ∈ Glev k r l.castSucc) (he : g *ᵥ 𝐞 
   rw [← Matrix.mul_inv_rev, ← h, Matrix.nonsing_inv_nonsing_inv _ (uh_unit hg.1)]
 
 /- English proof (translation)
-Unfold `w1`. Distinguish the cases in `h : q = eI k r l`. Simplify using `[h]`. Simplify using `[h, (eI_ne_esI l l).symm]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma weyl_cell_apply_dual_basis (c : ℂ) (q : Fin (2 * r + k + 1)) :
     w1 k r l c (esI k r l) q = if q = eI k r l then c else 0 := by
@@ -548,7 +548,7 @@ lemma weyl_cell_apply_dual_basis (c : ℂ) (q : Fin (2 * r + k + 1)) :
   · simp [h, (eI_ne_esI l l).symm]
 
 /- English proof (translation)
-Unfold `w1`. Distinguish the cases in `h : q = esI k r l`. Simplify using `[h, eI_ne_esI l l]`. Simplify using `[h, eI_ne_esI l l]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma weyl_cell_apply_basis (c : ℂ) (q : Fin (2 * r + k + 1)) :
     w1 k r l c (eI k r l) q = if q = esI k r l then (star c)⁻¹ else 0 := by
@@ -558,7 +558,7 @@ lemma weyl_cell_apply_basis (c : ℂ) (q : Fin (2 * r + k + 1)) :
   · simp [h, eI_ne_esI l l]
 
 /- English proof (translation)
-Unfold `w1`. Distinguish the cases in `h : q = p`. Simplify using `[h, h1, h2]`. Simplify using `[h1, h2, h, Ne.symm h]`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma weyl_cell_apply_other (c : ℂ) {p : Fin (2 * r + k + 1)} (h1 : p ≠ eI k r l) (h2 : p ≠ esI k r l)
     (q : Fin (2 * r + k + 1)) : w1 k r l c p q = if q = p then 1 else 0 := by
@@ -568,11 +568,11 @@ lemma weyl_cell_apply_other (c : ℂ) {p : Fin (2 * r + k + 1)} (h1 : p ≠ eI k
   · simp [h1, h2, h, Ne.symm h]
 
 /- English proof (translation)
-Use extensionality with `p`. Rewrite using `[herm_e_right, herm_es_right]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, bvec, Pi.single_apply, mulVec, dotProduct]`. Distinguish the cases in `h2 : p = esI k r l`. Substitute `h2` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [weyl_cell_apply_dual_basis, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, (eI_ne_esI l l).symm, if_false]`. Expand and normalize the polynomial expressions, which then agree. Distinguish the cases in `h1 : p = eI k r l`. Substitute `h1` using the available equality. Simplify using `only [weyl_cell_apply_basis, ite_mul, zero_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, eI_ne_esI l l, if_false]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [weyl_cell_apply_other c h1 h2, ite_mul, zero_mul, one_mul, Finset.sum_ite_eq', Finset.mem_univ, if_true, h1, h2, if_false]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma weyl_cell_mulVec (c : ℂ) (y : Fin (2 * r + k + 1) → ℂ) :
     w1 k r l c *ᵥ y = y + (c * ⟪y, 𝐬⟫ - ⟪y, 𝐞⟫) • 𝐬 + ((conj c)⁻¹ * ⟪y, 𝐞⟫ - ⟪y, 𝐬⟫) • 𝐞 := by
@@ -592,25 +592,25 @@ lemma weyl_cell_mulVec (c : ℂ) (y : Fin (2 * r + k + 1) → ℂ) :
       ring
 
 /- English proof (translation)
-Rewrite using `[weyl_cell_mulVec, h_e_e, h_e_es, if_pos rfl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma w1_mulVec_bvec_eI (c : ℂ) : w1 k r l c *ᵥ 𝐞 = c • 𝐬 := by
   rw [weyl_cell_mulVec, h_e_e, h_e_es, if_pos rfl]
   simp
 
 /- English proof (translation)
-Rewrite using `[weyl_cell_mulVec, h_es_e, h_es_es, if_pos rfl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma w1_mulVec_bvec_esI (c : ℂ) : w1 k r l c *ᵥ 𝐬 = (conj c)⁻¹ • 𝐞 := by
   rw [weyl_cell_mulVec, h_es_e, h_es_es, if_pos rfl]
   simp
 
 /- English proof (translation)
-Establish `hc' : conj c ≠ 0` using `(map_ne_zero _).2 hc`. Use `⟨?_, fun a ha => ?_⟩` and prove the remaining obligations. Apply `B2x8.mem_UH_of` to reduce the goal to its premises. Introduce `u w`. Establish `h1 : ⟪𝐞, w⟫ = conj ⟪w, 𝐞⟫` using `(h_conj _ Hh _ _).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : ⟪𝐬, w⟫ = conj ⟪w, 𝐬⟫` using `(h_conj _ Hh _ _).symm`. Rewrite using `[weyl_cell_mulVec, weyl_cell_mulVec]`. Simplify using `only [h_add_left, h_add_right, h_smul_left, h_smul_right, h_e_e, h_es_es, h_e_es, h_es_e, if_true, h1, h2, map_sub, map_mul, map_inv₀, Complex.conj_conj]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hne : a ≠ l` using `ne_of_val_lt (by simpa using ha)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[weyl_cell_mulVec, h_e_e, h_e_es, if_neg hne]`. Simplify using the standard rewrite rules. Rewrite using `[weyl_cell_mulVec, h_es_e, h_es_es, if_neg hne]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -632,9 +632,9 @@ lemma weyl_cell_mem_level_group {c : ℂ} (hc : c ≠ 0) : w1 k r l c ∈ Glev k
     · rw [weyl_cell_mulVec, h_es_e, h_es_es, if_neg hne]; simp
 
 /- English proof (translation)
-Take `⟨hg0, h1, h2⟩` from `(glev_succ_iff l g).1 hg`. Apply `mat_ext` to reduce the goal to its premises. Introduce `y`. Establish `e1 : ⟪g *ᵥ y, 𝐞⟫ = ⟪y, 𝐞⟫` using `by conv_lhs => rw [← h1]`. Conclude with `uh_herm hg0.1 _ _`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ⟪g *ᵥ y, 𝐬⟫ = ⟪y, 𝐬⟫` using `by conv_lhs => rw [← h2]`. Conclude with `uh_herm hg0.1 _ _`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, weyl_cell_mulVec, weyl_cell_mulVec, e1, e2, Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, h1, h2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma w1_commute_of_mem_Glev (c : ℂ) {g : Mx k r} (hg : g ∈ Glev k r l.succ) : w1 k r l c * g = g * w1 k r l c := by
   obtain ⟨hg0, h1, h2⟩ := (glev_succ_iff l g).1 hg
@@ -650,9 +650,9 @@ lemma w1_commute_of_mem_Glev (c : ℂ) {g : Mx k r} (hg : g ∈ Glev k r l.succ)
     Matrix.mulVec_smul, Matrix.mulVec_smul, h1, h2]
 
 /- English proof (translation)
-Establish `hc' : conj c ≠ 0` using `(map_ne_zero _).2 hc`. Apply `mat_ext` to reduce the goal to its premises. Introduce `y`. Rewrite using `[← Matrix.mulVec_mulVec, Matrix.one_mulVec, weyl_cell_mulVec (conj c), Matrix.mulVec_add, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_smul, w1_mulVec_bvec_eI, w1_mulVec_bvec_esI, weyl_cell_mulVec, Complex.conj_conj]`. Use extensionality with `p`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma weyl_cell_mul_conj {c : ℂ} (hc : c ≠ 0) : w1 k r l c * w1 k r l (conj c) = 1 := by
   have hc' : conj c ≠ 0 := (map_ne_zero _).2 hc
@@ -666,7 +666,7 @@ lemma weyl_cell_mul_conj {c : ℂ} (hc : c ≠ 0) : w1 k r l c * w1 k r l (conj 
   ring
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_right_inv (weyl_cell_mul_conj hc)`.
+A detailed English derivation is pending.
 -/
 lemma weyl_cell_inv {c : ℂ} (hc : c ≠ 0) : (w1 k r l c)⁻¹ = w1 k r l (conj c) :=
   Matrix.inv_eq_right_inv (weyl_cell_mul_conj hc)
@@ -679,27 +679,27 @@ structure Dec (k r : ℕ) (l : Fin r) (g : Mx k r) (c : ℂ) (u g₁ u' : Mx k r
   eq : g = u * (w1 k r l c * g₁) * u'
 
 /- English proof (translation)
-The claim follows from `((glev_succ_iff l g).1 hg).1`.
+A detailed English derivation is pending.
 -/
 lemma glev_succ_le {g : Mx k r} (hg : g ∈ Glev k r l.succ) : g ∈ Glev k r l.castSucc := ((glev_succ_iff l g).1 hg).1
 
 /- English proof (translation)
-Rewrite using `[h.eq]`. Conclude with `glev_mul (glev_mul h.hu.1 (glev_mul (weyl_cell_mem_level_group h.hc) (glev_succ_le h.hg))) h.hu'.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Dec.mem {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') : g ∈ Glev k r l.castSucc := by
   rw [h.eq]
   exact glev_mul (glev_mul h.hu.1 (glev_mul (weyl_cell_mem_level_group h.hc) (glev_succ_le h.hg))) h.hu'.1
 
 /- English proof (translation)
-Use `set c := ⟪g *ᵥ 𝐞, 𝐞⟫ with hcdef`. Establish `hc' : conj c ≠ 0` using `(map_ne_zero _).2 hc`. Establish `hX : IsX k r l (c⁻¹ • (g *ᵥ 𝐞))`. Use `⟨?_, ?_, fun a ha => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[h_smul_left, ← hcdef, inv_mul_cancel₀ hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h_smul_left, h_smul_right, uh_herm hg.1, h_e_e]`. Simplify using the standard rewrite rules. Rewrite using `[h_smul_right] conv_lhs => rw [← (hg.2 a (by simpa using ha)).1]`. Rewrite using `[uh_herm hg.1, h_e_e, mul_zero]`. Rewrite using `[h_smul_right] conv_lhs => rw [← (hg.2 a (by simpa using ha)).2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[uh_herm hg.1, h_es_e, if_neg (ne_of_val_lt ha), mul_zero]`. Establish `hu` using `hx_up hX`. Use `set u := hx k r l (c⁻¹ • (g *ᵥ 𝐞)) with hudef`. Establish `hues : u *ᵥ 𝐬 = c⁻¹ • (g *ᵥ 𝐞)` using `hx_es hX`. Establish `hw` using `weyl_cell_mem_level_group (k := k) (r := r) (l := l) hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : (w1 k r l c)⁻¹ * (u⁻¹ * g) ∈ Glev k r l.castSucc` using `glev_mul (glev_inv hw) (glev_mul (glev_inv hu.1) hg)`. Establish `he' : ((w1 k r l c)⁻¹ * (u⁻¹ * g)) *ᵥ 𝐞 = 𝐞`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Apply `uh_inv_fix hw.1` to reduce the goal to its premises. Use `symm`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `uh_inv_fix hu.1.1` to reduce the goal to its premises. Rewrite using `[w1_mulVec_bvec_eI, Matrix.mulVec_smul, hues, smul_smul, mul_inv_cancel₀ hc, one_smul]`. Take `⟨u', hu', g₁, hg₁, h⟩` from `stab_dec' hg' he'`. Use `⟨u, g₁, u', hc, hu, hg₁, hu', ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← h, ← Matrix.mul_assoc (w1 k r l c), uh_mul_inv hw.1, Matrix.one_mul, ← Matrix.mul_assoc, uh_mul_inv hu.1.1, Matrix.one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dec_exists {g : Mx k r} (hg : g ∈ Glev k r l.castSucc) (hc : ⟪g *ᵥ 𝐞, 𝐞⟫ ≠ 0) :
     ∃ u g₁ u', Dec k r l g ⟪g *ᵥ 𝐞, 𝐞⟫ u g₁ u' := by
@@ -732,7 +732,7 @@ lemma dec_exists {g : Mx k r} (hg : g ∈ Glev k r l.castSucc) (hc : ⟪g *ᵥ �
     ← Matrix.mul_assoc, uh_mul_inv hu.1.1, Matrix.one_mul]
 
 /- English proof (translation)
-Introduce `k r l g hg`. Take `⟨u, g₁, u', h⟩` from `dec_exists hg.1 hg.2`. Conclude with `⟨u, up_nlev h.hu, u', up_nlev h.hu', g₁, h.hg, h.eq⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cellDecomp : CellDecomp := by
   intro k r l g hg
@@ -740,7 +740,7 @@ theorem cellDecomp : CellDecomp := by
   exact ⟨u, up_nlev h.hu, u', up_nlev h.hu', g₁, h.hg, h.eq⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [hs, Matrix.add_apply, Matrix.sub_apply, Matrix.smul_apply, vecMulVec_apply, h_smul_right, Complex.conj_ofReal, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma hs_poly (p v₀ : Fin (2 * r + k + 1) → ℂ) (κ : ℂ) (t : ℝ) :
     hs (Hpk k r) p ((t : ℂ) • v₀) ((t : ℂ) ^ 2 * κ) =
@@ -752,15 +752,13 @@ lemma hs_poly (p v₀ : Fin (2 * r + k + 1) → ℂ) (κ : ℂ) (t : ℝ) :
   ring
 
 /- English proof (translation)
-Establish `hs : ({t : ℝ | (t : ℂ) * (A + t * B) ≠ 0}ᶜ).Countable`. Apply `Set.Countable.mono (s₂ := {0, (-A / B).re})` to reduce the goal to its premises. Introduce `t ht`. Simplify using `only [Set.mem_compl_iff, Set.mem_ofPred_eq, not_not, mul_eq_zero] at ht`. Break down `ht with ht | ht` into its components or cases.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Use `left`. Conclude with `ht` after adjusting the coercions. Use `right`. Establish `hB : B ≠ 0`. Introduce `hB`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `ht` using `[hB, mul_zero, add_zero]`. Break down `h with h | h` into its components or cases. Conclude with `h ht`. Conclude with `h hB`. Establish `h2 : (t : ℂ) = -A / B`.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `ht`. Simplify using `[← h2]`. Conclude with `(Set.toFinite _).countable`. Establish `h2` using `hs.dense_compl ℝ`.
-
-Rewrite `h2` using `[compl_compl]`. Conclude with `h2 0`.
+A detailed English derivation is pending.
 -/
 lemma zero_mem_closure_poly {A B : ℂ} (h : A ≠ 0 ∨ B ≠ 0) :
     (0 : ℝ) ∈ closure {t : ℝ | (t : ℂ) * (A + t * B) ≠ 0} := by
@@ -787,52 +785,46 @@ lemma zero_mem_closure_poly {A B : ℂ} (h : A ≠ 0 ∨ B ≠ 0) :
   exact h2 0
 
 /- English proof (translation)
-Rewrite using `[herm_bvec_right, Matrix.mulVec_mulVec, B2x8.Hpk_sq, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma herm_H_bvec (y : Fin (2 * r + k + 1) → ℂ) (j : Fin (2 * r + k + 1)) : ⟪Hpk k r *ᵥ y, bvec j⟫ = y j := by
   rw [herm_bvec_right, Matrix.mulVec_mulVec, B2x8.Hpk_sq, Matrix.one_mulVec]
 
 open scoped ComplexOrder in
 /- English proof (translation)
-Introduce `k r l g hg`. Distinguish the cases in `hc : herm (Hpk k r) (g *ᵥ bvec (eI k r l)) (bvec (eI k r l)) = 0`. Use `swap`. Conclude with `subset_closure ⟨hg, hc⟩`. Use `set x := g⁻¹ *ᵥ bvec (eI k r l) with hx`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set α := herm (Hpk k r) x (bvec (esI k r l)) with hα`. Use `set x₀ := x - α • bvec (eI k r l) with hx₀`. Use `set v₀ := Hpk k r *ᵥ x₀ with hv₀`. Use `set q := herm (Hpk k r) v₀ v₀ with hq`. Use `set κ := Complex.I - q / 2 with hκ`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hex : herm (Hpk k r) (bvec (eI k r l)) x = 0` using `by rw [hx, ← uh_herm_inv hg.1, hc]`. Establish `hxe : herm (Hpk k r) x (bvec (eI k r l)) = 0` using `by rw [← h_conj _ Hh, hex, map_zero]`. Establish `hve : herm (Hpk k r) v₀ (bvec (eI k r l)) = 0`. Rewrite using `[hv₀, herm_H_bvec, ← herm_es_right x₀ l, hx₀, h_sub_left, h_smul_left, h_e_es, if_pos rfl, ← hα]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvs : herm (Hpk k r) v₀ (bvec (esI k r l)) = 0`. Rewrite using `[hv₀, herm_H_bvec, ← herm_e_right x₀ l, hx₀, h_sub_left, h_smul_left, h_e_e, hxe]`. Expand and normalize the polynomial expressions, which then agree. Establish `hev : herm (Hpk k r) (bvec (eI k r l)) v₀ = 0` using `by rw [← h_conj _ Hh, hve, map_zero]`. Establish `hva : ∀ a : Fin r, a.val < (l.castSucc).val → herm (Hpk k r) (bvec (eI k r a)) v₀ = 0 ∧ herm (Hpk k r) (bvec (esI k r a)) v₀ = 0`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Establish `hne : a ≠ l` using `ne_of_val_lt (by simpa using ha)`. Establish `hgi` using `glev_inv hg`. Prove the components needed by the constructor for the conclusion. Rewrite using `[← h_conj _ Hh, hv₀, herm_H_bvec, ← herm_es_right x₀ a, hx₀, h_sub_left, h_smul_left, h_e_es, if_neg (Ne.symm hne), hx] conv_lhs => rw [← (hgi.2 a ha).2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[uh_herm hgi.1, h_e_es, if_neg (Ne.symm hne)]`. Simplify using the standard rewrite rules. Rewrite using `[← h_conj _ Hh, hv₀, herm_H_bvec, ← herm_e_right x₀ a, hx₀, h_sub_left, h_smul_left, h_e_e, hx] conv_lhs => rw [← (hgi.2 a ha).1]`. Rewrite using `[uh_herm hgi.1, h_e_e]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hqc : conj q = q` using `h_conj _ Hh _ _`. Establish `hκ0 : κ ≠ 0`. Introduce `h`. Establish `h1` using `congrArg Complex.im h`. Establish `h2 : q.im = 0` using `B2x8.herm_self_im k r v₀`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hκ, h2] at h1`. Use `set A := herm (Hpk k r) v₀ x with hA`. Use `set B := κ * conj α with hB`. Establish `hAB : A ≠ 0 ∨ B ≠ 0`. Distinguish the cases in `h0 : x₀ = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `right`. Establish `hα0 : α ≠ 0`. Introduce `h`. Establish `hx0 : x = 0`. Establish `: x = x₀ + α • bvec (eI k r l)` using `by rw [hx₀]; simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[this, h0, h]`. Simplify using the standard rewrite rules. Establish `h1 : g *ᵥ x = bvec (eI k r l)`. Rewrite using `[hx, Matrix.mulVec_mulVec, uh_mul_inv hg.1, Matrix.one_mulVec]`. Rewrite `h1` using `[hx0, Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h2` using `congrFun h1 (eI k r l)`. Simplify using `[bvec] at h2`. Conclude with `mul_ne_zero hκ0 ((map_ne_zero _).2 hα0)`. Use `left`. Establish `h1 : A = star x₀ ⬝ᵥ x₀`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: x = x₀ + α • bvec (eI k r l)` using `by rw [hx₀]; simp`. Rewrite using `[hA, this, h_add_right, h_smul_right, hve, mul_zero, add_zero, hv₀]`. Unfold `herm`. Rewrite using `[Matrix.mulVec_mulVec, B2x8.Hpk_sq, Matrix.one_mulVec]`. Rewrite using `[h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `h2`. Conclude with `h0 (dotProduct_star_self_eq_zero.mp h2)`. Set `γ : ℝ → Mx k r` to `fun t => g * hs (Hpk k r) (bvec (esI k r l)) ((t : ℂ) • v₀) ((t : ℂ) ^ 2 * κ)`. Establish `hγc : Continuous γ`. Establish `: γ = fun t : ℝ => g * (1 + (t : ℂ) • (Matrix.vecMulVec v₀ (fun j => herm (Hpk k r) (bvec j) (bvec (esI k r l))) - Matrix.vecMulVec (bvec (esI k r l)) (fun j => herm (Hpk k r) (bvec j) v₀)) + ((t : ℂ) ^ 2 * κ) • Matrix.vecMulVec (bvec (esI k r l)) (fun j => herm (Hpk k r) (bvec j …`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `t`. Simplify using `only [γ]`. Rewrite using `[hs_poly]`. Rewrite using `[this]`. Use `fun_prop`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hγ0 : γ 0 = g`. Simplify using `only [γ]`. Rewrite using `[hs_poly]`. Simplify using the standard rewrite rules. Rewrite using `[← hγ0]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `map_mem_closure hγc (zero_mem_closure_poly hAB) ?_` and prove the remaining obligations. Introduce `t ht`. Establish `hk : hs (Hpk k r) (bvec (esI k r l)) ((t : ℂ) • v₀) ((t : ℂ) ^ 2 * κ) ∈ Glev k r l.castSucc`. Apply `hs_glev (h_es_es l l)` to reduce the goal to its premises. Rewrite using `[h_smul_left, hvs, mul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h_smul_left, h_smul_right, ← hq, map_mul, map_pow, Complex.conj_ofReal, hκ, map_sub, map_div₀, hqc, Complex.conj_I]`. Simplify using `only [map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Introduce `a ha`. Establish `hne : a ≠ l` using `ne_of_val_lt (by simpa using ha)`.
-
-Conclude with `⟨by rw [h_e_es, if_neg hne], h_es_es a l⟩`. Introduce `a ha`. Rewrite using `[h_smul_right, h_smul_right, (hva a ha).1, (hva a ha).2]`. Simplify using the standard rewrite rules. Use `⟨glev_mul hg hk, ?_⟩` and prove the remaining obligations.
-
-Use `show herm (Hpk k r) (γ t *ᵥ bvec (eI k r l)) (bvec (eI k r l)) ≠ 0`. Establish `: herm (Hpk k r) (γ t *ᵥ bvec (eI k r l)) (bvec (eI k r l)) = (t : ℂ) * (A + t * B)`. Simplify using `only [γ]`. Rewrite using `[← Matrix.mulVec_mulVec, uh_herm_inv hg.1, ← hx, hs_act, h_smul_right, hev, h_e_es, if_pos rfl]`. Simplify using `only [h_add_left, h_sub_left, h_smul_left, hex, ← hA]`.
-
-Rewrite using `[← h_conj _ Hh x, ← hα, hB]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `ht`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cellDense : CellDense := by
   intro k r l g hg
@@ -942,7 +934,7 @@ def rho (k r : ℕ) (l : Fin r) (g : Mx k r) : Mx k r :=
   w1 k r l (conj (cF k r l g)) * iH (uL k r l g) * g * uL k r l (iH g)
 
 /- English proof (translation)
-Use `symm`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Establish `h : gᴴ * Hpk k r * g = Hpk k r` using `hg`. Unfold `iH`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, B2x8.Hpk_sq]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma iH_eq {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : iH g = g⁻¹ := by
   symm
@@ -952,12 +944,12 @@ lemma iH_eq {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : iH g = g⁻¹ := by
   rw [Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc gᴴ, h, B2x8.Hpk_sq]
 
 /- English proof (translation)
-The claim follows from `Matrix.nonsing_inv_nonsing_inv _ (uh_unit hg)`.
+A detailed English derivation is pending.
 -/
 lemma inv_inv' {g : Mx k r} (hg : g ∈ UH (Hpk k r)) : g⁻¹⁻¹ = g := Matrix.nonsing_inv_nonsing_inv _ (uh_unit hg)
 
 /- English proof (translation)
-Use `⟨(map_ne_zero _).2 h.hc, up_inv h.hu', glev_inv h.hg, up_inv h.hu, ?_⟩` and prove the remaining obligations. Rewrite using `[h.eq, Matrix.mul_inv_rev, Matrix.mul_inv_rev, Matrix.mul_inv_rev, weyl_cell_inv h.hc, ← w1_commute_of_mem_Glev _ (glev_inv h.hg)]`. Simplify using `only [Matrix.mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma Dec.inv {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') : Dec k r l g⁻¹ (conj c) u'⁻¹ g₁⁻¹ u⁻¹ := by
   refine ⟨(map_ne_zero _).2 h.hc, up_inv h.hu', glev_inv h.hg, up_inv h.hu, ?_⟩
@@ -965,36 +957,36 @@ lemma Dec.inv {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') : D
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[h.eq, ← Matrix.mulVec_mulVec, h.hu'.2.1, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ((glev_succ_iff l g₁).1 h.hg).2.1, w1_mulVec_bvec_eI, Matrix.mulVec_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Dec.act_e {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') : g *ᵥ 𝐞 = c • (u *ᵥ 𝐬) := by
   rw [h.eq, ← Matrix.mulVec_mulVec, h.hu'.2.1, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec,
     ((glev_succ_iff l g₁).1 h.hg).2.1, w1_mulVec_bvec_eI, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Unfold `cF`. Rewrite using `[h.act_e, h_smul_left, (isX_of_glev h.hu.1 h.hu.2.1).1, mul_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma Dec.cF_eq {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') : cF k r l g = c := by
   unfold cF
   rw [h.act_e, h_smul_left, (isX_of_glev h.hu.1 h.hu.2.1).1, mul_one]
 
 /- English proof (translation)
-Unfold `uL`. Rewrite using `[h.cF_eq, h.act_e, smul_smul, inv_mul_cancel₀ h.hc, one_smul, up_hx h.hu]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma Dec.uL_eq {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') : uL k r l g = u := by
   unfold uL
   rw [h.cF_eq, h.act_e, smul_smul, inv_mul_cancel₀ h.hc, one_smul, up_hx h.hu]
 
 /- English proof (translation)
-Rewrite using `[iH_eq h.mem.1, h.inv.uL_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma Dec.uL_iH {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') : uL k r l (iH g) = u'⁻¹ := by
   rw [iH_eq h.mem.1, h.inv.uL_eq]
 
 /- English proof (translation)
-Unfold `rho`. Rewrite using `[h.uL_iH, h.uL_eq, h.cF_eq, iH_eq h.hu.1.1, ← weyl_cell_inv h.hc]`. Use `conv_lhs => rw [h.eq]`. Establish `hw` using `weyl_cell_mem_level_group (k := k) (r := r) (l := l) h.hc`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[uh_inv_mul h.hu.1.1, uh_mul_inv h.hu'.1.1, Matrix.one_mul, Matrix.mul_one, ← Matrix.mul_assoc, uh_inv_mul hw.1, Matrix.one_mul]`.
+A detailed English derivation is pending.
 -/
 lemma Dec.rho_eq {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') : rho k r l g = g₁ := by
   unfold rho
@@ -1008,9 +1000,9 @@ lemma Dec.rho_eq {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') 
         uh_inv_mul hw.1, Matrix.one_mul]
 
 /- English proof (translation)
-Use `⟨h.hc, up_conj h.hu hp, glev_mul hp h.hg, h.hu', ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.mul_assoc (w1 k r l c), w1_commute_of_mem_Glev c hp, h.eq]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Use `_ = p * u * p⁻¹ * (p * w1 k r l c * g₁) * u' := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← uh_inv_mul hp.1]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Dec.leftG {g u g₁ u' p : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') (hp : p ∈ Glev k r l.succ) :
     Dec k r l (p * g) c (p * u * p⁻¹) (p * g₁) u' := by
@@ -1022,16 +1014,16 @@ lemma Dec.leftG {g u g₁ u' p : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u')
         rw [← uh_inv_mul hp.1]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.hc, up_mul hp h.hu, h.hg, h.hu', by rw [h.eq]; simp only [Matrix.mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 lemma Dec.leftU {g u g₁ u' u₂ : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') (hp : u₂ ∈ UP k r l) :
     Dec k r l (u₂ * g) c (u₂ * u) g₁ u' :=
   ⟨h.hc, up_mul hp h.hu, h.hg, h.hu', by rw [h.eq]; simp only [Matrix.mul_assoc]⟩
 
 /- English proof (translation)
-Use `⟨h.hc, h.hu, glev_mul h.hg hp, up_conj' h.hu' hp, ?_⟩` and prove the remaining obligations. Rewrite using `[h.eq]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc, Matrix.one_mul]`. Use `_ = u * (w1 k r l c * (g₁ * p)) * (p⁻¹ * u' * p) := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← uh_mul_inv hp.1]`. Simplify using `only [Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma Dec.rightG {g u g₁ u' p : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') (hp : p ∈ Glev k r l.succ) :
     Dec k r l (g * p) c u (g₁ * p) (p⁻¹ * u' * p) := by
@@ -1043,24 +1035,24 @@ lemma Dec.rightG {g u g₁ u' p : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u'
         rw [← uh_mul_inv hp.1]; simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.hc, h.hu, h.hg, up_mul h.hu' hp, by rw [h.eq]; simp only [Matrix.mul_assoc]⟩`.
+Supply the required witnesses or components.
 -/
 lemma Dec.rightU {g u g₁ u' u₂ : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') (hp : u₂ ∈ UP k r l) :
     Dec k r l (g * u₂) c u g₁ (u' * u₂) :=
   ⟨h.hc, h.hu, h.hg, up_mul h.hu' hp, by rw [h.eq]; simp only [Matrix.mul_assoc]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hc, up_one, hg, up_one, by rw [Matrix.one_mul, Matrix.mul_one]⟩`.
+Supply the required witnesses or components.
 -/
 lemma dec_w {c : ℂ} (hc : c ≠ 0) {g : Mx k r} (hg : g ∈ Glev k r l.succ) : Dec k r l (w1 k r l c * g) c 1 g 1 :=
   ⟨hc, up_one, hg, up_one, by rw [Matrix.one_mul, Matrix.mul_one]⟩
 
 /- English proof (translation)
-Use extensionality with `i`. Distinguish the cases in `hi : l.val ≤ i.val`. Rewrite using `[← B2x6.ent, hn.1.2.1 l i hi]`. Simplify using `only [bvec, Pi.single_apply]`. Establish `hl` using `l.isLt`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : eI k r ⟨i.val, by omega⟩ = i` using `Fin.ext rfl`. Establish `ha : (⟨i.val, by omega⟩ : Fin r).val < (l.castSucc).val` using `by simp only [Fin.val_castSucc]; omega`. Establish `hne : l ≠ ⟨i.val, by omega⟩` using `fun h => hi (by rw [h])`. Rewrite using `[← e, ← herm_es_right (n *ᵥ bvec (eI k r l))]`. Use `conv_lhs => rw [← (hn.2.2 _ ha).2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[uh_herm hn.2.1, h_e_es, if_neg hne]`. Use `symm`. Apply `Pi.single_eq_of_ne` to reduce the goal to its premises. Introduce `h`. Conclude with `hne (eI_inj.1 h).symm`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 lemma nlev_e {n : Mx k r} (hn : n ∈ Nlev k r l.castSucc) : n *ᵥ 𝐞 = 𝐞 := by
   ext i
@@ -1078,7 +1070,7 @@ lemma nlev_e {n : Mx k r} (hn : n ∈ Nlev k r l.castSucc) : n *ᵥ 𝐞 = 𝐞 
     intro h; exact hne (eI_inj.1 h).symm
 
 /- English proof (translation)
-Take `⟨u, hu, g₁, hg₁, h⟩` from `stab_dec hn.2 (nlev_e hn)`. Use `⟨u, hu, g₁, ⟨?_, hg₁⟩, h⟩` and prove the remaining obligations. Establish `: g₁ = u⁻¹ * n` using `by rw [h, ← Matrix.mul_assoc, uh_inv_mul hu.1.1, Matrix.one_mul]`. Rewrite using `[this]`. Conclude with `WeylGroupFacts.mem_n_mul (WeylGroupFacts.mem_n_inv (up_nset hu)) hn.1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nlev_dec {n : Mx k r} (hn : n ∈ Nlev k r l.castSucc) :
     ∃ u ∈ UP k r l, ∃ n₁ ∈ Nlev k r l.succ, n = u * n₁ := by
@@ -1089,7 +1081,7 @@ lemma nlev_dec {n : Mx k r} (hn : n ∈ Nlev k r l.castSucc) :
   exact WeylGroupFacts.mem_n_mul (WeylGroupFacts.mem_n_inv (up_nset hu)) hn.1
 
 /- English proof (translation)
-Take `⟨u, hu, g₁, hg₁, h⟩` from `stab_dec' hn.2 (nlev_e hn)`. Use `⟨u, hu, g₁, ⟨?_, hg₁⟩, h⟩` and prove the remaining obligations. Establish `: g₁ = n * u⁻¹` using `by rw [h, Matrix.mul_assoc, uh_mul_inv hu.1.1, Matrix.mul_one]`. Rewrite using `[this]`. Conclude with `WeylGroupFacts.mem_n_mul hn.1 (WeylGroupFacts.mem_n_inv (up_nset hu))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nlev_dec' {n : Mx k r} (hn : n ∈ Nlev k r l.castSucc) :
     ∃ u ∈ UP k r l, ∃ n₁ ∈ Nlev k r l.succ, n = n₁ * u := by
@@ -1100,18 +1092,18 @@ lemma nlev_dec' {n : Mx k r} (hn : n ∈ Nlev k r l.castSucc) :
   exact WeylGroupFacts.mem_n_mul hn.1 (WeylGroupFacts.mem_n_inv (up_nset hu))
 
 /- English proof (translation)
-The claim follows from `(psiChar k r z cStd hz n hn).1 n' hn'`.
+A detailed English derivation is pending.
 -/
 lemma psi_mul {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n n' : Mx k r} (hn : n ∈ Nset k r) (hn' : n' ∈ Nset k r) :
     psi k r z cStd (n * n') = psi k r z cStd n * psi k r z cStd n' := (psiChar k r z cStd hz n hn).1 n' hn'
 
 /- English proof (translation)
-The claim follows from `Complex.exp_ne_zero _`.
+A detailed English derivation is pending.
 -/
 lemma psi_ne {z : Fin (2 * r + k + 1) → ℂ} (n : Mx k r) : psi k r z cStd n ≠ 0 := Complex.exp_ne_zero _
 
 /- English proof (translation)
-Establish `h` using `psi_mul hz (WeylGroupFacts.mem_n_one (k := k) (r := r)) WeylGroupFacts.mem_n_one`. Rewrite `h` using `[Matrix.one_mul]`. Conclude with `(mul_eq_left₀ (psi_ne _)).1 h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma psi_one {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : psi k r z cStd (1 : Mx k r) = 1 := by
   have h := psi_mul hz (WeylGroupFacts.mem_n_one (k := k) (r := r)) WeylGroupFacts.mem_n_one
@@ -1119,7 +1111,7 @@ lemma psi_one {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) : psi k r z cS
   exact (mul_eq_left₀ (psi_ne _)).1 h.symm
 
 /- English proof (translation)
-Establish `h1` using `psi_mul hz (WeylGroupFacts.mem_n_mul (WeylGroupFacts.mem_n_mul hn hu) (WeylGroupFacts.mem_n_inv hn)) hn`. Rewrite `h1` using `[Matrix.mul_assoc, uh_inv_mul hn.1, Matrix.mul_one, psi_mul hz hn hu, mul_comm]`. Conclude with `(mul_right_cancel₀ (psi_ne _) h1).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma psi_conjN {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n u : Mx k r} (hn : n ∈ Nset k r) (hu : u ∈ Nset k r) :
     psi k r z cStd (n * u * n⁻¹) = psi k r z cStd u := by
@@ -1128,7 +1120,7 @@ lemma psi_conjN {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n u : Mx k 
   exact (mul_right_cancel₀ (psi_ne _) h1).symm
 
 /- English proof (translation)
-Use `psi_conjN hz (WeylGroupFacts.mem_n_inv hn) hu` as an intermediate fact. Rewrite `this` using `[inv_inv' hn.1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma psi_conjN' {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n u : Mx k r} (hn : n ∈ Nset k r) (hu : u ∈ Nset k r) :
     psi k r z cStd (n⁻¹ * u * n) = psi k r z cStd u := by
@@ -1136,7 +1128,7 @@ lemma psi_conjN' {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {n u : Mx k
   rwa [inv_inv' hn.1] at this
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[(uWNormal k r z hz h hh u hu).2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma psi_conjW {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {h u : Mx k r} (hh : h ∈ UWset k r z) (hu : u ∈ Nset k r) :
     psi k r z cStd (h * u * h⁻¹) = psi k r z cStd u := by
@@ -1144,7 +1136,7 @@ lemma psi_conjW {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {h u : Mx k 
   rw [(uWNormal k r z hz h hh u hu).2]
 
 /- English proof (translation)
-Use `psi_conjW hz (WeylGroupFacts.uw_inv hh) hu` as an intermediate fact. Rewrite `this` using `[inv_inv' hh.1]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma psi_conjW' {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) {h u : Mx k r} (hh : h ∈ UWset k r z) (hu : u ∈ Nset k r) :
     psi k r z cStd (h⁻¹ * u * h) = psi k r z cStd u := by
@@ -1159,22 +1151,22 @@ def SmM (f : X → Matrix (Fin m) (Fin m) ℂ) (s : Set X) : Prop := ∀ i j, Co
 def SmV (f : X → Fin m → ℂ) (s : Set X) : Prop := ∀ i, ContDiffOn ℝ ∞ (fun x => f x i) s
 
 /- English proof (translation)
-The claim follows from `Complex.conjCLE.contDiff.comp_contDiffOn hf`.
+A detailed English derivation is pending.
 -/
 lemma sm_conj {f : X → ℂ} {s : Set X} (hf : ContDiffOn ℝ ∞ f s) : ContDiffOn ℝ ∞ (fun x => conj (f x)) s :=
   Complex.conjCLE.contDiff.comp_contDiffOn hf
 
 /- English proof (translation)
-Introduce `_ _` and use `contDiffOn_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma smM_const (A : Matrix (Fin m) (Fin m) ℂ) (s : Set X) : SmM (fun _ => A) s := fun _ _ => contDiffOn_const
 /- English proof (translation)
-Introduce `_` and use `contDiffOn_const`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma smV_const (v : Fin m → ℂ) (s : Set X) : SmV (fun _ => v) s := fun _ => contDiffOn_const
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.mul_apply]`. Conclude with `ContDiffOn.sum fun p _ => (hf i p).mul (hg p j)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma smM_mul {f g : X → Matrix (Fin m) (Fin m) ℂ} {s : Set X} (hf : SmM f s) (hg : SmM g s) :
     SmM (fun x => f x * g x) s := by
@@ -1183,7 +1175,7 @@ lemma smM_mul {f g : X → Matrix (Fin m) (Fin m) ℂ} {s : Set X} (hf : SmM f s
   exact ContDiffOn.sum fun p _ => (hf i p).mul (hg p j)
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [Matrix.conjTranspose_apply]`. Conclude with `sm_conj (hf j i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma smM_conjT {f : X → Matrix (Fin m) (Fin m) ℂ} {s : Set X} (hf : SmM f s) : SmM (fun x => (f x)ᴴ) s := by
   intro i j
@@ -1191,7 +1183,7 @@ lemma smM_conjT {f : X → Matrix (Fin m) (Fin m) ℂ} {s : Set X} (hf : SmM f s
   exact sm_conj (hf j i)
 
 /- English proof (translation)
-Introduce `i`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `ContDiffOn.sum fun p _ => (hf i p).mul (hv p)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma smV_mulVec {f : X → Matrix (Fin m) (Fin m) ℂ} {v : X → Fin m → ℂ} {s : Set X} (hf : SmM f s) (hv : SmV v s) :
     SmV (fun x => f x *ᵥ v x) s := by
@@ -1200,7 +1192,7 @@ lemma smV_mulVec {f : X → Matrix (Fin m) (Fin m) ℂ} {v : X → Fin m → ℂ
   exact ContDiffOn.sum fun p _ => (hf i p).mul (hv p)
 
 /- English proof (translation)
-Introduce `i`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Conclude with `hc.mul (hv i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma smV_smul {c : X → ℂ} {v : X → Fin m → ℂ} {s : Set X} (hc : ContDiffOn ℝ ∞ c s) (hv : SmV v s) :
     SmV (fun x => c x • v x) s := by
@@ -1209,18 +1201,18 @@ lemma smV_smul {c : X → ℂ} {v : X → Fin m → ℂ} {s : Set X} (hc : ContD
   exact hc.mul (hv i)
 
 /- English proof (translation)
-Introduce `i` and use `(hu i).add (hv i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma smV_add {u v : X → Fin m → ℂ} {s : Set X} (hu : SmV u s) (hv : SmV v s) : SmV (fun x => u x + v x) s :=
   fun i => (hu i).add (hv i)
 /- English proof (translation)
-Introduce `i` and use `(hu i).sub (hv i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma smV_sub {u v : X → Fin m → ℂ} {s : Set X} (hu : SmV u s) (hv : SmV v s) : SmV (fun x => u x - v x) s :=
   fun i => (hu i).sub (hv i)
 
 /- English proof (translation)
-Simplify using `only [herm, dotProduct, Pi.star_apply]`. Conclude with `ContDiffOn.sum fun p _ => (sm_conj (hv p)).mul (smV_mulVec (smM_const H s) hu p)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma sm_herm (H : Matrix (Fin m) (Fin m) ℂ) {u v : X → Fin m → ℂ} {s : Set X} (hu : SmV u s) (hv : SmV v s) :
     ContDiffOn ℝ ∞ (fun x => herm H (u x) (v x)) s := by
@@ -1228,7 +1220,7 @@ lemma sm_herm (H : Matrix (Fin m) (Fin m) ℂ) {u v : X → Fin m → ℂ} {s : 
   exact ContDiffOn.sum fun p _ => (sm_conj (hv p)).mul (smV_mulVec (smM_const H s) hu p)
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [hs, Matrix.add_apply, Matrix.sub_apply, vecMulVec_apply]`. Conclude with `(contDiffOn_const.sub ((hp i).mul (sm_herm H (smV_const _ s) hv))).add ((smV_add hv (smV_smul hσ hp) i).mul (sm_herm H (smV_const _ s) hp))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma smM_hs (H : Matrix (Fin m) (Fin m) ℂ) {p v : X → Fin m → ℂ} {σ : X → ℂ} {s : Set X} (hp : SmV p s) (hv : SmV v s)
     (hσ : ContDiffOn ℝ ∞ σ s) : SmM (fun x => hs H (p x) (v x) (σ x)) s := by
@@ -1238,7 +1230,7 @@ lemma smM_hs (H : Matrix (Fin m) (Fin m) ℂ) {p v : X → Fin m → ℂ} {σ : 
     ((smV_add hv (smV_smul hσ hp) i).mul (sm_herm H (smV_const _ s) hp))
 
 /- English proof (translation)
-Establish `h : ContDiffOn ℝ ∞ (fun x => (f x : Fin m → Fin m → ℂ)) s` using `contDiffOn_pi.2 fun i => contDiffOn_pi.2 fun j => hf i j`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma smM_contDiffOn {f : X → Matrix (Fin m) (Fin m) ℂ} {s : Set X} (hf : SmM f s) : ContDiffOn ℝ ∞ f s := by
   have h : ContDiffOn ℝ ∞ (fun x => (f x : Fin m → Fin m → ℂ)) s :=
@@ -1248,7 +1240,7 @@ lemma smM_contDiffOn {f : X → Matrix (Fin m) (Fin m) ℂ} {s : Set X} (hf : Sm
 end smooth
 
 /- English proof (translation)
-Introduce `i j` and use `(contDiff_apply_apply ℝ ℂ i j).contDiffOn`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma smM_id (s : Set (Mx k r)) : SmM (fun g : Mx k r => g) s := fun i j =>
   (contDiff_apply_apply ℝ ℂ i j).contDiffOn
@@ -1257,19 +1249,19 @@ section smooth2
 variable {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
 
 /- English proof (translation)
-The claim follows from `smM_mul (smM_mul (smM_const _ s) (smM_conjT hf)) (smM_const _ s)`.
+A detailed English derivation is pending.
 -/
 lemma smM_iH {f : X → Mx k r} {s : Set X} (hf : SmM f s) : SmM (fun x => iH (f x)) s :=
   smM_mul (smM_mul (smM_const _ s) (smM_conjT hf)) (smM_const _ s)
 
 /- English proof (translation)
-The claim follows from `sm_herm _ (smV_mulVec hf (smV_const _ s)) (smV_const _ s)`.
+A detailed English derivation is pending.
 -/
 lemma sm_cF {f : X → Mx k r} {s : Set X} (hf : SmM f s) : ContDiffOn ℝ ∞ (fun x => cF k r l (f x)) s :=
   sm_herm _ (smV_mulVec hf (smV_const _ s)) (smV_const _ s)
 
 /- English proof (translation)
-The claim follows from `smM_hs _ (smV_const _ s) (smV_sub (smV_sub hx' (smV_const _ s)) (smV_smul (sm_herm _ hx' (smV_const _ s)) (smV_const _ s))) (sm_herm _ hx' (smV_const _ s))`.
+A detailed English derivation is pending.
 -/
 lemma smM_hx {x : X → Fin (2 * r + k + 1) → ℂ} {s : Set X} (hx' : SmV x s) : SmM (fun y => hx k r l (x y)) s :=
   smM_hs _ (smV_const _ s)
@@ -1277,16 +1269,14 @@ lemma smM_hx {x : X → Fin (2 * r + k + 1) → ℂ} {s : Set X} (hx' : SmV x s)
     (sm_herm _ hx' (smV_const _ s))
 
 /- English proof (translation)
-The claim follows from `smM_hx (smV_smul ((sm_cF hf).inv h0) (smV_mulVec hf (smV_const _ s)))`.
+A detailed English derivation is pending.
 -/
 lemma smM_uL {f : X → Mx k r} {s : Set X} (hf : SmM f s) (h0 : ∀ x ∈ s, cF k r l (f x) ≠ 0) :
     SmM (fun x => uL k r l (f x)) s :=
   smM_hx (smV_smul ((sm_cF hf).inv h0) (smV_mulVec hf (smV_const _ s)))
 
 /- English proof (translation)
-Introduce `i j`. Simplify using `only [w1]`. Use `split_ifs`. Conclude with `hc`. Conclude with `(sm_conj hc).inv fun x hx => (map_ne_zero _).2 (h0 x hx)`.
-
-Conclude with `contDiffOn_const`. Conclude with `contDiffOn_const`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma smooth_map_weyl_cell {c : X → ℂ} {s : Set X} (hc : ContDiffOn ℝ ∞ c s) (h0 : ∀ x ∈ s, c x ≠ 0) :
     SmM (fun x => w1 k r l (c x)) s := by
@@ -1299,11 +1289,9 @@ lemma smooth_map_weyl_cell {c : X → ℂ} {s : Set X} (hc : ContDiffOn ℝ ∞ 
   · exact contDiffOn_const
 
 /- English proof (translation)
-Establish `h1 : ContDiffOn ℝ ∞ (fun x => ell k r z (f x)) s`. Unfold `ell`. Apply `ContDiffOn.sum` to reduce the goal to its premises. Introduce `a _`. Use `split_ifs`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hf _ _`. Conclude with `smV_mulVec hf (smV_const _ s) _`. Establish `h2 : ContDiffOn ℝ ∞ (fun x => c * ell k r z (f x)) s` using `contDiffOn_const.mul h1`. Establish `h3 : ContDiffOn ℝ ∞ (fun x => (c * ell k r z (f x)).re) s` using `Complex.reCLM.contDiff.comp_contDiffOn h2`. Establish `h4 : ContDiffOn ℝ ∞ (fun x => (((c * ell k r z (f x)).re : ℝ) : ℂ)) s` using `Complex.ofRealCLM.contDiff.comp_contDiffOn h3`.
-
-Unfold `psi`. Conclude with `(contDiffOn_const.mul h4).cexp`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma sm_psi (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) {f : X → Mx k r} {s : Set X} (hf : SmM f s) :
     ContDiffOn ℝ ∞ (fun x => psi k r z c (f x)) s := by
@@ -1326,7 +1314,7 @@ end smooth2
 def C0 (k r : ℕ) (l : Fin r) : Set (Mx k r) := {g | cF k r l g ≠ 0 ∧ cF k r l (iH g) ≠ 0}
 
 /- English proof (translation)
-Establish `h1` using `smM_id (C0 k r l)`. Establish `h2 : SmM (fun g => uL k r l g) (C0 k r l)` using `smM_uL h1 fun x hx => hx.1`. Establish `h3 : SmM (fun g => uL k r l (iH g)) (C0 k r l)` using `smM_uL (smM_iH h1) fun x hx => hx.2`. Conclude with `smM_mul (smM_mul (smM_mul (smooth_map_weyl_cell (sm_conj (sm_cF h1)) fun x hx => (map_ne_zero _).2 hx.1) (smM_iH h2)) h1) h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma smM_rho : SmM (rho k r l) (C0 k r l) := by
   have h1 := smM_id (C0 k r l)
@@ -1335,7 +1323,7 @@ lemma smM_rho : SmM (rho k r l) (C0 k r l) := by
   exact smM_mul (smM_mul (smM_mul (smooth_map_weyl_cell (sm_conj (sm_cF h1)) fun x hx => (map_ne_zero _).2 hx.1) (smM_iH h2)) h1) h3
 
 /- English proof (translation)
-Establish `h1 : Continuous fun g : Mx k r => cF k r l g` using `continuousOn_univ.1 (sm_cF (smM_id Set.univ)).continuousOn`. Establish `h2 : Continuous fun g : Mx k r => cF k r l (iH g)` using `continuousOn_univ.1 (sm_cF (smM_iH (smM_id Set.univ))).continuousOn`. Conclude with `(isOpen_ne_fun h1 continuous_const).inter (isOpen_ne_fun h2 continuous_const)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isOpen_adelicUnipotentTimesIntegralOutsideSet : IsOpen (C0 k r l) := by
   have h1 : Continuous fun g : Mx k r => cF k r l g :=
@@ -1345,7 +1333,7 @@ lemma isOpen_adelicUnipotentTimesIntegralOutsideSet : IsOpen (C0 k r l) := by
   exact (isOpen_ne_fun h1 continuous_const).inter (isOpen_ne_fun h2 continuous_const)
 
 /- English proof (translation)
-Use `⟨by rw [h.cF_eq]; exact h.hc, ?_⟩` and prove the remaining obligations. Rewrite using `[iH_eq h.mem.1, h.inv.cF_eq]`. Conclude with `h.inv.hc`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Dec.cell_decomposition_mem {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') : g ∈ C0 k r l := by
   refine ⟨by rw [h.cF_eq]; exact h.hc, ?_⟩
@@ -1362,7 +1350,7 @@ def Jx (k r : ℕ) (l : Fin r) (z z' : Fin (2 * r + k + 1) → ℂ) (φ : ℂ �
   (psi k r z cStd (uL k r l g) * psi k r z' cStd (iH (uL k r l (iH g)))) • (φ (cF k r l g) • Ψ (rho k r l g))
 
 /- English proof (translation)
-Unfold `Jx`. Rewrite using `[h.uL_eq, h.uL_iH, h.cF_eq, h.rho_eq, iH_eq (up_inv h.hu').1.1, inv_inv' h.hu'.1.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma Dec.Jx_eq {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') (z z' : Fin (2 * r + k + 1) → ℂ) (φ : ℂ → ℂ)
     (Ψ : Mx k r → (Wq →L[ℂ] Wp)) :
@@ -1371,11 +1359,9 @@ lemma Dec.Jx_eq {g u g₁ u' : Mx k r} {c : ℂ} (h : Dec k r l g c u g₁ u') (
   rw [h.uL_eq, h.uL_iH, h.cF_eq, h.rho_eq, iH_eq (up_inv h.hu').1.1, inv_inv' h.hu'.1.1]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hg, hC, hρ⟩`. Take `⟨u, g₁, u', h⟩` from `dec_exists hg hC.1`. Use `⟨_, u, g₁, u', h, ?_⟩` and prove the remaining obligations. Rewrite using `[← h.rho_eq]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hρ`. Introduce and unpack `⟨c, u, g₁, u', h, hg₁⟩`. Use `⟨h.mem, h.cell_decomposition_mem, ?_⟩` and prove the remaining obligations. Use `show rho k r l g ∈ D₁`. Rewrite using `[h.rho_eq]`.
-
-Conclude with `hg₁`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_cell_domain_iff {D₁ : Set (Mx k r)} {g : Mx k r} :
     g ∈ Glev k r l.castSucc ∩ D0 k r l D₁ ↔ ∃ c u g₁ u', Dec k r l g c u g₁ u' ∧ g₁ ∈ D₁ := by
@@ -1390,41 +1376,37 @@ lemma mem_cell_domain_iff {D₁ : Set (Mx k r)} {g : Mx k r} :
     rw [h.rho_eq]; exact hg₁
 
 /- English proof (translation)
-The claim follows from `(smM_contDiffOn smM_rho).continuousOn.isOpen_inter_preimage isOpen_adelicUnipotentTimesIntegralOutsideSet hD`.
+A detailed English derivation is pending.
 -/
 lemma isOpen_cell_domain {D₁ : Set (Mx k r)} (hD : IsOpen D₁) : IsOpen (D0 k r l D₁) :=
   (smM_contDiffOn smM_rho).continuousOn.isOpen_inter_preimage isOpen_adelicUnipotentTimesIntegralOutsideSet hD
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ k r z z' π π' l D₁ φ Ψ hz hz' hD₁ hφ hΨ`. Take `⟨hΨs, hΨL, hΨR, hΨW⟩` from `hΨ`. Use `⟨D0 k r l D₁, ⟨isOpen_cell_domain hD₁.1, ?_⟩, ?_, ?_, Jx k r l z z' φ Ψ, ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg s ⟨h, hh, m, hm, rfl⟩ s' ⟨h', hh', m', hm', rfl⟩`. Take `⟨c, u, g₁, u', d, hg₁⟩` from `mem_cell_domain_iff.1 hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨u₂, hu₂, n₁, hn₁, rfl⟩` from `nlev_dec hm`. Take `⟨u₃, hu₃, n₃, hn₃, rfl⟩` from `nlev_dec' hm'`. Establish `d1` using `(((((d.leftG hn₁.2).leftU hu₂).leftG (uw_glev hh _)).rightG (uw_glev hh' _)).rightG hn₃.2).rightU hu₃`. Establish `e : h * (u₂ * n₁) * g * (h' * (n₃ * u₃)) = h * (u₂ * (n₁ * g)) * h' * n₃ * u₃`. Simplify using `only [Matrix.mul_assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Use `(mem_cell_domain_iff.2 ⟨_, _, _, _, d1, ?_⟩).2` and prove the remaining obligations. Establish `h2` using `hD₁.2 g₁ ⟨d.hg, hg₁⟩ (h * n₁) ⟨h, hh, n₁, hn₁, rfl⟩ (h' * n₃) ⟨h', hh', n₃, hn₃, rfl⟩`. Establish `e2 : h * (n₁ * g₁) * h' * n₃ = h * n₁ * g₁ * (h' * n₃)` using `by simp only [Matrix.mul_assoc]`. Rewrite using `[e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Introduce `g hg`. Conclude with `hg.1.1`. Introduce `c hc g hg`. Establish `d` using `dec_w (l := l) hc hg`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2 : rho k r l (w1 k r l c * g) ∈ D₁` using `h.2`. Rewrite `h2` using `[d.rho_eq]`. Then use the resulting hypothesis. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨d.cell_decomposition_mem, ?_⟩` and prove the remaining obligations. Use `show rho k r l (w1 k r l c * g) ∈ D₁`. Rewrite using `[d.rho_eq]`. Conclude with `h`. Introduce `g₀ hg₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, u, g₁, u', d, hg₁⟩` from `mem_cell_domain_iff.1 hg₀`. Take `⟨U₁, F₁, hU₁, hmem, hF₁, hag⟩` from `hΨs g₁ ⟨d.hg, hg₁⟩`. Use `⟨C0 k r l ∩ rho k r l ⁻¹' U₁, fun g => (psi k r z cStd (uL k r l g) * psi k r z' cStd (iH (uL k r l (iH g)))) • (φ (cF k r l g) • F₁ (rho k r l g)), (smM_contDiffOn smM_rho).continuousOn.isOpen_inter_preimage isOpen_adelicUnipotentTimesIntegralOutsideSet hU₁, ⟨d.cell_decompositio …` and prove the remaining obligations. Use `show rho k r l g₀ ∈ U₁`. Rewrite using `[d.rho_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hmem`. Establish `hs : C0 k r l ∩ rho k r l ⁻¹' U₁ ⊆ C0 k r l` using `Set.inter_subset_left`. Establish `h1` using `smM_id (C0 k r l ∩ rho k r l ⁻¹' U₁)`. Establish `h2 : SmM (fun g => uL k r l g) (C0 k r l ∩ rho k r l ⁻¹' U₁)` using `smM_uL h1 fun x hx => hx.1.1`. Establish `h3 : SmM (fun g => uL k r l (iH g)) (C0 k r l ∩ rho k r l ⁻¹' U₁)` using `smM_uL (smM_iH h1) fun x hx => hx.1.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : ContDiffOn ℝ ∞ (fun g => φ (cF k r l g)) (C0 k r l ∩ rho k r l ⁻¹' U₁)` using `hφ.comp (sm_cF h1) fun x hx => hx.1.1`. Establish `h5 : ContDiffOn ℝ ∞ (fun g => F₁ (rho k r l g)) (C0 k r l ∩ rho k r l ⁻¹' U₁)` using `hF₁.comp ((smM_contDiffOn smM_rho).mono hs) fun x hx => hx.2`. Conclude with `((sm_psi z cStd h2).mul (sm_psi z' cStd (smM_iH h3))).smul (h4.smul h5)`. Introduce `g hgU hgG`. Take `⟨u₂, g₂, u₂', d₂⟩` from `dec_exists hgG hgU.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `Jx`. Rewrite using `[hag (rho k r l g) hgU.2 (by rw [d₂.rho_eq]; exact d₂.hg)]`. Introduce `g hg n hn`. Take `⟨c, u, g₁, u', d, hg₁⟩` from `mem_cell_domain_iff.1 hg`. Take `⟨u₂, hu₂, n₁, hn₁, rfl⟩` from `nlev_dec hn`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `d1` using `(d.leftG hn₁.2).leftU hu₂`. Rewrite using `[Matrix.mul_assoc, d1.Jx_eq, d.Jx_eq, hΨL g₁ ⟨d.hg, hg₁⟩ n₁ hn₁, psi_mul hz (up_nset hu₂) (up_nset (up_conj d.hu hn₁.2)), psi_conjN hz hn₁.1 (up_nset d.hu), psi_mul hz (up_nset hu₂) hn₁.1]`. Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `g hg n hn`. Take `⟨c, u, g₁, u', d, hg₁⟩` from `mem_cell_domain_iff.1 hg`. Take `⟨u₃, hu₃, n₃, hn₃, rfl⟩` from `nlev_dec' hn`. Establish `d1` using `(d.rightG hn₃.2).rightU hu₃`. Rewrite using `[← Matrix.mul_assoc, d1.Jx_eq, d.Jx_eq, hΨR g₁ ⟨d.hg, hg₁⟩ n₃ hn₃, psi_mul hz' (up_nset (up_conj' d.hu' hn₃.2)) (up_nset hu₃), psi_conjN' hz' hn₃.1 (up_nset d.hu'), psi_mul hz' hn₃.1 (up_nset hu₃)]`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [smul_smul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Introduce `g hg h hh h' hh'`. Take `⟨c, u, g₁, u', d, hg₁⟩` from `mem_cell_domain_iff.1 hg`.
-
-Establish `d1` using `(d.leftG (uw_glev hh _)).rightG (uw_glev hh' _)`. Rewrite using `[d1.Jx_eq, d.Jx_eq, hΨW g₁ ⟨d.hg, hg₁⟩ h hh h' hh', psi_conjW hz hh (up_nset d.hu), psi_conjW' hz' hh' (up_nset d.hu')]`. Use extensionality with `v`. Simplify using the standard rewrite rules. Introduce `c hc g hg`.
-
-Rewrite using `[(dec_w hc hg.1).Jx_eq, psi_one hz, psi_one hz', one_mul, one_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resSurj : ResSurj := by
   intro Wp Wq _ _ _ _ k r z z' π π' l D₁ φ Ψ hz hz' hD₁ hφ hΨ
@@ -1519,38 +1501,38 @@ open Formalism.FourierDecayAlt.B2 (a0)
 open B2x6 (lv blk)
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by rw [B2x6.lv_val]; simp only [eI])`.
+A detailed English derivation is pending.
 -/
 lemma lv_eI (a : Fin r') : lv k r' (eI k r' a) = eI k (1 + r') ⟨a.val + 1, by omega⟩ :=
   Fin.ext (by rw [B2x6.lv_val]; simp only [eI])
 
 /- English proof (translation)
-The claim follows from `Fin.ext (by rw [B2x6.lv_val]; simp only [esI]; omega)`.
+A detailed English derivation is pending.
 -/
 lemma lv_esI (a : Fin r') : lv k r' (esI k r' a) = esI k (1 + r') ⟨a.val + 1, by omega⟩ :=
   Fin.ext (by rw [B2x6.lv_val]; simp only [esI]; omega)
 
 /- English proof (translation)
-The claim follows from `B2x8.al_fix hx.1 (hx.2 (a0 r') (by simp [a0])).1 (hx.2 (a0 r') (by simp [a0])).2`.
+A detailed English derivation is pending.
 -/
 lemma level_one_eq_embedding {x : Mx k (1 + r')} (hx : x ∈ Glev k (1 + r') ⟨1, by omega⟩) :
     ∃ g ∈ UH (Hpk k r'), x = ιLev k 1 r' g :=
   B2x8.al_fix hx.1 (hx.2 (a0 r') (by simp [a0])).1 (hx.2 (a0 r') (by simp [a0])).2
 
 /- English proof (translation)
-Use extensionality with `i j`. Conclude with `B2x6.lev_mm g i j`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma blk_lev (g : Mx k r') : blk (ιLev k 1 r' g) = g := by
   ext i j; exact B2x6.lev_mm g i j
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hg, fun a ha => absurd ha (by simp)⟩`.
+Supply the required witnesses or components.
 -/
 lemma glev0 {g : Mx k r'} (hg : g ∈ UH (Hpk k r')) : g ∈ Glev k r' 0 :=
   ⟨hg, fun a ha => absurd ha (by simp)⟩
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[WeylGroupFacts.nset_iff]`. Use `⟨hg, fun i j hj hi => ?_⟩` and prove the remaining obligations. Establish `h2` using `h.2 (lv k r' i) (lv k r' j) (by rw [B2x6.lv_val]; omega) (by rw [B2x6.lv_val, B2x6.lv_val]; omega)`. Rewrite `h2` using `[B2x6.lev_mm]`. Simplify `h2` using `only [B2x6.lv_inj]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma lev_nset {g : Mx k r'} (hg : g ∈ UH (Hpk k r')) (h : ιLev k 1 r' g ∈ Nset k (1 + r')) : g ∈ Nset k r' := by
   rw [WeylGroupFacts.nset_iff] at h ⊢
@@ -1560,16 +1542,16 @@ lemma lev_nset {g : Mx k r'} (hg : g ∈ UH (Hpk k r')) (h : ιLev k 1 r' g ∈ 
   simpa only [B2x6.lv_inj] using h2
 
 /- English proof (translation)
-Use `congrArg B2x6.res h` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma lift_inj {y y' : Fin (2 * r' + k + 1) → ℂ} (h : liftVec k 1 r' y = liftVec k 1 r' y') : y = y' := by
   have := congrArg B2x6.res h
   simpa using this
 
 /- English proof (translation)
-Use `⟨hg, fun a => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h2` using `(h.2.1 ⟨a.val + 1, by omega⟩).1`. Rewrite `h2` using `[← lv_eI, B2x6.bvec_lv, B2x5.lev_lift]`. Conclude with `lift_inj h2`. Establish `h2` using `(h.2.1 ⟨a.val + 1, by omega⟩).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← lv_esI, B2x6.bvec_lv, B2x5.lev_lift]`. Conclude with `lift_inj h2`. Establish `h2` using `h.2.2`. Rewrite `h2` using `[B2x5.lev_lift]`. Conclude with `lift_inj h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma lev_uw {z : Fin (2 * r' + k + 1) → ℂ} {g : Mx k r'} (hg : g ∈ UH (Hpk k r'))
     (h : ιLev k 1 r' g ∈ UWset k (1 + r') (liftVec k 1 r' z)) : g ∈ UWset k r' z := by
@@ -1585,9 +1567,9 @@ lemma lev_uw {z : Fin (2 * r' + k + 1) → ℂ} {g : Mx k r'} (hg : g ∈ UH (Hp
     exact lift_inj h2
 
 /- English proof (translation)
-Introduce `i hi`. Unfold `liftVec`. Use `split_ifs with hp`. Apply `hz` to reduce the goal to its premises. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 lemma lift_inWb {z : Fin (2 * r' + k + 1) → ℂ} (hz : inWb k r' z) : inWb k (1 + r') (liftVec k 1 r' z) := by
   intro i hi
@@ -1599,17 +1581,17 @@ lemma lift_inWb {z : Fin (2 * r' + k + 1) → ℂ} (hz : inWb k r' z) : inWb k (
   · rfl
 
 /- English proof (translation)
-Unfold `ell`. Use `symm`. Apply `Fintype.sum_of_injective (fun a : Fin r' => (⟨a.val + 1, by omega⟩ : Fin (1 + r')))` to reduce the goal to its premises. Introduce `a b h`. Use `congrArg Fin.val h` as an intermediate fact.
+Replace the relevant objects with their definitions. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only at this`. Conclude with `Fin.ext (by omega)`. Introduce `a ha`. Establish `ha0 : a.val = 0`. Assume the negation of the conclusion as `h0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ha` to reduce the goal to its premises. Use `a.isLt` as an intermediate fact. Conclude with `⟨⟨a.val - 1, by omega⟩, Fin.ext (by simp only; omega)⟩`. Establish `e : eI k (1 + r') a = B2x6.iF k r'` using `Fin.ext (by rw [B2x6.iF_val]; exact ha0)`. Use `split_ifs with h`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, B2x6.lev_F, if_neg]`. Introduce `h2`. Use `congrArg Fin.val h2` as an intermediate fact. Rewrite `this` using `[B2x6.iF_val]`. Simplify using `only [eI] at this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[e, B2x6.lev_mulVec_F, B2x6.lift_F]`. Introduce `a`. Distinguish the cases in `h : a.val + 1 < r'`. Rewrite using `[dif_pos h, dif_pos (by simp only; omega)]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : eI k (1 + r') ⟨a.val + 1 + 1, by omega⟩ = lv k r' (eI k r' ⟨a.val + 1, h⟩)` using `(lv_eI (k := k) (⟨a.val + 1, h⟩ : Fin r')).symm`. Rewrite using `[← lv_eI a]`. Conclude with `(B2x6.lev_mm g _ _).symm.trans (by rw [e2])`. Rewrite using `[dif_neg h, dif_neg (by simp only; omega), ← lv_eI a, B2x5.lev_lift]`. Conclude with `(congrFun (B2x6.lift_res (g *ᵥ z)) (eI k r' a)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ell_lev (z : Fin (2 * r' + k + 1) → ℂ) (g : Mx k r') :
     ell k (1 + r') (liftVec k 1 r' z) (ιLev k 1 r' g) = ell k r' z g := by
@@ -1645,50 +1627,46 @@ lemma ell_lev (z : Fin (2 * r' + k + 1) → ℂ) (g : Mx k r') :
       exact (congrFun (B2x6.lift_res (g *ᵥ z)) (eI k r' a)).symm
 
 /- English proof (translation)
-Unfold `psi`. Rewrite using `[ell_lev]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma psi_lev (z : Fin (2 * r' + k + 1) → ℂ) (c : ℂ) (g : Mx k r') :
     psi k (1 + r') (liftVec k 1 r' z) c (ιLev k 1 r' g) = psi k r' z c g := by
   unfold psi; rw [ell_lev]
 
 /- English proof (translation)
-Introduce `i j` and use `(contDiff_apply_apply ℝ ℂ (lv k r' i) (lv k r' j)).contDiffOn`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma smM_blk (s : Set (Mx k (1 + r'))) : SmM (fun x : Mx k (1 + r') => (blk x : Mx k r')) s := fun i j =>
   (contDiff_apply_apply ℝ ℂ (lv k r' i) (lv k r' j)).contDiffOn
 
 /- English proof (translation)
-The claim follows from `continuousOn_univ.1 (smM_contDiffOn (smM_blk Set.univ)).continuousOn`.
+A detailed English derivation is pending.
 -/
 lemma cont_blk : Continuous (fun x : Mx k (1 + r') => (blk x : Mx k r')) :=
   continuousOn_univ.1 (smM_contDiffOn (smM_blk Set.univ)).continuousOn
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ k r' z z' π π' D hz hz' hD J hJ`. Take `⟨hJs, hJL, hJR, hJW⟩` from `hJ`. Use `⟨fun x => π (blk x), fun x => π' (blk x), (fun x : Mx k (1 + r') => (blk x : Mx k r')) ⁻¹' D, fun x => J (blk x), lift_inWb hz, lift_inWb hz', ⟨hD.1.preimage cont_blk, ?_⟩, ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `x hx s ⟨h, hh, m, hm, rfl⟩ s' ⟨h', hh', m', hm', rfl⟩`. Take `⟨g, hg, rfl⟩` from `level_one_eq_embedding hx.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨h₁, hh₁, rfl⟩` from `level_one_eq_embedding (uw_glev hh _)`. Take `⟨m₁, hm₁, rfl⟩` from `level_one_eq_embedding hm.2`. Take `⟨h₂, hh₂, rfl⟩` from `level_one_eq_embedding (uw_glev hh' _)`. Take `⟨m₂, hm₂, rfl⟩` from `level_one_eq_embedding hm'.2`. Establish `hgD : g ∈ D`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hx.2` as an intermediate fact. Simplify using `only [Set.mem_preimage, blk_lev] at this`. Conclude with `this`. Use `show blk (ιLev k 1 r' h₁ * ιLev k 1 r' m₁ * ιLev k 1 r' g * (ιLev k 1 r' h₂ * ιLev k 1 r' m₂)) ∈ D`. Rewrite using `[← B2x8.al_lev_mul, ← B2x8.al_lev_mul, ← B2x8.al_lev_mul, ← B2x8.al_lev_mul, blk_lev]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `hD.2 g ⟨glev0 hg, hgD⟩ (h₁ * m₁) ⟨h₁, lev_uw hh₁ hh, m₁, ⟨lev_nset hm₁ hm.1, glev0 hm₁⟩, rfl⟩ (h₂ * m₂) ⟨h₂, lev_uw hh₂ hh', m₂, ⟨lev_nset hm₂ hm'.1, glev0 hm₂⟩, rfl⟩`. Introduce `x₀ hx₀`. Take `⟨g₀, hg₀, rfl⟩` from `level_one_eq_embedding hx₀.1`. Establish `hgD : g₀ ∈ D`. Use `hx₀.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_preimage, blk_lev] at this`. Conclude with `this`. Take `⟨U, F, hU, hmem, hF, hag⟩` from `hJs g₀ ⟨glev0 hg₀, hgD⟩`. Use `⟨(fun x : Mx k (1 + r') => (blk x : Mx k r')) ⁻¹' U, fun x => F (blk x), hU.preimage cont_blk, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, blk_lev]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `hmem`. Conclude with `hF.comp (smM_contDiffOn (smM_blk _)) fun x hx => hx`. Introduce `x hxU hxG`. Take `⟨g, hg, rfl⟩` from `level_one_eq_embedding hxG`. Simplify using `only [Set.mem_preimage, blk_lev] at hxU`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [blk_lev]`. Conclude with `hag g hxU (glev0 hg)`. Introduce `x hx n hn`. Take `⟨g, hg, rfl⟩` from `level_one_eq_embedding hx.1`. Take `⟨n₁, hn₁, rfl⟩` from `level_one_eq_embedding hn.2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hgD : g ∈ D`. Use `hx.2` as an intermediate fact. Simplify using `only [Set.mem_preimage, blk_lev] at this`. Conclude with `this`. Rewrite using `[← B2x8.al_lev_mul, psi_lev]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [blk_lev]`. Conclude with `hJL g ⟨glev0 hg, hgD⟩ n₁ ⟨lev_nset hn₁ hn.1, glev0 hn₁⟩`. Introduce `x hx n hn`. Take `⟨g, hg, rfl⟩` from `level_one_eq_embedding hx.1`. Take `⟨n₁, hn₁, rfl⟩` from `level_one_eq_embedding hn.2`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hgD : g ∈ D`. Use `hx.2` as an intermediate fact. Simplify using `only [Set.mem_preimage, blk_lev] at this`. Conclude with `this`. Rewrite using `[← B2x8.al_lev_mul, psi_lev]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [blk_lev]`. Conclude with `hJR g ⟨glev0 hg, hgD⟩ n₁ ⟨lev_nset hn₁ hn.1, glev0 hn₁⟩`. Introduce `x hx h hh h' hh'`. Take `⟨g, hg, rfl⟩` from `level_one_eq_embedding hx.1`. Take `⟨h₁, hh₁, rfl⟩` from `level_one_eq_embedding (uw_glev hh _)`.
-
-Take `⟨h₂, hh₂, rfl⟩` from `level_one_eq_embedding (uw_glev hh' _)`. Establish `hgD : g ∈ D`. Use `hx.2` as an intermediate fact. Simplify using `only [Set.mem_preimage, blk_lev] at this`. Conclude with `this`.
-
-Rewrite using `[← B2x8.al_lev_mul, ← B2x8.al_lev_mul]`. Simplify using `only [blk_lev]`. Conclude with `hJW g ⟨glev0 hg, hgD⟩ h₁ (lev_uw hh₁ hh) h₂ (lev_uw hh₂ hh')`. Introduce `g _`. Simplify using `only [Set.mem_preimage, blk_lev, true_and, iff_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fFTransfer : FFTransfer := by
   intro Wp Wq _ _ _ _ k r' z z' π π' D hz hz' hD J hJ
@@ -1765,19 +1743,19 @@ end Formalism.FourierDecayAlt.P.Qx4
 namespace Formalism.FourierDecayAlt.P
 
 /- English proof (translation)
-The claim follows from `Qx4.resSurj`.
+A detailed English derivation is pending.
 -/
 theorem resSurj_statement : Formalism.FourierDecayAlt.Q.ResSurj := Qx4.resSurj
 /- English proof (translation)
-The claim follows from `Qx4.cellDecomp`.
+A detailed English derivation is pending.
 -/
 theorem cell_decomposition : Formalism.FourierDecayAlt.Q.CellDecomp := Qx4.cellDecomp
 /- English proof (translation)
-The claim follows from `Qx4.cellDense`.
+A detailed English derivation is pending.
 -/
 theorem cells_dense : Formalism.FourierDecayAlt.Q.CellDense := Qx4.cellDense
 /- English proof (translation)
-The claim follows from `Qx4.fFTransfer`.
+A detailed English derivation is pending.
 -/
 theorem flag_frame_transfer : Formalism.FourierDecayAlt.Q.FFTransfer := Qx4.fFTransfer
 

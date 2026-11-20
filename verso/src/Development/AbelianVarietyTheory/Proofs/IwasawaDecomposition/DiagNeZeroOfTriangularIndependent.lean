@@ -6,21 +6,19 @@ open Formalism.MainNotions.DIV.Cons (intO)
 namespace GlobalTheory.FlagEmb
 
 /- English proof (translation)
-Introduce `T m K _ ι c c' d hli htri z hz`. Take `⟨τ, i⟩` from `z`. Use `set f : Fin (m τ) → ι → K := fun j => c ⟨τ, j⟩ with hf`. Set `w : Finset (ι → K)` to `(Finset.Iio i).image f`. Establish `hsub : ∀ j : Fin (m τ), j ≤ i → c' ⟨τ, j⟩ ∈ Submodule.span K (w : Set (ι → K))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : ∀ j : Fin (m τ), j ≤ i → Submodule.span K (f '' {j' | j' < j}) ≤ Submodule.span K (w : Set (ι → K))`. Introduce `j hj`. Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j', hj', rfl⟩`. Simplify using `only [w, Finset.coe_image, Finset.coe_Iio]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `⟨j', lt_of_lt_of_le hj' hj, rfl⟩`. Introduce `j hj`. Establish `ht` using `htri ⟨τ, j⟩`. Break down `lt_or_eq_of_le hj with hlt | heq` into its components or cases. Establish `h1 : c' ⟨τ, j⟩ - d ⟨τ, j⟩ • c ⟨τ, j⟩ ∈ Submodule.span K (w : Set (ι → K))` using `hspan j hj ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : c ⟨τ, j⟩ ∈ Submodule.span K (w : Set (ι → K))`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Simplify using `only [w, Finset.coe_image, Finset.coe_Iio]`. Conclude with `⟨j, hlt, rfl⟩`. Use `Submodule.add_mem _ h1 (Submodule.smul_mem _ (d ⟨τ, j⟩) h2)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Substitute `heq` using the available equality. Establish `h1` using `hspan j le_rfl ht`. Simplify `h1` using `[hz]`. Set `v : (Finset.Iic i) → ι → K` to `fun j => c' ⟨τ, j.1⟩`.
+Substitute using the available equality. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hv : LinearIndependent K v` using `(hli τ).comp (fun j : Finset.Iic i => j.1) Subtype.val_injective`. Establish `hle` using `linearIndependent_le_span_aux' v hv (w : Set (ι → K)) (by`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `hsub j.1 (Finset.mem_Iic.1 j.2))`. Establish `hw : Fintype.card (w : Set (ι → K)) ≤ (i : ℕ)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Finset.coe_sort_coe, Fintype.card_coe]`. Conclude with `(Finset.card_image_le).trans (by simp)`. Establish `hv' : Fintype.card (Finset.Iic i) = (i : ℕ) + 1`. Rewrite using `[Fintype.card_coe]`. Simplify using the standard rewrite rules.
-
-Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem tri_diag_ne_zero : ∀ (T : Type) (m : T → ℕ) (K : Type) [Field K] (ι : Type) (c c' : Let m → ι → K)
     (d : Let m → K), (∀ τ, LinearIndependent K fun j : Fin (m τ) => c' ⟨τ, j⟩) → Tri c c' d → ∀ z, d z ≠ 0 := by

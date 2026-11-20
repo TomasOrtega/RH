@@ -23,7 +23,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {β : Oz →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
 
 /- English proof (translation)
-Use `⟨hx, hφ, fun τ i => ⟨Pi.single i 1, by simp, fun k hk => Pi.single_eq_of_ne hk.ne' _, ?_⟩⟩` and prove the remaining obligations. Establish `e' : (fun k => spMap (Formalism.L2.Pj.dualMap ψ) ≫ f.v τ k) = g.v τ` using `funext fun k => (h τ k).symm`. Rewrite using `[e']`. Conclude with `isCombAtG_single Z.t _ (g.tan τ) i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_of_eq {R R' : Type} [CommRing R] [CommRing R'] {φ : c.F →+* R} {φ' : c.F →+* R'}
     {x : Sp R ⟶ Z.X} {x' : Sp R' ⟶ Z.X} (f : EigFrame Z φ x) (ψ : R →+* R') (g : EigFrame Z φ' x')
@@ -35,7 +35,7 @@ theorem tri_of_eq {R R' : Type} [CommRing R] [CommRing R'] {φ : c.F →+* R} {�
   exact isCombAtG_single Z.t _ (g.tan τ) i
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Conclude with `EigFrame.exists_baseChange E H Dw l Xo c Oz β Z R R' φ x f ψ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_bc {R R' : Type} [CommRing R] [CommRing R'] {φ : c.F →+* R} {x : Sp R ⟶ Z.X} (f : EigFrame Z φ x)
     (ψ : R →+* R') (x' : Sp R' ⟶ Z.X) (hx : x' = spMap ψ ≫ x) :
@@ -44,7 +44,7 @@ theorem exists_bc {R R' : Type} [CommRing R] [CommRing R'] {φ : c.F →+* R} {x
   exact EigFrame.exists_baseChange E H Dw l Xo c Oz β Z R R' φ x f ψ
 
 /- English proof (translation)
-Apply the tactic sequence `ext r <;> simp [Formalism.L2.Pj.dualMap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     (Formalism.L2.Pj.dualMap g).comp (Formalism.L2.Pj.dualMap f) = Formalism.L2.Pj.dualMap (g.comp f) := by
@@ -53,9 +53,9 @@ theorem dualMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : 
 variable {F : Type} [Field F] {e : F ≃+* c.F} {σ : c.F →+* ℂ} {N : ℕ} {U : Formalism.L2.PjFree.Unf Xo c σ N}
 
 /- English proof (translation)
-Take `⟨⟨i, p⟩, ⟨hp, hc⟩, hu⟩` from `Φ.lifts K χ x hx g`. Take `⟨t⟩ : Nonempty (Sp K)` from `inferInstance`. Take `⟨y, hy⟩` from `hr ⟨t, rfl⟩`. Establish `hi : i = k`. Use `GlobalTheory.FlagCptBase.eq_of_apply_eq Φ (GlobalTheory.FlagFibre.carries_every E H Dw l Xo c Oz β Z F e σ N U Φ) (fun i K _ χ p h => GlobalTheory.CarryAll.carry_some E H Dw l Xo c Oz β Z F e (Φ.C i) K χ p h) (p t) y ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hy, ← Scheme.Hom.comp_apply]`. Conclude with `congrArg (fun m : Sp K ⟶ gen Z => m t) hp`. Substitute `hi` using the available equality. Use `⟨p, ⟨hp, hc⟩, fun p₂ h₂ => ?_⟩` and prove the remaining obligations. Conclude with `eq_of_heq (Sigma.mk.inj_iff.1 (hu ⟨i, p₂⟩ h₂)).2`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lifts_closed (Φ : FlagTor Z e U) (k : U.Comp) (K : Type) [Field K] [IsAlgClosed K] (χ : c.F →+* K)
     (x : Sp K ⟶ gen Z) (hx : x ≫ genStr Z = spMap χ) (hr : Set.range x ⊆ Set.range (Φ.C k).π)
@@ -76,19 +76,19 @@ theorem lifts_closed (Φ : FlagTor Z e U) (k : U.Comp) (K : Type) [Field K] [IsA
 end GlobalTheory.FlagCls.Lift
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ e σ N U Φ k K _ χ x hx hr g`. Establish `: CharZero K` using `(RingHom.charZero_iff χ.injective).1 inferInstance`. Set `L` to `AlgebraicClosure K`. Set `ι : K →+* L` to `algebraMap K L`. Take `⟨gL, hgL⟩` from `GlobalTheory.FlagCls.Lift.exists_bc g ι ((spMap ι ≫ x) ≫ genι Z) (Category.assoc _ _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hT : g.Tri ι gL 1` using `GlobalTheory.FlagCls.Lift.tri_of_eq g ι gL (Category.assoc _ _ _) rfl hgL`. Establish `hxL : (spMap ι ≫ x) ≫ genStr Z = spMap (ι.comp χ)`. Rewrite using `[Category.assoc, hx, GlobalTheory.FieldPts.spMap_comp']`. Establish `hrL : Set.range (spMap ι ≫ x) ⊆ Set.range (Φ.C k).π`. Introduce and unpack `_ ⟨t, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hr ⟨spMap ι t, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Take `⟨q, ⟨hq1, hq2⟩, hqu⟩` from `GlobalTheory.FlagCls.Lift.lifts_closed Φ k L (ι.comp χ) (spMap ι ≫ x) hxL hrL gL`. Establish `hfix : ∀ s : L ≃ₐ[K] L, spMap (s : L →+* L) ≫ q = q`. Introduce `s`. Establish `hsι : (s : L →+* L).comp ι = ι` using `RingHom.ext fun a => s.commutes a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsx : spMap (s : L →+* L) ≫ spMap ι = spMap ι` using `by rw [GlobalTheory.FieldPts.spMap_comp', hsι]`. Use `hqu _ ⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hq1, ← Category.assoc, hsx]`. Establish `hTs : gL.Tri (s : L →+* L) gL 1`. Use `GlobalTheory.FlagCls.Lift.tri_of_eq gL _ gL ?_ ?_ fun τ j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [← Category.assoc]`. Rewrite using `[hsx]`. Rewrite using `[← RingHom.comp_assoc, hsι]`. Rewrite using `[hgL, ← Category.assoc, GlobalTheory.FieldPts.spMap_comp', GlobalTheory.FlagCls.Lift.dualMap_comp, hsι]`. Conclude with `(GlobalTheory.T.flag_compactification_point_extension E H Dw l Xo c Oz β Z F e (Φ.C k) L _ _ gL L (s : L →+* L) _ _ gL 1 q (by rw [← Category.assoc q, hq1]) (by rw [← Category.assoc q, hq1, hxL]) hTs).2 hq2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `GlobalTheory.FieldPts.exists_of_fixed q hfix`. Establish `key : ∀ p' : Sp K ⟶ (Φ.C k).Y.X, p' ≫ (Φ.C k).π = x → ((Φ.C k).Carries (spMap ι ≫ p') gL ↔ (Φ.C k).Carries p' g)` using `fun p' h' => GlobalTheory.T.flag_compactification_point_extension E H Dw l Xo c Oz β Z F e (Φ.C k) K χ _ g L ι _ _ gL 1 p' (by rw [← Category.assoc p', h']) (by rw [← Category.assoc p', h', hx]) hT`. Establish `hpx : p ≫ (Φ.C k).π = x`. Use `GlobalTheory.spec_map_field_cancel ι _ _ ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, hp, hq1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨p, ⟨hpx, (key p hpx).1 (hp ▸ hq2)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `p' ⟨h1, h2⟩`. Use `GlobalTheory.spec_map_field_cancel ι _ _ ?_` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `hqu _ ⟨by rw [Category.assoc, h1], (key p' h1).2 h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.FlagCls.Lift.lifts_field : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H) (l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H) (Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l) (c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l) (Oz : Type) [CommRing Oz] (β : Oz →+* c.F) (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) (F : Type) [Field F] (e : F ≃+* c.F) (σ : c.F →+* ℂ) (N : ℕ) (U : Formalism.L2.PjFree.Unf Xo c σ N) (Φ : FlagTor Z e U) (k : U.Comp) (K : Type) [Field K] (χ : c.F →+* K) (x : Sp K ⟶ gen Z), x ≫ genStr Z = spMap χ → Set.range x ⊆ Set.range (Φ.C k).π → ∀ g : EigFrame Z χ (x ≫ genι Z), ∃! p : Sp K ⟶ (Φ.C k).Y.X, p ≫ (Φ.C k).π = x ∧ (Φ.C k).Carries p g := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z F _ e σ N U Φ k K _ χ x hx hr g

@@ -7,25 +7,23 @@ open GlobalTheory.WeilM GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHeck
 namespace GlobalTheory.FormSection
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J L hL x ⟨z₀, hz₀L, hz₀⟩`. Set `φ : (Fin n → E) →ₗ[𝓞 E] E` to `{ toFun := fun z => form σ J z x map_add' := fun a b => by simp [form, add_dotProduct] map_smul' := fun a z => by`. Simplify using `only [form, RingHom.id_apply]`. Rewrite using `[← algebraMap_smul E a z, smul_dotProduct, smul_eq_mul, Algebra.smul_def] }`. Establish `hφ : ∀ z, φ z = form σ J z x` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφE : ∀ (c : E) z, form σ J (c • z) x = c * form σ J z x`. Introduce `c z`. Simplify using `[form, smul_dotProduct]`. Set `I : Submodule (𝓞 E) E` to `L.map φ`. Establish `hIfg : I.FG` using `hL.map φ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `I' : FractionalIdeal (nonZeroDivisors (𝓞 E)) E` to `⟨I, FractionalIdeal.isFractional_of_fg hIfg⟩`. Establish `hmemI : ∀ z ∈ L, form σ J z x ∈ I'` using `fun z hz => ⟨z, hz, rfl⟩`. Establish `hI0 : I' ≠ 0`. Introduce `h`. Use `hmemI z₀ hz₀L` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h, FractionalIdeal.mem_zero_iff]`. Conclude with `hz₀ this`. Establish `hone : I' * I'⁻¹ = 1` using `mul_inv_cancel₀ hI0`. Set `S : Submodule (𝓞 E) E` to `{ carrier := {e | ∃ y₀ : Fin n → E, form σ J y₀ x = e ∧ ∀ c ∈ I, c • y₀ ∈ L} add_mem' := by`. Introduce and unpack `_ _ ⟨y₁, rfl, h₁⟩ ⟨y₂, rfl, h₂⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨y₁ + y₂, by simp [form, add_dotProduct], fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Conclude with `L.add_mem (h₁ c hc) (h₂ c hc)`. Use the proof step `zero_mem' := ⟨0, by simp [form], fun c _ => by simp⟩`. Use the proof step `smul_mem' := by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `a _ ⟨y, rfl, h⟩`. Use `⟨a • y, ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[← hφ, ← hφ, map_smul]`. Rewrite using `[smul_comm]`. Conclude with `L.smul_mem a (h c hc) }`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : I * ((I'⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E) ≤ S`. Use `Submodule.mul_le.mpr fun i hi j hj => ?_` and prove the remaining obligations. Take `⟨z, hz, rfl⟩` from `hi`. Use `⟨j • z, ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[hφE, hφ, mul_comm]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hcj : j * c ∈ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)` using `(FractionalIdeal.mem_inv_iff hI0).mp hj c hc`. Take `⟨a, ha⟩` from `(FractionalIdeal.mem_one_iff _).mp hcj`. Rewrite using `[smul_smul, mul_comm, ← ha, algebraMap_smul]`. Conclude with `L.smul_mem a hz`. Establish `h1 : (1 : E) ∈ S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Apply `hle` to reduce the goal to its premises. Establish `: (1 : E) ∈ ((I' * I'⁻¹ : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) : Submodule (𝓞 E) E)`. Rewrite using `[hone]`. Conclude with `(FractionalIdeal.mem_one_iff _).mpr ⟨1, map_one _⟩`. Rewrite `this` using `[FractionalIdeal.coe_mul]`. Then use the resulting hypothesis.
-
-Take `⟨y₀, hy₀, hL'⟩` from `h1`. Conclude with `⟨y₀, hy₀, fun z hz => hL' _ (hmemI z hz)⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_section : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)), L.FG →

@@ -7,7 +7,7 @@ open UpperTheory.Comparison₂ Deduction.CH Formalism Formalism.HC Formalism.D5 
   Formalism.LFunctionChainParameters.LChain Formalism.LFunctionChainParameters.LHost
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [toE, Frame.tau1, Frame.iota, Frame.iotaInv, sgn2]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem embedding_generator_eq (φ : Frame) (s : φ.A) : toE φ (φ.tau1 s) = Multiplicative.ofAdd ((0 : E0), s) := by
   first
@@ -27,11 +27,11 @@ private theorem chr_coe_eq_addChar_toE (φ : Frame) (ψ : AddChar (E0 × φ.A) �
     ((chr φ ψ g : ℂˣ) : ℂ) = ψ (Multiplicative.toAdd (toE φ g)) := rfl
 
 /- English proof (translation)
-Establish `key : ∀ s : φ.A, ((chr φ ψ (φ.tau1 s) : ℂˣ) : ℂ) = ψ ((0 : E0), s)`. Introduce `s`. Rewrite using `[chr_coe_eq_addChar_toE, embedding_generator_eq]`. Both sides reduce to the same expression. Simplify using `only [PsiA, Frame.TrivialOnFirstFactor, Finset.mem_filter, Finset.mem_univ, true_and]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h s hs`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_one, key]`. Conclude with `h s hs`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h s hs`. Establish `h2` using `congrArg Units.val (h s hs)`. Rewrite `h2` using `[key, Units.val_one]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_PsiA_iff (φ : Frame) (ψ : AddChar (E0 × φ.A) ℂ) : ψ ∈ PsiA φ.A0 ↔ Frame.TrivialOnFirstFactor (chr φ ψ) := by
   have key : ∀ s : φ.A, ((chr φ ψ (φ.tau1 s) : ℂˣ) : ℂ) = ψ ((0 : E0), s) := by
@@ -50,16 +50,16 @@ private theorem mem_PsiA_iff (φ : Frame) (ψ : AddChar (E0 × φ.A) ℂ) : ψ �
     exact h2
 
 /- English proof (translation)
-Simplify using `[keptA]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem mem_keptA (Λ : Level) (φ : Frame) (H : HostRaw φ) (ψ : AddChar (E0 × φ.A) ℂ) :
     ψ ∈ keptA Λ H ↔ H.Kept Λ.KEPT (chr φ ψ) := by
   simp [keptA]
 
 /- English proof (translation)
-Establish `h1` using `(mem_PsiA_iff φ ψ).1 h`. Establish `h2 : ¬ H.Kept Λ.KEPT (chr φ ψ)` using `fun h => hk ((mem_keptA Λ φ H ψ).2 h)`. Establish `h3 : φ.iod * φ.iod = 1`. Simplify using `[Frame.iod]`. Establish `h4 : chr φ ψ φ.iod * chr φ ψ φ.iod = 1` using `by rw [← map_mul, h3, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h5 : ((chr φ ψ φ.iod : ℂˣ) : ℂ) * ((chr φ ψ φ.iod : ℂˣ) : ℂ) = 1`. Rewrite using `[← Units.val_mul, h4, Units.val_one]`. Break down `mul_self_eq_one_iff.1 h5 with h6 | h6` into its components or cases. Conclude with `Or.inl ⟨⟨h1, Units.ext h6⟩, h2⟩`. Conclude with `Or.inr ⟨h1, Units.ext h6⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 private theorem chr_bounded (Λ : Level) (φ : Frame) (H : HostRaw φ) (ψ : AddChar (E0 × φ.A) ℂ) (h : ψ ∈ PsiA φ.A0)
     (hk : ψ ∉ keptA Λ H) : chr φ ψ ∈ H.Bounded Λ.KEPT := by
@@ -75,11 +75,11 @@ private theorem chr_bounded (Λ : Level) (φ : Frame) (H : HostRaw φ) (ψ : Add
   · exact Or.inr ⟨h1, Units.ext h6⟩
 
 /- English proof (translation)
-Apply `MonoidHom.ext` to reduce the goal to its premises. Introduce `g`. Take `⟨u, rfl⟩` from `HostDer.art_surj H.der g`. Establish `h1` using `(H.toHostRaw.isPrimOf_prim θ).2`. Establish `h2` using `(H.toHostRaw.isPrimOf_prim θ').2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[← h]`. Establish `hc` using `ZMod.val_coe_unit_coprime u`. Establish `e` using `(h1 _ hc).symm.trans (h2 _ hc)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[← HostRaw.dir_unit, ← HostRaw.dir_unit]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Simplify `e` using `[HostRaw.dirAt, ZMod.natCast_zmod_val]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eq_of_prim_eq (φ : Frame) (H : HostAx φ) (θ θ' : φ.Char)
     (h : H.toHostRaw.prim θ = H.toHostRaw.prim θ') : θ = θ' := by
@@ -96,11 +96,11 @@ private theorem eq_of_prim_eq (φ : Frame) (H : HostAx φ) (θ θ' : φ.Char)
   simpa [HostRaw.dirAt, ZMod.natCast_zmod_val] using e
 
 /- English proof (translation)
-Rewrite using `[mem_keptA, HostRaw.kept_iff]`. Establish `hc : chr φ 0 = 1`. Use `MonoidHom.ext fun g => Units.ext ?_` and prove the remaining obligations. Rewrite using `[chr_coe_eq_addChar_toE, MonoidHom.one_apply, Units.val_one, AddChar.zero_apply]`. Establish `hd : H.dir 1 = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `MulChar.ext` to reduce the goal to its premises. Introduce `u`. Rewrite using `[HostRaw.dir_unit]`. Simplify using the standard rewrite rules. Rewrite using `[hc, HostRaw.prim, hd, PChar.of_one]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Λ.one_mem`.
+A detailed English derivation is pending.
 -/
 private theorem zero_kept (Λ : Level) (φ : Frame) (H : HostRaw φ) : (0 : AddChar (E0 × φ.A) ℂ) ∈ keptA Λ H := by
   rw [mem_keptA, HostRaw.kept_iff]
@@ -116,23 +116,19 @@ private theorem zero_kept (Λ : Level) (φ : Frame) (H : HostRaw φ) : (0 : AddC
   exact Λ.one_mem
 
 /- English proof (translation)
-Introduce `Λ φ H TT x eps C ell hx hE hL`. Establish `ho` using `hE.o_eq`. Establish `kept_xp : ∀ ψ ∈ keptA Λ H.toHostRaw, chr φ ψ ∈ φ.Xp`. Introduce `ψ hψ`. Take `⟨p, hp, hpp⟩` from `(mem_keptA Λ φ H.toHostRaw ψ).1 hψ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, hθ, hθp⟩` from `hE.kept p hp`. Establish `e1` using `(H.toHostRaw.isPrimOf_iff _ _).1 hpp`. Establish `e2` using `(H.toHostRaw.isPrimOf_iff _ _).1 hθp`. Establish `hq : chr φ ψ = θ` using `eq_of_prim_eq φ H _ _ (e1.symm.trans e2)`. Rewrite using `[hq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hθ`. Use `⟨zero_kept Λ φ H.toHostRaw, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `ψ hψ`. Establish `hX` using `kept_xp ψ hψ`. Use `⟨(mem_PsiA_iff φ ψ).2 hX.1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Units.val hX.2`. Rewrite `h2` using `[chr_coe_eq_addChar_toE, toE_iod, Units.val_one]`. Conclude with `h2`. Rewrite using `[card_PsiA, ho]`. Use `push_cast`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `le_refl _`. Introduce `ψ hψ hnt`. Establish `hP` using `(mem_PsiA_iff φ ψ).2 (kept_xp ψ hψ).1`. Establish `hb` using `tops_sum φ TT _ hE.shares ψ hP hnt`. Rewrite `hb` using `[ho]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hb.trans ?_` and prove the remaining obligations. Establish `hδ : 0 ≤ x ^ (-1 + eps)` using `Real.rpow_nonneg hx.le _`. Establish `h3 : 0 ≤ 3 * (Λ.o : ℝ) * x ^ (-1 + eps) * (TT.card : ℝ)` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `ψ hψ hne`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(prim_read φ H ell hL ψ).1 hne, koOf]`. Establish `hm : H.toHostRaw.prim (chr φ ψ) ∈ Λ.KEPT` using `(HostRaw.kept_iff _ _ _).1 ((mem_keptA Λ φ H.toHostRaw ψ).1 hψ)`. Conclude with `Finset.single_le_sum (f := fun p : PChar => ‖An.logDerivativeAtOne p.χ‖) (fun _ _ => norm_nonneg _) hm`. Introduce `ψ hP hk`. Establish `hne : ψ ≠ 0`.
-
-Introduce and unpack `rfl`. Conclude with `hk (zero_kept Λ φ H.toHostRaw)`. Rewrite using `[(prim_read φ H ell hL ψ).1 hne]`. Establish `hb` using `chr_bounded Λ φ H.toHostRaw ψ hP hk`. Use `haveI := (H.toHostRaw.prim (chr φ ψ)).ne`.
-
-Conclude with `hE.bdL _ hb _ _ (H.toHostRaw.isPrimOf_prim _)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Comparison₂.charsA :
     ∀ (Λ : Level) (φ : Frame) (H : HostAx φ) (TT : Finset φ.A) (x eps C : ℝ) (ell : AddChar (E0 × φ.A) ℂ → ℂ), 0 < x →

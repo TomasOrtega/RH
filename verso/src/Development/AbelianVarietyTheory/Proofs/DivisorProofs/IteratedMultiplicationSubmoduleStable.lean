@@ -23,9 +23,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LatModel
 
 /- English proof (translation)
-Establish `e : ((q : ℚ_[l]) : ℂ_[l]) = (q : ℂ_[l])`. Conclude with `map_ratCast (algebraMap ℚ_[l] ℂ_[l]) q`. Rewrite using `[← e, PadicComplex.norm_extends', Padic.eq_padicNorm]`. Distinguish the cases in `h0 : q = 0`. Substitute `h0` using the available equality.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[padicNorm.eq_zpow_of_nonzero h0]`. Establish `hl : (1 : ℚ) ≤ l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt.le`. Conclude with `zpow_le_one_of_nonpos₀ hl (by omega)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_ratCast_padicComplex_le_one (l : ℕ) [Fact l.Prime] (q : ℚ) (hq : 0 ≤ padicValRat l q) :
     ‖(q : ℂ_[l])‖ ≤ 1 := by
@@ -39,19 +39,17 @@ theorem norm_ratCast_padicComplex_le_one (l : ℕ) [Fact l.Prime] (q : ℚ) (hq 
     exact_mod_cast zpow_le_one_of_nonpos₀ hl (by omega)
 
 /- English proof (translation)
-Set `t : (E →+* ℂ) → IntermediateField ℚ ℂ` to `fun σ ↦ σ.toRatAlgHom.fieldRange`. Use `haveI : ∀ σ, FiniteDimensional ℚ (t σ) := fun σ ↦ LinearEquiv.finiteDimensional (AlgEquiv.ofInjectiveField σ.toRatAlgHom).toLinearEquiv`. Use `⟨⨆ σ, t σ, IntermediateField.finiteDimensional_iSup_of_finite, fun R hR ↦ ?_⟩` and prove the remaining obligations. Take `⟨hdvr, hsz, hmem⟩` from `hR`. Use `⟨hdvr, hsz, fun q hq ↦ ?_, fun σ x ↦ ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk : (q : ℂ) ∈ ⨆ σ, t σ`. Simplify using `using IntermediateField.algebraMap_mem (⨆ σ, t σ) q`. Establish `hqa : (q : ℂ) ∈ algebraicClosure ℚ ℂ`. Simplify using `using (algebraicClosure ℚ ℂ).algebraMap_mem q`. Use `hmem _ hk ⟨hqa, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (⟨(q : ℂ), hqa⟩ : algebraicClosure ℚ ℂ) = (q : algebraicClosure ℚ ℂ)` using `by ext; simp`. Rewrite using `[e, map_ratCast, Real.rpow_zero]`. Conclude with `norm_ratCast_padicComplex_le_one l q hq`. Establish `hk : σ x ∈ ⨆ σ, t σ` using `(le_iSup t σ) (AlgHom.mem_fieldRange.2 ⟨x, rfl⟩)`. Establish `ha : σ x ∈ algebraicClosure ℚ ℂ` using `mem_algebraicClosure_iff.2 ((Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom σ.toRatAlgHom)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hn : ‖lam ⟨σ x, ha⟩‖ ≤ 1`. Use `⟨σ x, hmem _ hk ⟨ha, by rwa [Real.rpow_zero]⟩, 1, R.one_mem, one_ne_zero, mul_one _⟩` and prove the remaining obligations. Use `push_neg at hn`. Establish `h0 : σ x ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: (⟨σ x, ha⟩ : algebraicClosure ℚ ℂ) = 0` using `Subtype.ext h`. Rewrite `hn` using `[this, map_zero, norm_zero]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hia : (σ x)⁻¹ ∈ algebraicClosure ℚ ℂ` using `inv_mem ha`. Establish `hik : (σ x)⁻¹ ∈ ⨆ σ, t σ` using `inv_mem hk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : (⟨(σ x)⁻¹, hia⟩ : algebraicClosure ℚ ℂ) = (⟨σ x, ha⟩ : algebraicClosure ℚ ℂ)⁻¹` using `by ext; simp`. Establish `hs : Sz l lam 0 (σ x)⁻¹`. Use `⟨hia, ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_inv₀, norm_inv, Real.rpow_zero]`. Conclude with `inv_le_one_of_one_le₀ hn.le`.
-
-Conclude with `⟨1, R.one_mem, (σ x)⁻¹, hmem _ hik hs, inv_ne_zero h0, mul_inv_cancel₀ h0⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eventually_isPlaceRing (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime]
     (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]) : Eventually l lam (IsPlaceRing E l lam) := by
@@ -96,7 +94,7 @@ theorem eventually_isPlaceRing (E : Type) [Field E] [NumberField E] (l : ℕ) [F
 end GlobalTheory.LatModel
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LatModel.eventually_isPlaceRing`.
+A detailed English derivation is pending.
 -/
 example : ∀ (E : Type) [Field E] [NumberField E] (l : ℕ) [Fact l.Prime] (lam : algebraicClosure ℚ ℂ →+* ℂ_[l]),
     GlobalTheory.LatModel.Eventually l lam (GlobalTheory.LatModel.IsPlaceRing E l lam) := GlobalTheory.LatModel.eventually_isPlaceRing

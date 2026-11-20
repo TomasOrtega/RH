@@ -17,15 +17,15 @@ local notation "𝒜" => E ⊗[F] FiniteAdeleRing (𝓞 F) F
 local notation "𝒮" => tensInt (F := F) (FiniteAdeleRing (𝓞 F) F) (intOE E) (intAd F)
 
 /- English proof (translation)
-Establish `hval : Valued.v (m : v.adicCompletion F) = 1`. Rewrite using `[RepAt.val_nat]`. Conclude with `le_antisymm (v.valuation_le_one _) (not_lt.1 fun h' => hm ((v.valuation_lt_one_iff_mem _).1 h'))`. Establish `hm0 : (m : v.adicCompletion F) ≠ 0` using `fun h => by rw [h, map_zero] at hval; exact zero_ne_one hval`. Establish `ha : (m : v.adicCompletion F)⁻¹ ∈ v.adicCompletionIntegers F`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hval, inv_one]`. Use `set u : 𝒮 := RepAt.incInt ⟨afsplitI v (m : v.adicCompletion F)⁻¹, afsplitI_mem_intAd v _ ha⟩ with hu`. Establish `e1 : afsplitI v (m : v.adicCompletion F)⁻¹ * (m : 𝔸) = afsplitI v 1`. Rewrite using `[← map_natCast (algebraMap F 𝔸) m]`. Use extensionality with `w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[afsplit_mul_apply]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `afsplitI v (m : v.adicCompletion F)⁻¹ w * algebraMap F (w.adicCompletion F) (m : F) = afsplitI v 1 w`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[afsplitI_self, afsplitI_self, map_natCast]`. Conclude with `inv_mul_cancel₀ hm0`. Rewrite using `[afsplitI_ne v w h, afsplitI_ne v w h, zero_mul]`. Establish `e2 : (u : 𝒜) * (m : 𝒜) = afsplitEps E v`. Rewrite using `[hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `(Algebra.TensorProduct.includeRight : 𝔸 →ₐ[F] 𝒜) (afsplitI v (m : v.adicCompletion F)⁻¹) * (m : 𝒜) = _`. Rewrite using `[← map_natCast (Algebra.TensorProduct.includeRight : 𝔸 →ₐ[F] 𝒜) m, ← map_mul, e1, afsplitEps, Algebra.TensorProduct.one_def, afsplitIE_tmul]`. Both sides reduce to the same expression. Rewrite using `[← e2, mul_assoc]`. Conclude with `mul_mem u.2 hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_mul_mem (v : HeightOneSpectrum (𝓞 F)) (m : ℕ) (hm : (m : 𝓞 F) ∉ v.asIdeal) (x : 𝒜)
     (hx : (m : 𝒜) * x ∈ 𝒮) : afsplitEps E v * x ∈ 𝒮 := by
@@ -63,15 +63,13 @@ end GlobalTheory.NormSum.IntOver
 open GlobalTheory.NormSum.IntOver GlobalTheory.NormSum.RepAt GlobalTheory.NormSum.PtsMem in
 
 /- English proof (translation)
-Introduce `D N h`. Use `set g : Matrix (Fin N) (Fin N) (AE D) := ((h : GL (Fin N) (AE D)) : Matrix (Fin N) (Fin N) (AE D)) with hg`. Use `choose m hm0 hm using fun ij : Fin N × Fin N => denom (F := ℚ) (E := D.host.E) (g ij.1 ij.2)`. Use `set M := ∏ ij, m ij with hMdef`. Establish `hM0 : 0 < M` using `Finset.prod_pos fun ij _ => hm0 ij`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨p, hpM, hp⟩` from `Nat.exists_infinite_primes (M + 1)`. Establish `hpM' : ¬ p ∣ M` using `fun hd => by have := Nat.le_of_dvd hM0 hd; omega`. Take `⟨v, hv, hw⟩` from `exists_place p hp`. Establish `hMv : ((M : ℕ) : 𝓞 ℚ) ∉ v.asIdeal`. Introduce `hm'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, y, e⟩` from `(Nat.isCoprime_iff_coprime.2 (Nat.coprime_comm.1 ((Nat.Prime.coprime_iff_not_dvd hp).2 hpM'))).map (Int.castRingHom (𝓞 ℚ))`. Use `v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (by simpa using hm')) (Ideal.mul_mem_left _ _ (by simpa using hv))`. Establish `hi : ∀ i j, afsplitEps D.host.E v * g i j ∈ OhE D` using `fun i j => eps_mul_mem v M hMv _ (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hMdef, ← Finset.prod_erase_mul _ _ (Finset.mem_univ (i, j)), Nat.cast_mul, mul_assoc]`. Conclude with `mul_mem (natCast_mem _ _) (hm (i, j)))`. Take `⟨k, hk, hint, htriv⟩` from `exists_int (F := ℚ) (D.host.conj : D.host.E →ₐ[ℚ] D.host.E) v (h : GL (Fin N) (AE D)) h.2 (Units.inv_eq_of_mul_eq_one_left ((mem_GA D _).1 h.2)) hi`. Use `⟨p, hp, ⟨k, hk⟩, (mem_intG _).2 hint, fun i j l => ?_⟩` and prove the remaining obligations. Use `zero_at (F := ℚ) (E := D.host.E) v p hp hw (g i j - (1 : Matrix (Fin N) (Fin N) (AE D)) i j) l` as an intermediate fact.
-
-Rewrite `this` using `[← htriv i j]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.NormSum.exists_prime_integralOver :
     ∀ (D : Formalism.BasicNotions.D7) (N : ℕ) (h : ↥(Formalism.MainNotions.StandardLatticesGL3.GA D N)), ∃ p : ℕ, p.Prime ∧ GlobalTheory.NormSum.IntegralOver D p h := by

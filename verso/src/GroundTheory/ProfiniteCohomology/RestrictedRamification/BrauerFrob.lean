@@ -59,7 +59,7 @@ variable {G}
 
 omit [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] in
 /- English proof (translation)
-The claim follows from `(hq.comp_continuous (continuous_apply 0)).comp (fun x : ℚ => ((x : AddCircle (1 : ℚ)) : Rep.trivial ℤ G (AddCircle (1 : ℚ))))`.
+A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_ratModInt (q : G → ℚ) (hq : IsLocallyConstant q) :
     IsLocallyConstant (fun g : Fin 1 → G =>
@@ -84,7 +84,7 @@ def ratModIntCocycle (q : G → ℚ) (hq : IsLocallyConstant q)
       exact ⟨n, by simp⟩)
 
 /- English proof (translation)
-Establish `h : cocycleι _ 1 (ratModIntCocycle q hq hint) = mkCochain _ _ (isLocallyConstant_ratModInt q hq)` using `(cochainsComplex (Rep.trivial ℤ G (AddCircle (1 : ℚ)))).i_cyclesMk _ _ _ _`. Rewrite using `[h, cochainOf_mkCochain]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cochainOf_ratModIntCocycle (q : G → ℚ) (hq : IsLocallyConstant q)
     (hint : ∀ g h : G, ∃ n : ℤ, (n : ℚ) = q h - q (g * h) + q g) (g : Fin 1 → G) :
@@ -95,19 +95,19 @@ theorem cochainOf_ratModIntCocycle (q : G → ℚ) (hq : IsLocallyConstant q)
   rw [h, cochainOf_mkCochain]
 
 /- English proof (translation)
-Set `z₂` to `cocyclesMapAlong (MonoidHom.id G) continuous_id (trivRepToTrivial G) 2 (cocyclesULiftInt _ z)`. Establish `hz₂ : ∀ u, cochainOf _ (cocycleι _ 2 z₂) u = cochainOf _ (cocycleι _ 2 z) u`. Introduce `u`. Rewrite using `[cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesULiftInt]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h1 : gvChar G (cohomologyπ _ 2 z) = cohomologyTwoIntAddEquiv G (cohomologyπ _ 2 z₂)`. Express the relevant statement in the definitionally equal form `cohomologyTwoIntAddEquiv G ((cohomologyMap (trivRepToTrivial G) 2).hom (cohomologyULiftIntAddEquiv (trivRep G ℤ) 2 (cohomologyπ _ 2 z))) = _`. Rewrite using `[cohomologyULiftIntAddEquiv_cohomologyπ', ← cohomologyMapAlong_id_eq_cohomologyMap]`. Conclude with `congrArg _ (cohomologyMapAlong_cohomologyπ _ _ _ _)`. Establish `hint : ∀ g h : G, ∃ n : ℤ, (n : ℚ) = q h - q (g * h) + q g` using `fun g h => ⟨_, hzq g h⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqloc : IsLocallyConstant (fun g : Fin 1 → G => (q (g 0) : (GroundTheory.GroupCoh.ratSES G).X₂))` using `hq.comp_continuous (continuous_apply 0)`. Establish `hδ : (δ (GroundTheory.GroupCoh.ratSES_shortExact G) 1 2 rfl).hom (cohomologyπ _ 1 (ratModIntCocycle q hq hint)) = cohomologyπ _ 2 z₂`. Use `δ_cohomologyπ_of_lift (GroundTheory.GroupCoh.ratSES_shortExact G) rfl _ (mkCochain (GroundTheory.GroupCoh.ratSES G).X₂ _ hqloc) ?_ z₂ ?_` and prove the remaining obligations. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `u`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(cochainOf_ratModIntCocycle q hq hint u).symm`. Apply `cochainOf_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `u`. Establish `e1` using `congrFun (cochainOf_d (A := (GroundTheory.GroupCoh.ratSES G).X₂) (mkCochain (GroundTheory.GroupCoh.ratSES G).X₂ _ hqloc)) u`. Rewrite `e1` using `[inhomogeneousCochains_d_one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hu : u = ![u 0, u 1]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Establish `e` using `hzq (u 0) (u 1)`. Rewrite `e` using `[← hu, ← hz₂]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e.trans e1.symm`. Establish `h2 : cohomologyTwoIntAddEquiv G (cohomologyπ _ 2 z₂) = locallyConstantHomQZEquiv G ((cohomologyOneIsoOfIsTrivial G (AddCircle (1 : ℚ))).hom.hom (cohomologyπ _ 1 (ratModIntCocycle q hq hint)))`. Establish `hδ' : (cohomologyOneRatModIntIsoTwoInt G).inv.hom (cohomologyπ _ 2 z₂) = cohomologyπ _ 1 (ratModIntCocycle q hq hint)`. Rewrite using `[← hδ]`. Conclude with `(cohomologyOneRatModIntIsoTwoInt G).hom_inv_id_apply _`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(cohomologyOneRatModIntIso G).hom.hom ((cohomologyOneRatModIntIsoTwoInt G).inv.hom (cohomologyπ _ 2 z₂)) = _`. Rewrite using `[hδ']`. Both sides reduce to the same expression. Rewrite using `[h1, h2, locallyConstantHomQZEquiv_apply, cohomologyOneIsoOfIsTrivial_hom_cohomologyπ]`. Conclude with `congrArg QZ.toAddCircle.symm (cochainOf_ratModIntCocycle q hq hint fun _ => g)`.
+A detailed English derivation is pending.
 -/
 theorem gvChar_cohomologyπ (z : cocycles (trivRep G ℤ) 2) (q : G → ℚ) (hq : IsLocallyConstant q)
     (hzq : ∀ g h : G, ((cochainOf _ (cocycleι _ 2 z) ![g, h] : ℤ) : ℚ) = q h - q (g * h) + q g)
@@ -161,9 +161,9 @@ theorem gvChar_cohomologyπ (z : cocycles (trivRep G ℤ) 2) (q : G → ℚ) (hq
   exact congrArg QZ.toAddCircle.symm (cochainOf_ratModIntCocycle q hq hint fun _ => g)
 
 /- English proof (translation)
-Set `zq` to `cocyclesMapAlong (MonoidHom.id G) continuous_id (trivRepToTrivial G ≫ GroundTheory.GroupCoh.intToRat G) 2 (cocyclesULiftInt _ z)`. Establish `hz : cohomologyπ _ 2 zq = 0` using `(ModuleCat.isZero_iff_subsingleton.1 (isZero_cohomology_trivial_rat (G := G) (by norm_num))).elim _ _`. Take `⟨w, hw, hwz⟩` from `(cohomologyπ_two_eq_zero_iff_locallyConstant _ zq).1 hz`. Use `⟨fun g => w fun _ => g, hw.comp_continuous (continuous_pi fun _ => continuous_id), fun g h => ?_⟩` and prove the remaining obligations. Establish `e` using `hwz ![g, h]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `e` using `[cochainOf_cocycleι_cocyclesMapAlong, cochainOf_cocycleι_cocyclesULiftInt]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rat_coboundary (z : cocycles (trivRep G ℤ) 2) :
     ∃ q : G → ℚ, IsLocallyConstant q ∧
@@ -179,23 +179,21 @@ theorem exists_rat_coboundary (z : cocycles (trivRep G ℤ) 2) :
   exact e
 
 /- English proof (translation)
-Take `⟨y', rfl⟩` from `cohomologyπ_surjective A 2 y`. Rewrite using `[cohomologyMapAlong_cohomologyπ]`. Take `⟨q, hq, hzq⟩` from `exists_rat_coboundary (cocyclesMapAlong φ hφ f 2 y')`. Rewrite using `[gvChar_cohomologyπ _ q hq hzq g, QZ.mk_eq_zero_iff]`. Use `set κ : ℚ := ((cochainOf _ (cocycleι _ 2 (cocyclesMapAlong φ hφ f 2 y')) ![1, 1] : ℤ) : ℚ) with hκ`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hconst : ∀ a b : G, φ a = 1 → φ b = 1 → ((cochainOf _ (cocycleι _ 2 (cocyclesMapAlong φ hφ f 2 y')) ![a, b] : ℤ) : ℚ) = κ`. Introduce `a b ha hb`. Rewrite using `[hκ, cochainOf_cocycleι_cocyclesMapAlong]`. Establish `: (⇑φ ∘ ![a, b]) = ⇑φ ∘ ![(1 : G), 1]`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `fin_cases i`. Simplify using `[ha]`. Simplify using `[hb]`. Simplify using `only [this]`. Establish `h1 : q 1 = κ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hzq 1 1` as an intermediate fact. Rewrite `this` using `[hconst 1 1 (map_one φ) (map_one φ), mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : ∀ m : ℕ, q (g ^ m) - κ = m * (q g - κ)`. Introduce `m`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `m with`. Consider the case `zero => simp [h1]`. Consider the case `succ m ih`. Use `hzq (g ^ m) g` as an intermediate fact. Rewrite `this` using `[hconst _ _ (by rw [map_pow, hg, one_pow]) hg, ← pow_succ]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hfin : (Set.range q).Finite` using `hq.range_finite`. Assume the negation of the conclusion as `hne`. Establish `hne' : q g - κ ≠ 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hne ⟨(cochainOf _ (cocycleι _ 2 (cocyclesMapAlong φ hφ f 2 y')) ![1, 1] : ℤ), by`. Rewrite using `[← hκ]`. Use the proof step `linarith⟩`. Establish `hinj : Function.Injective fun m : ℕ => q (g ^ m)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `m m' hmm`. Establish `e1` using `hpow m`. Establish `e2` using `hpow m'`. Simplify using `only at hmm`. Rewrite `e1` using `[hmm]`.
-
-Establish `: (m : ℚ) * (q g - κ) = m' * (q g - κ)` using `by rw [← e1, ← e2]`. Conclude with `mul_right_cancel₀ hne' this` after adjusting the coercions. Conclude with `Set.infinite_range_of_injective hinj (hfin.subset (Set.range_comp_subset_range _ _))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gvChar_cohomologyMapAlong_eq_zero {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     (φ : G →* H) (hφ : Continuous φ) {A : Rep.{0} (ULift.{0} ℤ) H} [IsDiscreteRep A]
@@ -258,11 +256,11 @@ variable {K : FiniteSubfield} {v : HeightOneSpectrum (𝓞 K.1)}
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Set `` to `algebraicValuativeRel (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))`. Set `` to `algebraicTopology (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))`. Use `algebraicTopology_isValuativeTopology (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))` as an intermediate fact. Use `algebraicValuativeRel_valuativeExtension (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))` as an intermediate fact. Use `((isUnramifiedSubextension_iff' (compField ι N)).2 ?_).le_maximalUnramifiedExtension` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hM : ramificationIndex (v.adicCompletion K.1) ((placeOfEmbedding ι N).1.adicCompletion N.1) = 1` using `(ramificationIdx_integer v (placeOfEmbedding ι N).1).trans he`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[v.adicCompletion K.1]`. Establish `h1` using `ord_algebraMap_uniformizer (K := v.adicCompletion K.1) (L := (placeOfEmbedding ι N).1.adicCompletion N.1) hϖ`. Establish `h2` using `ord_algebraMap_uniformizer (K := v.adicCompletion K.1) (L := compField ι N) hϖ`. Establish `hj : ∀ x y : (placeOfEmbedding ι N).1.adicCompletion N.1, (compEquiv ι N).toRingEquiv x ≤ᵥ (compEquiv ι N).toRingEquiv y ↔ x ≤ᵥ y` using `vle_map_iff (compEquiv ι N).toAlgHom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖ0 : algebraMap (v.adicCompletion K.1) ((placeOfEmbedding ι N).1.adicCompletion N.1) (ϖ : v.adicCompletion K.1) ≠ 0` using `(map_ne_zero _).2 (by exact_mod_cast hϖ.ne_zero)`. Establish `h3` using `ord_apply_of_vle (compEquiv ι N).toRingEquiv hj (Units.mk0 _ hϖ0)`. Establish `h4 : (compEquiv ι N).toRingEquiv (algebraMap (v.adicCompletion K.1) ((placeOfEmbedding ι N).1.adicCompletion N.1) (ϖ : v.adicCompletion K.1)) = algebraMap (v.adicCompletion K.1) (compField ι N) (ϖ : v.adicCompletion K.1)` using `(compEquiv ι N).commutes _`. Rewrite `h3` using `[Units.val_mk0, h4, h2, h1, hM]`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem compField_le_maximalUnramifiedExtension (N : FiniteSubfield) [Fact (K ≤ N)] [Normal K.1 N.1]
     (he : (placeOfEmbedding ι N).1.asIdeal.ramificationIdx (𝓞 K.1) = 1) :
@@ -308,11 +306,11 @@ variable {K : FiniteSubfield} (S : Set (HeightOneSpectrum (𝓞 K.1))) {v : Heig
 include hv in
 
 /- English proof (translation)
-Establish `hfix : g ∈ (maximalUnramifiedExtension (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))).fixingSubgroup`. Rewrite using `[← ker_unramifiedDegree]`. Conclude with `hg`. Apply `AlgEquiv.ext` to reduce the goal to its premises. Introduce `y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hKN, hNG, hN, hyN⟩` from `exists_galois_level S y.2`. Establish `hNn : Normal K.1 N.1` using `hNG.to_normal`. Establish `hU : Algebra.IsUnramifiedAt (𝓞 K.1) (placeOfEmbedding ι N).1.asIdeal` using `isUnramifiedIn_of_subset_max S hv N hN _ inferInstance (placeOfEmbedding ι N).2`. Establish `he : (placeOfEmbedding ι N).1.asIdeal.ramificationIdx (𝓞 K.1) = 1` using `Ideal.ramificationIdx_eq_one _ _`. Establish `hmem : ι (y : ℚ̄) ∈ maximalUnramifiedExtension (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))` using `compField_le_maximalUnramifiedExtension ι N he (ι_mem_compField ι N ⟨y, hyN⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `decompHom_apply (Kv := v.adicCompletion K.1) (ι.comp (maxUnramifiedOutside K.1 ℚ̄ S).val) g y`. Establish `h2 : g (ι (y : ℚ̄)) = ι (y : ℚ̄)` using `hfix ⟨_, hmem⟩`. Apply `Subtype.val_injective` to reduce the goal to its premises. Apply `ι.injective` to reduce the goal to its premises. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem decompHomS_eq_one_of_unramifiedDegree_eq_one
     (g : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1))
@@ -343,15 +341,15 @@ set_option maxHeartbeats 2000000 in
 include hv in
 
 /- English proof (translation)
-Set `Z : Set Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1)` to `{g | χ (Additive.ofMul g) = 0}`. Establish `hZc : IsClosed Z` using `(isClosed_discrete ({0} : Set QZ)).preimage (χ.continuous.comp continuous_ofMul)`. Establish `hT : IsClosed (unramifiedDegree (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) '' Z)` using `(hZc.isCompact.image continuous_unramifiedDegree).isClosed`. Establish `hpow : (Subgroup.zpowers (Multiplicative.ofAdd (1 : GroundTheory.LocalField.Abstract.ProfiniteInteger)) : Set (Multiplicative GroundTheory.LocalField.Abstract.ProfiniteInteger)) ⊆ unramifiedDegree (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) '' Z`. Introduce and unpack `_ ⟨n, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `⟨σ ^ n, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `χ (Additive.ofMul (σ ^ n)) = 0`. Rewrite using `[ofMul_zpow, map_zsmul, h0, smul_zero]`. Rewrite using `[map_zpow, hσ]`. Establish `huniv : unramifiedDegree (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) '' Z = Set.univ`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `dense_zpowers_ofAdd_one.mono hpow`. Rewrite using `[← hT.closure_eq, hd.closure_eq]`. Use extensionality with `x`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk, hdk⟩ : unramifiedDegree (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) (Additive.toMul x) ∈ unramifiedDegree (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) '' Z := by`. Rewrite using `[huniv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.mem_univ _`. Establish `h1 : unramifiedDegree (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1)) (k⁻¹ * Additive.toMul x) = 1`. Establish `e1` using `map_mul (unramifiedDegree (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))) k⁻¹ (Additive.toMul x)`. Establish `e2` using `map_inv (unramifiedDegree (v.adicCompletion K.1) (AlgebraicClosure (v.adicCompletion K.1))) k`. Rewrite using `[e1, e2, hdk, inv_mul_cancel]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hχ _ (decompHomS_eq_one_of_unramifiedDegree_eq_one S ι hv _ h1)`. Establish `hx : x = Additive.ofMul k + Additive.ofMul (k⁻¹ * Additive.toMul x)`. Rewrite using `[← ofMul_mul, mul_inv_cancel_left, ofMul_toMul]`. Rewrite using `[hx, map_add, h2, add_zero]`. Conclude with `hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_decompHomS_of_unramifiedDegree
     (χ : Additive Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1) →ₜ+ QZ)
@@ -396,7 +394,7 @@ theorem eq_zero_of_decompHomS_of_unramifiedDegree
   exact hk
 
 /- English proof (translation)
-The claim follows from `gvChar_cohomologyMapAlong_eq_zero _ _ y f g hg`.
+A detailed English derivation is pending.
 -/
 theorem gvChar_decompHomS_eq_zero {A : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOutside K.1 ℚ̄ S)} [IsDiscreteRep A]
     (y : cohomology A 2)
@@ -409,7 +407,7 @@ theorem gvChar_decompHomS_eq_zero {A : Rep.{0} (ULift.{0} ℤ) (galUnramifiedOut
   gvChar_cohomologyMapAlong_eq_zero _ _ y f g hg
 
 /- English proof (translation)
-The claim follows from `unramifiedDegree_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem exists_unramifiedDegree_eq_one :
     ∃ σ : Gal(AlgebraicClosure (v.adicCompletion K.1)/v.adicCompletion K.1),

@@ -8,17 +8,15 @@ namespace Formalism.MainNotions.SelectionLemmas.Pf
 open Formalism.MainNotions.G Formalism.MainNotions.SelectionLemmas Formalism.MainNotions.G.Joints.StandardMonomialSpace
 
 /- English proof (translation)
-Introduce `r Q be c ρ hr hQ`. Establish `hQ0 : 0 < Q` using `by omega`. Establish `hcore` using `Formalism.InvariantFactorPaths.BranchingDimensions.residueClassLowerBound r Q be (ρ % Q + (Q - c % Q)) hr hQ`. Use `le_trans hcore ?_` and prove the remaining obligations. Establish `hle : ((Finset.univ : Finset (Fin r → Fin (Q - 2 * be))).filter (fun u => (∑ l, (u l : ℕ)) % Q = (ρ % Q + (Q - c % Q)) % Q)).card ≤ ((Fintype.piFinset fun _ : Fin r => Finset.range (Q - 2 * be)).filter fun w => (c + ∑ i, w i) % Q = ρ % Q).card`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.card_le_card_of_injOn (fun u => fun l => (u l : ℕ)) ?_ ?_` and prove the remaining obligations. Introduce `u hu`. Establish `hu'` using `(Finset.mem_filter.mp (Finset.mem_coe.mp hu)).2`. Use `Finset.mem_coe.mpr (Finset.mem_filter.mpr ⟨Fintype.mem_piFinset.mpr fun l => Finset.mem_range.mpr (u l).isLt, ?_⟩)` and prove the remaining obligations. Establish `h1 : (∑ l, (u l : ℕ)) ≡ ρ % Q + (Q - c % Q) [MOD Q]` using `hu'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : c + ∑ l, (u l : ℕ) ≡ c + (ρ % Q + (Q - c % Q)) [MOD Q]` using `Nat.ModEq.add_left c h1`. Establish `h3 : c + (ρ % Q + (Q - c % Q)) ≡ ρ [MOD Q]`. Establish `hc : c % Q < Q` using `Nat.mod_lt _ hQ0`. Establish `e1 : c + (ρ % Q + (Q - c % Q)) = (c - c % Q + Q) + ρ % Q`. Use `Nat.mod_le c Q` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[e1]`. Establish `e2 : c - c % Q + Q ≡ 0 [MOD Q]`. Establish `hd : Q ∣ c - c % Q` using `Nat.dvd_sub_mod c`. Conclude with `(Nat.modEq_zero_iff_dvd.mpr (Dvd.dvd.add hd (dvd_refl Q)))`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : ρ % Q ≡ ρ [MOD Q]` using `Nat.mod_modEq ρ Q`. Simplify using `using e2.add e3`. Conclude with `h2.trans h3`. Introduce `u _ u' _ huu`. Use function extensionality and compare the values at `l`.
-
-Conclude with `Fin.ext (congrFun huu l)`. Conclude with `hle` after adjusting the coercions.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem residue_class_count : ResidueClassCount := by
   classical
@@ -55,9 +53,9 @@ theorem residue_class_count : ResidueClassCount := by
   exact_mod_cast hle
 
 /- English proof (translation)
-Introduce `n hn`. Take `⟨m, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hn.ne'`. Introduce `f g h`. Rewrite using `[Finset.sum_sub_distrib, Fin.sum_univ_succ f, Fin.sum_univ_castSucc g]`. Establish `h1 : ∑ i : Fin m, f i.succ ≤ ∑ i : Fin m, g i.castSucc` using `Finset.sum_le_sum fun i _ => h i.castSucc (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : (⟨m + 1 - 1, by omega⟩ : Fin (m + 1)) = Fin.last m` using `Fin.ext (by simp)`. Rewrite using `[e]`. Establish `e0 : (⟨0, hn⟩ : Fin (m + 1)) = 0` using `rfl`. Rewrite using `[e0]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem tele_le : ∀ (n : ℕ) (hn : 0 < n) (f g : Fin n → ℤ),
     (∀ (a : Fin n) (h : a.val + 1 < n), f ⟨a.val + 1, h⟩ ≤ g a) →
@@ -79,17 +77,15 @@ section D21
 variable {n' r : ℕ} [NeZero n'] [NeZero r] (X : Dat n' r) (p K : ℕ)
 
 /- English proof (translation)
-Establish `hr : 0 < r` using `NeZero.pos r`. Establish `hV` using `hX.valid`. Establish `hrN` using `k_r_le_segN X.F hV hr j`. Unfold `T.dminus Dat.beS`. Establish `himg : (X.F.letters j).filter (· < X.F.fr j 0) = (Finset.univ.filter fun l : Fin (segN X.F j) => l.val < segN X.F j - r).image (segE X.F j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use extensionality with `x`. Simplify using `only [Finset.mem_filter, Finset.mem_image, Finset.mem_univ, true_and]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hlt⟩`. Take `⟨i, rfl⟩` from `segE_surj X.F j hx`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i, (segE_lt_fr_iff X.F hV hr j i).mp hlt, rfl⟩`. Introduce and unpack `⟨i, hi, rfl⟩`. Conclude with `⟨segE_mem X.F j i, (segE_lt_fr_iff X.F hV hr j i).mpr hi⟩`. Rewrite using `[himg, Finset.sum_image (fun a _ b _ h => (segE_strictMono X.F j).injective h), Finset.sum_filter]`. Use `Finset.sum_le_sum fun l _ => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `split_ifs with h1 h2 h2`. Rewrite using `[hP.degs l ((segE_lt_fr_iff X.F hV hr j l).mpr h2)]`. It suffices to derive a contradiction. Establish `hl` using `l.isLt`. Establish `ht : l.val - (segN X.F j - r) < r` using `by omega`.
+Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hseg : segE X.F j l = X.F.fr j (l.val - (segN X.F j - r))` using `(segE_eq_fr_iff X.F hV j l ht).mpr (by omega)`. Establish `hvec : (segLL X.F j).vec l = true`. Rewrite using `[comb_vec, hseg]`. Conclude with `(hV.2.2.2.2.1 j _ ht).2`. Rewrite `h1` using `[hvec]`.
-
-Conclude with `absurd h1.2 (by simp)`. Conclude with `Nat.zero_le _`. Conclude with `le_rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dminus_le_beS (hX : X.Hyp p K) (j : ℤ) (b : ℤ → ℕ) (μ : Fin (segN X.F j + 1) → Fin (r + K) → ℤ)
     (dd : Fin (segN X.F j) → ℕ) (hP : X.IsPATH p K j b μ dd) (s : ℕ) :
@@ -128,17 +124,17 @@ theorem dminus_le_beS (hX : X.Hyp p K) (j : ℤ) (b : ℤ → ℕ) (μ : Fin (se
 end D21
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X hX j b μ dd hP i hi`. Establish `hr : 0 < r` using `NeZero.pos r`. Establish `hV` using `hX.valid`. Establish `hrN` using `k_r_le_segN X.F hV hr j`. Take `⟨P, hPμ⟩` from `hP.path`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hil` using `i.isLt`. Establish `hnot : ¬ i.val < segN X.F j - r` using `fun h => by`. Use `(segE_lt_fr_iff X.F hV hr j i).mpr h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `ht : i.val - (segN X.F j - r) < r` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hseg : segE X.F j i = X.F.fr j (i.val - (segN X.F j - r))` using `(segE_eq_fr_iff X.F hV j i ht).mpr (by omega)`. Establish `hvec : (segLL X.F j).vec i = true`. Rewrite using `[comb_vec, hseg]`. Conclude with `(hV.2.2.2.2.1 j _ ht).2`. Establish `hs` using `T.step_vec P i hvec`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[hPμ]`. Establish `hn : 0 < r + K` using `by omega`. Establish `h1` using `tele_le (r + K) hn (μ i.succ) (μ i.castSucc) hs.2.1`. Rewrite `h1` using `[hs.2.2]`. Establish `h2 : μ i.succ ⟨0, hn⟩ = (X.beS p K j b : ℤ)` using `hP.head i ⟨i.val - (segN X.F j - r), ht⟩ hseg ⟨0, hn⟩ (Nat.zero_le _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `T.neg_dminus_le_mu P i.val (by omega) ⟨r + K - 1, by omega⟩`. Rewrite `h3` using `[hPμ]`. Establish `h4` using `dminus_le_beS X p K hX j b μ dd hP i.val`. Establish `h5 : μ i.castSucc = μ ⟨i.val, by omega⟩` using `rfl`. Rewrite `h1` using `[h2, h5]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4' : (T.dminus (segLL X.F j) dd i.val : ℤ) ≤ (X.beS p K j b : ℤ)` using `by exact_mod_cast h4`. Establish `: (dd i : ℤ) ≤ 2 * (X.beS p K j b : ℤ)` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tau_degree_on_path_bound : TauDegreeOnPathBound := by
   intro p n' r K _ _ _ X hX j b μ dd hP i hi

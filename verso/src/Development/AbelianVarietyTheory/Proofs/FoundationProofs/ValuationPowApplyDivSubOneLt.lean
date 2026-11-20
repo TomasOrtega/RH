@@ -7,13 +7,13 @@ namespace GlobalTheory
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Proceed by induction on `i with`. Consider the case `zero => simp [hx]`. Consider the case `succ i ih`. Establish `hy0 : (σ ^ i) x ≠ 0` using `(map_ne_zero (σ ^ i)).2 hx`. Establish `hle : A.valuation ((σ ^ i) x / x) ≤ 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (σ ^ i) x / x = ((σ ^ i) x / x - 1) + 1` using `by ring`. Rewrite using `[e]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le ih.le (by simp))`. Establish `key : (σ ^ (i + 1)) x / x - 1 = (σ ((σ ^ i) x) / (σ ^ i) x - 1) * ((σ ^ i) x / x) + ((σ ^ i) x / x - 1)`. Rewrite using `[pow_succ', AlgEquiv.mul_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Apply `Valuation.map_add_lt _ _ ih` to reduce the goal to its premises. Rewrite using `[map_mul]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.valuation_pow_apply_div_sub_one_lt {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     (A : ValuationSubring Ω) (σ : Ω ≃ₐ[E] Ω)
@@ -42,31 +42,27 @@ theorem _root_.GlobalTheory.valuation_pow_apply_div_sub_one_lt {E Ω : Type} [Fi
 open NumberField IsDedekindDomain in
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A v hA H _ hH σ n hn hσ hpow`. Express the relevant statement in the definitionally equal form `Ω ≃ₐ[E] Ω at σ`. Establish `hv : A.valuation (n : Ω) = 1`. Establish `h1 : ¬ A.valuation (n : Ω) < 1`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hn` to reduce the goal to its premises. Rewrite using `[← hA]`. Simplify using `using h`. Establish `h2 : A.valuation (n : Ω) ≤ 1`. Simplify using `using A.valuation_le_one (n : A)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `le_antisymm h2 (not_lt.1 h1)`. Establish `hn0 : (n : Ω) ≠ 0`. Introduce `h`. Rewrite `hv` using `[h, map_zero]`. Conclude with `zero_ne_one hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hsdef⟩ : ∃ s : Ω → Ω, ∀ z, s z = ∑ i ∈ Finset.range n, (σ ^ i) z` from `⟨_, fun _ => rfl⟩`. Establish `hs : ∀ z, (σ ^ n) z = z → σ (s z) = s z`. Introduce `z hz`. Establish `e1` using `Finset.sum_range_succ (fun i => (σ ^ i) z) n`. Establish `e2` using `Finset.sum_range_succ' (fun i => (σ ^ i) z) n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hz, pow_zero, AlgEquiv.one_apply] at e1 e2`. Rewrite using `[hsdef, map_sum]`. Establish `e3 : ∑ i ∈ Finset.range n, σ ((σ ^ i) z) = ∑ i ∈ Finset.range n, (σ ^ (i + 1)) z` using `Finset.sum_congr rfl fun i _ => by rw [pow_succ', AlgEquiv.mul_apply]`. Rewrite using `[e3]`. Conclude with `add_right_cancel (e2.symm.trans e1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hk : ∀ w, σ w = w → ∀ k : ℕ, (σ ^ k) w = w`. Introduce `w hw k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', AlgEquiv.mul_apply, ih, hw]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : ∀ z, z ≠ 0 → s z ≠ 0`. Introduce `z hz h0`. Establish `hlt : A.valuation (∑ i ∈ Finset.range n, ((σ ^ i) z / z - 1)) < 1` using `Valuation.map_sum_lt _ one_ne_zero (fun i _ => _root_.GlobalTheory.valuation_pow_apply_div_sub_one_lt A σ hσ z hz i)`. Establish `e : ∑ i ∈ Finset.range n, ((σ ^ i) z / z - 1) = s z / z - n`. Simplify using `[hsdef, Finset.sum_sub_distrib, Finset.sum_div]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hlt` using `[e, h0, zero_div, zero_sub, Valuation.map_neg, hv]`. Conclude with `lt_irrefl _ hlt`. Establish `hfix : ∀ y : Ω, (σ ^ n) y = y → σ y = y`. Introduce `y hy`. Establish `hsy` using `hs y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ∀ i, (σ ^ i) ((n : Ω) * y - s y) = n * (σ ^ i) y - s y` using `fun i => by`. Rewrite using `[map_sub, map_mul, map_natCast, hk (s y) hsy i]`. Establish `hsz : s ((n : Ω) * y - s y) = 0`. Rewrite using `[hsdef, Finset.sum_congr rfl (fun i _ => h1 i), Finset.sum_sub_distrib, ← Finset.mul_sum, ← hsdef, Finset.sum_const, Finset.card_range, nsmul_eq_mul, sub_self]`. Establish `hz : (n : Ω) * y - s y = 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hne _ h hsz`. Establish `hy' : s y = n * y` using `(sub_eq_zero.1 hz).symm`. Establish `e` using `congrArg σ hy'`. Rewrite `e` using `[hsy, map_mul, map_natCast, hy']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(mul_left_cancel₀ hn0 e).symm`. Use `haveI : IsGalois E Ω := inferInstance`. Establish `hcl : IsClosed (H : Set (Ω ≃ₐ[E] Ω))` using `H.isClosed_of_isOpen hH`. Establish `hH'` using `InfiniteGalois.fixingSubgroup_fixedField (⟨H, hcl⟩ : ClosedSubgroup (Ω ≃ₐ[E] Ω))`. Establish `hmem : σ ∈ (IntermediateField.fixedField H).fixingSubgroup`.
-
-Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `y hy`. Apply `hfix` to reduce the goal to its premises. Conclude with `(IntermediateField.mem_fixedField_iff H y).1 hy _ hpow`. Rewrite `hmem` using `[hH']`.
-
-Conclude with `hmem`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.mem_of_wild_of_pow_mem_open_normal :
     ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 E)), _root_.Formalism.ConjugateSelfDual.IsPlaceOver A v → ∀ (H : Subgroup (_root_.Formalism.ConjugateSelfDual.G E Ω)), H.Normal → IsOpen (H : Set (_root_.Formalism.ConjugateSelfDual.G E Ω)) → ∀ (σ : _root_.Formalism.ConjugateSelfDual.G E Ω) (n : ℕ), ((n : ℕ) : 𝓞 E) ∉ v.asIdeal → (∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1) → σ ^ n ∈ H → σ ∈ H := by

@@ -8,19 +8,19 @@ open scoped Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `q l L hq hl hL`. Proceed by induction on `L with`. Consider the case `nil => simp [liftAll, deg]`. Consider the case `cons p L ih`. Establish `hp` using `hL p (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `ih'` using `ih (fun x hx => hL x (by simp [hx]))`. Establish `hcons : liftAll q l (p :: L) = (if l ∣ p.1 then liftL q l [p] else [(p.1, p.2 * ∑ i ∈ Finset.range l, q ^ (p.1 * i))]) ++ liftAll q l L`. Simplify using `[liftAll, List.flatMap_cons]`. Establish `hdegapp : ∀ A B : List (ℕ × ℕ), deg (A ++ B) = deg A + deg B` using `by intro A B; simp [deg]`. Establish `hdegcons : deg (p :: L) = p.1 + deg L` using `by simp [deg]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcons, hdegapp, hdegcons]`. Distinguish the cases in `h : l ∣ p.1`. Take `⟨h1, h2⟩` from `GlobalTheory.T.deg_liftL_and_reg_pow q l [p] hq hl.pos (by`. Introduce `x hx`. Rewrite `hx` using `[List.mem_singleton]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `hx` using the available equality. Conclude with `⟨hp.1, h, hp.2⟩)`. Rewrite using `[if_pos h]`. Establish `hs : deg [p] = p.1` using `by simp [deg]`. Use `⟨by rw [h1, hs, ih'.1], ?_⟩` and prove the remaining obligations.
+Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Break down `List.mem_append.1 hx with hx | hx` into its components or cases. Conclude with `h2 x hx`. Conclude with `ih'.2 x hx`. Rewrite using `[if_neg h]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `(GlobalTheory.T.regular_pair_lift_to_prime_power_field q l p.1 p.2 hq hl hp.1 h hp.2).1`. Establish `hs : deg [(p.1, p.2 * ∑ i ∈ Finset.range l, q ^ (p.1 * i))] = p.1` using `by simp [deg]`. Use `⟨by rw [hs, ih'.1], ?_⟩` and prove the remaining obligations. Introduce `x hx`. Break down `List.mem_append.1 hx with hx | hx` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `hx` using `[List.mem_singleton]`. Substitute `hx` using the available equality. Conclude with `⟨hp.1, hr⟩`. Conclude with `ih'.2 x hx`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem liftAll_deg_reg : ∀ (q l : ℕ) (L : List (ℕ × ℕ)), 2 ≤ q → l.Prime → (∀ p ∈ L, 0 < p.1 ∧ Reg q p.1 p.2) →
     deg (liftAll q l L) = deg L ∧ ∀ p ∈ liftAll q l L, 0 < p.1 ∧ Reg (q ^ l) p.1 p.2 := by

@@ -10,7 +10,7 @@ namespace GlobalTheory.IntTerm
 variable {E : Type} [Field E]
 
 /- English proof (translation)
-The claim follows from `| [], _, _ => by simp [ptEntry] | (t, s) :: bs, a, b => by rw [ptEntry, ptEntry, ptEntry_symm bs (a - s) (b - s), add_comm a b] simp only [and_comm]`.
+A detailed English derivation is pending.
 -/
 theorem ptEntry_symm : ∀ (bs : List (E × ℕ)) (a b : ℕ), ptEntry bs a b = ptEntry bs b a
   | [], _, _ => by simp [ptEntry]
@@ -19,7 +19,7 @@ theorem ptEntry_symm : ∀ (bs : List (E × ℕ)) (a b : ℕ), ptEntry bs a b = 
     simp only [and_comm]
 
 /- English proof (translation)
-The claim follows from `| [], _, a, ha => by simp at ha | (t, s) :: bs, h, a, ha => by have ht : t ≠ 0 := (h (t, s) (by simp)).1 simp only [List.map_cons, List.sum_cons] at ha ⊢ by_cases has : a < s · refine ⟨s - 1 - a, by omega, ?_, fun b hb => ?_⟩ · rw [ptEntry, if_pos (by omega), if_pos (by omega)]; …`.
+A detailed English derivation is pending.
 -/
 theorem ptEntry_row : ∀ (bs : List (E × ℕ)), (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) →
     ∀ a < (bs.map Prod.snd).sum, ∃ c < (bs.map Prod.snd).sum,
@@ -42,7 +42,7 @@ theorem ptEntry_row : ∀ (bs : List (E × ℕ)), (∀ b ∈ bs, b.1 ≠ 0 ∧ 1
         · rfl
 
 /- English proof (translation)
-The claim follows from `| [], [], _, _, _, _ => rfl | [], (t, s) :: cs, _, h, e, _ => by have := (h (t, s) (by simp)).2 simp only [List.map_cons, List.sum_cons, List.map_nil, List.sum_nil] at e this omega | (t, s) :: bs, [], h, _, e, _ => by have := (h (t, s) (by simp)).2 simp only [List.map_cons, List. …`.
+A detailed English derivation is pending.
 -/
 theorem ptEntry_inj : ∀ (bs cs : List (E × ℕ)), (∀ b ∈ bs, b.1 ≠ 0 ∧ 1 ≤ b.2) → (∀ b ∈ cs, b.1 ≠ 0 ∧ 1 ≤ b.2) →
     (bs.map Prod.snd).sum = (cs.map Prod.snd).sum →
@@ -77,7 +77,7 @@ theorem ptEntry_inj : ∀ (bs cs : List (E × ℕ)), (∀ b ∈ bs, b.1 ≠ 0 �
       Nat.add_sub_cancel, Nat.add_sub_cancel] at this
 
 /- English proof (translation)
-Introduce `w w' h`. Use `Subtype.ext (ptEntry_inj _ _ w.2.1 w'.2.1 (w.2.2.trans w'.2.2.symm) fun a ha b hb => ?_)` and prove the remaining obligations. Rewrite `ha`, `hb` using `[w.2.2]`. Conclude with `congrFun (congrFun h ⟨a, ha⟩) ⟨b, hb⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptMat_injective {m : ℕ} : Function.Injective (ptMat : Point E m → Matrix (Fin m) (Fin m) E) := by
   intro w w' h
@@ -86,9 +86,9 @@ theorem ptMat_injective {m : ℕ} : Function.Injective (ptMat : Point E m → Ma
   exact congrFun (congrFun h ⟨a, ha⟩) ⟨b, hb⟩
 
 /- English proof (translation)
-Establish `row (a : Fin m) : ∃ c, ptMat w a c ≠ 0 ∧ ∀ b, b ≠ c → ptMat w a b = 0`. Take `⟨c, hc, h1, h2⟩` from `ptEntry_row w.1 w.2.1 a (by rw [w.2.2]; exact a.2)`. Rewrite `hc` using `[w.2.2]`. Conclude with `⟨⟨c, hc⟩, h1, fun b hb => h2 b fun e => hb (Fin.ext e)⟩`. Establish `sy (a b : Fin m) : ptMat w a b = ptMat w b a` using `ptEntry_symm _ _ _`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨c, h1, h2⟩` from `row a`. Take `⟨d, -, h4⟩` from `row c`. Take `rfl : a = d` from `by_contra fun e => h1 ((sy a c).trans (h4 a e))`. Conclude with `⟨c, h1, h2, fun k hk => (sy k c).trans (h4 k hk)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ptMat_monomial {m : ℕ} (w : Point E m) (a : Fin m) :
     ∃ c, ptMat w a c ≠ 0 ∧ (∀ b, b ≠ c → ptMat w a b = 0) ∧ ∀ k, k ≠ a → ptMat w k c = 0 := by
@@ -103,7 +103,7 @@ theorem ptMat_monomial {m : ℕ} (w : Point E m) (a : Fin m) :
   exact ⟨c, h1, h2, fun k hk => (sy k c).trans (h4 k hk)⟩
 
 /- English proof (translation)
-Use `up_inv (u := lᵀ) fun i j => ⟨(hl j i).1, fun e => (hl j i).2 e.symm⟩` as an intermediate fact. Rewrite `this` using `[← Matrix.transpose_nonsing_inv]`. Conclude with `fun i j => ⟨(this j i).1, fun e => (this j i).2 e.symm⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem lo_inv {m : ℕ} {l : Matrix (Fin m) (Fin m) E} (hl : IsLo l) : IsLo l⁻¹ := by
   have := up_inv (u := lᵀ) fun i j => ⟨(hl j i).1, fun e => (hl j i).2 e.symm⟩
@@ -111,9 +111,9 @@ theorem lo_inv {m : ℕ} {l : Matrix (Fin m) (Fin m) E} (hl : IsLo l) : IsLo l�
   exact fun i j => ⟨(this j i).1, fun e => (this j i).2 e.symm⟩
 
 /- English proof (translation)
-Establish `e2 : l'⁻¹ * l * ptMat w = ptMat w' * (u' * u⁻¹)`. Use `congrArg (fun W => l'⁻¹ * W * u⁻¹) e` as an intermediate fact. Simplify using `only [Matrix.mul_assoc, up_mul_inv hu, Matrix.mul_one] at this`. Rewrite `this` using `[← Matrix.mul_assoc l'⁻¹ l', Matrix.nonsing_inv_mul l' (by simp [lo_det hl']), Matrix.one_mul, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Establish `hv` using `up_mul hu' (up_inv hu)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `e3` using `congrFun (congrFun e2 a) c`. Rewrite `e3` using `[Matrix.mul_apply, Matrix.mul_apply (M := ptMat w'), Finset.sum_eq_single a (fun k _ hk => by rw [h2 k hk, mul_zero]) (by simp), Finset.sum_eq_single c' (fun k _ hk => by rw [h3 k hk, zero_mul]) (by simp), (lo_mul (lo_inv hl') hl a a).2 rfl, one_mul]`. Conclude with `⟨not_lt.1 fun h => h1 (by rw [e3, (hv _ _).1 h, mul_zero]), fun h => by rw [e3, (hv _ _).2 h, mul_one]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ptMat_row_le {m : ℕ} {w w' : Point E m} {l u l' u' : Matrix (Fin m) (Fin m) E} (hl : IsLo l) (hu : IsUp u)
     (hl' : IsLo l') (hu' : IsUp u') (e : l * ptMat w * u = l' * ptMat w' * u') {a c c' : Fin m}
@@ -134,11 +134,11 @@ theorem ptMat_row_le {m : ℕ} {w w' : Point E m} {l u l' u' : Matrix (Fin m) (F
     fun h => by rw [e3, (hv _ _).2 h, mul_one]⟩
 
 /- English proof (translation)
-Take `⟨l, u, hl, hu, e⟩` from `h`. Take `⟨l', u', hl', hu', e'⟩` from `h'`. Use `ptMat_injective (Matrix.ext fun a b => ?_)` and prove the remaining obligations. Take `⟨c, h1, h2, h3⟩` from `ptMat_monomial w a`. Take `⟨c', k1, k2, k3⟩` from `ptMat_monomial w' a`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `p` using `ptMat_row_le hl hu hl' hu' (e.symm.trans e') h1 h3 k2`. Establish `q` using `ptMat_row_le hl' hu' hl hu (e'.symm.trans e) k1 k3 h2`. Take `rfl : c' = c` from `le_antisymm p.1 q.1`. Break down `eq_or_ne b c' with rfl | hb` into its components or cases. Conclude with `p.2 rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2 b hb, k2 b hb]`.
+A detailed English derivation is pending.
 -/
 theorem liesAt_unique {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (w w' : Point E (r + 1))
     (h : LiesAt w Z) (h' : LiesAt w' Z) : w = w' := by
@@ -158,7 +158,7 @@ variable [NumberField E] {σ : E →+* E} {n r g : ℕ} {J : Matrix (Fin n) (Fin
   {P : Matrix (Fin n) (Fin (r + 1)) E}
 
 /- English proof (translation)
-The claim follows from `liesAt_unique t.Zhat _ _ h h'`.
+A detailed English derivation is pending.
 -/
 theorem Term.At.unique {t : Term σ J T' g P} {w w' : Point E (r + 1)} (h : t.At w) (h' : t.At w') : w = w' :=
   liesAt_unique t.Zhat _ _ h h'

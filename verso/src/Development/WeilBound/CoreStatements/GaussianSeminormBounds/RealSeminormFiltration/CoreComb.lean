@@ -9,9 +9,9 @@ open scoped InnerProductSpace
 namespace PositivityTheory.KReal
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < (i : ℕ)` using `Nat.pos_of_ne_zero hne`. Establish `hN : 0 < N` using `lt_of_le_of_lt (Nat.zero_le _) i.isLt`. Establish `h0 : (⟨0, hN⟩ : Fin N) < i`. Rewrite using `[Fin.lt_def]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpos`. Establish `e1` using `hdom _ h0`. Establish `e2` using `hg' ⟨0, hN⟩ (ne_of_lt h0)`. Establish `e3` using `hf _ h0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem top_idx {N : ℕ} (f g : Fin N → ℚ) (i : Fin N) (hdom : ∀ i', i' < i → g i ≤ g i')
     (hg : g i = f i + 1) (hg' : ∀ i', i' ≠ i → g i' = f i') (hf : ∀ i', i' < i → f i' = f i) :
@@ -28,11 +28,11 @@ theorem top_idx {N : ℕ} (f g : Fin N → ℚ) (i : Fin N) (hdom : ∀ i', i' <
   linarith
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hlt : (j : ℕ) + 1 < N`. Use `j.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h0 : j < (⟨(j : ℕ) + 1, hlt⟩ : Fin N)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[Fin.lt_def]`. Conclude with `Nat.lt_succ_self _`. Establish `e1` using `hdom _ h0`. Establish `e2` using `hg' ⟨(j : ℕ) + 1, hlt⟩ (ne_of_gt h0)`. Establish `e3` using `hf _ h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem bot_idx {N : ℕ} (f g : Fin N → ℚ) (j : Fin N) (hdom : ∀ j', j < j' → g j' ≤ g j)
     (hg : g j = f j - 1) (hg' : ∀ j', j' ≠ j → g j' = f j') (hf : ∀ j', j < j' → f j' = f j) :
@@ -50,7 +50,7 @@ theorem bot_idx {N : ℕ} (f g : Fin N → ℚ) (j : Fin N) (hdom : ∀ j', j < 
   linarith
 
 /- English proof (translation)
-Establish `h' : RootTo (fun x => ν x + τ) a b (fun x => La x + τ)` using `fun x => by`. Use `h x` as an intermediate fact. Simplify using `only`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[casW_root hab h']`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -65,7 +65,7 @@ theorem cas_lt {r s : ℕ} {ν La : Ix r s → ℚ} {a b : Ix r s} (hab : a ≠ 
   linarith
 
 /- English proof (translation)
-Use `abs_add_le x 1` as an intermediate fact. Rewrite `this` using `[abs_one]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem abs_up (x : ℚ) : |x + 1| - |x| ≤ 1 := by
   have := abs_add_le x 1
@@ -73,7 +73,7 @@ theorem abs_up (x : ℚ) : |x + 1| - |x| ≤ 1 := by
   linarith
 
 /- English proof (translation)
-Establish `h` using `abs_add_le x (-1)`. Rewrite `h` using `[abs_neg, abs_one, ← sub_eq_add_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem abs_down (x : ℚ) : |x - 1| - |x| ≤ 1 := by
   have h := abs_add_le x (-1)
@@ -81,7 +81,7 @@ theorem abs_down (x : ℚ) : |x - 1| - |x| ≤ 1 := by
   linarith
 
 /- English proof (translation)
-Establish `h1 : (1 : ℚ) ≤ m` using `by exact_mod_cast hm`. Rewrite using `[abs_of_nonneg (by linarith : (0 : ℚ) ≤ (m : ℚ) - 1), abs_of_nonneg (by linarith : (0 : ℚ) ≤ (m : ℚ))]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem abs_pos_down {m : ℕ} (hm : 0 < m) : |(m : ℚ) - 1| - |(m : ℚ)| = -1 := by
   have h1 : (1 : ℚ) ≤ m := by exact_mod_cast hm
@@ -89,7 +89,7 @@ theorem abs_pos_down {m : ℕ} (hm : 0 < m) : |(m : ℚ) - 1| - |(m : ℚ)| = -1
   ring
 
 /- English proof (translation)
-Establish `: (1 : ℚ) ≤ m` using `by exact_mod_cast hm`. Rewrite using `[abs_of_nonpos (by linarith), abs_of_nonpos (by linarith)]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem abs_neg_up {m : ℕ} (hm : 0 < m) : |-(m : ℚ) + 1| - |-(m : ℚ)| = -1 := by
   have : (1 : ℚ) ≤ m := by exact_mod_cast hm
@@ -97,21 +97,19 @@ theorem abs_neg_up {m : ℕ} (hm : 0 < m) : |-(m : ℚ) + 1| - |-(m : ℚ)| = -1
   ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `i j hR hi hj hpos`. Establish `hne : (Sum.inr j : Ix r s) ≠ Sum.inl i` using `Sum.inr_ne_inl`. Take `⟨ea, eb, eo⟩` from `cw_root hne hR`. Establish `h0 : (i : ℕ) = 0`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `top_idx (fun k => La (.inl k)) (fun k => ν (.inl k)) i ?_ eb ?_ hi` and prove the remaining obligations. Introduce `i' hi'`. Conclude with `hD (.inl i') (.inl i) hi'`. Introduce `i' hi'`. Conclude with `eo _ Sum.inl_ne_inr (fun e => hi' (Sum.inl_injective e))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (j : ℕ) + 1 = s`. Use `bot_idx (fun k => La (.inr k)) (fun k => ν (.inr k)) j ?_ ea ?_ hj` and prove the remaining obligations. Introduce `j' hj'`. Conclude with `hD (.inr j) (.inr j') hj'`. Introduce `j' hj'`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `eo _ (fun e => hj' (Sum.inr_injective e)) Sum.inr_ne_inl`. Establish `h0' : ((i : ℕ) : ℚ) = 0` using `by exact_mod_cast h0`. Establish `h1' : ((j : ℕ) : ℚ) + 1 = s` using `by exact_mod_cast h1`. Simplify using `only [rho2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i j hR hj hi hpos`. Establish `hne : (Sum.inl i : Ix r s) ≠ Sum.inr j` using `Sum.inl_ne_inr`. Take `⟨ea, eb, eo⟩` from `cw_root hne hR`. Establish `h0 : (j : ℕ) = 0`. Use `top_idx (fun k => La (.inr k)) (fun k => ν (.inr k)) j ?_ eb ?_ hj` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j' hj'`. Conclude with `hD (.inr j') (.inr j) hj'`. Introduce `j' hj'`. Conclude with `eo _ Sum.inr_ne_inl (fun e => hj' (Sum.inr_injective e))`. Establish `h1 : (i : ℕ) + 1 = r`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `bot_idx (fun k => La (.inl k)) (fun k => ν (.inl k)) i ?_ ea ?_ hi` and prove the remaining obligations. Introduce `i' hi'`. Conclude with `hD (.inl i) (.inl i') hi'`. Introduce `i' hi'`. Conclude with `eo _ (fun e => hi' (Sum.inl_injective e)) Sum.inl_ne_inr`.
-
-Establish `h0' : ((j : ℕ) : ℚ) = 0` using `by exact_mod_cast h0`. Establish `h1' : ((i : ℕ) : ℚ) + 1 = r` using `by exact_mod_cast h1`. Simplify using `only [rho2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem extreme {r s : ℕ} {ν La : Ix r s → ℚ} (hD : Dom ν) :
     (∀ (i : Fin r) (j : Fin s), RootTo ν (.inr j) (.inl i) La →
@@ -163,35 +161,31 @@ theorem extreme {r s : ℕ} {ν La : Ix r s → ℚ} (hD : Dom ν) :
     linarith
 
 /- English proof (translation)
-Take `⟨hs, hu⟩` from `shape_pos hp hq hn hm c0 h1 h2`. Use `⟨hs, hu, ?_⟩` and prove the remaining obligations. Introduce `ν a b hab hR hD hS hdeg`. Establish `hne : a ≠ b`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `rcases a with k | l <;> exact hab trivial`. Apply `cas_lt hne hR` to reduce the goal to its premises. Establish `hdr` using `degW_root (cPair p q) hne hR`. Rewrite `hdr` using `[degW_laPos hp hq]`. Establish `e1 : c0 - cPair r s = n` using `by linarith`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : c0 + cPair r s = m` using `by linarith`. Rewrite `hdeg` using `[degW_const, e1, e2, Nat.abs_cast, Nat.abs_cast]`. Establish `hA` using `abs_up (shiftNu (cPair p q) (laPos p q r s n m) b)`. Establish `hB` using `abs_down (shiftNu (cPair p q) (laPos p q r s n m) a)`. Establish `hBeq : |shiftNu (cPair p q) (laPos p q r s n m) a - 1| - |shiftNu (cPair p q) (laPos p q r s n m) a| = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨ea, eb, eo⟩` from `cw_root hne hR`. Establish `hn' : (0 : ℚ) < n` using `by exact_mod_cast hn`. Establish `hm' : (0 : ℚ) < m` using `by exact_mod_cast hm`. Apply the tactic sequence `rcases a with k | l <;> rcases b with k' | l'`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd trivial hab`. Establish `sa : shiftNu (cPair p q) (laPos p q r s n m) (Sum.inl k) = (if (k : ℕ) < p then (n : ℚ) else 0)` using `by show (if (k : ℕ) < p then (n : ℚ) else 0) + cPair p q - cPair p q = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hk : p ≤ (k : ℕ)`. Assume the negation of the conclusion as `hk`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `push_neg at hk`. Rewrite `hBeq` using `[sa, if_pos hk, abs_pos_down hn]`. Evaluate the numerical expressions using `at hBeq`. Establish `hl : (l' : ℕ) < q`. Assume the negation of the conclusion as `hl`.
+Evaluate the numerical expressions. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hl`. Establish `h5 : ν (Sum.inr l') + cPair p q ≤ 0` using `hS.2.1 l' hl`. Establish `e : ν (Sum.inr l') = (if (l' : ℕ) < q then (m : ℚ) else 0) - cPair p q + 1` using `eb`. Rewrite `e` using `[if_neg (not_lt.mpr hl)]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(extreme hD).2 k l' hR ?_ ?_ ?_` and prove the remaining obligations. Introduce `j' hj'`. Establish `hj'' : (j' : ℕ) < q` using `lt_trans (Fin.lt_def.mp hj') hl`. Use `show (if (j' : ℕ) < q then (m : ℚ) else 0) - cPair p q = (if (l' : ℕ) < q then (m : ℚ) else 0) - cPair p q`. Rewrite using `[if_pos hj'', if_pos hl]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `i' hi'`. Establish `hi'' : ¬ ((i' : ℕ) < p)` using `not_lt.mpr (le_trans hk (le_of_lt (Fin.lt_def.mp hi')))`. Use `show (if (i' : ℕ) < p then (n : ℚ) else 0) + cPair p q = (if (k : ℕ) < p then (n : ℚ) else 0) + cPair p q`. Rewrite using `[if_neg hi'', if_neg (not_lt.mpr hk)]`. Use `show (0 : ℚ) < ((if (l' : ℕ) < q then (m : ℚ) else 0) - cPair p q) - ((if (k : ℕ) < p then (n : ℚ) else 0) + cPair p q)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[if_pos hl, if_neg (not_lt.mpr hk)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `sa : shiftNu (cPair p q) (laPos p q r s n m) (Sum.inr l) = (if (l : ℕ) < q then (m : ℚ) else 0)` using `by show (if (l : ℕ) < q then (m : ℚ) else 0) - cPair p q + cPair p q = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hl : q ≤ (l : ℕ)`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hl`. Use `push_neg at hl`. Rewrite `hBeq` using `[sa, if_pos hl, abs_pos_down hm]`. Evaluate the numerical expressions using `at hBeq`. Establish `hk : (k' : ℕ) < p`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hk`. Use `push_neg at hk`. Establish `h5 : ν (Sum.inl k') - cPair p q ≤ 0` using `hS.1 k' hk`. Establish `e : ν (Sum.inl k') = (if (k' : ℕ) < p then (n : ℚ) else 0) + cPair p q + 1` using `eb`. Rewrite `e` using `[if_neg (not_lt.mpr hk)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `(extreme hD).1 k' l hR ?_ ?_ ?_` and prove the remaining obligations. Introduce `i' hi'`. Establish `hi'' : (i' : ℕ) < p` using `lt_trans (Fin.lt_def.mp hi') hk`. Use `show (if (i' : ℕ) < p then (n : ℚ) else 0) + cPair p q = (if (k' : ℕ) < p then (n : ℚ) else 0) + cPair p q`.
-
-Rewrite using `[if_pos hi'', if_pos hk]`. Introduce `j' hj'`. Establish `hj'' : ¬ ((j' : ℕ) < q)` using `not_lt.mpr (le_trans hl (le_of_lt (Fin.lt_def.mp hj')))`. Use `show (if (j' : ℕ) < q then (m : ℚ) else 0) - cPair p q = (if (l : ℕ) < q then (m : ℚ) else 0) - cPair p q`. Rewrite using `[if_neg hj'', if_neg (not_lt.mpr hl)]`.
-
-Use `show (0 : ℚ) < ((if (k' : ℕ) < p then (n : ℚ) else 0) + cPair p q) - ((if (l : ℕ) < q then (m : ℚ) else 0) - cPair p q)`. Rewrite using `[if_pos hk, if_neg (not_lt.mpr hl)]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd trivial hab`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem comb_pos {p q r s n m : ℕ} (hp : p ≤ r) (hq : q ≤ s) (hn : 0 < n) (hm : 0 < m) (c0 τ : ℚ)
     (h1 : c0 = n + cPair r s) (h2 : c0 = m - cPair r s)
@@ -284,37 +278,35 @@ theorem comb_pos {p q r s n m : ℕ} (hp : p ≤ r) (hq : q ≤ s) (hn : 0 < n) 
   · exact absurd trivial hab
 
 /- English proof (translation)
-Take `⟨hs, hu⟩` from `shape_neg hq hp hn hm c0 h1 h2`. Use `⟨hs, hu, ?_⟩` and prove the remaining obligations. Introduce `ν a b hab hR hD hS hdeg`. Establish `hne : a ≠ b`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Apply the tactic sequence `rcases a with k | l <;> exact hab trivial`. Apply `cas_lt hne hR` to reduce the goal to its premises. Establish `hdr` using `degW_root (cPair p q) hne hR`. Rewrite `hdr` using `[degW_laNeg hq hp]`. Establish `e1 : c0 - cPair r s = -(m : ℚ)` using `by linarith`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : c0 + cPair r s = -(n : ℚ)` using `by linarith`. Rewrite `hdeg` using `[degW_const, e1, e2, abs_neg, abs_neg, Nat.abs_cast, Nat.abs_cast]`. Establish `hA` using `abs_up (shiftNu (cPair p q) (laNeg p q r s n m) b)`. Establish `hB` using `abs_down (shiftNu (cPair p q) (laNeg p q r s n m) a)`. Establish `hAeq : |shiftNu (cPair p q) (laNeg p q r s n m) b + 1| - |shiftNu (cPair p q) (laNeg p q r s n m) b| = 1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨ea, eb, eo⟩` from `cw_root hne hR`. Establish `hn' : (0 : ℚ) < n` using `by exact_mod_cast hn`. Establish `hm' : (0 : ℚ) < m` using `by exact_mod_cast hm`. Apply the tactic sequence `rcases a with k | l <;> rcases b with k' | l'`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd trivial hab`. Establish `sb : shiftNu (cPair p q) (laNeg p q r s n m) (Sum.inr l') = (if s ≤ (l' : ℕ) + p then -(m : ℚ) else 0)` using `by show (if s ≤ (l' : ℕ) + p then -(m : ℚ) else 0) - cPair p q + cPair p q = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hl : ¬ (s ≤ (l' : ℕ) + p)`. Introduce `hl`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hAeq` using `[sb, if_pos hl, abs_neg_up hm]`. Evaluate the numerical expressions using `at hAeq`. Establish `hk : r ≤ (k : ℕ) + q`. Assume the negation of the conclusion as `hk`. Use `push_neg at hk`.
+Evaluate the numerical expressions. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : 0 ≤ ν (Sum.inl k) - cPair p q` using `hS.2.2.1 k hk`. Establish `e : ν (Sum.inl k) = (if r ≤ (k : ℕ) + q then -(n : ℚ) else 0) + cPair p q - 1` using `ea`. Rewrite `e` using `[if_neg (not_le.mpr hk)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(extreme hD).2 k l' hR ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `j' hj'`. Establish `hj'' : ¬ (s ≤ (j' : ℕ) + p)`. Use `Fin.lt_def.mp hj'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `show (if s ≤ (j' : ℕ) + p then -(m : ℚ) else 0) - cPair p q = (if s ≤ (l' : ℕ) + p then -(m : ℚ) else 0) - cPair p q`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[if_neg hj'', if_neg hl]`. Introduce `i' hi'`. Establish `hi'' : r ≤ (i' : ℕ) + q`. Use `Fin.lt_def.mp hi'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `show (if r ≤ (i' : ℕ) + q then -(n : ℚ) else 0) + cPair p q = (if r ≤ (k : ℕ) + q then -(n : ℚ) else 0) + cPair p q`. Rewrite using `[if_pos hi'', if_pos hk]`. Use `show (0 : ℚ) < ((if s ≤ (l' : ℕ) + p then -(m : ℚ) else 0) - cPair p q) - ((if r ≤ (k : ℕ) + q then -(n : ℚ) else 0) + cPair p q)`. Rewrite using `[if_neg hl, if_pos hk]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `sb : shiftNu (cPair p q) (laNeg p q r s n m) (Sum.inl k') = (if r ≤ (k' : ℕ) + q then -(n : ℚ) else 0)` using `by show (if r ≤ (k' : ℕ) + q then -(n : ℚ) else 0) + cPair p q - cPair p q = _`. Expand and normalize the polynomial expressions, which then agree. Establish `hk : ¬ (r ≤ (k' : ℕ) + q)`. Introduce `hk`. Rewrite `hAeq` using `[sb, if_pos hk, abs_neg_up hn]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at hAeq`. Establish `hl : s ≤ (l : ℕ) + p`. Assume the negation of the conclusion as `hl`. Use `push_neg at hl`. Establish `h5 : 0 ≤ ν (Sum.inr l) + cPair p q` using `hS.2.2.2 l hl`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : ν (Sum.inr l) = (if s ≤ (l : ℕ) + p then -(m : ℚ) else 0) - cPair p q - 1` using `ea`. Rewrite `e` using `[if_neg (not_le.mpr hl)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(extreme hD).1 k' l hR ?_ ?_ ?_` and prove the remaining obligations. Introduce `i' hi'`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hi'' : ¬ (r ≤ (i' : ℕ) + q)`. Use `Fin.lt_def.mp hi'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `show (if r ≤ (i' : ℕ) + q then -(n : ℚ) else 0) + cPair p q = (if r ≤ (k' : ℕ) + q then -(n : ℚ) else 0) + cPair p q`. Rewrite using `[if_neg hi'', if_neg hk]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Introduce `j' hj'`. Establish `hj'' : s ≤ (j' : ℕ) + p`. Use `Fin.lt_def.mp hj'` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `show (if s ≤ (j' : ℕ) + p then -(m : ℚ) else 0) - cPair p q = (if s ≤ (l : ℕ) + p then -(m : ℚ) else 0) - cPair p q`.
-
-Rewrite using `[if_pos hj'', if_pos hl]`. Use `show (0 : ℚ) < ((if r ≤ (k' : ℕ) + q then -(n : ℚ) else 0) + cPair p q) - ((if s ≤ (l : ℕ) + p then -(m : ℚ) else 0) - cPair p q)`. Rewrite using `[if_neg hk, if_pos hl]`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `absurd trivial hab`.
+A detailed English derivation is pending.
 -/
 theorem comb_neg {p q r s n m : ℕ} (hq : q ≤ r) (hp : p ≤ s) (hn : 0 < n) (hm : 0 < m) (c0 τ : ℚ)
     (h1 : c0 = -m + cPair r s) (h2 : c0 = -n - cPair r s)
@@ -413,11 +405,11 @@ theorem comb_neg {p q r s n m : ℕ} (hq : q ≤ r) (hp : p ≤ s) (hn : 0 < n) 
   · exact absurd trivial hab
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9⟩` from `h`. Establish `hn2 : 2 * nD D = D.κ + 2 * D.y - D.d`. Unfold `nD`. Use `Nat.mul_div_cancel' (Nat.dvd_of_mod_eq_zero ?_)` and prove the remaining obligations. Simplify using `only [RealData.y, RealData.d]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hm2 : 2 * mD D = D.κ + D.d - 2 * D.y`. Unfold `mD`. Use `Nat.mul_div_cancel' (Nat.dvd_of_mod_eq_zero ?_)` and prove the remaining obligations. Simplify using `only [RealData.y, RealData.d]`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [RealData.y, RealData.d] at hn2 hm2`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `all_goals try simp only [RealData.R, RealData.S, RealData.P, RealData.Q, RealData.P', RealData.Q', RealData.y, RealData.d]`. Apply the tactic sequence `all_goals omega`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nat_facts {D : RealData} (h : D.Hyp) :
     D.R + D.p + D.q = D.a + D.a' ∧ D.S = D.p + D.q ∧ D.P + D.p = D.a ∧ D.Q = D.p ∧ D.P' = D.q ∧
@@ -441,11 +433,7 @@ theorem nat_facts {D : RealData} (h : D.Hyp) :
   all_goals omega
 
 /- English proof (translation)
-Take `⟨e1, e2, e3, e4, e5, e6, e7, e8⟩` from `nat_facts h`. Use `⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, by positivity, by positivity⟩` and prove the remaining obligations. Conclude with `e1` after adjusting the coercions. Conclude with `e2` after adjusting the coercions. Conclude with `e3` after adjusting the coercions.
-
-Conclude with `e4` after adjusting the coercions. Conclude with `e5` after adjusting the coercions. Conclude with `e6` after adjusting the coercions. Conclude with `e7` after adjusting the coercions. Conclude with `e8` after adjusting the coercions.
-
-Conclude with `h.h2` after adjusting the coercions. Conclude with `h.h5` after adjusting the coercions. Conclude with `h.a_gt` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rat_facts {D : RealData} (h : D.Hyp) :
     (D.R : ℚ) + D.p + D.q = D.a + D.a' ∧ (D.S : ℚ) = D.p + D.q ∧ (D.P : ℚ) + D.p = D.a ∧ (D.Q : ℚ) = D.p ∧
@@ -467,9 +455,9 @@ theorem rat_facts {D : RealData} (h : D.Hyp) :
   · exact_mod_cast h.a_gt
 
 /- English proof (translation)
-Take `⟨e1, e2, e3, e4, e5, e6, e7, e8⟩` from `nat_facts h`. Take `⟨f1, f2, f3, f4, f5, f6, f7, f8, -⟩` from `rat_facts h`. Use `h.h2` as an intermediate fact. Use `h.h5` as an intermediate fact. Use `h.a_gt` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨by omega, by omega, ?_, ?_, by omega, by omega, by omega, by omega⟩` and prove the remaining obligations. Simplify using `only [cPair]`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [cPair]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nm_facts {D : RealData} (h : D.Hyp) :
     0 < nD D ∧ 0 < mD D ∧ ((D.κ : ℚ) / 2 = nD D + cPair D.R D.S) ∧ ((D.κ : ℚ) / 2 = mD D - cPair D.R D.S) ∧
@@ -482,11 +470,11 @@ theorem nm_facts {D : RealData} (h : D.Hyp) :
   · simp only [cPair]; linarith
 
 /- English proof (translation)
-Take `⟨e1, e2, e3, e4, e5, e6, e7, e8⟩` from `nat_facts h`. Take `⟨f1, f2, f3, f4, f5, f6, f7, f8, -⟩` from `rat_facts h`. Use function extensionality and compare the values at `x`. Break down `x with k | l` into its components or cases. Simplify using `only [laNeg, laPos, cPair]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hk : (k : ℕ) < D.P`. Rewrite using `[if_pos hk, if_neg (by omega)]; linarith`. Rewrite using `[if_neg hk, if_pos (by omega)]; linarith`. Simplify using `only [laNeg, laPos, cPair]`. Distinguish the cases in `hk : (l : ℕ) < D.Q`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hk, if_neg (by omega)]; linarith`. Rewrite using `[if_neg hk, if_pos (by omega)]; linarith`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem la_eq {D : RealData} (h : D.Hyp) :
     (fun x => laNeg D.P' D.Q' D.R D.S (nD D) (mD D) x + (D.κ : ℚ) / 2) =
@@ -505,7 +493,7 @@ theorem la_eq {D : RealData} (h : D.Hyp) :
     · rw [if_neg hk, if_pos (by omega)]; linarith
 
 /- English proof (translation)
-Take `⟨hn, hm, e1, e2, hP, hQ, -, -⟩` from `nm_facts h`. Take `⟨f1, f2, f3, f4, f5, f6, f7, f8, g1, g2, g3, g4, g5⟩` from `rat_facts h`. Apply the tactic sequence `refine comb_pos hP hQ hn hm _ _ e1 e2 ?_ ?_ <;> simp only [cPair] <;> linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem combV {D : RealData} (h : D.Hyp) :
     CombOK D.P D.Q ((D.κ : ℚ) / 2) 0 (laPos D.P D.Q D.R D.S (nD D) (mD D)) := by
@@ -514,7 +502,7 @@ theorem combV {D : RealData} (h : D.Hyp) :
   refine comb_pos hP hQ hn hm _ _ e1 e2 ?_ ?_ <;> simp only [cPair] <;> linarith
 
 /- English proof (translation)
-Take `⟨hn, hm, e1, e2, -, -, hQ, hP⟩` from `nm_facts h`. Take `⟨f1, f2, f3, f4, f5, f6, f7, f8, g1, g2, g3, g4, g5⟩` from `rat_facts h`. Apply the tactic sequence `refine comb_neg hQ hP hn hm _ _ (by linarith) (by linarith) ?_ ?_ <;> simp only [cPair] <;> linarith`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem combV' {D : RealData} (h : D.Hyp) :
     CombOK D.P' D.Q' (-((D.κ : ℚ) / 2)) ((D.κ : ℚ) / 2) (laNeg D.P' D.Q' D.R D.S (nD D) (mD D)) := by

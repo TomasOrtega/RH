@@ -7,7 +7,7 @@ open TopologicalSpace
 namespace GlobalTheory.CompPart
 
 /- English proof (translation)
-Use `haveI := hd x`. Rewrite using `[← Scheme.range_fromSpecStalk, ← Set.image_univ]`. Conclude with `(IrreducibleSpace.isIrreducible_univ (Spec (Z.presheaf.stalk x))).image _ (Z.fromSpecStalk x).continuous.continuousOn`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIrreducible_generizations {Z : Scheme.{0}} (hd : ∀ x : Z, IsDomain (Z.presheaf.stalk x)) (x : Z) :
     IsIrreducible {y : Z | y ⤳ x} := by
@@ -17,9 +17,9 @@ theorem isIrreducible_generizations {Z : Scheme.{0}} (hd : ∀ x : Z, IsDomain (
     (Z.fromSpecStalk x).continuous.continuousOn
 
 /- English proof (translation)
-Establish `hcl : IsClosed C` using `isClosed_of_mem_irreducibleComponents C hC`. Take `⟨η, hη⟩` from `QuasiSober.sober hC.1 hcl`. Establish `hηx : η ⤳ x`. Rewrite using `[specializes_iff_mem_closure, hη.def]`. Conclude with `hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hsub : C ⊆ closure {y : Z | y ⤳ x}`. Rewrite using `[← hη.def]`. Conclude with `closure_mono (Set.singleton_subset_iff.2 hηx)`. Conclude with `hsub.antisymm (hC.2 (isIrreducible_generizations hd x).closure hsub)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_closure_generizations {Z : Scheme.{0}} (hd : ∀ x : Z, IsDomain (Z.presheaf.stalk x))
     {C : Set Z} (hC : C ∈ irreducibleComponents Z) {x : Z} (hx : x ∈ C) :
@@ -34,7 +34,7 @@ theorem eq_closure_generizations {Z : Scheme.{0}} (hd : ∀ x : Z, IsDomain (Z.p
   exact hsub.antisymm (hC.2 (isIrreducible_generizations hd x).closure hsub)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨_, irreducibleComponent_mem_irreducibleComponents x⟩, mem_irreducibleComponent, fun C hC => Subtype.ext ((eq_closure_generizations hd C.2 hC).trans (eq_closure_generizations hd (irreducibleComponent_mem_irreducibleComponents x) mem_irreducibleComponent).symm)⟩`.
+Supply the required witnesses or components.
 -/
 theorem existsUnique_mem {Z : Scheme.{0}} (hd : ∀ x : Z, IsDomain (Z.presheaf.stalk x)) (x : Z) :
     ∃! C : irreducibleComponents Z, x ∈ (C : Set Z) :=
@@ -44,11 +44,9 @@ theorem existsUnique_mem {Z : Scheme.{0}} (hd : ∀ x : Z, IsDomain (Z.presheaf.
         mem_irreducibleComponent).symm)⟩
 
 /- English proof (translation)
-Establish `hfin : (irreducibleComponents Z).Finite` using `NoetherianSpace.finite_irreducibleComponents`. Establish `hcompl : Cᶜ = ⋃ D ∈ {D ∈ irreducibleComponents Z | D ≠ C}, D`. Use extensionality with `y`. Simplify using `only [Set.mem_compl_iff, Set.mem_iUnion, Set.mem_ofPred_eq, exists_prop]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy`. Conclude with `⟨irreducibleComponent y, ⟨irreducibleComponent_mem_irreducibleComponents y, fun h => hy (h ▸ mem_irreducibleComponent)⟩, mem_irreducibleComponent⟩`. Introduce and unpack `⟨D, ⟨hD, hne⟩, hyD⟩ hyC`. Conclude with `hne (congrArg Subtype.val ((existsUnique_mem hd y).unique (y₁ := ⟨D, hD⟩) (y₂ := ⟨C, hC⟩) hyD hyC))`. Rewrite using `[← isClosed_compl_iff, hcompl]`.
-
-Conclude with `(hfin.subset fun D hD => hD.1).isClosed_biUnion fun D hD => isClosed_of_mem_irreducibleComponents D hD.1`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_of_mem {Z : Scheme.{0}} [NoetherianSpace Z] (hd : ∀ x : Z, IsDomain (Z.presheaf.stalk x))
     {C : Set Z} (hC : C ∈ irreducibleComponents Z) : IsOpen C := by
@@ -69,9 +67,7 @@ theorem isOpen_of_mem {Z : Scheme.{0}} [NoetherianSpace Z] (hd : ∀ x : Z, IsDo
 end GlobalTheory.CompPart
 
 /- English proof (translation)
-Introduce `n Z z hz hN`. Use `haveI : IsNoetherianRing (cycAway n) := is_noetherian_subring_closure _ (Set.toFinite _)`. Use `haveI : AlgebraicGeometry.IsNoetherian Z := GlobalTheory.isNoetherian_of_isProjOver hz`. Establish `hd : ∀ x : Z, IsDomain (Z.presheaf.stalk x)` using `fun x => hN.isDomain_stalk x`. Establish `hfin : (irreducibleComponents Z).Finite` using `NoetherianSpace.finite_irreducibleComponents`.
-
-Conclude with `⟨irreducibleComponents Z, hfin.fintype, fun C => (C : Set Z), fun C => ⟨isClosed_of_mem_irreducibleComponents _ C.2, GlobalTheory.CompPart.isOpen_of_mem hd C.2⟩, fun C => C.2.1, GlobalTheory.CompPart.existsUnique_mem hd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.irreducibleComponents_clopen_partition : ∀ (n : ℕ) (Z : Scheme.{0}) (z : Z ⟶ Sp (cycAway n)),
     IsProjOver z → GlobalTheory.IsNormalScheme Z → ∃ (ι : Type) (_ : Fintype ι) (W : ι → Set Z),

@@ -20,7 +20,7 @@ variable {V H Z : Type} [TopologicalSpace V] [MeasurableSpace V] [BorelSpace V]
   {μ : Measure V} {ν : Measure H} {f : V → Z} {ι : H → Z} {q : V → H} {U : Set V} {m : H → Measure V}
 
 /- English proof (translation)
-Establish `h1 : f ⁻¹' {ι b} ∩ U ∈ ae (m b)` using `mem_ae_iff.2 (h.1 b)`. Use `filter_upwards [h1] with X hX`. Conclude with `⟨hι ((hf X).trans hX.1), hX.2⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ae_fibre (hι : Function.Injective ι) (hf : ∀ X, ι (q X) = f X)
     (h : IsFibreFamily μ f ι U ν Set.univ m) (b : H) : ∀ᵐ X ∂(m b), q X = b ∧ X ∈ U := by
@@ -29,9 +29,9 @@ theorem ae_fibre (hι : Function.Injective ι) (hf : ∀ X, ι (q X) = f X)
   exact ⟨hι ((hf X).trans hX.1), hX.2⟩
 
 /- English proof (translation)
-Rewrite using `[h.2.1 (fun X => g X * s (q X)) (hg.mul (hs.comp hq))]`. Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Establish `h1 : ∫⁻ X, g X * s (q X) ∂(m b) = ∫⁻ X, g X * s b ∂(m b)`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_fibre hι hf h b] with X hX`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hX.1]`. Rewrite using `[h1, lintegral_mul_const _ hg, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_mul_base (hι : Function.Injective ι) (hf : ∀ X, ι (q X) = f X)
     (h : IsFibreFamily μ f ι U ν Set.univ m) (hq : Measurable q) {g : V → ℝ≥0∞} (hg : Measurable g)
@@ -46,11 +46,9 @@ theorem lintegral_mul_base (hι : Function.Injective ι) (hf : ∀ X, ι (q X) =
   rw [h1, lintegral_mul_const _ hg, mul_comm]
 
 /- English proof (translation)
-Establish `hφe : Measurable fun X => ‖φ X‖ₑ` using `hφ.enorm`. Use `set ρ : Measure V := (μ.restrict Aᶜ).withDensity fun X => ‖φ X‖ₑ with hρ`. Establish `hle : ρ.map q ≤ e • ν`. Use `Measure.le_iff.2 fun Y hYm => ?_` and prove the remaining obligations. Rewrite using `[Measure.map_apply hq hYm, hρ, withDensity_apply _ (hq hYm), Measure.restrict_restrict (hq hYm), Set.inter_comm, Measure.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `hY Y hYm`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hρ]`. Conclude with `(lintegral_withDensity_eq_lintegral_mul _ hφe (hs.comp hq)).symm`. Use `_ = ∫⁻ y, s y ∂(ρ.map q) := (lintegral_map hs hq).symm`.
-
-Use `_ ≤ ∫⁻ y, s y ∂(e • ν) := lintegral_mono' hle le_rfl`. Use `_ = e * ∫⁻ y, s y ∂ν := by rw [lintegral_smul_measure, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tail_lintegral {φ : V → ℂ} (hφ : Measurable φ) (hq : Measurable q) {A : Set V}
     (hA : MeasurableSet A) {e : ℝ≥0∞}
@@ -78,9 +76,9 @@ section Cut
 variable {V : Type} [TopologicalSpace V] [T2Space V] [LocallyCompactSpace V] [SecondCountableTopology V]
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace U := hU.isOpenEmbedding_subtypeVal.locallyCompactSpace`. Establish `hK : ∀ n, IsCompact (Subtype.val '' compactCovering U n)` using `fun n => (isCompact_compactCovering U n).image continuous_subtype_val`. Establish `hKU : ∀ n, Subtype.val '' compactCovering U n ⊆ U`. Introduce and unpack `n _ ⟨x, -, rfl⟩`. Conclude with `x.2`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `choose χ h1 h2 h3 h4 using fun n => exists_continuousMap_one_of_isCompact_subset_isOpen (hK n) hU (hKU n)`. Use `⟨fun n => χ n, fun n => ⟨(χ n).continuous, h2 n, h3 n, fun X => h4 n X⟩, fun X hX => ?_⟩` and prove the remaining obligations. Take `⟨n0, hn0⟩` from `exists_mem_compactCovering (⟨X, hX⟩ : U)`. Use `filter_upwards [eventually_ge_atTop n0] with n hn`. Conclude with `h1 n ⟨⟨X, hX⟩, compactCovering_subset U hn hn0, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_cutoffs {U : Set V} (hU : IsOpen U) :
     ∃ χ : ℕ → V → ℝ, (∀ n, Continuous (χ n) ∧ HasCompactSupport (χ n) ∧ tsupport (χ n) ⊆ U ∧
@@ -103,7 +101,7 @@ end Cut
 section SlopeTestRemainingChoices
 
 /- English proof (translation)
-The claim follows from `(ha.norm.mul_const C).mono' (ha.aestronglyMeasurable.mul hb) (ae_of_all _ fun x => (norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left (hC x) (norm_nonneg _)))`.
+A detailed English derivation is pending.
 -/
 theorem integrable_mul_bdd' {α 𝕜 : Type} [MeasurableSpace α] [NormedRing 𝕜] {ρ : Measure α} {a b : α → 𝕜}
     (ha : Integrable a ρ) (hb : AEStronglyMeasurable b ρ) {C : ℝ} (hC : ∀ x, ‖b x‖ ≤ C) :
@@ -112,7 +110,7 @@ theorem integrable_mul_bdd' {α 𝕜 : Type} [MeasurableSpace α] [NormedRing �
     (norm_mul_le _ _).trans (mul_le_mul_of_nonneg_left (hC x) (norm_nonneg _)))
 
 /- English proof (translation)
-Rewrite using `[integral_add ha.ofReal (hb.ofReal.mul_const _), integral_mul_const, integral_complex_ofReal, integral_complex_ofReal]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_re_im {α : Type} [MeasurableSpace α] {ρ : Measure α} {a b : α → ℝ}
     (ha : Integrable a ρ) (hb : Integrable b ρ) :
@@ -122,7 +120,7 @@ theorem integral_re_im {α : Type} [MeasurableSpace α] {ρ : Measure α} {a b :
     integral_complex_ofReal]
 
 /- English proof (translation)
-Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, Complex.norm_real]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem enorm_coe (x : ℝ) : ‖(x : ℂ)‖ₑ = ‖x‖ₑ := by
   rw [← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, Complex.norm_real]
@@ -137,21 +135,19 @@ variable {V H Z : Type} [TopologicalSpace V] [T2Space V] [LocallyCompactSpace V]
   {μ : Measure V} {ν : Measure H} {f : V → Z} {ι : H → Z} {q : V → H} {U : Set V} {m : H → Measure V}
 
 /- English proof (translation)
-Take `⟨hint, hcont⟩` from `h.2.2 g hgc hgs hgU`. Use `set G : H → ℝ := fun b => ∫ X, g X ∂(m b) with hGdef`. Establish `hG : Continuous G` using `continuousOn_univ.1 hcont`. Establish `hlin : ∀ b, ∫⁻ X, ENNReal.ofReal (g X) ∂(m b) = ENNReal.ofReal (G b)` using `fun b => (ofReal_integral_eq_lintegral_ofReal (hint b trivial) (Eventually.of_forall hg0)).symm`. Rewrite using `[hlin c]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Take `⟨e', he1, he2⟩` from `exists_between hlt`. Establish `hO : IsOpen {b | e' < ENNReal.ofReal (G b)}` using `isOpen_lt continuous_const (ENNReal.continuous_ofReal.comp hG)`. Take `⟨K, hK, hcK, hKO⟩` from `exists_compact_subset hO he2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYo : IsOpen (interior K)` using `isOpen_interior`. Establish `hYm : MeasurableSet (interior K)` using `hYo.measurableSet`. Establish `hpos : ν (interior K) ≠ 0` using `(hYo.measure_pos ν ⟨c, hcK⟩).ne'`. Establish `hfin : ν (interior K) ≠ ⊤` using `((measure_mono interior_subset).trans_lt hK.measure_lt_top).ne`. Establish `key : ∫⁻ b in interior K, ENNReal.ofReal (G b) ∂ν ≤ e * ν (interior K)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_indicator hYm]`. Use `lintegral_congr fun b => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hb : b ∈ interior K <;> simp [hb, hlin]`. Use `_ = ∫⁻ X in U, ENNReal.ofReal (g X) * (interior K).indicator 1 (q X) ∂μ := (lintegral_mul_base hι hf h hq hgc.measurable.ennreal_ofReal (measurable_one.indicator hYm)).symm`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `_ ≤ ∫⁻ X, ENNReal.ofReal (g X) * (interior K).indicator 1 (q X) ∂μ := setLIntegral_le_lintegral _ _`. Use `_ ≤ ∫⁻ X, (Aᶜ ∩ q ⁻¹' interior K).indicator (fun X => ‖φ X‖ₑ) X ∂μ := by`. Use `lintegral_mono fun X => ?_` and prove the remaining obligations. Distinguish the cases in `hXA : X ∈ A`. Simplify using `[hgA X hXA]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Distinguish the cases in `hXY : q X ∈ interior K`. Establish `hmem : X ∈ Aᶜ ∩ q ⁻¹' interior K` using `⟨hXA, hXY⟩`. Rewrite using `[Set.indicator_of_mem hmem, Set.indicator_of_mem hXY, Pi.one_apply, mul_one, ← ofReal_norm_eq_enorm]`. Conclude with `ENNReal.ofReal_le_ofReal (hgφ X)`. Simplify using `[hXY]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Use `_ = ∫⁻ X in Aᶜ ∩ q ⁻¹' interior K, ‖φ X‖ₑ ∂μ := lintegral_indicator (hA.compl.inter (hq hYm)) _`. Use `_ ≤ e * ν (interior K) := hY _ hYm`. Establish `low : e' * ν (interior K) ≤ ∫⁻ b in interior K, ENNReal.ofReal (G b) ∂ν`. Rewrite using `[← setLIntegral_const]`. Conclude with `setLIntegral_mono' hYm fun b hb => (hKO (interior_subset hb)).le`.
-
-Establish `hfinal : e' * ν (interior K) ≤ e * ν (interior K)` using `low.trans key`. Establish `: e' ≤ e` using `by first`. Consider the case `exact (ENNReal.mul_le_mul_iff_left hpos hfin).1 hfinal`. Consider the case `exact (ENNReal.mul_le_mul_right hpos hfin).1 hfinal`. Conclude with `absurd he1 (not_lt.2 this)`.
+A detailed English derivation is pending.
 -/
 theorem fibre_le [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts ν]
     (hι : Function.Injective ι) (hf : ∀ X, ι (q X) = f X)
@@ -212,13 +208,11 @@ theorem fibre_le [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts ν]
   exact absurd he1 (not_lt.2 this)
 
 /- English proof (translation)
-Take `⟨ψ, hψ, hev⟩` from `exists_cutoffs hU`. Use `set g : ℕ → V → ℝ := fun n X => ‖φ X‖ * (1 - χ X) * ψ n X with hg`. Establish `hgc : ∀ n, Continuous (g n)` using `fun n => (hφ.norm.mul (continuous_const.sub hχ)).mul (hψ n).1`. Establish `hgsub : ∀ n, Function.support (g n) ⊆ Function.support (ψ n)` using `fun n X hX h0 => hX (by simp [hg, show ψ n X = 0 from h0])`. Establish `hle : ∀ n, ∫⁻ X, ENNReal.ofReal (g n X) ∂(m c) ≤ e` using `fun n => fibre_le hι hf h hq hA hY (hgc n) ((hψ n).2.1.mono (hgsub n)) ((closure_mono (hgsub n)).trans (hψ n).2.2.1) (fun X => mul_nonneg (mul_nonneg (norm_nonneg _) (sub_nonneg.2 (hχ01 X).2)) ((hψ n).2.2.2 X).1) (fun X hX => by simp [hg, hχA X hX]) (fun X => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 1 - χ X ≤ 1` using `by linarith [(hχ01 X).1]`. Establish `h2 : 0 ≤ 1 - χ X` using `sub_nonneg.2 (hχ01 X).2`. Establish `h3` using `(hψ n).2.2.2 X`. Establish `h4 : (1 - χ X) * ψ n X ≤ 1` using `mul_le_one₀ h1 h3.1 h3.2`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hlim : ∀ᵐ X ∂(m c), ‖φ X‖ₑ * ENNReal.ofReal (1 - χ X) = liminf (fun n => ENNReal.ofReal (g n X)) atTop` using `by filter_upwards [ae_fibre hι hf h c] with X hX`. Use `(Tendsto.liminf_eq (tendsto_const_nhds.congr' ?_)).symm` and prove the remaining obligations. Use `filter_upwards [hev X hX.2] with n hn`. Simplify using `only [hg, hn, mul_one]`. Rewrite using `[ENNReal.ofReal_mul (norm_nonneg _), ofReal_norm_eq_enorm]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fibre_tail [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts ν] (hU : IsOpen U)
     (hι : Function.Injective ι) (hf : ∀ X, ι (q X) = f X)
@@ -261,11 +255,11 @@ theorem fibre_tail [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts ν] (hU : Is
     _ = e := liminf_const e
 
 /- English proof (translation)
-Establish `hsup : ∀ a : V → ℝ, Function.support (fun X => a X * χ X) ⊆ Function.support χ` using `fun a X hX h0 => hX (by simp [show χ X = 0 from h0])`. Establish `hp : ∀ a : V → ℝ, Continuous a → (∀ b, Integrable (fun X => a X * χ X) (m b)) ∧ Continuous fun b => ∫ X, a X * χ X ∂(m b)` using `fun a ha => by`. Take `⟨h1, h2⟩` from `h.2.2 (fun X => a X * χ X) (ha.mul hχ) (hχs.mono (hsup a)) ((closure_mono (hsup a)).trans hχU)`. Conclude with `⟨fun b => h1 b trivial, continuousOn_univ.1 h2⟩`. Take `⟨i1, c1⟩` from `hp (fun X => (φ X).re) (Complex.continuous_re.comp hφ)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨i2, c2⟩` from `hp (fun X => (φ X).im) (Complex.continuous_im.comp hφ)`. Establish `hid : ∀ X, φ X * (χ X : ℂ) = (((φ X).re * χ X : ℝ) : ℂ) + (((φ X).im * χ X : ℝ) : ℂ) * Complex.I` using `fun X => by`. Apply the tactic sequence `apply Complex.ext <;> simp`. Repeatedly rewrite using `[hid]`. Use `⟨fun b => (i1 b).ofReal.add ((i2 b).ofReal.mul_const _), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[integral_re_im (i1 _) (i2 _)]`. Conclude with `(Complex.continuous_ofReal.comp c1).add ((Complex.continuous_ofReal.comp c2).mul continuous_const)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_cut {φ : V → ℂ} (hφ : Continuous φ) (h : IsFibreFamily μ f ι U ν Set.univ m)
     {χ : V → ℝ} (hχ : Continuous χ) (hχs : HasCompactSupport χ) (hχU : tsupport χ ⊆ U) :
@@ -290,9 +284,9 @@ theorem fibre_cut {φ : V → ℂ} (hφ : Continuous φ) (h : IsFibreFamily μ f
     ((Complex.continuous_ofReal.comp c2).mul continuous_const)
 
 /- English proof (translation)
-Use `⟨hφ.aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `h1` using `((fibre_cut hφ h hχ hχs hχU).1 c).2`. Establish `hm1 : Measurable fun X => ‖φ X‖ₑ * ENNReal.ofReal (1 - χ X)` using `hφ.measurable.enorm.mul (continuous_const.sub hχ).measurable.ennreal_ofReal`. Establish `hle : ∀ X, ‖φ X‖ₑ ≤ ‖φ X * (χ X : ℂ)‖ₑ + ‖φ X‖ₑ * ENNReal.ofReal (1 - χ X)` using `fun X => by`. Rewrite using `[enorm_mul, enorm_coe, ← mul_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (1 : ℝ≥0∞) ≤ ‖χ X‖ₑ + ENNReal.ofReal (1 - χ X)`. Rewrite using `[← ofReal_norm_eq_enorm, Real.norm_of_nonneg (hχ01 X).1, ← ENNReal.ofReal_add (hχ01 X).1 (sub_nonneg.2 (hχ01 X).2)]`. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem fibre_integrable {φ : V → ℂ} (hφ : Continuous φ) (h : IsFibreFamily μ f ι U ν Set.univ m)
     {χ : V → ℝ} (hχ : Continuous χ) (hχs : HasCompactSupport χ) (hχU : tsupport χ ⊆ U)
@@ -317,9 +311,9 @@ theorem fibre_integrable {φ : V → ℂ} (hφ : Continuous φ) (h : IsFibreFami
     _ < ⊤ := ENNReal.add_lt_top.2 ⟨h1, ht⟩
 
 /- English proof (translation)
-Rewrite using `[← integral_sub h1 h2]`. Establish `h3 : ‖∫ X, (φ X - φ X * (χ X : ℂ)) ∂(m c)‖ₑ ≤ ENNReal.ofReal ε`. Use `(enorm_integral_le_lintegral_enorm _).trans (le_trans (le_of_eq ?_) ht)` and prove the remaining obligations. Use `lintegral_congr fun X => ?_` and prove the remaining obligations. Establish `: φ X - φ X * (χ X : ℂ) = φ X * ((1 - χ X : ℝ) : ℂ)` using `by push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this, enorm_mul, enorm_coe, ← ofReal_norm_eq_enorm (1 - χ X), Real.norm_of_nonneg (sub_nonneg.2 (hχ01 X).2)]`. Rewrite `h3` using `[← ofReal_norm_eq_enorm]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff hε).1 h3`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_diff {φ : V → ℂ} {χ : V → ℝ} {c : H} (h1 : Integrable φ (m c))
     (h2 : Integrable (fun X => φ X * (χ X : ℂ)) (m c)) (hχ01 : ∀ X, 0 ≤ χ X ∧ χ X ≤ 1) {ε : ℝ}
@@ -336,11 +330,11 @@ theorem fibre_diff {φ : V → ℂ} {χ : V → ℝ} {c : H} (h1 : Integrable φ
   exact (ENNReal.ofReal_le_ofReal_iff hε).1 h3
 
 /- English proof (translation)
-Take `⟨hint, hcont⟩` from `h.2.2 g hgc hgs hgU`. Establish `hG : Continuous fun b => ∫ X, g X ∂(m b)` using `continuousOn_univ.1 hcont`. Establish `hG0 : ∀ b, 0 ≤ ∫ X, g X ∂(m b)` using `fun b => integral_nonneg hg0`. Establish `hlin : ∀ b, ∫⁻ X, ENNReal.ofReal (g X) ∂(m b) = ENNReal.ofReal (∫ X, g X ∂(m b))` using `fun b => (ofReal_integral_eq_lintegral_ofReal (hint b trivial) (Eventually.of_forall hg0)).symm`. Rewrite using `[integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall fun X => mul_nonneg (hg0 X) (hs0 _)) (hgc.mul (hsc.comp hq)).aestronglyMeasurable, integral_eq_lintegral_of_nonneg_ae (Eventually.of_forall fun b => mul_nonneg (hs0 b) (hG0 b)) (hsc.mul hG).aestronglyMeasurable]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_indicator hUm]`. Use `lintegral_congr fun X => ?_` and prove the remaining obligations. Distinguish the cases in `hX : X ∈ U`.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hX, ENNReal.ofReal_mul (hg0 X)]`. Rewrite using `[Set.indicator_of_notMem hX, image_eq_zero_of_notMem_tsupport (fun hh => hX (hgU hh))]`. Simplify using the standard rewrite rules. Use `_ = ∫⁻ b, ENNReal.ofReal (s b) * ∫⁻ X, ENNReal.ofReal (g X) ∂(m b) ∂ν := lintegral_mul_base hι hf h hq.measurable hgc.measurable.ennreal_ofReal hsc.measurable.ennreal_ofReal`. Use `_ = ∫⁻ b, ENNReal.ofReal (s b * ∫ X, g X ∂(m b)) ∂ν := lintegral_congr fun b => by rw [hlin, ENNReal.ofReal_mul (hs0 b)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pos_identity (hUm : MeasurableSet U) (hι : Function.Injective ι) (hf : ∀ X, ι (q X) = f X)
     (h : IsFibreFamily μ f ι U ν Set.univ m) (hq : Continuous q)
@@ -373,21 +367,21 @@ theorem pos_identity (hUm : MeasurableSet U) (hι : Function.Injective ι) (hf :
         lintegral_congr fun b => by rw [hlin, ENNReal.ofReal_mul (hs0 b)]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hss.exists_bound_of_continuous hsc`. Establish `hsm : AEStronglyMeasurable (fun X => s (q X)) μ` using `(hsc.comp hq).aestronglyMeasurable`. Establish `hPsup : Function.support (fun X => max (g X) 0) ⊆ Function.support g` using `fun X hX h0 => hX (by simp [show g X = 0 from h0])`. Establish `hNsup : Function.support (fun X => max (-g X) 0) ⊆ Function.support g` using `fun X hX h0 => hX (by simp [show g X = 0 from h0])`. Establish `hPc : Continuous fun X => max (g X) 0` using `hgc.max continuous_const`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNc : Continuous fun X => max (-g X) 0` using `hgc.neg.max continuous_const`. Establish `hPs` using `hgs.mono hPsup`. Establish `hNs` using `hgs.mono hNsup`. Establish `hPU` using `(closure_mono hPsup).trans hgU`. Establish `hNU` using `(closure_mono hNsup).trans hgU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP` using `pos_identity hUm hι hf h hq hPc hPs hPU (fun X => le_max_right _ _) hsc hs0`. Establish `hN` using `pos_identity hUm hι hf h hq hNc hNs hNU (fun X => le_max_right _ _) hsc hs0`. Establish `iP : Integrable (fun X => max (g X) 0 * s (q X)) μ` using `integrable_mul_bdd' hgμ.pos_part hsm fun X => hC _`. Establish `iN : Integrable (fun X => max (-g X) 0 * s (q X)) μ` using `integrable_mul_bdd' hgμ.neg_part hsm fun X => hC _`. Take `⟨jP, cP⟩` from `h.2.2 _ hPc hPs hPU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨jN, cN⟩` from `h.2.2 _ hNc hNs hNU`. Establish `kP : Integrable (fun b => s b * ∫ X, max (g X) 0 ∂(m b)) ν` using `(hsc.mul (continuousOn_univ.1 cP)).integrable_of_hasCompactSupport hss.mul_right`. Establish `kN : Integrable (fun b => s b * ∫ X, max (-g X) 0 ∂(m b)) ν` using `(hsc.mul (continuousOn_univ.1 cN)).integrable_of_hasCompactSupport hss.mul_right`. Establish `hsplit : ∀ X, g X = max (g X) 0 - max (-g X) 0` using `fun X => by`. Break down `le_total (g X) 0 with h0 | h0` into its components or cases.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[max_eq_right h0, max_eq_left (neg_nonneg.2 h0)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[max_eq_left h0, max_eq_right (neg_nonpos.2 h0)]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : ∫ X, g X * s (q X) ∂μ = ∫ X, max (g X) 0 * s (q X) ∂μ - ∫ X, max (-g X) 0 * s (q X) ∂μ`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← integral_sub iP iN]`. Use `integral_congr_ae (Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Use `show g X * s (q X) = max (g X) 0 * s (q X) - max (-g X) 0 * s (q X)`. Rewrite using `[← sub_mul, ← hsplit X]`. Establish `e2 : ∫ b, s b * ∫ X, g X ∂(m b) ∂ν = ∫ b, s b * ∫ X, max (g X) 0 ∂(m b) ∂ν - ∫ b, s b * ∫ X, max (-g X) 0 ∂(m b) ∂ν`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← integral_sub kP kN]`. Use `integral_congr_ae (Eventually.of_forall fun b => ?_)` and prove the remaining obligations. Use `show s b * ∫ X, g X ∂(m b) = s b * ∫ X, max (g X) 0 ∂(m b) - s b * ∫ X, max (-g X) 0 ∂(m b)`. Rewrite using `[← mul_sub, ← integral_sub (jP b trivial) (jN b trivial)]`. Use `congr 2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `X`. Conclude with `hsplit X`. Rewrite using `[e1, e2, hP, hN]`.
+A detailed English derivation is pending.
 -/
 theorem real_identity [IsFiniteMeasureOnCompacts ν] (hUm : MeasurableSet U)
     (hι : Function.Injective ι) (hf : ∀ X, ι (q X) = f X)
@@ -443,13 +437,13 @@ theorem real_identity [IsFiniteMeasureOnCompacts ν] (hUm : MeasurableSet U)
   rw [e1, e2, hP, hN]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hss.exists_bound_of_continuous hsc`. Establish `hsm : AEStronglyMeasurable (fun X => s (q X)) μ` using `(hsc.comp hq).aestronglyMeasurable`. Establish `hsup : ∀ a : V → ℝ, Function.support (fun X => a X * χ X) ⊆ Function.support χ` using `fun a X hX h0 => hX (by simp [show χ X = 0 from h0])`. Establish `hχn : ∀ X, ‖χ X‖ ≤ 1` using `fun X => by`. Rewrite using `[Real.norm_of_nonneg (hχ01 X).1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hχ01 X).2`. Establish `hp : ∀ a : V → ℝ, Continuous a → Integrable a μ → Integrable (fun X => a X * χ X * s (q X)) μ ∧ (∀ b, Integrable (fun X => a X * χ X) (m b)) ∧ Integrable (fun b => s b * ∫ X, a X * χ X ∂(m b)) ν ∧ ∫ X, a X * χ X * s (q X) ∂μ = ∫ b, s b * ∫ X, a X * χ X ∂(m b) ∂ν` using `fun a ha haμ => by`. Establish `i0 : Integrable (fun X => a X * χ X) μ` using `integrable_mul_bdd' haμ hχ.aestronglyMeasurable hχn`. Take `⟨h1, h2⟩` from `h.2.2 (fun X => a X * χ X) (ha.mul hχ) (hχs.mono (hsup a)) ((closure_mono (hsup a)).trans hχU)`. Conclude with `⟨integrable_mul_bdd' i0 hsm fun X => hC _, fun b => h1 b trivial, (hsc.mul (continuousOn_univ.1 h2)).integrable_of_hasCompactSupport hss.mul_right, real_identity hUm hι hf h hq (ha.mul hχ) (hχs.mono (hsup a)) ((closure_mono (hsup a)).trans hχU) i0 hsc hss hs0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨a1, a2, a3, a4⟩` from `hp (fun X => (φ X).re) (Complex.continuous_re.comp hφ) hφμ.re`. Take `⟨b1, b2, b3, b4⟩` from `hp (fun X => (φ X).im) (Complex.continuous_im.comp hφ) hφμ.im`. Establish `hid : ∀ X, φ X * (χ X : ℂ) = (((φ X).re * χ X : ℝ) : ℂ) + (((φ X).im * χ X : ℝ) : ℂ) * Complex.I` using `fun X => by`. Apply the tactic sequence `apply Complex.ext <;> simp`. Establish `hfib : ∀ b, ∫ X, φ X * (χ X : ℂ) ∂(m b) = ((∫ X, (φ X).re * χ X ∂(m b) : ℝ) : ℂ) + ((∫ X, (φ X).im * χ X ∂(m b) : ℝ) : ℂ) * Complex.I` using `fun b => by simp_rw [hid]; exact integral_re_im (a2 b) (b2 b)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ∀ X, φ X * (χ X : ℂ) * (s (q X) : ℂ) = (((φ X).re * χ X * s (q X) : ℝ) : ℂ) + (((φ X).im * χ X * s (q X) : ℝ) : ℂ) * Complex.I` using `fun X => by rw [hid]; push_cast; ring`. Establish `hr : ∀ b, (s b : ℂ) * ∫ X, φ X * (χ X : ℂ) ∂(m b) = ((s b * ∫ X, (φ X).re * χ X ∂(m b) : ℝ) : ℂ) + ((s b * ∫ X, (φ X).im * χ X ∂(m b) : ℝ) : ℂ) * Complex.I` using `fun b => by rw [hfib]; push_cast; ring`. Repeatedly rewrite using `[hl, hr]`. Rewrite using `[integral_re_im a1 b1, integral_re_im a3 b3, a4, b4]`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cplx_identity [IsFiniteMeasureOnCompacts ν] (hUm : MeasurableSet U)
     (hι : Function.Injective ι) (hf : ∀ X, ι (q X) = f X)
@@ -497,13 +491,11 @@ theorem cplx_identity [IsFiniteMeasureOnCompacts ν] (hUm : MeasurableSet U)
   rw [integral_re_im a1 b1, integral_re_im a3 b3, a4, b4]
 
 /- English proof (translation)
-Establish `hsm : Measurable fun y => ENNReal.ofReal (s y)` using `hsc.measurable.ennreal_ofReal`. Establish `hI : 0 ≤ ∫ y, s y ∂ν` using `integral_nonneg hs0`. Establish `h3 : ‖∫ X, φ X * ((1 - χ X : ℝ) : ℂ) * (s (q X) : ℂ) ∂μ‖ₑ ≤ ENNReal.ofReal (ε * ∫ y, s y ∂ν)`. Use `(enorm_integral_le_lintegral_enorm _).trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `lintegral_mono fun X => ?_` and prove the remaining obligations. Distinguish the cases in `hX : X ∈ A`. Simplify using `[hχA X hX]`. Rewrite using `[Set.indicator_of_mem (show X ∈ Aᶜ from hX), enorm_mul, enorm_mul, enorm_coe, enorm_coe, ← ofReal_norm_eq_enorm (s (q X)), Real.norm_of_nonneg (hs0 _), ← ofReal_norm_eq_enorm (1 - χ X), Real.norm_of_nonneg (sub_nonneg.2 (hχ01 X).2)]`. Establish `: ENNReal.ofReal (1 - χ X) ≤ 1` using `ENNReal.ofReal_le_one.2 (by linarith [(hχ01 X).1])`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `_ = ∫⁻ X in Aᶜ, ‖φ X‖ₑ * ENNReal.ofReal (s (q X)) ∂μ := lintegral_indicator hA.compl _`. Use `_ ≤ ENNReal.ofReal ε * ∫⁻ y, ENNReal.ofReal (s y) ∂ν := tail_lintegral hφ.measurable hq.measurable hA hY hsm`. Use `_ = ENNReal.ofReal (ε * ∫ y, s y ∂ν) := by`. Rewrite using `[ENNReal.ofReal_mul hε, ofReal_integral_eq_lintegral_ofReal hsi (Eventually.of_forall hs0)]`.
-
-Rewrite `h3` using `[← ofReal_norm_eq_enorm]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (mul_nonneg hε hI)).1 h3`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tail_mu {φ : V → ℂ} (hφ : Continuous φ) (hq : Continuous q) {A : Set V}
     (hA : MeasurableSet A) {ε : ℝ} (hε : 0 ≤ ε)
@@ -539,17 +531,17 @@ theorem tail_mu {φ : V → ℂ} (hφ : Continuous φ) (hq : Continuous q) {A : 
   exact (ENNReal.ofReal_le_ofReal_iff (mul_nonneg hε hI)).1 h3
 
 /- English proof (translation)
-Rewrite using `[Metric.tendsto_nhds]`. Introduce `δ hδ`. Establish `hW : F ⁻¹' Metric.ball (F c) (δ / 2) ∈ 𝓝 c` using `hF.continuousAt.preimage_mem_nhds (Metric.ball_mem_nhds _ (half_pos hδ))`. Use `filter_upwards [(tendsto_smallSets_iff.1 hsh) _ hW] with k hk`. Take `⟨hc, hcs, h0, hpos⟩` from `hr k`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hri : Integrable (r k) ν` using `hc.integrable_of_hasCompactSupport hcs`. Establish `hRc : (((∫ y, r k y ∂ν : ℝ)) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hpos.ne'`. Establish `hcs' : HasCompactSupport fun y => (r k y : ℂ)` using `hcs.comp_left (g := fun x : ℝ => (x : ℂ)) (by simp)`. Establish `hint1 : Integrable (fun y => (r k y : ℂ) * F y) ν` using `((Complex.continuous_ofReal.comp hc).mul hF).integrable_of_hasCompactSupport hcs'.mul_right`. Establish `hint2 : Integrable (fun y => (r k y : ℂ)) ν` using `hri.ofReal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∫ y, (r k y : ℂ) * (F y - F c) ∂ν = (∫ y, (r k y : ℂ) * F y ∂ν) - ((∫ y, r k y ∂ν : ℝ) : ℂ) * F c`. Repeatedly rewrite using `[mul_sub]`. Rewrite using `[integral_sub hint1 (hint2.mul_const _), integral_mul_const, integral_complex_ofReal]`. Establish `hdiff : (∫ y, (r k y : ℂ) * F y ∂ν) / ((∫ y, r k y ∂ν : ℝ) : ℂ) - F c = (∫ y, (r k y : ℂ) * (F y - F c) ∂ν) / ((∫ y, r k y ∂ν : ℝ) : ℂ)`. Rewrite using `[hsub]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Establish `hb : ‖∫ y, (r k y : ℂ) * (F y - F c) ∂ν‖ ≤ ∫ y, r k y * (δ / 2) ∂ν`. Use `norm_integral_le_of_norm_le (hri.mul_const _) (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ tsupport (r k)`. Establish `h1 : dist (F y) (F c) < δ / 2` using `hk hy`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[dist_eq_norm]`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (h0 y)]`. Conclude with `mul_le_mul_of_nonneg_left h1.le (h0 y)`. Simplify using `[image_eq_zero_of_notMem_tsupport hy]`. Rewrite using `[dist_eq_norm, hdiff, norm_div, Complex.norm_real, Real.norm_of_nonneg hpos.le, div_lt_iff₀ hpos]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `hb` using `[integral_mul_const]`. Use the polynomial consequences of the given equalities and inequalities.
+A detailed English derivation is pending.
 -/
 theorem avg_tendsto [IsFiniteMeasureOnCompacts ν] {F : H → ℂ} (hF : Continuous F) (c : H)
     (r : ℕ → H → ℝ)
@@ -592,25 +584,21 @@ theorem avg_tendsto [IsFiniteMeasureOnCompacts ν] {F : H → ℂ} (hF : Continu
 end Fib
 
 /- English proof (translation)
-Introduce `V H Z _ _ _ _ _ _ _ _ _ _ _ μ ν _ _ f ι q U m hU hq hι hf h φ hφ hφμ hD c`. Establish `get : ∀ ε : ℝ, 0 < ε → ∃ (A : Set V) (χ : V → ℝ), MeasurableSet A ∧ (∀ Y, MeasurableSet Y → ∫⁻ X in Aᶜ ∩ q ⁻¹' Y, ‖φ X‖ₑ ∂μ ≤ ENNReal.ofReal ε * ν Y) ∧ Continuous χ ∧ HasCompactSupport χ ∧ tsupport χ ⊆ U ∧ (∀ X, 0 ≤ χ X ∧ χ X ≤ 1) ∧ ∀ X ∈ A, χ X = 1`. Introduce `ε hε`. Take `⟨A, hAc, hAU, hY⟩` from `hD (ENNReal.ofReal ε) (ENNReal.ofReal_ne_zero_iff.2 hε)`. Take `⟨χ, h1, h2, h3, h4⟩` from `exists_continuousMap_one_of_isCompact_subset_isOpen hAc hU hAU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨A, χ, hAc.isClosed.measurableSet, hY, χ.continuous, h2, h3, fun X => h4 X, fun X hX => h1 hX⟩`. Establish `hint : Integrable φ (m c)`. Take `⟨A, χ, hAm, hY, hχ, hχs, hχU, hχ01, hχA⟩` from `get 1 one_pos`. Conclude with `fibre_integrable hφ h hχ hχs hχU hχ01 ((fibre_tail hU hι hf h hq.measurable hφ hAm hY hχ hχ01 hχA c).trans_lt ENNReal.ofReal_lt_top)`. Use `⟨hint, fun r hr hsh => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.tendsto_nhds]`. Introduce `δ hδ`. Establish `hδ4 : 0 < δ / 4` using `by positivity`. Take `⟨A, χ, hAm, hY, hχ, hχs, hχU, hχ01, hχA⟩` from `get (δ / 4) hδ4`. Take `⟨hfi, hFc⟩` from `fibre_cut hφ h hχ hχs hχU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd` using `fibre_diff hint (hfi c) hχ01 hδ4.le (fibre_tail hU hι hf h hq.measurable hφ hAm hY hχ hχ01 hχA c)`. Use `filter_upwards [(Metric.tendsto_nhds.1 (avg_tendsto hFc c r hr hsh)) (δ / 4) hδ4] with k hk`. Take `⟨hc, hcs, h0, hpos⟩` from `hr k`. Establish `hri : Integrable (r k) ν` using `hc.integrable_of_hasCompactSupport hcs`. Take `⟨C, hC⟩` from `hcs.exists_bound_of_continuous hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrq : AEStronglyMeasurable (fun X => (r k (q X) : ℂ)) μ` using `(Complex.continuous_ofReal.comp (hc.comp hq)).aestronglyMeasurable`. Establish `hrqb : ∀ X, ‖(r k (q X) : ℂ)‖ ≤ C` using `fun X => by rw [Complex.norm_real]; exact hC _`. Establish `i1 : Integrable (fun X => φ X * (χ X : ℂ) * (r k (q X) : ℂ)) μ` using `integrable_mul_bdd' (integrable_mul_bdd' hφμ (Complex.continuous_ofReal.comp hχ).aestronglyMeasurable (C := 1) (fun X => by`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (hχ01 X).1]`. Conclude with `(hχ01 X).2)) hrq hrqb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `i2 : Integrable (fun X => φ X * ((1 - χ X : ℝ) : ℂ) * (r k (q X) : ℂ)) μ` using `integrable_mul_bdd' (integrable_mul_bdd' hφμ (Complex.continuous_ofReal.comp (continuous_const.sub hχ)).aestronglyMeasurable (C := 1) (fun X => by`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (sub_nonneg.2 (hχ01 X).2)]`. Combine the linear relations using `[(hχ01 X).1])) hrq hrqb`. Establish `hsplit : ∫ X, φ X * (r k (q X) : ℂ) ∂μ = (∫ y, (r k y : ℂ) * ∫ X, φ X * (χ X : ℂ) ∂(m y) ∂ν) + ∫ X, φ X * ((1 - χ X : ℝ) : ℂ) * (r k (q X) : ℂ) ∂μ`. Rewrite using `[← cplx_identity hU.measurableSet hι hf h hq hφ hφμ hχ hχs hχU hχ01 hc hcs h0, ← integral_add i1 i2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `integral_congr_ae (Eventually.of_forall fun X => ?_)` and prove the remaining obligations. Use `show φ X * (r k (q X) : ℂ) = _`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `ht` using `tail_mu hφ hq hAm hδ4.le hY hχ01 hχA hc hri h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `ht' : ‖(∫ X, φ X * ((1 - χ X : ℝ) : ℂ) * (r k (q X) : ℂ) ∂μ) / ((∫ y, r k y ∂ν : ℝ) : ℂ)‖ ≤ δ / 4`. Rewrite using `[norm_div, Complex.norm_real, Real.norm_of_nonneg hpos.le]`. Conclude with `(div_le_iff₀ hpos).2 ht`. Rewrite `hk`, the goal using `[dist_eq_norm]`. Rewrite using `[hsplit, add_div]`.
-
-Use `set a := (∫ y, (r k y : ℂ) * ∫ X, φ X * (χ X : ℂ) ∂(m y) ∂ν) / ((∫ y, r k y ∂ν : ℝ) : ℂ)`. Use `set b := (∫ X, φ X * ((1 - χ X : ℝ) : ℂ) * (r k (q X) : ℂ) ∂μ) / ((∫ y, r k y ∂ν : ℝ) : ℂ)`. Use `set Fc := ∫ X, φ X * (χ X : ℂ) ∂(m c)`. Use `set d := ∫ X, φ X ∂(m c)`. Establish `hfin : a + b - d = (a - Fc) + b - (d - Fc)` using `by ring`.
-
-Rewrite using `[hfin]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem fibre_avg_tendsto : ∀ (V H Z : Type) [TopologicalSpace V] [T2Space V] [LocallyCompactSpace V] [SecondCountableTopology V] [MeasurableSpace V] [BorelSpace V] [TopologicalSpace H] [T2Space H] [LocallyCompactSpace H] [MeasurableSpace H] [BorelSpace H] (μ : Measure V) (ν : Measure H) [ν.IsOpenPosMeasure] [IsFiniteMeasureOnCompacts ν] (f : V → Z) (ι : H → Z) (q : V → H) (U : Set V) (m : H → Measure V), IsOpen U → Continuous q → Function.Injective ι → (∀ X, ι (q X) = f X) → Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ f ι U ν Set.univ m → ∀ φ : V → ℂ, Continuous φ → Integrable φ μ → (∀ ε : ℝ≥0∞, ε ≠ 0 → ∃ A : Set V, IsCompact A ∧ A ⊆ U ∧ ∀ Y, MeasurableSet Y → ∫⁻ X in Aᶜ ∩ q ⁻¹' Y, ‖φ X‖ₑ ∂μ ≤ ε * ν Y) → ∀ c : H, Integrable φ (m c) ∧ ∀ r : ℕ → H → ℝ, (∀ k, Continuous (r k) ∧ HasCompactSupport (r k) ∧ (∀ y, 0 ≤ r k y) ∧ 0 < ∫ y, r k y ∂ν) → Filter.Tendsto (fun k => tsupport (r k)) Filter.atTop (nhds c).smallSets → Filter.Tendsto (fun k => (∫ X, φ X * (r k (q X) : ℂ) ∂μ) / ((∫ y, r k y ∂ν : ℝ) : ℂ)) Filter.atTop (nhds (∫ X, φ X ∂(m c))) := by
   intro V H Z _ _ _ _ _ _ _ _ _ _ _ μ ν _ _ f ι q U m hU hq hι hf h φ hφ hφμ hD c

@@ -31,11 +31,11 @@ section Family
 variable {K : Type} [Fintype K] [DecidableEq K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ}
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Establish `: Nonempty K` using `hP.1`. Take `⟨t, ht⟩` from `hC e e V (fun y' => ratio (Ψ (segre (γ y')))) hV hVne (fun y hy => (differentiableAt_ratio Ψ (hγ y hy).1 (h0 y hy)).differentiableWithinAt) hall`. Use `(fibreFinite K ι P e Ψ hP hΨ t).not_infinite ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hinj : Set.InjOn (fun y => (Ψ (segre (γ y)) 0)⁻¹ • segre (γ y)) {y | y ∈ V ∧ ratio (Ψ (segre (γ y))) = t}`. Introduce and unpack `y1 ⟨hy1, -⟩ y2 ⟨hy2, -⟩ h`. Use `horb y1 hy1 y2 hy2 (sameOrbit_of_segre (hγ y2 hy2).2.1 (Ψ (segre (γ y1)) 0 * (Ψ (segre (γ y2)) 0)⁻¹) (mul_ne_zero (h0 y1 hy1) (inv_ne_zero (h0 y2 hy2))) ?_)` and prove the remaining obligations. Establish `h' : (Ψ (segre (γ y1)) 0)⁻¹ • segre (γ y1) = (Ψ (segre (γ y2)) 0)⁻¹ • segre (γ y2)` using `h`. Rewrite using `[mul_smul, ← h', smul_smul, mul_inv_cancel₀ (h0 y1 hy1), one_smul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Set.Infinite.image hinj ht).mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, ⟨hy, hty⟩, rfl⟩`. Use `smul_mem_fibre hP.2.1.2.1 (hγ y hy).2 Ψ (h0 y hy)` as an intermediate fact. Rewrite `this` using `[hty]`. Then use the resulting hypothesis.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_injective (hC : CriticalFibreInfinite.Statement) {P : Ideal (MRing ι)}
     (hP : ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar P (e + 1))
@@ -64,13 +64,11 @@ theorem exists_injective (hC : CriticalFibreInfinite.Statement) {P : Ideal (MRin
   rwa [hty] at this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Establish `hne : Ψ (segre (γ y)) ≠ 0` using `hΨ _ (hγ y hy).2`. Take `⟨j, hj⟩` from `Function.ne_iff.1 hne`. Establish `hj0 : j ≠ 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Conclude with `hj (hall y hy)`. Establish `hcont : ContinuousOn (fun y' => Ψ (segre (γ y')) j) V` using `fun y' hy' => (differentiableAt_pi.1 (differentiableAt_proj_segre Ψ (hγ y' hy').1) j).continuousAt.continuousWithinAt`. Establish `hV'o : IsOpen (V ∩ (fun y' => Ψ (segre (γ y')) j) ⁻¹' {0}ᶜ)` using `hcont.isOpen_inter_preimage hV isOpen_compl_singleton`. Establish `h0' : ∀ y' ∈ V ∩ (fun y' => Ψ (segre (γ y')) j) ⁻¹' {0}ᶜ, swapProj j Ψ (segre (γ y')) 0 ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `y' hy'`. Simplify `hy'.2` using `[swapProj_apply]`. Take `⟨y1, hy1, hinj⟩` from `exists_injective hC hP (isGoodProj_swapProj hΨ j) hV'o ⟨y, hy, hj⟩ (fun y' hy' => hγ y' hy'.1) (fun a ha b hb => horb a ha.1 b hb.1) h0'`. Use `not_injective_of_coord_eventually_const (j.pred hj0) 0 (differentiableAt_ratio _ (hγ y1 hy1.1).1 (h0' y1 hy1)) ?_ hinj` and prove the remaining obligations. Use `filter_upwards [hV'o.mem_nhds hy1] with y' hy'`.
-
-Simplify using `[PtsSheetOnlyNull.ratio, swapProj_apply, hall y' hy'.1]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_proj_ne_zero (hC : CriticalFibreInfinite.Statement) {P : Ideal (MRing ι)}
     (hP : ReciprocityTheory.ChartRestriction.G.Geo.IsArithVar P (e + 1))
@@ -107,11 +105,11 @@ section Chart
 variable {m : ℕ} {n : Fin (m + 1) → ℕ} {X : Scheme.{0}} {i : X ⟶ MP ℤ m n} {D : ℕ}
 
 /- English proof (translation)
-Introduce `d hd k`. Rewrite `hd` using `[MvPolynomial.support_X, Finset.mem_singleton]`. Substitute `hd` using the available equality. Take `⟨k0, i0⟩` from `q`. Distinguish the cases in `h : k = k0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[Finsupp.single_apply]`. Establish `: ∀ j, (Finsupp.single (⟨k0, i0⟩ : Σ k, Bk n k) 1 : (Σ k, Bk n k) →₀ ℕ) ⟨k, j⟩ = 0`. Introduce `j`. Rewrite using `[Finsupp.single_apply, if_neg]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Conclude with `h (congrArg Sigma.fst e).symm`. Simplify using `[this, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_coord (q : Σ k, Bk n k) :
     IsMultiHomog (MvPolynomial.X q : Pol n) (Pi.single q.1 1) := by
@@ -131,7 +129,7 @@ theorem isMultiHomog_coord (q : Σ k, Bk n k) :
     simp [this, h]
 
 /- English proof (translation)
-Establish `hw : PtsOver.map i rfl _ y ∈ ptsIn (mpStr ℤ m n) σ₀ (mchart p)` using `CxPts.mem_ptsIn.2 (CxPts.mem_ptsIn.1 hy)`. Rewrite using `[CxPts.ev_app i rfl, GlobalTheory.T.dehomogenized_eval_eq_ratio m n p _ _ (isMultiHomog_coord q) _ z hz hw]`. Simplify using `[Pi.single_apply, Finset.prod_ite_eq']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ev_coord (p : ∀ k, Bk n k) {y : GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀}
     (hy : y ∈ ptsIn (i ≫ mpStr ℤ m n) σ₀ (i ⁻¹ᵁ mchart p)) {z : (Σ k, Bk n k) → ℂ} (hz : Over i y z)
@@ -147,13 +145,13 @@ theorem ev_coord (p : ∀ k, Bk n k) {y : GlobalTheory.CxPts (i ≫ mpStr ℤ m 
 variable [IsIntegral X] [IsClosedImmersion i]
 
 /- English proof (translation)
-Take `⟨z, hzP, hz⟩` from `GlobalTheory.T.complex_point_lifts_to_multicone m n X i y`. Use `choose p hp using hzP.1`. Establish `hyW : y ∈ ptsIn (i ≫ mpStr ℤ m n) σ₀ (i ⁻¹ᵁ mchart p)` using `CxPts.mem_ptsIn.2 (Set.mem_iInter.2 fun k => CxPts.mem_ptsIn.1 ((hz k (p k)).1.2 (hp k)))`. Use `set W := i ⁻¹ᵁ mchart p with hW`. Use `⟨c.finChart.target ∩ c.finChart.symm ⁻¹' ptsIn (i ≫ mpStr ℤ m n) σ₀ W, fun v q => ev (i ≫ mpStr ℤ m n) σ₀ W (i.app _ (dehomog p (MvPolynomial.X q))) (c.finChart.symm v), c.finChart.isOpen_inter_preimage_symm (isOpen_ptsIn W), fun hys => ?_, Set.inter_subset_left, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨c.finChart.map_source hys, ?_⟩` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, c.finChart.left_inv hys]`. Conclude with `hyW`. Use `differentiableOn_pi.2 fun q => ?_` and prove the remaining obligations. Conclude with `((c.analyticOnNhd_finChart_iff (isOpen_ptsIn W) _).2 (c.holo W _)).differentiableOn`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `v ⟨-, hvW⟩`. Take `⟨z', hz'P, hz'⟩` from `GlobalTheory.T.complex_point_lifts_to_multicone m n X i (c.finChart.symm v)`. Establish `hne : ∀ k, z' ⟨k, p k⟩ ≠ 0` using `fun k => (hz' k (p k)).1.1 (by`. Use `CxPts.mem_ptsIn.2 ?_` and prove the remaining obligations. Conclude with `Set.mem_iInter.1 (CxPts.mem_ptsIn.1 hvW) k)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `hso : SameOrbit (fun q => ev (i ≫ mpStr ℤ m n) σ₀ W (i.app _ (dehomog p (MvPolynomial.X q))) (c.finChart.symm v)) z'`. Use `⟨fun k => (z' ⟨k, p k⟩)⁻¹, fun k => inv_ne_zero (hne k), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `q`. Rewrite using `[ev_coord p hvW hz' q, div_eq_inv_mul]`. Conclude with `⟨GlobalTheory.T.isUnder_of_same_orbit m n _ _ _ hz' hso, mem_mcPts_of_sameOrbit hPh hso hz'P⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_lift (hPh : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomogIdeal (ptIdeal (i (genericPoint X))))
     (c : GlobalTheory.AlgChart (i ≫ mpStr ℤ m n) σ₀ D) {y : GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀} :
@@ -188,7 +186,7 @@ theorem exists_lift (hPh : ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog
 end Chart
 
 /- English proof (translation)
-Establish `hex : ∃ z, Over i y z` using `⟨z, h⟩`. Unfold `liftOf`. Rewrite using `[dif_pos hex]`. Conclude with `hex.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem over_liftOf {m : ℕ} {n : Fin (m + 1) → ℕ} {X : Scheme.{0}} {i : X ⟶ MP ℤ m n}
     {y : GlobalTheory.CxPts (i ≫ mpStr ℤ m n) σ₀} {z : (Σ k, Bk n k) → ℂ} (h : Over i y z) : Over i y (liftOf i y) := by
@@ -198,29 +196,27 @@ theorem over_liftOf {m : ℕ} {n : Fin (m + 1) → ℕ} {X : Scheme.{0}} {i : X 
   exact hex.choose_spec
 
 /- English proof (translation)
-Introduce `m n X _ i _ D hX Ψ hΨ c`. Take `⟨-, hp₃, hp₄, -⟩` from `GlobalTheory.T.mixed_cycle_point_dictionary m n X i (D + 1) hX.dim_eq`. Establish `hP` using `hp₄ (hp₃.2 hX.charZero)`. Establish `hPh` using `hP.2.1.2.1`. Establish `hCF` using `CriticalFibreInfinite.proof`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `horb : ∀ (O : Set (Fin D → ℂ)) (γ : (Fin D → ℂ) → (Σ k, Bk n k) → ℂ), O ⊆ c.finChart.target → (∀ v ∈ O, Over i (c.finChart.symm v) (γ v)) → ∀ v ∈ O, ∀ v' ∈ O, SameOrbit (γ v) (γ v') → v = v'`. Introduce `O γ hO hγ v hv v' hv' h`. Establish `e` using `(GlobalTheory.T.points_eq_iff_same_torus_orbit m n X i _ _ _ _ (hγ v hv) (hγ v' hv')).2 h`. Combine the equalities or inequalities in the displayed calculation. Establish `hlift : ∀ v ∈ c.finChart.target, ∃ (O : Set (Fin D → ℂ)) (γ : (Fin D → ℂ) → (Σ k, Bk n k) → ℂ), IsOpen O ∧ v ∈ O ∧ O ⊆ c.finChart.target ∧ DifferentiableOn ℂ γ O ∧ ∀ v ∈ O, Over i (c.finChart.symm v) (γ v) ∧ γ v ∈ mcPts (ptIdeal (i (genericPoint X)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Introduce `v hvT`. Take `⟨O, γ, hOo, hvO, hOT, hγd, hγ⟩` from `exists_lift (y := c.finChart.symm v) hPh c`. Use `⟨O, γ, hOo, ?_, hOT, hγd, hγ⟩` and prove the remaining obligations. Use `hvO (c.finChart.map_target hvT)` as an intermediate fact. Rewrite `this` using `[c.finChart.right_inv hvT]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hS1 : volume {v | v ∈ c.finChart.target ∧ ∃ z, Over i (c.finChart.symm v) z ∧ Ψ (segre z) 0 = 0} = 0`. Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `v ⟨hvT, -⟩`. Take `⟨O, γ, hOo, hvO, hOT, hγd, hγ⟩` from `hlift v hvT`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 hOo v hvO`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdiff : ∀ w ∈ O, DifferentiableAt ℂ γ w` using `fun w hw => (hγd w hw).differentiableAt (hOo.mem_nhds hw)`. Use `⟨Metric.ball v r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball v r).isPreconnected, fun w => Ψ (segre (γ w)) 0, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hd : DifferentiableOn ℂ (fun w => Ψ (segre (γ w)) 0) O` using `fun w hw => (differentiableAt_pi.1 (differentiableAt_proj_segre Ψ (hdiff w hw)) 0).differentiableWithinAt`. Conclude with `((SCV.analyticOnNhd_iff_differentiableOn hOo).2 hd).mono hball`. Conclude with `exists_proj_ne_zero hCF hP hΨ Metric.isOpen_ball (fun w hw => ⟨hdiff w (hball hw), (hγ w (hball hw)).2⟩) (fun a ha b hb => horb O γ hOT (fun u hu => (hγ u hu).1) a (hball ha) b (hball hb)) (Metric.mem_ball_self hr)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `w ⟨⟨-, z', hz', h0'⟩, hw⟩`. Take `⟨a, ha, e⟩` from `(GlobalTheory.T.points_eq_iff_same_torus_orbit m n X i _ _ _ _ hz' (hγ w (hball hw)).1).1 rfl`. Rewrite `h0'` using `[segre_orbit e, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `(mul_eq_zero.1 h0').resolve_left (Finset.prod_ne_zero_iff.2 fun k _ => ha k)`. Establish `hS2 : volume {v | v ∈ c.finChart.target ∧ (∀ z, Over i (c.finChart.symm v) z → Ψ (segre z) 0 ≠ 0) ∧ ¬ IsRegAt i Ψ c (c.finChart.symm v)} = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Apply `ReciprocityTheory.AnForm.volume_eq_zero_of_locally_in_analytic_zero_set` to reduce the goal to its premises. Introduce and unpack `v ⟨hvT, hnz, -⟩`. Take `⟨O, γ, hOo, hvO, hOT, hγd, hγ⟩` from `hlift v hvT`. Establish `hdiff : ∀ w ∈ O, DifferentiableAt ℂ γ w` using `fun w hw => (hγd w hw).differentiableAt (hOo.mem_nhds hw)`. Establish `hcont : ContinuousOn (fun w => Ψ (segre (γ w)) 0) O` using `fun w hw => (differentiableAt_pi.1 (differentiableAt_proj_segre Ψ (hdiff w hw)) 0).continuousAt.continuousWithinAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hO'o : IsOpen (O ∩ (fun w => Ψ (segre (γ w)) 0) ⁻¹' {0}ᶜ)` using `hcont.isOpen_inter_preimage hOo isOpen_compl_singleton`. Establish `hτd : DifferentiableOn ℂ (fun w => PtsSheetOnlyNull.ratio (Ψ (segre (γ w)))) (O ∩ (fun w => Ψ (segre (γ w)) 0) ⁻¹' {0}ᶜ)` using `fun w hw => (differentiableAt_ratio Ψ (hdiff w hw.1) hw.2).differentiableWithinAt`. Take `⟨r, hr, hball⟩` from `Metric.isOpen_iff.1 hO'o v ⟨hvO, hnz _ (hγ v hvO).1⟩`. Use `⟨Metric.ball v r, Metric.isOpen_ball, Metric.mem_ball_self hr, (convex_ball v r).isPreconnected, fun w => (ReciprocityTheory.AnForm.A.jacC (fun w => PtsSheetOnlyNull.ratio (Ψ (segre (γ w)))) w).det, (SheetOnlyNull.analyticOnNhd_det_jacC hO'o hτd).mono hball, ?_, ?_⟩` and prove the remaining obligations. Take `⟨y1, hy1, hinj⟩` from `exists_injective hCF hP hΨ Metric.isOpen_ball ⟨v, Metric.mem_ball_self hr⟩ (fun w hw => ⟨hdiff w (hball hw).1, (hγ w (hball hw).1).2⟩) (fun a ha b hb => horb O γ hOT (fun u hu => (hγ u hu).1) a (hball ha).1 b (hball hb).1) (fun w hw => (hball hw).2)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `⟨y1, hy1, ?_⟩` and prove the remaining obligations. Use `show (ReciprocityTheory.AnForm.A.jacC _ y1).det ≠ 0`. Rewrite using `[ReciprocityTheory.AnForm.A.det_jacC]`. Conclude with `(SheetOnlyNull.injective_iff_det_ne_zero _).1 hinj`. Introduce and unpack `w ⟨⟨hwT, -, hnr⟩, hw⟩ show (ReciprocityTheory.AnForm.A.jacC _ w).det = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ReciprocityTheory.AnForm.A.det_jacC]`. Establish `hev : projCoord i Ψ ∘ c.finChart.symm =ᶠ[𝓝 w] fun w => PtsSheetOnlyNull.ratio (Ψ (segre (γ w)))` using `by filter_upwards [hO'o.mem_nhds (hball hw)] with u hu`. Establish `hso` using `(GlobalTheory.T.points_eq_iff_same_torus_orbit m n X i _ _ _ _ (over_liftOf (hγ u hu.1).1) (hγ u hu.1).1).1 rfl`. Conclude with `ratios_eq_of_sameOrbit Ψ hso hu.2`. Unfold `IsRegAt at hnr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Prove the first alternative.
 
-Rewrite `hnr` using `[not_not, c.finChart.right_inv hwT, hev.fderiv_eq]`. Conclude with `hnr`. Establish `key : volume (c.finChart.target ∩ c.finChart.symm ⁻¹' {y | (∃ z, Over i y z ∧ Ψ (segre z) 0 = 0) ∨ ¬ IsRegAt i Ψ c y}) = 0`. Use `measure_mono_null ?_ (measure_union_null hS1 hS2)` and prove the remaining obligations. Introduce and unpack `v ⟨hvT, hvB⟩`.
-
-Distinguish the cases in `h : ∃ z, Over i (c.finChart.symm v) z ∧ Ψ (segre z) 0 = 0`. Conclude with `Or.inl ⟨hvT, h⟩`. Conclude with `Or.inr ⟨hvT, fun z hz h0 => h ⟨z, hz, h0⟩, hvB.resolve_left h⟩`. Rewrite using `[← (GlobalTheory.FinChart.measurePreserving_toV (D := D)).measure_preimage_emb (GlobalTheory.FinChart.toV D).toHomeomorph.measurableEmbedding]`. Conclude with `key`.
+Prove the second alternative. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_chart_crit : ∀ (m : ℕ) (n : Fin (m + 1) → ℕ) (X : Scheme.{0}) [IsIntegral X] (i : X ⟶ MP ℤ m n) [IsClosedImmersion i] (D : ℕ),
     GlobalTheory.IsArithVar (i ≫ mpStr ℤ m n) D → ∀ Ψ : GlobalTheory.CompanionTheory.MixZ.ArchEq.LinProj n D,

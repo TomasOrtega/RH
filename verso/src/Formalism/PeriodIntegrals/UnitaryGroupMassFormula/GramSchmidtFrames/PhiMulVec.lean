@@ -15,13 +15,13 @@ section loca
 variable {k r : ℕ}
 
 /- English proof (translation)
-Conclude with `add_sub_cancel a b`.
+A detailed English derivation is pending.
 -/
 lemma aps {V : Type*} [AddCommGroup V] (a b : V) : a + (b - a) = b := by
   exact add_sub_cancel a b
 
 /- English proof (translation)
-Conclude with `sub_add_cancel b a`.
+A detailed English derivation is pending.
 -/
 lemma spa {V : Type*} [AddCommGroup V] (a b : V) : b - a + a = b := by
   exact sub_add_cancel b a
@@ -29,7 +29,7 @@ lemma spa {V : Type*} [AddCommGroup V] (a b : V) : b - a + a = b := by
 def Rk (k r : ℕ) (p q : Fin (2 * r + k + 1) → ℂ) : B.Mat k r := vecMulVec p (star q ᵥ* Hpk k r)
 
 /- English proof (translation)
-Unfold `Rk`. Rewrite using `[Matrix.vecMulVec_mulVec, op_smul_eq_smul, ← Matrix.dotProduct_mulVec]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma Rk_mulVec (p q v : Fin (2 * r + k + 1) → ℂ) : Rk k r p q *ᵥ v = herm (Hpk k r) v q • p := by
   unfold Rk
@@ -39,7 +39,7 @@ lemma Rk_mulVec (p q v : Fin (2 * r + k + 1) → ℂ) : Rk k r p q *ᵥ v = herm
 def Dw (k r : ℕ) : B.Mat k r := diagonal fun i => if r ≤ i.val ∧ i.val ≤ r + k then 1 else 0
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[Dw, Matrix.mulVec_diagonal, wbPart]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma Dw_mulVec (v : Fin (2 * r + k + 1) → ℂ) : Dw k r *ᵥ v = wbPart k r v := by
   funext i
@@ -49,7 +49,7 @@ def Pm (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) : B.Mat k r :=
   Dw k r + ((Tz k r z : ℂ))⁻¹ • (Rk k r z z * Dw k r)
 
 /- English proof (translation)
-Unfold `Pm`. Rewrite using `[Matrix.add_mulVec, Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, Dw_mulVec, Rk_mulVec, smul_smul]`. Unfold `prW`. Rewrite using `[div_eq_inv_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma Pm_mulVec (z v : Fin (2 * r + k + 1) → ℂ) : Pm k r z *ᵥ v = prW k r z v := by
   unfold Pm
@@ -69,9 +69,9 @@ def Lm (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (M : B.Mat k r) : B.Mat 
     (-((Zhat k r z z' M).det)⁻¹ * (Zhat k r z z' M).adjugate c a) • (Rk k r (fvec k r z' c) (fvec k r z a) * M)
 
 /- English proof (translation)
-Unfold `Lm gam wv`. Rewrite using `[Matrix.add_mulVec, Matrix.one_mulVec, Matrix.sum_mulVec]`. Use `congr 1`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.sum_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.smul_mulVec, ← Matrix.mulVec_mulVec, Rk_mulVec, smul_smul]`. Rewrite using `[← Finset.sum_smul]`. Use `congr 1`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Matrix.mulVec, dotProduct, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -93,7 +93,7 @@ def Phi (k r : ℕ) (z z' : Fin (2 * r + k + 1) → ℂ) (M : B.Mat k r) : B.Mat
   Pm k r z * M * Lm k r z z' M
 
 /- English proof (translation)
-Unfold `Phi`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Pm_mulVec]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 lemma Phi_mulVec (z z' : Fin (2 * r + k + 1) → ℂ) (M : B.Mat k r) (u : Fin (2 * r + k + 1) → ℂ) :
     Phi k r z z' M *ᵥ u = prW k r z (M *ᵥ (Lm k r z z' M *ᵥ u)) := by
@@ -107,7 +107,7 @@ def Am (k r : ℕ) (z z' nu : Fin (2 * r + k + 1) → ℂ) (M : B.Mat k r) : B.M
   (1 - Pm k r z) + Phi k r z z' M * (Pm k r z - Rk k r nu nu * Pm k r z) + Rk k r (ev k r z z' M) nu * Pm k r z
 
 /- English proof (translation)
-Unfold `Am`. Simplify using `only [Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, Pm_mulVec, Rk_mulVec]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 lemma Am_mulVec (z z' nu : Fin (2 * r + k + 1) → ℂ) (M : B.Mat k r) (v : Fin (2 * r + k + 1) → ℂ) :
     Am k r z z' nu M *ᵥ v = (v - prW k r z v) +
@@ -118,25 +118,25 @@ lemma Am_mulVec (z z' nu : Fin (2 * r + k + 1) → ℂ) (M : B.Mat k r) (v : Fin
     Rk_mulVec]
 
 /- English proof (translation)
-The claim follows from `sm_iff.2 fun i j => by simp only [Matrix.smul_apply, smul_eq_mul]; exact hc.mul (sm_iff.1 hM i j)`.
+A detailed English derivation is pending.
 -/
 lemma s_msmul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {s : Set E} {m : ℕ} {c : E → ℂ}
     {M : E → Matrix (Fin m) (Fin m) ℂ} (hc : Sm c s) (hM : Sm M s) : Sm (fun x => c x • M x) s :=
   sm_iff.2 fun i j => by simp only [Matrix.smul_apply, smul_eq_mul]; exact hc.mul (sm_iff.1 hM i j)
 
 /- English proof (translation)
-The claim follows from `sm_iff.2 fun i j => by simp only [Rk, vecMulVec_apply]; exact (sv_iff.1 hp i).mul contDiffOn_const`.
+A detailed English derivation is pending.
 -/
 lemma s_Rk {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {s : Set E} {p : E → Fin (2 * r + k + 1) → ℂ}
     (hp : Sm p s) (q : Fin (2 * r + k + 1) → ℂ) : Sm (fun x => Rk k r (p x) q) s :=
   sm_iff.2 fun i j => by simp only [Rk, vecMulVec_apply]; exact (sv_iff.1 hp i).mul contDiffOn_const
 
 /- English proof (translation)
-Establish `hdi : Sm (fun x => -((Zhat k r z z' (Y x)).det)⁻¹) s` using `((s_det (s_Zhat z z' hY)).inv hd).neg`. Establish `hL : Sm (fun x => Lm k r z z' (Y x)) s`. Unfold `Lm`. Conclude with `contDiffOn_const.add (ContDiffOn.sum fun c _ => ContDiffOn.sum fun a _ => s_msmul (hdi.mul (s_adj (s_Zhat z z' hY) c a)) (s_mmul contDiffOn_const hY))`. Establish `hP : Sm (fun x => Phi k r z z' (Y x)) s`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Phi`. Conclude with `s_mmul (s_mmul contDiffOn_const hY) hL`. Establish `hf : Sm (fun x => (herm (Hpk k r) (omW k r z z' (Y x)) (omW k r z z' (Y x))).re) s` using `s_re (s_herm _ (s_omW z z' hY) (s_omW z z' hY))`. Establish `hN : Sm (fun x => ((Real.sqrt (herm (Hpk k r) (omW k r z z' (Y x)) (omW k r z z' (Y x))).re)⁻¹ : ℝ)) s` using `(hf.sqrt fun x hx => (hn x hx).ne').inv fun x hx => (Real.sqrt_pos.2 (hn x hx)).ne'`. Establish `he : Sm (fun x => ev k r z z' (Y x)) s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `ev nz`. Conclude with `s_smul (s_ofReal hN) (s_omW z z' hY)`. Unfold `Am`. Conclude with `(contDiffOn_const.add (s_mmul hP contDiffOn_const)).add (s_mmul (s_Rk he nu) contDiffOn_const)`.
+A detailed English derivation is pending.
 -/
 lemma s_Am {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] {s : Set E} (z z' nu : Fin (2 * r + k + 1) → ℂ)
     {Y : E → B.Mat k r} (hY : Sm Y s) (hd : ∀ x ∈ s, (Zhat k r z z' (Y x)).det ≠ 0)

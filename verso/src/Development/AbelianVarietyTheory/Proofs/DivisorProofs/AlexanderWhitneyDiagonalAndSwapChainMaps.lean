@@ -14,7 +14,7 @@ def cm (N j l : ℕ) : SimplexCategory.mk l ⟶ SimplexCategory.mk N :=
   if h : j + l ≤ N then SimplexCategory.subinterval j l h else SimplexCategory.const _ _ 0
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem cm_eq (N j l : ℕ) (h : j + l ≤ N) : cm N j l = SimplexCategory.subinterval j l h := dif_pos h
 
@@ -22,7 +22,7 @@ section
 variable {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[cm_eq N j l h, cm_eq (N + 1) (j + 1) l (by omega)]`. Use `hom_ext_val _ _ fun v => ?_` and prove the remaining obligations. Rewrite using `[sub_δ_val, sub_val]`. Apply the tactic sequence `split_ifs <;> omega`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cm_δ_le (j l : ℕ) (h : j + l ≤ N) (i : Fin (N + 2)) (hi : (i : ℕ) ≤ j) : cm N j l ≫ SimplexCategory.δ i = cm (N + 1) (j + 1) l := by
   rw [cm_eq N j l h, cm_eq (N + 1) (j + 1) l (by omega)]
@@ -31,7 +31,7 @@ theorem cm_δ_le (j l : ℕ) (h : j + l ≤ N) (i : Fin (N + 2)) (hi : (i : ℕ)
   split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite using `[cm_eq N j l h, cm_eq (N + 1) j l (by omega)]`. Use `hom_ext_val _ _ fun v => ?_` and prove the remaining obligations. Rewrite using `[sub_δ_val, sub_val]`. Apply the tactic sequence `split_ifs <;> omega`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cm_δ_gt (j l : ℕ) (h : j + l ≤ N) (i : Fin (N + 2)) (hi : j + l < (i : ℕ)) : cm N j l ≫ SimplexCategory.δ i = cm (N + 1) j l := by
   rw [cm_eq N j l h, cm_eq (N + 1) j l (by omega)]
@@ -40,7 +40,7 @@ theorem cm_δ_gt (j l : ℕ) (h : j + l ≤ N) (i : Fin (N + 2)) (hi : j + l < (
   split_ifs <;> omega
 
 /- English proof (translation)
-Rewrite using `[cm_eq N j l h, cm_eq (N + 1) j (l + 1) (by omega)]`. Use `hom_ext_val _ _ fun v => ?_` and prove the remaining obligations. Rewrite using `[sub_δ_val, δ_sub_val]`. Apply the tactic sequence `split_ifs <;> omega`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cm_δ_mid (j l : ℕ) (h : j + l ≤ N) (i : Fin (N + 2)) (i' : Fin (l + 2)) (hi : (i : ℕ) = j + i') :
     cm N j l ≫ SimplexCategory.δ i = SimplexCategory.δ i' ≫ cm (N + 1) j (l + 1) := by
@@ -52,17 +52,17 @@ theorem cm_δ_mid (j l : ℕ) (h : j + l ≤ N) (i : Fin (N + 2)) (i' : Fin (l +
 end
 
 /- English proof (translation)
-Establish `e1 : SimplexCategory.δ (Fin.last (p + 1)) ≫ cm (N + 1) 0 (p + 1) = cm (N + 1) 0 p`. Rewrite using `[cm_eq (N + 1) 0 (p + 1) (by omega), cm_eq (N + 1) 0 p (by omega)]`. Use `hom_ext_val _ _ fun v => ?_` and prove the remaining obligations. Rewrite using `[δ_sub_val, sub_val]`. Use `v.2` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Fin.val_last]`. Apply the tactic sequence `split_ifs <;> omega`. Establish `e2 : SimplexCategory.δ 0 ≫ cm (N + 1) p (r + 1) = cm (N + 1) (p + 1) r`. Rewrite using `[cm_eq (N + 1) p (r + 1) (by omega), cm_eq (N + 1) (p + 1) r (by omega)]`. Use `hom_ext_val _ _ fun v => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[δ_sub_val, sub_val]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[← Fin.sum_congr' _ (show (p + 1) + (r + 1) = N + 2 by omega), Fin.sum_univ_add, Fin.sum_univ_castSucc (n := p + 1), Fin.sum_univ_succ (n := r + 1), e1, e2, smul_add, Finset.smul_sum]`. Establish `c : (-1 : ℤ) ^ ((Fin.last (p + 1) : Fin (p + 2)) : ℕ) • φ (cm (N + 1) 0 p) (cm (N + 1) (p + 1) r) + (-1 : ℤ) ^ p • (-1 : ℤ) ^ ((0 : Fin (r + 2)) : ℕ) • φ (cm (N + 1) 0 p) (cm (N + 1) (p + 1) r) = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[pow_succ]`. Establish `key : ∀ a b c d e f : A, c + d = 0 → a = e → b = f → a + b = e + c + (d + f)`. Introduce and unpack `a b c d _ _ h rfl rfl`. Rewrite using `[add_assoc, ← add_assoc c, h, zero_add]`. Use `key _ _ _ _ _ _ c (Finset.sum_congr rfl fun i _ => ?_) (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `i.2` as an intermediate fact. Rewrite using `[cm_δ_mid 0 p (by omega) _ i.castSucc (by simp), cm_δ_le p r (by omega) _ (by simp; omega)]`. Both sides reduce to the same expression. Use `j.2` as an intermediate fact. Rewrite using `[cm_δ_mid p r (by omega) _ j.succ (by simp; omega), cm_δ_gt 0 p (by omega) _ (by simp; omega), smul_smul, ← pow_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem telescope {N : ℕ} {A : Type*} [AddCommGroup A] {p r : ℕ} (hN : p + r = N)
     (φ : (SimplexCategory.mk p ⟶ SimplexCategory.mk (N + 1)) → (SimplexCategory.mk r ⟶ SimplexCategory.mk (N + 1)) → A) :
@@ -100,7 +100,7 @@ theorem telescope {N : ℕ} {A : Type*} [AddCommGroup A] {p r : ℕ} (hN : p + r
     simp; omega
 
 /- English proof (translation)
-Rewrite using `[Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_range, Pr.aw]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `p.2` as an intermediate fact. Rewrite using `[cm_eq N 0 p (by omega), cm_eq N p (N - p) (by omega)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem aw_eq (N : ℕ) : Pr.aw N = ∑ q ∈ Finset.HasAntidiagonal.antidiagonal N,
     Finsupp.single (⟨q.1, q.2, cm N 0 q.1, cm N q.1 q.2⟩ : Pr N) (1 : ℤ) := by
@@ -122,7 +122,7 @@ theorem d₂_zero {N p : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N
     Pr.d₂ (⟨p, 0, a, b⟩ : Pr N) = 0 := rfl
 
 /- English proof (translation)
-Simplify using `only [Finsupp.smul_single, smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem d₁_succ {N p r : ℕ} (a : SimplexCategory.mk (p + 1) ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk r ⟶ SimplexCategory.mk N) :
     Pr.d₁ (⟨p + 1, r, a, b⟩ : Pr N) =
@@ -131,7 +131,7 @@ theorem d₁_succ {N p r : ℕ} (a : SimplexCategory.mk (p + 1) ⟶ SimplexCateg
   rfl
 
 /- English proof (translation)
-Simplify using `only [Finsupp.smul_single, smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem d₂_succ {N p r : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk N) (b : SimplexCategory.mk (r + 1) ⟶ SimplexCategory.mk N) :
     Pr.d₂ (⟨p, r + 1, a, b⟩ : Pr N) =
@@ -140,11 +140,11 @@ theorem d₂_succ {N p r : ℕ} (a : SimplexCategory.mk p ⟶ SimplexCategory.mk
   rfl
 
 /- English proof (translation)
-Rewrite using `[aw_eq, aw_eq, map_sum]`. Simplify using `only [Pr.d, Finsupp.linearCombination_single, one_smul, Finset.sum_add_distrib]`. Rewrite using `[Finset.Nat.sum_antidiagonal_succ, Finset.Nat.sum_antidiagonal_succ']`. Simplify using `only [d₁_zero, d₂_zero, smul_zero, zero_add, d₁_succ, d₂_succ]`. Simplify using `only [Pr.bd, map_sum, Pr.push, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Establish `hN : q.1 + q.2 = N` using `by simpa using hq`. Use `symm`. Use `(telescope hN (fun a b => Finsupp.single (⟨q.1, q.2, a, b⟩ : Pr (N + 1)) (1 : ℤ))).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_aw (N : ℕ) : Pr.d (N + 1) (Pr.aw (N + 1)) = Pr.bd (Pr.aw N) := by
   rw [aw_eq, aw_eq, map_sum]
@@ -160,7 +160,7 @@ theorem d_aw (N : ℕ) : Pr.d (N + 1) (Pr.aw (N + 1)) = Pr.bd (Pr.aw N) := by
   rw [Finset.smul_sum]
 
 /- English proof (translation)
-Rewrite using `[Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk, Finset.sum_range, Pr.wa]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `p.2` as an intermediate fact. Rewrite using `[cm_eq N 0 p (by omega), cm_eq N p (N - p) (by omega), Finsupp.smul_single, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wa_eq (N : ℕ) : Pr.wa N = ∑ q ∈ Finset.HasAntidiagonal.antidiagonal N,
     (-1 : ℤ) ^ (q.1 * q.2) • Finsupp.single (⟨q.2, q.1, cm N q.1 q.2, cm N 0 q.1⟩ : Pr N) (1 : ℤ) := by
@@ -170,15 +170,15 @@ theorem wa_eq (N : ℕ) : Pr.wa N = ∑ q ∈ Finset.HasAntidiagonal.antidiagona
   rw [cm_eq N 0 p (by omega), cm_eq N p (N - p) (by omega), Finsupp.smul_single, smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Rewrite using `[wa_eq, wa_eq, map_sum]`. Simplify using `only [map_zsmul, Pr.d, Finsupp.linearCombination_single, one_smul, smul_add, Finset.sum_add_distrib]`. Rewrite using `[Finset.Nat.sum_antidiagonal_succ', Finset.Nat.sum_antidiagonal_succ]`. Simplify using `only [d₁_zero, d₂_zero, smul_zero, zero_add, d₁_succ, d₂_succ]`. Simplify using `only [Pr.bd, map_sum, map_zsmul, Pr.push, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single, Finset.smul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun q hq => ?_` and prove the remaining obligations. Establish `hN : q.1 + q.2 = N` using `by simpa using hq`. Take `⟨p, r⟩` from `q`. Simplify using `only at hN ⊢`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Establish `T` using `telescope hN (fun a b => Finsupp.single (⟨r, p, b, a⟩ : Pr (N + 1)) (1 : ℤ))`. Use `conv_rhs => arg 2`. Use extensionality with `x`. Rewrite using `[smul_comm]`. Rewrite using `[← Finset.smul_sum (r := (-1 : ℤ) ^ (p * r)), T, smul_add, Finset.smul_sum, Finset.smul_sum, Finset.smul_sum]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conv_rhs => rw [add_comm]`. Establish `s1 : (-1 : ℤ) ^ (p * (r + 1)) = (-1) ^ (p * r) * (-1) ^ p` using `by ring`. Establish `s2 : (-1 : ℤ) ^ ((p + 1) * r) * (-1) ^ r = (-1) ^ (p * r)`. Rewrite using `[← pow_add, show (p + 1) * r + r = p * r + 2 * r by ring, pow_add, pow_mul]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Evaluate the numerical expressions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `congr 1 <;> refine Finset.sum_congr rfl fun x _ => ?_`. Simplify using `only [smul_smul, s1, mul_assoc]`. Simplify using `only [smul_smul]`. Rewrite using `[← mul_assoc, s2]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_wa (N : ℕ) : Pr.d (N + 1) (Pr.wa (N + 1)) = Pr.bd (Pr.wa N) := by
   rw [wa_eq, wa_eq, map_sum]
@@ -205,7 +205,7 @@ theorem d_wa (N : ℕ) : Pr.d (N + 1) (Pr.wa (N + 1)) = Pr.bd (Pr.wa N) := by
     rw [← mul_assoc, s2]
 
 /- English proof (translation)
-Introduce `N` and use `⟨d_aw N, d_wa N⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem aw_wa_chain : ∀ N, Pr.d (N + 1) (Pr.aw (N + 1)) = Pr.bd (Pr.aw N) ∧
     Pr.d (N + 1) (Pr.wa (N + 1)) = Pr.bd (Pr.wa N) :=

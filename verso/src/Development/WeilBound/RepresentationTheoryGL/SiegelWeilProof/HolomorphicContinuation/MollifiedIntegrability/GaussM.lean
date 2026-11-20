@@ -15,14 +15,14 @@ variable {m n : ℕ}
 namespace GM
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [herm] <;> ring`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem herm_isHermitian (y : E n) : (herm y).IsHermitian := by
   ext i j
   apply Complex.ext <;> simp [herm] <;> ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [gramX, Qp, Qb, evX, conjTranspose_apply, map_sub, map_sum, map_mul, eval_X, star_sub, star_sum, star_mul', star_star]`. Simplify using `only [if_true, Bool.false_eq_true, if_false]`. Apply the tactic sequence `congr 1 <;> (refine Finset.sum_congr rfl fun a _ => ?_; rw [star_star, mul_comm])`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramX_isHermitian (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) : (gramX ε x).IsHermitian := by
   ext i j
@@ -32,7 +32,7 @@ theorem gramX_isHermitian (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) : 
   congr 1 <;> (refine Finset.sum_congr rfl fun a _ => ?_; rw [star_star, mul_comm])
 
 /- English proof (translation)
-Establish `h : star (b * Q).trace = (b * Q).trace`. Rewrite using `[← Matrix.trace_conjTranspose, conjTranspose_mul, hb.eq, hQ.eq, Matrix.trace_mul_comm]`. Use `congrArg Complex.im h` as an intermediate fact. Simplify using `only [Complex.star_def, Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem trace_im_zero {b Q : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) (hQ : Q.IsHermitian) :
     (b * Q).trace.im = 0 := by
@@ -43,7 +43,7 @@ theorem trace_im_zero {b Q : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) (h
   linarith
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp]`. Establish `h0` using `trace_im_zero hb (gramX_isHermitian ε x)`. Establish `: (Complex.I * t * (b * gramX ε x).trace).re = 0`. Simplify using `[Complex.mul_re, h0]`. Rewrite using `[this, Real.exp_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_phase {ε : Fin m → Bool} {t : ℝ} {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian)
     (x : Fin m → Fin n → ℂ) : ‖Complex.exp (Complex.I * t * (b * gramX ε x).trace)‖ = 1 := by
@@ -54,7 +54,7 @@ theorem norm_phase {ε : Fin m → Bool} {t : ℝ} {b : Matrix (Fin n) (Fin n) �
   rw [this, Real.exp_zero]
 
 /- English proof (translation)
-Unfold `evX`. Use `(MvPolynomial.continuous_eval P).comp (continuous_pi fun k => ?_)` and prove the remaining obligations. Use `split_ifs`. Conclude with `continuous_star.comp ((continuous_apply _).comp (continuous_apply _))`. Conclude with `(continuous_apply _).comp (continuous_apply _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_evX (P : PX m n) : Continuous fun x : Fin m → Fin n → ℂ => evX P x := by
   unfold evX
@@ -64,9 +64,9 @@ theorem continuous_evX (P : PX m n) : Continuous fun x : Fin m → Fin n → ℂ
   · exact (continuous_apply _).comp (continuous_apply _)
 
 /- English proof (translation)
-Use `(hI m n c hc P).mono ?_ (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `(hI m n c hc P).aestronglyMeasurable.mul (Continuous.aestronglyMeasurable ?_)` and prove the remaining obligations. Use `Complex.continuous_exp.comp (continuous_const.mul ?_)` and prove the remaining obligations. Use `(continuous_const.matrix_mul ?_).matrix_trace` and prove the remaining obligations. Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `continuous_evX _`. Rewrite using `[norm_mul, norm_phase hb, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integ_sec (hI : IntegP) {ε : Fin m → Bool} {c t : ℝ} (hc : 0 < c) {b : Matrix (Fin n) (Fin n) ℂ}
     (hb : b.IsHermitian) (P : PX m n) :
@@ -80,7 +80,7 @@ theorem integ_sec (hI : IntegP) {ε : Fin m → Bool} {c t : ℝ} (hc : 0 < c) {
   · rw [norm_mul, norm_phase hb, mul_one]
 
 /- English proof (translation)
-Unfold `secN`. Rewrite using `[← integral_add (integ_sec hI hc hb P) (integ_sec hI hc hb Q)]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[evX]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -91,7 +91,7 @@ theorem sec_add (hI : IntegP) {ε : Fin m → Bool} {c t : ℝ} (hc : 0 < c) {b 
   congr 1; funext x; simp [evX]; ring
 
 /- English proof (translation)
-Unfold `secN`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Simplify using `[evX, smul_eq_C_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -102,13 +102,13 @@ theorem sec_smul {ε : Fin m → Bool} {c t : ℝ} {b : Matrix (Fin n) (Fin n) �
   congr 1; funext x; simp [evX, smul_eq_C_mul]; ring
 
 /- English proof (translation)
-Simplify using `[secN, evX]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sec_zero {ε : Fin m → Bool} {c t : ℝ} {b : Matrix (Fin n) (Fin n) ℂ} : secN ε c t (0 : PX m n) b = 0 := by
   simp [secN, evX]
 
 /- English proof (translation)
-Establish `h1 : star (star v ⬝ᵥ (b *ᵥ v)) = star (b *ᵥ v) ⬝ᵥ v`. Simplify using `only [dotProduct, star_sum, star_mul', star_star, Pi.star_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `h2 : star (b *ᵥ v) = star v ᵥ* b` using `by rw [star_mulVec, hb.eq]`. Rewrite using `[h1, h2, dotProduct_mulVec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_dot_herm {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) (v : Fin n → ℂ) :
     star (star v ⬝ᵥ (b *ᵥ v)) = star v ⬝ᵥ (b *ᵥ v) := by
@@ -119,15 +119,13 @@ theorem star_dot_herm {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) (v :
   rw [h1, h2, dotProduct_mulVec]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨v, hv, hMv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h`. Establish `e1 : v = (Complex.I * r) • (b *ᵥ v)`. Rewrite `hMv` using `[sub_mulVec, one_mulVec, smul_mulVec]`. Conclude with `sub_eq_zero.mp hMv`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : star v ⬝ᵥ v = (Complex.I * r) * (star v ⬝ᵥ (b *ᵥ v))`. Combine the equalities or inequalities in the displayed calculation. Establish `hq : (star v ⬝ᵥ (b *ᵥ v)).im = 0`. Use `congrArg Complex.im (star_dot_herm hb v)` as an intermediate fact. Simplify using `only [Complex.star_def, Complex.conj_im] at this`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hs : (star v ⬝ᵥ v).im = 0`. Establish `: star (star v ⬝ᵥ v) = star v ⬝ᵥ v`. Simplify using `only [dotProduct, star_sum, star_mul', star_star, Pi.star_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg Complex.im this` as an intermediate fact. Simplify using `only [Complex.star_def, Complex.conj_im] at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hr : (star v ⬝ᵥ v).re = 0`. Rewrite using `[e2]`.
-
-Simplify using `[Complex.mul_re, hq]`. Conclude with `hv (dotProduct_star_self_eq_zero.mp (Complex.ext (by simpa using hr) (by simpa using hs)))`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_ne_zero {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) (r : ℝ) :
     (1 - (Complex.I * r) • b).det ≠ 0 := by
@@ -157,7 +155,7 @@ theorem det_ne_zero {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) (r : �
 def sR (ε : Fin m → Bool) (a : Fin m) : ℝ := if ε a then 1 else -1
 
 /- English proof (translation)
-Apply the tactic sequence `unfold sgn sR; split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgn_eq (ε : Fin m → Bool) (a : Fin m) : sgn ε a = ((sR ε a : ℝ) : ℂ) := by
   unfold sgn sR; split_ifs <;> simp
@@ -166,7 +164,7 @@ def Mm (ε : Fin m → Bool) (s : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) (a : Fin
   1 - (Complex.I * ((s * sR ε a : ℝ) : ℂ)) • b
 
 /- English proof (translation)
-Unfold `Amat Mm`. Rewrite using `[transpose_sub, transpose_one, transpose_smul, smul_sub, smul_smul, sgn_eq]`. Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem amat_eq (ε : Fin m → Bool) (c s : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) (a : Fin m) :
     Amat ε c (s * c) b a = (c : ℂ) • (Mm ε s b a)ᵀ := by
@@ -176,9 +174,9 @@ theorem amat_eq (ε : Fin m → Bool) (c s : ℝ) (b : Matrix (Fin n) (Fin n) �
   push_cast; ring
 
 /- English proof (translation)
-Establish `hM : IsUnit (Mm ε s b a).det` using `isUnit_iff_ne_zero.mpr (det_ne_zero hb _)`. Establish `hinv : (Amat ε c (s * c) b a)⁻¹ = (c : ℂ)⁻¹ • ((Mm ε s b a)⁻¹)ᵀ`. Rewrite using `[amat_eq]`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, inv_mul_cancel₀ (by exact_mod_cast hc), one_smul, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hM, transpose_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hinv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem amat_inv_apply (ε : Fin m → Bool) {c : ℝ} (hc : c ≠ 0) (s : ℝ) {b : Matrix (Fin n) (Fin n) ℂ}
     (hb : b.IsHermitian) (a : Fin m) (i j : Fin n) :
@@ -192,7 +190,7 @@ theorem amat_inv_apply (ε : Fin m → Bool) {c : ℝ} (hc : c ≠ 0) (s : ℝ) 
   rw [hinv]; simp
 
 /- English proof (translation)
-Establish `hM` using `det_ne_zero hb (s * sR ε a)`. Rewrite using `[amat_eq, det_smul, det_transpose, Matrix.det_nonsing_inv, Fintype.card_fin, Ring.inverse_eq_inv']`. Establish `hc' : (c : ℂ) ≠ 0` using `by exact_mod_cast hc`. Unfold `Mm at hM ⊢`. Rewrite using `[div_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Clear the denominators using the available nonvanishing facts.
 -/
@@ -209,9 +207,9 @@ theorem amat_det (ε : Fin m → Bool) {c : ℝ} (hc : c ≠ 0) (s : ℝ) {b : M
 end GM
 
 /- English proof (translation)
-Unfold `GM.Mm GM.sR uM vM`. Use `split_ifs with h`. Use `push_cast`. Rewrite using `[mul_one]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[show Complex.I * ((s : ℂ) * -1) = -(Complex.I * s) by ring, neg_smul, sub_neg_eq_add]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mm_inv (ε : Fin m → Bool) (s : ℝ) (y : E n) (a : Fin m) :
     (GM.Mm ε s (herm y) a)⁻¹ = if ε a then uM (s : ℂ) y else vM (s : ℂ) y := by
@@ -224,39 +222,35 @@ theorem mm_inv (ε : Fin m → Bool) (s : ℝ) (y : E n) (a : Fin m) :
 
 open GM in
 /- English proof (translation)
-Set `S : Submodule ℂ (PX m n)` to `{ carrier := {P | ∃ R : MvPolynomial (Bool × Fin n × Fin n) ℂ, ∀ y : E n, secN ε c (s * c) P (herm y) = secN ε c (s * c) 1 (herm y) * evUV (s : ℂ) R y} add_mem' := by`. Introduce and unpack `P Q ⟨R1, h1⟩ ⟨R2, h2⟩`. Use `⟨R1 + R2, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[sec_add hI hc (herm_isHermitian y), h1, h2]`. Simplify using `[evUV, map_add]`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Use the proof step `zero_mem' := ⟨0, fun y => by simp [sec_zero, evUV]⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `r P ⟨R1, h1⟩`. Use `⟨MvPolynomial.C r * R1, fun y => ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[sec_smul, h1]`. Simplify using `[evUV]`. Use `ring }`. Establish `hmono : ∀ N : ℕ, ∀ d : (Fin m × Fin n × Bool) →₀ ℕ, d.sum (fun _ e => e) = N → monomial d (1 : ℂ) ∈ S`. Introduce `N`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `N using Nat.strong_induction_on with`. Consider the case `_ N ih`. Introduce `d hd`. Distinguish the cases in `ht : ∃ k : Fin m × Fin n × Bool, k.2.2 = true ∧ d k ≠ 0`. Take `⟨⟨a, i, bb⟩, hk, hdk⟩` from `ht`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using `only at hk`. Substitute `hk` using the available equality. Use `set k : Fin m × Fin n × Bool := (a, i, true) with hkdef`. Use `set d' := d - Finsupp.single k 1 with hd'`. Establish `hdd : d = Finsupp.single k 1 + d'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[hd', add_comm, tsub_add_cancel_of_le]`. Introduce `j`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `[Finsupp.single_apply, Ne.symm hj]`. Establish `hsum' : d'.sum (fun _ e => e) + 1 = N`. Rewrite using `[← hd, hdd, Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)]`. Simplify using `[Finsupp.sum_single_index]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hmul : monomial d (1 : ℂ) = X k * monomial d' 1`. Rewrite using `[hdd, X, monomial_mul, one_mul]`. Establish `hder : ∀ j : Fin n, pderiv ((a, j, false) : Fin m × Fin n × Bool) (monomial d' (1 : ℂ)) ∈ S`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h0 : d' (a, j, false) = 0`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Rewrite using `[show (monomial (d' - Finsupp.single (a, j, false) 1)) ((1 : ℂ) * ↑(d' (a, j, false))) = ((d' (a, j, false) : ℂ)) • monomial (d' - Finsupp.single (a, j, false) 1) (1 : ℂ) by`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_monomial, smul_eq_mul, one_mul, mul_one]]`. Use `S.smul_mem _ (ih _ ?_ _ rfl)` and prove the remaining obligations. Establish `hle : Finsupp.single ((a, j, false) : Fin m × Fin n × Bool) 1 ≤ d'`. Introduce `l`. Distinguish the cases in `hl : l = (a, j, false)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Substitute `hl` using the available equality. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using `[Finsupp.single_apply, Ne.symm hl]`. Establish `e2 : d' = Finsupp.single ((a, j, false) : Fin m × Fin n × Bool) 1 + (d' - Finsupp.single (a, j, false) 1)` using `by rw [add_comm, tsub_add_cancel_of_le hle]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `: (d' - Finsupp.single (a, j, false) 1).sum (fun _ e => e) + 1 = d'.sum (fun _ e => e)` using `by conv_rhs => rw [e2]`. Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)]`. Simplify using `[Finsupp.sum_single_index]`. Expand and normalize the polynomial expressions, which then agree. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `choose R hR using hder`. Use `⟨∑ j, MvPolynomial.C ((c : ℂ)⁻¹) * MvPolynomial.X (if ε a then ((false, i, j) : Bool × Fin n × Fin n) else (true, i, j)) * R j, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hmul, hW m n ε c (s * c) hc _ (herm_isHermitian y)]`. Repeatedly rewrite using `[hR]`. Simplify using `only [evUV, map_sum, map_mul, MvPolynomial.eval_C, MvPolynomial.eval_X, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[amat_inv_apply ε hc.ne' s (herm_isHermitian y), mm_inv]`. Apply the tactic sequence `by_cases h : ε a = true <;> simp [h] <;> ring`. Use `push_neg at ht`. Distinguish the cases in `hd0 : d = 0`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hd0` using the available equality. Conclude with `⟨1, fun y => by simp [evUV]⟩`. Use `⟨0, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[hR m n ε c (s * c) hc _ (herm_isHermitian y) d (fun k hk => ht k hk) hd0]`. Simplify using `[evUV]`.
-
-Introduce `P`. Establish `hP : P ∈ S`. Rewrite using `[P.as_sum]`. Use `Submodule.sum_mem _ fun d _ => ?_` and prove the remaining obligations. Rewrite using `[show monomial d (P.coeff d) = P.coeff d • monomial d (1 : ℂ) by rw [smul_monomial, smul_eq_mul, mul_one]]`.
-
-Conclude with `S.smul_mem _ (hmono _ d rfl)`. Conclude with `hP`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key (hI : IntegP) (hW : Wick) (hR : Rot) (ε : Fin m → Bool) {c : ℝ} (hc : 0 < c) (s : ℝ) :
     ∀ P : PX m n, ∃ R : MvPolynomial (Bool × Fin n × Fin n) ℂ, ∀ y : E n,
@@ -344,15 +338,15 @@ theorem key (hI : IntegP) (hW : Wick) (hR : Rot) (ε : Fin m → Bool) {c : ℝ}
   exact hP
 
 /- English proof (translation)
-Introduce `m n ε c t hc _ P`. Establish `e : (t / c) * c = t` using `by field_simp`. Take `⟨R, hR⟩` from `key hI hW hR ε hc (t / c) P`. Use `⟨MvPolynomial.C (((Real.pi : ℂ) / c) ^ (n * m)) * R, fun y => ?_⟩` and prove the remaining obligations. Establish `hy` using `hR y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `hy` using `[e]`. Establish `hA : ∀ a, (Real.pi : ℂ) ^ n / (Amat ε c t (herm y) a).det = ((Real.pi : ℂ) / c) ^ n * (if ε a then uM ((t / c : ℝ) : ℂ) y else vM ((t / c : ℝ) : ℂ) y).det`. Introduce `a`. Use `GM.amat_det ε hc.ne' (t / c) (GM.herm_isHermitian y) a` as an intermediate fact. Rewrite `this` using `[e, mm_inv]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Rewrite using `[hy, hB m n ε c t hc _ (GM.herm_isHermitian y)]`. Repeatedly rewrite using `[hA]`. Rewrite using `[Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Simplify using `only [apply_ite Matrix.det]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.prod_ite]`. Simplify using `only [Finset.prod_const]`. Unfold `cls`. Simplify using `only [neg_zero, Complex.cpow_zero, one_mul, evUV, map_mul, MvPolynomial.eval_C]`. Rewrite using `[← pow_mul, mul_comm n m]`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf : (Finset.univ.filter fun a => ¬ ε a = true) = Finset.univ.filter fun a => ε a = false`. Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite using `[hf]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gauss_of (hI : IntegP) (hW : Wick) (hR : Rot) (hB : Base) : Gauss := by
   intro m n ε c t hc _ P

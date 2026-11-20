@@ -20,7 +20,7 @@ variable {H N : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Loc
   [SecondCountableTopology N] [T2Space N] [MeasurableSpace N] [BorelSpace N]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Yhb4.main ι hι π hπ hmul φ ψ h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem char_eq_of_retract (ι : N →* H) (hι : Continuous ι) (π : H → N) (hπ : Continuous π)
     (hmul : ∀ x p, π (ι x * p) = x * π p) (φ : H ≃ₜ* H) (ψ : N ≃ₜ* N) (h1 : ∀ p, π (φ p) = ψ (π p))
@@ -82,7 +82,7 @@ instance [MeasurableSpace A] [MeasurableSpace B] [BorelSpace A] [BorelSpace B] [
 variable [IsTopologicalAddGroup A] [IsTopologicalAddGroup B]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Continuous fun p : (A × B) × A × B => ((p.1.1 + p.2.1, p.1.2 + p.2.2 + β p.1.1 p.2.1) : A × B)`. Conclude with `(continuous_fst.fst.add continuous_snd.fst).prodMk ((continuous_fst.snd.add continuous_snd.snd).add (hβ.comp (continuous_fst.fst.prodMk continuous_snd.fst)))`. Use `continuous_inv := by`. Express the relevant statement in the definitionally equal form `Continuous fun p : A × B => ((-p.1, -p.2 + β p.1 p.1) : A × B)`. Conclude with `continuous_fst.neg.prodMk (continuous_snd.neg.add (hβ.comp (continuous_fst.prodMk continuous_fst)))`.
+Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem Heis.isTopologicalGroup (hβ : Continuous fun p : A × A => β p.1 p.2) : IsTopologicalGroup (Heis β) where
   continuous_mul := by
@@ -97,19 +97,17 @@ variable [LocallyCompactSpace A] [SecondCountableTopology A] [T2Space A] [Measur
   [LocallyCompactSpace B] [SecondCountableTopology B] [T2Space B] [MeasurableSpace B] [BorelSpace B]
 
 /- English proof (translation)
-Set `μ₁ : Measure A` to `addHaar`. Set `μ₂ : Measure B` to `addHaar`. Set `μ : Measure (Heis β)` to `μ₁.prod μ₂`. Establish `: IsFiniteMeasureOnCompacts μ` using `inferInstanceAs (IsFiniteMeasureOnCompacts (μ₁.prod μ₂))`. Establish `: IsOpenPosMeasure μ` using `inferInstanceAs (IsOpenPosMeasure (μ₁.prod μ₂))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsMulLeftInvariant μ` using `⟨fun x => by`. Use `(MeasurePreserving.skew_product (μa := μ₁) (μc := μ₂) (μd := μ₂) (measurePreserving_add_left μ₁ x.1) (g := fun a b => x.2 + b + β x.1 a) ?_ (.of_forall fun a => ?_)).map_eq` and prove the remaining obligations. Conclude with `((continuous_const.add continuous_snd).add (hβ.comp (continuous_const.prodMk continuous_fst))).measurable`. Rewrite using `[show (fun b => x.2 + b + β x.1 a) = fun b => (x.2 + β x.1 a) + b from funext fun b => by abel]`. Conclude with `map_add_left_eq_self μ₂ _⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: IsHaarMeasure μ` using `{}`. Take `⟨U, hU, hU0⟩` from `exists_compact_mem_nhds (0 : A)`. Take `⟨V, hV, hV0⟩` from `exists_compact_mem_nhds (0 : B)`. Establish `e` using `mulEquivHaarChar_smul_preimage μ (X := (U ×ˢ V : Set (A × B))) ψ`. Establish `e1` using `addEquivAddHaarChar_smul_preimage μ₁ (X := U) θ₁`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `addEquivAddHaarChar_smul_preimage μ₂ (X := V) θ₂`. Establish `e3 : ψ ⁻¹' (U ×ˢ V : Set (A × B)) = ((θ₁ ⁻¹' U) ×ˢ (θ₂ ⁻¹' V) : Set (A × B))`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `ψ x ∈ (U ×ˢ V : Set (A × B)) ↔ _`. Rewrite using `[h]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `e` using `[e3]`. Express the relevant statement in the definitionally equal form `_ • (μ₁.prod μ₂) _ = (μ₁.prod μ₂) _ at e`. Rewrite `e` using `[prod_prod, prod_prod, ← e1, ← e2]`. Simplify using `only [ENNReal.smul_def, smul_eq_mul] at e`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e` using `[mul_mul_mul_comm, ← ENNReal.coe_mul]`. Use `ENNReal.coe_injective ((ENNReal.mul_left_inj (mul_ne_zero ?_ ?_) (ENNReal.mul_ne_top ?_ ?_)).1 e)` and prove the remaining obligations. Conclude with `(measure_pos_of_mem_nhds _ (θ₁.continuous.continuousAt.preimage_mem_nhds (x := 0) (by simpa using hU0))).ne'`. Conclude with `(measure_pos_of_mem_nhds _ (θ₂.continuous.continuousAt.preimage_mem_nhds (x := 0) (by simpa using hV0))).ne'`. Conclude with `(θ₁.toHomeomorph.isCompact_preimage.2 hU).measure_lt_top.ne`.
-
-Conclude with `(θ₂.toHomeomorph.isCompact_preimage.2 hV).measure_lt_top.ne`.
+A detailed English derivation is pending.
 -/
 theorem Heis.char_eq [IsTopologicalGroup (Heis β)] (hβ : Continuous fun p : A × A => β p.1 p.2) (ψ : Heis β ≃ₜ* Heis β)
     (θ₁ : A ≃ₜ+ A) (θ₂ : B ≃ₜ+ B) (h : ∀ x, ψ x = (θ₁ x.1, θ₂ x.2)) :
@@ -155,7 +153,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [SecondCountableTopology G] [T2Space G] [MeasurableSpace G] [BorelSpace G] {r : ℕ}
 
 /- English proof (translation)
-The claim follows from `(Function.LeftInverse.isClosedEmbedding h hτ ha).isClosedMap _ hD`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_image_section {X : Type} [TopologicalSpace X] [T2Space X] (τ : X → Fin r → ℝ) (hτ : Continuous τ)
     (a : (Fin r → ℝ) → X) (ha : Continuous a) (h : ∀ t, τ (a t) = t) {D : Set (Fin r → ℝ)} (hD : IsClosed D) :
@@ -163,29 +161,27 @@ theorem isClosed_image_section {X : Type} [TopologicalSpace X] [T2Space X] (τ :
   (Function.LeftInverse.isClosedEmbedding h hτ ha).isClosedMap _ hD
 
 /- English proof (translation)
-Establish `hT : IsClosed (Ω * range a)`. Rewrite using `[← image_univ]`. Conclude with `(isClosed_image_section τ hτ a ha hτa isClosed_univ).mul_left_of_isCompact hΩ`. Use `set T := Ω * range a with hTdef`. Set `w : G → ℝ≥0∞` to `fun p => ENNReal.ofReal (Real.exp (ρ (τ p)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hw : Measurable w` using `(Real.continuous_exp.comp (hρ.comp hτ)).measurable.ennreal_ofReal`. Set `m : Measure (Fin r → ℝ)` to `((ν.restrict T).withDensity w).map τ`. Establish `hm : ∀ g : (Fin r → ℝ) → ℝ≥0∞, Measurable g → ∫⁻ t, g t ∂m = ∫⁻ p, T.indicator (fun p => w p * g (τ p)) p ∂ν` using `fun g hg => by`. Rewrite using `[lintegral_map hg hτ.measurable, lintegral_withDensity_eq_lintegral_mul _ hw (g := fun p => g (τ p)) (hg.comp hτ.measurable), lintegral_indicator hT.measurableSet]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTa : ∀ s p, p * a s ∈ T ↔ p ∈ T`. Establish `: ∀ s p, p ∈ T → p * a s ∈ T`. Introduce and unpack `s _ ⟨p, hp, _, ⟨t, rfl⟩, rfl⟩`. Conclude with `⟨p, hp, _, ⟨t + s, rfl⟩, by simp [hadd, mul_assoc]⟩`. Establish `h0 : a 0 = 1` using `by simpa using hadd 0 0`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `fun s p => ⟨fun h => ?_, this s p⟩` and prove the remaining obligations. Use `this (-s) _ h` as an intermediate fact. Rewrite `this` using `[mul_assoc, ← hadd, add_neg_cancel, h0, mul_one]`. Then use the resulting hypothesis. Establish `: IsAddLeftInvariant m` using `⟨fun s => by`. Use `Measure.ext_of_lintegral _ fun g hg => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[lintegral_map hg (measurable_const_add s), hm (fun t => g (s + t)) (hg.comp (measurable_const_add s)), hm _ hg]`. Establish `hG : Measurable (T.indicator fun p => w p * g (τ p))` using `(hw.mul (hg.comp hτ.measurable)).indicator hT.measurableSet`. Establish `e` using `lintegral_map (μ := ν) hG (measurable_mul_const (a s))`. Rewrite `e` using `[hmod, lintegral_smul_measure, smul_eq_mul]`. Establish `h0 : ENNReal.ofReal (Real.exp (ρ s)) ≠ 0` using `by simp [Real.exp_pos]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← ENNReal.mul_right_inj h0 ENNReal.ofReal_ne_top, e, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ T`. Rewrite using `[indicator_of_mem hp, indicator_of_mem ((hTa s p).2 hp)]`. Simplify using `only [w, hτm, hτa, hρa, Real.exp_add, ENNReal.ofReal_mul (Real.exp_pos _).le, add_comm s]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[indicator_of_notMem hp, indicator_of_notMem (mt (hTa s p).1 hp), mul_zero]⟩`. Establish `: IsFiniteMeasureOnCompacts m` using `⟨fun C hC => by`. Take `⟨B, hB⟩` from `hC.bddAbove_image hρ.continuousOn`. Rewrite using `[← lintegral_indicator_one hC.measurableSet, hm _ (measurable_one.indicator hC.measurableSet)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hK : IsCompact (Ω * a '' C)` using `hΩ.mul (hC.image ha)`. Use `lt_of_le_of_lt (lintegral_mono (g := (Ω * a '' C).indicator fun _ => ENNReal.ofReal (Real.exp B)) fun p => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hp : p ∈ T`. Distinguish the cases in `hp' : τ p ∈ C`. Take `⟨q, hq, _, ⟨t, rfl⟩, rfl⟩` from `hp`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : τ (q * a t) = t` using `by rw [hτm, hτa, hΩτ q hq, zero_add]`. Simplify using `only [e] at hp'`. Rewrite using `[indicator_of_mem (show q * a t ∈ T from ⟨q, hq, _, ⟨t, rfl⟩, rfl⟩), indicator_of_mem (show q * a t ∈ Ω * a '' C from ⟨q, hq, _, ⟨t, hp', rfl⟩, rfl⟩), e, indicator_of_mem hp']`. Simplify using `only [w, e, Pi.one_apply, mul_one]`. Conclude with `ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 (hB ⟨t, hp', rfl⟩))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[indicator_of_mem hp, indicator_of_notMem hp', mul_zero]`. Conclude with `zero_le`. Rewrite using `[indicator_of_notMem hp]`. Conclude with `zero_le`. Rewrite using `[lintegral_indicator_const hK.measurableSet]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top hK.measure_lt_top⟩`. Use `⟨addHaarScalarFactor m volume, fun h hh => ?_⟩` and prove the remaining obligations. Establish `hg : Measurable fun t => h t * ENNReal.ofReal (Real.exp (-ρ t))` using `hh.mul (Real.continuous_exp.comp hρ.neg).measurable.ennreal_ofReal`. Establish `e` using `hm _ hg`. Rewrite `e` using `[isAddLeftInvariant_eq_smul m volume, lintegral_smul_measure, ENNReal.smul_def, smul_eq_mul, lintegral_indicator hT.measurableSet]`.
-
-Rewrite using `[e]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm, ← ENNReal.ofReal_mul (Real.exp_pos _).le, ← Real.exp_add, add_neg_cancel]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_tau (ν : Measure G) [ν.IsHaarMeasure] (τ : G → Fin r → ℝ) (hτ : Continuous τ)
     (hτm : ∀ p q, τ (p * q) = τ p + τ q) (a : (Fin r → ℝ) → G) (ha : Continuous a) (hadd : ∀ s t, a (s + t) = a s * a t)
@@ -261,7 +257,7 @@ theorem lintegral_tau (ν : Measure G) [ν.IsHaarMeasure] (τ : G → Fin r → 
   simp
 
 /- English proof (translation)
-Establish `e : (fun p => p * b) = φ ∘ fun p => b * p * 1 * b * b⁻¹` using `funext fun p => by simp [hφ]`. Rewrite using `[e, ← Measure.map_map (g := φ) φ.continuous.measurable (by fun_prop)]`. Simplify using `only [mul_one, mul_inv_cancel_right, map_mul_left_eq_self]`. Use `conv_rhs => rw [← mulEquivHaarChar_smul_map ν φ]`. Rewrite using `[smul_smul, inv_mul_cancel₀ (mulEquivHaarChar_pos φ).ne', one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mul_right_of_char (ν : Measure G) [ν.IsHaarMeasure] (b : G) (φ : G ≃ₜ* G) (hφ : ∀ p, φ p = b⁻¹ * p * b) :
     ν.map (· * b) = ((mulEquivHaarChar φ)⁻¹ : ℝ≥0) • ν := by
@@ -272,35 +268,31 @@ theorem map_mul_right_of_char (ν : Measure G) [ν.IsHaarMeasure] (b : G) (φ : 
   rw [smul_smul, inv_mul_cancel₀ (mulEquivHaarChar_pos φ).ne', one_smul]
 
 /- English proof (translation)
-Establish `hι : IsClosedEmbedding ((↑) : P → G)` using `hP.isClosedEmbedding_subtypeVal`. Establish `: SecondCountableTopology P` using `hι.isEmbedding.secondCountableTopology`. Establish `hL : IsCompact (((↑) : P → G) ⁻¹' K)` using `hι.isCompact_preimage hK`. Establish `hτL : ∀ m : P, m.1 ∈ K → τ m = 0` using `fun m hm => by`. Take `⟨B, hB⟩` from `(hL.image hτ).isBounded.exists_norm_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h1 : τ 1 = 0` using `by simpa using hτm 1 1`. Establish `h2 : ∀ j : ℕ, τ (m ^ j) = (j : ℝ) • τ m` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => simpa using h1`. Consider the case `succ j ih => rw [pow_succ, hτm, ih]`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `[add_smul]`. Assume the negation of the conclusion as `h0`. Take `⟨j, hj⟩` from `exists_nat_gt (B / ‖τ m‖)`. Establish `h3` using `hB _ ⟨m ^ j, K.pow_mem hm j, rfl⟩`. Rewrite `h3` using `[h2, norm_smul, Real.norm_natCast]`.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hj` using `[div_lt_iff₀ (norm_pos_iff.2 h0)]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hΩ' : IsCompact (((↑) : P → G) ⁻¹' Ω * ((↑) : P → G) ⁻¹' K)` using `(hι.isCompact_preimage hΩ).mul hL`. Take `⟨C, hC⟩` from `lintegral_tau (haar : Measure P) τ hτ hτm a ha hadd hτa ρ hρ hρa hmod hΩ' (by`. Introduce and unpack `_ ⟨p, hp, m, hm, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components.
 
-Take `⟨_, e⟩` from `hΩτ _ hp`. Rewrite using `[hτm, hτL m hm, e, add_zero])`. Establish `hT : IsClosed (((↑) : P → G) ⁻¹' Ω * ((↑) : P → G) ⁻¹' K * range a)`. Rewrite using `[← image_univ]`. Conclude with `(isClosed_image_section τ hτ a ha hτa isClosed_univ).mul_left_of_isCompact hΩ'`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set T := ((↑) : P → G) ⁻¹' Ω * ((↑) : P → G) ⁻¹' K * range a with hTdef`. Establish `: CompactSpace K` using `isCompact_iff_compactSpace.1 hK`. Set `κ : Measure K` to `haarMeasure ⊤`. Establish `hκ : κ univ = 1` using `by simpa [κ] using haarMeasure_self (K₀ := (⊤ : TopologicalSpace.PositiveCompacts K))`. Establish `hmP : Measurable ((↑) : P → G)` using `measurable_subtype_coe`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmK : Measurable ((↑) : K → G)` using `measurable_subtype_coe`. Take `⟨c, -, hc', hΦ⟩` from `GlobalTheory.CompanionTheory.HaarPK.haarProductClosedCompact_holds G μ inferInstance inferInstance (NeZero.ne μ) P K hP hK hPK ((haar : Measure P).map (↑)) (κ.map (↑)) (by rw [Measure.map_apply hmP hP.measurableSet.compl]; simp [preimage]) (fun p hp => by`. Rewrite using `[Measure.map_map (measurable_const_mul p) hmP]`. Use `conv_rhs => rw [← map_mul_left_eq_self (haar : Measure P) ⟨p, hp⟩, Measure.map_map hmP (measurable_const_mul _)]`. Use the proof step `rfl)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(fun s hs => by rw [Measure.map_apply hmP hs.measurableSet]; exact (hι.isCompact_preimage hs).measure_lt_top.ne)`. Use the proof step `(by rw [Ne, Measure.map_eq_zero_iff hmP.aemeasurable]; exact NeZero.ne _)`. Use the proof step `(by rw [Measure.map_apply hmK MeasurableSet.univ, preimage_univ, hκ])`. Use the proof step `(by rw [Measure.map_apply hmK hK.measurableSet.compl]; simp [preimage])`. Use the proof step `(fun p hp => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_map (measurable_const_mul p) hmK]`. Use `conv_rhs => rw [← map_mul_left_eq_self κ ⟨p, hp⟩, Measure.map_map hmK (measurable_const_mul _)]`. Use the proof step `rfl)`. Use `⟨c.toNNReal * C, fun D S hD hS hSΩ f h hh hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← lintegral_indicator hS, lintegral_eq_nnreal]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup₂_le fun φ hφ => ?_` and prove the remaining obligations. Establish `hφm : Measurable fun g => (φ g : ℝ≥0∞)` using `φ.measurable.coe_nnreal_ennreal`. Rewrite using `[← SimpleFunc.lintegral_eq_lintegral]`. Express the relevant statement in the definitionally equal form `∫⁻ g, (φ g : ℝ≥0∞) ∂μ ≤ _`. Rewrite using `[hΦ _ hφm, ENNReal.coe_mul, ENNReal.coe_toNNReal hc', mul_assoc, ← lintegral_indicator hD]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : D.indicator (fun t => h t * ENNReal.ofReal (Real.exp (-ρ t))) = fun t => D.indicator h t * ENNReal.ofReal (Real.exp (-ρ t))` using `funext fun t => by`. Apply the tactic sequence `by_cases ht : t ∈ D <;> simp [ht]`. Rewrite using `[e, ← hC _ (hh.indicator hD), ← lintegral_indicator hT.measurableSet]`. Use `mul_le_mul_right ?_ _` and prove the remaining obligations. Use `(lintegral_map_le _ ((↑) : P → G)).trans (lintegral_mono fun p => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(lintegral_map_le _ ((↑) : K → G)).trans ?_` and prove the remaining obligations. Use `(lintegral_mono (g := fun _ => T.indicator (fun p => D.indicator h (τ p)) p) fun k => ?_).trans (by rw [lintegral_const, hκ, mul_one])` and prove the remaining obligations. Use `(hφ _).trans ?_` and prove the remaining obligations. Distinguish the cases in `hg : p.1 * k.1 ∈ S`. Take `⟨q, hq, t, ht, k', hk', e⟩` from `hSΩ _ hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hqP, hq0⟩` from `hΩτ q hq`. Set `m : P` to `(⟨q, hqP⟩ * a t)⁻¹ * p`. Establish `hm : m.1 = k' * k.1⁻¹`. Express the relevant statement in the definitionally equal form `(q * a t)⁻¹ * p.1 = _`. Rewrite using `[inv_mul_eq_iff_eq_mul, ← mul_assoc, ← e, mul_inv_cancel_right]`.
-
-Establish `hmK : m.1 ∈ K` using `hm ▸ K.mul_mem hk' (K.inv_mem k.2)`. Establish `hp : p = ⟨q, hqP⟩ * m * a t` using `by rw [mul_assoc, ← hc m hmK, ← mul_assoc, mul_inv_cancel_left]`. Establish `hpT : p ∈ T` using `⟨_, ⟨⟨q, hqP⟩, hq, m, hmK, rfl⟩, _, ⟨t, rfl⟩, hp.symm⟩`. Establish `hτp : τ p = t` using `by rw [hp, hτm, hτm, hq0, hτL m hmK, hτa]; simp`. Rewrite using `[indicator_of_mem hg, indicator_of_mem hpT, hτp, indicator_of_mem ht, e]`.
-
-Conclude with `hf q hq t ht k' hk'`. Rewrite using `[indicator_of_notMem hg]`. Conclude with `zero_le`.
+A detailed English derivation is pending.
 -/
 theorem lintegral_siegel_le (μ : Measure G) [μ.IsHaarMeasure] (P K : Subgroup G) (hP : IsClosed (P : Set G))
     (hK : IsCompact (K : Set G)) (hPK : ∀ g, ∃ p ∈ P, ∃ k ∈ K, g = p * k) [LocallyCompactSpace P]

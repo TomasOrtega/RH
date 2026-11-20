@@ -17,13 +17,11 @@ namespace GlobalTheory.HeckePoint
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-Take `⟨ρ, hρ⟩` from `exists_ptsEquiv m.cart (𝟙_ (Over (Sp k))) y (Category.id_comp _)`. Establish `key : ∀ (T : Over (Sp k)) (y' : T.left ⟶ X) (_ : T.hom ≫ y = y') (n : ℤ) (x x' : T ⟶ o.t.G) (x₀ x₀' : Over.mk y' ⟶ u.t.G) (c : Γ(T.left, ⊤)ˣ), x₀.left = x.left ≫ m.cm.F → x₀'.left = x'.left ≫ m.cm.F → (Out.WeilIs o.t.G o.t.PP.L n x x' c ↔ Out.WeilIs u.t.G u.t.PP.L n x₀ x₀' c)`. Introduce `T y' e`. Substitute `e` using the available equality. Take `⟨w, hw, -⟩` from `m.lin`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Conclude with `fun n x x' x₀ x₀' c => weilIs_grpPullback_of_comm _ _ _ _ y m.cm.F _ _ u.t.PP.isLB o.t.PP.isLB m.cart ⟨w, hw⟩ T n x x' x₀ x₀' c`. Establish `tu : (toUnit (Over.mk y)).left = y` using `by simp`. Use `⟨ρ, m.cart.1.isoPullback, m.cart.1.isoPullback_hom_snd, fun x => ?_, fun a x => Over.OverMorphism.ext ?_, fun n x x' c => key _ y (Category.id_comp _) n x x' _ _ _ (hρ x) (hρ x'), fun a => Over.OverMorphism.ext ?_, fun a => Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[fibPt, pullback.lift_fst, hρ, Category.assoc, m.cart.1.isoPullback_hom_fst]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fibPt, pullback.lift_snd, Category.assoc, m.cart.1.isoPullback_hom_snd]`. Conclude with `(Over.w x).symm`. Rewrite using `[hρ, Over.comp_left, Over.comp_left, hρ, Category.assoc, m.act, Category.assoc]`. Rewrite using `[hρ, Over.comp_left, tu]`. Conclude with `m.eta a`.
-
-Rewrite using `[hρ, Over.comp_left, tu]`. Conclude with `m.etaA a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_transfer_comm
     {B : Type} [CommRing B] {b : Base l B} {X : Scheme.{0}} {sX : X ⟶ Sp B} (u : Obj D l b sX) {k : Type} [Field k]
@@ -61,35 +59,31 @@ namespace GlobalTheory
 open HeckePoint
 
 /- English proof (translation)
-Introduce `hL _ hPull hComp hfacts _ hTate hQuot hWeil hLie hDet _ E _ _ _ H D _ l Xo 𝔓 p i h𝔓 hco hp hp𝔓 hpM k _ _ y C hC`. Take `⟨c₁, c₂, c₃, c₄, c₅, -⟩` from `hC`. Establish `: CharZero k` using `charZero_of_injective_ringHom (Spec.preimage (y ≫ Xo.s)).hom.injective`. Establish `pull : ∀ y' : Sp k ⟶ Xo.X, y' ≫ Xo.s = y ≫ Xo.s → ∃ o : Obj D l (baseKA l) (y ≫ Xo.s), Nonempty (ObjMap o Xo.univ y')` using `fun y' h => hPull E H D l _ _ (baseKA l) (baseKA l) (RingHom.id _) _ _ Xo.s (y ≫ Xo.s) y' rfl rfl (by rw [h, spMap, CommRingCat.ofHom_id, Spec.map_id, Category.comp_id]) Xo.univ`. Take `⟨o, ⟨m⟩⟩` from `pull y rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, e, e₁, e₂, e₃, e₄, e₅, e₆⟩` from `exists_transfer_comm Xo.univ m`. Set `C' : Subgroup (𝟙_ (Over (Sp k)) ⟶ o.t.G)` to `C.comap ρ.toMonoidHom`. Establish `mem : ∀ x, x ∈ C' ↔ ρ x ∈ C` using `fun _ => Iff.rfl`. Take `⟨hC', o₁, ψ₁, h₁, hfin, het, hsur⟩` from `exists_isHeckeIsog hL hfacts hTate hQuot hWeil hLie o 𝔓 p h𝔓 hco hp hp𝔓 hpM C' (fun x hx a => (mem _).2 (by rw [e₃]; exact c₁ _ hx a)) (fun J hJ x hx => c₂ J hJ fun a ha => (e₃ a x).symm.trans (by rw [hx a ha, map_one])) (fun x hx a ha => ρ.injective ((e₃ a x).trans ((c₃ hx a ha) …`. Use `(e₄ ((p : ℤ) ^ 2) x x' 1).2 ((congrArg (Out.WeilIs _ _ ((p : ℤ) ^ 2) (ρ x) (ρ x')) unitOn_one).mpr (c₄ _ hx _ hx'))` as an intermediate fact.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_pow]`. Conclude with `(congrArg (Out.WeilIs _ _ ((p : ℤ) ^ 2) x x') unitOn_one).mp this)`. Use the proof step `((Nat.card_congr (ρ.toEquiv.subtypeEquiv mem)).trans c₅)`. Take `⟨y₁, ⟨hy₁, ⟨m₁⟩⟩, huniq⟩` from `Xo.rep _ (y ≫ Xo.s) inferInstance o₁`. Use `⟨y₁, ⟨hy₁, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ₁, f, f₁, f₂, f₃, f₄, f₅, f₆⟩` from `exists_transfer_comm Xo.univ m₁`. Take `⟨hom₁, lin₁, sur₁, ker₁, weil₁, lev₁⟩` from `h₁`. Set `σ : (𝟙_ (Over (Sp k)) ⟶ o.t.G) →* (𝟙_ (Over (Sp k)) ⟶ o₁.t.G)` to `MonoidHom.mk' (fun z => z ≫ ψ₁) fun a c => MonObj.mul_comp a c ψ₁`. Set `ψp` to `ρ₁.toMonoidHom.comp (σ.comp ρ.symm.toMonoidHom)`. Establish `hψ : ∀ x, ψp (ρ x) = ρ₁ (x ≫ ψ₁)` using `fun x => congrArg (fun z => ρ₁ (z ≫ ψ₁)) (ρ.symm_apply_apply x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨e.inv ≫ ψ₁.left ≫ f.hom, ψp, ?_, fun x => ?_, fun a x => ?_, fun z => ?_, Subgroup.ext fun x => ?_, fun n x x' c hn h => ?_, fun p' hp' a => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, f₁, Over.w, Iso.inv_comp_eq, e₁]`. Take `⟨x, rfl⟩` from `ρ.surjective x`. Rewrite using `[hψ, e₂, f₂, Category.assoc, Iso.hom_inv_id_assoc, Over.comp_left, Category.assoc]`. Take `⟨x, rfl⟩` from `ρ.surjective x`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← e₃, hψ, hψ, ← f₃, Category.assoc, lin₁, Category.assoc]`. Take `⟨z, rfl⟩` from `ρ₁.surjective z`. Take `⟨x, rfl⟩` from `sur₁ z`. Conclude with `⟨ρ x, hψ x⟩`. Take `⟨x, rfl⟩` from `ρ.surjective x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[MonoidHom.mem_ker, hψ, map_eq_one_iff _ ρ₁.injective, ker₁, mem]`. Take `⟨x, rfl⟩` from `ρ.surjective x`. Take `⟨x', rfl⟩` from `ρ.surjective x'`. Rewrite using `[hψ, hψ]`. Conclude with `(f₄ _ _ _ _).1 (weil₁ n x x' c hn ((e₄ _ _ _ _).2 h))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← e₅, ← e₆, hψ, hψ, (lev₁ p' hp' a).1, (lev₁ p' hp' a).2, f₅, f₆]`. Conclude with `⟨rfl, rfl⟩`. Introduce and unpack `y₂ ⟨hy₂, ψ, ψp, g₁, g₂, g₃, g₄, g₅, g₆, g₇⟩`. Take `⟨o₂, ⟨m₂⟩⟩` from `pull y₂ hy₂`. Take `⟨ρ₂, f, f₁, f₂, f₃, f₄, f₅, f₆⟩` from `exists_transfer_comm Xo.univ m₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `ψ₂ : o.t.G ⟶ o₂.t.G` to `Over.homMk (e.hom ≫ ψ ≫ f.inv) (by`. Rewrite using `[← f₁, Category.assoc, Category.assoc, Iso.inv_hom_id_assoc, g₁, e₁])`. Establish `hψ : ∀ x, ρ₂ (x ≫ ψ₂) = ψp (ρ x)` using `fun x => fibPt_injective _ (by`. Rewrite using `[f₂, ← g₂, e₂]`. Use `show (x.left ≫ e.hom ≫ ψ ≫ f.inv) ≫ f.hom = _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Category.assoc, Iso.inv_hom_id, Category.comp_id])`. Establish `hab` using `isAbelianScheme_of_proper o.t o.proper`. Establish `hab₂` using `isAbelianScheme_of_proper o₂.t o₂.proper`. Use `o₂.proper` as an intermediate fact. Establish `one : ∀ (G : Over (Sp k)) [GrpObj G], (1 : 𝟙_ (Over (Sp k)) ⟶ G) = η[G]` using `fun G _ => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Hom.one_def]`. Simplify using the standard rewrite rules. Establish `h₂ : IsHeckeIsog o o₂ p C' ψ₂`. Use `⟨hL.rigidity _ _ _ hab hab₂ ψ₂ ?_, fun a => hom_ext_pts hab.smooth fun x => ρ₂.injective ?_, fun z => ?_, fun x => ?_, fun n x x' c hn h => ?_, fun p' hp' a => ⟨ρ₂.injective ?_, ρ₂.injective ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← one, ← one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `ρ₂.injective (by rw [hψ, map_one, map_one, map_one])`. Rewrite using `[← Category.assoc, ← Category.assoc, hψ, f₃, hψ, e₃, g₃]`. Take `⟨x, hx⟩` from `g₄ (ρ₂ z)`. Take `⟨x, rfl⟩` from `ρ.surjective x`. Conclude with `⟨x, ρ₂.injective ((hψ x).trans hx)⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem, ← g₅, MonoidHom.mem_ker, ← hψ, map_eq_one_iff _ ρ₂.injective]`. Use `(f₄ _ _ _ _).2 ?_` and prove the remaining obligations. Rewrite using `[hψ, hψ]`. Conclude with `g₆ n _ _ c hn ((e₄ _ _ _ _).1 h)`. Rewrite using `[hψ, e₅, f₅]`.
-
-Conclude with `(g₇ p' hp' a).1`. Rewrite using `[hψ, e₆, f₆]`. Conclude with `(g₇ p' hp' a).2`. Take `⟨m'⟩` from `objMap_of_isHeckeIsog hL hfacts hDet hp hpM hC' h₁ h₂`. Take `⟨m'', -⟩` from `((hComp E H D l _ _ _ _ _ _ _ _ _ _ _ _ Xo.univ o₂ o₁).2 y₂ (𝟙 _) m₂).1 m'`.
-
-Rewrite `m''` using `[Category.id_comp]`. Conclude with `huniq y₂ ⟨hy₂, ⟨m''⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heckePoints_of_parts_comm :
     Out.Laws → (∀ (O : Type) [CommRing O] (S S' : Scheme.{0}) (G : Over S) (G' : Over S') [GrpObj

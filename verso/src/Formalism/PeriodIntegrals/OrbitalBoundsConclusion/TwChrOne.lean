@@ -2,6 +2,6 @@ import Formalism.PeriodIntegrals.TwChrOne
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.TwistedCharacterOne.TwChrOneMain
 
 /- English proof (translation)
-The claim follows from `PI.TwChrOne.Pf.twChrOne_main`.
+A detailed English derivation is pending.
 -/
 theorem TwChrOne : PI.TwChrOne.TwChrOne := PI.TwChrOne.Pf.twChrOne_main

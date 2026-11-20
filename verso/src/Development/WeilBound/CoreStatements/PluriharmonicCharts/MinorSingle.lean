@@ -19,7 +19,7 @@ section Mat
 variable {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[MinorCalc.minorIJ_eq_det A {a} {b} 1 (Finset.card_singleton a) (Finset.card_singleton b), Matrix.det_unique, Matrix.submatrix_apply]`. Use `congr 1`. Conclude with `Finset.mem_singleton.1 (Finset.orderEmbOfFin_mem _ _ _)`. Conclude with `Finset.mem_singleton.1 (Finset.orderEmbOfFin_mem _ _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem minor_single {R : Type} [CommRing R] (A : Matrix (Fin N) (Fin N) R) (a b : Fin N) :
     minorIJ A {a} {b} = A a b := by
@@ -30,9 +30,7 @@ theorem minor_single {R : Type} [CommRing R] (A : Matrix (Fin N) (Fin N) R) (a b
   · exact Finset.mem_singleton.1 (Finset.orderEmbOfFin_mem _ _ _)
 
 /- English proof (translation)
-Unfold `minorIJ`. Use `split_ifs with e`. Rewrite using `[Matrix.det_apply]`. Use `P.sum_mem fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def]`.
-
-Conclude with `P.zsmul_mem (P.prod_mem fun i _ => hA _ (Finset.orderEmbOfFin_mem _ _ _) _ (Finset.orderEmbOfFin_mem _ _ _)) _`. Conclude with `P.zero_mem`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem minor_mem {L : Type} [Field L] (P : Subring L) {A : Matrix (Fin N) (Fin N) L} {I J : Finset (Fin N)}
     (hA : ∀ a ∈ I, ∀ b ∈ J, A a b ∈ P) : minorIJ A I J ∈ P := by
@@ -53,19 +51,19 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
   {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ}
 
 /- English proof (translation)
-Take `⟨d, g, h0, hg, hh, -, heq, hz0, -⟩` from `h`. Conclude with `⟨d, g, h0, hg, hh, An.notMem_of_eval_ne_zero hz0, heq⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem regAt_of_val {s : Ω} {v : ℂ} (h : IsValueAt x s z v) : RegAt x (mCoordIdeal z) s := by
   obtain ⟨d, g, h0, hg, hh, -, heq, hz0, -⟩ := h
   exact ⟨d, g, h0, hg, hh, An.notMem_of_eval_ne_zero hz0, heq⟩
 
 /- English proof (translation)
-Simplify using `using isValueAt_intCast x z 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem val_one : IsValueAt x (1 : Ω) z 1 := by simpa using isValueAt_intCast x z 1
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat n => simpa using isValueAt_pow h n`. Consider the case `negSucc n`. Rewrite using `[zpow_negSucc, zpow_negSucc]`. Conclude with `isValueAt_inv (isValueAt_pow h _) (pow_ne_zero _ hs) (pow_ne_zero _ hv)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_zpow {s : Ω} {v : ℂ} (h : IsValueAt x s z v) (hs : s ≠ 0) (hv : v ≠ 0) (n : ℤ) :
     IsValueAt x (s ^ n) z (v ^ n) := by
@@ -76,7 +74,7 @@ theorem val_zpow {s : Ω} {v : ℂ} (h : IsValueAt x s z v) (hs : s ≠ 0) (hv :
     exact isValueAt_inv (isValueAt_pow h _) (pow_ne_zero _ hs) (pow_ne_zero _ hv)
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty => simpa using val_one`. Consider the case `insert a t ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha]`. Conclude with `isValueAt_mul (h a) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem val_prod {α : Type} (t : Finset α) (f : α → Ω) (v : α → ℂ) (h : ∀ a, IsValueAt x (f a) z (v a)) :
     IsValueAt x (∏ a ∈ t, f a) z (∏ a ∈ t, v a) := by
@@ -85,11 +83,11 @@ theorem val_prod {α : Type} (t : Finset α) (f : α → Ω) (v : α → ℂ) (h
   | insert a t ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha]; exact isValueAt_mul (h a) ih
 
 /- English proof (translation)
-Establish `h1` using `reg_minor hz hA (wIdx N j) (wIdx N j)`. Establish `h2` using `reg_minor hz hA (omIdx N j) (omIdx N j)`. Establish `h0` using `FV.valAt_one' hz`. Establish `r0` using `ValRing.regAt_one x z`. Unfold `detFac`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `split_ifs`. Conclude with `⟨(reg_mul hz h1.1 h2.1).1, by rw [(reg_mul hz h1.1 h2.1).2, h1.2, h2.2]⟩`. Simplify using `only [mul_one]`. Conclude with `h1`. Simplify using `only [one_mul]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Conclude with `h2`. Simplify using `only [mul_one]`. Conclude with `⟨r0, h0⟩`.
+A detailed English derivation is pending.
 -/
 theorem reg_detFac (hz : z ∈ mcPts (mCoordIdeal x)) {N : ℕ} (j : ℕ) (i : Fin N) {A : Matrix (Fin N) (Fin N) Ω}
     (hA : ∀ a b, RegAt x (mCoordIdeal z) (A a b)) :
@@ -121,7 +119,7 @@ def rhoC (F₁ F₂ : FrameData ι Ψ N M.Ω M.blk) (p : Ψ × Fin N) (zb : (Σ 
 variable {M} {F₁ F₂ : FrameData ι Ψ N M.Ω M.blk}
 
 /- English proof (translation)
-Rewrite using `[rho, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← mul_zpow, div_mul_cancel₀ _ (c₁ k)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_mul (c₁ : ∀ k, M.x ⟨k, F₁.c k⟩ ≠ 0) (p : Ψ × Fin N) :
     rho M F₁ F₂ p * ∏ k', M.x ⟨k', F₁.c k'⟩ ^ M.b p k' = ∏ k', M.x ⟨k', F₂.c k'⟩ ^ M.b p k' := by
@@ -130,7 +128,7 @@ theorem rho_mul (c₁ : ∀ k, M.x ⟨k, F₁.c k⟩ ≠ 0) (p : Ψ × Fin N) :
   rw [← mul_zpow, div_mul_cancel₀ _ (c₁ k)]
 
 /- English proof (translation)
-Establish `hu₁ : IsUnit (F₁.T τ).det` using `(h₁.1 τ).2.isUnit`. Rewrite using `[← MinorCalc.detFac_mul i (((h₁.1 τ).1.inv hu₁).mul (h₂.1 τ).1), Matrix.mul_nonsing_inv_cancel_left _ _ hu₁]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem detFac_chg (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂) (τ : Ψ) (i : Fin N) :
     detFac j i (F₂.T τ) = detFac j i (F₁.T τ) * detFac j i ((F₁.T τ)⁻¹ * F₂.T τ) := by
@@ -138,13 +136,13 @@ theorem detFac_chg (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂) (τ : Ψ) (i 
   rw [← MinorCalc.detFac_mul i (((h₁.1 τ).1.inv hu₁).mul (h₂.1 τ).1), Matrix.mul_nonsing_inv_cancel_left _ _ hu₁]
 
 /- English proof (translation)
-Establish `hT₁` using `h₁.1 p.1`. Establish `hT₂` using `h₂.1 p.1`. Establish `hu₁ : IsUnit (F₁.T p.1).det` using `hT₁.2.isUnit`. Establish `hA₁ : (∏ k', M.x ⟨k', F₁.c k'⟩ ^ M.b p k') ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (c₁ k')`. Establish `hS : IsBlockDiag j ((F₁.T p.1)⁻¹ * F₂.T p.1)` using `(hT₁.1.inv hu₁).mul hT₂.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : IsBlockDiag j (FrameChange.unitCols I' (stepCols N j p.2) hI'.1 : Matrix (Fin N) (Fin N) M.Ω)` using `FrameChange.unitCols_blockDiag _ _ _ (FrameChange.stepRows_same_side hI')`. Establish `e1` using `h₁.2.1 p k hp m _ (hS.mul hE)`. Establish `e2` using `h₂.2.1 p k hp m _ hE`. Rewrite `e1` using `[← Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu₁]`. Establish `hm : ∀ I, minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1 * FrameChange.unitCols I' (stepCols N j p.2) hI'.1) I (stepCols N j p.2) = minorIJ ((F₁.T p.1)⁻¹ * F₂.T p.1) I I'` using `fun I => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MinorCalc.minorIJ_mul]`. Simplify using `only [FrameChange.minor_unitCols, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Establish `hr : ∑ I, F₂.u ⟨k, m⟩ I * minorIJ (FrameChange.unitCols I' (stepCols N j p.2) hI'.1) I (stepCols N j p.2) = F₂.u ⟨k, m⟩ I'`. Simplify using `only [FrameChange.minor_unitCols, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Simplify using `only [hm] at e1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `e2` using `[hr, detFac_chg h₁ h₂, ← rho_mul (F₂ := F₂) c₁]`. Simplify using `only [mul_assoc]`. Rewrite using `[← Finset.mul_sum]`. Apply `mul_left_cancel₀ hA₁` to reduce the goal to its premises. Take the linear combination `(-detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1)) * e1 + e2`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rel (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂) (c₁ : ∀ k, M.x ⟨k, F₁.c k⟩ ≠ 0) {p : Ψ × Fin N} {k : K}
     (hp : M.blk p = some k) (m : ι k) (I' : Finset (Fin N)) (hI' : IsStepRows N j p.2 I') :
@@ -176,9 +174,9 @@ theorem rel (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂) (c₁ : ∀ k, M.x �
   linear_combination (-detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1)) * e1 + e2
 
 /- English proof (translation)
-Establish `hA₁ : (∏ k', M.x ⟨k', F₁.c k'⟩ ^ M.b p k') ≠ 0` using `Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (c₁ k')`. Establish `e1` using `h₁.2.2.2 p hp`. Establish `e2` using `h₂.2.2.2 p hp`. Rewrite `e2` using `[detFac_chg h₁ h₂, ← rho_mul (F₂ := F₂) c₁]`. Apply `mul_left_cancel₀ hA₁` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Take the linear combination `(-detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1)) * e1 + e2`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem rel0 (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂) (c₁ : ∀ k, M.x ⟨k, F₁.c k⟩ ≠ 0) {p : Ψ × Fin N}
     (hp : M.blk p = none) : detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1) * F₁.υ p = rho M F₁ F₂ p * F₂.υ p := by
@@ -193,13 +191,13 @@ theorem rel0 (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂) (c₁ : ∀ k, M.x 
 variable {zb : (Σ k, baseIdx ι M.blk k) → ℂ}
 
 /- English proof (translation)
-The claim follows from `CPts.coord_ne hz (An.coord_ne_zero_of_notMem (g₁.1 k))`.
+A detailed English derivation is pending.
 -/
 theorem x_chart_ne_zero_of_goodAt (hz : zb ∈ mcPts (mCoordIdeal M.x)) (g₁ : M.GoodAt F₁ (mCoordIdeal zb)) (k) :
     M.x ⟨k, F₁.c k⟩ ≠ 0 := CPts.coord_ne hz (An.coord_ne_zero_of_notMem (g₁.1 k))
 
 /- English proof (translation)
-The claim follows from `val_prod _ _ _ fun k => val_zpow (CPts.isValueAt_ratio (x_chart_ne_zero_of_goodAt hz g₁ k) (An.coord_ne_zero_of_notMem (g₁.1 k))) (div_ne_zero (x_chart_ne_zero_of_goodAt hz g₂ k) (x_chart_ne_zero_of_goodAt hz g₁ k)) (div_ne_zero (An.coord_ne_zero_of_notMem (g₂.1 k)) (An.coord_ne_ …`.
+A detailed English derivation is pending.
 -/
 theorem rho_val (hz : zb ∈ mcPts (mCoordIdeal M.x)) (g₁ : M.GoodAt F₁ (mCoordIdeal zb))
     (g₂ : M.GoodAt F₂ (mCoordIdeal zb)) (p : Ψ × Fin N) : IsValueAt M.x (rho M F₁ F₂ p) zb (rhoC M F₁ F₂ p zb) :=
@@ -209,15 +207,13 @@ theorem rho_val (hz : zb ∈ mcPts (mCoordIdeal M.x)) (g₁ : M.GoodAt F₁ (mCo
     (div_ne_zero (An.coord_ne_zero_of_notMem (g₂.1 k)) (An.coord_ne_zero_of_notMem (g₁.1 k))) _
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, M.blk (τ, i) = some k` from `Option.ne_none_iff_exists'.1 fun e => (M.blk_none _).1 e hi`. Establish `hu₁ : IsUnit (F₁.T τ).det` using `(h₁.1 τ).2.isUnit`. Establish `hS : IsBlockDiag j ((F₁.T τ)⁻¹ * F₂.T τ)` using `((h₁.1 τ).1.inv hu₁).mul (h₂.1 τ).1`. Use `set S := (F₁.T τ)⁻¹ * F₂.T τ with hSdef`. Establish `hoff : ∀ I, ¬ IsStepRows N j i I → minorIJ S I I' = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `I hI`. Establish `hE : IsBlockDiag j (FrameChange.unitCols I' (stepCols N j i) h'.1 : Matrix (Fin N) (Fin N) M.Ω)` using `FrameChange.unitCols_blockDiag _ _ _ (FrameChange.stepRows_same_side h')`. Use `((GlobalTheory.T.block_diagonal_minor_vanishing M.Ω N j i M.j_le).2.1 _ I (hS.mul hE) hI).resolve_right (FV.stepCols_ne_empty i)` as an intermediate fact. Rewrite `this` using `[MinorCalc.minorIJ_mul]`. Simplify `this` using `only [FrameChange.minor_unitCols, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `e : detFac j i S * minorIJ S I₀ I' = ∑ m : ι k, F₁.u' I₀ ⟨k, m⟩ * (rho M F₁ F₂ (τ, i) * F₂.u ⟨k, m⟩ I')`. Establish `r` using `fun m => rel h₁ h₂ (x_chart_ne_zero_of_goodAt hz g₁) hk m I' h'`. Simplify using `only [← r, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hI : IsStepRows N j i I`. Rewrite using `[← h₁.2.2.1 (τ, i) k hk I₀ I h₀ hI, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Simplify using `only [← hSdef, hoff I hI, mul_zero, Finset.sum_const_zero]`. Rewrite using `[e]`.
-
-Conclude with `Subring.sum_mem _ fun m _ => Subring.mul_mem _ (g₁.2.1 _ _).2 (Subring.mul_mem _ (regAt_of_val (rho_val hz g₁ g₂ _)) (g₂.2.1 _ _).1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_mem (hz : zb ∈ mcPts (mCoordIdeal M.x)) (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂)
     (g₁ : M.GoodAt F₁ (mCoordIdeal zb)) (g₂ : M.GoodAt F₂ (mCoordIdeal zb)) (τ : Ψ) (i : Fin N)
@@ -252,9 +248,9 @@ theorem step_mem (hz : zb ∈ mcPts (mCoordIdeal M.x)) (h₁ : M.IsFrame F₁) (
     (Subring.mul_mem _ (regAt_of_val (rho_val hz g₁ g₂ _)) (g₂.2.1 _ _).1)
 
 /- English proof (translation)
-Establish `hp : M.blk (τ, i) = none` using `(M.blk_none _).2 hi`. Establish `r` using `rel0 h₁ h₂ (x_chart_ne_zero_of_goodAt hz g₁) hp`. Establish `e : detFac j i ((F₁.T τ)⁻¹ * F₂.T τ) = rho M F₁ F₂ (τ, i) * F₂.υ (τ, i) * (F₁.υ (τ, i))⁻¹`. Rewrite using `[← r, mul_inv_cancel_right₀ (g₁.2.2 _ hp).1]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.mul_mem _ (Subring.mul_mem _ (regAt_of_val (rho_val hz g₁ g₂ _)) (g₂.2.2 _ hp).2.1) (g₁.2.2 _ hp).2.2`.
+A detailed English derivation is pending.
 -/
 theorem nonstep_mem (hz : zb ∈ mcPts (mCoordIdeal M.x)) (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂)
     (g₁ : M.GoodAt F₁ (mCoordIdeal zb)) (g₂ : M.GoodAt F₂ (mCoordIdeal zb)) (τ : Ψ) (i : Fin N)
@@ -268,21 +264,21 @@ theorem nonstep_mem (hz : zb ∈ mcPts (mCoordIdeal M.x)) (h₁ : M.IsFrame F₁
     (g₁.2.2 _ hp).2.2
 
 /- English proof (translation)
-Introduce `a ha b hb`. Establish `hj` using `M.j_le`. Establish `ha' : N - j ≤ (a : ℕ)` using `(Finset.mem_filter.1 ha).2`. Establish `hb' : N - j ≤ (b : ℕ)` using `(Finset.mem_filter.1 hb).2`. Establish `ha2` using `a.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb2` using `b.2`. Set `i : Fin N` to `⟨0, a.pos⟩`. Distinguish the cases in `h1 : j = 1`. Establish `hab : b = a` using `Fin.ext (by omega)`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hW : wIdx N j = {b}`. Use extensionality with `c`. Simplify using `only [wIdx, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff]`. Use `c.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `nonstep_mem hz h₁ h₂ g₁ g₂ τ i fun h => h.1 (by simp [i, h1])` as an intermediate fact. Unfold `detFac at this`. Rewrite `this` using `[if_pos (by simp [i, h1]), hW, minor_single]`. Use `split_ifs at this with h2`. Establish `hO : omIdx N j = ∅`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `c`. Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty, iff_false]`. Simplify using `only [i] at h2`. Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[hO, MinorCalc.minorIJ_eq_det _ _ _ 0 rfl rfl, Matrix.det_isEmpty, mul_one]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `this`. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis. Establish `hrow : ∀ c ∈ wIdx N j, IsStepRows N j i {c}`. Introduce `c hc`. Establish `hs : stepCols N j i = {⟨N - j, by omega⟩}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `c`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff, i]`. Rewrite using `[if_pos (by omega)]`. Use linear arithmetic over natural numbers and integers. Use `⟨by rw [hs]; rfl, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos (by simp only [i]; omega)]`. Conclude with `Finset.singleton_subset_iff.2 hc`. Use `step_mem hz h₁ h₂ g₁ g₂ τ i ⟨by simp only [i]; omega, by simp only [i]; omega⟩ (hrow a ha) (hrow b hb)` as an intermediate fact. Unfold `detFac at this`. Rewrite `this` using `[if_neg (by simp only [i]; omega), if_neg (by simp only [i]; omega), one_mul, one_mul, minor_single]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem w_mem (hz : zb ∈ mcPts (mCoordIdeal M.x)) (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂)
     (g₁ : M.GoodAt F₁ (mCoordIdeal zb)) (g₂ : M.GoodAt F₂ (mCoordIdeal zb)) (τ : Ψ) :
@@ -329,23 +325,21 @@ theorem w_mem (hz : zb ∈ mcPts (mCoordIdeal M.x)) (h₁ : M.IsFrame F₁) (h�
     rwa [if_neg (by simp only [i]; omega), if_neg (by simp only [i]; omega), one_mul, one_mul, minor_single] at this
 
 /- English proof (translation)
-Establish `hj` using `M.j_le`. Establish `hu₁ : IsUnit (F₁.T τ).det` using `(h₁.1 τ).2.isUnit`. Establish `hu₂ : IsUnit (F₂.T τ).det` using `(h₂.1 τ).2.isUnit`. Establish `hS : IsBlockDiag j ((F₁.T τ)⁻¹ * F₂.T τ)` using `((h₁.1 τ).1.inv hu₁).mul (h₂.1 τ).1`. Use `show _ ∈ regRing M.x zb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hab : ((a : ℕ) < N - j ↔ (b : ℕ) < N - j)`. Use `swap`. Rewrite using `[hS a b hab]`. Conclude with `Subring.zero_mem _`. Distinguish the cases in `ha : (a : ℕ) < N - j`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `swap`. Conclude with `w_mem hz h₁ h₂ g₁ g₂ τ a (by simp [wIdx]; omega) b (by simp [wIdx]; omega)`. Establish `hb` using `hab.1 ha`. Establish `hd : minorIJ ((F₂.T τ)⁻¹ * F₁.T τ) (wIdx N j) (wIdx N j) ∈ regRing M.x zb` using `minor_mem _ (w_mem hz h₂ h₁ g₂ g₁ τ)`. Establish `hone : minorIJ ((F₂.T τ)⁻¹ * F₁.T τ) (wIdx N j) (wIdx N j) * minorIJ ((F₁.T τ)⁻¹ * F₂.T τ) (wIdx N j) (wIdx N j) = 1`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression.
 
-Rewrite using `[← MinorCalc.minorIJ_mul_of_support _ _ _ _ (MinorCalc.support_wIdx hS), Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ hu₁, Matrix.nonsing_inv_mul _ hu₂, CPts.minorIJ_one]`. It suffices to establish `h : minorIJ ((F₁.T τ)⁻¹ * F₂.T τ) (wIdx N j) (wIdx N j) * ((F₁.T τ)⁻¹ * F₂.T τ) a b ∈ regRing M.x zb by`. Use `Subring.mul_mem _ hd h` as an intermediate fact. Rewrite `this` using `[← mul_assoc, hone, one_mul]`. Then use the resulting hypothesis. Set `i : Fin N` to `⟨j, by omega⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Distinguish the cases in `h1 : j + 1 = N`. Establish `hab : b = a` using `Fin.ext (by omega)`. Substitute `hab` using the available equality. Establish `hO : omIdx N j = {b}`. Use extensionality with `c`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [omIdx, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff]`. Use linear arithmetic over natural numbers and integers. Use `nonstep_mem hz h₁ h₂ g₁ g₂ τ i fun h => h.2 h1` as an intermediate fact. Unfold `detFac at this`. Rewrite `this` using `[if_pos (by simp only [i]; omega), if_pos h1, hO, minor_single]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hrow : ∀ c : Fin N, (c : ℕ) < N - j → IsStepRows N j i {c}`. Introduce `c hc`. Establish `hs : stepCols N j i = {⟨0, by omega⟩}`. Use extensionality with `c`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_singleton, Fin.ext_iff, i]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_neg (by omega)]`. Use linear arithmetic over natural numbers and integers. Use `⟨by rw [hs]; rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg (by simp only [i]; omega)]`. Conclude with `Finset.singleton_subset_iff.2 (by simpa [omIdx] using hc)`.
-
-Use `step_mem hz h₁ h₂ g₁ g₂ τ i ⟨by simp only [i]; omega, h1⟩ (hrow a ha) (hrow b hb)` as an intermediate fact. Unfold `detFac at this`. Rewrite `this` using `[if_pos (by simp only [i]; omega), if_neg h1, mul_one, minor_single]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem all_mem (hz : zb ∈ mcPts (mCoordIdeal M.x)) (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂)
     (g₁ : M.GoodAt F₁ (mCoordIdeal zb)) (g₂ : M.GoodAt F₂ (mCoordIdeal zb)) (τ : Ψ) (a b : Fin N) :
@@ -397,11 +391,11 @@ theorem all_mem (hz : zb ∈ mcPts (mCoordIdeal M.x)) (h₁ : M.IsFrame F₁) (h
     rwa [if_pos (by simp only [i]; omega), if_neg h1, mul_one, minor_single] at this
 
 /- English proof (translation)
-Establish `hA` using `all_mem hz h₁ h₂ g₁ g₂ p.1`. Establish `hd` using `reg_detFac hz j p.2 hA`. Establish `hstep : IsStepRows N j p.2 (stepCols N j p.2)` using `FV.isStepRows_stepCols p.2`. Establish `hinv` using `h₂.2.2.1 p k hp _ _ hstep hstep`. Rewrite `hinv` using `[if_pos rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨-, hval⟩` from `FV.reg_values hz p.2 (fun (m : ι k) I => detFac j p.2 ((F₁.T p.1)⁻¹ * F₂.T p.1) * F₁.u ⟨k, m⟩ I) (fun (m : ι k) I => F₂.u ⟨k, m⟩ I) (fun m : ι k => F₂.u' (stepCols N j p.2) ⟨k, m⟩) _ (rho M F₁ F₂ p) _ hstep (fun m I => ValRing.regAt_mul hd.1 (g₁.2.1 _ _).1) (fun m I => (g₂.2.1 _ …`. Use `FV.sum_minor_mul M.j_le p.2 _ _ _ _ hval h hh m` as an intermediate fact. Rewrite `this` using `[valAt_eq hz (rho_val hz g₁ g₂ p)]`. Rewrite using `[← this, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(reg_mul hz hd.1 (g₁.2.1 _ _).1).2, hd.2, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem relC (hz : zb ∈ mcPts (mCoordIdeal M.x)) (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂)
     (g₁ : M.GoodAt F₁ (mCoordIdeal zb)) (g₂ : M.GoodAt F₂ (mCoordIdeal zb)) {p : Ψ × Fin N} {k : K}
@@ -426,7 +420,7 @@ theorem relC (hz : zb ∈ mcPts (mCoordIdeal M.x)) (h₁ : M.IsFrame F₁) (h₂
   rw [(reg_mul hz hd.1 (g₁.2.1 _ _).1).2, hd.2, mul_assoc]
 
 /- English proof (translation)
-Establish `hd` using `reg_detFac hz j p.2 (all_mem hz h₁ h₂ g₁ g₂ p.1)`. Rewrite using `[← hd.2, ← (reg_mul hz hd.1 (g₁.2.2 p hp).2.1).2, rel0 h₁ h₂ (x_chart_ne_zero_of_goodAt hz g₁) hp, (reg_mul hz (regAt_of_val (rho_val hz g₁ g₂ p)) (g₂.2.2 p hp).2.1).2, valAt_eq hz (rho_val hz g₁ g₂ p)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rel0C (hz : zb ∈ mcPts (mCoordIdeal M.x)) (h₁ : M.IsFrame F₁) (h₂ : M.IsFrame F₂)
     (g₁ : M.GoodAt F₁ (mCoordIdeal zb)) (g₂ : M.GoodAt F₂ (mCoordIdeal zb)) {p : Ψ × Fin N}
@@ -438,7 +432,7 @@ theorem rel0C (hz : zb ∈ mcPts (mCoordIdeal M.x)) (h₁ : M.IsFrame F₁) (h�
     (reg_mul hz (regAt_of_val (rho_val hz g₁ g₂ p)) (g₂.2.2 p hp).2.1).2, valAt_eq hz (rho_val hz g₁ g₂ p)]
 
 /- English proof (translation)
-Establish `h` using `(reg_mul hz (g₁.2.2 p hp).2.1 (g₁.2.2 p hp).2.2).2`. Rewrite `h` using `[mul_inv_cancel₀ (g₁.2.2 p hp).1, FV.valAt_one' hz]`. Conclude with `left_ne_zero_of_mul_eq_one h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ups_ne (hz : zb ∈ mcPts (mCoordIdeal M.x)) (g₁ : M.GoodAt F₁ (mCoordIdeal zb)) {p : Ψ × Fin N}
     (hp : M.blk p = none) : valAt M.x (F₁.υ p) zb ≠ 0 := by
@@ -447,7 +441,7 @@ theorem ups_ne (hz : zb ∈ mcPts (mCoordIdeal M.x)) (g₁ : M.GoodAt F₁ (mCoo
   exact left_ne_zero_of_mul_eq_one h.symm
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.2 fun k _ => zpow_ne_zero _ (div_ne_zero (An.coord_ne_zero_of_notMem (g₂.1 k)) (An.coord_ne_zero_of_notMem (g₁.1 k)))`.
+A detailed English derivation is pending.
 -/
 theorem rhoC_ne (g₁ : M.GoodAt F₁ (mCoordIdeal zb)) (g₂ : M.GoodAt F₂ (mCoordIdeal zb)) (p : Ψ × Fin N) :
     rhoC M F₁ F₂ p zb ≠ 0 :=

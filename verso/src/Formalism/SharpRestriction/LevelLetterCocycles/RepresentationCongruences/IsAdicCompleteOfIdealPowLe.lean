@@ -10,13 +10,13 @@ namespace Formalism.MainNotions.N.Ln17
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup
 
 /- English proof (translation)
-Establish `mono : ∀ {A B : Ideal R}, A ≤ B → ∀ n : ℕ, A ^ n ≤ B ^ n`. Introduce `A B h n`. Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Rewrite using `[pow_succ, pow_succ]`. Conclude with `Ideal.mul_mono ih h`. Establish `hIJn : ∀ n : ℕ, I ^ (e * n) ≤ J ^ n` using `fun n => by`. Rewrite using `[pow_mul]`. Conclude with `mono hIJ n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hJIn : ∀ n : ℕ, J ^ n ≤ I ^ n` using `fun n => mono hJI n`. Establish `hle : ∀ n : ℕ, n ≤ e * n` using `fun n => by nlinarith`. Use `{ haus' := ?_, prec' := ?_ }` and prove the remaining obligations. Introduce `x hx`. Conclude with `hJ.haus' x fun n => (hx (e * n)).mono (Submodule.smul_mono_left (hIJn n))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `f hf`. Take `⟨L, hL⟩` from `hJ.prec' (fun k => f (e * k)) (fun {m n} hmn => (hf (Nat.mul_le_mul le_rfl hmn)).mono (Submodule.smul_mono_left (hIJn m)))`. Use `⟨L, fun n => ?_⟩` and prove the remaining obligations. Conclude with `(hf (hle n)).trans ((hL n).mono (Submodule.smul_mono_left (hJIn n)))`.
+A detailed English derivation is pending.
 -/
 theorem isAdicComplete_of_ideal_pow_le {R M : Type*} [CommRing R] [AddCommGroup M] [Module R M]
     (I J : Ideal R) [hJ : IsAdicComplete J M] (e : ℕ) (he : 1 ≤ e) (hJI : J ≤ I) (hIJ : I ^ e ≤ J) :
@@ -44,17 +44,17 @@ theorem isAdicComplete_of_ideal_pow_le {R M : Type*} [CommRing R] [AddCommGroup 
 
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.ArcLiftingSetup Formalism.MainNotions.N.Ln17 in
 /- English proof (translation)
-Introduce `l _ LL`. Establish `hc : IsAdicComplete (Ideal.span {((l : ℕ) : ↥(OL LL))}) ↥(OL LL)` using `Formalism.MainNotions.LiftingTheory.phib_OL_complete LL`. Establish `hl0 : ((l : ℕ) : ↥(OL LL)) ≠ 0`. Introduce `h`. Establish `h'` using `congrArg (fun x : ↥(OL LL) => (x : ↥LL.1)) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [map_natCast, ZeroMemClass.coe_zero] at h'`. Establish `hp : (l : ℕ) ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Conclude with `hp (by exact_mod_cast h')`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible ↥(OL LL)`. Take `⟨k, u, hk⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hl0 hϖ`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmax : IsLocalRing.maximalIdeal ↥(OL LL) = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).mp hϖ`. Establish `hspan : Ideal.span {((l : ℕ) : ↥(OL LL))} = IsLocalRing.maximalIdeal ↥(OL LL) ^ k`. Rewrite using `[hmax, Ideal.span_singleton_pow, hk, Ideal.span_singleton_mul_left_unit u.isUnit]`. Establish `hk1 : 1 ≤ k`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hk0 : k = 0` using `by omega`. Establish `htop : Ideal.span {((l : ℕ) : ↥(OL LL))} = ⊤`. Rewrite using `[hspan, hk0, pow_zero, Ideal.one_eq_top]`. Establish `h10 : (1 : ↥(OL LL)) = 0`. Apply `hc.haus' 1` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Rewrite using `[SModEq.sub_mem, htop, Ideal.top_pow, Submodule.top_smul]`. Conclude with `Submodule.mem_top`. Conclude with `one_ne_zero h10`. Use `isAdicComplete_of_ideal_pow_le (IsLocalRing.maximalIdeal ↥(OL LL)) (Ideal.span {((l : ℕ) : ↥(OL LL))}) k hk1 ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hspan]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hspan]`.
+A detailed English derivation is pending.
 -/
 theorem isAdicComplete_integers_local : ∀ (l : ℕ) [Fact l.Prime] (LL : FinExt l),
     IsAdicComplete (IsLocalRing.maximalIdeal ↥(OL LL)) ↥(OL LL) := by

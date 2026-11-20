@@ -11,16 +11,16 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.NormCompat.LocalDegOne
 
 /- English proof (translation)
-The claim follows from `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v k`.
+A detailed English derivation is pending.
 -/
 theorem valued_algebraMap_eq {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) (k : K) :
     Valued.v (algebraMap K (v.adicCompletion K) k) = v.valuation K k :=
   IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v k
 
 /- English proof (translation)
-Establish `e : a * b - 1 = (a - 1) * (b - 1) + ((a - 1) + (b - 1))` using `by ring`. Establish `h1 : WithZero.exp (-(M : ℤ)) ≤ 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use `(v.map_add _ _).trans (max_le ?_ ((v.map_add _ _).trans (max_le ha hb)))` and prove the remaining obligations. Rewrite using `[v.map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_sub_one_le {R : Type} [CommRing R] (v : Valuation R (WithZero (Multiplicative ℤ))) (a b : R) (M : ℕ)
     (ha : v (a - 1) ≤ WithZero.exp (-(M : ℤ))) (hb : v (b - 1) ≤ WithZero.exp (-(M : ℤ))) :
@@ -35,19 +35,17 @@ theorem mul_sub_one_le {R : Type} [CommRing R] (v : Valuation R (WithZero (Multi
     _ = _ := mul_one _
 
 /- English proof (translation)
-Introduce `E E' _ _ _ _ _ w w' i hi hcomp M`. Use `set σ : E' →+* w.adicCompletion E := (i.symm : w'.adicCompletion E' →+* w.adicCompletion E).comp (algebraMap E' (w'.adicCompletion E')) with hσ`. Establish `hσE : ∀ x : E, σ (algebraMap E E' x) = algebraMap E _ x` using `fun x => by`. Simplify using `only [hσ, RingHom.comp_apply, RingEquiv.coe_toRingHom, ← hcomp x, RingEquiv.symm_apply_apply]`. Establish `hσv : ∀ x : E', Valued.v (σ x) = w'.valuation E' x` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.T.valued_map_eq_of_continuous_completionIso_extending E E' w w' i hi hcomp (σ x)]`. Simplify using `only [hσ, RingHom.comp_apply, RingEquiv.coe_toRingHom, RingEquiv.apply_symm_apply]`. Conclude with `valued_algebraMap_eq w' x`. Take `⟨M₁, hM₁⟩` from `GlobalTheory.T.norm_div_localEmbedding_close_to_one E E' w w' σ hσE hσv M`. Use `⟨max (max M M₁) 1, fun c z hc hz hzw => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : ∀ k, k ≤ max (max M M₁) 1 → WithZero.exp (-((max (max M M₁) 1 : ℕ) : ℤ)) ≤ WithZero.exp (-(k : ℤ))` using `fun k hk => by`. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hzw` using `[zero_div, zero_sub, Valuation.map_neg, Valuation.map_one]`. Use `hzw.trans (hle 1 (le_max_right _ _))` as an intermediate fact. Rewrite `this` using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hF` using `hM₁ z hz0 fun w'' h1 h2 => (hz w'' h1 h2).trans (hle M₁ (by omega))`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hσz : σ z ≠ 0` using `(map_ne_zero σ).2 hz0`. Establish `hcE : algebraMap E (w.adicCompletion E) c ≠ 0` using `(map_ne_zero _).2 hc`. Establish `h2 : Valued.v (σ z / algebraMap E (w.adicCompletion E) c - 1) ≤ WithZero.exp (-(M : ℤ))`. Establish `e : σ z / algebraMap E (w.adicCompletion E) c - 1 = σ (z / algebraMap E E' c - 1)`. Rewrite using `[map_sub, map_div₀, hσE, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hσv]`. Conclude with `hzw.trans (hle M (by omega))`. Rewrite using `[← valued_algebraMap_eq, map_sub, map_div₀, map_one]`. Establish `e2 : algebraMap E (w.adicCompletion E) (Algebra.norm E z) / algebraMap E (w.adicCompletion E) c = (algebraMap E (w.adicCompletion E) (Algebra.norm E z) / σ z) * (σ z / algebraMap E (w.adicCompletion E) c)`. Clear the denominators using the available nonvanishing facts.
-
-Rewrite using `[e2]`. Conclude with `mul_sub_one_le Valued.v _ _ M hF h2`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_div_close_to_one : ∀ (E E' : Type) [Field E] [NumberField E] [Field E'] [NumberField E'] [Algebra E E'] (w : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E)) (w' : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E')) (i : w.adicCompletion E ≃+* w'.adicCompletion E'), Continuous i → (∀ x : E, i (algebraMap E _ x) = algebraMap E' _ (algebraMap E E' x)) → ∀ M : ℕ, ∃ M' : ℕ, ∀ (c : E) (z : E'), c ≠ 0 → (∀ w'' : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E'), w''.asIdeal.comap (algebraMap (NumberField.RingOfIntegers E) (NumberField.RingOfIntegers E')) = w.asIdeal → w'' ≠ w' → w''.valuation E' (z - 1) ≤ WithZero.exp (-(M' : ℤ))) → w'.valuation E' (z / algebraMap E E' c - 1) ≤ WithZero.exp (-(M' : ℤ)) → w.valuation E (Algebra.norm E z / c - 1) ≤ WithZero.exp (-(M : ℤ)) := by
   intro E E' _ _ _ _ _ w w' i hi hcomp M

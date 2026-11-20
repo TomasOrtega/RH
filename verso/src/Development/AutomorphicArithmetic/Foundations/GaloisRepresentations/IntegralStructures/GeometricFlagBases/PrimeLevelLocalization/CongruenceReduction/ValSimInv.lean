@@ -11,9 +11,9 @@ open UpperTheory.Gal.Int.Geo UpperTheory.Gal.Int.Geo.Pl UpperTheory.Gal.Int.Geo.
 attribute [local instance] Ideal.Quotient.field
 
 /- English proof (translation)
-Establish `h : ((sim g⁻¹ : AfQˣ) : AfQ) * ((sim g : AfQˣ) : AfQ) = 1`. Rewrite using `[map_inv, Units.inv_mul]`. Establish `h2` using `congrArg (fun x => GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E x) h`. Simplify using `only [map_mul, map_one] at h2`. Establish `h3` using `congrArg (fun x : FiniteAdeleRing (𝓞 E) E => Valued.v (x w)) h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `using h3`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem val_sim_inv {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (g : GUf E n) (w : Plc E) :
     Valued.v (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim g⁻¹ : AfQˣ) : AfQ) w) *
@@ -26,32 +26,30 @@ private theorem val_sim_inv {E : Type} [Field E] [NumberField E] [IsCMField E] {
   simpa using h3
 
 /- English proof (translation)
-Rewrite using `[map_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem ent_inv {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} (g : GUf E n) (w : Plc E) (i k : Fin n) :
     (comp w g⁻¹).val i k = ((comp w g)⁻¹).val i k := by
   rw [map_inv]
 
 /- English proof (translation)
-Introduce `E _ _ _ n g w`. Establish `hE` using `UpperTheory.Gal.Int.Geo.Pl.Tj.cjEnt`. Establish `ent : ∀ i k, Valued.v ((comp (cj w) g).val i k) = Valued.v (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim g : AfQˣ) : AfQ) w) * Valued.v ((comp w g⁻¹).val k i)` using `fun i k => by`. Rewrite using `[(hE E n g w i k).2, map_mul]`. Establish `ent' : ∀ i k, Valued.v ((comp (cj w) g⁻¹).val i k) = Valued.v (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim g⁻¹ : AfQˣ) : AfQ) w) * Valued.v ((comp w g).val k i)` using `fun i k => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hE E n g⁻¹ w i k).2, map_mul, inv_inv]`. Establish `hs` using `val_sim_inv g w`. Prove the components needed by the constructor for the conclusion. Introduce `h1 h2 hn`. Take `⟨a1, a2⟩` from `GlobalTheory.EulerTwRestr.mem_KGL_iff.1 h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b1, b2⟩` from `GlobalTheory.EulerTwRestr.mem_KGL_iff.1 h2`. Simplify using `only [HeightOneSpectrum.mem_adicCompletionIntegers] at a1 a2 b1 b2`. Set `i₀ : Fin n` to `⟨0, hn⟩`. Establish `hsum : ∑ k, (comp w g).val i₀ k * ((comp w g)⁻¹).val k i₀ = 1`. Establish `h` using `congrFun (congrFun (Units.mul_inv (comp w g)) i₀) i₀`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `[Matrix.mul_apply]`. Choose the witnesses or unpack the hypotheses as in `⟨k, hk⟩ : ∃ k, 1 ≤ Valued.v ((comp w g).val i₀ k * ((comp w g)⁻¹).val k i₀) := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h` using `Valuation.map_sum_lt Valued.v (one_ne_zero) (s := Finset.univ) (fun k _ => hc k)`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[hsum, map_one]`. Conclude with `lt_irrefl _ h`. Rewrite `hk` using `[map_mul]`. Establish `hu : Valued.v ((comp w g).val i₀ k) = 1` using `le_antisymm (a1 i₀ k) (hk.trans (mul_le_of_le_one_right' (a2 k i₀)))`. Establish `hv : Valued.v (((comp w g)⁻¹).val k i₀) = 1` using `le_antisymm (a2 k i₀) (hk.trans (mul_le_of_le_one_left' (a1 i₀ k)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : Valued.v (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim g : AfQˣ) : AfQ) w) ≤ 1`. Establish `h` using `b1 i₀ k`. Rewrite `h` using `[ent, ent_inv, hv, mul_one]`. Conclude with `h`. Establish `hle' : Valued.v (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim g⁻¹ : AfQˣ) : AfQ) w) ≤ 1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `b2 k i₀`. Rewrite `h` using `[← map_inv, ent', hu, mul_one]`. Conclude with `h`. Use `le_antisymm hle ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h1 h2`. Take `⟨a1, a2⟩` from `GlobalTheory.EulerTwRestr.mem_KGL_iff.1 h2`. Establish `hs' : Valued.v (GroundTheory.Global.AdeleBaseChange.finiteAdeleMap ℚ E ((sim g⁻¹ : AfQˣ) : AfQ) w) = 1`. Rewrite `hs` using `[h1, mul_one]`. Conclude with `hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Use `GlobalTheory.EulerTwRestr.mem_KGL_iff.2 ⟨fun i k => ?_, fun i k => ?_⟩` and prove the remaining obligations. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, ent, h1, one_mul]`. Use `a2 k i` as an intermediate fact. Rewrite `this` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Rewrite using `[ent_inv]` and apply the resulting hypothesis.
-
-Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, ← map_inv, ent', hs', one_mul]`. Use `a1 k i` as an intermediate fact. Rewrite `this` using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Geo.Pl.Tj.cjInt :
     UpperTheory.Gal.Int.Geo.Pl.Tj.CjInt := by

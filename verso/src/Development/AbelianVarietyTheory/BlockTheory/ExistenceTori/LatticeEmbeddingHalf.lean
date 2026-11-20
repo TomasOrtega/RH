@@ -36,7 +36,7 @@ def latBase : Submodule (𝓞 E) W := Submodule.span (𝓞 E) {v | ∃ a ∈ �
 omit [NumberField E] [IsCMField E] [IsScalarTower (𝓞 E) E W] in
 
 /- English proof (translation)
-Use `Submodule.span_mono ?_` and prove the remaining obligations. Introduce and unpack `v ⟨a, ha, x, hx, rfl⟩`. Use `⟨a, ha, x, ⟨toFin F fr x, AddSubgroup.subset_closure ⟨1, fun v => one_mem _, x, hx, rfl⟩, ?_⟩, rfl⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem latBase_le_latG_one : latBase L 𝔄 ≤ latG F fr L 𝔄 1 := by
   refine Submodule.span_mono ?_

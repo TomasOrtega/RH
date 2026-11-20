@@ -34,17 +34,15 @@ variable {D : D7} (X : HidaSetting D) (hb : AdBridgeIso X.B.I) (hK : X.LevelSubg
 set_option maxHeartbeats 4000000 in
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-Take `⟨⟨hT1, νH, hOmT, hCT⟩, -⟩` from `hMC.1 u'`. Establish `hn : X.B.I.n = D.R.r` using `hFD.2.2.2.2.2.2.1`. Establish `hk5 : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hm` using `Formalism.L2.SG.Pf.NcArithG.rm_eq D`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn2 : 2 * (D.R.rS + 1 + D.R.rS) < X.B.I.n` using `by rw [hn]; omega`. Establish `hp` using `hP.1`. Establish `hKo` using `hP.2.1`. Establish `hprod : 0 < ∏ p : TypX X, (X.measG.μGv p.1 (Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set _) p.1)).toReal` using `Finset.prod_pos fun p _ => (hp p).2.2.2.2.2.1`. Establish `hKf : 0 < (X.measG.μGf (Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set _))).toReal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hKo`. Express the relevant statement in the definitionally equal form `0 < (X.measG.μGf (Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set _))).toReal / _ at h`. Conclude with `(div_pos_iff_of_pos_right hprod).1 h`. Take `⟨hK0, hKtop⟩` from `ENNReal.toReal_pos_iff.1 hKf`. Take `⟨a', ha, hinf, hfin⟩` from `hSplit X.B.I.F X.B.I.E X.B.I.cm.sig X.B.I.n X.B.I.J ψ D.R.rS (frameOf X u') X.measG (X.measW u') hT1 νH (X.B.I.L : Set _) hStd hLat hdet hn2 hSW1 hSW2 X.measG_norm (X.measW_norm u') hOmT hCT (by exact hK0) (by exact hKtop)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hR0` using `hRB X hb FdN FdN' u u' ψ hHyp hMC hStd.2.2.2 hT1 a' ha hinf`. Establish `e1 : Formalism.L2.SG.Pf.NcReal.eDF D.R.k D.R.rS = -(8 * (D.R.rS : ℝ) ^ 3 + 6 * (D.R.rS : ℝ) ^ 2 + 6 * D.R.k * (D.R.rS : ℝ) ^ 2 + D.R.rS) / 3`. Unfold `Formalism.L2.SG.Pf.NcReal.eDF`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hR0` using `[e1]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hR : Formalism.L2.SG.RealObj.DisintegrationConstant X u u' 1 * (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).volH * (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).volN * (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).volN' = a' * 2 ^ …` using `hR0`. Establish `hμK : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).μK = (X.measG.μGf (Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set _))).toReal` using `by show (X.measG.μGf (Kf X.B.I.cm.sig X.B.I.J (X.B.I.L : Set _))).toReal / (∏ p : TypX X, (X.measG.μGv p.1 (Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set _) p.1)).toReal) * ∏ p : TypX X, (X.measG.μGv p.1 (Kv X.B.I.cm.sig X.B.I.J (X.B.I.L : Set _) p.1)).toReal = _`. Rewrite using `[div_mul_cancel₀ _ hprod.ne']`. Establish `hS : (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).μK * a' = (bCF X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq).μH' * ∏' v : PlX X, (omAt X.B.I.cm.sig X.B.I.J ψ v ((gramE X.B.I.cm.sig X.B.I.J (tupH (frameOf X u'))).map (inclR (Fv X.B.I.F v))) {Y | ∃ k ∈ …`. Rewrite using `[hμK]`.
-
-Conclude with `hfin`. Conclude with `Formalism.L2.SG.Pf.NcLeaves.ncTieC_of_leaves X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq a' ha hP hM hMs hL hO hTy hV hVG hStd.2.2.1 hStd.2.2.2 hcong hRR hS hR hVo hVt hIx hOm hFD hPC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncTieAllS_of (hSplit : Formalism.L2.SG.Pf.NcSplitS.SplitOm) (hRB : Formalism.L2.SG.Pf.NcReal.RealBracket)
     (hHyp : HypX X hb FdN FdN' u u') (hMC : MeasCompatψ X ψ) (hStd : StdHyp X.B.I.cm.sig X.B.I.J ψ)
@@ -121,7 +119,7 @@ theorem ncTieAllS_of (hSplit : Formalism.L2.SG.Pf.NcSplitS.SplitOm) (hRB : Forma
 set_option maxHeartbeats 4000000 in
 variable [Fact Formalism.HermitianLattices.Ext.L3.HermRepUnram] in
 /- English proof (translation)
-The claim follows from `ncTieAllS_of X hb hK FdN FdN' u u' X0 ψ T sd C Th vR Q M δ i0 i0' νq (Formalism.L2.SG.Pf.NcS.SplitPf.splitOm_of_intWitt Formalism.L2.SG.Pf.NcS.IntWittPf.integral_witt_almost_everywhere) hRB hHyp hMC hStd hLat hdet' (hSW X).1 (hSW X).2 (Formalism.L2.SG.Pf.MassDataX.pos_bCF X hb hK …`.
+A detailed English derivation is pending.
 -/
 theorem ncTie0All_of (hRB : Formalism.L2.SG.Pf.NcReal.RealBracket) (hSW : PI.VolStabS.MassDataS.SWXS)
     (hHyp : HypX X hb FdN FdN' u u') (hMC : MeasCompatψ X ψ) (hStd : StdHyp X.B.I.cm.sig X.B.I.J ψ)

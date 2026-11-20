@@ -32,9 +32,9 @@ theorem innerSmulRightR_apply {V : Type} [NormedAddCommGroup V] [InnerProductSpa
     innerSmulRightR e x = (innerSL ℂ x).smulRight e := rfl
 
 /- English proof (translation)
-Use extensionality with `w`. Rewrite using `[ContinuousLinearMap.sum_apply]`. Simplify using `only [innerSmulRightR_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]`. Rewrite using `[← (stdOrthonormalBasis ℂ V).sum_repr' (ContinuousLinearMap.adjoint B w)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[ContinuousLinearMap.adjoint_inner_right]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adjoint_eq_sum {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [FiniteDimensional ℂ V] [CompleteSpace V] (B : V →L[ℂ] V) :
@@ -48,9 +48,9 @@ theorem adjoint_eq_sum {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ 
   rw [ContinuousLinearMap.adjoint_inner_right]
 
 /- English proof (translation)
-Introduce `W V _ _ _ _ _ _ A s hA`. Establish `hEq : (fun y => ContinuousLinearMap.adjoint (A y)) = fun y => ∑ i, innerSmulRightR (stdOrthonormalBasis ℂ V i) (A y (stdOrthonormalBasis ℂ V i))`. Use function extensionality and compare the values at `y`. Conclude with `adjoint_eq_sum (A y)`. Rewrite using `[hEq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ContDiffOn.sum fun i _ => ?_` and prove the remaining obligations. Conclude with `(innerSmulRightR (stdOrthonormalBasis ℂ V i)).contDiff.comp_contDiffOn (hA _)`.
+A detailed English derivation is pending.
 -/
 theorem adjSmooth : AdjSmooth := by
   intro W V _ _ _ _ _ _ A s hA

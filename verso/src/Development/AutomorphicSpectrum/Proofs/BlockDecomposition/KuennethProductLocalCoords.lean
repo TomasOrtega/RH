@@ -23,9 +23,9 @@ section Algebra
 variable {R : Type} [CommRing R]
 
 /- English proof (translation)
-Establish `key : ∀ z : M ⊗[R] N, z = 0` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rfl`. Consider the case `tmul x y => rw [Subsingleton.elim x 0, TensorProduct.zero_tmul]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨fun a b => by rw [key a, key b]⟩`.
+Supply the required witnesses or components.
 -/
 theorem tensor_sub_left (M N : Type u) [AddCommMonoid M] [AddCommMonoid N] [Module R M] [Module R N] [Subsingleton M] :
     Subsingleton (M ⊗[R] N) := by
@@ -37,7 +37,7 @@ theorem tensor_sub_left (M N : Type u) [AddCommMonoid M] [AddCommMonoid N] [Modu
   exact ⟨fun a b => by rw [key a, key b]⟩
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qn17.tensor_sub_right M N`.
+A detailed English derivation is pending.
 -/
 theorem tensor_sub_right (M N : Type u) [AddCommMonoid M] [AddCommMonoid N] [Module R M] [Module R N] [Subsingleton N] :
     Subsingleton (M ⊗[R] N) :=
@@ -47,7 +47,7 @@ variable {I A : Type} [DecidableEq I] [Fintype A] [DecidableEq A] (M : I → Typ
   [∀ t, Module R (M t)] (ι : A → I)
 
 /- English proof (translation)
-Rewrite using `[DirectSum.component.of]`. Simplify using `[h.symm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem component_lof_ne {i j : I} (h : j ≠ i) (x : M i) : DirectSum.component R I M j (DirectSum.lof R I M i x) = 0 := by
   rw [DirectSum.component.of]
@@ -81,9 +81,9 @@ def sumPi (hι : Function.Injective ι) (hz : ∀ t, t ∉ Set.range ι → Subs
         rw [Subsingleton.elim x 0, map_zero, map_zero])
 
 /- English proof (translation)
-Use `funext fun a => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `DirectSum.component R I M (ι a) (DirectSum.lof R I M (ι b) x) = _`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[DirectSum.component.lof_self, Pi.single_eq_same]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[component_lof_ne M (fun e => h (hι e)) x, Pi.single_eq_of_ne h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sumPi_lof (hι : Function.Injective ι) (hz : ∀ t, t ∉ Set.range ι → Subsingleton (M t)) (b : A) (x : M (ι b)) :
     sumPi (R := R) M ι hι hz (DirectSum.lof R I M (ι b) x) = Pi.single b x := by
@@ -102,32 +102,30 @@ def diag (c : ℕ) (a : Fin (c + 1)) : Idx c c :=
   ⟨a, a, c - a, c - a, by omega, by omega⟩
 
 /- English proof (translation)
-Introduce `a b h`. Conclude with `Fin.ext (congrArg Idx.a h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem diag_inj (c : ℕ) : Function.Injective (diag c) := by
   intro a b h
   exact Fin.ext (congrArg Idx.a h)
 
 /- English proof (translation)
-Introduce `c n`. Establish `offL : ∀ t : Idx c n, t.i ≠ t.a → Subsingleton ((P t.a).H t.i ⊗[K] (Q t.a').H t.j)` using `fun t h => by`. Use `hP t.a t.i h` as an intermediate fact. Conclude with `tensor_sub_left _ _`. Establish `offR : ∀ t : Idx c n, t.j ≠ t.a' → Subsingleton ((P t.a).H t.i ⊗[K] (Q t.a').H t.j)` using `fun t h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hQ t.a' t.j h` as an intermediate fact. Conclude with `tensor_sub_right _ _`. Distinguish the cases in `hn : n = c`. Substitute `hn` using the available equality. Take `⟨e, he⟩` from `hE n`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : ∀ t, t ∉ Set.range (diag n) → Subsingleton ((P t.a).H t.i ⊗[K] (Q t.a').H t.j)` using `fun t ht => by`. Use `offL t fun hi => ht ?_` and prove the remaining obligations. Take `⟨a, i, a', j, ha, h⟩` from `t`. Simplify using `only at hi`. Substitute `hi` using the available equality.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : j = a'` from `by omega`. Take `rfl : j = n - i` from `by omega`. Conclude with `⟨⟨i, by omega⟩, rfl⟩`. Use `⟨(sumPi (R := K) (fun t : Idx n n => (P t.a).H t.i ⊗[K] (Q t.a').H t.j) (diag n) (diag_inj n) hz).trans e, ?_⟩` and prove the remaining obligations. Introduce `t x y hx hy hw`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `ht : t ∈ Set.range (diag n)`. Take `⟨b, rfl⟩` from `ht`. Rewrite using `[LinearEquiv.trans_apply, sumPi_lof]`. Conclude with `he b (by omega) x y hx hy hw`. Use `hz t ht` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hi : t.i ≠ t.a` using `fun hi => ht (by`. Take `⟨a, i, a', j, ha, h⟩` from `t`. Simplify using `only at hi`. Substitute `hi` using the available equality. Take `rfl : j = a'` from `by omega`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `rfl : j = n - i` from `by omega`. Conclude with `⟨⟨i, by omega⟩, rfl⟩)`. Establish `hB : x ∈ (P t.a).B t.i`. Use `hP t.a t.i hi` as an intermediate fact. Conclude with `((CrystallineSemistableComparison.P.cls_surj _ _).2.1 x hx).1 (Subsingleton.elim _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Subsingleton.elim ((P t.a).cls x hx ⊗ₜ[K] (Q t.a').cls y hy) 0, map_zero, map_zero]`. Conclude with `(((CrystallineSemistableComparison.P.cls_surj _ _).2.1 _ hw).2 (CrystallineSemistableComparison.Auxff.memB_left (pr t.ha) t.h x hB y hy)).symm`. Establish `: Subsingleton ((T c).H n)` using `hT c n hn`. Establish `hs : ∀ t : Idx c n, Subsingleton ((P t.a).H t.i ⊗[K] (Q t.a').H t.j)` using `fun t => by`. Distinguish the cases in `hi : t.i = t.a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `offR t fun hj => hn ?_` and prove the remaining obligations. Use `t.ha` as an intermediate fact. Use `t.h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `offL t hi`.
-
-Establish `: Subsingleton (⨁ t : Idx c n, (P t.a).H t.i ⊗[K] (Q t.a').H t.j)` using `inferInstance`. Conclude with `⟨LinearEquiv.ofSubsingleton _ _, fun _ _ _ _ _ _ => Subsingleton.elim _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kunE_of_diag {P Q T : ℕ → Cx.{w} K} (pr : ∀ {a a' c : ℕ}, a + a' = c → CxPairing (P a) (Q a') (T c))
     (hP : ∀ a j, j ≠ a → Subsingleton ((P a).H j)) (hQ : ∀ a j, j ≠ a → Subsingleton ((Q a).H j))
@@ -186,7 +184,7 @@ theorem kunE_of_diag {P Q T : ℕ → Cx.{w} K} (pr : ∀ {a a' c : ℕ}, a + a'
     exact ⟨LinearEquiv.ofSubsingleton _ _, fun _ _ _ _ _ _ => Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-The claim follows from `kunE_of_diag (P := fun a => CH.cx (U₁.ι ⋙ E.F₁ a)) (Q := fun a => CH.cx (U₂.ι ⋙ E.F₂ a)) (T := fun a => CH.cx (U₃.ι ⋙ E.F₃ a)) (fun {a a' c} ha => E.pr U₁ U₂ U₃ h₁ h₂ ha) hP hQ hT hE`.
+A detailed English derivation is pending.
 -/
 theorem xd_kun (E : XD K) (U₁ : ObjectProperty E.C₁) (U₂ : ObjectProperty E.C₂) (U₃ : ObjectProperty E.D)
     (h₁ : ∀ T, U₃ T → U₁ (E.L₁.obj T)) (h₂ : ∀ T, U₃ T → U₂ (E.L₂.obj T))
@@ -204,7 +202,7 @@ theorem xd_kun (E : XD K) (U₁ : ObjectProperty E.C₁) (U₂ : ObjectProperty 
     (fun {a a' c} ha => E.pr U₁ U₂ U₃ h₁ h₂ ha) hP hQ hT hE
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cls_eq {R : Type} [CommRing R] (L : Cx.{w} R) {n : ℕ} {x y : L.X n} (e : x = y) (hx : L.d n x = 0) (hy : L.d n y = 0) :
     L.cls x hx = L.cls y hy := by
@@ -230,11 +228,11 @@ end
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `_ hA hK K _ _ X X' P q q' p₁ p₂ hP V V' d d' hc hc' h₁ h₂`. Take `⟨hZ, hE⟩` from `hK K X X' P q q' p₁ p₂ hP V V' d d' hc hc'`. Use `xd_kun (hodgeXD q q' p₁ p₂ hP.w.symm) _ _ _ h₁ h₂ ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `fun a j hj => (hA K X q V d hc a).1 j hj`. Conclude with `fun a j hj => (hA K X' q' V' d' hc' a).1 j hj`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun a j hj => (hA K P (p₁ ≫ q) _ (d + d') hZ a).1 j hj`. Introduce `c`. Take `⟨e, he⟩` from `hE c h₁ h₂`. Use `⟨e, fun a hc x y hx hy hz => ?_⟩` and prove the remaining obligations. Establish `eq` using `hodge_pr_eq q q' p₁ p₂ hP.w.symm (inU q V) (inU q' V') (inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V')) h₁ h₂ hc hc x y`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hz' : (CH.cx ((inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V')).ι ⋙ G (p₁ ≫ q) c)).d c (cupU (p₁ ≫ q) _ hc hc ((morV p₁ rfl a h₁).pullC a x) ((morV p₂ hP.w.symm (c - a) h₂).pullC (c - a) y)) = 0`. Rewrite using `[← eq]`. Conclude with `hz`. Conclude with `(he a hc x y hx hy hz').trans (cls_eq _ eq.symm _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kun_aff : SiteLaws → AffOm → KunAff → ∀ (K : Type) [Field K] [CharZero K] (X X' P : Scheme.{0}) (q : X ⟶ Spec (CommRingCat.of K)) (q' : X' ⟶ Spec (CommRingCat.of K)) (p₁ : P ⟶ X) (p₂ : P ⟶ X') (hP : IsPullback p₁ p₂ q q') (V : X.Opens) (V' : X'.Opens) (d d' : ℕ), Nonempty (Coord q V d) → Nonempty (Coord q' V' d') → ∀ (h₁ : ∀ T, inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V') T → inU q V ((hodgeXD q q' p₁ p₂ hP.w.symm).L₁.obj T)) (h₂ : ∀ T, inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V') T → inU q' V' ((hodgeXD q q' p₁ p₂ hP.w.symm).L₂.obj T)), (hodgeXD q q' p₁ p₂ hP.w.symm).Kun (inU q V) (inU q' V') (inU (p₁ ≫ q) (p₁ ⁻¹ᵁ V ⊓ p₂ ⁻¹ᵁ V')) h₁ h₂  := by
   intro _ hA hK K _ _ X X' P q q' p₁ p₂ hP V V' d d' hc hc' h₁ h₂

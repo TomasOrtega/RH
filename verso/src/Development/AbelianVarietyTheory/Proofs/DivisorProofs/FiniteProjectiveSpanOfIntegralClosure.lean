@@ -6,7 +6,7 @@ namespace GlobalTheory
 
 open KaehlerDifferential in
 /- English proof (translation)
-Take `⟨s, hs⟩` from `Module.projective_def'.mp (inferInstance : Module.Projective A M)`. Establish `: Module.Projective R (M →₀ A)` using `Module.Projective.of_equiv (finsuppLequivDFinsupp R : (M →₀ A) ≃ₗ[R] Π₀ _ : M, A).symm`. Conclude with `Module.Projective.of_split ((s.restrictScalars R)) ((Finsupp.linearCombination A id).restrictScalars R) (LinearMap.ext fun m => LinearMap.congr_fun hs m)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem projective_of_isScalarTower_projective (R A M : Type) [CommRing R] [CommRing A] [Algebra R A]
     [AddCommGroup M] [Module R M] [Module A M] [IsScalarTower R A M] [Module.Projective R A]
@@ -22,23 +22,17 @@ private theorem projective_of_isScalarTower_projective (R A M : Type) [CommRing 
 open KaehlerDifferential in
 
 /- English proof (translation)
-Introduce `k F K _ _ _ _ _ _ _ A B hB hfin hproj W _ _ _ _ S hS hfinB hprojB`. Establish `hAB : ∀ a : A, algebraMap A K a ∈ B` using `fun a => (hB _).2 ((integralClosure A K).algebraMap_mem a)`. Use `letI : Algebra A B := ((algebraMap A K).codRestrict B hAB).toAlgebra`. Establish `hcoe : ∀ (a : A) (b : B), ((a • b : B) : K) = algebraMap F K (a : F) * (b : K)`. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression. Use `haveI : IsScalarTower A B W := ⟨fun a b w => by`. Rewrite using `[Subalgebra.smul_def, hcoe, mul_smul, algebraMap_smul, Subalgebra.smul_def, Subalgebra.smul_def]⟩`. Set `ψ : B ≃ₗ[A] integralClosure A K` to `{ toFun := fun b => ⟨b, (hB b).1 b.2⟩ invFun := fun c => ⟨c, (hB c).2 c.2⟩ map_add' := fun _ _ => rfl map_smul' := fun a b => Subtype.ext <| by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcoe, RingHom.id_apply, SetLike.val_smul, Algebra.smul_def]`. Both sides reduce to the same expression. Use `left_inv := fun _ => rfl`. Use `right_inv := fun _ => rfl }`. Use `haveI : Module.Finite A B := Module.Finite.equiv ψ.symm`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `haveI : Module.Projective A B := Module.Projective.of_equiv ψ.symm`. Use `haveI : Module.Finite A (Submodule.span B S) := Module.Finite.trans B _`. Use `haveI : Module.Projective A (Submodule.span B S) := projective_of_isScalarTower_projective A B _`. Establish `hclosed : ∀ c : B, ∀ w ∈ Submodule.span A S, c • w ∈ Submodule.span A S`. Introduce `c w hw`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem s hs`. Rewrite using `[Subalgebra.smul_def]`. Conclude with `Submodule.subset_span (hS c c.2 s hs)`. Consider the case `zero => rw [smul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add v w _ _ hv hw => rw [smul_add]`. Conclude with `Submodule.add_mem _ hv hw`. Consider the case `smul a v _ hv => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ a hv`.
-
-Set `SB : Submodule B W` to `{ carrier := Submodule.span A S add_mem' := Submodule.add_mem _ zero_mem' := Submodule.zero_mem _ smul_mem' := fun c w hw => hclosed c w hw }`. Establish `hsets : ∀ w, w ∈ Submodule.span A S ↔ w ∈ Submodule.span B S`. Introduce `w`. Prove the components needed by the constructor for the conclusion. Introduce `hw`.
-
-Establish `hle : Submodule.span A S ≤ (Submodule.span B S).restrictScalars A` using `Submodule.span_le.mpr fun s hs => Submodule.subset_span hs`. Conclude with `hle hw`. Introduce `hw`. Establish `hle : Submodule.span B S ≤ SB` using `Submodule.span_le.mpr fun s hs => (Submodule.subset_span hs : s ∈ Submodule.span A S)`. Conclude with `hle hw`.
-
-Set `χ : Submodule.span A S ≃ₗ[A] Submodule.span B S` to `{ toFun := fun w => ⟨w, (hsets w).1 w.2⟩ invFun := fun w => ⟨w, (hsets w).2 w.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl left_inv := fun _ => rfl right_inv := fun _ => rfl }`. Conclude with `⟨Module.Finite.equiv χ.symm, Module.Projective.of_equiv χ.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.finite_projective_span_of_integralClosure :
     ∀ (k F K : Type) [Field k] [Field F] [Field K] [Algebra k F] [Algebra k K] [Algebra F K] [IsScalarTower k F K] (A : Subalgebra k F) (B : Subalgebra k K), (∀ y : K, y ∈ B ↔ y ∈ integralClosure A K) → Module.Finite A (integralClosure A K) → Module.Projective A (integralClosure A K) → ∀ (W : Type) [AddCommGroup W] [Module K W] [Module F W] [IsScalarTower F K W] (S : Set W), (∀ c ∈ B, ∀ w ∈ S, (c : K) • w ∈ S) → Module.Finite B (Submodule.span B S) → Module.Projective B (Submodule.span B S) → Module.Finite A (Submodule.span A S) ∧ Module.Projective A (Submodule.span A S) := by

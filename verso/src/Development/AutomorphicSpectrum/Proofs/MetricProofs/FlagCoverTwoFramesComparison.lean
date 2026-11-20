@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.PB.CovMap.LocImg.Ind
 
 /- English proof (translation)
-Distinguish the cases in `h : (i : ℕ) + 1 ≤ j`. Use `⟨⟨N - j, by have := i.2; omega⟩, ?_⟩` and prove the remaining obligations. Simplify using `[stepCols, h]`. Use linear arithmetic over natural numbers and integers. Use `⟨⟨0, by have := i.2; omega⟩, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[stepCols, h]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem stepCols_nonempty {N j : ℕ} (hj : j ≤ N) (i : Fin N) : (stepCols N j i).Nonempty := by
   by_cases h : (i : ℕ) + 1 ≤ j
@@ -37,9 +37,9 @@ section SlopeTestRemainingChoices
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : Type} [Field Ω]
 
 /- English proof (translation)
-Introduce `h`. Apply `hX` to reduce the goal to its premises. Establish `h1 : (X q : MRing ι) ∈ mCoordIdeal x` using `by show mConeMap x (X q) = 0`. Rewrite using `[mConeMap, aeval_X, h, map_zero, zero_mul]`. Establish `h2` using `hz.2 _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : z q = 0` using `by simpa using h2`. Use `show mConeMap z (X q) = 0`. Rewrite using `[mConeMap, aeval_X, h3, map_zero, zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coord_ne {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal x)) {q : Σ k, ι k}
     (hX : (X q : MRing ι) ∉ mCoordIdeal z) : x q ≠ 0 := by
@@ -54,7 +54,7 @@ theorem coord_ne {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} (hz : z �
   rw [mConeMap, aeval_X, h3, map_zero, zero_mul]
 
 /- English proof (translation)
-Introduce `a b h` and use `by show valAt x (A a b) z = 0 rw [hA a b h] exact map_zero (regVal x hz)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem valMat_blockDiag {N j : ℕ} {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal x))
     {A : Matrix (Fin N) (Fin N) Ω} (hA : IsBlockDiag j A) : IsBlockDiag j (valMat x z A) := fun a b h => by
@@ -63,7 +63,7 @@ theorem valMat_blockDiag {N j : ℕ} {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k)
   exact map_zero (regVal x hz)
 
 /- English proof (translation)
-Establish `e : A⁻¹ * C = (A⁻¹ * B) * (B⁻¹ * C)`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_left _ _ (isUnit_iff_ne_zero.2 hB)]`. Rewrite using `[e]`. Conclude with `regMat_mul hz h₁ h₂`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reg_chain {N : ℕ} {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts (mCoordIdeal x))
     {A B C : Matrix (Fin N) (Fin N) Ω} (hB : B.det ≠ 0)
@@ -78,15 +78,13 @@ theorem reg_chain {N : ℕ} {x : (Σ k, ι k) → Ω} {z : (Σ k, ι k) → ℂ}
 variable {Φ : Type} [Field Φ] {y : (Σ k, ι k) → Φ} {Ψ : Type} {N j : ℕ}
 
 /- English proof (translation)
-Establish `hi` using `GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le`. Establish `hz : ∀ I', ¬ IsStepRows N j p.2 I' → minorIJ g I' (stepCols N j p.2) = 0` using `fun I' h => (hi.2.1 g I' hg h).resolve_right (stepCols_nonempty M.j_le p.2).ne_empty`. Establish `hv : ∀ I', IsStepRows N j p.2 I' → ∑ m : ι k, valAt M.x (F.u' I ⟨k, m⟩) b * valAt M.x (F.u ⟨k, m⟩ I') b = if I = I' then 1 else 0`. Introduce `I' hI'`. Establish `h1` using `hF.2.2.1 p k hk I I' hI hI'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `(reg_sum hb Finset.univ (fun m : ι k => F.u' I ⟨k, m⟩ * F.u ⟨k, m⟩ I') fun m _ => ValRing.regAt_mul (hG.2.1 _ _).2 (hG.2.1 _ _).1).2`. Rewrite `h2` using `[h1]`. Rewrite using `[Finset.sum_congr rfl fun m _ => (reg_mul hb (hG.2.1 _ _).2 (hG.2.1 _ _).1).2.symm, ← h2]`. Use `split_ifs`. Conclude with `map_one (regVal M.x hb)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Conclude with `map_zero (regVal M.x hb)`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [plk, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => (mul_assoc _ _ _).symm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = ∑ I', if I = I' then minorIJ g I' (stepCols N j p.2) else 0 := Finset.sum_congr rfl fun I' _ => by`. Distinguish the cases in `h : IsStepRows N j p.2 I'`. Apply the tactic sequence `rw [hv I' h]; split_ifs <;> simp`. Rewrite using `[hz I' h]`. Simplify using the standard rewrite rules.
-
-Use `_ = minorIJ g I (stepCols N j p.2) := by simp`.
+A detailed English derivation is pending.
 -/
 theorem minor_of_plk (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.blk} {b : (Σ k, baseIdx ι M.blk k) → ℂ}
     (hb : b ∈ mcPts (mCoordIdeal M.x)) (hF : M.IsFrame F) (hG : M.GoodAt F (mCoordIdeal b)) {p : Ψ × Fin N} {k : K}
@@ -120,9 +118,9 @@ theorem minor_of_plk (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.blk}
     _ = minorIJ g I (stepCols N j p.2) := by simp
 
 /- English proof (translation)
-Distinguish the cases in `hI : IsStepRows N j p.2 I`. Rewrite using `[← minor_of_plk M hb hF hG hk hI hg, ← minor_of_plk M hb hF hG hk hI hg₂, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[h m]`. Expand and normalize the polynomial expressions, which then agree.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hi` using `GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le`. Establish `hne` using `(stepCols_nonempty M.j_le p.2).ne_empty`. Rewrite using `[(hi.2.1 g I hg hI).resolve_right hne, (hi.2.1 g₂ I hg₂ hI).resolve_right hne, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem minor_eq_of_plk (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.blk} {b : (Σ k, baseIdx ι M.blk k) → ℂ}
     (hb : b ∈ mcPts (mCoordIdeal M.x)) (hF : M.IsFrame F) (hG : M.GoodAt F (mCoordIdeal b)) {p : Ψ × Fin N} {k : K}
@@ -140,27 +138,25 @@ theorem minor_eq_of_plk (M : FlagModel y Ψ N j) {F : FrameData ι Ψ N M.Ω M.b
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv b F₁' F₂' F₁ F₂ H₁ H₂ hb hF₁' hF₂' hF₁ hF₂ hG₁' hG₂' hG₁ hG₂ hH₁ hH₂ hyp p k hk`. Take `⟨k', hk'⟩` from `exists_blk_cover M' hk`. Take `⟨hbv, hpt⟩` from `GlobalTheory.T.flag_cover_base_point_in_points K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv b hb`. Establish `hi` using `GlobalTheory.T.block_diagonal_minor_vanishing ℂ N j p.2 M.j_le`. Establish `dT₁'` using `(hF₁'.1 p.1).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dP : ∀ F : FrameData ι Ψ N M.Ω M.blk, M.IsFrame F → ((F.T p.1).map Cv.φ).det ≠ 0` using `fun F hF => by`. Establish `e : ((F.T p.1).map Cv.φ).det = Cv.φ (F.T p.1).det` using `(RingHom.map_det Cv.φ (F.T p.1)).symm`. Rewrite using `[e]`. Conclude with `(map_ne_zero Cv.φ).2 (hF.1 p.1).2`. Establish `r₁₁` using `fun a c => Cv.agree b hb F₁' F₁ hF₁' hF₁ hG₁' hG₁ p.1 a c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r₁₂` using `fun a c => Cv.agree b hb F₁' F₂ hF₁' hF₂ hG₁' hG₂ p.1 a c`. Establish `r₂₁` using `fun a c => Cv.agree b hb F₂' F₁ hF₂' hF₁ hG₂' hG₁ p.1 a c`. Establish `r₂₂` using `fun a c => Cv.agree b hb F₂' F₂ hF₂' hF₂ hG₂' hG₂ p.1 a c`. Establish `c₁` using `reg_chain hb (dP F₁ hF₁) (fun a c => (r₁₁ a c).2) (fun a c => (r₂₁ a c).1)`. Establish `c₂` using `reg_chain hb (dP F₁ hF₁) (fun a c => (r₂₁ a c).2) (fun a c => (r₁₁ a c).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₃` using `reg_chain hb dT₁' (fun a c => (r₁₁ a c).1) (fun a c => (r₁₂ a c).2)`. Establish `c₄` using `reg_chain hb dT₁' (fun a c => (r₁₂ a c).1) (fun a c => (r₁₁ a c).2)`. Establish `c₅` using `reg_chain hb dT₁' (fun a c => (r₁₁ a c).1) c₁.1`. Establish `c₆` using `reg_chain hb (dP F₂ hF₂) c₃.1 (fun a c => (r₂₂ a c).1)`. Establish `eid : ∀ A : Matrix (Fin N) (Fin N) M'.Ω, A.map (RingHom.id M'.Ω) = A` using `fun A => by ext; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c', hc'0, hc'⟩` from `GlobalTheory.T.frame_change_under_field_map K' ι' Φ' y' Ψ N j M' (NonPluckerBlocks M'.blk) (baseIdx ι' M'.blk) M'.Ω M'.x (RingHom.id _) b F₁' F₂' hb hF₁' hF₂' (fun k => coord_ne hb (hG₁'.1 k)) (fun k => coord_ne hb (hG₂'.1 k)) p k' hk' (fun m I => ⟨(hG₁'.2.1 _ _).1, (hG₂'.2.1 _ _ …`. Simplify using `only [eid, RingHom.id_apply] at hc'`. Take `⟨a, ha0, hA⟩` from `hyp p k' hk'`. Take `⟨S', hS'⟩ : ∃ S', S' = valMat M'.x b ((F₁'.T p.1)⁻¹ * F₂'.T p.1)` from `⟨_, rfl⟩`. Rewrite `hc'` using `[← hS']`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `bdS' : IsBlockDiag j S'` using `hS' ▸ valMat_blockDiag hb (((hF₁'.1 p.1).1.inv (isUnit_iff_ne_zero.2 dT₁')).mul (hF₂'.1 p.1).1)`. Take `⟨μ, hμd⟩ : ∃ μ, μ = c' * a⁻¹` from `⟨_, rfl⟩`. Establish `hμ : μ ≠ 0` using `hμd ▸ mul_ne_zero hc'0 (inv_ne_zero ha0)`. Establish `e₁ : ∀ m : ι' k', plk M' F₁' b p.2 ⟨k', m⟩ (S' * H₂ p.1) = μ * plk M' F₁' b p.2 ⟨k', m⟩ (H₁ p.1)` using `fun m => by`. Rewrite using `[hA m, hμd, ← mul_assoc, mul_assoc c', inv_mul_cancel₀ ha0, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hc' (H₂ p.1) (hH₂ p.1) m`. Establish `e₂` using `minor_eq_of_plk M' hb hF₁' hG₁' hk' (bdS'.mul (hH₂ p.1)) (hH₁ p.1) e₁`. Take `⟨S, hS⟩ : ∃ S, S = valMat M'.x b (((F₁.T p.1).map Cv.φ)⁻¹ * (F₂.T p.1).map Cv.φ)` from `⟨_, rfl⟩`. Establish `eT : Cv.trans F₁' F₁ b p.1 * S' = S * Cv.trans F₂' F₂ b p.1`. Rewrite using `[hS', hS]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `c₅.2.symm.trans c₆.2`. Establish `e₃ : ∀ I, minorIJ (Cv.trans F₁' F₁ b p.1 * H₁ p.1) I (stepCols N j p.2) = μ⁻¹ * minorIJ (S * (Cv.trans F₂' F₂ b p.1 * H₂ p.1)) I (stepCols N j p.2)` using `fun I => by`. Rewrite using `[← Matrix.mul_assoc S, ← eT, Matrix.mul_assoc, hi.1 _ (S' * H₂ p.1), hi.1 _ (H₁ p.1), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I' _ => ?_` and prove the remaining obligations. Rewrite using `[e₂ I']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Take `⟨c, hc0, hc⟩` from `GlobalTheory.T.frame_change_under_field_map K ι Φ y Ψ N j M (NonPluckerBlocks M'.blk) (baseIdx ι' M'.blk) M'.Ω M'.x Cv.φ b F₁ F₂ hb hF₁ hF₂ (fun k => coord_ne hbv (hG₁.1 k)) (fun k => coord_ne hbv (hG₂.1 k)) p k hk (fun m I => ⟨(hpt _ (hG₁.2.1 _ _).1).1, (hpt _ (hG₂.2.1 _ _).1).1 …`. Rewrite `hc` using `[← hS]`. Establish `bdT₂` using `(GlobalTheory.T.flag_cover_frame_compatibility K ι Φ y Ψ N j M K' ι' Φ' y' M' Cv b F₂' F₂ hb hF₂' hF₂ hG₂' hG₂ p.1).1`. Establish `hval : ∀ F : FrameData ι Ψ N M.Ω M.blk, M.GoodAt F (mCoordIdeal (b ∘ Cv.v)) → ∀ q I, valAt M'.x (Cv.φ (F.u q I)) b = valAt M.x (F.u q I) (b ∘ Cv.v)` using `fun F hG q I => (hpt _ (hG.2.1 q I).1).2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨μ⁻¹ * c, mul_ne_zero (inv_ne_zero hμ) hc0, fun m => ?_⟩` and prove the remaining obligations. Establish `h3` using `hc (Cv.trans F₂' F₂ b p.1 * H₂ p.1) (bdT₂.mul (hH₂ p.1)) m`. Simplify using `only [hval F₁ hG₁, hval F₂ hG₂] at h3`. Simplify using `only [plk]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun I _ => by rw [e₃ I]; ring`. Use `_ = _ := by rw [h3, mul_assoc]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plk_moved_indep : ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Φ : Type) [Field Φ] (y : (Σ k, ι k) → Φ) (Ψ : Type) [Fintype Ψ] [DecidableEq Ψ] (N j : ℕ) (M : FlagModel y Ψ N j) (K' : Type) [Fintype K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (Φ' : Type) [Field Φ'] (y' : (Σ k, ι' k) → Φ') (M' : FlagModel y' Ψ N j) (Cv : FlagCover M' M) (b : (Σ k, baseIdx ι' M'.blk k) → ℂ) (F₁' F₂' : FrameData ι' Ψ N M'.Ω M'.blk) (F₁ F₂ : FrameData ι Ψ N M.Ω M.blk) (H₁ H₂ : Ψ → Matrix (Fin N) (Fin N) ℂ), b ∈ mcPts (mCoordIdeal M'.x) → M'.IsFrame F₁' → M'.IsFrame F₂' → M.IsFrame F₁ → M.IsFrame F₂ → M'.GoodAt F₁' (mCoordIdeal b) → M'.GoodAt F₂' (mCoordIdeal b) → M.GoodAt F₁ (mCoordIdeal (b ∘ Cv.v)) → M.GoodAt F₂ (mCoordIdeal (b ∘ Cv.v)) → (∀ τ, IsBlockDiag j (H₁ τ)) → (∀ τ, IsBlockDiag j (H₂ τ)) → (∀ (p : Ψ × Fin N) (k' : K'), M'.blk p = some k' → ∃ a : ℂ, a ≠ 0 ∧ ∀ m' : ι' k', CovMap.LocImg.plk M' F₁' b p.2 ⟨k', m'⟩ (H₁ p.1) = a * CovMap.LocImg.plk M' F₂' b p.2 ⟨k', m'⟩ (H₂ p.1)) → ∀ (p : Ψ × Fin N) (k : K), M.blk p = some k → ∃ a : ℂ, a ≠ 0 ∧ ∀ m : ι k, CovMap.LocImg.plk M F₁ (b ∘ Cv.v) p.2 ⟨k, m⟩ (Cv.trans F₁' F₁ b p.1 * H₁ p.1) = a * CovMap.LocImg.plk M F₂ (b ∘ Cv.v) p.2 ⟨k, m⟩ (Cv.trans F₂' F₂ b p.1 * H₂ p.1) := by
   intro K _ ι _ Φ _ y Ψ _ _ N j M K' _ ι' _ Φ' _ y' M' Cv b F₁' F₂' F₁ F₂ H₁ H₂ hb hF₁' hF₂' hF₁ hF₂ hG₁' hG₂' hG₁ hG₂

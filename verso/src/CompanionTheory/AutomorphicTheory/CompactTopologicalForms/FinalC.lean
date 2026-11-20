@@ -10,14 +10,14 @@ open Formalism.FourierDecayAlt Formalism.QuantumDeterminants Filter Topology Mea
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.BpCpt.NFId.nfTopIdAll_of_diag (CompanionTheory.NFCpt.top_form_all_compact CutSE.actual_compact_theorem) top_pointwise_all_levels_holds h3`.
+A detailed English derivation is pending.
 -/
 theorem nfTopIdAll_of_dom (h3 : NFTopDomAll) : NFTopIdAll :=
   CompanionTheory.BpCpt.NFId.nfTopIdAll_of_diag (CompanionTheory.NFCpt.top_form_all_compact CutSE.actual_compact_theorem)
     top_pointwise_all_levels_holds h3
 
 /- English proof (translation)
-The claim follows from `CompanionTheory.NFCpt.nfTopDomAll_of_C hT LimitNormalForms.normal_form_hat_product_bessel LimitNormalForms.normal_form_jacobi_cutoff`.
+A detailed English derivation is pending.
 -/
 theorem nfTopDomAll_of_tieC (hT : CompanionTheory.NFCpt.NFTieHatC) : NFTopDomAll :=
   CompanionTheory.NFCpt.nfTopDomAll_of_C hT LimitNormalForms.normal_form_hat_product_bessel LimitNormalForms.normal_form_jacobi_cutoff
@@ -25,9 +25,9 @@ theorem nfTopDomAll_of_tieC (hT : CompanionTheory.NFCpt.NFTieHatC) : NFTopDomAll
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Establish `hA : P5.ThmPActualCpt` using `CutSE.actual_compact_theorem`. Take `⟨C₄, c₃, Cc, Cc', Cc'', h⟩` from `thmBpAt_main4Cpt hA CompanionTheory.NFCpt.top_form_all_compact top_pointwise_all_levels_holds h3 (nfTopIdAll_of_dom h3) Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Use `⟨C₄, c₃, Cc, Cc', Cc'', ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p f b Λ A₀ p₀ χ nn Y K N hb hΛ hΛb hT hp₀ hK hKN hχ hnn hCb hf hfA hth1 hth2 hth3 hth4 hN2 hexp hWG hLG hBd`. Establish `hid : B.CkOn ⊤ (B.GV P.k P.r) (fun _ : B.Mat P.k P.r => ContinuousLinearMap.id ℂ Wq)` using `fun g₀ _ => ⟨Set.univ, fun _ => ContinuousLinearMap.id ℂ Wq, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h Wp Wq P p f b Λ A₀ p₀ χ nn Y K N hb hΛ hΛb hT hp₀ hK hKN hχ hnn hCb hf hfA hth1 hth2 hth3 hth4 hN2 hexp hWG hLG (blockGrowthBound_apx_cutF hA p nn χ _ Y K N Cb hCb hχ (ckOn_fpm p p₀ hf hid) hnn) hBd`.
+A detailed English derivation is pending.
 -/
 theorem thmBpAt_dom (h3 : NFTopDomAll)
     (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :
@@ -76,7 +76,7 @@ noncomputable section
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Establish `hA : P5.ThmPActualCpt` using `CutSE.actual_compact_theorem`. Take `⟨C₄, c₃, Cc, Cc', Cc'', h⟩` from `thmBpAt_eq_NFRCpt hA CompanionTheory.NFCpt.top_form_all_compact top_pointwise_all_levels_holds h3 (nfTopIdAll_of_dom h3) Cb C₃ CΛ C₀ hC₃ hCΛ hC₀`. Use `⟨C₄, c₃, Cc, Cc', Cc'', ?_⟩` and prove the remaining obligations. Introduce `P Wp Wq _ _ _ _ _ _ p f b n₀ S Λ A₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ hK hKN hχ hnnp hnnm hDDp hDDm hf hfA hth1 hth2 hth3 hth4 hN2 hexp hWGp hLGp hWGm hLGm hBdp hBdm`. Conclude with `h P Wp Wq p f b n₀ S Λ A₀ p₀ χ nnp nnm Yp Ym K N hb hΛ hΛb hT hn₀ hp₀ hK hKN hχ hnnp hnnm hDDp hDDm hf hfA hth1 hth2 hth3 hth4 hN2 hexp hWGp hLGp hWGm hLGm (blockGrowthBound_apx_cutF hA S.pp nnp χ _ Yp K N Cb hDDp hχ (ckOn_fpmSh S.pp p₀ hf (ckOn_of_polyOp S.polyP)) hnnp) (blockGr …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem thmBpAt_eqR_dom (h3 : NFTopDomAll)
     (Cb C₃ CΛ C₀ : ℝ) (hC₃ : 0 ≤ C₃) (hCΛ : 0 ≤ CΛ) (hC₀ : 1 / 2 ≤ C₀) :

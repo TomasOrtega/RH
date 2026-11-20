@@ -8,45 +8,43 @@ namespace PI.VolStabS
 open MeasureTheory Topology
 
 /- English proof (translation)
-Introduce `n m μ hμ f hf x0 hx0`. Set `A` to `fderiv ℝ f x0`. Take `⟨B, hB⟩` from `A.exists_rightInverse_of_surjective (LinearMap.range_eq_top.2 hx0)`. Establish `hRI : Function.RightInverse B A` using `fun y => by`. Simplify using `using congrArg (fun L : (Fin m → ℝ) →L[ℝ] (Fin m → ℝ) => L y) hB`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `T` to `ContinuousLinearEquiv.equivOfRightInverse A B hRI`. Establish `hT1 : ∀ x, (T x).1 = A x` using `fun x => rfl`. Set `Θ : (Fin n → ℝ) → (Fin n → ℝ)` to `fun x => T.symm (f x, (T x).2)`. Establish `hΘc : ContDiff ℝ 1 Θ` using `T.symm.contDiff.comp (hf.prodMk (contDiff_snd.comp T.contDiff))`. Establish `hfA : ∀ x, A (Θ x) = f x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Rewrite using `[← hT1]`. Simplify using `[Θ]`. Establish `hd : ∀ x, HasFDerivAt Θ (fderiv ℝ Θ x) x` using `fun x => ((hΘc.differentiable one_ne_zero) x).hasFDerivAt`. Establish `hid : fderiv ℝ Θ x0 = ContinuousLinearMap.id ℝ (Fin n → ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `P` to `(ContinuousLinearMap.snd ℝ (Fin m → ℝ) A.ker).comp T.toContinuousLinearMap`. Establish `hP : HasFDerivAt (fun x => (T x).2) P x0` using `P.hasFDerivAt`. Establish `h1 : HasFDerivAt (fun x => (f x, (T x).2)) ((fderiv ℝ f x0).prod P) x0` using `((hf.differentiable one_ne_zero) x0).hasFDerivAt.prodMk hP`. Establish `h2` using `T.symm.toContinuousLinearMap.hasFDerivAt.comp x0 h1`. Rewrite using `[show fderiv ℝ Θ x0 = T.symm.toContinuousLinearMap.comp ((fderiv ℝ f x0).prod P) from h2.fderiv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `ext1 y`. Express the relevant statement in the definitionally equal form `T.symm ((fderiv ℝ f x0) y, (T y).2) = y`. Establish `: ((fderiv ℝ f x0) y, (T y).2) = T y` using `Prod.ext (hT1 y).symm rfl`. Rewrite using `[this, ContinuousLinearEquiv.symm_apply_apply]`. Establish `hs : HasStrictFDerivAt Θ ((ContinuousLinearEquiv.refl ℝ (Fin n → ℝ) : (Fin n → ℝ) ≃L[ℝ] (Fin n → ℝ)) : (Fin n → ℝ) →L[ℝ] (Fin n → ℝ)) x0`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hΘc.contDiffAt.hasStrictFDerivAt (x := x0) one_ne_zero` as an intermediate fact. Rewrite `this` using `[hid]`. Conclude with `this`. Set `PH` to `hs.toOpenPartialHomeomorph Θ`. Establish `hPH : ∀ x, PH x = Θ x` using `fun x => rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `D : (Fin n → ℝ) → ℝ` to `fun x => (fderiv ℝ Θ x).det`. Establish `hDc : Continuous D` using `ContinuousLinearMap.continuous_det.comp (hΘc.continuous_fderiv one_ne_zero)`. Set `N` to `PH.source ∩ {x | D x ≠ 0}`. Establish `hNo : IsOpen N` using `PH.open_source.inter (isOpen_ne_fun hDc continuous_const)`. Establish `hx0N : x0 ∈ N` using `⟨hs.mem_toOpenPartialHomeomorph_source, by show (fderiv ℝ Θ x0).det ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hid, ContinuousLinearMap.det, ContinuousLinearMap.coe_id, LinearMap.det_id]`. Use the proof step `norm_num⟩`. Use `⟨N, hNo, hx0N, A, hx0, fun φ hc hsφ hφN => ?_⟩` and prove the remaining obligations. Set `C` to `PH '' tsupport φ`. Establish `hNsrc : N ⊆ PH.source` using `Set.inter_subset_left`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hCc : IsCompact C` using `hsφ.image_of_continuousOn (PH.continuousOn.mono (hφN.trans hNsrc))`. Set `G : (Fin n → ℝ) → ℝ` to `PH.target.indicator fun z => φ (PH.symm z) / |D (PH.symm z)|`. Establish `hGC : ∀ z, z ∉ C → G z = 0`. Introduce `z hz`. Distinguish the cases in `ht : z ∈ PH.target`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Simplify using `only [G, Set.indicator_of_mem ht]`. Establish `: φ (PH.symm z) = 0`. Assume the negation of the conclusion as `h0`. Conclude with `hz ⟨PH.symm z, subset_tsupport _ h0, PH.right_inv ht⟩`. Rewrite using `[this, zero_div]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[G, ht]`. Establish `hNimg : IsOpen (PH '' N)` using `PH.isOpen_image_of_subset_source hNo hNsrc`. Establish `hCN : C ⊆ PH '' N` using `Set.image_mono hφN`. Establish `hGcont : Continuous G`. Rewrite using `[continuous_iff_continuousAt]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `z`. Distinguish the cases in `hz : z ∈ PH '' N`. Take `⟨x, hxN, rfl⟩` from `hz`. Establish `hxs : x ∈ PH.source` using `hNsrc hxN`. Establish `hev : G =ᶠ[𝓝 (PH x)] fun z => φ (PH.symm z) / |D (PH.symm z)|` using `by filter_upwards [PH.open_target.mem_nhds (PH.map_source hxs)] with z hz`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[G, Set.indicator_of_mem hz]`. Use `ContinuousAt.congr ?_ hev.symm` and prove the remaining obligations. Establish `hsymm : ContinuousAt PH.symm (PH x)` using `PH.continuousAt_symm (PH.map_source hxs)`. Establish `hD0 : D (PH.symm (PH x)) ≠ 0` using `by rw [PH.left_inv hxs]; exact hxN.2`. Conclude with `(hc.continuousAt.comp hsymm).div ((continuous_abs.continuousAt).comp (hDc.continuousAt.comp hsymm)) (abs_ne_zero.2 hD0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hzC : z ∉ C` using `fun h => hz (hCN h)`. Establish `hev : G =ᶠ[𝓝 z] fun _ => 0` using `by filter_upwards [hCc.isClosed.isOpen_compl.mem_nhds hzC] with w hw`. Conclude with `hGC w hw`. Conclude with `(continuousAt_const).congr hev.symm`. Establish `hGs : HasCompactSupport G` using `HasCompactSupport.intro hCc hGC`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨G, hGcont, hGs, fun S hS => ?_⟩` and prove the remaining obligations. Establish `hSm : MeasurableSet S` using `hS.isClosed.measurableSet`. Establish `hNm : MeasurableSet N` using `hNo.measurableSet`. Establish `hJ` using `integral_image_eq_integral_abs_det_fderiv_smul μ hNm (fun x _ => (hd x).hasFDerivWithinAt) (PH.injOn.mono hNsrc) ((A ⁻¹' S).indicator G)`. Establish `hL : ∫ x in Θ '' N, (A ⁻¹' S).indicator G x ∂μ = ∫ v in A ⁻¹' S, G v ∂μ`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[setIntegral_eq_integral_of_forall_compl_eq_zero, integral_indicator (hSm.preimage A.continuous.measurable)]`. Introduce `z hz`. Establish `: G z = 0` using `hGC z fun h => hz (hCN h)`. Simplify using `[Set.indicator, this]`. Establish `hR : ∫ x in N, |(fderiv ℝ Θ x).det| • (A ⁻¹' S).indicator G (Θ x) ∂μ = ∫ v in f ⁻¹' S, φ v ∂μ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `e1 : ∀ x ∈ N, |(fderiv ℝ Θ x).det| • (A ⁻¹' S).indicator G (Θ x) = (f ⁻¹' S).indicator φ x`. Introduce `x hxN`. Establish `hxs : x ∈ PH.source` using `hNsrc hxN`. Establish `ht : Θ x ∈ PH.target` using `PH.map_source hxs`. Establish `hl : PH.symm (Θ x) = x` using `PH.left_inv hxs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts.
 
-Establish `hD : D x ≠ 0` using `hxN.2`. Distinguish the cases in `hfS : f x ∈ S`. Establish `h1 : Θ x ∈ A ⁻¹' S` using `by simp [hfA, hfS]`. Rewrite using `[Set.indicator_of_mem h1, Set.indicator_of_mem (show x ∈ f ⁻¹' S from hfS)]`. Simplify using `only [G, Set.indicator_of_mem ht, hl, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `|D x| * (φ x / |D x|) = φ x`. Clear the denominators using the available nonvanishing facts. Establish `h1 : Θ x ∉ A ⁻¹' S` using `by simp [hfA, hfS]`. Rewrite using `[Set.indicator_of_notMem h1, Set.indicator_of_notMem (show x ∉ f ⁻¹' S from hfS), smul_zero]`. Rewrite using `[setIntegral_congr_fun hNm e1, setIntegral_eq_integral_of_forall_compl_eq_zero, integral_indicator (hSm.preimage (hf.continuous.measurable))]`.
-
-Introduce `x hx`. Establish `: φ x = 0` using `image_eq_zero_of_notMem_tsupport fun h => hx (hφN h)`. Simplify using `[Set.indicator, this]`. Rewrite using `[← hR, ← hL, hJ]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem changeVar_holds : ChangeVar := by
   intro n m μ hμ f hf x0 hx0

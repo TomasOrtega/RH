@@ -5,21 +5,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Bern
 open Finset UpperTheory.V.Bern
 
 /- English proof (translation)
-Introduce `N m k a hN hm`. Set `F : ℕ → ℕ → PowerSeries ℚ` to `fun M c => PowerSeries.mk fun i => bcoef M i c / (i.factorial : ℚ)`. Set `y : PowerSeries ℚ` to `PowerSeries.rescale (N : ℚ) (PowerSeries.exp ℚ)`. Set `E : PowerSeries ℚ` to `PowerSeries.rescale ((N * m : ℕ) : ℚ) (PowerSeries.exp ℚ) - 1`. Establish `hpow : ∀ j : ℕ, y ^ j = PowerSeries.rescale ((j : ℚ) * N) (PowerSeries.exp ℚ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j`. Simplify using `only [y]`. Rewrite using `[← map_pow, PowerSeries.exp_pow_eq_rescale_exp, PowerSeries.rescale_rescale]`. Establish `hE : E = (∑ j ∈ range m, y ^ j) * (y - 1)`. Rewrite using `[geom_sum_mul, hpow]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [E]`. Use `push_cast`. Rewrite using `[mul_comm (m : ℚ)]`. Establish `hE0 : E ≠ 0`. Introduce `h`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (PowerSeries.coeff 1) h`. Simplify using `[E, PowerSeries.coeff_rescale, PowerSeries.coeff_exp] at h1`. Break down `h1 with h1 | h1` into its components or cases. Conclude with `hN.ne' h1`. Conclude with `hm.ne' h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Reduce the argument to an intermediate assertion. Establish an intermediate fact.
 
-It suffices to establish `h : F N a = ∑ j ∈ range m, F (N * m) (a + j * N) by`. Establish `h2` using `congrArg (PowerSeries.coeff k) h`. Rewrite `h2` using `[map_sum]`. Simplify using `only [F, PowerSeries.coeff_mk] at h2`. Rewrite `h2` using `[← Finset.sum_div, div_left_inj' (by positivity)]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Conclude with `h2`. Apply `mul_right_cancel₀ hE0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[b_egf N a hN]`. Use `_ = ∑ j ∈ range m, PowerSeries.X * PowerSeries.rescale ((a + j * N : ℕ) : ℚ) (PowerSeries.exp ℚ) := by`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hpow, mul_assoc, PowerSeries.exp_mul_exp_eq_exp_add]`. Use `push_cast`. Both sides reduce to the same expression.
-
-Use `_ = ∑ j ∈ range m, F (N * m) (a + j * N) * E := by`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[b_egf (N * m) (a + j * N) (Nat.mul_pos hN hm)]`. Use `_ = (∑ j ∈ range m, F (N * m) (a + j * N)) * E := by rw [Finset.sum_mul]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Bern.b_raabe :
     ∀ (N m k a : ℕ), 0 < N → 0 < m → bcoef N k a = ∑ j ∈ range m, bcoef (N * m) k (a + j * N) := by

@@ -11,19 +11,17 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum
 
 /- English proof (translation)
-Introduce `R _ _ _ hR Z π _ k hk`. Take `⟨⟨hN, -, -, hC⟩, -⟩` from `hR`. Use `haveI := hN`. Use `haveI := hC`. Use `haveI : IsAffine Z := isAffine_of_isAffineHom π`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `i : Spec Γ(Z, ⊤) ≅ Z` to `Z.isoSpec.symm`. Take `⟨θ, hθ⟩` from `Spec.map_surjective (i.hom ≫ π)`. Establish `h₁ : θ.hom.Finite`. Rewrite using `[← IsFinite.SpecMap_iff, hθ]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ψ, hψ⟩` from `Spec.map_surjective (k ≫ i.inv)`. Establish `hc : θ ≫ ψ = CommRingCat.ofHom (algebraMap R (Kb R))`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hψ, hθ, Category.assoc, i.inv_hom_id_assoc, hk]`. Simplify using `only [TF, jFK, jK, Over.mk_hom, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[← IsScalarTower.algebraMap_eq]`. Set `_ : Algebra R Γ(Z, ⊤)` to `θ.hom.toAlgebra`. Establish `: Module.Finite R Γ(Z, ⊤)` using `h₁`. Set `φ : Γ(Z, ⊤) →ₐ[R] Kb R` to `⟨ψ.hom, fun r => congr(($hc).hom r)⟩`. Set `S : Subalgebra R (Kb R)` to `φ.range`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : Module.Finite R S` using `Module.Finite.of_surjective φ.rangeRestrict.toLinearMap φ.rangeRestrict_surjective`. Establish `hloc : IsLocalRing S` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.isLocalRing_finite_domain (R := R) S`. Use `⟨S, hfin, hloc, spMap (φ.rangeRestrict : Γ(Z, ⊤) →+* S) ≫ i.hom, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, ← hθ, ← Spec.map_comp]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Conclude with `congrArg Subtype.val (φ.rangeRestrict.commutes r)`. Rewrite using `[← Category.assoc, ← Spec.map_comp]`. Establish `: CommRingCat.ofHom (φ.rangeRestrict : Γ(Z, ⊤) →+* S) ≫ CommRingCat.ofHom (S.val : S →+* Kb R) = ψ`. Use extensionality with `b`.
-
-Both sides reduce to the same expression. Rewrite using `[this, hψ, Category.assoc, i.inv_hom_id, Category.comp_id]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finpt_factor : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], Base R → ∀ (Z : Scheme.{0}) (π : Z ⟶ Sp R) [IsFinite π] (k : Sp (Kb R) ⟶ Z), k ≫ π = (TF (R := R) (Kb R)).hom → ∃ S : Subalgebra R (Kb R), Module.Finite R S ∧ IsLocalRing S ∧ ∃ k₀ : Sp S ⟶ Z, k₀ ≫ π = spMap (algebraMap R S) ∧ spMap (S.val : S →+* Kb R) ≫ k₀ = k := by
   intro R _ _ _ hR Z π _ k hk

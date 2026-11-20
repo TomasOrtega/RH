@@ -11,9 +11,9 @@ open Finset Formalism.HermitianLattices.ZeroFreeRegionGL2 Formalism.HermitianLat
 namespace QH
 
 /- English proof (translation)
-Establish `h` using `(isLittleO_log_rpow_atTop hδ).bound (c := 1 / A) (by positivity)`. Take `⟨Y₀, hY₀⟩` from `Filter.eventually_atTop.1 h`. Use `⟨max Y₀ 1, fun Y hY => ?_⟩` and prove the remaining obligations. Establish `h1` using `hY₀ Y (le_of_max_le_left hY)`. Establish `hY1 : 1 ≤ Y` using `le_of_max_le_right hY`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (Real.log_nonneg hY1), abs_of_nonneg (Real.rpow_nonneg (by linarith) _)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private lemma ev_log (δ A : ℝ) (hδ : 0 < δ) (hA : 0 < A) :
     ∃ Y₀ : ℝ, ∀ Y ≥ Y₀, A * Real.log Y ≤ Y ^ δ := by
@@ -28,13 +28,13 @@ private lemma ev_log (δ A : ℝ) (hδ : 0 < δ) (hA : 0 < A) :
     _ = Y ^ δ := by field_simp
 
 /- English proof (translation)
-Establish `hy0 : 0 < y` using `by linarith`. Establish `key : ∀ a : ℝ, 0 < a → a * Real.log y ≤ y ^ a`. Introduce `a ha`. Establish `h` using `Real.log_le_sub_one_of_pos (Real.rpow_pos_of_pos hy0 a)`. Rewrite `h` using `[Real.log_rpow hy0]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsq : Real.sqrt y = y ^ (1 / 2 : ℝ)` using `Real.sqrt_eq_rpow y`. Establish `hl : 0 ≤ Real.log y` using `Real.log_nonneg hy`. Prove the components needed by the constructor for the conclusion. Use `key (1 / 2) (by norm_num)` as an intermediate fact.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hsq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `key (3 / 10) (by norm_num)`. Establish `h3' : Real.log y ≤ 10 / 3 * y ^ (3 / 10 : ℝ)` using `by linarith`. Establish `hmul : y ^ (1 / 5 : ℝ) * y ^ (3 / 10 : ℝ) = Real.sqrt y`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.rpow_add hy0, hsq]`. Evaluate the numerical expressions. Establish `hs0 : 0 ≤ Real.sqrt y` using `Real.sqrt_nonneg y`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 private lemma sizes (y w : ℝ) (hy : 1 ≤ y) (hw0 : 0 ≤ w) (hw : w ≤ y ^ (1 / 5 : ℝ)) :
     Real.log y ≤ 2 * Real.sqrt y ∧ w * Real.log y ≤ 4 * Real.sqrt y := by
@@ -63,67 +63,63 @@ private lemma sizes (y w : ℝ) (hy : 1 ≤ y) (hw0 : 0 ≤ w) (hw : w ≤ y ^ (
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Take `⟨C1, hC1, hRR⟩` from `RR_le`. Take `⟨C2, hC2, hsP⟩` from `exists_primePowerSum_le_mul_log`. Take `⟨C3, hC3, hsPsq⟩` from `sPsq_le`. Take `⟨C4, hC4, hcN⟩` from `sum_cN_le`. Use `⟨C3 + 25 * C1 ^ 2 + 4 * C2 ^ 2 + 20 * C1 * C2 + C4 ^ 2, by positivity, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ε K hε hε1 hK`. Take `⟨Y1, hY1⟩` from `ev_log (ε / 6) (1600 * K) (by positivity) (by positivity)`. Take `⟨Y2, hY2⟩` from `ev_log (1 / 2) (400 * K) (by norm_num) (by positivity)`. Take `⟨Y3, hY3⟩` from `twistK ε (800 * K) (K + 1) hε (by positivity) (by positivity)`. Use `⟨max (max Y1 Y2) (max Y3 3), fun Y hY U m₀ a₀ hA hp => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hYa : Y1 ≤ Y` using `le_trans (le_trans (le_max_left _ _) (le_max_left _ _)) hY`. Establish `hYb : Y2 ≤ Y` using `le_trans (le_trans (le_max_right _ _) (le_max_left _ _)) hY`. Establish `hYc : Y3 ≤ Y` using `le_trans (le_trans (le_max_left _ _) (le_max_right _ _)) hY`. Establish `hY3' : (3 : ℝ) ≤ Y` using `le_trans (le_trans (le_max_right _ _) (le_max_right _ _)) hY`. Establish `hY0 : 0 < Y` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hY1' : (1 : ℝ) ≤ Y` using `by linarith`. Establish `hLY : 0 ≤ Real.log Y` using `Real.log_nonneg hY1'`. Take `⟨nstar, hn⟩` from `hY3 Y hYc U m₀ a₀ hA`. Use `set Z := (Y ^ K) ^ 400 with hZ`. Establish `hYK1 : 1 ≤ Y ^ K` using `Real.one_le_rpow hY1' (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYK : Y ≤ Y ^ K`. Simplify using `using Real.rpow_le_rpow_of_exponent_le hY1' hK`. Establish `hZY : Y ^ K ≤ Z` using `le_self_pow₀ hYK1 (by norm_num)`. Establish `hZpos : 0 < Z` using `by linarith`. Establish `hlogZ : Real.log Z = 400 * K * Real.log Y`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZ, Real.log_pow, Real.log_rpow hY0]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hZ2 : Z ^ 2 = Real.exp (800 * K * Real.log Y)`. Establish `h : Real.log (Z ^ 2) = 800 * K * Real.log Y`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Real.log_pow, hlogZ]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← h, Real.exp_log (pow_pos hZpos 2)]`. Establish `hZ2' : Z ^ 2 = Y ^ (800 * K)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hZ2, Real.rpow_def_of_pos hY0]`. Put the polynomial expressions in normal form. Establish `hN : ((⌊Z⌋₊ : ℕ) : ℝ) ≤ Z` using `Nat.floor_le hZpos.le`. Establish `hN2 : (((⌊Z⌋₊ ^ 2 : ℕ)) : ℝ) ≤ Z ^ 2`. Use `push_cast`.
+Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Conclude with `pow_le_pow_left₀ (Nat.cast_nonneg _) hN 2`. Establish `hq : ∀ q ∈ Formalism.HermitianLattices.ZeroFreeRegionGL2.PPset m₀ a₀ U, Nat.Prime q ∧ q % m₀ = a₀ % m₀ ∧ ⌊Z⌋₊ ^ 2 < q`. Introduce `q hqP`. Simplify using `only [Formalism.HermitianLattices.ZeroFreeRegionGL2.PPset, Finset.mem_filter, Finset.mem_Icc] at hqP`. Take `⟨⟨hq1, hqU⟩, hqp, hqm, hqs⟩` from `hqP`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨hqp, hqm, ?_⟩` and prove the remaining obligations. Establish `hUf : 0 < ⌊U⌋₊` using `by omega`. Establish `hU1 : 1 ≤ U` using `Nat.floor_pos.1 hUf`. Establish `hU0 : 0 < U` using `by linarith`. Establish `hlo` using `hA.lo`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy1` using `hY1 Y hYa`. Establish `h1 : Z ^ 2 ≤ U ^ (1 / 2 : ℝ)`. Rewrite using `[hZ2, Real.rpow_def_of_pos hU0]`. Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (((⌊Z⌋₊ ^ 2 : ℕ)) : ℝ) < (q : ℝ)` using `by linarith`. Conclude with `h2` after adjusting the coercions. Establish `hs : ∀ s : ℕ, 1 < s → Odd s → Squarefree s → s.Coprime m₀ → s ≤ ⌊Z⌋₊ ^ 2 → s ≠ nstar → |∑ q ∈ Formalism.HermitianLattices.ZeroFreeRegionGL2.PPset m₀ a₀ U, ((jacobiSym (q : ℤ) s : ℤ) : ℝ)| ≤ Y ^ (-(K + 1)) * ((Formalism.HermitianLattices.ZeroFreeRegionGL2.PPset m₀ a₀ U).card : ℝ)`. Introduce `s h1 h2 h3 h4 h5 h6`. Apply `hn s h1 h2 h3 h4 _ h6` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: ((s : ℕ) : ℝ) ≤ (((⌊Z⌋₊ ^ 2 : ℕ)) : ℝ)` using `by exact_mod_cast h5`. Rewrite using `[← hZ2']`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set w := Y ^ (ε / 5) with hw`. Establish `hw1 : 1 ≤ w` using `Real.one_le_rpow hY1' (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `hpw : ∀ p : ℕ, Nat.Prime p → p ∣ m₀ → p ≤ ⌊Z⌋₊ → (p : ℝ) ≤ w`. Introduce `p hpr hd hpN`. Break down `hp p hpr hd with h | h` into its components or cases. Conclude with `h`. Establish `: ((p : ℕ) : ℝ) ≤ ((⌊Z⌋₊ : ℕ) : ℝ)` using `by exact_mod_cast hpN`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hη0 : 0 ≤ Y ^ (-(K + 1))` using `Real.rpow_nonneg hY0.le _`. Establish `hprod : Y ^ K * Y * Y ^ (-(K + 1)) = 1`. Rewrite using `[show Y ^ K * Y * Y ^ (-(K + 1)) = Y ^ (K + 1 + (-(K + 1))) by`. Rewrite using `[Real.rpow_add hY0, Real.rpow_add hY0, Real.rpow_one]]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Introduce `y hy κ hκ`. Take `⟨hYy, hyYK⟩` from `hy`. Establish `hy3 : (3 : ℝ) ≤ y` using `by linarith`. Establish `hy0 : 0 ≤ y` using `by linarith`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hL1 : 1 ≤ Real.log y`. Rewrite using `[Real.le_log_iff_exp_le (by linarith)]`. Combine the linear relations using `[Real.exp_one_lt_d9]`. Establish `hwy : w ≤ y ^ (1 / 5 : ℝ)`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Take `⟨hsz1, hsz2⟩` from `sizes y w (by linarith) (by linarith) hwy`. Establish `hmain` using `meanSq_abs (Formalism.HermitianLattices.ZeroFreeRegionGL2.PPset m₀ a₀ U) m₀ a₀ nstar Z y (Y ^ (-(K + 1))) (C2 * Real.log y) κ hA.eight hA.coprime hy0 hη0 hq hκ (fun p => hsP y hy3 _ p) hs`. Use `le_trans hmain ?_` and prove the remaining obligations. Apply `mul_le_mul_of_nonneg_right _ (Nat.cast_nonneg _)` to reduce the goal to its premises. Use `set L := Real.log y with hLdef`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `set R := RR (cN y) m₀ ⌊Z⌋₊ with hRdef`. Use `set sq := Real.sqrt y with hsqdef`. Establish `hL0 : 0 ≤ L` using `by linarith`. Establish `hsq0 : 0 ≤ sq` using `Real.sqrt_nonneg y`. Establish `hsq2 : sq * sq = y` using `Real.mul_self_sqrt hy0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hsq1 : 1 ≤ sq` using `Real.one_le_sqrt.2 (by linarith)`. Establish `hsqy : sq ≤ y`. Combine the equalities or inequalities in the displayed calculation. Establish `hR0 : 0 ≤ R`. Rewrite using `[hRdef, RR]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Finset.sum_nonneg (fun n _ => cN_nonneg y hy0 n)`. Establish `hRle : R ≤ 5 * C1 * sq`. Use `hRR y hy3 ⌊Z⌋₊ m₀ w hw1 hpw` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Establish `hyL : y ≤ y * L` using `le_mul_of_one_le_right hy0 hL1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA1` using `hsPsq y hy3 ⌊Z⌋₊`. Establish `hR2 : R ^ 2 ≤ 25 * C1 ^ 2 * (y * L)`. Establish `h` using `pow_le_pow_left₀ hR0 hRle 2`. Establish `h' : (5 * C1 * sq) ^ 2 = 25 * C1 ^ 2 * (sq * sq)` using `by ring`. Establish `h3 : 25 * C1 ^ 2 * y ≤ 25 * C1 ^ 2 * (y * L)` using `mul_le_mul_of_nonneg_left hyL (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h` using `[h', hsq2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB2 : 2 * (C2 * L) ^ 2 ≤ 4 * C2 ^ 2 * (y * L)`. Establish `hL2 : L ≤ 2 * y` using `by linarith`. Establish `h1 : L * L ≤ 2 * y * L` using `mul_le_mul_of_nonneg_right hL2 hL0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : C2 ^ 2 * (L * L) ≤ C2 ^ 2 * (2 * y * L)` using `mul_le_mul_of_nonneg_left h1 (sq_nonneg _)`. Establish `h3 : 2 * (C2 * L) ^ 2 = 2 * (C2 ^ 2 * (L * L))` using `by ring`. Establish `h4 : 2 * (C2 ^ 2 * (2 * y * L)) = 4 * C2 ^ 2 * (y * L)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBR : 2 * (C2 * L) * R ≤ 20 * C1 * C2 * (y * L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : 2 * (C2 * L) * R ≤ 2 * (C2 * L) * (5 * C1 * sq)` using `mul_le_mul_of_nonneg_left hRle (by positivity)`. Establish `h2 : L * sq ≤ 2 * y`. Use `mul_le_mul_of_nonneg_right hsz1 hsq0` as an intermediate fact. Rewrite `this` using `[mul_assoc, hsq2]`. Conclude with `this`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : C1 * C2 * (L * sq) ≤ C1 * C2 * (2 * y)` using `mul_le_mul_of_nonneg_left h2 (by positivity)`. Establish `h4 : C1 * C2 * y ≤ C1 * C2 * (y * L)` using `mul_le_mul_of_nonneg_left hyL (by positivity)`. Establish `h5 : 2 * (C2 * L) * (5 * C1 * sq) = 10 * (C1 * C2 * (L * sq))` using `by ring`. Establish `h6 : C1 * C2 * (2 * y) = 2 * (C1 * C2 * y)` using `by ring`. Establish `h7 : 20 * C1 * C2 * (y * L) = 20 * (C1 * C2 * (y * L))` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hS0 : 0 ≤ ∑ n ∈ Finset.Icc 1 ⌊Z⌋₊, cN y n` using `Finset.sum_nonneg (fun n _ => cN_nonneg y hy0 n)`. Establish `hS : ∑ n ∈ Finset.Icc 1 ⌊Z⌋₊, cN y n ≤ C4 * y * (400 * K * Real.log Y)`. Rewrite using `[← hlogZ]; exact hcN y Z hy0 (by linarith)`. Establish `hKL : (400 * K * Real.log Y) ^ 2 ≤ Y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h` using `hY2 Y hYb`. Establish `h0 : 0 ≤ 400 * K * Real.log Y` using `by positivity`. Establish `h'` using `pow_le_pow_left₀ h0 h 2`. Rewrite `h'` using `[← Real.sqrt_eq_rpow, Real.sq_sqrt hY0.le]`. Conclude with `h'`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS2 : (∑ n ∈ Finset.Icc 1 ⌊Z⌋₊, cN y n) ^ 2 ≤ C4 ^ 2 * y ^ 2 * Y`. Establish `h` using `pow_le_pow_left₀ hS0 hS 2`. Establish `h2 : (C4 * y * (400 * K * Real.log Y)) ^ 2 ≤ C4 ^ 2 * y ^ 2 * Y`. Rewrite using `[show (C4 * y * (400 * K * Real.log Y)) ^ 2 = C4 ^ 2 * y ^ 2 * (400 * K * Real.log Y) ^ 2 by ring]`. Conclude with `mul_le_mul_of_nonneg_left hKL (by positivity)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hη1 : y * Y * Y ^ (-(K + 1)) ≤ 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hηt : Y ^ (-(K + 1)) * (∑ n ∈ Finset.Icc 1 ⌊Z⌋₊, cN y n) ^ 2 ≤ C4 ^ 2 * (y * L)`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hA1' : ∑ p ∈ Finset.Icc 1 ⌊Z⌋₊ with Nat.Prime p, sP (cN y) ⌊Z⌋₊ p ^ 2 ≤ C3 * (y * L)`. Establish `: C3 * y * L = C3 * (y * L)` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem meanSqK :
     ∃ C : ℝ, 0 < C ∧ ∀ ε K : ℝ, 0 < ε → ε ≤ 1 → 1 ≤ K → ∃ Y₀ : ℝ, ∀ Y ≥ Y₀, ∀ (U : ℝ) (m₀ a₀ : ℕ),

@@ -19,7 +19,7 @@ variable {D : D7} {n m : ℕ}
 def rr (m n : ℕ) : ℝ := ((Module.finrank ℝ (Fin m → Fin n → ℂ) + 1 : ℕ) : ℝ)
 
 /- English proof (translation)
-Establish `: (volume : Measure (Fin n → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Establish `: (volume : Measure (Fin m → Fin n → ℂ)).IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`. Apply `integrable_one_add_norm` to reduce the goal to its premises. Unfold `rr`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -32,15 +32,15 @@ theorem integrable_rho : Integrable (fun u : Fin m → Fin n → ℂ => (1 + ‖
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `gs_sch (m := m) (n := n) 1 one_pos`. Establish `hmem` using `hΨ.2 (gs 1) ⟨S, funext hS⟩`. Establish `hI` using `GlobalTheory.RegSch.CentreWeilComm.integrable_of_mem hθ μ ⟨_, hmem⟩`. Break down `K.eq_empty_or_nonempty with rfl | hne` into its components or cases. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Establish `hgc : Continuous fun u : Fin m → Fin n → ℂ => ‖gs (n` using `n) 1 u‖ := continuous_norm.comp (S.continuous.congr fun u => hS u)`. Take `⟨u0, -, hu0⟩` from `hK.exists_isMinOn hne hgc.continuousOn`. Establish `hδ : 0 < ‖gs (n` using `n) 1 u0‖ := norm_pos_iff.2 (Complex.exp_ne_zero _)`. Establish `hle : ∀ z, K.indicator 1 (piF θ τ fr z) * ‖Ψ z‖ₑ ≤ ENNReal.ofReal (‖gs (n` using `n) 1 u0‖)⁻¹ * ‖tens θ τ fr (gs 1) Ψ z‖ₑ := by`. Introduce `z`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hz : piF θ τ fr z ∈ K`. Rewrite using `[Set.indicator_of_mem hz, Pi.one_apply, one_mul]`. Establish `h1 : tens θ τ fr (gs 1) Ψ z = gs (n` using `n) 1 (piF θ τ fr z) * Ψ z := rfl`. Rewrite using `[h1, enorm_mul, ← mul_assoc]`. Use `conv_lhs => rw [← one_mul ‖Ψ z‖ₑ]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_mul (inv_nonneg.2 hδ.le), ← ENNReal.ofReal_one]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Rewrite using `[← div_eq_inv_mul, one_le_div hδ]`. Conclude with `hu0 hz`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hz, zero_mul]`. Conclude with `zero_le`. Use `ne_top_of_le_ne_top ?_ (lintegral_mono hle)` and prove the remaining obligations. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Conclude with `ENNReal.mul_ne_top ENNReal.ofReal_ne_top hI.hasFiniteIntegral.ne`.
+A detailed English derivation is pending.
 -/
 theorem hloc_away {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau} {fr : Matrix (Fin m) (Fin m) ℂ}
     (μ : Measure (Mx D m n)) [μ.IsAddHaarMeasure] {Ψ : Mx D m n → ℂ} (hΨ : AwayCls θ τ fr Ψ)
@@ -76,17 +76,17 @@ theorem hloc_away {θ : InfFam D} (hθ : IsInfFam θ) {τ : D.what₂.Tau} {fr :
 set_option synthInstance.maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `GlobalTheory.Doubling.isTopologicalRing_tens (F := D.host.F) (E := D.host.E) (R := AF D.host.F)` as an intermediate fact. Establish `: BorelSpace (Mx D V.rank n)` using `⟨rfl⟩`. Establish `hΨc` using `cont_of_away hθ hΨ`. Establish `hπ` using `continuous_piF (n := n) hθ τ fr`. Take `⟨c, hc⟩` from `Fib.fib_meas μ (piF θ τ fr) hπ (sIns τ fr) (piF_sIns hθ τ hdet) (fun z => ‖Ψ z‖ₑ) hΨc.enorm.measurable (fun z u => by simp only [away_add hθ hΨ]) (hloc_away hθ μ hΨ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hρc : Continuous fun u : Fin V.rank → Fin n → ℂ => (1 + ‖u‖) ^ (-rr V.rank n)` using `(continuous_const.add continuous_norm).rpow_const fun u => Or.inl (add_pos_of_pos_of_nonneg one_pos (norm_nonneg u)).ne'`. Use `⟨((hρc.comp hπ).mul (continuous_Bw hθ hψ hΨ x).norm).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Unfold `HasFiniteIntegral`. Establish `e1 : ∀ z, ‖(1 + ‖piF θ τ fr z‖) ^ (-rr V.rank n) * ‖Bw ψ V θ τ fr Ψ x z‖‖ₑ = ENNReal.ofReal ((1 + ‖piF θ τ fr z‖) ^ (-rr V.rank n)) * ‖Ψ z‖ₑ`. Introduce `z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[enorm_mul, norm_Bw hψ, ← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm (Ψ z), Real.norm_of_nonneg (Real.rpow_nonneg (by positivity) _), enorm_norm, ofReal_norm_eq_enorm]`. Repeatedly rewrite using `[e1]`. Establish `e2 : ∫⁻ z, ENNReal.ofReal ((1 + ‖piF θ τ fr z‖) ^ (-rr V.rank n)) * ‖Ψ z‖ₑ ∂μ = ∫⁻ u, ENNReal.ofReal ((1 + ‖u‖) ^ (-rr V.rank n)) ∂((μ.withDensity fun z => ‖Ψ z‖ₑ).map (piF θ τ fr))`. Rewrite using `[lintegral_map (f := fun u : Fin V.rank → Fin n → ℂ => ENNReal.ofReal ((1 + ‖u‖) ^ (-rr V.rank n))) (ENNReal.measurable_ofReal.comp hρc.measurable) hπ.measurable]`. Establish `e` using `lintegral_withDensity_eq_lintegral_mul μ hΨc.enorm.measurable ((ENNReal.measurable_ofReal.comp hρc.measurable).comp hπ.measurable)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_def] at e`. Rewrite using `[e]`. Use `congr 1`. Use extensionality with `z`. Simplify using `[mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[e2, hc, lintegral_smul_measure]`. Use `ENNReal.mul_lt_top ENNReal.coe_lt_top ?_` and prove the remaining obligations. Establish `hI` using `(integrable_rho (m := V.rank) (n := n)).hasFiniteIntegral`. Use `lt_of_le_of_lt (le_of_eq ?_) hI` and prove the remaining obligations. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `u`. Rewrite using `[← ofReal_norm_eq_enorm, Real.norm_of_nonneg (Real.rpow_nonneg (by positivity) _)]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem hint_int {θ : InfFam D} (hθ : IsInfFam θ) {V : HSp D} {τ : D.what₂.Tau}
     {fr : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hdet : IsUnit fr.det) (μ : Measure (Mx D V.rank n)) [μ.IsAddHaarMeasure]

@@ -10,9 +10,9 @@ namespace GlobalTheory.CompanionTheory.MirFourier
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Establish `hmem : (a' - a) ⬝ᵥ x.toAdd ∈ valBall k c`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Use `mul_mem_valBall (h i) (hx i)` as an intermediate fact. Simplify using `using this`. Establish `hsplit : a' ⬝ᵥ x.toAdd = a ⬝ᵥ x.toAdd + (a' - a) ⬝ᵥ x.toAdd`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← add_dotProduct]`. Simplify using the standard rewrite rules. Rewrite using `[chi_apply, chi_apply, hsplit, AddChar.map_add_eq_mul, hc _ hmem, mul_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_eq_on_box {ψ : AddChar k Circle} {c j : ℤ} (hc : IsTrivialOn ψ c) {n : ℕ}
     {a a' : Fin n → k} (h : ∀ i, a' i - a i ∈ valBall k (c - j))
@@ -27,7 +27,7 @@ theorem chi_eq_on_box {ψ : AddChar k Circle} {c j : ℤ} (hc : IsTrivialOn ψ c
   rw [chi_apply, chi_apply, hsplit, AddChar.map_add_eq_mul, hc _ hmem, mul_one]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨x, w, rfl⟩`. Use `Submodule.subset_span ⟨⟨x, hH x.2⟩, w, ?_⟩` and prove the remaining obligations. Simplify using `[h x x.2]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem twKer_chiOn_le {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (Multiplicative (Fin n → k)) V) (ψ : AddChar k Circle)
@@ -40,11 +40,11 @@ theorem twKer_chiOn_le {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
   simp [h x x.2]
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_isTrivialOn ψ hψ`. Use `choose j hj using hv`. Set `U : (Fin n → k) → Set (Fin n → k)` to `fun a => (fun a' => a' - a) ⁻¹' Set.pi Set.univ fun _ => (valBall k (c - j a) : Set k)`. Establish `hUopen : ∀ a, IsOpen (U a)` using `fun a => (isOpen_set_pi Set.finite_univ fun _ _ => isOpen_valBall _).preimage (continuous_id.sub continuous_const)`. Establish `hS : IsCompact (Set.pi Set.univ fun _ : Fin n => (valBall k M : Set k))` using `isCompact_univ_pi fun _ => isCompact_valBall M`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcover : (Set.pi Set.univ fun _ : Fin n => (valBall k M : Set k)) ⊆ ⋃ a, U a`. Introduce `a _`. Use `Set.mem_iUnion.2 ⟨a, fun i _ => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Take `⟨t, ht⟩` from `hS.elim_finite_subcover U hUopen hcover`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨J, hJ⟩` from `(t.image j).bddBelow`. Use `⟨J, fun J' hJ' a' ha' => ?_⟩` and prove the remaining obligations. Take `⟨a, hat, haU⟩` from `Set.mem_iUnion₂.1 (ht (fun i _ => ha' i))`. Establish `hle : J' ≤ j a` using `hJ'.trans (hJ (Finset.mem_coe.2 (Finset.mem_image_of_mem j hat)))`. Conclude with `twKer_chiOn_le ρ ψ (box_antitone k n hle) (fun x hx => chi_eq_on_box hc (fun i => haU i (Set.mem_univ i)) hx) (hj a (j a) le_rfl)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_box_forall_chi (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (hψ : Continuous ψ) (n : ℕ) (V : Type)

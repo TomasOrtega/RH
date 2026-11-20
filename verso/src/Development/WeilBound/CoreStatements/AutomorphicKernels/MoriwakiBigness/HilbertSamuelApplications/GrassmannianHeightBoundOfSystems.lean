@@ -6,7 +6,7 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-Introduce `hSys hU hBig hResK`. Conclude with `GlobalTheory.T.grassmann_height_Z2_of_inputs_and_Z2 (inputs_of_use hSys hU hBig hResK) hSys (hsLinks_of_use hU hBig).2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem grassmannian_height_bound_of_systems :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement → PositivityTheory.MbHsUse.HSUse →

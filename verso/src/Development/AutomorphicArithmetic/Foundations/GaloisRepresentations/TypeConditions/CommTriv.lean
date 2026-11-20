@@ -16,9 +16,9 @@ namespace UpperTheory.GalS
 open UpperTheory.Lit.Car (IneAb comm_le_ine)
 
 /- English proof (translation)
-Establish `hinv : ∀ a ∈ I, φ a * φ a⁻¹ = 1` using `fun a ha => by`. Rewrite using `[← hm a ha a⁻¹ (I.inv_mem ha), mul_inv_cancel, h1]`. Set `K : Subgroup G` to `{ carrier := {x | x ∈ I ∧ φ x = 1} mul_mem' := fun {x y} hx hy => ⟨I.mul_mem hx.1 hy.1, by rw [hm x hx.1 y hy.1, hx.2, hy.2, one_mul]⟩ one_mem' := ⟨I.one_mem, h1⟩ inv_mem' := fun {x} hx => ⟨I.inv_mem hx.1, by simpa [hx.2] using hinv x hx.1⟩ }`. Establish `hle : ⁅I, I⁆ ≤ K`. Rewrite using `[Subgroup.commutator_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha b hb`. Use `⟨I.mul_mem (I.mul_mem (I.mul_mem ha hb) (I.inv_mem ha)) (I.inv_mem hb), ?_⟩` and prove the remaining obligations. Rewrite using `[commutatorElement_def, hm _ (I.mul_mem (I.mul_mem ha hb) (I.inv_mem ha)) _ (I.inv_mem hb), hm _ (I.mul_mem ha hb) _ (I.inv_mem ha), hm a ha b hb]`. Take the linear combination `φ b * φ b⁻¹ * hinv a ha + hinv b hb`. Conclude with `fun σ hσ => (hle hσ).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem comm_triv {G : Type} [Group G] (I : Subgroup G) (φ : G → ℂ) (h1 : φ 1 = 1)
     (hm : ∀ a ∈ I, ∀ b ∈ I, φ (a * b) = φ a * φ b) : ∀ σ ∈ ⁅I, I⁆, φ σ = 1 := by

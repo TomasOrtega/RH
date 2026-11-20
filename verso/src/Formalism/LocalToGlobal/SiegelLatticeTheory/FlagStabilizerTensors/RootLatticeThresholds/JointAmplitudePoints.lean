@@ -69,7 +69,7 @@ section Proof
 variable {D : D7} {X : HidaSetting D}
 
 /- English proof (translation)
-Use `first`. Consider the case `(haveI : Nonempty D.what₂.Tau := ⟨D.eTau.symm 1⟩; exact Fintype.card_pos)`. Consider the case `(haveI : Nonempty D.what₂.Tau := ⟨D.eTau.symm ⟨1, one_mem _⟩⟩; exact Fintype.card_pos)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem card_pos' (D : D7) : 0 < Fintype.card D.what₂.Tau := by
   first
@@ -80,7 +80,7 @@ def ofPts {K : Type} {i : ℕ} (s : Σ c : Composition (i + 1), (Fin c.length �
   List.ofFn fun a => (s.2 a, s.1.blocksFun a)
 
 /- English proof (translation)
-Use `first`. Consider the case `(apply List.ext_getElem <;> simp [ofPts, toPts, Composition.blocksFun, Composition.length])`. Consider the case `(apply List.ext_get <;> simp [ofPts, toPts, Composition.blocksFun, Composition.length])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ofPts_toPts {K : Type} [Zero K] {i : ℕ} (p : Point K (i + 1)) : ofPts (toPts p) = p.1 := by
   first
@@ -88,7 +88,7 @@ theorem ofPts_toPts {K : Type} [Zero K] {i : ℕ} (p : Point K (i + 1)) : ofPts 
   | (apply List.ext_get <;> simp [ofPts, toPts, Composition.blocksFun, Composition.length])
 
 /- English proof (translation)
-Introduce `p q h`. Establish `h'` using `congrArg ofPts h`. Rewrite `h'` using `[ofPts_toPts, ofPts_toPts]`. Conclude with `Subtype.ext h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toPts_injective {K : Type} [Zero K] {i : ℕ} :
     Function.Injective (toPts : Point K (i + 1) → Σ c : Composition (i + 1), (Fin c.length → K)) := by
@@ -98,7 +98,7 @@ theorem toPts_injective {K : Type} [Zero K] {i : ℕ} :
   exact Subtype.ext h'
 
 /- English proof (translation)
-Unfold `J2of at h`. Use `split_ifs at h with hc`. Conclude with `hc`. Conclude with `absurd h (lt_irrefl 0)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isPtRep_of_J2of {Y : Full X} {u u' : D.what₂.Word} {ν : X.B.I.Ginf → Measure X.B.I.Ginf}
     {w : Point D.host.E (D.R.rS + 1)} (h : 0 < J2of Y u u' ν (toPts w)) :
@@ -109,27 +109,25 @@ theorem isPtRep_of_J2of {Y : Full X} {u u' : D.what₂.Word} {ν : X.B.I.Ginf �
   · exact absurd h (lt_irrefl 0)
 
 /- English proof (translation)
-Introduce `γ w _ hw hb hJ`. Substitute `hw` using the available equality. Establish `hJ' : 0 < J2of Y u u' ν (toPts w)` using `hJ`. Take `⟨w', hw', g0, hg0⟩` from `isPtRep_of_J2of hJ'`. Establish `hw'w : w' = w` using `hinj _ _ hw'`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hw'w` using the available equality. Establish `hrep : ∃ g, Formalism.L2.SG.RealObj.IsPtRep X u u' w' g` using `⟨g0, hg0⟩`. Establish `hP1` using `hP w' hb hJ'`. Use `set J2 := J2of Y u u' ν (toPts w') with hJ2`. Use `set th := thetaP u u' hB J2 w' with hth`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hthv : th = (localAmplitudeProduct u u' hB w' / J2) ^ ((1 : ℝ) / (2 * Fintype.card D.what₂.Tau))`. Rewrite using `[hth]`. Unfold `thetaP`. Rewrite using `[if_pos ⟨hJ', hP1⟩]`. Establish `hth0 : 0 < th` using `by rw [hthv]; exact Real.rpow_pos_of_pos (div_pos hP1 hJ') _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc : (0 : ℝ) < 2 * Fintype.card D.what₂.Tau`. Use `card_pos' D` as an intermediate fact. Check the signs of the components of the expression. Establish `hpow : th ^ (2 * Fintype.card D.what₂.Tau) = localAmplitudeProduct u u' hB w' / J2`. Rewrite using `[hthv, ← Real.rpow_natCast, ← Real.rpow_mul (div_pos hP1 hJ').le]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[one_div_mul_cancel hfc.ne', Real.rpow_one]`. Use `⟨gamP C u u' w', ptP C u u' w', fun _ => th, fun τ => (ENNReal.ofReal th)⁻¹ • nu1P C u u' w' τ, fun τ => ?_, ?_⟩` and prove the remaining obligations. Establish `hpt : ∃ p, RelPt D (zB X (C.Qi τ) u τ) (zB X (C.Qi τ) u' τ) (gamP C u u' w' τ) p ∧ Formalism.MainNotions.S.Pv.Frames.turnPt p = ptLoc D τ w'` using `hR w' hb hrep τ`. Establish `hnu : ∃ ν₁, RMeas D (locW C u u' τ) (gamP C u u' w' τ) 1 ν₁` using `hM w' hb hrep τ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp` using `hpt.choose_spec`. Establish `hptP : ptP C u u' w' τ = hpt.choose` using `by unfold ptP; rw [dif_pos hpt]`. Establish `hnuP : nu1P C u u' w' τ = hnu.choose` using `by unfold nu1P; rw [dif_pos hnu]`. Use `⟨?_, hT w' hb hJ', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hptP]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hp.1`. Take `⟨p, μR, hR1, hQ⟩` from `hnu.choose_spec`. Use `⟨p, μR, hR1, ?_⟩` and prove the remaining obligations. Use `show IsQuotMeas _ (ENNReal.ofReal th • μR) ((ENNReal.ofReal th)⁻¹ • nu1P C u u' w' τ)`. Rewrite using `[hnuP]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hQ' : IsQuotMeas (Formalism.L2.SG.Pf.BDat.WX C u u' τ).μG μR hnu.choose`. Simplify `hQ` using `[ENNReal.ofReal_one, one_smul]`. Conclude with `Formalism.L2.SG.Pf.LTL.isQuotMeas_smul hQ' (by simpa using hth0) ENNReal.ofReal_ne_top`. Rewrite using `[hptP]`. Conclude with `hp.2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hloc : ∀ τ, hsNormSq ((Formalism.L2.SG.Pf.BDat.AX hB u u' τ).J ((ENNReal.ofReal th)⁻¹ • nu1P C u u' w' τ) (gamP C u u' w' τ)) = (th ^ 2)⁻¹ * hsNormSq ((locS hB u u' τ).J (nu1P C u u' w' τ) (gamP C u u' w' τ))`. Introduce `τ`. Rewrite using `[Formalism.L2.SG.Pf.LTL.locJ_smul, Formalism.L2.SG.Pf.LTL.hsNormSq_smul, ENNReal.toReal_inv, ENNReal.toReal_ofReal hth0.le, Complex.normSq_ofReal]`. Use `congr 1`. Rewrite using `[sq, mul_inv]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hprod : ∏ τ, hsNormSq ((Formalism.L2.SG.Pf.BDat.AX hB u u' τ).J ((ENNReal.ofReal th)⁻¹ • nu1P C u u' w' τ) (gamP C u u' w' τ)) = J2`. Rewrite using `[Finset.prod_congr rfl fun τ _ => hloc τ, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_univ]`. Express the relevant statement in the definitionally equal form `((th ^ 2)⁻¹) ^ Fintype.card D.what₂.Tau * localAmplitudeProduct u u' hB w' = J2`. Rewrite using `[inv_pow, ← pow_mul, hpow]`. Clear the denominators using the available nonvanishing facts.
-
-Establish `hnn : ∀ τ, 0 ≤ hsNormSq ((Formalism.L2.SG.Pf.BDat.AX hB u u' τ).J ((ENNReal.ofReal th)⁻¹ • nu1P C u u' w' τ) (gamP C u u' w' τ))` using `fun τ => Formalism.L2.SG.Pf.LTL.hsNormSq_nonneg _`. Rewrite using `[ENNReal.ofReal_one, one_mul, ← ENNReal.ofReal_prod_of_nonneg (fun τ _ => hnn τ), hprod]`. Conclude with `le_rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jointAmplitudeFactorization_of_inj (Y : Full X) (u u' : D.what₂.Word) (large₂ : SizeData₂ D) (C1 : ℝ) {θ : ℝ} (C : Choice X θ)
     (hB : WuBessel C) (ν νL : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : Formalism.FourierDecayAlt.PN.Pts D.host.E D.R.rS → ℝ)
@@ -195,7 +193,7 @@ theorem jointAmplitudeFactorization_of_inj (Y : Full X) (u u' : D.what₂.Word) 
     exact le_rfl
 
 /- English proof (translation)
-The claim follows from `jointAmplitudeFactorization_of_inj Y u u' large₂ C1 C hB ν νL ng (fun w w' h => toPts_injective h) hR hM hP hT`.
+A detailed English derivation is pending.
 -/
 theorem jointAmplitudeFactorization_of (Y : Full X) (u u' : D.what₂.Word) (large₂ : SizeData₂ D) (C1 : ℝ) {θ : ℝ} (C : Choice X θ)
     (hB : WuBessel C) (ν νL : X.B.I.Ginf → Measure X.B.I.Ginf) (ng : Formalism.FourierDecayAlt.PN.Pts D.host.E D.R.rS → ℝ)
@@ -205,7 +203,7 @@ theorem jointAmplitudeFactorization_of (Y : Full X) (u u' : D.what₂.Word) (lar
   jointAmplitudeFactorization_of_inj Y u u' large₂ C1 C hB ν νL ng (fun w w' h => toPts_injective h) hR hM hP hT
 
 /- English proof (translation)
-Unfold `Formalism.L2.SG.Pf.BDat.RowBData`. Conclude with `⟨hIre, θ, C, hB, hθ0, hθw, hloc, 1, zero_le_one, fun νL ng => jointAmplitudeFactorization_of Y u u' large₂ C1 C hB ν νL ng hR hM hP hT, fun sec hsec => by simpa using hN sec hsec⟩`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem rowBData_of (large₂ : SizeData₂ D) (Y : Full X) (u u' : D.what₂.Word) (ν : X.B.I.Ginf → Measure X.B.I.Ginf)
     (C1 Cn Ire : ℝ) (hIre : 0 ≤ Ire) {θ : ℝ} (C : Choice X θ) (hB : WuBessel C) (hθ0 : 0 < θ)

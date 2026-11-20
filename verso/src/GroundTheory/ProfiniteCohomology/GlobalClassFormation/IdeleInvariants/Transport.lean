@@ -20,7 +20,7 @@ variable (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarc
   [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
 
 /- English proof (translation)
-Establish `hv : algebraicValuativeRel K Ω = v` using `valuativeRel_eq_of_isAlgebraic K (algebraicValuativeRel_valuativeExtension K Ω) inferInstance`. Substitute `hv` using the available equality. Set `: ValuativeRel Ω` to `algebraicValuativeRel K Ω`. Establish `ht : algebraicTopology K Ω = t` using `topologicalSpace_eq_of_isValuativeTopology (algebraicTopology_isValuativeTopology K Ω) inferInstance`. Substitute `ht` using the available equality.
+Establish an intermediate fact. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Substitute using the available equality.
 
 Both sides reduce to the same expression.
 -/
@@ -45,9 +45,9 @@ variable (Kv Ω : Type) [Field Kv] [ValuativeRel Kv] [TopologicalSpace Kv] [IsNo
   [ValuativeExtension Kv Ω] (L : IntermediateField Kv Ω) [FiniteDimensional Kv L]
 
 /- English proof (translation)
-Rewrite using `[brauerInvZOfIsSepClosure_eq_brauerInvZ L Ω, brauerInvZOfIsSepClosure_eq_brauerInvZ Kv Ω]`. Take `⟨x, rfl⟩` from `(cohomologyULiftIntAddEquiv (galUnits.{0} Kv Ω) 2).surjective y`. Establish `e` using `cohomologyULiftIntAddEquiv_cohomologyMapAlong (galUnits.{0} Kv Ω) (AlgEquiv.restrictScalarsHom Kv) (continuous_restrictScalarsHom_of_tower Kv L Ω) (galUnitsResScalars Kv L Ω) (unitsScalarsMor Kv Ω L) (fun _ => rfl) 2 x`. Establish `e'` using `congrArg (brauerInvZ L Ω) e`. Rewrite `e'` using `[brauerInvZ_cohomologyULiftIntAddEquiv]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `e'.symm.trans ?_` and prove the remaining obligations. Rewrite using `[brauerInvZ_cohomologyULiftIntAddEquiv]`. Conclude with `brauerInv_brauerRes Kv L Ω x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brauerInvZOfIsSepClosure_unitsScalarsRes (y : cohomology (galUnitsZ Kv Ω) 2) :
     brauerInvZOfIsSepClosure L Ω ((unitsScalarsRes Kv Ω L 2).hom y) =
@@ -71,9 +71,9 @@ variable {k G H : Type} [CommRing k] [Group G] [Group H] [TopologicalSpace G] [T
   [IsTopologicalGroup G] [IsTopologicalGroup H] {A : Rep k G} {B : Rep k H} [IsDiscreteRep A] [IsDiscreteRep B]
 
 /- English proof (translation)
-Establish `h : cohomologyMapAlong φ hφ f n ≫ cohomologyMapAlong ψ hψ f' n = 𝟙 _`. Rewrite using `[← cohomologyMapAlong_comp]`. Conclude with `cohomologyMapAlong_eq_id _ _ (MonoidHom.ext hφψ) hff n`. Introduce `x y hxy`. Establish `e` using `congrArg (cohomologyMapAlong ψ hψ f' n).hom hxy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[← ModuleCat.comp_apply, ← ModuleCat.comp_apply, h]`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem cohomologyMapAlong_injective_of_leftInverse (φ : H →* G) (hφ : Continuous φ) (ψ : G →* H)
     (hψ : Continuous ψ) (hφψ : ∀ g, φ (ψ g) = g) (f : Rep.res φ A ⟶ B) (f' : Rep.res ψ B ⟶ A)
@@ -95,7 +95,7 @@ variable {F F' Ω Ω' : Type} [Field F] [Field F'] [Field Ω] [Field Ω'] [Algeb
   [FiniteDimensional F Ω] [IsGalois F Ω] [FiniteDimensional F' Ω'] [IsGalois F' Ω']
 
 /- English proof (translation)
-Rewrite using `[quadraticInv_apply, quadraticInv_apply]`. Distinguish the cases in `hx : x = 0`. Rewrite using `[hx, map_zero, quadraticInvFun_zero, quadraticInvFun_zero]`. Rewrite using `[quadraticInvFun_of_ne_zero F Ω (fun h => hx (hinj (h.trans (map_zero _).symm))), quadraticInvFun_of_ne_zero F' Ω' hx]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem quadraticInv_cohomologyMapAlong_of_injective (h2 : Module.finrank F Ω ≤ 2) (hN)
     (h2' : Module.finrank F' Ω' ≤ 2) (hN') {ρ : Gal(Ω/F) →* Gal(Ω'/F')} (hρc : Continuous ρ)
@@ -116,19 +116,19 @@ variable {F Ω : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarc
   [Field Ω] [Algebra F Ω] [IsSepClosure F Ω]
 
 /- English proof (translation)
-Set `` to `algebraicValuativeRel F Ω`. Set `` to `algebraicTopology F Ω`. Use `algebraicTopology_isValuativeTopology F Ω` as an intermediate fact. Use `algebraicValuativeRel_valuativeExtension F Ω` as an intermediate fact. Take `⟨r, hr⟩` from `QZ.mk_surjective (brauerInvZ F Ω x)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `n : ℕ+` to `⟨r.den, r.den_pos⟩`. Set `f₀ : ℤ →+ QZ` to `zmultiplesHom QZ (QZ.mk r)`. Establish `hf₀ : f₀ ((n : ℕ) : ℤ) = 0`. Express the relevant statement in the definitionally equal form `((r.den : ℕ) : ℤ) • QZ.mk r = 0`. Rewrite using `[natCast_zsmul, ← QZ.mk_nsmul, nsmul_eq_mul, Rat.den_mul_eq_num, QZ.mk_eq_zero_iff]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨r.num, rfl⟩`. Set `χ₀ : ZMod n →+ QZ` to `ZMod.lift n ⟨f₀, hf₀⟩`. Establish `hχ₀ : χ₀ 1 = QZ.mk r`. Rewrite using `[show (1 : ZMod n) = ((1 : ℤ) : ZMod n) from Int.cast_one.symm, ZMod.lift_coe]`. Express the relevant statement in the definitionally equal form `(1 : ℤ) • QZ.mk r = QZ.mk r`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[one_zsmul]`. Set `ψ : Additive Gal(Ω/F) →ₜ+ QZ` to `{ toFun := fun g => χ₀ (proj n (Multiplicative.toAdd (unramifiedDegree F Ω (Additive.toMul g)))) map_zero' := by`. Express the relevant statement in the definitionally equal form `χ₀ (proj n (Multiplicative.toAdd (unramifiedDegree F Ω 1))) = 0`. Rewrite using `[map_one, toAdd_one, map_zero, map_zero]`. Use the proof step `map_add' := fun g h => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `χ₀ (proj n (Multiplicative.toAdd (unramifiedDegree F Ω (Additive.toMul g * Additive.toMul h)))) = _`. Rewrite using `[map_mul, toAdd_mul, map_add, map_add]`. Use `continuous_toFun := continuous_of_discreteTopology.comp ((continuous_proj n).comp (continuous_toAdd.comp ((continuous_unramifiedDegree (K := F) (Ω := Ω)).comp continuous_toMul))) }`. Choose the witnesses or unpack the hypotheses as in `⟨π, hπ⟩ : ∃ π : Fˣ, ord (π : F) = 1 := by`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible 𝒪[F]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h0 : (ϖ : F) ≠ 0` using `by exact_mod_cast hϖ.ne_zero`. Conclude with `⟨Units.mk0 _ h0, by rw [Units.val_mk0]; exact ord_uniformizer hϖ⟩`. Take `⟨σ, hσ⟩` from `unramifiedDegree_surjective (K := F) (Ω := Ω) (Multiplicative.ofAdd 1)`. Establish `hψ : ∀ g ∈ (unramifiedDegree F Ω).ker, ψ (Additive.ofMul g) = 0` using `fun g hg => by`. Express the relevant statement in the definitionally equal form `χ₀ (proj n (Multiplicative.toAdd (unramifiedDegree F Ω g))) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.mem_ker.1 hg, toAdd_one, map_zero, map_zero]`. Use `⟨ψ, π, (brauerInvZ_bijective F Ω).1 ?_⟩` and prove the remaining obligations. Rewrite using `[brauerInvZ_galCupClass_of_unramified ψ hψ hσ π, hπ, one_smul, ← hr]`. Express the relevant statement in the definitionally equal form `χ₀ (proj n (Multiplicative.toAdd (unramifiedDegree F Ω σ))) = QZ.mk r`. Rewrite using `[hσ, toAdd_ofAdd, map_one, hχ₀]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_galCupClass_eq (x : cohomology (galUnitsZ F Ω) 2) :
     ∃ (χ : Additive Gal(Ω/F) →ₜ+ QZ) (a : Fˣ), galCupClass F Ω χ a = x := by
@@ -188,9 +188,9 @@ omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [Valua
 include hε hf in
 
 /- English proof (translation)
-Use `cohomologyMapAlong_cupCharClassProf ρ hρc f χ _ _ ?_` and prove the remaining obligations. Apply `Additive.toMul.injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `algebraMap F Ω a = ((Additive.toMul (f.hom (Additive.ofMul (Units.map (algebraMap F' Ω' : F' →* Ω') (Units.map e.toRingHom.toMonoidHom a)))) : Ωˣ) : Ω)`. Rewrite using `[hf, Units.coe_map, Units.coe_map]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `algebraMap F Ω a = ε.symm (algebraMap F' Ω' (e a))`. Rewrite using `[← hε, RingEquiv.symm_apply_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cohomologyMapAlong_galCupClass_transport (χ : Additive Gal(Ω'/F') →ₜ+ QZ) (a : Fˣ) :
     (cohomologyMapAlong ρ hρc f 2).hom (galCupClass F' Ω' χ (Units.map e.toRingHom.toMonoidHom a)) =
@@ -207,9 +207,9 @@ theorem cohomologyMapAlong_galCupClass_transport (χ : Additive Gal(Ω'/F') →�
 include hε hρ in
 
 /- English proof (translation)
-Use `set g : Gal(Ω/F) := (localArtinMap F Ω a).liftNormal Ω`. Establish `hg : ∀ (y : Ω) (hy : y ∈ maximalAbelianExtension F Ω), g y = (localArtinMap F Ω a ⟨y, hy⟩ : Ω)` using `fun y hy => AlgEquiv.liftNormal_commutes (localArtinMap F Ω a) Ω ⟨y, hy⟩`. Rewrite using `[brauerInvZOfIsSepClosure_galCupClass _ a g hg, contCharComp_apply]`. Use `(brauerInvZOfIsSepClosure_galCupClass χ _ (ρ g) fun y' hy' => ?_).symm` and prove the remaining obligations. Take `⟨y, rfl⟩` from `ε.surjective y'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy : y ∈ maximalAbelianExtension F Ω` using `(mem_maximalAbelianExtension_transport_iff e ε hε).1 hy'`. Rewrite using `[hρ, hg y hy, localArtinMap_transport e he ε hε a hy]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brauerInvZOfIsSepClosure_galCupClass_transport (he : ∀ x y : F, e x ≤ᵥ e y ↔ x ≤ᵥ y)
     (χ : Additive Gal(Ω'/F') →ₜ+ QZ) (a : Fˣ) :
@@ -227,7 +227,7 @@ theorem brauerInvZOfIsSepClosure_galCupClass_transport (he : ∀ x y : F, e x �
 include hε hρ hf in
 
 /- English proof (translation)
-Take `⟨χ, a', rfl⟩` from `exists_galCupClass_eq x`. Take `⟨a, rfl⟩ : ∃ a : Fˣ, Units.map e.toRingHom.toMonoidHom a = a'` from `⟨Units.map e.symm.toRingHom.toMonoidHom a', by ext; simp⟩`. Rewrite using `[cohomologyMapAlong_galCupClass_transport e ε hε ρ hρc f hf, brauerInvZOfIsSepClosure_galCupClass_transport e ε hε ρ hρc hρ he]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem brauerInvZOfIsSepClosure_cohomologyMapAlong_transport (he : ∀ x y : F, e x ≤ᵥ e y ↔ x ≤ᵥ y)
     (x : cohomology (galUnitsZ F' Ω') 2) :

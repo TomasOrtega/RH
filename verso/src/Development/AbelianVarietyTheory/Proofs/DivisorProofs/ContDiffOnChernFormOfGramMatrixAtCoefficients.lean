@@ -25,26 +25,26 @@ def mult (B : Type) [CommRing B] [Algebra ℂ B] (s : Set E) : Subring (E → B)
   neg_mem' {a} ha F hF φ := by simpa using (ha F hF φ).neg
 
 /- English proof (translation)
-Introduce `F hF φ`. Simplify using `using hf.mul (hF (φ ∘ₗ LinearMap.mulLeft ℂ b))`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_mem {s : Set E} {f : E → ℂ} (hf : ContDiffOn ℝ ∞ f s) (b : B) : (fun v => f v • b) ∈ mult B s := by
   intro F hF φ
   simpa using hf.mul (hF (φ ∘ₗ LinearMap.mulLeft ℂ b))
 
 /- English proof (translation)
-Simplify using `using smul_mem (s := s) (f := fun _ => (1 : ℂ)) contDiffOn_const b`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem const_mem (s : Set E) (b : B) : (fun _ => b) ∈ mult B s := by
   simpa using smul_mem (s := s) (f := fun _ => (1 : ℂ)) contDiffOn_const b
 
 /- English proof (translation)
-Simplify `contDiffOn_const` using `using h 1 fun φ => by simpa`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem weakSmooth_of_mem {s : Set E} {G : E → B} (h : G ∈ mult B s) : WeakSmooth s G := by
   simpa using h 1 fun φ => by simpa using contDiffOn_const
 
 /- English proof (translation)
-Establish `: (fun v => (M v).det) = ∑ σ : Equiv.Perm r, ((Equiv.Perm.sign σ : ℤ) : E → B) * ∏ i, fun v => M v (σ i) i`. Use function extensionality and compare the values at `v`. Simplify using `[Matrix.det_apply', Finset.sum_apply, Finset.prod_apply]`. Rewrite using `[this]`. Conclude with `sum_mem fun σ _ => mul_mem (intCast_mem _ _) (prod_mem fun i _ => h _ _)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_mem {s : Set E} {r : Type} [Fintype r] [DecidableEq r] {M : E → Matrix r r B}
     (h : ∀ i j, (fun v => M v i j) ∈ mult B s) : (fun v => (M v).det) ∈ mult B s := by
@@ -57,11 +57,11 @@ theorem det_mem {s : Set E} {r : Type} [Fintype r] [DecidableEq r] {M : E → Ma
 end General
 
 /- English proof (translation)
-Introduce `n r _ _ H s hs hH hu j S`. Establish `hc : ∀ ξ η a b, ContDiffOn ℝ ∞ (fun v => curv H v ξ η a b) s` using `fun ξ η a b v hv => (MContDiffAt.curv (k := ∞) (j := ∞) (fun a b => (hH a b).contDiffAt (hs.mem_nhds hv)) (hu v hv) (by norm_cast) ξ η a b).contDiffWithinAt`. Establish `hd : (fun v => (-curvPoly H v).charpolyRev) ∈ mult (Polynomial (MvPolynomial (Fin n × Fin n) ℂ)) s`. Unfold `Matrix.charpolyRev`. Use `det_mem fun a b => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (fun v => (1 - (Polynomial.X : Polynomial (MvPolynomial (Fin n × Fin n) ℂ)) • (-curvPoly H v).map Polynomial.C) a b) = (fun _ => (1 : Matrix r r _) a b) + ∑ c, ∑ d, fun v => curv H v (coordVec c) (coordVec d) a b • (Polynomial.X * Polynomial.C (MvPolynomial.X (c, d)))`. Use function extensionality and compare the values at `v`. Simplify using `[curvPoly, Finset.sum_apply, Finset.mul_sum, MvPolynomial.C_mul', ← Polynomial.smul_C]`. Rewrite using `[this]`. Conclude with `add_mem (const_mem _ _) (sum_mem fun c _ => sum_mem fun d _ => smul_mem (hc _ _ _ _) _)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ : Polynomial (MvPolynomial (Fin n × Fin n) ℂ) →ₗ[ℂ] ℂ` to `(bas n).coord S ∘ₗ (Subalgebra.center ℂ (Alt n)).val.toLinearMap ∘ₗ (kappa ^ j • (MvPolynomial.aeval (R := ℂ) (sym (n := n))).toLinearMap) ∘ₗ (Polynomial.lcoeff _ j).restrictScalars ℂ`. Conclude with `weakSmooth_of_mem hd φ`.
+A detailed English derivation is pending.
 -/
 theorem contDiffOn_chernAt : ∀ {n : ℕ} {r : Type} [Fintype r] [DecidableEq r] (H : V n → Matrix r r ℂ) (s : Set (V n)), IsOpen s → (∀ a b, ContDiffOn ℝ ∞ (fun v => H v a b) s) → (∀ v ∈ s, IsUnit (H v).det) → ∀ (j : ℕ) (S : Finset (Fin (n + n))), ContDiffOn ℝ ∞ (fun v => (bas n).repr (chernAt H v j : Alt n) S) s := by
   intro n r _ _ H s hs hH hu j S

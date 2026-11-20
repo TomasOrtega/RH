@@ -18,30 +18,30 @@ open GlobalTheory.Hk3 (Core Good IsSF SchurAll TwoSided FixAll EEc Wcc eH IsLab 
 namespace GlobalTheory.LabEq
 
 /- English proof (translation)
-Simplify using `[dualLab, List.map_reverse]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualLab_dualLab' (d : List ℤ) : dualLab (dualLab d) = d := by
   simp [dualLab, List.map_reverse]
 
 /- English proof (translation)
-Simplify using `[dualLab]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualLab_length' (d : List ℤ) : (dualLab d).length = d.length := by
   simp [dualLab]
 
 /- English proof (translation)
-Simplify using `[dualLab, List.pairwise_reverse, List.pairwise_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualLab_pairwise' (d : List ℤ) :
     (dualLab d).Pairwise (fun a b => b ≤ a) ↔ d.Pairwise (fun a b => b ≤ a) := by
   simp [dualLab, List.pairwise_reverse, List.pairwise_map]
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F s _ i P d _`. Establish `hW : (Wc D i).rank = D.R.r` using `D.sp.W_rank _ (Nat.le_add_left _ _) i.2`. Establish `hY : (Yc D 0).rank = D.R.r`. Rewrite using `[D.sp.Y_rank _ (min_le_right _ _)]`. Simplify using `[Ranks.rankY]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing, GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing, GlobalTheory.T.isSphericalDoubleCosetLabel_iff_decreasing, hW, hY, dualLab_length', dualLab_pairwise', dualLab_dualLab']`. Use `⟨?_, Iff.rfl⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h1, h2, fun h => (h3 h).symm⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2, h3⟩`. Conclude with `⟨h1, h2, fun h => (h3 h).symm⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem isLab_W_iff : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) {s : ℕ}, Core R F → ∀ i P d, Good R A.μ0 P → (IsLab (Wc D i) P d ↔ IsLab (Yc D 0) P (dualLab d)) ∧ (IsLab (Wc D i) P d ↔ IsLab (Yc D 0) P d) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F s _ i P d _

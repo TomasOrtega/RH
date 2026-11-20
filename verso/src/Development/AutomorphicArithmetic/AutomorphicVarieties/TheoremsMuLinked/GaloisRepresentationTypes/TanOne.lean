@@ -26,9 +26,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 open UpperTheory.V.Ws.Eb
 
 /- English proof (translation)
-Establish `e1` using `h g`. Rewrite `e1` using `[hg]`. Establish `e2 : (ρ g : Matrix (Fin n) (Fin n) K) = 1`. Use extensionality with `i j`. Use `congrArg TrivSqZeroExt.fst (e1 i j)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Apply the tactic sequence `by_cases h : i = j <;> simpa [Matrix.one_apply, h] using this.symm`. Use extensionality with `i j`. Use `congrArg TrivSqZeroExt.snd (e1 i j)` as an intermediate fact. Rewrite `this` using `[e2, mul_one]`. Apply the tactic sequence `by_cases h : i = j <;> simpa [Matrix.one_apply, h] using this.symm`.
+Apply the first step, then apply the next step to every resulting obligation. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem tan_one {K H : Type} [CommRing K] [Group H] {n : ℕ} {ρ : H →* GL (Fin n) K} {y : H → Matrix (Fin n) (Fin n) K}
     {ρ' : H →* GL (Fin n) (DualNumber K)} (h : IsTan ρ y ρ') (g : H) (hg : ρ' g = 1) : y g = 0 := by
@@ -44,9 +44,9 @@ private theorem tan_one {K H : Type} [CommRing K] [Group H] {n : ℕ} {ρ : H �
   by_cases h : i = j <;> simpa [Matrix.one_apply, h] using this.symm
 
 /- English proof (translation)
-Establish `e1 : (R.comp (F.η.ker.subtype.comp (F.φ v)) : Representation (PadicAlgCl l) (F.Gv v) (Matrix (Fin n) (Fin n) (PadicAlgCl l))) = Loc.adGL (ρ.comp (F.φ v))` using `MonoidHom.ext fun g => LinearMap.ext fun X => hR.ad _ X`. Rewrite using `[e1]`. Simplify using `only [hzy]`. Use `locL hP φ hφ (ρ.comp (F.φ v)) (hcont.comp (F.φ_cont v)) _ ⟨hy.1.comp (F.φ_cont v), fun g h => ?_⟩ _ (htan.comp (F.φ v)) _ m k hfl hm hk fun i g hg => ⟨?_, h2 i g ((h1 g).1 hg)⟩` and prove the remaining obligations. Conclude with `(congrArg y (map_mul _ g h)).trans (hy.2 _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2` using `congrArg Units.val (DFunLike.congr_fun (W.LamObj.toPair_spec r Λ B.u v i) ⟨g, (h1 g).1 hg⟩)`. Conclude with `(congrArg (fun b => (x' b).snd) e2).symm.trans (hΛ _)`.
+A detailed English derivation is pending.
 -/
 private theorem at_l (hP : Loc.LocalPublishedTheorems) {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {c : Coef l} {n : ℕ} {r : W.Resid F c.O n}
     (B : W.UniversalOrdinaryDeterminantRing r) (Λ : W.LamObj r) (x' : B.B →ₐ[c.O] DualNumber (PadicAlgCl l)) (hΛ : ∀ a, (x' (Λ.toPair B.u a)).snd = 0)
@@ -77,15 +77,15 @@ variable {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMF
   {s : W.HidaSetting l L Ω} {V : s.Lev} {c : Coef l} {n : ℕ} {r : W.Resid V.frame c.O n} {B : W.UniversalOrdinaryDeterminantRing r}
 
 /- English proof (translation)
-Simplify using `using (s.hA v _).2 v.2`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem over_l (v : W.Vl l L) : (s.A v).valuation (l : Ω) < 1 := by
   simpa using (s.hA v _).2 v.2
 
 /- English proof (translation)
-Establish `hl : ∀ v : W.Vl l L, ((l : ℕ) : 𝓞 L) ∈ (s.w v).asIdeal` using `fun v => by`. Use `(s.hw v _).1 ?_` and prove the remaining obligations. Simplify using `using over_l (s := s) v`. Use `⟨fun v τ i j hij => ?_, fun v j => ?_⟩` and prove the remaining obligations. Use `hm v i j hij` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only`. Use linear arithmetic over natural numbers and integers. Conclude with `UpperTheory.V.Loc.laArith hP.toClassicalTheorems.litN.aut.art (s.hw v) (hl v) _ (Ws.Pt.psi_cont x v j) (m v j) k hk (hw v j)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem arith (hP : Af.HypothesesH) (x : B.Pt) (m : W.Vl l L → Fin n → ℤ) (hm : ∀ v i j, i < j → m v j + 2 ≤ m v i) (k : ℕ) (hk : 0 < k)
     (hw : ∀ (v : W.Vl l L) i (g : Dec (F := L) (s.A v)), (g : G L Ω) ∈ Ine (F := L) (s.A v) →
@@ -100,15 +100,15 @@ private theorem arith (hP : Af.HypothesesH) (x : B.Pt) (m : W.Vl l L → Fin n �
   · exact UpperTheory.V.Loc.laArith hP.toClassicalTheorems.litN.aut.art (s.hw v) (hl v) _ (Ws.Pt.psi_cont x v j) (m v j) k hk (hw v j)
 
 /- English proof (translation)
-Introduce `hij`. Establish `hne : 1 - m v i + m v j ≠ 0`. Break down `lt_trichotomy i j with h | h | h` into its components or cases. Use `hm v i j h` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Substitute `h` using the available equality. Use linear arithmetic over natural numbers and integers. Use `hm v j i h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Take `⟨g, hg, hg1⟩` from `Ws.Pt.cycIne L Ω l (s.A v) (over_l v) ((1 - m v i + m v j) * k) (mul_ne_zero hne (by exact_mod_cast hk.ne'))`.
+Substitute using the available equality. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Establish `hgD : g ∈ Dec (F` using `L) (s.A v) := (GlobalTheory.WeilDeligne.Weil_le_Dec (s.hw v)) (GlobalTheory.WeilDeligne.ineIncl (s.hw v) ⟨g, hg⟩).2`. Establish `h1` using `hw v i ⟨g, hgD⟩ hg`. Establish `h2` using `hw v j ⟨g, hgD⟩ hg`. Establish `e : x.psi v i ⟨g, hgD⟩ = x.psi v j ⟨g, hgD⟩ * cycBar L Ω l g`. Rewrite using `[hij]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Apply `hg1` to reduce the goal to its premises. Establish `e2 : x.psi v i ⟨g, hgD⟩ * cycBar L Ω l g ^ (-m v i) = (x.psi v j ⟨g, hgD⟩ * cycBar L Ω l g ^ (-m v j)) * cycBar L Ω l g ^ (1 - m v i + m v j)`. Rewrite using `[e, mul_assoc, mul_assoc, ← zpow_add, ← zpow_one_add]`. Use `congr 2`.
+Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Expand and normalize the polynomial expressions, which then agree. Express the relevant statement in the definitionally equal form `(x.psi v i ⟨g, hgD⟩ * cycBar L Ω l g ^ (-m v i)) ^ k = 1 at h1`. Express the relevant statement in the definitionally equal form `(x.psi v j ⟨g, hgD⟩ * cycBar L Ω l g ^ (-m v j)) ^ k = 1 at h2`. Rewrite `h1` using `[e2, mul_pow, h2, one_mul]`. Rewrite using `[zpow_mul, zpow_natCast, h1]`.
+Expand and normalize the polynomial expressions, which then agree. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem noRatio (x : B.Pt) (m : W.Vl l L → Fin n → ℤ) (hm : ∀ v i j, i < j → m v j + 2 ≤ m v i) (k : ℕ) (hk : 0 < k)
     (hw : ∀ (v : W.Vl l L) i (g : Dec (F := L) (s.A v)), (g : G L Ω) ∈ Ine (F := L) (s.A v) →
@@ -143,7 +143,7 @@ private theorem noRatio (x : B.Pt) (m : W.Vl l L → Fin n → ℤ) (hm : ∀ v 
   rw [zpow_mul, zpow_natCast, h1]
 
 /- English proof (translation)
-Introduce `v` and use `⟨m v, k, fun i j h => by have := hm v i j h; omega, hk, fun i j g hg => by have e : x.psi v i g / x.psi v j g * cycBar L Ω l g ^ (m v j - m v i) = (x.psi v i g * cycBar L Ω l g ^ (-m v i)) / (x.psi v j g * cycBar L Ω l g ^ (-m v j)) := by rw [mul_div_mul_comm, div_eq_mul_inv (_ ^ …`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem par (x : B.Pt) (m : W.Vl l L → Fin n → ℤ) (hm : ∀ v i j, i < j → m v j + 2 ≤ m v i) (k : ℕ) (hk : 0 < k)
     (hw : ∀ (v : W.Vl l L) i (g : Dec (F := L) (s.A v)), (g : G L Ω) ∈ Ine (F := L) (s.A v) →
@@ -157,7 +157,7 @@ private theorem par (x : B.Pt) (m : W.Vl l L → Fin n → ℤ) (hm : ∀ v i j,
     rw [e, div_pow, hw v i g hg, hw v j g hg, div_one]⟩
 
 /- English proof (translation)
-Introduce `v : W.Vl l L` and use `by obtain ⟨g, hg, hf⟩ := Z.J.freeFlagU hP L Ω l s.odd ι n hn ρ hρ haut (s.A v) (over_l v) (x.psi v) (m v) k (hfl v) (fun i j h => by have := hm v i j h; omega) hk (hw v) (noRatio x m hm k hk hw v) refine ⟨g, ?_, hf⟩ have e : V.ε (toGS Ω V.S' (W.resP L Ω g)) = cycZ (W.Lp L) Ω l (W …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem free (hP : Af.HypothesesH) (hn : 1 ≤ n) (ι : PadicAlgCl l ≃+* ℂ) (x : B.Pt) (ρ : G L Ω →* GL (Fin n) (PadicAlgCl l))
     (m : W.Vl l L → Fin n → ℤ) (hρ : Continuous ρ) (haut : Af.IsAutCsd ι ρ) (hm : ∀ v i j, i < j → m v j + 2 ≤ m v i)

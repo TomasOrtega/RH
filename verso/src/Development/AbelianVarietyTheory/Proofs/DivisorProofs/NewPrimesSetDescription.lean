@@ -8,11 +8,11 @@ open MvPolynomial Formalism.DegreeFormula Formalism.BasicNotions Formalism.Basic
 namespace GlobalTheory.Mean4
 
 /- English proof (translation)
-Establish `hd : 2 * (NumberField.discr D.host.E).natAbs ≠ 0`. Use `NumberField.discr_ne_zero D.host.E` as an intermediate fact. Check the signs of the components of the expression. Simplify using `only [setB, Finset.mem_union, Finset.mem_filter, Finset.mem_range, Nat.mem_primeFactors, Formalism.MainNotions.WeightThresholdDefs.dE, Nat.lt_succ_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `(⟨h, hp⟩ | ⟨hp, h, _⟩ | h)`. Conclude with `⟨hp, Or.inl ((Nat.le_floor_iff' hp.ne_zero).1 h)⟩`. Conclude with `⟨hp, Or.inr (Or.inl h)⟩`. Conclude with `⟨Y.lev_prime p h, Or.inr (Or.inr h)⟩`. Introduce and unpack `⟨hp, h | h | h⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `Or.inl ⟨(Nat.le_floor_iff' hp.ne_zero).2 h, hp⟩`. Conclude with `Or.inr (Or.inl ⟨hp, h, hd⟩)`. Conclude with `Or.inr (Or.inr h)`.
+Prove the first alternative. Prove the second alternative. Prove the second alternative.
 -/
 theorem mem_setB_iff_le {D : D7} (Y : ShimX D.what₂.Tau) (B : ℝ) (p : ℕ) :
     p ∈ setB Y B ↔ p.Prime ∧ ((p : ℝ) ≤ B ∨ p ∣ 2 * dE D ∨ p ∈ Y.lev) := by
@@ -32,13 +32,11 @@ theorem mem_setB_iff_le {D : D7} (Y : ShimX D.what₂.Tau) (B : ℝ) (p : ℕ) :
     · exact Or.inr (Or.inr h)
 
 /- English proof (translation)
-Simplify using `only [newPrimes, Finset.mem_sdiff, mem_setB_iff_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨hp, h⟩, h'⟩`. Establish `h'' : ¬ ((p : ℝ) ≤ B₀ ∨ p ∣ 2 * dE D ∨ p ∈ Y.lev)` using `fun h => h' ⟨hp, h⟩`. Simplify using `only [not_or, not_le] at h''`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨h1, h2, h3⟩` from `h''`. Use `⟨hp, h1, ?_, h2, h3⟩` and prove the remaining obligations. Break down `h with h | h | h` into its components or cases. Conclude with `(Nat.le_floor_iff' hp.ne_zero).2 h`. Conclude with `absurd h h2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `absurd h h3`. Introduce and unpack `⟨hp, h1, h2, h3, h4⟩`. Use `⟨⟨hp, Or.inl ((Nat.le_floor_iff' hp.ne_zero).1 h2)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨_, h | h | h⟩`. Conclude with `absurd h (not_le.2 h1)`.
-
-Conclude with `h3 h`. Conclude with `h4 h`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_newPrimes_iff {D : D7} (Y : ShimX D.what₂.Tau) (B₀ B : ℝ) (p : ℕ) :
     p ∈ newPrimes Y B₀ B ↔ p.Prime ∧ B₀ < p ∧ p ≤ ⌊B⌋₊ ∧ ¬ p ∣ 2 * dE D ∧ p ∉ Y.lev := by
@@ -61,9 +59,9 @@ theorem mem_newPrimes_iff {D : D7} (Y : ShimX D.what₂.Tau) (B₀ B : ℝ) (p :
     · exact h4 h
 
 /- English proof (translation)
-Introduce `D Y B₀ B _`. Use `⟨fun hB p hp => ?_, fun p hp => ((mem_setB_iff_le Y B p).1 hp).1, mem_newPrimes_iff Y B₀ B, fun n => ?_⟩` and prove the remaining obligations. Rewrite `hp`, the goal using `[mem_setB_iff_le]`. Conclude with `⟨hp.1, hp.2.imp_left fun h => h.trans hB⟩`. Use extensionality with `p`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. By extensionality, compare the relevant components.
 
-Simplify using `only [mem_newPrimes_iff, Finset.mem_filter, Finset.mem_range, Nat.floor_natCast, Nat.lt_succ_iff]`. The claim follows by propositional logic.
+Simplify using the standard rewrite rules. The claim follows by propositional logic.
 -/
 theorem setB_newP_facts : ∀ (D : D7) (Y : ShimX D.what₂.Tau), ∀ B₀ B : ℝ, 0 ≤ B₀ → (B₀ ≤ B → setB Y B₀ ⊆ setB Y B) ∧ (∀ p ∈ setB Y B, p.Prime) ∧ (∀ p : ℕ, p ∈ newPrimes Y B₀ B ↔ p.Prime ∧ B₀ < p ∧ p ≤ ⌊B⌋₊ ∧ ¬ p ∣ 2 * dE D ∧ p ∉ Y.lev) ∧ ∀ n : ℕ, newPrimes Y B₀ n = (Finset.range (n + 1)).filter (fun p : ℕ => p.Prime ∧ B₀ < (p : ℝ) ∧ ¬ p ∣ 2 * dE D ∧ p ∉ Y.lev) := by
   intro D Y B₀ B _

@@ -12,13 +12,13 @@ variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ
   [IsScalarTower ℝ ℂ E] {m l : Type*} [Fintype m] [DecidableEq m] [Fintype l]
 
 /- English proof (translation)
-Establish `hK : ∀ x, MContDiffAt 2 (fun x => 1 - P x * Q x) x` using `fun x => (mContDiffAt_const 1).sub ((hP x).mul (hQ x))`. Establish `hK0 : (1 - P z * Q z) = 1` using `by rw [hP0]; simp`. Establish `hd : ∀ x, mdel (fun x => 1 - P x * Q x) x ξ = -(P x * C)` using `fun x => by`. Establish `h1` using `(hP x).of_le one_le_two`. Establish `h2` using `(hQ x).of_le one_le_two`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sub_eq_add_neg]`. Rewrite using `[mdel_add (mContDiffAt_const 1) (h1.mul h2).neg, mdel_neg, mdel_mul h1 h2, hdP, hdQ]`. Simplify using the standard rewrite rules. Establish `hdd : mddbar (fun x => 1 - P x * Q x) z ξ η = -(mdbar P z η * C)`. Rewrite using `[← mdbar_mdel (hK z)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hd]`. Rewrite using `[mdbar_neg, mdbar_mul ((hP z).of_le one_le_two) (mContDiffAt_const C)]`. Simplify using the standard rewrite rules. Establish `hu : IsUnit (1 - P z * Q z)ᵀ.det` using `by rw [hK0]; simp`. Establish `e : (fun x => (1 - P x * Q x)⁻¹) = fun x => dualGram (1 - P x * Q x)ᵀ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[dualGram, transpose_nonsing_inv, transpose_transpose]`. Rewrite using `[e, curv_dual (hK z).transpose hu, curv_eq (hK z).transpose hu, mdel_transpose (fun x => 1 - P x * Q x), hd, show mddbar (fun x => (1 - P x * Q x)ᵀ) z ξ η = (mddbar (fun x => 1 - P x * Q x) z ξ η)ᵀ from rfl, hdd, hK0, hP0]`. Simplify using the standard rewrite rules.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem curv_inv_one_sub_mul {P : E → Matrix m l ℂ} {Q : E → Matrix l m ℂ} {z ξ η : E}
     {C : Matrix l m ℂ} (hP : ∀ x, MContDiffAt 2 P x) (hQ : ∀ x, MContDiffAt 2 Q x)
@@ -54,14 +54,14 @@ section
 variable {n : ℕ} {a b : Type*}
 
 /- English proof (translation)
-Introduce `i j` and use `((EuclideanSpace.proj (𝕜 := ℂ) (f i j)).restrictScalars ℝ).contDiff.contDiffAt`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mContDiffAt_coordMatrix (f : a → b → Fin n) (w : ReciprocityTheory.L2DbarEstimates.V n) :
     MContDiffAt 2 (fun u : ReciprocityTheory.L2DbarEstimates.V n => Matrix.of fun i j => u (f i j)) w := fun i j =>
   ((EuclideanSpace.proj (𝕜 := ℂ) (f i j)).restrictScalars ℝ).contDiff.contDiffAt
 
 /- English proof (translation)
-Use extensionality with `i j`. Set `L : ReciprocityTheory.L2DbarEstimates.V n →L[ℂ] ℂ` to `EuclideanSpace.proj (𝕜 := ℂ) (f i j)`. Express the relevant statement in the definitionally equal form `del L w ξ = L ξ`. Rewrite using `[del_eq_fderiv L.differentiableAt, L.fderiv]`.
+By extensionality, compare the relevant components. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mdel_coordMatrix (f : a → b → Fin n) (w ξ : ReciprocityTheory.L2DbarEstimates.V n) :
     mdel (fun u : ReciprocityTheory.L2DbarEstimates.V n => Matrix.of fun i j => u (f i j)) w ξ =
@@ -72,9 +72,9 @@ theorem mdel_coordMatrix (f : a → b → Fin n) (w ξ : ReciprocityTheory.L2Dba
   rw [del_eq_fderiv L.differentiableAt, L.fderiv]
 
 /- English proof (translation)
-Establish `h` using `mdel_add_mdbar (fun u : ReciprocityTheory.L2DbarEstimates.V n => Matrix.of fun i j => u (f i j)) w ξ`. Rewrite `h` using `[mdel_coordMatrix]`. Rewrite using `[← add_right_inj (Matrix.of fun i j => ξ (f i j)), h, add_zero]`. Use extensionality with `i j`. Set `L : ReciprocityTheory.L2DbarEstimates.V n →L[ℝ] ℂ` to `(EuclideanSpace.proj (𝕜 := ℂ) (f i j)).restrictScalars ℝ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Express the relevant statement in the definitionally equal form `fderiv ℝ L w ξ = L ξ`. Rewrite using `[L.fderiv]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem mdbar_coordMatrix (f : a → b → Fin n) (w ξ : ReciprocityTheory.L2DbarEstimates.V n) :
     mdbar (fun u : ReciprocityTheory.L2DbarEstimates.V n => Matrix.of fun i j => u (f i j)) w ξ = 0 := by
@@ -89,9 +89,9 @@ theorem mdbar_coordMatrix (f : a → b → Fin n) (w ξ : ReciprocityTheory.L2Db
 end
 
 /- English proof (translation)
-Introduce `n r s f g ξ η`. Set `Z : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin r) (Fin s) ℂ` to `fun u => Matrix.of fun i j => u (f i j)`. Set `W : ReciprocityTheory.L2DbarEstimates.V n → Matrix (Fin r) (Fin s) ℂ` to `fun u => Matrix.of fun i j => u (g i j)`. Establish `h` using `curv_inv_one_sub_mul (P := fun u => (Z u)ᴴᵀ) (Q := fun u => (W u)ᵀ) (z := 0) (ξ := ξ) (η := η) (C := (W ξ)ᵀ) (fun x => (mContDiffAt_coordMatrix f x).conjTranspose.transpose) (fun x => (mContDiffAt_coordMatrix g x).transpose) (by ext i j; simp [Z]) (fun x => by`. Rewrite using `[mdel_transpose (fun u => (Z u)ᴴ), mdel_conjTranspose, mdbar_coordMatrix]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Use the proof step `(fun x => by rw [mdel_transpose W, mdel_coordMatrix])`. Rewrite `h` using `[mdbar_transpose (fun u => (Z u)ᴴ), mdbar_conjTranspose, mdel_coordMatrix, ← transpose_mul, transpose_transpose]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem curv_inv_one_sub_conj_mul_transpose_zero : ∀ {n r s : ℕ} (f g : Fin r → Fin s → Fin n) (ξ η : ReciprocityTheory.L2DbarEstimates.V n), GlobalTheory.HermFrame.curv (fun u : ReciprocityTheory.L2DbarEstimates.V n => (1 - (Matrix.of fun i j => u (f i j)).map (starRingEnd ℂ) * (Matrix.of fun i j => u (g i j))ᵀ)⁻¹) 0 ξ η = -((Matrix.of fun i j => ξ (g i j)) * (Matrix.of fun i j => η (f i j))ᴴ) := by
   intro n r s f g ξ η

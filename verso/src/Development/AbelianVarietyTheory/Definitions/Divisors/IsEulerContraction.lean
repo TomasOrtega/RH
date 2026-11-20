@@ -78,7 +78,7 @@ def locRing (y : X) : Subring X.functionField :=
   (algebraMap (X.presheaf.stalk y) X.functionField).range
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locRing {y : X} {f : X.functionField} : f ∈ locRing y ↔ RegAt y f := Iff.rfl
 

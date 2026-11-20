@@ -13,7 +13,7 @@ namespace UpperTheory.FiniteGenerationAndTorsion
 open UpperTheory.V.KH
 
 /- English proof (translation)
-Take `rfl : i = AddCommGroup.toIntModule N` from `Subsingleton.elim _ _`. Conclude with `Module.Finite.iff_addGroup_fg.1 h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem fgOfFin (N : Type) [AddCommGroup N] [i : Module ℤ N] (h : Module.Finite ℤ N) :
     AddGroup.FG N := by
@@ -21,7 +21,7 @@ private theorem fgOfFin (N : Type) [AddCommGroup N] [i : Module ℤ N] (h : Modu
   exact Module.Finite.iff_addGroup_fg.1 h
 
 /- English proof (translation)
-Take `rfl : i = AddCommGroup.toIntModule N` from `Subsingleton.elim _ _`. Conclude with `Module.Finite.iff_addGroup_fg.2 h`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem finOfFg (N : Type) [AddCommGroup N] [i : Module ℤ N] (h : AddGroup.FG N) :
     Module.Finite ℤ N := by
@@ -29,9 +29,9 @@ private theorem finOfFg (N : Type) [AddCommGroup N] [i : Module ℤ N] (h : AddG
   exact Module.Finite.iff_addGroup_fg.2 h
 
 /- English proof (translation)
-Establish `: Module.Finite ℤ Q` using `Module.Finite.iff_addGroup_fg.2 hQ`. Establish `: Module.Finite ℤ P` using `Module.Finite.of_finite`. Establish `hr : LinearMap.range u.toIntLinearMap = LinearMap.ker v.toIntLinearMap`. Use extensionality with `x`. Rewrite using `[LinearMap.mem_range, LinearMap.mem_ker]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h x).symm`. Establish `: IsNoetherian ℤ N` using `isNoetherian_of_range_eq_ker _ _ hr`. Conclude with `Module.Finite.iff_addGroup_fg.1 inferInstance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fgStep {P N Q : Type} [AddCommGroup P] [AddCommGroup N] [AddCommGroup Q]
     (u : P →+ N) (v : N →+ Q) (h : Function.Exact u v) [Finite P] (hQ : AddGroup.FG Q) :
@@ -46,9 +46,7 @@ private theorem fgStep {P N Q : Type} [AddCommGroup P] [AddCommGroup N] [AddComm
   exact Module.Finite.iff_addGroup_fg.1 inferInstance
 
 /- English proof (translation)
-Use `ho.1` as an intermediate fact. Take `⟨φ⟩` from `hZero G X M e (LinearMap.range D : Set (X →₀ ℤ)) he (fun f => by`. Rewrite using `[Submodule.span_eq, LinearMap.mem_range]`. Conclude with `hex f)`. Establish `hf` using `fgOfFin _ (inferInstance : Module.Finite ℤ ((MulAction.orbitRel.Quotient G X →₀ ℤ) ⧸ Submodule.span ℤ (Finsupp.mapDomain (Quotient.mk (MulAction.orbitRel G X) : X → MulAction.orbitRel.Quotient G X) '' (LinearMap.range D : Set (X →₀ ℤ)))))`.
-
-Conclude with `AddGroup.fg_of_surjective (f := φ.symm.toAddMonoidHom) φ.symm.surjective`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem fgBase (G : Type) [Group G] (X Y : Type) [MulAction G X] (A : ℕ) (M : Rep ℤ G)
     (e : permRep G X ⟶ M) (D : (Y →₀ ℤ) →ₗ[ℤ] (X →₀ ℤ)) (he : Function.Surjective e.hom)
@@ -65,13 +63,13 @@ private theorem fgBase (G : Type) [Group G] (X Y : Type) [MulAction G X] (A : �
   exact AddGroup.fg_of_surjective (f := φ.symm.toAddMonoidHom) φ.symm.surjective
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Introduce `X _ d M e he h0 _ ho _`. Conclude with `fgBase G (X 0) (X 1) A M e (d 0).hom.toLinearMap he h0 (ho 0 le_rfl)`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X _ d M e he h0 hx ho hst`. Take `⟨K, p, i, hp, hi, hpi, hie⟩` from `imageRep G _ _ _ (d 0) e h0`. Establish `h1 : Function.Exact (d 1).hom p.hom`. Introduce `y`. Rewrite using `[← hx 0 (Nat.succ_pos m) y, ← hpi y]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Rewrite using `[h, map_zero]`. Introduce `h; exact hi (by rw [h, map_zero])`. Establish `hK` using `ih (fun q => X (q + 1)) (fun q => d (q + 1)) K p hp h1 (fun q hq => hx (q + 1) (by omega)) (fun q hq => ho (q + 1) (by omega)) (fun q hq => hst (q + 1) (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `(permCard G s m A (X 0) (ho 0 (by omega)) (hst 0 (by omega)) hs).1`. Take `⟨u, v, huv⟩` from `(les G _ _ _ i e hi hie he m).2`. Conclude with `fgStep u v huv hK`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem fg_homology_of_permutation_resolution (G : Type) [Group G] (A s : ℕ) (hs : 1 ≤ s) (m : ℕ) :
     ∀ (X : ℕ → Type) [∀ p, MulAction G (X p)]
@@ -101,7 +99,7 @@ private theorem fg_homology_of_permutation_resolution (G : Type) [Group G] (A s 
     exact fgStep u v huv hK
 
 /- English proof (translation)
-Introduce `G _ A s m X _ d M e hs he h0 hx ho hst`. Conclude with `finOfFg _ (fg_homology_of_permutation_resolution G A s hs m X d M e he h0 hx ho hst)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fgShift : FgShift := by
   intro G _ A s m X _ d M e hs he h0 hx ho hst

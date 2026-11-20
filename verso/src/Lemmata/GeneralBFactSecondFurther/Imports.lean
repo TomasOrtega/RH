@@ -3,17 +3,15 @@ import Mathlib
 namespace Bl.general_b_fact_second''
 
 /- English proof (translation)
-Introduce `O K X _ _ _ _ _ _ _ _ _ B hB x`. Establish `hx : x ∈ Submodule.span K (B : Set X)` using `by rw [hB]; exact Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hy⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact B.zero_mem⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Take `⟨d1, hd1, h1⟩` from `hy`. Take `⟨d2, hd2, h2⟩` from `hz`. Use `⟨d2 * d1, mul_ne_zero hd2 hd1, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `B.add_mem` to reduce the goal to its premises. Rewrite using `[mul_smul]`. Conclude with `B.smul_mem d2 h1`. Rewrite using `[mul_comm, mul_smul]`. Conclude with `B.smul_mem d1 h2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul k y _ hy`. Take `⟨d, hd, h⟩` from `hy`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := O) k`. Establish `hb0 : algebraMap O K b ≠ 0` using `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors hb`. Establish `hk : algebraMap O K b * (algebraMap O K a / algebraMap O K b) = algebraMap O K a`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `key : b • ((algebraMap O K a / algebraMap O K b) • y) = a • y`. Rewrite using `[← smul_assoc, Algebra.smul_def, hk, algebraMap_smul]`. Use `⟨d * b, mul_ne_zero hd (nonZeroDivisors.ne_zero hb), ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, key, smul_comm]`.
-
-Conclude with `B.smul_mem a h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {O K X : Type} [inst : CommRing.{0} O] [IsDomain.{0} O] [inst_2 : Field.{0} K] [inst_3 : Algebra.{0, 0} O K]

@@ -24,23 +24,23 @@ open Matrix GlobalTheory.PlaneProj GlobalTheory.IsoPlaneProj GlobalTheory.IwaIso
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hinv` using `GlobalTheory.LeviIdeleHom.sigma_sigma hσ`. Establish `hJ₁ : IsUnit Y₁.J.det` using `isUnit_iff_ne_zero.2 hd`. Take `⟨π, hfr⟩` from `frame_of_gram hinv hskew hn hxx hyy hxy horth hgram hJ₁`. Establish `hsk` using `GlobalTheory.PlaneFrame.form_skew hσ hskew`. Use `set c : AE F E →+* AE F E := ((cA σ : AE F E →ₐ[AF F] AE F E) : AE F E →+* AE F E) with hc`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `eιx : (H.ιᵀ * Y.J) *ᵥ (⇑σ ∘ H.x) = 0`. Use function extensionality and compare the values at `j`. Establish `h0` using `(horth (Pi.single j 1)).1`. Rewrite `h0` using `[form, dotProduct_comm, dotProduct_mulVec, dotProduct_single_one]`. Rewrite using `[Pi.zero_apply, ← h0, ← mulVec_mulVec, mulVec_transpose]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `exι : H.x ᵥ* (Y.J * H.ι.map σ) = 0`. Use function extensionality and compare the values at `j`. Establish `h0 : form σ Y.J H.x (H.ι *ᵥ Pi.single j 1) = 0`. Rewrite using `[hsk, (horth _).1, map_zero, neg_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Pi.zero_apply, ← h0, form, ← dotProduct_single_one (H.x ᵥ* _) j, ← dotProduct_mulVec, ← mulVec_mulVec]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, Pi.single_apply]`. Establish `hframe : vecMulVec (incV F H.x) (incM F Y.J *ᵥ (c ∘ incV F H.y)) + incM F H.ι * incM F π - vecMulVec (incV F H.y) (incM F Y.J *ᵥ (c ∘ incV F H.x)) = 1`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cA_incV, cA_incV, incM_mulVec', incM_mulVec', incM_vmv, incM_vmv, incM_mul]`. Establish `e1 : incM F (vecMulVec H.x (Y.J *ᵥ (⇑σ ∘ H.y))) + incM F (H.ι * π) - incM F (vecMulVec H.y (Y.J *ᵥ (⇑σ ∘ H.x))) = incM F (vecMulVec H.x (Y.J *ᵥ (⇑σ ∘ H.y)) + H.ι * π - vecMulVec H.y (Y.J *ᵥ (⇑σ ∘ H.x)))`. Use extensionality with `i j`. Simplify using `only [incM, Matrix.map_apply, Matrix.add_apply, Matrix.sub_apply, map_add, map_sub]`. Rewrite using `[e1, hfr]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[incM, Matrix.one_apply]`. Establish `hgram' : (incM F H.ι)ᵀ * incM F Y.J * (incM F H.ι).map c = incM F Y₁.J`. Rewrite using `[incM_map, incM_transpose, incM_mul, incM_mul, hgram]`. Establish `hιx : ((incM F H.ι)ᵀ * incM F Y.J) *ᵥ (c ∘ incV F H.x) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cA_incV, incM_transpose, incM_mul, incM_mulVec', eιx, incV_zero]`. Establish `hxι : incV F H.x ᵥ* (incM F Y.J * (incM F H.ι).map c) = 0`. Rewrite using `[incM_map, incM_mul, incV_vecMul, exι, incV_zero]`. Establish `hxx' : incV F H.x ⬝ᵥ (incM F Y.J *ᵥ (c ∘ incV F H.x)) = 0`. Rewrite using `[cA_incV, incM_mulVec', incV_dot]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: H.x ⬝ᵥ (Y.J *ᵥ (⇑σ ∘ H.x)) = 0` using `hxx`. Rewrite using `[this, map_zero]`. Establish `hJ₁' : IsUnit (incM F Y₁.J).det`. Rewrite using `[show incM F Y₁.J = (inclR (F := F) (AF F)).mapMatrix Y₁.J from rfl, ← RingHom.map_det]`. Conclude with `hJ₁.map _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨hU, hdet, hz⟩` from `proj_core c (mat p) (incM F Y.J) (incM F Y₁.J) (incM F H.ι) (incM F π) (incV F H.x) (incV F H.y) p.2 hp hframe hgram' hιx hxι hxx' hJ₁'`. Conclude with `⟨⟨Matrix.GeneralLinearGroup.mk'' _ hdet, hU⟩, fun z => ⟨_, hz z⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_levi_proj (hσ : IsCMExt F E σ) {n n₁ : ℕ} (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁)
     (hskew : ∀ i j, σ (Y.J j i) = -Y.J i j) (hn : n = n₁ + 2) (hxx : form σ Y.J H.x H.x = 0)
@@ -91,21 +91,19 @@ theorem exists_levi_proj (hσ : IsCMExt F E σ) {n n₁ : ℕ} (Y : Spc F E n) (
   exact ⟨⟨Matrix.GeneralLinearGroup.mk'' _ hdet, hU⟩, fun z => ⟨_, hz z⟩⟩
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_isLevi_of_hyperbolic_pair hcm Y Y₁ H hsk hxx hyy hxy horth t`. Establish `hmx : mat m⁻¹ *ᵥ incV F H.x = t⁻¹.1 • incV F H.x`. Use `inv_mulVec_of' m t.1 t.isUnit _ _ hm.1` as an intermediate fact. Simplify using `using this`. Establish `hp1 : mat (m⁻¹ * p) *ᵥ incV F H.x = incV F H.x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[mat_mul'', ← Matrix.mulVec_mulVec, ht, Matrix.mulVec_smul, hmx, smul_smul]`. Simplify using the standard rewrite rules. Take `⟨h₁, hh₁⟩` from `exists_levi_proj hcm Y Y₁ H hsk hn hxx hyy hxy horth hgram hd (m⁻¹ * p) hp1`. Establish `hm₁` using `hMsec h₁`. Generalize the expression as in `hM : Msec h₁ = m₁ at hm₁`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hm₁x : mat m₁⁻¹ *ᵥ incV F H.x = incV F H.x`. Use `inv_mulVec_of' m₁ 1 isUnit_one _ _ (by simpa using hm₁.1)` as an intermediate fact. Simplify using `using this`. Establish `hmι : mat m * incM F H.ι = incM F H.ι` using `by rw [hm.2.2, mat_one'', Matrix.mul_one]`. Establish `hmιinv : mat m⁻¹ * incM F H.ι = incM F H.ι` using `by conv_lhs => rw [← hmι, ← Matrix.mul_assoc, mat_inv_mul'', Matrix.one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm₁ιinv : mat m₁⁻¹ * incM F H.ι = incM F H.ι * mat h₁⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mat_mul_inv'', Matrix.mul_one]`. Use `_ = mat m₁⁻¹ * (mat m₁ * incM F H.ι) * mat h₁⁻¹ := by rw [hm₁.2.2]; simp only [Matrix.mul_assoc]`. Use `_ = incM F H.ι * mat h₁⁻¹ := by rw [← Matrix.mul_assoc, mat_inv_mul'', Matrix.one_mul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : ∀ v, mat p *ᵥ v = mat m *ᵥ (mat (m⁻¹ * p) *ᵥ v)`. Introduce `v`. Rewrite using `[Matrix.mulVec_mulVec, mat_mul'', ← Matrix.mul_assoc, mat_mul_inv'', Matrix.one_mul]`. Use `⟨p * m₁⁻¹ * m⁻¹, Subgroup.subset_closure ⟨?_, fun z => ?_⟩, m, hm, h₁, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [mat_mul'', Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Use `_ = t⁻¹.1 • (mat p *ᵥ (mat m₁⁻¹ *ᵥ incV F H.x)) := by rw [hmx, Matrix.mulVec_smul, Matrix.mulVec_smul]`. Use `_ = incV F H.x := by rw [hm₁x, ht, smul_smul]; simp`. Take `⟨c, hc⟩` from `hh₁ (mat h₁⁻¹ *ᵥ z)`. Use `⟨c * t.1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mat_mul'', Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Use `_ = mat p *ᵥ (incM F H.ι *ᵥ (mat h₁⁻¹ *ᵥ z)) := by`. Rewrite using `[Matrix.mulVec_mulVec _ (mat m⁻¹), hmιinv, Matrix.mulVec_mulVec _ (mat m₁⁻¹), hm₁ιinv, ← Matrix.mulVec_mulVec]`. Use `_ = mat m *ᵥ (incM F H.ι *ᵥ (mat h₁ *ᵥ (mat h₁⁻¹ *ᵥ z)) + c • incV F H.x) := by rw [e1, hc]`.
-
-Use `_ = incM F H.ι *ᵥ z + (c * t.1) • incV F H.x := by`. Rewrite using `[Matrix.mulVec_mulVec _ (mat h₁), mat_mul_inv'', Matrix.one_mulVec, Matrix.mulVec_add, Matrix.mulVec_mulVec, hmι, Matrix.mulVec_smul, hm.1, smul_smul]`. Rewrite using `[hM]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_dec (hcm : IsCMExt F E σ) {n n₁ : ℕ} (Y : Spc F E n) (Y₁ : Spc F E n₁) (H : Plane E n n₁)
     (hsk : ∀ i j, σ (Y.J j i) = -Y.J i j) (hn : n = n₁ + 2) (hxx : form σ Y.J H.x H.x = 0)
@@ -159,9 +157,9 @@ end GlobalTheory.ThK.InducedCons.ParDec
 open GlobalTheory.ThK.SquareIntegrability in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm hσ n n₁ W W₁ H hsk hn hxx hyy hxy horth hgram c₀ hc₀ hJ₁ _ M _ hM r X' Y' hW hX p t hp`. Establish `hd : W₁.J.det ≠ 0` using `fun h0 => hJ₁.2 (by`. Establish `e : (W₁.J.map σ).det = (σ : E →+* E) W₁.J.det` using `by rw [RingHom.map_det]; rfl`. Rewrite using `[Matrix.det_smul, e, h0, map_zero, mul_zero])`. Take `⟨q, rfl⟩` from `(toGAd hσ W.J hc₀).surjective p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, m, hm, h₁, e⟩` from `ParDec.exists_dec hcm W W₁ H hsk hn hxx hyy hxy horth hgram hd M hM q t hp`. Establish `hP : GlobalTheory.ThK.GLTwo.IsHypPlane σ H W W₁` using `⟨hn, hxx, hyy, hxy, horth, hgram⟩`. Use `⟨toGAd hσ W₁.J hc₀ h₁, toGAd hσ W.J hc₀ u, (hP.mem_unip_iff hσ hsk hd hc₀ hW (Nat.succ_pos r) hX u).1 hu, m, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_mul, map_mul]`. Simplify using `only [GlobalTheory.ThK.CuspTransfer.emb, MulEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem GlobalTheory.ThK.InducedCons.exists_isParDec : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →

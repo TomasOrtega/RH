@@ -9,39 +9,35 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `p _ D r w hw huw e`. Establish `hpr : Prime (p : ℤ)` using `Nat.prime_iff_prime_int.mp (Fact.out : Nat.Prime p)`. Establish `hbb : ∀ x : 𝓞 D.F, D.bar (D.bar x) = x`. Introduce `x`. Apply `NumberField.RingOfIntegers.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[D.bar_eq, D.bar_eq]`. Conclude with `IsCMField.complexConj_apply_apply _ _`. Establish `hp : (p : 𝓞 D.F) ∈ uIdeal D r` using `p_mem_uIdeal D r`. Establish `hs : D.ω - (r : 𝓞 D.F) ∈ uIdeal D r` using `sub_mem_uIdeal D r`. Use `set ub : Ideal (𝓞 D.F) := Ideal.span {(p : 𝓞 D.F), D.bar D.ω - (r : 𝓞 D.F)} with hub`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hmap : Ideal.map D.bar (uIdeal D r) = ub`. Simplify using `[uIdeal, Ideal.map_span, Set.image_pair, hub]`. Establish `hc : (D.ω - (r : 𝓞 D.F)) * (D.bar D.ω - r) = (r : 𝓞 D.F) ^ 2 - (D.tr : 𝓞 D.F) * r + D.nm`. Take the linear combination `D.nm_eq - (r : 𝓞 D.F) * D.tr_eq`. Establish `hdvd : (p : ℤ) ∣ r ^ 2 - D.tr * r + D.nm`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hnd`. Take `⟨a, b, hab⟩` from `(Irreducible.coprime_iff_not_dvd hpr.irreducible).2 hnd`. Establish `h2` using `congrArg (Int.cast : ℤ → 𝓞 D.F) hab`. Move the coercions through the operations in `at h2`. Apply `hw` to reduce the goal to its premises.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Apply `huw` to reduce the goal to its premises. Establish `key : (1 : 𝓞 D.F) = (a : 𝓞 D.F) * p + (b : 𝓞 D.F) * ((D.ω - r) * (D.bar D.ω - r))`. Take the linear combination `-h2 - (b : 𝓞 D.F) * hc`. Rewrite using `[key]`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hp) (Ideal.mul_mem_left _ _ (Ideal.mul_mem_right _ _ hs))`. Establish `hprod : uIdeal D r * ub ≤ Ideal.span {(p : 𝓞 D.F)}`. Take `⟨k, hk⟩` from `hdvd`. Use `show Ideal.span {(p : 𝓞 D.F), D.ω - (r : 𝓞 D.F)} * ub ≤ _`. Rewrite using `[hub, Ideal.span_pair_mul_span_pair, Ideal.span_le]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx`. Simplify using `only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx`. Break down `hx with rfl | rfl | rfl | rfl` into its components or cases. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`. Rewrite using `[SetLike.mem_coe, hc, Ideal.mem_span_singleton]`. Conclude with `⟨(k : 𝓞 D.F), by exact_mod_cast hk⟩`. Establish `hsup : uIdeal D r ⊔ ub = ⊤`. Take `⟨a, b, hab⟩` from `(Irreducible.coprime_iff_not_dvd hpr.irreducible).2 D.disc_p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (Int.cast : ℤ → 𝓞 D.F) hab`. Move the coercions through the operations in `at h2`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `hdiff : D.ω - D.bar D.ω ∈ uIdeal D r ⊔ ub`. Establish `: D.ω - D.bar D.ω = (D.ω - r) - (D.bar D.ω - r)` using `by ring`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ (Ideal.mem_sup_left hs) (Ideal.mem_sup_right (Ideal.subset_span (by simp)))`. Establish `hpm : (p : 𝓞 D.F) ∈ uIdeal D r ⊔ ub` using `Ideal.mem_sup_left hp`. Establish `key : (1 : 𝓞 D.F) = (a : 𝓞 D.F) * p + (b : 𝓞 D.F) * ((D.ω - D.bar D.ω) * (D.ω - D.bar D.ω))`. Take the linear combination `-h2 - (b : 𝓞 D.F) * (D.ω + D.bar D.ω + D.tr) * D.tr_eq + 4 * (b : 𝓞 D.F) * D.nm_eq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ hpm) (Ideal.mul_mem_left _ _ (Ideal.mul_mem_left _ _ hdiff))`. Establish `hcopE : uIdeal D r ^ e ⊔ ub ^ e = ⊤` using `Ideal.isCoprime_iff_sup_eq.mp ((Ideal.isCoprime_iff_sup_eq.mpr hsup).pow)`. Establish `hle : uIdeal D r ^ e * ub ^ e ≤ Ideal.span {(p : 𝓞 D.F) ^ e}`. Rewrite using `[← mul_pow, ← Ideal.span_singleton_pow]`.
+Check the elementary cases of the proposition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.pow_right_mono hprod e`. Establish `hinf : uIdeal D r ^ e ⊓ ub ^ e ≤ Ideal.span {(p : 𝓞 D.F) ^ e}`. Rewrite using `[← Ideal.mul_eq_inf_of_coprime hcopE]`. Conclude with `hle`. Establish `h1 : (1 : 𝓞 D.F) ∈ uIdeal D r ^ e ⊔ ub ^ e`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcopE]`. Discharge the goal by the elementary cases of `trivial`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp h1`. Establish `hbz : D.bar z ∈ uIdeal D r ^ e`. Rewrite `hz` using `[← hmap, ← Ideal.map_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨x, hx, rfl⟩` from `(Ideal.mem_map_of_equiv D.bar z).mp hz`. Rewrite using `[hbb]` and apply the resulting hypothesis. Establish `hup : ∀ x ∈ uIdeal D r ^ e, D.bar x ∈ ub ^ e`. Introduce `x hx`. Rewrite using `[← hmap, ← Ideal.map_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Ideal.mem_map_of_mem _ hx`. Establish `hx0u : z + D.bar z - 1 ∈ uIdeal D r ^ e`. Establish `: z + D.bar z - 1 = D.bar z - y`. Rewrite using `[← hyz]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[this]`. Conclude with `Ideal.sub_mem _ hbz hy`. Establish `hx0b : z + D.bar z - 1 ∈ ub ^ e`. Establish `h` using `hup _ hx0u`. Establish `: D.bar (z + D.bar z - 1) = z + D.bar z - 1`.
-
-Rewrite using `[map_sub, map_add, map_one, hbb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `h` using `[this]`. Then use the resulting hypothesis. Conclude with `⟨z, fun a ha => hle (Ideal.mul_mem_mul ha hz), hinf (Ideal.mem_inf.mpr ⟨hx0u, hx0b⟩), hbz⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.uElt_of :
     UElt := by

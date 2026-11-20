@@ -14,7 +14,7 @@ open GlobalTheory.SplitWeil GlobalTheory.RootEx GlobalTheory.StepData GlobalTheo
 open GlobalTheory.IndefiniteRowSideFullHecke.LocalOrderMatrix
 
 /- English proof (translation)
-Introduce and unpack `((i | i) | ⟨i, l⟩)`. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite using `[ordX_d]`. Simplify using `only [xPos]`.
+Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -46,27 +46,27 @@ section Arith
 variable {E : Type} [Field E] [NumberField E] {P : HeightOneSpectrum (𝓞 E)} {q : ℕ}
 
 /- English proof (translation)
-Simplify using `using IntAt.coe P (n : 𝓞 E)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intAt_nat (n : ℕ) : IntAt P (n : E) := by simpa using IntAt.coe P (n : 𝓞 E)
 
 /- English proof (translation)
-Simplify using `using reduction_coe P (n : 𝓞 E)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem reduction_natCast (n : ℕ) : redP P (n : E) = (n : 𝓞 E ⧸ P.asIdeal) := by
   simpa using reduction_coe P (n : 𝓞 E)
 
 /- English proof (translation)
-Rewrite using `[reduction_natCast]`. Simplify using `using Ideal.Quotient.eq_zero_iff_mem.2 hq`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem reduction_natCast_eq_zero (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) : redP P (q : E) = 0 := by
   rw [reduction_natCast]
   simpa using Ideal.Quotient.eq_zero_iff_mem.2 hq
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[zero_add, pow_one]`. Conclude with `⟨intAt_nat q, reduction_natCast_eq_zero hq⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[pow_succ]`. Conclude with `⟨ih.1.mul (intAt_nat q), by rw [reduction_mul ih.1 (intAt_nat q), ih.2, zero_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pow_red (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (n : ℕ) :
     IntAt P ((q : E) ^ (n + 1)) ∧ redP P ((q : E) ^ (n + 1)) = 0 := by
@@ -79,15 +79,15 @@ theorem pow_red (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (n : ℕ) :
     exact ⟨ih.1.mul (intAt_nat q), by rw [reduction_mul ih.1 (intAt_nat q), ih.2, zero_mul]⟩
 
 /- English proof (translation)
-Establish `hI : IntAt P (1 : E)` using `by simpa using intAt_nat (P := P) 1`. Establish `hU : IsUnit (redP P (1 : E))`. Use `reduction_natCast (P := P) 1` as an intermediate fact. Rewrite `this` using `[Nat.cast_one, Nat.cast_one]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isUnit_one`. Establish `hex : ∃ z : ℤ, IsUnit (redP P ((1 : E) / (q : E) ^ z))` using `⟨0, by rwa [zpow_zero, div_one]⟩`. Establish `hspec : IsUnit (redP P ((1 : E) / (q : E) ^ LocE.vP P q (1 : E)))`. Unfold `LocE.vP`. Conclude with `Classical.epsilon_spec hex`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Take `⟨n, hk | hk⟩` from `Int.eq_nat_or_neg (LocE.vP P q (1 : E))`. Take `⟨k', rfl⟩ : ∃ k', n = k' + 1` from `⟨n - 1, by omega⟩`. Rewrite `hspec` using `[hk, zpow_natCast]`. Distinguish the cases in `hI' : IntAt P ((1 : E) / (q : E) ^ (k' + 1))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (1 : E) = (q : E) ^ (k' + 1) * ((1 : E) / (q : E) ^ (k' + 1))` using `by field_simp`. Establish `h0 : redP P (1 : E) = 0`. Rewrite using `[e, reduction_mul (pow_red hq k').1 hI', (pow_red hq k').2, zero_mul]`. Rewrite `hU` using `[h0]`. Conclude with `not_isUnit_zero hU`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hspec` using `[reduction_eq_zero_of_not_integral P hI']`. Conclude with `not_isUnit_zero hspec`. Take `⟨k', rfl⟩ : ∃ k', n = k' + 1` from `⟨n - 1, by omega⟩`. Rewrite `hspec` using `[hk, _root_.zpow_neg, zpow_natCast, div_inv_eq_mul, reduction_mul hI (pow_red hq k').1, (pow_red hq k').2, mul_zero]`. Conclude with `not_isUnit_zero hspec`.
+A detailed English derivation is pending.
 -/
 theorem valuation_one₂ (hq : ((q : ℕ) : 𝓞 E) ∈ P.asIdeal) (hq0 : (q : E) ≠ 0) : LocE.vP P q (1 : E) = 0 := by
   have hI : IntAt P (1 : E) := by simpa using intAt_nat (P := P) 1

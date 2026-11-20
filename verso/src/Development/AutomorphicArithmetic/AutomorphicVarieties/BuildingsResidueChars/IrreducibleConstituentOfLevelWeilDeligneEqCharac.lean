@@ -9,9 +9,9 @@ open GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.LocGL Globa
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Rewrite `hd` using `[LinearMap.charpoly_one]`. Take `⟨q, hq⟩` from `hd`. Establish `h0` using `congrArg (Polynomial.aeval f) hq`. Rewrite `h0` using `[map_mul, LinearMap.aeval_self_charpoly, zero_mul, map_pow, map_sub, Polynomial.aeval_X, map_one]`. Establish `hs : (f - algebraMap ℂ (Module.End ℂ V) 1).IsSemisimple` using `Module.End.isSemisimple_sub_algebraMap_iff.2 hf`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hs` using `[map_one]`. Conclude with `sub_eq_zero.1 (Module.End.eq_zero_of_isNilpotent_isSemisimple ⟨_, h0⟩ hs)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_one_of_charpoly_dvd {V V' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V'] (f : Module.End ℂ V)
@@ -27,13 +27,13 @@ private theorem eq_one_of_charpoly_dvd {V V' : Type} [AddCommGroup V] [Module �
   exact sub_eq_zero.1 (Module.End.eq_zero_of_isNilpotent_isSemisimple ⟨_, h0⟩ hs)
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ w A h M n hM x z hx hz hd`. Take `⟨χ, a, hχ, rfl, -, ha⟩` from `hx`. Take `⟨m, b, rfl, hb⟩` from `hz`. Establish `key : ∀ s : ↥(Ine (F` using `F) A), (∀ ζ : Ω, ζ ^ M = 1 → (s : G F Ω) ζ = ζ) → b.ρ (ineIncl h s) = 1 := by`. Introduce `s hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : a.ρ (ineIncl h s) = 1`. Rewrite using `[ha s]`. Establish `: (fun i => ((χ i s : ℂˣ) : ℂ)) = fun _ => 1`. Use function extensionality and compare the values at `i`. Rewrite using `[hχ i s hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[this, Matrix.diagonal_one, Matrix.toLin'_one]`. Both sides reduce to the same expression. Establish `h2` using `hd (ineIncl h s)`. Rewrite `h2` using `[WD.charPol_mk, WD.charPol_mk, h1]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `eq_one_of_charpoly_dvd _ (b.semisimple _) h2`. Take `⟨ξ, hξ, h1, h2⟩` from `UpperTheory.irreducible_weilDeligne_tame_level_eq_character F Ω w A h M hM m b hb key`. Conclude with `⟨ξ, hξ, h1, fun s hs => h2 _ (key s hs)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.irreducible_constituent_of_level_weilDeligne_eq_character :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (w : HeightOneSpectrum (𝓞 F)) (A : ValuationSubring Ω) (h : IsPlaceOver A w) (M n : ℕ), 1 ≤ M →

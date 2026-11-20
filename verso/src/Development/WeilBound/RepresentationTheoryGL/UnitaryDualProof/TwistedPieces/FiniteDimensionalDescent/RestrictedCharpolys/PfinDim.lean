@@ -9,13 +9,13 @@ namespace PositivityTheory.RgUd.TP.Desc.Restr.PfinDim
 open PositivityTheory.RgUd.TP.Desc.Restr
 
 /- English proof (translation)
-Introduce `p c _ _`. Use `letI := frMod (k := k) p c`. Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `isUniformAddGroup_of_addCommGroup (G := k)` as an intermediate fact. Use `letI : (Valued.v (R := k)).RankOne := { hom' := IsRankLeOne.nonempty.some.emb (R := k).comp MonoidWithZeroHom.ValueGroup₀.embedding strictMono' := IsRankLeOne.nonempty.some.strictMono.comp MonoidWithZeroHom.ValueGroup₀.embedding_strictMono }`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hc : CompleteSpace k` using `inferInstance`. Use `letI : NontriviallyNormedField k := Valued.toNontriviallyNormedField k (ValueGroupWithZero k)`. Establish `: CompleteSpace k` using `hc`. Establish `: IsTopologicalAddGroup (Fr k p c)` using `inferInstanceAs (IsTopologicalAddGroup k)`. Establish `: T2Space (Fr k p c)` using `inferInstanceAs (T2Space k)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyCompactSpace (Fr k p c)` using `inferInstanceAs (LocallyCompactSpace k)`. Establish `: Nontrivial (Fr k p c)` using `inferInstanceAs (Nontrivial k)`. Establish `: ContinuousSMul k (Fr k p c)` using `⟨by show Continuous fun q : k × k => (iterateFrobenius k p c q.1) * q.2`. Simplify using `only [iterateFrobenius_def]`. Conclude with `(continuous_fst.pow _).mul continuous_snd⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfd : FiniteDimensional k (Fr k p c)` using `FiniteDimensional.of_locallyCompactSpace k`. Conclude with `⟨hfd, Module.finrank_pos⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finDim (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     FinDim k := by

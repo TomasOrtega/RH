@@ -15,22 +15,22 @@ instance isPrime_span_X : (Ideal.span {X} : Ideal O⟦X⟧).IsPrime := span_X_is
 
 omit [IsDomain O] in
 /- English proof (translation)
-Rewrite using `[Ideal.mem_span_singleton, X_dvd_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_span_X_iff {f : O⟦X⟧} : f ∈ (Ideal.span {X} : Ideal O⟦X⟧) ↔ constantCoeff f = 0 := by
   rw [Ideal.mem_span_singleton, X_dvd_iff]
 
 /- English proof (translation)
-The claim follows from `mem_span_X_iff.not`.
+A detailed English derivation is pending.
 -/
 theorem mem_primeCompl_span_X_iff {f : O⟦X⟧} :
     f ∈ (Ideal.span {X} : Ideal O⟦X⟧).primeCompl ↔ constantCoeff f ≠ 0 :=
   mem_span_X_iff.not
 
 /- English proof (translation)
-Use `⟨fun ⟨z, hz⟩ => ?_, fun h => by simpa using map_dvd (algebraMap O⟦X⟧ S) h⟩` and prove the remaining obligations. Take `⟨⟨g, s⟩, hgs⟩` from `IsLocalization.surj M z`. Establish `h1 : algebraMap O⟦X⟧ S (f * s) = algebraMap O⟦X⟧ S (X ^ a * g)`. Rewrite using `[map_mul, map_mul, map_pow, hz, mul_assoc, hgs]`. Take `⟨c, hc⟩` from `(IsLocalization.eq_iff_exists M S).1 h1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : X ^ a ∣ ((c * s : M) : O⟦X⟧) * f` using `⟨c * g, by`. Rewrite using `[Submonoid.coe_mul]`. Take the linear combination `hc⟩`. Conclude with `X_prime.pow_dvd_of_dvd_mul_left a (X_dvd_iff.not.2 (hM _ (c * s).2)) h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem algebraMap_X_pow_dvd_iff (M : Submonoid O⟦X⟧) (hM : ∀ m ∈ M, constantCoeff m ≠ 0)
     (S : Type*) [CommRing S] [Algebra O⟦X⟧ S] [IsLocalization M S] (a : ℕ) (f : O⟦X⟧) :
@@ -48,14 +48,14 @@ variable (S : Type*) [CommRing S] [Algebra O⟦X⟧ S]
   [IsLocalization.AtPrime S (Ideal.span {X} : Ideal O⟦X⟧)]
 
 /- English proof (translation)
-The claim follows from `algebraMap_X_pow_dvd_iff _ (fun _ hm => mem_primeCompl_span_X_iff.1 hm) S a f`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_X_pow_dvd_iff_atPrime (a : ℕ) (f : O⟦X⟧) :
     algebraMap O⟦X⟧ S X ^ a ∣ algebraMap O⟦X⟧ S f ↔ X ^ a ∣ f :=
   algebraMap_X_pow_dvd_iff _ (fun _ hm => mem_primeCompl_span_X_iff.1 hm) S a f
 
 /- English proof (translation)
-Use extensionality with `f`. Rewrite using `[Ideal.mem_comap, Ideal.mem_span_singleton, Ideal.mem_span_singleton, algebraMap_X_pow_dvd_iff_atPrime]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_span_X_pow_atPrime (a : ℕ) :
     (Ideal.span {algebraMap O⟦X⟧ S X ^ a}).comap (algebraMap O⟦X⟧ S) = Ideal.span {X ^ a} := by
@@ -65,19 +65,19 @@ theorem comap_span_X_pow_atPrime (a : ℕ) :
 
 include O in
 /- English proof (translation)
-The claim follows from `IsLocalization.isDomain_of_atPrime S (Ideal.span {X} : Ideal O⟦X⟧)`.
+A detailed English derivation is pending.
 -/
 theorem isDomain_atPrime_X : IsDomain S :=
   IsLocalization.isDomain_of_atPrime S (Ideal.span {X} : Ideal O⟦X⟧)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.injective S (Ideal.span {X} : Ideal O⟦X⟧).primeCompl_le_nonZeroDivisors`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_injective_atPrime_X : Function.Injective (algebraMap O⟦X⟧ S) :=
   IsLocalization.injective S (Ideal.span {X} : Ideal O⟦X⟧).primeCompl_le_nonZeroDivisors
 
 /- English proof (translation)
-The claim follows from `IsLocalization.map_units S (⟨f, mem_primeCompl_span_X_iff.2 hf⟩ : (Ideal.span {X} : Ideal O⟦X⟧).primeCompl)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_algebraMap_atPrime_X {f : O⟦X⟧} (hf : constantCoeff f ≠ 0) :
     IsUnit (algebraMap O⟦X⟧ S f) :=
@@ -85,7 +85,7 @@ theorem isUnit_algebraMap_atPrime_X {f : O⟦X⟧} (hf : constantCoeff f ≠ 0) 
     (Ideal.span {X} : Ideal O⟦X⟧).primeCompl)
 
 /- English proof (translation)
-Use `conv_rhs => rw [← X_pow_order_mul_divXPowOrder (f := f), map_mul, map_pow]`. Conclude with `associated_mul_unit_right _ _ (isUnit_algebraMap_atPrime_X S (constantCoeff_divXPowOrder_eq_zero_iff.not.2 hf))`.
+A detailed English derivation is pending.
 -/
 theorem associated_X_pow_order_atPrime {f : O⟦X⟧} (hf : f ≠ 0) :
     Associated (algebraMap O⟦X⟧ S X ^ f.order.toNat) (algebraMap O⟦X⟧ S f) := by
@@ -94,7 +94,7 @@ theorem associated_X_pow_order_atPrime {f : O⟦X⟧} (hf : f ≠ 0) :
     (isUnit_algebraMap_atPrime_X S (constantCoeff_divXPowOrder_eq_zero_iff.not.2 hf))
 
 /- English proof (translation)
-Establish `hne : algebraMap O⟦X⟧ S X ≠ 0` using `(map_ne_zero_iff _ (algebraMap_injective_atPrime_X S)).2 X_ne_zero`. Rewrite using `[← Ideal.span_singleton_prime hne, ← Set.image_singleton, ← Ideal.map_span]`. Conclude with `IsLocalization.isPrime_of_isPrime_disjoint (Ideal.span {X} : Ideal O⟦X⟧).primeCompl S _ inferInstance (Set.disjoint_left.2 fun _ h h' => h h')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_algebraMap_X_atPrime : Prime (algebraMap O⟦X⟧ S X) := by
   have hne : algebraMap O⟦X⟧ S X ≠ 0 :=
@@ -104,9 +104,9 @@ theorem prime_algebraMap_X_atPrime : Prime (algebraMap O⟦X⟧ S X) := by
     inferInstance (Set.disjoint_left.2 fun _ h h' => h h')
 
 /- English proof (translation)
-Take `⟨⟨f, s⟩, hfs⟩` from `IsLocalization.surj (Ideal.span {X} : Ideal O⟦X⟧).primeCompl z`. Establish `hs` using `IsLocalization.map_units S s`. Establish `hf : f ≠ 0`. Introduce and unpack `rfl`. Conclude with `hz (hs.mul_left_eq_zero.1 (by simpa using hfs))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, (associated_X_pow_order_atPrime S hf).trans ?_⟩` and prove the remaining obligations. Rewrite using `[← hfs]`. Conclude with `associated_mul_unit_left _ _ hs`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_associated_X_pow_atPrime {z : S} (hz : z ≠ 0) :
     ∃ n : ℕ, Associated (algebraMap O⟦X⟧ S X ^ n) z := by
@@ -122,7 +122,7 @@ theorem exists_associated_X_pow_atPrime {z : S} (hz : z ≠ 0) :
 include O in
 
 /- English proof (translation)
-The claim follows from `IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization ⟨_, (prime_algebraMap_X_atPrime (O := O) S).irreducible, fun hz => exists_associated_X_pow_atPrime S hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem isDiscreteValuationRing_atPrime_X [IsDomain S] : IsDiscreteValuationRing S :=
   IsDiscreteValuationRing.ofHasUnitMulPowIrreducibleFactorization
@@ -133,7 +133,7 @@ instance : IsDiscreteValuationRing (Localization.AtPrime (Ideal.span {X} : Ideal
   isDiscreteValuationRing_atPrime_X (O := O) _
 
 /- English proof (translation)
-Break down `eq_or_ne f 0 with rfl | hf` into its components or cases. Simplify using the standard rewrite rules. Take `⟨u, hu⟩` from `associated_X_pow_order_atPrime S hf`. Rewrite using `[IsDiscreteValuationRing.addVal_def _ u (prime_algebraMap_X_atPrime (O := O) S).irreducible _ (by rw [← hu, mul_comm]), coe_toNat_order hf]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem addVal_algebraMap_atPrime_X [IsDomain S] [IsDiscreteValuationRing S] (f : O⟦X⟧) :
     IsDiscreteValuationRing.addVal S (algebraMap O⟦X⟧ S f) = f.order := by
@@ -153,7 +153,7 @@ variable {O : Type*} [CommRing O] [IsDomain O] (K : Type*) [Field K] [Algebra O 
 omit [IsDomain O] in
 
 /- English proof (translation)
-The claim follows from `le_antisymm (le_order _ _ fun i hi => hφ (by simpa using coeff_of_lt_order i hi)) (le_order_map φ)`.
+A detailed English derivation is pending.
 -/
 theorem order_map_of_injective {A : Type*} [CommRing A] {φ : O →+* A}
     (hφ : Function.Injective φ) (f : O⟦X⟧) : (f.map φ).order = f.order :=
@@ -162,7 +162,7 @@ theorem order_map_of_injective {A : Type*} [CommRing A] {φ : O →+* A}
 
 omit [IsDomain O] in
 /- English proof (translation)
-The claim follows from `PowerSeries.map_injective _ (IsFractionRing.injective O K)`.
+A detailed English derivation is pending.
 -/
 theorem map_algebraMap_injective :
     Function.Injective (PowerSeries.map (algebraMap O K) : O⟦X⟧ →+* K⟦X⟧) :=
@@ -170,13 +170,13 @@ theorem map_algebraMap_injective :
 
 omit [IsDomain O] in
 /- English proof (translation)
-The claim follows from `order_map_of_injective (IsFractionRing.injective O K) f`.
+A detailed English derivation is pending.
 -/
 theorem order_map_algebraMap (f : O⟦X⟧) : (f.map (algebraMap O K)).order = f.order :=
   order_map_of_injective (IsFractionRing.injective O K) f
 
 /- English proof (translation)
-Break down `eq_or_ne f 0 with rfl | hf` into its components or cases. Simplify using the standard rewrite rules. Establish `hu : IsUnit (divXPowOrder f)` using `isUnit_iff_constantCoeff.2 (isUnit_iff_ne_zero.2 (constantCoeff_divXPowOrder_eq_zero_iff.not.2 hf))`. Rewrite using `[IsDiscreteValuationRing.addVal_def f hu.unit X_irreducible f.order.toNat (by rw [IsUnit.unit_spec, mul_comm, X_pow_order_mul_divXPowOrder]), coe_toNat_order hf]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem addVal_eq_order (f : K⟦X⟧) : IsDiscreteValuationRing.addVal K⟦X⟧ f = f.order := by
   rcases eq_or_ne f 0 with rfl | hf
@@ -187,7 +187,7 @@ theorem addVal_eq_order (f : K⟦X⟧) : IsDiscreteValuationRing.addVal K⟦X⟧
     (by rw [IsUnit.unit_spec, mul_comm, X_pow_order_mul_divXPowOrder]), coe_toNat_order hf]
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply O O⟦X⟧, ← sub_eq_zero, ← map_sub, Ideal.algebraMap_residueField_eq_zero, mem_span_X_iff]`. Simplify using `[PowerSeries.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem algebraMap_residueField_span_X (f : O⟦X⟧) :
     algebraMap O⟦X⟧ (Ideal.span {X} : Ideal O⟦X⟧).ResidueField f =
@@ -219,7 +219,7 @@ def residueFieldSpanXEquiv : (Ideal.span {X} : Ideal O⟦X⟧).ResidueField ≃�
   IsLocalization.algEquiv (nonZeroDivisors O) _ _
 
 /- English proof (translation)
-Rewrite using `[algebraMap_residueField_span_X, AlgEquiv.commutes]`.
+Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem residueFieldSpanXEquiv_algebraMap (f : O⟦X⟧) :
     residueFieldSpanXEquiv O K (algebraMap O⟦X⟧ _ f) = algebraMap O K (constantCoeff f) := by
@@ -239,14 +239,14 @@ def atPrimeXToPowerSeries : S →+* K⟦X⟧ :=
         exact (map_ne_zero_iff _ (IsFractionRing.injective O K)).2 this
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ _`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem atPrimeXToPowerSeries_algebraMap (f : O⟦X⟧) :
     atPrimeXToPowerSeries O K S (algebraMap O⟦X⟧ S f) = f.map (algebraMap O K) :=
   IsLocalization.lift_eq _ _
 
 /- English proof (translation)
-Break down `eq_or_ne z 0 with rfl | hz` into its components or cases. Simplify using the standard rewrite rules. Take `⟨n, u, rfl⟩` from `exists_associated_X_pow_atPrime (O := O) S hz`. Rewrite using `[mul_comm, IsDiscreteValuationRing.addVal_def' u (prime_algebraMap_X_atPrime (O := O) S).irreducible, ← addVal_eq_order, map_mul, map_pow, atPrimeXToPowerSeries_algebraMap, map_X]`. Conclude with `IsDiscreteValuationRing.addVal_def' (Units.map (atPrimeXToPowerSeries O K S).toMonoidHom u) X_irreducible n`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem order_atPrimeXToPowerSeries [IsDomain S] [IsDiscreteValuationRing S] (z : S) :
     (atPrimeXToPowerSeries O K S z).order = IsDiscreteValuationRing.addVal S z := by
@@ -279,34 +279,34 @@ variable {R : Type*} [CommRing R] [IsDomain R] {f : R} (hf : f ≠ 0)
 include hf
 
 /- English proof (translation)
-The claim follows from `IsLocalization.isDomain_of_le_nonZeroDivisors (M := Submonoid.powers f) S (powers_le_nonZeroDivisors_of_noZeroDivisors hf)`.
+A detailed English derivation is pending.
 -/
 theorem isDomain_away : IsDomain S :=
   IsLocalization.isDomain_of_le_nonZeroDivisors (M := Submonoid.powers f) S
     (powers_le_nonZeroDivisors_of_noZeroDivisors hf)
 
 /- English proof (translation)
-The claim follows from `IsLocalization.injective S (powers_le_nonZeroDivisors_of_noZeroDivisors hf)`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_injective_away : Function.Injective (algebraMap R S) :=
   IsLocalization.injective S (powers_le_nonZeroDivisors_of_noZeroDivisors hf)
 
 /- English proof (translation)
-The claim follows from `have := isDomain_away hf S inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem irreducibleSpace_primeSpectrum_away : IrreducibleSpace (PrimeSpectrum S) :=
   have := isDomain_away hf S
   inferInstance
 
 /- English proof (translation)
-The claim follows from `have := irreducibleSpace_primeSpectrum_away hf S inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem connectedSpace_primeSpectrum_away : ConnectedSpace (PrimeSpectrum S) :=
   have := irreducibleSpace_primeSpectrum_away hf S
   inferInstance
 
 /- English proof (translation)
-Rewrite using `[PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical, (RingHom.injective_iff_ker_eq_bot _).1 (algebraMap_injective_away hf S)]`. Conclude with `bot_le`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denseRange_comap_away : DenseRange (PrimeSpectrum.comap (algebraMap R S)) := by
   rw [PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical,

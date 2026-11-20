@@ -8,7 +8,7 @@ open Formalism.MainNotions.G Formalism.L2.Forms Formalism.UG NumberField IsDedek
 open scoped TensorProduct
 
 /- English proof (translation)
-Unfold `GAtP.funMod Level.funMod`. Simplify using `only [Submodule.mem_pi, Set.mem_univ, forall_true_left, Submodule.mem_inf, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mem_ker, LinearMap.proj_apply, LinearMap.sub_apply, LinearMap.comp_apply, LinearMap.smul_apply, LinearMap.restrictScalars_apply, sub_eq_zero, and_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mem_funMod_iff {p : ℕ} (G : GAtP p) (Hv : G.P.Tup → Submodule G.O G.P.Xsp) (Fn : G.Fn) :
     Fn ∈ G.funMod Hv ↔ ∀ i, (∀ L, G.P.IsLatTup L → Fn i L ∈ Hv L) ∧ (∀ L, ¬ G.P.IsLatTup L → Fn i L = 0) ∧
@@ -27,9 +27,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {yc : cls → UPts σ J (FiniteAdeleRing (𝓞 F) F)}
 
 /- English proof (translation)
-Rewrite using `[mem_funMod_iff]`. Introduce `i`. Use `⟨fun L hL => ?_, fun L hL => ?_, fun γ L => ?_⟩` and prove the remaining obligations. Unfold `cmpC`. Rewrite using `[if_pos hL]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hval i L hL`. Unfold `cmpC`. Rewrite using `[if_neg hL]`. Conclude with `cmpC_equiv tE htE hc hBs hA hex hpos hchi hi hp hU haw x i γ L`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cmpC_mem_funMod (tE : Tau → E →+* LL) (htE : ∀ τ x, embLL (tE τ x) = emb τ x)
     (hc : ∀ τ x, emb τ (σ x) = starRingEnd ℂ (emb τ x)) (hBs : cT (σ : E →+* E) A.B.1 * J * A.B.1 = 1) (hA : A.ActB)

@@ -20,7 +20,7 @@ set_option linter.unusedSectionVars false
 namespace ProjectiveBundleNumbers
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_range_succ', Finset.sum_range_succ' (fun k => (n.choose k : ℤ) * U k)]`. Simplify using `only [Nat.choose_succ_succ', Nat.cast_add, add_mul, Finset.sum_add_distrib, Nat.choose_zero_right]`. Rewrite using `[Finset.sum_range_succ (fun k => (n.choose (k + 1) : ℤ) * U (k + 1)), Nat.choose_succ_self, Nat.cast_zero, zero_mul, add_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem sum_choose_succ (n : ℕ) (U : ℕ → ℤ) :
     ∑ k ∈ Finset.range (n + 2), ((n + 1).choose k : ℤ) * U k =

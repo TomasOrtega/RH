@@ -21,7 +21,7 @@ noncomputable def coeffForm (φ : K →ₗ[F] F) : MvPolynomial σ K →ₗ[F] M
     ((algebraTensorAlgEquiv (σ := σ) F K).symm.toLinearEquiv.toLinearMap.restrictScalars F)
 
 /- English proof (translation)
-Rewrite using `[← algebraTensorAlgEquiv_tmul]`. Simplify using `[coeffForm, -algebraTensorAlgEquiv_tmul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeffForm_smul_map (φ : K →ₗ[F] F) (r : K) (Q : MvPolynomial σ F) :
     coeffForm φ (r • MvPolynomial.map (algebraMap F K) Q) = φ r • Q := by
@@ -29,7 +29,7 @@ theorem coeffForm_smul_map (φ : K →ₗ[F] F) (r : K) (Q : MvPolynomial σ F) 
   simp [coeffForm, -algebraTensorAlgEquiv_tmul]
 
 /- English proof (translation)
-Use `coeffForm_smul_map φ r (monomial m (1 : F))` as an intermediate fact. Simplify `this` using `[smul_monomial]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeffForm_monomial (φ : K →ₗ[F] F) (m : σ →₀ ℕ) (r : K) :
     coeffForm φ (monomial m r) = monomial m (φ r) := by
@@ -37,7 +37,7 @@ theorem coeffForm_monomial (φ : K →ₗ[F] F) (m : σ →₀ ℕ) (r : K) :
   simpa [smul_monomial] using this
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial d r => rw [coeffForm_monomial, coeff_monomial, coeff_monomial]; split_ifs <;> simp`. Consider the case `add P Q hP hQ => simp only [map_add, coeff_add, hP, hQ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem coeff_coeffForm (φ : K →ₗ[F] F) (m : σ →₀ ℕ) (P : MvPolynomial σ K) :
     coeff m (coeffForm φ P) = φ (coeff m P) := by
@@ -47,7 +47,7 @@ theorem coeff_coeffForm (φ : K →ₗ[F] F) (m : σ →₀ ℕ) (P : MvPolynomi
   | add P Q hP hQ => simp only [map_add, coeff_add, hP, hQ]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial d r`. Establish `e : (monomial d r : MvPolynomial σ K) = r • MvPolynomial.map (algebraMap F K) (monomial d 1)` using `by simp [smul_monomial]`. Rewrite using `[e, map_smul, ← h, coeffForm_smul_map, coeffForm_smul_map, map_smul]`. Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem coeffForm_comm (φ : K →ₗ[F] F) (L : MvPolynomial σ F →ₗ[F] MvPolynomial σ F)
     (L' : MvPolynomial σ K →ₗ[K] MvPolynomial σ K)
@@ -61,9 +61,9 @@ theorem coeffForm_comm (φ : K →ₗ[F] F) (L : MvPolynomial σ F →ₗ[F] MvP
   | add P Q hP hQ => simp only [map_add, hP, hQ]
 
 /- English proof (translation)
-Set `b` to `Module.Basis.ofVectorSpace F K`. Set `x` to `TensorProduct.equivFinsuppOfBasisLeft b ((algebraTensorAlgEquiv F K).symm P)`. Establish `hx (i) : x i = coeffForm (b.coord i) P` using `TensorProduct.equivFinsuppOfBasisLeft_apply b _ i`. Establish `e : P = algebraTensorAlgEquiv F K ((TensorProduct.equivFinsuppOfBasisLeft b).symm x)`. Simplify using `[x]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, TensorProduct.equivFinsuppOfBasisLeft_symm_apply, Finsupp.sum, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[algebraTensorAlgEquiv_tmul, hx]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, h _, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_map_of_coeffForm_mem (V : Set (MvPolynomial σ F)) {P : MvPolynomial σ K}
     (h : ∀ φ : K →ₗ[F] F, coeffForm φ P ∈ V) :
@@ -80,11 +80,11 @@ theorem mem_span_map_of_coeffForm_mem (V : Set (MvPolynomial σ F)) {P : MvPolyn
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, h _, rfl⟩)
 
 /- English proof (translation)
-It suffices to establish `∀ r : K, coeffForm φ (r • P) ∈ Submodule.span F V by simpa using this 1`. Proceed by induction on `h using Submodule.span_induction with`. Consider the case `mem P hP`. Take `⟨Q, hQ, rfl⟩` from `hP`. Introduce `r`.
+Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[coeffForm_smul_map]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hQ)`. Consider the case `zero => simp`. Consider the case `add P Q _ _ hP hQ => intro r`. Rewrite using `[smul_add, map_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `add_mem (hP r) (hQ r)`. Consider the case `smul s P _ hP => intro r`. Rewrite using `[smul_smul]`. Conclude with `hP _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffForm_mem_span (φ : K →ₗ[F] F) (V : Set (MvPolynomial σ F)) {P : MvPolynomial σ K}
     (h : P ∈ Submodule.span K (MvPolynomial.map (algebraMap F K) '' V)) :
@@ -101,7 +101,7 @@ theorem coeffForm_mem_span (φ : K →ₗ[F] F) (V : Set (MvPolynomial σ F)) {P
   | smul s P _ hP => intro r; rw [smul_smul]; exact hP _
 
 /- English proof (translation)
-Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_eq_one F (one_ne_zero (α := K))`. Use `coeffForm_mem_span φ V h` as an intermediate fact. Rewrite `this` using `[← one_smul K (MvPolynomial.map _ P), coeffForm_smul_map, hφ, one_smul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_span_of_map_mem_span [Nontrivial K] (V : Set (MvPolynomial σ F))
     {P : MvPolynomial σ F} (h : MvPolynomial.map (algebraMap F K) P ∈
@@ -113,9 +113,9 @@ theorem mem_span_of_map_mem_span [Nontrivial K] (V : Set (MvPolynomial σ F))
 variable {T κ : Type*} [Fintype κ] {p q : ℕ}
 
 /- English proof (translation)
-Take `⟨h₁, h₂, h₃⟩` from `mem_rowHighest_iff_rowAdd.1 hP`. Use `mem_rowHighest_iff_rowAdd.2 ⟨fun t a b => ?_, fun t r m hm => h₂ t r fun e => hm ?_, fun t r r' hr s => ?_⟩` and prove the remaining obligations. Rewrite using `[← coeffForm_comm φ _ _ (map_laplacian _ t a b), h₁, map_zero]`. Rewrite using `[coeff_coeffForm, e, map_zero]`. Use `coeffForm_comm φ (rowAdd t r r' (s : F)).toLinearMap (rowAdd t r r' (s : K)).toLinearMap (fun Q => by simpa using map_rowAdd (algebraMap F K) t r r' (s : F) Q) P` as an intermediate fact.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this.symm` using `[h₃ t r r' hr s]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coeffForm_mem_rowHighest (φ : K →ₗ[F] F) {c : T → Fin p → ℕ} {c' : T → Fin q → ℕ}
     {P : Poly K T p q κ} (hP : P ∈ rowHighest K c c') : coeffForm φ P ∈ rowHighest F c c' := by
@@ -130,7 +130,7 @@ theorem coeffForm_mem_rowHighest (φ : K →ₗ[F] F) {c : T → Fin p → ℕ} 
     simpa [h₃ t r r' hr s] using this.symm
 
 /- English proof (translation)
-The claim follows from `le_antisymm (Submodule.span_le.2 (by rintro _ ⟨P, hP, rfl⟩; exact map_mem_rowHighest _ hP)) fun _ hP => mem_span_map_of_coeffForm_mem _ fun φ => coeffForm_mem_rowHighest φ hP`.
+A detailed English derivation is pending.
 -/
 theorem span_map_rowHighest_algebraMap (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ) :
     Submodule.span K (MvPolynomial.map (algebraMap F K) ''
@@ -145,14 +145,14 @@ section Words
 variable {R S : Type*} [CommRing R] [CommRing S] {T κ : Type*} {p q n : ℕ}
 
 /- English proof (translation)
-Simplify using `[colLie_apply, pderiv_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem map_colLie (f : R →+* S) (t : T) (k l : κ) (P : Poly R T p q κ) :
     MvPolynomial.map f (colLie R p q t k l P) = colLie S p q t k l (MvPolynomial.map f P) := by
   simp [colLie_apply, pderiv_map]
 
 /- English proof (translation)
-Establish `e (k l : κ) : colLie R p q t k l = Capelli.mixedOp R (fun w : Fin p × κ => xVar t w.1 w.2) (fun w : Fin q × κ => yVar t w.1 w.2) k l` using `LinearMap.ext fun P => by rw [colLie_apply, Capelli.mixedOp_apply]`. Simplify using `only [e]`. Conclude with `Capelli.mixedOp_lie _ (fun u w e => by simpa [Prod.ext_iff] using e) _ (fun u w e => by simpa [Prod.ext_iff] using e) (fun u w => by simp) i j k l`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem colLie_lie [DecidableEq κ] (t : T) (i j k l : κ) :
     colLie R p q t i j * colLie R p q t k l - colLie R p q t k l * colLie R p q t i j =
@@ -165,7 +165,7 @@ theorem colLie_lie [DecidableEq κ] (t : T) (i j k l : κ) :
     (fun u w e => by simpa [Prod.ext_iff] using e) (fun u w => by simp) i j k l
 
 /- English proof (translation)
-Rewrite using `[colLie_apply, colLie_apply, ← fockInnerₛₗ_apply, ← fockInnerₛₗ_apply]`. Simplify using `only [map_sub, map_sum, LinearMap.sub_apply, LinearMap.sum_apply, fockInnerₛₗ_apply, fockInner_X_mul_left, fockInner_pderiv_left]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem fockInner_colLie (t : T) (k l : κ) (P Q : Poly ℂ T p q κ) :
     fockInner (colLie ℂ p q t k l P) Q = fockInner P (colLie ℂ p q t l k Q) := by
@@ -181,7 +181,7 @@ noncomputable def colWord (w : List (T × Fin n × Fin n)) : Poly R T p q (Fin n
   w.foldr (fun i P => colLie R p q i.1 i.2.1 i.2.2 P) (basePoly R h c c')
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact map_basePoly h c c' f`. Consider the case `cons i w ih => exact (map_colLie f _ _ _ _).trans (congrArg _ ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_colWord (f : R →+* S) (w : List (T × Fin n × Fin n)) :
     MvPolynomial.map f (colWord R h c c' w) = colWord S h c c' w := by
@@ -190,7 +190,7 @@ theorem map_colWord (f : R →+* S) (w : List (T × Fin n × Fin n)) :
   | cons i w ih => exact (map_colLie f _ _ _ _).trans (congrArg _ ih)
 
 /- English proof (translation)
-Rewrite using `[← Set.range_comp]`. Conclude with `congrArg _ (funext (map_colWord h c c' f))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_map_range_colWord (f : R →+* S) :
     MvPolynomial.map f '' Set.range (colWord R h c c') = Set.range (colWord S h c c') := by
@@ -198,7 +198,7 @@ theorem image_map_range_colWord (f : R →+* S) :
   exact congrArg _ (funext (map_colWord h c c' f))
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => exact basePoly_mem h c c'`. Consider the case `cons i w ih => exact colLie_mem_orbitSpan h c c' _ _ _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem colWord_mem_orbitSpan {K : Type*} [Field K] [Infinite K] (w : List (T × Fin n × Fin n)) :
     colWord K h c c' w ∈ orbitSpan K h c c' := by
@@ -207,7 +207,7 @@ theorem colWord_mem_orbitSpan {K : Type*} [Field K] [Infinite K] (w : List (T ×
   | cons i w ih => exact colLie_mem_orbitSpan h c c' _ _ _ ih
 
 /- English proof (translation)
-Rewrite using `[← map_colWord h c c' (Int.castRingHom R)]`. Use `map_mem_rowHighest _ ((map_mem_rowHighest_iff (f := Int.castRingHom ℚ) Int.cast_injective).1 ?_)` and prove the remaining obligations. Rewrite using `[map_colWord]`. Conclude with `orbitSpan_le_rowHighest h c c' (colWord_mem_orbitSpan h c c' w)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colWord_mem_rowHighest (w : List (T × Fin n × Fin n)) :
     colWord R h c c' w ∈ rowHighest R c c' := by
@@ -218,7 +218,7 @@ theorem colWord_mem_rowHighest (w : List (T × Fin n × Fin n)) :
   exact orbitSpan_le_rowHighest h c c' (colWord_mem_orbitSpan h c c' w)
 
 /- English proof (translation)
-Use `(Submodule.span_le (p := Submodule.comap (colLie R p q t k l) (Submodule.span R (Set.range (colWord R h c c'))))).2 ?_ hP` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `Submodule.subset_span ⟨(t, k, l) :: w, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem colLie_mem_span_colWord (t : T) (k l : Fin n) {P : Poly R T p q (Fin n)}
     (hP : P ∈ Submodule.span R (Set.range (colWord R h c c'))) :
@@ -229,7 +229,7 @@ theorem colLie_mem_span_colWord (t : T) (k l : Fin n) {P : Poly R T p q (Fin n)}
   exact Submodule.subset_span ⟨(t, k, l) :: w, rfl⟩
 
 /- English proof (translation)
-Use `Submodule.finiteDimensional_of_le hW` as an intermediate fact. Take `⟨v, hv, hv0, hup, μ, hμ⟩` from `exists_highest_vector (colLie K p q) colLie_diag_comm (iSup_iInf_eigenspace_colLie K T p q (Fin n)) W hs hW0`. Take `⟨r, rfl⟩` from `exists_eq_smul_basePoly h c c' (hW hv) μ (fun t => highest_weight_antitone _ (colLie_lie t) W (hs t) v hv hv0 _ (hup t) (hμ t)) (fun t k l hkl => (colLie_apply t k l v).symm.trans (hup t k l hkl)) fun t k => (colLie_apply t k k v).symm.trans (hμ t k)`. Conclude with `(W.smul_mem_iff (left_ne_zero_of_smul hv0)).1 hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem basePoly_mem_of_colLie_stable {K : Type*} [Field K] [CharZero K]
     (W : Submodule K (Poly K T p q (Fin n))) (hW : W ≤ rowHighest K c c')
@@ -245,15 +245,13 @@ theorem basePoly_mem_of_colLie_stable {K : Type*} [Field K] [CharZero K]
   exact (W.smul_mem_iff (left_ne_zero_of_smul hv0)).1 hv
 
 /- English proof (translation)
-Establish `hself (P : Poly ℂ T p q (Fin n)) (hP : fockInner P P = 0) : P = 0`. Rewrite `hP` using `[fockInner_self]`. Conclude with `fockNormSq_eq_zero.mp (RCLike.ofReal_eq_zero.mp hP)`. Use `set U := Submodule.span ℂ (Set.range (colWord ℂ h c c')) with hU`. Establish `hUle : U ≤ rowHighest ℂ c c'` using `Submodule.span_le.2 (by rintro _ ⟨w, rfl⟩; exact colWord_mem_rowHighest h c c' w)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `Submodule.finiteDimensional_of_le hUle` as an intermediate fact. Set `W : Submodule ℂ (Poly ℂ T p q (Fin n))` to `rowHighest ℂ c c' ⊓ ⨅ u ∈ U, LinearMap.ker ((fockInnerₛₗ _ ℂ).flip u)`. Establish `hW (P) : P ∈ W ↔ P ∈ rowHighest ℂ c c' ∧ ∀ u ∈ U, fockInner P u = 0`. Simplify using `[W, Submodule.mem_iInf]`. Establish `hW0 : W = ⊥`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hW0`. Use `basePoly_mem_of_colLie_stable h c c' W inf_le_left (fun t k l w hw => ?_) hW0` as an intermediate fact. Conclude with `basePoly_ne_zero h c c' (hself _ (((hW _).1 this).2 _ (Submodule.subset_span ⟨[], rfl⟩)))`. Rewrite `hw`, the goal using `[hW]`. Use `⟨colLie_mem_of_colAct_mem _ (fun g _ hP => colAct_mem_rowHighest g hP) t k l hw.1, fun u hu => ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[fockInner_colLie]`. Conclude with `hw.2 _ (colLie_mem_span_colWord h c c' t l k hu)`. Introduce `P hP`. Take `⟨Q, hQ, hperp⟩` from `exists_fockInner_sub_eq_zero U P`. Establish `: P - Q ∈ W` using `(hW _).2 ⟨sub_mem hP (hUle hQ), hperp⟩`.
-
-Rewrite `this` using `[hW0, Submodule.mem_bot, sub_eq_zero]`. Conclude with `this ▸ hQ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowHighest_le_span_colWord_complex :
     rowHighest ℂ c c' ≤ Submodule.span ℂ (Set.range (colWord ℂ h c c')) := by
@@ -287,13 +285,11 @@ theorem rowHighest_le_span_colWord_complex :
 variable (K : Type*)
 
 /- English proof (translation)
-Use `le_antisymm ?_ (Submodule.span_le.2 (by rintro _ ⟨w, rfl⟩; exact colWord_mem_rowHighest h c c' w))` and prove the remaining obligations. Rewrite using `[← span_map_rowHighest_algebraMap (F := ℚ), Submodule.span_le]`. Introduce and unpack `_ ⟨P, hP, rfl⟩`. Establish `h₁` using `rowHighest_le_span_colWord_complex h c c' (map_mem_rowHighest (algebraMap ℚ ℂ) hP)`. Rewrite `h₁` using `[← image_map_range_colWord h c c' (algebraMap ℚ ℂ)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h₂` using `mem_span_of_map_mem_span _ h₁`. Use `clear hP h₁`. Proceed by induction on `h₂ using Submodule.span_induction with`. Consider the case `mem P hP`. Take `⟨w, rfl⟩` from `hP`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_colWord]`. Conclude with `Submodule.subset_span ⟨w, rfl⟩`. Consider the case `zero => simp`. Consider the case `add P Q _ _ hP hQ => rw [map_add]`. Conclude with `add_mem hP hQ`.
-
-Consider the case `smul r P _ hP`. Rewrite using `[smul_eq_C_mul, map_mul, map_C, ← smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ hP`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowHighest_eq_span_colWord [CommRing K] [Algebra ℚ K] :
     rowHighest K c c' = Submodule.span K (Set.range (colWord K h c c')) := by
@@ -317,7 +313,7 @@ theorem rowHighest_eq_span_colWord [CommRing K] [Algebra ℚ K] :
     exact Submodule.smul_mem _ _ hP
 
 /- English proof (translation)
-Use `le_antisymm ?_ (orbitSpan_le_rowHighest h c c')` and prove the remaining obligations. Rewrite using `[rowHighest_eq_span_colWord h, Submodule.span_le]`. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `colWord_mem_orbitSpan h c c' w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem rowHighest_eq_orbitSpan [Field K] [CharZero K] :
     rowHighest K c c' = orbitSpan K h c c' := by
@@ -329,7 +325,7 @@ theorem rowHighest_eq_orbitSpan [Field K] [CharZero K] :
 include h in
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_le.2 (by rintro _ ⟨P, hP, rfl⟩; exact map_mem_rowHighest _ hP)) ?_` and prove the remaining obligations. Rewrite using `[rowHighest_eq_span_colWord h c c' K, ← image_map_range_colWord h c c' (Int.castRingHom K)]`. Use `Submodule.span_mono (Set.image_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `colWord_mem_rowHighest h c c' w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem span_map_rowHighest_int [CommRing K] [Algebra ℚ K] :
     Submodule.span K (MvPolynomial.map (Int.castRingHom K) ''
@@ -344,7 +340,7 @@ theorem span_map_rowHighest_int [CommRing K] [Algebra ℚ K] :
 end Words
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rowHighest_eq_orbitSpan h c c' ℂ, rowHighest_eq_orbitSpan h c c' K, span_map_rowHighest_int h c c' K⟩`.
+Supply the required witnesses or components.
 -/
 theorem rowHighest_orbitSpan_main {T : Type*} [Fintype T] {p q n : ℕ} (h : p + q ≤ n)
     (c : T → Fin p → ℕ) (c' : T → Fin q → ℕ) (K : Type*) [Field K] [CharZero K] :

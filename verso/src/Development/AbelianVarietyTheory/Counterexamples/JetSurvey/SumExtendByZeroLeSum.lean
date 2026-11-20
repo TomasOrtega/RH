@@ -8,7 +8,7 @@ namespace GlobalTheory.RamValCheck
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.PullbackSections
 
 /- English proof (translation)
-Establish `hc` using `D.ntypes.g_cond k`. Establish `hdvd : p ∣ D.host.QS * D.host.q * D.host.d` using `Nat.dvd_of_mem_primeFactors hp`. Use `Nat.Coprime.coprime_dvd_right hdvd ?_` and prove the remaining obligations. Rewrite using `[Nat.Coprime, Nat.gcd_comm, Nat.gcd_rec, hc]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem g_coprime (D : D7) (k : Fin 2) (p : ℕ) (hp : p ∈ D.host.condN.primeFactors) :
     Nat.Coprime (D.host.g k) p := by
@@ -19,9 +19,9 @@ theorem g_coprime (D : D7) (k : Fin 2) (p : ℕ) (hp : p ∈ D.host.condN.primeF
   simp
 
 /- English proof (translation)
-Establish `h0 : (p : K) ≠ 0` using `by exact_mod_cast hp`. Establish `hv : la.valuation K (p : K) < 1`. Use `(la.valuation_lt_one_iff_mem (K := K) (p : 𝓞 K)).2 hla` as an intermediate fact. Simplify using `using this`. Establish `hne : la.valuation K (p : K) ≠ 0` using `(la.valuation K).ne_zero_iff.2 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `(WithZero.log_lt_log hne one_ne_zero).2 hv` as an intermediate fact. Simplify using `only [WithZero.log_one] at this`. Unfold `vLa`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem one_le_vLa {K : Type} [Field K] [NumberField K] (la : HeightOneSpectrum (𝓞 K)) (p : ℕ) (hp : p ≠ 0)
     (hla : (p : 𝓞 K) ∈ la.asIdeal) : 1 ≤ vLa la (p : K) := by

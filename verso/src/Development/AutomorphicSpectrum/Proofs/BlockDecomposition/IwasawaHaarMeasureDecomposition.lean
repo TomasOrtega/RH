@@ -16,7 +16,7 @@ variable {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
   [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `hm : Measurable (Function.uncurry fun g k : G => f (g * k))` using `hf.comp measurable_mul`. Rewrite using `[lintegral_lintegral_swap hm.aemeasurable]`. Establish `h1 : ∀ᵐ k ∂ρ, ∫⁻ g, f (g * k) ∂μ = ∫⁻ g, f g ∂μ` using `by filter_upwards [hρK] with k hk conv_rhs => rw [← hμ k hk]`. Rewrite using `[lintegral_map hf (measurable_mul_const k)]`. Rewrite using `[lintegral_congr_ae h1, lintegral_const, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lintegral_avg (K : Subgroup G) (ρ : Measure G) [SFinite ρ] (hρK : ∀ᵐ k ∂ρ, k ∈ K)
     (μ : Measure G) [SFinite μ] (hμ : ∀ k ∈ K, μ.map (· * k) = μ)
@@ -31,15 +31,15 @@ theorem lintegral_avg (K : Subgroup G) (ρ : Measure G) [SFinite ρ] (hρK : ∀
   rw [lintegral_congr_ae h1, lintegral_const, mul_comm]
 
 /- English proof (translation)
-Establish `hd : DiscreteTopology (G ⧸ K)` using `QuotientGroup.discreteTopology hK`. Establish `hc : Countable (G ⧸ K)` using `TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hS : ∀ c : G ⧸ K, {h | (c.out)⁻¹ * h ∈ K} = (QuotientGroup.mk : G → G ⧸ K) ⁻¹' {c}`. Introduce `c`. Use extensionality with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, Set.mem_singleton_iff]`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Conclude with `eq_comm`. Establish `hmeas : ∀ c : G ⧸ K, MeasurableSet ((QuotientGroup.mk : G → G ⧸ K) ⁻¹' {c})` using `fun c => ((isOpen_discrete {c}).preimage QuotientGroup.continuous_mk).measurableSet`. Establish `hU : (⋃ c : G ⧸ K, (QuotientGroup.mk : G → G ⧸ K) ⁻¹' {c}) = Set.univ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `h`. Simplify using the standard rewrite rules. Establish `hdis : Pairwise (Function.onFun Disjoint fun c : G ⧸ K => (QuotientGroup.mk : G → G ⧸ K) ⁻¹' {c})`. Introduce `a b hab`. Conclude with `Disjoint.preimage _ (Set.disjoint_singleton.2 hab)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← setLIntegral_univ, ← hU, lintegral_iUnion hmeas hdis]`. Use `tsum_congr fun c => ?_` and prove the remaining obligations. Rewrite using `[hS c, ← setLIntegral_const]`. Use `setLIntegral_congr_fun (hmeas c) fun h hh => ?_` and prove the remaining obligations. Establish `e : (c.out)⁻¹ * h ∈ K`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: h ∈ {h | (c.out)⁻¹ * h ∈ K}` using `by rw [hS c]; exact hh`. Conclude with `this`. Use `hQ c.out _ e` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lintegral_coset (K : Subgroup G) (hK : IsOpen (K : Set G)) (μ : Measure G)
     {Q : G → ENNReal} (hQ : ∀ g, ∀ k ∈ K, Q (g * k) = Q g) :
@@ -71,11 +71,11 @@ theorem lintegral_coset (K : Subgroup G) (hK : IsOpen (K : Set G)) (μ : Measure
   exact this
 
 /- English proof (translation)
-Use `Measure.ext_of_lintegral _ fun f hf => ?_` and prove the remaining obligations. Establish `hQ : ∀ g, ∀ k ∈ K, ∫⁻ l, f (g * k * l) ∂ρ = ∫⁻ l, f (g * l) ∂ρ`. Introduce `g k hk`. Use `conv_rhs => rw [← hρ k hk]`. Rewrite using `[lintegral_map (f := fun l => f (g * l)) (hf.comp (measurable_const_mul g)) (measurable_const_mul k)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc]`. Establish `e₁` using `lintegral_avg K ρ hρK μ₁ h₁ hf`. Establish `e₂` using `lintegral_avg K ρ hρK μ₂ h₂ hf`. Rewrite `e₁` using `[lintegral_coset K hK μ₁ hQ]`. Rewrite `e₂` using `[lintegral_coset K hK μ₂ hQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [hc] at e₁`. Use `e₁.symm.trans e₂` as an intermediate fact. Conclude with `(ENNReal.mul_right_inj hρ0 (measure_ne_top _ _)).1 this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measure_eq_of_coset (K : Subgroup G) (hK : IsOpen (K : Set G)) (ρ : Measure G)
     [IsFiniteMeasure ρ] (hρ0 : ρ Set.univ ≠ 0) (hρK : ∀ᵐ k ∂ρ, k ∈ K)
@@ -106,7 +106,7 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-The claim follows from `isOpenEmbedding_units_val.isEmbedding.secondCountableTopology`.
+A detailed English derivation is pending.
 -/
 theorem secondCountable_units : SecondCountableTopology Fˣ :=
   isOpenEmbedding_units_val.isEmbedding.secondCountableTopology
@@ -115,7 +115,7 @@ attribute [local instance] secondCountable_units GlobalTheory.CompanionTheory.Lo
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [uni2] <;> fun_prop`. Apply the tactic sequence `refine continuous_matrix fun i j => ?_ fin_cases i <;> fin_cases j <;> simp [uni2] <;> fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem continuous_unipotentGL2 : Continuous (uni2 : F → GL (Fin 2) F) := by
   refine Units.continuous_iff.2 ⟨?_, ?_⟩
@@ -134,7 +134,7 @@ def iwM (ψ : AddChar F Circle) : Measure (GL (Fin 2) F) :=
     (((mIw ψ).withDensity wE).prod (selfDualMeasure ψ))
 
 /- English proof (translation)
-The claim follows from `((continuous_unipotentGL2.comp continuous_snd).mul ((GlobalTheory.CompanionTheory.LocalTestVectors.continuous_iwPt (F := F)).comp continuous_fst)).measurable`.
+A detailed English derivation is pending.
 -/
 theorem measurable_Phi :
     Measurable (fun q : (Fˣ × Fˣ × GL (Fin 2) F) × F => uni2 q.2 * hI q.1) :=
@@ -142,14 +142,14 @@ theorem measurable_Phi :
     ((GlobalTheory.CompanionTheory.LocalTestVectors.continuous_iwPt (F := F)).comp continuous_fst)).measurable
 
 /- English proof (translation)
-Establish `h : (0 : ℝ) < (modulus (p.1 : F) : ℝ)` using `by exact_mod_cast modulus_pos p.1.ne_zero`. Rewrite using `[wE, wR, ENNReal.ofReal_inv_of_pos h, ENNReal.ofReal_coe_nnreal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem wE_eq (p : Fˣ × Fˣ × GL (Fin 2) F) : wE p = ((modulus (p.1 : F) : ENNReal))⁻¹ := by
   have h : (0 : ℝ) < (modulus (p.1 : F) : ℝ) := by exact_mod_cast modulus_pos p.1.ne_zero
   rw [wE, wR, ENNReal.ofReal_inv_of_pos h, ENNReal.ofReal_coe_nnreal]
 
 /- English proof (translation)
-Establish `h : wE (F` using `F) = fun p => ((modulus (p.1 : F) : ENNReal))⁻¹ := funext wE_eq`. Rewrite using `[h]`. Conclude with `(measurable_modulus.comp (Units.continuous_val.measurable.comp measurable_fst)).coe_nnreal_ennreal.inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurable_wE : Measurable (wE (F := F)) := by
   have h : wE (F := F) = fun p => ((modulus (p.1 : F) : ENNReal))⁻¹ := funext wE_eq
@@ -157,21 +157,21 @@ theorem measurable_wE : Measurable (wE (F := F)) := by
   exact (measurable_modulus.comp (Units.continuous_val.measurable.comp measurable_fst)).coe_nnreal_ennreal.inv
 
 /- English proof (translation)
-The claim follows from `(measurable_wE.comp measurable_fst).mul (hf.comp measurable_Phi)`.
+A detailed English derivation is pending.
 -/
 theorem measurable_integrand {f : GL (Fin 2) F → ENNReal} (hf : Measurable f) :
     Measurable (fun q : (Fˣ × Fˣ × GL (Fin 2) F) × F => wE q.1 * f (uni2 q.2 * hI q.1)) :=
   (measurable_wE.comp measurable_fst).mul (hf.comp measurable_Phi)
 
 /- English proof (translation)
-The claim follows from `(measurable_integrand hf).lintegral_prod_right'`.
+A detailed English derivation is pending.
 -/
 theorem measurable_Hf (ψ : AddChar F Circle) {f : GL (Fin 2) F → ENNReal} (hf : Measurable f) :
     Measurable (Hf ψ f) :=
   (measurable_integrand hf).lintegral_prod_right'
 
 /- English proof (translation)
-Use `haveI : (LFS.hG ψ).IsHaarMeasure := by unfold LFS.hG; infer_instance`. Conclude with `⟨by rw [Measure.restrict_apply_univ]; exact (GLnLocal.isCompact_integralGL F 2).measure_lt_top⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_restrict (ψ : AddChar F Circle) : IsFiniteMeasure ((LFS.hG ψ).restrict (K2 F)) := by
   haveI : (LFS.hG ψ).IsHaarMeasure := by unfold LFS.hG; infer_instance
@@ -184,7 +184,7 @@ instance (ψ : AddChar F Circle) : SFinite (mIw ψ) := by unfold mIw; infer_inst
 instance (ψ : AddChar F Circle) : SFinite (iwM ψ) := by unfold iwM; infer_instance
 
 /- English proof (translation)
-Establish `h1 : Measurable fun q : (Fˣ × Fˣ × GL (Fin 2) F) × F => f (uni2 q.2 * hI q.1)` using `hf.comp measurable_Phi`. Rewrite using `[iwM, lintegral_map hf measurable_Phi, lintegral_prod _ h1.aemeasurable, lintegral_withDensity_eq_lintegral_mul _ measurable_wE h1.lintegral_prod_right']`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Simplify using `only [Pi.mul_apply, Hf]`. Conclude with `(lintegral_const_mul _ (h1.comp measurable_prodMk_left)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lintegral_iwM (ψ : AddChar F Circle) {f : GL (Fin 2) F → ENNReal} (hf : Measurable f) :
     ∫⁻ g, f g ∂iwM ψ = ∫⁻ p, Hf ψ f p ∂mIw ψ := by
@@ -197,7 +197,7 @@ theorem lintegral_iwM (ψ : AddChar F Circle) {f : GL (Fin 2) F → ENNReal} (hf
   exact (lintegral_const_mul _ (h1.comp measurable_prodMk_left)).symm
 
 /- English proof (translation)
-Unfold `LFS.hG`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem haar_inst (ψ : AddChar F Circle) : (LFS.hG ψ).IsHaarMeasure := by
   unfold LFS.hG; infer_instance
@@ -205,7 +205,7 @@ theorem haar_inst (ψ : AddChar F Circle) : (LFS.hG ψ).IsHaarMeasure := by
 attribute [local instance] haar_inst
 
 /- English proof (translation)
-The claim follows from `Measures.isMulRightInvariant_GL F 2 _`.
+A detailed English derivation is pending.
 -/
 theorem right_inst (ψ : AddChar F Circle) : (LFS.hG ψ).IsMulRightInvariant :=
   Measures.isMulRightInvariant_GL F 2 _
@@ -213,9 +213,7 @@ theorem right_inst (ψ : AddChar F Circle) : (LFS.hG ψ).IsMulRightInvariant :=
 attribute [local instance] right_inst
 
 /- English proof (translation)
-Establish `h` using `(measurePreserving_mul_right (LFS.hG ψ) k).restrict_preimage (GLnLocal.isOpen_integralGL F 2).measurableSet`. Establish `e : (· * k) ⁻¹' ((GLnLocal.integralGL F 2 : Subgroup (GL (Fin 2) F)) : Set (GL (Fin 2) F)) = (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F))`. Use extensionality with `g`. Conclude with `Subgroup.mul_mem_cancel_right _ hk`. Rewrite `h` using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_restrict_right (ψ : AddChar F Circle) {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL F 2) :
     MeasurePreserving (· * k) ((LFS.hG ψ).restrict (K2 F)) ((LFS.hG ψ).restrict (K2 F)) := by
@@ -229,9 +227,7 @@ theorem mp_restrict_right (ψ : AddChar F Circle) {k : GL (Fin 2) F} (hk : k ∈
   exact h
 
 /- English proof (translation)
-Establish `h` using `(measurePreserving_mul_left (LFS.hG ψ) k).restrict_preimage (GLnLocal.isOpen_integralGL F 2).measurableSet`. Establish `e : (k * ·) ⁻¹' ((GLnLocal.integralGL F 2 : Subgroup (GL (Fin 2) F)) : Set (GL (Fin 2) F)) = (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F))`. Use extensionality with `g`. Conclude with `Subgroup.mul_mem_cancel_left _ hk`. Rewrite `h` using `[e]`.
-
-Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mp_restrict_left (ψ : AddChar F Circle) {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL F 2) :
     MeasurePreserving (k * ·) ((LFS.hG ψ).restrict (K2 F)) ((LFS.hG ψ).restrict (K2 F)) := by
@@ -245,11 +241,11 @@ theorem mp_restrict_left (ψ : AddChar F Circle) {k : GL (Fin 2) F} (hk : k ∈ 
   exact h
 
 /- English proof (translation)
-Use `Measure.ext_of_lintegral _ fun f hf => ?_` and prove the remaining obligations. Establish `hτ : MeasurePreserving (fun p : Fˣ × Fˣ × GL (Fin 2) F => (p.1, p.2.1, p.2.2 * k)) (mIw ψ) (mIw ψ)`. Unfold `mIw`. Conclude with `(MeasurePreserving.id _).prod ((MeasurePreserving.id _).prod (mp_restrict_right ψ hk))`. Rewrite using `[lintegral_map hf (measurable_mul_const k), lintegral_iwM ψ (f := fun a => f (a * k)) (hf.comp (measurable_mul_const k)), lintegral_iwM ψ hf, ← hτ.lintegral_comp (measurable_Hf ψ hf)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Simplify using `only [Hf, Function.comp]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `e : uni2 x * hI p * k = uni2 x * hI (p.1, p.2.1, p.2.2 * k)`. Simplify using `only [hI, mul_assoc]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem iwM_right (ψ : AddChar F Circle) {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL F 2) :
     (iwM ψ).map (· * k) = iwM ψ := by
@@ -270,7 +266,7 @@ theorem iwM_right (ψ : AddChar F Circle) {k : GL (Fin 2) F} (hk : k ∈ GLnLoca
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two, add_comm]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unipotent_mul_unipotent_add (x y : F) : (uni2 y * uni2 x : GL (Fin 2) F) = uni2 (y + x) := by
   apply Units.ext
@@ -278,9 +274,9 @@ theorem unipotent_mul_unipotent_add (x y : F) : (uni2 y * uni2 x : GL (Fin 2) F)
   fin_cases i <;> fin_cases j <;> simp [uni2, Matrix.mul_apply, Fin.sum_univ_two, add_comm]
 
 /- English proof (translation)
-Use `Measure.ext_of_lintegral _ fun f hf => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map hf (measurable_const_mul _), lintegral_iwM ψ (f := fun a => f (uni2 y * a)) (hf.comp (measurable_const_mul _)), lintegral_iwM ψ hf]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Simplify using `only [Hf, Function.comp]`. Establish `e : ∀ x : F, uni2 y * (uni2 x * hI p) = uni2 (y + x) * hI p` using `fun x => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, unipotent_mul_unipotent_add]`. Repeatedly rewrite using `[e]`. Conclude with `lintegral_add_left_eq_self (fun x => wE p * f (uni2 x * hI p)) y`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwM_left_uni (ψ : AddChar F Circle) (y : F) :
     (iwM ψ).map (uni2 y * ·) = iwM ψ := by
@@ -297,7 +293,7 @@ theorem iwM_left_uni (ψ : AddChar F Circle) (y : F) :
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [uni2, dg2, Matrix.mul_apply, Fin.sum_univ_two]`. Clear the denominators using the available nonvanishing facts.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Clear the denominators using the available nonvanishing facts.
 -/
 theorem diagonal_mul_unipotent (s t : Fˣ) (x : F) :
     (dg2 s t * uni2 x : GL (Fin 2) F) = uni2 (((s * t⁻¹ : Fˣ) : F) * x) * dg2 s t := by
@@ -308,7 +304,7 @@ theorem diagonal_mul_unipotent (s t : Fˣ) (x : F) :
 
 omit [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diagonal_mul_diagonal_alt (s t c d : Fˣ) : (dg2 s t * dg2 c d : GL (Fin 2) F) = dg2 (s * c) (t * d) := by
   apply Units.ext
@@ -316,17 +312,15 @@ theorem diagonal_mul_diagonal_alt (s t c d : Fˣ) : (dg2 s t * dg2 c d : GL (Fin
   fin_cases i <;> fin_cases j <;> simp [dg2, Matrix.mul_apply, Fin.sum_univ_two]
 
 /- English proof (translation)
-Use `Measure.ext_of_lintegral _ fun f hf => ?_` and prove the remaining obligations. Use `set a₀ : Fˣ := s * t⁻¹ with ha₀`. Establish `hτ : MeasurePreserving (fun p : Fˣ × Fˣ × GL (Fin 2) F => (a₀ * p.1, t * p.2.1, p.2.2)) (mIw ψ) (mIw ψ)`. Unfold `mIw`. Conclude with `(measurePreserving_mul_left _ a₀).prod ((measurePreserving_mul_left _ t).prod (MeasurePreserving.id _))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[lintegral_map hf (measurable_const_mul _), lintegral_iwM ψ (f := fun a => f (dg2 s t * a)) (hf.comp (measurable_const_mul _)), lintegral_iwM ψ hf, ← hτ.lintegral_comp (measurable_Hf ψ hf)]`. Use `lintegral_congr fun p => ?_` and prove the remaining obligations. Establish `e : ∀ x : F, dg2 s t * (uni2 x * hI p) = uni2 ((a₀ : F) * x) * hI (a₀ * p.1, t * p.2.1, p.2.2)` using `fun x => by`. Establish `e1 : dg2 s t * hI p = hI (a₀ * p.1, t * p.2.1, p.2.2)`. Establish `e0 : s * (p.1 * p.2.1) = a₀ * p.1 * (t * p.2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : a₀ * t = s` using `by rw [ha₀, inv_mul_cancel_right]`. Rewrite using `[← h]`. The two sides agree by associativity and commutativity. Simplify using `only [hI]`. Rewrite using `[← mul_assoc, diagonal_mul_diagonal_alt, e0]`.
+The two sides agree by associativity and commutativity. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, diagonal_mul_unipotent, mul_assoc, e1]`. Establish `hm0 : (modulus (a₀ : F) : ENNReal) ≠ 0` using `ENNReal.coe_ne_zero.2 (modulus_ne_zero a₀.ne_zero)`. Establish `hw : wE ((a₀ * p.1, t * p.2.1, p.2.2) : Fˣ × Fˣ × GL (Fin 2) F) = ((modulus (a₀ : F) : ENNReal))⁻¹ * wE p`. Rewrite using `[wE_eq, wE_eq]`. Simplify using `only [Units.val_mul, modulus_mul, ENNReal.coe_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ENNReal.mul_inv (Or.inl hm0) (Or.inl ENNReal.coe_ne_top)]`. Simplify using `only [Hf, Function.comp]`. Repeatedly rewrite using `[e]`. Rewrite using `[lintegral_comp_mul_left (selfDualMeasure ψ) a₀.ne_zero (fun x => wE p * f (uni2 x * hI (a₀ * p.1, t * p.2.1, p.2.2))), hw]`. Repeatedly rewrite using `[mul_assoc]`.
-
-Rewrite using `[lintegral_const_mul' _ _ (ENNReal.inv_ne_top.2 hm0)]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwM_left_dg (ψ : AddChar F Circle) (s t : Fˣ) :
     (iwM ψ).map (dg2 s t * ·) = iwM ψ := by
@@ -365,11 +359,11 @@ theorem iwM_left_dg (ψ : AddChar F Circle) (s t : Fˣ) :
   rw [lintegral_const_mul' _ _ (ENNReal.inv_ne_top.2 hm0)]
 
 /- English proof (translation)
-Take `⟨x, m, n, κ, hκ, rfl⟩` from `GlobalTheory.CompanionTheory.GIntIw.iwasawa_decomposition_gl_two F g`. Use `set s : Fˣ := unifUnit F ^ m`. Use `set t : Fˣ := unifUnit F ^ n`. Establish `hK` using `(GLnLocal.isOpen_integralGL F 2).measurableSet`. Establish `hinv : (uni2 x * dg2 s t * κ)⁻¹ = κ⁻¹ * (dg2 s⁻¹ t⁻¹ * uni2 (-x))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (uni2 x : GL (Fin 2) F)⁻¹ = uni2 (-x)` using `(eq_inv_of_mul_eq_one_left (GlobalTheory.CompanionTheory.LocalTestVectors.unipotent_neg_mul x)).symm`. Establish `h2 : (dg2 s t : GL (Fin 2) F)⁻¹ = dg2 s⁻¹ t⁻¹` using `(eq_inv_of_mul_eq_one_left (GlobalTheory.CompanionTheory.LocalTestVectors.diag_inv_mul_alt s t)).symm`. Rewrite using `[_root_.mul_inv_rev, _root_.mul_inv_rev, h1, h2]`. Establish `hS : {h | (uni2 x * dg2 s t * κ)⁻¹ * h ∈ GLnLocal.integralGL F 2} = (uni2 (-x) * ·) ⁻¹' ((dg2 s⁻¹ t⁻¹ * ·) ⁻¹' (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)))`. Use extensionality with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe]`. Rewrite using `[hinv, mul_assoc, mul_assoc, Subgroup.mul_mem_cancel_left _ (inv_mem hκ)]`. Rewrite using `[hS, ← Measure.map_apply (measurable_const_mul _) ((measurable_const_mul _) hK), iwM_left_uni, ← Measure.map_apply (measurable_const_mul _) hK, iwM_left_dg]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwM_coset (ψ : AddChar F Circle) (g : GL (Fin 2) F) :
     iwM ψ {h | g⁻¹ * h ∈ GLnLocal.integralGL F 2} = iwM ψ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) := by
@@ -394,9 +388,9 @@ theorem iwM_coset (ψ : AddChar F Circle) (g : GL (Fin 2) F) :
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `((GLnLocal.mem_integralGL_iff F 2).1 h).1 0 1` as an intermediate fact. Simplify `this` using `[uni2]`. Introduce `h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h' : -x ∈ 𝒪[F]` using `neg_mem h`. Establish `e : (uni2 x : GL (Fin 2) F)⁻¹ = uni2 (-x)` using `(eq_inv_of_mul_eq_one_left (GlobalTheory.CompanionTheory.LocalTestVectors.unipotent_neg_mul x)).symm`. Rewrite using `[GLnLocal.mem_integralGL_iff, e]`. Apply the tactic sequence `constructor <;> intro i j <;> fin_cases i <;> fin_cases j <;>`. Simplify using `[uni2, h, zero_mem, one_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem unipotent_mem_integral_GL_iff (x : F) : uni2 x ∈ GLnLocal.integralGL F 2 ↔ x ∈ 𝒪[F] := by
   constructor
@@ -413,7 +407,7 @@ theorem unipotent_mem_integral_GL_iff (x : F) : uni2 x ∈ GLnLocal.integralGL F
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Establish `h3 : modulus ((p.1 * p.2.1 : Fˣ) : F) = 1`. Rewrite using `[Units.val_mul, modulus_mul, h1, h2, one_mul]`. Conclude with `mul_mem (GlobalTheory.CompanionTheory.GIntIw.diag_unit_mem_integral_gl_two (modulus_eq_one_iff.1 h3).2 (modulus_eq_one_iff.1 h2).2) hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hI_mem {p : Fˣ × Fˣ × GL (Fin 2) F} (hp : p.2.2 ∈ GLnLocal.integralGL F 2)
     (h1 : modulus (p.1 : F) = 1) (h2 : modulus (p.2.1 : F) = 1) :
@@ -425,11 +419,9 @@ theorem hI_mem {p : Fˣ × Fˣ × GL (Fin 2) F} (hp : p.2.2 ∈ GLnLocal.integra
 
 omit [MeasurableSpace F] [BorelSpace F] in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `e : dg2 (p.1 * p.2.1) p.2.1 * p.2.2 = uni2 (-x) * (uni2 x * hI p)`. Rewrite using `[← mul_assoc, GlobalTheory.CompanionTheory.LocalTestVectors.unipotent_neg_mul, one_mul]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨h1, h2⟩` from `GlobalTheory.CompanionTheory.LocalTestVectors.modulus_of_decomp hp h e`. Rewrite `h1` using `[Units.val_mul, modulus_mul, h2, mul_one]`. Use `⟨⟨h1, h2⟩, ?_⟩` and prove the remaining obligations. Conclude with `(unipotent_mem_integral_GL_iff x).1 ((Subgroup.mul_mem_cancel_right _ (hI_mem hp h1 h2)).1 h)`. Introduce and unpack `⟨⟨h1, h2⟩, hx⟩`.
-
-Conclude with `mul_mem ((unipotent_mem_integral_GL_iff x).2 hx) (hI_mem hp h1 h2)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_K_iff {p : Fˣ × Fˣ × GL (Fin 2) F} (hp : p.2.2 ∈ GLnLocal.integralGL F 2) (x : F) :
     uni2 x * hI p ∈ GLnLocal.integralGL F 2 ↔
@@ -447,25 +439,23 @@ theorem mem_K_iff {p : Fˣ × Fˣ × GL (Fin 2) F} (hp : p.2.2 ∈ GLnLocal.inte
     exact mul_mem ((unipotent_mem_integral_GL_iff x).2 hx) (hI_mem hp h1 h2)
 
 /- English proof (translation)
-Establish `hKm : MeasurableSet (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F))` using `(GLnLocal.isOpen_integralGL F 2).measurableSet`. Establish `hOm : MeasurableSet (𝒪[F] : Set F)`. Establish `e : (𝒪[F] : Set F) = uni2 ⁻¹' (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F))`. Use extensionality with `x`. Conclude with `(unipotent_mem_integral_GL_iff x).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `continuous_unipotentGL2.measurable hKm`. Use `set U : Set Fˣ := {a | modulus (a : F) = 1} with hU`. Establish `hUm : MeasurableSet U` using `(measurable_modulus.comp Units.continuous_val.measurable) (measurableSet_singleton (1 : NNReal))`. Establish `hU1 : multHaar F U = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Establish `e : U = (unitFiltrationUnits F 0 : Set Fˣ)`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `mem_unitFiltrationUnits_zero_iff_ord.2 (modulus_eq_one_iff.1 h).2`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Conclude with `modulus_eq_one_iff.2 ⟨a.ne_zero, mem_unitFiltrationUnits_zero_iff_ord.1 h⟩`. Rewrite using `[e, multHaar_unitFiltrationUnits_zero]`. Use `set T : Set (Fˣ × Fˣ × GL (Fin 2) F) := U ×ˢ (U ×ˢ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F))) with hTdef`. Establish `hT : MeasurableSet T` using `hUm.prod (hUm.prod hKm)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ᵐ p ∂mIw ψ, Hf ψ ((GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)).indicator 1) p = T.indicator (fun _ => selfDualMeasure ψ (𝒪[F] : Set F)) p` using `by filter_upwards [GlobalTheory.CompanionTheory.LocalTestVectors.ae_mem_maximal_compact ψ] with p hk`. Establish `hk' : p.2.2 ∈ GLnLocal.integralGL F 2` using `hk`. Distinguish the cases in `hp : p ∈ T`. Rewrite using `[Set.indicator_of_mem hp]`. Establish `h1 : modulus (p.1 : F) = 1` using `hp.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h2 : modulus (p.2.1 : F) = 1` using `hp.2.1`. Establish `hw : wE p = 1` using `by rw [wE_eq, h1]; simp`. Establish `e : ∀ x, wE p * (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)).indicator 1 (uni2 x * hI p) = (𝒪[F] : Set F).indicator 1 x`. Introduce `x`. Rewrite using `[hw, one_mul]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : x ∈ 𝒪[F]`. Rewrite using `[Set.indicator_of_mem (show x ∈ (𝒪[F] : Set F) from hx), Set.indicator_of_mem (show _ ∈ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) from (mem_K_iff hk' x).2 ⟨⟨h1, h2⟩, hx⟩)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem (show x ∉ (𝒪[F] : Set F) from hx), Set.indicator_of_notMem (show _ ∉ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) from fun h => hx ((mem_K_iff hk' x).1 h).2)]`. Simplify using `only [Hf, e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `lintegral_indicator_one hOm`. Rewrite using `[Set.indicator_of_notMem hp]`. Establish `e : ∀ x, wE p * (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)).indicator 1 (uni2 x * hI p) = 0`. Introduce `x`. Rewrite using `[Set.indicator_of_notMem, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Introduce `h`. Take `⟨⟨h1, h2⟩, -⟩` from `(mem_K_iff hk' x).1 h`. Conclude with `hp ⟨h1, h2, hk'⟩`. Simplify using `only [Hf, e, lintegral_zero]`. Rewrite using `[← lintegral_indicator_one hKm, lintegral_iwM ψ (measurable_one.indicator hKm), lintegral_congr_ae key, lintegral_indicator_const hT]`.
-
-Use `congr 1`. Rewrite using `[hTdef]`. Unfold `mIw`. Rewrite using `[Measure.prod_prod, Measure.prod_prod, hU1, one_mul, one_mul, Measure.restrict_apply hKm]`. Simplify using `[K2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem iwM_K (ψ : AddChar F Circle) :
     iwM ψ (GLnLocal.integralGL F 2 : Set (GL (Fin 2) F)) =
@@ -539,15 +529,13 @@ end GlobalTheory.CompanionTheory.IwaHaar
 open GlobalTheory.CompanionTheory.IwaHaar in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ _`. Use `haveI := haar_inst ψ`. Use `haveI := right_inst ψ`. Use `haveI := finite_restrict ψ`. Use `haveI : SecondCountableTopology (GL (Fin 2) F) := GlobalTheory.CompanionTheory.LocalTestVectors.secondCountable_GL2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hO : selfDualMeasure ψ (𝒪[F] : Set F) ≠ 0`. Rewrite using `[selfDualMeasure_integers]`. Conclude with `ENNReal.coe_ne_zero.2 (selfDualMeasure_coeff_ne_zero ψ)`. Establish `hT : selfDualMeasure ψ (𝒪[F] : Set F) ≠ ⊤`. Rewrite using `[selfDualMeasure_integers]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ENNReal.coe_ne_top`. Use `⟨_, hO, hT, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hM : iwM ψ = selfDualMeasure ψ (𝒪[F] : Set F) • LFS.hG ψ`. Use `measure_eq_of_coset (GLnLocal.integralGL F 2) (GLnLocal.isOpen_integralGL F 2) ((LFS.hG ψ).restrict (K2 F)) ?_ (ae_restrict_mem (GLnLocal.isOpen_integralGL F 2).measurableSet) (fun k hk => (mp_restrict_left ψ hk).map_eq) _ _ (fun k hk => iwM_right ψ hk) ?_ ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply_univ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Conclude with `((GLnLocal.isOpen_integralGL F 2).measure_pos _ ⟨1, one_mem _⟩).ne'`. Introduce `k hk`. Rewrite using `[Measure.map_smul, map_mul_right_eq_self]`. Introduce `g`. Rewrite using `[iwM_coset, iwM_K, Measure.smul_apply, smul_eq_mul]`.
-
-Use `congr 1`. Conclude with `(measure_preimage_mul (LFS.hG ψ) g⁻¹ _).symm`. Use `lintegral_iwM ψ hf` as an intermediate fact. Rewrite `this` using `[hM, lintegral_smul_measure, smul_eq_mul]`. Conclude with `this.symm.trans rfl`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.IwaHaar.main : ForS fun F _ _ _ _ _ _ ψ => ∃ c : ENNReal, c ≠ 0 ∧ c ≠ ⊤ ∧
     ∀ f : GL (Fin 2) F → ENNReal, Measurable f →

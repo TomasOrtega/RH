@@ -19,7 +19,7 @@ Both sides reduce to the same expression.
 theorem om_coe (hq : QuadData d K b) : ((om hq : 𝓞 K) : K) = (1 + b) / 2 := rfl
 
 /- English proof (translation)
-Take `⟨m, n, h⟩` from `(imag_quadratic_integral_basis d K b hq).2 x`. Use `⟨m, n, RingOfIntegers.ext ?_⟩` and prove the remaining obligations. Rewrite using `[h]`. Move the coercions through the operations in `[om_coe]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem basis (hq : QuadData d K b) (x : 𝓞 K) : ∃ m n : ℤ, x = m + n * om hq := by
   obtain ⟨m, n, h⟩ := (imag_quadratic_integral_basis d K b hq).2 x
@@ -29,11 +29,11 @@ theorem basis (hq : QuadData d K b) (x : 𝓞 K) : ∃ m n : ℤ, x = m + n * om
   rfl
 
 /- English proof (translation)
-Establish `hK : (m : K) + n * ((1 + b) / 2) = m' + n' * ((1 + b) / 2)`. Establish `h'` using `congrArg (fun x : 𝓞 K => (x : K)) h`. Move the coercions through the operations in `[om_coe] at h'`. Conclude with `h'`. Distinguish the cases in `hn : n = n'`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hn` using the available equality. Use `⟨?_, rfl⟩` and prove the remaining obligations. Conclude with `add_right_cancel hK` after adjusting the coercions. It suffices to derive a contradiction. Establish `hne : ((n : K) - n') ≠ 0` using `sub_ne_zero.mpr (by exact_mod_cast hn)`.
+Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations.
 
-Apply `PI.UnitaryGroupMassFormula.ClassNumImQInv.b_ne_rat hq ((2 * (m' - m) + n' - n) / (n - n'))` to reduce the goal to its premises. Use `push_cast`. Rewrite using `[div_eq_iff hne]`. Take the linear combination `(-2 : K) * hK`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem coeff_unique (hq : QuadData d K b) {m n m' n' : ℤ}
     (h : (m : 𝓞 K) + n * om hq = m' + n' * om hq) : m = m' ∧ n = n' := by

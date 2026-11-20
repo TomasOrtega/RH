@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LogKSCoc
 
 /- English proof (translation)
-Use `ext`. Express the relevant statement in the definitionally equal form `(X.presheaf.map _).hom ((X.presheaf.map _).hom _) = (X.presheaf.map _).hom _`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) (a : Γ(X, U)ˣ) :
     res h' (res h a) = res (h'.trans h) a := by
@@ -25,7 +25,7 @@ theorem res_res {X : Scheme.{0}} {U V W : X.Opens} (h : V ≤ U) (h' : W ≤ V) 
   rfl
 
 /- English proof (translation)
-Establish `e'` using `congrArg (res (le_inf h h')) e`. Simplify using `only [map_mul, map_inv, res_res] at e'`. Rewrite using `[e', _root_.mul_right_comm, inv_mul_cancel_right]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem res_intertwines {Y : Scheme.{0}} {P Q A B V : Y.Opens} (a : Γ(Y, P)ˣ) (a' : Γ(Y, Q)ˣ) (m : Γ(Y, A)ˣ)
     (l : Γ(Y, B)ˣ) (hA : P ⊓ Q ≤ A) (hB : P ⊓ Q ≤ B)
@@ -37,7 +37,7 @@ theorem res_intertwines {Y : Scheme.{0}} {P Q A B V : Y.Opens} (a : Γ(Y, P)ˣ) 
   rw [e', _root_.mul_right_comm, inv_mul_cancel_right]
 
 /- English proof (translation)
-Conclude with `res_intertwines (w.s (i, k)) (w.s (i', k')) (M.g i i') (L.g k k') _ _ (hw (i, k) (i', k')) h h' hM hL`.
+A detailed English derivation is pending.
 -/
 theorem gen_intertwines {Y : Scheme.{0}} (M L : LB Y) (w : LB.Iso L M) (hw : w.IsGen) (i i' : M.ι) (k k' : L.ι)
     {V : Y.Opens} (h : V ≤ M.U i ⊓ L.U k) (h' : V ≤ M.U i' ⊓ L.U k') (hM : V ≤ M.U i ⊓ M.U i')
@@ -46,11 +46,9 @@ theorem gen_intertwines {Y : Scheme.{0}} (M L : LB Y) (w : LB.Iso L M) (hw : w.I
   exact res_intertwines (w.s (i, k)) (w.s (i', k')) (M.g i i') (L.g k k') _ _ (hw (i, k) (i', k')) h h' hM hL
 
 /- English proof (translation)
-Introduce `Y Z φ L L' w hw i i' k k' O O' hO hO' hk hk' hu`. Establish `e` using `gen_intertwines (L.pull φ) L' w hw (fun _ => i) (fun _ => i') k k' (V := O ⊓ O') (inf_le_left.trans hO) (inf_le_right.trans hO') (inf_le_inf (hO.trans inf_le_left) (hO'.trans inf_le_left)) (inf_le_inf hk hk')`. Establish `g : res (inf_le_inf (hO.trans inf_le_left) (hO'.trans inf_le_left)) ((L.pull φ).g (fun _ => i) (fun _ => i')) = res hu (pullU φ _ (L.g i i'))`. Unfold `LB.pull LB.LinComb`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions.
 
-Rewrite using `[Fintype.prod_unique, zpow_one]`. Conclude with `res_res _ _ _`. Rewrite `e` using `[g]`. Establish `e₁` using `congrArg Units.val (res_res hO (inf_le_left : O ⊓ O' ≤ O) (w.s (fun _ => i, k)))`. Establish `e₂` using `congrArg Units.val (res_res hO' (inf_le_right : O ⊓ O' ≤ O') (w.s (fun _ => i', k')))`.
-
-Conclude with `(congrArg (_ * ·) e₂).trans ((congrArg Units.val e).trans (congrArg (· * _) e₁.symm))`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iso_pull_intertwines : ∀ (Y Z : Scheme.{0}) (φ : Y ⟶ Z) (L : LB Z) (L' : LB Y) (w : LB.Iso L' (L.pull φ)), w.IsGen → ∀ (i i' : L.ι) (k k' : L'.ι) (O O' : Y.Opens) (hO : O ≤ (L.pull φ).U (fun _ => i) ⊓ L'.U k) (hO' : O' ≤ (L.pull φ).U (fun _ => i') ⊓ L'.U k') (hk : O ≤ L'.U k) (hk' : O' ≤ L'.U k') (hu : O ⊓ O' ≤ φ ⁻¹ᵁ (L.U i ⊓ L.U i')), resG Y hu (pullU φ _ (L.g i i')).val * resG Y (inf_le_right : O ⊓ O' ≤ O') (resG Y hO' (w.s (fun _ => i', k')).val) = resG Y (inf_le_left : O ⊓ O' ≤ O) (resG Y hO (w.s (fun _ => i, k)).val) * resG Y (inf_le_inf hk hk') (L'.g k k').val := by
   intro Y Z φ L L' w hw i i' k k' O O' hO hO' hk hk' hu

@@ -14,11 +14,11 @@ open scoped nonZeroDivisors
 variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Fintype.linearCombination K v) (LinearMap.ker_eq_bot.2 (LinearIndependent.fintypeLinearCombination_injective hv))`. Introduce `h`. Use `congrArg (exteriorPower.alternatingMapLinearEquiv ((Matrix.detRowAlternating : (Fin m → K) [⋀^Fin m]→ₗ[K] K).compLinearMap g)) h` as an intermediate fact. Rewrite `this` using `[exteriorPower.alternatingMapLinearEquiv_apply_ιMulti, map_zero]`. Establish `hgv : ∀ i, g (v i) = Pi.single i 1`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `i`. Establish `: v i = Fintype.linearCombination K v (Pi.single i 1)` using `by simp`. Rewrite using `[this, ← LinearMap.comp_apply, hg, LinearMap.id_apply]`. Establish `e : (fun i => g (v i)) = fun i => Pi.single i 1` using `funext hgv`. Express the relevant statement in the definitionally equal form `Matrix.det (Matrix.of fun i => g (v i)) = 0 at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, show (Matrix.of fun i : Fin m => (Pi.single i 1 : Fin m → K)) = 1 from by`. Use extensionality with `i j`. Simplify using `[Matrix.one_apply, Pi.single_apply, eq_comm], Matrix.det_one] at this`. Conclude with `one_ne_zero this`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ιMulti_ne_zero_of_li {m : ℕ} (v : Fin m → V) (hv : LinearIndependent K v) :
     exteriorPower.ιMulti K m v ≠ 0 := by
@@ -41,17 +41,17 @@ theorem ιMulti_ne_zero_of_li {m : ℕ} (v : Fin m → V) (hv : LinearIndependen
 omit [IsScalarTower (𝓞 K) K V] [Module (𝓞 K) V] in
 
 /- English proof (translation)
-Use extensionality with `r`. Rewrite using `[Submodule.mem_colon]`. Prove the components needed by the constructor for the conclusion. Introduce `h set Df : FractionalIdeal (𝓞 K)⁰ K := ⟨D, hD⟩`. Establish `hDf : Df ≠ 0` using `fun e => h0 (by`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (fun I : FractionalIdeal (𝓞 K)⁰ K => (I : Submodule (𝓞 K) K)) e` as an intermediate fact. Simplify `this)` using `[Df]`. Establish `hmem : ∀ x ∈ 𝔞 • D, x ∈ (𝔞 : FractionalIdeal (𝓞 K)⁰ K) * Df`. Introduce `x hx`. Use `Submodule.smul_induction_on hx ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha d hd`. Rewrite using `[Algebra.smul_def]`. Conclude with `FractionalIdeal.mul_mem_mul ((FractionalIdeal.mem_coeIdeal _).2 ⟨a, ha, rfl⟩) hd`. Introduce `x y hx hy`. Conclude with `Submodule.add_mem (((𝔞 : FractionalIdeal (𝓞 K)⁰ K) * Df : FractionalIdeal (𝓞 K)⁰ K) : Submodule (𝓞 K) K) hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : FractionalIdeal.spanSingleton (𝓞 K)⁰ (algebraMap (𝓞 K) K r) * Df ≤ (𝔞 : FractionalIdeal (𝓞 K)⁰ K) * Df`. Rewrite using `[FractionalIdeal.mul_le]`. Introduce `i hi j hj`. Take `⟨a, rfl⟩` from `(FractionalIdeal.mem_spanSingleton _).1 hi`. Establish `h1` using `hmem _ (h j hj)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_mul_assoc]`. Use `Submodule.smul_mem _ a ?_` and prove the remaining obligations. Rewrite `h1` using `[Algebra.smul_def]`. Then use the resulting hypothesis. Establish `key2` using `mul_le_mul_left key Df⁻¹`. Rewrite `key2` using `[mul_assoc, mul_assoc, mul_inv_cancel₀ hDf, mul_one, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr` using `key2 (FractionalIdeal.mem_spanSingleton_self _ _)`. Take `⟨x, hx, e⟩` from `(FractionalIdeal.mem_coeIdeal _).1 hr`. Rewrite using `[← (FaithfulSMul.algebraMap_injective (𝓞 K) K) e]` and apply the resulting hypothesis. Introduce `hr s hs`. Conclude with `Submodule.smul_mem_smul hr hs`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem colon_smul_cancel (𝔞 : Ideal (𝓞 K)) (D : Submodule (𝓞 K) K)
     (hD : IsFractional (𝓞 K)⁰ D) (h0 : D ≠ ⊥) : (𝔞 • D).colon (D : Set K) = 𝔞 := by
@@ -96,7 +96,7 @@ def coordMap (v : Fin m → V) : (Fin m → K) →ₗ[𝓞 K] V :=
   (Fintype.linearCombination K v).restrictScalars (𝓞 K)
 
 /- English proof (translation)
-Simplify using `[coordMap, Fintype.linearCombination_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordMap_apply (v : Fin m → V) (x : Fin m → K) : coordMap K v x = ∑ i, x i • v i := by
   simp [coordMap, Fintype.linearCombination_apply]
@@ -112,13 +112,13 @@ Both sides reduce to the same expression.
 theorem lineMap_apply (ω : ⋀[K]^m V) (t : K) : lineMap K ω t = t • ω := rfl
 
 /- English proof (translation)
-Unfold `detSpan GlobalTheory.BetaEx.detSpan`. Rewrite using `[Submodule.map_span]`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, rfl⟩ choose x hx hxy using fun i => Submodule.mem_map.1 (hy i)`. Use `⟨(Matrix.of x).det, (GlobalTheory.BetaEx.mem_detSet M' _).2 ⟨Matrix.of x, hx, rfl⟩, ?_⟩` and prove the remaining obligations. Establish `e : y = fun i => ∑ j, (Matrix.of x) i j • v j` using `funext fun i => by`. Rewrite using `[← hxy i, coordMap_apply]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[lineMap_apply, e, GlobalTheory.FlatCM.Model.ιMulti_comb]`. Introduce and unpack `⟨d, hd, rfl⟩`. Take `⟨x, hx, rfl⟩` from `(GlobalTheory.BetaEx.mem_detSet M' d).1 hd`. Use `⟨fun i => coordMap K v (x i), fun i => Submodule.mem_map_of_mem (hx i), ?_⟩` and prove the remaining obligations. Establish `e : (fun i => coordMap K v (x i)) = fun i => ∑ j, x i j • v j` using `funext fun i => by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[coordMap_apply]`. Rewrite using `[lineMap_apply, e, GlobalTheory.FlatCM.Model.ιMulti_comb]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem detSpan_map_coord (v : Fin m → V) (M' : Submodule (𝓞 K) (Fin m → K)) :
     detSpan K m (M'.map (coordMap K v)) =
@@ -144,11 +144,11 @@ theorem detSpan_map_coord (v : Fin m → V) (M' : Submodule (𝓞 K) (Fin m → 
 omit [IsScalarTower (𝓞 K) K V] [Module (𝓞 K) V] in
 
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `only [Submodule.mem_colon]`. Prove the components needed by the constructor for the conclusion. Introduce `h q hq`. Use `h (f q) (Submodule.mem_map_of_mem hq)` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[← map_smul]`. Take `⟨p, hp, e⟩` from `Submodule.mem_map.1 this`. Rewrite `hp` using `[hf e]`. Then use the resulting hypothesis. Introduce `h b hb`. Take `⟨q, hq, rfl⟩` from `Submodule.mem_map.1 hb`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← map_smul]`. Conclude with `Submodule.mem_map_of_mem (h q hq)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem colon_map_of_injective {A B : Type} [AddCommGroup A] [Module (𝓞 K) A] [AddCommGroup B] [Module (𝓞 K) B]
     (f : A →ₗ[𝓞 K] B) (hf : Function.Injective f) (P Q : Submodule (𝓞 K) A) :
@@ -169,11 +169,11 @@ theorem colon_map_of_injective {A B : Type} [AddCommGroup A] [Module (𝓞 K) A]
 omit [IsScalarTower (𝓞 K) K V] [Module (𝓞 K) V] in
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hM`. Take `⟨⟨b, hb⟩, hint⟩` from `IsLocalization.exist_integer_multiples_of_finset (𝓞 K)⁰ (s.biUnion fun x => Finset.univ.image x)`. Use `⟨b, nonZeroDivisors.ne_zero hb, fun v hv => ?_⟩` and prove the remaining obligations. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Rewrite using `[GlobalTheory.BetaEx.mem_std]`. Introduce `j`. Take `⟨c, hc⟩` from `hint (x j) (Finset.mem_biUnion.2 ⟨x, hx, Finset.mem_image.2 ⟨j, Finset.mem_univ _, rfl⟩⟩)`. Conclude with `⟨c, hc⟩`. Consider the case `zero => rw [smul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ a hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem bdd_of_fg {M : Submodule (𝓞 K) (Fin m → K)} (hM : M.FG) : GlobalTheory.BetaEx.Bdd M := by
   classical
@@ -192,7 +192,7 @@ theorem bdd_of_fg {M : Submodule (𝓞 K) (Fin m → K)} (hM : M.FG) : GlobalThe
   | smul a x _ hx => rw [smul_comm]; exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-The claim follows from `Submodule.eq_of_le_of_finrank_eq (Submodule.span_mono hNL) hr.symm`.
+A detailed English derivation is pending.
 -/
 theorem span_eq_of_latRank_eq [FiniteDimensional K V] {N L : Submodule (𝓞 K) V} (hNL : N ≤ L)
     (hr : latRank K L = latRank K N) :
@@ -202,7 +202,7 @@ theorem span_eq_of_latRank_eq [FiniteDimensional K V] {N L : Submodule (𝓞 K) 
 omit [IsScalarTower (𝓞 K) K V] in
 
 /- English proof (translation)
-Establish `: IsNoetherian (𝓞 K) L` using `isNoetherian_of_fg_of_noetherian L hL`. Establish `hfg` using `IsNoetherian.noetherian (N.comap L.subtype)`. Establish `e : (N.comap L.subtype).map L.subtype = N`. Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.2 hNL]`. Conclude with `e ▸ hfg.map _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fg_of_le_fg' {N L : Submodule (𝓞 K) V} (hNL : N ≤ L) (hL : L.FG) : N.FG := by
   have : IsNoetherian (𝓞 K) L := isNoetherian_of_fg_of_noetherian L hL
@@ -212,29 +212,25 @@ theorem fg_of_le_fg' {N L : Submodule (𝓞 K) V} (hNL : N ≤ L) (hL : L.FG) : 
   exact e ▸ hfg.map _
 
 /- English proof (translation)
-Establish `hN : N.FG` using `fg_of_le_fg' hNL hL`. Take `⟨v, hv⟩ : ∃ v : Fin m → V, IsFrame K N v` from `hrN ▸ exists_isFrame N hN`. Establish `hspanv : Submodule.span K (Set.range v) = Submodule.span K (N : Set V)`. Use `le_antisymm (Submodule.span_le.2 ?_) (Submodule.span_le.2 hv.2.2)` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span (hv.1 i)`. Establish `hLv : (L : Set V) ⊆ Submodule.span K (Set.range v)`. Rewrite using `[hspanv, span_eq_of_latRank_eq hNL (hrL.trans hrN.symm)]`. Conclude with `Submodule.subset_span`. Use `set ψ := coordMap K v with hψ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective ψ` using `hv.2.1.fintypeLinearCombination_injective`. Establish `hrange : L ≤ LinearMap.range ψ`. Introduce `x hx`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun K).1 (hLv hx)`. Conclude with `⟨c, by rw [coordMap_apply]; exact hc⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L' := L.comap ψ with hL'def`. Use `set N' := N.comap ψ with hN'def`. Establish `hL' : L'.map ψ = L` using `Submodule.map_comap_eq_self hrange`. Establish `hN' : N'.map ψ = N` using `Submodule.map_comap_eq_self (hNL.trans hrange)`. Establish `hNL' : N' ≤ L'` using `Submodule.comap_mono hNL`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hstd : ∀ x : Fin m → K, (∀ j, ∃ b : 𝓞 K, (b : K) = x j) → x ∈ N'`. Introduce `x hx`. Use `choose b hb using hx`. Express the relevant statement in the definitionally equal form `ψ x ∈ N`. Rewrite using `[coordMap_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Submodule.sum_mem _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← hb j, algebraMap_smul]`. Conclude with `N.smul_mem _ (hv.1 j)`. Establish `hLfg : L'.FG` using `Submodule.fg_of_fg_map_injective ψ hinj (hL' ▸ hL)`. Establish `hb : GlobalTheory.BetaEx.Bdd L'` using `bdd_of_fg hLfg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb' : GlobalTheory.BetaEx.Bdd (N' ⊔ L')` using `by rwa [sup_eq_right.2 hNL']`. Establish `ht : ∀ x ∈ L', ∃ a : 𝓞 K, a ≠ 0 ∧ a • x ∈ N'`. Introduce `x hx`. Take `⟨k, hk, h⟩` from `hb`. Conclude with `⟨k, hk, hstd _ ((GlobalTheory.BetaEx.mem_std _).1 (h x hx))⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨𝔞, h0, h1, -, h2⟩` from `GlobalTheory.DetIdeal.exists_index_ideal_pair L' N' hLfg hb' ht`. Rewrite `h1`, `h2` using `[inf_eq_right.2 hNL']`. Establish `hω` using `ιMulti_ne_zero_of_li v hv.2.1`. Establish `hℓ : Function.Injective (lineMap K (exteriorPower.ιMulti K m v))` using `fun s t e => smul_left_injective K hω e`. Establish `hD0 : GlobalTheory.BetaEx.detSpan L' ≠ ⊥`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `e`. Apply the tactic sequence `have h1m := GlobalTheory.BetaEx.det_mem (M := L') (1 : Matrix (Fin m) (Fin m) K) fun i => hNL' (hstd _ fun j => ⟨if i = j then 1 else 0, by by_cases hij : i = j <;> simp [Matrix.one_apply, hij]⟩)`. Rewrite `h1m` using `[e, Matrix.det_one]`. Conclude with `one_ne_zero ((Submodule.mem_bot _).1 h1m)`. Establish `hidx : idx K m L N = 𝔞`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `idx`. Rewrite using `[← hL', ← hN', detSpan_map_coord, detSpan_map_coord, colon_map_of_injective _ hℓ, h1]`. Conclude with `colon_smul_cancel 𝔞 _ (GlobalTheory.BetaEx.frac_of_bdd hb) hD0`. Use `⟨hidx ▸ h0, ?_⟩` and prove the remaining obligations. Rewrite using `[hidx, h2]`.
-
-Establish `e : L'.toAddSubgroup.map ψ.toAddMonoidHom = L.toAddSubgroup`. Use extensionality with `x`. Rewrite using `[← hL']`. Simplify using `[Submodule.mem_map]`. Rewrite using `[← e]`.
-
-Conclude with `(AddSubgroup.relIndex_comap N.toAddSubgroup ψ.toAddMonoidHom L'.toAddSubgroup).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_eq_absNorm_idx [FiniteDimensional K V] {N L : Submodule (𝓞 K) V} (hNL : N ≤ L) (hL : L.FG)
     (hrL : latRank K L = m) (hrN : latRank K N = m) :
@@ -304,9 +300,9 @@ namespace GlobalTheory.LatIndexDeg
 open AlgebraicGeometry CategoryTheory NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory GlobalTheory.CM GlobalTheory.FlatCM
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ h m L N hNL hL hrL hrN`. Take `⟨hne, hidx⟩` from `relIndex_eq_absNorm_idx hNL hL hrL hrN`. Use `⟨hne, ?_⟩` and prove the remaining obligations. Establish `hN : N.FG` using `fg_of_le_fg' hNL hL`. Establish `hspan : (L : Set V) ⊆ Submodule.span K (N : Set V)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[span_eq_of_latRank_eq hNL (hrL.trans hrN.symm)]`. Conclude with `Submodule.subset_span`. Rewrite using `[deg_of_le h hN hL hNL hspan, hidx]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deg_eq_deg_add_log_absNorm_idx : ∀ (K V : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : HermFam K V) (m : ℕ) (L N : Submodule (𝓞 K) V), N ≤ L → L.FG → latRank K L = m → latRank K N = m → idx K m L N ≠ ⊥ ∧ deg h L = deg h N + Real.log (Ideal.absNorm (idx K m L N)) / Module.finrank ℚ K := by
   intro K V _ _ _ _ _ _ _ h m L N hNL hL hrL hrN

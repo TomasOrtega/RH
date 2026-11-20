@@ -30,19 +30,19 @@ namespace GlobalTheory.IsoNegIdx
 open ReciprocityTheory.ChartRestriction.G GlobalTheory.Inertia
 
 /- English proof (translation)
-Take `⟨e, P, hP⟩` from `h`. Use `set A : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ := (P : Matrix _ _ ℂ).map (starRingEnd ℂ) with hA`. Establish `hAc : A.map (starRingEnd ℂ) = (P : Matrix _ _ ℂ)`. Use extensionality with `i j`. Simplify using `[hA]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hdet : A.det ≠ 0`. Establish `hu` using `Matrix.isUnits_det_units P`. Establish `h2` using `RingHom.map_det (starRingEnd ℂ) (P : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ)`. Rewrite `h2` using `[RingHom.mapMatrix_apply]`. Rewrite using `[hA, ← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(map_ne_zero _).2 hu.ne_zero`. Establish `hc : A.transpose * M.reindex e e * A.map (starRingEnd ℂ) = Formalism.UG.Jpq p q`. Rewrite using `[hAc, ← hP]`. Both sides reduce to the same expression. Establish `hcn : A.transpose * (-M).reindex e e * A.map (starRingEnd ℂ) = -Formalism.UG.Jpq p q`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hc]`. Establish `: (-M).reindex e e = -(M.reindex e e)` using `by ext; simp`. Rewrite using `[this, Matrix.mul_neg, Matrix.neg_mul]`. Establish `hJ : Formalism.UG.Jpq p q = Matrix.diagonal (Sum.elim (fun _ => (1 : ℂ)) (fun _ => -1))`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j <;>`. Apply the tactic sequence `simp [Formalism.UG.Jpq, Matrix.one_apply, Matrix.diagonal_apply] <;> split_ifs <;> simp`. Establish `hJn : -Formalism.UG.Jpq p q = Matrix.diagonal (Sum.elim (fun _ => (-1 : ℂ)) (fun _ => 1))`. Rewrite using `[hJ, Matrix.diagonal_neg]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `ext i; rcases i with i | i <;> simp`. Establish `hre : ∀ N : Matrix n n ℂ, posIndex N = posIndex (N.reindex e e)` using `fun N => (posIndex_submatrix_equiv N e.symm).symm`. Prove the components needed by the constructor for the conclusion. Rewrite using `[hre, ← posIndex_congr _ hdet, hc, hJ, posIndex_diagonal, Finset.card_filter, Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hre, ← posIndex_congr _ hdet, hcn, hJn, posIndex_diagonal, Finset.card_filter, Fintype.sum_sum_type]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem posIndex_of_hasSignature {n : Type} [Fintype n] [DecidableEq n] {M : Matrix n n ℂ} {p q : ℕ}
     (h : Formalism.UG.HasSignature M p q) : posIndex M = p ∧ posIndex (-M) = q := by
@@ -79,7 +79,7 @@ theorem posIndex_of_hasSignature {n : Type} [Fintype n] [DecidableEq n] {M : Mat
     simp
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.equivFun_symm_apply]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, Finset.mul_sum, Formalism.BasicNotions.HSpace.gram]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[starRingEnd_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hT_coords {E : Type} [Field E] [NumberField E] [StarRing E] (S : Formalism.BasicNotions.HSpace E) (u : Fin S.rank → E) :
     S.hT (S.frame.equivFun.symm u) (S.frame.equivFun.symm u) = ∑ b, ∑ a, star (u a) * S.gram a b * u b := by
@@ -97,35 +97,33 @@ namespace GlobalTheory.IsoNegIdx
 open ReciprocityTheory.ChartRestriction.G GlobalTheory.Inertia
 
 /- English proof (translation)
-Introduce `D S k hS hk1 hk2 hn`. Use `letI : IsCMField D.host.E := D.host.isCMField_hostE`. Establish `hst : ∀ x : D.host.E, star x = FD.cc x` using `fun _ => rfl`. Establish `hsig : ∀ φ : D.host.E →+* ℂ, Formalism.UG.HasSignature (S.gram.map φ) (S.rank - k) k`. Introduce `φ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨ρ, h | h⟩` from `GlobalTheory.MassLink.tauE_or' D φ`. Substitute `h` using the available equality. Simplify `hS ρ` using `[gramAt]`. Establish `h1` using `GlobalTheory.BottomIsom.hasSignature_map_star (by simpa [gramAt] using hS ρ)`. Rewrite `h1` using `[Matrix.map_map]`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (⇑(starRingEnd ℂ) ∘ ⇑(tauE D ρ)) = ⇑φ`. Use function extensionality and compare the values at `x`. Rewrite using `[Function.comp_apply, h, ComplexEmbedding.conjugate_coe_eq, Complex.conj_conj]`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Use `set G : Matrix (Fin S.rank) (Fin S.rank) D.host.E := S.gram.transpose with hGdef`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hG : ∀ a b, FD.cc (G a b) = G b a` using `fun a b => by`. Simplify using `only [hGdef, Matrix.transpose_apply, ← hst]`. Conclude with `S.herm.eq _ _`. Establish `hform : ∀ u, S.hT (S.frame.equivFun.symm u) (S.frame.equivFun.symm u) = FD.herm G u u` using `fun u => by`. Rewrite using `[hT_coords, FD.herm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [hGdef, Matrix.transpose_apply, hst]`. Expand and normalize the polynomial expressions, which then agree. Establish `hGφ : ∀ φ : D.host.E →+* ℂ, G.map φ = S.gram.map (ComplexEmbedding.conjugate φ)` using `fun φ => by`. Use extensionality with `a b`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.map_apply, ComplexEmbedding.conjugate_coe_eq]`. Rewrite using `[← hG b a, GlobalTheory.Published.embedding_cc]`. Both sides reduce to the same expression. Take `⟨P, d, hP, hPd, hd, -⟩` from `GlobalTheory.HermDiag.exists_congr_diagonal_herm hG`. Establish `key : ∀ u, FD.herm G (P.mulVec u) (P.mulVec u) = FD.herm (Matrix.diagonal d) u u` using `fun u => by`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.Published.LandherrSt.herm_mulVec, hPd]`. Establish `hne : ∀ u, u ≠ 0 → S.frame.equivFun.symm (P.mulVec u) ≠ 0` using `fun u hu h => by`. Apply `hu` to reduce the goal to its premises. Apply `Matrix.eq_zero_of_mulVec_eq_zero hP` to reduce the goal to its premises. Establish `h3` using `congrArg S.frame.equivFun h`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Consider separately whether the proposition holds or fails.
 
-Rewrite `h3` using `[LinearEquiv.apply_symm_apply, map_zero]`. Then use the resulting hypothesis. Distinguish the cases in `hz : ∃ i, d i = 0`. Take `⟨i, hi⟩` from `hz`. Use `⟨_, hne (Pi.single i 1) (by simp), ?_⟩` and prove the remaining obligations. Rewrite using `[hform, key, GlobalTheory.UTrans.herm_diagonal_self]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality. Simplify using `[hi]`. Simplify using `[Pi.single_apply, hj]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at hz`. Establish `hs : ∀ φ : D.host.E →+* ℂ, (∃ i, 0 < (φ (d i)).re) ∧ ∃ j, (φ (d j)).re < 0`. Introduce `φ`. Establish `hc : (P.map φ).transpose * G.map φ * (P.map φ).map (starRingEnd ℂ) = Matrix.diagonal fun i => φ (d i)`. Establish `h1 : (P.map φ).map (starRingEnd ℂ) = (P.map FD.cc).map φ`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `a b`. Simplify using `[GlobalTheory.Published.embedding_cc]`. Rewrite using `[h1, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, hPd, Matrix.diagonal_map (map_zero φ)]`. Establish `hdet : (P.map φ).det ≠ 0`. Establish `h2` using `RingHom.map_det φ P`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h2` using `[RingHom.mapMatrix_apply]`. Rewrite using `[← h2]`. Conclude with `(map_ne_zero φ).2 hP`. Take `⟨hp, hq⟩` from `posIndex_of_hasSignature (hGφ φ ▸ hsig (ComplexEmbedding.conjugate φ))`. Establish `hcn : (P.map φ).transpose * (-G.map φ) * (P.map φ).map (starRingEnd ℂ) = Matrix.diagonal fun i => -φ (d i)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, hc, Matrix.diagonal_neg]`. Rewrite `hp` using `[← posIndex_congr _ hdet, hc, posIndex_diagonal]`. Rewrite `hq` using `[← posIndex_congr _ hdet, hcn, posIndex_diagonal]`. Prove the components needed by the constructor for the conclusion. Take `⟨i, hi⟩` from `Finset.card_pos.1 (show 0 < _ by rw [hp]; omega)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `⟨i, (Finset.mem_filter.1 hi).2⟩`. Take `⟨i, hi⟩` from `Finset.card_pos.1 (show 0 < _ by rw [hq]; omega)`. Use `⟨i, ?_⟩` and prove the remaining obligations. Use `(Finset.mem_filter.1 hi).2` as an intermediate fact. Simplify using `only [Complex.neg_re] at this`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨z, hz0, hzz⟩` from `GlobalTheory.UTrans.exists_isotropic_diagonal hn hd hz hs`. Conclude with `⟨_, hne z hz0, by rw [hform, key, hzz]⟩`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isotropic_of_negIdx : ∀ (D : D7) (S : HSp D) (k : ℕ), NegIdx S k → 1 ≤ k → k + 1 ≤ S.rank → 3 ≤ S.rank →
     ∃ x : S.V, x ≠ 0 ∧ S.hT x x = 0 := by

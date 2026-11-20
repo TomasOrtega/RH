@@ -3,7 +3,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Proofs.IwasawaDecomposition.RegularLocalRingNormalDomain
 import Development.AbelianVarietyTheory.Proofs.DivisorProofs.RegularQuotientPrimeElement
 /- English proof (citation)
-Apply `GlobalTheory.prime_algebraMap_localization_of_isRegularRing_quotient` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FRegularQuotientPrimeElement.lean&line=6#L6)
 -/

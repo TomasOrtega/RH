@@ -16,15 +16,13 @@ section Abstract
 variable {E : Type} [CommRing E] {V : Type} [AddCommGroup V] [Module E V] {O : Subring E}
 
 /- English proof (translation)
-Rewrite using `[MulAction.mem_stabilizer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv` using `[← h, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨w, hw, hwv⟩` from `hv`. Establish `: w = v` using `g.injective hwv`. Conclude with `this ▸ hw`. Introduce `hv`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, Submodule.mem_smul_pointwise_iff_exists]`. Conclude with `⟨v, hv, rfl⟩`. Introduce `h`. Use extensionality with `v`. Rewrite using `[Submodule.mem_smul_pointwise_iff_exists]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨w, hw, rfl⟩`. Conclude with `(h w).2 hw`. Introduce `hv`. Use `⟨g.symm v, (h _).1 (by simpa using hv), ?_⟩` and prove the remaining obligations.
-
-Conclude with `g.apply_symm_apply v`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem mem_stab_iff (Λ : Submodule O V) (g : V ≃ₗ[E] V) :
     g ∈ MulAction.stabilizer (V ≃ₗ[E] V) Λ ↔ ∀ v, g v ∈ Λ ↔ v ∈ Λ := by
@@ -51,15 +49,15 @@ theorem mem_stab_iff (Λ : Submodule O V) (g : V ≃ₗ[E] V) :
       exact g.apply_symm_apply v
 
 /- English proof (translation)
-The claim follows from `Λ.smul_mem ⟨c, hc⟩ hv`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_of (Λ : Submodule O V) {c : E} (hc : c ∈ O) {v : V} (hv : v ∈ Λ) : c • v ∈ Λ :=
   Λ.smul_mem ⟨c, hc⟩ hv
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.PowSmulMem.main`. Consider the case `exact _root_.GlobalTheory.PowSmulMem.main`. Consider the case `(apply _root_.GlobalTheory.PowSmulMem.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PowSmulMem.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.PowSmulMem.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PowSmulMem.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem {p : E} (hp : p ∈ O) (hdiv : ∀ e : E, ∃ a : ℕ, p ^ a * e ∈ O)
     (Λ Λ' : Submodule O V) (hΛ : Λ.FG) (hΛ' : Submodule.span E (Λ' : Set V) = ⊤) :
@@ -92,7 +90,7 @@ def congSub (Λ : Submodule O V) (c : E) : Subgroup (V ≃ₗ[E] V) where
     rw [smul_neg, ← h, this, neg_sub]
 
 /- English proof (translation)
-Use `⟨mul_mem (mul_mem ha hg.1) (inv_mem ha), fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, h⟩` from `hg.2 (a⁻¹ v) (((mem_stab_iff Λ _).1 (inv_mem ha) v).2 hv)`. Use `⟨a w, ((mem_stab_iff Λ _).1 ha w).2 hw, ?_⟩` and prove the remaining obligations. Establish `h2 : a (a⁻¹ v) = v` using `a.apply_symm_apply v`. Rewrite using `[← map_smul, ← h, map_sub, h2]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -107,9 +105,9 @@ theorem conj_mem (Λ : Submodule O V) (c : E) {a g : V ≃ₗ[E] V}
   rfl
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[Subgroup.mem_pointwise_smul_iff_inv_smul_mem]`. Establish `e : (MulAut.conj a)⁻¹ • g = a⁻¹ * g * a⁻¹⁻¹` using `by simp`. Rewrite using `[e]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `conj_mem Λ c ha h` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Conclude with `conj_mem Λ c (inv_mem ha)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem conj_smul_eq (Λ : Submodule O V) (c : E) {a : V ≃ₗ[E] V}
     (ha : a ∈ MulAction.stabilizer (V ≃ₗ[E] V) Λ) :
@@ -125,19 +123,17 @@ theorem conj_smul_eq (Λ : Submodule O V) (c : E) {a : V ≃ₗ[E] V}
   · exact conj_mem Λ c (inv_mem ha)
 
 /- English proof (translation)
-Use `set I : Ideal O := Ideal.span {(⟨c, hc⟩ : O)} with hI`. Use `haveI : Module.Finite O Λ := Module.Finite.iff_fg.2 hΛ`. Use `haveI : Finite (Λ ⧸ (I • ⊤ : Submodule O Λ)) := Submodule.finite_quotient_smul I (Module.Finite.fg_top)`. Establish `hQ : ∀ x y : Λ, (Submodule.Quotient.mk x : Λ ⧸ (I • ⊤ : Submodule O Λ)) = Submodule.Quotient.mk y → ∃ w ∈ Λ, (x : V) - y = c • w`. Introduce `x y h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `h` using `[Submodule.Quotient.eq, hI, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨w, -, hw⟩` from `h`. Conclude with `⟨w, w.2, (congrArg Subtype.val hw).symm⟩`. Use `set S := MulAction.stabilizer (V ≃ₗ[E] V) Λ`. Set `f : S → (Λ ⧸ (I • ⊤ : Submodule O Λ)) → (Λ ⧸ (I • ⊤ : Submodule O Λ))` to `fun g q => Submodule.Quotient.mk ⟨g.1 (q.out : Λ), ((mem_stab_iff Λ _).1 g.2 _).2 q.out.2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : ∀ g h : S, f g = f h → g⁻¹ * h ∈ (congSub Λ c).subgroupOf S`. Introduce `g h hgh`. Rewrite using `[Subgroup.mem_subgroupOf]`. Use `⟨(g⁻¹ * h).2, fun v hv => ?_⟩` and prove the remaining obligations. Set `q : Λ ⧸ (I • ⊤ : Submodule O Λ)` to `Submodule.Quotient.mk ⟨v, hv⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw, e1⟩` from `hQ ⟨v, hv⟩ q.out (Quotient.out_eq q).symm`. Take `⟨w', hw', e2⟩` from `hQ _ _ (congrFun hgh q).symm`. Establish `hi` using `(mem_stab_iff Λ _).1 (inv_mem g.2)`. Establish `hh` using `(mem_stab_iff Λ _).1 h.2`. Use `⟨g.1⁻¹ (h.1 w) + g.1⁻¹ w' - w, Λ.sub_mem (Λ.add_mem ((hi _).2 ((hh _).2 hw)) ((hi _).2 hw')) hw, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : v = (q.out : Λ) + c • w` using `by rw [← e1]; simp`. Establish `e4 : h.1 (q.out : Λ) = g.1 (q.out : Λ) + c • w'` using `by rw [← e2]; simp`. Establish `e5 : ∀ x, g.1⁻¹ (g.1 x) = x` using `fun x => g.1.symm_apply_apply x`. Use `show g.1⁻¹ (h.1 v) - v = _`. Rewrite using `[e3, map_add, e4]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_add, map_smul, e5, smul_add, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `: Finite (S ⧸ (congSub Λ c).subgroupOf S)`. Use `Finite.of_injective (fun q => f q.out) fun q q' h => ?_` and prove the remaining obligations. Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq]`.
-
-Conclude with `hf _ _ h`. Conclude with `Subgroup.index_ne_zero_of_finite`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_ne_zero (Λ : Submodule O V) (hΛ : Λ.FG) {c : E} (hc : c ∈ O)
     (hfin : Finite (O ⧸ Ideal.span {(⟨c, hc⟩ : O)})) :
@@ -181,17 +177,17 @@ theorem relIndex_ne_zero (Λ : Submodule O V) (hΛ : Λ.FG) {c : E} (hc : c ∈ 
   exact Subgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Establish `hg1 : ∀ v ∈ Λ, ∃ w ∈ Λ, g v - v = p • w`. Introduce `v hv`. Take `⟨w, hw, h⟩` from `hg v hv`. Take `⟨M, rfl⟩` from `Nat.exists_eq_add_of_le hN`. Conclude with `⟨p ^ M • w, smul_mem_of Λ (O.pow_mem hp M) hw, by rw [h, pow_add, pow_one, mul_smul]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hle : ∀ v ∈ Λ, g v ∈ Λ`. Introduce `v hv`. Take `⟨w, hw, h⟩` from `hg1 v hv`. Rewrite using `[eq_add_of_sub_eq h]`. Conclude with `Λ.add_mem (smul_mem_of Λ hp hw) hv`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hit : ∀ k : ℕ, ∀ v ∈ Λ, ∃ u ∈ Λ, ∃ w ∈ Λ, v = g u + p ^ k • w`. Introduce `k v hv`. Proceed by induction on `k with`. Consider the case `zero => exact ⟨0, Λ.zero_mem, v, hv, by simp⟩`. Consider the case `succ k ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, w, hw, e⟩` from `ih`. Take `⟨w', hw', e'⟩` from `hg1 w hw`. Use `⟨u + p ^ k • w, Λ.add_mem hu (smul_mem_of Λ (O.pow_mem hp k) hw), -w', Λ.neg_mem hw', ?_⟩` and prove the remaining obligations. Rewrite using `[e, map_add, map_smul, eq_add_of_sub_eq e', pow_succ, mul_smul]`. Simplify using `only [smul_add, smul_neg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Set `Λ1 : Submodule O V` to `Λ.map (g.symm.toLinearMap.restrictScalars O)`. Take `⟨a, ha⟩` from `exists_pow_smul_mem hp hdiv Λ1 Λ (hΛ.map _) hΛ'`. Rewrite using `[mem_stab_iff]`. Use `fun v => ⟨fun hv => ?_, hle v⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, w, hw, e⟩` from `hit a _ hv`. Establish `: v = u + p ^ a • g.symm w` using `g.injective (by rw [e]; simp)`. Rewrite using `[this]`. Conclude with `Λ.add_mem hu (ha _ ⟨w, hw, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_stab_of_cong {p : E} (hp : p ∈ O) (hdiv : ∀ e : E, ∃ a : ℕ, p ^ a * e ∈ O)
     (Λ : Submodule O V) (hΛ : Λ.FG) (hΛ' : Submodule.span E (Λ : Set V) = ⊤) {N : ℕ} (hN : 1 ≤ N)
@@ -229,9 +225,9 @@ theorem mem_stab_of_cong {p : E} (hp : p ∈ O) (hdiv : ∀ e : E, ∃ a : ℕ, 
   exact Λ.add_mem hu (ha _ ⟨w, hw, rfl⟩)
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `exists_pow_smul_mem hp hdiv Λ Λ' hΛ hs'`. Take `⟨b, hb⟩` from `exists_pow_smul_mem hp hdiv Λ' Λ hΛ' hs`. Use `⟨b + (N + a), fun g hg v hv => ?_⟩` and prove the remaining obligations. Take `⟨w, hw, e⟩` from `hg _ (hb v hv)`. Use `⟨p ^ a • w, ha w hw, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e` using `[map_smul, ← smul_sub, pow_add, mul_smul, pow_add, mul_smul]`. Conclude with `(hu.pow b).smul_left_cancel.1 e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level {p : E} (hp : p ∈ O) (hu : IsUnit p) (hdiv : ∀ e : E, ∃ a : ℕ, p ^ a * e ∈ O)
     (Λ Λ' : Submodule O V) (hΛ : Λ.FG) (hs : Submodule.span E (Λ : Set V) = ⊤)
@@ -252,9 +248,9 @@ variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchim
   {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E]
 
 /- English proof (translation)
-Use `haveI := L.free`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by rw [L.rank]; norm_num)`. Take `⟨y, hy, hi⟩` from `((IsFractionRing.isAlgebraic_iff 𝒪[F] F E).2 (Algebra.IsAlgebraic.isAlgebraic e)).exists_integral_multiple`. Take `⟨a, u, rfl⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hy hϖ`. Use `⟨a, (L.O_def _).2 ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `hi.smul (u⁻¹ : (𝒪[F])ˣ).1`. Rewrite `h` using `[smul_smul, ← mul_assoc, Units.inv_mul, one_mul, Algebra.smul_def, map_pow]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem (L : LocE F E) (ϖ : 𝒪[F]) (hϖ : Irreducible ϖ) (e : E) :
     ∃ a : ℕ, algebraMap F E ϖ ^ a * e ∈ L.O := by
@@ -273,13 +269,13 @@ end GlobalTheory.HL.CongFin
 open GlobalTheory.HL.CongFin in
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ E _ _ _ L ϖ hϖ n Λ hΛ N`. Take `⟨-, -, -, -, hO, hcard, hq, -⟩` from `GlobalTheory.UnramOrder.order_facts L ϖ hϖ`. Establish `hp : algebraMap F E ϖ ∈ L.O` using `(hO _).2 ϖ.2`. Establish `hu : IsUnit (algebraMap F E ϖ)` using `(IsUnit.mk0 (ϖ : F) (fun h => hϖ.ne_zero (Subtype.ext h))).map _`. Establish `hdiv` using `exists_pow_mul_mem L ϖ hϖ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [CongId, map_pow]`. Use `⟨⟨congSub Λ (algebraMap F E ϖ ^ N), fun g => Iff.rfl, ?_, fun a ha => conj_smul_eq Λ _ ha⟩, fun hN g hg => mem_stab_of_cong hp hdiv Λ hΛ.1 hΛ.2 hN g hg, fun Λ' hΛ' => exists_level hp hu hdiv Λ Λ' hΛ.1 hΛ.2 hΛ'.1 hΛ'.2 N⟩` and prove the remaining obligations. Use `relIndex_ne_zero Λ hΛ.1 (L.O.pow_mem hp N) ?_` and prove the remaining obligations. Establish `hs : {y : L.O | (y : E) = algebraMap F E ((ϖ : F) ^ N)} = {(⟨algebraMap F E ϖ ^ N, L.O.pow_mem hp N⟩ : L.O)}`. Use extensionality with `y`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Subtype.ext_iff]`. Establish `h` using `hcard N`. Rewrite `h` using `[hs]`. Use `Nat.finite_of_card_ne_zero ?_` and prove the remaining obligations. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_ne_zero _ (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HL.congruence_subgroup_facts : ∀ {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [CharZero F] {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] (L : LocE F E), ∀ (ϖ : 𝒪[F]), Irreducible ϖ → ∀ {n : ℕ} (Λ : Submodule L.O (Fin n → E)), IsLat L Λ → ∀ N : ℕ, (∃ K : Subgroup ((Fin n → E) ≃ₗ[E] (Fin n → E)), (∀ g, g ∈ K ↔ g ∈ stabL L Λ ∧ CongId L ϖ Λ N g) ∧ K.relIndex (stabL L Λ) ≠ 0 ∧ ∀ a ∈ stabL L Λ, MulAut.conj a • K = K) ∧ (1 ≤ N → ∀ g, CongId L ϖ Λ N g → g ∈ stabL L Λ) ∧ ∀ Λ', IsLat L Λ' → ∃ N' : ℕ, ∀ g, CongId L ϖ Λ N' g → CongId L ϖ Λ' N g := by
   intro F _ _ _ _ _ E _ _ _ L ϖ hϖ n Λ hΛ N

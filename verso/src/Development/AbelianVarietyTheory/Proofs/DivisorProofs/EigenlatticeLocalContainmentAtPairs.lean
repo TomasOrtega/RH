@@ -23,9 +23,9 @@ variable {K : Type} [Field K] [NumberField K]
 variable {Z : Type} [AddCommGroup Z] [Module K Z] [Module (𝓞 K) Z] [IsScalarTower (𝓞 K) K Z]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.TargetLemmaCollection.target`. Consider the case `exact _root_.GlobalTheory.TargetLemmaCollection.target`. Consider the case `(apply _root_.GlobalTheory.TargetLemmaCollection.target <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.TargetLemmaCollection.target <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.TargetLemmaCollection.target <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.TargetLemmaCollection.target ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_of_mem_span {A : Submodule (𝓞 K) Z} {x : Z} (hx : x ∈ Submodule.span K (A : Set Z)) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ A := by
@@ -38,13 +38,11 @@ theorem exists_smul_mem_of_mem_span {A : Submodule (𝓞 K) Z} {x : Z} (hx : x �
   | (intros; exact _root_.GlobalTheory.TargetLemmaCollection.target ..)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Conclude with `(Submodule.mem_inf.1 hx).2`. Introduce `w hw`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hm⟩` from `exists_smul_mem_of_mem_span (A := A) (x := w) (by rw [hA]; trivial)`. Establish `hd' : algebraMap (𝓞 K) K d ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).2 hd`. Establish `hmem : d • w ∈ Formalism.EigenvalueLevelCeiling.cut W A`. Use `Submodule.mem_inf.2 ⟨hm, ?_⟩` and prove the remaining obligations. Use `show d • w ∈ W`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul K d w]`. Conclude with `W.smul_mem _ hw`. Establish `hw' : w = (algebraMap (𝓞 K) K d)⁻¹ • (d • w)`. Rewrite using `[← algebraMap_smul K d w, smul_smul, inv_mul_cancel₀ hd', one_smul]`. Rewrite using `[hw']`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hmem)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_cut {A : Submodule (𝓞 K) Z} (hA : Submodule.span K (A : Set Z) = ⊤) (W : Submodule K Z) :
     Submodule.span K (Formalism.EigenvalueLevelCeiling.cut W A : Set Z) = W := by
@@ -66,9 +64,9 @@ theorem span_cut {A : Submodule (𝓞 K) Z} (hA : Submodule.span K (A : Set Z) =
     exact Submodule.smul_mem _ _ (Submodule.subset_span hmem)
 
 /- English proof (translation)
-Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Establish `hm : a • y ∈ Formalism.EigenvalueLevelCeiling.sc a A` using `Submodule.mem_map.2 ⟨y, hy, rfl⟩`. Establish `hy' : y = a⁻¹ • (a • y)` using `by rw [smul_smul, inv_mul_cancel₀ ha, one_smul]`. Rewrite using `[hy']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hm)`.
+A detailed English derivation is pending.
 -/
 theorem span_le_span_sc {a : K} (ha : a ≠ 0) (A : Submodule (𝓞 K) Z) :
     Submodule.span K (A : Set Z) ≤ Submodule.span K (Formalism.EigenvalueLevelCeiling.sc a A : Set Z) := by
@@ -80,9 +78,9 @@ theorem span_le_span_sc {a : K} (ha : a ≠ 0) (A : Submodule (𝓞 K) Z) :
   exact Submodule.smul_mem _ _ (Submodule.subset_span hm)
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨s, hs, hsx⟩` from `hx`. Establish `hs0 : s ≠ 0` using `fun h => hs (h ▸ v.asIdeal.zero_mem)`. Establish `hs' : algebraMap (𝓞 K) K s ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective (𝓞 K) K)).2 hs0`. Establish `hx' : x = (algebraMap (𝓞 K) K s)⁻¹ • (s • x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul K s x, smul_smul, inv_mul_cancel₀ hs', one_smul]`. Rewrite using `[hx']`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hsx)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locP_subset_span (v : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K) Z) :
     (Formalism.HermitianLatticesTheory.localization₂ v.asIdeal L : Set Z) ⊆ Submodule.span K (L : Set Z) := by
@@ -98,7 +96,7 @@ theorem locP_subset_span (v : HeightOneSpectrum (𝓞 K)) (L : Submodule (𝓞 K
 variable {P : Type} [Group P]
 
 /- English proof (translation)
-Unfold `Formalism.EigenvalueLevelCeiling.eig`. Simplify using `only [Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, sub_eq_zero]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem mem_eig_iff (ρ : Representation K P Z) (U : Subgroup P) (ψ : P → 𝓞 K) (x : Z) :
     x ∈ Formalism.EigenvalueLevelCeiling.eig ρ U ψ ↔ ∀ u : U, ρ u x = ((ψ u : 𝓞 K) : K) • x := by
@@ -107,11 +105,11 @@ theorem mem_eig_iff (ρ : Representation K P Z) (U : Subgroup P) (ψ : P → �
     sub_eq_zero]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Use `Submodule.mem_inf.2 ⟨(mem_eig_iff ρ U ψ _).2 fun u => ?_, by rw [← hp.2]; exact LinearMap.mem_range_self e x⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun f : Z →ₗ[K] Z => f x) (hc u)`. Simplify using `only [LinearMap.comp_apply] at h`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h, (mem_eig_iff ρ U ψ x).1 hx u, map_smul]`. Introduce `x hx`. Take `⟨hx, hv⟩` from `Submodule.mem_inf.1 hx`. Rewrite `hv` using `[← hp.2]`. Take `⟨y, rfl⟩` from `hv`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨e y, hx, congrArg (fun f : Z →ₗ[K] Z => f y) hp.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem map_eig (ρ : Representation K P Z) (U : Subgroup P) (ψ : P → 𝓞 K) (e : Z →ₗ[K] Z) (V₀ : Submodule K Z)
     (hp : e ∘ₗ e = e ∧ LinearMap.range e = V₀) (hc : ∀ g : P, e ∘ₗ ρ g = ρ g ∘ₗ e) :
@@ -129,7 +127,7 @@ theorem map_eig (ρ : Representation K P Z) (U : Subgroup P) (ψ : P → 𝓞 K)
     exact ⟨e y, hx, congrArg (fun f : Z →ₗ[K] Z => f y) hp.1⟩
 
 /- English proof (translation)
-Use `⟨hfg.map _, ?_⟩` and prove the remaining obligations. Establish `hs : Submodule.span K (A : Set Z) = Formalism.EigenvalueLevelCeiling.eig ρ U ψ` using `le_antisymm (Submodule.span_le.2 fun x hx => hle hx) hge`. Rewrite using `[Submodule.map_coe, LinearMap.coe_restrictScalars, Submodule.span_image, hs, map_eig ρ U ψ e V₀ hp hc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem isLatIn_map (ρ : Representation K P Z) (U : Subgroup P) (ψ : P → 𝓞 K) (e : Z →ₗ[K] Z) (V₀ : Submodule K Z)
     (hp : e ∘ₗ e = e ∧ LinearMap.range e = V₀) (hc : ∀ g : P, e ∘ₗ ρ g = ρ g ∘ₗ e) {A : Submodule (𝓞 K) Z}
@@ -144,11 +142,11 @@ theorem isLatIn_map (ρ : Representation K P Z) (U : Subgroup P) (ψ : P → �
 end Gen
 
 /- English proof (translation)
-Introduce `K _ _ _ Bs Df S P _ _ c O hSp hD hPr hc hJ w hw`. Establish `one : ∀ v : HeightOneSpectrum (𝓞 K), (∀ j, Formalism.EigenvalueLevelCeiling.IsLatIn ⊤ (O.Th v j) ∧ Formalism.EigenvalueLevelCeiling.IsLatIn ⊤ (O.ThK v j)) → (∀ j, (O.Th0 v j).FG ∧ O.Th0 v j ≤ (Formalism.EigenvalueLevelCeiling.eig (O.ρ j) O.U O.ψ).restrictScalars (𝓞 K) ∧ Formalism …`. Introduce `v hs hd hj j`. Establish `hU : ((Nat.card O.U : ℕ) : K) ≠ 0` using `Nat.cast_ne_zero.2 Nat.card_pos.ne'`. Establish `h0 : (Formalism.EigenvalueLevelCeiling.eig (O.ρ j) O.U O.ψ : Set (Fin (O.nZ j) → K)) ⊆ (Submodule.span K (O.Th0 v j : Set (Fin (O.nZ j) → K)) : Set (Fin (O.nZ j) → K))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x hx`. Establish `h1 : x ∈ Submodule.span K (Formalism.EigenvalueLevelCeiling.cut (Formalism.EigenvalueLevelCeiling.eig (O.ρ j) O.U O.ψ) (O.ThK v j) : Set (Fin (O.nZ j) → K))`. Rewrite using `[span_cut (hs j).2.2]`. Conclude with `hx`. Conclude with `Submodule.span_mono (fun y hy => (hd j).2.2 hy) (span_le_span_sc hU _ h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hJs : (Formalism.EigenvalueLevelCeiling.eig (O.ρ j) O.U O.ψ : Set (Fin (O.nZ j) → K)) ⊆ (Submodule.span K (O.ThJ v j : Set (Fin (O.nZ j) → K)) : Set (Fin (O.nZ j) → K))`. Introduce `x hx`. Conclude with `Submodule.span_le.2 (fun y hy => locP_subset_span v _ ((hj j).2.2 (Formalism.HermitianLatticesTheory.locBasic_le_locS _ _ hy))) (h0 hx)`. Conclude with `⟨isLatIn_map (O.ρ j) O.U O.ψ (O.e j) (O.V₀ j) (hPr j) (hc j) (hd j).1 (hd j).2.1 h0, isLatIn_map (O.ρ j) O.U O.ψ (O.e j) (O.V₀ j) (hPr j) (hc j) (hj j).1 (hj j).2.1 hJs, (hj j).2.2⟩`. Conclude with `⟨one w (hSp w hw).1 (hD w hw).1 (hJ w hw).1, one _ (hSp w hw).2 (hD w hw).2 (hJ w hw).2⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rankAtPlaces_alg : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (Bs : DefBase K) (Df : DefSide Bs) (S : IndefData Df) (P : Type) [Group P] [Finite P] (c : OnConst) (O : OnObj S P c), LeafSpan O → LeafData O → LeafProj O → (∀ j (g : P), O.e j ∘ₗ O.ρ j g = O.ρ j g ∘ₗ O.e j) → (AtPair S fun v => ∀ j, (O.ThJ v j).FG ∧ O.ThJ v j ≤ (Formalism.EigenvalueLevelCeiling.eig (O.ρ j) O.U O.ψ).restrictScalars (𝓞 K) ∧ Formalism.HermitianLatticesTheory.localization₂ v.asIdeal (O.Th0 v j) ≤ Formalism.HermitianLatticesTheory.localization₂ v.asIdeal (O.ThJ v j)) → RankAtPlaces O := by
   intro K _ _ _ Bs Df S P _ _ c O hSp hD hPr hc hJ w hw

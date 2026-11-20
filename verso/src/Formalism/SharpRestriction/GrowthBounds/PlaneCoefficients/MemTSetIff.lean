@@ -13,9 +13,9 @@ open Formalism.MainNotions.G Formalism.GradedWeylDivisibility Formalism.MainNoti
 open Formalism.MainNotions.TestSideWords.TwistedFiltration.G3 Formalism.MainNotions.TestSideWords.TwistedFiltration.G1
 
 /- English proof (translation)
-Establish `e : valS LL S F = valS LL ∅ F`. Unfold `valS sDegs`. Rewrite using `[twistSub_congr LL LL S ∅ _ F fun v hv => ⟨⟨fun h' => absurd h' (h v hv), fun h' => absurd h' (Set.notMem_empty _)⟩, rfl⟩]`. Rewrite using `[e]`. Unfold `valS`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `Finset.le_inf fun k hk => ?_` and prove the remaining obligations. Use `Formalism.MainNotions.G.Joints.StandardMonomialSpace.sDegs_empty_subset LL (lastIdx n) F k hk` as an intermediate fact. Rewrite `this` using `[Set.mem_singleton_iff]`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valS_off {R : Type} [CommRing R] {ι : Type} {n : ℕ} [NeZero n] (LL : Letters ι) (S : Set ι)
     (F : MvPolynomial (ι × Fin n) R) (h : ∀ v ∈ F.vars, v.1 ∉ S) : 0 ≤ valS LL S F := by
@@ -37,9 +37,9 @@ variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing
   {Fr : Frames n' r} {L₁ N₁ : ℕ} {J : ℕ} [NeZero J] (Dt : SignedChainData p O r J)
 
 /- English proof (translation)
-Break down `restSpec n' r Fr L₁ N₁ hV J Dt.nL hnL j y hy with ⟨l, hyl, hml⟩ | ⟨m, hym, hml⟩ | ⟨m, hym, _⟩` into its components or cases. Conclude with `⟨Sum.inl l, hyl.symm, fun a => by`. Simplify using `only [PhiJ, AlgHom.comp_apply, chi, aeval_X, if_pos hy, hml, SignedChainData.ph]⟩`. Conclude with `⟨Sum.inr m, hym.symm, fun a => by`. Simplify using `only [PhiJ, AlgHom.comp_apply, chi, aeval_X, if_pos hy, hml, SignedChainData.ph]⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Conclude with `absurd ⟨m, hym⟩ hw`.
+A detailed English derivation is pending.
 -/
 theorem PhiJ_nonW (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, Dt.nL j = (Fr.LLset (segZ j)).card) (j : ZMod J) (y : ℤ)
     (hy : y ∈ Fr.letters (segZ j)) (hw : y ∉ wSet Fr (segZ j)) :
@@ -52,11 +52,11 @@ theorem PhiJ_nonW (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, Dt.nL j = (Fr.LLset (s
   · exact absurd ⟨m, hym⟩ hw
 
 /- English proof (translation)
-Take `⟨m, rfl⟩` from `hw`. Distinguish the cases in `hy : Fr.fr (segZ j - 1) (r - 1 - m.val) ∈ Fr.letters (segZ j)`. Establish `: PhiJ Fr Dt j (X (Fr.fr (segZ j - 1) (r - 1 - m.val), a)) = X (⟨j - 1, Sum.inr m⟩, a) ^ Dt.P (j - 1) m`. Simplify using `only [PhiJ, AlgHom.comp_apply, chi, aeval_X, if_pos hy, mlOf_wc hV hnL j m, SignedChainData.ph]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Subalgebra.pow_mem _ ?_ _` and prove the remaining obligations. Rewrite using `[X_mem_supported, Set.mem_ofPred_eq]`. Establish `: PhiJ Fr Dt j (X (Fr.fr (segZ j - 1) (r - 1 - m.val), a)) = 0`. Simplify using `only [PhiJ, AlgHom.comp_apply, chi, aeval_X, if_neg hy, map_zero]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subalgebra.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem PhiJ_w (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, Dt.nL j = (Fr.LLset (segZ j)).card) (j : ZMod J) (y : ℤ)
     (hw : y ∈ wSet Fr (segZ j)) (a : Fin r) :
@@ -74,13 +74,13 @@ theorem PhiJ_w (hV : Fr.Valid L₁ N₁) (hnL : ∀ j, Dt.nL j = (Fr.LLset (segZ
     exact Subalgebra.zero_mem _
 
 /- English proof (translation)
-Break down `s with l | m` into its components or cases. Rewrite using `[mem_NSet_inl]`. Prove the components needed by the constructor for the conclusion. Introduce `_`. Use `l.isLt` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `_`. Conclude with `Or.inl ⟨l, rfl⟩`. Rewrite using `[mem_NSet_inr]`. Establish `h1` using `m.isLt`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Prove the first alternative. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `mm.isLt`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(⟨l, h⟩ | ⟨m', hm, h⟩)`. Consider the cases of `h`. Consider the cases of `h`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Establish `: mm.val < m.val` using `hm`. Use linear arithmetic over natural numbers and integers. Introduce `h`. Conclude with `Or.inr ⟨m, (by show mm.val < m.val; omega), rfl⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Prove the second alternative.
 -/
 theorem mem_TSet_iff (j : ZMod J) (mm : Fin r) (s : Fin (Dt.nL j) ⊕ Fin r) :
     (⟨j, s⟩ : TL J Dt.nL r) ∈ Dt.TSet j mm ↔ (⟨j, s⟩ : TL J Dt.nL r) ∈ NSet Dt.nL j (Dt.nL j + (r - 1 - mm.val)) := by
@@ -105,7 +105,7 @@ theorem mem_TSet_iff (j : ZMod J) (mm : Fin r) (s : Fin (Dt.nL j) ⊕ Fin r) :
       exact Or.inr ⟨m, (by show mm.val < m.val; omega), rfl⟩
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h with ⟨l, rfl⟩ | ⟨m, _, rfl⟩ <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem TSet_fst {j : ZMod J} {mm : Fin r} {t : TL J Dt.nL r} (h : t ∈ Dt.TSet j mm) : t.1 = j := by
   rcases h with ⟨l, rfl⟩ | ⟨m, _, rfl⟩ <;> rfl
@@ -113,41 +113,35 @@ theorem TSet_fst {j : ZMod J} {mm : Fin r} {t : TL J Dt.nL r} (h : t ∈ Dt.TSet
 end Phi
 
 /- English proof (translation)
-Introduce `p _ n' r _ _ O _ _ _ Fr L₁ N₁ hV hn J _ Dt hT hJ2 j mm hmm F hF dw hdeg th hth`. Take `⟨hJ, hnL, hsgn, -, -, -⟩` from `hT`. Establish `hr : 1 ≤ r` using `NeZero.one_le`. Establish `hmm'` using `mm.isLt`. Use `set u := Dt.nL j + (r - 1 - mm.val) with hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hul : u < Dt.nL j + r` using `by omega`. Use `set w := wSet Fr (segZ j) with hwdef`. Use `set Sz : Set ℤ := {y | y < posU Fr (Dt.nL j) (segZ j) u} with hSz`. Establish `hwS : w ⊆ Sz`. Introduce and unpack `y ⟨m, rfl⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `m.isLt` as an intermediate fact. Conclude with `w_lt_posU' hV hr (segZ j) (Dt.nL j) (hnL j) _ u (by omega) hul`. Establish `hun : (Sz \ w) ∪ w = Sz` using `Set.sdiff_union_of_subset hwS`. Establish `hwv : ∀ l ∈ w, LZ.vec l = true`. Introduce and unpack `y ⟨m, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `m.isLt` as an intermediate fact. Conclude with `decide_eq_true (hV.2.2.2.2.1 _ _ (by omega)).2`. Establish `hne : j - 1 ≠ j`. Establish `: Fact (1 < J)` using `⟨by omega⟩`. Introduce `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `one_ne_zero (sub_eq_self.1 h)`. Establish `hPhi : ∀ H, PhiJ Fr Dt j H = aeval (fun v => PhiJ Fr Dt j (X v)) H`. Introduce `H`. Conclude with `congrArg (fun φ : _ →ₐ[KK O] _ => φ H) (aeval_unique (PhiJ Fr Dt j))`. Establish `hsum` using `sum_wCoeff w F`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `e` using `congrArg (PhiJ Fr Dt j) hsum`. Rewrite `e` using `[map_sum]`. Rewrite using `[e]`. Use `valS_sum_ge _ _ _ _ _ fun M hM => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_image] at hM`. Take `⟨μ0, hμ0, rfl⟩` from `hM`. Establish `h0 : 0 ≤ valS Dt.trueLet (Dt.TSet j mm) (PhiJ Fr Dt j (monomial (μ0.filter (fun v => v.1 ∈ w)) 1))`. Establish `hs : PhiJ Fr Dt j (monomial (μ0.filter (fun v => v.1 ∈ w)) 1) ∈ supported (KK O) {u : TL J Dt.nL r × Fin r | u.1.1 = j - 1}`. Rewrite using `[hPhi, aeval_monomial, map_one, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subalgebra.prod_mem _ fun v hv => Subalgebra.pow_mem _ ?_ _` and prove the remaining obligations. Establish `hv'` using `(Finsupp.mem_support_iff.1 hv)`. Rewrite `hv'` using `[Finsupp.filter_apply]`. Establish `hvw : v.1 ∈ w`. Assume the negation of the conclusion as `hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv'` using `[if_neg hc]`. Conclude with `hv' rfl`. Conclude with `PhiJ_w Dt hV hnL j v.1 hvw v.2`. Use `valS_off _ _ _ fun v hv hvT => ?_` and prove the remaining obligations. Establish `h1 : v.1.1 = j - 1` using `(mem_supported.1 hs) (Finset.mem_coe.2 hv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hne (h1.symm.trans (TSet_fst Dt hvT))`. Establish `h1` using `valS_wCoeff_ge LZ (Sz \ w) w hwv Set.disjoint_sdiff_left F dw hdeg th (by rw [hun]; exact hth) (μ0.filter (fun v => v.1 ∈ w))`. Establish `hsup : wCoeff w (μ0.filter (fun v => v.1 ∈ w)) F ∈ supported (KK O) {v : ℤ × Fin r | v.1 ∈ {y | y ∈ Fr.letters (segZ j) ∧ y ∉ w}}`. Rewrite using `[mem_supported]`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ν, hν, hvν⟩` from `(mem_vars_iff_mem_support v).1 (Finset.mem_coe.1 hv)`. Establish `hc` using `mem_support_iff.1 hν`. Rewrite `hc` using `[coeff_wCoeff]`. Establish `hv'` using `Finsupp.mem_support_iff.1 hvν`. Use `split_ifs at hc with hcond`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hvw : v.1 ∉ w`. Introduce `hvw`. Establish `h5 : (ν.filter (fun v => v.1 ∈ w)) v = 0` using `by rw [hcond.1]; rfl`. Rewrite `h5` using `[Finsupp.filter_apply, if_pos hvw]`. Conclude with `hv' h5`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hvF : v ∈ F.vars` using `(mem_vars_iff_mem_support v).2 ⟨_, mem_support_iff.2 hc, by`. Rewrite using `[Finsupp.mem_support_iff, Finsupp.add_apply]`. Use the proof step `omega⟩`. Conclude with `⟨(mem_supported.1 hF) (Finset.mem_coe.2 hvF), hvw⟩`. Conclude with `absurd rfl hc`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `h2 : valS LZ (Sz \ w) (wCoeff w (μ0.filter (fun v => v.1 ∈ w)) F) ≤ valS Dt.trueLet (Dt.TSet j mm) (PhiJ Fr Dt j (wCoeff w (μ0.filter (fun v => v.1 ∈ w)) F))`. Rewrite using `[hPhi]`. Use `valAeval (KK O) ℤ (TL J Dt.nL r) r LZ Dt.trueLet (Sz \ w) {y | y ∈ Fr.letters (segZ j) ∧ y ∉ w} (Dt.TSet j mm) (gT Fr Dt.nL) _ _ hsup ?_ ?_` and prove the remaining obligations. Introduce and unpack `⟨y, a⟩ ⟨hy, hyw⟩ hyS`. Take `⟨s, hs, hX⟩` from `PhiJ_nonW Dt hV hnL j y hy hyw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hg : gT Fr Dt.nL y = ⟨j, s⟩` using `by rw [← hs, gT_posTL hV hnL]`. Use `⟨by simp only [hg]; exact hX a, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [hg]`. Rewrite using `[mem_TSet_iff, NSet_lt hV hnL j u hul s, hs]`. Conclude with `hyS.1`.
-
-Simplify using `only [hg]`. Rewrite using `[trueLet_vec Dt hV hsgn, hs]`. Introduce and unpack `⟨y, a⟩ ⟨hy, hyw⟩ hyS`. Take `⟨s, hs, hX⟩` from `PhiJ_nonW Dt hV hnL j y hy hyw`. Simplify using `only [hX a]`.
-
-Use `X_mem_supported.2 ?_` and prove the remaining obligations. Use `show (⟨j, s⟩ : TL J Dt.nL r) ∉ Dt.TSet j mm`. Rewrite using `[mem_TSet_iff, NSet_lt hV hnL j u hul s, hs]`. Introduce `hlt`. Conclude with `hyS ⟨hlt, hyw⟩`.
-
-Establish `h3` using `flt_valS_mul_ge Dt.trueLet (Dt.TSet j mm) (PhiJ Fr Dt j (monomial (μ0.filter (fun v => v.1 ∈ w)) 1)) (PhiJ Fr Dt j (wCoeff w (μ0.filter (fun v => v.1 ∈ w)) F))`. Use `le_trans ?_ h3` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem linkL : LinkL := by
   intro p _ n' r _ _ O _ _ _ Fr L₁ N₁ hV hn J _ Dt hT hJ2 j mm hmm F hF dw hdeg th hth

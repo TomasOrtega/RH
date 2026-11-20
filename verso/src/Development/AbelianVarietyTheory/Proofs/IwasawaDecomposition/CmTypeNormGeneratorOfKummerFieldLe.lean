@@ -17,15 +17,15 @@ open GlobalTheory.Mem.FieldsEx GlobalTheory.Mem.BaseExt GlobalTheory.IndefiniteR
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Establish `: NumberField K` using `NumberField.mk`. Establish `hβ : β ^ h = ∏ τ : E →+* ℂ, τ.codRestrict K (hK τ) (γ : E) ^ r τ`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [SubmonoidClass.coe_pow, IntermediateField.coe_prod, hb]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Establish `hβ0 : β ≠ 0`. Introduce `h`. Rewrite `hβ` using `[h, zero_pow hpos.ne']`. Use `Finset.prod_ne_zero_iff.2 (fun τ _ => pow_ne_zero _ ?_) hβ.symm` and prove the remaining obligations. Rewrite using `[map_ne_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0` after adjusting the coercions. Use `⟨hβ0, ?_, fun σ => ?_⟩` and prove the remaining obligations. Simplify using `only [fun τ => span_eq_extend K τ (hK τ)]`. Use `(GlobalTheory.submodule_eq_span_of_pow_eq_span_pow K _ β _ hpos hβ0 (fg_prod_pow _ _ _ fun τ => extendIdealHom_fg _ _) ?_).symm` and prove the remaining obligations. Rewrite using `[hβ, ← span_singleton_prod_pow, ← Finset.prod_pow]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, ← map_pow, hγ, extendIdealHom_span]`. Establish `h1` using `norm_typeNorm_sq_eq E r n hr K hK (γ : E) σ`. Establish `h2 : ‖σ (β ^ h)‖ ^ 2 = (Ideal.absNorm (Ideal.span {γ}) : ℝ) ^ n`. Rewrite using `[Ideal.absNorm_span_singleton, Nat.cast_natAbs, Int.cast_abs, hβ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← Algebra.coe_norm_int, Rat.cast_intCast]`. Conclude with `h1`. Rewrite `h2` using `[← hγ, map_pow, map_pow, norm_pow, Nat.cast_pow, ← pow_mul, ← pow_mul, mul_comm _ 2, mul_comm _ n, pow_mul, pow_mul]`. Conclude with `(pow_left_inj₀ (by positivity) (by positivity) hpos.ne').1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem typeNorm_of_root [IsCMField E] [IsGalois ℚ E] (r : (E →+* ℂ) → ℕ) (n : ℕ)
     (hr : ∀ τ, r τ + r (ComplexEmbedding.conjugate τ) = n) (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K]
@@ -62,19 +62,17 @@ theorem typeNorm_of_root [IsCMField E] [IsGalois ℚ E] (r : (E →+* ℂ) → �
     exact (pow_left_inj₀ (by positivity) (by positivity) hpos.ne').1 h2
 
 /- English proof (translation)
-Set `𝔠 : (Ideal (𝓞 E))⁰` to `⟨𝔞, mem_nonZeroDivisors_of_ne_zero h𝔞⟩`. Take `⟨a, ha⟩` from `b.span (ClassGroup.mk E (FractionalIdeal.mk0 E 𝔠))`. Establish `hk : ∀ i, ∃ k, classNumber E = b.h i * k` using `fun i => (orderOf_dvd_card : b.h i ∣ classNumber E)`. Use `choose k hk using hk`. Establish `h1 : ClassGroup.mk E (FractionalIdeal.mk0 E 𝔠 * (∏ i, b.c i ^ a i)⁻¹) = 1`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv, map_prod, ha]`. Simplify using `only [map_zpow, mul_inv_cancel]`. Take `⟨x, hx⟩` from `(FractionalIdeal.isPrincipal_iff _).1 (ClassGroup.mk_eq_one_iff.1 h1)`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hx` using `[FractionalIdeal.spanSingleton_zero]`. Conclude with `Units.ne_zero _ hx`. Establish `h2 : FractionalIdeal.mk0 E 𝔠 = toPrincipalIdeal (𝓞 E) E (Units.mk0 x hx0) * ∏ i, b.c i ^ a i`. Rewrite using `[← mul_inv_eq_iff_eq_mul]`. Conclude with `Units.ext (by rw [hx, coe_toPrincipalIdeal]; rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `set y : Eˣ := Units.mk0 x hx0 ^ classNumber E * ∏ i, (b.γ i ^ k i) ^ a i with hy`. Establish `h3 : FractionalIdeal.mk0 E 𝔠 ^ classNumber E = toPrincipalIdeal (𝓞 E) E y`. Rewrite using `[h2, hy, mul_pow, map_mul, map_pow, map_prod, ← Finset.prod_pow]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zpow, map_pow, ← b.pow_eq i, ← pow_mul, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm, hk i]`. Both sides reduce to the same expression. Establish `h4 : ((𝔞 ^ classNumber E : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E) = FractionalIdeal.spanSingleton (𝓞 E)⁰ (y : E)`. Rewrite using `[← coe_toPrincipalIdeal, ← h3, FractionalIdeal.coeIdeal_pow, Units.val_pow_eq_pow_val]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h5 : (y : E) ∈ ((𝔞 ^ classNumber E : Ideal (𝓞 E)) : FractionalIdeal (𝓞 E)⁰ E)`. Rewrite using `[h4]`. Conclude with `FractionalIdeal.mem_spanSingleton_self _ _`. Take `⟨γ, -, hγ⟩` from `(FractionalIdeal.mem_coeIdeal _).1 h5`. Use `⟨γ, Units.mk0 x hx0, a, k, ?_, hk, ?_, hγ⟩` and prove the remaining obligations.
-
-Introduce and unpack `rfl`. Conclude with `y.ne_zero (by rw [← hγ, map_zero])`. Apply `FractionalIdeal.coeIdeal_injective (K := E)` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[h4, FractionalIdeal.coeIdeal_span_singleton, hγ]`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_basis (b : ClassBasis E) (𝔞 : Ideal (𝓞 E)) (h𝔞 : 𝔞 ≠ ⊥) :
     ∃ (γ : 𝓞 E) (α : Eˣ) (a : Fin b.k → ℤ) (k : Fin b.k → ℕ), γ ≠ 0 ∧ (∀ i, classNumber E = b.h i * k i) ∧
@@ -118,11 +116,11 @@ theorem exists_gen_basis (b : ClassBasis E) (𝔞 : Ideal (𝓞 E)) (h𝔞 : �
     rw [h4, FractionalIdeal.coeIdeal_span_singleton, hγ]
 
 /- English proof (translation)
-Take `⟨γ, α, a, k, h0, hk, hγ, hy⟩` from `exists_gen_basis b 𝔞 h𝔞`. Set `Ψ : Eˣ →* ℂ` to `{ toFun := fun x => ∏ τ : E →+* ℂ, τ (x : E) ^ r τ map_one' := by simp map_mul' := fun x y => by simp only [Units.val_mul, map_mul, mul_pow, Finset.prod_mul_distrib] }`. Use `choose ψ hψ using fun i => IsAlgClosed.exists_pow_nat_eq (Ψ (b.γ i)) (b.h_pos i)`. Establish `hm : Ψ α * ∏ i, ψ i ^ a i ∈ K` using `mul_mem (prod_mem fun τ _ => pow_mem (hK τ _) _) (prod_mem fun i _ => zpow_mem (hb i _ (hψ i)) _)`. Use `⟨⟨_, hm⟩, typeNorm_of_root r n hr K hK 𝔞 (classNumber_pos E) γ h0 hγ _ ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Express the relevant statement in the definitionally equal form `(Ψ α * ∏ i, ψ i ^ a i) ^ _ = Ψ _`. Rewrite using `[mul_pow, map_mul, map_pow, map_prod, ← Finset.prod_pow]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zpow, map_pow, ← hψ i, ← pow_mul, ← hk i, ← zpow_natCast, ← zpow_natCast, ← zpow_mul, ← zpow_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem typeNorm_of_basis [IsCMField E] [IsGalois ℚ E] (r : (E →+* ℂ) → ℕ) (n : ℕ)
     (hr : ∀ τ, r τ + r (ComplexEmbedding.conjugate τ) = n) (K : IntermediateField ℚ ℂ) [FiniteDimensional ℚ K]
@@ -150,13 +148,13 @@ theorem typeNorm_of_basis [IsCMField E] [IsGalois ℚ E] (r : (E →+* ℂ) → 
     mul_comm]
 
 /- English proof (translation)
-Introduce `P δ F _ j hF 𝔞 h𝔞`. Establish `hcm : IsCMField P.host.E` using `P.host.isCMField_hostE`. Establish `hgal : IsGalois ℚ P.host.E` using `P.host.hostE_isGalois`. Simplify using `only [FieldDat.KPsi, kPsiField, sup_le_iff, imField_le_iff, IntermediateField.adjoin_le_iff] at hF`. Take `⟨⟨hE, -⟩, hψ⟩` from `hF`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hK : ∀ (τ : P.host.E →+* ℂ) x, τ x ∈ F` using `fun τ x => by`. Take `⟨σ, hσ⟩` from `exists_aut P.host.φ₀ τ`. Rewrite using `[hσ]`. Conclude with `hE _`. Take `⟨β, hβ, hsp, hn⟩` from `typeNorm_of_basis (typeExp P.host (P.R.sigW j).1 (P.R.sigW j).2) _ (typeExp_add P.host _ _) F hK δ.basis (fun i z hz => hψ ⟨i, by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, prod_typeExp, typeNorm, map_prod]`. Use `Finset.prod_congr rfl fun g _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_pow, conjugate_emb_apply]`. Use the proof step `rfl⟩) 𝔞 h𝔞`. Use `⟨β, hβ, ?_, hn⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsp, prod_typeExp]`. Use `Finset.prod_congr rfl fun g _ => ?_` and prove the remaining obligations. Simplify using `only [conjugate_emb_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem typeNorm_gen_of_kPsi_le : ∀ (P : Pre) (δ : FieldDat P) (F : IntermediateField ℚ ℂ) [FiniteDimensional ℚ F] (j : ℕ), δ.KPsi j ≤ F → ∀ 𝔞 : Ideal (𝓞 P.host.E), 𝔞 ≠ ⊥ → ∃ β : F, β ≠ 0 ∧ Submodule.span (𝓞 F) {β} = ∏ g : Tau P.R, (Submodule.span (𝓞 F) {x : F | ∃ a ∈ 𝔞, (x : ℂ) = P.host.φ₀ (P.host.sigmaOf g (a : P.host.E))} ^ (P.R.sigW j).1 * Submodule.span (𝓞 F) {x : F | ∃ a ∈ 𝔞, (x : ℂ) = P.host.φ₀ (P.host.sigmaOf g (P.host.conj (a : P.host.E)))} ^ (P.R.sigW j).2) ∧ ∀ σ : F →+* ℂ, ‖σ β‖ ^ 2 = (Ideal.absNorm 𝔞 : ℝ) ^ ((P.R.sigW j).1 + (P.R.sigW j).2) := by
   intro P δ F _ j hF 𝔞 h𝔞

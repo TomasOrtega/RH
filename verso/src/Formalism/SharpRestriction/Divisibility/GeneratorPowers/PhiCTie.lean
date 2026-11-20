@@ -17,21 +17,21 @@ variable {E : Type} [Field E] [NumberField E] {Y : Type} [AddCommGroup Y] [Modul
 def coordT (x y : Y) : ι × ι → ℤ := fun p => b.repr x p.1 * b.repr y p.2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [coordT, map_add, Finsupp.add_apply, Pi.add_apply, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coordT_add_left (x x' y : Y) : coordT b (x + x') y = coordT b x y + coordT b x' y := by
   funext p
   simp only [coordT, map_add, Finsupp.add_apply, Pi.add_apply, add_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [coordT, map_add, Finsupp.add_apply, Pi.add_apply, mul_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem coordT_add_right (x y y' : Y) : coordT b x (y + y') = coordT b x y + coordT b x y' := by
   funext p
   simp only [coordT, map_add, Finsupp.add_apply, Pi.add_apply, mul_add]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [coordT, map_zsmul, Finsupp.smul_apply, smul_eq_mul, Pi.smul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coordT_smul_left (k : ℤ) (x y : Y) : coordT b (k • x) y = k • coordT b x y := by
   funext p
@@ -39,7 +39,7 @@ theorem coordT_smul_left (k : ℤ) (x y : Y) : coordT b (k • x) y = k • coor
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [coordT, map_zsmul, Finsupp.smul_apply, smul_eq_mul, Pi.smul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem coordT_smul_right (k : ℤ) (x y : Y) : coordT b x (k • y) = k • coordT b x y := by
   funext p
@@ -58,9 +58,9 @@ theorem evB_apply (B : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (n : ι × ι → ℤ) :
     evB b B n = ∑ p, (n p : ℝ) * B (b p.1) (b p.2) := rfl
 
 /- English proof (translation)
-Rewrite using `[evB_apply, Fintype.sum_prod_type]`. Establish `hx` using `b.sum_repr x`. Establish `hy` using `b.sum_repr y`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [coordT, Int.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = B x y := by conv_rhs => rw [← hx, ← hy]`. Simplify using `only [map_sum, map_zsmul, LinearMap.sum_apply, LinearMap.smul_apply, zsmul_eq_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem evB_coordT (B : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (x y : Y) : evB b B (coordT b x y) = B x y := by
   rw [evB_apply, Fintype.sum_prod_type]
@@ -80,18 +80,18 @@ def annS (cj : E → E) : Submodule ℤ (ι × ι → ℤ) :=
   ⨅ β : SymB cj Y, LinearMap.ker (evB b (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ))
 
 /- English proof (translation)
-Simplify using `only [annS, Submodule.mem_iInf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_annS (cj : E → E) (n : ι × ι → ℤ) :
     n ∈ annS b cj ↔ ∀ β : SymB cj Y, evB b (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) n = 0 := by
   simp only [annS, Submodule.mem_iInf, LinearMap.mem_ker]
 
 /- English proof (translation)
-Use `⟨fun {k} {q} h => ?_⟩` and prove the remaining obligations. Take `⟨n, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Distinguish the cases in `hk : k = 0`. Conclude with `Or.inl hk`. Use `right`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Prove the first alternative. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, mem_annS]`. Rewrite using `[Submodule.Quotient.mk_eq_zero, mem_annS]`. Introduce `β`. Establish `h1` using `h β`. Rewrite `h1` using `[map_zsmul, zsmul_eq_mul, mul_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `h1 with h1 | h1` into its components or cases. Conclude with `absurd (Int.cast_eq_zero.mp h1) hk`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem noZero_annS (cj : E → E) : NoZeroSMulDivisors ℤ ((ι × ι → ℤ) ⧸ annS b cj) := by
   refine ⟨fun {k} {q} h => ?_⟩
@@ -122,9 +122,9 @@ theorem formOf_apply (f : (ι × ι → ℤ) →ₗ[ℤ] ℤ) (x y : Y) :
     formOf b f x y = ((f (coordT b x y) : ℤ) : ℝ) := rfl
 
 /- English proof (translation)
-Establish `key : ∀ x y x' y' : Y, (∀ β : SymB cj Y, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) x y = (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) x' y') → formOf b (f ∘ₗ (annS b cj).mkQ) x y = formOf b (f ∘ₗ (annS b cj).mkQ) x' y'`. Introduce `x y x' y' h`. Rewrite using `[formOf_apply, formOf_apply, LinearMap.comp_apply, LinearMap.comp_apply]`. Use `congr 2`. Rewrite using `[Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq, mem_annS]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Introduce `β`. Rewrite using `[map_sub, evB_coordT, evB_coordT, h β, sub_self]`. Establish `mem : ∀ β : SymB cj Y, (∀ a d : Y, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a d = (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) d a) ∧ ∀ (c c' : 𝓞 E), (c' : E) = cj c → ∀ (a d : Y), (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (c • a) d = (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) a (c' • d)` using `fun β => β.2`. Use `⟨fun a d => key a d d a fun β => (mem β).1 a d, fun c c' hc a d => key _ _ _ _ fun β => (mem β).2 c c' hc a d⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem formOf_mem (cj : E → E) (f : ((ι × ι → ℤ) ⧸ annS b cj) →ₗ[ℤ] ℤ) :
     formOf b (f ∘ₗ (annS b cj).mkQ) ∈ SymB cj Y := by
@@ -146,21 +146,21 @@ theorem formOf_mem (cj : E → E) (f : ((ι × ι → ℤ) ⧸ annS b cj) →ₗ
 end Comparison₂
 
 /- English proof (translation)
-Introduce `E _ _ cj Y _ _ _ _ l hl`. Set `b` to `Module.Free.chooseBasis ℤ Y`. Set `A` to `annS b cj`. Establish `: NoZeroSMulDivisors ℤ ((_ × _ → ℤ) ⧸ A)` using `noZero_annS b cj`. Establish `: Module.Free ℤ ((_ × _ → ℤ) ⧸ A)` using `Module.free_of_finite_type_torsion_free'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `eb` to `Module.Free.chooseBasis ℤ ((_ × _ → ℤ) ⧸ A)`. Set `βk : Module.Free.ChooseBasisIndex ℤ ((_ × _ → ℤ) ⧸ A) → SymB cj Y` to `fun k => ⟨formOf b (eb.coord k ∘ₗ A.mkQ), formOf_mem b cj _⟩`. Establish `hint : ∀ k, ∃ z : ℤ, l (βk k) = z` using `fun k => hl (βk k) (fun x y => ⟨_, formOf_apply b _ x y⟩)`. Use `choose z hz using hint`. Take `⟨n, hn⟩` from `Submodule.Quotient.mk_surjective A (∑ k, z k • eb k)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `e` to `(Fintype.equivFin (Module.Free.ChooseBasisIndex ℤ Y × Module.Free.ChooseBasisIndex ℤ Y)).symm`. Use `⟨Fintype.card (Module.Free.ChooseBasisIndex ℤ Y × Module.Free.ChooseBasisIndex ℤ Y), fun t => n (e t) • b (e t).1, fun t => b (e t).2, fun β => ?_⟩` and prove the remaining obligations. Establish `hR : ∑ t, (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (n (e t) • b (e t).1) (b (e t).2) = evB b (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) n`. Rewrite using `[e.sum_comp (fun p => (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) (n p • b p.1) (b p.2)), evB_apply]`. Simplify using `[zsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR]`. Establish `hle : A ≤ LinearMap.ker (evB b (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ))` using `iInf_le _ β`. Set `ψ` to `A.liftQ (evB b (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ)) hle`. Establish `hψ : ∀ m, ψ (Submodule.Quotient.mk m) = evB b (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) m` using `fun m => Submodule.liftQ_apply _ _ _`. Establish `hβ : β = ∑ k, ψ (eb k) • βk k`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `LinearMap.ext₂` to reduce the goal to its premises. Introduce `x y`. Rewrite using `[Submodule.coe_sum, LinearMap.sum_apply, LinearMap.sum_apply]`. Simplify using `only [Submodule.coe_smul, LinearMap.smul_apply, βk, formOf_apply, LinearMap.comp_apply, Submodule.mkQ_apply, Module.Basis.coord_apply, smul_eq_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← evB_coordT b (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) x y, ← hψ]`. Use `conv_lhs => rw [← eb.sum_repr (Submodule.Quotient.mk (coordT b x y))]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hz, smul_eq_mul]`. Use `_ = evB b (β : Y →ₗ[ℤ] Y →ₗ[ℤ] ℝ) n := by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hψ, hn, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem phiCTie_holds : PhiCTieStatement := by
   intro E _ _ cj Y _ _ _ _ l hl

@@ -13,14 +13,14 @@ namespace GlobalTheory.Mem.Chr
 variable {L : Type} [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L))
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.Aut.adic_valued_algebraMap v (algebraMap (𝓞 L) L a)`.
+A detailed English derivation is pending.
 -/
 theorem tame_valued_int (a : 𝓞 L) :
     Valued.v (algebraMap (𝓞 L) (v.adicCompletion L) a) = v.valuation L (algebraMap (𝓞 L) L a) :=
   ReciprocityTheory.Aut.adic_valued_algebraMap v (algebraMap (𝓞 L) L a)
 
 /- English proof (translation)
-Rewrite using `[tame_valued_int, HeightOneSpectrum.valuation_lt_one_iff_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tame_valued_lt_one_iff (a : 𝓞 L) :
     Valued.v (algebraMap (𝓞 L) (v.adicCompletion L) a) < 1 ↔ a ∈ v.asIdeal := by
@@ -28,7 +28,7 @@ theorem tame_valued_lt_one_iff (a : 𝓞 L) :
     HeightOneSpectrum.valuation_lt_one_iff_mem]
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq, ← tame_valued_lt_one_iff, map_sub]`. Establish `e : algebraMap (𝓞 L) (v.adicCompletion L) a - algebraMap (𝓞 L) (v.adicCompletion L) b = (u - algebraMap (𝓞 L) (v.adicCompletion L) b) - (u - algebraMap (𝓞 L) (v.adicCompletion L) a)`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `lt_of_le_of_lt (Valuation.map_sub _ _ _) (max_lt hb ha)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tame_mk_eq {u : v.adicCompletion L} {a b : 𝓞 L}
     (ha : Valued.v (u - algebraMap (𝓞 L) (v.adicCompletion L) a) < 1)
@@ -49,9 +49,9 @@ def unitPart : (v.adicCompletion L)ˣ →* (v.adicCompletion L)ˣ where
     exact mul_mul_mul_comm _ _ _ _
 
 /- English proof (translation)
-Establish `h : Valued.v ((atFin v (unif v) : (v.adicCompletion L)ˣ) : v.adicCompletion L) = WithZero.exp (-1 : ℤ)` using `unif_spec v`. Establish `hx : Valued.v (x : v.adicCompletion L) ≠ 0` using `by simp`. Use `show Valued.v ((x * atFin v (unif v) ^ WithZero.log (Valued.v (x : v.adicCompletion L)) : (v.adicCompletion L)ˣ) : v.adicCompletion L) = 1`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, h, ← WithZero.exp_zsmul]`. Use `nth_rewrite 1 [← WithZero.exp_log hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← WithZero.exp_add]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem isUnitAt_unitPart (x : (v.adicCompletion L)ˣ) : IsUnitAt v (unitPart v x) := by
   have h : Valued.v ((atFin v (unif v) : (v.adicCompletion L)ˣ) : v.adicCompletion L) =
@@ -65,7 +65,7 @@ theorem isUnitAt_unitPart (x : (v.adicCompletion L)ˣ) : IsUnitAt v (unitPart v 
   simp
 
 /- English proof (translation)
-Establish `h : Valued.v (x : v.adicCompletion L) = 1` using `hx`. Use `show x * atFin v (unif v) ^ WithZero.log (Valued.v (x : v.adicCompletion L)) = x`. Rewrite using `[h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unitPart_of_isUnitAt {x : (v.adicCompletion L)ˣ} (hx : IsUnitAt v x) : unitPart v x = x := by
   have h : Valued.v (x : v.adicCompletion L) = 1 := hx
@@ -74,7 +74,7 @@ theorem unitPart_of_isUnitAt {x : (v.adicCompletion L)ˣ} (hx : IsUnitAt v x) : 
   simp
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.Aut.adic_exists_approx v _ (le_of_eq (isUnitAt_unitPart v x))`.
+A detailed English derivation is pending.
 -/
 theorem exists_unitPart_approx (x : (v.adicCompletion L)ˣ) : ∃ a : 𝓞 L,
     Valued.v ((unitPart v x : v.adicCompletion L) - algebraMap (𝓞 L) (v.adicCompletion L) a) < 1 :=
@@ -110,7 +110,7 @@ def resPart : (v.adicCompletion L)ˣ →* 𝓞 L ⧸ v.asIdeal where
       exact lt_of_le_of_lt (mul_le_of_le_one_right' hb) hx
 
 /- English proof (translation)
-Use `tame_mk_eq v (exists_unitPart_approx v x).choose_spec ?_` and prove the remaining obligations. Rewrite using `[unitPart_of_isUnitAt v hx]` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem resPart_eq {x : (v.adicCompletion L)ˣ} (hx : IsUnitAt v x) {a : 𝓞 L}
     (ha : Valued.v ((x : v.adicCompletion L) - algebraMap (𝓞 L) (v.adicCompletion L) a) < 1) :
@@ -121,19 +121,17 @@ theorem resPart_eq {x : (v.adicCompletion L)ˣ} (hx : IsUnitAt v x) {a : 𝓞 L}
 open Classical in
 
 /- English proof (translation)
-Introduce `L _ _ v θ0`. Use `haveI : Finite (𝓞 L ⧸ v.asIdeal) := v.asIdeal.finiteQuotientOfFreeOfNeBot v.ne_bot`. Use `⟨θ0.comp (resPart v).toHomUnits, ⟨fun x => ?_, fun x hx h1 => ?_⟩, fun k y b hk hb => ?_, fun x _ => ⟨_, rfl⟩⟩` and prove the remaining obligations. Establish `hf : IsOfFinOrder ((θ0 ((resPart v).toHomUnits x) : ℂˣ) : ℂ)` using `((Units.coeHom ℂ).comp θ0).isOfFinOrder (isOfFinOrder_of_finite _)`. Conclude with `hf.norm_eq_one`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : (resPart v).toHomUnits x = 1`. Apply `Units.ext` to reduce the goal to its premises. Use `show resPart v x = Ideal.Quotient.mk v.asIdeal 1`. Use `resPart_eq v hx ?_` and prove the remaining obligations. Rewrite using `[map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Use `lt_of_le_of_lt h1 ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Rewrite using `[MonoidHom.comp_apply, e, map_one]`. Establish `ek : ((atFin v k : (v.adicCompletion L)ˣ) : v.adicCompletion L) = algebraMap (𝓞 L) (v.adicCompletion L) y` using `by show algebraMap L (v.adicCompletion L) (k : L) = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hk]`. Both sides reduce to the same expression. Establish `hy : y ∉ v.asIdeal`. Introduce `hy`. Rewrite `hb` using `[Ideal.Quotient.eq_zero_iff_mem.2 hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := v.isPrime`. Conclude with `b.ne_zero hb`. Establish `hu : IsUnitAt v (atFin v k)` using `by show Valued.v ((atFin v k : (v.adicCompletion L)ˣ) : v.adicCompletion L) = 1`. Rewrite using `[ek]`. Use `le_antisymm ?_ (not_lt.1 fun h => hy ((tame_valued_lt_one_iff v y).1 h))` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[tame_valued_int]`. Conclude with `v.valuation_le_one y`. Establish `e : (resPart v).toHomUnits (atFin v k) = b`. Apply `Units.ext` to reduce the goal to its premises. Use `show resPart v (atFin v k) = _`.
-
-Rewrite using `[hb]`. Use `resPart_eq v hu ?_` and prove the remaining obligations. Rewrite using `[ek, sub_self, map_zero]`. Conclude with `zero_lt_one`. Rewrite using `[MonoidHom.comp_apply, e]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_tameLoc_of_residue : ∀ (L : Type) [Field L] [NumberField L] (v : HeightOneSpectrum (𝓞 L)) (θ0 : (𝓞 L ⧸ v.asIdeal)ˣ →* ℂˣ), ∃ θ : (v.adicCompletion L)ˣ →* ℂˣ, TameLoc v θ ∧ (∀ (k : Lˣ) (y : 𝓞 L) (b : (𝓞 L ⧸ v.asIdeal)ˣ), (k : L) = (y : L) → (b : 𝓞 L ⧸ v.asIdeal) = Ideal.Quotient.mk v.asIdeal y → θ (atFin v k) = θ0 b) ∧ ∀ x, IsUnitAt v x → ∃ b, θ x = θ0 b := by
   intro L _ _ v θ0

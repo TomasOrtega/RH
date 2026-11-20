@@ -34,11 +34,11 @@ open Formalism.L2.Col GlobalTheory.Mem.Col2 GlobalTheory.Core.Rk.Top GlobalTheor
 namespace GlobalTheory.TopVal
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `hL p K q c b hw hs`. Take `⟨x, a, ax, y, -⟩` from `hw`. Establish `hx : a.x = x` using `eq_of_heq ax`. Establish `h0` using `datVal_twArgs _ _ _ _ q.w q.Z _ _ _ _ _ _ _ _ _ _ a hs`. Establish `h1 : DatVal q.w.I q.w.l q.Z (aK` using `x.alg) x.R.toRealDat x.Y.tup := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hx` using the available equality. Conclude with `h0`. Establish `h2 : (fun k : _root_.GlobalTheory.Mem.Top.Bl.RealPackage b.R b.S => DatVal q.w.I q.w.l q.Z (aK` using `k.B.alg) k.B.Q.Rl.toRealDat k.P.I.tup) (_root_.GlobalTheory.Mem.Top.Bl.realPackageOfBundle b) := by`. Rewrite using `[y.eq]`. Conclude with `h1`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨cv, h3, h4⟩` from `h2`. Conclude with `⟨cv, h3, h4⟩`.
+A detailed English derivation is pending.
 -/
 theorem pkVal_of_bWit_alt : ∀ {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c), _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b → q.x.what₂.r.z.Std → ∃ cv, _root_.GlobalTheory.TopVal.ValEqvAlt (I := q.w.I) (l := q.w.l) (Z := q.Z) (_root_.GlobalTheory.Fam.packB_alt b) cv ∧ _root_.GlobalTheory.TopVal.PackageValuation (I := q.w.I) (l := q.w.l) (Z := q.Z) (_root_.GlobalTheory.Fam.packB_alt b) cv := by
   intro hL p K q c b hw hs

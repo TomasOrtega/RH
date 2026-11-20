@@ -14,9 +14,9 @@ section aux
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `ha : dC F E nT * a = Matrix.of fun i j => a (Sum.elim id id (finSumFinEquiv.symm i)) j` using `GlobalTheory.LagrThetaInv.dC_mul_eq a`. Establish `hb : dC F E nT * b = Matrix.of fun i j => b (Sum.elim id id (finSumFinEquiv.symm i)) j` using `GlobalTheory.LagrThetaInv.dC_mul_eq b`. Rewrite using `[ha, hb]`. Unfold `hOF`. Use `Finset.sum_eq_zero fun p _ => Finset.sum_eq_zero fun q _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [← finSumFinEquiv.sum_comp, Matrix.of_apply, Equiv.symm_apply_apply, GlobalTheory.LagrThetaInv.dblG_apply]`. Simplify using `only [Fintype.sum_sum_type]`. Simplify using `[dbl, Finset.sum_add_distrib, Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hOF_dC (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)
     (a b : WOF F E nS nT) :
@@ -33,7 +33,7 @@ theorem hOF_dC (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS)
   simp [dbl, Finset.sum_add_distrib, Finset.sum_neg_distrib]
 
 /- English proof (translation)
-Simplify using `only [symplOHF, symplOF, hOF_dC, mul_zero, map_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOHF_dC (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E)
     (ξ₀ : E) (a b : WOF F E nS nT) :
@@ -41,22 +41,16 @@ theorem symplOHF_dC (σ : E →ₐ[F] E) {nS nT : ℕ} (JS : Matrix (Fin nS) (Fi
   simp only [symplOHF, symplOF, hOF_dC, mul_zero, map_zero]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LagrThetaInv.dC_mul_rat γ`.
+A detailed English derivation is pending.
 -/
 theorem dC_mul_ratWF {nS nT : ℕ} (γ : Matrix (Fin nT) (Fin nS) E) :
     (dC F E nT * (ratWF γ : WOF F E nS nT) : WOF F E nS (nT + nT)) = ratWF (GlobalTheory.LagrThetaInv.dC E nT * γ) :=
   GlobalTheory.LagrThetaInv.dC_mul_rat γ
 
 /- English proof (translation)
-Use `haveI : BorelSpace (WOF F E nS nT) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (AF F ⊗[F] E) := IsModuleTopology.toContinuousAdd (AF F) _`. Use `haveI : ContinuousAdd (WOF F E nS nT) := inferInstanceAs (ContinuousAdd (Fin nT → Fin nS → AF F ⊗[F] E))`. Use `haveI : MeasurableAdd (WOF F E nS nT) := ⟨fun c => (continuous_const_add c).measurable, fun c => (continuous_add_const c).measurable⟩`. Use `haveI : MeasurableConstVAdd (ratLF F E nS nT) (WOF F E nS nT) := ⟨fun r => (continuous_const_add (r : WOF F E nS nT)).measurable⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : VAddInvariantMeasure (ratLF F E nS nT) (WOF F E nS nT) ν := ⟨fun r s _ => measure_preimage_add ν (r : WOF F E nS nT) s⟩`. Use `haveI : VAddCommClass (WOF F E nS nT) (ratLF F E nS nT) (WOF F E nS nT) := ⟨fun a r x => add_left_comm a (r : WOF F E nS nT) x⟩`. Use `haveI : Countable (ratLF F E nS nT) := by haveI : Countable E := by haveI : FiniteDimensional ℚ E := inferInstance`. Conclude with `((Module.finBasis ℚ E).equivFun).injective.countable`. Establish `: Countable (Matrix (Fin nT) (Fin nS) E)` using `inferInstanceAs (Countable (Fin nT → Fin nS → E))`.
-
-Conclude with `(Set.countable_range ((incAF F E).toAddMonoidHom.mapMatrix (m := Fin nT) (n := Fin nS))).to_subtype`. Rewrite using `[← (measurePreserving_add_right ν u).setIntegral_image_emb (measurableEmbedding_addRight u) g 𝓕]`. Establish `hF' : IsAddFundamentalDomain (ratLF F E nS nT) ((· + u) '' 𝓕) ν`. Establish `hs : (· + u) '' 𝓕 = ((u : WOF F E nS nT) +ᵥ 𝓕 : Set (WOF F E nS nT))`. Rewrite using `[← Set.image_vadd]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `v`. Conclude with `add_comm v u`. Rewrite using `[hs]`. Conclude with `h𝓕.vadd_of_comm (G' := WOF F E nS nT) (u : WOF F E nS nT)`.
-
-Conclude with `hF'.setIntegral_eq h𝓕 h2`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_add_right {nS nT : ℕ} (ν : Measure (WOF F E nS nT)) (𝓕 : Set (WOF F E nS nT))
     [ν.IsAddHaarMeasure] (h𝓕 : IsAddFundamentalDomain (ratLF F E nS nT) 𝓕 ν) (g : WOF F E nS nT → ℂ)
@@ -93,11 +87,11 @@ theorem setIntegral_add_right {nS nT : ℕ} (ν : Measure (WOF F E nS nT)) (𝓕
 end aux
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B _ nS nT JS JT _ _ ξ₀ _ _ ν 𝓕 _ h𝓕 f hf u`. Use `set g : WOF F E nS nT → ℂ := fun v => f (dC F E nT * v) with hg`. Establish `h1 : ∀ v : WOF F E nS nT, heisOF σ JS (GlobalTheory.WeilSchrodinger.DblTargetF.dblG JT) ξ₀ B.ψ (dC F E nT * u) f (dC F E nT * v) = g (v + u)`. Introduce `v`. Simplify using `only [hg, heisOF]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[symplOHF_dC, AddChar.map_zero_eq_one, one_mul, Matrix.mul_add]`. Establish `h2 : ∀ (r : ratLF F E nS nT) (v : WOF F E nS nT), g (r +ᵥ v) = g v`. Introduce and unpack `⟨r, γ, rfl⟩ v`. Use `show f (dC F E nT * ((ratWF γ : WOF F E nS nT) + v)) = f (dC F E nT * v)`. Establish `hq` using `hf.quasi (GlobalTheory.LagrThetaInv.dC E nT * γ) (dC F E nT * v)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hq` using `[← dC_mul_ratWF, symplOHF_dC, neg_zero, AddChar.map_zero_eq_one, one_mul]`. Rewrite using `[Matrix.mul_add, hq]`. Unfold `GlobalTheory.LagrTheta.lagrInt`. Repeatedly rewrite using `[h1]`. Conclude with `setIntegral_add_right ν 𝓕 h𝓕 g h2 u`.
+Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lagrInt_heis_dC : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E),
     B.IsGood σ → ∀ (nS nT : ℕ) (JS : Matrix (Fin nS) (Fin nS) E) (JT : Matrix (Fin nT) (Fin nT) E),

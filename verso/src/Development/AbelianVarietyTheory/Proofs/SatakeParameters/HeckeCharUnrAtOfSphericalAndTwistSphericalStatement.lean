@@ -21,7 +21,7 @@ open GlobalTheory.GalCut GlobalTheory.Published
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.SphTwistUnr.unrAt_of_isSpherical_twist` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FHeckeCharUnrAtOfSphericalAndTwistSpherical.lean&line=43#L43)
 -/

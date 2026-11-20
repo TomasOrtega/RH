@@ -15,21 +15,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace CrystallinePoints.Pd
 
 /- English proof (translation)
-Use `haveI := hA.comm`. Take `⟨I, _, c, ω, hω, hch, hψf⟩` from `chern_eq_sum hF hH hA hg hψ hiso`. Take `⟨hfin, -, hrk⟩` from `AbelianDeRham.Free.prim hF hA hg`. Take `⟨hLie, -, -, -, hrkF⟩` from `hH K A g hA hg`. Establish `d1 : Module.finrank K (primDR A) = 2 * g` using `finrank_of_rankAtStalk hrk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d2 : Module.finrank K (PrimitiveSubmodule A) = g` using `finrank_of_rankAtStalk hrkF`. Establish `d3 : Module.finrank K (Fil A) = g`. Use `Subspace.finrank_add_finrank_dualAnnihilator_eq (PrimitiveSubmodule A)` as an intermediate fact. Rewrite `this` using `[d1, d2]`. Express the relevant statement in the definitionally equal form `g + Module.finrank K (Fil A) = _ at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Use `perf_of_lag (Fil A) g (Subspace.dual_finrank_eq.trans d1) d3 ψ hψ.isAlt hiso fun x hx ↦ ?_` and prove the remaining obligations. Take `⟨v, hv, -⟩` from `hLie.1 x`. Use `choose z hz using fun k ↦ H1.mk_surjective _ (c k).1`. Establish `hmem : ∑ k, tanVal v (ω k) • c k ∈ PrimitiveSubmodule A`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Subspace.dualAnnihilator_dualCoannihilator_eq (W := PrimitiveSubmodule A), Submodule.mem_dualCoannihilator]`. Introduce `f hf`. Establish `e` using `hx f hf`. Rewrite `e` using `[hψf f hf]`. Rewrite using `[← e, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun k _ ↦ ?_` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, hv.2 (ω k) (hω k), _root_.mul_comm]`. Establish `hch' : IsChern (dp0 K) (A.hom ≫ 𝟙 (Sp K)) L (∑ k, cup _ (H1.mk _ (z k)) (Form.cl _ (ω k)))`. Simplify `hch` using `only [hz]`. Set `J : Type` to `{p : A.left.affineOpens × L.ι // p.1.1 ≤ L.U p.2}`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr` using `GlobalTheory.T.isCechRepresentative_chernClass_tangentValue K A hA L hL I z ω hch' v hv.1 J (fun j ↦ j.1.1) (fun j ↦ j.1.2) fun j ↦ j.2`. Establish `hcov : ⨆ j : J, j.1.1.1 = ⊤`. Use `eq_top_iff.2 fun p _ ↦ ?_` and prove the remaining obligations. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hL.cover.ge (Set.mem_univ p))`. Take `⟨U, hU, hp, hle⟩` from `exists_isAffineOpen_mem_and_subset (U := L.U k) hk`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨(⟨U, hU⟩, k), hle⟩, hp⟩`. Establish `h1 : v = 1` using `eq_one_of_isRep hL hK hv.1 _ hcov _ (fun j ↦ j.2) _ hr (by`. Use `Submodule.mem_comap.1 hmem` as an intermediate fact. Simplify using `only [map_sum, map_smul] at this`. Simplify using `only [map_sum, map_smul, hz]`.
-
-Conclude with `this)`. Substitute `h1` using the available equality. Conclude with `isLieImage_one_iff.1 hv`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem perfect_field (hF : AbelianDeRham.Free) (hH : AbelianDeRham.Hodge) {K : Type} [Field K] {A : Over (Sp K)} [GrpObj A] {g : ℕ} (hA : IsAbelianScheme A) (hg : SmoothOfRelativeDimension g A.hom) {L : LB A.left} (hL : L.IsLB) {ψ : LinearMap.BilinForm K (HdR A)} (hψ : IsPolForm (dp0 K) (𝟙 _) A L ψ) (hiso : ∀ x ∈ Fil A, ∀ y ∈ Fil A, ψ x y = 0) (hK : ReciprocityTheory.ChartRestriction.G.Out.KTriv A L) : LinearMap.IsPerfPair ψ := by
   classical

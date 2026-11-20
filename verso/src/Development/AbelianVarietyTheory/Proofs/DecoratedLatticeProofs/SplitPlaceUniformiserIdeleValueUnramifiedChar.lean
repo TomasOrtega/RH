@@ -20,17 +20,17 @@ noncomputable section
 namespace GlobalTheory.SplitUnifIdele
 
 /- English proof (translation)
-Introduce `D v w hw hs χ _`. Take `⟨e, he⟩` from `GlobalTheory.WeilAtPlace.exists_isIdemAt_of_split hs hw`. Establish `hP : IsPrimeIdem w e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Establish `hee : e * e = e` using `he.1.1`. Establish `hlt : w.asIdeal ^ 2 < w.asIdeal ^ 1` using `Ideal.pow_right_strictAnti w.asIdeal w.ne_bot w.isPrime.ne_top (by norm_num : 1 < 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hlt` using `[pow_one]`. Take `⟨ϖ, h1, h2⟩` from `SetLike.exists_of_lt hlt`. Establish `hϖ0 : (ϖ : D.host.E) ≠ 0`. Introduce `h0`. Conclude with `h2 (by rw [show ϖ = 0 from RingOfIntegers.coe_eq_zero_iff.1 h0]; exact zero_mem _)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hab : incA D (ϖ : D.host.E) * incA D ((ϖ : D.host.E)⁻¹) = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hϖ0, map_one]`. Establish `hba : incA D ((ϖ : D.host.E)⁻¹) * incA D (ϖ : D.host.E) = 1`. Rewrite using `[mul_comm]`. Conclude with `hab`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `x : (AE D)ˣ` to `⟨e * incA D (ϖ : D.host.E) + (1 - e), e * incA D ((ϖ : D.host.E)⁻¹) + (1 - e), by linear_combination (incA D (ϖ : D.host.E) * incA D ((ϖ : D.host.E)⁻¹) - incA D (ϖ : D.host.E) - incA D ((ϖ : D.host.E)⁻¹) + 1) * hee + e * hab, by linear_combination (incA D ((ϖ : D.host.E)⁻¹) * inc …`. Use `⟨e, ϖ, x, he, h1, h2, rfl, fun χ' hχ' => ?_⟩` and prove the remaining obligations. Take `⟨y, hy, hxy⟩` from `GlobalTheory.WeilAtPlace.exists_eq_locIdele (GlobalTheory.WeilAtPlace.isPrimeIdem_infPart hP) (GlobalTheory.LFun.finPart_of_isPrimeIdem hP) x (by`. Express the relevant statement in the definitionally equal form `e * (e * incA D (ϖ : D.host.E) + (1 - e) - 1) = e * incA D (ϖ : D.host.E) + (1 - e) - 1`. Take the linear combination `(incA D (ϖ : D.host.E) - 1) * hee)`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hy' : (y : w.adicCompletion D.host.E) = algebraMap D.host.E _ (ϖ : D.host.E)`. Rewrite using `[hy, show (x : AE D) = e * incA D (ϖ : D.host.E) + (1 - e) from rfl, GlobalTheory.WeilAtPlace.compAt_cut (GlobalTheory.LFun.finPart_of_isPrimeIdem hP), GlobalTheory.LFun.compAt_incA]`. Establish `hu : Formalism.L2.Host.IsUnifAt w y`. Unfold `Formalism.L2.Host.IsUnifAt`. Rewrite using `[hy']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Formalism.UG.P.levelaf_valued_algebraMap _ _).trans (GlobalTheory.LFun.EulerTie.valuation_of_mem_notMem_sq w h1 h2)`. Use `hχ'.locChar_eq_val hu` as an intermediate fact. Rewrite using `[← this, hxy]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem value_eq_val : ∀ (D : D7) (v : HeightOneSpectrum (𝓞 D.host.F)) (w : HeightOneSpectrum (𝓞 D.host.E)), w.under (𝓞 D.host.F) = v → IsSplit (E := D.host.E) v → ∀ χ : (AE D)ˣ →* Circle, UnrAt χ w → ∃ (e : AE D) (ϖ : 𝓞 D.host.E) (x : (AE D)ˣ), Formalism.L2.NTheta.IsIdemAt e w ∧ ϖ ∈ w.asIdeal ∧ ϖ ∉ w.asIdeal ^ 2 ∧ (x : AE D) = e * incA D (ϖ : D.host.E) + (1 - e) ∧ ∀ χ' : (AE D)ˣ →* Circle, UnrAt χ' w → ((χ' x : Circle) : ℂ) = ((val (F := D.host.F) χ' w : ℂˣ) : ℂ) := by
   intro D v w hw hs χ _

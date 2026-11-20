@@ -18,9 +18,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.InertPackage
 
 /- English proof (translation)
-Introduce `h2`. Unfold `InPsi at h1 h2`. Rewrite `h2` using `[ComplexEmbedding.conjugate_coe_eq, h1]`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.1 h2`. Establish `e3` using `H.sqrt_neg_disc_sq`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `e3` using `[hr]`. Establish `e4 : r ^ 2 = -(H.d : ℝ)` using `by exact_mod_cast e3`. Establish `: (0 : ℝ) < H.d` using `by exact_mod_cast H.d_prime.pos`. Use polynomial arithmetic with `[sq_nonneg r]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem not_inPsi_conjugate {E : Type} [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E)
     (τ : E →+* ℂ) (h1 : InPsi H τ) : ¬ InPsi H (ComplexEmbedding.conjugate τ) := by
@@ -35,28 +35,26 @@ theorem not_inPsi_conjugate {E : Type} [Field E] [NumberField E] [IsCMField E] (
   nlinarith [sq_nonneg r]
 
 /- English proof (translation)
-Unfold `RF.bg`. Apply the tactic sequence `split_ifs with h <;> simp [h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zero_eq_bg_iff {d : ℕ} [NeZero d] (s : ZMod d) : (0 : Fin 2) = RF.bg s ↔ Even s.val := by
   unfold RF.bg
   split_ifs with h <;> simp [h]
 
 /- English proof (translation)
-Introduce `hUp E _ _ _ H Dw lv Xo c _ hstar N j pl a hj1 hjm hpl hp hq hdom la h2 hqq hdd hM _ T io e hover y hy C3 nW ν hν hin hphi TT θ0 C1 hdeg hrows`. Take `⟨C, _, _, V, ι, hl, hι, hac, hcpl, hla, hunit, hval⟩` from `GlobalTheory.PlaceClosedField.exists_closed_field_over_place E H Dw lv Xo c la T io e hover`. Establish `hν'` using `hval y C3 lv.M a nW ν hν`. Establish `hMu` using `hunit lv.M hM`. Rewrite `h2`, `hqq`, `hdd`, `hin`, `hphi`, `hdeg`, `hrows`, the goal using `[← hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨Y, hY⟩` from `GlobalTheory.ChartBaseChange.exists_baseChange E H Dw lv Xo c T io y C3 C V ι hι hac hcpl (ne_two_of_not_small h2) (GlobalTheory.QuadTrace.cmHost_idempotent_trace_eq_one E H hstar) lv.M hMu`. Establish `hunr : ¬ (V.l : ℤ) ∣ NumberField.discr E` using `hpl.unr V.l V.l_prime h2 hqq hdd`. Take `⟨Z, hZ, hZne, heven, hbij, hfr⟩` from `GlobalTheory.InertLabelling.main E H lv c N pl hpl la T io C V ι hι hl hla hin hphi j`. Establish `hpsi : ∀ z, InPsi H (pl z)` using `fun z => (hpl.psi _).2 ⟨z, rfl⟩`. Establish `hmk` using `N.R.m_add_three_le_k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `lab : Lab E Z (N.ordP V.l)` to `{ tau := fun o => tauIn N pl V.l o.1 n := N.R.k - 1 j := j j' := N.R.m - j big := fun _ g s => g = RF.bg s }`. Establish `harith : LabArith V io ι lab` using `{ inj := hbij.1 conj := fun o s => (hfr o.1 0).2 s frob := fun o g => (hfr o.1 g).1 sep := fun x x' hx => (GlobalTheory.EmbSep.cmEmbeddings_integral_and_distinct_mod_maximal' E H lv c T io C V ι hι hunr).2 _ _ fun h => hx (hbij.1 h) unr := fun o g => GlobalTheory.exists_idempoten …`. Establish `hrank : lab.RankOK Dw`. Introduce `o`. Use `⟨fun g s => ?_, fun g s hg => ?_, fun g s hg => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `show 1 - g = RF.bg s ↔ ¬ g = RF.bg s`. Generalize the expression as in `RF.bg s = b`. Use `revert g b`. Evaluate the decidable proposition. Establish `hg' : g = RF.bg s` using `hg show Dw.mult (tauIn N pl V.l o.1 g s) = N.R.k - 1 + j`.
+Replace the chosen expression with an arbitrary variable. Evaluate the decidable proposition. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `tauIn Datum.mult`. Rewrite using `[if_pos hg']`. Use `(if_pos (hpsi _)).trans ?_` and prove the remaining obligations. Rewrite using `[hp]`. Use `show N.R.k + j - 1 = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use linear arithmetic over natural numbers and integers. Establish `hg' : ¬ g = RF.bg s` using `hg show Dw.mult (tauIn N pl V.l o.1 g s) = N.R.m - j`. Unfold `tauIn Datum.mult`. Rewrite using `[if_neg hg']`. Conclude with `(if_neg (not_inPsi_conjugate H _ (hpsi _))).trans hq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsup` using `GlobalTheory.T.rowData_supplied_at_pairs_of_places hUp E H Dw lv Xo c hstar T io y C3 C V ι hι lv.M Y hY hy hunr Z (N.ordP V.l) lab harith hbij.2 hrank (show N.R.m - j < N.R.k - 1 by omega) (fun _ => Or.inl ⟨heven, fun s => zero_eq_bg_iff s⟩) a hdom nW ν hν'`. Take `⟨I, J, fI, fJ, X, F, hn, hbig, hvb⟩` from `GlobalTheory.RowAt.supply_extend C V (N.ordP V.l) (RPl N.R) Z (N.R.k - 1) (j + (N.R.m - j)) (fun _ g s => g = RF.bg s) (fun z g s => Dw.mult (tauIn N pl V.l z g s)) (fun z g s => gap (Dw.mult (tauIn N pl V.l z g s)) fun i => a (tauIn N pl V.l z g s, i)) nW ν hZne hsup`. Establish `hwt` using `GlobalTheory.RowAt.wtHyp_gap E H Dw N j pl a hj1 hjm hpsi hp hq hdom (N.ordP V.l) (N.pos V.l) Z RF.bg (tauIn N pl V.l) hZ hbij (fun z s => if_pos rfl)`. Use `⟨{ R := { C := C, V := V, hVl := rfl, I := I, J := J, fI := fI, fJ := fJ, X := X, F := F hn := fun z => ⟨(hn z).1, (hn z).2.trans (by show j + (N.R.m - j) = N.R.m; omega)⟩ } Z := Z hZ := hZ alt := fun z hz => ⟨heven, fun s => ((hbig z hz 0 s).1).trans (zero_eq_bg_iff s)⟩ ga := fu …` and prove the remaining obligations. Establish `h` using `hwt.supp z hz g s k' hk`.
-
-Conclude with `⟨h.1, h.2.trans_eq (hbig z hz g s).2.symm⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem pkgInert : (∀ (p : ℕ) [Fact p.Prime], ReciprocityTheory.ChartRestriction.G.Pdiv.ChartF.UpFSt p) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (lv : Level H) (Xo : Moduli Dw lv) (c : Coeff lv) [StarRing (𝓞 E)], PkgInertSt Xo c := by
   intro hUp E _ _ _ H Dw lv Xo c _ hstar N j pl a hj1 hjm hpl hp hq hdom la h2 hqq hdd hM _ T io e hover y hy C3 nW ν hν

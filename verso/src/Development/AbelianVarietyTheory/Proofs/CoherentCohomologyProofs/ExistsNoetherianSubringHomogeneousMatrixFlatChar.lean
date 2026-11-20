@@ -9,33 +9,33 @@ namespace GlobalTheory
 
 open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct in
 /- English proof (translation)
-Set `p : Fin a → P` to `fun m => ε (Pi.single m 1)`. Establish `hεsum : ∀ y : Fin a → S, ε y = ∑ m, π (y m) • p m`. Introduce `y`. Use `conv_lhs => rw [show y = ∑ m, y m • Pi.single m 1 from by`. Use function extensionality and compare the values at `j`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[Finset.sum_apply, Pi.single_apply]]`. Simplify using `[map_sum, p]`. Set `F : (Fin a → B) →ₗ[B] P` to `Fintype.linearCombination B p`. Establish `hF : ∀ β, F β = ∑ m, β m • p m` using `fun β => Fintype.linearCombination_apply B p β`. Establish `hFsurj : Function.Surjective F`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨y, rfl⟩` from `hε x`. Conclude with `⟨fun m => π (y m), by rw [hF, hεsum]⟩`. Take `⟨s, hs⟩` from `Module.projective_lifting_property F LinearMap.id hFsurj`. Establish `hlift : ∀ β : Fin a → B, ∃ y : Fin a → S, (fun m => π (y m)) = β`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `β`. Use `choose y hy using fun m => hπ (β m)`. Conclude with `⟨y, funext hy⟩`. Establish `hcol : ∀ m : Fin a, ∃ w : Fin b → S, (fun j => π ((Φ.mulVec w) j)) = Pi.single m 1 - s (p m)`. Introduce `m`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `hlift (Pi.single m 1 - s (p m))`. Establish `h0 : ε y = 0`. Rewrite using `[hεsum, ← hF]`. Establish `: (fun m => π (y m)) = Pi.single m 1 - s (p m)` using `hy`. Rewrite using `[show (fun m => π (y m)) = _ from this, map_sub, hF]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : F (s (p m)) = p m`. Use `congr_arg (fun φ => φ (p m)) hs` as an intermediate fact. Simplify using `using this`. Rewrite using `[hs']`. Simplify using `[Pi.single_apply]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, w', hw⟩` from `(hkerε y).1 h0`. Use `⟨w, ?_⟩` and prove the remaining obligations. Rewrite using `[← hy, hw]`. Use function extensionality and compare the values at `j`. Simplify using `[hu]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose w hw using hcol`. Establish `hs' : ∀ x, F (s x) = x` using `fun x => by`. Use `congr_arg (fun φ => φ x) hs` as an intermediate fact. Simplify using `using this`. Establish `hcolε : ∀ j, ε (fun l => Φ l j) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `j`. Use `(hkerε _).2 ⟨Pi.single j 1, 0, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `l`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply]`. Set `Ψ : Matrix (Fin b) (Fin a) S` to `Matrix.of fun j m => w m j`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hD : ∀ l j, (Φ * Ψ * Φ - Φ) l j ∈ Ideal.span (Set.range g)`. Introduce `l j`. Rewrite using `[← hker, RingHom.mem_ker]`. Establish `hcomp : ∀ m, π ((Φ * Ψ) l m) = (Pi.single m 1 - s (p m) : Fin a → B) l`. Introduce `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `congr_fun (hw m) l` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, Ψ]`. Establish `hsum : ∑ m, π (Φ m j) • s (p m) = 0`. Establish `h1` using `hεsum (fun l => Φ l j)`. Rewrite `h1` using `[hcolε j]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[← LinearMap.map_smul, ← map_sum, ← h1, map_zero]`. Establish `hsuml` using `congr_fun hsum l`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply] at hsuml`. Rewrite using `[Matrix.sub_apply, map_sub, Matrix.mul_apply, map_sum]`. Simplify using `only [AlgHom.coe_toRingHom, map_mul, hcomp, Pi.sub_apply, sub_mul, Finset.sum_sub_distrib, Pi.single_apply, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show ∑ m, s (p m) l * π (Φ m j) = ∑ m, π (Φ m j) * s (p m) l from Finset.sum_congr rfl fun _ _ => mul_comm _ _, hsuml]`. Expand and normalize the polynomial expressions, which then agree. Use `choose c hc using fun l j => (Submodule.mem_span_range_iff_exists_fun S).1 (hD l j)`. Use `⟨Ψ, fun k => Matrix.of fun l j => c l j k, ?_⟩` and prove the remaining obligations. Use extensionality with `l j`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1` using `hc l j`. Simplify using `only [smul_eq_mul] at h1`. Simplify using `only [Matrix.add_apply, Matrix.sum_apply, Matrix.smul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[show ∑ k, g k * c l j k = ∑ k, c l j k * g k from Finset.sum_congr rfl fun _ _ => mul_comm _ _, h1]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem exists_generalized_inverse_mod_ideal {R S B P : Type} [CommRing R] [CommRing S]
     [Algebra R S] [CommRing B] [Algebra R B] [AddCommGroup P] [Module B P] {a b r : ℕ}
@@ -122,19 +122,17 @@ private theorem exists_generalized_inverse_mod_ideal {R S B P : Type} [CommRing 
 
 open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct in
 /- English proof (translation)
-Take `⟨B, _, _, π, P, _, _, ε, hsm, hproj, hπ, hX, hεs, hkerε⟩` from `H`. Establish `hfg` using `Algebra.FinitePresentation.ker_fG_of_surjective π hπ`. Take `⟨r, g, hg⟩` from `Submodule.fg_iff_exists_fin_generating_family.1 hfg`. Establish `hker : RingHom.ker (π : MvPolynomial ι R →+* B) = Ideal.span (Set.range g)` using `hg.symm`. Establish `hu : π (X i - 1) = 0` using `by rw [map_sub, hX, map_one, sub_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨r, g, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `e : (MvPolynomial ι R ⧸ RingHom.ker (π : MvPolynomial ι R →+* B)) ≃ₐ[R] B` using `Ideal.quotientKerAlgEquivOfSurjective hπ`. Establish `: Algebra.FormallySmooth R (MvPolynomial ι R ⧸ RingHom.ker (π : MvPolynomial ι R →+* B))` using `Algebra.FormallySmooth.of_equiv e.symm`. Rewrite `this` using `[hker]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : (X i - 1 : MvPolynomial ι R) ∈ Ideal.span (Set.range g)`. Rewrite using `[← hker, RingHom.mem_ker]`. Conclude with `hu`. Take `⟨c, hc⟩` from `(Submodule.mem_span_range_iff_exists_fun (MvPolynomial ι R)).1 hmem`. Conclude with `⟨c, by rw [← hc]; simp [smul_eq_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `k`. Establish `hgk : π (g k) = 0`. Establish `: g k ∈ RingHom.ker (π : MvPolynomial ι R →+* B)`. Rewrite using `[hker]`. Conclude with `Ideal.subset_span ⟨k, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Establish `hcol : ∀ m : Fin a, ∃ w w', g k • (Pi.single m 1 : Fin a → MvPolynomial ι R) = Φ.mulVec w + (X i - 1 : MvPolynomial ι R) • w'`. Introduce `m`. Use `(hkerε _).1 ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Simplify using `[hgk]`. Use `choose w w' hw using hcol`. Use `⟨Matrix.of fun j m => w m j, Matrix.of fun l m => w' m l, ?_⟩` and prove the remaining obligations. Use extensionality with `l m`. Establish `h1` using `congr_fun (hw m) l`.
-
-Simplify using `only [Pi.smul_apply, Pi.add_apply, smul_eq_mul, Pi.single_apply] at h1`. Simplify using `only [Matrix.smul_apply, Matrix.one_apply, Matrix.add_apply, Matrix.mul_apply, Matrix.of_apply, smul_eq_mul]`. Rewrite using `[h1]`. Simplify using `[Matrix.mulVec, dotProduct]`. Conclude with `exists_generalized_inverse_mod_ideal Φ (X i - 1) g π hker hπ ε hproj hεs hkerε hu`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem chart_witnesses_lemma {ι : Type} [Fintype ι] {R : Type} [CommRing R] {a b : ℕ}
     (Φ : Matrix (Fin a) (Fin b) (MvPolynomial ι R)) (i : ι)
@@ -187,17 +185,15 @@ private theorem chart_witnesses_lemma {ι : Type} [Fintype ι] {R : Type} [CommR
 
 open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct in
 /- English proof (translation)
-Use `set I := Ideal.span (Set.range g) with hI`. Set `f : MvPolynomial ι R →ₐ[R] MvPolynomial ι R ⧸ I` to `Ideal.Quotient.mkₐ R I`. Establish `hkerf : RingHom.ker f.toRingHom = I` using `Ideal.Quotient.mkₐ_ker R I`. Set `x : ι → MvPolynomial ι R` to `fun i => X i + ∑ k, a i k * g k`. Set `φ : MvPolynomial ι R →ₐ[R] MvPolynomial ι R ⧸ RingHom.ker f.toRingHom ^ 2` to `(Ideal.Quotient.mkₐ R _).comp (aeval x)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgI : ∀ k, g k ∈ I` using `fun k => Ideal.subset_span ⟨k, rfl⟩`. Establish `hφ : ∀ p ∈ I, φ p = 0`. Establish `hle : I ≤ RingHom.ker φ` using `by show Ideal.span (Set.range g) ≤ RingHom.ker φ`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [SetLike.mem_coe, RingHom.mem_ker]`. Use `show Ideal.Quotient.mk _ (aeval x (g j)) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hkerf, h j, pow_two]`. Conclude with `Ideal.sum_mem _ fun k _ => Ideal.sum_mem _ fun l _ => Ideal.mul_mem_left _ _ (Ideal.mul_mem_mul (hgI k) (hgI l))`. Conclude with `fun p hp => hle hp`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Set `s` to `Ideal.Quotient.liftₐ I φ hφ`. Use `Algebra.FormallySmooth.of_split f s ?_` and prove the remaining obligations. Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : s (Ideal.Quotient.mkₐ R I (X i)) = Ideal.Quotient.mk _ (x i)` using `by show (Ideal.Quotient.liftₐ I φ hφ) (Ideal.Quotient.mk I (X i)) = _`. Rewrite using `[Ideal.Quotient.liftₐ_apply]`. Use `erw [Ideal.Quotient.lift_mk]`. Use `show (Ideal.Quotient.mkₐ R _) (aeval x (X i)) = _`. Rewrite using `[aeval_X]`.
-
-Both sides reduce to the same expression. Simplify using `only [AlgHom.comp_apply, hs, AlgHom.id_apply]`. Rewrite using `[AlgHom.kerSquareLift_mk]`. Simplify using `[f, x, Ideal.Quotient.eq_zero_iff_mem.2 (hgI _)]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem formallySmooth_quotient_of_aeval_shift_mem_sq {ι R : Type} [CommRing R] {r : ℕ}
     (g : Fin r → MvPolynomial ι R) (a : ι → Fin r → MvPolynomial ι R)
@@ -241,37 +237,31 @@ private theorem formallySmooth_quotient_of_aeval_shift_mem_sq {ι R : Type} [Com
 open CategoryTheory CategoryTheory.Limits DirectSum MvPolynomial TensorProduct in
 
 /- English proof (translation)
-Introduce `ι _ _ R _ a b d e Φ hΦ H`. Use `choose r g hsm hc hC hΨ using fun i => chart_witnesses_lemma Φ i (H i)`. Use `choose wa wb hwit using fun i => _root_.GlobalTheory.exists_witnesses_of_formallySmooth_quotient ι R (r i) (g i) (hsm i)`. Use `choose c hc' using hc`. Use `choose C C' hCC using hC`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose Ψ E hΨE using hΨ`. Set `pols : (Fin a × Fin b) ⊕ (Σ i, Fin (r i)) ⊕ (Σ i, ι × Fin (r i)) ⊕ (Σ i, Fin (r i) × Fin (r i) × Fin (r i)) ⊕ (Σ i, Fin (r i)) ⊕ (Σ i, Fin (r i) × Fin b × Fin a) ⊕ (Σ i, Fin (r i) × Fin a × Fin a) ⊕ (Σ i, Fin b × Fin a) ⊕ (Σ i, Fin (r i) × Fin a × Fin b) → MvPolynomial ι R` to `Sum.elim (fun x => Φ x.1 x.2) (Sum.elim (fun x => g x.1 x.2) (Sum.elim (fun x => wa x.1 x.2.1 x.2.2) (Sum.elim (fun x => wb x.1 x.2.1 x.2.2.1 x.2.2.2) (Sum.elim (fun x => c x.1 x.2) (Sum.elim (fun x => C x.1 x.2.1 x.2.2.1 x.2.2.2) (Sum.elim (fun x => C' x.1 x.2.1 x.2.2.1 x.2.2.2) …`. Set `T : Set R` to `⋃ j, ↑(pols j).coeffs`. Establish `hT : T.Finite` using `Set.finite_iUnion fun j => Finset.finite_toSet _`. Set `R₀` to `Subring.closure T`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnoeth : IsNoetherianRing R₀` using `is_noetherian_subring_closure T hT`. Set `φ : MvPolynomial ι R₀ →+* MvPolynomial ι R` to `MvPolynomial.map R₀.subtype`. Establish `hφinj : Function.Injective φ` using `MvPolynomial.map_injective _ Subtype.val_injective`. Establish `hlift : ∀ j, ∃ p₀, φ p₀ = pols j`. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Establish `: pols j ∈ Set.range φ`. Rewrite using `[MvPolynomial.mem_range_map_iff_coeffs_subset]`. Introduce `x hx`. Conclude with `⟨⟨x, Subring.subset_closure (Set.mem_iUnion.2 ⟨j, hx⟩)⟩, rfl⟩`. Conclude with `this`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `choose L hL using hlift`. Set `Φ₀ : Matrix (Fin a) (Fin b) (MvPolynomial ι R₀)` to `Matrix.of fun l j => L (Sum.inl (l, j))`. Set `g₀ : ∀ i, Fin (r i) → MvPolynomial ι R₀` to `fun i k => L (Sum.inr (Sum.inl ⟨i, k⟩))`. Set `wa₀ : ∀ i, ι → Fin (r i) → MvPolynomial ι R₀` to `fun i v k => L (Sum.inr (Sum.inr (Sum.inl ⟨i, v, k⟩)))`. Set `wb₀ : ∀ i, Fin (r i) → Fin (r i) → Fin (r i) → MvPolynomial ι R₀` to `fun i j k l => L (Sum.inr (Sum.inr (Sum.inr (Sum.inl ⟨i, j, k, l⟩))))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `c₀ : ∀ i, Fin (r i) → MvPolynomial ι R₀` to `fun i k => L (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inl ⟨i, k⟩)))))`. Set `C₀ : ∀ i, Fin (r i) → Matrix (Fin b) (Fin a) (MvPolynomial ι R₀)` to `fun i k => Matrix.of fun j m => L (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inl ⟨i, k, j, m⟩))))))`. Set `C'₀ : ∀ i, Fin (r i) → Matrix (Fin a) (Fin a) (MvPolynomial ι R₀)` to `fun i k => Matrix.of fun l m => L (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inl ⟨i, k, l, m⟩)))))))`. Set `Ψ₀ : ∀ i, Matrix (Fin b) (Fin a) (MvPolynomial ι R₀)` to `fun i => Matrix.of fun j m => L (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inl ⟨i, j, m⟩))))))))`. Set `E₀ : ∀ i, Fin (r i) → Matrix (Fin a) (Fin b) (MvPolynomial ι R₀)` to `fun i k => Matrix.of fun l j => L (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inr (Sum.inr ⟨i, k, l, j⟩))))))))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΦ₀ : ∀ l j, φ (Φ₀ l j) = Φ l j` using `fun l j => hL _`. Establish `hg₀ : ∀ i k, φ (g₀ i k) = g i k` using `fun i k => hL _`. Establish `hwa₀ : ∀ i v k, φ (wa₀ i v k) = wa i v k` using `fun i v k => hL _`. Establish `hwb₀ : ∀ i j k l, φ (wb₀ i j k l) = wb i j k l` using `fun i j k l => hL _`. Establish `hc₀ : ∀ i k, φ (c₀ i k) = c i k` using `fun i k => hL _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hC₀ : ∀ i k j m, φ (C₀ i k j m) = C i k j m` using `fun i k j m => hL _`. Establish `hC'₀ : ∀ i k l m, φ (C'₀ i k l m) = C' i k l m` using `fun i k l m => hL _`. Establish `hΨ₀ : ∀ i j m, φ (Ψ₀ i j m) = Ψ i j m` using `fun i j m => hL _`. Establish `hE₀ : ∀ i k l j, φ (E₀ i k l j) = E i k l j` using `fun i k l j => hL _`. Establish `hφX : ∀ v, φ (X v) = X v` using `fun v => MvPolynomial.map_X _ _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨R₀, Φ₀, hnoeth, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `Matrix.ext fun l j => hΦ₀ l j`. Introduce `l j`. Rewrite using `[_root_.GlobalTheory.mem_polyGrading_iff]`. Introduce `α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `(_root_.GlobalTheory.mem_polyGrading_iff.1 (hΦ l j)) α ?_` and prove the remaining obligations. Rewrite using `[← hΦ₀ l j, MvPolynomial.coeff_map]`. Introduce `h0`. Conclude with `hα (Subtype.val_injective (by simpa using h0))`. Introduce `i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hwit₀ : ∀ j, aeval (fun v => X v + ∑ k, wa₀ i v k * g₀ i k) (g₀ i j) = ∑ k, ∑ l, wb₀ i j k l * (g₀ i k * g₀ i l)`. Introduce `j`. Apply `hφinj` to reduce the goal to its premises. Rewrite using `[aeval_eq_bind₁, MvPolynomial.map_bind₁]`. Simplify using `only [φ] at hg₀ hwa₀ hwb₀ hφX ⊢`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_sum, map_mul, hg₀, hwa₀, hwb₀, hφX]`. Rewrite using `[← aeval_eq_bind₁]`. Conclude with `hwit i j`. Use `haveI : Algebra.FormallySmooth R₀ (MvPolynomial ι R₀ ⧸ Ideal.span (Set.range (g₀ i))) := formallySmooth_quotient_of_aeval_shift_mem_sq (g₀ i) (wa₀ i) (wb₀ i) hwit₀`. Use `haveI : Algebra.FinitePresentation R₀ (MvPolynomial ι R₀ ⧸ Ideal.span (Set.range (g₀ i))) := Algebra.FinitePresentation.of_finiteType.1 inferInstance`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `haveI : Algebra.Smooth R₀ (MvPolynomial ι R₀ ⧸ Ideal.span (Set.range (g₀ i))) := ⟨inferInstance, inferInstance⟩`. Use `_root_.GlobalTheory.flat_quotSMulTop_coker_of_matrix_witnesses R₀ (MvPolynomial ι R₀) (r i) a b (g₀ i) (X i - 1) Φ₀ inferInstance ⟨c₀ i, ?_⟩ (fun k => ⟨C₀ i k, C'₀ i k, ?_⟩) ⟨Ψ₀ i, E₀ i, ?_⟩` and prove the remaining obligations. Apply `hφinj` to reduce the goal to its premises. Simplify using `only [map_sub, map_one, map_sum, map_mul, hc₀, hg₀, hφX]`. Conclude with `hc' i`.
-
-Use `Matrix.ext fun l m => ?_` and prove the remaining obligations. Apply `hφinj` to reduce the goal to its premises. Establish `h1` using `congr_fun (congr_fun (hCC i k) l) m`. Simplify using `only [Matrix.smul_apply, Matrix.add_apply, Matrix.mul_apply, Matrix.one_apply, smul_eq_mul] at h1 ⊢`. Simplify using `only [map_add, map_mul, map_sum, map_sub, map_one, hg₀, hφX, hΦ₀, hC₀, hC'₀, apply_ite φ, map_zero, map_one]`.
-
-Simplify `h1` using `[Φ₀, C₀, C'₀]`. Use `Matrix.ext fun l j => ?_` and prove the remaining obligations. Apply `hφinj` to reduce the goal to its premises. Establish `h1` using `congr_fun (congr_fun (hΨE i) l) j`. Simplify using `only [Matrix.add_apply, Matrix.mul_apply, Matrix.sum_apply, Matrix.smul_apply, smul_eq_mul] at h1 ⊢`.
-
-Simplify using `only [map_add, map_mul, map_sum, hΦ₀, hΨ₀, hE₀, hg₀]`. Conclude with `h1`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_noetherian_subring_homogeneous_matrix_flat_charts :
     ∀ (ι : Type) [LinearOrder ι] [Fintype ι] (R : Type) [CommRing R] (a b : ℕ) (d : Fin a → ℤ) (e : Fin b → ℤ) (Φ : Matrix (Fin a) (Fin b) (MvPolynomial ι R)), (∀ l j, Φ l j ∈ _root_.GlobalTheory.polyGrading ι R (e j - d l)) → (∀ i : ι, ∃ (B : Type) (_ : CommRing B) (_ : Algebra R B) (π : MvPolynomial ι R →ₐ[R] B) (P : Type) (_ : AddCommGroup P) (_ : Module B P) (ε : (Fin a → MvPolynomial ι R) →ₛₗ[(π : MvPolynomial ι R →+* B)] P), Algebra.Smooth R B ∧ Module.Projective B P ∧ Function.Surjective π ∧ π (X i) = 1 ∧ Function.Surjective ε ∧ ∀ y, ε y = 0 ↔ ∃ w w', y = Φ.mulVec w + (X i - 1 : MvPolynomial ι R) • w') → ∃ (R₀ : Subring R) (Φ₀ : Matrix (Fin a) (Fin b) (MvPolynomial ι R₀)), IsNoetherianRing R₀ ∧ Φ₀.map (MvPolynomial.map R₀.subtype) = Φ ∧ (∀ l j, Φ₀ l j ∈ _root_.GlobalTheory.polyGrading ι R₀ (e j - d l)) ∧ ∀ i : ι, Module.Flat R₀ (QuotSMulTop (X i - 1 : MvPolynomial ι R₀) ((Fin a → MvPolynomial ι R₀) ⧸ LinearMap.range Φ₀.mulVecLin)) := by

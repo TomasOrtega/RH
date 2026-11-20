@@ -11,19 +11,19 @@ open MvPowerSeries ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ Reciprocity
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ f g hf hg` and use `WickVanishing.gt_expS_add f g hf hg`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem germ_expS_add : G2.ExpAddZeroConstant :=
   fun _ _ _ _ _ f g hf hg => WickVanishing.gt_expS_add f g hf hg
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ a f ha` and use `WickVanishing.gt_const_ev_eq a ha f`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem germ_constantCoeff_ev : G2.ConstantCoeffSubstitution :=
   fun _ _ _ _ _ a f ha => WickVanishing.gt_const_ev_eq a ha f
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨germ_expS_add, germ_constantCoeff_ev⟩`.
+Supply the required witnesses or components.
 -/
 theorem germ_expAdd_and_evConst : G2.ExpAddZeroConstant ∧ G2.ConstantCoeffSubstitution :=
   ⟨germ_expS_add, germ_constantCoeff_ev⟩

@@ -3,7 +3,7 @@ import Mathlib
 open Matrix
 
 /- English proof (translation)
-Establish `h` using `Matrix.aeval_self_charpoly M`. Rewrite `h` using `[hM]`. Simplify using `only [map_mul, map_sub, map_add, map_one, map_pow, Polynomial.aeval_X, Polynomial.aeval_C] at h`. Rewrite `h` using `[Algebra.algebraMap_eq_smul_one, smul_mul_assoc, one_mul, sq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma cayley_hamilton_rank_three_factored {K : Type} [Field K] (τ : K) (M : Matrix (Fin 3) (Fin 3) K)
     (hM : M.charpoly = (Polynomial.X - 1) * (Polynomial.X ^ 2 - Polynomial.C τ * Polynomial.X + 1)) :
@@ -16,11 +16,11 @@ private lemma cayley_hamilton_rank_three_factored {K : Type} [Field K] (τ : K) 
   exact h
 
 /- English proof (translation)
-Establish `hp : ∀ t : K, (Matrix.scalar (Fin 3) t - M).det = (t - 1) * (t ^ 2 - τ * t + 1)`. Introduce `t`. Rewrite using `[← Matrix.eval_charpoly, hM]`. Simplify using the standard rewrite rules. Establish `e0` using `hp 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1` using `hp 1`. Establish `em` using `hp (-1)`. Simplify using `only [Matrix.det_fin_three, Matrix.sub_apply, Matrix.scalar_apply, Matrix.diagonal_apply] at e0 e1 em`. Simplify using `only [Fin.isValue, Fin.reduceEq, if_true, if_false, eq_self_iff_true] at e0 e1 em`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[Matrix.trace_fin_three]`. Take the linear combination `e0 - e1 / 2 - em / 2`. Rewrite using `[Matrix.trace_fin_three]`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_three]`. Take the linear combination `(M 0 0 + M 1 1 + M 2 2 + 1 + τ) * (e0 - e1 / 2 - em / 2) - (e1 - em)`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private lemma trace_inverseGram_conj_smul_eq {K : Type} [Field K] [CharZero K] (τ : K) (M : Matrix (Fin 3) (Fin 3) K)
     (hM : M.charpoly = (Polynomial.X - 1) * (Polynomial.X ^ 2 - Polynomial.C τ * Polynomial.X + 1)) :
@@ -42,61 +42,57 @@ private lemma trace_inverseGram_conj_smul_eq {K : Type} [Field K] [CharZero K] (
     linear_combination (M 0 0 + M 1 1 + M 2 2 + 1 + τ) * (e0 - e1 / 2 - em / 2) - (e1 - em)
 
 /- English proof (translation)
-Introduce `K _ _ τ hτ M hM`. Establish `hPQ` using `cayley_hamilton_rank_three_factored τ M hM`. Take `⟨htr1, htr2⟩` from `trace_inverseGram_conj_smul_eq τ M hM`. Establish `hc : (2 - τ : K) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hτ` to reduce the goal to its premises. Establish `h2 : τ = 2` using `by linear_combination -h0`. Rewrite using `[h2]`. Evaluate the numerical expressions. Take `⟨Q, hQdef⟩ : ∃ Q : Matrix (Fin 3) (Fin 3) K, Q = M * M - τ • M + 1` from `⟨_, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result.
 
-Rewrite `hPQ` using `[← hQdef]`. Establish `hMQ : M * Q = Q`. Rewrite `hPQ` using `[sub_mul, one_mul, sub_eq_zero]`. Conclude with `hPQ`. Establish `hQM : Q * M = Q`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : Q * M = M * Q`. Rewrite using `[hQdef]`. Simplify using `only [sub_mul, mul_sub, add_mul, mul_add, one_mul, mul_one, smul_mul_assoc, mul_smul_comm, mul_assoc]`. Rewrite using `[hc', hMQ]`. Establish `hQQ : Q * Q = (2 - τ) • Q`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_add, mul_sub, mul_one, mul_smul_comm, mul_assoc]`. Use `_ = (2 - τ) • Q := by`. Rewrite using `[hQM, hQM, sub_smul, two_smul]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨E, hE⟩ : ∃ E : Matrix (Fin 3) (Fin 3) K, E = (2 - τ)⁻¹ • Q` from `⟨_, rfl⟩`. Establish `hEE : E * E = E`. Rewrite using `[hE, smul_mul_smul_comm, hQQ, smul_smul]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hME : M * E = E` using `by rw [hE, mul_smul_comm, hMQ]`. Establish `hEM : E * M = E` using `by rw [hE, smul_mul_assoc, hQM]`. Establish `htrQ : Matrix.trace Q = 2 - τ`. Rewrite using `[hQdef, Matrix.trace_add, Matrix.trace_sub, Matrix.trace_smul, htr1, htr2, Matrix.trace_one]`. Simplify using `only [Fintype.card_fin, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `htrE : Matrix.trace E = 1`. Rewrite using `[hE, Matrix.trace_smul, htrQ, smul_eq_mul, inv_mul_cancel₀ hc]`. Take `⟨F, hF⟩ : ∃ F : Matrix (Fin 3) (Fin 3) K, F = 1 - E` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `htrF : Matrix.trace F = 2`. Rewrite using `[hF, Matrix.trace_sub, Matrix.trace_one, htrE]`. Simplify using `only [Fintype.card_fin]`. Evaluate the numerical expressions. Establish `hQF : Q * F = 0`.
+Simplify using the standard rewrite rules. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hF, mul_sub, mul_one, hE, mul_smul_comm, hQQ, smul_smul, inv_mul_cancel₀ hc, one_smul, sub_self]`. Establish `hEF : E * F = 0` using `by rw [hF, mul_sub, mul_one, hEE, sub_self]`. Establish `hMF : M * F = F * M` using `by rw [hF, mul_sub, sub_mul, mul_one, one_mul, hME, hEM]`. Establish `hQv : ∀ x : Fin 3 → K, Q *ᵥ x = M *ᵥ (M *ᵥ x) - τ • (M *ᵥ x) + x`. Introduce `x`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hQdef, Matrix.add_mulVec, Matrix.sub_mulVec, Matrix.smul_mulVec, Matrix.one_mulVec, Matrix.mulVec_mulVec]`. Establish `hdet : (Matrix.scalar (Fin 3) (1 : K) - M).det = 0`. Rewrite using `[← Matrix.eval_charpoly, hM]`. Simplify using the standard rewrite rules. Take `⟨e, he0, he⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hMe : M *ᵥ e = e`. Rewrite `he` using `[Matrix.sub_mulVec, sub_eq_zero]`. Simplify using `using he.symm`. Establish `hEe : E *ᵥ e = e`. Establish `h1 : Q *ᵥ e = (2 - τ) • e`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[hQv, hMe, hMe, sub_smul, two_smul]`. Normalize the expressions using the abelian group laws. Rewrite using `[hE, Matrix.smul_mulVec, h1, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Set `W : Submodule K (Fin 3 → K)` to `LinearMap.range (Matrix.toLin' F)`. Establish `hW : ∀ x ∈ W, Matrix.toLin' M x ∈ W`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x ⟨y, rfl⟩`. Use `⟨M *ᵥ y, ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.toLin'_apply, Matrix.mulVec_mulVec, hMF]`. Set `g : W →ₗ[K] W` to `(Matrix.toLin' M).restrict hW`. Choose the witnesses or unpack the hypotheses as in `⟨v0, hv0⟩ : ∃ v : W, LinearIndependent K ![v, g v] := by`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Take `⟨a, ha⟩` from `LinearMap.exists_eq_smul_id_of_forall_notLinearIndependent hno`. Establish `hMFx : ∀ x : Fin 3 → K, M *ᵥ (F *ᵥ x) = a • (F *ᵥ x)`. Introduce `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h` using `congrArg (fun h : W →ₗ[K] W => ((h ⟨F *ᵥ x, x, rfl⟩ : W) : Fin 3 → K)) ha`. Simplify `h` using `[g, LinearMap.restrict_apply, Matrix.toLin'_apply]`. Establish `hMFm : M * F = a • F`. Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `z`. Rewrite using `[map_smul, LinearMap.smul_apply, Matrix.toLin'_apply, Matrix.toLin'_apply, ← Matrix.mulVec_mulVec, hMFx]`. Establish `htrM : Matrix.trace M = 1 + 2 * a`. Establish `hsplit : M = M * E + M * F` using `by rw [← mul_add, hF, add_sub_cancel, mul_one]`. Rewrite using `[hsplit, Matrix.trace_add, hME, hMFm, Matrix.trace_smul, htrE, htrF, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hF0 : ∃ x : Fin 3 → K, F *ᵥ x ≠ 0`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Establish `hF00 : F = 0`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `Matrix.toLin'.injective` to reduce the goal to its premises. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `z`. Rewrite using `[map_zero, LinearMap.zero_apply, Matrix.toLin'_apply, hall z]`. Rewrite `htrF` using `[hF00, Matrix.trace_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Evaluate the numerical expressions using `at htrF`. Take `⟨x, hx⟩` from `hF0`. Establish `hq : (a ^ 2 - τ * a + 1) • (F *ᵥ x) = 0`. Establish `h` using `hQv (F *ᵥ x)`. Rewrite `h` using `[Matrix.mulVec_mulVec, hQF, Matrix.zero_mulVec, hMFx, Matrix.mulVec_smul, hMFx]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h]`. Use `module`. Establish `hq' : a ^ 2 - τ * a + 1 = 0`. Break down `smul_eq_zero.mp hq with h | h` into its components or cases. Conclude with `h`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `absurd h hx`. Apply `hτ` to reduce the goal to its premises. Establish `ht : τ = 2 * a` using `by linear_combination htr1.symm.trans htrM`. Take the linear combination `(τ - 2 * a) * ht - 4 * hq'`. Take `⟨y, hy⟩` from `v0.2`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set v : Fin 3 → K := (v0 : Fin 3 → K) with hvdef`. Establish `hvF : v = F *ᵥ y` using `by rw [← hy, Matrix.toLin'_apply]`. Establish `hv : LinearIndependent K ![v, M *ᵥ v]`. Establish `h` using `hv0.map' W.subtype (Submodule.ker_subtype W)`. Establish `hfun : (W.subtype ∘ ![v0, g v0]) = ![v, M *ᵥ v]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i : 1`. Apply the tactic sequence `fin_cases i <;> simp [g, LinearMap.restrict_apply, Matrix.toLin'_apply, hvdef]`. Rewrite `h` using `[hfun]`. Conclude with `h`. Establish `hQv0 : Q *ᵥ v = 0` using `by rw [hvF, Matrix.mulVec_mulVec, hQF, Matrix.zero_mulVec]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨e, v, hMe, ?_, ?_⟩` and prove the remaining obligations. Establish `h` using `hQv v`. Rewrite `h` using `[hQv0]`. Rewrite using `[eq_sub_iff_add_eq, ← sub_eq_zero, h]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hEv : E *ᵥ v = 0` using `by rw [hvF, Matrix.mulVec_mulVec, hEF, Matrix.zero_mulVec]`. Establish `hEMv : E *ᵥ (M *ᵥ v) = 0` using `by rw [Matrix.mulVec_mulVec, hEM, hEv]`. Establish `hli : LinearIndependent K ![e, v, M *ᵥ v]`. Express the relevant statement in the definitionally equal form `LinearIndependent K (Fin.cons e ![v, M *ᵥ v])`. Rewrite using `[linearIndependent_fin_cons]`.
-
-Use `⟨hv, fun hmem => ?_⟩` and prove the remaining obligations. Establish `hle : Submodule.span K (Set.range ![v, M *ᵥ v]) ≤ LinearMap.ker (Matrix.toLin' E)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Apply the tactic sequence `fin_cases i <;> simp [Matrix.toLin'_apply, hEv, hEMv]`.
-
-Establish `h0` using `hle hmem`. Rewrite `h0` using `[LinearMap.mem_ker, Matrix.toLin'_apply, hEe]`. Conclude with `he0 h0`. Establish `hu : IsUnit (Matrix.of ![e, v, M *ᵥ v])` using `Matrix.linearIndependent_rows_iff_isUnit.mp hli`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).mp hu).ne_zero`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_fixed_rotation_basis_of_charpoly :
     ∀ (K : Type) [Field K] [CharZero K] (τ : K), τ ^ 2 - 4 ≠ 0 → ∀ M : Matrix (Fin 3) (Fin 3) K,

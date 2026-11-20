@@ -6,27 +6,25 @@ open NumberField
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hr hfg`. Unfold `ReciprocityTheory.GeometryOfNumbersTheory.latRank at hr`. Take `⟨w, hw0, hw⟩` from `(finrank_eq_one_iff').mp hr`. Establish `hvW : (w : Fin m → K) ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hw0 (Subtype.ext h)`. Establish `hmul : ∀ e ∈ ell, ∃ β : K, e = β • (w : Fin m → K)`. Introduce `e he`. Take `⟨c, hc⟩` from `hw ⟨e, Submodule.subset_span he⟩`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congrArg Subtype.val hc` as an intermediate fact. Conclude with `this.symm`. Set `f : K →ₗ[𝓞 K] (Fin m → K)` to `{ toFun := fun β => β • (w : Fin m → K) map_add' := fun a b => add_smul a b _ map_smul' := fun r b => by`. Simplify using `only [RingHom.id_apply]`. Conclude with `smul_assoc r b _ }`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : ∀ β, f β = β • (w : Fin m → K)` using `fun _ => rfl`. Establish `finj : Function.Injective f`. Introduce `a b hab`. Rewrite `hab` using `[hf, hf]`. Establish `: (a - b) • (w : Fin m → K) = 0` using `by rw [sub_smul, hab, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Break down `smul_eq_zero.mp this with h | h` into its components or cases. Conclude with `sub_eq_zero.mp h`. Conclude with `absurd h hvW`. Use `⟨w, hvW, ell.comap f, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply `Submodule.fg_of_fg_map_injective f finj` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `: (ell.comap f).map f = ell`. Apply `le_antisymm (Submodule.map_comap_le _ _)` to reduce the goal to its premises. Introduce `e he`. Take `⟨β, rfl⟩` from `hmul e he`. Conclude with `⟨β, he, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hfg`. Introduce `hbot`. Apply `hw0` to reduce the goal to its premises. Establish `hell : ell = ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[eq_bot_iff]`. Introduce `e he`. Take `⟨β, rfl⟩` from `hmul e he`. Establish `: β ∈ ell.comap f` using `he`. Rewrite `this` using `[hbot, Submodule.mem_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[this]`. Establish `hW : Submodule.span K (ell : Set (Fin m → K)) = ⊥` using `by simp [hell]`. Establish `h0 : ∀ x ∈ Submodule.span K (ell : Set (Fin m → K)), x = 0`. Rewrite using `[hW]`. Introduce `x hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `(Submodule.mem_bot K).mp hx`. Conclude with `Subtype.ext (h0 _ w.2)`. Introduce `e`. Prove the components needed by the constructor for the conclusion. Introduce `he`.
-
-Take `⟨β, rfl⟩` from `hmul e he`. Conclude with `⟨β, he, rfl⟩`. Introduce and unpack `⟨β, hβ, rfl⟩`. Conclude with `hβ`.
+A detailed English derivation is pending.
 -/
 theorem latRank_one_eq_ideal_smul {K : Type} [Field K] [NumberField K] {m : ℕ}
     (ell : Submodule (𝓞 K) (Fin m → K)) :

@@ -15,9 +15,9 @@ open GlobalTheory.Poinc
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `g hg n hn hodd F Z z i hθ φ hφ`. Take `⟨ι, _, W, hclo, hirr, hpart⟩` from `GlobalTheory.T.exists_clopen_irreducible_partition_of_normal_proj n Z z hθ.1 hθ.2.1`. Establish `key : ∀ c, ∃ (d : ℕ) (J : Z.IdealSheafData), 1 ≤ d ∧ (∀ x ∈ J.support, x ∈ W c ∧ x ∉ Set.range i) ∧ ∀ (T : Trait F) (ξ : Sp T.V ⟶ Z), jK T.V ≫ ξ = T.y ≫ i → ξ (closedPoint T.V) ∈ W c → ∃ a : ℕ, (a : ℝ) = d * φ.evalZ T.β ∧ idlAlong J ξ = Ideal.span {T.ϖ ^ a}`. Introduce `c`. Take `⟨W8, X₁, ι₁, J₁, h1, h2, h4, h5⟩` from `GlobalTheory.T.exists_thetaSetup_ideal_over_clopen_component g n hg hn hodd F Z z i hθ φ hφ (W c) (hclo c) (hirr c)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.T.idealDescent_thetaModel_to_component_traitOrders g n hg hn hodd F Z z i hθ φ hφ (W c) (hclo c) (hirr c) W8 X₁ ι₁ J₁ h1 h2 h4 h5`. Use `choose d J hd hJ hv using key`. Conclude with `GlobalTheory.T.exists_fanOrder_ideal_glued_clopen_pieces F i φ W J d hclo hpart hd hJ hv`.
+A detailed English derivation is pending.
 -/
 theorem idealSt_holds : IdealSt := by
   intro g hg n hn hodd F Z z i hθ φ hφ

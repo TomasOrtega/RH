@@ -14,9 +14,9 @@ open GlobalTheory.UT ReciprocityTheory.ChartRestriction.G.DVR
 namespace GlobalTheory.Poinc.PsiIntGen
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun q => q.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`. Establish `e' : (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (f a) = ((Spec.map (CommRingCat.ofHom f)).app ⊤).hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a)` using `e`. Rewrite using `[e']`. Use `gs_pull (𝟙 (Spec (CommRingCat.of B))) (Spec.map (CommRingCat.ofHom f)) z ⊤ trivial ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a)` as an intermediate fact. Rewrite `this` using `[Category.id_comp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem gs_specMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (z : Spec (CommRingCat.of B)) (a : A) :
     gs (Spec.map (CommRingCat.ofHom f)) z ⊤ ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a) =
@@ -31,15 +31,15 @@ theorem gs_specMap {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (z : S
   exact this.symm
 
 /- English proof (translation)
-Introduce `V _ _ D mu r hr`. Take `⟨j, hj, h, e⟩` from `hr`. Take `⟨t, ht, vt⟩` from `PsiSpread.exists_gen_of_chart D.P.isLB (K := PUnit) (fun _ => (D.c mu).left) (fun _ => -1) j (fun y => Set.mem_iInter.2 fun _ => hj trivial) ⊤ (fun _ => trivial) 1`. Use `⟨t, ht, fun z J hJ => ?_⟩` and prove the remaining obligations. Establish `q : jFK (R` using `V) (FractionRing V) ≫ ptK (D.c mu) = (toUnit (TF (R := V) (FractionRing V))).left ≫ (D.c mu).left := (Category.assoc _ _ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `a` using `gen_trans (D.psi_gen mu) (jFK (R := V) (FractionRing V)) z (j' := j) (hJ.mem _ _) (h trivial)`. Establish `b` using `vt _ (toUnit (TF (R := V) (FractionRing V))).left z _ (hJ.mem _ _)`. Rewrite `b` using `[map_one, _root_.mul_one]`. Establish `c : (gm (jFK (R` using `V) (FractionRing V)) z (LB.wchart D.P.L (K := PUnit) (fun _ => ptK (D.c mu)) j) ((D.psi mu).s j)).val = GlobalTheory.UT.cst (FractionRing V) z (algebraMap V (FractionRing V) r) := by`. Use `(gs_unit _ _ _ (h trivial) _).symm.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gs_res (jFK (R := V) (FractionRing V)) z h trivial ((D.psi mu).s j).val).symm.trans ?_` and prove the remaining obligations. Use `(congrArg (gs (jFK (R := V) (FractionRing V)) z _) e.symm).trans ?_` and prove the remaining obligations. Use `(gs_pull (jFK (R := V) (FractionRing V)) (jK V) z ⊤ trivial _).trans ?_` and prove the remaining obligations. Use `(gs_res _ z (le_top : (⊤ : (Spec (CommRingCat.of V)).Opens) ≤ ⊤) trivial _).trans ?_` and prove the remaining obligations. Establish `s : jFK (R` using `V) (FractionRing V) ≫ jK V = Spec.map (CommRingCat.ofHom (algebraMap V (FractionRing V))) := by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[s]`. Conclude with `gs_specMap _ z r`. Establish `d : trF (L` using `D.P.L) (K := PUnit) (fun _ => ptK (D.c mu)) (fun _ => -1) (jFK (R := V) (FractionRing V)) z (fun _ => J (jFK (R := V) (FractionRing V) ≫ ptK (D.c mu))) j = trF (L := D.P.L) (K := PUnit) (fun _ => (D.c mu).left) (fun _ => -1) (toUnit (TF (R := V) (FractionRing V))).left z (fun _ = …`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg Units.val a).trans ((Units.val_mul _ _).trans ((_root_.mul_comm _ _).trans ?_))` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) c (congrArg Units.val (d.trans b.symm))`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (V : Type) [CommRing V] [IsDomain V] (D : DegPre V) (mu : D.X) (r : V), Formalism.L2.Pj.PsiCoord D mu r → ∃ gam : LB.Gen (LB.LinComb D.P.L (K := PUnit) (fun _ => (D.c mu).left) (fun _ => -1)), gam.IsGen ∧ ∀ (z : (TF (R := V) (FractionRing V)).left) (J : ((TF (R := V) (FractionRing V)).left ⟶ D.P.A.left) → D.P.L.ι), Good D.P.L z J → (@id ((TF (R := V) (FractionRing V)).left.presheaf.stalk z)ˣ (Geo.Tor.val (D.psi mu) (jFK (R := V) (FractionRing V)) z J)).val = GlobalTheory.UT.cst (FractionRing V) z (algebraMap V (FractionRing V) r) * (Geo.Tor.val gam (toUnit (TF (R := V) (FractionRing V))).left z J).val := by
   intro V _ _ D mu r hr

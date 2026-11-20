@@ -13,23 +13,21 @@ section Local
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {P : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Establish `hq0` using `GlobalTheory.TopStep.qOf_ne_zero (P := P)`. Establish `key : {z | z - a ∈ stdAt E n P} = {z | z - a' ∈ stdAt E n P} ↔ a - a' ∈ stdAt E n P`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h0 : a ∈ {z | z - a ∈ stdAt E n P}` using `by show a - a ∈ stdAt E n P`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[sub_self]`. Conclude with `zero_mem _`. Rewrite `h0` using `[h]`. Conclude with `h0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `z`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `hz`. Use `add_mem hz h` as an intermediate fact.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Introduce `hz`. Use `sub_mem hz h` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_right]`. Then use the resulting hypothesis. Rewrite using `[key, GlobalTheory.TopStep.mem_stdAt]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `i`. Establish `hi` using `GlobalTheory.TopStep.mem_stdAt.1 ha i`. Establish `hi'` using `GlobalTheory.TopStep.mem_stdAt.1 ha' i`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show redP P ((((qOf P : ℕ) : E) • a) i) = redP P ((((qOf P : ℕ) : E) • a') i)`. Rewrite using `[← sub_eq_zero, ← GlobalTheory.TopStep.reduction_sub hi hi']`. Apply `GlobalTheory.TopStep.redP_eq_zero_of_div` to reduce the goal to its premises. Use `h i using 1` and compare the differences between its conclusion and the goal. Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.sub_apply]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Introduce `h i`. Establish `hi` using `GlobalTheory.TopStep.mem_stdAt.1 ha i`. Establish `hi'` using `GlobalTheory.TopStep.mem_stdAt.1 ha' i`. Establish `e` using `congrFun h i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : redP P ((((qOf P : ℕ) : E) • a) i - (((qOf P : ℕ) : E) • a') i) = 0`. Rewrite using `[GlobalTheory.TopStep.reduction_sub hi hi']`. Conclude with `sub_eq_zero.2 e`. Use `GlobalTheory.TopStep.intAt_div_of_redP hq (GlobalTheory.TopStep.intAt_sub hi hi') h0` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
-
-Simplify using `only [Pi.smul_apply, smul_eq_mul, Pi.sub_apply]`. Clear the denominators using the available nonvanishing facts.
+Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem coset_eq_iff_redV (hq : ((qOf P : ℕ) : 𝓞 E) ∉ P.asIdeal ^ 2) {a a' : Sp E n}
     (ha : ((qOf P : ℕ) : E) • a ∈ stdAt E n P) (ha' : ((qOf P : ℕ) : E) • a' ∈ stdAt E n P) :
@@ -89,7 +87,7 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞
   {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ}
 
 /- English proof (translation)
-Establish `h` using `P.2`. Simplify using `only [rowSG, uSG, hQ, Finset.union_empty] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_vGs_of_rowSG (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (P : rowSG Pr sel mu) : P.1 ∈ Pr.vGs := by
   have h := P.2
@@ -97,11 +95,11 @@ theorem mem_vGs_of_rowSG (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (P : rowSG P
   exact h
 
 /- English proof (translation)
-Take `⟨y, hy, hY⟩` from `q.mem_ybSet h`. Use `⟨y, fun w hw => ?_, fun z => ?_⟩` and prove the remaining obligations. Use `(Formalism.L2.Col.mem_locLat _ _ _ _).1 hy ⟨w, Finset.mem_union_left _ hw⟩` as an intermediate fact. Simplify `this` using `[hw]`. Rewrite using `[hY, Set.mem_setOf_eq, Formalism.L2.Col.mem_locLat]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h w hw`. Simplify `h ⟨w, Finset.mem_union_left _ hw⟩` using `[hw]`. Introduce `h P`. Establish `hP` using `mem_vGs_of_rowSG hQ P`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h P.1 hP` using `[hP]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ptAt_coset (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (q : PtAt R sel mu cst u j) (h : j + 1 = R.m) :
     ∃ y : Sp X.E (R.N j), (∀ w ∈ Pr.vGs, ((qOf w : ℕ) : X.E) • y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal q.1.1.deco.1.N) ∧
@@ -119,13 +117,13 @@ theorem ptAt_coset (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (q : PtAt R sel mu
       simpa [hP] using h P.1 hP
 
 /- English proof (translation)
-Establish `hP` using `mem_vGs_of_rowSG hQ P`. Establish `hf` using `GlobalTheory.TopStep.liftFr_spec q.1.1.deco.2 ⟨P.1, hP⟩`. Establish `hfr : frsF sel mu q.1.1 P = q.1.1.deco.1.liftFr ⟨P.1, hP⟩`. Unfold `frsF`. Rewrite using `[dif_pos hP]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `z`. Simplify using `only [cosetIn, Set.mem_setOf_eq, if_pos hP, pow_zero, inv_one, one_smul, hfr]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y', hy', hz⟩`. Establish `h1 : (q.1.1.deco.1.liftFr ⟨P.1, hP⟩).symm y' - (q.1.1.deco.1.liftFr ⟨P.1, hP⟩).symm y ∈ stdAt X.E (R.N j) P.1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[← map_sub]`. Conclude with `(hf.1 _).1 (by rw [LinearEquiv.apply_symm_apply]; exact (hY y').1 hy' P.1 hP)`. Use `add_mem hz h1` as an intermediate fact. Rewrite `this` using `[sub_add_sub_cancel]`. Then use the resulting hypothesis. Introduce `hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨y, (hY y).2 fun w _ => by rw [sub_self]; exact zero_mem _, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem cosetIn_eq (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (q : PtAt R sel mu cst u j) {y : Sp X.E (R.N j)}
     (hY : ∀ z, z ∈ q.1.2 ↔ ∀ w ∈ Pr.vGs, z - y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal q.1.1.deco.1.N) (P : rowSG Pr sel mu) :
@@ -148,13 +146,13 @@ theorem cosetIn_eq (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (q : PtAt R sel mu
     exact ⟨y, (hY y).2 fun w _ => by rw [sub_self]; exact zero_mem _, hz⟩
 
 /- English proof (translation)
-Establish `hd` using `q.1.1.deco.2`. Establish `hf` using `GlobalTheory.TopStep.liftFr_spec hd w`. Establish `hq` using `hy w.1 w.2`. Establish `key : q.1.1.deco.1.be w (((qOf w.1 : ℕ) : X.E) • y) = redV w.1 (((qOf w.1 : ℕ) : X.E) • (q.1.1.deco.1.liftFr w).symm y)`. Rewrite using `[← map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : (q.1.1.deco.1.liftFr w).symm (((qOf w.1 : ℕ) : X.E) • y) ∈ stdAt X.E _ w.1` using `(hf.1 _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hq)`. Rewrite using `[← hf.2 _ hs, LinearEquiv.apply_symm_apply]`. Use extensionality with `v`. Simplify using `only [bar, Set.mem_setOf_eq, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Rewrite using `[← key]`. Establish `ht : z - y ∈ q.1.1.deco.1.at w.1` using `(hY z).1 hz w.1 w.2`. Establish `e : ((qOf w.1 : ℕ) : X.E) • z = ((qOf w.1 : ℕ) : X.E) • y + ((qOf w.1 : ℕ) : X.E) • (z - y)`. Rewrite using `[← smul_add, add_sub_cancel]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, hd.be_add w _ hq _ (GlobalTheory.TopStep.smul_mem_locP (GlobalTheory.TopStep.intAt_nat _) ht), GlobalTheory.TopStep.be_smul_int hd w (GlobalTheory.TopStep.intAt_nat _) ht, GlobalTheory.TopStep.reduction_absNorm_eq_zero, zero_smul, add_zero]`. Introduce and unpack `rfl`. Conclude with `⟨y, (hY y).2 fun w _ => by rw [sub_self]; exact zero_mem _, key.symm⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem bar_eq (q : PtAt R sel mu cst u j) {y : Sp X.E (R.N j)}
     (hy : ∀ w ∈ Pr.vGs, ((qOf w : ℕ) : X.E) • y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal q.1.1.deco.1.N)
@@ -183,21 +181,19 @@ theorem bar_eq (q : PtAt R sel mu cst u j) {y : Sp X.E (R.N j)}
     exact ⟨y, (hY y).2 fun w _ => by rw [sub_self]; exact zero_mem _, key.symm⟩
 
 /- English proof (translation)
-Introduce `X Pr R sel S mu cst u j hQ hq q q'`. Distinguish the cases in `h : j + 1 = R.m`. Take `⟨y, hy, hY⟩` from `ptAt_coset hQ q h`. Take `⟨y', hy', hY'⟩` from `ptAt_coset hQ q' h`. Establish `hA : ∀ (p : PtAt R sel mu cst u j) (y : Sp X.E (R.N j)), (∀ w ∈ Pr.vGs, ((qOf w : ℕ) : X.E) • y ∈ Formalism.HermitianLatticesTheory.localization₂ w.asIdeal p.1.1.deco.1.N) → ∀ w : Pr.vGs, ((qOf w.1 : ℕ) : X.E) • (p.1.1.deco.1.liftFr w).symm y ∈ stdAt X.E (R.N j) w.1`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `p y hy w`. Establish `hf` using `GlobalTheory.TopStep.liftFr_spec p.1.1.deco.2 w`. Rewrite using `[← map_smul]`. Conclude with `(hf.1 _).1 (by rw [LinearEquiv.apply_symm_apply]; exact hy w.1 w.2)`. Rewrite using `[funext_iff, funext_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `H w`. Use `H ⟨w.1, Finset.mem_union_left _ w.2⟩` as an intermediate fact. Rewrite `this` using `[cosetIn_eq hQ q hY, cosetIn_eq hQ q' hY']`. Rewrite using `[bar_eq q hy hY, bar_eq q' hy' hY', Set.singleton_eq_singleton_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(coset_eq_iff_redV (hq w.1 w.2) (hA q y hy w) (hA q' y' hy' w)).1 this`. Introduce `H P`. Establish `hP` using `mem_vGs_of_rowSG hQ P`. Use `H ⟨P.1, hP⟩` as an intermediate fact. Rewrite `this` using `[bar_eq q hy hY, bar_eq q' hy' hY', Set.singleton_eq_singleton_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[cosetIn_eq hQ q hY, cosetIn_eq hQ q' hY']`. Conclude with `(coset_eq_iff_redV (hq P.1 hP) (hA q y hy ⟨P.1, hP⟩) (hA q' y' hy' ⟨P.1, hP⟩)).2 this`. Establish `e : ∀ p : PtAt R sel mu cst u j, p.1.2 = ∅` using `fun p => by`. Use `p.2` as an intermediate fact. Rewrite `this` using `[ysAt_ys_of_ne sel mu cst h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components.
 
-Conclude with `this`. Establish `h1 : ∀ p : PtAt R sel mu cst u j, cosetIn p = fun _ => ∅` using `fun p => by`. Use function extensionality and compare the values at `P`. Use extensionality with `z`. Simplify using `[cosetIn, e p]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ p : PtAt R sel mu cst u j, bar p = fun _ => ∅` using `fun p => by`. Use function extensionality and compare the values at `w`. Use extensionality with `v`. Simplify using `[bar, e p]`. Rewrite using `[h1 q, h1 q', h2 q, h2 q']`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cosetIn_eq_iff_bar_eq : ∀ {X : Fields} {Pr : Primes X} {R : Ranks} {sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)}
     {S : Set ℕ} {mu : Tup X.F X.E X.K S} {cst : LocCst X (rowSG Pr sel mu)} {u : Pr.Word} {j : ℕ},

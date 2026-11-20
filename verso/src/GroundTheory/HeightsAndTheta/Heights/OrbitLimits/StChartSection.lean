@@ -21,7 +21,7 @@ def chartSection {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → 
 omit [Fintype K] [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Use `show eval₂Hom (RingHom.id ℂ) x _ = _`. Rewrite using `[chartSection, eval₂Hom_bind₁]`. Simplify using `only [eval₂Hom_X']`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem eval_chartSection {m : ℕ} (σ : Fin m ≃ ((k : K) → ι k)) (i : (k : K) → ι k) (s : MRing ι)
     (x : Fin m → ℂ) :

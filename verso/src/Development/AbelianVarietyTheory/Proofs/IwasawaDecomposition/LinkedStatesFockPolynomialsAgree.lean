@@ -22,13 +22,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HeightCounting.SerMove.Io
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Establish `ht : X.tC cr b j Bs.μ0 = 0`. Establish `e : (fun k => X.θ' j Bs.μ0 (X.jL j Bs.μ0 (cr.toL X.zs b j Bs.μ0 (Pi.single k 1)))) = fun _ => 0`. Use function extensionality and compare the values at `fun k => by rw [hn (cr.toL X.zs b j Bs.μ0 _), map_zero, map_zero]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Unfold `CxData.tC`. Rewrite using `[e]`. Use extensionality with `k`. Simplify using `[lin]`. Establish `hw : LinearMap.range (X.w0C b j) = ⊥` using `by rw [← (h5 j Bs.μ0).2, ht, LinearMap.range_zero]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE0 : X.EEl b = ⊥`. Rewrite using `[← hE.2, iSup_eq_bot]`. Introduce `p`. Rewrite using `[← Submodule.finrank_eq_zero, ← hD j p, hw, inf_bot_eq, finrank_bot]`. Establish `h0 : X.iC cr b Bs.μ0 = 0` using `LinearMap.range_eq_bot.1 (h2.2.2.trans hE0)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (fun _ => 1 : Fin ((lv (fc X.zs) b).dQ Bs.μ0) → ℂ) = 0` using `h2.1 (by rw [h0]; rfl)`. Conclude with `one_ne_zero (congrFun h1 ⟨0, hp⟩)`.
+A detailed English derivation is pending.
 -/
 theorem cx_form {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase K} {A : DefAmb Bs} (X : CxData A)
     {fc : DefSub A → DefFace Bs} (cr : Crd A fc) (b : Bool) (hp : (lv (fc X.zs) b).Pos) (h2 : X.H2 cr b) (h5 : X.H5 cr b)
@@ -52,7 +52,7 @@ theorem cx_form {K : Type} [Field K] [NumberField K] [StarRing K] {Bs : DefBase 
   exact one_ne_zero (congrFun h1 ⟨0, hp⟩)
 
 /- English proof (translation)
-The claim follows from `have hRw := complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim cx_form (R.toCx3 F) F.cr false (hH.prim.pos false) (hRw.what₂ false).1 hRw.lifts0.1 (hH.prim.sumE false) hH.prim.dimParts i`.
+A detailed English derivation is pending.
 -/
 theorem exists_form {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat3 D A3 Ks} {F : Face3 D A3}
@@ -64,7 +64,7 @@ theorem exists_form {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `choose u hu h1 h2 using fun i => OmExt.RootUpd.exists_unit_of_pow (a i) (n i) (hn i) (ha i)`. Take `⟨gramR, c0R, ht⟩` from `hc`. Conclude with `⟨gramR, c0R, ⟨ht.ranks, ht.v0, ht.tauL_ok, ht.pl_inj, ht.q, ht.S_fin, ht.ok, ht.gramR_eq, ht.mapR, fun j => OmExt.RootUpd.coefMapTie_smul (ht.mapL j) ((map_ne_zero _).2 (right_ne_zero_of_mul_eq_one (h2 j))), ht.coefR, fun j t => OmExt.RootUpd.coefTie_smul (ht.coefL j t) (a j) (u …`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coefFam_roots {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
@@ -78,7 +78,7 @@ theorem coefFam_roots {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} 
     ht.coefR, fun j t => OmExt.RootUpd.coefTie_smul (ht.coefL j t) (a j) (u j) (hu j) (h1 j) (h2 j)⟩⟩
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `.refl _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sameModel_of_eq {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.what₂.LL G Pl0 T0 D.R.m} {Ks : Type}
     [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (i : Fin D.R.m) {σ σ' : D.what₂.LL →+* ℂ} (h : σ = σ') :
@@ -92,17 +92,17 @@ variable {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : T
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality. Establish `e0 : i = i'` using `Fin.ext hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e0` using the available equality. Substitute `hW` using the available equality. Consider the cases of `hn`. Consider the cases of `hiW`. Consider the cases of `hy`.
+Substitute using the available equality. Substitute using the available equality. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Take `⟨a, b, c, d, l, e, g⟩` from `hM`. Consider the cases of `M`. Consider the cases of `M'`. Simplify using `only at a b c d l e g`. Consider the cases of `a`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `b`. Consider the cases of `c`. Consider the cases of `d`. Consider the cases of `l`. Consider the cases of `e`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `g`. Establish `e1 : u = u'` using `funext fun τ => Subtype.ext (Subtype.ext (eq_of_heq (hu τ τ HEq.rfl)))`. Establish `e2 : io' = io` using `eq_of_heq hio`. Substitute `e1` using the available equality. Substitute `e2` using the available equality.
+Split into cases according to the possible forms of the given data. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Substitute using the available equality.
 
-Conclude with `HEq.rfl`.
+A detailed English derivation is pending.
 -/
 theorem heq_io (q : B'.toPre = B.toPre) (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i')
     {S : (w.st Z).toD7.what₂.Tau → SPar} {S' : (w'.st Z').toD7.what₂.Tau → SPar}
@@ -138,9 +138,9 @@ theorem heq_io (q : B'.toPre = B.toPre) (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨P', _⟩` from `B'`. Take `⟨P, _⟩` from `B`. Simplify using `only at q`. Substitute `q` using the available equality. Establish `e0 : i = i'` using `Fin.ext hi`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Establish an intermediate fact.
 
-Substitute `e0` using the available equality. Establish `e1 : MvPolynomial.map ι F = F'` using `eq_of_heq hF`. Substitute `e1` using the available equality. Conclude with `heq_of_eq ((MvPolynomial.map_map _ _ _).trans (congrArg (fun s => MvPolynomial.map s F) (RingHom.ext hι)))`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem heq_pol (q : B'.toPre = B.toPre) (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i')
     (ι : (w.st Z).toD7.what₂.LL →+* (w'.st Z').toD7.what₂.LL)
@@ -165,15 +165,15 @@ open OmExt LiftUnit Formalism.DivisionValues Formalism.L2.Col
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨gR, c0R, ht⟩` from `hc`. Take `⟨gR', c0R', ht'⟩` from `hc''`. Take `⟨hW, hρ, -⟩` from `hN.BV i i' hii`. Take `⟨hnW, hiW⟩` from `hN.cV i i' hii`. Establish `hcI` using `z.pins.char.base.models.cV i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmapL` using `ht.mapL i`. Establish `hmapL'` using `ht'.mapL i'`. Establish `htau` using `ht.tauL_ok`. Establish `htau'` using `ht'.tauL_ok`. Use `clear hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hpre, -, -, hR⟩` from `hE`. Consider the cases of `B with | mk P => cases B' with | mk P' =>`. Simplify using `only at hpre`. Substitute `hpre` using the available equality. Take `rfl : i = i'` from `Fin.ext hii`.
+Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `ι : (w.st Z).toD7.what₂.LL →+* (w'.st Z').toD7.what₂.LL` to `(by with_unfolding_all exact ((enlEmb hR) :))`. Establish `hι : ∀ x, (w'.st Z').toD7.what₂.embLL (ι x) = (w.st Z).toD7.what₂.embLL x` using `(by with_unfolding_all exact ((enlEmb_spec hR) :))`. Set `c'' : CoefA (Vc (w.st Z).toD7 i)` to `{ W := (z'.R.cV i).W, nW := (z'.R.cV i).nW, iW := (z'.R.cV i).iW, fW := (z'.R.cV i).fW, ρ := (z'.R.cV i).ρ }`. Establish `hcc : c'' = z.R.cV i` using `coefA_eq _ _ hW hρ hnW hiW`. Take `⟨μ, hμ⟩` from `exists_smul_eq_enl (z.R.cV i) hcI ι (w'.st Z').toD7.what₂.embLL hι (labLL (w.st Z).toD7) (labLL (w'.st Z').toD7) (fun τ => (htau' τ).trans (htau τ).symm) (c0L i) hmapL c'' hcc (c0L'' i) hmapL'.1`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨μ, fun v v' hv => hμ v v' (eq_of_heq hv)⟩`.
+A detailed English derivation is pending.
 -/
 theorem coef_schur (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' Wt') (hE : Enl0 B B') (hN : ExtN z z')
     (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hii : (i : ℕ) = i')
@@ -207,21 +207,19 @@ theorem coef_schur (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' 
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Take `⟨φ, rfl⟩` from `((mtKGSD (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ((i : ℕ) + 1)).res (mtKOk _ _ _ _ hX _)).surjective x`. Establish `hφ : φ ≠ 0` using `fun h0 => hx (h0 ▸ map_zero _)`. Take `⟨h, hh⟩ : ∃ h, z.R.B.jL i (mu0F (X` from `B.fields) (tuOf w.I (usedOf w.I T Wt))) ((mtKGSD (Pr := B.primes w.px) B.wts w.I.Ch w.I.sel (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt))).1 ((i : ℕ) + 1)).res (mtKOk _ _ _ _ hX _) φ) h ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Conclude with `hx (GlobalTheory.PresBasic.extL_injective (z.R.B.L i (mu0F (X := B.fields) (tuOf w.I (usedOf w.I T Wt)))).pres ((funext hn).trans (map_zero _).symm))`. Take `⟨φ', hφφ⟩` from `exists_form_enl w w' Wt Wt' hE hf hpx ((i : ℕ) + 1) ((i' : ℕ) + 1) (by rw [hii]) φ`. Establish `hj` using `hN.jL i i' hii (mtKOk _ _ _ _ hX _) (mtKOk _ _ _ _ hX' _) φ φ' hφφ`. Establish `hW` using `(hN.BV i i' hii).1`. Take `⟨u, n, hn, hu, H⟩` from `exists_root_reading (w.st Z) w.I hX _ z.Xg z.tr z.R.toRealDat w.ok z.lev i (z.pins.char.base.models.cV i) c0L hc (hstd.2 i) _ φ hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `RowCoord.exists_matEq (D := (w.st Z).toD7) (Vc (w.st Z).toD7 i) (LiftBrg.rkEq (w.st Z) i).symm (gram_eq_one (w.st Z) w.I w.ok i) h`. Take `⟨v, hv1, hv2⟩` from `H φ h y hy`. Establish `H'` using `exists_root_reading (w'.st Z') w'.I hX' _ z'.Xg z'.tr z'.R.toRealDat w'.ok z'.lev i' (z'.pins.char.base.models.cV i') c0L'' hc'' (hB.2 i') _ φ'`. Establish `hS` using `rowLevelPrimes_colTuples_eq_vGs w Wt`. Establish `hS'` using `rowLevelPrimes_colTuples_eq_vGs w' Wt'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data.
 
-Use `clear H hN hB hstd hc hc''`. Take `⟨hpre, -, -, -⟩` from `hE`. Consider the cases of `B with | mk P₁ =>`. Consider the cases of `B' with | mk P₂ =>`. Simplify using `only at hpre`.
+Split into cases according to the possible forms of the given data. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hpre` using the available equality. Take `rfl : i' = i` from `Fin.ext hii.symm`. Establish `ep : w'.px = w.px` using `eq_of_heq hpx`. Establish `hvG : ((baseOfColW w').primes w'.px).vGs = ((baseOfColW w).primes w.px).vGs`. Rewrite using `[ep]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `hjh` using `heq_apply (eq_of_heq hW) hj h`. Establish `hSS` using `hS'.trans (hvG.trans hS.symm)`. Establish `hd` using `hφφ _ _ (heq_decoOf (X := (baseOfColW w).fields) hSS y.1)`. Establish `h0 : c0L i' v ≠ 0` using `fun e => hh (hv2.trans ((congrArg _ e).trans (smul_zero (A := (z.R.cV i').W) _)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hφ' : φ' ≠ 0` using `fun e => hφ (Subtype.ext (funext fun d => Subtype.ext (by`. Establish `e1` using `eq_of_heq (hφφ d (cast (congrArg (DecoSet (baseOfColW w).fields.E (baseOfColW w).R.nV ∅) hSS.symm) d) (cast_heq _ _))`. Rewrite `e1` using `[e]`. Conclude with `MvPolynomial.map_injective _ (baseOfColW w).embLL.injective (e1.symm.trans ((map_zero _).trans (map_zero _).symm)))))`. Take `⟨u', n', hn', hu', H⟩` from `H' hφ'`.
-
-Take `⟨v', hv1', hv2'⟩` from `H φ' h y hy`. Conclude with `⟨v, v', u, u', n, n', hn, hu, hn', hu', hv1'.trans (hd.trans hv1.symm), h0, (heq_of_eq hv2'.symm).trans (hjh.trans (heq_of_eq hv2))⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem agree_root (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' Wt') (hE : Enl0 B B') (hf : HEq f' f)
     (hpx : HEq w'.px w.px) (hstd : z.Std) (hB : z'.Std) (hN : ExtN z z')
@@ -281,15 +279,15 @@ theorem agree_root (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨μ, hμ⟩` from `coef_schur z z' hE hN i i' hii c0L hc c0L'' hc''`. Take `⟨v, v', u, u', n, n', hn, hun, hn', hun', hvv, hv0, hrel⟩` from `agree_root z z' hE hf hpx hstd hB hN i i' hii c0L hc c0L'' hc'' x hx`. Establish `hW` using `(hN.BV i i' hii).1`. Take `⟨hnW, hiW⟩` from `hN.cV i i' hii`. Establish `key` using `OmCoef.smul_eq_of_heq (eq_of_heq hW) hnW hiW (hμ v v' hvv) hrel`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hμe : (w'.st Z').toD7.what₂.embLL u' * μ = (w.st Z).toD7.what₂.embLL u` using `smul_left_injective ℂ hv0 key`. Establish `hu0 : (w.st Z).toD7.what₂.embLL u ≠ 0` using `(map_ne_zero _).2 fun h => by`. Rewrite `hun` using `[h, zero_pow hn]`. Conclude with `zero_ne_one hun`. Take `⟨b, hb⟩ : (w.st Z).toD7.what₂.embLL u ∈ Set.range (w'.st Z').toD7.what₂.embLL` from `hE.2.2.2 ⟨u, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb1 : b ^ n = 1` using `(w'.st Z').toD7.what₂.embLL.injective (by rw [map_pow, hb, ← map_pow, hun, map_one, map_one])`. Establish `ha : (u' * b⁻¹) ^ (n * n') = 1`. Establish `e1 : u' ^ (n * n') = 1` using `by rw [mul_comm, pow_mul, hun', one_pow]`. Establish `e2 : b ^ (n * n') = 1` using `by rw [pow_mul, hb1, one_pow]`. Rewrite using `[mul_pow, inv_pow, e1, e2, inv_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨u' * b⁻¹, n * n', mul_ne_zero hn hn', ha, fun v1 v1' h => ?_⟩` and prove the remaining obligations. Use `(OmCoef.heq_smul (eq_of_heq hW) hnW hiW (hμ v1 v1' h) _).trans (heq_of_eq ?_)` and prove the remaining obligations. Establish `e1 : (w'.st Z').toD7.what₂.embLL (u' * b⁻¹) * μ = 1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul, map_inv₀, hb]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = 1 := by rw [hμe, mul_inv_cancel₀ hu0]`. Rewrite using `[e1, one_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_lift (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' Wt') (hE : Enl0 B B') (hf : HEq f' f)
     (hpx : HEq w'.px w.px) (hstd : z.Std) (hB : z'.Std) (hN : ExtN z z')
@@ -329,9 +327,9 @@ end Lift
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ i : Fin (w.st Z).toD7.R.m, (i : ℕ) = i'`. Use `h.elim fun i hi => (exists_form z.pins hH i).elim fun x hx => ?_` and prove the remaining obligations. Use `(one_lift z z' hE hf hpx hstd hB hN i i' hi c0L hc c0L'' hc'' x hx).imp fun a h1 => h1.imp fun n h2 => ⟨h2.1, h2.2.1, fun j hj => ?_⟩` and prove the remaining obligations. Establish `e : j = i` using `Fin.ext (hj.trans hi.symm)`. Substitute `e` using the available equality.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `h2.2.2`. Conclude with `⟨1, 1, one_ne_zero, one_pow _, fun i hi => absurd ⟨i, hi⟩ h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_roots (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' Wt') (hE : Enl0 B B') (hf : HEq f' f)
     (hpx : HEq w'.px w.px) (hstd : z.Std) (hB : z'.Std) (hN : ExtN z z') (hH : Holds z.R z.F)
@@ -352,7 +350,7 @@ theorem exists_roots (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `s` using `sameModel_of_eq z.R.toRealDat i (ExtModel.sign_at_base_place_eq_embedding z)`. Establish `s'` using `sameModel_of_eq z'.R.toRealDat i' (ExtModel.sign_at_base_place_eq_embedding z')`. Establish `m` using `hN.MW i i' hi`. Conclude with `⟨s.H.trans (m.1.symm.trans s'.H.symm), s.nacg.trans (m.2.1.symm.trans s'.nacg.symm), s.ips.trans (m.2.2.1.symm.trans s'.ips.symm), s.σ.trans (m.2.2.2.1.symm.trans s'.σ.symm), s.lam.trans (m.2.2.2.2.1.symm.trans s'.lam.symm), s.ε.trans (m.2.2.2.2.2.1.symm.trans s'.ε.symm), s.fr.tr …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem sameModel_extN (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' Wt') (hN : ExtN z z')
     (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i') :
@@ -367,7 +365,7 @@ theorem sameModel_extN (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hM` using `sameModel_extN z z' hN i i' hi`. Establish `h1` using `hN.BV i i' hi`. Establish `h2` using `hN.cV i i' hi`. Establish `k` using `@heq_io B B' f f' T T' w w' Z Z' hE.1 i i' hi _ _ _ _ hM (z.R.cV i).W (z'.R.cV i').W (z.R.cV i).nW (z.R.cV i).iW (z'.R.cV i').nW (z'.R.cV i').iW (eq_of_heq h1.1) h2.1 h2.2 ((by with_unfolding_all exact ((z.R.ioP i) :))) ((by with_unfolding_all exact ((z'.R.ioP i') :))) ((by with_ …`. Conclude with `(by with_unfolding_all exact (k :))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem io_at (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' Wt') (hE : Enl0 B B') (hN : ExtN z z')
     (i : Fin (w.st Z).toD7.R.m) (i' : Fin (w'.st Z').toD7.R.m) (hi : (i : ℕ) = i')
@@ -385,9 +383,9 @@ theorem io_at (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' Wt
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Use `z.pins.char.base.fam.tie.elim fun g₁ h => h.elim fun c₁ h => h.elim fun c0L hT => ?_` and prove the remaining obligations. Use `z'.pins.char.base.fam.tie.elim fun g₂ h => h.elim fun c₂ h => h.elim fun c0L'' hT'' => ?_` and prove the remaining obligations. Establish `hc : OmExt.CoefFam z.R.toRealDat c0L` using `⟨g₁, c₁, hT⟩`. Establish `hc'' : OmExt.CoefFam z'.R.toRealDat c0L''` using `⟨g₂, c₂, hT''⟩`. Establish `key` using `exists_roots z z' hE hf hpx hstd hB hN hH c0L hc c0L'' hc''`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose a n hn ha H using key`. Use `⟨c0L, fun i => (w'.st Z').toD7.what₂.embLL (a i) • c0L'' i, hc, coefFam_roots z'.R.toRealDat c0L'' hc'' a n hn ha, fun i i' hi u u' hu v v' hv => ?_⟩` and prove the remaining obligations. Establish `hy` using `H i' i hi v v' (heq_pol (w := w) (w' := w') (Z := Z) (Z' := Z') hE.1 i i' hi ι hι v.1 v'.1 hv)`. Conclude with `(by with_unfolding_all exact ((io_at z z' hE hN i i' hi u u' hu (c0L i v) ((w'.st Z').toD7.what₂.embLL (a i') • c0L'' i' v') hy) :))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem io_of_extN (z : Dat (w.st Z) w.I hX T Wt) (z' : Dat (w'.st Z') w'.I hX' T' Wt') (hE : Enl0 B B') (hf : HEq f' f)
     (hpx : HEq w'.px w.px) (hstd : z.Std) (hB : z'.Std) (hN : ExtN z z') (hH : Holds z.R z.F)
@@ -426,7 +424,7 @@ set_option maxHeartbeats 2000000
 open GlobalTheory.HeightCounting.SerMove GlobalTheory.Mem.R3.Tr
 
 /- English proof (translation)
-Introduce `K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a'`. Conclude with `(by with_unfolding_all exact (Io.io_of_extN (datAt x g) (datAt x' g') (isBaseEnlargementFixedCoefField_of_coeffEnlargement l.enl) l.fr l.px (StateChecks.St.std x) (StateChecks.St.std x') l.extN x.m.intersectionNumber_baseChange ι l.cp.embLL :))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HeightCounting.SerMove.ioCl_of_link : ∀ {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'} (x : St P) (x' : St P') (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0) (g : Geo x) (g' : Geo x'), Link x x' ι e g g' → ∀ (hg : GlobalTheory.RealGeo.InGeo g) (hg' : GlobalTheory.RealGeo.InGeo g') (a : BigHost (Dof x)) (a' : BigHost (Dof x')), IoCl (sideAt x g hg a) (sideAt x' g' hg' a') ι := by
   intro K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a'

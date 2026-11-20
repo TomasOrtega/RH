@@ -8,9 +8,9 @@ open PositivityTheory.He2M1 GroundTheory.Global GroundTheory.Automorphic GroundT
 namespace GlobalTheory.CompanionTheory.AdelicThetaSeries
 
 /- English proof (translation)
-Unfold `thetaC`. Rewrite using `[← (Equiv.neg (ι → k)).tsum_eq (fun ξ => F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ))]`. Use `tsum_congr fun ξ => ?_` and prove the remaining obligations. Establish `hr : ratV (-ξ) = -ratV ξ`. Use function extensionality and compare the values at `i`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[ratV]`. Simplify using `only [Equiv.neg_apply, hr, Matrix.mulVec_neg]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem thetaC_neg {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
     (F : (ι → 𝔸[k]) → ℂ) (h : GL ι 𝔸[k]) :
@@ -24,7 +24,7 @@ theorem thetaC_neg {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι]
   simp only [Equiv.neg_apply, hr, Matrix.mulVec_neg]
 
 /- English proof (translation)
-Introduce `k _ _ ι _ _ w F ω`. Use function extensionality and compare the values at `t`. Unfold `thetaCInt`. Simplify using `only [thetaC_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem thetaCInt_neg : ∀ {k : Type} [Field k] [NumberField k], ∀ {ι : Type} [Fintype ι]
     [DecidableEq ι], ∀ (w : InfinitePlace k) (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k),

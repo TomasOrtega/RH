@@ -285,7 +285,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra O Ω] {Sg : Type}
 
 /- English proof (translation)
-Rewrite using `[famD, dif_pos h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem famD_pos (e : Sg → CMType H ⊕ CMType H) (b : ∀ t, Fin (labelRk D t) → 𝔐.Li)
     (pq : (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)}) →+* F) (sc : F →+ (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)})) (w : O)
@@ -295,9 +295,9 @@ theorem famD_pos (e : Sg → CMType H ⊕ CMType H) (b : ∀ t, Fin (labelRk D t
   rw [famD, dif_pos h]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hA`. Use `⟨fun s hs a ha v hv => ?_, fun s t hs ht v hv => ?_⟩` and prove the remaining obligations. Rewrite `hv`, the goal using `[← h s hs]`. Conclude with `h1 s hs a ha v hv`. Rewrite `hv` using `[← h s hs]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h t ht]`. Conclude with `h2 s t hs ht v hv`.
+A detailed English derivation is pending.
 -/
 theorem isLatFamily_congr {V : Type} [AddCommGroup V] [Module Ω V] {o : Type} [CommRing o] [Algebra o Ω]
     {A B : (∀ k, J k) → AddSubgroup V} (h : ∀ c', mseg y c' ≠ 0 → A c' = B c') (hA : IsLatFamily o y A) :

@@ -23,9 +23,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.RefSum.QuoShape
 
 /- English proof (translation)
-Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩ hab`. Establish `hab' : a ≤ b` using `hab`. Use `clear hab`. Proceed by induction on `b, hab' using Nat.le_induction with`. Consider the case `base => exact le_rfl`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n hn ih => exact (h ⟨n, by omega⟩ ⟨n + 1, hb⟩ rfl).trans (ih (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem antitone_of_adj {N : ℕ} (f : Fin N → ℤ) (h : ∀ a b : Fin N, (b : ℕ) = a + 1 → f b ≤ f a) : Antitone f := by
   rintro ⟨a, ha⟩ ⟨b, hb⟩ hab
@@ -36,13 +36,13 @@ theorem antitone_of_adj {N : ℕ} (f : Fin N → ℤ) (h : ∀ a b : Fin N, (b :
   | succ n hn ih => exact (h ⟨n, by omega⟩ ⟨n + 1, hb⟩ rfl).trans (ih (by omega))
 
 /- English proof (translation)
-Establish `hT : (4 : ℤ) ≤ W.T` using `by have := hH.h1; omega`. Establish `bar : ∀ τ (a b : Fin N), (a : ℕ) + 1 = W.p → (b : ℕ) = W.p → (n : ℤ) + 1 ≤ W.u1 τ a - W.u1 τ b`. Introduce `τ a b ha hb`. Establish `h` using `((GlobalTheory.MeanTop.divided_gaps ι N W hH hD τ a b (by omega)).2.1 hb).2`. Establish `h2 : (n : ℤ) ≤ W.u1 τ a - W.u1 τ b - 3 * N` using `le_of_mul_le_mul_left (hn.trans h) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `b.isLt`. Use linear arithmetic over natural numbers and integers. Use `⟨fun τ => antitone_of_adj _ fun a b hab => ?_, bar, fun τ a => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hb : (b : ℕ) = W.p`. Use `bar τ a b (by omega) hb` as an intermediate fact.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `(GlobalTheory.MeanTop.divided_gaps ι N W hH hD τ a b hab).1 hb` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `h1` using `(GlobalTheory.MeanTop.divided_entries ι N W hH hD τ a).1`. Establish `h2 : 4 * |W.u1 τ a| ≤ |W.u τ a| + W.c0 + 4 * N` using `(mul_le_mul_of_nonneg_right (by omega) (abs_nonneg _)).trans h1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 4 * |(W.u1 τ a : ℝ)| ≤ |(W.u τ a : ℝ)| + W.c0 + 4 * N` using `by exact_mod_cast h2`. Establish `h4` using `hH.h5 τ a`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem shape {ι : Type} [Fintype ι] {N : ℕ} (W : GlobalTheory.MeanTop.Wts ι N) (hH : W.Hyp) (hD : W.IsDiv) (n : ℕ)
     (hn : 4 * (W.T : ℤ) * n ≤ W.h0) :
@@ -70,11 +70,11 @@ theorem shape {ι : Type} [Fintype ι] {N : ℕ} (W : GlobalTheory.MeanTop.Wts �
     linarith
 
 /- English proof (translation)
-Establish `hf` using `SizeTZ.two_le_f D`. Establish `hr` using `SizeTZ.six_le_r D`. Establish `hm` using `D.R.two_le_m`. Establish `hk : 5 ≤ D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Generalize the expression as in `D.R.f = f at *`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `D.R.r = r at *`. Generalize the expression as in `D.R.m = m at *`. Generalize the expression as in `D.R.k = k at *`. Establish `hc : r ≤ r.choose 2`. Rewrite using `[Nat.choose_two_right, Nat.le_div_iff_mul_le (by norm_num)]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul_left _ (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem ranks_le (D : D7) : 80 * D.R.f * D.R.r ^ 2 ≤ D.R.r * D.R.f ^ 2 * D.R.m ^ 2 * D.R.k * (D.R.f * D.R.r.choose 2) := by
   have hf := SizeTZ.two_le_f D
@@ -95,13 +95,13 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y0 : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y0 cX} {Csz : ℝ} (p : PtAt ex Csz) (i : Fin D.R.m)
 
 /- English proof (translation)
-Take `⟨h0, S, eta, -, -, -, -, hh, hH⟩` from `hW.hyp hi`. Establish `hH1` using `hH u1`. Establish `hcol : (nCol (dat p i) : ℝ) ≤ 20 * D.R.f * (D.R.r : ℝ) ^ 2` using `SizeTZ.nCol_le_of_pins p.fw.laws.pins ⟨Nat.le_add_left _ _, i.2⟩`. Establish `hr : (80 : ℝ) * D.R.f * (D.R.r : ℝ) ^ 2 ≤ D.R.r * (D.R.f : ℝ) ^ 2 * (D.R.m : ℝ) ^ 2 * D.R.k * (GlobalTheory.CompHt.dimFlag (dat p i) : ℝ)`. Rewrite using `[hW.dim]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ranks_le D` after adjusting the coercions. Establish `hn : 4 * ((lenT p i PP : ℕ) : ℤ) * (nCol (dat p i) : ℕ) ≤ h0`. Establish `hT0 : (0 : ℝ) ≤ lenT p i PP` using `Nat.cast_nonneg _`. Establish `h1 : 4 * (lenT p i PP : ℝ) * (nCol (dat p i) : ℝ) ≤ h0`. Use `le_trans ?_ hh` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `(lenT p i PP : ℝ) = T at *`. Combine the equalities or inequalities in the displayed calculation. Conclude with `h1` after adjusting the coercions. Take `⟨a1, a2, a3⟩` from `shape (wtsAt p i PP h0 S eta u1) hH1 ((quo_iff p i PP h0 S eta u1).1 hq) (nCol (dat p i)) hn`. Establish `b1 : D.R.k - 1 < (dat p i).p` using `hH1.kc_lt`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `b2 : (dat p i).p < (dat p i).p + (dat p i).q` using `hH1.p_lt`. Use `⟨by omega, by omega, hW.sig.2.2, a1, a2, fun τ a => (a3 τ a).trans (le_of_eq ?_)⟩` and prove the remaining obligations. Use `show 4 * L.sc.b / 2 = 2 * L.sc.b`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem shape_at {PP : ℝ} (hPP : 1 ≤ PP) (hW : WtNum p i PP) (hi : (i : ℕ) + 1 < D.R.m) (u1 : Psi p.T.Q.H → Fin ((dat p i).p + (dat p i).q) → ℤ)
     (hq : Quo p i PP u1) :
@@ -133,7 +133,7 @@ theorem shape_at {PP : ℝ} (hPP : 1 ≤ PP) (hW : WtNum p i PP) (hi : (i : ℕ)
   ring
 
 /- English proof (translation)
-Introduce `_` and use `Formalism.MainNotions.Closed.imp GlobalTheory.T.weight_bound_holds fun Fm _ _ ⟨C, h0, a, h⟩ => ⟨C, h0, a, fun x hx hle ι p hp i hi u1 hq => by obtain ⟨a1, a2, a3, a4, a5, a6⟩ := shape_at p i ((one_le_pow₀ (SizeTZ.one_le_zBase _)).trans (SizeTZ.pow_le_PP (Fm.parT x hx ι))) (h x hx …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem quo_shape : Size → Lifts fun Fm x _ ι p i PP _ => (i : ℕ) + 1 < (Fm.D x ι).R.m → ∀ u1, Quo p i PP u1 → 1 ≤ (dat p i).p ∧ 1 ≤ (dat p i).q ∧ (dat p i).p + (dat p i).q = (Fm.D x ι).R.r ∧ (∀ τ, Antitone (u1 τ)) ∧ (∀ τ (a b : Fin ((dat p i).p + (dat p i).q)), (a : ℕ) + 1 = (dat p i).p → (b : ℕ) = (dat p i).p → (nCol (dat p i) : ℤ) + 1 ≤ u1 τ a - u1 τ b) ∧ (∀ τ a, |(u1 τ a : ℝ)| ≤ 2 * (Fm.L x ι).sc.b) ∧ Dom (aOf p i u1) (nCol (dat p i)) ∧ LastPos (dat p i) (aOf p i u1) ∧ GOf p i u1 = wtOf (dat p i) (u1 + parWt (dat p i) (shift (dat p i) u1 (nCol (dat p i)))) ((nCol (dat p i) / 2 : ℕ) : ℤ) := fun _ =>
   Formalism.MainNotions.Closed.imp GlobalTheory.T.weight_bound_holds fun Fm _ _ ⟨C, h0, a, h⟩ => ⟨C, h0, a, fun x hx hle ι p hp i hi u1 hq => by

@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.Mem.Col2.AdT.AdTieNear
 
 /- English proof (translation)
-Take `⟨p, -, hmax⟩` from `Finset.exists_max_image (Finset.univ : Finset (Fin n × Fin n)) (fun p => v (D p.1 p.2)) ⟨(r, s), Finset.mem_univ _⟩`. Use `(hmax (r, s) (Finset.mem_univ _)).trans ?_` and prove the remaining obligations. Distinguish the cases in `hμ : v (D p.1 p.2) = 0`. Rewrite using `[hμ]`. Conclude with `zero_le'`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlt : v ((A * D) p.1 p.2) < v (D p.1 p.2)`. Rewrite using `[Matrix.mul_apply]`. Use `Valuation.map_sum_lt _ hμ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e` using `Valuation.map_add_eq_of_lt_left v hlt`. Rewrite using `[← e, ← Matrix.add_apply]`. Conclude with `h p.1 p.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem entries_le_of_add_mul {K : Type} [Field K] (v : Valuation K (WithZero (Multiplicative ℤ))) {n : ℕ}
     (A D : Matrix (Fin n) (Fin n) K) (c : WithZero (Multiplicative ℤ)) (hA : ∀ r s, v (A r s) < 1)
@@ -41,34 +41,30 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [StarRing E]
 
 /- English proof (translation)
-Conclude with `adAt_inclE F P _`.
+A detailed English derivation is pending.
 -/
 theorem adAt_ratA {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (G : GL (Fin n) E) (r s : Fin n) :
     adAt F P ((GlobalTheory.TwU.ratA F G : GL (Fin n) (AfE F E)) r s) = algebraMap E (P.adicCompletion E) ((G : Matrix (Fin n) (Fin n) E) r s) := by
   exact adAt_inclE F P _
 
 /- English proof (translation)
-Use `set φ := adAt F P`. Use `set y := x⁻¹ * GlobalTheory.TwU.ratA F G`. Use `set y' := x⁻¹ * GlobalTheory.TwU.ratA F G'`. Use `set H : GL (Fin n) E := G⁻¹ * G'`. Establish `hyH : y * GlobalTheory.TwU.ratA F H = y'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [y, y', H, map_mul, map_inv, mul_assoc, mul_inv_cancel_left]`. Use `set Y : Matrix (Fin n) (Fin n) (P.adicCompletion E) := (y : Matrix (Fin n) (Fin n) (AfE F E)).map φ`. Use `set Y' : Matrix (Fin n) (Fin n) (P.adicCompletion E) := (y' : Matrix (Fin n) (Fin n) (AfE F E)).map φ`. Use `set R : Matrix (Fin n) (Fin n) (P.adicCompletion E) := ((GlobalTheory.TwU.ratA F H : GL (Fin n) (AfE F E)) : Matrix (Fin n) (Fin n) (AfE F E)).map φ`. Establish `hYR : Y * R = Y'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Y, Y', R, ← Matrix.map_mul, ← Units.val_mul, hyH]`. Establish `hdA : ∀ r s, Valued.v ((Y - 1) r s) < 1` using `fun r s => by`. Use `lt_of_le_of_lt (hy r s) ?_` and prove the remaining obligations. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hsum : ∀ r s, Valued.v (((R - 1) + (Y - 1) * (R - 1)) r s) ≤ WithZero.exp (-(d' : ℤ))` using `fun r s => by`. Establish `e : (R - 1) + (Y - 1) * (R - 1) = (Y' - 1) - (Y - 1)`. Rewrite using `[← hYR]`. Use `noncomm_ring`. Rewrite using `[e, Matrix.sub_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Valuation.map_sub_le _ (hy' r s) ((hy r s).trans ?_)` and prove the remaining obligations. Rewrite using `[WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hD` using `entries_le_of_add_mul Valued.v (Y - 1) (R - 1) _ hdA hsum`. Establish `hH : ∀ r s, Valued.v (algebraMap E (P.adicCompletion E) (((H : Matrix (Fin n) (Fin n) E) - 1) r s)) ≤ WithZero.exp (-(d' : ℤ))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r s`. Establish `e : (R - 1) r s = algebraMap E (P.adicCompletion E) (((H : Matrix (Fin n) (Fin n) E) - 1) r s)`. Rewrite using `[Matrix.sub_apply, Matrix.sub_apply, map_sub]`. Simplify using `only [R, Matrix.map_apply, φ, adAt_ratA]`. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[← e]`. Conclude with `hD r s`. Introduce `w hw`. Establish `hHw : g ((H : Matrix (Fin n) (Fin n) E) *ᵥ w) = g' w`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[← hG, Matrix.mulVec_mulVec, ← Units.val_mul, ← hG']`. Simplify using `only [H, mul_inv_cancel_left]`. Establish `e : (((qOf P : ℕ) : E) ^ d')⁻¹ • (g' w - g w) = g ((((qOf P : ℕ) : E) ^ d')⁻¹ • (((H : Matrix (Fin n) (Fin n) E) - 1) *ᵥ w))`. Rewrite using `[map_smul, Matrix.sub_mulVec, Matrix.one_mulVec, map_sub, hHw]`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `(hg _).2 ?_` and prove the remaining obligations. Rewrite `hw`, the goal using `[GlobalTheory.Mem.ColAd.mem_stdAt_val]`. Introduce `l`. Establish `hs : Valued.v (algebraMap E (P.adicCompletion E) ((((H : Matrix (Fin n) (Fin n) E) - 1) *ᵥ w) l)) ≤ WithZero.exp (-(d' : ℤ))`. Simplify using `only [Matrix.mulVec, dotProduct, map_sum]`.
-
-Use `Valuation.map_sum_le _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Pi.smul_apply, smul_eq_mul, map_mul, map_mul, map_inv₀, map_inv₀, map_pow, map_pow, map_natCast, hq]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← WithZero.exp_nsmul, ← WithZero.exp_neg, ← WithZero.exp_add]`. Simplify using the standard rewrite rules.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem congE_of_near (P : HeightOneSpectrum (𝓞 E)) {n : ℕ} (d d' : ℕ) (hd' : 1 ≤ d') (hdd : d' ≤ d)
     (x : GL (Fin n) (AfE F E)) (g g' : Sp E n ≃ₗ[E] Sp E n) (G G' : GL (Fin n) E)
@@ -143,9 +139,9 @@ namespace GlobalTheory.Mem.Col2.AdT.AdTieNear
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `B X I hOk l Z a i fb dep dep' P κ g g' hg h1 hdd hF hF'`. Unfold `GlobalTheory.TwU.InFrame GlobalTheory.TwU.NearAt at hF hF'`. Establish `hq` using `(GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a ((I.rec7 l Z).R.N i) 0 P 1).2.1`. Establish `hy` using `(GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a _ (dep P) P _).2.2.1 hF`. Establish `hy'` using `(GlobalTheory.T.adelicMatrixCongruenceBadPrime_iff_completion I hOk l Z a _ (dep' P) P _).2.2.1 hF'`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `congE_of_near (F := B.host.F) P.1 (dep P) (dep' P) h1 hdd _ g g' (GlobalTheory.TwU.seamGL (sm I l Z) g) (GlobalTheory.TwU.seamGL (sm I l Z) g') (fun w => GlobalTheory.TwU.seamGL_mulVec (sm I l Z) g w) (fun w => GlobalTheory.TwU.seamGL_mulVec (sm I l Z) g' w) hg hq hy hy'`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)), ∀ (a : I.ι) (i : ℕ) (fb : SBof I a → GL (Fin ((I.rec7 l Z).R.N i)) (I.rec7 l Z).host.E) (dep dep' : SBof I a → ℕ) (P : SBof I a) (κ : GL (Fin ((I.rec7 l Z).R.N i)) (AfE (I.rec7 l Z).host.F (I.rec7 l Z).host.E)) (g g' : Sp B.fields.E (B.R.N i) ≃ₗ[B.fields.E] Sp B.fields.E (B.R.N i)), g ∈ Formalism.L2.Col.GLint B.fields.E (B.R.N i) P.1 → 1 ≤ dep' P → dep' P ≤ dep P → GlobalTheory.TwU.InFrame (i := i) (sm I l Z) fb dep P κ g → GlobalTheory.TwU.InFrame (i := i) (sm I l Z) fb dep' P κ g' → CongE P.1 (dep' P) g' g := by
   intro B X I hOk l Z a i fb dep dep' P κ g g' hg h1 hdd hF hF'

@@ -28,7 +28,7 @@ open GlobalTheory.QCoh (appLinear appLinear_apply)
 namespace GlobalTheory.FlagZ.Loc
 
 /- English proof (translation)
-Establish `h1 : b.BlockTriangular id` using `fun i j h => hb i j h`. Establish `h2 : (b.submatrix (Fin.castLE hl) (Fin.castLE hl)).BlockTriangular id` using `fun i j h => hb _ _ h`. Rewrite `hu` using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_of_isUpperTriangular h1, IsUnit.prod_univ_iff]`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_of_isUpperTriangular h2, IsUnit.prod_univ_iff]`. Conclude with `fun i => hu _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnit_submatrix_castLE_of_upper {R : Type*} [CommRing R] {N l : ℕ} (hl : l ≤ N)
     (b : Matrix (Fin N) (Fin N) R) (hb : ∀ i j : Fin N, j < i → b i j = 0) (hu : IsUnit b) :
@@ -42,9 +42,9 @@ theorem isUnit_submatrix_castLE_of_upper {R : Type*} [CommRing R] {N l : ℕ} (h
   exact fun i => hu _
 
 /- English proof (translation)
-Establish `hli : LinearIndependent Γ(X, W) fun k => resM G hW (c (σ k))` using `(Fintype.linearIndependent_iff.2 fun a ha => congrFun ((injective_iff_map_eq_zero _).1 (hc W hW).1 a ((Fintype.linearCombination_apply _ _ _).trans ha))).comp σ hσ`. Express the relevant statement in the definitionally equal form `Function.Injective (appLinear φ W)`. Use `(injective_iff_map_eq_zero _).2 fun t ht => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(he W hW).2 t`. Simplify using `only [Fintype.linearCombination_apply, map_sum, map_smul, appLinear_apply, app_resM, h] at ht`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `ha : a = 0` using `funext (Fintype.linearIndependent_iff.1 hli a ht)`. Rewrite using `[ha, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem injective_app_of_frame {X : Scheme.{0}} {F G : X.Modules} (φ : F ⟶ G) {V : X.Opens}
     {m n : Type} [Fintype m] [Fintype n] {e : m → Γ(F, V)} {c : n → Γ(G, V)} (σ : m → n)
@@ -64,7 +64,7 @@ theorem injective_app_of_frame {X : Scheme.{0}} {F G : X.Modules} (φ : F ⟶ G)
   rw [ha, map_zero]
 
 /- English proof (translation)
-Simplify using `only [colSecOn, Matrix.mul_apply, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem colSecOn_mul {N : ℕ} {T : Scheme.{0}} (x : T ⟶ Sp ℤ) (V : T.Opens)
     (C b : Matrix (Fin N) (Fin N) Γ(T, V)) (j : Fin N) :
@@ -74,9 +74,9 @@ theorem colSecOn_mul {N : ℕ} {T : Scheme.{0}} (x : T ⟶ Sp ℤ) (V : T.Opens)
   simp only [mul_comm]
 
 /- English proof (translation)
-Introduce `T x N F' φ V l e C b he hφ hb hu`. Establish `hc : VB.IsFrame (colSecOn x V C.1)` using `Univ.isFrame_sum_smul_of_isUnit (isFrame_stdSec x V) C.1 C.isUnit`. Use `⟨injective_app_of_frame φ _ (Fin.castLE_injective l.is_le) he hc hφ, _, Univ.isFrame_sum_smul_of_isUnit he _ (isUnit_submatrix_castLE_of_upper l.is_le b hb hu), fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[colSecOn_mul, ← appLinear_apply]`. Simplify using `only [map_sum, map_smul, appLinear_apply, hφ, Matrix.submatrix_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_of_injOn (Fin.castLE l.is_le) (Fin.castLE_injective _).injOn (fun _ _ => Finset.mem_univ _) (fun k _ hk => ?_) (fun _ _ => rfl)` and prove the remaining obligations. Rewrite using `[hb, zero_smul]`. Assume the negation of the conclusion as `hlt`. Establish `hk' : (k : ℕ) < l` using `lt_of_le_of_lt (Fin.le_def.1 (not_lt.1 hlt)) j.2`. Conclude with `hk ⟨⟨k, hk'⟩, Finset.mem_coe.2 (Finset.mem_univ _), rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem injective_and_exists_frame_mul_upper : ∀ {T : Scheme.{0}} (x : T ⟶ Sp ℤ) {N : ℕ} {F' : T.Modules}
     (φ : F' ⟶ (Scheme.Modules.pullback x).obj (GlobalTheory.FlagZ.Taut.stdE N)) (V : T.Opens) (l : Fin (N + 1))

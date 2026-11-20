@@ -10,9 +10,9 @@ variable {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [Norm
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] {P : M.Par}
 
 /- English proof (translation)
-Unfold `KB.Pl.RR D.RRplace`. Use `split_ifs with h1 h2 h3 h4`. Use linear arithmetic over natural numbers and integers. Conclude with `⟨_, sq_nonneg _, Formalism.FourierDecayAlt.P.TBBx2.Tri.hsInner_self _⟩`. Unfold `Top.topOf`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities.
 
-Repeatedly rewrite using `[Formalism.FourierDecayAlt.P.TBBx2.Tri.hsInner_self, ← Complex.ofReal_mul, ← Complex.ofReal_sum]`. Conclude with `⟨_, Finset.sum_nonneg fun e _ => Finset.sum_nonneg fun ρ _ => mul_nonneg (mul_self_nonneg _) (sq_nonneg _), rfl⟩`. Conclude with `⟨0, le_rfl, by simp⟩`. Conclude with `⟨0, le_rfl, by simp⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem RR_top_diag (p : KB.Pl P Wp Wq) (H : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter) (γ : C.LPt) :
     ∃ x : ℝ, 0 ≤ x ∧ p.RR H (P.r + 1) w γ γ = (x : ℂ) := by
@@ -28,11 +28,11 @@ theorem RR_top_diag (p : KB.Pl P Wp Wq) (H : B.Mat P.k P.r → (Wq →L[ℂ] Wp)
   · exact ⟨0, le_rfl, by simp⟩
 
 /- English proof (translation)
-Establish `hv' : ∀ F, D.vecV p.T.base p.ν' p.m₀ F γ = 0` using `hv`. Establish `h0 : B.hsInner (0 : Wq →L[ℂ] Wp) 0 = 0`. Unfold `B.hsInner B.hsVec`. Establish `: (WithLp.toLp 2 fun i : Fin (Module.finrank ℂ Wq) => (0 : Wq →L[ℂ] Wp) (stdOrthonormalBasis ℂ Wq i)) = 0` using `by simp; rfl`. Rewrite using `[this, inner_zero_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `KB.Pl.RR D.RRplace`. Use `split_ifs with h1 h2 h3 h4`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hv', h0]`. Unfold `Top.topOf`.
+Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun e _ => Finset.sum_eq_zero fun ρ _ => ?_` and prove the remaining obligations. Rewrite using `[hv', ContinuousLinearMap.comp_zero, h0, mul_zero]`. Both sides reduce to the same expression. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem RR_top_zero (p : KB.Pl P Wp Wq) (H : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (w : List C.Letter) (γ : C.LPt)
     (hv : ∀ F, p.V F γ = 0) : p.RR H (P.r + 1) w γ γ = 0 := by
@@ -54,9 +54,7 @@ theorem RR_top_zero (p : KB.Pl P Wp Wq) (H : B.Mat P.k P.r → (Wq →L[ℂ] Wp)
   · rfl
 
 /- English proof (translation)
-Use `show D.vecV p.T.base p.ν' p.m₀ F (Formalism.FourierDecayAlt.P.PBJ.bigPt c) = 0`. Unfold `D.vecV`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨-, hG⟩`. Use `Formalism.FourierDecayAlt.P.PBM.zeta_big _ c hG` as an intermediate fact.
-
-Conclude with `absurd this (not_lt.2 hζ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem V_bigPt_zero (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (c : Fin (P.r + 1) → ℂ)
     (hζ : Complex.normSq (c (Fin.last P.r)) ≤ TBB.TTp p) : p.V F (TBB.bigPt P.r c) = 0 := by
@@ -68,13 +66,13 @@ theorem V_bigPt_zero (p : KB.Pl P Wp Wq) (F : B.Mat P.k P.r → (Wq →L[ℂ] Wp
   exact absurd this (not_lt.2 hζ)
 
 /- English proof (translation)
-Unfold `TBB.nPt`. Establish `e : D.ptGG (P.T * P.T') (TBB.bigPt P.r c) = Complex.normSq (c (Fin.last P.r)) - P.T * P.T'`. Unfold `D.ptGG`. Rewrite using `[Formalism.FourierDecayAlt.P.CutBP.ptLast_bigPt]`. Rewrite using `[e]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `TBB.bigPt`. Rewrite using `[Formalism.FourierDecayAlt.P.CutBP.level_product_of_constant_weights]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Unfold `KB.levW`. Rewrite using `[add_comm 1 (i : ℕ)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with h`. Establish `hi : i = Fin.last P.r` using `Fin.ext (by simp only [Fin.val_last]; omega)`. Substitute `hi` using the available equality. Unfold `B2.zWeight`. Rewrite using `[if_pos hζ]`.
+Establish an intermediate fact. Substitute using the available equality. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem nPt_eq_prod (P : M.Par) (c : Fin (P.r + 1) → ℂ) (hζ : P.T * P.T' ≤ Complex.normSq (c (Fin.last P.r))) :
     TBB.nPt P.k P.r (P.T * P.T') (TBB.bigPt P.r c) = ∏ i : Fin (P.r + 1), KB.levW P ((i : ℕ) + 1) (c i) := by
@@ -96,7 +94,7 @@ theorem nPt_eq_prod (P : M.Par) (c : Fin (P.r + 1) → ℂ) (hζ : P.T * P.T' �
   · rfl
 
 /- English proof (translation)
-Unfold `KB.levW B2.zWeight`. Use `split_ifs with h1 h2`. Conclude with `pow_nonneg (sub_nonneg.2 h2) _`. Conclude with `le_rfl`. Conclude with `zpow_nonneg (norm_nonneg _) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem levW_nonneg (P : M.Par) (i : ℕ) (c : ℂ) : 0 ≤ KB.levW P i c := by
   unfold KB.levW B2.zWeight
@@ -106,11 +104,11 @@ theorem levW_nonneg (P : M.Par) (i : ℕ) (c : ℂ) : 0 ≤ KB.levW P i c := by
   · exact zpow_nonneg (norm_nonneg _) _
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p H w c _`. Take `⟨x, hx, hRR⟩` from `RR_top_diag p H w (TBB.bigPt P.r c)`. Use `⟨?_, by rw [hRR, Complex.ofReal_im], by rw [hRR, Complex.ofReal_re]; exact hx⟩` and prove the remaining obligations. Establish `hTT : TBB.TTp p = P.T * P.T'`. Unfold `TBB.TTp`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[p.hP.2.2.2.1, p.hP.2.2.2.2.1]`. Distinguish the cases in `hζ : P.T * P.T' ≤ Complex.normSq (c (Fin.last P.r))`. Establish `hn : TBB.normC (fun _ => 1) w = 1`. Unfold `TBB.normC`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Unfold `TBB.Ew TBB.NP`. Rewrite using `[hn, hTT, nPt_eq_prod P c hζ, div_one, Real.mul_self_sqrt (Finset.prod_nonneg fun i _ => levW_nonneg P _ _), Complex.re_ofReal_mul]`. Establish `h0` using `RR_top_zero p H w (TBB.bigPt P.r c) fun F => V_bigPt_zero p F c (by rw [hTT]; exact (not_le.1 hζ).le)`. Unfold `TBB.Ew TBB.NP`. Rewrite using `[h0]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

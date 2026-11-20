@@ -9,7 +9,7 @@ open NumberField MeasureTheory Formalism.MainNotions.GlobalTheoryTheory.GenusMas
 namespace GlobalTheory.ThK.ExpVExps
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.ThK.ExpVRe.realPart`.
+A detailed English derivation is pending.
 -/
 theorem re_cuspExp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

@@ -13,38 +13,32 @@ open scoped Matrix
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 private theorem ine_of_emb {L Ω : Type} [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [Algebra ℚ Ω]
     [IsScalarTower ℚ L Ω] (A : ValuationSubring Ω) (s : G L Ω)
     (h : Base.galEmb ℚ L Ω s ∈ Ine (F := ℚ) A) : s ∈ Ine (F := L) A := h
 
 /- English proof (translation)
-Introduce `L Ω _ _ _ _ _ l _ A hA H hH`. Use `haveI : CharZero Ω := charZero_of_injective_algebraMap (algebraMap L Ω).injective`. Use `haveI : IsScalarTower ℚ L Ω := inferInstance`. Use `haveI : Algebra.IsAlgebraic L Ω := IsAlgClosure.isAlgebraic`. Use `haveI : IsAlgClosure ℚ Ω := ⟨IsAlgClosure.isAlgClosed L, Algebra.IsAlgebraic.trans ℚ L Ω⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Use `haveI : IsGalois L Ω := IsAlgClosure.isGalois L Ω`. Use `haveI : Finite (G L Ω ⧸ H) := H.quotient_finite_of_isOpen hH`. Take `⟨hemb, -, hidx⟩` from `Base.galEmbTop ℚ L Ω`. Establish `hrange : (Base.galEmb ℚ L Ω).range = Base.galOf ℚ L Ω`. Apply `le_antisymm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `Base.galEmb_mem ℚ L Ω s`. Introduce `σ hσ`. Use `⟨{ σ.toRingEquiv with commutes' := fun x => hσ x }, ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[Base.galEmb_apply]`. Both sides reduce to the same expression. Establish `hfin : (H.map (Base.galEmb ℚ L Ω)).index ≠ 0`. Rewrite using `[H.index_map_of_injective hemb.injective, hrange, hidx]`. Conclude with `mul_ne_zero Subgroup.index_ne_zero_of_finite Module.finrank_pos.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : (H.map (Base.galEmb ℚ L Ω)).FiniteIndex := ⟨hfin⟩`. Establish `hu : IsUnit ((1 : ℤ_[l]) + l)`. Assume the negation of the conclusion as `h`. Establish `h1 : (l : ℤ_[l]) ∣ 1 + l` using `(PadicInt.norm_lt_one_iff_dvd _).mp (PadicInt.mem_nonunits.mp (mem_nonunits_iff.mpr h))`. Establish `hl : IsUnit (l : ℤ_[l])` using `isUnit_of_dvd_one ((dvd_add_left (dvd_refl _)).mp h1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : ‖(l : ℤ_[l])‖ < 1` using `(PadicInt.norm_lt_one_iff_dvd _).mpr (dvd_refl _)`. Rewrite `h2` using `[PadicInt.isUnit_iff.mp hl]`. Conclude with `lt_irrefl _ h2`. Establish `hv : ¬ IsOfFinOrder hu.unit`. Introduce `hv`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, hpow⟩` from `hv.exists_pow_eq_one`. Establish `h2 : ((1 : ℤ_[l]) + l) ^ n = 1`. Use `congrArg Units.val hpow` as an intermediate fact. Simplify using `using this`. Establish `h3 : ((1 + l) ^ n : ℕ) = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h2` after adjusting the coercions. Break down `Nat.pow_eq_one.mp h3 with h4 | h4` into its components or cases. Use `(Fact.out : l.Prime).pos` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨τ, hτ, hτv⟩` from `GlobalTheory.CycInertia.cycZ_Ine_surjective Ω l A hA hu.unit`. Establish `hpow : τ ^ (H.map (Base.galEmb ℚ L Ω)).normalCore.index ∈ H.map (Base.galEmb ℚ L Ω)` using `Subgroup.normalCore_le _ (Subgroup.pow_index_mem _ τ)`. Take `⟨s, hs, hsτ⟩` from `hpow`. Establish `hsI : Base.galEmb ℚ L Ω s ∈ Ine (F` using `ℚ) A := by`. Rewrite using `[hsτ]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Conclude with `Subgroup.pow_mem _ hτ _`. Use `⟨s, hs, ine_of_emb A s hsI, ?_⟩` and prove the remaining obligations. Establish `hcyc : cycZ L Ω l s = cycZ ℚ Ω l (Base.galEmb ℚ L Ω s)`. Simplify using `only [cycZ, MonoidHom.comp_apply]`. Use `congr 1`.
-
-Establish `hinj : Function.Injective ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom)` using `(algebraMap ℚ_[l] (Qbar l)).injective.comp Subtype.val_injective`. Establish `hmap : Function.Injective (Units.map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom : ℤ_[l] →* Qbar l))`. Introduce `a b hab`. Conclude with `Units.ext (hinj (congrArg Units.val hab))`. Introduce `hfo`.
-
-Establish `hval : cycBar L Ω l s = Units.map ((algebraMap ℚ_[l] (Qbar l)).comp PadicInt.Coe.ringHom : ℤ_[l] →* Qbar l) (hu.unit ^ (H.map (Base.galEmb ℚ L Ω)).normalCore.index)`. Simplify using `only [cycBar, MonoidHom.comp_apply, hcyc, hsτ, map_pow, hτv]`. Both sides reduce to the same expression. Rewrite `hfo` using `[hval, ← orderOf_pos_iff, orderOf_injective _ hmap, orderOf_pos_iff, isOfFinOrder_pow]`. Break down `hfo with h | h` into its components or cases.
-
-Conclude with `hv h`. Conclude with `Subgroup.FiniteIndex.index_ne_zero h`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Ga.ineInf :
     ∀ (L Ω : Type) [Field L] [NumberField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (l : ℕ) [Fact l.Prime] (A : ValuationSubring Ω), A.valuation (l : Ω) < 1 → ∀ H : Subgroup (G L Ω), IsOpen (H : Set (G L Ω)) → ∃ s ∈ H, s ∈ Ine (F := L) A ∧ ¬ IsOfFinOrder (cycBar L Ω l s) := by

@@ -10,7 +10,7 @@ variable {LL : Type} [Field LL] {D : Type} [AddCommGroup D] [Module LL D]
   {n : ℕ} {Emb : Type} [Fintype Emb]
 
 /- English proof (translation)
-Proceed by induction on `a, hba using Int.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ k _ ih => exact (F.Fil_anti τ k).trans ih`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem fil_le_fil_of_le (F : FilPhi LL D n Emb) (τ : Emb) {b a : ℤ} (hba : b ≤ a) :
     F.Fil τ a ≤ F.Fil τ b := by
@@ -23,27 +23,25 @@ end FilPhi
 open FilPhi
 
 /- English proof (translation)
-Introduce `LL _ D _ _ n Emb _ F τ l h`. Prove the components needed by the constructor for the conclusion. Introduce `hJ`. Establish `hno : ∀ a, a ∉ Set.Icc l h → F.Fil τ (a + 1) = F.Fil τ a`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hne`. Conclude with `ha (hJ a hne)`. Prove the components needed by the constructor for the conclusion. Establish `key : ∀ k : ℕ, F.Fil τ (l - k) = F.Fil τ l`. Introduce `k`.
+Assume the negation of the conclusion and derive a contradiction. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `hk : (l - ((k + 1 : ℕ) : ℤ)) ∉ Set.Icc l h`. Introduce `hm`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hm.1` as an intermediate fact. Move the coercions through the operations in `at this`. Use linear arithmetic over natural numbers and integers. Establish `e` using `hno _ hk`. Establish `: l - ((k + 1 : ℕ) : ℤ) + 1 = l - (k : ℤ)` using `by push_cast; ring`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[this]`. Rewrite using `[← e, ih]`. Establish `hlo` using `F.Fil_lo τ (l - ((l - min F.lo l).toNat : ℕ)) (by omega)`. Rewrite `hlo` using `[key]`. Conclude with `hlo`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key : ∀ k : ℕ, F.Fil τ (h + 1 + k) = F.Fil τ (h + 1)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : (h + 1 + (k : ℤ)) ∉ Set.Icc l h`. Introduce `hm`. Use `hm.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e` using `hno _ hk`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: h + 1 + ((k + 1 : ℕ) : ℤ) = h + 1 + (k : ℤ) + 1` using `by push_cast; ring`. Rewrite using `[this, e, ih]`. Establish `hhi` using `F.Fil_hi τ (h + 1 + ((F.hi - (h + 1)).toNat : ℕ)) (by omega)`. Rewrite `hhi` using `[key]`. Conclude with `hhi`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `⟨hl, hh⟩ a ha`. Assume the negation of the conclusion as `hm`. Apply `ha` to reduce the goal to its premises. Break down `(not_and_or.mp hm) with hal | hah` into its components or cases. Establish `hal : a + 1 ≤ l` using `by omega`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Apply `le_antisymm (F.Fil_anti τ a)` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hah : h + 1 ≤ a` using `by omega`. Establish `h1 : F.Fil τ a = ⊥` using `le_bot_iff.mp (hh ▸ F.fil_le_fil_of_le τ hah)`. Establish `h2 : F.Fil τ (a + 1) = ⊥` using `le_bot_iff.mp (hh ▸ F.fil_le_fil_of_le τ (by omega : h + 1 ≤ a + 1))`.
-
-Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jumpsIcc : JumpsIcc := by
   intro LL _ D _ _ n Emb _ F τ l h
@@ -99,9 +97,9 @@ theorem jumpsIcc : JumpsIcc := by
       rw [h1, h2]
 
 /- English proof (translation)
-Introduce `LL _ D _ _ n Emb _ F`. Prove the components needed by the constructor for the conclusion. Use `⟨fun x _ => Submodule.mem_top, ?_⟩` and prove the remaining obligations. Simplify using `only [top_inf_eq]`. Conclude with `F.internal.submodule_iSup_eq_top.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x hx => ?_, ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hx, map_zero]`. Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem subTopBot : SubTopBot := by
   intro LL _ D _ _ n Emb _ F
@@ -115,7 +113,7 @@ theorem subTopBot : SubTopBot := by
     · simp
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨jumpsIcc, subTopBot⟩`.
+Supply the required witnesses or components.
 -/
 theorem jumpsIcc_and_subTopBot : JumpsIcc ∧ SubTopBot := ⟨jumpsIcc, subTopBot⟩
 

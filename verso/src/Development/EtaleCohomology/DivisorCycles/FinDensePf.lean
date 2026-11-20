@@ -5,7 +5,7 @@ open Matrix PositivityTheory.AutomorphicGaloisHodgeTate.Div
 namespace LateralTheory.DivDb.FinDensePf
 
 /- English proof (translation)
-Establish `h1 : Continuous (fun g => (fun p : Fin n × Fin n => x g p.1 p.2))` using `continuous_pi fun p => hx.matrix_elem p.1 p.2`. Conclude with `(MvPolynomial.continuous_eval f).comp h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_ev {Γ K : Type} [TopologicalSpace Γ] [Field K] [TopologicalSpace K] [IsTopologicalRing K]
     (n : ℕ) (x : Γ → Matrix (Fin n) (Fin n) K) (hx : Continuous x) (f : LateralTheory.DivDb.MP K n) :
@@ -19,13 +19,13 @@ end LateralTheory.DivDb.FinDensePf
 namespace LateralTheory.DivDb
 
 /- English proof (translation)
-Introduce `Γ K _ _ _ _ _ _ _ _ _ n r hr hU`. Take `⟨f, hf⟩` from `hSep K n`. Establish `hset : {g : Γ | (r g : Mat K n).charpoly.Separable} = {g | ev (r g : Mat K n) f ≠ 0}`. Use extensionality with `g`. Conclude with `hf _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset]`. Establish `hc` using `LateralTheory.DivDb.FinDensePf.cont_ev n (fun g => (r g : Mat K n)) hr f`. Use `⟨isOpen_ne_fun hc continuous_const, ?_⟩` and prove the remaining obligations. Rewrite using `[dense_iff_inter_open]`. Introduce `O hO hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hemp`. Establish `hz : ∀ g ∈ O, ev (r g : Mat K n) f = 0`. Introduce `g hg`. Assume the negation of the conclusion as `h`. Conclude with `hemp ⟨g, hg, h⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hUn, hUf, g, hg⟩` from `hOC Γ K n r f O hO hne hz`. Take `⟨u, hu, hs⟩` from `hU U hUn hUf g`. Conclude with `(hf _).1 hs (hg u hu)`.
+A detailed English derivation is pending.
 -/
 theorem FinDense_of (hSep : SepPoly) (hOC : OpenCoset) : FinDense := by
   intro Γ K _ _ _ _ _ _ _ _ _ n r hr hU

@@ -14,7 +14,7 @@ open Formalism.DivisionValues Formalism.EigenvalueLevelCeiling Formalism.L2.Inde
 def NumDatum.unitE (Nd : NumDatum) (Nc : ℝ) : ℝ := Nd.sc.x ^ Nd.sc.eps * (Nd.B0 + Nc)
 
 /- English proof (translation)
-Establish `hl : 0 < Real.log Nd.sc.x` using `Real.log_pos Nd.sc.one_lt_alt`. Establish `h1` using `Real.log_le_sub_one_of_pos hl`. Establish `h2 : Nd.sc.L = Nd.sc.x ^ Nd.sc.eps` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem NumDatum.logLog_le (Nd : NumDatum) (h : Real.log Nd.sc.x ≤ Nd.sc.L) :
     Real.log (Real.log Nd.sc.x) ≤ Nd.sc.x ^ Nd.sc.eps := by
@@ -24,7 +24,7 @@ theorem NumDatum.logLog_le (Nd : NumDatum) (h : Real.log Nd.sc.x ≤ Nd.sc.L) :
   linarith
 
 /- English proof (translation)
-Unfold `NumDatum.B0`. Use `Nd.b_pos` as an intermediate fact. Use `Real.rpow_nonneg Nd.x_pos.le Nd.sc.eps` as an intermediate fact. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem NumDatum.loss_bound_nonneg (Nd : NumDatum) : 0 ≤ Nd.B0 := by
   unfold NumDatum.B0
@@ -33,11 +33,11 @@ theorem NumDatum.loss_bound_nonneg (Nd : NumDatum) : 0 ≤ Nd.B0 := by
   positivity
 
 /- English proof (translation)
-Unfold `NumDatum.B0`. Establish `hf : (1 : ℝ) ≤ Nd.R.f`. Establish `: 1 ≤ Nd.R.f`. Establish `h1 : Nd.R.f = 2 * Nd.R.ord` using `rfl`. Establish `h2` using `Nd.R.ord_pos`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `this` after adjusting the coercions. Establish `hm : (1 : ℝ) ≤ Nd.R.m`. Use `Nd.R.two_le_m` as an intermediate fact. Conclude with `(show 1 ≤ Nd.R.m by omega)` after adjusting the coercions.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb` using `Nd.one_le_b`. Establish `hx : 1 ≤ Nd.sc.x ^ Nd.sc.eps` using `Real.one_le_rpow Nd.sc.one_lt_alt.le Nd.sc.eps_pos.le`. Establish `h1` using `one_le_mul_of_one_le_of_one_le hf hm`. Establish `h2` using `one_le_mul_of_one_le_of_one_le h1 hb`. Conclude with `one_le_mul_of_one_le_of_one_le h2 hx`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem NumDatum.one_le_B0 (Nd : NumDatum) : 1 ≤ Nd.B0 := by
   unfold NumDatum.B0
@@ -57,9 +57,9 @@ theorem NumDatum.one_le_B0 (Nd : NumDatum) : 1 ≤ Nd.B0 := by
   exact one_le_mul_of_one_le_of_one_le h2 hx
 
 /- English proof (translation)
-Unfold `NumDatum.unitE`. Establish `hm : (1 : ℝ) ≤ Nd.R.m`. Use `Nd.R.two_le_m` as an intermediate fact. Conclude with `(show 1 ≤ Nd.R.m by omega)` after adjusting the coercions. Establish `hx : 1 ≤ Nd.sc.x ^ Nd.sc.eps` using `Real.one_le_rpow Nd.sc.one_lt_alt.le Nd.sc.eps_pos.le`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : 1 ≤ Nd.B0 + Nc` using `by linarith [Nd.one_le_B0]`. Conclude with `one_le_mul_of_one_le_of_one_le hm (one_le_mul_of_one_le_of_one_le hx hB)`.
+A detailed English derivation is pending.
 -/
 theorem NumDatum.one_le_m_unitE (Nd : NumDatum) {Nc : ℝ} (hNc : 0 ≤ Nc) : 1 ≤ (Nd.R.m : ℝ) * Nd.unitE Nc := by
   unfold NumDatum.unitE
@@ -92,7 +92,7 @@ def ZscOfNum (A : FamIn K G Pl0 T m) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (Nd :
 variable (A : FamIn K G Pl0 T m) (P0 : Subgroup G) (ψ0 : P0 →* Kˣ) (Nd : NumDatum) (eJ : A.fam.base.J ≃ Fin Nd.R.m) (Nc : ℝ)
 
 /- English proof (translation)
-Use `eigen_sum_le_of_scale _ C CH _ (fun _ => le_refl _) ?_` and prove the remaining obligations. Use `show C * ((Nd.R.f : ℝ) * (Nd.R.nV : ℝ) ^ 2 * Nd.Lp) ≤ Ch * (Nd.R.f : ℝ) * (Nd.R.nV : ℝ) ^ 2 * Nd.Lp`. Establish `h0 : 0 ≤ (Nd.R.f : ℝ) * (Nd.R.nV : ℝ) ^ 2 * Nd.Lp` using `mul_nonneg (by positivity) Nd.Lp_nonneg`. Use `mul_le_mul_of_nonneg_right hC h0` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eigen_sum_le_of_numeric (Zs : DefSub A.fam.amb) (C CH : ℝ) (δ : Code Nd) (Tl : ℕ) (lam0 C0 ce Ch Sw C1 : ℝ)
     (H : Nd.NumFacts δ Nc lam0 C0 ce Ch Sw C1) (hC : C ≤ Ch) :
@@ -104,7 +104,7 @@ theorem eigen_sum_le_of_numeric (Zs : DefSub A.fam.amb) (C CH : ℝ) (δ : Code 
   linarith
 
 /- English proof (translation)
-The claim follows from `l3main_of_scale _ C CH (RecNums.ofNum Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H) (fun _ => le_refl _)`.
+A detailed English derivation is pending.
 -/
 theorem l3main_ofNum (Zs : DefSub A.fam.amb) (C CH : ℝ) (δ : Code Nd) (Tl : ℕ) (lam0 C0 ce Ch Sw C1 : ℝ)
     (H : Nd.NumFacts δ Nc lam0 C0 ce Ch Sw C1) :
@@ -116,14 +116,14 @@ theorem l3main_ofNum (Zs : DefSub A.fam.amb) (C CH : ℝ) (δ : Code Nd) (Tl : �
   l3main_of_scale _ C CH (RecNums.ofNum Nd eJ δ Tl Nc lam0 C0 ce Ch Sw C1 H) (fun _ => le_refl _)
 
 /- English proof (translation)
-The claim follows from `lift_exponent_of_least A hOk P0 ψ0 Zs μ Tw _ (fun _ _ _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem lift_exponent_of_numeric {s : ℕ} (hOk : A.fam.Ok s) (Zs : DefSub A.fam.amb) (μ : HeightOneSpectrum (𝓞 K) → T)
     (Tw : Finset (HeightOneSpectrum (𝓞 K))) : LiftExponentAtTwisted A P0 ψ0 Zs μ Tw (ZscOfNum A P0 ψ0 Nd eJ Nc Zs).J0 :=
   lift_exponent_of_least A hOk P0 ψ0 Zs μ Tw _ (fun _ _ _ => rfl)
 
 /- English proof (translation)
-Use `show 0 ≤ 8 * (Nd.R.f : ℝ) * (Nd.R.r : ℝ) / ((min (Nd.g 0) (Nd.g 1) : ℕ) : ℝ)`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem numeric_scale_offset_nonneg (Zs : DefSub A.fam.amb) (C CH : ℝ) : 0 ≤ ((ZscOfNum A P0 ψ0 Nd eJ Nc Zs).num C CH).de := by
   show 0 ≤ 8 * (Nd.R.f : ℝ) * (Nd.R.r : ℝ) / ((min (Nd.g 0) (Nd.g 1) : ℕ) : ℝ)
@@ -135,7 +135,7 @@ def bdOf (Zs : DefSub A.fam.amb) (μ : HeightOneSpectrum (𝓞 K) → T) (Tw : F
     ((A.fam.R A.fam.μ0).dZ (A.fam.lvl P0 ψ0) (Zs.Z A.fam.μ0) : ℝ)
 
 /- English proof (translation)
-Introduce `j`. Establish `hD' : (0 : ℝ) < ((A.fam.R A.fam.μ0).dZ (A.fam.lvl P0 ψ0) (Zs.Z A.fam.μ0) : ℝ)` using `by exact_mod_cast hD`. Unfold `bdOf`. Rewrite using `[div_mul_cancel₀ _ hD'.ne']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem inEta_bdOf (Zs : DefSub A.fam.amb) (μ : HeightOneSpectrum (𝓞 K) → T) (Tw : Finset (HeightOneSpectrum (𝓞 K)))
     (hD : 0 < (A.fam.R A.fam.μ0).dZ (A.fam.lvl P0 ψ0) (Zs.Z A.fam.μ0)) :
@@ -146,7 +146,7 @@ theorem inEta_bdOf (Zs : DefSub A.fam.amb) (μ : HeightOneSpectrum (𝓞 K) → 
   rw [div_mul_cancel₀ _ hD'.ne']
 
 /- English proof (translation)
-Use `inEta_bdOf A P0 ψ0 Zs S.μ S.Tw ?_` and prove the remaining obligations. Establish `e : (A.fam.R A.fam.μ0).dZ (A.fam.lvl P0 ψ0) (Zs.Z A.fam.μ0) = S.D` using `S.dQ_eq A.fam.base.μ0`. Rewrite using `[e]`. Conclude with `S.D_pos`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inEta_bdOf_rows (Zs : DefSub A.fam.amb) (S : IndefRows (A.side P0 ψ0 Zs)) :
     InEta A.fam P0 ψ0 Zs S.μ S.Tw (bdOf A P0 ψ0 Zs S.μ S.Tw) := by
@@ -160,18 +160,18 @@ def dgOf (hT : Finite T) : ℕ :=
   Finset.univ.lcm fun p : Fin m × T => (A.fam.L p.1 p.2).DG (A.fam.lvlA P0 ψ0)
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite T`. Conclude with `Finset.dvd_lcm (f := fun p : Fin m × T => (A.fam.L p.1 p.2).DG (A.fam.lvlA P0 ψ0)) (Finset.mem_univ (j, t))`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem dgOf_dvd (hT : Finite T) (j : Fin m) (t : T) : (A.fam.L j t).DG (A.fam.lvlA P0 ψ0) ∣ dgOf A P0 ψ0 hT := by
   letI := Fintype.ofFinite T
   exact Finset.dvd_lcm (f := fun p : Fin m × T => (A.fam.L p.1 p.2).DG (A.fam.lvlA P0 ψ0)) (Finset.mem_univ (j, t))
 
 /- English proof (translation)
-Use `letI := Fintype.ofFinite T`. Establish `hpos : ∀ j t, 0 < (A.fam.L j t).DG (A.fam.lvlA P0 ψ0)`. Introduce `j t`. Unfold `BlockDat.DG`. Use `Nat.mul_pos Nat.card_pos (Nat.pos_of_ne_zero ?_)` and prove the remaining obligations.
+Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `CSD.DGam`. Rewrite using `[Ne, Finset.lcm_eq_zero_iff]`. Introduce and unpack `⟨c, -, hc⟩`. Conclude with `(Fintype.card_pos (α := ((A.fam.L j t).S.Gam c))).ne' hc`. Use `Nat.pos_of_ne_zero ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Unfold `dgOf`. Rewrite using `[Ne, Finset.lcm_eq_zero_iff]`. Introduce and unpack `⟨p, -, hp⟩`. Conclude with `(hpos p.1 p.2).ne' hp`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem dgOf_pos (hT : Finite T) : 0 < dgOf A P0 ψ0 hT := by
   letI := Fintype.ofFinite T
@@ -200,12 +200,12 @@ def QOf (P : IndefCore Df0 Df1 Dc Sp N) (LG E3 : ℝ) (E2 : Bs.J → ℝ) : ℝ 
   max 1 (boundB P LG E3 E2 + N.hh + 28 * N.la)
 
 /- English proof (translation)
-The claim follows from `le_max_left _ _`.
+A detailed English derivation is pending.
 -/
 theorem QOf_one (P : IndefCore Df0 Df1 Dc Sp N) (LG E3 : ℝ) (E2 : Bs.J → ℝ) : 1 ≤ QOf P LG E3 E2 := le_max_left _ _
 
 /- English proof (translation)
-The claim follows from `le_max_right _ _`.
+A detailed English derivation is pending.
 -/
 theorem QOf_ge (P : IndefCore Df0 Df1 Dc Sp N) (LG E3 : ℝ) (E2 : Bs.J → ℝ) :
     boundB P LG E3 E2 + N.hh + 28 * N.la ≤ QOf P LG E3 E2 := le_max_right _ _
@@ -228,13 +228,11 @@ def DGamSize (hT : Finite T) (s : ℕ) (cD : ℝ) : Prop :=
   Real.log (dgOf A P0 ψ0 hT : ℝ) + Real.log (s : ℝ) ≤ cD * Nd.unitE Nc
 
 /- English proof (translation)
-Establish `key` using `errB_of_units (ZscOfNum A P0 ψ0 Nd eJ Nc Zs) C CH (RecNums.ofNum Nd eJ δ Tl Nc (Real.log (Fintype.card G)) C0 ce Ch Sw C1 H) (lgDef (RecNums.ofNum Nd eJ δ Tl Nc (Real.log (Fintype.card G)) C0 ce Ch Sw C1 H) s) 1 (etaSumBound bd dg s) C cG (c13 + cD) 1 hC (le_refl (Nd.unitE Nc)) ? …`. Conclude with `key`. Use `show C * (Nd.B0 * Real.log (Real.log Nd.sc.x)) ≤ C * Nd.unitE Nc`. Use `mul_le_mul_of_nonneg_left ?_ hC` and prove the remaining obligations. Establish `hll` using `Nd.logLog_le H.logx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `Nd.loss_bound_nonneg`. Establish `hx : 0 ≤ Nd.sc.x ^ Nd.sc.eps` using `Real.rpow_nonneg Nd.x_pos.le _`. Establish `h1 : Nd.B0 * Real.log (Real.log Nd.sc.x) ≤ Nd.B0 * Nd.sc.x ^ Nd.sc.eps` using `mul_le_mul_of_nonneg_left hll hB`. Establish `h2 : 0 ≤ Nd.sc.x ^ Nd.sc.eps * Nc` using `mul_nonneg hx H.Nc0`. Unfold `NumDatum.unitE`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the polynomial consequences of the given equalities and inequalities. Use `show Real.log (Fintype.card G) + Real.log (s : ℝ) ≤ cG * ((Nd.R.m : ℝ) * Nd.unitE Nc)`. Conclude with `hLam`. Introduce `j show bd j + Real.log (dg : ℝ) + Real.log (s : ℝ) ≤ (c13 + cD) * Nd.unitE Nc`. Use `hbd j` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `show (1 : ℝ) ≤ 1 * ((Nd.R.m : ℝ) * Nd.unitE Nc)`. Rewrite using `[one_mul]`. Conclude with `Nd.one_le_m_unitE H.Nc0`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem errB_ofNum (Zs : DefSub A.fam.amb) (C CH : ℝ) (δ : Code Nd) (Tl : ℕ) (C0 ce Ch Sw C1 : ℝ)
     (H : Nd.NumFacts δ Nc (Real.log (Fintype.card G)) C0 ce Ch Sw C1) (hC : 0 ≤ C) (bd : A.fam.base.J → ℝ) (dg s : ℕ)

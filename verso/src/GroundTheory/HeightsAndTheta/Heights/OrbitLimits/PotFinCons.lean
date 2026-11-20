@@ -9,7 +9,7 @@ namespace GroundTheory.Heights₂.Heights.Targets
 open ReciprocityTheory.ChartRestriction.G.Geo Filter Topology
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j z`. Apply the tactic sequence `refine Fin.cases ?_ (fun i => ?_) j <;> simp [pot]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pot_fin_cons {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {e : ℕ} (M : HermLine ι)
     (L : Fin e → HermLine ι) :
@@ -18,11 +18,11 @@ theorem pot_fin_cons {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (�
   refine Fin.cases ?_ (fun i => ?_) j <;> simp [pot]
 
 /- English proof (translation)
-Introduce `K _ ι _ P n L A B s hP hL hA hB _ hs`. Take `⟨a, ha, hsa, hsP⟩` from `id hs`. Establish `hM : ∀ j, IsSmoothHerm ((Fin.cons B L : Fin (n + 1) → HermLine ι) j)` using `fun j => Fin.cases (by simpa using hB) (fun i => by simpa using hL i) j`. Establish `hlim` using `GroundTheory.Heights₂.Heights.Inter.PtsRegLimit.proof hInt (GroundTheory.Heights₂.Heights.Inter.PtsAbsIntegrable.proof hInt hMeas) K ι P (n + 1) (Fin.cons B L) A s ⟨a, ha, hsa⟩ hP hM hA hsP`. Rewrite `hlim` using `[pot_fin_cons]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hg : ∀ ε, (fun z => Real.log ((GroundTheory.Heights₂.Heights.Inter.regLine A s ⟨a, ha, hsa⟩ ε).h z)) = regLog A s ε`. Introduce `ε`. Use function extensionality and compare the values at `z`. Rewrite using `[GroundTheory.Heights₂.Heights.Inter.log_regLine_h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify `hlim` using `only [hg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem PoincareLelongRegularised.proof (hInt : PtsIntegrableStatement)
     (hMeas : GroundTheory.Heights₂.Heights.Inter.PtsAbsMeasurable.Statement) : PoincareLelongRegularised.Statement := by

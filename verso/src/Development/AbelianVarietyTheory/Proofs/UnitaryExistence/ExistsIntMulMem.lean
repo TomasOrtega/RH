@@ -5,19 +5,19 @@ namespace GlobalTheory.IntMulMem
 open NumberField
 
 /- English proof (translation)
-Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simpa using Λ.zero_mem⟩`. Consider the case `add x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨N, hN, hNx⟩` from `hx`. Take `⟨M, hM, hMy⟩` from `hy`. Use `⟨N * M, mul_ne_zero hN hM, ?_⟩` and prove the remaining obligations. Establish `h1 : ((N * M : ℤ) : E) • x = ((M : ℤ) : RingOfIntegers E) • ((N : E) • x)`. Rewrite using `[← algebraMap_smul E ((M : ℤ) : RingOfIntegers E), smul_smul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `[mul_comm]`. Establish `h2 : ((N * M : ℤ) : E) • y = ((N : ℤ) : RingOfIntegers E) • ((M : E) • y)`. Rewrite using `[← algebraMap_smul E ((N : ℤ) : RingOfIntegers E), smul_smul]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using the standard rewrite rules. Rewrite using `[smul_add, h1, h2]`. Conclude with `Λ.add_mem (Λ.smul_mem _ hNx) (Λ.smul_mem _ hMy)`. Consider the case `smul c x _ hx`. Take `⟨N, hN, hNx⟩` from `hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `halg : IsAlgebraic ℤ c` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).mpr (.of_finite ℚ c)`. Take `⟨y, hy0, hyi⟩` from `halg.exists_integral_multiple`. Set `a : RingOfIntegers E` to `⟨y • c, hyi⟩`. Use `⟨y * N, mul_ne_zero hy0 hN, ?_⟩` and prove the remaining obligations. Establish `h : ((y * N : ℤ) : E) • (c • x) = a • ((N : E) • x)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← algebraMap_smul E a, smul_smul, smul_smul]`. Use `congr 1`. Use `show _ = (y • c) * (N : E)`. Rewrite using `[zsmul_eq_mul]`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `Λ.smul_mem _ hNx`.
+A detailed English derivation is pending.
 -/
 theorem exists_int_mul_mem {E : Type} [Field E] [NumberField E] {V : Type} [AddCommGroup V]
     [Module E V] [Module (RingOfIntegers E) V] [IsScalarTower (RingOfIntegers E) E V]

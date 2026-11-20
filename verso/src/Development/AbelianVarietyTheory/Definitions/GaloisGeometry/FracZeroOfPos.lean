@@ -23,9 +23,9 @@ def frac (f : Fin d → R) {M : Type} [AddCommGroup M] [Module R M] (m : M) (k :
   Submodule.Quotient.mk (LocalizedModule.mk m ⟨(∏ l, f l) ^ k, by exact ⟨k, rfl⟩⟩)
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Proceed by induction on `y using LocalizedModule.induction_on with`. Consider the case `h m u`. Take `⟨k, hk⟩` from `u.2`. Use `⟨m, k, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `frac`. Use `congr 2`. Conclude with `Subtype.ext hk.symm`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem frac_surjective (f : Fin d → R) (x : LC f M) : ∃ (m : M) (k : ℕ), x = frac f m k := by
   obtain ⟨y, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -38,7 +38,7 @@ theorem frac_surjective (f : Fin d → R) (x : LC f M) : ∃ (m : M) (k : ℕ), 
     exact Subtype.ext hk.symm
 
 /- English proof (translation)
-Unfold `frac`. Use `congr 1`. Rewrite using `[LocalizedModule.mk_eq]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Simplify using `only [one_smul, Submonoid.smul_def, smul_smul, pow_succ]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem frac_prod_smul (f : Fin d → R) (m : M) (k : ℕ) : frac f ((∏ l, f l) • m) (k + 1) = frac f m k := by
   unfold frac
@@ -48,7 +48,7 @@ theorem frac_prod_smul (f : Fin d → R) (m : M) (k : ℕ) : frac f ((∏ l, f l
   simp only [one_smul, Submonoid.smul_def, smul_smul, pow_succ]
 
 /- English proof (translation)
-Unfold `frac`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨⟨0, hd⟩, 0, m, by simp⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 -/
 theorem frac_zero_of_pos (f : Fin d → R) (hd : 0 < d) (m : M) : frac f m 0 = 0 := by
   unfold frac
@@ -69,20 +69,20 @@ variable {B : Type} [CommRing B] [Algebra ℂ B] {s : Fin d → B} {e : B →ₐ
   {ρ : LC s (Om ℂ B d) →ₗ[ℂ] ℂ}
 
 /- English proof (translation)
-The claim follows from `hρ.2.1 ω`.
+A detailed English derivation is pending.
 -/
 theorem top_form (hρ : IsRes s e ρ) (ω : Om ℂ B d) :
     ∃ h : B, ω = h • exteriorPower.ιMulti B d fun j => D ℂ B (s j) := hρ.2.1 ω
 
 /- English proof (translation)
-The claim follows from `hρ.2.2 k h`.
+A detailed English derivation is pending.
 -/
 theorem apply_frac (hρ : IsRes s e ρ) (k : ℕ) (h : B) :
     ρ (frac s (h • exteriorPower.ιMulti B d fun j => D ℂ B (s j)) (k + 1)) =
       MvPowerSeries.coeff (Finsupp.equivFunOnFinite.symm fun _ => k) (e h) := hρ.2.2 k h
 
 /- English proof (translation)
-Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Take `⟨ω, k, rfl⟩` from `frac_surjective s x`. Rewrite using `[← frac_prod_smul s ω k]`. Take `⟨h, hh⟩` from `hρ.top_form ((∏ l, s l) • ω)`. Rewrite using `[hh, hρ.apply_frac, hρ'.apply_frac]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem unique {ρ' : LC s (Om ℂ B d) →ₗ[ℂ] ℂ} (hρ : IsRes s e ρ) (hρ' : IsRes s e ρ') : ρ = ρ' := by
   refine LinearMap.ext fun x => ?_
@@ -113,9 +113,9 @@ def rho0 (s : Fin 0 → ℂ) : LC s (Om ℂ ℂ 0) →ₗ[ℂ] ℂ :=
       rw [this]; exact bot_le))
 
 /- English proof (translation)
-Use `⟨fun j => j.elim0, fun ω => ⟨exteriorPower.zeroEquiv ℂ Ω[ℂ⁄ℂ] ω, ?_⟩, fun k h => ?_⟩` and prove the remaining obligations. Apply `(exteriorPower.zeroEquiv ℂ Ω[ℂ⁄ℂ]).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.map_smul, exteriorPower.zeroEquiv_ιMulti, smul_eq_mul, mul_one]`. Establish `hn : (Finsupp.equivFunOnFinite.symm fun _ : Fin 0 => k) = 0` using `Subsingleton.elim _ _`. Rewrite using `[hn, Algebra.ofId_apply, MvPowerSeries.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply, MvPowerSeries.coeff_zero_C]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[rho0, frac, LocalizedModule.lift_mk, exteriorPower.zeroEquiv_ιMulti]`.
+Simplify using the standard rewrite rules.
 -/
 example (s : Fin 0 → ℂ) : IsRes s (Algebra.ofId ℂ (MvPowerSeries (Fin 0) ℂ)) (rho0 s) := by
   refine ⟨fun j => j.elim0, fun ω => ⟨exteriorPower.zeroEquiv ℂ Ω[ℂ⁄ℂ] ω, ?_⟩, fun k h => ?_⟩
@@ -127,13 +127,13 @@ example (s : Fin 0 → ℂ) : IsRes s (Algebra.ofId ℂ (MvPowerSeries (Fin 0) �
     simp [rho0, frac, LocalizedModule.lift_mk, exteriorPower.zeroEquiv_ιMulti]
 
 /- English proof (translation)
-The claim follows from `frac_zero_of_pos _ Nat.one_pos _`.
+A detailed English derivation is pending.
 -/
 example : frac (fun _ : Fin 1 => (Polynomial.X : Polynomial ℂ)) (1 : Polynomial ℂ) 0 = 0 :=
   frac_zero_of_pos _ Nat.one_pos _
 
 /- English proof (translation)
-Use `frac_prod_smul (fun _ : Fin 1 => (Polynomial.X : Polynomial ℂ)) (1 : Polynomial ℂ) 1` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 example : frac (fun _ : Fin 1 => (Polynomial.X : Polynomial ℂ)) (Polynomial.X : Polynomial ℂ) 2 =
     frac (fun _ : Fin 1 => (Polynomial.X : Polynomial ℂ)) (1 : Polynomial ℂ) 1 := by

@@ -9,7 +9,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 namespace UpperTheory.V.Z.Bc
 
 /- English proof (translation)
-The claim follows from `Z.InvariantSubmoduleMonicPolynomial.E.indCs_of_bcfl PositivityTheory.Rg.Tf.Loc.bcflUnit`.
+A detailed English derivation is pending.
 -/
 theorem indCs : Z.InvariantSubmoduleMonicPolynomial.E.IndCs := Z.InvariantSubmoduleMonicPolynomial.E.indCs_of_bcfl PositivityTheory.Rg.Tf.Loc.bcflUnit
 

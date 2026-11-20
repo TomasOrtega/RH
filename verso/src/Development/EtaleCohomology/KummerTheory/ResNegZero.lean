@@ -7,7 +7,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.KummerTheory.DegreeZeroClassRestriction
 
 /- English proof (translation)
-Apply `HomologicalComplex.isZero_extend_X` to reduce the goal to its premises. Introduce `i hi`. Establish `h' : ((i : ℕ) : ℤ) = s` using `hi`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem res_neg_zero (R : Type) [CommRing R] (F : Shv R) (s : ℤ) (hs : s < 0) : IsZero ((res R F).X s) := by
   apply HomologicalComplex.isZero_extend_X
@@ -22,18 +22,18 @@ def ofHom {X U : Scheme.{0}} (g : U ⟶ X) : Sx (sch.obj X) 0 U := by
   unfold sch; exact g
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `asHom x ≫ 𝟙 X = x`. Conclude with `Category.comp_id (asHom x)`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem res_ofHom {X U : Scheme.{0}} (x : Sx (sch.obj X) 0 U) : Sx.res (asHom x) (ofHom (𝟙 X)) = x := by
   change asHom x ≫ 𝟙 X = x
   exact Category.comp_id (asHom x)
 
 /- English proof (translation)
-Apply `LateralTheory.KummerTheory.AW.ev_ext` to reduce the goal to its premises. Introduce `p s hp U x`. Consider the cases of `p with`. Consider the case `zero`. Take `rfl : s = 0` from `by simpa using hp.symm`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ γ : Cochain ((chains R).obj (sch.obj X)) (res R F) 0, ev γ 0 0 hp U x = Sec.res (asHom x) (ev γ 0 0 hp X (ofHom (𝟙 X)))`. Introduce `γ`. Rewrite using `[LateralTheory.KummerTheory.AW.ev_res]`. Rewrite using `[res_ofHom]`. Rewrite using `[key α, key β]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg _ h`. Consider the case `succ k`. Establish `hs : s < 0` using `by omega`. Rewrite using `[LateralTheory.KummerTheory.AW.ev_eq, LateralTheory.KummerTheory.AW.ev_eq, (res_neg_zero R F s hs).eq_of_tgt ((chainsXIso R (sch.obj X) (k + 1)).inv ≫ α.v _ _ hp) ((chainsXIso R (sch.obj X) (k + 1)).inv ≫ β.v _ _ hp)]`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cochain_eq (R : Type) [CommRing R] (F : Shv R) (X : Scheme.{0})
     (α β : Cochain ((chains R).obj (sch.obj X)) (res R F) 0)
@@ -58,7 +58,7 @@ theorem cochain_eq (R : Type) [CommRing R] (F : Shv R) (X : Scheme.{0})
 end LateralTheory.KummerTheory.DegreeZeroClassRestriction
 
 /- English proof (translation)
-Introduce `R _ F X α β h`. Establish `e : α.1 = β.1` using `LateralTheory.KummerTheory.DegreeZeroClassRestriction.cochain_eq R F X α.1 β.1 h`. Conclude with `congrArg CohomologyClass.mk (Cocycle.ext e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem LateralTheory.KummerTheory.Cls0_of (_hT : LateralTheory.KummerTheory.TwSec) : LateralTheory.KummerTheory.Cls0 := by
   intro R _ F X α β h

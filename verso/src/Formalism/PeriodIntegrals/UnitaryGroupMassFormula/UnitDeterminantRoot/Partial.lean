@@ -6,7 +6,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.UnitDeterminantRoot.Det
 namespace PI.UnitaryGroupMassFormula.UnitDetRoot
 
 /- English proof (translation)
-The claim follows from `unitDetRoot_of detInK localStd h normOne rootStep conjMem conjLUnit`.
+A detailed English derivation is pending.
 -/
 theorem unitDetRoot_of_global (h : GlobalLUnit) : PI.UnitDetRoot :=
   unitDetRoot_of detInK localStd h normOne rootStep conjMem conjLUnit

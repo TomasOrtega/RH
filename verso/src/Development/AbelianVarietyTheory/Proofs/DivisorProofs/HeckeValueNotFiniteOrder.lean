@@ -10,7 +10,7 @@ namespace GlobalTheory.CMSplitValue
 open WithZero GlobalTheory.CharVal GlobalTheory.Formalism.L2.Col.HostOk
 
 /- English proof (translation)
-Use `letI : Algebra E ℂ := τ₀.toAlgebra`. Use `haveI : IsScalarTower ℚ E ℂ := IsScalarTower.of_algebraMap_eq fun q => by show algebraMap ℚ ℂ q = τ₀ (algebraMap ℚ E q)`. Rewrite using `[eq_ratCast (algebraMap ℚ ℂ), eq_ratCast (algebraMap ℚ E), map_ratCast]`. Conclude with `⟨(τ₁.toRatAlgHom).restrictNormal' E, fun x => (τ₁.toRatAlgHom).restrictNormal_commutes E x⟩`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_aut_comp {E : Type} [Field E] [NumberField E] [IsGalois ℚ E] (τ₀ τ₁ : E →+* ℂ) :
     ∃ g : E ≃ₐ[ℚ] E, ∀ x, τ₀ (g x) = τ₁ x := by
@@ -21,33 +21,29 @@ theorem exists_aut_comp {E : Type} [Field E] [NumberField E] [IsGalois ℚ E] (�
   exact ⟨(τ₁.toRatAlgHom).restrictNormal' E, fun x => (τ₁.toRatAlgHom).restrictNormal_commutes E x⟩
 
 /- English proof (translation)
-Introduce `hfin`. Take `⟨M, z, hM, h1, h2, h3⟩` from `GlobalTheory.TamePow.exists_pow_locK_mul_inf E χ (GlobalTheory.Mem.UnrAe.unr_ae_and_level _ χ).1.toFinset (GlobalTheory.HeckeProduct.hchar_productRule _ χ) (fun v hv => by simpa using hv) ht W (Formalism.L2.Host.unif W)`. Take `⟨a, ha, hpow⟩` from `isOfFinOrder_iff_pow_eq_one.1 hfin`. Establish `h4 : χ.inf z ^ a = 1`. Use `congrArg (· ^ a) h3` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [mul_pow, one_pow] at this`. Rewrite `this` using `[← pow_mul, mul_comm M a, pow_mul]`. Express the relevant statement in the definitionally equal form `χ.val W ^ a = 1 at hpow`. Unfold `Formalism.L2.Host.HChar.val at hpow`. Rewrite `this` using `[hpow, one_pow, one_mul]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨w₀⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `set τ₀ : E →+* ℂ := (τ w₀).1 with hτ₀`. Use `choose g hg using fun w => exists_aut_comp τ₀ (τ w).1`. Establish `h5 : ((χ.inf z : ℂˣ) : ℂ) ^ 2 = τ₀ (∏ w, (g w z / g w (σ z)) ^ n w)`. Rewrite using `[hinf z, map_prod, ← Finset.prod_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow₀, ← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast]`. Use `congr 1`. Establish `e : τ₀ (g w (σ z)) = starRingEnd ℂ (τ₀ (g w z))`. Rewrite using `[hg, hg]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hcm.2.2.2 _ _`. Establish `e' : (τ w).1 z = τ₀ (g w z)` using `(hg w z).symm`. Establish `h0 : τ₀ (g w z) ≠ 0` using `by simp`. Rewrite using `[map_div₀, e, e', div_pow, div_eq_div_iff (pow_ne_zero _ (by simpa using h0)) (by simpa using h0), sq, mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Establish `h6 : (∏ w, (g w z / g w (σ z)) ^ n w) ^ a = 1`. Apply `τ₀.injective` to reduce the goal to its premises. Rewrite using `[map_pow, ← h5, ← pow_mul, mul_comm, pow_mul, ← Units.val_pow_eq_pow_val, h4, map_one]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7` using `unit_of_pow (w := W) ha (by rw [h6, map_one])`. Establish `hg0 : ∀ x, g w₀ x = x` using `fun x => τ₀.injective (hg w₀ x)`. Establish `hres : ∀ w, (∀ f : F, τ₀ (algebraMap F E f) = w.embedding f) → w = w₀`. Introduce `w hw`. Establish `e : w.embedding = w₀.embedding`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `f`. Rewrite using `[← hw f]`. Conclude with `(RingHom.congr_fun (τ w₀).2 f)`. Rewrite using `[← InfinitePlace.mk_embedding w, e, InfinitePlace.mk_embedding]`. Establish `hc : ∀ w, W.valuation E (g w (σ z)) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Use `GlobalTheory.SplitValue.val_map_eq_one hp hN hsq h2 ((g w : E →+* E).comp (σ : E →+* E)) fun e => ?_` and prove the remaining obligations. Establish `hw : w = w₀` using `hres w fun f => by`. Use `RingHom.congr_fun e (algebraMap F E f)` as an intermediate fact. Express the relevant statement in the definitionally equal form `g w (σ (algebraMap F E f)) = algebraMap F E f at this`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← this, hg, AlgHom.commutes]`. Conclude with `RingHom.congr_fun (τ w).2 f`. Substitute `hw` using the available equality. Take `⟨x, hx⟩` from `GlobalTheory.AdelicU.exists_cm_conj_ne hcm`. Use `RingHom.congr_fun e x` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `g w (σ x) = x at this`. Rewrite `this` using `[hg0]`. Conclude with `hx this`. Establish `hgw : ∀ w, w ≠ w₀ → W.valuation E (g w z) = 1`. Introduce `w hw`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.SplitValue.val_map_eq_one hp hN hsq h2 (g w : E →+* E) fun e => hw (hres w fun f => ?_)` and prove the remaining obligations. Use `RingHom.congr_fun e (algebraMap F E f)` as an intermediate fact. Express the relevant statement in the definitionally equal form `g w (algebraMap F E f) = algebraMap F E f at this`. Rewrite using `[← this, hg]`. Conclude with `RingHom.congr_fun (τ w).2 f`.
-
-Rewrite `h7` using `[map_prod, Finset.prod_eq_single w₀ (fun w _ h => by rw [map_zpow₀, map_div₀, hgw w h, hc w, div_one, one_zpow]) (by simp), map_zpow₀, map_div₀, hc, div_one, hg0, h1, val_unif, ← exp_nsmul, ← exp_zsmul, ← exp_zero, exp_inj]`. Simplify using `only [nsmul_eq_mul, smul_eq_mul, mul_eq_zero] at h7`. Break down `h7 with h | h | h` into its components or cases. Conclude with `hn w₀ h`. Use linear arithmetic over natural numbers and integers.
-
-Use linear arithmetic over natural numbers and integers.
+Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem not_isOfFinOrder_val_of_tame (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) (hgal : IsGalois ℚ E) (τ : ∀ w : InfinitePlace F, EmbOver E w)
@@ -132,11 +128,11 @@ end GlobalTheory.CMSplitValue
 namespace GlobalTheory.CMSplitValue
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm hgal τ H n hinf hn p hp W hN hsq hfin`. Take `⟨N, hN0, hunr⟩` from `GlobalTheory.Corev.UnrPow.exists_pow_unrAt E H`. Establish `ht : ∀ v, (H ^ N).TameAt v` using `fun v x hx _ => hunr v x hx`. Establish `hinf' : (H ^ N).HasInf (fun w => (τ w).1) (fun w => (N : ℤ) * n w)`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GlobalTheory.SplitValuePow.inf_pow, Units.val_pow_eq_pow_val, hinf k, ← Finset.prod_pow]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm]`. Use `not_isOfFinOrder_val_of_tame F E σ hcm hgal τ (H ^ N) _ ht hinf' (fun w => mul_ne_zero (by exact_mod_cast hN0.ne') (hn w)) p hp W hN hsq ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitValuePow.val_pow]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfin.pow`.
+A detailed English derivation is pending.
 -/
 theorem not_isOfFinOrder_val : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → IsGalois ℚ E → ∀ (τ : ∀ w : InfinitePlace F, EmbOver E w) (H : Formalism.L2.Host.HChar E) (n : InfinitePlace F → ℤ), H.HasInf (fun w => (τ w).1) n → (∀ w, n w ≠ 0) → ∀ (p : ℕ), p.Prime → ∀ W : HeightOneSpectrum (𝓞 E), Ideal.absNorm W.asIdeal = p → (p : 𝓞 E) ∉ W.asIdeal ^ 2 → ¬ IsOfFinOrder (H.val W) := by
   intro F E _ _ _ _ _ σ hcm hgal τ H n hinf hn p hp W hN hsq hfin

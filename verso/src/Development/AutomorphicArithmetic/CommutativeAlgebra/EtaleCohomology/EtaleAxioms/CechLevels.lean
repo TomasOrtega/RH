@@ -7,24 +7,24 @@ import Development.EtaleCohomology.EtaleSheaves.SpecLimPf
 namespace UpperTheory.Et.CechLevelsEtaleAxioms
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.SpecLimPf.SpecLim_of`.
+A detailed English derivation is pending.
 -/
 theorem a0 : LateralTheory.E.LevelsGenPf.SpecLim := LateralTheory.E.SpecLimPf.SpecLim_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LevelsGenPf.LevelsGen_of_specLim a0`.
+A detailed English derivation is pending.
 -/
 theorem a1 : LateralTheory.E.LevelsPf.LevelsGen := LateralTheory.E.LevelsGenPf.LevelsGen_of_specLim a0
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LevelsPf.Levels_of_gen a1`.
+A detailed English derivation is pending.
 -/
 theorem a2 : LateralTheory.E.CechLevelsPf.Levels := LateralTheory.E.LevelsPf.Levels_of_gen a1
 /- English proof (translation)
-The claim follows from `LateralTheory.E.CechLevelsPf.CechLevels_of' a2`.
+A detailed English derivation is pending.
 -/
 theorem a3 : LateralTheory.E.t_E1Cut.CechLevels := LateralTheory.E.CechLevelsPf.CechLevels_of' a2
 
 /- English proof (translation)
-The claim follows from `a3`.
+A detailed English derivation is pending.
 -/
 theorem intersectionNumber_baseChange : LateralTheory.E.t_E1Cut.CechLevels := a3
 

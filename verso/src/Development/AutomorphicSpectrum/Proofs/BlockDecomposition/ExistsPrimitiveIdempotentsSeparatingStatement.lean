@@ -6,7 +6,7 @@ open NumberField IsDedekindDomain Matrix Polynomial GlobalTheory.CuspRep GlobalT
 open scoped Pointwise
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.TorusCh.exists_prim_cover` to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
+Apply the cited theorem to the given parameters and hypotheses. The parameters and hypotheses occur in the same order in both statements, and the conclusions agree.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FExistsPrimitiveIdempotentsSeparating.lean&line=69#L69)
 -/

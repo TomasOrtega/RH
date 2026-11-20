@@ -18,7 +18,7 @@ attribute [local instance] MvPolynomial.algebraMvPolynomial
 omit [Fintype σ] in
 
 /- English proof (translation)
-The claim follows from `Module.Flat.isBaseChange F (MvPolynomial σ F) F' (MvPolynomial σ F') (Algebra.IsPushout.out (R := F) (S := MvPolynomial σ F) (R' := F') (S' := MvPolynomial σ F'))`.
+A detailed English derivation is pending.
 -/
 theorem flat_mvPolynomial_map :
     Module.Flat (MvPolynomial σ F) (MvPolynomial σ F') :=
@@ -28,11 +28,11 @@ theorem flat_mvPolynomial_map :
 omit [Fintype σ] in
 
 /- English proof (translation)
-Use `flat_mvPolynomial_map (σ := σ) (F := F) (F' := F')` as an intermediate fact. Establish `hQp : Q.IsPrime` using `hQ.1.1`. Establish `hle : Ideal.map (algebraMap (MvPolynomial σ F) (MvPolynomial σ F')) 𝔭 ≤ Q` using `hQ.1.2`. Use `set q := Q.comap (algebraMap (MvPolynomial σ F) (MvPolynomial σ F')) with hq`. Establish `: q.IsPrime` using `Ideal.comap_isPrime _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Q.LiesOver q` using `⟨rfl⟩`. Establish `hpq : 𝔭 ≤ q` using `Ideal.map_le_iff_le_comap.mp hle`. Take `⟨P, hPQ, hP, hPl⟩` from `Ideal.exists_ideal_le_liesOver_of_le (p := 𝔭) Q hpq`. Establish `hPext : Ideal.map (MvPolynomial.map (algebraMap F F')) 𝔭 ≤ P`. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hPl.over.le`. Establish `hQP : Q ≤ P` using `hQ.2 ⟨hP, hPext⟩ hPQ`. Establish `hPQe : P = Q` using `le_antisymm hPQ hQP`. Substitute `hPQe` using the available equality. Conclude with `hPl.over.symm`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem comap_of_mem_minimalPrimes_map (𝔭 : Ideal (MvPolynomial σ F)) [𝔭.IsPrime]
     (Q : Ideal (MvPolynomial σ F'))
@@ -55,11 +55,11 @@ theorem comap_of_mem_minimalPrimes_map (𝔭 : Ideal (MvPolynomial σ F)) [𝔭.
   exact hPl.over.symm
 
 /- English proof (translation)
-Use `flat_mvPolynomial_map (σ := σ) (F := F) (F' := F')` as an intermediate fact. Establish `: Q.IsPrime` using `hQ.1.1`. Establish `hc` using `comap_of_mem_minimalPrimes_map 𝔭 Q hQ`. Establish `: Q.LiesOver 𝔭` using `⟨hc.symm⟩`. Rewrite using `[Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown 𝔭 Q]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : (Q.map (Ideal.Quotient.mk (𝔭.map (algebraMap (MvPolynomial σ F) (MvPolynomial σ F'))))).height = 0`. Establish `hQ' : Q ∈ (𝔭.map (algebraMap (MvPolynomial σ F) (MvPolynomial σ F'))).minimalPrimes` using `hQ`. Rewrite `hQ'` using `[Ideal.minimalPrimes_eq_comap]`. Take `⟨Q', hQ'm, hQ'e⟩` from `hQ'`. Establish `: Q'.IsPrime` using `hQ'm.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hQ'e, Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective]`. Conclude with `Ideal.height_eq_zero_iff.mpr hQ'm`. Rewrite using `[h0, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_eq_of_mem_minimalPrimes_map (𝔭 : Ideal (MvPolynomial σ F)) [𝔭.IsPrime]
     (Q : Ideal (MvPolynomial σ F'))
@@ -83,7 +83,7 @@ theorem height_eq_of_mem_minimalPrimes_map (𝔭 : Ideal (MvPolynomial σ F)) [�
 end GD
 
 /- English proof (translation)
-Set `e : MvPolynomial σ k ≃+* MvPolynomial (Fin (Fintype.card σ)) k` to `(MvPolynomial.renameEquiv k (Fintype.equivFin σ)).toRingEquiv`. Establish `: (P.map e).IsPrime` using `Ideal.map_isPrime_of_equiv e`. Establish `h` using `ReciprocityTheory.CA.height_add_ringKrullDim_quotient_mvPolynomial_field k _ (P.map e)`. Rewrite `h` using `[RingEquiv.height_map, ← ringKrullDim_eq_of_ringEquiv (Ideal.quotientEquiv P (P.map e) e rfl)]`. Conclude with `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem height_add_ringKrullDim_quotient (k : Type*) [Field k]
     (P : Ideal (MvPolynomial σ k)) [P.IsPrime] :
@@ -97,7 +97,7 @@ theorem height_add_ringKrullDim_quotient (k : Type*) [Field k]
   exact h
 
 /- English proof (translation)
-Establish `: Q.IsPrime` using `hQ.1.1`. Establish `h1` using `height_add_ringKrullDim_quotient F' Q`. Establish `h2` using `height_add_ringKrullDim_quotient F 𝔭`. Rewrite `h1` using `[height_eq_of_mem_minimalPrimes_map 𝔭 Q hQ]`. Conclude with `ReciprocityTheory.AnForm.R.BaseChangeC.withBot_enat_cancel h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_of_mem_minimalPrimes_map (𝔭 : Ideal (MvPolynomial σ F)) [𝔭.IsPrime]
     (Q : Ideal (MvPolynomial σ F'))
@@ -110,9 +110,9 @@ theorem ringKrullDim_of_mem_minimalPrimes_map (𝔭 : Ideal (MvPolynomial σ F))
   exact ReciprocityTheory.AnForm.R.BaseChangeC.withBot_enat_cancel h1 h2
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_quotient, Order.krullDim_eq_iSup_coheight, iSup_le_iff]`. Introduce `a`. Take `⟨Z, hZ, hZa⟩` from `Ideal.exists_minimalPrimes_le ((PrimeSpectrum.mem_zeroLocus _ _).mp a.2)`. Establish `: Z.IsPrime` using `hZ.1.1`. Set `z : PrimeSpectrum.zeroLocus (R` to `R) (I : Set R) := ⟨⟨Z, inferInstance⟩, (PrimeSpectrum.mem_zeroLocus _ _).mpr hZ.1.2⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hza : z ≤ a` using `hZa`. Set `e : Set.Ici z ↪o PrimeSpectrum.zeroLocus (R` to `R) (Z : Set R) := OrderEmbedding.ofMapLEIff (fun x => ⟨x.1.1, (PrimeSpectrum.mem_zeroLocus _ _).mpr (show Z ≤ x.1.1.asIdeal from x.2)⟩) fun _ _ => Iff.rfl`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Introduce a local definition for the expression. Chain the equalities or inequalities of the calculation.
 -/
 theorem ringKrullDim_quotient_le_of_minimalPrimes {R : Type*} [CommRing R] (I : Ideal R)
     {N : WithBot ℕ∞} (h : ∀ Z ∈ I.minimalPrimes, ringKrullDim (R ⧸ Z) ≤ N) :

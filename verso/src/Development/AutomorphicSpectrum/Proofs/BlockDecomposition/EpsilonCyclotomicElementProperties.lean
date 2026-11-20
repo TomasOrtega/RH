@@ -14,7 +14,7 @@ namespace GlobalTheory.CompanionTheory.EpsFacts
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `e` using `mul_geom_sum z m`. Rewrite `e` using `[h, sub_self]`. Conclude with `(mul_eq_zero.1 e).resolve_left (sub_ne_zero.2 h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem geom_sum_eq_zero {R : Type*} [CommRing R] [IsDomain R] {z : R} {m : ℕ} (h : z ^ m = 1) (h1 : z ≠ 1) :
     ∑ i ∈ Finset.range m, z ^ i = 0 := by
@@ -23,7 +23,7 @@ theorem geom_sum_eq_zero {R : Type*} [CommRing R] [IsDomain R] {z : R} {m : ℕ}
   exact (mul_eq_zero.1 e).resolve_left (sub_ne_zero.2 h1)
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[pow_succ m j, mul_comm, pow_mul, ← add_assoc, hs, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_chain {M : Type*} [Monoid M] {m : ℕ} (e : ℕ → M) (hs : ∀ k, e (k + 1) ^ m = e k) (k j : ℕ) :
     e (k + j) ^ m ^ j = e k := by
@@ -33,11 +33,11 @@ theorem pow_chain {M : Type*} [Monoid M] {m : ℕ} (e : ℕ → M) (hs : ∀ k, 
     rw [pow_succ m j, mul_comm, pow_mul, ← add_assoc, hs, ih]
 
 /- English proof (translation)
-Consider the cases of `m with`. Consider the case `zero => simpa [h0] using IsPrimitiveRoot.one`. Consider the case `succ k`. Establish `a : e (k + 1) ^ l ^ k = e 1`. Use `pow_chain e hs 1 k` as an intermediate fact.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[add_comm 1 k]`. Then use the resulting hypothesis. Establish `b : e (k + 1) ^ l ^ (k + 1) = 1`. Use `pow_chain e hs 0 (k + 1)` as an intermediate fact. Rewrite `this` using `[zero_add, h0]`. Then use the resulting hypothesis. Establish `o : orderOf (e (k + 1)) = l ^ (k + 1)` using `orderOf_eq_prime_pow (by rw [a]; exact h1) b`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Conclude with `o ▸ IsPrimitiveRoot.orderOf _`.
+A detailed English derivation is pending.
 -/
 theorem prim_chain {M : Type*} [CommMonoid M] (e : ℕ → M) (hs : ∀ k, e (k + 1) ^ l = e k) (h0 : e 0 = 1)
     (h1 : e 1 ≠ 1) (m : ℕ) : IsPrimitiveRoot (e m) (l ^ m) := by
@@ -55,9 +55,9 @@ theorem prim_chain {M : Type*} [CommMonoid M] (e : ℕ → M) (hs : ∀ k, e (k 
     exact o ▸ IsPrimitiveRoot.orderOf _
 
 /- English proof (translation)
-Establish `h1 : IsLocalRing.residue R a = 1`. Establish `: IsLocalRing.residue R (a - 1) = 0` using `(IsLocalRing.residue_eq_zero_iff _).2 ((IsLocalRing.mem_maximalIdeal _).2 ha)`. Rewrite `this` using `[map_sub, map_one, sub_eq_zero]`. Then use the resulting hypothesis. Establish `h2 : WittVector.map (IsLocalRing.residue R) (WittVector.teichmuller l a - 1 : WittVector l R) = 0`. Rewrite using `[map_sub, map_one, WittVector.map_teichmuller, h1, map_one, sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : IsLocalRing.residue R ((WittVector.teichmuller l a - 1 : WittVector l R).coeff i) = 0`. Rewrite using `[← WittVector.map_coeff, h2, WittVector.zero_coeff]`. Conclude with `(IsLocalRing.mem_maximalIdeal _).1 ((IsLocalRing.residue_eq_zero_iff _).1 h3)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_not_isUnit {R : Type*} [CommRing R] [IsLocalRing R] (a : R) (ha : ¬ IsUnit (a - 1)) (i : ℕ) :
     ¬ IsUnit ((WittVector.teichmuller l a - 1 : WittVector l R).coeff i) := by
@@ -73,13 +73,13 @@ theorem coeff_not_isUnit {R : Type*} [CommRing R] [IsLocalRing R] (a : R) (ha : 
 
 variable (l) in
 /- English proof (translation)
-The claim follows from `ValuationRing.isLocalRing (OC l)`.
+A detailed English derivation is pending.
 -/
 theorem isLocalRing_oc : IsLocalRing (OC l) := ValuationRing.isLocalRing (OC l)
 
 variable (l) in
 /- English proof (translation)
-The claim follows from `haveI := isLocalRing_oc l GlobalTheory.preTilt_isLocalRing l (OC l)`.
+A detailed English derivation is pending.
 -/
 theorem isLocalRing_ob : IsLocalRing (Ob l) :=
   haveI := isLocalRing_oc l
@@ -87,7 +87,7 @@ theorem isLocalRing_ob : IsLocalRing (Ob l) :=
 
 variable (l) in
 /- English proof (translation)
-Introduce `h` and use `by have h1 : IsUnit (theta0 l (WittVector.teichmuller l (pFlat l))) := (h.map (WittVector.teichmuller l)).map (theta0 l) rw [WittVector.fontaineTheta_teichmuller, untilt_pFlat] at h1 exact (inferInstance : Fact (¬ IsUnit (l : OC l))).out h1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pFlat_not_isUnit : ¬ IsUnit (pFlat l) := fun h => by
   have h1 : IsUnit (theta0 l (WittVector.teichmuller l (pFlat l))) := (h.map (WittVector.teichmuller l)).map (theta0 l)
@@ -95,7 +95,7 @@ theorem pFlat_not_isUnit : ¬ IsUnit (pFlat l) := fun h => by
   exact (inferInstance : Fact (¬ IsUnit (l : OC l))).out h1
 
 /- English proof (translation)
-Establish `h` using `((RL.sharp_cong (base l)).2.1 (ε.e 0 : Ob l) 1).1 (by`. Establish `h0 : (base l).sharp (ε.e 0 : Ob l) = 1` using `ε.sharp_e (base l)`. Rewrite using `[h0, map_one, sub_self]`. Conclude with `zero_mem _)`. Conclude with `Ideal.mem_span_singleton.1 h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_prime_dvd_epsilon_zero_sub_one (ε : Eps l) : pFlat l ∣ ((ε.e 0 : Ob l) - 1) := by
   have h := ((RL.sharp_cong (base l)).2.1 (ε.e 0 : Ob l) 1).1 (by
@@ -105,7 +105,7 @@ theorem integral_prime_dvd_epsilon_zero_sub_one (ε : Eps l) : pFlat l ∣ ((ε.
   exact Ideal.mem_span_singleton.1 h
 
 /- English proof (translation)
-Introduce `h` and use `by haveI : CharP (Ob l) l := inferInstance have h1 : IsUnit (((ε.e 1 : Ob l) - 1) ^ l) := h.pow l have e : (ε.e 1 : Ob l) ^ l = ε.e 0 := by have := congrArg Units.val (ε.succ 0) rwa [Units.val_pow_eq_pow_val] at this rw [sub_pow_char, e, one_pow] at h1 exact pFlat_not_isUnit l (i …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem epsilon_one_sub_one_not_isUnit (ε : Eps l) : ¬ IsUnit ((ε.e 1 : Ob l) - 1) := fun h => by
   haveI : CharP (Ob l) l := inferInstance
@@ -117,20 +117,20 @@ theorem epsilon_one_sub_one_not_isUnit (ε : Eps l) : ¬ IsUnit ((ε.e 1 : Ob l)
   exact pFlat_not_isUnit l (isUnit_of_dvd_unit (integral_prime_dvd_epsilon_zero_sub_one ε) h1)
 
 /- English proof (translation)
-Rewrite using `[← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, ε.succ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_e_succ (ε : Eps l) (k : ℕ) :
     theta0 l (WittVector.teichmuller l (ε.e (k + 1) : Ob l)) ^ l = theta0 l (WittVector.teichmuller l (ε.e k : Ob l)) := by
   rw [← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, ε.succ]
 
 /- English proof (translation)
-Rewrite using `[Eps.qk, ← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, ε.succ, Eps.qk]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qk_succ (ε : Eps l) (k : ℕ) : ε.qk (k + 1) ^ l = ε.qk k := by
   rw [Eps.qk, ← map_pow, ← map_pow, ← Units.val_pow_eq_pow_val, ε.succ, Eps.qk]
 
 /- English proof (translation)
-Rewrite using `[RingHom.mem_ker, map_sum]`. Simplify using `only [map_pow]`. Conclude with `geom_sum_eq_zero ((theta_e_succ ε 0).trans ε.one) ε.prim`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_mem_ker (ε : Eps l) :
     ∑ i ∈ Finset.range l, (WittVector.teichmuller l (ε.e 1 : Ob l)) ^ i ∈ RingHom.ker (theta0 l) := by
@@ -139,11 +139,11 @@ theorem sum_mem_ker (ε : Eps l) :
   exact geom_sum_eq_zero ((theta_e_succ ε 0).trans ε.one) ε.prim
 
 /- English proof (translation)
-Establish `e : ∑ i ∈ Finset.range l, ε.qk 1 ^ i = algebraMap (Ainf l) (Acris l) (∑ i ∈ Finset.range l, (WittVector.teichmuller l (ε.e 1 : Ob l)) ^ i)`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow, Eps.qk]`. Establish `h` using `sum_mem_ker ε`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[ker_theta0]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h`. Rewrite using `[e, cris_algebraMap, ← hc, map_mul, map_mul]`. Express the relevant statement in the definitionally equal form `_ * A.toAcr n A.xi ∈ _`. Rewrite using `[toAcr_xi]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨1, le_rfl, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 theorem cris_sum_mem (ε : Eps l) (A : PAlg l) (n : ℕ) :
     A.cris n (∑ i ∈ Finset.range l, ε.qk 1 ^ i) ∈ A.Fil n 1 := by
@@ -161,13 +161,13 @@ theorem cris_sum_mem (ε : Eps l) (A : PAlg l) (n : ℕ) :
   exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨1, le_rfl, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[mul_geom_sum, qk_succ ε 0, Eps.μ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mu_eq (ε : Eps l) : ε.μ = (ε.qk 1 - 1) * ∑ i ∈ Finset.range l, ε.qk 1 ^ i := by
   rw [mul_geom_sum, qk_succ ε 0, Eps.μ]
 
 /- English proof (translation)
-Introduce `l _ ε`. Use `haveI := isLocalRing_ob l`. Conclude with `⟨fun i => coeff_not_isUnit _ (epsilon_one_sub_one_not_isUnit ε) i, qk_succ ε, cris_sum_mem ε, mu_eq ε, prim_chain (fun m => theta0 l (WittVector.teichmuller l (ε.e m : Ob l))) (theta_e_succ ε) ε.one ε.prim⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eps_facts : ∀ {l : ℕ} [Fact l.Prime] (ε : Eps l), D.InWm l ((WittVector.teichmuller l (ε.e 1 : Ob l)) - 1) ∧ (∀ k, ε.qk (k + 1) ^ l = ε.qk k) ∧ (∀ (A : PAlg l) (n : ℕ), A.cris n (∑ i ∈ Finset.range l, ε.qk 1 ^ i) ∈ A.Fil n 1) ∧ ε.μ = (ε.qk 1 - 1) * ∑ i ∈ Finset.range l, ε.qk 1 ^ i ∧ ∀ m, IsPrimitiveRoot (theta0 l (WittVector.teichmuller l (ε.e m : Ob l))) (l ^ m) := by
   intro l _ ε

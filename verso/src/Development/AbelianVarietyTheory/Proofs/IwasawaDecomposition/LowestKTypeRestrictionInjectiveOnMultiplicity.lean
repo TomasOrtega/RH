@@ -15,13 +15,11 @@ noncomputable section
 namespace GlobalTheory.Mem.R3.Rw.LowRes
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG _ _ hP _ y i w hw hK`. Establish `hM` using `hP.char.base.models`. Use `set M := R.MW i (sg0 D A3.A)`. Set `w' : (⨂[ℂ] τ, M.sm τ) →ₗ[ℂ] (GA D (Wc D i) → ℂ)` to `w`. Set `U : MMap M` to `PiTensorProduct.lift.symm w'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hU : U ∈ Mult R.θ M _ _` using `(Mult.mem_multT _ _ _ _ w').1 hw`. Establish `h0 : U = 0` using `GlobalTheory.LowTypeDetermined.eq_zero_of_lowT D _ _ M R.θ hM.inf (GlobalTheory.LowTypeRestriction.lowT_ne_bot _) _ _ U hU (fun v => by`. Establish `e` using `LinearMap.congr_fun hK (PiTensorProduct.tprod ℂ v)`. Establish `e2 : w' (PiTensorProduct.map (fun τ => (lowT M τ).subtype) (PiTensorProduct.tprod ℂ v)) = 0` using `e`. Rewrite `e2` using `[PiTensorProduct.map_tprod]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : PiTensorProduct.lift U (PiTensorProduct.tprod ℂ (fun τ => (lowT M τ).subtype (v τ))) = 0`. Rewrite using `[show PiTensorProduct.lift U = w' from LinearEquiv.apply_symm_apply _ w']`. Conclude with `e2`. Rewrite `e3` using `[PiTensorProduct.lift.tprod]`. Conclude with `e3)`.
-
-Establish `hUw : PiTensorProduct.lift U = w'` using `LinearEquiv.apply_symm_apply _ w'`. Use `show w' = 0`. Rewrite using `[← hUw, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem multW_lowRes_inj : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd), (∀ o : D.what₂.O, ∃ k : Ks, algebraMap Ks D.what₂.LL k = D.what₂.OtoLL o) → Inputs D → Pins R F cG → Holds R F → ∀ (y : Hd R.toRealDat) (i : Fin D.R.m), ∀ w ∈ (y.L F.lv2).MultW i, w ∘ₗ (y.L F.lv2).embK i = 0 → w = 0 := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG _ _ hP _ y i w hw hK

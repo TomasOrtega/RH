@@ -8,37 +8,35 @@ open NumberField Ideal Formalism.HC Formalism.FrobeniusOrbits
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `φ H l hl`. Use `haveI : Fact l.Prime := ⟨hl⟩`. Establish `hN : H.condN ≠ 0` using `H.condN_ne_zero`. Take `⟨hE, hEpos, _⟩` from `condE_spec H.toHostRaw`. Use `set v := H.condN.factorization l with hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e := H.condE.factorization l with he`. Establish `hlay` using `fun j (hj : j ≤ v) => layer_bot H.toHostRaw hl hj`. Establish `hev : e ≤ v` using `((hlay 0 (Nat.zero_le _)).2.2)`. Establish `hcardbot : ∀ j, j ≤ v → (Nat.card (H.imgOne (H.condN / l ^ v * l ^ j)) = 1 ↔ e ≤ j)`. Introduce `j hj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.card_eq_one]`. Conclude with `(hlay j hj).1`. Establish `hdvdE : l ∣ H.condE ↔ 0 < e`. Rewrite using `[he]`. Conclude with `hl.dvd_iff_one_le_factorization hEpos.ne'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hel : H.el l = Nat.card (H.imgOne (H.condN / l ^ v * l ^ 0))`. Simplify using `[HostRaw.el, HostRaw.inertG, hv]`. Establish `hA : H.el l ≠ 1 ↔ l ∣ H.condE`. Rewrite using `[hel, Ne, hcardbot 0 (Nat.zero_le _), hdvdE]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hT : ∀ n : ℕ, 0 ≤ 1 - 1 / (n : ℝ)`. Introduce `n`. Break down `Nat.eq_zero_or_pos n with h | h` into its components or cases. Simplify using `[h]`. Establish `h1 : (1 : ℝ) ≤ n` using `by exact_mod_cast h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: 1 / (n : ℝ) ≤ 1`. Rewrite using `[div_le_one (by linarith)]`. Conclude with `h1`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hT0 : ∀ n : ℕ, (1 - 1 / (n : ℝ) = 0 ↔ n = 1)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `n`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `Nat.eq_zero_or_pos n with h0 | h0` into its components or cases. Simplify using `[h0] at h`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hn : (n : ℝ) ≠ 0` using `by positivity`. Establish `: (n : ℝ) = 1`. Clear denominators, using `at h` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `h`. Simplify using `[h]`. Establish `hB : H.vdH l ≠ 0 ↔ l ∣ H.condE`. Rewrite using `[vd_formula H hl, Ne, Finset.sum_eq_zero_iff_of_nonneg (fun j _ => hT _), hdvdE]`. Prove the components needed by the constructor for the conclusion.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Assume the negation of the conclusion as `h0`. Apply `h` to reduce the goal to its premises. Introduce `j hj`. Rewrite using `[hT0, hcardbot j (Finset.mem_range.1 hj).le]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Introduce `h hall`. Establish `h0` using `hall 0 (Finset.mem_range.2 (lt_of_lt_of_le h hev))`. Rewrite `h0` using `[hT0, hcardbot 0 (Nat.zero_le _)]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hC : l ∈ H.ram ↔ H.vdH l ≠ 0`. Establish `hd : (NumberField.discr H.E).natAbs ≠ 0` using `Int.natAbs_ne_zero.2 (NumberField.discr_ne_zero H.E)`. Establish `hr : (Module.finrank ℚ H.E : ℝ) ≠ 0`. Use `Module.finrank_pos (R := ℚ) (M := H.E)` as an intermediate fact. Check the signs of the components of the expression.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `key` using `dvd_iff_padicValNat_ne_zero (p := l) hd`. Simplify using `only [HostRaw.ram, Nat.mem_primeFactors, HostRaw.vdH, Ne, div_eq_zero_iff, hr, or_false, Nat.cast_eq_zero]`. Rewrite `key` using `[Ne]`. Rewrite using `[← key]`. The claim follows by propositional logic.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlow : l ∈ H.ram → 1 - 1 / (H.el l : ℝ) ≤ H.vdH l`. Introduce `hram`. Establish `hpos : 0 < e` using `hdvdE.1 (hB.1 (hC.1 hram))`. Rewrite using `[vd_formula H hl, hel]`. Conclude with `Finset.single_le_sum (f := fun j => 1 - 1 / (Nat.card (H.imgOne (H.condN / l ^ v * l ^ j)) : ℝ)) (fun j _ => hT _) (Finset.mem_range.2 (lt_of_lt_of_le hpos hev))`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `⟨hC.trans (hB.trans hA.symm), hC.trans hB, hC, fun hram => ?_, hlow⟩` and prove the remaining obligations. Establish `h2 : 2 ≤ H.el l`. Establish `h1` using `(hC.trans (hB.trans hA.symm)).1 hram`. Use `HostRaw.el_pos H.toHostRaw l` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Establish `h2r : (2 : ℝ) ≤ H.el l` using `by exact_mod_cast h2`. Establish `hq : 1 / (H.el l : ℝ) ≤ 1 / 2` using `one_div_le_one_div_of_le (by norm_num) h2r`. Combine the linear relations using `[hlow hram]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.HF.mem_ram :
     ∀ {φ : Frame} (H : HostAx φ) {l : ℕ}, l.Prime → (l ∈ H.ram ↔ H.el l ≠ 1) ∧ (l ∈ H.ram ↔ l ∣ H.condE) ∧ (l ∈ H.ram ↔ H.vdH l ≠ 0) ∧ (l ∈ H.ram → 1 / 2 ≤ H.vdH l) ∧ (l ∈ H.ram → 1 - 1 / (H.el l : ℝ) ≤ H.vdH l) := by

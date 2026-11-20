@@ -65,7 +65,7 @@ Both sides reduce to the same expression.
 theorem conjLinear_apply (z : ComplexAt σ) : conjLinear σ z = conj σ z := rfl
 
 /- English proof (translation)
-Rewrite using `[complex_smul_def, map_mul, conj_ofComplex, complex_smul_def]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_smul (c : ℂ) (z : ComplexAt σ) : conj σ (c • z) = starRingEnd ℂ c • conj σ z := by
   rw [complex_smul_def, map_mul, conj_ofComplex, complex_smul_def]
@@ -95,7 +95,7 @@ Both sides reduce to the same expression.
 theorem conjMap_tmul (z : ComplexAt σ) (e : E) : conjMap σ E (z ⊗ₜ e) = conj σ z ⊗ₜ e := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [smul_zero, map_zero]`. Consider the case `tmul z e => rw [smul_tmul', conjMap_tmul, conjMap_tmul, smul_tmul', conj_smul]`. Consider the case `add x y hx hy => rw [smul_add, map_add, map_add, hx, hy, smul_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem conjMap_smul (c : ℂ) (x : Fibre σ E) :
     conjMap σ E (c • x) = starRingEnd ℂ c • conjMap σ E x := by
@@ -165,9 +165,9 @@ theorem integersCoord_tmul (σ : K →+* ℂ) (z : ComplexAt σ) (a : 𝓞 K) :
 
 omit [NumberField K] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul z a`. Rewrite using `[conjMap_tmul, integersCoord_tmul, integersCoord_tmul, map_mul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`.
+Treat this case separately.
 -/
 theorem integersCoord_conjMap (σ : K →+* ℂ) (x : Fibre σ (𝓞 K)) :
     integersCoord K (conjugate σ) (conjMap σ (𝓞 K) x) = starRingEnd ℂ (integersCoord K σ x) := by
@@ -187,7 +187,7 @@ def HermitianMetric.integers : HermitianMetric K (𝓞 K) where
       RCLike.inner_apply, map_mul, RingHomCompTriple.comp_apply, RingHom.id_apply]
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem HermitianMetric.integers_inner (σ : K →+* ℂ) (z w : ComplexAt σ) (a b : 𝓞 K) :
     ((HermitianMetric.integers K).form σ).inner (z ⊗ₜ a) (w ⊗ₜ b) =
@@ -212,9 +212,9 @@ theorem standardCoord_tmul (σ : K →+* ℂ) (ι : Type*) [Fintype ι] [Decidab
 
 omit [NumberField K] in
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, PiLp.zero_apply]`. Consider the case `tmul z v`. Rewrite using `[conjMap_tmul, standardCoord_tmul, standardCoord_tmul, map_mul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, PiLp.add_apply, hx, hy, map_add, PiLp.add_apply, map_add]`.
+Treat this case separately.
 -/
 theorem standardCoord_conjMap (σ : K →+* ℂ) (ι : Type*) [Fintype ι] [DecidableEq ι]
     (x : Fibre σ (ι → 𝓞 K)) (i : ι) :
@@ -237,7 +237,7 @@ def HermitianMetric.standard (ι : Type*) [Fintype ι] [DecidableEq ι] :
       standardCoord_conjMap, map_sum, map_mul, Complex.conj_conj]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `inner ℂ (standardCoord K σ ι x) (standardCoord K σ ι y) = _`. Simplify using `only [PiLp.inner_apply, RCLike.inner_apply]`. Conclude with `Finset.sum_congr rfl fun i _ ↦ mul_comm _ _`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem HermitianMetric.standard_inner (ι : Type*) [Fintype ι] [DecidableEq ι] (σ : K →+* ℂ)
     (x y : Fibre σ (ι → 𝓞 K)) :
@@ -257,7 +257,7 @@ end Examples
 abbrev GaussianField : Type := CyclotomicField 4 ℚ
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 example : NumberField GaussianField := inferInstance
 
@@ -271,7 +271,7 @@ def gaussianStandard (n : ℕ) : HermitianBundle GaussianField :=
   HermitianBundle.standard GaussianField n
 
 /- English proof (translation)
-Rewrite using `[HermitianMetric.standard_inner, Finset.sum_eq_single i]`. Simplify using `only [standardCoord_tmul, Pi.single_eq_same, map_one] show starRingEnd ℂ (1 * 1) * (1 * 1) = 1`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[standardCoord_tmul, Pi.single_eq_of_ne hj]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -290,7 +290,7 @@ theorem HermitianMetric.standard_inner_single (K : Type*) [Field K] [NumberField
 def ratEmbedding : ℚ →+* ℂ := Rat.castHom ℂ
 
 /- English proof (translation)
-The claim follows from `HermitianMetric.standard_inner_single ℚ 2 ratEmbedding 0`.
+A detailed English derivation is pending.
 -/
 example : ((HermitianMetric.standard ℚ (Fin 2)).form ratEmbedding).inner
     ((1 : ComplexAt ratEmbedding) ⊗ₜ[𝓞 ℚ] (Pi.single 0 1 : Fin 2 → 𝓞 ℚ))

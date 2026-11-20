@@ -19,9 +19,9 @@ noncomputable section
 namespace GlobalTheory.PolKerPull
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Establish `h₁ : HasGen ((L.pull f).pull (g ≫ ℓ))` using `⟨LB.pullGen (L.pull f) (fun _ : PUnit => ℓ) (fun _ => 1) t g, DVR.pullGen_isGen (L.pull f) (fun _ : PUnit => ℓ) (fun _ => 1) t ht g⟩`. Take `⟨s, hs⟩` from `h₁`. Take `⟨u, hu⟩` from `RigidTranslate.gen_of_lbIso (pull_isLB (pull_isLB hL f) _) (pull_isLB hL _) (FamRep.lbIso_pull_pull hL f (g ≫ ℓ)) s hs`. Establish `e : (g ≫ ℓ) ≫ f = m` using `by rw [Category.assoc, hm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `e` using the available equality. Conclude with `⟨u, hu⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem hasGen_pull_pull_comp {X Y Z W : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f : Y ⟶ X) (ℓ : Z ⟶ Y)
     (g : W ⟶ Z) (m : W ⟶ X) (hm : g ≫ ℓ ≫ f = m) (h : HasGen ((L.pull f).pull ℓ)) : HasGen (L.pull m) := by
@@ -37,19 +37,19 @@ theorem hasGen_pull_pull_comp {X Y Z W : Scheme.{0}} {L : LB X} (hL : L.IsLB) (f
   exact ⟨u, hu⟩
 
 /- English proof (translation)
-Introduce `F _ _ 𝔠 S S' X b A' _ _ φ hφ rm' hact φ₂ hsq c T x hgen a ha`. Set `T₀ : Over S` to `Over.mk (T.hom ≫ b)`. Set `x₀ : T₀ ⟶ X.A` to `pushPt hφ.1.w x`. Set `Z' : Over S'` to `Over.mk ((snd X.A T₀).left ≫ T.hom)`. Establish `w₁ : (fst X.A T₀).left ≫ X.A.hom = ((snd X.A T₀).left ≫ T.hom) ≫ b`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Over.w (fst X.A T₀), Category.assoc]`. Conclude with `(Over.w (snd X.A T₀)).symm`. Set `p₁ : Z' ⟶ A'` to `Over.homMk (hφ.1.lift (fst X.A T₀).left ((snd X.A T₀).left ≫ T.hom) w₁) (hφ.1.lift_snd _ _ _)`. Set `p₂ : Z' ⟶ T` to `Over.homMk (snd X.A T₀).left rfl`. Establish `hp₁ : p₁.left ≫ φ = (fst X.A T₀).left` using `hφ.1.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : (lift p₁ p₂).left ≫ (lift (fst A' T) (snd A' T ≫ x)).left ≫ φ₂ = (lift (fst X.A T₀) (snd X.A T₀ ≫ x₀)).left`. Establish `e : (lift p₁ p₂).left ≫ (lift (fst A' T) (snd A' T ≫ x)).left = (lift p₁ (p₂ ≫ x)).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, e]`. Apply `pullback.hom_ext` to reduce the goal to its premises. Establish `h1` using `hsq.1`. Rewrite `h1` using `[Over.fst_left]`. Rewrite using `[Category.assoc, h1, ← Category.assoc, ← Over.comp_left, lift_fst, hp₁, ← Over.fst_left, ← Over.comp_left, lift_fst]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `hsq.2`. Rewrite `h2` using `[Over.snd_left]`. Rewrite using `[Category.assoc, h2, ← Category.assoc, ← Over.comp_left, lift_snd, ← Over.snd_left, ← Over.comp_left, lift_snd, Over.comp_left, Over.comp_left, Category.assoc]`. Both sides reduce to the same expression. Establish `hgen₀ : HasGen ((X.P c).pull (lift (fst X.A T₀) (snd X.A T₀ ≫ x₀)).left)` using `hasGen_pull_pull_comp (X.isLB c) φ₂ _ (lift p₁ p₂).left _ key hgen`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₀ : x₀ ≫ X.rm.act a = 1` using `X.ker c T₀ x₀ hgen₀ a ha`. Establish `inj : ∀ {y z : T ⟶ A'}, pushPt hφ.1.w y = pushPt hφ.1.w z → y = z` using `fun {y z} h => Over.OverMorphism.ext (hφ.1.hom_ext (congrArg (fun q => q.left) h) (by rw [Over.w, Over.w]))`. Apply `inj` to reduce the goal to its premises. Establish `hpa : pushPt hφ.1.w (x ≫ rm'.act a) = x₀ ≫ X.rm.act a` using `Over.OverMorphism.ext (by show (x.left ≫ (rm'.act a).left) ≫ φ = (x.left ≫ φ) ≫ (X.rm.act a).left`. Rewrite using `[Category.assoc, hact, Category.assoc])`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hpa, h₀]`. Conclude with `(map_one (pushHom hφ T)).symm`.
+A detailed English derivation is pending.
 -/
 theorem ker_pull : ∀ {F : Type} [Field F] [NumberField F] {𝔠 : FracId F} {S S' : Scheme.{0}} (X : Obj F 𝔠 S) (b : S' ⟶ S) (A' : Over S') [GrpObj A'] [IsCommMonObj A']
     (φ : A'.left ⟶ X.A.left), IsGrpPullback A' X.A b φ → ∀ (rm' : OAct (𝓞 F) A'),

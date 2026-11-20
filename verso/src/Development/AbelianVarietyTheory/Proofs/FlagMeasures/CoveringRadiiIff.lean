@@ -15,7 +15,7 @@ section Lie
 variable {A : Type} [CommRing A] {n : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.UG.hform`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem hform_eq_dot (s : A →+* A) (M : Matrix (Fin n) (Fin n) A) (u u' : Fin n → A) :
     Formalism.UG.hform s M u u' = (fun i => s (u i)) ⬝ᵥ (M *ᵥ u') := by
@@ -23,9 +23,9 @@ theorem hform_eq_dot (s : A →+* A) (M : Matrix (Fin n) (Fin n) A) (u u' : Fin 
   simp only [dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot, hform_eq_dot, hform_eq_dot]`. Establish `h1 : (fun i => s ((Y *ᵥ u) i)) = (Y.map s) *ᵥ (fun i => s (u i))`. Use function extensionality and compare the values at `i`. Simplify using `[mulVec, dotProduct, map_sum, map_mul]`. Establish `h2 : ((Y.map s) *ᵥ (fun i => s (u i))) ⬝ᵥ (J *ᵥ u') = (fun i => s (u i)) ⬝ᵥ (((Y.map s)ᵀ * J) *ᵥ u')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← mulVec_mulVec, dotProduct_mulVec (fun i => s (u i)) (Y.map s)ᵀ, vecMul_transpose]`. Rewrite using `[h1, h2, mulVec_mulVec, ← dotProduct_add, ← add_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hform_skew (s : A →+* A) (J Y : Matrix (Fin n) (Fin n) A) (u u' : Fin n → A) :
     Formalism.UG.hform s J (Y *ᵥ u) u' + Formalism.UG.hform s J u (Y *ᵥ u') =
@@ -41,9 +41,9 @@ theorem hform_skew (s : A →+* A) (J Y : Matrix (Fin n) (Fin n) A) (u u' : Fin 
   rfl
 
 /- English proof (translation)
-Rewrite using `[hform_eq_dot]`. Establish `e : (fun a => s ((Pi.single i (1 : A) : Fin n → A) a)) = (Pi.single i 1 : Fin n → A)`. Use function extensionality and compare the values at `a`. Distinguish the cases in `h : a = i`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Rewrite using `[e]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma hform_single_single' (s : A →+* A) (M : Matrix (Fin n) (Fin n) A) (i j : Fin n) :
     Formalism.UG.hform s M (Pi.single i 1) (Pi.single j 1) = M i j := by
@@ -57,9 +57,9 @@ private lemma hform_single_single' (s : A →+* A) (M : Matrix (Fin n) (Fin n) A
   simp
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h u u'`. Rewrite using `[hform_skew, h, hform_eq_dot, zero_mulVec, dotProduct_zero]`. Introduce `h`. Use extensionality with `i j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[Matrix.zero_apply, ← hform_single_single' s (Formalism.UG.cT s Y * J + J * Y) i j, ← hform_skew]`. Conclude with `h _ _`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem skew_iff (s : A →+* A) (J Y : Matrix (Fin n) (Fin n) A) :
     Formalism.UG.cT s Y * J + J * Y = 0 ↔ GlobalTheory.IndefiniteRowSideFullHecke.CenteredPerpendicularSets.IsSkew s J Y := by

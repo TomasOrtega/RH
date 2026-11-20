@@ -15,9 +15,9 @@ noncomputable section
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.RT GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Top GlobalTheory.Mem.Top.Bl GlobalTheory.Fc
 namespace GlobalTheory.Fc.RL
 /- English proof (translation)
-Use `RowE.of_all fun κ K β c b _ _ hl => ?_` and prove the remaining obligations. Take `⟨q, b', ⟨w⟩, he⟩` from `hl`. Establish `h1` using `congrArg (fun s : Σ (D : D7) (O : Obj D), _root_.GlobalTheory.Fc.BundleCondition D O c => _root_.GlobalTheory.Fc.R1.DecompositionPointBundle s.1 s.2.1 c s.2.2) he`. Use `cast h1.symm ?_` and prove the remaining obligations. Use `show GlobalTheory.Cp.DcPtG _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hP : b'.P = R3.divisionPairOfAdelicFormsFaceColumnsData w.x` using `congrArg _root_.GlobalTheory.Mem.Top.Bl.RealPackage.P w.y.eq`. Rewrite using `[hP]`. Conclude with `(GlobalTheory.Mem.R3.rowConditions_at_companion_from_readings _ _ _ _ _ _ _ _ _ w.x).2.2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowE_dcPt_linked_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL) (Q : V4.Slot) :
     RowE Q (_root_.GlobalTheory.Mem.Top.Bl.BundleLinkage p) (fun _ => _root_.GlobalTheory.Fc.R1.DecompositionPointBundle) := by
@@ -30,7 +30,7 @@ theorem rowE_dcPt_linked_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} (p : 
   rw [hP]
   exact (GlobalTheory.Mem.R3.rowConditions_at_companion_from_readings _ _ _ _ _ _ _ _ _ w.x).2.2.1
 /- English proof (translation)
-Introduce `hL N S Γ`. Conclude with `_root_.GlobalTheory.Fc.RL.LinkedAt.of_row (RowE.row (_root_.GlobalTheory.Fc.RL.rowE_dcPt_linked_alt _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem linkedAt_hDcPtG : ∀ (hL : _root_.UpperTheory.Zero.LLC.RecTExists) (N : _root_.GlobalTheory.Mem.Top.Bl.NormChoiceExtension hL) (S : SExt) (Γ : GeoP),
     _root_.GlobalTheory.Fc.RL.LinkedAt (_root_.GlobalTheory.Mem.Top.Bl.parametersOfExtension N S Γ) _root_.GlobalTheory.Fc.R1.SlotDecompositionPointCondition := by

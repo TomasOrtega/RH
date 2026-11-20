@@ -47,9 +47,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 omit [NumberField F] in
 
 /- English proof (translation)
-Establish `h1 : genericPt Y ≫ Y.str = spMap (algebraMap F Y.Fn)` using `(GlobalTheory.FlagBundle.ratOf Y).pt_s`. Establish `h2 : spMap e.toRingHom ≫ spMap e.symm.toRingHom = 𝟙 _`. Use `(Spec.map_comp _ _).symm.trans ((congrArg Spec.map ?_).trans (Spec.map_id _))` and prove the remaining obligations. Conclude with `CommRingCat.hom_ext (RingHom.ext fun a => e.apply_symm_apply a)`. Establish `h4 : spMap (constF e Y) = spMap (algebraMap F Y.Fn) ≫ spMap e.symm.toRingHom` using `by rw [← Spec.map_comp]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨f⟩` from `EigLoc.exists_eigFrame E H Dw l Xo c O β Z _ (constF e Y) (genericPt Y ≫ ρ) (by`. Rewrite using `[h4, ← h1, ← hρ]`. Simplify using `only [Category.assoc, h2, Category.comp_id])`. Conclude with `⟨by rw [GenFrame, ← Category.assoc]; exact f⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_genFrame {O : Type} [CommRing O] {β : O →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β} {Y : Var F}
     {ρ : Y.X ⟶ gen Z} (hρ : ρ ≫ genStr Z ≫ spMap e.toRingHom = Y.str) : Nonempty (GenFrame e ρ) := by
@@ -63,15 +63,13 @@ theorem nonempty_genFrame {O : Type} [CommRing O] {β : O →+* c.F} {Z : Recipr
   exact ⟨by rw [GenFrame, ← Category.assoc]; exact f⟩
 
 /- English proof (translation)
-Take `⟨N, ρ', hN, hρ', hS⟩` from `UpperTheory.exists_true_model_over E H Dw l Xo c Z F e Y ρ hρ g`. Use `⟨N, hN, fun τ dual => ?_⟩` and prove the remaining obligations. Use `N.ar.isIntegral` as an intermediate fact. Use `choose V P hz hVP using hS τ`. Establish `hj : N.j (genericPoint Y.X) = genericPoint N.X` using `GlobalTheory.ModelBirational.j_genericPoint N`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hV : ∀ z, ⊤ ≤ (genericPt Y ≫ N.j) ⁻¹ᵁ V z` using `fun z => (hVP z).choose_spec.choose`. Establish `hP : ∀ z, IsUnit (P z).det` using `fun z => by`. Take `⟨_, _, _, _, _, _, -, -, h, -⟩` from `hVP z`. Conclude with `h`. Take `⟨M, hM, A, hA, hch⟩` from `UpperTheory.exists_vector_bundle_gluing N.X Y.Fn (genericPt Y ≫ N.j) (fun p => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Scheme.Hom.comp_apply, ← hj]`. Conclude with `congrArg N.j ((GlobalTheory.FlagBundle.ratOf Y).pt_apply p))`. Use `_ N.X V hV (fun z => lieMat dual (P z)) (fun z => ⟨z, hz z⟩) (fun z => isUnit_det_lieMat dual (hP z)) fun z z' => by`. Take `⟨T, hT, h⟩` from `UpperTheory.frame_generic_chart E H Dw l Xo c _ _ Z F e Y ρ hρ g τ N.X N.j ρ' hj hρ' _ _ _ _ (hVP z) (hVP z') (le_inf_pre (hV z) (hV z'))`. Conclude with `⟨lieMat dual T, by rw [h, lieMat_mul, lieMat_map _ _ hT]⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose ch hU hch using hch`. Establish `hL : IsLie g τ N.j dual A` using `isLie_of_exists hA fun y => ⟨ch (N.j y), hU _ ▸ hz _, by`. Rewrite using `[hch, lieMat_lieMat _ (hP _)]`. Conclude with `UpperTheory.frame_generic_chart_norm E H Dw l Xo c _ _ Z F e Y ρ hρ g τ N.X N.j ρ' hρ' _ _ (hVP _) y (hz _)⟩`. Use `⟨M, hM, A, hL, UpperTheory.frame_generic_valuation E H Dw l Xo c _ _ Z F e Y ρ hρ g τ N.X N.j M hM dual A hL fun z => ⟨ch z, hU _ ▸ hz _, ?_⟩⟩` and prove the remaining obligations.
-
-Rewrite using `[hch, lieMat_lieMat _ (hP _), hU]`. Conclude with `UpperTheory.frame_generic_integral E H Dw l Xo c _ _ Z F e Y ρ hρ g τ N.X N.j ρ' hρ' _ _ (hVP _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_base {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)} {Y : Var F} {ρ : Y.X ⟶ gen Z}
     (hρ : ρ ≫ genStr Z ≫ spMap e.toRingHom = Y.str) (g : GenFrame e ρ) :
@@ -107,15 +105,15 @@ theorem exists_base {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c
 variable {O : Type} [CommRing O] {β : O →+* c.F} {Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β}
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `UpperTheory.exists_graded_section_flag F C.Y N.X N.j M _ dual A fl i h₁.1 h₄`. Generalize the expression as in `hw : Finsupp.single (kind, Ro, Sum.inl (τ, (pos dual i : ℕ))) (cond dual (-1) 1 : ℤ) = w`. Establish `e₁` using `UpperTheory.true_model_chart_divisor E H Dw l Xo c O β Z F e C N τ M dual A fl i s kind Ro w hw.symm h₁ h₄ hs`. Establish `e₂` using `UpperTheory.true_model_chart_divisor_metric E H Dw l Xo c O β Z F e C N τ M dual A fl i s kind Ro w hw.symm h₁ h₄ hs G h hh h₃`. Establish `e₃` using `UpperTheory.true_model_chart_divisor_alt E H Dw l Xo c O β Z F e C N τ M dual A fl i s kind Ro w hw.symm h₁ h₄ hs h₂ hk`.
+Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : parOf w = Ro`. Apply the tactic sequence `have hn : (cond dual (-1) 1 : ℤ) ≠ 0 := by cases dual <;> simp`. Establish `h : w.support.Nonempty` using `hw ▸ Finsupp.support_nonempty_iff.2 (Finsupp.single_ne_zero.2 hn)`. Establish `h'` using `h.choose_spec`. Rewrite using `[parOf, dif_pos h]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `h.choose = a at h'`. Rewrite `h'` using `[← hw]`. Rewrite using `[Finset.mem_singleton.1 (Finsupp.support_single_subset h')]`. Use `⟨by simp, s, ⟨LB.isLB_pull (fl.isLB_root i) N.j, hs.1, fun k y hy => ?_⟩, fun σ y y' k f a₁ a₂ a₃ => ?_, fun v ε y yt k a₁ a₂ => ?_⟩` and prove the remaining obligations. Conclude with `(one_nsmul (divOf C (expo Dw w))).symm ▸ e₁ k y hy`.
+Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hy : y ∈ Var.eqnSet σ (divOf C (expo Dw w)) (s k)` using `e₁ k _ a₂`. Establish `hy' : y ∈ Var.eqnSet σ ((1 : ℕ) • divOf C (expo Dw w)) (s k ^ 1)` using `(e₁ k _ a₂).nsmul 1`. Express the relevant statement in the definitionally equal form `Real.exp (-(2 * ((1 : ℕ) : ℝ) * ((1 : ℕ) : ℝ) * 0)) * Var.pn C.Y σ _ (Var.mPow C.Y σ (divOf C (expo Dw w)) 1 (hm (parOf w) σ _)) (C.Y.cx σ f) y = _`. Rewrite using `[hp, hG, Var.pn_eq hy', Var.mPow_h hy, Var.fval_cx, e₂ σ y y' k a₁ a₂]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `e₃ v ε y yt k a₁ a₂` using `[adlOf]`.
+A detailed English derivation is pending.
 -/
 theorem induced_grLB (C : FlagCpt Z e) (N : GlobalTheory.TrueGeo.Model C.Y) (τ : E →+* ℂ) (M : N.X.Modules) (dual : Bool)
     (A : Chart M (Dw.mult τ) → Matrix _ _ C.Y.Fn) (fl : Vert.Flag M (Dw.mult τ)) (i : Fin (Dw.mult τ)) (kind : ℕ → Bool)
@@ -150,17 +148,15 @@ theorem induced_grLB (C : FlagCpt Z e) (N : GlobalTheory.TrueGeo.Model C.Y) (τ 
   · simpa [adlOf] using e₃ v ε y yt k a₁ a₂
 
 /- English proof (translation)
-Use `choose A₁ hA₁ hP₁ using fun a => (hA a).exists_pull hf hg C.f0 (f ≫ N.j) (𝟙 _) (Category.id_comp _) (hM a)`. Use `choose fl₁ hfl₁ using fun a => UpperTheory.flag_compact_vector_bundle E H Dw l Xo c O β Z F e C (emb a) _ ((hM a).pullback (f ≫ N.j)) (dual a) (A₁ a) (hA₁ a)`. Take `⟨j, ⟨hj, hc⟩, -⟩` from `hfl C.Y.X (f ≫ N.j) fl₁`. Use `choose A' hA' hP' using fun a => (hA a).exists_pull hf hg C.f0 π j hj (hM a)`. Establish `hF : ∀ a, IsFlag (genericPt C.Y ≫ j) (dual a) (A' a) (fl a)` using `fun a ch had hch => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨ch', hU, had', htr⟩` from `UpperTheory.flag_connection_adapted N.X X C.Y.X π ι M _ hM fl j _ hj fl₁ hc a ch had`. Take `⟨U, s, hb, hs⟩` from `hM a (N.j (genericPoint B.X))`. Set `b : Chart (M a) (Dw.mult (emb a))` to `⟨U, s, hs⟩`. Establish `hb₀ : ⊤ ≤ (genericPt B ≫ N.j) ⁻¹ᵁ b.U` using `gen_le N.j hb`. Establish `hb₁ : ⊤ ≤ (genericPt C.Y ≫ f ≫ N.j) ⁻¹ᵁ b.U`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hf.2.2.1, Category.assoc]`. Conclude with `fun p _ => hb₀ (x := spMap φ p) trivial`. Establish `hb₂ : ⊤ ≤ (genericPt C.Y ≫ j) ⁻¹ᵁ (b.pull (hM a) π).U`. Express the relevant statement in the definitionally equal form `⊤ ≤ ((genericPt C.Y ≫ j) ≫ π) ⁻¹ᵁ b.U`. Rewrite using `[Category.assoc, hj]` and apply the resulting hypothesis.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb₃ : ⊤ ≤ (genericPt C.Y ≫ 𝟙 _) ⁻¹ᵁ (b.pull (hM a) (f ≫ N.j)).U`. Rewrite using `[Category.comp_id]`. Conclude with `hb₁`. Establish `hch' : ⊤ ≤ (genericPt C.Y ≫ 𝟙 _) ⁻¹ᵁ ch'.U`. Rewrite using `[Category.comp_id, hU]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hch`. Establish `key : A' a ch = A₁ a ch'`. Rewrite using `[(hA' a).1.2 _ ch hb₂ hch, (hA₁ a).1.2 _ ch' hb₃ hch', hP' a b hb₀, hP₁ a b hb₀, Category.comp_id, htr _ _ b hb₁ hch]`. Rewrite using `[key]`. Conclude with `hfl₁ a ch' had' hch'`.
-
-Use `⟨j, hj, A', UpperTheory.isPullback_of_unique_points F C.Y X _ d ar hX j ?_ (UpperTheory.flag_compact_triangular_over E H Dw l Xo c O β Z F e C B ρB f φ hf hρ g g' hg ι emb hemb dual N X j π hj M hM A A' fl hA hA' hP' hF hfl hl), fun a => ⟨hA' a, hP' a, hF a⟩⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, hj, Category.assoc, N.pb.w, ← Category.assoc, hf.2.1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_flag_model (C : FlagCpt Z e) (B : Var F) (ρB : B.X ⟶ gen Z) (f : C.Y.X ⟶ B.X) (φ : B.Fn →+* C.Y.Fn)
     (hf : IsOver e ρB C.π f φ) (hρ : ρB ≫ genStr Z ≫ spMap e.toRingHom = B.str) (g : GenFrame e ρB)
@@ -207,15 +203,13 @@ theorem exists_flag_model (C : FlagCpt Z e) (B : Var F) (ρB : B.X ⟶ gen Z) (f
 end Free
 
 /- English proof (translation)
-Take `rfl` from `funext hn`. Take `⟨xa, _, hcw⟩` from `hC`. Establish `hm : O.met.hm = metsOf xa O.Φ` using `hcw.hm_eq`. Use `O.s.T.smooth` as an intermediate fact. Set `emb` to `fun a : D.what₂.Tau × Bool => (cond a.2 (DV.tauEmb D a.1) (conjEmb (DV.tauEmb D a.1)) : D.host.E →+* ℂ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨B, ρB, f, φ, hρ, hf, hdim, hl⟩` from `UpperTheory.flag_polynomial_dimension D O c`. Take `⟨g⟩` from `nonempty_genFrame hρ`. Take `⟨g', hg⟩` from `hf.exists_isMap g`. Take `⟨N, hN, hex⟩` from `exists_base hρ g`. Use `choose M hM A hA hL using fun a : D.what₂.Tau × Bool => hex (emb a) (!a.2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `G` to `fun σ => xa.eigMetAt σ (some R)`. Use `choose h hh using fun a => UpperTheory.generic_frame_true_model _ _ _ _ _ _ _ _ _ _ _ B ρB hρ g (emb a) N (M a) (hM a) (!a.2) (A a) G (hA a) fun σ σ' y y' k k' a₁ a₂ a₃ => GlobalTheory.ShFam.ConjMet.eigMetAt_conj xa a₁ a₂ a₃ _ _`. Establish `hH : ∀ a, (h a).IsCInf` using `fun a => UpperTheory.smooth_frame_generic _ _ _ _ _ _ _ _ _ _ _ B ρB hρ g (emb a) N (M a) (!a.2) (A a) G (h a) (hA a) (fun σ => ToroidalCompactificationData.smoothOn_eigMetAt_some _ _ _ _ _ _ _ xa σ R hR (ToroidalCompactificationData.hodge_smoothOn _ _ _ _ _ _ _ xa σ)) (hh a)`. Use `N.ar.isIntegral` as an intermediate fact. Establish `arN : IsArithVar N.p (GlobalTheory.FlagPoly.dimGr D.what₂.Tau O.N O.j)` using `hdim ▸ N.ar`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨X, hX, π, fl, hfl, ar, nX⟩` from `GlobalTheory.FlagEx.main _ N.X N.p _ arN hN _ M _ hM`. Rewrite `ar` using `[hd]`. Take `⟨j, hj, A', pb, hA'⟩` from `exists_flag_model (O.Φ.C c) B ρB f φ hf hρ g g' hg emb (UpperTheory.embedding_bijective_multiplicity D O).1 (fun a => !a.2) N M hM A hA X π fl hfl _ ar nX hl`. Set `P : GlobalTheory.TrueGeo.Model (O.var c)` to `⟨X, π ≫ N.p, ar, j, pb⟩`. Use `⟨Cover.ofModel P nX, N.X, inferInstance, N.p, arN, π, rfl, M, h, hH, fl, hfl, fun a i => ?_⟩` and prove the remaining obligations.
-
-Use `Cover.induces_ofModel (M := P) (k := 1) nX (induced_grLB (O.Φ.C c) P (emb a) _ (!a.2) (A' a) (fl a) i _ (fun p => by simp [ArIn.ind]) (some R) G _ _ _ (fun σ n => by rw [hm]; rfl) (hA' a).1 ?_ ?_ (hA' a).2.2)` and prove the remaining obligations. Conclude with `UpperTheory.eigenvariety_over_frame _ _ _ _ _ _ _ _ _ _ _ B _ ρB _ f φ hf hρ g g' _ hg (emb a) _ _ N.j j π hj (M a) (hM a) _ (A a) (A' a) (hA a) (hA' a).1 (hA' a).2.1 (hL a)`. Conclude with `UpperTheory.eigenvariety_over_frame_alt _ _ _ _ _ _ _ _ _ _ _ B _ ρB _ f φ hf hρ g g' _ hg (emb a) _ _ N.j j π hj (M a) (hM a) _ (A a) (A' a) (hA a) (hA' a).1 (hA' a).2.1 _ _ rfl G (h a) (hh a)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_bun {D : D7} (O : Setup D) (hC : O.Core) {R : ℝ} (hR : 2 ≤ R) (c : O.s.Comp)
     (n : D.what₂.Tau × Bool → ℕ)
@@ -259,13 +253,13 @@ theorem exists_bun {D : D7} (O : Setup D) (hC : O.Core) {R : ℝ} (hR : 2 ≤ R)
       (hA' a).1 (hA' a).2.1 _ _ rfl G (h a) (hh a)
 
 /- English proof (translation)
-Take `⟨V, B, _, q, ar, π, w, M, h, H, fl, hfl, hI⟩` from `exists_bun O hC hR c _ (UpperTheory.embedding_bijective_multiplicity D O).2 (GlobalTheory.FlagBlockDim.dim_eq_dimGr_add O c)`. Use `⟨BunModel.mk V B q ar π w M h H fl hfl fun a i => ?_⟩` and prove the remaining obligations. Use `hI a i using 2` and compare the differences between its conclusion and the goal. Establish `hp` using `O.S.p_eq`. Establish `hq` using `O.S.rank_eq`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi` using `i.2`. Take `⟨τ, _ | _⟩` from `a`. Simplify using `only [rkB, cond_false] at hi`. Simplify using `only [rootSym, cond_false, Bool.not_false, cond_true, pos, Fin.val_rev, rkB]`. Rewrite using `[if_neg (by omega)]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 5`. Express the relevant statement in the definitionally equal form `_ = ((Fin.rev i : Fin _) : ℕ)`. Rewrite using `[Fin.val_rev]`. Simplify using `only [rkB, cond_false]`. Use linear arithmetic over natural numbers and integers.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [rkB, cond_true] at hi`. Simplify using `only [rootSym, cond_false, Bool.not_true, cond_true, pos, zero_add]`. Rewrite using `[if_pos (by omega)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem nonempty_bunModel {D : D7} (O : Setup D) (hC : O.Core) {R : ℝ} (hR : 2 ≤ R) (c : O.s.Comp) :
     Nonempty (BunModel O ∅ R c) := by

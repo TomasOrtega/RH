@@ -8,11 +8,11 @@ namespace GlobalTheory
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `k`. Proceed by induction on `k with`. Consider the case `zero`. Introduce `t ht`. Rewrite `ht` using `[pow_zero, Set.mem_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Substitute `ht` using the available equality. Conclude with `SetLike.one_mem_graded 𝒜`. Consider the case `succ k ih`. Introduce `t ht`. Rewrite `ht` using `[pow_succ]`.
+Substitute using the available equality. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, ⟨i, rfl⟩, rfl⟩` from `ht`. Conclude with `SetLike.mul_mem_graded (ih a ha) (hx i)`.
+A detailed English derivation is pending.
 -/
 theorem mem_graded_of_mem_pow_range {K T : Type} [Field K] [CommRing T] [Algebra K T]
     (𝒜 : ℕ → Submodule K T) [GradedAlgebra 𝒜] {m : ℕ} (x : Fin m → T) (hx : ∀ i, x i ∈ 𝒜 1) :
@@ -31,19 +31,17 @@ theorem mem_graded_of_mem_pow_range {K T : Type} [Field K] [CommRing T] [Algebra
     exact SetLike.mul_mem_graded (ih a ha) (hx i)
 
 /- English proof (translation)
-Establish `h1 : ∀ u ∈ Submonoid.closure (Set.range x), ∃ j : ℕ, u ∈ (Set.range x) ^ j`. Introduce `u hu`. Proceed by induction on `hu using Submonoid.closure_induction with`. Consider the case `mem y hy => exact ⟨1, by simpa using hy⟩`. Consider the case `one => exact ⟨0, by simp⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul a b _ _ ha hb`. Take `⟨i, hi⟩` from `ha`. Take `⟨j, hj⟩` from `hb`. Conclude with `⟨i + j, by rw [pow_add]; exact Set.mul_mem_mul hi hj⟩`. Establish `h2 : ∀ u ∈ Submodule.span K (Submonoid.closure (Set.range x) : Set T), GradedAlgebra.proj 𝒜 k u ∈ Submodule.span K ((Set.range x) ^ k)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `u hu`. Proceed by induction on `hu using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨j, hj⟩` from `h1 y hy`. Establish `hyj` using `mem_graded_of_mem_pow_range 𝒜 x hx j y hj`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GradedAlgebra.proj_apply]`. Distinguish the cases in `hjk : j = k`. Substitute `hjk` using the available equality. Rewrite using `[DirectSum.decompose_of_mem_same 𝒜 hyj]`. Conclude with `Submodule.subset_span hj`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DirectSum.decompose_of_mem_ne 𝒜 hyj hjk]`. Conclude with `Submodule.zero_mem _`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ c ha`. Establish `h3 : t ∈ Submodule.span K (Submonoid.closure (Set.range x) : Set T)`. Rewrite using `[← Algebra.adjoin_eq_span]`.
-
-Conclude with `ht`. Establish `h4` using `h2 t h3`. Rewrite `h4` using `[GradedAlgebra.proj_apply, DirectSum.decompose_of_mem_same 𝒜 htk]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_span_pow_range_of_mem_adjoin {K T : Type} [Field K] [CommRing T] [Algebra K T]
     (𝒜 : ℕ → Submodule K T) [GradedAlgebra 𝒜] {m : ℕ} (x : Fin m → T) (hx : ∀ i, x i ∈ 𝒜 1)
@@ -81,21 +79,17 @@ theorem mem_span_pow_range_of_mem_adjoin {K T : Type} [Field K] [CommRing T] [Al
   rwa [GradedAlgebra.proj_apply, DirectSum.decompose_of_mem_same 𝒜 htk] at h4
 
 /- English proof (translation)
-Use `set S := Algebra.adjoin K (Set.range x) with hS`. Set `x' : Fin m → S` to `fun i => ⟨x i, Algebra.subset_adjoin ⟨i, rfl⟩⟩`. Set `C : Ideal S` to `{ carrier := {a | s * (a : T) ∈ S} add_mem' := fun {a b} ha hb => by`. Simplify using `only [Set.mem_setOf_eq, Subalgebra.coe_add, mul_add] at *`. Conclude with `S.add_mem ha hb`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := fun c a ha => by`. Simplify using `only [Set.mem_setOf_eq, smul_eq_mul, Subalgebra.coe_mul] at *`. Rewrite using `[mul_left_comm]`. Conclude with `S.mul_mem c.2 ha }`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hle : Ideal.span (Set.range x') ≤ C.radical`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Take `⟨n, hn⟩` from `hs i`. Conclude with `⟨n, hn⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Take `⟨N, hN⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg hle (Submodule.fg_span (Set.finite_range x'))`. Use `⟨N, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (k : ℕ), ∀ t ∈ (Set.range x) ^ k, ∃ a ∈ Ideal.span (Set.range x') ^ k, (a : T) = t`. Introduce `k`. Proceed by induction on `k with`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components.
 
-Consider the case `zero`. Introduce `t ht`. Rewrite `ht` using `[pow_zero, Set.mem_one]`. Substitute `ht` using the available equality. Conclude with `⟨1, by simp, rfl⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `succ k ih`. Introduce `t ht`. Rewrite `ht` using `[pow_succ]`. Take `⟨a, ha, b, ⟨i, rfl⟩, rfl⟩` from `ht`. Take `⟨a', ha', rfl⟩` from `ih a ha`.
-
-Use `⟨a' * x' i, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mem_mul ha' (Ideal.subset_span ⟨i, rfl⟩)`. Introduce `t ht`. Take `⟨a, ha, rfl⟩` from `key N t ht`.
-
-Conclude with `hN ha`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_mul_mem_adjoin_of_mem_pow_range {K T : Type} [Field K] [CommRing T] [Algebra K T]
     {m : ℕ} (x : Fin m → T) (s : T)
@@ -143,23 +137,19 @@ theorem exists_mul_mem_adjoin_of_mem_pow_range {K T : Type} [Field K] [CommRing 
   exact hN ha
 
 /- English proof (translation)
-Introduce `K T _ _ _ _ 𝒜 _ m x hx hne d s hsd hs`. Take `⟨N, hN⟩` from `exists_mul_mem_adjoin_of_mem_pow_range x s hs`. Use `set S := Algebra.adjoin K (Set.range x) with hS`. Establish `hP : ∀ (k : ℕ), ∀ t ∈ (Set.range x) ^ k, t ∈ S`. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero`. Introduce `t ht`. Rewrite `ht` using `[pow_zero, Set.mem_one]`. Substitute `ht` using the available equality.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Treat this case separately.
 
-Conclude with `S.one_mem`. Consider the case `succ k ih`. Introduce `t ht`. Rewrite `ht` using `[pow_succ]`. Take `⟨a, ha, b, hb, rfl⟩` from `ht`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `S.mul_mem (ih a ha) (Algebra.subset_adjoin hb)`. Establish `hfin : ∀ k : ℕ, ((Set.range x) ^ k).Finite`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `Set.finite_one`. Consider the case `succ k ih => rw [pow_succ]`. Conclude with `ih.mul (Set.finite_range x)`. Use `isIntegral_of_smul_mem_submodule (Submodule.span S ((Set.range x) ^ N)) ?_ (Submodule.fg_span (hfin N)) s ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `hne`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[Submodule.ne_bot_iff]`. Conclude with `⟨x i ^ N, Submodule.subset_span (Set.pow_mem_pow ⟨i, rfl⟩), pow_ne_zero N hi⟩`. Introduce `t ht`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Treat this case separately.
 
-Establish `h1` using `mem_span_pow_range_of_mem_adjoin 𝒜 x hx (d + N) (s * y) (hN y hy) (SetLike.mul_mem_graded hsd (mem_graded_of_mem_pow_range 𝒜 x hx N y hy))`. Establish `h2 : Submodule.span K ((Set.range x) ^ (d + N)) ≤ (Submodule.span S ((Set.range x) ^ N)).restrictScalars K`. Rewrite using `[Submodule.span_le, pow_add]`. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Conclude with `Submodule.smul_mem (Submodule.span S ((Set.range x) ^ N)) (⟨a, hP d a ha⟩ : S) (Submodule.subset_span hb)`.
-
-Conclude with `h2 h1`. Consider the case `zero => rw [smul_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [smul_add]`. Conclude with `Submodule.add_mem _ ha hb`.
-
-Consider the case `smul c a _ ha => rw [smul_comm]`. Conclude with `Submodule.smul_mem _ c ha`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isIntegral_adjoin_of_mul_pow_mem :
     (∀ (K T : Type) [Field K] [CommRing T] [IsDomain T] [Algebra K T] (𝒜 : ℕ → Submodule K T) [GradedAlgebra 𝒜] (m : ℕ) (x : Fin m → T), (∀ i, x i ∈ 𝒜 1) → (∃ i, x i ≠ 0) → ∀ (d : ℕ), ∀ s ∈ 𝒜 d, (∀ i, ∃ n : ℕ, s * x i ^ n ∈ Algebra.adjoin K (Set.range x)) → IsIntegral (Algebra.adjoin K (Set.range x)) s) := by

@@ -11,7 +11,7 @@ open GlobalTheory GlobalTheory.CM GlobalTheory.LamF
 namespace GlobalTheory.LamF
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Both sides reduce to the same expression. Consider the case `succ n ih => rw [pow_succ, ← ih]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Both sides reduce to the same expression.
 -/
 private theorem pnsmulPt_eq_pow {S : Scheme.{0}} {G T : Over S} [GrpObj G] (n : ℕ) (a : T ⟶ G) :
     pnsmulPt n a = a ^ n := by
@@ -20,9 +20,9 @@ private theorem pnsmulPt_eq_pow {S : Scheme.{0}} {G T : Over S} [GrpObj G] (n : 
   | succ n ih => rw [pow_succ, ← ih]; rfl
 
 /- English proof (translation)
-Introduce `laws K _ _ A B f g hf hg H`. Establish `hβ : Function.Injective ((algebraMap K (AlgebraicClosure K)).comp (algebraMap (𝓞 K) K))` using `(algebraMap K (AlgebraicClosure K)).injective.comp (IsFractionRing.injective (𝓞 K) K)`. Use `(GlobalTheory.T.cubeLBPairingIso_iff_weilPairingCompatible_over_ring laws (𝓞 K) A A B A f f g (𝟙 A.A) hf hf hg inferInstance (AlgebraicClosure K) ((algebraMap K (AlgebraicClosure K)).comp (algebraMap (𝓞 K) K))).2 inferInstance hβ ?_` and prove the remaining obligations. Introduce `n p q c hn hp hq`. Rewrite using `[Category.comp_id]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `H _ n p q (unitOn c) hn ?_ ?_` and prove the remaining obligations. Rewrite using `[pnsmulPt_eq_pow, hp]`. Both sides reduce to the same expression. Rewrite using `[pnsmulPt_eq_pow, hq]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lamEq_of_weilIs_all_points : Out.Laws → ∀ (K : Type) [Field K] [NumberField K] (A B : Out.PolAV (Sp (𝓞 K))) (f : A.A ⟶ B.A) (g : A.A ⟶ A.A), IsMonHom f → IsMonHom g → (∀ (Tb : Over (Sp (𝓞 K))) (k : ℕ) (x y : Tb ⟶ A.A) (c : Γ(Tb.left, ⊤)ˣ), 0 < k → pnsmulPt k x = toUnit Tb ≫ η[A.A] → pnsmulPt k y = toUnit Tb ≫ η[A.A] → (Out.WeilIs B.A B.L k (x ≫ f) (y ≫ f) c ↔ Out.WeilIs A.A A.L k (x ≫ g) y c)) → LamEq B.L f f A.L g (𝟙 A.A) := by
   intro laws K _ _ A B f g hf hg H

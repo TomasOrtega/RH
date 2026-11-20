@@ -13,7 +13,7 @@ open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.Basi
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2`. Establish `h : K0 K ≤ K.1` using `inf_le_left`. Conclude with `FiniteDimensional.of_injective (IntermediateField.inclusion h).toLinearMap (IntermediateField.inclusion h).injective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_max_unramified (K : FinExt l) : FiniteDimensional ℚ_[l] ↥(K0 K) := by
   haveI : FiniteDimensional ℚ_[l] ↥K.1 := K.2
@@ -22,9 +22,7 @@ theorem finiteDimensional_max_unramified (K : FinExt l) : FiniteDimensional ℚ_
     (IntermediateField.inclusion h).injective
 
 /- English proof (translation)
-Establish `hpos : 0 < l ^ s` using `pow_pos (Fact.out : l.Prime).pos _`. Establish `hfin : Set.Finite {x : Om l | x ^ (l ^ s) = 1}` using `(Polynomial.nthRoots (l ^ s) (1 : Om l)).toFinset.finite_toSet.subset fun x hx => by`. Simplify `hx` using `[Polynomial.mem_nthRoots hpos]`. Use `haveI : Finite {x : Om l | x ^ (l ^ s) = 1} := hfin.to_subtype`. Use `haveI : FiniteDimensional ℚ_[l] ↥(IntermediateField.adjoin ℚ_[l] {x : Om l | x ^ (l ^ s) = 1}) := IntermediateField.finiteDimensional_adjoin fun x hx => IsIntegral.of_pow hpos (by rw [hx]; exact isIntegral_one)`.
-
-Use `haveI := finiteDimensional_max_unramified K`. Unfold `Ks`. Conclude with `IntermediateField.finiteDimensional_sup _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fd_Ks (K : FinExt l) (s : ℕ) : FiniteDimensional ℚ_[l] ↥(Ks K s) := by
   classical
@@ -47,12 +45,12 @@ def bigLL (K LL : FinExt l) : FinExt l :=
     exact IntermediateField.finiteDimensional_sup _ _⟩
 
 /- English proof (translation)
-The claim follows from `le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem le_bigLL (K LL : FinExt l) : LL.1 ≤ (bigLL K LL).1 := le_sup_left
 
 /- English proof (translation)
-Use `⟨(algebraMap ↥(K0 K) ↥K.1).injective, fun y => ⟨⟨y, ⟨y.2, hA.1 y.2⟩⟩, ?_⟩⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem unram_of_caseA {K LL : FinExt l} (hA : CaseA K LL) :
     Function.Bijective (algebraMap ↥(K0 K) ↥K.1) := by
@@ -72,9 +70,9 @@ def BrRest {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Q
   ∃ e : W.DD W.one, UnitGen W e ∧ BKExt W e ∧ ∀ hR : Ring9 W, Realised2 hR e
 
 /- English proof (translation)
-Use `⟨hs, unram_of_caseA hA, ?_, h5W, h6W, h9W, h2a, hwx, hwr, htools, hf1, hf2, hH, ?_, ?_, hrest⟩` and prove the remaining obligations. Rewrite using `[P.PD_p K]`. Conclude with `h5`. Unfold `ValRing`. Use `⟨fun a b h => Subtype.ext h, fun x hx => ⟨⟨x, (P.v_O LL x).1 hx⟩, rfl⟩, fun o => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(P.v_O LL _).2 o.2`. Rewrite using `[P.PD_p K]`. Conclude with `complete_OL LL`.
+A detailed English derivation is pending.
 -/
 theorem brHyp2_of_rec (P : LocPrime l) {K LL : FinExt l} (hA : CaseA K LL) (h5 : 5 ≤ l)
     [NeZero (finrank ℚ_[l] ↥(K0 K))] [Fintype (↥K.1 →ₐ[ℚ_[l]] ↥LL.1)]

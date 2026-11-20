@@ -34,63 +34,63 @@ namespace GroundTheory.Heights₂.Heights.Vertical
 open MvPolynomial NumberField IsDedekindDomain
 
 /- English proof (translation)
-The claim follows from `NormLength.proof`.
+A detailed English derivation is pending.
 -/
 theorem NormLength.full : NormLength.Statement := NormLength.proof
 /- English proof (translation)
-The claim follows from `VertTermEq.proof`.
+A detailed English derivation is pending.
 -/
 theorem VertTermEq.full : VertTermEq.Statement := VertTermEq.proof
 /- English proof (translation)
-The claim follows from `PrimitiveUnit.proof`.
+A detailed English derivation is pending.
 -/
 theorem PrimitiveUnit.full : PrimitiveUnit.Statement := PrimitiveUnit.proof
 /- English proof (translation)
-The claim follows from `ParAlgIndep.proof`.
+A detailed English derivation is pending.
 -/
 theorem ParAlgIndep.full : ParAlgIndep.Statement := ParAlgIndep.proof
 /- English proof (translation)
-The claim follows from `NormFormEval.proof`.
+A detailed English derivation is pending.
 -/
 theorem NormFormEval.full : NormFormEval.Statement := NormFormEval.proof
 /- English proof (translation)
-The claim follows from `ChartTorsion.proof`.
+A detailed English derivation is pending.
 -/
 theorem ChartTorsion.full : ChartTorsion.Statement := ChartTorsion.proof
 /- English proof (translation)
-The claim follows from `ChowFormHomog.proof`.
+A detailed English derivation is pending.
 -/
 theorem ChowFormHomog.full : ChowFormHomog.Statement := ChowFormHomog.proof
 /- English proof (translation)
-The claim follows from `IncidenceNull.proof`.
+A detailed English derivation is pending.
 -/
 theorem IncidenceNull.full : IncidenceNull.Statement := IncidenceNull.proof
 /- English proof (translation)
-The claim follows from `LengthDecomp.proof`.
+A detailed English derivation is pending.
 -/
 theorem LengthDecomp.full : LengthDecomp.Statement := LengthDecomp.proof
 /- English proof (translation)
-The claim follows from `NormFormLocalization.proof`.
+A detailed English derivation is pending.
 -/
 theorem NormFormLocalization.full : NormFormLocalization.Statement := NormFormLocalization.proof
 /- English proof (translation)
-The claim follows from `ParDVRIsDVR.proof`.
+A detailed English derivation is pending.
 -/
 theorem ParDVRIsDVR.full : ParDVRIsDVR.Statement := ParDVRIsDVR.proof
 /- English proof (translation)
-The claim follows from `ParFracIsFractionRing.proof`.
+A detailed English derivation is pending.
 -/
 theorem ParFracIsFractionRing.full : ParFracIsFractionRing.Statement := ParFracIsFractionRing.proof
 /- English proof (translation)
-The claim follows from `PrimitiveScale.proof`.
+A detailed English derivation is pending.
 -/
 theorem PrimitiveScale.full : PrimitiveScale.Statement := PrimitiveScale.proof
 /- English proof (translation)
-The claim follows from `SecBGeneric.proof`.
+A detailed English derivation is pending.
 -/
 theorem SecBGeneric.full : SecBGeneric.Statement := SecBGeneric.proof
 /- English proof (translation)
-The claim follows from `SecBFinite.proof IncidenceNull.full ChartTorsion.full PrimitiveScale.full`.
+A detailed English derivation is pending.
 -/
 theorem SecBFinite.full : SecBFinite.Statement :=
   SecBFinite.proof IncidenceNull.full ChartTorsion.full PrimitiveScale.full

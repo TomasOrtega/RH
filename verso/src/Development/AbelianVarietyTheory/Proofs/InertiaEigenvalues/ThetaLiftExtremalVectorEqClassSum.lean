@@ -17,15 +17,15 @@ noncomputable section
 namespace GlobalTheory.LiftClassSum
 
 /- English proof (translation)
-Introduce `D X E Y i j b t hxi hQ y hy`. Take `⟨u, hu⟩` from `GlobalTheory.LiftClassSum.exists_low D X E Y j`. Take `⟨m, h₀, c, z, hh₀, hz, hP⟩` from `GlobalTheory.T.thetaLift_eq_multiple_principalLevel_classSum D X E Y i j b t hxi hQ y u`. Establish `hB : (Y.Z.ρ.B i j b).Good` using `Y.Z.good.base i j b`. Establish `hq : (Y.Z.ρ.tw i b 0 ∅ 1).Q = ∅` using `half_empty _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : (Y.Z.ρ.tw i b 0 ∅ 1).chi = 1` using `charOf_one _ _`. Establish `hgood : ∀ τ : Twist D Circle, τ.Q = ∅ → τ.chi = 1 → τ.Good`. Introduce and unpack `⟨Q0, c0, r0⟩ hq0 hc0`. Simplify using `only at hq0 hc0`. Substitute `hq0 hc0` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Substitute using the available equality.
 
-Establish `h1` using `Twist.triv_good (D := D) (A := Circle) (Q := ∅) splitSet_empty`. Conclude with `⟨h1.isOpen, h1.rat, h1.real, h1.split, h1.unram, fun _ h => absurd h (Finset.notMem_empty _)⟩`. Establish `hψ : (Y.Z.ρ.tw i b 0 ∅ 1).Good` using `hgood _ hq hc`. Establish `hA : (Y.Z.ρ.B i j b).admitted (Y.Z.ρ.tw i b 0 ∅ 1).Q` using `by rw [hq]; exact Base.admissible_empty_of_good hB`. Establish `hBase : GlobalTheory.ConjTwist.BaseOf X.R.toRealDat j (Y.Z.ρ.B i j b)` using `GlobalTheory.PinBase.baseOf_of_pin D X Y.Z.ρ Y.Z.good Y.Z.pin i j b`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htup : GlobalTheory.ConjTwist.IsTupOf X.R.toRealDat (Y.Z.ρ.B i j b) (Y.Z.ρ.tw i b 0 ∅ 1) t` using `⟨by rw [hxi, hc, mul_one], by rw [hQ, hq, Finset.union_empty]⟩`. Establish `hW : (Y.Z.ρ.B i j b).IsWeil (Y.Z.ρ.tw i b 0 ∅ 1).chi (X.R.ωP j t)` using `hBase.isWeil X.char.thP.ωP htup`. Take `⟨κ, hκ⟩` from `GlobalTheory.T.classSum_principalLevel_eq_const_mul_classSum D _ _ (Y.Z.ρ.B i j b) hB (D.sp.V_sig _) _ hψ hA _ hW m h₀ hh₀ _ (Y.Z.ρ.rep i j b (Y.Z.ρ.tw i b 0 ∅ 1)) (Y.Z.good.classes i j b _ hψ hA)`. Establish `hF` using `GlobalTheory.T.fockReading_translatedForm_mem_complexForms D X E Y i j b t hxi hQ y hy u hu z hz`. Use `⟨(c * κ) • (fun h => X.R.ioP j (PiTensorProduct.tprod ℂ u) ((X.R.HV j t).e y (h * z))), Submodule.smul_mem _ _ hF, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(congrArg (fun v => X.R.thF j t y v) hu.symm).trans (hP.trans ?_)` and prove the remaining obligations. Conclude with `(congrArg (c • ·) (hκ _ hF)).trans ((smul_smul c κ _).trans (LinearMap.map_smul _ _ _).symm)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_thetaLift_eq_classSum : ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E) (i : D.ntw.Tw) (j : Fin D.R.m) (b : Bool) (t : X.T),
     X.R.xi t = (Y.Z.ρ.B i j b).de.chi → X.R.Q t = (Y.Z.ρ.B i j b).de.Q → ∀ y : (X.R.HV j t).H,

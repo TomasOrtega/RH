@@ -14,7 +14,7 @@ namespace KLinesLineDegree
 variable {K : Type} [Field K] {n : ℕ}
 
 /- English proof (translation)
-Unfold `genIndex`. Rewrite using `[AddSubgroup.relIndex_map_map_of_injective _ _ hf, AddSubgroup.relIndex_map_map_of_injective _ _ hf]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem genIndex_map_of_injective {G G' : Type*} [AddCommGroup G] [AddCommGroup G'] (f : G →+ G')
     (hf : Function.Injective f) (A B : AddSubgroup G) :
@@ -24,7 +24,7 @@ theorem genIndex_map_of_injective {G G' : Type*} [AddCommGroup G] [AddCommGroup 
     AddSubgroup.relIndex_map_map_of_injective _ _ hf]
 
 /- English proof (translation)
-Introduce `s t h`. Simplify using `using congrFun h x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem single_injective (x : Fin n) :
     Function.Injective (AddMonoidHom.single (fun _ : Fin n => K) x) := by
@@ -32,13 +32,13 @@ theorem single_injective (x : Fin n) :
   simpa using congrFun h x
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [Submodule.mem_toAddSubgroup, Submodule.mem_inf, Submodule.restrictScalars_mem, Set.range_const, Submodule.mem_span_singleton, AddSubgroup.mem_map, AddMonoidHom.single_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, t, rfl⟩`. Use `⟨t, ?_, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `(Submodule.mem_pi.mp hv) x (Set.mem_univ _)`. Simplify using `using h`. Rewrite using `[← Pi.single_smul', smul_eq_mul, mul_one]`. Introduce and unpack `⟨t, ht, rfl⟩`. Use `⟨?_, t, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[idealLattice, Submodule.mem_pi]`. Introduce `y _`. Distinguish the cases in `hy : y = x`. Substitute `hy` using the available equality. Simplify using `using ht`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [Pi.single_apply, hy, if_false]`. Conclude with `zero_mem _`. Rewrite using `[← Pi.single_smul', smul_eq_mul, mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_line (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (x : Fin n) :
     (idealLattice a ⊓ (Submodule.span K
@@ -65,9 +65,9 @@ theorem inter_line (a : Fin n → FractionalIdeal (𝓞 K)⁰ K) (x : Fin n) :
     · rw [← Pi.single_smul', smul_eq_mul, mul_one]
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [Submodule.mem_toAddSubgroup, Set.range_const, Submodule.mem_span_singleton, AddSubgroup.mem_map, Submodule.mem_one, AddMonoidHom.single_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨algebraMap (𝓞 K) K y, ⟨y, rfl⟩, by rw [← Pi.single_smul', Algebra.smul_def, mul_one]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨t, ⟨y, rfl⟩, rfl⟩`. Conclude with `⟨y, by rw [← Pi.single_smul', Algebra.smul_def, mul_one]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem span_line (x : Fin n) :
     (Submodule.span (𝓞 K) (Set.range fun _ : Fin 1 => (Pi.single x 1 : Fin n → K))).toAddSubgroup =
@@ -82,7 +82,7 @@ theorem span_line (x : Fin n) :
     exact ⟨y, by rw [← Pi.single_smul', Algebra.smul_def, mul_one]⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_unique]`. Simplify using `[gramAt, diagMetric, embVec, dotProduct, Matrix.mulVec_diagonal, Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_line (d : (K →+* ℂ) → Fin n → ℝ) (σ : K →+* ℂ) (x : Fin n) :
     (gramAt (diagMetric d σ) σ (fun _ : Fin 1 => (Pi.single x 1 : Fin n → K))).det.re = d σ x := by
@@ -94,7 +94,7 @@ end KLinesLineDegree
 open KLinesLineDegree in
 
 /- English proof (translation)
-Introduce `K _ _ n a d x`. Unfold `subDegree idealIndex`. Rewrite using `[inter_line, span_line, genIndex_map_of_injective _ (single_injective x)]`. Simplify using `only [gram_line]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem LinesLineDegree.proof : LinesLineDegree.Statement := by
   intro K _ _ n a d x

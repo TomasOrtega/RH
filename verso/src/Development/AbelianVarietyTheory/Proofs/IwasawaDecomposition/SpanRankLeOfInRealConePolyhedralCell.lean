@@ -6,21 +6,19 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroi
 namespace GlobalTheory.PolFan
 
 /- English proof (translation)
-Introduce `O _ bar ψ X _ _ _ m n γ v hγ hbal hnn hcone`. Take `⟨N, ℓ, hN, h1, h2, h3⟩` from `hγ.strict`. Establish `hk : ∀ j, ∃ k : ℕ, 0 < k ∧ ((k : ℤ) • v j) ∈ Submodule.span ℤ (Set.range γ)`. Introduce `j`. Take `⟨c, hc, e⟩` from `hcone j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hl` using `apply_eq_of_toReal_eq e ℓ`. Establish `hlin` using `(linearOn_iff ψ γ).1 hγ.linear c hc`. Rewrite `hlin` using `[← e, evalR_toReal]`. Establish `heq : (N : ℝ) * ψ.evalZ (v j) = ℓ (v j)`. Rewrite using `[hl, hlin, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h1 i]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨k, c', hk, hc'⟩` from `h3 (v j) (hbal j) (hnn j) heq`. Use `⟨k, hk, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[natCast_zsmul, hc']`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_of_tower_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Use `choose k hkpos hkmem using hk`. Use `set K : ℕ := ∏ j, k j with hKdef`. Establish `hK : 0 < K` using `Finset.prod_pos fun j _ => hkpos j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `set S := Submodule.span ℤ (Set.range γ) with hS`. Establish `hle : Submodule.span ℤ (Set.range v) ≤ S.comap ((K : ℤ) • LinearMap.id)`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨r, hr⟩ : k j ∣ K` from `Finset.dvd_prod_of_mem _ (Finset.mem_univ j)`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `show ((K : ℤ) • LinearMap.id) (v j) ∈ S`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[hr, Nat.cast_mul, mul_comm, mul_smul]`. Conclude with `S.smul_mem _ (hkmem j)`. Set `f : Submodule.span ℤ (Set.range v) →ₗ[ℤ] S` to `(((K : ℤ) • LinearMap.id).comp (Submodule.span ℤ (Set.range v)).subtype).codRestrict S fun x => hle x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hf : Function.Injective f`. Introduce `x y hxy`. Establish `e` using `congrArg Subtype.val hxy`. Apply `Subtype.ext` to reduce the goal to its premises. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations.
-
-Establish `e2` using `LinearMap.congr_fun₂ e a b`. Simplify using `only [f, LinearMap.codRestrict_apply, LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.smul_apply, LinearMap.id_apply, smul_eq_mul] at e2`. Conclude with `mul_left_cancel₀ (by exact_mod_cast hK.ne') e2`. Use `haveI : Module.Finite ℤ S := Module.Finite.span_of_finite ℤ (Set.finite_range γ)`. Conclude with `LinearMap.finrank_le_finrank_of_injective hf`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genRank_le_of_inRCone_cell : ∀ (O : Type) [CommRing O] (bar : O → O) (ψ : InvFun O) (X : Type) [AddCommGroup X]
     [Module O X] [Module.Finite O X] (m n : ℕ) (γ : Fin m → LinearMap.BilinForm ℤ X) (v : Fin n → LinearMap.BilinForm ℤ X),

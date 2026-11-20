@@ -15,11 +15,9 @@ namespace GlobalTheory.FrameChange
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hc` using `congrFun (congrFun h a) i`. Rewrite `hc` using `[Formalism.REAL.Jm, Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Assume the negation of the conclusion as `hne`. Apply `hx` to reduce the goal to its premises. Apply the tactic sequence `cases h1 : ε a <;> cases h2 : ε' i <;> simp only [h1, h2] at hc hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `(hne trivial).elim`. Simplify using `at hc`. Take the linear combination `-hc / 2`. Simplify using `at hc`. Take the linear combination `hc / 2`.
-
-Conclude with `(hne trivial).elim`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sign_eq_of_ne_zero {n : ℕ} {ε ε' : Fin n → Bool} {x : Matrix (Fin n) (Fin n) ℂ}
     (h : Formalism.REAL.Jm ε * x = x * Formalism.REAL.Jm ε') {a i : Fin n} (hx : x a i ≠ 0) : ε a = ε' i := by
@@ -34,9 +32,7 @@ theorem sign_eq_of_ne_zero {n : ℕ} {ε ε' : Fin n → Bool} {x : Matrix (Fin 
   · exact (hne trivial).elim
 
 /- English proof (translation)
-Unfold `Fr.cart at h`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[GlobalTheory.CompactFockAction.fr_mul_inv, Matrix.one_mul]`. Use `_ = X.fr τ * ((X.fr τ)⁻¹ * Formalism.REAL.Jm (X.ε τ) * X.fr τ) * (Y.fr τ)⁻¹ := by simp only [Matrix.mul_assoc]`. Use `_ = X.fr τ * ((Y.fr τ)⁻¹ * Formalism.REAL.Jm (Y.ε τ) * Y.fr τ) * (Y.fr τ)⁻¹ := by rw [h]`.
-
-Use `_ = X.fr τ * (Y.fr τ)⁻¹ * Formalism.REAL.Jm (Y.ε τ) * (Y.fr τ * (Y.fr τ)⁻¹) := by simp only [Matrix.mul_assoc]`. Use `_ = _ := by rw [GlobalTheory.CompactFockAction.fr_mul_inv, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Jm_mul_fr {V : HSp D} (X Y : Fr V) (τ : D.what₂.Tau) (h : Y.cart τ = X.cart τ) :
     Formalism.REAL.Jm (X.ε τ) * (X.fr τ * (Y.fr τ)⁻¹) = X.fr τ * (Y.fr τ)⁻¹ * Formalism.REAL.Jm (Y.ε τ) := by
@@ -50,7 +46,7 @@ theorem Jm_mul_fr {V : HSp D} (X Y : Fr V) (τ : D.what₂.Tau) (h : Y.cart τ =
     _ = _ := by rw [GlobalTheory.CompactFockAction.fr_mul_inv, Matrix.mul_one]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = 1 := by rw [GlobalTheory.CompactFockAction.inv_mul_fr, Matrix.mul_one, GlobalTheory.CompactFockAction.fr_mul_inv]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fr_mul_inv_mul {V : HSp D} (X Y : Fr V) (τ : D.what₂.Tau) :
     X.fr τ * (Y.fr τ)⁻¹ * (Y.fr τ * (X.fr τ)⁻¹) = 1 := by
@@ -79,24 +75,24 @@ namespace GlobalTheory.FrameChange
 variable {D : D7} {V W : HSp D} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D}
 
 /- English proof (translation)
-Unfold `Fr.onb`. Rewrite using `[← Matrix.mul_assoc, GlobalTheory.CompactFockAction.inv_mul_fr, Matrix.one_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem onb_eq (X Y : Fr V) (τ : D.what₂.Tau) : Y.onb τ = X.onb τ * (X.fr τ * (Y.fr τ)⁻¹) := by
   unfold Fr.onb
   rw [← Matrix.mul_assoc, GlobalTheory.CompactFockAction.inv_mul_fr, Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (fr_mul_inv_mul Y X τ)`.
+A detailed English derivation is pending.
 -/
 theorem inv_fr_mul (X Y : Fr V) (τ : D.what₂.Tau) : (X.fr τ * (Y.fr τ)⁻¹)⁻¹ = Y.fr τ * (X.fr τ)⁻¹ :=
   Matrix.inv_eq_left_inv (fr_mul_inv_mul Y X τ)
 
 /- English proof (translation)
-Take `⟨ρ, i, j⟩` from `v`. Simplify using `only [aPlusAll]`. Rewrite using `[onb_eq A A' ρ, onb_eq B B' ρ, GlobalTheory.FockBasis.unitMap_mul, inv_fr_mul, GlobalTheory.FockSubst.aPlus_dir_sum hψ hθ ρ _ _ hg, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockSubst.aPlus_dir_sum hψ hθ ρ _ _ hg]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.FockSubst.aPlus_dir_smul hψ hθ ρ _ _ hg _ _ (GlobalTheory.CompactFockAction.Jm_single A B ρ a b)]`. Use `congr 1`. Simplify using `only [coef]`. Distinguish the cases in `hx : (B.fr ρ * (B'.fr ρ)⁻¹) a i * (A'.fr ρ * (A.fr ρ)⁻¹) j b = 0`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hx]`. Establish `h1` using `sign_eq_of_ne_zero (Jm_mul_fr B B' ρ (hB ρ)) (left_ne_zero_of_mul hx)`. Establish `h2` using `sign_eq_of_ne_zero (Jm_mul_fr A' A ρ (hA ρ).symm) (right_ne_zero_of_mul hx)`. Rewrite using `[h1, ← h2]`. Simplify using `only [decide_eq_true_eq]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem aPlusAll_change (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A A' : Fr V) (B B' : Fr W)
     (hA : ∀ τ, A'.cart τ = A.cart τ) (hB : ∀ τ, B'.cart τ = B.cart τ) (v : FVar D W.rank V.rank)
@@ -122,11 +118,11 @@ theorem aPlusAll_change (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A A' : 
     simp only [decide_eq_true_eq]
 
 /- English proof (translation)
-Establish `e1 : A'.cart = A.cart` using `funext hA`. Establish `e2 : B'.cart = B.cart` using `funext hB`. Establish `hS` using `GlobalTheory.CompactFockAction.cart_isCartanInv A`. Establish `hT` using `GlobalTheory.CompactFockAction.cart_isCartanInv B`. Unfold `ptF pureTensorO sub`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e1, e2]`. Establish `hAt : ∀ X Y i f, IsThetaFunO ψ V W f → IsThetaFunO ψ V W (aPlusAll (heisO ψ V W) θ (fun ρ => cplxO (A.cart ρ) (B.cart ρ)) X Y i f)` using `fun _ _ _ _ h => GlobalTheory.FockSubst.aPlus_th hψ hθ _ _ _ h`. Establish `Aadd : ∀ X Y i f f', IsThetaFunO ψ V W f → IsThetaFunO ψ V W f' → aPlusAll (heisO ψ V W) θ (fun ρ => cplxO (A.cart ρ) (B.cart ρ)) X Y i (f + f') = aPlusAll (heisO ψ V W) θ (fun ρ => cplxO (A.cart ρ) (B.cart ρ)) X Y i f + aPlusAll (heisO ψ V W) θ (fun ρ => cplxO (A.cart ρ) (B.cart …` using `fun _ _ _ _ _ h h' => GlobalTheory.FockSubst.aPlus_add hψ hθ _ _ _ h h'`. Establish `Asm : ∀ X Y i (a : ℂ) f, IsThetaFunO ψ V W f → aPlusAll (heisO ψ V W) θ (fun ρ => cplxO (A.cart ρ) (B.cart ρ)) X Y i (a • f) = a • aPlusAll (heisO ψ V W) θ (fun ρ => cplxO (A.cart ρ) (B.cart ρ)) X Y i f` using `fun _ _ _ a _ h => GlobalTheory.FockSubst.aPlus_smul hψ hθ _ _ _ a h`. Establish `Ac : ∀ X Y i j f, IsThetaFunO ψ V W f → aPlusAll (heisO ψ V W) θ (fun ρ => cplxO (A.cart ρ) (B.cart ρ)) X Y i (aPlusAll (heisO ψ V W) θ (fun ρ => cplxO (A.cart ρ) (B.cart ρ)) X Y j f) = aPlusAll (heisO ψ V W) θ (fun ρ => cplxO (A.cart ρ) (B.cart ρ)) X Y j (aPlusAll (heisO ψ V W) …` using `fun _ _ i j _ h => GlobalTheory.FockSubst.aPlus_comm (sS := A.cart) (sT := B.cart) hψ hθ i.1 _ hS hT j.1 _ h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.FockSubst.pure_subst (P := IsThetaFunO ψ V W) (fun _ _ => GlobalTheory.OrientedHeis.theta_add) (fun a _ => GlobalTheory.OrientedHeis.theta_smul a) (hAt _ _) (Ac _ _) (Aadd _ _) (Asm _ _) (hAt _ _) (Ac _ _) (Aadd _ _) (Asm _ _) (coef A A' B B') (fun v p => (v.1, p.1, …`.
+A detailed English derivation is pending.
 -/
 theorem ptF_sub (hψ : IsStdChar D ψ (-1)) (hθ : IsInfFam θ) (A A' : Fr V) (B B' : Fr W)
     (hA : ∀ τ, A'.cart τ = A.cart τ) (hB : ∀ τ, B'.cart τ = B.cart τ) {f : WO V W → ℂ}
@@ -168,19 +164,19 @@ namespace GlobalTheory.FrameChange
 variable {D : D7} {V W : HSp D}
 
 /- English proof (translation)
-Take `⟨ρ, i, j⟩` from `v`. Establish `hK : ∀ c d, (∑ a, (Y'.fr ρ * (Y.fr ρ)⁻¹) a d * (Y.fr ρ * (Y'.fr ρ)⁻¹) c a) = if c = d then 1 else 0`. Introduce `c d`. Use `congrFun (congrFun (fr_mul_inv_mul Y Y' ρ) c) d` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun a _ => mul_comm _ _`. Establish `hU : ∀ c d, (∑ b, (X.fr ρ * (X'.fr ρ)⁻¹) c b * (X'.fr ρ * (X.fr ρ)⁻¹) b d) = if c = d then 1 else 0`. Introduce `c d`. Use `congrFun (congrFun (fr_mul_inv_mul X X' ρ) c) d` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.mul_apply, Matrix.one_apply]`. Conclude with `this`. Establish `hprod : (∑ p : Fin W.rank × Fin V.rank, ((Y'.fr ρ * (Y.fr ρ)⁻¹) p.1 i * (X.fr ρ * (X'.fr ρ)⁻¹) j p.2) * ((Y.fr ρ * (Y'.fr ρ)⁻¹) q.1 p.1 * (X'.fr ρ * (X.fr ρ)⁻¹) p.2 q.2)) = if q = (i, j) then 1 else 0`. Rewrite using `[Fintype.sum_prod_type]`. Establish `e : ∀ a b, ((Y'.fr ρ * (Y.fr ρ)⁻¹) a i * (X.fr ρ * (X'.fr ρ)⁻¹) j b) * ((Y.fr ρ * (Y'.fr ρ)⁻¹) q.1 a * (X'.fr ρ * (X.fr ρ)⁻¹) b q.2) = ((Y'.fr ρ * (Y.fr ρ)⁻¹) a i * (Y.fr ρ * (Y'.fr ρ)⁻¹) q.1 a) * ((X.fr ρ * (X'.fr ρ)⁻¹) j b * (X'.fr ρ * (X.fr ρ)⁻¹) b q.2)` using `fun a b => by ring`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [e, ← Finset.mul_sum, ← Finset.sum_mul, hU, hK]`. Take `⟨q1, q2⟩` from `q`. Apply the tactic sequence `by_cases h1 : q1 = i <;> by_cases h2 : j = q2 <;> (try simp [h1, h2]) <;> (try exact fun h => h1 h.symm) <;> (try exact fun h => h2 h.symm)`. Establish `hterm : ∀ p : Fin W.rank × Fin V.rank, coef X' X Y' Y (ρ, i, j) p * coef X X' Y Y' (ρ, p.1, p.2) q = if Y.ε ρ i = X.ε ρ j then ((Y'.fr ρ * (Y.fr ρ)⁻¹) p.1 i * (X.fr ρ * (X'.fr ρ)⁻¹) j p.2) * ((Y.fr ρ * (Y'.fr ρ)⁻¹) q.1 p.1 * (X'.fr ρ * (X.fr ρ)⁻¹) p.2 q.2) else starRingEnd ℂ (((Y …`. Introduce `p`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [coef]`. Distinguish the cases in `hx : (Y'.fr ρ * (Y.fr ρ)⁻¹) p.1 i * (X.fr ρ * (X'.fr ρ)⁻¹) j p.2 = 0`. Simplify using `[hx]`. Establish `h1` using `sign_eq_of_ne_zero (Jm_mul_fr Y' Y ρ (hY ρ).symm) (left_ne_zero_of_mul hx)`. Establish `h2` using `sign_eq_of_ne_zero (Jm_mul_fr X X' ρ (hX ρ)) (right_ne_zero_of_mul hx)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[h1, ← h2]`. Apply the tactic sequence `split_ifs <;> simp [map_mul]`. Distinguish the cases in `hs : Y.ε ρ i = X.ε ρ j`. Simplify using `only [hterm, hs, if_true]`. Conclude with `hprod`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [hterm, hs, if_false]`. Rewrite using `[← map_sum, hprod]`. Apply the tactic sequence `split_ifs <;> simp`.
+A detailed English derivation is pending.
 -/
 theorem coef_comp (X X' : Fr V) (Y Y' : Fr W) (hX : ∀ τ, X'.cart τ = X.cart τ) (hY : ∀ τ, Y'.cart τ = Y.cart τ)
     (v : FVar D W.rank V.rank) (q : Fin W.rank × Fin V.rank) :
@@ -232,13 +228,11 @@ theorem coef_comp (X X' : Fr V) (Y Y' : Fr W) (hX : ∀ τ, X'.cart τ = X.cart 
     split_ifs <;> simp
 
 /- English proof (translation)
-Use `MvPolynomial.algHom_ext fun v => ?_` and prove the remaining obligations. Rewrite using `[AlgHom.comp_apply, AlgHom.id_apply]`. Take `⟨ρ, i, j⟩` from `v`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [sub, MvPolynomial.aeval_X, map_sum, map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = ∑ q : Fin W.rank × Fin V.rank, (∑ p : Fin W.rank × Fin V.rank, coef X' X Y' Y (ρ, i, j) p * coef X X' Y Y' (ρ, p.1, p.2) q) • (MvPolynomial.X (ρ, q.1, q.2) : PolF D W.rank V.rank) := by`. Simplify using `only [Finset.smul_sum, smul_smul, Finset.sum_smul]`. Conclude with `Finset.sum_comm`. Use `_ = ∑ q : Fin W.rank × Fin V.rank, (if q = (i, j) then (1 : ℂ) else 0) • (MvPolynomial.X (ρ, q.1, q.2) : PolF D W.rank V.rank) := by`. Simplify using `only [coef_comp X X' Y Y' hX hY (ρ, i, j)]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = MvPolynomial.X (ρ, i, j) := by`. Rewrite using `[Finset.sum_eq_single (i, j)]`. Simplify using the standard rewrite rules. Introduce `q _ hq`. Simplify using `[hq]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sub_comp (X X' : Fr V) (Y Y' : Fr W) (hX : ∀ τ, X'.cart τ = X.cart τ) (hY : ∀ τ, Y'.cart τ = Y.cart τ) :
     (sub X X' Y Y').comp (sub X' X Y' Y) = AlgHom.id ℂ (PolF D W.rank V.rank) := by
@@ -270,7 +264,7 @@ end GlobalTheory.FrameChange
 namespace GlobalTheory.FrameChange
 
 /- English proof (translation)
-Introduce `D ψ θ hψ hθ V W A A' B B' hA hB`. Set `e : PolF D W.rank V.rank ≃ₐ[ℂ] PolF D W.rank V.rank` to `AlgEquiv.ofAlgHom (sub A' A B' B) (sub A A' B B') (sub_comp A' A B' B (fun τ => (hA τ).symm) fun τ => (hB τ).symm) (sub_comp A A' B B' hA hB)`. Use `⟨e.toLinearEquiv, fun f hf P => ?_⟩` and prove the remaining obligations. Conclude with `(ptF_sub hψ hθ A' A B' B (fun τ => (hA τ).symm) (fun τ => (hB τ).symm) hf P).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ptF_frame_change : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ → ∀ (V W : HSp D) (A A' : Fr V) (B B' : Fr W), (∀ τ, A'.cart τ = A.cart τ) → (∀ τ, B'.cart τ = B.cart τ) → ∃ j : PolF D W.rank V.rank ≃ₗ[ℂ] PolF D W.rank V.rank, ∀ f, IsThetaFunO ψ V W f → ∀ P, ptF ψ θ A' B' f (j P) = ptF ψ θ A B f P := by
   intro D ψ θ hψ hθ V W A A' B B' hA hB

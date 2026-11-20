@@ -11,13 +11,13 @@ set_option autoImplicit false
 namespace GlobalTheory.AnPer
 
 /- English proof (translation)
-Introduce `D _ _ J dl hdl`. Take `⟨N, h⟩` from `hdl`. Establish `h0 : ∀ l : List D, (∀ b ∈ l, b ∈ J) → N ≤ l.length → l.prod = 0`. Introduce `l hl hN`. Establish `k` using `h (l.map fun b ↦ (1, b)) (by simpa using hl) (by simpa [List.map_map, Function.comp_def] using hN)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `k` using `[List.map_map]`. Establish `e : l.map ((fun p : ℕ × D ↦ dl.dpow p.1 p.2) ∘ fun b ↦ (1, b)) = l.map id` using `List.map_congr_left fun b hb ↦ dl.dpow_one (hl b hb)`. Rewrite `k` using `[e, List.map_id]`. Then use the resulting hypothesis. Establish `key : ∀ n : ℕ, ∀ x ∈ J ^ n, ∀ l : List D, (∀ b ∈ l, b ∈ J) → N ≤ n + l.length → x * l.prod = 0`. Introduce `n`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `n with`. Consider the case `zero => intro x _ l hl hN; rw [h0 l hl (by simpa using hN), mul_zero]`. Consider the case `succ n ih`. Introduce `x hx l hl hN`. Rewrite `hx` using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Submodule.mul_induction_on hx (fun a ha b hb ↦ ?_) fun a b ha hb ↦ by rw [add_mul, ha, hb, add_zero]` and prove the remaining obligations. Use `ih a ha (b :: l) (by simpa using ⟨hb, hl⟩) (by simp; omega)` as an intermediate fact. Rewrite `this` using `[List.prod_cons, ← _root_.mul_assoc]`. Then use the resulting hypothesis. Use `⟨N, eq_bot_iff.2 fun x hx ↦ ?_⟩` and prove the remaining obligations. Simplify using `using key N x hx [] (by simp) (by simp)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isNilpotent_of_isDPNilpotent : ∀ {D : Type} [CommRing D] [Algebra ℂ D] {J : Ideal D}
     (dl : DividedPowers J), IsNilDP dl → IsNilpotent J := by

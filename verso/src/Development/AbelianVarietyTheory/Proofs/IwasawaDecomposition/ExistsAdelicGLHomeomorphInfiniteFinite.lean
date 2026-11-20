@@ -13,7 +13,7 @@ namespace GlobalTheory.CuspRep.GASplit
 variable (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
 
 /- English proof (translation)
-Use `continuous_pi fun w => ?_` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometryEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)).continuous.comp (continuous_apply w)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_infEq_symm : Continuous (infEq E).symm := by
   refine continuous_pi fun w => ?_
@@ -21,30 +21,30 @@ theorem continuous_infEq_symm : Continuous (infEq E).symm := by
     (continuous_apply w)
 
 /- English proof (translation)
-The claim follows from `(continuous_infEq_symm E).comp continuous_fst`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pInf : Continuous (pInf E) :=
   (continuous_infEq_symm E).comp continuous_fst
 
 /- English proof (translation)
-The claim follows from `continuous_snd`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pFin : Continuous (pFin E) := continuous_snd
 
 /- English proof (translation)
-The claim follows from `(continuous_infEq E).prodMk continuous_const`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sInf : Continuous (sInf E) :=
   (continuous_infEq E).prodMk continuous_const
 
 /- English proof (translation)
-The claim follows from `continuous_const.prodMk continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sFin : Continuous (sFin E) :=
   continuous_const.prodMk continuous_id
 
 /- English proof (translation)
-Use `Continuous.units_map _ ?_` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => hp.comp ((continuous_apply j).comp (continuous_apply i))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_glMap {R S : Type} [CommRing R] [CommRing S] [TopologicalSpace R] [TopologicalSpace S]
     [IsTopologicalRing R] [IsTopologicalRing S] (p : R →+* S) (hp : Continuous p) :
@@ -53,7 +53,7 @@ theorem continuous_glMap {R S : Type} [CommRing R] [CommRing S] [TopologicalSpac
   exact continuous_pi fun i => continuous_pi fun j => hp.comp ((continuous_apply j).comp (continuous_apply i))
 
 /- English proof (translation)
-Use `Continuous.units_map _ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun x : Matrix (Fin a) (Fin a) R => 1 - matN a s 1 + matN a s x`. Use `continuous_const.add ?_` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => hs.comp ((continuous_apply j).comp (continuous_apply i))`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_cornerGL {R S : Type} [CommRing R] [CommRing S] [TopologicalSpace R] [TopologicalSpace S]
     [IsTopologicalRing R] [IsTopologicalRing S] (s : R →ₙ+* S) (hs : Continuous s) :
@@ -81,7 +81,7 @@ def splitEquiv : GA E a ≃ₜ* GL (Fin a) (Cinf E) × GL (Fin a) (Af E) where
       ((continuous_cornerGL a (sFin E) (continuous_sFin E)).comp continuous_snd)
 
 /- English proof (translation)
-Introduce `E _ _ _ a` and use `⟨splitEquiv E a, fun _ => rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_split : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ),
     ∃ e : GA E a ≃ₜ* GL (Fin a) (Cinf E) × GL (Fin a) (Af E),

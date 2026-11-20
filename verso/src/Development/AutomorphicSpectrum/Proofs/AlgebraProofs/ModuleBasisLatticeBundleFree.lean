@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat.DegCurve
 open GlobalTheory.CompanionTheory.Ar.Crv
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Use `push_cast`. Conclude with `(v.map_add _ _).trans (max_le ih (le_of_eq v.map_one))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 private theorem valuation_natCast_le_one_algebra {K : Type} [Field K] (v : Valuation K (WithZero (Multiplicative ℤ)))
     (n : ℕ) : v (n : K) ≤ 1 := by
@@ -21,9 +21,9 @@ private theorem valuation_natCast_le_one_algebra {K : Type} [Field K] (v : Valua
     exact (v.map_add _ _).trans (max_le ih (le_of_eq v.map_one))
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `ofNat m`. Rewrite using `[Int.ofNat_eq_natCast, Int.cast_natCast]`. Conclude with `valuation_natCast_le_one_algebra v m`. Consider the case `negSucc m`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Int.cast_negSucc, Valuation.map_neg]`. Conclude with `valuation_natCast_le_one_algebra v (m + 1)` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem v_intCast_le_one {K : Type} [Field K] (v : Valuation K (WithZero (Multiplicative ℤ)))
     (n : ℤ) : v (n : K) ≤ 1 := by
@@ -36,37 +36,33 @@ theorem v_intCast_le_one {K : Type} [Field K] (v : Valuation K (WithZero (Multip
     exact_mod_cast valuation_natCast_le_one_algebra v (m + 1)
 
 /- English proof (translation)
-Take `⟨x, hli, hL'⟩` from `h`. Use `set e : Fin r × ι → V := fun q => ρ (b q.2) (x q.1) with he`. Take `⟨b0, hb0⟩` from `hL.1 i`. Establish `hb0 : ∀ z : V, z ∈ L i ↔ ∀ q, C.v i (b0.repr z q) ≤ 1` using `hb0`. Establish `hmemL : ∀ y : V, y ∈ L i → y ∈ Submodule.span K (Set.range e)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Take `⟨c, -, rfl⟩` from `(hL' y).1 hy`. Conclude with `Submodule.sum_mem _ fun q _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨q, rfl⟩)`. Establish `hspan : ⊤ ≤ Submodule.span K (Set.range e)`. Rewrite using `[← b0.span_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Use `hmemL _ ((hb0 _).2 fun q => ?_)` and prove the remaining obligations. Rewrite using `[Module.Basis.repr_self, Finsupp.single_apply]`. Use `split_ifs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(map_one _).le`. Rewrite using `[map_zero]`. Conclude with `zero_le_one`. Set `B : Module.Basis (Fin r × ι) K V` to `Module.Basis.mk hli hspan`. Establish `hBe : ∀ q, B q = e q` using `fun q => Module.Basis.mk_apply hli hspan q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ (c : Fin r × ι → K) (q : Fin r × ι), B.coord q (∑ q', c q' • e q') = c q`. Introduce `c q`. Establish `hc : ∑ q', c q' • e q' = B.equivFun.symm c`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Simplify using `only [hBe]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, Module.Basis.coord_apply, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Establish `key' : ∀ (c : Fin r × ι → K) (q : Fin r × ι), B.coord q (∑ q', c q' • ρ (b q'.2) (x q'.1)) = c q` using `key`. Establish `hrep : ∀ (o : O) (s' : Fin r), ρ o (x s') = ∑ q : Fin r × ι, (if q.1 = s' then ((b.repr o q.2 : ℤ) : K) else 0) • e q`. Introduce `o s'`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single s' (fun s _ hs => by simp [hs]) (fun h => absurd (Finset.mem_univ _) h)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `conv_lhs => rw [← b.sum_repr o]`. Rewrite using `[map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only`. Rewrite using `[if_pos rfl, map_zsmul, Int.cast_smul_eq_zsmul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Both sides reduce to the same expression. Use `⟨x, fun l s => ∑ j, algebraMap k K (l (1 ⊗ₜ[ℤ] b j)) • B.coord (s, j), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `s`. Rewrite using `[hL']`. Use `⟨fun q => if q.1 = s then ((b.repr 1 q.2 : ℤ) : K) else 0, fun q => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Proceed by induction. Treat this case separately.
 
-Simplify using `only split_ifs`. Conclude with `v_intCast_le_one _ _`. Rewrite using `[map_zero]`. Conclude with `zero_le_one`. Conclude with `(LinearMap.congr_fun (map_one ρ) (x s)).symm.trans (hrep 1 s)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `l s s' a dsimp only`. Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul c o`. Rewrite using `[act_tmul, LinearMap.smul_apply, map_smul, hrep o s']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, key, smul_eq_mul]`. Use `split_ifs with hss`. Establish `h1 : l (c ⊗ₜ[ℤ] o) = c * l ((1 : k) ⊗ₜ[ℤ] o)`. Rewrite using `[← smul_eq_mul, ← map_smul, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Establish `h2 : l ((1 : k) ⊗ₜ[ℤ] o) = ∑ j, b.repr o j • l ((1 : k) ⊗ₜ[ℤ] b j)` using `by conv_lhs => rw [← b.sum_repr o]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[TensorProduct.tmul_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[TensorProduct.tmul_smul, map_zsmul]`. Rewrite using `[h1, h2, map_mul, map_sum]`. Use `congr 1`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, zsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[hss]`. Consider the case `add a a' ha ha'`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_add, LinearMap.add_apply, map_add, ha, ha']`. Apply the tactic sequence `split_ifs <;> simp [map_add]`. Introduce `l s y hy`. Take `⟨c, hc, rfl⟩` from `(hL' y).1 hy`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, key', smul_eq_mul]`.
-
-Use `Valuation.map_sum_le _ fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hk _) (hc _)`. Introduce `y`. Establish `hy : y ∈ Submodule.span K (Set.range e)` using `hspan Submodule.mem_top`.
-
-Use `Submodule.span_mono ?_ hy` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `⟨(1 ⊗ₜ[ℤ] b q.2, q.1), by show (act k ρ) ((1 : k) ⊗ₜ[ℤ] b q.2) (x q.1) = e q`. Rewrite using `[act_tmul, map_one, one_smul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem freeAt_of_basis_lattice (K : Type) [Field K] (C : ACurve K) (V : Type) [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] (L : C.I → AddSubgroup V) (O ι k : Type) [CommRing O]

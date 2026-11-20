@@ -3,21 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open Polynomial UpperTheory.V.Z.Sym.Wt
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => exact fun V _ _ _ f h => ⟨Module.finBasisOfFinrankEq ℂ V h, fun i => i.elim0⟩`. Consider the case `succ d ih`. Introduce `V _ _ _ f h`. Use `haveI : Nontrivial V := Module.nontrivial_of_finrank_eq_succ h`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, hμ⟩` from `Module.End.exists_eigenvalue f`. Establish `h1 : LinearMap.range (f - μ • (1 : Module.End ℂ V)) < ⊤`. Rewrite using `[lt_top_iff_ne_top, Ne, ← LinearMap.ker_eq_bot_iff_range_eq_top]`. Rewrite `hμ` using `[Module.End.hasEigenvalue_iff, Module.End.eigenspace_def]`. Conclude with `hμ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, hφ, hle⟩` from `Submodule.exists_le_ker_of_lt_top _ h1`. Establish `hk : Module.finrank ℂ (LinearMap.ker φ) = d`. Use `Module.Dual.finrank_ker_add_one_of_ne_zero hφ` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hm : ∀ x ∈ LinearMap.ker φ, f x ∈ LinearMap.ker φ` using `fun x hx => by`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(LinearMap.ker φ).add_mem (hle ⟨x, rfl⟩) ((LinearMap.ker φ).smul_mem μ hx)` as an intermediate fact. Simplify using `using this`. Take `⟨b, hb⟩` from `ih _ (f.restrict hm) hk`. Take `⟨y, hy⟩ : ∃ y, φ y = 1` from `LinearMap.surjective_of_ne_zero hφ 1`. Set `b'` to `Module.Basis.mkFinCons y b (fun c x hx h => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `congrArg φ h` as an intermediate fact. Rewrite using `[map_add, map_smul, hy, LinearMap.mem_ker.1 hx, map_zero, add_zero, smul_eq_mul, mul_one] at this)` and apply the resulting hypothesis. Use the proof step `(fun z => ⟨-φ z, by simp [hy]⟩)`. Establish `hb' : ∀ i, b' (Fin.succ i) = b i` using `fun i => by simp [b']`. Use `⟨b', fun i j hij => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨j, rfl⟩` from `Fin.exists_succ_eq.2 (ne_of_gt (lt_of_le_of_lt (Fin.zero_le i) hij))`. Establish `e : f (b' j.succ) = ∑ k, b.repr (f.restrict hm (b j)) k • b' k.succ`. Use `congrArg Subtype.val (b.sum_repr (f.restrict hm (b j)))` as an intermediate fact. Rewrite using `[hb']`. Simplify using `only [hb']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[Submodule.coe_sum]`. Conclude with `this.symm`. Rewrite using `[e, map_sum, Finsupp.finset_sum_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_apply]`.
-
-Use `split_ifs with hk`. Rewrite using `[hb k j (by rw [← hk] at hij; exact Fin.succ_lt_succ_iff.1 hij), zero_smul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem tri (d : ℕ) : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V] (f : Module.End ℂ V),
     Module.finrank ℂ V = d → ∃ b : Module.Basis (Fin d) ℂ V, ∀ i j, i < j → b.repr (f (b j)) i = 0 := by
@@ -61,9 +59,9 @@ private theorem tri (d : ℕ) : ∀ (V : Type) [AddCommGroup V] [Module ℂ V] [
     · simp
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `tri d (Fin d → ℂ) (Matrix.toLin' (g : Matrix (Fin d) (Fin d) ℂ)) (by simp)`. Set `e` to `Pi.basisFun ℂ (Fin d)`. Use `⟨⟨e.toMatrix b, b.toMatrix e, e.toMatrix_mul_toMatrix_flip b, b.toMatrix_mul_toMatrix_flip e⟩, fun i j h => ?_⟩` and prove the remaining obligations. Use `basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix b e b e (Matrix.toLin' (g : Matrix (Fin d) (Fin d) ℂ))` as an intermediate fact. Rewrite `this` using `[show LinearMap.toMatrix e e (Matrix.toLin' (g : Matrix (Fin d) (Fin d) ℂ)) = g by simp [e]]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(b.toMatrix e * (g : Matrix (Fin d) (Fin d) ℂ) * e.toMatrix b) i j = 0`. Rewrite using `[this, LinearMap.toMatrix_apply, hb i j h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem tri_mat {d : ℕ} (g : GL (Fin d) ℂ) : ∃ Q : GL (Fin d) ℂ, ∀ i j, i < j → (Q⁻¹ * g * Q : GL (Fin d) ℂ) i j = 0 := by
   obtain ⟨b, hb⟩ := tri d (Fin d → ℂ) (Matrix.toLin' (g : Matrix (Fin d) (Fin d) ℂ)) (by simp)
@@ -75,7 +73,7 @@ private theorem tri_mat {d : ℕ} (g : GL (Fin d) ℂ) : ∃ Q : GL (Fin d) ℂ,
   rw [this, LinearMap.toMatrix_apply, hb i j h]
 
 /- English proof (translation)
-Use `haveI := finMH Unit d fun _ => n`. Establish `e : ∀ a b : GL (Fin d) ℂ, mRep d (fun _ : Unit => n) (fun _ => a * b) = mRep d _ (fun _ => a) * mRep d _ fun _ => b` using `fun a b => by rw [← map_mul]; rfl`. Unfold `tr1`. Rewrite using `[e, LinearMap.trace_mul_comm, ← e, ← mul_assoc, mul_inv_cancel, one_mul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem homogeneous_trace_conj {d : ℕ} (n : ℕ) (g Q : GL (Fin d) ℂ) : tr1 d n (Q⁻¹ * g * Q) = tr1 d n g := by
   haveI := finMH Unit d fun _ => n
@@ -86,9 +84,9 @@ private theorem homogeneous_trace_conj {d : ℕ} (n : ℕ) (g Q : GL (Fin d) ℂ
 
 open MvPolynomial in
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => exact fun m => continuous_const`. Consider the case `cons a s ih`. Introduce `m`. Simplify using `only [Multiset.map_cons, Multiset.prod_cons, MvPolynomial.coeff_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_finset_sum _ fun p _ => (h a _).mul (ih _)`.
+A detailed English derivation is pending.
 -/
 private theorem cont_coeff {σ ι : Type} [Fintype ι] (F : ι → ℂ → MvPolynomial σ ℂ) (h : ∀ i m, Continuous fun t => coeff m (F i t))
     (s : Multiset ι) : ∀ m, Continuous fun t => coeff m (s.map fun i => F i t).prod := by
@@ -102,13 +100,13 @@ private theorem cont_coeff {σ ι : Type} [Fintype ι] (F : ι → ℂ → MvPol
 
 open MvPolynomial in
 /- English proof (translation)
-Establish `e : ∀ m : Unit × Fin d →₀ ℕ, coeff m (sbs (fun _ : Unit => g) (MvPolynomial.monomial m 1)) = ∏ i, g i i ^ m ((), i)` using `fun m => by`. Establish `: sbs (fun _ : Unit => g) (MvPolynomial.monomial m 1) = MvPolynomial.monomial m (∏ i, g i i ^ m ((), i))`. Use `MvPolynomial.funext fun x => ?_` and prove the remaining obligations. Establish `a : act (fun _ : Unit => g) x = fun p => x p * g p.2 p.2` using `funext fun p => Finset.sum_eq_single p.2 (fun j _ hj => by rw [h j _ hj, mul_zero]) (by simp)`. Rewrite using `[eval_sbs, a, MvPolynomial.eval_monomial, MvPolynomial.eval_monomial, Finsupp.prod_fintype _ _ (by simp), Finsupp.prod_fintype _ _ (by simp)]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Fintype.prod_prod_type, mul_pow, Finset.prod_mul_distrib, mul_comm]`. Rewrite using `[this, MvPolynomial.coeff_monomial, if_pos rfl]`. Rewrite using `[symPowTrace_eq_sum_coeff, hsymm, map_sum]`. Simplify using `only [e]`. Use `symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use symmetry to reverse the relation.
 
-Use `Finset.sum_bij (fun s _ => Finsupp.equivFunOnFinite.symm fun p : Unit × Fin d => s.1.count p.2) (fun s _ => mem_homogeneousExponentsOneBlock.2 ?_) (fun s _ s' _ hs => Subtype.ext (Multiset.ext' fun a => ?_)) (fun m hm => ?_) fun s _ => ?_` and prove the remaining obligations. Conclude with `(Multiset.sum_count_eq_card fun a _ => Finset.mem_univ a).trans s.2`. Conclude with `DFunLike.congr_fun hs ((), a)`. Use `⟨⟨∑ i, Multiset.replicate (m ((), i)) i, by simpa using mem_homogeneousExponentsOneBlock.1 hm⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use extensionality with `⟨⟨⟩, i⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Multiset.count_sum', Multiset.count_replicate]`. Rewrite using `[map_multiset_prod, Multiset.map_map, Finset.prod_multiset_map_count]`. Simplify using `only [Function.comp_apply, MvPolynomial.eval_X]`. Conclude with `Finset.prod_subset (Finset.subset_univ _) fun a _ ha => by`. Rewrite using `[Multiset.count_eq_zero_of_notMem (by simpa using ha), pow_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem homogeneous_trace_diagonal {d : ℕ} (n : ℕ) (g : GL (Fin d) ℂ) (h : ∀ i j, i ≠ j → g i j = 0) :
     tr1 d n g = MvPolynomial.eval (fun i => g i i) (hsymm (Fin d) ℂ n) := by
@@ -138,23 +136,23 @@ private theorem homogeneous_trace_diagonal {d : ℕ} (n : ℕ) (g : GL (Fin d) �
       rw [Multiset.count_eq_zero_of_notMem (by simpa using ha), pow_zero]
 
 /- English proof (translation)
-Set `A : ℂ → Matrix (Fin d) (Fin d) ℂ` to `fun t => Matrix.of fun i j => t ^ ((i : ℕ) - j) * g i j`. Establish `hd : ∀ t, (A t).det ≠ 0` using `fun t => by`. Establish `h1` using `Matrix.det_of_lowerTriangular (A t) fun i j hij => by simp [A, h i j hij]`. Establish `h2` using `Matrix.det_of_lowerTriangular (g : Matrix (Fin d) (Fin d) ℂ) fun i j hij => h i j hij`. Rewrite using `[h1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `g.det_ne_zero` using `[A, ← h2]`. Set `γ : ℂ → GL (Fin d) ℂ` to `fun t => Matrix.GeneralLinearGroup.mkOfDetNeZero _ (hd t)`. Establish `hc : Continuous fun t => tr1 d n (γ t)`. Simplify using `only [symPowTrace_eq_sum_coeff]`. Use `continuous_finset_sum _ fun m _ => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `cont_coeff (fun (p : Unit × Fin d) t => ∑ j, MvPolynomial.X (p.1, j) * MvPolynomial.C (A t j p.2)) (fun p m => by` as an intermediate fact. Simplify using `only [MvPolynomial.coeff_sum, mul_comm (MvPolynomial.X _), MvPolynomial.coeff_C_mul, A, Matrix.of_apply]`. Use the proof step `fun_prop) m.toMultiset m`. Use `this.congr fun t => ?_` and prove the remaining obligations. Use `congr 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sbs, MvPolynomial.aeval_monomial, map_one, one_mul, Finsupp.toMultiset_map, Finsupp.prod_toMultiset, Finsupp.prod_mapDomain_index (by simp) (fun _ _ _ => pow_add _ _ _)]`. Both sides reduce to the same expression. Establish `h1 : ∀ t ∈ ({0}ᶜ : Set ℂ), tr1 d n (γ t) = tr1 d n g` using `fun t ht => by`. Establish `ht : t ≠ 0` using `ht`. Set `Q : GL (Fin d) ℂ` to `Matrix.GeneralLinearGroup.mkOfDetNeZero (Matrix.diagonal fun i : Fin d => t ^ (i : ℕ)) (by rw [Matrix.det_diagonal]; exact Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ ht)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← homogeneous_trace_conj n (γ t) Q]`. Use `congr 1`. Rewrite using `[mul_assoc, inv_mul_eq_iff_eq_mul]`. Use `Units.ext (Matrix.ext fun i j => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(A t * Matrix.diagonal (fun i : Fin d => t ^ (i : ℕ)) : Matrix (Fin d) (Fin d) ℂ) i j = (Matrix.diagonal (fun i : Fin d => t ^ (i : ℕ)) * (g : Matrix (Fin d) (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ) i j`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Break down `lt_or_ge i j with hij | hij` into its components or cases. Simplify using `[A, h i j hij]`. Simplify using `only [A, Matrix.of_apply]`. Rewrite using `[mul_right_comm, ← pow_add, Nat.sub_add_cancel hij]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrFun (Continuous.ext_on (dense_compl_singleton (0 : ℂ)) hc continuous_const h1) 0`. Rewrite using `[← h2, homogeneous_trace_diagonal n (γ 0) fun i j hij => ?_]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `A 0 i i = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `[A]`. Express the relevant statement in the definitionally equal form `A 0 i j = 0`. Break down `lt_or_gt_of_ne hij with h' | h'` into its components or cases. Simplify using `[A, h i j h']`. Simplify using `only [A, Matrix.of_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_pow (Nat.sub_ne_zero_of_lt h'), zero_mul]`.
+A detailed English derivation is pending.
 -/
 private theorem homogeneous_trace_triangular {d : ℕ} (n : ℕ) (g : GL (Fin d) ℂ) (h : ∀ i j, i < j → g i j = 0) :
     tr1 d n g = MvPolynomial.eval (fun i => g i i) (MvPolynomial.hsymm (Fin d) ℂ n) := by
@@ -205,15 +203,15 @@ private theorem homogeneous_trace_triangular {d : ℕ} (n : ℕ) (g : GL (Fin d)
       rw [zero_pow (Nat.sub_ne_zero_of_lt h'), zero_mul]
 
 /- English proof (translation)
-Introduce `d n g α hα`. Take `⟨Q, hQ⟩` from `tri_mat g`. Rewrite using `[← homogeneous_trace_conj n g Q, homogeneous_trace_triangular n _ hQ]`. Establish `h0 : ((Q⁻¹ * g * Q : GL (Fin d) ℂ) : Matrix (Fin d) (Fin d) ℂ).charpoly = ∏ i, (X - C (α i))`. Rewrite using `[← hα, Units.val_mul, Units.val_mul, Matrix.charpoly_mul_comm, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `Q⁻¹ * g * Q = u at h0 hQ`. Take `⟨β, hβ⟩ : ∃ β : Fin d → ℂ, β = fun i => u i i` from `⟨_, rfl⟩`. Rewrite using `[← hβ]`. Establish `h1 : ∏ i, (X - C (β i)) = ∏ i, (X - C (α i))`. Rewrite using `[← h0, ← Matrix.charpoly_transpose, Matrix.charpoly_of_upperTriangular (u : Matrix (Fin d) (Fin d) ℂ).transpose fun i j hij => hQ j i hij, hβ]`.
+Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : Finset.univ.val.map β = Finset.univ.val.map α`. Rewrite using `[← roots_multiset_prod_X_sub_C (Finset.univ.val.map β), ← roots_multiset_prod_X_sub_C (Finset.univ.val.map α), Multiset.map_map, Multiset.map_map]`. Conclude with `congrArg roots h1`. Establish `h3 : ∀ c, Fintype.card {i // β i = c} = Fintype.card {i // α i = c}` using `fun c => by`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (Multiset.count c) h2` as an intermediate fact. Rewrite `this` using `[Multiset.count_map, Multiset.count_map]`. Simplify using `only [Fintype.card_subtype, eq_comm (b := c)]`. Conclude with `this`. Set `e : Fin d ≃ Fin d` to `Equiv.ofFiberEquiv fun c => Fintype.equivOfCardEq (h3 c)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h4 : β = α ∘ e` using `funext fun i => (Equiv.ofFiberEquiv_map _ i).symm`. Rewrite using `[h4, ← MvPolynomial.eval_rename, MvPolynomial.rename_hsymm]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Sym.Wt.trOne :
     UpperTheory.V.Z.Sym.Wt.TrOne := by

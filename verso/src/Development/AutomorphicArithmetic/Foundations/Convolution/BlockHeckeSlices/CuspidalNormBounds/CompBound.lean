@@ -12,13 +12,13 @@ namespace UpperTheory.ConvolutionTheory.BW
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {S : Set (Pl E)} {n r s : ℕ}
 
 /- English proof (translation)
-Introduce `n d N`. Proceed by induction on `d with`. Consider the case `nil => exact ⟨AutomorphicForm.height (1 : GA E 0) ^ N, 0, fun φ B _ h t => by`. Rewrite using `[zero_mul, Real.exp_zero, mul_one, mul_comm]`. Conclude with `h 1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `@cons r s b d ih`. Take `⟨C, R, h1⟩` from `(sliceBound E S r s b).1 N`. Take `⟨C', R', h2⟩` from `ih`. Use `⟨|C' * C|, |R| + |R'|, fun φ B hφ hB (t : Fin (d.len + 1) → ℝ) => ?_⟩` and prove the remaining obligations. Take `⟨ψ, e, hψ, -⟩` from `sliceUmg E S r s b (t 0) φ hφ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h3` using `h2 ψ (C * B * Real.exp (R * |t 0|)) hψ (fun m => e ▸ h1 φ B hφ hB (t 0) m) fun j => t j.succ`. Rewrite `h3` using `[e]`. Use `le_trans h3 ?_` and prove the remaining obligations. Establish `hB0 : 0 ≤ B` using `nonneg_of_mul_nonneg_left ((norm_nonneg _).trans (hB 1)) (pow_pos (AutomorphicForm.height_pos _) N)`. Establish `a1 : |t 0| ≤ ‖t‖` using `norm_le_pi_norm t 0`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2 : ‖fun j : Fin d.len => t j.succ‖ ≤ ‖t‖` using `(pi_norm_le_iff_of_nonneg (norm_nonneg _)).2 fun j => norm_le_pi_norm t j.succ`. Establish `a3 : Real.exp (R * |t 0|) * Real.exp (R' * ‖fun j : Fin d.len => t j.succ‖) ≤ Real.exp ((|R| + |R'|) * ‖t‖)`. Rewrite using `[← Real.exp_add, add_mul]`. Conclude with `Real.exp_le_exp.2 (add_le_add (mul_le_mul (le_abs_self R) a1 (abs_nonneg _) (abs_nonneg _)) (mul_le_mul (le_abs_self R') a2 (norm_nonneg _) (abs_nonneg _)))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem bnd : ∀ {n : ℕ} (d : Dat S n) (N : ℕ), ∃ C R : ℝ, ∀ (φ : Sm E n) (B : ℝ), Umg φ →
     (∀ g, ‖φ.1 g‖ ≤ B * AutomorphicForm.height g ^ N) → ∀ t, ‖d.comp φ.1 t‖ ≤ C * B * Real.exp (R * ‖t‖) := by
@@ -46,11 +46,11 @@ private theorem bnd : ∀ {n : ℕ} (d : Dat S n) (N : ℕ), ∃ C R : ℝ, ∀ 
       _ ≤ _ := mul_le_mul (mul_le_mul_of_nonneg_right (le_abs_self _) hB0) a3 (by positivity) (by positivity)
 
 /- English proof (translation)
-Introduce `n d`. Proceed by induction on `d with`. Consider the case `nil => exact fun φ ψ c _ _ t => rfl`. Consider the case `@cons r s b d ih`. Introduce `φ ψ c hφ hψ (t : Fin (d.len + 1) → ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨φ', e, hφ', -⟩` from `sliceUmg E S r s b (t 0) φ hφ`. Take `⟨ψ', e', hψ', -⟩` from `sliceUmg E S r s b (t 0) ψ hψ`. Establish `h` using `ih φ' ψ' c hφ' hψ' fun j => t j.succ`. Establish `e2 : (c • φ' + ψ').1 = slice b.f.1 (t 0) (c • φ + ψ).1` using `funext fun m => by`. Rewrite using `[(sliceBound E S r s b).2 φ ψ c hφ hψ, ← e, ← e']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `h` using `[e2, e, e']`. Conclude with `h`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem lin : ∀ {n : ℕ} (d : Dat S n) (φ ψ : Sm E n) (c : ℂ), Umg φ → Umg ψ →
     ∀ t, d.comp (c • φ + ψ).1 t = c * d.comp φ.1 t + d.comp ψ.1 t := by
@@ -70,7 +70,7 @@ private theorem lin : ∀ {n : ℕ} (d : Dat S n) (φ ψ : Sm E n) (c : ℂ), Um
 end UpperTheory.ConvolutionTheory.BW
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ d` and use `⟨UpperTheory.ConvolutionTheory.BW.bnd d, UpperTheory.ConvolutionTheory.BW.lin d⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.BW.compBound :
     ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E], UpperTheory.ConvolutionTheory.BW.CompBound E :=

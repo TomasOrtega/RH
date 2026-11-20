@@ -12,13 +12,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 open UpperTheory.Gal.Int.Geo
 
 /- English proof (translation)
-Introduce `p _ D G L hsc E _ _ gb w q _ r 𝔴 𝔫 S k T M c a hnum C Ω _ _ y σ hy`. Establish `hComp : QComp` using `UpperTheory.quotient_map_comp`. Establish `hCls : ClsEx` using `UpperTheory.isogeny_class_exists_of_quotient UpperTheory.quotient_moduli_object_exists UpperTheory.quotient_map_comp (UpperTheory.quotient_unique_of_comp UpperTheory.quotient_map_comp) (UpperTheory.quotient_level_of_lattice_generation UpperTheory.lattice_generation)`. Establish `hpos : 0 < M.1`. Use `M.2.1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨o, C', hC'⟩` from `UpperTheory.Gal.FiniteEtaleModels.O.clsAt q (datAt S.atq S.sp) hsc.m1 r S.atq.root (Ow w) E S.b gb (algebraMap (Ow w) E) S.mat M.1 S.N₀ c a S.𝔞 hnum.1 hpos S.std.cop hnum.2 S.upow S.Y Ω y σ hy`. Take `⟨x, ⟨hxs, ⟨m⟩⟩, -⟩` from `(T.M M).rep (Sp Ω) σ o`. Take `⟨n', hn'⟩` from `(hComp q (datAt S.atq S.sp) (Ow w) E S.b gb M.1 S.N₀ c _ _ _ (T.M M).s S.Y.s S.Y.s (T.M M).univ S.Y.univ S.Y.univ C.j (𝟙 _)).2.2.2 (Sp Ω) σ o x m C.m`. Establish `hov : (x ≫ C.j) ≫ S.Y.s = σ ≫ spMap (algebraMap (Ow w) E)`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, C.ov, ← Category.assoc, hxs]`. Establish `hlv : ∀ v : (datAt S.atq S.sp).La, (o.eta (algebraMap (𝓞 (datAt S.atq S.sp).F) (datAt S.atq S.sp).O a • v)).left ≫ n'.φ = (x ≫ C.j) ≫ (S.Y.lv v).left`. Introduce `v`. Rewrite using `[hn', ← Category.assoc]`. Use `(congrArg (· ≫ C.m.φ) (m.eta _)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `(congrArg (x ≫ ·) (C.lv v)).trans ?_` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm`. Establish `hu` using `(hCls q (datAt S.atq S.sp) (Ow w) E S.b gb (algebraMap (Ow w) E) S.mat M.1 S.N₀ c a S.𝔞 hnum.1 hpos S.std.three S.std.cop hnum.2 S.Y (Sp Ω) σ o).2 ⟨x ≫ C.j, hov, n', hlv⟩ C'`. Conclude with `⟨x, hu.1.trans hC', hxs⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.O.baseOnto :
     UpperTheory.Gal.FiniteEtaleModels.BaseOnto := by

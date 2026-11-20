@@ -24,7 +24,7 @@ Both sides reduce to the same expression.
 theorem adele_ext_components (x : E) : p2 g x = (g.e x).2 := rfl
 
 /- English proof (translation)
-Use `symm`. Apply `Matrix.inv_eq_right_inv` to reduce the goal to its premises. Rewrite using `[← Matrix.map_mul, Matrix.mul_nonsing_inv _ hA, Matrix.map_one _ (map_zero f) (map_one f)]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_inv_of {K : Type} [CommRing K] {n : Type} [Fintype n] [DecidableEq n] (f : E →+* K)
     (A : Matrix n n E) (hA : IsUnit A.det) : (A⁻¹).map f = (A.map f)⁻¹ := by
@@ -33,7 +33,7 @@ theorem map_inv_of {K : Type} [CommRing K] {n : Type} [Fintype n] [DecidableEq n
   rw [← Matrix.map_mul, Matrix.mul_nonsing_inv _ hA, Matrix.map_one _ (map_zero f) (map_one f)]
 
 /- English proof (translation)
-Rewrite using `[Matrix.inv_def, Matrix.smul_apply, Matrix.adjugate_fin_succ_eq_det_submatrix, Fin.succAbove_last]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inv_last {K : Type} [CommRing K] (A : Matrix (Fin (r + 1)) (Fin (r + 1)) K) :
     A⁻¹ (Fin.last r) (Fin.last r) = Ring.inverse A.det * (A.submatrix Fin.castSucc Fin.castSucc).det := by
@@ -41,9 +41,9 @@ theorem inv_last {K : Type} [CommRing K] (A : Matrix (Fin (r + 1)) (Fin (r + 1))
   simp
 
 /- English proof (translation)
-Rewrite using `[inv_last, inv_last]`. Take `⟨u₁, hu₁⟩` from `h₁`. Take `⟨u₂, hu₂⟩` from `h₂`. Unfold `KapEq at hk`. Rewrite `hk`, the goal using `[← hu₁, ← hu₂]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [Ring.inverse_unit]`. Apply `(u₁ * u₂).isUnit.mul_left_cancel` to reduce the goal to its premises. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation.
 -/
 theorem kap_common {Zh₁ Zh₂ : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hk : KapEq Zh₁ Zh₂)
     (h₁ : IsUnit Zh₁.det) (h₂ : IsUnit Zh₂.det) :
@@ -67,7 +67,7 @@ variable (hs : M.split = some g)
 include hs
 
 /- English proof (translation)
-Use extensionality with `b a`. Simplify using `only [ZZm, Matrix.map_apply, Matrix.add_apply, Matrix.of_apply, map_add, Matrix.smul_apply, smul_eq_mul, adeleInfiniteComponent_apply]`. Rewrite using `[zz_comp hs, e_cor]`. Simplify using `only [ind, AlgEquiv.apply_symm_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zzMinus_firstProj (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
     (ZZm g Zh T T').map (p1 g) = (g.q : F)⁻¹ • Zh.map (p1 g) := by
@@ -79,7 +79,7 @@ theorem zzMinus_firstProj (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F)
   split_ifs <;> ring
 
 /- English proof (translation)
-Use extensionality with `b a`. Simplify using `only [ZZm, Matrix.map_apply, Matrix.add_apply, Matrix.of_apply, map_add, Matrix.smul_apply, smul_eq_mul, adele_ext_components, Matrix.transpose_apply]`. Rewrite using `[zz_comp hs, e_cor]`. Simplify using `only [ind, AlgEquiv.apply_symm_apply]`. Apply the tactic sequence `split_ifs <;> ring`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem zzMinus_secondProj (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F) :
     (ZZm g Zh T T').map (p2 g) = -(g.q : F)⁻¹ • (Zh.map (p2 g)).transpose := by
@@ -91,7 +91,7 @@ theorem zzMinus_secondProj (Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : F
   split_ifs <;> ring
 
 /- English proof (translation)
-Use `hA.map f` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem det_map_unit {n : Type} [Fintype n] [DecidableEq n] (f : E →+* F) (A : Matrix n n E)
     (hA : IsUnit A.det) : IsUnit (A.map f).det := by
@@ -99,9 +99,9 @@ theorem det_map_unit {n : Type} [Fintype n] [DecidableEq n] (f : E →+* F) (A :
   rwa [RingHom.map_det] at this
 
 /- English proof (translation)
-Establish `hq` using `q_ne g`. Apply `Formalism.L2.SG.LocalCountModules.UnitaryGroupMassFormula.LocCntUG.isUnit_of_comp g` to reduce the goal to its premises. Rewrite using `[← adeleInfiniteComponent_apply, RingHom.map_det]`. Express the relevant statement in the definitionally equal form `(((ZZm g Zh T T').map (p1 g))).det ≠ 0`. Rewrite using `[zzMinus_firstProj hs, Matrix.det_smul]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_ne_zero (pow_ne_zero _ (inv_ne_zero hq)) (det_map_unit hs (p1 g) Zh hZh).ne_zero`. Rewrite using `[← adele_ext_components, RingHom.map_det]`. Express the relevant statement in the definitionally equal form `(((ZZm g Zh T T').map (p2 g))).det ≠ 0`. Rewrite using `[zzMinus_secondProj hs, Matrix.det_smul, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 (inv_ne_zero hq))) (det_map_unit hs (p2 g) Zh hZh).ne_zero`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zm_unit {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsUnit Zh.det) (T T' : F) :
     IsUnit (ZZm g Zh T T').det := by
@@ -117,7 +117,7 @@ theorem zm_unit {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsUnit Zh.det
     exact mul_ne_zero (pow_ne_zero _ (neg_ne_zero.2 (inv_ne_zero hq))) (det_map_unit hs (p2 g) Zh hZh).ne_zero
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ hc, one_smul, Matrix.nonsing_inv_mul _ hX]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_smul_q {n : Type} [Fintype n] [DecidableEq n] (c : F) (hc : c ≠ 0) (X : Matrix n n F)
     (hX : IsUnit X.det) : (c⁻¹ • X)⁻¹ = c • X⁻¹ := by
@@ -125,7 +125,7 @@ theorem inv_smul_q {n : Type} [Fintype n] [DecidableEq n] (c : F) (hc : c ≠ 0)
   rw [Matrix.smul_mul, Matrix.mul_smul, smul_smul, mul_inv_cancel₀ hc, one_smul, Matrix.nonsing_inv_mul _ hX]
 
 /- English proof (translation)
-Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, neg_mul_neg, mul_inv_cancel₀ hc, one_smul, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hX, Matrix.transpose_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_smul_qT {n : Type} [Fintype n] [DecidableEq n] (c : F) (hc : c ≠ 0) (X : Matrix n n F)
     (hX : IsUnit X.det) : (-c⁻¹ • X.transpose)⁻¹ = -c • (X⁻¹).transpose := by
@@ -134,9 +134,9 @@ theorem inv_smul_qT {n : Type} [Fintype n] [DecidableEq n] (c : F) (hc : c ≠ 0
     ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hX, Matrix.transpose_one]
 
 /- English proof (translation)
-Establish `hq` using `q_ne g`. Simplify using `only [laG, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (map_inv_of (p1 g) _ (zm_unit hs hZh T T')) (Fin.last r)) b`. Rewrite `h` using `[Matrix.map_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, zzMinus_firstProj hs, inv_smul_q hs _ hq _ (det_map_unit hs (p1 g) Zh hZh), Matrix.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lastCoordinate_firstProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsUnit Zh.det) (T T' : F)
     (l : Fin (r + 1) → M.R) :
@@ -149,9 +149,9 @@ theorem lastCoordinate_firstProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZ
   rw [h, zzMinus_firstProj hs, inv_smul_q hs _ hq _ (det_map_unit hs (p1 g) Zh hZh), Matrix.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hq` using `q_ne g`. Simplify using `only [laG, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Establish `h` using `congrFun (congrFun (map_inv_of (p2 g) _ (zm_unit hs hZh T T')) (Fin.last r)) b`. Rewrite `h` using `[Matrix.map_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h, zzMinus_secondProj hs, inv_smul_qT hs _ hq _ (det_map_unit hs (p2 g) Zh hZh), Matrix.smul_apply, smul_eq_mul, Matrix.transpose_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lastCoordinate_secondProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsUnit Zh.det) (T T' : F)
     (l : Fin (r + 1) → M.R) :
@@ -165,7 +165,7 @@ theorem lastCoordinate_secondProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (h
     Matrix.transpose_apply]
 
 /- English proof (translation)
-Simplify using `only [lamC, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← map_inv_of (p1 g) _ hZh, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lambda_firstProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsUnit Zh.det) (y : Fin (r + 1) → E) :
     p1 g (lamC Zh y) = ∑ b, (Zh.map (p1 g))⁻¹ (Fin.last r) b * p1 g (y b) := by
@@ -174,7 +174,7 @@ theorem lambda_firstProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsUn
   rw [← map_inv_of (p1 g) _ hZh, Matrix.map_apply]
 
 /- English proof (translation)
-Simplify using `only [lamC, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← map_inv_of (p2 g) _ hZh, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lambda_secondProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsUnit Zh.det) (y : Fin (r + 1) → E) :
     p2 g (lamC Zh y) = ∑ b, (Zh.map (p2 g))⁻¹ (Fin.last r) b * p2 g (y b) := by
@@ -183,19 +183,19 @@ theorem lambda_secondProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsU
   rw [← map_inv_of (p2 g) _ hZh, Matrix.map_apply]
 
 /- English proof (translation)
-Rewrite using `[adeleInfiniteComponent_apply, adele_ext_components, e_cjR]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem firstProj_conj_split (x : E) : p1 g ((M.L.cj : E →+* E) x) = p2 g x := by
   rw [adeleInfiniteComponent_apply, adele_ext_components, e_cjR]
 
 /- English proof (translation)
-Rewrite using `[adeleInfiniteComponent_apply, adele_ext_components, e_cjR]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem secondProj_conj_split (x : E) : p2 g ((M.L.cj : E →+* E) x) = p1 g x := by
   rw [adeleInfiniteComponent_apply, adele_ext_components, e_cjR]
 
 /- English proof (translation)
-Simplify using `only [lamStarC, map_sum, map_mul, firstProj_conj_split hs]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← map_inv_of (p2 g) _ hZh, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lambdaStar_firstProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsUnit Zh.det) (y : Fin (r + 1) → E) :
     p1 g (lamStarC (M.L.cj : E →+* E) Zh y) = ∑ b, (Zh.map (p2 g))⁻¹ b (Fin.last r) * p1 g (y b) := by
@@ -204,7 +204,7 @@ theorem lambdaStar_firstProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : 
   rw [← map_inv_of (p2 g) _ hZh, Matrix.map_apply]
 
 /- English proof (translation)
-Simplify using `only [lamStarC, map_sum, map_mul, secondProj_conj_split hs]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← map_inv_of (p1 g) _ hZh, Matrix.map_apply]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lambdaStar_secondProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsUnit Zh.det) (y : Fin (r + 1) → E) :
     p2 g (lamStarC (M.L.cj : E →+* E) Zh y) = ∑ b, (Zh.map (p1 g))⁻¹ b (Fin.last r) * p2 g (y b) := by
@@ -213,14 +213,14 @@ theorem lambdaStar_secondProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh :
   rw [← map_inv_of (p1 g) _ hZh, Matrix.map_apply]
 
 /- English proof (translation)
-Rewrite using `[← map_inv_of (p1 g) _ hZh, Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_inverse_firstProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsUnit Zh.det) :
     p1 g (Zh⁻¹ (Fin.last r) (Fin.last r)) = (Zh.map (p1 g))⁻¹ (Fin.last r) (Fin.last r) := by
   rw [← map_inv_of (p1 g) _ hZh, Matrix.map_apply]
 
 /- English proof (translation)
-Rewrite using `[← map_inv_of (p2 g) _ hZh, Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem corner_inverse_secondProj {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} (hZh : IsUnit Zh.det) :
     p2 g (Zh⁻¹ (Fin.last r) (Fin.last r)) = (Zh.map (p2 g))⁻¹ (Fin.last r) (Fin.last r) := by

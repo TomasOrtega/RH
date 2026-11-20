@@ -11,7 +11,7 @@ namespace PI.GreenLabelMapW
 variable {K : Type} [Field K] [Fintype K] [DecidableEq K]
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5⟩` from `hP`. Conclude with `⟨h1, h2, h3, h4, fun x hx γ hγ z hz m hm => (h γ).trans (h5 x hx γ hγ z hz m hm)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hasCuspLabel_of_trace (Cv : LabelConv K) {ι : Type} [Fintype ι] [DecidableEq ι]
     {τ τ' : FDRep ℂ (GL ι K)}
@@ -21,7 +21,7 @@ theorem hasCuspLabel_of_trace (Cv : LabelConv K) {ι : Type} [Fintype ι] [Decid
   exact ⟨h1, h2, h3, h4, fun x hx γ hγ z hz m hm => (h γ).trans (h5 x hx γ hγ z hz m hm)⟩
 
 /- English proof (translation)
-Rewrite using `[FDRep.Iso.conj_ρ e γ, LinearMap.trace_conj']`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trace_of_iso {ι : Type} [Fintype ι] [DecidableEq ι] {τ τ' : FDRep ℂ (GL ι K)}
     (e : τ ≅ τ') (γ : GL ι K) :
@@ -32,7 +32,7 @@ def greenLab (Cv : LabelConv K) (d : ℕ) (τ : FDRep ℂ (GL (Fin d) K)) : K[X]
   Classical.epsilon (fun P => HasCuspLabel Cv τ P)
 
 /- English proof (translation)
-Take `⟨e⟩` from `h`. Unfold `greenLab`. Use `congr 1`. Use function extensionality and compare the values at `P`. Conclude with `propext ⟨hasCuspLabel_of_trace Cv (trace_of_iso e), hasCuspLabel_of_trace Cv (fun γ => (trace_of_iso e γ).symm)⟩`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem greenLab_iso (Cv : LabelConv K) (d : ℕ) (τ τ' : FDRep ℂ (GL (Fin d) K))
     (h : Nonempty (τ ≅ τ')) : greenLab Cv d τ = greenLab Cv d τ' := by
@@ -44,7 +44,7 @@ theorem greenLab_iso (Cv : LabelConv K) (d : ℕ) (τ τ' : FDRep ℂ (GL (Fin d
     hasCuspLabel_of_trace Cv (fun γ => (trace_of_iso e γ).symm)⟩
 
 /- English proof (translation)
-Unfold `greenLab`. Conclude with `Classical.epsilon_spec (((hC d hd).1 τ hs hc).1.exists)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem greenLab_spec (Cv : LabelConv K) (hC : CuspParam K Cv) {d : ℕ} (hd : 1 ≤ d)
     {τ : FDRep ℂ (GL (Fin d) K)} (hs : Simple τ) (hc : IsCuspidal K τ) :
@@ -53,7 +53,7 @@ theorem greenLab_spec (Cv : LabelConv K) (hC : CuspParam K Cv) {d : ℕ} (hd : 1
   exact Classical.epsilon_spec (((hC d hd).1 τ hs hc).1.exists)
 
 /- English proof (translation)
-Conclude with `((hC d hd).1 τ hs hc).1.unique (greenLab_spec Cv hC hd hs hc) hP`.
+A detailed English derivation is pending.
 -/
 theorem greenLab_eq (Cv : LabelConv K) (hC : CuspParam K Cv) {d : ℕ} (hd : 1 ≤ d)
     {τ : FDRep ℂ (GL (Fin d) K)} (hs : Simple τ) (hc : IsCuspidal K τ) {P : K[X]}
@@ -61,7 +61,7 @@ theorem greenLab_eq (Cv : LabelConv K) (hC : CuspParam K Cv) {d : ℕ} (hd : 1 �
   exact ((hC d hd).1 τ hs hc).1.unique (greenLab_spec Cv hC hd hs hc) hP
 
 /- English proof (translation)
-Introduce `s b hb hs`. It suffices to derive a contradiction. Establish `h` using `Fintype.card_le_of_surjective b hb`. Simplify using `only [Fintype.card_fin] at h`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem isCuspidal_fin_one (τ : FDRep ℂ (GL (Fin 1) K)) : IsCuspidal K τ := by
   intro s b hb hs
@@ -71,20 +71,20 @@ theorem isCuspidal_fin_one (τ : FDRep ℂ (GL (Fin 1) K)) : IsCuspidal K τ := 
   omega
 
 /- English proof (translation)
-Rewrite using `[Matrix.charpoly, Matrix.det_unique, Fin.default_eq_zero, Matrix.charmatrix_apply_eq]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem charpoly_fin_one (A : Matrix (Fin 1) (Fin 1) K) :
     A.charpoly = X - Polynomial.C (A 0 0) := by
   rw [Matrix.charpoly, Matrix.det_unique, Fin.default_eq_zero, Matrix.charmatrix_apply_eq]
 
 /- English proof (translation)
-Apply `greenLab_eq Cv hC le_rfl hs (isCuspidal_fin_one τ)` to reduce the goal to its premises. Establish `hxX : X - Polynomial.C x ≠ X`. Introduce `h`. Apply `hx` to reduce the goal to its premises. Establish `h'` using `congrArg (fun P : K[X] => P.coeff 0) h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify using `using h'`. Use `⟨monic_X_sub_C x, irreducible_X_sub_C x, hxX, by simp, ?_⟩` and prove the remaining obligations. Introduce `x' hx' γ _ z hz m hm`. Establish `hx'' : x' = algebraMap K (AlgebraicClosure K) x`. Simplify `hx'` using `[sub_eq_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hz' : z = algebraMap K (AlgebraicClosure K) (Matrix.det (γ : Matrix (Fin 1) (Fin 1) K))`. Rewrite `hz` using `[charpoly_fin_one]`. Establish `hz2 : z = algebraMap K (AlgebraicClosure K) ((γ : Matrix (Fin 1) (Fin 1) K) 0 0)`. Simplify `hz` using `[sub_eq_zero]`. Rewrite using `[hz2, Matrix.det_unique, Fin.default_eq_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fintype.card_fin, Nat.sub_self, pow_zero, one_mul, Finset.sum_range_one, mul_one]`. Rewrite using `[hx'', htr γ m (hm.trans hz')]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem greenLab_one (Cv : LabelConv K) (hC : CuspParam K Cv) (τ : FDRep ℂ (GL (Fin 1) K))
     (x : K) (hs : Simple τ) (hx : x ≠ 0)
@@ -111,7 +111,7 @@ theorem greenLab_one (Cv : LabelConv K) (hC : CuspParam K Cv) (τ : FDRep ℂ (G
   rw [hx'', htr γ m (hm.trans hz')]
 
 /- English proof (translation)
-Rewrite using `[← Cv.gen_order d hd]`. Conclude with `pow_orderOf_eq_one _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_pow (Cv : LabelConv K) {d : ℕ} (hd : 1 ≤ d) :
     Cv.gen d ^ (Fintype.card K ^ d - 1) = 1 := by
@@ -119,7 +119,7 @@ theorem gen_pow (Cv : LabelConv K) {d : ℕ} (hd : 1 ≤ d) :
   exact pow_orderOf_eq_one _
 
 /- English proof (translation)
-Establish `hq : 2 ≤ Fintype.card K` using `Fintype.one_lt_card`. Establish `h2 : 2 ≤ Fintype.card K ^ d` using `le_trans hq (Nat.le_self_pow (by omega) _)`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem card_pow_sub_one_pos {d : ℕ} (hd : 1 ≤ d) : 1 ≤ Fintype.card K ^ d - 1 := by
   have hq : 2 ≤ Fintype.card K := Fintype.one_lt_card
@@ -127,7 +127,7 @@ theorem card_pow_sub_one_pos {d : ℕ} (hd : 1 ≤ d) : 1 ≤ Fintype.card K ^ d
   omega
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `gen_pow Cv hd`. Establish `h2` using `card_pow_sub_one_pos (K := K) hd`. Rewrite `h1` using `[h, zero_pow (by omega)]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gen_ne_zero (Cv : LabelConv K) {d : ℕ} (hd : 1 ≤ d) : Cv.gen d ≠ 0 := by
   intro h
@@ -137,11 +137,11 @@ theorem gen_ne_zero (Cv : LabelConv K) {d : ℕ} (hd : 1 ≤ d) : Cv.gen d ≠ 0
   exact zero_ne_one h1
 
 /- English proof (translation)
-Establish `key : ∀ (M : Matrix ι ι K) (w : AlgebraicClosure K), aeval w M.charpoly = (Matrix.scalar ι w - M.map (algebraMap K (AlgebraicClosure K))).det`. Introduce `M w`. Rewrite using `[← Polynomial.eval_map_algebraMap, ← Matrix.charpoly_map, Matrix.eval_charpoly]`. Establish `hAB : ((γ⁻¹ : GL ι K) : Matrix ι ι K).map (algebraMap K (AlgebraicClosure K)) * (γ : Matrix ι ι K).map (algebraMap K (AlgebraicClosure K)) = 1`. Rewrite using `[← Matrix.map_mul, ← Units.val_mul, inv_mul_cancel, Units.val_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `hz`, the goal using `[key]`. Establish `hs : ∀ w : AlgebraicClosure K, Matrix.scalar ι w = w • (1 : Matrix ι ι (AlgebraicClosure K))`. Introduce `w`. Simplify using `[Matrix.smul_one_eq_diagonal]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hmat : Matrix.scalar ι z⁻¹ - ((γ⁻¹ : GL ι K) : Matrix ι ι K).map (algebraMap K (AlgebraicClosure K)) = -(z⁻¹ • ((γ⁻¹ : GL ι K) : Matrix ι ι K).map (algebraMap K (AlgebraicClosure K))) * (Matrix.scalar ι z - (γ : Matrix ι ι K).map (algebraMap K (AlgebraicClosure K)))`. Rewrite using `[hs, hs, neg_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, Matrix.mul_one, smul_smul, inv_mul_cancel₀ hz0, one_smul, Matrix.smul_mul, hAB]`. Normalize the expressions using the abelian group laws. Rewrite using `[hmat, Matrix.det_mul, hz, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 -/
 theorem root_inv {ι : Type} [Fintype ι] [DecidableEq ι] (γ : GL ι K) {z : AlgebraicClosure K}
     (hz0 : z ≠ 0) (hz : aeval z (Matrix.charpoly (γ : Matrix ι ι K)) = 0) :
@@ -168,11 +168,11 @@ theorem root_inv {ι : Type} [Fintype ι] [DecidableEq ι] (γ : GL ι K) {z : A
   rw [hmat, Matrix.det_mul, hz, mul_zero]
 
 /- English proof (translation)
-Establish `hint : ∀ w : AlgebraicClosure K, IsIntegral K w` using `fun w => Algebra.IsIntegral.isIntegral w`. Establish `h1 : Matrix.charpoly (γ : Matrix ι ι K) = minpoly K z` using `minpoly.eq_of_irreducible_of_monic hγ hz (Matrix.charpoly_monic _)`. Establish `hadj : IntermediateField.adjoin K {z⁻¹} = IntermediateField.adjoin K {z}`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[IntermediateField.adjoin_simple_le_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_mem (IntermediateField.mem_adjoin_simple_self K z)`. Rewrite using `[IntermediateField.adjoin_simple_le_iff]`. Establish `h2` using `inv_mem (IntermediateField.mem_adjoin_simple_self K z⁻¹)`. Rewrite `h2` using `[inv_inv]`. Then use the resulting hypothesis. Establish `hdeg : (minpoly K z⁻¹).natDegree = (minpoly K z).natDegree`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← IntermediateField.adjoin.finrank (hint _), ← IntermediateField.adjoin.finrank (hint _), hadj]`. Establish `hdvd : minpoly K z⁻¹ ∣ Matrix.charpoly ((γ⁻¹ : GL ι K) : Matrix ι ι K)` using `minpoly.dvd K _ (root_inv γ hz0 hz)`. Establish `heq : Matrix.charpoly ((γ⁻¹ : GL ι K) : Matrix ι ι K) = minpoly K z⁻¹` using `Polynomial.eq_of_monic_of_dvd_of_natDegree_le (minpoly.monic (hint _)) (Matrix.charpoly_monic _) hdvd (by rw [Matrix.charpoly_natDegree_eq_dim, hdeg, ← h1, Matrix.charpoly_natDegree_eq_dim])`. Rewrite using `[heq]`. Conclude with `minpoly.irreducible (hint _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem irreducible_charpoly_inv {ι : Type} [Fintype ι] [DecidableEq ι] (γ : GL ι K)
     (hγ : Irreducible (Matrix.charpoly (γ : Matrix ι ι K))) {z : AlgebraicClosure K}

@@ -15,11 +15,11 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 namespace RD
 variable {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} (R : _root_.PositivityTheory.SiegelWeilFormula.RD_k d) (w : InfinitePlace F)
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.SiegelWeilFormula.RD_k.w_four_pf h`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.w_four {ε : ℤˣ} {w₀ : d.G} (h : d.IsW ε w₀) : w₀ * w₀ * w₀ * w₀ = 1 := _root_.PositivityTheory.SiegelWeilFormula.RD_k.w_four_pf h
 /- English proof (translation)
-The claim follows from `R.nbar_conj_pf w h`.
+A detailed English derivation is pending.
 -/
 theorem _root_.PositivityTheory.SiegelWeilFormula.RD_k.nbar_conj' {ε : ℤˣ} {w₀ : d.G} (h : d.IsW ε w₀) : ∀ (y : GR d.n) (c : Matrix (Fin d.n) (Fin d.n) ℂ), cᴴ = c →
     mR y = nbLoc c → ∃ (y' : GR d.n) (x : Matrix (Fin d.n) (Fin d.n) ℂ), xᴴ = x ∧ mR y' = nU x ∧

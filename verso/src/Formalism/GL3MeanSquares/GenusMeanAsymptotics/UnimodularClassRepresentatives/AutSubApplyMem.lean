@@ -14,34 +14,34 @@ variable {V' : Type} [AddCommGroup V'] [Module K V'] [FiniteDimensional K V'] [M
 variable {h : V →ₗ⋆[K] V →ₗ[K] K} {h' : V' →ₗ⋆[K] V' →ₗ[K] K}
 
 /- English proof (translation)
-Rewrite using `[← extHom_apply, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extOf_one (S : VecSplit h h') : SplitBAux.extOf S 1 = 1 := by
   rw [← extHom_apply, map_one]
 
 /- English proof (translation)
-Rewrite using `[← extHom_apply, ← extHom_apply, ← extHom_apply, map_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem extOf_mul (S : VecSplit h h') (a b : V' ≃ₗ[K] V') :
     SplitBAux.extOf S (a * b) = SplitBAux.extOf S a * SplitBAux.extOf S b := by
   rw [← extHom_apply, ← extHom_apply, ← extHom_apply, map_mul]
 
 /- English proof (translation)
-Rewrite using `[← autSub_gmap_mul, ← extOf_mul, mul_inv_cancel, extOf_one, autSub_gmap_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gmap_extOf_inv (S : VecSplit h h') (a : V' ≃ₗ[K] V') (M : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap (SplitBAux.extOf S a) (Formalism.HermitianLatticesTheory.gmap (SplitBAux.extOf S a⁻¹) M) = M := by
   rw [← autSub_gmap_mul, ← extOf_mul, mul_inv_cancel, extOf_one, autSub_gmap_one]
 
 /- English proof (translation)
-Rewrite using `[← autSub_gmap_mul, ← extOf_mul, inv_mul_cancel, extOf_one, autSub_gmap_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gmap_extOf_inv' (S : VecSplit h h') (a : V' ≃ₗ[K] V') (M : Submodule (𝓞 K) V) :
     Formalism.HermitianLatticesTheory.gmap (SplitBAux.extOf S a⁻¹) (Formalism.HermitianLatticesTheory.gmap (SplitBAux.extOf S a) M) = M := by
   rw [← autSub_gmap_mul, ← extOf_mul, inv_mul_cancel, extOf_one, autSub_gmap_one]
 
 /- English proof (translation)
-Use `⟨fun M => ⟨1, one_mem _, by rw [extOf_one, autSub_gmap_one]⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `M₁ M₂ ⟨g', hg', e⟩`. Conclude with `⟨g'⁻¹, inv_mem hg', by rw [← e, gmap_extOf_inv']⟩`. Introduce and unpack `M₁ M₂ M₃ ⟨g', hg', e⟩ ⟨g'', hg'', e'⟩`. Conclude with `⟨g'' * g', mul_mem hg'' hg', by rw [extOf_mul, autSub_gmap_mul, e, e']⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem orb_equiv (S : VecSplit h h') :
     Equivalence (fun M₁ M₂ : Submodule (𝓞 K) V =>
@@ -53,7 +53,7 @@ theorem orb_equiv (S : VecSplit h h') :
     exact ⟨g'' * g', mul_mem hg'' hg', by rw [extOf_mul, autSub_gmap_mul, e, e']⟩
 
 /- English proof (translation)
-Take `⟨⟨g, hg, hgA⟩, hxM⟩` from `hM`. Use `⟨⟨SplitBAux.extOf S g' * g, mul_mem (SplitBAux.extOf_mem_isom hs S hg') hg, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[autSub_gmap_mul, hgA]`. Conclude with `⟨S.x₀, hxM, SplitBAux.extOf_x₀ S g'⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem through_smul (hs : h.IsSymm) (S : VecSplit h h') {A M : Submodule (𝓞 K) V}
     {g' : V' ≃ₗ[K] V'} (hg' : g' ∈ Formalism.HermitianLatticesTheory.isom h')
@@ -66,9 +66,9 @@ theorem through_smul (hs : h.IsSymm) (S : VecSplit h h') {A M : Submodule (𝓞 
   · exact ⟨S.x₀, hxM, SplitBAux.extOf_x₀ S g'⟩
 
 /- English proof (translation)
-Take `⟨g, hg, hy'⟩` from `hy`. Use `⟨g, hg, ?_⟩` and prove the remaining obligations. Establish `hz' : z ∈ ((extP K 𝔭) ^ J • A : Submodule (𝓞 K) V)` using `Submodule.smul_mono_left (Ideal.pow_le_pow_right hJk) hz`. Establish `e : y + z - g x = (y - g x) + z` using `by abel`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hy' hz'`.
+A detailed English derivation is pending.
 -/
 theorem tube_add (D : Subgroup (V ≃ₗ[K] V)) (A : Submodule (𝓞 K) V) (𝔭 : Ideal (𝓞 F)) {J k : ℕ}
     (hJk : J ≤ k) (x : V) {y z : V} (hy : y ∈ tube D A 𝔭 J x)
@@ -82,7 +82,7 @@ theorem tube_add (D : Subgroup (V ≃ₗ[K] V)) (A : Submodule (𝓞 K) V) (𝔭
   exact add_mem hy' hz'
 
 /- English proof (translation)
-Establish `h2 : Formalism.HermitianLatticesTheory.gmap u A = A` using `hu.2`. Rewrite using `[← h2]`. Conclude with `⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem autSub_apply_mem {u : V ≃ₗ[K] V} {A : Submodule (𝓞 K) V} (hu : u ∈ autSub h A) {x : V}
     (hx : x ∈ A) : u x ∈ A := by
@@ -91,15 +91,15 @@ theorem autSub_apply_mem {u : V ≃ₗ[K] V} {A : Submodule (𝓞 K) V} (hu : u 
   exact ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Establish `hx₁' : g₁.symm S.x₀ ∈ locF 𝔭 L` using `(Formalism.HermitianLatticesTheory.isomAct_mem_gmap g₁ (locF 𝔭 L) S.x₀).1 hx₁`. Establish `hx₂' : g₂.symm S.x₀ ∈ locF 𝔭 L` using `(Formalism.HermitianLatticesTheory.isomAct_mem_gmap g₂ (locF 𝔭 L) S.x₀).1 hx₂`. Take `⟨u₁, hu₁, hy₁⟩` from `h1`. Take `⟨u₂, hu₂, hy₂⟩` from `h2`. Establish `ha : u₁ (g₁.symm S.x₀) ∈ locF 𝔭 L` using `autSub_apply_mem hu₁ hx₁'`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hb : u₂ (g₂.symm S.x₀) ∈ locF 𝔭 L` using `autSub_apply_mem hu₂ hx₂'`. Establish `hna : h (u₁ (g₁.symm S.x₀)) (u₁ (g₁.symm S.x₀)) = algebraMap F K (n : F)`. Rewrite using `[SplitBAux.isom_apply hu₁.1, SplitBAux.isom_apply (SplitBAux.symm_mem_isom hg₁), hx]`. Establish `hnb : h (u₂ (g₂.symm S.x₀)) (u₂ (g₂.symm S.x₀)) = algebraMap F K (n : F)`. Rewrite using `[SplitBAux.isom_apply hu₂.1, SplitBAux.isom_apply (SplitBAux.symm_mem_isom hg₂), hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxy : u₂ (g₂.symm S.x₀) - u₁ (g₁.symm S.x₀) ∈ ((extP K 𝔭) ^ J • (locF 𝔭 L) : Submodule (𝓞 K) V)`. Establish `e : u₂ (g₂.symm S.x₀) - u₁ (g₁.symm S.x₀) = (y - u₁ (g₁.symm S.x₀)) - (y - u₂ (g₂.symm S.x₀))` using `by abel`. Rewrite using `[e]`. Conclude with `sub_mem hy₁ hy₂`. Take `⟨w, hw, -, hwab⟩` from `exists_isom_congr hK hF hs hd hL hLi h𝔭 hn ha hb hna hnb hJ hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set G : V ≃ₗ[K] V := g₂ * u₂⁻¹ * w * u₁ * g₁⁻¹ with hGdef`. Establish `hG : G ∈ Formalism.HermitianLatticesTheory.isom h` using `mul_mem (mul_mem (mul_mem (mul_mem hg₂ (inv_mem hu₂.1)) hw.1) hu₁.1) (inv_mem hg₁)`. Establish `hGx : G S.x₀ = S.x₀`. Express the relevant statement in the definitionally equal form `g₂ (u₂.symm (w (u₁ (g₁.symm S.x₀)))) = S.x₀`. Rewrite using `[hwab, LinearEquiv.symm_apply_apply, LinearEquiv.apply_symm_apply]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨SplitBAux.res S G hG hGx, SplitBAux.res_mem_isom S G hG hGx, ?_⟩` and prove the remaining obligations. Rewrite using `[extOf_res, ← autSub_gmap_mul]`. Establish `e : G * g₁ = g₂ * u₂⁻¹ * w * u₁`. Rewrite using `[hGdef, inv_mul_cancel_right]`. Rewrite using `[e, autSub_gmap_mul, hu₁.2, autSub_gmap_mul, hw.2, autSub_gmap_mul, (inv_mem hu₂).2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem same_orbit (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (hs : h.IsSymm) (hd : IsTotPosDef h)
     (S : VecSplit h h') {L : Submodule (𝓞 K) V}
@@ -142,9 +142,7 @@ theorem same_orbit (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : Is
   rw [e, autSub_gmap_mul, hu₁.2, autSub_gmap_mul, hw.2, autSub_gmap_mul, (inv_mem hu₂).2]
 
 /- English proof (translation)
-Use `⟨g⁻¹ * SplitBAux.extOf S g' * γ, ?_, ?_⟩` and prove the remaining obligations. Use `show _ ∈ Formalism.HermitianLatticesTheory.isom h ∧ _`. Use `⟨mul_mem (mul_mem (inv_mem hg) (SplitBAux.extOf_mem_isom hs S hg')) hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[autSub_gmap_mul, autSub_gmap_mul, e, ← autSub_gmap_mul, inv_mul_cancel, autSub_gmap_one]`. Rewrite using `[LinearEquiv.mul_apply, LinearEquiv.mul_apply, LinearEquiv.apply_symm_apply, SplitBAux.extOf_x₀, ← hy]`.
-
-Conclude with `g.symm_apply_apply y`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_on_orbit (hs : h.IsSymm) (S : VecSplit h h') {A : Submodule (𝓞 K) V}
     {g γ : V ≃ₗ[K] V} (hg : g ∈ Formalism.HermitianLatticesTheory.isom h) (hγ : γ ∈ Formalism.HermitianLatticesTheory.isom h)

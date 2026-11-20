@@ -11,9 +11,9 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Establish `h1` using `TR.hasDerivAt_curve f (x * TR.infGL F 2 (c t)) c Y c0 hc.2`. Establish `h2 : HasDerivAt (fun s : ℝ => s - t) 1 t` using `(hasDerivAt_id t).sub_const t`. Establish `h1' : HasDerivAt (fun u => f.1 (x * TR.infGL F 2 (c t) * TR.infGL F 2 (c u))) (TR.lieD Y f.1 (x * TR.infGL F 2 (c t))) ((fun s : ℝ => s - t) t)` using `by simpa using h1`. Establish `h3 : HasDerivAt ((fun u => f.1 (x * TR.infGL F 2 (c t) * TR.infGL F 2 (c u))) ∘ (fun s : ℝ => s - t)) ((1 : ℝ) • TR.lieD Y f.1 (x * TR.infGL F 2 (c t))) t` using `HasDerivAt.scomp t h1' h2`. Establish `e : (fun s => f.1 (x * TR.infGL F 2 (c s))) = (fun u => f.1 (x * TR.infGL F 2 (c t) * TR.infGL F 2 (c u))) ∘ (fun s : ℝ => s - t)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `s`. Simplify using `only [Function.comp_apply]`. Rewrite using `[mul_assoc, ← map_mul, ← hc.1, add_sub_cancel]`. Rewrite using `[e]`. Simplify using `using h3`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem curve_at {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
     (f : TR.Sm F 2) (x : GL (Fin 2) (A F)) {c : ℝ → GL (Fin 2) (TR.Rinf F)} {Y : TR.Lie F 2}
@@ -34,19 +34,17 @@ private theorem curve_at {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
   simpa using h3
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π f hf φ hφ c Y hc h`. Take `⟨hinf, hcc⟩` from `parCont F`. Take `⟨c0, ccont, -⟩` from `hcc c Y hc`. Establish `hf' : TR.lie F 2 Y f ∈ π.V` using `π.stable (.lie Y) f hf`. Use `haveI : IsFiniteMeasure (M.μ.restrict M.D) := ⟨by simpa using vol F M⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m1, -⟩` from `thMeas F E D W (W.L h φ)`. Use `set T : G1 F → ℂ := fun g => Th (W.Om g (W.L h φ)).1 with hT`. Use `set x₀ := dM (nu F h) with hx₀`. Establish `cf : ∀ (u : TR.Sm F 2), u ∈ π.V → ∀ a : GL (Fin 2) (A F), Continuous fun g : G1 F => u.1 (gl g * a)` using `fun u hu a => (decay F π u hu).1.comp (Matrix.SpecialLinearGroup.continuous_toGL.mul continuous_const)`. Establish `hone : ∀ y ∈ ({1} : Set (GL (Fin 2) (Cinf E))), One F y`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce and unpack `_ rfl`. Simplify using `[Ff.One, nu]`. Use `set C : Set (GL (Fin 2) (A F)) := (fun t => x₀ * TR.infGL F 2 (c t)) '' Metric.closedBall (0 : ℝ) 1 with hC`. Establish `Cc : IsCompact C` using `(isCompact_closedBall (0 : ℝ) 1).image (continuous_const.mul (hinf.comp ccont))`. Take `⟨B, hB⟩` from `thBoundH F E D W π _ hf' φ hφ h C Cc {1} isCompact_singleton hone`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨B₀, hB₀⟩` from `thBoundH F E D W π f hf φ hφ h C Cc {1} isCompact_singleton hone`. Establish `bd : ∀ (u : TR.Sm F 2) (B : ℝ), (∀ g, ∀ x ∈ C, ∀ y ∈ ({1} : Set (GL (Fin 2) (Cinf E))), ‖u.1 (gl g * x) * Th (W.Om g (W.L (h * infGL E 2 y) φ)).1‖ ≤ B) → ∀ t ∈ Metric.closedBall (0 : ℝ) 1, ∀ g, ‖u.1 (gl g * x₀ * TR.infGL F 2 (c t)) * T g‖ ≤ B`. Introduce `u B hb t ht g`. Use `hb g _ ⟨t, ht, rfl⟩ 1 rfl` as an intermediate fact. Simplify `this` using `[hT, mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `ms : ∀ u ∈ π.V, ∀ a : GL (Fin 2) (A F), AEStronglyMeasurable (fun g => u.1 (gl g * x₀ * a) * T g) (M.μ.restrict M.D)`. Introduce `u hu a`. Establish `e : (fun g => u.1 (gl g * x₀ * a) * T g) = (fun g => u.1 (gl g * (x₀ * a))) * T`. Use function extensionality and compare the values at `g`. Simplify using `only [Pi.mul_apply, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `((cf u hu (x₀ * a)).measurable.mul m1).aestronglyMeasurable`. Establish `key` using `hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := M.μ.restrict M.D) (F := fun t g => f.1 (gl g * x₀ * TR.infGL F 2 (c t)) * T g) (F' := fun t g => (TR.lie F 2 Y f).1 (gl g * x₀ * TR.infGL F 2 (c t)) * T g) (x₀ := (0 : ℝ)) (s := Metric.closedBall (0 : ℝ) 1) (bound := fun _ => …`. Simplify `key.2` using `[lift, Function.comp_def, c0, mul_assoc]`. Conclude with `ms f hf _`.
-
-Establish `h0 : ∀ g, ‖f.1 (gl g * x₀ * TR.infGL F 2 (c 0)) * T g‖ ≤ B₀` using `bd _ B₀ hB₀ 0 (by simp)`. Conclude with `Integrable.of_bound (ms f hf _) B₀ (ae_of_all _ h0)`. Conclude with `ms _ hf' _`. Conclude with `(curve_at f _ hc c0 t).mul_const _`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.derF :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), DerF W M π := by

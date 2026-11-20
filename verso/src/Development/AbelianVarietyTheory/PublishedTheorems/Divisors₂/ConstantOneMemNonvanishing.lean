@@ -163,19 +163,19 @@ variable {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {D : ℕ} {B 
   (R : ArRing B h) (L : HermLB p) {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-The claim follows from `left_eq_add.1 ((R.firstChernCongr _ _ (HermLB.triv p).isometric_tens_triv).symm.trans (R.firstChernTensor _ _))`.
+A detailed English derivation is pending.
 -/
 theorem firstChern_trivial : R.c1 (.triv p) = 0 :=
   left_eq_add.1 ((R.firstChernCongr _ _ (HermLB.triv p).isometric_tens_triv).symm.trans (R.firstChernTensor _ _))
 
 /- English proof (translation)
-The claim follows from `eq_neg_of_add_eq_zero_left ((R.firstChernTensor _ _).symm.trans ((R.firstChernCongr _ _ L.isometric_dual_tens).trans R.firstChern_trivial))`.
+A detailed English derivation is pending.
 -/
 theorem firstChern_dual : R.c1 L.dual = -R.c1 L :=
   eq_neg_of_add_eq_zero_left ((R.firstChernTensor _ _).symm.trans ((R.firstChernCongr _ _ L.isometric_dual_tens).trans R.firstChern_trivial))
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => rw [R.firstChernCongr _ _ L.isometric_pow_zero, firstChern_trivial, zero_smul]`. Consider the case `succ m ih => rw [R.firstChernCongr _ _ (L.isometric_pow_succ m), R.firstChernTensor, ih, succ_nsmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem firstChern_pow (m : ℕ) : R.c1 (L.pow m) = m • R.c1 L := by
   induction m with
@@ -183,14 +183,14 @@ theorem firstChern_pow (m : ℕ) : R.c1 (L.pow m) = m • R.c1 L := by
   | succ m ih => rw [R.firstChernCongr _ _ (L.isometric_pow_succ m), R.firstChernTensor, ih, succ_nsmul]
 
 /- English proof (translation)
-Rewrite using `[zp, R.firstChernTensor, firstChern_dual, firstChern_pow, firstChern_pow, ← natCast_zsmul, ← natCast_zsmul, ← sub_eq_add_neg, ← sub_smul, Int.toNat_sub_toNat_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem firstChern_zpow (m : ℤ) : R.c1 (zp L m) = m • R.c1 L := by
   rw [zp, R.firstChernTensor, firstChern_dual, firstChern_pow, firstChern_pow, ← natCast_zsmul, ← natCast_zsmul, ← sub_eq_add_neg, ← sub_smul,
     Int.toNat_sub_toNat_neg]
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_map_toList, comb]`. Proceed by induction on `(Finset.univ : Finset ι).toList with`. Consider the case `nil => exact R.firstChern_trivial`. Consider the case `cons a l ih => rw [List.foldr_cons, R.firstChernTensor, firstChern_zpow, ih, List.map_cons, List.sum_cons]`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem firstChern_tensor_powers (L : ι → HermLB p) (m : ι → ℤ) : R.c1 (comb L m) = ∑ i, m i • R.c1 (L i) := by
   rw [← Finset.sum_map_toList, comb]
@@ -199,13 +199,13 @@ theorem firstChern_tensor_powers (L : ι → HermLB p) (m : ι → ℤ) : R.c1 (
   | cons a l ih => rw [List.foldr_cons, R.firstChernTensor, firstChern_zpow, ih, List.map_cons, List.sum_cons]
 
 /- English proof (translation)
-Set `Ψ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ` to `(basisMonomials ι ℝ).constr ℝ fun d => R.deg (aeval (fun i => R.c1 (L i)) (monomial d (1 : ℚ)))`. Establish `h₀ (d) : Ψ (monomial d 1) = R.deg (aeval (fun i => R.c1 (L i)) (monomial d (1 : ℚ)))` using `(basisMonomials ι ℝ).constr_basis ℝ _ d`. Establish `h₁ (P : MvPolynomial ι ℚ) : R.deg (aeval (fun i => R.c1 (L i)) P) = Ψ (map (algebraMap ℚ ℝ) P)`. Proceed by induction on `P using MvPolynomial.induction_on' with`. Consider the case `monomial d c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Rewrite using `[map_monomial, ← mul_one (algebraMap ℚ ℝ c), ← smul_eq_mul, ← smul_monomial, map_smul, h₀, algebraMap_smul, ← map_smul, ← map_smul, smul_monomial, smul_eq_mul, mul_one]`. Consider the case `add P Q hP hQ => simp only [map_add, hP, hQ]`. Establish `h₂ : Ψ - Φ = 0` using `Model.eq_zero_of_pow (D + 1) _ (fun m => ?_) fun P e he hP => ?_`. Rewrite using `[h₁, sub_eq_zero.1 h₂]`. Establish `e : lin (fun i => (m i : ℝ)) ^ (D + 1) = map (algebraMap ℚ ℝ) ((∑ i, m i • MvPolynomial.X i) ^ (D + 1))`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[lin]`. Rewrite using `[LinearMap.sub_apply, ← R.degreeFirstChernPow _ _ (hΦ.1 m), e, ← h₁, firstChern_tensor_powers]`. Simplify using the standard rewrite rules. Rewrite using `[LinearMap.sub_apply, hΦ.2 P e he hP, sub_zero, P.as_sum, map_sum]`. Use `Finset.sum_eq_zero fun d hd => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_one (coeff d P), ← smul_eq_mul, ← smul_monomial, map_smul, h₀, R.deg_eq_zero e he, smul_zero]`. Rewrite using `[aeval_monomial, map_one, one_mul, ← hP (mem_support_iff.1 hd), Finsupp.weight_apply]`. Conclude with `SetLike.prod_mem_graded R.gr _ _ fun i _ => SetLike.pow_mem_graded _ (R.constant_one_mem_nonvanishing _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem deg_aeval [IsIntegral X] {L : ι → HermLB p} {Φ : MvPolynomial ι ℝ →ₗ[ℝ] ℝ} (hΦ : IsArFun L D Φ)
     (P : MvPolynomial ι ℚ) : R.deg (aeval (fun i => R.c1 (L i)) P) = Φ (map (algebraMap ℚ ℝ) P) := by
@@ -232,7 +232,7 @@ theorem deg_aeval [IsIntegral X] {L : ι → HermLB p} {Φ : MvPolynomial ι ℝ
     exact SetLike.prod_mem_graded R.gr _ _ fun i _ => SetLike.pow_mem_graded _ (R.constant_one_mem_nonvanishing _)
 
 /- English proof (translation)
-Introduce `t` and use `⟨_, R.degreeFirstChernPow _ t (ArithBase.isSelfInter_trivShift t)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem deg_surjective_int (R : ArRing B isRegVar_int) : Function.Surjective R.deg := fun t =>
   ⟨_, R.degreeFirstChernPow _ t (ArithBase.isSelfInter_trivShift t)⟩

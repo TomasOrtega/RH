@@ -6,13 +6,13 @@ open MeasureTheory IsDedekindDomain NumberField
 namespace GlobalTheory.PrimeSquareSum
 
 /- English proof (translation)
-Establish `hs` using `hasSum_zeta_two`. Establish `h1 : (1 : ℕ) ∉ t` using `fun h => by`. Use `ht 1 h` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hsum : ∑ n ∈ insert 1 t, ((n : ℝ) ^ 2)⁻¹ ≤ Real.pi ^ 2 / 6`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[← hs.tsum_eq]`. Establish `e : (fun n : ℕ => 1 / (n : ℝ) ^ 2) = fun n : ℕ => ((n : ℝ) ^ 2)⁻¹`. Use function extensionality and compare the values at `n`. Rewrite using `[one_div]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Summable.sum_le_tsum _ (fun _ _ => by positivity) (e ▸ hs.summable)`. Rewrite `hsum` using `[Finset.sum_insert h1]`. Evaluate the numerical expressions using `at hsum`. Establish `hpi : Real.pi ^ 2 / 6 ≤ 2`. Use `Real.pi_lt_d2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[Real.pi_pos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_inv_sq_le_one (t : Finset ℕ) (ht : ∀ n ∈ t, 2 ≤ n) :
     ∑ n ∈ t, ((n : ℝ) ^ 2)⁻¹ ≤ 1 := by
@@ -35,15 +35,13 @@ theorem sum_inv_sq_le_one (t : Finset ℕ) (ht : ∀ n ∈ t, 2 ≤ n) :
   linarith
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `GlobalTheory.exists_colouring_maximal_ideals K`. Establish `hp : ∀ w : HeightOneSpectrum (𝓞 K), ∃ p : ℕ, p.Prime ∧ (p : 𝓞 K) ∈ w.asIdeal ∧ p ≤ Ideal.absNorm w.asIdeal`. Introduce `w`. Use `haveI := w.isMaximal`. Take `⟨q, n, hn, hqP, hq, H⟩` from `Ideal.exists_prime_and_absNorm_eq_pow w.asIdeal`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨q, hq, hqP, H ▸ Nat.le_self_pow hn.ne' q⟩`. Use `choose p hp hpm hple using hp`. Rewrite using `[← Finset.sum_fiberwise s (fun w => c w.asIdeal)]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Set.InjOn p (s.filter fun w => c w.asIdeal = i)`. Introduce `v hv w hw h`. Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq] at hv hw`. Conclude with `HeightOneSpectrum.ext (hc (p v) (hp v) _ _ v.isMaximal w.isMaximal (hpm v) (h ▸ hpm w) (hv.2.trans hw.2.symm))`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun w _ => ?_` and prove the remaining obligations. Establish `h0 : (0 : ℝ) < p w` using `by exact_mod_cast (hp w).pos`. Establish `h1 : (p w : ℝ) ≤ (Ideal.absNorm w.asIdeal : ℕ)` using `by exact_mod_cast hple w`. Use `gcongr`. Use `_ = ∑ n ∈ (s.filter (fun w => c w.asIdeal = i)).image p, ((n : ℝ) ^ 2)⁻¹ := (Finset.sum_image (f := fun n : ℕ => ((n : ℝ) ^ 2)⁻¹) hinj).symm`.
-
-Use `_ ≤ 1 := by`. Use `sum_inv_sq_le_one _ fun n hn => ?_` and prove the remaining obligations. Take `⟨w, -, rfl⟩` from `Finset.mem_image.1 hn`. Conclude with `(hp w).two_le`. Use `_ = _ := by simp`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sum_absNorm_inv_sq_le (K : Type) [Field K] [NumberField K]
     (s : Finset (HeightOneSpectrum (𝓞 K))) :
@@ -79,7 +77,7 @@ theorem sum_absNorm_inv_sq_le (K : Type) [Field K] [NumberField K]
     _ = _ := by simp
 
 /- English proof (translation)
-Introduce `K _ _`. Establish `hnn : 0 ≤ fun w : HeightOneSpectrum (𝓞 K) => (((Ideal.absNorm w.asIdeal : ℕ) : ℝ) ^ 2)⁻¹` using `fun w => by positivity`. Conclude with `⟨summable_of_sum_le hnn (sum_absNorm_inv_sq_le K), tsum_le_of_sum_le' (by positivity) (sum_absNorm_inv_sq_le K)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem summable_absNorm_inv_sq : ∀ (K : Type) [Field K] [NumberField K], Summable (fun w : HeightOneSpectrum (𝓞 K) => (((Ideal.absNorm w.asIdeal : ℕ) : ℝ) ^ 2)⁻¹) ∧ ∑' w : HeightOneSpectrum (𝓞 K), (((Ideal.absNorm w.asIdeal : ℕ) : ℝ) ^ 2)⁻¹ ≤ (Module.finrank ℚ K : ℝ) := by
   intro K _ _

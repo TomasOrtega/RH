@@ -15,7 +15,7 @@ noncomputable def nuGal (l : ℕ) [Fact l.Prime] (E : Type*) [Field E] (tr : ℕ
     emultiplicity (l : ℤ_[l]) (((eps l E g : ℤ_[l]ˣ) : ℤ_[l]) ^ tr - 1)
 
 /- English proof (translation)
-Unfold `nuGal nu nuStar galImage`. Rewrite using `[iInf, Set.image_image]`. Use `congr 1`. Use extensionality with `x`. Simplify using `[MonoidHom.coe_range]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem nuGal_eq_nu (l : ℕ) [Fact l.Prime] (E : Type*) [Field E] (tr : ℕ) :
     nuGal l E tr = nu l (galImage l E) tr := by

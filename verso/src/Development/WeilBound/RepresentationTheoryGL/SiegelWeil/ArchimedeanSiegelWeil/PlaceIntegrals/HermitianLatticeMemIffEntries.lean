@@ -11,7 +11,7 @@ open GlobalTheory.CompanionTheory.WeilSiegel.Frame GlobalTheory.CompanionTheory.
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.SiegelND.Coef.LatCmp.latH_iff_latV` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FBlockDecomposition%2FHermitianLatticeMemIffEntries.lean&line=130#L130)
 -/

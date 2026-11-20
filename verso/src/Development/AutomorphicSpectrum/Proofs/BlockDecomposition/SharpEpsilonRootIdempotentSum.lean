@@ -11,7 +11,7 @@ section Frob
 variable {l : ℕ} {R : Type} [CommRing R] (φ : R →+* R)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 h`. Take `⟨c', rfl⟩` from `hb.2 c`. Conclude with `Ideal.mem_span_singleton'.2 ⟨c', hb.1 (by rw [map_mul, hc])⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_span_of_frob_mem (hb : Function.Bijective φ) {y p : R}
     (h : φ y ∈ Ideal.span {φ p}) : y ∈ Ideal.span {p} := by
@@ -20,9 +20,9 @@ theorem mem_span_of_frob_mem (hb : Function.Bijective φ) {y p : R}
   exact Ideal.mem_span_singleton'.2 ⟨c', hb.1 (by rw [map_mul, hc])⟩
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simpa using h`. Consider the case `succ N ih`. Use `ih (mem_span_of_frob_mem φ hb ?_)` and prove the remaining obligations. Rewrite using `[hφ, hφ, ← pow_mul, ← pow_mul, ← pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem mem_span_of_pow_mem (hφ : ∀ x, φ x = x ^ l) (hb : Function.Bijective φ) {x p : R}
     (N : ℕ) (h : x ^ l ^ N ∈ Ideal.span {p ^ l ^ N}) : x ∈ Ideal.span {p} := by
@@ -34,7 +34,7 @@ theorem mem_span_of_pow_mem (hφ : ∀ x, φ x = x ^ l) (hb : Function.Bijective
     exact h
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero => simp`. Consider the case `succ N ih`. Rewrite using `[pow_succ, pow_mul, pow_mul, pow_mul, ih, ← hφ, map_sub, hφ, hφ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_pow_of_frob (hφ : ∀ x, φ x = x ^ l) (a b : R) (N : ℕ) :
     (a - b) ^ l ^ N = a ^ l ^ N - b ^ l ^ N := by
@@ -46,7 +46,7 @@ theorem sub_pow_of_frob (hφ : ∀ x, φ x = x ^ l) (a b : R) (N : ℕ) :
 end Frob
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ' l k, pow_mul, ← add_assoc, hx, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem root_pow {l : ℕ} {T : Type} [Monoid T] {x : ℕ → T} (hx : ∀ m, x (m + 1) ^ l = x m) (m k : ℕ) :
     x (m + k) ^ l ^ k = x m := by
@@ -61,7 +61,7 @@ def powSum (A : PAlg l) (u : (A.cont ℤ_[l]).A) (N : ℕ) : (A.cont ℤ_[l]).A 
   ∑ c : ZMod (l ^ N), ind A N c * u ^ c.val
 
 /- English proof (translation)
-Rewrite using `[powSum, map_sum]`. Simplify using `only [map_mul, map_pow, ev_ind, ite_mul, one_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ev_powSum (A : PAlg l) (u : (A.cont ℤ_[l]).A) (N : ℕ) (z : ℤ_[l]) :
     Hom.f (A.evCont z) (powSum A u N) = Hom.f (A.evCont z) u ^ (PadicInt.toZModPow N z).val := by
@@ -71,9 +71,9 @@ theorem ev_powSum (A : PAlg l) (u : (A.cont ℤ_[l]).A) (N : ℕ) (z : ℤ_[l]) 
   simp
 
 /- English proof (translation)
-Establish `hf : ∀ x : (A.cont ℤ_[l]).A, (A.cont ℤ_[l]).frob x = x ^ l` using `fun _ => rfl`. Use `mem_span_of_pow_mem (l := l) (A.cont ℤ_[l]).frob hf (A.cont ℤ_[l]).frob_bijective N ?_` and prove the remaining obligations. Establish `h1 : ρ N ^ l ^ N = ρ 0` using `by simpa using root_pow hρ 0 N`. Establish `h2 : u N ^ l ^ N = u 0` using `by simpa using root_pow hu 0 N`. Rewrite using `[sub_pow_of_frob (l := l) _ hf, h1, mem_span_pi_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z`. Rewrite using `[map_sub, map_pow, ev_powSum, ← pow_mul, mul_comm, pow_mul, ← map_pow, h2]`. Conclude with `h0 N z`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_powSum_mem (A : PAlg l) {u ρ : ℕ → (A.cont ℤ_[l]).A} (hu : ∀ n, u (n + 1) ^ l = u n)
     (hρ : ∀ n, ρ (n + 1) ^ l = ρ n)
@@ -90,23 +90,19 @@ theorem sub_powSum_mem (A : PAlg l) {u ρ : ℕ → (A.cont ℤ_[l]).A} (hu : �
   exact h0 N z
 
 /- English proof (translation)
-Use `set B := powSum A (u (m + k)) (m + k) ^ l ^ k with hB`. Use `set v := (A.cont ℤ_[l]).sharp (u m) with hvdef`. Use `set T := ∑ c : ZMod (l ^ m), (A.cont ℤ_[l]).sharp (ind A m c) * v ^ c.val with hT`. Establish `hle : m ≤ m + k` using `Nat.le_add_right m k`. Establish `h1 : ∀ c' : ZMod (l ^ (m + k)), ind A (m + k) c' * B = ind A (m + k) c' * u m ^ c'.val`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `c'`. Use `cont_ext fun z => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, ev_ind]`. Use `split_ifs with h`. Establish `hr : Hom.f (A.evCont z) (u (m + k)) ^ l ^ k = Hom.f (A.evCont z) (u m)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, root_pow hu]`. Rewrite using `[hB, map_pow, ev_powSum, map_pow, h, ← pow_mul, mul_comm c'.val, pow_mul, hr]`. Simplify using the standard rewrite rules. Establish `h2 : ∀ (c' : ZMod (l ^ (m + k))) (c : ZMod (l ^ m)), ZMod.cast c' ≠ c → ind A (m + k) c' * ind A m c = 0`. Introduce `c' c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `cont_ext fun z => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ev_ind, ev_ind, map_zero]`. Use `split_ifs with h h'`. Conclude with `absurd (by rw [← h', ← h, PadicInt.cast_toZModPow m (m + k) hle]) hc`. Apply the tactic sequence `all_goals simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : ∀ c' : ZMod (l ^ (m + k)), ind A (m + k) c' * ind A m (ZMod.cast c') = ind A (m + k) c'`. Introduce `c'`. Use `cont_ext fun z => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ev_ind, ev_ind]`. Use `split_ifs with h h'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Conclude with `absurd (by rw [← h, PadicInt.cast_toZModPow m (m + k) hle]) h'`. Apply the tactic sequence `all_goals simp`. Establish `h4 : ∀ c' : ZMod (l ^ (m + k)), v ^ (ZMod.cast c' : ZMod (l ^ m)).val = v ^ c'.val`. Introduce `c'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[pow_eq_pow_mod c'.val hv, ← ZMod.natCast_val, ZMod.val_natCast]`. Establish `key : ∀ c' : ZMod (l ^ (m + k)), (A.cont ℤ_[l]).sharp (ind A (m + k) c') * (A.cont ℤ_[l]).sharp B = (A.cont ℤ_[l]).sharp (ind A (m + k) c') * T`. Introduce `c'`. Rewrite using `[← map_mul, h1, map_mul, map_pow, hT, Finset.mul_sum, Finset.sum_eq_single (ZMod.cast c')]`. Rewrite using `[← mul_assoc, ← map_mul, h3, h4]`.
-
-Introduce `c _ hc`. Rewrite using `[← mul_assoc, ← map_mul, h2 c' c (Ne.symm hc), sharp_zero, zero_mul]`. Simplify using the standard rewrite rules. Establish `hsum` using `sum_sharp_eq_one (A.cont ℤ_[l]) (coi_ind A (m + k))`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hsum, one_mul]`. Use `_ = (∑ c', (A.cont ℤ_[l]).sharp (ind A (m + k) c')) * T := by`. Rewrite using `[Finset.sum_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun c' _ => key c'`. Use `_ = T := by rw [hsum, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharp_powSum (A : PAlg l) {u : ℕ → (A.cont ℤ_[l]).A} (hu : ∀ n, u (n + 1) ^ l = u n)
     (m k : ℕ) (hv : (A.cont ℤ_[l]).sharp (u m) ^ l ^ m = 1) :
@@ -162,11 +158,11 @@ theorem sharp_powSum (A : PAlg l) {u : ℕ → (A.cont ℤ_[l]).A} (hu : ∀ n, 
     _ = T := by rw [hsum, one_mul]
 
 /- English proof (translation)
-Establish `hv : (A.cont ℤ_[l]).sharp (u m) ^ l ^ m = 1`. Rewrite using `[← map_pow, (by simpa using root_pow hu 0 m : u m ^ l ^ m = u 0), hs]`. Establish `hk : ∀ k, (A.cont ℤ_[l]).sharp (ρ m) - ∑ c : ZMod (l ^ m), (A.cont ℤ_[l]).sharp (ind A m c) * (A.cont ℤ_[l]).sharp (u m) ^ c.val ∈ Ideal.span {(l : (A.cont ℤ_[l]).U) ^ (k + 1)}`. Introduce `k`. Establish `h` using `(RL.sharp_cong (A.cont ℤ_[l])).1 _ _ k (sub_powSum_mem A hu hρ h0 (m + k))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[root_pow hρ, sharp_powSum A hu m k hv]`. Then use the resulting hypothesis. Use `sub_eq_zero.1 (IsHausdorff.haus (inferInstance : IsHausdorff (Ideal.span {(l : (A.cont ℤ_[l]).U)}) (A.cont ℤ_[l]).U) _ fun k => ?_)` and prove the remaining obligations. Use `smodEq_iff.2 ?_` and prove the remaining obligations. Rewrite using `[sub_zero]`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (hk k)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mem_span_singleton'.2 ⟨c * l, by rw [← hc, pow_succ]; ring⟩`.
+A detailed English derivation is pending.
 -/
 theorem sharp_roots_core (A : PAlg l) {u ρ : ℕ → (A.cont ℤ_[l]).A} (hu : ∀ n, u (n + 1) ^ l = u n)
     (hs : (A.cont ℤ_[l]).sharp (u 0) = 1) (hρ : ∀ n, ρ (n + 1) ^ l = ρ n)
@@ -190,9 +186,7 @@ theorem sharp_roots_core (A : PAlg l) {u ρ : ℕ → (A.cont ℤ_[l]).A} (hu : 
   exact Ideal.mem_span_singleton'.2 ⟨c * l, by rw [← hc, pow_succ]; ring⟩
 
 /- English proof (translation)
-Establish `hev : ∀ (n : ℕ) (z : ℤ_[l]), Hom.f ((base l).evCont z) (((base l).cont ℤ_[l]).s (ε.e n)) = (base l).s (ε.e n)` using `fun n z => RingHom.congr_fun (Hom.comm ((base l).evCont z)) _`. Use `sharp_roots_core (base l) (u := fun n => ((base l).cont ℤ_[l]).s (ε.e n)) (fun n => ?_) (ε.sharp_e _) hρ (fun k z => ?_) m` and prove the remaining obligations. Use `show ((base l).cont ℤ_[l]).s (ε.e (n + 1)) ^ l = ((base l).cont ℤ_[l]).s (ε.e n)`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, ε.succ]`. Use `show Hom.f ((base l).evCont z) (ρ 0) - Hom.f ((base l).evCont z) (((base l).cont ℤ_[l]).s (ε.e 0)) ^ _ ∈ _`.
-
-Rewrite using `[hev]`. Conclude with `h0 k z`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sharp_roots_universal {l : ℕ} [Fact l.Prime] (ε : Eps l) (ρ : ℕ → ((base l).cont ℤ_[l]).A)
     (h0 : ∀ (m : ℕ) (z : ℤ_[l]), Hom.f ((base l).evCont z) (ρ 0) -

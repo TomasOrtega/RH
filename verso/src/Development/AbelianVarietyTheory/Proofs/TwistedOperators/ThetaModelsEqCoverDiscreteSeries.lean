@@ -9,7 +9,7 @@ open Formalism.BasicNotions
 namespace GlobalTheory
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.thetaModels_are_coverDiscreteSeries_of_harishChandra`.
+A detailed English derivation is pending.
 -/
 theorem modelsAreCoverSeries_of_hypotheses :
     GlobalTheory.Published.DiscreteSeriesCover → GlobalTheory.Published.HarishChandraModules →

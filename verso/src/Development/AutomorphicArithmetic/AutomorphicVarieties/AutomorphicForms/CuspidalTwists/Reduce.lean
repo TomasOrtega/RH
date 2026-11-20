@@ -10,21 +10,21 @@ open NumberField Formalism.L2.Host GlobalTheory.CuspRep GlobalTheory.Mem.Chr.Cha
 namespace UpperTheory.V.TR.SS
 
 /- English proof (translation)
-Set `A` to `Algebra.adjoin ℂ (Set.range act)`. Set `up : ∀ U : Submodule ℂ M, (∀ o, ∀ x ∈ U, act o x ∈ U) → Submodule A M` to `fun U hU => { U.toAddSubmonoid with smul_mem' := by`. Introduce and unpack `⟨z, hz⟩ x hx`. Express the relevant statement in the definitionally equal form `z x ∈ U`. Proceed by induction on `hz using Algebra.adjoin_induction generalizing x with`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Proceed by induction.
 
-Consider the case `mem z hz => obtain ⟨o, rfl⟩ := hz`. Conclude with `hU o x hx`. Consider the case `algebraMap c => exact U.smul_mem c hx`. Consider the case `add y z _ _ h1 h2 => exact U.add_mem (h1 hx) (h2 hx)`. Consider the case `mul y z _ _ h1 h2 => exact h1 (h2 hx) }`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hdown : ∀ N : Submodule A M, ∀ o, ∀ x ∈ N.restrictScalars ℂ, act o x ∈ N.restrictScalars ℂ` using `fun N o x hx => N.smul_mem (⟨act o, Algebra.subset_adjoin ⟨o, rfl⟩⟩ : A) hx`. Establish `hud : ∀ U hU, (up U hU).restrictScalars ℂ = U` using `fun U hU => rfl`. Set `C'` to `up C hC`. Establish `hI : ComplementedLattice (Set.Iic C')` using `⟨fun N => by`. Take `⟨D, h1, h2, h3, h4⟩` from `hc (N.1.restrictScalars ℂ) N.2 (hdown _)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨up D h2, h1⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[disjoint_iff]`. Use `Subtype.ext (Submodule.restrictScalars_injective ℂ _ _ ?_)` and prove the remaining obligations. Conclude with `h3`. Rewrite using `[codisjoint_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Subtype.ext (Submodule.restrictScalars_injective ℂ _ _ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(N.1 ⊔ up D h2).restrictScalars ℂ = C`. Rewrite using `[Submodule.restrictScalars_sup]`. Conclude with `h4⟩`. Establish `hL : ComplementedLattice (Submodule A C')` using `(Submodule.mapIic C').complementedLattice_iff.2 hI`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hat : IsAtomistic (Submodule A C')` using `isAtomistic_of_complementedLattice`. Introduce `x hx`. Establish `hx' : (⟨x, hx⟩ : C') ∈ sSup {a : Submodule A C' | IsAtom a}`. Rewrite using `[sSup_atoms_eq_top]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx'` using `[sSup_eq_iSup']`. Generalize the expression as in `hS : sSup {V : Submodule ℂ M | V ≤ C ∧ (∀ o, ∀ x ∈ V, act o x ∈ V) ∧ V ≠ ⊥ ∧ ∀ W ≤ V, (∀ o, ∀ x ∈ W, act o x ∈ W) → W = ⊥ ∨ W = V} = S`. Use `Submodule.iSup_induction _ (motive := fun y : C' => y.1 ∈ S) hx' ?_ S.zero_mem fun _ _ => S.add_mem` and prove the remaining obligations. Introduce and unpack `⟨N, hN⟩ y hy`. Establish `hN' : IsAtom (N.map C'.subtype)` using `(((Submodule.mapIic C').isAtom_iff N).2 hN).of_isAtom_coe_Iic`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : (N.map C'.subtype).restrictScalars ℂ ≤ S`. Rewrite using `[← hS]`. Use `le_sSup ⟨C'.map_subtype_le N, hdown _, fun h => hN'.1 (Submodule.restrictScalars_injective ℂ _ _ h), fun W hW hs => ?_⟩` and prove the remaining obligations. Conclude with `(hN'.le_iff.1 (show up W hs ≤ _ from hW)).imp (congrArg (Submodule.restrictScalars ℂ)) (congrArg (Submodule.restrictScalars ℂ))`. Conclude with `hle ⟨y, hy, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem le_sSup_minimal {M O : Type*} [AddCommGroup M] [Module ℂ M] (act : O → Module.End ℂ M) (C : Submodule ℂ M)
     (hC : ∀ o, ∀ x ∈ C, act o x ∈ C)
@@ -78,11 +78,11 @@ theorem le_sSup_minimal {M O : Type*} [AddCommGroup M] [Module ℂ M] (act : O �
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F] {a : ℕ}
 
 /- English proof (translation)
-Use `expo_eq_of_exp _ v s fun t => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Complex.exp (s * logNorm F (infId F (expU (Pi.single v t)))) = _`. Establish `h1 : finPart F (infId F (expU (Pi.single v t))) = 1` using `Units.ext (by`. Express the relevant statement in the definitionally equal form `(1 : Af F) - 0 + 0 = 1`. Use the proof step `simp)`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Establish `h2 : ∀ u, ‖(infPart F (infId F (expU (Pi.single v t)))).val u‖ = Real.exp ((Pi.single v t : Rinf F) u)` using `fun u => by`. Establish `e : (infPart F (infId F (expU (Pi.single v t)))).val = infEq F (expU (Pi.single v t)).val`. Express the relevant statement in the definitionally equal form `1 - infEq F 1 + infEq F _ = _`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(((InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal u)).symm.isometry.norm_map_of_map_zero (map_zero (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal u)).symm)) _).trans (Real.norm_of_nonneg (Real.exp_pos _).le)`. Rewrite using `[logNorm, h1, logFin_one, logInf]`. Simplify using `[h2, Pi.single_apply, InfinitePlace.mult, IsTotallyReal.isReal]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expo_absC (s : ℂ) (v : InfinitePlace F) : expo (GlobalTheory.CuspRep.Model.absC F s) v = s := by
   classical
@@ -103,9 +103,9 @@ theorem expo_absC (s : ℂ) (v : InfinitePlace F) : expo (GlobalTheory.CuspRep.M
   simp [h2, Pi.single_apply, InfinitePlace.mult, IsTotallyReal.isReal]
 
 /- English proof (translation)
-Establish `hn : (Fintype.card (InfinitePlace F) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`. Establish `ha' : (a : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 ha`. Use `⟨GlobalTheory.CuspRep.Model.absC F (-s / (Fintype.card (InfinitePlace F) * a)), ?_⟩` and prove the remaining obligations. Establish `ht : (Matrix.of (oneL F a)).trace = (a : Rinf F)`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin a) (Fin a) (Rinf F)).trace = _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Rewrite using `[lie_mulChi, h, ← add_smul, dchi_eq_sum, ht]`. Simplify using `only [expo_absC, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, Pi.natCast_apply, Complex.ofReal_natCast]`. Establish `: s + (Fintype.card (InfinitePlace F) : ℂ) * (-s / (Fintype.card (InfinitePlace F) * a) * a) = 0` using `by field_simp; ring`. Rewrite using `[this, zero_smul, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_twist_zero (ha : a ≠ 0) {φ : Sm F a} {s : ℂ} (h : lie F a (oneL F a) φ = s • φ) :
     ∃ χ : HChar F, lie F a (oneL F a) (mulChi a χ φ) = 0 := by
@@ -128,7 +128,7 @@ def ZeroCompl : Prop :=
     ∀ U ≤ C, IsStable U → ∃ D ≤ C, IsStable D ∧ U ⊓ D = ⊥ ∧ U ⊔ D = C
 
 /- English proof (translation)
-Take `⟨C, hm, hm', hs, hc⟩` from `h`. Use `(le_sSup_minimal act C hs hc).trans (sSup_le ?_) (hm' φ h1 h2)` and prove the remaining obligations. Introduce and unpack `V ⟨h3, h4, h5, h6⟩`. Conclude with `le_iSup (fun π : CuspSub F a => π.V) ⟨V, fun ψ hψ => hm ψ (h3 hψ), h4, h5, h6⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_iSup_of_zero (h : ZeroCompl F a) {φ : Sm F a} (h1 : IsCuspForm φ) (h2 : lie F a (oneL F a) φ = 0) :
     φ ∈ ⨆ π : CuspSub F a, π.V := by
@@ -138,7 +138,7 @@ theorem mem_iSup_of_zero (h : ZeroCompl F a) {φ : Sm F a} (h1 : IsCuspForm φ) 
   exact le_iSup (fun π : CuspSub F a => π.V) ⟨V, fun ψ hψ => hm ψ (h3 hψ), h4, h5, h6⟩
 
 /- English proof (translation)
-Establish `: (⨆ π : CuspSub F a, π.V).map (mulChi a χ).toLinearMap ≤ ⨆ π : CuspSub F a, π.V`. Rewrite using `[Submodule.map_iSup]`. Conclude with `iSup_le fun π => le_iSup (fun π : CuspSub F a => π.V) (π.twist χ)`. Conclude with `this ⟨φ, h, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulChi_mem_iSup (χ : HChar F) {φ : Sm F a} (h : φ ∈ ⨆ π : CuspSub F a, π.V) :
     mulChi a χ φ ∈ ⨆ π : CuspSub F a, π.V := by
@@ -148,9 +148,9 @@ theorem mulChi_mem_iSup (χ : HChar F) {φ : Sm F a} (h : φ ∈ ⨆ π : CuspSu
   exact this ⟨φ, h, rfl⟩
 
 /- English proof (translation)
-Introduce and unpack `F _ _ _ a φ hφ ⟨s, hs⟩`. Break down `eq_or_ne a 0 with rfl | ha` into its components or cases. Use `le_iSup (fun π : CuspSub F 0 => π.V) (CuspSub.triv F zero_le_one) ?_` and prove the remaining obligations. Conclude with `Submodule.mem_span_singleton.2 ⟨φ.1 1, Subtype.ext (funext fun g => by`. Rewrite using `[Subsingleton.elim g 1]`.
+Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_one _)⟩`. Take `⟨χ, hχ⟩` from `exists_twist_zero ha hs`. Establish `h1` using `mulChi_mem_iSup χ⁻¹ (mem_iSup_of_zero (h F a) (hφ.mulChi χ) hχ)`. Rewrite `h1` using `[← mulChi_mul, mul_inv_cancel, mulChi_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem cuspSemisimple_of (h : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (a : ℕ), ZeroCompl F a) :
     UpperTheory.V.Published.CuspSemisimpleReal := by

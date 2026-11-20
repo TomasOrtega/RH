@@ -12,13 +12,13 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Establish `hx' : IsWeight F μ x` using `hx`. Use `show IsWeight F (μ + rt a b) (F a b x)`. Introduce `c`. Establish `h` using `LinearMap.congr_fun (hg c c a b) x`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, hx' c, map_smul] at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : F c c (F a b x) = ((μ c : ℝ) : ℂ) • F a b x + ((if c = a then F c b else 0) x - (if b = c then F a c else 0) x)`. Rewrite using `[← h]`. Normalize the expressions using the abelian group laws. Rewrite using `[e]`. Apply the tactic sequence `by_cases h1 : c = a <;> by_cases h2 : b = c`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality.
 
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Simplify using `[rt]`. Substitute `h1` using the available equality. Establish `h3 : c ≠ b` using `fun h => h2 h.symm`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[rt, h2, h3, add_smul]`. Substitute `h2` using the available equality. Simplify using `[rt, h1, sub_eq_add_neg, add_smul]`. Establish `h3 : c ≠ b` using `fun h => h2 h.symm`. Simplify using `[rt, h1, h2, h3]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem F_wsp {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     {F : Fin n → Fin n → Module.End ℂ V} (hg : GlRel F) (a b : Fin n) {μ : Wt n} {x : V}
@@ -43,16 +43,16 @@ private theorem F_wsp {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     simp [rt, h1, h2, h3]
 
 /- English proof (translation)
-Simplify using `using ((UpperTheory.RealTr.trAdd V 0).2.1 W 0 0 (by simp) (by simp)).2.1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem trOn_zero' {V : Type} [AddCommGroup V] [Module ℂ V] (W : Submodule ℂ V) :
     trOn W (0 : Module.End ℂ V) = 0 := by
   simpa using ((UpperTheory.RealTr.trAdd V 0).2.1 W 0 0 (by simp) (by simp)).2.1
 
 /- English proof (translation)
-Proceed by induction on `I using Finset.induction_on with`. Consider the case `empty => simpa using trOn_zero' W`. Consider the case `insert i I hi ih`. Establish `hI : ∀ j ∈ I, ∀ x ∈ W, f j x ∈ W` using `fun j hj => hf j (mem_insert_of_mem hj)`. Establish `hs : ∀ x ∈ W, (∑ j ∈ I, f j) x ∈ W` using `fun x hx => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.sum_apply]`. Conclude with `W.sum_mem fun j hj => hI j hj x hx`. Rewrite using `[sum_insert hi, sum_insert hi, ← ih hI]`. Conclude with `((UpperTheory.RealTr.trAdd V (f i)).2.1 W (∑ j ∈ I, f j) 0 (hf i (mem_insert_self i I)) hs).1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trOn_sum' {V : Type} [AddCommGroup V] [Module ℂ V] (W : Submodule ℂ V) {ι : Type}
     (I : Finset ι) (f : ι → Module.End ℂ V) (hf : ∀ i ∈ I, ∀ x ∈ W, f i x ∈ W) :
@@ -69,7 +69,7 @@ private theorem trOn_sum' {V : Type} [AddCommGroup V] [Module ℂ V] (W : Submod
     exact ((UpperTheory.RealTr.trAdd V (f i)).2.1 W (∑ j ∈ I, f j) 0 (hf i (mem_insert_self i I)) hs).1
 
 /- English proof (translation)
-Establish `hk : ∀ x ∈ W, (k • B) x ∈ W` using `fun x hx => W.smul_mem k (hB x hx)`. Rewrite using `[((UpperTheory.RealTr.trAdd V Q).2.1 W (k • B) 1 hQ hk).2.2 h]`. Conclude with `((UpperTheory.RealTr.trAdd V B).2.1 W B k hB hB).2.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trOn_smul' {V : Type} [AddCommGroup V] [Module ℂ V] (W : Submodule ℂ V)
     (Q B : Module.End ℂ V) (k : ℂ) (hQ : ∀ x ∈ W, Q x ∈ W) (hB : ∀ x ∈ W, B x ∈ W)
@@ -79,7 +79,7 @@ private theorem trOn_smul' {V : Type} [AddCommGroup V] [Module ℂ V] (W : Submo
   exact ((UpperTheory.RealTr.trAdd V B).2.1 W B k hB hB).2.1
 
 /- English proof (translation)
-Establish `hk : ∀ x ∈ W, (k • B) x ∈ W` using `fun x hx => W.smul_mem k (hB x hx)`. Establish `hPk : ∀ x ∈ W, (P + k • B) x ∈ W` using `fun x hx => W.add_mem (hP x hx) (hk x hx)`. Rewrite using `[((UpperTheory.RealTr.trAdd V Q).2.1 W (P + k • B) 1 hQ hPk).2.2 h, ((UpperTheory.RealTr.trAdd V P).2.1 W (k • B) 1 hP hk).1, ((UpperTheory.RealTr.trAdd V B).2.1 W B k hB hB).2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem trOn_comb {V : Type} [AddCommGroup V] [Module ℂ V] (W : Submodule ℂ V)
     (P Q B : Module.End ℂ V) (k : ℂ) (hP : ∀ x ∈ W, P x ∈ W) (hQ : ∀ x ∈ W, Q x ∈ W)
@@ -92,11 +92,11 @@ private theorem trOn_comb {V : Type} [AddCommGroup V] [Module ℂ V] (W : Submod
     ((UpperTheory.RealTr.trAdd V B).2.1 W B k hB hB).2.1]
 
 /- English proof (translation)
-Establish `h : ∀ q : Fin n × Fin n, g q = (if q.1 = q.2 then g q else 0) + ((if q.1 < q.2 then g q else 0) + (if q.2 < q.1 then g q else 0))`. Introduce `q`. Break down `lt_trichotomy q.1 q.2 with h | h | h` into its components or cases. Simplify using `[h, h.ne, h.not_gt]`. Simplify using `[h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h, h.ne', h.not_gt]`. Establish `h1 : ∑ q : Fin n × Fin n, (if q.1 = q.2 then g q else 0) = ∑ a, g (a, a)`. Rewrite using `[Fintype.sum_prod_type]`. Simplify using the standard rewrite rules. Establish `h2 : ∑ q : Fin n × Fin n, (if q.1 < q.2 then g q else 0) = ∑ p ∈ posP n, g p`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[posP, sum_filter]`. Establish `h3 : ∑ q : Fin n × Fin n, (if q.2 < q.1 then g q else 0) = ∑ p ∈ posP n, g p.swap`. Rewrite using `[posP, sum_filter]`. Conclude with `(Equiv.sum_comp (Equiv.prodComm (Fin n) (Fin n)) (fun q => if q.2 < q.1 then g q else 0)).symm`. Rewrite using `[sum_congr rfl fun q _ => h q, sum_add_distrib, sum_add_distrib, h1, h2, h3, sum_add_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sum_split {n : ℕ} (g : Fin n × Fin n → ℂ) :
     ∑ q, g q = ∑ a, g (a, a) + ∑ p ∈ posP n, (g p + g p.swap) := by
@@ -118,35 +118,33 @@ private theorem sum_split {n : ℕ} (g : Fin n × Fin n → ℂ) :
   rw [sum_congr rfl fun q _ => h q, sum_add_distrib, sum_add_distrib, h1, h2, h3, sum_add_distrib]
 
 /- English proof (translation)
-Introduce `n V _ _ F hF S hS hSt B c s hC hc hs`. Use `choose t ht using fun p : Fin n × Fin n => UpperTheory.RealTr.chEx n V F hF S hS hSt (F p.1 p.2 * F p.2 p.1 * B)`. Establish `hg` using `hF.gl`. Use `haveI := hS`. Establish `hFW : ∀ a b μ x, x ∈ wsp F μ ⊓ S → F a b x ∈ wsp F (μ + rt a b) ⊓ S` using `fun a b μ x hx => ⟨F_wsp hg a b hx.1, hSt a b x hx.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hBW : ∀ μ x, x ∈ wsp F μ ⊓ S → B x ∈ wsp F μ ⊓ S`. Introduce `μ x hx`. Use `⟨?_, hC.2 x hx.2⟩` and prove the remaining obligations. Establish `hx' : IsWeight F μ x` using `hx.1`. Use `show IsWeight F μ (B x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `a`. Establish `h` using `LinearMap.congr_fun (hC.1 a a) x`. Simplify using `only [Module.End.mul_apply] at h`. Rewrite using `[← h, hx' a, map_smul]`. Establish `hrt : ∀ (a b : Fin n) (μ : Wt n), μ + rt a b + rt b a = μ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `a b μ`. Use extensionality with `c`. Simplify using `only [rt, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hback : ∀ a b μ x, x ∈ wsp F (μ + rt a b) ⊓ S → F b a x ∈ wsp F μ ⊓ S`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `a b μ x hx`. Use `hFW b a _ x hx` as an intermediate fact. Rewrite `this` using `[hrt]`. Then use the resulting hypothesis. Establish `hP : ∀ a b μ x, x ∈ wsp F μ ⊓ S → (F a b * F b a * B) x ∈ wsp F μ ⊓ S` using `fun a b μ x hx => hback b a μ _ (hFW b a μ _ (hBW μ x hx))`. Establish `hcyc : ∀ a b μ, trOn (wsp F μ ⊓ S) (F b a * F a b * B) = cf (t (a, b)) (μ + rt a b)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b μ`. Establish `h` using `(UpperTheory.RealTr.trAdd V (F b a)).2.2.1 (wsp F (μ + rt a b) ⊓ S) (wsp F μ ⊓ S) (F a b * B) inferInstance inferInstance (hback a b μ) (fun x hx => hFW a b μ _ (hBW μ x hx))`. Establish `e1 : F a b * B * F b a = F a b * F b a * B`. Rewrite using `[mul_assoc, hC.1 b a, mul_assoc]`. Rewrite `h` using `[e1, ← mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← h]`. Conclude with `(ht (a, b) _).symm`. Use `⟨t, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨a, b⟩ - μ show cf (t (a, b)) μ - cf (t (a, b)) (μ + rt a b) = ((μ a - μ b : ℝ) : ℂ) * cf c μ`. Establish `h0 : cf (t (a, b)) μ = trOn (wsp F μ ⊓ S) (F a b * F b a * B)` using `ht (a, b) μ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hcyc a b μ, h0, hc μ]`. Rewrite using `[trOn_comb (wsp F μ ⊓ S) (F b a * F a b * B) (F a b * F b a * B) B ((μ a - μ b : ℝ) : ℂ) (hP b a μ) (hP a b μ) (hBW μ)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `x hx`. Establish `hy : IsWeight F μ (B x)` using `(hBW μ x hx).1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h` using `LinearMap.congr_fun (hg a b b a) (B x)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, if_true, hy a, hy b] at h`. Simplify using `only [Module.End.mul_apply]`. Rewrite `h` using `[sub_eq_iff_eq_add']`. Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `push_cast`. Rewrite using `[sub_smul]`. Introduce `μ`. Establish `hs' : ∀ q : Fin n × Fin n, ∀ x ∈ wsp F μ ⊓ S, (F q.1 q.2 * F q.2 q.1 * B) x ∈ wsp F μ ⊓ S` using `fun q => hP q.1 q.2 μ`. Establish `hall : ∀ x ∈ wsp F μ ⊓ S, (∑ q : Fin n × Fin n, F q.1 q.2 * F q.2 q.1 * B) x ∈ wsp F μ ⊓ S`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Rewrite using `[LinearMap.sum_apply]`. Conclude with `Submodule.sum_mem _ fun q _ => hs' q x hx`. Establish `hcas : trOn (wsp F μ ⊓ S) (∑ q : Fin n × Fin n, F q.1 q.2 * F q.2 q.1 * B) = s * trOn (wsp F μ ⊓ S) B`. Use `trOn_smul' _ _ _ _ hall (hBW μ) fun x hx => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hs (B x) (hBW μ x hx).2, Cas, Fintype.sum_prod_type]`. Simplify using `[LinearMap.sum_apply, Module.End.mul_apply]`. Establish `hsum` using `trOn_sum' (wsp F μ ⊓ S) univ (fun q : Fin n × Fin n => F q.1 q.2 * F q.2 q.1 * B) (fun q _ => hs' q)`. Establish `hdiag : ∀ a, trOn (wsp F μ ⊓ S) (F a a * F a a * B) = ((μ a : ℂ)) ^ 2 * trOn (wsp F μ ⊓ S) B`. Introduce `a`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `trOn_smul' _ _ _ _ (hP a a μ) (hBW μ) fun x hx => ?_` and prove the remaining obligations. Establish `hy : IsWeight F μ (B x)` using `(hBW μ x hx).1`. Simplify using `only [Module.End.mul_apply, hy a, map_smul, smul_smul, sq]`. Rewrite using `[hc μ, ← hcas, hsum, sum_split]`. Simplify using `only [hdiag, Prod.swap]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← Finset.sum_mul]`. Use `congr 1`. Simplify using `[nsq]`. Use `sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Establish `h0 : cf (t p) μ = trOn (wsp F μ ⊓ S) (F p.1 p.2 * F p.2 p.1 * B)` using `ht p μ`.
-
-Rewrite using `[h0]`. Use `congr 1`. Conclude with `hcyc p.1 p.2 μ`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.chLap :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fin n → Fin n → Module.End ℂ V), UF F → ∀ S : Submodule ℂ V, FiniteDimensional ℂ S → Stb F S → ∀ B c (s : ℂ), Cm F S B → IsCh F S B c → (∀ x ∈ S, Cas F x = s • x) → ∃ t : Fin n × Fin n → FR n,

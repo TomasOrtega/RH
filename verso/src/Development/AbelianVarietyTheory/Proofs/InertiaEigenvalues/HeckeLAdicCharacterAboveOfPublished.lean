@@ -12,7 +12,7 @@ open NumberField IsDedekindDomain Neutral.B1 Formalism.ConjugateSelfDual Recipro
 namespace GlobalTheory.HeckeAboveBridge
 
 /- English proof (translation)
-Introduce `hdR hcr hpst`. Rewrite using `[heckeLAdicCharacterAbove_iff]`. Introduce `E Ω _ _ _ _ _ l _ P AI hT ι art hart χ n μ hχ hμ hl w A hA O _ _ _ Bw hB`. Establish `h1` using `hdR E Ω l P AI hT ι art hart χ n μ hχ hμ hl w A hA O Bw hB`. Conclude with `⟨h1.1, GlobalTheory.PotCrysRankOne.isPotCrystalline_of_deRham_character hpst E Ω l P AI hT μ hμ A O Bw hB h1.1, hcr E Ω l P AI hT ι art hart χ n μ hχ hμ hl w A hA O Bw hB, h1.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem heckeLAdicCharacterAbove_of_potSemistable :
     HeckeLAdicCharacterDeRham → HeckeLAdicCharacterCrystalline → DeRhamPotSemistable →

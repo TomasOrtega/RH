@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
 theorem sigO_coe (x : 𝓞 E) : (sigO σ x : E) = σ (x : E) := rfl
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[sigO_coe]`. Use `show σ (algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) a)) = algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) a)`. Rewrite using `[← IsScalarTower.algebraMap_apply (𝓞 F) (𝓞 E) E, IsScalarTower.algebraMap_apply (𝓞 F) F E]`. Conclude with `σ.commutes _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigO_alg (a : 𝓞 F) : sigO σ (algebraMap (𝓞 F) (𝓞 E) a) = algebraMap (𝓞 F) (𝓞 E) a := by
   apply RingOfIntegers.ext
@@ -35,7 +35,7 @@ theorem sigO_alg (a : 𝓞 F) : sigO σ (algebraMap (𝓞 F) (𝓞 E) a) = algeb
   exact σ.commutes _
 
 /- English proof (translation)
-Rewrite using `[← Ideal.map_le_iff_le_comap, Ideal.map_map]`. Establish `hc : (sigO σ).comp (algebraMap (𝓞 F) (𝓞 E)) = algebraMap (𝓞 F) (𝓞 E)` using `RingHom.ext (sigO_alg σ)`. Rewrite using `[hc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem IE_le : IE (E := E) v ≤ (IE (E := E) v).comap (sigO σ) := by
   rw [← Ideal.map_le_iff_le_comap, Ideal.map_map]
@@ -50,7 +50,7 @@ Both sides reduce to the same expression.
 theorem sigQ_mk (x : 𝓞 E) : sigQ σ v (Ideal.Quotient.mk _ x) = Ideal.Quotient.mk _ (sigO σ x) := rfl
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2 τ, h.2.2.2 τ, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sig_sig (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -58,9 +58,9 @@ theorem sig_sig (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   rw [h.2.2.2 τ, h.2.2.2 τ, star_star]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Rewrite using `[sigQ_mk, sigQ_mk]`. Use `congr 1`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Simplify using `only [sigO_coe]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Conclude with `sig_sig σ h _`.
+A detailed English derivation is pending.
 -/
 theorem sigQ_sigQ (h : IsCMExt F E σ) (x : QE (E := E) v) : sigQ σ v (sigQ σ v x) = x := by
   obtain ⟨y, rfl⟩ := Ideal.Quotient.mk_surjective x
@@ -71,7 +71,7 @@ theorem sigQ_sigQ (h : IsCMExt F E σ) (x : QE (E := E) v) : sigQ σ v (sigQ σ 
   exact sig_sig σ h _
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective c`. Rewrite using `[Ideal.Quotient.algebraMap_quotient_map_quotient, sigQ_mk, sigO_alg]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigQ_alg (c : 𝓞 F ⧸ v.asIdeal) :
     sigQ σ v (algebraMap (𝓞 F ⧸ v.asIdeal) (QE (E := E) v) c) = algebraMap (𝓞 F ⧸ v.asIdeal) (QE (E := E) v) c := by
@@ -93,13 +93,13 @@ def QSplit : Prop :=
     ∃ e : QE (E := E) v ≃+* (𝓞 F ⧸ v.asIdeal) × (𝓞 F ⧸ v.asIdeal), ∀ x, e (sigQ σ v x) = (e x).swap
 
 /- English proof (translation)
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem card_res : Nat.card (𝓞 F ⧸ v.asIdeal) = Ideal.absNorm v.asIdeal := by
   rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]
 
 /- English proof (translation)
-Apply `Nat.finite_of_card_ne_zero` to reduce the goal to its premises. Rewrite using `[card_res]`. Conclude with `fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem finite_res : Finite (𝓞 F ⧸ v.asIdeal) := by
   apply Nat.finite_of_card_ne_zero
@@ -107,7 +107,7 @@ theorem finite_res : Finite (𝓞 F ⧸ v.asIdeal) := by
   exact fun h => v.ne_bot (Ideal.absNorm_eq_zero_iff.mp h)
 
 /- English proof (translation)
-Conclude with `Ideal.map_ne_bot_of_ne_bot v.ne_bot`.
+A detailed English derivation is pending.
 -/
 theorem IE_ne_bot : IE (E := E) v ≠ ⊥ := by
   exact Ideal.map_ne_bot_of_ne_bot v.ne_bot

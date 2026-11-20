@@ -4,13 +4,13 @@ open IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `v : HeightOneSpectrum R` to `IsDiscreteValuationRing.maximalIdeal R`. Establish `hinj : Function.Injective (algebraMap R (integralClosure R L))`. Establish `h : Function.Injective (algebraMap R L)`. Rewrite using `[IsScalarTower.algebraMap_eq R K L]`. Conclude with `(algebraMap K L).injective.comp (IsFractionRing.injective R K)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[IsScalarTower.algebraMap_eq R (integralClosure R L) L]`. Rewrite `h` using `[RingHom.coe_comp]`. Conclude with `Function.Injective.of_comp h`. Establish `: FaithfulSMul R (integralClosure R L)` using `(faithfulSMul_iff_algebraMap_injective _ _).2 hinj`. Establish `: Module.IsTorsionFree R (integralClosure R L)` using `inferInstance`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `hlo : P.asIdeal.LiesOver v.asIdeal`. Prove the components needed by the constructor for the conclusion. Establish `hP` using `P.isPrime`. Establish `hne : P.asIdeal.under R ≠ ⊥` using `Ideal.under_ne_bot R P.ne_bot`. Conclude with `((IsLocalRing.eq_maximalIdeal (Ideal.IsPrime.isMaximal inferInstance hne))).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1` using `HeightOneSpectrum.valuation_liesOver L v P (algebraMap R K π)`. Rewrite using `[← h1, Ideal.ramificationIdx'_eq_ramificationIdx _ _ v.ne_bot, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_singleton v hπ.ne_zero hπ.maximalIdeal_eq, ← WithZero.exp_nsmul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valuation_uniformizer_integralClosure (R K L : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [Field K] [Algebra R K] [IsFractionRing R K] [Field L] [Algebra K L] [FiniteDimensional K L]

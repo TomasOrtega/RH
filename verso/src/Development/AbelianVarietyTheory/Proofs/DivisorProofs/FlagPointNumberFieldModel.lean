@@ -11,9 +11,9 @@ namespace GlobalTheory.FlagDescent
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `P Q`. Use extensionality with `x`. Break down `h x with hx | ⟨n, hn⟩` into its components or cases. Conclude with `⟨fun hm => absurd (Ideal.eq_top_of_isUnit_mem _ hm hx) P.2.ne_top, fun hm => absurd (Ideal.eq_top_of_isUnit_mem _ hm hx) Q.2.ne_top⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `hP : x ∈ P.asIdeal` using `P.2.mem_of_pow_mem n (by rw [hn]; exact zero_mem _)`. Establish `hQ : x ∈ Q.asIdeal` using `Q.2.mem_of_pow_mem n (by rw [hn]; exact zero_mem _)`. Conclude with `⟨fun _ => hQ, fun _ => hP⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem subsingleton_primeSpectrum {R : Type} [CommRing R] (h : ∀ x : R, IsUnit x ∨ IsNilpotent x) :
     Subsingleton (PrimeSpectrum R) := by
@@ -28,23 +28,21 @@ theorem subsingleton_primeSpectrum {R : Type} [CommRing R] (h : ∀ x : R, IsUni
     exact ⟨fun _ => hQ, fun _ => hP⟩
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal R`. Set `p : Sp R` to `(show PrimeSpectrum R from ⟨M, hM.isPrime⟩)`. Take `⟨U, hU, hpU, -⟩` from `exists_isAffineOpen_mem_and_subset (x := x p) (U := ⊤) trivial`. Establish `hr : Set.range x ⊆ Set.range U.ι`. Introduce and unpack `_ ⟨q, rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Establish `: q = p` using `Subsingleton.elim (α := PrimeSpectrum R) q p`. Rewrite using `[this]`. Conclude with `hpU`. Set `xU : Sp R ⟶ U.toScheme` to `IsOpenImmersion.lift U.ι x hr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxU : xU ≫ U.ι = x` using `IsOpenImmersion.lift_fac _ _ _`. Set `φ : Γ(X, U) ⟶ CommRingCat.of R` to `Spec.preimage (xU ≫ hU.isoSpec.hom)`. Establish `hφ : Spec.map φ = xU ≫ hU.isoSpec.hom` using `Spec.map_preimage _`. Establish `hft : (CommRingCat.Hom.hom (h.appLE ⊤ U (by simp))).FiniteType` using `HasRingHomProperty.appLE (P := @LocallyOfFiniteType) h inferInstance ⟨⊤, isAffineOpen_top (Sp ℤ)⟩ ⟨U, hU⟩ (by simp)`. Establish `hft' : (Int.castRingHom Γ(X, U)).FiniteType`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hft.comp (RingHom.FiniteType.of_surjective (CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv) (fun a => ⟨(CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of ℤ)).hom) a, by`. Rewrite using `[← CommRingCat.comp_apply, Iso.hom_inv_id]`. Use the proof step `rfl⟩))`. Establish `e : (CommRingCat.Hom.hom (h.appLE ⊤ U (by simp))).comp (CommRingCat.Hom.hom (Scheme.ΓSpecIso (CommRingCat.of ℤ)).inv) = Int.castRingHom Γ(X, U)` using `RingHom.ext_int _ _`. Rewrite `h2` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `letI : Algebra ℤ Γ(X, U) := (Int.castRingHom Γ(X, U)).toAlgebra`. Take `⟨t, ht⟩` from `hft'.out`. Use `⟨t.image φ.hom, ?_⟩` and prove the remaining obligations. Introduce `T _ β hβ hs`. Establish `hR : ∀ b : Γ(X, U), ∃ c, β c = φ.hom b`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `b`. Establish `hb : b ∈ Algebra.adjoin ℤ (t : Set Γ(X, U))` using `by rw [ht]; trivial`. Express the relevant statement in the definitionally equal form `φ.hom b ∈ β.range`. Proceed by induction on `hb using Algebra.adjoin_induction with`. Consider the case `mem b hb => exact hs (Finset.mem_coe.2 (Finset.mem_image_of_mem _ hb))`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `algebraMap r => exact ⟨r, by rw [map_intCast, eq_intCast (algebraMap ℤ Γ(X, U)), map_intCast]⟩`. Consider the case `add b b' _ _ hb hb' => rw [map_add]`. Conclude with `add_mem hb hb'`. Consider the case `mul b b' _ _ hb hb' => rw [map_mul]`. Conclude with `mul_mem hb hb'`.
+Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose ψ₀ hψ₀ using hR`. Set `ψ : Γ(X, U) →+* T` to `{ toFun := ψ₀ map_one' := hβ (by simp [hψ₀]) map_mul' := fun a b => hβ (by simp [hψ₀]) map_zero' := hβ (by simp [hψ₀]) map_add' := fun a b => hβ (by simp [hψ₀]) }`. Establish `hψ : CommRingCat.ofHom ψ ≫ CommRingCat.ofHom β = φ`. Use extensionality with `b`. Conclude with `hψ₀ b`.
-
-Use `⟨Spec.map (CommRingCat.ofHom ψ) ≫ hU.isoSpec.inv ≫ U.ι, ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc, spMap, ← Spec.map_comp, hψ, hφ, Category.assoc, Iso.hom_inv_id_assoc, hxU]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finset_factor {X : Scheme.{0}} (h : X ⟶ Sp ℤ) [LocallyOfFiniteType h]
     {R : Type} [CommRing R] [Nontrivial R] [Subsingleton (PrimeSpectrum R)] (x : Sp R ⟶ X) :
@@ -107,16 +105,16 @@ namespace GlobalTheory.FlagDescent
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.Toroidal CategoryTheory.Limits
 
 /- English proof (translation)
-Rewrite using `[spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (a : A →+* B) (b : B →+* C) :
     spMap b ≫ spMap a = spMap (b.comp a) := by
   rw [spMap, spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[← Spec.map_preimage f, ← Spec.map_preimage g]`. Rewrite `h` using `[spMap, ← Spec.map_comp, ← Spec.map_comp]`. Establish `h'` using `Spec.map_injective h`. Use `congr 1`. Use extensionality with `b`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Apply `hι` to reduce the goal to its premises. Use `congrArg (fun φ => CommRingCat.Hom.hom φ b) h'` as an intermediate fact. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem spMap_cancel {A Q B : Type} [CommRing A] [CommRing Q] [CommRing B] (ι : A →+* Q)
     (hι : Function.Injective ι) (f g : Sp A ⟶ Sp B) (h : spMap ι ≫ f = spMap ι ≫ g) : f = g := by
@@ -130,37 +128,27 @@ theorem spMap_cancel {A Q B : Type} [CommRing A] [CommRing Q] [CommRing B] (ι :
   simpa using this
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Z y`. Use `haveI : FiniteDimensional ℚ c.F := c.fin`. Use `haveI : NumberField c.F := {}`. Use `haveI := isProper_toroidalModel_structureMap Z`. Use `haveI : LocallyOfFiniteType (spMap (Int.castRingHom (𝓞 c.F))) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[spMap, HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Express the relevant statement in the definitionally equal form `(Int.castRingHom (𝓞 c.F)).FiniteType`. Establish `e : Int.castRingHom (𝓞 c.F) = algebraMap ℤ (𝓞 c.F)` using `RingHom.ext_int _ _`. Rewrite using `[e]`. Conclude with `(RingHom.finite_algebraMap.2 inferInstance).to_finiteType`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `haveI : LocallyOfFiniteType Z.t.G.hom := by haveI := Z.t.semi.smooth; infer_instance`. Use `haveI : Subsingleton (PrimeSpectrum (DualNumber Qb)) := subsingleton_primeSpectrum fun x => by`. Distinguish the cases in `hx : TrivSqZeroExt.fst x = 0`. Use `right`. Use `⟨2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Apply the tactic sequence `ext <;> simp [pow_two, hx]`. Use `left`. Conclude with `TrivSqZeroExt.isUnit_iff_isUnit_fst.2 (isUnit_iff_ne_zero.2 hx)`. Use `haveI : Subsingleton (PrimeSpectrum Qb) := subsingleton_primeSpectrum fun x => by`. Distinguish the cases in `hx : x = 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `right; exact ⟨1, by simp [hx]⟩`. Use `left`. Conclude with `isUnit_iff_ne_zero.2 hx`. Take `⟨s₀, hs₀⟩` from `exists_finset_factor (Z.s ≫ spMap (Int.castRingHom (𝓞 c.F))) (y.y ≫ genι Z)`. Establish `hu` using `fun τ i => exists_finset_factor (Z.t.G.hom ≫ Z.s ≫ spMap (Int.castRingHom (𝓞 c.F))) (y.u τ i)`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Use `choose su hsu using hu`. Set `b` to `Module.finBasis ℚ c.F`. Set `S : Set Qb` to `(s₀ : Set Qb) ∪ Set.range (fun k => y.fK (b k)) ∪ ⋃ τ, ⋃ i, (TrivSqZeroExt.fst '' (su τ i : Set (DualNumber Qb)) ∪ TrivSqZeroExt.snd '' (su τ i : Set (DualNumber Qb)))`. Establish `hSfin : S.Finite` using `(s₀.finite_toSet.union (Set.finite_range _)).union (Set.finite_iUnion fun τ => Set.finite_iUnion fun i => ((su τ i).finite_toSet.image _).union ((su τ i).finite_toSet.image _))`. Use `haveI : Finite S := hSfin.to_subtype`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : Algebra.IsAlgebraic ℚ Qb := algebraicClosure.isAlgebraic ℚ ℂ`. Set `Kf : IntermediateField ℚ Qb` to `IntermediateField.adjoin ℚ S`. Use `haveI : FiniteDimensional ℚ Kf := IntermediateField.finiteDimensional_adjoin fun x _ => (Algebra.IsAlgebraic.isAlgebraic x).isIntegral`. Use `haveI : NumberField Kf := {}`. Establish `hSK : ∀ z ∈ S, z ∈ Kf` using `fun z hz => IntermediateField.subset_adjoin ℚ S hz`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ι : Kf →+* Qb` to `Kf.val.toRingHom`. Establish `hι : Function.Injective ι` using `Subtype.val_injective`. Establish `hmem : ∀ x, y.fK x ∈ Kf`. Introduce `x`. Establish `hx : x ∈ Submodule.span ℚ (Set.range b)` using `by rw [b.span_eq]; trivial`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `hSK _ (Or.inl (Or.inr ⟨k, rfl⟩))`. Consider the case `zero => rw [map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_mem _`. Consider the case `add x x' _ _ hx hx' => rw [map_add]`. Conclude with `add_mem hx hx'`. Consider the case `smul q x _ hx => rw [map_rat_smul]`. Conclude with `Kf.smul_mem hx`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Set `jF : c.F →+* Kf` to `y.fK.codRestrict Kf hmem`. Establish `hιjF : ι.comp jF = y.fK` using `RingHom.ext fun _ => rfl`. Take `⟨x0, hx0⟩` from `hs₀ Kf ι hι fun z hz => ⟨⟨z, hSK z (Or.inl (Or.inl hz))⟩, rfl⟩`. Establish `w : x0 ≫ Z.s = spMap jF ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Apply `spMap_cancel ι hι` to reduce the goal to its premises.
-
-Rewrite using `[reassoc_of% hx0, pullback.condition, ← Category.assoc, y.y_over, ← Category.assoc, spMap_comp' jF ι, hιjF]`. Set `yK : Sp Kf ⟶ gen Z` to `pullback.lift x0 (spMap jF) w`. Establish `hdual : Function.Injective (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR ι)`. Introduce `z z' hzz`. Establish `h1` using `congrArg TrivSqZeroExt.fst hzz`.
-
-Establish `h2` using `congrArg TrivSqZeroExt.snd hzz`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Chart.dualMapR] at h1 h2`. Conclude with `TrivSqZeroExt.ext (hι h1) (hι h2)`. Establish `hU : ∀ τ i, ∃ v : Sp (DualNumber Kf) ⟶ Z.t.G.left, spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR ι) ≫ v = y.u τ i`. Introduce `τ i`.
-
-Use `hsu τ i (DualNumber Kf) _ hdual ?_` and prove the remaining obligations. Introduce `z hz`. Establish `h1 : TrivSqZeroExt.fst z ∈ Kf` using `hSK _ (Or.inr (Set.mem_iUnion.2 ⟨τ, Set.mem_iUnion.2 ⟨i, Or.inl ⟨z, hz, rfl⟩⟩⟩))`. Establish `h2 : TrivSqZeroExt.snd z ∈ Kf` using `hSK _ (Or.inr (Set.mem_iUnion.2 ⟨τ, Set.mem_iUnion.2 ⟨i, Or.inr ⟨z, hz, rfl⟩⟩⟩))`. Use `⟨((⟨_, h1⟩ : Kf), (⟨_, h2⟩ : Kf)), ?_⟩` and prove the remaining obligations.
-
-Apply the tactic sequence `ext <;> simp [ReciprocityTheory.ChartRestriction.G.Chart.dualMapR, ι]`. Use `choose uK huK using hU`. Use `⟨Kf, inferInstance, inferInstance, ι, jF, yK, uK, hιjF, ?_, pullback.lift_snd _ _ _, fun τ i => (huK τ i).symm⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, pullback.lift_fst, hx0]`.
-
-Rewrite using `[Category.assoc, pullback.lift_snd, spMap_comp', hιjF, y.y_over]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_numberField : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c (algebraMap (𝓞 c.F) c.F)) (y : GlobalTheory.ShFam.Pad.FlagPt Z Qb), ∃ (K : Type) (_ : Field K) (_ : NumberField K) (ι : K →+* Qb) (jF : c.F →+* K) (yK : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp K ⟶ GlobalTheory.Toroidal.gen Z) (uK : ∀ τ : E →+* ℂ, Fin (Dw.mult τ) → (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Sp (DualNumber K) ⟶ Z.t.G.left)), ι.comp jF = y.fK ∧ ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap ι ≫ yK = y.y ∧ yK ≫ GlobalTheory.Toroidal.genStr Z = ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap jF ∧ ∀ τ i, y.u τ i = ReciprocityTheory.ChartRestriction.G.Geo.Tor.spMap (ReciprocityTheory.ChartRestriction.G.Chart.dualMapR ι) ≫ uK τ i := by
   intro E _ _ _ H Dw l Xo c Z y

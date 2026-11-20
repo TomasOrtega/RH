@@ -12,51 +12,51 @@ open PositivityTheory.Rg.Sw.WR PositivityTheory.Rg.Sw.WR.Z
 variable {n : ℕ}
 
 /- English proof (translation)
-Simplify using `[evQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evQ_mul (s z : ℂ) (P Q : Fm n) (B : MC n) : evQ s z (P * Q) B = evQ s z P B * evQ s z Q B := by
   simp [evQ]
 
 /- English proof (translation)
-Simplify using `[evQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evQ_add (s z : ℂ) (P Q : Fm n) (B : MC n) : evQ s z (P + Q) B = evQ s z P B + evQ s z Q B := by
   simp [evQ]
 
 /- English proof (translation)
-Simplify using `[evQ, map_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evQ_sum (s z : ℂ) {ι : Type} (t : Finset ι) (P : ι → Fm n) (B : MC n) :
     evQ s z (∑ i ∈ t, P i) B = ∑ i ∈ t, evQ s z (P i) B := by
   simp [evQ, map_sum]
 
 /- English proof (translation)
-Simplify using `[evQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evQ_CC (s z a : ℂ) (B : MC n) : evQ s z (MvPolynomial.C (Polynomial.C a)) B = a := by
   simp [evQ]
 
 /- English proof (translation)
-Simplify using `[evQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evQ_C (s z : ℂ) (p : Polynomial ℂ) (B : MC n) : evQ s z (MvPolynomial.C p) B = p.eval z := by
   simp [evQ]
 
 /- English proof (translation)
-Simplify using `[evQ, yv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evQ_yv (s z : ℂ) (b : Bool) (i j : Fin n) (B : MC n) : evQ s z (yv b i j) B = vals s B (b, i, j) := by
   simp [evQ, yv]
 
 /- English proof (translation)
-Rewrite using `[multPart_apply, evQ_mul, evQ_CC, evQ_mul, evQ_mul, evQ_C, evQ_yv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem evQ_multPart (s z : ℂ) (m : ℕ) (b : Bool) (k l : Fin n) (Q : Fm n) (B : MC n) :
     evQ s z (multPart s m b k l Q) B = -(cB s b) * ((alB m b).eval z * vals s B (b, l, k) * evQ s z Q B) := by
   rw [multPart_apply, evQ_mul, evQ_CC, evQ_mul, evQ_mul, evQ_C, evQ_yv]
 
 /- English proof (translation)
-Rewrite using `[derPart_apply, evQ_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[evQ_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[evQ_mul, evQ_CC, evQ_mul, evQ_mul, evQ_yv, evQ_yv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem evQ_derPart (s z : ℂ) (b : Bool) (k l : Fin n) (Q : Fm n) (B : MC n) :
     evQ s z (derPart s b k l Q) B = ∑ a : Fin n, ∑ d : Fin n,
@@ -68,9 +68,9 @@ theorem evQ_derPart (s z : ℂ) (b : Bool) (k l : Fin n) (Q : Fm n) (B : MC n) :
   rw [evQ_mul, evQ_CC, evQ_mul, evQ_mul, evQ_yv, evQ_yv]
 
 /- English proof (translation)
-Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.of_apply, eU]`. Rewrite using `[Finset.sum_eq_single l]`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Simplify using `[hb]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Simplify using the standard rewrite rules.
 -/
@@ -88,11 +88,11 @@ theorem trace_eU (Y : Matrix (Fin n) (Fin n) ℂ) (k l : Fin n) : (Y * Matrix.of
   · simp
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply, eU]`. Rewrite using `[Finset.sum_eq_single l]`. Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules. Introduce `b _ hb`. Rewrite using `[Finset.sum_eq_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j _`. Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sandwich_eU (Y : Matrix (Fin n) (Fin n) ℂ) (k l a d : Fin n) :
     (Y * Matrix.of (eU k l) * Y) a d = Y a k * Y l d := by

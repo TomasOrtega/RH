@@ -11,9 +11,9 @@ variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {σ : L
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 
 /- English proof (translation)
-Establish `h : mat s * Matrix.diagonal (fun i => ϖ ^ (-b i)) = 1`. Rewrite using `[hs, Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← zpow_add₀ hϖ, add_neg_cancel, zpow_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem mat_inv_diag {ϖ : L} (hϖ : ϖ ≠ 0) {s : GU σ r} {b : Fin r → ℤ}
     (hs : mat s = Matrix.diagonal (fun i => ϖ ^ b i)) : mat s⁻¹ = Matrix.diagonal (fun i => ϖ ^ (-b i)) := by
@@ -28,11 +28,11 @@ theorem mat_inv_diag {ϖ : L} (hϖ : ϖ ≠ 0) {s : GU σ r} {b : Fin r → ℤ}
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 
 /- English proof (translation)
-Proceed by induction on `d using Int.induction_on with`. Consider the case `zero => simp [mat_one]`. Consider the case `succ k ih`. Rewrite using `[zpow_add_one, mat_mul, ih, hs, Matrix.diagonal_mul_diagonal]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[← zpow_add₀ hϖ]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Consider the case `pred k ih`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Rewrite using `[zpow_sub_one, mat_mul, ih, mat_inv_diag hϖ hs, Matrix.diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[← zpow_add₀ hϖ]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -59,7 +59,7 @@ theorem mat_zpow_diag {ϖ : L} (hϖ : ϖ ≠ 0) {s : GU σ r} {b : Fin r → ℤ
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 
 /- English proof (translation)
-Rewrite using `[mat_mul, mat_mul, mat_inv_diag hϖ hs, hs, Matrix.mul_diagonal, Matrix.diagonal_mul, sub_eq_add_neg, zpow_add₀ hϖ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mat_conj_apply {ϖ : L} (hϖ : ϖ ≠ 0) {s : GU σ r} {b : Fin r → ℤ}
     (hs : mat s = Matrix.diagonal (fun i => ϖ ^ b i)) (g : GU σ r) (i j : Fin r) :
@@ -69,9 +69,9 @@ theorem mat_conj_apply {ϖ : L} (hϖ : ϖ ≠ 0) {s : GU σ r} {b : Fin r → �
   ring
 
 /- English proof (translation)
-Introduce `L _ _ ϖ σ r γ b b' d s s' g hϖ hb hs hs' hg`. Apply `mat_injective` to reduce the goal to its premises. Use extensionality with `i j`. Rewrite using `[mat_conj_apply hϖ hs', mat_conj_apply hϖ (mat_zpow_diag hϖ hs d)]`. Distinguish the cases in `h : γ i = γ j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hb i j h, mul_sub]`. Establish `h0 : mat g i j = 0` using `hg i j h`. Rewrite using `[h0, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem torusConj : GlobalTheory.SatakeWeyl.TorusConj := by
   intro L _ _ ϖ σ r γ b b' d s s' g hϖ hb hs hs' hg

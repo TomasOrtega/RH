@@ -15,9 +15,9 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Take `⟨c₀, hc₀⟩` from `relIndex_sSub_inf_eq hK hF hs hd hA₀ hA₀i hB₀ hB₀i h𝔭`. Use `⟨c₀, fun c hc => ?_⟩` and prove the remaining obligations. Take `⟨k₀, hk₀⟩` from `hc₀ c hc`. Use `⟨k₀, fun k hk => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `hk₀ k hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Rewrite using `[h3]`. Conclude with `relIndex_hermL hK hF hs hd hA₀ hA₀i hB₀ hB₀i h𝔭 h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_sSub_inf (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {A₀ : Submodule (𝓞 K) V}
@@ -45,23 +45,23 @@ namespace Formalism.HermitianLattices.Ext.L3
 open D2
 
 /- English proof (translation)
-Introduce `K F _ _ _ _ _ _ hK hF V _ _ _ _ _ h A₀ B₀ 𝔭 hs hd h𝔭 hA₀ hB₀ hA₀i hB₀i`. Take `⟨c₁, hc₁⟩` from `D2.relIndex_sSub_inf hK hF hs hd hA₀ hA₀i hB₀ hB₀i h𝔭`. Take `⟨c₂, hc₂⟩` from `D2.relIndex_nSub hK hF hA₀ hB₀ h𝔭`. Use `set c := c₁ + c₂ with hc`. Take `⟨k₁, hk₁⟩` from `hc₁ c (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k₂, hk₂⟩` from `hc₂ c (by omega)`. Take `⟨k₃, hk₃⟩` from `D2.akCount_eq_relIndex hK hF hs hd hA₀ hA₀i h𝔭`. Take `⟨k₄, hk₄⟩` from `D2.akCount_eq_relIndex hK hF hs hd hB₀ hB₀i h𝔭`. Take `⟨k₅, hk₅⟩` from `D2.relIndex_inf_glSub hK hF hs hd hA₀ hA₀i hB₀ h𝔭`. Take `⟨k₆, hk₆⟩` from `D2.relIndex_inf_glSub hK hF hs hd hB₀ hB₀i hA₀ h𝔭`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k₇, hk₇⟩` from `D2.nSub_le_glSub hB₀ hA₀ h𝔭`. Take `⟨k₈, hk₈⟩` from `D2.alphaL_eq hK hF hs hd hA₀ hA₀i h𝔭`. Take `⟨k₉, hk₉⟩` from `D2.alphaL_eq hK hF hs hd hB₀ hB₀i h𝔭`. Use `set k := k₁ + k₂ + k₃ + k₄ + k₅ + k₆ + k₇ + k₈ + k₉ with hk`. Take `⟨hJI, hIJ⟩` from `hk₁ k (by omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hNN, hNNi⟩` from `hk₂ k (by omega)`. Establish `hakA` using `hk₃ k (by omega)`. Establish `hakB` using `hk₄ (k + c) (by omega)`. Establish `horbAB` using `hk₅ k (by omega)`. Establish `horbBA` using `hk₆ (k + c) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNBA` using `hk₇ (k + c) (by omega)`. Establish `hαA` using `hk₈ k (by omega)`. Establish `hαB` using `hk₉ (k + c) (by omega)`. Establish `f1` using `D2.nSub_le_sSub hF hA₀i h𝔭 k`. Establish `f2` using `D2.nSub_le_sSub hF hB₀i h𝔭 (k + c)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNJ : nSub (locF 𝔭 B₀) 𝔭 (k + c) ≤ sSub h (locF 𝔭 B₀) 𝔭 (k + c) ⊓ glSub (locF 𝔭 A₀)` using `le_inf f2 hNBA`. Establish `hIS : sSub h (locF 𝔭 A₀) 𝔭 k ⊓ glSub (locF 𝔭 B₀) ≤ sSub h (locF 𝔭 A₀) 𝔭 k` using `inf_le_left`. Establish `hJS : sSub h (locF 𝔭 B₀) 𝔭 (k + c) ⊓ glSub (locF 𝔭 A₀) ≤ sSub h (locF 𝔭 B₀) 𝔭 (k + c)` using `inf_le_left`. Establish `e1` using `Subgroup.relIndex_mul_relIndex (hHK := hNN) (hKL := f1)`. Establish `e2` using `Subgroup.relIndex_mul_relIndex (hHK := hNJ) (hKL := hJI)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3` using `Subgroup.relIndex_mul_relIndex (hHK := hNJ.trans hJI) (hKL := hIS)`. Establish `e4` using `Subgroup.relIndex_mul_relIndex (hHK := hNJ) (hKL := hJS)`. Establish `e5 : (nSub (locF 𝔭 A₀) 𝔭 k).relIndex (sSub h (locF 𝔭 A₀) 𝔭 k) * (nSub (locF 𝔭 B₀) 𝔭 (k + c)).relIndex (nSub (locF 𝔭 A₀) 𝔭 k) = (nSub (locF 𝔭 B₀) 𝔭 (k + c)).relIndex (sSub h (locF 𝔭 B₀) 𝔭 (k + c) ⊓ glSub (locF 𝔭 A₀)) * ((sSub h (locF 𝔭 B₀) 𝔭 (k + c) ⊓ glSub (locF 𝔭 A₀)).relIndex ( …`. Rewrite using `[mul_comm, e1, ← e3, ← e2, mul_assoc]`. Establish `E : akCount h (locF 𝔭 A₀) 𝔭 k * Ideal.absNorm 𝔭 ^ (2 * finrank K V ^ 2 * c) * Ideal.absNorm 𝔭 ^ (finrank K V * vd h (locF 𝔭 B₀) 𝔭) * orbCount h (locF 𝔭 B₀) (locF 𝔭 A₀) = akCount h (locF 𝔭 B₀) 𝔭 (k + c) * orbCount h (locF 𝔭 A₀) (locF 𝔭 B₀) * Ideal.absNorm 𝔭 ^ (finrank K V ^ 2 * c …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hakA, hakB, ← horbAB, ← horbBA, ← hNNi, ← hIJ, ← e4, e5]`. Expand and normalize the polynomial expressions, which then agree. Establish `hQ : (Ideal.absNorm 𝔭 : ℝ) ≠ 0`. Establish `hb : 𝔭 ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField h𝔭 (NumberField.RingOfIntegers.not_isField F)`. Conclude with `fun h0 => hb (Ideal.absNorm_eq_zero_iff.mp h0)` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `Er : (akCount h (locF 𝔭 A₀) 𝔭 k : ℝ) * (Ideal.absNorm 𝔭 : ℝ) ^ (2 * finrank K V ^ 2 * c) * (Ideal.absNorm 𝔭 : ℝ) ^ (finrank K V * vd h (locF 𝔭 B₀) 𝔭) * (orbCount h (locF 𝔭 B₀) (locF 𝔭 A₀) : ℝ) = (akCount h (locF 𝔭 B₀) 𝔭 (k + c) : ℝ) * (orbCount h (locF 𝔭 A₀) (locF 𝔭 B₀) : ℝ) * (I …`. Conclude with `E` after adjusting the coercions. Rewrite using `[hαA, hαB, div_mul_eq_mul_div, div_mul_eq_mul_div, div_mul_eq_mul_div, div_mul_eq_mul_div, div_eq_div_iff (pow_ne_zero _ hQ) (pow_ne_zero _ hQ)]`. Apply `mul_right_cancel₀ (pow_ne_zero (finrank K V ^ 2 * c) hQ)` to reduce the goal to its premises. Take the linear combination `((Ideal.absNorm 𝔭 : ℝ) ^ (k * finrank K V ^ 2)) * Er`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem local_density_ratio_holds : LocalDensityRatio := by
   intro K F _ _ _ _ _ _ hK hF V _ _ _ _ _ h A₀ B₀ 𝔭 hs hd h𝔭 hA₀ hB₀ hA₀i hB₀i

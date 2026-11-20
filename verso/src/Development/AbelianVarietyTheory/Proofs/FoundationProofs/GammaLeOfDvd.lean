@@ -14,9 +14,9 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Introduce `γ hγ`. Rewrite `hγ`, the goal using `[CongruenceSubgroup.Gamma_mem]`. Establish `key : ∀ x : ℤ, (x : ZMod N) = ZMod.castHom hd (ZMod N) (x : ZMod N')` using `fun x => by`. Rewrite using `[map_intCast]`. Take `⟨h1, h2, h3, h4⟩` from `hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[key, h1, map_one]`. Rewrite using `[key, h2, map_zero]`. Rewrite using `[key, h3, map_zero]`. Rewrite using `[key, h4, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem gamma_le_of_dvd {N N' : ℕ} (hd : N ∣ N') :
     CongruenceSubgroup.Gamma N' ≤ CongruenceSubgroup.Gamma N := by
@@ -32,9 +32,9 @@ theorem gamma_le_of_dvd {N N' : ℕ} (hd : N ∣ N') :
   · rw [key, h4, map_one]
 
 /- English proof (translation)
-Introduce `E N N' w w' f hN' hd hw hf`. Use `⟨fun γ hγ τ => hf.1 γ (gamma_le_of_dvd hd hγ) τ, fun γ => ?_⟩` and prove the remaining obligations. Establish `h1 : QAll (· ∈ E) N' fun τ => DD τ ^ w * f (γ • τ)` using `QAll.of_dvd hN' hd E.zero_mem (hf.2 γ)`. Establish `h2 : QAll (· ∈ E) N' fun τ => DD τ ^ (w' - w)` using `QAllSubring.pow (w' - w) (eis_qAll N' hN' DD (Or.inr (Or.inr rfl)) E)`. Establish `h3` using `QAllSubring.mul h2 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(congrArg (QAll (· ∈ E) N') (funext fun τ => ?_)).mp h3` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← pow_add, Nat.sub_add_cancel hw]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lv_mono : ∀ (E : Subring ℂ) (N N' w w' : ℕ) (f : ℍ → ℂ), 0 < N' → N ∣ N' → w ≤ w' →
     Lv E N w f → Lv E N' w' f := by

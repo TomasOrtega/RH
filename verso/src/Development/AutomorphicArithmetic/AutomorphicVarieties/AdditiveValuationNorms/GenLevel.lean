@@ -9,13 +9,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.
 open UpperTheory.V UpperTheory.V.PropA NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
 /- English proof (translation)
-Introduce `l _ L₀ _ _ hmu`. Establish `hM` using `muQ L₀ (AlgebraicClosure L₀) l`. Establish `hq : qExp l ≤ cZero l L₀` using `hM.2.2.1.mp hmu`. Establish `hP` using `princGen l (cZero l L₀) hq`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu, hu'⟩ : ∃ u ∈ KStar.TotallyRealRoots.princ l (cZero l L₀), u ∉ KStar.TotallyRealRoots.princ l (cZero l L₀ + 1) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `h1` using `hP.2.2 1`. Rewrite `h1` using `[Subgroup.relIndex_eq_one.mpr hne, pow_one]`. Conclude with `(Fact.out : l.Prime).one_lt.ne h1`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hr` using `cycRange L₀ (AlgebraicClosure L₀) l hmu`. Take `⟨γ, hγ⟩ : u ∈ (cycZ L₀ (AlgebraicClosure L₀) l).range` from `hr ▸ hu`. Use `⟨γ, ⟨Subgroup.mem_top _, ?_⟩, ?_, (hM.1 _).mpr le_rfl⟩` and prove the remaining obligations. Rewrite using `[← MonoidHom.range_eq_map, hr, hγ]`. Conclude with `(hP.1 u hu).mpr hu'`.
-
-Rewrite using `[hγ]`. Conclude with `(hP.2.1 u hu hu').1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.PropA.genLevel :
     ∀ (l : ℕ) [Fact l.Prime] (L₀ : Type) [Field L₀] [NumberField L₀], HasMuQ l L₀ →

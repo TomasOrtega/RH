@@ -16,13 +16,13 @@ noncomputable section
 namespace GlobalTheory.RowIndex
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact h1 x hx`. Consider the case `zero => intro i _`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `add x y _ _ hx hy => intro i hi`. Simplify using `[hx i hi, hy i hi]`. Consider the case `smul a x _ hx => intro i hi`. Simplify using `[hx i hi]`.
+Both sides reduce to the same expression. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Introduce `hv`. Establish `hsum : v = ∑ i, v i • Pi.single i (1 : R)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : T i`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span (h2 i hi))`. Simplify using `[hv i hi]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_span_supp {R : Type} [CommRing R] {N : ℕ} (U : Set (Fin N → R)) (T : Fin N → Prop)
     (h1 : ∀ u ∈ U, ∀ i, ¬ T i → u i = 0) (h2 : ∀ i, T i → Pi.single i 1 ∈ U) (v : Fin N → R) :
@@ -45,35 +45,31 @@ theorem mem_span_supp {R : Type} [CommRing R] {N : ℕ} (U : Set (Fin N → R)) 
     · simp [hv i hi]
 
 /- English proof (translation)
-Establish `key : ∀ i : Fin N, Formalism.MainNotions.StandardLattice.blk s k i.1 = s ↔ (s ≤ i.1 ∧ i.1 ≤ s + k)`. Introduce `i`. Unfold `Formalism.MainNotions.StandardLattice.blk`. Apply the tactic sequence `split_ifs <;> omega`. Establish `mono : ∀ i j : Fin N, i ≤ j → Formalism.MainNotions.StandardLattice.blk s k i.1 ≤ Formalism.MainNotions.StandardLattice.blk s k j.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Introduce `i j h`. Establish `h' : i.1 ≤ j.1` using `h`. Unfold `Formalism.MainNotions.StandardLattice.blk`. Apply the tactic sequence `split_ifs <;> omega`. Establish `hL : Formalism.MainNotions.StandardLattice.IsRowLev k s A ↔ ((∀ i j : Fin N, j < i → A i j = 0) ∧ (∀ i, A i i = 1) ∧ ∀ i j : Fin N, j.1 = s + k → s ≤ i.1 → i.1 < s + k → A i j = 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Unfold `Formalism.MainNotions.StandardLattice.IsRowLev`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨ha, hb, hc, hd⟩`. Use `⟨fun i j hij => ?_, hb, fun i j hj h1 h2 => ?_⟩` and prove the remaining obligations. Break down `lt_or_eq_of_le (mono j i hij.le) with h | h` into its components or cases.
+Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `ha i j h`. Conclude with `hc i j h.symm hij`. Conclude with `hd i j hj (fun e => by subst e; omega) ((key i).2 ⟨h1, by omega⟩)`. Introduce and unpack `⟨hl, hb, hd⟩`. Use `⟨fun i j h => hl i j ?_, hb, fun i j _ h => hl i j h, fun i j hj hij hi => ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc push Not at hc`. Conclude with `absurd (mono i j hc) (not_le.2 h)`. Establish `h5` using `(key i).1 hi`. Establish `hne : i.1 ≠ j.1` using `fun e => hij (Fin.ext e)`. Conclude with `hd i j hj h5.1 (by omega)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hl, hd1, hd⟩`. Establish `hBr` using `rows_unitri B A h' 0 (fun i _ => ⟨hd1 i, fun j hj => hl i j hj⟩)`. Use `⟨fun j _ i hij => ?_, fun j hj i hi => ?_, fun i _ j hij => ?_⟩` and prove the remaining obligations.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Break down `eq_or_lt_of_le (not_lt.1 hij) with e | e` into its components or cases. Substitute `e` using the available equality. Simplify using `[hd1]`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply_ne e.ne', hl i j e, sub_zero]`. Distinguish the cases in `e : i = j`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `e` using the available equality. Simplify using `[hd1]`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply_ne e, sub_zero]`. Break down `lt_or_gt_of_ne (Fin.val_ne_of_ne e) with h1 | h1` into its components or cases. Conclude with `hd i j hj (by omega) (by omega)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `hl i j h1`. Break down `eq_or_lt_of_le (not_lt.1 hij) with e | e` into its components or cases. Substitute `e` using the available equality. Simplify using `[(hBr j (Nat.zero_le _)).1]`. Rewrite using `[Matrix.sub_apply, Matrix.one_apply_ne e.ne', (hBr i (Nat.zero_le _)).2 j e, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce and unpack `⟨h1, h2, h3⟩`. Establish `hB : ∀ i : Fin N, s + k ≤ i.1 → B i i = 1 ∧ ∀ j, j < i → B i j = 0`. Introduce `i hi`. Use `⟨?_, fun j hj => ?_⟩` and prove the remaining obligations. Establish `h5` using `h3 i hi i (lt_irrefl _)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h5` using `[Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero]`. Then use the resulting hypothesis. Establish `h5` using `h3 i hi j (not_lt.2 hj.le)`. Rewrite `h5` using `[Matrix.sub_apply, Matrix.one_apply_ne hj.ne', sub_zero]`. Then use the resulting hypothesis. Establish `hA` using `rows_unitri A B h (s + k) hB`. Establish `c1 : ∀ j : Fin N, j.1 < s + k → A j j = 1` using `fun j hj => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Establish `h5` using `h1 j hj j (lt_irrefl _)`. Rewrite `h5` using `[Matrix.sub_apply, Matrix.one_apply_eq, sub_eq_zero]`. Then use the resulting hypothesis. Establish `c2 : ∀ i j : Fin N, j.1 < s + k → j < i → A i j = 0` using `fun i j hj hji => by`. Establish `h5` using `h1 j hj i (not_lt.2 hji.le)`. Rewrite `h5` using `[Matrix.sub_apply, Matrix.one_apply_ne hji.ne', sub_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨fun i j hji => ?_, fun i => ?_, fun i j hj hs hi => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j.1 < s + k`. Conclude with `c2 i j hj hji`. Establish `h6 : j.1 < i.1` using `hji`. Conclude with `(hA i (by omega)).2 j hji`.
-
-Distinguish the cases in `hi : i.1 < s + k`. Conclude with `c1 i hi`. Conclude with `(hA i (by omega)).1`. Establish `h5` using `h2 j hj i (by omega)`. Establish `hne : i ≠ j` using `fun e => by subst e; omega`.
-
-Rewrite `h5` using `[Matrix.sub_apply, Matrix.one_apply_ne hne, sub_zero]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem isRowLev_iff {R : Type} [CommRing R] {N k s : ℕ} (A B : Matrix (Fin N) (Fin N) R) (h : B * A = 1)
     (h' : A * B = 1) :
@@ -156,15 +152,15 @@ theorem isRowLev_iff {R : Type} [CommRing R] {N k s : ℕ} (A B : Matrix (Fin N)
 variable {I : AutInst}
 
 /- English proof (translation)
-Establish `hm : 1 ≤ g 0 * g 1` using `Nat.mul_pos (hC.1 0).pos (hC.1 1).pos`. Establish `hgk : ∀ (q : Fin 2) (u : HeightOneSpectrum (𝓞 I.E)), ((g q : ℕ) : 𝓞 I.E) ∈ u.asIdeal → ((g 0 * g 1 : ℕ) : 𝓞 I.E) ∈ u.asIdeal`. Introduce `q u hu`. Rewrite using `[Nat.cast_mul]`. Use `fin_cases q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `u.asIdeal.mul_mem_right _ hu`. Conclude with `u.asIdeal.mul_mem_left _ hu`. Establish `hconjg : ∀ q v, ((g q : ℕ) : 𝓞 I.E) ∈ (w' q v).asIdeal` using `fun q v => (hw' q v (g q) (g q) (by simp)).1 ((hC.2.2.2.1 q v).1)`. Rewrite using `[mem_mod_iff hm (IsChoice.isRadical_mul hC) (Submodule.span _ S) y]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h q v`. Conclude with `⟨(mem_span_iff (fr q v) S y).1 (h _ (hgk q _ (hC.2.2.2.1 q v).1)), (mem_span_iff (fr' q v) S y).1 (h _ (hgk q _ (hconjg q v)))⟩`. Introduce `h u hu`. Rewrite `hu` using `[Nat.cast_mul]`. Establish `hq : ∃ q : Fin 2, ((g q : ℕ) : 𝓞 I.E) ∈ u.asIdeal`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Break down `u.isPrime.mem_or_mem hu with h0 | h1` into its components or cases. Conclude with `⟨0, h0⟩`. Conclude with `⟨1, h1⟩`. Take `⟨q, hq⟩` from `hq`. Take `⟨v, hv | hv⟩` from `hC.2.2.2.2.2.2 q u hq`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hv` using the available equality. Conclude with `(mem_span_iff (fr q v) S y).2 (h q v).1`. Establish `e : u = w' q v` using `(extId_mul_sup_natCast_conj I).2.2.2.2.2.1 _ _ _ hv (hw' q v)`. Substitute `e` using the available equality. Conclude with `(mem_span_iff (fr' q v) S y).2 (h q v).2`.
+A detailed English derivation is pending.
 -/
 theorem cong_iff {N : ℕ} {g : Fin 2 → ℕ} {Pl : Fin 2 → Type} {w w' : ∀ k, Pl k → HeightOneSpectrum (𝓞 I.E)}
     (hC : IsChoice I g Pl w) (hw' : ∀ k v, IsConj I (w k v) (w' k v))
@@ -203,21 +199,21 @@ theorem cong_iff {N : ℕ} {g : Fin 2 → ℕ} {Pl : Fin 2 → Type} {w w' : ∀
       exact (mem_span_iff (fr' q v) S y).2 (h q v).2
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_reduction (F := I.F) (E := I.E) p hp w hw`. Establish `hker` using `ker_eq_extId hp.ne_zero r hr`. Establish `hdual : ∀ i j, r (hI (b' i) (b j)) = if i = j then 1 else 0`. Introduce `i j`. Establish `h` using `hb i j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h` using `[← hker, RingHom.mem_ker, map_sub, sub_eq_zero]`. Rewrite using `[h]`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨fr, hfr, hfc⟩` from `exists_frame_of_dual hn hp hw r hr b b' hdual`. Establish `hr'` using `conj_reduction hc r hr`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hdual' : ∀ i j, (r.comp (sigI I)) (hI (b i) (b' j)) = if i = j then 1 else 0`. Introduce `i j`. Rewrite using `[RingHom.comp_apply, sigI_hI, hdual j i]`. Distinguish the cases in `e : i = j`. Substitute `e` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[e, Ne.symm e]`. Take `⟨fr', hfr', hfc'⟩` from `exists_frame_of_dual hn hp hw' (r.comp (sigI I)) hr' b' b hdual'`. Establish `hb1 : ∀ j, fr.c (b j) = Pi.single j 1`. Introduce `j`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[hfc, hdual]`. Simplify using `[Pi.single_apply]`. Use `⟨fr, fr', hb1, fun j => ?_, fun a => ?_, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hfc', hdual']`. Simplify using `[Pi.single_apply]`. Rewrite using `[hfr', hfr]`. Both sides reduce to the same expression. Introduce `x hx M hM i j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(entry_eq fr b hb1 hx hM i j).symm, ?_⟩` and prove the remaining obligations. Establish `hxi : x⁻¹ ∈ I.Kset` using `(Ksub I).inv_mem hx`. Take `⟨M2, hM2⟩` from `fr.exists_actsAs hxi`. Establish `hmul : fr.ActsAs (x * x⁻¹) (M.1 * M2)` using `PlFrame.ActsAs.mul fr hxi hM hM2`. Rewrite `hmul` using `[mul_inv_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : M.1 * M2 = 1` using `PlFrame.ActsAs.unique fr (Ksub I).one_mem hmul fr.actsAs_one`. Establish `h2 : (M⁻¹).1 = M2`. Combine the equalities or inequalities in the displayed calculation. Establish `e2` using `entry_eq fr b hb1 hxi hM2 j i`. Rewrite using `[hfc', RingHom.comp_apply, sigI_hI, hI_latEnd, ← hfc, ← e2, h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_frames {N p : ℕ} {w w' : HeightOneSpectrum (𝓞 I.E)} (hn : I.n = N) (hp : p.Prime)
     (hw : Ideal.absNorm w.asIdeal = p) (hw' : Ideal.absNorm w'.asIdeal = p) (hc : IsConj I w w')
@@ -268,35 +264,29 @@ theorem exists_frames {N p : ℕ} {w w' : HeightOneSpectrum (𝓞 I.E)} (hn : I.
     rw [hfc', RingHom.comp_apply, sigI_hI, hI_latEnd, ← hfc, ← e2, h2]
 
 /- English proof (translation)
-Establish `hfr : Module.finrank ℚ E = Module.finrank ℚ E'` using `ι.toRatAlgEquiv.toLinearEquiv.finrank_eq`. Use `set n := Module.finrank ℚ E' with hn`. Use `set S := {v : HeightOneSpectrum (𝓞 E) | ((p : ℕ) : 𝓞 E) ∈ v.asIdeal} with hS`. Set `φ : 𝓞 E ≃+* 𝓞 E'` to `NumberField.RingOfIntegers.mapRingEquiv ι`. Establish `hcount : S.ncard = n`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← h]`. Use `Set.ncard_congr (fun v _ => HeightOneSpectrum.equivOfRingEquiv φ v) ?_ ?_ ?_` and prove the remaining obligations. Introduce `v hv show (φ.symm : 𝓞 E' →+* 𝓞 E) ((p : ℕ) : 𝓞 E') ∈ v.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hv`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a c _ _ e`. Conclude with `(HeightOneSpectrum.equivOfRingEquiv φ).injective e`. Introduce `v' hv'`. Use `⟨(HeightOneSpectrum.equivOfRingEquiv φ).symm v', ?_, (HeightOneSpectrum.equivOfRingEquiv φ).apply_symm_apply v'⟩` and prove the remaining obligations. Use `show (φ : 𝓞 E →+* 𝓞 E') ((p : ℕ) : 𝓞 E) ∈ v'.asIdeal`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_natCast]`. Conclude with `hv'`. Establish `hnpos : 0 < n` using `Module.finrank_pos`. Establish `hfin : S.Finite` using `Set.finite_of_ncard_pos (by omega)`. Use `set T := hfin.toFinset with hT`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hTc : T.card = n` using `by rw [hT, ← Set.ncard_eq_toFinset_card S hfin, hcount]`. Establish `hmemT : ∀ v, v ∈ T ↔ ((p : ℕ) : 𝓞 E) ∈ v.asIdeal` using `fun v => by simp [hT, hS]`. Establish `hnorm : Ideal.absNorm (Ideal.span {((p : ℕ) : 𝓞 E)}) = p ^ n`. Rewrite using `[Ideal.absNorm_span_singleton]`. Establish `e : ((p : ℕ) : 𝓞 E) = algebraMap ℤ (𝓞 E) (p : ℤ)` using `by simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, Algebra.norm_algebraMap, NumberField.RingOfIntegers.rank, hfr]`. Simplify using the standard rewrite rules. Establish `hdv : ∀ v ∈ T, Ideal.absNorm v.asIdeal ∣ p ^ n`. Introduce `v hv`. Rewrite using `[← hnorm]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Ideal.absNorm_dvd_absNorm_of_le ((Ideal.span_singleton_le_iff_mem _).2 ((hmemT v).1 hv))`. Use `choose! j hj using fun v (hv : v ∈ T) => (Nat.dvd_prime_pow hp).1 (hdv v hv)`. Establish `hj1 : ∀ v ∈ T, 1 ≤ j v`. Introduce `v hv`. Assume the negation of the conclusion as `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h00 : j v = 0` using `by omega`. Establish `h1 : Ideal.absNorm v.asIdeal = 1` using `by rw [(hj v hv).2, h00, pow_zero]`. Conclude with `v.isPrime.ne_top (Ideal.absNorm_eq_one_iff.1 h1)`. Establish `hcop : (T : Set (HeightOneSpectrum (𝓞 E))).Pairwise (Function.onFun IsCoprime (fun v : HeightOneSpectrum (𝓞 E) => v.asIdeal))`. Introduce `v _ w _ hvw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show IsCoprime v.asIdeal w.asIdeal`. Rewrite using `[Ideal.isCoprime_iff_sup_eq]`. Conclude with `Ideal.IsMaximal.coprime_of_ne v.isMaximal w.isMaximal (fun e => hvw (HeightOneSpectrum.ext e))`. Establish `hJ : ∏ v ∈ T, v.asIdeal = ⨅ v ∈ T, v.asIdeal` using `Ideal.prod_eq_iInf_of_pairwise_isCoprime hcop`. Establish `hle : Ideal.span {((p : ℕ) : 𝓞 E)} ≤ ∏ v ∈ T, v.asIdeal`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Rewrite using `[hJ]`. Use `le_iInf₂ fun v hv => ?_` and prove the remaining obligations. Conclude with `(Ideal.span_singleton_le_iff_mem _).2 ((hmemT v).1 hv)`. Establish `hJn : Ideal.absNorm (∏ v ∈ T, v.asIdeal) = p ^ (∑ v ∈ T, j v)`. Rewrite using `[map_prod, Finset.prod_congr rfl (fun v hv => (hj v hv).2), Finset.prod_pow_eq_pow_sum]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsum_le : ∑ v ∈ T, j v ≤ n`. Establish `h5` using `Ideal.absNorm_dvd_absNorm_of_le hle`. Rewrite `h5` using `[hnorm, hJn]`. Conclude with `(Nat.pow_dvd_pow_iff_le_right hp.one_lt).1 h5`. Establish `hsum_ge : n ≤ ∑ v ∈ T, j v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hTc, Finset.card_eq_sum_ones]`. Conclude with `Finset.sum_le_sum hj1`. Establish `hall : ∀ v ∈ T, j v = 1`. Establish `h5` using `(Finset.sum_eq_sum_iff_of_le hj1).1 (by rw [← Finset.card_eq_sum_ones, hTc]; omega)`. Conclude with `fun v hv => (h5 v hv).symm`.
-
-Establish `heq : Ideal.span {((p : ℕ) : 𝓞 E)} = ∏ v ∈ T, v.asIdeal`. Take `⟨K, hK⟩` from `Ideal.dvd_iff_le.2 hle`. Establish `h1 : Ideal.absNorm K = 1`. Establish `h5` using `congrArg Ideal.absNorm hK`. Rewrite `h5` using `[map_mul, hnorm, hJn, show ∑ v ∈ T, j v = n by omega]`.
-
-Establish `hp0 : 0 < p ^ n` using `pow_pos hp.pos _`. Conclude with `Nat.eq_of_mul_eq_mul_left hp0 (by rw [mul_one]; exact h5.symm)`. Rewrite using `[hK, Ideal.absNorm_eq_one_iff.1 h1, Ideal.mul_top]`. Use `⟨hcount, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[heq, hJ]`.
-
-Conclude with `Ideal.isRadical_iInf _ fun v => Ideal.isRadical_iInf _ fun _ => v.isPrime.isRadical`. Introduce `v hv`. Rewrite using `[(hj v ((hmemT v).2 hv)).2, hall v ((hmemT v).2 hv), pow_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_facts {E E' : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] (ι : E ≃+* E') {p : ℕ}
     (hp : p.Prime) (h : (Formalism.BasicNotions.placesOver E' p).ncard = Module.finrank ℚ E') :
@@ -383,47 +373,43 @@ theorem split_facts {E E' : Type} [Field E] [NumberField E] [Field E'] [NumberFi
     rw [(hj v ((hmemT v).2 hv)).2, hall v ((hmemT v).2 hv), pow_one]
 
 /- English proof (translation)
-Establish `hMi : (M⁻¹).1 * M.1 = 1` using `M.inv_mul`. Establish `hMi' : M.1 * (M⁻¹).1 = 1` using `M.mul_inv`. Rewrite using `[isRowLev_iff M.1 (M⁻¹).1 hMi hMi']`. Establish `hA : ∀ j i, c (T (b j) - b j) i = (M.1 - 1) i j`. Introduce `j i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_sub, Pi.sub_apply, (hM i j).1, hb, Matrix.sub_apply, Pi.single_apply, Matrix.one_apply]`. Establish `hB : ∀ m l, c' (T (b' m) - b' m) l = ((M⁻¹).1 - 1) m l`. Introduce `m l`. Rewrite using `[map_sub, Pi.sub_apply, (hM l m).2, hb', Matrix.sub_apply, Pi.single_apply, Matrix.one_apply]`. Distinguish the cases in `e : l = m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Simplify using `[e, Ne.symm e]`. Establish `hz : ∀ j : Fin N, s ≤ j.1 → j.1 < s + k → c' (T (b j) - b j) = 0`. Introduce `j hj1 hj2`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← h3 j hj1 hj2, map_smul, ← smul_sub, map_smulₛₗ, hε, zero_smul]`. Establish `spanC : ∀ (P : Fin N → Prop) (v : Fin N → ZMod p), v ∈ Submodule.span (ZMod p) (c '' (b '' {i | P i})) ↔ ∀ i, ¬ P i → v i = 0`. Introduce `P v`. Use `mem_span_supp _ P ?_ ?_ v` and prove the remaining obligations. Introduce and unpack `u ⟨_, ⟨i0, hi0, rfl⟩, rfl⟩ i hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hb, Pi.single_apply, if_neg]`. Introduce and unpack `rfl`. Conclude with `hi hi0`. Introduce `i hi`. Conclude with `⟨b i, ⟨i, hi, rfl⟩, hb i⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `spanC' : ∀ (P : Fin N → Prop) (v : Fin N → ZMod p), (∀ i, P i → i.1 < s) → (v ∈ Submodule.span (ZMod p) (c' '' (b '' {i | P i})) ↔ ∀ l : Fin N, ¬ P l.rev → v l = 0)`. Introduce `P v hP`. Use `mem_span_supp _ (fun l => P l.rev) ?_ ?_ v` and prove the remaining obligations. Introduce and unpack `u ⟨_, ⟨i0, hi0, rfl⟩, rfl⟩ l hl`. Rewrite using `[h1 i0 (hP i0 hi0), hb', Pi.single_apply, if_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Apply `hl` to reduce the goal to its premises. Use `show P l.rev`. Rewrite using `[e, Fin.rev_rev]`. Conclude with `hi0`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `l hl`. Use `⟨b l.rev, ⟨l.rev, hl, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h1 _ (hP _ hl), hb', Fin.rev_rev]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hP, hQ⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun j hj i hi => ?_, fun j hj i hi => ?_, fun i hi l hl => ?_⟩` and prove the remaining obligations. Rewrite using `[← hA]`. Conclude with `(spanC (· < j) _).1 (hP j hj).1 i hi`. Rewrite using `[← hA]`. Conclude with `(spanC (fun i => i.1 < s) _).1 (hQ j hj).1 i hi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl' : l.1 ≤ i.1` using `not_lt.1 hl`. Establish `hlr` using `Fin.val_rev l`. Establish `hir` using `Fin.val_rev i`. Establish `hi2` using `i.2`. Establish `hl2` using `l.2`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Distinguish the cases in `hi' : i.1 = s + k`. Establish `e : T (b i) - b i = -(T (b' i) - b' i)`. Rewrite using `[h2 i hi', map_neg]`. Normalize the expressions using the abelian group laws. Establish `h5` using `(hQ i hi').2`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h5` using `[e, map_neg, Submodule.neg_mem_iff]`. Rewrite using `[← hB]`. Use `(spanC' (fun i => i.1 < s) _ (fun _ h => h)).1 h5 l ?_` and prove the remaining obligations. Use `show ¬ l.rev.1 < s`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hj : i.rev.1 < s` using `by omega`. Establish `h5` using `(hP i.rev (by omega)).2`. Establish `e : T (b i.rev) - b i.rev = T (b' i) - b' i`. Rewrite using `[h1 _ hj, Fin.rev_rev]`. Rewrite `h5` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Use linear arithmetic over natural numbers and integers. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[← hB]`. Use `(spanC' (· < i.rev) _ (fun _ h => lt_trans (show _ < i.rev.1 from h) hj)).1 h5 l ?_` and prove the remaining obligations. Use `show ¬ l.rev.1 < i.rev.1`. Use linear arithmetic over natural numbers and integers. Introduce and unpack `⟨r1, r2, r3⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun j hj => ⟨?_, ?_⟩, fun j hj => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(spanC (· < j) _).2 fun i hi => by rw [hA]; exact r1 j hj i hi`. Distinguish the cases in `hjs : j.1 < s`. Establish `e : T (b j) - b j = T (b' j.rev) - b' j.rev` using `by rw [h1 j hjs]`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(spanC' (· < j) _ (fun _ h => lt_trans (show _ < j.1 from h) hjs)).2 fun l hl => ?_` and prove the remaining obligations. Rewrite using `[hB]`. Establish `hjr` using `Fin.val_rev j`. Establish `hlr` using `Fin.val_rev l`. Establish `hj2` using `j.2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hl2` using `l.2`. Use `r3 j.rev (by omega) l ?_` and prove the remaining obligations. Introduce `hlt`. Apply `hl` to reduce the goal to its premises. Use `show l.rev.1 < j.1`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h6 : j.rev.1 < l.1` using `hlt`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hz j (not_lt.1 hjs) hj]`. Conclude with `zero_mem _`. Conclude with `(spanC (fun i => i.1 < s) _).2 fun i hi => by rw [hA]; exact r2 j hj i hi`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : T (b j) - b j = -(T (b' j) - b' j)`. Rewrite using `[h2 j hj, map_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, map_neg, Submodule.neg_mem_iff]`. Use `(spanC' (fun i => i.1 < s) _ (fun _ h => h)).2 fun l hl => ?_` and prove the remaining obligations.
-
-Rewrite using `[hB]`. Use `r3 j (le_of_eq hj.symm) l ?_` and prove the remaining obligations. Introduce `hlt`. Apply `hl` to reduce the goal to its premises. Use `show l.rev.1 < s`.
-
-Establish `hlr` using `Fin.val_rev l`. Establish `hl2` using `l.2`. Establish `h6 : j.1 < l.1` using `hlt`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem local_iff {N p k s : ℕ} (hN : N = s + k + 1 + s) {R L : Type} [CommRing R] [AddCommGroup L] [Module R L]
     {r r' : R →+* ZMod p} (c : L →ₛₗ[r] (Fin N → ZMod p)) (c' : L →ₛₗ[r'] (Fin N → ZMod p)) (b b' : Fin N → L)
@@ -546,17 +532,15 @@ theorem local_iff {N p k s : ℕ} (hN : N = s + k + 1 + s) {R L : Type} [CommRin
       omega
 
 /- English proof (translation)
-Take `⟨w, hC, hw1⟩` from `exists_choice_of_idem g hg hne hrad hsp hf hcard ε e1 e2 e3`. Establish `hex : ∀ (q : Fin 2) (v : Fin f), ∃ u, IsConj I (w q v) u` using `fun q v => (extId_mul_sup_natCast_conj I).2.2.2.1 (w q v)`. Use `choose w' hw' using hex`. Establish `hgw : ∀ q v, ((g q : ℕ) : 𝓞 I.E) ∈ (w q v).asIdeal` using `fun q v => (hC.2.2.2.1 q v).1`. Establish `hgw' : ∀ q v, ((g q : ℕ) : 𝓞 I.E) ∈ (w' q v).asIdeal` using `fun q v => (hw' q v (g q) (g q) (by simp)).1 (hgw q v)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfr : ∀ (q : Fin 2) (v : Fin f), ∃ (fr : PlFrame I N (g q) (w q v)) (fr' : PlFrame I N (g q) (w' q v)), (∀ j, fr.c (b j) = Pi.single j 1) ∧ (∀ j, fr'.c (b' j) = Pi.single j 1) ∧ (∀ a, fr'.r a = fr.r (sigI I a)) ∧ ∀ (x : I.Gf) (hx : x ∈ I.Kset) (M : GL (Fin N) (ZMod (g q))), fr.Ac …` using `fun q v => exists_frames hn (hg q) (hsp q _ (hgw q v)) (hsp q _ (hgw' q v)) (hw' q v) b b' (hb q _ (hgw q v) (hw1 q v))`. Use `choose fr fr' hfb hfb' hfr' hact using hfr`. Establish `hε : ∀ q v, (fr' q v).r ε = 0`. Introduce `q v`. Establish `h0 : (fr q v).r (1 - ε) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← RingHom.mem_ker, PlFrame.ker_r]`. Conclude with `hw1 q v`. Rewrite `h0` using `[map_sub, map_one, sub_eq_zero]`. Rewrite using `[hfr' q v, ← one_mul ((fr q v).r (sigI I ε)), h0, ← map_mul, e2, map_zero]`. Take `⟨ρ, hρ⟩` from `exists_red_actsBy I N g (fun _ => Fin f) w fr hn hC`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : 1 ≤ g 0 * g 1` using `Nat.mul_pos (hg 0).pos (hg 1).pos`. Establish `loc : ∀ (q : Fin 2) (v : Fin f) (x : I.Gf) (hx : x ∈ I.Kset), (((∀ j : Fin N, j.1 < s + k → (fr q v).c (latEnd hx (b j) - b j) ∈ Submodule.span (ZMod (g q)) ((fr q v).c '' (b '' {i | i < j})) ∧ (fr' q v).c (latEnd hx (b j) - b j) ∈ Submodule.span (ZMod (g q)) ((fr' q v).c '' (b ' …` using `fun q v x hx => local_iff hN (fr q v).c (fr' q v).c b b' (hfb q v) (hfb' q v) h1 h2 ε (hε q v) h3 (latEnd hx) (ρ.toFun x ⟨q, v⟩) (hact q v x hx _ (fun y h => hρ x hx q v y h))`. Use `vol_ratio_prod (fun _ => Fintype.card_fin f) ρ μf hm (fun _ => Formalism.MainNotions.StandardLattice.IsRowLev k s) K₂ ?_` and prove the remaining obligations. Introduce `x`. Rewrite using `[hK x]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hx, hA, hB⟩`. Use `⟨hx, fun q v => (loc q v x hx).1 ⟨fun j hj => ?_, fun j hj => ?_⟩⟩` and prove the remaining obligations. Conclude with `(cong_iff hC hw' fr fr' _ _).1 (hA j hj) q v`. Conclude with `(cong_iff hC hw' fr fr' _ _).1 (hB j hj) q v`.
-
-Introduce and unpack `⟨hx, hP⟩`. Use `⟨hx, fun j hj => ?_, fun j hj => ?_⟩` and prove the remaining obligations. Conclude with `(cong_iff hC hw' fr fr' _ _).2 fun q v => ((loc q v x hx).2 (hP q v)).1 j hj`. Conclude with `(cong_iff hC hw' fr fr' _ _).2 fun q v => ((loc q v x hx).2 (hP q v)).2 j hj`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem vol_ratio_rows {N f k s : ℕ} (hN : N = s + k + 1 + s) (hn : I.n = N) (g : Fin 2 → ℕ)
     (hg : ∀ i, (g i).Prime) (hne : g 0 ≠ g 1) (hrad : ∀ i, (Ideal.span {((g i : ℕ) : 𝓞 I.E)}).IsRadical)

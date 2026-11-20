@@ -25,7 +25,7 @@ section Jets
 variable {R : Type} [CommRing R] {ι : Type} {m : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, show orig R ι = MvPolynomial.idealOfVars ι R from rfl, MvPolynomial.mem_pow_idealOfVars_iff']`. Simplify using `[Nat.lt_succ_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mk_eq_zero_iff (p : MvPolynomial ι R) :
     (Ideal.Quotient.mk _ p : Jet R ι m) = 0 ↔ ∀ e : ι →₀ ℕ, e.degree ≤ m → p.coeff e = 0 := by
@@ -34,9 +34,9 @@ theorem mk_eq_zero_iff (p : MvPolynomial ι R) :
   simp [Nat.lt_succ_iff]
 
 /- English proof (translation)
-Unfold `degLE`. Rewrite using `[Finset.mem_filter]`. Establish `hd : (e.sum fun _ k => k) = e.degree` using `rfl`. Rewrite using `[hd]`. Use `⟨fun h => h.2, fun h => ⟨?_, h⟩⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.mem_image.2 ⟨fun i => ⟨e i, Nat.lt_succ_of_le ((Finsupp.le_degree i e).trans h)⟩, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mem_degLE [Fintype ι] [DecidableEq ι] (e : ι →₀ ℕ) : e ∈ degLE m ↔ e.degree ≤ m := by
   unfold degLE
@@ -50,7 +50,7 @@ theorem mem_degLE [Fintype ι] [DecidableEq ι] (e : ι →₀ ℕ) : e ∈ degL
   simp
 
 /- English proof (translation)
-Unfold `psTrunc`. Rewrite using `[MvPolynomial.coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Simplify using `[mem_degLE]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coeff_psTrunc [Fintype ι] [DecidableEq ι] (f : MvPowerSeries ι R) (e : ι →₀ ℕ) :
     (psTrunc m f).coeff e = if e.degree ≤ m then MvPowerSeries.coeff e f else 0 := by
@@ -61,7 +61,7 @@ theorem coeff_psTrunc [Fintype ι] [DecidableEq ι] (f : MvPowerSeries ι R) (e 
   simp [mem_degLE]
 
 /- English proof (translation)
-Rewrite `h` using `[← sub_eq_zero, psJet, psJet, ← map_sub, mk_eq_zero_iff]`. Use `h e he` as an intermediate fact. Rewrite `this` using `[coeff_sub, coeff_psTrunc, coeff_psTrunc, if_pos he, if_pos he, sub_eq_zero]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coeff_eq_of_psJet_eq [Fintype ι] [DecidableEq ι] {f g : MvPowerSeries ι R} (h : psJet m f = psJet m g)
     (e : ι →₀ ℕ) (he : e.degree ≤ m) : MvPowerSeries.coeff e f = MvPowerSeries.coeff e g := by
@@ -70,7 +70,7 @@ theorem coeff_eq_of_psJet_eq [Fintype ι] [DecidableEq ι] {f g : MvPowerSeries 
   rwa [coeff_sub, coeff_psTrunc, coeff_psTrunc, if_pos he, if_pos he, sub_eq_zero] at this
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => rw [Finset.prod_empty, Finset.prod_empty, FBIdJet.psJet_one]`. Consider the case `insert a S ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, FBIdJet.psJet_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem psJet_prod [Fintype ι] [DecidableEq ι] {α : Type} [DecidableEq α] (S : Finset α) (g : α → MvPowerSeries ι R) :
     psJet m (∏ i ∈ S, g i) = ∏ i ∈ S, psJet m (g i) := by
@@ -79,7 +79,7 @@ theorem psJet_prod [Fintype ι] [DecidableEq ι] {α : Type} [DecidableEq α] (S
   | insert a S ha ih => rw [Finset.prod_insert ha, Finset.prod_insert ha, FBIdJet.psJet_mul, ih]
 
 /- English proof (translation)
-Proceed by induction on `q with`. Consider the case `zero => rw [pow_zero, pow_zero, FBIdJet.psJet_one]`. Consider the case `succ q ih => rw [pow_succ, pow_succ, FBIdJet.psJet_mul, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem psJet_pow [Fintype ι] [DecidableEq ι] (f : MvPowerSeries ι R) (q : ℕ) :
     psJet m (f ^ q) = psJet m f ^ q := by
@@ -90,9 +90,9 @@ theorem psJet_pow [Fintype ι] [DecidableEq ι] (f : MvPowerSeries ι R) (q : �
 variable {K : Type} [CommRing K] (f : R →+* K)
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite `ha` using `[JetTr.jetCoef_mk, mk_eq_zero_iff]`. Rewrite using `[mk_eq_zero_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `e he`. Apply `hf` to reduce the goal to its premises. Rewrite using `[map_zero, ← ha e he, coeff_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem jetCoef_injective (hf : Function.Injective f) : Function.Injective (jetCoef f ι m) := by
   rw [injective_iff_map_eq_zero]
@@ -105,16 +105,14 @@ theorem jetCoef_injective (hf : Function.Injective f) : Function.Injective (jetC
   rw [map_zero, ← ha e he, coeff_map]
 
 /- English proof (translation)
-Rewrite using `[psIn, psIn, map_rename, JetTr.psTrunc_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_psIn {d n n' : ℕ} (r : Fin n → Fin n') (g : MvPowerSeries (Fin n × Fin d) R) :
     MvPolynomial.map f (psIn d m r g) = psIn d m r (MvPowerSeries.map f g) := by
   rw [psIn, psIn, map_rename, JetTr.psTrunc_map]
 
 /- English proof (translation)
-Establish `e : (fun p : Fin 2 × Fin d => (![u', v'] : Fin 2 → Fin d → MvPolynomial κ K) p.1 p.2) = fun p : Fin 2 × Fin d => MvPolynomial.map f ((![u, v] : Fin 2 → Fin d → MvPolynomial κ R) p.1 p.2)`. Use function extensionality and compare the values at `⟨i, j⟩`. Use `fin_cases i`. Conclude with `(hu j).symm`. Conclude with `(hv j).symm`.
-
-Rewrite using `[e]`. Conclude with `RingHom.congr_fun (JetTr.jetCoef_substP f m _) a`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetCoef_subst2 {d : ℕ} {κ : Type} (u v : Fin d → MvPolynomial κ R) (u' v' : Fin d → MvPolynomial κ K)
     (hu : ∀ j, MvPolynomial.map f (u j) = u' j) (hv : ∀ j, MvPolynomial.map f (v j) = v' j)
@@ -138,7 +136,7 @@ section Rat
 variable {S : Type} [CommRing S] [Algebra ℚ S] {d : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← jetSubstP_psJet m (fun p : Fin 1 × Fin d => (X (i, p.2) : MvPolynomial (Fin n × Fin d) S)) ![pt S d i] (fun ⟨a, j⟩ => by fin_cases a; exact cc_pt' i j) (fun p => by simp) (fun ⟨a, j⟩ => by fin_cases a; exact mk_X_psJet m (i, j))]`. Use `DFunLike.congr_fun (GermD.jet_hom_ext fun p => ?_) _` and prove the remaining obligations. Simplify using `only [jetCopy, jetSubstP, GermD.jetMap_mk, aeval_X, constantCoeff_X, map_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem jetCopy_psJet {n : ℕ} (m : ℕ) (i : Fin n) (g : PS S 1 d) :
     (jetCopy (S := S) d m i : Jet S (Fin 1 × Fin d) m →ₐ[S] Jet S (Fin n × Fin d) m) (psJet m g) =
@@ -150,17 +148,11 @@ theorem jetCopy_psJet {n : ℕ} (m : ℕ) (i : Fin n) (g : PS S 1 d) :
   simp only [jetCopy, jetSubstP, GermD.jetMap_mk, aeval_X, constantCoeff_X, map_zero, sub_zero]
 
 /- English proof (translation)
-Establish `hr : (![pt S (n` using `1) d 0] : Fin 1 → Pt S 1 d) = fun i => pt S d ((![0] : Fin 1 → Fin 1) i) := by`. Use function extensionality and compare the values at `i`. Use `fin_cases i`. Both sides reduce to the same expression. Establish `ha : ∀ a j, MvPowerSeries.constantCoeff ((![pt S d 0, comp1 w (pt S d 0)] : Fin 2 → Pt S 1 d) a j) = 0`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a j`. Use `fin_cases a`. Conclude with `cc_pt' _ j`. Conclude with `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.cc_comp1 _ _ hw (fun i => cc_pt' _ i) j`. Establish `hb : ∀ a j, MvPowerSeries.constantCoeff ((![pt S d i] : Fin 1 → Pt S n d) a j) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `a j`. Use `fin_cases a`. Conclude with `cc_pt' _ j`. Rewrite using `[jetSubstP_psJet m _ (![pt S d 0, comp1 w (pt S d 0)] : Fin 2 → Pt S 1 d) (fun p => ha p.1 p.2) (fun ⟨a, j⟩ => by fin_cases a`. Simplify using the standard rewrite rules.
-
-Use `show constantCoeff (psIn d m ![0] (w j)) = 0`. Rewrite using `[FBIdPh.cc_psIn, hw])`. Use the proof step `(fun ⟨a, j⟩ => by fin_cases a`. Conclude with `mk_X_psJet m _`. Use `show _ = psJet m (ev ![pt S (n := 1) d 0] (w j))`.
-
-Rewrite using `[hr]`. Conclude with `mk_psIn_psJet m _ _),`. Use the proof step `jetCopy_psJet, ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.ev_ev _ _ ha hb]`. Use `congr 2`. Use function extensionality and compare the values at `a j`.
-
-Use `fin_cases a`. Conclude with `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.ev_X _ hb 0 j`. Conclude with `ev_at _ hb 0 (w j)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem jetCopy_graph {n : ℕ} (m : ℕ) (i : Fin n) (w : Pt S 1 d) (hw : ∀ j, MvPowerSeries.constantCoeff (w j) = 0)
     (g : PS S 2 d) :
@@ -199,19 +191,15 @@ theorem jetCopy_graph {n : ℕ} (m : ℕ) (i : Fin n) (w : Pt S 1 d) (hw : ∀ j
 end Rat
 
 /- English proof (translation)
-Use `set f := algebraMap V F with hfd`. Set `BF : FB F d O` to `FBMap.mapFB f B`. Set `UF : (Jet F (Fin 2 × Fin d) m)ˣ` to `Units.map (jetCoef f (Fin 2 × Fin d) m).toMonoidHom U`. Establish `hUF : (UF : Jet F (Fin 2 × Fin d) m) = jetCoef f (Fin 2 × Fin d) m U` using `rfl`. Establish `hX : ∀ {r : ℕ} (i : Fin r) (j : Fin d), MvPolynomial.map f (X (i, j) : MvPolynomial (Fin r × Fin d) V) = X (i, j)` using `fun i j => map_X _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hcs, hcb, hc⟩` from `CIndFrExp3.fixExp BF.G BF.A.act BF.A.const bar m UF (by`. Establish `e` using `congrArg (jetCoef f (Fin 3 × Fin d) m) h1`. Rewrite `e` using `[map_mul, jetCoef_subst2 f _ _ _ _ (fun j => map_psIn f _ _) (hX 2), jetCoef_subst2 f _ _ _ _ (hX 0) (hX 2), jetCoef_subst2 f _ _ _ _ (hX 1) (hX 2)]`. Conclude with `e)`. Use the proof step `(by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `congrArg (jetCoef f (Fin 2 × Fin d) m) hs`. Rewrite `e` using `[jetCoef_subst2 f _ _ _ _ (hX 1) (hX 0)]`. Conclude with `e)`. Use the proof step `(fun a => by`. Establish `e` using `congrArg (jetCoef f (Fin 2 × Fin d) m) (hb a)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[jetCoef_subst2 f _ _ _ _ (fun j => map_psIn f _ _) (hX 1), jetCoef_subst2 f _ _ _ _ (hX 0) (fun j => map_psIn f _ _)]`. Conclude with `e)`. Establish `hc0 : c = 0`. Use `GlobalTheory.DiagExpZero.form_eq_zero_of_diag_exp F d BF.G (BF.A.act w0) (BF.A.act (bar w0)) (BF.A.const w0) ?_ c hcs (hcb w0) n q hn hq ?_` and prove the remaining obligations. Establish `e` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA.dAct_add F B w0 (bar w0)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[hw, ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf.EigA.dAct_one]`. Conclude with `e.symm`. Introduce `e he`. Use `hk m _ (fun e' he' => ?_) e (by omega)` and prove the remaining obligations. Rewrite `hrel` using `[jetCoef_subst2 f _ _ (fun j => X ((0 : Fin 1), j)) (fun j => psIn d m ![0] (BF.A.act w0 j)) (hX 0) (fun j => map_psIn f _ _), ← hUF, hc]`.
-
-Simplify using `only [jetCopy_graph m _ _ (BF.A.const w0)] at hrel`. Simplify using `only [← psJet_pow] at hrel`. Rewrite `hrel` using `[← psJet_prod, ← FBIdJet.psJet_mul]`. Rewrite using `[mul_sub, mul_one, map_sub, coeff_eq_of_psJet_eq hrel e' he', sub_self]`. Rewrite `hc` using `[hc0, CIndFrFix2c.twist_zero, FBIdJet.psJet_one, hUF]`.
-
-Conclude with `Units.ext (jetCoef_injective f hf (by rw [hc, Units.val_one, map_one]))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_eq_one {V F : Type} [CommRing V] [Field F] [CharZero F] [Algebra V F]
     (hf : Function.Injective (algebraMap V F)) {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB V d O)
@@ -289,13 +277,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Use `letI := H.starRing`. Introduce `T io y C P n D' A' G' _ _ pD pA pG U' PU F _ _ _ _ _ q σ' h hn hq hh hg`. Take `⟨k, hk⟩` from `GlobalTheory.mvPowerSeries_coeff_eq_zero_of_mul_coeff_eq_zero F (Fin n × Fin (chD C.ch)) h hh`. Take `⟨B, eF, eA, -⟩` from `integralChart_formalBiext E H Dw l Xo c T io y C`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨k + 2, fun m hm => ?_⟩` and prove the remaining obligations. Take `⟨U, hU, h1, hs, hb⟩` from `FrRatio.frRatioG C.chartT C.frameT m`. Establish `hrel` using `GlobalTheory.GermRatio.main E H T.V (maximalIdeal T.V) C.I.G P (chD C.ch) n C.xT C.FT C.actT C.tgT _ C.chartT C.wPT C.primT D' A' G' pD pA pG U' PU F q σ' h C.eT C.frameT.gen hg m U hU`. Establish `hinj : Function.Injective (algebraMap T.V F)`. Rewrite using `[IsScalarTower.algebraMap_eq T.V T.Fr F]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(algebraMap T.Fr F).injective.comp (IsFractionRing.injective T.V T.Fr)`. Rewrite `h1` using `[← eF]`. Rewrite `hb`, `hrel` using `[← eA]`. Establish `hone : U = 1` using `FrameEventually.unit_eq_one hinj B H.bar H.w0 (ReciprocityTheory.ChartRestriction.G.PullbackSections.CVA.cmHostUnit_add_conj_eq_one H) hn hq h k hk m hm U h1 hs hb hrel`. Substitute `hone` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `corr_of_val C.I.G.PP.isLB fun z J hJ => ?_` and prove the remaining obligations. Use `(val_corr hJ hU (𝟙 _)).trans ((GermB.val_scale _ _ _ _ _ _ z J hJ).trans ?_)` and prove the remaining obligations. Rewrite using `[unitΓ, map_one, map_one, _root_.one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frames_compatible_eventually_of_germ : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), letI := H.starRing; ∀ (T : CDVR) (io : c.F →+* T.Fr) (y : IntFr Xo c T io) (C : IntegralChartA3 Xo c T io y) (P : PELUnif (maximalIdeal T.V) C.I.G) (n : ℕ) (D' : DegData T.V (maximalIdeal T.V)) (A' : PolAV (Spec (CommRingCat.of T.Fr))) (G' : Over (Sp T.V)) [GrpObj G'] [IsCommMonObj G'] (pD : IsPowDeg D'.toPre P.D.toPre n) (pA : IsPowPolAV A' P.A n) (pG : IsPowGrp G' C.I.G.G n) (U' : Unif (maximalIdeal T.V) D' A' G') (PU : UnifPowOf pD pA pG U' P.U) (F : Type) [Field F] [CharZero F] [Algebra T.Fr F] [Algebra T.V F] [IsScalarTower T.V T.Fr F] (q : ℕ) (σ' : U'.toUnifPre.SecGF F q) (h : PS F n (chD C.ch)), 1 ≤ n → 1 ≤ q → h ≠ 0 → IsGermN P C.xT C.actT C.eT C.wPT pG PU F q σ' h → ∃ m₀ : ℕ, ∀ m, m₀ ≤ m → LB.Gen.Corr C.I.G.PP.L _ _ _ _ (LB.pullGen C.I.G.PP.L (cφG C.I.G ![jptG C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT (m + 1) (0 : Fin 2), jptG C.I.G (𝟙 (Sp T.V)) (chD C.ch) C.xT (m + 1) (1 : Fin 2)]) (cε 2) (C.eT (m + 1)) (homAt (𝟙 (Sp T.V)) (jetTrunc : Jet T.V (Fin 2 × Fin (chD C.ch)) (m + 1) →ₐ[T.V] Jet T.V (Fin 2 × Fin (chD C.ch)) m)).left) (C.eT m) := by
   intro E _ _ _ H Dw l Xo c

@@ -5,13 +5,13 @@ open MeasureTheory Matrix Complex GlobalTheory.RealWeil
 open scoped Real SchwartzMap ComplexConjugate
 
 /- English proof (translation)
-Introduce `l _ _ w φ f f₁ hf hf₁`. Take `⟨p, q⟩` from `w`. Establish `h : ⇑f₁ = rhoFun (Sum.elim p q) ⇑f`. Use function extensionality and compare the values at `x`. Rewrite using `[hf₁, GlobalTheory.Published.Metaplectic.rho_apply, rhoFun, hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [phase, pPart, qPart, Sum.elim_inl, Sum.elim_inr, PiLp.inner_apply, WithLp.ofLp_add]`. Use `congr 1`. Use `congr 1`. Use `push_cast`. Simplify using `only [dotProduct, RCLike.inner_apply, conj_trivial, Finset.sum_div]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[Finset.sum_congr rfl fun i _ => mul_comm ((q i : ℝ) : ℂ) ((p i : ℝ) : ℂ)]`. Expand and normalize the polynomial expressions, which then agree. Use `Lp.ext ((f₁.coeFn_toLp 2 volume).trans ?_)` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h]`. Conclude with `((coeFn_rho _ _).trans (rhoFun_congr _ (f.coeFn_toLp 2 volume))).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Proof.schrodinger_models_agree : ∀ (l : Type) [Fintype l] [DecidableEq l] (w : (l → ℝ) × (l → ℝ)) (φ : 𝓢(l → ℝ, ℂ)) (f f₁ : Sch l), (∀ x : EuclideanSpace ℝ l, f x = φ x.ofLp) → (∀ x : EuclideanSpace ℝ l, f₁ x = GlobalTheory.Published.Metaplectic.rho w φ x.ofLp) → f₁.toLp 2 = rho (Sum.elim w.1 w.2) (f.toLp 2) := by
   intro l _ _ w φ f f₁ hf hf₁

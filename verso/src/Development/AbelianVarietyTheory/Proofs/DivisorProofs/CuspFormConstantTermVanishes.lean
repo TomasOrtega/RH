@@ -27,15 +27,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}
 
 /- English proof (translation)
-Use `set R0 : Matrix (Fin n) (Fin n) K := 1 - X * Q - Y * P with hR0`. Establish `hP : P * R0 = 0`. Rewrite using `[hR0, Matrix.mul_sub, Matrix.mul_sub, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hPX, hPY]`. Simplify using the standard rewrite rules. Establish `hQ : Q * R0 = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR0, Matrix.mul_sub, Matrix.mul_sub, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hQX, hQY]`. Simplify using the standard rewrite rules. Establish `hA : A * R0.map τ = R0.map τ`. Use extensionality with `i j`. Use `congrFun (hz (fun k => R0 k j) (funext fun k => congrFun (congrFun hP k) j) (funext fun k => congrFun (congrFun hQ k) j)) i` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) R) = R0.map τ + X.map τ * Q.map τ + Y.map τ * P.map τ`. Establish `e : (1 : Matrix (Fin n) (Fin n) K) = R0 + X * Q + Y * P` using `by rw [hR0]; abel`. Use `congrArg (Matrix.map · τ) e` as an intermediate fact. Rewrite `this` using `[Matrix.map_add _ (map_add τ), Matrix.map_add _ (map_add τ), Matrix.map_mul, Matrix.map_mul, Matrix.map_one _ (map_zero τ) (map_one τ)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `h2 : R0.map τ = 1 - X.map τ * Q.map τ - Y.map τ * P.map τ`. Rewrite using `[h1]`. Normalize the expressions using the abelian group laws. Combine the equalities or inequalities in the displayed calculation.
+Normalize the expressions using the abelian group laws. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[Matrix.mul_add, Matrix.mul_add, hA, ← Matrix.mul_assoc, hX, ← Matrix.mul_assoc, hY]`. Use `_ = _ := by`. Rewrite using `[h2, Matrix.mul_sub, Matrix.mul_sub, Matrix.sub_mul, Matrix.sub_mul, Matrix.mul_one, Matrix.mul_one]`. Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 theorem eq_of_frame_eigen {n r : ℕ} {K R : Type} [Field K] [CommRing R] (τ : K →+* R) {X Y : Matrix (Fin n) (Fin r) K}
     {P Q : Matrix (Fin r) (Fin n) K} (hPX : P * X = 0) (hPY : P * Y = 1) (hQX : Q * X = 1) (hQY : Q * Y = 0)
@@ -70,13 +70,13 @@ theorem eq_of_frame_eigen {n r : ℕ} {K R : Type} [Field K] [CommRing R] (τ : 
       abel
 
 /- English proof (translation)
-Apply `matHom_injective` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[GlobalTheory.T.idelicFrameTorusElement_matrix_eq h hJ hW ha]`. Establish `key` using `eq_of_frame_eigen (inclR (F := F) (AF F) : E →+* AF F ⊗[F] E) (P := cT (σ : E →+* E) X * J) (Q := cT (σ : E →+* E) Y * J) hW.xx hW.xy (yx h hJ hW) hW.yy hg.1 hg.2.1 hg.2.2`. Establish `d1 : GlobalTheory.LeviBlockRealization.diagonalMulSingle F i ((e : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) - 1 = diagonal (fun k => (((Pi.mulSingle i e : Fin r → (AF F ⊗[F] E)ˣ) k : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) - 1)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.LeviBlockRealization.diagonalMulSingle, ← diagonal_one, diagonal_sub]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Break down `eq_or_ne k i with rfl | hk` into its components or cases. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[hk, Pi.mulSingle_eq_of_ne hk]`. Establish `d2 : GlobalTheory.LeviBlockRealization.diagonalMulSingle F i (sigR (AF F) σ (((e⁻¹ : (AF F ⊗[F] E)ˣ)) : AF F ⊗[F] E)) - 1 = diagonal (fun k => (((conjUnit σ ((Pi.mulSingle i e : Fin r → (AF F ⊗[F] E)ˣ) k))⁻¹ : (AF F ⊗[F] E)ˣ) : AF F ⊗[F] E) - 1)`. Rewrite using `[GlobalTheory.LeviBlockRealization.diagonalMulSingle, ← diagonal_one, diagonal_sub]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Break down `eq_or_ne k i with rfl | hk` into its components or cases. Simplify using `[conjUnit]`. Simplify using `[hk, Pi.mulSingle_eq_of_ne hk]`. Rewrite using `[key, d1, d2]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem blockCentre_eq (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFrame σ J X Y) {i : Fin r}
     {e : (AF F ⊗[F] E)ˣ} {g a : GAd σ J} (hg : GlobalTheory.LeviBlockRealization.IsBlockCentre σ J X Y i e g)
@@ -104,29 +104,25 @@ theorem blockCentre_eq (h : IsCMExt F E σ) (hJ : IsHermND σ J) (hW : IsWittFra
 
 open GroundTheory.Global GlobalTheory.HeckeAbsArch in
 /- English proof (translation)
-Take `⟨D, hD, -, hxD⟩` from `IdeleGroup.exists_isCompact_normOneSubgroup E`. Establish `habs : ∀ z, (absE F E z : ℝ) ≠ 0` using `fun z h0 => by`. Use `congrArg (fun t : NNReal => (t : ℝ)) (map_mul_eq_one (absE F E) (mul_inv_cancel z))` as an intermediate fact. Simplify using `only [NNReal.coe_mul, NNReal.coe_one, h0, zero_mul] at this`. Conclude with `zero_ne_one this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmod : ∀ z : IdeleGroup E, (IdeleGroup.ideleModule E z : ℝ) ≠ 0` using `fun z => (IdeleGroup.ideleModule E z).2.ne'`. Use `set gA : (AF F ⊗[F] E)ˣ → ℝ := fun z => Real.log (absE F E z : ℝ) with hgA`. Use `set gM : (AF F ⊗[F] E)ˣ → ℝ := fun z => Real.log (IdeleGroup.ideleModule E (toIdeleE z) : ℝ) with hgM`. Establish `cA : Continuous gA` using `(NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE (F := F) (E := E))).log habs`. Establish `cM : Continuous gM` using `((continuous_subtype_val.comp (IdeleGroup.continuous_ideleModule (K := E))).comp continuous_toIdeleE).log fun z => hmod _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `mA : ∀ a b, gA (a * b) = gA a + gA b` using `fun a b => by`. Simplify using `only [hgA, map_mul, NNReal.coe_mul]`. Conclude with `Real.log_mul (habs a) (habs b)`. Establish `mM : ∀ a b, gM (a * b) = gM a + gM b` using `fun a b => by`. Simplify using `only [hgM, map_mul, Positive.val_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `Real.log_mul (hmod _) (hmod _)`. Establish `pA : ∀ e : Eˣ, gA (Units.map (inclR (F` using `F) (AF F)).toMonoidHom e) = 0 := fun e => by`. Simplify using `only [hgA, GlobalTheory.Doubling.absE_inclR, NNReal.coe_one, Real.log_one]`. Establish `aA : ∀ c, gA (archUnit F E c) = 2 * Module.finrank ℚ F * c` using `fun c => by`. Simplify using `only [hgA, absE_archUnit hσ, Real.log_exp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `normOne : ∀ z, gM z = 0 → toIdeleE z ∈ IdeleGroup.normOneSubgroup E` using `fun z hz => by`. Rewrite using `[IdeleGroup.mem_normOneSubgroup]`. Establish `hp` using `(IdeleGroup.ideleModule E (toIdeleE z)).2`. Rewrite using `[← Real.exp_log hp]`. Conclude with `(congrArg Real.exp hz).trans Real.exp_zero`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f : ℝ →+ ℝ` to `{ toFun := fun c => gM (archUnit F E c) map_zero' := by`. Express the relevant statement in the definitionally equal form `Real.log ((IdeleGroup.ideleModule E (toIdeleE (archUnit F E 0)) : ℝ)) = 0`. Rewrite using `[archUnit_zero, map_one, map_one]`. Conclude with `Real.log_one`. Use the proof step `map_add' := fun c d => by simp only [archUnit_add, mM] }`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `cf : Continuous f` using `cM.comp continuous_archUnit`. Establish `lin : ∀ c, gM (archUnit F E c) = c * f 1` using `fun c => by`. Use `map_real_smul f cf c 1` as an intermediate fact. Simplify using `only [smul_eq_mul, mul_one] at this`. Conclude with `this`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hκ : f 1 ≠ 0`. Introduce `h0`. Use `eq_zero_of_normOne gA cA mA pA (archUnit F E 1) (normOne _ (by rw [lin, h0, mul_zero]))` as an intermediate fact. Rewrite `this` using `[aA, mul_one]`. Establish `hn : (0 : ℝ) < Module.finrank ℚ F` using `Nat.cast_pos.2 Module.finrank_pos`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hz : ∀ y, gM ((archUnit F E (gM y / f 1))⁻¹ * y) = 0` using `fun y => by`. Use `mM (archUnit F E (gM y / f 1)) ((archUnit F E (gM y / f 1))⁻¹ * y)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, lin, div_mul_cancel₀ _ hκ]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨toIdeleE.symm '' D, fun y => gM y / f 1, hD.image continuous_toIdeleE_symm, fun a b => by simp only [mM, add_div], fun y => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `zA` using `eq_zero_of_normOne gA cA mA pA _ (normOne _ (hz y))`. Establish `yA : gA y = 2 * Module.finrank ℚ F * (gM y / f 1)`. Use `mA (archUnit F E (gM y / f 1)) ((archUnit F E (gM y / f 1))⁻¹ * y)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, zA, aA, add_zero]`.
-
-Conclude with `this`. Rewrite using `[← yA, hgA]`. Conclude with `(Real.exp_log (lt_of_le_of_ne (absE F E y).2 (habs y).symm)).symm`. Take `⟨k, hk⟩` from `hxD _ (normOne _ (hz y))`. Use `⟨k, _, hk, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, ← toIdeleE_inclR (F := F) k, MulEquiv.symm_apply_apply, MulEquiv.symm_apply_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_decomp (hσ : IsCMExt F E σ) : ∃ (D : Set (AF F ⊗[F] E)ˣ) (κ : (AF F ⊗[F] E)ˣ → ℝ), IsCompact D ∧
     (∀ a b, κ (a * b) = κ a + κ b) ∧ (∀ y, (absE F E y : ℝ) = Real.exp (2 * Module.finrank ℚ F * κ y)) ∧
@@ -193,7 +189,7 @@ theorem exists_decomp (hσ : IsCMExt F E σ) : ∃ (D : Set (AF F ⊗[F] E)ˣ) (
     rw [map_mul, ← toIdeleE_inclR (F := F) k, MulEquiv.symm_apply_apply, MulEquiv.symm_apply_apply]
 
 /- English proof (translation)
-The claim follows from `| [], v, hv => by simpa [polyAt] using hv | c :: L, v, hv => by have e : polyAt A (c :: L) v = A (polyAt A L v) - c • polyAt A L v := by simp [polyAt, List.map_cons, List.prod_cons] rw [e] exact sub_mem (hW _ (polyAt_mem A W hW L v hv)) (W.smul_mem c (polyAt_mem A W hW L v hv))`.
+A detailed English derivation is pending.
 -/
 theorem polyAt_mem {V : Type} [AddCommGroup V] [Module ℂ V] (A : Module.End ℂ V) (W : Submodule ℂ V)
     (hW : ∀ v ∈ W, A v ∈ W) : ∀ (L : List ℂ) (v : V), v ∈ W → polyAt A L v ∈ W
@@ -205,7 +201,7 @@ theorem polyAt_mem {V : Type} [AddCommGroup V] [Module ℂ V] (A : Module.End �
     exact sub_mem (hW _ (polyAt_mem A W hW L v hv)) (W.smul_mem c (polyAt_mem A W hW L v hv))
 
 /- English proof (translation)
-The claim follows from `| [], f, _, hf, h0 => absurd (by simpa [polyAt] using h0) hf | c :: L, f, hfW, hf, h0 => by by_cases hz : polyAt A L f = 0 · obtain ⟨c', hc', G, hG⟩ := exists_eigen_of_polyAt A W hW L f hfW hf hz exact ⟨c', List.mem_cons_of_mem _ hc', G, hG⟩ · refine ⟨c, List.mem_cons_self, _, po …`.
+A detailed English derivation is pending.
 -/
 theorem exists_eigen_of_polyAt {V : Type} [AddCommGroup V] [Module ℂ V] (A : Module.End ℂ V) (W : Submodule ℂ V)
     (hW : ∀ v ∈ W, A v ∈ W) : ∀ (L : List ℂ) (f : V), f ∈ W → f ≠ 0 → polyAt A L f = 0 →
@@ -222,7 +218,7 @@ theorem exists_eigen_of_polyAt {V : Type} [AddCommGroup V] [Module ℂ V] (A : M
       exact h0
 
 /- English proof (translation)
-Unfold `polyAt`. Use `Commute.list_prod_left _ _ fun x hx => ?_` and prove the remaining obligations. Take `⟨c, -, rfl⟩` from `List.mem_map.1 hx`. Conclude with `h.sub_left ((Commute.one_left B).smul_left c)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem polyAt_comm {V : Type} [AddCommGroup V] [Module ℂ V] {A B : Module.End ℂ V} (h : Commute A B) (L : List ℂ) :
     Commute (polyAt A L) B := by
@@ -232,13 +228,13 @@ theorem polyAt_comm {V : Type} [AddCommGroup V] [Module ℂ V] {A B : Module.End
   exact h.sub_left ((Commute.one_left B).smul_left c)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hlt | hlt` into its components or cases. Establish `hq : 1 < ρ / a` using `(one_lt_div ha).2 hlt`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (M / b) hq`. Use `h2 k` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[inv_pow, inv_pow, ← div_eq_inv_mul, ← div_eq_inv_mul, div_le_div_iff₀ (pow_pos ha k) (pow_pos hρ k)]`. Establish `h3 : (ρ / a) ^ k * b ≤ M`. Rewrite using `[div_pow, div_mul_eq_mul_div, div_le_iff₀ (pow_pos ha k)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(div_lt_iff₀ hb).1 hk` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hq : 1 < a / ρ` using `(one_lt_div hρ).2 hlt`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (M / b) hq`. Use `h1 k` as an intermediate fact. Establish `h3 : (a / ρ) ^ k * b ≤ M`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_pow, div_mul_eq_mul_div, div_le_iff₀ (pow_pos hρ k)]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `(div_lt_iff₀ hb).1 hk` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eq_of_pow_bound {a ρ b M : ℝ} (ha : 0 < a) (hρ : 0 < ρ) (hb : 0 < b)
     (h1 : ∀ k : ℕ, a ^ k * b ≤ ρ ^ k * M) (h2 : ∀ k : ℕ, a⁻¹ ^ k * b ≤ ρ⁻¹ ^ k * M) : a = ρ := by
@@ -269,67 +265,63 @@ open GlobalTheory.StdPar GlobalTheory.IdTorus
 open GlobalTheory.Doubling (absE conjUnit)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ n J hJ r X Y hW K S hS i hi φc hφ s hs e h hh L hL`. Take `⟨t, htc, ht⟩` from `GlobalTheory.T.exists_continuous_split_torus_section hσ hJ hW`. Establish `tu : ∀ {l a}, IsIdTorusElt σ J X Y l a → a = t l` using `fun ha => GlobalTheory.T.split_torus_element_unique hσ hJ hW ha (ht _)`. Establish `tmul : ∀ l l', t (l * l') = t l * t l'` using `fun l l' => (tu (GlobalTheory.T.split_torus_element_mul (ht l) (ht l'))).symm`. Establish `tcomm : ∀ l l', t l * t l' = t l' * t l` using `fun l l' => by rw [← tmul, ← tmul, mul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `t1 : t 1 = 1` using `(tu (isIdTorusElt_one σ J X Y)).symm`. Set `ι : (AF F ⊗[F] E)ˣ → Fin r → (AF F ⊗[F] E)ˣ` to `fun y => Pi.mulSingle i y`. Establish `ιmul : ∀ a b, ι (a * b) = ι a * ι b` using `fun a b => Pi.mulSingle_mul (f := fun _ : Fin r => (AF F ⊗[F] E)ˣ) i a b`. Establish `ιcont : Continuous ι` using `continuous_pi fun j => by`. Break down `eq_or_ne j i with rfl | hj` into its components or cases.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify `(continuous_id' : Continuous fun a : (AF F ⊗[F] E)ˣ => a)` using `[ι]`. Simplify `continuous_const` using `[ι, Pi.mulSingle_eq_of_ne hj]`. Establish `hh' : h = t (ι e)` using `blockCentre_eq hσ hJ hW hh (ht _)`. Establish `splitT : ∀ u a, IsSplitElt σ J X Y S u a → a = t (fun k => archUnit F E (stepSum S u k))` using `fun u a ha => tu (GlobalTheory.T.split_element_is_torus_element hσ hJ hW S u ha)`. Set `incl : Eˣ →* (AF F ⊗[F] E)ˣ` to `Units.map (inclR (F := F) (AF F)).toMonoidHom`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ratLevi : ∀ γ : Eˣ, t (ι (incl γ)) ∈ ratPts σ J ∧ t (ι (incl γ)) ∈ levi σ J X Y S`. Introduce `γ`. Establish `ef : (fun j => incl ((Pi.mulSingle i γ : Fin r → Eˣ) j)) = ι (incl γ)` using `funext fun j => by`. Break down `eq_or_ne j i with rfl | hj` into its components or cases. Simplify using `[ι]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[ι, Pi.mulSingle_eq_of_ne hj]`. Use `⟨GlobalTheory.T.rational_split_torus_rational_points hσ hJ hW (Pi.mulSingle i γ) (ef ▸ ht _), (GlobalTheory.T.split_torus_in_levi_parabolic hσ hJ hW hS (l := ι (incl γ)) (fun k hk => ?_) (ht _)).1⟩` and prove the remaining obligations. Simplify using `[ι, Pi.mulSingle_eq_of_ne (show k ≠ i from fun e => hk (e ▸ hi))]`. Set `W : Submodule ℂ (GAd σ J → ℂ)` to `{ carrier := {f | Continuous f ∧ (∀ γ : Eˣ, ∀ x, f (t (ι (incl γ)) * x) = f x) ∧ ∀ u a, IsSplitElt σ J X Y S u a → ∀ x, f (a * x) = expChar F n s (stepSum S u) * f x} add_mem' := fun {f g} hf hg => ⟨hf.1.add hg.1, fun γ x => by simp only [Pi.add_apply, hf.2.1 γ x, hg.2.1 γ x], fu …`. Establish `memW : ∀ f, f ∈ W ↔ Continuous f ∧ (∀ γ : Eˣ, ∀ x, f (t (ι (incl γ)) * x) = f x) ∧ ∀ u a, IsSplitElt σ J X Y S u a → ∀ x, f (a * x) = expChar F n s (stepSum S u) * f x` using `fun _ => Iff.rfl`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `set T := GlobalTheory.LeviBlockRealization.leftTr σ J h with hT`. Establish `Tap : ∀ f x, T f x = f (h * x)` using `fun _ _ => rfl`. Establish `commH : ∀ l, h * t l = t l * h` using `fun l => by rw [hh', tcomm]`. Establish `stW : ∀ f ∈ W, T f ∈ W`. Introduce `f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hf1, hf2, hf3⟩` from `(memW f).1 hf`. Use `(memW _).2 ⟨hf1.comp (continuous_const.mul continuous_id), fun γ x => ?_, fun u a ha x => ?_⟩` and prove the remaining obligations. Simplify using `only [Tap]`. Rewrite using `[← mul_assoc, commH, mul_assoc, hf2]`. Simplify using `only [Tap]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, splitT u a ha, commH, mul_assoc, ← splitT u a ha, hf3 u a ha]`. Use `set δ : ℝ := (absE F E e : ℝ) ^ (((n : ℝ) - 1) / 2 - (i : ℝ)) with hδ`. Use `set P := polyAt T (L.map fun c => c * (δ : ℂ)) with hP`. Take `⟨f', hf'span, hf'0, hf'eig⟩` from `hs`. Establish `gen : ∀ f ∈ Submodule.span ℂ {f₁ : GAd σ J → ℂ | ∃ u a, IsSplitElt σ J X Y S u a ∧ f₁ = fun g => φc (a * g)}, Continuous f ∧ (∀ γ : Eˣ, ∀ x, f (t (ι (incl γ)) * x) = f x) ∧ P f = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `f hf`. Proceed by induction on `hf using Submodule.span_induction with`. Consider the case `mem f₁ hf₁`. Take `⟨u, a, ha, rfl⟩` from `hf₁`. Use `⟨hφ.1.cont.comp (continuous_const.mul continuous_id), fun γ x => ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only`. Rewrite using `[splitT u a ha, ← mul_assoc, tcomm, mul_assoc, hφ.1.leftM _ (ratLevi γ).1 (ratLevi γ).2]`. Establish `hc : Commute T (GlobalTheory.LeviBlockRealization.leftTr σ J a)`. Use `LinearMap.ext fun f => funext fun x => ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, Tap, GlobalTheory.LeviBlockRealization.leftTr_apply]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc, ← mul_assoc, splitT u a ha, commH]`. Use `congrArg (fun A : Module.End ℂ (GAd σ J → ℂ) => A φc) (polyAt_comm hc (L.map fun c => c * (δ : ℂ))).eq` as an intermediate fact. Simplify using `only [Module.End.mul_apply] at this`. Express the relevant statement in the definitionally equal form `P (GlobalTheory.LeviBlockRealization.leftTr σ J a φc) = 0`. Rewrite using `[hP, this, ← hP, hL, map_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `zero => exact ⟨continuous_const, fun _ _ => rfl, map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Conclude with `⟨hx.1.add hy.1, fun γ z => by simp only [Pi.add_apply, hx.2.1 γ z, hy.2.1 γ z], by`. Rewrite using `[map_add, hx.2.2, hy.2.2, add_zero]⟩`. Consider the case `smul c x _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨hx.1.const_smul c, fun γ z => by simp only [Pi.smul_apply, hx.2.1 γ z], by rw [map_smul, hx.2.2, smul_zero]⟩`. Take `⟨g1, g2, g3⟩` from `gen f' hf'span`. Establish `hf'W : f' ∈ W` using `(memW _).2 ⟨g1, g2, hf'eig⟩`. Take `⟨c', hc', G, hGW, hG0, hGe⟩` from `exists_eigen_of_polyAt T W stW _ f' hf'W hf'0 g3`. Take `⟨c, hcL, rfl⟩` from `List.mem_map.1 hc'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨c, hcL, ?_⟩` and prove the remaining obligations. Take `⟨G1, G2, G3⟩` from `(memW G).1 hGW`. Establish `Gh : ∀ x, G (h * x) = (c * δ) * G x` using `fun x => congrFun hGe x`. Choose the witnesses or unpack the hypotheses as in `⟨g0, hg0⟩ : ∃ g0, G g0 ≠ 0 := by`. Assume the negation of the conclusion as `hne`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at hne`. Conclude with `hG0 (funext hne)`. Establish `hlam : c * (δ : ℂ) ≠ 0`. Introduce `h0`. Apply `hg0` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Gh (h⁻¹ * g0)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left, h0, zero_mul]`. Then use the resulting hypothesis. Take `⟨D, κ, hDc, κmul, κabs, hdec⟩` from `exists_decomp (F := F) (E := E) hσ`. Establish `κone : κ 1 = 0` using `by have := κmul 1 1; rw [mul_one] at this; linarith`. Establish `κpow : ∀ y (k : ℕ), κ (y ^ k) = k * κ y` using `fun y k => by`.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Proceed by induction on `k with`. Consider the case `zero => simp [κone]`. Consider the case `succ k ih => rw [pow_succ, κmul, ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `κinv : ∀ y, κ y⁻¹ = - κ y` using `fun y => by`. Use `κmul y y⁻¹` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, κone]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨M, hM⟩` from `hDc.exists_bound_of_continuousOn (f := fun d => G (t (ι d) * g0)) ((G1.comp ((htc.comp ιcont).mul continuous_const)).continuousOn)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `bound : ∀ y, ‖G (t (ι y) * g0)‖ ≤ ‖expChar F n s (Pi.single i (κ y))‖ * M`. Introduce `y`. Take `⟨γ, hγ⟩` from `hdec y`. Use `set d := incl γ * ((archUnit F E (κ y))⁻¹ * y) with hd`. Establish `hy : y = archUnit F E (κ y) * (incl γ⁻¹ * d)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hd, map_inv]`. Use `group`. Take `⟨u, hu⟩` from `GlobalTheory.T.step_sum_surjective_initial_segment hS (Pi.single i (κ y)) (fun k hk => Pi.single_eq_of_ne (show k ≠ i from fun e' => hk (e' ▸ hi)) _)`. Take `⟨a, ha⟩` from `exists_isSplitElt S hσ hJ hW u`. Establish `el : (fun j => archUnit F E (stepSum S u j)) = ι (archUnit F E (κ y))` using `funext fun j => by`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu]`. Break down `eq_or_ne j i with rfl | hj` into its components or cases. Simplify using `[ι]`. Simplify using `[ι, Pi.single_eq_of_ne hj, Pi.mulSingle_eq_of_ne hj, archUnit_zero]`. Establish `hat : a = t (ι (archUnit F E (κ y)))` using `el ▸ splitT u a ha`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `e1 : G (t (ι y) * g0) = expChar F n s (Pi.single i (κ y)) * G (t (ι d) * g0)` using `by conv_lhs => rw [hy, ιmul, tmul, ιmul, tmul, ← hat, mul_assoc, mul_assoc, G3 u a ha, hu, G2]`. Rewrite using `[e1, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hM _ hγ) (norm_nonneg _)`. Establish `iter : ∀ (y : (AF F ⊗[F] E)ˣ) (μ : ℂ), (∀ x, G (t (ι y) * x) = μ * G x) → ∀ k : ℕ, G (t (ι (y ^ k)) * g0) = μ ^ k * G g0`. Introduce `y μ hy k`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `k with`. Consider the case `zero => simp [ι, t1]`. Consider the case `succ k ih => rw [pow_succ', ιmul, tmul, mul_assoc, hy, ih]`. Expand and normalize the polynomial expressions, which then agree. Establish `he : ∀ x, G (t (ι e) * x) = (c * δ) * G x` using `by rw [← hh']; exact Gh`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinv : t (ι e⁻¹) = h⁻¹`. Rewrite using `[hh']`. Conclude with `eq_inv_of_mul_eq_one_right (by rw [← tmul, ← ιmul, mul_inv_cancel]; simp [ι, t1])`. Establish `heinv : ∀ x, G (t (ι e⁻¹) * x) = (c * δ)⁻¹ * G x` using `fun x => by`. Rewrite using `[hinv]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Gh (h⁻¹ * x)` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Rewrite using `[this, ← mul_assoc, inv_mul_cancel₀ hlam, one_mul]`. Use `set ρ := Real.exp (2 * Module.finrank ℚ F * κ e * ((s i).re - (negRho n r i).re)) with hρ`. Establish `expk : ∀ c0 : ℝ, ‖expChar F n s (Pi.single i c0)‖ = Real.exp (2 * Module.finrank ℚ F * c0 * ((s i).re - (negRho n r i).re))` using `fun c0 => GlobalTheory.T.norm_exp_character_single s i c0`.
+Put the polynomial expressions in normal form. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : ∀ k : ℕ, ‖c * (δ : ℂ)‖ ^ k * ‖G g0‖ ≤ ρ ^ k * M`. Introduce `k`. Use `bound (e ^ k)` as an intermediate fact. Establish `eq : Real.exp (2 * Module.finrank ℚ F * (k * κ e) * ((s i).re - (negRho n r i).re)) = ρ ^ k`. Rewrite using `[hρ, ← Real.exp_nat_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Put the polynomial expressions in normal form. Rewrite `this` using `[iter e _ he k, norm_mul, norm_pow, expk, κpow, eq]`. Conclude with `this`. Establish `h2 : ∀ k : ℕ, ‖c * (δ : ℂ)‖⁻¹ ^ k * ‖G g0‖ ≤ ρ⁻¹ ^ k * M`. Introduce `k`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `bound (e⁻¹ ^ k)` as an intermediate fact. Establish `eq : Real.exp (2 * Module.finrank ℚ F * (k * κ e⁻¹) * ((s i).re - (negRho n r i).re)) = ρ⁻¹ ^ k`. Rewrite using `[κinv, hρ, ← Real.exp_neg, ← Real.exp_nat_mul]`. Put the polynomial expressions in normal form. Rewrite `this` using `[iter e⁻¹ _ heinv k, norm_mul, norm_pow, norm_inv, expk, κpow, eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `this`. Establish `key : ‖c * (δ : ℂ)‖ = ρ` using `eq_of_pow_bound (norm_pos_iff.2 hlam) (Real.exp_pos _) (norm_pos_iff.2 hg0) h1 h2`. Establish `hA : (absE F E e : ℝ) = Real.exp (2 * Module.finrank ℚ F * κ e)` using `κabs e`. Establish `hδ' : δ = Real.exp (2 * Module.finrank ℚ F * κ e * (((n : ℝ) - 1) / 2 - (i : ℝ)))`. Rewrite using `[hδ, hA, ← Real.exp_mul]`.
-
-Establish `hδpos : 0 < δ` using `by rw [hδ']; exact Real.exp_pos _`. Rewrite `key` using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg hδpos.le]`. Establish `hc : ‖c‖ = ρ / δ` using `(eq_div_iff hδpos.ne').2 key`. Establish `hx : (negRho n r i).re = (i : ℝ) - ((n : ℝ) - 1) / 2` using `by simp [negRho]`. Rewrite using `[hc, hA, ← Real.exp_mul, hρ, hδ', ← Real.exp_sub, hx]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem abs_root_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J →

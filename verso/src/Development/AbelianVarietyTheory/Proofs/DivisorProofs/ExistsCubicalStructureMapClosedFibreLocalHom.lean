@@ -14,7 +14,7 @@ noncomputable section
 namespace GlobalTheory.UU.ClosedFib
 
 /- English proof (translation)
-Simplify using `only [zero_add, pow_one]`. Conclude with `fun x hx => (mem_maximalIdeal _).2 fun h => (mem_maximalIdeal _).1 hx (isUnit_of_map_unit φ x h)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_comap_max {R W : Type} [CommRing R] [IsLocalRing R] [CommRing W] [IsLocalRing W] (φ : R →+* W)
     (hφ : IsLocalHom φ) : maximalIdeal R ^ (0 + 1) ≤ (maximalIdeal W ^ (0 + 1)).comap φ := by
@@ -22,7 +22,7 @@ theorem le_comap_max {R W : Type} [CommRing R] [IsLocalRing R] [CommRing W] [IsL
   exact fun x hx => (mem_maximalIdeal _).2 fun h => (mem_maximalIdeal _).1 hx (isUnit_of_map_unit φ x h)
 
 /- English proof (translation)
-Simplify using `only [spMap, thick, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.quotientMap_comp_mk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_thick {R W : Type} [CommRing R] [IsLocalRing R] [CommRing W] [IsLocalRing W] (φ : R →+* W)
     (hφ : IsLocalHom φ) :
@@ -31,13 +31,13 @@ theorem spMap_thick {R W : Type} [CommRing R] [IsLocalRing R] [CommRing W] [IsLo
   simp only [spMap, thick, ← Spec.map_comp, ← CommRingCat.ofHom_comp, Ideal.quotientMap_comp_mk]
 
 /- English proof (translation)
-Introduce `R W _ _ _ _ _ _ φ hφ G _ _ G' _ _ β hβ P P' w hP P₀ P'₀ h₀ h₀'`. Set `ρ` to `Ideal.quotientMap (maximalIdeal W ^ (0 + 1)) φ (le_comap_max φ hφ)`. Establish `sq : spMap ρ ≫ thick R (maximalIdeal R) 0 = thick W (maximalIdeal W) 0 ≫ spMap φ` using `spMap_thick φ hφ`. Set `β₀ : (thickObj W (maximalIdeal W) 0 G').left ⟶ (thickObj R (maximalIdeal R) 0 G).left` to `pullback.lift (pullback.fst G'.hom (thick W (maximalIdeal W) 0) ≫ β) (pullback.snd G'.hom (thick W (maximalIdeal W) 0) ≫ spMap ρ) (by`. Rewrite using `[Category.assoc, hβ.1.w, ← Category.assoc, pullback.condition, Category.assoc, Category.assoc, sq])`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁ : β₀ ≫ pullback.fst G.hom (thick R (maximalIdeal R) 0) = pullback.fst G'.hom (thick W (maximalIdeal W) 0) ≫ β` using `pullback.lift_fst _ _ _`. Establish `e₂ : β₀ ≫ (thickObj R (maximalIdeal R) 0 G).hom = (thickObj W (maximalIdeal W) 0 G').hom ≫ spMap ρ` using `pullback.lift_snd _ _ _`. Establish `n : IsGrpPullback (thickObj W (maximalIdeal W) 0 G') G (spMap ρ ≫ thick R (maximalIdeal R) 0) (β₀ ≫ pullback.fst G.hom (thick R (maximalIdeal R) 0))` using `(IsGrpPullback.comp (isGrpPullback_pullback G' (thick W (maximalIdeal W) 0)) hβ).congr sq.symm e₁.symm`. Establish `hβ₀ : IsGrpPullback (thickObj W (maximalIdeal W) 0 G') (thickObj R (maximalIdeal R) 0 G) (spMap ρ) β₀` using `(isGrpPullback_pullback G (thick R (maximalIdeal R) 0)).cancel n e₂`. Take `⟨_, hR⟩` from `h₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, hW⟩` from `h₀'`. Take `⟨_, -, hc⟩` from `hP.exists_comp hW (by`. Rewrite using `[Category.assoc, hβ.1.w, ← Category.assoc, pullback.condition, Category.assoc]`. Use the proof step `rfl)`. Take `⟨w₀, hw₀⟩` from `GlobalTheory.UU.TowerEx.exists_cancel hR hc hβ₀ sq e₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨ρ, β₀, hβ₀, w₀, hw₀⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_isCPMap_closedFibre : ∀ (R W : Type) [CommRing R] [IsDomain R] [IsLocalRing R] [CommRing W] [IsDomain W] [IsLocalRing W] (φ : R →+* W), IsLocalHom φ → ∀ (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (G' : Over (Sp W)) [GrpObj G'] [IsCommMonObj G'] (β : G'.left ⟶ G.left) (hβ : IsGrpPullback G' G (spMap φ) β) (P : GlobalTheory.UU.CP G) (P' : GlobalTheory.UU.CP G') (w : LB.Iso P'.L.L (P.L.L.pull β)), GlobalTheory.UU.IsCPMap P' P (spMap φ) β hβ.1.w w → ∀ (P₀ : GlobalTheory.UU.CP (thickObj R (maximalIdeal R) 0 G)) (P'₀ : GlobalTheory.UU.CP (thickObj W (maximalIdeal W) 0 G')), GlobalTheory.UU.IsLevelCP (maximalIdeal R) 0 P₀ P → GlobalTheory.UU.IsLevelCP (maximalIdeal W) 0 P'₀ P' → ∃ (ρ : R ⧸ maximalIdeal R ^ (0 + 1) →+* W ⧸ maximalIdeal W ^ (0 + 1)) (β₀ : (thickObj W (maximalIdeal W) 0 G').left ⟶ (thickObj R (maximalIdeal R) 0 G).left) (hβ₀ : IsGrpPullback (thickObj W (maximalIdeal W) 0 G') (thickObj R (maximalIdeal R) 0 G) (spMap ρ) β₀) (w₀ : LB.Iso P'₀.L.L (P₀.L.L.pull β₀)), GlobalTheory.UU.IsCPMap P'₀ P₀ (spMap ρ) β₀ hβ₀.1.w w₀ := by
   intro R W _ _ _ _ _ _ φ hφ G _ _ G' _ _ β hβ P P' w hP P₀ P'₀ h₀ h₀'

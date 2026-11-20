@@ -27,21 +27,19 @@ open scoped NNReal
 namespace GlobalTheory.CompanionTheory.WcB
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ σ hσ μ _ lam c hc Φ g h10 hW`. Distinguish the cases in `h : ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det`. Use `⟨h.choose, h.choose_spec, ?_⟩` and prove the remaining obligations. Establish `hN : Algebra.norm F ((h.choose : Eˣ) : E) = (g.val).det` using `h.choose_spec`. Establish `hd0 : (g.val).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 g.isUnit).ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc : g.val 1 0 / (g.val).det ≠ 0` using `div_ne_zero h10 hd0`. Establish `hct : ‖((c h.choose : ℂˣ) : ℂ)‖ = 1` using `hc.2 _`. Establish `hn : ∀ a : F, ‖GL2LocalData.nsg E a‖ = 1`. Introduce `a`. Unfold `GL2LocalData.nsg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hpos : (0 : ℝ) < (modulus (g.val).det : ℝ)`. Conclude with `modulus_pos hd0` after adjusting the coercions. Establish `hpos10 : (0 : ℝ) < (modulus (g.val 1 0) : ℝ)`. Conclude with `modulus_pos h10` after adjusting the coercions.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcp : ‖(((modulus (g.val).det : ℝ) : ℂ)) ^ (1 / 2 : ℂ)‖ = (modulus (g.val).det : ℝ) ^ (1 / 2 : ℝ)`. Rewrite using `[Complex.norm_cpow_eq_rpow_re_of_pos hpos]`. Evaluate the numerical expressions. Establish `hm : ∀ r : ℝ≥0, ‖(((r : ℝ)⁻¹ : ℝ) : ℂ)‖ = (r : ℝ)⁻¹`. Introduce `r`.
+Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (inv_nonneg.2 (NNReal.coe_nonneg _))]`. Establish `hmt : (modulus ((h.choose : Eˣ) : E) : ℝ) = (modulus (g.val).det : ℝ)`. Rewrite using `[← GroundTheory.LocalField.FiltrationCocycleLiftCriterion.WeilRep.modulus_norm (K := F) ((h.choose : Eˣ) : E), hN]`. Establish `hmc : (modulus (g.val 1 0 / (g.val).det) : ℝ) = (modulus (g.val 1 0) : ℝ) * (modulus (g.val).det : ℝ)⁻¹`. Rewrite using `[div_eq_mul_inv, modulus_mul, modulus_inv, NNReal.coe_mul, NNReal.coe_inv]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `k1 : g.val 1 1 / (g.val 1 0 / (g.val).det * Algebra.norm F ((h.choose : Eˣ) : E)) = g.val 1 1 / g.val 1 0`. Rewrite using `[hN, div_mul_cancel₀ _ hd0]`. Establish `k2 : (algebraMap F E (g.val 1 0 / (g.val).det))⁻¹ = algebraMap F E ((g.val).det / g.val 1 0)`. Rewrite using `[← map_inv₀, inv_div]`. Rewrite using `[Wc_eq_wS χ σ μ lam c Φ g h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `wS`. Rewrite using `[GlobalTheory.T.weil_whittaker_nontrivial_galois_integral F E χ σ hσ μ lam Φ _ _ _ _ hcc h.choose, k1, k2]`. Simplify using `only [norm_mul, hct, hcp, hn, hm, Circle.norm_coe, mul_one, one_mul]`. Rewrite using `[hmt, hmc]`. Clear the denominators using the available nonvanishing facts.
-
-Conclude with `absurd (Wc_eq_zero χ σ μ lam c Φ g h) hW`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem value_lower_ne : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] [MeasurableSpace E] [BorelSpace E] [Algebra F E] [ValuativeExtension F E] [FiniteDimensional F E] [Algebra.IsSeparable F E] [Fact (Module.finrank F E = 2)] (χ : AddChar F Circle) (σ : E ≃ₐ[F] E), σ ≠ AlgEquiv.refl → ∀ (μ : Measure E) [μ.IsAddHaarMeasure] (lam : ℂ) (c : Eˣ →* ℂˣ), IsUnit1 c → ∀ (Φ : E → ℂ) (g : GL (Fin 2) F), g.val 1 0 ≠ 0 → GL2LocalData.Wc χ σ μ lam c Φ g ≠ 0 → ∃ t : Eˣ, Algebra.norm F (t : E) = (g.val).det ∧ ‖GL2LocalData.Wc χ σ μ lam c Φ g‖ = ‖lam‖ * (modulus (g.val).det : ℝ) ^ (1 / 2 : ℝ) * (modulus (g.val 1 0) : ℝ)⁻¹ * ‖gaussI χ μ Φ (g.val 1 1 / g.val 1 0) (algebraMap F E ((g.val).det / g.val 1 0) * (t : E)⁻¹)‖ := by
   intro F _ _ _ _ _ _ E _ _ _ _ _ _ _ _ _ _ _ χ σ hσ μ _ lam c hc Φ g h10 hW

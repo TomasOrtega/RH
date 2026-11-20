@@ -20,7 +20,7 @@ def hcomp (T : Forms0 D u)
   η * kU T κ * μ * (kU T κ)⁻¹
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Simplify using `only [natTr0, Finset.mul_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem natTr0_sum (T : Forms0 D u) (γ : UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)))
     (κ : T.cls0.lev.U) {ι : Type*} (S : Finset ι) (F : ι → (D.mem u).C.Y 0 → ℂ) :
@@ -31,9 +31,9 @@ theorem natTr0_sum (T : Forms0 D u) (γ : UJ (sigD D : D.host.E →+* D.host.E) 
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Rewrite using `[htr, U_op_eq_move_sum T v ψ hG hψ ((D.fm u).dn 0 v c g) Mu hMu, natTr0_sum T γ κ Finset.univ (fun x s => G (T.cls0.y ((D.fm u).dn 0 v c g) * Mu x) (T.val0.eY s))]`. Use function extensionality and compare the values at `s`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Establish `hx : (T.cls0.y c * hcomp T η κ (Mu x)).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ.1 * (T.cls0.y ((D.fm u).dn 0 v c g) * Mu x).1 * (κ⁻¹).1 := by`. Simplify using `only [hcomp, kU, Subgroup.coe_mul, Subgroup.coe_inv]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_assoc (bc (inclE (F := D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) γ.1), hrel]`. Simplify using `only [mul_assoc]`. Establish `key` using `hG γ.1 γ.2 (T.cls0.y ((D.fm u).dn 0 v c g) * Mu x) (T.cls0.y c * hcomp T η κ (Mu x)) κ⁻¹ hx (T.val0.eY s) _ (is_translate_inverse T γ s)`. Rewrite using `[key, map_inv, Units.val_inv_eq_inv_val]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem dnU_term (T : Forms0 D u) (v : (D.mem u).A.vT) (ψ : Fn D u 0)
     {G : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) → Fr D 0 (Nat.zero_le _) → ℂ}

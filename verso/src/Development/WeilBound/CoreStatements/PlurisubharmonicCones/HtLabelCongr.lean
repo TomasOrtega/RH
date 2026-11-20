@@ -18,9 +18,9 @@ section Lat
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {V : Type} [AddCommGroup V] [Module Ω V]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Simplify using `only [Lat.patch]`. Use `split_ifs with hF`. Use `iInf_congr fun p => iInf_congr fun hp => iInf_congr fun hq => ?_` and prove the remaining obligations. Rewrite using `[h p hp q hq]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem patch_congr' (T : Finset ℕ) (L₀ : Lat ξ V) (Lp Lp' : ℕ → Lat ξ V)
     (h : ∀ p ∈ T, ∀ q, InFibre ξ p q → Lp p q = Lp' p q) : Lat.patch T L₀ Lp = Lat.patch T L₀ Lp' := by
@@ -32,7 +32,7 @@ theorem patch_congr' (T : Finset ℕ) (L₀ : Lat ξ V) (Lp Lp' : ℕ → Lat ξ
   · rfl
 
 /- English proof (translation)
-Introduce `p hp`. Take `⟨W, hW, b, hb, hf⟩` from `hL p hp`. Conclude with `⟨W, hW, b, hb, fun q hq hqW => ⟨(hf q hq hqW).1, (h q hq).symm.trans (hf q hq hqW).2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem vbOn_congr {L L' : Lat ξ V} {T : Set (Cpt ξ)} {r : ℕ} {U : Submodule Ω V} (h : ∀ q ∈ T, L q = L' q)
     (hL : L.IsVBOn T r U) : L'.IsVBOn T r U := by
@@ -46,7 +46,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {c : Coeff l}
 
 /- English proof (translation)
-Break down `s with τ | τ` into its components or cases. Simplify using `only [htLabel, LieModel.htW, LieModel.htDual, h]`. Simplify using `only [htLabel, LieModel.htDual, h]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem htLabel_congr {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Sp Ω ⟶ X} {G : Over X} [GrpObj G]
     {Li : Type} [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (L : LB G.left) {n n' : ℕ}
@@ -62,7 +62,7 @@ variable {O : Type} [CommRing O] {β : O →+* c.F} {Y : Model Xo c β} {S₀ : 
   {J : K → Type} {y : (Σ k, J k) → Ω} (𝔐 : HodgeCpt Y S₀ y) (S : Finset ℕ)
 
 /- English proof (translation)
-The claim follows from `patch_congr' _ _ _ _ fun p hp q hq => htLabel_congr _ _ _ _ _ (h p hp q hq)`.
+A detailed English derivation is pending.
 -/
 theorem patch_four (h : ∀ p ∈ S, ∀ q, InFibre 𝔐.ξ p q → 𝔐.M.htOm 𝔐.t.PP.L (p ^ 4) q = 𝔐.M.htOm 𝔐.t.PP.L (p ^ 𝔐.R p) q)
     (s : CMType H ⊕ CMType H) :
@@ -88,25 +88,23 @@ def levFour (hp : ∀ p ∈ S, p.Prime) (hR : ∀ p ∈ S, 4 ≤ 𝔐.R p) (ht :
 end Level
 
 /- English proof (translation)
-Take `⟨A', e, j', m', p1, p2, p3, p4, p5, p6, p7, -, p9⟩` from `GlobalTheory.T.hodge_cpt_field_extension E H D l Xo c _ _ Y S Ω Ω' i K K' J J' y y' B x A.X A.ξ g hx hdisc hvb A.all A.tie A.normal hd`. Establish `he : A.ξ ≫ e.symm.hom = A'.ξ`. Rewrite using `[← p1]`. Simplify using the standard rewrite rules. Establish `hf' : e.symm.hom ≫ A'.f = A.f`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[p2, ← hf]`. Simplify using the standard rewrite rules. Establish `hc : A'.cst = A.cst`. Use `OrLinked.ringHom_ext_int c (OrLinked.spMap_inj' ?_)` and prove the remaining obligations. Rewrite using `[← A'.cst_over, ← A.cst_over, ← hf', ← he]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc]`. Take `⟨φ, φt, -, φr, φp⟩` from `OrLinked.same_base_cmp A' A e.symm he hf' hc`. Establish `ha : (FrameRebase.sabRebase A.m hf.symm).φ = A.m.φ` using `FrameRebase.sabRebase_φ _ _`. Take `⟨k, hk⟩` from `sabCancel pullCubCancel E H _ _ _ Y.t B.t A.t B.f g B.m (FrameRebase.sabRebase A.m hf.symm)`. Rewrite `hk` using `[ha]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `j : B.Li →+ A.Li` to `φ.toLinearMap.toAddMonoidHom.comp j'`. Establish `hjd : ∀ a, j a = φ (j' a)` using `fun _ => rfl`. Establish `hj : IsExtOver i j` using `⟨fun a v => by rw [hjd, hjd, p6.1, map_smul], fun n b hb => (p6.2 n b hb).map' φ.toLinearMap φ.ker⟩`. Establish `hd' : GlobalTheory.CompanionTheory.Ar.Dominates A'.ξ B.ξ (e.hom ≫ g) i` using `by show A'.ξ ≫ e.hom ≫ g = _`. Rewrite using `[← Category.assoc, p1]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd`. Use `⟨j, k, hj, fun a => B.m.cart.1.hom_ext ?_ ?_, fun s => ?_⟩` and prove the remaining obligations. Use `show ((A.M.pt (φ (j' a))).left ≫ k.φ) ≫ B.m.φ = _`. Rewrite using `[Category.assoc, ← hk, φt, p3, ← Category.assoc, p7]`. Establish `w1` using `Over.w (A'.M.pt (j' a))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `w2` using `Over.w (A.M.pt (φ (j' a)))`. Establish `w3 : (A'.M.pt (j' a)).left ≫ A'.t.G.hom ≫ e.hom = (A.M.pt (φ (j' a))).left ≫ A.t.G.hom`. Rewrite using `[← Category.assoc, w1, w2, ← p1]`. Conclude with `Category.assoc _ _ _`. Use `show ((A.M.pt (φ (j' a))).left ≫ k.φ) ≫ B.t.G.hom = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← p7, Category.assoc, Category.assoc, k.cart.1.w, m'.cart.1.w, ← Category.assoc, ← w3]`. Simplify using `only [Category.assoc]`. Use function extensionality and compare the values at `q`. Take `⟨hq, -, -⟩` from `RegAtDom.regAt_dominates _ _ _ _ _ _ g i hd q`. Take `⟨U, hU, b, -, hb⟩` from `B.vb s ⟨g q.1, hq⟩ trivial`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : (B.V s).IsFrameAt b ⟨g q.1, hq⟩` using `hb _ trivial hU`. Establish `h'` using `OrLinked.genPt_spec e.symm he q`. Establish `e1 : (e.hom ≫ g) (e.symm.hom q.1) = g q.1` using `by simp`. Establish `hq' : genPt B.ξ ⤳ (e.hom ≫ g) (e.symm.hom q.1)` using `e1 ▸ hq`. Establish `hb2 : (B.V s).IsFrameAt b ⟨(e.hom ≫ g) (e.symm.hom q.1), hq'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (⟨(e.hom ≫ g) (e.symm.hom q.1), hq'⟩ : Cpt B.ξ) = ⟨g q.1, hq⟩` using `Subtype.ext e1`. Rewrite using `[this]`. Conclude with `hb1`. Establish `hb3` using `FlagPull.pull_isFrameAt hd' p6 ⟨e.symm.hom q.1, h'⟩ hq' hb2`. Rewrite `hb3` using `[← p9]`.
-
-Establish `hb4 : (A.V s).IsFrameAt (fun k => φ (j' (b k))) q` using `OrLinked.frame_tr φ (φr q h') (φp S (fun p hp => by rw [p5]; exact hR p hp) s q h') hb3`. Conclude with `hb4.2.trans (FlagPull.pull_isFrameAt hd hj q hq hb1).2.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pull_on {Y : Model Xo c (algebraMap (𝓞 c.F) c.F)} {S : Finset ℕ} {Ω Ω' : Type} [Field Ω] [Field Ω'] {i : Ω →+* Ω'}
     {K K' : Type} [Fintype K] [Fintype K'] {J : K → Type} {J' : K' → Type} [∀ k, Fintype (J k)] [∀ k, Fintype (J' k)]

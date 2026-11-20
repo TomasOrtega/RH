@@ -13,7 +13,7 @@ namespace GlobalTheory.DSSU.Chamber
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `h' : ε (s (s.symm x)) = ε (s (s.symm y))` using `by simpa using h`. Establish `e1` using `hanti.lt_iff_gt (a := s.symm y) (b := s.symm x)`. Establish `e2` using `GlobalTheory.DSId.PermK.lt_iff hs h'`. Simplify using `only [Function.comp_apply, Equiv.apply_symm_apply] at e1 e2`. Conclude with `e1.trans e2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma blk_iff {ε : Fin n → Bool} {lam : Fin n → ℝ} {s : Equiv.Perm (Fin n)}
     (hs : ∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) (hanti : StrictAnti (lam ∘ s))
@@ -25,9 +25,9 @@ lemma blk_iff {ε : Fin n → Bool} {lam : Fin n → ℝ} {s : Equiv.Perm (Fin n
   exact e1.trans e2.symm
 
 /- English proof (translation)
-Establish `hA : ∀ ν : Fin n → ℝ, Above (fun a b => lam b < lam a ∧ ε a = ε b) ν μ ↔ CDom ε ν μ`. Introduce `ν`. Use `exists_congr fun c => and_congr ?_ ?_` and prove the remaining obligations. Use `forall_congr' fun a => forall_congr' fun b => imp_congr_right fun _ => ?_` and prove the remaining obligations. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨(hb a b h2).1 h1, h2⟩, fun ⟨h1, h2⟩ => ⟨(hb a b h2).2 h1, h2⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => by rw [h]; abel, fun h => by rw [← h]; abel⟩`. Simplify using `only [IsKTypeU, IsKTypeOf, Stable, IsKStableOn, hA]`.
+Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 lemma kType_iff {ε : Fin n → Bool} {lam : Fin n → ℝ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
@@ -42,9 +42,9 @@ lemma kType_iff {ε : Fin n → Bool} {lam : Fin n → ℝ} {H : Type} [NormedAd
   simp only [IsKTypeU, IsKTypeOf, Stable, IsKStableOn, hA]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [lowCh, lowK, rhoNh, rhoCh, rhoN, rhoC, Function.comp_apply, Pi.add_apply, Pi.sub_apply]`. Establish `k : ∀ b, lam (s b) < lam (s a) ↔ a < b` using `fun b => hanti.lt_iff_gt`. Establish `k' : ∀ b, lam (s a) < lam (s b) ↔ b < a` using `fun b => hanti.lt_iff_gt`. Establish `c1 : (univ.filter fun b => a < b ∧ ε (s b) ≠ ε (s a)).card = (univ.filter fun b => lam b < lam (s a) ∧ ε b ≠ ε (s a)).card` using `Finset.card_equiv s (fun b => by simp [k])`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : (univ.filter fun b => b < a ∧ ε (s b) ≠ ε (s a)).card = (univ.filter fun b => lam (s a) < lam b ∧ ε b ≠ ε (s a)).card` using `Finset.card_equiv s (fun b => by simp [k'])`. Establish `c3 : (univ.filter fun b => a < b ∧ ε (s b) = ε (s a)).card = (univ.filter fun b => lam b < lam (s a) ∧ ε b = ε (s a)).card` using `Finset.card_equiv s (fun b => by simp [k])`. Establish `c4 : (univ.filter fun b => b < a ∧ ε (s b) = ε (s a)).card = (univ.filter fun b => lam (s a) < lam b ∧ ε b = ε (s a)).card` using `Finset.card_equiv s (fun b => by simp [k'])`. Rewrite using `[c1, c2, c3, c4]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma lowCh_comp (ε : Fin n → Bool) {lam : Fin n → ℝ} {s : Equiv.Perm (Fin n)} (hanti : StrictAnti (lam ∘ s)) :
     lowCh ε lam ∘ s = lowK (ε ∘ s) (lam ∘ s) := by
@@ -67,7 +67,7 @@ lemma lowCh_comp (ε : Fin n → Bool) {lam : Fin n → ℝ} {s : Equiv.Perm (Fi
   rw [c1, c2, c3, c4]
 
 /- English proof (translation)
-Establish `h` using `fun k => (GlobalTheory.T.gelfand_values_shift n χ).2.2 s k`. Simplify using `only [HasInfChar, IsZEigen, h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 lemma infChar_comp (ε : Fin n → Bool) (χ : Fin n → ℂ) (s : Equiv.Perm (Fin n)) {H : Type} [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) :
@@ -76,17 +76,17 @@ lemma infChar_comp (ε : Fin n → Bool) (χ : Fin n → ℂ) (s : Equiv.Perm (F
   simp only [HasInfChar, IsZEigen, h]
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ lam s hs hanti hU`. Take `⟨hI, hC, hE, hAb⟩` from `hU`. Establish `hb : ∀ x y, ε x = ε y → (lam y < lam x ↔ x < y)` using `fun x y h => blk_iff hs hanti h`. Establish `P` using `GlobalTheory.DSId.PermK.permKType n ε s H σ hs`. Establish `hlow` using `lowCh_comp ε hanti`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨P.2.2.2.1.1 hI, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : HasInfChar ε ((fun a => (lam a : ℂ)) ∘ s) σ` using `(infChar_comp ε _ s σ).2 hC`. Conclude with `(P.2.2.2.2 _).2 h1`. Take `⟨S, hS, huniq⟩` from `hE`. Use `⟨S, ?_, fun T hT => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hlow]`. Conclude with `(P.1 _ S).1 ((kType_iff hb _ S).1 hS)`. Rewrite `hT` using `[← hlow]`. Conclude with `huniq T ((kType_iff hb _ T).2 ((P.1 _ T).2 hT))`. Introduce `μ S hS`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `e : (μ ∘ s.symm) ∘ s = μ` using `by funext a; simp`. Establish `h1 : IsKTypeOf ε σ (μ ∘ s.symm) S` using `(P.1 _ S).2 (by rw [e]; exact hS)`. Take `⟨c, hc, h2⟩` from `hAb _ S ((kType_iff hb _ S).2 h1)`. Use `⟨fun a b => c (s a) (s b), fun a b h => hanti.lt_iff_gt.1 (hc _ _ h), ?_⟩` and prove the remaining obligations. Rewrite using `[← hlow]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Establish `h3` using `congrFun h2 (s x)`. Rewrite `h3` using `[← Equiv.sum_comp s]`. Simplify using `only [Function.comp_apply, Equiv.symm_apply_apply, Pi.add_apply, Finset.sum_apply] at h3 ⊢`. Use `h3.trans (congrArg _ (Finset.sum_congr rfl fun a _ => ?_))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Equiv.sum_comp s]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Simplify using `[root, Pi.single_apply]`.
+A detailed English derivation is pending.
 -/
 theorem vChamber : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (lam : Fin n → ℝ) (s : Equiv.Perm (Fin n)), (∀ a b, a < b → ε (s a) = ε (s b) → s a < s b) → StrictAnti (lam ∘ s) → IsHCU ε lam σ → IsHCDS (ε ∘ s) (lam ∘ s) (fun g => σ (g.submatrix s.symm s.symm)) := by
   intro n ε H _ _ σ lam s hs hanti hU

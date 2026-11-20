@@ -26,15 +26,15 @@ def rr_N (Γ : Subgroup G) (D : Set G) : Set G :=
 variable {μ : Measure G} {Γ : Subgroup G} {D : Set G}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_rr_N_iff {y : G} :
     y ∈ rr_N Γ D ↔ ∃ γ₁ ∈ Γ, ∃ γ₂ ∈ Γ, γ₁ ≠ γ₂ ∧ γ₁ * y ∈ D ∧ γ₂ * y ∈ D := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `y`. Simplify using `only [mem_rr_N_iff, Set.mem_iUnion, Set.mem_inter_iff, Set.mem_preimage]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, b, hb, hab, h1, h2⟩`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, fun e => hab (congrArg Subtype.val e), h1, h2⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, b, hab, h1, h2⟩`. Conclude with `⟨a, a.2, b, b.2, fun e => hab (Subtype.ext e), h1, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem rr_N_eq_iUnion_preimage_inter :
     rr_N Γ D = ⋃ a : Γ, ⋃ b : Γ, ⋃ (_ : a ≠ b),
@@ -48,11 +48,11 @@ private theorem rr_N_eq_iUnion_preimage_inter :
     exact ⟨a, a.2, b, b.2, fun e => hab (Subtype.ext e), h1, h2⟩
 
 /- English proof (translation)
-Rewrite using `[rr_N_eq_iUnion_preimage_inter]`. Use `measure_iUnion_null fun a => measure_iUnion_null fun b => measure_iUnion_null fun hab => ?_` and prove the remaining obligations. Establish `hne : (a : G) * (b : G)⁻¹ ≠ 1` using `fun e => hab (Subtype.ext (mul_inv_eq_one.mp e))`. Establish `hmem : (a : G) * (b : G)⁻¹ ∈ (Γ : Set G)` using `Γ.mul_mem a.2 (Γ.inv_mem b.2)`. Establish `hsub : (fun y => (a : G) * y) ⁻¹' D ∩ (fun y => (b : G) * y) ⁻¹' D ⊆ (fun y => (a : G) * y) ⁻¹' ((fun z => (a : G) * (b : G)⁻¹ * z) '' D ∩ D)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `y ⟨h1, h2⟩`. Use `⟨⟨(b : G) * y, h2, ?_⟩, h1⟩` and prove the remaining obligations. Simplify using `only [mul_assoc, inv_mul_cancel_left]`. Use `measure_mono_null hsub ?_` and prove the remaining obligations. Rewrite using `[measure_preimage_mul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.disj _ hmem hne`.
+A detailed English derivation is pending.
 -/
 theorem rr_N_null [μ.IsMulLeftInvariant] [Countable Γ] (h : rr_FD μ Γ D) : μ (rr_N Γ D) = 0 := by
   rw [rr_N_eq_iUnion_preimage_inter]
@@ -69,7 +69,7 @@ theorem rr_N_null [μ.IsMulLeftInvariant] [Countable Γ] (h : rr_FD μ Γ D) : �
   exact h.disj _ hmem hne
 
 /- English proof (translation)
-Establish `hex : ∃ γ ∈ (Γ : Set G), γ * y ∈ D` using `h.cov y`. Use `⟨hex.choose, hex.choose_spec.1, ?_, hex.choose_spec.2⟩` and prove the remaining obligations. Unfold `rr_rep`. Rewrite using `[dif_pos hex]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem rr_rep_spec (h : rr_FD μ Γ D) (y : G) :
     ∃ γ ∈ Γ, rr_rep (Γ : Set G) D y = γ * y ∧ γ * y ∈ D := by
@@ -79,7 +79,7 @@ theorem rr_rep_spec (h : rr_FD μ Γ D) (y : G) :
   rw [dif_pos hex]
 
 /- English proof (translation)
-Take `⟨γ₀, hγ₀, he, hD₀⟩` from `rr_rep_spec h y`. Rewrite using `[he]`. Assume the negation of the conclusion as `hne`. Conclude with `hy (mem_rr_N_iff.mpr ⟨γ₀, hγ₀, γ, hγ, fun e => hne (by rw [e]), hD₀, hD⟩)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem rr_rep_eq (h : rr_FD μ Γ D) {y : G} (hy : y ∉ rr_N Γ D) {γ : G} (hγ : γ ∈ Γ) (hD : γ * y ∈ D) :
     rr_rep (Γ : Set G) D y = γ * y := by
@@ -89,7 +89,7 @@ theorem rr_rep_eq (h : rr_FD μ Γ D) {y : G} (hy : y ∉ rr_N Γ D) {γ : G} (h
   exact hy (mem_rr_N_iff.mpr ⟨γ₀, hγ₀, γ, hγ, fun e => hne (by rw [e]), hD₀, hD⟩)
 
 /- English proof (translation)
-Introduce `hcy`. Take `⟨g1, hg1, g2, hg2, hne, h1, h2⟩` from `mem_rr_N_iff.mp hcy`. Use `hy (mem_rr_N_iff.mpr ⟨g1 * c, Γ.mul_mem hg1 hc, g2 * c, Γ.mul_mem hg2 hc, fun e => hne (mul_right_cancel e), ?_, ?_⟩)` and prove the remaining obligations. Rewrite using `[mul_assoc]` and apply the resulting hypothesis. Rewrite using `[mul_assoc]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem rr_N_smul {y c : G} (hc : c ∈ Γ) (hy : y ∉ rr_N Γ D) : c * y ∉ rr_N Γ D := by
   intro hcy
@@ -100,7 +100,7 @@ theorem rr_N_smul {y c : G} (hc : c ∈ Γ) (hy : y ∉ rr_N Γ D) : c * y ∉ r
   · rwa [mul_assoc]
 
 /- English proof (translation)
-Take `⟨γ, hγ, he, hD⟩` from `rr_rep_spec h y`. Establish `hD' : γ * c⁻¹ * (c * y) ∈ D`. Rewrite using `[mul_assoc, inv_mul_cancel_left]` and apply the resulting hypothesis. Rewrite using `[rr_rep_eq h (rr_N_smul hc hy) (Γ.mul_mem hγ (Γ.inv_mem hc)) hD', he, mul_assoc, inv_mul_cancel_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem rr_rep_smul (h : rr_FD μ Γ D) {y c : G} (hc : c ∈ Γ) (hy : y ∉ rr_N Γ D) :
     rr_rep (Γ : Set G) D (c * y) = rr_rep (Γ : Set G) D y := by
@@ -111,9 +111,9 @@ theorem rr_rep_smul (h : rr_FD μ Γ D) {y c : G} (hc : c ∈ Γ) (hy : y ∉ rr
     mul_assoc, inv_mul_cancel_left]
 
 /- English proof (translation)
-Use `haveI : Nonempty Γ := ⟨1⟩`. Take `⟨e, he⟩` from `exists_surjective_nat Γ`. Establish `hex : ∀ y : G, ∃ n : ℕ, ((e n : Γ) : G) * y ∈ D`. Introduce `y`. Take `⟨γ, hγ, hD⟩` from `h.cov y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `he ⟨γ, hγ⟩`. Conclude with `⟨n, by rw [hn]; exact hD⟩`. Use `⟨fun y => ((e (Nat.find (hex y)) : Γ) : G) * y, ?_, fun y => ⟨_, (e (Nat.find (hex y))).2, rfl, Nat.find_spec (hex y)⟩⟩` and prove the remaining obligations. Conclude with `Measurable.find (f := fun n y => ((e n : Γ) : G) * y) (p := fun n y => ((e n : Γ) : G) * y ∈ D) (fun n => measurable_const_mul _) (fun n => measurable_const_mul _ h.meas) hex`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rr_exists_meas_rep [Countable Γ] (h : rr_FD μ Γ D) :
     ∃ r : G → G, Measurable r ∧ ∀ y, ∃ γ ∈ Γ, r y = γ * y ∧ γ * y ∈ D := by
@@ -131,7 +131,7 @@ theorem rr_exists_meas_rep [Countable Γ] (h : rr_FD μ Γ D) :
     (fun n => measurable_const_mul _) (fun n => measurable_const_mul _ h.meas) hex
 
 /- English proof (translation)
-The claim follows from `(measurable_mul_const g) h.meas cov := fun y => by obtain ⟨γ, hγ, hD⟩ := h.cov (y * g) exact ⟨γ, hγ, by simpa [mul_assoc] using hD⟩ disj := fun γ hγ h1 => by have : (fun y => γ * y) '' ((fun x => x * g) ⁻¹' D) ∩ (fun x => x * g) ⁻¹' D ⊆ (fun x => x * g) ⁻¹' ((fun y => γ * y) '' D …`.
+A detailed English derivation is pending.
 -/
 theorem rr_FD_right [μ.IsMulRightInvariant] (h : rr_FD μ Γ D) (g : G) : rr_FD μ Γ ((fun x => x * g) ⁻¹' D) where
   meas := (measurable_mul_const g) h.meas
@@ -148,7 +148,7 @@ theorem rr_FD_right [μ.IsMulRightInvariant] (h : rr_FD μ Γ D) (g : G) : rr_FD
     exact h.disj γ hγ h1
 
 /- English proof (translation)
-Rewrite using `[rr_N_eq_iUnion_preimage_inter]`. Conclude with `MeasurableSet.iUnion fun a => MeasurableSet.iUnion fun b => MeasurableSet.iUnion fun _ => (measurable_const_mul (a : G) hD).inter (measurable_const_mul (b : G) hD)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem measurableSet_rr_N [Countable Γ] (hD : MeasurableSet D) :
     MeasurableSet (rr_N Γ D) := by
@@ -157,7 +157,7 @@ private theorem measurableSet_rr_N [Countable Γ] (hD : MeasurableSet D) :
     (measurable_const_mul (a : G) hD).inter (measurable_const_mul (b : G) hD)
 
 /- English proof (translation)
-Use `IsFundamentalDomain.mk'' h.meas.nullMeasurableSet (ae_of_all _ fun y => ?_) (fun g hg => ?_) (fun g => ?_)` and prove the remaining obligations. Take `⟨γ, hγ, hD⟩` from `h.cov y`. Conclude with `⟨⟨γ, hγ⟩, hD⟩`. Conclude with `h.disj g g.2 (fun e => hg (Subtype.ext e))`. Conclude with `(measurePreserving_mul_left μ (g : G)).quasiMeasurePreserving`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rr_isFD [μ.IsMulLeftInvariant] [Countable Γ] (h : rr_FD μ Γ D) : IsFundamentalDomain Γ D μ := by
   refine IsFundamentalDomain.mk'' h.meas.nullMeasurableSet
@@ -175,9 +175,9 @@ variable {G : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G]
 variable {μ : Measure G} {Γ : Subgroup G} {D : Set G}
 
 /- English proof (translation)
-Establish `hM : μ ((fun x => x * g) ⁻¹' rr_N Γ D) = 0`. Rewrite using `[measure_preimage_mul_right]`. Conclude with `rr_N_null h`. Rewrite using `[ae_iff]`. Use `measure_mono_null (fun x hx => ?_) hM` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hxM`. Take `⟨γ, hγ, hrx, hD⟩` from `hr (x * g)`. Conclude with `hx (by rw [hrx]; exact rr_rep_eq (y := x * g) h hxM hγ hD)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem rr_rep_ae_eq [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (h : rr_FD μ Γ D) {r : G → G}
     (hr : ∀ y, ∃ γ ∈ Γ, r y = γ * y ∧ γ * y ∈ D) (g : G) :
@@ -191,7 +191,7 @@ theorem rr_rep_ae_eq [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable
   exact hx (by rw [hrx]; exact rr_rep_eq (y := x * g) h hxM hγ hD)
 
 /- English proof (translation)
-Take `⟨γ, hγ, hry, hD⟩` from `hr y`. Rewrite using `[hry, rr_rep_eq h hy hγ hD]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eq_rr_rep_of_not_mem_rr_N (h : rr_FD μ Γ D) {r : G → G}
     (hr : ∀ y, ∃ γ ∈ Γ, r y = γ * y ∧ γ * y ∈ D) {y : G} (hy : y ∉ rr_N Γ D) :
@@ -200,7 +200,7 @@ private theorem eq_rr_rep_of_not_mem_rr_N (h : rr_FD μ Γ D) {r : G → G}
   rw [hry, rr_rep_eq h hy hγ hD]
 
 /- English proof (translation)
-Establish `e` using `rr_rep_eq h hy Γ.one_mem (by rwa [one_mul])`. Rewrite `e` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem rr_rep_eq_self_of_mem_of_not_mem_rr_N (h : rr_FD μ Γ D) {y : G}
     (hy : y ∉ rr_N Γ D) (hD : y ∈ D) : rr_rep (Γ : Set G) D y = y := by
@@ -208,25 +208,23 @@ private theorem rr_rep_eq_self_of_mem_of_not_mem_rr_N (h : rr_FD μ Γ D) {y : G
   rwa [one_mul] at e
 
 /- English proof (translation)
-Take `⟨r₀, hr₀, hr₀rep⟩` from `rr_exists_meas_rep h`. Use `haveI : MeasurableConstSMul Γ G := ⟨fun c => measurable_const_mul (c : G)⟩`. Use `haveI : SMulInvariantMeasure Γ G μ := ⟨fun c s _ => measure_preimage_mul μ (c : G) s⟩`. Establish `hMmeas : MeasurableSet (rr_N Γ D)` using `measurableSet_rr_N h.meas`. Establish `hN0 : μ ((fun x => x * g) ⁻¹' rr_N Γ D) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[measure_preimage_mul_right]`. Conclude with `rr_N_null h`. Establish `hN : ∀ᵐ x ∂μ, x * g ∉ rr_N Γ D`. Use `ae_iff.mpr (measure_mono_null (fun x hx => ?_) hN0)` and prove the remaining obligations. Simplify using `only [Set.mem_setOf_eq, not_not] at hx`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx`. Establish `hSmeas : MeasurableSet ((fun x => x * g) ⁻¹' ((rr_N Γ D)ᶜ ∩ r₀ ⁻¹' A))` using `measurable_mul_const g (hMmeas.compl.inter (hr₀ hA))`. Establish `hinv : ∀ c : Γ, (fun x => c • x) ⁻¹' ((fun x => x * g) ⁻¹' ((rr_N Γ D)ᶜ ∩ r₀ ⁻¹' A)) = ((fun x => x * g) ⁻¹' ((rr_N Γ D)ᶜ ∩ r₀ ⁻¹' A))`. Introduce `c`. Use extensionality with `x`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `show (c : G) * x * g ∉ rr_N Γ D ∧ r₀ ((c : G) * x * g) ∈ A ↔ x * g ∉ rr_N Γ D ∧ r₀ (x * g) ∈ A`. Rewrite using `[mul_assoc]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `hy : x * g ∉ rr_N Γ D`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components.
 
-Establish `e` using `rr_N_smul (Γ.inv_mem c.2) h1`. Rewrite `e` using `[inv_mul_cancel_left]`. Then use the resulting hypothesis. Use `⟨hy, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[eq_rr_rep_of_not_mem_rr_N h hr₀rep h1, rr_rep_smul h c.2 hy, ← eq_rr_rep_of_not_mem_rr_N h hr₀rep hy]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy` using `rr_N_smul c.2 h1`. Use `⟨hy, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_rr_rep_of_not_mem_rr_N h hr₀rep hy, rr_rep_smul h c.2 h1, ← eq_rr_rep_of_not_mem_rr_N h hr₀rep h1]` and apply the resulting hypothesis. Establish `hfd : IsFundamentalDomain Γ D μ` using `(rr_isFD h)`. Establish `hfd' : IsFundamentalDomain Γ ((fun x => x * g) ⁻¹' D) μ` using `(rr_isFD ((rr_FD_right h) g))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `hfd.measure_set_eq hfd' (A := ((fun x => x * g) ⁻¹' ((rr_N Γ D)ᶜ ∩ r₀ ⁻¹' A))) hSmeas hinv`. Establish `e1 : μ ((fun x => r (x * g)) ⁻¹' A ∩ D) = μ (((fun x => x * g) ⁻¹' ((rr_N Γ D)ᶜ ∩ r₀ ⁻¹' A)) ∩ D)`. Use `measure_congr (hN.mono fun x hx => propext ?_)` and prove the remaining obligations. Establish `e : r (x * g) = r₀ (x * g)`. Rewrite using `[eq_rr_rep_of_not_mem_rr_N h hr hx, eq_rr_rep_of_not_mem_rr_N h hr₀rep hx]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Use `show r (x * g) ∈ A ∧ x ∈ D ↔ (x * g ∉ rr_N Γ D ∧ r₀ (x * g) ∈ A) ∧ x ∈ D`. Rewrite using `[e]`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨⟨hx, h1⟩, h2⟩, fun ⟨⟨_, h1⟩, h2⟩ => ⟨h1, h2⟩⟩`. Establish `e2 : μ (((fun x => x * g) ⁻¹' ((rr_N Γ D)ᶜ ∩ r₀ ⁻¹' A)) ∩ (fun x => x * g) ⁻¹' D) = μ ((fun x => x * g) ⁻¹' (A ∩ D))`. Use `measure_congr (hN.mono fun x hx => propext ?_)` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (x * g ∉ rr_N Γ D ∧ r₀ (x * g) ∈ A) ∧ x * g ∈ D ↔ x * g ∈ A ∧ x * g ∈ D`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨_, h1⟩, h2⟩`. Use `⟨?_, h2⟩` and prove the remaining obligations. Rewrite `h1` using `[eq_rr_rep_of_not_mem_rr_N h hr₀rep hx, rr_rep_eq_self_of_mem_of_not_mem_rr_N h hx h2]`. Then use the resulting hypothesis.
-
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨hx, ?_⟩, h2⟩` and prove the remaining obligations. Rewrite using `[eq_rr_rep_of_not_mem_rr_N h hr₀rep hx, rr_rep_eq_self_of_mem_of_not_mem_rr_N h hx h2]` and apply the resulting hypothesis. Rewrite using `[e1, key, e2, measure_preimage_mul_right]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rr_meas_pre [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (h : rr_FD μ Γ D) {r : G → G}
     (hr : ∀ y, ∃ γ ∈ Γ, r y = γ * y ∧ γ * y ∈ D) (g : G) {A : Set G} (hA : MeasurableSet A) :
@@ -285,7 +283,7 @@ theorem rr_meas_pre [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable 
   rw [e1, key, e2, measure_preimage_mul_right]
 
 /- English proof (translation)
-Take `⟨r₀, hr₀, hr₀rep⟩` from `rr_exists_meas_rep h`. Establish `hae : AEMeasurable (fun x => rr_rep (Γ : Set G) D (x * g)) (μ.restrict D)` using `⟨fun x => r₀ (x * g), hr₀.comp (measurable_mul_const g), ae_restrict_of_ae (rr_rep_ae_eq h hr₀rep g)⟩`. Use `⟨hae, Measure.ext fun A hA => ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_apply_of_aemeasurable hae hA, Measure.restrict_apply' h.meas, Measure.restrict_apply' h.meas]`. Conclude with `rr_meas_pre h (rr_rep_spec h) g hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rr_map [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (h : rr_FD μ Γ D) (g : G) :
     AEMeasurable (fun x => rr_rep (Γ : Set G) D (x * g)) (μ.restrict D) ∧
@@ -300,9 +298,9 @@ theorem rr_map [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (
   exact rr_meas_pre h (rr_rep_spec h) g hA
 
 /- English proof (translation)
-Establish `hM : μ ((fun x => x * (g * k)) ⁻¹' rr_N Γ D) = 0`. Rewrite using `[measure_preimage_mul_right]`. Conclude with `rr_N_null h`. Rewrite using `[ae_iff]`. Use `measure_mono_null (fun x hx => ?_) hM` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hxM`. Take `⟨γ, hγ, he, -⟩` from `rr_rep_spec h (x * g)`. Use `hx ?_` and prove the remaining obligations. Rewrite using `[he, show γ * (x * g) * k = γ * (x * (g * k)) by simp only [mul_assoc]]`. Conclude with `rr_rep_smul (y := x * (g * k)) h hγ hxM`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rr_rep_comp [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (h : rr_FD μ Γ D) (g k : G) :
     ∀ᵐ x ∂μ, rr_rep (Γ : Set G) D (rr_rep (Γ : Set G) D (x * g) * k) = rr_rep (Γ : Set G) D (x * (g * k)) := by
@@ -317,9 +315,9 @@ theorem rr_rep_comp [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable 
   exact rr_rep_smul (y := x * (g * k)) h hγ hxM
 
 /- English proof (translation)
-Rewrite using `[ae_restrict_iff' h.meas, ae_iff]`. Use `measure_mono_null (fun x hx => ?_) (rr_N_null h)` and prove the remaining obligations. Assume the negation of the conclusion as `hxM`. Simplify using `only [Set.mem_setOf_eq, _root_.not_imp] at hx`. Take `⟨hxD, hne⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[mul_one]`. Establish `e` using `rr_rep_eq h hxM Γ.one_mem (by rwa [one_mul])`. Rewrite `e` using `[one_mul]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rr_rep_self [μ.IsMulLeftInvariant] [Countable Γ] (h : rr_FD μ Γ D) :
     ∀ᵐ x ∂μ.restrict D, rr_rep (Γ : Set G) D (x * 1) = x := by
@@ -341,9 +339,9 @@ def rr_IsReg (μ : Measure G) (Γ : Subgroup G) (D : Set G)
 variable {R : G → (Lp ℂ 2 (μ.restrict D) →L[ℂ] Lp ℂ 2 (μ.restrict D))}
 
 /- English proof (translation)
-Take `⟨hae, hmap⟩` from `rr_map h g`. Establish `hF : AEStronglyMeasurable (F : G → ℂ) (Measure.map (fun x => rr_rep (Γ : Set G) D (x * g)) (μ.restrict D))`. Rewrite using `[hmap]`. Conclude with `Lp.aestronglyMeasurable F`. Establish `key` using `eLpNorm_map_measure (p := 2) hF hae`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hmap]`. Rewrite using `[Lp.norm_def, Lp.norm_def, eLpNorm_congr_ae (hR g F)]`. Conclude with `congrArg ENNReal.toReal key.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rr_norm [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (h : rr_FD μ Γ D)
     (hR : rr_IsReg μ Γ D R) (g : G) (F : Lp ℂ 2 (μ.restrict D)) : ‖R g F‖ = ‖F‖ := by
@@ -357,9 +355,9 @@ theorem rr_norm [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] 
   exact congrArg ENNReal.toReal key.symm
 
 /- English proof (translation)
-Use extensionality with `F : 1`. Use `Lp.ext ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.comp_apply]`. Take `⟨hae, hmap⟩` from `rr_map h g`. Establish `h3 : (fun x => ((R k F : Lp ℂ 2 (μ.restrict D)) : G → ℂ) (rr_rep (Γ : Set G) D (x * g))) =ᵐ[μ.restrict D] fun x => (F : G → ℂ) (rr_rep (Γ : Set G) D (rr_rep (Γ : Set G) D (x * g) * k))` using `ae_eq_comp (f := fun x => rr_rep (Γ : Set G) D (x * g)) (g := ((R k F : Lp ℂ 2 (μ.restrict D)) : G → ℂ)) (g' := fun y => (F : G → ℂ) (rr_rep (Γ : Set G) D (y * k))) hae (by rw [hmap]; exact hR k F)`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `filter_upwards [hR (g * k) F, hR g (R k F), h3, ae_restrict_of_ae (s := D) (rr_rep_comp h g k)] with x e1 e2 e3 e4`. Simplify using `only [e1, e2, e3, e4]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rr_mul [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (h : rr_FD μ Γ D)
     (hR : rr_IsReg μ Γ D R) (g k : G) : R (g * k) = R g ∘L R k := by
@@ -378,7 +376,7 @@ theorem rr_mul [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ] (
   simp only [e1, e2, e3, e4]
 
 /- English proof (translation)
-Use extensionality with `F : 1`. Use `Lp.ext ?_` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.one_apply]`. Use `filter_upwards [hR 1 F, rr_rep_self h] with x e1 e2`. Simplify using `only [e1, e2]`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rr_one [μ.IsMulLeftInvariant] [Countable Γ] (h : rr_FD μ Γ D) (hR : rr_IsReg μ Γ D R) : R 1 = 1 := by
   ext F : 1
@@ -388,9 +386,9 @@ theorem rr_one [μ.IsMulLeftInvariant] [Countable Γ] (h : rr_FD μ Γ D) (hR : 
   simp only [e1, e2]
 
 /- English proof (translation)
-Take `⟨r₀, hr₀, hr₀rep⟩` from `rr_exists_meas_rep h`. Establish `hΦ : StronglyMeasurable (fun p : G × G => ⟪(x : G → ℂ) p.2, (y : G → ℂ) (r₀ (p.2 * p.1))⟫_ℂ)` using `((Lp.stronglyMeasurable x).comp_measurable measurable_snd).inner ((Lp.stronglyMeasurable y).comp_measurable (hr₀.comp (measurable_snd.mul measurable_fst)))`. Establish `hEq : (fun g => ⟪x, R g y⟫_ℂ) = fun g => ∫ z, ⟪(x : G → ℂ) z, (y : G → ℂ) (r₀ (z * g))⟫_ℂ ∂(μ.restrict D)`. Use function extensionality and compare the values at `g`. Rewrite using `[L2.inner_def]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hR g y, ae_restrict_of_ae (s := D) (rr_rep_ae_eq h hr₀rep g)] with z e1 e2`. Simplify using `only [e1, e2]`. Rewrite using `[hEq]`. Conclude with `hΦ.integral_prod_right'`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rr_weak_meas [MeasurableMul₂ G] [SFinite μ] [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant] [Countable Γ]
     (h : rr_FD μ Γ D) (hR : rr_IsReg μ Γ D R) (x y : Lp ℂ 2 (μ.restrict D)) :

@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.GoodTop
 
 /- English proof (translation)
-Establish `hint : ∀ w : V n, Integrable (fun y => fderiv ℝ G y w)` using `fun w => ((hG.continuous_fderiv (by norm_num)).clm_apply continuous_const).integrable_of_hasCompactSupport (hc.fderiv_apply (𝕜 := ℝ) w)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `only [dbar_apply, smul_eq_mul]`. Conclude with `((hint _).add ((hint _).const_mul _)).const_mul _`. Simplify using `only [dbar_apply, smul_eq_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_const_mul, integral_add (hint _) ((hint _).const_mul _), integral_const_mul, ReciprocityTheory.L2DbarEstimates.integral_fderiv_apply_eq_zero n G hG hc, ReciprocityTheory.L2DbarEstimates.integral_fderiv_apply_eq_zero n G hG hc]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_dbar_eq_zero_of_hasCompactSupport {n : ℕ} {G : V n → ℂ} (hG : ContDiff ℝ 1 G)
     (hc : HasCompactSupport G) (u : V n) :
@@ -33,15 +33,13 @@ theorem integral_dbar_eq_zero_of_hasCompactSupport {n : ℕ} {G : V n → ℂ} (
     simp
 
 /- English proof (translation)
-Use `set G : V n → ℂ := U.indicator g with hGdef`. Establish `hin : ∀ v ∈ U, G =ᶠ[𝓝 v] g` using `fun v hv => by filter_upwards [hU.mem_nhds hv] with x hx`. Conclude with `Set.indicator_of_mem hx g`. Establish `hz : ∀ x, x ∉ K → G x = 0` using `fun x hx => by`. Distinguish the cases in `hxU : x ∈ U`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hGdef, Set.indicator_of_mem hxU, h0 x hxU hx]`. Rewrite using `[hGdef, Set.indicator_of_notMem hxU]`. Establish `hout : ∀ v, v ∉ K → G =ᶠ[𝓝 v] fun _ => 0` using `fun v hv => by filter_upwards [hK.isClosed.isOpen_compl.mem_nhds hv] with x hx`. Conclude with `hz x hx`. Establish `hG : ContDiff ℝ 1 G`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `v`. Distinguish the cases in `hv : v ∈ U`. Conclude with `(hg.contDiffAt (hU.mem_nhds hv)).congr_of_eventuallyEq (hin v hv)`. Conclude with `contDiffAt_const.congr_of_eventuallyEq (hout v fun h => hv (hKU h))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : HasCompactSupport G` using `HasCompactSupport.intro hK hz`. Take `⟨hI, hE⟩` from `integral_dbar_eq_zero_of_hasCompactSupport hG hc ξ`. Establish `heq : Set.EqOn (fun v => dbar G v ξ) (fun v => dbar g v ξ) U` using `fun v hv => by`. Simplify using `only [dbar_congr (hin v hv)]`. Use `⟨hI.integrableOn.congr_fun heq hU.measurableSet, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← setIntegral_congr_fun hU.measurableSet heq, setIntegral_eq_integral_of_forall_compl_eq_zero, hE]`. Introduce `v hv`. Rewrite using `[dbar_congr (hout v fun h => hv (hKU h))]`. Simplify using `[dbar_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setIntegral_dbar_eq_zero {n : ℕ} (U K : Set (V n)) (g : V n → ℂ) (ξ : V n)
     (hU : IsOpen U) (hK : IsCompact K) (hKU : K ⊆ U) (hg : ContDiffOn ℝ 1 g U)

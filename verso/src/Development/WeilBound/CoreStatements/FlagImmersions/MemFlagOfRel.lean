@@ -12,15 +12,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GlobalTheory.CompanionTheory.Ar GlobalTheory.CompanionTheory.Ar.Cusp GlobalTheory.CompanionTheory.Ar.HodgeExt
 
 /- English proof (translation)
-Take `⟨A, _, φ, u, χ, hp, -, -, -, -, hv⟩` from `h`. Establish `h1 : lft hp (1 : epsAt z ⟶ t.G) = 1`. Use `lft_mul hp (1 : epsAt z ⟶ t.G) 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_mul.1 this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : u.IsDiff 0 (lft hp (Mz.pt 0))`. Rewrite using `[Mz.pt_zero, h1, Hom.one_def]`. Conclude with `GlobalTheory.ArchMetricCompare.isDiff_zero u`. Establish `hc : ∀ (c c' : ℂ) (p q : (Fin g → ℂ) × V), u.IsDiff p.1 (lft hp (Mz.pt p.2)) → u.IsDiff q.1 (lft hp (Mz.pt q.2)) → u.IsDiff (c • p.1 + c' • q.1) (lft hp (Mz.pt (c • p.2 + c' • q.2)))` using `fun c c' p q a b => by`. Use `HodgePull.isDiff_comb Mz hp u ![p.2, q.2] ![p.1, q.1] (fun l => by fin_cases l; exacts [a, b]) 0 ![c, c']` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Fin.sum_univ_two]`. Establish `ht : ∀ s, IsTangent (lft hp (Mz.pt s))` using `fun s => isTangent_lft hp (Mz.tan s)`. Use `⟨{ carrier := {p | u.IsDiff p.1 (lft hp (Mz.pt p.2))} add_mem' := fun {p q} a b => by simpa using hc 1 1 p q a b zero_mem' := h0 smul_mem' := fun c p a => by simpa using hc c 0 p p a a }, fun a s e => ?_, fun d hd => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Take `⟨v', e', hd⟩` from `hv a show u.IsDiff (x a) (lft hp (Mz.pt s))`. Rewrite using `[← e, ← lft_unique hp e']`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `hd`. Conclude with `eq_of_isDiff u (ht 0) hd h0`. Establish `e` using `GlobalTheory.ArchMetricCompare.eq_of_isDiff u (ht s) (ht 0) hs h0`. Apply `Mz.inj` to reduce the goal to its premises. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
-
-Rewrite using `[← lft_left hp (Mz.pt s), e, lft_left]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rel {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {X : Scheme.{0}} {t : SAB H X}
     {z : Sp ℂ ⟶ X} {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ] {R : RiemLat E g Λ} {A₀ : Type}
@@ -59,9 +57,9 @@ section Lin
 variable {W V : Type} [AddCommGroup W] [Module ℂ W] [AddCommGroup V] [Module ℂ V] {Rel : Submodule ℂ (W × V)} {m : ℕ}
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Use `hx c (h1 _ ?_)` and prove the remaining obligations. Use `Rel.sum_mem (t := Finset.univ) fun i _ => Rel.smul_mem (c i) (h i)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `ext`. Simplify using `[Prod.fst_sum]`. Simplify using `[Prod.snd_sum, hc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem indep_of_rel (h1 : ∀ d, (d, 0) ∈ Rel → d = 0) {x : Fin m → W} {ω : Fin m → V} (h : ∀ i, (x i, ω i) ∈ Rel)
     (hx : LinearIndependent ℂ x) : LinearIndependent ℂ ω := by
@@ -75,13 +73,13 @@ theorem indep_of_rel (h1 : ∀ d, (d, 0) ∈ Rel → d = 0) {x : Fin m → W} {�
   · simp [Prod.snd_sum, hc]
 
 /- English proof (translation)
-Establish `key : ∀ d ∈ flagStep ℂ x k, ∃ s ∈ flagStep ℂ ω k, (d, s) ∈ Rel`. Introduce `d hd`. Proceed by induction on `hd using Submodule.span_induction with`. Consider the case `mem _ hy`. Take `⟨i, hi, rfl⟩` from `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ω i, Submodule.subset_span ⟨i, hi, rfl⟩, h i⟩`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _, Rel.zero_mem⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨s, hs, ha⟩` from `ha`. Take `⟨s', hs', hb⟩` from `hb`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s + s', Submodule.add_mem _ hs hs', Rel.add_mem ha hb⟩`. Consider the case `smul c a _ ha`. Take `⟨s, hs, ha⟩` from `ha`. Conclude with `⟨c • s, Submodule.smul_mem _ c hs, Rel.smul_mem c ha⟩`. Take `⟨s', hs', hr⟩` from `key d hm`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Establish `e : s - s' = 0` using `h2 _ (by simpa using Rel.sub_mem hd hr)`. Rewrite using `[sub_eq_zero.1 e]` and apply the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_flag_of_rel (h2 : ∀ s, (0, s) ∈ Rel → s = 0) {x : Fin m → W} {ω : Fin m → V} (h : ∀ i, (x i, ω i) ∈ Rel)
     {k : ℕ} {d : W} {s : V} (hd : (d, s) ∈ Rel) (hm : d ∈ flagStep ℂ x k) : s ∈ flagStep ℂ ω k := by
@@ -104,7 +102,7 @@ theorem mem_flag_of_rel (h2 : ∀ s, (0, s) ∈ Rel → s = 0) {x : Fin m → W}
   rwa [sub_eq_zero.1 e]
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `mem_flag_of_rel h2 h (h' i) (e ▸ Submodule.subset_span ⟨i, hi, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem flag_le_of_rel (h2 : ∀ s, (0, s) ∈ Rel → s = 0) {x x' : Fin m → W} {ω ω' : Fin m → V} (h : ∀ i, (x i, ω i) ∈ Rel)
     (h' : ∀ i, (x' i, ω' i) ∈ Rel) {k : ℕ} (e : flagStep ℂ x k = flagStep ℂ x' k) : flagStep ℂ ω' k ≤ flagStep ℂ ω k := by
@@ -113,27 +111,27 @@ theorem flag_le_of_rel (h2 : ∀ s, (0, s) ∈ Rel → s = 0) {x x' : Fin m → 
   exact mem_flag_of_rel h2 h (h' i) (e ▸ Submodule.subset_span ⟨i, hi, rfl⟩)
 
 /- English proof (translation)
-Set `ε : Fin m → V` to `fun k => ∑ l, u l k • α l`. Establish `hco : ∀ (t : Fin m → ℂ) (c : Fin m → ℂ), ∑ i, t i • ε i = ∑ l, c l • α l → ∀ l, ∑ i, t i * u l i = c l`. Introduce `t c e`. Establish `e2 : ∑ l, ((∑ i, t i * u l i) - c l) • α l = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, ← e, ε, Finset.smul_sum, Finset.sum_smul, smul_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm, sub_self]`. Conclude with `fun l => sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hα _ e2 l)`. Establish `hlow : ∀ (t : Fin m → ℂ) (l : Fin m), (∀ i, i < l → t i = 0) → ∑ i, t i * u l i = t l`. Introduce `t l ht`. Rewrite using `[Finset.sum_eq_single l, h1, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i _ hi`. Break down `lt_or_gt_of_ne hi with h | h` into its components or cases. Rewrite using `[ht i h, zero_mul]`. Rewrite using `[h0 l i h, mul_zero]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hvan : ∀ (t c : Fin m → ℂ) (k : ℕ), (∀ l, ∑ i, t i * u l i = c l) → (∀ l : Fin m, (l : ℕ) < k → c l = 0) → ∀ l : Fin m, (l : ℕ) < k → t l = 0`. Introduce `t c k e hc l`. Proceed by induction on `l using WellFoundedLT.induction with`. Consider the case `ind l ih`. Introduce `hl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hlow t l fun i hi => ih i hi (lt_trans hi hl), e, hc l hl]`. Establish `hε : LinearIndependent ℂ ε`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `t ht l`. Conclude with `hvan t 0 m (hco t 0 (by simpa using ht)) (fun _ _ => rfl) l l.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hfl : ∀ k : ℕ, flagStep ℂ ε k = flagStep ℂ ω k` using `fun k => by`. Establish `hle : flagStep ℂ ε k ≤ flagStep ℂ ω k`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Use `Submodule.span_mono (Set.image_mono fun j hj => ?_) (hu i)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lt_of_lt_of_le (show (j : ℕ) < i + 1 from hj) hi`. Use `haveI : FiniteDimensional ℂ (flagStep ℂ ω k) := FiniteDimensional.span_of_finite ℂ (Set.toFinite _)`. Use `Submodule.eq_of_le_of_finrank_le hle ?_` and prove the remaining obligations. Unfold `flagStep`. Rewrite using `[Set.image_eq_range, Set.image_eq_range]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(finrank_range_le_card _).trans (finrank_span_eq_card (hε.comp _ Subtype.val_injective)).ge`. Use function extensionality and compare the values at `l k`. Establish `hm` using `hu' k`. Rewrite `hm` using `[← hfl]`. Take `⟨t, ht, e⟩` from `(Finsupp.mem_span_image_iff_linearCombination ℂ).1 hm`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[Finsupp.linearCombination_apply, Finsupp.sum_fintype _ _ (by simp)]`. Establish `e1` using `hco t _ e`. Establish `e2` using `hvan t _ k e1 fun l hl => h0' l k hl`. Establish `e3 : t k = 1` using `by rw [← hlow t k fun i hi => e2 i hi, e1, h1']`. Rewrite using `[← e1 l, Finset.sum_eq_single k, e3, _root_.one_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `i _ hi`. Break down `lt_or_gt_of_ne hi with h | h` into its components or cases. Rewrite using `[e2 i h, zero_mul]`. Establish `: t i = 0`. Assume the negation of the conclusion as `hne`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `h6 : (i : ℕ) < k + 1` using `ht (Finsupp.mem_support_iff.2 hne)`. Establish `h7 : (k : ℕ) < i` using `h`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, zero_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tri_unique {α ω : Fin m → V} (hα : LinearIndependent ℂ α) {u u' : Fin m → Fin m → ℂ} (h1 : ∀ k, u k k = 1)
     (h0 : ∀ l k, l < k → u l k = 0) (h1' : ∀ k, u' k k = 1) (h0' : ∀ l k, l < k → u' l k = 0)

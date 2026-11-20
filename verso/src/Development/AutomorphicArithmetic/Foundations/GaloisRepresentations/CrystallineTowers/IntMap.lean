@@ -12,15 +12,15 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
   {w : HeightOneSpectrum (𝓞 E)} {A : ValuationSubring Ω}
 
 /- English proof (translation)
-Take `⟨n, d, hd, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hd1 : algebraMap (𝓞 E) E d ≠ 0` using `by simpa using hd0`. Rewrite `hx` using `[map_div₀, div_le_one₀ (zero_lt_iff.2 (by simpa using hd1)), HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.valuation_of_algebraMap]`. Use `set k := (Associates.mk w.asIdeal).count (Associates.mk (Ideal.span {d})).factors with hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv : w.intValuation d = WithZero.exp (-(k : ℤ))` using `w.intValuation_if_neg hd0`. Establish `h1 : d ∈ w.asIdeal ^ k` using `(w.intValuation_le_pow_iff_mem d k).1 hv.le`. Establish `h2 : n ∈ w.asIdeal ^ k` using `(w.intValuation_le_pow_iff_mem n k).1 (hx.trans hv.le)`. Establish `h3 : d ∉ w.asIdeal ^ (k + 1)` using `fun h => by`. Use `(w.intValuation_le_pow_iff_mem d (k + 1)).2 h` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hv, WithZero.exp_le_exp]`. Move the coercions through the operations in `at this`. Use linear arithmetic over natural numbers and integers. Take `⟨J, hJ⟩` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 h1)`. Establish `h4 : ¬ J ≤ w.asIdeal` using `fun h => h3 <| by`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: d ∈ Ideal.span {d}` using `Ideal.mem_span_singleton_self d`. Rewrite `this` using `[hJ]`. Rewrite using `[pow_succ]`. Conclude with `Ideal.mul_mono_right h this`. Take `⟨b, hbJ, hb⟩` from `SetLike.not_le_iff_exists.1 h4`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h5 : n * b ∈ Ideal.span {d}` using `hJ ▸ Ideal.mul_mem_mul h2 hbJ`. Take `⟨a, ha⟩` from `Ideal.mem_span_singleton'.1 h5`. Use `⟨a, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[div_mul_eq_mul_div, div_eq_iff hd1, ← map_mul, ← map_mul, ha]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_den {x : E} (hx : w.valuation E x ≤ 1) :
     ∃ a b : 𝓞 E, b ∉ w.asIdeal ∧ x * algebraMap (𝓞 E) E b = algebraMap (𝓞 E) E a := by
@@ -51,7 +51,7 @@ private theorem exists_den {x : E} (hx : w.valuation E x ≤ 1) :
   rw [div_mul_eq_mul_div, div_eq_iff hd1, ← map_mul, ← map_mul, ha]
 
 /- English proof (translation)
-Establish `h : IsIntegral A (algebraMap E Ω (algebraMap (𝓞 E) E a))` using `((RingOfIntegers.isIntegral_coe a).algebraMap (B := Ω)).tower_top`. Take `⟨y, hy⟩` from `IsIntegrallyClosed.isIntegral_iff.1 h`. Rewrite using `[← hy]`. Conclude with `y.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_int (a : 𝓞 E) : algebraMap E Ω (algebraMap (𝓞 E) E a) ∈ A := by
   have h : IsIntegral A (algebraMap E Ω (algebraMap (𝓞 E) E a)) :=
@@ -61,16 +61,16 @@ private theorem mem_of_int (a : 𝓞 E) : algebraMap E Ω (algebraMap (𝓞 E) E
   exact y.2
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((A.valuation_le_one_iff _).2 (mem_of_int b)) (not_lt.1 fun h => hb ((hA b).1 h))`.
+A detailed English derivation is pending.
 -/
 private theorem val_eq_one (hA : IsPlaceOver A w) {b : 𝓞 E} (hb : b ∉ w.asIdeal) :
     A.valuation (algebraMap E Ω (algebraMap (𝓞 E) E b)) = 1 :=
   le_antisymm ((A.valuation_le_one_iff _).2 (mem_of_int b)) (not_lt.1 fun h => hb ((hA b).1 h))
 
 /- English proof (translation)
-Take `⟨a, b, hb, e⟩` from `exists_den hx`. Rewrite using `[← A.valuation_le_one_iff]`. Establish `h` using `congrArg (fun y => A.valuation (algebraMap E Ω y)) e`. Simplify using `only [map_mul, val_eq_one hA hb, mul_one] at h`. Rewrite using `[h]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(A.valuation_le_one_iff _).2 (mem_of_int a)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_of_le_one (hA : IsPlaceOver A w) {x : E} (hx : w.valuation E x ≤ 1) :
     algebraMap E Ω x ∈ A := by
@@ -82,11 +82,9 @@ private theorem mem_of_le_one (hA : IsPlaceOver A w) {x : E} (hx : w.valuation E
   exact (A.valuation_le_one_iff _).2 (mem_of_int a)
 
 /- English proof (translation)
-Take `⟨a, b, hb, e⟩` from `exists_den hx.le`. Establish `hb1 : w.valuation E (algebraMap (𝓞 E) E b) = 1` using `le_antisymm (w.valuation_le_one b) (not_lt.1 fun h => hb ((w.valuation_lt_one_iff_mem b).1 h))`. Establish `ha : a ∈ w.asIdeal`. Rewrite using `[← w.valuation_lt_one_iff_mem (K := E)]`. Express the relevant statement in the definitionally equal form `w.valuation E (algebraMap (𝓞 E) E a) < 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← e, map_mul, hb1, mul_one]`. Conclude with `hx`. Establish `h` using `congrArg (fun y => A.valuation (algebraMap E Ω y)) e`. Simplify using `only [map_mul, val_eq_one hA hb, mul_one] at h`. Rewrite using `[h]`.
-
-Conclude with `(hA a).2 ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_lt_one (hA : IsPlaceOver A w) {x : E} (hx : w.valuation E x < 1) :
     A.valuation (algebraMap E Ω x) < 1 := by
@@ -104,11 +102,11 @@ private theorem val_lt_one (hA : IsPlaceOver A w) {x : E} (hx : w.valuation E x 
   exact (hA a).2 ha
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Establish `h1 : 1 < w.valuation E x` using `not_le.1 h`. Establish `h0 : w.valuation E x ≠ 0` using `(zero_lt_one.trans h1).ne'`. Establish `h2 : w.valuation E x⁻¹ < 1`. Rewrite using `[map_inv₀]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_lt_one_of_one_lt₀ h1`. Establish `h3` using `val_lt_one hA h2`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h4 : A.valuation (algebraMap E Ω x) ≠ 0` using `by simpa using hx0`. Rewrite `h3` using `[map_inv₀, map_inv₀, inv_lt_one₀ (zero_lt_iff.2 h4)]`. Conclude with `absurd ((A.valuation_le_one_iff _).2 hx) (not_le.2 h3)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem le_one_of_mem (hA : IsPlaceOver A w) {x : E} (hx : algebraMap E Ω x ∈ A) :
     w.valuation E x ≤ 1 := by
@@ -129,22 +127,22 @@ private theorem le_one_of_mem (hA : IsPlaceOver A w) {x : E} (hx : algebraMap E 
 end Place
 
 /- English proof (translation)
-The claim follows from `GroundTheory.PAdicHodge.mem_normInteger`.
+A detailed English derivation is pending.
 -/
 private theorem mem_OK_iff {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (x : ↥K) :
     x ∈ OK l K ↔ ‖(x : PadicAlgCl l)‖ ≤ 1 :=
   GroundTheory.PAdicHodge.mem_normInteger
 
 /- English proof (translation)
-Establish `hmul : ∀ a b : ↥(OK l K), ‖(((a * b : ↥(OK l K)) : ↥K) : PadicAlgCl l)‖ = ‖((a : ↥K) : PadicAlgCl l)‖ * ‖((b : ↥K) : PadicAlgCl l)‖` using `fun a b => norm_mul _ _`. Establish `hle : ∀ a : ↥(OK l K), ‖((a : ↥K) : PadicAlgCl l)‖ ≤ 1` using `fun a => (mem_OK_iff _).1 a.2`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `h` using `hmul u (↑u⁻¹ : ↥(OK l K))`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h` using `[Units.mul_inv]`. Establish `h1 : ‖(((1 : ↥(OK l K)) : ↥K) : PadicAlgCl l)‖ = 1` using `norm_one`. Rewrite `h` using `[h1]`. Establish `h2` using `hle u`. Establish `h3` using `hle (↑u⁻¹ : ↥(OK l K))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `norm_nonneg (((u : ↥(OK l K)) : ↥K) : PadicAlgCl l)`. Use the polynomial consequences of the given equalities and inequalities. Introduce `h`. Establish `hy0 : (y : ↥K) ≠ 0` using `fun h0 => by`. Rewrite `h` using `[h0]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at h`. Establish `hinv : (y : ↥K)⁻¹ ∈ OK l K`. Rewrite using `[mem_OK_iff]`. Express the relevant statement in the definitionally equal form `‖((y : ↥K) : PadicAlgCl l)⁻¹‖ ≤ 1`. Rewrite using `[norm_inv, h, inv_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext (mul_inv_cancel₀ hy0))`.
+A detailed English derivation is pending.
 -/
 private theorem isUnit_OK_iff {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (y : ↥(OK l K)) :
     IsUnit y ↔ ‖((y : ↥K) : PadicAlgCl l)‖ = 1 := by
@@ -172,39 +170,35 @@ private theorem isUnit_OK_iff {l : ℕ} [Fact l.Prime] {K : IntermediateField �
     exact IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext (mul_inv_cancel₀ hy0))
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ l _ w A hA O _ _ _ Bw hj`. Use `haveI : IsDiscreteValuationRing (Ow w) := (w.valuation E).valuationSubring_isDiscreteValuationRing`. Establish `hmem : ∀ x : Ow w, algebraMap E Ω (algebraMap (Ow w) E x) ∈ A` using `fun x => mem_of_le_one hA ((Valuation.mem_valuationSubring_iff _ _).1 x.2)`. Establish `hφ : ∀ x : Ow w, ((kOf Bw).comp (algebraMap (Ow w) E)) x ∈ OK l Bw.Kw.1` using `fun x => (mem_OK_iff _).2 ((hj _).1 (hmem x))`. Use `⟨((kOf Bw).comp (algebraMap (Ow w) E)).codRestrict (OK l Bw.Kw.1) hφ, fun x => rfl, fun ϖ hϖ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `ν : Ow w → ℝ` to `fun x => ‖Bw.j (algebraMap E Ω (algebraMap (Ow w) E x))‖`. Set `M : ↥(OK l Bw.Kw.1) → ℝ` to `fun y => ‖((y : ↥Bw.Kw.1) : PadicAlgCl l)‖`. Establish `hν1 : ∀ x, ν x ≤ 1` using `fun x => (hj _).1 (hmem x)`. Establish `hνmul : ∀ x y, ν (x * y) = ν x * ν y` using `fun x y => by simp only [ν, map_mul, norm_mul]`. Establish `hϖ0 : (algebraMap (Ow w) E ϖ) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hϖw : w.valuation E (algebraMap (Ow w) E ϖ) < 1`. Assume the negation of the conclusion as `h`. Establish `h1 : w.valuation E (algebraMap (Ow w) E ϖ) = 1` using `le_antisymm ((Valuation.mem_valuationSubring_iff _ _).1 ϖ.2) (not_lt.1 h)`. Establish `hinv : (algebraMap (Ow w) E ϖ)⁻¹ ∈ (w.valuation E).valuationSubring`. Rewrite using `[Valuation.mem_valuationSubring_iff, map_inv₀, h1, inv_one]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hϖ.not_isUnit (IsUnit.of_mul_eq_one ⟨_, hinv⟩ (Subtype.ext (mul_inv_cancel₀ hϖ0)))`. Establish `hϖ1 : ν ϖ < 1` using `(Induces.valuation_lt_one_iff hj _).1 (val_lt_one hA hϖw)`. Establish `hϖp : 0 < ν ϖ` using `norm_pos_iff.2 ((map_ne_zero _).2 ((map_ne_zero _).2 hϖ0))`. Establish `hbound : ∀ y : ↥(OK l Bw.Kw.1), M y < 1 → 0 < M y → M y ≤ ν ϖ`. Introduce `y hy hpos`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨_, ⟨x, rfl⟩, hx⟩` from `Metric.mem_closure_iff.1 (Bw.j_dense (y : ↥Bw.Kw.1).2) _ hpos`. Rewrite `hx` using `[dist_eq_norm]`. Use `set t : PadicAlgCl l := Bw.j (algebraMap E Ω x) with ht`. Use `set s : PadicAlgCl l := ((y : ↥Bw.Kw.1) : PadicAlgCl l) with hs`. Establish `hM : M y = ‖s‖` using `rfl`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hy`, `hpos`, the goal using `[hM]`. Establish `h1 : ‖t‖ ≤ ‖s‖`. Establish `h` using `IsUltrametricDist.norm_add_le_max s (t - s)`. Rewrite `h` using `[add_sub_cancel, norm_sub_rev]`. Conclude with `h.trans (max_le le_rfl hx.le)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h2 : ‖s‖ ≤ ‖t‖`. Establish `h` using `IsUltrametricDist.norm_add_le_max t (s - t)`. Rewrite `h` using `[add_sub_cancel]`. Conclude with `(le_max_iff.1 h).resolve_right (not_le.2 hx)`. Establish `hxw : w.valuation E x ≤ 1` using `le_one_of_mem hA ((hj _).2 (h1.trans hy.le))`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `ξ : Ow w` to `⟨x, (Valuation.mem_valuationSubring_iff _ _).2 hxw⟩`. Establish `hξ : ν ξ = ‖t‖` using `rfl`. Establish `hnu : ¬ IsUnit ξ`. Introduce and unpack `⟨u, hu⟩`. Establish `h3` using `hνmul u (↑u⁻¹ : Ow w)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite `h3` using `[Units.mul_inv, hu, hξ]`. Establish `h4 : ν 1 = 1` using `by simp [ν]`. Rewrite `h3` using `[h4]`. Establish `h5` using `hν1 (↑u⁻¹ : Ow w)`. Establish `h6` using `norm_nonneg t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hmax : ξ ∈ Ideal.span {ϖ}`. Rewrite using `[← (IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ]`. Conclude with `(IsLocalRing.mem_maximalIdeal ξ).2 hnu`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hmax`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ν ξ = ν c * ν ϖ` using `by rw [← hc, hνmul]`. Establish `h4` using `hν1 c`. Establish `h5 : ‖t‖ ≤ ν ϖ`. Rewrite using `[← hξ, h3]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `h2.trans h5`. Use `set φ := ((kOf Bw).comp (algebraMap (Ow w) E)).codRestrict (OK l Bw.Kw.1) hφ with hφdef`. Establish `hMϖ : M (φ ϖ) = ν ϖ` using `rfl`. Establish `hMmul : ∀ a b, M (a * b) = M a * M b` using `fun a b => norm_mul _ _`. Establish `hMle : ∀ a, M a ≤ 1` using `fun a => (mem_OK_iff _).1 a.2`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[irreducible_iff]`. Use `⟨fun h => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Use `(isUnit_OK_iff _).1 h` as an intermediate fact. Express the relevant statement in the definitionally equal form `M (φ ϖ) = 1 at this`. Rewrite `this` using `[hMϖ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hϖ1.ne this`. Assume the negation of the conclusion as `hn`. Take `⟨ha, hb⟩` from `not_or.1 hn`. Establish `ha1 : M a < 1` using `lt_of_le_of_ne (hMle a) fun h => ha ((isUnit_OK_iff _).2 h)`. Establish `hb1 : M b < 1` using `lt_of_le_of_ne (hMle b) fun h => hb ((isUnit_OK_iff _).2 h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : ν ϖ = M a * M b` using `by rw [← hMϖ, hab, hMmul]`. Establish `ha0 : 0 ≤ M a` using `norm_nonneg _`. Establish `hb0 : 0 ≤ M b` using `norm_nonneg _`. Establish `hap : 0 < M a` using `lt_of_le_of_ne ha0 fun h => by`. Rewrite `hprod` using `[← h, zero_mul]`.
-
-Conclude with `hϖp.ne' hprod`. Establish `hbp : 0 < M b` using `lt_of_le_of_ne hb0 fun h => by`. Rewrite `hprod` using `[← h, mul_zero]`. Conclude with `hϖp.ne' hprod`. Establish `h1` using `hbound a ha1 hap`.
-
-Establish `h2` using `hbound b hb1 hbp`. Establish `h3 : M a * M b ≤ ν ϖ * ν ϖ` using `mul_le_mul h1 h2 hb0 hϖp.le`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem intMap : IntMap := by
   intro E Ω _ _ _ _ _ l _ w A hA O _ _ _ Bw hj

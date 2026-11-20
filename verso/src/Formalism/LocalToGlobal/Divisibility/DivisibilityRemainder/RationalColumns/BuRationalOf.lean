@@ -12,9 +12,9 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : MainNotions.G.Inst 
   {cX : ExtraC} {ex : Extra D L hT Gi Gl K Y cX}
 
 /- English proof (translation)
-Establish `hlat` using `hF.rr_lattice`. Establish `hlat' : Submodule.IsLattice D.what₂.LL (P.A3.indefDown P.S1).RR` using `hlat`. Establish `hL : D.div.RR.L = (P.A3.indefDown P.S1).RR.map (P.I.eRR.toLinearMap.restrictScalars (𝓞 D.what₂.LL))` using `hR.sharpRR.lat`. Use `⟨by rw [hL]; exact hlat'.fg.map _, ?_⟩` and prove the remaining obligations. Establish `hset : (D.div.RR.L : Set D.div.RR.V) = P.I.eRR.toLinearMap '' ((P.A3.indefDown P.S1).RR : Set _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hL, Submodule.map_coe]`. Both sides reduce to the same expression. Rewrite using `[hset, Submodule.span_image, hlat'.span_eq_top, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `P.I.eRR.surjective`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rrFull_of (P : RowSideFamily ex) (hF : ColFacts P.S1 P.C)
     (hR : DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I) : D.RRFull := by
@@ -29,13 +29,11 @@ theorem rrFull_of (P : RowSideFamily ex) (hF : ColFacts P.S1 P.C)
   exact P.I.eRR.surjective
 
 /- English proof (translation)
-Introduce `u φ x`. Take `⟨x', rfl⟩` from `(P.I.eNu u).surjective φ`. Take `⟨y, rfl⟩` from `P.I.eRR.surjective x`. Rewrite using `[hBu, hR.colsBk u x' y]`. Establish `hform` using `P.tied.div.sharp.forms P.A3.A.μ0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `PerDescent.per_sec D u (D.jN u (P.I.eNu u x')) (P.I.tup P.A3.A.μ0) P.tied.div.tup.mu0 (fun F => P.I.jA P.A3.A.μ0 ((rV0 D P.A3.A P.Ps P.ψs P.A3.A.μ0).mulVec F)) P.I.eRR (fun F => (P.S1.ι P.A3.A.μ0).mulVec (((P.A3.side3 P.Ps P.ψs P.Zs).Pq P.A3.A.μ0).mulVec F)) (P.C.B (P.I.wU u) x') …` and prove the remaining obligations. Conclude with `(hF.bij _).2.comp (hF.wf.Pq_surj _)`. Conclude with `range_op_eq_span hform _ (fun z => lvlOp_range _ _ _ _ _ z) (fun F => Formalism.L2.G.ServJoint.level_operator_fixes_image hOk.ok2 P.Ps P.ψs (P.A3.fam3.toSub2 P.Zs) P.A3.A.μ0 F)`. Introduce `F`. Establish `h` using `P.tied.div.sharp.iota P.A3.A.μ0 F`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[Formalism.MainNotions.AbsolutelyIrreducibleSpan.sharp_iota]`. Conclude with `h`. Introduce `F`. Establish `h1 : P.Dc.Pt (P.I.wU u) P.A3.A.μ0 x' F = P.C.ζ (P.I.wU u) P.A3.A.μ0 * P.C.B (P.I.wU u) x' ((P.S1.ι P.A3.A.μ0).mulVec (((P.A3.side3 P.Ps P.ψs P.Zs).Pq P.A3.A.μ0).mulVec F))` using `hF.l1b.1 _ _ _ _`. Establish `h2 : P.C.ζ (P.I.wU u) P.A3.A.μ0 = 1` using `hF.l1b.2.1 _`.
-
-Rewrite `h1` using `[h2, one_mul]`. Conclude with `(hPt u P.A3.A.μ0 x' F).symm.trans (congrArg D.what₂.embLL h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem buRational_of (P : RowSideFamily ex) {s : ℕ} (hOk : P.A3.fam3.Ok3 s) (hF : ColFacts P.S1 P.C)
     (hR : DivRows3 D P.A3 P.P0 P.ψ0 P.Ps P.ψs P.Zs P.S0 P.S1 ex.p0 P.C P.NuC P.I) (hPt : RowsHoldDcPt3 P)

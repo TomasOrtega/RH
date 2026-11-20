@@ -66,7 +66,7 @@ def embC (a : Fin d → E) : X.Ψ → Fin d → ℂ := fun τ i => τ.1 (a i)
 section Two
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isIsoFam_two (G : Matrix (Fin r) (Fin r) E) (u : Fin 2 → Fin r → E) :
     IsIsoFam G u ↔ IsIsoPair G u := Iff.rfl
@@ -102,9 +102,9 @@ def Cm (u : Fin d → Fin r → E) (b : X.Ψ → Fin d → Fin d → ℂ) (τ : 
     ∑ l, τ.1 (X.Gm j l) * conj (Data.emb τ.1 (u k) l)
 
 /- English proof (translation)
-Use extensionality with `a j`. Simplify using `only [zmat, Am, Cm, Matrix.of_apply, Matrix.add_apply, Matrix.one_apply, Matrix.mul_apply]`. Rewrite using `[sub_eq_add_neg]`. Use `congr 1`. Simplify using `only [Finset.mul_sum, ← Finset.sum_neg_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem zmat_eq (u : Fin d → Fin r → E) (b : X.Ψ → Fin d → Fin d → ℂ) (τ : X.Ψ) :
     zmat X u b τ = 1 + Am X u τ * Cm X u b τ := by
@@ -118,7 +118,7 @@ theorem zmat_eq (u : Fin d → Fin r → E) (b : X.Ψ → Fin d → Fin d → �
   ring
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Cm, Matrix.of_apply, Matrix.add_apply, Pi.add_apply, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Cm_add (u : Fin d → Fin r → E) (b b' : X.Ψ → Fin d → Fin d → ℂ) (τ : X.Ψ) :
     Cm X u (b + b') τ = Cm X u b τ + Cm X u b' τ := by
@@ -127,13 +127,13 @@ theorem Cm_add (u : Fin d → Fin r → E) (b b' : X.Ψ → Fin d → Fin d → 
   ring
 
 /- English proof (translation)
-Establish `hS : ∀ i' k, ∑ j, Data.emb τ.1 (u i') j * ∑ l, τ.1 (X.Gm j l) * conj (Data.emb τ.1 (u k) l) = 0`. Introduce `i' k`. Establish `h` using `hermC_emb τ.1 X.Gm (u i') (u k)`. Rewrite `h` using `[hu, map_zero]`. Rewrite using `[← h]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hermC, Finset.mul_sum, mul_assoc]`. Use extensionality with `i i'`. Simplify using `only [Cm, Am, Matrix.mul_apply, Matrix.of_apply, Matrix.zero_apply]`. Establish `: ∑ j, -(I * (X.c τ : ℂ)) * (∑ k, b τ i k * ∑ l, τ.1 (X.Gm j l) * conj (Data.emb τ.1 (u k) l)) * Data.emb τ.1 (u i') j = -(I * X.c τ) * ∑ k, b τ i k * ∑ j, Data.emb τ.1 (u i') j * ∑ l, τ.1 (X.Gm j l) * conj (Data.emb τ.1 (u k) l)`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hS]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Cm_mul_Am (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (b : X.Ψ → Fin d → Fin d → ℂ) (τ : X.Ψ) : Cm X u b τ * Am X u τ = 0 := by
@@ -159,9 +159,9 @@ theorem Cm_mul_Am (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u 
   simp [hS]
 
 /- English proof (translation)
-Rewrite using `[zmat_eq, zmat_eq, zmat_eq, Cm_add]`. Establish `h` using `Cm_mul_Am X u hu b τ`. Establish `h0 : Am X u τ * Cm X u b τ * (Am X u τ * Cm X u b' τ) = 0`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (Cm X u b τ), h, Matrix.zero_mul, Matrix.mul_zero]`. Simplify using `only [mul_add, add_mul, mul_one, one_mul, h0, add_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.mul_add, add_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zmat_mul (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (b b' : X.Ψ → Fin d → Fin d → ℂ) (τ : X.Ψ) :
@@ -174,20 +174,20 @@ theorem zmat_mul (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k
   rw [Matrix.mul_add, add_assoc]
 
 /- English proof (translation)
-Rewrite using `[zmat_eq, Matrix.det_one_add_mul_comm, Cm_mul_Am X u hu, add_zero, Matrix.det_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem zmat_det (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (b : X.Ψ → Fin d → Fin d → ℂ) (τ : X.Ψ) : (zmat X u b τ).det = 1 := by
   rw [zmat_eq, Matrix.det_one_add_mul_comm, Cm_mul_Am X u hu, add_zero, Matrix.det_one]
 
 /- English proof (translation)
-Use extensionality with `a j`. Simplify using `[zmat, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem zmat_zero (u : Fin d → Fin r → E) (τ : X.Ψ) : zmat X u 0 τ = 1 := by
   ext a j; simp [zmat, Matrix.one_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `[Am, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem Am_mulVec (u : Fin d → Fin r → E) (τ : X.Ψ) (y : Fin d → ℂ) :
     Am X u τ *ᵥ y = ∑ i, y i • Data.emb τ.1 (u i) := by
@@ -195,7 +195,7 @@ theorem Am_mulVec (u : Fin d → Fin r → E) (τ : X.Ψ) (y : Fin d → ℂ) :
   simp [Am, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [Cm, Matrix.mulVec, dotProduct, Matrix.of_apply, hermC]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -211,7 +211,7 @@ theorem Cm_mulVec (u : Fin d → Fin r → E) (b : X.Ψ → Fin d → Fin d → 
   ring
 
 /- English proof (translation)
-Rewrite using `[zmat_eq, Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, Am_mulVec]`. Simplify using `only [Cm_mulVec]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem zmat_mulVec (u : Fin d → Fin r → E) (b : X.Ψ → Fin d → Fin d → ℂ) (τ : X.Ψ)
     (v : Fin r → ℂ) :
@@ -221,7 +221,7 @@ theorem zmat_mulVec (u : Fin d → Fin r → E) (b : X.Ψ → Fin d → Fin d �
   simp only [Cm_mulVec]
 
 /- English proof (translation)
-Simplify using `[zmat_mulVec, hermC_emb, hu]`.
+Simplify using the standard rewrite rules.
 -/
 theorem zmat_fix (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (b : X.Ψ → Fin d → Fin d → ℂ) (τ : X.Ψ) (i : Fin d) :
@@ -229,11 +229,11 @@ theorem zmat_fix (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k
   simp [zmat_mulVec, hermC_emb, hu]
 
 /- English proof (translation)
-Establish `hiso : ∀ i k, hermC τ.1 X.Gm (Data.emb τ.1 (u i)) (Data.emb τ.1 (u k)) = 0` using `fun i k => by`. Rewrite using `[hermC_emb, hu, map_zero]`. Establish `hbc : ∀ i k, conj (b τ i k) = b τ k i` using `fun i k => (hb τ i k).symm`. Establish `hcI : conj (I * (X.c τ : ℂ)) = -(I * X.c τ)`. Rewrite using `[map_mul, Complex.conj_I, Complex.conj_ofReal]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[zmat_mulVec, zmat_mulVec]`. Generalize the expression as in `(I * (X.c τ : ℂ)) = q at hcI`. Simplify using `only [hermC_add_left, hermC_add_right, hermC_sum_left, hermC_sum_right, hermC_smul_left, hermC_smul_right, hiso, map_mul, map_neg, map_sum, hcI, hbc, hermC_conj τ.1 X.Gm_herm, mul_zero, Finset.sum_const_zero, add_zero, neg_neg]`. Rewrite using `[add_assoc, add_eq_left]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -265,7 +265,7 @@ theorem mat_Zb (u : Fin d → Fin r → E) (b : X.Ψ → Fin d → Fin d → ℂ
     mat (Zb X u b x) τ = zmat X u b τ * mat x τ := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show zmat X u b τ * (zmat X u b' τ * mat x τ) = zmat X u (b + b') τ * mat x τ`. Rewrite using `[← Matrix.mul_assoc, zmat_mul X u hu]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Zb_Zb (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (b b' : X.Ψ → Fin d → Fin d → ℂ) (x : Frame X.Ψ r) :
@@ -275,7 +275,7 @@ theorem Zb_Zb (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) =
   rw [← Matrix.mul_assoc, zmat_mul X u hu]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show zmat X u 0 τ * mat x τ = mat x τ`. Rewrite using `[zmat_zero, Matrix.one_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Zb_zero (u : Fin d → Fin r → E) (x : Frame X.Ψ r) : Zb X u 0 x = x := by
   funext τ
@@ -283,7 +283,7 @@ theorem Zb_zero (u : Fin d → Fin r → E) (x : Frame X.Ψ r) : Zb X u 0 x = x 
   rw [zmat_zero, Matrix.one_mul]
 
 /- English proof (translation)
-Establish `: gram τ.1 X.Gm (mat (Zb X u b x) τ) = gram τ.1 X.Gm (mat x τ)` using `X.gram_unitary x τ _ (zmat_unitary X u hu b hb τ)`. Simplify using `only [dmin]`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem dmin_Zb (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (b : X.Ψ → Fin d → Fin d → ℂ) (hb : IsHerm b) (x : Frame X.Ψ r) (τ : X.Ψ) (i : Fin (r + 1)) :
@@ -293,9 +293,7 @@ theorem dmin_Zb (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k)
   simp only [dmin]; rw [this]
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[mat_Zb, Matrix.det_mul, zmat_det X u hu, one_mul]`. Conclude with `(hx τ).1`. Rewrite using `[dmin_Zb X u hu b hb]`.
-
-Conclude with `(hx τ).2 i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Zb_dom (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (b : X.Ψ → Fin d → Fin d → ℂ) (hb : IsHerm b) {x : Frame X.Ψ r} (hx : x ∈ X.dom) :
@@ -306,7 +304,7 @@ theorem Zb_dom (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) 
   · rw [dmin_Zb X u hu b hb]; exact (hx τ).2 i
 
 /- English proof (translation)
-Simplify using `only [Data.nfac, dmin_Zb X u hu b hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nfac_Zb (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (b : X.Ψ → Fin d → Fin d → ℂ) (hb : IsHerm b) (la : Wt X.Ψ r) (x : Frame X.Ψ r) :
@@ -314,9 +312,7 @@ theorem nfac_Zb (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k)
   simp only [Data.nfac, dmin_Zb X u hu b hb]
 
 /- English proof (translation)
-Use `continuous_pi fun τ => ?_` and prove the remaining obligations. Use `show Continuous fun b : X.Ψ → Fin d → Fin d → ℂ => (zmat X u b τ * mat y τ : Matrix (Fin r) (Fin r) ℂ)`. Use `Continuous.matrix_mul ?_ continuous_const` and prove the remaining obligations. Use `continuous_pi fun a => continuous_pi fun j => ?_` and prove the remaining obligations. Simplify using `only [zmat, Matrix.of_apply]`.
-
-Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_Zb (u : Fin d → Fin r → E) (y : Frame X.Ψ r) :
     Continuous fun b : X.Ψ → Fin d → Fin d → ℂ => Zb X u b y := by
@@ -329,11 +325,11 @@ theorem continuous_Zb (u : Fin d → Fin r → E) (y : Frame X.Ψ r) :
   fun_prop
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use `show X.flowMatV (uvec X u a τ) τ (s τ) * mat x τ = zmat X u _ τ * mat x τ`. Use `congr 1`. Use extensionality with `p j`. Simplify using `only [Data.flowMatV, zmat, uvec, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_lhs => arg 2`. Use extensionality with `k`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem flowV_uvec (u : Fin d → Fin r → E) (a : X.Ψ → Fin d → ℂ) (s : X.Ψ → ℂ) (x : Frame X.Ψ r) :
     X.flowV (uvec X u a) s x = Zb X u (fun τ i k => s τ * a τ i * conj (a τ k)) x := by
@@ -353,7 +349,7 @@ theorem flowV_uvec (u : Fin d → Fin r → E) (a : X.Ψ → Fin d → ℂ) (s :
   ring
 
 /- English proof (translation)
-Rewrite using `[← flowV_uvec]`. Establish `: uvec X u (embC X a) = X.embV (∑ i, a i • u i)`. Use function extensionality and compare the values at `τ p`. Simplify using `[uvec, embC, Data.embV, Data.emb, Finset.sum_apply]`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -372,7 +368,7 @@ def Mmat (u : Fin d → Fin r → E) (β : Matrix (Fin d) (Fin d) E) : Matrix (F
     X.κ0 * ∑ i, ∑ k, β i k * u i a * ∑ l, X.Gm j l * cc (u k l)
 
 /- English proof (translation)
-Use extensionality with `a j`. Simplify using `only [Mmat, zmat, embH, Matrix.map_apply, Matrix.of_apply, map_add, map_mul, map_sum, Data.emb, emb_cc, X.tau_kappa0, apply_ite, map_one, map_zero]`. Expand and normalize the polynomial expressions, which then agree.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Mmat_map (u : Fin d → Fin r → E) (β : Matrix (Fin d) (Fin d) E) (τ : X.Ψ) :
     (Mmat X u β).map τ.1 = zmat X u (embH X β) τ := by
@@ -382,19 +378,19 @@ theorem Mmat_map (u : Fin d → Fin r → E) (β : Matrix (Fin d) (Fin d) E) (τ
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ i k`. Simplify using `[embH]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem embH_add (β β' : Matrix (Fin d) (Fin d) E) : embH X (β + β') = embH X β + embH X β' := by
   funext τ i k; simp [embH]
 
 /- English proof (translation)
-Use extensionality with `a j`. Simplify using `[Mmat, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem Mmat_zero (u : Fin d → Fin r → E) : Mmat X u 0 = 1 := by
   ext a j; simp [Mmat, Matrix.one_apply]
 
 /- English proof (translation)
-Take `⟨τ0⟩` from `X.nonempty_Psi`. Apply `Matrix.map_injective τ0.1.injective` to reduce the goal to its premises. Simplify using `only`. Rewrite using `[Matrix.map_mul, Mmat_map, Mmat_map, Mmat_map, zmat_mul X u hu, embH_add]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Mmat_mul (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (β β' : Matrix (Fin d) (Fin d) E) : Mmat X u β * Mmat X u β' = Mmat X u (β + β') := by
@@ -409,7 +405,7 @@ def gam (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     by rw [Mmat_mul X u hu, neg_add_cancel, Mmat_zero]⟩
 
 /- English proof (translation)
-Introduce `τ i k` and use `by simp only [embH] rw [← emb_cc, hβ]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isHerm_embH {β : Matrix (Fin d) (Fin d) E} (hβ : ∀ i k, cc (β i k) = β k i) :
     IsHerm (embH X β) := fun τ i k => by
@@ -417,14 +413,14 @@ theorem isHerm_embH {β : Matrix (Fin d) (Fin d) E} (hβ : ∀ i k, cc (β i k) 
   rw [← emb_cc, hβ]
 
 /- English proof (translation)
-Take `⟨β, hβ, -, rfl⟩` from `hb`. Conclude with `isHerm_embH X hβ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isHerm_of_mem_LZ {g : ℕ} {b : X.Ψ → Fin d → Fin d → ℂ} (hb : b ∈ LZ X d g) : IsHerm b := by
   obtain ⟨β, hβ, -, rfl⟩ := hb
   exact isHerm_embH X hβ
 
 /- English proof (translation)
-Take `⟨τ0⟩` from `X.nonempty_Psi`. Apply `τ0.1.injective` to reduce the goal to its premises. Rewrite using `[← hermC_emb, ← hermC_emb, Data.emb_mulVec, Data.emb_mulVec, Mmat_map]`. Conclude with `zmat_unitary X u hu _ (isHerm_embH X hβ) τ0 _ _`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_Mmat (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u k) = 0)
     (β : Matrix (Fin d) (Fin d) E) (hβ : ∀ i k, cc (β i k) = β k i) (v w : Fin r → E) :
@@ -435,9 +431,9 @@ theorem herm_Mmat (u : Fin d → Fin r → E) (hu : ∀ i k, herm X.Gm (u i) (u 
   exact zmat_unitary X u hu _ (isHerm_embH X hβ) τ0 _ _
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [Mmat, Matrix.mulVec, dotProduct, Matrix.of_apply, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, herm, add_mul, Finset.sum_add_distrib, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Use `congr 1`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`. Use `conv_lhs => rw [Finset.sum_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use `conv_lhs => arg 2`. Use extensionality with `i`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Mmat_mulVec (u : Fin d → Fin r → E) (β : Matrix (Fin d) (Fin d) E) (v : Fin r → E) :
     Mmat X u β *ᵥ v = v + ∑ i, (X.κ0 * ∑ k, β i k * herm X.Gm v (u k)) • u i := by
@@ -458,17 +454,17 @@ section Level
 variable (Y : DataX E r)
 
 /- English proof (translation)
-Introduce `v hv`. Use `choose γ hγi hγ using hβ`. Use `set D := (NumberField.discr E).natAbs with hd`. Establish `hint : ∀ k, IsIntegral ℤ ((D : E) * (Y.ξ0 * herm Y.Gm v (u k)))` using `fun k => Y.discr_mul_hermitian_integral hv (hmem k)`. Establish `hc : ∀ i k, IsIntegral ℤ (Y.κ0 / 2 * D * γ i k * herm Y.Gm v (u k))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `i k`. Break down `Y.κ0_xi with h | h` into its components or cases. Establish `e1 : Y.κ0 / 2 * D * γ i k * herm Y.Gm v (u k) = γ i k * ((D : E) * (Y.ξ0 * herm Y.Gm v (u k)))`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1]`. Conclude with `(hγi i k).mul (hint k)`. Establish `e1 : Y.κ0 / 2 * D * γ i k * herm Y.Gm v (u k) = -(γ i k * ((D : E) * (Y.ξ0 * herm Y.Gm v (u k))))`. Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e1]`. Conclude with `((hγi i k).mul (hint k)).neg`. Use `set c : Fin d → E := fun i => ∑ k, Y.κ0 / 2 * D * γ i k * herm Y.Gm v (u k) with hcdef`. Establish `hci : ∀ i, IsIntegral ℤ (c i)` using `fun i => IsIntegral.sum _ fun k _ => hc i k`. Use `⟨∑ i, c i • u i, Submodule.sum_mem _ fun i _ => smul_mem_of_int Y.Λ (hci i) (hmem i), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Rewrite using `[Mmat_mulVec, add_sub_cancel_left, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`. Use `congr 1`. Simplify using `only [hcdef, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hγ i k, hd]`. Unfold `dEnat`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem Mmat_cong (u : Fin d → Fin r → E) (hmem : ∀ i, u i ∈ Y.Λ) (β : Matrix (Fin d) (Fin d) E)
     (hβ : ∀ i k, ∃ γ : E, IsIntegral ℤ γ ∧ β i k = ((Y.g * dEnat E : ℕ) : E) / 2 * γ) :
@@ -504,15 +500,13 @@ theorem Mmat_cong (u : Fin d → Fin r → E) (hmem : ∀ i, u i ∈ Y.Λ) (β :
   ring
 
 /- English proof (translation)
-Take `⟨β, hβh, hβi, rfl⟩` from `hb`. Establish `hγc : ∀ v ∈ Y.Λ, ∃ y ∈ Y.Λ, Mmat Y.toData u β *ᵥ v - v = (Y.g : E) • y` using `Mmat_cong Y u hmem β hβi`. Establish `hγc' : ∀ v ∈ Y.Λ, ∃ y ∈ Y.Λ, Mmat Y.toData u (-β) *ᵥ v - v = (Y.g : E) • y` using `Mmat_cong Y u hmem (-β) (fun i k => by`. Take `⟨γ', h1, h2⟩` from `hβi i k`. Conclude with `⟨-γ', h1.neg, by simp [h2]⟩)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hstab : IsUStab Y.Gm Y.Λ (gam Y.toData u hiso β)`. Use `⟨fun x y => herm_Mmat Y.toData u hiso β hβh x y, fun x => ⟨fun hx => ?_, fun hx => ?_⟩⟩` and prove the remaining obligations. Take `⟨y, hy, hyeq⟩` from `hγc x hx`. Establish `e1 : Mmat Y.toData u β *ᵥ x = x + (Y.g : E) • y` using `by rw [← hyeq]; abel`. Use `show Mmat Y.toData u β *ᵥ x ∈ Y.Λ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `Y.Λ.add_mem hx (Y.g_smul_mem hy)`. Express the relevant statement in the definitionally equal form `Mmat Y.toData u β *ᵥ x ∈ Y.Λ at hx`. Establish `hinv : Mmat Y.toData u (-β) *ᵥ (Mmat Y.toData u β *ᵥ x) = x`. Rewrite using `[Matrix.mulVec_mulVec, Mmat_mul _ u hiso, neg_add_cancel, Mmat_zero, Matrix.one_mulVec]`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy, hyeq⟩` from `hγc' _ hx`. Establish `e1 : Mmat Y.toData u (-β) *ᵥ (Mmat Y.toData u β *ᵥ x) = Mmat Y.toData u β *ᵥ x + (Y.g : E) • y`. Rewrite using `[← hyeq]`. Normalize the expressions using the abelian group laws. Rewrite using `[← hinv, e1]`.
-
-Conclude with `Y.Λ.add_mem hx (Y.g_smul_mem hy)`. Conclude with `⟨gam Y.toData u hiso β, Y.cong _ hstab hγc, hγc, fun τ => Mmat_map _ u β τ⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_gamma (u : Fin d → Fin r → E) (hiso : ∀ i k, herm Y.Gm (u i) (u k) = 0)
     (hmem : ∀ i, u i ∈ Y.Λ) (b : Y.Ψ → Fin d → Fin d → ℂ) (hb : b ∈ LZ Y.toData d Y.g) :
@@ -544,7 +538,7 @@ theorem exists_gamma (u : Fin d → Fin r → E) (hiso : ∀ i k, herm Y.Gm (u i
   exact ⟨gam Y.toData u hiso β, Y.cong _ hstab hγc, hγc, fun τ => Mmat_map _ u β τ⟩
 
 /- English proof (translation)
-Take `⟨γ, hγΓ, hγc, hmap⟩` from `exists_gamma Y u hiso hmem b hb`. Establish `e1 : Zb Y.toData u b x = lact γ x` using `funext fun τ => by show zmat Y.toData u b τ * mat x τ = (γ : Matrix (Fin r) (Fin r) E).map τ.1 * mat x τ`. Rewrite using `[hmap]`. Rewrite using `[e1, hP.2.2 γ hγΓ x hx, hχ γ hγΓ hγc, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem LZ_periodic (u : Fin d → Fin r → E) (hiso : ∀ i k, herm Y.Gm (u i) (u k) = 0)
     (hmem : ∀ i, u i ∈ Y.Λ) (la : Wt Y.Ψ r) (P : Frame Y.Ψ r → ℂ) (hP : Y.IsSec la P)

@@ -3,7 +3,7 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.DivisorCount
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ]`. Use linear arithmetic over natural numbers and integers.
+Proceed by induction. Treat this case separately. Treat this case separately. Use linear arithmetic over natural numbers and integers.
 -/
 private lemma two_mul_add_one_le_three_pow (k : ℕ) : 2 * k + 1 ≤ 3 ^ k := by
   induction k with
@@ -11,7 +11,7 @@ private lemma two_mul_add_one_le_three_pow (k : ℕ) : 2 * k + 1 ≤ 3 ^ k := by
   | succ k ih => rw [pow_succ]; omega
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Establish `h : 1 ≤ 2 ^ k` using `Nat.one_le_two_pow`. Rewrite using `[pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -23,7 +23,7 @@ private lemma two_mul_add_one_le_two_mul_two_pow (k : ℕ) : 2 * k + 1 ≤ 2 * 2
     rw [pow_succ]; omega
 
 /- English proof (translation)
-Rewrite using `[← pow_mul, Nat.divisors_prime_pow hp, Finset.card_map, Finset.card_range]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma card_divisors_sq_prime_pow {p k : ℕ} (hp : p.Prime) :
     (((p ^ k) ^ 2).divisors).card = 2 * k + 1 := by
@@ -31,21 +31,19 @@ private lemma card_divisors_sq_prime_pow {p k : ℕ} (hp : p.Prime) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.recOnPosPrimePosCoprime with`. Consider the case `prime_pow p k hp hk`. Rewrite using `[card_divisors_sq_prime_pow hp]`. Break down `hp.eq_two_or_odd' with rfl | hodd` into its components or cases. Use `⟨?_, fun h => ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `two_mul_add_one_le_two_mul_two_pow k`. Conclude with `absurd h (by`. Rewrite using `[Nat.not_odd_iff_even]`. Conclude with `(Nat.even_pow.mpr ⟨even_two, hk.ne'⟩))`. Establish `h3 : 3 ≤ p`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Use linear arithmetic over natural numbers and integers.
 
-Use `hp.two_le` as an intermediate fact. Break down `hodd with ⟨m, rfl⟩` into its components or cases. Use linear arithmetic over natural numbers and integers. Establish `h : 2 * k + 1 ≤ p ^ k` using `(two_mul_add_one_le_three_pow k).trans (Nat.pow_le_pow_left h3 k)`. Conclude with `⟨by omega, fun _ => h⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `one => simp`. Consider the case `coprime a b ha hb hab iha ihb`. Establish `hcop : Nat.Coprime (a ^ 2) (b ^ 2)` using `Nat.Coprime.pow 2 2 hab`. Establish `hcard : ((a * b) ^ 2).divisors.card = (a ^ 2).divisors.card * (b ^ 2).divisors.card`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_pow, hcop.card_divisors_mul]`. Rewrite using `[hcard]`. Establish `hodd : Odd a ∨ Odd b`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_or]`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Even a` using `Nat.not_odd_iff_even.mp h.1`. Establish `h2 : Even b` using `Nat.not_odd_iff_even.mp h.2`. Establish `: 2 ∣ Nat.gcd a b` using `Nat.dvd_gcd h1.two_dvd h2.two_dvd`. Rewrite `this` using `[hab]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation.
 
-Prove the components needed by the constructor for the conclusion. Break down `hodd with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Introduce `h`.
-
-Take `⟨h1, h2⟩` from `Nat.odd_mul.mp h`. Conclude with `Nat.mul_le_mul (iha.2 h1) (ihb.2 h2)`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem card_divisors_sq_le_strong (n : ℕ) :
     (n ^ 2).divisors.card ≤ 2 * n ∧ (Odd n → (n ^ 2).divisors.card ≤ n) := by
@@ -92,7 +90,7 @@ theorem card_divisors_sq_le_strong (n : ℕ) :
       exact Nat.mul_le_mul (iha.2 h1) (ihb.2 h2)
 
 /- English proof (translation)
-Conclude with `(card_divisors_sq_le_strong n).1` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem card_divisors_sq_le_two_mul (n : ℕ) :
     (((n ^ 2).divisors.card : ℕ) : ℝ) ≤ 2 * n := by

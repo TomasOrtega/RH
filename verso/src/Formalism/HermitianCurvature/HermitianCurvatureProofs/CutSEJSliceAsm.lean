@@ -18,9 +18,9 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun h => ?_` and prove the remaining obligations. Take `⟨x, y, rfl⟩ : ∃ x y : ℝ, h = x + y * Complex.I` from `⟨h.re, h.im, (Complex.re_add_im h).symm⟩`. Simplify using `only [ContinuousLinearMap.comp_apply, dSl_apply, ContinuousLinearMap.add_apply, ContinuousLinearMap.smulRight_apply, Complex.reCLM_apply, Complex.imCLM_apply, hsVecR_apply, hsVec_add', hsVec_smul']`. Establish `hs : B.hsVec (U - V) = B.hsVec U - B.hsVec V`. Rewrite using `[sub_eq_add_neg, hsVec_add', ← neg_one_smul ℂ V, hsVec_smul', neg_one_smul, sub_eq_add_neg]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs]`. Simplify using `only [map_add, map_mul, Complex.conj_ofReal, Complex.conj_I, Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.I_re, Complex.ofReal_im, Complex.I_im, Complex.add_im, Complex.mul_im]`. Simplify using `only [mul_zero, mul_one, sub_zero, zero_add, add_zero, zero_sub]`. Rewrite using `[← Complex.coe_smul, ← Complex.coe_smul]`. Use `module`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hsVecR_dSl (U V : Wq →L[ℂ] Wp) :
     (hsVecR (Wp := Wp) (Wq := Wq)).comp (dSl U V) = Complex.reCLM.smulRight (hsVecR (U + V)) +
@@ -46,7 +46,7 @@ def Dy (X : ActualOps k r z z' π π') (l : Fin r) (Ξ : RadSp k r z z' π π') 
   Complex.I • (dT X l Ξ - dTb X l Ξ)
 
 /- English proof (translation)
-Establish `h` using `hsVecR.hasFDerivAt.comp s (slice_hasFDerivAt X l Ξ y g hs)`. Rewrite `h` using `[hsVecR_dSl]`. Simplify `h` using `only [Dx, Dy, Submodule.coe_add, Submodule.coe_smul, Submodule.coe_sub, Pi.add_apply, Pi.smul_apply, Pi.sub_apply, Function.comp_def]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sl_hasFDerivAt (X : ActualOps k r z z' π π') (l : Fin r) (Ξ : RadSp k r z z' π π') (y : Fin r → ℂ)
     (g : Mx k r) {s : ℂ} (hs : s ≠ 0) :
@@ -59,7 +59,7 @@ theorem sl_hasFDerivAt (X : ActualOps k r z z' π π') (l : Fin r) (Ξ : RadSp k
     Pi.sub_apply, Function.comp_def] using h
 
 /- English proof (translation)
-Establish `h1` using `norm_add_le a b`. Establish `h2` using `norm_nonneg (a + b)`. Use polynomial arithmetic with `[sq_nonneg (‖a‖ - ‖b‖), norm_nonneg a, norm_nonneg b]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sq_add_le_two {E : Type*} [SeminormedAddCommGroup E] (a b : E) :
     ‖a + b‖ ^ 2 ≤ 2 * ‖a‖ ^ 2 + 2 * ‖b‖ ^ 2 := by
@@ -68,7 +68,7 @@ theorem sq_add_le_two {E : Type*} [SeminormedAddCommGroup E] (a b : E) :
   nlinarith [sq_nonneg (‖a‖ - ‖b‖), norm_nonneg a, norm_nonneg b]
 
 /- English proof (translation)
-Use `sq_add_le_two a (-b)` as an intermediate fact. Rewrite `this` using `[← sub_eq_add_neg, norm_neg]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem sq_sub_le_two {E : Type*} [SeminormedAddCommGroup E] (a b : E) :
     ‖a - b‖ ^ 2 ≤ 2 * ‖a‖ ^ 2 + 2 * ‖b‖ ^ 2 := by
@@ -79,21 +79,21 @@ def wd7 (X : ActualOps k r z z' π π') (l : Fin r) (Ξ : RadSp k r z z' π π')
   ![Ξ, dT X l Ξ, dTb X l Ξ, dT X l (dT X l Ξ), dTb X l (dT X l Ξ), dT X l (dTb X l Ξ), dTb X l (dTb X l Ξ)]
 
 /- English proof (translation)
-Rewrite using `[hsVecR_apply, hsVecR_apply, hsVec_smul', norm_smul, Complex.norm_I, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hsVecR_Ismul (A : Wq →L[ℂ] Wp) : ‖hsVecR (Complex.I • A)‖ = ‖hsVecR A‖ := by
   rw [hsVecR_apply, hsVecR_apply, hsVec_smul', norm_smul, Complex.norm_I, one_mul]
 
 /- English proof (translation)
-Use `set a := fun Ψ : RadSp k r z z' π π' => hsVecR ((Ψ : Fn k r (Wq →L[ℂ] Wp)) p g) with ha`. Establish `eA : ∀ Ψ Ψ' : RadSp k r z z' π π', a (Ψ + Ψ') = a Ψ + a Ψ'` using `fun Ψ Ψ' => by`. Simplify using `only [ha, Submodule.coe_add, Pi.add_apply, map_add]`. Establish `eS : ∀ Ψ Ψ' : RadSp k r z z' π π', a (Ψ - Ψ') = a Ψ - a Ψ'` using `fun Ψ Ψ' => by`. Simplify using `only [ha, Submodule.coe_sub, Pi.sub_apply, map_sub]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `eI : ∀ Ψ : RadSp k r z z' π π', ‖a (Complex.I • Ψ)‖ = ‖a Ψ‖` using `fun Ψ => by`. Simplify using `only [ha, Submodule.coe_smul, Pi.smul_apply]`. Conclude with `hsVecR_Ismul _`. Establish `hx : ‖a (Dx X l Ξ)‖ ^ 2 ≤ 2 * ‖a (dT X l Ξ)‖ ^ 2 + 2 * ‖a (dTb X l Ξ)‖ ^ 2`. Rewrite using `[Dx, eA]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sq_add_le_two _ _`. Establish `hy : ‖a (Dy X l Ξ)‖ ^ 2 ≤ 2 * ‖a (dT X l Ξ)‖ ^ 2 + 2 * ‖a (dTb X l Ξ)‖ ^ 2`. Rewrite using `[Dy, eI, eS]`. Conclude with `sq_sub_le_two _ _`. Establish `exy : Dx X l (Dy X l Ξ) = Complex.I • (dT X l (dT X l Ξ) - dT X l (dTb X l Ξ)) + Complex.I • (dTb X l (dT X l Ξ) - dTb X l (dTb X l Ξ))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Dx, Dy, map_smul, map_sub]`. Establish `hxy : ‖a (Dx X l (Dy X l Ξ))‖ ^ 2 ≤ 4 * ‖a (dT X l (dT X l Ξ))‖ ^ 2 + 4 * ‖a (dT X l (dTb X l Ξ))‖ ^ 2 + 4 * ‖a (dTb X l (dT X l Ξ))‖ ^ 2 + 4 * ‖a (dTb X l (dTb X l Ξ))‖ ^ 2`. Rewrite using `[exy, eA]`. Use `(sq_add_le_two _ _).trans ?_` and prove the remaining obligations. Rewrite using `[eI, eI, eS, eS]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[sq_sub_le_two (a (dT X l (dT X l Ξ))) (a (dT X l (dTb X l Ξ))), sq_sub_le_two (a (dTb X l (dT X l Ξ))) (a (dTb X l (dTb X l Ξ)))]`. Simplify using `only [Fin.sum_univ_seven, wd7, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Matrix.cons_val_two, Matrix.tail_cons, Matrix.cons_val_three, Matrix.cons_val_four]`. Use `show ‖a Ξ‖ ^ 2 + ‖a (Dx X l Ξ)‖ ^ 2 + ‖a (Dy X l Ξ)‖ ^ 2 + ‖a (Dx X l (Dy X l Ξ))‖ ^ 2 ≤ _`. Simplify using `only [Matrix.cons_val]`. Use polynomial arithmetic with `[sq_nonneg ‖a Ξ‖, sq_nonneg ‖a (dT X l Ξ)‖, sq_nonneg ‖a (dTb X l Ξ)‖]`.
+A detailed English derivation is pending.
 -/
 theorem four_le_seven (X : ActualOps k r z z' π π') (l : Fin r) (Ξ : RadSp k r z z' π π') (p : Fin r → ℂ)
     (g : Mx k r) :
@@ -138,23 +138,23 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Simplify using `only [dT, Module.End.mul_apply]`. Conclude with `op_lc X l 2 _ (op_lc X l 0 _ h)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dT_lc (X : ActualOps k r z z' π π') (l : Fin r) {Ξ : RadSp k r z z' π π'} (h : Ξ ∈ lcSub k r z z' π π') :
     dT X l Ξ ∈ lcSub k r z z' π π' := by
   simp only [dT, Module.End.mul_apply]; exact op_lc X l 2 _ (op_lc X l 0 _ h)
 
 /- English proof (translation)
-Simplify using `only [dTb, Module.End.mul_apply]`. Conclude with `op_lc X l 5 _ (op_lc X l 3 _ h)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dTb_lc (X : ActualOps k r z z' π π') (l : Fin r) {Ξ : RadSp k r z z' π π'} (h : Ξ ∈ lcSub k r z z' π π') :
     dTb X l Ξ ∈ lcSub k r z z' π π' := by
   simp only [dTb, Module.End.mul_apply]; exact op_lc X l 5 _ (op_lc X l 3 _ h)
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> first`. Consider the case `exact h`. Consider the case `exact dT_lc X l h`. Consider the case `exact dTb_lc X l h`. Consider the case `exact dT_lc X l (dT_lc X l h)`.
+Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `exact dTb_lc X l (dT_lc X l h)`. Consider the case `exact dT_lc X l (dTb_lc X l h)`. Consider the case `exact dTb_lc X l (dTb_lc X l h)`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem seven_derivatives_preserve_compact (X : ActualOps k r z z' π π') (l : Fin r) {Ξ : RadSp k r z z' π π'} (h : Ξ ∈ lcSub k r z z' π π')
     (i : Fin 7) : wd7 X l Ξ i ∈ lcSub k r z z' π π' := by
@@ -169,7 +169,7 @@ theorem seven_derivatives_preserve_compact (X : ActualOps k r z z' π π') (l : 
     | exact dTb_lc X l (dTb_lc X l h)
 
 /- English proof (translation)
-Establish `e : pairAt μ Ξ Ξ p = ((∫ x : Mt k r, ‖B.hsVec ((Ξ : Fn k r (Wq →L[ℂ] Wp)) p (Matrix.of x))‖ ^ 2 ∂μ : ℝ) : ℂ)`. Unfold `pairAt`. Repeatedly rewrite using `[hsInner_self_ofRealI]`. Conclude with `integral_complex_ofReal`. Rewrite using `[e, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg fun _ => by positivity)]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pairAt_self_real (μ : Measure (Mt k r)) (Ξ : RadSp k r z z' π π') (p : Fin r → ℂ) :
     pairAt μ Ξ Ξ p = ((‖pairAt μ Ξ Ξ p‖ : ℝ) : ℂ) := by
@@ -180,14 +180,14 @@ theorem pairAt_self_real (μ : Measure (Mt k r)) (Ξ : RadSp k r z z' π π') (p
   rw [e, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg fun _ => by positivity)]
 
 /- English proof (translation)
-Unfold `wtI`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (Finset.prod_nonneg fun _ _ => by positivity)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem wtI_real (i : Fin (r + 1)) (c' : Cf r i) : wtI i c' = ((‖wtI i c'‖ : ℝ) : ℂ) := by
   unfold wtI
   rw [Complex.norm_real, Real.norm_of_nonneg (Finset.prod_nonneg fun _ _ => by positivity)]
 
 /- English proof (translation)
-Unfold `fs`. Establish `e : (fun c' : Cf r l.succ => wtI l.succ c' * pairAt μ Ξ Ξ (glue l.succ (Function.update c l t) c')) = fun c' => ((‖wtI l.succ c' * pairAt μ Ξ Ξ (glue l.succ (Function.update c l t) c')‖ : ℝ) : ℂ)`. Use function extensionality and compare the values at `c'`. Rewrite using `[norm_mul, Complex.ofReal_mul, ← wtI_real, ← pairAt_self_real]`. Rewrite using `[e, integral_complex_ofReal, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_fs_self (μ : Measure (Mt k r)) (l : Fin r) (Ξ : RadSp k r z z' π π') (c : Fin r → ℂ) (t : ℂ) :
     ‖fs μ l Ξ Ξ c t‖ = ∫ c' : Cf r l.succ, ‖wtI l.succ c' * pairAt μ Ξ Ξ (glue l.succ (Function.update c l t) c')‖ := by
@@ -199,15 +199,15 @@ theorem norm_fs_self (μ : Measure (Mt k r)) (l : Fin r) (Ξ : RadSp k r z z' π
   rw [e, integral_complex_ofReal, Complex.norm_real, Real.norm_of_nonneg (integral_nonneg fun _ => norm_nonneg _)]
 
 /- English proof (translation)
-Rewrite using `[hsInner_self_ofRealI, Complex.norm_real, Real.norm_of_nonneg (by positivity), hsVecR_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_hsInner_self (A : Wq →L[ℂ] Wp) : ‖B.hsInner A A‖ = ‖hsVecR A‖ ^ 2 := by
   rw [hsInner_self_ofRealI, Complex.norm_real, Real.norm_of_nonneg (by positivity), hsVecR_apply]
 
 /- English proof (translation)
-Take `⟨K, hK⟩` from `hS t0 δ hδ`. Use `⟨|K|, abs_nonneg _, fun X l Ξ y g t ht => ?_⟩` and prove the remaining obligations. Establish `slc : ∀ Ψ : RadSp k r z z' π π', ContinuousOn (fun s => ‖hsVecR ((Ψ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) g)‖ ^ 2) (Metric.closedBall t0 (2 * δ))` using `fun Ψ s hs => ((sl_hasFDerivAt X l Ψ y g (hB s hs)).continuousAt.norm.pow 2).continuousWithinAt`. Establish `key` using `hK (PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp)) (fun s => hsVecR ((Ξ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) g)) (fun s => hsVecR ((Dx X l Ξ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) g)) (fun s => hsVecR ((Dy X l Ξ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l …`. Use `key.trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hI4 : IntegrableOn (fun s => ‖hsVecR ((Ξ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) g)‖ ^ 2 + ‖hsVecR ((Dx X l Ξ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) g)‖ ^ 2 + ‖hsVecR ((Dy X l Ξ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) g)‖ ^ 2 + ‖hsVecR ((Dx X l (Dy X l Ξ) …` using `((((slc Ξ).add (slc _)).add (slc _)).add (slc _)).integrableOn_compact (isCompact_closedBall _ _)`. Establish `hI7 : IntegrableOn (fun s => 4 * ∑ i, ‖hsVecR ((wd7 X l Ξ i : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) g)‖ ^ 2) (Metric.closedBall t0 (2 * δ))` using `(continuousOn_const.mul (continuousOn_finsetSum _ fun i _ => slc _)).integrableOn_compact (isCompact_closedBall _ _)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem pt_sob (hS : JSSob2) (t0 : ℂ) (δ : ℝ) (hδ : 0 < δ) (hB : ∀ s ∈ Metric.closedBall t0 (2 * δ), s ≠ 0) :
     ∃ K : ℝ, 0 ≤ K ∧ ∀ (X : ActualOps k r z z' π π') (l : Fin r) (Ξ : RadSp k r z z' π π') (y : Fin r → ℂ)
@@ -261,61 +261,51 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Establish `: SFinite μ` using `sfinite_of_isHaarOn _ μ hμ`. Use `choose ε hε M hMb using hloc`. Use `set ε0 := Finset.univ.inf' Finset.univ_nonempty ε with hε0def`. Establish `hε0 : 0 < ε0` using `(Finset.lt_inf'_iff _).2 fun i _ => hε i`. Establish `hε0i : ∀ i, ε0 ≤ ε i` using `fun i => Finset.inf'_le _ (Finset.mem_univ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0n : 0 < ‖t0‖` using `norm_pos_iff.2 ht0`. Use `set δ : ℝ := min (‖t0‖ / 4) (ε0 / 4) with hδdef`. Establish `hδ : 0 < δ` using `lt_min (by positivity) (by positivity)`. Establish `hδ1 : δ ≤ ‖t0‖ / 4` using `min_le_left _ _`. Establish `hδ2 : δ ≤ ε0 / 4` using `min_le_right _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set B' := Metric.closedBall t0 (2 * δ) with hB'`. Establish `hB : ∀ s ∈ B', s ≠ 0`. Introduce `s hs h0`. Rewrite `hs` using `[h0, Metric.mem_closedBall, dist_zero_left]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hBε : ∀ s ∈ B', ∀ i, s ∈ Metric.ball t0 (ε i)`. Introduce `s hs i`. Rewrite `hs` using `[Metric.mem_closedBall]`. Rewrite using `[Metric.mem_ball]`. Combine the linear relations using `[hε0i i]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K, hK0, hK⟩` from `pt_sob (k := k) (r := r) (z := z) (z' := z') (π := π) (π' := π') hS t0 δ hδ hB`. Establish `hwlc` using `seven_derivatives_preserve_compact X l hΦ`. Use `set P : Fin 7 → ℂ × Cf r l.succ → ℂ := fun i q => pairAt μ (wd7 X l Φ i) (wd7 X l Φ i) (glue l.succ (Function.update c l q.1) q.2) with hPdef`. Establish `hPm : ∀ i, StronglyMeasurable (P i)` using `fun i => (hM k r z z' Wp Wq π π' l c (wd7 X l Φ i) (wd7 X l Φ i)).stronglyMeasurable.integral_prod_right'`. Establish `hPcont : ∀ i c', ContinuousOn (fun s => ‖P i (s, c')‖) B'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i c' s hs`. Simplify using `only [hPdef, glue_succ_update_eq]`. Distinguish the cases in `hyO : Function.update (glue l.succ c c') l s ∈ OmX r`. Conclude with `((pairAt_hasFDerivAt X μ hμ l _ _ (hwlc i) (hwlc i) _ (hB s hs) hyO).continuousAt.norm).continuousWithinAt`. Use `(continuousWithinAt_const (b := (0 : ℝ))).congr (fun s' _ => ?_) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pairAt_off _ _ _ _ (omX_update_any _ l (hB s hs) hyO s'), norm_zero]`. Rewrite using `[pairAt_off _ _ _ _ hyO, norm_zero]`. Establish `hPint : ∀ i c', IntegrableOn (fun s => ‖P i (s, c')‖) B'` using `fun i c' => (hPcont i c').integrableOn_compact (isCompact_closedBall _ _)`. Use `set F : Cf r l.succ → ℝ := fun c' => 4 * K * (‖wtI l.succ c'‖ * ∑ i, ∫ s in B', ‖P i (s, c')‖) with hF`. Establish `hS0 : ∀ c', 0 ≤ ∑ i, ∫ s in B', ‖P i (s, c')‖` using `fun c' => Finset.sum_nonneg fun i _ => setIntegral_nonneg measurableSet_closedBall fun s _ => norm_nonneg _`.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hF0 : ∀ c', 0 ≤ F c'` using `fun c' => by`. Use `hS0 c'` as an intermediate fact. Simplify using `only [hF]`. Check the signs of the components of the expression. Use `⟨δ, hδ, F, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFm : Measurable F`. Simplify using `only [hF]`. Use `measurable_const.mul ((wtI_measurable l.succ).norm.mul (Finset.measurable_sum _ fun i _ => ?_))` and prove the remaining obligations. Conclude with `((hPm i).norm.integral_prod_left (μ := volume.restrict B')).measurable`. Use `⟨hFm.aestronglyMeasurable, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hasFiniteIntegral_iff_ofReal (Eventually.of_forall hF0)]`. Establish `hper : ∀ c', ENNReal.ofReal (F c') = ENNReal.ofReal (4 * K) * ∑ i, ∫⁻ s in B', ENNReal.ofReal ‖wtI l.succ c' * P i (s, c')‖`. Introduce `c'`. Simplify using `only [hF]`. Rewrite using `[ENNReal.ofReal_mul (by positivity), Finset.mul_sum, ENNReal.ofReal_sum_of_nonneg fun i _ => mul_nonneg (norm_nonneg _) (setIntegral_nonneg measurableSet_closedBall fun s _ => norm_nonneg _)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul, ofReal_integral_eq_lintegral_ofReal ((hPint i c').const_mul _) (Eventually.of_forall fun _ => by positivity)]`. Simplify using `only [norm_mul]`. Establish `hswap : ∀ i, ∫⁻ c', ∫⁻ s in B', ENNReal.ofReal ‖wtI l.succ c' * P i (s, c')‖ = ∫⁻ s in B', ∫⁻ c', ENNReal.ofReal ‖wtI l.succ c' * P i (s, c')‖`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i`. Use `lintegral_lintegral_swap ?_` and prove the remaining obligations. Establish `hm : Measurable (fun q : Cf r l.succ × ℂ => ENNReal.ofReal ‖wtI l.succ q.1 * P i (q.2, q.1)‖)` using `ENNReal.measurable_ofReal.comp (((wtI_measurable l.succ).comp measurable_fst).mul ((hPm i).measurable.comp measurable_swap)).norm`. Conclude with `hm.aemeasurable`. Establish `hinner : ∀ i, ∀ s ∈ B', ∫⁻ c', ENNReal.ofReal ‖wtI l.succ c' * P i (s, c')‖ ≤ ENNReal.ofReal (M i)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `i s hs`. Establish `hL` using `(hMb i s (hBε s hs i)).1`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal hL.norm (Eventually.of_forall fun _ => norm_nonneg _)]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Rewrite using `[← norm_fs_self]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hMb i s (hBε s hs i)).2`. Combine the equalities or inequalities in the displayed calculation. Repeatedly rewrite using `[hper]`. Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[lintegral_finsetSum']`. Conclude with `Finset.sum_congr rfl fun i _ => hswap i`. Introduce `i _`. Conclude with `((ENNReal.measurable_ofReal.comp (((wtI_measurable l.succ).comp measurable_fst).mul ((hPm i).measurable.comp measurable_swap)).norm).lintegral_prod_right' (ν := volume.restrict B')).aemeasurable`. Use `_ ≤ ENNReal.ofReal (4 * K) * ∑ i, ∫⁻ s in B', ENNReal.ofReal (M i) := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_mul' le_rfl (Finset.sum_le_sum fun i _ => setLIntegral_mono' measurableSet_closedBall fun s hs => hinner i s hs)`. Use `_ < ⊤ := by`. Use `ENNReal.mul_lt_top ENNReal.ofReal_lt_top (ENNReal.sum_lt_top.2 fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[setLIntegral_const]`. Conclude with `ENNReal.mul_lt_top ENNReal.ofReal_lt_top measure_closedBall_lt_top`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `t ht c'`. Rewrite using `[glue_succ_update_eq, norm_mul]`. Use `set y := glue l.succ c c' with hy`. Distinguish the cases in `hyO : Function.update y l t ∈ OmX r`. Use `swap`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[pairAt_off _ _ _ _ hyO, norm_zero, mul_zero]`. Conclude with `hF0 c'`. Establish `hP : ‖pairAt μ Φ Φ (Function.update y l t)‖ ≤ 4 * K * ∑ i, ∫ s in B', ‖P i (s, c')‖`. Establish `hx_int : ∀ Ξ ∈ lcSub k r z z' π π', ∀ s, Integrable (fun x : Mt k r => ‖hsVecR ((Ξ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) (Matrix.of x))‖ ^ 2) μ`. Introduce `Ξ hΞ s`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(int_lc μ hμ hΞ hΞ (Function.update y l s)).norm` as an intermediate fact. Simplify `this` using `only [norm_hsInner_self]`. Establish `hpair : ∀ Ξ : RadSp k r z z' π π', ∀ s, ‖pairAt μ Ξ Ξ (Function.update y l s)‖ = ∫ x, ‖hsVecR ((Ξ : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) (Matrix.of x))‖ ^ 2 ∂μ`. Introduce `Ξ s`. Rewrite using `[norm_pairAt_selfI]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [norm_hsInner_self]`. Establish `hPy : ∀ i s, ‖P i (s, c')‖ = ‖pairAt μ (wd7 X l Φ i) (wd7 X l Φ i) (Function.update y l s)‖`. Introduce `i s`. Simplify using `only [hPdef, glue_succ_update_eq, hy]`. Establish `hsint : ∀ x : Mt k r, IntegrableOn (fun s => 4 * ∑ i, ‖hsVecR ((wd7 X l Φ i : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) (Matrix.of x))‖ ^ 2) B'` using `fun x => (continuousOn_const.mul (continuousOn_finsetSum _ fun i _ => fun s hs => ((sl_hasFDerivAt X l (wd7 X l Φ i) y (Matrix.of x) (hB s hs)).continuousAt.norm.pow 2).continuousWithinAt) ).integrableOn_compact (isCompact_closedBall _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hmeas : Measurable (fun q : Mt k r × ℂ => ENNReal.ofReal (4 * ∑ i, ‖hsVecR ((wd7 X l Φ i : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l q.2) (Matrix.of q.1))‖ ^ 2))`. Use `ENNReal.measurable_ofReal.comp (measurable_const.mul (Finset.measurable_sum _ fun i _ => ?_))` and prove the remaining obligations. Establish `hm` using `hM k r z z' Wp Wq π π' l c (wd7 X l Φ i) (wd7 X l Φ i)`. Establish `hc : Measurable (fun q : Mt k r × ℂ => (((q.2, c') : ℂ × Cf r l.succ), q.1))` using `by fun_prop`. Establish `e : (fun q : Mt k r × ℂ => ‖hsVecR ((wd7 X l Φ i : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l q.2) (Matrix.of q.1))‖ ^ 2) = fun q => ‖B.hsInner ((wd7 X l Φ i : Fn k r (Wq →L[ℂ] Wp)) (glue l.succ (Function.update c l q.2) c') (Matrix.of q.1)) ((wd7 X l Φ i : Fn k r (Wq →L[ℂ] Wp)) …`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities.
 
-Use function extensionality and compare the values at `q`. Rewrite using `[glue_succ_update_eq, norm_hsInner_self]`. Rewrite using `[e]`. Conclude with `(hm.comp hc).norm`. Establish `hinner : ∀ s, ∫⁻ x, ENNReal.ofReal (4 * ∑ i, ‖hsVecR ((wd7 X l Φ i : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) (Matrix.of x))‖ ^ 2) ∂μ = ENNReal.ofReal (4 * ∑ i, ‖P i (s, c')‖)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 
-Introduce `s`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal ((integrable_finsetSum _ fun i _ => hx_int _ (hwlc i) s).const_mul 4) (Eventually.of_forall fun _ => by positivity)]`. Use `congr 1`. Rewrite using `[integral_const_mul, integral_finsetSum _ fun i _ => hx_int _ (hwlc i) s]`. Use `congr 1`.
-
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [hPy, hpair]`. Establish `hRHS0 : 0 ≤ 4 * K * ∑ i, ∫ s in B', ‖P i (s, c')‖`. Use `hS0 c'` as an intermediate fact. Check the signs of the components of the expression. Rewrite using `[← ENNReal.ofReal_le_ofReal_iff hRHS0, hpair Φ t, ofReal_integral_eq_lintegral_ofReal (hx_int Φ hΦ t) (Eventually.of_forall fun _ => by positivity)]`.
-
-Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal (hsint x) (Eventually.of_forall fun _ => by positivity), ← ENNReal.ofReal_mul hK0]`. Conclude with `ENNReal.ofReal_le_ofReal (hK X l Φ y (Matrix.of x) t ht)`. Use `_ = ENNReal.ofReal K * ∫⁻ s in B', ∫⁻ x, ENNReal.ofReal (4 * ∑ i, ‖hsVecR ((wd7 X l Φ i : Fn k r (Wq →L[ℂ] Wp)) (Function.update y l s) (Matrix.of x))‖ ^ 2) ∂μ := by`.
-
-Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `congr 1`. Conclude with `lintegral_lintegral_swap hmeas.aemeasurable`. Use `_ = ENNReal.ofReal K * ∫⁻ s in B', ENNReal.ofReal (4 * ∑ i, ‖P i (s, c')‖) := by`. Repeatedly rewrite using `[hinner]`.
-
-Use `_ = ENNReal.ofReal (4 * K * ∑ i, ∫ s in B', ‖P i (s, c')‖) := by`. Rewrite using `[← ofReal_integral_eq_lintegral_ofReal ((integrable_finsetSum _ fun i _ => hPint i c').const_mul 4) (Eventually.of_forall fun _ => mul_nonneg (by norm_num) (Finset.sum_nonneg fun i _ => norm_nonneg _)), ← ENNReal.ofReal_mul hK0]`. Use `congr 1`. Rewrite using `[integral_const_mul, integral_finsetSum _ fun i _ => hPint i c']`. Expand and normalize the polynomial expressions, which then agree.
-
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem slDom_of_loc (hS : JSSob2) (hM : JSMeas) (X : ActualOps k r z z' π π') (μ : Measure (Mt k r))
     (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) (l : Fin r) (c : Fin r → ℂ) (Φ : RadSp k r z z' π π')
@@ -511,7 +501,7 @@ def wlist7 : Fin 7 → List (Fin 6) :=
   ![[], [2, 0], [5, 3], [2, 0, 2, 0], [5, 3, 2, 0], [2, 0, 5, 3], [5, 3, 5, 3]]
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;>`. Simplify using `[wd7, wlist7, wOp, dT, dTb, List.map_cons, List.prod_cons, Module.End.mul_apply, mul_assoc]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem seven_derivatives_of_word_operator (X : ActualOps k r z z' π π') (l : Fin r) (js : List (Fin 6)) (Ψ : RadSp k r z z' π π')
     (i : Fin 7) : wd7 X l (wOp X l js Ψ) i = wOp X l (wlist7 i ++ js) Ψ := by
@@ -519,9 +509,9 @@ theorem seven_derivatives_of_word_operator (X : ActualOps k r z z' π π') (l : 
     simp [wd7, wlist7, wOp, dT, dTb, List.map_cons, List.prod_cons, Module.End.mul_apply, mul_assoc]
 
 /- English proof (translation)
-Proceed by induction on `js with`. Consider the case `nil => intro Ψ h`. Simplify `h` using `[wOp]`. Consider the case `cons j js ih`. Introduce `Ψ h`.
+Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : wOp X l (j :: js) Ψ = X.op l j (wOp X l js Ψ)`. Simplify using `[wOp, List.map_cons, List.prod_cons, Module.End.mul_apply]`. Rewrite using `[e]`. Conclude with `op_lc X l j _ (ih Ψ h)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wOp_lcJ (X : ActualOps k r z z' π π') (l : Fin r) (js : List (Fin 6)) :
     ∀ Ψ ∈ lcSub k r z z' π π', wOp X l js Ψ ∈ lcSub k r z z' π π' := by
@@ -537,7 +527,7 @@ theorem wOp_lcJ (X : ActualOps k r z z' π π') (l : Fin r) (js : List (Fin 6)) 
 end Gen
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' l hl c hc Ψ hΨ`. Use `⟨hΨ.1, fun js t0 ht0 => ?_⟩` and prove the remaining obligations. Use `slDom_of_loc hS hM X μ hD.2.1 l c (wOp X l js Ψ) (wOp_lcJ X l js Ψ hΨ.1) t0 ht0 fun i => ?_` and prove the remaining obligations. Rewrite using `[seven_derivatives_of_word_operator]`. Conclude with `hL Wp Wq S P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' l hl c hc Ψ hΨ (wlist7 i ++ js) t0 ht0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jSliceGenC_of_sob2_meas_locality (hS : JSSob2) (hM : JSMeas) (hL : SpectralL2Locality) : JSliceGenC := by
   intro Wp Wq _ _ _ _ _ _ S _ _ P z z' π π' X μ L st l0 D hD hl1 hl2 hz hz' hπ hπ' l hl c hc Ψ hΨ

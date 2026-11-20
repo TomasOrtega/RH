@@ -3,11 +3,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.De
 open Matrix IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Use `letI := (PowerSeries.map f).toAlgebra`. Use `haveI : Module.Finite K L := Module.Finite.of_finite`. Set `b` to `Module.finBasis K L`. Use `show Module.Finite (PowerSeries K) (PowerSeries L)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨Finset.univ.image (fun i => PowerSeries.C (b i)), ?_⟩⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `φ _`. Establish `key : φ = ∑ i, (PowerSeries.mk fun n => b.repr (PowerSeries.coeff n φ) i) • PowerSeries.C (b i)`. Use extensionality with `n`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Algebra.smul_def, RingHom.algebraMap_toAlgebra, map_sum, PowerSeries.coeff_mul_C, PowerSeries.coeff_map, PowerSeries.coeff_mk]`. Conclude with `(b.sum_repr _).symm.trans (Finset.sum_congr rfl fun i _ => Algebra.smul_def _ _)`. Rewrite using `[key]`. Use `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem map_finite {K L : Type} [Field K] [Field L] [Finite L] (f : K →+* L) :
     (PowerSeries.map f).Finite := by
@@ -31,7 +31,7 @@ private theorem map_finite {K L : Type} [Field K] [Field L] [Finite L] (f : K �
   simp
 
 /- English proof (translation)
-Use `⟨RingHom.injective _, fun y => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `residue_surjective y`. Use `⟨PowerSeries.constantCoeff x, ?_⟩` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, ← sub_eq_zero, ← map_sub, residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff, PowerSeries.isUnit_iff_constantCoeff, map_sub, PowerSeries.constantCoeff_C, sub_self]`. Conclude with `not_isUnit_zero`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bijective_residue_comp_powerSeries_C (F : Type) [Field F] :
     Function.Bijective ((residue (PowerSeries F)).comp (PowerSeries.C (R := F))) := by
@@ -44,13 +44,13 @@ private theorem bijective_residue_comp_powerSeries_C (F : Type) [Field F] :
   exact not_isUnit_zero
 
 /- English proof (translation)
-Introduce `l _ K _ _ _ d D hK hdD hD`. Establish `hd : d ≠ 0`. Introduce and unpack `rfl`. Conclude with `hD (zero_dvd_iff.mp hdD)`. Use `letI : Algebra (ZMod l) K := ZMod.algebra K l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Set `e` to `GaloisField.algEquivGaloisField l d hK`. Take `⟨g⟩` from `FiniteField.nonempty_algHom_of_finrank_dvd (F := ZMod l) (K := GaloisField l d) (L := GaloisField l D) (by rw [GaloisField.finrank l hd, GaloisField.finrank l hD]; exact hdD)`. Set `φ : K →+* GaloisField l D` to `(g.comp e.toAlgHom).toRingHom`. Establish `hcc : ∀ ψ : PowerSeries K, PowerSeries.constantCoeff (PowerSeries.map φ ψ) = φ (PowerSeries.constantCoeff ψ)`. Introduce `ψ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply]`. Use `haveI : CharP (PowerSeries (GaloisField l D)) l := charP_of_injective_ringHom (PowerSeries.C (R := GaloisField l D)).injective l`. Use `haveI : UpperTheory.V.Pa.IsEqDVR l (PowerSeries (GaloisField l D)) := ⟨by rw [PowerSeries.maximalIdeal_eq_span_X]; infer_instance, Finite.of_surjective _ (bijective_residue_comp_powerSeries_C (GaloisField l D)).2, inferInstance⟩`. Use `⟨PowerSeries (GaloisField l D), inferInstance, inferInstance, inferInstance, inferInstance, PowerSeries.map φ, PowerSeries.map_injective _ φ.injective, ⟨fun ψ hψ => ?_⟩, map_finite φ, ?_, ?_⟩` and prove the remaining obligations. Rewrite `hψ` using `[PowerSeries.isUnit_iff_constantCoeff, hcc, isUnit_iff_ne_zero, map_ne_zero_iff _ φ.injective]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PowerSeries.isUnit_iff_constantCoeff, isUnit_iff_ne_zero]`. Conclude with `hψ`. Rewrite using `[← Nat.card_congr (Equiv.ofBijective _ (bijective_residue_comp_powerSeries_C (GaloisField l D))), GaloisField.card l D hD]`. Rewrite using `[PowerSeries.map_X]`. Conclude with `PowerSeries.X_irreducible`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Det.resExt :
     ∀ (l : ℕ) [Fact l.Prime] {K : Type} [Field K] [Finite K] [CharP K l] (d D : ℕ), Nat.card K = l ^ d → d ∣ D → D ≠ 0 → ∃ (A' : Type) (_ : CommRing A') (_ : IsDomain A') (_ : IsDiscreteValuationRing A') (_ : IsEqDVR l A') (j : PowerSeries K →+* A'), Function.Injective j ∧ IsLocalHom j ∧ j.Finite ∧ Nat.card (ResidueField A') = l ^ D ∧ Irreducible (j PowerSeries.X) := by

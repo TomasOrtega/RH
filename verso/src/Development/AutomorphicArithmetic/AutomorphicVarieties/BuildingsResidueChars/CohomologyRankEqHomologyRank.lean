@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.H
 open CategoryTheory
 
 /- English proof (translation)
-Introduce `C q`. Establish `h1 : Function.Surjective (C.homologyπ q).hom` using `(ModuleCat.epi_iff_surjective _).1 inferInstance`. Establish `h2 : Function.Injective (C.iCycles q).hom` using `(ModuleCat.mono_iff_injective _).1 inferInstance`. Conclude with `(LinearMap.rank_le_of_surjective _ h1).trans (LinearMap.rank_le_of_injective _ h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.cohomology_rank_eq_homology_rank :
     UpperTheory.V.Af.CohB.RankHomology := by

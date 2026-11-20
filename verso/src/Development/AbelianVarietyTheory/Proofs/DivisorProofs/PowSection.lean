@@ -16,25 +16,25 @@ noncomputable section
 namespace GlobalTheory.SiegAct
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-The claim follows from `congrArg CommRingCat.Hom.hom (Spec.map_injective h)`.
+A detailed English derivation is pending.
 -/
 theorem spMap_inj {A B : Type} [CommRing A] [CommRing B] {f g : A →+* B} (h : spMap f = spMap g) : f = g :=
   congrArg CommRingCat.Hom.hom (Spec.map_injective h)
 
 /- English proof (translation)
-The claim follows from `Spec.map_id _`.
+A detailed English derivation is pending.
 -/
 theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 (Sp A) := Spec.map_id _
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(Spec.preimage x).hom, by rw [spMap, CommRingCat.ofHom_hom, Spec.map_preimage]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_spMap {k B : Type} [CommRing k] [CommRing B] (x : Sp k ⟶ Sp B) : ∃ β : B →+* k, x = spMap β :=
   ⟨(Spec.preimage x).hom, by rw [spMap, CommRingCat.ofHom_hom, Spec.map_preimage]⟩
@@ -49,7 +49,7 @@ theorem unit_left' {S T : Scheme.{0}} {G : Over S} (x : T ⟶ S) (σ : 𝟙_ (Ov
 variable {h N m : ℕ} {B B' : Type} [CommRing B] [CommRing B'] {ζ : B} {ζ' : B'} {S : Scheme.{0}} {s : S ⟶ Sp B}
 
 /- English proof (translation)
-Use `C.lev_add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lev_zero (C : SiegPre h N ζ s) : C.lev 0 = 1 := by
   have := C.lev_add 0 0
@@ -57,7 +57,7 @@ theorem lev_zero (C : SiegPre h N ζ s) : C.lev 0 = 1 := by
   exact left_eq_mul.1 this
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [zero_smul, pow_zero, lev_zero]`. Consider the case `succ k ih => rw [succ_nsmul, C.lev_add, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem lev_nsmul (C : SiegPre h N ζ s) (k : ℕ) (a : Fin h ⊕ Fin h → ℤ) : C.lev (k • a) = C.lev a ^ k := by
   induction k with
@@ -65,7 +65,7 @@ theorem lev_nsmul (C : SiegPre h N ζ s) (k : ℕ) (a : Fin h ⊕ Fin h → ℤ)
   | succ k ih => rw [succ_nsmul, C.lev_add, ih, pow_succ]
 
 /- English proof (translation)
-Rewrite using `[lev_nsmul, C.lev_tors]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lev_N_smul (C : SiegPre h N ζ s) (a : Fin h ⊕ Fin h → ℤ) : C.lev (N • a) = 1 := by
   rw [lev_nsmul, C.lev_tors]
@@ -124,9 +124,9 @@ def Sq (c' : SiegPre h n' ζ' s') (c : SiegPre h n ζ s) (φ : c'.A.left ⟶ c.A
   ∃ φ₂ : (G2 c'.A).left ⟶ (G2 c.A).left, IsSquare φ φ₂ ∧ LBIso c'.P (c.P.pull φ₂)
 
 /- English proof (translation)
-Take `⟨φ₂, hs, hw⟩` from `m`. Take `⟨ψ₂, hs', hw'⟩` from `m'`. Use `⟨ψ₂ ≫ φ₂, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hs.1, ← Category.assoc, hs'.1, Category.assoc]`. Rewrite using `[Category.assoc, hs.2, ← Category.assoc, hs'.2, Category.assoc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hw'.trans c''.isLB (pull_isLB c'.isLB _) (pull_isLB (pull_isLB c.isLB _) _) (iso_pull ψ₂ hw)).trans c''.isLB (pull_isLB (pull_isLB c.isLB _) _) (pull_isLB c.isLB _) (iso_pull_pull c.isLB φ₂ ψ₂)`.
+A detailed English derivation is pending.
 -/
 theorem Sq.comp {φ : c'.A.left ⟶ c.A.left} {ψ : c''.A.left ⟶ c'.A.left} (m : Sq c' c φ) (m' : Sq c'' c' ψ) :
     Sq c'' c (ψ ≫ φ) := by
@@ -139,7 +139,7 @@ theorem Sq.comp {φ : c'.A.left ⟶ c.A.left} {ψ : c''.A.left ⟶ c'.A.left} (m
       c''.isLB (pull_isLB (pull_isLB c.isLB _) _) (pull_isLB c.isLB _) (iso_pull_pull c.isLB φ₂ ψ₂)
 
 /- English proof (translation)
-Take `⟨hφ, hs, hl⟩` from `m`. Take `⟨hψ, hs', hl'⟩` from `m'`. Use `⟨hψ.comp hφ, Sq.comp (c := c) (c' := c') (c'' := c'') hs hs', fun a => ?_⟩` and prove the remaining obligations. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ φ) (hl' a)).trans ((Category.assoc _ _ _).trans ((congrArg (f' ≫ ·) (hl a)).trans (Category.assoc _ _ _).symm)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sRelBy_comp {φ : c'.A.left ⟶ c.A.left} {ψ : c''.A.left ⟶ c'.A.left} (m : SRelBy c' c d' d f φ)
     (m' : SRelBy c'' c' d'' d' f' ψ) : SRelBy c'' c d'' d (f' ≫ f) (ψ ≫ φ) := by
@@ -150,9 +150,9 @@ theorem sRelBy_comp {φ : c'.A.left ⟶ c.A.left} {ψ : c''.A.left ⟶ c'.A.left
       ((congrArg (f' ≫ ·) (hl a)).trans (Category.assoc _ _ _).symm)))
 
 /- English proof (translation)
-Establish `e₁ : x' = SiegelPull.secPull hφ x`. Use `push_injective hφ _ (Over.OverMorphism.ext ?_)` and prove the remaining obligations. Conclude with `e.trans (SiegelPull.secPull_left hφ x).symm`. Establish `e₂ : x' ^ k = SiegelPull.secPull hφ (x ^ k)` using `push_injective hφ _ (by`. Rewrite using `[map_pow, e₁, push_secPull', push_secPull', MonObj.comp_pow])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₂, SiegelPull.secPull_left]`.
+A detailed English derivation is pending.
 -/
 theorem pow_section {A : Over S} {A' : Over S'} [GrpObj A] [GrpObj A'] {φ : A'.left ⟶ A.left}
     (hφ : IsGrpPullback A' A f φ) (x' : 𝟙_ (Over S') ⟶ A') (x : 𝟙_ (Over S) ⟶ A)

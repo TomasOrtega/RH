@@ -10,9 +10,9 @@ open ReciprocityTheory.ChartRestriction.G.Geo MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.sum_mul]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hc : (∏ i : (Σ k, ι k), t i.1 ^ d i) = ∏ k, t k ^ a k`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ∏ x, t k ^ d ⟨k, x⟩ = _`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hf d hd k]`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, hc]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem aeval_mul_blockScale_of_isMultiHomog {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)]
     {Ω : Type*} [CommRing Ω] {f : MRing ι} {a : K → ℕ} (hf : IsMultiHomog f a) (t : K → Ω)
@@ -29,7 +29,7 @@ theorem aeval_mul_blockScale_of_isMultiHomog {K : Type*} [Fintype K] {ι : K →
   ring
 
 /- English proof (translation)
-Establish `h0 : mConeMap y f = 0` using `hf`. Establish `hcomp : ((aeval t).restrictScalars ℤ).comp (mConeMap y) = aeval (fun p => y p * t p.1)` using `MvPolynomial.algHom_ext fun p => by simp [mConeMap]`. Rewrite using `[← hcomp, AlgHom.comp_apply, h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_mul_blockScale_eq_zero_of_mem_mCoordIdeal {K : Type*} [Fintype K] {ι : K → Type*}
     [∀ k, Fintype (ι k)] {Ω : Type*} [Field Ω] {y : (Σ k, ι k) → Ω} {f : MRing ι}
@@ -40,43 +40,35 @@ theorem aeval_mul_blockScale_eq_zero_of_mem_mCoordIdeal {K : Type*} [Fintype K] 
   rw [← hcomp, AlgHom.comp_apply, h0, map_zero]
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D e L hhom hL p hp j hj`. Take `⟨N, hN⟩` from `PullConeNull.proof K ι Ω y D L hL`. Establish `hp0 : (p : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr hp.ne_zero`. Establish `key : ∀ c : ∀ k, ι k, (∀ k, y ⟨k, c k⟩ ≠ 0) → ∃ a : ℕ, (p : Ω) ^ a * (∏ k, y ⟨k, c k⟩ ^ e k) / aeval y (L j) ∈ Subring.closure (Set.range (fun q : Σ k, ι k => y q / y ⟨q.1, c q.1⟩) ∪ Set.range (fun i => aeval y (L i) / aeval y (L j)) ∪ {z | ∃ r : ℕ, ¬ p ∣ r ∧ z = (r : Ω)⁻¹})`. Introduce `c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set R := Subring.closure (Set.range (fun q : Σ k, ι k => y q / y ⟨q.1, c q.1⟩) ∪ Set.range (fun i => aeval y (L i) / aeval y (L j)) ∪ {z | ∃ r : ℕ, ¬ p ∣ r ∧ z = (r : Ω)⁻¹}) with hR`. Use `set Y := ∏ k, y ⟨k, c k⟩ ^ e k with hYdef`. Establish `hY : Y ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun k _ => pow_ne_zero _ (hc k)`. Establish `hpR : ∀ n : ℕ, (p : Ω) ^ n ∈ R` using `fun n => R.pow_mem (natCast_mem R p) n`. Set `G : Subalgebra ℚ Ω` to `{ carrier := {x | ∃ a : ℕ, (p : Ω) ^ a * x ∈ R} mul_mem' := by`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x z ⟨a, ha⟩ ⟨b, hb⟩`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Establish `: (p : Ω) ^ (a + b) * (x * z) = ((p : Ω) ^ a * x) * ((p : Ω) ^ b * z)` using `by ring`. Rewrite using `[this]`. Conclude with `R.mul_mem ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use the proof step `add_mem' := by`. Introduce and unpack `x z ⟨a, ha⟩ ⟨b, hb⟩`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Establish `: (p : Ω) ^ (a + b) * (x + z) = (p : Ω) ^ b * ((p : Ω) ^ a * x) + (p : Ω) ^ a * ((p : Ω) ^ b * z)`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `R.add_mem (R.mul_mem (hpR b) ha) (R.mul_mem (hpR a) hb)`. Use the proof step `algebraMap_mem' := by`. Introduce `q`. Take `⟨b, d', hd', hden⟩` from `Nat.exists_eq_pow_mul_and_not_dvd q.den_nz p hp.one_lt.ne'`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨b, ?_⟩` and prove the remaining obligations. Establish `hden' : (q.den : Ω) = (p : Ω) ^ b * (d' : Ω)` using `by exact_mod_cast hden`. Establish `hd0 : (d' : Ω) ≠ 0`. Introduce `h0`. Establish `: (q.den : Ω) ≠ 0` using `Nat.cast_ne_zero.mpr q.den_nz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hden', h0, mul_zero]`. Conclude with `this rfl`. Establish `: (p : Ω) ^ b * algebraMap ℚ Ω q = (q.num : Ω) * (d' : Ω)⁻¹`. Rewrite using `[eq_ratCast, Rat.cast_def, hden']`. Clear the denominators using the available nonvanishing facts.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show (p : Ω) ^ b * algebraMap ℚ Ω q ∈ R`. Rewrite using `[this]`. Conclude with `R.mul_mem (intCast_mem R _) (Subring.subset_closure (Or.inr ⟨d', hd', rfl⟩)) }`. Establish `hmemG : ∀ x ∈ R, x ∈ G` using `fun x hx => ⟨0, by simpa using hx⟩`. Set `r : (Σ k, ι k) → Ω` to `fun q => y q / y ⟨q.1, c q.1⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Set `χ : MvPolynomial (Σ k, ι k) ℚ →ₐ[ℚ] Ω` to `aeval r`. Set `t : K → Ω` to `fun k => (y ⟨k, c k⟩)⁻¹`. Establish `hχG : ∀ g, χ g ∈ G`. Introduce `g`. Proceed by induction on `g using MvPolynomial.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Consider the case `C q => simpa [χ] using G.algebraMap_mem q`. Consider the case `add f g hf hg => simpa using G.add_mem hf hg`. Consider the case `mul_X f q hf`. Simplify `G.mul_mem hf (hmemG _ (Subring.subset_closure (Or.inl (Or.inl ⟨q, rfl⟩))))` using `[χ]`. Establish `hχmap : ∀ f : MRing ι, χ (map (Int.castRingHom ℚ) f) = aeval (fun q => y q * t q.1) f`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `f`. Rewrite using `[← algebraMap_int_eq, aeval_map_algebraMap]`. Simplify using `only [r, t, div_eq_mul_inv]`. Set `J : Ideal (MvPolynomial (Σ k, ι k) ℚ)` to `{ carrier := {f | χ f * (Y / aeval y (L j)) ∈ G} add_mem' := by`. Introduce `f g hf hg`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `G.add_mem hf hg` using `[add_mul]`. Use the proof step `zero_mem' := by simp`. Use the proof step `smul_mem' := by`. Introduce `g f hf`. Simplify `G.mul_mem (hχG g) hf }` using `[smul_eq_mul, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Establish `hIJ : coneNullIdeal y L ≤ J`. Use `Ideal.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `f (⟨f, hf, rfl⟩ | ⟨i, rfl⟩)`. Use `show χ _ * _ ∈ G`. Rewrite using `[hχmap, aeval_mul_blockScale_eq_zero_of_mem_mCoordIdeal hf t, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `G.zero_mem`. Use `show χ _ * _ ∈ G`. Rewrite using `[hχmap, aeval_mul_blockScale_of_isMultiHomog (hhom i) t]`. Establish `: aeval y (L i) * (∏ k, t k ^ e k) * (Y / aeval y (L j)) = aeval y (L i) / aeval y (L j)`. Establish `hprod : (∏ k, t k ^ e k) = Y⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hYdef, ← Finset.prod_inv_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => inv_pow _ _`. Rewrite using `[hprod]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[this]`.
-
-Conclude with `hmemG _ (Subring.subset_closure (Or.inl (Or.inr ⟨i, rfl⟩)))`. Establish `h1` using `hIJ (hN c)`. Establish `hone : χ ((∏ k, (X ⟨k, c k⟩ : MvPolynomial (Σ k, ι k) ℚ)) ^ N) = 1`. Simplify using `[χ, r, div_self (hc _)]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : Y / aeval y (L j) ∈ G := by`.
-
-Establish `: χ ((∏ k, (X ⟨k, c k⟩ : MvPolynomial (Σ k, ι k) ℚ)) ^ N) * (Y / aeval y (L j)) ∈ G` using `h1`. Rewrite `this` using `[hone, one_mul]`. Then use the resulting hypothesis. Conclude with `⟨a, by rw [mul_div_assoc]; exact ha⟩`. Use `choose! a ha using key`. Use `⟨Finset.univ.sup a, fun c hc => ?_⟩` and prove the remaining obligations.
-
-Establish `hle : a c ≤ Finset.univ.sup a` using `Finset.le_sup (Finset.mem_univ c)`. Establish `e1 : (p : Ω) ^ Finset.univ.sup a * (∏ k, y ⟨k, c k⟩ ^ e k) / aeval y (L j) = (p : Ω) ^ (Finset.univ.sup a - a c) * ((p : Ω) ^ a c * (∏ k, y ⟨k, c k⟩ ^ e k) / aeval y (L j))`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
-
-Conclude with `Subring.mul_mem _ (Subring.pow_mem _ (natCast_mem _ p) _) (ha c hc)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartPrimePowerInverse.proof : ChartPrimePowerInverse.Statement := by
   classical

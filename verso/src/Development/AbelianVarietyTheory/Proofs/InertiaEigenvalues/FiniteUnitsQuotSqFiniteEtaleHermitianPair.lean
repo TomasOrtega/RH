@@ -6,31 +6,27 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨-, hsq⟩` from `isOpenUnits_and_eventually_sq_normed F R`. Take `⟨ε, hε, hball⟩` from `Metric.eventually_nhds_iff.mp hsq`. Take `⟨b, hb0, hb1⟩` from `NormedField.exists_norm_lt_one F`. Establish `hρ2 : 0 < ‖b‖ ^ 2` using `by positivity`. Establish `: ProperSpace R` using `FiniteDimensional.proper F R`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `C : Set R` to `{x | ‖b‖ ^ 2 ≤ ‖x‖ ∧ ‖x‖ ≤ 1}`. Establish `hCc : IsCompact C`. Apply `Metric.isCompact_of_isClosed_isBounded` to reduce the goal to its premises. Conclude with `(isClosed_le continuous_const continuous_norm).inter (isClosed_le continuous_norm continuous_const)`. Conclude with `(Metric.isBounded_closedBall (x := (0 : R)) (r := 1)).subset (fun x hx => by simpa using hx.2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hCu : ∀ c ∈ C, IsUnit c` using `fun c hc => hR c (by`. Introduce `h`. Establish `h1` using `hc.1`. Rewrite `h1` using `[h, norm_zero]`. Use the proof step `linarith)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨t, htC, hcov⟩` from `hCc.elim_nhds_subcover (fun c => {x : R | dist (x * Ring.inverse c) 1 < ε}) (by`. Introduce `c hc`. Apply `IsOpen.mem_nhds` to reduce the goal to its premises. Conclude with `isOpen_lt (by fun_prop) continuous_const`. Simplify using `[Ring.mul_inverse_cancel _ (hCu c hc), hε])`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Set `f : R → Rˣ ⧸ (powMonoidHom 2 : Rˣ →* Rˣ).range` to `fun x => if h : IsUnit x then QuotientGroup.mk h.unit else 1`. Establish `hsurj : (Set.univ : Set (Rˣ ⧸ (powMonoidHom 2 : Rˣ →* Rˣ).range)) ⊆ f '' (t : Set R)`. Introduce and unpack `q -`. Proceed by induction on `q using QuotientGroup.induction_on with | H u => ?_`. Establish `hu0 : 0 < ‖(u : R)‖` using `norm_pos_iff.mpr u.ne_zero`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : 1 < (‖b‖ ^ 2)⁻¹` using `(one_lt_inv₀ hρ2).mpr (by nlinarith [norm_nonneg b])`. Take `⟨n, hn1, hn2⟩` from `exists_mem_Ioc_zpow hu0 hy`. Establish `hb0' : b ≠ 0` using `norm_pos_iff.mp hb0`. Establish `hβ0 : b ^ (n + 1) ≠ 0` using `zpow_ne_zero _ hb0'`. Establish `hnv : ‖(b ^ (n + 1)) ^ 2 • (u : R)‖ = ‖(u : R)‖ / ((‖b‖ ^ 2)⁻¹) ^ (n + 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[norm_smul, norm_pow, norm_zpow, _root_.inv_zpow, div_inv_eq_mul, mul_comm, ← zpow_natCast, ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_mul]`. Rewrite using `[mul_comm (n + 1)]`. Establish `hv : (b ^ (n + 1)) ^ 2 • (u : R) ∈ C`. Establish `hpos : 0 < ((‖b‖ ^ 2)⁻¹) ^ n` using `zpow_pos (by positivity) n`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hnv, zpow_add₀ (by positivity), zpow_one, le_div_iff₀ (by positivity)]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hnv, div_le_one (by positivity)]`. Conclude with `hn2`. Take `⟨c, hct, hcv⟩` from `Set.mem_iUnion₂.mp (hcov hv)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcu` using `hCu c (htC c hct)`. Take `⟨s, hs⟩` from `hball hcv`. Establish `hsU : IsUnit s`. Establish `: IsUnit (s ^ 2)`. Establish `hic : Ring.inverse c = ↑(hcu.unit⁻¹)` using `by rw [← Ring.inverse_unit, IsUnit.unit_spec]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[hs, Algebra.smul_def, hic]`. Conclude with `((isUnit_iff_ne_zero.mpr (pow_ne_zero 2 hβ0)).map (algebraMap F R) |>.mul u.isUnit).mul (hcu.unit⁻¹).isUnit`. Conclude with `(isUnit_pow_iff two_ne_zero).mp this`. Use `⟨c, hct, ?_⟩` and prove the remaining obligations. Simplify using `only [f, dif_pos hcu]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[QuotientGroup.eq, MonoidHom.mem_range]`. Set `bu : Rˣ` to `Units.map (algebraMap F R).toMonoidHom (Units.mk0 _ hβ0)`. Establish `hs' : hsU.unit ^ 2 = bu ^ 2 * u * hcu.unit⁻¹`. Use `ext`. Simplify using `only [Units.val_pow_eq_pow_val, Units.val_mul, IsUnit.unit_spec, bu, Units.coe_map, Units.val_mk0]`.
-
-Rewrite using `[hs, ← Ring.inverse_unit, IsUnit.unit_spec, Algebra.smul_def, map_pow]`. Both sides reduce to the same expression. Use `⟨hsU.unit * bu⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[powMonoidHom_apply, mul_pow, inv_pow, hs']`. Simplify using `only [mul_comm, mul_left_comm, mul_assoc, mul_inv_cancel_left, inv_mul_cancel_left, mul_inv_cancel, mul_one]`.
-
-Establish `hfin : (Set.univ : Set (Rˣ ⧸ (powMonoidHom 2 : Rˣ →* Rˣ).range)).Finite` using `(t.finite_toSet.image f).subset hsurj`. Conclude with `Set.finite_univ_iff.mp hfin`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_units_quot_sq_normed (F : Type) [NontriviallyNormedField F] [CompleteSpace F]
     [ProperSpace F] [CharZero F] (R : Type) [NormedCommRing R] [Nontrivial R] [NormedAlgebra F R]
@@ -114,9 +110,9 @@ end GlobalTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `b` to `Module.finBasis F L`. Set `: NormedRing (Matrix (Fin (Module.finrank F L)) (Fin (Module.finrank F L)) F)` to `Matrix.linftyOpNormedRing`. Set `: NormedAlgebra F (Matrix (Fin (Module.finrank F L)) (Fin (Module.finrank F L)) F)` to `Matrix.linftyOpNormedAlgebra`. Set `N : NormedCommRing L` to `NormedCommRing.induced L _ (Algebra.leftMulMatrix b) (Algebra.leftMulMatrix_injective b)`. Set `A : @NormedAlgebra F L _ N.toNormedRing.toSeminormedRing` to `NormedAlgebra.induced F L _ (Algebra.leftMulMatrix b)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `@finite_units_quot_sq_normed F _ _ _ _ L N inferInstance A ‹_› (fun x hx => hx.isUnit)`.
+A detailed English derivation is pending.
 -/
 theorem finite_units_quot_sq_field (F : Type) [NontriviallyNormedField F] [CompleteSpace F]
     [ProperSpace F] [CharZero F] (L : Type) [Field L] [Algebra F L] [Module.Finite F L] :
@@ -134,21 +130,21 @@ theorem finite_units_quot_sq_field (F : Type) [NontriviallyNormedField F] [Compl
   exact @finite_units_quot_sq_normed F _ _ _ _ L N inferInstance A ‹_› (fun x hx => hx.isUnit)
 
 /- English proof (translation)
-Establish `: IsArtinianRing K` using `IsArtinianRing.of_finite F K`. Use `letI (I : MaximalSpectrum K) : Field (K ⧸ I.asIdeal) := @Ideal.Quotient.field _ _ I.asIdeal I.isMaximal`. Establish `hfin (I : MaximalSpectrum K) : Finite ((K ⧸ I.asIdeal)ˣ ⧸ (powMonoidHom 2 : (K ⧸ I.asIdeal)ˣ →* (K ⧸ I.asIdeal)ˣ).range)` using `finite_units_quot_sq_field F (K ⧸ I.asIdeal)`. Set `φ : Kˣ →* ∀ I : MaximalSpectrum K, (K ⧸ I.asIdeal)ˣ ⧸ (powMonoidHom 2 : (K ⧸ I.asIdeal)ˣ →* (K ⧸ I.asIdeal)ˣ).range` to `Pi.monoidHom fun I => (QuotientGroup.mk' _).comp (Units.map (Ideal.Quotient.mk I.asIdeal).toMonoidHom)`. Establish `hker : φ.ker = (powMonoidHom 2 : Kˣ →* Kˣ).range`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `u`. Simplify using `only [MonoidHom.mem_ker, MonoidHom.mem_range, powMonoidHom_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`. Establish `hI (I : MaximalSpectrum K) : ∃ s : (K ⧸ I.asIdeal)ˣ, s ^ 2 = Units.map (Ideal.Quotient.mk I.asIdeal).toMonoidHom u`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrFun hu I` as an intermediate fact. Express the relevant statement in the definitionally equal form `((Units.map (Ideal.Quotient.mk I.asIdeal).toMonoidHom u : (K ⧸ I.asIdeal)ˣ) : (K ⧸ I.asIdeal)ˣ ⧸ (powMonoidHom 2 : (K ⧸ I.asIdeal)ˣ →* (K ⧸ I.asIdeal)ˣ).range) = 1 at this`. Rewrite `this` using `[QuotientGroup.eq_one_iff]`. Take `⟨s, hs⟩` from `this`. Conclude with `⟨s, hs⟩`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose s hs using hI`. Set `e` to `IsArtinianRing.equivPi K`. Set `x : K` to `e.symm fun I => (s I : K ⧸ I.asIdeal)`. Set `y : K` to `e.symm fun I => ((s I)⁻¹ : (K ⧸ I.asIdeal)ˣ)`. Establish `hxy : x * y = 1` using `e.injective (by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_one]`. Use function extensionality and compare the values at `I`. Simplify using `[x, y])`. Use `⟨⟨x, y, hxy, by rw [mul_comm]; exact hxy⟩, ?_⟩` and prove the remaining obligations. Use `ext`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `e.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `I`. Use `congrArg Units.val (hs I)` as an intermediate fact. Simplify using `only [Units.val_pow_eq_pow_val, Units.coe_map, MonoidHom.coe_coe] at this`. Apply the tactic sequence `simp [x, this] <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, rfl⟩`. Use function extensionality and compare the values at `I`. Express the relevant statement in the definitionally equal form `((Units.map (Ideal.Quotient.mk I.asIdeal).toMonoidHom (w ^ 2) : (K ⧸ I.asIdeal)ˣ) : (K ⧸ I.asIdeal)ˣ ⧸ (powMonoidHom 2 : (K ⧸ I.asIdeal)ˣ →* (K ⧸ I.asIdeal)ˣ).range) = 1`. Rewrite using `[QuotientGroup.eq_one_iff, map_pow]`. Conclude with `⟨_, rfl⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Use `Finite.of_injective _ (QuotientGroup.kerLift_injective φ)` as an intermediate fact. Rewrite `this` using `[hker]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_units_quot_sq_reduced (F : Type) [NontriviallyNormedField F] [CompleteSpace F]
     [ProperSpace F] [CharZero F] (K : Type) [CommRing K] [Algebra F K] [Module.Finite F K]
@@ -203,7 +199,7 @@ theorem finite_units_quot_sq_reduced (F : Type) [NontriviallyNormedField F] [Com
   exact this
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU A`. Establish `: CharZero F` using `hU.charZero`. Establish `: LocallyCompactSpace F` using `hU.lcF`. Establish `: ProperSpace F` using `ProperSpace.of_locallyCompactSpace F`. Conclude with `finite_units_quot_sq_reduced F A.K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Et.finite_units_quot_sq : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E),

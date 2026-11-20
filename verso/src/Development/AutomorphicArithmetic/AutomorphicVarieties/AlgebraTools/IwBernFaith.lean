@@ -8,7 +8,7 @@ open ValuativeRel Matrix GlobalTheory.SmGL GlobalTheory.SplitWeil UpperTheory.V.
 namespace UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `i j hij`. Break down `hij.eq_or_lt with rfl | hlt` into its components or cases. Conclude with `le_rfl`. Use `h i j hlt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem anti_of_gap {n : ℕ} {c : Fin n → ℤ} {N : ℕ} (h : ∀ i j, i < j → c j + N ≤ c i) : Antitone c := by
   intro i j hij
@@ -18,7 +18,7 @@ private theorem anti_of_gap {n : ℕ} {c : Fin n → ℤ} {N : ℕ} (h : ∀ i j
     omega
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `h1` using `h i j hij`. Establish `h2 : a j ≤ a.degree` using `Finsupp.le_degree j a`. Simplify using `only [Pi.add_apply]`. Move the coercions through the operations in `at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -33,7 +33,7 @@ private theorem gap_add {n : ℕ} {c : Fin n → ℤ} (a : Fin n →₀ ℕ) {N 
   omega
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `: (i : ℕ) ≤ j` using `hij`. Simplify using `only [fund]`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem anti_fund (n m : ℕ) : Antitone (fund n m) := by
   intro i j hij
@@ -42,23 +42,21 @@ private theorem anti_fund (n m : ℕ) : Antitone (fund n m) := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Establish `hadd : ∀ a b : Fin n →₀ ℕ, (∀ c : Fin n → ℤ, (∀ i j, i < j → c j + (a.degree : ℤ) ≤ c i) → ∃ m : ℕ, T c * th (MvPolynomial.monomial a 1) = q ^ m • T (c + fun i => (a i : ℤ))) → (∀ c : Fin n → ℤ, (∀ i j, i < j → c j + (b.degree : ℤ) ≤ c i) → ∃ m : ℕ, T c * th (MvPolynomial.monomia …`. Introduce `a b ha hb c hc`. Rewrite `hc` using `[map_add]`. Take `⟨m, hm⟩` from `ha c fun i j hij => by`. Use `hc i j hij` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Use linear arithmetic over natural numbers and integers. Take `⟨m', hm'⟩` from `hb _ (gap_add a hc)`. Use `⟨m + m', ?_⟩` and prove the remaining obligations. Establish `e : (MvPolynomial.monomial (a + b) (1 : A)) = MvPolynomial.monomial a 1 * MvPolynomial.monomial b 1`.
+Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.monomial_mul, one_mul]`. Rewrite using `[e, map_mul, ← mul_assoc, hm, smul_mul_assoc, hm', smul_smul, pow_add]`. Use `congr 2`. Use extensionality with `i`. Simplify using `[add_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `h0 : ∀ c : Fin n → ℤ, (∀ i j, i < j → c j + ((0 : Fin n →₀ ℕ).degree : ℤ) ≤ c i) → ∃ m : ℕ, T c * th (MvPolynomial.monomial 0 1) = q ^ m • T (c + fun i => ((0 : Fin n →₀ ℕ) i : ℤ))`. Introduce `c _`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: (c + fun i => ((0 : Fin n →₀ ℕ) i : ℤ)) = c` using `by ext i; simp`. Rewrite using `[this]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h1 : ∀ l : Fin n, ∀ c : Fin n → ℤ, (∀ i j, i < j → c j + (((Finsupp.single l 1 : Fin n →₀ ℕ).degree : ℕ) : ℤ) ≤ c i) → ∃ m : ℕ, T c * th (MvPolynomial.monomial (Finsupp.single l 1) 1) = q ^ m • T (c + fun i => ((Finsupp.single l 1 : Fin n →₀ ℕ) i : ℤ))`. Introduce `l c hc`. Use `⟨l, ?_⟩` and prove the remaining obligations. Establish `hc' : Antitone (c + fun i => ((Finsupp.single l 1 : Fin n →₀ ℕ) i : ℤ))` using `anti_of_gap (N := 0) (gap_add _ (by simpa using hc))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `(hu _ (anti_fund n l)).mul_right_cancel` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `T c * th (MvPolynomial.X l) * _ = _`. Rewrite using `[mul_assoc, hX, mul_smul_comm, smul_mul_assoc, hmul _ _ (anti_of_gap hc) (anti_fund _ _), hmul _ _ hc' (anti_fund _ _)]`. Use `congr 2`. Use extensionality with `i`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [Pi.add_apply, fund, Finsupp.single_apply, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> push_cast <;> omega`. Proceed by induction on `a using Finsupp.induction_linear with`. Consider the case `zero => exact h0`. Consider the case `add a b ha hb => exact hadd a b ha hb`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `single l m`. Proceed by induction on `m with`. Consider the case `zero => rw [Finsupp.single_zero]`. Conclude with `h0`. Consider the case `succ m ih => rw [Finsupp.single_add]`.
-
-Conclude with `hadd _ _ ih (h1 l)`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem abs_mono {n : ℕ} {A H : Type} [CommRing A] [Ring H] [Algebra A H] (q : A)
     (T : (Fin n → ℤ) → H) (th : MvPolynomial (Fin n) A →ₐ[A] H)
@@ -119,19 +117,17 @@ private theorem abs_mono {n : ℕ} {A H : Type} [CommRing A] [Ring H] [Algebra A
     | succ m ih => rw [Finsupp.single_add]; exact hadd _ _ ih (h1 l)
 
 /- English proof (translation)
-Use `set N : ℕ := p.support.sup Finsupp.degree with hN`. Set `c : Fin n → ℤ` to `fun i => -((i : ℕ) : ℤ) * N`. Establish `hc : ∀ a : p.support, ∀ i j, i < j → c j + (a.1.degree : ℤ) ≤ c i`. Introduce `a i j hij`. Establish `h1 : a.1.degree ≤ N` using `Finset.le_sup (f := Finsupp.degree) a.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ((i : ℕ) : ℤ) + 1 ≤ (j : ℕ)` using `by exact_mod_cast hij`. Establish `h3 : (a.1.degree : ℤ) ≤ N` using `by exact_mod_cast h1`. Establish `h4 : (0 : ℤ) ≤ N` using `Int.natCast_nonneg _`. Simplify using `only [c]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. Introduce a local definition for the expression.
 
-Use `choose m hm using fun a : p.support => abs_mono q T th hmul hu hX a.1 c (hc a)`. Set `f : p.support → {a : Fin n → ℤ // Antitone a}` to `fun a => ⟨c + fun i => (a.1 i : ℤ), anti_of_gap (N := 0) (gap_add _ (by simpa using hc a))⟩`. Establish `hf : Function.Injective f`. Introduce `a b hab`. Use `congrArg Subtype.val hab` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Simplify using `only [f, add_right_inj] at this`. Use extensionality with `i`. Conclude with `congrFun this i` after adjusting the coercions. Establish `hli'` using `Fintype.linearIndependent_iff.1 (hli.comp f hf) (fun a => p.coeff a.1 * q ^ m a) (by`. Establish `h0 : T c * (th p * e) = 0` using `by rw [hp, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← h0]`. Use `conv_rhs => rw [p.as_sum, ← Finset.sum_coe_sort, map_sum, Finset.sum_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `: MvPolynomial.monomial a.1 (p.coeff a.1) = p.coeff a.1 • MvPolynomial.monomial a.1 (1 : A)`. Rewrite using `[MvPolynomial.smul_monomial, smul_eq_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[this, map_smul, smul_mul_assoc, mul_smul_comm, ← mul_assoc, hm, smul_mul_assoc, smul_smul]`. Use the proof step `rfl)`. Use extensionality with `a`. Assume the negation of the conclusion as `ha`. Establish `ha' : a ∈ p.support` using `by simpa using ha`.
-
-Use `hli' ⟨a, ha'⟩` as an intermediate fact. Conclude with `ha (by simpa using ((hq.pow _).mul_left_eq_zero).1 this)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem abs_faith {n : ℕ} {A H : Type} [CommRing A] [Ring H] [Algebra A H] (q : A) (hq : IsUnit q)
     (T : (Fin n → ℤ) → H) (th : MvPolynomial (Fin n) A →ₐ[A] H) (e : H)
@@ -176,9 +172,9 @@ private theorem abs_faith {n : ℕ} {A H : Type} [CommRing A] [Ring H] [Algebra 
   exact ha (by simpa using ((hq.pow _).mul_left_eq_zero).1 this)
 
 /- English proof (translation)
-Take `⟨p, -, hp⟩` from `hx`. Introduce `i j hij`. Establish `h1 : valuation k (x : k) ≤ 1` using `by rw [← hp]; exact p.2`. Establish `h0 : 0 < valuation k (x : k)` using `by simp [zero_lt_iff]`. Simplify using `only [Units.val_zpow_eq_zpow_val, map_zpow₀]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `zpow_le_zpow_right_of_le_one₀ h0 h1 (hc hij)`.
+A detailed English derivation is pending.
 -/
 private theorem dom_pw {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
     {x : kˣ} (hx : IsUnif x) {c : Fin n → ℤ} (hc : Antitone c) : Dom fun i => x ^ c i := by
@@ -192,11 +188,11 @@ private theorem dom_pw {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k
 end UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n A _ x hx hq b hT' hX p hp`. Use `abs_faith (resCard k : A) hq (fun c => hT A (iwC k n ⊤) (pw x c)) b.th b.one ?_ ?_ hX ?_ p hp` and prove the remaining obligations. Introduce `c d hc hd`. Apply `Subtype.ext` to reduce the goal to its premises. Use `(domMul k n ⊤ A _ (permRep A (iwC k n ⊤))).1 _ _ (dom_pw hx hc) (dom_pw hx hd)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `this.trans ?_` and prove the remaining obligations. Establish `e : ((fun i => x ^ c i) * fun i => x ^ d i) = fun i => x ^ (c + d) i` using `by ext1 i`. Simplify using `[_root_.zpow_add]`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `c hc`. Conclude with `(unitHk k n A hq).2 _ (dom_pw hx hc)`. Use `satakeIndep k n A x hx` as an intermediate fact. Simplify `this` using `only [Hk.Bern.one, hT']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.bernFaith :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (n : ℕ) (A : Type) [CommRing A] (x : kˣ), IsUnif x → IsUnit (resCard k : A) → ∀ b : UpperTheory.V.AlgebraTools.Hk.Bern n (resCard k : A) (HkAlg A (iwC k n ⊤)), (∀ w, b.T w = hT A (iwC k n ⊤) (pm k n w)) → (∀ i : Fin n, b.th (MvPolynomial.X i) * hT A (iwC k n ⊤) (pw x (fund n i)) = ((resCard k : A) ^ (i : ℕ)) • hT A (iwC k n ⊤) (pw x (fund n ((i : ℕ) + 1)))) → b.Faithful := by

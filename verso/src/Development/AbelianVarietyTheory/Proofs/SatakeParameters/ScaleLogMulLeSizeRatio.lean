@@ -7,21 +7,21 @@ open GlobalTheory.HTW Formalism.BasicNotions Formalism.FrobeniusOrbits
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `eps C A heps hC hA`. Establish `hK : 0 ≤ C * (A + 1)` using `by positivity`. Establish `hev : ∀ᶠ t in Filter.atTop, t ^ ⌈6 / eps⌉₊ * Real.exp (-t) ≤ 1 / (C * (A + 1) + 1)` using `(Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero ⌈6 / eps⌉₊).eventually (ge_mem_nhds (by positivity))`. Take `⟨T0, hT0⟩` from `Filter.eventually_atTop.mp hev`. Use `⟨max T0 1 ^ (3 / eps), fun s hse hx => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx1 : 1 < s.x` using `s.one_lt_alt`. Establish `hx0 : 0 ≤ s.x` using `by linarith`. Establish `hT1 : 0 ≤ max T0 1` using `le_trans zero_le_one (le_max_right _ _)`. Establish `ht : max T0 1 ≤ s.x ^ (eps / 3)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[← Real.rpow_mul hT1]`. Rewrite using `[show 3 / eps * (eps / 3) = 1 by field_simp, Real.rpow_one]`. Use `_ ≤ s.x ^ (eps / 3) := Real.rpow_le_rpow (by positivity) hx (by positivity)`. Establish `ht1 : 1 ≤ s.x ^ (eps / 3)` using `le_trans (le_max_right _ _) ht`. Establish `hxsq : s.x ^ 2 ≤ (s.x ^ (eps / 3)) ^ ⌈6 / eps⌉₊`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : s.x ^ 2 = (s.x ^ (eps / 3)) ^ (6 / eps)`. Rewrite using `[← Real.rpow_mul hx0, show eps / 3 * (6 / eps) = ((2 : ℕ) : ℝ) by field_simp; norm_num, Real.rpow_natCast]`. Rewrite using `[e, ← Real.rpow_natCast]`. Conclude with `Real.rpow_le_rpow_of_exponent_le ht1 (Nat.le_ceil _)`. Establish `hu` using `hT0 _ (le_trans (le_max_left _ _) ht)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu` using `[le_div_iff₀ (by positivity)]`. Establish `hu0 : 0 ≤ (s.x ^ (eps / 3)) ^ ⌈6 / eps⌉₊ * Real.exp (-(s.x ^ (eps / 3)))` using `by positivity`. Establish `he` using `Real.exp_pos (s.x ^ (eps / 3))`. Establish `e1 : (s.x ^ (eps / 3)) ^ ⌈6 / eps⌉₊ = (s.x ^ (eps / 3)) ^ ⌈6 / eps⌉₊ * Real.exp (-(s.x ^ (eps / 3))) * Real.exp (s.x ^ (eps / 3))`. Rewrite using `[mul_assoc, ← Real.exp_add, neg_add_cancel, Real.exp_zero, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlog : A * Real.log s.x + 1 ≤ (A + 1) * s.x`. Use `Real.log_le_sub_one_of_pos (by linarith : 0 < s.x)` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `main : C * (A * Real.log s.x + 1) * s.x ≤ Real.exp (s.x ^ (eps / 3))`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[e1]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hu he.le, mul_nonneg hu0 he.le]`. Establish `hb : 0 ≤ s.b` using `(Real.exp_pos _).le`. Establish `hb' : s.b' = s.x * s.b / Real.exp (s.x ^ (eps / 3))`. Simplify using `only [Scale.b', Scale.a, Scale.X', hse]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hb']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_le_one he]`. Conclude with `main`. Use `_ = s.b := one_mul _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_log_mul_b'_le_b : ∀ eps C A : ℝ, 0 < eps → 0 ≤ C → 0 ≤ A → ∃ x0 : ℝ, ∀ s : Scale,
     s.eps = eps → x0 ≤ s.x → C * (A * Real.log s.x + 1) * s.b' ≤ s.b := by

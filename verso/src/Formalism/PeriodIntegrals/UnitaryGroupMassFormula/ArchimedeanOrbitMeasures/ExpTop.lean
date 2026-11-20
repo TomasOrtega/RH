@@ -5,12 +5,12 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasure
 namespace PI.AprimeInfW
 
 /- English proof (translation)
-The claim follows from `expProdU_of_cayProdU (cayProdU_of_G h)`.
+A detailed English derivation is pending.
 -/
 theorem expProdU_of_G (h : CayDensG) : ExpProdU := expProdU_of_cayProdU (cayProdU_of_G h)
 
 /- English proof (translation)
-The claim follows from `expProdU_of_G (cayDensG_of h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem expProdU_of_hua (h1 : CayDensEx) (h2 : CayValId) : ExpProdU := expProdU_of_G (cayDensG_of h1 h2)
 

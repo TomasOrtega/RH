@@ -28,16 +28,16 @@ private def transHomeo {k : Type} [TopologicalSpace k] {n d : ℕ} :
   continuous_invFun := continuous_id.matrix_transpose
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous e.continuous, hf.2.comp_homeomorph e⟩`.
+Supply the required witnesses or components.
 -/
 private theorem comp_homeo_mem_SB {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (e : X ≃ₜ Y)
     {f : Y → ℂ} (hf : f ∈ SB Y) : (fun x => f (e x)) ∈ SB X :=
   ⟨hf.1.comp_continuous e.continuous, hf.2.comp_homeomorph e⟩
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n d`. Use `⟨fun ν b g h Φ hΦ => ?_, fun Ψ hΨ => comp_homeo_mem_SB transHomeo hΨ⟩` and prove the remaining obligations. Establish `hc` using `comp_homeo_mem_SB (mulHomeo g⁻¹ (GlobalTheory.SplitFlip.invT h)) hΦ`. Establish `key : GlobalTheory.SplitFlip.omA ν b g h Φ = ((↑(ν (GlobalTheory.SplitFlip.gdet g))⁻¹ * ↑(b (GlobalTheory.SplitFlip.gdet h)) * GlobalTheory.SplitFlip.apow (GlobalTheory.SplitFlip.gdet g) (-↑(Fintype.card (Fin d)) / 2) * GlobalTheory.SplitFlip.apow (GlobalTheory.SplitFlip.gdet h) …`. Use function extensionality and compare the values at `X`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `(SB _).smul_mem _ hc`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.TP.Loc.keepsSB :
     UpperTheory.Gal.TP.Loc.KeepsSB := by

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.TypePrimeFramesR
 open NumberField IsDedekindDomain
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ Q n N k hn hk` and use `GlobalTheory.LevFrame.congAt_inv F E N n Q k hn hk`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwU.congAt_inv_pos_depth : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (Q : HeightOneSpectrum (𝓞 E)) (n N : ℕ) (k : GL (Fin N) (TensorProduct F E (FiniteAdeleRing (𝓞 F) F))),

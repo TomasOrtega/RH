@@ -14,13 +14,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SqLift
 
 /- English proof (translation)
-Introduce `P R R₀ _ _ I hI π hπ hk H g A₀ _ A' _ i' h' hA' hg' F hF`. Establish `hn : IsNilpotent (RingHom.ker π)` using `⟨2, hk ▸ hI⟩`. Take `⟨X, i, h, hX, hFil⟩` from `H.exists_lift h' hA' hg' hF`. Establish `hA₀ : IsAbelianScheme A₀` using `PolPull.isAbelianScheme_of_isGrpPullback hA' h'`. Establish `hg₀ : SmoothOfRelativeDimension g A₀.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback h'.1 hg'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he, he₀⟩` from `GlobalTheory.T.exists_section_lift_smooth_nilpotent_thickening R R₀ π hπ hn X A₀ i h hX (1 : Over.mk (𝟙 (Sp R₀)) ⟶ A₀).left (Over.w (1 : Over.mk (𝟙 (Sp R₀)) ⟶ A₀))`. Establish `w : ((fst A₀ A₀).left ≫ i) ≫ X.hom = ((snd A₀ A₀).left ≫ i) ≫ X.hom`. Rewrite using `[Category.assoc, Category.assoc, h.w, Over.w_assoc, Over.w_assoc]`. Establish `hl₁ : (Limits.pullback.lift _ _ w : (A₀ ⊗ A₀).left ⟶ (X ⊗ X).left) ≫ (fst X X).left = (fst A₀ A₀).left ≫ i` using `Limits.pullback.lift_fst _ _ _`. Establish `hl₂ : (Limits.pullback.lift _ _ w : (A₀ ⊗ A₀).left ⟶ (X ⊗ X).left) ≫ (snd X X).left = (snd A₀ A₀).left ≫ i` using `Limits.pullback.lift_snd _ _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, hm⟩` from `GlobalTheory.T.exists_lift_shearMap_squareZero_abelianSchemes R R₀ I hI π hπ hk H g g A₀ A₀ A' A' i' i' h' h' hA' hA' hg' hg' X X i i h h hX hX e e he he he₀ he₀ _ hl₁ hl₂ (𝟙 A₀) (fun d hd ↦ by rw [push_id]; exact hd)`. Establish `hμ : (fst A₀ A₀ ≫ 𝟙 A₀) * snd A₀ A₀ = μ[A₀]`. Rewrite using `[Category.comp_id, Hom.mul_def, lift_fst_snd, Category.id_comp]`. Rewrite `hm` using `[hμ]`. Take `⟨_, hp, hab⟩` from `GlobalTheory.T.exists_grpObj_isAbelianScheme_smoothLift_nilpotent R R₀ π hπ hn A₀ hA₀ X i h hX e he he₀ _ hl₁ hl₂ m hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hg : SmoothOfRelativeDimension g X.hom` using `GlobalTheory.T.smoothOfRelativeDimension_of_nilpotent_reduction R R₀ π hπ hn g X A₀ i h hX hg₀`. Conclude with `⟨X, _, i, hp, hab, hg, (schemeFil_eq_liftFil _ hp (P.1 R X g hab hg).1).symm.trans hFil⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem liftObj_sq : AbelianDeRham → ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀), Function.Surjective π → RingHom.ker π = I → AbelianSchemeLifts.At hI π → LiftObj (divided₂ hI) π := by
   intro P R R₀ _ _ I hI π hπ hk H g A₀ _ A' _ i' h' hA' hg' F hF

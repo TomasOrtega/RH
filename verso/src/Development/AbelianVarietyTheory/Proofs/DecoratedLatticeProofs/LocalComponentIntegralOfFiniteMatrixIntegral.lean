@@ -19,9 +19,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FinIntBridge
 
 /- English proof (translation)
-Establish `hle : Formalism.UG.tensInt (F` using `F) (v.adicCompletion F) (Formalism.UG.intOE E) (v.adicCompletionIntegers F).toSubring ≤ (GlobalTheory.AdelicU.intLoc F E v).comap ((Algebra.TensorProduct.comm F (v.adicCompletion F) E).symm : E ⊗[F] v.adicCompletion F →+* v.adicCompletion F ⊗[F] E) := by`. Unfold `Formalism.UG.tensInt`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `z (⟨⟨e, he⟩, rfl⟩ | ⟨⟨b, hb⟩, rfl⟩)`. Take `⟨x, rfl⟩` from `RingHom.mem_range.1 (show e ∈ (algebraMap (𝓞 E) E).range from he)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using `only [SetLike.mem_coe, Subring.mem_comap, RingHom.coe_coe]`. Simplify using `using GlobalTheory.AdelicU.tmul_mem_intLoc (E := E) (v := v) (one_mem _) x`. Simplify using `only [SetLike.mem_coe, Subring.mem_comap, RingHom.coe_coe]`. Simplify using `using GlobalTheory.AdelicU.tmul_mem_intLoc (E := E) (v := v) (a := b) hb 1`. Conclude with `hle ha`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem comm_symm_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) {a : E ⊗[F] v.adicCompletion F}
@@ -41,7 +41,7 @@ theorem comm_symm_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberFi
   exact hle ha
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x y => rfl`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem prV_gen {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     (v : HeightOneSpectrum (𝓞 F)) (y : AF F ⊗[F] E) :
@@ -54,9 +54,9 @@ theorem prV_gen {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Introduce `D V n hn κ x hx v h i j`. Establish `h1` using `comm_symm_mem v (h (finCongr hn i) (finCongr hn j))`. Establish `h2 : (Formalism.UG.bc (Formalism.UG.prV (E` using `D.host.E) v) x).1 (finCongr hn i) (finCongr hn j) = Formalism.UG.prV (E := D.host.E) v (toEAf D (Formalism.L2.Theta.mt V κ i j)) := by`. Express the relevant statement in the definitionally equal form `Formalism.UG.prV (E := D.host.E) v (x.1 (finCongr hn i) (finCongr hn j)) = _`. Rewrite using `[← hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [GlobalTheory.AdForm.finM, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.map_apply, Equiv.symm_apply_apply]`. Rewrite `h1` using `[h2]`. Establish `h3` using `prV_gen (F := D.host.F) (E := D.host.E) v (Formalism.L2.Theta.mt V κ i j)`. Conclude with `(congrArg (· ∈ GlobalTheory.AdelicU.intLoc D.host.F D.host.E v) h3).mp h1`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_intLoc_of_finM : ∀ (D : D7) (V : HSp D) (n : ℕ) (hn : V.rank = n) (κ : GA D V) (x : GL (Fin n) (GlobalTheory.AdForm.EF D)), GlobalTheory.AdForm.finM V hn κ = x.1 → ∀ (v : HeightOneSpectrum (𝓞 D.host.F)), (∀ i j, (Formalism.UG.bc (Formalism.UG.prV (E := D.host.E) v) x).1 i j ∈ Formalism.UG.tensInt (F := D.host.F) (v.adicCompletion D.host.F) (Formalism.UG.intOE D.host.E) (v.adicCompletionIntegers D.host.F).toSubring) → ∀ i j, (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig V.gram (GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v κ)).1 i j ∈ GlobalTheory.AdelicU.intLoc D.host.F D.host.E v := by
   intro D V n hn κ x hx v h i j

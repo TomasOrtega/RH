@@ -28,15 +28,15 @@ theorem fieldCoord_tmul (σ : K →+* ℂ) (z : ComplexAt σ) (x : K) :
   rfl
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, zero_tmul]`. Consider the case `tmul z x`. Take `⟨a, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) x`. Establish `hb' : algebraMap (𝓞 K) K b ≠ 0`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[ne_eq, map_eq_zero_iff _ (IsFractionRing.injective (𝓞 K) K)]`. Conclude with `nonZeroDivisors.ne_zero hb`. Establish `hσb : σ (algebraMap (𝓞 K) K b) ≠ 0` using `by rwa [map_ne_zero]`. Use `set w : ComplexAt σ := ofComplex σ ((σ (algebraMap (𝓞 K) K b))⁻¹ * (ofComplex σ).symm z)`. Establish `e1 : z = b • w`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[smul_def]`. Apply `(ofComplex σ).symm.injective` to reduce the goal to its premises. Simplify using `only [w, map_mul, AlgEquiv.symm_apply_apply]`. Rewrite using `[← mul_assoc, mul_inv_cancel₀ hσb, one_mul]`. Establish `e2 : b • (algebraMap (𝓞 K) K a / algebraMap (𝓞 K) K b) = a • (1 : K)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[Algebra.smul_def, Algebra.smul_def, mul_one, mul_div_cancel₀ _ hb']`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Rewrite using `[fieldCoord_tmul, smul_def]`. Apply `(ofComplex σ).symm.injective` to reduce the goal to its premises.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [w, map_mul, AlgEquiv.symm_apply_apply, map_div₀]`. Rewrite using `[div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add s t hs ht`. Rewrite using `[map_add, map_add, add_tmul, ← hs, ← ht]`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_fieldCoord_tmul_one (σ : K →+* ℂ) (t : Fibre σ K) :
     t = ofComplex σ (fieldCoord σ t) ⊗ₜ (1 : K) := by
@@ -71,16 +71,16 @@ theorem eq_fieldCoord_tmul_one (σ : K →+* ℂ) (t : Fibre σ K) :
     rw [map_add, map_add, add_tmul, ← hs, ← ht]
 
 /- English proof (translation)
-Introduce `s t h`. Rewrite using `[eq_fieldCoord_tmul_one σ s, eq_fieldCoord_tmul_one σ t, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem fieldCoord_injective (σ : K →+* ℂ) : Function.Injective (fieldCoord σ) := by
   intro s t h
   rw [eq_fieldCoord_tmul_one σ s, eq_fieldCoord_tmul_one σ t, h]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul z x`. Rewrite using `[conjMap_tmul, fieldCoord_tmul, fieldCoord_tmul, map_mul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add s t hs ht => rw [map_add, map_add, hs, ht, map_add, map_add]`.
+Treat this case separately.
 -/
 theorem fieldCoord_conjMap (σ : K →+* ℂ) (t : Fibre σ K) :
     fieldCoord (conjugate σ) (conjMap σ K t) = starRingEnd ℂ (fieldCoord σ t) := by
@@ -105,7 +105,7 @@ theorem fieldStdCoord_apply (σ : K →+* ℂ) (n : ℕ) (x : Fibre σ (Fin n �
   rfl
 
 /- English proof (translation)
-Introduce `x y h`. Apply `(piRight (𝓞 K) (ComplexAt σ) (ComplexAt σ) fun _ : Fin n ↦ K).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Apply `fieldCoord_injective σ` to reduce the goal to its premises. Rewrite using `[← fieldStdCoord_apply, ← fieldStdCoord_apply, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem fieldStdCoord_injective (σ : K →+* ℂ) (n : ℕ) : Function.Injective (fieldStdCoord σ n) := by
   intro x y h
@@ -115,9 +115,9 @@ theorem fieldStdCoord_injective (σ : K →+* ℂ) (n : ℕ) : Function.Injectiv
   rw [← fieldStdCoord_apply, ← fieldStdCoord_apply, h]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, PiLp.zero_apply]`. Consider the case `tmul z f`. Rewrite using `[conjMap_tmul, fieldStdCoord_apply, fieldStdCoord_apply, piRight_apply, piRight_apply, piRightHom_tmul, piRightHom_tmul, fieldCoord_tmul, fieldCoord_tmul, map_mul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => rw [map_add, map_add, PiLp.add_apply, hx, hy, map_add, PiLp.add_apply, map_add]`.
+Treat this case separately.
 -/
 theorem fieldStdCoord_conjMap (σ : K →+* ℂ) (n : ℕ) (x : Fibre σ (Fin n → K)) (i : Fin n) :
     fieldStdCoord (conjugate σ) n (conjMap σ _ x) i = starRingEnd ℂ (fieldStdCoord σ n x i) := by
@@ -149,7 +149,7 @@ def FullLattice.standard (n : ℕ) : FullLattice K (Fin n → K) where
     rw [Submodule.span_span_of_tower, e, (Pi.basisFun K (Fin n)).span_eq]
 
 /- English proof (translation)
-The claim follows from `(HermitianNorms.standard K 2).bundle (FullLattice.standard K 2)`.
+A detailed English derivation is pending.
 -/
 example : HermitianBundle K := (HermitianNorms.standard K 2).bundle (FullLattice.standard K 2)
 
@@ -159,11 +159,9 @@ variable {V : Type*} [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalar
 variable (v : HeightOneSpectrum (𝓞 K))
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[localLattice, Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ⟨y, hy, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy => rw [toLocal_smul]`.
-
-Conclude with `Submodule.smul_mem _ _ hy`. Conclude with `Submodule.span_mono (Set.image_mono Submodule.subset_span)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem localLattice_span (S : Set V) :
     localLattice v (Submodule.span (𝓞 K) S) = Submodule.span _ (toLocal v '' S) := by
@@ -178,17 +176,15 @@ theorem localLattice_span (S : Set V) :
   · exact Submodule.span_mono (Set.image_mono Submodule.subset_span)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Take `⟨S, hS⟩` from `L.fg`. Use `⟨S.image (toLocal v), ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.coe_image, ← hS, localLattice_span]`. Use `set W := Submodule.span (v.adicCompletion K) (localLattice v L.carrier : Set (v.adicCompletion K ⊗[K] V))`.
+Prove the components needed by the constructor for the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : ∀ x ∈ L.carrier, toLocal v x ∈ W` using `fun x hx ↦ Submodule.subset_span (Submodule.subset_span ⟨x, hx, rfl⟩)`. Establish `h2 : ∀ x : V, toLocal v x ∈ W`. Introduce `x`. Establish `hx : x ∈ Submodule.span K (L.carrier : Set V)` using `L.span_eq ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Consider the case `mem y hy => exact h1 y hy`. Consider the case `zero => rw [map_zero]`. Conclude with `W.zero_mem`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `W.add_mem hy hz`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c y _ hy`. Rewrite using `[map_smul, ← algebraMap_smul (v.adicCompletion K) c]`. Conclude with `W.smul_mem _ hy`. Rewrite using `[eq_top_iff]`. Introduce and unpack `t -`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact W.zero_mem`. Consider the case `tmul a x`. Establish `e : a ⊗ₜ[K] x = a • toLocal v x`. Rewrite using `[toLocal, TensorProduct.mk_apply, smul_tmul', smul_eq_mul, mul_one]`.
-
-Rewrite using `[e]`. Conclude with `W.smul_mem a (h2 x)`. Consider the case `add s t hs ht => exact W.add_mem hs ht`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem localLattice_isLocalLattice (L : FullLattice K V) :
     IsLocalLattice v (localLattice v L.carrier) := by
@@ -223,9 +219,9 @@ theorem localLattice_isLocalLattice (L : FullLattice K V) :
     | add s t hs ht => exact W.add_mem hs ht
 
 /- English proof (translation)
-Use `set f := ((e.baseChange K (v.adicCompletion K) V V).toLinearMap.restrictScalars (v.adicCompletionIntegers K))`. Establish `hf : ∀ x : V, f (toLocal v x) = toLocal v (e x)` using `fun x ↦ rfl`. Express the relevant statement in the definitionally equal form `_ = (f : _ → _) '' _`. Rewrite using `[← Submodule.map_coe, localLattice, Submodule.map_span, Set.image_image]`. Simplify using `only [hf]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hL : (e : V → V) '' (L : Set V) = L` using `by conv_rhs => rw [← he]`. Rewrite using `[Submodule.map_coe]`. Both sides reduce to the same expression. Rewrite using `[← Set.image_image (toLocal v) (e : V → V), hL]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localLattice_baseChange (e : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V)
     (he : L.map (e.toLinearMap.restrictScalars (𝓞 K)) = L) :
@@ -246,7 +242,7 @@ theorem localLattice_baseChange (e : V ≃ₗ[K] V) (L : Submodule (𝓞 K) V)
 end Local
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `Ideal.exists_maximal (𝓞 K)`. Use `⟨⟨m, hm.isPrime, fun h ↦ NumberField.RingOfIntegers.not_isField K ?_⟩⟩` and prove the remaining obligations. Conclude with `Ring.isField_iff_maximal_bot.mpr (h ▸ hm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem nonempty_heightOneSpectrum : Nonempty (HeightOneSpectrum (𝓞 K)) := by
   obtain ⟨m, hm⟩ := Ideal.exists_maximal (𝓞 K)
@@ -256,11 +252,11 @@ theorem nonempty_heightOneSpectrum : Nonempty (HeightOneSpectrum (𝓞 K)) := by
 def swapCoord : (Fin 2 → K) ≃ₗ[K] (Fin 2 → K) := LinearEquiv.funCongrLeft K K (Equiv.swap 0 1)
 
 /- English proof (translation)
-Rewrite using `[FullLattice.standard, Submodule.map_span, ← Set.range_comp]`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_range, Function.comp_apply]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨i, rfl⟩`. Use `⟨Equiv.swap 0 1 i, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> rfl`. Introduce and unpack `⟨i, rfl⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components.
 
-Use `⟨Equiv.swap 0 1 i, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> rfl`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swapCoord_standard :
     (FullLattice.standard K 2).carrier.map ((swapCoord (K := K)).toLinearMap.restrictScalars (𝓞 K)) =
@@ -286,7 +282,7 @@ def swapAt (v₀ : HeightOneSpectrum (𝓞 K)) (v : HeightOneSpectrum (𝓞 K)) 
   if v = v₀ then swapCoord.baseChange K (v.adicCompletion K) _ _ else 1
 
 /- English proof (translation)
-Use `(Set.finite_singleton v₀).subset fun v hv ↦ ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Set.mem_singleton_iff]`. Conclude with `hv (by simp only [swapAt, if_neg h])`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swapAt_finite (v₀ : HeightOneSpectrum (𝓞 K)) : {v | swapAt v₀ v ≠ 1}.Finite := by
   refine (Set.finite_singleton v₀).subset fun v hv ↦ ?_
@@ -295,7 +291,7 @@ theorem swapAt_finite (v₀ : HeightOneSpectrum (𝓞 K)) : {v | swapAt v₀ v �
   exact hv (by simp only [swapAt, if_neg h])
 
 /- English proof (translation)
-Distinguish the cases in `h : v = v₀`. Simplify using `only [swapAt, if_pos h]`. Conclude with `localLattice_baseChange v swapCoord _ swapCoord_standard`. Simplify using `only [swapAt, if_neg h, LinearEquiv.coe_one, Set.image_id]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem localLattice_swapAt (v₀ v : HeightOneSpectrum (𝓞 K)) :
     (localLattice v (FullLattice.standard K 2).carrier : Set _) =

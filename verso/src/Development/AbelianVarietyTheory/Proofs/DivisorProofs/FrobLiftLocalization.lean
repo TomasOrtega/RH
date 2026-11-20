@@ -4,21 +4,21 @@ open GlobalTheory GlobalTheory.DI
 namespace GlobalTheory.DI
 
 /- English proof (translation)
-Introduce `p _ B Kt _ _ _ S _ F hp2 hF`. Establish `hunit : ∀ s : S, IsUnit ((algebraMap B Kt).comp F s)`. Introduce `s`. Take `⟨w, hw⟩` from `hF (s : B)`. Establish `hu : IsUnit (algebraMap B Kt (s : B) ^ p)` using `(IsLocalization.map_units Kt s).pow p`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn : IsNilpotent ((p : Kt) * algebraMap B Kt w)`. Use `⟨2, ?_⟩` and prove the remaining obligations. Establish `: (p : Kt) ^ 2 = 0`. Use `congrArg (algebraMap B Kt) hp2` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[mul_pow, this, zero_mul]`. Use `hn.isUnit_add_right_of_commute hu (Commute.all _ _)` as an intermediate fact. Rewrite `this` using `[add_comm]`. Simplify `this` using `[RingHom.comp_apply, hw, map_add, map_mul, map_pow, map_natCast]`. Use `⟨IsLocalization.lift hunit, fun b => by simp [IsLocalization.lift_eq], ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `z`. Take `⟨⟨b, s⟩, rfl⟩` from `IsLocalization.mk'_surjective S z`. Use `set z := IsLocalization.mk' Kt b s with hz`. Use `set F' : Kt →+* Kt := IsLocalization.lift hunit`. Establish `hF' : ∀ c, F' (algebraMap B Kt c) = algebraMap B Kt (F c)` using `fun c => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[F', IsLocalization.lift_eq]`. Establish `hspec : z * algebraMap B Kt (s : B) = algebraMap B Kt b` using `IsLocalization.mk'_spec Kt b s`. Take `⟨v, hv⟩` from `hF b`. Take `⟨u, hu⟩` from `hF (s : B)`. Establish `key : F' z * (algebraMap B Kt (s : B) ^ p + p * algebraMap B Kt u) = algebraMap B Kt b ^ p + p * algebraMap B Kt v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrArg F' hspec` as an intermediate fact. Rewrite `this` using `[map_mul, hF', hF', hu, hv]`. Simplify `this` using `[map_add, map_mul, map_pow, map_natCast]`. Take `⟨t, ht⟩` from `(IsLocalization.map_units Kt s).pow p`. Use `⟨(algebraMap B Kt v - F' z * algebraMap B Kt u) * ↑t⁻¹, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzs : z ^ p * algebraMap B Kt (s : B) ^ p = algebraMap B Kt b ^ p`. Rewrite using `[← mul_pow, hspec]`. Establish `h1 : (F' z - z ^ p) * (t : Kt) = p * (algebraMap B Kt v - F' z * algebraMap B Kt u)`. Rewrite using `[ht]`. Take the linear combination `key - hzs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_assoc, Units.mul_inv, mul_one]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = _ := by rw [h1]; ring`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem frobLift_localization :
     ∀ (p : ℕ) [Fact p.Prime] {B Kt : Type} [CommRing B] [CommRing Kt] [Algebra B Kt]

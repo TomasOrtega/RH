@@ -75,13 +75,13 @@ def NFEmptyOps : Prop :=
         B.opApply Th₀ F g = F g ∧ B.opApply Th₁ F g = ((Gf P.k P.r p.T.base.z p.T.base.z' g ^ N : ℝ) : ℂ) • F g
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ _ _ P p H w c hw hloc _`. Establish `hn : TBB.normC (fun _ => 1) w = 1`. Simplify using `[TBB.normC]`. Establish `hRR : p.RR H (P.r + 1) w (TBB.bigPt P.r c) (TBB.bigPt P.r c) = Top.topOf P p.l0 p.T p.ν' p.m₀ p.Θ p.TP H w (TBB.bigPt P.r c) (TBB.bigPt P.r c)`. Rewrite using `[KB.Pl.RR, D.RRplace, dif_pos ⟨hloc, hloc⟩, dif_neg (Nat.not_succ_le_self _), if_pos rfl, if_neg hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (TBB.NP p (fun _ => 1) H (P.r + 1) w (TBB.bigPt P.r c) (TBB.bigPt P.r c)).re = _`. Rewrite using `[TBB.NP, hn, div_one, hRR, Top.topOf, Complex.re_ofReal_mul]`. Use `congr 1`. Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.re_sum]`. Use `Finset.sum_congr rfl fun ρ _ => ?_` and prove the remaining obligations. Establish `hsq : ∀ v : PiLp 2 (fun _ : Fin (Module.finrank ℂ Wq) => Wp), (inner ℂ v v : ℂ).re = ‖v‖ ^ 2` using `fun v => by simpa using inner_self_eq_norm_sq (𝕜 := ℂ) v`. Rewrite using `[Complex.re_ofReal_mul, B.hsInner, hsq]`. Simplify using `only [TBB.TTp, KB.Pl.V]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem unfolding_top_term_holds : NFUnfoldTop := by
   intro Wp Wq _ _ _ _ _ _ P p H w c hw hloc _

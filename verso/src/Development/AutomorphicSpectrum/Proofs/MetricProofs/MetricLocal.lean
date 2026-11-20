@@ -8,7 +8,7 @@ import GroundTheory.HeightsAndTheta.Heights.SemipositiveHeights.MetricLocalB
 namespace GlobalTheory.CompanionTheory.Ar.Giv
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.MetricLocalB.full`.
+A detailed English derivation is pending.
 -/
 theorem metricLocal : ReciprocityTheory.ChartRestriction.G.AI.I2.MetricLocalStatement :=
   GroundTheory.Heights₂.Heights.MetricLocalB.full

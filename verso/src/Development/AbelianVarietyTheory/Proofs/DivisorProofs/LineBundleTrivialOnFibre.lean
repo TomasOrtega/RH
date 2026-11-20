@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.KTrivJacobson
 
 /- English proof (translation)
-Take `⟨m, hm, hpm⟩` from `Ideal.exists_le_maximal p.asIdeal p.2.ne_top`. Establish `hJm : J ≤ m` using `hJ.trans (sInf_le ⟨bot_le, hm⟩)`. Establish `: (⟨m, hm.isPrime⟩ : PrimeSpectrum R) ∈ Set.range (PrimeSpectrum.comap (Ideal.Quotient.mk J))`. Rewrite using `[range_comap_of_surjective _ _ Ideal.Quotient.mk_surjective, Ideal.mk_ker]`. Conclude with `hJm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq⟩` from `this`. Use `⟨q, ?_⟩` and prove the remaining obligations. Rewrite using `[hq, ← PrimeSpectrum.le_iff_specializes]`. Conclude with `hpm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_specializes {R : Type} [CommRing R] {J : Ideal R} (hJ : J ≤ Ideal.jacobson ⊥)
     (p : PrimeSpectrum R) :
@@ -30,9 +30,9 @@ theorem exists_specializes {R : Type} [CommRing R] {J : Ideal R} (hJ : J ≤ Ide
   exact hpm
 
 /- English proof (translation)
-Introduce `R _ _ J hJ B _ hB M hM hA Y₀ _ b hb N₀ hN₀ e hK`. Establish `key : ∀ p : Spec (CommRingCat.of R), ∃ U : (Spec (CommRingCat.of R)).Opens, p ∈ U ∧ KTriv ((Over.pullback U.ι).obj B) (M.pull (pullback.fst B.hom U.ι))` using `fun p => by`. Take `⟨q, hq⟩` from `exists_specializes hJ p`. Take `⟨U, hU, H⟩` from `GlobalTheory.KTrivGlob.exists_open hM hN₀ hB hA hb e hK q`. Conclude with `⟨U, hq.mem_open U.2 hU, H⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose U hU hK using key`. Establish `hL` using `fun p => pull_isLB hM (pullback.fst B.hom (U p).ι)`. Conclude with `GlobalTheory.CoverGlue.kTriv_of_cover _ _ U B _ _ (top_le_iff.1 fun p _ => TopologicalSpace.Opens.mem_iSup.2 ⟨p, hU p⟩) (fun p => isGrpPullback_pullback B (U p).ι) _ _ hM hL (fun p => GlobalTheory.lbIso_refl (hL p)) hB (fun p => GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullba …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem kTriv_of_quotient : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (J : Ideal R), J ≤ Ideal.jacobson ⊥ → ∀ (B : Over (Spec (CommRingCat.of R))) [GrpObj B], IsAbelianScheme B → ∀ M : LB B.left, M.IsLB → RelAmple B M → ∀ (Y₀ : Over (Spec (CommRingCat.of (R ⧸ J)))) [GrpObj Y₀] (b : Y₀.left ⟶ B.left), IsGrpPullback Y₀ B (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk J))) b → ∀ N₀ : LB Y₀.left, N₀.IsLB → LBIso N₀ (M.pull b) → KTriv Y₀ N₀ → KTriv B M := by
   intro R _ _ J hJ B _ hB M hM hA Y₀ _ b hb N₀ hN₀ e hK

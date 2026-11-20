@@ -10,9 +10,9 @@ open GlobalTheory.LocMod GlobalTheory.SplitWeil ValuativeRel
 namespace GlobalTheory.SplitOrth
 
 /- English proof (translation)
-Take `⟨α, rfl, -, h0⟩` from `h`. Take `⟨β, rfl, -, k0⟩` from `h'`. Use `Prod.ext (mul_zero (0 : Ainf D.host.F)) (show α * β = 0 from FiniteAdeleRing.ext _ fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `evalV D.host.F w (α * β) = evalV D.host.F w 0`. Rewrite using `[map_mul, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hw : w = v`. Rewrite using `[k0 w (hw ▸ hv), mul_zero]`. Rewrite using `[h0 w hw, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem place_mul_place {D : D7} {v v' : HeightOneSpectrum (𝓞 D.host.F)} {ε ε' : AF D.host.F} (h : IsPlaceIdem D v ε)
     (h' : IsPlaceIdem D v' ε') (hv : v ≠ v') : ε * ε' = 0 := by
@@ -26,9 +26,9 @@ theorem place_mul_place {D : D7} {v v' : HeightOneSpectrum (𝓞 D.host.F)} {ε 
   · rw [h0 w hw, zero_mul]
 
 /- English proof (translation)
-Introduce `D k k' _ _ _ _ _ _ _ _ q q' hv`. Take `⟨ε, hε, he⟩` from `q.above`. Take `⟨ε', hε', he'⟩` from `q'.above`. Establish `h1 : q.e * q.e = q.e` using `q.split.1`. Establish `h2 : q.e * cA D q.e = 0` using `q.split.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1' : q'.e * q'.e = q'.e` using `q'.split.1`. Establish `h2' : q'.e * cA D q'.e = 0` using `q'.split.2.1`. Establish `a : q.e = q.e * algebraMap _ _ ε` using `by rw [← he, mul_add, h1, h2, add_zero]`. Establish `a' : q'.e = q'.e * algebraMap _ _ ε'` using `by rw [← he', mul_add, h1', h2', add_zero]`. Rewrite using `[a, a', mul_mul_mul_comm, ← map_mul, place_mul_place hε hε' hv, map_zero, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem split_mul_split : ∀ (D : D7) (k k' : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Field k'] [ValuativeRel k'] [TopologicalSpace k'] [IsNonarchimedeanLocalField k'] (q : SplitPt D k) (q' : SplitPt D k'), q.v ≠ q'.v → q.e * q'.e = 0 := by
   intro D k k' _ _ _ _ _ _ _ _ q q' hv

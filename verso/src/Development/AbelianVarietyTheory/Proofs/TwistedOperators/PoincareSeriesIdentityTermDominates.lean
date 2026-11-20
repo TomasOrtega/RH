@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.IdDom
 
 /- English proof (translation)
-Establish `h : ∀ y : Fin n → ℂ, eu y = ‖(WithLp.toLp 2 y : EuclideanSpace ℂ (Fin n))‖` using `fun y => by`. Rewrite using `[EuclideanSpace.norm_eq]`. Both sides reduce to the same expression. Rewrite using `[h, h, h, WithLp.toLp_sub]`. Conclude with `norm_sub_le _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eu_sub_le {n : ℕ} (u u' : Fin n → ℂ) : eu (u - u') ≤ eu u + eu u' := by
   have h : ∀ y : Fin n → ℂ, eu y = ‖(WithLp.toLp 2 y : EuclideanSpace ℂ (Fin n))‖ := fun y => by
@@ -29,9 +29,9 @@ theorem eu_sub_le {n : ℕ} (u u' : Fin n → ℂ) : eu (u - u') ≤ eu u + eu u
   rw [h, h, h, WithLp.toLp_sub]; exact norm_sub_le _ _
 
 /- English proof (translation)
-Unfold `nrm`. Establish `e : (fun i => tauE D τ ((y - y') i)) = (fun i => tauE D τ (y i)) - fun i => tauE D τ (y' i)`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Rewrite using `[e, mulVec_sub, mulVec_sub]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eu_sub_le _ _`.
+A detailed English derivation is pending.
 -/
 theorem nrm_sub_le {D : D7} (θ : InfFam D) {V : HSp D} (B : Fr V) (g : GA D V) (τ : D.what₂.Tau)
     (y y' : Fin V.rank → D.host.E) : nrm θ B g τ (y - y') ≤ nrm θ B g τ y + nrm θ B g τ y' := by
@@ -41,7 +41,7 @@ theorem nrm_sub_le {D : D7} (θ : InfFam D) {V : HSp D} (B : Fr V) (g : GA D V) 
   rw [e, mulVec_sub, mulVec_sub]; exact eu_sub_le _ _
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem nrm_nonneg' {D : D7} (θ : InfFam D) {V : HSp D} (B : Fr V) (g : GA D V) (τ : D.what₂.Tau)
     (y : Fin V.rank → D.host.E) : 0 ≤ nrm θ B g τ y := Real.sqrt_nonneg _
@@ -49,75 +49,67 @@ theorem nrm_nonneg' {D : D7} (θ : InfFam D) {V : HSp D} (B : Fr V) (g : GA D V)
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `D θ hθ Y V d S S' M₀ M p Q hbase Λ 𝔪 hΛ h𝔪 v φ c b s x hφ hbnd hx hs0 hs1 hlong had hR2 hR1`. Take `⟨ι, hι, hιc, hιi, hιQ, -, -, hιr, -, -⟩` from `GlobalTheory.T.exists_unitary_embedding_stabilizer D θ hθ Y V 1 1 one_ne_zero d`. Use `haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`. Use `haveI := v.haar`. Use `set K := congLev D.sp.cm V.gram (d.lat Λ fun _ => 1) 𝔪 with hK`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f : GA D V → ℂ := fun g => coef θ M K (p.v θ) (p.v θ) (stabilizerEmbedding d x⁻¹ * g) with hf`. Establish `hcoef : Measurable (coef θ M K (p.v θ) (p.v θ))`. Establish `h1` using `GlobalTheory.T.continuous_realPlacesMatrixCoefficientProduct D θ hθ V S M (p.v θ) (p.v θ)`. Establish `h2` using `GlobalTheory.T.isOpen_congruence_embedding D Y V d Λ 𝔪 hΛ h𝔪`. Unfold `coef`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Measurable.ite h2.measurableSet h1.measurable measurable_const`. Establish `hfm : ∀ γ : GA D V, Measurable fun h => f (γ * ι h)` using `fun γ => hcoef.comp (continuous_const.mul (continuous_const.mul hιc)).measurable`. Establish `hcomap : (GQ V).comap ι = GQ Y` using `by ext h; simp [Subgroup.mem_comap, hιQ]`. Establish `hfund : IsFundamentalDomain ((GQ V).comap ι) v.𝓕 v.μ` using `by rw [hcomap]; exact v.fund`. Establish `hinv : ∀ γ ∈ (GQ V).comap ι, ∀ h, φ (γ * h) = φ h` using `fun γ hγ h => hφ.1 γ (by rw [← hcomap]; exact hγ) h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb0 : 0 ≤ b` using `(norm_nonneg _).trans (hbnd x)`. Establish `hV1 : 1 ≤ V.rank` using `by have := d.rank; omega`. Take `⟨hlongV, hz₀, hz1⟩` from `GlobalTheory.T.long_element_embedding_norm D θ hθ Y V d p.A p.B hbase.adapted Λ x s hΛ hs0 hs1 hlong`. Use `choose z hz using fun q : GQ V ⧸ ι.range.subgroupOf (GQ V) => GlobalTheory.T.exists_rational_image_rationalPoint_mulVec D V _ (q.out).2 (zv d)`. Establish `hterm : ∀ q : GQ V ⧸ ι.range.subgroupOf (GQ V), Integrable (fun h => f ((q.out : GA D V) * ι h)) v.μ ∧ (∫ h, ‖f ((q.out : GA D V) * ι h)‖ ∂v.μ) * (∏ τ, nrm θ p.B (stabilizerEmbedding d x) τ (z q)) ^ (2 * V.rank + 5) ≤ Real.exp Q * ‖c‖ ∧ (z q - zv d ∉ 𝔪 • latAt (d.lat Λ fun _ => 1 …`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q`. Use `had.term x _ (z q) (q.out).2 (hz q)` as an intermediate fact. Simplify `this` using `only [hf, hι, mul_assoc]`. Establish `hmtm : ∀ a a' : GA D V, mt V (a * a') = mt V a * mt V a'` using `fun a a' => by simp [Formalism.L2.Theta.mt]`. Establish `hmt1 : mt V 1 = 1` using `by simp [Formalism.L2.Theta.mt]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hfix : ∀ g : GA D V, mt V g *ᵥ ratV (zv d) = ratV (zv d) → g ∈ ι.range`. Introduce `g hg`. Rewrite using `[hιr]`. Use extensionality with `i j`. Establish `hj : j = 0` using `Subsingleton.elim _ _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Substitute `hj` using the available equality. Use `congrFun hg i` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply, Matrix.mulVec, dotProduct, ratV, zv]`. Establish `hcos : ∀ q q' : GQ V ⧸ ι.range.subgroupOf (GQ V), ((q.out : GA D V))⁻¹ * (q'.out : GA D V) ∈ ι.range → q = q'`. Introduce `q q' h`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientGroup.out_eq' q, ← QuotientGroup.out_eq' q', QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using h`. Establish `hinj : ∀ q q', z q = z q' → q = q'`. Introduce `q q' h`. Use `hcos q q' (hfix _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hmtm, ← Matrix.mulVec_mulVec, hz q', ← h, ← hz q, Matrix.mulVec_mulVec, ← hmtm, inv_mul_cancel, hmt1, Matrix.one_mulVec]`. Use `set q₁ : GQ V ⧸ ι.range.subgroupOf (GQ V) := ((1 : GQ V) : GQ V ⧸ ι.range.subgroupOf (GQ V)) with hq₁`. Establish `hq1 : ∀ q, z q = zv d → q = q₁`. Introduce `q h`. Rewrite using `[← QuotientGroup.out_eq' q, hq₁, QuotientGroup.eq, Subgroup.mem_subgroupOf]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Simplify using `using hfix _ (by rw [hz, h])`. Establish `hTle : ∀ q : GQ V ⧸ ι.range.subgroupOf (GQ V), ‖∫ h, f ((q.out : GA D V) * ι h) * φ h ∂v.μ‖ ≤ b * ∫ h, ‖f ((q.out : GA D V) * ι h)‖ ∂v.μ`. Introduce `q`. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_mono_of_nonneg (Filter.Eventually.of_forall fun h => norm_nonneg _) ((hterm q).1.norm.const_mul b) (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[norm_mul, mul_comm b]`. Conclude with `mul_le_mul_of_nonneg_left (hbnd h) (norm_nonneg _)`. Establish `hLle : ∀ q : GQ V ⧸ ι.range.subgroupOf (GQ V), ∫⁻ h, ‖f ((q.out : GA D V) * ι h) * φ h‖ₑ ∂v.μ ≤ ENNReal.ofReal (b * ∫ h, ‖f ((q.out : GA D V) * ι h)‖ ∂v.μ)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q`. Rewrite using `[← integral_const_mul, ofReal_integral_eq_lintegral_ofReal ((hterm q).1.norm.const_mul b) (Filter.Eventually.of_forall fun h => mul_nonneg hb0 (norm_nonneg _))]`. Use `lintegral_mono fun h => ?_` and prove the remaining obligations. Rewrite using `[← ofReal_norm_eq_enorm]`. Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Rewrite using `[norm_mul, mul_comm b]`. Conclude with `mul_le_mul_of_nonneg_left (hbnd h) (norm_nonneg _)`. Use `set β : (GQ V ⧸ ι.range.subgroupOf (GQ V)) → ℝ := fun q => b * ∫ h, ‖f ((q.out : GA D V) * ι h)‖ ∂v.μ with hβ`. Establish `hβ0 : ∀ q, 0 ≤ β q` using `fun q => mul_nonneg hb0 (integral_nonneg fun _ => norm_nonneg _)`. Establish `hβle : ∀ q, β q ≤ b * (Real.exp Q * ‖c‖)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `q`. Use `mul_le_mul_of_nonneg_left ?_ hb0` and prove the remaining obligations. Establish `hP : 1 ≤ ∏ τ, nrm θ p.B (stabilizerEmbedding d x) τ (z q)`. Simplify using `using Finset.prod_le_prod (s := Finset.univ) (f := fun _ => (1 : ℝ)) (fun _ _ => zero_le_one) (fun τ _ => hz1 _ (z q) (q.out).2 (hz q) τ)`. Conclude with `(le_mul_of_one_le_right (integral_nonneg fun _ => norm_nonneg _) (one_le_pow₀ hP)).trans (hterm q).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨R, hRdef⟩ : ∃ R : ℝ, R = s ^ Fintype.card D.what₂.Tau * Real.sqrt (Ideal.absNorm 𝔪)` from `⟨_, rfl⟩`. Take `⟨Kx, hKx⟩ : ∃ Kx : ℝ, Kx = (6 * (V.rank : ℝ) + 9) * Fintype.card D.what₂.Tau` from `⟨_, rfl⟩`. Take `⟨Bt, hBt⟩ : ∃ Bt : ℝ, Bt = b * (Real.exp Q * ‖c‖) * (Real.exp Kx / R)` from `⟨_, rfl⟩`. Rewrite `hR1`, `hR2` using `[← hRdef]`. Rewrite `hR2` using `[← hKx]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `htail : ∀ t : Finset (GQ V ⧸ ι.range.subgroupOf (GQ V)), ∑ q ∈ t.erase q₁, β q ≤ Bt`. Introduce `t`. Take `⟨L, hL⟩ : ∃ L : Lat V, L = 𝔪 • latAt (d.lat Λ fun _ => 1) (stabilizerEmbedding d x)` from `⟨_, rfl⟩`. Take `⟨w, hw⟩ : ∃ w : (GQ V ⧸ ι.range.subgroupOf (GQ V)) → (Fin V.rank → D.host.E), w = fun q => z q - zv d` from `⟨_, rfl⟩`. Establish `hwq : ∀ q, w q = z q - zv d` using `fun q => by rw [hw]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨t', ht'⟩ : ∃ t' : Finset (GQ V ⧸ ι.range.subgroupOf (GQ V)), t' = (t.erase q₁).filter (fun q => w q ∈ L)` from `⟨_, rfl⟩`. Establish `h1 : ∑ q ∈ t.erase q₁, β q = ∑ q ∈ t', β q`. Rewrite using `[ht']`. Use `(Finset.sum_filter_of_ne fun q _ hq => ?_).symm` and prove the remaining obligations. Assume the negation of the conclusion as `hL'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `hq` to reduce the goal to its premises. Establish `h0` using `(hterm q).2.2 (fun h => hL' (by rw [hwq, hL]; exact h))`. Simplify using `[hβ, h0]`. Establish `h2 : ∀ q ∈ t', β q ≤ b * (Real.exp Q * ‖c‖) * ∏ τ, (((1 + nrm θ p.B (stabilizerEmbedding d x) τ (w q)) / 3) ^ (2 * V.rank + 5))⁻¹`. Introduce `q _`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : ∀ τ, (1 + nrm θ p.B (stabilizerEmbedding d x) τ (w q)) / 3 ≤ nrm θ p.B (stabilizerEmbedding d x) τ (z q)`. Introduce `τ`. Establish `a1` using `nrm_sub_le θ p.B (stabilizerEmbedding d x) τ (z q) (zv d)`. Establish `a2` using `hz1 _ (z q) (q.out).2 (hz q) τ`. Rewrite `a1` using `[hz₀ τ]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hwq]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hP' : 0 < ∏ τ, (1 + nrm θ p.B (stabilizerEmbedding d x) τ (w q)) / 3` using `Finset.prod_pos fun τ _ => by have := nrm_nonneg' θ p.B (stabilizerEmbedding d x) τ (w q); positivity`. Establish `hPP : ∏ τ, (1 + nrm θ p.B (stabilizerEmbedding d x) τ (w q)) / 3 ≤ ∏ τ, nrm θ p.B (stabilizerEmbedding d x) τ (z q)` using `Finset.prod_le_prod (fun τ _ => by have := nrm_nonneg' θ p.B (stabilizerEmbedding d x) τ (w q); positivity) fun τ _ => hτ τ`. Establish `ha` using `(hterm q).2.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Establish `ha0 : 0 ≤ ∫ h, ‖f ((q.out : GA D V) * ι h)‖ ∂v.μ` using `integral_nonneg fun _ => norm_nonneg _`. Rewrite using `[Finset.prod_inv_distrib, Finset.prod_pow, mul_assoc]`. Use `mul_le_mul_of_nonneg_left ?_ hb0` and prove the remaining obligations. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ (pow_pos hP' _)]`. Conclude with `(mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hP'.le hPP _) ha0).trans ha`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw_inj : Set.InjOn w t'`. Introduce `q _ q' _ h`. Conclude with `hinj q q' (sub_left_inj.1 (by rwa [hwq, hwq] at h))`. Establish `hws : ∀ y ∈ t'.image w, y ∈ L ∧ y ≠ 0`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨q, hq, rfl⟩` from `Finset.mem_image.1 hy`. Rewrite `hq` using `[ht', Finset.mem_filter, Finset.mem_erase]`. Conclude with `⟨hq.2, fun h0 => hq.1.1 (hq1 q (sub_eq_zero.1 (by rwa [hwq] at h0)))⟩`. Establish `hsum` using `GlobalTheory.T.latticeSum_longVectors_decayWeight_le D θ V p.B (stabilizerEmbedding d x) L R hV1 hR1 (fun y hy hy0 => hRdef ▸ hlongV 𝔪 h𝔪 y (hL ▸ hy) hy0) (t'.image w) hws`. Rewrite `hsum` using `[← hKx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_image hw_inj, Finset.mul_sum]`. Use `_ ≤ Bt := by rw [hBt]; exact mul_le_mul_of_nonneg_left hsum (by positivity)`. Establish `hall : ∀ t : Finset (GQ V ⧸ ι.range.subgroupOf (GQ V)), ∑ q ∈ t, β q ≤ b * (Real.exp Q * ‖c‖) + Bt`. Introduce `t`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hβs : Summable β` using `summable_of_sum_le hβ0 hall`. Establish `hfin : (∑' q : GQ V ⧸ ι.range.subgroupOf (GQ V), ∫⁻ h, ‖f ((q.out : GQ V) * ι h) * φ h‖ₑ ∂v.μ) ≠ ⊤`. Establish `h1 : (∑' q : GQ V ⧸ ι.range.subgroupOf (GQ V), ∫⁻ h, ‖f ((q.out : GQ V) * ι h) * φ h‖ₑ ∂v.μ) ≤ ∑' q, ENNReal.ofReal (β q)` using `ENNReal.tsum_le_tsum hLle`. Establish `h2 : (∑' q, ENNReal.ofReal (β q)) = ENNReal.ofReal (∑' q, β q)` using `(ENNReal.ofReal_tsum_of_nonneg hβ0 hβs).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ne_top_of_le_ne_top ENNReal.ofReal_ne_top (h1.trans h2.le)`. Establish `hU` using `GlobalTheory.T.integrableOn_and_hasSum_tsum_subgroup (GA D V) (GA D Y) v.μ ι hιi (GQ V) v.𝓕 hfund f φ hfm hφ.2.measurable hinv hfin`. Establish `htarget : (∫ h in v.𝓕, poin θ M K (p.v θ) (stabilizerEmbedding d x⁻¹) (p.v θ) (stabilizerEmbedding d h) * φ h ∂v.μ) = ∫ h in v.𝓕, (∑' γ : GQ V, f (γ * ι h)) * φ h ∂v.μ`. Use `congr 1`. Use function extensionality and compare the values at `h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [poin, hf, hι, mul_assoc]`. Establish `h1r : ((q₁.out : GQ V) : GA D V) ∈ ι.range`. Use `QuotientGroup.out_eq' q₁` as an intermediate fact. Rewrite `this` using `[hq₁, QuotientGroup.eq, Subgroup.mem_subgroupOf]`. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨h₀, hh₀⟩` from `h1r`. Establish `hh₀Q : h₀ ∈ GQ Y` using `(hιQ h₀).1 (hh₀ ▸ (q₁.out).2)`. Establish `hT1 : ∫ h, f ((q₁.out : GA D V) * ι h) * φ h ∂v.μ = c * φ x`. Rewrite using `[← hh₀, ← had.one x]`. Establish `e : (fun h => f (ι h₀ * ι h) * φ h) = fun h => (fun h' => coef θ M K (p.v θ) (p.v θ) (stabilizerEmbedding d x⁻¹ * stabilizerEmbedding d h') * φ h') (h₀ * h)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `h`. Use `show f (ι h₀ * ι h) * φ h = coef θ M K (p.v θ) (p.v θ) (stabilizerEmbedding d x⁻¹ * stabilizerEmbedding d (h₀ * h)) * φ (h₀ * h)`. Rewrite using `[← map_mul, hφ.1 h₀ hh₀Q h]`. Simplify using `only [hf, hι]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `integral_mul_left_eq_self (μ := v.μ) (fun h' => coef θ M K (p.v θ) (p.v θ) (stabilizerEmbedding d x⁻¹ * stabilizerEmbedding d h') * φ h') h₀`. Rewrite using `[htarget]`. Introduce `hI0`. Establish `hH'` using `hU.2.update q₁ 0`. Establish `hβ's : Summable (Function.update β q₁ 0)` using `hβs.update q₁ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hnorm` using `hH'.norm_le_of_bounded hβ's.hasSum (fun q => by`. Distinguish the cases in `hq : q = q₁`. Substitute `hq` using the available equality. Simplify using the standard rewrite rules. Simplify using `only [Function.update_apply, hq, if_false]`.
-
-Conclude with `hTle q)`. Establish `hts : ∑' q, Function.update β q₁ 0 q ≤ Bt`. Use `hβ's.tsum_le_of_sum_le fun t => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_erase t (a := q₁) (by simp)]`. Combine the equalities or inequalities in the displayed calculation.
-
-Simplify using `[Function.update_apply, Finset.ne_of_mem_erase hq]`. Use `_ ≤ Bt := htail t`. Rewrite `hnorm` using `[hI0, add_zero, zero_sub, norm_neg, hT1, norm_mul]`. Establish `hRpos : 0 < R` using `by linarith`. Establish `hq' : Real.exp Q * Real.exp Kx / R ≤ 1 / 2`.
-
-Rewrite using `[div_le_iff₀ hRpos, ← Real.exp_add]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBt : Bt ≤ b * ‖c‖ / 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hc0 : 0 < ‖c‖` using `norm_pos_iff.2 had.ne`.
-
-Use `mul_lt_mul_of_pos_left hx hc0` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem identity_dominates : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (Y V : HSp D) (d : HermitianOrthogonalExtensionData Y V 1 1) (S S' : D.what₂.Tau → SPar) (M₀ : DSModel Y S') (M : DSModel V S) (p : Pack M₀ M) (Q : ℝ), p.Base d → ∀ (Λ : Lat Y) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC Y Λ → 𝔪 ≠ ⊥ → ∀ (v : GlobalTheory.Unf.Vol Y) (φ : GA D Y → ℂ) (c : ℂ) (b s : ℝ) (x : GA D Y), GlobalTheory.Unf.IsContAut Y φ → (∀ h, ‖φ h‖ ≤ b) → b / 2 < ‖φ x‖ → 0 ≤ s → s ≤ 1 → Long θ p.A Λ x s → p.AdelicAt θ d Q (d.lat Λ fun _ => 1) 𝔪 v.μ φ c → 2 * Real.exp (Q + (6 * (V.rank : ℝ) + 9) * Fintype.card D.what₂.Tau) ≤ s ^ Fintype.card D.what₂.Tau * Real.sqrt (Ideal.absNorm 𝔪) → 1 < s ^ Fintype.card D.what₂.Tau * Real.sqrt (Ideal.absNorm 𝔪) → ∫ h in v.𝓕, poin θ M (congLev D.sp.cm V.gram (d.lat Λ fun _ => 1) 𝔪) (p.v θ) (stabilizerEmbedding d x⁻¹) (p.v θ) (stabilizerEmbedding d h) * φ h ∂v.μ ≠ 0 := by
   intro D θ hθ Y V d S S' M₀ M p Q hbase Λ 𝔪 hΛ h𝔪 v φ c b s x hφ hbnd hx hs0 hs1 hlong had hR2 hR1

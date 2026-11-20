@@ -24,14 +24,14 @@ namespace GlobalTheory.FibreSection
 variable {X X' Y : Scheme.{0}}
 
 /- English proof (translation)
-Introduce `y hy` and use `mem_pull.2 ((congrArg (fun q => q y ∈ L.U (j 0)) e).mpr (LB.wchart_le L _ j 0 hy))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem chart_le (L : LB X) {F : X' ⟶ X} {φ : Y ⟶ X} (h : Y ⟶ X') (e : h ≫ F = φ) (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => φ) j ≤ h ⁻¹ᵁ (L.pull F).U (fun _ => j 0) := fun y hy =>
   mem_pull.2 ((congrArg (fun q => q y ∈ L.U (j 0)) e).mpr (LB.wchart_le L _ j 0 hy))
 
 /- English proof (translation)
-Introduce `y hy` and use `Set.mem_iInter.2 fun _ => (congrArg (fun q => q y ∈ L.U j) e).mp (mem_pull.1 hy)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_chart (L : LB X) {F : X' ⟶ X} {φ : Y ⟶ X} (h : Y ⟶ X') (e : h ≫ F = φ) (j : L.ι) :
     h ⁻¹ᵁ (L.pull F).U (fun _ => j) ≤ LB.wchart L (fun _ : Fin 1 => φ) (fun _ => j) := fun y hy =>
@@ -54,9 +54,9 @@ def pullAlong (L : LB X) {F : X' ⟶ X} {φ : Y ⟶ X} (h : Y ⟶ X') (e : h ≫
         ((gs_res _ y _ hy _).trans (gs_appLE h _ _ _ (𝟙 _) y hy.2 _)))))))
 
 /- English proof (translation)
-Unfold `valAt'`. Distinguish the cases in `hp : ⊤ ≤ pt ⁻¹ᵁ W`. Establish `hp' : ⊤ ≤ (pt ≫ h) ⁻¹ᵁ U` using `fun z hz => le (hp hz)`. Rewrite using `[dif_pos hp, dif_pos hp']`. Unfold `valAt`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Rewrite using `[← CommRingCat.comp_apply, Scheme.Hom.appLE_comp_appLE]`. Establish `hp' : ¬ ⊤ ≤ (pt ≫ h) ⁻¹ᵁ U` using `fun k => hp fun z hz => ge (k hz)`. Rewrite using `[dif_neg hp, dif_neg hp']`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem valAt'_appLE (pt : Sp ℂ ⟶ Y) (h : Y ⟶ X') (U : X'.Opens) (W : Y.Opens) (le : W ≤ h ⁻¹ᵁ U)
     (ge : h ⁻¹ᵁ U ≤ W) (f : Γ(X', U)) :
@@ -72,11 +72,11 @@ theorem valAt'_appLE (pt : Sp ℂ ⟶ Y) (h : Y ⟶ X') (U : X'.Opens) (W : Y.Op
     rw [dif_neg hp, dif_neg hp']
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo y s`. Establish `cond : gxFst y ≫ Xo.univ.t.G.hom = gxSnd y ≫ y` using `(Over.w (CartesianMonoidalCategory.snd (Over.mk y) Xo.univ.t.G)).trans (Over.w (CartesianMonoidalCategory.fst (Over.mk y) Xo.univ.t.G)).symm`. Set `h : Gx y ⟶ pullback Xo.univ.t.G.hom y` to `pullback.lift _ _ cond`. Establish `hφ : h ≫ pullback.fst _ _ = gxFst y` using `pullback.lift_fst _ _ cond`. Establish `hh : h ≫ pullback.snd _ _ = gxSnd y` using `pullback.lift_snd _ _ cond`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨pullAlong Xo.univ.t.PP.L h hφ s, fun j pt x e₁ e₂ e₃ => ?_⟩` and prove the remaining obligations. Establish `hx : x = pt ≫ h`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hφ, e₁]`. Rewrite using `[Category.assoc, hh, e₂, e₃]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `hx` using the available equality. Conclude with `valAt'_appLE pt h _ _ (chart_le Xo.univ.t.PP.L h hφ (fun _ => j)) (le_chart Xo.univ.t.PP.L h hφ j) _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_sec_same_values : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (y : Sp ℂ ⟶ Xo.X) (s : (Xo.univ.t.PP.L.pull (pullback.fst Xo.univ.t.G.hom y)).Sec), ∃ s' : LB.Sec (PPx y), ∀ j (pt : Sp ℂ ⟶ Gx y) (x : Sp ℂ ⟶ pullback Xo.univ.t.G.hom y), x ≫ pullback.fst _ _ = pt ≫ gxFst y → x ≫ pullback.snd _ _ = 𝟙 _ → pt ≫ gxSnd y = 𝟙 _ → valAt' pt ((PPx y).U (fun _ => j)) (s'.f (fun _ => j)) = valAt' x ((Xo.univ.t.PP.L.pull (pullback.fst Xo.univ.t.G.hom y)).U (fun _ => j)) (s.f (fun _ => j)) := by
   intro E _ _ _ H Dw l Xo y s

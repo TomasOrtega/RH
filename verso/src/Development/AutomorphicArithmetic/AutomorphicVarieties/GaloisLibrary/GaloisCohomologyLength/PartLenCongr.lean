@@ -6,9 +6,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Galo
 open NumberField IsDedekindDomain ReciprocityTheory.Gal Formalism.ConjugateSelfDual Formalism.GaloisCohomology UpperTheory.V.LDataCardLeFinrank
 
 /- English proof (translation)
-Set `φ' : F' →+* ℂ` to `Classical.choice (inferInstance : Nonempty _)`. Apply `φ'.injective` to reduce the goal to its premises. Establish `h1` using `IsCMField.complexEmbedding_complexConj F (φ'.comp f.toRingHom) x`. Establish `h2` using `IsCMField.complexEmbedding_complexConj F' φ' (f x)`. Use `show φ' (f ((IsCMField.complexConj F) x)) = φ' ((IsCMField.complexConj F') (f x))`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private theorem cE_comm {F F' : Type} [Field F] [NumberField F] [IsCMField F] [Field F'] [NumberField F']
     [IsCMField F'] (f : F ≃+* F') (x : F) : f (UpperTheory.V.cE F x) = UpperTheory.V.cE F' (f x) := by
@@ -21,11 +21,11 @@ private theorem cE_comm {F F' : Type} [Field F] [NumberField F] [IsCMField F] [F
   exact h1
 
 /- English proof (translation)
-Establish `hE : (c.eigenspace s).map Φ.toLinearMap = c'.eigenspace s`. Use extensionality with `y`. Rewrite using `[Submodule.map_equiv_eq_comap_symm, Submodule.mem_comap, Module.End.mem_eigenspace_iff, Module.End.mem_eigenspace_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h'` using `congrArg Φ h`. Rewrite `h'` using `[hc, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, map_smul, LinearEquiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `h`. Apply `Φ.injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.coe_coe, hc, LinearEquiv.apply_symm_apply, map_smul, LinearEquiv.apply_symm_apply, h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (N ⊓ c.eigenspace s).map Φ.toLinearMap = N' ⊓ c'.eigenspace s`. Rewrite using `[Submodule.map_inf _ Φ.injective, hN, hE]`. Rewrite using `[← hm]`. Conclude with `(Φ.submoduleMap (N ⊓ c.eigenspace s)).length_eq`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem length_inf_eigen {R M M' : Type*} [CommRing R] [AddCommGroup M] [Module R M] [AddCommGroup M']
     [Module R M'] (Φ : M ≃ₗ[R] M') (N : Submodule R M) (N' : Submodule R M') (hN : N.map Φ.toLinearMap = N')
@@ -49,7 +49,7 @@ private theorem length_inf_eigen {R M M' : Type*} [CommRing R] [AddCommGroup M] 
   exact (Φ.submoduleMap (N ⊓ c.eigenspace s)).length_eq
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ F' Ω' _ _ _ _ _ _ l _ D D' f e`. Take `⟨Φ, hΦ, hact⟩` from `UpperTheory.V.LDataCardLeFinrank.H1_transport_field_iso F Ω F' Ω' l D D' f (e : ℤ)`. Establish `hc` using `hact (UpperTheory.V.cE F) (UpperTheory.V.cE F') (cE_comm f)`. Unfold `UpperTheory.V.plusLen UpperTheory.V.minusLen UpperTheory.V.ShaPlus UpperTheory.V.ShaMinus UpperTheory.V.cAct`. Conclude with `⟨length_inf_eigen Φ _ _ hΦ _ _ hc _, length_inf_eigen Φ _ _ hΦ _ _ hc _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.LDataCardLeFinrank.partLenCongr :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] [IsCMField F] (F' Ω' : Type) [Field F'] [NumberField F'] [Field Ω'] [Algebra F' Ω'] [IsAlgClosure F' Ω'] [IsCMField F'] (l : ℕ) [Fact l.Prime] (D : LData F Ω l) (D' : LData F' Ω' l) (f : F ≃+* F') (e : ℕ), UpperTheory.V.plusLen D e = UpperTheory.V.plusLen D' e ∧ UpperTheory.V.minusLen D e = UpperTheory.V.minusLen D' e := by

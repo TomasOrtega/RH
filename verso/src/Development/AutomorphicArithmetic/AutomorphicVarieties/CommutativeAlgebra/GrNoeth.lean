@@ -6,31 +6,25 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing MvPowerSeries UpperTheory.V.Alg
 
 /- English proof (translation)
-Introduce `O _ _ _ _ X _ _ _ _ R _ _ _ W hz`. Use `haveI := W.fin`. Use `haveI hco : IsCO O (W.gr 0) := wPres_gr_zero_isCO_of_mem_maximalIdeal O X R W hz`. Use `haveI : IsNoetherianRing (W.gr 0) := IsCO.toIsNoetherian O`. Establish `hgen : Algebra.adjoin (W.gr 0) (Set.range W.zA) = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `a -`. Establish `ha : a ∈ Algebra.adjoin O ((W.gr 0 : Set W.A) ∪ Set.range W.zA)`. Rewrite using `[gr_gen O R X W]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Break down `hx with hx | ⟨i, rfl⟩` into its components or cases. Establish `e : algebraMap (W.gr 0) W.A ⟨x, hx⟩ = x` using `rfl`. Rewrite using `[← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subalgebra.algebraMap_mem _ _`. Conclude with `Algebra.subset_adjoin ⟨i, rfl⟩`. Consider the case `algebraMap r`. Establish `hr : algebraMap O W.A r ∈ W.gr 0` using `SetLike.algebraMap_mem_graded W.gr r`. Establish `e : algebraMap (W.gr 0) W.A ⟨_, hr⟩ = algebraMap O W.A r` using `rfl`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← e]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x y _ _ hx hy => exact Subalgebra.add_mem _ hx hy`. Consider the case `mul x y _ _ hx hy => exact Subalgebra.mul_mem _ hx hy`. Use `haveI hft : Algebra.FiniteType (W.gr 0) W.A := ⟨⟨Finset.univ.image W.zA, by rw [Finset.coe_image, Finset.coe_univ, Set.image_univ, hgen]⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨Algebra.FiniteType.isNoetherianRing (W.gr 0) W.A, hft, ?_⟩` and prove the remaining obligations. Introduce `j`. Establish `hmono : ∀ m : W.σ →₀ ℕ, monomial m (1 : O) ∈ wtPart O W.wt (Finsupp.weight W.wt m)`. Introduce `m n hn`. Rewrite using `[coeff_monomial, if_neg]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hn rfl`. Take `⟨μ, hμS, hμ⟩` from `part_span O R X W {n | Finsupp.weight W.wt n = j} j (fun n hn => hn)`. Set `mA : (W.σ →₀ ℕ) → W.A` to `fun m => ⟨W.π (monomial m 1), W.part_le_A (Submodule.mem_map_of_mem (hmono m))⟩`. Establish `hsj : ∀ a ∈ μ.image mA, a ∈ W.gr j`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a ha`. Take `⟨m, hm, rfl⟩` from `Finset.mem_image.mp ha`. Establish `hw : Finsupp.weight W.wt m = j` using `hμS hm`. Use `show (W.π (monomial m 1) : R) ∈ W.part j`. Rewrite using `[← hw]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Submodule.mem_map_of_mem (hmono m)`. Use `⟨μ.image mA, hsj, ?_⟩` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Introduce `a ha`. Establish `ha' : (a : R) ∈ W.part j` using `ha`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f, hf, hfa⟩` from `Submodule.mem_map.mp ha'`. Take `⟨b, hb, hfb⟩` from `hμ f (fun n hn => hf n hn)`. Set `bA : (W.σ →₀ ℕ) → W.A` to `fun m => ⟨W.π (b m), W.part_le_A (Submodule.mem_map_of_mem (hb m))⟩`. Establish `hsum : a = ∑ m ∈ μ, bA m * mA m`. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Rewrite using `[← hfa]`. Simplify using `[hfb, map_sum, map_mul, bA, mA]`. Rewrite using `[hsum]`. Use `Submodule.sum_mem _ fun m hm => Submodule.mul_mem_mul ?_ ?_` and prove the remaining obligations. Use `show (W.π (b m) : R) ∈ W.part 0`.
-
-Conclude with `Submodule.mem_map_of_mem (hb m)`. Conclude with `Submodule.subset_span (Finset.mem_coe.mpr (Finset.mem_image_of_mem mA hm))`. Rewrite using `[Submodule.mul_le]`. Introduce `x hx y hy`. Establish `hy' : y ∈ W.gr j` using `(Submodule.span_le.mpr fun z hz => hsj z hz) hy`.
-
-Simplify using `using SetLike.GradedMul.mul_mem hx hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.gr_noeth :
     ∀ (O : Type) [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O] (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [DecidableEq X] (R : Type) [CommRing R] [Algebra O R] [IsCO O R] (W : WPres O X R), (∀ s, W.z s ∈ maximalIdeal R) → IsNoetherianRing W.A ∧ Algebra.FiniteType (W.gr 0) W.A ∧ ∀ j, ∃ s : Finset W.A, (∀ a ∈ s, a ∈ W.gr j) ∧ W.gr j = W.gr 0 * Submodule.span O (s : Set W.A) := by

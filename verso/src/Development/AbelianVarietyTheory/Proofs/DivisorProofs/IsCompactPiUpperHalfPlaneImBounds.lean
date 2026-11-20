@@ -10,13 +10,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.OmegaFactorization GlobalTheory.Hec
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `ι _ L hL hpos`. Take `⟨C, hC⟩` from `hL.isBounded.exists_norm_le`. Establish `hup : ∀ z ∈ L, ∀ i, (z i).im ≤ C` using `fun z hz i => (Complex.im_le_norm (z i)).trans ((norm_le_pi_norm z i).trans (hC z hz))`. Break down `L.eq_empty_or_nonempty with hE | hne` into its components or cases. Conclude with `⟨1, 0, one_pos, by simp [hE]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `hm : ∀ i, ∃ m : ℝ, 0 < m ∧ ∀ z ∈ L, m ≤ (z i).im`. Introduce `i`. Establish `hc : Continuous fun z : ι → ℂ => (z i).im` using `Complex.continuous_im.comp (continuous_apply i)`. Take `⟨x, hx, hmin⟩` from `hL.exists_isMinOn hne hc.continuousOn`. Conclude with `⟨(x i).im, hpos x hx i, fun z hz => hmin hz⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose m hm0 hmle using hm`. Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Conclude with `⟨1, C, one_pos, fun z _ i => isEmptyElim i⟩`. Use `⟨Finset.univ.inf' Finset.univ_nonempty m, C, ?_, fun z hz i => ⟨?_, hup z hz i⟩⟩` and prove the remaining obligations. Conclude with `(Finset.lt_inf'_iff _).2 fun i _ => hm0 i`.
-
-Conclude with `(Finset.inf'_le _ (Finset.mem_univ i)).trans (hmle i z hz)`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCompact_pi_upperHalfPlane_im_bounds :
     ∀ (ι : Type) [Fintype ι] (L : Set (ι → ℂ)), IsCompact L → (∀ z ∈ L, ∀ i, 0 < (z i).im) →

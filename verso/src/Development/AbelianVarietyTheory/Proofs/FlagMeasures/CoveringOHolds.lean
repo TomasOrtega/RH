@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.FlagMeasures.TransferenceCoverHol
 namespace GlobalTheory
 
 /- English proof (translation)
-Apply `Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.coveringO_of_transference` to reduce the goal to its premises. Introduce `E _ _ _ Λ _ _ lam hlam hdual x`. Conclude with `transferenceCover_holds E Λ lam hlam hdual x`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem coveringO_holds : Formalism.HermitianLatticeCounting.LatticeSumBounds.CoveringO := by
   apply Formalism.HermitianLatticeCounting.Final.LatticeSumBounds.coveringO_of_transference

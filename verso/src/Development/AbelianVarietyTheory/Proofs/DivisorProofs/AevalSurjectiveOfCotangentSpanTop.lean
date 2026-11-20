@@ -6,9 +6,9 @@ open scoped Pointwise
 namespace GlobalTheory.NakAug
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.PowerIdealSurjectivity.aeval_surjective`. Consider the case `exact _root_.GlobalTheory.PowerIdealSurjectivity.aeval_surjective`. Consider the case `(apply _root_.GlobalTheory.PowerIdealSurjectivity.aeval_surjective <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.PowerIdealSurjectivity.aeval_surjective <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.PowerIdealSurjectivity.aeval_surjective <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.PowerIdealSurjectivity.aeval_surjective ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem surj : ∀ (O A : Type) [CommRing O] [IsLocalRing O] [CommRing A] [Algebra O A] [Module.Finite O A] [IsLocalRing A] (q : O), q ∈ IsLocalRing.maximalIdeal O → ∀ (ε : A →ₐ[O] O) (d : ℕ) (x : Fin d → A), (∀ i, ε (x i) = 0) → (∀ i, ∃ N : ℕ, algebraMap O A q ∣ x i ^ N) → Submodule.span O (Set.range fun i => AugCot.d ε (x i)) = ⊤ → Function.Surjective (MvPolynomial.aeval x : MvPolynomial (Fin d) O →ₐ[O] A) := by
   first

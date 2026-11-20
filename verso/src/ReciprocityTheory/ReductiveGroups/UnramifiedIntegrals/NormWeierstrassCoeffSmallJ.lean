@@ -12,17 +12,17 @@ open Formalism.L2.Th1.CM Formalism.L2.Th1.F
 namespace ReciprocityTheory.ChartRestriction.L1
 
 /- English proof (translation)
-Establish `hl0 : 0 < l` using `by linarith`. Establish `e1 : x ^ (12 * t) * l ^ (2 * n * t) = 1`. Establish `: (x ^ 12 * (l ^ n) ^ 2) ^ t = 1` using `by rw [h1, one_pow]`. Rewrite `this` using `[mul_pow, ← pow_mul]`. Rewrite using `[← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[← zpow_natCast (l ^ n) 2, ← zpow_mul, ← zpow_natCast _ t, ← zpow_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2 : x ^ (12 * t) * l ^ (6 * a) = 1`. Establish `: (x ^ (2 * t) * l ^ a) ^ 6 = 1` using `by rw [h2, one_pow]`. Rewrite `this` using `[mul_pow, ← pow_mul]`. Rewrite using `[← this]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← zpow_natCast (l ^ a) 6, ← zpow_mul]`. Use `congr 1`. Use `push_cast`.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hx0 : x ^ (12 * t) ≠ 0` using `(pow_pos hx _).ne'`. Establish `e3 : l ^ (2 * n * t) = l ^ (6 * a)` using `mul_left_cancel₀ hx0 (e1.trans e2.symm)`. Establish `e4 : 2 * n * t = 6 * a` using `zpow_right_injective₀ hl0 hl.ne' e3`. Establish `e5 : (3 : ℤ) ∣ n * t` using `⟨a, by linarith⟩`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : Prime (3 : ℤ)` using `Int.prime_three`. Break down `hp.dvd_or_dvd e5 with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd (by exact_mod_cast h) ht`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem three_dvd_of_norm_relations (l x : ℝ) (hl : 1 < l) (hx : 0 < x) (n a : ℤ) (t : ℕ)
     (h1 : x ^ 12 * (l ^ n) ^ 2 = 1) (h2 : x ^ (2 * t) * l ^ a = 1) (ht : ¬ 3 ∣ t) :
@@ -62,9 +62,9 @@ section Norms
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h : ¬ l ∣ 27`. Introduce `h`. Establish `h3 : l ∣ 3` using `(Fact.out : l.Prime).dvd_of_dvd_pow (show l ∣ 3 ^ 3 by simpa using h)`. Use `Nat.le_of_dvd (by norm_num) h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `using red_norm_natCast l h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_twentySeven_eq_one_of_five_le (h5 : 5 ≤ l) : ‖(27 : ℂ_[l])‖ = 1 := by
   have h : ¬ l ∣ 27 := by
@@ -75,9 +75,9 @@ theorem norm_twentySeven_eq_one_of_five_le (h5 : 5 ≤ l) : ‖(27 : ℂ_[l])‖
   simpa using red_norm_natCast l h
 
 /- English proof (translation)
-Establish `h : ¬ l ∣ 1728`. Introduce `h`. Establish `h' : l ∣ 2 ^ 6 * 3 ^ 3` using `by simpa using h`. Break down `(Fact.out : l.Prime).dvd_mul.1 h' with h2 | h3` into its components or cases. Use `Nat.le_of_dvd (by norm_num) ((Fact.out : l.Prime).dvd_of_dvd_pow h2)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `Nat.le_of_dvd (by norm_num) ((Fact.out : l.Prime).dvd_of_dvd_pow h3)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `using red_norm_natCast l h`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_1728_eq_one_of_five_le' (h5 : 5 ≤ l) : ‖(1728 : ℂ_[l])‖ = 1 := by
   have h : ¬ l ∣ 1728 := by
@@ -91,7 +91,7 @@ theorem norm_1728_eq_one_of_five_le' (h5 : 5 ≤ l) : ‖(1728 : ℂ_[l])‖ = 1
   simpa using red_norm_natCast l h
 
 /- English proof (translation)
-Establish `h` using `norm_1728_eq_one_of_five_le' l h5`. Establish `hne : ‖J‖ ≠ ‖-(1728 : ℂ_[l])‖` using `by rw [norm_neg, h]; exact hJ.ne`. Rewrite using `[sub_eq_add_neg, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm hne, norm_neg, h]`. Conclude with `max_eq_right hJ.le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_sub_1728_eq_one_of_norm_lt_one (h5 : 5 ≤ l) {J : ℂ_[l]} (hJ : ‖J‖ < 1) : ‖J - 1728‖ = 1 := by
   have h := norm_1728_eq_one_of_five_le' l h5
@@ -100,11 +100,11 @@ theorem norm_sub_1728_eq_one_of_norm_lt_one (h5 : 5 ≤ l) {J : ℂ_[l]} (hJ : �
   exact max_eq_right hJ.le
 
 /- English proof (translation)
-Establish `h1` using `norm_sub_1728_eq_one_of_norm_lt_one l h5 hJ`. Establish `h27` using `norm_twentySeven_eq_one_of_five_le l h5`. Establish `h1728` using `norm_1728_eq_one_of_five_le' l h5`. Establish `hne : J - 1728 ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[h, norm_zero]`. Conclude with `zero_ne_one h1`. Establish `hc : ‖27 * J / (J - 1728)‖ = ‖J‖`. Rewrite using `[norm_div, norm_mul, h1, h27, one_mul, div_one]`. Use `⟨hc, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (27 * J / (J - 1728)) ^ 3 - 27 * (27 * J / (J - 1728)) ^ 2 = (27 * J / (J - 1728)) ^ 2 * (27 * 1728 / (J - 1728))`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, norm_mul, norm_pow, hc, norm_div, norm_mul, h1, h27, h1728]`. Evaluate the numerical expressions.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem norm_weierstrass_coeff_small_j (h5 : 5 ≤ l) {J : ℂ_[l]} (hJ : ‖J‖ < 1) :
     ‖27 * J / (J - 1728)‖ = ‖J‖ ∧
@@ -129,37 +129,33 @@ theorem norm_weierstrass_coeff_small_j (h5 : 5 ≤ l) {J : ℂ_[l]} (hJ : ‖J�
 end Norms
 
 /- English proof (translation)
-Break down `hJ1.eq_or_lt with hJ1 | hJ1` into its components or cases. Conclude with `⟨0, by simpa using hJ1⟩`. Establish `hj0 : jInv L ≠ 0` using `fun h => h0 (by rw [h, map_zero])`. Establish `hg2 : L.g₂ ≠ 0` using `fun h => hj0 ((jInv_eq_zero_iff L).2 h)`. Establish `hd3 : d ≠ 3`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Conclude with `hg2 (g2_eq_zero_of_hasCMBy_three L hCM)`. Establish `hsub` using `norm_sub_1728_eq_one_of_norm_lt_one l h5 hJ1`. Establish `i27 : ι 27 = 27` using `map_ofNat ι 27`. Establish `i1728 : ι 1728 = 1728` using `map_ofNat ι 1728`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg3 : L.g₃ ≠ 0`. Introduce `h`. Establish `h'` using `(jInv_eq_iff L).2 h`. Rewrite `hsub` using `[h', i1728, sub_self, norm_zero]`. Conclude with `zero_ne_one hsub`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨L0, hCM0, hj, hc2, hc3⟩` from `exists_cm_lattice_equal_invariants d L hCM hg2 hg3`. Use `set J : ℂ_[l] := ι (jInv L) with hJdef`. Establish `hι2 : ι L0.g₂ = 27 * J / (J - 1728)`. Rewrite using `[hc2]`. Simplify using `[hJdef, i27, i1728]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hι3 : ι L0.g₃ = 27 * J / (J - 1728)`. Rewrite using `[hc3]`. Simplify using `[hJdef, i27, i1728]`. Take `⟨hnc, hnD⟩` from `norm_weierstrass_coeff_small_j l h5 hJ1`. Use `set c : ℂ_[l] := 27 * J / (J - 1728) with hcdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hιD : ι (L0.g₂ ^ 3 - 27 * L0.g₃ ^ 2) = c ^ 3 - 27 * c ^ 2`. Simplify using `[hι2, hι3, i27]`. Establish `hJpos : 0 < ‖J‖` using `norm_pos_iff.2 h0`. Establish `hD0 : c ^ 3 - 27 * c ^ 2 ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hnD` using `[h, norm_zero]`. Conclude with `(pow_pos hJpos 2).ne hnD`. Take `⟨μ, hμ⟩` from `IsAlgClosed.exists_pow_nat_eq (c ^ 3 - 27 * c ^ 2)⁻¹ (n := 12) (by norm_num)`. Establish `hμ1 : μ ^ 12 * ι (L0.g₂ ^ 3 - 27 * L0.g₃ ^ 2) = 1`. Rewrite using `[hιD, hμ, inv_mul_cancel₀ hD0]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hμn : ‖μ‖ ^ 12 * ‖J‖ ^ 2 = 1`. Use `congrArg norm hμ1` as an intermediate fact. Rewrite `this` using `[hιD, norm_mul, norm_pow, hnD, norm_one]`. Then use the resulting hypothesis. Establish `hμpos : 0 < ‖μ‖`. Break down `(norm_nonneg μ).eq_or_lt with h | h` into its components or cases.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hμn` using `[← h]`. Evaluate the numerical expressions using `at hμn`. Conclude with `h`. Establish `hn4 : ‖μ ^ 4 * ι L0.g₂‖ < 1`. Establish `e : ‖μ ^ 4 * ι L0.g₂‖ ^ 3 = ‖J‖`.
+Chain the equalities or inequalities of the calculation. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hι2, norm_mul, norm_pow, hnc]`. Combine the equalities or inequalities in the displayed calculation. Assume the negation of the conclusion as `hcon`. Establish `: 1 ≤ ‖μ ^ 4 * ι L0.g₂‖ ^ 3` using `one_le_pow₀ (not_lt.1 hcon)`. Rewrite `this` using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `absurd hJ1 (not_lt.2 this)`. Establish `hn6 : ‖μ ^ 6 * ι L0.g₃‖ = 1`. Establish `e : ‖μ ^ 6 * ι L0.g₃‖ ^ 2 = 1`. Rewrite using `[hι3, norm_mul, norm_pow, hnc]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) (by norm_num)).1 e`. Take `⟨N, T, hlN, h3N, h3T, hT, hk⟩` from `kerProd d L0 hsq hd4 hCM0 l Fact.out h5 hld 3 (Or.inr ⟨rfl, hd3⟩)`. Establish `hunit` using `unit_prod L0 l ι h5 μ hμ1 hn4.le hn6.le 3 N (Or.inl ⟨rfl, hn4⟩) hlN h3N T hT`. Establish `hcK : c ∈ MaximalUnramifiedExtension l`. Establish `h27 : (27 : ℂ_[l]) ∈ MaximalUnramifiedExtension l`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `natCast_mem (MaximalUnramifiedExtension l) 27` after adjusting the coercions. Establish `h1728 : (1728 : ℂ_[l]) ∈ MaximalUnramifiedExtension l`. Conclude with `natCast_mem (MaximalUnramifiedExtension l) 1728` after adjusting the coercions. Conclude with `div_mem (mul_mem h27 hJ) (sub_mem hJ h1728)`. Establish `hP : ι (∏ z ∈ T, L0.weierstrassP z) ∈ MaximalUnramifiedExtension l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hk ((MaximalUnramifiedExtension l).comap (ι : ℂ →+* ℂ_[l])) (by rw [Subfield.mem_comap]; simpa [hι2] using hcK) (by rw [Subfield.mem_comap]; simpa [hι3] using hcK) (by rw [Subfield.mem_comap]; exact omega_mem_kur d hsq hd4 l hld ι)` as an intermediate fact. Simplify `this` using `[Subfield.mem_comap]`. Establish `hP0 : ι (∏ z ∈ T, L0.weierstrassP z) ≠ 0`. Introduce `h`. Rewrite `hunit` using `[h, norm_zero, mul_zero]`.
-
-Conclude with `zero_ne_one hunit`. Take `⟨a, ha⟩` from `kur_val l hP hP0`. Take `⟨n, hn⟩` from `kur_val l hJ h0`. Establish `hl1 : (1 : ℝ) < l`. Establish `: 1 < l` using `by omega`.
-
-Conclude with `this` after adjusting the coercions. Rewrite `hunit` using `[ha]`. Rewrite `hμn` using `[hn]`. Take `⟨m, hm⟩` from `three_dvd_of_norm_relations l ‖μ‖ hl1 hμpos n a T.card hμn hunit h3T`. Conclude with `⟨m, by rw [hn, hm]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem valDiv3 (d : ℕ) (L : PeriodPair) (hsq : Squarefree d) (hd4 : d % 4 = 3) (hCM : HasCMBy d L) (l : ℕ)
     [Fact l.Prime] (h5 : 5 ≤ l) (hld : ¬ l ∣ d) (ι : ℂ ≃+* ℂ_[l]) (hJ : ι (jInv L) ∈ MaximalUnramifiedExtension l)

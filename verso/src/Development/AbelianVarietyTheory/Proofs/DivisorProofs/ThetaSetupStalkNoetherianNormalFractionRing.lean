@@ -9,13 +9,13 @@ open GlobalTheory.Poinc
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ z₁`. Use `letI : Algebra (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ := (X₁.M.stalkHom z₁).toAlgebra`. Establish `hN` using `X₁.normal`. Use `⟨GlobalTheory.IsNormalScheme.isDomain_stalk z₁, ?_, GlobalTheory.IsNormalScheme.isIntegrallyClosed_stalk z₁, ?_⟩` and prove the remaining obligations. Establish `: FaithfulSMul (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁` using `(faithfulSMul_iff_algebraMap_injective _ _).2 (X₁.M.stalkHom_injective z₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `IsFractionRing.of_field _ _ fun x => ?_` and prove the remaining obligations. Take `⟨a, b, -, hx⟩` from `IsFractionRing.div_surjective (A := X₁.M.O z₁) x`. Use `⟨(X₁.M.stalkEquiv z₁).symm a, (X₁.M.stalkEquiv z₁).symm b, ?_⟩` and prove the remaining obligations. Establish `h : ∀ c : X₁.M.O z₁, algebraMap (X₁.M.Z.presheaf.stalk z₁) X₁.Ω₁ ((X₁.M.stalkEquiv z₁).symm c) = c` using `fun c => by`. Express the relevant statement in the definitionally equal form `X₁.M.stalkHom z₁ _ = _`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← RatModel.coe_stalkEquiv, RingEquiv.apply_symm_apply]`. Rewrite using `[h, h, ← hx]`. Both sides reduce to the same expression. Establish `: IsDedekindDomain X₁.o₁` using `X₁.ar.ded`. Use `X₁.M.lft` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsLocallyNoetherian (Sp X₁.o₁)` using `inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of X₁.o₁)))`. Establish `: IsLocallyNoetherian X₁.M.Z` using `LocallyOfFiniteType.isLocallyNoetherian X₁.M.s`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem stalk_isNoetherian_normal_fractionRing : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ)
     (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i) (z₁ : X₁.M.Z),

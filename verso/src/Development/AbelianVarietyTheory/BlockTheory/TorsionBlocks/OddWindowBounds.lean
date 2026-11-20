@@ -12,7 +12,7 @@ def eFactor {L : Type} [Field L] (q : ℕ) (s : ℤ) (Y : Lˣ) : L :=
     ((q : L) - 1) * (q : L) ^ (-(2 * s))
 
 /- English proof (translation)
-Evaluate the numerical expressions using `[eFactor]`.
+Evaluate the numerical expressions.
 -/
 example : eFactor (L := ℚ) 3 1 1 = 2 / 3 := by
   norm_num [eFactor]

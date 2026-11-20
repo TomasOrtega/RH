@@ -7,19 +7,17 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => intro _ c _ _`. Simplify using the standard rewrite rules. Consider the case `succ N ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hS c hc hct`. Establish `hSN : ∀ k ≤ N, ∑ a ∈ range k, μ a ≤ ∑ a ∈ range k, lam a` using `fun k hk => hS k (by omega)`. Establish `hN` using `hS N (by omega)`. Establish `hN1` using `hS (N + 1) le_rfl`. Simplify using `only [Finset.sum_range_succ, Finset.prod_range_succ] at hN1 ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set Pm := ∏ a ∈ range N, t a ^ μ a with hPm`. Use `set Pl := ∏ a ∈ range N, t a ^ lam a with hPl`. Use `set M := ∑ a ∈ range N, μ a with hM`. Use `set L := ∑ a ∈ range N, lam a with hL`. Establish `htN : 0 ≤ t N` using `ht0 N`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hPm0 : 0 ≤ Pm` using `Finset.prod_nonneg fun a _ => pow_nonneg (ht0 a) _`. Establish `hPl0 : 0 ≤ Pl` using `Finset.prod_nonneg fun a _ => pow_nonneg (ht0 a) _`. Establish `hcN : c ≤ t N` using `hct N (by omega)`. Break down `le_total (μ N) (lam N) with h | h` into its components or cases. Establish `e : L + lam N - (M + μ N) = (L - M) + (lam N - μ N)` using `by omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e, pow_add]`. Establish `ih'` using `ih hSN c hc (fun a ha => hct a (by omega))`. Establish `h2 : t N ^ μ N * c ^ (lam N - μ N) ≤ t N ^ lam N`. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `ih'` using `ih hSN (t N) htN (fun a ha => ht (show a ≤ N by omega))`. Establish `e2 : t N ^ μ N * t N ^ (L + lam N - (M + μ N)) = t N ^ (L - M) * t N ^ lam N`. Rewrite using `[← pow_add, ← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers.
-
-Combine the equalities or inequalities in the displayed calculation.
+Use linear arithmetic over natural numbers and integers. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma antitone_prod_pow_dominance (t : ℕ → ℝ) (ht0 : ∀ a, 0 ≤ t a) (ht : Antitone t) (μ lam : ℕ → ℕ) :
     ∀ N : ℕ, (∀ k ≤ N, ∑ a ∈ range k, μ a ≤ ∑ a ∈ range k, lam a) →
@@ -66,7 +64,7 @@ lemma antitone_prod_pow_dominance (t : ℕ → ℝ) (ht0 : ∀ a, 0 ≤ t a) (ht
         _ ≤ Pl * t N ^ lam N := mul_le_mul_of_nonneg_right ih' (pow_nonneg htN _)
 
 /- English proof (translation)
-Establish `h` using `antitone_prod_pow_dominance t ht0 ht μ lam N hS 0 le_rfl (fun a _ => ht0 a)`. Rewrite `h` using `[hT, Nat.sub_self, pow_zero, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma ldiag_domPow_nat (t : ℕ → ℝ) (ht0 : ∀ a, 0 ≤ t a) (ht : Antitone t) (μ lam : ℕ → ℕ) (N : ℕ)
     (hS : ∀ k ≤ N, ∑ a ∈ range k, μ a ≤ ∑ a ∈ range k, lam a)
@@ -79,17 +77,17 @@ def ldiagExt {α : Type*} [Zero α] {r : ℕ} (f : Fin r → α) (a : ℕ) : α 
   if h : a < r then f ⟨a, h⟩ else 0
 
 /- English proof (translation)
-Rewrite using `[ldiagExt, dif_pos a.isLt]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma ldiag_ext_fin {α : Type*} [Zero α] {r : ℕ} (f : Fin r → α) (a : Fin r) : ldiagExt f a = f a := by
   rw [ldiagExt, dif_pos a.isLt]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_filter]`. Establish `h1 : ∀ a : Fin r, (if a.val < k then f a else 0) = (fun i : ℕ => if i < k then ldiagExt f i else 0) a.val` using `fun a => by`. Simplify using `only [ldiag_ext_fin]`. Rewrite using `[Finset.sum_congr rfl (fun a _ => h1 a), Fin.sum_univ_eq_sum_range (fun i : ℕ => if i < k then ldiagExt f i else 0) r, ← Finset.sum_filter]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i`. Simplify using `only [Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, h⟩`. Conclude with `h`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h; exact ⟨by omega, h⟩`.
+A detailed English derivation is pending.
 -/
 lemma ldiag_sum_filter_lt_eq_range {r : ℕ} (f : Fin r → ℕ) (k : ℕ) (hk : k ≤ r) :
     ∑ a : Fin r with a.val < k, f a = ∑ a ∈ range k, ldiagExt f a := by
@@ -107,7 +105,7 @@ lemma ldiag_sum_filter_lt_eq_range {r : ℕ} (f : Fin r → ℕ) (k : ℕ) (hk :
   · intro h; exact ⟨by omega, h⟩
 
 /- English proof (translation)
-Establish `h` using `ldiag_sum_filter_lt_eq_range f r le_rfl`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma ldiag_sum_univ_eq_range {r : ℕ} (f : Fin r → ℕ) :
     ∑ a : Fin r, f a = ∑ a ∈ range r, ldiagExt f a := by
@@ -115,7 +113,7 @@ lemma ldiag_sum_univ_eq_range {r : ℕ} (f : Fin r → ℕ) :
   simpa using h
 
 /- English proof (translation)
-Rewrite using `[← Fin.prod_univ_eq_prod_range (fun i : ℕ => ldiagExt t i ^ ldiagExt μ i) r]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [ldiag_ext_fin]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 lemma ldiag_prod_univ_eq_range {r : ℕ} (t : Fin r → ℝ) (μ : Fin r → ℕ) :
     ∏ a : Fin r, t a ^ μ a = ∏ a ∈ range r, ldiagExt t a ^ ldiagExt μ a := by
@@ -124,13 +122,11 @@ lemma ldiag_prod_univ_eq_range {r : ℕ} (t : Fin r → ℝ) (μ : Fin r → ℕ
   simp only [ldiag_ext_fin]
 
 /- English proof (translation)
-Introduce `r t μ lam ht0 ht hS hT`. Rewrite using `[ldiag_prod_univ_eq_range, ldiag_prod_univ_eq_range]`. Establish `hext0 : ∀ a, 0 ≤ ldiagExt t a` using `fun a => by`. Unfold `ldiagExt`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `ht0 _`. Conclude with `le_rfl`. Use `ldiag_domPow_nat (ldiagExt t) hext0 ?_ (ldiagExt μ) (ldiagExt lam) r ?_ ?_` and prove the remaining obligations. Introduce `a b hab`. Distinguish the cases in `hb : b < r`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `ha : a < r` using `lt_of_le_of_lt hab hb`. Simplify using `only [ldiagExt, dif_pos ha, dif_pos hb]`. Conclude with `ht (show (⟨a, ha⟩ : Fin r) ≤ ⟨b, hb⟩ from hab)`. Simplify using `only [ldiagExt, dif_neg hb]`. Conclude with `hext0 a`.
-
-Introduce `k hk`. Rewrite using `[← ldiag_sum_filter_lt_eq_range μ k hk, ← ldiag_sum_filter_lt_eq_range lam k hk]`. Conclude with `hS k`. Rewrite using `[← ldiag_sum_univ_eq_range, ← ldiag_sum_univ_eq_range]`. Conclude with `hT`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dominancePowerProduct_holds : DomPow := by
   intro r t μ lam ht0 ht hS hT

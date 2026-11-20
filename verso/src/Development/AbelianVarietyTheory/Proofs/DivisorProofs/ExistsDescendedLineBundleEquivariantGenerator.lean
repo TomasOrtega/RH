@@ -19,20 +19,20 @@ noncomputable section
 namespace GlobalTheory.CharKer
 
 /- English proof (translation)
-Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [pmap]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pmap_eq_whiskerRight {S : Scheme.{0}} {A A' : Over S} (q : A ⟶ A') (T : Over S) : pmap q T = q ▷ T := by
   apply CartesianMonoidalCategory.hom_ext <;> simp [pmap]
 
 /- English proof (translation)
-The claim follows from `H.map (Over.forget S)`.
+A detailed English derivation is pending.
 -/
 theorem isPullback_over_left {S : Scheme.{0}} {P X Y Z : Over S} {f : P ⟶ X} {g : P ⟶ Y} {h : X ⟶ Z} {k : Y ⟶ Z}
     (H : IsPullback f g h k) : IsPullback f.left g.left h.left k.left :=
   H.map (Over.forget S)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `_ = (X.presheaf.map ((homOfLE h₁).op ≫ (homOfLE h₂).op)).hom x.val`. Rewrite using `[Functor.map_comp, CommRingCat.hom_comp, RingHom.comp_apply]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_res_units {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (x : Γ(X, U)ˣ) :
     res h₂ (res h₁ x) = res (h₂.trans h₁) x := by
@@ -41,7 +41,7 @@ theorem res_res_units {X : Scheme.{0}} {U V W : X.Opens} (h₁ : V ≤ U) (h₂ 
   rw [Functor.map_comp, CommRingCat.hom_comp, RingHom.comp_apply]; rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `f.naturality (homOfLE h).op` as an intermediate fact. Express the relevant statement in the definitionally equal form `(X.presheaf.map (homOfLE h).op ≫ f.app V).hom x.val = _`. Rewrite using `[this]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem res_pullU_units {X Y : Scheme.{0}} (f : Y ⟶ X) {U V : X.Opens} (h : V ≤ U) (x : Γ(X, U)ˣ) :
     pullU f V (res h x) = res (f.preimage_mono h) (pullU f U x) := by
@@ -51,25 +51,23 @@ theorem res_pullU_units {X Y : Scheme.{0}} (f : Y ⟶ X) {U V : X.Opens} (h : V 
   rw [this]; rfl
 
 /- English proof (translation)
-Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, mul_div_mul_left_eq_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mul_inv_mul_inv_cancel {G : Type*} [CommGroup G] (c x y : G) : (c * x) * (c * y)⁻¹ = x * y⁻¹ := by
   rw [← div_eq_mul_inv, ← div_eq_mul_inv, mul_div_mul_left_eq_div]
 
 /- English proof (translation)
-Introduce `S A A' N T _ _ _ i q χ hi hq hfin hflat hsurj hker hχ`. Establish `hloc` using `GlobalTheory.T.exists_nhds_characterUnit_kernel_action S A A' N T i q χ hi hq hfin hflat hsurj hker hχ`. Establish `: Flat (pmap q T).left` using `by rw [pmap_eq_whiskerRight]; infer_instance`. Establish `: Surjective (pmap q T).left` using `by rw [pmap_eq_whiskerRight]; infer_instance`. Establish `: QuasiCompact (pmap q T).left` using `by rw [pmap_eq_whiskerRight]; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpb : IsPullback (prMap A N T).left (actMap i T).left (pmap q T).left (pmap q T).left` using `isPullback_over_left (GlobalTheory.T.kernelAction_isPullback_prodMap_torsor S A A' N T i q hi hq hker)`. Establish `hw : ∀ z, (pmap q T).left ((actMap i T).left z) = (pmap q T).left ((prMap A N T).left z)` using `fun z => by`. Rewrite using `[← Scheme.Hom.comp_apply, ← Scheme.Hom.comp_apply, hpb.w]`. Establish `inj : ∀ U : (A' ⊗ T).left.Opens, Function.Injective (pullU (pmap q T).left U)` using `fun U x y hxy => Units.ext (ReciprocityTheory.ChartRestriction.G.DVR.TG.app_injective_of_flat_surj (pmap q T).left U (congrArg Units.val hxy))`. Establish `desc : ∀ (U : (A' ⊗ T).left.Opens) (u : Γ((A ⊗ T).left, (pmap q T).left ⁻¹ᵁ U)ˣ), (∀ (W : (A ⊗ (N ⊗ T)).left.Opens) (h₁ : W ≤ (actMap i T).left ⁻¹ᵁ ((pmap q T).left ⁻¹ᵁ U)) (h₂ : W ≤ (prMap A N T).left ⁻¹ᵁ ((pmap q T).left ⁻¹ᵁ U)), res h₁ (pullU (actMap i T).left _ u) = res h₂ (p …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `U u hu`. Establish `hg : (prMap A N T).left ⁻¹ᵁ ((pmap q T).left ⁻¹ᵁ U) ≤ (actMap i T).left ⁻¹ᵁ ((pmap q T).left ⁻¹ᵁ U)` using `fun z hz => show (pmap q T).left ((actMap i T).left z) ∈ U from (hw z) ▸ hz`. Establish `key` using `GlobalTheory.FlatDescent.existsUnique_app_eq_iff (pmap q T).left hpb U _ rfl le_rfl hg u.val`. Take `⟨a, ha, -⟩` from `key.2 (congrArg Units.val (hu _ hg le_rfl)).symm`. Take `⟨a, rfl⟩` from `(GlobalTheory.FlatDescent.isUnit_app_iff (pmap q T).left U a).1 (ha ▸ u.isUnit)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a, Units.ext ha⟩`. Use `choose V hyV e he using hloc`. Establish `hu : ∀ k l, ∃ g : Γ((A' ⊗ T).left, V k ⊓ V l)ˣ, pullU (pmap q T).left _ g = res ((pmap q T).left.preimage_mono inf_le_left) (e k) * (res ((pmap q T).left.preimage_mono inf_le_right) (e l))⁻¹` using `fun k l => desc _ _ (by`. Introduce `W h₁ h₂`. Simplify using `only [map_mul, map_inv, res_pullU_units, res_res_units]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[he k W _ (h₂.trans ((prMap A N T).left.preimage_mono ((pmap q T).left.preimage_mono inf_le_left))), he l W _ (h₂.trans ((prMap A N T).left.preimage_mono ((pmap q T).left.preimage_mono inf_le_right))), mul_mul_inv_mul_inv_cancel])`. Use `choose g hg using hu`. Use `⟨⟨(A' ⊗ T).left, V, g⟩, e, ⟨?_, ?_, ?_⟩, ?_, fun k W h₁ h₂ => he k W h₁ h₂⟩` and prove the remaining obligations. Conclude with `eq_top_iff.2 fun y _ => TopologicalSpace.Opens.mem_iSup.2 ⟨y, hyV y⟩`. Introduce `k`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `inj` to reduce the goal to its premises. Simplify using `only [res_pullU_units, hg, map_mul, map_inv, res_res_units, map_one, mul_inv_cancel]`. Introduce `a b c`. Apply `inj` to reduce the goal to its premises. Simplify using `only [res_pullU_units, hg, map_mul, map_inv, res_res_units, _root_.mul_assoc, inv_mul_cancel_left]`.
-
-Introduce `k l W h₁ h₂ h₃`. Simplify using `only [res_pullU_units, hg, map_mul, map_inv, res_res_units, _root_.mul_assoc, inv_mul_cancel, _root_.mul_one]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_equivGen : ∀ (S : Scheme.{0}) (A A' N T : Over S) [GrpObj A] [GrpObj A'] [GrpObj N] (i : N ⟶ A) (q : A ⟶ A') (χ : Γ((N ⊗ T).left, ⊤)ˣ), IsMonHom i → IsMonHom q → IsFinite q.left → Flat q.left → Surjective q.left → IsPullback i (toUnit N) q η[A'] → IsCharacter χ → ∃ (M : LB (A' ⊗ T).left) (e : ∀ k, Γ((A ⊗ T).left, (pmap q T).left ⁻¹ᵁ M.U k)ˣ), M.IsLB ∧ IsEquivGen i q χ M e := by
   intro S A A' N T _ _ _ i q χ hi hq hfin hflat hsurj hker hχ

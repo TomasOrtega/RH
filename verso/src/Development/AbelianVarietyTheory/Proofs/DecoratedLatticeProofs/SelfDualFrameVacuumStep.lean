@@ -20,7 +20,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FamSplit
 
 /- English proof (translation)
-Take `⟨-, e, he, hθ⟩` from `h`. Take `⟨-, e', he', hθ'⟩` from `h'`. Take `rfl` from `GlobalTheory.DatumFourier.idemSum_unique S he he'`. Take `⟨⟨Tm, hTm⟩, hall⟩` from `hθ`. Rewrite using `[hall Tm hTm, hθ'.2 Tm hTm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem stepVecOf_unique {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {S T : HSp D}
     {sS : D.what₂.Tau → Matrix (Fin S.rank) (Fin S.rank) ℂ} {sT : D.what₂.Tau → Matrix (Fin T.rank) (Fin T.rank) ℂ}
@@ -41,15 +41,15 @@ end GlobalTheory.FamSplit
 namespace GlobalTheory.FamSplit
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u hW j hj V S M Λ β vac hSD hvac`. Establish `hLev` using `hW.bot.hyp.2.2.2.1.lev`. Take `⟨cY, hY⟩` from `hLev.βY j hj`. Establish `sdY : IsSelfDualC (Yc D j) ((pk W).ΛY j)` using `GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _ (hLev.βY j hj)`. Establish `frY : Formalism.L2.DIV.IsFrame ((pk W).βY j) ((pk W).ΛY j)` using `hY.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sdV : IsSelfDualC V Λ` using `hSD.elim (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _) (GlobalTheory.SDFrameLattice.isSelfDualC_of_isSDFrame D _ _ _ _)`. Establish `frV : Formalism.L2.DIV.IsFrame β Λ` using `hSD.elim (fun h => h.elim fun _ h => h.1) (fun h => h.elim fun _ h => h.1)`. Establish `hex` using `GlobalTheory.PlaceDatum.stepVecExists D`. Take `⟨⟨eG, heG⟩, hQt⟩` from `GlobalTheory.T.level_places_disjoint_idempotents W hW`. Take `⟨fG, hfG⟩` from `hex (pk W).ψ (pk W).θ (Yc D j) V (cart ((pk W).MY j)) (cart M) ((pk W).ΛY j) Λ ((pk W).βY j) β (datY _ D.R.r D.R.t j (r_le_Y j) (pk W).Pg ∅ (lvP W) (pk W).chi (fun _ => 1) Frm.B) ((pk W).chi (j + 1)) ∅ (fun _ => 1) sdY sdV frY frV (Finset.disjoint_empty_right _) ⟨eG, heG⟩ vac hva …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨dG, hdG, rfl⟩` from `GlobalTheory.T.levelStepVector_eq_heisenbergCombination_vacuum D _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ sdY sdV frY frV hfG`. Establish `hdG' : GlobalTheory.FinPl.CombAt (fun p => ∃ PP ∈ (pk W).Pg, p = PP.under (𝓞 D.host.F)) dG`. Simplify `hdG` using `only [datY, Finset.union_empty]`. Use `⟨dG, ⟨hdG', hfG⟩, fun t => ?_⟩` and prove the remaining obligations. Take `⟨hdis, hne, ⟨e, he⟩, ⟨eQ, heQ⟩⟩` from `hQt t`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨fQ, hfQ⟩` from `hex (pk W).ψ (pk W).θ (Yc D j) V (cart ((pk W).MY j)) (cart M) ((pk W).ΛY j) Λ ((pk W).βY j) β (datY _ D.R.r D.R.t j (r_le_Y j) ∅ ((pk W).Q t) (LevelP.triv _ _ _) (pk W).chi ((pk W).xiR t) Frm.B) ((pk W).chi (j + 1)) ((pk W).Q t) ((pk W).xiR t) sdY sdV frY frV (Finset.disjoint_em …`. Take `⟨dQ, hdQ, rfl⟩` from `GlobalTheory.T.levelStepVector_eq_heisenbergCombination_vacuum D _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ sdY sdV frY frV hfQ`. Establish `hdQ' : GlobalTheory.FinPl.CombAt (fun p => ∃ PP ∈ (pk W).Q t, p = PP.under (𝓞 D.host.F)) dQ`. Simplify `hdQ` using `only [datY, Finset.empty_union]`. Establish `hfull` using `GlobalTheory.T.thetaStepVector_eq_tupleComb_of_levelComb D _ _ (Yc D j) V _ _ _ _ _ _ D.R.r D.R.t j (r_le_Y j) (pk W).Pg ((pk W).Q t) (lvP W) (pk W).chi ((pk W).chi (j + 1)) ((pk W).xiR t) vac dG dQ sdY sdV frY frV hdis hne ⟨e, he⟩ hdG' hdQ' hfG hfQ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `⟨dQ, ⟨hdQ', hfQ⟩, fun v => ⟨fun hv => stepVecOf_unique hv hfull, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hfull`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem split_datum : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word), PkHyp W → ∀ (j : ℕ), j < D.R.m → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (Λ : GlobalTheory.FinPl.Lat V) (β : GL (Fin V.rank) (Lev.EAf D)) (vac : WO (Yc D j) V → ℂ), IsSDFrame V β Λ 1 ∨ IsSDFrame V β Λ (D.host.g 0 * D.host.g 1) → IsVacO (pk W).ψ (pk W).θ (Yc D j) V (cart ((pk W).MY j)) (cart M) ((pk W).ΛY j) Λ vac → ∃ dG, IsDG W j M Λ β vac dG ∧ ∀ t, ∃ dQ, IsDQ W t j M Λ β vac dQ ∧ ∀ v, IsStepVecOf (pk W).ψ (pk W).θ (Yc D j) V (cart ((pk W).MY j)) (cart M) ((pk W).ΛY j) Λ ((pk W).βY j) β ((pk W).datYt t j (lvP W)) ((pk W).chi (j + 1)) ((pk W).Q t) ((pk W).xiR t) vac v ↔ v = comb (pk W).ψ _ _ dQ (comb (pk W).ψ _ _ dG vac) := by
   intro D L hT Gi Gl Kc Yd cX ex W u hW j hj V S M Λ β vac hSD hvac

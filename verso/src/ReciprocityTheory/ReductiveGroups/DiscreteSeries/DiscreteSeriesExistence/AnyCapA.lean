@@ -11,7 +11,7 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `w with`. Consider the case `nil => simpa using hx`. Consider the case `cons p w ih`. Simplify using `only [List.map_cons, List.prod_cons, Module.End.mul_apply]`. Conclude with `ICD.gen_stable ih p.1 p.2`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem anyCap_word_mem {M : Type*} [AddCommGroup M] [Module ℂ M] {E : Fin n → Fin n → Module.End ℂ M}
     {V : Submodule ℂ M} (w : List (Fin n × Fin n)) {x : M} (hx : x ∈ genSub E V) :
@@ -23,15 +23,15 @@ theorem anyCap_word_mem {M : Type*} [AddCommGroup M] [Module ℂ M] {E : Fin n �
     exact ICD.gen_stable ih p.1 p.2
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `qdet_eq_sum_words E u`. Use `⟨(l.map fun c => (starRingEnd ℂ c.1 * (c.2.map fun p => adjSign ε p.1 p.2).prod) • ((c.2.reverse.map Prod.swap).map fun p => E p.1 p.2).prod).sum, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx clear hl`. Proceed by induction on `l with`. Consider the case `nil => simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `cons c l ih`. Simplify using `only [List.map_cons, List.sum_cons, LinearMap.add_apply, LinearMap.smul_apply]`. Conclude with `add_mem (Submodule.smul_mem _ _ (anyCap_word_mem _ hx)) ih`. Introduce `x y`. Rewrite using `[hl]`.
+Treat this case separately. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Use `clear hl`. Proceed by induction on `l with`. Consider the case `nil => simp`. Consider the case `cons c l ih`. Simplify using `only [List.map_cons, List.sum_cons, LinearMap.add_apply, LinearMap.smul_apply, inner_add_left, inner_add_right, inner_smul_left, inner_smul_right]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[ih]`. Use `congr 1`. Establish `h` using `eword_adjoint hU c.2 y x`. Establish `h' : inner ℂ x ((c.2.map fun p => E p.1 p.2).prod y) = starRingEnd ℂ (c.2.map fun p => adjSign ε p.1 p.2).prod * inner ℂ (((c.2.reverse.map Prod.swap).map fun p => E p.1 p.2).prod x) y`. Rewrite using `[← inner_conj_symm, h, map_mul, inner_conj_symm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h', map_mul, starRingEnd_self_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem anyCap_adj {M : Type*} [NormedAddCommGroup M] [InnerProductSpace ℂ M] {ε : Fin n → Bool}
     {E : Fin n → Fin n → Module.End ℂ M} (hU : IsInfUnitary ε E) (V : Submodule ℂ M) (u : ℂ) :

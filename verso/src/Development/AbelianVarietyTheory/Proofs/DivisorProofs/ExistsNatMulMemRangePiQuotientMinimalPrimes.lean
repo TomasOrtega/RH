@@ -3,13 +3,13 @@ import Mathlib
 namespace GlobalTheory.CokerMinimalPrimes
 
 /- English proof (translation)
-Establish `hQm : Minimal (fun q : Ideal B => q.IsPrime ∧ ⊥ ≤ q) Q` using `hQ`. Establish `hPm : Minimal (fun q : Ideal B => q.IsPrime ∧ ⊥ ≤ q) P` using `hP`. Establish `hnle : ¬ P ≤ Q` using `fun h => hPQ (hQm.eq_of_le hPm.1 h)`. Use `haveI : Q.IsPrime := hQm.1.1`. Take `⟨p, hpP, hpQ⟩` from `Set.not_subset.mp hnle`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx : Ideal.Quotient.mk Q p ≠ 0`. Rewrite using `[Ne, Ideal.Quotient.eq_zero_iff_mem]` and apply the resulting hypothesis. Establish `hxI : Ideal.Quotient.mk Q p ∈ Ideal.map (Ideal.Quotient.mk Q) P` using `Ideal.mem_map_of_mem _ hpP`. Establish `hne` using `Ideal.comap_ne_bot_of_integral_mem (R := ℤ) hx hxI (Algebra.IsIntegral.isIntegral _)`. Take `⟨k, hk, hk0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hk` using `[Ideal.mem_comap, eq_intCast, ← map_intCast (Ideal.Quotient.mk Q), Ideal.mem_quotient_iff_mem_sup]`. Use `⟨k.natAbs, by simpa using hk0, ?_⟩` and prove the remaining obligations. Break down `Int.natAbs_eq k with h | h` into its components or cases. Rewrite `hk` using `[h, Int.cast_natCast]`. Conclude with `hk`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `hk` using `[h, Int.cast_neg, Int.cast_natCast]`. Simplify using `using (P ⊔ Q).neg_mem hk`.
+A detailed English derivation is pending.
 -/
 theorem exists_nat_mem_sup (B : Type) [CommRing B] [Module.Finite ℤ B]
     {P Q : Ideal B} (hP : P ∈ minimalPrimes B) (hQ : Q ∈ minimalPrimes B) (hPQ : P ≠ Q) :
@@ -34,17 +34,15 @@ theorem exists_nat_mem_sup (B : Type) [CommRing B] [Module.Finite ℤ B]
   · rw [h, Int.cast_neg, Int.cast_natCast] at hk; simpa using (P ⊔ Q).neg_mem hk
 
 /- English proof (translation)
-Establish `hq : ∀ i j, ∃ q : B, i ≠ j → q ∈ I j ∧ m - q ∈ I i`. Introduce `i j`. Distinguish the cases in `hij : i = j`. Conclude with `⟨0, fun h => (h hij).elim⟩`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.mp (hm i j hij)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, fun _ => ⟨hz, by rw [← hyz]; simpa using hy⟩⟩`. Use `choose q hq using hq`. Set `e : ι → B` to `fun i => ∏ j ∈ Finset.univ.erase i, q i j`. Establish `he_mem : ∀ i j, i ≠ j → e i ∈ I j`. Introduce `i j hij`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem (q i) (Finset.mem_erase.mpr ⟨Ne.symm hij, Finset.mem_univ j⟩)`. Express the relevant statement in the definitionally equal form `∏ j ∈ Finset.univ.erase i, q i j ∈ I j`. Rewrite using `[hc]`. Conclude with `Ideal.mul_mem_right _ _ (hq i j hij).1`. Establish `he_mod : ∀ i, Ideal.Quotient.mk (I i) (e i) = (Ideal.Quotient.mk (I i) m) ^ (Fintype.card ι - 1)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i`. Simplify using `only [e, map_prod]`. Rewrite using `[Finset.prod_congr rfl (g := fun _ => Ideal.Quotient.mk (I i) m), Finset.prod_const, Finset.card_erase_of_mem (Finset.mem_univ i), Finset.card_univ]`. Introduce `j hj`. Establish `hij : i ≠ j` using `Ne.symm (Finset.mem_erase.mp hj).1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ideal.Quotient.eq.mpr (hq i j hij).2).symm`. Use `choose c hc using fun i => Ideal.Quotient.mk_surjective (I := I i) (b' i)`. Use `⟨∑ i, e i * c i, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum, Finset.sum_eq_single i]`. Rewrite using `[map_mul, he_mod, hc]`.
-
-Introduce `j _ hji`. Rewrite using `[map_mul, Ideal.Quotient.eq_zero_iff_mem.mpr (he_mem j i hji), zero_mul]`. Introduce `h`. Conclude with `(h (Finset.mem_univ i)).elim`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_pow_mul_mem_range {B : Type} [CommRing B] {ι : Type} [Fintype ι] [DecidableEq ι]
     (I : ι → Ideal B) (m : B) (hm : ∀ i j, i ≠ j → m ∈ I i ⊔ I j)
@@ -84,17 +82,15 @@ theorem exists_pow_mul_mem_range {B : Type} [CommRing B] {ι : Type} [Fintype ι
   · intro h; exact (h (Finset.mem_univ i)).elim
 
 /- English proof (translation)
-Introduce `B _ _`. Use `haveI : IsNoetherian ℤ B := isNoetherian_of_isNoetherianRing_of_finite ℤ B`. Use `haveI : IsNoetherianRing B := isNoetherian_of_tower ℤ inferInstance`. Use `haveI : Finite (minimalPrimes B) := (minimalPrimes.finite_of_isNoetherianRing B).to_subtype`. Use `letI : Fintype (minimalPrimes B) := Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hpair : ∀ P Q : minimalPrimes B, ∃ m : ℕ, m ≠ 0 ∧ (P ≠ Q → (m : B) ∈ (P : Ideal B) ⊔ Q)`. Introduce `P Q`. Distinguish the cases in `h : P = Q`. Conclude with `⟨1, one_ne_zero, fun h' => (h' h).elim⟩`. Take `⟨m, hm0, hm⟩` from `exists_nat_mem_sup B P.2 Q.2 (fun e => h (Subtype.ext e))`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨m, hm0, fun _ => hm⟩`. Use `choose f hf0 hf using hpair`. Set `m : ℕ` to `∏ p : minimalPrimes B × minimalPrimes B, f p.1 p.2`. Establish `hm0 : m ≠ 0` using `Finset.prod_ne_zero_iff.mpr fun p _ => hf0 p.1 p.2`. Establish `hm : ∀ P Q : minimalPrimes B, P ≠ Q → (m : B) ∈ (P : Ideal B) ⊔ Q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `P Q hPQ`. Take `⟨c, hc⟩` from `Finset.dvd_prod_of_mem (fun p : minimalPrimes B × minimalPrimes B => f p.1 p.2) (Finset.mem_univ (P, Q))`. Express the relevant statement in the definitionally equal form `((∏ p : minimalPrimes B × minimalPrimes B, f p.1 p.2 : ℕ) : B) ∈ _`. Rewrite using `[hc, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ (hf P Q hPQ)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨m ^ (Fintype.card (minimalPrimes B) - 1), pow_ne_zero _ hm0, fun b' => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `exists_pow_mul_mem_range (fun P : minimalPrimes B => (P : Ideal B)) (m : B) hm b'`. Use `⟨a, funext fun P => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk (P : Ideal B) a = _`. Rewrite using `[ha P, Pi.mul_apply, Pi.natCast_apply, map_natCast]`.
-
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_nat_mul_mem_range_pi_quotient_minimalPrimes : ∀ (B : Type) [CommRing B] [Module.Finite ℤ B], ∃ n : ℕ, n ≠ 0 ∧
     ∀ b' : ((P : minimalPrimes B) → B ⧸ (P : Ideal B)),

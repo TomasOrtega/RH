@@ -10,7 +10,7 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 namespace GlobalTheory.BCen.SuppEmbed
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π hs hi`. Take `⟨t, x, hx, hc, φ, hφ⟩` from `GlobalTheory.CompanionTheory.SubEmb.subEmbedding_of_stage GlobalTheory.CompanionTheory.ProdStage.prod₂_prodIrr_append k n V π hs hi`. Establish `hsupp : HasSupport π (Finset.univ.val.map x)` using `hasSupport_of_isSubquotient hi hc (.of_injective φ hφ)`. Use `⟨t, x, hx, φ, hc, hφ, fun s => ⟨fun h => ?_, fun h => h ▸ hsupp⟩⟩` and prove the remaining obligations. Conclude with `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique GlobalTheory.CompanionTheory.GeoLink.geometricLemma GlobalTheory.bernsteinZelevinskyFiniteness_holds hsupp h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_embedding_prodIrr_support : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V]

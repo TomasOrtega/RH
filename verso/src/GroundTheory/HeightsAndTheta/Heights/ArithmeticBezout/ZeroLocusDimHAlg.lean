@@ -10,11 +10,9 @@ noncomputable section
 namespace ZeroLocusDimH
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (PrimeSpectrum A) with hA | hA` into its components or cases. Rewrite using `[ringKrullDim, Order.krullDim_eq_bot]`. Conclude with `bot_le`. Rewrite using `[ringKrullDim, Order.krullDim_eq_iSup_length]`. Rewrite using `[WithBot.coe_iSup (OrderTop.bddAbove _)]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `iSup_le fun l => ?_` and prove the remaining obligations. Take `⟨P, -, hP, hPl⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral l.head.asIdeal (⊥ : Ideal R) (by rw [← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).1 h]; exact bot_le)`. Establish `: P.LiesOver l.head.asIdeal` using `⟨hPl.symm⟩`. Take `⟨L, hL, -, -⟩` from `Ideal.exists_ltSeries_of_hasGoingUp l P`. Rewrite using `[← hL]`.
-
-Conclude with `Order.LTSeries.length_le_krullDim L`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_le_of_isIntegral_inj {A R : Type*} [CommRing A] [CommRing R] [Algebra A R]
     [Algebra.IsIntegral A R] (h : Function.Injective (algebraMap A R)) :
@@ -33,11 +31,9 @@ theorem ringKrullDim_le_of_isIntegral_inj {A R : Type*} [CommRing A] [CommRing R
   exact Order.LTSeries.length_le_krullDim L
 
 /- English proof (translation)
-Establish `: Module.IsTorsionFree R A` using `Module.isTorsionFree_iff_algebraMap_injective.2 hinj`. Establish `hx : IsIntegral R x` using `Algebra.IsIntegral.isIntegral x`. Introduce `h0`. Establish `hdvd` using `minpoly.isIntegrallyClosed_dvd hx h0`. Establish `hmon` using `minpoly.monic hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : Polynomial.derivative (minpoly R x) ≠ 0`. Introduce `hd`. Conclude with `(minpoly.natDegree_pos hx).ne' (Polynomial.derivative_eq_zero.1 hd)`. Establish `h1` using `Polynomial.degree_le_of_dvd hdvd hne`. Establish `h2` using `Polynomial.degree_derivative_lt hmon.ne_zero`.
-
-Conclude with `absurd h1 (not_le.2 h2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aeval_derivative_minpoly_ne_zero {R A : Type*} [CommRing R] [IsDomain R]
     [IsIntegrallyClosed R] [CharZero R] [CommRing A] [IsDomain A] [Algebra R A]
@@ -56,15 +52,15 @@ theorem aeval_derivative_minpoly_ne_zero {R A : Type*} [CommRing R] [IsDomain R]
   exact absurd h1 (not_le.2 h2)
 
 /- English proof (translation)
-Establish `: Nontrivial (MvPolynomial (Fin n) ℂ ⧸ p)` using `Ideal.Quotient.nontrivial_iff.2 hp.ne_top`. Take `⟨s, g, hinj, hint⟩` from `exists_integral_inj_algHom_of_fg ℂ (MvPolynomial (Fin n) ℂ ⧸ p)`. Set `_ : Algebra (MvPolynomial (Fin s) ℂ) (MvPolynomial (Fin n) ℂ ⧸ p)` to `g.toRingHom.toAlgebra`. Establish `: Algebra.IsIntegral (MvPolynomial (Fin s) ℂ) (MvPolynomial (Fin n) ℂ ⧸ p)` using `⟨hint⟩`. Establish `hdim : ringKrullDim (MvPolynomial (Fin s) ℂ) = s`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_field]`. Simplify using the standard rewrite rules. Use `⟨s, hdim ▸ ringKrullDim_le_of_isIntegral_inj hinj, ?_⟩` and prove the remaining obligations. Use `choose π hπ using fun j : Fin s => Ideal.Quotient.mk_surjective (I := p) (g (X j))`. Establish `hcomp : (Ideal.Quotient.mk p).comp (MvPolynomial.aeval π).toRingHom = algebraMap (MvPolynomial (Fin s) ℂ) (MvPolynomial (Fin n) ℂ ⧸ p)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `MvPolynomial.ringHom_ext (fun a => ?_) (fun j => ?_)` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_C]`. Express the relevant statement in the definitionally equal form `_ = g (C a)`. Rewrite using `[← MvPolynomial.algebraMap_eq, g.commutes]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, MvPolynomial.aeval_X]`. Conclude with `hπ j`. Establish `hkey : ∀ (Q : Polynomial (MvPolynomial (Fin s) ℂ)) (i : Fin n), Ideal.Quotient.mk p (Q.eval₂ (MvPolynomial.aeval π).toRingHom (X i)) = Polynomial.aeval (Ideal.Quotient.mk p (X i)) Q`. Introduce `Q i`. Rewrite using `[Polynomial.hom_eval₂, hcomp, Polynomial.aeval_def]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hx : ∀ i : Fin n, IsIntegral (MvPolynomial (Fin s) ℂ) (Ideal.Quotient.mk p (X i))` using `fun i => Algebra.IsIntegral.isIntegral _`. Use `⟨π, fun i => minpoly (MvPolynomial (Fin s) ℂ) (Ideal.Quotient.mk p (X i)), fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, hkey, minpoly.aeval]`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, hkey]`. Conclude with `aeval_derivative_minpoly_ne_zero hinj _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_simple_root_data {n : ℕ} (p : Ideal (MvPolynomial (Fin n) ℂ)) [hp : p.IsPrime] :
     ∃ s : ℕ, (s : WithBot ℕ∞) ≤ ringKrullDim (MvPolynomial (Fin n) ℂ ⧸ p) ∧

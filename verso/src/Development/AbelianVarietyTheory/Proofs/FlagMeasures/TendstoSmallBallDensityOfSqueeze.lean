@@ -6,13 +6,11 @@ open Filter Topology Set
 namespace GlobalTheory.IwConst
 
 /- English proof (translation)
-Establish `hs' : Tendsto (fun r : ℝ => s * r) (𝓝[>] (0 : ℝ)) (𝓝[>] (0 : ℝ))`. Use `tendsto_nhdsWithin_of_tendsto_nhds_of_eventually_within _ ?_ ?_` and prove the remaining obligations. Establish `h0 : Tendsto (fun r : ℝ => s * r) (𝓝 (0 : ℝ)) (𝓝 (s * 0))` using `(continuous_const.mul continuous_id).tendsto 0`. Rewrite `h0` using `[mul_zero]`. Conclude with `h0.mono_left nhdsWithin_le_nhds`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [self_mem_nhdsWithin] with r hr`. Conclude with `mul_pos hs hr`. Establish `h1` using `ENNReal.Tendsto.const_mul (a := ENNReal.ofReal (s ^ d)) (hb.comp hs') (Or.inr ENNReal.ofReal_ne_top)`. Establish `h2` using `ENNReal.Tendsto.const_mul (a := ENNReal.ofReal c) h1 (Or.inr ENNReal.ofReal_ne_top)`. Rewrite `h2` using `[← mul_assoc, ← ENNReal.ofReal_mul hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `h2.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with r hr`. Establish `hsd : ENNReal.ofReal (s ^ d) ≠ 0`. Rewrite using `[Ne, ENNReal.ofReal_eq_zero, not_le]`. Conclude with `pow_pos hs d`.
-
-Simplify using `only [Function.comp]`. Rewrite using `[mul_pow, ENNReal.ofReal_mul (pow_nonneg hs.le d), ← mul_div_assoc, ENNReal.mul_div_mul_left _ _ hsd ENNReal.ofReal_ne_top, mul_div_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tendsto_scale_div_pow (b : ℝ → ENNReal) (d : ℕ) (v : ENNReal) (s : ℝ) (hs : 0 < s)
     (c : ℝ) (hc : 0 ≤ c)
@@ -42,9 +40,9 @@ theorem tendsto_scale_div_pow (b : ℝ → ENNReal) (d : ℕ) (v : ENNReal) (s :
     ENNReal.mul_div_mul_left _ _ hsd ENNReal.ofReal_ne_top, mul_div_assoc]
 
 /- English proof (translation)
-Establish `h1 : Tendsto (fun η : ℝ => ENNReal.ofReal (g η)) (𝓝[>] (0 : ℝ)) (𝓝 1)`. Establish `h` using `(ENNReal.continuous_ofReal.tendsto (g 0)).comp hg.tendsto`. Rewrite `h` using `[h0, ENNReal.ofReal_one]`. Conclude with `h.mono_left nhdsWithin_le_nhds`. Establish `h2` using `ENNReal.Tendsto.mul_const (b := v) h1 (Or.inr hv)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[one_mul]`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_ofReal_mul_of_one (g : ℝ → ℝ) (v : ENNReal) (hv : v ≠ ⊤)
     (hg : ContinuousAt g 0) (h0 : g 0 = 1) :
@@ -58,15 +56,15 @@ theorem tendsto_ofReal_mul_of_one (g : ℝ → ℝ) (v : ENNReal) (hv : v ≠ �
   exact h2
 
 /- English proof (translation)
-Use `tendsto_order.2 ⟨fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hg : ContinuousAt (fun η : ℝ => (1 + η)⁻¹ * ((1 + η)⁻¹) ^ d) 0` using `by fun_prop (disch := norm_num)`. Establish `hg0 : (fun η : ℝ => (1 + η)⁻¹ * ((1 + η)⁻¹) ^ d) 0 = 1` using `by simp`. Establish `hT` using `tendsto_ofReal_mul_of_one _ v hv hg hg0`. Take `⟨η, hη, hηpos⟩` from `((tendsto_order.1 hT).1 a ha |>.and self_mem_nhdsWithin).exists`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hη0 : (0 : ℝ) < η` using `hηpos`. Establish `h1η : (0 : ℝ) < 1 + η` using `by linarith`. Take `⟨b, hb, hev⟩` from `h η hη0`. Establish `hL` using `tendsto_scale_div_pow b d v ((1 + η)⁻¹) (inv_pos.2 h1η) ((1 + η)⁻¹) (inv_nonneg.2 h1η.le) hb hv`. Use `filter_upwards [(tendsto_order.1 hL).1 a hη, hev] with r hr1 hr2`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `lt_of_lt_of_le hr1 (ENNReal.div_le_div_right ?_ _)` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← div_eq_inv_mul]`. Conclude with `hr2.1`. Use `_ = f r := by`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc, ← ENNReal.ofReal_mul (inv_nonneg.2 h1η.le), inv_mul_cancel₀ h1η.ne', ENNReal.ofReal_one, one_mul]`. Establish `hg : ContinuousAt (fun η : ℝ => (1 + η) * (1 + η) ^ d) 0` using `by fun_prop`. Establish `hg0 : (fun η : ℝ => (1 + η) * (1 + η) ^ d) 0 = 1` using `by simp`. Establish `hT` using `tendsto_ofReal_mul_of_one _ v hv hg hg0`. Take `⟨η, hη, hηpos⟩` from `((tendsto_order.1 hT).2 a ha |>.and self_mem_nhdsWithin).exists`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hη0 : (0 : ℝ) < η` using `hηpos`. Take `⟨b, hb, hev⟩` from `h η hη0`. Establish `hU` using `tendsto_scale_div_pow b d v (1 + η) (by linarith) (1 + η) (by linarith) hb hv`. Use `filter_upwards [(tendsto_order.1 hU).2 a hη, hev] with r hr1 hr2`. Conclude with `lt_of_le_of_lt (ENNReal.div_le_div_right hr2.2 _) hr1`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_div_pow_of_squeeze (f : ℝ → ENNReal) (d : ℕ) (v : ENNReal) (hv : v ≠ ⊤)
     (h : ∀ η : ℝ, 0 < η → ∃ b : ℝ → ENNReal,

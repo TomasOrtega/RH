@@ -7,7 +7,7 @@ open Matrix MeasureTheory PositivityTheory.Rg.BcB PositivityTheory.Rg.Tf.Loc Glo
 open scoped ENNReal
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.LocVan.NormaliserAbs.exists_normaliser | exact GlobalTheory.CompanionTheory.LocVan.NormaliserAbs.exists_normaliser | (intros; apply GlobalTheory.CompanionTheory.LocVan.NormaliserAbs.exists_normaliser <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.integral_fiber_decomposition_invariant : ∀ {H X : Type} [MeasurableSpace H] [MeasurableSpace X] (ν : Measure H) [SFinite ν]
   (act : H → X → X), Measurable (fun p : H × X => act p.1 p.2) →

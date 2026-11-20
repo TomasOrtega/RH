@@ -20,7 +20,7 @@ noncomputable section
 namespace GlobalTheory.TanBasis
 
 /- English proof (translation)
-Introduce `R _ _ G _ _ hG`. Conclude with `GlobalTheory.RayBasis.exists_basis hG`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_basis_tanM : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], Smooth G.hom → ∃ n : ℕ, Nonempty (Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G)) := by
   intro R _ _ G _ _ hG

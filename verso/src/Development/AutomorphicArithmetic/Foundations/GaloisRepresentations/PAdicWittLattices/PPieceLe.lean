@@ -5,7 +5,7 @@ open UpperTheory.Gal.Int.Geo (FEt Cover gen piece IsHEig)
 universe u v
 
 /- English proof (translation)
-Establish `hu : IsUnit ((l : Ω))` using `h.isUnit`. Use `hu.map (Scheme.ΓSpecIso (CommRingCat.of Ω)).inv.hom` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem unit_sp (l : ℕ) (Ω : Type) [Field Ω] (h : (l : Ω) ≠ 0) : IsUnit (l : Γ(sp Ω, ⊤)) := by
   have hu : IsUnit ((l : Ω)) := h.isUnit
@@ -13,7 +13,7 @@ private theorem unit_sp (l : ℕ) (Ω : Type) [Field Ω] (h : (l : Ω) ≠ 0) : 
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[LinearMap.baseChange_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem bc_apply {R : Type} [CommRing R] (L : Type) [CommRing L] [Algebra R L] {M N P : Type*}
     [AddCommGroup M] [AddCommGroup N] [AddCommGroup P] [Module R M] [Module R N] [Module R P]
@@ -22,7 +22,7 @@ private theorem bc_apply {R : Type} [CommRing R] (L : Type) [CommRing L] [Algebr
   rw [LinearMap.baseChange_comp]; rfl
 
 /- English proof (translation)
-Use `⟨inferInstance, inferInstance, fun K _ _ x => ?_⟩` and prove the remaining obligations. Use `Nat.card_eq_one_iff_unique.mpr ⟨⟨fun a b => Subtype.ext ?_⟩, ⟨⟨x ≫ inv f, by simp⟩⟩⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono f, a.2, b.2]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem fEt_iso {Y Z : Scheme.{0}} (f : Y ⟶ Z) [IsIso f] : FEt f 1 := by
   refine ⟨inferInstance, inferInstance, fun K _ _ x => ?_⟩
@@ -30,13 +30,13 @@ private theorem fEt_iso {Y Z : Scheme.{0}} (f : Y ⟶ Z) [IsIso f] : FEt f 1 := 
   rw [← cancel_mono f, a.2, b.2]
 
 /- English proof (translation)
-Introduce `hEt hBc hExt hExtTr hHop hCov l _ k L O _ _ _ _ _ hl H θ C hC Ω _ _`. Establish `hlΩ : ((l : ℕ) : Ω) ≠ 0`. Introduce `h0`. Apply `hl` to reduce the goal to its premises. Establish `: algebraMap k Ω (l : k) = 0` using `by simpa using h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `(algebraMap k Ω).injective (by simpa using this)`. Establish `hT0 : (etG l k Ω).Good` using `hBc _ _ (hEt l _ (unit_sp l Ω hlΩ))`. Establish `hT : ((etG l k Ω).ext L).Good` using `hExt _ L hT0`. Use `haveI : CharZero L := charZero_of_injective_algebraMap (algebraMap ℚ_[l] L).injective`. Take `⟨hinj, hsurj⟩` from `hCov C hC ((etG l k Ω).ext L) hT`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hinj, fun y hy => hsurj y ?_⟩` and prove the remaining obligations. Introduce `g hiso hθ`. Use `haveI := hiso`. Take `⟨tr0, htr0⟩` from `hT0.tr H.q (H.s g ≫ H.q) (H.s g) rfl`. Use `⟨tr0.baseChange L, hExtTr _ L H.q (H.s g ≫ H.q) (H.s g) tr0 htr0, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hop_eq` using `(hHop l hl H Ω g 1 (fEt_iso (H.s g))).2 tr0 htr0`. Establish `hy' : y ∈ Module.End.eigenspace ((hop l H Ω g).baseChange L) (θ g)` using `(Submodule.mem_iInf _).1 hy g`. Rewrite `hy'` using `[Module.End.mem_eigenspace_iff, hθ, one_smul, hop_eq]`. Express the relevant statement in the definitionally equal form `tr0.baseChange L (((etG l k Ω).pull (H.t g) _).baseChange L y) = y`. Conclude with `(bc_apply L _ _ y).symm.trans hy'`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G3.pPieceLe :
     EtGood → BcGood.{1} → ExtGood.{1} → (∀ {B : Scheme.{0}} {R : Type} [Field R] (T : Th.{1} B R) (L : Type) [Field L] [Algebra R L] {Z Y : Scheme.{0}} (p : Z ⟶ B) (q : Y ⟶ B) (s : Y ⟶ Z) (tr : T.H q →ₗ[R] T.H p), T.IsTr p q s tr → (T.ext L).IsTr p q s (tr.baseChange L)) → HopSpec → CoverInv.{1} → PieceLe := by

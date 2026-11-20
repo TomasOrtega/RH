@@ -25,7 +25,7 @@ def evV (v : InfinitePlace I.F) : Formalism.MainNotions.GlobalTheoryTheory.Genus
       (RingHom.fst (InfiniteAdeleRing I.F) (FiniteAdeleRing (𝓞 I.F) I.F)))
 
 /- English proof (translation)
-Use `first`. Consider the case `(exact InfinitePlace.Completion.extensionEmbedding_coe v ((WithAbs.equiv v.1).symm a))`. Consider the case `(have h := InfinitePlace.Completion.extensionEmbedding_coe v ((WithAbs.equiv v.1).symm a); simp only [Equiv.apply_symm_apply] at h; exact h)`. Consider the case `(simp [evV]; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem evV_algebraMap (v : InfinitePlace I.F) (a : I.F) :
     evV I v (algebraMap I.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) a) = v.embedding a := by
@@ -43,7 +43,7 @@ def thetaV (v : InfinitePlace I.F) : Formalism.MainNotions.GlobalTheoryTheory.Ge
     (fun _ _ => Commute.all _ _)).toRingHom
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp [thetaV]; done)`. Consider the case `(exact Algebra.TensorProduct.lift_tmul _ _ _ a x)`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem thetaV_tmul (v : InfinitePlace I.F) (a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) (x : I.E) :
     thetaV I v (a ⊗ₜ[I.F] x) = evV I v a * I.φ v x := by
@@ -60,7 +60,7 @@ def tauF : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[
     (fun _ _ => Commute.all _ _)).toRingHom
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp [tauF, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sndA, Algebra.TensorProduct.tmul_mul_tmul]; done)`. Consider the case `(show (1 : I.E) ⊗ₜ[I.F] a.2 * x ⊗ₜ[I.F] (1 : Formalism.MainNotions.S.Af I.F) = _`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one])`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauF_tmul (a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) (x : I.E) :
     tauF I (a ⊗ₜ[I.F] x) = x ⊗ₜ[I.F] a.2 := by
@@ -114,12 +114,12 @@ def AdelicIsomorphism : Prop := AdBridgeIso I ∧ AdBridgeGF I ∧ AdBridgeK I
 def toHA (hb : AdBridgeIso I) : I.GA ≃ₜ* HAd I := hb.choose
 
 /- English proof (translation)
-The claim follows from `hb.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem toHA_isBridge (hb : AdBridgeIso I) : IsBridge I (toHA I hb) := hb.choose_spec
 
 /- English proof (translation)
-Establish `h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) x = (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) ⊗ₜ[I.F] x` using `rfl`. Rewrite using `[h, thetaV_tmul, map_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaV_inclR (v : InfinitePlace I.F) (x : I.E) :
     thetaV I v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) x) = I.φ v x := by
@@ -128,7 +128,7 @@ theorem thetaV_inclR (v : InfinitePlace I.F) (x : I.E) :
   rw [h, thetaV_tmul, map_one, one_mul]
 
 /- English proof (translation)
-Establish `h : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) x = (1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) ⊗ₜ[I.F] x` using `rfl`. Rewrite using `[h, tauF_tmul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tauF_inclR (x : I.E) :
     tauF I (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) x) =
@@ -139,17 +139,15 @@ theorem tauF_inclR (x : I.E) :
   rfl
 
 /- English proof (translation)
-Establish `hv : v.IsReal` using `by first`. Consider the case `exact I.cm.totReal.isReal v`. Consider the case `(haveI := I.cm.totReal; exact NumberField.IsTotallyReal.isReal v)`. Establish `hc : Continuous (InfinitePlace.Completion.extensionEmbedding v)` using `by first`. Consider the case `exact (InfinitePlace.Completion.isometry_extensionEmbedding v).continuous`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `fun_prop`. Establish `hK : ∀ y : I.F, starRingEnd ℂ (v.embedding y) = v.embedding y`. Introduce `y`. Use `first`. Consider the case `exact RingHom.congr_fun (NumberField.ComplexEmbedding.isReal_iff.mp (InfinitePlace.isReal_iff.mp hv)) y`.
+Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately.
 
-Consider the case `simpa using RingHom.congr_fun (NumberField.ComplexEmbedding.isReal_iff.mp (InfinitePlace.isReal_iff.mp hv)) y`. Establish `key : ∀ c : v.Completion, starRingEnd ℂ (InfinitePlace.Completion.extensionEmbedding v c) = InfinitePlace.Completion.extensionEmbedding v c`. Introduce `c`. Use `first`. Consider the case `(refine InfinitePlace.Completion.induction_on c (isClosed_eq (Complex.continuous_conj.comp hc) hc) ?_; intro y; first | (rw [InfinitePlace.Completion.extensionEmbedding_coe]; exact hK _) | (simp only [InfinitePlace.Completion.extensionEmbedding_coe]; exact hK _) | (simp [Infinite …`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(refine (InfinitePlace.Completion.denseRange_coe (v := v)).induction_on c (isClosed_eq (Complex.continuous_conj.comp hc) hc) ?_; intro y; first | (rw [InfinitePlace.Completion.extensionEmbedding_coe]; exact hK _) | (simp only [InfinitePlace.Completion.extensionEmbedding_coe]; exa …`. Consider the case `(refine (InfinitePlace.Completion.denseRange_coe v).induction_on c (isClosed_eq (Complex.continuous_conj.comp hc) hc) ?_; intro y; first | (rw [InfinitePlace.Completion.extensionEmbedding_coe]; exact hK _) | (simp only [InfinitePlace.Completion.extensionEmbedding_coe]; exact hK _ …`. Consider the case `(obtain ⟨c'⟩ := c; refine UniformSpace.Completion.induction_on c' (isClosed_eq (Complex.continuous_conj.comp (hc.comp (by fun_prop))) (hc.comp (by fun_prop))) ?_; intro y; first | (rw [InfinitePlace.Completion.extensionEmbedding_coe]; exact hK _) | (simp only [InfinitePlace.Compl …`. Establish `hreal : ∀ a : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F, starRingEnd ℂ (evV I v a) = evV I v a` using `fun a => key (a.1 v)`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Treat this case separately. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a y`. Establish `hs : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig (a ⊗ₜ[I.F] y) = a ⊗ₜ[I.F] I.cm.sig y` using `rfl`. Rewrite using `[hs, thetaV_tmul, thetaV_tmul, map_mul, hreal]`. Use `congr 1`.
-
-Conclude with `I.cm.cmUnram.2.1 (I.φ v) y`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem thetaV_sigR (v : InfinitePlace I.F) (x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) :
     thetaV I v (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig x) =
@@ -190,11 +188,11 @@ theorem thetaV_sigR (v : InfinitePlace I.F) (x : Formalism.MainNotions.GlobalThe
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Establish `hh : hmat I h = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F))` using `by first`. Consider the case `(unfold hmat; rw [hγ]; rfl)`. Consider the case `(simp only [hmat, hγ]; rfl)`. Consider the case `(simp only [hmat, hγ]; done)`. Consider the case `(rw [show hmat I h = ((Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J h : GL (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E)) : Matrix (Fin I. …`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `key : (hmat I h).map (thetaV I v) = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v)`. Rewrite using `[hh]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `thetaV_inclR I v _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Unfold `ofHAInf`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofHAInf_rat (h : HAd I) (γ : GL (Fin I.n) I.E)
     (hγ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J h =
@@ -218,9 +216,9 @@ theorem ofHAInf_rat (h : HAd I) (γ : GL (Fin I.n) I.E)
   rw [key]
 
 /- English proof (translation)
-Establish `hh : hmat I h = (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.inclR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F))` using `by first`. Consider the case `(unfold hmat; rw [hγ]; rfl)`. Consider the case `(simp only [hmat, hγ]; rfl)`. Consider the case `(simp only [hmat, hγ]; done)`. Consider the case `(rw [show hmat I h = ((Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J h : GL (Fin I.n) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E)) : Matrix (Fin I. …`.
+Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Unfold `ofHAFin`. Rewrite using `[hh]`. Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Conclude with `tauF_inclR I _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofHAFin_rat (h : HAd I) (γ : GL (Fin I.n) I.E)
     (hγ : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.HA.mat (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig I.J h =
@@ -242,17 +240,15 @@ theorem ofHAFin_rat (h : HAd I) (γ : GL (Fin I.n) I.E)
   exact tauF_inclR I _
 
 /- English proof (translation)
-Establish `hM : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig) (hmat I h) * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (Formalism.MainNotions.GlobalTheoryTheory.Ge …` using `h.2`. Establish `h1 : (Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig) (hmat I h)).map (thetaV I v) = ((hmat I h).map (thetaV I v))ᴴ`. Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, Matrix.map_apply, Matrix.transpose_apply, Matrix.conjTranspose_apply]`. Rewrite using `[thetaV_sigR, starRingEnd_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.J).map (thetaV I v) = I.J.map (I.φ v)`. Use extensionality with `i j`. Simplify using `only [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, Matrix.map_apply]`. Conclude with `thetaV_inclR I v _`. Establish `hA : ((hmat I h).map (thetaV I v))ᴴ * I.J.map (I.φ v) * (hmat I h).map (thetaV I v) = I.J.map (I.φ v)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun X => X.map (thetaV I v)) hM`. Simplify using `only [Matrix.map_mul] at h3`. Rewrite `h3` using `[h1, h2]`. Conclude with `h3`. Establish `hPu : IsUnit (I.P v).det` using `(Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPP : I.P v * (I.P v)⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hPu`. Establish `hPPh : ((I.P v)⁻¹)ᴴ * (I.P v)ᴴ = 1`. Rewrite using `[← Matrix.conjTranspose_mul, hPP, Matrix.conjTranspose_one]`. Unfold `Formalism.REAL.inUJ ofHAInf`. Rewrite using `[← I.P_spec v]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = (I.P v)ᴴ * (((hmat I h).map (thetaV I v))ᴴ * I.J.map (I.φ v) * (hmat I h).map (thetaV I v)) * I.P v := by`. Rewrite using `[hPPh, hPP]`. Simplify using `only [Matrix.mul_one]`.
-
-Use `_ = _ := by rw [hA]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ofHAInf_mem (h : HAd I) (v : InfinitePlace I.F) : Formalism.REAL.inUJ (I.ε v) (ofHAInf I h v) := by
   have hM : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig) (hmat I h) *
@@ -290,9 +286,9 @@ theorem ofHAInf_mem (h : HAd I) (v : InfinitePlace I.F) : Formalism.REAL.inUJ (I
     _ = _ := by rw [hA]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y`. Establish `hs : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig (a ⊗ₜ[I.F] y) = a ⊗ₜ[I.F] I.cm.sig y` using `rfl`. Rewrite using `[hs, tauF_tmul, tauF_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Both sides reduce to the same expression. Treat this case separately.
 -/
 private theorem tauF_sigR_comm (x : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F ⊗[I.F] I.E) :
     tauF I (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig x) =
@@ -307,11 +303,11 @@ private theorem tauF_sigR_comm (x : Formalism.MainNotions.GlobalTheoryTheory.Gen
   | add a b ha hb => simp only [map_add, ha, hb]
 
 /- English proof (translation)
-Establish `hM : Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig) (hmat I h) * Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (Formalism.MainNotions.GlobalTheoryTheory.Ge …` using `h.2`. Establish `h1 : (Formalism.UG.cT (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.cm.sig) (hmat I h)).map (tauF I) = Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Formalism.MainNotions.S.Af I.F)) (ofHAFin I h …`. Use extensionality with `i j`. Simplify using `only [Formalism.UG.cT, ofHAFin, Matrix.map_apply, Matrix.transpose_apply]`. Conclude with `tauF_sigR_comm I _`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.AF I.F) I.J).map (tauF I) = I.J.map (Formalism.UG.inclE (F` using `I.F) (Formalism.MainNotions.S.Af I.F)) := by`. Use extensionality with `i j`. Simplify using `only [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.JR, Matrix.map_apply]`. Conclude with `tauF_inclR I _`. Establish `h3` using `congrArg (fun X => X.map (tauF I)) hM`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Matrix.map_mul] at h3`. Rewrite `h3` using `[h1, h2]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem ofHAFin_mem (h : HAd I) :
     Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Formalism.MainNotions.S.Af I.F)) (ofHAFin I h) *

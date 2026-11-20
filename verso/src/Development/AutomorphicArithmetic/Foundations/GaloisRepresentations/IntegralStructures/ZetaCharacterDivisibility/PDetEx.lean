@@ -18,11 +18,11 @@ open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac 
 open UpperTheory.Gal.Int.Div
 
 /- English proof (translation)
-Establish `hq : (((q : ℝ) ^ (((a : ℝ) - 1) / 2) : ℝ) ^ a : ℝ) = (q : ℝ) ^ (a.choose 2)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg q), ← Real.rpow_natCast (q : ℝ) (a.choose 2), Nat.cast_choose_two]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `hu : ((B.prod : ℂˣ) : ℂ) = (B.map fun α : ℂˣ => (α : ℂ)).prod` using `map_multiset_prod (Units.coeHom ℂ) B`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hm` using `Multiset.prod_map_mul (m := B) (f := fun _ : ℂˣ => (((q : ℝ) ^ (((a : ℝ) - 1) / 2) : ℝ) : ℂ)) (g := fun α : ℂˣ => (α : ℂ))`. Establish `hl : algSat a q B = B.map fun α : ℂˣ => (((q : ℝ) ^ (((a : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ)`. Unfold `algSat`. Express the relevant statement in the definitionally equal form `Multiset.map _ (Multiset.bind B fun α : ℂˣ => {(α : ℂ)}) = _`. Rewrite using `[Multiset.bind_singleton, Multiset.map_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[hl, hm, Multiset.map_const', Multiset.prod_replicate, hB, hu, mul_comm]`. Use `congr 1`. Conclude with `hq` after adjusting the coercions.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem algSat_prod_eq (a q : ℕ) (B : Multiset ℂˣ) (hB : B.card = a) :
     (algSat a q B).prod = ((B.prod : ℂˣ) : ℂ) * (q : ℂ) ^ (a.choose 2) := by
@@ -45,17 +45,17 @@ private theorem algSat_prod_eq (a q : ℕ) (B : Multiset ℂˣ) (hB : B.card = a
   exact_mod_cast hq
 
 /- English proof (translation)
-Introduce `hC E Ω _ _ _ _ _ _ l _ ι a ha U hU`. Take `⟨χ, n, hχ, hval⟩` from `hC E a ha U hU`. Take `⟨L, hL, -⟩` from `UpperTheory.Gal.TP.Sub.charEx E Ω l ι`. Take `⟨ν, hν⟩ : ∃ ν : HChar E, ν.IsAbsPow ((-((a.choose 2 : ℕ) : ℤ) : ℤ) : ℝ)` from `⟨_, GlobalTheory.Mem.Chr.CharModel.absChar_isAbsPow _⟩`. Establish `hνa : IsAlgPos ν (fun _ => -((a.choose 2 : ℕ) : ℤ))` using `AlgExpo.isAlgPos_of_expo E ν _ fun τ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[(InfType.expo_of_infType E ν).2.1 _ hν τ]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hA` using `GlobalTheory.GoodCsdTwist.isAlgPos_mul hχ hνa`. Use `⟨L (χ * ν) (n + fun _ => -((a.choose 2 : ℕ) : ℤ)), (hL _ _ hA).1, fun w hw B hB => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hu, hv⟩` from `hval w hw B hB`. Establish `hcl` using `(hL _ _ hA).2 w (GlobalTheory.GoodCsdTwist.unrAt_mul hu (hν.1 w))`. Establish `hcard : B.card = a`. Take `⟨σ, -, hs⟩` from `hB`. Conclude with `hs.card`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvalue : (((χ * ν).val w : ℂˣ) : ℂ) = (algSat a (normV w) B).prod`. Establish `e : (χ * ν).val w = χ.val w * ν.val w` using `rfl`. Establish `h2 : ((ν.val w : ℂˣ) : ℂ) = ((normV w : ℕ) : ℂ) ^ (a.choose 2)`. Rewrite using `[hν.2.1 w]`. Establish `e2 : -(((((-((a.choose 2 : ℕ) : ℤ) : ℤ) : ℝ)) : ℂ)) = ((a.choose 2 : ℕ) : ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e2, Complex.cpow_natCast]`. Both sides reduce to the same expression. Rewrite using `[e, Units.val_mul, hv, h2, algSat_prod_eq a _ B hcard]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcl` using `[hvalue]`. Conclude with `⟨_, hcl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Div.detEx_of :
     CentU → DetEx := by

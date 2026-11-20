@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.CompanionTheory.DegenSeries
 
 /- English proof (translation)
-Introduce `k _ _ _ _ a b χ₁ χ₂ _ _`. Conclude with `GlobalTheory.SmGL.ParIndAdm.isAdmissible_parInd _ _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isAdmissible_degenerate : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (a b : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ), IsSmoothChar χ₁ → IsSmoothChar χ₂ →

@@ -15,7 +15,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.QFinMain
 
 /- English proof (translation)
-Introduce `D c v t w hc ht hv hW hP j σ h`. Take `⟨F, hF⟩` from `hP`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.twistChainLevelProductOverPlaces_compact_open D c v t w F hF j σ h`. Take `⟨T₁, hT, hS⟩` from `GlobalTheory.T.firstVariable_support_finite_cells_at_twist_places D c v t w F hc ht hv hW hF j σ h`. Conclude with `⟨GlobalTheory.QuotientFiniteLevel.qK F j σ h, T₁, h1, h2, h3, hT, GlobalTheory.T.twistChainLevelProduct_inverse_scalar_laws D c v t w F hc ht hv hW hF j σ h, hS⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem qFin_of_pin : ∀ (D : D7) (c : Comm D) (v : VCom c) (t : Tup c) (w : VTup t), c.Is → t.Is → v.Is → WeilOK (t := t) v → QPin v w → QFin v w := by
   intro D c v t w hc ht hv hW hP j σ h

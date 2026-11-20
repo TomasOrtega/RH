@@ -22,9 +22,9 @@ set_option maxHeartbeats 1600000
 namespace GlobalTheory.LocalInvIdem
 
 /- English proof (translation)
-Proceed by induction on `a using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, RingHom.map_zero _⟩`. Consider the case `add x y hx hy`. Take `⟨p, hp⟩` from `hx`. Take `⟨q, hq⟩` from `hy`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p + q, by rw [RingHom.map_add, hp, hq]⟩`. Consider the case `tmul x y => exact ⟨pairA D.host.F 0 y ⊗ₜ[D.host.F] x, rfl⟩`.
+Supply the required witnesses or components. Treat this case separately.
 -/
 theorem toEAf_surj {D : D7} (a : EAf D) : ∃ α : AE D, toEAf D α = a := by
   induction a using TensorProduct.induction_on with
@@ -36,11 +36,11 @@ theorem toEAf_surj {D : D7} (a : EAf D) : ∃ α : AE D, toEAf D α = a := by
   | tmul x y => exact ⟨pairA D.host.F 0 y ⊗ₜ[D.host.F] x, rfl⟩
 
 /- English proof (translation)
-Establish `hc0 : c ≠ 0`. Introduce `h`. Rewrite `hv1` using `[h, map_zero]`. Conclude with `zero_ne_one hv1`. Take `⟨t, ht⟩` from `hC.1 c⁻¹`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ePP * t, ?_, ?_⟩` and prove the remaining obligations. Use `(hC.2.2.2 t).2 (GlobalTheory.SplitHecke.isInt_Ov.2 ?_)` and prove the remaining obligations. Rewrite using `[ht, HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hv1, inv_one]`. Establish `h1 : π (α * t - 1) = 0`. Rewrite using `[map_sub, map_mul, ht, hc, mul_inv_cancel₀ hc0, map_one, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(hC.2.1 _).1 h1`. Take the linear combination `h2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem inv_of_chart {D : D7} {ePP α : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)} {π : AE D →+* Fv D.host.F v}
     (hC : GlobalTheory.SplitHecke.Chart ePP v π) {c : Fv D.host.F v} (hc : π α = c) (hv1 : Valued.v c = 1) :
@@ -57,13 +57,11 @@ theorem inv_of_chart {D : D7} {ePP α : AE D} {v : HeightOneSpectrum (𝓞 D.hos
     linear_combination h2
 
 /- English proof (translation)
-Take `⟨v, τ, hIdem, hP⟩` from `GlobalTheory.SplitIdemDict.exists_emb hPP`. Establish `hProj` using `(GlobalTheory.SplitIdemDict.isProjAt_iff τ PP).2 hP`. Take `⟨⟨r, -, hr0, -, hrS⟩, -⟩` from `GlobalTheory.PlaceRed.red_dict D v (splitProj τ) PP hProj`. Take `⟨hC, hE, -⟩` from `GlobalTheory.SplitProjChart.chart_rdA D v (splitProj τ) ePP hIdem`. Take `⟨hmem, hrr⟩` from `hrS (toEAf D α) ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩ : ∃ c, GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.rdA (splitProj τ) α = c` from `⟨_, rfl⟩`. Establish `hcE` using `(hE α).trans hc`. Establish `: Nontrivial (Formalism.L2.DIV.kP PP)` using `Ideal.Quotient.nontrivial_iff.2 PP.isPrime.ne_top`. Establish `hv1 : Valued.v c = 1`. Establish `hle : Valued.v c ≤ 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hcE]`. Conclude with `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hmem`. Use `le_antisymm hle (not_lt.1 fun hlt => hu.ne_zero ?_)` and prove the remaining obligations. Rewrite using `[← hrr]`. Use `(hr0 _).2 ?_` and prove the remaining obligations.
-
-Conclude with `(congrArg Valued.v hcE).trans_lt hlt`. Conclude with `inv_of_chart hC hc hv1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_local_inv {D : D7} {PP : Pl D.host.E} {ePP : AE D} (hPP : Formalism.L2.NTheta.IsIdemAt ePP PP)
     (α : AE D) (ha : toEAf D α ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
@@ -87,11 +85,11 @@ theorem exists_local_inv {D : D7} {PP : Pl D.host.E} {ePP : AE D} (hPP : Formali
   exact inv_of_chart hC hc hv1
 
 /- English proof (translation)
-Introduce `D Z e he a ha hZ`. Take `⟨α, rfl⟩` from `toEAf_surj a`. Take `⟨es, hes, hsum⟩` from `he.1`. Establish `key : ∀ PP ∈ Z, ∃ γ : AE D, finPart D γ ∈ intAE D ∧ α * γ = es PP` using `fun PP hPP => exists_local_inv (hes PP hPP) α ha (hZ PP hPP)`. Use `choose! γ hγ1 hγ2 using key`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨toEAf D (∑ PP ∈ Z, γ PP), GlobalTheory.IdemIntegral.toEAf_mem_of_finPart ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum (finPart D)]`. Conclude with `sum_mem fun PP hPP => hγ1 PP hPP`. Establish `hαw : α * ∑ PP ∈ Z, γ PP = e`. Rewrite using `[Finset.mul_sum, hsum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun PP hPP => hγ2 PP hPP`. Establish `hee : e * e = e` using `GlobalTheory.PlaceDatum.idemSum_mul_self he`. Rewrite using `[← map_mul, ← map_mul, hαw, hee]`.
+A detailed English derivation is pending.
 -/
 theorem exists_inv : ∀ {D : D7} (Z : Finset (Pl D.host.E)) (e : AE D), IsIdemSum e Z → ∀ (a : EAf D) (ha : a ∈ Formalism.L2.Herm.intAf D.host.F D.host.E), (∀ PP ∈ Z, IsUnit (Formalism.L2.DIV.resS D.host.F PP ⟨a, ha⟩)) → ∃ w ∈ Formalism.L2.Herm.intAf D.host.F D.host.E, a * w * toEAf D e = toEAf D e := by
   intro D Z e he a ha hZ

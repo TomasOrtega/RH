@@ -13,15 +13,13 @@ namespace GlobalTheory.ModuAdele
 open scoped Pointwise
 
 /- English proof (translation)
-Use `letI : MeasurableSpace (AdeleRing (𝓞 K) K) := GroundTheory.Global.measurableSpace_adeleRing K`. Take `⟨s, hsc, hs0⟩ : ∃ s : Set (AdeleRing (𝓞 K) K), IsCompact s ∧ s ∈ nhds (0 : AdeleRing (𝓞 K) K)` from `exists_compact_mem_nhds 0`. Establish `hpos : 0 ≤ (GroundTheory.Global.IdeleGroup.ideleModule K a : ℝ)` using `(GroundTheory.Global.IdeleGroup.ideleModule K a).2.le`. Use `set r : NNReal := ⟨_, hpos⟩ with hr`. Use `set μ := GroundTheory.Global.adeleMeasure K with hμ`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ν : Measure (AdeleRing (𝓞 K) K) := Measure.addHaar with hν`. Establish `e1` using `Measure.measure_isAddInvariant_eq_smul_of_isCompact_closure μ ν hsc.closure`. Establish `e2` using `Measure.measure_isAddInvariant_eq_smul_of_isCompact_closure μ ν (hsc.smul a).closure`. Establish `hm` using `GroundTheory.Global.adeleMeasure_smul a s`. Use `set c := μ.addHaarScalarFactor ν`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμs : μ s ≠ 0` using `(Measure.measure_pos_of_mem_nhds _ hs0).ne'`. Establish `hνs : ν s ≠ 0` using `(Measure.measure_pos_of_mem_nhds _ hs0).ne'`. Establish `hνs' : ν s ≠ ⊤` using `hsc.measure_lt_top.ne`. Establish `hc : (c : ENNReal) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hμs` to reduce the goal to its premises. Rewrite using `[e1, ENNReal.smul_def, smul_eq_mul, h0, zero_mul]`. Establish `h` using `distribHaarChar_eq_of_measure_smul_eq_mul (g := a) (μ := ν) (s := s) hνs hνs' (r := r) (by`. Rewrite `hm` using `[e1, e2, ENNReal.smul_def, ENNReal.smul_def, smul_eq_mul, smul_eq_mul, ENNReal.ofReal_eq_coe_nnreal hpos]`. Establish `hm' : (c : ENNReal) * ν (a • s) = (c : ENNReal) * ((r : ENNReal) * ν s)`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(ENNReal.mul_right_inj hc ENNReal.coe_ne_top).1 hm')`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem distribHaarChar_adeleRing (K : Type) [Field K] [NumberField K] (a : (AdeleRing (𝓞 K) K)ˣ) :
     (distribHaarChar (AdeleRing (𝓞 K) K) a : ℝ) = (GroundTheory.Global.IdeleGroup.ideleModule K a : ℝ) := by
@@ -57,9 +55,9 @@ theorem distribHaarChar_adeleRing (K : Type) [Field K] [NumberField K] (a : (Ade
 end GlobalTheory.ModuAdele
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ x`. Establish `hf : (Function.mulSupport fun v : HeightOneSpectrum (𝓞 F) => ‖evFin F v (Algebra.norm (AF F) x.1)‖₊).Finite`. Simplify `GlobalTheory.Doubling.finite_mulSupport_absEv x` using `only [GlobalTheory.Doubling.absEv_unitFin]`. Apply `NNReal.eq` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(distribHaarChar (AdeleRing (𝓞 F) F) (Units.map (Algebra.norm (AF F) : AE F E →* AF F) x) : ℝ) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.ModuAdele.distribHaarChar_adeleRing, GroundTheory.Global.IdeleGroup.ideleModule_eq, GlobalTheory.Doubling.absE_apply]`. Simplify using `only [GlobalTheory.Doubling.absEv_unitFin, GlobalTheory.Doubling.absEw_unitInf]`. Rewrite using `[NNReal.coe_mul, NNReal.coe_prod]`. Use `congr 1`. Rewrite using `[show ((∏ᶠ v : HeightOneSpectrum (𝓞 F), ‖evFin F v (Algebra.norm (AF F) x.1)‖₊ : ℝ≥0) : ℝ) = ∏ᶠ v : HeightOneSpectrum (𝓞 F), ((‖evFin F v (Algebra.norm (AF F) x.1)‖₊ : ℝ≥0) : ℝ) from NNReal.toRealHom.toMonoidHom.map_finprod hf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

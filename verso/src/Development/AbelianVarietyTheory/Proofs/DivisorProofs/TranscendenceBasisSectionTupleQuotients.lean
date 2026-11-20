@@ -10,9 +10,9 @@ namespace GlobalTheory.HSAmp.TrBasis
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Use `⟨Polynomial.C (⟨b, hb⟩ : Algebra.adjoin ℤ s) * Polynomial.X - Polynomial.C ⟨a, ha⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Establish `h1` using `congrArg (Polynomial.coeff · 1) h`. Simplify using `at h1`. Conclude with `hb0 (congrArg Subtype.val h1)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_div_cancel₀ _ hb0]`.
+A detailed English derivation is pending.
 -/
 theorem isAlgebraic_div_of_mem {s : Set K} {a b : K} (ha : a ∈ Algebra.adjoin ℤ s)
     (hb : b ∈ Algebra.adjoin ℤ s) (hb0 : b ≠ 0) : IsAlgebraic (Algebra.adjoin ℤ s) (a / b) := by
@@ -24,9 +24,9 @@ theorem isAlgebraic_div_of_mem {s : Set K} {a b : K} (ha : a ∈ Algebra.adjoin 
   · simp [mul_div_cancel₀ _ hb0]
 
 /- English proof (translation)
-Rewrite `ht`, the goal using `[← AlgebraicIndependent.matroid_spanning_iff]`. Rewrite `ht`, the goal using `[Matroid.spanning_iff_closure_eq]`. Use `Set.eq_univ_of_univ_subset ?_` and prove the remaining obligations. Rewrite `ht` using `[AlgebraicIndependent.matroid_e]`. Rewrite using `[← ht]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Matroid.closure_subset_closure_of_subset_closure ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite using `[AlgebraicIndependent.matroid_closure_eq]`. Conclude with `(Subalgebra.mem_algebraicClosure _ _).2 (hts w hw)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_trans [CharZero K] {s t : Set K}
     (ht : Algebra.IsAlgebraic (Algebra.adjoin ℤ t) K)
@@ -43,33 +43,27 @@ theorem isAlgebraic_trans [CharZero K] {s t : Set K}
   exact (Subalgebra.mem_algebraicClosure _ _).2 (hts w hw)
 
 /- English proof (translation)
-Use `haveI : FaithfulSMul ℤ K := (faithfulSMul_iff_algebraMap_injective ℤ K).mpr Int.cast_injective`. Use `set y : Fin (D + 1) → K := fun j => x j / x l with hy`. Establish `hle : ratR x l ≤ (Algebra.adjoin ℤ (Set.range y)).toSubring` using `Subring.closure_le.2 Algebra.subset_adjoin`. Set `φ : ratR x l →+* Algebra.adjoin ℤ (Set.range y)` to `{ toFun := fun v => ⟨v, hle v.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hAlgA : ∀ w ∈ (A : Set K), IsAlgebraic (Algebra.adjoin ℤ (Set.range y)) w` using `fun w hw => (IsIntegral.map_of_comp_eq φ (RingHom.id K) (by ext; rfl) (hint w hw)).isAlgebraic`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hAlgY : Algebra.IsAlgebraic (Algebra.adjoin ℤ (Set.range y)) K`. Use `isAlgebraic_trans (t := (A : Set K)) ⟨fun w => ?_⟩ hAlgA` and prove the remaining obligations. Take `⟨a, ha, b, hb, hb0, rfl⟩` from `hfr w`. Conclude with `isAlgebraic_div_of_mem (Algebra.subset_adjoin ha) (Algebra.subset_adjoin hb) hb0`. Use `set z : Fin D → K := fun j => x (l.succAbove j) / x l with hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hAlgZ : Algebra.IsAlgebraic (Algebra.adjoin ℤ (Set.range z)) K`. Use `isAlgebraic_trans hAlgY ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Break down `Fin.eq_self_or_eq_succAbove l j with h | ⟨j', rfl⟩` into its components or cases. Substitute `h` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hy, div_self hl]`. Conclude with `isAlgebraic_one`. Conclude with `isAlgebraic_algebraMap (⟨z j', Algebra.subset_adjoin ⟨j', rfl⟩⟩ : Algebra.adjoin ℤ (Set.range z))`. Establish `hZ : IsTranscendenceBasis ℤ z` using `Algebra.IsAlgebraic.isTranscendenceBasis_of_le_trdeg_of_finite ℤ z (by rw [htr]; simp)`. Establish `hx : ∀ j, x j ≠ 0`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `j`. Break down `Fin.eq_self_or_eq_succAbove l j with h | ⟨j', rfl⟩` into its components or cases. Conclude with `h ▸ hl`. Introduce `h0`. Conclude with `hZ.1.ne_zero j' (by simp [hz, h0])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `set u : Fin D → K := fun j => x j.succ / x 0 with hu`. Establish `hv : ∀ k, x k / x 0 ∈ Algebra.adjoin ℤ (Set.range u)`. Introduce `k`. Use `Fin.cases ?_ (fun j => ?_) k` and prove the remaining obligations. Rewrite using `[div_self (hx 0)]`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subalgebra.one_mem _`. Conclude with `Algebra.subset_adjoin ⟨j, rfl⟩`. Establish `hAlgU : Algebra.IsAlgebraic (Algebra.adjoin ℤ (Set.range u)) K`. Use `isAlgebraic_trans hAlgZ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : z j = (x (l.succAbove j) / x 0) / (x l / x 0)`. Simplify using `only [hz]`. Clear denominators, using `[hx 0, hl]` for the nonvanishing conditions. Rewrite using `[e]`. Conclude with `isAlgebraic_div_of_mem (hv _) (hv _) (div_ne_zero hl (hx 0))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU : IsTranscendenceBasis ℤ u` using `Algebra.IsAlgebraic.isTranscendenceBasis_of_le_trdeg_of_finite ℤ u (by rw [htr]; simp)`. Use `⟨hx, hU.1, ?_⟩` and prove the remaining obligations. Establish `hleF : ∀ {v : K}, v ∈ Algebra.adjoin ℤ (Set.range u) → v ∈ ratF x` using `fun hv => Algebra.adjoin_le (S := subalgebraOfSubring (ratF x).toSubring) Subfield.subset_closure hv`. Set `ψ : Algebra.adjoin ℤ (Set.range u) →+* ratF x` to `{ toFun := fun v => ⟨v, hleF v.2⟩ map_one' := rfl map_mul' := fun _ _ => rfl map_zero' := rfl map_add' := fun _ _ => rfl }`. Establish `hψ : Function.Injective ψ` using `fun a b h => by`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h'` using `congrArg Subtype.val h`. Conclude with `Subtype.ext h'`. Establish `hAlgF : Algebra.IsAlgebraic (ratF x) K` using `⟨fun w => (hAlgU.isAlgebraic w).ringHom_of_comp_eq ψ (RingHom.id K) hψ (by ext; rfl)⟩`. Take `⟨t, ht⟩` from `hA.out`. Set `T : Set K` to `(Subtype.val : A → K) '' (t : Set A)`.
+Treat this case separately. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Finite T := (t.finite_toSet.image _).to_subtype`. Establish `hfd : FiniteDimensional (ratF x) (IntermediateField.adjoin (ratF x) T)` using `IntermediateField.finiteDimensional_adjoin fun w _ => (hAlgF.isAlgebraic w).isIntegral`. Establish `hmemA : ∀ a : A, (a : K) ∈ IntermediateField.adjoin (ratF x) T`. Introduce `a`. Establish `ha : a ∈ Algebra.adjoin ℤ (t : Set A)` using `ht ▸ Algebra.mem_top`.
-
-Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem c hc => exact IntermediateField.subset_adjoin _ _ ⟨c, hc, rfl⟩`. Consider the case `algebraMap n => simpa using IntermediateField.intCast_mem _ n`. Consider the case `add a b _ _ ha hb => simpa using add_mem ha hb`. Consider the case `mul a b _ _ ha hb => simpa using mul_mem ha hb`.
-
-Establish `htop : IntermediateField.adjoin (ratF x) T = ⊤`. Use `eq_top_iff.2 fun w _ => ?_` and prove the remaining obligations. Take `⟨a, ha, b, hb, _, rfl⟩` from `hfr w`. Conclude with `div_mem (hmemA ⟨a, ha⟩) (hmemA ⟨b, hb⟩)`. Rewrite `hfd` using `[htop]`.
-
-Conclude with `IntermediateField.topEquiv.toLinearEquiv.finiteDimensional`.
+A detailed English derivation is pending.
 -/
 theorem trBasis_of_integral_ratR (K : Type) [Field K] [CharZero K] (D : ℕ) (x : Fin (D + 1) → K) (l : Fin (D + 1))
     (A : Subring K) (htr : Algebra.trdeg ℤ K = D) (hl : x l ≠ 0) (hA : Algebra.FiniteType ℤ A)

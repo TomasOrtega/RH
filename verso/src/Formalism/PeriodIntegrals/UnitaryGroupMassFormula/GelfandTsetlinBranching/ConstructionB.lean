@@ -8,12 +8,12 @@ namespace PI.WGB
 open Formalism.BasicNotions MvPolynomial
 
 /- English proof (translation)
-The claim follows from `stableCompl_B`.
+A detailed English derivation is pending.
 -/
 theorem stable_complement_exists : StableCompl := stableCompl_B
 
 /- English proof (translation)
-The claim follows from `highestVec_B`.
+A detailed English derivation is pending.
 -/
 theorem highest_weight_vector_exists : HighestVec := highestVec_B
 

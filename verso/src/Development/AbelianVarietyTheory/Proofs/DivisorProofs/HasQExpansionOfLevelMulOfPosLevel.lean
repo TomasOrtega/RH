@@ -7,11 +7,11 @@ open GlobalTheory.QFam
 namespace GlobalTheory.QFam
 
 /- English proof (translation)
-Establish `hna : Summable fun n => ‖a n * e n‖` using `summable_norm_iff.mpr ha.summable`. Establish `hnb : Summable fun n => ‖b n * e n‖` using `summable_norm_iff.mpr hb.summable`. Establish `hS : HasSum (fun n => ∑ p ∈ Finset.HasAntidiagonal.antidiagonal n, (a p.1 * e p.1) * (b p.2 * e p.2)) (x * y)`. Rewrite using `[← ha.tsum_eq, ← hb.tsum_eq, tsum_mul_tsum_eq_tsum_sum_antidiagonal_of_summable_norm hna hnb]`. Conclude with `(summable_norm_sum_mul_antidiagonal_of_summable_norm hna hnb).of_norm.hasSum`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hS using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`. Rewrite using `[conv, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun p hp => ?_` and prove the remaining obligations. Rewrite `hp` using `[Finset.HasAntidiagonal.mem_antidiagonal]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp, he]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma hasSum_conv_mul_of_multiplicative {a b : ℕ → ℂ} {e : ℕ → ℂ} {x y : ℂ}
     (he : ∀ m n, e (m + n) = e m * e n)
@@ -31,7 +31,7 @@ private lemma hasSum_conv_mul_of_multiplicative {a b : ℕ → ℂ} {e : ℕ →
   ring
 
 /- English proof (translation)
-Rewrite using `[← Complex.exp_add]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private lemma mvExp_add_character_germs (N : ℕ) (τ : ℍ) (m n : ℕ) :
     Complex.exp (2 * Real.pi * Complex.I * ((m + n : ℕ) : ℂ) * τ / N) =
@@ -43,14 +43,14 @@ private lemma mvExp_add_character_germs (N : ℕ) (τ : ℍ) (m n : ℕ) :
   ring
 
 /- English proof (translation)
-Introduce `τ` and use `hasSum_conv_mul_of_multiplicative (mvExp_add_character_germs N τ) (hf τ) (hg τ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HasQ.mul_conv {N : ℕ} {f g : ℍ → ℂ} {a b : ℕ → ℂ} (hf : HasQ N f a) (hg : HasQ N g b) :
     HasQ N (fun τ => f τ * g τ) (conv a b) :=
   fun τ => hasSum_conv_mul_of_multiplicative (mvExp_add_character_germs N τ) (hf τ) (hg τ)
 
 /- English proof (translation)
-Introduce `N f g a b _ hf hg τ`. Conclude with `hasSum_conv_mul_of_multiplicative (mvExp_add_character_germs N τ) (hf τ) (hg τ)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hasQ_mul_conv : ∀ (N : ℕ) (f g : ℍ → ℂ) (a b : ℕ → ℂ), 0 < N → HasQ N f a → HasQ N g b →
     HasQ N (fun τ => f τ * g τ) (conv a b) := by

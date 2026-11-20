@@ -12,7 +12,7 @@ variable {g : ℕ}
 open scoped ComplexConjugate BigOperators ComplexOrder in
 variable {g : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.Ker.JMB.hf`. Simplify using `only [Pi.smul_apply, smul_eq_mul, Finset.mul_sum, mul_assoc]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.MomOne.LiftChange.hf_smul_left (Hm : Matrix (Fin g) (Fin g) ℂ) (a : ℂ) (x y : Fin g → ℂ) :
     _root_.Formalism.L2.Ker.JMB.hf Hm (a • x) y = a * _root_.Formalism.L2.Ker.JMB.hf Hm x y := by
@@ -22,7 +22,7 @@ theorem _root_.GlobalTheory.MomOne.LiftChange.hf_smul_left (Hm : Matrix (Fin g) 
 open scoped ComplexConjugate BigOperators ComplexOrder in
 variable {g : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.Ker.JMB.hf`. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem _root_.GlobalTheory.MomOne.LiftChange.hf_smul_right (Hm : Matrix (Fin g) (Fin g) ℂ) (a : ℂ) (x y : Fin g → ℂ) :
     _root_.Formalism.L2.Ker.JMB.hf Hm x (a • y) = conj a * _root_.Formalism.L2.Ker.JMB.hf Hm x y := by
@@ -34,7 +34,7 @@ theorem _root_.GlobalTheory.MomOne.LiftChange.hf_smul_right (Hm : Matrix (Fin g)
 open scoped ComplexConjugate BigOperators ComplexOrder in
 variable {g : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.Ker.JMB.hf`. Simplify using `only [Pi.add_apply, add_mul, Finset.sum_add_distrib]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.MomOne.LiftChange.hf_add_left (Hm : Matrix (Fin g) (Fin g) ℂ) (x x' y : Fin g → ℂ) :
     _root_.Formalism.L2.Ker.JMB.hf Hm (x + x') y = _root_.Formalism.L2.Ker.JMB.hf Hm x y + _root_.Formalism.L2.Ker.JMB.hf Hm x' y := by
@@ -44,7 +44,7 @@ theorem _root_.GlobalTheory.MomOne.LiftChange.hf_add_left (Hm : Matrix (Fin g) (
 open scoped ComplexConjugate BigOperators ComplexOrder in
 variable {g : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.Ker.JMB.hf`. Simplify using `only [Finset.sum_apply, Finset.sum_mul]`. Use `conv_rhs => rw [Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.MomOne.LiftChange.hf_sum_left (Hm : Matrix (Fin g) (Fin g) ℂ) {r : ℕ} (x : Fin r → Fin g → ℂ)
     (y : Fin g → ℂ) :
@@ -57,7 +57,7 @@ theorem _root_.GlobalTheory.MomOne.LiftChange.hf_sum_left (Hm : Matrix (Fin g) (
 open scoped ComplexConjugate BigOperators ComplexOrder in
 variable {g : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.Ker.JMB.kap`. Rewrite using `[h, Complex.exp_eq_one_iff]`. Conclude with `⟨-z, by push_cast; ring⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.MomOne.LiftChange.kap_eq_one (Hm : Matrix (Fin g) (Fin g) ℂ)
     (x y : Fin g → ℂ) (z : ℤ) (h : (_root_.Formalism.L2.Ker.JMB.hf Hm x y).im = z) :
@@ -69,23 +69,23 @@ theorem _root_.GlobalTheory.MomOne.LiftChange.kap_eq_one (Hm : Matrix (Fin g) (F
 open scoped ComplexConjugate BigOperators ComplexOrder in
 variable {g : ℕ} in
 /- English proof (translation)
-Unfold `_root_.Formalism.L2.Ker.JMB.OK at h`. Take `⟨u, v, rfl⟩` from `h`. Take `⟨k, rfl⟩ : ∃ k : ℕ, d = 4 * k + 3` from `⟨d / 4, by omega⟩`. Establish `hs : ((√((4 * k + 3 : ℕ) : ℝ) : ℝ) : ℂ) ^ 2 = 4 * (k : ℂ) + 3`. Rewrite using `[← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg _)]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hw : _root_.Formalism.L2.Ker.JMB.w0 (4 * k + 3) = (1 + Complex.I * (√((4 * k + 3 : ℕ) : ℝ) : ℂ)) / 2`. Unfold `_root_.Formalism.L2.Ker.JMB.w0 _root_.Formalism.L2.Ker.JMB.rtd`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression.
 
-Establish `hconj : conj (_root_.Formalism.L2.Ker.JMB.w0 (4 * k + 3)) = 1 - _root_.Formalism.L2.Ker.JMB.w0 (4 * k + 3)`. Rewrite using `[hw]`. Simplify using `only [map_div₀, map_add, map_one, map_mul, Complex.conj_I, Complex.conj_ofReal, map_ofNat]`. Expand and normalize the polynomial expressions, which then agree. Establish `hquad : _root_.Formalism.L2.Ker.JMB.w0 (4 * k + 3) ^ 2 - _root_.Formalism.L2.Ker.JMB.w0 (4 * k + 3) + ((k : ℂ) + 1) = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[hw]`. Take the linear combination `((√((4 * k + 3 : ℕ) : ℝ) : ℂ) ^ 2 / 4) * Complex.I_sq + (-1 / 4 : ℂ) * hs`. Establish `halg : _root_.Formalism.L2.Ker.JMB.w0 (4 * k + 3) ∈ _root_.Formalism.L2.Ker.JMB.Qbar`. Unfold `_root_.Formalism.L2.Ker.JMB.Qbar`. Rewrite using `[mem_algebraicClosure_iff]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Polynomial.X ^ 2 - Polynomial.X + Polynomial.C ((k : ℚ) + 1), ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Use `congrArg (Polynomial.eval 0) h0` as an intermediate fact. Simplify using `only [Polynomial.eval_add, Polynomial.eval_sub, Polynomial.eval_pow, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_zero] at this`. Combine the linear relations using `[(Nat.cast_nonneg k : (0 : ℚ) ≤ k)]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [map_add, map_sub, map_pow, Polynomial.aeval_X, Polynomial.aeval_C]`. Use `push_cast`. Take the linear combination `hquad`. Establish `hmem : ∀ a b : ℤ, (a : ℂ) + (b : ℂ) * _root_.Formalism.L2.Ker.JMB.w0 (4 * k + 3) ∈ _root_.Formalism.L2.Ker.JMB.Qbar` using `fun a b => add_mem (intCast_mem _ a) (mul_mem (intCast_mem _ b) halg)`. Use `⟨hmem u v, ?_, ⟨u ^ 2 + u * v + v ^ 2 * ((k : ℤ) + 1), ?_⟩⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: conj ((u : ℂ) + (v : ℂ) * _root_.Formalism.L2.Ker.JMB.w0 (4 * k + 3)) = ((u + v : ℤ) : ℂ) + ((-v : ℤ) : ℂ) * _root_.Formalism.L2.Ker.JMB.w0 (4 * k + 3)`. Rewrite using `[map_add, map_mul, hconj]`. Simplify using `only [map_intCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Conclude with `hmem _ _`. Rewrite using `[map_add, map_mul, hconj]`. Simplify using `only [map_intCast]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(v : ℂ) ^ 2) * hquad`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.MomOne.LiftChange.norm_int {d : ℕ} (hd : d % 4 = 3) {eps : ℂ}
     (h : eps ∈ _root_.Formalism.L2.Ker.JMB.OK d) :
@@ -139,9 +139,9 @@ theorem _root_.GlobalTheory.MomOne.LiftChange.norm_int {d : ℕ} (hd : d % 4 = 3
 open scoped ComplexConjugate BigOperators ComplexOrder in
 variable {g : ℕ} in
 /- English proof (translation)
-Take `⟨-, -, -, -, -, hw, -⟩` from `hS`. Unfold `_root_.Formalism.L2.Ker.JMB.OK at ha`. Take `⟨u, v, rfl⟩` from `ha`. Rewrite using `[add_smul, mul_smul]`. Use `add_mem ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show ((u : ℂ) • x) = u • x from (Int.cast_smul_eq_zsmul ℂ u x)]`. Conclude with `S.La.smul_mem u hx`. Rewrite using `[show ((v : ℂ) • (_root_.Formalism.L2.Ker.JMB.w0 S.d • x)) = v • (_root_.Formalism.L2.Ker.JMB.w0 S.d • x) from (Int.cast_smul_eq_zsmul ℂ v _)]`. Conclude with `S.La.smul_mem v (hw x hx)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.MomOne.LiftChange.smul_mem (S : _root_.Formalism.L2.Ker.JMB.Setup g) (hS : S.Ok) {a : ℂ}
     (ha : a ∈ _root_.Formalism.L2.Ker.JMB.OK S.d) {x : Fin g → ℂ} (hx : x ∈ S.La) :
@@ -165,83 +165,79 @@ open LiftChange
 open scoped ComplexConjugate BigOperators ComplexOrder in
 
 /- English proof (translation)
-Introduce `q _ lam g S r b e t n m s eps y hS hb he hid hnm hti hs`. Take `⟨hprime, hd16, hpos, -, -, -, hbeta, -⟩` from `id hS`. Establish `hd3 : S.d % 4 = 3` using `by omega`. Establish `hdpos : (0 : ℝ) < S.d` using `by exact_mod_cast hprime.pos`. Establish `hsqrt : (0 : ℝ) < √(S.d : ℝ)` using `Real.sqrt_pos.2 hdpos`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0 : _root_.Formalism.L2.Ker.JMB.w0 S.d = (1 + Complex.I * (√(S.d : ℝ) : ℂ)) / 2`. Unfold `_root_.Formalism.L2.Ker.JMB.w0 _root_.Formalism.L2.Ker.JMB.rtd`. Both sides reduce to the same expression. Establish `hconjhf : ∀ x w : Fin g → ℂ, conj (_root_.Formalism.L2.Ker.JMB.hf S.Hm x w) = _root_.Formalism.L2.Ker.JMB.hf S.Hm w x`. Introduce `x w`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `_root_.Formalism.L2.Ker.JMB.hf`. Simplify using `only [map_sum, map_mul, Complex.conj_conj]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[show conj (S.Hm j i) = S.Hm i j from hpos.1.apply i j]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hOKim : ∀ {u u' : ℤ}, ((u : ℂ) + (u' : ℂ) * _root_.Formalism.L2.Ker.JMB.w0 S.d).im = u' * (√(S.d : ℝ) / 2)`. Introduce `u u'`. Rewrite using `[hw0]`. Simplify using `[Complex.add_im, Complex.mul_im, Complex.div_im]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hbetaim : ∀ x w, (_root_.Formalism.L2.Ker.JMB.beta S.d S.Hm x w).im = √(S.d : ℝ) / 2 * (_root_.Formalism.L2.Ker.JMB.hf S.Hm x w).im`. Introduce `x w`. Unfold `_root_.Formalism.L2.Ker.JMB.beta`. Rewrite using `[Complex.im_ofReal_mul]`. Establish `himLa : ∀ v ∈ S.La, ∀ w ∈ S.La, ∃ z : ℤ, (_root_.Formalism.L2.Ker.JMB.hf S.Hm v w).im = z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v hv w hw`. Take `⟨u, u', hu⟩` from `hbeta v hv w hw`. Use `⟨u', ?_⟩` and prove the remaining obligations. Establish `h1` using `congrArg Complex.im hu`. Rewrite `h1` using `[hbetaim, hOKim]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hne : √(S.d : ℝ) / 2 ≠ 0` using `by positivity`. Clear denominators, using `at h1` for the nonvanishing conditions. Combine the linear equalities and inequalities to obtain the conclusion. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : ℤ, (s : ℤ) - 1 = (q : ℤ) ^ n * c := by`. Use `Nat.modEq_iff_dvd.1 hs.symm` as an intermediate fact.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Conclude with `this`. Establish `hqpos : (0 : ℝ) < q` using `by exact_mod_cast (Fact.out : q.Prime).pos`. Establish `hqn : ((q : ℂ) ^ n) ≠ 0` using `pow_ne_zero _ (by exact_mod_cast hqpos.ne')`. Establish `hcC : (s : ℂ) - 1 = (q : ℂ) ^ n * c` using `by exact_mod_cast hc`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hYB : _root_.Formalism.L2.Ker.JMB.liftY q n eps b y = (eps / (q : ℂ) ^ n) • ∑ i, (((y i : ℕ)) : ℂ) • b i` using `rfl`. Establish `hBLa : (∑ i, (((y i : ℕ)) : ℂ) • b i) ∈ S.La` using `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[Nat.cast_smul_eq_nsmul ℂ]`. Conclude with `nsmul_mem (hb i) _`. Establish `hepsB : eps • (∑ i, (((y i : ℕ)) : ℂ) • b i) ∈ S.La` using `_root_.GlobalTheory.MomOne.LiftChange.smul_mem S hS hid.1 hBLa`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : ((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y = (c : ℂ) • (eps • ∑ i, (((y i : ℕ)) : ℂ) • b i)`. Rewrite using `[hYB, smul_smul, smul_smul, hcC]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Establish `hxLa : ((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y ∈ S.La`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hx, Int.cast_smul_eq_zsmul ℂ]`. Conclude with `S.La.smul_mem c hepsB`. Establish `hsconj : conj (s : ℂ) = s` using `Complex.conj_natCast s`. Establish `hs1conj : conj ((s : ℂ) - 1) = (s : ℂ) - 1` using `by rw [map_sub, hsconj, map_one]`. Use `⟨?_, fun v hv => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hepsQ, hconjQ, N, hN⟩` from `_root_.GlobalTheory.MomOne.LiftChange.norm_int hd3 hid.1`. Establish `hdivN : ((q : ℤ) ^ n) ∣ N`. Take `⟨-, h1, h2⟩` from `hid`. Unfold `_root_.Formalism.L2.Ker.JMB.lamA at h1 h2`. Rewrite `h1` using `[dif_pos hepsQ]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[dif_pos hconjQ]`. Establish `hle1 : ‖lam ⟨eps, hepsQ⟩‖ ≤ 1`. Establish `h3` using `IsUltrametricDist.norm_add_le_max (lam ⟨eps, hepsQ⟩ - 1) 1`. Rewrite `h3` using `[sub_add_cancel, norm_one]`. Use `h3.trans (max_le (h1.trans ?_) le_rfl)` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `zpow_le_one_of_nonpos₀ (by exact_mod_cast (Fact.out : q.Prime).one_lt.le) (by simp)`. Establish `hprod : lam ⟨eps, hepsQ⟩ * lam ⟨conj eps, hconjQ⟩ = (N : ℂ_[q])`. Rewrite using `[← map_mul]`. Establish `: (⟨eps, hepsQ⟩ * ⟨conj eps, hconjQ⟩ : _root_.Formalism.L2.Ker.JMB.Qbar) = (N : _root_.Formalism.L2.Ker.JMB.Qbar)` using `Subtype.ext (by simp [hN])`. Rewrite using `[this, map_intCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hNn : ‖(N : ℂ_[q])‖ ≤ (q : ℝ) ^ (-(m : ℤ))`. Rewrite using `[← hprod, norm_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcast : ‖(N : ℂ_[q])‖ = ‖(N : ℚ_[q])‖`. Rewrite using `[← PadicComplex.norm_extends' q (N : ℚ_[q]), map_intCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Use `congr 1`. Use `first`. Consider the case `exact (map_intCast (UniformSpace.Completion.coeRingHom (α := PadicAlgCl q)) N).symm`. Consider the case `norm_cast`. Consider the case `simp`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hNn` using `[hcast]`. Establish `hm` using `(Padic.norm_int_le_pow_iff_dvd N m).1 hNn`. Conclude with `(pow_dvd_pow (q : ℤ) (by omega : n ≤ m)).trans hm`. Take `⟨N', hN'⟩` from `hdivN`. Take `⟨u, u', hu⟩` from `hbeta _ hBLa _ hBLa`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfBB : (_root_.Formalism.L2.Ker.JMB.hf S.Hm (∑ i, (((y i : ℕ)) : ℂ) • b i) (∑ i, (((y i : ℕ)) : ℂ) • b i)).im = 0` using `Complex.conj_eq_iff_im.1 (hconjhf _ _)`. Establish `hu' : u' = 0`. Establish `h1` using `congrArg Complex.im hu`. Rewrite `h1` using `[hbetaim, hOKim, hfBB, mul_zero]`. Establish `hne : √(S.d : ℝ) / 2 ≠ 0` using `by positivity`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `: (u' : ℝ) = 0`. Break down `mul_eq_zero.1 h1.symm with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hne`. Conclude with `this` after adjusting the coercions.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBu : ((√(S.d : ℝ) / 2 : ℝ) : ℂ) * _root_.Formalism.L2.Ker.JMB.hf S.Hm (∑ i, (((y i : ℕ)) : ℂ) • b i) (∑ i, (((y i : ℕ)) : ℂ) • b i) = (u : ℂ)`. Establish `h1` using `hu`. Unfold `_root_.Formalism.L2.Ker.JMB.beta at h1`. Rewrite using `[h1, hu']`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hβY : _root_.Formalism.L2.Ker.JMB.beta S.d S.Hm (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) = (((N * u : ℤ) : ℝ) / ((q : ℝ) ^ n) ^ 2 : ℝ)`. Unfold `_root_.Formalism.L2.Ker.JMB.beta`. Rewrite using `[hYB, _root_.GlobalTheory.MomOne.LiftChange.hf_smul_left, _root_.GlobalTheory.MomOne.LiftChange.hf_smul_right, map_div₀, map_pow, Complex.conj_natCast]`. Establish `: ((√(S.d : ℝ) / 2 : ℝ) : ℂ) * (eps / (q : ℂ) ^ n * (conj eps / (q : ℂ) ^ n * _root_.Formalism.L2.Ker.JMB.hf S.Hm (∑ i, (((y i : ℕ)) : ℂ) • b i) (∑ i, (((y i : ℕ)) : ℂ) • b i))) = (eps * conj eps) * (((√(S.d : ℝ) / 2 : ℝ) : ℂ) * _root_.Formalism.L2.Ker.JMB.hf S.Hm (∑ i, (((y i : …` using `by ring`. Rewrite using `[this, hN, hBu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hρ : (((_root_.Formalism.L2.Ker.JMB.beta S.d S.Hm (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y)).re : ℝ) : ℂ) = _root_.Formalism.L2.Ker.JMB.beta S.d S.Hm (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) (_root_.Formalism.L2.Ker.JMB …`. Rewrite using `[hβY, Complex.ofReal_re]`. Establish `hK2 : ((s : ℂ) - 1) * (((_root_.Formalism.L2.Ker.JMB.beta S.d S.Hm (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y)).re : ℝ) : ℂ) = ((c * N' * u : ℤ) : ℂ)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hρ, hβY, hcC, hN']`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Use `choose zf hzf using hti`. Establish `hFt : _root_.Formalism.L2.Ker.JMB.hf S.Hm (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) t = (c : ℂ) * ∑ i, (((y i : ℕ)) : ℂ) * _root_.Formalism.L2.Ker.JMB.hf S.Hm (eps • b i) t`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hx, _root_.GlobalTheory.MomOne.LiftChange.hf_smul_left, Finset.smul_sum, _root_.GlobalTheory.MomOne.LiftChange.hf_sum_left]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[smul_comm, _root_.GlobalTheory.MomOne.LiftChange.hf_smul_left]`. Establish `hFim : (_root_.Formalism.L2.Ker.JMB.hf S.Hm (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) t).im = ((c * ∑ i, ((y i : ℕ) : ℤ) * zf i : ℤ) : ℝ)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hFt]`. Simplify using `[Complex.mul_im, Complex.im_sum, hzf]`. Establish `hFsub : _root_.Formalism.L2.Ker.JMB.hf S.Hm (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) t - conj (_root_.Formalism.L2.Ker.JMB.hf S.Hm (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) t) = 2 * Complex.I * ((c * ∑ i, ((y i : ℕ) : ℤ) * zf i : ℤ) : …`. Rewrite using `[Complex.sub_conj, hFim]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hf1 : ∀ z : Fin g → ℂ, _root_.Formalism.L2.Ker.JMB.hf S.Hm (z + (s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) t = _root_.Formalism.L2.Ker.JMB.hf S.Hm z t + (s : ℂ) * _root_.Formalism.L2.Ker.JMB.hf S.Hm (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) t` using `fun z => by`. Rewrite using `[_root_.GlobalTheory.MomOne.LiftChange.hf_add_left, _root_.GlobalTheory.MomOne.LiftChange.hf_smul_left]`. Establish `hf2 : ∀ z : Fin g → ℂ, _root_.Formalism.L2.Ker.JMB.hf S.Hm (z + _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) t = _root_.Formalism.L2.Ker.JMB.hf S.Hm z t + _root_.Formalism.L2.Ker.JMB.hf S.Hm (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) t` using `fun z => _root_.GlobalTheory.MomOne.LiftChange.hf_add_left _ _ _ _`. Establish `hf3 : ∀ z : Fin g → ℂ, _root_.Formalism.L2.Ker.JMB.hf S.Hm z ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) = (s : ℂ) * _root_.Formalism.L2.Ker.JMB.hf S.Hm z (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y)` using `fun z => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[_root_.GlobalTheory.MomOne.LiftChange.hf_smul_right, hsconj]`. Establish `hf4 : _root_.Formalism.L2.Ker.JMB.hf S.Hm ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) = (s : ℂ) * ((s : ℂ) * _root_.Formalism.L2.Ker.JMB.hf S.Hm (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) (_root_.Formali …`. Rewrite using `[_root_.GlobalTheory.MomOne.LiftChange.hf_smul_left, _root_.GlobalTheory.MomOne.LiftChange.hf_smul_right, hsconj]`. Establish `hf5 : ∀ z : Fin g → ℂ, _root_.Formalism.L2.Ker.JMB.hf S.Hm (z + _root_.Formalism.L2.Ker.JMB.liftY q n eps b y + t) (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) = ((s : ℂ) - 1) * (_root_.Formalism.L2.Ker.JMB.hf S.Hm z (_root_.Formalism.L2.Ker.JMB.liftY q n eps b …` using `fun z => by`. Rewrite using `[_root_.GlobalTheory.MomOne.LiftChange.hf_smul_right, hs1conj, _root_.GlobalTheory.MomOne.LiftChange.hf_add_left, _root_.GlobalTheory.MomOne.LiftChange.hf_add_left]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf6 : _root_.Formalism.L2.Ker.JMB.hf S.Hm (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) = ((s : ℂ) - 1) * (((s : ℂ) - 1) * _root_.Formalism.L2.Ker.JMB.hf S.Hm (_root_.Formalism.L2.Ker.JMB.liftY q n …`. Rewrite using `[_root_.GlobalTheory.MomOne.LiftChange.hf_smul_left, _root_.GlobalTheory.MomOne.LiftChange.hf_smul_right, hs1conj]`. Establish `hre1 : (_root_.Formalism.L2.Ker.JMB.beta S.d S.Hm ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y)).re = (s : ℝ) * s * (_root_.Formalism.L2.Ker.JMB.beta S.d S.Hm (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) (_r …`. Establish `: _root_.Formalism.L2.Ker.JMB.beta S.d S.Hm ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) = (((s : ℝ) * s : ℝ) : ℂ) * _root_.Formalism.L2.Ker.JMB.beta S.d S.Hm (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) (_ …`. Unfold `_root_.Formalism.L2.Ker.JMB.beta`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hf4]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, Complex.re_ofReal_mul]`. Establish `hre2 : (_root_.Formalism.L2.Ker.JMB.beta S.d S.Hm (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y)).re = ((s : ℝ) - 1) * ((s : ℝ) - 1) * (_root_.Formalism.L2.Ker.JMB.beta S.d S.Hm (_root_.Formalism.L2. …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Establish `: _root_.Formalism.L2.Ker.JMB.beta S.d S.Hm (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) = ((((s : ℝ) - 1) * ((s : ℝ) - 1) : ℝ) : ℂ) * _root_.Formalism.L2.Ker.JMB.beta S.d S.Hm (_root_.Formalism.L2 …`. Unfold `_root_.Formalism.L2.Ker.JMB.beta`. Rewrite using `[hf6]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Complex.re_ofReal_mul]`. Establish `hF : ((s : ℂ) - 1) * _root_.Formalism.L2.Ker.JMB.hf S.Hm (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) t = _root_.Formalism.L2.Ker.JMB.hf S.Hm (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) t` using `(_root_.GlobalTheory.MomOne.LiftChange.hf_smul_left _ _ _ _).symm`. Establish `hFc : ((s : ℂ) - 1) * _root_.Formalism.L2.Ker.JMB.hf S.Hm t (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) = conj (_root_.Formalism.L2.Ker.JMB.hf S.Hm (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) t)`. Rewrite using `[hconjhf, _root_.GlobalTheory.MomOne.LiftChange.hf_smul_right, hs1conj]`. Move the coercions through the operations in `at hK2 hFsub`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `z`. Establish `hθ` using `congrFun (he.2 _ hxLa) (z + _root_.Formalism.L2.Ker.JMB.liftY q n eps b y + t)`. Unfold `_root_.Formalism.L2.Ker.JMB.opW _root_.Formalism.L2.Ker.JMB.opU at hθ ⊢`. Establish `hpt : z + (s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y + t = (z + _root_.Formalism.L2.Ker.JMB.liftY q n eps b y + t) + ((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y` using `by module`. Rewrite using `[hpt]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hew : e (z + _root_.Formalism.L2.Ker.JMB.liftY q n eps b y + t + ((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) = e (z + _root_.Formalism.L2.Ker.JMB.liftY q n eps b y + t) * Complex.exp (-(↑Real.pi * Complex.I * ↑(_root_.Formalism.L2.Ker.JMB.beta S.d S.Hm (((s : ℂ …`. Rewrite using `[← hθ, Complex.exp_neg, Complex.exp_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[hew]`. Establish `key : Complex.exp (↑Real.pi * Complex.I * ↑(_root_.Formalism.L2.Ker.JMB.beta S.d S.Hm ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y)).re + -(↑Real.pi * Complex.I * ↑(_root_.Formalism.L2.Ker.JMB.beta S.d S.Hm ((( …`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`. Use `⟨c * N' * u - c * ∑ i, ((y i : ℕ) : ℤ) * zf i, ?_⟩` and prove the remaining obligations. Rewrite using `[hre1, hre2, hf1, hf2, hf3, hf4, hf5, hf6]`. Use `push_cast`. Take the linear combination `(2 * ↑Real.pi * Complex.I) * hK2 + ↑Real.pi * hFc - ↑Real.pi * hF - ↑Real.pi * hFsub`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Complex.exp_add] at key`. Take the linear combination `(e (z + _root_.Formalism.L2.Ker.JMB.liftY q n eps b y + t)) * key`. Unfold `_root_.Formalism.L2.Ker.JMB.kap`. Rewrite using `[Complex.exp_eq_exp_iff_exists_int]`. Take `⟨z, hz⟩` from `himLa v hv _ hxLa`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : _root_.Formalism.L2.Ker.JMB.hf S.Hm v ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) = (s : ℂ) * _root_.Formalism.L2.Ker.JMB.hf S.Hm v (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y)`. Rewrite using `[_root_.GlobalTheory.MomOne.LiftChange.hf_smul_right, hsconj]`. Establish `h2 : _root_.Formalism.L2.Ker.JMB.hf S.Hm v (((s : ℂ) - 1) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) = ((s : ℂ) - 1) * _root_.Formalism.L2.Ker.JMB.hf S.Hm v (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y)`. Rewrite using `[_root_.GlobalTheory.MomOne.LiftChange.hf_smul_right, hs1conj]`. Establish `ha : ((s : ℝ) - 1) * (_root_.Formalism.L2.Ker.JMB.hf S.Hm v (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y)).im = z`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[← hz, h2]`. Simplify using `[Complex.mul_im]`. Establish `hsv : (_root_.Formalism.L2.Ker.JMB.hf S.Hm v ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y)).im = s * (_root_.Formalism.L2.Ker.JMB.hf S.Hm v (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y)).im`. Rewrite using `[h1]`. Simplify using `[Complex.mul_im]`.
-
-Use `⟨-z, ?_⟩` and prove the remaining obligations. Rewrite using `[hsv]`. Establish `ha' : ((s : ℂ) - 1) * ((_root_.Formalism.L2.Ker.JMB.hf S.Hm v (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y)).im : ℂ) = (z : ℂ)`. Conclude with `ha` after adjusting the coercions. Use `push_cast`.
-
-Take the linear combination `(-(2 * ↑Real.pi * Complex.I)) * ha'`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.MomOne.lift_change : ∀ (q : ℕ) [Fact q.Prime] (lam : _root_.Formalism.L2.Ker.JMB.Qbar →+* ℂ_[q]) (g : ℕ) (S : _root_.Formalism.L2.Ker.JMB.Setup g) (r : ℕ) (b : Fin r → Fin g → ℂ) (e : (Fin g → ℂ) → ℂ) (t : Fin g → ℂ) (n m s : ℕ) (eps : ℂ) (y : Fin r → Fin (q ^ n)), S.Ok → (∀ i, b i ∈ S.La) → S.IsTheta e → _root_.Formalism.L2.Ker.JMB.IsIdem lam S.d m eps → 2 * n ≤ m → (∀ i, ∃ z : ℤ, (_root_.Formalism.L2.Ker.JMB.hf S.Hm (eps • b i) t).im = z) → s ≡ 1 [MOD q ^ n] → _root_.Formalism.L2.Ker.JMB.opW S.d S.Hm ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) (_root_.Formalism.L2.Ker.JMB.opU S.Hm t e) = _root_.Formalism.L2.Ker.JMB.opW S.d S.Hm (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) (_root_.Formalism.L2.Ker.JMB.opU S.Hm t e) ∧ ∀ v ∈ S.La, _root_.Formalism.L2.Ker.JMB.kap S.Hm v ((s : ℂ) • _root_.Formalism.L2.Ker.JMB.liftY q n eps b y) = _root_.Formalism.L2.Ker.JMB.kap S.Hm v (_root_.Formalism.L2.Ker.JMB.liftY q n eps b y) := by
   intro q _ lam g S r b e t n m s eps y hS hb he hid hnm hti hs

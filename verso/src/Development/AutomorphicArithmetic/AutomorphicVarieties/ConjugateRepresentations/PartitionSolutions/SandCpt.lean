@@ -4,15 +4,13 @@ open UpperTheory.V.Cj.A
 open Matrix NumberField GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af UpperTheory.V.Lit UpperTheory.V.Lit.Dr
 
 /- English proof (translation)
-Introduce `E _ _ a`. Establish `hcont : Continuous (fun g : GL (Fin a) (Cinf E) => sand g (hOne E a))`. Use `Continuous.subtype_mk (f := fun g : GL (Fin a) (Cinf E) => (sand g (hOne E a)).1) ?_ _` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Continuous fun g : GL (Fin a) (Cinf E) => (g.val * Matrix.of (hOne E a).1 * star g.val : Matrix (Fin a) (Fin a) (Cinf E))`. Conclude with `(Units.continuous_val.mul continuous_const).mul Units.continuous_val.star`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hcont, fun K hK hKc => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `boundInf E a (insert (hOne E a) K) (Set.insert_subset hOne_mem_cone hK) (hKc.insert _)`. Establish `hB : IsCompact {m : Matrix (Fin a) (Fin a) (Cinf E) | ‖toL m‖ ≤ C}`. Establish `h : IsCompact (Metric.closedBall (0 : Fin a → Fin a → Cinf E) C)` using `isCompact_closedBall _ _`. Establish `e : Metric.closedBall (0 : Fin a → Fin a → Cinf E) C = {m | ‖m‖ ≤ C}`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `m`. Simplify using the standard rewrite rules. Rewrite `h` using `[e]`. Conclude with `h`. Establish `hT` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin a) (Fin a) (Cinf E))).isCompact_preimage (hB.prod (hB.image MulOpposite.continuous_op))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `hT.of_isClosed_subset (hKc.isClosed.preimage hcont) fun g hg => ⟨?_, (g⁻¹).val, ?_, rfl⟩` and prove the remaining obligations. Conclude with `hC g _ (Set.mem_insert _ _) (Set.mem_insert_of_mem _ hg)`. Use `hC g⁻¹ _ (Set.mem_insert_of_mem _ hg) ?_` and prove the remaining obligations. Establish `e : sand g⁻¹ (sand g (hOne E a)) = hOne E a`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← map_mul, inv_mul_cancel, map_one]`.
-
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `Set.mem_insert _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.A.sandCpt :
     SandCpt := by

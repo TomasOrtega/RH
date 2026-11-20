@@ -6,7 +6,7 @@ open TensorProduct
 namespace GlobalTheory.FFDescent
 
 /- English proof (translation)
-Introduce `B B' _ _ _ _ _ M _ _ h`. Conclude with `(GlobalTheory.FlatDescent.invertible_baseChange_iff B' M).1 h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem invertible_of_invertible_baseChange : ∀ (B B' : Type) [CommRing B] [CommRing B'] [Algebra B B']
     [IsNoetherianRing B] [Module.FaithfullyFlat B B']

@@ -13,9 +13,9 @@ namespace GlobalTheory.FlagZ
 variable {ι κ : Type} [Fintype ι] [Finite κ] {N : ℕ} (a : κ → ι) (l : κ → Fin (N + 1))
 
 /- English proof (translation)
-Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @SmoothOfRelativeDimension.{0} (Nat.card (CellVar a l))) (Q := RingHom.Locally (RingHom.IsStandardSmoothOfRelativeDimension (Nat.card (CellVar a l))))` as an intermediate fact. Set `𝒰 : (Part a l).OpenCover` to `Scheme.Cover.mkOfCovers (ι → Equiv.Perm (Fin N)) (fun _ => Sp (MvPolynomial (CellVar a l) ℤ)) (cell a l) hc ho`. Use `IsZariskiLocalAtSource.of_openCover (P := @SmoothOfRelativeDimension.{0} (Nat.card (CellVar a l))) 𝒰 fun (w : ι → Equiv.Perm (Fin N)) => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `SmoothOfRelativeDimension _ (cell a l w ≫ _)`. Rewrite using `[toZ_ext (cell a l w ≫ _) (Spec.map (CommRingCat.ofHom (algebraMap ℤ (MvPolynomial (CellVar a l) ℤ))))]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `(HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension (Nat.card (CellVar a l)))).2 ?_` and prove the remaining obligations. Use `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ?_` and prove the remaining obligations. Conclude with `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap _).2 (Adelic.isStandardSmooth_mvPolynomial ℤ (CellVar a l))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_str_of_cells (ho : ∀ w, IsOpenImmersion (cell a l w))
     (hc : ∀ x : Part a l, ∃ w, x ∈ Set.range (cell a l w)) :
@@ -35,9 +35,9 @@ theorem smoothOfRelativeDimension_str_of_cells (ho : ∀ w, IsOpenImmersion (cel
     (Adelic.isStandardSmooth_mvPolynomial ℤ (CellVar a l))
 
 /- English proof (translation)
-Establish `hd : ∀ w, topologicalKrullDim (Set.range (cell a l w)) = (Nat.card (CellVar a l) + 1 : ℕ)` using `fun w => by`. Use `ho w` as an intermediate fact. Rewrite using `[← IsHomeomorph.topologicalKrullDim_eq _ (cell a l w).isOpenEmbedding.isEmbedding.toHomeomorph.isHomeomorph]`. Use `(PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim (R := MvPolynomial (CellVar a l) ℤ)).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, IsPrincipalIdealRing.ringKrullDim_eq_one ℤ Int.not_isField]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[add_comm]`. Use `le_antisymm (topologicalKrullDim_le_of_forall_exists_isOpen fun x => ?_) ((hd 1).ge.trans (topologicalKrullDim_subspace_le _ _))` and prove the remaining obligations. Take `⟨w, hw⟩` from `hc x`. Use `ho w` as an intermediate fact. Conclude with `⟨_, (cell a l w).isOpenEmbedding.isOpen_range, hw, (hd w).le⟩`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem topologicalKrullDim_part_of_cells (ho : ∀ w, IsOpenImmersion (cell a l w))
     (hc : ∀ x : Part a l, ∃ w, x ∈ Set.range (cell a l w)) :
@@ -57,7 +57,7 @@ theorem topologicalKrullDim_part_of_cells (ho : ∀ w, IsOpenImmersion (cell a l
   exact ⟨_, (cell a l w).isOpenEmbedding.isOpen_range, hw, (hd w).le⟩
 
 /- English proof (translation)
-Introduce `ι κ _ _ N a l` and use `have ho := GlobalTheory.T.schubert_cell_open_immersion ι κ N a l have hc := GlobalTheory.T.flag_point_in_some_cell ι κ N a l ⟨smoothOfRelativeDimension_str_of_cells a l ho hc, topologicalKrullDim_part_of_cells a l ho hc, isArithVar_of_dim a l (topologicalKrullDim_part_of_cells a …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smooth_dim_isArithVar_part : ∀ (ι κ : Type) [Fintype ι] [Finite κ] (N : ℕ) (a : κ → ι) (l : κ → Fin (N + 1)),
     SmoothOfRelativeDimension (Nat.card (CellVar a l)) (str a l) ∧

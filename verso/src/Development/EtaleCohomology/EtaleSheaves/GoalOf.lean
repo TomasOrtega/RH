@@ -4,7 +4,7 @@ import Development.EtaleCohomology.EtaleSheaves.CupProductRingLaws
 namespace LateralTheory.E.LeafA6ringCut
 
 /- English proof (translation)
-Introduce `q _ E` and use `⟨h5 q E, h6 q E, h7 q E⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem goal_of (h5 : LateralTheory.E.CupProductRingLaws.LeafRingUnit) (h6 : LateralTheory.E.CupProductRingLaws.LeafRingAssoc)
     (h7 : LateralTheory.E.CupProductRingLaws.LeafRingComm) : LateralTheory.E.D2.LeafA6ring :=

@@ -7,7 +7,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.T
 import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.CrystallineBaseChange.CountQuadraticOfHyp
 
 /- English proof (translation)
-The claim follows from `UpperTheory.V.Br.count_quadratic_of_hypotheses`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.countQ :
     UpperTheory.V.Af.Hypotheses₂ → UpperTheory.V.Af.CountQ := UpperTheory.V.Br.count_quadratic_of_hypotheses

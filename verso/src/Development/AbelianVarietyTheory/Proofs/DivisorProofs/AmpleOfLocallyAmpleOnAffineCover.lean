@@ -13,11 +13,11 @@ open TopologicalSpace ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.LBGe
 variable {X Y : Scheme.{0}}
 
 /- English proof (translation)
-Establish `hs₀ : nonzeroLocus (secOfFn L r) = f.opensRange` using `(nonzeroLocus_secOfFn hL r).trans hr`. Take `⟨T, hT, hTu⟩` from `exists_push f (nonzeroLocus (secOfFn L r)) hs₀ t`. Take `⟨N, hN⟩` from `exists_sec_eq_pow_mul hL (secOfFn L r) T hT`. Take `⟨u, hu⟩` from `hN N le_rfl`. Establish `key : ∀ (y' : Y) (J : PUnit → L.ι), f y' ∈ powChart L J → (f y' ∈ nonzeroLocus u ↔ y' ∈ nonzeroLocus t)` using `fun y' J hJ => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs : f y' ∈ nonzeroLocus (secOfFn L r)` using `hs₀ ▸ ⟨y', rfl⟩`. Establish `hy : f y' ∈ nonzeroLocus (secOfFn L r) ⊓ powChart L J` using `⟨hs, hJ⟩`. Establish `e` using `congrArg (gs (𝟙 X) (f y') _) (hu J)`. Rewrite `e` using `[gs_res (𝟙 X) (f y') _ hy, gs_mul (𝟙 X) (f y') _ hy, gs_pow (𝟙 X) (f y') _ hy, gs_res (𝟙 X) (f y') _ hy]`. Rewrite using `[mem_nonzeroLocus_iff_powFn u hJ, e, IsUnit.mul_iff, hTu y' J hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `and_iff_right (((mem_nonzeroLocus_iff_powFn _ hJ).1 hs).pow N)`. Take `⟨i, hi⟩` from `exists_chart hL (f y)`. Use `⟨secCast (by omega) u, ?_⟩` and prove the remaining obligations. Rewrite using `[nonzeroLocus_secCast]`. Conclude with `(key y (fun _ => i) (mem_powChart.2 hi)).2 hty`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_of_pull [CompactSpace X] [QuasiSeparatedSpace X] {L : LB X} (hL : L.IsLB) (f : Y ⟶ X)
     [IsOpenImmersion f] (r : Γ(X, ⊤)) (hr : X.basicOpen r = f.opensRange) {n : ℕ} (t : (lbPow (L.pull f) n).Sec)
@@ -40,17 +40,15 @@ theorem exists_sec_of_pull [CompactSpace X] [QuasiSeparatedSpace X] {L : LB X} (
   exact (key y (fun _ => i) (mem_powChart.2 hi)).2 hty
 
 /- English proof (translation)
-Introduce `X O _ I _ Y s u a L hX hXs hL hspan hu hrange hgen`. Establish `hc : ∀ x : X, ∃ i y, u i y = x` using `fun x => by`. Establish `: ∃ i, a i ∉ (s x).asIdeal`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(s x).isPrime.ne_top` to reduce the goal to its premises. Rewrite using `[eq_top_iff, ← hspan]`. Conclude with `Ideal.span_le.2 (Set.range_subset_iff.2 hne)`. Take `⟨i, hi⟩` from `this`. Establish `hx : x ∈ Set.range (u i)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hrange i]`. Conclude with `hi`. Take `⟨y, hy⟩` from `hx`. Conclude with `⟨i, y, hy⟩`. Establish `hpt : ∀ x : X, ∃ n, 1 ≤ n ∧ ∃ σ : (lbPow L n).Sec, x ∈ nonzeroLocus σ` using `fun x => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨i, y, rfl⟩` from `hc x`. Establish `hr : X.basicOpen ((s.appTop) ((Scheme.ΓSpecIso (CommRingCat.of O)).inv (a i))) = (u i).opensRange`. Apply `SetLike.coe_injective` to reduce the goal to its premises. Rewrite using `[basicOpen_eq O s (a i), ← hrange i]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨N, hN, hg⟩` from `hgen i`. Take `⟨t, ht⟩` from `hg.exists_mem y`. Conclude with `⟨N, hN, exists_sec_of_pull hL (u i) _ hr t y ht⟩`. Use `choose n hn σ hσ using hpt`. Take `⟨T, hT⟩` from `exists_finset_iSup_eq_top (fun x => nonzeroLocus (σ x)) hσ`.
-
-Take `⟨N, hN, t, ht⟩` from `exists_common_pow (fun x : T => n x) (fun x => hn x) (fun x => σ x)`. Conclude with `⟨N, hN, isGenerated_of_finite t ((iSup_congr ht).trans hT)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isGenerated_pow_of_basicOpen_cover : ∀ (X : Scheme.{0}) (O : Type) [CommRing O] (I : Type) [Finite I]
     (Y : I → Scheme.{0}) (s : X ⟶ Sp O) (u : ∀ i, Y i ⟶ X) (a : I → O) (L : LB X),

@@ -52,7 +52,7 @@ def BundleCondition : Prop := ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} 
 def ConstantFunctionFits (Fld : FldT) : Prop := ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → Closed FamHyp fun Fm CH => DIVinN Fm →
   _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm fun _ _ _ p => HasGrid Fld p CF → ∀ C, (p.S false).FUN (p.N C CH)
 /- English proof (translation)
-The claim follows from `let ⟨a, ha⟩ := hP let ⟨b, hb⟩ := hQ ⟨max a b, fun x hx h i p hp => ⟨ha x hx (le_of_max_le_left h) i p hp, hb x hx (le_of_max_le_right h) i p hp⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem evPt_and' {eps : ℝ} {Fm : FamP eps} {P Q : ∀ (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop}
     (hP : _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm P) (hQ : _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm Q) : _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm fun x hx i p => P x hx i p ∧ Q x hx i p :=
@@ -60,14 +60,14 @@ theorem evPt_and' {eps : ℝ} {Fm : FamP eps} {P Q : ∀ (x : ℝ) (hx : Fm.x1 <
   let ⟨b, hb⟩ := hQ
   ⟨max a b, fun x hx h i p hp => ⟨ha x hx (le_of_max_le_left h) i p hp, hb x hx (le_of_max_le_right h) i p hp⟩⟩
 /- English proof (translation)
-The claim follows from `let ⟨a, ha⟩ := hP ⟨a, fun x hx h' i p hp => h x hx i p hp (ha x hx h' i p hp)⟩`.
+A detailed English derivation is pending.
 -/
 theorem evPt_mono {eps : ℝ} {Fm : FamP eps} {P Q : ∀ (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i → Prop}
     (hP : _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm P) (h : ∀ x hx i p, p.PointConditions' → P x hx i p → Q x hx i p) : _root_.GlobalTheory.BigTop.EventuallyAtPoints Fm Q :=
   let ⟨a, ha⟩ := hP
   ⟨a, fun x hx h' i p hp => h x hx i p hp (ha x hx h' i p hp)⟩
 /- English proof (translation)
-Take `⟨CF0, h⟩` from `h`. Use `⟨CF0, fun CF hCF => (h CF hCF).imp fun Fm CH _ a hN => ?_⟩` and prove the remaining obligations. Take `⟨C0, a⟩` from `a hN`. Conclude with `⟨C0, fun C hC => _root_.GlobalTheory.BigTop.Fun.evPt_mono (a C hC) fun _ _ _ p hp b d hd => (h' p CF d C CH hp hd).2 (b d (h' p CF d C CH hp hd).1)⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem LeafConditions.mono {Comparison₂ Tie' : TieT} {Q Q' : PropT} (h : _root_.GlobalTheory.BigTop.Fun.LeafConditions Comparison₂ Q)
     (h' : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ} (p : PtAt ex Csz) (CF : ℝ) (d : FunIn p CF) (C CH : ℝ), p.PointConditions' → Tie' p CF d →
@@ -78,9 +78,9 @@ theorem LeafConditions.mono {Comparison₂ Tie' : TieT} {Q Q' : PropT} (h : _roo
   exact ⟨C0, fun C hC => _root_.GlobalTheory.BigTop.Fun.evPt_mono (a C hC) fun _ _ _ p hp b d hd =>
     (h' p CF d C CH hp hd).2 (b d (h' p CF d C CH hp hd).1)⟩
 /- English proof (translation)
-Take `⟨a, h⟩` from `h`. Take `⟨b, h'⟩` from `h'`. Use `⟨max a b, fun CF hCF => ((h CF (le_of_max_le_left hCF)).and (h' CF (le_of_max_le_right hCF))).imp fun Fm CH _ c hN => ?_⟩` and prove the remaining obligations. Take `⟨C0, c1⟩` from `c.1 hN`. Take `⟨C1, c2⟩` from `c.2 hN`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨max C0 C1, fun C hC => _root_.GlobalTheory.BigTop.Fun.evPt_mono (_root_.GlobalTheory.BigTop.Fun.evPt_and' (c1 C (le_of_max_le_left hC)) (c2 C (le_of_max_le_right hC))) fun _ _ _ _ _ e d hd => ⟨e.1 d hd, e.2 d hd⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem LeafConditions.and {Comparison₂ : TieT} {Q Q' : PropT} (h : _root_.GlobalTheory.BigTop.Fun.LeafConditions Comparison₂ Q) (h' : _root_.GlobalTheory.BigTop.Fun.LeafConditions Comparison₂ Q') :
     _root_.GlobalTheory.BigTop.Fun.LeafConditions Comparison₂ fun p CF d C CH => Q p CF d C CH ∧ Q' p CF d C CH := by
@@ -93,22 +93,20 @@ theorem LeafConditions.and {Comparison₂ : TieT} {Q Q' : PropT} (h : _root_.Glo
   exact ⟨max C0 C1, fun C hC => _root_.GlobalTheory.BigTop.Fun.evPt_mono (_root_.GlobalTheory.BigTop.Fun.evPt_and' (c1 C (le_of_max_le_left hC)) (c2 C (le_of_max_le_right hC)))
     fun _ _ _ _ _ e d hd => ⟨e.1 d hd, e.2 d hd⟩⟩
 /- English proof (translation)
-The claim follows from `h.mono fun _ _ _ _ _ _ _ => ⟨trivial, id⟩`.
+A detailed English derivation is pending.
 -/
 theorem LeafConditions.of_noTie {Q : PropT} (h : _root_.GlobalTheory.BigTop.Fun.LeafConditions trivialTieCondition Q) (Comparison₂ : TieT) : _root_.GlobalTheory.BigTop.Fun.LeafConditions Comparison₂ Q :=
   h.mono fun _ _ _ _ _ _ _ => ⟨trivial, id⟩
 /- English proof (translation)
-Take `⟨a, hA⟩` from `_root_.GlobalTheory.BigTop.Fun.LeafConditions.and h1 <| _root_.GlobalTheory.BigTop.Fun.LeafConditions.and h2 <| _root_.GlobalTheory.BigTop.Fun.LeafConditions.and h3 <| _root_.GlobalTheory.BigTop.Fun.LeafConditions.and h4 <| _root_.GlobalTheory.BigTop.Fun.LeafConditions.and h5 <| …`. Take `⟨b, hE⟩` from `hE`. Use `⟨max a b, fun CF hCF => (((hA CF (le_of_max_le_left hCF)).and (hE CF (le_of_max_le_right hCF))).and hS).imp fun Fm CH _ c hN => ?_⟩` and prove the remaining obligations. Take `⟨C0, c1⟩` from `c.1.1 hN`. Use `_root_.GlobalTheory.BigTop.Fun.evPt_mono (_root_.GlobalTheory.BigTop.Fun.evPt_and' (_root_.GlobalTheory.BigTop.Fun.evPt_and' (c1 (max C0 1) (le_max_left _ _)) (c.1.2 hN)) c.2) fun x hx i p hp e hG C => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨e1, e2⟩, s1, s2, s3⟩` from `e`. Take `⟨G, W, g1, g2, g3⟩` from `hG`. Take `⟨d, rfl, hd⟩` from `e2 G W g1 g2 g3`. Take `⟨l1, ⟨ze, z1, z2, l2⟩, l3, ⟨Tf, dF, l4⟩, l5, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15, l16⟩` from `e1 d ⟨g2, hd⟩`. Take `⟨wf, R0, hR⟩` from `hB p hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `v0 : (d.data ze Tf dF).vmu p.P.A3.fam3.base3.μ0 = d.V p.P.A3.fam3.base3.μ0` using `by show (ze _)⁻¹ • _ = _`. Rewrite using `[z1, inv_one]`. Conclude with `one_smul _ _`. Establish `v1 : ∀ Tf dF t, (d.data (fun _ => 1) Tf dF).vmu t = d.V t` using `fun _ _ _ => by show (1 : _)⁻¹ • _ = _`. Rewrite using `[inv_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `one_smul _ _`. Establish `hRR` using `R0.RR_spec Formalism.DivisionValues.lattice_gluing wf`. Use `functional_lower_bound_of_conditions_numeric wf (p.S false) p.Z C CH (d.data ze Tf dF) (max C0 1) (hR ▸ R0.D_pos) (hR ▸ R0.h0) (hR ▸ R0.l1a) (hR ▸ R0.l1c) (hR ▸ R0.frames.1) (hR ▸ hRR.1) (hR ▸ hRR.2) (le_max_right _ _) s1 s2 s3 l1 l2 ?_ ?_ ⟨?_, l6⟩ l7 l8 l9 l10 l11 l13.1 l13.2 l1 …` and prove the remaining obligations. Establish `: LinearMap.ker (d.O.vmu _).mulVecLin = _` using `l3`. Rewrite `this` using `[v1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show LinearMap.ker ((d.data ze Tf dF).vmu _).mulVecLin = _`. Rewrite using `[v0]`. Conclude with `this`. Use `GlobalTheory.finitePlaceBound_inv_rootOfUnity_smul _ ze _ _ _ z2 l4` as an intermediate fact. Simplify using `only [v1] at this`.
-
-Conclude with `this`. Introduce `vb hvb`. Conclude with `l5 vb (hvb.trans v0)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fun0Fit_of_leaves_alt (Fld : FldT) (Comparison₂ : TieT) (hB : _root_.GlobalTheory.BigTop.Fun.BundleCondition) (hS : _root_.GlobalTheory.BigTop.Fun.ScaleCondition) (hE : _root_.GlobalTheory.BigTop.Fun.ExistsFunctionIn Fld Comparison₂) (h1 : _root_.GlobalTheory.BigTop.Fun.LeafMinimalMass Comparison₂) (h2 : _root_.GlobalTheory.BigTop.Fun.LeafUniqueMap Comparison₂)
     (h3 : _root_.GlobalTheory.BigTop.Fun.LeafKernel Comparison₂) (h4 : _root_.GlobalTheory.BigTop.Fun.LeafFixedPoint Comparison₂) (h5 : _root_.GlobalTheory.BigTop.Fun.LeafHeightMapBound Comparison₂) (h6 : _root_.GlobalTheory.BigTop.Fun.LeafInfinitePlaceBound) (h7 : _root_.GlobalTheory.BigTop.Fun.LeafUniqueSquareRoot Comparison₂) (h8 : _root_.GlobalTheory.BigTop.Fun.LeafDensity Comparison₂) (h9 : _root_.GlobalTheory.BigTop.Fun.LeafIntegrality Comparison₂) (h10 : _root_.GlobalTheory.BigTop.Fun.ArchimedeanCondition Comparison₂)

@@ -1,9 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `A M Q Q' _ _ _ _ _ _ _ π hπ g hg`. Establish `hle : LinearMap.ker π ≤ LinearMap.ker g` using `fun m hm => LinearMap.mem_ker.mpr (hg m (LinearMap.mem_ker.mp hm))`. Use `⟨((LinearMap.ker π).liftQ g hle).comp (π.quotKerEquivOfSurjective hπ).symm.toLinearMap, fun m => ?_⟩` and prove the remaining obligations. Establish `h : (π.quotKerEquivOfSurjective hπ).symm (π m) = Submodule.Quotient.mk m`. Rewrite using `[LinearEquiv.symm_apply_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[LinearMap.comp_apply, LinearEquiv.coe_coe, h, Submodule.liftQ_apply]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qf12.lift_ex :
     ∀ {A M Q Q' : Type} [inst : CommRing A] [inst_1 : AddCommGroup M]

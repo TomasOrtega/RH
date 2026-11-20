@@ -3,13 +3,13 @@ import Mathlib
 open Matrix
 
 /- English proof (translation)
-Establish `hk : ∀ k : ℕ, ∑ i, al i ^ k • u i = 0`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simpa using hs`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h` using `congrArg A.mulVec ih`. Rewrite `h` using `[Matrix.mulVec_zero, Matrix.mulVec_sum]`. Rewrite using `[← h]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_smul, hu, smul_smul, pow_succ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Use function extensionality and compare the values at `j`. Establish `h : (fun i => u i j) = 0`. Apply `Matrix.eq_zero_of_forall_pow_sum_mul_pow_eq_zero hal` to reduce the goal to its premises. Introduce `k`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun (hk k) j` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, mul_comm]`. Conclude with `congrFun h i`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem eig_sum_zero {O : Type} [CommRing O] [IsDomain O] {n : ℕ}
     (A : Matrix (Fin n) (Fin n) O) (al : Fin n → O) (hal : Function.Injective al)
@@ -35,21 +35,19 @@ private theorem eig_sum_zero {O : Type} [CommRing O] [IsDomain O] {n : ℕ}
   exact congrFun h i
 
 /- English proof (translation)
-Introduce `O _ _ n A al hal hc`. Establish `hw : ∀ i, ∃ w : Fin n → O, w ≠ 0 ∧ A.mulVec w = al i • w`. Introduce `i`. Establish `h0 : (Matrix.scalar (Fin n) (al i) - A).det = 0`. Rewrite using `[← Matrix.eval_charpoly, hc, Polynomial.eval_prod]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (by simp)`. Take `⟨w, hw0, hw⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Use `⟨w, hw0, ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[Matrix.sub_mulVec, sub_eq_zero]`. Rewrite using `[← hw]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal]`. Use `choose w hw0 hw using hw`. Use `⟨∑ i, w i, fun Y hY hv => ?_⟩` and prove the remaining obligations. Establish `hYw : ∀ i, Y.mulVec (w i) = 0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `eig_sum_zero A al hal (fun i => Y.mulVec (w i))` to reduce the goal to its premises. Introduce `i`. Rewrite using `[Matrix.mulVec_mulVec, hY, ← Matrix.mulVec_mulVec, hw, Matrix.mulVec_smul]`. Rewrite using `[← Matrix.mulVec_sum, hv]`. Establish `hdet : (Matrix.of w).det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h0`. Take `⟨c, hc0, hc⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr h0`. Apply `hc0` to reduce the goal to its premises. Establish `h` using `eig_sum_zero A al hal (fun i => c i • w i) (fun i => by rw [Matrix.mulVec_smul, hw, smul_comm]) (by`. Use function extensionality and compare the values at `j`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrFun hc j` as an intermediate fact. Simplify `this)` using `[Matrix.vecMul, dotProduct, Finset.sum_apply]`. Use function extensionality and compare the values at `i`. Conclude with `(smul_eq_zero.mp (h i)).resolve_right (hw0 i)`. Use extensionality with `r j`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h : Y r = 0`. Apply `Matrix.eq_zero_of_mulVec_eq_zero hdet` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrFun (hYw i) r` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, mul_comm]`.
-
-Conclude with `congrFun h j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.ExistsCyclic.exists_cyc :
     ∀ {O : Type} [inst : CommRing O] [IsDomain O] {n : ℕ} (A : Matrix (Fin n) (Fin n) O) (al : Fin n → O),

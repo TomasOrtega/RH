@@ -16,7 +16,7 @@ def ThmIUniquePosDim.Statement : Prop :=
       1 ≤ n → IsArithVar P n → AllSmooth L → I P n L = J P n L
 
 /- English proof (translation)
-The claim follows from `IsIntersectionFamily.isRFamily ((IsFamily.equiv I).1 h)`.
+A detailed English derivation is pending.
 -/
 theorem IsFamily.isRFamily {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {I : Family ι}
     (h : IsFamily I) : IsRFamily I :=

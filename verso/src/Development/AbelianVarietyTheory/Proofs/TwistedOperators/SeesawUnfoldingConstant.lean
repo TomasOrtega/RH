@@ -23,7 +23,7 @@ noncomputable section
 namespace GlobalTheory.SquareAgree.KerPCpt
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.add_apply, Pi.add_apply, add_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_add' {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ)
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) :
@@ -32,7 +32,7 @@ theorem pure_add' {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] 
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.add_apply, Pi.add_apply, add_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.smul_apply, Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_smul' {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (c : ℂ) (f : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ)
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) :
@@ -41,7 +41,7 @@ theorem pure_smul' {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.smul_apply, Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.zero_apply, Pi.zero_apply, zero_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_zero' {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure (0 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ) φ = 0 := by
@@ -49,7 +49,7 @@ theorem pure_zero' {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.zero_apply, Pi.zero_apply, zero_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.sub_apply, Pi.sub_apply, sub_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem pure_sub' {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f g : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf F κ)
     (φ : ∀ v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F, (κ → Fv F v) → ℂ) :
@@ -58,9 +58,9 @@ theorem pure_sub' {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] 
   simp only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, SchwartzMap.sub_apply, Pi.sub_apply, sub_mul]
 
 /- English proof (translation)
-Unfold `GlobalTheory.LFun.IsHecke at h h' ⊢`. Take `⟨hc, hx⟩` from `h`. Take `⟨hc', hx'⟩` from `h'`. Use `⟨?_, fun x => ?_⟩` and prove the remaining obligations. Establish `hfun : (⇑(χ / χ')) = fun z => χ z / χ' z` using `funext (MonoidHom.div_apply χ χ')`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hfun]`. Conclude with `hc.div' hc'`. Rewrite using `[MonoidHom.div_apply, hx x, hx' x, div_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isHecke_quot {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {χ χ' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chr F E} (h : GlobalTheory.LFun.IsHecke F E χ) (h' : GlobalTheory.LFun.IsHecke F E χ') :
@@ -75,9 +75,9 @@ theorem isHecke_quot {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
   · rw [MonoidHom.div_apply, hx x, hx' x, div_one]
 
 /- English proof (translation)
-Unfold `GlobalTheory.WeilM.ResEtaPow at h h' ⊢`. Introduce `u`. Rewrite using `[MonoidHom.div_apply, Circle.coe_div, h u, h' u, hk]`. Use `split_ifs`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_eq_mul_inv, ← inv_pow, inv_neg_one, ← pow_add]`.
+A detailed English derivation is pending.
 -/
 theorem resEtaPow_quot {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K : Subgroup Rˣ}
     {χ χ' : Aˣ →* Circle} {n m k : ℕ} (h : GlobalTheory.WeilM.ResEtaPow K χ n) (h' : GlobalTheory.WeilM.ResEtaPow K χ' m) (hk : k = n + m) :
@@ -90,7 +90,7 @@ theorem resEtaPow_quot {R A : Type} [CommRing R] [CommRing A] [Algebra R A] {K :
   · rw [div_eq_mul_inv, ← inv_pow, inv_neg_one, ← pow_add]
 
 /- English proof (translation)
-The claim follows from `{ base := h.base herm := h.geo.hV' skew := h.geo.hW good := h.geo.hM' hX := h.chars.heckeα hW := isHecke_quot h.chars.heckeα h.chars.heckeβ resX := h.chars.resα resW := resEtaPow_quot h.chars.resα h.chars.resβ (by omega) weil := h.weil' }`.
+A detailed English derivation is pending.
 -/
 theorem isPair_small {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E} {a a' : ℕ} {G : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Geo σ a a'} {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Chars F E}
@@ -111,9 +111,9 @@ end GlobalTheory.SquareAgree.KerPCpt
 namespace GlobalTheory.SquareAgree.KerPCpt
 
 /- English proof (translation)
-Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hM k hk f hf f₁ hf₁ hact φ hφ hvac`. Establish `hspan` using `GlobalTheory.T.theta_pair_compact_action hP _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ (isPair_small hT') k hk f hf f₁ hact`. Set `L : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.SInf D.host.F (Fin W₁.rank × Fin (W.rank + W₁.rank)) →ₗ[ℂ] ((Fin W₁.rank × Fin (W.rank + W₁.rank) → AF D.host.F) → ℂ)` to `{ toFun := fun g => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ map_add' := fun g g' => pure_add' g g' φ map_smul' := fun c g => pure_smul' c g φ }`. Establish `key : f₁ - f ∈ (kerPD ψ θ A₁ B Bs Γ cB p').comap L`. Use `(Submodule.span_le.mpr ?_) hspan` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `g₁ ⟨hg₁, γ, hγ, g, hg, hD⟩`. Apply the tactic sequence `exact GlobalTheory.T.seesaw_unfolding_symmetry hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ hT hO hT' Pi rf rl p p' hM γ hγ g hg g₁ hg₁ hD φ hφ hvac`. Rewrite using `[← pure_sub']`. Conclude with `Submodule.mem_comap.mp key`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpt_mem_kerPD : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

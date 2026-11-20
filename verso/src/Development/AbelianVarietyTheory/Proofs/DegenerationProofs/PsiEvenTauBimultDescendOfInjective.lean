@@ -19,7 +19,7 @@ variable {R R' : Type} [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] {φ
   {D' : DegPre R'}
 
 /- English proof (translation)
-The claim follows from `corr_of_val_field_extension _ _ (fracMap hφ) X L hL K K' ψ ε ψ' ε' t t' h`.
+A detailed English derivation is pending.
 -/
 theorem corr_of_val_genMap (hφ : Function.Injective φ) {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K K' : Type}
     [Fintype K] [Fintype K'] {ψ : K → ((TK R).left ⟶ X)} {ε : K → ℤ} {ψ' : K' → ((TK R).left ⟶ X)} {ε' : K' → ℤ}
@@ -29,15 +29,15 @@ theorem corr_of_val_genMap (hφ : Function.Injective φ) {X : Scheme.{0}} {L : L
   corr_of_val_field_extension _ _ (fracMap hφ) X L hL K K' ψ ε ψ' ε' t t' h
 
 /- English proof (translation)
-Introduce `χ`. Take `⟨x, rfl⟩` from `hD.xe.surjective χ`. Use `corr_of_val_genMap hφ D.P.isLB fun z J hJ => ?_` and prove the remaining obligations. Take `⟨J', hJ'⟩` from `DegPull.exists_good' D'.P.isLB (Z := (TK R').left) z`. Establish `sq` using `fracMap_sq hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hh : (TK R').hom ≫ spMap φ = genMap hφ ≫ (TK R).hom` using `(Category.id_comp _).symm.trans sq`. Establish `cW : (𝟙 _ ≫ D'.xK x) ≫ proj hD = genMap hφ ≫ D.xK (hD.xe x)`. Rewrite using `[Category.id_comp]`. Conclude with `cPoint_proj hD _ hh x`. Establish `cn : D'.xK (-x) = D'.xK x ≫ (ι[D'.P.A]).left` using `by show (toUnit _ ≫ D'.c (-x)).left = _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[PsiEvenPull.c_neg, ← Category.assoc, Over.comp_left]`. Establish `c' : 𝟙 _ ≫ D'.xK (-x) = (𝟙 _ ≫ D'.xK x) ≫ (ι[D'.P.A]).left` using `by rw [cn, Category.assoc]`. Establish `e` using `val_corr hJ' (h x) (𝟙 (TK R').left)`. Rewrite `e` using `[val_mul hJ', val_pull hJ']`. Establish `a₁` using `psi_val hD (Z := (TK R').left) _ _ sq hJ hJ' (-x)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a₂` using `psi_val hD (Z := (TK R').left) _ _ sq hJ hJ' x`. Establish `a₃ : val D.sym (genMap hφ ≫ D.xK (hD.xe x)) z J = om hD.w z J J' ((𝟙 _ ≫ D'.xK x) ≫ (ι[D'.P.A]).left) * (om hD.w z J J' (𝟙 _ ≫ D'.xK x))⁻¹ * val D'.sym (𝟙 _ ≫ D'.xK x) z J'` using `(congrArg (fun q => val D.sym q z J) cW.symm).trans (PsiEvenPull.sym_pull hG hD _ z hJ hJ')`. Rewrite `a₁` using `[c', map_neg]`. Use `(val_mul hJ _ _ _).trans (Eq.trans (congrArg₂ (· * ·) a₁ ((val_pull hJ _ _ _).trans a₃)) (Eq.trans ?_ a₂.symm))` and prove the remaining obligations. Rewrite using `[← e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem psiEven_desc (hG : GlobalFnsSt) (hφ : Function.Injective φ) (hD : IsPullDeg φ D D') (h : D'.PsiEven) :
     D.PsiEven := by
@@ -71,23 +71,23 @@ theorem psiEven_desc (hG : GlobalFnsSt) (hφ : Function.Injective φ) (hD : IsPu
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `χ χ' ν`. Take `⟨a, rfl⟩` from `hD.xe.surjective χ`. Take `⟨a', rfl⟩` from `hD.xe.surjective χ'`. Take `⟨b, rfl⟩` from `hD.xe.surjective ν`. Use `corr_of_val_genMap hφ D.P.isLB fun y J hJ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨J', hJ'⟩` from `DegPull.exists_good' D'.P.isLB (Z := (TK R').left) y`. Establish `sq` using `fracMap_sq hφ`. Establish `hh : (TK R').hom ≫ spMap φ = genMap hφ ≫ (TK R).hom` using `(Category.id_comp _).symm.trans sq`. Establish `gp` using `pull_grp hD`. Set `T : Over (Spec (CommRingCat.of R))` to `Over.mk ((TK R').hom ≫ spMap φ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `κ : T ⟶ TK R` to `Over.homMk (genMap hφ) hh.symm`. Set `β : (TK R' ⟶ D'.P.A) → (T ⟶ D.P.A)` to `fun x => pushPt gp.1.w x`. Establish `βc : ∀ χ, β (cP D' _ χ) = cP D _ (hD.xe χ)` using `fun χ => Over.OverMorphism.ext (by show ((TK R').hom ≫ (D'.c χ).left) ≫ proj hD = ((TK R').hom ≫ spMap φ) ≫ (D.c (hD.xe χ)).left`. Rewrite using `[Category.assoc, hD.c_pr, Category.assoc])`. Set `Ω : (TK R' ⟶ D'.P.A) → ((TK R').left.presheaf.stalk y)ˣ` to `fun x => om hD.w (Z := (TK R').left) y J J' x.left`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `θ : (T ⟶ D.P.A) → (T ⟶ D.P.A) → (T ⟶ D.P.A) → ((TK R').left.presheaf.stalk y)ˣ` to `th D (T := T) y J`. Establish `cub : ∀ a b c : TK R' ⟶ D'.P.A, θ (β a) (β b) (β c) = Ω (a * b * c) * (Ω (a * b))⁻¹ * (Ω (a * c))⁻¹ * (Ω (b * c))⁻¹ * Ω a * Ω b * Ω c * (Ω 1)⁻¹ * th D' (T` using `TK R') y J' a b c := by`. Introduce `a b c`. Establish `e` using `cub_pull hG hD (T' := TK R') hJ hJ' a b c`. Establish `q : (lift a (lift b c)).left ≫ (cubeMapOf gp).F3 = (lift (β a) (lift (β b) (β c))).left` using `hom_ext_triple _ fun i => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, cubeMap_comp_proj_three, ← Category.assoc, ← Over.comp_left, ← Over.comp_left]`. Apply the tactic sequence `fin_cases i <;> simp [x3] <;> rfl`. Rewrite `e` using `[q]`. Conclude with `e.trans (congrArg₂ (· * ·) (prod_cub a b c (fun q => om hD.w (Z := (TK R').left) y J J' q)) rfl)`. Set `τ : D.X → D.X → ((TK R').left.presheaf.stalk y)ˣ` to `fun a b => val (D.tau a b) (genMap hφ) y J`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `τ' : D'.X → D'.X → ((TK R').left.presheaf.stalk y)ˣ` to `fun a b => val (D'.tau a b) (𝟙 (TK R').left) y J'`. Establish `vτ : ∀ a b, τ (hD.xe a) (hD.xe b) = (Ω (cP D' _ a * cP D' _ b))⁻¹ * Ω (cP D' _ a) * Ω (cP D' _ b) * (Ω 1)⁻¹ * τ' a b` using `fun a b => by`. Establish `e` using `tau_val hD (Z := (TK R').left) _ _ sq hJ hJ' a b`. Simplify using `only [Category.id_comp] at e`. Rewrite using `[← cPoint_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `e`. Establish `e : τ' (a + a') b * th D' (T` using `TK R') y J' (cP D' _ a) (cP D' _ a') (cP D' _ b) = τ' a b * τ' a' b := by`. Use `Eq.trans (congrArg₂ (· * ·) rfl ?_) ((val_mul hJ' _ _ _).symm.trans ((val_corr hJ' (h a a' b) (𝟙 (TK R').left)).trans (val_mul hJ' _ _ _)))` and prove the remaining obligations. Use `Eq.trans ?_ (val_cub D'.cub (𝟙 (TK R')) hJ' (cP D' _ a) (cP D' _ a') (cP D' _ b)).symm` and prove the remaining obligations. Rewrite using `[Category.id_comp, Category.id_comp, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : τ (hD.xe a + hD.xe a') (hD.xe b) * θ (cP D T (hD.xe a)) (cP D T (hD.xe a')) (cP D T (hD.xe b)) = τ (hD.xe a) (hD.xe b) * τ (hD.xe a') (hD.xe b)`. Rewrite using `[← βc, ← βc, ← βc, cub, ← map_add, vτ, vτ, vτ, cPoint_add]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Establish `e'` using `congrArg Additive.ofMul e`. Simplify using `only [ofMul_mul, ofMul_inv] at e' ⊢`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Take the linear combination `(norm := abel) e'`. Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (val_mul hJ _ _ _).symm)` and prove the remaining obligations. Use `Eq.trans (congrArg₂ (· * ·) rfl ?_) key` and prove the remaining obligations. Use `(val_cub D.cub κ hJ (cP D _ (hD.xe a)) (cP D _ (hD.xe a')) (cP D _ (hD.xe b))).trans ?_` and prove the remaining obligations. Rewrite using `[comp_cP, comp_cP, comp_cP]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tauBimult_desc (hG : GlobalFnsSt) (hφ : Function.Injective φ) (hD : IsPullDeg φ D D') (h : D'.TauBimult) :
     D.TauBimult := by
@@ -149,7 +149,7 @@ end GlobalTheory.PullDescent
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hG _ _ _ _ _ _ _ hφ _ _ hD` and use `⟨PullDescent.psiEven_desc hG hφ hD, PullDescent.tauBimult_desc hG hφ hD⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem psiEven_tauBimult_of_isPullDeg_injective : GlobalFnsSt → ∀ (R R' : Type) [CommRing R] [IsDomain R] [CommRing R'] [IsDomain R'] (φ : R →+* R'), Function.Injective φ → ∀ (D : DegPre R) (D' : DegPre R') (_ : IsPullDeg φ D D'), (D'.PsiEven → D.PsiEven) ∧ (D'.TauBimult → D.TauBimult) :=
   fun hG _ _ _ _ _ _ _ hφ _ _ hD => ⟨PullDescent.psiEven_desc hG hφ hD, PullDescent.tauBimult_desc hG hφ hD⟩

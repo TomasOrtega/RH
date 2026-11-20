@@ -16,7 +16,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 set_option synthInstance.maxHeartbeats 200000
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `(s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (v : Plc (Lp L)) : (s.w v).under (𝓞 (Lp L)) = v := by
@@ -24,9 +24,9 @@ private theorem w_under {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [Number
   exact (s.hw v (algebraMap (𝓞 (Lp L)) (𝓞 L) x)).symm.trans (s.hA v x)
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : ((s.p : ℕ) : 𝓞 (Lp L)) ∈ s.v0.asIdeal`. Rewrite using `[← s.norm_v0_eq_one]`. Conclude with `Ideal.absNorm_mem s.v0.asIdeal`. Establish `hc : IsCoprime (s.p : 𝓞 (Lp L)) (l : 𝓞 (Lp L))` using `((Nat.coprime_primes s.p_prime Fact.out).2 s.p_ne).cast`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `hc`. Conclude with `s.v0.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 (hab ▸ add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h)))`.
+A detailed English derivation is pending.
 -/
 private theorem l_not_mem_base_prime {l : ℕ} [Fact l.Prime] {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω]
     [IsAlgClosure L Ω] (s : HidaSetting l L Ω) : ((l : ℕ) : 𝓞 (Lp L)) ∉ s.v0.asIdeal := by
@@ -41,24 +41,20 @@ private theorem l_not_mem_base_prime {l : ℕ} [Fact l.Prime] {L Ω : Type} [Fie
     (hab ▸ add_mem (Ideal.mul_mem_left _ _ h1) (Ideal.mul_mem_left _ _ h)))
 
 /- English proof (translation)
-Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sum_one {M : Type} [AddCommGroup M] [Module ℂ M] {m : ℕ} {H : Type} [Group H] (τ : H →* GL (Fin m) ℂ)
     (f : Fin m → M) (i : Fin m) : ∑ j : Fin m, τ 1 i j • f j = f i := by
   simp [Matrix.one_apply]
 
 /- English proof (translation)
-Introduce `l _ L Ω _ _ _ _ _ _ s n hn V Q c ι m τ₀ lam d e ξ hξ σ hσ hY τ hτ`. Establish `hw0` using `w_under s s.v0`. Establish `hsp : IsSplitAt (s.w s.v0)` using `UpperTheory.isSplitAt_of_decomposition_le_restriction_range L Ω _ _ (s.hA s.v0) (s.split _ (Or.inr (Or.inr rfl))) _ hw0`. Take `⟨j, hj1, hj2, -, hj3⟩` from `(UpperTheory.V.Hi.secU l L Ω s n hn _ hsp).1`. Establish `hiso` using `UpperTheory.isoSum_restriction_of_local_component_unitary L n σ hσ _ j hj1 hj2 hj3 τ hτ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h1, -, -, h4⟩` from `UpperTheory.V.Hi.partUR2Abs L n _ _ _ _ τ hiso`. Use `h1 _ (h4 1) ?_` and prove the remaining obligations. Take `⟨F, hF, hF0⟩` from `(Submodule.ne_bot_iff _).1 hY`. Take `⟨hB, hM⟩` from `(UpperTheory.V.Hi.partUR2Mem l L Ω s n hn V Q c ι m τ₀ lam d e ξ σ F).1 hF`. Establish `hinj` using `(UpperTheory.V.Hi.formU l L Ω s n hn V Q c m τ₀ ι lam d e ξ hξ _ fun _ => rfl).1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `hbot`. Use `hF0 (funext fun i => hinj (F i) (And.left hB i (Set.mem_univ i)) fun ℓ => ?_)` and prove the remaining obligations. Use `(Submodule.eq_bot_iff _).1 hbot _ (Submodule.mem_inf.2 ⟨hM i ℓ, fun g hg => ?_⟩)` and prove the remaining obligations. Establish `hloc : ∀ u : Plc L, u.under (𝓞 (Lp L)) ≠ s.v0 → cLoc u (j g) = 1` using `fun u hu => MonoidHom.mem_ker.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_inf.1 (hj1 g)).2 u) (hw0.symm ▸ hu))`. Establish `h` using `UpperTheory.V.Hi.partUR2Fix l L Ω s n hn V Q c ι m τ₀ lam d e ξ hξ F hB (j g) (Subgroup.mem_inf.1 (hj1 g)).1 (fun v => hloc _ fun h => l_not_mem_base_prime s (by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← h, w_under]`. Conclude with `v.2)) 1`. Use the proof step `(fun u => (hloc _ fun h => s.v0_St (by`. Rewrite using `[← h, w_under]`. Conclude with `u.2)).symm)`.
-
-Use the proof step `((hj2 g).symm ▸ hg)`. Use the proof step `(fun w hw => by`. Rewrite using `[hloc w fun h => hw (V.sub (Or.inr (Or.inr h)))]`. Conclude with `one_mem _)`. Use the proof step `(fun q => hloc _ fun h => Q.notS q (Or.inr (Or.inr h))) i ℓ`.
-
-Conclude with `(sum_one _ (fun j' => RU L n (j g) (toForm ι e (F j') ℓ)) i).symm.trans h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Hi.partUR2V0 :
     ∀ (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ), 1 ≤ n →

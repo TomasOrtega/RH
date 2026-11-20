@@ -18,14 +18,14 @@ section Lin
 variable {K M : Type} [Field K] [AddCommGroup M] [Module ℂ M] {σ : K →+* ℂ} {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `[Finset.sum_apply, Pi.single_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eq_sum_single (x : Fin n → K) : x = ∑ i, x i • (Pi.single i (1 : K) : Fin n → K) := by
   ext k
   simp [Finset.sum_apply, Pi.single_apply]
 
 /- English proof (translation)
-Rewrite using `[eq_sum_single x, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_single (j : (Fin n → K) →ₛₗ[σ] M) (x : Fin n → K) :
     j x ∈ Submodule.span ℂ (Set.range fun i => j (Pi.single i 1)) := by
@@ -35,9 +35,9 @@ theorem mem_span_single (j : (Fin n → K) →ₛₗ[σ] M) (x : Fin n → K) :
   exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)
 
 /- English proof (translation)
-Use `le_antisymm (Submodule.span_mono ?_) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `⟨_, rfl⟩`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `mem_span_single j x`.
+A detailed English derivation is pending.
 -/
 theorem span_single_eq (j : (Fin n → K) →ₛₗ[σ] M) :
     Submodule.span ℂ (Set.range fun i => j (Pi.single i 1)) = Submodule.span ℂ (Set.range j) := by
@@ -49,9 +49,9 @@ theorem span_single_eq (j : (Fin n → K) →ₛₗ[σ] M) :
     exact mem_span_single j x
 
 /- English proof (translation)
-Set `b` to `Module.Basis.mk hli hsp.ge`. Set `b'` to `Module.Basis.mk hli' hsp'.ge`. Use `⟨b.equiv b' (Equiv.refl _), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[eq_sum_single x, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smulₛₗ j, map_smulₛₗ j', LinearEquiv.map_smul]`. Use `congr 1`. Establish `h1 : j (Pi.single i 1) = b i` using `(Module.Basis.mk_apply hli hsp.ge i).symm`. Establish `h2 : j' (Pi.single i 1) = b' i` using `(Module.Basis.mk_apply hli' hsp'.ge i).symm`. Rewrite using `[h1, h2, Module.Basis.equiv_apply, Equiv.refl_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_equiv_of_bases {M' : Type} [AddCommGroup M'] [Module ℂ M'] (j : (Fin n → K) →ₛₗ[σ] M)
     (j' : (Fin n → K) →ₛₗ[σ] M') (hli : LinearIndependent ℂ fun i => j (Pi.single i 1))
@@ -85,7 +85,7 @@ def ipK (z z' : MtildeV W Ch sel mu P) : X.K :=
   (mtildeKGSD W Ch sel mu).ip (mtildeKOk W Ch sel mu hX) z.1 z'.1
 
 /- English proof (translation)
-Establish `h` using `(Pi.basisFun X.K (Fin (dimP W Ch sel mu P hX))).linearIndependent.map' (zOf W Ch sel mu P hX) (LinearMap.ker_eq_bot.2 (zOf_injective W Ch sel mu P hX))`. Simplify `h` using `[Function.comp_def]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem li_zOf : LinearIndependent X.K fun i => zOf W Ch sel mu P hX (Pi.single i 1) := by
   have h := (Pi.basisFun X.K (Fin (dimP W Ch sel mu P hX))).linearIndependent.map' (zOf W Ch sel mu P hX)
@@ -96,13 +96,13 @@ def jP (σ : X.K →+* ℂ) : (Fin (dimP W Ch sel mu P hX) → X.K) →ₛₗ[σ
   (toMtP W Ch sel mu P σ).comp (zOf W Ch sel mu P hX)
 
 /- English proof (translation)
-The claim follows from `toMtilde_linearIndependent W Ch sel mu P σ (li_zOf W Ch sel mu P hX)`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_jP_single (σ : X.K →+* ℂ) : LinearIndependent ℂ fun i => jP W Ch sel mu P hX σ (Pi.single i 1) :=
   toMtilde_linearIndependent W Ch sel mu P σ (li_zOf W Ch sel mu P hX)
 
 /- English proof (translation)
-Use `eq_top_iff.2 ?_` and prove the remaining obligations. Rewrite using `[← toMtilde_span W Ch sel mu P σ hX, Submodule.span_le]`. Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨x, rfl⟩` from `zOf_surjective W Ch sel mu P hX z`. Conclude with `mem_span_single (jP W Ch sel mu P hX σ) x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem span_range_jP_single_eq_top (σ : X.K →+* ℂ) : Submodule.span ℂ (Set.range fun i => jP W Ch sel mu P hX σ (Pi.single i 1)) = ⊤ := by
   refine eq_top_iff.2 ?_

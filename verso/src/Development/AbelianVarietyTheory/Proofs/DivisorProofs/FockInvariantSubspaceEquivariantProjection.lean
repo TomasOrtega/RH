@@ -14,11 +14,9 @@ variable {σ : Type} [DecidableEq σ] {H : Type} [NormedAddCommGroup H] [InnerPr
   {ι : MvPolynomial σ ℂ →ₗ[ℂ] H}
 
 /- English proof (translation)
-Use `conv_lhs => rw [← sum_homogeneousComponent g]`. Rewrite using `[map_sum, inner_sum]`. Distinguish the cases in `hn : n ∈ Finset.range (g.totalDegree + 1)`. Rewrite using `[Finset.sum_eq_single_of_mem n hn]`. Introduce `m _ hmn`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.FockAdj.inner_eq_zero_of_isHomogeneous hι (Ne.symm hmn) hh (homogeneousComponent_isHomogeneous m g)`. Establish `hlt : g.totalDegree < n` using `by simp at hn; omega`. Rewrite using `[homogeneousComponent_eq_zero n g hlt, map_zero, inner_zero_right]`. Use `Finset.sum_eq_zero fun m hm => ?_` and prove the remaining obligations. Establish `: m ≠ n` using `by simp at hm; omega`.
-
-Conclude with `GlobalTheory.FockAdj.inner_eq_zero_of_isHomogeneous hι (Ne.symm this) hh (homogeneousComponent_isHomogeneous m g)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem inner_homog_eq (hι : IsFockIP ι) {n : ℕ} {h : MvPolynomial σ ℂ} (hh : h.IsHomogeneous n)
     (g : MvPolynomial σ ℂ) :
@@ -38,15 +36,13 @@ theorem inner_homog_eq (hι : IsFockIP ι) {n : ℕ} {h : MvPolynomial σ ℂ} (
       (homogeneousComponent_isHomogeneous m g)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hxC`. Establish `h0 : inner ℂ (ι x) (ι x) = 0` using `(Submodule.mem_orthogonal _ _).1 (Submodule.mem_comap.1 hxC) (ι x) (Submodule.mem_map_of_mem hx)`. Rewrite `h0` using `[inner_self_eq_zero]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hinj (by rw [h0, map_zero])`. Rewrite using `[codisjoint_iff, Submodule.eq_top_iff']`. Introduce `f`. Rewrite using `[← sum_homogeneousComponent f]`. Use `Submodule.sum_mem _ fun n _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set h := homogeneousComponent n f`. Establish `hh : h.IsHomogeneous n` using `homogeneousComponent_isHomogeneous n f`. Set `Wn : Submodule ℂ (MvPolynomial σ ℂ)` to `W ⊓ homogeneousSubmodule σ ℂ n`. Use `haveI : FiniteDimensional ℂ (homogeneousSubmodule σ ℂ n) := Module.Finite.iff_fg.2 (homogeneousSubmodule_fg σ ℂ n)`. Use `haveI : FiniteDimensional ℂ Wn := Submodule.finiteDimensional_of_le inf_le_right`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `K : Submodule ℂ H` to `Wn.map ι`. Use `haveI : FiniteDimensional ℂ K := inferInstance`. Take `⟨w, hwWn, hwk⟩` from `Submodule.mem_map.1 (K.starProjection_apply_mem (ι h))`. Establish `hwn : w.IsHomogeneous n` using `(mem_homogeneousSubmodule n w).1 hwWn.2`. Use `Submodule.mem_sup.2 ⟨w, hwWn.1, h - w, ?_, add_sub_cancel _ _⟩` and prove the remaining obligations.
-
-Rewrite using `[Submodule.mem_comap, Submodule.mem_orthogonal]`. Introduce and unpack `v ⟨w', hw', rfl⟩`. Rewrite using `[inner_eq_zero_symm, inner_homog_eq hι (hh.sub hwn), map_sub, hwk]`. Use `Submodule.starProjection_inner_eq_zero (K := K) _ _ ?_` and prove the remaining obligations. Conclude with `Submodule.mem_map_of_mem ⟨hW w' hw' n, homogeneousComponent_mem n w'⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCompl_orth [Finite σ] (hι : IsFockIP ι) (hinj : Function.Injective ι)
     (W : Submodule ℂ (MvPolynomial σ ℂ)) (hW : ∀ f ∈ W, ∀ n, homogeneousComponent n f ∈ W) :
@@ -80,15 +76,15 @@ theorem isCompl_orth [Finite σ] (hι : IsFockIP ι) (hinj : Function.Injective 
     exact Submodule.mem_map_of_mem ⟨hW w' hw' n, homogeneousComponent_mem n w'⟩
 
 /- English proof (translation)
-Introduce `p q r s W hst hgr`. Take `⟨ι, hι, hinj⟩` from `GlobalTheory.FischerParts.exists_fockIP (Ln p q r s)`. Use `set C : Submodule ℂ (Pol p q r s) := (W.map ι)ᗮ.comap ι with hCdef`. Establish `hc : IsCompl W C` using `isCompl_orth hι hinj W hgr`. Establish `hCst : ∀ Z, ∀ u ∈ C, fockAct1 p q r s Z u ∈ C`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z u hu`. Rewrite `hu`, the goal using `[hCdef, Submodule.mem_comap, Submodule.mem_orthogonal]`. Introduce and unpack `v ⟨w, hw, rfl⟩`. Rewrite using `[inner_eq_zero_symm, (GlobalTheory.FockAdj.fock_adjoints p q r s _ ι hι).2.1 Z u w, inner_eq_zero_symm]`. Conclude with `hu _ (Submodule.mem_map_of_mem (hst _ w hw))`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `π : Pol p q r s →ₗ[ℂ] Pol p q r s` to `W.subtype ∘ₗ W.linearProjOfIsCompl C hc`. Establish `hmem : ∀ f, π f ∈ W` using `fun f => (W.linearProjOfIsCompl C hc f).2`. Establish `hπW : ∀ f ∈ W, π f = f` using `fun f hf => congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hc ⟨f, hf⟩)`. Establish `hπC : ∀ u ∈ C, π u = 0` using `fun u hu => by`. Establish `h0` using `(Submodule.linearProjOfIsCompl_apply_eq_zero_iff hc).2 hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(congrArg Subtype.val h0).trans rfl`. Establish `hsub : ∀ f, f - π f ∈ C` using `fun f => by`. Establish `key : W.linearProjOfIsCompl C hc (π f) = W.linearProjOfIsCompl C hc f` using `Submodule.linearProjOfIsCompl_apply_left hc (W.linearProjOfIsCompl C hc f)`. Establish `h1` using `(W.linearProjOfIsCompl C hc).map_sub f (π f)`. Rewrite `h1` using `[key, sub_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Submodule.linearProjOfIsCompl_apply_eq_zero_iff hc).1 h1`. Use `⟨π, hmem, hπW, fun Z f => ?_⟩` and prove the remaining obligations. Establish `hf : f = π f + (f - π f)` using `(add_sub_cancel _ _).symm`. Use `conv_lhs => rw [hf]`. Rewrite using `[map_add, map_add, hπW _ (hst Z _ (hmem f)), hπC _ (hCst Z _ (hsub f)), add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem exists_equivariant_proj : ∀ (p q r s : ℕ) (W : Submodule ℂ (Pol p q r s)),
     (∀ Z, ∀ f ∈ W, fockAct1 p q r s Z f ∈ W) → (∀ f ∈ W, ∀ n, homogeneousComponent n f ∈ W) →

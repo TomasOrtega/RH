@@ -20,9 +20,9 @@ open GlobalTheory.FinPl.LatMem
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨ha0, haw⟩` from `mem_idAt_iff.1 ha`. Take `⟨hb0, hbw⟩` from `mem_idAt_iff.1 hb`. Use `GlobalTheory.AdelicU.Supp.adTens_ext (fun w => ?_) fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, compInf_eq_zero ha0, zero_mul, map_zero]`. Rewrite using `[map_mul, map_zero, compFin_eq_compAt, compFin_eq_compAt]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hv : P v`. Rewrite using `[hbw v (hd v hv), mul_zero]`. Rewrite using `[haw v hv, zero_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_eq_zero_of_disj {P P' : Pl D → Prop} (hd : ∀ p, P p → ¬ P' p) {a b : AE D} (ha : a ∈ idAt D P)
     (hb : b ∈ idAt D P') : a * b = 0 := by
@@ -36,11 +36,11 @@ theorem mul_eq_zero_of_disj {P P' : Pl D → Prop} (hd : ∀ p, P p → ¬ P' p)
     · rw [haw v hv, zero_mul]
 
 /- English proof (translation)
-Take `⟨hb0, hbw⟩` from `mem_idAt_iff.1 hb`. Establish `haw : ∀ v, P v → compAt D v a = 0`. Introduce `v hv`. Unfold `idOff at ha`. Rewrite `ha` using `[Submodule.mem_iInf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `RingHom.mem_ker.1 (ha ⟨v, hv⟩)`. Use `GlobalTheory.AdelicU.Supp.adTens_ext (fun w => ?_) fun v => ?_` and prove the remaining obligations. Rewrite using `[map_mul, compInf_eq_zero hb0, mul_zero, map_zero]`. Rewrite using `[map_mul, map_zero, compFin_eq_compAt, compFin_eq_compAt]`. Distinguish the cases in `hv : P v`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[haw v hv, zero_mul]`. Rewrite using `[hbw v hv, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_eq_zero_of_off {P : Pl D → Prop} {a b : AE D} (ha : a ∈ idOff D P) (hb : b ∈ idAt D P) : a * b = 0 := by
   obtain ⟨hb0, hbw⟩ := mem_idAt_iff.1 hb
@@ -59,25 +59,25 @@ theorem mul_eq_zero_of_off {P : Pl D → Prop} {a b : AE D} (ha : a ∈ idOff D 
 def idem (P : Pl D → Prop) : AE D := pairA D.host.F 0 (indP D.host.F P) ⊗ₜ[D.host.F] (1 : D.host.E)
 
 /- English proof (translation)
-The claim follows from `tmul_mem_idAt (indicatorAdele_supported D.host.F P) 1`.
+A detailed English derivation is pending.
 -/
 theorem idem_mem (P : Pl D → Prop) : idem P ∈ idAt D P := tmul_mem_idAt (indicatorAdele_supported D.host.F P) 1
 
 /- English proof (translation)
-Use `show pairA D.host.F 0 (indP D.host.F P) ⊗ₜ[D.host.F] star (1 : D.host.E) = _`. Rewrite using `[star_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem cA_idem (P : Pl D → Prop) : cA D (idem P) = idem P := by
   show pairA D.host.F 0 (indP D.host.F P) ⊗ₜ[D.host.F] star (1 : D.host.E) = _
   rw [star_one]; rfl
 
 /- English proof (translation)
-Rewrite using `[mul_comm]`. Conclude with `mul_indP ha`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idem_mul {P : Pl D → Prop} {a : AE D} (ha : a ∈ idAt D P) : idem P * a = a := by
   rw [mul_comm]; exact mul_indP ha
 
 /- English proof (translation)
-Use `GlobalTheory.SplitScalar.symplO_eq_zero S T (a := idem P) (b := idem P') ?_ (fun i j => idem_mul (hx i j)) (fun i j => idem_mul (hy i j))` and prove the remaining obligations. Rewrite using `[cA_idem]`. Conclude with `mul_eq_zero_of_disj hd (idem_mem P) (idem_mem P')`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symplO_disj {S T : HSp D} {P P' : Pl D → Prop} (hd : ∀ p, P p → ¬ P' p) {x y : WO S T} (hx : MxAt P x)
     (hy : MxAt P' y) : symplO S T x y = 0 := by
@@ -87,7 +87,7 @@ theorem symplO_disj {S T : HSp D} {P P' : Pl D → Prop} (hd : ∀ p, P p → ¬
   exact mul_eq_zero_of_disj hd (idem_mem P) (idem_mem P')
 
 /- English proof (translation)
-Introduce `i j`. Take `⟨h0, hw⟩` from `mem_idAt_iff.1 (hx i j)`. Conclude with `mem_idAt_iff.2 ⟨h0, fun w hw' => hw w fun hp => hw' (h w hp)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mxAt_mono {P Q : Pl D → Prop} (h : ∀ p, P p → Q p) {m n : ℕ} {x : Mx D m n} (hx : MxAt P x) : MxAt Q x := by
   intro i j
@@ -95,7 +95,7 @@ theorem mxAt_mono {P Q : Pl D → Prop} (h : ∀ p, P p → Q p) {m n : ℕ} {x 
   exact mem_idAt_iff.2 ⟨h0, fun w hw' => hw w fun hp => hw' (h w hp)⟩
 
 /- English proof (translation)
-Unfold `comb`. Rewrite using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem comb_single (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO S T) (f : WO S T → ℂ) :
     comb ψ S T (Finsupp.single w 1) f = heisO ψ S T w f := by
@@ -103,9 +103,9 @@ theorem comb_single (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (w : WO S T) 
   rw [Finsupp.support_single_ne_zero _ one_ne_zero, Finset.sum_singleton, Finsupp.single_eq_same, one_smul]
 
 /- English proof (translation)
-Unfold `congGrp at hg`. Rewrite `hg` using `[MonoidHom.mem_ker]`. Introduce `i j`. Use `congrArg (fun x : GL (Fin V.rank) (AE D ⧸ I) => x.1 i j) hg` as an intermediate fact. Rewrite using `[← Ideal.Quotient.eq]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Formalism.L2.Theta.mt, Matrix.one_apply] at this ⊢`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_congGrp' {V : HSp D} {I : Ideal (AE D)} {g : GA D V} (hg : g ∈ congGrp V I) :
     ∀ i j, mt V g i j - (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D)) i j ∈ I := by
@@ -118,13 +118,11 @@ theorem mem_congGrp' {V : HSp D} {I : Ideal (AE D)} {g : GA D V} (hg : g ∈ con
   exact this
 
 /- English proof (translation)
-Establish `hg'` using `mem_congGrp' (inv_mem hg)`. Establish `hh'` using `mem_congGrp' hh`. Establish `h1 : HMul.hMul (mt T h - 1 : Matrix (Fin T.rank) (Fin T.rank) (AE D)) (u : Matrix (Fin T.rank) (Fin S.rank) (AE D)) = 0`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.zero_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_eq_zero fun k _ => mul_eq_zero_of_off (by simpa using hh' i k) (hu k j)`. Establish `h2 : HMul.hMul (u : Matrix (Fin T.rank) (Fin S.rank) (AE D)) (mt S g⁻¹ - 1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) = 0`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply, Matrix.zero_apply]`. Conclude with `Finset.sum_eq_zero fun k _ => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mul_comm]; exact mul_eq_zero_of_off (by simpa using hg' k j) (hu i k)`. Rewrite `h1` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Rewrite `h2` using `[Matrix.mul_sub, Matrix.mul_one, sub_eq_zero]`. Unfold `actO`. Rewrite using `[h1]`.
-
-Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actO_off {S T : HSp D} {P : Pl D → Prop} {g : GA D S} {h : GA D T} (hg : g ∈ grpOff S P)
     (hh : h ∈ grpOff T P) {u : WO S T} (hu : MxAt P u) : actO S T g h u = u := by
@@ -154,7 +152,7 @@ open GlobalTheory.FinPl.LatMem
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[← compFin_eq_compAt]`. Use `show evalV D.host.F w (indP D.host.F P) ⊗ₜ[D.host.F] (1 : D.host.E) = 1`. Rewrite using `[evalV_indP, if_pos hpw]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem compAt_idem {P : Pl D → Prop} {w : Pl D} (hpw : P w) : compAt D w (idem P) = 1 := by
   rw [← compFin_eq_compAt]
@@ -163,7 +161,7 @@ theorem compAt_idem {P : Pl D → Prop} {w : Pl D} (hpw : P w) : compAt D w (ide
   rfl
 
 /- English proof (translation)
-Take `⟨h0, hw⟩` from `mem_idAt_iff.1 ha`. Use `mem_idAt_iff.2 ⟨by rw [RingHom.map_sub, RingHom.map_mul, h0, mul_zero, sub_zero], fun w hw' => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hpw : P w`. Rewrite using `[RingHom.map_sub, RingHom.map_mul, compAt_idem hpw, one_mul, sub_self]`. Rewrite using `[RingHom.map_sub, RingHom.map_mul, hw w (fun h => h.elim hpw hw'), mul_zero, sub_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_idem_mem {P P' : Pl D → Prop} {a : AE D} (ha : a ∈ idAt D (fun p => P p ∨ P' p)) :
     a - idem P * a ∈ idAt D P' := by
@@ -176,13 +174,13 @@ theorem sub_idem_mem {P P' : Pl D → Prop} {a : AE D} (ha : a ∈ idAt D (fun p
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `ann` using `GlobalTheory.SelfDualAt.latO_ann_at D ψ hψ S T LS LT hLS hLT`. Establish `hmono : ∀ (Q Q' : Pl D → Prop), (∀ p, Q p → Q' p) → latO S T (LS : Set _) (LT : Set _) Q ≤ latO S T (LS : Set _) (LT : Set _) Q'`. Introduce `Q Q' hQ`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨α, hα, hv, rest⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨α, hα, fun v hv' => hv v fun hq => hv' (hQ v hq), rest⟩`. Establish `huM` using `latO_mxAt hu`. Establish `hu1 : MxAt P (idem P • u)` using `fun i j => by`. Rewrite using `[Matrix.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (idem_mem P)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu2 : MxAt P' (u - idem P • u)` using `fun i j => by`. Rewrite using `[Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Conclude with `sub_idem_mem (huM i j)`. Use `⟨hu1, hu2, (ann P _ hu1).2 fun u' hu' => ?_, (ann P' _ hu2).2 fun u' hu' => ?_⟩` and prove the remaining obligations. Establish `hsub : symplO S T (idem P • u) u' = symplO S T u u' - symplO S T (u - idem P • u) u'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.SplitScalar.symplO_sub_left, sub_sub_cancel]`. Rewrite using `[hsub, symplO_disj (fun p hp' hp => hd p hp hp') hu2 (latO_mxAt hu'), sub_zero]`. Conclude with `(ann _ u huM).1 hu u' (hmono _ _ (fun p hp => Or.inl hp) hu')`. Rewrite using `[GlobalTheory.SplitScalar.symplO_sub_left, symplO_disj hd hu1 (latO_mxAt hu'), sub_zero]`. Conclude with `(ann _ u huM).1 hu u' (hmono _ _ (fun p hp => Or.inr hp) hu')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem split_latO (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) {S T : HSp D} {LS : Lat S} {LT : Lat T}
     (hLS : IsSelfDualC S LS) (hLT : IsSelfDualC T LT) {P P' : Pl D → Prop} (hd : ∀ p, P p → ¬ P' p) {u : WO S T}
@@ -212,7 +210,7 @@ theorem split_latO (ψ : AddChar (AF D.host.F) ℂ) (hψ : IsStdChar D ψ (-1)) 
     exact (ann _ u huM).1 hu u' (hmono _ _ (fun p hp => Or.inr hp) hu')
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[mul_left_comm, h i j]`. Simplify using `only [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]`. Rewrite using `[mul_sub, h i j, mul_left_comm, h i j]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem isHalf_parts {S T : HSp D} {P : Pl D → Prop} {e : AE D} {u : WO S T} (h : IsHalf e u) :
     IsHalf e (idem P • u) ∧ IsHalf e (u - idem P • u) := by
@@ -229,27 +227,25 @@ namespace GlobalTheory.DisjComb
 open GlobalTheory.FinPl.LatMem
 
 /- English proof (translation)
-Introduce `D ψ hψ S T P P' hd`. Establish `HC` using `GlobalTheory.HeisComb.main D ψ S T`. Establish `hcomm : ∀ (e : WO S T →₀ ℂ), CombAt P e → ∀ w : WO S T, MxAt P' w → ∀ f, heisO ψ S T w (comb ψ S T e f) = comb ψ S T e (heisO ψ S T w f)`. Introduce `e he w hw f`. Establish `h` using `HC.2.1 e (Finsupp.single w 1) (fun x hx y hy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hy` using `[Finsupp.support_single_ne_zero _ one_ne_zero, Finset.mem_singleton]`. Substitute `hy` using the available equality. Conclude with `symplO_disj hd (he x hx) hw) f`. Simplify using `only [comb_single] at h`. Conclude with `h.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmono : ∀ (LS : Lat S) (LT : Lat T) (Q Q' : Pl D → Prop), (∀ p, Q p → Q' p) → latO S T (LS : Set _) (LT : Set _) Q ≤ latO S T (LS : Set _) (LT : Set _) Q'`. Introduce `LS LT Q Q' hQ`. Apply `AddSubgroup.closure_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨α, hα, hv, rest⟩`. Conclude with `⟨α, hα, fun v hv' => hv v fun hq => hv' (hQ v hq), rest⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnsmul : ∀ (Q : Pl D → Prop) (x : WO S T), MxAt Q x → MxAt Q ((2 : ℕ) • x)`. Introduce `Q x hx i j`. Rewrite using `[Matrix.smul_apply]`. Conclude with `nsmul_mem (hx i j) 2`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `e e' he he' f`. Conclude with `HC.2.1 e e' (fun x hx y hy => symplO_disj hd (he x hx) (he' y hy)) f`. Introduce `e he`. Establish `hfin : IsFinComb e` using `fun u hu => Matrix.ext fun i j => (mem_idAt_iff.1 (he u hu i j)).1`. Use `⟨hfin, fun LS LT f hf => ⟨HC.2.2.1 e f hf.1 hfin hψ, fun u hu => ?_, fun e' he' u hu hh => ?_⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[hcomm e he _ (hnsmul P' u (latO_mxAt hu)), hf.2.1 u hu]`. Rewrite using `[hcomm e he u (latO_mxAt hu), hf.2.2 e' he' u hu hh]`. Introduce `χS χT om hom e he g hg h hh f hf`. Unfold `comb`. Rewrite using `[map_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations. Rewrite using `[map_smul, hom.om_heis g h u f hf, actO_off hg hh (he u hu)]`. Introduce `e e' he he'`. Take `⟨c'', hsupp, heq⟩` from `HC.1 e e'`. Use `⟨c'', fun w hw => ?_, heq⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx, y, hy, rfl⟩` from `hsupp w hw`. Introduce `i j`. Rewrite using `[Matrix.add_apply]`. Conclude with `Ideal.add_mem _ (he x hx i j) (he' y hy i j)`. Introduce `LS LT f hLS hLT`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hf`. Use `⟨⟨hf.1, fun u hu => hf.2.1 u (hmono LS LT _ _ (fun p hp => Or.inl hp) hu), fun e he u hu hh => hf.2.2 e he u (hmono LS LT _ _ (fun p hp => Or.inl hp) hu) hh⟩, ⟨hf.1, fun u hu => hf.2.1 u (hmono LS LT _ _ (fun p hp => Or.inr hp) hu), fun e he u hu hh => hf.2.2 e he u (hmono LS LT …` and prove the remaining obligations. Introduce and unpack `⟨hP, hP'⟩`. Use `⟨hP.1, fun u hu => ?_, fun e he u hu hh => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hm1, hm2, hl1, hl2⟩` from `split_latO ψ hψ hLS hLT hd hu`. Establish `hsum : u = idem P • u + (u - idem P • u)` using `(add_sub_cancel _ _).symm`. Rewrite using `[hsum, nsmul_add, GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T (symplO_disj hd (hnsmul P _ hm1) (hnsmul P' _ hm2)), hP'.2.1 _ hl2, hP.2.1 _ hl1]`. Take `⟨hm1, hm2, hl1, hl2⟩` from `split_latO ψ hψ hLS hLT hd hu`. Take `⟨h1, h2⟩` from `isHalf_parts (P := P) hh`.
-
-Establish `hsum : u = idem P • u + (u - idem P • u)` using `(add_sub_cancel _ _).symm`. Rewrite using `[hsum, GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T (symplO_disj hd hm1 hm2), hP'.2.2 e he _ hl2 h2, hP.2.2 e he _ hl1 h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (S T : HSp D) (P P' : Pl D → Prop), (∀ p, P p → ¬ P' p) → (∀ e e' : WO S T →₀ ℂ, CombAt P e → CombAt P' e' → ∀ f, comb ψ S T e (comb ψ S T e' f) = comb ψ S T e' (comb ψ S T e f)) ∧ (∀ e : WO S T →₀ ℂ, CombAt P e → IsFinComb e ∧ ∀ LS LT f, Vac ψ S T LS LT P' f → Vac ψ S T LS LT P' (comb ψ S T e f)) ∧ (∀ χS χT (om : Om S T), IsWeilDatumO ψ S T χS χT om → ∀ e : WO S T →₀ ℂ, CombAt P e → ∀ g ∈ grpOff S P, ∀ h ∈ grpOff T P, ∀ f, IsThetaFunO ψ S T f → om (g, h) (comb ψ S T e f) = comb ψ S T e (om (g, h) f)) ∧ (∀ e e' : WO S T →₀ ℂ, CombAt (fun p => P p ∨ P' p) e → CombAt (fun p => P p ∨ P' p) e' → ∃ e'', CombAt (fun p => P p ∨ P' p) e'' ∧ ∀ f, comb ψ S T e'' f = comb ψ S T e (comb ψ S T e' f)) ∧ ∀ LS LT f, IsSelfDualC S LS → IsSelfDualC T LT → (Vac ψ S T LS LT (fun p => P p ∨ P' p) f ↔ Vac ψ S T LS LT P f ∧ Vac ψ S T LS LT P' f) := by
   intro D ψ hψ S T P P' hd

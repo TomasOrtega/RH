@@ -18,9 +18,9 @@ variable {O : Type} [CommRing O] [Module.Finite ℤ O] {bar : O → O} {w0 : O}
 variable {X : Type} [AddCommGroup X] [Module O X]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun a y z => ?_⟩` and prove the remaining obligations. Use `show β (τ a • y) z = β y (τ (bar a) • z)`. Rewrite using `[h2, hb.comm]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨h1, fun a y z => ?_⟩` and prove the remaining obligations. Use `h2 (τ.symm a) y z` as an intermediate fact. Express the relevant statement in the definitionally equal form `β (τ (τ.symm a) • y) z = β y (τ (bar (τ.symm a)) • z) at this`. Rewrite `this` using `[hb.comm, τ.apply_symm_apply]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem mem_balForms_twist (hb : CMOrd O bar) (τ : O ≃+* O) (β : LinearMap.BilinForm ℤ X) :
     β ∈ balForms bar X ↔ β ∈ (letI := Module.compHom X τ.toRingHom; balForms bar X) := by
@@ -36,11 +36,11 @@ theorem mem_balForms_twist (hb : CMOrd O bar) (τ : O ≃+* O) (β : LinearMap.B
     rwa [hb.comm, τ.apply_symm_apply] at this
 
 /- English proof (translation)
-Take `⟨n, r, hr⟩` from `Module.Finite.exists_fin' O X`. Rewrite using `[φ.eval_eq hr, ← hφ τ hτ]`. Set `g : (Fin n → O) →+ X` to `r.toAddMonoidHom.comp ⟨⟨fun a i => τ (a i), by ext; simp⟩, fun a b => by ext; simp⟩`. Establish `hg : ∀ (c : O) a, g (c • a) = τ c • g a` using `fun c a => by`. Express the relevant statement in the definitionally equal form `r _ = τ c • r _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← map_smul]`. Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules. Establish `hs : Function.Surjective g` using `hr.comp fun a => ⟨fun i => τ.symm (a i), funext fun i => τ.apply_symm_apply _⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `letI : Module O X := Module.compHom _ τ.toRingHom`. Use `letI := hf`. Conclude with `(φ.eval_eq (r := ⟨g.toAddHom, hg⟩) hs _).symm`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem eval_twist_of_isTwG {φ : InvFun O} (hφ : IsTwG w0 φ) (τ : O ≃+* O) (hτ : τ w0 = w0)
     [Module.Finite O X] (hf : letI := Module.compHom X τ.toRingHom; Module.Finite O X) (B : X → X → ℝ) :
@@ -63,15 +63,13 @@ theorem eval_twist_of_isTwG {φ : InvFun O} (hφ : IsTwG w0 φ) (τ : O ≃+* O)
 omit [Module O X] in
 
 /- English proof (translation)
-Introduce and unpack `t ⟨X₁, i1, i2, i3, r, B₁, hr, hrad, hB, hd⟩`. Use `set τ := σ.symm with hτdef`. Establish `hτ : τ w0 = w0` using `(σ.symm_apply_eq).2 hσ.symm`. Set `g : (Fin n → O) →+ X₁` to `r.toAddMonoidHom.comp ⟨⟨fun a i => τ (a i), by ext; simp⟩, fun a b => by ext; simp⟩`. Establish `hg : ∀ (c : O) a, g (c • a) = τ c • g a` using `fun c a => by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `r _ = τ c • r _`. Rewrite using `[← map_smul]`. Use `congr 1`. Use extensionality with `i`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs : Function.Surjective g` using `hr.comp fun a => ⟨fun i => σ (a i), funext fun i => σ.symm_apply_apply _⟩`. Establish `hgB : ∀ a b, B a b = B₁ (g a) (g b)` using `fun a b => by`. Use `hB (fun i => τ (a i)) (fun i => τ (b i))` as an intermediate fact. Simplify using `only [hτdef, RingEquiv.apply_symm_apply] at this`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hf' : letI` using `Module.compHom X₁ τ.toRingHom; Module.Finite O X₁ := by`. Use `letI := Module.compHom X₁ τ.toRingHom`. Conclude with `Module.Finite.of_surjective (⟨g.toAddHom, hg⟩ : (Fin n → O) →ₗ[O] X₁) hs`. Establish `hd'` using `isStarDepth_transfer bar i2 (Module.compHom X₁ τ.toRingHom) i3 hf' (mem_balForms_twist hb τ) (eval_twist_of_isTwG hψ τ hτ hf') (eval_twist_of_isTwG hw τ hτ hf') hd`. Use `letI := Module.compHom X₁ τ.toRingHom`.
-
-Conclude with `⟨X₁, i1, _, hf', ⟨g.toAddHom, hg⟩, B₁, hs, hrad, hgB, hd'⟩`.
+Establish an intermediate fact. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem depthSet_twist_subset (hb : CMOrd O bar) {ψ w : InvFun O} (hψ : IsTwG w0 ψ) (hw : IsTwG w0 w) (σ : O ≃+* O)
     (hσ : σ w0 = w0) (n : ℕ) (B : (Fin n → O) → (Fin n → O) → ℝ) :
@@ -103,9 +101,9 @@ theorem depthSet_twist_subset (hb : CMOrd O bar) {ψ w : InvFun O} (hψ : IsTwG 
 end Twist
 
 /- English proof (translation)
-Introduce `O _ _ _ _ bar w0 hb ψ w hψ hw σ hσ n B`. Use `show sSup _ = sSup _`. Use `congr 1`. Use `Set.Subset.antisymm (depthSet_twist_subset hb hψ hw σ hσ n B) ?_` and prove the remaining obligations. Establish `h` using `depthSet_twist_subset hb hψ hw σ.symm ((σ.symm_apply_eq).2 hσ.symm) n (fun a b => B (fun i => σ (a i)) (fun i => σ (b i)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h` using `only [RingEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem isTwG_starDepth : ∀ (O : Type) [CommRing O] [IsDedekindDomain O] [CharZero O] [Module.Finite ℤ O] (bar : O → O)
     (w0 : O), CMOrd O bar → ∀ (ψ w : InvFun O), IsTwG w0 ψ → IsTwG w0 w → IsTwG w0 (starDepth bar ψ w) := by

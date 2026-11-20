@@ -14,7 +14,7 @@ section
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 namespace GlobalTheory.RefSum
 /- English proof (translation)
-Introduce `hP _ hS hF` and use `_root_.GlobalTheory.T.refW_of_prints_size_flatDeg_refTheta hP hS hF (_root_.GlobalTheory.T.refTheta_of_size_refCore hS (_root_.GlobalTheory.T.reference_core_of_size_and_sum_point hS (_root_.GlobalTheory.T.sum_pt_of_size hS)))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem refinedSum_weight_of_size_alt : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.RefSum.ReferenceWeight :=
   fun hP _ hS hF => _root_.GlobalTheory.T.refW_of_prints_size_flatDeg_refTheta hP hS hF (_root_.GlobalTheory.T.refTheta_of_size_refCore hS (_root_.GlobalTheory.T.reference_core_of_size_and_sum_point hS (_root_.GlobalTheory.T.sum_pt_of_size hS)))
@@ -24,7 +24,7 @@ section
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConjugateDefects NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.AllWt GlobalTheory.FlatLine GlobalTheory.FlatTw GlobalTheory.SlopeRec GlobalTheory.CovTop GlobalTheory.BigTop GlobalTheory.RefSum
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.RefSum.refinedSum_weight_of_size_alt | exact _root_.GlobalTheory.RefSum.refinedSum_weight_of_size_alt | (intros; apply _root_.GlobalTheory.RefSum.refinedSum_weight_of_size_alt <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.refW_of_prints_deepGood_size_flatDeg : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → _root_.GlobalTheory.CovTop.DeepGoodness → _root_.GlobalTheory.CovTop.SizeCondition → _root_.GlobalTheory.CovTop.FlatDegreeCondition → _root_.GlobalTheory.RefSum.ReferenceWeight := by
   first | exact @_root_.GlobalTheory.RefSum.refinedSum_weight_of_size_alt | exact _root_.GlobalTheory.RefSum.refinedSum_weight_of_size_alt | (intros; apply _root_.GlobalTheory.RefSum.refinedSum_weight_of_size_alt <;> assumption)

@@ -6,12 +6,12 @@ import Development.WeilBound.CoreStatements.VolumeEquality.BaseUnifVec
 namespace SheetDecomposition
 
 /- English proof (translation)
-The claim follows from `baseUnifEx2_of (vecOfPeriods_of holCoord) kUnifConj`.
+A detailed English derivation is pending.
 -/
 theorem baseUnifEx2 : BaseUnifEx2 := baseUnifEx2_of (vecOfPeriods_of holCoord) kUnifConj
 
 /- English proof (translation)
-Introduce `hG E _ _ _ H D l Xo c Y sm j j' n h₁ h₂ h₃` and use `(baseUnifEx2 hG E H D l Xo c Y sm j j' n h₁ h₂ h₃).elim fun B _ => ⟨B⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem baseUnifEx : BaseUnifEx := fun hG E _ _ _ H D l Xo c Y sm j j' n h₁ h₂ h₃ =>
   (baseUnifEx2 hG E H D l Xo c Y sm j j' n h₁ h₂ h₃).elim fun B _ => ⟨B⟩

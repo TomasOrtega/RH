@@ -10,9 +10,9 @@ noncomputable section
 namespace GlobalTheory.KZ.H3.LamStab
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => simp [slP]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp`. Simplify using `only [map_mul, hp, MvPolynomial.map_X, Betti.slP_X, map_add, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Simplify using `[MvPolynomial.smul_eq_C_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem polySlash_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (m : Matrix (Fin 2) (Fin 2) ℤ)
     (p : MvPolynomial (Fin 2) R) : slP m (MvPolynomial.map φ p) = MvPolynomial.map φ (slP m p) := by
@@ -24,7 +24,7 @@ theorem polySlash_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (m
     simp [MvPolynomial.smul_eq_C_mul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [opP, LinearMap.coe_mk, AddHom.coe_mk, polySlash_map]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem opP_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (m : Matrix (Fin 2) (Fin 2) ℤ)
     (F : ℂ → MvPolynomial (Fin 2) R) :
@@ -33,7 +33,7 @@ theorem opP_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (m : Mat
   simp only [opP, LinearMap.coe_mk, AddHom.coe_mk, polySlash_map]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [LinearMap.sum_apply, Finset.sum_apply, opP_map, map_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem sum_opP_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {ι : Type} (s : Finset ι)
     (m : ι → Matrix (Fin 2) (Fin 2) ℤ) (F : ℂ → MvPolynomial (Fin 2) R) :
@@ -43,9 +43,9 @@ theorem sum_opP_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) {ι 
   simp only [LinearMap.sum_apply, Finset.sum_apply, opP_map, map_sum]
 
 /- English proof (translation)
-Consider the cases of `T with`. Consider the case `T q`. Simplify using `only [opL, LinearMap.add_apply, sum_opP_map, opP_map]`. Use function extensionality and compare the values at `z`. Simplify using the standard rewrite rules.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `U => simp only [opL, sum_opP_map]`. Consider the case `D d => simp only [opL, opP_map]`.
+Treat this case separately. Treat this case separately.
 -/
 theorem opL_map {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (N l : ℕ) (T : Letter)
     (F : ℂ → MvPolynomial (Fin 2) R) :
@@ -62,9 +62,9 @@ end GlobalTheory.KZ.H3.LamStab
 open GlobalTheory.KZ.H3 GlobalTheory.KZ.H3.LamStab in
 
 /- English proof (translation)
-Introduce `Ω _ _ ε X N l _ E _ _ T p hp`. Set `Φ : ((E ⊗[ℤ_[l]] X.Fn l) × (ℂ → MvPolynomial (Fin 2) E)) →ₗ[E] ((E ⊗[ℤ_[l]] X.Fn l) × (ℂ → MvPolynomial (Fin 2) E))` to `LinearMap.prodMap (X.opV N l E T) (opL E N l T)`. Establish `key : abelian₂ X l E ≤ (abelian₂ X l E).comap Φ`. Unfold `abelian₂`. Rewrite using `[Submodule.span_le]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `q ⟨b, F, hR, rfl⟩`. Use `Submodule.subset_span ⟨X.op N l T b, opL ℤ_[l] N l T F, (GlobalTheory.T.kummerPotentialRelation_linear_hecke_stable Ω ε X l).2.2.2.2 N T b F hR, ?_⟩` and prove the remaining obligations. Simplify using `only [Φ, LinearMap.prodMap_apply, Tower.opV, LinearMap.baseChange_tmul, opL_map]`. Conclude with `key hp`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KZ.H3.lam_stable : ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] (ε : Ω →+* ℂ) (X : Tower Ω ε) (N l : ℕ) [Fact l.Prime]
     {E : Type} [Field E] [Algebra ℤ_[l] E] (T : Letter) (p : (E ⊗[ℤ_[l]] X.Fn l) × (ℂ → MvPolynomial (Fin 2) E)),

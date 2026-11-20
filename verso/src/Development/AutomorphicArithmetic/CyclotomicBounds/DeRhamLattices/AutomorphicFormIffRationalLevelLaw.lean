@@ -14,9 +14,9 @@ open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
 /- English proof (translation)
-Take `⟨hsplit, -⟩` from `GlobalTheory.UnitarySplit.real_finite_split D V`. Take `⟨g, hg⟩` from `x.2`. Take `⟨a, ha, k, hk, rfl⟩` from `hsplit g`. Establish `ha' : finHom V a = 1` using `ha`. Use `⟨k, hk, Subtype.ext ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[MonoidHom.coe_rangeRestrict, ← hg, map_mul, ha', one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_finPt {D : D7} (V : HSp D) (x : Bridge.Gf V) : ∃ k ∈ GfC V, finPt V k = x := by
   obtain ⟨hsplit, -⟩ := GlobalTheory.UnitarySplit.real_finite_split D V
@@ -27,13 +27,13 @@ private theorem exists_finPt {D : D7} (V : HSp D) (x : Bridge.Gf V) : ∃ k ∈ 
   rw [MonoidHom.coe_rangeRestrict, ← hg, map_mul, ha', one_mul]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ k ∈ J, ∀ g, F (g * k) = χ k • F g) ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `H h ⟨k, hk⟩`. Take `⟨h, hh, rfl⟩` from `exists_finPt S h`. Take `⟨k, hk', rfl⟩` from `exists_finPt S k`.
+Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hkG` using `(B.finPt_mem_levJ ψ hk').1 hk`. Use `H k ((hJ k).1.2 hkG) h` as an intermediate fact. Rewrite `this` using `[hF, hF, hρ _ ((GfC S).inv_mem hh), hρ _ ((GfC S).inv_mem ((GfC S).mul_mem hh hk')), (hJ k).2 hkG, ← B.levLam_finPt ψ hk, finPt, map_mul]`. Conclude with `this`. Introduce `H k hk g`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hkG` using `(hJ k).1.1 hk`. Establish `hk' : k ∈ GfC S` using `hkG.1`. Establish `hkJ` using `(B.finPt_mem_levJ ψ hk').2 hkG`. Establish `h1` using `H (finPt S g) ⟨_, hkJ⟩`. Establish `h2 : finPt S (g * k) = finPt S g * finPt S k` using `map_mul _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF, hF, h2, h1, (hJ k).2 hkG, ← B.levLam_finPt ψ hkJ, mul_inv_rev, map_mul ρ, hρ _ ((GfC S).inv_mem hk'), Module.End.mul_apply, Module.End.one_apply]`. Conclude with `LinearMap.map_smul (ρ g⁻¹) _ _`.
+A detailed English derivation is pending.
 -/
 private theorem lev_iff {D : D7} {S T : HSp D} (B : Base S T) (ψ : Twist D Circle) {W : Type} [AddCommGroup W] [Module ℂ W]
     (ρ : GA D S →* Module.End ℂ W) (hρ : ∀ h ∈ GfC S, ρ h = 1) (J : Set (GA D S)) (χ : GA D S → ℂ)
@@ -63,7 +63,7 @@ private theorem lev_iff {D : D7} {S T : HSp D} (B : Base S T) (ψ : Twist D Circ
     exact LinearMap.map_smul (ρ g⁻¹) _ _
 
 /- English proof (translation)
-Simplify using `using hF γ g 1`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem adForms_left {G Γ W : Type} [Group G] [Group Γ] {ι : Γ →* G} [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     {ρ : Γ →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ} {F : G → W}
@@ -71,7 +71,7 @@ private theorem adForms_left {G Γ W : Type} [Group G] [Group Γ] {ι : Γ →* 
   simpa using hF γ g 1
 
 /- English proof (translation)
-Simplify using `using hF 1 h k`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem law_right {G A W : Type} [Group G] [Group A] {Γ : Subgroup A} {ι : Γ →* G} [AddCommGroup W] [Module ℂ W]
     {ρ : A →* Module.End ℂ W} {J : Subgroup G} {χ : J →* ℂˣ} {F : G → W}
@@ -80,15 +80,13 @@ private theorem law_right {G A W : Type} [Group G] [Group A] {Γ : Subgroup A} {
   simpa using hF 1 h k
 
 /- English proof (translation)
-Introduce `D X X0 Y S YS Z c w j H ι hι f`. Establish `hrange` using `(X.char.models.HV j (Y.tupT (D.what₂.muTw w))).2.1`. Establish `key` using `fun y : (X.R.HV j (Y.tupT (D.what₂.muTw w))).H => lev_iff (baseOf Z c w j) (twVia Z.ρ ι) (X.R.cV j).ρ (X.char.models.cV j).1 _ _ (UpperTheory.KN.levS_iff_levG_and_levChi_eq D X X0 Y S YS Z c w j H ι hι) ((X.R.HV j (Y.tupT (D.what₂.muTw w))).e y) (X.R.toRealDat.extV j (Y.tupT (D.w …`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ γ h k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Establish `h1` using `(key (formOf Y (used_of_tw H.tw) j x)).1 (by`. Rewrite using `[extV_formOf]`. Conclude with `(Y.IL.jMt _ (used_of_tw H.tw) j x).2.2)`. Establish `h2` using `adForms_left (hrange.le (LinearMap.mem_range_self _ (formOf Y (used_of_tw H.tw) j x))) γ h`. Conclude with `(h1 _ k).trans (congrArg (fun v => (((baseOf Z c w j).levLam (twVia Z.ρ ι) k : ℂˣ) : ℂ) • v) h2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `hf`. Establish `hA : f ∈ Bridge.AdForms (Bridge.ratF (Vc D j)) (X.R.cV j).coef.ρ (levEnv (Vc D j) (X.R.βV j) (X.R.datVt j (Y.tupT (D.what₂.muTw w)))).J (levEnv (Vc D j) (X.R.βV j) (X.R.datVt j (Y.tupT (D.what₂.muTw w)))).χ`. Introduce `γ h k`. Take `⟨hk, hχ⟩` from `UpperTheory.KN.levEnv_level_subgroup_le_levJ_and_character_eq D X X0 Y S YS Z c w j H ι hι k`. Conclude with `(hf γ h ⟨k, hk⟩).trans (congrArg (fun u : ℂˣ => (u : ℂ) • (X.R.cV j).ρ (γ : GA D (Vc D j)) (f h)) hχ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, rfl⟩` from `hrange.ge hA`. Establish `h1` using `(key y).2 (law_right hf)`. Use `⟨(Y.IL.jMt _ (used_of_tw H.tw) j).symm ⟨X.R.toRealDat.extV j _ y, ⟨y, rfl⟩, h1⟩, congrArg _ ?_⟩` and prove the remaining obligations. Apply `Y.hinj j` to reduce the goal to its premises. Rewrite using `[extV_formOf]`.
-
-Conclude with `congrArg Subtype.val ((Y.IL.jMt _ (used_of_tw H.tw) j).apply_symm_apply _)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.automorphic_form_iff_rational_level_law :
     ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),

@@ -20,7 +20,7 @@ namespace GlobalTheory.FrameBaseChange
 open MvPolynomial (X C)
 
 /- English proof (translation)
-Unfold `spMap`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spec_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'') (g : R →+* R') :
     spMap f ≫ spMap g = spMap (f.comp g) := by
@@ -29,9 +29,9 @@ theorem spec_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[gm_val _ _ _ (by simp), gm_val _ _ _ (by simp)]`. Unfold `unitΓ toΓ`. Simplify using `only [Units.coe_map]`. Establish `key` using `congrArg (fun g => g.hom (u : A)) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom f))`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at key`. Use `erw [key]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gm_unit_map {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (u : Aˣ) {Z : Scheme.{0}} (r : Z ⟶ Sp B)
     (z : Z) : gm r z ⊤ (unitΓ (Units.map f.toMonoidHom u)) = gm (r ≫ spMap f) z ⊤ (unitΓ u) := by
@@ -48,7 +48,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l}
 
 /- English proof (translation)
-Unfold `val Formalism.L2.Pj.scaleGen`. Use `erw [map_mul, gm_res r z _ (hJ.mem φ r)]`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem val_scale {Y Z : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ Xo.univ.t.G.left)} {ε : K → ℤ}
     {z : Z} {J : (Z ⟶ Xo.univ.t.G.left) → Xo.univ.t.PP.L.ι} (hJ : Good Xo.univ.t.PP.L z J) (c : Γ(Y, ⊤)ˣ)
@@ -60,9 +60,9 @@ theorem val_scale {Y Z : Scheme.{0}} {K : Type} [Fintype K] {φ : K → (Y ⟶ X
 variable {S S' : Type} [CommRing S] [CommRing S'] (ψ : S →+* S') (x0 : Sp S ⟶ Xo.X)
 
 /- English proof (translation)
-Unfold `psIn`. Rewrite using `[MvPolynomial.map_rename]`. Use `congr 1`. Unfold `psTrunc`. Rewrite using `[map_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MvPolynomial.map_monomial, MvPowerSeries.coeff_map]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psIn_map {d n n' : ℕ} (m : ℕ) (r : Fin n → Fin n') (f : MvPowerSeries (Fin n × Fin d) S) :
     psIn d m r (MvPowerSeries.map ψ f) = MvPolynomial.map ψ (psIn d m r f) := by
@@ -74,9 +74,9 @@ theorem psIn_map {d n n' : ℕ} (m : ℕ) (r : Fin n → Fin n') (f : MvPowerSer
   simp only [MvPolynomial.map_monomial, MvPowerSeries.coeff_map]
 
 /- English proof (translation)
-Unfold `rjBC Formalism.L2.Pj.homAt`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Over.homMk_left]`. Rewrite using `[spec_comp, spec_comp]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `ReciprocityTheory.ChartRestriction.G.PullbackSections.jetSubstP_comp_jetBC ψ m φ`.
+A detailed English derivation is pending.
 -/
 theorem subst_square {n n' d : ℕ} (m : ℕ) (φ : Fin n × Fin d → MvPolynomial (Fin n' × Fin d) S) :
     homAt (spMap ψ ≫ x0) (jetSubstP m (fun i => MvPolynomial.map ψ (φ i)) :
@@ -90,7 +90,7 @@ theorem subst_square {n n' d : ℕ} (m : ℕ) (φ : Fin n × Fin d → MvPolynom
   exact ReciprocityTheory.ChartRestriction.G.PullbackSections.jetSubstP_comp_jetBC ψ m φ
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem jetMap_congr {R κ κ' : Type} [CommRing R] {m : ℕ} {f g : κ → MvPolynomial κ' R} (e : f = g)
     (hf : ∀ i, f i ∈ orig R κ') (hg : ∀ i, g i ∈ orig R κ') : jetMap (m := m) f hf = jetMap (m := m) g hg := by
@@ -98,13 +98,11 @@ theorem jetMap_congr {R κ κ' : Type} [CommRing R] {m : ℕ} {f g : κ → MvPo
   rfl
 
 /- English proof (translation)
-Unfold `rjBC Formalism.L2.Pj.homAt jetCopy`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Over.homMk_left]`. Rewrite using `[spec_comp, spec_comp]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hS : ∀ p : Fin 1 × Fin d, (X (i, p.2) : MvPolynomial (Fin n × Fin d) S) ∈ orig S (Fin n × Fin d)`. Introduce `p`. Simplify using `only [orig]`. Conclude with `Ideal.subset_span ⟨_, rfl⟩`. Establish `hS' : ∀ p : Fin 1 × Fin d, MvPolynomial.map ψ (X (i, p.2) : MvPolynomial (Fin n × Fin d) S) ∈ orig S' (Fin n × Fin d)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Rewrite using `[MvPolynomial.map_X]`. Simplify using `only [orig]`. Conclude with `Ideal.subset_span ⟨_, rfl⟩`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.jetMap_comp_jetBC ψ m (fun p : Fin 1 × Fin d => (X (i, p.2) : MvPolynomial (Fin n × Fin d) S)) hS hS'`.
-
-Rewrite using `[jetMap_congr (g := fun p : Fin 1 × Fin d => MvPolynomial.map ψ (X (i, p.2) : MvPolynomial (Fin n × Fin d) S)) (funext fun p => (MvPolynomial.map_X ψ (i, p.2)).symm) _ hS']`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem copy_square (d m n : ℕ) (i : Fin n) :
     homAt (spMap ψ ≫ x0) (jetCopy d m i : Jet S' (Fin 1 × Fin d) m →ₐ[S'] Jet S' (Fin n × Fin d) m) ≫
@@ -133,7 +131,7 @@ theorem copy_square (d m n : ℕ) (i : Fin n) :
 variable {ψ x0} {d : ℕ} {x : ∀ m, rjO x0 d m 1 ⟶ Xo.univ.t.G} {x' : ∀ m, rjO (spMap ψ ≫ x0) d m 1 ⟶ Xo.univ.t.G}
 
 /- English proof (translation)
-Unfold `rjpt`. Rewrite using `[hx m, ← Category.assoc, copy_square, Category.assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem point_bc (hx : ∀ m, x' m = rjBC ψ x0 d m 1 ≫ x m) {n : ℕ} (m : ℕ) (i : Fin n) :
     rjpt (spMap ψ ≫ x0) d x' m i = rjBC ψ x0 d m n ≫ rjpt x0 d x m i := by
@@ -147,9 +145,9 @@ variable {e : ∀ m, RFrTy x0 d x m} {e' : ∀ m, RFrTy (spMap ψ ≫ x0) d x' m
 include hc hJ
 
 /- English proof (translation)
-Unfold `rpe`. Use `((val_pull hJ _ _ r).trans ((val_corr hJ hc _).trans (val_pull hJ _ _ _))).trans (Eq.trans (congrArg (fun q => val (e m) q z J) ?_) (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Establish `e2 : (fun p : Fin 2 × Fin d => φ' p.1 p.2) = fun p => MvPolynomial.map ψ (φ p.1 p.2)`. Use function extensionality and compare the values at `fun p => hφ p.1 p.2`. Establish `hsq` using `subst_square ψ x0 m (fun p : Fin 2 × Fin d => φ p.1 p.2)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Category.assoc, ← Over.comp_left, e2, hsq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_subst {n : ℕ} (φ : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S)
     (φ' : Fin 2 → Fin d → MvPolynomial (Fin n × Fin d) S') (hφ : ∀ i j, φ' i j = MvPolynomial.map ψ (φ i j))
@@ -171,37 +169,37 @@ open FrameBaseChange
 open MvPolynomial (X C)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo S S' _ _ ψ x0 d F act x x' hx e e' he he' hc ph1 ph2 sy ad hF`. Establish `hL : Xo.univ.t.PP.L.IsLB` using `Xo.univ.t.PP.isLB`. Use `⟨he', ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `m`. Take `⟨u, hu, hcr⟩` from `hF.ph1 m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨Units.map (jetBC ψ (Fin 3 × Fin d) m).toMonoidHom u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.coe_map] show jetBC ψ _ m (u : Jet S (Fin 3 × Fin d) m) = _`. Rewrite using `[hu, ReciprocityTheory.ChartRestriction.G.PullbackSections.jetBC_psJet]`. Apply `corr_of_val hL` to reduce the goal to its premises. Introduce `y J hJ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hlift : lift (rjpt (spMap ψ ≫ x0) d x' m (0 : Fin 3)) (lift (rjpt (spMap ψ ≫ x0) d x' m (1 : Fin 3)) (rjpt (spMap ψ ≫ x0) d x' m (2 : Fin 3))) = rjBC ψ x0 d m 3 ≫ lift (rjpt x0 d x m (0 : Fin 3)) (lift (rjpt x0 d x m (1 : Fin 3)) (rjpt x0 d x m (2 : Fin 3)))`. Simplify using `only [point_bc hx, CartesianMonoidalCategory.comp_lift]`. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hlift, Over.comp_left, ← Category.assoc]`. Use `Eq.trans (val_pull hJ _ _ _).symm ((val_corr hJ hcr _).trans ((val_scale hJ _ _ _).trans ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (val_scale hJ _ _ _).symm` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Rewrite using `[gm_unit_map]`. Both sides reduce to the same expression. Simplify using `only [val_mul hJ, val_inv]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `refine congrArg₂ (· * ·) ?_ (congrArg₂ (· * ·) (congrArg Inv.inv ?_) (congrArg Inv.inv ?_)) <;>`. Apply the tactic sequence `exact (val_subst (hc m) hJ _ _ (by intro i j; fin_cases i <;> simp [psIn_map]) _).symm`. Introduce `m`. Take `⟨u, hu, hcr⟩` from `hF.ph2 m`. Use `⟨Units.map (jetBC ψ (Fin 3 × Fin d) m).toMonoidHom u, ?_, ?_⟩` and prove the remaining obligations.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.coe_map] show jetBC ψ _ m (u : Jet S (Fin 3 × Fin d) m) = _`. Rewrite using `[hu, ReciprocityTheory.ChartRestriction.G.PullbackSections.jetBC_psJet]`. Apply `corr_of_val hL` to reduce the goal to its premises. Introduce `y J hJ`. Establish `hlift : lift (rjpt (spMap ψ ≫ x0) d x' m (1 : Fin 3)) (lift (rjpt (spMap ψ ≫ x0) d x' m (2 : Fin 3)) (rjpt (spMap ψ ≫ x0) d x' m (0 : Fin 3))) = rjBC ψ x0 d m 3 ≫ lift (rjpt x0 d x m (1 : Fin 3)) (lift (rjpt x0 d x m (2 : Fin 3)) (rjpt x0 d x m (0 : Fin 3)))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [point_bc hx, CartesianMonoidalCategory.comp_lift]`. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[hlift, Over.comp_left, ← Category.assoc]`. Use `Eq.trans (val_pull hJ _ _ _).symm ((val_corr hJ hcr _).trans ((val_scale hJ _ _ _).trans ?_))` and prove the remaining obligations. Use `Eq.trans ?_ (val_scale hJ _ _ _).symm` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Rewrite using `[gm_unit_map]`. Both sides reduce to the same expression. Simplify using `only [val_mul hJ, val_inv]`. Apply the tactic sequence `refine congrArg₂ (· * ·) ?_ (congrArg₂ (· * ·) (congrArg Inv.inv ?_) (congrArg Inv.inv ?_)) <;>`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `exact (val_subst (hc m) hJ _ _ (by intro i j; fin_cases i <;> simp [psIn_map]) _).symm`. Introduce `m`. Take `⟨u, hu, hcr⟩` from `hF.sy m`. Use `⟨Units.map (jetBC ψ (Fin 2 × Fin d) m).toMonoidHom u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.coe_map] show jetBC ψ _ m (u : Jet S (Fin 2 × Fin d) m) = _`.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, ReciprocityTheory.ChartRestriction.G.PullbackSections.jetBC_psJet]`. Apply `corr_of_val hL` to reduce the goal to its premises. Introduce `y J hJ`. Use `((val_corr hJ (hc m) _).trans (val_pull hJ _ _ _)).trans ?_` and prove the remaining obligations. Use `((val_corr hJ hcr _).trans (val_scale hJ _ _ _)).trans ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (val_scale hJ _ _ _).symm` and prove the remaining obligations. Use `congrArg₂ (· * ·) ?_ ?_` and prove the remaining obligations. Rewrite using `[← map_inv, gm_unit_map]`. Both sides reduce to the same expression. Use `(val_subst (hc m) hJ _ _ ?_ _).symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `i j`. Apply the tactic sequence `fin_cases i <;> simp`. Introduce `a`. Take `⟨wL, hwL, hm⟩` from `hF.ad a`. Use `⟨wL, hwL, fun m => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨u, hu, hcr⟩` from `hm m`. Use `⟨Units.map (jetBC ψ (Fin 2 × Fin d) m).toMonoidHom u, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.coe_map] show jetBC ψ _ m (u : Jet S (Fin 2 × Fin d) m) = _`. Rewrite using `[hu, ReciprocityTheory.ChartRestriction.G.PullbackSections.jetBC_psJet]`. Apply `corr_of_val hL` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `y J hJ`. Establish `hlift : lift (rjpt (spMap ψ ≫ x0) d x' m (0 : Fin 2)) (rjpt (spMap ψ ≫ x0) d x' m (1 : Fin 2)) = rjBC ψ x0 d m 2 ≫ lift (rjpt x0 d x m (0 : Fin 2)) (rjpt x0 d x m (1 : Fin 2))`. Simplify using `only [point_bc hx, CartesianMonoidalCategory.comp_lift]`. Establish `h3` using `(val_mul hJ _ _ _).symm.trans ((val_corr hJ hcr (𝟙 _ ≫ (rjBC ψ x0 d m 2).left)).trans (val_scale hJ _ _ _))`. Use `(val_mul hJ _ _ _).trans (Eq.trans ?_ (h3.trans (Eq.trans ?_ (val_scale hJ _ _ _).symm)))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `refine congrArg₂ (· * ·) ?_ (val_subst (hc m) hJ _ _ (by intro i j; fin_cases i <;> simp [psIn_map]) _)`. Use `(val_pull hJ _ _ _).trans (Eq.trans ?_ (val_pull hJ _ _ _).symm)` and prove the remaining obligations. Use `show val wL (𝟙 _ ≫ (lift (rjpt (spMap ψ ≫ x0) d x' m (0 : Fin 2)) (rjpt (spMap ψ ≫ x0) d x' m (1 : Fin 2))).left) y J = val wL ((𝟙 _ ≫ (rjBC ψ x0 d m 2).left) ≫ (lift (rjpt x0 d x m (0 : Fin 2)) (rjpt x0 d x m (1 : Fin 2))).left) y J`. Rewrite using `[hlift, Over.comp_left, Category.assoc]`. Apply the tactic sequence `refine congrArg₂ (· * ·) ?_ (val_subst (hc m) hJ _ _ (by intro i j; fin_cases i <;> simp [psIn_map]) _).symm`.
+Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gm_unit_map]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isFrame_baseChange : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S S' : Type) [CommRing S] [CommRing S'] (ψ : S →+* S') (x0 : Sp S ⟶ Xo.X) (d : ℕ) (F : Fin d → MvPowerSeries (Fin 2 × Fin d) S) (act : 𝓞 E → Fin d → MvPowerSeries (Fin 1 × Fin d) S) (x : ∀ m, rjO x0 d m 1 ⟶ Xo.univ.t.G) (x' : ∀ m, rjO (spMap ψ ≫ x0) d m 1 ⟶ Xo.univ.t.G), (∀ m, x' m = rjBC ψ x0 d m 1 ≫ x m) → ∀ (e : ∀ m, RFrTy x0 d x m) (e' : ∀ m, RFrTy (spMap ψ ≫ x0) d x' m), (∀ m, (e m).IsGen) → (∀ m, (e' m).IsGen) → (∀ m, LB.Gen.Corr Xo.univ.t.PP.L _ _ _ _ (e' m) (LB.pullGen Xo.univ.t.PP.L (cφ ![rjpt x0 d x m (0 : Fin 2), rjpt x0 d x m (1 : Fin 2)]) (cε 2) (e m) (rjBC ψ x0 d m 2).left)) → ∀ (ph1 ph2 : MvPowerSeries (Fin 3 × Fin d) S) (sy : MvPowerSeries (Fin 2 × Fin d) S) (ad : 𝓞 E → MvPowerSeries (Fin 2 × Fin d) S), RIsFrame x0 d x F act ph1 ph2 sy ad e → RIsFrame (spMap ψ ≫ x0) d x' (fun i => MvPowerSeries.map ψ (F i)) (fun a i => MvPowerSeries.map ψ (act a i)) (MvPowerSeries.map ψ ph1) (MvPowerSeries.map ψ ph2) (MvPowerSeries.map ψ sy) (fun a => MvPowerSeries.map ψ (ad a)) e' := by
   intro E _ _ _ H Dw l Xo S S' _ _ ψ x0 d F act x x' hx e e' he he' hc ph1 ph2 sy ad hF

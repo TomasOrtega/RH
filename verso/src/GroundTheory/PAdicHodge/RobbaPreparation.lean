@@ -22,21 +22,19 @@ namespace Laurent
 variable {a : ℤ → K} {ρ : ℝ}
 
 /- English proof (translation)
-Establish `hv : ConvergesAt (u - Pi.single 0 1) ρ` using `hu.sub hρ (convergesAt_single 0 1 ρ)`. Establish `hw : ∀ m : ℤ, ‖(u - (Pi.single 0 (1 : K) : ℤ → K)) m‖ * ρ ^ m < 1` using `fun m => (hv.le_gaussNorm m).trans_lt h1`. Establish `hu0 : ‖u 0‖ = 1`. Use `hw 0` as an intermediate fact. Simplify using `only [Pi.sub_apply, Pi.single_eq_same, zpow_zero, mul_one] at this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : u 0 = 1 + (u 0 - 1)` using `by ring`. Rewrite using `[e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm (by rw [norm_one]; exact this.ne'), norm_one, max_eq_left this.le]`. Establish `hne : u ≠ 0` using `fun h => by rw [h] at hu0; simp at hu0`. Establish `hweight : ∀ m, m ≠ 0 → ‖u m‖ * ρ ^ m < ‖u 0‖ * ρ ^ (0 : ℤ)`. Introduce `m hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hw m` as an intermediate fact. Simplify using `only [Pi.sub_apply, Pi.single_eq_of_ne hm, sub_zero] at this`. Rewrite using `[hu0, zpow_zero, mul_one]`. Conclude with `this`. Establish `hg : gaussNorm u ρ = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (gaussNorm_le fun m => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hm : m = 0`. Substitute `hm` using the available equality. Rewrite using `[hu0, zpow_zero, mul_one]`. Use `hweight m hm` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hu0, zpow_zero, mul_one]`. Conclude with `this.le`. Use `hu.le_gaussNorm 0` as an intermediate fact. Rewrite `this` using `[hu0, zpow_zero, mul_one]`. Then use the resulting hypothesis. Establish `hdom : domSet u ρ = {0}`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `m`. Simplify using `only [domSet, Set.mem_setOf_eq, hg, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Assume the negation of the conclusion as `hm`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hweight m hm` as an intermediate fact. Rewrite `this` using `[hu0, zpow_zero, mul_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce and unpack `rfl`. Rewrite using `[hu0, zpow_zero, mul_one]`.
-
-Conclude with `⟨hne, by rw [lowIndex, hdom, csInf_singleton], by rw [highIndex, hdom, csSup_singleton]⟩`.
+Combine the linear equalities and inequalities to obtain the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dominant_zero_of_gaussNorm_sub_one_lt (hρ : 0 < ρ) {u : ℤ → K} (hu : ConvergesAt u ρ)
     (h1 : gaussNorm (u - Pi.single 0 1) ρ < 1) :
@@ -71,11 +69,11 @@ theorem dominant_zero_of_gaussNorm_sub_one_lt (hρ : 0 < ρ) {u : ℤ → K} (hu
   exact ⟨hne, by rw [lowIndex, hdom, csInf_singleton], by rw [highIndex, hdom, csSup_singleton]⟩
 
 /- English proof (translation)
-Establish `hρN : 0 < ρ ^ N` using `zpow_pos hρ N`. Prove the components needed by the constructor for the conclusion. Establish `e : P N = P₀ N + (P - P₀) N` using `by simp`. Establish `h1 : ‖(P - P₀) N‖ < ‖P₀ N‖`. Rewrite using `[← mul_lt_mul_iff_of_pos_right hρN, hN]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hδ N`. Rewrite using `[e, IsUltrametricDist.norm_add_eq_max_of_norm_ne_norm h1.ne', max_eq_left h1.le, hN]`. Introduce `i`. Establish `e : P i = P₀ i + (P - P₀) i` using `by simp`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem dominant_of_perturb {P₀ P : ℤ → K} {N : ℤ} {F : ℝ} (hρ : 0 < ρ)
     (hN : ‖P₀ N‖ * ρ ^ N = F) (hF : 0 < F) (hdom : ∀ i, ‖P₀ i‖ * ρ ^ i ≤ F)
@@ -119,7 +117,7 @@ def DivSpec (τ₁ τ₂ : ℝ) (L H : ℤ) (P h : ℤ → K) (qr : (ℤ → K) 
       gaussNorm P τ₂
 
 /- English proof (translation)
-Distinguish the cases in `hh : DivHyp τ₁ τ₂ L H P h`. Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10⟩` from `hh`. Take `⟨q, r, hq⟩` from `weierstrass_division h1 h2 h3 h4 h5 h6 h7 h8 h9 h10`. Conclude with `⟨(q, r), fun _ => hq⟩`. Conclude with `⟨(0, 0), fun h => absurd h hh⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_divSpec (τ₁ τ₂ : ℝ) (L H : ℤ) (P h : ℤ → K) :
     ∃ qr : (ℤ → K) × (ℤ → K), DivHyp τ₁ τ₂ L H P h → DivSpec τ₁ τ₂ L H P h qr := by
@@ -133,7 +131,7 @@ def wdiv (τ₁ τ₂ : ℝ) (L H : ℤ) (P h : ℤ → K) : (ℤ → K) × (ℤ
   Classical.choose (exists_divSpec τ₁ τ₂ L H P h)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_divSpec τ₁ τ₂ L H P h) hh`.
+A detailed English derivation is pending.
 -/
 theorem wdiv_spec {P h : ℤ → K} (hh : DivHyp τ₁ τ₂ L H P h) :
     DivSpec τ₁ τ₂ L H P h (wdiv τ₁ τ₂ L H P h) :=
@@ -179,13 +177,11 @@ variable (hτ₁ : 0 < τ₁) (hτ : τ₁ ≤ τ₂) (hLH : L ≤ H) (h₁ : Co
 include hτ₁ hτ hLH h₁ h₂ hF₁ hF₂ hL hL' hH hH' hlam0 hlam1 he₁ he₂
 
 /- English proof (translation)
-Establish `hτ₂ : 0 < τ₂` using `hτ₁.trans_le hτ`. Use `⟨fun n hn => ?_, ?_, ?_, convergesAt_single 0 1 τ₁, convergesAt_single 0 1 τ₂, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `: n ∉ Set.Icc L H` using `fun hm => by simp only [Set.mem_Icc] at hm; omega`. Simplify using `[prepSeq, trunc, Set.indicator_of_notMem this]`. Simplify using `only [prepSeq, sub_self, gaussNorm_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Check the signs of the components of the expression. Simplify using `only [prepSeq, sub_self, gaussNorm_zero]`. Check the signs of the components of the expression. Simplify using `only [prepSeq, sub_self, gaussNorm_zero]`. Conclude with `hlam0`.
+Check the signs of the components of the expression. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [prepSeq, sub_self, gaussNorm_zero]`. Conclude with `hlam0`. Simplify using `only [prepSeq, cmul_single_zero_one, zero_add, pow_one]`. Conclude with `he₁`. Simplify using `only [prepSeq, cmul_single_zero_one, zero_add, pow_one]`.
-
-Conclude with `he₂`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prepInv_zero : PrepInv τ₁ τ₂ L H f F₁ F₂ lam 0 := by
   have hτ₂ : 0 < τ₂ := hτ₁.trans_le hτ
@@ -203,39 +199,35 @@ theorem prepInv_zero : PrepInv τ₁ τ₂ L H f F₁ F₂ lam 0 := by
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `hτ₂ : 0 < τ₂` using `hτ₁.trans_le hτ`. Take `⟨hs, hb1, hb2, hu1, hu2, hv1, hv2, hd1, hd2⟩` from `hk`. Use `set P := (prepSeq τ₁ τ₂ L H f k).1 with hPdef`. Use `set u := (prepSeq τ₁ τ₂ L H f k).2 with hudef`. Use `set P₀ := trunc f (Set.Icc L H)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set e := f - cmul P u with hedef`. Establish `hP₀s : ∀ n, n < L ∨ H < n → P₀ n = 0` using `fun n hn => by`. Establish `: n ∉ Set.Icc L H` using `fun hm => by simp only [Set.mem_Icc] at hm; omega`. Simplify using `[P₀, trunc, Set.indicator_of_notMem this]`. Establish `hδs : ∀ n, n < L ∨ H < n → (P - P₀) n = 0` using `fun n hn => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hs n hn, hP₀s n hn]`. Establish `hP₀L : P₀ L = f L` using `by simp [P₀, trunc, Set.indicator_of_mem (show L ∈ Set.Icc L H from ⟨le_rfl, hLH⟩)]`. Establish `hP₀H : P₀ H = f H` using `by simp [P₀, trunc, Set.indicator_of_mem (show H ∈ Set.Icc L H from ⟨hLH, le_rfl⟩)]`. Establish `hdom1` using `dominant_of_perturb (P₀ := P₀) (P := P) (N := L) hτ₁ (by rw [hP₀L]; exact hL) hF₁ (fun i => ((mul_le_mul_of_nonneg_right (norm_trunc_le _ i) (by positivity))).trans (hL' i)) (fun i => ((convergesAt_of_support hδs τ₁).le_gaussNorm i).trans_lt (hb1.trans_lt (by nlinarith)))`. Establish `hdom2` using `dominant_of_perturb (P₀ := P₀) (P := P) (N := H) hτ₂ (by rw [hP₀H]; exact hH) hF₂ (fun i => ((mul_le_mul_of_nonneg_right (norm_trunc_le _ i) (by positivity))).trans (hH' i)) (fun i => ((convergesAt_of_support hδs τ₂).le_gaussNorm i).trans_lt (hb2.trans_lt (by nlinarith)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hPL : P L ≠ 0` using `fun h0 => by`. Use `hdom1.1` as an intermediate fact. Rewrite `this` using `[h0, norm_zero, zero_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hPH : P H ≠ 0` using `fun h0 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `hdom2.1` as an intermediate fact. Rewrite `this` using `[h0, norm_zero, zero_mul]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hin : ∀ i, ‖P i‖ * τ₁ ^ i ≤ ‖P L‖ * τ₁ ^ L` using `fun i => by rw [hdom1.1]; exact hdom1.2 i`. Establish `hout : ∀ i, ‖P i‖ * τ₂ ^ i ≤ ‖P H‖ * τ₂ ^ H` using `fun i => by rw [hdom2.1]; exact hdom2.2 i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG1 : gaussNorm P τ₁ = F₁` using `by rw [gaussNorm_eq_of_dominant hs hin, hdom1.1]`. Establish `hG2 : gaussNorm P τ₂ = F₂` using `by rw [gaussNorm_eq_of_dominant hs hout, hdom2.1]`. Establish `hPc : ∀ ρ, ConvergesAt P ρ` using `convergesAt_of_support hs`. Establish `he1 : ConvergesAt e τ₁` using `h₁.sub hτ₁ ((hPc τ₁).cmul hτ₁ hu1)`. Establish `he2 : ConvergesAt e τ₂` using `h₂.sub hτ₂ ((hPc τ₂).cmul hτ₂ hu2)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hhyp : DivHyp τ₁ τ₂ L H P e` using `⟨hτ₁, hτ, hLH, hs, hPL, hPH, hin, hout, he1, he2⟩`. Take `⟨hq1, hq2, hrs, hediv, hqb1, hqb2, hrb1, hrb2⟩` from `wdiv_spec hhyp`. Use `set q := (wdiv τ₁ τ₂ L H P e).1`. Use `set r := (wdiv τ₁ τ₂ L H P e).2`. Rewrite `hqb1`, `hqb2`, `hrb1`, `hrb2` using `[hG1, hG2]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set M := max (gaussNorm e τ₁ / F₁) (gaussNorm e τ₂ / F₂) with hM`. Establish `hM0 : 0 ≤ M` using `le_max_of_le_left (div_nonneg (gaussNorm_nonneg hτ₁) hF₁.le)`. Establish `hMk : M ≤ lam ^ (k + 1)` using `max_le ((div_le_iff₀ hF₁).2 hd1) ((div_le_iff₀ hF₂).2 hd2)`. Establish `hpow : lam ^ (k + 1) ≤ lam` using `pow_le_of_le_one hlam0 hlam1.le (by omega)`. Establish `hMlam : M ≤ lam` using `hMk.trans hpow`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrc : ∀ ρ, ConvergesAt r ρ` using `convergesAt_of_support hrs`. Establish `hnext : prepSeq τ₁ τ₂ L H f (k + 1) = (P + r, u + q)` using `rfl`. Establish `hδ1` using `convergesAt_single 0 (1 : K) τ₁`. Establish `herr : f - cmul (P + r) (u + q) = -(cmul r ((u - Pi.single 0 1) + q))`. Establish `e1 : cmul (P + r) (u + q) = cmul P u + cmul P q + cmul r (u + q)`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[add_cmul hτ₁ (hPc τ₁) (hrc τ₁) (hu1.add hτ₁ hq1), cmul_add hτ₁ (hPc τ₁) hu1 hq1]`. Establish `e2 : cmul r ((u - Pi.single 0 1) + q) = cmul r (u + q) - r`. Rewrite using `[show (u - Pi.single 0 1) + q = (u + q) + -Pi.single 0 1 by abel, cmul_add hτ₁ (hrc τ₁) (hu1.add hτ₁ hq1) hδ1.neg, cmul_neg, cmul_single_zero_one]`. Normalize the expressions using the abelian group laws. Establish `e3 : e = cmul P q + r` using `by rw [hediv, cmul_comm]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2]`. Establish `: f = e + cmul P u` using `by rw [hedef]; abel`. Rewrite using `[this, e3]`. Normalize the expressions using the abelian group laws. Establish `hw1 : ConvergesAt ((u - Pi.single 0 1) + q) τ₁` using `(hu1.sub hτ₁ hδ1).add hτ₁ hq1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw2 : ConvergesAt ((u - Pi.single 0 1) + q) τ₂` using `(hu2.sub hτ₂ (convergesAt_single 0 1 τ₂)).add hτ₂ hq2`. Establish `hwb1 : gaussNorm ((u - Pi.single 0 1) + q) τ₁ ≤ lam` using `(gaussNorm_add_le hτ₁ (hu1.sub hτ₁ hδ1) hq1).trans (max_le hv1 (hqb1.trans hMlam))`. Establish `hwb2 : gaussNorm ((u - Pi.single 0 1) + q) τ₂ ≤ lam` using `(gaussNorm_add_le hτ₂ (hu2.sub hτ₂ (convergesAt_single 0 1 τ₂)) hq2).trans (max_le hv2 (hqb2.trans hMlam))`. Establish `hrb1' : gaussNorm r τ₁ ≤ lam ^ (k + 1) * F₁` using `hrb1.trans (by nlinarith)`. Establish `hrb2' : gaussNorm r τ₂ ≤ lam ^ (k + 1) * F₂` using `hrb2.trans (by nlinarith)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n hn`. Rewrite using `[hnext]`. Simplify using `[hs n hn, hrs n hn]`. Rewrite using `[hnext, show P + r - P₀ = (P - P₀) + r by abel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(gaussNorm_add_le hτ₁ (convergesAt_of_support hδs τ₁) (hrc τ₁)).trans (max_le hb1 (hrb1'.trans (by nlinarith)))`. Rewrite using `[hnext, show P + r - P₀ = (P - P₀) + r by abel]`. Conclude with `(gaussNorm_add_le hτ₂ (convergesAt_of_support hδs τ₂) (hrc τ₂)).trans (max_le hb2 (hrb2'.trans (by nlinarith)))`. Rewrite using `[hnext]`. Conclude with `hu1.add hτ₁ hq1`.
+Chain the equalities or inequalities of the calculation. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hnext]`. Conclude with `hu2.add hτ₂ hq2`. Rewrite using `[hnext, show u + q - Pi.single 0 1 = (u - Pi.single 0 1) + q by abel]; exact hwb1`. Rewrite using `[hnext, show u + q - Pi.single 0 1 = (u - Pi.single 0 1) + q by abel]; exact hwb2`. Rewrite using `[hnext] show gaussNorm (f - cmul (P + r) (u + q)) τ₁ ≤ lam ^ (k + 1 + 1) * F₁`.
-
-Rewrite using `[herr, gaussNorm_neg]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hnext] show gaussNorm (f - cmul (P + r) (u + q)) τ₂ ≤ lam ^ (k + 1 + 1) * F₂`. Rewrite using `[herr, gaussNorm_neg]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[hnext, show P + r - P = r by abel]; exact hrb1'`. Rewrite using `[hnext, show P + r - P = r by abel]; exact hrb2'`. Rewrite using `[hnext, show u + q - u = q by abel]; exact hqb1.trans hMk`. Rewrite using `[hnext, show u + q - u = q by abel]; exact hqb2.trans hMk`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prepInv_succ {k : ℕ} (hk : PrepInv τ₁ τ₂ L H f F₁ F₂ lam k) :
     PrepInv τ₁ τ₂ L H f F₁ F₂ lam (k + 1) ∧
@@ -349,7 +341,7 @@ theorem prepInv_succ {k : ℕ} (hk : PrepInv τ₁ τ₂ L H f F₁ F₂ lam k) 
   · rw [hnext, show u + q - u = q by abel]; exact hqb2.trans hMk
 
 /- English proof (translation)
-The claim follows from `| 0 => prepInv_zero hτ₁ hτ hLH h₁ h₂ hF₁ hF₂ hL hL' hH hH' hlam0 hlam1 he₁ he₂ | k + 1 => (prepInv_succ hτ₁ hτ hLH h₁ h₂ hF₁ hF₂ hL hL' hH hH' hlam0 hlam1 he₁ he₂ (prepInv_all k)).1`.
+A detailed English derivation is pending.
 -/
 theorem prepInv_all : ∀ k, PrepInv τ₁ τ₂ L H f F₁ F₂ lam k
   | 0 => prepInv_zero hτ₁ hτ hLH h₁ h₂ hF₁ hF₂ hL hL' hH hH' hlam0 hlam1 he₁ he₂
@@ -367,7 +359,7 @@ section PrepLimit
 variable {τ₁ τ₂ : ℝ} {L H : ℤ} {f : ℤ → K} {F₁ F₂ lam : ℝ}
 
 /- English proof (translation)
-Use `((tendsto_pow_atTop_nhds_zero_of_lt_one h0 h1).comp (tendsto_add_atTop_nat 1)).mul_const F` as an intermediate fact. Simplify `this` using `[Function.comp]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tendsto_pow_succ_mul {lam F : ℝ} (h0 : 0 ≤ lam) (h1 : lam < 1) :
     Tendsto (fun k : ℕ => lam ^ (k + 1) * F) atTop (𝓝 0) := by
@@ -385,37 +377,33 @@ include hτ₁ hτ hLH h₁ h₂ hF₁ hF₂ hL hL' hH hH' hlam0 hlam1 he₁ he�
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Establish `hτ₂ : 0 < τ₂` using `hτ₁.trans_le hτ`. Establish `inv` using `prepInv_all hτ₁ hτ hLH h₁ h₂ hF₁ hF₂ hL hL' hH hH' hlam0 hlam1 he₁ he₂`. Establish `stp` using `fun k => (prepInv_succ hτ₁ hτ hLH h₁ h₂ hF₁ hF₂ hL hL' hH hH' hlam0 hlam1 he₁ he₂ (inv k)).2`. Use `set Pk : ℕ → ℤ → K := fun k => (prepSeq τ₁ τ₂ L H f k).1 with hPk`. Use `set uk : ℕ → ℤ → K := fun k => (prepSeq τ₁ τ₂ L H f k).2 with huk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPks : ∀ k n, n < L ∨ H < n → Pk k n = 0` using `fun k => (inv k).1`. Establish `hPc : ∀ k ρ, ConvergesAt (Pk k) ρ` using `fun k => convergesAt_of_support (hPks k)`. Establish `hdPc : ∀ j ρ, ConvergesAt (Pk (j + 1) - Pk j) ρ` using `fun j ρ => convergesAt_of_support (A := L) (B := H) (fun n (hn : n < L ∨ H < n) => by simp [hPks (j + 1) n hn, hPks j n hn]) ρ`. Establish `hCP1 : UCauchy Pk τ₁` using `UCauchy.of_gaussNorm hτ₁ (fun j => hdPc j τ₁) (squeeze_zero (fun _ => gaussNorm_nonneg hτ₁) (fun j => (stp j).1) (tendsto_pow_succ_mul hlam0 hlam1))`. Establish `hu1 : ∀ k, ConvergesAt (uk k) τ₁` using `fun k => (inv k).2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu2 : ∀ k, ConvergesAt (uk k) τ₂` using `fun k => (inv k).2.2.2.2.1`. Establish `hCu1 : UCauchy uk τ₁` using `UCauchy.of_gaussNorm hτ₁ (fun j => (hu1 (j + 1)).sub hτ₁ (hu1 j)) (squeeze_zero (fun _ => gaussNorm_nonneg hτ₁) (fun j => by simpa using (stp j).2.2.1) (by simpa using tendsto_pow_succ_mul (F := 1) hlam0 hlam1))`. Establish `hCu2 : UCauchy uk τ₂` using `UCauchy.of_gaussNorm hτ₂ (fun j => (hu2 (j + 1)).sub hτ₂ (hu2 j)) (squeeze_zero (fun _ => gaussNorm_nonneg hτ₂) (fun j => by simpa using (stp j).2.2.2) (by simpa using tendsto_pow_succ_mul (F := 1) hlam0 hlam1))`. Use `set P := limSeq Pk`. Use `set u := limSeq uk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPs : ∀ n, n < L ∨ H < n → P n = 0` using `fun n hn => tendsto_nhds_unique (hCP1.tendsto hτ₁ n) (by simp only [hPks _ n hn]; exact tendsto_const_nhds)`. Establish `hPcv : ∀ ρ, ConvergesAt P ρ` using `convergesAt_of_support hPs`. Establish `hkP : ∀ k ρ, ConvergesAt (Pk k - P) ρ` using `fun k ρ => convergesAt_of_support (A := L) (B := H) (fun n (hn : n < L ∨ H < n) => by simp [hPks k n hn, hPs n hn]) ρ`. Establish `huc1 : ConvergesAt u τ₁` using `hCu1.convergesAt hτ₁ hu1`. Establish `huc2 : ConvergesAt u τ₂` using `hCu2.convergesAt hτ₂ hu2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hδ : ∀ ρ, ConvergesAt (Pi.single 0 (1 : K)) ρ` using `convergesAt_single 0 1`. Establish `hε0 : 0 < (1 - lam) / 2` using `by linarith`. Establish `hunit : ∀ ρ, 0 < ρ → UCauchy uk ρ → ConvergesAt u ρ → (∀ k, ConvergesAt (uk k) ρ) → (∀ k, gaussNorm (uk k - Pi.single 0 1) ρ ≤ lam) → gaussNorm (u - Pi.single 0 1) ρ < 1`. Introduce `ρ hρ hC hc hck hb`. Take `⟨K₀, hK₀⟩` from `hC.gaussNorm_sub_le hρ hε0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : u - Pi.single 0 1 = (u - uk K₀) + (uk K₀ - Pi.single 0 1)` using `by abel`. Rewrite using `[e]`. Use `(gaussNorm_add_le hρ (hc.sub hρ (hck K₀)) ((hck K₀).sub hρ (hδ ρ))).trans_lt ?_` and prove the remaining obligations. Conclude with `max_lt ((hK₀ K₀ le_rfl).trans_lt (by linarith)) ((hb K₀).trans_lt hlam1)`. Use `⟨P, u, hPs, huc1, huc2, hunit τ₁ hτ₁ hCu1 huc1 hu1 (fun k => (inv k).2.2.2.2.2.1), hunit τ₂ hτ₂ hCu2 huc2 hu2 (fun k => (inv k).2.2.2.2.2.2.1), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set D := f - cmul P u with hD`. Establish `hDc : ConvergesAt D τ₁` using `h₁.sub hτ₁ ((hPcv τ₁).cmul hτ₁ huc1)`. Establish `hsmall : ∀ ε > 0, gaussNorm D τ₁ ≤ ε`. Introduce `ε hε`. Use `set C := gaussNorm P τ₁`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC0 : 0 ≤ C` using `gaussNorm_nonneg hτ₁`. Take `⟨K1, hK1⟩` from `hCP1.gaussNorm_sub_le hτ₁ hε`. Take `⟨K2, hK2⟩` from `hCu1.gaussNorm_sub_le hτ₁ (show 0 < ε / (C + 1) by positivity)`. Take `⟨K3, hK3⟩` from `eventually_atTop.1 ((tendsto_pow_succ_mul (F := F₁) hlam0 hlam1).eventually (ge_mem_nhds hε))`. Use `set k := max K1 (max K2 K3)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hk1 : gaussNorm (P - Pk k) τ₁ ≤ ε` using `hK1 k (le_max_left _ _)`. Establish `hk2 : gaussNorm (u - uk k) τ₁ ≤ ε / (C + 1)` using `hK2 k (le_max_of_le_right (le_max_left _ _))`. Establish `hk3 : gaussNorm (f - cmul (Pk k) (uk k)) τ₁ ≤ ε` using `((inv k).2.2.2.2.2.2.2.1).trans (hK3 k (le_max_of_le_right (le_max_right _ _)))`. Establish `hukb : gaussNorm (uk k) τ₁ ≤ 1`. Establish `e : uk k = (uk k - Pi.single 0 1) + Pi.single 0 1` using `by abel`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[e]`. Use `(gaussNorm_add_le hτ₁ ((hu1 k).sub hτ₁ (hδ τ₁)) (hδ τ₁)).trans (max_le ?_ ?_)` and prove the remaining obligations. Conclude with `((inv k).2.2.2.2.2.1).trans hlam1.le`. Rewrite using `[gaussNorm_single_zero_one hτ₁]`. Establish `hexp : D = (f - cmul (Pk k) (uk k)) + (cmul (Pk k - P) (uk k) + cmul P (uk k - u))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : cmul (Pk k) (uk k) = cmul P (uk k) + cmul (Pk k - P) (uk k)`. Rewrite using `[← add_cmul hτ₁ (hPcv τ₁) (hkP k τ₁) (hu1 k)]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `e2 : cmul P (uk k) = cmul P u + cmul P (uk k - u)`.
+Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← cmul_add hτ₁ (hPcv τ₁) huc1 ((hu1 k).sub hτ₁ huc1)]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Rewrite using `[hD, e1, e2]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hexp]`. Establish `hc1 : ConvergesAt (cmul (Pk k - P) (uk k)) τ₁` using `(hkP k τ₁).cmul hτ₁ (hu1 k)`. Establish `hc2 : ConvergesAt (cmul P (uk k - u)) τ₁` using `(hPcv τ₁).cmul hτ₁ ((hu1 k).sub hτ₁ huc1)`. Use `(gaussNorm_add_le hτ₁ (h₁.sub hτ₁ ((hPc k τ₁).cmul hτ₁ (hu1 k))) (hc1.add hτ₁ hc2)).trans (max_le hk3 ((gaussNorm_add_le hτ₁ hc1 hc2).trans (max_le ?_ ?_)))` and prove the remaining obligations. Use `(gaussNorm_cmul_le hτ₁ (hkP k τ₁) (hu1 k)).trans ?_` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[gaussNorm_sub_comm]`. Combine the equalities or inequalities in the displayed calculation. Use `(gaussNorm_cmul_le hτ₁ (hPcv τ₁) ((hu1 k).sub hτ₁ huc1)).trans ?_` and prove the remaining obligations. Rewrite using `[gaussNorm_sub_comm]`. Combine the equalities or inequalities in the displayed calculation.
-
-Establish `hD0 : gaussNorm D τ₁ = 0`. Use `le_antisymm ?_ (gaussNorm_nonneg hτ₁)` and prove the remaining obligations. Assume the negation of the conclusion as `hpos`. Use `push_neg at hpos`. Use `hsmall (gaussNorm D τ₁ / 2) (by positivity)` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Use `(gaussNorm_eq_zero_iff hτ₁ hDc).1 hD0` as an intermediate fact. Conclude with `(sub_eq_zero.1 this)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem prep_limit : ∃ P u : ℤ → K, (∀ n, n < L ∨ H < n → P n = 0) ∧ ConvergesAt u τ₁ ∧
     ConvergesAt u τ₂ ∧ gaussNorm (u - Pi.single 0 1) τ₁ < 1 ∧
@@ -519,11 +507,9 @@ theorem prep_limit : ∃ P u : ℤ → K, (∀ n, n < L ∨ H < n → P n = 0) �
 end PrepLimit
 
 /- English proof (translation)
-Establish `hF` using `gaussNorm_pos hρ h hf`. Establish `hc : ConvergesAt (f - trunc f (Set.Icc L H)) ρ` using `h.sub hρ (h.trunc hρ _)`. Distinguish the cases in `h0 : f - trunc f (Set.Icc L H) = 0`. Rewrite using `[h0, gaussNorm_zero]`. Conclude with `hF`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `hc.exists_eq_gaussNorm hρ h0`. Rewrite using `[← hn]`. Distinguish the cases in `hm : n ∈ Set.Icc L H`. Simplify using `[trunc, Set.indicator_of_mem hm]`. Conclude with `hF`.
-
-Simplify using `only [Pi.sub_apply, trunc, Set.indicator_of_notMem hm, sub_zero]`. Conclude with `hout n hm`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gaussNorm_sub_trunc_lt {ρ : ℝ} {f : ℤ → K} {L H : ℤ} (hρ : 0 < ρ) (h : ConvergesAt f ρ)
     (hf : f ≠ 0) (hout : ∀ n, n ∉ Set.Icc L H → ‖f n‖ * ρ ^ n < gaussNorm f ρ) :
@@ -539,13 +525,11 @@ theorem gaussNorm_sub_trunc_lt {ρ : ℝ} {f : ℤ → K} {L H : ℤ} (hρ : 0 <
   · simp only [Pi.sub_apply, trunc, Set.indicator_of_notMem hm, sub_zero]; exact hout n hm
 
 /- English proof (translation)
-Establish `hτ₂ : 0 < τ₂` using `hτ₁.trans_le hτ`. Use `set L := lowIndex f τ₁`. Use `set H := highIndex f τ₂`. Establish `hLH : L ≤ H` using `(lowIndex_le_highIndex hτ₁ h₁ hf).trans (highIndex_mono hτ₁ hτ h₁ h₂ hf)`. Establish `hF₁` using `gaussNorm_pos hτ₁ h₁ hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF₂` using `gaussNorm_pos hτ₂ h₂ hf`. Establish `hlt₁ : gaussNorm (f - trunc f (Set.Icc L H)) τ₁ < gaussNorm f τ₁` using `gaussNorm_sub_trunc_lt hτ₁ h₁ hf fun n hn => by`. Simplify using `only [Set.mem_Icc, not_and_or, not_le] at hn`. Break down `hn with hn | hn` into its components or cases. Conclude with `weight_lt_of_lt_lowIndex hτ₁ h₁ hf hn`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `weight_lt_of_highIndex_lt hτ₁ h₁ hf (lt_of_le_of_lt (highIndex_mono hτ₁ hτ h₁ h₂ hf) hn)`. Establish `hlt₂ : gaussNorm (f - trunc f (Set.Icc L H)) τ₂ < gaussNorm f τ₂` using `gaussNorm_sub_trunc_lt hτ₂ h₂ hf fun n hn => by`. Simplify using `only [Set.mem_Icc, not_and_or, not_le] at hn`. Break down `hn with hn | hn` into its components or cases. Conclude with `weight_lt_of_lt_lowIndex hτ₂ h₂ hf (lt_of_lt_of_le hn (lowIndex_mono hτ₁ hτ h₁ h₂ hf))`.
-
-Conclude with `weight_lt_of_highIndex_lt hτ₂ h₂ hf hn`. Use `set lam := max (gaussNorm (f - trunc f (Set.Icc L H)) τ₁ / gaussNorm f τ₁) (gaussNorm (f - trunc f (Set.Icc L H)) τ₂ / gaussNorm f τ₂)`. Establish `hlam0 : 0 ≤ lam` using `le_max_of_le_left (div_nonneg (gaussNorm_nonneg hτ₁) hF₁.le)`. Establish `hlam1 : lam < 1` using `max_lt ((div_lt_one hF₁).2 hlt₁) ((div_lt_one hF₂).2 hlt₂)`. Conclude with `prep_limit hτ₁ hτ hLH h₁ h₂ hF₁ hF₂ (lowIndex_mem hτ₁ h₁ hf) (h₁.le_gaussNorm) (highIndex_mem hτ₂ h₂ hf) (h₂.le_gaussNorm) hlam0 hlam1 ((div_le_iff₀ hF₁).1 (le_max_left _ _)) ((div_le_iff₀ hF₂).1 (le_max_right _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem weierstrass_preparation {τ₁ τ₂ : ℝ} {f : ℤ → K} (hτ₁ : 0 < τ₁) (hτ : τ₁ ≤ τ₂)
     (h₁ : ConvergesAt f τ₁) (h₂ : ConvergesAt f τ₂) (hf : f ≠ 0) :

@@ -10,9 +10,9 @@ open MvPolynomial
 namespace ComponentOfIncIdeal
 
 /- English proof (translation)
-Take `⟨x, hxQ, hxP⟩` from `SetLike.exists_of_lt (lt_of_le_of_ne hPQ hne)`. Establish `hne' : Q.map (Ideal.Quotient.mk P) ≠ ⊥`. Introduce `h0`. Establish `hx : Ideal.Quotient.mk P x ∈ Q.map (Ideal.Quotient.mk P)` using `Ideal.mem_map_of_mem _ hxQ`. Rewrite `hx` using `[h0, Ideal.mem_bot, Ideal.Quotient.eq_zero_iff_mem]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hxP hx`. Establish `h` using `GroundTheory.Arith.Abelian.Jacobian.ringKrullDim_quotient_add_one_le _ hne'`. Rewrite `h` using `[ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hPQ)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_quot_add_one_le {A : Type} [CommRing A] {P Q : Ideal A} [P.IsPrime]
     (hPQ : P ≤ Q) (hne : P ≠ Q) : ringKrullDim (A ⧸ Q) + 1 ≤ ringKrullDim (A ⧸ P) := by
@@ -26,13 +26,11 @@ theorem ringKrullDim_quot_add_one_le {A : Type} [CommRing A] {P Q : Ideal A} [P.
   rwa [ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hPQ)] at h
 
 /- English proof (translation)
-Establish `hWp` using `hW.isPrime`. Use `set m : Ideal (MvPolynomial (Fin n) F) := RingHom.ker (constantCoeff : MvPolynomial (Fin n) F →+* F)`. Establish `hmp : m.IsPrime` using `RingHom.ker_isPrime _`. Establish `hle : W ≤ m`. Introduce `f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker]`. Assume the negation of the conclusion as `h`. Establish `h0` using `hW.isHomog f hf 0`. Rewrite `h0` using `[homogeneousComponent_zero]`. Establish `hc : coeff 0 f ≠ 0` using `by rwa [← constantCoeff_eq]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hWp.ne_top (Ideal.eq_top_of_isUnit_mem _ h0 ((Ne.isUnit hc).map C))`. Establish `hne : W ≠ m`. Take `⟨j, hj⟩` from `hW.isRelevant`. Introduce `h`. Conclude with `hj (h ▸ (by simp [m] : (X j : MvPolynomial (Fin n) F) ∈ m))`.
-
-Establish `h` using `ringKrullDim_quot_add_one_le hle hne`. Establish `h0 : (0 : WithBot ℕ∞) ≤ ringKrullDim (MvPolynomial (Fin n) F ⧸ m)` using `ringKrullDim_nonneg_of_nontrivial`. Conclude with `(le_add_of_nonneg_left h0).trans h`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem one_le_ringKrullDim_quot {F : Type} [Field F] {n : ℕ} {W : Ideal (MvPolynomial (Fin n) F)}
     (hW : IsProjPrime W) : (1 : WithBot ℕ∞) ≤ ringKrullDim (MvPolynomial (Fin n) F ⧸ W) := by
@@ -57,11 +55,11 @@ theorem one_le_ringKrullDim_quot {F : Type} [Field F] {n : ℕ} {W : Ideal (MvPo
   exact (le_add_of_nonneg_left h0).trans h
 
 /- English proof (translation)
-Proceed by induction on `x using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h1 (by simp)`. Consider the case `coe y`. Proceed by induction on `y using ENat.recTopCoe with`. Consider the case `top`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Establish `h3 : ((⊤ : ℕ∞) : WithBot ℕ∞) ≤ ((e + 1 : ℕ) : WithBot ℕ∞)` using `le_trans (le_add_of_nonneg_right zero_le_one) h2`. Establish `h4 : (⊤ : ℕ∞) ≤ ((e + 1 : ℕ) : ℕ∞)` using `by exact_mod_cast h3`. Conclude with `absurd h4 (by simp)`. Consider the case `coe k`. Use `⟨k, rfl, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `h1` after adjusting the coercions. Establish `: ((k + 1 : ℕ) : WithBot ℕ∞) ≤ ((e + 1 : ℕ) : WithBot ℕ∞)` using `by exact_mod_cast h2`. Establish `: k + 1 ≤ e + 1` using `by exact_mod_cast this`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_nat_of_bounds {x : WithBot ℕ∞} {e : ℕ} (h1 : 1 ≤ x) (h2 : x + 1 ≤ ((e + 1 : ℕ) : WithBot ℕ∞)) :
     ∃ k : ℕ, x = (k : WithBot ℕ∞) ∧ 1 ≤ k ∧ k ≤ e := by
@@ -86,27 +84,25 @@ end ComponentOfIncIdeal
 open ComponentOfIncIdeal in
 
 /- English proof (translation)
-Introduce `F _ n e I W u q hI hdim hu hW hle hq hinc`. Establish `hWp` using `hW.isPrime`. Use `hI.isPrime` as an intermediate fact. Establish `hIW : I ≤ W` using `le_sup_left.trans hle`. Establish `huW : linForm u ∈ W` using `hle (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIneW : I ≠ W` using `fun h => hu (h ▸ huW)`. Establish `hup` using `ringKrullDim_quot_add_one_le hIW hIneW`. Rewrite `hup` using `[hdim]`. Take `⟨k, hk, hk1, hke⟩` from `exists_nat_of_bounds (one_le_ringKrullDim_quot hW) hup`. Establish `hdimInc` using `h₁ F n e (k - 1) W hW (by rw [hk]; congr 2; omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hincp : (incIdeal W e).IsPrime` using `h₂ F n e W hWp hW.isRelevant`. Establish `hS : ringKrullDim (MvPolynomial (Fin e × Fin n) F) = ((e * n : ℕ) : WithBot ℕ∞)`. Rewrite using `[MvPolynomial.ringKrullDim_of_isNoetherianRing, ringKrullDim_eq_zero_of_isField (Field.toIsField F)]`. Simplify using `[Nat.card_eq_fintype_card]`. Establish `hsum` using `GroundTheory.Arith.Abelian.Jacobian.height_add_ringKrullDim_quotient F (incIdeal W e)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `hsum` using `[hdimInc, hS]`. Establish `hqle : (Ideal.span {q}).height ≤ 1` using `Ideal.height_span_singleton_le_one hq.not_isUnit`. Establish `hht : (incIdeal W e).height ≤ 1` using `(Ideal.height_mono hinc).trans hqle`. Take `⟨h, hh⟩ : ∃ h : ℕ, (incIdeal W e).height = h` from `ENat.ne_top_iff_exists.mp (ne_top_of_le_ne_top (by simp) hht) |>.imp fun _ h => h.symm`. Rewrite `hsum`, `hht` using `[hh]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hh1 : h ≤ 1` using `by exact_mod_cast hht`. Establish `hnat : h + (e * n - e + min e (k - 1)) = e * n`. Establish `h5 : (((h + (e * n - e + min e (k - 1)) : ℕ) : ℕ∞) : WithBot ℕ∞) = (((e * n : ℕ) : ℕ∞) : WithBot ℕ∞)`. Rewrite using `[Nat.cast_add, WithBot.coe_add]`. Conclude with `hsum`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `WithBot.coe_inj.mp h5` after adjusting the coercions. Establish `hn : 1 ≤ n`. Take `⟨j, _⟩` from `hW.isRelevant`. Conclude with `Nat.one_le_iff_ne_zero.mpr fun h0 => (h0 ▸ j).elim0`. Establish `hen : e ≤ e * n` using `Nat.le_mul_of_pos_right e hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Establish `hmin : min e (k - 1) = k - 1` using `min_eq_right (by omega)`. Rewrite `hnat` using `[hmin]`. Generalize the expression as in `e * n = N at hnat hen`. Establish `hke' : k = e` using `by omega`. Establish `hh' : h = 1` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Take `⟨W'', hmin'', hW''⟩` from `Ideal.exists_minimalPrimes_le hle`. Establish `hrel : IsRelevant W''`. Take `⟨j, hj⟩` from `hW.isRelevant`. Conclude with `⟨j, fun hj'' => hj (hW'' hj'')⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hdim''` using `(h₃ F n e I W'' u hI hdim hu ⟨hmin'', hrel⟩).2`. Distinguish the cases in `heq : W'' = W`. Conclude with `heq ▸ ⟨hmin'', hrel⟩`. Use `hmin''.1.1` as an intermediate fact. Establish `hlt` using `ringKrullDim_quot_add_one_le hW'' heq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `hlt` using `[hdim'', hk, hke']`. Establish `: e + 1 ≤ e` using `by exact_mod_cast hlt`. Use linear arithmetic over natural numbers and integers. Assume the negation of the conclusion as `hne`. Establish `: (Ideal.span {q}).IsPrime` using `(Ideal.span_singleton_prime hq.ne_zero).mpr hq`.
-
-Establish `: (Ideal.span {q}).FiniteHeight` using `(Ideal.span {q}).finiteHeight_iff.mpr (Or.inr (ne_top_of_le_ne_top (by simp) hqle))`. Establish `hlt` using `Ideal.height_strict_mono_of_isPrime_of_isPrime (lt_of_le_of_ne hinc hne)`. Rewrite `hlt` using `[hh, hh']`. Conclude with `absurd (hlt.trans_le hqle) (lt_irrefl _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ComponentOfIncIdeal.proof (h₁ : IncIdealDim.Statement) (h₂ : IncIdealPrime.Statement)
     (h₃ : ConeDimComponent.Statement) : ComponentOfIncIdeal.Statement := by

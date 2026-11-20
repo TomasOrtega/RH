@@ -12,13 +12,11 @@ namespace GlobalTheory.LatVacFull
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨y, hy0, hy⟩` from `exists_integral_multiples ℤ ℚ ({c} : Finset E)`. Establish `h` using `hy c (by simp)`. Use `⟨y.natAbs, Int.natAbs_pos.2 hy0, ?_⟩` and prove the remaining obligations. Break down `Int.natAbs_eq y with h1 | h1` into its components or cases. Use `⟨⟨y • c, h⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `y • c = _`. Rewrite using `[zsmul_eq_mul]`. Use `congr 1`. Use `conv_lhs => rw [h1]`. Conclude with `Int.cast_natCast _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨-⟨y • c, h⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `-(y • c) = _`. Rewrite using `[zsmul_eq_mul, ← neg_mul]`. Use `congr 1`. Use `conv_lhs => rw [h1]`.
-
-Rewrite using `[Int.cast_neg, neg_neg, Int.cast_natCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nat_integral {E : Type} [Field E] [NumberField E] (c : E) :
     ∃ n : ℕ, 0 < n ∧ ∃ d : 𝓞 E, (d : E) = n * c := by
@@ -40,9 +38,9 @@ theorem exists_nat_integral {E : Type} [Field E] [NumberField E] (c : E) :
     rw [Int.cast_neg, neg_neg, Int.cast_natCast]
 
 /- English proof (translation)
-Use `mul_ne_zero ?_ (inv_ne_zero ?_)` and prove the remaining obligations. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`. Introduce `h`. Conclude with `D.host.ccK_ne_bot ((Ideal.map_eq_bot_iff_of_injective (RingOfIntegers.algebraMap.injective _ _)).1 h)`. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1` using `D.host.𝔟_spec.1`. Rewrite `h1` using `[h, Ideal.bot_mul]`. Conclude with `differentIdeal_ne_bot h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   refine mul_ne_zero ?_ (inv_ne_zero ?_)
@@ -60,35 +58,35 @@ section
 variable (S T : HSp D) (s x y : Fin S.rank → D.host.E) (t u v : Fin T.rank → D.host.E) (a c : D.host.E)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [genMap, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ ha0]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem genMap_one (ha0 : a ≠ 0) : genMap S T 1 s t = a⁻¹ • genMap S T a s t := by
   ext i j
   simp only [genMap, Matrix.of_apply, Matrix.smul_apply, smul_eq_mul, ← mul_assoc, inv_mul_cancel₀ ha0]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [genMap, Matrix.of_apply, Pi.zero_apply, Matrix.zero_apply, mul_zero, zero_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem genMap_zero_right : genMap S T 1 s 0 = 0 := by
   ext i j
   simp only [genMap, Matrix.of_apply, Pi.zero_apply, Matrix.zero_apply, mul_zero, zero_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [genMap, Matrix.of_apply, Pi.add_apply, Matrix.add_apply, mul_add, add_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem genMap_add_right : genMap S T 1 s (u + v) = genMap S T 1 s u + genMap S T 1 s v := by
   ext i j
   simp only [genMap, Matrix.of_apply, Pi.add_apply, Matrix.add_apply, mul_add, add_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [genMap, Matrix.of_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, one_mul, mul_assoc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem genMap_smul_right : genMap S T 1 s (c • u) = c • genMap S T 1 s u := by
   ext i j
   simp only [genMap, Matrix.of_apply, Pi.smul_apply, Matrix.smul_apply, smul_eq_mul, one_mul, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [genMap, Matrix.of_apply, Pi.zero_apply, Matrix.zero_apply, star_zero, mul_zero, zero_mul, Finset.sum_const_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem genMap_zero_left : genMap S T 1 0 t = 0 := by
   ext i j
@@ -96,7 +94,7 @@ theorem genMap_zero_left : genMap S T 1 0 t = 0 := by
     Finset.sum_const_zero]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [genMap, Matrix.of_apply, Pi.add_apply, Matrix.add_apply, star_add, mul_add, add_mul, Finset.sum_add_distrib]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem genMap_add_left : genMap S T 1 (x + y) t = genMap S T 1 x t + genMap S T 1 y t := by
   ext i j
@@ -104,7 +102,7 @@ theorem genMap_add_left : genMap S T 1 (x + y) t = genMap S T 1 x t + genMap S T
     Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Simplify using `only [genMap, Matrix.of_apply, Matrix.smul_apply, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => by ring`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genMap_smul_left : genMap S T 1 (c • x) t = star c • genMap S T 1 x t := by
   refine Matrix.ext fun i j => ?_
@@ -135,19 +133,17 @@ def sat (S T : HSp D) (LS : Set (Fin S.rank → D.host.E)) (LT : Set (Fin T.rank
     rw [e]; exact h
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha0, ha⟩ : ∃ a : D.host.E, a ≠ 0 ∧ a ∈ D.host.AA := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `AA_ne_zero D` to reduce the goal to its premises. Rewrite using `[FractionalIdeal.eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hx0`. Conclude with `h x hx0 hx`. Establish `hs : s ∈ Submodule.span D.host.E (ΛS : Set (Fin S.rank → D.host.E))`. Rewrite using `[hS.span_eq_top]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Establish an intermediate fact.
 
-Discharge the goal by the elementary cases of `trivial`. Establish `ht : t ∈ Submodule.span D.host.E (ΛT : Set (Fin T.rank → D.host.E))`. Rewrite using `[hT.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hs using Submodule.span_induction with`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Proceed by induction.
 
-Consider the case `mem s hs`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem t ht`. Rewrite using `[genMap_one S T s t a ha0]`. Use `Submodule.smul_mem _ _ ⟨1, one_pos, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[one_smul]`. Conclude with `AddSubgroup.subset_closure ⟨a, ha, s, hs, t, ht, rfl⟩`. Consider the case `zero => rw [genMap_zero_right]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy => rw [genMap_add_right]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [genMap_smul_right]`. Conclude with `Submodule.smul_mem _ _ hx`. Consider the case `zero => rw [genMap_zero_left]`. Conclude with `zero_mem _`.
-
-Consider the case `add x y _ _ hx hy => rw [genMap_add_left]`. Conclude with `add_mem hx hy`. Consider the case `smul c x _ hx => rw [genMap_smul_left]`. Conclude with `Submodule.smul_mem _ _ hx`.
+A detailed English derivation is pending.
 -/
 theorem genMap_mem_sat (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (hS : Submodule.IsLattice D.host.E ΛS)
@@ -181,9 +177,9 @@ theorem genMap_mem_sat (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.ran
   | smul c x _ hx => rw [genMap_smul_left]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `M ∈ sat S T (ΛS : Set (Fin S.rank → D.host.E)) (ΛT : Set (Fin T.rank → D.host.E))`. Establish `e : M = ∑ i, genMap S T 1 (fun k => star ((M * S.gram⁻¹) i k)) (Pi.single i 1)`. Use extensionality with `i j`. Establish `h : ∀ l, ∑ k, (M * S.gram⁻¹) l k * S.gram k j = M l j`. Introduce `l`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Matrix.mul_apply, Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (gram_det_isUnit S), Matrix.mul_one]`. Simplify using `only [Matrix.sum_apply, genMap, Matrix.of_apply, star_star, h, one_mul]`. Simplify using `[Pi.single_apply]`. Rewrite using `[e]`. Conclude with `Submodule.sum_mem _ fun i _ => genMap_mem_sat S T ΛS ΛT hS hT _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latRat_full (D : D7) (S T : HSp D) (ΛS : Submodule (𝓞 D.host.E) (Fin S.rank → D.host.E))
     (ΛT : Submodule (𝓞 D.host.E) (Fin T.rank → D.host.E)) (hS : Submodule.IsLattice D.host.E ΛS)

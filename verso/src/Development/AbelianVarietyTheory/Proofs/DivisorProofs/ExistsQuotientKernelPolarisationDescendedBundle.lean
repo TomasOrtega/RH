@@ -18,23 +18,23 @@ noncomputable section
 namespace GlobalTheory.DualQuot
 
 /- English proof (translation)
-Introduce `R _ _ A _ g hA hg L hL hamp`. Take `⟨H, _, i, hi, hmono, hHf, hHfl, hrep⟩` from `GlobalTheory.T.kernelOfLineBundle_finiteFlat_subgroupScheme R A hA L hL hamp`. Take `⟨B, _, q, π, hB, hq, hqf, hqfl, hqs, hπ, hpb⟩` from `GlobalTheory.T.exists_quotient_abelianScheme_finiteFlat_subgroup R A H i hA hi hmono hHf hHfl`. Take `⟨P₀, hP₀, hform⟩` from `GlobalTheory.T.exists_descent_mumfordBundle_quotient R A hA L hL H i hi hmono hHf hHfl hrep B q hB hq hqf hqfl hqs hpb`. Establish `hc` using `hA.comm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `c : A ⊗ B ⟶ A ⊗ B` to `snd A B ≫ lift (1 : B ⟶ A) (𝟙 B)`. Set `P : LB (A ⊗ B).left` to `tens P₀ (dual (P₀.pull c.left))`. Establish `hP : P.IsLB` using `isLB_tens hP₀ (isLB_dual (pull_isLB hP₀ _))`. Establish `hcls : cls P hP = cls P₀ hP₀ - GlobalTheory.CechPic.pull c.left (cls P₀ hP₀)`. Rewrite using `[cls_tens hP₀ (isLB_dual (pull_isLB hP₀ _)), cls_dual (pull_isLB hP₀ _), cls_pull hP₀, sub_eq_add_neg]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : ∀ (Y : Over (Sp R)) (a : Y ⟶ A) (t : Y ⟶ B), evc hP a t = evc hP₀ a t - evc hP₀ 1 t`. Introduce `Y a t`. Establish `e : lift a t ≫ c = lift (1 : Y ⟶ A) t`. Simplify using `only [c, lift_snd_assoc, comp_lift, MonObj.comp_one, Category.comp_id, lift_snd]`. Simplify using `only [evc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hcls, map_sub, ← GlobalTheory.CechPic.pull_comp, ← Over.comp_left, e]`. Establish `hform' : ∀ (Y : Over (Sp R)) (a x : Y ⟶ A), evc hP a (x ≫ q) = GlobalTheory.CechPic.pull (a * x).left (cls L hL) - GlobalTheory.CechPic.pull a.left (cls L hL) - GlobalTheory.CechPic.pull x.left (cls L hL) + GlobalTheory.CechPic.pull (1 : Y ⟶ A).left (cls L hL)`. Introduce `Y a x`. Rewrite using `[hev, hform, hform, _root_.one_mul]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `h0l : Triv (ev P (1 : B ⟶ A) (𝟙 B))`. Rewrite using `[triv_ev_iff hP, hev, sub_self]`. Establish `h0r : Triv (ev P (𝟙 A) (1 : A ⟶ B))`. Establish `e : (1 : A ⟶ B) = (1 : A ⟶ A) ≫ q` using `(MonObj.one_comp q).symm`. Rewrite using `[triv_ev_iff hP, e, hform', _root_.mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hadd : IsAdditive P` using `GlobalTheory.CubeNoeth.isAdditive_of_triv_axes hA hB hP h0l h0r`. Establish `hBsm` using `hB.smooth`. Establish `hAfa` using `GlobalTheory.T.finiteSetsInAffineOpen_abelianScheme_relAmple R A hA L hL hamp`. Use `⟨B, P, q, ⟨hP, hadd⟩, ⟨hB.proper, GlobalTheory.T.smoothOfRelativeDimension_descends_finite_flat_surjective _ A B g q hg hBsm hqf hqfl hqs, hB.geomConnected⟩, ?_, hqf, hqfl, hqs, hform', ?_⟩` and prove the remaining obligations.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `F classical`. Take `⟨U, hU, hF⟩` from `hAfa (F.image π.left)`. Conclude with `⟨π.left ⁻¹ᵁ U, hU.preimage π.left, fun x hx ↦ hF _ (Finset.mem_image_of_mem _ hx)⟩`. Introduce `Y x y`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Use `(hrep Y (x * y⁻¹)).2 ⟨hpb.lift x y h ≫ fst H A, ?_⟩` and prove the remaining obligations. Establish `h1` using `hpb.lift_fst x y h`. Rewrite `h1` using `[comp_mul, hpb.lift_snd]`. Rewrite using `[eq_mul_inv_iff_mul_eq, Category.assoc, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Take `⟨z, hz⟩` from `(hrep Y (x * y⁻¹)).1 h`. Establish `hx : x = lift z y ≫ ((fst H A ≫ i) * snd H A)`. Rewrite using `[comp_mul, lift_fst_assoc, lift_snd, hz, inv_mul_cancel_right]`. Rewrite using `[hx, Category.assoc, hpb.w, lift_snd_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_quotient_lam : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (A : Over (Sp R)) [GrpObj A] (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (L : LB A.left) (hL : L.IsLB), Out.RelAmple A L → ∃ (B : Over (Sp R)) (P : LB (A ⊗ B).left) (q : A ⟶ B) (hP : Fam A P), Good g B.hom ∧ FinAff B.left ∧ IsFinite q.left ∧ Flat q.left ∧ Surjective q.left ∧ (∀ (Y : Over (Sp R)) (a x : Y ⟶ A), evc hP.isLB a (x ≫ q) = GlobalTheory.CechPic.pull (a * x).left (cls L hL) - GlobalTheory.CechPic.pull a.left (cls L hL) - GlobalTheory.CechPic.pull x.left (cls L hL) + GlobalTheory.CechPic.pull (1 : Y ⟶ A).left (cls L hL)) ∧ (∀ (Y : Over (Sp R)) (x y : Y ⟶ A), x ≫ q = y ≫ q ↔ GlobalTheory.MemKL A L (x * y⁻¹)) := by
   intro R _ _ A _ g hA hg L hL hamp

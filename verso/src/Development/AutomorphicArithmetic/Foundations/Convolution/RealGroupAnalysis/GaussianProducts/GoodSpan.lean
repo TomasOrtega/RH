@@ -6,25 +6,21 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.G
 open scoped Classical ENNReal nonZeroDivisors
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ D`. Establish `hWE : ∀ (Φ : GL (Fin 2) (A E) → ℂ) h, WE D Φ h = ∫ u in FS2 F, Φ (nE D u * h) * ψ (2 * u 0) ∂(adeleMeasurePi F)` using `fun _ _ => rfl`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun _ _ => rfl, fun _ => ?_, fun _ => ?_, fun _ => ?_, fun h => ?_⟩` and prove the remaining obligations. Simplify using `using (integrableOn_zero (μ := adeleMeasurePi F) (s := FS2 F))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using (integrableOn_zero (μ := adeleMeasurePi F) (s := FS2 F))`. Simplify using the standard rewrite rules. Establish `: ∀ ξ : Rw F, WE D (0 : GL (Fin 2) (A E) → ℂ) (aE (al D ξ.1) * h) = 0`. Introduce `ξ`. Rewrite using `[hWE]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [this]`. Conclude with `hasSum_zero`. Introduce `Φ Φ' h1 h2`. Use `⟨fun γ h => ?_, fun h => ?_, fun h => ?_, fun h => ?_, fun h => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, h1.left, h2.left]`. Conclude with `(h1.int0 h).add (h2.int0 h)`. Establish `heq : (fun u => (Φ + Φ') (nE D u * h) * ψ (2 * u 0)) = (fun u => Φ (nE D u * h) * ψ (2 * u 0)) + fun u => Φ' (nE D u * h) * ψ (2 * u 0)`. Use function extensionality and compare the values at `u`. Simplify using `only [Pi.add_apply, add_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[heq]`. Conclude with `(h1.int1 h).add (h2.int1 h)`. Simplify using `only [Pi.add_apply]`. Rewrite using `[integral_add (h1.int0 h) (h2.int0 h), h1.zero, h2.zero, add_zero]`. Establish `: ∀ ξ : Rw F, WE D (Φ + Φ') (aE (al D ξ.1) * h) = WE D Φ (aE (al D ξ.1) * h) + WE D Φ' (aE (al D ξ.1) * h)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `ξ`. Simplify using `only [hWE, Pi.add_apply, add_mul]`. Conclude with `integral_add (h1.int1 _) (h2.int1 _)`. Simplify using `only [this, Pi.add_apply]`. Conclude with `(h1.sum h).add (h2.sum h)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `c Φ h1`. Use `⟨fun γ h => ?_, fun h => ?_, fun h => ?_, fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, h1.left]`. Conclude with `(h1.int0 h).const_mul c`. Establish `heq : (fun u => (c • Φ) (nE D u * h) * ψ (2 * u 0)) = fun u => c * (Φ (nE D u * h) * ψ (2 * u 0))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `u`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`. Rewrite using `[heq]`. Conclude with `(h1.int1 h).const_mul c`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`.
-
-Rewrite using `[integral_const_mul, h1.zero, mul_zero]`. Establish `: ∀ ξ : Rw F, WE D (c • Φ) (aE (al D ξ.1) * h) = c * WE D Φ (aE (al D ξ.1) * h)`. Introduce `ξ`. Simplify using `only [hWE, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `integral_const_mul _ _`.
-
-Simplify using `only [this, Pi.smul_apply, smul_eq_mul]`. Conclude with `(h1.sum h).mul_left c`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.G.goodSpan :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (D : Dat F E), Good D 0 ∧ (∀ Φ Φ', Good D Φ → Good D Φ' → Good D (Φ + Φ')) ∧ ∀ (c : ℂ) Φ, Good D Φ → Good D (c • Φ) := by

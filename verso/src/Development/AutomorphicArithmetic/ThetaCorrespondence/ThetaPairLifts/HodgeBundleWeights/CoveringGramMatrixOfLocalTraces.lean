@@ -8,7 +8,7 @@ noncomputable section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 namespace GlobalTheory.CovTop
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ => ⟨0, le_rfl, 0, fun _ _ _ _ p hp i => ⟨GlobalTheory.T.row_norm_has_gram p hp.1 hp.2 i, GlobalTheory.T.row_lattice_finitely_generated p hp.1 hp.2 i, GlobalTheory.T.row_good_lattice_ne_bot p hp.1 hp.2 …`.
+Supply the required witnesses or components.
 -/
 theorem covering_gram_matrix_of_local_traces (_h : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems) : Gram :=
   ⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun _ _ _ _ =>
@@ -22,7 +22,7 @@ section
 open GlobalTheory.CovTop GlobalTheory.BigTop
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.CovTop.covering_gram_matrix_of_local_traces | exact _root_.GlobalTheory.CovTop.covering_gram_matrix_of_local_traces | (intros; apply _root_.GlobalTheory.CovTop.covering_gram_matrix_of_local_traces <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.covering_gram_matrix_criterion : _root_.GlobalTheory.CovTop.PublishedHodgeBundleTheorems → Gram := by
   first | exact @_root_.GlobalTheory.CovTop.covering_gram_matrix_of_local_traces | exact _root_.GlobalTheory.CovTop.covering_gram_matrix_of_local_traces | (intros; apply _root_.GlobalTheory.CovTop.covering_gram_matrix_of_local_traces <;> assumption)

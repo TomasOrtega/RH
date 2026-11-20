@@ -15,13 +15,13 @@ section
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W]
 
 /- English proof (translation)
-Use extensionality with `h`. Take `⟨i1, i2⟩` from `((avSpec M.F).2.2.2 φ hi).1 (M.P (Ioc a b) h)`. Simplify using `only [ContinuousLinearMap.mul_apply]`. Rewrite using `[i2, ← ContinuousLinearMap.integral_comp_comm _ i1]`. Use `integral_congr_ae (Eventually.of_forall fun t => ?_)` and prove the remaining obligations.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `ht : ρ < |t|`. Simplify using `[hρ t ht]`. Establish `pl` using `(projLaws M).2.2.2.2.1`. Establish `m : MeasurableSet ((fun x => x + t) ⁻¹' Ioc a b)` using `measurableSet_Ioc.preimage (measurable_add_const t)`. Establish `e1 : M.F.U t (M.P (Ioc a b) h) = _` using `DFunLike.congr_fun ((pl (Ioc a b) (Ioc a b) measurableSet_Ioc measurableSet_Ioc).2.2.2.2 t).1 h`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `(pl (Ioc (a - ρ) (b + ρ)) _ measurableSet_Ioc m).1`. Rewrite using `[inter_eq_right.2 (by`. Introduce and unpack `x ⟨h1, h2⟩`. Use `abs_le.1 (not_lt.1 ht)` as an intermediate fact. Apply the tactic sequence `constructor <;> linarith [this.1, this.2])] at e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [map_smul]`. Rewrite using `[e1]`. Conclude with `congrArg _ (DFunLike.congr_fun e2 _)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem widen (M : Sc H V W) (φ : ℝ → ℂ) (hi : Integrable φ) (ρ a b : ℝ) (hρ : ∀ t, ρ < |t| → φ t = 0) :
     M.P (Ioc (a - ρ) (b + ρ)) * (M.F.av φ * M.P (Ioc a b)) = M.F.av φ * M.P (Ioc a b) := by
@@ -47,35 +47,33 @@ private theorem widen (M : Sc H V W) (φ : ℝ → ℂ) (hi : Integrable φ) (ρ
 end
 
 /- English proof (translation)
-Introduce `H _ _ _ V _ _ _ _ W _ _ _ _ M X κ hk hX ψ δ a b hψ hab`. Take `⟨c1, c2, -⟩` from `carLaws M X κ hk hX`. Establish `hk'` using `(convAdj κ hk).1`. Take `⟨s0, hi, -⟩` from `avApprox.2.1 ψ _ _ hψ`. Establish `cc : Continuous fun t => (ψ t : ℂ)` using `Complex.continuous_ofReal.comp hψ.cont`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `sc : HasCompactSupport fun t => (ψ t : ℂ)` using `s0.comp_left Complex.ofReal_zero`. Establish `cn : Continuous fun t => (ψ (-t) : ℂ)` using `cc.comp continuous_neg`. Establish `sn : HasCompactSupport fun t => (ψ (-t) : ℂ)` using `sc.comp_homeomorph (Homeomorph.neg ℝ)`. Establish `z : ∀ t, |δ| < |t| → ψ t = 0` using `fun t ht => hψ.supp t fun h => by`. Establish `: |t| ≤ |δ|` using `abs_le.2 ⟨by linarith [h.1, le_abs_self δ], h.2.trans (abs_nonneg δ)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨-, -, a1, a2, -⟩` from `(avSpec M.F).2.2.2 _ hi`. Simplify using `only [Complex.conj_ofReal] at a1`. Use `set Ψ := M.F.av fun t => (ψ t : ℂ) with hΨ`. Use `set Ψn := M.F.av fun t => (ψ (-t) : ℂ) with hΨn`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3 : M.swap.F.av (fun t => (ψ t : ℂ)) = Ψn` using `a2`. Establish `cm : Ψ * X = X * Ψn`. Use `((avSpec M.F.rev).2.2.2 _ hi).2.2.2.2 M.F X fun t h => by show X (M.F.U (-t) h) = _` as an intermediate fact. Rewrite using `[c1, neg_neg]`. Rewrite `this` using `[a2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this.symm`. Establish `hab' : a - |δ| ≤ b + |δ|` using `by linarith [abs_nonneg δ]`. Establish `w1` using `widen M (fun t => (ψ (-t) : ℂ)) hi.comp_neg |δ| a b fun t ht => by rw [z (-t) (by rwa [abs_neg])]; simp`. Establish `w2` using `widen M.swap (fun t => (ψ t : ℂ)) hi |δ| a b fun t ht => by rw [z t ht]; simp`. Rewrite `w2` using `[a3]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b1, -, b2, -, b3⟩` from `bandHS M X κ hk hX _ a b cn sn hab`. Take `⟨b4, -⟩` from `bandHS M X κ hk hX _ _ _ cn sn hab'`. Take `⟨d1, -, d2, -, d3⟩` from `bandHS M.swap _ _ hk' c2 _ a b cc sc hab`. Take `⟨d4, -⟩` from `bandHS M.swap _ _ hk' c2 _ _ _ cc sc hab'`. Rewrite `d2`, `d3` using `[a3]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p1, p2, -⟩` from `(projLaws M).2.2.2.2.1 (Ioc a b) (Ioc a b) measurableSet_Ioc measurableSet_Ioc`. Take `⟨q1, q2, -⟩` from `(projLaws M.swap).2.2.2.2.1 (Ioc a b) (Ioc a b) measurableSet_Ioc measurableSet_Ioc`. Take `⟨-, q3, -⟩` from `(projLaws M.swap).2.2.2.2.1 (Ioc (a - |δ|) (b + |δ|)) (Ioc a b) measurableSet_Ioc measurableSet_Ioc`. Rewrite `p1`, `q1` using `[inter_self]`. Establish `d5 : IsHilbertSchmidt (X ∘L M.swap.P (Ioc (a - |δ|) (b + |δ|)))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `flip M.swap X _ _ (fun t h => c1 (-t) h) ?_` and prove the remaining obligations. Use `d4.adjoint` as an intermediate fact. Rewrite `this` using `[ContinuousLinearMap.adjoint_comp, q3.adjoint_eq, ContinuousLinearMap.adjoint_adjoint]`. Then use the resulting hypothesis. Simplify using `only [Sc.P']`. Use `set P := M.P (Ioc a b)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set Q := M.swap.P (Ioc a b)`. Use `set P₁ := M.P (Ioc (a - |δ|) (b + |δ|))`. Use `set Q₁ := M.swap.P (Ioc (a - |δ|) (b + |δ|))`. Establish `a1' : star Ψ = Ψn` using `a1`. Establish `a4 : star Ψn = Ψ` using `by rw [← a1', star_star]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `t1 : IsTraceClass (Ψ * X * P)`. Rewrite using `[cm, mul_assoc, ← w1, ← mul_assoc]`. Conclude with `isTraceClass_comp b4 b2`. Establish `t3 : IsTraceClass (Ψ * X * Q)`. Rewrite using `[cm, mul_assoc, ← w2, ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isTraceClass_comp d5 d2`. Establish `t2 : IsTraceClass (Q * (Ψ * X))`. Establish `h : IsTraceClass (star X * Q₁ * (Ψn * Q))` using `isTraceClass_comp d4 d2`. Rewrite `h` using `[mul_assoc, w2]`. Establish `h' : IsTraceClass (star (star X * (Ψn * Q)))` using `h.adjoint`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h'` using `[star_mul, star_mul, star_star, q2.star_eq, a4, mul_assoc]`. Then use the resulting hypothesis. Use `⟨t1, t2, t3, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [neg_neg] at b3`. Rewrite using `[← b3]`. Establish `h` using `trace_comp_comm t1 P`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `trace (P * (Ψ * X * P)) = trace (Ψ * X * P * P) at h`. Express the relevant statement in the definitionally equal form `P * P = P at p1`. Rewrite `h` using `[mul_assoc (Ψ * X), p1]`. Express the relevant statement in the definitionally equal form `trace (Ψ * X * P) = trace (star (Ψn * P) * (X * P))`. Rewrite using `[← h, star_mul, p2.star_eq, a4]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[← d3, ← trace_adjoint (isTraceClass_comp d2.adjoint d1)]`. Establish `h` using `trace_comp_comm t2 Q`. Express the relevant statement in the definitionally equal form `trace (Q * (Q * (Ψ * X))) = trace (Q * (Ψ * X) * Q) at h`. Express the relevant statement in the definitionally equal form `Q * Q = Q at q1`.
-
-Rewrite `h` using `[← mul_assoc, q1]`. Express the relevant statement in the definitionally equal form `trace (Q * (Ψ * X)) = trace (star (star (Ψn * Q) * (star X * Q)))`. Rewrite using `[h, star_mul, star_star, star_mul, star_star, q2.star_eq, cm]`. Simplify using `only [mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.bandTC :
     ∀ {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V] [FiniteDimensional ℂ V] [CompleteSpace V] {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [FiniteDimensional ℂ W] [CompleteSpace W] (M : Sc H V W) (X : H →L[ℂ] H) (κ : ℝ → V →L[ℂ] W), Ker κ → M.Carries X κ → ∀ (ψ : ℝ → ℝ) (δ a b : ℝ), Bump ψ (-δ) 0 → a ≤ b →

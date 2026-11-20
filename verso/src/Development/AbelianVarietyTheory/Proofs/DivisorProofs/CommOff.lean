@@ -31,13 +31,13 @@ noncomputable section
 namespace GlobalTheory.HoweLocal.LocOpsW
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `Submodule.exists_isCompl S`. Use `set P := S.linearProjOfIsCompl C hC with hPdef`. Establish `hP : ∀ s : S, P s = s` using `fun s => Submodule.linearProjOfIsCompl_apply_left hC s`. Set `A : G → Module.End ℂ V` to `fun g => S.subtype ∘ₗ T g ∘ₗ P + (LinearMap.id - S.subtype ∘ₗ P)`. Establish `hA : ∀ g w, A g w = (T g (P w) : V) + (w - (P w : V))` using `fun g w => rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ toFun := A, map_one' := ?_, map_mul' := ?_ }, ?_⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[hA, map_one, Module.End.one_apply, Module.End.one_apply]`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x y`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `w`. Rewrite using `[Module.End.mul_apply, hA x, hA y, hA (x * y), map_mul, Module.End.mul_apply]`. Establish `e : P ((T y (P w) : V) + (w - (P w : V))) = T y (P w)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_sub, hP, hP, sub_self, add_zero]`. Rewrite using `[e]`. Normalize the expressions using the abelian group laws. Introduce `g s show A g s = _`. Rewrite using `[hA, hP, sub_self, add_zero]`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extend_hom {V : Type} [AddCommGroup V] [Module ℂ V] (S : Submodule ℂ V) {G : Type} [Monoid G]
     (T : G →* Module.End ℂ S) : ∃ om' : G →* Module.End ℂ V, ∀ g (s : S), om' g s = (T g s : V) := by
@@ -65,7 +65,7 @@ namespace GlobalTheory.HoweLocal.LocOpsW
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.eq_of_componentTensorAdelicFunction_eq v φ φ₁ φ₂ hφ fun r hr => (h1 r hr).symm.trans (h2 r hr)`.
+A detailed English derivation is pending.
 -/
 theorem acts_uniq (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F)
     (T : ((κ → AF F) → ℂ) → (κ → AF F) → ℂ) {φ φ₁ φ₂ : (κ → Fv F v) → ℂ} (hφ : φ ∈ GlobalTheory.WeilM.SB (κ → Fv F v))
@@ -73,15 +73,15 @@ theorem acts_uniq (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.
   GlobalTheory.T.eq_of_componentTensorAdelicFunction_eq v φ φ₁ φ₂ hφ fun r hr => (h1 r hr).symm.trans (h2 r hr)
 
 /- English proof (translation)
-Set `S` to `GlobalTheory.WeilM.SB (κ → Fv F v)`. Set `t : G → S → S` to `fun x φ => ⟨Classical.choose (hex x φ φ.2), (Classical.choose_spec (hex x φ φ.2)).1⟩`. Establish `ht : ∀ x (φ : S), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (evFin F v) (Ω x) φ (t x φ)` using `fun x φ => (Classical.choose_spec (hex x φ φ.2)).2`. Establish `hu : ∀ x (φ ψ : S), GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Acts (evFin F v) (Ω x) φ ψ → t x φ = ψ` using `fun x φ ψ h => Subtype.ext (acts_uniq v _ φ.2 (ht x φ) h)`. Set `L : G → Module.End ℂ S` to `fun x => { toFun := t x map_add' := fun φ ψ => hu x _ _ (by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `GlobalTheory.ThK.LocalOps.acts_lin v (Ω x) (hex x) φ.2 ψ.2 (ht x φ) (ht x ψ) 1 1` as an intermediate fact. Simplify using `using this)`. Use the proof step `map_smul' := fun a φ => hu x _ _ (by`. Use `GlobalTheory.ThK.LocalOps.acts_lin v (Ω x) (hex x) φ.2 φ.2 (ht x φ) (ht x φ) a 0` as an intermediate fact. Simplify using `using this) }`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨{ toFun := L, map_one' := ?_, map_mul' := ?_ }, fun x φ => ht x φ⟩` and prove the remaining obligations. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ show t 1 φ = φ`. Use `hu 1 φ φ ?_` and prove the remaining obligations. Introduce `r _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one]`. Both sides reduce to the same expression. Introduce `x y`. Apply `LinearMap.ext` to reduce the goal to its premises. Introduce `φ show t (x * y) φ = t x (t y φ)`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `hu (x * y) φ _ ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `GlobalTheory.ThK.LocalOps.acts_mul v (hpres y) (ht y φ) (ht x (t y φ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc_hom (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {G : Type} [Monoid G] (Ω : G →* Module.End ℂ ((κ → AF F) → ℂ))
     (hpres : ∀ x, ∀ Φ ∈ GlobalTheory.WeilM.schA F κ, Ω x Φ ∈ GlobalTheory.WeilM.schA F κ)
@@ -121,15 +121,13 @@ end GlobalTheory.HoweLocal.LocOpsW
 namespace GlobalTheory.HoweLocal.LocOpsW
 
 /- English proof (translation)
-Use `set w := M.co.e.symm (p, q) with hw`. Establish `he : M.co.e (u • w) = (u • p, u • q)`. Rewrite using `[LinearEquiv.map_smul, hw, LinearEquiv.apply_symm_apply, Prod.smul_mk]`. Establish `h1 : u • (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x.1 - 1) = 0` using `hx1 u hu`. Establish `h2 : u • (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x.2 - 1) = 0` using `hx2 u hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x.1 * (u • w) = u • w`. Establish `: GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x.1 * (u • w) - u • w = (u • (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x.1 - 1)) * w`. Rewrite using `[Matrix.smul_mul, Matrix.sub_mul, Matrix.one_mul, Matrix.mul_smul, smul_sub]`. Rewrite `this` using `[h1, Matrix.zero_mul, sub_eq_zero]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (u • w) * (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x.2)ᵀ = u • w`. Establish `: (u • w) * (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x.2)ᵀ - u • w = w * (u • (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat x.2 - 1))ᵀ`. Rewrite using `[Matrix.transpose_smul, Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_sub, Matrix.transpose_one, Matrix.mul_sub, Matrix.mul_one, smul_sub]`. Rewrite `this` using `[h2, Matrix.transpose_zero, Matrix.mul_zero, sub_eq_zero]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hact : GlobalTheory.WeilM.actAB (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.cA σ) x (u • w) = u • w`. Simplify using `only [GlobalTheory.WeilM.actAB]`. Use `e1` as an intermediate fact. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.mat] at this e2`. Rewrite using `[this, e2]`.
-
-Establish `h3` using `hW.impl x (u • w) Φ hΦ`. Simplify using `only [GlobalTheory.WeilM.Darboux.rho, he, hact] at h3`. Conclude with `h3`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem comm_off {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}
@@ -167,27 +165,23 @@ theorem comm_off {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E
   exact h3
 
 /- English proof (translation)
-Use `set T := om x with hTdef`. Establish `hkeep : ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d), T Φ ∈ GlobalTheory.WeilM.schA F _` using `fun Φ hΦ => hW.pres x Φ hΦ`. Establish `hcomm` using `comm_off hW v x hx1 hx2`. Establish `hfib` using `GlobalTheory.T.isometry_commuting_heisenberg_acts_fibrewise v ψ T hstd (GlobalTheory.T.standardAdelicAddChar_nontrivial_finitePlace ψ hstd) hkeep (fun μ hμ Φ hΦ => hW.unit μ hμ x Φ hΦ) hcomm`. Establish `htr : ∀ u : AF F, evFin F v u = 0 → ∀ p : Fin n × Fin d → AF F, ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d), T (fun y => Φ (y + u • p)) = fun y => T Φ (y + u • p)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u hu p Φ hΦ`. Establish `h` using `hcomm u hu p 0 Φ hΦ`. Rewrite `h` using `[smul_zero, GlobalTheory.ThK.LocalOps.schr_trans, GlobalTheory.ThK.LocalOps.schr_trans]`. Conclude with `h`. Take `⟨R, hR0, hR⟩` from `GlobalTheory.T.exists_complementary_adelicSchwartz_restFunction (Fin n × Fin d) v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨(R 0)⁻¹ • fun t => T (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) φ R) (fun i => GlobalTheory.LatVac.liftV v (t i)), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.WeilM.SB _).smul_mem (R 0)⁻¹ (GlobalTheory.T.adelicSchwartz_restrict_finitePlace_mem_schwartzBruhat v _ (hkeep _ (hR φ hφ).2))`. Introduce `r hr`. Use function extensionality and compare the values at `y`. Use `set u : AF F := 1 - GlobalTheory.LatVac.liftV v 1 with hudef`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hu : evFin F v u = 0` using `by simp [hudef, GlobalTheory.LatVac.evFin_liftV]`. Use `set p : Fin n × Fin d → AF F := fun i => GlobalTheory.LatVac.liftV v (evFin F v (y i)) with hpdef`. Establish `hyp : y + u • (-y) = p`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.add_apply, Pi.smul_apply, Pi.neg_apply, smul_eq_mul, hudef, hpdef]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← GlobalTheory.ThK.LocalOps.liftV_one_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hpat : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) p`. Introduce `u' hu'`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.LatVac.at_liftV v _ u' hu'`. Use `set Φ₀ := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) φ R with hΦ₀`. Use `set Φ₁ := GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens (evFin F v) φ r with hΦ₁`. Use `set Φ₂ : (Fin n × Fin d → AF F) → ℂ := (r y / R 0) • (fun w => Φ₀ (w + u • (-y))) with hΦ₂`. Establish `hm₀ : Φ₀ ∈ GlobalTheory.WeilM.schA F _` using `(hR φ hφ).2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm₂ : Φ₂ ∈ GlobalTheory.WeilM.schA F _` using `Submodule.smul_mem _ _ (GlobalTheory.T.adelicSchwartzSpace_translate_mem_of_mem _ _ hm₀)`. Establish `hfz : ∀ z, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) z → (Φ₁ - Φ₂) (y + z) = 0`. Introduce `z hz`. Establish `e1 : r (y + z) = r y` using `hr.1 y z hz`. Establish `e2 : y + z + u • (-y) = p + z` using `by rw [← hyp]; abel`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hpz : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.At (evFin F v) (p + z)` using `fun u' hu' => by`. Rewrite using `[smul_add, hpat u' hu', hz u' hu', add_zero]`. Establish `e3 : R (p + z) = R 0` using `by simpa using (hR φ hφ).1 0 (p + z) hpz`. Establish `e4 : (fun i => evFin F v ((y + z + u • (-y)) i)) = fun i => evFin F v ((y + z) i)`. Use function extensionality and compare the values at `i`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hu]`. Simplify using `only [Pi.sub_apply, hΦ₂, hΦ₁, hΦ₀, Pi.smul_apply, smul_eq_mul, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens]`. Rewrite using `[e4, e2, e3, e1]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `h0` using `hfib (Φ₁ - Φ₂) (sub_mem hr.2 hm₂) y hfz`. Rewrite `h0` using `[map_sub, Pi.sub_apply, sub_eq_zero]`. Establish `h2 : T Φ₂ y = (r y / R 0) * T Φ₀ p`. Rewrite using `[hΦ₂, map_smul, htr u hu (-y) Φ₀ hm₀, Pi.smul_apply, smul_eq_mul, hyp]`. Rewrite using `[h0, h2]`.
-
-Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.tens, hpdef, Pi.smul_apply, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem acts_exists {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E n} {W : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Spc F E d}
@@ -262,11 +256,11 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.HoweL
 namespace GlobalTheory.HoweLocal.LocOpsW
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n d X W M ψ χX χW om hstd hweil v`. Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hweil`. Set `ι : UAtGrp σ X (evFin F v) × UAtGrp σ W (evFin F v) →* UA σ X.J × UA σ W.J` to `(UAtGrp σ X (evFin F v)).subtype.prodMap (UAtGrp σ W (evFin F v)).subtype`. Take `⟨T, hT⟩` from `loc_hom v (om.comp ι) (fun x Φ hΦ => hW.pres (ι x) Φ hΦ) (fun x φ hφ => acts_exists hstd hW v (ι x) x.1.2 x.2.2 φ hφ)`. Take `⟨om', hom'⟩` from `extend_hom (GlobalTheory.WeilM.SB (Fin n × Fin d → Fv F v)) T`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨om', fun g h φ hφ => ?_⟩` and prove the remaining obligations. Establish `e` using `hom' (g, h) ⟨φ, hφ⟩`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show om' (g, h) φ = _ from e]`. Conclude with `(T (g, h) ⟨φ, hφ⟩).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show om' (g, h) φ = _ from e]`. Conclude with `hT (g, h) ⟨φ, hφ⟩`.
+A detailed English derivation is pending.
 -/
 theorem locRep : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (ψ : AddChar (AF F) ℂ) (χX χW : Chr F E) (om : Rep σ X W),

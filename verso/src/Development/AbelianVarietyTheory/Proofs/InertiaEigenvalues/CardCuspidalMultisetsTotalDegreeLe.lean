@@ -14,7 +14,7 @@ open scoped Classical
 namespace GlobalTheory.GLq.CuspMultisetCount
 
 /- English proof (translation)
-Unfold `degL`. Use `conv_rhs => rw [← Multiset.coe_toList M]`. Rewrite using `[Multiset.map_coe, Multiset.sum_coe]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem degL_toList {g : ℕ} [Fact g.Prime] (M : Multiset (Pc g)) :
     degL M.toList = (M.map fun p => p.1).sum := by
@@ -23,9 +23,9 @@ theorem degL_toList {g : ℕ} [Fact g.Prime] (M : Multiset (Pc g)) :
   rw [Multiset.map_coe, Multiset.sum_coe]
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `congrArg (fun ψ : AddChar (ZMod g) ℂ => ψ 1) h`. Simplify using `only [AddChar.one_apply] at h1`. Establish `h0 : (ZMod.stdAddChar : AddChar (ZMod g) ℂ) 0 = 1` using `AddChar.map_zero_eq_one _`. Use `ZMod.injective_stdAddChar (N := g) (h1.trans h0.symm)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `one_ne_zero this`.
+A detailed English derivation is pending.
 -/
 theorem stdAddChar_ne_one (g : ℕ) [Fact g.Prime] : (ZMod.stdAddChar : AddChar (ZMod g) ℂ) ≠ 1 := by
   intro h
@@ -36,15 +36,13 @@ theorem stdAddChar_ne_one (g : ℕ) [Fact g.Prime] : (ZMod.stdAddChar : AddChar 
   exact one_ne_zero this
 
 /- English proof (translation)
-Introduce `g _ n hn S hS`. Use `set ψ : AddChar (ZMod g) ℂ := ZMod.stdAddChar with hψdef`. Establish `hψ : ψ ≠ 1` using `stdAddChar_ne_one g`. Establish `hdeg : ∀ M ∈ S, degL M.toList = n` using `fun M hM => (degL_toList M).trans (hS M hM).1`. Establish `hcusp : ∀ M ∈ S, ∀ p ∈ M.toList, IsCusp p.2` using `fun M hM p hp => (hS M hM).2 p (Multiset.mem_toList.1 hp)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hchar : ∀ M ∈ S, IsChar (hcL M.toList n)` using `fun M hM => (GlobalTheory.gl_list_product_perm_char g M.toList M.toList n (hdeg M hM).symm (fun p hp => Label.isChar_of_isIrr (hcusp M hM p hp).2.1)).1`. Establish `key : ∀ M ∈ S, ∃ ρ : Gn g n → ℂ, IsIrr ρ ∧ wh ψ ρ ≠ 0 ∧ ip ρ (hcL M.toList n) ≠ 0` using `fun M hM => GlobalTheory.T.exists_generic_constituent_harishChandra_cuspidal g ψ hψ M.toList n (hdeg M hM) (hcusp M hM)`. Use `choose! f hf using key`. Establish `hfin : {ρ : Gn g n → ℂ | IsIrr ρ ∧ wh ψ ρ ≠ 0}.Finite` using `(GlobalTheory.GLq.irr_finite_and_finsum_zOf_eq_one (Gn g n)).1.subset fun ρ h => h.1`. Establish `hinj : Set.InjOn f (S : Set (Multiset (Pc g)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `M hM M' hM' heq`. Establish `h1` using `(hf M hM).2.2`. Establish `h2` using `(hf M' hM').2.2`. Rewrite `h1` using `[heq]`. Establish `hne` using `Label.ip_ne_zero_of_common (f M') _ _ (hf M' hM').1 (hchar M hM) (hchar M' hM') h1 h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hp : M.toList.Perm M'.toList`. Assume the negation of the conclusion as `hnp`. Conclude with `hne ((GlobalTheory.GLq.IpCuspProd.ip_hcL_cusp g M.toList M'.toList n (hdeg M hM) (hdeg M' hM') (hcusp M hM) (hcusp M' hM')).1 hnp)`. Rewrite using `[← Multiset.coe_toList M, ← Multiset.coe_toList M']`. Conclude with `Multiset.coe_eq_coe.2 hp`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_le : ∀ (g : ℕ) [Fact g.Prime] (n : ℕ), 0 < n → ∀ S : Finset (Multiset (Pc g)),
     (∀ M ∈ S, (M.map fun p => p.1).sum = n ∧ ∀ p ∈ M, IsCusp p.2) → S.card ≤ g ^ n - g ^ (n - 1) := by

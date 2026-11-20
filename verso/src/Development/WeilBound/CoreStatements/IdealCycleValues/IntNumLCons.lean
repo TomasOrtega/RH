@@ -5,7 +5,7 @@ import GroundTheory.HeightsAndTheta.Heights.DiscreteValuationNumbers.OfSteps
 open MvPolynomial GroundTheory.Heights₂.Heights.NumbersDVR
 
 /- English proof (translation)
-Unfold `intNumL intNum GroundTheory.Heights₂.Heights.NumbersDVR.mixedDiff`. Rewrite using `[List.ofFn_get, List.ofFn_succ]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_succ, List.ofFn_get]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem BaseChangeColon.intNumL_cons (F : Type) [Field F] (K : Type) [DecidableEq K] (ι : K → Type)
     (V : Ideal (MRing ι F)) (b : K → ℤ) (l : List (K → ℤ)) :
@@ -15,7 +15,7 @@ theorem BaseChangeColon.intNumL_cons (F : Type) [Field F] (K : Type) [DecidableE
   simp only [Matrix.cons_val_zero, Matrix.cons_val_succ, List.ofFn_get]
 
 /- English proof (translation)
-Rewrite using `[BaseChangeColon.intNumL_cons, BaseChangeColon.intNumL_cons, BaseChangeColon.intNumL_cons]`. Use `IntNumAddFirst.full F K ι l.length V hV.isPrime hV.multiHomog ?_ b b' l.get` and prove the remaining obligations. Rewrite using `[hd]`. Conclude with `(show d + Fintype.card K < l.length + 2 + Fintype.card K by omega)` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BaseChangeColon.intNumL_add (F : Type) [Field F] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type)
     [∀ k, Fintype (ι k)] (V : Ideal (MRing ι F)) (d : ℕ) (hV : IsMultiProjPrime V)

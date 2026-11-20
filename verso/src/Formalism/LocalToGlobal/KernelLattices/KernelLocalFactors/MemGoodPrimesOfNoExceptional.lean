@@ -20,7 +20,7 @@ variable {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → He
   (mu : Tup X.F X.E X.K S)
 
 /- English proof (translation)
-Establish `h` using `P.2`. Simplify using `only [rowSG, uSG, hQ, Finset.union_empty] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_vGs_of_QE_empty (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (P : rowSG Pr sel mu) : P.1 ∈ Pr.vGs := by
   have h := P.2
@@ -28,9 +28,7 @@ theorem mem_vGs_of_QE_empty (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (P : rowS
   exact h
 
 /- English proof (translation)
-Establish `hE : IsEmpty ↥(QE sel (mu : Chr X.F X.E X.K))` using `by rw [hQ]; infer_instance`. Establish `key : ∀ c' : ↥(Subgroup.pi Set.univ fun P => (Θ P).H), piChar (fun P => (Θ P).H) (fun P => (Θ P).lam) c' = 1`. Introduce `c'`. Rewrite using `[piChar, MonoidHom.finset_prod_apply]`. Conclude with `Fintype.prod_empty _`.
-
-Conclude with `key c`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levQFam_chr_eq_one_of_QE_empty (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {n : ℕ} (Θ : LevQFam X.E X.K n (QE sel (mu : Chr X.F X.E X.K))) (c : ↥Θ.grp) :
     Θ.chr c = 1 := by
@@ -44,7 +42,7 @@ theorem levQFam_chr_eq_one_of_QE_empty (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅
 
 open Classical in
 /- English proof (translation)
-Conclude with `Fintype.prod_equiv (Equiv.subtypeEquivRight (fun x => by show x ∈ Pr.vGs ∪ QE sel (mu : Chr X.F X.E X.K) ↔ _`. Rewrite using `[hQ, Finset.union_empty])) _ _ (fun _ => rfl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_rowSG_eq_prod_vGs_of_QE_empty (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) {M : Type} [CommMonoid M] (f : {w // w ∈ Pr.vGs} → M) :
     ∏ P : rowSG Pr sel mu, f ⟨P.1, mem_vGs_of_QE_empty sel mu hQ P⟩ = ∏ w : {w // w ∈ Pr.vGs}, f w := by
@@ -53,7 +51,7 @@ theorem prod_rowSG_eq_prod_vGs_of_QE_empty (hQ : QE sel (mu : Chr X.F X.E X.K) =
     rw [hQ, Finset.union_empty])) _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Establish `h2 : ∏ i, (a i * z i) = ∏ i, (b i * y i)` using `Finset.prod_congr rfl (fun i _ => h i)`. Rewrite `h2` using `[Finset.prod_mul_distrib, Finset.prod_mul_distrib]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem prod_mul_eq_of_forall_cross_mul_eq {ι K : Type} [Fintype ι] [CommRing K] (a b y z : ι → K) (φ : K) (h : ∀ i, a i * z i = b i * y i) :
     (∏ i, a i) * (φ * ∏ i, z i) = (∏ i, b i) * (φ * ∏ i, y i) := by
@@ -64,7 +62,7 @@ theorem prod_mul_eq_of_forall_cross_mul_eq {ι K : Type} [Fintype ι] [CommRing 
     _ = (∏ i, b i) * (φ * ∏ i, y i) := by ring
 
 /- English proof (translation)
-Simplify using `only [piChar, MonoidHom.finset_prod_apply, Units.coe_prod, MonoidHom.comp_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem piChar_apply_coe' {K : Type} [Field K] {ι : Type} [Fintype ι] {G : ι → Type} [∀ i, Group (G i)] (H : ∀ i, Subgroup (G i))
     (lam : ∀ i, ↥(H i) →* Kˣ) (x : ↥(Subgroup.pi Set.univ H)) :
@@ -73,7 +71,7 @@ theorem piChar_apply_coe' {K : Type} [Field K] {ι : Type} [Fintype ι] {G : ι 
   rfl
 
 /- English proof (translation)
-Use `show ((piChar (fun w => (Λ w).H) (fun w => (Λ w).lam) x : Kˣ) : K) = _`. Conclude with `piChar_apply_coe' _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem levFam_chr_apply_coe {E K : Type} [Field E] [NumberField E] [Field K] {n : ℕ} {SG : Finset (HeightOneSpectrum (𝓞 E))}
     (Λ : LevFam E K n SG) (x : ↥Λ.grp) :
@@ -88,7 +86,7 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `hf' : f = Fin.castSucc` using `funext fun i => Fin.ext (hf i)`. Substitute `hf'` using the available equality. Conclude with `initL_extE γ.1 v`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem funLeft_extUH2 {N n : ℕ} (hN : N = n + 1) (f : Fin n → Fin N) (hf : ∀ i, (f i).1 = i.1) (γ : UF E n) (v : Sp E N) :
     LinearMap.funLeft E E f ((extUH hN γ).1 v) = γ.1 (LinearMap.funLeft E E f v) := by
@@ -98,7 +96,7 @@ theorem funLeft_extUH2 {N n : ℕ} (hN : N = n + 1) (f : Fin n → Fin N) (hf : 
   exact initL_extE γ.1 v
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `h : n < n + 1` using `Nat.lt_succ_self n`. Simplify using `only [atNL, dif_pos h, LinearMap.proj_apply]`. Conclude with `extE_last γ.1 v`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem atNL_extUH2 {N n : ℕ} (hN : N = n + 1) (γ : UF E n) (v : Sp E N) :
     atNL E N n ((extUH hN γ).1 v) = atNL E N n v := by
@@ -108,22 +106,22 @@ theorem atNL_extUH2 {N n : ℕ} (hN : N = n + 1) (γ : UF E n) (v : Sp E N) :
   exact extE_last γ.1 v
 
 /- English proof (translation)
-Simplify using `using IntAt.coe P (k : 𝓞 E)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem intAt_natCast_kernel_local_factors (P : HeightOneSpectrum (𝓞 E)) (k : ℕ) : IntAt P (k : E) := by
   simpa using IntAt.coe P (k : 𝓞 E)
 
 /- English proof (translation)
-Take `⟨r, s, hs, e⟩` from `h`. Conclude with `⟨-r, s, hs, by rw [mul_neg, e, map_neg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem intAt_neg_kernel_local_factors {P : HeightOneSpectrum (𝓞 E)} {a : E} (h : IntAt P a) : IntAt P (-a) := by
   obtain ⟨r, s, hs, e⟩ := h
   exact ⟨-r, s, hs, by rw [mul_neg, e, map_neg]⟩
 
 /- English proof (translation)
-Rewrite `hv` using `[ciMem_stdAt]`. Establish `hv' : v = ∑ i, v i • (Pi.single i 1 : Sp E n)`. Use extensionality with `j`. Simplify using `[Finset.sum_apply, Pi.single_apply]`. Rewrite using `[hv', map_sum]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_induction _ (IntAt P) (fun a b ha hb => IntAt.add ha hb) (by simpa using IntAt.coe P 0) ?_` and prove the remaining obligations. Introduce `i _`. Rewrite using `[map_smul, smul_eq_mul]`. Conclude with `IntAt.mul (hv i) (hη i)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_linear_form_on_std {n : ℕ} (P : HeightOneSpectrum (𝓞 E)) (η : Sp E n →ₗ[E] E) (hη : ∀ i : Fin n, IntAt P (η (Pi.single i 1)))
     {v : Sp E n} (hv : v ∈ stdAt E n P) : IntAt P (η v) := by
@@ -145,25 +143,25 @@ variable {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → He
   (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu))
 
 /- English proof (translation)
-Establish `hκ : ∀ x, κ.1 x ∈ stdAt X.E n w.1 ↔ x ∈ stdAt X.E n w.1` using `κ.2`. Establish `hsg : ∀ i : Fin n, (Pi.single i 1 : Sp X.E n) ∈ stdAt X.E n w.1`. Introduce `i`. Rewrite using `[ciMem_stdAt]`. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Simplify using `using intAt_natCast_kernel_local_factors w.1 1`. Simplify using `using intAt_natCast_kernel_local_factors w.1 0`. Establish `hcond : (∀ i : Fin n, IntAt w.1 ((η ∘ₗ κ.1.toLinearMap) (Pi.single i 1))) ↔ ∀ i : Fin n, IntAt w.1 (η (Pi.single i 1))`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h i`. Establish `hs : κ.1.symm (Pi.single i 1) ∈ stdAt X.E n w.1`. Rewrite using `[← hκ, LinearEquiv.apply_symm_apply]`. Conclude with `hsg i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h'` using `intAt_linear_form_on_std w.1 (η ∘ₗ κ.1.toLinearMap) h hs`. Simplify using `using h'`. Introduce `h i`. Establish `hs : κ.1 (Pi.single i 1) ∈ stdAt X.E n w.1` using `(hκ _).2 (hsg i)`. Simplify using `using intAt_linear_form_on_std w.1 η h hs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ftY`. Rewrite using `[if_pos hw, if_pos hw]`. Distinguish the cases in `hη : ∀ i : Fin n, IntAt w.1 (η (Pi.single i 1))`. Rewrite using `[if_pos (hcond.2 hη), if_pos hη]`. Establish `hd : IntAt w.1 (η (κ.1 y₁ - y))` using `intAt_linear_form_on_std w.1 η hη hδ`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : (η ∘ₗ κ.1.toLinearMap) y₁ = η y + η (κ.1 y₁ - y)`. Rewrite using `[map_sub]`. Simplify using the standard rewrite rules. Establish `hqη : IntAt w.1 ((Col.qOf w.1 : X.E) * η y)`. Establish `h'` using `intAt_linear_form_on_std w.1 η hη hq`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h'` using `[map_smul, smul_eq_mul]`. Then use the resulting hypothesis. Establish `hD` using `hcst.D_pos w`. Establish `hqD : ∀ x : X.E, IntAt w.1 ((Col.qOf w.1 : X.E) * x) → IntAt w.1 ((Col.qOf w.1 : X.E) ^ cst.D w * x)`. Introduce `x hx`. Establish `e : (Col.qOf w.1 : X.E) ^ cst.D w * x = ((Col.qOf w.1 ^ (cst.D w - 1) : ℕ) : X.E) * ((Col.qOf w.1 : X.E) * x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[← mul_assoc, ← pow_succ, Nat.sub_add_cancel hD]`. Rewrite using `[e]`. Conclude with `IntAt.mul (intAt_natCast_kernel_local_factors _ _) hx`. Establish `hζe : IntAt w.1 ((epsSg : X.E) * η (κ.1 y₁ - y))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h'` using `intAt_neg_kernel_local_factors hd`. Simplify `h'` using `[epsSg]`. Establish `hA : IntAt w.1 ((Col.qOf w.1 : X.E) ^ cst.D w * ((epsSg : X.E) * η y))`. Apply `hqD` to reduce the goal to its premises. Establish `h'` using `intAt_neg_kernel_local_factors hqη`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h'` using `[epsSg]`. Establish `hB : IntAt w.1 ((Col.qOf w.1 : X.E) ^ cst.D w * ((epsSg : X.E) * η (κ.1 y₁ - y)))` using `hqD _ (IntAt.mul (intAt_natCast_kernel_local_factors _ _) hζe)`. Rewrite using `[e0, mul_add, hcst.psi_add w _ _ hA hB, hcst.psi_int w _ hζe, mul_one]`. Rewrite using `[if_neg (fun h => hη (hcond.1 h)), if_neg hη]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ftY_move2 (hcst : cst.Ok) (w : rowSG Pr sel mu) (hw : w.1 ∈ Pr.vGs) {n : ℕ} (κ : ↥(GLint X.E n w.1))
     (η : Sp X.E n →ₗ[X.E] X.E) (y y₁ : Sp X.E n) (hδ : κ.1 y₁ - y ∈ stdAt X.E n w.1)
@@ -224,17 +222,15 @@ theorem ftY_move2 (hcst : cst.Ok) (w : rowSG Pr sel mu) (hw : w.1 ∈ Pr.vGs) {n
 open Classical in
 
 /- English proof (translation)
-Take `⟨y, hy, rfl⟩` from `hY`. Establish `key : ∀ (e : rowSG Pr sel mu → ℤ) (x : Sp X.E n), x ∈ locLat (rowSG Pr sel mu) N e → ((Col.qOf w.1 : X.E) ^ e w)⁻¹ • x ∈ localization₂ w.1.asIdeal N`. Introduce `e x hx`. Conclude with `Submodule.mem_comap.1 ((Submodule.mem_iInf _).1 hx w)`. Establish `hD : ∀ a ∈ {z | z - y ∈ locLat (rowSG Pr sel mu) N (fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ))}, a - y ∈ localization₂ w.1.asIdeal N`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha`. Establish `h1` using `key _ _ ha`. Simplify using `only [if_pos hw, zpow_zero, inv_one, one_smul] at h1`. Conclude with `h1`. Establish `hyw : ((Col.qOf w.1 : ℕ) : X.E) • y ∈ localization₂ w.1.asIdeal N`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h1` using `key _ _ hy`. Simplify using `only [if_pos hw, zpow_neg, zpow_one, inv_inv] at h1`. Conclude with `h1`. Use `⟨⟨y, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Use `show y - y ∈ locLat (rowSG Pr sel mu) N (fun P => if P.1 ∈ Pr.vGs then 0 else (cst.M : ℤ))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_self]`. Conclude with `zero_mem _`. Introduce `a ha a' ha'`. Establish `e : a - a' = (a - y) - (a' - y)` using `by abel`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `sub_mem (hD a ha) (hD a' ha')`. Introduce `a ha`. Establish `e2 : ((Col.qOf w.1 : ℕ) : X.E) • a = ((Col.qOf w.1 : ℕ) : X.E) • (a - y) + ((Col.qOf w.1 : ℕ) : X.E) • y`. Rewrite using `[← smul_add, sub_add_cancel]`. Rewrite using `[e2]`.
-
-Use `add_mem ?_ hyw` and prove the remaining obligations. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem (hD a ha) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ybSet_props2 {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} {Y : Set (Sp X.E n)} (hY : Y ∈ ybSet sel mu cst N)
     (w : rowSG Pr sel mu) (hw : w.1 ∈ Pr.vGs) :
@@ -272,7 +268,7 @@ theorem ybSet_props2 {n : ℕ} {N : Submodule (𝓞 X.E) (Sp X.E n)} {Y : Set (S
     exact nsmul_mem (hD a ha) _
 
 /- English proof (translation)
-The claim follows from `Classical.epsilon_spec h`.
+A detailed English derivation is pending.
 -/
 theorem representative_mem {n : ℕ} {Y : Set (Sp X.E n)} (h : Y.Nonempty) : repY Y ∈ Y := Classical.epsilon_spec h
 
@@ -281,7 +277,7 @@ end FtY
 section Inv2
 
 /- English proof (translation)
-Unfold `divs at h`. Use `split_ifs at h with hf`. Simplify using `using h`. Simplify using `at h`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_asIdeal_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A} {P : HeightOneSpectrum A} (h : P ∈ divs a) :
     a ∈ P.asIdeal := by
@@ -293,19 +289,19 @@ theorem mem_asIdeal_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a 
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Substitute `hN` using the available equality. Establish `hf' : f = Fin.castSucc` using `funext fun i => Fin.ext (hf i)`. Substitute `hf'` using the available equality. Establish `hv' : v ∈ localization₂ Q.asIdeal (tilN d.1.N)`. Establish `e : (DecoSet.til (ST` using `ST) pi d).1 = d.1.til (ST := ST) pi := by`.
+Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `DecoSet.til`. Rewrite using `[dif_pos (d.2.til hT hG)]`. Establish `hv2 : v ∈ localization₂ Q.asIdeal (DecoSet.til (ST` using `ST) pi d).1.N := hv`. Rewrite `hv2` using `[e]`. Conclude with `hv2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsv⟩` from `hv'`. Rewrite `hsv` using `[tilN, Submodule.mem_sup]`. Take `⟨a, ha, b, hb, hab⟩` from `hsv`. Take `⟨x, hx, rfl⟩` from `Submodule.mem_map.1 ha`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hb`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : LinearMap.funLeft E E Fin.castSucc (s • v) = x`. Rewrite using `[← hab]`. Use function extensionality and compare the values at `i`. Simplify using `[LinearMap.funLeft_apply, incl, eLast, Pi.single_apply, Fin.castSucc_ne_last]`. Establish `h2 : (s • v) (Fin.last n) = algebraMap (𝓞 E) E c`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hab]`. Simplify using `[incl, eLast, Algebra.smul_def]`. Prove the components needed by the constructor for the conclusion. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.map_smul_of_tower, h1]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hx`. Establish `h3 : atNL E (n + 1) n v = v (Fin.last n)`. Simplify using `only [atNL, dif_pos (Nat.lt_succ_self n), LinearMap.proj_apply]`. Both sides reduce to the same expression. Rewrite using `[h3]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `h2` using `[Pi.smul_apply, Algebra.smul_def]`. Conclude with `⟨c, s, hs, h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem tilde_lattice_restrict_mem {N n : ℕ} (hN : N = n + 1) {ST SG : Finset (HeightOneSpectrum (𝓞 E))} (pi : 𝓞 E) (d : DecoSet E n ∅ SG)
     (hT : ∀ P : ST, cO E pi ∉ P.1.asIdeal) (hG : ∀ w : SG, pi ∉ w.1.asIdeal)
@@ -346,19 +342,19 @@ theorem tilde_lattice_restrict_mem {N n : ℕ} (hN : N = n + 1) {ST SG : Finset 
     exact ⟨c, s, hs, h2⟩
 
 /- English proof (translation)
-Establish `hcond : (∀ i : Fin n, IntAt w.1 ((η + ζ) (Pi.single i 1))) ↔ ∀ i : Fin n, IntAt w.1 (η (Pi.single i 1))`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Establish `h'` using `IntAt.add (h i) (intAt_neg_kernel_local_factors (hζ i))`. Rewrite `h'` using `[LinearMap.add_apply, add_neg_cancel_right]`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h'`. Introduce `h i`. Rewrite using `[LinearMap.add_apply]`. Conclude with `IntAt.add (h i) (hζ i)`. Unfold `ftY`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hw, if_pos hw]`. Distinguish the cases in `hη : ∀ i : Fin n, IntAt w.1 (η (Pi.single i 1))`. Rewrite using `[if_pos (hcond.2 hη), if_pos hη]`. Establish `hqη : IntAt w.1 ((Col.qOf w.1 : X.E) * η y)`. Establish `h'` using `intAt_linear_form_on_std w.1 η hη hq`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `h'` using `[map_smul, smul_eq_mul]`. Then use the resulting hypothesis. Establish `hD` using `hcst.D_pos w`. Establish `hqD : ∀ x : X.E, IntAt w.1 ((Col.qOf w.1 : X.E) * x) → IntAt w.1 ((Col.qOf w.1 : X.E) ^ cst.D w * x)`. Introduce `x hx`. Establish `e : (Col.qOf w.1 : X.E) ^ cst.D w * x = ((Col.qOf w.1 ^ (cst.D w - 1) : ℕ) : X.E) * ((Col.qOf w.1 : X.E) * x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Rewrite using `[← mul_assoc, ← pow_succ, Nat.sub_add_cancel hD]`. Rewrite using `[e]`. Conclude with `IntAt.mul (intAt_natCast_kernel_local_factors _ _) hx`. Establish `hζe : IntAt w.1 ((epsSg : X.E) * ζ y)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h'` using `intAt_neg_kernel_local_factors hζy`. Simplify `h'` using `[epsSg]`. Establish `hA : IntAt w.1 ((Col.qOf w.1 : X.E) ^ cst.D w * ((epsSg : X.E) * η y))`. Apply `hqD` to reduce the goal to its premises. Establish `h'` using `intAt_neg_kernel_local_factors hqη`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify `h'` using `[epsSg]`. Establish `hB : IntAt w.1 ((Col.qOf w.1 : X.E) ^ cst.D w * ((epsSg : X.E) * ζ y))` using `hqD _ (IntAt.mul (intAt_natCast_kernel_local_factors _ _) hζe)`. Rewrite using `[LinearMap.add_apply, mul_add, hcst.psi_add w _ _ hA hB, hcst.psi_int w _ hζe, mul_one]`. Rewrite using `[if_neg (fun h => hη (hcond.1 h)), if_neg hη]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fourierTwist_add_integral {X : Fields} {Pr : Primes X} (sel : HeightOneSpectrum (𝓞 X.F) → HeightOneSpectrum (𝓞 X.E)) {S : Set ℕ}
     (mu : Tup X.F X.E X.K S) (cst : LocCst X (rowSG Pr sel mu)) (hcst : cst.Ok) (w : rowSG Pr sel mu) (hw : w.1 ∈ Pr.vGs) {n : ℕ}
@@ -424,7 +420,7 @@ def TopLaw (P : LevFam X.E X.K R.r Pr.vGs) (m2 : ℕ) (b : L.β (m2 + 1)) : Prop
           PhiTop Ch mu cst.sharp m2 w.1 (y ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))))
 
 /- English proof (translation)
-The claim follows from `funLeft_extUH2 (E := X.E) (N_m_succ R) _ (fun i => rfl) γ₁ v`.
+A detailed English derivation is pending.
 -/
 theorem prXp_extUH2 (γ₁ : UF X.E (R.N R.m - 1)) (v : Sp X.E (R.N R.m)) :
     prXp X.E R ((extUH (N_m_succ R) γ₁).1 v) = γ₁.1 (prXp X.E R v) := funLeft_extUH2 (E := X.E) (N_m_succ R) _ (fun i => rfl) γ₁ v
@@ -443,7 +439,7 @@ def TopInv (m2 : ℕ) : Prop :=
       PhiTop Ch mu cst.sharp m2 w.1 (y + z) = PhiTop Ch mu cst.sharp m2 w.1 y
 
 /- English proof (translation)
-Establish `e : frsF sel mu p P = p.deco.1.liftFr ⟨P.1, hP⟩` using `by simp only [frsF, dif_pos hP]`. Rewrite using `[e]`. Conclude with `(Deco.liftFr_spec (p.deco.2.hasLift ⟨P.1, hP⟩)).1 v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_mem_lattice_iff_std' {j : ℕ} (p : ChPt (R := R) sel mu u j) (P : rowSG Pr sel mu) (hP : P.1 ∈ Pr.vGs) (v : Sp X.E (R.N j)) :
     frsF sel mu p P v ∈ p.deco.1.at P.1 ↔ v ∈ stdAt X.E (R.N j) P.1 := by
@@ -453,11 +449,9 @@ theorem frame_mem_lattice_iff_std' {j : ℕ} (p : ChPt (R := R) sel mu u j) (P :
 
 open Classical in
 /- English proof (translation)
-Establish `hq0 : (Col.qOf P.1 : X.E) ≠ 0`. Establish `: Col.qOf P.1 ≠ 0` using `fun h => P.1.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Conclude with `this` after adjusting the coercions. Establish `hdvd : (∏ Q : rowSG Pr sel mu, Col.qOf Q.1) = Col.qOf P.1 * ∏ Q ∈ Finset.univ.erase P, Col.qOf Q.1` using `(Finset.mul_prod_erase _ _ (Finset.mem_univ P)).symm`. Establish `e : ((Col.qOf P.1 : X.E) ^ cst.B)⁻¹ * ((cBof sel mu cst u : ℕ) : X.E) = ((Pr.T u * (∏ Q ∈ Finset.univ.erase P, Col.qOf Q.1) ^ cst.B : ℕ) : X.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cBof, hdvd]`. Use `push_cast`. Rewrite using `[mul_pow]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[e]`.
-
-Conclude with `intAt_natCast_kernel_local_factors _ _`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem intAt_inv_qOf_pow_mul_cBof (P : rowSG Pr sel mu) :
     IntAt P.1 (((Col.qOf P.1 : X.E) ^ cst.B)⁻¹ * ((cBof sel mu cst u : ℕ) : X.E)) := by
@@ -478,59 +472,53 @@ theorem intAt_inv_qOf_pow_mul_cBof (P : rowSG Pr sel mu) :
 open Classical in
 
 /- English proof (translation)
-Take `⟨z', hz', hzeq⟩` from `Submodule.mem_map.1 hz`. Establish `hzE : z = ((cBof sel mu cst u : ℕ) : X.E) • z'`. Rewrite using `[← hzeq]`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply]`. Rewrite using `[Nat.cast_smul_eq_nsmul (𝓞 X.E), Nat.cast_smul_eq_nsmul X.E]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `hzE` using the available equality. Establish `hz'' : ∀ P ∈ Sall sel mu u, ∀ y ∈ localization₂ P.asIdeal p.deco.1.N, z' y ∈ localization₂ P.asIdeal (tilQ sel mu u d).1.N` using `hz'`. Establish `hsm : ∀ {k : ℕ} (v : Sp X.E k), ((cBof sel mu cst u : ℕ) : X.E) • v = ((cBof sel mu cst u : ℕ) : 𝓞 X.E) • v`. Introduce `k v`. Rewrite using `[Nat.cast_smul_eq_nsmul (𝓞 X.E), Nat.cast_smul_eq_nsmul X.E]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hvG : ∀ P : rowSG Pr sel mu, P.1 ∈ Pr.vGs` using `mem_vGs_of_QE_empty sel mu hQ`. Establish `hSr : ∀ P : rowSG Pr sel mu, P.1 ∈ Sall sel mu u` using `fun P => by`. Establish `h` using `P.2`. Simplify using `only [rowSG, uSG, Finset.mem_union] at h`. Simplify using `only [Sall, Finset.mem_union]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `Or.inr h`. Establish `hST : ∀ P : Pr.vT u, P.1 ∈ Sall sel mu u` using `fun P => by`. Simplify using `only [Sall, Finset.mem_union]`. Conclude with `Or.inl P.2`. Establish `hpiG : ∀ w : rowSG Pr sel mu, Pr.piT u ∉ w.1.asIdeal` using `fun w => piT_notMem_vGs hPr u ⟨w.1, hvG w⟩`.
+Prove the second alternative. Establish an intermediate fact. Simplify using the standard rewrite rules. Prove the first alternative. Establish an intermediate fact.
 
-Establish `htil : ∀ (P : rowSG Pr sel mu) (v : Sp X.E (R.N R.m)), v ∈ (tilQ sel mu u d).1.at P.1 → prXp X.E R v ∈ d.1.at P.1 ∧ IntAt P.1 (atNL X.E (R.N R.m) (R.N R.m - 1) v)` using `fun P v hv => tilde_lattice_restrict_mem (N_m_succ R) (Pr.piT u) d (conj_piT_notMem hPr u) hpiG (fun i : Fin (R.N R.m - 1) => (⟨i.1, by have := i.2; omega⟩ : Fin (R.N R.m))) (fun i => rfl) P.1 v hv`. Establish `hcBT : ∀ P : Pr.vT u, ((cBof sel mu cst u : ℕ) : 𝓞 X.E) ∈ P.1.asIdeal`. Introduce `P`. Establish `hpi : Pr.piT u ∈ P.1.asIdeal` using `mem_asIdeal_of_mem_divs P.2`. Establish `hTu : ((Pr.T u : ℕ) : 𝓞 X.E) ∈ P.1.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hPr.piT_norm u]`. Conclude with `Ideal.mul_mem_right _ _ hpi`. Rewrite using `[cBof, Nat.cast_mul]`. Conclude with `Ideal.mul_mem_right _ _ hTu`. Establish `hqdvd : ∀ P : rowSG Pr sel mu, Col.qOf P.1 ∣ cBof sel mu cst u`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Introduce `P`. Unfold `cBof`. Conclude with `Dvd.dvd.mul_left (dvd_pow (Finset.dvd_prod_of_mem _ (Finset.mem_univ P)) (by have := hcst.B_pos; omega)) _`. Establish `hsg : ∀ (P : rowSG Pr sel mu) {k : ℕ} (i : Fin k), (Pi.single i 1 : Sp X.E k) ∈ stdAt X.E k P.1`. Introduce `P k i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ciMem_stdAt]`. Introduce `j`. Rewrite using `[Pi.single_apply]`. Use `split_ifs`. Simplify using `using intAt_natCast_kernel_local_factors P.1 1`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using intAt_natCast_kernel_local_factors P.1 0`. Establish `hF : ∀ (P : rowSG Pr sel mu) (v : Sp X.E (R.N (m2 + 1))), v ∈ stdAt X.E (R.N (m2 + 1)) P.1 → frsF sel mu p P v ∈ p.deco.1.at P.1` using `fun P v hv => (frame_mem_lattice_iff_std' sel mu p P (hvG P) v).2 hv`. Establish `hFs : ∀ (P : rowSG Pr sel mu) (v : Sp X.E (R.N (m2 + 1))), v ∈ p.deco.1.at P.1 → (frsF sel mu p P).symm v ∈ stdAt X.E (R.N (m2 + 1)) P.1`. Introduce `P v hv`. Apply `(frame_mem_lattice_iff_std' sel mu p P (hvG P) _).1` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hv`. Establish `hLs : ∀ (P : rowSG Pr sel mu) (v : Sp X.E (R.N R.m - 1)), v ∈ d.1.at P.1 → (d.1.liftFr P).symm v ∈ stdAt X.E (R.N R.m - 1) P.1`. Introduce `P v hv`. Apply `((Deco.liftFr_spec (d.2.hasLift P)).1 _).1` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hv`. Establish `hA : phiT X.K p.deco.1 (tilQ sel mu u d).1 (x + ((cBof sel mu cst u : ℕ) : X.E) • z') = phiT X.K p.deco.1 (tilQ sel mu u d).1 x`. Establish `hiff : ∀ (P : Pr.vT u) (y : Sp X.E (R.N (m2 + 1))), y ∈ p.deco.1.at P.1 → (((x + ((cBof sel mu cst u : ℕ) : X.E) • z') y ∈ (tilQ sel mu u d).1.at P.1 ∧ (tilQ sel mu u d).1.f P ((x + ((cBof sel mu cst u : ℕ) : X.E) • z') y) = p.deco.1.f P y) ↔ (x y ∈ (tilQ sel mu u d).1.at P.1 ∧ ( …`. Introduce `P y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hzy : z' y ∈ (tilQ sel mu u d).1.at P.1` using `hz'' P.1 (hST P) y hy`. Establish `hzy2 : (((cBof sel mu cst u : ℕ) : X.E) • z') y ∈ (tilQ sel mu u d).1.at P.1`. Rewrite using `[LinearMap.smul_apply, hsm]`. Conclude with `Submodule.smul_mem _ _ hzy`. Establish `hf0 : (tilQ sel mu u d).1.f P ((((cBof sel mu cst u : ℕ) : X.E) • z') y) = 0`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[LinearMap.smul_apply, hsm, (tilQ sel mu u d).2.f_smul P _ _ hzy, Ideal.Quotient.eq_zero_iff_mem.2 (hcBT P), zero_mul]`. Rewrite using `[LinearMap.add_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `hx : x y ∈ (tilQ sel mu u d).1.at P.1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `sub_mem h1 hzy2`. Rewrite `h3` using `[add_sub_cancel_right]`. Then use the resulting hypothesis. Use `⟨hx, ?_⟩` and prove the remaining obligations. Rewrite using `[← h2, (tilQ sel mu u d).2.f_add P _ hx _ hzy2, hf0, add_zero]`. Introduce and unpack `⟨h1, h2⟩`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨add_mem h1 hzy2, ?_⟩` and prove the remaining obligations. Rewrite using `[(tilQ sel mu u d).2.f_add P _ h1 _ hzy2, hf0, add_zero, h2]`. Unfold `phiT`. Distinguish the cases in `hc : ∀ P : Pr.vT u, ∀ y ∈ p.deco.1.at P.1, x y ∈ (tilQ sel mu u d).1.at P.1 ∧ (tilQ sel mu u d).1.f P (x y) = p.deco.1.f P y`. Rewrite using `[if_pos hc, if_pos (fun P y hy => (hiff P y hy).2 (hc P y hy))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[if_neg hc, if_neg (fun h => hc (fun P y hy => (hiff P y hy).1 (h P y hy)))]`. Establish `hPhi : ∀ P : rowSG Pr sel mu, PhiTop Ch mu cst.sharp m2 P.1 ((d.1.liftFr P).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ (x + ((cBof sel mu cst u : ℕ) : X.E) • z') ∘ₗ (frsF sel mu p P).toLinearMap ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) = PhiTop Ch mu cst.sharp m2 P.1 ( …`. Introduce `P`. Rewrite using `[LinearMap.add_comp, LinearMap.comp_add, LinearMap.comp_add]`. Use `hTI P (hvG P) _ _ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `s l`. Establish `hs : LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1))) (Pi.single s 1) ∈ stdAt X.E (R.N (m2 + 1)) P.1`. Rewrite using `[ciMem_stdAt]`. Introduce `j`. Conclude with `(ciMem_stdAt P.1 _).1 (hsg P s) _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hV` using `hLs P _ (htil P _ (hz'' P.1 (hSr P) _ (hF P _ hs))).1`. Rewrite `hV` using `[ciMem_stdAt]`. Establish `hq` using `intAt_inv_qOf_pow_mul_cBof sel mu cst (u := u) P`. Establish `e : (((d.1.liftFr P).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ (((cBof sel mu cst u : ℕ) : X.E) • z') ∘ₗ (frsF sel mu p P).toLinearMap ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m2 + 1)))) (Pi.single s 1)) l = ((cBof sel mu cst u : ℕ) : X.E) * (d.1.liftFr P).symm (prXp X.E R (z' ( …`. Simplify using `only [LinearMap.comp_apply, LinearMap.smul_apply, LinearEquiv.coe_coe, map_smul, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, ← mul_assoc]`. Conclude with `IntAt.mul hq (hV l)`. Establish `hft : ∀ P : rowSG Pr sel mu, ftY sel mu cst P ((((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ (x + ((cBof sel mu cst u : ℕ) : X.E) • z') ∘ₗ (frsF sel mu p P).toLinearMap) ((frsF sel mu p P).symm (repY Y)) = ftY sel mu cst P ((((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ • a …`. Introduce `P`. Establish `hYP` using `ybSet_props2 sel mu cst hYm P (hvG P)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr` using `representative_mem hYP.1`. Establish `hqr : ((Col.qOf P.1 : ℕ) : X.E) • repY Y ∈ p.deco.1.at P.1` using `hYP.2.2 _ hr`. Establish `hpiI : IntAt P.1 (((Pr.piT u : 𝓞 X.E) : X.E)⁻¹)`. Establish `h0 : ((Pr.piT u : 𝓞 X.E) : X.E) ≠ 0`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `hpiG P` to reduce the goal to its premises. Establish `h1 : Pr.piT u = 0` using `(IsFractionRing.injective (𝓞 X.E) X.E) (by rw [map_zero]; exact h)`. Rewrite using `[h1]`. Conclude with `zero_mem _`. Use `⟨1, Pr.piT u, hpiG P, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_one]`. Conclude with `mul_inv_cancel₀ h0`. Rewrite using `[LinearMap.add_comp, LinearMap.comp_add]`. Use `fourierTwist_add_integral sel mu cst hcst P (hvG P) _ _ _ ?_ ?_ ?_` and prove the remaining obligations. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv` using `(htil P _ (hz'' P.1 (hSr P) _ (hF P _ (hsg P i)))).2`. Establish `e : ((((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ (((cBof sel mu cst u : ℕ) : X.E) • z') ∘ₗ (frsF sel mu p P).toLinearMap) (Pi.single i 1) = ((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ * (((cBof sel mu cst u : ℕ) : X.E) * atNL X.E (R.N R.m) (R.N R.m - 1) (z' (frsF sel mu …`. Apply the tactic sequence `simp only [LinearMap.comp_apply, LinearMap.smul_apply, LinearEquiv.coe_coe, map_smul, smul_eq_mul] <;> ring`. Rewrite using `[e]`. Conclude with `IntAt.mul hpiI (IntAt.mul (intAt_natCast_kernel_local_factors _ _) hv)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hv` using `(htil P _ (hz'' P.1 (hSr P) _ hqr)).2`. Rewrite `hv` using `[map_smul, map_smul, smul_eq_mul]`. Take `⟨m, hm⟩` from `hqdvd P`. Establish `e : ((((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ (((cBof sel mu cst u : ℕ) : X.E) • z') ∘ₗ (frsF sel mu p P).toLinearMap) ((frsF sel mu p P).symm (repY Y)) = ((Pr.piT u : 𝓞 X.E) : X.E)⁻¹ * (((cBof sel mu cst u : ℕ) : X.E) * atNL X.E (R.N R.m) (R.N R.m - 1 …`. Apply the tactic sequence `simp only [LinearMap.comp_apply, LinearMap.smul_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, map_smul, smul_eq_mul] <;> ring`.
-
-Rewrite using `[e, hm, Nat.cast_mul]`. Establish `e3 : ((Col.qOf P.1 : ℕ) : X.E) * (m : X.E) * atNL X.E (R.N R.m) (R.N R.m - 1) (z' (repY Y)) = (m : X.E) * (((Col.qOf P.1 : ℕ) : X.E) * atNL X.E (R.N R.m) (R.N R.m - 1) (z' (repY Y)))` using `by ring`. Rewrite using `[e3]`. Conclude with `IntAt.mul hpiI (IntAt.mul (intAt_natCast_kernel_local_factors _ _) hv)`. Rewrite using `[← LinearEquiv.map_smul]`.
-
-Conclude with `hFs P _ hqr`. Unfold `XiCpl2`. Rewrite using `[hA]`. Use `congr 1`. Use `Finset.prod_congr rfl (fun P _ => ?_)` and prove the remaining obligations.
-
-Rewrite using `[hPhi P, hft P]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xiCpl2_inv (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (hPr : Pr.Ok) (hcst : cst.Ok) {m2 : ℕ} (hTI : TopInv Ch sel mu cst m2)
     (p : ChPt (R := R) sel mu u (m2 + 1)) (Y : Set (Sp X.E (R.N (m2 + 1)))) (d : RowPt Pr R sel mu)
@@ -711,39 +699,35 @@ variable {X : Fields} {Pr : Primes X} {R : Ranks} (W : Wts X Pr.Word R) (Ch : Ch
   (A : Amb X) (u : Pr.Word) (m2 : ℕ)
 
 /- English proof (translation)
-Introduce `g g₁ p Y d hYm`. Express the relevant statement in the definitionally equal form `Y ∈ ybSet sel mu cst p.deco.1.N at hYm`. Establish `hG` using `mem_vGs_of_QE_empty (Pr := Pr) sel mu hQ`. Use `choose κ hκ hκr using fun w : rowSG Pr sel mu => frsF_smul sel mu p (L.levG (m2 + 1) b) (L.levQ (m2 + 1) b) g w (hG w)`. Establish `hfr : frsF sel mu (g • p) = fun w => g.1.1 * frsF sel mu p w * (κ w).1` using `funext hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTc : ∀ Q : Pr.vT u, cO X.E (Pr.piT u) ∉ Q.1.asIdeal` using `conj_piT_notMem hPr u`. Establish `hGc : ∀ w : rowSG Pr sel mu, Pr.piT u ∉ w.1.asIdeal` using `fun w => piT_notMem_vGs hPr u ⟨w.1, hG w⟩`. Establish `hgd : g₁ • d = ((g₁.1, (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) : UF X.E (R.N R.m - 1) × GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) • d` using `rfl`. Establish `htil : tilQ sel mu u (g₁ • d) = (extUH (N_m_succ R) g₁.1, extGH (N_m_succ R) (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) • tilQ sel mu u d`. Rewrite using `[hgd]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `DecoSet.tilH_smul (N_m_succ R) _ d hTc hGc`. Use `choose κt hκt hκtr using fun w : rowSG Pr sel mu => liftFr_smul (tilQ sel mu u d) (extUH (N_m_succ R) g₁.1, extGH (N_m_succ R) (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) w`. Establish `hfrT : frsT sel mu u (g₁ • d) = fun w => (extUH (N_m_succ R) g₁.1).1 * frsT sel mu u d w * (κt w).1`. Use function extensionality and compare the values at `w`. Unfold `frsT`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[htil]`. Conclude with `hκt w`. Use `choose κr hκr' hκrr using fun w : rowSG Pr sel mu => liftFr_smul d ((g₁.1, (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu))) : UF X.E (R.N R.m - 1) × GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) w`. Establish `hlr : ∀ w, (g₁ • d).1.liftFr w = g₁.1.1 * d.1.liftFr w * (κr w).1` using `fun w => hκr' w`. Establish `hN : IsSdLat p.deco.1.N` using `⟨p.deco.2.lat, p.deco.2.uni⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN' : IsSdLat (tilQ sel mu u d).1.N` using `⟨(tilQ sel mu u d).2.lat, (tilQ sel mu u d).2.uni⟩`. Establish `hdeco : (g • p).deco = (g.1, (g.2.1 : GLG X.E (R.N (m2 + 1)) Pr.vGs)) • p.deco` using `rfl`. Establish `hYm1 : (fun v => g.1.1 v) '' Y ∈ ybSet sel mu cst (gmap g.1.1 p.deco.1.N)` using `(ybSet_gmap sel mu cst p.deco.1.N g.1.1 Y).2 hYm`. Establish `hc : ((((rowTy Ch sel mu P).inv.chr g₁.2)⁻¹ * ((L.levG (m2 + 1) b).chr g.2.1)⁻¹ : X.Kˣ) : X.K) = ∏ w : rowSG Pr sel mu, (((((rowTy Ch sel mu P).inv w).lam ⟨(g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) w, g₁.2.2 w (Set.mem_univ w)⟩)⁻¹ : X.Kˣ) : X.K) * ((((L.levG (m2 + 1) b ⟨ …`. Rewrite using `[Finset.prod_mul_distrib, prod_rowSG_eq_prod_vGs_of_QE_empty sel mu hQ (fun w => ((((L.levG (m2 + 1) b w).lam ⟨(g.2.1 : GLG X.E (R.N (m2 + 1)) Pr.vGs) w, g.2.1.2 _ (Set.mem_univ _)⟩)⁻¹ : X.Kˣ) : X.K))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul, Units.val_inv_eq_inv_val, Units.val_inv_eq_inv_val, levFam_chr_apply_coe, levFam_chr_apply_coe]`. Simplify using `only [Units.val_inv_eq_inv_val, Finset.prod_inv_distrib]`. Unfold `cp2K`. Apply the tactic sequence `split_ifs with h1 h2 <;> first | exact absurd hYm1 h1 | exact absurd hYm h2 | skip`. Rewrite using `[hfr, hfrT, htil]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `(kerOf_move hOk.top (cBof_pos sel mu cst u hT) hN hN' (frsF sel mu p) (frsT sel mu u d) g.1 (extUH (N_m_succ R) g₁.1) κ κt _ _ ((((rowTy Ch sel mu P).inv.chr g₁.2)⁻¹ * ((L.levG (m2 + 1) b).chr g.2.1)⁻¹ : X.Kˣ) : X.K) (fun x z hz => xiCpl2_inv Ch sel mu cst hQ hPr hcst hTI p Y d x …` and prove the remaining obligations. Introduce `x`. Unfold `XiCpl2`. Rewrite using `[hdeco, htil, phiT_smul]`. Simplify using `only [hfr, hlr]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hc]`. Use `prod_mul_eq_of_forall_cross_mul_eq _ _ _ _ _ fun w => ?_` and prove the remaining obligations. Establish `hw` using `hG w`. Take `⟨hne, hdiff, hqm⟩` from `ybSet_props2 sel mu cst hYm w hw`. Establish `hF : frsF sel mu p w = p.deco.1.liftFr ⟨w.1, hw⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Unfold `frsF`. Rewrite using `[dif_pos hw]`. Establish `hLift` using `Deco.liftFr_spec (p.deco.2.hasLift ⟨w.1, hw⟩)`. Establish `hFst : ∀ z, z ∈ localization₂ w.1.asIdeal p.deco.1.N → (frsF sel mu p w).symm z ∈ stdAt X.E (R.N (m2 + 1)) w.1`. Introduce `z hz`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hF]`. Apply `(hLift.1 _).1` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`. Conclude with `hz`. Take `⟨a, ha, hra⟩ : repY ((fun v => g.1.1 v) '' Y) ∈ (fun v => g.1.1 v) '' Y` from `representative_mem (hne.image _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr0` using `representative_mem hne`. Establish `e2 : (κ w).1 ((g.1.1 * frsF sel mu p w * (κ w).1).symm (g.1.1 a)) = (frsF sel mu p w).symm a`. Rewrite using `[LinearEquiv.eq_symm_apply]`. Apply `g.1.1.injective` to reduce the goal to its premises. Use `LinearEquiv.apply_symm_apply (g.1.1 * frsF sel mu p w * (κ w).1) (g.1.1 a)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[LinearEquiv.mul_apply, LinearEquiv.mul_apply]`. Conclude with `this`. Establish `hδ : (κ w).1 ((g.1.1 * frsF sel mu p w * (κ w).1).symm (g.1.1 a)) - (frsF sel mu p w).symm (repY Y) ∈ stdAt X.E (R.N (m2 + 1)) w.1`. Rewrite using `[e2, ← map_sub]`. Conclude with `hFst _ (hdiff _ ha _ hr0)`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hq : ((qOf w.1 : ℕ) : X.E) • (frsF sel mu p w).symm (repY Y) ∈ stdAt X.E (R.N (m2 + 1)) w.1`. Rewrite using `[← LinearEquiv.map_smul]`. Conclude with `hFst _ (hqm _ hr0)`. Establish `hA : PhiTop Ch mu cst.sharp m2 w.1 ((g₁.1.1 * d.1.liftFr w * (κr w).1).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ ((extUH (N_m_succ R) g₁.1).1.toLinearMap ∘ₗ x ∘ₗ g.1.1.symm.toLinearMap) ∘ₗ (g.1.1 * frsF sel mu p w * (κ w).1).toLinearMap ∘ₗ LinearMap.funLeft X.E X.E (Fin.castAdd (cOf R (m …`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe]`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Simplify using `only [LinearEquiv.mul_apply, LinearEquiv.apply_symm_apply, LinearEquiv.symm_apply_apply, prXp_extUH2]`. Establish `hη : ((((Pr.piT u : 𝓞 X.E) : X.E))⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ ((extUH (N_m_succ R) g₁.1).1.toLinearMap ∘ₗ x ∘ₗ g.1.1.symm.toLinearMap) ∘ₗ (g.1.1 * frsF sel mu p w * (κ w).1).toLinearMap = (((((Pr.piT u : 𝓞 X.E) : X.E))⁻¹ • atNL X.E (R.N R.m) (R.N R.m - 1)) ∘ₗ x ∘ₗ ( …`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.mul_apply, LinearEquiv.symm_apply_apply, LinearMap.smul_apply, atNL_extUH2]`. Establish `key` using `hTop w hw ⟨(g.2.1 : GLG X.E (R.N (m2 + 1)) Pr.vGs) ⟨w.1, hw⟩, g.2.1.2 _ (Set.mem_univ _)⟩ (g₁.2.1 : GLG X.E (R.N R.m - 1) (rowSG Pr sel mu)) (g₁.2.2 w (Set.mem_univ w)) (κ w) (κr w) (κt w) (hκr w) (hκrr w) (hκtr w) ((d.1.liftFr w).symm.toLinearMap ∘ₗ prXp X.E R ∘ₗ x ∘ₗ (frsF sel …`. Rewrite using `[hA, hη, ftY_move2 sel mu cst hcst w hw (κ w) _ _ _ ?_ hq, ← mul_assoc, key, mul_assoc]`. Apply the tactic sequence `try rfl`.
-
-Express the relevant statement in the definitionally equal form `(κ w).1 ((g.1.1 * frsF sel mu p w * (κ w).1).symm (repY ((fun v => g.1.1 v) '' Y))) - (frsF sel mu p w).symm (repY Y) ∈ stdAt X.E (R.N (m2 + 1)) w.1`. Rewrite using `[← hra]`. Conclude with `hδ`. Use `show _ = (evRho W Ch sel mu P u g₁) ∘ₗ _ ∘ₗ (frmRho (colValF W sel mu u (m2 + 1)) (L.levG (m2 + 1) b) (L.levQ (m2 + 1) b) g⁻¹)`. Simplify using `only [evRho, frmRho, MonoidHom.coe_mk, OneHom.coe_mk, levQFam_chr_eq_one_of_QE_empty sel mu hQ, mul_one, Prod.fst_inv, Prod.snd_inv, map_inv, LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]`.
-
-Use `congr 1`. Simplify using `only [Units.val_mul, Units.val_inv_eq_inv_val]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem cp2EquivOn_of (hQ : QE sel (mu : Chr X.F X.E X.K) = ∅) (hT : 0 < Pr.T u) (hPr : Pr.Ok) (hcst : cst.Ok)
     (hOk : ChTh.Ok (Ch := Ch) cst (chTh W Ch sel mu cst A u m2))

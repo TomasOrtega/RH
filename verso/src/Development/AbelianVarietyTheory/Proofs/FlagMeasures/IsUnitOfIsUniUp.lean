@@ -11,7 +11,7 @@ open scoped Classical
 variable {g : ℕ} [Fact g.Prime]
 
 /- English proof (translation)
-Rewrite using `[Matrix.isUnit_iff_isUnit_det, Matrix.det_of_upperTriangular (fun a b hab => (h a b).1 hab)]`. Rewrite using `[Finset.prod_eq_one (fun a _ => (h a a).2 rfl)]`. Conclude with `isUnit_one`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_isUniUp {n : ℕ} {M : Mt g n} (h : IsUniUp M) : IsUnit M := by
   rw [Matrix.isUnit_iff_isUnit_det, Matrix.det_of_upperTriangular (fun a b hab => (h a b).1 hab)]
@@ -19,13 +19,13 @@ theorem isUnit_of_isUniUp {n : ℕ} {M : Mt g n} (h : IsUniUp M) : IsUnit M := b
   exact isUnit_one
 
 /- English proof (translation)
-Simplify using `[toG, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem val_toG {n : ℕ} {M : Mt g n} (h : IsUnit M) : ((toG M : Gn g n) : Mt g n) = M := by
   simp [toG, h]
 
 /- English proof (translation)
-Unfold `tr eDat`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hx : P (x : Mt g N) <;>`. Simplify using `[MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply, Finsupp.single_apply, hx, mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem tr_eDat (N : ℕ) (P : Mt g N → Prop) (φ : Mt g N → ZMod g) (ψ : AddChar (ZMod g) ℂ)
     (χ : Gn g N → ℂ) :
@@ -38,27 +38,27 @@ theorem tr_eDat (N : ℕ) (P : Mt g N → Prop) (φ : Mt g N → ZMod g) (ψ : A
     simp [MonoidAlgebra.coeff_sum, Finsupp.finset_sum_apply, Finsupp.single_apply, hx, mul_assoc]
 
 /- English proof (translation)
-Set `T : Fin N → Fin N → Finset (ZMod g)` to `fun a b => if a < b ∧ ¬ S b then Finset.univ else {(1 : Mt g N) a b}`. Establish `key : ∀ M : Mt g N, (IsUniUp M ∧ ∀ b, S b → ∀ a, a < b → entN M a b = 0) ↔ ∀ a b, M a b ∈ T a b`. Introduce `M`. Simplify using `only [T]`. Prove the components needed by the constructor for the conclusion.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩ a b split_ifs with h`. Simplify using the standard rewrite rules. Rewrite using `[Finset.mem_singleton]`. Break down `lt_trichotomy a b with hab | hab | hab` into its components or cases. Establish `hS : S b` using `by tauto`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `h2 b hS a hab` as an intermediate fact. Simplify using `only [entN, a.2, b.2, and_self, dif_pos] at this`. Rewrite using `[Matrix.one_apply_ne hab.ne]`. Conclude with `this`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(h1 a a).2 rfl, Matrix.one_apply_eq]`. Rewrite using `[(h1 a b).1 hab, Matrix.one_apply_ne hab.ne']`. Introduce `h`. Use `⟨fun a b => ⟨fun hab => ?_, fun hab => ?_⟩, fun b hb a hab => ?_⟩` and prove the remaining obligations. Use `h a b` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[if_neg (fun h' => lt_asymm hab h'.1), Finset.mem_singleton]`. Rewrite using `[this, Matrix.one_apply_ne hab.ne']`. Substitute `hab` using the available equality. Use `h a a` as an intermediate fact. Rewrite `this` using `[if_neg (fun h' => lt_irrefl _ h'.1), Finset.mem_singleton]`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Matrix.one_apply_eq]`. Unfold `entN split_ifs with hN`. Use `h ⟨a, hN.1⟩ ⟨b, hN.2⟩` as an intermediate fact. Rewrite `this` using `[if_neg (fun h' => h'.2 hb), Finset.mem_singleton]`. Rewrite using `[this, Matrix.one_apply_ne (by intro h'; simp at h'; omega)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h1 : (Finset.univ.filter fun u : Gn g N => IsUniUp (u : Mt g N) ∧ ∀ b, S b → ∀ a, a < b → entN (u : Mt g N) a b = 0).card = (Fintype.piFinset fun a => Fintype.piFinset fun b => T a b).card`. Use `Finset.card_bij (fun u _ => (u : Mt g N)) (fun u hu => ?_) (fun u _ v _ h => Units.ext h) (fun M hM => ?_)` and prove the remaining obligations. Conclude with `Fintype.mem_piFinset.2 fun a => Fintype.mem_piFinset.2 fun b => (key _).1 (Finset.mem_filter.1 hu).2 a b`. Use `(key M).2 fun a b => Fintype.mem_piFinset.1 (Fintype.mem_piFinset.1 hM a) b` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu` using `isUnit_of_isUniUp this.1`. Use `⟨toG M, ?_, val_toG hu⟩` and prove the remaining obligations. Rewrite using `[Finset.mem_filter, val_toG hu]`. Conclude with `⟨Finset.mem_univ _, this⟩`. Rewrite using `[h1, Fintype.card_piFinset]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fintype.card_piFinset]`. Rewrite using `[Finset.prod_comm, ← Finset.prod_pow_eq_pow_sum, Finset.prod_range]`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hb : S b`. Simplify using `[T, hb]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: ∀ a, (T a b).card = if a < b then g else 1`. Introduce `a`. Apply the tactic sequence `by_cases hab : a < b <;> simp [T, hb, hab]`. Simplify using `only [this, hb, if_false]`. Rewrite using `[Finset.prod_ite, Finset.prod_const, Finset.prod_const_one, mul_one]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[show Finset.univ.filter (fun a => a < b) = Finset.Iio b by ext; simp]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_uniUp (N : ℕ) (S : ℕ → Prop) :
     (Finset.univ.filter fun u : Gn g N => IsUniUp (u : Mt g N) ∧
@@ -125,9 +125,9 @@ theorem card_uniUp (N : ℕ) (S : ℕ → Prop) :
     simp
 
 /- English proof (translation)
-Unfold `diag1`. Use `val_toG (isUnit_of_isUniUp fun a b => ⟨fun hab => ?_, fun hab => ?_⟩)` and prove the remaining obligations. Use `show (if (a : ℕ) < k ∧ (b : ℕ) < k then entN (u : Mt g k) a b else (1 : Mt g n) a b) = 0 split_ifs with h`. Simplify using `only [entN, h, and_self, dif_pos]`. Conclude with `(hu _ _).1 hab`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `Matrix.one_apply_ne hab.ne'`. Substitute `hab show (if (a : ℕ) < k ∧ (a : ℕ) < k then entN (u : Mt g k) a a else (1 : Mt g n) a a) = 1 split_ifs with h` using the available equality. Simplify using `only [entN, h, and_self, dif_pos]`. Conclude with `(hu _ _).2 rfl`. Conclude with `Matrix.one_apply_eq _`.
+A detailed English derivation is pending.
 -/
 theorem val_diag1 {k : ℕ} (n : ℕ) (u : Gn g k) (hu : IsUniUp (u : Mt g k)) :
     ((diag1 u n : Gn g n) : Mt g n) = fun i j : Fin n =>
@@ -147,9 +147,9 @@ theorem val_diag1 {k : ℕ} (n : ℕ) (u : Gn g k) (hu : IsUniUp (u : Mt g k)) :
     · exact Matrix.one_apply_eq _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h a b ha hb`. Simplify using `only [entN, ha, hb, and_self, dif_pos]`. Conclude with `⟨fun hab => (h _ _).1 hab, fun hab => (h _ _).2 (Fin.ext hab)⟩`. Introduce `h a b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `h a b a.2 b.2` as an intermediate fact. Simplify using `only [entN, a.2, b.2, and_self, dif_pos] at this`. Conclude with `⟨fun hab => this.1 hab, fun hab => this.2 (congrArg _ hab)⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem isUniUp_iff {n : ℕ} (M : Mt g n) : IsUniUp M ↔
     ∀ a b, a < n → b < n → (b < a → entN M a b = 0) ∧ (a = b → entN M a b = 1) := by
@@ -163,7 +163,7 @@ theorem isUniUp_iff {n : ℕ} (M : Mt g n) : IsUniUp M ↔
     exact ⟨fun hab => this.1 hab, fun hab => this.2 (congrArg _ hab)⟩
 
 /- English proof (translation)
-Use `conv_lhs => simp only [entN, ha, hb, and_self, dif_pos]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem entN_tl {n : ℕ} (k : ℕ) (M : Mt g n) {a b : ℕ} (ha : a < k) (hb : b < k) :
     entN (tl k M) a b = entN M a b := by
@@ -171,7 +171,7 @@ theorem entN_tl {n : ℕ} (k : ℕ) (M : Mt g n) {a b : ℕ} (ha : a < k) (hb : 
   rfl
 
 /- English proof (translation)
-Use `conv_lhs => simp only [entN, ha, hb, and_self, dif_pos]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem entN_br {n : ℕ} (k r : ℕ) (M : Mt g n) {a b : ℕ} (ha : a < r) (hb : b < r) :
     entN (br k r M) a b = entN M (k + a) (k + b) := by
@@ -179,33 +179,31 @@ theorem entN_br {n : ℕ} (k r : ℕ) (M : Mt g n) {a b : ℕ} (ha : a < r) (hb 
   rfl
 
 /- English proof (translation)
-Simplify using `[entN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem entN_fin {n : ℕ} (M : Mt g n) (a b : Fin n) : entN M a b = M a b := by
   simp [entN]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hu, ⟨hP, hB⟩, ht⟩`. Rewrite `ht` using `[val_diag1 _ u hu]`. Establish `ht' : ∀ a b (ha : a < k + 1) (hb : b < k + 1), entN x a b = if a < k ∧ b < k then entN (u : Mt g k) a b else if a = b then 1 else 0`. Introduce `a b ha hb`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrFun (congrFun ht ⟨a, ha⟩) ⟨b, hb⟩` as an intermediate fact. Simplify `this` using `[tl, Matrix.one_apply]`. Rewrite `hu`, `hB` using `[isUniUp_iff]`. Use `⟨⟨(isUniUp_iff x).2 fun a b ha hb => ?_, fun a ha => ?_⟩, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h1 : a < k + 1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h2 : b < k + 1`. Rewrite using `[ht' a b h1 h2] split_ifs with h3 h4`. Conclude with `hu a b h3.1 h3.2`. Conclude with `⟨fun h => by omega, fun _ => rfl⟩`. Conclude with `⟨fun _ => rfl, fun h => absurd h h4⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => by omega, fun h => by omega⟩`. Distinguish the cases in `h2 : b < k + 1`. Use `⟨fun _ => ?_, fun h => by omega⟩` and prove the remaining obligations. Conclude with `(entN_fin x ⟨a, ha⟩ ⟨b, hb⟩).trans (hP ⟨a, ha⟩ ⟨b, hb⟩ h2 (by simpa using h1))`. Use `hB (a - (k + 1)) (b - (k + 1)) (by omega) (by omega)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Rewrite `this` using `[entN_br _ _ _ (by omega) (by omega), show k + 1 + (a - (k + 1)) = a by omega, show k + 1 + (b - (k + 1)) = b by omega]`. Conclude with `⟨fun h => this.1 (by omega), fun h => this.2 (by omega)⟩`. Rewrite using `[ht' a k (by omega) (by omega), if_neg (by omega), if_neg (by omega)]`. Use extensionality with `a b`. Rewrite using `[tl, ht' a b (by omega) (by omega), if_pos ⟨a.2, b.2⟩, entN_fin]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨⟨hx, h0⟩, hu⟩`. Establish `hx'` using `(isUniUp_iff x).1 hx`. Establish `hu1 : IsUniUp (u : Mt g k)`. Rewrite using `[hu, isUniUp_iff]`. Introduce `a b ha hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[entN_tl _ _ ha hb]`. Conclude with `hx' a b (by omega) (by omega)`. Use `⟨hu1, ⟨fun a b h1 h2 => (hx a b).1 (by show (b : ℕ) < a; omega), ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[isUniUp_iff]`. Introduce `a b ha hb`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Rewrite using `[entN_br _ _ _ ha hb]`. Use `hx' (k + 1 + a) (k + 1 + b) (by omega) (by omega)` as an intermediate fact. Conclude with `⟨fun h => this.1 (by omega), fun h => this.2 (by omega)⟩`. Rewrite using `[val_diag1 _ u hu1]`. Use extensionality with `a b`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha` using `a.2`. Establish `hb` using `b.2`. Use `hx' a b (by omega) (by omega)` as an intermediate fact. Simplify using `only [tl]`. Use `split_ifs with h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hu, entN_tl _ _ h.1 h.2]`. Break down `lt_trichotomy (a : ℕ) b with hab | hab | hab` into its components or cases. Rewrite using `[Matrix.one_apply_ne (fun h' => by rw [h'] at hab; omega), show (b : ℕ) = k by omega]`. Conclude with `h0 a (by omega)`. Rewrite using `[this.2 hab, Fin.ext hab, Matrix.one_apply_eq]`.
-
-Rewrite using `[this.1 hab, Matrix.one_apply_ne (fun h' => by rw [h'] at hab; omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_iff {N k : ℕ} (hk : k < N) (x : Mt g N) (u : Gn g k) :
     (IsUniUp (u : Mt g k) ∧ InR (k + 1) x ∧ tl (k + 1) x = ((diag1 u (k + 1) : Gn g (k + 1)) : Mt g (k + 1))) ↔
@@ -266,9 +264,9 @@ theorem fibre_iff {N k : ℕ} (hk : k < N) (x : Mt g N) (u : Gn g k) :
         · rw [this.1 hab, Matrix.one_apply_ne (fun h' => by rw [h'] at hab; omega)]
 
 /- English proof (translation)
-Unfold `supFrom`. Rewrite using `[← Finset.sum_range_add_sum_Ico _ (show k ≤ N - 1 by omega)]`. Use `congr 1`. Break down `k with _ | k` into its components or cases. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_range_succ, h0 k (by omega), add_zero, Nat.add_sub_cancel]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[entN_tl _ _ (by omega) (by omega)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem sup_split {N k : ℕ} (hk : k < N) (x : Mt g N) (h0 : ∀ a, a < k → entN x a k = 0) :
     ∑ i ∈ Finset.range (N - 1), entN x i (i + 1) =
@@ -284,9 +282,9 @@ theorem sup_split {N k : ℕ} (hk : k < N) (x : Mt g N) (h0 : ∀ a, a < k → e
     rw [entN_tl _ _ (by omega) (by omega)]
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_range_add, Finset.sum_range_succ, if_pos rfl, add_zero, ← Finset.sum_range_id r]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite `hi` using `[Finset.mem_range]`. Rewrite using `[if_neg (by omega), if_neg id]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_congr rfl fun i _ => if_neg (show k + 1 + i ≠ k by omega), Finset.sum_add_distrib]`. Simplify using `[mul_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exp_split (k r : ℕ) :
     (∑ b ∈ Finset.range (k + 1 + r), if b = k then 0 else b) =
@@ -307,23 +305,23 @@ open Polynomial Formalism.MainNotions.ArithmeticCylinders GlobalTheory.GLq Globa
 open scoped Classical
 
 /- English proof (translation)
-Take `⟨r, rfl⟩ : ∃ r, N = k + 1 + r` from `⟨N - (k + 1), by omega⟩`. Establish `c1` using `card_uniUp (g := g) (k + 1 + r) (fun b => b = k)`. Establish `c2` using `card_uniUp (g := g) k (fun _ => False)`. Simplify using `only [forall_eq] at c1`. Simplify using `only [false_imp_iff, implies_true, and_true] at c2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Unfold `wh eU eJ'`. Rewrite using `[tr_eDat, tr_eDat]`. Establish `e1 : ((Finset.univ.filter fun u : Gn g (k + 1 + r) => IsUniUp (u : Mt g (k + 1 + r)) ∧ ∀ a, a < k → entN (u : Mt g (k + 1 + r)) a k = 0).card : ℂ) = ((Finset.univ.filter fun u : Gn g k => IsUniUp (u : Mt g k)).card : ℂ) * (g : ℂ) ^ ((k + 1) * r + r * (r - 1) / 2)`. Establish `h1` using `exp_split k r`. Rewrite using `[c2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg _ (Eq.trans (by congr) c1)).trans ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_pow, Nat.cast_pow, ← pow_add]`. Use `congr 1`. Use `h1` and compare the differences between its conclusion and the goal. Use `Eq.trans (congrArg₂ _ (congrArg _ (Eq.trans (by congr) e1)) rfl) ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply an available result and prove the equalities needed to match it to the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_inv, mul_assoc]`. Use `congr 1`. Unfold `tail`. Simplify using `only [Nat.add_sub_cancel_left, Nat.add_sub_cancel]`. Establish `: ∀ (c : ℂ) (A : Prop) [Decidable A] (B : Gn g (k + 1 + r) → Prop) [DecidablePred B] (f : Gn g (k + 1 + r) → ℂ) (d : ℂ), (if A then d * (c * ∑ x, if B x then f x else 0) else 0) = c * ∑ x, if A ∧ B x then d * f x else 0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `c A _ B _ f d`. Distinguish the cases in `hA : A`. Simplify using `only [hA, if_true, true_and, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[hA]`. Simplify using `only [this]`. Rewrite using `[← Finset.mul_sum, Finset.sum_comm]`. Use `congr 1`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [fibre_iff hk]`. Use `split_ifs with hx`. Establish `hx'` using `(isUniUp_iff _).1 hx.1`. Establish `hU : IsUnit (tl k (x : Mt g (k + 1 + r)))`. Use `isUnit_of_isUniUp ((isUniUp_iff _).2 fun a b ha hb => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[entN_tl _ _ ha hb]`. Conclude with `hx' a b (by omega) (by omega)`. Rewrite using `[Finset.sum_eq_single (toG (tl k (x : Mt g (k + 1 + r))))]`. Rewrite using `[if_pos ⟨hx, val_toG hU⟩, val_toG hU, sup_split hk _ hx.2, AddChar.map_add_eq_mul, mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `u _ hu`. Conclude with `if_neg fun h => hu (Units.ext (h.2.trans (val_toG hU).symm))`. Simplify using the standard rewrite rules. Simplify using `[hx]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tr_eJ'_eq_wh_tail (g : ℕ) [Fact g.Prime] (ψ : AddChar (ZMod g) ℂ) (N k : ℕ) (χ : Gn g N → ℂ)
     (hk : k < N) :

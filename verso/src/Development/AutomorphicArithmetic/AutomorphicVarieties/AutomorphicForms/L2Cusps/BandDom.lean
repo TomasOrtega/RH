@@ -9,14 +9,14 @@ namespace UpperTheory.V.KernelIndexFullLattice
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ}
 
 /- English proof (translation)
-Rewrite using `[retractOne_mul, splitEq_holds E a 1, ← map_zpow, retractOne_centralSection, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem retract_zpow_mul (n : ℤ) (g : GA E a) :
     retractOne (splitCentre E a 1 ^ n * g) = retractOne g := by
   rw [retractOne_mul, splitEq_holds E a 1, ← map_zpow, retractOne_centralSection, one_mul]
 
 /- English proof (translation)
-Rewrite using `[splitEq_holds E a 1, detModule_centralSection ha]`. Establish `h1 : (0 : ℝ) < a` using `Nat.cast_pos.2 ha`. Establish `h2 : (0 : ℝ) < Module.finrank ℚ E` using `Nat.cast_pos.2 Module.finrank_pos`. Conclude with `Real.one_lt_exp_iff.2 (by positivity)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem one_lt_mod (ha : 0 < a) : (1 : ℝ) < (detModule E a (splitCentre E a 1) : ℝ) := by
   rw [splitEq_holds E a 1, detModule_centralSection ha]
@@ -25,13 +25,13 @@ private theorem one_lt_mod (ha : 0 < a) : (1 : ℝ) < (detModule E a (splitCentr
   exact Real.one_lt_exp_iff.2 (by positivity)
 
 /- English proof (translation)
-Simplify using `only [band, Set.mem_setOf_eq, map_mul, mem_normOneGL_iff_detModule.1 x.2, one_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coe_mul_mem_band (x : G1 E a) (g : GA E a) : (x : GA E a) * g ∈ band E a ↔ g ∈ band E a := by
   simp only [band, Set.mem_setOf_eq, map_mul, mem_normOneGL_iff_detModule.1 x.2, one_mul]
 
 /- English proof (translation)
-Establish `hy` using `one_lt_mod (E := E) ha`. Establish `hy0 : (0 : ℝ) < (detModule E a (splitCentre E a 1) : ℝ)` using `zero_lt_one.trans hy`. Simplify using `only [band, Set.mem_setOf_eq, map_mul, map_zpow, ha.ne', false_or, Set.mem_Ico]`. Rewrite using `[← Subtype.coe_le_coe, ← Subtype.coe_lt_coe, Positive.val_mul, Positive.coe_zpow, Positive.val_one, zpow_add_one₀ hy0.ne', zpow_neg, ← one_div, div_le_iff₀' (zpow_pos hy0 n), one_div, lt_inv_mul_iff₀ (zpow_pos hy0 n)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem zpow_mul_mem_band (ha : 0 < a) (n : ℤ) (g : GA E a) :
     splitCentre E a 1 ^ n * g ∈ band E a ↔
@@ -45,7 +45,7 @@ private theorem zpow_mul_mem_band (ha : 0 < a) (n : ℤ) (g : GA E a) :
     lt_inv_mul_iff₀ (zpow_pos hy0 n)]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a with ha | ha` into its components or cases. Conclude with `⟨0, Or.inl ha⟩`. Take `⟨n, hn⟩` from `exists_mem_Ico_zpow (detModule E a g).2 (one_lt_mod (E := E) ha)`. Conclude with `⟨-n, (zpow_mul_mem_band ha _ g).2 (by rwa [neg_neg])⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_zpow_mul_mem_band (g : GA E a) : ∃ n : ℤ, splitCentre E a 1 ^ n * g ∈ band E a := by
   rcases Nat.eq_zero_or_pos a with ha | ha
@@ -54,9 +54,9 @@ private theorem exists_zpow_mul_mem_band (g : GA E a) : ∃ n : ℤ, splitCentre
     exact ⟨-n, (zpow_mul_mem_band ha _ g).2 (by rwa [neg_neg])⟩
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos a with rfl | ha` into its components or cases. Conclude with `Units.ext (Subsingleton.elim _ _)`. Establish `hy` using `one_lt_mod (E := E) ha`. Rewrite `hm`, `hn` using `[zpow_mul_mem_band ha]`. Establish `h1` using `(zpow_lt_zpow_iff_right₀ hy).1 (hm.1.trans_lt hn.2)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(zpow_lt_zpow_iff_right₀ hy).1 (hn.1.trans_lt hm.2)`. Rewrite using `[show m = n by omega]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zpow_eq_of_mem_band {g : GA E a} {m n : ℤ} (hm : splitCentre E a 1 ^ m * g ∈ band E a)
     (hn : splitCentre E a 1 ^ n * g ∈ band E a) : splitCentre E a 1 ^ m = splitCentre E a 1 ^ n := by
@@ -72,15 +72,15 @@ end UpperTheory.V.KernelIndexFullLattice
 
 open UpperTheory.V.KernelIndexFullLattice in
 /- English proof (translation)
-Introduce `E _ _ _ a D hD g`. Take `⟨⟨x, hx⟩, hxD, huniq⟩` from `hD (retractOne g)`. Take `⟨n, hn⟩` from `exists_zpow_mul_mem_band g`. Take `⟨γ, hγ⟩` from `id hx`. Establish `hγ' : ratGL E a γ = (x : GA E a)` using `hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨⟨(x : GA E a) * splitCentre E a 1 ^ n, mem_latticeGL_iff.2 ⟨γ, n, by rw [hγ']⟩⟩, ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `retractOne ((x : GA E a) * splitCentre E a 1 ^ n * g) ∈ D`. Rewrite using `[mul_assoc, retractOne_coe_mul, retract_zpow_mul]`. Conclude with `hxD`. Express the relevant statement in the definitionally equal form `(x : GA E a) * splitCentre E a 1 ^ n * g ∈ band E a`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, coe_mul_mem_band]`. Conclude with `hn`. Introduce and unpack `⟨l, hl⟩ ⟨h1, h2⟩`. Take `⟨δ, m, rfl⟩` from `mem_latticeGL_iff.1 hl`. Set `y : G1 E a` to `⟨ratGL E a δ, rationalGL_le_normOneGL ⟨δ, rfl⟩⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `retractOne ((y : GA E a) * splitCentre E a 1 ^ m * g) ∈ D at h1`. Express the relevant statement in the definitionally equal form `(y : GA E a) * splitCentre E a 1 ^ m * g ∈ band E a at h2`. Rewrite `h1` using `[mul_assoc, retractOne_coe_mul, retract_zpow_mul]`. Rewrite `h2` using `[mul_assoc, coe_mul_mem_band]`. Establish `e : y = x` using `congrArg Subtype.val (huniq ⟨y, ⟨δ, rfl⟩⟩ h1)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(y : GA E a) * splitCentre E a 1 ^ m = (x : GA E a) * splitCentre E a 1 ^ n`. Rewrite using `[e, zpow_eq_of_mem_band h2 hn]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.KernelIndexFullLattice.bandDom_holds :
     UpperTheory.V.KernelIndexFullLattice.BandDom := by

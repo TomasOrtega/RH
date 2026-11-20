@@ -23,18 +23,18 @@ def psiA (C : Core l) (K : FinExt l) : AK K →+* Per.BdRp l :=
       (congrArg (fun y : Per.OC l => (y : ℂ_[l])) (intToOC_thetaW (fK K) K w)).symm).symm
 
 /- English proof (translation)
-The claim follows from `lift_inA _ _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem psiA_inA (C : Core l) (K : FinExt l) (a : Ainf l) : psiA C K (inA K a) = aDp l a := lift_inA _ _ _ a
 
 /- English proof (translation)
-The claim follows from `lift_inO _ _ _ c`.
+A detailed English derivation is pending.
 -/
 theorem psiA_inO (C : Core l) (K : FinExt l) (c : ↥(OL K)) :
     psiA C K (inO K c) = C.o ((oK K c : ↥K.1) : Om l) := lift_inO _ _ _ c
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.AinfK.induction_on x (fun a c => by rw [map_mul, map_mul, map_mul, psiA_inA, psiA_inO, thetaK_inA, thetaK_inO, (thetaD_props l).2.2.2.1, C.o_sec.th] rfl) fun x y hx hy => by rw [map_add, map_add, map_add, hx, hy]; rfl`.
+A detailed English derivation is pending.
 -/
 theorem thetaD_psiA (C : Core l) (K : FinExt l) (x : AK K) :
     Per.θD l (psiA C K x) = ((thetaK K x : OC l) : ℂ_[l]) :=
@@ -45,15 +45,15 @@ theorem thetaD_psiA (C : Core l) (K : FinExt l) (x : AK K) :
     fun x y hx hy => by rw [map_add, map_add, map_add, hx, hy]; rfl
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `exists_unif (K := K)`. Take `⟨p, hp⟩` from `GlobalTheory.MemLoc.FundOnto.untilt_surjective l (intToOC K π)`. Establish `hk` using `ker_thetaK hπ hp`. Take `⟨hF, hreg, -⟩` from `filtration_eq_xi_pow l C.ε (core_isEps l C)`. Establish `hdiv : ∀ y : AK K, thetaK K y = 0 → eta π p ∣ y` using `fun y hy => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.mem_span_singleton, ← hk]`. Conclude with `hy`. Take `⟨a, rfl⟩` from `hdiv x hx`. Establish `hξ : Per.θ l (xi C.ε) = 0`. Rewrite using `[← RingHom.mem_ker, C.ker_theta]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mem_span_singleton_self _`. Take `⟨b, hb⟩` from `hdiv (inA K (xi C.ε)) (by rw [thetaK_inA, hξ])`. Take `⟨z, hz⟩` from `(hF 2 _).1 h2`. Establish `hb'` using `congrArg (psiA C K) hb`. Rewrite `hb'` using `[psiA_inA, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hz` using `[map_mul]`. Establish `h3 : psiA C K a - aDp l (xi C.ε) * (z * psiA C K b) = 0` using `hreg _ (by`. Take the linear combination `psiA C K a * hb' + psiA C K b * hz)`. Establish `h4` using `congrArg (Per.θD l) h3`. Rewrite `h4` using `[map_sub, map_mul, (thetaD_props l).2.2.2.1, hξ, thetaD_psiA, map_zero]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h5 : thetaK K a = 0` using `Subtype.ext (by simpa using h4)`. Rewrite using `[pow_two]`. Conclude with `Ideal.mul_mem_mul (thetaK_eta hp) h5`.
+A detailed English derivation is pending.
 -/
 theorem mem_sq_of_psiA (C : Core l) (K : FinExt l) (x : AK K) (hx : thetaK K x = 0)
     (h2 : psiA C K x ∈ Per.FilP l 2) : x ∈ RingHom.ker (thetaK K) ^ 2 := by
@@ -80,36 +80,32 @@ theorem mem_sq_of_psiA (C : Core l) (K : FinExt l) (x : AK K) (hx : thetaK K x =
   exact Ideal.mul_mem_mul (thetaK_eta hp) h5
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.aB_eq_alg l a`.
+A detailed English derivation is pending.
 -/
 private theorem aB_eq_aC_pt (a : Ainf l) :
     Per.aB l a = algebraMap (Per.Acris l) (Per.Bcris l) (aC l a) := GlobalTheory.RingIface.aB_eq_alg l a
 
 /- English proof (translation)
-The claim follows from `(congrArg C.j (GlobalTheory.RingIface.tower l a)).trans (C.j_cris.on0 (algebraMap (Per.Ainf l) (Per.Acris0 l) a))`.
+A detailed English derivation is pending.
 -/
 private theorem j_aC_pt (C : Core l) (a : Ainf l) : C.j (aC l a) = aDp l a :=
   (congrArg C.j (GlobalTheory.RingIface.tower l a)).trans
     (C.j_cris.on0 (algebraMap (Per.Ainf l) (Per.Acris0 l) a))
 
 /- English proof (translation)
-Introduce `l _ P AI ⟨T⟩ K`. Take `⟨C, hC⟩` from `GlobalTheory.MemLoc.FitsEx.exists_fits l P AI T`. Set `j : Per.Acris l →+* P.R.B` to `T.eB.symm.toRingHom.comp (algebraMap (Per.Acris l) (Per.Bcris l))`. Set `u : Per.Acris l →+* P.R.BdR` to `(P.PD K).ι.toRingHom.comp j`. Establish `hu : ∀ a, u a = (P.PD K).ι (T.eB.symm (algebraMap (Per.Acris l) (Per.Bcris l) a))` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `huv : ∀ w : W0 K, u (aC l (wA l (fK K) w)) = algebraMap ↥K.1 P.R.BdR (oK K (thetaW (fK K) K w))` using `fun w => (GlobalTheory.WittCompat.exists_unramified_witt_element l P AI T K w).elim fun c hc => (((congrArg (fun b => (P.PD K).ι (T.eB.symm b)) (aB_eq_aC_pt _).symm).trans (congrArg (P.PD K).ι hc.2).symm).trans ((P.PD K).ι.commutes c)).trans ((IsScalarTower.algebraMap_apply ↥(K0 …`. Establish `h1` using `liftB_inK u (algebraMap ↥K.1 P.R.BdR) huv`. Establish `h2` using `liftB_inC u (algebraMap ↥K.1 P.R.BdR) huv`. Generalize the expression as in `liftB u (algebraMap ↥K.1 P.R.BdR) huv = Ψ at h1 h2`. Establish `hD : ∀ a, T.eD (u a) = algebraMap (Per.BdRp l) (Per.BdR l) (C.j a)` using `fun a => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Rewrite using `[hu, P.PD_ι, hC.ι, RingEquiv.apply_symm_apply, C.ι_j]`. Establish `hA : ∀ x : AK K, T.eD (Ψ (toB K (ofA K x))) = algebraMap (Per.BdRp l) (Per.BdR l) (psiA C K x)` using `fun x => GlobalTheory.AinfK.induction_on x (fun a c => by`. Simplify using `only [map_mul]`. Rewrite using `[ofA_inA, ofA_inO, ← inK_oK, h1, h2, hD, psiA_inA, psiA_inO]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `congrArg _ (j_aC_pt C a)`. Conclude with `hC.o _)`. Use `fun x y hx hy => by simp only [map_add, hx, hy]`. Establish `hfil : ∀ (n : ℕ) (x : AK K), Ψ (toB K (ofA K x)) ∈ (P.PD K).Fil n ↔ psiA C K x ∈ Per.FilP l n` using `fun n x => by`. Rewrite using `[T.fil, hA, GlobalTheory.BKGal.TaylorFil.alg_mem_FilD_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsm : ∀ (c : ↥K.1) (b : BK K), Ψ (inK K c * b) = c • Ψ b` using `fun c b => by`. Rewrite using `[map_mul, h1, Algebra.smul_def]`. Use `⟨Ψ, h1, fun g b => ?_, fun b => ?_, fun x hx => ?_, fun x hx hx2 h => ?_⟩` and prove the remaining obligations. Use `RingHom.congr_fun (GlobalTheory.PZ.ColmezVec.ext_BK (((P.PD K).actdR g).toAlgHom.toRingHom.comp Ψ) (Ψ.comp (galB g)) (fun c => ?_) fun a => ?_) b` and prove the remaining obligations. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, galB_inK, h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Conclude with `((P.PD K).actdR g).commutes c`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, galB_toB, galC_inC, h2, h2, hu, hu, ← GlobalTheory.PZ.ColmezVec.act_acris T K g, (P.PD K).ι_comm]`. Both sides reduce to the same expression. Take `⟨D, z, hz⟩` from `exists_pow_mul b`. Establish `hz0 : Ψ (toB K z) ∈ (P.PD K).Fil 0` using `GlobalTheory.AcrisK.induction_on z (fun a c => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, ← inK_oK, mul_comm, hsm, h2]`. Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Rewrite using `[T.fil, hD]`. Conclude with `GlobalTheory.MemLoc.TiedUnif.alg_mem_FilD_zero _)`. Use `fun x y hx hy => by rw [map_add, map_add]; exact add_mem hx hy`.
-
-Establish `hl : ((l : ↥K.1) ^ D) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Rewrite `hz0` using `[← hz, ← map_natCast (inK K), ← map_pow, hsm]`. Conclude with `(Submodule.smul_mem_iff _ hl).1 hz0`. Use `(hfil 1 x).2 (((thetaD_props l).2.1 _).1 ?_)` and prove the remaining obligations. Rewrite using `[thetaD_psiA, hx]`.
-
-Both sides reduce to the same expression. Conclude with `hx2 (mem_sq_of_psiA C K x hx ((hfil 2 x).1 h))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_map : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     ∀ K : FinExt l, ∃ Ψ : BK K →+* P.R.BdR,

@@ -12,7 +12,7 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace GlobalTheory.ThK
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Simplify using `only [Model.I, theta, map_smul, thetaSum, Pi.smul_apply, smul_eq_mul]`. Repeatedly rewrite using `[tsum_mul_left]`. Rewrite using `[integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_smul_datum {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
     {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : Rep σ X W) (c : ℂ) (Φ : (Fin n × Fin d → AF F) → ℂ) :
@@ -23,19 +23,17 @@ theorem integral_smul_datum {F E : Type} [Field F] [NumberField F] [Field E] [Nu
   rw [integral_const_mul]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a a' G X om om' hT hq Φ' hΦ' hI`. It suffices to establish `key : ∀ Φ ∈ PolData B G.M', ∃ Φ'' ∈ PolData B G.M' ⊓ G.M'.So B.ψ B.τ₁, G.M'.I om' Φ'' = G.M'.I om' Φ by`. Take `⟨Φ'', h1, h2⟩` from `key Φ' hΦ'`. Conclude with `⟨Φ'', h1, h2 ▸ hI⟩`. Introduce `Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨f, hf, φ, hφ, hcof, rfl⟩` from `hx`. Establish `hgood : X.Good B.v₁` using `hT.chars.good`. Establish `hnr` using `GlobalTheory.T.character_at_uniformizer_not_root_of_unity F E σ B a a' G X om om' hT B.v₁ hgood`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨φ₀, hφ₀, hd⟩` from `GlobalTheory.T.schwartz_bruhat_local_approximation hKP.base F E σ B a a' G X om om' hT B.v₁ hgood hnr B.τ₁ (φ B.v₁) (hφ B.v₁)`. Establish `hSB : ∀ v, Function.update φ B.v₁ φ₀ v ∈ SB _`. Introduce `v`. Distinguish the cases in `hv : v = B.v₁`. Substitute `hv` using the available equality.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `using hφ₀.1`. Simplify `hφ v` using `[Function.update_of_ne hv]`. Establish `hcof' : ∀ᶠ v in cofinite, Function.update φ B.v₁ φ₀ v = G.M'.vac v` using `by filter_upwards [hcof, (Set.finite_singleton B.v₁).compl_mem_cofinite] with v hv hv'`. Rewrite using `[Function.update_of_ne (by simpa using hv')]`. Conclude with `hv`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨pure f (Function.update φ B.v₁ φ₀), ⟨?_, ?_⟩, GlobalTheory.T.anisotropic_restricted_tensor hKP F E σ B a a' G X om om' hT hq f φ (Function.update φ B.v₁ φ₀) hf hφ hcof (by simpa using hφ₀.1) (fun v hv => Function.update_of_ne hv _ _) (by simpa using hd)⟩` and prove the remaining obligations. Conclude with `Submodule.subset_span ⟨f, hf, Function.update φ B.v₁ φ₀, hSB, hcof', rfl⟩`. Conclude with `Submodule.subset_span ⟨f, Function.update φ B.v₁ φ₀, hSB, hcof', by simpa using hφ₀, rfl⟩`. Consider the case `zero => exact ⟨0, zero_mem _, rfl⟩`. Consider the case `add x y hx hy ihx ihy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Φx, hx', ex⟩` from `ihx`. Take `⟨Φy, hy', ey⟩` from `ihy`. Use `⟨Φx + Φy, add_mem hx' hy', ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.anisotropic_theta_additive hKP F E σ B a a' G X om om' hT hq _ hx'.1 _ hy'.1, GlobalTheory.T.anisotropic_theta_additive hKP F E σ B a a' G X om om' hT hq _ hx _ hy, ex, ey]`. Consider the case `smul c x hx ih`.
-
-Take `⟨Φx, hx', ex⟩` from `ih`. Conclude with `⟨c • Φx, Submodule.smul_mem _ c hx', by rw [integral_smul_datum, integral_smul_datum, ex]⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_so_integral_ne_zero : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)
     (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' → G.q = 0 → ∀ Φ' ∈ PolData B G.M', G.M'.I om' Φ' ≠ 0 →

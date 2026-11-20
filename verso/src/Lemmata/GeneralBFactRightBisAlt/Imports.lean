@@ -5,9 +5,9 @@ universe u_1
 namespace Bl.general_b_fact_right_bis_other
 
 /- English proof (translation)
-Introduce `K _ n l l' hl hl' a`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_single a ?_ ?_` and prove the remaining obligations. Introduce `c _ hca`. Break down `lt_or_gt_of_ne hca with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hl' c a h, mul_zero]`. Rewrite using `[hl a c h, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ a) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {K : Type u_1} [inst : CommRing.{u_1} K] {n : Nat} {l l' : Matrix.{0, 0, u_1} (Fin n) (Fin n) K},

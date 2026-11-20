@@ -12,13 +12,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open GroundTheory.Heights₂.Heights.LowerBoundFree GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Take `⟨_, ⟨hP, _, _⟩, hhor, hdim⟩` from `h`. Use `haveI := hP`. Establish `hinj : Function.Injective (algebraMap ℤ (MRing J ⧸ P))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : (MvPolynomial.C a : MRing J) ∈ P`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem]`. Establish `hc : algebraMap ℤ (MRing J ⧸ P) a = Ideal.Quotient.mk P (MvPolynomial.C a)` using `by simp`. Rewrite using `[← hc]`. Conclude with `ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc : a ∈ Ideal.comap (MvPolynomial.C : ℤ →+* MRing J) P` using `hmem`. Rewrite `hc` using `[hhor]`. Conclude with `(Submodule.mem_bot _).1 hc`. Establish `hd` using `GroundTheory.Heights₂.Heights.IntDomainDim.proof (MRing J ⧸ P) hinj`. Rewrite `hdim` using `[hd]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (Cardinal.toENat (Algebra.trdeg ℤ (MRing J ⧸ P)) + 1 : ℕ∞) = ((n + Fintype.card K : ℕ) : ℕ∞) + 1`. Rewrite `hdim` using `[show n + 1 + Fintype.card K = n + Fintype.card K + 1 by ring]`. Conclude with `hdim` after adjusting the coercions. Establish `h3 : Cardinal.toENat (Algebra.trdeg ℤ (MRing J ⧸ P)) = ((n + Fintype.card K : ℕ) : ℕ∞)` using `WithTop.add_right_cancel ENat.one_ne_top h4`. Conclude with `Cardinal.toENat_eq_nat.1 h3`.
+A detailed English derivation is pending.
 -/
 theorem trdeg_of_arithVar {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintype (J k)] {P : Ideal (MRing J)} {n : ℕ}
     (h : IsArithVar P (n + 1)) : Algebra.trdeg ℤ (MRing J ⧸ P) = ((n + Fintype.card K : ℕ) : Cardinal) := by
@@ -46,51 +46,45 @@ theorem trdeg_of_arithVar {K : Type} [Fintype K] {J : K → Type} [∀ k, Fintyp
   exact Cardinal.toENat_eq_nat.1 h3
 
 /- English proof (translation)
-Introduce `X Ω _ _ ξ K _ J _ y n Bd χ U htie hspec harith hU`. Use `haveI : (mCoordIdeal y).IsPrime := harith.2.1.1`. Establish `hhom : IsMultiHomogIdeal (mCoordIdeal y)` using `harith.2.1.2.1`. Establish `hconv : ∀ (w : (k : K) × J k → ℂ) (f : MvPolynomial ((k : K) × J k) ℤ), aeval w f = MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) f)`. Introduce `w f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MvPolynomial.eval_map, MvPolynomial.aeval_def, algebraMap_int_eq]`. Establish `hscale : ∀ (c : K → ℂ) (w : (k : K) × J k → ℂ) (s : MvPolynomial ((k : K) × J k) ℤ) (a : K → ℕ), IsMultiHomog s a → aeval (torusSmul c w) s = (∏ k, c k ^ a k) * aeval w s`. Introduce `c w s a hs`. Rewrite using `[MvPolynomial.aeval_def, MvPolynomial.aeval_def, MvPolynomial.eval₂_eq', MvPolynomial.eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hprod : ∏ i, (torusSmul c w i) ^ d i = (∏ k, c k ^ a k) * ∏ i, w i ^ d i`. Simplify using `only [torusSmul, mul_pow, Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ∏ j : J k, c k ^ d ⟨k, j⟩ = c k ^ a k`. Rewrite using `[Finset.prod_pow_eq_pow_sum, hs d hd k]`. Rewrite using `[hprod]`. Expand and normalize the polynomial expressions, which then agree. Establish `htor : ∀ (c : K → ℂ) (w : (k : K) × J k → ℂ), w ∈ mcPts (mCoordIdeal y) → ∀ f ∈ mCoordIdeal y, aeval (torusSmul c w) f = 0`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `c w hw f hf`. Take `⟨S, hS, hPS⟩` from `hhom`. Establish `hf' : f ∈ Ideal.span S`. Rewrite using `[← hPS]`. Conclude with `hf`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `clear hf`. Proceed by induction on `hf' using Submodule.span_induction with`. Consider the case `mem s hs`. Take `⟨a, ha⟩` from `hS s hs`. Establish `hsP : s ∈ mCoordIdeal y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Rewrite using `[hPS]`. Conclude with `Ideal.subset_span hs`. Rewrite using `[hscale c w s a ha, hconv, hw.2 s hsP, mul_zero]`. Consider the case `zero => simp`. Consider the case `add f₁ f₂ _ _ h₁ h₂ => rw [map_add, h₁, h₂, add_zero]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Consider the case `smul r f₁ _ h₁ => rw [smul_eq_mul, map_mul, h₁, mul_zero]`. Take `⟨g, hg, hgU⟩` from `SheetDecomposition.ChartForm.exists_form htie U hU`. Establish `h0b : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Set `D` to `fderiv ℂ χ.γ 0`. Set `Γ : (Fin n → ℂ) × (K → ℂ) → (k : K) × J k → ℂ` to `fun w => torusSmul (fun k => 1 + w.2 k) (χ.γ w.1)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `L : ((Fin n → ℂ) × (K → ℂ)) →L[ℂ] ((k : K) × J k → ℂ)` to `ContinuousLinearMap.pi fun p : (k : K) × J k => (ContinuousLinearMap.proj p).comp (D.comp (ContinuousLinearMap.fst ℂ (Fin n → ℂ) (K → ℂ))) + χ.γ 0 p • (ContinuousLinearMap.proj p.1).comp (ContinuousLinearMap.snd ℂ (Fin n → ℂ) (K → ℂ))`. Establish `hγ : HasStrictFDerivAt χ.γ D 0` using `(χ.analytic 0 h0b).hasStrictFDerivAt`. Establish `hstrict : HasStrictFDerivAt Γ L 0`. Rewrite using `[hasStrictFDerivAt_pi']`. Introduce `p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : HasStrictFDerivAt (fun w : (Fin n → ℂ) × (K → ℂ) => (1 : ℂ) + w.2 p.1) ((ContinuousLinearMap.proj p.1).comp (ContinuousLinearMap.snd ℂ (Fin n → ℂ) (K → ℂ))) 0`. Establish `hs : HasStrictFDerivAt (fun w : (Fin n → ℂ) × (K → ℂ) => w.2 p.1) ((ContinuousLinearMap.proj p.1).comp (ContinuousLinearMap.snd ℂ (Fin n → ℂ) (K → ℂ))) 0` using `((ContinuousLinearMap.proj p.1).comp (ContinuousLinearMap.snd ℂ (Fin n → ℂ) (K → ℂ))).hasStrictFDerivAt`. Conclude with `hs.const_add (1 : ℂ)`. Establish `h2 : HasStrictFDerivAt (fun w : (Fin n → ℂ) × (K → ℂ) => χ.γ w.1 p) ((ContinuousLinearMap.proj p).comp (D.comp (ContinuousLinearMap.fst ℂ (Fin n → ℂ) (K → ℂ)))) 0`. Establish `hγp : HasStrictFDerivAt (fun t : Fin n → ℂ => χ.γ t p) ((ContinuousLinearMap.proj p).comp D) (0 : Fin n → ℂ)` using `hasStrictFDerivAt_pi'.1 hγ p`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Establish `hfst : HasStrictFDerivAt (fun w : (Fin n → ℂ) × (K → ℂ) => w.1) (ContinuousLinearMap.fst ℂ (Fin n → ℂ) (K → ℂ)) 0` using `hasStrictFDerivAt_fst`. Conclude with `hγp.comp (0 : (Fin n → ℂ) × (K → ℂ)) hfst`. Use `(h1.mul h2).congr_fderiv (ContinuousLinearMap.ext fun v => ?_)` and prove the remaining obligations. Apply the tactic sequence `simp [L] <;> ring`. Establish `hinjL : Function.Injective L`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨v, d⟩ h0`. Establish `hcomp : ∀ p : (k : K) × J k, D v p + χ.γ 0 p * d p.1 = 0`. Introduce `p`. Use `congrFun h0 p` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Substitute using the available equality.
 
-Simplify `this` using `[L]`. Establish `hv : v = 0`. Use `χ.immersion 0 h0b v ⟨fun k => -d k, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `p`. Simplify using `only [torusSmul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `hcomp p`. Substitute `hv` using the available equality. Establish `hd : d = 0`. Use function extensionality and compare the values at `k`. Take `⟨i, hi⟩` from `(χ.mem 0 h0b).1 k`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hcomp ⟨k, i⟩` as an intermediate fact. Simplify using `only [map_zero, Pi.zero_apply, zero_add] at this`. Conclude with `(mul_eq_zero.1 this).resolve_left hi`. Rewrite using `[hd]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hfin : Module.finrank ℂ ((Fin n → ℂ) × (K → ℂ)) = n + Fintype.card K` using `by simp`. Establish `htr : Algebra.trdeg ℤ (MvPolynomial ((k : K) × J k) ℤ ⧸ mCoordIdeal y) ≤ ↑(Module.finrank ℂ ((Fin n → ℂ) × (K → ℂ)))` using `(trdeg_of_arithVar harith).trans_le (le_of_eq (by rw [hfin]))`. Establish `hN : ∀ᶠ w : (Fin n → ℂ) × (K → ℂ) in 𝓝 0, w.1 ∈ Metric.ball (0 : Fin n → ℂ) 1 ∧ ∀ k, 1 + w.2 k ≠ 0`. Use `Filter.Eventually.and ?_ (Filter.eventually_all.2 fun k => ?_)` and prove the remaining obligations. Conclude with `(Metric.isOpen_ball.preimage continuous_fst).mem_nhds (by simpa using h0b)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `(isOpen_ne_fun (continuous_const.add ((continuous_apply k).comp continuous_snd)) continuous_const).mem_nhds (by simp)`. Establish `hev : ∀ f ∈ mCoordIdeal y, ∀ᶠ w : (Fin n → ℂ) × (K → ℂ) in 𝓝 0, aeval (Γ w) f = 0`. Introduce `f hf`. Use `filter_upwards [hN] with w hw`. Conclude with `htor _ _ (χ.mem _ hw.1) f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hne` using `SheetDecomposition.ChartAlg.not_eventually_zero (mCoordIdeal y) htr Γ 0 L hstrict hinjL hev g hg`. Choose the witnesses or unpack the hypotheses as in `⟨w, hwN, hwg⟩ : ∃ w : (Fin n → ℂ) × (K → ℂ), (w.1 ∈ Metric.ball (0 : Fin n → ℂ) 1 ∧ ∀ k, 1 + w.2 k ≠ 0) ∧ aeval (Γ w) g ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Conclude with `hne (hN.mono fun w hw => hcon w hw)`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hmem` using `χ.mem _ hwN.1`. Take `⟨z, hsp, hco⟩` from `SheetDecomposition.ChartForm.exists_point htie (Γ w) (fun k => by`. Take `⟨i, hi⟩` from `hmem.1 k`. Conclude with `⟨i, (mul_ne_zero (hwN.2 k) hi).isUnit⟩)`. Use the proof step `(fun f hf => htor _ _ hmem f hf)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcU` using `hgU z (Γ w) hsp hco hwg`. Establish `hcoord : CoordsAt ξ y z (χ.γ w.1)`. Take `⟨_, hrel⟩` from `hco`. Use `⟨fun k => ?_, fun k c' hu => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hmem.1 k`.
-
-Conclude with `⟨i, hi.isUnit⟩`. Establish `hu' : IsUnit (Γ w ⟨k, c'⟩)` using `(hwN.2 k).isUnit.mul hu`. Take `⟨hy, hr⟩` from `hrel k c' hu'`. Use `⟨hy, fun i => ?_⟩` and prove the remaining obligations. Take `⟨r, hval, hreq⟩` from `hr i`.
-
-Use `⟨r, hval, ?_⟩` and prove the remaining obligations. Establish `hreq' : (1 + w.2 k) * χ.γ w.1 ⟨k, i⟩ = r * ((1 + w.2 k) * χ.γ w.1 ⟨k, c'⟩)` using `hreq`. Apply `mul_left_cancel₀ (hwN.2 k)` to reduce the goal to its premises. Take the linear combination `hreq'`. Use `⟨w.1, hwN.1, z, hcoord, ?_⟩` and prove the remaining obligations.
-
-Introduce `x _`. Establish `hx : x = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim _ _`. Rewrite using `[hx]`. Conclude with `hcU`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartMeets : ChartMeets := by
   intro X Ω _ _ ξ K _ J _ y n Bd χ U htie hspec harith hU

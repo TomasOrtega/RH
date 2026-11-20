@@ -13,26 +13,24 @@ namespace GlobalTheory.ShellVan
 open GlobalTheory.IndefiniteRowSideFullHecke.ScaledIntegerPeriodic
 
 /- English proof (translation)
-Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, hϖ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valuation_unif_zpow {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {ϖ : kˣ} (hϖ : IsUnif ϖ) (m : ℤ) : valuation k ((ϖ ^ m : kˣ) : k) = uniformizer k ^ m := by
   rw [Units.val_zpow_eq_zpow_val, map_zpow₀, hϖ]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ϖ hϖ ν a μ φ M' hS n hn z`. Use `push_neg at hn`. Take `⟨i, hi⟩` from `hn`. Rewrite using `[shell]`. Use `setIntegral_eq_zero_of_forall_eq_zero fun g hg => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, y, hy, rfl⟩` from `mem_shellSet.1 hg`. It suffices to establish `h : φ (x * diagGL (fun i => ϖ ^ n i) * y).val = 0 by rw [h, zero_mul, zero_mul]`. Assume the negation of the conclusion as `hne`. Establish `hmem` using `hS hne`. Establish `hd : (diagGL (fun i => ϖ ^ n i)).val = (x⁻¹).val * (x * diagGL (fun i => ϖ ^ n i) * y).val * (y⁻¹).val`.
+Reduce the argument to an intermediate assertion. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Units.val_mul, ← Units.val_mul]`. Use `congr 1`. Use `group`. Establish `hx'` using `((mem_KO_iff x).1 hx).2`. Establish `hy'` using `((mem_KO_iff y).1 hy).2`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `bound : ∀ r s, valuation k ((diagGL (fun i => ϖ ^ n i)).val r s) ≤ valuation k (((ϖ ^ (-(M' : ℤ)) : kˣ) : k))`. Introduce `r s`. Rewrite using `[hd, Matrix.mul_apply]`. Use `Valuation.map_sum_le _ fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' ((Valuation.mem_integer_iff _ _).1 (hx' r q))).trans (hmem q t))`. Use the proof step `((Valuation.mem_integer_iff _ _).1 (hy' t s))`. Use `_ = _ := mul_one _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `bound i i`. Simplify using `only [diagGL_val, diagonal_apply_eq] at h1`. Rewrite `h1` using `[valuation_unif_zpow hϖ, valuation_unif_zpow hϖ]`. Establish `hu0 : (0 : ValueGroupWithZero k) < uniformizer k` using `zero_lt_iff.2 uniformizer_ne_zero`. Establish `h2` using `(zpow_le_zpow_iff_right_of_lt_one₀ hu0 uniformizer_lt_one).1 h1`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem shell_eq_zero_of_support : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [MeasurableSpace k] [BorelSpace k] (ϖ : kˣ), IsUnif ϖ → ∀ (ν : kˣ →* ℂˣ) (a : ℕ) (μ : Measure (GL (Fin a) k))
@@ -74,19 +72,17 @@ theorem shell_eq_zero_of_support : ∀ (k : Type) [Field k] [ValuativeRel k] [To
   omega
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ϖ hϖ ν e hram hcond a μ hμ φ hφ`. Establish `: μ.IsHaarMeasure` using `hμ`. Establish `hint` using `GlobalTheory.T.integrableOn_cartanDoubleCoset_shellIntegrand k ϖ ν e hcond a μ φ hφ`. Establish `h2 : ∀ M : ℤ, IsPeriodic ϖ M φ → ∀ n : Fin a → ℤ, (∃ i, M ≤ n i) → ∀ z : ℂ, shell μ ϖ ν z φ n = 0`. Introduce and unpack `M hM n ⟨i, hi⟩ z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Choose the witnesses or unpack the hypotheses as in `⟨u, hu1, hu2⟩ : ∃ u : kˣ, valuation k (u : k) = 1 ∧ ν u ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hram h`. Take `⟨t, htK, heq, hdisj⟩` from `GlobalTheory.T.cartanDoubleCoset_finite_disjoint_leftCosets k ϖ a n`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[shell, heq, integral_biUnion_finset t]`. Conclude with `Finset.sum_eq_zero fun x hx => GlobalTheory.T.setIntegral_leftCoset_shellIntegrand_eq_zero k ϖ hϖ ν a μ φ M hM n i hi u hu1 hu2 x (htK x hx) z`. Introduce `x _`. Conclude with `(isOpen_KO.preimage (continuous_const.mul continuous_id)).measurableSet`. Conclude with `hdisj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Use `(hint n z).mono_set ?_` and prove the remaining obligations. Rewrite using `[heq]`. Conclude with `Set.subset_biUnion_of_mem (u := fun x => {g : GL (Fin a) k | (x * diagGL (fun i => ϖ ^ n i))⁻¹ * g ∈ KO k (Fin a)}) hx`. Establish `h3` using `shell_eq_zero_of_support k ϖ hϖ ν a μ φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `⟨hint, h2, h3, ?_⟩` and prove the remaining obligations. Take `⟨N, M, hN, hM⟩` from `GlobalTheory.SBUniform.exists_bound_period k (Fin a) φ hφ`. Establish `hP : IsPeriodic ϖ (M : ℤ) φ` using `fun X Z hZ => hM X Z fun i j => by`. Use `hZ i j` as an intermediate fact. Rewrite `this` using `[valuation_unif_zpow hϖ]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hS : Function.support φ ⊆ scaledInt ϖ a (-(N : ℤ))` using `fun X hX i j => by`. Rewrite using `[valuation_unif_zpow hϖ]`. Conclude with `hN X hX i j`. Use `((Set.Finite.pi (t := fun _ : Fin a => Set.Ico (-(N : ℤ)) M) fun _ => Set.finite_Ico _ _).preimage Subtype.val_injective.injOn).subset ?_` and prove the remaining obligations. Introduce and unpack `⟨n, hn⟩ ⟨z, hz⟩ i -`.
-
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hz (h3 N hS n (fun h' => h (h' i)) z)`. Assume the negation of the conclusion as `h`. Conclude with `hz (h2 M hP n ⟨i, not_lt.1 h⟩ z)`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem shell_lemma : ShellLemma := by
   intro k _ _ _ _ _ _ ϖ hϖ ν e hram hcond a μ hμ φ hφ

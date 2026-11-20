@@ -19,13 +19,11 @@ noncomputable section
 namespace GlobalTheory.UU.ExpLinMap
 
 /- English proof (translation)
-Use `choose e he using tot`. Establish `hl : ∀ (c : F) t t' α, e (c • t + t') α = c • e t α + e t' α` using `fun c t t' α => congrFun ((uq _ _ _ _ (he _) (lin c t t' _ _ (he t) (he t'))).1 rfl) α`. Establish `h0 : ∀ α, e 0 α = 0` using `fun α => by`. Establish `h` using `hl 1 0 0 α`. Simplify using `using h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hu : ∀ t s, E t s → ∀ α, s α = e t α` using `fun t s h α => congrFun ((uq _ _ _ _ h (he t)).1 rfl) α`. Use `⟨fun α => ⟨⟨fun t => e t α, fun t t' => ?_⟩, fun c t => ?_⟩, he, hu, fun t h => ?_, fun α => ⟨?_, fun h => ?_⟩⟩` and prove the remaining obligations. Simplify using `using hl 1 t t' α`. Simplify `hl c t 0 α` using `[h0]`. Conclude with `(uq _ _ _ _ (he t) (he 0)).2 (funext fun α => (h α).trans (h0 α).symm)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce and unpack `⟨t, s, h, hs⟩ hz`. Conclude with `hs ((hu t s h α).trans (LinearMap.congr_fun hz t))`. Assume the negation of the conclusion as `hn`. Use `h (LinearMap.ext fun t => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `ht`.
-
-Conclude with `hn ⟨t, e t, he t, ht⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_linear_of_rel {F M X : Type} [Field F] [AddCommGroup M] [Module F M] {N : X → Type}
     [∀ α, AddCommGroup (N α)] [∀ α, Module F (N α)] (E : M → (∀ α, N α) → Prop)
@@ -52,9 +50,9 @@ theorem exists_linear_of_rel {F M X : Type} [Field F] [AddCommGroup M] [Module F
     exact hn ⟨t, e t, he t, ht⟩
 
 /- English proof (translation)
-Introduce `h1 h2 V _ _ _ hV D A G _ _ U F _ _ k hk`. Take `⟨ex, a, b, c, d⟩` from `exists_linear_of_rel (F := F) (M := EA A (jFK (R := V) F) k) (N := fun α => WB D F k α) (fun t s => U.ExpF F k t.sec (fun α => (s α).sec)) (fun t => GlobalTheory.T.exists_fourierJacobi_expansion_over_field h1 h2 V hV D A G U F k hk t.sec) (fun t t' s s' h h' => GlobalTheory.T.fou …`. Use `⟨ex, a, fun t s h α => b (SecMod.mk _ t) (fun α => SecMod.mk _ (s α)) h α, c, fun α => Iff.trans ?_ (d α)⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, s, h, j, hj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨SecMod.mk _ t, fun α => SecMod.mk _ (s α), h, fun hz => hj ((SecMod.eq_zero_iff_coord _).1 hz j)⟩`. Introduce and unpack `⟨t, s, h, hs⟩`. Conclude with `⟨t.sec, fun α => (s α).sec, h, not_forall.1 fun hz => hs ((SecMod.eq_zero_iff_coord _).2 hz)⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem exists_expansion_linear : Laws → Laws2 → (AllPre fun {V} _ _ _ {D} {A} {G} _ _ U => ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] (k : ℕ), 1 ≤ k → ∃ ex : ∀ α : D.X, EA A (jFK (R := V) F) k →ₗ[F] WB D F k α, (∀ t, U.ExpF F k t.sec (fun α => (ex α t).sec)) ∧ (∀ t s, U.ExpF F k t s → ∀ α, s α = (ex α (SecMod.mk _ t)).sec) ∧ (∀ t, (∀ α, ex α t = 0) → t = 0) ∧ ∀ α, (U.Supp F k α ↔ ex α ≠ 0)) := by
   intro h1 h2 V _ _ _ hV D A G _ _ U F _ _ k hk

@@ -11,7 +11,7 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.HatIntSmul
 
 /- English proof (translation)
-Use `(Submodule.mem_pi.mp hs) j (Set.mem_univ _)` as an intermediate fact. Take `⟨o, ho⟩` from `Submodule.mem_one.mp this`. Conclude with `⟨o, ho.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_stdLat_coord {E : Type} [Field E] [NumberField E] {n : ℕ} {s : Fin n → E}
     (hs : s ∈ Formalism.L2.Pj.stdLat E n) (j : Fin n) : ∃ o : 𝓞 E, s j = (o : E) := by
@@ -20,7 +20,7 @@ theorem mem_stdLat_coord {E : Type} [Field E] [NumberField E] {n : ℕ} {s : Fin
   exact ⟨o, ho.symm⟩
 
 /- English proof (translation)
-Use `Submodule.mem_pi.mpr fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.mem_one]`. Distinguish the cases in `h : j = i`. Substitute `h; exact ⟨o, by simp⟩` using the available equality. Conclude with `⟨0, by simp [Pi.single_apply, h]⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem single_mem_stdLat {E : Type} [Field E] [NumberField E] {n : ℕ} (i : Fin n) (o : 𝓞 E) :
     Pi.single i (o : E) ∈ Formalism.L2.Pj.stdLat E n := by
@@ -31,7 +31,7 @@ theorem single_mem_stdLat {E : Type} [Field E] [NumberField E] {n : ℕ} (i : Fi
   · exact ⟨0, by simp [Pi.single_apply, h]⟩
 
 /- English proof (translation)
-Establish `h` using `map_nsmul (TensorProduct.mk F (Af F) E β) a x`. Simplify using `only [TensorProduct.mk_apply] at h`. Rewrite using `[← h, nsmul_eq_mul]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nsmul_tmul {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [NumberField E] [Algebra F E]
     (a : ℕ) (β : Af F) (x : E) : a • (β ⊗ₜ[F] x) = β ⊗ₜ[F] (((a : 𝓞 E) : E) * x) := by
@@ -43,35 +43,29 @@ theorem nsmul_tmul {F : Type} [Field F] [NumberField F] {E : Type} [Field E] [Nu
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D n Λ a h1 h2 M hM y hy`. Establish `mulMem : ∀ {x y : Af D.host.F ⊗[D.host.F] D.host.E}, x ∈ intAE D → y ∈ intAE D → x * y ∈ intAE D`. Introduce `x y hx hy`. Use `AddSubgroup.closure_induction₂ (p := fun x y _ _ => x * y ∈ intAE D) ?_ ?_ ?_ ?_ ?_ ?_ ?_ hx hy` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, ha, u, rfl⟩ ⟨b, hb, v, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `AddSubgroup.subset_closure ⟨a * b, fun w => ?_, u * v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_mem (ha w) (hb w)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x _`. Rewrite using `[zero_mul]`. Conclude with `zero_mem _`. Introduce `x _`. Rewrite using `[mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Introduce `x y z _ _ _ h1 h2`. Rewrite using `[add_mul]`. Conclude with `add_mem h1 h2`. Introduce `x y z _ _ _ h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_add]`. Conclude with `add_mem h1 h2`. Introduce `x y _ _ h`. Rewrite using `[neg_mul]`. Conclude with `neg_mem h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x y _ _ h`. Rewrite using `[mul_neg]`. Conclude with `neg_mem h`. Establish `stepA : ∀ w : Fin n → Af D.host.F ⊗[D.host.F] D.host.E, (∀ i, w i ∈ intAE D) → a • w ∈ GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin n → D.host.E))`. Introduce `w hw`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Establish `hw' : a • w = ∑ i, a • Pi.single i (w i)`. Rewrite using `[← Finset.smul_sum, Finset.univ_sum_single]`. Rewrite using `[hw']`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `key : ∀ z ∈ intAE D, a • Pi.single i z ∈ GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin n → D.host.E))`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨β, hβ, o, rfl⟩` from `hz`. Apply `AddSubgroup.subset_closure` to reduce the goal to its premises.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Use `⟨β, fun v => hβ v, (a : 𝓞 D.host.E) • Pi.single i (o : D.host.E), h1 _ (single_mem_stdLat i o), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Rewrite using `[Pi.smul_apply, Pi.smul_apply, Pi.single_eq_same, Pi.single_eq_same, nsmul_tmul, Algebra.smul_def]`.
+Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `[Pi.single_apply, hk]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Pi.single_add, smul_add]`. Conclude with `add_mem hx hy`. Consider the case `neg x _ hx => rw [Pi.single_neg, smul_neg]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `neg_mem hx`. Conclude with `key _ (hw i)`. Proceed by induction on `hy using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨α, hα, x, hx, rfl⟩` from `hz`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨o, ho⟩` from `Classical.axiomOfChoice (mem_stdLat_coord (h2 x hx))`. Establish `e : (a ^ 2) • (M *ᵥ fun i => α ⊗ₜ[D.host.F] x i) = a • (M *ᵥ fun j => α ⊗ₜ[D.host.F] ((o j : 𝓞 D.host.E) : D.host.E))`. Rewrite using `[pow_two, mul_smul, ← Matrix.mulVec_smul]`. Use `congr 2`. Use function extensionality and compare the values at `j`.
-
-Rewrite using `[Pi.smul_apply, nsmul_tmul, ← ho j]`. Simplify using `[Algebra.smul_def]`. Rewrite using `[e]`. Use `stepA _ fun i => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`.
-
-Use `sum_mem fun j _ => mulMem (hM i j) (AddSubgroup.subset_closure ⟨α, fun v => hα v, o j, rfl⟩)` and prove the remaining obligations. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [Matrix.mulVec_add, smul_add]`. Conclude with `add_mem hy hz`. Consider the case `neg y _ hy => rw [Matrix.mulVec_neg, smul_neg]`.
-
-Conclude with `neg_mem hy`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sq_smul_mulVec_mem_hat : ∀ (D : D7) (n : ℕ) (Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)) (a : ℕ), (∀ x ∈ Formalism.L2.Pj.stdLat D.host.E n, (a : 𝓞 D.host.E) • x ∈ Λ) → (∀ x ∈ Λ, (a : 𝓞 D.host.E) • x ∈ Formalism.L2.Pj.stdLat D.host.E n) → ∀ (M : Matrix (Fin n) (Fin n) (Af D.host.F ⊗[D.host.F] D.host.E)), (∀ i j, M i j ∈ intAE D) → ∀ y ∈ GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin n → D.host.E)), (a ^ 2) • (M *ᵥ y) ∈ GlobalTheory.AdLat.hat D.host.F (Λ : Set (Fin n → D.host.E)) := by
   intro D n Λ a h1 h2 M hM y hy

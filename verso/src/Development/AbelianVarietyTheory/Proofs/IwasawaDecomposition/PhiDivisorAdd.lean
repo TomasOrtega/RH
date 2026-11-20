@@ -10,9 +10,9 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.TorRef.AddDiv
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `D₁.exists_mem (ξ (IsLocalRing.closedPoint R))`. Take `⟨j, hj⟩` from `D₂.exists_mem (ξ (IsLocalRing.closedPoint R))`. Establish `hij : ξ (IsLocalRing.closedPoint R) ∈ (D₁.add D₂).U (i, j)` using `⟨hi, hj⟩`. Rewrite using `[idlAlong, idlAlong, idlAlong, (D₁.add D₂).stalkId_idealSheaf (i, j) _ hij, D₁.stalkId_idealSheaf i _ hi, D₂.stalkId_idealSheaf j _ hj, ← Ideal.map_mul, Ideal.span_singleton_mul_span_singleton]`. Establish `e : (X.presheaf.germ _ _ hij).hom ((D₁.add D₂).f (i, j)) = (X.presheaf.germ _ _ hi).hom (D₁.f i) * (X.presheaf.germ _ _ hj).hom (D₂.f j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(X.presheaf.germ _ _ hij).hom (resG X inf_le_left (D₁.f i) * resG X inf_le_right (D₂.f j)) = _`. Conclude with `(map_mul (X.presheaf.germ _ _ hij).hom _ _).trans (congrArg₂ (· * ·) (GlobalTheory.Cartier.germ_resG _ _ _ _) (GlobalTheory.Cartier.germ_resG _ _ _ _))`. Rewrite using `[e]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idlAlong_add {X : Scheme.{0}} (D₁ D₂ : GlobalTheory.EffCartierData X) {R : Type} [CommRing R] [IsLocalRing R]
     (ξ : Sp R ⟶ X) :
@@ -31,7 +31,7 @@ theorem idlAlong_add {X : Scheme.{0}} (D₁ D₂ : GlobalTheory.EffCartierData X
   rw [e]
 
 /- English proof (translation)
-Simplify using `only [InvFun.evalZ, InvFun.eval, comb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem evalZ_comb_one {O : Type} [CommRing O] (ψ φ : InvFun O) {M : Type} [AddCommGroup M] [Module O M]
     [Module.Finite O M] (be : LinearMap.BilinForm ℤ M) :
@@ -41,9 +41,9 @@ theorem evalZ_comb_one {O : Type} [CommRing O] (ψ φ : InvFun O) {M : Type} [Ad
   ring
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Z φ₁ φ₂ D₁ D₂ h₁ h₂`. Introduce `W _ _ _ hW ϖ hϖ χ t hχ P hr be hbe hm`. Take `⟨n₁, hn₁, hI₁⟩` from `h₁ W hW ϖ hϖ χ t hχ P hr be hbe hm`. Take `⟨n₂, hn₂, hI₂⟩` from `h₂ W hW ϖ hϖ χ t hχ P hr be hbe hm`. Use `⟨n₁ + n₂, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[evalZ_comb_one, ← hn₁, ← hn₂]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[idlAlong_add, hI₁, hI₂, Ideal.span_singleton_mul_span_singleton, pow_add]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPhiDiv_add : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H)
     (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (φ₁ φ₂ : InvFun (𝓞 E))

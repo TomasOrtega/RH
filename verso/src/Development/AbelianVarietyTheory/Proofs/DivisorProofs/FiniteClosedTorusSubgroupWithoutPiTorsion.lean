@@ -17,9 +17,9 @@ attribute [local instance] zuAlgebra
 variable {k : Type} [Field k] {X : Type} [AddCommGroup X]
 
 /- English proof (translation)
-Establish `h : (torusIso k X).hom.appTop.hom (chi X b) = (Scheme.ΓSpecIso (CommRingCat.of (AddMonoidAlgebra k X))).inv.hom (AddMonoidAlgebra.single b 1)`. Use `torusGamma_chi k X b` as an intermediate fact. Rewrite `this` using `[torusGamma, CommRingCat.comp_apply]`. Rewrite using `[← this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[SplitTorus.val_eq, splitTorusPoint_left, Scheme.Hom.comp_appTop, CommRingCat.comp_apply, h, SplitTorus.specMap_appTop_apply]`. Simplify using `[torusEval_single]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_splitTorusPoint (t : Multiplicative X →* kˣ) (b : X) :
     SplitTorus.val (splitTorusPoint t) b =
@@ -35,7 +35,7 @@ theorem val_splitTorusPoint (t : Multiplicative X →* kˣ) (b : X) :
   simp [torusEval_single]
 
 /- English proof (translation)
-The claim follows from `SplitTorus.hom_ext fun b => by rw [SplitTorus.val_comp_torusMap, val_splitTorusPoint, val_splitTorusPoint] rfl`.
+A detailed English derivation is pending.
 -/
 theorem splitTorusPoint_comp_torusMap (t : Multiplicative X →* kˣ) (φ : X →+ X) :
     splitTorusPoint t ≫ SplitTorus.torusMap (Sp k) φ =
@@ -51,29 +51,23 @@ namespace GlobalTheory
 namespace TorusPiTorsion
 
 /- English proof (translation)
-Set `K : Submodule O X` to `{ carrier := {x | ∀ s ∈ H, s (Multiplicative.ofAdd x) = 1} add_mem' := fun {a b} ha hb s hs => by rw [ofAdd_add, map_mul, ha s hs, hb s hs, _root_.mul_one] zero_mem' := fun s _ => map_one s smul_mem' := fun a x hx s hs => hx _ (hstab a s hs) }`. Establish `hK : ∀ x, x ∈ K ↔ ∀ s ∈ H, s (Multiplicative.ofAdd x) = 1` using `fun x => Iff.rfl`. Set `N : Submodule O X` to `K ⊔ Ideal.span {π} • ⊤`. Establish `hπN : ∀ x : X, π • x ∈ N` using `fun x => Submodule.mem_sup_right (Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) trivial)`. Use `haveI : Module.Finite O X := Module.Finite.of_restrictScalars_finite ℤ O X`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (⊤ : Submodule O X) ≤ N`. Introduce `x _`. Assume the negation of the conclusion as `hx`. Take `⟨m, hm0, c, hc⟩` from `hdiv π hπ0`. Establish `hmQ : ∀ q : X ⧸ N, m • q = 0` using `fun q => by`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `N.mkQ_surjective q`. Rewrite using `[← Int.cast_smul_eq_zsmul O, ← map_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, hc, mul_smul]`. Conclude with `hπN _`. Establish `hmQ' : ∀ q : Multiplicative (X ⧸ N), q ^ m.natAbs = 1` using `fun q => by`. Establish `h1 : (m.natAbs : ℤ) • q.toAdd = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Break down `Int.natAbs_eq m with h | h` into its components or cases. Rewrite using `[← h]`. Conclude with `hmQ _`. Rewrite using `[show (m.natAbs : ℤ) = -m by omega, neg_smul, hmQ, neg_zero]`. Rewrite `h1` using `[natCast_zsmul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `congrArg Multiplicative.ofAdd h1`. Use `haveI : Module.Finite ℤ (X ⧸ N) := Module.Finite.of_surjective N.mkQ.toAddMonoidHom.toIntLinearMap N.mkQ_surjective`. Use `haveI : Finite (X ⧸ N) := Module.finite_of_fg_torsion _ fun q => ⟨⟨m, mem_nonZeroDivisors_of_ne_zero hm0⟩, hmQ q⟩`. Establish `hexp : Monoid.exponent (Multiplicative (X ⧸ N)) ≠ 0` using `Monoid.exponent_ne_zero_of_finite`. Use `haveI : NeZero ((Monoid.exponent (Multiplicative (X ⧸ N)) : ℕ) : k) := ⟨Nat.cast_ne_zero.2 hexp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨φ, hφ⟩` from `CommGroup.exists_apply_ne_one_of_hasEnoughRootsOfUnity (Multiplicative (X ⧸ N)) k (a := Multiplicative.ofAdd (N.mkQ x)) (by simpa using hx)`. Set `t : Multiplicative X →* kˣ` to `φ.comp (AddMonoidHom.toMultiplicative N.mkQ.toAddMonoidHom)`. Establish `ht : ∀ y, t y = φ (Multiplicative.ofAdd (N.mkQ y.toAdd))` using `fun y => rfl`. Establish `htH : t ∈ H` using `mem_of_isClosed_torusZariski hH fun y hy => by`. Establish `: N.mkQ y.toAdd = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.mem_sup_left ((hK _).2 hy)`. Rewrite using `[ht, this, ofAdd_zero, map_one]`. Establish `ht1 : t = 1` using `htors t htH (MonoidHom.ext fun y => by`. Establish `: N.mkQ (π • y.toAdd) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `hπN _`. Express the relevant statement in the definitionally equal form `t (Multiplicative.ofAdd (π • y.toAdd)) = 1`. Rewrite using `[ht, toAdd_ofAdd, this, ofAdd_zero, map_one])`. Conclude with `hφ (by simpa [ht] using DFunLike.congr_fun ht1 (Multiplicative.ofAdd x))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr, hrK⟩` from `Submodule.exists_sub_one_mem_and_smul_le_of_fg_of_le_sup (I := Ideal.span {π}) (N := K) (N' := ⊤) (P := ⊤) Module.Finite.fg_top le_rfl hN`. Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Apply `hπ` to reduce the goal to its premises. Rewrite `hr` using `[zero_sub, Ideal.mem_span_singleton]`.
-
-Conclude with `isUnit_of_dvd_one ((dvd_neg).1 hr)`. Take `⟨m, hm0, c, hc⟩` from `hdiv r hr0`. Establish `hmK : ∀ x : X, m • x ∈ K` using `fun x => by`. Rewrite using `[← Int.cast_smul_eq_zsmul O, hc, mul_smul]`. Conclude with `hrK (Submodule.smul_mem_pointwise_smul _ r ⊤ trivial)`.
-
-Establish `hmH : ∀ s ∈ H, s ^ m.natAbs = 1` using `fun s hs => by`. Establish `h1 : s ^ m = 1` using `MonoidHom.ext fun y => by`. Use `(hK _).1 (hmK y.toAdd) s hs` as an intermediate fact. Rewrite `this` using `[ofAdd_zsmul, map_zpow, ofAdd_toAdd]`. Rewrite using `[MonoidHom.zpow_apply, this, MonoidHom.one_apply]`.
-
-Conclude with `pow_natAbs_eq_one.2 h1`. Conclude with `(finite_setOf_pow_eq_one_torus (R := k) (X := X) (Int.natAbs_ne_zero.2 hm0)).subset (t := (H : Set (Multiplicative X →* kˣ))) fun s hs => hmH s hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_isClosed_torusZariski_of_smul {k : Type} [Field k] [IsAlgClosed k] [CharZero k]
     {O : Type} [CommRing O] {X : Type} [AddCommGroup X] [Module O X] [Module.Finite ℤ X]
@@ -163,7 +157,7 @@ namespace TorusPiTorsion
 open ReciprocityTheory.ChartRestriction.G.Semi.Rosenlicht
 
 /- English proof (translation)
-Use `⟨(Ideal.absNorm (Ideal.span {r}) : ℤ), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hr`. Rewrite using `[Int.cast_natCast, ← Ideal.mem_span_singleton]`. Conclude with `Ideal.absNorm_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_int_dvd (E : Type) [Field E] [NumberField E] (r : 𝓞 E) (hr : r ≠ 0) :
     ∃ m : ℤ, m ≠ 0 ∧ r ∣ (m : 𝓞 E) := by
@@ -174,21 +168,19 @@ theorem exists_int_dvd (E : Type) [Field E] [NumberField E] (r : 𝓞 E) (hr : r
     exact Ideal.absNorm_mem _
 
 /- English proof (translation)
-Introduce `E _ _ k _ _ _ X _ _ _ act π hπ0 hπ C Z hZ hC hstab htors`. Establish `hφ : ∀ a, ∃ φ : X →+ X, act.act a = SplitTorus.torusMap (Sp k) φ` using `fun a => by haveI := act.hom a`. Conclude with `SplitTorus.exists_eq_torusMap _`. Use `choose φ hφ using hφ`. Establish `hinj : ∀ {ψ ψ' : X →+ X}, SplitTorus.torusMap (Sp k) ψ = SplitTorus.torusMap (Sp k) ψ' → ψ = ψ'` using `fun h => SplitTorus.torusMap_injective h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hone : φ 1 = AddMonoidHom.id X` using `hinj (by rw [← hφ, act.one, SplitTorus.torusMap_id])`. Establish `hmul : ∀ a b, φ (a * b) = (φ a).comp (φ b)` using `fun a b => hinj (by rw [← hφ, SplitTorus.torusMap_comp, ← hφ, ← hφ, act.mul])`. Establish `hadd : ∀ a b, φ (a + b) = φ a + φ b` using `fun a b => hinj (by rw [← hφ, SplitTorus.torusMap_add, ← hφ, ← hφ, act.add])`. Set `ρ : 𝓞 E →+* AddMonoid.End X` to `{ toFun := φ map_one' := hone map_mul' := hmul map_zero' := by`. Establish `h` using `hadd 0 0`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[add_zero]`. Establish `h' : φ 0 = 0` using `by simpa using h.symm`. Conclude with `h'`. Use the proof step `map_add' := hadd }`. Use `letI : Module (𝓞 E) X := Module.compHom X ρ`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsmul : ∀ (a : 𝓞 E) (x : X), a • x = φ a x` using `fun a x => rfl`. Set `e` to `splitTorusPointEquiv k X`. Establish `hpt : ∀ (s : Multiplicative X →* kˣ) (a : 𝓞 E), e s ≫ act.act a = e (s.comp (AddMonoidHom.toMultiplicative (DistribMulAction.toAddMonoidHom X a)))`. Introduce `s a`. Rewrite using `[hφ a]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `splitTorusPoint_comp_torusMap s (φ a)`. Set `H` to `C.comap e.toMonoidHom`. Establish `hcl : IsClosed[torusZariski k X] (H : Set (Multiplicative X →* kˣ))`. Use `isClosed_induced_iff.2 ⟨(torusIso k X).hom ⁻¹' Z, hZ.preimage (torusIso k X).hom.continuous, ?_⟩` and prove the remaining obligations. Use extensionality with `t`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ ↔ splitTorusPoint t ∈ C`. Rewrite using `[hC, range_splitTorusPoint_left, Set.singleton_subset_iff]`. Both sides reduce to the same expression. Establish `h` using `finite_of_isClosed_torusZariski_of_smul (k := k) (O := 𝓞 E) (X := X) (exists_int_dvd E) hπ0 hπ hcl (fun a s hs => by`. Express the relevant statement in the definitionally equal form `e _ ∈ C`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hpt]`. Conclude with `hstab a _ hs)`. Use the proof step `(fun s hs h1 => e.injective (by`. Rewrite using `[map_one]`. Use `htors _ hs ?_` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `e s ≫ act.act π = 1`. Rewrite using `[hpt, h1, map_one]))`. Establish `e' : H ≃ C` using `e.toEquiv.subtypeEquiv fun _ => Iff.rfl`. Conclude with `e'.finite_iff.1 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_of_isClosed_of_no_pi_torsion :
     ∀ (E : Type) [Field E] [NumberField E] (k : Type) [Field k] [IsAlgClosed k] [CharZero k]

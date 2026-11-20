@@ -17,7 +17,7 @@ def trH (a b : ℕ) : Matrix (Fin a) (Fin b) k ≃ₜ Matrix (Fin b) (Fin a) k w
   continuous_invFun := continuous_id.matrix_transpose
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf.1.comp_continuous (trH a b).continuous, hf.2.comp_homeomorph (trH a b)⟩`.
+Supply the required witnesses or components.
 -/
 theorem comp_trH_mem {a b : ℕ} {f : Matrix (Fin b) (Fin a) k → ℂ}
     (hf : f ∈ SB (Matrix (Fin b) (Fin a) k)) : f ∘ trH a b ∈ SB (Matrix (Fin a) (Fin b) k) :=
@@ -29,7 +29,7 @@ def trL (a b : ℕ) : SB (Matrix (Fin b) (Fin a) k) →ₗ[ℂ] SB (Matrix (Fin 
   map_smul' _ _ := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show Φ.1 x.transpose.transpose = Φ.1 x`. Rewrite using `[Matrix.transpose_transpose]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trL_trL (a b : ℕ) (Φ : SB (Matrix (Fin a) (Fin b) k)) : trL a b (trL b a Φ) = Φ := by
   apply Subtype.ext
@@ -38,7 +38,7 @@ theorem trL_trL (a b : ℕ) (Φ : SB (Matrix (Fin a) (Fin b) k)) : trL a b (trL 
   rw [Matrix.transpose_transpose]
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, hθ, Matrix.det_transpose, ← Matrix.GeneralLinearGroup.val_det_apply, map_inv]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_transInv {m : ℕ} (θ : GL (Fin m) k →* GL (Fin m) k)
     (hθ : ∀ g, (θ g).val = (g⁻¹).val.transpose) (g : GL (Fin m) k) :
@@ -48,7 +48,7 @@ theorem det_transInv {m : ℕ} (θ : GL (Fin m) k →* GL (Fin m) k)
     map_inv]
 
 /- English proof (translation)
-Rewrite using `[det_transInv θ hθ]`. Simplify using `[nabs, map_inv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem nabs_det_transInv {m : ℕ} (θ : GL (Fin m) k →* GL (Fin m) k)
     (hθ : ∀ g, (θ g).val = (g⁻¹).val.transpose) (g : GL (Fin m) k) :
@@ -57,15 +57,15 @@ theorem nabs_det_transInv {m : ℕ} (θ : GL (Fin m) k →* GL (Fin m) k)
   simp [nabs, map_inv]
 
 /- English proof (translation)
-Rewrite using `[Real.inv_rpow ha.le, ← Real.rpow_neg ha.le, neg_div]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rpow_inv_half {a : ℝ} (ha : 0 < a) (c : ℝ) : (a⁻¹) ^ (c / 2) = a ^ (-c / 2) := by
   rw [Real.inv_rpow ha.le, ← Real.rpow_neg ha.le, neg_div]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `hm : ((θn g)⁻¹ : GL (Fin n) k).val * x * (θr h).val = (h⁻¹.val * x.transpose * g.val).transpose`. Rewrite using `[← map_inv, hn, hr, inv_inv, Matrix.transpose_mul, Matrix.transpose_mul, Matrix.transpose_transpose]`. Simplify using `only [Matrix.mul_assoc]`. Simplify using `only [om, Function.comp_apply, map_one, MonoidHom.one_apply, Units.val_one, inv_one, one_mul, Fintype.card_fin]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[nabs_det_transInv θr hr, nabs_det_transInv θn hn, rpow_inv_half (nabs_pos' k _), rpow_inv_half (nabs_pos' k _), neg_neg, hm]`. Establish `e1 : trH n r (h⁻¹.val * x.transpose * g.val).transpose = h⁻¹.val * x.transpose * g.val` using `Matrix.transpose_transpose _`. Establish `e2 : trH n r x = x.transpose` using `rfl`. Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem om_trans {r n : ℕ} (θr : GL (Fin r) k →* GL (Fin r) k) (θn : GL (Fin n) k →* GL (Fin n) k)
     (hr : ∀ g, (θr g).val = (g⁻¹).val.transpose) (hn : ∀ g, (θn g).val = (g⁻¹).val.transpose)
@@ -90,13 +90,11 @@ end GlobalTheory.HoweTranspose
 open GlobalTheory.HoweTranspose in
 
 /- English proof (translation)
-Introduce `k _ _ _ _ r n V W _ _ _ _ σ τ θr θn hr hn ⟨f, hf0, hf⟩`. Use `⟨(TensorProduct.comm ℂ V W).toLinearMap ∘ₗ f ∘ₗ trL n r, ?_, ?_⟩` and prove the remaining obligations. Introduce `h0`. Apply `hf0` to reduce the goal to its premises. Use extensionality with `Φ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use `LinearMap.congr_fun h0 (trL r n Φ)` as an intermediate fact. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, trL_trL, LinearEquiv.coe_coe, LinearMap.zero_apply] at this`. Simplify using `using this`. Introduce `g h Ψ Ψ' hΨ`. Establish `key : f (trL n r Ψ') = TensorProduct.map (σ (θr h)) (τ (θn g)) (f (trL n r Ψ))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hf (θr h) (θn g) _ _ ?_` and prove the remaining obligations. Use `show Ψ'.1 ∘ trH n r = om 1 (θr h) (θn g) (Ψ.1 ∘ trH n r)`. Rewrite using `[hΨ]`. Conclude with `om_trans θr θn hr hn g h Ψ.1`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, LinearEquiv.coe_coe, key, MonoidHom.coe_comp]`.
-
-Conclude with `(TensorProduct.map_comm _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.omQuot_transpose : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (r n : ℕ) (V W : Type) [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W] (σ : Representation ℂ (GL (Fin r) k) V) (τ : Representation ℂ (GL (Fin n) k) W) (θr : GL (Fin r) k →* GL (Fin r) k) (θn : GL (Fin n) k →* GL (Fin n) k), (∀ g, (θr g).val = (g⁻¹).val.transpose) → (∀ g, (θn g).val = (g⁻¹).val.transpose) → OmQuot 1 σ τ → OmQuot 1 (τ.comp θn : Representation ℂ (GL (Fin n) k) W) (σ.comp θr : Representation ℂ (GL (Fin r) k) V) := by
   intro k _ _ _ _ r n V W _ _ _ _ σ τ θr θn hr hn ⟨f, hf0, hf⟩

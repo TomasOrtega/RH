@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Establish `hu : IsUnit (n : ZMod q)` using `(ZMod.isUnit_iff_coprime n q).mpr hn`. Establish `h` using `congrArg (fun f : DirichletCharacter ℂ q => f (n : ZMod q)) hsq`. Simplify using `only [MulChar.pow_apply' χ two_ne_zero, MulChar.one_apply hu] at h`. Rewrite using `[← sq]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_character_apply_sq_eq_one {q : ℕ} (χ : DirichletCharacter ℂ q) (hsq : χ ^ 2 = 1) {n : ℕ}
     (hn : n.Coprime q) : χ (n : ZMod q) * χ (n : ZMod q) = 1 := by
@@ -19,9 +19,9 @@ theorem real_character_apply_sq_eq_one {q : ℕ} (χ : DirichletCharacter ℂ q)
   exact h
 
 /- English proof (translation)
-Use extensionality with `a`. Establish `hm : (((a : ZMod (q₁ * q)).val : ℕ) : ZMod (q₁ * q)) = a` using `ZMod.natCast_zmod_val _`. Use `set m := (a : ZMod (q₁ * q)).val with hmdef`. Establish `hcop : m.Coprime (q₁ * q)` using `(ZMod.isUnit_iff_coprime m (q₁ * q)).mp (by rw [hm]; exact a.isUnit)`. Establish `c1 : m.Coprime q₁` using `Nat.Coprime.coprime_dvd_right (dvd_mul_right q₁ q) hcop`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : m.Coprime q` using `Nat.Coprime.coprime_dvd_right (dvd_mul_left q q₁) hcop`. Rewrite using `[MulChar.one_apply_coe, MulChar.pow_apply' ψ two_ne_zero, ← hm, hψ m, mul_pow, ← MulChar.pow_apply' χ₁ two_ne_zero, ← MulChar.pow_apply' χ two_ne_zero, h1, h2, MulChar.one_apply ((ZMod.isUnit_iff_coprime m q₁).mpr c1), MulChar.one_apply ((ZMod.isUnit_iff_coprime m q).mpr c2), one …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem product_real_characters_sq_eq_one {q₁ q : ℕ} [NeZero q₁] [NeZero q] (χ₁ : DirichletCharacter ℂ q₁) (χ : DirichletCharacter ℂ q)
     (ψ : DirichletCharacter ℂ (q₁ * q)) (h1 : χ₁ ^ 2 = 1) (h2 : χ ^ 2 = 1) (hψ : IsProdChar χ₁ χ ψ) :
@@ -39,9 +39,9 @@ theorem product_real_characters_sq_eq_one {q₁ q : ℕ} [NeZero q₁] [NeZero q
     MulChar.one_apply ((ZMod.isUnit_iff_coprime m q).mpr c2), one_mul]
 
 /- English proof (translation)
-Introduce `n hn`. Establish `hu : IsUnit (n : ZMod (q₁ * q))` using `(ZMod.isUnit_iff_coprime n (q₁ * q)).mpr hn`. Establish `e1 : χ₁ (n : ZMod q₁) * χ (n : ZMod q) = 1`. Rewrite using `[← hψ n, hψ1, MulChar.one_apply hu]`. Establish `e2` using `real_character_apply_sq_eq_one χ h2 (Nat.Coprime.coprime_dvd_right (dvd_mul_left q q₁) hn)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e2, mul_one]`. Use `_ = (χ₁ (n : ZMod q₁) * χ (n : ZMod q)) * χ (n : ZMod q) := by ring`. Use `_ = χ (n : ZMod q) := by rw [e1, one_mul]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem agree_coprime_of_product_principal {q₁ q : ℕ} (χ₁ : DirichletCharacter ℂ q₁) (χ : DirichletCharacter ℂ q)
     (ψ : DirichletCharacter ℂ (q₁ * q)) (h2 : χ ^ 2 = 1) (hψ : IsProdChar χ₁ χ ψ) (hψ1 : ψ = 1) :
@@ -57,7 +57,7 @@ theorem agree_coprime_of_product_principal {q₁ q : ℕ} (χ₁ : DirichletChar
     _ = χ (n : ZMod q) := by rw [e1, one_mul]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem two_pow_card_primeFactors_le_self (n : ℕ) (hn : n ≠ 0) : 2 ^ n.primeFactors.card ≤ n := by
   calc 2 ^ n.primeFactors.card ≤ ∏ p ∈ n.primeFactors, p :=
@@ -65,13 +65,13 @@ private theorem two_pow_card_primeFactors_le_self (n : ℕ) (hn : n ≠ 0) : 2 ^
     _ ≤ n := Nat.le_of_dvd (Nat.pos_of_ne_zero hn) (Nat.prod_primeFactors_dvd n)
 
 /- English proof (translation)
-Establish `hl2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr hn`. Establish `h2 : (2 : ℝ) ^ n.primeFactors.card ≤ n` using `by exact_mod_cast two_pow_card_primeFactors_le_self n hn`. Establish `hcard : (n.primeFactors.card : ℝ) * Real.log 2 ≤ Real.log n`. Use `Real.log_le_log (by positivity) h2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.log_pow]`. Then use the resulting hypothesis. Establish `hlog : Real.log n ≤ (n : ℝ) ^ (ε / 2) / (ε / 2)` using `Real.log_le_rpow_div (by linarith) (by linarith)`. Rewrite `hlog` using `[le_div_iff₀ (by linarith : (0 : ℝ) < ε / 2)]`. Establish `hR1 : 1 ≤ (n : ℝ) ^ (ε / 2)` using `Real.one_le_rpow hn1 (by linarith)`. Establish `hc : (n.primeFactors.card : ℝ) ≤ 2 / (ε * Real.log 2) * (n : ℝ) ^ (ε / 2)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ (mul_pos hε hl2)]`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hcard (by linarith : (0 : ℝ) ≤ ε / 2)]`. Establish `hb : (n.primeFactors.card : ℝ) + 1 ≤ (2 / (ε * Real.log 2) + 1) * (n : ℝ) ^ (ε / 2)`. Use the polynomial consequences of the given equalities and inequalities. Establish `h0 : 0 ≤ (n.primeFactors.card : ℝ) + 1` using `by positivity`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, ← Real.rpow_natCast ((n : ℝ) ^ (ε / 2)) 2, ← Real.rpow_mul (by positivity)]`. Evaluate the numerical expressions.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 private theorem card_primeFactors_add_one_sq_le_rpow {ε : ℝ} (hε : 0 < ε) (n : ℕ) (hn : n ≠ 0) :
     ((n.primeFactors.card : ℝ) + 1) ^ 2 ≤ (2 / (ε * Real.log 2) + 1) ^ 2 * (n : ℝ) ^ ε := by
@@ -97,11 +97,11 @@ private theorem card_primeFactors_add_one_sq_le_rpow {ε : ℝ} (hε : 0 < ε) (
         norm_num
 
 /- English proof (translation)
-Establish `hCp : 0 < max C 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Establish `hden : 0 < 2 * max C 1 * L₁ * A * (2 / ε) * Pc` using `mul_pos (mul_pos (mul_pos (mul_pos (mul_pos two_pos hCp) hL₁) hA) (div_pos two_pos hε)) hPc`. Establish `hLX : 0 ≤ L₁ * X` using `mul_nonneg hL₁.le hX`. Establish `hp : 0 ≤ L₁ * X * Lψ * Nk` using `mul_nonneg (mul_nonneg hLX hLψ0) hNk0`. Establish `s1 : C * (L₁ * X * Lψ) * Nk ≤ max C 1 * (L₁ * X * Lψ * Nk)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_right (le_max_left C 1) hp` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hAM : 0 ≤ A * (M / (ε / 2))` using `mul_nonneg hA.le (div_nonneg hM0 (by linarith))`. Establish `s2 : L₁ * X * Lψ * Nk ≤ L₁ * X * (A * (M / (ε / 2))) * M` using `mul_le_mul (mul_le_mul_of_nonneg_left hLψ hLX) hNk hNk0 (mul_nonneg hLX hAM)`. Establish `s3` using `mul_le_mul_of_nonneg_left s2 hCp.le`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : max C 1 * (L₁ * X * (A * (M / (ε / 2))) * M) = max C 1 * L₁ * A * (2 / ε) * X * (M * M)` using `by ring`. Rewrite `e` using `[hMM]`. Rewrite using `[div_le_iff₀ hden]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem div_le_mul_of_main_bound_caseA {σ ε C L₁ X Lψ Nk M Q Pc A : ℝ} (hε : 0 < ε) (h1σ : 0 < 1 - σ)
     (hL₁ : 0 < L₁) (hX : 0 ≤ X) (hA : 0 < A) (hNk0 : 0 ≤ Nk) (hLψ0 : 0 ≤ Lψ) (hM0 : 0 ≤ M)
@@ -127,7 +127,7 @@ private theorem div_le_mul_of_main_bound_caseA {σ ε C L₁ X Lψ Nk M Q Pc A :
   linarith
 
 /- English proof (translation)
-Rewrite using `[div_le_iff₀ (mul_pos hD hPc)]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem div_le_mul_of_chain_caseB {L₁ X W D Nε Pc Q : ℝ} (hL₁ : 0 < L₁) (hX : 0 ≤ X) (hD : 0 < D)
     (hPc : 0 < Pc) (hS : L₁ ≤ W * X) (hW : W ≤ D * Nε) (hN : Nε ≤ Pc * Q) :
@@ -139,23 +139,21 @@ private theorem div_le_mul_of_chain_caseB {L₁ X W D Nε Pc Q : ℝ} (hL₁ : 0
     _ = X * Q * (D * Pc) := by ring
 
 /- English proof (translation)
-Establish `h1σ : 0 < 1 - σ` using `by linarith`. Establish `hL₁ : 0 < ‖DirichletCharacter.LFunction χ₁ 1‖` using `norm_pos_iff.mpr (DirichletCharacter.LFunction_apply_one_ne_zero h1ne)`. Establish `hA : 0 < |CL| + 1` using `by positivity`. Establish `hq₁ : (1 : ℝ) ≤ q₁` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q₁)`. Establish `hPc : 0 < ((3 : ℝ) * q₁) ^ ε` using `Real.rpow_pos_of_pos (by positivity) ε`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl2 : 0 < Real.log 2` using `Real.log_pos one_lt_two`. Establish `hD : 0 < (2 / (ε * Real.log 2) + 1) ^ 2` using `pow_pos (by have := div_pos two_pos (mul_pos hε hl2); linarith) 2`. Establish `hCp : 0 < max C 1` using `lt_of_lt_of_le one_pos (le_max_right _ _)`. Establish `hden : 0 < 2 * max C 1 * ‖DirichletCharacter.LFunction χ₁ 1‖ * (|CL| + 1) * (2 / ε) * ((3 : ℝ) * q₁) ^ ε` using `mul_pos (mul_pos (mul_pos (mul_pos (mul_pos two_pos hCp) hL₁) hA) (div_pos two_pos hε)) hPc`. Use `⟨min ((1 - σ) / (2 * max C 1 * ‖DirichletCharacter.LFunction χ₁ 1‖ * (|CL| + 1) * (2 / ε) * ((3 : ℝ) * q₁) ^ ε)) (‖DirichletCharacter.LFunction χ₁ 1‖ / ((2 / (ε * Real.log 2) + 1) ^ 2 * ((3 : ℝ) * q₁) ^ ε)), lt_min (div_pos h1σ hden) (div_pos hL₁ (mul_pos hD hPc)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `q _ χ hsq hne`. Establish `hq : (1 : ℝ) ≤ q` using `by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne q)`. Establish `hq0 : (0 : ℝ) ≤ q` using `by linarith`. Establish `hQ : 0 < (q : ℝ) ^ ε` using `Real.rpow_pos_of_pos (by linarith) ε`. Rewrite using `[Real.rpow_neg hq0, ← div_eq_mul_inv, div_le_iff₀ hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hN : ((q₁ * q : ℕ) : ℝ) = (q₁ : ℝ) * q` using `by push_cast; ring`. Establish `hN1 : (1 : ℝ) ≤ ((q₁ * q : ℕ) : ℝ)` using `by rw [hN]; nlinarith`. Establish `hNε : ((q₁ * q : ℕ) : ℝ) ^ ε ≤ ((3 : ℝ) * q₁) ^ ε * (q : ℝ) ^ ε`. Rewrite using `[hN, Real.mul_rpow (by linarith) hq0]`. Conclude with `mul_le_mul_of_nonneg_right (Real.rpow_le_rpow (by linarith) (by linarith) hε.le) hQ.le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ, hψ⟩` from `hP q₁ q χ₁ χ`. Distinguish the cases in `hψ1 : ψ = 1`. Use `le_trans (min_le_right _ _) ?_` and prove the remaining obligations. Conclude with `div_le_mul_of_chain_caseB hL₁ (norm_nonneg _) hD hPc (hS q₁ q χ₁ χ h1ne hne (agree_coprime_of_product_principal χ₁ χ ψ hsq hψ hψ1)) (card_primeFactors_add_one_sq_le_rpow hε (q₁ * q) (Nat.mul_ne_zero (NeZero.ne q₁) (NeZero.ne q))) hNε`. Use `le_trans (min_le_left _ _) ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk` using `hKey q₁ q χ₁ χ ψ h1sq hsq h1ne hne hψ1 hψ σ hσ78 hσ1`. Establish `hn` using `hneg q χ ψ hsq hne hψ1 hψ`. Establish `hmain : (1 - σ) / 2 ≤ C * (‖DirichletCharacter.LFunction χ₁ 1‖ * ‖DirichletCharacter.LFunction χ 1‖ * ‖DirichletCharacter.LFunction ψ 1‖) * ((q₁ * q : ℕ) : ℝ) ^ (K * (1 - σ))`. Establish `h2 : 1 / 2 ≤ C * ‖lamBq χ₁ χ ψ‖ * ((q₁ * q : ℕ) : ℝ) ^ (K * (1 - σ)) / (1 - σ)` using `by linarith`. Rewrite `h2` using `[le_div_iff₀ h1σ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hlam : ‖lamBq χ₁ χ ψ‖ = ‖DirichletCharacter.LFunction χ₁ 1‖ * ‖DirichletCharacter.LFunction χ 1‖ * ‖DirichletCharacter.LFunction ψ 1‖` using `by simp only [lamBq, norm_mul]`. Rewrite `h2` using `[hlam]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3N : (1 : ℝ) ≤ 3 * ((q₁ * q : ℕ) : ℝ)` using `by linarith`. Establish `hM0 : 0 ≤ (3 * ((q₁ * q : ℕ) : ℝ)) ^ (ε / 2)` using `by positivity`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlogb : Real.log (3 * ((q₁ * q : ℕ) : ℝ)) ≤ (3 * ((q₁ * q : ℕ) : ℝ)) ^ (ε / 2) / (ε / 2)` using `Real.log_le_rpow_div (by linarith) (by linarith)`. Establish `hLψ : ‖DirichletCharacter.LFunction ψ 1‖ ≤ (|CL| + 1) * ((3 * ((q₁ * q : ℕ) : ℝ)) ^ (ε / 2) / (ε / 2))`. Combine the equalities or inequalities in the displayed calculation. Establish `hNk : ((q₁ * q : ℕ) : ℝ) ^ (K * (1 - σ)) ≤ (3 * ((q₁ * q : ℕ) : ℝ)) ^ (ε / 2)` using `(Real.rpow_le_rpow_of_exponent_le hN1 hKa).trans (Real.rpow_le_rpow (by linarith) (by linarith) (by linarith))`. Establish `hMM : (3 * ((q₁ * q : ℕ) : ℝ)) ^ (ε / 2) * (3 * ((q₁ * q : ℕ) : ℝ)) ^ (ε / 2) = ((3 : ℝ) * q₁) ^ ε * (q : ℝ) ^ ε`.
-
-Rewrite using `[← Real.rpow_add (by linarith), add_halves, hN, ← mul_assoc, Real.mul_rpow (by positivity) hq0]`. Conclude with `div_le_mul_of_main_bound_caseA hε h1σ hL₁ (norm_nonneg _) hA (by positivity) (norm_nonneg _) hM0 hmain hLψ hNk hMM hPc`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegel_product_character_inequality (hP : ProdCharExists) (hS : SameCharacterLFunctionOne) {C K CL : ℝ}
     (hKey : ∀ (q₁ q₂ : ℕ) [NeZero q₁] [NeZero q₂] [NeZero (q₁ * q₂)] (χ₁ : DirichletCharacter ℂ q₁)

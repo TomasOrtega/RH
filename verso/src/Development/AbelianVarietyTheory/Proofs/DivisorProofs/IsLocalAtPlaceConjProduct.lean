@@ -11,7 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FrameProdLoc
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.HeckeRowsCompare.mem_locGrp]`. Conclude with `GlobalTheory.Mem.R3.LiftInertChi.locAt_of_isLocElt V _ x ((GlobalTheory.Hk3Split.isLabElt_of_isTEnv V pl ok i x).2.1 h)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_locGrp_of_isLocEnv {D : D7} (V : Formalism.BasicNotions.TH.HSp D) {Pl0 : Type} (pl : Pl0 → Pl D.host.E) (ok : Set Pl0)
     (i : ok × ℕ) (x : Bridge.Gf V) (h : isLocEnv V pl ok i x) :
@@ -20,9 +20,9 @@ theorem mem_locGrp_of_isLocEnv {D : D7} (V : Formalism.BasicNotions.TH.HSp D) {P
   exact GlobalTheory.Mem.R3.LiftInertChi.locAt_of_isLocElt V _ x ((GlobalTheory.Hk3Split.isLabElt_of_isTEnv V pl ok i x).2.1 h)
 
 /- English proof (translation)
-Take `⟨α, hα, hfin⟩` from `GlobalTheory.HeckeRowsCompare.fin_lift V x`. Establish `hI : IsPrimeIdem (pl i.1) e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨-, ε, hε, hf⟩` from `GlobalTheory.IdemSupport.of_isPrimeIdem hΦ hI`. Use `⟨e, α, he, hα, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show SuppF V (e + cA D e) α`. Rewrite using `[hf, GlobalTheory.HeckeRowsCompare.suppF_iff V hε hα, hfin]`. Conclude with `h`. Rewrite using `[← hfin]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isLocEnv_of_mem {D : D7} (V : Formalism.BasicNotions.TH.HSp D) {Pl0 : Type} (pl : Pl0 → Pl D.host.E) (ok : Set Pl0)
     (i : ok × ℕ) (x : Bridge.Gf V) (e : Formalism.L2.Theta.AE D) (he : Formalism.L2.NTheta.IsIdemAt e (pl i.1))
@@ -39,9 +39,9 @@ theorem isLocEnv_of_mem {D : D7} (V : Formalism.BasicNotions.TH.HSp D) {Pl0 : Ty
     rfl
 
 /- English proof (translation)
-Introduce `D V Pl0 pl ok i i' a b c d hv ha hb hc hd`. Take `⟨e, -, he, -⟩` from `id ha`. Apply `isLocEnv_of_mem V pl ok i _ e he` to reduce the goal to its premises. Establish `ha'` using `mem_locGrp_of_isLocEnv V pl ok i a ha`. Establish `hd'` using `mem_locGrp_of_isLocEnv V pl ok i d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb'` using `mem_locGrp_of_isLocEnv V pl ok i' b hb`. Establish `hc'` using `mem_locGrp_of_isLocEnv V pl ok i' c hc`. Rewrite `hb'`, `hc'` using `[← hv]`. Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ (Subgroup.mul_mem _ hc' hd')) (Subgroup.mul_mem _ ha' hb')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLocEnv_prod : ∀ {D : D7} (V : Formalism.BasicNotions.TH.HSp D) {Pl0 : Type} (pl : Pl0 → Pl D.host.E) (ok : Set Pl0)
     (i i' : ok × ℕ) (a b c d : Bridge.Gf V), (pl i.1).under (𝓞 D.host.F) = (pl i'.1).under (𝓞 D.host.F) →

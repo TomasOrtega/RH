@@ -20,11 +20,11 @@ noncomputable section
 variable {X : Scheme.{0}} {G : Over X} [GrpObj G] {g m : ℕ}
 
 /- English proof (translation)
-Establish `key : ∀ b₁ ∈ B, ∃ L : (Fin m → ℂ) → ((Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)), (∀ᶠ b in 𝓝 b₁, ∀ z, e b (L b z) = e b z ≫ f) ∧ ∀ z, DifferentiableAt ℂ (fun b => L b z) b₁`. Introduce `b₁ hb₁`. Take `⟨ζ, -, h2, h3⟩` from `hl.lift (W := B ×ˢ Set.univ) (β := Prod.fst) (fun bz : (Fin m → ℂ) × (Fin g → ℂ) => e bz.1 bz.2 ≫ f) (w₀ := (b₁, 0)) (z₀ := 0) (hB.prod isOpen_univ) ⟨hb₁, trivial⟩ differentiableOn_fst (fun _ h => h.1) (isHolTo_comp_hom hol f.left) (by simp only [hom_zero (he b₁ hb₁).1.1, MonObj. …`. Use `⟨fun b => ((fderiv ℂ ζ (b, 0)).comp (ContinuousLinearMap.inr ℂ _ _)).toLinearMap, ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `ht : Tendsto (fun b : Fin m → ℂ => (b, (0 : Fin g → ℂ))) (𝓝 b₁) (𝓝 (b₁, 0))` using `(Continuous.prodMk_left _).tendsto _ filter_upwards [hB.mem_nhds hb₁, ht.eventually h2.eventually_analyticAt, ht.eventually h3.eventually_nhds] with b hb ha hz z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hd` using `ha.differentiableAt.hasFDerivAt.comp (0 : Fin g → ℂ) (hasFDerivAt_prodMk_right b (0 : Fin g → ℂ))`. Use `fderiv_lift (x := fun z => e b z ≫ f) (fun z w => by simp only [(he b hb).1.1, MonObj.mul_comp]) (he b hb).1.1 (he b hb).1.2.1 hr (he b hb).2 hd.differentiableAt (((Continuous.prodMk_right b).tendsto 0).eventually hz) z` as an intermediate fact. Rewrite `this` using `[hd.fderiv]`. Then use the resulting hypothesis. Establish `: DifferentiableAt ℂ (fun b : Fin m → ℂ => fderiv ℂ ζ (b, 0) ((0 : Fin m → ℂ), z)) b₁` using `(h2.fderiv.differentiableAt.comp b₁ (hasFDerivAt_prodMk_left b₁ (0 : Fin g → ℂ)).differentiableAt).clm_apply (differentiableAt_const ((0 : Fin m → ℂ), z))`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose! L h1 h2 using key`. Use `⟨fun b => L b b, fun b hb => (h1 b hb).self_of_nhds, fun z b₁ hb₁ => ?_⟩` and prove the remaining obligations. Use `((h2 b₁ hb₁ z).congr_of_eventuallyEq ?_).differentiableWithinAt` and prove the remaining obligations. Use `filter_upwards [hB.mem_nhds hb₁, h1 b₁ hb₁] with b hb h`. Rewrite using `[linear_lift_unique (he b hb).1.1 hr (he b hb).2 (L := L b b) (L' := L b₁ b) fun z => ((h1 b hb).self_of_nhds z).trans (h z).symm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hol_linear_lift {B : Set (Fin m → ℂ)} (hB : IsOpen B) {y : (Fin m → ℂ) → (Sp ℂ ⟶ X)}
     {e : ∀ b, (Fin g → ℂ) → (Over.mk (y b) ⟶ G)} {r : ℝ} (hr : 0 < r)
@@ -62,13 +62,13 @@ theorem exists_hol_linear_lift {B : Set (Fin m → ℂ)} (hB : IsOpen B) {y : (F
     fun z => ((h1 b hb).self_of_nhds z).trans (h z).symm]
 
 /- English proof (translation)
-Use `choose L h1 h2 using fun a => haveI := act.hom a`. Use `exists_hol_linear_lift hB hr hol he hl (act.act a)`. Establish `key : ∀ b ∈ B, ∃ F : O →+* Matrix (Fin g) (Fin g) ℂ, ∀ a, F a = LinearMap.toMatrix' (L a b)`. Introduce `b hb`. Establish `u` using `fun L L' => linear_lift_unique (he b hb).1.1 hr (he b hb).2 (V := Fin g → ℂ) (L := L) (L' := L')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨RingHom.mk' ⟨⟨fun a => LinearMap.toMatrix' (L a b), ?_⟩, fun a a' => ?_⟩ fun a a' => ?_, fun _ => rfl⟩` and prove the remaining obligations. Rewrite using `[u (L 1 b) LinearMap.id fun z => by rw [h1 1 b hb, act.one, Category.comp_id, LinearMap.id_apply], LinearMap.toMatrix'_id]`. Express the relevant statement in the definitionally equal form `LinearMap.toMatrix' (L (a * a') b) = _`. Rewrite using `[u (L (a * a') b) (L a b ∘ₗ L a' b) fun z => by`. Rewrite using `[h1 _ b hb, LinearMap.comp_apply, h1 _ b hb, h1 _ b hb, mul_comm, act.mul, Category.assoc],`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `LinearMap.toMatrix'_comp]`. Express the relevant statement in the definitionally equal form `LinearMap.toMatrix' (L (a + a') b) = LinearMap.toMatrix' (L a b) + LinearMap.toMatrix' (L a' b)`. Rewrite using `[u (L (a + a') b) (L a b + L a' b) fun z => by`. Rewrite using `[h1 _ b hb, LinearMap.add_apply, (he b hb).1.1, h1 _ b hb, h1 _ b hb, act.add, MonObj.comp_mul], map_add]`. Use `choose F hF using key`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨fun b => if hb : b ∈ B then F b hb else F b₀ hb₀, fun b hb a z => ?_, fun a i j => ?_⟩` and prove the remaining obligations. Simplify using `only [dif_pos hb, hF, LinearMap.toMatrix'_mulVec, h1 a b hb]`. Use `(differentiableOn_pi.1 (h2 a (Pi.single j 1)) i).congr fun b hb => ?_` and prove the remaining obligations. Simplify using `only [dif_pos hb, hF, LinearMap.toMatrix'_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_hol_rep {O : Type} [CommRing O] {B : Set (Fin m → ℂ)} (hB : IsOpen B) {b₀ : Fin m → ℂ} (hb₀ : b₀ ∈ B)
     {y : (Fin m → ℂ) → (Sp ℂ ⟶ X)} {e : ∀ b, (Fin g → ℂ) → (Over.mk (y b) ⟶ G)} {r : ℝ} (hr : 0 < r)
@@ -105,9 +105,9 @@ def HasForm {La : Type} [AddCommGroup La] (EF : LinearMap.BilinForm ℤ La) (P :
 
 open Matrix in
 /- English proof (translation)
-Take `⟨Hm, h1, h2, h3⟩` from `h`. Set `M` to `LinearMap.toMatrix' L`. Establish `key : ∀ z w, hermForm (Mᵀ * Hm * Mᵀᴴ) z w = hermForm Hm (L z) (L w)` using `fun z w => by`. Rewrite using `[← LinearMap.toMatrix'_mulVec L z, ← LinearMap.toMatrix'_mulVec L w, hermForm, hermForm, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec, vecMul_transpose, star_mulVec, ← mulVec_transpose]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨Mᵀ * Hm * Mᵀᴴ, isHermitian_mul_mul_conjTranspose _ h1, fun z hz => ?_, fun x y => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `h2 _ fun h0 => hz (hL (h0.trans (map_zero L).symm))`. Rewrite using `[key, h3]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasForm.of_comp {La : Type} [AddCommGroup La] {EF : LinearMap.BilinForm ℤ La} {P : La → (Fin g → ℂ)} {g' : ℕ}
     (L : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)) (hL : Function.Injective L) (h : HasForm EF (fun x => L (P x))) :
@@ -124,11 +124,11 @@ theorem HasForm.of_comp {La : Type} [AddCommGroup La] {EF : LinearMap.BilinForm 
   · rw [key, h3]
 
 /- English proof (translation)
-Establish `hd : ∀ k : ℕ, 0 < k → (k : ℤ) ∣ b - a` using `fun k hk => by`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 (h k hk)`. Establish `hk' : (k : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hk.ne'`. Establish `hp` using `Complex.two_pi_I_ne_zero`. Use `⟨n, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ((b : ℂ) - a) = k * n`. Use `mul_left_cancel₀ hp ?_` and prove the remaining obligations. Clear denominators, using `at hn` for the nonvanishing conditions. Take the linear combination `(2 * Real.pi * Complex.I) * hn`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Use `Int.eq_zero_of_dvd_of_natAbs_lt_natAbs (hd ((b - a).natAbs + 1) (Nat.succ_pos _)) (by` as an intermediate fact. Rewrite using `[Int.natAbs_natCast]`. Conclude with `Nat.lt_succ_self _)`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem int_eq_of_exp {a b : ℤ} (h : ∀ k : ℕ, 0 < k → Complex.exp (-(2 * Real.pi * Complex.I) * (a : ℂ) / k) =
     Complex.exp (-(2 * Real.pi * Complex.I) * (b : ℂ) / k)) : a = b := by
@@ -147,19 +147,17 @@ theorem int_eq_of_exp {a b : ℤ} (h : ∀ k : ℕ, 0 < k → Complex.exp (-(2 *
   omega
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Take `⟨A', φ, hφ, -, hm, t, ht⟩` from `hB _ _ y₀ A`. Establish `hgp : IsGrpPullback A'.A A.A y₀ φ` using `⟨hφ, fun T x y x₀ y₀ hx hy => by`. Rewrite using `[(Over.OverMorphism.ext hx : x₀ = Out.toBase hφ.w x), (Over.OverMorphism.ext hy : y₀ = Out.toBase hφ.w y), ← hm]`. Use the proof step `rfl⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨rig, hrig⟩` from `A'.rigid`. Take `⟨u, Hm, χ, Ef, ⟨h1, h2, -⟩, -, -, -, -, -, h3, -, h4⟩` from `hT A' rig hrig`. Set `x : (Fin A'.g → ℂ) → (Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ y₀) ⟶ A.A)` to `fun w => Out.toBase hφ.w (u.ex w)`. Establish `hx : ∀ z w, x (z + w) = x z * x w` using `fun z w => by simp only [x, u.ex_add, hm]`. Establish `hinj : Function.Injective (fun p : 𝟙_ (Over (Sp ℂ)) ⟶ A'.A => Out.toBase hφ.w p)` using `fun p q h => Over.OverMorphism.ext (hφ.hom_ext (congrArg (fun s => s.left) h) ((Over.w p).trans (Over.w q).symm))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : ∀ z, x z = 1 ↔ z ∈ u.Λ` using `fun z => by`. Rewrite using `[← u.ker, ← hom_zero hx, ← hom_zero u.ex_add]`. Conclude with `hinj.eq_iff`. Establish `hsx : Function.Surjective x` using `fun q => by`. Take `⟨w, hw⟩` from `u.ex_onto (Over.homMk (hφ.lift q.left (𝟙_ (Over (Sp ℂ))).hom (Over.w q)) (hφ.lift_snd _ _ _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨w, Over.OverMorphism.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(u.ex w).left ≫ φ = _`. Rewrite using `[hw]`. Conclude with `hφ.lift_fst _ _ _`. Establish `hhol : IsHolTo Set.univ (fun w => (u.ex w).left)` using `fun U f => by simpa using u.hol U f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ζ, hζ, hζ'⟩` from `hl _ x (isHolTo_comp_hom hhol φ) (by rw [hom_zero hx, hom_zero he.1])`. Take `⟨L, hL⟩` from `exists_linearEquiv_lift hx he.1 hsx he.2.1 (by haveI := u.discrete`. Rewrite using `[show {z | x z = 1} = (u.Λ : Set _) from Set.ext hker]`. Conclude with `DiscreteTopology.isDiscrete) hr hk hζ.differentiableAt hζ'`. Establish `hmem : ∀ a, L.symm (P a) ∈ u.Λ` using `fun a => by rw [← hker, ← hL, L.apply_symm_apply, hP]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `HasForm.of_comp L.symm.toLinearEquiv.toLinearMap L.symm.injective ⟨Hm, h1, h2, fun a a₂ => ?_⟩` and prove the remaining obligations. Use `(h3 ⟨_, hmem a⟩ ⟨_, hmem a₂⟩).symm.trans (congrArg _ (int_eq_of_exp fun k hk0 => ?_))` and prove the remaining obligations. Establish `e1` using `h4 k ⟨_, hmem a⟩ ⟨_, hmem a₂⟩ (Units.mk0 _ (Complex.exp_ne_zero _)) hk0 rfl`. Establish `e2` using `hw k a a₂ (Units.mk0 _ (Complex.exp_ne_zero _)) hk0 rfl`. Establish `hp : ∀ a, (e ((k : ℂ)⁻¹ • P a)).left = (u.ex ((k : ℂ)⁻¹ • L.symm (P a))).left ≫ φ` using `fun a => by`.
-
-Rewrite using `[← map_smul, ← L.apply_symm_apply ((k : ℂ)⁻¹ • P a), hL, L.symm_apply_apply]`. Both sides reduce to the same expression. Use `haveI := A.isAb.comm`. Establish `e3` using `(weilIs_grpPullback_of_comm _ _ A.A A'.A y₀ φ A.L A'.L A.isLB A'.isLB hgp (LBIso.symm ⟨t, ht⟩) _ k _ _ _ _ _ (hp a) (hp a₂)).1 e1`. Conclude with `congrArg Units.val (weilIs_unique_fieldPoint _ A.A A.L A.isLB ℂ _ k _ _ _ _ e3 e2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hasForm_of_weil (hT : ThetaUnifAV) (hB : Out.PolBaseChangeSt)
     (A : Out.PolAV X) (y₀ y : Sp ℂ ⟶ X) (hy : y = (𝟙_ (Over (Sp ℂ))).hom ≫ y₀)

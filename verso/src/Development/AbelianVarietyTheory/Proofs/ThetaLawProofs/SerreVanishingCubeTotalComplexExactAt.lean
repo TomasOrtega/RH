@@ -22,11 +22,11 @@ open GlobalTheory
 namespace GlobalTheory.KeyKa
 
 /- English proof (translation)
-Introduce `R _ _ Y f H m s M hH hM hv`. Take `⟨N, _, _, _, _, 𝒩, _, _, hfin, hφ⟩` from `GlobalTheory.AbLaw.exists_finite_graded_module_secCube R Y f H m s M hH hM hv`. Take `⟨n₀, hn⟩` from `GlobalTheory.cubeComplex_grCube_exactAt_of_finite (Fin (m + 1)) R N 𝒩 hfin`. Use `⟨n₀, fun t ht p => ?_⟩` and prove the remaining obligations. Establish `h01` using `secCube_exactAt_zero_and_one R Y f (tw M H t) (Fin (m + 1)) (fun i => Out.nonzeroLocus (s i)) hv.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `match p with`. Consider the case `0 => exact h01.1`. Consider the case `1 => exact h01.2`. Consider the case `p + 2`. Take `⟨φ, hb⟩` from `hφ t`.
+Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `isIso_cechComplexMap φ hb` as an intermediate fact. Rewrite using `[← cechComplex_exactAt_succ_iff_cube]`. Conclude with `((cechComplex_exactAt_succ_iff_cube _ p).2 (hn t ht (p + 2))).of_iso (asIso (cechComplexMap φ))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secCube_tw_exactAt_of_veryAmpleBy : ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of R)) (H : LB Y) (m : ℕ) (s : Fin (m + 1) → LB.Sec H) (M : LB Y), H.IsLB → M.IsLB → VeryAmpleBy f H s → ∃ t₀ : ℤ, ∀ t, t₀ ≤ t → ∀ p, (cubeComplex (secCube f (tw M H t) (fun i => Out.nonzeroLocus (s i)))).ExactAt p := by
   intro R _ _ Y f H m s M hH hM hv

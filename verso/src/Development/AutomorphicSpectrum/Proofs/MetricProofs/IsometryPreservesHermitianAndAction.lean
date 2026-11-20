@@ -10,63 +10,63 @@ namespace GlobalTheory.CompanionTheory.Ar.Cusp.PeriodIso
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type} [AddCommGroup Λ] [Module (𝓞 E) Λ]
 
 /- English proof (translation)
-Simplify using `[RiemLat.ip, star_add, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_add_left' (R : RiemLat E g Λ) (x x' y : Fin g → ℂ) : R.ip (x + x') y = R.ip x y + R.ip x' y := by
   simp [RiemLat.ip, star_add, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `[RiemLat.ip, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_add_right' (R : RiemLat E g Λ) (x y y' : Fin g → ℂ) : R.ip x (y + y') = R.ip x y + R.ip x y' := by
   simp [RiemLat.ip, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[RiemLat.ip, star_smul, Matrix.mulVec_smul, dotProduct_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_smul_left' (R : RiemLat E g Λ) (c : ℂ) (x y : Fin g → ℂ) :
     R.ip (c • x) y = star c * R.ip x y := by
   simp [RiemLat.ip, star_smul, Matrix.mulVec_smul, dotProduct_smul]
 
 /- English proof (translation)
-Simplify using `[RiemLat.ip, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ip_smul_right' (R : RiemLat E g Λ) (c : ℂ) (x y : Fin g → ℂ) : R.ip x (c • y) = c * R.ip x y := by
   simp [RiemLat.ip, smul_dotProduct]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem real_smul_eq' (r : ℝ) (x : Fin g → ℂ) : r • x = (r : ℂ) • x := by
   ext i
   simp
 
 /- English proof (translation)
-The claim follows from `R.im y x`.
+A detailed English derivation is pending.
 -/
 theorem ip_period_im (R : RiemLat E g Λ) (x y : Λ) : (R.ip (R.P x) (R.P y)).im = R.form y x :=
   R.im y x
 
 /- English proof (translation)
-Set `D : (Fin g → ℂ) → (Fin g → ℂ) → ℂ` to `fun z w => R'.ip (φ z) (φ w) - R.ip z w`. Establish `hl : ∀ z z' w, D (z + z') w = D z w + D z' w` using `fun z z' w => by`. Simplify using `only [D, map_add, ip_add_left']`. Expand and normalize the polynomial expressions, which then agree. Establish `hr : ∀ z w w', D z (w + w') = D z w + D z w'` using `fun z w w' => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [D, map_add, ip_add_right']`. Expand and normalize the polynomial expressions, which then agree. Establish `hcl : ∀ (c : ℂ) z w, D (c • z) w = star c * D z w` using `fun c z w => by`. Simplify using `only [D, map_smul, ip_smul_left']`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcr : ∀ (c : ℂ) z w, D z (c • w) = c * D z w` using `fun c z w => by`. Simplify using `only [D, map_smul, ip_smul_right']`. Expand and normalize the polynomial expressions, which then agree. Establish `h0l : ∀ w, D 0 w = 0` using `fun w => by`. Simplify using `[D, RiemLat.ip]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h0r : ∀ z, D z 0 = 0` using `fun z => by`. Simplify using `[D, RiemLat.ip]`. Establish `base : ∀ l l', (D (R.P l) (R.P l')).im = 0` using `fun l l' => by`. Simplify using `only [D, Complex.sub_im]`. Rewrite using `[← hP, ← hP, ip_period_im, ip_period_im, hf, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `s1 : ∀ l w, (D (R.P l) w).im = 0` using `fun l w => by`. Establish `hw : w ∈ Submodule.span ℝ (Set.range R.P)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem w h`. Take `⟨l', rfl⟩` from `h`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `base l l'`. Consider the case `zero => simp [h0r]`. Consider the case `add w w' _ _ h h' => simp [hr, h, h']`. Consider the case `smul r w _ h`. Rewrite using `[real_smul_eq', hcr]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[h]`. Establish `s2 : ∀ z w, (D z w).im = 0` using `fun z w => by`. Establish `hz : z ∈ Submodule.span ℝ (Set.range R.P)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z h`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨l, rfl⟩` from `h`. Conclude with `s1 l w`. Consider the case `zero => simp [h0l]`. Consider the case `add z z' _ _ h h' => simp [hl, h, h']`. Consider the case `smul r z _ h`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[real_smul_eq', hcl]`. Simplify using `[h]`. Establish `s3 : (D x y).re = 0`. Establish `h` using `s2 x (Complex.I • y)`. Rewrite `h` using `[hcr]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using h`. Establish `s4 : D x y = 0` using `Complex.ext s3 (s2 x y)`. Conclude with `sub_eq_zero.mp s4`.
+A detailed English derivation is pending.
 -/
 theorem isometry_of_periods (R R' : RiemLat E g Λ) (hs : Submodule.span ℝ (Set.range R.P) = ⊤)
     (γ : Λ ≃ₗ[𝓞 E] Λ) (φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ))
@@ -122,9 +122,9 @@ theorem isometry_of_periods (R R' : RiemLat E g Λ) (hs : Submodule.span ℝ (Se
   exact sub_eq_zero.mp s4
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span ℝ (Set.range R.P)` using `hs ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`. Take `⟨l, rfl⟩` from `h`. Rewrite using `[← R.act, ← hP, ← hP, map_smul, R'.act]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => simp`. Consider the case `add x x' _ _ h h' => simp [h, h']`. Consider the case `smul r x _ h`. Rewrite using `[real_smul_eq', map_smul, map_smul, h, map_smul, map_smul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem commutes_of_periods (R R' : RiemLat E g Λ) (hs : Submodule.span ℝ (Set.range R.P) = ⊤)
     (γ : Λ ≃ₗ[𝓞 E] Λ) (φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)) (hP : ∀ x, R'.P (γ x) = φ (R.P x))
@@ -140,7 +140,7 @@ theorem commutes_of_periods (R R' : RiemLat E g Λ) (hs : Submodule.span ℝ (Se
     rw [real_smul_eq', map_smul, map_smul, h, map_smul, map_smul]
 
 /- English proof (translation)
-Introduce `E _ _ _ g Λ _ _ R R' γ φ hf hP`. Establish `hs` using `(GlobalTheory.T.riemann_lattice_eigen_projection E g Λ Unit R).2.1`. Conclude with `⟨isometry_of_periods R R' hs γ φ hf hP, commutes_of_periods R R' hs γ φ hP⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isometry_and_commutes : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (g : ℕ) (Λ : Type) [AddCommGroup Λ]
     [Module (𝓞 E) Λ] (R R' : RiemLat E g Λ) (γ : Λ ≃ₗ[𝓞 E] Λ) (φ : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)),

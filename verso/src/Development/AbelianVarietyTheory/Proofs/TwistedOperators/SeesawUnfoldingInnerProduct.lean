@@ -25,9 +25,9 @@ noncomputable section
 namespace GlobalTheory.KInvData
 
 /- English proof (translation)
-Rewrite using `[hasDerivAt_iff_tendsto_slope]`. Establish `h1 : Filter.Tendsto (slope u t) (nhdsWithin t {t}ᶜ) (nhds u')`. Rewrite using `[tendsto_pi_nhds]`. Introduce `z`. Conclude with `hasDerivAt_iff_tendsto_slope.1 (hd z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm : ∀ s, slope u t s ∈ U` using `fun s => U.smul_of_tower_mem _ (U.sub_mem (hu s) (hu t))`. Establish `h2 : Filter.Tendsto (fun s => (⟨slope u t s, hm s⟩ : U)) (nhdsWithin t {t}ᶜ) (nhds ⟨u', hu'⟩)` using `tendsto_subtype_rng.2 h1`. Establish `h3` using `((φ ∘ₗ U.subtype).continuous_of_finiteDimensional.tendsto _).comp h2`. Use `h3.congr fun s => ?_` and prove the remaining obligations. Simplify using `[slope, LinearMap.map_smul_of_tower]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_linear {Z Q : Type} [NormedAddCommGroup Q] [NormedSpace ℂ Q] (U : Submodule ℂ (Z → ℂ))
     [FiniteDimensional ℂ U] (φ : (Z → ℂ) →ₗ[ℂ] Q) {u : ℝ → Z → ℂ} {u' : Z → ℂ} {t : ℝ} (hu : ∀ s, u s ∈ U) (hu' : u' ∈ U)
@@ -45,7 +45,7 @@ theorem hasDerivAt_linear {Z Q : Type} [NormedAddCommGroup Q] [NormedSpace ℂ Q
   simp [slope, LinearMap.map_smul_of_tower]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show Units.map (Matrix.reindexAlgEquiv (AE D) (AE D) e).toMonoidHom (matHom X 1) = 1`. Rewrite using `[map_one, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kapX_one {D : D7} (X : HSp D) {d : ℕ} (e : Fin X.rank ≃ Fin d) {J : Matrix (Fin d) (Fin d) D.host.E}
     (hJ : J = D.host.xi0 • reindex e e X.gramᵀ) : kapX X e hJ 1 = 1 := by
@@ -65,23 +65,21 @@ variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {θ : InfFam D} {W W₁ X : H
   {rl : D.what₂.Tau → Matrix (Fin X.rank) (Fin X.rank) ℂ → Module.End ℂ Pi} {p : (WO W X → ℂ) →ₗ[ℂ] Pi}
 
 /- English proof (translation)
-Establish `huniq : ∀ {x : (Fin W.rank × Fin (W.rank + W₁.rank) → AF D.host.F) → ℂ} {f g : WO W X → ℂ}, IsDatum Γ.M ψ cA x f → IsDatum Γ.M ψ cA x g → f = g` using `fun hf hg => GlobalTheory.SquareAgree.CoinvPass.isDatum_unique cA.surjective hf hg`. Set `G : Submodule ℂ (((Fin W.rank × Fin (W.rank + W₁.rank) → AF D.host.F) → ℂ) × (WO W X → ℂ))` to `{ carrier := {q | q.1 ∈ U ∧ IsDatum Γ.M ψ cA q.1 q.2} add_mem' := fun ha hb => ⟨U.add_mem ha.1 hb.1, GlobalTheory.SquareAgree.CoinvPass.isDatum_add hψ ha.2 hb.2⟩ zero_mem' := ⟨U.zero_mem, GlobalTheory.SquareAgree.CoinvPass.isDatum_zero⟩ smul_mem' := fun c _ ha => ⟨U.smul_mem c ha …`. Set `fG : G →ₗ[ℂ] U` to `((LinearMap.fst ℂ _ _).comp G.subtype).codRestrict U (fun q => q.2.1)`. Establish `hfG : Function.Injective fG`. Introduce `q q' hq`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1 : q.1.1 = q'.1.1` using `congrArg Subtype.val hq`. Establish `e2 : q.1.2 = q'.1.2` using `huniq q.2.2 (e1 ▸ q'.2.2)`. Conclude with `Subtype.ext (Prod.ext e1 e2)`. Use `haveI : FiniteDimensional ℂ G := Module.Finite.of_injective fG hfG`. Set `Uf : Submodule ℂ (WO W X → ℂ)` to `G.map (LinearMap.snd ℂ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Φt : ℝ → WO W X → ℂ` to `fun t => ωA (oneP θ W τ Y t, 1) Φ`. Establish `hdat : ∀ t, IsDatum Γ.M ψ cA (om (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hO.JW (oneP θ W τ Y t), 1) ΦD) (Φt t)`. Introduce `t`. Establish `h` using `hO.weilA ΦD Φ h0 (oneP θ W τ Y t) 1`. Rewrite `h` using `[kapX_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmemU : ∀ t, Φt t ∈ Uf` using `fun t => ⟨(_, Φt t), ⟨hUt t ΦD hΦD, hdat t⟩, rfl⟩`. Establish `halg : ∀ t, Φt t ∈ algF ψ θ true A B`. Introduce `t`. Take `⟨Φ', hΦ', hD'⟩` from `hO.algA' _ (hU (hUt t ΦD hΦD))`. Rewrite `hΦ'` using `[huniq hD' (hdat t)]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hshift : ∀ s t, ωA (oneP θ W τ Y s, 1) (Φt t) = Φt (s + t)`. Introduce `s t`. Simplify using `only [Φt]`. Rewrite using `[GlobalTheory.Mem.Lift.oneP_add hθ hY s t, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Establish `hzero : ∀ t, ∀ l : Module.Dual ℂ Pi, HasDerivAt (fun s => l (p (Φt s))) 0 t`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `t l`. Take `⟨Φ', hΦ', hder⟩` from `hmap.stabM.2 τ Y hY (Φt t) (halg t)`. Establish `hp` using `hmap.invl τ Y hY (Φt t) (halg t) Φ' hΦ' hder`. Establish `hd : ∀ z, HasDerivAt (fun s => Φt s z) (Φ' z) t`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `HasDerivAt.comp_sub_const t t (by rw [sub_self]; exact hder z)`. Use `h.congr_of_eventuallyEq (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show Φt s z = ωA (oneP θ W τ Y (s - t), 1) (Φt t) z`. Rewrite using `[hshift, sub_add_cancel]`. Establish `h` using `hasDerivAt_linear (Uf ⊔ Submodule.span ℂ {Φ'}) (l.comp p) (u := Φt) (fun s => Submodule.mem_sup_left (hmemU s)) (Submodule.mem_sup_right (Submodule.mem_span_singleton_self _)) hd`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `h` using `[hp]`. Establish `hconst : ∀ l : Module.Dual ℂ Pi, l (p (Φt 1)) = l (p (Φt 0))` using `fun l => is_const_of_deriv_eq_zero (fun t => (hzero t l).differentiableAt) (fun t => (hzero t l).deriv) 1 0`. Establish `e1 : Φt 1 = Φ₁` using `huniq (hdat 1) h1`. Establish `e0 : Φt 0 = Φ`. Simplify using `only [Φt]`.
-
-Rewrite using `[GlobalTheory.Mem.Lift.oneP_zero hθ, Prod.mk_one_one, map_one, Module.End.one_apply]`. Rewrite using `[← e1, ← e0, ← sub_eq_zero]`. Conclude with `(Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun l => by rw [map_sub, hconst l, sub_self]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem line_step (hθ : IsInfFam θ) (hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ)
     (hO : IsOver ψ θ A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB)
@@ -147,15 +145,15 @@ theorem line_step (hθ : IsInfFam θ) (hψ : GlobalTheory.IndefiniteRowSideFullH
   exact (Module.forall_dual_apply_eq_zero_iff ℂ _).1 fun l => by rw [map_sub, hconst l, sub_self]
 
 /- English proof (translation)
-Introduce `hP D ψ θ W W₁ X A A₁ B α β ν 𝓕 ν₁ 𝓕₁ ωA ωB e Bs Γ Xc om om' cA cB hθ _ hO hT Pi rf rl p p' hm k hk ΦD hΦD Φ Φ₁ h0 h1`. Establish `hψ : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.IsStd ψ` using `hO.psi ▸ hT.base.std`. Take `⟨U, hUf, hUle, hΦU, hUst⟩` from `GlobalTheory.T.algebraic_model_invariant_sub hP _ _ _ Bs _ _ Γ Xc om om' hT ΦD hΦD`. Take `⟨l, hl, rfl⟩` from `GlobalTheory.T.compact_element_gaussian_list hP D θ W Bs Γ.V _ _ hO.JW hθ hT.base hT.geo.hV k hk`. Use `haveI := hUf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ l : List (D.what₂.Tau × Matrix (Fin W.rank) (Fin W.rank) ℂ), (∀ q ∈ l, q.2 ∈ lieAt W q.1 ∧ ∀ t : ℝ, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hO.JW (oneP θ W q.1 q.2 t) ∈ GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.KInf D.sp.cm.sig …`. Introduce `l`. Proceed by induction on `l with`. Consider the case `nil`. Introduce `_ x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.map_nil, List.prod_nil, Prod.mk_one_one, map_one, Module.End.one_apply]`. Conclude with `⟨hx, fun Φ Φ₁ h0 h1 => by rw [GlobalTheory.SquareAgree.CoinvPass.isDatum_unique cA.surjective h1 h0]⟩`. Consider the case `cons q l ih`. Introduce `hl x hx`. Take `⟨hx1, hx2⟩` from `ih (fun q' hq' => hl q' (List.mem_cons_of_mem _ hq')) x hx`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hq1, hq2⟩` from `hl q List.mem_cons_self`. Establish `e : om ((List.map (fun q => GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hO.JW (oneP θ W q.1 q.2 1)) (q :: l)).prod, 1) x = om (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.conjU W 1 hO.JW (oneP θ W q.1 q.2 1), 1) (om ((l.map fun q => GlobalT …`. Rewrite using `[List.map_cons, List.prod_cons, ← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, one_mul]`. Rewrite using `[e]`. Use `⟨hUst _ (hq2 1) _ hx1, fun Φ Φ₁ h0 h1 => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨Ψ, -, hΨ⟩` from `hO.algA' _ (hUle hx1)`. Rewrite using `[line_step hθ hψ hO hm.mapA hq1 U hUle (fun t z hz => hUst _ (hq2 t) z hz) hx1 hΨ h1, hx2 Φ Ψ h0 hΨ]`. Conclude with `(key l hl ΦD hΦU).2 Φ Φ₁ h0 h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_kInf_inv : GlobalTheory.FunPr.Hypotheses₂ → ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (W W₁ X : HSp D) (A : Fr W) (A₁ : Fr W₁)
     (B : Fr X) (α β : (AE D)ˣ →* Circle) (ν : Measure (GA D W)) (𝓕 : Set (GA D W)) (ν₁ : Measure (GA D W₁))

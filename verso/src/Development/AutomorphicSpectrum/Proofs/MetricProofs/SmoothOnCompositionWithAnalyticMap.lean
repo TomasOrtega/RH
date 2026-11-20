@@ -7,13 +7,11 @@ open GlobalTheory.CompanionTheory.Ar.PB.WSq GlobalTheory.CompanionTheory.Ar.PB.W
 namespace GlobalTheory.CompanionTheory.Ar.PB.WSq.Fib
 
 /- English proof (translation)
-Introduce `e n X _ A Un bp W f hUn hbp hana hW hf w hw`. Take `⟨k, hk⟩` from `A.cover (bp w)`. Establish `hV : IsOpen (Un ∩ bp ⁻¹' (A.chart k).source)` using `hbp.isOpen_inter_preimage hUn (A.chart k).open_source`. Establish `h1 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (A.chart k ∘ bp) (Un ∩ bp ⁻¹' (A.chart k).source)` using `((hana k).contDiffOn hV.uniqueDiffOn).restrict_scalars ℝ`. Establish `h2 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (f ∘ (A.chart k).symm) ((A.chart k).target ∩ (A.chart k).symm ⁻¹' W)` using `hf k`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) ((f ∘ (A.chart k).symm) ∘ (A.chart k ∘ bp)) (Un ∩ bp ⁻¹' (A.chart k).source)`. Use `h2.comp h1 ?_` and prove the remaining obligations. Introduce `x hx`. Use `⟨(A.chart k).map_source hx.2, ?_⟩` and prove the remaining obligations. Use `show (A.chart k).symm (A.chart k (bp x)) ∈ W`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(A.chart k).left_inv hx.2]`. Conclude with `hW x hx.1`. Establish `h4 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (f ∘ bp) (Un ∩ bp ⁻¹' (A.chart k).source)`. Use `h3.congr ?_` and prove the remaining obligations. Introduce `x hx`.
-
-Simplify using `only [Function.comp_apply, (A.chart k).left_inv hx.2]`. Conclude with `(h4.contDiffAt (hV.mem_nhds ⟨hw, hk⟩)).contDiffWithinAt`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem contDiffOn_comp_of_analytic_in_charts :
     ∀ (e n : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas n X) (Un : Set (Fin e → ℂ))

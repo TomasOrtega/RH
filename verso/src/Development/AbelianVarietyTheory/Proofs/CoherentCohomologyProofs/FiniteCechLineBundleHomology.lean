@@ -13,9 +13,9 @@ open GlobalTheory GlobalTheory.AbLaw
 namespace GlobalTheory.AbLaw
 
 /- English proof (translation)
-Take `⟨N, _, _, _, _, 𝒩, _, _, hN, hφ⟩` from `exists_finite_graded_module_secCube R Y f H m s M hH hM hv`. Take `⟨φ, hφ⟩` from `hφ 0`. Use `finite_grCech_homology (Fin (m + 1)) R N 𝒩 hN 0 p` as an intermediate fact. Establish `: IsIso (cechComplexMap φ)` using `isIso_cechComplexMap φ hφ`. Set `e : cechComplex (grCube (Fin (m + 1)) 𝒩 0) ≅ cechLB f M (fun i => nonzeroLocus (s i))` to `asIso (cechComplexMap φ) ≪≫ (cechLBTwZero f _ hM hH).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `Module.Finite.equiv (HomologicalComplex.homologyMapIso e p).toLinearEquiv`.
+A detailed English derivation is pending.
 -/
 theorem finite_cechLB_homology (R : Type) [CommRing R] (Y : Scheme.{0})
     (f : Y ⟶ Spec (CommRingCat.of R)) [IsNoetherianRing R] (H : LB Y) (m : ℕ)

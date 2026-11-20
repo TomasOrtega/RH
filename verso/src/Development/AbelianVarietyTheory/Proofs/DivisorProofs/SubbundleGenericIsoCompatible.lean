@@ -20,21 +20,21 @@ def extendStep (fl : Flag K r) (i : K ⟶ E) (j : Fin (r + 2)) : Σ A : X.Module
     (fun k => ⟨fl.F k, fl.ι k ≫ i⟩) j
 
 /- English proof (translation)
-The claim follows from `Fin.lastCases_last ..`.
+A detailed English derivation is pending.
 -/
 theorem extendStep_last (fl : Flag K r) (i : K ⟶ E) :
     extendStep fl i (Fin.last (r + 1)) = ⟨E, 𝟙 E⟩ := Fin.lastCases_last ..
 
 /- English proof (translation)
-The claim follows from `Fin.lastCases_castSucc ..`.
+A detailed English derivation is pending.
 -/
 theorem extendStep_castSucc (fl : Flag K r) (i : K ⟶ E) (k : Fin (r + 1)) :
     extendStep fl i k.castSucc = ⟨fl.F k, fl.ι k ≫ i⟩ := Fin.lastCases_castSucc ..
 
 /- English proof (translation)
-Proceed by induction on `k using Fin.lastCases with`. Consider the case `last`. Rewrite using `[Fin.succ_last, extendStep_last, extendStep_castSucc]`. Conclude with `⟨fl.ι _ ≫ i, Category.comp_id _⟩`. Consider the case `cast k`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately.
 
-Rewrite using `[← Fin.castSucc_succ, extendStep_castSucc, extendStep_castSucc]`. Conclude with `⟨fl.step k, fl.step_ι_assoc k i⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem exists_extendStep_step (fl : Flag K r) (i : K ⟶ E) (k : Fin (r + 1)) :
     ∃ f : (extendStep fl i k.castSucc).1 ⟶ (extendStep fl i k.succ).1,
@@ -71,9 +71,9 @@ variable {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] {Z : G
   {E E' K K' : Z.X.Modules} {r : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => rw [Flag.extendStep_last, Flag.extendStep_last]; exact ⟨φ, by simp⟩`. Consider the case `cast k`. Rewrite using `[Flag.extendStep_castSucc, Flag.extendStep_castSucc]`. Use `⟨P.gen k, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only`. Rewrite using `[Functor.map_comp, Functor.map_comp, ← Category.assoc, P.gen_ι, Category.assoc, hcomm, Category.assoc]`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_gen_extendStep (φ : Z.GenIso E E') (i : K ⟶ E) (i' : K' ⟶ E') (ψ : Z.GenIso K K')
     (hcomm : ψ.hom ≫ Z.genRes.map i' = Z.genRes.map i ≫ φ.hom) (P : FlagPair ψ r)
@@ -116,7 +116,7 @@ theorem extend_fl' {φ : Z.GenIso E E'} {i : K ⟶ E} {i' : K' ⟶ E'} {ψ : Z.G
     (extend hi hi' hE hE' hcomm P).fl' = P.fl'.extend i' hi' hE' := rfl
 
 /- English proof (translation)
-Introduce `O _ _ _ Z E E' E'' K K' K'' φ φ' i i' i'' ψ ψ' r hi hi' hi'' hE hE' hE'' hc hc' P Q hQ`. Use `⟨extend hi hi' hE hE' hc P, extend hi' hi'' hE' hE'' hc' Q, ?_⟩` and prove the remaining obligations. Rewrite using `[extend_fl, extend_fl', hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_extend_chain : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Z : GlobalTheory.Vert.Model O) (E E' E'' K K' K'' : Z.X.Modules) (φ : Z.GenIso E E') (φ' : Z.GenIso E' E'') (i : K ⟶ E) (i' : K' ⟶ E') (i'' : K'' ⟶ E'') (ψ : Z.GenIso K K') (ψ' : Z.GenIso K' K'') (r : ℕ), GlobalTheory.VB.IsSubbundle i → GlobalTheory.VB.IsSubbundle i' → GlobalTheory.VB.IsSubbundle i'' → GlobalTheory.VB.IsVB E (r + 1) → GlobalTheory.VB.IsVB E' (r + 1) → GlobalTheory.VB.IsVB E'' (r + 1) → ψ.hom ≫ Z.genRes.map i' = Z.genRes.map i ≫ φ.hom → ψ'.hom ≫ Z.genRes.map i'' = Z.genRes.map i' ≫ φ'.hom → ∀ (P : GlobalTheory.Vert.Model.FlagPair ψ r) (Q : GlobalTheory.Vert.Model.FlagPair ψ' r), Q.fl = P.fl' → ∃ (P₁ : GlobalTheory.Vert.Model.FlagPair φ (r + 1)) (Q₁ : GlobalTheory.Vert.Model.FlagPair φ' (r + 1)), Q₁.fl = P₁.fl' := by
   intro O _ _ _ Z E E' E'' K K' K'' φ φ' i i' i'' ψ ψ' r hi hi' hi'' hE hE' hE'' hc hc' P Q hQ

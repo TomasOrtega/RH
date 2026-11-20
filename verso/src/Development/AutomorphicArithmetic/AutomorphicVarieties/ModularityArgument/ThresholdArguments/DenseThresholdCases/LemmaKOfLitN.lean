@@ -10,7 +10,7 @@ section
 open Formalism.GaloisCohomology
 namespace UpperTheory.V.ZK
 /- English proof (translation)
-The claim follows from `lemmaK hB (_root_.UpperTheory.V.HV.U.pt_s hN) hN.coh.lfK hN.coh.ltK`.
+A detailed English derivation is pending.
 -/
 theorem lemmaK_of_litN_alt (hN : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) (hB : BOdd) : ∃ CK, LemmaK CK :=
   lemmaK hB (_root_.UpperTheory.V.HV.U.pt_s hN) hN.coh.lfK hN.coh.ltK

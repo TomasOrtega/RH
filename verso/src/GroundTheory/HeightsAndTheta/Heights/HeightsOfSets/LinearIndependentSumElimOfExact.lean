@@ -14,7 +14,7 @@ noncomputable section
 variable {K : Type*} [Field K] [NumberField K]
 
 /- English proof (translation)
-Simplify using `only [gramDet]`. Use `congr 3`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem gramDet_comap {E M : Type*} [AddCommGroup E] [Module (𝓞 K) E] [Module.Finite (𝓞 K) E]
     [Module.Projective (𝓞 K) E] [AddCommGroup M] [Module (𝓞 K) M] [Module.Finite (𝓞 K) M]
@@ -25,7 +25,7 @@ theorem gramDet_comap {E M : Type*} [AddCommGroup E] [Module (𝓞 K) E] [Module
   congr 3
 
 /- English proof (translation)
-Rewrite using `[HermitianBundle.degree_eq_arithDegree, arithDegree_eq _ hs hcard, GroundTheory.Heights₂.Heights.degreeWith]`. Simplify using `only [gramDet_comap, Submodule.subtype_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem HermitianBundle.degree_eq_of_linearIndependent (E : HermitianBundle K)
     (F : Submodule (𝓞 K) E.carrier) {ι : Type*} [Fintype ι] [DecidableEq ι] {s : ι → F}
@@ -44,9 +44,9 @@ variable {A B C : Type*} [AddCommGroup A] [Module (𝓞 K) A] [AddCommGroup B] [
 omit [NumberField K] in
 
 /- English proof (translation)
-Establish `h1` using `rank_quotient_add_rank_of_isDomain (LinearMap.range i)`. Establish `hker : LinearMap.ker p = LinearMap.range i` using `hex.linearMap_ker_eq`. Set `e1 : (B ⧸ LinearMap.range i) ≃ₗ[𝓞 K] C` to `(Submodule.quotEquivOfEq _ _ hker.symm).trans (p.quotKerEquivOfSurjective hp)`. Set `e2 : A ≃ₗ[𝓞 K] LinearMap.range i` to `LinearEquiv.ofInjective i hi`. Rewrite `h1` using `[← Module.finrank_eq_rank, ← Module.finrank_eq_rank, ← Module.finrank_eq_rank]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Normalize the coercions in `at h1`. Rewrite `h1` using `[e1.finrank_eq, ← e2.finrank_eq]`. Use linear arithmetic over natural numbers and integers.
+Put the expressions in a common number system so they can be compared. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_eq_add_of_exact [Module.Finite (𝓞 K) A] [Module.Finite (𝓞 K) B]
     [Module.Finite (𝓞 K) C] (hi : Function.Injective i) (hp : Function.Surjective p)
@@ -67,13 +67,13 @@ variable {m n : Type*} [Fintype m] [Fintype n]
 omit [NumberField K] in
 
 /- English proof (translation)
-Rewrite `hs'`, `hs''`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Rewrite `hg` using `[Fintype.sum_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at hg`. Establish `h2 : ∑ j, g (Sum.inr j) • s'' j = 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `congrArg p hg` as an intermediate fact. Simplify `this` using `[map_add, map_sum, map_smul, hex.apply_apply_eq_zero, hu]`. Establish `hr` using `hs'' _ h2`. Establish `h1 : ∑ k, g (Sum.inl k) • s' k = 0`. Apply `hi` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [hr, zero_smul, Finset.sum_const_zero, add_zero] at hg`. Rewrite using `[map_sum, map_zero]`. Simplify `hg` using `[map_smul]`. Establish `hl` using `hs' _ h1`. Introduce and unpack `(k | j)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `exacts [hl k, hr j]`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent_sumElim_of_exact (hi : Function.Injective i) (hex : Function.Exact i p)
     {s' : m → A} {s'' : n → C} {u : n → B} (hu : ∀ j, p (u j) = s'' j)
@@ -99,29 +99,25 @@ theorem linearIndependent_sumElim_of_exact (hi : Function.Injective i) (hex : Fu
 omit [NumberField K] in
 
 /- English proof (translation)
-Use `set w := Sum.elim (fun k ↦ i (s' k)) u`. Use `set N := Submodule.span (𝓞 K) (Set.range w)`. Use `set S := N ⊔ LinearMap.range i`. Rewrite using `[← Submodule.card_quotient_mul_card_quotient S N le_sup_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : S.map N.mkQ = LinearMap.range (N.mkQ ∘ₗ i)`. Rewrite using `[Submodule.map_sup, Submodule.mkQ_map_self, bot_sup_eq, LinearMap.range_comp]`. Establish `hker : LinearMap.ker (N.mkQ ∘ₗ i) = Submodule.span (𝓞 K) (Set.range s')`. Use extensionality with `x`. Simplify using `only [LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨g, hg⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).mp hx`. Rewrite `hg` using `[Fintype.sum_sum_type]`. Simplify using `only [w, Sum.elim_inl, Sum.elim_inr] at hg`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h2 : ∑ j, g (Sum.inr j) • s'' j = 0`. Use `congrArg p hg` as an intermediate fact. Simplify `this` using `[map_add, map_sum, map_smul, hex.apply_apply_eq_zero, hu]`. Establish `hr` using `(Fintype.linearIndependent_iff.mp hs'') _ h2`. Simplify using `only [hr, zero_smul, Finset.sum_const_zero, add_zero] at hg`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: i (∑ k, g (Sum.inl k) • s' k) = i x`. Rewrite using `[← hg, map_sum]`. Simplify using `[map_smul]`. Rewrite using `[← hi this]`. Conclude with `Submodule.sum_mem _ fun k _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨k, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hx`. Establish `: i x ∈ (Submodule.span (𝓞 K) (Set.range s')).map i` using `Submodule.mem_map_of_mem hx`. Rewrite `this` using `[Submodule.map_span]`. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨k, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨Sum.inl k, rfl⟩`. Rewrite using `[hS, ← hker]`. Conclude with `Nat.card_congr (LinearMap.quotKerEquivRange _).toEquiv.symm`. Use `set φ := (Submodule.span (𝓞 K) (Set.range s'')).mkQ ∘ₗ p`. Establish `hφ : Function.Surjective φ` using `(Submodule.mkQ_surjective _).comp hp`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker φ = S`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [φ, LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero] at hx`. Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun (𝓞 K)).mp hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hy : x - ∑ j, b j • u j ∈ LinearMap.range i`. Rewrite using `[← hex.linearMap_ker_eq, LinearMap.mem_ker, map_sub, map_sum]`. Simplify using `only [map_smul, hu, hb, sub_self]`. Establish `hN : ∑ j, b j • u j ∈ N` using `Submodule.sum_mem _ fun j _ ↦ Submodule.smul_mem _ _ (Submodule.subset_span ⟨Sum.inr j, rfl⟩)`. Use `Submodule.add_mem_sup hN hy` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Break down `k with k | j` into its components or cases.
-
-Simplify using `[φ, w, hex.apply_apply_eq_zero]`. Simplify using `only [φ, w, SetLike.mem_coe, LinearMap.mem_ker, LinearMap.coe_comp, Function.comp_apply, Sum.elim_inr, hu, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Introduce and unpack `_ ⟨y, rfl⟩`. Simplify using `[φ, hex.apply_apply_eq_zero]`.
-
-Rewrite using `[← hker]`. Conclude with `Nat.card_congr (φ.quotKerEquivOfSurjective hφ).toEquiv`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quotient_sumElim_of_exact (hi : Function.Injective i) (hp : Function.Surjective p)
     (hex : Function.Exact i p) {s' : m → A} {s'' : n → C} {u : n → B} (hu : ∀ j, p (u j) = s'' j)
@@ -200,21 +196,19 @@ namespace HermitianExtension
 variable {E' E E'' : HermitianBundle K} (X : HermitianExtension E' E E'')
 
 /- English proof (translation)
-Set `L : FibreSpace E'.metric σ →ₗ[ℂ] FibreSpace E.metric σ` to `{ toFun := fun x ↦ X.incl.lTensor (ComplexAt σ) x map_add' := map_add _ map_smul' := lTensor_complex_smul σ X.incl }`. Set `W` to `LinearMap.range L`. Establish `: FiniteDimensional ℂ W` using `inferInstance`. Establish `: CompleteSpace W` using `FiniteDimensional.complete ℂ W`. Set `a : m → FibreSpace E.metric σ` to `fun k ↦ fibreVec E.metric σ (X.incl (s' k))`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b : n → FibreSpace E.metric σ` to `fun j ↦ fibreVec E.metric σ (u j)`. Establish `ha : ∀ k, a k ∈ W` using `fun k ↦ ⟨fibreVec E'.metric σ (s' k), by`. Express the relevant statement in the definitionally equal form `X.incl.lTensor (ComplexAt σ) ((1 : ComplexAt σ) ⊗ₜ s' k) = _`. Rewrite using `[LinearMap.lTensor_tmul]`. Use the proof step `rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key` using `re_det_gram_sumElim_ge W a ha b`. Establish `hga : gram ℂ a = gram ℂ (fun k ↦ fibreVec E'.metric σ (s' k))`. Use extensionality with `i k`. Conclude with `X.incl_isometric σ (1 ⊗ₜ s' i) (1 ⊗ₜ s' k)`. Set `P : FibreSpace E.metric σ →ₗ[ℂ] FibreSpace E''.metric σ` to `{ toFun := fun x ↦ X.proj.lTensor (ComplexAt σ) x map_add' := map_add _ map_smul' := lTensor_complex_smul σ X.proj }`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : ∀ y : Fibre σ E'.carrier, X.proj.lTensor (ComplexAt σ) (X.incl.lTensor (ComplexAt σ) y) = 0`. Introduce `y`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.lTensor_comp, X.exact.linearMap_comp_eq_zero, LinearMap.lTensor_zero, LinearMap.zero_apply]`. Establish `hPL : ∀ y, P (L y) = 0` using `fun y ↦ hcomp y`. Establish `hQ : ∀ j, P (Wᗮ.starProjection (b j)) = fibreVec E''.metric σ (X.proj (u j))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j`. Rewrite using `[Submodule.starProjection_orthogonal_val, map_sub]`. Take `⟨y, hy⟩` from `W.starProjection_apply_mem (b j)`. Rewrite using `[← hy, hPL, sub_zero]`. Express the relevant statement in the definitionally equal form `X.proj.lTensor (ComplexAt σ) ((1 : ComplexAt σ) ⊗ₜ u j) = _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[LinearMap.lTensor_tmul]`. Both sides reduce to the same expression. Establish `hperp : ∀ j (w : Fibre σ E'.carrier), (E.metric.form σ).inner (X.incl.lTensor (ComplexAt σ) w) (Wᗮ.starProjection (b j)) = 0` using `fun j w ↦ Submodule.inner_right_of_mem_orthogonal (K := W) ⟨w, rfl⟩ (Wᗮ.starProjection_apply_mem (b j))`. Establish `hgq : gram ℂ (fun j ↦ Wᗮ.starProjection (b j)) = gram ℂ (fun j ↦ fibreVec E''.metric σ (X.proj (u j)))`. Use extensionality with `j k`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[gram_apply, gram_apply, ← hQ j, ← hQ k]`. Conclude with `(X.proj_coisometric σ _ _ (hperp j) (hperp k)).symm`. Establish `hfam : (fun k ↦ fibreVec E.metric σ (Sum.elim (fun k ↦ X.incl (s' k)) u k)) = Sum.elim a b`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases k with k | j <;> rfl`.
-
-Simplify using `only [gramDet]`. Rewrite using `[hfam, ← hga, ← hgq]`. Conclude with `key`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramDet_sumElim_ge (σ : K →+* ℂ) {m n : Type*} [Fintype m] [DecidableEq m] [Fintype n]
     [DecidableEq n] (s' : m → E'.carrier) (u : n → E.carrier) :
@@ -279,24 +273,22 @@ def subIncl : F.comap X.incl →ₗ[𝓞 K] F := X.incl.restrict fun _ hx ↦ hx
 def subProj : F →ₗ[𝓞 K] F.map X.proj := X.proj.restrict fun _ hx ↦ Submodule.mem_map_of_mem hx
 
 /- English proof (translation)
-The claim follows from `fun _ _ h ↦ Subtype.ext (X.incl_injective (congrArg Subtype.val h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem subIncl_injective : Function.Injective (X.subIncl F) := fun _ _ h ↦
   Subtype.ext (X.incl_injective (congrArg Subtype.val h))
 
 /- English proof (translation)
-Introduce and unpack `⟨y, x, hx, rfl⟩`. Conclude with `⟨⟨x, hx⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem subProj_surjective : Function.Surjective (X.subProj F) := by
   rintro ⟨y, x, hx, rfl⟩
   exact ⟨⟨x, hx⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`. Establish `h0 : X.proj (y : E.carrier) = 0` using `congrArg Subtype.val hy`. Take `⟨x, hx⟩` from `(X.exact (y : E.carrier)).mp h0`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨x, ?_⟩, Subtype.ext hx⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `X.incl x ∈ F`. Rewrite using `[hx]`. Conclude with `y.2`. Introduce and unpack `⟨x, rfl⟩`.
-
-Conclude with `Subtype.ext (X.exact.apply_apply_eq_zero (x : E'.carrier))`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem subExact : Function.Exact (X.subIncl F) (X.subProj F) := by
   intro y
@@ -312,27 +304,25 @@ theorem subExact : Function.Exact (X.subIncl F) (X.subProj F) := by
     exact Subtype.ext (X.exact.apply_apply_eq_zero (x : E'.carrier))
 
 /- English proof (translation)
-The claim follows from `finrank_eq_add_of_exact (X.subIncl_injective F) (X.subProj_surjective F) (X.subExact F)`.
+A detailed English derivation is pending.
 -/
 theorem rank_sub_eq : E.rank F = E'.rank (F.comap X.incl) + E''.rank (F.map X.proj) :=
   finrank_eq_add_of_exact (X.subIncl_injective F) (X.subProj_surjective F) (X.subExact F)
 
 /- English proof (translation)
-Use `set F' := F.comap X.incl`. Use `set F'' := F.map X.proj`. Take `⟨s', hs'⟩` from `HermitianBundle.exists_linearIndependent_rank E' F'`. Take `⟨s'', hs''⟩` from `HermitianBundle.exists_linearIndependent_rank E'' F''`. Use `choose u hu using fun j ↦ X.subProj_surjective F (s'' j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw` using `linearIndependent_sumElim_of_exact (X.subIncl_injective F) (X.subExact F) hu hs' hs''`. Establish `hcard : Fintype.card (Fin (E'.rank F') ⊕ Fin (E''.rank F'')) = E.rank F`. Rewrite using `[Fintype.card_sum, Fintype.card_fin, Fintype.card_fin]`. Conclude with `(X.rank_sub_eq F).symm`. Rewrite using `[E.degree_eq_of_linearIndependent F hw hcard, E'.degree_eq_of_linearIndependent F' hs' (Fintype.card_fin _), E''.degree_eq_of_linearIndependent F'' hs'' (Fintype.card_fin _), card_quotient_sumElim_of_exact (X.subIncl_injective F) (X.subProj_surjective F) (X.subExact F) hu hs'']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin'` using `finite_quotient_span hs' (by rw [Fintype.card_fin]; rfl)`. Establish `hfin''` using `finite_quotient_span hs'' (by rw [Fintype.card_fin]; rfl)`. Establish `hc' : (0 : ℝ) < Nat.card (F' ⧸ Submodule.span (𝓞 K) (Set.range s'))`. Conclude with `Nat.card_pos` after adjusting the coercions. Establish `hc'' : (0 : ℝ) < Nat.card (F'' ⧸ Submodule.span (𝓞 K) (Set.range s''))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Nat.card_pos` after adjusting the coercions. Rewrite using `[Nat.cast_mul, Real.log_mul hc'.ne' hc''.ne']`. Establish `hli' : LinearIndependent (𝓞 K) (fun k ↦ (s' k : E'.carrier))` using `hs'.map' F'.subtype (Submodule.ker_subtype _)`. Establish `hli'' : LinearIndependent (𝓞 K) (fun j ↦ (s'' j : E''.carrier))` using `hs''.map' F''.subtype (Submodule.ker_subtype _)`. Establish `hG : ∀ σ : K →+* ℂ, Real.log (gramDet E'.metric σ (fun k ↦ (s' k : E'.carrier))) + Real.log (gramDet E''.metric σ (fun j ↦ (s'' j : E''.carrier))) ≤ Real.log (gramDet E.metric σ (fun k ↦ ((Sum.elim (fun k ↦ X.subIncl F (s' k)) u k : F) : E.carrier)))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `σ`. Establish `h1` using `gramDet_pos E'.metric σ hli'`. Establish `h2` using `gramDet_pos E''.metric σ hli''`. Rewrite using `[← Real.log_mul h1.ne' h2.ne']`. Use `Real.log_le_log (mul_pos h1 h2) ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hfam : (fun k ↦ ((Sum.elim (fun k ↦ X.subIncl F (s' k)) u k : F) : E.carrier)) = Sum.elim (fun k ↦ X.incl (s' k : E'.carrier)) (fun j ↦ (u j : E.carrier))`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `rcases k with k | j <;> rfl`. Establish `hsu : (fun j ↦ (s'' j : E''.carrier)) = fun j ↦ X.proj (u j : E.carrier)`. Use function extensionality and compare the values at `j`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[← hu j]`. Both sides reduce to the same expression. Rewrite using `[hfam, hsu]`. Conclude with `X.gramDet_sumElim_ge σ _ _`. Establish `hsum` using `Finset.sum_le_sum (fun σ (_ : σ ∈ (Finset.univ : Finset (K →+* ℂ))) ↦ hG σ)`.
-
-Rewrite `hsum` using `[Finset.sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem degree_submodule_le : E.degree F ≤ E'.degree (F.comap X.incl) + E''.degree (F.map X.proj) := by
   set F' := F.comap X.incl

@@ -11,7 +11,7 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `σ _ I w hI hint hdim hw`. Take `⟨hd, hdvr⟩` from `hDVR σ I w hI hint hdim hw`. Set `: Algebra (JacobianAtCurvePoint.ptLoc w) (pointLocalRing I w)` to `inferInstanceAs (Algebra (JacobianAtCurvePoint.ptLoc w) (JacobianAtCurvePoint.ptQuot I w))`. Establish `: IsScalarTower (MvPolynomial σ ℂ) (JacobianAtCurvePoint.ptLoc w) (pointLocalRing I w)` using `inferInstanceAs (IsScalarTower (MvPolynomial σ ℂ) (JacobianAtCurvePoint.ptLoc w) (JacobianAtCurvePoint.ptQuot I w))`. Conclude with `JacobianAtCurvePoint.exists_of_isDiscreteValuationRing I w hw (pointLocalRing I w) (by exact Ideal.Quotient.mk_surjective) (by exact Ideal.mk_ker)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem NormalCurveJacobian.proof (hDVR : NormalCurvePointDVR.Statement) : NormalCurveJacobian.Statement := by
   intro σ _ I w hI hint hdim hw

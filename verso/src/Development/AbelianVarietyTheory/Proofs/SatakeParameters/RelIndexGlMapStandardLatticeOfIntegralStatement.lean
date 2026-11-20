@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.EsymmInvMulEsymm
 open GlobalTheory.LatHecke GlobalTheory.SatakeInv
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.LatHecke.relIndex_glMap_std_of_integral` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FRelIndexGlMapStandardLatticeOfIntegral.lean&line=49#L49)
 -/

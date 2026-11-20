@@ -21,14 +21,14 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 open GroundTheory.Heights₂.Heights.LowerBoundFree in
 
 /- English proof (translation)
-The claim follows from `HodgeFlagArith.proof HodgeFlagNeZero.proof (HodgeFlagRatioTrdeg.proof HodgeFlagRatioFieldEq.full HodgeFlagMinorTrdeg.proof)`.
+A detailed English derivation is pending.
 -/
 theorem hodgeFlagArith : HodgeFlagArith.Statement :=
   HodgeFlagArith.proof HodgeFlagNeZero.proof
     (HodgeFlagRatioTrdeg.proof HodgeFlagRatioFieldEq.full HodgeFlagMinorTrdeg.proof)
 
 /- English proof (translation)
-Introduce `h` and use `GroundTheory.Heights₂.Heights.LowerBoundFree.PushDown.proof (GlobalTheory.T.generic_degree_of_arith_system h) GlobalTheory.CompanionTheory.Ar.Giv.ProjF.pfStep hodgeFlagArith`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pushDown :
     ReciprocityTheory.ChartRestriction.G.Geo.ArithIntersectionSystemStatement →

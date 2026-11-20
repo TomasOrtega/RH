@@ -22,7 +22,7 @@ Both sides reduce to the same expression.
 theorem idxN_eq_card (A B : Submodule R W) : idxN A B = Nat.card (A ⧸ B.comap A.subtype) := rfl
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.relIndex_mul_relIndex _ _ _ ((Submodule.toAddSubgroup_le _ _).mpr h1) ((Submodule.toAddSubgroup_le _ _).mpr h2)`.
+A detailed English derivation is pending.
 -/
 theorem idxN_mul {A B C : Submodule R W} (h1 : A ≤ B) (h2 : B ≤ C) :
     idxN B A * idxN C B = idxN C A :=
@@ -30,19 +30,17 @@ theorem idxN_mul {A B C : Submodule R W} (h1 : A ≤ B) (h2 : B ≤ C) :
     ((Submodule.toAddSubgroup_le _ _).mpr h2)
 
 /- English proof (translation)
-The claim follows from `AddSubgroup.relIndex_eq_one.trans (Submodule.toAddSubgroup_le _ _)`.
+A detailed English derivation is pending.
 -/
 theorem idxN_eq_one {A B : Submodule R W} : idxN A B = 1 ↔ A ≤ B :=
   AddSubgroup.relIndex_eq_one.trans (Submodule.toAddSubgroup_le _ _)
 
 /- English proof (translation)
-Take `⟨P, hP, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.1 ((covBy_iff_quot_is_simple h.le).1 h)`. Use `⟨P, hP, fun r => ⟨fun hr y hy => ?_, fun hr => ?_⟩, by rw [idxN_eq_card]; exact Nat.card_congr e.toEquiv⟩` and prove the remaining obligations. Establish `: r • (Submodule.Quotient.mk ⟨y, hy⟩ : Y ⧸ X.comap Y.subtype) = 0`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[map_smul, map_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `Submodule.Quotient.mk_surjective P (e (Submodule.Quotient.mk ⟨y, hy⟩))`. Rewrite using `[← ha, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `P.mul_mem_right a hr`. Rewrite `this` using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (e.symm (Submodule.Quotient.mk 1))`. Establish `h0 : r • e.symm (Submodule.Quotient.mk 1) = 0`. Rewrite using `[← hy, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `hr y y.2`. Rewrite `h0` using `[← map_smul, EmbeddingLike.map_eq_zero_iff, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`.
-
-Simplify using `using h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_max_of_covBy {X Y : Submodule R W} (h : X ⋖ Y) :
     ∃ P : Ideal R, P.IsMaximal ∧ (∀ r : R, r ∈ P ↔ ∀ y ∈ Y, r • y ∈ X) ∧ idxN Y X = Nat.card (R ⧸ P) := by
@@ -65,7 +63,7 @@ theorem exists_max_of_covBy {X Y : Submodule R W} (h : X ⋖ Y) :
     simpa using h0
 
 /- English proof (translation)
-Use `CompleteLattice.Iic_coatomic_of_compact_element ((Submodule.fg_iff_compact Y).1 hY)` as an intermediate fact. Break down `eq_top_or_exists_le_coatom (⟨X, h.le⟩ : Set.Iic Y) with e | ⟨Z, hZ, hle⟩` into its components or cases. Conclude with `absurd (congrArg Subtype.val e) h.ne`. Conclude with `⟨Z.1, hle, (covBy_iff_coatom_Iic Z.2).2 hZ⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_covBy {X Y : Submodule R W} (hY : Y.FG) (h : X < Y) : ∃ Z, X ≤ Z ∧ Z ⋖ Y := by
   have := CompleteLattice.Iic_coatomic_of_compact_element ((Submodule.fg_iff_compact Y).1 hY)
@@ -81,13 +79,13 @@ variable {K V : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [M
 omit [StarRing K] [FiniteDimensional K V] in
 
 /- English proof (translation)
-Take `⟨d, hd, hdY⟩` from `indexBasic_denom (nonZeroDivisors (𝓞 K)) Y X hY (by rw [indexBasic_locS_top (K := K) X hX.span_eq_top]; exact le_top)`. Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {d}))`. Establish `hn : Ideal.absNorm (Ideal.span {d}) ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hd0`. Establish `: Module.Finite (𝓞 K) Y` using `Module.Finite.iff_fg.mpr hY`. Establish `: Module.Finite ℤ (Y ⧸ X.comap Y.subtype)` using `Module.Finite.trans (𝓞 K) _`. Establish `: Finite (Y ⧸ X.comap Y.subtype)`. Apply `Module.finite_of_fg_torsion` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q`. Take `⟨y, rfl⟩` from `Submodule.mkQ_surjective (X.comap Y.subtype) q`. Use `⟨⟨(Ideal.absNorm (Ideal.span {d}) : ℤ), mem_nonZeroDivisors_of_ne_zero (by exact_mod_cast hn)⟩, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Ideal.absNorm (Ideal.span {d}) : ℤ) • Submodule.mkQ (X.comap Y.subtype) y = 0`. Rewrite using `[← map_zsmul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(Ideal.absNorm (Ideal.span {d}) : ℤ) • (y : V) ∈ X`. Rewrite using `[natCast_zsmul, ← Nat.cast_smul_eq_nsmul (𝓞 K), ← hc, mul_smul]`. Conclude with `X.smul_mem c (hdY y y.2)`. Rewrite using `[idxN_eq_card]`. Conclude with `Nat.card_pos.ne'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idxN_ne_zero {X Y : Submodule (𝓞 K) V} (hX : Submodule.IsLattice K X) (hY : Y.FG) :
     idxN Y X ≠ 0 := by
@@ -114,7 +112,7 @@ theorem idxN_ne_zero {X Y : Submodule (𝓞 K) V} (hX : Submodule.IsLattice K X)
 
 omit [StarRing K] [FiniteDimensional K V] in
 /- English proof (translation)
-The claim follows from `Submodule.IsLattice.of_le_of_isLattice_of_fg K h1 (hY.fg.of_le h2)`.
+A detailed English derivation is pending.
 -/
 theorem lattice_between {X Y Z : Submodule (𝓞 K) V} (hX : Submodule.IsLattice K X)
     (hY : Submodule.IsLattice K Y) (h1 : X ≤ Z) (h2 : Z ≤ Y) : Submodule.IsLattice K Z :=
@@ -124,11 +122,11 @@ variable (h : V →ₗ⋆[K] V →ₗ[K] K) (hs : h.IsSymm) (hn : h.Nondegenerat
 include hs hn
 
 /- English proof (translation)
-Establish `dl` using `dualLattice (𝓞 K) K V h hs hn star_algebraMap_ringOfIntegers_mem_range`. Establish `an` using `(dualBasic (𝓞 K) K V h hs star_algebraMap_ringOfIntegers_mem_range).1`. Use `⟨lt_of_le_of_ne (an _ _ hc.le) fun e => hc.ne ?_, fun Z h1 h2 => ?_⟩` and prove the remaining obligations. Rewrite using `[← (dl X hX).2.1, ← e, (dl Y hY).2.1]`. Establish `hZ` using `lattice_between (dl Y hY).1 (dl X hX).1 h1.le h2.le`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `a1` using `an _ _ h1.le`. Establish `a2` using `an _ _ h2.le`. Rewrite `a1` using `[(dl Y hY).2.1]`. Rewrite `a2` using `[(dl X hX).2.1]`. Break down `hc.eq_or_eq a2 a1 with e | e` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `h2.ne (by rw [← e, (dl Z hZ).2.1])`. Conclude with `h1.ne (by rw [← e, (dl Z hZ).2.1])`.
+A detailed English derivation is pending.
 -/
 theorem dual_covBy {X Y : Submodule (𝓞 K) V} (hX : Submodule.IsLattice K X)
     (hY : Submodule.IsLattice K Y) (hc : X ⋖ Y) : dual h Y ⋖ dual h X := by
@@ -146,15 +144,13 @@ theorem dual_covBy {X Y : Submodule (𝓞 K) V} (hX : Submodule.IsLattice K X)
     · exact h1.ne (by rw [← e, (dl Z hZ).2.1])
 
 /- English proof (translation)
-Take `⟨P, hP, hPm, hPi⟩` from `exists_max_of_covBy hc`. Take `⟨Q, hQ, hQm, hQi⟩` from `exists_max_of_covBy (dual_covBy h hs hn hX hY hc)`. Use `set σ := locBasic_sigma (genusCovol_hinj (K := K)) star_algebraMap_ringOfIntegers_mem_range with hσ`. Establish `hσσ : ∀ r, σ (σ r) = r` using `fun r => genusCovol_hinj (by`. Rewrite using `[locBasic_sigma_spec, locBasic_sigma_spec, star_star])`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : 𝓞 K ≃+* 𝓞 K` to `RingEquiv.ofBijective σ (Function.Involutive.bijective hσσ)`. Establish `hle : P ≤ Q.comap σ`. Introduce `r hr`. Rewrite using `[Ideal.mem_comap, hQm]`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[dualBasic_mem_dual]`. Introduce `y hy`. Use `hx _ ((hPm r).1 hr y hy)` as an intermediate fact. Rewrite `this` using `[genusBasic_hsmul_left genusCovol_hinj star_algebraMap_ringOfIntegers_mem_range]`. Rewrite using `[genusBasic_hsmul_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hPQ : P = Q.comap σ` using `hP.eq_of_le (Ideal.comap_ne_top σ hQ.ne_top) hle`. Establish `hm : Q = P.map (e : 𝓞 K →+* 𝓞 K)`. Rewrite using `[hPQ]`. Conclude with `(Ideal.map_comap_of_surjective σ e.surjective Q).symm`.
-
-Rewrite using `[hPi, hQi]`. Conclude with `(Nat.card_congr (Ideal.quotientEquiv P Q e hm).toEquiv).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idxN_dual_of_covBy {X Y : Submodule (𝓞 K) V} (hX : Submodule.IsLattice K X)
     (hY : Submodule.IsLattice K Y) (hc : X ⋖ Y) : idxN (dual h X) (dual h Y) = idxN Y X := by
@@ -182,13 +178,13 @@ theorem idxN_dual_of_covBy {X Y : Submodule (𝓞 K) V} (hX : Submodule.IsLattic
   exact (Nat.card_congr (Ideal.quotientEquiv P Q e hm).toEquiv).symm
 
 /- English proof (translation)
-Establish `an` using `(dualBasic (𝓞 K) K V h hs star_algebraMap_ringOfIntegers_mem_range).1`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `Y hY hle hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `hle.eq_or_lt with rfl | hlt` into its components or cases. Rewrite using `[← hi, idxN_eq_one.2 le_rfl, idxN_eq_one.2 le_rfl]`. Take `⟨Z, hXZ, hc⟩` from `exists_covBy hY.fg hlt`. Establish `hZ` using `lattice_between hX hY hXZ hc.le`. Establish `m1` using `idxN_mul hXZ hc.le`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n1` using `idxN_ne_zero hX hZ.fg`. Establish `n2` using `idxN_ne_zero hZ hY.fg`. Establish `n3 : idxN Y Z ≠ 1` using `fun e => hc.lt.not_ge (idxN_eq_one.1 e)`. Establish `hlt' : idxN Z X < n`. Rewrite using `[← hi, ← m1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_mul_of_one_lt_right (Nat.pos_of_ne_zero n1) (by omega)`. Rewrite using `[← idxN_mul (an _ _ hc.le) (an _ _ hXZ), ih _ hlt' Z hZ hXZ rfl, idxN_dual_of_covBy h hs hn hZ hY hc, ← hi, ← m1, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idxN_dual {X : Submodule (𝓞 K) V} (hX : Submodule.IsLattice K X) : ∀ (n : ℕ)
     (Y : Submodule (𝓞 K) V), Submodule.IsLattice K Y → X ≤ Y → idxN Y X = n →
@@ -217,23 +213,21 @@ end GlobalTheory.Mass.DiscOrder
 namespace GlobalTheory.Mass.DiscOrder
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ h _ hs hn M hM`. Establish `dl` using `dualLattice (𝓞 K) K V h hs hn star_algebraMap_ringOfIntegers_mem_range`. Take `⟨an, -, -, hint, huni⟩` from `dualBasic (𝓞 K) K V h hs star_algebraMap_ringOfIntegers_mem_range`. Establish `ld` using `locDual (𝓞 K) K V h hs star_algebraMap_ringOfIntegers_mem_range`. Establish `hMd` using `(hint M).1 hM.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : ∀ N, IsIntLat h N → discN h N ≠ 0` using `fun N hN => idxN_ne_zero hN.1 (dl N hN.1).1.fg`. Use `⟨h0 M hM, ?_, fun M' hM' hle => ⟨idxN_ne_zero hM.1 hM'.1.fg, ?_⟩, fun N hN => ?_, fun P hP hd => ?_, fun M' hM' hle P hP hu => ?_⟩` and prove the remaining obligations. Rewrite using `[huni, discN, idxN_eq_one]`. Conclude with `⟨fun e => ⟨hM.2, e⟩, fun e => e.2⟩`. Establish `hMd'` using `(hint M').1 hM'.2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[discN, discN, ← idxN_mul (hle.trans hMd') (an _ _ hle), ← idxN_mul hle hMd', idxN_dual h hs hn hM.1 _ M' hM'.1 hle rfl]`. Expand and normalize the polynomial expressions, which then agree. Establish `hNi : IsIntLat h N` using `⟨hN.1, (((genusBasic (𝓞 K) K V h hs star_algebraMap_ringOfIntegers_mem_range).2.2 M N hM.1.fg hN.1.fg hN.2).2).1 hM.2⟩`. Use `⟨hNi, genusCovol_lemmaS _ M (dual h M) N (dual h N) hMd ((hint N).1 hNi.2) rfl (h0 M hM) (h0 N hNi) fun P hP => ?_⟩` and prove the remaining obligations. Take `⟨g, hg, hgL⟩` from `hN.2 P hP`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hle` using `locBasic_hcompl_le (K := K) P`. Establish `key : ∀ A B : Submodule (𝓞 K) V, gmap g (loc (K` using `K) P A) = loc (K := K) P B → gmap g (locS P.primeCompl A) = locS P.primeCompl B := by`. Introduce `A B e`. Rewrite using `[← genusCovol_locS_locS hle A, gmap_locS_comm]`. Express the relevant statement in the definitionally equal form `locS P.primeCompl (gmap g (loc (K := K) P A)) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e]`. Conclude with `genusCovol_locS_locS hle B`. Take `⟨a1, a2, -, -, a5⟩` from `isomAct (𝓞 K) K V h g hg M`. Establish `b1` using `(ld (gmap g M) (a5.2 hM.1).fg).1 P hP.isPrime`. Establish `b2` using `(ld N hN.1.fg).1 P hP.isPrime`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, g.injective, genusCovol_addData g _ _ (key _ _ hgL), genusCovol_addData g _ _ (key _ _ ?_)⟩` and prove the remaining obligations. Rewrite using `[b2.1, ← b2.2, ← hgL, ← a2 P, b1.2, ← b1.1, a1, (isomAct (𝓞 K) K V h g hg (dual h M)).2.1 P]`. Establish `b` using `(ld M hM.1.fg).1 P hP.isPrime`. Rewrite using `[IsUnimodularAt, b.2, ← b.1]`. Use `le_antisymm ((locBasic_locS_mono _ fun x hx => ?_).trans (locBasic_locS_idem _ M).le) (locBasic_locS_mono _ hMd)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(discN h M : 𝓞 K), Submonoid.subset_closure ⟨hd, fun t ht => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `: t = (discN h M : 𝓞 K)` using `genusCovol_hinj (by rw [ht]; simp)`. Rewrite using `[this]` and apply the resulting hypothesis. Rewrite using `[Nat.cast_smul_eq_nsmul]`. Use `AddSubgroup.nsmul_index_mem (H := M.toAddSubgroup.addSubgroupOf (dual h M).toAddSubgroup) ⟨x, hx⟩` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `b` using `(ld M hM.1.fg).1 P hP.isPrime`. Rewrite `hu` using `[IsUnimodularAt, b.2, ← b.1]`. Use `le_antisymm (locBasic_locS_mono _ hle) ?_` and prove the remaining obligations. Rewrite using `[← hu]`.
-
-Conclude with `locBasic_locS_mono _ (((hint M').1 hM'.2).trans (an _ _ hle))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K V : Type) [Field K] [NumberField K] [StarRing K] [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (h : V →ₗ⋆[K] V →ₗ[K] K), IsCMUnram K → h.IsSymm → h.Nondegenerate → ∀ M : Submodule (𝓞 K) V, IsIntLat h M → discN h M ≠ 0 ∧ (discN h M = 1 ↔ IsUnimodular h M) ∧ (∀ M' : Submodule (𝓞 K) V, IsIntLat h M' → M ≤ M' → idxN M' M ≠ 0 ∧ discN h M = discN h M' * idxN M' M ^ 2) ∧ (∀ N ∈ genus h M, IsIntLat h N ∧ discN h N = discN h M) ∧ (∀ P : Ideal (𝓞 K), P.IsMaximal → ((discN h M : ℕ) : 𝓞 K) ∉ P → IsUnimodularAt h P M) ∧ (∀ M' : Submodule (𝓞 K) V, IsIntLat h M' → M ≤ M' → ∀ P : Ideal (𝓞 K), P.IsMaximal → IsUnimodularAt h P M → loc (K := K) P M = loc (K := K) P M') := by
   intro K V _ _ _ _ _ _ _ _ h _ hs hn M hM

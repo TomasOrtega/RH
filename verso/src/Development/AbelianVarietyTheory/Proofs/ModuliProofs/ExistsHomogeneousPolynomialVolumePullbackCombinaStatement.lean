@@ -11,7 +11,7 @@ open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZV
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.VolPoly.exists_vol_linComb_poly` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FModuliProofs%2FExistsHomogeneousPolynomialVolumePullbackCombina.lean&line=268#L268)
 -/

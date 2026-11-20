@@ -19,7 +19,7 @@ variable {p : ℕ} [hp : Fact p.Prime] {L : Type*} [NontriviallyNormedField L] [
 abbrev πB : T.B := algebraMap Γ T.B T.π
 
 /- English proof (translation)
-Use `T.nontrivial_B` as an intermediate fact. Conclude with `(IsLocalization.Away.algebraMap_isUnit T.π).ne_zero`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem πB_ne_zero : T.πB ≠ 0 := by
   have := T.nontrivial_B
@@ -33,26 +33,26 @@ def IsUnitTerm (P : T.B) (i : ℤ) : Prop :=
 variable {T}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h _ m _ => h m, fun h n => h n n le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem digLe_iff_prefixLe {x : Γ} {Θ : ℝ} : T.DigLe x Θ ↔ ∀ n, T.PrefixLe x n Θ :=
   ⟨fun h _ m _ => h m, fun h n => h n n le_rfl⟩
 
 /- English proof (translation)
-Introduce `n` and use `(h n).trans hΘ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DigLe.mono {x : Γ} {Θ Θ' : ℝ} (h : T.DigLe x Θ) (hΘ : Θ ≤ Θ') : T.DigLe x Θ' :=
   fun n => (h n).trans hΘ
 
 /- English proof (translation)
-The claim follows from `digLe_iff_prefixLe.2 fun n => T.prefixLe_add (digLe_iff_prefixLe.1 hx n) (digLe_iff_prefixLe.1 hy n)`.
+A detailed English derivation is pending.
 -/
 theorem DigLe.add {x y : Γ} {Θ : ℝ} (hx : T.DigLe x Θ) (hy : T.DigLe y Θ) : T.DigLe (x + y) Θ :=
   digLe_iff_prefixLe.2 fun n =>
     T.prefixLe_add (digLe_iff_prefixLe.1 hx n) (digLe_iff_prefixLe.1 hy n)
 
 /- English proof (translation)
-Introduce `n` and use `by rw [T.coeff_teich] split_ifs · exact h · simpa using (norm_nonneg a).trans h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem digLe_teich {a : L} {Θ : ℝ} (h : ‖a‖ ≤ Θ) : T.DigLe (T.teich a) Θ := fun n => by
   rw [T.coeff_teich]
@@ -61,9 +61,9 @@ theorem digLe_teich {a : L} {Θ : ℝ} (h : ‖a‖ ≤ Θ) : T.DigLe (T.teich a
   · simpa using (norm_nonneg a).trans h
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h n`. Rewrite using `[← T.coeff_π_mul_succ]`. Conclude with `h (n + 1)`. Introduce `h n`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `n with`. Consider the case `zero => rw [T.coeff_zero, map_mul, T.red_π, zero_mul, norm_zero]`. Conclude with `hΘ`. Consider the case `succ n => rw [T.coeff_π_mul_succ]`. Conclude with `h n`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem digLe_π_mul_iff {x : Γ} {Θ : ℝ} (hΘ : 0 ≤ Θ) : T.DigLe (T.π * x) Θ ↔ T.DigLe x Θ := by
   constructor
@@ -74,12 +74,12 @@ theorem digLe_π_mul_iff {x : Γ} {Θ : ℝ} (hΘ : 0 ≤ Θ) : T.DigLe (T.π * 
     | succ n => rw [T.coeff_π_mul_succ]; exact h n
 
 /- English proof (translation)
-The claim follows from `T.mem_int_iff.1 hx`.
+A detailed English derivation is pending.
 -/
 theorem digLe_one_of_mem_int {x : Γ} (hx : x ∈ T.int) : T.DigLe x 1 := T.mem_int_iff.1 hx
 
 /- English proof (translation)
-The claim follows from `T.convergesAt_of_forall_weight_le (ρ := 1) (Y := Θ) hr0 hr1 fun n => by rw [one_pow, mul_one]; exact hx n`.
+A detailed English derivation is pending.
 -/
 theorem DigLe.convergesAt {x : Γ} {Θ : ℝ} (hx : T.DigLe x Θ) {r : ℝ} (hr0 : 0 < r) (hr1 : r < 1) :
     ConvergesAt (T.zcoeff x) r :=
@@ -87,7 +87,7 @@ theorem DigLe.convergesAt {x : Γ} {Θ : ℝ} (hx : T.DigLe x Θ) {r : ℝ} (hr0
     rw [one_pow, mul_one]; exact hx n
 
 /- English proof (translation)
-The claim follows from `ciSup_le fun j => T.zcoeff_weight_le hΘ (fun n => (mul_le_of_le_one_right (norm_nonneg _) (pow_le_one₀ hr0.le hr1.le)).trans (hx n)) j`.
+A detailed English derivation is pending.
 -/
 theorem DigLe.gaussNorm_le {x : Γ} {Θ : ℝ} (hx : T.DigLe x Θ) (hΘ : 0 ≤ Θ) {r : ℝ} (hr0 : 0 < r)
     (hr1 : r < 1) : gaussNorm (T.zcoeff x) r ≤ Θ :=
@@ -95,19 +95,17 @@ theorem DigLe.gaussNorm_le {x : Γ} {Θ : ℝ} (hx : T.DigLe x Θ) (hΘ : 0 ≤ 
     (mul_le_of_le_one_right (norm_nonneg _) (pow_le_one₀ hr0.le hr1.le)).trans (hx n)) j
 
 /- English proof (translation)
-Introduce `_ hr0 hr1` and use `by rw [T.coeffB_algebraMap]; exact hx.convergesAt hr0 hr1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem DigLe.convAll {x : Γ} {Θ : ℝ} (hx : T.DigLe x Θ) : T.ConvAll (algebraMap Γ T.B x) :=
   fun _ hr0 hr1 => by rw [T.coeffB_algebraMap]; exact hx.convergesAt hr0 hr1
 
 /- English proof (translation)
-Establish `hinv : (T.πB)⁻¹ = IsLocalization.Away.invSelf T.π` using `inv_eq_of_mul_eq_one_right (IsLocalization.Away.mul_invSelf T.π)`. Establish `hc : T.ConvAll (IsLocalization.Away.invSelf T.π)` using `fun ρ _ _ => by`. Rewrite using `[T.coeffB_invSelf]`. Conclude with `convergesAt_pi_single _ _ _`. Establish `hpow : ∀ n : ℕ, T.ConvAll ((IsLocalization.Away.invSelf T.π) ^ n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Rewrite using `[pow_zero]`. Simplify using `using (convAll_π_pow (T := T) 0)`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `succ n ih => rw [pow_succ]`. Conclude with `ih.mul hc`. Break down `i with n | n` into its components or cases. Simplify `(convAll_π_pow (T := T) n)` using `[zpow_natCast]`. Rewrite using `[zpow_negSucc, ← inv_pow, hinv]`.
-
-Conclude with `hpow _`.
+Separate the alternatives or extract the components of the hypothesis. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem convAll_πB_zpow (i : ℤ) : T.ConvAll (T.πB ^ i) := by
   have hinv : (T.πB)⁻¹ = IsLocalization.Away.invSelf T.π :=
@@ -126,15 +124,15 @@ theorem convAll_πB_zpow (i : ℤ) : T.ConvAll (T.πB ^ i) := by
   · rw [zpow_negSucc, ← inv_pow, hinv]; exact hpow _
 
 /- English proof (translation)
-The claim follows from `(digLe_one_of_mem_int hU).convAll`.
+A detailed English derivation is pending.
 -/
 theorem convAll_algebraMap_of_mem_int {U : Γ} (hU : U ∈ T.int) :
     T.ConvAll (algebraMap Γ T.B U) := (digLe_one_of_mem_int hU).convAll
 
 /- English proof (translation)
-Use `set N := (-i).toNat`. Use `set M := i.toNat`. Establish `hNM : i + (N : ℤ) = M` using `by have := Int.toNat_sub_toNat_neg i; omega`. Establish `h : T.πB ^ i * algebraMap Γ T.B x * algebraMap Γ T.B T.π ^ N = algebraMap Γ T.B (T.π ^ M * x)`. Rewrite using `[map_mul, map_pow, mul_right_comm, ← zpow_natCast, ← zpow_add₀ T.πB_ne_zero, hNM, zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[T.coeffB_eq h]`. Use function extensionality and compare the values at `k`. Use `T.zcoeff_π_pow_mul M x (k - i)` as an intermediate fact. Rewrite `this` using `[show k - i + (M : ℤ) = k + (N : ℤ) by omega]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeffB_πB_zpow_mul (i : ℤ) (x : Γ) :
     T.coeffB (T.πB ^ i * algebraMap Γ T.B x) = fun k => T.zcoeff x (k - i) := by
@@ -152,32 +150,32 @@ theorem coeffB_πB_zpow_mul (i : ℤ) (x : Γ) :
   exact this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, T.int.one_mem, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnitTerm_one : T.IsUnitTerm 1 0 :=
   ⟨1, T.int.one_mem, by simp, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, T.int.one_mem, by simp, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnitTerm_πB_zpow (i : ℤ) : T.IsUnitTerm (T.πB ^ i) i :=
   ⟨1, T.int.one_mem, by simp, by simp⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨U, hU, h1, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUnitTerm_algebraMap {U : Γ} (hU : U ∈ T.int) (h1 : ‖T.red U‖ = 1) :
     T.IsUnitTerm (algebraMap Γ T.B U) 0 :=
   ⟨U, hU, h1, by simp⟩
 
 /- English proof (translation)
-The claim follows from `hij ▸ h`.
+A detailed English derivation is pending.
 -/
 theorem IsUnitTerm.congr_idx {P : T.B} {i j : ℤ} (h : T.IsUnitTerm P i) (hij : i = j) :
     T.IsUnitTerm P j := hij ▸ h
 
 /- English proof (translation)
-Take `⟨U, hU, hU1, rfl⟩` from `h`. Take `⟨U', hU', hU1', rfl⟩` from `h'`. Use `⟨U * U', T.int.mul_mem hU hU', by rw [map_mul, norm_mul, hU1, hU1', one_mul], ?_⟩` and prove the remaining obligations. Rewrite using `[zpow_add₀ T.πB_ne_zero, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsUnitTerm.mul {P P' : T.B} {i i' : ℤ} (h : T.IsUnitTerm P i) (h' : T.IsUnitTerm P' i') :
     T.IsUnitTerm (P * P') (i + i') := by
@@ -187,9 +185,9 @@ theorem IsUnitTerm.mul {P P' : T.B} {i i' : ℤ} (h : T.IsUnitTerm P i) (h' : T.
   rw [zpow_add₀ T.πB_ne_zero, map_mul]; ring
 
 /- English proof (translation)
-Take `⟨U, hU, hU1, rfl⟩` from `h`. Take `⟨V, hV, hUV⟩` from `T.exists_inv_mem_int hU hU1`. Establish `hV1 : ‖T.red V‖ = 1`. Use `congrArg (fun y => ‖T.red y‖) hUV` as an intermediate fact. Simplify `this` using `[map_mul, norm_mul, hU1]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨V, hV, hV1, ?_⟩` and prove the remaining obligations. Establish `hUVB : algebraMap Γ T.B U * algebraMap Γ T.B V = 1` using `by rw [← map_mul, hUV, map_one]`. Rewrite using `[mul_inv, zpow_neg, inv_eq_of_mul_eq_one_right hUVB]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsUnitTerm.inv {P : T.B} {i : ℤ} (h : T.IsUnitTerm P i) : T.IsUnitTerm P⁻¹ (-i) := by
   obtain ⟨U, hU, hU1, rfl⟩ := h
@@ -202,9 +200,9 @@ theorem IsUnitTerm.inv {P : T.B} {i : ℤ} (h : T.IsUnitTerm P i) : T.IsUnitTerm
   rw [mul_inv, zpow_neg, inv_eq_of_mul_eq_one_right hUVB]
 
 /- English proof (translation)
-Introduce `h0`. Take `⟨U, hU, hU1, hP⟩` from `h.inv`. Rewrite `hP` using `[h0, inv_zero]`. Establish `hU0 : algebraMap Γ T.B U = 0`. Break down `mul_eq_zero.1 hP.symm with h1 | h1` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `absurd h1 (zpow_ne_zero _ T.πB_ne_zero)`. Conclude with `h1`. Establish `: U = 0` using `T.algebraMap_injective (by rw [hU0, map_zero])`. Rewrite `hU1` using `[this, map_zero, norm_zero]`. Conclude with `zero_ne_one hU1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsUnitTerm.ne_zero {P : T.B} {i : ℤ} (h : T.IsUnitTerm P i) : P ≠ 0 := by
   intro h0
@@ -219,7 +217,7 @@ theorem IsUnitTerm.ne_zero {P : T.B} {i : ℤ} (h : T.IsUnitTerm P i) : P ≠ 0 
   exact zero_ne_one hU1
 
 /- English proof (translation)
-Proceed by induction on `k using Int.induction_on with`. Consider the case `zero => rw [zpow_zero]; exact isUnitTerm_one.congr_idx (by ring)`. Consider the case `succ k ih => rw [zpow_add_one₀ h.ne_zero]; exact (ih.mul h).congr_idx (by ring)`. Consider the case `pred k ih`. Rewrite using `[zpow_sub_one₀ h.ne_zero]; exact (ih.mul h.inv).congr_idx (by ring)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsUnitTerm.zpow {P : T.B} {i : ℤ} (h : T.IsUnitTerm P i) (k : ℤ) :
     T.IsUnitTerm (P ^ k) (k * i) := by
@@ -230,16 +228,16 @@ theorem IsUnitTerm.zpow {P : T.B} {i : ℤ} (h : T.IsUnitTerm P i) (k : ℤ) :
     rw [zpow_sub_one₀ h.ne_zero]; exact (ih.mul h.inv).congr_idx (by ring)
 
 /- English proof (translation)
-Take `⟨U, hU, -, rfl⟩` from `h`. Conclude with `(convAll_πB_zpow i).mul (convAll_algebraMap_of_mem_int hU)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsUnitTerm.convAll {P : T.B} {i : ℤ} (h : T.IsUnitTerm P i) : T.ConvAll P := by
   obtain ⟨U, hU, -, rfl⟩ := h
   exact (convAll_πB_zpow i).mul (convAll_algebraMap_of_mem_int hU)
 
 /- English proof (translation)
-Use `le_antisymm (ciSup_le fun n => ?_) ?_` and prove the remaining obligations. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hn]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem gaussNorm_single_zero (c : L) (r : ℝ) :
     gaussNorm (Pi.single 0 c) r = ‖c‖ := by
@@ -253,7 +251,7 @@ theorem gaussNorm_single_zero (c : L) (r : ℝ) :
           (convergesAt_pi_single (0 : ℤ) c r).bddAbove 0
 
 /- English proof (translation)
-Take `⟨U, hU, hU1, rfl⟩` from `h`. Rewrite using `[mul_assoc, ← map_mul, coeffB_πB_zpow_mul]`. Establish `e : (fun k => T.zcoeff (U * T.teich a) (k - i)) = fun k => T.zcoeff (U * T.teich a) (k + -i)` using `by funext k; rw [sub_eq_add_neg]`. Rewrite using `[e, gaussNorm_shift hr0, neg_neg, T.gaussNorm_zcoeff_mul hr0 hr1 (T.convergesAt_of_mem_int hU hr0 hr1) ((digLe_teich (T := T) (le_refl ‖a‖)).convergesAt hr0 hr1), T.gaussNorm_eq_one_of_mem_int hU hU1 hr0 hr1, T.zcoeff_teich, gaussNorm_single_zero a r]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem IsUnitTerm.gaussNorm_mul_teich {P : T.B} {i : ℤ} (h : T.IsUnitTerm P i) (a : L) {r : ℝ}
     (hr0 : 0 < r) (hr1 : r < 1) :
@@ -275,11 +273,11 @@ variable (F : T.TeichFrob)
 def frobPow (k : ℤ) (a : L) : L := ((iterateFrobeniusEquiv L p F.a : RingAut L) ^ k) a
 
 /- English proof (translation)
-Take `⟨U, hU, hU1, rfl⟩` from `h`. Establish `hπt : T.IsUnitTerm (F.toB T.πB) 1`. Establish `h1` using `(isUnitTerm_πB_zpow (T := T) 1).mul (isUnitTerm_algebraMap F.u_mem_int F.norm_red_u)`. Rewrite `h1` using `[zpow_one, add_zero]`. Rewrite using `[F.toB_algebraMap, F.φ_π, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Establish `hUt : T.IsUnitTerm (F.toB (algebraMap Γ T.B U)) 0`. Rewrite using `[F.toB_algebraMap]`. Use `isUnitTerm_algebraMap (F.map_int U hU) ?_` and prove the remaining obligations. Rewrite using `[F.red_φ, norm_pow, hU1, one_pow]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_zpow₀]`. Conclude with `((hπt.zpow i).mul hUt).congr_idx (by ring)`.
+A detailed English derivation is pending.
 -/
 theorem IsUnitTerm.toB {P : T.B} {i : ℤ} (h : T.IsUnitTerm P i) : T.IsUnitTerm (F.toB P) i := by
   obtain ⟨U, hU, hU1, rfl⟩ := h

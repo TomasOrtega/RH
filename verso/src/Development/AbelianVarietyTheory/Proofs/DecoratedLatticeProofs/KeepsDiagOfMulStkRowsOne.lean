@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.Core.Rk.SW
 
 /- English proof (translation)
-Rewrite using `[keepsDiag_iff]`. Establish `key : ∀ s : Fin n ⊕ Fin n, ∀ j, M (finSumFinEquiv s) (finSumFinEquiv (Sum.inl j)) + M (finSumFinEquiv s) (finSumFinEquiv (Sum.inr j)) = β (s.elim id id) j`. Introduce `s j`. Establish `h1 : ∑ k, M (finSumFinEquiv s) k * stkRows (1 : Matrix (Fin n) (Fin n) R) 1 k j = stkRows β β (finSumFinEquiv s) j` using `congrFun (congrFun h _) j`. Rewrite `h1` using `[← finSumFinEquiv.sum_comp, Fintype.sum_sum_type]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [stkRows, Matrix.submatrix_apply, id, Equiv.symm_apply_apply, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Matrix.one_apply, mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true] at h1`. Rewrite using `[h1]`. Apply the tactic sequence `rcases s with s | s <;> rfl`. Introduce `i j`. Rewrite using `[key (Sum.inr i), key (Sum.inl i)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

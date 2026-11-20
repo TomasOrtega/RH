@@ -10,22 +10,22 @@ import ReciprocityTheory.ReductiveGroups.DiscreteSeries.HighestWeights.FromHC
 namespace ReciprocityTheory.ChartRestriction.DS.HW
 
 /- English proof (translation)
-The claim follows from `kRepPiece_of kRepRel kRepStable`.
+A detailed English derivation is pending.
 -/
 theorem kRepPiece : KRepPieceStatement := kRepPiece_of kRepRel kRepStable
 
 /- English proof (translation)
-The claim follows from `compRed_of kRepRel kRepStable kRepPiece`.
+A detailed English derivation is pending.
 -/
 theorem compRed : CompRedStatement := compRed_of kRepRel kRepStable kRepPiece
 
 /- English proof (translation)
-The claim follows from `derivExists_of derivExists_allPos`.
+A detailed English derivation is pending.
 -/
 theorem derivExists : DerivExistsStatement := derivExists_of derivExists_allPos
 
 /- English proof (translation)
-The claim follows from `uRepCompRed_of uRepHom derivExists kRepRel compRed`.
+A detailed English derivation is pending.
 -/
 theorem uRepCompRed : URepCompRedStatement := uRepCompRed_of uRepHom derivExists kRepRel compRed
 

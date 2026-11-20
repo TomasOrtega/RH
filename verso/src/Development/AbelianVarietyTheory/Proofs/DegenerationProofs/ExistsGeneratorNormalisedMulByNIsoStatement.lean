@@ -13,7 +13,7 @@ open GlobalTheory.ZH ReciprocityTheory.ChartRestriction.G.Out Classical
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ZH.MulExtend.exists_gen_mulRel` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDegenerationProofs%2FExistsGeneratorNormalisedMulByNIso.lean&line=143#L143)
 -/

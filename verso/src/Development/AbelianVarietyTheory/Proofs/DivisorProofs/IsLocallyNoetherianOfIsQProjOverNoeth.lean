@@ -6,9 +6,9 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G.Geo.T
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ _ X f h`. Take `⟨N, i, hi, -, e⟩` from `h`. Establish `: IsProper (PSpace.str R N)` using `isProper_str R N`. Establish `: LocallyOfFiniteType f`. Rewrite using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `: IsLocallyNoetherian (Sp R)` using `inferInstanceAs (IsLocallyNoetherian (Spec (CommRingCat.of R)))`. Conclude with `LocallyOfFiniteType.isLocallyNoetherian f`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isLocallyNoetherian_of_isQProjOver_noeth :
     ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (X : Scheme.{0}) (f : X ⟶ Sp R),

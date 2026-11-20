@@ -11,11 +11,11 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestric
 namespace GlobalTheory.Published.AbelianDeRham
 
 /- English proof (translation)
-Introduce `H H' R _ A _ g hA hg I κ hκ R₀ _ π hπ hI A₀ _ i h`. Use `hA.smooth` as an intermediate fact. Use `hA.proper` as an intermediate fact. Take `⟨h₁, -⟩` from `H' R I κ hκ R₀ π hπ hI _ _ (A.hom ≫ 𝟙 _) A₀.hom i inferInstance inferInstance inferInstance (by rw [Category.comp_id]; exact h.1) (liftMor κ h).isMor`. Establish `hP` using `(H R A g hA hg).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun c d e ↦ Subtype.ext (h₁.1 ?_), fun c ↦ ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val e` as an intermediate fact. Simplify `this` using `only [GrpMor.coe_pull]`. Take `⟨c', hc'⟩` from `h₁.2 c.1`. Establish `hm : c' ∈ prim (dp0 R) (𝟙 _) A`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[show prim (dp0 R) (𝟙 _) A = ⊤ from hP]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `⟨⟨c', hm⟩, Subtype.ext (by rw [GrpMor.coe_pull]; exact hc')⟩`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Supply the required witnesses or components.
 -/
 theorem rigid_of_free_of_crystallineDeRham : GlobalTheory.Published.AbelianDeRham.Free →
     GlobalTheory.Published.CrystallineDeRham → GlobalTheory.Published.AbelianDeRham.Rigid := by

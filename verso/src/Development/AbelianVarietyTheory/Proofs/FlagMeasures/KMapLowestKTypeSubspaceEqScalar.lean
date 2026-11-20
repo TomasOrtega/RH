@@ -15,15 +15,13 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {Λ : Fin n → ℝ} {S : Submodule ℂ H}
 
 /- English proof (translation)
-Take `⟨_, hSst, hSirr, _, _⟩` from `hS`. Establish `hle : (W.comap T).map S.subtype ≤ S`. Introduce and unpack `_ ⟨s, _, rfl⟩`. Conclude with `s.2`. Establish `hst : IsKStableOn ε σ ((W.comap T).map S.subtype)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `g hg _ ⟨s, hs, rfl⟩`. Use `⟨⟨σ g s, hSst g hg s s.2⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show T _ ∈ W`. Rewrite using `[hT g hg s _ rfl]`. Conclude with `hW g hg _ hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Break down `hSirr _ hle hst with h | h` into its components or cases. Use `left`. Introduce `s hs`. Establish `hmem : (s : H) ∈ (W.comap T).map S.subtype` using `⟨s, hs, rfl⟩`. Rewrite `hmem` using `[h, Submodule.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Subtype.ext hmem`. Use `right`. Introduce `s`. Establish `hmem : (s : H) ∈ (W.comap T).map S.subtype`. Rewrite using `[h]`.
-
-Conclude with `s.2`. Take `⟨t, ht, hts⟩` from `hmem`. Take `rfl : t = s` from `Subtype.ext hts`. Conclude with `ht`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem comap_bot_or_top (hS : IsKTypeOf ε σ Λ S) (T : S →ₗ[ℂ] H)
     (hT : ∀ k ∈ Kset ε, ∀ s s' : S, (s' : H) = σ k s → T s' = σ k (T s))
@@ -55,7 +53,7 @@ theorem comap_bot_or_top (hS : IsKTypeOf ε σ Λ S) (T : S →ₗ[ℂ] H)
     exact ht
 
 /- English proof (translation)
-Establish `hbot : IsKStableOn ε σ (⊥ : Submodule ℂ H)`. Introduce `g _ v hv`. Rewrite `hv`, the goal using `[Submodule.mem_bot]`. Rewrite using `[hv, map_zero]`. Simplify `comap_bot_or_top hS T hT ⊥ hbot` using `only [Submodule.mem_bot]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem inj_or_zero (hS : IsKTypeOf ε σ Λ S) (T : S →ₗ[ℂ] H)
     (hT : ∀ k ∈ Kset ε, ∀ s s' : S, (s' : H) = σ k s → T s' = σ k (T s)) :
@@ -67,21 +65,17 @@ theorem inj_or_zero (hS : IsKTypeOf ε σ Λ S) (T : S →ₗ[ℂ] H)
   simpa only [Submodule.mem_bot] using comap_bot_or_top hS T hT ⊥ hbot
 
 /- English proof (translation)
-Establish `hS'` using `hS`. Take `⟨hfin, hSst, _, ⟨v, hvS, hv0, hvw⟩, hdom⟩` from `hS'`. Establish `key : ∀ s : S, ∀ t ∈ Kset ε, ∀ c : ℂ, σ t (T s) = c • T s → σ t s = c • (s : H)`. Introduce `s t ht c h`. Establish `h2 : T (⟨σ t s, hSst t ht s s.2⟩ - c • s) = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_smul, hT t ht s _ rfl, h, sub_self]`. Conclude with `congrArg Subtype.val (sub_eq_zero.mp (hinj _ h2))`. Use `⟨inferInstance, ?_, ?_, ⟨T ⟨v, hvS⟩, ⟨⟨v, hvS⟩, rfl⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `g hg _ ⟨s, rfl⟩`. Conclude with `⟨⟨σ g s, hSst g hg s s.2⟩, hT g hg s _ rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `S' hle hst`. Break down `comap_bot_or_top hS T hT S' hst with h | h` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`. Introduce `x hx`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, rfl⟩` from `hle hx`. Rewrite using `[h s hx, map_zero]`. Conclude with `Submodule.zero_mem _`. Use `right`. Use `le_antisymm hle ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨s, rfl⟩`. Conclude with `h s`. Introduce `h`. Conclude with `hv0 (congrArg Subtype.val (hinj _ h))`. Introduce `θ hθ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hT _ hθ ⟨v, hvS⟩ ⟨_, hSst _ hθ v hvS⟩ rfl, ← map_smul]`. Conclude with `congrArg T (Subtype.ext (hvw θ hθ))`. Introduce `μ w hw hw0 hww`. Take `⟨s, rfl⟩` from `hw`. Use `hdom μ s s.2 ?_ ?_` and prove the remaining obligations.
-
-Introduce `h`. Apply `hw0` to reduce the goal to its premises. Take `rfl : s = 0` from `Subtype.ext h`. Conclude with `map_zero T`. Introduce `θ hθ`.
-
-Conclude with `key s _ hθ _ (hww θ hθ)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem range_isKType (hS : IsKTypeOf ε σ Λ S) (T : S →ₗ[ℂ] H)
     (hT : ∀ k ∈ Kset ε, ∀ s s' : S, (s' : H) = σ k s → T s' = σ k (T s))
@@ -124,13 +118,13 @@ theorem range_isKType (hS : IsKTypeOf ε σ Λ S) (T : S →ₗ[ℂ] H)
       exact key s _ hθ _ (hww θ hθ)
 
 /- English proof (translation)
-Establish `hS'` using `hS`. Take `⟨hfin, _, _, ⟨v, hvS, hv0, _⟩, _⟩` from `hS'`. Use `haveI : Nontrivial S := ⟨⟨⟨v, hvS⟩, 0, fun h => hv0 (congrArg Subtype.val h)⟩⟩`. Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue (LinearMap.codRestrict S T hle)`. Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hK : ∀ k ∈ Kset ε, ∀ s s' : S, (s' : H) = σ k s → (T - c • S.subtype) s' = σ k ((T - c • S.subtype) s)`. Introduce `k hk s s' hs'`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, Submodule.subtype_apply, map_sub, map_smul, hT k hk s s' hs', hs']`. Break down `inj_or_zero hS (T - c • S.subtype) hK with h | h` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `e : T w = c • (w : H)` using `congrArg Subtype.val hw.apply_eq_smul`. Use `hw.2 (h w ?_)` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, LinearMap.smul_apply, Submodule.subtype_apply, e, sub_self]`. Introduce `s`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hs` using `h s`. Rewrite `hs` using `[LinearMap.sub_apply, LinearMap.smul_apply, Submodule.subtype_apply, sub_eq_zero]`. Conclude with `hs`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar_of_range_le (hS : IsKTypeOf ε σ Λ S) (T : S →ₗ[ℂ] H)
     (hT : ∀ k ∈ Kset ε, ∀ s s' : S, (s' : H) = σ k s → T s' = σ k (T s))
@@ -159,9 +153,9 @@ theorem scalar_of_range_le (hS : IsKTypeOf ε σ Λ S) (T : S →ₗ[ℂ] H)
 end
 
 /- English proof (translation)
-Introduce `n ε lam H _ _ _ σ _ hK T hT`. Break down `inj_or_zero hK T hT with h | h` into its components or cases. Use `scalar_of_range_le hK T hT ?_` and prove the remaining obligations. Introduce `s`. Establish `hle : LinearMap.range T ≤ lowKSub ε lam σ` using `le_sSup (range_isKType hK T hT h)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hle ⟨s, rfl⟩`. Conclude with `⟨0, fun s => by rw [h s, zero_smul]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem kMap_lowKSub_scalar : ∀ (n : ℕ) (ε : Fin n → Bool) (lam : Fin n → ℝ) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsURepOn (UJset ε) σ → IsKTypeOf ε σ (lowK ε lam) (lowKSub ε lam σ) → ∀ T : lowKSub ε lam σ →ₗ[ℂ] H, (∀ k ∈ Kset ε, ∀ s s' : lowKSub ε lam σ, (s' : H) = σ k s → T s' = σ k (T s)) → ∃ c : ℂ, ∀ s, T s = c • (s : H) := by
   intro n ε lam H _ _ _ σ _ hK T hT

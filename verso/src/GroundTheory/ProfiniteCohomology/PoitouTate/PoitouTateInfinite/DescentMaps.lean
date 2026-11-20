@@ -19,9 +19,9 @@ variable {k : Type u} [CommRing k] {H G' G : Type u} [Group H] [Group G'] [Group
   [TopologicalSpace G'] [TopologicalSpace G] [IsTopologicalGroup H] [IsTopologicalGroup G'] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Use extensionality with `n x : 3`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `f.hom (((cochainsComplexι A).f n).hom x (⇑φ ∘ s)) = g.hom (((cochainsComplexι A).f n).hom x (⇑ψ ∘ s))`. Establish `e : ⇑φ ∘ s = ⇑ψ ∘ s` using `funext fun i => h (s i)`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[e, hfg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cochainsMapAlong_eq_of_forall_eq {A : Rep.{u} k G} {C : Rep.{u} k H} [IsDiscreteRep A] [IsDiscreteRep C]
     (φ ψ : H →* G) (hφ : Continuous φ) (hψ : Continuous ψ) (f : Rep.res φ A ⟶ C) (g : Rep.res ψ A ⟶ C)
@@ -35,7 +35,7 @@ theorem cochainsMapAlong_eq_of_forall_eq {A : Rep.{u} k G} {C : Rep.{u} k H} [Is
   rw [e, hfg]
 
 /- English proof (translation)
-Establish `e` using `cohomologyMapAlong_comp π hπ f φ hφ g n`. Establish `e2 : cohomologyMapAlong (π.comp φ) (hπ.comp hφ) ((Rep.resFunctor φ).map f ≫ g) n = cohomologyMapAlong φ' hφ' g' n`. Rewrite using `[cohomologyMapAlong, cohomologyMapAlong, cochainsMapAlong_eq_of_forall_eq (π.comp φ) φ' (hπ.comp hφ) hφ' ((Rep.resFunctor φ).map f ≫ g) g' hc fun b => (hg b).symm]`. Rewrite using `[← e2, e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cohomologyMapAlong_comp_apply_of_eq (φ : H →* G) (hφ : Continuous φ) (π : G →* G') (hπ : Continuous π)
     (φ' : H →* G') (hφ' : Continuous φ') (hc : ∀ σ, π (φ σ) = φ' σ) {B : Rep.{u} k G'} {A : Rep.{u} k G}
@@ -54,7 +54,7 @@ theorem cohomologyMapAlong_comp_apply_of_eq (φ : H →* G) (hφ : Continuous φ
   rfl
 
 /- English proof (translation)
-Rewrite using `[← cohomologyMapAlong_id_eq_cohomologyMap]`. Establish `e` using `cohomologyMapAlong_comp φ hφ f (MonoidHom.id H) continuous_id g n`. Establish `e2 : cohomologyMapAlong (φ.comp (MonoidHom.id H)) (hφ.comp continuous_id) ((Rep.resFunctor (MonoidHom.id H)).map f ≫ g) n = cohomologyMapAlong φ hφ (f ≫ g) n`. Rewrite using `[cohomologyMapAlong, cohomologyMapAlong, cochainsMapAlong_eq_of_forall_eq (φ.comp (MonoidHom.id H)) φ (hφ.comp continuous_id) hφ ((Rep.resFunctor (MonoidHom.id H)).map f ≫ g) (f ≫ g) (fun _ => rfl) fun _ => rfl]`. Rewrite using `[← e2, e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/

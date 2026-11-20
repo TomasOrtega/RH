@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalLatticeIsomorphism
 namespace PI.KLW
 
 /- English proof (translation)
-The claim follows from `normOne_of pairOne`.
+A detailed English derivation is pending.
 -/
 theorem normOne : NormOne := normOne_of pairOne
 

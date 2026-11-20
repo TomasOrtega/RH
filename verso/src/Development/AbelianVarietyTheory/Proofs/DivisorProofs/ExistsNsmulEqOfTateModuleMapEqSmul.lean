@@ -11,9 +11,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ l _ hl A B f φ hf`. Use `exists_nsmul_eq_of_kills_torsion K A B f l hl fun x hx => ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `(tl_lev_surj_ker K l A 1).1 x (by rwa [pow_one])`. Establish `h1 : (tmap l A B f t).lev 1 = x ≫ f.hom` using `by rw [lev_tmap, ht]`. Rewrite using `[← h1, hf, LinearMap.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((tl_lev_surj_ker K l B 1).2 _).2 ⟨φ t, by rw [pow_one]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_nsmul_eq_of_tmap_eq_smul : ∀ (K : Type) [Field K] (l : ℕ) [Fact l.Prime], (l : K) ≠ 0 →
     ∀ (A B : AbVar K) (f : A ⟶ B) (φ : Tl l A →ₗ[ℤ_[l]] Tl l B),

@@ -14,15 +14,15 @@ namespace GlobalTheory.PairingComb
 open CommutatorPairing
 
 /- English proof (translation)
-Establish `le : ∀ (jj : K → I → D.ι) (i : I), LB.wchart (LB.LinComb D F e) ψ jj ≤ h i ⁻¹ᵁ LB.wchart D (φ i) (fun k => jj k i)` using `fun jj i y hy => Set.mem_iInter.2 fun k => by`. Establish `h₁ : (ψ k ≫ F i) y ∈ D.U (jj k i)` using `Set.mem_iInter.1 (Set.mem_iInter.1 hy k) i`. Rewrite `h₁` using `[hc]`. Conclude with `h₁`. Establish `v : ∀ (Z : Scheme.{0}) (r : Z ⟶ Y') (z : Z) (jj : K → I → D.ι), r z ∈ LB.wchart (LB.LinComb D F e) ψ jj → gm r z (LB.wchart (LB.LinComb D F e) ψ jj) (∏ i, res (le jj i) (pullU (h i) _ ((t i).s fun k => jj k i)) ^ e i) = ∏ i, gm (r ≫ h i) z (LB.wchart D (φ i) fun k => jj k i) ((t …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Z r z jj hz`. Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow, gm_res r z _ hz]`. Conclude with `congrArg (· ^ e i) (gm_pull r (h i) z _ (le jj i hz) _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun jj => ∏ i, res (le jj i) (pullU (h i) _ ((t i).s fun k => jj k i)) ^ e i⟩, (CechPic.isGen_iff_germ _).2 fun y j j' hj hj' => ?_, fun Z r z J₀ hJ => ?_⟩` and prove the remaining obligations. Use `(v _ (𝟙 Y') y j hj).trans (Eq.trans ?_ (congrArg₂ (· * ·) (gm_linComb (LB.LinComb D F e) ψ ε (𝟙 Y') y j j' hj hj') (v _ (𝟙 Y') y j' hj')).symm)` and prove the remaining obligations. Establish `a : ∀ i, gm (𝟙 Y' ≫ h i) y (LB.wchart D (φ i) fun k => j k i) ((t i).s fun k => j k i) = _` using `fun i => gen_trans (ht i) (𝟙 Y' ≫ h i) y (le j i hj) (le j' i hj')`. Establish `b : ∀ k, _` using `fun k => gm_linComb D F e (𝟙 Y' ≫ ψ k) y (j k) (j' k) (Set.mem_iInter.1 hj k) (Set.mem_iInter.1 hj' k)`. Simplify using `only [a, mul_zpow, Finset.prod_mul_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Eq.trans ?_ (Finset.prod_congr rfl fun k _ => congrArg (· ^ ε k) (b k)).symm` and prove the remaining obligations. Simplify using `only [trF, ← Finset.prod_zpow, ← zpow_mul, Category.assoc, hc]`. Rewrite using `[Finset.prod_comm]`. Simplify using `only [mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : r z ∈ LB.wchart (LB.LinComb D F e) ψ (fun k i => J₀ ((r ≫ ψ k) ≫ F i))` using `Set.mem_iInter.2 fun k => Set.mem_iInter.2 fun i => hJ ((r ≫ ψ k) ≫ F i)`. Use `(v Z r z _ hz).trans (Finset.prod_congr rfl fun i _ => congrArg (· ^ e i) ?_)` and prove the remaining obligations. Conclude with `(val_of (t i) (r ≫ h i) z J₀ _ fun k => by rw [Category.assoc, Category.assoc, hc]).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_linComb {X X' Y' : Scheme.{0}} {D : LB X} {I K : Type} [Fintype I] [Fintype K]
     (F : I → (X' ⟶ X)) (e : I → ℤ) (ψ : K → (Y' ⟶ X')) (ε : K → ℤ) {Y : I → Scheme.{0}} (h : ∀ i, Y' ⟶ Y i)
@@ -66,11 +66,11 @@ theorem exists_gen_linComb {X X' Y' : Scheme.{0}} {D : LB X} {I K : Type} [Finty
 variable {S : Scheme.{0}} {G A : Over S} [GrpObj G] [GrpObj A] {D : LB A.left} {I : Type} [Fintype I]
 
 /- English proof (translation)
-Establish `hc : ∀ i (k : Fin 2), ![(snd T G).left, (translPt G x).left] k ≫ (φ i).left = (lift (fst T G ≫ m i) (snd T G ≫ φ i)).left ≫ ![(snd (T' i) A).left, (translPt A (θ₀ i).pt).left] k`. Introduce `i k`. Use `hφ i` as an intermediate fact. Use `fin_cases k`. Conclude with `congrArg CommaMorphism.left (lift_snd (fst T G ≫ m i) (snd T G ≫ φ i)).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg CommaMorphism.left (?_ : translPt G x ≫ φ i = _ ≫ translPt A (θ₀ i).pt)` and prove the remaining obligations. Rewrite using `[lift_translPt, Category.assoc, hx]`. Use `show ((fst T G ≫ x) * snd T G) ≫ φ i = _`. Rewrite using `[MonObj.mul_comp, Category.assoc]`. Take `⟨u, hu, hv⟩` from `exists_gen_linComb (fun i => (φ i).left) e _ ![n, -n] _ _ hc (fun i => (θ₀ i).φ) (fun i => (θ₀ i).isGen)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨x, u, hu⟩, rfl, fun Z t a z J₀ hJ => (hv _ (lift t a).left z J₀ hJ).trans ?_⟩` and prove the remaining obligations. Use `Finset.prod_congr rfl fun i _ => congrArg (· ^ e i) ?_` and prove the remaining obligations. Rewrite using `[← Over.comp_left, comp_lift, lift_fst_assoc, lift_snd_assoc]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_theta_linComb (φ : I → (G ⟶ A)) (hφ : ∀ i, IsMonHom (φ i)) (e : I → ℤ) {n : ℤ} {T : Over S}
     {T' : I → Over S} (m : ∀ i, T ⟶ T' i) (x : T ⟶ G) (θ₀ : ∀ i, ThetaGrp A D n (T' i))
@@ -96,19 +96,17 @@ theorem exists_theta_linComb (φ : I → (G ⟶ A)) (hφ : ∀ i, IsMonHom (φ i
   rfl
 
 /- English proof (translation)
-Establish `hL` using `LB.isLB_linComb hD (fun i => (φ i).left) e`. Use `WeilIsogeny.weilIs_of_local hG hA hL fun p => ?_` and prove the remaining obligations. Use `choose V hV H using fun i => h i p`. Use `choose θx₀ θy₀ ex ey using fun i => (H i).1`. Set `V₀ : T.left.Opens` to `⟨⋂ i, (V i : Set T.left), isOpen_iInter_of_finite fun i => (V i).isOpen⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `le : ∀ i, V₀ ≤ V i` using `fun i _ hz => Set.mem_iInter.1 hz i`. Take `⟨θx, fx, vx⟩` from `exists_theta_linComb φ hφ e (fun i => overLE (le i)) (overResι V₀ ≫ x) θx₀ (fun i => by rw [ex, ← Category.assoc, overLE_ι, Category.assoc])`. Take `⟨θy, fy, vy⟩` from `exists_theta_linComb φ hφ e (fun i => overLE (le i)) (overResι V₀ ≫ y) θy₀ (fun i => by rw [ey, ← Category.assoc, overLE_ι, Category.assoc])`. Take `⟨c', hc'⟩` from `exists_commIsOf hG hA hL θx θy`. Use `⟨V₀, Set.mem_iInter.2 hV, θx, θy, fx, fy, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : c' = unitRes V₀ (∏ i, c i ^ e i) := by`. Use `unit_ext fun z _ => ?_` and prove the remaining obligations. Use `choose J₀ hJ₀ using fun χ : (overRes V₀).left ⟶ A.left => exists_chart hD (χ z)`. Establish `e₁` using `(commIsOf_iff hL _ _ _).1 hc' _ (𝟙 _) 1 z (fun χ i => J₀ (χ ≫ (φ i).left)) (fun χ => Set.mem_iInter.2 fun i => hJ₀ (χ ≫ (φ i).left))`. Establish `e₂ : ∀ i, _` using `fun i => (commIsOf_iff hD _ _ _).1 ((H i).2 (θx₀ i) (θy₀ i) (ex i) (ey i)) _ (𝟙 _ ≫ overLE (le i)) (1 ≫ φ i) z J₀ hJ₀`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `gx : ∀ i, ((𝟙 _ ≫ overLE (le i)) ≫ (θx₀ i).pt) * (1 ≫ φ i) = ((𝟙 _ ≫ θx.pt) * 1) ≫ φ i` using `fun i => by`. Use `hφ i` as an intermediate fact. Rewrite using `[MonObj.mul_comp, ex, fx, Category.assoc, ← Category.assoc (overLE _), overLE_ι]`. Simplify using `only [Category.assoc]`. Establish `gy : ∀ i, ((𝟙 _ ≫ overLE (le i)) ≫ (θy₀ i).pt) * (1 ≫ φ i) = ((𝟙 _ ≫ θy.pt) * 1) ≫ φ i` using `fun i => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hφ i` as an intermediate fact. Rewrite using `[MonObj.mul_comp, ey, fy, Category.assoc, ← Category.assoc (overLE _), overLE_ι]`. Simplify using `only [Category.assoc]`. Establish `e₃ : ∀ i, gm (𝟙 _ ≫ overLE (le i)).left z ⊤ (unitRes (V i) (c i)) = gm (𝟙 _ ≫ V₀.ι) z ⊤ (c i)` using `fun i => by`. Use `(gm_unitRes (V i) (c i) _ z).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun q => gm q z ⊤ (c i)) (congrArg CommaMorphism.left ((Category.assoc _ _ _).trans (congrArg (𝟙 _ ≫ ·) (overLE_ι (le i)))))`. Use `e₁.symm.trans (Eq.trans ?_ (gm_unitRes V₀ _ (𝟙 _) z).symm)` and prove the remaining obligations. Unfold `commVal`. Rewrite using `[vx _ _ _ _ _ hJ₀, vx _ _ _ _ _ hJ₀, vy _ _ _ _ _ hJ₀, vy _ _ _ _ _ hJ₀, map_prod, ← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib, ← Finset.prod_inv_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations.
-
-Rewrite using `[map_zpow, ← e₃, ← e₂, commVal, gx, gy]`. Simplify using `only [mul_zpow, inv_zpow]`. Conclude with `hc'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weilIs_linComb (hG : GlobalFnsSt) (hA : IsAbelianScheme G) (hD : D.IsLB) (φ : I → (G ⟶ A))
     (hφ : ∀ i, IsMonHom (φ i)) (e : I → ℤ) {n : ℤ} {T : Over S} {x y : T ⟶ G} (c : I → Γ(T.left, ⊤)ˣ)

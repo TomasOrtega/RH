@@ -52,7 +52,7 @@ def θ {Rg : Type} [CommRing Rg] (A : Over (Sp Rg)) : A.left ⟶ (topS Rg ⊗ A)
   (lift (Over.homMk (A.hom ≫ (Sp Rg).topIso.inv) (by simp) : A ⟶ topS Rg) (𝟙 A)).left
 
 /- English proof (translation)
-Rewrite using `[θ, ← Over.comp_left, lift_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem θ_snd {Rg : Type} [CommRing Rg] (A : Over (Sp Rg)) : θ A ≫ (snd (topS Rg) A).left = 𝟙 A.left := by
   rw [θ, ← Over.comp_left, lift_snd]; rfl

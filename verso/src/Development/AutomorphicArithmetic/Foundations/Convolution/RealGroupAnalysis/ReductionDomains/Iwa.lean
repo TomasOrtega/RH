@@ -8,7 +8,7 @@ open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F _ _ _ g`. Take `⟨b, hb, k, hk, e⟩` from `Reduction.exists_adelicBorel_mul_maxCompact (K := F) (n := 2) (gl g)`. Take `⟨x, a, k', hk', hg, -, -⟩` from `UpperTheory.ConvolutionTheory.R2.M.fromGL F g b hb k hk e`. Conclude with `⟨x, a, k', hk', hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.M.iwa :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F], ∀ g : G1 F, ∃ (b : A F) (a : (A F)ˣ), ∃ k ∈ KK F, g = nU b * mD a * k := by

@@ -11,17 +11,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.SelfReciprocalLocalField Positivity
 namespace GlobalTheory.CompanionTheory.FormRatio
 
 /- English proof (translation)
-Establish `hH₀' : IsUnit H₀.det` using `isUnit_iff_ne_zero.mpr hH₀`. Establish `hB : IsUnit (cT σ A).det`. Use `isUnit_iff_ne_zero.mpr fun h0 => hH₀ ?_` and prove the remaining obligations. Establish `h1` using `congrArg Matrix.det e₀`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_mul, h0, zero_mul, zero_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1.symm`. Establish `k1 : H * A = (cT σ A)⁻¹ * H`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.nonsing_inv_mul _ hB, one_mul]`. Use `_ = (cT σ A)⁻¹ * (cT σ A * H * A) := by simp only [mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `_ = (cT σ A)⁻¹ * H := by rw [e]`. Establish `k0 : H₀ * A = (cT σ A)⁻¹ * H₀`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.nonsing_inv_mul _ hB, one_mul]`. Use `_ = (cT σ A)⁻¹ * (cT σ A * H₀ * A) := by simp only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ = (cT σ A)⁻¹ * H₀ := by rw [e₀]`. Establish `k2 : A * H₀⁻¹ = H₀⁻¹ * (cT σ A)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc H₀⁻¹ H₀ A, Matrix.nonsing_inv_mul _ hH₀', one_mul]`. Use `_ = H₀⁻¹ * ((cT σ A)⁻¹ * H₀) * H₀⁻¹ := by rw [k0]`.
-
-Use `_ = H₀⁻¹ * (cT σ A)⁻¹ * (H₀ * H₀⁻¹) := by simp only [mul_assoc]`. Use `_ = H₀⁻¹ * (cT σ A)⁻¹ := by rw [Matrix.mul_nonsing_inv _ hH₀', mul_one]`. Establish `hc : Commute A (H₀⁻¹ * H)` using `by show A * (H₀⁻¹ * H) = H₀⁻¹ * H * A`. Combine the equalities or inequalities in the displayed calculation. Take `⟨m, hm⟩` from `ClsFin.exists_aeval_of_comm A (H₀⁻¹ * H) hs hc`.
-
-Use `⟨m, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, ← mul_assoc, Matrix.mul_nonsing_inv _ hH₀', one_mul]`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eq_mul_aeval (K : Type) [Field K] (σ : K →+* K) (n : ℕ)
     (A H₀ H : Matrix (Fin n) (Fin n) K) (_hA : IsUnit A.det) (hs : A.charpoly.Separable)

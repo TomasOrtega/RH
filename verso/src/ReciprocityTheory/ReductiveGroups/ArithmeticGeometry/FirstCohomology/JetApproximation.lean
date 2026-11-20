@@ -7,7 +7,7 @@ namespace ReciprocityTheory.ChartRestriction.G.H1.JetApproximation
 variable {F R : Type*} [Field F] [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-The claim follows from `| 0 => le_rfl | n + 1 => by rw [pow_succ, pow_succ] exact mul_le_mul' (pow_le_pow_of_le h n) h`.
+A detailed English derivation is pending.
 -/
 theorem pow_le_pow_of_le {V W : Submodule F R} (h : V ≤ W) : ∀ n : ℕ, V ^ n ≤ W ^ n
   | 0 => le_rfl
@@ -16,7 +16,7 @@ theorem pow_le_pow_of_le {V W : Submodule F R} (h : V ≤ W) : ∀ n : ℕ, V ^ 
     exact mul_le_mul' (pow_le_pow_of_le h n) h
 
 /- English proof (translation)
-The claim follows from `| 0 => by rw [pow_zero] | n + 1 => by rw [pow_succ] calc (1 : Submodule F R) = 1 * 1 := (mul_one 1).symm _ ≤ V ^ n * V := mul_le_mul' (one_le_pow h1 n) h1`.
+A detailed English derivation is pending.
 -/
 theorem one_le_pow {V : Submodule F R} (h1 : 1 ≤ V) : ∀ n : ℕ, 1 ≤ V ^ n
   | 0 => by rw [pow_zero]
@@ -26,7 +26,7 @@ theorem one_le_pow {V : Submodule F R} (h1 : 1 ≤ V) : ∀ n : ℕ, 1 ≤ V ^ n
       _ ≤ V ^ n * V := mul_le_mul' (one_le_pow h1 n) h1
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `Nat.exists_eq_add_of_le hab`. Rewrite using `[pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem pow_mono {V : Submodule F R} (h1 : 1 ≤ V) {a b : ℕ} (hab : a ≤ b) : V ^ a ≤ V ^ b := by
   obtain ⟨c, rfl⟩ := Nat.exists_eq_add_of_le hab
@@ -35,7 +35,7 @@ theorem pow_mono {V : Submodule F R} (h1 : 1 ≤ V) {a b : ℕ} (hab : a ≤ b) 
     _ ≤ V ^ a * V ^ c := mul_le_mul' le_rfl (one_le_pow h1 c)
 
 /- English proof (translation)
-The claim follows from `| 0 => by intro x _ simp [Ideal.one_eq_top] | k + 1 => by rw [pow_succ] refine Submodule.mul_le.2 fun a ha b hb => ?_ rw [Submodule.restrictScalars_mem, pow_succ] exact Ideal.mul_mem_mul (pow_le_ideal_pow h k ha) (h hb)`.
+A detailed English derivation is pending.
 -/
 theorem pow_le_ideal_pow {W : Submodule F R} {m : Ideal R} (h : W ≤ m.restrictScalars F) :
     ∀ k : ℕ, W ^ k ≤ (m ^ k).restrictScalars F
@@ -49,15 +49,13 @@ theorem pow_le_ideal_pow {W : Submodule F R} {m : Ideal R} (h : W ≤ m.restrict
     exact Ideal.mul_mem_mul (pow_le_ideal_pow h k ha) (h hb)
 
 /- English proof (translation)
-Use `set W : Submodule F R := V ⊓ m.restrictScalars F`. Establish `hVW : V ≤ 1 ⊔ W`. Introduce `v hv`. Take `⟨c, hc⟩` from `hres v`. Use `Submodule.mem_sup.2 ⟨algebraMap F R c, Submodule.algebraMap_mem c, v - algebraMap F R c, ⟨V.sub_mem hv (h1 (Submodule.algebraMap_mem c)), hc⟩, add_sub_cancel _ _⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hWm : W ≤ m.restrictScalars F` using `inf_le_right`. Establish `key : ∀ n k : ℕ, W ^ k * V ^ n ≤ V ^ D ⊔ (m ^ (D + 1)).restrictScalars F`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[pow_zero, mul_one]`. Break down `le_or_gt k D with hk | hk` into its components or cases. Conclude with `le_sup_of_le_left ((pow_le_pow_of_le inf_le_left k).trans (pow_mono h1 hk))`. Use `le_sup_of_le_right ((pow_le_ideal_pow hWm k).trans ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Introduce `x hx`. Conclude with `Ideal.pow_le_pow_right hk hx`. Consider the case `succ n ih`. Introduce `k`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Submodule.mul_sup, mul_one, Submodule.mul_sup, ← mul_assoc, pow_succ, mul_right_comm (W ^ k) W]`. Use `_ ≤ _ := sup_le (ih k) (ih (k + 1))`. Simplify using `using key n 0`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem pow_le_sup {V : Submodule F R} (h1 : 1 ≤ V) {m : Ideal R}
     (hres : ∀ f : R, ∃ c : F, f - algebraMap F R c ∈ m) (D : ℕ) (n : ℕ) :
@@ -90,19 +88,15 @@ theorem pow_le_sup {V : Submodule F R} (h1 : 1 ≤ V) {m : Ideal R}
   simpa using key n 0
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `hres u`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[map_zero, sub_zero]`. Conclude with `hm _ hc u.isUnit`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `set a : R := algebraMap F R c⁻¹`. Establish `ha : a * algebraMap F R c = 1` using `by rw [← map_mul, inv_mul_cancel₀ hc0, map_one]`. Use `set x : R := -(a * u - 1)`. Establish `hxm : x ∈ m`. Establish `: a * u - 1 = a * ((u : R) - algebraMap F R c)` using `by rw [mul_sub, ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show x = -(a * u - 1) from rfl, this]`. Conclude with `m.neg_mem (m.mul_mem_left a hc)`. Establish `hxV : x ∈ V ^ n`. Use `(V ^ n).neg_mem ((V ^ n).sub_mem ?_ (Submodule.one_le.1 (one_le_pow h1 n)))` and prove the remaining obligations. Rewrite using `[show a * (u : R) = c⁻¹ • (u : R) from (Algebra.smul_def _ _).symm]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(V ^ n).smul_mem _ hu`. Use `⟨a * ∑ e ∈ Finset.range (D + 1), x ^ e, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[show a * ∑ e ∈ Finset.range (D + 1), x ^ e = c⁻¹ • ∑ e ∈ Finset.range (D + 1), x ^ e from (Algebra.smul_def _ _).symm]`. Use `(V ^ (n * D)).smul_mem _ (Submodule.sum_mem _ fun e he => ?_)` and prove the remaining obligations. Establish `hx` using `Submodule.pow_mem_pow (V ^ n) hxV e`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hx` using `[← pow_mul]`. Conclude with `pow_mono h1 (Nat.mul_le_mul_left n (Nat.lt_succ_iff.1 (Finset.mem_range.1 he))) hx`. Establish `hau : a * u = 1 - x` using `by rw [show x = -(a * u - 1) from rfl]; ring`. Establish `hgeom : (u : R) * (a * ∑ e ∈ Finset.range (D + 1), x ^ e) = 1 - x ^ (D + 1)`. Rewrite using `[← mul_assoc, mul_comm (u : R) a, hau, mul_neg_geom_sum]`.
-
-Establish `: ((u⁻¹ : Rˣ) : R) - a * ∑ e ∈ Finset.range (D + 1), x ^ e = ((u⁻¹ : Rˣ) : R) * x ^ (D + 1)`. Establish `e1 : ((u⁻¹ : Rˣ) : R) * u = 1` using `u.inv_mul`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_sub, mul_one, ← mul_assoc, e1, one_mul]`. Use `_ = _ := by rw [hgeom]; ring`.
-
-Rewrite using `[this]`. Conclude with `(m ^ (D + 1)).mul_mem_left _ (Ideal.pow_mem_pow hxm _)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_approx {V : Submodule F R} (h1 : 1 ≤ V) {m : Ideal R} (hm : ∀ x ∈ m, ¬ IsUnit x)
     (hres : ∀ f : R, ∃ c : F, f - algebraMap F R c ∈ m) (D n : ℕ) (u : Rˣ) (hu : (u : R) ∈ V ^ n) :
@@ -143,13 +137,11 @@ theorem inv_approx {V : Submodule F R} (h1 : 1 ≤ V) {m : Ideal R} (hm : ∀ x 
     exact (m ^ (D + 1)).mul_mem_left _ (Ideal.pow_mem_pow hxm _)
 
 /- English proof (translation)
-Take `⟨n, G, G', hG, hG', ⟨u, rfl⟩, hf⟩` from `hfrac f`. Take `⟨w, hw, hw'⟩` from `inv_approx h1 hm hres D n u hG'`. Establish `hGw : G * w ∈ V ^ D ⊔ (m ^ (D + 1)).restrictScalars F`. Use `pow_le_sup h1 hres D (n + n * D) ?_` and prove the remaining obligations. Rewrite using `[pow_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mul_mem_mul hG hw`. Take `⟨y, hy, z, hz, hyz⟩` from `Submodule.mem_sup.1 hGw`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Establish `hfG : f = G * ((u⁻¹ : Rˣ) : R)` using `by rw [← hf, mul_assoc, u.mul_inv, mul_one]`. Establish `: f - y = G * (((u⁻¹ : Rˣ) : R) - w) + z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hfG]`. Establish `: y = G * w - z` using `by rw [← hyz]; ring`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
-
-Conclude with `(m ^ (D + 1)).add_mem ((m ^ (D + 1)).mul_mem_left _ hw') hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jets {V : Submodule F R} (h1 : 1 ≤ V) {m : Ideal R} (hm : ∀ x ∈ m, ¬ IsUnit x)
     (hres : ∀ f : R, ∃ c : F, f - algebraMap F R c ∈ m)

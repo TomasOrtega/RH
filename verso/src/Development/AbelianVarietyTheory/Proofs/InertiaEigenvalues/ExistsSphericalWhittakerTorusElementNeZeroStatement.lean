@@ -9,7 +9,7 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.CuspRep Formalism.UG Globa
 open scoped Classical
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.JSW.NzSphRam.exists_sph_whit_tl_ne_zero) | (exact GlobalTheory.JSW.NzSphRam.exists_sph_whit_tl_ne_zero) | (intros; apply GlobalTheory.JSW.NzSphRam.exists_sph_whit_tl_ne_zero <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_spherical_whittaker_torusElement_ne_zero : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (π : CuspSub E (m + 1)) (α : {w : HeightOneSpectrum (𝓞 E) // w ∉ T} → Fin (m + 1) → ℂˣ),

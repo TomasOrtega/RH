@@ -13,7 +13,7 @@ open GlobalTheory.ChiGrid GlobalTheory.LeafRestExamples GlobalTheory.FunObj.SqNu
 open GlobalTheory.Mem.Col2.SplitChar (finIdl)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.FunObj.SqNum.nuH_inv_hasInf` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FSquareNuInvHasInfinityTypeCmType.lean&line=15#L15)
 -/

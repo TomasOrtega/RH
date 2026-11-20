@@ -21,7 +21,7 @@ section SlopeTestRemainingChoices
 variable {Ω : Type} [Field Ω] [CharZero Ω] {A : ValuationSubring Ω} {l : ℕ}
 
 /- English proof (translation)
-Unfold `Bd at *`. Take `⟨e, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[add_comm, pow_add, mul_assoc]`. Conclude with `mul_mem (pow_mem (natCast_mem A l) e) hy`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Bd.mono {k k' : ℕ} {y : Ω} (h : k ≤ k') (hy : Bd A l k y) : Bd A l k' y := by
   unfold Bd at *
@@ -30,31 +30,31 @@ private theorem Bd.mono {k k' : ℕ} {y : Ω} (h : k ≤ k') (hy : Bd A l k y) :
   exact mul_mem (pow_mem (natCast_mem A l) e) hy
 
 /- English proof (translation)
-The claim follows from `mul_mem (pow_mem (natCast_mem A l) k) hy`.
+A detailed English derivation is pending.
 -/
 private theorem Bd.of_mem {k : ℕ} {y : Ω} (hy : y ∈ A) : Bd A l k y :=
   mul_mem (pow_mem (natCast_mem A l) k) hy
 
 /- English proof (translation)
-Unfold `Bd at *`. Rewrite using `[mul_add]`. Conclude with `add_mem hx hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Bd.add {k : ℕ} {x y : Ω} (hx : Bd A l k x) (hy : Bd A l k y) : Bd A l k (x + y) := by
   unfold Bd at *; rw [mul_add]; exact add_mem hx hy
 
 /- English proof (translation)
-Unfold `Bd at *`. Rewrite using `[mul_neg]`. Conclude with `neg_mem hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Bd.neg {k : ℕ} {x : Ω} (hx : Bd A l k x) : Bd A l k (-x) := by
   unfold Bd at *; rw [mul_neg]; exact neg_mem hx
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg]`. Conclude with `hx.add hy.neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Bd.sub {k : ℕ} {x y : Ω} (hx : Bd A l k x) (hy : Bd A l k y) : Bd A l k (x - y) := by
   rw [sub_eq_add_neg]; exact hx.add hy.neg
 
 /- English proof (translation)
-Unfold `Bd at *`. Establish `e : (l : Ω) ^ (a + b) * (x * y) = ((l : Ω) ^ a * x) * ((l : Ω) ^ b * y)` using `by rw [pow_add]; ring`. Rewrite using `[e]`. Conclude with `mul_mem hx hy`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Bd.mul {a b : ℕ} {x y : Ω} (hx : Bd A l a x) (hy : Bd A l b y) : Bd A l (a + b) (x * y) := by
   unfold Bd at *
@@ -62,21 +62,21 @@ private theorem Bd.mul {a b : ℕ} {x y : Ω} (hx : Bd A l a x) (hy : Bd A l b y
   rw [e]; exact mul_mem hx hy
 
 /- English proof (translation)
-Unfold `Bd at *`. Rewrite using `[mul_left_comm]`. Conclude with `mul_mem ha hy`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Bd.mul_left {k : ℕ} {a y : Ω} (ha : a ∈ A) (hy : Bd A l k y) : Bd A l k (a * y) := by
   unfold Bd at *
   rw [mul_left_comm]; exact mul_mem ha hy
 
 /- English proof (translation)
-Unfold `Bd at *`. Rewrite using `[pow_mul, ← mul_pow]`. Conclude with `pow_mem hx n`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Bd.pow {a : ℕ} {x : Ω} (hx : Bd A l a x) (n : ℕ) : Bd A l (a * n) (x ^ n) := by
   unfold Bd at *
   rw [pow_mul, ← mul_pow]; exact pow_mem hx n
 
 /- English proof (translation)
-Unfold `Bd at *`. Rewrite using `[Finset.mul_sum]`. Conclude with `sum_mem h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Bd.sum {ι : Type*} {k : ℕ} (s : Finset ι) (f : ι → Ω) (h : ∀ i ∈ s, Bd A l k (f i)) :
     Bd A l k (∑ i ∈ s, f i) := by
@@ -84,11 +84,11 @@ private theorem Bd.sum {ι : Type*} {k : ℕ} (s : Finset ι) (f : ι → Ω) (h
   rw [Finset.mul_sum]; exact sum_mem h
 
 /- English proof (translation)
-Establish `hle : A.valuation (a : Ω) ≤ 1` using `(A.valuation_le_one_iff _).2 (natCast_mem A a)`. Use `le_antisymm hle (not_lt.1 fun hlt => ?_)` and prove the remaining obligations. Take `⟨u, v, huv⟩ : IsCoprime (a : ℤ) (l : ℤ)` from `Nat.isCoprime_iff_coprime.2 ((Nat.Prime.coprime_iff_not_dvd hl).2 ha).symm`. Establish `h1 : (u : Ω) * a + v * l = 1` using `by exact_mod_cast congrArg (Int.cast : ℤ → Ω) huv`. Establish `hu : A.valuation (u : Ω) ≤ 1` using `(A.valuation_le_one_iff _).2 (intCast_mem A u)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv : A.valuation (v : Ω) ≤ 1` using `(A.valuation_le_one_iff _).2 (intCast_mem A v)`. Establish `hl1 : A.valuation (l : Ω) < 1` using `A.mem_nonunits_iff.1 hA`. Establish `h2 : A.valuation ((u : Ω) * a) < 1`. Rewrite using `[map_mul]; exact lt_of_le_of_lt (by simpa using mul_le_mul' hu (le_refl (A.valuation (a : Ω)))) hlt`. Establish `h3 : A.valuation ((v : Ω) * l) < 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul]; exact lt_of_le_of_lt (by simpa using mul_le_mul' hv (le_refl (A.valuation (l : Ω)))) hl1`. Establish `h4` using `Valuation.map_add_lt _ h2 h3`. Rewrite `h4` using `[h1, map_one]`. Conclude with `lt_irrefl _ h4`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem val_nat (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {a : ℕ} (ha : ¬ l ∣ a) :
     A.valuation (a : Ω) = 1 := by
@@ -109,14 +109,14 @@ private theorem val_nat (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {a : ℕ} 
   exact lt_irrefl _ h4
 
 /- English proof (translation)
-The claim follows from `(A.valuation_le_one_iff _).1 (by rw [map_inv₀, val_nat hl hA ha, inv_one])`.
+A detailed English derivation is pending.
 -/
 private theorem inv_nat_mem (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {a : ℕ} (ha : ¬ l ∣ a) :
     ((a : Ω))⁻¹ ∈ A :=
   (A.valuation_le_one_iff _).1 (by rw [map_inv₀, val_nat hl hA ha, inv_one])
 
 /- English proof (translation)
-Take `⟨n, rfl | rfl⟩` from `k.eq_nat_or_neg`. Rewrite using `[zpow_natCast]`. Conclude with `pow_mem hx n`. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `pow_mem hx' n`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem zpow_mem' {x : Ω} (hx : x ∈ A) (hx' : x⁻¹ ∈ A) (k : ℤ) : x ^ k ∈ A := by
   obtain ⟨n, rfl | rfl⟩ := k.eq_nat_or_neg
@@ -124,11 +124,11 @@ private theorem zpow_mem' {x : Ω} (hx : x ∈ A) (hx' : x⁻¹ ∈ A) (k : ℤ)
   · rw [zpow_neg, zpow_natCast, ← inv_pow]; exact pow_mem hx' n
 
 /- English proof (translation)
-Establish `hd` using `Nat.ordProj_mul_ordCompl_eq_self r.den l`. Establish `hnd : ¬ l ∣ r.den / l ^ r.den.factorization l` using `Nat.not_dvd_ordCompl hl r.den_nz`. Establish `hl0 : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne_zero`. Use `set e := r.den.factorization l`. Use `set u := r.den / l ^ e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0 : (u : Ω) ≠ 0` using `Nat.cast_ne_zero.2 (fun h => hnd (h ▸ dvd_zero l))`. Establish `hc : (r.den : Ω) = (l : Ω) ^ e * u` using `by rw [← hd]; push_cast; ring`. Establish `h : (l : Ω) ^ e * (r : Ω) = r.num * (u : Ω)⁻¹`. Rewrite using `[Rat.cast_def, hc]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `Bd lden`. Use `show (l : Ω) ^ e * (r : Ω) ∈ A`. Rewrite using `[h]`. Conclude with `mul_mem (intCast_mem A _) (inv_nat_mem hl hA hnd)`.
+A detailed English derivation is pending.
 -/
 private theorem Bd_rat (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) (r : ℚ) : Bd A l (lden l r) (r : Ω) := by
   have hd := Nat.ordProj_mul_ordCompl_eq_self r.den l
@@ -146,9 +146,9 @@ private theorem Bd_rat (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) (r : ℚ) :
   exact mul_mem (intCast_mem A _) (inv_nat_mem hl hA hnd)
 
 /- English proof (translation)
-Rewrite using `[Polynomial.eval_eq_sum_range, Rat.cast_sum]`. Use `Bd.sum _ _ fun i hi => ?_` and prove the remaining obligations. Rewrite using `[Rat.cast_mul, Rat.cast_pow]`. Use `Bd.mono ?_ ((Bd_rat hl hA (P.coeff i)).mul (hy.pow i))` and prove the remaining obligations. Establish `h1 : lden l (P.coeff i) ≤ pden l P` using `Finset.single_le_sum (f := fun i => lden l (P.coeff i)) (fun _ _ => Nat.zero_le _) hi`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : k * i ≤ k * P.natDegree` using `Nat.mul_le_mul_left k (Nat.lt_succ_iff.1 (Finset.mem_range.1 hi))`. Conclude with `Nat.add_le_add h1 h2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem Bd_eval (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) (P : Polynomial ℚ) {y : ℚ} {k : ℕ}
     (hy : Bd A l k (y : Ω)) : Bd A l (pden l P + k * P.natDegree) ((P.eval y : ℚ) : Ω) := by
@@ -163,9 +163,9 @@ private theorem Bd_eval (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) (P : Polyn
   exact Nat.add_le_add h1 h2
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Establish `hl0 : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne_zero`. Establish `hN0 : (N : Ω) ≠ 0` using `Nat.cast_ne_zero.2 (fun h => hN (h ▸ dvd_zero l))`. Establish `e : (l : Ω) ^ m * ((x : Ω) / ((N * l ^ m : ℕ) : Ω)) = x * (N : Ω)⁻¹` using `by push_cast; field_simp`. Unfold `Bd`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e]`. Conclude with `mul_mem (intCast_mem A x) (inv_nat_mem hl hA hN)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Bd_div (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m : ℕ} (hN : ¬ l ∣ N)
     (hM : M = N * l ^ m) (x : ℤ) : Bd A l m ((x : Ω) / (M : Ω)) := by
@@ -178,14 +178,14 @@ private theorem Bd_div (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m : �
   exact mul_mem (intCast_mem A x) (inv_nat_mem hl hA hN)
 
 /- English proof (translation)
-Simplify using `using Bd_div (A := A) hl hA hN hM (x : ℤ)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem Bd_divN (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m : ℕ} (hN : ¬ l ∣ N)
     (hM : M = N * l ^ m) (x : ℕ) : Bd A l m ((x : Ω) / (M : Ω)) := by
   simpa using Bd_div (A := A) hl hA hN hM (x : ℤ)
 
 /- English proof (translation)
-Establish `e : ((frc M a : ℚ) : Ω) = ((a % (M : ℤ) : ℤ) : Ω) / (M : Ω)`. Unfold `frc`. Rewrite using `[Rat.cast_div, Rat.cast_intCast, Rat.cast_natCast]`. Rewrite using `[e]`. Conclude with `Bd_div hl hA hN hM _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem Bd_frc (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m : ℕ} (hN : ¬ l ∣ N)
     (hM : M = N * l ^ m) (a : ℤ) : Bd A l m ((frc M a : ℚ) : Ω) := by
@@ -194,9 +194,7 @@ private theorem Bd_frc (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m : �
   rw [e]; exact Bd_div hl hA hN hM _
 
 /- English proof (translation)
-Unfold `coefPos`. Use `Bd.sum _ _ fun d _ => Bd.sub ?_ ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `((Bd_divN hl hA hN hM (n / d)).pow (j - 1)).mul (Bd.of_mem (k := 0) (zpow_mem' hz hz' _))`. Conclude with `Bd.of_mem (zero_mem A)`.
-
-Use `split_ifs`. Conclude with `((Bd_divN hl hA hN hM (n / d)).neg.pow (j - 1)).mul (Bd.of_mem (k := 0) (zpow_mem' hz hz' _))`. Conclude with `Bd.of_mem (zero_mem A)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem Bd_coefPos (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m : ℕ} (hN : ¬ l ∣ N)
     (hM : M = N * l ^ m) {z : Ω} (hz : z ∈ A) (hz' : z⁻¹ ∈ A) (j : ℕ) (a₁ a₂ : ℤ) (n : ℕ) :
@@ -211,11 +209,11 @@ private theorem Bd_coefPos (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m 
     · exact Bd.of_mem (zero_mem A)
 
 /- English proof (translation)
-Unfold `const0`. Use `split_ifs with hj hd`. Conclude with `absurd hd (h1 hj)`. Rewrite using `[Rat.cast_sub]`. Use `Bd.sub ((Bd_rat hl hA _).mono ?_) ((Bd_frc hl hA hN hM a₁).mono ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Unfold `eB`. Use linear arithmetic over natural numbers and integers. Establish `: m * 1 ≤ m * eD j` using `Nat.mul_le_mul_left m (by unfold eD; omega)`. Use linear arithmetic over natural numbers and integers. Rewrite using `[div_eq_mul_inv, Rat.cast_mul]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Use `Bd.neg (Bd.mono ?_ ((Bd_eval hl hA _ (Bd_frc hl hA hN hM a₁)).mul (Bd_rat hl hA _)))` and prove the remaining obligations. Unfold `eB eD`. Rewrite using `[Nat.mul_add]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem Bd_const0 (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m : ℕ} (hN : ¬ l ∣ N)
     (hM : M = N * l ^ m) (z : Ω) (j : ℕ) (a₁ a₂ : ℤ) (h1 : j = 1 → ¬ (M : ℤ) ∣ a₁) :
@@ -235,9 +233,7 @@ private theorem Bd_const0 (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m :
     omega
 
 /- English proof (translation)
-Unfold `eisF`. Use `split_ifs`. Conclude with `Bd_const0 hl hA hN hM z j a₁ a₂ h1`. Use `(Bd_coefPos hl hA hN hM hz hz' j a₁ a₂ n).mono ?_` and prove the remaining obligations. Establish `: m * (j - 1) ≤ m * eD j` using `Nat.mul_le_mul_left m (by unfold eD; omega)`.
-
-Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem Bd_eisF (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m : ℕ} (hN : ¬ l ∣ N)
     (hM : M = N * l ^ m) {z : Ω} (hz : z ∈ A) (hz' : z⁻¹ ∈ A) (j : ℕ) (a₁ a₂ : ℤ)
@@ -250,11 +246,11 @@ private theorem Bd_eisF (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m : �
     omega
 
 /- English proof (translation)
-Establish `hlM : (l : ℤ) ∣ (M : ℤ)` using `Int.natCast_dvd_natCast.2 (hM ▸ Dvd.dvd.mul_left (dvd_pow_self l (by omega)) N)`. Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.1 hl`. Establish `hc1 : (((c : ℤ) : Ω)) ∈ A` using `intCast_mem A _`. Establish `hc2 : (((c : ℤ) : Ω))⁻¹ ∈ A`. Rewrite using `[Int.cast_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_nat_mem hl hA hc`. Unfold `smF`. Use `Bd.sub (Bd.mul_left (pow_mem hc1 2) (Bd_eisF hl hA hN hM hz hz' j a₁ a₂ ?_ n)) (Bd.mul_left (zpow_mem' hc1 hc2 _) (Bd_eisF hl hA hN hM hz hz' j _ _ ?_ n))` and prove the remaining obligations. Conclude with `fun hj hd => h1 hj (hlM.trans hd)`. Introduce `hj hd`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hp.dvd_or_dvd (hlM.trans hd) with h | h` into its components or cases. Conclude with `hc (Int.natCast_dvd_natCast.1 h)`. Conclude with `h1 hj h`.
+A detailed English derivation is pending.
 -/
 private theorem Bd_smF (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m : ℕ} (hN : ¬ l ∣ N) (hm : 1 ≤ m)
     (hM : M = N * l ^ m) {z : Ω} (hz : z ∈ A) (hz' : z⁻¹ ∈ A) {c : ℕ} (hc : ¬ l ∣ c) (j : ℕ) (a₁ a₂ : ℤ)
@@ -276,7 +272,7 @@ private theorem Bd_smF (hl : l.Prime) (hA : (l : Ω) ∈ A.nonunits) {N M m : �
     · exact h1 hj h
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (l : ℤ) ∣ (l : ℤ) ^ m * t` using `Dvd.dvd.mul_right (dvd_pow_self _ (by omega)) t`. Establish `h2 : (l : ℤ) ∣ (N : ℤ) * (v : ℤ)` using `(dvd_add_left h1).1 h`. Establish `h3 : l ∣ N * v` using `by exact_mod_cast h2`. Conclude with `((hl.dvd_mul).1 h3).elim hN hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem not_dvd_row (hl : l.Prime) {N m v : ℕ} (hN : ¬ l ∣ N) (hm : 1 ≤ m) (hv : ¬ l ∣ v) (t : ℤ) :
     ¬ (l : ℤ) ∣ (N : ℤ) * (v : ℤ) + (l : ℤ) ^ m * t := by
@@ -287,7 +283,7 @@ private theorem not_dvd_row (hl : l.Prime) {N m v : ℕ} (hN : ¬ l ∣ N) (hm :
   exact ((hl.dvd_mul).1 h3).elim hN hv
 
 /- English proof (translation)
-Introduce `hd`. Establish `h1 : l ∣ Nat.gcd c (6 * l * N)` using `Nat.dvd_gcd hd (Dvd.dvd.mul_right (Dvd.intro_left 6 rfl) N)`. Rewrite `h1` using `[h]`. Conclude with `hl.one_lt.ne' (Nat.dvd_one.1 h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem not_dvd_of_coprime (hl : l.Prime) {c N : ℕ} (h : Nat.Coprime c (6 * l * N)) : ¬ l ∣ c := by
   intro hd
@@ -300,25 +296,23 @@ end SlopeTestRemainingChoices
 end UpperTheory.Kd.L
 
 /- English proof (translation)
-Introduce `l _ w L₀`. Use `⟨2 * L₀ + (eB l (w + 1) + L₀ * eD (w + 1)) + (eB l 1 + L₀ * eD 1), ?_⟩` and prove the remaining obligations. Introduce `Ω _ _ _ _ ε N _ c d gm hP A hA x m hm1 hmL β t a i`. Use `haveI : IsAlgClosed Ω := IsAlgClosure.isAlgClosed ℚ`. Establish `hl : l.Prime` using `Fact.out`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl0 : (l : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hl.ne_zero`. Establish `hz : eOm ε (1 / ((N : ℚ) * (l : ℚ) ^ m)) ^ β ∈ A` using `pow_mem (GlobalTheory.UlCusp.eOm_mem ε A _) β`. Establish `hz' : (eOm ε (1 / ((N : ℚ) * (l : ℚ) ^ m)) ^ β)⁻¹ ∈ A`. Rewrite using `[← inv_pow]`. Conclude with `pow_mem (GlobalTheory.UlCusp.eOm_inv_mem ε A _) β`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `eOm ε (1 / ((N : ℚ) * (l : ℚ) ^ m)) ^ β = z at hz hz' ⊢`. Establish `hlc : ¬ l ∣ c` using `not_dvd_of_coprime hl hP.cc`. Establish `hld : ¬ l ∣ d` using `not_dvd_of_coprime hl hP.dc`. Establish `key : ∀ (b : ℕ) (S : Ω), Bd A l b S → (l : Ω) ^ (2 * L₀ + b) * (-((l : Ω) ^ ((m : ℤ) * (((w + 2 : ℕ) : ℤ) - 4))) * S) ∈ A`. Introduce `b S hS`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e : ℤ := (m : ℤ) * (((w + 2 : ℕ) : ℤ) - 4) with he`. Establish `he0 : 0 ≤ 2 * (L₀ : ℤ) + e`. Establish `h1 : (0 : ℤ) ≤ (m : ℤ) * (w : ℤ)` using `by positivity`. Establish `h2 : (m : ℤ) ≤ L₀` using `by exact_mod_cast hmL`. Rewrite using `[he]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Take `⟨u, hu⟩` from `Int.eq_ofNat_of_zero_le he0`. Establish `h3 : (l : Ω) ^ (2 * L₀ + b) * (l : Ω) ^ e = (l : Ω) ^ u * (l : Ω) ^ b`. Rewrite using `[← zpow_natCast, ← zpow_natCast, ← zpow_natCast, ← zpow_add₀ hl0, ← zpow_add₀ hl0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 
-Use `congr 1`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Establish `h4 : (l : Ω) ^ (2 * L₀ + b) * (-((l : Ω) ^ e) * S) = -((l : Ω) ^ u * ((l : Ω) ^ b * S))`. Take the linear combination `(-S) * h3`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h4]`. Conclude with `neg_mem (mul_mem (pow_mem (natCast_mem A l) u) hS)`. Establish `hsum` using `add_assoc (2 * L₀) (eB l (w + 1) + L₀ * eD (w + 1)) (eB l 1 + L₀ * eD 1)`. Rewrite using `[hsum]`. Unfold `toQ pieceT`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Use `key _ _ (Bd.sum _ _ fun γ hγ => ?_)` and prove the remaining obligations. Establish `hγ'` using `Finset.mem_filter.1 (Finset.mem_filter.1 hγ).1`. Establish `hψ : (1 : DirichletCharacter Ω (l ^ m)) (((γ : Matrix (Fin 2) (Fin 2) (ZMod (l ^ m))).det.val : ℕ) : ZMod (l ^ m)) ∈ A`. Distinguish the cases in `hu : IsUnit (((γ : Matrix (Fin 2) (Fin 2) (ZMod (l ^ m))).det.val : ℕ) : ZMod (l ^ m))`. Rewrite using `[MulChar.one_apply hu]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `one_mem A`. Rewrite using `[MulChar.map_nonunit _ hu]`. Conclude with `zero_mem A`. Use `Bd.mul_left hψ ?_` and prove the remaining obligations. Unfold `cmul`.
-
-Use `Bd.sum _ _ fun r _ => Bd.mul ?_ ?_` and prove the remaining obligations. Use `(Bd_smF hl hA hP.cop hm1 rfl hz hz' hlc _ _ _ (fun _ => not_dvd_row hl hP.cop hm1 hγ'.2.1 _) _).mono ?_` and prove the remaining obligations. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ hmL) _`. Use `(Bd_smF hl hA hP.cop hm1 rfl hz hz' hld _ _ _ (fun _ => not_dvd_row hl hP.cop hm1 hγ'.2.2 _) _).mono ?_` and prove the remaining obligations. Conclude with `Nat.add_le_add_left (Nat.mul_le_mul_right _ hmL) _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Kd.L.small :
     ∀ (l : ℕ) [Fact l.Prime] (w L₀ : ℕ), ∃ c₂ : ℕ, ∀ {Ω : Type} [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] [CharZero Ω] (ε : Ω →+* ℂ) (N : ℕ) [NeZero N] (c d : ℕ) (gm : (ZMod l)ˣ → SL(2, ℤ)), Par l N c d gm → ∀ (A : ValuationSubring Ω), ((l : ℕ) : Ω) ∈ A.nonunits → ∀ (x : ZMod N) (m : ℕ), 1 ≤ m → m ≤ L₀ → ∀ (β : ℕ) (t a : ℤ) (i : ℕ), (l : Ω) ^ c₂ * toQ (l ^ m) (pieceT N l m m (w + 2) (1 : DirichletCharacter Ω (l ^ m)) (c : ℤ) (d : ℤ) ((x.val : ℤ) * a * t, 0) (a * t, 0) (eOm ε (1 / ((N : ℚ) * (l : ℚ) ^ m)) ^ β) ((unitSet l m).filter fun γ => (γ : Matrix (Fin 2) (Fin 2) (ZMod (l ^ m))).det = 1)) i ∈ A := by

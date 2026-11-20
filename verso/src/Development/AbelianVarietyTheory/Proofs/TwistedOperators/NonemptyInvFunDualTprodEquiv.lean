@@ -7,17 +7,17 @@ open scoped TensorProduct DirectSum
 namespace GlobalTheory.OneFunctional
 
 /- English proof (translation)
-Set `L : σ.IntertwiningMap ρ →ₗ[ℂ] invFun (ρ.dual.tprod σ)` to `{ toFun := fun f => ⟨TensorProduct.lift (LinearMap.lcomp ℂ ℂ f.toLinearMap), fun g x => by`. Proceed by induction on `x with`. Consider the case `zero => simp`. Consider the case `tmul ξ w`. Establish `h` using `LinearMap.congr_fun (f.isIntertwining' g) w`.
+Introduce a local definition for the expression. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply] at h`. Simplify using `only [Representation.tprod_apply, TensorProduct.map_tmul, TensorProduct.lift.tmul, LinearMap.lcomp_apply, Representation.dual_apply, Module.Dual.transpose_apply, LinearMap.comp_apply, h, Representation.inv_self_apply]`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]⟩`. Use the proof step `map_add' := fun f f' => Subtype.ext (TensorProduct.ext' fun ξ w => by`. Express the relevant statement in the definitionally equal form `ξ (f.toLinearMap w + f'.toLinearMap w) = ξ (f.toLinearMap w) + ξ (f'.toLinearMap w)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `map_add _ _ _)`. Use the proof step `map_smul' := fun c f => Subtype.ext (TensorProduct.ext' fun ξ w => by`. Express the relevant statement in the definitionally equal form `ξ (c • f.toLinearMap w) = c • ξ (f.toLinearMap w)`. Conclude with `map_smul _ _ _) }`. Establish `hL : ∀ f ξ w, (L f).1 (ξ ⊗ₜ w) = ξ (f.toLinearMap w)` using `fun _ _ _ => rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨(LinearEquiv.ofBijective L ⟨fun f f' h => ?_, fun l => ?_⟩).symm⟩` and prove the remaining obligations. Use `Representation.IntertwiningMap.ext (LinearMap.ext fun w => ?_)` and prove the remaining obligations. Use `(Module.evalEquiv ℂ V).injective (LinearMap.ext fun ξ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `ξ _ = ξ _`. Rewrite using `[← hL, ← hL, h]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Set `φ : W →ₗ[ℂ] V` to `(Module.evalEquiv ℂ V).symm.toLinearMap ∘ₗ (TensorProduct.curry l.1).flip`. Establish `hφ : ∀ (ξ : Module.Dual ℂ V) w, ξ (φ w) = l.1 (ξ ⊗ₜ w)` using `fun ξ w => by`. Simplify using `[φ]`. Use `⟨⟨φ, fun g => LinearMap.ext fun w => ?_⟩, Subtype.ext (TensorProduct.ext' fun ξ w => hφ ξ w)⟩` and prove the remaining obligations. Use `(Module.evalEquiv ℂ V).injective (LinearMap.ext fun ξ => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Express the relevant statement in the definitionally equal form `ξ (φ (σ g w)) = (ξ ∘ₗ ρ g) (φ w)`. Rewrite using `[hφ, hφ, ← mem_invFun.1 l.2 g ((ξ ∘ₗ ρ g) ⊗ₜ w), Representation.tprod_apply, TensorProduct.map_tmul]`. Use `congr 2`. Use extensionality with `v`. Simplify using `[Module.Dual.transpose_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nonempty_invFun_dual_tprod_equiv (G V W : Type) [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W]
     [Module ℂ W] [FiniteDimensional ℂ V] (ρ : Representation ℂ G V) (σ : Representation ℂ G W) :

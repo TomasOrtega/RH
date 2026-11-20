@@ -7,13 +7,11 @@ open scoped ContDiff
 namespace GlobalTheory.CompanionTheory.CutOff
 
 /- English proof (translation)
-Introduce `E _ _ _ S B hO hI`. Establish `hc : ∀ w : Pl E, Continuous (pLoc E w)` using `fun w => RestrictedProduct.continuous_eval w`. Establish `heq : (latS S B : Set (Af E)) = (GroundTheory.Global.integralFiniteAdeles (𝓞 E) E : Set (Af E)) ∩ ⋂ w ∈ S, (pLoc E w) ⁻¹' (B w : Set (w.adicCompletion E))`. Use extensionality with `a`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩`. Use `⟨GroundTheory.Global.mem_integralFiniteAdeles.2 fun w => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ S`. Conclude with `hI w hw (h2 w hw)`. Conclude with `h1 w hw`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `Set.mem_iInter₂.2 fun w hw => h2 w hw`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨fun w _ => GroundTheory.Global.mem_integralFiniteAdeles.1 h1 w, fun w hw => Set.mem_iInter₂.1 h2 w hw⟩`. Rewrite using `[heq]`. Prove the components needed by the constructor for the conclusion.
-
-Conclude with `GroundTheory.Global.isOpen_integralFiniteAdeles.inter (isOpen_biInter_finset fun w hw => (hO w hw).preimage (hc w))`. Use `(GroundTheory.Global.isCompact_integralFiniteAdeles E).inter_right ?_` and prove the remaining obligations. Use `isClosed_biInter fun w hw => IsClosed.preimage (hc w) ?_` and prove the remaining obligations. Conclude with `AddSubgroup.isClosed_of_isOpen (B w) (hO w hw)`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem latS_isOpen_isCompact : ∀ {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] (S : Finset (Pl E)) (B : ∀ w : Pl E, AddSubgroup (w.adicCompletion E)), (∀ w ∈ S, IsOpen (B w : Set (w.adicCompletion E))) → (∀ w ∈ S, (B w : Set (w.adicCompletion E)) ⊆ (Formalism.UG.Ov E w : Set (w.adicCompletion E))) → IsOpen (latS S B : Set (Af E)) ∧ IsCompact (latS S B : Set (Af E)) := by
   intro E _ _ _ S B hO hI

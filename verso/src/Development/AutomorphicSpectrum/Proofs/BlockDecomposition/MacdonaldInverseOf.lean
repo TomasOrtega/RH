@@ -19,7 +19,7 @@ open PositivityTheory.Rg.BcN.F2 (mconv LocOpUniformizer)
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `mconv`. Use `congr 1`. Use function extensionality and compare the values at `z`. Rewrite using `[← mul_assoc, hv]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem mconv_right {a b : ℕ} {w : Pl E} {u v : GLw a w × GLw b w → ℂ} {l : GLw a w × GLw b w}
     (hv : ∀ m, v (m * l) = v m) (m : GLw a w × GLw b w) : mconv u v (m * l) = mconv u v m := by
@@ -29,9 +29,9 @@ theorem mconv_right {a b : ℕ} {w : Pl E} {u v : GLw a w × GLw b w → ℂ} {l
   rw [← mul_assoc, hv]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact hβ`. Consider the case `succ k ih`. Introduce `x y g`. Use `show (∑ z, mconv ((d.betaL a ha).m w x z) ((pw (d.betaL a ha) k).m w z y)) (g * l) = (∑ z, mconv ((d.betaL a ha).m w x z) ((pw (d.betaL a ha) k).m w z y)) g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_apply, Finset.sum_apply]`. Conclude with `Finset.sum_congr rfl fun z _ => mconv_right (ih z y) g`.
+A detailed English derivation is pending.
 -/
 theorem pw_right (d : LocData E n) {a : ℕ} (ha : a ≤ n) {w : Pl E} {l : GLw a w × GLw (n - a) w}
     (hβ : ∀ x y : d.kap w, ∀ g, (d.betaL a ha).m w x y (g * l) = (d.betaL a ha).m w x y g) (k : ℕ) :
@@ -47,13 +47,11 @@ theorem pw_right (d : LocData E n) {a : ℕ} (ha : a ≤ n) {w : Pl E} {l : GLw 
     exact Finset.sum_congr rfl fun z _ => mconv_right (ih z y) g
 
 /- English proof (translation)
-Introduce `h3 h1 E _ _ _ n d hd _ a ha w hw x y`. Establish `hT : w ∉ d.T` using `fun h => Finset.disjoint_left.1 hd.disj.1 h hw`. Establish `hP : w ∈ d.P` using `Finset.mem_union_right _ hw`. Establish `hSB : w ∈ d.S₀ ∪ d.Bad` using `Finset.mem_union_left _ hw`. Establish `hl : d.lev a w = d.L a w` using `by simp [LocData.lev, hT, hSB]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : ∀ x y : d.kap w, IsHecke (d.L a w) ((d.betaL a ha).m w x y)` using `fun x y => by`. Establish `h` using `PositivityTheory.Rg.BcB.F.LocComm.hecke_beta d (h3 E) hd ha hP x y`. Rewrite `h` using `[hl]`. Then use the resulting hypothesis. Use `⟨hH x y, fun m => ?_⟩` and prove the remaining obligations. Take `⟨ho, hle⟩` from `GlobalTheory.CompanionTheory.MatchLMPlaces.L_open_le d hd ha hSB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `GlobalTheory.CompanionTheory.FmPowP.mconv_idem_right ho hle _ fun u hu g => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.MatchLMPlaces.tr_one d _ hP, Finset.sum_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `show (∑ z, mconv ((d.fixL a).m w t z) ((pw (d.betaL a ha) m).m w z t)) (g * u) = (∑ z, mconv ((d.fixL a).m w t z) ((pw (d.betaL a ha) m).m w z t)) g`. Rewrite using `[Finset.sum_apply, Finset.sum_apply]`.
-
-Conclude with `Finset.sum_congr rfl fun z _ => mconv_right (pw_right d ha (fun x y g => ((hH x y).2 u hu g).2) m z t) g`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem macInvOf : MacInvOf := by
   intro h3 h1 E _ _ _ n d hd _ a ha w hw x y

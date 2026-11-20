@@ -27,29 +27,29 @@ def rowOf (hk : m + 1 < a) (h : GL (Fin a) R) : UnipotentBlockColumnIndex a (m +
 def dotp {ι : Type} [Fintype ι] (ξ y : ι → R) : R := ∑ t, ξ t * y t
 
 /- English proof (translation)
-Simplify using `[dotp, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dotp_add {ι : Type} [Fintype ι] (ξ y y' : ι → R) : dotp ξ (y + y') = dotp ξ y + dotp ξ y' := by
   simp [dotp, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[dotp, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dotp_sub_left {ι : Type} [Fintype ι] (ξ ξ' y : ι → R) : dotp (ξ - ξ') y = dotp ξ y - dotp ξ' y := by
   simp [dotp, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Simplify using `[dotp, Pi.single_apply, ite_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dotp_single {ι : Type} [Fintype ι] [DecidableEq ι] (t : ι) (y : ι → R) : dotp (Pi.single t 1) y = y t := by
   simp [dotp, Pi.single_apply, ite_mul]
 
 /- English proof (translation)
-Unfold `lastE`. Rewrite using `[Finset.sum_eq_single (t0 hk)]`. Simplify using `[t0]`. Introduce `t _ ht`. Rewrite using `[if_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `e`. Apply `ht` to reduce the goal to its premises. Establish `hc : t.1.2 = ⟨m + 1, hk⟩` using `Fin.ext (le_antisymm t.2.2.2 t.2.2.1)`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `Fin.ext (by simp [t0]; omega)`. Conclude with `hc`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lastE_eq (hk : m + 1 < a) (y : UnipotentBlockColumnIndex a (m + 1) (m + 1) → R) : lastE (m + 1) y = y (t0 hk) := by
   unfold lastE
@@ -67,11 +67,11 @@ theorem lastE_eq (hk : m + 1 < a) (y : UnipotentBlockColumnIndex a (m + 1) (m + 
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 + posM Subtype.val y : Matrix (Fin a) (Fin a) R) t.1.1 t.1.2 = y t`. Rewrite using `[Matrix.add_apply, posM, Matrix.sum_apply, Finset.sum_eq_single t]`. Rewrite using `[Matrix.one_apply_ne, Matrix.single_apply_same, zero_add]`. Introduce `e`. Establish `h1` using `t.2.1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `t.2.2.1`. Rewrite `h1` using `[e]`. Use linear arithmetic over natural numbers and integers. Introduce `s _ hs`. Rewrite using `[Matrix.single_apply_of_ne]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨e1, e2⟩`. Conclude with `hs (Subtype.ext (Prod.ext e1 e2))`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blkU_apply {r k : ℕ} (y : UnipotentBlockColumnIndex a r k → R) (t : UnipotentBlockColumnIndex a r k) : (blkU y).val t.1.1 t.1.2 = y t := by
   change (1 + posM Subtype.val y : Matrix (Fin a) (Fin a) R) t.1.1 t.1.2 = y t
@@ -89,7 +89,7 @@ theorem blkU_apply {r k : ℕ} (y : UnipotentBlockColumnIndex a r k → R) (t : 
   · simp
 
 /- English proof (translation)
-Introduce `y y' e`. Use function extensionality and compare the values at `t`. Rewrite using `[← blkU_apply y t, ← blkU_apply y' t, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem blkU_injective {r k : ℕ} : Function.Injective (blkU : (UnipotentBlockColumnIndex a r k → R) → GL (Fin a) R) := by
   intro y y' e
@@ -97,11 +97,11 @@ theorem blkU_injective {r k : ℕ} : Function.Injective (blkU : (UnipotentBlockC
   rw [← blkU_apply y t, ← blkU_apply y' t, e]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `hc : t.1.2 = ⟨m + 1, hk⟩` using `Fin.ext (le_antisymm t.2.2.2 t.2.2.1)`. Distinguish the cases in `ht : t = t0 hk`. Substitute `ht` using the available equality. Simplify using `[rowOf, t0]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Pi.single_eq_of_ne ht]`. Simplify using `only [rowOf, Units.val_one]`. Rewrite using `[Matrix.one_apply_ne]`. Introduce `e`. Apply `ht` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Prod.ext` to reduce the goal to its premises. Conclude with `e.symm`. Conclude with `hc`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem rowOf_one (hk : m + 1 < a) : rowOf hk (1 : GL (Fin a) R) = Pi.single (t0 hk) 1 := by
   funext t
@@ -119,7 +119,7 @@ theorem rowOf_one (hk : m + 1 < a) : rowOf hk (1 : GL (Fin a) R) = Pi.single (t0
     · exact hc
 
 /- English proof (translation)
-Take `⟨y', e1, e2⟩` from `(hS R a (m + 1)).2.2.2.2.2.2.2 h hh y`. Establish `h1 : ρ h (ρ (blkU y) x) = ρ (blkU y') (ρ h x)`. Rewrite using `[← Module.End.mul_apply, ← map_mul, e1, map_mul, Module.End.mul_apply]`. Rewrite using `[h1, hΛ _ (hY h x hx) y', lastE_eq hk, e2]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem key (hS : MirabolicColumnBlock) (hk : m + 1 < a) (χ : AddChar R ℂ) {X : Type} [AddCommGroup X] [Module ℂ X]
     (ρ : Representation ℂ (GL (Fin a) R) X) (Y : Submodule ℂ X) (hY : ∀ g, ∀ x ∈ Y, ρ g x ∈ Y)
@@ -146,13 +146,13 @@ def sMat (hk : m + 1 < a) (ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → 
   Matrix.updateRow 1 ⟨m, by omega⟩ (extR hk ξ)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_isLowerTriangular]`. Rewrite using `[Finset.prod_eq_single (⟨m, by omega⟩ : Fin a)]`. Simplify using `[sMat, extR, t0]`. Introduce `i _ hi`. Simplify using `[sMat, Matrix.updateRow_ne hi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce `i j hij`. Establish `hij' : i < j` using `hij`. Distinguish the cases in `hi : i = ⟨m, by omega⟩`. Establish `hj : ¬ ((j : ℕ) < m + 1)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `Fin.lt_def.1 hij'` as an intermediate fact. Rewrite `this` using `[hi]`. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hi]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[sMat, extR, hj]`. Simplify using `[sMat, Matrix.updateRow_ne hi, Matrix.one_apply_ne (ne_of_lt hij')]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem det_sMat (hk : m + 1 < a) (ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F) : (sMat hk ξ).det = ξ (t0 hk) := by
   rw [Matrix.det_of_isLowerTriangular]
@@ -181,20 +181,20 @@ def sM (hk : m + 1 < a) (ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F)
   else 1
 
 /- English proof (translation)
-Simplify using `[sM, hξ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sM_val (hk : m + 1 < a) (ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F) (hξ : ξ (t0 hk) ≠ 0) :
     (sM hk ξ).val = sMat hk ξ := by
   simp [sM, hξ]
 
 /- English proof (translation)
-Establish `h1 : (Pi.single (t0 hk) (1 : F) : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F) (t0 hk) ≠ 0` using `by simp`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[sM_val hk _ h1, Units.val_one, sMat]`. Establish `: extR hk (Pi.single (t0 hk) (1 : F)) = (1 : Matrix (Fin a) (Fin a) F) ⟨m, by omega⟩`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [extR, Matrix.one_apply]`. Distinguish the cases in `hj : (j : ℕ) < m + 1`. Rewrite using `[dif_pos hj, Pi.single_apply]`. Use `congr 1`. Simplify using `only [t0, Subtype.ext_iff, Prod.ext_iff, Fin.ext_iff, and_true, eq_iff_iff]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[dif_neg hj, if_neg]`. Introduce `e`. Rewrite `hj` using `[← e]`. Simplify using `at hj`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, Matrix.updateRow_eq_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sM_e (hk : m + 1 < a) : sM hk (Pi.single (t0 hk) (1 : F)) = 1 := by
   have h1 : (Pi.single (t0 hk) (1 : F) : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F) (t0 hk) ≠ 0 := by simp
@@ -215,11 +215,11 @@ theorem sM_e (hk : m + 1 < a) : sM hk (Pi.single (t0 hk) (1 : F)) = 1 := by
   rw [this, Matrix.updateRow_eq_self]
 
 /- English proof (translation)
-Introduce `i j hij`. Distinguish the cases in `hξ : ξ (t0 hk) ≠ 0`. Rewrite using `[sM_val hk ξ hξ, sMat]`. Distinguish the cases in `hi : i = ⟨m, by omega⟩`. Establish `hj : ¬ ((j : ℕ) < m + 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite `hij` using `[hi]`. Simplify using `at hij`. Use linear arithmetic over natural numbers and integers. Establish `hmj : (⟨m, by omega⟩ : Fin a) ≠ j`. Introduce `e`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hj` using `[← e]`. Simplify using `at hj`. Rewrite using `[hi, Matrix.updateRow_self, extR, dif_neg hj, Matrix.one_apply_ne hmj]`. Rewrite using `[Matrix.updateRow_ne hi]`. Simplify using `[sM, hξ]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem blk_sM (hk : m + 1 < a) (ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F) : GlobalTheory (m + 1) (sM hk ξ) := by
   intro i j hij
@@ -239,21 +239,21 @@ theorem blk_sM (hk : m + 1 < a) (ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1
   · simp [sM, hξ]
 
 /- English proof (translation)
-Use `set M := sM hk (rowOf hk h) with hM`. Introduce `i j hij`. Rewrite using `[Units.val_mul]`. Break down `hij with hi | hj` into its components or cases. Establish `hrow : ∀ l, h.val i l = M.val i l`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Distinguish the cases in `him : (i : ℕ) = m`. Establish `hi' : i = ⟨m, by omega⟩` using `Fin.ext him`. Rewrite using `[hM, sM_val hk _ hξ, sMat, hi', Matrix.updateRow_self, extR]`. Distinguish the cases in `hl : (l : ℕ) < m + 1`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hl]`. Both sides reduce to the same expression. Rewrite using `[dif_neg hl]`. Rewrite using `[hh _ _ (Or.inr (by omega)), Matrix.one_apply_ne]`. Introduce `e`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hl` using `[← e]`. Simplify using `at hl`. Rewrite using `[hh _ _ (Or.inl (by omega)), blk_sM hk _ _ _ (Or.inl (by omega))]`. Establish `: (h.val * M⁻¹.val) i j = (M.val * M⁻¹.val) i j`. Simplify using `only [Matrix.mul_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[hrow l]`. Rewrite using `[this, Units.mul_inv]`. Establish `hj' : m + 1 ≤ (j : ℕ)` using `hj`. Establish `hcol : ∀ l, M⁻¹.val l j = (1 : Matrix (Fin a) (Fin a) F) l j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l`. Establish `h1 : (M⁻¹.val * M.val) l j = (M⁻¹.val * (1 : Matrix (Fin a) (Fin a) F)) l j`. Simplify using `only [Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[blk_sM hk _ p j (Or.inr hj')]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Units.inv_mul, Matrix.mul_one]`. Conclude with `h1.symm`. Establish `: (h.val * M⁻¹.val) i j = (h.val * (1 : Matrix (Fin a) (Fin a) F)) i j`. Simplify using `only [Matrix.mul_apply]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcol l]`. Rewrite using `[this, Matrix.mul_one, hh _ _ (Or.inr hj')]`.
+A detailed English derivation is pending.
 -/
 theorem mir_mul (hk : m + 1 < a) (h : GL (Fin a) F) (hh : GlobalTheory (m + 1) h) (hξ : rowOf hk h (t0 hk) ≠ 0) :
     Mir m (h * (sM hk (rowOf hk h))⁻¹) := by
@@ -296,15 +296,11 @@ theorem mir_mul (hk : m + 1 < a) (h : GL (Fin a) F) (hh : GlobalTheory (m + 1) h
     rw [this, Matrix.mul_one, hh _ _ (Or.inr hj')]
 
 /- English proof (translation)
-Establish `hc : Continuous (sMat hk : (UnipotentBlockColumnIndex a (m + 1) (m + 1) → F) → Matrix (Fin a) (Fin a) F)`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [sMat, Matrix.updateRow_apply, extR]`. Use `split_ifs`. Conclude with `continuous_apply _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_const`. Conclude with `continuous_const`. Establish `hi : Continuous fun x : {ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F | ξ (t0 hk) ≠ 0} => (sMat hk x.1)⁻¹`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : ContinuousAt Inv.inv (sMat hk x.1)`. Use `continuousAt_matrix_inv _ ?_` and prove the remaining obligations. Rewrite using `[det_sMat, Ring.inverse_eq_inv']`. Conclude with `continuousAt_inv₀ x.2`. Conclude with `(h1.comp hc.continuousAt).comp continuous_subtype_val.continuousAt`.
-
-Rewrite using `[continuousOn_iff_continuous_domRestrict]`. Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Use `(hc.comp continuous_subtype_val).congr fun x => ?_` and prove the remaining obligations. Conclude with `(sM_val hk x.1 x.2).symm`. Use `hi.congr fun x => ?_ show _ = ((sM hk x.1)⁻¹ : GL (Fin a) F).val` and prove the remaining obligations.
-
-Rewrite using `[Matrix.coe_units_inv, sM_val hk x.1 x.2]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contOn_sM [TopologicalSpace F] [IsTopologicalDivisionRing F] (hk : m + 1 < a) :
     ContinuousOn (sM hk) {ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F | ξ (t0 hk) ≠ 0} := by
@@ -338,9 +334,9 @@ section Val
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Use `⟨Units.mk0 γ hγ, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hz' : valuation F (z - x) < γ` using `by simpa using hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : valuation F z ≤ max (valuation F (z - x)) (valuation F x)`. Simplify using `using (valuation F).map_add (z - x) x`. Conclude with `h1.trans (max_le hz'.le hx)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isOpen_le {γ : ValueGroupWithZero F} (hγ : γ ≠ 0) : IsOpen {x : F | valuation F x ≤ γ} := by
   rw [isOpen_iff_mem_nhds]
@@ -353,7 +349,7 @@ theorem isOpen_le {γ : ValueGroupWithZero F} (hγ : γ ≠ 0) : IsOpen {x : F |
   exact h1.trans (max_le hz'.le hx)
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `x hx`. Rewrite using `[IsValuativeTopology.mem_nhds_iff']`. Use `⟨Units.mk0 (valuation F x) (by simpa using hx), fun z hz hz0 => ?_⟩` and prove the remaining obligations. Simplify using `[hz0] at hz`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isOpen_ne_zero : IsOpen {x : F | x ≠ 0} := by
   rw [isOpen_iff_mem_nhds]
@@ -363,11 +359,9 @@ theorem isOpen_ne_zero : IsOpen {x : F | x ≠ 0} := by
   simp [hz0] at hz
 
 /- English proof (translation)
-Take `⟨γ, hγ, hsub⟩` from `(IsValuativeTopology.hasBasis_nhds_zero' F).mem_iff.mp hW`. Take `⟨r0, hr0⟩` from `ValuativeRel.valuation_surjective γ`. Take `⟨π, hπ0, hπ1⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation F)`. Establish `hr0' : r0 ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hγ (by rw [← hr0, map_zero])`. Use `⟨r0 * π, mul_ne_zero hr0' hπ0, fun x hx => hsub ?_⟩` and prove the remaining obligations. Establish `hlt : valuation F (r0 * π) < γ`. Rewrite using `[map_mul, hr0]`. Conclude with `mul_lt_of_lt_one_right (zero_lt_iff.2 hγ) hπ1`.
-
-Conclude with `lt_of_le_of_lt hx hlt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_le_sub {W : Set F} (hW : W ∈ 𝓝 (0 : F)) :
     ∃ r : F, r ≠ 0 ∧ {x : F | valuation F x ≤ valuation F r} ⊆ W := by
@@ -394,13 +388,13 @@ def lat (γ : ValueGroupWithZero F) : AddSubgroup (ι → F) where
   neg_mem' := by intro y hy t; simpa using hy t
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_lat {γ : ValueGroupWithZero F} {y : ι → F} : y ∈ (lat γ : AddSubgroup (ι → F)) ↔ ∀ t, valuation F (y t) ≤ γ :=
   Iff.rfl
 
 /- English proof (translation)
-Establish `e : ((lat γ : AddSubgroup (ι → F)) : Set (ι → F)) = Set.univ.pi (fun _ => {x : F | valuation F x ≤ γ})`. Use extensionality with `y`. Simplify using `[mem_lat]`. Rewrite using `[e]`. Conclude with `isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall F γ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_lat (γ : ValueGroupWithZero F) : IsCompact ((lat γ : AddSubgroup (ι → F)) : Set (ι → F)) := by
   have e : ((lat γ : AddSubgroup (ι → F)) : Set (ι → F)) = Set.univ.pi (fun _ => {x : F | valuation F x ≤ γ}) := by
@@ -410,7 +404,7 @@ theorem isCompact_lat (γ : ValueGroupWithZero F) : IsCompact ((lat γ : AddSubg
   exact isCompact_univ_pi fun _ => IsNonarchimedeanLocalField.isCompact_closedBall F γ
 
 /- English proof (translation)
-Establish `e : ((lat γ : AddSubgroup (ι → F)) : Set (ι → F)) = Set.univ.pi (fun _ => {x : F | valuation F x ≤ γ})`. Use extensionality with `y`. Simplify using `[mem_lat]`. Rewrite using `[e]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_le hγ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_lat {γ : ValueGroupWithZero F} (hγ : γ ≠ 0) : IsOpen ((lat γ : AddSubgroup (ι → F)) : Set (ι → F)) := by
   have e : ((lat γ : AddSubgroup (ι → F)) : Set (ι → F)) = Set.univ.pi (fun _ => {x : F | valuation F x ≤ γ}) := by
@@ -420,9 +414,9 @@ theorem isOpen_lat {γ : ValueGroupWithZero F} (hγ : γ ≠ 0) : IsOpen ((lat �
   exact isOpen_set_pi Set.finite_univ fun _ _ => isOpen_le hγ
 
 /- English proof (translation)
-Rewrite `hW` using `[nhds_pi, Filter.mem_pi']`. Take `⟨I, s, hs, hsW⟩` from `hW`. Establish `hs' : ∀ i, ∃ r : F, r ≠ 0 ∧ {x : F | valuation F x ≤ valuation F r} ⊆ s i` using `fun i => exists_le_sub (hs i)`. Use `choose r hr0 hrs using hs'`. Establish `: Nonempty ι` using `⟨t⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i0, hi0⟩` from `Finite.exists_min (fun i => valuation F (r i))`. Use `⟨r i0, hr0 i0, fun y hy => hsW fun i _ => hrs i ((hy i).trans (hi0 i))⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_lat {W : Set (ι → F)} (hW : W ∈ 𝓝 (0 : ι → F)) (t : ι) :
     ∃ r : F, r ≠ 0 ∧ ((lat (valuation F r) : AddSubgroup (ι → F)) : Set (ι → F)) ⊆ W := by
@@ -436,7 +430,7 @@ theorem exists_lat {W : Set (ι → F)} (hW : W ∈ 𝓝 (0 : ι → F)) (t : ι
   refine ⟨r i0, hr0 i0, fun y hy => hsW fun i _ => hrs i ((hy i).trans (hi0 i))⟩
 
 /- English proof (translation)
-Establish `: CompactSpace (lat γ : AddSubgroup (ι → F))` using `isCompact_iff_compactSpace.mp (isCompact_lat γ)`. Apply `AddSubgroup.quotient_finite_of_isOpen` to reduce the goal to its premises. Conclude with `(isOpen_lat hδ).preimage continuous_subtype_val`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem finite_quot {γ δ : ValueGroupWithZero F} (hδ : δ ≠ 0) :
     Finite ((lat γ : AddSubgroup (ι → F)) ⧸ (lat δ : AddSubgroup (ι → F)).addSubgroupOf (lat γ)) := by
@@ -445,15 +439,15 @@ theorem finite_quot {γ δ : ValueGroupWithZero F} (hδ : δ ≠ 0) :
   exact (isOpen_lat hδ).preimage continuous_subtype_val
 
 /- English proof (translation)
-Introduce `t`. Assume the negation of the conclusion as `hlt`. Rewrite `hlt` using `[not_le]`. Establish `hz : ζ t ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hlt` using `[h0, map_zero]`. Conclude with `not_lt_zero hlt`. Establish `hv : valuation F (x0 / ζ t) ≤ valuation F (x0 / ε)`. Establish `e1 : x0 / ζ t = (x0 / ε) * (ε / ζ t)` using `by field_simp`. Rewrite using `[e1, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_of_le_one_right' ?_` and prove the remaining obligations. Rewrite using `[map_div₀]`. Conclude with `(div_le_one₀ (lt_of_le_of_lt zero_le hlt)).2 hlt.le`. Establish `hy : (Pi.single t (x0 / ζ t) : ι → F) ∈ (lat Γ : AddSubgroup (ι → F))`. Introduce `s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `hs : s = t`. Substitute `hs` using the available equality. Simplify using `using hv.trans hΓ`. Simplify using `[hs]`. Establish `h1` using `hζ _ hy`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2 : dotp ζ (Pi.single t (x0 / ζ t)) = x0`. Simplify using `[dotp, Pi.single_apply]`. Clear the denominators using the available nonvanishing facts. Rewrite `h1` using `[h2]`. Conclude with `hx0 h1`.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ann [DecidableEq ι] (χ : AddChar F ℂ) (x0 : F) (hx0 : χ x0 ≠ 1) (ε : F) (hε : ε ≠ 0)
     (Γ : ValueGroupWithZero F) (hΓ : valuation F (x0 / ε) ≤ Γ) (ζ : ι → F)
@@ -486,13 +480,13 @@ theorem ann [DecidableEq ι] (χ : AddChar F ℂ) (x0 : F) (hx0 : χ x0 ≠ 1) (
 end Val
 
 /- English proof (translation)
-Establish `hwd : ∀ x x' : L, (QuotientAddGroup.mk x : L ⧸ L0.addSubgroupOf L) = QuotientAddGroup.mk x' → f (x : G) = f (x' : G)`. Introduce `x x' hx`. Rewrite `hx` using `[QuotientAddGroup.eq]`. Establish `hm : ((-x + x' : L) : G) ∈ L0` using `AddSubgroup.mem_addSubgroupOf.1 hx`. Establish `e : (x' : G) = (x : G) + ((-x + x' : L) : G)` using `by simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, hadd, h0 _ hm, mul_one]`. Establish `hout : ∀ x : L ⧸ L0.addSubgroupOf L, (QuotientAddGroup.mk (Quotient.out x) : L ⧸ L0.addSubgroupOf L) = x` using `fun x => Quotient.out_eq x`. Use `set q1 : L ⧸ L0.addSubgroupOf L := QuotientAddGroup.mk ⟨y1, hy1⟩ with hq1`. Establish `hs : (∑ q : L ⧸ L0.addSubgroupOf L, f ((Quotient.out q : L) : G)) * f y1 = ∑ q : L ⧸ L0.addSubgroupOf L, f ((Quotient.out q : L) : G)`. Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fintype.sum_equiv (Equiv.addRight q1) _ _ fun q => ?_` and prove the remaining obligations. Establish `e1 : f ((Quotient.out (q + q1) : L) : G) = f (((Quotient.out q : L) + ⟨y1, hy1⟩ : L) : G)`. Apply `hwd` to reduce the goal to its premises. Rewrite using `[QuotientAddGroup.mk_add, hout, hout]`. Rewrite using `[Equiv.coe_addRight, e1, AddSubgroup.coe_add, hadd]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (∑ q : L ⧸ L0.addSubgroupOf L, f ((Quotient.out q : L) : G)) * (1 - f y1) = 0`. Rewrite using `[mul_sub, mul_one, hs, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_right (sub_ne_zero.2 (Ne.symm hf1))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_zero {G : Type} [AddCommGroup G] (L L0 : AddSubgroup G) [Fintype (L ⧸ L0.addSubgroupOf L)]
     (f : G → ℂ) (hadd : ∀ x y, f (x + y) = f x * f y) (h0 : ∀ y ∈ L0, f y = 1) (y1 : G) (hy1 : y1 ∈ L)
@@ -523,61 +517,55 @@ end LatticeLastEntry
 
 open LatticeLastEntry ValuativeRel in
 /- English proof (translation)
-Introduce `hS F _ _ _ _ a m hk χ hχc hχ1 X _ _ ρ U hU`. Take `⟨x0, hx0⟩` from `hχ1`. Take `⟨e, he⟩ : ∃ e : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F, e = Pi.single (t0 hk) 1` from `⟨_, rfl⟩`. Establish `he1 : sM hk e = 1` using `by rw [he]; exact sM_e hk`. Establish `hrow1 : rowOf hk (1 : GL (Fin a) F) = e` using `by rw [he]; exact rowOf_one hk`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdot : ∀ y, dotp e y = y (t0 hk)` using `by intro y; rw [he]; exact dotp_single _ y`. Establish `he0 : e (t0 hk) ≠ 0` using `by simp [he]`. Establish `hW0 : {y : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F | blkU y ∈ U ∧ ‖χ (y (t0 hk)) - 1‖ < 1 / 2} ∈ 𝓝 (0 : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F)`. Use `Filter.inter_mem ?_ ?_` and prove the remaining obligations. Establish `hc : Continuous (blkU : (UnipotentBlockColumnIndex a (m + 1) (m + 1) → F) → GL (Fin a) F)` using `continuous_posU (isNil_blk a (m + 1) (m + 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `hc.continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Establish `h1 : (blkU (0 : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F) : GL (Fin a) F) = 1` using `posU_zero (isNil_blk a (m + 1) (m + 1))`. Rewrite using `[h1]`. Conclude with `hU`. Establish `ho : IsOpen {y : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F | ‖χ (y (t0 hk)) - 1‖ < 1 / 2}` using `isOpen_lt ((hχc.comp (continuous_apply (t0 hk))).sub continuous_const).norm continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `ho.mem_nhds (by simp)`. Take `⟨d, hd0, hd⟩` from `exists_lat hW0 (t0 hk)`. Establish `hopen : IsOpen {ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F | ξ (t0 hk) ≠ 0}` using `isOpen_ne_zero.preimage (continuous_apply (t0 hk))`. Establish `hW1 : (fun ζ => e + ζ) ⁻¹' ({ξ : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F | ξ (t0 hk) ≠ 0} ∩ sM hk ⁻¹' U) ∈ 𝓝 (0 : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F)`. Establish `hca : ContinuousAt (sM hk) e` using `(contOn_sM hk).continuousAt (hopen.mem_nhds he0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : sM hk ⁻¹' U ∈ 𝓝 e` using `hca.preimage_mem_nhds (by rw [he1]; exact hU)`. Use `(continuous_const_add e).continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations. Rewrite using `[add_zero]`. Conclude with `Filter.inter_mem (hopen.mem_nhds he0) h1`. Take `⟨ε, hε0, hε⟩` from `exists_lat hW1 (t0 hk)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Γ, hΓ⟩ : ∃ Γ : ValueGroupWithZero F, Γ = max (valuation F d) (valuation F (x0 / ε))` from `⟨_, rfl⟩`. Establish `hdΓ : valuation F d ≤ Γ` using `hΓ ▸ le_max_left _ _`. Establish `hxΓ : valuation F (x0 / ε) ≤ Γ` using `hΓ ▸ le_max_right _ _`. Take `⟨L, hL⟩ : ∃ L : AddSubgroup (UnipotentBlockColumnIndex a (m + 1) (m + 1) → F), L = lat Γ` from `⟨_, rfl⟩`. Take `⟨L0, hL0⟩ : ∃ L0 : AddSubgroup (UnipotentBlockColumnIndex a (m + 1) (m + 1) → F), L0 = lat (valuation F d)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hd0' : valuation F d ≠ 0` using `by simpa using hd0`. Establish `: Finite (L ⧸ L0.addSubgroupOf L)` using `by rw [hL, hL0]; exact finite_quot hd0'`. Set `_ : Fintype (L ⧸ L0.addSubgroupOf L)` to `Fintype.ofFinite _`. Establish `hχ0 : ∀ y ∈ L0, χ (y (t0 hk)) = 1`. Introduce `y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.CuspRep.eq_one_of_pow_near fun n => ?_` and prove the remaining obligations. Rewrite using `[← AddChar.map_nsmul_eq_pow]`. Establish `hn : n • y ∈ L0` using `L0.nsmul_mem hy n`. Rewrite `hn` using `[hL0]`. Conclude with `(hd hn).2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hU0 : ∀ y ∈ L0, blkU y ∈ U` using `fun y hy => (hd (hL0 ▸ hy)).1`. Set `P1 : (UnipotentBlockColumnIndex a (m + 1) (m + 1) → F) → Prop` to `fun ξ => ∀ y ∈ L, χ (dotp (ξ - e) y) = 1`. Establish `hP1 : ∀ ξ, P1 ξ → ξ (t0 hk) ≠ 0 ∧ sM hk ξ ∈ U ∧ ξ - e ∈ (lat (valuation F ε) : AddSubgroup (UnipotentBlockColumnIndex a (m + 1) (m + 1) → F))`. Introduce `ξ hξ`. Establish `hm` using `ann χ x0 hx0 ε hε0 Γ hxΓ (ξ - e) (fun y hy => hξ y (hL ▸ hy))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `h2` using `hε hm`. Establish `h3 : e + (ξ - e) = ξ` using `by abel`. Simplify using `only [Set.mem_preimage, Set.mem_inter_iff, Set.mem_ofPred_eq, h3] at h2`. Conclude with `⟨h2.1, h2.2, hm⟩`. Set `N : ℝ` to `(Fintype.card (L ⧸ L0.addSubgroupOf L) : ℝ)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `T : Finset (GL (Fin a) F)` to `Finset.univ.image fun q : L ⧸ L0.addSubgroupOf L => blkU ((Quotient.out q : L) : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F)`. Set `c : GL (Fin a) F → ℂ` to `fun g => χ (-(g.val (t0 hk).1.1 (t0 hk).1.2))`. Set `η : GL (Fin a) F → ℂ` to `fun h => ((if GlobalTheory (m + 1) h ∧ P1 (rowOf hk h) then N else 0 : ℝ) : ℂ)`. Set `r : GL (Fin a) F → GL (Fin a) F` to `fun h => if GlobalTheory (m + 1) h ∧ P1 (rowOf hk h) then h * (sM hk (rowOf hk h))⁻¹ else 1`. Establish `hblk1 : GlobalTheory (m + 1) (1 : GL (Fin a) F)` using `fun i j _ => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hP1one : P1 (rowOf hk (1 : GL (Fin a) F))`. Introduce `y _`. Rewrite using `[hrow1, sub_self]`. Simplify using `[dotp]`. Establish `hN : N ≠ 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [N]`. Conclude with `Fintype.card_ne_zero` after adjusting the coercions. Establish `hc1 : ∀ y, c (blkU y) = χ (-(y (t0 hk)))`. Introduce `y`. Simplify using `only [c]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[blkU_apply]`. Use `⟨T, c, η, r, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [η, if_pos (And.intro hblk1 hP1one)]`. Conclude with `hN` after adjusting the coercions. Simplify using `only [r, if_pos (And.intro hblk1 hP1one)]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules.
 
-Rewrite using `[hrow1, he1]`. Simplify using the standard rewrite rules. Introduce `h hh hη`. Establish `hc : GlobalTheory (m + 1) h ∧ P1 (rowOf hk h)`. Assume the negation of the conclusion as `hc; exact hη (by simp [η, hc])`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [r, if_pos hc]`. Conclude with `mir_mul hk h hh (hP1 _ hc.2).1`. Introduce `h`. Use `⟨if GlobalTheory (m + 1) h ∧ P1 (rowOf hk h) then N else 0, ?_, rfl⟩` and prove the remaining obligations. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Nat.cast_nonneg _`. Conclude with `le_rfl`. Use `⟨(fun ζ => sM hk (e + ζ)) '' (lat (valuation F ε) : AddSubgroup (UnipotentBlockColumnIndex a (m + 1) (m + 1) → F)), ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `(isCompact_lat _).image_of_continuousOn ?_` and prove the remaining obligations. Use `(contOn_sM hk).comp (continuous_const_add e).continuousOn ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Introduce `ζ hζ`. Conclude with `(hε hζ).1`. Introduce and unpack `_ ⟨ζ, hζ, rfl⟩`. Conclude with `(hε hζ).2`. Introduce and unpack `_ ⟨ζ, hζ, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `blk_sM hk _`. Introduce `h hh hη`. Establish `hc : GlobalTheory (m + 1) h ∧ P1 (rowOf hk h)`. Assume the negation of the conclusion as `hc; exact hη (by simp [η, hc])`. Use `⟨sM hk (rowOf hk h), ⟨rowOf hk h - e, (hP1 _ hc.2).2.2, ?_⟩, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show sM hk (e + (rowOf hk h - e)) = _`. Use `congr 1`. Normalize the expressions using the abelian group laws. Simplify using `only [r, if_pos hc]`. Conclude with `(inv_mul_cancel_right _ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Introduce `v hv Y hY hvY Λ hΛ h hh`. Establish `hsum : Λ (ρ h (∑ t ∈ T, c t • ρ t v)) = (∑ q : L ⧸ L0.addSubgroupOf L, χ (dotp (rowOf hk h - e) ((Quotient.out q : L) : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F))) * Λ (ρ h v)`. Rewrite using `[Finset.sum_image]`. Rewrite using `[map_sum, map_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun q _ => ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_smul, map_smul, smul_eq_mul, key hS hk χ ρ Y hY Λ hΛ h hh v hvY, hc1, dotp_sub_left, hdot, sub_eq_neg_add, AddChar.map_add_eq_mul, mul_assoc]`. Introduce `q _ q' _ hqq`. Conclude with `Quotient.out_injective (Subtype.ext (blkU_injective hqq))`. Distinguish the cases in `hc : GlobalTheory (m + 1) h ∧ P1 (rowOf hk h)`. Establish `hall : ∀ q : L ⧸ L0.addSubgroupOf L, χ (dotp (rowOf hk h - e) ((Quotient.out q : L) : UnipotentBlockColumnIndex a (m + 1) (m + 1) → F)) = 1` using `fun q => hc.2 _ (Quotient.out q).2`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hfix : ρ h v = ρ (h * (sM hk (rowOf hk h))⁻¹) v` using `by conv_lhs => rw [show h = h * (sM hk (rowOf hk h))⁻¹ * sM hk (rowOf hk h) from (inv_mul_cancel_right _ _).symm]`. Rewrite using `[map_mul, Module.End.mul_apply, hv _ (hP1 _ hc.2).2.1]`. Rewrite using `[hsum]`. Simplify using `only [hall, Finset.sum_const, Finset.card_univ, nsmul_eq_mul, mul_one, η, r, if_pos hc, N]`. Rewrite using `[hfix]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push_cast`. Both sides reduce to the same expression. Establish `hηh : η h = 0` using `by simp [η, hc]`. Rewrite using `[hsum, hηh, zero_mul]`. Establish `hP1' : ¬ P1 (rowOf hk h)` using `fun h1 => hc ⟨hh, h1⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Distinguish the cases in `hP0 : ∀ y ∈ L0, χ (dotp (rowOf hk h) y) = 1`. Simplify using `only [P1, not_forall] at hP1'`. Take `⟨y1, hy1, hf1⟩` from `hP1'`. Rewrite using `[sum_zero L L0 (fun y => χ (dotp (rowOf hk h - e) y)) ?_ ?_ y1 hy1 hf1, zero_mul]`. Introduce `y y'`.
-
-Rewrite using `[dotp_add, AddChar.map_add_eq_mul]`. Introduce `y hy`. Rewrite using `[dotp_sub_left, hdot, sub_eq_add_neg, AddChar.map_add_eq_mul, hP0 y hy, AddChar.map_neg_eq_inv, hχ0 y hy]`. Simplify using the standard rewrite rules. Use `push Not at hP0`.
-
-Take `⟨y0, hy0, hne⟩` from `hP0`. Establish `h0 : Λ (ρ h v) = 0`. Establish `h1` using `key hS hk χ ρ Y hY Λ hΛ h hh v hvY y0`. Rewrite `h1` using `[hv _ (hU0 y0 hy0)]`. Establish `h2 : (1 - χ (dotp (rowOf hk h) y0)) * Λ (ρ h v) = 0`.
-
-Rewrite using `[sub_mul, one_mul, ← h1, sub_self]`. Break down `mul_eq_zero.1 h2 with h3 | h3` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h3).symm hne`. Conclude with `h3`. Rewrite using `[h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_open_last_entry : MirabolicColumnBlock → S9 := by
   intro hS F _ _ _ _ a m hk χ hχc hχ1 X _ _ ρ U hU

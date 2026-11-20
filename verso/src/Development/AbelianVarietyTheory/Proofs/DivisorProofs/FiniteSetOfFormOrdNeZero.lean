@@ -18,15 +18,15 @@ noncomputable section
 namespace GlobalTheory.FormOrdFinite
 
 /- English proof (translation)
-Take `⟨V, hV, hgV, -⟩` from `exists_isAffineOpen_mem_and_subset (x := genericPoint X) (U := ⊤) trivial`. Use `haveI : Nonempty V := ⟨⟨_, hgV⟩⟩`. Use `letI := (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p V).toAlgebra`. Establish `h1 : (ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p V).FiniteType` using `(p.finiteType_appLE (isAffineOpen_top _) hV _).comp (.of_surjective _ (ConcreteCategory.bijective_of_isIso _).2)`. Use `haveI : Algebra.FiniteType k Γ(X, V) := h1`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : ringKrullDim Γ(X, V) = n`. Establish `h2` using `GlobalTheory.OpenDim.topologicalKrullDim_open k p V ⟨_, hgV⟩`. Rewrite `h2` using `[hn]`. Rewrite using `[← PrimeSpectrum.topologicalKrullDim_eq_ringKrullDim, ← h2]`. Conclude with `(topologicalKrullDim_eq_of_isEmbedding hV.fromSpec.isOpenEmbedding.isEmbedding hV.range_fromSpec).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs, hsm⟩` from `GlobalTheory.AffinePoints.exists_ne_zero_isStandardSmoothOfRelativeDimension (K := k) (A := Γ(X, V)) hd`. Establish `hloc` using `hV.isLocalization_basicOpen s`. Establish `h₁ : (algebraMap k (Localization.Away s)).IsStandardSmoothOfRelativeDimension n` using `(RingHom.isStandardSmoothOfRelativeDimension_algebraMap n).2 hsm`. Establish `h₂` using `RingHom.isStandardSmoothOfRelativeDimension_respectsIso.1 _ (IsLocalization.algEquiv (Submonoid.powers s) (Localization.Away s) Γ(X, X.basicOpen s)).toRingEquiv h₁`. Establish `e : ((IsLocalization.algEquiv (Submonoid.powers s) (Localization.Away s) Γ(X, X.basicOpen s)).toRingEquiv.toRingHom.comp (algebraMap k (Localization.Away s))) = ReciprocityTheory.ChartRestriction.G.DVR.FlatBC.algX p (X.basicOpen s)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[← resG_comp_algX p (X.basicOpen_le s)]`. Use extensionality with `a`. Simplify using `[IsScalarTower.algebraMap_apply k Γ(X, V) (Localization.Away s)]`. Both sides reduce to the same expression. Rewrite `h₂` using `[e]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ω, hω⟩` from `GlobalTheory.TopForm.exists_isFreeGen h₂`. Establish `hne : X.basicOpen s ≠ ⊥` using `fun h => hs ((AlgebraicGeometry.basicOpen_eq_bot_iff s).1 h)`. Take `⟨x, hx⟩` from `(TopologicalSpace.Opens.ne_bot_iff_nonempty _).1 hne`. Conclude with `⟨X.basicOpen s, ω, gen_mem hx, hV.basicOpen s, hω⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isFrame_genericPoint {k : Type} [Field k] [PerfectField k] {X : Scheme.{0}}
     [IsIntegral X] (p : X ⟶ Sp k) [LocallyOfFiniteType p] (n : ℕ)
@@ -67,15 +67,13 @@ theorem exists_isFrame_genericPoint {k : Type} [Field k] [PerfectField k] {X : S
   exact ⟨X.basicOpen s, ω, gen_mem hx, hV.basicOpen s, hω⟩
 
 /- English proof (translation)
-Introduce `k _ _ X _ _ _ p n hp hn η hη`. Use `haveI : IsProper p := ((isProjOver_iff_isProper_and_exists_isAmpleLB _).1 hp).1`. Use `haveI : CompactSpace X := QuasiCompact.compactSpace_of_compactSpace p`. Use `haveI : IsNoetherian X := {}`. Take `⟨U, ω, hU, hω⟩` from `exists_isFrame_genericPoint p n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgen` using `isFreeGen_formOf hU hω`. Establish `h0 : formOf U hU ω ≠ 0` using `fun h => one_ne_zero (hgen.1 (a₁ := 1) (a₂ := 0) (by simp [h]))`. Take `⟨c, hc⟩` from `hgen.2 η`. Use `replace hc : c • formOf U hU ω = η := hc`. Establish `hc0 : c ≠ 0` using `fun h => hη (by rw [← hc, h, zero_smul])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W, hW, hWu⟩` from `(unitAt_genericPoint hc0).exists_nhds`. Set `B : Closeds X` to `⟨((U ⊓ W : X.Opens) : Set X)ᶜ, (U ⊓ W).isOpen.isClosed_compl⟩`. Establish `hB : B ≠ ⊤` using `fun h => by`. Establish `hm : genericPoint X ∈ (B : Set X)` using `by rw [h]; trivial`. Conclude with `hm ⟨hU, hW⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `(GlobalTheory.T.finite_codim_one_points_closed X B hB).subset ?_` and prove the remaining obligations. Introduce and unpack `z ⟨E, hE, hne⟩`. Use `⟨hE.coheight_eq_one, fun hz => hne ?_⟩` and prove the remaining obligations. Take `⟨hzU, hzW⟩` from `hz`. Take `⟨a, ha, e⟩` from `hWu z hzW`.
-
-Establish `hord : E.ord (Units.mk0 c hc0) = 0` using `E.ord_eq_zero (u := hE.equiv a) (ha.map hE.equiv) e`. Establish `h1` using `E.formOrd_smul hn h0 (Units.mk0 c hc0)`. Rewrite `h1` using `[Units.val_mk0, hc, hord, DivOver.formOrd_formOf_eq_zero hzU hE hω]`. Simplify using `using h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_setOf_formOrd_ne_zero : ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] [IsLocallyNoetherian X] [GlobalTheory.IsNormalScheme X] (p : X ⟶ Sp k) (n : ℕ), IsProjOver p → topologicalKrullDim X = n → ∀ η : RatForms p n, η ≠ 0 → {z : X | ∃ E : DivOver p, E.IsAt z ∧ E.formOrd η ≠ 0}.Finite := by
   intro k _ _ X _ _ _ p n hp hn η hη

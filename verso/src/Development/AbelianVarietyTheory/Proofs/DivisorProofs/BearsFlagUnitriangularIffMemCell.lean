@@ -16,7 +16,7 @@ namespace GlobalTheory.FlagCell2.BearsCell
 variable {ι : Type} {m : ι → ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Use extensionality with `a b`. Simplify using `only [Mat.map, upM, upU, Matrix.map_apply, Matrix.of_apply]`. Apply the tactic sequence `split_ifs <;> simp [h0, h1]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem upM_map {K K' : Type} [Field K] [Field K'] (v : K → K') (h0 : v 0 = 0) (h1 : v 1 = 1) (u : Cell m → K) :
     (upM u).map v = upM fun j => v (u j) := by
@@ -26,23 +26,23 @@ theorem upM_map {K K' : Type} [Field K] [Field K'] (v : K → K') (h0 : v 0 = 0)
   split_ifs <;> simp [h0, h1]
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.FlagCell2.lowMul_upU_leadMinor_ne_zero K (m τ) _ 1 (fun _ _ h => Matrix.one_apply_ne h.ne) (by simp)).1`.
+A detailed English derivation is pending.
 -/
 theorem det_upM {K : Type} [Field K] (u : Cell m → K) (τ : ι) : (upM u τ).det = 1 :=
   (GlobalTheory.FlagCell2.lowMul_upU_leadMinor_ne_zero K (m τ) _ 1 (fun _ _ h => Matrix.one_apply_ne h.ne) (by simp)).1
 
 /- English proof (translation)
-Establish `hgv` using `hg.map_of v ψ hv`. Establish `hy : ∀ τ, (upM y₀ τ).det ≠ 0` using `fun τ => (det_upM y₀ τ).trans_ne one_ne_zero`. Establish `e : g.map v = (upM y₀ * (g.map v)⁻¹)⁻¹ * upM y₀`. Rewrite using `[Mat.mul_inv_rev, Mat.inv_inv hgv.det_ne, mul_assoc, Mat.inv_mul hy, mul_one]`. Establish `hmin : ∀ τ (k : ℕ), ((g τ).submatrix (Subtype.val : {a : Fin (m τ) // (a : ℕ) < k} → Fin (m τ)) Subtype.val).det ≠ 0 ∧ (((g τ).submatrix (Subtype.val : {a : Fin (m τ) // (a : ℕ) < k} → Fin (m τ)) Subtype.val).det)⁻¹ ∈ O` using `fun τ k => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `N : Matrix {a : Fin (m τ) // (a : ℕ) < k} {a : Fin (m τ) // (a : ℕ) < k} O` to `fun a b => ⟨_, (hg τ).1 a.1 b.1⟩`. Establish `e1 : (N.det : K) = ((g τ).submatrix (Subtype.val : {a : Fin (m τ) // (a : ℕ) < k} → Fin (m τ)) Subtype.val).det` using `O.subtype.map_det N`. Establish `e2 : ψ.mapMatrix N = (g.map v τ).submatrix (Subtype.val : {a : Fin (m τ) // (a : ℕ) < k} → Fin (m τ)) Subtype.val`. Use extensionality with `a b`. Conclude with `(hv (N a b)).symm`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e1]`. Use `hu _ ?_` and prove the remaining obligations. Rewrite using `[ψ.map_det, e2, e]`. Conclude with `(GlobalTheory.FlagCell2.lowMul_upU_leadMinor_ne_zero K' (m τ) _ _ (fun i j h => (hP.inv τ).2.2.2 i j i.2 h) (hP.inv.det_ne τ)).2 k`. Use `choose y b h1 h2 h3 h4 using fun τ => GlobalTheory.FlagLU.exists_lu_subring K O (m τ) (g τ) (hg τ).1 (hmin τ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hgb : g = b * upM (fun j : Cell m => y j.1 j.2)` using `funext h4`. Establish `hd : ∀ τ, (b τ).det = (g τ).det` using `fun τ => by`. Rewrite using `[hgb, Pi.mul_apply, Matrix.det_mul, det_upM, mul_one]`. Establish `hb : Par m O b` using `fun τ => ⟨h2 τ, hd τ ▸ (hg τ).2.1, hd τ ▸ (hg τ).2.2.1, fun i j _ h => h3 τ i j h⟩`. Establish `hU : Par 0 O (upM fun j : Cell m => y j.1 j.2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hb.inv.mono (k' := 0) (fun _ => Nat.zero_le _) le_rfl).mul hg` as an intermediate fact. Rewrite `this` using `[hgb, ← mul_assoc, Mat.inv_mul hb.det_ne, one_mul]`. Then use the resulting hypothesis. Use `⟨_, b, hb, hgb, fun j => ?_⟩` and prove the remaining obligations. Establish `e3 : g.map v = Mat.map b v * upM fun j : Cell m => v (y j.1 j.2)`. Rewrite using `[← upM_map v ((hv 0).trans (map_zero ψ)) ((hv 1).trans (map_one ψ)), ← Par.map_mul_of hb hU v ψ hv, ← hgb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e4 : upM y₀ = (upM y₀ * (g.map v)⁻¹ * Mat.map b v) * upM fun j : Cell m => v (y j.1 j.2)`. Rewrite using `[mul_assoc, ← e3, mul_assoc, Mat.inv_mul hgv.det_ne, mul_one]`. Establish `hc` using `hP.mul (hb.map_of v ψ hv)`. Conclude with `(congrFun (GlobalTheory.FlagCell2.upU_unique_of_lower K' (m j.1) _ _ _ (fun i k h => (hc j.1).2.2.2 i k i.2 h) (congrFun e4 j.1)) j.2).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_lu {K K' : Type} [Field K] [Field K'] {O : Subring K} (v : K → K') (ψ : O →+* K')
     (hv : ∀ x : O, v x = ψ x) (hu : ∀ x : O, ψ x ≠ 0 → (x : K) ≠ 0 ∧ (x : K)⁻¹ ∈ O) {g : Mat m K} (hg : Par 0 O g)
@@ -82,13 +82,13 @@ theorem exists_lu {K K' : Type} [Field K] [Field K'] {O : Subring K} (v : K → 
   exact (congrFun (GlobalTheory.FlagCell2.upU_unique_of_lower K' (m j.1) _ _ _ (fun i k h => (hc j.1).2.2.2 i k i.2 h) (congrFun e4 j.1)) j.2).symm
 
 /- English proof (translation)
-Introduce `F _ X Y ι _ m E E' φ f hf A K _ p hA y₀`. Establish `hd : ∀ σ, (A.map φ σ).det ≠ 0` using `fun σ => (Mat.det_map A (φ : X.Fn →+* Y.Fn) σ).trans_ne ((map_ne_zero _).2 (Fr.det_ne hA σ))`. Establish `hr` using `GlobalTheory.ZH.RatModel.range_eq_singleton (M := ratOf Y) p (IsLocalRing.closedPoint K)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨A', hA', hP⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨u, b, hb, hg, hu⟩` from `exists_lu ((ratOf Y).val p) (GlobalTheory.ZH.RatModel.valHom (M := ratOf Y) p _ hr) (fun _ => rfl) (fun x hx => (GlobalTheory.ZH.RatModel.isUnit_O_iff x).1 ((GlobalTheory.ZH.RatModel.val_ne_zero_iff (M := ratOf Y) hr x).1 hx)) (hf.sub _ A' hA' A hA) hP`. Use `⟨u, (Fr.mem_iff hA').2 ?_, hu⟩` and prove the remaining obligations. Establish `e : upM u * A.map φ * A'⁻¹ = b⁻¹`. Establish `e1 : upM u = b⁻¹ * (A' * (A.map φ)⁻¹)`. Rewrite using `[hg, ← mul_assoc, Mat.inv_mul hb.det_ne, one_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, mul_assoc b⁻¹, mul_assoc A', Mat.inv_mul hd, mul_one, mul_assoc, Mat.mul_inv (Fr.det_ne hA'), mul_one]`. Rewrite using `[e]`. Conclude with `hb.inv`. Introduce and unpack `⟨u, hu, hy⟩`. Use `⟨_, hu, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc, Mat.mul_inv hd, mul_one, upM_map ((ratOf Y).val p) (GlobalTheory.ZH.RatModel.val_zero (M := ratOf Y) p) (GlobalTheory.ZH.RatModel.val_one (M := ratOf Y) p), show (fun j => (ratOf Y).val p (u j)) = y₀ from funext hy, Mat.mul_inv fun τ => (det_upM y₀ τ).trans_ne one_ne_ …`. Conclude with `Par.one`.
+A detailed English derivation is pending.
 -/
 theorem bears_iff : ∀ (F : Type) [Field F] (X Y : Var F) (ι : Type) [Fintype ι] (m : ι → ℕ) (E : Fr (ratOf X) m 0) (E' : Fr (ratOf Y) m m) (φ : X.Fn →ₐ[F] Y.Fn) (f : Y.X ⟶ X.X), Refines E E' φ f → ∀ (A : Mat m X.Fn) (K : Type) [Field K] (p : Sp K ⟶ Y.X), A ∈ E.S (f (p (IsLocalRing.closedPoint K))) → ∀ y₀ : Cell m → K, Bears E' φ A (upM y₀) p ↔ ∃ u : Cell m → Y.Fn, upM u * A.map φ ∈ E'.S (p (IsLocalRing.closedPoint K)) ∧ ∀ j, (ratOf Y).val p (u j) = y₀ j := by
   intro F _ X Y ι _ m E E' φ f hf A K _ p hA y₀

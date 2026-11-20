@@ -15,11 +15,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {v : Pl F} {w : HeightOneSpectrum (𝓞 E)}
 
 /- English proof (translation)
-Establish `hz' : z ∈ FractionalIdeal.dual ℤ ℚ (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)`. Rewrite using `[FractionalIdeal.mem_dual (one_ne_zero : (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0)]`. Introduce `a ha`. Take `⟨o, rfl⟩` from `(FractionalIdeal.mem_one_iff _).1 ha`. Rewrite using `[Algebra.traceForm_apply, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsIntegrallyClosed.isIntegral_iff.mp (hz o)`. Establish `ht' : (t : E) ∈ ((differentIdeal ℤ (𝓞 E) : Ideal (𝓞 E)) : FractionalIdeal (nonZeroDivisors (𝓞 E)) E)` using `(FractionalIdeal.mem_coeIdeal _).2 ⟨t, ht, rfl⟩`. Rewrite `ht'` using `[coeIdeal_differentIdeal ℤ ℚ]`. Establish `hm` using `FractionalIdeal.mul_mem_mul ht' hz'`. Rewrite `hm` using `[inv_mul_cancel₀ (FractionalIdeal.dual_ne_zero ℤ ℚ (one_ne_zero : (1 : FractionalIdeal (nonZeroDivisors (𝓞 E)) E) ≠ 0))]`.
-
-Conclude with `(FractionalIdeal.mem_one_iff _).1 hm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_range_of_trace {t : 𝓞 E} (ht : t ∈ differentIdeal ℤ (𝓞 E)) {z : E}
     (hz : ∀ o : 𝓞 E, IsIntegral ℤ (Algebra.trace ℚ E (o * z))) : (t : E) * z ∈ (algebraMap (𝓞 E) E).range := by
@@ -37,11 +35,11 @@ theorem mul_mem_range_of_trace {t : 𝓞 E} (ht : t ∈ differentIdeal ℤ (𝓞
   exact (FractionalIdeal.mem_one_iff _).1 hm
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hle : differentIdeal ℤ (𝓞 E) ≤ w.asIdeal` using `fun t ht => hcon t ht`. Rewrite `hle` using `[differentIdeal_eq_differentIdeal_mul_differentIdeal ℤ (𝓞 F) (𝓞 E)]`. Break down `(Ideal.IsPrime.mul_le w.isPrime).1 hle with h1 | h2` into its components or cases.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `hB.unram` as an intermediate fact. Establish `hu : Algebra.IsUnramifiedAt (𝓞 F) w.asIdeal` using `inferInstance`. Conclude with `(not_dvd_differentIdeal_iff.2 hu) (Ideal.dvd_iff_le.2 h1)`. Rewrite `h2` using `[Ideal.map_le_iff_le_comap]`. Establish `hc : w.asIdeal.comap (algebraMap (𝓞 F) (𝓞 E)) = v.asIdeal`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← h]`. Both sides reduce to the same expression. Rewrite `h2` using `[hc]`. Conclude with `GlobalTheory.DiffCoprimeP.not_le_differentIdeal_of_psiUnr hB.std v (hB.inert v w hw).2.2 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_different {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) (hw : Formalism.UG.IsInertAt F E v w)
     (h : w.under (𝓞 F) = v) : ∃ t ∈ differentIdeal ℤ (𝓞 E), t ∉ w.asIdeal := by
@@ -60,17 +58,15 @@ theorem exists_mem_different {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood 
     exact GlobalTheory.DiffCoprimeP.not_le_differentIdeal_of_psiUnr hB.std v (hB.inert v w hw).2.2 h2
 
 /- English proof (translation)
-Establish `key : GlobalTheory.LFun.latAt w L ≤ GlobalTheory.LFun.latAt w L'`. Unfold `GlobalTheory.LFun.latAt`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `htx` using `hL x hx`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hv : Valued.v (algebraMap E (w.adicCompletion E) (t : E)) = 1`. Establish `e1` using `IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (v := w) (t : E)`. Use `e1.trans ?_` and prove the remaining obligations. Conclude with `(IsDedekindDomain.HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E) w).2 ht`. Establish `hne : algebraMap E (w.adicCompletion E) (t : E) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `hv` using `[h0, map_zero]`. Conclude with `zero_ne_one hv`. Establish `hu : (algebraMap E (w.adicCompletion E) (t : E))⁻¹ ∈ w.adicCompletionIntegers E`. Rewrite using `[IsDedekindDomain.HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hv, inv_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `heq : (fun i => algebraMap E (w.adicCompletion E) (x i)) = (⟨_, hu⟩ : Formalism.UG.Ov E w) • (fun i => algebraMap E (w.adicCompletion E) ((t • x) i))`. Use function extensionality and compare the values at `i`. Establish `hc : ((t • x) i : E) = (t : E) * x i` using `rfl`. Use `show _ = (algebraMap E (w.adicCompletion E) (t : E))⁻¹ * algebraMap E (w.adicCompletion E) ((t • x) i)`. Rewrite using `[hc, map_mul, ← mul_assoc, inv_mul_cancel₀ hne, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[SetLike.mem_coe]`. Use `show (fun i => algebraMap E (w.adicCompletion E) (x i)) ∈ _`. Rewrite using `[heq]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨t • x, htx, rfl⟩)`. Introduce `y hy`.
-
-Rewrite `hy` using `[GlobalTheory.LFun.InertChart.mem_latLoc_iff (L := L) hw h]`. Rewrite using `[GlobalTheory.LFun.InertChart.mem_latLoc_iff (L := L') hw h]`. Conclude with `key hy`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latLoc_le (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = v) {n : ℕ}
     {L L' : Submodule (𝓞 E) (Fin n → E)} {t : 𝓞 E} (ht : t ∉ w.asIdeal) (hL : ∀ y ∈ L, t • y ∈ L') :
@@ -107,7 +103,7 @@ theorem latLoc_le (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = 
 
 omit [NumberField F] [NumberField E] in
 /- English proof (translation)
-Simplify using `only [hE, Formalism.UG.hform, form, dotProduct, Matrix.mulVec, Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul, Finset.mul_sum, AlgHom.coe_toRingHom]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hE_smul_transpose (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : E) (x y : Fin n → E) :
     hE σ (c • Jᵀ) x y = c * form σ J y x := by
@@ -118,7 +114,7 @@ theorem hE_smul_transpose (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fi
   ring
 
 /- English proof (translation)
-Take `⟨w0⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Establish `h0` using `GlobalTheory.SigDet.det_ne_zero_of_hasSig _ _ r s (hX.sig w0)`. Introduce `hJ`. Apply `h0` to reduce the goal to its premises. Rewrite using `[Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, hJ, map_zero, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_ne_zero {σ : E →ₐ[F] E} {B : Base F E} {n r s : ℕ} {X : Spc F E n} (hX : X.IsSkew σ B r s) :
     X.J.det ≠ 0 := by
@@ -129,7 +125,7 @@ theorem det_ne_zero {σ : E →ₐ[F] E} {B : Base F E} {n r s : ℕ} {X : Spc F
   rw [Matrix.det_smul, ← RingHom.mapMatrix_apply, ← RingHom.map_det, hJ, map_zero, mul_zero]
 
 /- English proof (translation)
-Use `show ((c : E) • y) ⬝ᵥ _ = _`. Rewrite using `[smul_dotProduct, smul_eq_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem form_smul_left_divisor (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (c : 𝓞 E)
     (y x : Fin n → E) : form σ J (c • y) x = (c : E) * form σ J y x := by
@@ -138,23 +134,21 @@ private theorem form_smul_left_divisor (σ : E →ₐ[F] E) {n : ℕ} (J : Matri
   rfl
 
 /- English proof (translation)
-Establish `hd0 : (d : E) ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Establish `hd' : d = 0` using `by exact_mod_cast h0`. Rewrite using `[hd']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `w.asIdeal.zero_mem`. Establish `hdet : ((d : E)⁻¹ • X.Jᵀ).det ≠ 0`. Rewrite using `[Matrix.det_smul, Matrix.det_transpose]`. Conclude with `mul_ne_zero (pow_ne_zero _ (inv_ne_zero hd0)) (det_ne_zero hX)`. Use `⟨hdet, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.AdelicU.IsSelfDualAt`. Rewrite using `[← SelfDual.latLoc_dualGlob hdet hX.lat v]`. Take `⟨t, ht, htw⟩` from `exists_mem_different hB hw h`. Apply `le_antisymm` to reduce the goal to its premises. Use `latLoc_le hw h (t := d * t) ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `hm`. Break down `w.isPrime.mem_or_mem hm with h1 | h1` into its components or cases. Conclude with `hd h1`. Conclude with `htw h1`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[SelfDual.mem_dualGlob]`. Introduce `x hx`. Rewrite using `[hE_smul_transpose, form_smul_left_divisor]`. Establish `hf : (t : E) * form σ X.J y x ∈ (algebraMap (𝓞 E) E).range` using `mul_mem_range_of_trace ht (fun o => (hX.dual y).1 hy x hx o)`. Establish `he : (d : E)⁻¹ * (((d * t : 𝓞 E) : E) * form σ X.J y x) = (t : E) * form σ X.J y x`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_cast`. Rewrite using `[← mul_assoc, ← mul_assoc, inv_mul_cancel₀ hd0, one_mul]`. Rewrite using `[he]`. Conclude with `hf`. Use `latLoc_le hw h (t := 1) ?_ ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h1`. Conclude with `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h1)`. Introduce `y hy`. Rewrite using `[one_smul]`. Rewrite `hy` using `[SelfDual.mem_dualGlob]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(hX.dual y).2 fun x hx o => ?_` and prove the remaining obligations. Establish `h1` using `hy x hx`. Rewrite `h1` using `[hE_smul_transpose]`. Take `⟨e, he⟩` from `h1`. Establish `hf : form σ X.J y x = (d : E) * algebraMap (𝓞 E) E e`.
-
-Rewrite using `[he, ← mul_assoc, mul_inv_cancel₀ hd0, one_mul]`. Rewrite using `[hf]`. Establish `hi : IsIntegral ℤ ((o : E) * ((d : E) * algebraMap (𝓞 E) E e))` using `(RingOfIntegers.isIntegral_coe o).mul ((RingOfIntegers.isIntegral_coe d).mul (RingOfIntegers.isIntegral_coe e))`. Conclude with `Algebra.isIntegral_trace hi`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isSelfDualAt {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {n r s : ℕ} {X : Spc F E n}
     (hX : X.IsSkew σ B r s) (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = v) {d : 𝓞 E} (hd : d ∉ w.asIdeal) :
@@ -207,29 +201,27 @@ theorem isSelfDualAt {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {n r
       exact Algebra.isIntegral_trace hi
 
 /- English proof (translation)
-Establish `hcm` using `hB.cm`. Take `⟨x, hx⟩` from `GlobalTheory.LFun.InertChart.exists_conj_sub_unit hcm hw`. Establish `hxi : IsIntegral ℤ (σ (x : E) - (x : E))` using `(map_isIntegral_int (σ : E →+* E) (RingOfIntegers.isIntegral_coe x)).sub (RingOfIntegers.isIntegral_coe x)`. Set `d : 𝓞 E` to `⟨σ (x : E) - (x : E), hxi⟩`. Establish `hdE : (d : E) = σ (x : E) - (x : E)` using `rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd : d ∉ w.asIdeal` using `(IsDedekindDomain.HeightOneSpectrum.valuation_eq_one_iff_notMem (K := E) w).1 hx`. Take `⟨hdet, hs⟩` from `isSelfDualAt hB hX hw h hd`. Establish `hσd : σ (d : E) = -(d : E)`. Rewrite using `[hdE, map_sub, GlobalTheory.LFun.InertChart.conj_conj hcm]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hd0 : (d : E) ≠ 0`. Introduce `h0`. Apply `hd` to reduce the goal to its premises. Establish `hd' : d = 0` using `by exact_mod_cast h0`. Rewrite using `[hd']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `w.asIdeal.zero_mem`. Establish `hherm : IsHermND σ ((d : E)⁻¹ • X.Jᵀ)`. Use `⟨fun i j => ?_, hdet⟩` and prove the remaining obligations. Simplify using `only [Matrix.smul_apply, Matrix.transpose_apply, smul_eq_mul, map_mul, map_inv₀, hσd, hX.skew j i]`. Rewrite using `[inv_neg]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨a, ha, haJ⟩` from `GlobalTheory.LFun.InertChart.exists_frame_antiJ hcm hherm hX.lat.fg hX.lat.span_eq_top hw hc hs`. Take `⟨ϖ, hU⟩` from `GlobalTheory.LFun.InertChart.exists_isUnramInv hcm hw hc`. Take `⟨k, hk, hk1⟩` from `GlobalTheory.LFun.InertChart.exists_congr_antiJ hU (B := 1) (one_mem _) (by`. Unfold `Formalism.UG.cT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use the proof step `simp)`. Use `set δ := algebraMap E (w.adicCompletion E) (d : E) with hδ`. Establish `hδ0 : δ ≠ 0`. Rewrite using `[hδ]`. Conclude with `(map_ne_zero _).2 hd0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `set Jw := X.J.map (algebraMap E (w.adicCompletion E)) with hJw`. Establish `e1 : (a.1.map c)ᵀ * Jwᵀ * a.1 = δ • ((k.1.map c)ᵀ * k.1)`. Establish `h2` using `haJ.trans hk1.symm`. Unfold `Formalism.UG.cT at h2`. Establish `hKm : ((d : E)⁻¹ • X.Jᵀ).map (algebraMap E (w.adicCompletion E)) = δ⁻¹ • Jwᵀ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[hδ, hJw, map_inv₀]`. Rewrite `h2` using `[hKm, Matrix.mul_smul, Matrix.smul_mul]`. Establish `h2' : δ⁻¹ • ((a.1.map c)ᵀ * Jwᵀ * a.1) = (k.1.map c)ᵀ * k.1` using `by simpa using h2`. Rewrite using `[← h2', smul_smul, mul_inv_cancel₀ hδ0, one_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : a.1ᵀ * Jw * a.1.map c = δ • (k.1ᵀ * k.1.map c)`. Establish `h3` using `congrArg Matrix.transpose e1`. Simplify `h3` using `only [Matrix.transpose_mul, Matrix.transpose_smul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Establish `hkk : k.1 * (k⁻¹).1 = 1`. Rewrite using `[← Matrix.GeneralLinearGroup.coe_mul, mul_inv_cancel]`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Both sides reduce to the same expression. Use `⟨δ, a * k⁻¹, ?_, ?_, (GlobalTheory.LFun.InertChart.isFrameAt_mul ha (inv_mem hk)).1, ?_⟩` and prove the remaining obligations. Conclude with `(IsDedekindDomain.HeightOneSpectrum.valuedAdicCompletion_eq_valuation' (v := w) (d : E)).trans hx`. Rewrite using `[hδ, GlobalTheory.LFun.InertChart.conj_algebraMap hc, hσd, map_neg]`. Rewrite using `[Matrix.GeneralLinearGroup.coe_mul, Matrix.transpose_mul, Matrix.map_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = δ • ((k.1 * (k⁻¹).1)ᵀ * (k.1 * (k⁻¹).1).map c) := by`. Rewrite using `[e2, Matrix.mul_smul, Matrix.smul_mul, Matrix.transpose_mul, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = δ • 1 := by`. Rewrite using `[hkk]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_frame_skew {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ) {n r s : ℕ} {X : Spc F E n}
     (hX : X.IsSkew σ B r s) (hw : Formalism.UG.IsInertAt F E v w) (h : w.under (𝓞 F) = v)
@@ -300,7 +292,7 @@ theorem exists_frame_skew {σ : E →ₐ[F] E} {B : Base F E} (hB : B.IsGood σ)
           simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G hB hG v w hw h σL hc`. Conclude with `exists_frame_skew hB hG.hW hw h hc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_inertPlace_seesawW_scalar_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a'), B.IsGood σ → G.IsGood B → ∀ (v : Pl F) (w : HeightOneSpectrum (𝓞 E)),

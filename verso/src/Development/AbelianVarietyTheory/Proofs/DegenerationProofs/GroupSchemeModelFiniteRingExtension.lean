@@ -10,11 +10,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Establish `s₁ : specMap V'' L ≫ specMap V' V'' = spMap j ≫ specMap V' K'` using `by show spMap (algebraMap V'' L) ≫ spMap (algebraMap V' V'') = spMap j ≫ spMap (algebraMap V' K')`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, t]`. Establish `s₂ : spMap j ≫ 𝟙 _ ≫ specMap K K' = specMap K L` using `by show spMap j ≫ 𝟙 _ ≫ spMap (algebraMap K K') = spMap (algebraMap K L)`. Rewrite using `[Category.id_comp, e₂, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `p₁` using `((isGrpPullback_pullback (baseChange V' V'' G) (specMap V'' L)).comp (isGrpPullback_pullback G (specMap V' V''))).congr s₁ rfl`. Establish `p₂` using `(isGrpPullback_pullback (baseChange V' K' G) (spMap j)).comp (isGrpPullback_pullback G (specMap V' K'))`. Establish `p₃` using `((isGrpPullback_pullback (baseChange V' K' G) (spMap j)).comp ((isGrpPullback_of_iso e).comp (isGrpPullback_pullback A (specMap K K')))).congr s₂ rfl`. Take `⟨i₁, hi₁, -⟩` from `grpPullback_iso p₁ p₂`. Take `⟨i₂, hi₂, -⟩` from `grpPullback_iso p₃ (isGrpPullback_pullback A (specMap K L))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨i₁ ≪≫ i₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Iso.trans_hom]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem baseChange_iso_tower (K K' V' V'' L : Type) [CommRing K] [CommRing K'] [CommRing V'] [CommRing V''] [CommRing L]
     [Algebra K K'] [Algebra V' K'] [Algebra V' V''] [Algebra V'' L] [Algebra K L] (j : K' →+* L)
@@ -41,9 +41,9 @@ theorem baseChange_iso_tower (K K' V' V'' L : Type) [CommRing K] [CommRing K'] [
   rw [Iso.trans_hom]; infer_instance
 
 /- English proof (translation)
-Establish `: FaithfulSMul V' V''` using `(faithfulSMul_iff_algebraMap_injective V' V'').2 hi`. Establish `hinj : Function.Injective ((algebraMap V'' L).comp (algebraMap V' V''))` using `(IsFractionRing.injective V'' L).comp hi`. Take `⟨j, t⟩ : ∃ j : K' →+* L, j.comp (algebraMap V' K') = (algebraMap V'' L).comp (algebraMap V' V'')` from `⟨IsFractionRing.lift (K := K') hinj, RingHom.ext fun x => IsFractionRing.lift_algebraMap hinj x⟩`. Set `a₁ : Algebra V' L` to `((algebraMap V'' L).comp (algebraMap V' V'')).toAlgebra`. Set `a₂ : Algebra K' L` to `j.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `: IsScalarTower V' V'' L` using `IsScalarTower.of_algebraMap_eq' rfl`. Establish `: IsScalarTower V' K' L` using `IsScalarTower.of_algebraMap_eq' t.symm`. Establish `: IsLocalization (Algebra.algebraMapSubmonoid V'' (nonZeroDivisors V')) L` using `inferInstance`. Establish `h : Module.Finite K' L` using `Module.Finite.of_isLocalization V' V'' (nonZeroDivisors V')`. Conclude with `⟨j, h, t⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_finite_frac (V' K' V'' L : Type) [CommRing V'] [IsDomain V'] [Field K'] [Algebra V' K'] [IsFractionRing V' K']
     [CommRing V''] [IsDomain V''] [Algebra V' V''] [Field L] [Algebra V'' L] [IsFractionRing V'' L]
@@ -63,9 +63,9 @@ theorem exists_finite_frac (V' K' V'' L : Type) [CommRing V'] [IsDomain V'] [Fie
   exact ⟨j, h, t⟩
 
 /- English proof (translation)
-Introduce `V _ _ _ K _ _ _ A _ K' _ _ hK V' _ _ _ _ _ hc G _ ⟨e, he⟩ V'' _ _ _ hf hi`. Take `⟨j, hj, t⟩` from `exists_finite_frac V' K' V'' (FractionRing V'') hf hi`. Set `aK : Algebra K (FractionRing V'')` to `(j.comp (algebraMap K K')).toAlgebra`. Establish `e₂ : algebraMap K (FractionRing V'') = j.comp (algebraMap K K')` using `rfl`. Use `⟨aK, hj.comp (RingHom.finite_algebraMap.2 hK), ?_, baseChange_iso_tower K K' V' V'' _ j t e₂ A G e he⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[e₂, ← RingHom.comp_assoc, ← t, RingHom.comp_assoc, hc, RingHom.comp_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem model_finite_ext : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (K : Type) [Field K] [Algebra V K] [IsFractionRing V K] (A : Over (Spec (CommRingCat.of K))) [GrpObj A] (K' : Type) [Field K'] [Algebra K K'] [FiniteDimensional K K'] (V' : Type) [CommRing V'] [IsDomain V'] [Algebra V V'] [Algebra V' K'] [IsFractionRing V' K'], (algebraMap V' K').comp (algebraMap V V') = (algebraMap K K').comp (algebraMap V K) → ∀ (G : Over (Spec (CommRingCat.of V'))) [GrpObj G], (∃ e : baseChange V' K' G ≅ baseChange K K' A, IsMonHom e.hom) → ∀ (V'' : Type) [CommRing V''] [IsDomain V''] [Algebra V' V''], Module.Finite V' V'' → Function.Injective (algebraMap V' V'') → ∃ (_ : Algebra K (FractionRing V'')) (_ : FiniteDimensional K (FractionRing V'')), (algebraMap V'' (FractionRing V'')).comp ((algebraMap V' V'').comp (algebraMap V V')) = (algebraMap K (FractionRing V'')).comp (algebraMap V K) ∧ ∃ e : baseChange V'' (FractionRing V'') (baseChange V' V'' G) ≅ baseChange K (FractionRing V'') A, IsMonHom e.hom := by
   intro V _ _ _ K _ _ _ A _ K' _ _ hK V' _ _ _ _ _ hc G _ ⟨e, he⟩ V'' _ _ _ hf hi

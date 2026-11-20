@@ -13,13 +13,11 @@ open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC GroundThe
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `hSel hModel hH q _ k B _ _ _ _ _ _ hq`. Distinguish the cases in `hB : IsField B`. Use `letI := hB.toField haveI : Subsingleton (CommRing.Pic B) := inferInstance`. Conclude with `Finite.of_subsingleton`. Use `haveI hK : IsFunctionField k (FractionRing B) := UpperTheory.isFunctionField_fractionRing_of_dedekind_finiteType k B hB`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u, hu, hfd⟩` from `IsFunctionField.exists_transcendental_finiteDimensional (k := k) (K := FractionRing B)`. Take `⟨C0, c0, x, ψ, hc, hx, hψ⟩` from `hModel k (FractionRing B) u hu hfd`. Use `haveI : IsIntegral C0 := hc.1`. Take `rfl : x = genericPoint C0` from `hx.eq (genericPoint_spec C0)`. Use `letI : Algebra k C0.functionField := (CommRingCat.ofHom (algebraMap k (FractionRing B)) ≫ Spec.preimage ψ).hom.toAlgebra`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `letI : Algebra (FractionRing B) C0.functionField := (Spec.preimage ψ).hom.toAlgebra`. Use `haveI : IsScalarTower k (FractionRing B) C0.functionField := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `heq : Spec.map (CommRingCat.ofHom (algebraMap k C0.functionField)) = C0.fromSpecStalk (genericPoint C0) ≫ c0`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (algebraMap k (FractionRing B)) ≫ Spec.preimage ψ) = _`. Rewrite using `[Spec.map_comp, Spec.map_preimage, hψ]`.
-
-Take `⟨hF, hch⟩` from `UpperTheory.isFunctionField_and_charts_of_isCurve_of_isUnit hH q k hq c0 hc heq`. Use `haveI := hF`. Conclude with `UpperTheory.finite_pic_torsion_of_finite_kummerSelmer hSel k B q (UpperTheory.finite_kummerSelmer_of_finite_extension k (FractionRing B) C0.functionField q hq (UpperTheory.finite_kummerSelmer_of_charts k _ q hch))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.curve_picard_of_selmerPicard_of_modelCurve :
     LateralTheory.E.LeafPicCut.LeafSelPic → LateralTheory.E.LeafCurveVCut.LeafModelCurve → LateralTheory.E.E4.LeafPic := by

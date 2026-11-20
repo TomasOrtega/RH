@@ -15,27 +15,27 @@ namespace GlobalTheory.LineCos.FsLaw
 open GlobalTheory.LineCos
 
 /- English proof (translation)
-The claim follows from `(Complex.pos_iff.1 hG.det_pos).1`.
+A detailed English derivation is pending.
 -/
 theorem re_det_pos {G : Matrix (Fin 2) (Fin 2) ℂ} (hG : G.PosDef) : 0 < G.det.re :=
   (Complex.pos_iff.1 hG.det_pos).1
 
 /- English proof (translation)
-Establish `h` using `hG.isHermitian.apply 0 0`. Conclude with `(Complex.conj_eq_iff_re.1 h).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem corner_eq {G : Matrix (Fin 2) (Fin 2) ℂ} (hG : G.PosDef) : G 0 0 = ((G 0 0).re : ℂ) := by
   have h := hG.isHermitian.apply 0 0
   exact (Complex.conj_eq_iff_re.1 h).symm
 
 /- English proof (translation)
-Simplify using `[hform, Fin.sum_univ_two]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_single (G : Matrix (Fin 2) (Fin 2) ℂ) (w : Fin 2 → ℂ) :
     hform G w (Pi.single 0 1) = w 0 * G 0 0 + w 1 * G 1 0 := by
   simp [hform, Fin.sum_univ_two]
 
 /- English proof (translation)
-Establish `h00 : (G 0 0).im = 0` using `Complex.conj_eq_iff_im.1 (hG.isHermitian.apply 0 0)`. Establish `h11 : (G 1 1).im = 0` using `Complex.conj_eq_iff_im.1 (hG.isHermitian.apply 1 1)`. Establish `h01 : G 0 1 = starRingEnd ℂ (G 1 0)` using `(hG.isHermitian.apply 0 1).symm`. Simplify using `only [hform, Fin.sum_univ_two, Matrix.det_fin_two, h01, ← Complex.normSq_eq_norm_sq, Complex.normSq_apply, Complex.add_re, Complex.add_im, Complex.mul_re, Complex.mul_im, Complex.sub_re, Complex.conj_re, Complex.conj_im, h00, h11]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem re_hform_mul {G : Matrix (Fin 2) (Fin 2) ℂ} (hG : G.PosDef) (w : Fin 2 → ℂ) :
     (hform G w w).re * (G 0 0).re = ‖w 0 * G 0 0 + w 1 * G 1 0‖ ^ 2 + G.det.re * ‖w 1‖ ^ 2 := by
@@ -48,9 +48,7 @@ theorem re_hform_mul {G : Matrix (Fin 2) (Fin 2) ℂ} (hG : G.PosDef) (w : Fin 2
   ring
 
 /- English proof (translation)
-Consider the cases of `s`. Use `fin_cases i`. Conclude with `measurable_const`. Conclude with `measurable_id`. Use `fin_cases i`.
-
-Conclude with `measurable_id`. Conclude with `measurable_const`.
+Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem measurable_lineVec (s : Bool) (i : Fin 2) : Measurable fun x : ℂ => lineVec s x i := by
   cases s
@@ -62,7 +60,7 @@ theorem measurable_lineVec (s : Bool) (i : Fin 2) : Measurable fun x : ℂ => li
     · exact measurable_const
 
 /- English proof (translation)
-Unfold `hform`. Use `Finset.measurable_sum _ fun i _ => Finset.measurable_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `((ha i).mul (Complex.continuous_conj.measurable.comp (hb j))).mul_const _`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measurable_hform (G : Matrix (Fin 2) (Fin 2) ℂ) {a b : ℂ → Fin 2 → ℂ} (ha : ∀ i, Measurable fun x => a x i)
     (hb : ∀ i, Measurable fun x => b x i) : Measurable fun x => hform G (a x) (b x) := by
@@ -71,7 +69,7 @@ theorem measurable_hform (G : Matrix (Fin 2) (Fin 2) ℂ) {a b : ℂ → Fin 2 �
   exact ((ha i).mul (Complex.continuous_conj.measurable.comp (hb j))).mul_const _
 
 /- English proof (translation)
-Establish `h1 : Measurable fun x : ℂ => hform G (lineVec s x) (Pi.single (0 : Fin 2) (1 : ℂ))` using `measurable_hform G (b := fun _ => Pi.single (0 : Fin 2) (1 : ℂ)) (measurable_lineVec s) fun _ => measurable_const`. Establish `h2 : Measurable fun x : ℂ => (hform G (lineVec s x) (lineVec s x)).re` using `Complex.measurable_re.comp (measurable_hform G (measurable_lineVec s) (measurable_lineVec s))`. Conclude with `(h1.norm.pow_const 2).div (h2.mul_const _)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_cosSq (s : Bool) (G : Matrix (Fin 2) (Fin 2) ℂ) : Measurable (cosSq s G) := by
   have h1 : Measurable fun x : ℂ => hform G (lineVec s x) (Pi.single (0 : Fin 2) (1 : ℂ)) :=
@@ -81,9 +79,9 @@ theorem measurable_cosSq (s : Bool) (G : Matrix (Fin 2) (Fin 2) ℂ) : Measurabl
   exact (h1.norm.pow_const 2).div (h2.mul_const _)
 
 /- English proof (translation)
-Rewrite using `[← lintegral_indicator measurableSet_Ioo, ← lintegral_indicator measurableSet_Ioo, ← lintegral_sub_left_eq_self ((Set.Ioo (0 : ℝ) 1).indicator g) 1]`. Use `congr 1`. Use function extensionality and compare the values at `t`. Distinguish the cases in `ht : t ∈ Set.Ioo (0 : ℝ) 1`. Establish `: 1 - t ∈ Set.Ioo (0 : ℝ) 1` using `⟨by linarith [ht.2], by linarith [ht.1]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify using `only [Set.indicator_of_mem ht, Set.indicator_of_mem this]`. Establish `: 1 - t ∉ Set.Ioo (0 : ℝ) 1` using `fun h => ht ⟨by linarith [h.2], by linarith [h.1]⟩`. Simplify using `only [Set.indicator_of_notMem ht, Set.indicator_of_notMem this]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem lintegral_reflect (g : ℝ → ℝ≥0∞) :
     ∫⁻ t in Set.Ioo (0 : ℝ) 1, g (1 - t) = ∫⁻ t in Set.Ioo (0 : ℝ) 1, g t := by
@@ -98,23 +96,21 @@ theorem lintegral_reflect (g : ℝ → ℝ≥0∞) :
     simp only [Set.indicator_of_notMem ht, Set.indicator_of_notMem this]
 
 /- English proof (translation)
-Use `set a : ℝ := (G 0 0).re with ha_def`. Use `set D : ℝ := G.det.re with hD_def`. Establish `ha : 0 < a` using `re_corner_pos hG`. Establish `hD : 0 < D` using `re_det_pos hG`. Establish `hG0 : G 0 0 = (a : ℂ)` using `corner_eq hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haC : (a : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 ha.ne'`. Establish `hc : ((Real.sqrt D / a : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (div_pos (Real.sqrt_pos.2 hD) ha).ne'`. Establish `hH : Measurable fun x : ℂ => g (1 / (1 + ‖x‖ ^ 2)) * ENNReal.ofReal (1 / (Real.pi * (1 + ‖x‖ ^ 2) ^ 2))`. Establish `: Measurable fun x : ℂ => g (1 / (1 + ‖x‖ ^ 2))` using `hg.comp (by fun_prop)`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.FibLine.lintegral_comp_fsDens g hg, ← GlobalTheory.FibLine.MoebiusLintegral.lintegral_moebius (G 1 0 / a) _ hc _ hH]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [GlobalTheory.FibLine.UnitaryInv.ae_affine_ne 1 (G 1 0 / a) (Or.inl one_ne_zero)] with x hx`. Establish `hsq` using `re_hform_mul hG (lineVec false x)`. Establish `hone` using `hform_single G (lineVec false x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw0 : lineVec false x 0 = 1` using `rfl`. Establish `hw1 : lineVec false x 1 = x` using `rfl`. Establish `hp : 1 * G 0 0 + x * G 1 0 = a * (1 + G 1 0 / a * x)`. Rewrite using `[hG0]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hsq`, `hone` using `[hw0, hw1, hp]`. Use `set q : ℝ := ‖1 + G 1 0 / a * x‖ with hq_def`. Establish `hq : 0 < q` using `norm_pos_iff.2 hx`. Establish `hn : ‖(a : ℂ) * (1 + G 1 0 / a * x)‖ = a * q`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg ha.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcn : ‖((Real.sqrt D / a : ℝ) : ℂ)‖ ^ 2 = D / a ^ 2`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, sq_abs, div_pow, Real.sq_sqrt hD.le]`. Establish `hy : ‖((Real.sqrt D / a : ℝ) : ℂ) * x / (1 + G 1 0 / a * x)‖ ^ 2 = D / a ^ 2 * ‖x‖ ^ 2 / q ^ 2`. Rewrite using `[norm_div, norm_mul, div_pow, mul_pow, hcn]`. Establish `hj : ‖((Real.sqrt D / a : ℝ) : ℂ) / (1 + G 1 0 / a * x) ^ 2‖ ^ 2 = D / a ^ 2 / q ^ 4`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[norm_div, norm_pow, div_pow, hcn, ← pow_mul]`. Rewrite `hsq` using `[hn, ← ha_def, ← hD_def]`. Establish `hh : (hform G (lineVec false x) (lineVec false x)).re = ((a * q) ^ 2 + D * ‖x‖ ^ 2) / a` using `eq_div_of_mul_eq ha.ne' hsq`. Establish `hcos : cosSq false G x = 1 / (1 + D / a ^ 2 * ‖x‖ ^ 2 / q ^ 2)`. Unfold `cosSq`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[hone, hn, ← ha_def, hsq]`. Clear the denominators using the available nonvanishing facts. Establish `hpi` using `Real.pi_pos`. Rewrite using `[hy, hj, hcos, hh, mul_left_comm, mul_comm, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 2`.
-
-Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem lintegral_false {G : Matrix (Fin 2) (Fin 2) ℂ} (hG : G.PosDef) (g : ℝ → ℝ≥0∞) (hg : Measurable g) :
     ∫⁻ x : ℂ, ENNReal.ofReal (G.det.re / (Real.pi * (hform G (lineVec false x) (lineVec false x)).re ^ 2)) *
@@ -165,23 +161,21 @@ theorem lintegral_false {G : Matrix (Fin 2) (Fin 2) ℂ} (hG : G.PosDef) (g : �
   field_simp
 
 /- English proof (translation)
-Use `set a : ℝ := (G 0 0).re with ha_def`. Use `set D : ℝ := G.det.re with hD_def`. Establish `ha : 0 < a` using `re_corner_pos hG`. Establish `hD : 0 < D` using `re_det_pos hG`. Establish `hG0 : G 0 0 = (a : ℂ)` using `corner_eq hG`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haC : (a : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 ha.ne'`. Establish `hc : ((a / Real.sqrt D : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (div_pos ha (Real.sqrt_pos.2 hD)).ne'`. Establish `hg' : Measurable fun t : ℝ => g (1 - t)` using `hg.comp (by fun_prop)`. Establish `hH : Measurable fun x : ℂ => g (1 - 1 / (1 + ‖x‖ ^ 2)) * ENNReal.ofReal (1 / (Real.pi * (1 + ‖x‖ ^ 2) ^ 2))`. Establish `: Measurable fun x : ℂ => g (1 - 1 / (1 + ‖x‖ ^ 2))` using `hg.comp (by fun_prop)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `fun_prop`. Rewrite using `[← lintegral_reflect, ← GlobalTheory.FibLine.lintegral_comp_fsDens _ hg', ← GlobalTheory.FibLine.MoebiusLintegral.lintegral_moebius 0 _ hc _ hH, ← lintegral_sub_right_eq_self _ (G 1 0 / a)]`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Establish `hsq` using `re_hform_mul hG (lineVec true (x - G 1 0 / a))`. Establish `hone` using `hform_single G (lineVec true (x - G 1 0 / a))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0 : lineVec true (x - G 1 0 / a) 0 = x - G 1 0 / a` using `rfl`. Establish `hw1 : lineVec true (x - G 1 0 / a) 1 = 1` using `rfl`. Establish `hp : (x - G 1 0 / a) * G 0 0 + 1 * G 1 0 = a * x`. Rewrite using `[hG0]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `hsq`, `hone` using `[hw0, hw1, hp]`. Establish `hn : ‖(a : ℂ) * x‖ = a * ‖x‖`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg ha.le]`. Establish `hcn : ‖((a / Real.sqrt D : ℝ) : ℂ)‖ ^ 2 = a ^ 2 / D`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.norm_real, Real.norm_eq_abs, sq_abs, div_pow, Real.sq_sqrt hD.le]`. Establish `hy : ‖((a / Real.sqrt D : ℝ) : ℂ) * x / (1 + 0 * x)‖ ^ 2 = a ^ 2 / D * ‖x‖ ^ 2`. Rewrite using `[zero_mul, add_zero, div_one, norm_mul, mul_pow, hcn]`. Establish `hj : ‖((a / Real.sqrt D : ℝ) : ℂ) / (1 + 0 * x) ^ 2‖ ^ 2 = a ^ 2 / D`. Rewrite using `[zero_mul, add_zero, one_pow, div_one, hcn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hsq` using `[hn, ← ha_def, ← hD_def, norm_one, one_pow, mul_one]`. Establish `hh : (hform G (lineVec true (x - G 1 0 / a)) (lineVec true (x - G 1 0 / a))).re = ((a * ‖x‖) ^ 2 + D) / a` using `eq_div_of_mul_eq ha.ne' hsq`. Establish `hcos : cosSq true G (x - G 1 0 / a) = 1 - 1 / (1 + a ^ 2 / D * ‖x‖ ^ 2)`. Unfold `cosSq`. Rewrite using `[hone, hn, ← ha_def, hsq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hpi` using `Real.pi_pos`. Rewrite using `[hy, hj, hcos, hh, mul_left_comm, mul_comm, ← ENNReal.ofReal_mul (by positivity)]`. Use `congr 2`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem lintegral_true {G : Matrix (Fin 2) (Fin 2) ℂ} (hG : G.PosDef) (g : ℝ → ℝ≥0∞) (hg : Measurable g) :
     ∫⁻ x : ℂ, ENNReal.ofReal (G.det.re / (Real.pi * (hform G (lineVec true x) (lineVec true x)).re ^ 2)) *
@@ -233,9 +227,9 @@ theorem lintegral_true {G : Matrix (Fin 2) (Fin 2) ℂ} (hG : G.PosDef) (g : ℝ
   ring
 
 /- English proof (translation)
-Establish `hd : Measurable fun x : ℂ => ENNReal.ofReal (G.det.re / (Real.pi * (hform G (lineVec s x) (lineVec s x)).re ^ 2))`. Use `Complex.measurable_re.comp (measurable_hform G (measurable_lineVec s) (measurable_lineVec s))` as an intermediate fact. Conclude with `(measurable_const.div ((this.pow_const 2).const_mul _)).ennreal_ofReal`. Use `Measure.ext_of_lintegral _ fun g hg => ?_` and prove the remaining obligations. Rewrite using `[lintegral_map hg (measurable_cosSq s G), lintegral_withDensity_eq_lintegral_mul _ hd (g := fun x => g (cosSq s G x)) (hg.comp (measurable_cosSq s G)), ← Measure.restrict_congr_set Ioo_ae_eq_Icc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `s`. Conclude with `lintegral_false hG g hg`. Conclude with `lintegral_true hG g hg`.
+A detailed English derivation is pending.
 -/
 theorem map_cosSq_fs (G : Matrix (Fin 2) (Fin 2) ℂ) (s : Bool) (hG : G.PosDef) :
     Measure.map (cosSq s G)

@@ -14,11 +14,11 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.L2.Col Formal
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r, s, hs, h⟩`. Establish `h1 : P.valuation E (algebraMap (𝓞 E) E s) = 1`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `hs`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (P.valuation E) h`. Rewrite `h2` using `[map_mul, h1, one_mul]`. Rewrite using `[h2]`. Conclude with `P.valuation_le_one r`. Introduce `h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨n, d, hnd⟩` from `P.exists_primeCompl_mul_eq_of_integer a h`. Conclude with `⟨n, d, d.2, by rw [mul_comm]; exact hnd⟩`.
+A detailed English derivation is pending.
 -/
 theorem intAt_iff_val (P : HeightOneSpectrum (𝓞 E)) (a : E) : IntAt P a ↔ P.valuation E a ≤ 1 := by
   constructor
@@ -35,9 +35,9 @@ theorem intAt_iff_val (P : HeightOneSpectrum (𝓞 E)) (a : E) : IntAt P a ↔ P
     exact ⟨n, d, d.2, by rw [mul_comm]; exact hnd⟩
 
 /- English proof (translation)
-Rewrite using `[intAt_iff_val, map_mul, map_inv₀]`. Establish `hc : P.valuation E ((c : ℕ) : E) ≤ 1` using `(intAt_iff_val P _).1 ⟨(c : 𝓞 E), 1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), by simp⟩`. Establish `h1 : P.valuation E z ≤ P.valuation E ((q : E) ^ B)`. Use `hz.trans ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_mul, Nat.cast_pow, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_right' hc`. Establish `h0 : P.valuation E ((q : E) ^ B) ≠ 0` using `(Valuation.ne_zero_iff _).2 (pow_ne_zero _ hq)`. Conclude with `(inv_mul_le_one₀ (zero_lt_iff.2 h0)).2 h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem intAt_inv_pow_mul {P : HeightOneSpectrum (𝓞 E)} {q B c : ℕ} (hq : (q : E) ≠ 0) {z : E}
     (hz : P.valuation E z ≤ P.valuation E (((q ^ B * c : ℕ) : ℕ) : E)) : IntAt P (((q : E) ^ B)⁻¹ * z) := by
@@ -60,19 +60,17 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open Formalism.L2.Ker
 
 /- English proof (translation)
-Introduce `B X I hI l u a i hm al P p q p' q' k y k' y' hp hN hp' hN' hq hq' hc`. Establish `hL` using `hI.idx_ok a`. Rewrite `hL` using `[show B.R.m - 2 = i by omega]`. Distinguish the cases in `hP : P.1 ∈ (B.primes X).vGs`. Use `⟨Formalism.L2.Col.qOf P.1, Nat.pos_of_ne_zero fun h => P.1.ne_bot (Ideal.absNorm_eq_zero_iff.1 h), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨c, rfl⟩ x x₀ hx`. Conclude with `GlobalTheory.Transport.Pen.psiAt_frames (base_fields_primes_ok B X).1 l.pr hL al P hP p q p' q' hp hN hp' hN' hq hq' hc (GlobalTheory.Transport.Pen.lt_of_congAt hx)`. Establish `hPQ : P.1 ∈ I.Q a` using `(Finset.mem_union.1 P.2).resolve_left hP`. Establish `hq0n : Formalism.L2.Col.qOf P.1 ≠ 0` using `fun h => P.1.ne_bot (Ideal.absNorm_eq_zero_iff.1 h)`. Establish `hq0 : ((Formalism.L2.Col.qOf P.1 : ℕ) : B.fields.E) ≠ 0` using `Nat.cast_ne_zero.2 hq0n`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Formalism.L2.Col.qOf P.1 ^ (I.cst a).B, pow_pos (Nat.pos_of_ne_zero hq0n) _, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨c, rfl⟩ x x₀ hx`. Establish `hr` using `GlobalTheory.T.twist_prime_congruent_maps_frame_readings_bound I u a i P hPQ (GlobalTheory.Mem.Df.disjoint_vGs_Q I hI l a) p q p' q' k y k' y' hp hN hp' hN' hq hq' _ x x₀ hx`. Establish `hm' : i + 1 + 1 = B.R.m` using `by omega`. Use `set x₁ := Formalism.L2.Col.inFr (Formalism.L2.Col.frsF I.sel (I.tup a) p.1.1 P) (Formalism.L2.Col.frsF I.sel (I.tup a) p'.1.1 P) x₀ with hx₁`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set x₂ := Formalism.L2.Col.inFr (Formalism.L2.Col.frsF I.sel (I.tup a) q.1.1 P) (Formalism.L2.Col.frsF I.sel (I.tup a) q'.1.1 P) x with hx₂`. Use `set y₁ := (Formalism.L2.Col.frsF I.sel (I.tup a) p'.1.1 P).symm (Formalism.L2.Col.repY p'.1.2) with hy₁`. Use `set y₂ := (Formalism.L2.Col.frsF I.sel (I.tup a) q'.1.1 P).symm (Formalism.L2.Col.repY q'.1.2) with hy₂`. Establish `s1` using `hL.psiInvX al P x₁ (x₂ - x₁) y₁ fun s l => by`. Use `hr l s` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Matrix.sub_apply, LinearMap.toMatrix'_apply, LinearMap.toMatrix'_apply]`. Conclude with `GlobalTheory.Transport.TwistCpl.intAt_inv_pow_mul hq0 (by rw [LinearMap.sub_apply, Pi.sub_apply]; exact this)`. Rewrite `s1` using `[add_sub_cancel]`. Rewrite using `[← s1]`. Establish `h1 : y₁ ∈ cosetIn p' P` using `⟨_, p'.repY_mem hm', by simp [hy₁]⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[← hc]`. Take `⟨z, hz, h2⟩` from `h1`. Rewrite `h2` using `[if_neg hP]`. Establish `h3` using `add_mem h2 ((GlobalTheory.TopLaw.coset_sub q'.1.1 (q'.mem_ybSet hm') hz (q'.repY_mem hm') P).2 hP)`. Rewrite `h3` using `[← smul_add, sub_add_sub_cancel]`.
-
-Establish `h4` using `hL.psiInv al P x₂ y₂ (y₁ - y₂) fun j => by`. Rewrite using `[if_neg hP]`. Use `open Formalism.L2.Col Formalism.L2.DIV GlobalTheory.TopStep in exact mem_stdAt.1 h3 j`. Rewrite `h4` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Transport.TwistCpl.psiAt_transport_tw : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X) (hI : I.Ok) (l : I.Laws) (u : B.Word) (a : I.ι) (i : ℕ) (hm : i + 2 = B.R.m) (al : (I.idx a).β i) (P : Formalism.L2.Col.rowSG (B.primes X) I.sel (I.tup a))
     (p q : PtAt B.R I.sel (I.tup a) (I.cst a) u (i)) (p' q' : PtAt B.R I.sel (I.tup a) (I.cst a) u (i + 1))

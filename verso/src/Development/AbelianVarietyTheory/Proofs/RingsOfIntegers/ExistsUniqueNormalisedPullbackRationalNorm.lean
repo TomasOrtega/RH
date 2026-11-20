@@ -21,11 +21,11 @@ namespace NormPullUniq
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] (L : RigLB A)
 
 /- English proof (translation)
-Establish `hL` using `L.isLB`. Take `⟨α₀, α, hα₀, nα, cα, tα⟩` from `h₁`. Take `⟨β₀, β, hβ₀, nβ, cβ, tβ⟩` from `h₂`. Establish `key : ∀ j, s₁.f j = s₂.f j` using `sec_ext_val hL (φ := fun _ : Fin 1 => (snd T A).left) (ε := fun _ => a) (s := s₁) (s' := s₂) fun y J hJ => by`. Use `(twist_val tα (𝟙 _) y hJ).trans (Eq.trans ?_ (twist_val tβ (𝟙 _) y hJ).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[val_corr hJ cα (𝟙 _), val_corr hJ cβ (𝟙 _), val_pull hJ, val_pull hJ]`. Rewrite using `[gen_unique hL A.hom (eSec A) NormMulUniv.eSec_hom hp hα₀ hβ₀ (fun w I hI => by`. Establish `a` using `val_corr hI nα (𝟙 _)`. Establish `b` using `val_corr hI nβ (𝟙 _)`. Rewrite `a`, `b` using `[val_pull hI, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `a.trans b.symm) _ _ y J hJ]`. Take `⟨f₁, p₁⟩` from `s₁`. Take `⟨f₂, p₂⟩` from `s₂`. Take `rfl : f₁ = f₂` from `funext key`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isNormPull_unique (hp : Function.Surjective A.hom.appTop.hom) (φ : A ⟶ A) (a b : ℤ)
     {T : Over S} {s : LB.Sec (LPow A L.L b T)} {s₁ s₂ : LB.Sec (LPow A L.L a T)}
@@ -51,9 +51,9 @@ theorem isNormPull_unique (hp : Function.Surjective A.hom.appTop.hom) (φ : A �
 end NormPullUniq
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo S _ x a N k k' ha hk F`. Substitute `hk` using the available equality. Use `letI := H.starRing`. Use `Xo.univ.t.act.hom a` as an intermediate fact. Establish `hL` using `Xo.univ.t.PP.isLB`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `PullGenG.hasGen_pull Xo.univ.t.PP Xo.univ.t.cub Xo.univ.t.act.toRingAct H.w0 a N ha (Xo.univ.t.adj a) Xo.univ.t.prim k`. Take `⟨β, hβ⟩` from `h.gen hL (K' := Fin 2) ![𝟙 Xo.univ.t.G.left, (Xo.univ.t.act.act a).left] ![((k * N : ℕ) : ℤ), -(k : ℤ)] rfl`. Take `⟨F', hF'⟩` from `TransPullEx.exists_isNormPull Xo.univ.t.PP (Xo.univ.t.act.act a) ((k * N : ℕ) : ℤ) k β hβ F`. Conclude with `⟨F', hF', fun F'' hF'' => NormPullUniq.isNormPull_unique Xo.univ.t.PP (SemiRigid.globalFns _ _ (ObjDim.isAbelianScheme Xo.univ)).2 _ _ _ hF'' hF'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem existsUnique_pulls : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (S : Type) [CommRing S] (x : Sp S ⟶ Xo.X) (a : 𝓞 E) (N k k' : ℕ), a * H.bar a = (N : 𝓞 E) → k' = k * N → ∀ F : SecN Xo x k, ∃! F' : SecN Xo x k', Pulls Xo a F F' := by
   intro E _ _ _ H Dw l Xo S _ x a N k k' ha hk F

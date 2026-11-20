@@ -18,7 +18,7 @@ variable {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R'] {A : Over (Sp R
   {A' : Over (Sp R')} [GrpObj A'] {φ : A'.left ⟶ A.left}
 
 /- English proof (translation)
-Establish `e1` using `GrpMor.pull_pull (homMor (dp0 R) (𝟙 _) e) (bcMor h) (GrpMor.comp (homMor (dp0 R) (𝟙 _) e) (bcMor h)) (fun _ => rfl) rfl c`. Establish `e2` using `GrpMor.pull_pull (bcMor h) (homMor (dp0 R') (𝟙 _) e') (GrpMor.comp (homMor (dp0 R) (𝟙 _) e) (bcMor h)) (fun _ => rfl) he c`. Conclude with `e1.trans e2.symm`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem pull_primPull (h : IsGrpPullback A' A (spMap (algebraMap R R')) φ) (e : A ⟶ A) (e' : A' ⟶ A')
     [IsMonHom e] [IsMonHom e'] (he : e'.left ≫ φ = φ ≫ e.left) (c : primDR A) :
@@ -30,7 +30,7 @@ private theorem pull_primPull (h : IsGrpPullback A' A (spMap (algebraMap R R')) 
   exact e1.trans e2.symm
 
 /- English proof (translation)
-Proceed by induction on `f with`. Consider the case `zero => rfl`. Consider the case `succ f ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', GlobalTheory.LinFrob.pull_frobDR p hR hR' h, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pull_frob_iter (p : ℕ) [Fact p.Prime] (hR : (p : R) = 0) (hR' : (p : R') = 0)
     (h : IsGrpPullback A' A (spMap (algebraMap R R')) φ) (f : ℕ) (c : primDR A) :
@@ -41,7 +41,7 @@ private theorem pull_frob_iter (p : ℕ) [Fact p.Prime] (hR : (p : R) = 0) (hR' 
     rw [Function.iterate_succ_apply', Function.iterate_succ_apply', GlobalTheory.LinFrob.pull_frobDR p hR hR' h, ih]
 
 /- English proof (translation)
-Proceed by induction on `f with`. Consider the case `zero => simp`. Consider the case `succ f ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ih, GlobalTheory.LinFrob.frobDR_smul p hR, pow_succ, pow_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem frob_iter_smul (p : ℕ) [Fact p.Prime] (hR : (p : R) = 0) (f : ℕ) (r : R) (c : primDR A) :
     (frobDR p R hR A)^[f] (r • c) = r ^ p ^ f • (frobDR p R hR A)^[f] c := by
@@ -52,11 +52,9 @@ private theorem frob_iter_smul (p : ℕ) [Fact p.Prime] (hR : (p : R) = 0) (f : 
       pow_mul]
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨c, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨(bcMor h).pull c, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[pull_primPull h g g' hg, pull_frob_iter p hR hR' h]`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`. Conclude with `Submodule.add_mem _ ha hb`.
-
-Consider the case `smul r a _ ha => rw [LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ ha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem pull_mem_span (p : ℕ) [Fact p.Prime] (hR : (p : R) = 0) (hR' : (p : R') = 0)
     (h : IsGrpPullback A' A (spMap (algebraMap R R')) φ) (g : A ⟶ A) (g' : A' ⟶ A') [IsMonHom g] [IsMonHom g']
@@ -75,11 +73,9 @@ private theorem pull_mem_span (p : ℕ) [Fact p.Prime] (hR : (p : R) = 0) (hR' :
   | smul r a _ ha => rw [LinearMap.map_smulₛₗ]; exact Submodule.smul_mem _ _ ha
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx` using `[(GlobalTheory.abelianDeRham.2.2.1 R A d hA hd R' A' φ h).2]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← pull_primPull h e e' he]`. Conclude with `pull_mem_span p hR hR' h g g' hg f (hN c hc)`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
-
-Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul r a _ ha => rw [map_smul]`. Conclude with `Submodule.smul_mem _ _ ha`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem no_up (p : ℕ) [Fact p.Prime] (hR : (p : R) = 0) (hR' : (p : R') = 0)
     (h : IsGrpPullback A' A (spMap (algebraMap R R')) φ) (d : ℕ) (hA : IsAbelianScheme A)
@@ -107,11 +103,11 @@ variable {K L : Type} [Field K] [Field L] [Algebra K L] {A : Over (Sp K)} [GrpOb
   {A' : Over (Sp L)} [GrpObj A'] {φ : A'.left ⟶ A.left}
 
 /- English proof (translation)
-Establish `hcomp : W.mkQ ∘ₗ W.subtype = 0`. Use extensionality with `w`. Conclude with `(Submodule.Quotient.mk_eq_zero W).mpr w.2`. Establish `hq : (W.mkQ.baseChange L) ((W.subtype.baseChange L) s) = 0`. Rewrite using `[← LinearMap.comp_apply, ← LinearMap.baseChange_comp, hcomp, LinearMap.baseChange_zero, LinearMap.zero_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hq` using `[hs, LinearMap.baseChange_tmul]`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap K L) (LinearMap.ker_eq_bot.mpr (algebraMap K L).injective)`. Establish `hg1 : g 1 = 1`. Use `LinearMap.congr_fun hg 1` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h2 : (TensorProduct.lid K (V ⧸ W)) (LinearMap.rTensor (V ⧸ W) g ((1 : L) ⊗ₜ[K] W.mkQ y)) = 0`. Rewrite using `[hq, map_zero, map_zero]`. Rewrite `h2` using `[LinearMap.rTensor_tmul, TensorProduct.lid_tmul, hg1, one_smul, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_of_subtype_baseChange_eq_one_tmul {K L : Type} {V : Type*} [Field K] [Field L] [Algebra K L] [AddCommGroup V] [Module K V]
     (W : Submodule K V) (y : V) (s : L ⊗[K] W) (hs : (W.subtype.baseChange L) s = (1 : L) ⊗ₜ[K] y) : y ∈ W := by
@@ -135,23 +131,21 @@ private theorem mem_of_subtype_baseChange_eq_one_tmul {K L : Type} {V : Type*} [
 set_option maxHeartbeats 200000 in
 
 /- English proof (translation)
-Take `⟨-, -, hBC, -, -⟩` from `GlobalTheory.abelianDeRham`. Take `⟨hbij, hF⟩` from `hBC K A d hA hd L A' φ h`. Unfold `NO at hN ⊢`. Introduce `x hx`. Establish `hPx : (bcMor h).pull x ∈ PrimitiveSubmodule A'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hF]`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`. Establish `hy'` using `hN _ hPx`. Rewrite `hy'` using `[← pull_primPull h e e' he]`. Take `⟨W, hW⟩ : ∃ W, W = Submodule.span K (Set.range fun c => primPull (dp0 K) (𝟙 (Sp K)) g ((frobDR p K hK A)^[f] c))` from `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hW]`. Set `Φ : L ⊗[K] W →ₗ[L] primDR A'` to `(liftSemi (bcMor h).pull).comp (W.subtype.baseChange L)`. Establish `hΦ : ∀ (a : L) (w : W), Φ (a ⊗ₜ[K] w) = a • (bcMor h).pull (w : primDR A)`. Introduce `a w`. Simplify using `only [Φ, LinearMap.comp_apply, LinearMap.baseChange_tmul, liftSemi_tmul, Submodule.subtype_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hgen : ∀ t : L ⊗[K] primDR A, primPull (dp0 L) (𝟙 (Sp L)) g' ((frobDR p L hL A')^[f] (liftSemi (bcMor h).pull t)) ∈ LinearMap.range Φ`. Introduce `t`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero`. Rewrite using `[map_zero, iterate_map_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `tmul a v`. Rewrite using `[liftSemi_tmul, frob_iter_smul p hL f a, ← pull_frob_iter p hK hL h f v, map_smul, ← pull_primPull h g g' hg]`. Establish `hmem : primPull (dp0 K) (𝟙 (Sp K)) g ((frobDR p K hK A)^[f] v) ∈ W`. Rewrite using `[hW]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.subset_span ⟨v, rfl⟩`. Conclude with `LinearMap.mem_range.mpr ⟨(a ^ p ^ f) ⊗ₜ[K] (⟨_, hmem⟩ : W), hΦ _ _⟩`. Consider the case `add t1 t2 h1 h2`. Rewrite using `[map_add, iterate_map_add, map_add]`. Conclude with `Submodule.add_mem _ h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hle : Submodule.span L (Set.range fun c => primPull (dp0 L) (𝟙 (Sp L)) g' ((frobDR p L hL A')^[f] c)) ≤ LinearMap.range Φ`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Take `⟨t, ht⟩` from `hbij.2 c`. Establish `h4` using `hgen t`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SetLike.mem_coe, ← ht]`. Conclude with `h4`. Take `⟨s, hs⟩` from `LinearMap.mem_range.mp (hle hy')`. Simplify using `only [Φ, LinearMap.comp_apply] at hs`. Establish `h5 : liftSemi (bcMor h).pull (W.subtype.baseChange L s) = liftSemi (bcMor h).pull ((1 : L) ⊗ₜ[K] primPull (dp0 K) (𝟙 (Sp K)) e x)`.
-
-Rewrite using `[liftSemi_tmul, one_smul]`. Conclude with `hs`. Establish `h6` using `hbij.1 h5`. Conclude with `mem_of_subtype_baseChange_eq_one_tmul W _ s h6`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem no_down (p : ℕ) [Fact p.Prime] (hK : (p : K) = 0) (hL : (p : L) = 0)
     (h : IsGrpPullback A' A (spMap (algebraMap K L)) φ) (d : ℕ) (hA : IsAbelianScheme A)
@@ -213,11 +207,9 @@ end Down
 end UpperTheory.Gal.Ord
 
 /- English proof (translation)
-Introduce `p _ D R _ b N w f π κ k T _ _ _ hκ hk hT σ τ s s₀ s' o o₀ o' m₀ m' hN`. Use `letI : Algebra κ k := σ.toAlgebra`. Use `letI : Algebra κ T := τ.toAlgebra`. Use `haveI := o.act.hom ((algebraMap (𝓞 D.F) D.O) π.ε)`. Use `haveI := o.act.hom ((algebraMap (𝓞 D.F) D.O) π.g)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := o₀.act.hom ((algebraMap (𝓞 D.F) D.O) π.ε)`. Use `haveI := o₀.act.hom ((algebraMap (𝓞 D.F) D.O) π.g)`. Use `haveI := o'.act.hom ((algebraMap (𝓞 D.F) D.O) π.ε)`. Use `haveI := o'.act.hom ((algebraMap (𝓞 D.F) D.O) π.g)`. Establish `hd` using `GlobalTheory.T.harrisTaylor_relDim_and_diagonal_isLineBundle p D R b N _ s o`.
-
-Establish `h1 : NOo hκ o π` using `no_down p hκ hk m₀.cart D.g o.ab hd.1 (o.act.act ((algebraMap (𝓞 D.F) D.O) π.ε)) (o.act.act ((algebraMap (𝓞 D.F) D.O) π.g)) (o₀.act.act ((algebraMap (𝓞 D.F) D.O) π.ε)) (o₀.act.act ((algebraMap (𝓞 D.F) D.O) π.g)) (m₀.act _) (m₀.act _) f hN`. Conclude with `no_up p hκ hT m'.cart D.g o.ab hd.1 (o.act.act ((algebraMap (𝓞 D.F) D.O) π.ε)) (o.act.act ((algebraMap (𝓞 D.F) D.O) π.g)) (o'.act.act ((algebraMap (𝓞 D.F) D.O) π.ε)) (o'.act.act ((algebraMap (𝓞 D.F) D.O) π.g)) (m'.act _) (m'.act _) f h1`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Ord.desc :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (N : ℕ) (w : Ideal (𝓞 D.F)) (f : ℕ) (π : Par p w f)

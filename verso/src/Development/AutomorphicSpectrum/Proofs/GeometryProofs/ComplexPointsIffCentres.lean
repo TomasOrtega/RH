@@ -9,11 +9,11 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 namespace GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Introduce `X Ω _ ξ K _ J _ y tie w`. Establish `key` using `GlobalTheory.T.local_ring_points_existsUnique X Ω ξ K J y tie ℂ`. Establish `hval : ∀ g : MvPolynomial (Σ k, J k) ℤ, MvPolynomial.aeval w g = MvPolynomial.eval w (MvPolynomial.map (Int.castRingHom ℂ) g)`. Introduce `g`. Rewrite using `[MvPolynomial.eval_map, MvPolynomial.aeval_def]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hne, hvan⟩`. Take `⟨z, ⟨hz, hc⟩, -⟩` from `key.1 w (fun k => (hne k).imp fun _ h => isUnit_iff_ne_zero.mpr h) (fun g hg => by rw [hval]; exact hvan g hg)`. Conclude with `⟨z, hz, hc⟩`.
+Reduce the equality to equality of the corresponding arguments. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, hz, hc⟩`. Use `⟨fun k => (hc.1 k).imp fun _ h => h.ne_zero, fun f hf => ?_⟩` and prove the remaining obligations. Rewrite using `[← hval]`. Conclude with `(key.2.2 z w hz hc).1 f hf`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mcPts_iff_exists_coordsAt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω), CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → ∀ w : (Σ k, J k) → ℂ, w ∈ mcPts (mCoordIdeal y) ↔ ∃ z : Spec (CommRingCat.of ℂ) ⟶ X, genPt ξ ⤳ centre z ∧ CoordsAt ξ y z w := by
   intro X Ω _ ξ K _ J _ y tie w

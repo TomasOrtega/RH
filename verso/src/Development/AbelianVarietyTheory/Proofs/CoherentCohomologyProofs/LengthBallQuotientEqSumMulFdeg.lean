@@ -10,9 +10,9 @@ open TensorProduct in
 open TensorProduct in
 
 /- English proof (translation)
-Use `letI : Field (R ⧸ M) := Ideal.Quotient.field M`. Use `haveI : Module.Finite K (R ⧸ M) := finite_of_finite_type_of_isJacobsonRing K (R ⧸ M)`. Set `e : K ≃ₐ[K] R ⧸ M` to `AlgEquiv.ofBijective (Algebra.ofId K (R ⧸ M)) IsAlgClosed.algebraMap_bijective_of_isIntegral`. Use `⟨e.symm.toAlgHom.comp (Ideal.Quotient.mkₐ K M), ?_⟩` and prove the remaining obligations. Use extensionality with `x`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `[RingHom.mem_ker, Ideal.Quotient.eq_zero_iff_mem]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PointSupport.exists_algHom_ker_eq (K : Type) [Field K] [IsAlgClosed K] (R : Type)
     [CommRing R] [Algebra K R] [Algebra.FiniteType K R] (M : Ideal R) [M.IsMaximal] :
@@ -29,45 +29,35 @@ open TensorProduct in
 open TensorProduct in
 
 /- English proof (translation)
-Introduce `K _ _ R _ _ _ χ₀ O _ _ _ _ H _ _ _ _ _ hsupp`. Use `haveI : IsJacobsonRing R := isJacobsonRing_of_finiteType (A := K)`. Establish `hχ₀ : Function.Surjective χ₀` using `fun k => ⟨algebraMap K R k, χ₀.commutes k⟩`. Use `haveI hP : (RingHom.ker χ₀).IsMaximal := RingHom.ker_isMaximal_of_surjective _ hχ₀`. Establish `hmax : ∀ M : Ideal R, M.IsMaximal → Module.annihilator R H ≤ M → M = RingHom.ker χ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `M hM hle`. Take `⟨χ, hχ⟩` from `_root_.GlobalTheory.PointSupport.exists_algHom_ker_eq K R M`. Distinguish the cases in `h : χ = χ₀`. Rewrite using `[← hχ, h]`. Take `⟨r, hr, hrz⟩` from `hsupp χ h`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hrM : r ∈ M` using `hle (Module.mem_annihilator.mpr hrz)`. Rewrite `hrM` using `[← hχ]`. Conclude with `absurd (RingHom.mem_ker.mp hrM) hr`. Establish `hprime : ∀ Q : Ideal R, Q.IsPrime → Module.annihilator R H ≤ Q → Q = RingHom.ker χ₀`. Introduce `Q hQ hle`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← IsJacobsonRing.out' Q hQ.isRadical]`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨J, hJ, hQJ⟩` from `Ideal.exists_le_maximal Q hQ.ne_top`. Rewrite using `[← hmax J hJ (hle.trans hQJ)]`. Conclude with `sInf_le ⟨hQJ, hJ⟩`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_sInf fun J hJ => (hmax J hJ.2 (hle.trans hJ.1)).ge`. Use `letI : Module (R ⧸ Module.annihilator R H) H := Module.quotientAnnihilator`. Establish `hmk : ∀ (r : R) (z : H), (Ideal.Quotient.mk (Module.annihilator R H) r) • z = r • z` using `fun _ _ => rfl`. Use `haveI : IsScalarTower R (R ⧸ Module.annihilator R H) H := ⟨fun r a z => by`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.smul_def, Ideal.Quotient.algebraMap_eq, ← map_mul, hmk, hmk, mul_smul]⟩`. Use `haveI : IsScalarTower K (R ⧸ Module.annihilator R H) H := ⟨fun k a z => by`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective a`. Rewrite using `[Algebra.smul_def, ← Ideal.Quotient.mk_algebraMap, ← map_mul, hmk, hmk, ← Algebra.smul_def, smul_assoc]⟩`. Use `haveI : Module.Finite (R ⧸ Module.annihilator R H) H := Module.Finite.of_restrictScalars_finite R _ H`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprimeq : ∀ Q : Ideal (R ⧸ Module.annihilator R H), Q.IsPrime → Q.comap (Ideal.Quotient.mk _) = RingHom.ker χ₀` using `fun Q hQ => hprime _ (Ideal.comap_isPrime _ Q) fun r hr => by`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hr]`. Conclude with `Q.zero_mem`. Use `haveI : Ring.KrullDimLE 0 (R ⧸ Module.annihilator R H) := Ring.KrullDimLE.mk₀ fun Q hQ => by`. Rewrite using `[← Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective Q, hprimeq Q hQ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Ideal.IsMaximal.map_of_surjective_of_ker_le Ideal.Quotient.mk_surjective ?_` and prove the remaining obligations. Rewrite using `[Ideal.mk_ker, ← hprimeq Q hQ]`. Introduce `r hr`. Rewrite using `[Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hr]`. Conclude with `Q.zero_mem`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `haveI : Module.Finite K (R ⧸ Module.annihilator R H) := (Module.finite_iff_krullDimLE_zero K _).mpr inferInstance`. Use `haveI hfin : Module.Finite K H := Module.Finite.trans (R ⧸ Module.annihilator R H) H`. Establish `hunit : ∀ s : (RingHom.ker χ₀).primeCompl, IsUnit (algebraMap R (Module.End R H) s)`. Introduce `s`. Establish `ha : IsUnit (Ideal.Quotient.mk (Module.annihilator R H) (s : R))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Equip the data with the indicated structure. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails.
 
-Assume the negation of the conclusion as `h`. Take `⟨I, hI, hsI⟩` from `exists_max_ideal_of_mem_nonunits h`. Establish `hsI' : (s : R) ∈ Ideal.comap (Ideal.Quotient.mk (Module.annihilator R H)) I` using `hsI`. Rewrite `hsI'` using `[hprimeq I hI.isPrime]`. Conclude with `s.2 hsI'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Module.End.isUnit_iff]`. Take `⟨b, hb⟩` from `ha.exists_right_inv`. Use `⟨fun x y hxy => ?_, fun z => ⟨b • z, ?_⟩⟩` and prove the remaining obligations. Rewrite `hxy` using `[Module.algebraMap_end_apply, Module.algebraMap_end_apply, ← hmk, ← hmk]`. Conclude with `ha.smul_left_cancel.mp hxy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Module.algebraMap_end_apply, ← hmk, smul_smul, hb, one_smul]`. Use `haveI : IsLocalizedModule (RingHom.ker χ₀).primeCompl (LinearMap.id : H →ₗ[R] H) := IsLocalizedModule.mk hunit (fun y => ⟨⟨y, 1⟩, one_smul _ _⟩) (fun {x₁ x₂} h => ⟨1, by simpa using h⟩)`. Set `e : H ≃ₗ[R] O ⊗[R] H` to `IsLocalizedModule.linearEquiv (RingHom.ker χ₀).primeCompl LinearMap.id (TensorProduct.mk R O H 1)`. Use `letI : Algebra K O := ((algebraMap R O).comp (algebraMap K R)).toAlgebra`. Use `haveI : IsScalarTower K R O := IsScalarTower.of_algebraMap_eq fun _ => rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `eK : H ≃ₗ[K] O ⊗[R] H` to `e.restrictScalars K`. Use `haveI : IsLocalRing O := IsLocalization.AtPrime.isLocalRing O (RingHom.ker χ₀)`. Use `haveI : IsLocalHom (algebraMap K O) := ⟨fun k hk => by`. Distinguish the cases in `h0 : k = 0`. Rewrite `hk` using `[h0, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `absurd hk not_isUnit_zero`. Conclude with `isUnit_iff_ne_zero.mpr h0⟩`. Use `haveI : Module.Finite K (O ⊗[R] H) := Module.Finite.equiv eK`. Establish `hsurj : Function.Surjective (algebraMap (IsLocalRing.ResidueField K) (IsLocalRing.ResidueField O))`. Establish `hR : ∀ r : R, IsLocalRing.residue O (algebraMap R O r) ∈ (algebraMap (IsLocalRing.ResidueField K) (IsLocalRing.ResidueField O)).fieldRange`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `r`. Use `⟨IsLocalRing.residue K (χ₀ r), ?_⟩` and prove the remaining obligations. Establish `hmem : algebraMap R O (r - algebraMap K R (χ₀ r)) ∈ IsLocalRing.maximalIdeal O`. Rewrite using `[IsLocalization.AtPrime.to_map_mem_maximal_iff O (RingHom.ker χ₀), RingHom.mem_ker, map_sub, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply, sub_self]`. Rewrite `hmem` using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_sub, sub_eq_zero]`.
-
-Rewrite using `[hmem]`. Conclude with `IsLocalRing.ResidueField.map_residue (algebraMap K O) (χ₀ r)`. Introduce `x`. Take `⟨o, rfl⟩` from `IsLocalRing.residue_surjective x`. Take `⟨r, s, rfl⟩` from `IsLocalization.exists_mk'_eq (RingHom.ker χ₀).primeCompl o`.
-
-Rewrite using `[IsLocalization.mk'_eq_mul_mk'_one, map_mul]`. Establish `hs : IsLocalRing.residue O (IsLocalization.mk' O (1 : R) s) = (IsLocalRing.residue O (algebraMap R O s))⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← map_mul, IsLocalization.mk'_spec, map_one, map_one]`. Rewrite using `[hs]`.
-
-Conclude with `Subfield.mul_mem _ (hR r) (Subfield.inv_mem _ (hR s))`. Establish `hres : Module.length (IsLocalRing.ResidueField K) (IsLocalRing.ResidueField O) = 1`. Set `f` to `LinearEquiv.ofBijective (Algebra.linearMap (IsLocalRing.ResidueField K) (IsLocalRing.ResidueField O)) ⟨(algebraMap (IsLocalRing.ResidueField K) (IsLocalRing.ResidueField O)).injective, hsurj⟩`. Rewrite using `[← f.length_eq, Module.length_eq_one_iff]`. Use `infer_instance`.
-
-Establish `hlen` using `IsLocalRing.length_restrictScalars K O (O ⊗[R] H)`. Rewrite `hlen` using `[hres, mul_one, Module.length_eq_finrank K]`. Establish `hfr : Module.finrank K H = Module.finrank K (O ⊗[R] H)` using `eK.finrank_eq`. Use `⟨?_, hfin, ?_⟩` and prove the remaining obligations. Rewrite using `[← Module.length_ne_top_iff, ← hlen]`.
-
-Conclude with `ENat.coe_ne_top _`. Rewrite using `[hfr]`. Conclude with `hlen`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.PointSupport.finiteLength_and_finrank_eq_length :
     ∀ (K : Type) [Field K] [IsAlgClosed K] (R : Type) [CommRing R] [Algebra K R]

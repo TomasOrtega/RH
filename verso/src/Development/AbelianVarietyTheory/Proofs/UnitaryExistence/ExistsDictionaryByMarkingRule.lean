@@ -16,15 +16,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.Member
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r C hC`. Use `choose k₀ γ₀ h₀ using GlobalTheory.T.exists_component_lattice_marking_adelic D H Dw l Xo c σ V r C hC`. Use `⟨fun h => if hk : ∃ k, C.Mark h k 1 then ⟨hk.choose, C.fr h hk.choose⟩ else ⟨k₀ h, C.fr (γ₀ h * h) (k₀ h)⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Distinguish the cases in `hk : ∃ k, C.Mark h k 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨1, ?_⟩ beta_reduce` and prove the remaining obligations. Rewrite using `[dif_pos hk]`. Conclude with `⟨hk.choose_spec, by rw [one_mul]⟩`. Use `⟨γ₀ h, ?_⟩ beta_reduce` and prove the remaining obligations. Rewrite using `[dif_neg hk]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨h₀ h, rfl⟩`. Introduce `k`. Take `⟨h, hf, hm⟩` from `GlobalTheory.T.exists_finiteAdelic_element_marking_component D H Dw l Xo c σ V r C hC k`. Establish `hk : ∃ k, C.Mark h k 1` using `⟨k, hm⟩`. Use `⟨h, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[dif_pos hk]`. Establish `e : hk.choose = k` using `(GlobalTheory.T.marking_component_unique_frame_unique_arithmeticGroup D H Dw l Xo c σ V r C hC h).1 _ _ _ _ hk.choose_spec hm`. Rewrite using `[e]`. Use `(GlobalTheory.T.memberDictionary_frames_orthonormal_unit D H Dw l Xo c σ V r C hC 1 k).2.2.2.2.1 h hf` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[one_mul]`. Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Member.Ctx.exists_isDict : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∃ dict, C.IsDict dict := by
   intro D H Dw l Xo c σ V r C hC

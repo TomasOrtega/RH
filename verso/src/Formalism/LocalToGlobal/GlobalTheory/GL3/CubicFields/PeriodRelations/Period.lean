@@ -25,9 +25,9 @@ theorem br_brN_eq (D : D7) : brN D = ((FractionalIdeal.absNorm (D.host.AA0 *
       FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E)) : ℚ) : ℝ) := rfl
 
 /- English proof (translation)
-Rewrite using `[br_ellT_eq, lineR_eq D.host.K D.host.E (brPhi D) M D.what₂.Tau (embT D) (br_embT_injective D) (br_embT_res D) (br_card_tau D) hemb]`. Establish `hJ : D.host.AA0 * ((differentIdeal (𝓞 D.host.K) (𝓞 D.host.E) : Ideal (𝓞 D.host.E)) : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E) ≠ 0` using `mul_ne_zero (leading_constant_ne_zero D) (coeIdeal_different_ne_zero _ _)`. Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (FractionalIdeal.coeToSubmodule_ne_bot.mpr hJ)`. Use `⟨liftM M (embT D τ a), ?_, Submodule.subset_span ⟨a, ha, rfl⟩⟩` and prove the remaining obligations. Establish `hm` using `hemb τ a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `liftM`. Rewrite using `[dif_pos hm]`. Introduce `h`. Establish `: embT D τ a = 0` using `congrArg Subtype.val h`. Conclude with `ha0 ((map_eq_zero (embT D τ)).mp this)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem br_exists_ellT (D : D7) (M : IntermediateField ℚ ℂ) [NumberField M]
     (hemb : ∀ τ x, embT D τ x ∈ M) (τ : D.what₂.Tau) :
@@ -48,23 +48,19 @@ theorem br_exists_ellT (D : D7) (M : IntermediateField ℚ ℂ) [NumberField M]
   exact ha0 ((map_eq_zero (embT D τ)).mp this)
 
 /- English proof (translation)
-Establish `hex` using `br_exists_ellT D M hemb τ`. Unfold `meanLogOm`. Simplify using `only`. Use `set s : M := Classical.epsilon (fun s : M => s ≠ 0 ∧ s ∈ Formalism.MainNotions.TaylorLogMetric.ellT D M τ) with hsdef`. Establish `hs : s ≠ 0 ∧ s ∈ Formalism.MainNotions.TaylorLogMetric.ellT D M τ` using `Classical.epsilon_spec hex`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hs`, the goal using `[br_ellT_eq]`. Establish `hidx` using `index_lineR D.host.K D.host.E (brPhi D) M D.what₂.Tau (embT D) (br_embT_injective D) (br_embT_res D) (br_card_tau D) hemb D.host.AA0 (leading_constant_ne_zero D) τ s hs.1 hs.2`. Rewrite `hidx` using `[← br_brN_eq]`. Use `set x : ℝ := ((((Submodule.span (𝓞 M) {s}).toAddSubgroup.addSubgroupOf (lineR M (embT D) D.host.AA0 τ).toAddSubgroup).index : ℕ) : ℝ) with hxdef`. Use `set e : ℕ := Module.finrank ℚ D.host.E with he`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set m : ℕ := Module.finrank ℚ M with hm`. Use `set ns : ℝ := |((Algebra.norm ℚ s : ℚ) : ℝ)| with hns`. Establish `hns0 : ns ≠ 0`. Rewrite using `[hns, abs_ne_zero, Rat.cast_ne_zero]`. Conclude with `(Algebra.norm_ne_zero_iff).mpr hs.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrhs : ns ^ e ≠ 0` using `pow_ne_zero _ hns0`. Establish `hl : x ^ e * brN D ^ m ≠ 0` using `hidx ▸ hrhs`. Establish `hx0 : x ^ e ≠ 0` using `left_ne_zero_of_mul hl`. Establish `hN0 : brN D ^ m ≠ 0` using `right_ne_zero_of_mul hl`. Establish `hlog : (e : ℝ) * Real.log x + (m : ℝ) * Real.log (brN D) = (e : ℝ) * Real.log ns`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg Real.log hidx` as an intermediate fact. Rewrite `this` using `[Real.log_mul hx0 hN0, Real.log_pow, Real.log_pow, Real.log_pow]`. Conclude with `this`. Establish `he0 : (e : ℝ) ≠ 0`. Rewrite using `[he]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(Module.finrank_pos : 0 < Module.finrank ℚ D.host.E).ne'` after adjusting the coercions. Establish `hm0 : (m : ℝ) ≠ 0`. Rewrite using `[hm]`. Conclude with `(Module.finrank_pos : 0 < Module.finrank ℚ M).ne'` after adjusting the coercions. Establish `hterm : ∀ ρ : M →ₐ[ℚ] ℂ, Formalism.MainNotions.TaylorLogMetric.logMet M Λ ρ s = Real.log Real.pi + Real.log (‖ρ s‖ ^ 2) - Real.log (area (lamConj M ρ Λ))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `ρ`. Unfold `Formalism.MainNotions.TaylorLogMetric.logMet`. Rewrite using `[br_area_eq]`. Establish `hρ : ‖ρ s‖ ^ 2 ≠ 0` using `pow_ne_zero _ (norm_ne_zero_iff.mpr ((map_ne_zero ρ).mpr hs.1))`. Rewrite using `[Real.log_div (mul_ne_zero Real.pi_ne_zero hρ) (hpos ρ).ne', Real.log_mul Real.pi_ne_zero hρ]`.
-
-Establish `hsum : ∑ ρ : M →ₐ[ℚ] ℂ, Formalism.MainNotions.TaylorLogMetric.logMet M Λ ρ s = (m : ℝ) * Real.log Real.pi + 2 * Real.log ns - ∑ ρ : M →ₐ[ℚ] ℂ, Real.log (area (lamConj M ρ Λ))`. Rewrite using `[Finset.sum_congr rfl (fun ρ _ => hterm ρ), Finset.sum_sub_distrib, Finset.sum_add_distrib, br_sum_log_norm_sq M s hs.1, Finset.sum_const, Finset.card_univ, AlgHom.card, nsmul_eq_mul]`. Establish `hsum2 : ∑ ρ : M →ₐ[ℚ] ℂ, Real.log (area (lamConj M ρ Λ) / Real.pi) = ∑ ρ : M →ₐ[ℚ] ℂ, Real.log (area (lamConj M ρ Λ)) - (m : ℝ) * Real.log Real.pi`. Rewrite using `[Finset.sum_congr rfl (fun ρ _ => Real.log_div (hpos ρ).ne' Real.pi_ne_zero), Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, AlgHom.card, nsmul_eq_mul]`. Rewrite using `[hsum, hsum2]`.
-
-Clear the denominators using the available nonvanishing facts. Take the linear combination `2 * hlog`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem br_meanLogOm_eq (D : D7) (Λ : AddSubgroup ℂ) (M : IntermediateField ℚ ℂ) [NumberField M]
     (hemb : ∀ τ x, embT D τ x ∈ M) (τ : D.what₂.Tau)

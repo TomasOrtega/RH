@@ -12,7 +12,7 @@ noncomputable section
 namespace DiagonalRelevant
 
 /- English proof (translation)
-Rewrite using `[RingHom.mem_ker]`. Unfold `T.multiConeMap`. Rewrite using `[eval₂Hom_X', mul_eq_zero, C_eq_zero]`. Simplify using `[X_ne_zero]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem X_mem_ker_iff {K : Type} {ι : K → Type} {Φ : Type} [Field Φ] (c : (Σ k, ι k) → Φ)
     (p : Σ k, ι k) :
@@ -23,13 +23,11 @@ theorem X_mem_ker_iff {K : Type} {ι : K → Type} {Φ : Type} [Field Φ] (c : (
   simp [X_ne_zero]
 
 /- English proof (translation)
-Introduce `h`. Unfold `T.lineVal at h`. Distinguish the cases in `h1 : ψ (e 1) = 0`. Apply `hψ` to reduce the goal to its premises. Use `e.ext fun q => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `fin_cases q`. Simplify using `only [h1, map_zero, mul_zero, add_zero] at h`. Simplify using `using (map_eq_zero_iff _ (algebraMap Ω Φ).injective).1 h`. Simplify using `using h1`. Apply `ha` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1' : algebraMap Ω Φ (ψ (e 1)) ≠ 0` using `(map_ne_zero _).2 h1`. Establish `: a = algebraMap Ω Φ (-(ψ (e 0)) / ψ (e 1))`. Rewrite using `[map_div₀, map_neg, eq_div_iff h1']`. Take the linear combination `h`. Rewrite using `[this]`.
-
-Conclude with `isAlgebraic_algebraMap _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineVal_ne_zero {Ω : Type} [Field Ω] {E : Type} [AddCommGroup E] [Module Ω E] {Φ : Type} [Field Φ]
     [Algebra Ω Φ] (e : Module.Basis (Fin 2) Ω E) {ψ : E →ₗ[Ω] Ω} (hψ : ψ ≠ 0) {a : Φ}
@@ -56,13 +54,11 @@ end DiagonalRelevant
 open DiagonalRelevant DiagonalForms in
 
 /- English proof (translation)
-Introduce `Ω _ ι ν κ _ _ _ E _ _ Φ _ _ x B e φ δ _ hgen hdet ⟨i, hi⟩ a ha`. Establish `hmap : ∀ y : Ω, y ≠ 0 → algebraMap Ω Φ y ≠ 0` using `fun y hy => (map_ne_zero _).2 hy`. Take `⟨u, hu, w, hw, huw⟩` from `exists_detE_ne B i hi e`. Take `⟨l, hl⟩ : ∃ l, δ l ≠ 0` from `by by_contra! h`. Conclude with `huw ((Submodule.mem_bot _).1 ((Submodule.span_le (p := ⊥)).2 (by rintro _ ⟨l, rfl⟩; simp [h l]) ((hdet i hi).2 u hu w hw)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ψ₀, hψ₀, ψ₁, -, hne⟩` from `exists_dual_pair B i hi e`. Take `⟨k, hk⟩ : ∃ k, φ k ≠ 0` from `by by_contra! h`. Take `⟨c, -, hc⟩` from `hgen i hi ψ₀ hψ₀`. Conclude with `hne (by simp [hc, h])`. Establish `hv : T.lineVal e (φ k) (a 0) ≠ 0` using `lineVal_ne_zero e hk (ha.transcendental 0)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Introduce `blk`. Consider the cases of `blk with`. Consider the case `base => exact ⟨i, fun h => hmap _ hi ((X_mem_ker_iff _ _).1 h)⟩`. Consider the case `det => exact ⟨l, fun h => hmap _ hl ((X_mem_ker_iff _ _).1 h)⟩`. Consider the case `line0 => exact ⟨k, fun h => hv ((X_mem_ker_iff _ _).1 h)⟩`.
-
-Consider the case `line1 => exact ⟨k, fun h => hv ((X_mem_ker_iff _ _).1 h)⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem DiagRelevant.proof : DiagRelevant.Statement := by
   intro Ω _ ι ν κ _ _ _ E _ _ Φ _ _ x B e φ δ _ hgen hdet ⟨i, hi⟩ a ha

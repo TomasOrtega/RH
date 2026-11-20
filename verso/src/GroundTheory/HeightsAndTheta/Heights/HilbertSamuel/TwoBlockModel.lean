@@ -41,7 +41,7 @@ def twoBlockStep (x x' : Ix κ → Ω) (a b : ℕ) : ℝ :=
   Real.log ((sec ℤ x (a + 1) * sec ℤ x' b).toAddSubgroup.relIndex (sec ℤ x a * sec ℤ x' (b + 1)).toAddSubgroup)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[twoBlockList]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem twoBlockList_zero (m m' : ConeMetric ℂ (Ix κ)) (D : ℕ) :
     twoBlockList m m' D 0 = fun _ => blockLine m' 1 := by
@@ -49,7 +49,7 @@ theorem twoBlockList_zero (m m' : ConeMetric ℂ (Ix κ)) (D : ℕ) :
   simp [twoBlockList]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Simplify using `[twoBlockList, j.2]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem twoBlockList_last (m m' : ConeMetric ℂ (Ix κ)) (D : ℕ) :
     twoBlockList m m' D (D + 1) = fun _ => blockLine m 0 := by
@@ -57,7 +57,7 @@ theorem twoBlockList_last (m m' : ConeMetric ℂ (Ix κ)) (D : ℕ) :
   simp [twoBlockList, j.2]
 
 /- English proof (translation)
-Unfold `twoBlockCoeff`. Rewrite using `[Finset.sum_range_sub', twoBlockList_zero, twoBlockList_last]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_twoBlockCoeff (I : AllFam) (x x' : Ix κ → Ω) (m m' : ConeMetric ℂ (Ix κ)) (D : ℕ) :
     ∑ i ∈ Finset.range (D + 1), twoBlockCoeff I x x' m m' D i =

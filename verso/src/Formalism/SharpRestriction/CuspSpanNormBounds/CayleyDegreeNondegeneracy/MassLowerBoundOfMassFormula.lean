@@ -11,9 +11,9 @@ open NumberField Module Formalism.BasicNotions Formalism.MainNotions Formalism.M
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `hTp h3 hsp F0 he hz Λ hrow`. Take `⟨hΛ, hu, hlift, hconv⟩` from `hrow.2.1`. Take `⟨w₁, hw₁, hgen, hann⟩` from `dual_orthLattice_quotient_cyclic F0 he hz Λ hΛ hu hlift.1 hconv.2 hTp.ne_zero`. Use `latDet_of_cyclic_dual_quotient D _ (orthLattice_isLattice F0 he hz Λ hΛ hu) ?_ hTp hsp w₁ hw₁ hgen hann` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(i_mem_dual _ _).2 fun y hy => orthLattice_isIntegral_of_unimodular Λ (lf D F0) hu y hy x hx`.
+A detailed English derivation is pending.
 -/
 theorem det_orthLattice_eq_pow (D : D7) (u : D.what₂.Word) :
     ForPrimeFlagLattice D u fun F0 Λ => latDetH (D.sp.X 0).hT (L0X D Λ (lf D F0)) = ((Tu D u ^ D.R.f : ℕ) : ℝ) := by
@@ -25,12 +25,12 @@ theorem det_orthLattice_eq_pow (D : D7) (u : D.what₂.Word) :
   exact (i_mem_dual _ _).2 fun y hy => orthLattice_isIntegral_of_unimodular Λ (lf D F0) hu y hy x hx
 
 /- English proof (translation)
-The claim follows from `orthLattice_structure_of_det D u (det_orthLattice_eq_pow D u)`.
+A detailed English derivation is pending.
 -/
 theorem orthLattice_structure (D : D7) (u : D.what₂.Word) : BaseLatticeStructure D u := orthLattice_structure_of_det D u (det_orthLattice_eq_pow D u)
 
 /- English proof (translation)
-The claim follows from `orth_space_posDef_every_place (Formalism.MainNotions.S.Inh.tie_flag0 D u) rfl rfl hT`.
+A detailed English derivation is pending.
 -/
 theorem orth_space_posDef (D : D7) (u : D.what₂.Word) (hT : 0 < Tu D u) : IsPosDef (D.sp.X 0).hT :=
   orth_space_posDef_every_place (Formalism.MainNotions.S.Inh.tie_flag0 D u) rfl rfl hT

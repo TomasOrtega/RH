@@ -6,7 +6,7 @@ open CategoryTheory AlgebraicGeometry CrystallineSemistableComparison Crystallin
 namespace GlobalTheory.CompanionTheory.SecRules
 
 /- English proof (translation)
-Use `haveI : Subsingleton (Localization.Away (0 : S)) := IsLocalization.subsingleton (M := Submonoid.powers (0 : S)) (Submonoid.mem_powers 0)`. Use `haveI : IsEmpty (Spec (CommRingCat.of (Localization.Away (0 : S)))) := inferInstanceAs (IsEmpty (PrimeSpectrum (Localization.Away (0 : S))))`. Conclude with `⟨isInitialOfIsEmpty.to Y, isInitialOfIsEmpty.hom_ext _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem secOn_zero {S : Type} [CommRing S] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of S)) :
     SecOn f 0 := by
@@ -17,9 +17,9 @@ theorem secOn_zero {S : Type} [CommRing S] (Y : Scheme.{0}) (f : Y ⟶ Spec (Com
   exact ⟨isInitialOfIsEmpty.to Y, isInitialOfIsEmpty.hom_ext _ _⟩
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Use `⟨Spec.map (CommRingCat.ofHom (IsLocalization.Away.awayToAwayRight (S := Localization.Away e) (P := Localization.Away (e * e')) e e')) ≫ s, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hs, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using `only [CommRingCat.comp_apply, CommRingCat.hom_ofHom]`. Conclude with `IsLocalization.Away.awayToAwayRight_eq e e' a`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem secOn_mul {S : Type} [CommRing S] {Y : Scheme.{0}} {f : Y ⟶ Spec (CommRingCat.of S)}
     (e e' : S) (h : SecOn f e) : SecOn f (e * e') := by
@@ -33,9 +33,9 @@ theorem secOn_mul {S : Type} [CommRing S] {Y : Scheme.{0}} {f : Y ⟶ Spec (Comm
   exact IsLocalization.Away.awayToAwayRight_eq e e' a
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h`. Set `eqv` to `IsLocalization.atUnit S (Localization.Away (1 : S)) 1 isUnit_one`. Use `⟨Spec.map (CommRingCat.ofHom (eqv.symm : Localization.Away (1 : S) →+* S)) ≫ s, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hs, ← Spec.map_comp]`. Establish `hid : CommRingCat.ofHom (Algebra.algebraMap S (Localization.Away (1 : S))) ≫ CommRingCat.ofHom (eqv.symm : Localization.Away (1 : S) →+* S) = 𝟙 _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `a`. Simplify using `only [CommRingCat.comp_apply, CommRingCat.hom_ofHom, CommRingCat.id_apply]`. Conclude with `eqv.symm.commutes a`. Rewrite using `[hid, Spec.map_id]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem section_of_secOn_one {S : Type} [CommRing S] {Y : Scheme.{0}}
     {f : Y ⟶ Spec (CommRingCat.of S)} (h : SecOn f 1) :
@@ -52,7 +52,7 @@ theorem section_of_secOn_one {S : Type} [CommRing S] {Y : Scheme.{0}}
   rw [hid, Spec.map_id]
 
 /- English proof (translation)
-Introduce `S _ Y f`. Conclude with `⟨secOn_zero Y f, fun e e' h => secOn_mul e e' h, section_of_secOn_one⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ∀ {S : Type} [CommRing S] (Y : Scheme.{0}) (f : Y ⟶ Spec (CommRingCat.of S)),
     SecOn f 0 ∧ (∀ e e' : S, SecOn f e → SecOn f (e * e')) ∧

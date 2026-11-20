@@ -12,17 +12,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorsionRank
 
 /- English proof (translation)
-Set `A'` to `(Over.pullback y).obj A`. Set `K'` to `(Over.pullback y).obj K`. Set `i' : K' ⟶ A'` to `(Over.pullback y).map i`. Establish `hA' : IsAbelianScheme A'` using `Out.TLinPf.isAb_pullback y A hA`. Use `hA'.comm` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA'.smooth` as an intermediate fact. Establish `hc' : IsUnit (c : Γ(Sp k, ⊤))`. Use `(Ne.isUnit hc).map (Scheme.ΓSpecIso (CommRingCat.of k)).inv.hom` as an intermediate fact. Simplify using `using this`. Establish `hTe : Etale (torsion A' c).hom` using `GrpTangent.etale_torsion A' hc'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hi' : i' ^ c = 1`. Establish `h` using `map_pow (Over.pullback y).homMonoidHom i c`. Rewrite `h` using `[hi, map_one]`. Conclude with `h.symm`. Take `⟨j, hj, -⟩` from `GlobalTheory.LatticeTorsion.existsUnique_torsion A' c i' hi'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: Mono i'` using `inferInstance`. Establish `hjm : Mono j` using `mono_of_mono_fac hj`. Establish `hjml : Mono j.left` using `inferInstanceAs (Mono ((Over.forget _).map j))`. Establish `hju : FormallyUnramified j.left` using `inferInstance`. Establish `hKu : FormallyUnramified K'.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.w j]`. Conclude with `MorphismProperty.comp_mem @FormallyUnramified _ _ hju inferInstance`. Establish `: Flat K'.hom` using `by change Flat (pullback.snd K.hom y); infer_instance`. Establish `: IsFinite K'.hom` using `by change IsFinite (pullback.snd K.hom y); infer_instance`. Establish `: LocallyOfFinitePresentation K'.hom` using `inferInstance`.
-
-Conclude with `Etale.of_formallyUnramified_of_flat K'.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_pullback_snd {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonObj A]
     (hA : IsAbelianScheme A) (K : Over S) (i : K ⟶ A) (c : ℕ) [Mono i] [IsFinite K.hom]
@@ -56,11 +54,11 @@ theorem etale_pullback_snd {S : Scheme.{0}} (A : Over S) [GrpObj A] [IsCommMonOb
   exact Etale.of_formallyUnramified_of_flat K'.hom
 
 /- English proof (translation)
-Introduce `S A _ _ hA K i c hi hfin hfl hic k _ _ hc y z`. Establish `het` using `etale_pullback_snd A hA K i c hic k hc y`. Take `⟨-, hcard⟩` from `GlobalTheory.FinEt.card_points_eq_finrank (pullback.snd K.hom y) (𝟙 (Sp k)) z`. Establish `hz : (𝟙 (Sp k) : Sp k ⟶ Sp k) z = z` using `rfl`. Rewrite `hcard` using `[hz, Scheme.Hom.finrank_pullback_snd]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hcard]`. Use `Nat.card_congr { toFun := fun x => Over.homMk (x.1 ≫ pullback.fst K.hom y) (by` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x.1 ≫ pullback.fst K.hom y) ≫ K.hom = y`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, x.2, Category.id_comp])`. Use `invFun := fun g => ⟨pullback.lift g.left (𝟙 _) (by`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.id_comp]`. Conclude with `Over.w g), pullback.lift_snd _ _ _⟩`. Use `left_inv := fun x => Subtype.ext (pullback.hom_ext (pullback.lift_fst _ _ _) ((pullback.lift_snd _ _ _).trans x.2.symm))`. Use `right_inv := fun g => Over.OverMorphism.ext (pullback.lift_fst _ _ _) }`.
+A detailed English derivation is pending.
 -/
 theorem finrank_eq_card : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] [IsCommMonObj A], IsAbelianScheme A → ∀ (K : Over S) (i : K ⟶ A) (c : ℕ), Mono i → IsFinite K.hom → Flat K.hom → i ^ c = 1 → ∀ (k : Type) [Field k] [IsAlgClosed k], (c : k) ≠ 0 → ∀ (y : Sp k ⟶ S) (z : Sp k), K.hom.finrank (y z) = Nat.card (Over.mk y ⟶ K) := by
   intro S A _ _ hA K i c hi hfin hfl hic k _ _ hc y z

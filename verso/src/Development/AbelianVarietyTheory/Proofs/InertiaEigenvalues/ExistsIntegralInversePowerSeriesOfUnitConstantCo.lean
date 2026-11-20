@@ -10,13 +10,11 @@ open scoped Formalism.Per
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ _ f hf hc`. Establish `hc0 : constantCoeff f ≠ 0`. Introduce `h`. Rewrite `hc` using `[h, norm_zero]`. Conclude with `zero_ne_one hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f⁻¹, ?_, PowerSeries.mul_inv_cancel f hc0⟩` and prove the remaining obligations. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Rewrite using `[PowerSeries.coeff_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hn`. Rewrite using `[norm_inv, hc, inv_one]`. Rewrite using `[norm_mul, norm_neg, norm_inv, hc, inv_one, one_mul]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun x hx => ?_` and prove the remaining obligations. Use `split_ifs with hlt`.
-
-Rewrite using `[norm_mul]`. Conclude with `mul_le_one₀ (hf _) (norm_nonneg _) (ih _ hlt)`. Rewrite using `[norm_zero]`. Conclude with `zero_le_one`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem powerSeries_inv_coeff_norm_le_one :
     ∀ (K : Type) [NormedField K] [IsUltrametricDist K] (f : K⟦X⟧), (∀ n, ‖coeff n f‖ ≤ 1) →

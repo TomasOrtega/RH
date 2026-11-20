@@ -24,13 +24,13 @@ def IsTwistOf (π : TR.CuspSub F a) (χ : HChar F) (π' : TR.CuspSub F a) : Prop
     ∀ X φ, π'.op (.lie X) (e φ) = e (π.op (.lie X) φ) + d (Matrix.of X).trace • e φ
 
 /- English proof (translation)
-Take `⟨e₁, f₁, c₁, x₁⟩` from `h₁`. Take `⟨e₂, d, hd, f₂, c₂, x₂⟩` from `h₂`. Take `⟨T, hT⟩` from `h`. Set `S : π.V ≃ₗ[ℂ] π.V` to `(e₁.trans e₂).trans T.symm`. Establish `hS : ∀ ψ, T (S ψ) = e₂ (e₁ ψ)` using `fun ψ => T.apply_symm_apply _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨B.compl₂ S.symm.toLinearMap, d, fun φ h => hl φ fun ψ => ?_, fun ψ h => ?_, hd, fun k φ ψ => ?_, fun k φ ψ => ?_, fun X φ ψ => ?_⟩` and prove the remaining obligations. Simplify using `using h (S ψ)`. Conclude with `S.symm.map_eq_zero_iff.1 (hr _ h)`. Take `⟨ψ, rfl⟩` from `S.surjective ψ`. Establish `e : π.op (.fin k) (S ψ) = S (((chiDet a χ (finGL F a k) : ℂˣ) : ℂ) • π.op (.fin (invT a (Af F) k)) ψ)` using `T.injective (by rw [hT, hS, hS, f₂, f₁, map_smul, map_smul])`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[e, hf]`. Take `⟨ψ, rfl⟩` from `S.surjective ψ`. Establish `e : π.op (.cpt k) (S ψ) = S (((chiDet a χ (TR.infGL F a (Unitary.toUnits k)) : ℂˣ) : ℂ) • π.op (.cpt k) ψ)` using `T.injective (by rw [hT, hS, hS, c₂, c₁, map_smul, map_smul])`. Simplify using `[e, hc]`. Take `⟨ψ, rfl⟩` from `S.surjective ψ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : π.op (.lie X) (S ψ) = S (π.op (.lie (TR.toL (-(Matrix.of X)ᵀ))) ψ + d (Matrix.of X).trace • ψ)` using `T.injective (by rw [hT, hS, hS, x₂, x₁, map_add, map_add, map_smul, map_smul])`. Use `hX X φ ψ` as an intermediate fact. Simplify using `only [e, LinearMap.compl₂_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply, map_add, map_smul, smul_eq_mul]`. Take the linear combination `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem isSelfDualBy_of_iso {π π₁ π₂ : TR.CuspSub F a} {χ : HChar F} (B : π.V →ₗ[ℂ] π.V →ₗ[ℂ] ℂ)
     (hl : ∀ φ, (∀ ψ, B φ ψ = 0) → φ = 0) (hr : ∀ ψ, (∀ φ, B φ ψ = 0) → ψ = 0)

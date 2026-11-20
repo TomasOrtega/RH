@@ -13,7 +13,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.StdChart
 
 /- English proof (translation)
-Rewrite using `[Psi_val]`. Conclude with `bdet_eq D _ a h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bdet_Psi (D : D7) {n : ℕ} (χ : (AE D)ˣ →* Circle) (g : GlobalTheory.StdUnn.G D n) (a : GL (Fin n) (AE D))
     (h : GlobalTheory.StdUnn.blkA (GlobalTheory.StdUnn.mat g) = a.1) :
@@ -22,9 +22,7 @@ theorem bdet_Psi (D : D7) {n : ℕ} (χ : (AE D)ˣ →* Circle) (g : GlobalTheor
   exact bdet_eq D _ a h
 
 /- English proof (translation)
-Introduce `hD hI D χ n`. Use `⟨Psi D χ n, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `mem_GF D χ`. Conclude with `mem_P D χ`. Conclude with `mem_K D χ hD hI`.
-
-Conclude with `bdet_Psi D χ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tStd : TStd := by
   intro hD hI D χ n

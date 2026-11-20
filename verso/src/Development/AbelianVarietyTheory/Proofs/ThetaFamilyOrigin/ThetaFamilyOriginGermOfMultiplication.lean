@@ -15,7 +15,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ThetaGerm
 
 /- English proof (translation)
-Establish `hle` using `(PowSec.chart_eq L σ ρ e j).le`. Establish `h₁ : gs r z (LB.wchart L (fun _ : PUnit => 𝟙 X) j) ((PowSec.down L σ ρ e n b).f j) = gs (r ≫ ρ) z (LB.wchart L (fun _ : Fin 1 => σ) (fun _ => j PUnit.unit)) (b.f (fun _ => j PUnit.unit))` using `(gs_res r z hle hj _).trans (gs_pull r ρ z _ (hle hj) _)`. Rewrite using `[h₁, sec_trans b (r ≫ ρ) z (j := fun _ => j PUnit.unit) (hle hj) (hJ.mem (fun _ : Fin 1 => σ) (r ≫ ρ))]`. Conclude with `associated_unit_mul_left _ _ (Units.isUnit _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem associated_gs_down {X Y Z : Scheme.{0}} (L : LB X) (σ : Y ⟶ X) (ρ : X ⟶ Y) (e : ρ ≫ σ = 𝟙 X) (n : ℤ)
     (b : (LB.LinComb L (K := Fin 1) (fun _ => σ) (fun _ => n)).Sec) (r : Z ⟶ X) (z : Z) (j : PUnit → L.ι)
@@ -30,23 +30,19 @@ theorem associated_gs_down {X Y Z : Scheme.{0}} (L : LB X) (σ : Y ⟶ X) (ρ : 
   exact associated_unit_mul_left _ _ (Units.isUnit _)
 
 /- English proof (translation)
-Introduce `hLaw K _ _ P N m J x th t ρ e a hth H hx`. Set `π : P.A ⟶ Out.baseOver (Sp K)` to `Over.homMk P.A.hom (Category.comp_id _)`. Set `ρ' : P.A ⟶ Out.baseOver (Sp K) ⊗ P.A` to `lift π (𝟙 _)`. Establish `ρ₂ : ρ'.left ≫ (snd (Out.baseOver (Sp K)) P.A).left = 𝟙 _` using `congrArg (fun q => q.left) (lift_snd _ _ : ρ' ≫ _ = _)`. Establish `ρ₁ : ρ'.left ≫ (fst (Out.baseOver (Sp K)) P.A).left = P.A.hom` using `congrArg (fun q => q.left) (lift_fst _ _ : ρ' ≫ _ = _)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ρ₃ : (snd (Out.baseOver (Sp K)) P.A).left ≫ ρ'.left = 𝟙 _`. Apply `pullback.hom_ext` to reduce the goal to its premises. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ρ₁).trans (pullback.condition.symm.trans ((Category.comp_id _).trans (Category.id_comp _).symm)))`. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) ρ₂).trans ((Category.comp_id _).trans (Category.id_comp _).symm))`. Choose the witnesses or unpack the hypotheses as in `rfl : ρ = ρ'.left := by`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Category.comp_id ρ, ← ρ₃, ← Category.assoc, e, Category.id_comp]`. Use `haveI : IsIso ρ'.left := ⟨_, ρ₂, ρ₃⟩`. Use `⟨?_, fun y k l hk hl => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne push_neg at hne`. Establish `hz : Out.SecM.ofSec P.A th = 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Subtype.ext (funext fun j => ?_)` and prove the remaining obligations. Take `⟨k, rfl⟩ : ∃ k, j = fun _ => k` from `⟨j 0, funext fun q => by rw [Subsingleton.elim q 0]⟩`. Conclude with `PowSec.appLE_injective ρ'.left _ _ (PowSec.chart_eq P.L (snd (Out.baseOver (Sp K)) P.A).left ρ'.left ρ₂ (fun _ => k)) ((hne fun _ => k).trans (map_zero _).symm)`. Establish `: Subsingleton (Out.SecM P.A P.L (1 : ℕ) (Out.baseOver (Spec (CommRingCat.of K))))` using `subsingleton_of_forall_eq 0 fun y => by`. Take `⟨r, hr⟩` from `hth (Out.SecM.toSec P.A y)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : y = r • Out.SecM.ofSec P.A th` using `Subtype.ext (funext hr)`. Conclude with `e.trans ((congrArg (r • ·) hz).trans (smul_zero r))`. Establish `hnt : Nontrivial Γ((Out.baseOver (Spec (CommRingCat.of K))).left, ⊤)` using `(Scheme.ΓSpecIso (CommRingCat.of K)).hom.hom.domain_nontrivial`. Use `hLaw.globalSectionsRank K P 1 le_rfl` as an intermediate fact. Rewrite `this` using `[Module.finrank_zero_of_subsingleton, one_pow]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`. Take `⟨s, α, U, -, hs, hU, ht⟩` from `H choose I hI using fun χ : P.A.left ⟶ P.A.left => exists_chart P.isLB (χ y)`. Establish `hI' : Good P.L y I` using `hI`. Establish `b₁` using `ThetaCoord.sv_act ((hU a).pt_eq.trans hx) (ht a) π hI' (𝟙 _)`. Establish `b₂` using `ThetaCoord.sv_mulPull hs π hI' (𝟙 _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `b₁` using `[MonObj.comp_one, _root_.one_mul, b₂]`. Establish `e₁ : (Out.mulA P.A m).left ≫ ρ'.left = (lift π (𝟙 P.A ^ m)).left`. Rewrite using `[← Over.comp_left, comp_lift, Category.comp_id]`. Use `congr 2`. Conclude with `Over.OverMorphism.ext (Over.w (Out.mulA P.A m))`.
-
-Establish `a₁` using `associated_gs_down P.L _ _ e (N : ℤ) (t a) (𝟙 _) y k hk hI'`. Establish `a₂` using `associated_gs_down P.L _ _ e ((1 : ℕ) : ℤ) th (Out.mulA P.A m).left y l hl hI'`. Rewrite `a₁` using `[Category.id_comp]`. Rewrite `a₂` using `[e₁]`. Use `a₁.trans (Associated.trans ?_ a₂.symm)` and prove the remaining obligations.
-
-Conclude with `(Associated.of_eq b₁).trans ((associated_unit_mul_left _ _ (Units.isUnit _)).trans (associated_unit_mul_left _ _ (Units.isUnit _)))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem germ_origin : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (N m : ℕ) (J : Type) (x : J → ((Out.baseOver (Sp K)) ⟶ P.A)) (th : LB.Sec (Out.LPow P.A P.L 1 (Out.baseOver (Sp K)))) (t : J → LB.Sec (Out.LPow P.A P.L N (Out.baseOver (Sp K)))) (ρ : P.A.left ⟶ ((Out.baseOver (Sp K)) ⊗ P.A).left) (e : ρ ≫ (snd (Out.baseOver (Sp K)) P.A).left = 𝟙 P.A.left) (a : J), Out.IsGenSec P.A P.L 1 th → IsThetaFamily P N m x th t → x a = 1 → (∃ l, (PowSec.down P.L (snd (Out.baseOver (Sp K)) P.A).left ρ e ((1 : ℕ) : ℤ) (th)).f l ≠ 0) ∧ (∀ (y : P.A.left) k l, y ∈ (lbPow P.L N).U k → (Out.mulA P.A m).left y ∈ (lbPow P.L 1).U l → Associated (gs (𝟙 P.A.left) y ((lbPow P.L N).U k) ((PowSec.down P.L (snd (Out.baseOver (Sp K)) P.A).left ρ e ((N : ℕ) : ℤ) (t a)).f k)) (gs (Out.mulA P.A m).left y ((lbPow P.L 1).U l) ((PowSec.down P.L (snd (Out.baseOver (Sp K)) P.A).left ρ e ((1 : ℕ) : ℤ) (th)).f l))) := by
   intro hLaw K _ _ P N m J x th t ρ e a hth H hx

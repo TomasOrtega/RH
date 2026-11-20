@@ -11,9 +11,9 @@ open Formalism.BasicNotions.TH MvPolynomial
 namespace GlobalTheory.SteepSmall
 
 /- English proof (translation)
-Proceed by induction on `g using MvPolynomial.induction_on' with`. Consider the case `monomial u a`. Establish `h : monomial u a = a • monomial u (1 : ℂ)` using `by rw [smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[h, map_smul, hA, coeff_smul, coeff_smul, smul_eq_mul, smul_eq_mul, coeff_smul, smul_eq_mul, coeff_monomial]`. Distinguish the cases in `h' : u = α`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h'` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h']`. Consider the case `add p q hp hq => simp [map_add, coeff_add, hp, hq, mul_add]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem coeff_diag {σ : Type*} (A : MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomial σ ℂ) (w : (σ →₀ ℕ) → ℂ)
     (hA : ∀ α, A (monomial α 1) = w α • monomial α 1) (g : MvPolynomial σ ℂ) (α : σ →₀ ℕ) :
@@ -30,7 +30,7 @@ theorem coeff_diag {σ : Type*} (A : MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomia
   | add p q hp hq => simp [map_add, coeff_add, hp, hq, mul_add]
 
 /- English proof (translation)
-Establish `h1` using `coeff_diag A w hA g α`. Rewrite `h1` using `[hg, coeff_smul, smul_eq_mul]`. Establish `h2 : coeff α g ≠ 0` using `mem_support_iff.1 hα`. Conclude with `(mul_right_cancel₀ h2 h1).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eig_supp {σ : Type*} (A : MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomial σ ℂ) (w : (σ →₀ ℕ) → ℂ)
     (hA : ∀ α, A (monomial α 1) = w α • monomial α 1) (g : MvPolynomial σ ℂ) (c : ℂ)
@@ -41,9 +41,9 @@ theorem eig_supp {σ : Type*} (A : MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomial 
   exact (mul_right_cancel₀ h2 h1).symm
 
 /- English proof (translation)
-Take `⟨hh, -, hw0, hw⟩` from `hf`. Apply the tactic sequence `obtain ⟨s1, -, -⟩ := GlobalTheory.T.fock_dualPair_swap_symmetry R S P' Q'`. Use `set e := GlobalTheory.FockAlg.MinSecond.swapPol R S P' Q'`. Establish `h1 : ∀ Z v, e (fockAct1 R S P' Q' Z v) = fockAct2 P' Q' R S Z (e v)` using `s1`. Establish `hsymm` using `GlobalTheory.FockAlg.MinSecond.symm_equivariant e _ _ h1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhw : e.symm f ∈ hwSub (fockAct1 R S P' Q') μ` using `GlobalTheory.FockAlg.MinFirst.hw_map e.symm.toLinearMap (fun Z _ v => hsymm Z v) hw`. Establish `hot` using `GlobalTheory.FockAlg.MinFirst.ofType_of_hw hhw`. Establish `h2` using `GlobalTheory.FockAlg.MinSecond.ofType_equiv e _ _ h1 μ _ hot`. Rewrite `h2` using `[e.apply_symm_apply]`. Conclude with `(GlobalTheory.FockAlg.harmonic_homog_of_type P' Q' R S).2 μ f hw0 h2 hh`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homog_of_harmVec {P' Q' R S : ℕ} {x : ℚ} {μ : Ix R S → ℚ} {f : Pol P' Q' R S}
     (hf : GlobalTheory.RealLift.IsHarmVec x μ f) :
@@ -66,17 +66,17 @@ namespace GlobalTheory.SteepSmall
 open Formalism.BasicNotions.TH MvPolynomial
 
 /- English proof (translation)
-Establish `hrow : ∀ a : Ix P' Q', (∑ c, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) = (x : ℂ)`. Introduce `a`. Establish `hK` using `hf.2.1 (Eab a a) (GlobalTheory.FockAlg.MinFirst.isKC_diag _)`. Establish `h` using `eig_supp _ _ (fun β => cartan1 (r := R) (s := S) a β) f _ hK hα`. Rewrite using `[h, Eab, Matrix.trace_single_eq_same, mul_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hcol : ∀ c : Ix R S, (∑ a, lineSign a c * (((α (a, c) : ℕ) : ℂ) + 1 / 2)) = ((μ c : ℚ) : ℂ)`. Introduce `c`. Establish `hw` using `((GlobalTheory.FockAlg.MinFirst.mem_hwSub _ _ _).1 hf.2.2.2).1 c`. Conclude with `eig_supp _ _ (fun β => cartan2 (p := P') (q := Q') c β) f _ (sub_eq_zero.1 hw) hα`. Use `⟨fun i => ?_, fun j => ?_, fun k => ?_, fun l => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h` using `hrow (.inl i)`. Simplify using `only [Fintype.sum_sum_type, lineSign, one_mul, neg_one_mul, Finset.sum_neg_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h`. Apply `Rat.cast_injective (α := ℂ)` to reduce the goal to its premises. Move the coercions through the operations in `[cPair]`. Take the linear combination `h`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h` using `hrow (.inr j)`. Simplify using `only [Fintype.sum_sum_type, lineSign, one_mul, neg_one_mul, Finset.sum_neg_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h`. Apply `Rat.cast_injective (α := ℂ)` to reduce the goal to its premises. Move the coercions through the operations in `[cPair]`. Take the linear combination `h`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h` using `hcol (.inl k)`. Simplify using `only [Fintype.sum_sum_type, lineSign, one_mul, neg_one_mul, Finset.sum_neg_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h`. Apply `Rat.cast_injective (α := ℂ)` to reduce the goal to its premises. Move the coercions through the operations in `[cPair, shiftNu]`. Take the linear combination `h`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h` using `hcol (.inr l)`. Simplify using `only [Fintype.sum_sum_type, lineSign, one_mul, neg_one_mul, Finset.sum_neg_distrib, Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h`. Apply `Rat.cast_injective (α := ℂ)` to reduce the goal to its premises. Move the coercions through the operations in `[cPair, shiftNu]`. Take the linear combination `h`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mono_eqs {P' Q' R S : ℕ} {x : ℚ} {μ : Ix R S → ℚ} {f : Pol P' Q' R S}
     (hf : GlobalTheory.RealLift.IsHarmVec x μ f) {α : Ix P' Q' × Ix R S →₀ ℕ} (hα : α ∈ f.support) :
@@ -129,13 +129,13 @@ namespace GlobalTheory.SteepSmall
 open Formalism.BasicNotions.TH MvPolynomial
 
 /- English proof (translation)
-Set `M : Matrix (Fin n) (Fin n) (MvPolynomial σ ℂ)` to `(Matrix.mvPolynomialX (Fin n) (Fin n) ℂ).map (rename φ)`. Establish `hdet : M.det ≠ 0`. Establish `h1 : M.det = rename φ (Matrix.mvPolynomialX (Fin n) (Fin n) ℂ).det`. Rewrite using `[AlgHom.map_det]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[h1]`. Introduce `h0`. Apply `Matrix.det_mvPolynomialX_ne_zero (Fin n) ℂ` to reduce the goal to its premises. Conclude with `rename_injective φ hφ (by rw [h0, map_zero])`. Establish `hM : M.mulVec g = 0`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Simplify `h m` using `[M, Matrix.mulVec, dotProduct, Matrix.mvPolynomialX]`. Establish `h2 : (M.adjugate * M).mulVec g = 0`. Rewrite using `[← Matrix.mulVec_mulVec, hM, Matrix.mulVec_zero]`. Rewrite `h2` using `[Matrix.adjugate_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `h3` using `congrFun h2 i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply] at h3`. Conclude with `h3.resolve_left hdet`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem det_kill {σ : Type*} {n : ℕ} (φ : Fin n × Fin n → σ) (hφ : Function.Injective φ)
     (g : Fin n → MvPolynomial σ ℂ) (h : ∀ m, ∑ i, X (φ (m, i)) * g i = 0) : ∀ i, g i = 0 := by
@@ -161,7 +161,7 @@ theorem det_kill {σ : Type*} {n : ℕ} (φ : Fin n × Fin n → σ) (hφ : Func
   exact h3.resolve_left hdet
 
 /- English proof (translation)
-Rewrite using `[f.as_sum, map_sum]`. Use `Finset.sum_eq_zero fun α hα => ?_` and prove the remaining obligations. Rewrite using `[pderiv_monomial, h α hα]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_eq_zero_of {σ : Type*} (f : MvPolynomial σ ℂ) (v : σ)
     (h : ∀ α ∈ f.support, α v = 0) : pderiv v f = 0 := by
@@ -172,9 +172,9 @@ theorem pderiv_eq_zero_of {σ : Type*} (f : MvPolynomial σ ℂ) (v : σ)
   simp
 
 /- English proof (translation)
-Introduce `α hα`. Establish `hd` using `coeff_diag (LinearMap.mulLeft ℂ (X v) ∘ₗ (pderiv v).toLinearMap) (fun β => ((β v : ℕ) : ℂ)) (fun β => by simpa using Formalism.BasicNotions.TH.X_mul_pderiv_monomial v β) f α`. Establish `h0 : (LinearMap.mulLeft ℂ (X v) ∘ₗ (pderiv v).toLinearMap) f = 0` using `by simp [h]`. Rewrite `hd` using `[h0, coeff_zero]`. Establish `hc : coeff α f ≠ 0` using `mem_support_iff.1 hα`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `(mul_eq_zero.1 hd.symm).resolve_right hc` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem support_zero_of_pderiv {σ : Type*} (f : MvPolynomial σ ℂ) (v : σ)
     (h : pderiv v f = 0) : ∀ α ∈ f.support, α v = 0 := by
@@ -194,13 +194,11 @@ namespace GlobalTheory.SteepSmall
 open Formalism.BasicNotions.TH MvPolynomial
 
 /- English proof (translation)
-Establish `hpt : ∀ j l, pderiv ((.inr j, .inr l) : Ix P' Q' × Ix R S) f = 0` using `fun j l => pderiv_eq_zero_of f _ (fun α hα => ht α hα j l)`. Establish `key : ∀ l' : Fin S, l₀ ≠ l' → fockAct2 P' Q' R S (Eab (.inr l₀) (.inr l')) f = -∑ i : Fin P', X ((.inl i, .inr l') : Ix P' Q' × Ix R S) * pderiv (.inl i, .inr l₀) f`. Introduce `l' hne`. Rewrite using `[fockAct2_Eab, LinearMap.sum_apply, Fintype.sum_sum_type]`. Simplify using `[omE, raiB, lowB, linePos, hne, Derivation.leibniz, pderiv_X_of_ne, hpt, Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hg` using `det_kill (n := P') (fun mi => ((.inl mi.2, .inr ⟨Q + mi.1, by omega⟩) : Ix P' Q' × Ix R S)) (by`. Introduce `x y hxy`. Simplify using `only [Prod.mk.injEq, Sum.inl.injEq, Sum.inr.injEq, Fin.mk.injEq] at hxy`. Conclude with `Prod.ext (Fin.ext (by omega)) hxy.1)`. Use the proof step `(fun i => pderiv (.inl i, .inr l₀) f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun m => by`. Establish `h1` using `hE ⟨Q + m, by omega⟩ (by simp)`. Rewrite `h1` using `[key _ (by intro h; rw [Fin.ext_iff] at h; simp at h; omega)]`. Simplify using `using h1)`. Introduce `α hα i`.
-
-Conclude with `support_zero_of_pderiv f _ (hg i) α hα`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cauchy_u {P' Q' R S : ℕ} (Q : ℕ) (hS : Q + P' ≤ S) (f : Pol P' Q' R S) (l₀ : Fin S)
     (hl₀ : (l₀ : ℕ) < Q) (ht : ∀ α ∈ f.support, ∀ j l, α (.inr j, .inr l) = 0)
@@ -229,13 +227,11 @@ theorem cauchy_u {P' Q' R S : ℕ} (Q : ℕ) (hS : Q + P' ≤ S) (f : Pol P' Q' 
   exact support_zero_of_pderiv f _ (hg i) α hα
 
 /- English proof (translation)
-Establish `hps : ∀ i k, pderiv ((.inl i, .inl k) : Ix P' Q' × Ix R S) f = 0` using `fun i k => pderiv_eq_zero_of f _ (fun α hα => hs α hα i k)`. Establish `key : ∀ k' : Fin R, k₀ ≠ k' → fockAct2 P' Q' R S (Eab (.inl k₀) (.inl k')) f = -∑ j : Fin Q', X ((.inr j, .inl k') : Ix P' Q' × Ix R S) * pderiv (.inr j, .inl k₀) f`. Introduce `k' hne`. Rewrite using `[fockAct2_Eab, LinearMap.sum_apply, Fintype.sum_sum_type]`. Simplify using `[omE, raiB, lowB, linePos, hne, Derivation.leibniz, pderiv_X_of_ne, hps, Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hg` using `det_kill (n := Q') (fun mj => ((.inr mj.2, .inl ⟨P + mj.1, by omega⟩) : Ix P' Q' × Ix R S)) (by`. Introduce `x y hxy`. Simplify using `only [Prod.mk.injEq, Sum.inl.injEq, Sum.inr.injEq, Fin.mk.injEq] at hxy`. Conclude with `Prod.ext (Fin.ext (by omega)) hxy.1)`. Use the proof step `(fun j => pderiv (.inr j, .inl k₀) f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use the proof step `(fun m => by`. Establish `h1` using `hE ⟨P + m, by omega⟩ (by simp)`. Rewrite `h1` using `[key _ (by intro h; rw [Fin.ext_iff] at h; simp at h; omega)]`. Simplify using `using h1)`. Introduce `α hα j`.
-
-Conclude with `support_zero_of_pderiv f _ (hg j) α hα`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem cauchy_w {P' Q' R S : ℕ} (P : ℕ) (hR : P + Q' ≤ R) (f : Pol P' Q' R S) (k₀ : Fin R)
     (hk₀ : (k₀ : ℕ) < P) (hs : ∀ α ∈ f.support, ∀ i k, α (.inl i, .inl k) = 0)
@@ -269,23 +265,23 @@ namespace GlobalTheory.SteepSmall
 open Formalism.BasicNotions.TH MvPolynomial
 
 /- English proof (translation)
-Rewrite using `[← h]; exact abs_le.2 ⟨by linarith, by linarith⟩`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem abs_le_add_of_sub {s w ν : ℚ} (hs : 0 ≤ s) (hw : 0 ≤ w) (h : s - w = ν) : |ν| ≤ s + w := by
   rw [← h]; exact abs_le.2 ⟨by linarith, by linarith⟩
 
 /- English proof (translation)
-Use `set ν := shiftNu (cPair P' Q') μ with hν`. Take `⟨-, -, hK, hL⟩` from `mono_eqs hf hα`. Take `⟨d, hd, hmem⟩` from `homog_of_harmVec hf`. Establish `hhom : IsHomogeneous f d` using `(mem_homogeneousSubmodule d f).1 hmem`. Establish `hdeg` using `hhom (mem_support_iff.1 hα)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw1 : (Finsupp.weight 1) α = ∑ c, α c`. Simplify using `[Finsupp.weight_apply, Finsupp.sum_fintype]`. Rewrite `hdeg` using `[hw1]`. Establish `hsum : (∑ c : Ix P' Q' × Ix R S, (α c : ℚ)) = ∑ c : Ix R S, |ν c|`. Rewrite using `[hν, ← degW, ← hd, ← hdeg]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite `hsum` using `[Fintype.sum_prod_type, Finset.sum_comm, Fintype.sum_sum_type]`. Simplify using `only [Fintype.sum_sum_type] at hsum`. Establish `hk : ∀ k : Fin R, |ν (.inl k)| ≤ (∑ i : Fin P', (α (.inl i, .inl k) : ℚ)) + ∑ j : Fin Q', (α (.inr j, .inl k) : ℚ)` using `fun k => abs_le_add_of_sub (Finset.sum_nonneg fun _ _ => by positivity) (Finset.sum_nonneg fun _ _ => by positivity) (hK k)`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ∀ l : Fin S, |ν (.inr l)| ≤ (∑ j : Fin Q', (α (.inr j, .inr l) : ℚ)) + ∑ i : Fin P', (α (.inl i, .inr l) : ℚ)` using `fun l => abs_le_add_of_sub (Finset.sum_nonneg fun _ _ => by positivity) (Finset.sum_nonneg fun _ _ => by positivity) (hL l)`. Establish `s1` using `Finset.sum_le_sum fun k (_ : k ∈ Finset.univ) => hk k`. Establish `s2` using `Finset.sum_le_sum fun l (_ : l ∈ Finset.univ) => hl l`. Establish `hl' : ∀ l : Fin S, (∑ i : Fin P', (α (.inl i, .inr l) : ℚ)) + ∑ j : Fin Q', (α (.inr j, .inr l) : ℚ) = (∑ j : Fin Q', (α (.inr j, .inr l) : ℚ)) + ∑ i : Fin P', (α (.inl i, .inr l) : ℚ)` using `fun l => add_comm _ _`. Simplify using `only [hl'] at hsum`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1` using `(Finset.sum_eq_sum_iff_of_le fun k (_ : k ∈ Finset.univ) => hk k).1 (by linarith)`. Establish `e2` using `(Finset.sum_eq_sum_iff_of_le fun l (_ : l ∈ Finset.univ) => hl l).1 (by linarith)`. Use `⟨fun k => ?_, fun l => ?_⟩` and prove the remaining obligations. Establish `h1` using `e1 k (Finset.mem_univ _)`. Establish `h2` using `hK k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `constructor <;> linarith`. Establish `h1` using `e2 l (Finset.mem_univ _)`. Establish `h2` using `hL l`. Apply the tactic sequence `constructor <;> linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem col_min {P' Q' R S : ℕ} {x : ℚ} {μ : Ix R S → ℚ} {f : Pol P' Q' R S}
     (hf : GlobalTheory.RealLift.IsHarmVec x μ f) {α : Ix P' Q' × Ix R S →₀ ℕ} (hα : α ∈ f.support) :
@@ -336,11 +332,11 @@ namespace GlobalTheory.SteepSmall
 open Formalism.BasicNotions.TH MvPolynomial
 
 /- English proof (translation)
-Take `⟨hI, hJ, -, -⟩` from `mono_eqs hf hα`. Take `⟨hK, hL⟩` from `col_min hf hα`. Prove the components needed by the constructor for the conclusion. Establish `h` using `Finset.sum_congr rfl fun i (_ : i ∈ (Finset.univ : Finset (Fin P'))) => hI i`. Rewrite `h` using `[Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_comm, Finset.sum_comm (f := fun i l => (α (.inl i, .inr l) : ℚ))]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h`. Rewrite using `[← Finset.sum_congr rfl fun k (_ : k ∈ Finset.univ) => (hK k).1, ← Finset.sum_congr rfl fun l (_ : l ∈ Finset.univ) => (hL l).2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `Finset.sum_congr rfl fun j (_ : j ∈ (Finset.univ : Finset (Fin Q'))) => hJ j`. Rewrite `h` using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_comm, Finset.sum_comm (f := fun j k => (α (.inr j, .inl k) : ℚ))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul] at h`. Rewrite using `[← Finset.sum_congr rfl fun l (_ : l ∈ Finset.univ) => (hL l).1, ← Finset.sum_congr rfl fun k (_ : k ∈ Finset.univ) => (hK k).2]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem row_sums {P' Q' R S : ℕ} {x : ℚ} {μ : Ix R S → ℚ} {f : Pol P' Q' R S}
     (hf : GlobalTheory.RealLift.IsHarmVec x μ f) {α : Ix P' Q' × Ix R S →₀ ℕ} (hα : α ∈ f.support) :
@@ -367,7 +363,7 @@ theorem row_sums {P' Q' R S : ℕ} {x : ℚ} {μ : Ix R S → ℚ} {f : Pol P' Q
     linarith
 
 /- English proof (translation)
-Rewrite using `[Fin.sum_univ_eq_sum_range (fun l => if l < m then (0 : ℚ) else c) n, Finset.range_eq_Ico, ← Finset.sum_Ico_consecutive _ (Nat.zero_le m) h, Finset.sum_congr rfl (fun l hl => if_pos (Finset.mem_Ico.1 hl).2), Finset.sum_congr rfl (fun l hl => if_neg (by have := (Finset.mem_Ico.1 h …`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_ite_lt (n m : ℕ) (h : m ≤ n) (c : ℚ) :
     ∑ l : Fin n, (if (l : ℕ) < m then (0 : ℚ) else c) = ((n - m : ℕ) : ℚ) * c := by
@@ -378,9 +374,9 @@ theorem sum_ite_lt (n m : ℕ) (h : m ≤ n) (c : ℚ) :
   simp
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.RealLift.casK, GlobalTheory.RealLift.addRoot, Fintype.sum_sum_type, Sum.inl.injEq, reduceCtorEq, if_false, Sum.inr.injEq]`. Apply the tactic sequence `have e1 : ∀ i : Fin R, (μ (.inl i) + (if i = k then 1 else 0) - 0) ^ 2 = μ (.inl i) ^ 2 + (if i = k then 2 * μ (.inl i) + 1 else 0) := by intro i; split_ifs <;> ring`. Apply the tactic sequence `have e2 : ∀ j : Fin S, (μ (.inr j) + 0 - (if j = l then 1 else 0)) ^ 2 = μ (.inr j) ^ 2 + (if j = l then -2 * μ (.inr j) + 1 else 0) := by intro j; split_ifs <;> ring`. Establish `e3 : ∀ i : Fin R, (μ (.inl i) + (if i = k then 1 else 0) - 0) * ((R : ℚ) - 1 - 2 * (i : ℕ)) = μ (.inl i) * ((R : ℚ) - 1 - 2 * (i : ℕ)) + (if i = k then (R : ℚ) - 1 - 2 * (i : ℕ) else 0)`. Apply the tactic sequence `intro i; split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e4 : ∀ j : Fin S, (μ (.inr j) + 0 - (if j = l then 1 else 0)) * ((S : ℚ) - 1 - 2 * (j : ℕ)) = μ (.inr j) * ((S : ℚ) - 1 - 2 * (j : ℕ)) - (if j = l then (S : ℚ) - 1 - 2 * (j : ℕ) else 0)`. Apply the tactic sequence `intro j; split_ifs <;> ring`. Simplify using `only [e1, e2, e3, e4, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem casK_lr {R S : ℕ} (μ : Ix R S → ℚ) (k : Fin R) (l : Fin S) :
     GlobalTheory.RealLift.casK (GlobalTheory.RealLift.addRoot μ (.inl k) (.inr l)) = GlobalTheory.RealLift.casK μ + 2 * μ (.inl k) + 1 -
@@ -402,9 +398,9 @@ theorem casK_lr {R S : ℕ} (μ : Ix R S → ℚ) (k : Fin R) (l : Fin S) :
   ring
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.RealLift.casK, GlobalTheory.RealLift.addRoot, Fintype.sum_sum_type, Sum.inl.injEq, reduceCtorEq, if_false, Sum.inr.injEq]`. Apply the tactic sequence `have e1 : ∀ i : Fin R, (μ (.inl i) + 0 - (if i = k then 1 else 0)) ^ 2 = μ (.inl i) ^ 2 + (if i = k then -2 * μ (.inl i) + 1 else 0) := by intro i; split_ifs <;> ring`. Apply the tactic sequence `have e2 : ∀ j : Fin S, (μ (.inr j) + (if j = l then 1 else 0) - 0) ^ 2 = μ (.inr j) ^ 2 + (if j = l then 2 * μ (.inr j) + 1 else 0) := by intro j; split_ifs <;> ring`. Establish `e3 : ∀ i : Fin R, (μ (.inl i) + 0 - (if i = k then 1 else 0)) * ((R : ℚ) - 1 - 2 * (i : ℕ)) = μ (.inl i) * ((R : ℚ) - 1 - 2 * (i : ℕ)) - (if i = k then (R : ℚ) - 1 - 2 * (i : ℕ) else 0)`. Apply the tactic sequence `intro i; split_ifs <;> ring`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `e4 : ∀ j : Fin S, (μ (.inr j) + (if j = l then 1 else 0) - 0) * ((S : ℚ) - 1 - 2 * (j : ℕ)) = μ (.inr j) * ((S : ℚ) - 1 - 2 * (j : ℕ)) + (if j = l then (S : ℚ) - 1 - 2 * (j : ℕ) else 0)`. Apply the tactic sequence `intro j; split_ifs <;> ring`. Simplify using `only [e1, e2, e3, e4, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem casK_rl {R S : ℕ} (μ : Ix R S → ℚ) (l : Fin S) (k : Fin R) :
     GlobalTheory.RealLift.casK (GlobalTheory.RealLift.addRoot μ (.inr l) (.inl k)) = GlobalTheory.RealLift.casK μ + 2 * μ (.inr l) + 1 -
@@ -431,67 +427,61 @@ namespace GlobalTheory.SteepSmall
 open Formalism.BasicNotions.TH MvPolynomial
 
 /- English proof (translation)
-Introduce `P Q P' Q' R S κ hN a b hab f hf`. Take `⟨hR, hS, hSP, hSQ, hev, hκe, hlt⟩` from `hN`. Substitute `hR hS` using the available equality. Establish `hκ2 : ((P + Q' + (Q + P') : ℕ) : ℤ) + 2 ≤ κ`. Take `⟨n, hn⟩` from `hev`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `hκe`. Establish `hn' : ((P + Q' + (Q + P') : ℕ) : ℤ) = (n : ℤ) + n` using `by exact_mod_cast hn`. Use linear arithmetic over natural numbers and integers. Establish `hκq : ((P : ℚ) + Q' + (Q + P')) + 2 ≤ (κ : ℚ)`. Use `(Int.cast_le (R := ℚ)).2 hκ2` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Use `set Λ := GlobalTheory.RealLift.lam P Q (P + Q') (Q + P') κ with hΛ`. Use `set μ := fun c => GlobalTheory.RealLift.addRoot Λ a b c - (κ : ℚ) / 2 with hμ`. Choose the witnesses or unpack the hypotheses as in `⟨α, hα⟩ : ∃ α, α ∈ f.support := by`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨d, hd⟩` from `ne_zero_iff.1 hf.2.2.1`. Conclude with `⟨d, mem_support_iff.2 hd⟩`. Establish `hnu_l : ∀ k : Fin (P + Q'), shiftNu (cPair P' Q') μ (.inl k) = (if (k : ℕ) < P then 0 else -((κ : ℚ) / 2 - cPair (P + Q') (Q + P'))) + ((if (Sum.inl k : Ix (P + Q') (Q + P')) = a then 1 else 0) - (if (Sum.inl k : Ix (P + Q') (Q + P')) = b then 1 else 0))`. Introduce `k`. Simplify using `only [shiftNu, hμ, GlobalTheory.RealLift.addRoot, hΛ, GlobalTheory.RealLift.lam, cPair]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `split_ifs <;> push_cast <;> ring`. Establish `hnu_r : ∀ l : Fin (Q + P'), shiftNu (cPair P' Q') μ (.inr l) = (if (l : ℕ) < Q then 0 else -((κ : ℚ) / 2 + cPair (P + Q') (Q + P'))) + ((if (Sum.inr l : Ix (P + Q') (Q + P')) = a then 1 else 0) - (if (Sum.inr l : Ix (P + Q') (Q + P')) = b then 1 else 0))`. Introduce `l`. Simplify using `only [shiftNu, hμ, GlobalTheory.RealLift.addRoot, hΛ, GlobalTheory.RealLift.lam, cPair]`. Apply the tactic sequence `split_ifs <;> push_cast <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hA : 1 ≤ (κ : ℚ) / 2 + cPair (P + Q') (Q + P')`. Simplify using `only [cPair]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hB : 1 ≤ (κ : ℚ) / 2 - cPair (P + Q') (Q + P')`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Simplify using `only [cPair]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hw` using `(GlobalTheory.FockAlg.MinFirst.mem_hwSub _ _ _).1 hf.2.2.2`. Apply the tactic sequence `rcases a with k₀ | l₀ <;> rcases b with k₁ | l₁`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hab trivial).elim`. Establish `hνl : ∀ k : Fin (P + Q'), shiftNu (cPair P' Q') μ (.inl k) = (if (k : ℕ) < P then 0 else -((κ : ℚ) / 2 - cPair (P + Q') (Q + P'))) + (if k = k₀ then 1 else 0)`. Introduce `k`. Rewrite using `[hnu_l]`. Simplify using `only [Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_false]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hνr : ∀ l : Fin (Q + P'), shiftNu (cPair P' Q') μ (.inr l) = (if (l : ℕ) < Q then 0 else -((κ : ℚ) / 2 + cPair (P + Q') (Q + P'))) - (if l = l₁ then 1 else 0)`. Introduce `l`. Rewrite using `[hnu_r]`. Simplify using `only [Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_false]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hνr0 : ∀ l, shiftNu (cPair P' Q') μ (.inr l) ≤ 0`. Apply the tactic sequence `intro l; rw [hνr l]; split_ifs <;> linarith`. Establish `hk0 : (k₀ : ℕ) < P`. Assume the negation of the conclusion as `hk`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨h1, -⟩` from `row_sums hf hα`. Establish `e1 : ∀ k, (|shiftNu (cPair P' Q') μ (.inl k)| + shiftNu (cPair P' Q') μ (.inl k)) / 2 = 0`. Introduce `k`. Establish `: shiftNu (cPair P' Q') μ (.inl k) ≤ 0`. Rewrite using `[hνl k]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `split_ifs with hc hd hd`. Substitute `hd` using the available equality. Conclude with `absurd hc hk`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[abs_of_nonpos this]`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ l, (|shiftNu (cPair P' Q') μ (.inr l)| - shiftNu (cPair P' Q') μ (.inr l)) / 2 = (if (l : ℕ) < Q then 0 else ((κ : ℚ) / 2 + cPair (P + Q') (Q + P'))) + (if l = l₁ then 1 else 0)`. Introduce `l`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[abs_of_nonpos (hνr0 l), hνr l]`. Apply the tactic sequence `split_ifs <;> ring`. Rewrite `h1` using `[Finset.sum_congr rfl (fun k _ => e1 k), Finset.sum_congr rfl (fun l _ => e2 l), Finset.sum_add_distrib, sum_ite_lt (Q + P') Q (by omega), Finset.sum_ite_eq']`. Simplify using `only [Finset.sum_const_zero, Finset.mem_univ, if_true, Nat.add_sub_cancel_left] at h1`. Establish `: (-1 : ℚ) = 0` using `by linear_combination h1`.
+Evaluate the numerical expressions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at this`. Establish `ht : ∀ β ∈ f.support, ∀ j l, β (.inr j, .inr l) = 0`. Introduce `β hβ j l`. Establish `h` using `((col_min hf hβ).2 l).1`. Rewrite `h` using `[abs_of_nonpos (hνr0 l), show ∀ v : ℚ, (-v + v) / 2 = 0 from fun v => by ring]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(Finset.sum_eq_zero_iff_of_nonneg (fun j _ => by positivity)).1 h j (Finset.mem_univ _)` as an intermediate fact. Conclude with `this` after adjusting the coercions. Establish `hl0 : Q ≤ (l₁ : ℕ)`. Assume the negation of the conclusion as `hl`. Use `push Not at hl`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Establish `hE : ∀ l' : Fin (Q + P'), Q ≤ (l' : ℕ) → fockAct2 P' Q' (P + Q') (Q + P') (Eab (.inr l₁) (.inr l')) f = 0`. Introduce `l' hl'`. Conclude with `hw.2 _ _ (show l₁ < l' from Fin.lt_def.2 (by omega))`. Establish `hz` using `cauchy_u Q (by omega) f l₁ hl ht hE α hα`. Establish `h` using `((col_min hf hα).2 l₁).2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Rewrite `h` using `[hνr l₁]`. Simplify using `only [hz, Nat.cast_zero, Finset.sum_const_zero, if_pos hl, if_pos rfl] at h`. Evaluate the numerical expressions using `at h`. Rewrite using `[casK_lr]`. Simplify using `only [hΛ, GlobalTheory.RealLift.lam, if_pos hk0, if_neg (not_lt.2 hl0), cPair]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hk' : ((k₀ : ℕ) : ℚ) + 1 ≤ P` using `by exact_mod_cast hk0`. Establish `hl' : (Q : ℚ) ≤ ((l₁ : ℕ) : ℚ)` using `by exact_mod_cast hl0`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hνl : ∀ k : Fin (P + Q'), shiftNu (cPair P' Q') μ (.inl k) = (if (k : ℕ) < P then 0 else -((κ : ℚ) / 2 - cPair (P + Q') (Q + P'))) - (if k = k₁ then 1 else 0)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `k`. Rewrite using `[hnu_l]`. Simplify using `only [Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_false]`. Expand and normalize the polynomial expressions, which then agree. Establish `hνr : ∀ l : Fin (Q + P'), shiftNu (cPair P' Q') μ (.inr l) = (if (l : ℕ) < Q then 0 else -((κ : ℚ) / 2 + cPair (P + Q') (Q + P'))) + (if l = l₀ then 1 else 0)`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `l`. Rewrite using `[hnu_r]`. Simplify using `only [Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, if_false]`. Expand and normalize the polynomial expressions, which then agree. Establish `hνl0 : ∀ k, shiftNu (cPair P' Q') μ (.inl k) ≤ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `intro k; rw [hνl k]; split_ifs <;> linarith`. Establish `hl0 : (l₀ : ℕ) < Q`. Assume the negation of the conclusion as `hl`. Take `⟨-, h1⟩` from `row_sums hf hα`. Establish `e1 : ∀ l, (|shiftNu (cPair P' Q') μ (.inr l)| + shiftNu (cPair P' Q') μ (.inr l)) / 2 = 0`.
+Substitute using the available equality. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Introduce `l`. Establish `: shiftNu (cPair P' Q') μ (.inr l) ≤ 0`. Rewrite using `[hνr l]`. Use `split_ifs with hc hd hd`. Substitute `hd` using the available equality.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `absurd hc hl`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[abs_of_nonpos this]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e2 : ∀ k, (|shiftNu (cPair P' Q') μ (.inl k)| - shiftNu (cPair P' Q') μ (.inl k)) / 2 = (if (k : ℕ) < P then 0 else ((κ : ℚ) / 2 - cPair (P + Q') (Q + P'))) + (if k = k₁ then 1 else 0)`. Introduce `k`. Rewrite using `[abs_of_nonpos (hνl0 k), hνl k]`. Apply the tactic sequence `split_ifs <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Finset.sum_congr rfl (fun l _ => e1 l), Finset.sum_congr rfl (fun k _ => e2 k), Finset.sum_add_distrib, sum_ite_lt (P + Q') P (by omega), Finset.sum_ite_eq']`. Simplify using `only [Finset.sum_const_zero, Finset.mem_univ, if_true, Nat.add_sub_cancel_left] at h1`. Establish `: (-1 : ℚ) = 0` using `by linear_combination h1`. Evaluate the numerical expressions using `at this`. Establish `hs : ∀ β ∈ f.support, ∀ i k, β (.inl i, .inl k) = 0`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `β hβ i k`. Establish `h` using `((col_min hf hβ).1 k).1`. Rewrite `h` using `[abs_of_nonpos (hνl0 k), show ∀ v : ℚ, (-v + v) / 2 = 0 from fun v => by ring]`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun i _ => by positivity)).1 h i (Finset.mem_univ _)` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hk0 : P ≤ (k₁ : ℕ)`. Assume the negation of the conclusion as `hk`. Use `push Not at hk`. Establish `hE : ∀ k' : Fin (P + Q'), P ≤ (k' : ℕ) → fockAct2 P' Q' (P + Q') (Q + P') (Eab (.inl k₁) (.inl k')) f = 0`. Introduce `k' hk'`.
-
-Conclude with `hw.2 _ _ (show k₁ < k' from Fin.lt_def.2 (by omega))`. Establish `hz` using `cauchy_w P (by omega) f k₁ hk hs hE α hα`. Establish `h` using `((col_min hf hα).1 k₁).2`. Rewrite `h` using `[hνl k₁]`. Simplify using `only [hz, Nat.cast_zero, Finset.sum_const_zero, if_pos hk, if_pos rfl] at h`.
-
-Evaluate the numerical expressions using `at h`. Rewrite using `[casK_rl]`. Simplify using `only [hΛ, GlobalTheory.RealLift.lam, if_pos hl0, if_neg (not_lt.2 hk0), cPair]`. Establish `hl' : ((l₀ : ℕ) : ℚ) + 1 ≤ Q` using `by exact_mod_cast hl0`. Establish `hk' : (P : ℚ) ≤ ((k₁ : ℕ) : ℚ)` using `by exact_mod_cast hk0`.
-
-Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `(hab trivial).elim`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem steep_small : ∀ (P Q P' Q' R S : ℕ) (κ : ℤ), GlobalTheory.RealLift.Num P Q P' Q' R S κ →
     ∀ a b : Formalism.BasicNotions.TH.Ix R S, ¬ Formalism.BasicNotions.TH.sameBlock a b → ∀ f : Formalism.BasicNotions.TH.Pol P' Q' R S,
@@ -654,7 +644,7 @@ theorem steep_small : ∀ (P Q P' Q' R S : ℕ) (κ : ℤ), GlobalTheory.RealLif
 end GlobalTheory.SteepSmall
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SteepSmall.steep_small`.
+A detailed English derivation is pending.
 -/
 example : ∀ (P Q P' Q' R S : ℕ) (κ : ℤ), GlobalTheory.RealLift.Num P Q P' Q' R S κ → ∀ a b : Formalism.BasicNotions.TH.Ix R S, ¬ Formalism.BasicNotions.TH.sameBlock a b → ∀ f : Formalism.BasicNotions.TH.Pol P' Q' R S, GlobalTheory.RealLift.IsHarmVec (-((κ : ℚ) / 2)) (fun c => GlobalTheory.RealLift.addRoot (GlobalTheory.RealLift.lam P Q R S κ) a b c - (κ : ℚ) / 2) f → GlobalTheory.RealLift.casK (GlobalTheory.RealLift.lam P Q R S κ) + ((R + S : ℕ) : ℚ) < GlobalTheory.RealLift.casK (GlobalTheory.RealLift.addRoot (GlobalTheory.RealLift.lam P Q R S κ) a b) :=
   GlobalTheory.SteepSmall.steep_small

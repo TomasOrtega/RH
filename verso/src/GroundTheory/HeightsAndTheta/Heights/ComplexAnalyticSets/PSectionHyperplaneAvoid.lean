@@ -14,7 +14,7 @@ def linFormMap (n : ℕ) : (Fin n → ℂ) →ₗ[ℂ] MvPolynomial (Fin n) ℂ 
   Fintype.linearCombination ℂ (fun j => (X j : MvPolynomial (Fin n) ℂ))
 
 /- English proof (translation)
-Simplify using `[linFormMap, linForm, Fintype.linearCombination_apply, C_mul']`.
+Simplify using the standard rewrite rules.
 -/
 theorem linFormMap_apply {n : ℕ} (ℓ : Fin n → ℂ) : linFormMap n ℓ = linForm ℓ := by
   simp [linFormMap, linForm, Fintype.linearCombination_apply, C_mul']
@@ -23,16 +23,16 @@ def formSpace {n : ℕ} (I : Ideal (MvPolynomial (Fin n) ℂ)) : Submodule ℂ (
   (I.restrictScalars ℂ).comap (linFormMap n)
 
 /- English proof (translation)
-Simplify using `[formSpace, linFormMap_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_formSpace {n : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {ℓ : Fin n → ℂ} :
     ℓ ∈ formSpace I ↔ linForm ℓ ∈ I := by
   simp [formSpace, linFormMap_apply]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hI`. Introduce `htop`. Establish `h : Pi.single j 1 ∈ formSpace I` using `htop ▸ Submodule.mem_top`. Rewrite `h` using `[mem_formSpace]`. Apply `hj` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: linForm (Pi.single j (1 : ℂ)) = (X j : MvPolynomial (Fin n) ℂ)`. Rewrite using `[← linFormMap_apply]`. Simplify using `[linFormMap, Fintype.linearCombination_apply, Pi.single_apply]`. Rewrite `h` using `[this]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem formSpace_ne_top {n : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} (hI : IsRelevant I) :
     formSpace I ≠ ⊤ := by
@@ -47,7 +47,7 @@ theorem formSpace_ne_top {n : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} (hI : 
   rwa [this] at h
 
 /- English proof (translation)
-Rewrite `hW` using `[Finsupp.mem_support_iff]`. Simplify using `only [divCycle, fundCycle, Finsupp.onFinset_apply] at hW`. Assume the negation of the conclusion as `h`. Conclude with `hW (if_neg fun h' => h h'.2)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem isRelevant_of_mem_support {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ)} {u : Fin n → ℂ}
     {W : Ideal (MvPolynomial (Fin n) ℂ)} (hW : W ∈ (divCycle J u).support) : IsRelevant W := by
@@ -57,11 +57,9 @@ theorem isRelevant_of_mem_support {n : ℕ} {J : Ideal (MvPolynomial (Fin n) ℂ
   exact hW (if_neg fun h' => h h'.2)
 
 /- English proof (translation)
-Introduce `n J u hJ`. Set `p : Option (divCycle J u).support → Submodule ℂ (Fin n → ℂ)` to `fun o => o.elim (formSpace J) (fun W => formSpace W.1)`. Establish `hp : ∀ o, p o ≠ ⊤`. Introduce and unpack `(_ | ⟨W, hW⟩)`. Conclude with `formSpace_ne_top hJ.isRelevant`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Conclude with `formSpace_ne_top (isRelevant_of_mem_support hW)`. Establish `hcov : ⋃ o, (p o : Set (Fin n → ℂ)) ≠ Set.univ` using `fun h => (Subspace.exists_eq_top_of_iUnion_eq_univ h).elim hp`. Take `⟨ℓ, hℓ⟩` from `(Set.ne_univ_iff_exists_notMem _).mp hcov`. Simplify using `only [Set.mem_iUnion, not_exists, SetLike.mem_coe] at hℓ`. Use `⟨ℓ, fun h => hℓ none (mem_formSpace.mpr h), fun W hW h => hℓ (some ⟨W, hW⟩) ?_⟩` and prove the remaining obligations.
-
-Conclude with `mem_formSpace.mpr h`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem proof : SectionHyperplaneAvoid.Statement := by
   intro n J u hJ

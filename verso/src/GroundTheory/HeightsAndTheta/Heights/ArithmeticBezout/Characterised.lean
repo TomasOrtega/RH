@@ -38,7 +38,7 @@ def ChowHeightCharacterised.Statement : Prop :=
       IsProjPrime I → IsChowForm I (e + 1) f → IsMultiHomog δ f → J I = chowHt H (e + 1) δ f
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjPrime_point ℂ, isChowForm_point ℂ, isMultiHomog_point ℂ⟩`.
+Supply the required witnesses or components.
 -/
 theorem ConeIntegralMass.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℂ)) ∧
@@ -47,7 +47,7 @@ theorem ConeIntegralMass.hypotheses_inhabited :
   ⟨isProjPrime_point ℂ, isChowForm_point ℂ, isMultiHomog_point ℂ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isProjPrime_point ℚ, isChowForm_point ℚ⟩`.
+Supply the required witnesses or components.
 -/
 theorem ChowFormBaseChange.hypotheses_inhabited :
     IsProjPrime (⊥ : Ideal (MvPolynomial (Fin 1) ℚ)) ∧

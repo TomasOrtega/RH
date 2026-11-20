@@ -10,13 +10,13 @@ open scoped Classical TensorProduct
 namespace PositivityTheory.Rg.BcB.G3.ClsOntoP
 
 /- English proof (translation)
-Take `⟨u, v, huv⟩` from `hF.span x.val (by simpa only [Units.val_mul] using congrArg Units.val hx)`. Establish `hA` using `ClsEqP.A_delta_theta hF hcs x u v huv`. Establish `e : x.val * (δ * thetaGL n c x).val = (ρ u - s • ρ v) * (δ * thetaGL n c x).val`. Establish `hk' : x.val * (δ.val * (thetaGL n c x).val) = δ.val`. Use `congrArg Units.val hk` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[Units.val_mul, hA, hk']`. Establish `h0 : x.val = ρ u - s • ρ v`. Use `congrArg (· * ((δ * thetaGL n c x)⁻¹).val) e` as an intermediate fact. Simplify `this` using `only [Matrix.mul_assoc, Units.mul_inv, Matrix.mul_one]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e2 : s • ρ v = -(s • ρ v)`. Use `huv.symm.trans h0` as an intermediate fact. Rewrite `this` using `[sub_eq_add_neg]`. Conclude with `add_left_cancel this`. Establish `e3 : (2 * s) • ρ v = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[two_mul, add_smul]`. Use `nth_rewrite 2 [e2]`. Conclude with `add_neg_cancel _`. Establish `hv : ρ v = 0` using `(smul_eq_zero.mp e3).resolve_left (mul_ne_zero two_ne_zero hs0)`. Conclude with `⟨u, by rw [huv, hv, smul_zero, add_zero]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem only_rho {k : Type} [Field k] [CharZero k] {n : ℕ} {c : k →+* k} {δ : GL (Fin n) k} {s : k} {B : Type}
     [CommRing B] {d : B} {ρ : B →+* Matrix (Fin n) (Fin n) k} (hF : IsFrame c δ s d ρ) (hs0 : s ≠ 0) (hcs : c s = -s)
@@ -48,21 +48,19 @@ end PositivityTheory.Rg.BcB.G3.ClsOntoP
 namespace PositivityTheory.Rg.BcB.G3
 
 /- English proof (translation)
-Introduce `k _ _ n c hc δ s hs0 hcs B _ d ρ hF hsep y hy`. Take `⟨h, hh⟩` from `GlobalTheory.SepConj.conj_of_charpoly_eq_of_separable k n (δ * thetaGL n c δ) (y * thetaGL n c y) hy.symm hsep`. Take `⟨y', hy'⟩ : ∃ y' : GL (Fin n) k, y' = h * y * (thetaGL n c h)⁻¹` from `⟨_, rfl⟩`. Establish `hy'N : y' * thetaGL n c y' = δ * thetaGL n c δ`. Rewrite using `[hy']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_inv, GlobalTheory.LocTwist.thetaGL_thetaGL n c hc]`. Combine the equalities or inequalities in the displayed calculation. Establish `hT : thetaGL n c y' * y' = thetaGL n c δ * δ`. Use `congrArg (thetaGL n c) hy'N` as an intermediate fact. Simplify `this` using `only [map_mul, GlobalTheory.LocTwist.thetaGL_thetaGL n c hc]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨a, ha⟩ : ∃ a : GL (Fin n) k, a = y' * δ⁻¹` from `⟨_, rfl⟩`. Establish `hcomm : a * (δ * thetaGL n c δ) = (δ * thetaGL n c δ) * a`. Combine the equalities or inequalities in the displayed calculation. Establish `hkey : a * δ * thetaGL n c a = δ`. Rewrite using `[ha]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_inv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hcomm' : a⁻¹ * (δ * thetaGL n c δ) = (δ * thetaGL n c δ) * a⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `hkey' : a⁻¹ * δ * thetaGL n c a⁻¹ = δ`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨u, hu⟩` from `ClsOntoP.only_rho hF hs0 hcs a hcomm hkey`. Take `⟨u', hu'⟩` from `ClsOntoP.only_rho hF hs0 hcs a⁻¹ hcomm' hkey'`. Establish `huu : u * u' = 1`. Apply `hF.inj` to reduce the goal to its premises.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[map_mul, ← hu, ← hu', Units.mul_inv, map_one]`. Set `t : Bˣ` to `⟨u, u', huu, by rw [mul_comm, huu]⟩`. Establish `hta : Units.map ρ.toMonoidHom t = a`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[ClsNormP.units_map_val, hu]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t, h, ?_⟩` and prove the remaining obligations. Establish `hpt : pt δ ρ t = y'`. Rewrite using `[pt, hta, ha]`. Use `group`. Rewrite using `[hpt, hy']`.
-
-Use `group`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clsOnto_pf : ClsOnto := by
   intro k _ _ n c hc δ s hs0 hcs B _ d ρ hF hsep y hy

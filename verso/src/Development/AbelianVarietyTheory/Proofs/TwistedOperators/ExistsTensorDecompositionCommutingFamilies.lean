@@ -24,9 +24,9 @@ def cyc (i : ι) (w : W) : Submodule ℂ W := LinearMap.range (ev a i w)
 variable {a}
 
 /- English proof (translation)
-Simplify using `only [cyc, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨α, hα⟩, rfl⟩`. Conclude with `⟨α, hα, rfl⟩`. Introduce and unpack `⟨α, hα, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨α, hα⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_cyc {i : ι} {w v : W} : v ∈ cyc a i w ↔ ∃ α ∈ alg a i, α w = v := by
   simp only [cyc, LinearMap.mem_range]
@@ -37,17 +37,17 @@ theorem mem_cyc {i : ι} {w v : W} : v ∈ cyc a i w ↔ ∃ α ∈ alg a i, α 
     exact ⟨⟨α, hα⟩, rfl⟩
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨g, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem_alg (i : ι) (g : G i) : a i g ∈ alg a i := Algebra.subset_adjoin ⟨g, rfl⟩
 
 /- English proof (translation)
-The claim follows from `mem_cyc.2 ⟨1, (alg a i).one_mem, Module.End.one_apply w⟩`.
+A detailed English derivation is pending.
 -/
 theorem self_mem_cyc (i : ι) (w : W) : w ∈ cyc a i w := mem_cyc.2 ⟨1, (alg a i).one_mem, Module.End.one_apply w⟩
 
 /- English proof (translation)
-Take `⟨α, hα, rfl⟩` from `mem_cyc.1 hv`. Conclude with `mem_cyc.2 ⟨β * α, (alg a i).mul_mem hβ hα, rfl⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem apply_mem_cyc {i : ι} {w v : W} (hv : v ∈ cyc a i w) {β : Module.End ℂ W} (hβ : β ∈ alg a i) :
     β v ∈ cyc a i w := by
@@ -55,13 +55,11 @@ theorem apply_mem_cyc {i : ι} {w v : W} (hv : v ∈ cyc a i w) {β : Module.End
   exact mem_cyc.2 ⟨β * α, (alg a i).mul_mem hβ hα, rfl⟩
 
 /- English proof (translation)
-Unfold `alg at hα`. Proceed by induction on `hα using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨g, rfl⟩` from `hx`. Conclude with `hN g`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `algebraMap r`. Introduce `x hx`. Rewrite using `[Module.algebraMap_end_apply]`. Conclude with `N.smul_mem r hx`. Consider the case `add x y _ _ h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Rewrite using `[LinearMap.add_apply]`. Conclude with `N.add_mem (h1 z hz) (h2 z hz)`. Consider the case `mul x y _ _ h1 h2`. Introduce `z hz`.
-
-Rewrite using `[Module.End.mul_apply]`. Conclude with `h1 _ (h2 z hz)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg_stable {i : ι} (N : Submodule ℂ W) (hN : ∀ g, ∀ x ∈ N, a i g x ∈ N)
     {α : Module.End ℂ W} (hα : α ∈ alg a i) : ∀ x ∈ N, α x ∈ N := by
@@ -84,7 +82,7 @@ theorem alg_stable {i : ι} (N : Submodule ℂ W) (hN : ∀ g, ∀ x ∈ N, a i 
     exact h1 _ (h2 z hz)
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨α, hα, rfl⟩` from `mem_cyc.1 hv`. Conclude with `alg_stable N hN hα w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cyc_le {i : ι} {w : W} (N : Submodule ℂ W) (hN : ∀ g, ∀ x ∈ N, a i g x ∈ N) (hw : w ∈ N) :
     cyc a i w ≤ N := by
@@ -93,11 +91,11 @@ theorem cyc_le {i : ι} {w : W} (N : Submodule ℂ W) (hN : ∀ g, ∀ x ∈ N, 
   exact alg_stable N hN hα w hw
 
 /- English proof (translation)
-Unfold `alg at hα hβ`. Proceed by induction on `hβ using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨h, rfl⟩` from `hx`. Proceed by induction on `hα using Algebra.adjoin_induction with`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `mem y hy`. Take `⟨g, rfl⟩` from `hy`. Conclude with `hc i j hij g h`. Consider the case `algebraMap r => exact Algebra.commute_algebraMap_left r _`. Consider the case `add y z _ _ h1 h2 => exact h1.add_left h2`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `mul y z _ _ h1 h2 => exact h1.mul_left h2`. Consider the case `algebraMap r => exact Algebra.commute_algebraMap_right r _`. Consider the case `add y z _ _ h1 h2 => exact h1.add_right h2`. Consider the case `mul y z _ _ h1 h2 => exact h1.mul_right h2`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem commute_alg (hc : ∀ i j, i ≠ j → ∀ g h, a i g * a j h = a j h * a i g) {i j : ι} (hij : i ≠ j)
     {α β : Module.End ℂ W} (hα : α ∈ alg a i) (hβ : β ∈ alg a j) : Commute α β := by
@@ -117,7 +115,7 @@ theorem commute_alg (hc : ∀ i j, i ≠ j → ∀ g h, a i g * a j h = a j h * 
   | mul y z _ _ h1 h2 => exact h1.mul_right h2
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨β, hβ, rfl⟩` from `mem_cyc.1 hv`. Rewrite using `[Submodule.mem_map]`. Use `⟨β w, mem_cyc.2 ⟨β, hβ, rfl⟩, ?_⟩` and prove the remaining obligations. Conclude with `LinearMap.congr_fun (commute_alg hc hij hα hβ).eq w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cyc_apply_le (hc : ∀ i j, i ≠ j → ∀ g h, a i g * a j h = a j h * a i g) {i j : ι} (hij : i ≠ j)
     {α : Module.End ℂ W} (hα : α ∈ alg a i) (w : W) : cyc a j (α w) ≤ (cyc a j w).map α := by
@@ -128,11 +126,11 @@ theorem cyc_apply_le (hc : ∀ i j, i ≠ j → ∀ g h, a i g * a j h = a j h *
   exact LinearMap.congr_fun (commute_alg hc hij hα hβ).eq w
 
 /- English proof (translation)
-Take `⟨w, hwN, hw0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Take `⟨α, hα, hαw⟩` from `mem_cyc.1 (hle hwN)`. Establish `h1 : cyc a i w ≤ N` using `cyc_le N hN hwN`. Establish `hle' : ∀ j ∈ (Finset.univ : Finset ι), finrank ℂ (cyc a j w) ≤ finrank ℂ (cyc a j w₀)`. Introduce `j _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Conclude with `Submodule.finrank_mono (h1.trans hle)`. Rewrite using `[← hαw]`. Conclude with `(Submodule.finrank_mono (cyc_apply_le hc hij hα w₀)).trans (Submodule.finrank_map_le _ _)`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heq` using `(Finset.sum_eq_sum_iff_of_le hle').1 (le_antisymm (Finset.sum_le_sum hle') (hmin w hw0))`. Establish `hi` using `Submodule.eq_of_le_of_finrank_eq (h1.trans hle) (heq i (Finset.mem_univ i))`. Conclude with `le_antisymm hle (hi ▸ h1)`.
+A detailed English derivation is pending.
 -/
 theorem eq_cyc_of_min [Fintype ι] [FiniteDimensional ℂ W]
     (hc : ∀ i j, i ≠ j → ∀ g h, a i g * a j h = a j h * a i g) {w₀ : W}
@@ -155,17 +153,15 @@ theorem eq_cyc_of_min [Fintype ι] [FiniteDimensional ℂ W]
   exact le_antisymm hle (hi ▸ h1)
 
 /- English proof (translation)
-Use `⟨hb, fun T hT => ?_⟩` and prove the remaining obligations. Take `⟨c, hcT⟩` from `Module.End.exists_eigenvalue T`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `hstab : ∀ g, ∀ x ∈ LinearMap.ker (T - c • LinearMap.id), b g x ∈ LinearMap.ker (T - c • LinearMap.id)`. Introduce `g x hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Establish `h` using `LinearMap.congr_fun (hT g) x`. Establish `h2` using `congrArg (b g) hx`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, LinearMap.comp_apply, map_sub, map_smul, map_zero] at hx h h2 ⊢`. Rewrite using `[h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2`. Break down `hb _ hstab with h | h` into its components or cases. It suffices to derive a contradiction. Take `⟨v, hv⟩` from `hcT.exists_hasEigenvector`. Establish `hv0 : v ≠ 0` using `hv.2`.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hv0` to reduce the goal to its premises. Establish `hmem : v ∈ LinearMap.ker (T - c • LinearMap.id)`. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply, hv.apply_eq_smul, sub_self]`. Rewrite `hmem` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `x`. Establish `hx : x ∈ LinearMap.ker (T - c • LinearMap.id)`. Rewrite using `[h]`. Conclude with `Submodule.mem_top`. Rewrite `hx` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`.
-
-Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absIrr_of_irr {K : Type} [AddCommGroup K] [Module ℂ K] [FiniteDimensional ℂ K] [Nontrivial K]
     {H : Type} (b : H → Module.End ℂ K)
@@ -212,7 +208,7 @@ def prodAt (x : ∀ i, cyc a i w₀) (S : Finset ι) : Module.End ℂ W :=
     (fun i _ j _ hij => commute_alg hc hij (s i (x i)).2 (s j (x j)).2)
 
 /- English proof (translation)
-Unfold `prodAt`. Conclude with `(Finset.noncommProd_erase_mul _ (Finset.mem_univ i) _ _).symm`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem prodAt_univ_eq [DecidableEq ι] (x : ∀ i, cyc a i w₀) (i : ι) :
     prodAt hc s x Finset.univ = prodAt hc s x (Finset.univ.erase i) * (s i (x i) : Module.End ℂ W) := by
@@ -220,7 +216,7 @@ theorem prodAt_univ_eq [DecidableEq ι] (x : ∀ i, cyc a i w₀) (i : ι) :
   exact (Finset.noncommProd_erase_mul _ (Finset.mem_univ i) _ _).symm
 
 /- English proof (translation)
-Unfold `prodAt`. Apply `Finset.noncommProd_congr rfl` to reduce the goal to its premises. Introduce `j hj`. Use `show ((s j (Function.update x i v j) : alg a j) : Module.End ℂ W) = s j (x j)`. Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hj)]`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prodAt_erase_update {dec : DecidableEq ι} (x : ∀ i, cyc a i w₀) (i : ι) (v : cyc a i w₀) :
     prodAt hc s (Function.update x i v) (Finset.univ.erase i) = prodAt hc s x (Finset.univ.erase i) := by
@@ -231,7 +227,7 @@ theorem prodAt_erase_update {dec : DecidableEq ι} (x : ∀ i, cyc a i w₀) (i 
   rw [Function.update_of_ne (Finset.ne_of_mem_erase hj)]
 
 /- English proof (translation)
-Unfold `prodAt`. Apply `Finset.noncommProd_commute` to reduce the goal to its premises. Introduce `j hj`. Conclude with `commute_alg hc (Finset.ne_of_mem_erase hj).symm hα (s j (x j)).2`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem prodAt_erase_commute [DecidableEq ι] (x : ∀ i, cyc a i w₀) (i : ι) {α : Module.End ℂ W}
     (hα : α ∈ alg a i) : Commute α (prodAt hc s x (Finset.univ.erase i)) := by
@@ -244,14 +240,14 @@ variable (hs : ∀ i y, (s i y : Module.End ℂ W) w₀ = y)
 include hs
 
 /- English proof (translation)
-Rewrite using `[prodAt_univ_eq hc s x i, Module.End.mul_apply, hs]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prodAt_univ_apply [DecidableEq ι] (x : ∀ i, cyc a i w₀) (i : ι) :
     prodAt hc s x Finset.univ w₀ = prodAt hc s x (Finset.univ.erase i) (x i : W) := by
   rw [prodAt_univ_eq hc s x i, Module.End.mul_apply, hs]
 
 /- English proof (translation)
-Rewrite using `[prodAt_univ_apply hc s hs (Function.update x i v) i, prodAt_erase_update hc s, Function.update_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prodAt_univ_update {dec : DecidableEq ι} (x : ∀ i, cyc a i w₀) (i : ι) (v : cyc a i w₀) :
     prodAt hc s (Function.update x i v) Finset.univ w₀ = prodAt hc s x (Finset.univ.erase i) (v : W) := by
@@ -259,7 +255,7 @@ theorem prodAt_univ_update {dec : DecidableEq ι} (x : ∀ i, cyc a i w₀) (i :
 
 omit hs in
 /- English proof (translation)
-Unfold `prodAt`. Conclude with `Finset.noncommProd_empty _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem prodAt_empty (x : ∀ i, cyc a i w₀) : prodAt hc s x ∅ = 1 := by
   unfold prodAt
@@ -267,7 +263,7 @@ theorem prodAt_empty (x : ∀ i, cyc a i w₀) : prodAt hc s x ∅ = 1 := by
 
 omit hs in
 /- English proof (translation)
-Unfold `prodAt`. Conclude with `Finset.noncommProd_insert_of_notMem _ _ _ _ hj`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem prodAt_insert [DecidableEq ι] (x : ∀ i, cyc a i w₀) {j : ι} {S : Finset ι} (hj : j ∉ S) :
     prodAt hc s x (insert j S) = (s j (x j) : Module.End ℂ W) * prodAt hc s x S := by
@@ -275,7 +271,7 @@ theorem prodAt_insert [DecidableEq ι] (x : ∀ i, cyc a i w₀) {j : ι} {S : F
   exact Finset.noncommProd_insert_of_notMem _ _ _ _ hj
 
 /- English proof (translation)
-Use `Finset.induction_on S ?_ ?_` and prove the remaining obligations. Rewrite using `[prodAt_empty hc s, Module.End.one_apply]`. Introduce `j S hj ih`. Rewrite using `[prodAt_insert hc s _ hj, Module.End.mul_apply, ih, hs]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem prodAt_base (S : Finset ι) :
     prodAt hc s (fun i => ⟨w₀, self_mem_cyc i w₀⟩) S w₀ = w₀ := by
@@ -310,7 +306,7 @@ Both sides reduce to the same expression.
 theorem mu_apply (x : ∀ i, cyc a i w₀) : mu hc s hs x = prodAt hc s x Finset.univ w₀ := rfl
 
 /- English proof (translation)
-Rewrite using `[mu_apply, mu_apply, prodAt_univ_update hc s hs, res_apply, prodAt_univ_apply hc s hs x i]`. Conclude with `(LinearMap.congr_fun (prodAt_erase_commute hc s x i (gen_mem_alg i g)).eq (x i : W)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_update {dec : DecidableEq ι} (x : ∀ i, cyc a i w₀) (i : ι) (g : G i) :
     mu hc s hs (Function.update x i (res a i w₀ g (x i))) = a i g (mu hc s hs x) := by
@@ -320,35 +316,29 @@ theorem mu_update {dec : DecidableEq ι} (x : ∀ i, cyc a i w₀) (i : ι) (g :
 end Prod
 
 /- English proof (translation)
-Introduce `ι _ _ W _ _ _ _ G a hc hirr`. Take `⟨v₀, hv₀⟩` from `exists_ne (0 : W)`. Establish `hex : ∃ n, ∃ w : W, w ≠ 0 ∧ ∑ i, finrank ℂ (cyc a i w) = n` using `⟨_, v₀, hv₀, rfl⟩`. Take `⟨w₀, hw₀, hw₀n⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ w : W, w ≠ 0 → ∑ i, finrank ℂ (cyc a i w₀) ≤ ∑ i, finrank ℂ (cyc a i w)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `w hw`. Rewrite using `[hw₀n]`. Conclude with `Nat.find_min' hex ⟨w, hw, rfl⟩`. Establish `hsec : ∀ i, ∃ t : cyc a i w₀ →ₗ[ℂ] alg a i, (ev a i w₀).rangeRestrict ∘ₗ t = LinearMap.id` using `fun i => (ev a i w₀).rangeRestrict.exists_rightInverse_of_surjective (LinearMap.range_rangeRestrict _)`. Use `choose s hs0 using hsec`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs : ∀ i y, (s i y : Module.End ℂ W) w₀ = y`. Introduce `i y`. Conclude with `congrArg Subtype.val (LinearMap.congr_fun (hs0 i) y)`. Establish `hirr_i : ∀ i, ∀ N : Submodule ℂ (cyc a i w₀), (∀ g, ∀ x ∈ N, res a i w₀ g x ∈ N) → N = ⊥ ∨ N = ⊤`. Introduce `i N hN`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Prove the first alternative. Establish an intermediate fact.
 
-Distinguish the cases in `hN0 : N = ⊥`. Conclude with `Or.inl hN0`. Use `right`. Establish `hmap : N.map (cyc a i w₀).subtype = cyc a i w₀`. Use `eq_cyc_of_min hc hmin i _ (Submodule.map_subtype_le _ _) ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `g _ ⟨y, hy, rfl⟩`. Conclude with `⟨res a i w₀ g y, hN g y hy, rfl⟩`. Introduce `h`. Conclude with `hN0 (Submodule.map_injective_of_injective (cyc a i w₀).injective_subtype (h.trans (Submodule.map_bot _).symm))`. Apply `Submodule.map_injective_of_injective (cyc a i w₀).injective_subtype` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hmap, Submodule.map_subtype_top]`. Establish `habs : ∀ i, AbsIrr (res a i w₀)`. Introduce `i`. Use `haveI : Nontrivial (cyc a i w₀) := ⟨⟨⟨w₀, self_mem_cyc i w₀⟩, 0, fun h => hw₀ (congrArg Subtype.val h)⟩⟩`. Conclude with `absIrr_of_irr _ (hirr_i i)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨e0, he0⟩ : ∃ e0 : (⨂[ℂ] i, cyc a i w₀) →ₗ[ℂ] W, ∀ x, e0 (PiTensorProduct.tprod ℂ x) = mu hc s hs x` from `⟨PiTensorProduct.lift (mu hc s hs), fun x => PiTensorProduct.lift.tprod x⟩`. Establish `hint : ∀ i g, e0 ∘ₗ intersection_update_fsHerm_neg_one i (res a i w₀ g) = a i g ∘ₗ e0`. Introduce `i g`. Apply `PiTensorProduct.ext` to reduce the goal to its premises. Apply `MultilinearMap.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce `x`. Simplify using `only [LinearMap.compMultilinearMap_apply, LinearMap.comp_apply, position_tprod, he0]`. Conclude with `mu_update hc s hs x i g`. Establish `hbase : e0 (PiTensorProduct.tprod ℂ (fun i => (⟨w₀, self_mem_cyc i w₀⟩ : cyc a i w₀))) = w₀`. Rewrite using `[he0, mu_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `prodAt_base hc s hs Finset.univ`. Establish `hsurj : LinearMap.range e0 = ⊤`. Establish `hstab : ∀ i g, ∀ x ∈ LinearMap.range e0, a i g x ∈ LinearMap.range e0`. Introduce and unpack `i g _ ⟨t, rfl⟩`. Establish `h` using `LinearMap.congr_fun (hint i g) t`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite `h` using `[LinearMap.comp_apply, LinearMap.comp_apply]`. Conclude with `LinearMap.mem_range.2 ⟨_, h⟩`. Break down `hirr _ hstab with h | h` into its components or cases. It suffices to derive a contradiction. Apply `hw₀` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : w₀ ∈ LinearMap.range e0` using `⟨_, hbase⟩`. Rewrite `hm` using `[h]`. Conclude with `(Submodule.mem_bot ℂ).1 hm`. Conclude with `h`. Establish `hker : LinearMap.ker e0 = ⊥`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Establish `hstab : ∀ i g, ∀ x ∈ LinearMap.ker e0, intersection_update_fsHerm_neg_one i (res a i w₀ g) x ∈ LinearMap.ker e0`. Introduce `i g x hx`. Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Establish `h` using `LinearMap.congr_fun (hint i g) x`.
-
-Simplify using `only [LinearMap.comp_apply] at h`. Rewrite using `[h, hx, map_zero]`. Establish `htop` using `GlobalTheory.TensorIrr.eq_top_of_stable ι (fun i => cyc a i w₀) G (fun i => res a i w₀) habs (LinearMap.ker e0) hstab hne`. Apply `hw₀` to reduce the goal to its premises. Rewrite using `[← hbase]`.
-
-Establish `hm : PiTensorProduct.tprod ℂ (fun i => (⟨w₀, self_mem_cyc i w₀⟩ : cyc a i w₀)) ∈ LinearMap.ker e0`. Rewrite using `[htop]`. Conclude with `Submodule.mem_top`. Conclude with `LinearMap.mem_ker.1 hm`. Set `e` to `LinearEquiv.ofBijective e0 ⟨LinearMap.ker_eq_bot.1 hker, LinearMap.range_eq_top.1 hsurj⟩`.
-
-Use `⟨fun i => cyc a i w₀, fun i => inferInstance, fun i => inferInstance, fun i => inferInstance, fun i => res a i w₀, fun i => (cyc a i w₀).subtype, e, fun i => (cyc a i w₀).injective_subtype, fun i g x => rfl, hirr_i, ?_⟩` and prove the remaining obligations. Introduce `i g x`. Use `show e0 _ = a i g (e0 _)`. Rewrite using `[he0, he0]`. Conclude with `mu_update hc s hs x i g`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tensor_decomp : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (W : Type) [AddCommGroup W] [Module ℂ W] [FiniteDimensional ℂ W] [Nontrivial W] (G : ι → Type) (a : ∀ i, G i → Module.End ℂ W), (∀ i j, i ≠ j → ∀ g h, a i g * a j h = a j h * a i g) → (∀ N : Submodule ℂ W, (∀ i g, ∀ x ∈ N, a i g x ∈ N) → N = ⊥ ∨ N = ⊤) → ∃ (X : ι → Type) (_ : ∀ i, AddCommGroup (X i)) (_ : ∀ i, Module ℂ (X i)) (_ : ∀ i, FiniteDimensional ℂ (X i)) (b : ∀ i, G i → Module.End ℂ (X i)) (m : ∀ i, X i →ₗ[ℂ] W) (e : (⨂[ℂ] i, X i) ≃ₗ[ℂ] W), (∀ i, Function.Injective (m i)) ∧ (∀ i g x, m i (b i g x) = a i g (m i x)) ∧ (∀ i, ∀ N : Submodule ℂ (X i), (∀ g, ∀ x ∈ N, b i g x ∈ N) → N = ⊥ ∨ N = ⊤) ∧ ∀ i g (x : ∀ i, X i), e (PiTensorProduct.tprod ℂ (Function.update x i (b i g (x i)))) = a i g (e (PiTensorProduct.tprod ℂ x)) := by
   intro ι _ _ W _ _ _ _ G a hc hirr

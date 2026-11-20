@@ -9,15 +9,13 @@ open Matrix FockH1Action MvPolynomial FockRaiseLowInner
 namespace PI.FockOneDegW
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [posC, sameBlock]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sameBlock_of_posC {p q : ℕ} {a b : Ix p q} (h : posC a b) : sameBlock a b := by
   rcases a with a | a <;> rcases b with b | b <;> simp_all [posC, sameBlock]
 
 /- English proof (translation)
-Introduce `x y hxy`. Simplify using `only [Eab, Matrix.single_apply]`. Use `split_ifs with h'`. Take `⟨rfl, rfl⟩` from `h'`. Conclude with `absurd h hxy`.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isKC_Eab {p q : ℕ} {a b : Ix p q} (h : sameBlock a b) : IsKC (Eab a b) := by
   intro x y hxy
@@ -39,17 +37,17 @@ def innerL {σ : Type} (x : MvPolynomial σ ℂ) : MvPolynomial σ ℂ →ₗ[�
   map_smul' c Q := by simp [fockInner_smul_right]
 
 /- English proof (translation)
-Establish `: FiniteDimensional ℂ N` using `Submodule.finiteDimensional_of_le hNV.le`. Use `set k := Module.finrank ℂ N`. Set `b` to `Module.finBasis ℂ N`. Set `Φ : MvPolynomial σ ℂ →ₗ[ℂ] (Fin k → ℂ)` to `LinearMap.pi (fun i => innerL ((b i : N) : MvPolynomial σ ℂ))`. Set `Ψ` to `Φ.domRestrict V`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `LinearMap.finrank_range_add_finrank_ker Ψ`. Establish `h2 : Module.finrank ℂ (LinearMap.range Ψ) ≤ k`. Use `Submodule.finrank_le (LinearMap.range Ψ)` as an intermediate fact. Simplify `this` using `[Module.finrank_fin_fun]`. Establish `h3 : k < Module.finrank ℂ V` using `Submodule.finrank_lt_finrank_of_lt hNV`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : LinearMap.ker Ψ ≠ ⊥`. Introduce `h`. Rewrite `h1` using `[h, finrank_bot]`. Use linear arithmetic over natural numbers and integers. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h4`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(x : MvPolynomial σ ℂ), x.2, fun h => hx0 (Subtype.ext h), fun n hn => ?_⟩` and prove the remaining obligations. Establish `hx' : ∀ i, fockInner ((b i : N) : MvPolynomial σ ℂ) (x : MvPolynomial σ ℂ) = 0`. Introduce `i`. Use `congrFun (LinearMap.mem_ker.mp hx) i` as an intermediate fact. Simplify `this` using `[Ψ, Φ, innerL]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hsum` using `b.sum_repr ⟨n, hn⟩`. Establish `hn' : n = ∑ i, (b.repr ⟨n, hn⟩ i) • ((b i : N) : MvPolynomial σ ℂ)` using `by conv_lhs => rw [show n = ((⟨n, hn⟩ : N) : MvPolynomial σ ℂ) from rfl, ← hsum]`. Rewrite using `[Submodule.coe_sum]`. Simplify using `only [Submodule.coe_smul]`. Rewrite using `[hn', fockInner_sum_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[fockInner_smul_left, hx' i, mul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orth {σ : Type} {V N : Submodule ℂ (MvPolynomial σ ℂ)} [FiniteDimensional ℂ V]
     (hNV : N < V) : ∃ c ∈ V, c ≠ 0 ∧ ∀ n ∈ N, fockInner n c = 0 := by
@@ -84,33 +82,29 @@ theorem exists_orth {σ : Type} {V N : Submodule ℂ (MvPolynomial σ ℂ)} [Fin
   rw [fockInner_smul_left, hx' i, mul_zero]
 
 /- English proof (translation)
-Set `V : Submodule ℂ (Pol p q r s)` to `W ⊓ harmSub hS p q r s`. Set `N : Submodule ℂ (Pol p q r s)` to `V ⊓ LinearMap.ker (homogeneousComponent e : Pol p q r s →ₗ[ℂ] Pol p q r s)`. Use `haveI : FiniteDimensional ℂ V := Submodule.finiteDimensional_of_le inf_le_left`. Establish `hVst : ∀ a b : Ix p q, sameBlock a b → ∀ u ∈ V, fockAct1 p q r s (Eab a b) u ∈ V`. Introduce `a b hab u hu`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨hWK _ (isKC_Eab hab) u hu.1, hKh p q r s a b hab u hu.2⟩`. Establish `hNst : ∀ a b : Ix p q, sameBlock a b → ∀ u ∈ N, fockAct1 p q r s (Eab a b) u ∈ N`. Introduce `a b hab u hu`. Use `⟨hVst a b hab u hu.1, ?_⟩` and prove the remaining obligations. Establish `h0 : homogeneousComponent e u = 0` using `hu.2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show homogeneousComponent e (fockAct1 p q r s (Eab a b) u) = 0`. Rewrite using `[hKc p q r s a b hab e u, h0, map_zero]`. Set `C : Submodule ℂ (Pol p q r s)` to `{ carrier := {c | c ∈ V ∧ ∀ n ∈ N, fockInner n c = 0} add_mem' := by`. Introduce and unpack `x y ⟨hx, hx'⟩ ⟨hy, hy'⟩`. Use `⟨V.add_mem hx hy, fun n hn => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[fockInner_add_right, hx' n hn, hy' n hn, add_zero]`. Use the proof step `zero_mem' := ⟨V.zero_mem, fun n _ => fockInner_zero_right n⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c x ⟨hx, hx'⟩`. Use `⟨V.smul_mem c hx, fun n hn => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[fockInner_smul_right, hx' n hn, mul_zero] }`. Establish `hPV : P ∈ V` using `⟨hPW, hH⟩`. Establish `hPN : P ∉ N` using `fun h => he h.2`. Establish `hNV : N < V` using `lt_of_le_of_ne inf_le_left (fun h => hPN (h ▸ hPV))`. Take `⟨c0, hc0V, hc0, hc0N⟩` from `exists_orth hNV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hCne : C ≠ ⊥`. Introduce `h`. Establish `: c0 ∈ C` using `⟨hc0V, hc0N⟩`. Rewrite `this` using `[h, Submodule.mem_bot]`. Conclude with `hc0 this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ C := Submodule.finiteDimensional_of_le (show C ≤ V from fun x hx => hx.1)`. Establish `hCst : ∀ a b : Ix p q, sameBlock a b → ∀ u ∈ C, fockAct1 p q r s (Eab a b) u ∈ C`. Introduce `a b hab u hu`. Use `⟨hVst a b hab u hu.1, fun n hn => ?_⟩` and prove the remaining obligations. Rewrite using `[hA p q r s a b hab n u]`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hba : sameBlock b a`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> simp_all [sameBlock]`. Conclude with `hu.2 _ (hNst b a hba n hn)`. Take `⟨ν, v, hvC, hv0, hvhw⟩` from `hE p q r s C inferInstance hCne hCst`. Establish `hνμ : ν = μ` using `hWhw ν v hvC.1.1 ⟨hv0, hvhw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `hνμ` using the available equality. Establish `hve : homogeneousComponent e v ≠ 0`. Introduce `h`. Establish `hvN : v ∈ N` using `⟨hvC.1, h⟩`. Use `hvC.2 v hvN` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hv0 ((hI _ v v v 0).2.2.2.2.1 this)`. Establish `hwt : ∀ a : Ix p q, fockAct1 p q r s (Eab a a) v = ((ν a : ℚ) : ℂ) • v`. Introduce `a`. Use `(Submodule.mem_iInf _).mp hvhw.1 a` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.sub_apply, sub_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `using this`. Establish `hraise : ∀ a b : Ix p q, posC a b → fockAct1 p q r s (Eab a b) v = 0`. Introduce `a b hab`. Establish `h1` using `(Submodule.mem_iInf _).mp hvhw.2 a`. Establish `h2` using `(Submodule.mem_iInf _).mp h1 b`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `(Submodule.mem_iInf _).mp h2 hab`. Conclude with `LinearMap.mem_ker.mp h3`. Establish `hsame : ∀ a : Ix p q, sameBlock a a`. Apply the tactic sequence `intro a; rcases a with a | a <;> simp [sameBlock]`. Establish `hHW : IsHW (fockAct1 p q r s) ν (homogeneousComponent e v)`.
-
-Use `⟨hve, ?_, ?_⟩` and prove the remaining obligations. Use `(Submodule.mem_iInf _).mpr fun a => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, ← hKc p q r s a a (hsame a) e v, hwt a, map_smul, LinearMap.smul_apply, LinearMap.id_apply, sub_self]`. Use `(Submodule.mem_iInf _).mpr fun a => (Submodule.mem_iInf _).mpr fun b => (Submodule.mem_iInf _).mpr fun hab => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, ← hKc p q r s a b (sameBlock_of_posC hab) e v, hraise a b hab, map_zero]`.
-
-Establish `hhom : homogeneousComponent e v ∈ homog (Ix p q × Ix r s) e` using `(mem_homogeneousSubmodule _ _).mpr (homogeneousComponent_isHomogeneous e v)`. Conclude with `hT p q r s ν e _ hhom hHW (hHc p q r s e v hvC.1.2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem key_of (hI : InnerFacts) (hKc : KHc) (hKh : KHarm) (hHc : HcHarm) (hS : HarmSub)
     (hA : KAdj) (hE : HwExist) (hT : HwHarmDeg)
@@ -198,17 +192,15 @@ theorem key_of (hI : InnerFacts) (hKc : KHc) (hKh : KHarm) (hHc : HcHarm) (hS : 
   exact hT p q r s ν e _ hhom hHW (hHc p q r s e v hvC.1.2)
 
 /- English proof (translation)
-Introduce `hT p q r s μ P hP0 hOT hH`. Take `⟨W, hWfd, hPW, hWK, hWhw⟩` from `hOT`. Establish `key` using `fun e he => key_of hI hKc hKh hHc hS hA hE hT μ W hWK hWhw P hPW hH e he`. Choose the witnesses or unpack the hypotheses as in `⟨e, he⟩ : ∃ e, homogeneousComponent e P ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Conclude with `hP0 (FockRaiseLowGrade.eq_zero_of_hc P h)`. Use `⟨e, key e he, ?_⟩` and prove the remaining obligations. Establish `hother : ∀ e', e' ≠ e → homogeneousComponent e' P = 0`. Introduce `e' hne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Establish `h1` using `key e' h`. Rewrite `h1` using `[← key e he]`. Conclude with `hne (by exact_mod_cast h1)`. Establish `hPe : P = homogeneousComponent e P`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: P - homogeneousComponent e P = 0`. Apply `FockRaiseLowGrade.eq_zero_of_hc` to reduce the goal to its premises. Introduce `e'`. Rewrite using `[map_sub, FockRaiseLowGrade.hc_hc]`. Distinguish the cases in `h : e' = e`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[if_neg h, hother e' h, sub_zero]`. Conclude with `sub_eq_zero.mp this`. Rewrite using `[hPe]`.
-
-Conclude with `(mem_homogeneousSubmodule _ _).mpr (homogeneousComponent_isHomogeneous e P)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reduction_of (hI : InnerFacts) (hKc : KHc) (hKh : KHarm) (hHc : HcHarm) (hS : HarmSub)
     (hA : KAdj) (hE : HwExist) : Reduction := by

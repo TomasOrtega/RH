@@ -11,9 +11,9 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC
 
 /- English proof (translation)
-Break down `le_or_gt p 0 with hp | hp` into its components or cases. Take `⟨N, rfl⟩ : ∃ N : ℕ, p = -(N : ℤ)` from `⟨(-p).toNat, by omega⟩`. Establish `hnat` using `((GlobalTheory.EtC.chains_basic R).2.1 f N)`. Establish `hm : Mono ((free R).map (f.app (op (SimplexCategory.mk N))))` using `((GlobalTheory.T.freeEtaleModuleSheaf_map_mono_epi_iso R (f.app (op (SimplexCategory.mk N)))).1 inferInstance)`. Establish `: ((chains R).map f).f (-(N : ℤ)) = ((chains R).map f).f (-(N : ℤ)) ≫ (chainsXIso R E N).hom ≫ (chainsXIso R E N).inv` using `by simp`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this, ← Category.assoc, hnat, Category.assoc]`. Use `infer_instance`. Use `haveI := (GlobalTheory.EtC.chains_basic R).1 U`. Conclude with `IsZero.mono (isZero_of_isStrictlyLE _ 0 p hp) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_supp_chainsMap_mono (R : Type) [CommRing R] {U E : Spc} (f : U ⟶ E) [Mono f] (p : ℤ) :
     Mono (((chains R).map f).f p) := by
@@ -30,9 +30,7 @@ theorem cup_supp_chainsMap_mono (R : Type) [CommRing R] {U E : Spc} (f : U ⟶ E
     exact IsZero.mono (isZero_of_isStrictlyLE _ 0 p hp) _
 
 /- English proof (translation)
-Use `⟨Cochain.mk fun p q h => by haveI := cup_supp_chainsMap_mono R f p haveI := hI q` and prove the remaining obligations. Conclude with `Injective.factorThru (β.v p q h) (((chains R).map f).f p), ?_⟩`. Use `Cochain.ext _ _ fun p q h => ?_` and prove the remaining obligations. Use `haveI := cup_supp_chainsMap_mono R f p`. Use `haveI := hI q`.
-
-Rewrite using `[Cochain.comp_v _ _ (zero_add n) p p q (add_zero p) h, Cochain.ofHom_v, Cochain.mk_v]`. Conclude with `Injective.comp_factorThru (J := I.X q) (β.v p q h) (((chains R).map f).f p)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_supp_extend (R : Type) [CommRing R] {I : Cx R} (hI : ∀ s, Injective (I.X s)) {U E : Spc} (f : U ⟶ E) [Mono f]
     {n : ℤ} (β : Cochain ((chains R).obj U) I n) :
@@ -48,17 +46,17 @@ theorem cup_supp_extend (R : Type) [CommRing R] {I : Cx R} (hI : ∀ s, Injectiv
   exact Injective.comp_factorThru (J := I.X q) (β.v p q h) (((chains R).map f).f p)
 
 /- English proof (translation)
-Use `Cochain.ext _ _ fun p q h => ?_` and prove the remaining obligations. Rewrite using `[Cochain.zero_v]`. Break down `le_or_gt p 0 with hp | hp` into its components or cases. Take `⟨N, rfl⟩ : ∃ N : ℕ, p = -(N : ℤ)` from `⟨(-p).toNat, by omega⟩`. Establish `hf'` using `congrArg (fun z => z.v (-(N : ℤ)) q h) hf`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hg'` using `congrArg (fun z => z.v (-(N : ℤ)) q h) hg`. Simplify using `only [Cochain.comp_v _ _ (zero_add k) (-(N : ℤ)) (-(N : ℤ)) q (add_zero _) h, Cochain.ofHom_v, Cochain.zero_v] at hf' hg'`. Establish `nf` using `(GlobalTheory.EtC.chains_basic R).2.1 f N`. Establish `ng` using `(GlobalTheory.EtC.chains_basic R).2.1 g N`. Use `haveI := hc.2.2 (op (SimplexCategory.mk N))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : biprod.desc ((free R).map (f.app (op (SimplexCategory.mk N)))) ((free R).map (g.app (op (SimplexCategory.mk N)))) ≫ ((chainsXIso R E N).inv ≫ γ.v (-(N : ℤ)) q h) = 0`. Apply `biprod.hom_ext'` to reduce the goal to its premises. Rewrite using `[biprod.inl_desc_assoc, comp_zero]`. Establish `: (free R).map (f.app (op (SimplexCategory.mk N))) = (chainsXIso R U N).inv ≫ ((chains R).map f).f (-(N : ℤ)) ≫ (chainsXIso R E N).hom`. Rewrite using `[nf]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using `[hf']`. Rewrite using `[biprod.inr_desc_assoc, comp_zero]`. Establish `: (free R).map (g.app (op (SimplexCategory.mk N))) = (chainsXIso R V N).inv ≫ ((chains R).map g).f (-(N : ℤ)) ≫ (chainsXIso R E N).hom`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ng]`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Simplify using `[hg']`. Establish `h0 : (chainsXIso R E N).inv ≫ γ.v (-(N : ℤ)) q h = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← cancel_epi (biprod.desc ((free R).map (f.app (op (SimplexCategory.mk N)))) ((free R).map (g.app (op (SimplexCategory.mk N))))), key, comp_zero]`. Establish `: γ.v (-(N : ℤ)) q h = (chainsXIso R E N).hom ≫ ((chainsXIso R E N).inv ≫ γ.v (-(N : ℤ)) q h)` using `by simp`. Rewrite using `[this, h0, comp_zero]`. Use `haveI := (GlobalTheory.EtC.chains_basic R).1 E`. Conclude with `(isZero_of_isStrictlyLE _ 0 p hp).eq_of_src _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_supp_vanish (R : Type) [CommRing R] {K : Cx R} {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) (hc : Cover2 R f g)
     {k : ℤ} (γ : Cochain ((chains R).obj E) K k)
@@ -97,11 +95,11 @@ theorem cup_supp_vanish (R : Type) [CommRing R] {K : Cx R} {U V E : Spc} (f : U 
     exact (isZero_of_isStrictlyLE _ 0 p hp).eq_of_src _ _
 
 /- English proof (translation)
-Take `⟨α, rfl⟩` from `a.mk_surjective`. Express the relevant statement in the definitionally equal form `CohomologyClass.mk (zcomp (Cocycle.ofHom ((chains R).map f)) α (zero_add n)) = 0 at ha`. Rewrite `ha` using `[CohomologyClass.mk_eq_zero_iff]`. Take `⟨n', hn', β, hβ⟩` from `ha`. Establish `hβ2 : δ n' n β = (Cochain.ofHom ((chains R).map f)).comp α.1 (zero_add n)` using `hβ`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨β', hβ'⟩` from `cup_supp_extend R hI f β`. Set `c : Cocycle ((chains R).obj E) I n` to `Cocycle.mk (δ n' n β') (n + 1) rfl (δ_δ _ _ _ _)`. Use `⟨α - c, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[CohomologyClass.mk_sub, sub_eq_self, CohomologyClass.mk_eq_zero_iff]`. Conclude with `⟨n', hn', β', rfl⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `(Cochain.ofHom ((chains R).map f)).comp (α.1 - δ n' n β') (zero_add n) = 0`. Rewrite using `[Cochain.comp_sub, ← δ_ofHom_comp, hβ', hβ2, sub_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem cup_supp_rep (R : Type) [CommRing R] {I : Cx R} (hI : ∀ s, Injective (I.X s)) {U E : Spc} (f : U ⟶ E) [Mono f]
     {n : ℤ} (a : CohomologyClass ((chains R).obj E) I n) (ha : cpull ((chains R).map f) I n a = 0) :
@@ -121,17 +119,17 @@ theorem cup_supp_rep (R : Type) [CommRing R] {I : Cx R} (hI : ∀ s, Injective (
     rw [Cochain.comp_sub, ← δ_ofHom_comp, hβ', hβ2, sub_self]
 
 /- English proof (translation)
-Use `haveI := hc.1`. Use `haveI := hc.2.1`. Take `⟨α, rfl, hα⟩` from `cup_supp_rep R hI f a ha`. Take `⟨β, rfl, hβ⟩` from `cup_supp_rep R hJ g b hb`. Take `⟨γ, hγ⟩` from `(GlobalTheory.T.cup_eq_class_of_isAW R μ hk).1 α β`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(GlobalTheory.T.cup_eq_class_of_isAW R μ hk).2 α β γ hγ, CohomologyClass.mk_eq_zero_iff]`. Establish `evK` using `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := K) (n := k)`. Establish `evI` using `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := I) (n := n)`. Establish `evJ` using `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := E) (I := J) (n := m)`. Establish `h1 : (Cochain.ofHom ((chains R).map f)).comp γ.1 (zero_add k) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `evKU` using `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := U) (I := K) (n := k)`. Establish `evIU` using `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := U) (I := I) (n := n)`. Apply `evKU.2.2.1` to reduce the goal to its premises. Introduce `N w h U' x`. Rewrite using `[evK.2.2.2.1 f γ.1 N w h U' x, (evKU.1 0 0 N w h U' x).2.2.1, hγ N w h U' (x.map f)]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[((GlobalTheory.T.etaleSpaceSimplicesOver_sub_composite x).2.2.1 0 i (by omega)).2.1 f, ← evI.2.2.2.1 f α.1, hα, (evIU.1 0 0 _ _ rfl U' (x.sub 0 i (by omega))).2.2.1]`. Simplify using the standard rewrite rules. Establish `h2 : (Cochain.ofHom ((chains R).map g)).comp γ.1 (zero_add k) = 0`. Establish `evKV` using `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := V) (I := K) (n := k)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `evJV` using `GlobalTheory.T.etaleCochainEvalOnSimplex_basic_properties R (E := V) (I := J) (n := m)`. Apply `evKV.2.2.1` to reduce the goal to its premises. Introduce `N w h U' x`. Rewrite using `[evK.2.2.2.1 g γ.1 N w h U' x, (evKV.1 0 0 N w h U' x).2.2.1, hγ N w h U' (x.map g)]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[((GlobalTheory.T.etaleSpaceSimplicesOver_sub_composite x).2.2.1 i (N - i) (by omega)).2.1 g, ← evJ.2.2.2.1 g β.1, hβ, (evJV.1 0 0 _ _ rfl U' (x.sub i (N - i) (by omega))).2.2.1]`. Simplify using the standard rewrite rules. Establish `h0 : γ = 0` using `Cocycle.ext (cup_supp_vanish R f g hc γ.1 h1 h2)`. Rewrite using `[h0]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cup_supp (R : Type) [CommRing R] {I J K : Cx R} (μ : Pair I J K) (hI : ∀ s, Injective (I.X s))
     (hJ : ∀ s, Injective (J.X s)) {U V E : Spc} (f : U ⟶ E) (g : V ⟶ E) (hc : Cover2 R f g) {n m k : ℤ}

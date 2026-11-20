@@ -5,33 +5,29 @@ open Finset
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on_max_value lv with`. Consider the case `empty`. Introduce `_ T _ hT`. Establish `: T.card ≤ 1` using `Finset.card_le_one.2 fun x hx y hy => hT x hx y hy (by simp)`. Simplify using `using this`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `insert a s ha hmax ih`. Introduce `hp T hTS hT`. Establish `hps : ∀ b ∈ s, ∀ T : Finset α, (↑T : Set α) ⊆ S → (∀ x ∈ T, ∀ y ∈ T, ∀ b' ∈ s, lv b' < lv b → r b' x y) → (∀ x ∈ T, ∀ y ∈ T, r b x y → x = y) → (T.card : ℝ) ≤ B b`. Introduce `b hb T' h1 h2 h3`. Use `hp b (mem_insert_of_mem hb) T' h1 ?_ h3` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx y hy b' hb' hlt`. Break down `mem_insert.1 hb' with rfl | hb'` into its components or cases. Conclude with `absurd (hmax b hb) (by omega)`. Conclude with `h2 x hx y hy b' hb' hlt`. Establish `hBa : 0 ≤ B a`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hp a (mem_insert_self _ _) ∅ (by simp) (by simp) (by simp)`. Rewrite using `[prod_insert ha]`. Break down `T.eq_empty_or_nonempty with rfl | ⟨x0, -⟩` into its components or cases. Use `ih hps ∅ (by simp) (by simp)` as an intermediate fact. Simplify using `only [card_empty, Nat.cast_zero] at this ⊢`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Introduce a local definition for the expression.
 
-Check the signs of the components of the expression. Use `haveI : Nonempty α := ⟨x0⟩`. Set `q : α → Set α` to `fun x => {y | ∀ b ∈ s, r b x y}`. Establish `hq : ∀ x y, q x = q y ↔ ∀ b ∈ s, r b x y`. Introduce `x y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `: y ∈ q y` using `fun b _ => (hr b).refl y`. Rewrite `this` using `[← h]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Introduce `h`. Use extensionality with `z`. Conclude with `⟨fun hz b hb => (hr b).trans ((hr b).symm (h b hb)) (hz b hb), fun hz b hb => (hr b).trans (h b hb) (hz b hb)⟩`. Set `ρ : α → α` to `fun x => Function.invFunOn q (↑T : Set α) (q x)`. Establish `hρ : ∀ x ∈ T, ρ x ∈ T ∧ q (ρ x) = q x` using `fun x hx => Function.invFunOn_pos (f := q) (s := (↑T : Set α)) ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `him : ((T.image ρ).card : ℝ) ≤ ∏ b ∈ s, B b`. Use `ih hps _ ?_ ?_` and prove the remaining obligations. Introduce `z hz`. Take `⟨x, hx, rfl⟩` from `mem_image.1 (mem_coe.1 hz)`. Conclude with `hTS (hρ x hx).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `z hz w hw h`. Take `⟨x, hx, rfl⟩` from `mem_image.1 hz`. Take `⟨y, hy, rfl⟩` from `mem_image.1 hw`. Establish `h'` using `(hq _ _).2 h`. Rewrite `h'` using `[(hρ x hx).2, (hρ y hy).2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [ρ, h']`. Establish `hfib : ∀ z ∈ T.image ρ, ((T.filter (fun x => ρ x = z)).card : ℝ) ≤ B a`. Introduce `z _`. Establish `key : ∀ x ∈ T.filter (fun x => ρ x = z), ∀ y ∈ T.filter (fun x => ρ x = z), ∀ b ∈ s, r b x y`. Introduce `x hx y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨hx, hx'⟩` from `mem_filter.1 hx`. Take `⟨hy, hy'⟩` from `mem_filter.1 hy`. Rewrite using `[← hq, ← (hρ x hx).2, ← (hρ y hy).2, hx', hy']`. Use `hp a (mem_insert_self _ _) _ ?_ ?_ ?_` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hTS (mem_filter.1 (mem_coe.1 hx)).1`. Introduce `x hx y hy b' hb' hlt`. Break down `mem_insert.1 hb' with rfl | hb'` into its components or cases. Conclude with `absurd hlt (lt_irrefl _)`. Conclude with `key x hx y hy b' hb'`.
-
-Introduce `x hx y hy h`. Use `hT x (mem_filter.1 hx).1 y (mem_filter.1 hy).1 ?_` and prove the remaining obligations. Introduce `b hb`. Break down `mem_insert.1 hb with rfl | hb` into its components or cases. Conclude with `h`.
-
-Conclude with `key x hx y hy b hb`. Rewrite using `[Finset.card_eq_sum_card_image ρ T]`. Use `push_cast`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_le_prod_of_separated_levels {α β : Type} (S : Set α) (lv : β → ℕ)
     (r : β → α → α → Prop) (B : β → ℝ) (hr : ∀ b, Equivalence (r b)) (s : Finset β) :
@@ -120,11 +116,11 @@ theorem card_le_prod_of_separated_levels {α β : Type} (S : Set α) (lv : β �
       _ ≤ B a * ∏ b ∈ s, B b := mul_le_mul_of_nonneg_left him hBa
 
 /- English proof (translation)
-Introduce `α β S s lv r B hr hinj hp`. Establish `h : ∀ T : Finset α, (↑T : Set α) ⊆ S → (T.card : ℝ) ≤ ∏ b ∈ s, B b` using `fun T hT => card_le_prod_of_separated_levels S lv r B hr s hp T hT fun x hx y hy => hinj x (hT hx) y (hT hy)`. Establish `hS : S.Finite`. Assume the negation of the conclusion as `hinf`. Take `⟨n, hn⟩` from `exists_nat_gt (∏ b ∈ s, B b)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT, hc⟩` from `Set.Infinite.exists_subset_card_eq hinf n`. Use `h T hT` as an intermediate fact. Rewrite `this` using `[hc]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hS, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.ncard_eq_toFinset_card S hS]`. Conclude with `h _ (by simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_and_ncard_le_prod_of_levels :
     ∀ (α β : Type) (S : Set α) (s : Finset β) (lv : β → ℕ) (r : β → α → α → Prop) (B : β → ℝ), (∀ b, Equivalence (r b)) → (∀ x ∈ S, ∀ y ∈ S, (∀ b ∈ s, r b x y) → x = y) → (∀ b ∈ s, ∀ T : Finset α, (↑T : Set α) ⊆ S → (∀ x ∈ T, ∀ y ∈ T, ∀ b' ∈ s, lv b' < lv b → r b' x y) → (∀ x ∈ T, ∀ y ∈ T, r b x y → x = y) → (T.card : ℝ) ≤ B b) → S.Finite ∧ ((S.ncard : ℕ) : ℝ) ≤ ∏ b ∈ s, B b := by

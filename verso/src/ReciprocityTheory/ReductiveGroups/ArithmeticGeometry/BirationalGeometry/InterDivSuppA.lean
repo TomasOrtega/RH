@@ -6,7 +6,7 @@ noncomputable section
 namespace ReciprocityTheory.ChartRestriction.G.Geo
 
 /- English proof (translation)
-Use `haveI : IsJacobsonRing ℤ := int_isJacobsonRing`. Use `haveI := DimF.finiteRingKrullDim_mvPolynomialInt_quot P`. Use `haveI : (Q.map (Ideal.Quotient.mk P)).IsPrime := DimF.isPrime_map_mk h`. Establish `key` using `DimF.dim_quot_add_height (A := MvPolynomial σ ℤ ⧸ P) (DimF.height_eq_of_isMaximal_int P) (Q.map (Ideal.Quotient.mk P))`. Rewrite using `[← key, ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE h)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mvPolynomialInt_dimFormula {σ : Type*} [Finite σ] (P Q : Ideal (MvPolynomial σ ℤ))
     [P.IsPrime] [Q.IsPrime] (h : P ≤ Q) :

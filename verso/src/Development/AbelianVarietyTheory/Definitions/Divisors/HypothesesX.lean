@@ -20,7 +20,7 @@ structure HypothesesX : Prop where
   fsch : GlobalTheory.Published.FubiniStudyChowHeight
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.sep, h.green⟩`.
+Supply the required witnesses or components.
 -/
 example (h : HypothesesX) : GlobalTheory.Published.PointSeparationPair ∧ GlobalTheory.Published.GreenCuspidal := ⟨h.sep, h.green⟩
 

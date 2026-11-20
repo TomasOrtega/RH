@@ -8,23 +8,23 @@ open Formalism.UG (cT cT_mul cT_one)
 namespace GlobalTheory.UAut.NoLower
 
 /- English proof (translation)
-Establish `e0 : fam st u none = 1 - (X * L + Y * T)`. Simplify using `only [fam, Option.elim, Fintype.sum_sum_type, Sum.elim_inl, Sum.elim_inr, hs]`. Simplify using `only [hu, ← Matrix.sum_mul, ← Matrix.mul_sum, Matrix.sum_single_one, Matrix.mul_one]`. Establish `e1 : ∀ j, fam st u (some (.inl j)) = X * single j j (1 : A) * L` using `hu`. Establish `e2 : ∀ j, fam st u (some (.inr j)) = Y * single j j (1 : A) * T` using `hs`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k0 : fam st u none * X = 0`. Rewrite using `[e0, Matrix.sub_mul, Matrix.add_mul, Matrix.mul_assoc, Matrix.mul_assoc, hLX, hTX]`. Simplify using the standard rewrite rules. Establish `k1 : T * fam st u none = 0`. Rewrite using `[e0, Matrix.mul_sub, Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, hTY, hTX]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `l1 : ∀ (e : Matrix (Fin n) (Fin n) A) (j : Fin r), e * x * (X * single j j (1 : A) * L) = e * X * B * single j j (1 : A) * L` using `fun e j => by`. Rewrite using `[Matrix.mul_assoc e X, ← eB]`. Simplify using `only [Matrix.mul_assoc]`. Establish `l2 : ∀ (e : Matrix (Fin n) (Fin n) A) (j : Fin r), (Y * single j j (1 : A) * T) * x * e = Y * single j j (1 : A) * C * (T * e)` using `fun e j => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_assoc _ T, eC]`. Simplify using `only [Matrix.mul_assoc]`. Establish `sm : ∀ (D : Matrix (Fin r) (Fin r) A) (i j : Fin r), D i j = 0 → single i i (1 : A) * D * single j j (1 : A) = 0` using `fun D i j h => by`. Rewrite using `[Matrix.single_mul_mul_single, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce and unpack `(_ | i | i) (_ | j | j) hab`. Simplify using `at hab`. Rewrite using `[e1, l1, k0]`. Simplify using the standard rewrite rules. Use `hd j` as an intermediate fact.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[wt] at hab`. Use linear arithmetic over natural numbers and integers. Use `hd i` as an intermediate fact. Simplify using `[wt] at hab`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `h` using `sm B i j (hB i j (by simp [wt] at hab; omega))`. Rewrite using `[e1, e1, l1, Matrix.mul_assoc _ L, hLX, Matrix.mul_one, Matrix.mul_assoc X, Matrix.mul_assoc X, h]`. Simplify using the standard rewrite rules. Use `hd i` as an intermediate fact. Use `hd j` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[wt] at hab`. Use linear arithmetic over natural numbers and integers. Rewrite using `[e2, l2, k1]`. Simplify using the standard rewrite rules. Rewrite using `[e1, e2, l1, Matrix.mul_assoc _ T, hTX]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h` using `sm C i j (hC i j (by simp [wt] at hab; omega))`. Rewrite using `[e2, e2, l2, ← Matrix.mul_assoc T, ← Matrix.mul_assoc T, hTY, Matrix.one_mul, ← Matrix.mul_assoc, Matrix.mul_assoc Y, Matrix.mul_assoc Y, h]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem abstract_no_lower {A : Type} [CommRing A] {n r : ℕ} (st : Matrix (Fin n) (Fin n) A →+ Matrix (Fin n) (Fin n) A)
     (u : Fin r → Matrix (Fin n) (Fin n) A) (X Y : Matrix (Fin n) (Fin r) A) (L T : Matrix (Fin r) (Fin n) A)
@@ -66,15 +66,15 @@ theorem abstract_no_lower {A : Type} [CommRing A] {n r : ℕ} (st : Matrix (Fin 
       Matrix.mul_assoc Y, Matrix.mul_assoc Y, h]; simp
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n J hJ r X Y d M hd hXX _ hXY p hp`. Establish `hσ : ∀ x, σ (σ x) = x` using `sigma_sigma hcm`. Establish `cc : ∀ {m q : Type} (A : Matrix m q E), cT (σ : E →+* E) (cT (σ : E →+* E) A) = A` using `fun A => Matrix.ext fun i j => hσ _`. Take `⟨⟨B, hB, eB⟩, B', hB', eB'⟩` from `hp`. Establish `eC` using `form_mul_of_mul_cols eB'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `eC` using `[inv_inv]`. Establish `hLX : cT (σ : E →+* E) Y * J * X = 1`. Use `congrArg (cT (σ : E →+* E)) hXY` as an intermediate fact. Rewrite `this` using `[cT_mul, cT_mul, cc, cT_form hJ, cT_one, ← Matrix.mul_assoc]`. Then use the resulting hypothesis. Use `abstract_no_lower _ _ (adMat F X) (adMat F Y) (adMat F (cT (σ : E →+* E) Y * J)) (adMat F (cT (σ : E →+* E) X * J)) (fun j => idemA_eq _ _ j) (fun j => ?_) ?_ ?_ ?_ d M hd _ B _ (fun i j h => hB h) (fun i j h => ?_) eB eC` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Establish `s : cT (σ : E →+* E) (single j j (1 : E) : Matrix (Fin r) (Fin r) E) = single j j 1`. Rewrite using `[cT, Matrix.map_single, Matrix.transpose_single, map_one]`. Establish `e : J⁻¹ * cT (σ : E →+* E) (X * single j j (1 : E) * (cT (σ : E →+* E) Y * J)) * J = Y * single j j (1 : E) * (cT (σ : E →+* E) X * J)`. Rewrite using `[cT_mul, cT_mul, cT_mul, cc, cT_form hJ, s, ← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_left _ _ (det_isUnit hJ)]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[idemA, adjA_map, e]`. Conclude with `idemA_eq Y _ j`. Rewrite using `[adMat, adMat, ← Matrix.map_mul, hLX, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite using `[adMat, adMat, ← Matrix.map_mul, hXX, Matrix.map_zero _ (map_zero _)]`. Rewrite using `[adMat, adMat, ← Matrix.map_mul, hXY, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show sigR (AF F) σ (B' j i) = 0`. Rewrite using `[hB' h, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem parFlag_no_lower : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E) (d : Fin r → ℕ) (M : ℕ), (∀ j, d j < M) → Formalism.UG.cT (σ : E →+* E) X * J * X = 0 → Formalism.UG.cT (σ : E →+* E) Y * J * Y = 0 → Formalism.UG.cT (σ : E →+* E) X * J * Y = 1 → ∀ p ∈ parFlag σ J X d, ∀ a b, wt d M a < wt d M b → fam (adjA σ J) (idemA X (Formalism.UG.cT (σ : E →+* E) Y * J)) a * (matHom (AF F) σ J p).1 * fam (adjA σ J) (idemA X (Formalism.UG.cT (σ : E →+* E) Y * J)) b = 0 := by
   intro F E _ _ _ _ _ σ hcm n J hJ r X Y d M hd hXX _ hXY p hp

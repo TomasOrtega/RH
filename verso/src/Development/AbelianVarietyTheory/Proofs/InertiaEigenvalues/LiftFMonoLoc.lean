@@ -28,7 +28,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {ρ : Representation LL G V} {ρ' : Representation LL G V'}
 
 /- English proof (translation)
-Introduce `c hc`. Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le he`. Rewrite using `[pow_add, mul_comm, mul_smul]`. Conclude with `(F.ImF PD).smul_mem _ (hF c hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftF_mono {L : Lattice (O := O) ρ} {L' : Lattice (O := O) ρ'} (F : LatHom L L') {e e' : ℕ}
     (hF : F.LiftF PD e) (he : e ≤ e') : F.LiftF PD e' := by
@@ -51,7 +51,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {O : Type} [CommRing O] [Algebra O LL]
 
 /- English proof (translation)
-The claim follows from `liftF_mono PD F hF he`.
+A detailed English derivation is pending.
 -/
 theorem liftF_mono_loc {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L) {e e' : ℕ}
     (hF : F.LiftF PD e) (he : e ≤ e') : F.LiftF PD e' :=
@@ -64,17 +64,17 @@ section Core
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk continuous_subtype_val _`.
+A detailed English derivation is pending.
 -/
 theorem incl_cont {K K' : FinExt l} (h : K.1 ≤ K'.1) : Continuous (Subgroup.inclusion (GK_le h)) :=
   Continuous.subtype_mk continuous_subtype_val _
 
 /- English proof (translation)
-Use `⟨?_, GlobalTheory.inertiaThrough_of_isSubFam l P K K' LL h hN hF hS ι k Ms W hW Sig htr hcop hin, fun τ => GlobalTheory.Pass.jumpsInV_of_isSubFam l P K LL ι k Ms W hW τ U fun x => hJ x τ⟩` and prove the remaining obligations. Set `incl` to `Subgroup.inclusion (GK_le h)`. Establish `hincl : Continuous incl` using `incl_cont h`. Set `W' : GRep ↥(GK K') ℚ_[l] ↥LL.1 ↥(OL LL)` to `{ V := W.V, ρ := W.ρ.comp incl, cont := fun x => (W.cont x).comp hincl }`. Set `Ms' : ι → (↥(GK K') →* Matrix (Fin k) (Fin k) ↥LL.1)` to `fun x => (Ms x).comp incl`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hc' : ∀ x v, Continuous fun g => (Ms' x g).mulVec v` using `fun x v => ((hc x).comp hincl).matrix_mulVec continuous_const`. Establish `hcr' : ∀ x, IsCrys (P.PD K') (matRep (Ms' x))` using `fun x => (GlobalTheory.PcRes.main l P K K' LL h hN hF hS _ (matRep (Ms x))).2.1 (hpot x)`. Establish `hsub : IsSubOfSums W'.ρ (fun x => ⇑(Ms' x))`. Take `⟨a, x, p, hp, hinj⟩` from `hW`. Use `⟨a, x, LinearMap.pi p, ?_, fun g v => funext fun j => hp j (incl g) v⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `v hv`. Conclude with `hinj v fun j => congrFun hv j`. Establish `hW' : IsCrys (P.PD K') W'.ρ` using `(subsum_crys (PD := P.PD K') (Ms := Ms') (hc := hc') (hF := hFont) (S := fun _ => Set.univ) (hcr := hcr') (hS := fun _ _ _ _ => Set.mem_univ _) (A := W') (hA := hsub)).1`. Conclude with `(GlobalTheory.PcRes.main l P K K' LL h hN hF hS W.V W.ρ).2.2 hW'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sub_props (P : LocPrime l) (K K' LL : FinExt l) (h : K.1 ≤ K'.1) (hN : (GKin h).Normal)
     (hF : (GKin h).FiniteIndex)
@@ -125,9 +125,9 @@ variable {l : ℕ} [Fact l.Prime]
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `W₁ W₂ hW₁ hW₂ L₁ L₂ F hFo`. Establish `k₁` using `sub_props P (qlExt l) K' LL h hN hF hS hFont Ms hc Sig htr hcop hpot hin _ hJ W₁ hW₁`. Establish `k₂` using `sub_props P (qlExt l) K' LL h hN hF hS hFont Ms hc Sig htr hcop hpot hin _ hJ W₂ hW₂`. Set `T₁ : LocLat ↥(GK (qlExt l)) ℚ_[l] ↥LL.1 ↥(OL LL)` to `{ V := W₁.V, modO := W₁.modO, towO := W₁.towO, ρ := W₁.ρ, cont := W₁.cont, L := L₁ }`. Set `T₂ : LocLat ↥(GK (qlExt l)) ℚ_[l] ↥LL.1 ↥(OL LL)` to `{ V := W₂.V, modO := W₂.modO, towO := W₂.towO, ρ := W₂.ρ, cont := W₂.cont, L := L₂ }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨h4, hL⟩` from `hT T₁ T₂ F N η H U Sig Fr k₁.1 k₂.1 hFo hFr hSt h1 hcard hN2 k₁.2.1 k₂.2.1 hU hU0 hUc hη hηH k₁.2.2 k₂.2.2 hsize`. Establish `hr : rPrime (pc P h hN hF hS).Iner Fr Sig ≤ N ^ 2 / 4` using `(Nat.le_div_iff_mul_le (by norm_num)).2 (by rw [mul_comm]; exact h4)`. Establish `he : CT * (N * rPrime (pc P h hN hF hS).Iner Fr Sig + η * (N + rPrime (pc P h hN hF hS).Iner Fr Sig)) ≤ CT * (N * (N ^ 2 / 4) + η * (N + N ^ 2 / 4))` using `by gcongr`. Conclude with `liftF_mono_loc (P.PD (qlExt l)) (T₁ := T₁) (T₂ := T₂) F hL he`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem liftFam_core (P : LocPrime l) (K' LL : FinExt l) (h : (qlExt l).1 ≤ K'.1) (hN : (GKin h).Normal)
     (hF : (GKin h).FiniteIndex)
@@ -175,13 +175,13 @@ variable {l : ℕ} [Fact l.Prime]
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Substitute `hK` using the available equality. Distinguish the cases in `hne : Nonempty ι`. Take `⟨x0⟩` from `hne`. Conclude with `liftFam_core P K' LL h hN hF hS CT (hT K' h hN hF hS) (hFont K') Ms hc N η H hN2 hη hηH hsize Sig Fr hFr hSt h1 hcard (hx x0).2.1 (hx x0).2.2.1 (fun x => (hx x).1) (fun x => (hx x).2) U hU hU0 hUc hJ`. Establish `hemp : ∀ x : ι, False` using `fun x => hne ⟨x⟩`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `liftFam_core P K' LL h hN hF hS CT (hT K' h hN hF hS) (hFont K') Ms hc N η H hN2 hη hηH hsize {1} Fr hFr ?_ (Finset.mem_singleton_self _) (by rw [Finset.card_singleton]; omega) ?_ ?_ (fun x => (hemp x).elim) (fun x => (hemp x).elim) U hU hU0 hUc hJ` and prove the remaining obligations. Introduce `a ha`. Rewrite `ha` using `[Finset.mem_singleton]`. Substitute `ha` using the available equality. Conclude with `⟨1, Finset.mem_singleton_self _, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha g _`. Rewrite `ha` using `[Finset.mem_singleton]`. Substitute `ha` using the available equality. Both sides reduce to the same expression. Introduce `a ha`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[Finset.mem_singleton]`. Substitute `ha` using the available equality. Rewrite using `[orderOf_one]`. Conclude with `Nat.coprime_one_left _`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftFam_of_eq (P : LocPrime l) (K K' LL : FinExt l) (hK : K = qlExt l) (CT : ℕ)
     (hT : ∀ (K' : FinExt l) (h : (qlExt l).1 ≤ K'.1) (hN : (GKin h).Normal) (hF : (GKin h).FiniteIndex)
@@ -230,11 +230,11 @@ theorem liftFam_of_eq (P : LocPrime l) (K K' LL : FinExt l) (hK : K = qlExt l) (
 end Wrap
 
 /- English proof (translation)
-Introduce `D CT hT hFont i w hw hdeg ι Ms hc eta H hlt hsize hPot hJump`. Take `⟨K', h, hN, hF, hS, Sig, Fr, hFr, hSt, h1, hcard, hx⟩` from `hPot`. Take `⟨U, hU, hU0, hUc, hJ⟩` from `hJump`. Establish `hK : (D.nbr i w hw).Kw = Formalism.MainNotions.ElementDenominator.qlExt (D.nd.l i)` using `Subtype.ext (IntermediateField.finrank_eq_one_iff.1 hdeg)`. Establish `hT' : Formalism.MainNotions.ElementDenominator.CorollaryALocal D.loc CT` using `hT`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnV : 2 ≤ D.R.nV + 1`. Establish `h5` using `D.R.rank_add_five_le`. Establish `: D.R.nV = D.R.r + D.R.t` using `rfl`. Use linear arithmetic over natural numbers and integers. Establish `hcl : ∀ x, Continuous (Br.loc D.nbr i w hw (Ms x))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Introduce `x`. Establish `hfc : Continuous (D.nbr i w hw).toLL` using `continuous_subtype_val.comp (D.nbr i w hw).eO_cont`. Establish `h1' : Continuous fun g : Br.G D.nbr i w hw => Ms x ((Br.iota D.nbr i w hw g : Gw D.nd w) : GE D.nd)` using `(hc x).comp (continuous_subtype_val.comp (Br.iota_cont D.nbr i w hw))`. Conclude with `h1'.matrix_map hfc`. Conclude with `liftFam_of_eq (D.loc (D.nd.l i)) (D.nbr i w hw).Kw K' (D.nbr i w hw).LL hK CT (fun K' h hN hF hS => hT' (D.nd.l i) K' h hN hF hS (D.nbr i w hw).LL) (fun K'' => hFont (D.nd.l i) K'' (D.nbr i w hw).LL) (fun x => Br.loc D.nbr i w hw (Ms x)) hcl (D.R.nV + 1) (eta + D.R.t + 1) H hnV ( …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem main : StepLift := by
   intro D CT hT hFont i w hw hdeg ι Ms hc eta H hlt hsize hPot hJump

@@ -11,9 +11,9 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `h : (P.scaleRoots s).comp (Polynomial.C s * Polynomial.X) = Polynomial.C s ^ P.natDegree * P`. Establish `h0` using `Polynomial.scaleRoots_eval₂_mul (p := P) (Polynomial.C : W →+* Polynomial W) Polynomial.X s`. Rewrite `h0` using `[Polynomial.eval₂_C_X]`. Conclude with `h0`. Establish `h1` using `congrArg (fun r => Polynomial.eval₂ c t (Polynomial.derivative r)) h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.derivative_comp, ← Polynomial.C_pow, Polynomial.derivative_C_mul, Polynomial.derivative_X, mul_one, Polynomial.eval₂_mul, Polynomial.eval₂_C, Polynomial.eval₂_comp, Polynomial.eval₂_X] at h1`. Rewrite using `[h1, map_pow]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scaleRoots_derivative_eval₂_mul {W R : Type} [CommRing W] [CommRing R] (c : W →+* R) (P : Polynomial W)
     (s : W) (t : R) :
@@ -29,11 +29,11 @@ theorem scaleRoots_derivative_eval₂_mul {W R : Type} [CommRing W] [CommRing R]
   rw [h1, map_pow]
 
 /- English proof (translation)
-Use `⟨Polynomial.eval₂ c t b * c s, ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩` from `Polynomial.sub_dvd_eval_sub x (c s * t) (Polynomial.derivative ((P.scaleRoots s).map c))`. Establish `h1` using `scaleRoots_derivative_eval₂_mul c P s t`. Establish `h2` using `congrArg (Polynomial.eval₂ c t) hab`. Rewrite `h2` using `[Polynomial.eval₂_add, Polynomial.eval₂_mul, Polynomial.eval₂_mul, Polynomial.eval₂_C]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (Polynomial.derivative ((P.scaleRoots s).map c)).eval (c s * t) = Polynomial.eval₂ c (c s * t) (Polynomial.derivative (P.scaleRoots s))`. Rewrite using `[Polynomial.derivative_map, Polynomial.eval_map]`. Rewrite `hw` using `[h3]`. Establish `h4 : Polynomial.eval₂ c t b * c s * (Polynomial.derivative ((P.scaleRoots s).map c)).eval x - c s ^ P.natDegree * c z = (Polynomial.eval₂ c t b * c s * w) * (x - c s * t) - (c s ^ P.natDegree * Polynomial.eval₂ c t a) * Polynomial.eval₂ c t P`. Take the linear combination `(Polynomial.eval₂ c t b * c s) * hw + Polynomial.eval₂ c t b * h1 + c s ^ P.natDegree * h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[h4]`. Conclude with `I.sub_mem (I.mul_mem_left _ hx) (I.mul_mem_left _ ht)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_derivative_scaleRoots_sub_mem {W R : Type} [CommRing W] [CommRing R] (c : W →+* R) (I : Ideal R)
     (P a b : Polynomial W) (s z : W) (hab : a * P + b * Polynomial.derivative P = Polynomial.C z) (t x : R)
@@ -57,7 +57,7 @@ theorem exists_mul_derivative_scaleRoots_sub_mem {W R : Type} [CommRing W] [Comm
   exact I.sub_mem (I.mul_mem_left _ hx) (I.mul_mem_left _ ht)
 
 /- English proof (translation)
-Proceed by induction on `P using Polynomial.induction_on' with`. Consider the case `add p q hp hq => rw [Polynomial.eval₂_add, hp, hq, Polynomial.coe_add]`. Consider the case `monomial n a`. Rewrite using `[Polynomial.eval₂_monomial, ← Polynomial.C_mul_X_pow_eq_monomial, Polynomial.coe_mul, Polynomial.coe_pow, Polynomial.coe_C, Polynomial.coe_X]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem eval₂_C_X_powerSeries {W : Type} [CommRing W] (P : Polynomial W) :
     Polynomial.eval₂ (PowerSeries.C : W →+* W⟦X⟧) X P = (P : W⟦X⟧) := by
@@ -68,15 +68,15 @@ theorem eval₂_C_X_powerSeries {W : Type} [CommRing W] (P : Polynomial W) :
       Polynomial.coe_C, Polynomial.coe_X]
 
 /- English proof (translation)
-Establish `hfE : f P ∈ I` using `by rw [hI]; exact Ideal.mem_span_singleton_self _`. Establish `hgE : g P ∈ I` using `by rw [hI']; exact Ideal.mem_span_singleton_self _`. Establish `hcomp : f.comp PowerSeries.C = g.comp PowerSeries.C` using `RingHom.ext hC`. Establish `hroot : ∀ h : W⟦X⟧ →+* R, h P ∈ I → ((P.scaleRoots ((l : W) ^ m)).map (h.comp PowerSeries.C)).eval (h q) ∈ I ^ n`. Introduce `h hE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, hy⟩` from `h2`. Rewrite using `[Polynomial.eval_map, ← Polynomial.hom_eval₂, hy, map_mul, map_pow]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.pow_mem_pow hE n)`. Establish `hcong : ∀ h : W⟦X⟧ →+* R, h P ∈ I → h q - (l : R) ^ m * h X ∈ I`. Introduce `h hE`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `h1`. Use `congrArg h hy` as an intermediate fact. Rewrite `this` using `[map_sub, map_mul, map_mul, map_pow, map_natCast]`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ hE`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxy : f q - g q ∈ I`. Establish `: f q - g q = (f q - (l : R) ^ m * f X) - (g q - (l : R) ^ m * g X) + (l : R) ^ m * (f X - g X)` using `by ring`. Rewrite using `[this]`. Conclude with `I.add_mem (I.sub_mem (hcong f hfE) (hcong g hgE)) (I.mul_mem_left _ hX)`. Take `⟨b', hb'⟩` from `exists_mul_derivative_scaleRoots_sub_mem (f.comp PowerSeries.C) I P a b ((l : W) ^ m) _ hab (f X) (f q) (by rw [← Polynomial.hom_eval₂, eval₂_C_X_powerSeries]; exact hfE) (by rw [map_pow, map_natCast]; exact hcong f hfE)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hg` using `hroot g hgE`. Rewrite `hg` using `[← hcomp]`. Establish `key` using `GlobalTheory.T.pow_mul_sub_mem_pow_of_eval_mem_pow R I _ _ _ _ _ n (hroot f hfE) hg hxy hb'`. Rewrite `key` using `[hI, Ideal.span_singleton_pow, Ideal.mem_span_singleton, map_pow, map_pow, map_natCast, ← pow_mul, ← pow_add, ← pow_mul]`. Conclude with `⟨_, key⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem approxRoot_image_indep_general_rings {W R : Type} [CommRing W] [CommRing R] (l n m c : ℕ) (P a b : Polynomial W)
     (hab : a * P + b * Polynomial.derivative P = Polynomial.C ((l : W) ^ c)) (q : W⟦X⟧)
@@ -117,7 +117,7 @@ theorem approxRoot_image_indep_general_rings {W R : Type} [CommRing W] [CommRing
   exact ⟨_, key⟩
 
 /- English proof (translation)
-Introduce `l _ K bk n m q h1 h2 B f g`. Take `⟨hC, hX, hI⟩` from `GlobalTheory.T.breuilKisinPrism_homs_agree_witt_and_mod_ideal l K bk B f g`. Take `⟨-, -, hI'⟩` from `GlobalTheory.T.breuilKisinPrism_homs_agree_witt_and_mod_ideal l K bk B g f`. Take `⟨c, a, b, hab⟩` from `GlobalTheory.T.bezout_eisenstein_derivative_prime_pow l K bk`. Conclude with `approxRoot_image_indep_general_rings l n m c bk.Ep a b hab q h1 h2 B.I (BK.hf f) (BK.hf g) hC hX hI hI'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem approx_root_indep : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (n m : ℕ) (q : bk.S), bk.E ∣ q - (l : bk.S) ^ m * X → bk.E ^ n ∣ Polynomial.eval₂ PowerSeries.C q (bk.Ep.scaleRoots ((l : Wq l bk.a) ^ m)) → (∀ (B : Obj l ↥(OL K)) (f g : Hom bk.prism B), ∃ k : ℕ, BK.hf f bk.E ^ n ∣ (l : B.A) ^ k * (BK.hf f q - BK.hf g q)) := by
   intro l _ K bk n m q h1 h2 B f g

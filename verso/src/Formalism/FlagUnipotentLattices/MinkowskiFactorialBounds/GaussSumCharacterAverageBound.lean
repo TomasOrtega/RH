@@ -6,9 +6,9 @@ namespace Formalism.HermitianLatticeCounting.P
 open Formalism.HermitianLatticeCounting.S4 Formalism.HermitianLatticeCounting.P.S4aux Finset
 
 /- English proof (translation)
-Introduce `q k N hq hk`. Establish `hq2 : (2 : ℝ) ≤ q` using `by exact_mod_cast hq`. Establish `hx : (2 : ℝ) ≤ (q : ℝ) ^ (k - 1)`. Combine the equalities or inequalities in the displayed calculation. Establish `e : ∀ i : ℕ, ((q : ℝ) ^ i) ^ (k - 1) = ((q : ℝ) ^ (k - 1)) ^ i` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Rewrite using `[← pow_mul, ← pow_mul, mul_comm]`. Simplify using `only [e]`. Use `geo_q _ hx N` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem geometric_powers_bound : Formalism.HermitianLatticeCounting.S4.GeomPowers := by
   intro q k N hq hk
@@ -24,35 +24,29 @@ theorem geometric_powers_bound : Formalism.HermitianLatticeCounting.S4.GeomPower
   linarith
 
 /- English proof (translation)
-Introduce `k r q H nn D Ty _ _ w amp μ be isBe hk hq hH hqH hnn hw hTy hbe hμ hμbe hμal hsum hamp hampbe`. Take `⟨K, rfl⟩ : ∃ K, k = K + 2 * r + 5` from `⟨k - 2 * r - 5, by omega⟩`. Establish `hq0 : (0 : ℝ) < q` using `by positivity`. Establish `hq1 : (1 : ℝ) ≤ q` using `by exact_mod_cast (by omega : 1 ≤ q)`. Establish `e1 : (q : ℝ) ^ (-(((K + 2 * r + 5 : ℕ) : ℤ) - 2 * r - 5)) = ((q : ℝ) ^ K)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← zpow_natCast, ← zpow_neg]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e2 : (q : ℝ) ^ (1 - (((K + 2 * r + 5 : ℕ) : ℤ) - 2 * r - 3)) = ((q : ℝ) ^ (K + 1))⁻¹`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[← zpow_natCast, ← zpow_neg]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hampbe` using `[e2]`. Establish `e3 : K + 2 * r + 5 - 1 = K + (2 * r + 4)` using `by omega`. Rewrite `hμbe`, `hμal`, `hsum` using `[e3]`. Use `set n : ℕ := K + (2 * r + 4) with hn`. Use `set A0 : ℝ := H ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) with hA0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set A1 : ℝ := H ^ (4 * (r + 1)) with hA1`. Establish `hA0p : 0 < A0` using `by positivity`. Establish `hA1p : 0 < A1` using `by positivity`. Distinguish the cases in `hne : Nonempty Ty`. Use `swap`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Check the signs of the components of the expression.
 
-Establish `: IsEmpty Ty` using `not_nonempty_iff.1 hne`. Simplify using `only [Finset.univ_eq_empty, Finset.sum_empty, norm_zero]`. Simplify using `only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_zero, Finset.sum_const_zero]`. Check the signs of the components of the expression. Establish `hqH'` using `hqH hne`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `per : ∀ t, ∑ d, w d * ‖amp t d‖ ^ 2 ≤ 392 * A0 * A1 * ((q : ℝ) ^ K)⁻¹ * nn`. Introduce `t`. Establish `hbe0 : 0 < be t` using `lt_of_lt_of_le one_pos (hbe t)`. Choose the witnesses or unpack the hypotheses as in `⟨ε, X, hε0, hX0, hε, hX, hεb⟩ : ∃ ε X : ℝ, 0 ≤ ε ∧ 0 ≤ X ∧ (∀ d, ‖amp t d‖ ≤ ε * μ t d) ∧ (∀ d, μ t d ≤ 2 * A0 * X) ∧ ε ^ 2 * (X * (be t ^ n)⁻¹) ≤ 49 * ((q : ℝ) ^ K)⁻¹ := by`. Distinguish the cases in `hb : isBe t`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨7 * ((q : ℝ) ^ (K + 1))⁻¹, be t ^ n, by positivity, by positivity, fun d => hampbe t d hb, fun d => hμbe t d hb, ?_⟩` and prove the remaining obligations. Establish `h1 : be t ^ n * (be t ^ n)⁻¹ = 1` using `mul_inv_cancel₀ (by positivity)`. Rewrite using `[h1, mul_one, mul_pow]`. Establish `h3 : (((q : ℝ) ^ (K + 1))⁻¹) ^ 2 ≤ ((q : ℝ) ^ K)⁻¹`. Rewrite using `[inv_pow, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Conclude with `pow_le_pow_right₀ hq1 (by omega)`. Use the polynomial consequences of the given equalities and inequalities. Use `⟨1, (be t / q) ^ n, zero_le_one, by positivity, fun d => by rw [one_mul]; exact hamp t d, fun d => hμal t d hb, ?_⟩` and prove the remaining obligations. Establish `h2 : (be t / q) ^ n * (be t ^ n)⁻¹ = ((q : ℝ) ^ n)⁻¹`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Establish `h3 : ((q : ℝ) ^ n)⁻¹ ≤ ((q : ℝ) ^ K)⁻¹`. Apply `inv_anti₀ (by positivity)` to reduce the goal to its premises. Conclude with `pow_le_pow_right₀ hq1 (by omega)`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h4 : 0 < ((q : ℝ) ^ K)⁻¹` using `by positivity`. Rewrite using `[h2]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hms` using `S4aux.maximal_sum_bound D w (μ t) (amp t) ε (2 * A0 * X) hw (hμ t) hε0 hε hX`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Establish `h392 : (392 : ℝ) ≤ H ^ 9`. Combine the equalities or inequalities in the displayed calculation. Use `le_trans ?_ hqH'` and prove the remaining obligations. Conclude with `hq` after adjusting the coercions. Establish `hexp : (r + 2) + (r + 2) + 9 + (9 * (r + 1) ^ 2 + 12 * (r + 1)) + 4 * (r + 1) ≤ 39 * (r + 1) ^ 2`.
-
-Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.sum_nonneg fun t _ => Finset.sum_nonneg fun d _ => mul_nonneg (hw d) (sq_nonneg _)`. Conclude with `per t`. Use `_ = (Fintype.card Ty : ℝ) * (H ^ (r + 2) * (392 * A0 * A1 * ((q : ℝ) ^ K)⁻¹ * nn)) := by`.
-
-Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ H ^ (r + 2) * (H ^ (r + 2) * (H ^ 9 * A0 * A1 * ((q : ℝ) ^ K)⁻¹ * nn)) := by gcongr`. Use `_ = H ^ ((r + 2) + (r + 2) + 9 + (9 * (r + 1) ^ 2 + 12 * (r + 1)) + 4 * (r + 1)) * ((q : ℝ) ^ K)⁻¹ * nn := by`. Rewrite using `[pow_add, pow_add, pow_add, pow_add]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hermitian_assembly_numeric_bound : Formalism.HermitianLatticeCounting.S4.WeightedAmplitudeSqSumBoundTwoTypeClasses := by
   intro k r q H nn D Ty _ _ w amp μ be isBe hk hq hH hqH hnn hw hTy hbe hμ hμbe hμal hsum hamp hampbe
@@ -133,17 +127,13 @@ theorem hermitian_assembly_numeric_bound : Formalism.HermitianLatticeCounting.S4
         gcongr
 
 /- English proof (translation)
-Introduce `k r H nn D Ty _ _ w amp μ be hH hnn hw hTy hbe hμ hμM hsum hamp`. Establish `hH1 : (1 : ℝ) ≤ H` using `by linarith`. Use `set n : ℕ := k - 1 with hn`. Use `set A0 : ℝ := H ^ (9 * (r + 1) ^ 2 + 12 * (r + 1)) with hA0`. Use `set A1 : ℝ := H ^ (4 * (r + 1)) with hA1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA0p : 0 < A0` using `by positivity`. Establish `hA1p : 0 < A1` using `by positivity`. Establish `per : ∀ t, ∑ d, w d * ‖amp t d‖ ^ 2 ≤ 8 * A0 * A1 * nn`. Introduce `t`. Establish `hbe0 : 0 < be t` using `lt_of_lt_of_le one_pos (hbe t)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hms` using `S4aux.maximal_sum_bound D w (μ t) (amp t) 1 (2 * A0 * be t ^ n) hw (hμ t) zero_le_one (fun d => by rw [one_mul]; exact hamp t d) (hμM t)`. Establish `h1 : be t ^ n * (be t ^ n)⁻¹ = 1` using `mul_inv_cancel₀ (by positivity)`. Combine the equalities or inequalities in the displayed calculation. Establish `h8 : (8 : ℝ) ≤ H ^ 3`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hexp : 1 + 1 + 3 + (9 * (r + 1) ^ 2 + 12 * (r + 1)) + 4 * (r + 1) ≤ 39 * (r + 1) ^ 2`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Conclude with `Finset.sum_nonneg fun t _ => Finset.sum_nonneg fun d _ => mul_nonneg (hw d) (sq_nonneg _)`. Conclude with `per t`.
-
-Use `_ = (Fintype.card Ty : ℝ) * (H * (8 * A0 * A1 * nn)) := by`. Rewrite using `[Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ H * (H * (H ^ 3 * A0 * A1 * nn)) := by gcongr`. Use `_ = H ^ (1 + 1 + 3 + (9 * (r + 1) ^ 2 + 12 * (r + 1)) + 4 * (r + 1)) * nn := by`.
-
-Rewrite using `[pow_add, pow_add, pow_add, pow_add, pow_one]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem non_generic_bound_large_height : Formalism.HermitianLatticeCounting.S4.NonGenericBoundLargeHeight := by
   intro k r H nn D Ty _ _ w amp μ be hH hnn hw hTy hbe hμ hμM hsum hamp

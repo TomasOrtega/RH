@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PatchingModules.Cl
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.AlgebraTools UpperTheory.V.Pa
 
 /- English proof (translation)
-Introduce `l _ S Q hQ hs`. Break down `(UpperTheory.V.Pa.urep_stable S.U Q hQ).1 hs with ha | ⟨y, hy, z, hz, b, hb, e⟩` into its components or cases. Conclude with `Or.inl ha`. Conclude with `Or.inr fun hle => hb (hle (Ideal.subset_span ⟨y, hy, z, hz, e⟩))`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem UpperTheory.V.Pa.discImp :
     ∀ (l : ℕ) [Fact l.Prime] (S : Ctx l), ∀ Q : Ideal S.Bh, Q.IsPrime → DiscSt (S.u.D.map (algebraMap S.B S.Bh)) Q → S.x.a = S.n ∨ ¬ ired S.U.N ≤ Q := by

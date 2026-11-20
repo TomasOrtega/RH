@@ -8,17 +8,15 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hC : connectedComponentIn F a = Subtype.val '' connectedComponent (⟨a, ha⟩ : F)` using `connectedComponentIn_eq_image ha`. Establish `hmem : ∀ y : F, (y : X) ∈ connectedComponentIn F a ↔ y ∈ connectedComponent (⟨a, ha⟩ : F)`. Introduce `y`. Rewrite using `[hC]`. Conclude with `Subtype.val_injective.mem_set_image`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU, hUe⟩` from `isOpen_induced_iff.1 ho`. Take `⟨Z, hZ, hZe⟩` from `isClosed_induced_iff.1 (isClosed_connectedComponent : IsClosed (connectedComponent (⟨a, ha⟩ : F)))`. Prove the components needed by the constructor for the conclusion. Establish `h1 : closure (F \ connectedComponentIn F a) ⊆ Uᶜ`. Use `closure_minimal ?_ hU.isClosed_compl` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `y ⟨hyF, hy⟩ hyU`. Apply `hy` to reduce the goal to its premises. Use `(hmem ⟨y, hyF⟩).2 ?_` and prove the remaining obligations. Rewrite using `[← hUe]`. Conclude with `hyU`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Set.disjoint_left.2 fun y hy hy' => h1 hy' ?_` and prove the remaining obligations. Use `(hmem ⟨y, connectedComponentIn_subset F a hy⟩).1 hy` as an intermediate fact. Rewrite `this` using `[← hUe]`. Conclude with `this`. Establish `h1 : closure (connectedComponentIn F a) ⊆ Z`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `closure_minimal ?_ hZ` and prove the remaining obligations. Introduce `y hy`. Use `(hmem ⟨y, connectedComponentIn_subset F a hy⟩).1 hy` as an intermediate fact. Rewrite `this` using `[← hZe]`. Conclude with `this`.
-
-Use `Set.disjoint_left.2 fun y hy hy' => hy'.2 ?_` and prove the remaining obligations. Use `(hmem ⟨y, hy'.1⟩).2 ?_` and prove the remaining obligations. Rewrite using `[← hZe]`. Conclude with `h1 hy`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem separated_of_isOpen_component_subtype {X : Type*} [TopologicalSpace X] (F : Set X) (a : X)
     (ha : a ∈ F) (ho : IsOpen (connectedComponent (⟨a, ha⟩ : F))) :
@@ -57,9 +55,9 @@ theorem separated_of_isOpen_component_subtype {X : Type*} [TopologicalSpace X] (
     exact h1 hy
 
 /- English proof (translation)
-Establish `: LocallyOfFiniteType (f.fiberToSpecResidueField s)` using `inferInstanceAs (LocallyOfFiniteType (pullback.snd f (S.fromSpecResidueField s)))`. Establish `hn : IsLocallyNoetherian (f.fiber s)` using `LocallyOfFiniteType.isLocallyNoetherian (f.fiberToSpecResidueField s)`. Establish `ho` using `GlobalTheory.T.isOpen_connectedComponent_of_isLocallyNoetherian' _ hn ((f.fiberHomeo s).symm a)`. Establish `h` using `(f.fiberHomeo s).isOpenMap _ ho`. Establish `h2 : (f.fiberHomeo s) '' connectedComponent ((f.fiberHomeo s).symm a) = connectedComponent a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(f.fiberHomeo s).image_connectedComponentIn (s := Set.univ) (x := (f.fiberHomeo s).symm a) (Set.mem_univ _)` as an intermediate fact. Simplify `this` using `[connectedComponentIn_univ, (f.fiberHomeo s).surjective.range_eq]`. Rewrite `h` using `[h2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isOpen_component_fibre_subtype {X S : Scheme.{0}} (f : X ⟶ S) [LocallyOfFiniteType f]
     (s : S) (a : (f ⁻¹' {s} : Set X)) : IsOpen (connectedComponent a) := by
@@ -77,17 +75,15 @@ theorem isOpen_component_fibre_subtype {X S : Scheme.{0}} (f : X ⟶ S) [Locally
   rwa [h2] at h
 
 /- English proof (translation)
-Introduce `V _ _ _ X f e σ hf he hσ hm`. Establish `hfe : ∀ p : (Spec (CommRingCat.of V) : Scheme.{0}), f (e p) = p` using `fun p => by`. Rewrite using `[← Scheme.Hom.comp_apply, he]`. Both sides reduce to the same expression. Establish `hfσ : ∀ p : (Spec (CommRingCat.of V) : Scheme.{0}), f (σ p) = p` using `fun p => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Hom.comp_apply, hσ]`. Both sides reduce to the same expression. Set `g₀ : (Spec (CommRingCat.of V) : Scheme.{0})` to `(⊥ : PrimeSpectrum V)`. Set `m : (Spec (CommRingCat.of V) : Scheme.{0})` to `IsLocalRing.closedPoint V`. Express the relevant statement in the definitionally equal form `σ m ∈ connectedComponentIn (f ⁻¹' {f (σ m)}) (e (f (σ m))) at hm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `σ g₀ ∈ connectedComponentIn (f ⁻¹' {f (σ g₀)}) (e (f (σ g₀)))`. Rewrite `hm`, the goal using `[hfσ]`. Establish `hsp : g₀ ⤳ m` using `IsLocalRing.specializes_closedPoint (R := V) ⊥`. Establish `ha : e g₀ ∈ f ⁻¹' {g₀}` using `hfe g₀`. Take `⟨h1, h2⟩` from `separated_of_isOpen_component_subtype (f ⁻¹' {g₀}) (e g₀) ha (isOpen_component_fibre_subtype f g₀ ⟨e g₀, ha⟩)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hd, hu⟩` from `GlobalTheory.T.disjoint_closure_and_union_eq_univ_of_genericFibre_partition V X f hf (connectedComponentIn (f ⁻¹' {g₀}) (e g₀)) (f ⁻¹' {g₀} \ connectedComponentIn (f ⁻¹' {g₀}) (e g₀)) (Set.union_diff_cancel (connectedComponentIn_subset _ _)) h1 h2`. Assume the negation of the conclusion as `hne`. Establish `hσ' : σ m ∈ closure (f ⁻¹' {g₀} \ connectedComponentIn (f ⁻¹' {g₀}) (e g₀))` using `(hsp.map σ.continuous).mem_closed isClosed_closure (subset_closure ⟨hfσ g₀, hne⟩)`. Establish `he' : e m ∈ closure (connectedComponentIn (f ⁻¹' {g₀}) (e g₀))` using `(hsp.map e.continuous).mem_closed isClosed_closure (subset_closure (mem_connectedComponentIn ha))`. Establish `hclopen : IsClopen (closure (connectedComponentIn (f ⁻¹' {g₀}) (e g₀)))`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨isClosed_closure, ?_⟩` and prove the remaining obligations. Establish `: closure (connectedComponentIn (f ⁻¹' {g₀}) (e g₀)) = (closure (f ⁻¹' {g₀} \ connectedComponentIn (f ⁻¹' {g₀}) (e g₀)))ᶜ` using `(IsCompl.eq_compl ⟨hd, codisjoint_iff.2 hu⟩)`. Rewrite using `[this]`. Conclude with `isClosed_closure.isOpen_compl`. Establish `hsub` using `(isPreconnected_connectedComponentIn (x := e m) (F := f ⁻¹' {m})).subset_isClopen hclopen ⟨e m, mem_connectedComponentIn (hfe m), he'⟩`.
-
-Conclude with `Set.disjoint_left.1 hd (hsub hm) hσ'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem section_mem_component_generic_of_closed :
     ∀ (V : Type) [CommRing V] [IsDomain V] [ValuationRing V] (X : Scheme.{0}) (f : X ⟶ Spec (CommRingCat.of V)) (e σ : Spec (CommRingCat.of V) ⟶ X), Smooth f → e ≫ f = 𝟙 _ → σ ≫ f = 𝟙 _ → σ (IsLocalRing.closedPoint V) ∈ {x : X | x ∈ connectedComponentIn (f ⁻¹' {f x}) (e (f x))} → σ (⊥ : PrimeSpectrum V) ∈ {x : X | x ∈ connectedComponentIn (f ⁻¹' {f x}) (e (f x))} := by

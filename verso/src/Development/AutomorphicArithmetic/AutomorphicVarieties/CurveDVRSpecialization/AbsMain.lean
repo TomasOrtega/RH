@@ -10,11 +10,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecializa
 import Development.AutomorphicArithmetic.AutomorphicVarieties.CurveDVRSpecialization.FinPtOf
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ _ F T₂ T₃ J₂ J₃ m₂ m₃`. Take `⟨Φ₂, hΦ₂, hs₂⟩` from `UpperTheory.V.Pr.phiEx l O F 2 T₂`. Take `⟨Φ₃, hΦ₃, hs₃⟩` from `UpperTheory.V.Pr.phiEx l O F 3 T₃`. Take `⟨Λ₂, hΛ₂⟩` from `m₂.fin`. Take `⟨Λ₃, hΛ₃⟩` from `m₃.fin`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `fl₂` using `UpperTheory.V.Pr.finLamOf l O F 2 T₂ Φ₂ hΦ₂ hs₂ Λ₂ J₂ hΛ₂`. Establish `fl₃` using `UpperTheory.V.Pr.finLamOf l O F 3 T₃ Φ₃ hΦ₃ hs₃ Λ₃ J₃ hΛ₃`. Establish `p₂` using `UpperTheory.V.Pr.p1Of l O F 2 T₂ Φ₂ hΦ₂ m₂.n4 J₂ m₂.p1`. Establish `p₃` using `UpperTheory.V.Pr.p1Of l O F 3 T₃ Φ₃ hΦ₃ m₃.n4 J₃ m₃.p1`. Establish `q₃` using `UpperTheory.V.Pr.rankThree_deformationSetup_splitting_condition l O F T₃ Φ₃ hΦ₃ m₃.n4 J₃ m₃.p3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₂` using `UpperTheory.V.Pr.seedOf l O F 2 T₂ Φ₂ hΦ₂ J₂ m₂.unr m₂.dim m₂.seed`. Establish `s₃` using `UpperTheory.V.Pr.seedOf l O F 3 T₃ Φ₃ hΦ₃ J₃ m₃.unr m₃.dim m₃.seed`. Establish `g₂` using `UpperTheory.V.Pr.components_good_rank_two l O F T₂.C₀ T₂.ok T₂.big T₂.S _ fl₂ p₂ s₂`. Take `⟨g₃, off⟩` from `UpperTheory.V.Pr.components_good_rank_three l O F T₃.C₀ T₃.ok T₃.big T₂.S _ fl₂ g₂ T₃.S _ fl₃ p₃ q₃ s₃`. Conclude with `⟨UpperTheory.V.Pr.goodPtOf l O F 2 T₂ Φ₂ hΦ₂ J₂ g₂, UpperTheory.V.Pr.goodPtOf l O F 3 T₃ Φ₃ hΦ₃ J₃ g₃, UpperTheory.V.Pr.finPtOf l O F T₃.C₀ T₃.ok T₃.S off⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Pr.absMain :
     UpperTheory.V.Pr.AbsMain := by

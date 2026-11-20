@@ -19,14 +19,14 @@ def ev (R : Type) [CommRing R] [IsLocalRing R] : (Sp R).presheaf.stalk (closedPo
   (stalkClosedPointIso (CommRingCat.of R)).hom.hom
 
 /- English proof (translation)
-The claim follows from `MulEquiv.isUnit_map (stalkClosedPointIso (CommRingCat.of R)).commRingCatIsoToRingEquiv`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_ev {R : Type} [CommRing R] [IsLocalRing R] (a : (Sp R).presheaf.stalk (closedPoint R)) :
     IsUnit (ev R a) ↔ IsUnit a :=
   MulEquiv.isUnit_map (stalkClosedPointIso (CommRingCat.of R)).commRingCatIsoToRingEquiv
 
 /- English proof (translation)
-Rewrite using `[gs_eq b _ U h, ← germ_stalkClosedPointIso_hom]`. Simplify using `only [Scheme.Hom.appLE, CommRingCat.hom_comp, RingHom.comp_apply, ev]`. Use `congr 1`. Conclude with `(TopCat.Presheaf.germ_res_apply (Sp R).presheaf (homOfLE h') (closedPoint R) (Set.mem_univ _) _).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem ev_gs {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} (b : Sp R ⟶ X) (U : X.Opens)
     (h : b (closedPoint R) ∈ U) (h' : ⊤ ≤ b ⁻¹ᵁ U) (f : Γ(X, U)) :
@@ -37,7 +37,7 @@ theorem ev_gs {R : Type} [CommRing R] [IsLocalRing R] {X : Scheme.{0}} (b : Sp R
   exact (TopCat.Presheaf.germ_res_apply (Sp R).presheaf (homOfLE h') (closedPoint R) (Set.mem_univ _) _).symm
 
 /- English proof (translation)
-Rewrite using `[gs_eq b _ U h, ← Y.mem_basicOpen _ y h, ← Scheme.preimage_basicOpen]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isUnit_gs {X Y : Scheme.{0}} (b : Y ⟶ X) (y : Y) (U : X.Opens) (h : b y ∈ U) (f : Γ(X, U)) :
     IsUnit (gs b y U f) ↔ b y ∈ X.basicOpen f := by
@@ -47,9 +47,9 @@ theorem isUnit_gs {X Y : Scheme.{0}} (b : Y ⟶ X) (y : Y) (U : X.Opens) (h : b 
 variable {k K : Type} [Field k] [Field K] [Algebra k K]
 
 /- English proof (translation)
-Establish `h1 : ⊤ ≤ b ⁻¹ᵁ U` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := .of O) b h).ge`. Establish `h2 : ⊤ ≤ (spMap O.subtype ≫ b) ⁻¹ᵁ U` using `fun x _ => h1 (x := spMap O.subtype x) trivial`. Use `⟨h2 trivial, fun f => ⟨ev O (gs b _ U f), ?_, (isUnit_ev _).trans (isUnit_gs b _ U h f)⟩⟩` and prove the remaining obligations. Rewrite using `[ev_gs b U h h1, ev_gs _ U (h2 trivial) h2, ← Scheme.Hom.appLE_comp_appLE (spMap O.subtype) b U ⊤ ⊤ h1 le_rfl]`. Establish `h3 : (spMap O.subtype).appLE ⊤ ⊤ le_rfl = (spMap O.subtype).appTop`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Rewrite using `[h3, Category.assoc, Scheme.ΓSpecIso_naturality]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem integral_value (O : ValuationSubring K) {X : Scheme.{0}} (b : Sp O ⟶ X) (U : X.Opens)
     (h : b (closedPoint O) ∈ U) :
@@ -67,7 +67,7 @@ theorem integral_value (O : ValuationSubring K) {X : Scheme.{0}} (b : Sp O ⟶ X
   rfl
 
 /- English proof (translation)
-Establish `: IsDominant (spMap O.subtype)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (((RingHom.injective_iff_ker_eq_bot _).1 Subtype.val_injective).le.trans bot_le)⟩`. Use `ext_of_isDominant_of_isSeparated B.hom (ext_of_isDominant (spMap O.subtype) ?_) _ h` and prove the remaining obligations. Rewrite using `[← Category.assoc, h, Category.assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_unique (O : ValuationSubring K) (B : Over (Sp k)) [IsSeparated B.hom] {b b' : Sp O ⟶ B.left}
     (h : spMap O.subtype ≫ b = spMap O.subtype ≫ b') : b = b' := by
@@ -77,7 +77,7 @@ theorem ext_unique (O : ValuationSubring K) (B : Over (Sp k)) [IsSeparated B.hom
   rw [← Category.assoc, h, Category.assoc]
 
 /- English proof (translation)
-Establish `hE : ValuativeCriterion.Existence B.hom` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed B.hom) : (ValuativeCriterion.Existence ⊓ @QuasiCompact) B.hom).1`. Take `⟨⟨l⟩⟩` from `hE { R := O, K := K, i₁ := x.left, i₂ := spMap ((algebraMap k K).codRestrict O hO), commSq := ⟨(Over.w x).trans (by rw [← Spec.map_comp]; rfl)⟩ }`. Conclude with `⟨l.l, l.fac_left⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ext_exists (O : ValuationSubring K) (hO : ∀ c, algebraMap k K c ∈ O) (B : Over (Sp k))
     [IsProper B.hom] (x : Over.mk (spMap (algebraMap k K)) ⟶ B) :
@@ -89,21 +89,19 @@ theorem ext_exists (O : ValuationSubring K) (hO : ∀ c, algebraMap k K c ∈ O)
   exact ⟨l.l, l.fac_left⟩
 
 /- English proof (translation)
-Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVU⟩` from `B.left.isBasis_affineOpens.exists_subset_of_mem_open hU U.isOpen`. Establish `hx : ⊤ ≤ x.left ⁻¹ᵁ V` using `(Scheme.preimage_eq_top_of_closedPoint_mem (R := .of K) x.left hxV).ge`. Set `ψ : Γ(B.left, V) ⟶ CommRingCat.of K` to `x.left.appLE V ⊤ hx ≫ (Scheme.ΓSpecIso (CommRingCat.of K)).hom`. Establish `hψ : Spec.map ψ ≫ hV.fromSpec = x.left` using `AffinePointValues.specMap_appLE_fromSpec hV _ hx`. Set `c : CommRingCat.of k ⟶ Γ(B.left, V)` to `(Scheme.ΓSpecIso (.of k)).inv ≫ B.hom.appLE ⊤ V le_top`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hc : c ≫ ψ = CommRingCat.ofHom (algebraMap k K)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, ← AffinePointValues.fromSpec_comp hV B.hom le_top, ← Category.assoc, hψ]`. Conclude with `Over.w x`. Establish `hft : c.hom.FiniteType` using `(B.hom.finiteType_appLE (isAffineOpen_top _) hV le_top).comp (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of k)).inv).2)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI := c.hom.toAlgebra`. Take `⟨T, hT⟩` from `hft.out`. Establish `hfin : ∀ a : K, {i | a ∉ Pl.O i}.Finite` using `fun a => by`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(Pl.fin (Units.mk0 a ha)).subset fun i hi h0 => hi ?_` and prove the remaining obligations. Conclude with `(Pl.mem i (Units.mk0 a ha)).2 (le_of_eq (Eq.symm h0))`. Use `(T.finite_toSet.biUnion fun a _ => hfin (ψ.hom a)).subset fun i hi => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_iUnion, Set.mem_setOf_eq, not_exists, not_not] at hn`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall : ∀ a, ψ.hom a ∈ Pl.O i` using `fun a => by`. Establish `ha : a ∈ Algebra.adjoin k (T : Set Γ(B.left, V))` using `hT ▸ Algebra.mem_top`. Proceed by induction on `ha using Algebra.adjoin_induction with`. Consider the case `mem a h => exact hn a h`. Consider the case `algebraMap r => exact (congrArg (fun q => q.hom r) hc) ▸ Pl.const i r`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add a a' _ _ h h' => rw [map_add]`. Conclude with `add_mem h h'`. Consider the case `mul a a' _ _ h h' => rw [map_mul]`. Conclude with `mul_mem h h'`. Establish `e : b i = Spec.map (CommRingCat.ofHom (ψ.hom.codRestrict (Pl.O i) hall)) ≫ hV.fromSpec`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_unique _ B ?_` and prove the remaining obligations. Rewrite using `[hb, ← hψ, ← Category.assoc, ← Spec.map_comp]`. Both sides reduce to the same expression. Use `hi (hVU ?_)` and prove the remaining obligations. Rewrite using `[e]`.
-
-Conclude with `hV.range_fromSpec.le ⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centre_finite (Pl : Places k K) (B : Over (Sp k)) [IsProper B.hom]
     (x : Over.mk (spMap (algebraMap k K)) ⟶ B) (b : ∀ i, Sp (Pl.O i) ⟶ B.left)
@@ -156,50 +154,50 @@ def od (Pl : Places k K) (i : Pl.I) (u : ((Sp K).presheaf.stalk (closedPoint K))
 variable (Pl : Places k K)
 
 /- English proof (translation)
-The claim follows from `Pl.fin _`.
+A detailed English derivation is pending.
 -/
 theorem od_fin (u) : (Function.support fun i => od Pl i u).Finite := Pl.fin _
 
 /- English proof (translation)
-The claim follows from `Pl.sum _`.
+A detailed English derivation is pending.
 -/
 theorem od_sum (u) : ∑ᶠ i, od Pl i u = 0 := Pl.sum _
 
 /- English proof (translation)
-Simplify using `only [od, map_mul, toAdd_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem od_mul (i u u') : od Pl i (u * u') = od Pl i u + od Pl i u' := by
   simp only [od, map_mul, toAdd_mul]
 
 /- English proof (translation)
-Simplify using `only [od, map_zpow, toAdd_zpow, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem od_zpow (i u) (n : ℤ) : od Pl i (u ^ n) = n * od Pl i u := by
   simp only [od, map_zpow, toAdd_zpow, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [od, map_inv, toAdd_inv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem od_inv (i u) : od Pl i u⁻¹ = -od Pl i u := by
   simp only [od, map_inv, toAdd_inv]
 
 /- English proof (translation)
-Simplify using `only [od, map_prod, toAdd_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem od_prod (i) {n : ℕ} (u : Fin n → _) : od Pl i (∏ m, u m) = ∑ m, od Pl i (u m) := by
   simp only [od, map_prod, toAdd_prod]
 
 /- English proof (translation)
-The claim follows from `Pl.mem i (Units.map (ev K).toMonoidHom u)`.
+A detailed English derivation is pending.
 -/
 theorem od_mem (i u) : ev K u.val ∈ Pl.O i ↔ 0 ≤ od Pl i u := Pl.mem i (Units.map (ev K).toMonoidHom u)
 
 /- English proof (translation)
-Substitute `hb` using the available equality. Take `⟨a, ha, hi⟩` from `(integral_value _ b U h).2 f`. Rewrite `ha` using `[hu]`. Establish `h0 : 0 ≤ od Pl i u` using `(od_mem Pl i u).1 (ha ▸ a.2)`. Establish `hm : (a : K) * ev K u⁻¹.val = 1` using `by rw [ha, ← map_mul, Units.mul_inv, map_one]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨h0, Iff.trans ⟨fun h1 => ?_, fun h1 => ?_⟩ hi⟩` and prove the remaining obligations. Establish `h2 : ev K u⁻¹.val ∈ Pl.O i` using `(od_mem Pl i _).2 (by rw [od_inv, h1]; rfl)`. Conclude with `IsUnit.of_mul_eq_one (⟨_, h2⟩ : Pl.O i) (Subtype.ext hm)`. Take `⟨a', ha'⟩` from `h1.exists_right_inv`. Establish `h3 : (a : K) * a' = 1` using `congrArg Subtype.val ha'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ev K u⁻¹.val = a'` using `mul_left_cancel₀ (left_ne_zero_of_mul_eq_one h3) (hm.trans h3.symm)`. Establish `h2` using `(od_mem Pl i u⁻¹).1 (h4 ▸ a'.2)`. Rewrite `h2` using `[od_inv]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem od_section (i) {X : Scheme.{0}} (b : Sp (Pl.O i) ⟶ X) (x : Sp K ⟶ X)
     (hb : spMap (Pl.O i).subtype ≫ b = x) (U : X.Opens) (h : b (closedPoint (Pl.O i)) ∈ U) (f : Γ(X, U))
@@ -221,7 +219,7 @@ theorem od_section (i) {X : Scheme.{0}} (b : Sp (Pl.O i) ⟶ X) (x : Sp K ⟶ X)
     omega
 
 /- English proof (translation)
-Establish `hx : x (closedPoint K) ∈ U` using `hb ▸ (integral_value _ b U h).1`. Use `(od_section Pl i b x hb U h f.val _ (gs_unit x _ U hx f)).2.2 ?_` and prove the remaining obligations. Rewrite using `[X.basicOpen_of_isUnit f.isUnit]`. Conclude with `h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem od_unit (i) {X : Scheme.{0}} (b : Sp (Pl.O i) ⟶ X) (x : Sp K ⟶ X)
     (hb : spMap (Pl.O i).subtype ≫ b = x) (U : X.Opens) (h : b (closedPoint (Pl.O i)) ∈ U) (f : Γ(X, U)ˣ) :
@@ -232,7 +230,7 @@ theorem od_unit (i) {X : Scheme.{0}} (b : Sp (Pl.O i) ⟶ X) (x : Sp K ⟶ X)
   exact h
 
 /- English proof (translation)
-Establish `hm : x y ∈ L.U i ⊓ L.U j` using `⟨hi, hj⟩`. Use `(gs_res x y _ hm _).symm.trans ((congrArg (gs x y _) (s.compat i j)).trans ((gs_mul x y _ hm _ _).trans (congrArg₂ (· * ·) ?_ (gs_res x y _ hm _))))` and prove the remaining obligations. Conclude with `(gs_unit x y _ hm (L.g i j ^ N)).trans (congrArg Units.val (map_zpow _ _ _))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gs_pw {X Y : Scheme.{0}} {L : LB X} {N : ℤ} (s : LB.Sec (GlobalTheory.AbLaw.pw L N)) (x : Y ⟶ X) (y : Y)
     {i j : L.ι} (hi : x y ∈ L.U i) (hj : x y ∈ L.U j) :
@@ -248,29 +246,27 @@ namespace GlobalTheory.SS
 open IsLocalRing Height
 
 /- English proof (translation)
-Introduce `k K _ _ _ Pl B hB L hL`. Use `choose b hb using fun (x : Over.mk (spMap (algebraMap k K)) ⟶ B) (i : Pl.I) => ext_exists (Pl.O i) (Pl.const i) B x`. Use `choose ch hch using exists_chart hL`. Set `j₀ : (Over.mk (spMap (algebraMap k K)) ⟶ B) → L.ι` to `fun x => ch (x.left (closedPoint K))`. Set `j : (Over.mk (spMap (algebraMap k K)) ⟶ B) → Pl.I → L.ι` to `fun x i => ch (b x i (closedPoint (Pl.O i)))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : (Over.mk (spMap (algebraMap k K)) ⟶ B) → Pl.I → ℤ` to `fun x i => od Pl i (gm (Y := Sp K) x.left (closedPoint K) (L.U (j x i) ⊓ L.U (j₀ x)) (L.g (j x i) (j₀ x)))`. Establish `hj : ∀ x i, x.left (closedPoint K) ∈ L.U (j x i)` using `fun x i => hb x i ▸ (integral_value _ (b x i) _ (hch _)).1`. Establish `hg : ∀ x, (Function.support (g x)).Finite` using `fun x => (centre_finite Pl B x (b x) (hb x) (L.U (j₀ x)) (hch _)).subset fun i hi => by`. Assume the negation of the conclusion as `hn`. Conclude with `hi (od_unit Pl i (b x i) x.left (hb x i) (L.U (j x i) ⊓ L.U (j₀ x)) ⟨hch _, not_not.1 hn⟩ _)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `⟨fun x => ∑ᶠ i, g x i, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `Z hZ n φ ε ⟨t, ht⟩ z`. Establish `m₀ : z.left (closedPoint K) ∈ LB.wchart L (fun m => (φ m).left) (fun m => j₀ (z ≫ φ m))` using `Set.mem_iInter.2 fun m => hch _`. Establish `key : ∀ i, ∑ m, ε m * g (z ≫ φ m) i = -od Pl i (gm (Y` using `Sp K) z.left (closedPoint K) (LB.wchart L (fun m => (φ m).left) (fun m => j₀ (z ≫ φ m))) (t.s (fun m => j₀ (z ≫ φ m)))) := by`. Introduce `i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `ext_exists (Pl.O i) (Pl.const i) Z z`. Establish `e : ∀ m, b (z ≫ φ m) i = c ≫ (φ m).left` using `fun m => ext_unique _ B (by rw [hb, ← Category.assoc, hc]; rfl)`. Establish `m₁ : c (closedPoint (Pl.O i)) ∈ LB.wchart L (fun m => (φ m).left) (fun m => j (z ≫ φ m) i)` using `Set.mem_iInter.2 fun m => by`. Use `hch (b (z ≫ φ m) i (closedPoint (Pl.O i)))` as an intermediate fact. Rewrite `this` using `[e m]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [j]`. Rewrite using `[e m]`. Conclude with `this`. Establish `m₂ : z.left (closedPoint K) ∈ LB.wchart L (fun m => (φ m).left) (fun m => j (z ≫ φ m) i)` using `Set.mem_iInter.2 fun m => hj (z ≫ φ m) i`. Establish `h1` using `((od_unit Pl i c z.left hc _ m₁ _).symm.trans (congrArg (od Pl i) (gen_trans ht (Z := Sp K) z.left (closedPoint K) m₂ m₀))).trans (od_mul Pl i _ _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `eq_neg_of_add_eq_zero_left (Eq.trans ?_ h1.symm)` and prove the remaining obligations. Use `congr 1`. Conclude with `((od_prod Pl i _).trans (Finset.sum_congr rfl fun m _ => od_zpow Pl i _ _)).symm`. Simplify using `only [mul_finsum]`. Rewrite using `[← finsum_sum_comm _ (fun i m => ε m * g (z ≫ φ m) i) (fun m _ => (hg _).subset (Function.support_mul_subset_right _ _))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [key]`. Rewrite using `[finsum_neg_distrib, od_sum, neg_zero]`. Introduce `N s x hN hx`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 (hx ⟨closedPoint K, rfl⟩)`. Establish `ha' : x.left (closedPoint K) ∈ L.U a` using `B.left.basicOpen_le _ ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Take `⟨u, hu⟩` from `(isUnit_gs (Y := Sp K) x.left _ _ ha' _).2 ha`. Establish `h₀` using `gs_pw s (Y := Sp K) x.left (closedPoint K) (hch _) ha'`. Rewrite `h₀` using `[← hu, ← Units.val_mul]`. Generalize the expression as in `_ * u = u₀ at h₀`. Establish `key : ∀ i, 0 ≤ (N : ℤ) * g x i + od Pl i u₀ ∧ ((N : ℤ) * g x i + od Pl i u₀ = 0 ↔ b x i (closedPoint (Pl.O i)) ∈ B.left.basicOpen (s.f (j x i)))` using `fun i => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h₁` using `gs_pw s (Y := Sp K) x.left (closedPoint K) (hj x i) (hch _)`. Rewrite `h₁` using `[h₀, ← Units.val_mul]`. Use `od_section Pl i (b x i) x.left (hb x i) _ (hch _) _ _ h₁` as an intermediate fact. Rewrite `this` using `[od_mul, od_zpow]`. Then use the resulting hypothesis. Establish `f₁ : (Function.support fun i => (N : ℤ) * g x i).Finite` using `(hg _).subset (Function.support_mul_subset_right _ _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hs : ∑ᶠ i, ((N : ℤ) * g x i + od Pl i u₀) = N * ∑ᶠ i, g x i`. Rewrite using `[finsum_add_distrib f₁ (od_fin Pl u₀), od_sum, add_zero, mul_finsum]`. Establish `hp : 0 ≤ (N : ℤ) * ∑ᶠ i, g x i` using `hs ▸ finsum_nonneg fun i => (key i).1`. Use `⟨(mul_nonneg_iff_of_pos_left (by exact_mod_cast hN)).1 hp, fun h0 i => ⟨b x i, hb x i, ?_⟩⟩` and prove the remaining obligations. Establish `h0' : ∑ᶠ i, g x i = 0` using `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hs` using `[h0', mul_zero]`. Establish `hi : (N : ℤ) * g x i + od Pl i u₀ = 0`. Assume the negation of the conclusion as `hne`. Conclude with `(finsum_pos (fun i => (key i).1) ⟨i, lt_of_le_of_ne (key i).1 (Ne.symm hne)⟩ ((f₁.union (od_fin Pl u₀)).subset (Function.support_add _ _))).ne' hs`. Establish `hm : b x i (closedPoint (Pl.O i)) ∈ Out.nonzeroLocus s` using `TopologicalSpace.Opens.mem_iSup.2 ⟨_, (key i).2.1 hi⟩`.
-
-Introduce and unpack `_ ⟨y, rfl⟩`. Conclude with `(Scheme.preimage_eq_top_of_closedPoint_mem (R := .of (Pl.O i)) (b x i) hm).ge (x := y) trivial`.
+A detailed English derivation is pending.
 -/
 theorem exists_height : ∀ (k K : Type) [Field k] [Field K] [Algebra k K] (Pl : Places k K) (B : Over (Sp k)), IsProper B.hom → ∀ (L : LB B.left), L.IsLB → ∃ h : (Over.mk (spMap (algebraMap k K)) ⟶ B) → ℤ, (∀ (Z : Over (Sp k)), IsProper Z.hom → ∀ (n : ℕ) (φ : Fin n → (Z ⟶ B)) (ε : Fin n → ℤ), (∃ t : LB.Gen (LB.LinComb L (fun i => (φ i).left) ε), t.IsGen) → ∀ z : Over.mk (spMap (algebraMap k K)) ⟶ Z, ∑ i, ε i * h (z ≫ φ i) = 0) ∧ ∀ (N : ℕ) (s : LB.Sec (GlobalTheory.AbLaw.pw L N)) (x : Over.mk (spMap (algebraMap k K)) ⟶ B), 1 ≤ N → Set.range x.left ⊆ Out.nonzeroLocus s → 0 ≤ h x ∧ (h x = 0 → ∀ i, ∃ b : Sp (Pl.O i) ⟶ B.left, spMap (Pl.O i).subtype ≫ b = x.left ∧ Set.range b ⊆ Out.nonzeroLocus s) := by
   intro k K _ _ _ Pl B hB L hL

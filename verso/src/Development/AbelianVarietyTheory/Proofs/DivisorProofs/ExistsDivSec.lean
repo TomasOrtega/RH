@@ -20,19 +20,17 @@ noncomputable section
 namespace GlobalTheory.HeatRatio
 
 /- English proof (translation)
-Establish `hun : ∀ (j : K → L.ι) (y : Y), y ∈ U → y ∈ LB.wchart L φ j → IsUnit (gs (𝟙 Y) y (LB.wchart L φ j) (s.f j))` using `fun j y hU hy => by`. Take `⟨J, hJ, e⟩` from `sval_trans hL s y j hy`. Rewrite using `[e]`. Conclude with `(Units.isUnit _).mul (hs y hU J hJ)`. Set `W : (K → L.ι) → Y.Opens` to `fun j => U ⊓ LB.wchart L φ j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hloc : ∀ j, ∃ u : Γ(Y, W j), ∀ y ∈ W j, gs (𝟙 Y) y (LB.wchart L φ j) (a.f j) = gs (𝟙 Y) y U f * gs (𝟙 Y) y (LB.wchart L φ j) (b.f j) + gs (𝟙 Y) y (W j) u * gs (𝟙 Y) y (LB.wchart L φ j) (s.f j)`. Introduce `j`. Establish `l₁ : W j ≤ U` using `inf_le_left`. Establish `l₂ : W j ≤ LB.wchart L φ j` using `inf_le_right`. Establish `hu : IsUnit ((Y.presheaf.map (homOfLE l₂).op).hom (s.f j))` using `Y.toRingedSpace.isUnit_of_isUnit_germ _ _ fun y hy => (congrArg IsUnit ((gs_eq (𝟙 Y) y (W j) hy _).symm.trans (gs_res (𝟙 Y) y l₂ hy (s.f j)))).mpr (hun j y hy.1 hy.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `hu.exists_left_inv`. Establish `key : (Y.presheaf.map (homOfLE l₂).op).hom (a.f j) = (Y.presheaf.map (homOfLE l₁).op).hom f * (Y.presheaf.map (homOfLE l₂).op).hom (b.f j) + (((Y.presheaf.map (homOfLE l₂).op).hom (a.f j) - (Y.presheaf.map (homOfLE l₁).op).hom f * (Y.presheaf.map (homOfLE l₂).op).hom (b.f j)) * v …`. Rewrite using `[_root_.mul_assoc, hv]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨((Y.presheaf.map (homOfLE l₂).op).hom (a.f j) - (Y.presheaf.map (homOfLE l₁).op).hom f * (Y.presheaf.map (homOfLE l₂).op).hom (b.f j)) * v, fun y hy => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gs_res (𝟙 Y) y l₂ hy _).symm.trans ((congrArg (gs (𝟙 Y) y (W j)) key).trans ?_)` and prove the remaining obligations. Use `(gs_add (𝟙 Y) y _ hy _ _).trans (congrArg₂ (· + ·) ?_ ?_)` and prove the remaining obligations. Conclude with `(gs_mul (𝟙 Y) y _ hy _ _).trans (congrArg₂ (· * ·) (gs_res (𝟙 Y) y l₁ hy _) (gs_res (𝟙 Y) y l₂ hy _))`. Conclude with `(gs_mul (𝟙 Y) y _ hy _ _).trans (congrArg _ (gs_res (𝟙 Y) y l₂ hy _))`. Use `choose u hu using hloc`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, hg, -⟩` from `Y.sheaf.existsUnique_gluing' W U (fun j => homOfLE inf_le_left) (fun y hy => by choose I hI using fun χ : Y ⟶ X => exists_chart hL (χ y)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨fun k => I (φ k), hy, Set.mem_iInter.2 fun k => hI _⟩) u`. Use the proof step `(fun j j' => fn_ext (V := W j ⊓ W j') fun y hy => by`. Use `(gs_res (𝟙 Y) y inf_le_left hy _).trans (Eq.trans ?_ (gs_res (𝟙 Y) y inf_le_right hy _).symm)` and prove the remaining obligations. Establish `e₁` using `hu j y hy.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₂` using `hu j' y hy.2`. Rewrite `e₁` using `[sec_trans a (𝟙 Y) y hy.1.2 hy.2.2, sec_trans b (𝟙 Y) y hy.1.2 hy.2.2, sec_trans s (𝟙 Y) y hy.1.2 hy.2.2]`. Establish `hc` using `(Units.isUnit (trF φ ε (𝟙 Y) y j j')).mul (hun j' y hy.1.1 hy.2.2)`. Use `hc.mul_right_cancel ?_` and prove the remaining obligations. Take the linear combination `(trF φ ε (𝟙 Y) y j j').val * e₂ - e₁)`.
-
-Use `⟨g, fun z hz J hJ => ?_⟩` and prove the remaining obligations. Establish `hm : z ∈ W (fun k => J (𝟙 Y ≫ φ k))` using `⟨hz, hJ.mem φ (𝟙 Y)⟩`. Establish `e : gs (𝟙 Y) z U g = gs (𝟙 Y) z (W _) (u (fun k => J (𝟙 Y ≫ φ k)))` using `(gs_res (𝟙 Y) z inf_le_left hm g).symm.trans (congrArg (gs (𝟙 Y) z (W _)) (hg _))`. Rewrite using `[e]`. Conclude with `hu _ z hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_div_sec {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)} {ε : K → ℤ}
     (s a b : LB.Sec (LB.LinComb L φ ε)) (U : Y.Opens) (f : Γ(Y, U))
@@ -89,7 +87,7 @@ theorem exists_div_sec {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [F
   exact hu _ z hm
 
 /- English proof (translation)
-Introduce `R _ _ Q N α σ σ' σp σp' U f h`. Conclude with `exists_div_sec Q.P.isLB σ' σp σp' U f fun z hz J hJ => (h z hz J hJ).1`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isRem : ∀ (R : Type) [CommRing R] [IsDomain R] (Q : DegPre R) (N : ℕ) (α : Q.X) (σ σ' σp σp' : Q.SecB N α) (U : Q.P.A.left.Opens) (f : Γ(Q.P.A.left, U)), GlobalTheory.HeatRatio.IsRatio Q σ σ' U f → ∃ g : Γ(Q.P.A.left, U), GlobalTheory.HeatRatio.IsRem Q σ' σp σp' U f g := by
   intro R _ _ Q N α σ σ' σp σp' U f h

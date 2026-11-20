@@ -7,15 +7,13 @@ open GlobalTheory.IndefiniteRowSideFullHecke.MultiplicationKernelIdentity Global
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `C _ v N X hX`. Set `ι : (Fin N → Int0 v) →ₗ[Int0 v] (Fin N → C)` to `(Algebra.linearMap (Int0 v) C).compLeft (Fin N)`. Establish `hι : Function.Injective ι`. Introduce `x y h`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Subtype.ext (congrFun h i)`. Set `L : X →ₗ[Int0 v] (Fin N → C)` to `ι ∘ₗ X.subtype`. Establish `hL : Function.Injective L` using `hι.comp Subtype.val_injective`. Use `haveI : Module.IsTorsionFree (Int0 v) X := inferInstance`. Use `haveI : Module.Free (Int0 v) X := free_of_finite_of_isTorsionFree_of_valuationRing (Int0 v) X`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `b` to `Module.Free.chooseBasis (Int0 v) X`. Establish `hli : LinearIndependent (Int0 v) (L ∘ b)` using `b.linearIndependent.map' L (LinearMap.ker_eq_bot.mpr hL)`. Establish `hliC : LinearIndependent C (L ∘ b)` using `(LinearIndependent.iff_fractionRing (Int0 v) C).mp hli`. Establish `hspan : Submodule.span C ((fun (x : Fin N → Int0 v) (i : Fin N) => (x i : C)) '' (X : Set (Fin N → Int0 v))) = Submodule.span C (Set.range (L ∘ b))`. Apply `le_antisymm` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Establish `h1 : L ⟨x, hx⟩ ∈ Submodule.span (Int0 v) (L '' Set.range b)` using `Submodule.apply_mem_span_image_of_mem_span L (by rw [b.span_eq]; trivial)`. Rewrite `h1` using `[← Set.range_comp]`. Conclude with `Submodule.span_le_restrictScalars (Int0 v) C _ h1`.
-
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `Submodule.subset_span ⟨(b k : Fin N → Int0 v), (b k).2, rfl⟩`. Rewrite using `[hspan, finrank_span_eq_card hliC, Module.finrank_eq_card_chooseBasisIndex]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_addValuationInteger_submodule_eq_finrank_span : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ))
     (N : ℕ) (X : Submodule (Int0 v) (Fin N → Int0 v)), Module.Finite (Int0 v) X →

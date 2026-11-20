@@ -19,9 +19,9 @@ variable {n : ℕ} {Y : Type} [TopologicalSpace Y] [T2Space Y] [SecondCountableT
   (A : WeightedAtlas n Y ι La) {Λ : La} {τ : ι → Y → ℂ}
 
 /- English proof (translation)
-Use `show τ i y ≠ 0 ↔ τ (A.pick y) y ≠ 0`. Rewrite using `[hτ.2 (A.pick y) i y trivial (A.mem_pick y) hy]`. Establish `hg` using `A.g_ne Λ (A.pick y) i y (A.mem_pick y) hy`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_ne_zero hg h`. Introduce `h h0; exact h (by rw [h0, mul_zero])`.
+A detailed English derivation is pending.
 -/
 theorem nz_coeff_ne_iff (hτ : A.IsSec Λ τ) {i : ι} {y : Y} (hy : y ∈ (A.chart i).source) :
     τ i y ≠ 0 ↔ y ∈ nz A τ := by
@@ -33,9 +33,9 @@ theorem nz_coeff_ne_iff (hτ : A.IsSec Λ τ) {i : ι} {y : Y} (hy : y ∈ (A.ch
   · intro h h0; exact h (by rw [h0, mul_zero])
 
 /- English proof (translation)
-Rewrite using `[isOpen_iff_forall_mem_open]`. Introduce `y hy`. Establish `hc : ContinuousOn (τ (A.pick y)) (A.chart (A.pick y)).source`. Simplify using `using fn_contOn_sec A hτ (A.pick y)`. Use `⟨(A.chart (A.pick y)).source ∩ τ (A.pick y) ⁻¹' {0}ᶜ, ?_, hc.isOpen_inter_preimage (A.chart _).open_source isOpen_compl_singleton, ⟨A.mem_pick y, hy⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `x ⟨hxs, hx⟩`. Conclude with `(nz_coeff_ne_iff A hτ hxs).1 hx`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem nz_isOpen_of_isSec (hτ : A.IsSec Λ τ) : IsOpen (nz A τ) := by
   rw [isOpen_iff_forall_mem_open]
@@ -48,37 +48,35 @@ theorem nz_isOpen_of_isSec (hτ : A.IsSec Λ τ) : IsOpen (nz A τ) := by
   exact (nz_coeff_ne_iff A hτ hxs).1 hx
 
 /- English proof (translation)
-Simplify using `using hτ.1 i`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem nz_coeff_diff (hτ : A.IsSec Λ τ) (i : ι) :
     DifferentiableOn ℂ (τ i ∘ (A.chart i).symm) (A.chart i).target := by
   simpa using hτ.1 i
 
 /- English proof (translation)
-The claim follows from `nz_coeff_ne_iff A hτ ((A.chart i).map_target hv)`.
+A detailed English derivation is pending.
 -/
 theorem nz_coeff_ne_iff' (hτ : A.IsSec Λ τ) {i : ι} {v : V n} (hv : v ∈ (A.chart i).target) :
     (τ i ∘ (A.chart i).symm) v ≠ 0 ↔ (A.chart i).symm v ∈ nz A τ :=
   nz_coeff_ne_iff A hτ ((A.chart i).map_target hv)
 
 /- English proof (translation)
-Establish `hMo : IsOpen (nz A τ)` using `nz_isOpen_of_isSec A hτ`. Take `⟨U, hU, hfin⟩` from `hloc ((A.chart i).symm v)`. Take `⟨U', hU'U, hU'o, hyU'⟩` from `mem_nhds_iff.1 hU`. Establish `hTo : IsOpen ((A.chart i).target ∩ (A.chart i).symm ⁻¹' U')` using `(A.chart i).isOpen_inter_preimage_symm hU'o`. Take `⟨r0, hr0, hB0⟩` from `Metric.isOpen_iff.1 hTo v ⟨hv, hyU'⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hK : Metric.closedBall v (r0 / 2) ⊆ (A.chart i).target ∩ (A.chart i).symm ⁻¹' U'` using `(Metric.closedBall_subset_ball (by linarith)).trans hB0`. Establish `hqc : ContinuousOn (fun u => Real.exp (A.ph la i ((A.chart i).symm u) - A.ph A.kap i ((A.chart i).symm u))) (Metric.closedBall v (r0 / 2))` using `(Real.continuous_exp.comp_continuousOn ((A.smooth_ph la i).continuousOn.sub (A.smooth_ph A.kap i).continuousOn)).mono (hK.trans inter_subset_left)`. Take `⟨C, hC⟩` from `(isCompact_closedBall v (r0 / 2)).exists_bound_of_continuousOn hqc`. Establish `hC0 : 0 ≤ C` using `(norm_nonneg _).trans (hC v (Metric.mem_closedBall_self (by linarith)))`. Establish `hBt : Metric.ball v (r0 / 2) ⊆ (A.chart i).target` using `(Metric.ball_subset_closedBall.trans hK).trans inter_subset_left`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨r0 / 2, by linarith, hBt, ?_⟩` and prove the remaining obligations. Establish `hSm : MeasurableSet ((A.chart i).source ∩ nz A τ ∩ U')` using `(((A.chart i).open_source.inter hMo).inter hU'o).measurableSet`. Establish `hgc : ContinuousOn (fun x => ENNReal.ofReal (‖F i x‖ ^ 2 * Real.exp (-A.ph la i x))) ((A.chart i).source ∩ nz A τ ∩ U')` using `ENNReal.continuous_ofReal.comp_continuousOn (((fn_contOn_sec A hFs i).mono inter_subset_left).norm.pow 2 |>.mul (Real.continuous_exp.comp_continuousOn ((fn_contOn_ph A la i).mono (inter_subset_left.trans inter_subset_left)).neg))`. Establish `hmg : Measurable (((A.chart i).source ∩ nz A τ ∩ U').indicator (fun x => ENNReal.ofReal (‖F i x‖ ^ 2 * Real.exp (-A.ph la i x))))` using `by classical`. Rewrite using `[← Set.piecewise_eq_indicator]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hgc.measurable_piecewise continuousOn_const hSm`. Establish `hmeas : MeasurableSet (Metric.ball v (r0 / 2) \ {u | (τ i ∘ (A.chart i).symm) u = 0})`. Establish `: IsOpen (Metric.ball v (r0 / 2) ∩ (τ i ∘ (A.chart i).symm) ⁻¹' {0}ᶜ)` using `((nz_coeff_diff A hτ i).continuousOn.mono hBt).isOpen_inter_preimage Metric.isOpen_ball isOpen_compl_singleton`. Conclude with `this.measurableSet`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `setLIntegral_mono' hmeas fun u hu => ?_` and prove the remaining obligations. Establish `hut : u ∈ (A.chart i).target` using `hBt hu.1`. Establish `hsu : (A.chart i).symm u ∈ (A.chart i).source` using `(A.chart i).map_target hut`. Establish `hM : (A.chart i).symm u ∈ nz A τ` using `(nz_coeff_ne_iff' A hτ hut).1 hu.2`. Establish `hU' : (A.chart i).symm u ∈ U'` using `(hK (Metric.ball_subset_closedBall hu.1)).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : (A.chart i).symm u ∈ (A.chart i).source ∩ nz A τ ∩ U'` using `⟨⟨hsu, hM⟩, hU'⟩`. Rewrite using `[Set.indicator_of_mem (s := (A.chart i).source ∩ nz A τ ∩ U') hmem]`. Unfold `fnRho`. Rewrite using `[← ENNReal.ofReal_mul (Real.exp_pos _).le, ← ENNReal.ofReal_mul hC0]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hq` using `hC u (Metric.ball_subset_closedBall hu.1)`. Rewrite `hq` using `[Real.norm_of_nonneg (Real.exp_pos _).le]`. Establish `e0 : Real.exp (A.ph la i ((A.chart i).symm u) - A.ph A.kap i ((A.chart i).symm u)) * Real.exp (A.ph A.kap i ((A.chart i).symm u)) * Real.exp (-A.ph la i ((A.chart i).symm u)) = 1`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Take a linear combination of the given relations to obtain the conclusion.
 
-Combine the equalities or inequalities in the displayed calculation. Take the linear combination `(-‖F i ((A.chart i).symm u)‖ ^ 2) * e0`. Use `_ ≤ _ := mul_le_mul_of_nonneg_right hq (by positivity)`. Use `_ ≤ ∫⁻ u in (A.chart i).target, ENNReal.ofReal C * (fnRho A i u * ((A.chart i).source ∩ nz A τ ∩ U').indicator (fun x => ENNReal.ofReal (‖F i x‖ ^ 2 * Real.exp (-A.ph la i x))) ((A.chart i).symm u)) := lintegral_mono_set (sdiff_subset.trans hBt)`. Use `_ = ENNReal.ofReal C * ∫⁻ x in (A.chart i).source, ((A.chart i).source ∩ nz A τ ∩ U').indicator (fun x => ENNReal.ofReal (‖F i x‖ ^ 2 * Real.exp (-A.ph la i x))) x ∂A.mu := by`.
-
-Rewrite using `[lintegral_const_mul' _ _ ENNReal.ofReal_ne_top, fn_lint A i hmg]`. Use `_ ≤ ENNReal.ofReal C * ∫⁻ x in U ∩ nz A τ, ENNReal.ofReal (A.nsq la F x) ∂A.mu := by`. Use `mul_le_mul_of_nonneg_left ?_ zero_le` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `_ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nz_loc (hτ : A.IsSec Λ τ) {la : La} {F : ι → Y → ℂ}
     (hFs : A.IsSecOn la (nz A τ) F)
@@ -172,11 +170,11 @@ theorem nz_loc (hτ : A.IsSec Λ τ) {la : La} {F : ι → Y → ℂ}
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hfin
 
 /- English proof (translation)
-Introduce `p hp`. Rewrite using `[_root_.mem_closure_iff]`. Introduce `o ho hpo`. Establish `hWo : IsOpen ((A.chart i).source ∩ A.chart i ⁻¹' (o ∩ O))` using `(A.chart i).continuousOn.isOpen_inter_preimage (A.chart i).open_source (ho.inter hO)`. Establish `hpt` using `hOt hp`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : (A.chart i).symm p ∈ (A.chart i).source ∩ A.chart i ⁻¹' (o ∩ O)`. Use `⟨(A.chart i).map_target hpt, ?_⟩` and prove the remaining obligations. Use `show A.chart i ((A.chart i).symm p) ∈ o ∩ O`. Rewrite using `[(A.chart i).right_inv hpt]`. Conclude with `⟨hpo, hp⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hxW, hxM⟩` from `hdense.inter_open_nonempty _ hWo ⟨_, hmem⟩`. Use `⟨A.chart i x, hxW.2.1, hxW.2.2, ?_⟩` and prove the remaining obligations. Use `show (τ i ∘ (A.chart i).symm) (A.chart i x) ≠ 0`. Rewrite using `[nz_coeff_ne_iff' A hτ ((A.chart i).map_source hxW.1), (A.chart i).left_inv hxW.1]`. Conclude with `hxM`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nz_sub_closure (hτ : A.IsSec Λ τ) (hdense : Dense (nz A τ)) (i : ι) {O : Set (V n)}
     (hO : IsOpen O) (hOt : O ⊆ (A.chart i).target) :
@@ -198,25 +196,21 @@ theorem nz_sub_closure (hτ : A.IsSec Λ τ) (hdense : Dense (nz A τ)) (i : ι)
   exact hxM
 
 /- English proof (translation)
-Introduce `n Y _ _ _ _ _ ι La _ A Λ la τ F hτ hdense hFs hfin`. Establish `hloc : ∀ y, ∃ U ∈ 𝓝 y, ∫⁻ x in U ∩ nz A τ, ENNReal.ofReal (A.nsq la F x) ∂A.mu < ⊤` using `fun y => ⟨univ, univ_mem, by simpa using hfin⟩`. Establish `hex : ∀ i, ∀ v ∈ (A.chart i).target, ∃ r > 0, Metric.ball v r ⊆ (A.chart i).target ∧ ∃ U : V n → ℂ, DifferentiableOn ℂ U (Metric.ball v r) ∧ EqOn U (F i ∘ (A.chart i).symm) (Metric.ball v r \ {u | (τ i ∘ (A.chart i).symm) u = 0})`. Introduce `i v hv`. Take `⟨r, hr, hBt, hfin'⟩` from `nz_loc A hτ hFs hloc i hv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hu : DifferentiableOn ℂ (F i ∘ (A.chart i).symm) (Metric.ball v r \ {u | (τ i ∘ (A.chart i).symm) u = 0})` using `(hFs.1 i).mono fun u (hu : u ∈ Metric.ball v r \ {u | (τ i ∘ (A.chart i).symm) u = 0}) => ⟨hBt hu.1, (nz_coeff_ne_iff' A hτ (hBt hu.1)).1 hu.2⟩`. Take `⟨U, hU, hUeq⟩` from `ReciprocityTheory.L2DbarEstimates.ext n v r (τ i ∘ (A.chart i).symm) (F i ∘ (A.chart i).symm) ((nz_coeff_diff A hτ i).mono hBt) hu hfin'`. Conclude with `⟨r, hr, hBt, U, hU, hUeq⟩`. Use `choose! R hR hRt U hU hUeq using hex`. Establish `hagree : ∀ i, ∀ v ∈ (A.chart i).target, EqOn (fun u => U i u u) (U i v) (Metric.ball v (R i v))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i v hv u hu`. Establish `hut` using `hRt i v hv hu`. Establish `hO : IsOpen (Metric.ball v (R i v) ∩ Metric.ball u (R i u))` using `Metric.isOpen_ball.inter Metric.isOpen_ball`. Establish `hOt : Metric.ball v (R i v) ∩ Metric.ball u (R i u) ⊆ (A.chart i).target` using `inter_subset_left.trans (hRt i v hv)`. Establish `key` using `Set.EqOn.of_subset_closure (s := (Metric.ball v (R i v) ∩ Metric.ball u (R i u)) ∩ {x | (τ i ∘ (A.chart i).symm) x ≠ 0}) (f := U i v) (g := U i u) ?_ ((hU i v hv).continuousOn.mono inter_subset_left) ((hU i u hut).continuousOn.mono inter_subset_right) inter_subset_left (nz_sub_cl …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(key ⟨hu, Metric.mem_ball_self (hR i u hut)⟩).symm`. Introduce `x hx`. Rewrite using `[hUeq i v hv ⟨hx.1.1, hx.2⟩, hUeq i u hut ⟨hx.1.2, hx.2⟩]`. Establish `hGcd : ∀ i, DifferentiableOn ℂ (fun u => U i u u) (A.chart i).target`. Introduce `i v hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hev : (fun u => U i u u) =ᶠ[𝓝 v] U i v` using `Filter.eventually_of_mem (Metric.ball_mem_nhds v (hR i v hv)) (hagree i v hv)`. Conclude with `(((hU i v hv).differentiableAt (Metric.ball_mem_nhds v (hR i v hv))).congr_of_eventuallyEq hev).differentiableWithinAt`. Establish `hGcF : ∀ i, ∀ v ∈ (A.chart i).target, (A.chart i).symm v ∈ nz A τ → U i v v = F i ((A.chart i).symm v)`. Introduce `i v hv hM`. Conclude with `hUeq i v hv ⟨Metric.mem_ball_self (hR i v hv), (nz_coeff_ne_iff' A hτ hv).2 hM⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hGF : ∀ i y, y ∈ nz A τ → y ∈ (A.chart i).source → U i (A.chart i y) (A.chart i y) = F i y`. Introduce `i y hyM hys`. Rewrite using `[hGcF i _ ((A.chart i).map_source hys) (by rw [(A.chart i).left_inv hys]; exact hyM), (A.chart i).left_inv hys]`. Use `⟨fun i y => U i (A.chart i y) (A.chart i y), ⟨fun i => ?_, ?_⟩, hGF⟩` and prove the remaining obligations. Use `((hGcd i).mono inter_subset_left).congr fun u hu => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[(A.chart i).right_inv hu.1]`. Introduce `i j y _ hyi hyj`. Establish `hcont : ∀ k, ContinuousOn (fun y => U k (A.chart k y) (A.chart k y)) (A.chart k).source` using `fun k => (hGcd k).continuousOn.comp (A.chart k).continuousOn fun x hx => (A.chart k).map_source hx`. Establish `hgc : ContinuousOn (A.g la i j) ((A.chart i).source ∩ (A.chart j).source)`. Use `((A.holo_g la i j).continuousOn.comp ((A.chart i).continuousOn.mono inter_subset_left) fun x hx => ?_).congr fun x hx => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show A.chart i x ∈ (A.chart i).target ∩ (A.chart i).symm ⁻¹' (A.chart j).source`. Use `⟨(A.chart i).map_source hx.1, ?_⟩` and prove the remaining obligations. Use `show (A.chart i).symm (A.chart i x) ∈ (A.chart j).source`. Rewrite using `[(A.chart i).left_inv hx.1]`. Conclude with `hx.2`.
-
-Simplify using `[(A.chart i).left_inv hx.1]`. Establish `hO : IsOpen ((A.chart i).source ∩ (A.chart j).source)` using `(A.chart i).open_source.inter (A.chart j).open_source`. Use `Set.EqOn.of_subset_closure (s := ((A.chart i).source ∩ (A.chart j).source) ∩ nz A τ) (f := fun y => U i (A.chart i y) (A.chart i y)) (g := fun y => A.g la i j y * U j (A.chart j y) (A.chart j y)) ?_ ((hcont i).mono inter_subset_left) (hgc.mul ((hcont j).mono inter_subset_right)) …` and prove the remaining obligations. Introduce `x hx`. Simplify using `only`.
-
-Rewrite using `[hGF i x hx.2 hx.1.1, hGF j x hx.2 hx.1.2]`. Conclude with `hFs.2 i j x hx.2 hx.1.1 hx.1.2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l2_extension_nz : ∀ (n : ℕ) (Y : Type) [TopologicalSpace Y] [T2Space Y] [SecondCountableTopology Y] [MeasurableSpace Y] [BorelSpace Y] (ι La : Type) [AddCommGroup La] (A : WeightedAtlas n Y ι La), ∀ (Λ la : La) (τ F : ι → Y → ℂ), A.IsSec Λ τ → Dense (nz A τ) → A.IsSecOn la (nz A τ) F → ∫⁻ y in nz A τ, ENNReal.ofReal (A.nsq la F y) ∂A.mu < ⊤ → ∃ G : ι → Y → ℂ, A.IsSec la G ∧ ∀ i y, y ∈ nz A τ → y ∈ (A.chart i).source → G i y = F i y := by
   intro n Y _ _ _ _ _ ι La _ A Λ la τ F hτ hdense hFs hfin

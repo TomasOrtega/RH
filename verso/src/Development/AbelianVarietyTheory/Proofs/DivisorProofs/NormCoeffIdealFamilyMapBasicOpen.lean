@@ -10,7 +10,7 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.NormSheafDescent
 
 /- English proof (translation)
-Substitute `hV` using the available equality. Conclude with `hU.isLocalization_basicOpen g`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isLocalization_away_of_eq_basicOpen {X : Scheme.{0}} {U : X.Opens} (hU : IsAffineOpen U)
     (g : Γ(X, U)) (V : X.Opens) (hV : V = X.basicOpen g) (hle : V ≤ U) :
@@ -20,27 +20,23 @@ theorem isLocalization_away_of_eq_basicOpen {X : Scheme.{0}} {U : X.Opens} (hU :
   exact hU.isLocalization_basicOpen g
 
 /- English proof (translation)
-Introduce `Y Z π _ _ _ hK hfd I U f hU`. Distinguish the cases in `hD : genPt π ∈ Z.basicOpen f`. Establish `hζU : genPt π ∈ U.1` using `Z.basicOpen_le f hD`. Establish `hD' : genPt π ∈ (Z.affineBasicOpen f).1` using `hD`. Establish `hUD : ((Z.affineBasicOpen f : Z.affineOpens) : Set Z) ⊆ Set.range π` using `fun x hx => hU (Z.basicOpen_le f hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := fieldK π hK`. Use `letI := algKL π`. Take `⟨hdomA, hfrA⟩` from `GlobalTheory.T.sections_isFractionRing_stalk_imageOfGenericPoint Y Z π U.1 U.2 hU hζU`. Take `⟨_, hfrA'⟩` from `GlobalTheory.T.sections_isFractionRing_stalk_imageOfGenericPoint Y Z π (Z.basicOpen f) (Z.affineBasicOpen f).2 hUD hD`. Use `letI iA := algAK π U.1 hζU`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `letI iB := algBL π U.1 hζU`. Use `letI iA' := algAK π (Z.basicOpen f) hD`. Use `letI iB' := algBL π (Z.basicOpen f) hD`. Use `letI iAA' : Algebra Γ(Z, U) Γ(Z, Z.basicOpen f) := (Z.presheaf.map (homOfLE (Z.basicOpen_le f)).op).hom.toAlgebra`. Establish `hleY : π ⁻¹ᵁ Z.basicOpen f ≤ π ⁻¹ᵁ U.1` using `π.preimage_mono (Z.basicOpen_le f)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI iBB' : Algebra Γ(Y, π ⁻¹ᵁ U.1) Γ(Y, π ⁻¹ᵁ Z.basicOpen f) := (Y.presheaf.map (homOfLE hleY).op).hom.toAlgebra`. Use `letI iAB : Algebra Γ(Z, U) Γ(Y, π ⁻¹ᵁ U.1) := (π.app U.1).hom.toAlgebra`. Use `haveI : IsLocalization.Away f Γ(Z, Z.basicOpen f) := U.2.isLocalization_basicOpen f`. Use `haveI : IsLocalization.Away (algebraMap Γ(Z, U) Γ(Y, π ⁻¹ᵁ U.1) f) Γ(Y, π ⁻¹ᵁ Z.basicOpen f) := isLocalization_away_of_eq_basicOpen (U.2.preimage π) (π.app U.1 f) _ (Scheme.preimage_basicOpen π f) hleY`. Establish `h1 : (algebraMap Γ(Z, Z.basicOpen f) (Z.presheaf.stalk (genPt π))).comp (algebraMap Γ(Z, U) Γ(Z, Z.basicOpen f)) = algebraMap Γ(Z, U) (Z.presheaf.stalk (genPt π))`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `a`. Conclude with `Z.presheaf.germ_res_apply (homOfLE (Z.basicOpen_le f)) (genPt π) hD a`. Establish `h2 : (algebraMap Γ(Y, π ⁻¹ᵁ Z.basicOpen f) Y.functionField).comp (algebraMap Γ(Y, π ⁻¹ᵁ U.1) Γ(Y, π ⁻¹ᵁ Z.basicOpen f)) = algebraMap Γ(Y, π ⁻¹ᵁ U.1) Y.functionField`. Use extensionality with `a`. Conclude with `Y.presheaf.germ_res_apply (homOfLE hleY) (genericPoint Y) hD a`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : (algebraMap (Z.presheaf.stalk (genPt π)) Y.functionField).comp (algebraMap Γ(Z, U) (Z.presheaf.stalk (genPt π))) = (algebraMap Γ(Y, π ⁻¹ᵁ U.1) Y.functionField).comp (algebraMap Γ(Z, U) Γ(Y, π ⁻¹ᵁ U.1))`. Use extensionality with `a`. Conclude with `Scheme.Hom.germ_stalkMap_apply π U.1 (genericPoint Y) hζU a`. Establish `h4 : Function.Injective (algebraMap Γ(Z, Z.basicOpen f) (Z.presheaf.stalk (genPt π)))` using `IsFractionRing.injective _ _`. Establish `h5 : ∀ {m : ℕ} (g : Fin m → Γ(Y, π ⁻¹ᵁ U.1)) s, (GlobalTheory.NormSheaf.normForm (Z.presheaf.stalk (genPt π)) Y.functionField (fun i => algebraMap Γ(Y, π ⁻¹ᵁ U.1) Y.functionField (g i))).coeff s ∈ (algebraMap Γ(Z, U) (Z.presheaf.stalk (genPt π))).range`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `m g s`. Use `haveI : IsIntegrallyClosed Γ(Z, U) := GlobalTheory.IsNormalScheme.isIntegrallyClosed_of_isAffineOpen U.2`. Use `letI iAL : Algebra Γ(Z, U) Y.functionField := ((algebraMap (Z.presheaf.stalk (genPt π)) Y.functionField).comp (algebraMap Γ(Z, U) (Z.presheaf.stalk (genPt π)))).toAlgebra`. Use `haveI : IsScalarTower Γ(Z, U) (Z.presheaf.stalk (genPt π)) Y.functionField := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Establish `hfin : (π.app U.1).hom.Finite` using `π.finite_app U.1 U.2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `φ : Γ(Y, π ⁻¹ᵁ U.1) →ₐ[Γ(Z, U)] Y.functionField` to `{ algebraMap Γ(Y, π ⁻¹ᵁ U.1) Y.functionField with commutes' := fun a => (congrArg (fun h => h a) h3).symm }`. Use `GlobalTheory.T.coeff_normFormOfFamily_mem_range_integrallyClosed Γ(Z, U) (Z.presheaf.stalk (genPt π)) Y.functionField _ (fun i => ?_) s` and prove the remaining obligations. Establish `hi : IsIntegral Γ(Z, U) (g i)` using `hfin.to_isIntegral (g i)`. Conclude with `hi.map φ`. Establish `hJ : I.ideal ⟨π ⁻¹ᵁ (Z.affineBasicOpen f).1, (Z.affineBasicOpen f).2.preimage π⟩ = (I.ideal ⟨π ⁻¹ᵁ U.1, U.2.preimage π⟩).map (algebraMap Γ(Y, π ⁻¹ᵁ U.1) Γ(Y, π ⁻¹ᵁ Z.basicOpen f))` using `(I.map_ideal (U := ⟨π ⁻¹ᵁ (Z.affineBasicOpen f).1, (Z.affineBasicOpen f).2.preimage π⟩) (V := ⟨π ⁻¹ᵁ U.1, U.2.preimage π⟩) hleY).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Simplify using `only [famIdeal, dif_pos hζU, dif_pos hD']`. Rewrite using `[hJ]`. Conclude with `GlobalTheory.T.normFormCoefficientIdeal_map_localizationAway Γ(Z, U) (Z.presheaf.stalk (genPt π)) Y.functionField Γ(Y, π ⁻¹ᵁ U.1) Γ(Z, Z.basicOpen f) Γ(Y, π ⁻¹ᵁ Z.basicOpen f) f h1 h2 h3 h4 h5 _`. Establish `hbot : Z.basicOpen f = ⊥`. Use extensionality with `x`.
-
-Simplify using `only [TopologicalSpace.Opens.coe_bot, Set.mem_empty_iff_false, iff_false]`. Introduce `hx`. Take `⟨y, rfl⟩` from `hU (Z.basicOpen_le f hx)`. Conclude with `hD (((genericPoint_specializes y).map π.continuous).mem_open (Z.basicOpen f).isOpen hx)`. Use `haveI : Subsingleton Γ(Z, Z.basicOpen f) := CommRingCat.subsingleton_of_isTerminal (Z.sheaf.isTerminalOfEqEmpty hbot)`.
-
-Use `haveI : Subsingleton Γ(Z, (Z.affineBasicOpen f : Z.Opens)) := this`. Use extensionality with `x`. Rewrite using `[Subsingleton.elim x 0]`. Conclude with `iff_of_true (Ideal.zero_mem _) (Ideal.zero_mem _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem famIdeal_map_basicOpen : ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z) [IsFinite π] [IsIntegral Y] [GlobalTheory.IsNormalScheme Z]
     (hK : IsField (Z.presheaf.stalk (GlobalTheory.NormSheafDescent.genPt π)))

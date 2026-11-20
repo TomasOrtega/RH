@@ -12,19 +12,17 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.GrowthOfInvariants
 
 /- English proof (translation)
-Establish `key : ∀ a : O, Nat.card (O ⧸ Ideal.span {a}) = (Submodule.toAddSubgroup (Ideal.span {a} : Ideal O)).index` using `fun a => rfl`. Proceed by induction on `n with`. Consider the case `zero`. Establish `: Subsingleton (O ⧸ Ideal.span {ϖ ^ 0})`. Rewrite using `[pow_zero, Ideal.span_singleton_one]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.Quotient.subsingleton_iff.mpr rfl`. Simplify using `[Nat.card_of_subsingleton (0 : O ⧸ Ideal.span {ϖ ^ 0})]`. Consider the case `succ n ih`. Set `f : O →+ O` to `AddMonoidHom.mulLeft (ϖ ^ n)`. Establish `hle : Submodule.toAddSubgroup (Ideal.span {ϖ ^ (n + 1)} : Ideal O) ≤ Submodule.toAddSubgroup (Ideal.span {ϖ ^ n} : Ideal O)`.
+Simplify using the standard rewrite rules. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Establish `hx' : x ∈ (Ideal.span {ϖ ^ (n + 1)} : Ideal O)` using `hx`. Express the relevant statement in the definitionally equal form `x ∈ (Ideal.span {ϖ ^ n} : Ideal O)`. Rewrite `hx'`, the goal using `[Ideal.mem_span_singleton]`. Conclude with `(pow_dvd_pow ϖ (Nat.le_succ n)).trans hx'`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hrange : f.range = Submodule.toAddSubgroup (Ideal.span {ϖ ^ n} : Ideal O)`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Express the relevant statement in the definitionally equal form `ϖ ^ n * y ∈ (Ideal.span {ϖ ^ n} : Ideal O)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Introduce `hx`. Establish `hx' : x ∈ (Ideal.span {ϖ ^ n} : Ideal O)` using `hx`. Take `⟨y, rfl⟩` from `Ideal.mem_span_singleton.mp hx'`. Conclude with `⟨y, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hcomap : (Submodule.toAddSubgroup (Ideal.span {ϖ ^ (n + 1)} : Ideal O)).comap f = Submodule.toAddSubgroup (Ideal.span {ϖ} : Ideal O)`. Use extensionality with `x`. Express the relevant statement in the definitionally equal form `ϖ ^ n * x ∈ (Ideal.span {ϖ ^ (n + 1)} : Ideal O) ↔ x ∈ (Ideal.span {ϖ} : Ideal O)`. Rewrite using `[Ideal.mem_span_singleton, Ideal.mem_span_singleton, pow_succ]`. Conclude with `mul_dvd_mul_iff_left (pow_ne_zero n hϖ)`.
-
-Establish `h1` using `AddSubgroup.relIndex_mul_index hle`. Rewrite `h1` using `[← hrange, ← AddSubgroup.index_comap, hcomap, hrange, ← key, ← key, ← key, ih]`. Rewrite using `[← h1, pow_succ, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_pow {O : Type} [CommRing O] [IsDomain O] (ϖ : O) (hϖ : ϖ ≠ 0) (n : ℕ) :
     Nat.card (O ⧸ Ideal.span {ϖ ^ n}) = Nat.card (O ⧸ Ideal.span {ϖ}) ^ n := by
@@ -66,11 +64,11 @@ theorem card_quot_pow {O : Type} [CommRing O] [IsDomain O] (ϖ : O) (hϖ : ϖ �
     rw [← h1, pow_succ, mul_comm]
 
 /- English proof (translation)
-Rewrite using `[AddSubgroup.card_eq_card_quotient_mul_card_addSubgroup φ.range]`. Establish `h2 : Nat.card (Q ⧸ φ.range) ≤ Nat.card R`. Use `Nat.card_le_card_of_injective (fun u => g u.out) ?_` and prove the remaining obligations. Introduce `u v h`. Take `⟨e, he⟩` from `hg _ _ h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← QuotientAddGroup.out_eq' u, ← QuotientAddGroup.out_eq' v]`. Use `(QuotientAddGroup.eq.mpr ?_).symm` and prove the remaining obligations. Establish `: -v.out + u.out = φ e` using `by rw [← he]; abel`. Rewrite using `[this]`. Conclude with `⟨e, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `h3 : Nat.card φ.range ≤ Nat.card E` using `Nat.card_le_card_of_surjective φ.rangeRestrict φ.rangeRestrict_surjective`. Conclude with `Nat.mul_le_mul h2 h3`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_le_of_fibers {Q R E : Type} [AddCommGroup Q] [AddCommGroup E] [Finite R] [Finite E]
     (g : Q → R) (φ : E →+ Q) (hg : ∀ x y, g x = g y → ∃ e, x - y = φ e) :
@@ -90,7 +88,7 @@ theorem card_le_of_fibers {Q R E : Type} [AddCommGroup Q] [AddCommGroup E] [Fini
   exact Nat.mul_le_mul h2 h3
 
 /- English proof (translation)
-Use `haveI : Module.Finite (O ⧸ J) (M ⧸ (J • ⊤ : Submodule O M)) := Module.Finite.of_restrictScalars_finite O _ _`. Conclude with `Module.finite_of_finite (O ⧸ J)`.
+A detailed English derivation is pending.
 -/
 theorem finite_quot_smul_top {O M : Type} [CommRing O] [AddCommGroup M] [Module O M]
     [Module.Finite O M] (J : Ideal O) [Finite (O ⧸ J)] :
@@ -100,15 +98,13 @@ theorem finite_quot_smul_top {O M : Type} [CommRing O] [AddCommGroup M] [Module 
   exact Module.finite_of_finite (O ⧸ J)
 
 /- English proof (translation)
-Establish `hq : (Ideal.span {a} • ⊤ : Submodule O M).map (e : M →ₗ[O] (Fin h → O)) = Submodule.pi Set.univ (fun _ => (Ideal.span {a} : Submodule O O))`. Rewrite using `[Submodule.ideal_span_singleton_smul]`. Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨z, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp hy`. Introduce `i _`. Simplify using `only [LinearEquiv.coe_coe, map_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Introduce `hx`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx' : ∀ i, ∃ y, x i = a * y` using `fun i => Ideal.mem_span_singleton'.mp (hx i (Set.mem_univ i)) |>.imp fun y hy => by`. Rewrite using `[← hy, mul_comm]`. Use `choose y hy using hx'`. Use `⟨a • e.symm y, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mpr ⟨_, trivial, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i`. Simplify using `[hy]`. Establish `e1` using `Submodule.Quotient.equiv _ _ e hq`. Establish `e2` using `Submodule.quotientPi (fun _ : Fin h => (Ideal.span {a} : Submodule O O))`. Rewrite using `[Nat.card_congr e1.toEquiv, Nat.card_congr e2.toEquiv]`.
-
-Simplify using `[Nat.card_pi]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem card_quot_free {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] {h : ℕ}
     (e : M ≃ₗ[O] (Fin h → O)) (a : O) :
@@ -138,7 +134,7 @@ theorem card_quot_free {O M : Type} [CommRing O] [AddCommGroup M] [Module O M] {
   simp [Nat.card_pi]
 
 /- English proof (translation)
-Establish `hpos : Nat.card (O ⧸ Ideal.span {ϖ}) ≠ 0` using `Nat.card_pos.ne'`. Conclude with `Nat.finite_of_card_ne_zero (by rw [card_quot_pow ϖ hϖ n]; exact pow_ne_zero n hpos)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_quot_pow {O : Type} [CommRing O] [IsDomain O] {ϖ : O} (hϖ : ϖ ≠ 0)
     (hq : Finite (O ⧸ Ideal.span {ϖ})) (n : ℕ) : Finite (O ⧸ Ideal.span {ϖ ^ n}) := by
@@ -146,17 +142,17 @@ theorem finite_quot_pow {O : Type} [CommRing O] [IsDomain O] {ϖ : O} (hϖ : ϖ 
   exact Nat.finite_of_card_ne_zero (by rw [card_quot_pow ϖ hϖ n]; exact pow_ne_zero n hpos)
 
 /- English proof (translation)
-Establish `hfg : R.FG` using `IsNoetherian.noetherian R`. Establish `hkill : (∀ y ∈ R, ∃ a : O, a ≠ 0 ∧ a • y = 0) → ∃ a : O, a ≠ 0 ∧ ∀ y ∈ R, a • y = 0`. Use `Submodule.fg_induction (motive := fun N _ => (∀ y ∈ N, ∃ a : O, a ≠ 0 ∧ a • y = 0) → ∃ a : O, a ≠ 0 ∧ ∀ y ∈ N, a • y = 0) ?_ ?_ R hfg` and prove the remaining obligations. Introduce `x hx`. Take `⟨a, ha, hax⟩` from `hx x (Submodule.mem_span_singleton_self x)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨a, ha, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.mp hy`. Rewrite using `[smul_comm, hax, smul_zero]`. Introduce `N₁ N₂ _ _ h₁ h₂ h`. Take `⟨a, ha, ha'⟩` from `h₁ fun y hy => h y (Submodule.mem_sup_left hy)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hb'⟩` from `h₂ fun y hy => h y (Submodule.mem_sup_right hy)`. Use `⟨a * b, mul_ne_zero ha hb, fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨y₁, hy₁, y₂, hy₂, rfl⟩` from `Submodule.mem_sup.mp hy`. Rewrite using `[smul_add, mul_comm, mul_smul, ha' y₁ hy₁, smul_zero, mul_comm, mul_smul, hb' y₂ hy₂, smul_zero, add_zero]`. Take `⟨a, ha, ha'⟩` from `hkill hR`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ha hϖ`. Establish `hJ : (Ideal.span {a} : Ideal O) = Ideal.span {ϖ ^ n}` using `Ideal.span_singleton_eq_span_singleton.mpr hn`. Establish `hfin : Finite (O ⧸ (Ideal.span {a} : Ideal O))`. Rewrite using `[hJ]`. Conclude with `finite_quot_pow hϖ.ne_zero hq n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Module.Finite O R := Module.Finite.iff_fg.mpr hfg`. Establish `hfq` using `finite_quot_smul_top (M := R) (Ideal.span {a} : Ideal O)`. Establish `hbot : (Ideal.span {a} • ⊤ : Submodule O R) = ⊥`. Rewrite using `[Submodule.ideal_span_singleton_smul, eq_bot_iff]`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Take `⟨z, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp hy`. Simplify using `only [Submodule.mem_bot]`. Conclude with `Subtype.ext (ha' z z.2)`. Conclude with `Finite.of_equiv _ (Submodule.quotEquivOfEqBot _ hbot).toEquiv`.
+A detailed English derivation is pending.
 -/
 theorem finite_of_torsion {O H : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     [AddCommGroup H] [Module O H] [Module.Finite O H] {ϖ : O} (hϖ : Irreducible ϖ)
@@ -201,7 +197,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp LL O : Type} [Field Qp] [
   (A : GRep G Qp LL O) (LA : Lattice (O := O) A.ρ)
 
 /- English proof (translation)
-Rewrite `h` using `[← algebraMap_smul LL s x]`. Conclude with `(smul_eq_zero.mp h).resolve_left ((map_ne_zero_iff _ (IsFractionRing.injective O LL)).mpr hs)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_eq_zero_of_ne [IsDomain O] [IsFractionRing O LL] {s : O} (hs : s ≠ 0) {x : A.V}
     (h : s • x = 0) : x = 0 := by
@@ -209,7 +205,7 @@ theorem smul_eq_zero_of_ne [IsDomain O] [IsFractionRing O LL] {s : O} (hs : s �
   exact (smul_eq_zero.mp h).resolve_left ((map_ne_zero_iff _ (IsFractionRing.injective O LL)).mpr hs)
 
 /- English proof (translation)
-Apply the tactic sequence `apply _root_.UpperTheory.Reformulated.B.ExistsSmulMemBis.exists_smul_mem <;> assumption`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_smul_mem [IsDomain O] [IsFractionRing O LL] (v : A.V) :
     ∃ a : O, a ≠ 0 ∧ a • v ∈ LA.T :=
@@ -218,26 +214,24 @@ theorem exists_smul_mem [IsDomain O] [IsFractionRing O LL] (v : A.V) :
 def fixT : Submodule O ↥LA.T := ((H0V A.ρ).restrictScalars O).comap LA.T.subtype
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(m : A.V) ∈ H0V A.ρ ↔ _`. Simplify using `[H0V, Submodule.mem_iInf, sub_eq_zero]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem mem_fixT {m : ↥LA.T} : m ∈ fixT A LA ↔ ∀ g, A.ρ g (m : A.V) = m := by
   change (m : A.V) ∈ H0V A.ρ ↔ _
   simp [H0V, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Use `haveI : Module.Finite O ↥LA.T := Module.Finite.iff_fg.mpr LA.fg`. Use `haveI := LA.free`. Take `⟨n, ⟨b⟩⟩` from `Submodule.nonempty_basis_of_pid (Module.finBasis O ↥LA.T) (fixT A LA)`. Set `f : ↥(fixT A LA) →ₗ[O] A.V` to `LA.T.subtype ∘ₗ (fixT A LA).subtype`. Set `bv : Fin n → A.V` to `f ∘ b`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : LinearMap.ker f = ⊥` using `LinearMap.ker_eq_bot.mpr (LA.T.injective_subtype.comp (fixT A LA).injective_subtype)`. Establish `hli : LinearIndependent O bv` using `b.linearIndependent.map' f hker`. Establish `hli' : LinearIndependent LL bv` using `(LinearIndependent.iff_fractionRing O LL).mp hli`. Establish `hspan : Submodule.span LL (Set.range bv) = H0V A.ρ`. Use `le_antisymm ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.span_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨i, rfl⟩`. Conclude with `(b i).2`. Introduce `v hv`. Take `⟨a, ha, hav⟩` from `exists_smul_mem A LA v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm : (⟨a • v, hav⟩ : ↥LA.T) ∈ fixT A LA` using `((H0V A.ρ).restrictScalars O).smul_mem a hv`. Set `m : ↥(fixT A LA)` to `⟨⟨a • v, hav⟩, hm⟩`. Establish `h1 : f m ∈ Submodule.span O (Set.range bv)`. Use `Submodule.mem_map_of_mem (f := f) (show m ∈ Submodule.span O (Set.range b) by rw [b.span_eq]; trivial)` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `Submodule.span_subset_span O LL (Set.range bv) h1`. Establish `ha1 : algebraMap O LL a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O LL)).mpr ha`. Establish `h3 : v = (algebraMap O LL a)⁻¹ • f m`. Express the relevant statement in the definitionally equal form `v = (algebraMap O LL a)⁻¹ • (a • v)`. Rewrite using `[← algebraMap_smul LL a v, smul_smul, inv_mul_cancel₀ ha1, one_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Conclude with `Submodule.smul_mem _ _ h2`. Establish `hn : finrank LL ↥(H0V A.ρ) = n`. Rewrite using `[← hspan, finrank_span_eq_card hli', Fintype.card_fin]`. Rewrite using `[hn]`.
-
-Conclude with `⟨b.equivFun⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equiv_fixT [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL] :
     Nonempty (↥(fixT A LA) ≃ₗ[O] (Fin (finrank LL ↥(H0V A.ρ)) → O)) := by
@@ -296,9 +290,9 @@ def coW : Submodule O A.V where
     exact LA.T.smul_mem c (ha g)
 
 /- English proof (translation)
-Use `⟨⟨?_, ?_⟩, fun g _ => hv g⟩` and prove the remaining obligations. Establish `h : cob A.ρ v = fun g => A.ρ g v + -v` using `funext fun g => sub_eq_add_neg _ _`. Rewrite using `[h]`. Conclude with `(A.cont v).add continuous_const`. Introduce `g h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [cob_apply, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem cob_mem_Z1T (v : A.V) (hv : v ∈ coW A LA) : cob A.ρ v ∈ latticeCocycles LA := by
   refine ⟨⟨?_, ?_⟩, fun g _ => hv g⟩
@@ -320,9 +314,9 @@ def cobW : ↥(coW A LA) →ₗ[O] ↥(latticeCocycles LA) where
 def connW : ↥(coW A LA) →ₗ[O] LatticeCohomology LA := Submodule.mkQ _ ∘ₗ cobW A LA
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = 0 ↔ _`. Rewrite using `[Submodule.Quotient.mk_eq_zero]`. Express the relevant statement in the definitionally equal form `cob A.ρ (v : A.V) ∈ latticeCoboundaries LA ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, h⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨u, hu, h⟩`. Introduce and unpack `⟨u, hu, h⟩`. Conclude with `⟨u, hu, h⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem connW_eq_zero_iff (v : ↥(coW A LA)) :
     connW A LA v = 0 ↔ ∃ u ∈ LA.T, cob A.ρ u = cob A.ρ (v : A.V) := by
@@ -336,9 +330,9 @@ theorem connW_eq_zero_iff (v : ↥(coW A LA)) :
     exact ⟨u, hu, h⟩
 
 /- English proof (translation)
-Use `finite_of_torsion hϖ hq _ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨v, rfl⟩`. Take `⟨a, ha, hav⟩` from `exists_smul_mem A LA (v : A.V)`. Use `⟨a, ha, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_smul, connW_eq_zero_iff]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, hav, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem finite_range_connW [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL]
     (hfin : Module.Finite O (LatticeCohomology LA)) {ϖ : O} (hϖ : Irreducible ϖ)
@@ -351,9 +345,9 @@ theorem finite_range_connW [IsDomain O] [IsDiscreteValuationRing O] [IsFractionR
   exact ⟨_, hav, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[Submodule.ideal_span_singleton_smul]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨z, -, rfl⟩` from `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mp hx`. Conclude with `⟨z, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Conclude with `(Submodule.mem_smul_pointwise_iff_exists _ _ _).mpr ⟨y, trivial, rfl⟩`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_span_smul_top {M : Type} [AddCommGroup M] [Module O M] {a : O} {x : M} :
     x ∈ (Ideal.span {a} • ⊤ : Submodule O M) ↔ ∃ y, x = a • y := by
@@ -376,7 +370,7 @@ def fixQ (I : Submodule O ↥LA.T) (hI : StableSub LA I) : Submodule O (↥LA.T 
     rw [map_smul, ha g]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext ((mem_fixT A LA).mp hm g)`.
+A detailed English derivation is pending.
 -/
 theorem actT_of_mem_fixT {m : ↥LA.T} (hm : m ∈ fixT A LA) (g : G) : actT LA g m = m :=
   Subtype.ext ((mem_fixT A LA).mp hm g)
@@ -402,11 +396,11 @@ def phi (a : O) (hI : StableSub LA (Ideal.span {a} • ⊤ : Submodule O ↥LA.T
     refine (Submodule.Quotient.mk_eq_zero _).mpr (mem_span_smul_top.mpr ⟨(y : ↥LA.T), rfl⟩))
 
 /- English proof (translation)
-Use `LinearMap.ker_eq_bot.mp (Submodule.ker_liftQ_eq_bot _ _ _ ?_)` and prove the remaining obligations. Introduce `m hm`. Establish `h0 : (Submodule.Quotient.mk (m : ↥LA.T) : ↥LA.T ⧸ (Ideal.span {a} • ⊤ : Submodule O ↥LA.T)) = 0` using `congrArg Subtype.val (LinearMap.mem_ker.mp hm)`. Take `⟨y, hy⟩` from `mem_span_smul_top.mp ((Submodule.Quotient.mk_eq_zero _).mp h0)`. Establish `hyf : y ∈ fixT A LA`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `(mem_fixT A LA).mpr fun g => ?_` and prove the remaining obligations. Establish `h1` using `(mem_fixT A LA).mp m.2 g`. Establish `h2 : ((m : ↥LA.T) : A.V) = a • (y : A.V)` using `congrArg Subtype.val hy`. Rewrite `h1` using `[h2, (A.ρ g).map_smul_of_tower]`. Establish `h3 : a • (A.ρ g (y : A.V) - y) = 0` using `by rw [smul_sub, h1, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.mp (smul_eq_zero_of_ne A ha h3)`. Conclude with `mem_span_smul_top.mpr ⟨⟨y, hyf⟩, Subtype.ext hy⟩`.
+A detailed English derivation is pending.
 -/
 theorem phi_injective [IsDomain O] [IsFractionRing O LL] {a : O} (ha : a ≠ 0)
     (hI : StableSub LA (Ideal.span {a} • ⊤ : Submodule O ↥LA.T)) :
@@ -427,7 +421,7 @@ theorem phi_injective [IsDomain O] [IsFractionRing O LL] {a : O} (ha : a ≠ 0)
   exact mem_span_smul_top.mpr ⟨⟨y, hyf⟩, Subtype.ext hy⟩
 
 /- English proof (translation)
-Establish `ha1 : algebraMap O LL a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O LL)).mpr ha`. Rewrite using `[← algebraMap_smul LL a, smul_smul, mul_inv_cancel₀ ha1, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_inv_smul_tower [IsDomain O] [IsFractionRing O LL] {a : O} (ha : a ≠ 0) (v : A.V) :
     a • ((algebraMap O LL a)⁻¹ • v) = v := by
@@ -435,7 +429,7 @@ theorem smul_inv_smul_tower [IsDomain O] [IsFractionRing O LL] {a : O} (ha : a �
   rw [← algebraMap_smul LL a, smul_smul, mul_inv_cancel₀ ha1, one_smul]
 
 /- English proof (translation)
-Establish `ha1 : algebraMap O LL a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective O LL)).mpr ha`. Rewrite using `[← algebraMap_smul LL a, smul_smul, inv_mul_cancel₀ ha1, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_smul_smul_tower [IsDomain O] [IsFractionRing O LL] {a : O} (ha : a ≠ 0) (v : A.V) :
     (algebraMap O LL a)⁻¹ • (a • v) = v := by
@@ -443,7 +437,7 @@ theorem inv_smul_smul_tower [IsDomain O] [IsFractionRing O LL] {a : O} (ha : a �
   rw [← algebraMap_smul LL a, smul_smul, inv_mul_cancel₀ ha1, one_smul]
 
 /- English proof (translation)
-Introduce `g`. Take `⟨y, hy⟩` from `mem_span_smul_top.mp (ht g)`. Establish `h1 : A.ρ g (t : A.V) - t = a • (y : A.V)` using `congrArg Subtype.val hy`. Rewrite using `[map_smul, ← smul_sub, h1, inv_smul_smul_tower A ha]`. Conclude with `y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_mem_coW [IsDomain O] [IsFractionRing O LL] {a : O} (ha : a ≠ 0) (t : ↥LA.T)
     (ht : ∀ g, actT LA g t - t ∈ (Ideal.span {a} • ⊤ : Submodule O ↥LA.T)) :
@@ -455,27 +449,23 @@ theorem lift_mem_coW [IsDomain O] [IsFractionRing O LL] {a : O} (ha : a ≠ 0) (
   exact y.2
 
 /- English proof (translation)
-Use `haveI hR := finite_range_connW A LA hfin hϖ hq`. Use `⟨Nat.card ↥(LinearMap.range (connW A LA)), fun r hI => ?_⟩` and prove the remaining obligations. Establish `ha : ϖ ^ r ≠ 0` using `pow_ne_zero r hϖ.ne_zero`. Take `⟨e⟩` from `exists_equiv_fixT A LA`. Use `haveI : Finite (O ⧸ (Ideal.span {ϖ ^ r} : Ideal O)) := finite_quot_pow hϖ.ne_zero hq r`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Module.Finite O ↥LA.T := Module.Finite.iff_fg.mpr LA.fg`. Use `haveI : Module.Finite O ↥(fixT A LA) := Module.Finite.equiv e.symm`. Use `haveI hTI := finite_quot_smul_top (M := ↥LA.T) (Ideal.span {ϖ ^ r} : Ideal O)`. Use `haveI hE := finite_quot_smul_top (M := ↥(fixT A LA)) (Ideal.span {ϖ ^ r} : Ideal O)`. Establish `hcE : Nat.card (↥(fixT A LA) ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥(fixT A LA))) = Nat.card (O ⧸ Ideal.span {ϖ}) ^ (r * finrank LL ↥(H0V A.ρ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[card_quot_free e, card_quot_pow ϖ hϖ.ne_zero r, pow_mul]`. Establish `hcQ : Nat.card {x : ↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T) // ∀ g, actQ LA _ hI g x = x} = Nat.card ↥(fixQ A LA _ hI)` using `rfl`. Rewrite using `[hcQ, ← hcE]`. Prove the components needed by the constructor for the conclusion. Conclude with `Nat.card_le_card_of_injective _ (phi_injective A LA ha hI)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `I : Submodule O ↥LA.T` to `Ideal.span {ϖ ^ r} • ⊤`. Set `sec : (↥LA.T ⧸ I) → ↥LA.T` to `Function.surjInv (Submodule.mkQ_surjective I)`. Establish `hsec : ∀ y, I.mkQ (sec y) = y` using `Function.surjInv_eq _`. Establish `hlift : ∀ x : ↥(fixQ A LA I hI), ∀ g, actT LA g (sec x) - sec x ∈ I`. Introduce `x g`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : actQ LA I hI g (x : ↥LA.T ⧸ I) = x` using `x.2 g`. Establish `h2 : (Submodule.Quotient.mk (actT LA g (sec x)) : ↥LA.T ⧸ I) = Submodule.Quotient.mk (sec x)`. Express the relevant statement in the definitionally equal form `actQ LA I hI g (I.mkQ (sec x)) = I.mkQ (sec x)`. Rewrite using `[hsec]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(Submodule.Quotient.eq I).mp h2`. Set `w : ↥(fixQ A LA I hI) → ↥(coW A LA)` to `fun x => ⟨(algebraMap O LL (ϖ ^ r))⁻¹ • ((sec x : ↥LA.T) : A.V), lift_mem_coW A LA ha _ (hlift x)⟩`. Use `card_le_of_fibers (fun x => (connW A LA).rangeRestrict (w x)) (phi A LA _ hI).toAddMonoidHom ?_` and prove the remaining obligations. Introduce `x y hxy`. Establish `h1 : connW A LA (w x - w y) = 0`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, sub_eq_zero]`. Conclude with `congrArg Subtype.val hxy`. Take `⟨u, hu, hcu⟩` from `(connW_eq_zero_iff A LA _).mp h1`. Set `m0 : ↥LA.T` to `sec x - sec y - (ϖ ^ r) • (⟨u, hu⟩ : ↥LA.T)`. Establish `hz : (m0 : A.V) = (ϖ ^ r) • (((w x : A.V) - (w y : A.V)) - u)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((sec x : ↥LA.T) : A.V) - ((sec y : ↥LA.T) : A.V) - (ϖ ^ r) • u = _`. Rewrite using `[smul_sub, smul_sub]`. Express the relevant statement in the definitionally equal form `_ = (ϖ ^ r) • ((algebraMap O LL (ϖ ^ r))⁻¹ • ((sec x : ↥LA.T) : A.V)) - (ϖ ^ r) • ((algebraMap O LL (ϖ ^ r))⁻¹ • ((sec y : ↥LA.T) : A.V)) - _`. Rewrite using `[smul_inv_smul_tower A ha, smul_inv_smul_tower A ha]`. Establish `hm0 : m0 ∈ fixT A LA`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(mem_fixT A LA).mpr fun g => ?_` and prove the remaining obligations. Establish `h2 : A.ρ g u - u = A.ρ g ((w x : A.V) - (w y : A.V)) - ((w x : A.V) - (w y : A.V))` using `congrFun hcu g`. Establish `h3 : A.ρ g (((w x : A.V) - (w y : A.V)) - u) = ((w x : A.V) - (w y : A.V)) - u`. Rewrite `h2` using `[sub_eq_sub_iff_add_eq_add]`. Rewrite using `[map_sub (A.ρ g), sub_eq_sub_iff_add_eq_add, ← h2, add_comm]`.
-
-Rewrite using `[hz, (A.ρ g).map_smul_of_tower, h3]`. Use `⟨Submodule.Quotient.mk ⟨m0, hm0⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(x : ↥LA.T ⧸ I) - y = I.mkQ m0`. Establish `h4 : I.mkQ ((ϖ ^ r) • (⟨u, hu⟩ : ↥LA.T)) = 0` using `(Submodule.Quotient.mk_eq_zero _).mpr (mem_span_smul_top.mpr ⟨_, rfl⟩)`. Express the relevant statement in the definitionally equal form `_ = I.mkQ (sec x - sec y - (ϖ ^ r) • (⟨u, hu⟩ : ↥LA.T))`.
-
-Rewrite using `[map_sub, map_sub, h4, hsec, hsec, sub_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem growth [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL]
     (hfin : Module.Finite O (LatticeCohomology LA)) {ϖ : O} (hϖ : Irreducible ϖ)
@@ -547,9 +537,7 @@ theorem growth [IsDomain O] [IsDiscreteValuationRing O] [IsFractionRing O LL]
 end Rep
 
 /- English proof (translation)
-Introduce `D l _ K hcore LL _ _ _ O _ _ hG A LA ϖ hϖ`. Take `⟨⟨hO, hD, hF⟩, -⟩` from `id hG`. Use `haveI := hO`. Use `haveI := hD`. Use `haveI := hF`.
-
-Conclude with `growth A LA (hcore LL O hG A LA) hϖ (GlobalTheory.T.goodO_adic_complete_compact_basis l LL O hG ϖ hϖ).2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem growth_galois_invariants_mod_prime_power_lattice_alt : ∀ (D : D7) (l : ℕ) [Fact l.Prime] (K : FinExt l), TateFiniteness ((D.loc l).PD K) → ∀ (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ (A : GRep ↥(GK K) ℚ_[l] LL O) (LA : Lattice (O := O) A.ρ) (ϖ : O), Irreducible ϖ → ∃ C : ℕ, ∀ (r : ℕ) (hI : StableSub LA (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T)), Nat.card (O ⧸ Ideal.span {ϖ}) ^ (r * finrank LL ↥(H0V A.ρ)) ≤ Nat.card {x : ↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T) // ∀ g, actQ LA _ hI g x = x} ∧ Nat.card {x : ↥LA.T ⧸ (Ideal.span {ϖ ^ r} • ⊤ : Submodule O ↥LA.T) // ∀ g, actQ LA _ hI g x = x} ≤ C * Nat.card (O ⧸ Ideal.span {ϖ}) ^ (r * finrank LL ↥(H0V A.ρ)) := by
   intro D l _ K hcore LL _ _ _ O _ _ hG A LA ϖ hϖ

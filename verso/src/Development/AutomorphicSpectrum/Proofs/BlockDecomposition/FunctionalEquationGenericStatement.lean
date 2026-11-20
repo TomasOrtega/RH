@@ -11,7 +11,7 @@ open scoped ValuativeRel
 open GlobalTheory.CompanionTheory.DualHol
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.WhitFE.feGen | exact GlobalTheory.CompanionTheory.WhitFE.feGen | (intros; apply GlobalTheory.CompanionTheory.WhitFE.feGen <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.functional_equation_generic : Ad3.SchwartzSpaceL2.FeGen := by
   first | exact @GlobalTheory.CompanionTheory.WhitFE.feGen | exact GlobalTheory.CompanionTheory.WhitFE.feGen | (intros; apply GlobalTheory.CompanionTheory.WhitFE.feGen <;> assumption)

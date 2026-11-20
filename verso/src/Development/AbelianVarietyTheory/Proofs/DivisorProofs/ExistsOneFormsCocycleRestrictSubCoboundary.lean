@@ -15,15 +15,13 @@ namespace GlobalTheory.CechDR.FormExt
 attribute [local instance] GlobalTheory.Cris.opModule GlobalTheory.Cris.isCentralScalar_kaehler GlobalTheory.Cris.isScalarTower_kaehler
 
 /- English proof (translation)
-Introduce `R _ C _ C' _ F G hsurj β' hβ'`. Set `f' : Z1 (G ⋙ omExt F)` to `⟨fun t t' a ↦ (TrivSqZeroExt.inr (β' t t' a) : (omExt F).obj (G.obj t')), fun t t' t'' a b ↦ by`. Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Use `show (0 : F.obj (G.obj t'')) = (extMap F (G.map b) (TrivSqZeroExt.inr (β' t t' a))).fst + 0`. Rewrite using `[fst_extMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `show β' t t'' (a ≫ b) = (extMap F (G.map b) (TrivSqZeroExt.inr (β' t t' a))).snd + β' t' t'' b`. Rewrite using `[snd_extMap, hβ']`. Use the proof step `rfl⟩`. Take `⟨h0, hh⟩` from `hsurj (H1.mk _ f')`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨f, rfl⟩` from `H1.mk_surjective _ h0`. Rewrite `hh` using `[CoefMap.pullCohomologyOne_class, H1.mk_eq_mk]`. Take `⟨g, hg⟩` from `hh`. Use `⟨fun T T' φ ↦ (f.1 T T' φ).snd, fun T T' T'' φ ψ ↦ ?_, fun t ↦ (g t).snd, fun t t' a ↦ ?_⟩` and prove the remaining obligations. Establish `e` using `congrArg TrivSqZeroExt.snd (Z1.comp f φ ψ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : TrivSqZeroExt.snd (mp (omExt F) ψ (f.1 T T' φ) + f.1 T' T'' ψ) = p1 F ψ (f.1 T T' φ).snd + (f.1 T' T'' ψ).snd` using `by show (extMap F ψ (f.1 T T' φ)).snd + (f.1 T' T'' ψ).snd = _`. Conclude with `congrArg (· + (f.1 T' T'' ψ).snd) (snd_extMap F ψ (f.1 T T' φ))`. Conclude with `e.trans e2`. Establish `e` using `congrArg TrivSqZeroExt.snd (congrFun (congrFun (congrFun hg t) t') a)`. Establish `e2 : (g t').snd - p1 F (G.map a) (g t).snd = (f.1 _ _ (G.map a)).snd - β' t t' a`.
-
-Combine the equalities or inequalities in the displayed calculation. Conclude with `e2.symm`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_cocycle_restrict_sub_eq_coboundary : ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] {C' : Type} [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C), Function.Surjective (CoefMap.restrict (FormExt.omExt F) G).pull1 → (∀ β' : ∀ t t', (t ⟶ t') → Ω[F.obj (G.obj t')⁄R], (∀ ⦃t t' t'' : C'⦄ (a : t ⟶ t') (b : t' ⟶ t''), β' t t'' (a ≫ b) = p1 F (G.map b) (β' t t' a) + β' t' t'' b) → ∃ β : A1 F, (∀ ⦃T T' T'' : C⦄ (φ : T ⟶ T') (ψ : T' ⟶ T''), β T T'' (φ ≫ ψ) = p1 F ψ (β T T' φ) + β T' T'' ψ) ∧ ∃ θ' : ∀ t, Ω[F.obj (G.obj t)⁄R], ∀ ⦃t t' : C'⦄ (a : t ⟶ t'), β _ _ (G.map a) - β' t t' a = θ' t' - p1 F (G.map a) (θ' t)) := by
   intro R _ C _ C' _ F G hsurj β' hβ'

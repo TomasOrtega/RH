@@ -8,11 +8,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Ar.Coc.QAlg
 
 /- English proof (translation)
-Take `⟨P, rfl⟩` from `Ideal.Quotient.mk_surjective (I := orig B Unit ^ (m + 1)) x`. Establish `hmem` using `sub_const_mem_orig P`. Establish `hr : Set.range (MvPolynomial.X : Unit → MvPolynomial Unit B) = {MvPolynomial.X ()}` using `Set.range_unique`. Rewrite `hmem` using `[orig, hr, Ideal.mem_span_singleton']`. Take `⟨Q, hQ⟩` from `hmem`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨MvPolynomial.constantCoeff P, Ideal.Quotient.mk _ Q, ?_⟩` and prove the remaining obligations. Establish `hP : P = MvPolynomial.C (MvPolynomial.constantCoeff P) + Q * MvPolynomial.X ()`. Rewrite using `[hQ]`. Expand and normalize the polynomial expressions, which then agree. Use `conv_lhs => rw [hP]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_mul, mul_comm]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_const_add_dQ_mul (B : Type) [CommRing B] (m : ℕ) (x : Jet B Unit m) :
     ∃ (b : B) (y : Jet B Unit m), x = algebraMap B _ b + dQ B m * y := by
@@ -30,7 +30,7 @@ theorem exists_const_add_dQ_mul (B : Type) [CommRing B] (m : ℕ) (x : Jet B Uni
   rfl
 
 /- English proof (translation)
-Use `show (jetAug : Jet B Unit m →ₐ[B] B) (Ideal.Quotient.mk (orig B Unit ^ (m + 1)) (MvPolynomial.X ())) = 0`. Simplify using `[jetAug, liftJet, Ideal.Quotient.liftₐ_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jetAug_dQ (B : Type) [CommRing B] (m : ℕ) :
     (jetAug : Jet B Unit m →ₐ[B] B) (dQ B m) = 0 := by
@@ -39,7 +39,7 @@ theorem jetAug_dQ (B : Type) [CommRing B] (m : ℕ) :
   simp [jetAug, liftJet, Ideal.Quotient.liftₐ_apply]
 
 /- English proof (translation)
-Rewrite using `[add_pow_prime_eq hp, h]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem add_pow_of_natCast_eq_zero {A : Type} [CommRing A] (p : ℕ) (hp : p.Prime)
     (h : (p : A) = 0) (x y : A) : (x + y) ^ p = x ^ p + y ^ p := by
@@ -47,11 +47,11 @@ theorem add_pow_of_natCast_eq_zero {A : Type} [CommRing A] (p : ℕ) (hp : p.Pri
   simp
 
 /- English proof (translation)
-Establish `hpJ : ((p : ℕ) : Jet B Unit p) = 0`. Rewrite using `[← map_natCast (algebraMap B (Jet B Unit p)) p, h0, map_zero]`. Take `⟨b, y, rfl⟩` from `exists_const_add_dQ_mul B p e`. Establish `hb : b = 1`. Simplify `he` using `only [map_add, map_mul, jetAug_dQ, zero_mul, add_zero, AlgHom.commutes, Algebra.algebraMap_self, RingHom.id_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `hb` using the available equality. Take `⟨c, z, rfl⟩` from `exists_const_add_dQ_mul B p y`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `h2 : dQ B p ^ p * dQ B p ^ p = 0`. Rewrite using `[← pow_add]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_eq_zero_of_le (by have := hp.out.one_lt; omega) (dQ_pow B p)`. Rewrite using `[map_one, add_pow_of_natCast_eq_zero p hp.out hpJ, one_pow, mul_pow, add_pow_of_natCast_eq_zero p hp.out hpJ, mul_pow, map_pow]`. Take the linear combination `(z ^ p) * h2`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem pow_eq_one_add (B : Type) [CommRing B] (p : ℕ) [hp : Fact p.Prime] (h0 : (p : B) = 0)
     (e : Jet B Unit p) (he : (jetAug : Jet B Unit p →ₐ[B] B) e = 1) :

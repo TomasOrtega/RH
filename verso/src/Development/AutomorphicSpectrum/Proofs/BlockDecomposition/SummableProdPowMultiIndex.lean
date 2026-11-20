@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.CompanionTheory.Summability
 
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `x _ _`. Conclude with `(hasSum_fintype _).summable`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ r ih`. Introduce `x h0 h1`. Set `e : ℕ × (Fin r → ℕ) ≃ (Fin (r + 1) → ℕ)` to `{ toFun := fun p => Fin.cons p.1 p.2 invFun := fun j => (j 0, Fin.tail j) left_inv := fun p => by simp right_inv := fun j => by simp }`. Rewrite using `[← e.summable_iff]`. Establish `hA : Summable (fun n : ℕ => x 0 ^ n)` using `summable_geometric_of_lt_one (h0 0) (h1 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : Summable (fun j : Fin r → ℕ => ∏ i, x i.succ ^ j i)` using `ih (fun i => x i.succ) (fun i => h0 _) (fun i => h1 _)`. Establish `hM` using `hA.mul_of_nonneg hB (fun n => pow_nonneg (h0 0) n) (fun j => Finset.prod_nonneg (fun i _ => pow_nonneg (h0 _) _))`. Use `hM.congr ?_` and prove the remaining obligations. Introduce and unpack `⟨n, j⟩`. Simplify using `[e, Fin.prod_univ_succ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem summable_prod_pow_multiIndex : ∀ (r : ℕ) (x : Fin r → ℝ), (∀ i, 0 ≤ x i) → (∀ i, x i < 1) →
     Summable (fun j : Fin r → ℕ => ∏ i, x i ^ j i) := by

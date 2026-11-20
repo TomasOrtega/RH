@@ -13,17 +13,15 @@ section LinAlg
 variable {K : Type*} [Field K]
 
 /- English proof (translation)
-Establish `hrow : ∀ i, ∃ t : Fin k → K, ∀ z, (δ *ᵥ z) i = t ⬝ᵥ (M *ᵥ z)`. Introduce `i`. Set `f : (Fin n → K) →ₗ[K] (Fin k → K)` to `M.mulVecLin`. Set `g : Module.Dual K (Fin n → K)` to `{ toFun := fun z => (δ *ᵥ z) i map_add' := fun x y => by simp [Matrix.mulVec_add] map_smul' := fun c x => by simp [Matrix.mulVec_smul] }`. Establish `hg : g ∈ (LinearMap.ker f).dualAnnihilator`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_dualAnnihilator]`. Introduce `z hz`. Use `show (δ *ᵥ z) i = 0`. Rewrite using `[h z (LinearMap.mem_ker.mp hz)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[← LinearMap.range_dualMap_eq_dualAnnihilator_ker]`. Take `⟨hd, hh⟩` from `hg`. Use `⟨fun c => hd (fun j => if c = j then 1 else 0), fun z => ?_⟩` and prove the remaining obligations. Establish `h1 : hd (f z) = g z`. Rewrite using `[← hh]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2 : hd (M *ᵥ z) = (fun c => hd (fun j => if c = j then 1 else 0)) ⬝ᵥ (M *ᵥ z)`. Rewrite using `[LinearMap.pi_apply_eq_sum_univ hd (M *ᵥ z)]`. Simplify using `only [dotProduct, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Conclude with `h1.symm.trans h2`. Use `choose X hX using hrow`. Use `⟨Matrix.of X, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Use `hX i (Pi.single j 1)` as an intermediate fact.
-
-Rewrite `this` using `[Matrix.dotProduct_mulVec]`. Simplify `this` using `[Matrix.mul_apply, Matrix.vecMul, dotProduct, Pi.single_apply]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ap_factor {n k : ℕ} (δ : Matrix (Fin n) (Fin n) K) (M : Matrix (Fin k) (Fin n) K)
     (h : ∀ w, M *ᵥ w = 0 → δ *ᵥ w = 0) : ∃ X : Matrix (Fin n) (Fin k) K, δ = X * M := by
@@ -63,7 +61,7 @@ end LinAlg
 section Place
 
 /- English proof (translation)
-Use `first`. Consider the case `simp [Formalism.MainNotions.S.uMat]`. Consider the case `(show ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) * (((g⁻¹ : Formalism.REAL.UJ ε) : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ) = 1`. Rewrite using `[Subgroup.coe_inv, Units.mul_inv])`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ap_uMat_mul_inv {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) :
     Formalism.MainNotions.S.uMat g * Formalism.MainNotions.S.uMat g⁻¹ = 1 := by
@@ -74,7 +72,7 @@ theorem ap_uMat_mul_inv {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ �
        rw [Subgroup.coe_inv, Units.mul_inv])
 
 /- English proof (translation)
-Use `first`. Consider the case `exact g.2`. Consider the case `(have h := g.2`. Simplify `h)` using `[Formalism.REAL.UJ, Formalism.REAL.inUJ]`.
+Treat this case separately. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ap_inUJ {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) :
     (Formalism.MainNotions.S.uMat g)ᴴ * Formalism.REAL.Jm ε * Formalism.MainNotions.S.uMat g = Formalism.REAL.Jm ε := by
@@ -84,7 +82,7 @@ theorem ap_inUJ {n : ℕ} {ε : Fin n → Bool} (g : Formalism.REAL.UJ ε) :
        simpa [Formalism.REAL.UJ, Formalism.REAL.inUJ] using h)
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ap_Jm_herm {n : ℕ} (ε : Fin n → Bool) : (Formalism.REAL.Jm ε)ᴴ = Formalism.REAL.Jm ε := by
   unfold Formalism.REAL.Jm
@@ -94,7 +92,7 @@ theorem ap_Jm_herm {n : ℕ} (ε : Fin n → Bool) : (Formalism.REAL.Jm ε)ᴴ =
   by_cases h : ε a <;> simp [h]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : ε a <;> simp [h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem ap_Jm_sq {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   unfold Formalism.REAL.Jm
@@ -120,19 +118,19 @@ theorem ap_coordV (z : I.GA) (v : InfinitePlace I.F) (w : Fin I.n → I.E) :
     PI.LatCountG.coordV I z v w = qM I z v *ᵥ phv I v w := rfl
 
 /- English proof (translation)
-Conclude with `Matrix.mul_nonsing_inv (I.P v) ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v))`.
+A detailed English derivation is pending.
 -/
 theorem ap_hP (v : InfinitePlace I.F) : I.P v * (I.P v)⁻¹ = 1 := by
   exact Matrix.mul_nonsing_inv (I.P v) ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v))
 
 /- English proof (translation)
-Conclude with `Matrix.nonsing_inv_mul (I.P v) ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v))`.
+A detailed English derivation is pending.
 -/
 theorem ap_hP' (v : InfinitePlace I.F) : (I.P v)⁻¹ * I.P v = 1 := by
   exact Matrix.nonsing_inv_mul (I.P v) ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[phv, Matrix.mulVec, dotProduct, map_sum, map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ap_phv_mulVec (v : InfinitePlace I.F) (δ : Matrix (Fin I.n) (Fin I.n) I.E) (w : Fin I.n → I.E) :
     phv I v (δ *ᵥ w) = δ.map (I.φ v) *ᵥ phv I v w := by
@@ -140,7 +138,7 @@ theorem ap_phv_mulVec (v : InfinitePlace I.F) (δ : Matrix (Fin I.n) (Fin I.n) I
   simp [phv, Matrix.mulVec, dotProduct, map_sum, map_mul]
 
 /- English proof (translation)
-Unfold `amat qM`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Formalism.MainNotions.S.uMat (y.1 v)), ap_uMat_mul_inv, Matrix.one_mul, ap_hP, Matrix.mul_one]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ap_AQ (x y : I.GA) (v : InfinitePlace I.F) (δ : Matrix (Fin I.n) (Fin I.n) I.E) :
     amat I x y v δ * qM I y v = qM I x v * δ.map (I.φ v) := by
@@ -149,7 +147,7 @@ theorem ap_AQ (x y : I.GA) (v : InfinitePlace I.F) (δ : Matrix (Fin I.n) (Fin I
   rw [← Matrix.mul_assoc (Formalism.MainNotions.S.uMat (y.1 v)), ap_uMat_mul_inv, Matrix.one_mul, ap_hP, Matrix.mul_one]
 
 /- English proof (translation)
-Rewrite using `[ap_coordV, ap_coordV, Matrix.mulVec_mulVec, ap_AQ, ← Matrix.mulVec_mulVec, ap_phv_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ap_amat_coord (x y : I.GA) (v : InfinitePlace I.F) (δ : Matrix (Fin I.n) (Fin I.n) I.E)
     (w : Fin I.n → I.E) :
@@ -157,7 +155,7 @@ theorem ap_amat_coord (x y : I.GA) (v : InfinitePlace I.F) (δ : Matrix (Fin I.n
   rw [ap_coordV, ap_coordV, Matrix.mulVec_mulVec, ap_AQ, ← Matrix.mulVec_mulVec, ap_phv_mulVec]
 
 /- English proof (translation)
-Use extensionality with `a c`. Simplify using `[PI.LatCountG.gramV, colM, Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem ap_gram (z : I.GA) (v : InfinitePlace I.F) {k : ℕ} (b : Fin k → Fin I.n → I.E) :
     PI.LatCountG.gramV I z v b = (colM I z v b)ᴴ * colM I z v b := by
@@ -165,7 +163,7 @@ theorem ap_gram (z : I.GA) (v : InfinitePlace I.F) {k : ℕ} (b : Fin k → Fin 
   simp [PI.LatCountG.gramV, colM, Matrix.mul_apply, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Use extensionality with `i c`. Simplify using `only [colM, Matrix.of_apply]`. Rewrite using `[← ap_amat_coord I x y v δ (u c)]`. Simplify using `[Matrix.mul_apply, Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ap_AC (x y : I.GA) (v : InfinitePlace I.F) (δ : Matrix (Fin I.n) (Fin I.n) I.E) {k : ℕ}
     (u : Fin k → Fin I.n → I.E) :
@@ -176,11 +174,11 @@ theorem ap_AC (x y : I.GA) (v : InfinitePlace I.F) (δ : Matrix (Fin I.n) (Fin I
   simp [Matrix.mul_apply, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Unfold `qM`. Rewrite using `[Matrix.conjTranspose_mul]`. Establish `hU` using `ap_inUJ (y.1 v)⁻¹`. Establish `hS` using `I.P_spec v`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = ((I.P v)⁻¹)ᴴ * Formalism.REAL.Jm (I.ε v) * (I.P v)⁻¹ := by rw [hU]`. Use `_ = ((I.P v)⁻¹)ᴴ * ((I.P v)ᴴ * I.J.map (I.φ v) * I.P v) * (I.P v)⁻¹ := by rw [hS]`. Use `_ = (I.P v * (I.P v)⁻¹)ᴴ * I.J.map (I.φ v) * (I.P v * (I.P v)⁻¹) := by`. Rewrite using `[Matrix.conjTranspose_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = I.J.map (I.φ v) := by`. Rewrite using `[ap_hP]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem ap_QJQ (y : I.GA) (v : InfinitePlace I.F) :
     (qM I y v)ᴴ * Formalism.REAL.Jm (I.ε v) * qM I y v = I.J.map (I.φ v) := by
@@ -201,7 +199,7 @@ theorem ap_QJQ (y : I.GA) (v : InfinitePlace I.F) :
         simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ap_QJQ]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ap_pair (y : I.GA) (v : InfinitePlace I.F) (p q : Fin I.n → ℂ) :
     star (qM I y v *ᵥ p) ⬝ᵥ (Formalism.REAL.Jm (I.ε v) *ᵥ (qM I y v *ᵥ q)) =
@@ -209,7 +207,7 @@ theorem ap_pair (y : I.GA) (v : InfinitePlace I.F) (p q : Fin I.n → ℂ) :
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, ap_QJQ]
 
 /- English proof (translation)
-Establish `h` using `I.cm.cmUnram.2.1 (I.φ v) a`. Rewrite `h` using `[starRingEnd_apply]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ap_star (v : InfinitePlace I.F) (a : I.E) : I.φ v (star a) = star (I.φ v a) := by
   have h := I.cm.cmUnram.2.1 (I.φ v) a
@@ -217,7 +215,7 @@ theorem ap_star (v : InfinitePlace I.F) (a : I.E) : I.φ v (star a) = star (I.φ
   exact h
 
 /- English proof (translation)
-Simplify using `only [hf, Formalism.UG.hform, map_sum, map_mul, dotProduct, Matrix.mulVec, phv, Pi.star_apply, Matrix.map_apply, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[starRingEnd_apply, ap_star]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ap_form (v : InfinitePlace I.F) (w z : Fin I.n → I.E) :
     I.φ v (hf I w z) = star (phv I v w) ⬝ᵥ (I.J.map (I.φ v) *ᵥ phv I v z) := by
@@ -228,7 +226,7 @@ theorem ap_form (v : InfinitePlace I.F) (w z : Fin I.n → I.E) :
   ring
 
 /- English proof (translation)
-Simplify using `only [Matrix.mul_apply, Matrix.conjTranspose_apply, dotProduct, Matrix.mulVec, Pi.star_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ap_entry {n k : ℕ} (Y C : Matrix (Fin n) (Fin k) ℂ) (Jm : Matrix (Fin n) (Fin n) ℂ) (a c : Fin k) :
     (Yᴴ * Jm * C) a c = star (fun i => Y i a) ⬝ᵥ (Jm *ᵥ fun i => C i c) := by
@@ -239,9 +237,9 @@ theorem ap_entry {n k : ℕ} (Y C : Matrix (Fin n) (Fin k) ℂ) (Jm : Matrix (Fi
   ring
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_mul, ap_Jm_herm]`. Use extensionality with `a c`. Rewrite using `[ap_entry, Matrix.map_apply]`. Establish `e1 : (fun i => colM I y v b' i a) = PI.LatCountG.coordV I y v (b' a)` using `rfl`. Establish `e2 : (fun i => colM I y v u i c) = PI.LatCountG.coordV I y v (u c)` using `rfl`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, e2, ap_coordV, ap_coordV, ap_pair]`. Simplify using `only [pairM, Matrix.of_apply]`. Rewrite using `[ap_form]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ap_DC (y : I.GA) (v : InfinitePlace I.F) {k : ℕ} (b' u : Fin k → Fin I.n → I.E) :
     (Formalism.REAL.Jm (I.ε v) * colM I y v b')ᴴ * colM I y v u = (pairM I b' u).map (I.φ v) := by
@@ -255,7 +253,7 @@ theorem ap_DC (y : I.GA) (v : InfinitePlace I.F) {k : ℕ} (b' u : Fin k → Fin
   rw [ap_form]
 
 /- English proof (translation)
-Rewrite using `[Matrix.conjTranspose_mul, ap_Jm_herm]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (Formalism.REAL.Jm (I.ε v)), ap_Jm_sq, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ap_DD (y : I.GA) (v : InfinitePlace I.F) {k : ℕ} (b' : Fin k → Fin I.n → I.E) :
     (Formalism.REAL.Jm (I.ε v) * colM I y v b')ᴴ * (Formalism.REAL.Jm (I.ε v) * colM I y v b') =
@@ -268,7 +266,7 @@ def hM {k : ℕ} (b' : Fin k → Fin I.n → I.E) : Matrix (Fin k) (Fin I.n) I.E
   Matrix.of (fun a i => star (b' a i)) * I.J
 
 /- English proof (translation)
-Simplify using `only [hM, hf, Formalism.UG.hform, Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.of_apply, Finset.sum_mul, starRingEnd_apply]`. Use `first`. Consider the case `exact Finset.sum_comm`. Consider the case `rw [Finset.sum_comm]`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem ap_hM (k : ℕ) (b' : Fin k → Fin I.n → I.E) (w : Fin I.n → I.E) (a : Fin k) :
     (hM I b' *ᵥ w) a = hf I (b' a) w := by
@@ -279,25 +277,23 @@ theorem ap_hM (k : ℕ) (b' : Fin k → Fin I.n → I.E) (w : Fin I.n → I.E) (
     | rw [Finset.sum_comm]
 
 /- English proof (translation)
-Introduce `w hw`. Establish `hle : LinearMap.ker δ.mulVecLin ≤ LinearMap.ker (hM I b').mulVecLin`. Introduce `z hz`. Rewrite `hz`, the goal using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Matrix.mulVecLin_apply, ap_hM]`. Conclude with `hperp a z hz`. Establish `hrδ : Module.finrank I.E (LinearMap.range δ.mulVecLin) = k`. Establish `hr : LinearMap.range δ.mulVecLin = Submodule.span I.E (Set.range fun c => δ *ᵥ u c)`. Apply `le_antisymm` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `hsp z`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨c, rfl⟩`. Conclude with `⟨u c, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr, finrank_span_eq_card hu, Fintype.card_fin]`. Establish `hrows : LinearIndependent I.E (fun a => hM I b' a)`. Rewrite `hb`, the goal using `[linearIndependent_iff']`. Introduce `s g hg a ha`. Establish `h1 : (∑ j ∈ s, g j • (fun i => star (b' j i))) ᵥ* I.J = 0`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← hg]`. Use function extensionality and compare the values at `i`. Simplify using `only [hM, Matrix.vecMul, dotProduct, Matrix.mul_apply, Matrix.of_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.sum_mul, Finset.mul_sum, mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Establish `hJ : IsUnit I.J.det` using `isUnit_iff_ne_zero.mpr I.J_det`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (∑ j ∈ s, g j • (fun i => star (b' j i))) = 0`. Use `congrArg (fun x => x ᵥ* I.J⁻¹) h1` as an intermediate fact. Simplify `this` using `[Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hJ]`. Establish `h3 : ∑ j ∈ s, star (g j) • b' j = 0`. Use function extensionality and compare the values at `i`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `congrArg star (congrFun h2 i)` as an intermediate fact. Simplify `this` using `[Finset.sum_apply, star_sum, star_mul']`. Use `hb s (fun j => star (g j)) h3 a ha` as an intermediate fact. Simplify using `using this`. Establish `hrM : Module.finrank I.E (LinearMap.range (hM I b').mulVecLin) = k`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Matrix.rank_eq_finrank_span_row (hM I b')` as an intermediate fact. Establish `hrows' : LinearIndependent I.E (hM I b').row` using `by first`. Consider the case `exact hrows`. Consider the case `simpa [Matrix.row] using hrows`. Rewrite `this` using `[finrank_span_eq_card hrows', Fintype.card_fin]`.
+Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hn1` using `LinearMap.finrank_range_add_finrank_ker δ.mulVecLin`. Establish `hn2` using `LinearMap.finrank_range_add_finrank_ker (hM I b').mulVecLin`. Establish `heq : LinearMap.ker δ.mulVecLin = LinearMap.ker (hM I b').mulVecLin` using `Submodule.eq_of_le_of_finrank_eq hle (by omega)`. Establish `hw' : w ∈ LinearMap.ker (hM I b').mulVecLin` using `LinearMap.mem_ker.mpr hw`.
-
-Rewrite `hw'` using `[← heq]`. Conclude with `LinearMap.mem_ker.mp hw'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ap_ker (δ : Matrix (Fin I.n) (Fin I.n) I.E) (k : ℕ) (u b' : Fin k → Fin I.n → I.E)
     (hu : LinearIndependent I.E (fun c => δ *ᵥ u c))
@@ -356,17 +352,17 @@ theorem ap_ker (δ : Matrix (Fin I.n) (Fin I.n) I.E) (k : ℕ) (u b' : Fin k →
   exact LinearMap.mem_ker.mp hw'
 
 /- English proof (translation)
-Introduce `z hz`. Take `⟨X, hX⟩` from `ap_factor δ (hM I b') (ap_ker I δ k u b' hu hsp hb hperp)`. Use `set Φ : Matrix (Fin I.n) (Fin k) ℂ := Matrix.of fun j a => I.φ v (b' a j) with hΦ`. Establish `hC : colM I y v b' = qM I y v * Φ`. Use extensionality with `j a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [colM, Matrix.of_apply]`. Rewrite using `[ap_coordV]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply, hΦ, phv]`. Establish `hH : (Formalism.REAL.Jm (I.ε v) * colM I y v b')ᴴ * qM I y v = (hM I b').map (I.φ v)`. Rewrite using `[hC, Matrix.conjTranspose_mul, ap_Jm_herm, Matrix.conjTranspose_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hM, Matrix.map_mul]`. Use `congr 1`. Use extensionality with `a j`. Simplify using `[hΦ, ap_star]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hinv : qM I y v * (I.P v * Formalism.MainNotions.S.uMat (y.1 v)) = 1`. Unfold `qM`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mul_assoc (I.P v)⁻¹, ap_hP', Matrix.one_mul]`. Use `ap_uMat_mul_inv (y.1 v)⁻¹` as an intermediate fact. Rewrite `this` using `[inv_inv]`. Then use the resulting hypothesis.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `set z' := (I.P v * Formalism.MainNotions.S.uMat (y.1 v)) *ᵥ z with hz'`. Establish `hzz : z = qM I y v *ᵥ z'`. Rewrite using `[hz', Matrix.mulVec_mulVec, hinv, Matrix.one_mulVec]`. Establish `hM0 : (hM I b').map (I.φ v) *ᵥ z' = 0`. Rewrite using `[← hH, ← Matrix.mulVec_mulVec, ← hzz]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hz`. Establish `hd0 : δ.map (I.φ v) *ᵥ z' = 0`. Rewrite using `[hX, Matrix.map_mul, ← Matrix.mulVec_mulVec, hM0, Matrix.mulVec_zero]`. Rewrite using `[hzz, Matrix.mulVec_mulVec, ap_AQ, ← Matrix.mulVec_mulVec, hd0, Matrix.mulVec_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ap_kernel (x y : I.GA) (v : InfinitePlace I.F) (δ : Matrix (Fin I.n) (Fin I.n) I.E) (k : ℕ)
     (u b' : Fin k → Fin I.n → I.E)
@@ -408,20 +404,20 @@ theorem ap_kernel (x y : I.GA) (v : InfinitePlace I.F) (δ : Matrix (Fin I.n) (F
   rw [hzz, Matrix.mulVec_mulVec, ap_AQ, ← Matrix.mulVec_mulVec, hd0, Matrix.mulVec_zero]
 
 /- English proof (translation)
-Unfold `hsN Formalism.REAL.hs`. Rewrite using `[Real.sq_sqrt (by positivity)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ap_hs_sq {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) : hsN A ^ 2 = ∑ i, ∑ j, ‖A i j‖ ^ 2 := by
   unfold hsN Formalism.REAL.hs
   rw [Real.sq_sqrt (by positivity)]
 
 /- English proof (translation)
-Unfold `ArchPlaceOf ArchIneq ArchPlace`. Introduce `hA I x y δ k u b' v hu hsp hb hperp`. Establish `hCS : ∀ w : Fin I.n → ℂ, PI.UnitaryGroupMassFormula.LSC.nsq (amat I x y v δ *ᵥ w) ≤ hsN (amat I x y v δ) ^ 2 * PI.UnitaryGroupMassFormula.LSC.nsq w`. Introduce `w`. Unfold `PI.UnitaryGroupMassFormula.LSC.nsq`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Rewrite using `[ap_hs_sq, Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Establish `h1 : ‖(amat I x y v δ *ᵥ w) i‖ ≤ ∑ j, ‖amat I x y v δ i j‖ * ‖w j‖`. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `(norm_sum_le _ _).trans (le_of_eq ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[norm_mul]`. Establish `h2` using `Finset.sum_mul_sq_le_sq_mul_sq Finset.univ (fun j => ‖amat I x y v δ i j‖) (fun j => ‖w j‖)`. Combine the equalities or inequalities in the displayed calculation. Use polynomial arithmetic with `[h1, norm_nonneg ((amat I x y v δ *ᵥ w) i)]`. Use `_ ≤ (∑ j, ‖amat I x y v δ i j‖ ^ 2) * ∑ j, ‖w j‖ ^ 2 := h2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `key` using `hA I.n k (amat I x y v δ) (colM I y v u) (Formalism.REAL.Jm (I.ε v) * colM I y v b') (hsN (amat I x y v δ) ^ 2) (sq_nonneg _) hCS (ap_kernel I x y v δ k u b' hu hsp hb hperp)`. Rewrite `key` using `[ap_AC, ap_DD, ap_DC, ← ap_gram, ← ap_gram, ← pow_mul]`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Conclude with `key`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem archimedean_place_exists : ArchPlaceOf := by
   unfold ArchPlaceOf ArchIneq ArchPlace

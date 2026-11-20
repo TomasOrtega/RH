@@ -16,9 +16,9 @@ open ArithmeticFunction Formalism.LFunctionChainParameters.characterSumData.PB
 variable {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H]
 
 /- English proof (translation)
-Unfold `askD`. Use `Finset.sum_eq_zero (fun i hi => Finset.sum_eq_zero (fun g hg => ?_))` and prove the remaining obligations. Establish `hg'` using `(Finset.mem_filter.1 hg).2.2`. Simplify using `only [Finset.mem_Icc] at hi`. Apply `max_zero_of_gt hw hN hg'` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (D.d : ℝ) ≤ (D.d : ℝ) ^ i`. Establish `: (1 : ℝ) ≤ D.d` using `by exact_mod_cast hD.d_prime.one_lt.le`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : (N : ℝ) < D.d` using `by exact_mod_cast hdN`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 lemma ramifiedPrimeTerm_eq_zero_of_lt_ramifiedPrime (D : ArithData H) {S0 : Finset ℕ} (hD : HostFactsS D S0) {N : ℕ} {a : ℝ} {t : H} {w : E0 × H → ℝ}
     (hw : ∀ ρ, InPhi ρ → 0 < w ρ) (hN : ∀ ρ, InPhi ρ → a / w ρ ≤ N) (hdN : N < D.d) :
@@ -37,7 +37,7 @@ lemma ramifiedPrimeTerm_eq_zero_of_lt_ramifiedPrime (D : ArithData H) {S0 : Fins
   linarith
 
 /- English proof (translation)
-Rewrite using `[natCard_eq_filter]`. Establish `: univ.filter (fun x => x ∈ D.inertia D.d) = ({0, sgc0} : Finset (E0 × H))`. Use extensionality with `x`. Simplify using `[hD.inertia_d]`. Rewrite using `[this, Finset.card_pair (by unfold sgc0; intro h; have := congrArg (fun x : E0 × H => x.1.1) h; simp at this)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
 Evaluate the numerical expressions.
 -/
@@ -50,9 +50,9 @@ lemma cardI (D : ArithData H) {S0 : Finset ℕ} (hD : HostFactsS D S0) : (Nat.ca
   norm_num
 
 /- English proof (translation)
-Use `orthogonality_ramified D p i hp hi g` as an intermediate fact. Rewrite using `[this, hD.unram p hp h2 hd]`. Distinguish the cases in `he : i • D.frob p = g`. Rewrite using `[if_pos he, if_pos (by rw [he, sub_self]; exact AddSubgroup.zero_mem _), AddSubgroup.card_bot]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Rewrite using `[if_neg he, if_neg (by rw [AddSubgroup.mem_bot, sub_eq_zero]; exact fun e => he e.symm)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma ounram (D : ArithData H) {S0 : Finset ℕ} (hD : HostFactsS D S0) (p i : ℕ) (hp : p.Prime) (h2 : p ∉ S0)
     (hd : p ≠ D.d) (hi : 1 ≤ i) (g : E0 × H) :
@@ -68,11 +68,11 @@ lemma ounram (D : ArithData H) {S0 : Finset ℕ} (hD : HostFactsS D S0) (p i : �
   · rw [if_neg he, if_neg (by rw [AddSubgroup.mem_bot, sub_eq_zero]; exact fun e => he e.symm)]
 
 /- English proof (translation)
-Establish `hR : ((2 * Real.log p * askP D N a t w p : ℝ) : ℂ) = ∑ i ∈ Icc 1 N, (if ¬ InPhi (i • D.frob p) then 2 * (Real.log p : ℂ) * ((max (a / (p : ℝ) ^ i - w (partner t (i • D.frob p))) 0 : ℝ) : ℂ) else 0)`. Unfold `askP`. Rewrite using `[Finset.sum_filter, Finset.mul_sum]`. Use `push_cast`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite using `[hR]`. Use `Finset.sum_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Establish `hi1 : 1 ≤ i` using `(Finset.mem_Icc.1 hi).1`. Establish `e : ∀ g, Kc D (p ^ i) g = if i • D.frob p = g then 2 else 0` using `fun g => ounram D hD p i hp h2 hd hi1 g`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e, ite_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq]`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and]`. Apply the tactic sequence `split_ifs with h <;> simp only [Fc, Nat.cast_pow, mul_zero] <;> ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma lunram (D : ArithData H) {S0 : Finset ℕ} (hD : HostFactsS D S0) (N : ℕ) (a : ℝ) (t : H) (w : E0 × H → ℝ)
     {p : ℕ} (hp : p.Prime) (h2 : p ∉ S0) (hd : p ≠ D.d) :
@@ -97,13 +97,13 @@ lemma lunram (D : ArithData H) {S0 : Finset ℕ} (hD : HostFactsS D S0) (N : ℕ
   split_ifs with h <;> simp only [Fc, Nat.cast_pow, mul_zero] <;> ring
 
 /- English proof (translation)
-Use `Finset.sum_eq_zero (fun i hi => ?_)` and prove the remaining obligations. Establish `hi1 : 1 ≤ i` using `(Finset.mem_Icc.1 hi).1`. Rewrite using `[Finset.sum_eq_zero, mul_zero]`. Introduce `g hg`. Establish `hg'` using `(Finset.mem_filter.1 hg).2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `orthogonality_ramified D p i hp hi1 g`. Unfold `Kc`. Rewrite using `[e]`. Establish `: ¬ (g - i • D.frob p ∈ D.inertia p)`. Introduce `hm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hg'` to reduce the goal to its premises. Establish `hx` using `hD.split_inertia p h2 _ hm`. Establish `hf` using `inPhi_nsmul (hD.split_frob p h2) i`. Use `inPhi_add hx hf` as an intermediate fact. Simplify using `using this`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `[this]`.
+Simplify using the standard rewrite rules.
 -/
 lemma lsplit (D : ArithData H) {S0 : Finset ℕ} (hD : HostFactsS D S0) (N : ℕ) (a : ℝ) (t : H) (w : E0 × H → ℝ)
     {p : ℕ} (hp : p.Prime) (h2 : p ∈ S0) :
@@ -128,13 +128,13 @@ lemma lsplit (D : ArithData H) {S0 : Finset ℕ} (hD : HostFactsS D S0) (N : ℕ
   simp [this]
 
 /- English proof (translation)
-Unfold `askD`. Use `push_cast`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i hi => ?_)` and prove the remaining obligations. Establish `hi1 : 1 ≤ i` using `(Finset.mem_Icc.1 hi).1`.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congr 1`. Rewrite using `[Finset.sum_filter, Finset.sum_filter]`. Use `Finset.sum_congr rfl (fun g _ => ?_)` and prove the remaining obligations. Establish `e` using `orthogonality_ramified D D.d i hD.d_prime hi1 g`. Unfold `Kc`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, cardI D hD]`. Unfold `Fc`. Distinguish the cases in `hφ : InPhi g`. Simplify using `[hφ]`. Distinguish the cases in `hm : g - i • D.frob D.d ∈ D.inertia D.d`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hφ, hm]`. Simplify using `[hφ, hm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma ld (D : ArithData H) {S0 : Finset ℕ} (hD : HostFactsS D S0) (N : ℕ) (a : ℝ) (t : H) (w : E0 × H → ℝ) :
     ∑ i ∈ Icc 1 N, (Real.log D.d : ℂ) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g),
@@ -160,31 +160,27 @@ lemma ld (D : ArithData H) {S0 : Finset ℕ} (hD : HostFactsS D S0) (N : ℕ) (a
     · simp [hφ, hm]
 
 /- English proof (translation)
-Use `set S := univ.filter (fun g : E0 × H => ¬ InPhi g) with hS`. Establish `hA : (1 / ((PhiSet (H` using `H)).card : ℂ)) * ∑ g ∈ S, ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * ∑ n ∈ Icc 1 N, (Λ n : ℂ) * primVal D ψ n * ((max (a / n - w (partner t g)) 0 : ℝ) : ℂ) = ∑ n ∈ Icc 1 N, (Λ n : ℂ) * ∑ g ∈ S, Kc D n g * Fc a t w n g := by`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum]`. Use `_ = ∑ g ∈ S, ∑ n ∈ Icc 1 N, ∑ ψ : AddChar (E0 × H) ℂ, (1 / ((PhiSet (H := H)).card : ℂ)) * (starRingEnd ℂ (ψ g) * ((Λ n : ℂ) * primVal D ψ n * ((max (a / n - w (partner t g)) 0 : ℝ) : ℂ))) := Finset.sum_congr rfl (fun g _ => Finset.sum_comm)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ = ∑ n ∈ Icc 1 N, ∑ g ∈ S, ∑ ψ : AddChar (E0 × H) ℂ, (1 / ((PhiSet (H := H)).card : ℂ)) * (starRingEnd ℂ (ψ g) * ((Λ n : ℂ) * primVal D ψ n * ((max (a / n - w (partner t g)) 0 : ℝ) : ℂ))) := Finset.sum_comm`. Use `_ = _ := by`. Simplify using `only [Kc, Fc, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl (fun n _ => Finset.sum_congr rfl (fun g _ => Finset.sum_congr rfl (fun ψ _ => by ring)))` and prove the remaining obligations. Rewrite using `[hA]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[sum_vonMangoldt_primePow N (fun n => ∑ g ∈ S, Kc D n g * Fc a t w n g) (by`. Introduce `p i hp hi hgt`. Use `Finset.sum_eq_zero (fun g hg => ?_)` and prove the remaining obligations. Establish `hg'` using `(Finset.mem_filter.1 hg).2`. Unfold `Fc`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[max_zero_of_gt hw hN hg' (m := ((p ^ i : ℕ) : ℝ)) (by exact_mod_cast hgt)]`. Use the proof step `simp)]`. Use `set P := (range (N + 1)).filter Nat.Prime with hP`. Establish `hC : ∀ p ∈ P, (∑ i ∈ Icc 1 N, (Real.log p : ℂ) * ∑ g ∈ S, Kc D (p ^ i) g * Fc a t w (p ^ i) g) = (if IsInert D p then ((2 * Real.log p * askP D N a t w p : ℝ) : ℂ) else 0) + (if p = D.d then ((Real.log D.d * askD D N a t w : ℝ) : ℂ) else 0)`. Introduce `p hpP`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `hp : p.Prime` using `(Finset.mem_filter.1 hpP).2`. Distinguish the cases in `hd : p = D.d`. Substitute `hd` using the available equality. Rewrite using `[hS, ld D hD N a t w, if_neg (fun h => h.2.2.2.1 rfl), if_pos rfl, zero_add]`. Rewrite using `[if_neg hd, add_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h2 : p ∈ S0`. Rewrite using `[hS, lsplit D hD N a t w hp h2]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨_, _, _, _, hc⟩`. Conclude with `hc (hD.split_frob p h2)`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h21 : p ≠ 2` using `fun e => h2 (e ▸ hD.two_mem)`. Establish `h22 : p ≠ D.q1` using `fun e => h2 (e ▸ hD.q1_mem)`. Rewrite using `[hS, lunram D hD N a t w hp h2 hd]`. Distinguish the cases in `hin : IsInert D p`. Rewrite using `[if_pos hin]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg hin]`. Establish `hφ : InPhi (D.frob p)`. Assume the negation of the conclusion as `hc`. Conclude with `hin ⟨hp, h21, h22, hd, hc⟩`. Establish `: askP D N a t w p = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `askP`. Rewrite using `[Finset.sum_eq_zero]`. Introduce `i hi`. Conclude with `absurd (inPhi_nsmul hφ i) (Finset.mem_filter.1 hi).2`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Simplify using the standard rewrite rules. Rewrite using `[Finset.sum_congr rfl hC, Finset.sum_add_distrib, ← Finset.sum_filter, Finset.sum_ite_eq']`. Establish `hfilt : (range (N + 1)).filter (IsInert D) = P.filter (IsInert D)`. Rewrite using `[hP, Finset.filter_filter]`. Conclude with `Finset.filter_congr (fun p _ => ⟨fun h => ⟨h.1, h⟩, fun h => h.2⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Unfold `ASK`. Rewrite using `[hfilt]`. Use `push_cast`. Use `congr 1`. Distinguish the cases in `hdP : D.d ∈ P`.
-
-Rewrite using `[if_pos hdP]`. Rewrite using `[if_neg hdP]`. Establish `hdN : N < D.d`. Assume the negation of the conclusion as `hc`. Conclude with `hdP (Finset.mem_filter.2 ⟨Finset.mem_range.2 (by omega), hD.d_prime⟩)`.
-
-Rewrite using `[ramifiedPrimeTerm_eq_zero_of_lt_ramifiedPrime D hD hw hN hdN]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma askExp (D : ArithData H) {S0 : Finset ℕ} (hD : HostFactsS D S0) (a : ℝ) (t : H) (w : E0 × H → ℝ)
     (hw : ∀ ρ, InPhi ρ → 0 < w ρ) (N : ℕ) (hN : ∀ ρ, InPhi ρ → a / w ρ ≤ N) :
@@ -265,21 +261,21 @@ lemma askExp (D : ArithData H) {S0 : Finset ℕ} (hD : HostFactsS D S0) (a : ℝ
 end CharacterBalance
 
 /- English proof (translation)
-Establish `hf0` using `PB.phi_card_ne_zero (H := H)`. Establish `hfr : ((PhiSet (H` using `H)).card : ℝ) ≠ 0 := by exact_mod_cast hf0`. Rewrite using `[CharacterBalance.askExp D hD a t w hw N hN]`. Establish `hin : ∀ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∀ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * ∑ n ∈ Icc 1 N, (ArithmeticFunction.vonMangoldt n : ℂ) * primVal D ψ n * ((max (a / n - w (partner t g)) 0 : ℝ) : ℂ) = starRingEnd ℂ (ψ g) * ((w (partner t g) : ℂ) * GPsi D ell ψ …`. Introduce `g hg ψ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hg'` using `(Finset.mem_filter.1 hg).2`. Establish `hW` using `hw _ (partner_inPhi t hg')`. Rewrite using `[sum_cut D ψ N a _ ha hW (hN _ (partner_inPhi t hg')), inner_eq D ell ψ a _ ha hW]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun g hg => Finset.sum_congr rfl (fun ψ _ => hin g hg ψ))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.sum_add_distrib, mul_add]`. Establish `hDe : (1 / ((PhiSet (H` using `H)).card : ℂ)) * ∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * ((w (partner t g) : ℂ) * GPsi D ell ψ (a / w (partner t g))) = De D ell a t w := by`. Unfold `De`. Use `congrArg _ (Finset.sum_congr rfl (fun g _ => Finset.sum_congr rfl (fun ψ _ => by ring)))` and prove the remaining obligations. Rewrite using `[hDe]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsplit : ∀ g : E0 × H, (∑ ψ : AddChar (E0 × H) ℂ, starRingEnd ℂ (ψ g) * (if ψ = 0 then ((a * Real.log a - a * Real.log (w (partner t g)) - (1 + Real.eulerMascheroniConstant) * a : ℝ) : ℂ) else -(a : ℂ) * ell ψ)) = ((a * Real.log a - a * Real.log (w (partner t g)) - (1 + Real.eule …`. Introduce `g`. Rewrite using `[← Finset.add_sum_erase _ _ (mem_univ (0 : AddChar (E0 × H) ℂ)), if_pos rfl, AddChar.zero_apply, map_one, one_mul]`. Use `congr 1`. Use `Finset.sum_congr rfl (fun ψ hψ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[if_neg (Finset.ne_of_mem_erase hψ)]`. Establish `hcol : (∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ∑ ψ ∈ univ.erase (0 : AddChar (E0 × H) ℂ), starRingEnd ℂ (ψ g) * (-(a : ℂ) * ell ψ)) = ((PhiSet (H` using `H)).card : ℂ) * ((a : ℂ) * ell chC) := by`. Rewrite using `[Finset.sum_comm]`. Rewrite using `[Finset.sum_congr rfl (fun ψ hψ => by`. Rewrite using `[← Finset.sum_mul, colour_sum ψ, if_neg (Finset.ne_of_mem_erase hψ)])]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ite_mul, zero_mul]`. Rewrite using `[Finset.sum_ite_eq', if_pos (Finset.mem_erase.2 ⟨PB.chC_ne_zero (H := H), mem_univ _⟩)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hreal : (∑ g ∈ univ.filter (fun g : E0 × H => ¬ InPhi g), ((a * Real.log a - a * Real.log (w (partner t g)) - (1 + Real.eulerMascheroniConstant) * a : ℝ) : ℂ)) = ((((PhiSet (H` using `H)).card : ℝ) * (a * Real.log a - (1 + Real.eulerMascheroniConstant) * a) - a * ∑ ρ ∈ PhiSet (H := H), Real.log (w ρ) : ℝ) : ℂ) := by`. Rewrite using `[← Complex.ofReal_sum]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.sum_sub_distrib, Finset.sum_sub_distrib, Finset.sum_const, Finset.sum_const, PB.card_notPhi, ← Finset.mul_sum, PB.sum_partner t (fun ρ => Real.log (w ρ))]`. Simplify using `only [nsmul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun g _ => hsplit g), Finset.sum_add_distrib, hreal, hcol]`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Unfold `MAIN`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ch_balance {H : Type} [AddCommGroup H] [Fintype H] [DecidableEq H] (D : ArithData H) (S : Finset ℕ) (hD : HostFactsS D S)
     (ell : AddChar (E0 × H) ℂ → ℂ) (a : ℝ) (t : H) (w : E0 × H → ℝ) (ha : 0 < a) (hw : ∀ ρ, InPhi ρ → 0 < w ρ)

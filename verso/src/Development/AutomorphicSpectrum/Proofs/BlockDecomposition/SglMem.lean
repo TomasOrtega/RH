@@ -24,53 +24,53 @@ def Vn (K : DCx.{w} R) (t : ℕ) (x : ∀ p q, K.X p q) : Prop := ∀ p q, t ≤
 def Pv (K : DCx.{w} R) (n : ℕ) (x : ∀ p q, K.X p q) : Prop := ∀ p q, p + q + 1 ≠ n → x p q = 0
 
 /- English proof (translation)
-Introduce `p q hq` and use `h p q (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Vn.mono {t : ℕ} {x : ∀ p q, K.X p q} (h : Vn K t x) : Vn K (t + 1) x := fun p q hq => h p q (by omega)
 
 /- English proof (translation)
-Introduce `p q hq` and use `by rw [Pi.add_apply, Pi.add_apply, h p q hq, h' p q hq, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Vn.add {t : ℕ} {x y : ∀ p q, K.X p q} (h : Vn K t x) (h' : Vn K t y) : Vn K t (x + y) := fun p q hq => by
   rw [Pi.add_apply, Pi.add_apply, h p q hq, h' p q hq, add_zero]
 
 /- English proof (translation)
-Introduce `p q hq` and use `by rw [Pi.sub_apply, Pi.sub_apply, h p q hq, h' p q hq, sub_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Vn.sub {t : ℕ} {x y : ∀ p q, K.X p q} (h : Vn K t x) (h' : Vn K t y) : Vn K t (x - y) := fun p q hq => by
   rw [Pi.sub_apply, Pi.sub_apply, h p q hq, h' p q hq, sub_zero]
 
 /- English proof (translation)
-Introduce `p q hq` and use `by rw [Pi.add_apply, Pi.add_apply, h p q hq, h' p q hq, add_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Pv.add {n : ℕ} {x y : ∀ p q, K.X p q} (h : Pv K n x) (h' : Pv K n y) : Pv K n (x + y) := fun p q hq => by
   rw [Pi.add_apply, Pi.add_apply, h p q hq, h' p q hq, add_zero]
 
 /- English proof (translation)
-Introduce `p q hq` and use `by rw [Pi.sub_apply, Pi.sub_apply, h p q hq, h' p q hq, sub_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Pv.sub {n : ℕ} {x y : ∀ p q, K.X p q} (h : Pv K n x) (h' : Pv K n y) : Pv K n (x - y) := fun p q hq => by
   rw [Pi.sub_apply, Pi.sub_apply, h p q hq, h' p q hq, sub_zero]
 
 /- English proof (translation)
-Introduce `_ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem Pv.zero (n : ℕ) : Pv K n 0 := fun _ _ _ => rfl
 
 /- English proof (translation)
-Introduce `_ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem Vn.zero (t : ℕ) : Vn K t 0 := fun _ _ _ => rfl
 
 /- English proof (translation)
-Introduce `p q hq` and use `h p q (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Pv.mem {m : ℕ} {x : ∀ p q, K.X p q} (h : Pv K (m + 1) x) : x ∈ K.T m := fun p q hq => h p q (by omega)
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Establish `: x = 0`. Use function extensionality and compare the values at `p q`. Conclude with `h p q (by omega)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `succ m => exact K.D_mem m x h.mem`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Pv.D_mem {n : ℕ} {x : ∀ p q, K.X p q} (h : Pv K n x) : K.D x ∈ K.T n := by
   cases n with
@@ -83,18 +83,18 @@ theorem Pv.D_mem {n : ℕ} {x : ∀ p q, K.X p q} (h : Pv K n x) : K.D x ∈ K.T
   | succ m => exact K.D_mem m x h.mem
 
 /- English proof (translation)
-Introduce `a b hab` and use `K.sgl_ne x (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem sgl_mem (p q : ℕ) (x : K.X p q) : K.sgl p q x ∈ K.T (p + q) := fun a b hab => K.sgl_ne x (by omega)
 
 /- English proof (translation)
-Consider the cases of `a with`. Consider the case `zero`. Establish `h0 : z = 0` using `hz`. Substitute `h0` using the available equality. Use `⟨0, Pv.zero _, Vn.zero _, ?_⟩` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zero, map_zero, sub_zero]`. Conclude with `Vn.zero _`. Consider the case `succ a`. Take `⟨u, rfl⟩` from `hz`. Use `⟨(-1 : ℤ) ^ p • K.sgl p a u, fun p' q h => ?_, fun p' q h => ?_, fun p' q h => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, Pi.smul_apply, K.sgl_ne _ (by omega), smul_zero]`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, K.sgl_ne _ (by omega), smul_zero]`. Establish `e : K.D ((-1 : ℤ) ^ p • K.sgl p a u) = (-1 : ℤ) ^ p • K.sgl (p + 1) a (K.dh p a u) + K.sgl p (a + 1) (K.dv p a u)`. Rewrite using `[map_zsmul, K.D_sgl, smul_add, smul_smul, ← mul_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(K.D ((-1 : ℤ) ^ p • K.sgl p a u) - K.sgl p (a + 1) (K.dv p a u)) p' q = 0`. Rewrite using `[e, add_sub_cancel_right, Pi.smul_apply, Pi.smul_apply, K.sgl_ne _ (by omega), smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kill (p a : ℕ) (z : K.X p a) (hz : z ∈ (K.col p).B a) :
     ∃ g, Pv K (p + a) g ∧ Vn K a g ∧ Vn K a (K.D g - K.sgl p a z) := by
@@ -117,7 +117,7 @@ theorem kill (p a : ℕ) (z : K.X p a) (hz : z ∈ (K.col p).B a) :
       rw [e, add_sub_cancel_right, Pi.smul_apply, Pi.smul_apply, K.sgl_ne _ (by omega), smul_zero]
 
 /- English proof (translation)
-Introduce `p' q h` and use `by rw [Pi.sub_apply, Pi.sub_apply] by_cases h1 : p' = p ∧ q = a · obtain ⟨rfl, rfl⟩ := h1 rw [K.sgl_self, sub_self] · rw [K.sgl_ne _ (by omega), sub_zero] by_cases h2 : q = a · subst h2 exact hz _ _ (by omega) · exact hs _ _ (by omega)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cut {n a p : ℕ} (hn : p + a = n) {z : ∀ p q, K.X p q} (hz : z ∈ K.T n) (hs : Vn K (a + 1) z) :
     Vn K a (z - K.sgl p a (z p a)) := fun p' q h => by
@@ -132,11 +132,11 @@ theorem cut {n a p : ℕ} (hn : p + a = n) {z : ∀ p q, K.X p q} (hz : z ∈ K.
     · exact hs _ _ (by omega)
 
 /- English proof (translation)
-Establish `h` using `congrFun (congrFun hD p) (t + 1)`. Rewrite `h` using `[K.D_apply]`. Establish `h1 : K.Dh y p (t + 1) = 0`. Consider the cases of `p with`. Consider the case `zero => rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `succ p`. Express the relevant statement in the definitionally equal form `K.dh p (t + 1) (y p (t + 1)) = 0`. Rewrite using `[hs _ _ le_rfl, map_zero]`. Rewrite `h` using `[h1, zero_add]`. Establish `h2 : (-1 : ℤ) ^ p • K.dv p t (y p t) = 0` using `h`.
+Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `congrArg (fun v => (-1 : ℤ) ^ p • v) h2`. Simplify `h3` using `[smul_smul, ← mul_pow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem dv_top {t : ℕ} {y : ∀ p q, K.X p q} (hD : K.D y = 0) (hs : Vn K (t + 1) y) (p : ℕ) : K.dv p t (y p t) = 0 := by
   have h := congrFun (congrFun hD p) (t + 1)
@@ -153,9 +153,9 @@ theorem dv_top {t : ℕ} {y : ∀ p q, K.X p q} (hD : K.D y = 0) (hs : Vn K (t +
   simpa [smul_smul, ← mul_pow] using h3
 
 /- English proof (translation)
-Distinguish the cases in `h : t ≤ n`. Take `⟨p, rfl⟩ : ∃ p, n = p + t` from `⟨n - t, by omega⟩`. Take `⟨g, h1, h2, h3⟩` from `kill p t (x p t) (hex p _ (dv_top hD hs p))`. Use `⟨g, h1, h2, ?_⟩` and prove the remaining obligations. Establish `e : x - K.D g = (x - K.sgl p t (x p t)) - (K.D g - K.sgl p t (x p t))` using `by abel`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(cut rfl hx hs).sub h3`. Use `⟨0, Pv.zero _, Vn.zero _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, sub_zero]`. Conclude with `fun p q hq => hx p q (by omega)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem step {n t : ℕ} {x : ∀ p q, K.X p q} (hx : x ∈ K.T n) (hD : K.D x = 0) (hs : Vn K (t + 1) x)
     (hex : ∀ p (y : K.X p t), K.dv p t y = 0 → y ∈ (K.col p).B t) :
@@ -172,16 +172,16 @@ theorem step {n t : ℕ} {x : ∀ p q, K.X p q} (hx : x ∈ K.T n) (hD : K.D x =
     exact fun p q hq => hx p q (by omega)
 
 /- English proof (translation)
-The claim follows from `K.DD w`.
+A detailed English derivation is pending.
 -/
 theorem DD' (w : ∀ p q, K.X p q) : K.D (K.D w) = 0 := K.DD w
 
 /- English proof (translation)
-Proceed by induction on `t generalizing x with`. Consider the case `zero`. Use `⟨0, Pv.zero _, Vn.zero _, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Use function extensionality and compare the values at `p q`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hs p q (Nat.zero_le _)).symm`. Consider the case `succ t ih`. Take `⟨w₁, h1, h2, h3⟩` from `step hx hD hs (hex t (by omega))`. Take `⟨w₂, k1, k2, k3⟩` from `ih (fun s hs' => hex s (by omega)) (Submodule.sub_mem _ hx h1.D_mem) (by rw [map_sub, hD, DD', sub_zero]) h3`. Use `⟨w₁ + w₂, h1.add k1, (h2.add k2).mono, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, k3]`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem down (t : ℕ) (hex : ∀ s < t, ∀ p (y : K.X p s), K.dv p s y = 0 → y ∈ (K.col p).B s) {n : ℕ} {x : ∀ p q, K.X p q}
     (hx : x ∈ K.T n) (hD : K.D x = 0) (hs : Vn K t x) : ∃ w, Pv K n w ∧ Vn K t w ∧ K.D w = x := by
@@ -200,9 +200,9 @@ theorem down (t : ℕ) (hex : ∀ s < t, ∀ p (y : K.X p s), K.dv p s y = 0 →
     abel
 
 /- English proof (translation)
-Proceed by induction on `k generalizing x with`. Consider the case `zero => exact ⟨x, 0, hx, hD, hs, Pv.zero _, by rw [map_zero, sub_self]⟩`. Consider the case `succ k ih`. Take `⟨w₁, h1, h2, h3⟩` from `step (t := a + 1 + k) hx hD hs (hex _ (by omega))`. Take `⟨x', w₂, k1, k2, k3, k4, k5⟩` from `ih (Submodule.sub_mem _ hx h1.D_mem) (by rw [map_sub, hD, DD', sub_zero]) h3`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨x', w₁ + w₂, k1, k2, k3, h1.add k4, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← k5]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem up (a : ℕ) (hex : ∀ s, a < s → ∀ p (y : K.X p s), K.dv p s y = 0 → y ∈ (K.col p).B s) {n : ℕ} (k : ℕ)
     {x : ∀ p q, K.X p q} (hx : x ∈ K.T n) (hD : K.D x = 0) (hs : Vn K (a + 1 + k) x) :
@@ -217,13 +217,13 @@ theorem up (a : ℕ) (hex : ∀ s, a < s → ∀ p (y : K.X p s), K.dv p s y = 0
     abel
 
 /- English proof (translation)
-Take `⟨g, g1, g2, g3⟩` from `kill (p + 1) a _ h2`. Establish `hDe : K.D (K.sgl p a x₀) = K.sgl (p + 1) a (K.dh p a x₀)`. Rewrite using `[K.D_sgl, h1, map_zero, smul_zero, add_zero]`. Establish `hm : K.D (K.sgl p a x₀) - K.D g ∈ K.T (p + 1 + a)` using `Submodule.sub_mem _ (by rw [hDe]; exact sgl_mem _ _ _) g1.D_mem`. Establish `hv : Vn K a (K.D (K.sgl p a x₀) - K.D g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hDe]`. Use `(Vn.zero a).sub g3` as an intermediate fact. Rewrite `this` using `[zero_sub, neg_sub]`. Conclude with `this`. Take `⟨w, w1, w2, w3⟩` from `down a hex hm (by rw [map_sub, DD', DD', sub_zero]) hv`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨K.sgl p a x₀ - g - w, ?_, ?_, fun p' q h => ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sub_mem _ (Submodule.sub_mem _ (sgl_mem _ _ _) fun a b h => g1 a b (by omega)) fun a b h => w1 a b (by omega)` and prove the remaining obligations. Rewrite using `[map_sub, map_sub, w3]`. Normalize the expressions using the abelian group laws. Rewrite using `[Pi.sub_apply, Pi.sub_apply, Pi.sub_apply, Pi.sub_apply, K.sgl_ne _ (by omega), g2 _ _ (by omega), w2 _ _ (by omega)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[Pi.sub_apply, Pi.sub_apply, Pi.sub_apply, Pi.sub_apply, K.sgl_self, g2 _ _ le_rfl, w2 _ _ le_rfl]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lift {a p : ℕ} (hex : ∀ s < a, ∀ p (y : K.X p s), K.dv p s y = 0 → y ∈ (K.col p).B s) (x₀ : K.X p a)
     (h1 : K.dv p a x₀ = 0) (h2 : K.dh p a x₀ ∈ (K.col (p + 1)).B a) :
@@ -249,11 +249,11 @@ theorem lift {a p : ℕ} (hex : ∀ s < a, ∀ p (y : K.X p s), K.dv p s y = 0 �
     simp
 
 /- English proof (translation)
-Consider the cases of `a with`. Consider the case `zero`. Establish `h` using `congrFun (congrFun hD (p + 1)) 0`. Rewrite `h` using `[K.D_apply]`. Establish `h0 : K.Dv y (p + 1) 0 = 0` using `rfl`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[h0, smul_zero, add_zero]`. Conclude with `h`. Consider the case `succ a`. Establish `h` using `congrFun (congrFun hD (p + 1)) (a + 1)`. Rewrite `h` using `[K.D_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h' : K.dh p (a + 1) (y p (a + 1)) + (-1 : ℤ) ^ (p + 1) • K.dv (p + 1) a (y (p + 1) a) = 0` using `h`. Use `⟨-((-1 : ℤ) ^ (p + 1) • y (p + 1) a), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `K.dv (p + 1) a (-((-1 : ℤ) ^ (p + 1) • y (p + 1) a)) = _`. Rewrite using `[map_neg, map_zsmul]`. Conclude with `(eq_neg_of_add_eq_zero_left h').symm`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dh_bd {y : ∀ p q, K.X p q} (hD : K.D y = 0) (p a : ℕ) : K.dh p a (y p a) ∈ (K.col (p + 1)).B a := by
   cases a with
@@ -273,9 +273,9 @@ theorem dh_bd {y : ∀ p q, K.X p q} (hD : K.D y = 0) (p a : ℕ) : K.dh p a (y 
     exact (eq_neg_of_add_eq_zero_left h').symm
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero`. Establish `h0 : w = 0`. Use function extensionality and compare the values at `p q`. Conclude with `hw p q (by omega)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h0, map_zero]`. Conclude with `Subtype.ext h`. Consider the case `succ m => exact ⟨⟨w, hw.mem⟩, Subtype.ext h.symm⟩`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem prevB {n : ℕ} (u : K.tot.X n) (w : ∀ p q, K.X p q) (hw : Pv K n w) (h : u.1 = K.D w) : u ∈ K.tot.B n := by
   cases n with
@@ -288,23 +288,23 @@ theorem prevB {n : ℕ} (u : K.tot.X n) (w : ∀ p q, K.X p q) (hw : Pv K n w) (
   | succ m => exact ⟨⟨w, hw.mem⟩, Subtype.ext h.symm⟩
 
 /- English proof (translation)
-Introduce `c`. Take `⟨y, hy, rfl⟩` from `(P.cls_surj L.tot n).1 c`. Establish `hyD : L.D y.1 = 0` using `congrArg Subtype.val hy`. Take `⟨y', w, t1, t2, t3, t4, t5⟩` from `up a (fun s hs => hL s (by omega)) n y.2 hyD (fun p q h => y.2 p q (by omega))`. Distinguish the cases in `hn : n < a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Establish `hv : Vn L a y'` using `fun p q h => t1 p q (by omega)`. Take `⟨w', u1, u2, u3⟩` from `down a (fun s hs => hL s (by omega)) t1 t2 hv`. Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero]`. Use `symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Rewrite using `[(P.cls_surj L.tot n).2.1]`. Conclude with `prevB y (w + w') (t4.add u1) (by rw [map_add, u3, ← t5]; abel)`. Take `⟨p, rfl⟩ : ∃ p, n = p + a` from `⟨n - a, by omega⟩`. Take `⟨x₀, s1, s2, s3⟩` from `S p _ (dv_top t2 t3 p) (dh_bd t2 p a)`. Take `⟨x, x1, x2, x3, x4⟩` from `lift (fun s hs => hK s (by omega)) x₀ s1 s2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `X : K.tot.X (p + a)` to `⟨x, x1⟩`. Establish `hX : K.tot.d (p + a) X = 0` using `Subtype.ext x2`. Establish `hb : L.tot.d _ (φ.tot.f _ X) = 0` using `by rw [φ.tot.comm, hX, map_zero]`. Use `⟨K.tot.cls X hX, ?_⟩` and prove the remaining obligations. Rewrite using `[P.mapH_cls φ.tot _ X hX hb, (P.cls_surj L.tot _).2.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩ : ∃ z, z = (φ.tot.f _ X).1 - y'` from `⟨_, rfl⟩`. Establish `hz1 : z ∈ L.T (p + a)` using `hz ▸ Submodule.sub_mem _ (φ.tot.f _ X).2 t1`. Establish `hzD : L.D z = 0`. Rewrite using `[hz, map_sub, t2, sub_zero]`. Conclude with `congrArg Subtype.val hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzv : Vn L (a + 1) z` using `fun p' q h => by`. Rewrite using `[hz]`. Express the relevant statement in the definitionally equal form `φ.f p' q (x p' q) - y' p' q = 0`. Rewrite using `[x3 p' q h, t3 p' q h, map_zero, sub_zero]`. Establish `hzp : z p a = φ.f p a x₀ - y' p a`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hz]`. Express the relevant statement in the definitionally equal form `φ.f p a (x p a) - y' p a = _`. Rewrite using `[x4]`. Take `⟨g, g1, g2, g3⟩` from `kill p a (z p a) (hzp ▸ s3)`. Establish `hv : Vn L a (z - L.D g)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : z - L.D g = (z - L.sgl p a (z p a)) - (L.D g - L.sgl p a (z p a))` using `by abel`. Rewrite using `[e]`. Conclude with `(cut rfl hz1 hzv).sub g3`. Take `⟨w', u1, u2, u3⟩` from `down a (fun s hs => hL s (by omega)) (Submodule.sub_mem _ hz1 g1.D_mem) (by rw [map_sub, hzD, DD', sub_zero]) hv`. Use `prevB _ (g + w' - w) ((g1.add u1).sub t4) ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_add, u3, ← t5]`. Express the relevant statement in the definitionally equal form `(φ.tot.f _ X).1 - y.1 = _`. Establish `e1 : (φ.tot.f _ X).1 = z + y'` using `by rw [hz]; abel`. Rewrite using `[e1]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem surj {L : DCx.{w'} R} (φ : DCx.Hom K L (RingHom.id R)) (a : ℕ)
     (hK : ∀ s, s ≠ a → ∀ p (y : K.X p s), K.dv p s y = 0 → y ∈ (K.col p).B s)
@@ -366,7 +366,7 @@ section App
 variable {ι : Type} [DecidableEq ι]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨i 0, Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem ent_ne {n : ℕ} (i : Fin (n + 1) → ι) : (ent i).Nonempty := ⟨i 0, Finset.mem_image_of_mem _ (Finset.mem_univ _)⟩
 
@@ -407,11 +407,11 @@ def hm {A : Sy.{w} R ι} {B : Sy.{w'} R ι} (m : A.Hom B) : DCx.Hom (cc A).dcx (
     exact (m.φ (ent i)).comm q (x i)
 
 /- English proof (translation)
-Consider the cases of `s with`. Consider the case `zero`. Prove the components needed by the constructor for the conclusion. Introduce `h i`. Establish `h0 : y = 0` using `h`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h0]`. Conclude with `Submodule.zero_mem _`. Introduce `h`. Conclude with `funext h`. Consider the case `succ s`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩ i`. Conclude with `⟨u i, rfl⟩`. Introduce `h choose u hu using h`. Conclude with `⟨u, funext hu⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem piB (A : Sy.{w} R ι) (p s : ℕ) (y : (colK A p).X s) : y ∈ (colK A p).B s ↔ ∀ i, y i ∈ (A.K (ent i)).B s := by
   cases s with
@@ -432,7 +432,7 @@ theorem piB (A : Sy.{w} R ι) (p s : ℕ) (y : (colK A p).X s) : y ∈ (colK A p
       exact ⟨u, funext hu⟩
 
 /- English proof (translation)
-Use `(piB A p s y).2 fun i => ?_` and prove the remaining obligations. Establish `hi : (A.K (ent i)).d s (y i) = 0` using `congrFun hy i`. Use `oA (ent i) (ent_ne i) s hs` as an intermediate fact. Conclude with `((P.cls_surj (A.K (ent i)) s).2.1 _ hi).1 (Subsingleton.elim _ _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem colEx (A : Sy.{w} R ι) {a : ℕ} (oA : A.One a) (s : ℕ) (hs : s ≠ a) (p : ℕ) (y : (cc A).dcx.X p s)
     (hy : (cc A).dcx.dv p s y = 0) : y ∈ ((cc A).dcx.col p).B s := by
@@ -442,9 +442,9 @@ theorem colEx (A : Sy.{w} R ι) {a : ℕ} (oA : A.One a) (s : ℕ) (hs : s ≠ a
   exact ((P.cls_surj (A.K (ent i)) s).2.1 _ hi).1 (Subsingleton.elim _ _)
 
 /- English proof (translation)
-Establish `e : (⟨∑ k, c k • v k, h⟩ : C.Z a) = ∑ k, c k • (⟨v k, hv k⟩ : C.Z a)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using the standard rewrite rules. Unfold `Cx.cls`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Submodule.mkQ _ _ = _`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => map_zsmul _ _ _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_sum {C : Cx.{w} R} {a : ℕ} {κ : Type} [Fintype κ] (c : κ → ℤ) (v : κ → C.X a) (hv : ∀ k, C.d a (v k) = 0)
     (h : C.d a (∑ k, c k • v k) = 0) : C.cls (∑ k, c k • v k) h = ∑ k, c k • C.cls (v k) (hv k) := by
@@ -461,11 +461,11 @@ def cl (A : Sy.{w} R ι) (a p : ℕ) (x : (colK A p).X a) (hx : ∀ i, (A.K (ent
   fun i => (A.K (ent i)).cls (x i) (hx i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Establish `hv : ∀ k : Fin (p + 2), (A.K (ent t)).d a ((A.res (ent_comp t k.succAbove)).f a (x (t ∘ k.succAbove))) = 0` using `fun k => by`. Rewrite using `[(A.res _).comm, hx, map_zero]`. Establish `e1 : ((A.term a).cech.d p x) t = ∑ k : Fin (p + 2), (-1 : ℤ) ^ (k : ℕ) • (A.res (ent_comp t k.succAbove)).f a (x (t ∘ k.succAbove))`. Rewrite using `[Cos.d_apply, Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `e2 : (A.coh a).cech.d p (cl A a p x hx) t = ∑ k : Fin (p + 2), (-1 : ℤ) ^ (k : ℕ) • (A.K (ent t)).cls _ (hv k)`. Rewrite using `[Cos.d_apply, Finset.sum_apply]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[e2]`. Express the relevant statement in the definitionally equal form `(A.K (ent t)).cls _ (h' t) = _`. Simplify using `only [e1]`. Conclude with `cls_sum _ _ hv _`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cl_dh (A : Sy.{w} R ι) (a p : ℕ) (x : (colK A p).X a) (hx : ∀ i, (A.K (ent i)).d a (x i) = 0)
     (h' : ∀ t, (A.K (ent t)).d a (((A.term a).cech.d p x) t) = 0) :
@@ -496,9 +496,9 @@ def sc {A : Sy.{w} R ι} {B : Sy.{w'} R ι} {a : ℕ} (σ : ∀ S : Finset ι, S
     (g : (B.coh a).cech.X p) : (A.coh a).cech.X p := fun i => σ (ent i) (ent_ne i) (g i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Rewrite using `[Cos.d_apply, Cos.d_apply]`. Express the relevant statement in the definitionally equal form `σ (ent t) (ent_ne t) ((∑ k : Fin (p + 2), (-1 : ℤ) ^ (k : ℕ) • (B.coh a).cech.δ p k g) t) = _`. Rewrite using `[Finset.sum_apply, Finset.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Pi.smul_apply, Pi.smul_apply, map_zsmul]`. Use `congr 1`. Conclude with `h2 (ent_comp t k.succAbove) (ent_ne _) (ent_ne t) (g _)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sc_d {A : Sy.{w} R ι} {B : Sy.{w'} R ι} {a : ℕ} (σ : ∀ S : Finset ι, S.Nonempty → ((B.K S).H a →ₗ[R] (A.K S).H a))
     (h2 : ∀ {S T : Finset ι} (h : S ⊆ T) hS hT x, σ T hT ((B.res h).mapH a x) = (A.res h).mapH a (σ S hS x))
@@ -513,15 +513,13 @@ theorem sc_d {A : Sy.{w} R ι} {B : Sy.{w'} R ι} {a : ℕ} (σ : ∀ S : Finset
   exact h2 (ent_comp t k.succAbove) (ent_ne _) (ent_ne t) (g _)
 
 /- English proof (translation)
-Establish `hyi : ∀ i, (B.K (ent i)).d a (y i) = 0` using `fun i => congrFun hy i`. Use `choose x hx hxe using fun i : Fin (p + 1) → ι => (P.cls_surj (A.K (ent i)) a).1 (σ _ (ent_ne i) ((B.K _).cls (y i) (hyi i)))`. Establish `hvx : (cc A).dcx.dv p a x = 0` using `funext hx`. Establish `hdx : (cc A).dcx.dv (p + 1) a ((cc A).dcx.dh p a x) = 0`. Rewrite using `[← (cc A).dcx.hv, hvx, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdy : (cc B).dcx.dv (p + 1) a ((cc B).dcx.dh p a y) = 0`. Rewrite using `[← (cc B).dcx.hv, hy, map_zero]`. Use `⟨x, hvx, ?_, ?_⟩` and prove the remaining obligations. Use `(piB A (p + 1) a _).2 fun t => ?_` and prove the remaining obligations. Establish `c1` using `cl_dh A a p x hx (fun t => congrFun hdx t)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2` using `cl_dh B a p y hyi (fun t => congrFun hdy t)`. Establish `cx : cl A a p x hx = sc σ p (cl B a p y hyi)` using `funext fun i => (hxe i).symm`. Establish `z0 : cl B a (p + 1) ((B.term a).cech.d p y) (fun t => congrFun hdy t) = 0`. Use function extensionality and compare the values at `fun t => ((P.cls_surj _ a).2.1 _ _).2 ((piB B (p + 1) a _).1 hb t)`. Establish `z1 : sc σ (p + 1) (0 : (B.coh a).cech.X (p + 1)) = 0` using `funext fun t => map_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `z2 : cl A a (p + 1) ((A.term a).cech.d p x) (fun t => congrFun hdx t) = 0`. Rewrite using `[c1, cx, ← sc_d σ h2, ← c2, z0, z1]`. Conclude with `((P.cls_surj _ a).2.1 _ _).1 (congrFun z2 t)`. Use `(piB B p a _).2 fun i => ?_` and prove the remaining obligations. Establish `h` using `h1 (ent i) (ent_ne i) ((B.K _).cls (y i) (hyi i))`.
-
-Rewrite `h` using `[hxe i, P.mapH_cls (m.φ (ent i)) a (x i) (hx i) (by rw [(m.φ _).comm, hx, map_zero])]`. Conclude with `((P.cls_surj _ a).2.2.1 _ _ _ _).1 h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sprop {A : Sy.{w} R ι} {B : Sy.{w'} R ι} (m : A.Hom B) (a : ℕ)
     (σ : ∀ S : Finset ι, S.Nonempty → ((B.K S).H a →ₗ[R] (A.K S).H a))
@@ -556,19 +554,19 @@ theorem sprop {A : Sy.{w} R ι} {B : Sy.{w'} R ι} (m : A.Hom B) (a : ℕ)
     exact ((P.cls_surj _ a).2.2.1 _ _ _ _).1 h
 
 /- English proof (translation)
-Introduce `b`. Establish `eA` using `P.dc_row (augR A hA) 1 (fun q => hA q) n`. Establish `eB` using `P.dc_row (augR B hB) 1 (fun q => hB q) n`. Establish `ht` using `surj (hm m) a (colEx A oA) (colEx B oB) (sprop m a σ h1 h2) n`. Establish `hc : ∀ c : (A.K ∅).H n, (augR B hB).edge.mapH n ((m.φ ∅).mapH n c) = (hm m).tot.mapH n ((augR A hA).edge.mapH n c)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c`. Take `⟨u, hu, rfl⟩` from `(P.cls_surj _ n).1 c`. Establish `hm1 : (B.K ∅).d n ((m.φ ∅).f n u) = 0` using `by rw [(m.φ ∅).comm, hu, map_zero]`. Establish `he1 : (cc A).dcx.tot.d n ((augR A hA).edge.f n u) = 0` using `by rw [(augR A hA).edge.comm, hu, map_zero]`. Establish `he2 : (cc B).dcx.tot.d n ((augR B hB).edge.f n ((m.φ ∅).f n u)) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(augR B hB).edge.comm, hm1, map_zero]`. Establish `he3 : (cc B).dcx.tot.d n ((hm m).tot.f n ((augR A hA).edge.f n u)) = 0`. Rewrite using `[(hm m).tot.comm, he1, map_zero]`. Establish `e : (augR B hB).edge.f n ((m.φ ∅).f n u) = (hm m).tot.f n ((augR A hA).edge.f n u)`. Use `Subtype.ext (funext fun p => funext fun q => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `(cc B).dcx.sgl 0 n ((B.term n).aug ((m.φ ∅).f n u)) p q = (hm m).f p q ((cc A).dcx.sgl 0 n ((A.term n).aug u) p q)`. Distinguish the cases in `h : p = 0 ∧ q = n`. Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[DCx.sgl_self, DCx.sgl_self]`. Use function extensionality and compare the values at `i`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(m.nat (Finset.empty_subset _) _ u).symm`. Rewrite using `[DCx.sgl_ne _ _ (by omega), DCx.sgl_ne _ _ (by omega), map_zero]`. Rewrite using `[P.mapH_cls (m.φ ∅) n u hu hm1, P.mapH_cls _ n _ hm1 he2, P.mapH_cls _ n u hu he1, P.mapH_cls _ n _ he1 he3]`. Simplify using `only [e]`. Take `⟨c₁, hc₁⟩` from `ht ((augR B hB).edge.mapH n b)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b', hb'⟩` from `eA.2 c₁`. Rewrite `hb'` using `[one_pow, one_smul]`. Use `⟨b', ?_⟩` and prove the remaining obligations. Establish `h0 : (augR B hB).edge.mapH n ((m.φ ∅).mapH n b' - b) = 0`. Rewrite using `[map_sub, hc, hb', hc₁, sub_self]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3` using `eB.1 _ h0`. Rewrite `h3` using `[one_pow, one_smul]`. Conclude with `sub_eq_zero.1 h3`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjS {A : Sy.{w} R ι} {B : Sy.{w'} R ι} (m : A.Hom B) (a : ℕ) (hA : A.Desc) (hB : B.Desc) (oA : A.One a) (oB : B.One a)
     (σ : ∀ S : Finset ι, S.Nonempty → ((B.K S).H a →ₗ[R] (A.K S).H a))
@@ -613,7 +611,7 @@ theorem surjS {A : Sy.{w} R ι} {B : Sy.{w'} R ι} (m : A.Hom B) (a : ℕ) (hA :
 end Fin
 
 /- English proof (translation)
-Introduce `R _ ι _ A B m a hA hB oA oB σ h1 h2 n`. Conclude with `surjS m a hA hB oA oB σ h1 (fun h => h2 h) n`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem oneSurj : OneSurj := by
   intro R _ ι _ A B m a hA hB oA oB σ h1 h2 n

@@ -15,7 +15,7 @@ open TensorProduct
 namespace GlobalTheory.Unif
 
 /- English proof (translation)
-Take `⟨y, -⟩` from `p.surjective (Classical.arbitrary Z)`. Use `⟨j.opensRange, i.opensRange, j.isoOpensRange.inv ≫ p ≫ i.isoOpensRange.hom, ⟨j y, y, rfl⟩, inferInstance, inferInstance, inferInstance, ?_⟩` and prove the remaining obligations. Simplify using `only [Category.assoc, Scheme.Hom.isoOpensRange_hom_ι_assoc, h]`. Rewrite using `[Iso.inv_comp_eq, Scheme.Hom.isoOpensRange_hom_ι_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem finFlatChart_of_openImmersion {X Y Z S B : Scheme.{0}} (f : X ⟶ B) (s : S ⟶ B)
     (j : Y ⟶ X) [IsOpenImmersion j] (i : Z ⟶ S) [IsOpenImmersion i] (p : Y ⟶ Z)
@@ -29,11 +29,11 @@ theorem finFlatChart_of_openImmersion {X Y Z S B : Scheme.{0}} (f : X ⟶ B) (s 
   rw [Iso.inv_comp_eq, Scheme.Hom.isoOpensRange_hom_ι_assoc]
 
 /- English proof (translation)
-Use `algebraize [φ]`. Establish `: Module.FinitePresentation R A` using `Module.finitePresentation_of_finite R A`. Take `⟨r, hr, hfree, -⟩` from `Module.FinitePresentation.exists_free_localizedModule_powers (nonZeroDivisors R) (LocalizedModule.mkLinearMap (nonZeroDivisors R) A) (FractionRing R)`. Establish `hfree' : Module.Free (Localization.Away r) (Localization.Away r ⊗[R] A)` using `Module.Free.of_equiv (LocalizedModule.equivTensorProduct (Submonoid.powers r) A)`. Establish `hpb` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct R (Localization.Away r) A)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : IsFinite (Spec.map (CommRingCat.ofHom (algebraMap R A)))`. Rewrite using `[IsFinite.SpecMap_iff]`. Conclude with `hφ`. Establish `h2 : Surjective (Spec.map (CommRingCat.ofHom (algebraMap R A)))` using `⟨hφ.to_isIntegral.comap_surjective hi⟩`. Establish `h3 : IsOpenImmersion (Spec.map (CommRingCat.ofHom (algebraMap R (Localization.Away r))))` using `inferInstance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hd : IsDomain (Localization.Away r)` using `IsLocalization.isDomain_localization (Submonoid.powers_le.mpr hr)`. Use `⟨_, _, _, _, _, MorphismProperty.of_isPullback hpb h3, h3, MorphismProperty.of_isPullback hpb.flip h1, ?_, MorphismProperty.of_isPullback hpb.flip h2, inferInstanceAs (Nonempty (PrimeSpectrum (Localization.Away r))), hpb.w⟩` and prove the remaining obligations. Rewrite using `[Flat.SpecMap_iff]`. Conclude with `(RingHom.flat_algebraMap_iff (R := Localization.Away r) (S := Localization.Away r ⊗[R] A)).mpr inferInstance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finFlat_away (R A : Type) [CommRing R] [CommRing A] [IsDomain R]
     [IsNoetherianRing R] (φ : R →+* A) (hφ : φ.Finite) (hi : Function.Injective φ) :
@@ -64,13 +64,11 @@ theorem exists_finFlat_away (R A : Type) [CommRing R] [CommRing A] [IsDomain R]
     (S := Localization.Away r ⊗[R] A)).mpr inferInstance
 
 /- English proof (translation)
-Introduce `K _ X _ f _`. Take `⟨_, ⟨U, hU, rfl⟩, hξ, -⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (Set.mem_univ (genericPoint X)) isOpen_univ`. Use `replace hU : IsAffineOpen U := hU`. Establish `: Nonempty U` using `⟨⟨_, hξ⟩⟩`. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (hU.fromSpec ≫ f)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hft : LocallyOfFiniteType (Spec.map ψ)` using `by rw [hψ]; infer_instance`. Establish `hft' : ψ.hom.FiniteType` using `(HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)).mp hft`. Use `letI : Algebra K Γ(X, U) := ψ.hom.toAlgebra`. Establish `: Algebra.FiniteType K Γ(X, U)` using `hft'`. Take `⟨g, φ, hinj, hfin⟩` from `exists_finite_inj_algHom_of_fg K Γ(X, U)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Y, Z, j, i, p, _, _, _, _, _, _, h⟩` from `exists_finFlat_away _ _ φ.toRingHom hfin hinj`. Use `⟨g, finFlatChart_of_openImmersion f _ (j ≫ hU.fromSpec) i p ?_⟩` and prove the remaining obligations. Rewrite using `[reassoc_of% h, Category.assoc, ← hψ, ← Spec.map_comp]`. Use `congr 2`. Use extensionality with `x`.
-
-Conclude with `φ.commutes x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_finite_flat_chart : ∀ (K : Type) [Field K] (X : Scheme.{0}) [IsIntegral X] (f : X ⟶ Spec (CommRingCat.of K)) [LocallyOfFiniteType f], ∃ (g : ℕ) (W : X.Opens) (V : (Spec (CommRingCat.of (MvPolynomial (Fin g) K))).Opens) (π : W.toScheme ⟶ V.toScheme), (W : Set X).Nonempty ∧ IsFinite π ∧ Flat π ∧ Surjective π ∧ π ≫ V.ι ≫ (Spec.map (CommRingCat.ofHom (algebraMap K (MvPolynomial (Fin g) K)))) = W.ι ≫ f := by
   intro K _ X _ f _

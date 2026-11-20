@@ -13,7 +13,7 @@ namespace GlobalTheory.PfBCI
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Use `choose l hl using fun i => Module.Projective.exists_dual_eq_one ℂ (hv i)`. Introduce `h0`. Use `congrArg (PiTensorProduct.lift ((MultilinearMap.mkPiAlgebra ℂ ι ℂ).compLinearMap l)) h0` as an intermediate fact. Simplify using `[hl] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem unramB_tprod_ne_zero {ι : Type} [Fintype ι] {X : ι → Type} [∀ i, AddCommGroup (X i)]
     [∀ i, Module ℂ (X i)] (v : ∀ i, X i) (hv : ∀ i, v i ≠ 0) : PiTensorProduct.tprod ℂ v ≠ 0 := by
@@ -24,25 +24,23 @@ theorem unramB_tprod_ne_zero {ι : Type} [Fintype ι] {X : ι → Type} [∀ i, 
   simp [hl] at this
 
 /- English proof (translation)
-Take `⟨hKo, hKc⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w n`. Take `⟨W, _, _, π, q, hπ, hq, hq0⟩` from `GlobalTheory.FinZeta.GLSeries.exists_irrSmooth_quot (ρ) hKo hf0ne hf0K`. Establish `hπs` using `hπ.1`. Establish `hπi` using `hπ.2`. Set `S : Subrepresentation (ρ)` to `⟨GlobalTheory.FinZeta.GLSeries.cyc (ρ) f0, by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Introduce `g u hu`. Conclude with `GlobalTheory.FinZeta.GLSeries.cyc_stable _ f0 g u hu⟩`. Establish `hqi : ∀ g (y : S.toSubmodule), q (S.toRepresentation g y) = π g (q y)` using `fun g y => hq g y`. Set `qI : S.toRepresentation.IntertwiningMap π` to `{ toLinearMap := q, isIntertwining' := fun g => LinearMap.ext fun y => hqi g y }`. Establish `hqs : Function.Surjective q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : Subrepresentation π` to `⟨LinearMap.range q, by`. Introduce `g u hu`. Take `⟨y, rfl⟩` from `LinearMap.mem_range.1 hu`. Conclude with `LinearMap.mem_range.2 ⟨_, hq g y⟩⟩`. Use `haveI : IsSimpleOrder (Subrepresentation π) := hπi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Break down `eq_bot_or_eq_top T with hT | hT` into its components or cases. It suffices to derive a contradiction. Establish `hm : q ⟨f0, GlobalTheory.FinZeta.GLSeries.self_mem_cyc _ f0⟩ ∈ T.toSubmodule` using `LinearMap.mem_range_self q _`. Rewrite `hm` using `[hT]`. Conclude with `hq0 ((Submodule.mem_bot ℂ).1 hm)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `z`. Establish `hz : z ∈ T.toSubmodule`. Rewrite using `[hT]`. Conclude with `Submodule.mem_top`. Take `⟨y, hy⟩` from `LinearMap.mem_range.1 hz`.
+Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Introduce a local definition for the expression.
 
-Conclude with `⟨y, hy⟩`. Establish `hSs : IsSmooth S.toRepresentation` using `fun y => by`. Use `(congrArg IsOpen ?_).mpr (hρs y.1)` and prove the remaining obligations. Use extensionality with `g`. Conclude with `Subtype.ext_iff`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `P : SmIrr (GL (Fin n) (w.adicCompletion E))` to `⟨W, π, hπs, hπi⟩`. Establish `hy0K : q ⟨f0, GlobalTheory.FinZeta.GLSeries.self_mem_cyc _ f0⟩ ∈ fixed π (GlobalTheory.LFun.KGL w n)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => by`. Rewrite using `[← hq]`. Use `congr 1`. Conclude with `Subtype.ext (GlobalTheory.LGrp.mem_fixed.1 hf0K k hk)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsph : GlobalTheory.LGrp.IsSpherical P.ρ (GlobalTheory.LFun.KGL w n)` using `(Submodule.ne_bot_iff _).2 ⟨_, hy0K, hq0⟩`. Use `⟨P, ⟨S, qI, fun z => hqs z⟩, hsph, hsph, fun x hx hx0 => ?_⟩` and prove the remaining obligations. Establish `hx' : x ∈ (fixed S.toRepresentation (GlobalTheory.LFun.KGL w n)).map qI.toLinearMap`. Rewrite using `[GlobalTheory.LocGL.map_fixed_of_surjective hSs hKc (f := qI) fun z => hqs z]`. Conclude with `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨u, hu, hux⟩` from `Submodule.mem_map.1 hx'`. Establish `hqu : q u = x` using `hux`. Establish `hu0 : u ≠ 0` using `fun e => hx0 (by rw [← hqu, e, map_zero])`. Establish `huK : u.1 ∈ fixed (ρ) (GlobalTheory.LFun.KGL w n)` using `GlobalTheory.LGrp.mem_fixed.2 fun k hk => congrArg Subtype.val (GlobalTheory.LGrp.mem_fixed.1 hu k hk)`. Establish `hu1 : GlobalTheory.LFun.IsSatVecGL w (ρ) u.1 B` using `hsat _ huK fun e => hu0 (Subtype.ext e)`.
-
-Establish `hu2 : GlobalTheory.LFun.IsSatVecGL w S.toRepresentation u B` using `GlobalTheory.LFun.IsSatVecGL.of_map (ρ' := ρ) S.toSubmodule.subtype (fun _ _ => rfl) Subtype.val_injective hu1`. Establish `hu3 : GlobalTheory.LFun.IsSatVecGL w π (q u) B` using `hu2.map (ρ' := π) q (fun g y => hqi g y) (by rw [hqu]; exact hx0)`. Rewrite `hu3` using `[hqu]`. Conclude with `hu3`.
+A detailed English derivation is pending.
 -/
 theorem unramB_irr_quot (w : HeightOneSpectrum (𝓞 E)) {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (GL (Fin n) (w.adicCompletion E)) V) (hρs : IsSmooth ρ) {f0 : V} (hf0ne : f0 ≠ 0)
@@ -110,15 +108,13 @@ theorem unramB_irr_quot (w : HeightOneSpectrum (𝓞 E)) {V : Type} [AddCommGrou
   exact hu3
 
 /- English proof (translation)
-Use `letI := GlobalTheory.LocalData.complRel w`. Use `haveI := GlobalTheory.LocalData.isLocalField w`. Establish `hKO : ∀ m, GlobalTheory.LFun.KGL w m = GlobalTheory.SplitWeil.KO (w.adicCompletion E) (Fin m)` using `fun m => (GlobalTheory.SmGL.SphCompletion.KO_completion w m).symm`. Establish `hv : ∀ i, ∃ v ∈ fixed (σ i).ρ (GlobalTheory.LFun.KGL w (N i)), v ≠ 0` using `fun i => (Submodule.ne_bot_iff _).1 (hB i).1`. Use `choose v hvK hv0 using hv`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨f0, hf0, hf01⟩` from `GlobalTheory.SatInd.exists_fixed_apply_one (GlobalTheory.SmGL.stdBlocks N h) (ρ := GlobalTheory.SmGL.piTensor fun i => (σ i).ρ) (x := PiTensorProduct.tprod ℂ v) fun g hg => by`. Rewrite using `[GlobalTheory.SmGL.piTensor_tprod]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `GlobalTheory.LGrp.mem_fixed.1 (hvK a) (g a) (by rw [hKO]; exact hg a)`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf0K : f0 ∈ fixed (locProd h w σ) (GlobalTheory.LFun.KGL w n)`. Rewrite using `[hKO]`. Conclude with `hf0`. Establish `hf0ne : f0 ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `unramB_tprod_ne_zero v hv0 hf01.symm`. Establish `hsat : ∀ f ∈ fixed (locProd h w σ) (GlobalTheory.LFun.KGL w n), f ≠ 0 → GlobalTheory.LFun.IsSatVecGL w (locProd h w σ) f (∑ i, B i)`. Introduce `f hf hf0`. Take `⟨S, hS, hfS⟩` from `GlobalTheory.SatInd.exists_sat_multiProd h (fun a => (σ a).smooth) (fun a => (σ a).irred) hf hf0`. Establish `hSB : S = B` using `funext fun a => (hS a).unique (hB a).2`.
-
-Rewrite using `[← hSB]`. Conclude with `hfS`. Conclude with `unramB_irr_quot w (locProd h w σ) (GlobalTheory.SmGL.isSmooth_parInd _ _) hf0ne hf0K _ hsat`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unram_component {c : ℕ} {N : Fin c → ℕ} (h : ∑ i, N i = n) (w : HeightOneSpectrum (𝓞 E))
     (σ : ∀ i, SmIrr (GL (Fin (N i)) (w.adicCompletion E))) (B : Fin c → Multiset ℂˣ)

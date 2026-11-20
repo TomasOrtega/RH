@@ -11,9 +11,9 @@ open Matrix in
 open scoped Kronecker ComplexOrder TensorProduct in
 
 /- English proof (translation)
-Introduce `z hz`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Distinguish the cases in `ha : IsAlgebraic ℚ z`. Take `⟨σ, hσ⟩` from `_root_.GlobalTheory.ClassFin.exists_ringEquiv_apply_ne_of_isAlgebraic z ha h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `hσ (hz σ)`. Take `⟨σ, hσ⟩` from `_root_.GlobalTheory.ClassFin.exists_ringEquiv_ne_of_transcendental z ha`. Conclude with `hσ (hz σ)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ClassFin.exists_rat_of_forall_ringEquiv_fixed :
     ∀ z : ℂ, (∀ σ : ℂ ≃+* ℂ, σ z = z) → ∃ q : ℚ, z = q := by

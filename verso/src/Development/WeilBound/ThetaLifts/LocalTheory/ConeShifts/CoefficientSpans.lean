@@ -18,51 +18,49 @@ abbrev rv (B : Base F E) (M : Model σ X W) (v : Pl F) (w : Matrix (Fin n) (Fin 
   schr (psiAt B.ψ v) (locCo M.co v w) φ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SchrSB.schr_mem_SB B.ψ hB.std.1 v w φ hφ`.
+A detailed English derivation is pending.
 -/
 theorem rv_sb {B : Base F E} (hB : B.IsGood σ) (M : Model σ X W) (v : Pl F) (w) {φ : Fl F v n d} (hφ : φ ∈ SB _) :
     schr (psiAt B.ψ v) w φ ∈ SB _ := GlobalTheory.SchrSB.schr_mem_SB B.ψ hB.std.1 v w φ hφ
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v w hw φ`.
+A detailed English derivation is pending.
 -/
 theorem rv_acts (B : Base F E) (M : Model σ X W) {v : Pl F} {w} (hw : At (evFin F v) w) (φ : Fl F v n d) :
     Acts (evFin F v) (M.co.rho B.ψ w) φ (rv B M v w φ) := GlobalTheory.VacBridge.rho_acts_locCo M.co B.ψ v w hw φ
 
 /- English proof (translation)
-The claim follows from `evFin_liftV v 1`.
+A detailed English derivation is pending.
 -/
 theorem evFin_idem (v : Pl F) : evFin F v (idem F v) = 1 := evFin_liftV v 1
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_smul, show u * idem F v = 0 from at_liftV v 1 u hu, zero_smul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_idem {N : Type} [AddCommGroup N] [Module (AF F) N] (v : Pl F) (z : N) : At (evFin F v) (idem F v • z) := fun u hu => by
   rw [smul_smul, show u * idem F v = 0 from at_liftV v 1 u hu, zero_smul]
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [smul_comm, hz u hu, smul_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_smul {N : Type} [AddCommGroup N] [Module (AF F) N] {v : Pl F} (a : AF F) {z : N} (hz : At (evFin F v) z) :
     At (evFin F v) (a • z) := fun u hu => by rw [smul_comm, hz u hu, smul_zero]
 
 /- English proof (translation)
-Apply the tactic sequence `ext i <;> simp [locCo]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem locCo_smul (M : Model σ X W) (v : Pl F) (a : AF F) (w : Matrix (Fin n) (Fin d) (AE F E)) :
     locCo M.co v (a • w) = evFin F v a • locCo M.co v w := by
   ext i <;> simp [locCo]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨f, hf⟩ : ∃ f, ei f ≠ 0 := by`. Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Conclude with `h.ne (ContinuousLinearMap.ext hn)`. Establish `sb : ∀ a : Fl F v n d, a ∈ SB _ → ∀ u, Function.update M.vac v a u ∈ SB _` using `fun a ha u => by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `e : u = v`. Substitute `e` using the available equality. Rewrite using `[Function.update_self]` and apply the resulting hypothesis. Rewrite using `[Function.update_of_ne e]`. Conclude with `(hM.vac u).1`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `cf : ∀ a : Fl F v n d, ∀ᶠ u in cofinite, Function.update M.vac v a u = M.vac u` using `fun a => by filter_upwards [(Set.finite_singleton v).compl_mem_cofinite] with u hu using Function.update_of_ne hu _ _`. Establish `st : ∀ a : Fl F v n d, ∀ᶠ u in cofinite, Function.update M.vac v a u = Set.indicator {x | ∀ i, x i ∈ u.adicCompletionIntegers F} 1` using `fun a => by filter_upwards [cf a, hM.std] with u a b using a.trans b`. Establish `up : ∀ a : Fl F v n d, (fun u => ev u (Function.update M.vac v a u)) = Function.update M₁.vac v (ev v a)` using `fun a =>`. Use function extensionality and compare the values at `fun u => by`. Distinguish the cases in `e : u = v`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Substitute `e` using the available equality. Rewrite using `[Function.update_self, Function.update_self]`. Rewrite using `[Function.update_of_ne e, Function.update_of_ne e, (h.vac u).1]`. Establish `h1` using `(PositivityTheory.ThKF.pureAct F _ v (M.co.rho B.ψ i) f _ (sb φ hφ) (st φ)).2.2 (rv B M v i φ) (by rw [Function.update_self]; exact rv_acts B M hi φ)`. Establish `h2` using `he _ (GlobalTheory.TensUniq.pure_mem_schA f _ (sb φ hφ) (st φ))`.
-
-Rewrite `h2` using `[h1, Function.update_idem, h.pure f _ (sb _ (rv_sb hB M v _ hφ)) (cf _), h.pure f _ (sb _ hφ) (cf _), up, up]`. Conclude with `pure_cancel (fun u => (hM₁.vac u).2.1) hM₁.std v hf h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_inv {B : Base F E} (hB : B.IsGood σ) {M : Model σ X W} {M₁ : Model σ X₁ W₁} (hM : M.IsGood B.ψ) (hM₁ : M₁.IsGood B.ψ)
     {e ei ev} (h : IsEvLoc M M₁ e ei ev) {v : Pl F} {i} (hi : At (evFin F v) i)
@@ -92,7 +90,7 @@ theorem ev_inv {B : Base F E} (hB : B.IsGood σ) {M : Model σ X W} {M₁ : Mode
   exact pure_cancel (fun u => (hM₁.vac u).2.1) hM₁.std v hf h2
 
 /- English proof (translation)
-Take `⟨-, -, θ, -, hθ⟩` from `hM.vac v`. Use `hθ γ hγ` as an intermediate fact. Rewrite `this` using `[symp, show hTens (cA σ) (incM F X.J) (incM F W.J) γ γ = 0 from h0, mul_zero, map_zero, mul_zero, AddChar.map_zero_eq_one, one_smul]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem vac_fix {B : Base F E} {M : Model σ X W} (hM : M.IsGood B.ψ) {v : Pl F} {γ} (hγ : γ ∈ latAtV X W v)
     (h0 : hh σ X W γ γ = 0) : Acts (evFin F v) (M.co.rho B.ψ γ) (M.vac v) (M.vac v) := by
@@ -102,13 +100,13 @@ theorem vac_fix {B : Base F E} {M : Model σ X W} (hM : M.IsGood B.ψ) {v : Pl F
     AddChar.map_zero_eq_one, one_smul] at this
 
 /- English proof (translation)
-Take `⟨r, s, hX⟩` from `hc.herm`. Take `⟨r', s', hW⟩` from `hc.skew`. Use `PositivityTheory.ThK.Vac.mem_latAtV hc.base hX hW v (at_smul a hb) fun γ hγ => ?_` and prove the remaining obligations. Take `⟨t, ht, e1⟩` from `hcomp γ hγ`. Establish `hi : At (evFin F v) (a • t • V₁)` using `at_smul a ((latAtV_at_stable X W v).1 _ ht)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : a • t • V₁ = (algebraMap (AF F) (AE F E) a * t) • V₁` using `by rw [mul_smul, algebraMap_smul]`. Establish `h1` using `ev_inv hc.base hc.good hc.good₁ h hi (by rw [e2]; exact hinv _) (rv_sb hc.base M v (locCo M.co v (b • V₀)) hφ)`. Rewrite `h1` using `[rv, schr_comm, ← GlobalTheory.LatVac.DualLoc.psi_form M.co v B.ψ hi, show schr _ (locCo M.co v (a • t • V₁)) φ = φ from ha t ht, map_smul]`. Establish `h2 : B.ψ (symp (R` using `AF F) (cA σ) (-1) (incM F X.J) (incM F W.J) (a • t • V₁) (b • V₀)) = 1 := smul_left_injective ℂ hne (h1.trans (one_smul _ _).symm)`. Rewrite using `[← h2, symp, symp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 3`. Establish `e3 : a • b • V₀ = (algebraMap (AF F) (AE F E) a * b) • V₀` using `by rw [mul_smul, algebraMap_smul]`. Establish `e4` using `hh_smul (σ := σ) (X := X) (W := W) 1 (algebraMap (AF F) (AE F E) a * b) γ V₀`. Rewrite `e4` using `[one_smul]`. Express the relevant statement in the definitionally equal form `hh σ X W _ _ = hh σ X W _ _`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e2, e3, e4, hh_smul, e1, map_mul, AlgHom.commutes]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem key {B : Base F E} {M : Model σ X W} {M₁ : Model σ X₁ W₁} {H : Plane E n n₁} {H' : Plane E d d₁} {e u ei ev}
     (hc : Cfg B M M₁ H H' e u) (h : IsEvLoc M M₁ e ei ev) {V₀ V₁ : Matrix (Fin n) (Fin d) (AE F E)}
@@ -137,9 +135,9 @@ theorem key {B : Base F E} {M : Model σ X W} {M₁ : Model σ X₁ W₁} {H : P
   ring
 
 /- English proof (translation)
-Take `⟨I, _, g, hg⟩` from `GlobalTheory.LatParam.latAtV_param X W hX.lat hW.lat v`. Use `haveI := GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v`. Use `⟨Set.range fun a : I → v.adicCompletionIntegers F => ∑ m, (a m : Fv F v) • locCo M.co v (incM F (g m)), isCompact_range (continuous_finset_sum _ fun m _ => (show Continuous fun a : I → v.adicCompletionIntegers F => (a m : Fv F v) from continuous_subtype_val.comp (continuous_apply …` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(hg γ).1 hγ`. Use `⟨a, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun m _ => by rw [locCo_smul, GlobalTheory.EmbChart.evFin_atPlace]`.
+A detailed English derivation is pending.
 -/
 theorem lat_compact {B : Base F E} {r s r' s'} (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s') (M : Model σ X W) (v : Pl F) :
     ∃ C, IsCompact C ∧ ∀ γ ∈ latAtV X W v, locCo M.co v γ ∈ C := by
@@ -155,9 +153,9 @@ theorem lat_compact {B : Base F E} {r s r' s'} (hX : X.IsHerm σ B r s) (hW : W.
   exact Finset.sum_congr rfl fun m _ => by rw [locCo_smul, GlobalTheory.EmbChart.evFin_atPlace]
 
 /- English proof (translation)
-Establish `h0 : Ideal.absNorm v.asIdeal ≠ 0` using `by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot`. Establish `h1 : ‖((Ideal.absNorm v.asIdeal : ℕ) : Fv F v)‖ < 1`. Use `(NumberField.FinitePlace.norm_lt_one_iff_mem F v ((Ideal.absNorm v.asIdeal : ℕ) : 𝓞 F)).2 (Ideal.absNorm_mem _)` as an intermediate fact. Simplify using `using this`. Take `⟨m, hm⟩` from `((tendsto_pow_atTop_nhds_zero_of_norm_lt_one h1).eventually hU).exists`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨Ideal.absNorm v.asIdeal ^ m, pow_ne_zero _ h0, by rw [Nat.cast_pow]; exact hm⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_nat (v : Pl F) {U : Set (Fv F v)} (hU : U ∈ 𝓝 0) : ∃ N : ℕ, N ≠ 0 ∧ (N : Fv F v) ∈ U := by
   have h0 : Ideal.absNorm v.asIdeal ≠ 0 := by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot
@@ -168,15 +166,15 @@ theorem exists_nat (v : Pl F) {U : Set (Fv F v)} (hU : U ∈ 𝓝 0) : ∃ N : �
   exact ⟨Ideal.absNorm v.asIdeal ^ m, pow_ne_zero _ h0, by rw [Nat.cast_pow]; exact hm⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.SchrSB.isLocallyConstant_addChar _ (GlobalTheory.SchrSB.continuous_psiAt B.ψ hB.std.1 v)`.
+A detailed English derivation is pending.
 -/
 theorem psi_lc {B : Base F E} (hB : B.IsGood σ) (v : Pl F) : IsLocallyConstant (psiAt B.ψ v) :=
   GlobalTheory.SchrSB.isLocallyConstant_addChar _ (GlobalTheory.SchrSB.continuous_psiAt B.ψ hB.std.1 v)
 
 /- English proof (translation)
-Take `⟨C, hC, h⟩` from `lat_compact hX hW M v`. Establish `h1 : ∀ᶠ x in 𝓝 (0 : Fv F v), ∀ w ∈ C, schr (psiAt B.ψ v) (x • w) φ = φ`. Use `hC.eventually_forall_of_forall_eventually fun w _ => ?_` and prove the remaining obligations. Establish `t : Tendsto (fun z : Fv F v × _ => z.1 • z.2) (𝓝 (0, w)) (𝓝 0)`. Use `(continuous_smul (M := Fv F v)).tendsto (0, w)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[zero_smul]`. Then use the resulting hypothesis. Conclude with `t.eventually (schr_fix (psi_lc hB v) hφ)`. Take `⟨N, hN, h2⟩` from `exists_nat v h1`. Conclude with `⟨N, hN, fun γ hγ => by rw [rv, locCo_smul, map_natCast]; exact h2 _ (h γ hγ)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_level {B : Base F E} (hB : B.IsGood σ) {r s r' s'} (hX : X.IsHerm σ B r s) (hW : W.IsSkew σ B r' s')
     (M : Model σ X W) (v : Pl F) {φ : Fl F v n d} (hφ : φ ∈ SB _) :
@@ -192,7 +190,7 @@ theorem exists_level {B : Base F E} (hB : B.IsGood σ) {r s r' s'} (hX : X.IsHer
   exact ⟨N, hN, fun γ hγ => by rw [rv, locCo_smul, map_natCast]; exact h2 _ (h γ hγ)⟩
 
 /- English proof (translation)
-Set `L : AE F E →ₗ[AF F] _` to `M.co.e.toLinearMap ∘ₗ ((LinearMap.toSpanSingleton (AE F E) _ V).restrictScalars (AF F)) ∘ₗ c.toLinearMap`. Establish `hL : Continuous L` using `IsModuleTopology.continuous_of_linearMap L`. Establish `he : Continuous (evFin F v)` using `(RestrictedProduct.continuous_eval v).comp continuous_snd`. Conclude with `(continuous_pi fun i => he.comp ((continuous_apply i).comp hL.fst)).prodMk (continuous_pi fun i => he.comp ((continuous_apply i).comp hL.snd))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cont_loc (M : Model σ X W) (v : Pl F) (c : AE F E →ₐ[AF F] AE F E) (V : Matrix (Fin n) (Fin d) (AE F E)) :
     Continuous fun x : AE F E => locCo M.co v (c x • V) := by

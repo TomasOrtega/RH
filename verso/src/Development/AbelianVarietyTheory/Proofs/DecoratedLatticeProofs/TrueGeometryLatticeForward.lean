@@ -24,9 +24,9 @@ noncomputable section
 namespace GlobalTheory.FamTrace.LatFwd
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `e : GlobalTheory.AdForm.finM V rfl κ * GlobalTheory.AdForm.finM V rfl κ⁻¹ = 1`. Establish `e1 : ∀ g, GlobalTheory.AdForm.finM V rfl g = (mt V g).map (toEAf D)` using `fun g => rfl`. Establish `e2 : mt V κ * mt V κ⁻¹ = 1`. Simplify using `only [Formalism.L2.Theta.mt]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Rewrite using `[e1, e1, ← Matrix.map_mul, e2]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Rewrite `e` using `[h]`. Conclude with `(Units.inv_eq_of_mul_eq_one_right e).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finM_inv_eq {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (κ : GA D V) (x : GL (Fin n) (GlobalTheory.AdForm.EF D))
     (h : GlobalTheory.AdForm.finM V hn κ = x.1) : GlobalTheory.AdForm.finM V hn κ⁻¹ = (x⁻¹).1 := by
@@ -42,11 +42,9 @@ theorem finM_inv_eq {D : D7} (V : HSp D) {n : ℕ} (hn : V.rank = n) (κ : GA D 
   exact (Units.inv_eq_of_mul_eq_one_right e).symm
 
 /- English proof (translation)
-Rewrite `hM'` using `[map_inv, map_inv]`. Use `set M := GlobalTheory.AdelicU.matHom _ D.sp.cm.sig V.gram (GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v g)`. Establish `hint : ∀ (N : Matrix (Fin V.rank) (Fin V.rank) (Fv D.host.F v ⊗[D.host.F] D.host.E)), (∀ i j, N i j ∈ GlobalTheory.AdelicU.intLoc D.host.F D.host.E v) → ∀ z : Fin V.rank → Fv D.host.F v ⊗[D.host.F] D.host.E, (∀ i, z i ∈ GlobalTheory.AdelicU.intLoc D.host.F D.host.E v) → ∀ i, (N * …` using `fun N hN z hz i => by`. Simplify using `only [Matrix.mulVec, dotProduct]`. Conclude with `Subring.sum_mem _ fun j _ => Subring.mul_mem _ (hN i j) (hz j)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.AdelicU.mem_stabLoc.2 fun z => ?_` and prove the remaining obligations. Simplify using `only [GlobalTheory.AdelicU.mem_latLoc_stdLattice]`. Use `⟨fun hz => hint _ hM z hz, fun hz => ?_⟩` and prove the remaining obligations. Establish `e : (M⁻¹).1 *ᵥ (M.1 *ᵥ z) = z`. Rewrite using `[Matrix.mulVec_mulVec, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mulVec]`.
-
-Rewrite using `[← e]`. Conclude with `hint _ hM' _ hz`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_mem_stabLoc_std {D : D7} (V : HSp D) (g : GA D V) (v : HeightOneSpectrum (𝓞 D.host.F))
     (hM : ∀ i j, (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig V.gram (GlobalTheory.AdelicU.proj D.sp.cm.sig V.gram v g)).1 i j ∈ GlobalTheory.AdelicU.intLoc D.host.F D.host.E v)
@@ -75,19 +73,17 @@ namespace GlobalTheory.FamTrace.LatFwd
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hat row col hc κ hκ y hy hU`. Establish `hs` using `hA.tr.std.some u`. Take `⟨k, hk⟩` from `hs.ends 0 (Nat.zero_le _) (Or.inl rfl)`. Establish `hlb` using `hk.lb ()`. Establish `hg : Formalism.L2.Forms.gramN (I.rec7 l Z) 0 (Nat.zero_le _) = 1` using `((GlobalTheory.Mem.Col2.TC.spaces_in_coordinates I hA.tr.ok hA.tr.pins.some l Z).2.2.2 0 (Nat.zero_le _)).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfg : ((a.g.x 0).L).FG` using `by haveI : Submodule.IsLattice _ (a.g.x 0).L := (ha.x 0 (Nat.zero_le _)).sd.1`. Conclude with `Submodule.IsLattice.fg (A := (I.rec7 l Z).host.E)`. Establish `hne : X.piT u ≠ 0`. Establish `hcop : IsCoprime (X.piT u) (B.fields.conjO (X.piT u))` using `l.pr.piT_cop u`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcop` using `[h0, map_zero, isCoprime_zero_left]`. Conclude with `not_isUnit_zero hcop`. Establish `hne' : ((X.piT u : 𝓞 B.host.E) : B.host.E) ≠ 0` using `fun h => hne (by exact_mod_cast h)`. Establish `hσ : ∀ x, Formalism.L2.Forms.sigD (I.rec7 l Z) (Formalism.L2.Forms.sigD (I.rec7 l Z) x) = x` using `fun x => star_star x`. Establish `hΛ : ∀ x, x ∈ (F0 W u).cls0.lev.Lb ↔ ∀ j : Fin _, ∃ r : 𝓞 (I.rec7 l Z).host.E, x j = (r : (I.rec7 l Z).host.E) ∧ (j.1 + 1 = _ → X.piT u ∣ r)` using `fun x => hlb x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc : ∀ v, ∀ g ∈ (F0 W u).cls0.lev.Uloc v, ∀ i j, g.1 i j ∈ Formalism.UG.tensInt (F` using `(I.rec7 l Z).host.F) (v.adicCompletion (I.rec7 l Z).host.F) (Formalism.UG.intOE (I.rec7 l Z).host.E) (v.adicCompletionIntegers (I.rec7 l Z).host.F).toSubring := fun v g hgv => GlobalTheory.T.unitFormUnitary_integralEntries_of_levelLattice _ _ _ hσ _ _ hg _ hne' _ hΛ v g ((F0 W u) …`. Establish `hyv` using `(((F0 W u).cls0.lev.U_eq y.1).1 hU).2`. Establish `hyinv` using `finM_inv_eq _ _ κ y.1 hy`. Use `GlobalTheory.FinPl.KOpen.moves_of_levelOpen _ _ hfg _ ?_` and prove the remaining obligations. Use `clear hs hk hlb row col hc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hL : (a.g.x 0).L = GlobalTheory.AdelicU.stdLattice (I.rec7 l Z).host.E ((I.rec7 l Z).sp.X 0).rank`. Use extensionality with `z`. Rewrite using `[(hat.pinX.xs 0 (Nat.zero_le _)).2.2 z]`. Simplify using `only [GlobalTheory.AdForm.intVec, Set.mem_setOf_eq, GlobalTheory.AdelicU.stdLattice, Formalism.UG.stdLat, Submodule.mem_pi, Set.mem_univ, true_imp_iff, LinearMap.mem_range, Algebra.linearMap_apply]`. Conclude with `forall_congr' fun k => ⟨fun hk => ⟨⟨_, hk⟩, rfl⟩, fun ⟨y, hy⟩ => hy ▸ y.isIntegral_coe⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.AdelicU.levelOpen, Subgroup.mem_iInf]`. Introduce `v`. Rewrite using `[Subgroup.mem_comap, hL]`. Establish `e2 : ∀ i j, (Formalism.UG.bc (Formalism.UG.prV (E` using `(I.rec7 l Z).host.E) v) (y.1)⁻¹).1 i j ∈ Formalism.UG.tensInt (F := (I.rec7 l Z).host.F) (v.adicCompletion (I.rec7 l Z).host.F) (Formalism.UG.intOE (I.rec7 l Z).host.E) (v.adicCompletionIntegers (I.rec7 l Z).host.F).toSubring := by`. Rewrite using `[map_inv]`.
-
-Conclude with `hloc v _ (inv_mem (hyv v))`. Conclude with `proj_mem_stabLoc_std _ κ v (GlobalTheory.T.localComponent_integral_of_finiteMatrix_integral _ _ _ _ κ y.1 hy v (hloc v _ (hyv v))) (GlobalTheory.T.localComponent_integral_of_finiteMatrix_integral _ _ _ _ κ⁻¹ (y.1)⁻¹ hyinv v e2)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lattice_forward_preserves_base : ∀ {B : GlobalTheory.Mem.Base} {X : GlobalTheory.Mem.PreX B.toPre} {I : TC B X} {l : I.Laws} {Z : TC.Later B (I.cols l)} {L : SizeData₂ (I.rec7 l Z)} {hT : GatTies (I.rec7 l Z)} {Gi : Formalism.MainNotions.G.Inst (I.rec7 l Z) L} {Gl : Formalism.MainNotions.G.LatInst (I.rec7 l Z)} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX (I.rec7 l Z)} {cX : ExtraC} {ex : Extra (I.rec7 l Z) L hT Gi Gl Kc Yd cX} (W : RealPack ex), AllTrue W → ∀ (u : B.Word) (a : GeoAll W u), a.Is → a.True → ∀ row col, (a.fam row col).c.Is → ∀ κ ∈ GfC ((I.rec7 l Z).sp.X 0), ∀ y : Formalism.UG.UPts (Formalism.L2.Forms.sigD (I.rec7 l Z)) (Formalism.L2.Forms.gramN (I.rec7 l Z) 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 (I.rec7 l Z).host.F) (I.rec7 l Z).host.F), GlobalTheory.AdForm.finM ((I.rec7 l Z).sp.X 0) (Formalism.L2.Forms.rankN (I.rec7 l Z) 0 (Nat.zero_le _)) κ = y.1.1 → (y : GL _ _) ∈ (F0 W u).cls0.lev.U → GlobalTheory.FinPl.Moves ((I.rec7 l Z).sp.X 0) κ (a.g.x 0).L (a.g.x 0).L (fun _ => True) := by
   intro B X I l Z L hT Gi Gl Kc Yd cX ex W hA u a ha hat row col hc κ hκ y hy hU

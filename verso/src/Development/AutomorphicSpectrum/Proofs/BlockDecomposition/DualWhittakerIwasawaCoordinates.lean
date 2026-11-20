@@ -15,7 +15,7 @@ namespace GlobalTheory.CompanionTheory.DualHol.Coord
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Simplify using `[Matrix.det_succ_row_zero, Fin.sum_univ_succ, Matrix.det_fin_two, Fin.succAbove]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_blk (h : GL (Fin 2) F) :
     (!![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] : Matrix (Fin 3) (Fin 3) F).det
@@ -23,9 +23,9 @@ theorem det_blk (h : GL (Fin 2) F) :
   simp [Matrix.det_succ_row_zero, Fin.sum_univ_succ, Matrix.det_fin_two, Fin.succAbove]
 
 /- English proof (translation)
-Establish `hd : (!![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] : Matrix (Fin 3) (Fin 3) F).det ≠ 0`. Rewrite using `[det_blk]`. Conclude with `((Matrix.isUnit_iff_isUnit_det _).1 h.isUnit).ne_zero`. Unfold `GL2LocalData.em`. Rewrite using `[dif_pos hd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem em_coe (h : GL (Fin 2) F) : (GL2LocalData.em h).val =
     !![h.val 0 0, h.val 0 1, 0; h.val 1 0, h.val 1 1, 0; 0, 0, 1] := by
@@ -38,7 +38,7 @@ theorem em_coe (h : GL (Fin 2) F) : (GL2LocalData.em h).val =
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, em_coe, em_coe, em_coe, Units.val_mul]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Fin.sum_univ_three]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem em_mul (g h : GL (Fin 2) F) : GL2LocalData.em (g * h) = GL2LocalData.em g * GL2LocalData.em h := by
   apply Units.ext
@@ -47,7 +47,7 @@ theorem em_mul (g h : GL (Fin 2) F) : GL2LocalData.em (g * h) = GL2LocalData.em 
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, Fin.sum_univ_three]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[em_coe]`. Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem em_one : GL2LocalData.em (1 : GL (Fin 2) F) = 1 := by
   apply Units.ext
@@ -56,14 +56,14 @@ theorem em_one : GL2LocalData.em (1 : GL (Fin 2) F) = 1 := by
   fin_cases i <;> fin_cases j <;> simp
 
 /- English proof (translation)
-Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← em_mul, mul_inv_cancel, em_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem em_inv (g : GL (Fin 2) F) : (GL2LocalData.em g)⁻¹ = GL2LocalData.em g⁻¹ := by
   apply inv_eq_of_mul_eq_one_right
   rw [← em_mul, mul_inv_cancel, em_one]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show ((g * h)⁻¹ : GL (Fin n) F).val.transpose = (g⁻¹ : GL (Fin n) F).val.transpose * (h⁻¹ : GL (Fin n) F).val.transpose`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, Matrix.transpose_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tinv_mul' {n : ℕ} (g h : GL (Fin n) F) : GL2LocalData.tinv (g * h) = GL2LocalData.tinv g * GL2LocalData.tinv h := by
   apply Units.ext
@@ -72,7 +72,7 @@ theorem tinv_mul' {n : ℕ} (g h : GL (Fin n) F) : GL2LocalData.tinv (g * h) = G
   rw [_root_.mul_inv_rev, Units.val_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GLnLocal.mem_integralGL_iff F n).1 hk`. Conclude with `(GLnLocal.mem_integralGL_iff F n).2 ⟨fun i j => h2 j i, fun i j => h1 j i⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tinv_mem' {n : ℕ} {k : GL (Fin n) F} (hk : k ∈ GLnLocal.integralGL F n) :
     GL2LocalData.tinv k ∈ GLnLocal.integralGL F n := by
@@ -80,7 +80,7 @@ theorem tinv_mem' {n : ℕ} {k : GL (Fin n) F} (hk : k ∈ GLnLocal.integralGL F
   exact (GLnLocal.mem_integralGL_iff F n).2 ⟨fun i j => h2 j i, fun i j => h1 j i⟩
 
 /- English proof (translation)
-Use `(GLnLocal.mem_integralGL_iff F 2).2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `show (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) F) i j ∈ 𝒪[F] fin_cases i <;> fin_cases j <;> simp [zero_mem, one_mem]`. Apply the tactic sequence `show (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) F) i j ∈ 𝒪[F] fin_cases i <;> fin_cases j <;> simp [zero_mem, one_mem]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem long_weyl2_mem_integral_GL : (GL2LocalData.w2 : GL (Fin 2) F) ∈ GLnLocal.integralGL F 2 := by
   refine (GLnLocal.mem_integralGL_iff F 2).2 ⟨fun i j => ?_, fun i j => ?_⟩
@@ -90,7 +90,7 @@ theorem long_weyl2_mem_integral_GL : (GL2LocalData.w2 : GL (Fin 2) F) ∈ GLnLoc
     fin_cases i <;> fin_cases j <;> simp [zero_mem, one_mem]
 
 /- English proof (translation)
-Use `(GLnLocal.mem_integralGL_iff F 3).2 ⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `show (!![0, 0, 1; 0, 1, 0; 1, 0, 0] : Matrix (Fin 3) (Fin 3) F) i j ∈ 𝒪[F] fin_cases i <;> fin_cases j <;> simp [zero_mem, one_mem]`. Apply the tactic sequence `show (!![0, 0, 1; 0, 1, 0; 1, 0, 0] : Matrix (Fin 3) (Fin 3) F) i j ∈ 𝒪[F] fin_cases i <;> fin_cases j <;> simp [zero_mem, one_mem]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem long_weyl3_mem_integral_GL : (GL2LocalData.w3 : GL (Fin 3) F) ∈ GLnLocal.integralGL F 3 := by
   refine (GLnLocal.mem_integralGL_iff F 3).2 ⟨fun i j => ?_, fun i j => ?_⟩
@@ -100,9 +100,9 @@ theorem long_weyl3_mem_integral_GL : (GL2LocalData.w3 : GL (Fin 3) F) ∈ GLnLoc
     fin_cases i <;> fin_cases j <;> simp [zero_mem, one_mem]
 
 /- English proof (translation)
-Establish `key : ∀ {g : GL (Fin 2) F}, (∀ i j, g.val i j ∈ 𝒪[F]) → ∀ i j, (GL2LocalData.em g).val i j ∈ 𝒪[F]`. Introduce `g hg i j`. Rewrite using `[em_coe]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [zero_mem, one_mem, hg]`. Take `⟨h1, h2⟩` from `(GLnLocal.mem_integralGL_iff F 2).1 hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Use `(GLnLocal.mem_integralGL_iff F 3).2 ⟨key h1, ?_⟩` and prove the remaining obligations. Rewrite using `[em_inv]`. Conclude with `key h2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem em_mem {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL F 2) :
     GL2LocalData.em k ∈ GLnLocal.integralGL F 3 := by
@@ -116,16 +116,16 @@ theorem em_mem {k : GL (Fin 2) F} (hk : k ∈ GLnLocal.integralGL F 2) :
   exact key h2
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Both sides reduce to the same expression.
 -/
 theorem diag_pair_inv (x y : Fˣ) : (dg2 x y)⁻¹ = dg2 x⁻¹ y⁻¹ := by
   apply Units.ext
   rfl
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `h : (GL2LocalData.tinv (GL2LocalData.em (dg2 x y))).val = (GL2LocalData.em (dg2 x⁻¹ y⁻¹)).val.transpose` using `by show ((GL2LocalData.em (dg2 x y))⁻¹ : GL (Fin 3) F).val.transpose = _`. Rewrite using `[em_inv, diag_pair_inv]`. Rewrite using `[Units.val_mul, Units.val_mul, h, em_coe]`. Use `show (!![0, 0, 1; 0, 1, 0; 1, 0, 0] : Matrix (Fin 3) (Fin 3) F) * _ = (!![((1 : Fˣ) : F), 0, 0; 0, ((y⁻¹ : Fˣ) : F), 0; 0, 0, ((x⁻¹ : Fˣ) : F)] : Matrix (Fin 3) (Fin 3) F) * !![0, 0, 1; 0, 1, 0; 1, 0, 0]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three, dg2]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem long_weyl3_mul_transpose_inv_embed_diag (x y : Fˣ) :
     (GL2LocalData.w3 : GL (Fin 3) F) * GL2LocalData.tinv (GL2LocalData.em (dg2 x y)) = dg 1 y⁻¹ x⁻¹ * GL2LocalData.w3 := by
@@ -141,9 +141,9 @@ theorem long_weyl3_mul_transpose_inv_embed_diag (x y : Fˣ) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_three, dg2]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Establish `h : (GL2LocalData.tinv (dg2 x y)).val = (dg2 x⁻¹ y⁻¹).val.transpose` using `by show ((dg2 x y)⁻¹ : GL (Fin 2) F).val.transpose = _`. Rewrite using `[diag_pair_inv]`. Rewrite using `[Units.val_mul, Units.val_mul, h]`. Use `show (!![0, 1; 1, 0] : Matrix (Fin 2) (Fin 2) F) * _ = (!![((y⁻¹ : Fˣ) : F), 0; 0, ((x⁻¹ : Fˣ) : F)] : Matrix (Fin 2) (Fin 2) F) * !![0, 1; 1, 0]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, dg2]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem long_weyl2_mul_transpose_inv_diag_pair (x y : Fˣ) :
     (GL2LocalData.w2 : GL (Fin 2) F) * GL2LocalData.tinv (dg2 x y) = dg2 y⁻¹ x⁻¹ * GL2LocalData.w2 := by
@@ -158,9 +158,7 @@ theorem long_weyl2_mul_transpose_inv_diag_pair (x y : Fˣ) :
   fin_cases i <;> fin_cases j <;> simp [Matrix.mul_apply, Fin.sum_univ_two, dg2]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ a b k hk`. Use `⟨GL2LocalData.w3 * GL2LocalData.tinv (GL2LocalData.em k), mul_mem long_weyl3_mem_integral_GL (tinv_mem' (em_mem hk)), GL2LocalData.w2 * GL2LocalData.tinv k, mul_mem long_weyl2_mem_integral_GL (tinv_mem' hk), fun W => ?_, fun W' => ?_⟩` and prove the remaining obligations. Use `show W (GL2LocalData.w3 * GL2LocalData.tinv (GL2LocalData.em (dg2 (a * b) b * k))) = _`. Rewrite using `[em_mul, tinv_mul', ← mul_assoc, long_weyl3_mul_transpose_inv_embed_diag, mul_assoc]`. Use `show W' (GL2LocalData.w2 * GL2LocalData.tinv (dg2 (a * b) b * k)) = _`.
-
-Rewrite using `[tinv_mul', ← mul_assoc, long_weyl2_mul_transpose_inv_diag_pair, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coords : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] (a b : Fˣ) (k : GL (Fin 2) F), k ∈ GLnLocal.integralGL F 2 → ∃ k₃ ∈ GLnLocal.integralGL F 3, ∃ k₂ ∈ GLnLocal.integralGL F 2, (∀ W : GL (Fin 3) F → ℂ, GL2LocalData.dW3 W (GL2LocalData.em (dg2 (a * b) b * k)) = W (dg 1 b⁻¹ (a * b)⁻¹ * k₃)) ∧ (∀ W' : GL (Fin 2) F → ℂ, GL2LocalData.dW2 W' (dg2 (a * b) b * k) = W' (dg2 b⁻¹ (a * b)⁻¹ * k₂)) := by
   intro F _ _ _ _ a b k hk

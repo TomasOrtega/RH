@@ -15,15 +15,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `hci D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT i Tp tup O hO t x`. Establish `hj` using `inR i`. Establish `hσ : GoodEmb T.Q.c O.s0` using `rfl`. Take `⟨-, -, -, -, hr, -, hr1, -, -, -, hDom, -, hLast⟩` from `GlobalTheory.AdTh.models_at_record_core D G Pl0 T0 A T R F κ v₀ hR hT i _ rfl (T.dict ((i : ℕ) + 1) T.toCore.σ₀ 1).1`. Take `⟨hι, hx₀⟩` from `GlobalTheory.TupleCover.iotaOK_and_frame T hT.laws _ hj _ hσ (Wc D i) O.hV (rank_Wc i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c0, ⟨m, hm, hc0⟩, hv⟩` from `hO.cxi`. Take `⟨hxi, n, hn, hxn⟩` from `GlobalTheory.ClassSumRule.xi_laws hR.lev (hO.tuple t).xi`. Take `⟨hd, hA, -⟩` from `hO.cov t`. Establish `hpq` using `hr ▸ hr1`. Establish `hN : 0 < m * n` using `Nat.mul_pos hm hn`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcN : c0 ^ (m * n) = 1` using `by rw [pow_mul, hc0, one_pow]`. Establish `hxN : ∀ h : GA D (Wc D i), O.xi t (Matrix.GeneralLinearGroup.det (finHom (Wc D i) h)) ^ (m * n) = 1` using `fun h => by`. Rewrite using `[mul_comm, pow_mul, hxn, one_pow]`. Take `⟨_, _, _, hfam⟩` from `hR.fam.tie`. Take `⟨ψ, hψ, hw⟩` from `GlobalTheory.ClassSumRule.exists_char hR.lev (O.dδ t) hd hι (hr.symm.trans (rank_Wc i).symm) hpq (hO.tuple t).half (fun P hP z => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `GlobalTheory.RationalValues.xiR_mem R hR.lev hR.fam.pl_onto hR.fam.muVal hfam.ok i (tup t) P hP z`. Rewrite using `[← ha, ← hO.lift.field]`. Conclude with `(O.jL a).2) (hO.tuple t).xi (hO.tuple t).phi`. Take `⟨f, hf, hcls, -⟩` from `GlobalTheory.ClsVal.exists_cusp_isThClsD_unique hci _ _ _ _ _ O.c' _ (O.dδ t) _ (unfBC O.hle (T.U ((i : ℕ) + 1))) hr1 (fun σ hσ => GlobalTheory.OneMapAll.isUnf_unfExt O.hle σ (fun _ => rfl) (hT.laws.unf _ hj (σ.comp (incF T.Q.c O.c' O.hle)) hσ)) hT.laws.pins.2.1.2 (fun _ => hO.co …`. Take `⟨-, _, h⟩` from `hO.io`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `h.2.2.1.le) x`. Conclude with `⟨f, hf, hcls⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ClassSumRule.exists_cusp_isThClsD_core : Formalism.MainNotions.ModuliIntegralCharts.H1.ChartIndepSt2 → ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), GlobalTheory.Hk3.Core R F → TieIn T R κ v₀ → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ∀ (t : Tp) (x : O.Cl' t → VsV D i O.c'.F), ∃ f ∈ cusp (T.Q.Xo ((i : ℕ) + 1)) O.c' (unfBC O.hle (T.U ((i : ℕ) + 1))) (wtA (κ i)) (Vc D i).rank, IsThClsD (T.Q.Xo ((i : ℕ) + 1)) O.c' (O.dδ t) (O.w t) (O.La t) (O.Nc t) (O.gam t) (O.vol t) (O.ep t) O.io x f := by
   intro hci D G _ _ Pl0 T0 A T _ R F κ v₀ hR hT i Tp tup O hO t x

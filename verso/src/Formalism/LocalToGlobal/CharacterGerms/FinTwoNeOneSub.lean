@@ -10,11 +10,11 @@ namespace Formalism.L2.FormalSeriesBounds.RF
 open Formalism.IncomingBounds Formalism.L2.Pj
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial s a`. Simplify using `only [MvPolynomial.pderiv_monomial]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Both sides reduce to the same expression. Use `congr 1`. Rewrite using `[tsub_right_comm]`. Simplify using `only [Finsupp.coe_tsub, Pi.sub_apply, Finsupp.single_apply, if_neg hij, if_neg (Ne.symm hij), tsub_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Both sides reduce to the same expression. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Treat this case separately.
 -/
 theorem pderiv_comm' {σ R : Type} [CommRing R] (i j : σ) (p : MvPolynomial σ R) :
     MvPolynomial.pderiv i (MvPolynomial.pderiv j p) = MvPolynomial.pderiv j (MvPolynomial.pderiv i p) := by
@@ -36,15 +36,13 @@ section One
 variable {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {I J : Fin 2 → Type} [∀ g, Fintype (I g)] [∀ g, Fintype (J g)]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `h`. Rewrite `hw`, `hw'` using `[MvPolynomial.mem_vars]`. Take `⟨μ, hμ, hμw⟩` from `hw`. Take `⟨μ', hμ', hμw'⟩` from `hw'`. Break down `hk : kind ρ with _ | ⟨g, a, a'⟩` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨g, hg'⟩` from `h2 ρ hk`. Establish `e1` using `hg' μ hμ w (Finsupp.mem_support_iff.1 hμw)`. Establish `e2` using `hg' μ' hμ' w' (Finsupp.mem_support_iff.1 hμw')`. Conclude with `hg (e1.trans e2.symm)`. Take `⟨-, hodd, hleaf⟩` from `h1 ρ g a a' hk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `l1` using `hleaf μ hμ w (Finsupp.mem_support_iff.1 hμw)`. Establish `l2` using `hleaf μ' hμ' w' (Finsupp.mem_support_iff.1 hμw')`. Apply the tactic sequence `rcases l1 with ⟨e1, t1⟩ | ⟨e1, t1⟩ <;> rcases l2 with ⟨e2, t2⟩ | ⟨e2, t2⟩`. Conclude with `hg (e1.trans e2.symm)`. Establish `he : a = a'` using `t1.symm.trans (ht.trans t2)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hodd` using `[he, sub_self, ZMod.val_zero]`. Conclude with `absurd hodd (by decide)`. Establish `he : a' = a` using `t1.symm.trans (ht.trans t2)`. Rewrite `hodd` using `[he, sub_self, ZMod.val_zero]`. Conclude with `absurd hodd (by decide)`.
-
-Conclude with `hg (e1.trans e2.symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem no_conj_of_rowsOK {G : ∀ g, Cart V d (I g) (J g)} {alt : Prop} {N : ℕ} {P : MvPolynomial (Fin N × WV I) C}
     {kind : Fin N → Knd d} (h : RowsOK G alt P kind) {ρ : Fin N} {w w' : WV I} (hw : (ρ, w) ∈ P.vars)
@@ -74,25 +72,23 @@ theorem no_conj_of_rowsOK {G : ∀ g, Cart V d (I g) (J g)} {alt : Prop} {N : �
 variable (X : RowData C V d I J) (F : Flag X)
 
 /- English proof (translation)
-Consider the cases of `b with`. Consider the case `ch g a u`. Use `⟨(GlobalTheory.ch g a u).kind X.n, (rowsOK_iff _ _ _ _).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `ρ g' a1 a2 hk`. Conclude with `absurd hk (by simp [GlobalTheory.kind])`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ _`. Conclude with `⟨g, fun w hw => (vars_letter X F (MvPolynomial.vars_pow _ _ hw)).1⟩`. Consider the case `mon g e N`. Use `⟨(GlobalTheory.mon g e N).kind X.n, (rowsOK_iff _ _ _ _).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `ρ g' a1 a2 hk`.
+Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd hk (by simp [GlobalTheory.kind])`. Introduce `ρ _`. Use `⟨g, fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨a, -, ha⟩` from `Finset.mem_biUnion.1 (MvPolynomial.vars_prod _ hw)`. Conclude with `(vars_letter X F ha).1`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Consider the case `bi g a i y`. Distinguish the cases in `hy : y = 0`. Substitute `hy` using the available equality. Establish `hp : (GlobalTheory.bi g a i 0).poly X F = 1`. Simplify using `[GlobalTheory.poly]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Both sides reduce to the same expression. Use `⟨fun _ => none, (rowsOK_iff _ _ _ _).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `ρ g' a1 a2 hk`. Conclude with `absurd hk (by simp)`. Introduce `ρ _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨0, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite `hw` using `[hp]`. Simplify using `at hw`. Establish `hl : 0 < V.l ^ i * y` using `Nat.mul_pos (pow_pos V.l_prime.pos i) (Nat.pos_of_ne_zero hy)`. Establish `w1 : X.n ≤ X.rkF g a`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Apply `hwt g a X.n` to reduce the goal to its premises. Simplify using `only [GlobalTheory.wt, and_self, if_true]`. Use linear arithmetic over natural numbers and integers. Establish `w2 : X.n ≤ X.rkF (1 - g) (a + (i : ZMod d))`. Apply `hwt (1 - g) (a + (i : ZMod d)) X.n` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [GlobalTheory.wt, and_self, if_true]`. Use linear arithmetic over natural numbers and integers. Establish `hao` using `alt_odd_of_big X hdich (big_of_le_rk X hj w1) (big_of_le_rk X hj w2)`. Use `⟨(GlobalTheory.bi g a i y).kind X.n, (rowsOK_iff _ _ _ _).2 ⟨?_, ?_⟩⟩` and prove the remaining obligations. Introduce `ρ g' a1 a2 hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hk' : (g, a, a + (i : ZMod d)) = (g', a1, a2)` using `by simpa [GlobalTheory.kind] using hk`. Take `⟨rfl, rfl, rfl⟩ : g = g' ∧ a = a1 ∧ a + (i : ZMod d) = a2` from `by simpa using hk'`. Use `⟨hao.1, hao.2, fun w hw => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_union.1 (MvPolynomial.vars_mul _ _ hw) with h1 | h1` into its components or cases. Conclude with `Or.inl (vars_letter X F (MvPolynomial.vars_pow _ _ h1))`.
-
-Conclude with `Or.inr (vars_letter X F (MvPolynomial.vars_pow _ _ h1))`. Introduce `ρ hk`. Conclude with `absurd hk (by simp [GlobalTheory.kind])`.
+Prove the first alternative. Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_rowsOK (hdich : X.Alt ∨ ∀ a, X.big 0 a) (hj : X.j' < X.n) (b : GlobalTheory d)
     (hwt : ∀ g a k, b.wt X g a k ≠ 0 → k ≤ X.rkF g a) :
@@ -157,11 +153,9 @@ variable {C : Type} [Field C] {V : VF C} {d : ℕ} [NeZero d] {T : Type} {r : T 
   {pl : (Σ o, Σ i : Fin (L o).length, Fin (rowsAt X L o i)) → Fin n}
 
 /- English proof (translation)
-Establish `h : ∀ i : Fin (L o).length, ∃ kind : Fin (rowsAt X L o i) → Knd d, RowsOK (X o).G (X o).Alt ((blkAt L o i).poly (X o) (F o)) kind`. Introduce `i`. Distinguish the cases in `ho : o ∈ Z`. Use `exists_rowsOK (X o) (F o) (H.dich o ho) (H.hj o ho) _ fun g t k hk => (H.supp o ho g t k ?_).2` and prove the remaining obligations. Rewrite using `[← H.wt o ho g t k]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (blkAt L o i).wt (X o) g t k ≤ ((L o).map fun q => q.1.wt (X o) g t k).sum` using `le_sum_map (L o) (fun q => q.1.wt (X o) g t k) (List.get_mem (L o) i)`. Use linear arithmetic over natural numbers and integers. Establish `h0 : (L o).length = 0` using `by rw [H.off o ho]; rfl`. Conclude with `absurd i.2 (by omega)`. Use `choose kind hk using h`.
-
-Conclude with `⟨_, rowsOK_prodAll _ _ (plAt_inj n H.plinj o) _ kind hk⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ConjugatePairPlaceSetting.rowsOK (H : ConjugatePairPlaceSetting r cc a tau X F Z ga n L pl) (o : Orb) :
     ∃ kind : Fin n → Knd d, RowsOK (X o).G (X o).Alt
@@ -181,11 +175,11 @@ theorem ConjugatePairPlaceSetting.rowsOK (H : ConjugatePairPlaceSetting r cc a t
   exact ⟨_, rowsOK_prodAll _ _ (plAt_inj n H.plinj o) _ kind hk⟩
 
 /- English proof (translation)
-Unfold `blkProd at hx`. Establish `h1` using `MvPolynomial.vars_prod _ hx`. Rewrite `h1` using `[Finset.mem_biUnion]`. Take `⟨o', -, h2⟩` from `h1`. Unfold `toAll at h2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions.
 
-Establish `h3` using `MvPolynomial.vars_rename _ _ h2`. Rewrite `h3` using `[Finset.mem_image]`. Take `⟨y, hy, hyeq⟩` from `h3`. Simplify using `only [Prod.mk.injEq] at hyeq`. Take `⟨hy1, hy2⟩` from `hyeq`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `ho : o' = o` using `congrArg Sigma.fst hy2`. Substitute `ho` using the available equality. Establish `hw : y.2 = w` using `eq_of_heq (Sigma.mk.inj_iff.1 hy2).2`. Rewrite using `[show (b, w) = y from Prod.ext hy1.symm hw.symm]`. Conclude with `hy`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_vars_blkProd {b : Fin n} {o : Orb} {w : WV (IIof r tau o)}
     (hx : ((b, ⟨o, w⟩) : Fin n × WVO (IIof r tau)) ∈ (blkProd X F n L pl).vars) :
@@ -207,13 +201,13 @@ theorem mem_vars_blkProd {b : Fin n} {o : Orb} {w : WV (IIof r tau o)}
   exact hy
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases g <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fin_two_ne_one_sub (g : Fin 2) : g ≠ 1 - g := by
   fin_cases g <;> decide
 
 /- English proof (translation)
-Take `⟨kind, hk⟩` from `H.rowsOK o`. Use `no_conj_of_rowsOK hk (mem_vars_blkProd hx) (mem_vars_blkProd hx') (fin_two_ne_one_sub g) ?_` and prove the remaining obligations. Use `show ((X o).G g).ty (Sum.inl ⟨t, i⟩) = ((X o).G (1 - g)).ty (Sum.inl ⟨t, i'⟩)`. Rewrite using `[H.hty o g, H.hty o (1 - g)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ConjugatePairPlaceSetting.no_conj (H : ConjugatePairPlaceSetting r cc a tau X F Z ga n L pl) (b : Fin n) (o : Orb) (g : Fin 2) (t : ZMod d)
     (i : Fin (r (tau o g t))) (i' : Fin (r (tau o (1 - g) t)))
@@ -225,13 +219,13 @@ theorem ConjugatePairPlaceSetting.no_conj (H : ConjugatePairPlaceSetting r cc a 
   rw [H.hty o g, H.hty o (1 - g)]
 
 /- English proof (translation)
-Take `⟨x, hx, ex⟩` from `Finset.mem_image.1 (MvPolynomial.vars_rename _ _ h1)`. Take `⟨x', hx', ex'⟩` from `Finset.mem_image.1 (MvPolynomial.vars_rename _ _ h2)`. Take `⟨ρ, o, g, t, i⟩` from `x`. Take `⟨ρ', o', g', t', i'⟩` from `x'`. Establish `e1 : tau o g t = τ` using `congrArg Sigma.fst ex`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1' : tau o' g' t' = cc τ` using `congrArg Sigma.fst ex'`. Establish `eρ : ρ = b` using `congrArg (fun ℓ : Letter T r n => ℓ.2.2) ex`. Establish `eρ' : ρ' = b` using `congrArg (fun ℓ : Letter T r n => ℓ.2.2) ex'`. Establish `e2 : tau o' g' t' = tau o (1 - g) t`. Rewrite using `[e1', ← e1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have hg : g = 0 ∨ g = 1 := by fin_cases g <;> simp`. Break down `hg with rfl | rfl` into its components or cases. Conclude with `H.conj o t`. Conclude with `H.conj' o t`. Establish `e3` using `H.inj (a₁ := (o', g', t')) (a₂ := (o, 1 - g, t)) e2`.
+Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Prod.mk.injEq] at e3`. Take `⟨rfl, rfl, rfl⟩` from `e3`. Rewrite `hx` using `[eρ]`. Rewrite `hx'` using `[eρ']`. Conclude with `H.no_conj b o' g t' i i' hx hx'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ConjugatePairPlaceSetting.no_conj_letter (H : ConjugatePairPlaceSetting r cc a tau X F Z ga n L pl) (τ : T) (a1 : Fin (r τ)) (a2 : Fin (r (cc τ)))
     (b : Fin n)
@@ -261,7 +255,7 @@ theorem ConjugatePairPlaceSetting.no_conj_letter (H : ConjugatePairPlaceSetting 
 end Fam
 
 /- English proof (translation)
-Simplify using `only [lap, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.comp_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem lap_one_apply {T : Type} (r : T → ℕ) (n : ℕ) (C : Type) [Field C] (τ τ' : T) (a : Fin (r τ)) (a' : Fin (r τ'))
     (P : MvPolynomial (Letter T r n) C) :
@@ -271,11 +265,11 @@ theorem lap_one_apply {T : Type} (r : T → ℕ) (n : ℕ) (C : Type) [Field C] 
   rfl
 
 /- English proof (translation)
-Introduce `C _ V d _ T r cc a Orb _ tau J _ X F Z ga n L pl H isX`. Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `τ _ a1 a2`. Rewrite using `[lap_one_apply]`. Use `Finset.sum_eq_zero fun b _ => Finset.sum_eq_zero fun b' _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hb : b = b'`. Substitute `hb` using the available equality. Distinguish the cases in `h : (⟨τ, a1, b⟩ : Letter T r n) ∈ (MvPolynomial.rename (phiL r tau n) (blkProd X F n L pl)).vars`. Establish `h' : (⟨cc τ, a2, b⟩ : Letter T r n) ∉ (MvPolynomial.rename (phiL r tau n) (blkProd X F n L pl)).vars` using `fun h2 => H.no_conj_letter τ a1 a2 b h h2`. Rewrite using `[MvPolynomial.pderiv_eq_zero_of_notMem_vars h', map_zero, smul_zero]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pderiv_comm', MvPolynomial.pderiv_eq_zero_of_notMem_vars h, map_zero, smul_zero]`. Rewrite using `[Matrix.one_apply_ne hb, zero_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem harmonic_product_bound : NormOneHarmonic := by
   intro C _ V d _ T r cc a Orb _ tau J _ X F Z ga n L pl H isX

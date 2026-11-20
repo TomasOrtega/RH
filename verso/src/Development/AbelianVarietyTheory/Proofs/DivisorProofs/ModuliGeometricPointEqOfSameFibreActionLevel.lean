@@ -14,13 +14,11 @@ noncomputable section
 namespace GlobalTheory.UMin
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo K _ _ P x x' α α' hs hα hα' hL hL' hact hM hA`. Use `choose act h₁ h₂ using hact`. Establish `h : GlobalTheory.ArcUnique.IsFibre P.A act P.L Xo.univ.t x α` using `⟨hα, h₁, hL⟩`. Establish `h' : GlobalTheory.ArcUnique.IsFibre P.A act P.L Xo.univ.t x' α'` using `⟨hα', h₂, hL'⟩`. Take `⟨o', ⟨m⟩⟩` from `obj_pull E H D l (KA l) (KA l) (baseKA l) (baseKA l) (RingHom.id _) _ (Sp K) Xo.s (x ≫ Xo.s) x rfl rfl ((Category.comp_id _).symm.trans (congrArg ((x ≫ Xo.s) ≫ ·) (Spec.map_id _).symm)) Xo.univ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ, e₁, g, ha, hi⟩` from `h.cancel P.isLB o'.t.PP.isLB (GlobalTheory.ArcUnique.isFibre_of_sabMap m.toSABMap) (Category.id_comp x)`. Take `⟨f₁, f₂, f₃⟩` from `h'.precomp P.isLB o'.t.PP.isLB g ha hi`. Rewrite `f₁` using `[Category.id_comp]`. Use `o'.proper` as an intermediate fact. Take `⟨m', hm'⟩` from `exists_sabMap_of_lbIso E H _ _ Xo.univ.t o'.t x' (ρ ≫ α') ⟨inferInstance, fun s _ K _ _ t _ => inferInstance⟩ f₁ f₂ f₃`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (y : 𝟙_ (Over (Sp K)) ⟶ o'.t.G) (w : 𝟙_ (Over Xo.X) ⟶ Xo.univ.t.G), y.left ≫ m.toSABMap.φ = x ≫ w.left → (∃ z : baseOver (Sp K) ⟶ P.A, z.left ≫ α = x ≫ w.left ∧ z.left ≫ α' = x' ≫ w.left) → y.left ≫ m'.φ = x' ≫ w.left`. Introduce and unpack `y w hy ⟨z, z₁, z₂⟩`. Establish `e : y.left ≫ ρ = z.left` using `hα.1.hom_ext (by rw [Category.assoc, e₁, hy, z₁]) (by`. Rewrite using `[Category.assoc, g.1.w, ← Category.assoc, Over.w, Over.w]`. Conclude with `Category.comp_id _)`.
-
-Rewrite using `[hm', ← Category.assoc, e, z₂]`. Conclude with `(Xo.rep _ _ inferInstance o').unique ⟨rfl, ⟨m⟩⟩ ⟨hs.symm, ⟨⟨m', fun a => key _ _ (m.eta a) (hM a), fun a => key _ _ (m.etaA a) (hA a)⟩⟩⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem moduli_point_eq_of_same_fibre : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (K : Type) [Field K] [IsAlgClosed K] (P : PolAV (Sp K)) (x x' : Sp K ⟶ Xo.X) (α α' : P.A.left ⟶ Xo.univ.t.G.left), x ≫ Xo.s = x' ≫ Xo.s → IsGrpPullback P.A Xo.univ.t.G x α → IsGrpPullback P.A Xo.univ.t.G x' α' → LBIso P.L (Xo.univ.t.PP.L.pull α) → LBIso P.L (Xo.univ.t.PP.L.pull α') → (∀ a, ∃ h : P.A ⟶ P.A, h.left ≫ α = α ≫ (Xo.univ.t.act.act a).left ∧ h.left ≫ α' = α' ≫ (Xo.univ.t.act.act a).left) → (∀ a, ∃ z : baseOver (Sp K) ⟶ P.A, z.left ≫ α = x ≫ (Xo.univ.eta a).left ∧ z.left ≫ α' = x' ≫ (Xo.univ.eta a).left) → (∀ a, ∃ z : baseOver (Sp K) ⟶ P.A, z.left ≫ α = x ≫ (Xo.univ.etaA a).left ∧ z.left ≫ α' = x' ≫ (Xo.univ.etaA a).left) → x = x' := by
   intro E _ _ _ H D l Xo K _ _ P x x' α α' hs hα hα' hL hL' hact hM hA

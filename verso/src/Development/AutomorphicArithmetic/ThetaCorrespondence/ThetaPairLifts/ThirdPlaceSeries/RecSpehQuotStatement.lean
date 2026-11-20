@@ -9,7 +9,7 @@ section
 open NumberField ReciprocityTheory.Gal Formalism.ConjugateSelfDual IsDedekindDomain GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.WeilDeligne GlobalTheory.LocLanglands GlobalTheory.CuspRep GlobalTheory.DefiniteBC
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-The claim follows from `GlobalTheory.LocalData.isLocalField w ∀ (h : IsPlaceOver A w) (rc : IrrGL (w.adicCompletion E) → WD h), _root_.UpperTheory.Zero.LLC.IsRecT h rc → GlobalTheory.Published.GenericUnitaryDualGL → GlobalTheory.Published.StandardCosocleGL → ∀ (a d n : ℕ) (hd : ∑ _ : Fin d, a = n) (σ : …`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.local_langlands_speh_product' : ∀ (E Ω : Type) [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)),

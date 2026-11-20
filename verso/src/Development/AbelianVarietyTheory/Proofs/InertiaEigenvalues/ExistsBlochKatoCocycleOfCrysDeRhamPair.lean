@@ -47,7 +47,7 @@ lemma ιV_tmul' (v : V) (b : B) :
     ιV PD (LL := LL) (V := V) (v ⊗ₜ[Qp] b) = v ⊗ₜ[Qp] PD.ι b := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => rw [actVB_tmul', φVB_tmul', φVB_tmul', actVB_tmul', PD.φ_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma φVB_actVB' (g : G) (x : V ⊗[Qp] B) :
     φVB PD (LL := LL) (V := V) (actVB PD ρ g x) = actVB PD ρ g (φVB PD (LL := LL) (V := V) x) := by
@@ -57,7 +57,7 @@ lemma φVB_actVB' (g : G) (x : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b => rw [actVB_tmul', ιV_tmul', ιV_tmul', actVdR_tmul', PD.ι_comm]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 lemma ιV_actVB' (g : G) (x : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := V) (actVB PD ρ g x) = actVdR PD ρ g (ιV PD (LL := LL) (V := V) x) := by
@@ -67,9 +67,9 @@ lemma ιV_actVB' (g : G) (x : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul v b`. Rewrite using `[actVB_tmul', actVB_tmul', actVB_tmul', map_mul, map_mul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 lemma actVB_mul' (g h : G) (x : V ⊗[Qp] B) :
     actVB PD ρ (g * h) x = actVB PD ρ g (actVB PD ρ h x) := by
@@ -81,9 +81,9 @@ lemma actVB_mul' (g h : G) (x : V ⊗[Qp] B) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `hy`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, Submodule.zero_mem]`. Consider the case `tmul v b`. Conclude with `⟨ρ g v ⊗ₜ[Qp] ⟨PD.actdR g b.1, PD.Fil_G g a _ b.2⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Supply the required witnesses or components.
 
-Consider the case `add x y hx hy`. Rewrite using `[map_add, map_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma actVdR_mem_FilV' (g : G) (a : ℤ) (y : V ⊗[Qp] BdR)
     (hy : y ∈ FilV PD (LL := LL) (V := V) a) :
@@ -99,7 +99,7 @@ lemma actVdR_mem_FilV' (g : G) (a : ℤ) (y : V ⊗[Qp] BdR)
 
 include PD in
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Apply `PD.not_mem_filtration_two` to reduce the goal to its premises. Rewrite using `[Subsingleton.elim PD.t 0, map_zero]`. Conclude with `Submodule.zero_mem _`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma nontrivial_B' : Nontrivial B := by
   by_contra h
@@ -110,7 +110,7 @@ lemma nontrivial_B' : Nontrivial B := by
 
 include PD in
 /- English proof (translation)
-Use `haveI := nontrivial_B' PD`. Take `⟨f, hf⟩` from `Module.Projective.exists_dual_eq_one Qp (one_ne_zero : (1 : B) ≠ 0)`. Use `congrArg (fun z => TensorProduct.rid Qp V (LinearMap.lTensor V f z)) h` as an intermediate fact. Simplify `this` using `[hf]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma tmul_one_injective' {v w : V} (h : v ⊗ₜ[Qp] (1 : B) = w ⊗ₜ[Qp] (1 : B)) : v = w := by
   haveI := nontrivial_B' PD
@@ -119,11 +119,11 @@ lemma tmul_one_injective' {v w : V} (h : v ⊗ₜ[Qp] (1 : B) = w ⊗ₜ[Qp] (1 
   simpa [hf] using this
 
 /- English proof (translation)
-Establish `e₁ : actVB PD ρ g d₁ - d₁ = 0` using `(Submodule.mem_iInf _).1 h₁ g`. Establish `e₂ : actVdR PD ρ g d₂ - d₂ = 0` using `(Submodule.mem_iInf _).1 h₂ g`. Rewrite `e₁` using `[← hx, map_sub]`. Rewrite `e₂` using `[← hxy, map_sub]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Rewrite using `[map_sub, φVB_actVB', ← sub_eq_zero, ← neg_eq_zero, ← e₁]`. Normalize the expressions using the abelian group laws. Establish `: ιV PD (LL` using `LL) (V := V) (actVB PD ρ g x - x) = actVdR PD ρ g y - y := by`. Rewrite using `[map_sub, ιV_actVB', ← sub_eq_zero, ← e₂]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Rewrite using `[this]`. Conclude with `Submodule.sub_mem _ (actVdR_mem_FilV' PD ρ g 0 y hy) hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma sub_fixed_mem (d₁ : V ⊗[Qp] B) (h₁ : d₁ ∈ Dcris PD ρ) (d₂ : V ⊗[Qp] BdR) (h₂ : d₂ ∈ DdR PD ρ)
     (x : V ⊗[Qp] B) (y : V ⊗[Qp] BdR) (hy : y ∈ FilV PD (LL := LL) (V := V) 0)
@@ -145,7 +145,7 @@ lemma sub_fixed_mem (d₁ : V ⊗[Qp] B) (h₁ : d₁ ∈ Dcris PD ρ) (d₂ : V
     exact Submodule.sub_mem _ (actVdR_mem_FilV' PD ρ g 0 y hy) hy
 
 /- English proof (translation)
-Apply `tmul_one_injective' PD` to reduce the goal to its premises. Establish `e : ρ g (c h) ⊗ₜ[Qp] (1 : B) = actVB PD ρ g (c h ⊗ₜ[Qp] (1 : B))`. Rewrite using `[actVB_tmul', map_one]`. Rewrite using `[add_tmul, e, hc, hc, hc, map_sub, actVB_mul']`. Normalize the expressions using the abelian group laws.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 lemma cocycle_of_tmul_one (x : V ⊗[Qp] B) (c : G → V)
     (hc : ∀ g, c g ⊗ₜ[Qp] (1 : B) = actVB PD ρ g x - x) (g h : G) :
@@ -159,9 +159,9 @@ lemma cocycle_of_tmul_one (x : V ⊗[Qp] B) (c : G → V)
 end General
 
 /- English proof (translation)
-Introduce `l _ P AI T K LL _ _ _ O _ _ hO A d₁ h₁ d₂ h₂`. Take `⟨hsurj, hker⟩` from `GlobalTheory.FundSeq.tensor_fundamental_sequence l P AI T K LL A.V`. Take `⟨x, y, hy, hx, hxy⟩` from `hsurj d₁ d₂`. Establish `key : ∀ g, ∃ v : A.V, actVB (P.PD K) A.ρ g x - x = v ⊗ₜ[ℚ_[l]] (1 : P.R.B)` using `fun g => hker _ (sub_fixed_mem (P.PD K) A.ρ d₁ h₁ d₂ h₂ x y hy hx hxy g).1 (sub_fixed_mem (P.PD K) A.ρ d₁ h₁ d₂ h₂ x y hy hx hxy g).2`. Use `choose c hc using key`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : ∀ g, c g ⊗ₜ[ℚ_[l]] (1 : P.R.B) = actVB (P.PD K) A.ρ g x - x` using `fun g => (hc g).symm`. Establish `hcont : Continuous c` using `GlobalTheory.FundCont.contCore_tied l P AI T K LL O hO A 0 Fin.elim0 Fin.elim0 (fun i => i.elim0) x c (fun g => by rw [Finset.univ_eq_empty, Finset.sum_empty, zero_add]; exact hc' g)`. Conclude with `⟨x, y, c, hy, hx, hxy, ⟨⟨hcont, cocycle_of_tmul_one (P.PD K) A.ρ x c hc'⟩, x, hc'⟩, hc'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem connecting_cocycle : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI → ∀ (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O] [Algebra O LL], GoodO (Qp := ℚ_[l]) LL O → ∀ A : GRep ↥(GK K) ℚ_[l] LL O, ∀ d₁ ∈ Dcris (P.PD K) A.ρ, ∀ d₂ ∈ DdR (P.PD K) A.ρ, ∃ (x : A.V ⊗[ℚ_[l]] P.R.B) (y : A.V ⊗[ℚ_[l]] P.R.BdR) (c : ↥(GK K) → A.V), y ∈ FilV (P.PD K) (LL := LL) (V := A.V) 0 ∧ x - φVB (P.PD K) (LL := LL) (V := A.V) x = d₁ ∧ ιV (P.PD K) (LL := LL) (V := A.V) x - y = d₂ ∧ c ∈ finiteCocycles (P.PD K) A.ρ ∧ ∀ g, c g ⊗ₜ[ℚ_[l]] (1 : P.R.B) = actVB (P.PD K) A.ρ g x - x := by
   intro l _ P AI T K LL _ _ _ O _ _ hO A d₁ h₁ d₂ h₂

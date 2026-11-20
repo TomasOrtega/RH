@@ -16,9 +16,9 @@ def blkWt : (Σ k, ι k) → (K →₀ ℕ) := fun p => Finsupp.single p.1 1
 def oneK : K →₀ ℕ := Finsupp.equivFunOnFinite.symm (fun _ => 1)
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finsupp.finset_sum_apply, Fintype.sum_sigma]`. Use `(Finset.sum_eq_single k ?_ ?_).trans ?_` and prove the remaining obligations. Introduce `k' _ hk'`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Simplify using `[blkWt, Finsupp.single_apply, hk']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[blkWt]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem weight_blkWt_apply (m : (Σ k, ι k) →₀ ℕ) (k : K) :
     Finsupp.weight (blkWt (ι := ι)) m k = ∑ i, m ⟨k, i⟩ := by
@@ -34,9 +34,9 @@ theorem weight_blkWt_apply (m : (Σ k, ι k) →₀ ℕ) (k : K) :
     simp [blkWt]
 
 /- English proof (translation)
-Introduce `d hd`. Establish `hd' : d ∈ f.support`. Rewrite using `[MvPolynomial.mem_support_iff]`. Introduce `h`. Apply `hd` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[qmap, MvPolynomial.coeff_map, h]`. Use extensionality with `k`. Rewrite using `[weight_blkWt_apply, hf d hd' k]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isWeightedHomogeneous_qmap (f : MRing ι) (a : K → ℕ) (hf : IsMultiHomog f a) :
     IsWeightedHomogeneous (blkWt (ι := ι)) (qmap f) (Finsupp.equivFunOnFinite.symm a) := by
@@ -51,9 +51,9 @@ theorem isWeightedHomogeneous_qmap (f : MRing ι) (a : K → ℕ) (hf : IsMultiH
   simp
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `hP`. Rewrite using `[qIdeal, Ideal.map_span]`. Apply `Ideal.homogeneous_span` to reduce the goal to its premises. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨a, ha⟩` from `hS f hf`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, (mem_weightedHomogeneousSubmodule _ _ _ _).2 (isWeightedHomogeneous_qmap f a ha)⟩`.
+Supply the required witnesses or components.
 -/
 theorem qIdeal_isHomogeneous (P : Ideal (MRing ι)) (hP : IsMultiHomogIdeal P) :
     (qIdeal P).IsHomogeneous (weightedHomogeneousSubmodule ℚ (blkWt (ι := ι))) := by
@@ -67,9 +67,9 @@ theorem qIdeal_isHomogeneous (P : Ideal (MRing ι)) (hP : IsMultiHomogIdeal P) :
 def segMon (i : (k : K) → ι k) : MvPolynomial (Σ k, ι k) ℚ := ∏ k, X ⟨k, i k⟩
 
 /- English proof (translation)
-Establish `h` using `IsWeightedHomogeneous.prod Finset.univ (fun k => (X ⟨k, i k⟩ : MvPolynomial (Σ k, ι k) ℚ)) (fun k => blkWt (ι := ι) ⟨k, i k⟩) (fun k _ => isWeightedHomogeneous_X ℚ _ _)`. Establish `e : (∑ k ∈ Finset.univ, blkWt (ι` using `ι) ⟨k, i k⟩) = oneK := by`. Use extensionality with `k`. Rewrite using `[Finsupp.finset_sum_apply]`. Simplify using `only [blkWt, oneK, Finsupp.single_apply, Finsupp.coe_equivFunOnFinite_symm]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `h` using `[e]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem segMon_isWeightedHomogeneous (i : (k : K) → ι k) :
     IsWeightedHomogeneous (blkWt (ι := ι)) (segMon i) oneK := by
@@ -85,9 +85,9 @@ theorem segMon_isWeightedHomogeneous (i : (k : K) → ι k) :
   exact h
 
 /- English proof (translation)
-Rewrite using `[aeval_monomial, Finsupp.weight_apply, Finsupp.sum, Finsupp.prod]`. Establish `h0 : IsWeightedHomogeneous (blkWt (ι` using `ι)) (algebraMap ℚ (MvPolynomial (Σ k, ι k) ℚ) c) 0 := by`. Rewrite using `[MvPolynomial.algebraMap_eq]`. Conclude with `isWeightedHomogeneous_C _ _`. Establish `h1` using `h0.mul (IsWeightedHomogeneous.prod n.support (fun e => yt e ^ n e) (fun e => n e • w' e) (fun e _ => (hy e).pow (n e)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h1`.
+A detailed English derivation is pending.
 -/
 private theorem aeval_of_isWeightedHomogeneous_blkWt {E : Type*} (w' : E → (K →₀ ℕ))
     (yt : E → MvPolynomial (Σ k, ι k) ℚ)
@@ -104,9 +104,9 @@ private theorem aeval_of_isWeightedHomogeneous_blkWt {E : Type*} (w' : E → (K 
   simpa using h1
 
 /- English proof (translation)
-Proceed by induction on `H using MvPolynomial.induction_on' with`. Consider the case `monomial n c`. Distinguish the cases in `h : Finsupp.weight w' n = δ`. Substitute `h` using the available equality. Rewrite using `[(aeval_of_isWeightedHomogeneous_blkWt w' yt hy n c).weightedHomogeneousComponent_same, (isWeightedHomogeneous_monomial w' n c rfl).weightedHomogeneousComponent_same]`.
+Proceed by induction. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(aeval_of_isWeightedHomogeneous_blkWt w' yt hy n c).weightedHomogeneousComponent_ne δ (Ne.symm h), (isWeightedHomogeneous_monomial w' n c rfl).weightedHomogeneousComponent_ne δ (Ne.symm h), map_zero]`. Consider the case `add p q hp hq => simp only [map_add, hp, hq]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem component_aeval {E : Type*} (w' : E → (K →₀ ℕ))
     (yt : E → MvPolynomial (Σ k, ι k) ℚ)
@@ -131,11 +131,11 @@ def sWt (r : ℕ) : Fin r ⊕ {k // k ≠ k0} → (K →₀ ℕ) :=
   Sum.elim (fun _ => oneK) (fun k' => Finsupp.single k'.1 1)
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp), Finsupp.finset_sum_apply, Fintype.sum_sum_type]`. Use `congr 1`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `[sWt, oneK]`. Distinguish the cases in `h : k = k0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[dif_pos rfl]`. Use `Finset.sum_eq_zero fun k' _ => ?_` and prove the remaining obligations. Simplify using `[sWt, Finsupp.single_apply, k'.2]`. Rewrite using `[dif_neg h, Finset.sum_eq_single ⟨k, h⟩]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[sWt]`. Introduce `k' _ hk'`. Establish `: k'.1 ≠ k` using `fun e => hk' (Subtype.ext e)`. Simplify using `[sWt, Finsupp.single_apply, this]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem weight_sWt_apply {r : ℕ} (n : (Fin r ⊕ {k // k ≠ k0}) →₀ ℕ) (k : K) :
     Finsupp.weight (sWt k0 r) n k =
@@ -159,7 +159,7 @@ theorem weight_sWt_apply {r : ℕ} (n : (Fin r ⊕ {k // k ≠ k0}) →₀ ℕ) 
       · simp
 
 /- English proof (translation)
-Establish `h0 : Finsupp.weight (sWt k0 r) n k0 = Finsupp.weight (sWt k0 r) n0 k0` using `by rw [h]`. Establish `h1 : Finsupp.weight (sWt k0 r) n k'.1 = Finsupp.weight (sWt k0 r) n0 k'.1` using `by rw [h]`. Rewrite `h0` using `[weight_sWt_apply, weight_sWt_apply, dif_pos rfl, dif_pos rfl]`. Rewrite `h1` using `[weight_sWt_apply, weight_sWt_apply, dif_neg k'.2, dif_neg k'.2, Subtype.coe_eta]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem inr_eq_of_weight_eq {r : ℕ} {n n0 : (Fin r ⊕ {k // k ≠ k0}) →₀ ℕ}
     (h : Finsupp.weight (sWt k0 r) n = Finsupp.weight (sWt k0 r) n0) (k' : {k // k ≠ k0}) :
@@ -171,9 +171,9 @@ theorem inr_eq_of_weight_eq {r : ℕ} {n n0 : (Fin r ⊕ {k // k ≠ k0}) →₀
   omega
 
 /- English proof (translation)
-Establish `hw : ∀ n ∈ H.support, ∀ k', n (Sum.inr k') = n0 (Sum.inr k')` using `fun n hn k' => inr_eq_of_weight_eq k0 ((hH (mem_support_iff.mp hn)).trans (hH (mem_support_iff.mp hn0)).symm) k'`. Rewrite using `[aeval_def, aeval_def, eval₂_eq', eval₂_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun n hn => ?_` and prove the remaining obligations. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`. Establish `hp : ∏ k', b k' ^ n (Sum.inr k') = ∏ k', b k' ^ n0 (Sum.inr k')` using `Finset.prod_congr rfl fun k' _ => by rw [hw n hn k']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, Pi.one_apply, one_pow, Finset.prod_const_one, mul_one, hp]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem aeval_sumElim_factor {S : Type*} [CommRing S] [Algebra ℚ S] {r : ℕ}
     {H : MvPolynomial (Fin r ⊕ {k // k ≠ k0}) ℚ} {δ : K →₀ ℕ}

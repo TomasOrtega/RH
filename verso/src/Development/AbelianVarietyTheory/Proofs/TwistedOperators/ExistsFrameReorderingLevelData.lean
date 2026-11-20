@@ -19,7 +19,7 @@ section Perm
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Equiv.sum_comp f (fun m => if m = j then (if i = m then (1 : R) else 0) else 0)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_perm_one (R : Type) [CommRing R] (f : Equiv.Perm (Fin n)) (i j : Fin n) :
     (∑ k, if f k = j then (if i = f k then (1 : R) else 0) else 0) = if i = j then 1 else 0 := by
@@ -37,14 +37,14 @@ def pmat (R : Type) [CommRing R] (f : Equiv.Perm (Fin n)) : GL (Fin n) R where
     simpa [Matrix.mul_apply, Matrix.one_apply, Equiv.eq_symm_apply] using sum_perm_one R f.symm i j
 
 /- English proof (translation)
-Use extensionality with `i j`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem pmat_inv (R : Type) [CommRing R] (f : Equiv.Perm (Fin n)) : (pmat R f)⁻¹ = pmat R f.symm := by
   ext i j
   rfl
 
 /- English proof (translation)
-Rewrite using `[pmat_inv, Units.val_mul, Units.val_mul]`. Use `show ((1 : Matrix (Fin n) (Fin n) R).submatrix id f.symm * (g : Matrix (Fin n) (Fin n) R) * (1 : Matrix (Fin n) (Fin n) R).submatrix id f) a b = _`. Simplify using `[Matrix.mul_apply, Matrix.one_apply, Equiv.eq_symm_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_pmat (R : Type) [CommRing R] (f : Equiv.Perm (Fin n)) (g : GL (Fin n) R) (a b : Fin n) :
     (((pmat R f)⁻¹ * g * pmat R f : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) a b = (g : Matrix (Fin n) (Fin n) R) (f a) (f b) := by
@@ -54,7 +54,7 @@ theorem conj_pmat (R : Type) [CommRing R] (f : Equiv.Perm (Fin n)) (g : GL (Fin 
   simp [Matrix.mul_apply, Matrix.one_apply, Equiv.eq_symm_apply]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `i j`. Simplify using `only [Formalism.UG.bc, pmat] at *`. Apply the tactic sequence `by_cases h : i = f j <;> simp [Matrix.one_apply, h]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bc_pmat {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (f : Equiv.Perm (Fin n)) :
     Formalism.UG.bc φ (pmat R f) = pmat S f := by
@@ -64,7 +64,7 @@ theorem bc_pmat {R S : Type} [CommRing R] [CommRing S] (φ : R →+* S) (f : Equ
   by_cases h : i = f j <;> simp [Matrix.one_apply, h]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `show ((1 : Matrix (Fin n) (Fin n) R).submatrix id f.symm *ᵥ v) i = v (f i)`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.one_apply, Equiv.eq_symm_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pmat_mulVec (R : Type) [CommRing R] (f : Equiv.Perm (Fin n)) (v : Fin n → R) :
     ((pmat R f.symm : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) *ᵥ v = fun i => v (f i) := by
@@ -81,7 +81,7 @@ open scoped TensorProduct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Use `show β * intGL F E n σ * intGL F E n y * (β * intGL F E n σ)⁻¹ = β * intGL F E n (σ * y * σ⁻¹) * β⁻¹`. Rewrite using `[map_mul, map_mul, map_inv]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frGL_mul_int (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (σ y : GL (Fin n) (intAf F E)) :
     frGL (β * intGL F E n σ) y = frGL β (σ * y * σ⁻¹) := by
@@ -90,9 +90,9 @@ theorem frGL_mul_int (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (σ y :
   group
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [St, MonoidHom.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨σ * y * σ⁻¹, (frGL_mul_int β σ y).symm⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨y, rfl⟩`. Use `⟨σ⁻¹ * y * σ, ?_⟩` and prove the remaining obligations. Rewrite using `[frGL_mul_int]`. Use `congr 1`. Use `group`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem St_mul_int (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (σ : GL (Fin n) (intAf F E)) :
     St (β * intGL F E n σ) = St β := by
@@ -108,9 +108,9 @@ theorem St_mul_int (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (σ : GL 
     group
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ St β`. Take `⟨y, rfl⟩` from `MonoidHom.mem_range.mp hx`. Establish `hy : frGL β y = frGL (β * intGL F E n σ) (σ⁻¹ * y * σ)`. Rewrite using `[frGL_mul_int]`. Use `congr 1`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`. Rewrite using `[redFn_frGL β PP y, hy, redFn_frGL]`. Simplify using `only [map_mul, map_inv]`. Establish `hx' : x ∉ St (β * intGL F E n σ)` using `by rwa [St_mul_int]`. Simplify using `[redFn, ext1, hx, hx']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem redFn_mul_int (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (σ : GL (Fin n) (intAf F E)) (PP : Pl E)
     (x : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) :
@@ -127,9 +127,9 @@ theorem redFn_mul_int (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) (σ : 
     simp [redFn, ext1, hx, hx']
 
 /- English proof (translation)
-Unfold `Formalism.L2.DIV.IsFrame at h ⊢`. Introduce `x`. Establish `e : (((β * intGL F E n (pmat _ f))⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ x = fun i => (((β⁻¹ : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)) *ᵥ x) (f i)`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec, ← map_inv (intGL F E n) (pmat _ f), pmat_inv]`. Unfold `intGL`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[bc_pmat, pmat_mulVec]`. Rewrite using `[h x, e]`. Conclude with `⟨fun hx i => hx (f i), fun hx i => by simpa using hx (f.symm i)⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isFrame_mul_pmat {β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} {Λ : Submodule (𝓞 E) (Fin n → E)} (h : IsFrame β Λ)
     (f : Equiv.Perm (Fin n)) : IsFrame (β * intGL F E n (pmat _ f)) Λ := by
@@ -152,7 +152,7 @@ section Level
 variable {D : D7}
 
 /- English proof (translation)
-Apply `upper_block_val_submatrix` to reduce the goal to its premises. Rewrite using `[mem_blockTri]`. Introduce `i j hij`. Establish `hi : i.val < r` using `lt_of_lt_of_le i.isLt hn`. Simplify using `[blk2, hi] at hij`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem rankBlock_val_eq_submatrix_of_le_rank {κ : Type} [CommRing κ] {n r : ℕ} (hr : r ≤ n) (hn : n ≤ r) (M : GL (Fin n) κ) :
     ((upperLeftBlock hr M : GL (Fin r) κ) : Matrix (Fin r) (Fin r) κ) =
@@ -164,7 +164,7 @@ theorem rankBlock_val_eq_submatrix_of_le_rank {κ : Type} [CommRing κ] {n r : �
   simp [blk2, hi] at hij
 
 /- English proof (translation)
-Rewrite using `[mem_blockTri]`. Introduce `i j hij`. Establish `hi : i.val < r` using `lt_of_lt_of_le i.isLt hn`. Simplify using `[blkOf, hi] at hij`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem blockTri_all {κ : Type} [CommRing κ] {n r : ℕ} (t : ℕ) (hn : n ≤ r) (M : GL (Fin n) κ) :
     M ∈ blockTri (blkOf r t) := by
@@ -177,7 +177,7 @@ def fperm {n r : ℕ} (hr : r ≤ n) (hn : n ≤ r) (π : Equiv.Perm (Fin r)) : 
   ((finCongr (le_antisymm hr hn)).symm.trans π.symm).trans (finCongr (le_antisymm hr hn))
 
 /- English proof (translation)
-Establish `h1 : (finCongr (le_antisymm hr hn)).symm (Fin.castLE hr (π a)) = π a` using `Fin.ext (by simp)`. Simplify using `only [fperm, Equiv.trans_apply, h1, Equiv.symm_apply_apply]`. Conclude with `Fin.ext (by simp)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fperm_castLE {n r : ℕ} (hr : r ≤ n) (hn : n ≤ r) (π : Equiv.Perm (Fin r)) (a : Fin r) :
     fperm hr hn π (Fin.castLE hr (π a)) = Fin.castLE hr a := by
@@ -186,9 +186,9 @@ theorem fperm_castLE {n r : ℕ} (hr : r ≤ n) (hn : n ≤ r) (π : Equiv.Perm 
   exact Fin.ext (by simp)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `PP`. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `a b`. Use `show (upperLeftBlock L.hr (redFn (β * intGL _ _ n (pmat _ (fperm L.hr hn π))) PP.1 x)).1 (π a) (π b) = (upperLeftBlock L.hr (redFn β PP.1 x)).1 a b`. Rewrite using `[rankBlock_val_eq_submatrix_of_le_rank L.hr hn, rankBlock_val_eq_submatrix_of_le_rank L.hr hn, redFn_mul_int, bc_pmat]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.submatrix_apply]`. Rewrite using `[conj_pmat, fperm_castLE, fperm_castLE]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reord_rTup {n : ℕ} (L : LevDat D.host.E ℂ n) (hn : n ≤ L.r) (β : GL (Fin n) (EAf D))
     (π : Equiv.Perm (Fin L.r)) (x : GL (Fin n) (EAf D)) :
@@ -203,7 +203,7 @@ theorem reord_rTup {n : ℕ} (L : LevDat D.host.E ℂ n) (hn : n ≤ L.r) (β : 
   rw [conj_pmat, fperm_castLE, fperm_castLE]
 
 /- English proof (translation)
-Establish `h` using `D.sp.Y_rank 0 (Nat.zero_le _)`. Use `show (D.sp.Y (min 0 D.R.m)).rank ≤ D.R.r`. Rewrite using `[Nat.zero_min, h]`. Use `show D.R.r + 0 * D.R.t ≤ D.R.r`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rank_zeroth_component_eq : (Yc D 0).rank ≤ D.R.r := by
   have h := D.sp.Y_rank 0 (Nat.zero_le _)
@@ -223,9 +223,9 @@ def r0 {T : Type} (Lc : LevCh D T) (β : GL (Fin (Yc D 0).rank) (EAf D)) (x : GL
   fun PP => upperLeftBlock (r_le_Y 0) (redFn β PP.1 x)
 
 /- English proof (translation)
-Establish `hP : (Lc.dat0 P).P = P` using `by simp [LevCh.dat0, datY]`. Establish `hblk : ∀ PP ∈ (Lc.dat0 P).Pg, redFn β PP (finE (Yc D 0) κ) ∈ blockTri (blkOf (Lc.dat0 P).r (Lc.dat0 P).t)` using `fun PP _ => blockTri_all _ (rank_zeroth_component_eq (D := D)) _`. Establish `hQ : ∀ PP ∈ (Lc.dat0 P).Q, redFn β PP (finE (Yc D 0) κ) ∈ blockTri (blk2 (Lc.dat0 P).r)`. Introduce `PP h`. Simplify using `[LevCh.dat0, datY] at h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Formalism.IndefR.Links.levS, Formalism.IndefR.Lev.levG, SetLike.mem_coe, Formalism.IndefR.Lev.mem_levA, Formalism.L2.DIV.mem_lev, Formalism.L2.DIV.mem_parLev, hP]`. Conclude with `⟨fun ⟨h1, ⟨h2, h3, _, _⟩, h4⟩ => ⟨⟨h1, h2, h3⟩, h4⟩, fun ⟨⟨h1, h2, h3⟩, h4⟩ => ⟨h1, ⟨h2, h3, hblk, hQ⟩, h4⟩⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem mem_levelSubgroup_principalDatum_iff {T : Type} (Lc : LevCh D T) (P : LevelP Lc.Pg D.R.r ℂ) (β : GL (Fin (Yc D 0).rank) (EAf D))
     (κ : GA D (Yc D 0)) :
@@ -245,7 +245,7 @@ theorem mem_levelSubgroup_principalDatum_iff {T : Type} (Lc : LevCh D T) (P : Le
     fun ⟨⟨h1, h2, h3⟩, h4⟩ => ⟨h1, ⟨h2, h3, hblk, hQ⟩, h4⟩⟩
 
 /- English proof (translation)
-Establish `hs : (Lc.dat0 P).s = 0` using `rfl`. Establish `hQ : (Lc.dat0 P).Q = ∅` using `rfl`. Establish `hP : (Lc.dat0 P).P = P` using `by simp [LevCh.dat0, datY]`. Rewrite using `[Formalism.IndefR.Lev.levChi, levFn, hs, hQ, hP]`. Simplify using `only [Finset.range_zero, Finset.prod_empty, Finset.prod_const_one, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -260,11 +260,11 @@ theorem principalRowLevelCharacter_trivial {T : Type} (Lc : LevCh D T) (P : Leve
   rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_levelSubgroup_principalDatum_iff, mem_levelSubgroup_principalDatum_iff, hSt, hH, hkey]`. Rewrite using `[principalRowLevelCharacter_trivial, principalRowLevelCharacter_trivial]`. Distinguish the cases in `hg : r0 Lc β₂ (finE (Yc D 0) κ) ∈ P.H`. Establish `hg' : r0 Lc β₃ (finE (Yc D 0) κ) ∈ P'.H`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[← hkey]`. Conclude with `(hH _).1 hg`. Establish `e : (⟨reord π (r0 Lc β₂ (finE (Yc D 0) κ)), (hH _).1 hg⟩ : P'.H) = ⟨r0 Lc β₃ (finE (Yc D 0) κ), hg'⟩` using `Subtype.ext (hkey _)`. Rewrite using `[extendOne_of_mem _ hg, extendOne_of_mem _ hg', hchi _ hg ((hH _).1 hg), e]`. Establish `hg' : r0 Lc β₃ (finE (Yc D 0) κ) ∉ P'.H`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hkey]`. Conclude with `fun h => hg ((hH _).2 h)`. Unfold `ext1`. Rewrite using `[dif_neg hg, dif_neg hg']`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem level_eq_of_reord {T : Type} (Lc : LevCh D T) (P P' : LevelP Lc.Pg D.R.r ℂ) (π : Equiv.Perm (Fin D.R.r))
     (hH : ∀ g, g ∈ P.H ↔ reord π g ∈ P'.H) (hchi : ∀ g hg hg', P.chi ⟨g, hg⟩ = P'.chi ⟨reord π g, hg'⟩)
@@ -291,7 +291,7 @@ theorem level_eq_of_reord {T : Type} (Lc : LevCh D T) (P P' : LevelP Lc.Pg D.R.r
 end Main
 
 /- English proof (translation)
-Introduce `D T Lc P P' π hH hchi β₃ hβ`. Conclude with `⟨β₃ * intGL _ _ _ (pmat _ (fperm (Lc.dat0 P).hr (rank_zeroth_component_eq (D := D)) π)), isFrame_mul_pmat hβ _, fun κ => level_eq_of_reord Lc P P' π hH hchi _ β₃ (St_mul_int _ _) (fun x => reord_rTup (Lc.dat0 P) (rank_zeroth_component_eq (D := D)) β₃ π x) κ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_frame_reord : ∀ {D : D7} {T : Type} (Lc : LevCh D T) (P P' : LevelP Lc.Pg D.R.r ℂ) (π : Equiv.Perm (Fin D.R.r)), (∀ g, g ∈ P.H ↔ reord π g ∈ P'.H) → (∀ g hg hg', P.chi ⟨g, hg⟩ = P'.chi ⟨reord π g, hg'⟩) → ∀ β₃ : GL (Fin (Yc D 0).rank) (EAf D), IsFrame β₃ (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) → ∃ β₂ : GL (Fin (Yc D 0).rank) (EAf D), IsFrame β₂ (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) ∧ ∀ κ : GA D (Yc D 0), (κ ∈ levS (Yc D 0) β₂ (Lc.dat0 P) ↔ κ ∈ levS (Yc D 0) β₃ (Lc.dat0 P')) ∧ levChi (Yc D 0) β₂ (Lc.dat0 P) κ = levChi (Yc D 0) β₃ (Lc.dat0 P') κ := by
   intro D T Lc P P' π hH hchi β₃ hβ

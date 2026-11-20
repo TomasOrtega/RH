@@ -6,7 +6,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LevelCohomology.Hc
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal IsLocalRing Module UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.X
 
 /- English proof (translation)
-Introduce `z hzlc hzc hzU hzD`. Take `⟨m, hm⟩` from `hv z hzlc (fun g k => by rw [hzc, h]) (fun A hA g hgA hgK => hzU A hA g hgA (MonoidHom.mem_ker.mp hgK)) (fun v hvT => by`. Take `⟨m, hm⟩` from `hzD v hvT`. Conclude with `⟨m, fun g hg => by rw [hm g hg, h]⟩)`. Conclude with `⟨m, fun g => by rw [hm g, h]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 private theorem xvan_of_van {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
     (D : Raw Ω c) (γ : G ℚ Ω →* c.Oˣ) (γ' : G ℚ Ω →* (ResidueField c.O)ˣ)
@@ -20,13 +20,11 @@ private theorem xvan_of_van {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure �
   exact ⟨m, fun g => by rw [hm g, h]⟩
 
 /- English proof (translation)
-Introduce `hCor Ω _ _ _ l _ c D hT d f n _ φ ξ hX γ hγ`. Use `haveI : CharP (ResidueField c.O) l := by`. Take `⟨-, -, hloc, -⟩` from `dvrFacts l c.O`. Rewrite using `[CharP.charP_iff_prime_eq_zero (Fact.out : l.Prime)]`. Rewrite using `[← map_natCast (residue c.O), residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hu`. Rewrite `hu` using `[← map_natCast (algebraMap ℤ_[l] c.O)]`. Conclude with `PadicInt.p_nonunit (isUnit_of_map_unit (algebraMap ℤ_[l] c.O) _ hu)`. Use `set γ' : G ℚ Ω →* (ResidueField c.O)ˣ := redChar Ω (residue c.O) (prodX φ ξ) with hγ'`. Take `⟨hKn, hKi, -⟩` from `spKer D`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : ∀ γ'' : G ℚ Ω →* (ResidueField c.O)ˣ, (γ'' = γ' ∨ γ'' = γ'⁻¹) → Van D.T D.pl D.rbar.ker γ''`. Introduce `γ'' hor`. Conclude with `vanOf Ω l (ResidueField c.O) γ'' (hCor Ω l c (ResidueField c.O) (residue c.O) d f n φ ξ hX γ'' hor) D.T D.pl D.rbar.ker hT hKn hKi`. Use `⟨xvan_of_van D γ γ' hγ (hv γ' (Or.inl rfl)), xvan_of_van D γ⁻¹ γ'⁻¹ ?_ (hv γ'⁻¹ (Or.inr rfl))⟩` and prove the remaining obligations. Introduce `g`.
-
-Establish `h1` using `hγ g`. Simplify using `only [Raw.bar, MonoidHom.inv_apply] at h1 ⊢`. Rewrite using `[map_units_inv, Units.val_inv_eq_inv_val, h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.xvan :
     CorX → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l} (D : Raw Ω c), (∀ p ∈ D.T, p.Prime ∧ (D.pl p).valuation (p : Ω) < 1) → ∀ (d f n : ℕ) [NeZero (f * 2 ^ n)] (φ : DirichletCharacter c.O f) (ξ : DirichletCharacter c.O (2 ^ n)), XData l d φ ξ → ∀ γ : G ℚ Ω →* c.Oˣ, (∀ g, Raw.bar γ g = (redChar Ω (residue c.O) (prodX φ ξ) g : ResidueField c.O)) → D.XVan γ ∧ D.XVan γ⁻¹ := by

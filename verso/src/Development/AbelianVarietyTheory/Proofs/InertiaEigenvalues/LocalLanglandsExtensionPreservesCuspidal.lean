@@ -18,7 +18,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Rewrite using `[WD.lpZero, WD.charPol_mk]`. Conclude with `Polynomial.eq_one_of_monic_natDegree_zero (LinearMap.charpoly_monic _) (by rw [LinearMap.charpoly_natDegree]; simp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem charPol_lpZero (σ : Weil h) : (WD.lpZero h).charPol σ = 1 := by
   rw [WD.lpZero, WD.charPol_mk]
@@ -26,7 +26,7 @@ theorem charPol_lpZero (σ : Weil h) : (WD.lpZero h).charPol σ = 1 := by
     (by rw [LinearMap.charpoly_natDegree]; simp)
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [sumList, charPol_lpZero]`. Consider the case `cons b l ih`. Establish `: sumList (b :: l) = WD.lpSum b (sumList l)` using `rfl`. Rewrite using `[this, WD.charPol_lpSum, ih, List.map_cons, List.prod_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem charPol_sumList (l : List (WD h)) (σ : Weil h) :
     (sumList l).charPol σ = (l.map fun y => y.charPol σ).prod := by
@@ -40,7 +40,7 @@ variable {a : Weil h →* (w.adicCompletion E)ˣ} {ha : IsLocalArtin h a}
   {e : AddChar (w.adicCompletion E) Circle → WD h → ℂˣ} {r : IrrGL (w.adicCompletion E) → WD h}
 
 /- English proof (translation)
-Rewrite using `[IrrGL.nu, H.twist x hx, WD.lpTw]`. Use `congr 1`. Conclude with `ha.absPow_comp s`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem nu_eq (H : CuspLaws a ha e r) {x : IrrGL (w.adicCompletion E)} (hx : x.IsCusp) (s : ℝ) :
     r (x.nu s) = (r x).lpTw s := by
@@ -49,9 +49,9 @@ theorem nu_eq (H : CuspLaws a ha e r) {x : IrrGL (w.adicCompletion E)} (hx : x.I
   exact ha.absPow_comp s
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.WeilDeligne.charPol_lpTw_lpChar_lpSp E Ω A w h (r Δ.first)).2 Δ.len σ, Segment.ms, Multiset.map_map]`. Establish `h1 : ∀ j : Fin Δ.len, (r (Δ.term j)).charPol σ = ((r Δ.first).lpTw ((j : ℕ) : ℝ)).charPol σ`. Introduce `j`. Rewrite using `[Segment.term, show (((j : ℕ) : ℂ)) = ((((j : ℕ) : ℝ)) : ℂ) by push_cast; rfl, nu_eq H Δ.isCusp_first]`. Express the relevant statement in the definitionally equal form `_ = ∏ j : Fin Δ.len, (fun y => (r y).charPol σ) (Δ.term j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [h1]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun j => ((r Δ.first).lpTw (j : ℝ)).charPol σ) Δ.len]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem charPol_seg (H : CuspLaws a ha e r) (Δ : Segment (w.adicCompletion E)) (σ : Weil h) :
     (((r Δ.first).lpTw (((Δ.len : ℝ) - 1) / 2)).lpChar (WD.lpSp h Δ.len)).charPol σ

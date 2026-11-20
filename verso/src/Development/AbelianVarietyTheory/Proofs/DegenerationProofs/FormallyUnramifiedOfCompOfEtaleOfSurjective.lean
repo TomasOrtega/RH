@@ -15,7 +15,7 @@ universe u
 open TensorProduct in
 
 /- English proof (translation)
-Use `algebraize [φ, β, β.comp φ]`. Establish `: Algebra.FormallyEtale B C` using `Algebra.FormallyEtale.iff_formallyUnramified_and_formallySmooth.mpr ⟨hu, hs⟩`. Establish `h1 : Subsingleton (C ⊗[B] Ω[B⁄A])` using `(KaehlerDifferential.tensorKaehlerEquivOfFormallyEtale A B C).subsingleton`. Conclude with `⟨(Module.FaithfullyFlat.subsingleton_tensorProduct_iff_right B C).mp h1⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ringHom_formallyUnramified_of_comp_faithfullyFlat {A B C : Type*} [CommRing A]
     [CommRing B] [CommRing C] {φ : A →+* B} {β : B →+* C} (hβ : β.FaithfullyFlat)
@@ -29,7 +29,7 @@ theorem ringHom_formallyUnramified_of_comp_faithfullyFlat {A B C : Type*} [CommR
   exact ⟨(Module.FaithfullyFlat.subsingleton_tensorProduct_iff_right B C).mp h1⟩
 
 /- English proof (translation)
-Establish `h` using `Flat.stalkMap g w`. Use `algebraize [(g.stalkMap w).hom]`. Establish `: IsLocalHom (algebraMap (X.presheaf.stalk (g w)) (W.presheaf.stalk w))` using `inferInstanceAs <| IsLocalHom (g.stalkMap w).hom`. Conclude with `Module.FaithfullyFlat.of_flat_of_isLocalHom`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem faithfullyFlat_stalkMap_of_flat {W X : Scheme.{u}} (g : W ⟶ X) [Flat g] (w : W) :
     (g.stalkMap w).hom.FaithfullyFlat := by
@@ -40,7 +40,7 @@ theorem faithfullyFlat_stalkMap_of_flat {W X : Scheme.{u}} (g : W ⟶ X) [Flat g
   exact Module.FaithfullyFlat.of_flat_of_isLocalHom
 
 /- English proof (translation)
-Use `Flat.of_stalkMap u fun x => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `g.surjective x`. Establish `h` using `Flat.stalkMap (g ≫ u) w`. Rewrite `h` using `[Scheme.Hom.stalkMap_comp]`. Conclude with `ringHom_flat_of_comp_faithfullyFlat (faithfullyFlat_stalkMap_of_flat g w) h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flat_of_comp_of_flat_of_surjective {W X Y : Scheme.{u}} (g : W ⟶ X) (u : X ⟶ Y)
     [Flat g] [Surjective g] [Flat (g ≫ u)] : Flat u := by
@@ -51,9 +51,9 @@ theorem flat_of_comp_of_flat_of_surjective {W X Y : Scheme.{u}} (g : W ⟶ X) (u
   exact ringHom_flat_of_comp_faithfullyFlat (faithfullyFlat_stalkMap_of_flat g w) h
 
 /- English proof (translation)
-Establish `: Flat g` using `(Etale.iff_flat_and_formallyUnramified.mp ‹Etale g›).1`. Use `HasRingHomProperty.of_stalkMap RingHom.FormallyUnramified.ofLocalizationPrime fun x => ?_` and prove the remaining obligations. Take `⟨w, rfl⟩` from `g.surjective x`. Establish `h` using `FormallyUnramified.stalkMap (g ≫ u) w`. Rewrite `h` using `[Scheme.Hom.stalkMap_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hs : (g.stalkMap w).hom.FormallySmooth` using `Scheme.Hom.mem_smoothLocus.mp (g.smoothLocus_eq_top.ge (Set.mem_univ w))`. Conclude with `ringHom_formallyUnramified_of_comp_faithfullyFlat (faithfullyFlat_stalkMap_of_flat g w) hs (FormallyUnramified.stalkMap g w) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formallyUnramified_of_comp_of_etale_of_surjective {W X Y : Scheme.{u}} (g : W ⟶ X)
     (u : X ⟶ Y) [Etale g] [Surjective g] [FormallyUnramified (g ≫ u)] :
@@ -69,7 +69,7 @@ theorem formallyUnramified_of_comp_of_etale_of_surjective {W X Y : Scheme.{u}} (
     hs (FormallyUnramified.stalkMap g w) h
 
 /- English proof (translation)
-Establish `: Flat g` using `(Etale.iff_flat_and_formallyUnramified.mp ‹Etale g›).1`. Establish `: Flat (g ≫ u)` using `(Etale.iff_flat_and_formallyUnramified.mp ‹Etale (g ≫ u)›).1`. Use `flat_of_comp_of_flat_of_surjective g u` as an intermediate fact. Use `formallyUnramified_of_comp_of_etale_of_surjective g u` as an intermediate fact. Conclude with `Etale.of_formallyUnramified_of_flat u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etale_of_comp_of_etale_of_surjective {W X Y : Scheme.{u}} (g : W ⟶ X)
     (u : X ⟶ Y) [Etale g] [Surjective g] [Etale (g ≫ u)] [LocallyOfFinitePresentation u] :
@@ -81,13 +81,13 @@ theorem etale_of_comp_of_etale_of_surjective {W X Y : Scheme.{u}} (g : W ⟶ X)
   exact Etale.of_formallyUnramified_of_flat u
 
 /- English proof (translation)
-Introduce `W X Y g u _ _ _`. Establish `: Flat g` using `(Etale.iff_flat_and_formallyUnramified.mp ‹Etale g›).1`. Set `V : X.Opens` to `⟨Set.range g, g.isOpenMap.isOpen_range⟩`. Use `⟨V, rfl, ?_⟩` and prove the remaining obligations. Establish `hr : Set.range g ⊆ Set.range V.ι`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `subset_rfl`. Set `g' : W ⟶ V` to `IsOpenImmersion.lift V.ι g hr`. Establish `hg' : g' ≫ V.ι = g` using `IsOpenImmersion.lift_fac _ _ _`. Establish `: Etale (g' ≫ V.ι)` using `by rw [hg']; infer_instance`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Etale g'` using `Etale.of_comp g' V.ι`. Establish `: Surjective g'`. Use `⟨fun v => ?_⟩` and prove the remaining obligations. Take `⟨w, hw⟩ : V.ι v ∈ Set.range g` from `v.2`. Use `⟨w, V.ι.isOpenEmbedding.injective ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_apply, hg', hw]`. Establish `: Etale (g' ≫ V.ι ≫ u)` using `by rw [← Category.assoc, hg']; infer_instance`. Conclude with `etale_of_comp_of_etale_of_surjective g' (V.ι ≫ u)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_opens_range_etale_of_comp :
     ∀ (W X Y : Scheme.{0}) (g : W ⟶ X) (u : X ⟶ Y) [Etale g] [Etale (g ≫ u)]

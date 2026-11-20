@@ -19,7 +19,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TorsionLocal
 
 /- English proof (translation)
-The claim follows from `| 0 => by simp [MonObj.comp_one] | n + 1 => by rw [pow_succ, pow_succ, MonObj.comp_mul, comp_pow_overScheme_grpObj f g n]`.
+A detailed English derivation is pending.
 -/
 lemma comp_pow_overScheme_grpObj {A T : Over (Sp ℂ)} [GrpObj A] (f : T ⟶ A) (g : A ⟶ A) :
     ∀ n : ℕ, f ≫ g ^ n = (f ≫ g) ^ n
@@ -27,37 +27,29 @@ lemma comp_pow_overScheme_grpObj {A T : Over (Sp ℂ)} [GrpObj A] (f : T ⟶ A) 
   | n + 1 => by rw [pow_succ, pow_succ, MonObj.comp_mul, comp_pow_overScheme_grpObj f g n]
 
 /- English proof (translation)
-Introduce `A _ hA N hN T x hx t`. Establish `hunit : IsUnit ((N : ℕ) : Γ(Sp ℂ, ⊤))`. Establish `h : IsUnit ((N : ℂ))` using `(Nat.cast_ne_zero.mpr (by omega)).isUnit`. Simplify using `using h.map (Scheme.ΓSpecIso (CommRingCat.of ℂ)).inv.hom`. Take `⟨-, hfin, het, -⟩` from `abelianScheme_id_pow_finite_etale_surjective (Sp ℂ) A N hA hunit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `set f : A ⟶ A := (𝟙 A) ^ N with hf`. Establish `hTu : (toUnit T).left = T.hom` using `by simpa using Over.w (toUnit T)`. Establish `hxf : x.left ≫ f.left = T.hom ≫ η[A].left`. Establish `h1 : x ≫ f = toUnit T ≫ η[A]`. Rewrite using `[hf, comp_pow_overScheme_grpObj, Category.comp_id, hx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `h2` using `congrArg (fun h => h.left) h1`. Simplify `h2` using `[hTu]`. Use `haveI : IsFinite f.left := hfin`. Use `haveI : Etale f.left := het`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hA.smooth`. Establish `hη : η[A].left ≫ A.hom = 𝟙 _` using `by simpa using Over.w η[A]`. Establish `hfw : f.left ≫ A.hom = A.hom` using `Over.w f`. Establish `hpt : T.hom t = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim _ _`. Use `set a := x.left t with ha_def`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfa : f.left a = η[A].left (IsLocalRing.closedPoint ℂ)`. Rewrite using `[ha_def, ← Scheme.Hom.comp_apply, hxf, Scheme.Hom.comp_apply, hpt]`. Establish `he : IsClosed ({η[A].left (IsLocalRing.closedPoint ℂ)} : Set A.left)` using `((pointEquivClosedPoint A.hom) ⟨η[A].left, hη⟩).2`. Use `haveI : JacobsonSpace A.left := LocallyOfFiniteType.jacobsonSpace A.hom`. Establish `ha : IsClosed ({a} : Set A.left)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[isClosed_singleton_iff_locallyOfFiniteType]`. Establish `h1 : LocallyOfFiniteType (A.left.fromSpecResidueField (f.left a))` using `isClosed_singleton_iff_locallyOfFiniteType.mp (hfa ▸ he)`. Establish `h2 : LocallyOfFiniteType (Spec.map (f.left.residueFieldMap a))`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`. Conclude with `RingHom.FiniteType.of_finite (residueFieldMap_finite_of_locallyQuasiFinite f.left a)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : LocallyOfFiniteType (A.left.fromSpecResidueField a ≫ f.left)`. Rewrite using `[← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField]`. Use `infer_instance`. Conclude with `locallyOfFiniteType_of_comp _ f.left`. Set `y0 : Sp ℂ ⟶ A.left` to `pointOfClosedPoint A.hom a ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy0 : y0 ≫ A.hom = 𝟙 _` using `pointOfClosedPoint_comp A.hom a ha`. Set `y : 𝟙_ (Over (Sp ℂ)) ⟶ A` to `Over.homMk y0 (by simpa using hy0)`. Establish `hy0f : y0 ≫ f.left = η[A].left`. Use `ext_of_apply_closedPoint_eq A.hom ?_ hη ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hfw, hy0]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show f.left (pointOfClosedPoint A.hom a ha (IsLocalRing.closedPoint ℂ)) = _`. Conclude with `(congrArg f.left (pointOfClosedPoint_apply A.hom a ha _)).trans hfa`. Establish `hg : x.left ≫ f.left = (T.hom ≫ y0) ≫ f.left`. Rewrite using `[hxf, Category.assoc, hy0f]`. Establish `hψ` using `Spec.map_preimage (T.left.fromSpecResidueField t ≫ T.hom)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set ψ := Spec.preimage (T.left.fromSpecResidueField t ≫ T.hom)`. Establish `hr : (residueFieldIsoBase A.hom a ha).inv ≫ x.left.residueFieldMap t = ψ`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hψ, SpecMap_residueFieldIsoBase_inv]`. Use `erw [Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Over.w x]`. Establish `k : T.left.fromSpecResidueField t ≫ x.left = T.left.fromSpecResidueField t ≫ T.hom ≫ y0`. Rewrite using `[← Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField, ← Category.assoc, ← hψ]`. Simplify using `only [y0, pointOfClosedPoint, ← Category.assoc, ← Spec.map_comp]`. Rewrite using `[← hr, ← Category.assoc, Iso.hom_inv_id, Category.id_comp]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `g : T.left ⟶ pullback f.left f.left` to `pullback.lift x.left (T.hom ≫ y0) hg`. Establish `kg : T.left.fromSpecResidueField t ≫ g = (T.left.fromSpecResidueField t ≫ x.left) ≫ pullback.diagonal f.left`. Apply `pullback.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, Category.assoc, pullback.lift_fst, pullback.diagonal_fst, Category.comp_id]`. Rewrite using `[Category.assoc, Category.assoc, pullback.lift_snd, pullback.diagonal_snd, Category.comp_id, k]`.
-
-Use `⟨g ⁻¹ᵁ (pullback.diagonal f.left).opensRange, y, ?_, ?_⟩` and prove the remaining obligations. Use `show g t ∈ Set.range (pullback.diagonal f.left)`. Establish `hk` using `congrArg (fun h => h (IsLocalRing.closedPoint (T.left.residueField t))) kg`. Use `⟨_, ((Scheme.Hom.comp_apply _ _ _).symm.trans hk.symm).trans ((Scheme.Hom.comp_apply _ _ _).trans ?_)⟩` and prove the remaining obligations. Conclude with `congrArg g (Scheme.fromSpecResidueField_apply t _)`.
-
-Use `set U := g ⁻¹ᵁ (pullback.diagonal f.left).opensRange`. Establish `hle : Set.range (U.ι ≫ g) ⊆ Set.range (pullback.diagonal f.left)`. Introduce and unpack `_ ⟨u, rfl⟩`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `u.2`.
-
-Establish `hl` using `IsOpenImmersion.lift_fac (pullback.diagonal f.left) (U.ι ≫ g) hle`. Establish `h1` using `congrArg (· ≫ pullback.fst f.left f.left) hl`. Establish `h2` using `congrArg (· ≫ pullback.snd f.left f.left) hl`. Simplify using `only [Category.assoc, pullback.diagonal_fst, pullback.diagonal_snd, Category.comp_id, g, pullback.lift_fst, pullback.lift_snd] at h1 h2`. Use `show U.ι ≫ x.left = U.ι ≫ T.hom ≫ y0`.
-
-Rewrite using `[← h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locally_eq_const_of_pow_eq_one : ∀ (A : Over (Sp ℂ)) [GrpObj A], IsAbelianScheme A → ∀ (N : ℕ), 1 ≤ N →
     ∀ (T : Over (Sp ℂ)) (x : T ⟶ A), x ^ N = 1 →

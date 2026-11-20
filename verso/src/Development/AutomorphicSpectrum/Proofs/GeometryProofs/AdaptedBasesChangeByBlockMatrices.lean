@@ -12,9 +12,9 @@ open GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 namespace GlobalTheory.CompanionTheory.Ar.Flat.CPoint
 
 /- English proof (translation)
-Establish `hM : M.submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks P (Matrix.of fun i l => M (Fin.castAdd q i) (Fin.natAdd p l)) 0 D`. Use extensionality with `a b`. Apply the tactic sequence `rcases a with i | j <;> rcases b with k | l`. Simplify using `[h11]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h21]`. Simplify using `[h22]`. Rewrite using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv M, hM, Matrix.det_fromBlocks_zero₂₁]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_eq_det_mul_det_of_block {K : Type} [Field K] {p q : ℕ} (M : Matrix (Fin (p + q)) (Fin (p + q)) K)
     (P : Matrix (Fin p) (Fin p) K) (D : Matrix (Fin q) (Fin q) K)
@@ -32,21 +32,19 @@ theorem det_eq_det_mul_det_of_block {K : Type} [Field K] {p q : ℕ} (M : Matrix
   rw [← Matrix.det_submatrix_equiv_self finSumFinEquiv M, hM, Matrix.det_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Introduce `h h' hv hspan hP hQ`. Take `⟨-, h1, h2⟩` from `h`. Take `⟨he', h1', h2'⟩` from `h'`. Establish `hex : ∀ i, ∃ c : Fin (p + q) → K, ∑ k, c k • u k = u' i` using `fun i => by`. Rewrite using `[← Submodule.mem_span_range_iff_exists_fun, hspan]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he' i`. Use `choose B hB using hex`. Set `M : Matrix (Fin (p + q)) (Fin (p + q)) K` to `Matrix.of B`. Establish `hMB : ∀ i k, M i k = B i k` using `fun _ _ => rfl`. Use `⟨M, fun i => (hB i).symm, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hfst : ∀ i, (u' i).1 = ∑ k : Fin p, M i (Fin.castAdd q k) • v k` using `fun i => by`. Rewrite using `[← hB i, Prod.fst_sum, Fin.sum_univ_add]`. Simplify using `[h1, (h2 _).1, hMB]`. Establish `h11 : ∀ i k, M (Fin.castAdd q i) (Fin.castAdd q k) = P i k` using `fun i k => by`. Establish `e` using `(hfst (Fin.castAdd q i)).symm.trans ((h1' i).trans (hP i))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Simplify using `only [← sub_smul] at e`. Conclude with `sub_eq_zero.1 (Fintype.linearIndependent_iff.1 hv _ e k)`. Establish `h21 : ∀ j k, M (Fin.natAdd p j) (Fin.castAdd q k) = 0` using `fun j k => by`. Establish `e` using `(hfst (Fin.natAdd p j)).symm.trans (h2' j).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Fintype.linearIndependent_iff.1 hv _ e k`. Establish `hsnd : ∀ j, (u' (Fin.natAdd p j)).2 = ∑ l : Fin q, M (Fin.natAdd p j) (Fin.natAdd p l) • (u (Fin.natAdd p l)).2` using `fun j => by`. Rewrite using `[← hB (Fin.natAdd p j), Prod.snd_sum, Fin.sum_univ_add]`. Simplify using `only [← hMB, Prod.smul_snd, h21, zero_smul, Prod.snd_zero, Finset.sum_const_zero, _root_.zero_add]`. Set `D : Matrix (Fin q) (Fin q) K` to `fun j l => M (Fin.natAdd p j) (Fin.natAdd p l)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hDQ : D * Q.transpose = 1`. Use extensionality with `j j'`. Establish `e` using `(h2' j).2 j'`. Rewrite `e` using `[hsnd j, hQ j']`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smul, (h2 _).2, smul_eq_mul] at e`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_ite, _root_.mul_one, mul_zero, Finset.sum_ite_eq', Finset.sum_ite_eq, Finset.mem_univ, if_true] at e`. Rewrite using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.transpose_apply]`. Rewrite using `[← e]`. Conclude with `Finset.sum_congr rfl fun _ _ => _root_.mul_comm _ _`.
-
-Establish `hdet : M.det = P.det * D.det` using `det_eq_det_mul_det_of_block M P D h11 h21 fun _ _ => rfl`. Establish `hDQd : D.det * Q.det = 1`. Rewrite using `[← Matrix.det_transpose Q, ← Matrix.det_mul, hDQ, Matrix.det_one]`. Rewrite using `[hdet, _root_.mul_assoc, hDQd, _root_.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_det_mul_eq_of_isAdapted
     (E : Type) [Field E] [NumberField E] (K W : Type) [Field K] [AddCommGroup W] [Module K W]

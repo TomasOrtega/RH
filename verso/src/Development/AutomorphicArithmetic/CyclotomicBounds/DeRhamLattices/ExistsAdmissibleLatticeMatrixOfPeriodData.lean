@@ -4,11 +4,11 @@ import Development.AutomorphicArithmetic.CyclotomicBounds.DeRhamLattices.ExistsG
 open Formalism Formalism.MainNotions Formalism.MainNotions.N Formalism.WeaklyAdmissibleFiltrations TensorProduct UpperTheory.KN
 
 /- English proof (translation)
-Rewrite using `[eq_top_iff]`. Introduce `x _`. Rewrite using `[← Finset.univ_sum_single x]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Establish `hx : x k ∈ Submodule.span LL (T k : Set (V k))` using `by rw [h k]; trivial`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2` using `Submodule.apply_mem_span_image_of_mem_span (LinearMap.single LL V k) hx`. Use `Submodule.span_mono ?_ h2` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Introduce `i _`. Distinguish the cases in `hi : i = k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `hi` using the available equality. Simplify using `using hy`. Simplify using `[Pi.single_eq_of_ne hi]`.
+Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 -/
 private theorem span_pi_submodule_eq_top {O LL : Type} [CommRing O] [Field LL] [Algebra O LL] {m : ℕ} {V : Fin m → Type}
     [∀ k, AddCommGroup (V k)] [∀ k, Module LL (V k)] [∀ k, Module O (V k)]
@@ -30,7 +30,7 @@ private theorem span_pi_submodule_eq_top {O LL : Type} [CommRing O] [Field LL] [
   · simp [Pi.single_eq_of_ne hi]
 
 /- English proof (translation)
-Use `haveI : Module.Finite O T := Module.Finite.iff_fg.mpr h`. Use `haveI : Module.IsTorsionFree O V := Module.IsTorsionFree.trans_faithfulSMul O LL V`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 private theorem free_of_finitely_generated_pid {O LL : Type} [CommRing O] [IsDomain O] [IsPrincipalIdealRing O] [Field LL]
     [Algebra O LL] [IsFractionRing O LL] {V : Type} [AddCommGroup V] [Module LL V] [Module O V]
@@ -40,13 +40,13 @@ private theorem free_of_finitely_generated_pid {O LL : Type} [CommRing O] [IsDom
   infer_instance
 
 /- English proof (translation)
-Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD LL _ _ _ _ O _ _ _ _ _ nn emb lam jT cT ι _ n N A _ _ _ j actA E _ _ act S q c hfull hj hact hq hqa hc hcy`. Set `σ : Fin (Fintype.card ι) ≃ ι` to `(Fintype.equivFin ι).symm`. Set `F : Fin (Fintype.card ι) → tableLineDegreeTwo.FullRep PD emb lam jT cT` to `fun k => { V := Fin n → LL ρ := matRep (mapM (algebraMap O LL) (N (σ k))) full := hfull (σ k) }`. Set `L : ∀ k, Lattice (O` to `O) (F k).ρ := fun k => stdLatG (IsFractionRing.injective O LL) (N (σ k))`. Establish `hfg : (Submodule.pi Set.univ fun k => (L k).T).FG` using `Submodule.fg_pi fun k => (L k).fg`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `Λ : Lattice (O` to `O) (tableLineDegreeTwo.piRep F) := { T := Submodule.pi Set.univ fun k => (L k).T stable := fun g x hx k _ => (L k).stable g (x k) (hx k trivial) fg := hfg free := free_of_finitely_generated_pid (LL := LL) _ hfg span := span_pi_submodule_eq_top _ fun k => (L k).span }`. Set `j' : A →ₗ[O] (∀ k, (F k).V)` to `LinearMap.pi fun k => (LinearMap.proj (σ k)).comp j`. Use `UpperTheory.KN.exists_galois_stable_lattice_of_period_data PD emb lam jT cT F Λ j' actA act S q c ?_ ?_ hq hqa hc hcy` and prove the remaining obligations. Introduce `a b hab`. Apply `hj` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `i`. Use `congrFun hab (σ.symm i)` as an intermediate fact. Express the relevant statement in the definitionally equal form `j a (σ (σ.symm i)) = j b (σ (σ.symm i)) at this`. Rewrite `this` using `[Equiv.apply_symm_apply]`. Then use the resulting hypothesis. Introduce `g a`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `k`. Express the relevant statement in the definitionally equal form `j (actA g a) (σ k) = _`. Rewrite using `[hact]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.UpperTheory.KN.exists_admissible_lattice_matrix_of_period_data :
     ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K]

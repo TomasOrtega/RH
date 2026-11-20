@@ -5,13 +5,11 @@ noncomputable section
 namespace ReciprocityTheory.GC
 
 /- English proof (translation)
-Take `⟨W, hWm⟩ : ∃ W : Submodule k V, ∀ v, v ∈ W ↔ ∃ b ∈ B, b x = v` from `⟨{ carrier := {v | ∃ b ∈ B, b x = v} add_mem' := by`. Introduce and unpack `_ _ ⟨b, hb, rfl⟩ ⟨c, hc, rfl⟩`. Conclude with `⟨b + c, B.add_mem hb hc, rfl⟩`. Use the proof step `zero_mem' := ⟨0, B.zero_mem, rfl⟩`. Use the proof step `smul_mem' := by`.
+Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `r _ ⟨b, hb, rfl⟩`. Conclude with `⟨r • b, B.smul_mem hb r, rfl⟩ }, fun v => Iff.rfl⟩`. Establish `hW : ∀ b ∈ B, ∀ w ∈ W, b w ∈ W`. Introduce `b hb w hw`. Take `⟨c, hc, rfl⟩` from `(hWm w).1 hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Conclude with `(hWm _).2 ⟨b * c, B.mul_mem hb hc, rfl⟩`. Break down `hB W hW with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hxW : x ∈ W` using `(hWm x).2 ⟨1, B.one_mem, rfl⟩`. Rewrite `hxW` using `[h]`.
-
-Conclude with `hx ((Submodule.mem_bot k).1 hxW)`. Establish `hyW : y ∈ W` using `by rw [h]; exact Submodule.mem_top`. Conclude with `(hWm y).1 hyW`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma exists_mem_apply_eq_lemma {k V : Type*} [Field k] [AddCommGroup V] [Module k V]
     (B : Subalgebra k (Module.End k V))
@@ -39,55 +37,47 @@ private lemma exists_mem_apply_eq_lemma {k V : Type*} [Field k] [AddCommGroup V]
     exact (hWm y).1 hyW
 
 /- English proof (translation)
-Establish `h10 : (1 : Module.End k V) ≠ 0`. Introduce `h`. Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Conclude with `hv (LinearMap.congr_fun h v)`. Establish `hex : ∃ r, ∃ T ∈ B, T ≠ 0 ∧ Module.finrank k (LinearMap.range T) = r` using `⟨_, 1, B.one_mem, h10, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hTB, hT0, hTr⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ T' ∈ B, T' ≠ 0 → Nat.find hex ≤ Module.finrank k (LinearMap.range T')` using `fun T' h1 h2 => Nat.find_min' hex ⟨T', h1, h2, rfl⟩`. Choose the witnesses or unpack the hypotheses as in `⟨u, hu⟩ : ∃ u, T u ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hT0 (LinearMap.ext h)`. Use `haveI : Nontrivial (LinearMap.range T) := ⟨⟨⟨T u, LinearMap.mem_range_self T u⟩, 0, fun h => hu (congrArg Subtype.val h)⟩⟩`. Establish `key : ∀ b ∈ B, ∃ c : k, T * b * T = c • T`. Introduce `b hb`. Establish `hRinv : ∀ v ∈ LinearMap.range T, (T * b) v ∈ LinearMap.range T` using `fun v _ => LinearMap.mem_range_self T (b v)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue ((T * b).restrict hRinv)`. Take `⟨w, hw⟩` from `hc.exists_hasEigenvector`. Establish `hw0 : w ≠ 0` using `hw.2`. Establish `hTbw : T (b (w : V)) = c • (w : V)` using `congrArg Subtype.val hw.apply_eq_smul`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Establish `hT'B : T * b * T - c • T ∈ B` using `B.sub_mem (B.mul_mem (B.mul_mem hTB hb) hTB) (B.smul_mem hTB c)`. Establish `hle` using `hmin _ hT'B (sub_ne_zero.2 hne)`. Establish `hcomp : T * b * T - c • T = (T * b - c • 1).comp T`. Use extensionality with `v`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Rewrite `hle` using `[hcomp, LinearMap.range_comp, ← LinearMap.range_domRestrict]`. Establish `hsum` using `LinearMap.finrank_range_add_finrank_ker ((T * b - c • 1).domRestrict (LinearMap.range T))`. Establish `hker : w ∈ LinearMap.ker ((T * b - c • 1).domRestrict (LinearMap.range T))`. Rewrite using `[LinearMap.mem_ker]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show T (b (w : V)) - c • (w : V) = 0`. Rewrite using `[hTbw, sub_self]`. Establish `hk : Module.finrank k (LinearMap.ker ((T * b - c • 1).domRestrict (LinearMap.range T))) ≠ 0`. Introduce `h0`. Rewrite `h0` using `[Submodule.finrank_eq_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hker` using `[h0]`. Conclude with `hw0 ((Submodule.mem_bot k).1 hker)`. Use linear arithmetic over natural numbers and integers. Establish `hTv : ∀ v, ∃ c : k, T v = c • T u`. Introduce `v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Take `⟨b, hb, hbv⟩` from `exists_mem_apply_eq_lemma B hB hu v`. Take `⟨c, hc⟩` from `key b hb`. Use `⟨c, ?_⟩` and prove the remaining obligations. Rewrite using `[← hbv]`. Conclude with `LinearMap.congr_fun hc u`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨χ, hχ⟩ : ∃ χ : Module.Dual k V, χ (T u) ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hu ((Module.forall_dual_apply_eq_zero_iff k (T u)).1 h)`. Take `⟨φ, hφ⟩ : ∃ φ : Module.Dual k V, ∀ v, φ v = (χ (T u))⁻¹ * χ (T v)` from `⟨(χ (T u))⁻¹ • (χ ∘ₗ T), fun v => rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hφT : ∀ v, T v = φ v • T u`. Introduce `v`. Take `⟨c, hc⟩` from `hTv v`. Rewrite using `[hφ v, hc, map_smul, smul_eq_mul, mul_comm c, ← mul_assoc, inv_mul_cancel₀ hχ, one_mul]`. Establish `hφu : φ u = 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hφ u]`. Conclude with `inv_mul_cancel₀ hχ`. Take `⟨S, hSm⟩ : ∃ S : Submodule k (Module.Dual k V), ∀ ψ, ψ ∈ S ↔ ∀ y : V, ψ.smulRight y ∈ B` from `⟨{ carrier := {ψ | ∀ y : V, ψ.smulRight y ∈ B} add_mem' := by`. Introduce `ψ χ' hψ hχ' y`. Establish `h : (ψ + χ').smulRight y = ψ.smulRight y + χ'.smulRight y`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `v`. Simplify using `[add_smul]`. Rewrite using `[h]`. Conclude with `B.add_mem (hψ y) (hχ' y)`. Use the proof step `zero_mem' := by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y`. Establish `h : (0 : Module.Dual k V).smulRight y = 0`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `B.zero_mem`. Use the proof step `smul_mem' := by`. Introduce `r ψ hψ y`. Establish `h : (r • ψ).smulRight y = r • ψ.smulRight y`. Use extensionality with `v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[mul_smul]`. Rewrite using `[h]`. Conclude with `B.smul_mem (hψ y) r }, fun ψ => Iff.rfl⟩`. Establish `hφS : φ ∈ S`. Rewrite using `[hSm]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨b, hb, hby⟩` from `exists_mem_apply_eq_lemma B hB hu y`. Establish `h : φ.smulRight y = b * T`. Use extensionality with `v`. Use `show φ v • y = b (T v)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[hφT v, map_smul, hby]`. Rewrite using `[h]`. Conclude with `B.mul_mem hb hTB`. Establish `hScomp : ∀ ψ ∈ S, ∀ b ∈ B, ψ ∘ₗ b ∈ S`. Introduce `ψ hψ b hb`.
+It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hψ`, the goal using `[hSm]`. Introduce `y`. Establish `h : (ψ ∘ₗ b).smulRight y = ψ.smulRight y * b`. Use extensionality with `v`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h]`. Conclude with `B.mul_mem (hψ y) hb`. Establish `hU : S.dualCoannihilator = ⊥`. Establish `hinv : ∀ b ∈ B, ∀ w ∈ S.dualCoannihilator, b w ∈ S.dualCoannihilator`. Introduce `b hb w hw`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw`, the goal using `[Submodule.mem_dualCoannihilator]`. Introduce `ψ hψ`. Conclude with `hw _ (hScomp ψ hψ b hb)`. Break down `hB _ hinv with h | h` into its components or cases. Conclude with `h`.
-
-It suffices to derive a contradiction. Establish `hu' : u ∈ S.dualCoannihilator` using `by rw [h]; exact Submodule.mem_top`. Rewrite `hu'` using `[Submodule.mem_dualCoannihilator]`. Establish `h1` using `hu' φ hφS`. Rewrite `h1` using `[hφu]`.
-
-Conclude with `one_ne_zero h1`. Establish `hStop : S = ⊤`. Rewrite using `[← Subspace.dualCoannihilator_dualAnnihilator_eq (W := S), hU, Submodule.dualAnnihilator_bot]`. Take `⟨bs⟩ : Nonempty (Module.Basis (Fin (Module.finrank k V)) k V)` from `⟨Module.finBasis k V⟩`. Establish `hf : f = ∑ i, (bs.coord i).smulRight (f (bs i))`.
-
-Use `bs.ext fun j => ?_` and prove the remaining obligations. Simplify using `[LinearMap.sum_apply, Module.Basis.coord_apply, Module.Basis.repr_self, Finsupp.single_apply]`. Rewrite using `[hf]`. Use `sum_mem fun i _ => ?_` and prove the remaining obligations. Establish `hmem : bs.coord i ∈ S` using `by rw [hStop]; exact Submodule.mem_top`.
-
-Rewrite `hmem` using `[hSm]`. Conclude with `hmem _`.
+A detailed English derivation is pending.
 -/
 private lemma mem_of_irred_lemma_2 {k V : Type*} [Field k] [IsAlgClosed k] [AddCommGroup V]
     [Module k V] [FiniteDimensional k V] [Nontrivial V]
@@ -228,7 +218,7 @@ private lemma mem_of_irred_lemma_2 {k V : Type*} [Field k] [IsAlgClosed k] [AddC
   exact hmem _
 
 /- English proof (translation)
-Introduce `f`. Establish `hB : ∀ W : Submodule k V, (∀ b ∈ ρ.range, ∀ w ∈ W, b w ∈ W) → W = ⊥ ∨ W = ⊤` using `fun W hW => hirr W fun a w hw => hW (ρ a) (AlgHom.mem_range_self ρ a) w hw`. Conclude with `(AlgHom.mem_range ρ).1 (mem_of_irred_lemma_2 ρ.range hB f)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem burnside_surj_of_irred {k A V : Type*} [Field k] [IsAlgClosed k] [Ring A] [Algebra k A] [AddCommGroup V]
     [Module k V] [FiniteDimensional k V] (ρ : A →ₐ[k] Module.End k V) [Nontrivial V]

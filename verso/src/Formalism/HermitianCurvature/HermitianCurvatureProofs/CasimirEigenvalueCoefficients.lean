@@ -19,14 +19,14 @@ variable {k r : ℕ} {Vs : Type} [NormedAddCommGroup Vs] [NormedSpace ℂ Vs]
 def SV (σ : Mx k r → (Vs →L[ℂ] Vs)) (w : Vs) : Prop := CkOn ⊤ (GV k r) (fun g => σ g w)
 
 /- English proof (translation)
-Use `show (1 : Mx k r)ᴴ * Hpk k r * 1 = Hpk k r`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_mem_GV : (1 : Mx k r) ∈ GV k r := by
   show (1 : Mx k r)ᴴ * Hpk k r * 1 = Hpk k r
   simp
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, a, b, c, d⟩` from `h g₀ hg₀`. Conclude with `⟨U, F, a, b, c, fun g hg hgG => (he g hgG).symm.trans (d g hg hgG)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ckOn_congr {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : ℕ∞} {f f' : Mx k r → E}
     (he : ∀ g ∈ GV k r, f g = f' g) (h : CkOn m (GV k r) f) : CkOn m (GV k r) f' := by
@@ -35,9 +35,9 @@ theorem ckOn_congr {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : �
   exact ⟨U, F, a, b, c, fun g hg hgG => (he g hgG).symm.trans (d g hg hgG)⟩
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, a, b, c, d⟩` from `h g₀ hg₀`. Take `⟨U', F', a', b', c', d'⟩` from `h' g₀ hg₀`. Use `⟨U ∩ U', fun g => F g + F' g, a.inter a', ⟨b, b'⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(c.mono Set.inter_subset_left).add (c'.mono Set.inter_subset_right)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg hgG show f g + f' g = F g + F' g`. Rewrite using `[d g hg.1 hgG, d' g hg.2 hgG]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ckOn_add {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : ℕ∞} {f f' : Mx k r → E}
     (h : CkOn m (GV k r) f) (h' : CkOn m (GV k r) f') : CkOn m (GV k r) (fun g => f g + f' g) := by
@@ -51,9 +51,9 @@ theorem ckOn_add {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : ℕ
     rw [d g hg.1 hgG, d' g hg.2 hgG]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F, a, b, c, d⟩` from `h g₀ hg₀`. Use `⟨U, fun g => s • F g, a, b, ?_, ?_⟩` and prove the remaining obligations. Conclude with `c.const_smul s`. Introduce `g hg hgG show s • f g = s • F g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[d g hg hgG]`.
+A detailed English derivation is pending.
 -/
 theorem ckOn_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : ℕ∞} {f : Mx k r → E} (s : ℂ)
     (h : CkOn m (GV k r) f) : CkOn m (GV k r) (fun g => s • f g) := by
@@ -66,7 +66,7 @@ theorem ckOn_smul {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {m : �
     rw [d g hg hgG]
 
 /- English proof (translation)
-Unfold `SV at *`. Use `ckOn_add h h'` as an intermediate fact. Simplify `this` using `only [map_add]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sv_add {σ : Mx k r → (Vs →L[ℂ] Vs)} {w w' : Vs} (h : SV σ w) (h' : SV σ w') : SV σ (w + w') := by
   unfold SV at *
@@ -74,7 +74,7 @@ theorem sv_add {σ : Mx k r → (Vs →L[ℂ] Vs)} {w w' : Vs} (h : SV σ w) (h'
   simpa only [map_add] using this
 
 /- English proof (translation)
-Unfold `SV at *`. Use `ckOn_smul s h` as an intermediate fact. Simplify `this` using `only [map_smul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sv_smul {σ : Mx k r → (Vs →L[ℂ] Vs)} {w : Vs} (s : ℂ) (h : SV σ w) : SV σ (s • w) := by
   unfold SV at *
@@ -82,7 +82,7 @@ theorem sv_smul {σ : Mx k r → (Vs →L[ℂ] Vs)} {w : Vs} (s : ℂ) (h : SV �
   simpa only [map_smul] using this
 
 /- English proof (translation)
-Use `sv_smul (σ := σ) (w := (0 : Vs)) 0 (by` as an intermediate fact. Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, trivial, contDiffOn_const, fun g _ _ => by simp⟩)`. Simplify using `using this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sv_zero (σ : Mx k r → (Vs →L[ℂ] Vs)) : SV σ (0 : Vs) := by
   have := sv_smul (σ := σ) (w := (0 : Vs)) 0 (by
@@ -93,9 +93,9 @@ theorem sv_zero (σ : Mx k r → (Vs →L[ℂ] Vs)) : SV σ (0 : Vs) := by
 variable {σ : Mx k r → (Vs →L[ℂ] Vs)}
 
 /- English proof (translation)
-Establish `h1` using `B5.rdV_hasDerivAt (B5.ckOn_mono (m := 1) le_top hw) (one_mem_GV (k := k) (r := r)) hX`. Simplify using `only [Matrix.one_mul] at h1`. Establish `hd : dRep σ X w = RdV X (fun g => σ g w) 1` using `h1.deriv`. Rewrite using `[hd]`. Establish `h2` using `((σ g).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) h1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `h2.congr_of_eventuallyEq (Filter.Eventually.of_forall fun t => ?_)` and prove the remaining obligations. Use `hrep.2 g hg _ (B5.exp_mem hX t)` as an intermediate fact. Simplify using `only [Function.comp_apply, ContinuousLinearMap.coe_restrictScalars', this, ContinuousLinearMap.comp_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem hasDerivAt_orbit (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV σ w) {X : Mx k r}
     (hX : inLie k r X) {g : Mx k r} (hg : g ∈ GV k r) :
@@ -111,7 +111,7 @@ theorem hasDerivAt_orbit (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV �
     ContinuousLinearMap.comp_apply]
 
 /- English proof (translation)
-The claim follows from `(hasDerivAt_orbit hrep hw hX hg).deriv`.
+A detailed English derivation is pending.
 -/
 theorem rdV_orbit (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV σ w) {X : Mx k r}
     (hX : inLie k r X) {g : Mx k r} (hg : g ∈ GV k r) :
@@ -119,7 +119,7 @@ theorem rdV_orbit (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV σ w) {X
   (hasDerivAt_orbit hrep hw hX hg).deriv
 
 /- English proof (translation)
-Establish `h` using `(ℓ.restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_orbit hrep hw hX hg)`. Conclude with `h.deriv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rdV_coeff (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV σ w) {X : Mx k r}
     (hX : inLie k r X) (ℓ : Vs →L[ℂ] ℂ) {g : Mx k r} (hg : g ∈ GV k r) :
@@ -128,7 +128,7 @@ theorem rdV_coeff (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV σ w) {X
   exact h.deriv
 
 /- English proof (translation)
-Establish `h : CkOn ⊤ (GV k r) (RdV X (fun x => σ x w))` using `B5.ckOn_RdV (m := ⊤) hX (by rw [top_add]; exact hw)`. Conclude with `ckOn_congr (fun g hg => rdV_orbit hrep hw hX hg) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sv_dRep (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV σ w) {X : Mx k r}
     (hX : inLie k r X) : SV σ (dRep σ X w) := by
@@ -137,17 +137,17 @@ theorem sv_dRep (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV σ w) {X :
   exact ckOn_congr (fun g hg => rdV_orbit hrep hw hX hg) h
 
 /- English proof (translation)
-The claim follows from `Qx2.hpart1_lie Z`.
+A detailed English derivation is pending.
 -/
 theorem lie1 (Z : Mx k r) : inLie k r (hpart1 (Hpk k r) Z) := Qx2.hpart1_lie Z
 
 /- English proof (translation)
-The claim follows from `Qx2.hpart2_lie Z`.
+A detailed English derivation is pending.
 -/
 theorem lie2 (Z : Mx k r) : inLie k r (hpart2 (Hpk k r) Z) := Qx2.hpart2_lie Z
 
 /- English proof (translation)
-The claim follows from `sv_add (sv_dRep hrep hw (lie1 Z)) (sv_smul _ (sv_dRep hrep hw (lie2 Z)))`.
+A detailed English derivation is pending.
 -/
 theorem sv_ecRep (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV σ w) (Z : Mx k r) :
     SV σ (EcRep (Hpk k r) σ Z w) :=
@@ -157,7 +157,7 @@ def stepV (σ : Mx k r → (Vs →L[ℂ] Vs)) (c : ℂ) (a b : Fin (2 * r + k + 
   (if a = b then c • y else 0) + EcRep (Hpk k r) σ (Matrix.single a b 1) y
 
 /- English proof (translation)
-Unfold `stepV`. Use `sv_add ?_ (sv_ecRep hrep hw _)` and prove the remaining obligations. Use `split_ifs`. Conclude with `sv_smul c hw`. Conclude with `sv_zero σ`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sv_stepV (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV σ w) (c : ℂ) (a b : Fin (2 * r + k + 1)) :
     SV σ (stepV σ c a b w) := by
@@ -168,7 +168,7 @@ theorem sv_stepV (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV σ w) (c 
   · exact sv_zero σ
 
 /- English proof (translation)
-Unfold `QuantumDeterminants.Top stepV EcRep`. Simplify using `only [EH, EabH]`. Rewrite using `[rdV_coeff hrep hw (lie1 _) ℓ hg, rdV_coeff hrep hw (lie2 _) ℓ hg]`. Apply the tactic sequence `split_ifs <;> simp [map_add, map_smul]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem top_coeff (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV σ w) (ℓ : Vs →L[ℂ] ℂ) (c : ℂ)
     (a b : Fin (2 * r + k + 1)) {g : Mx k r} (hg : g ∈ GV k r) :
@@ -179,7 +179,7 @@ theorem top_coeff (hrep : IsCRepOn (UH (Hpk k r)) σ) {w : Vs} (hw : SV σ w) (�
   split_ifs <;> simp [map_add, map_smul]
 
 /- English proof (translation)
-Unfold `RdV`. Use `congr 1`. Use function extensionality and compare the values at `t`. Conclude with `he _ (B5.curve_mem hg hX t)`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rdV_local {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {f f' : Mx k r → E}
     (he : ∀ g ∈ GV k r, f g = f' g) {X : Mx k r} (hX : inLie k r X) {g : Mx k r} (hg : g ∈ GV k r) :
@@ -190,7 +190,7 @@ theorem rdV_local {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {f f' :
   exact he _ (B5.curve_mem hg hX t)
 
 /- English proof (translation)
-Unfold `QuantumDeterminants.Top`. Simplify using `only [EH, EabH]`. Rewrite using `[he g hg, rdV_local he (lie1 _) hg, rdV_local he (lie2 _) hg]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem top_local {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {f f' : Mx k r → E}
     (he : ∀ g ∈ GV k r, f g = f' g) (c : ℂ) (a b : Fin (2 * r + k + 1)) {g : Mx k r} (hg : g ∈ GV k r) :
@@ -200,11 +200,11 @@ theorem top_local {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {f f' :
   rw [he g hg, rdV_local he (lie1 _) hg, rdV_local he (lie2 _) hg]
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro w hw`. Conclude with `⟨hw, fun g _ => rfl⟩`. Consider the case `cons p L ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `w hw`. Take `⟨h1, h2⟩` from `ih w hw`. Use `⟨sv_stepV hrep h1 _ _ _, fun g hg => ?_⟩` and prove the remaining obligations. Simplify using `only [List.map_cons, List.foldr_cons]`. Rewrite using `[top_local (f' := fun x => ℓ (σ x (L.foldr (fun p y => stepV σ p.1 p.2.1 p.2.2 y) w))) h2 _ _ _ hg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `top_coeff hrep h1 ℓ _ _ _ hg`.
+A detailed English derivation is pending.
 -/
 theorem steps (hrep : IsCRepOn (UH (Hpk k r)) σ) (ℓ : Vs →L[ℂ] ℂ) :
     ∀ (L : List (ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k + 1))) (w : Vs), SV σ w →
@@ -223,11 +223,11 @@ theorem steps (hrep : IsCRepOn (UH (Hpk k r)) σ) (ℓ : Vs →L[ℂ] ℂ) :
     exact top_coeff hrep h1 ℓ _ _ _ hg
 
 /- English proof (translation)
-Unfold `qminorOp qmF`. Rewrite using `[Finset.sum_apply, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, map_smul, map_smul]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `e1 : (List.ofFn fun i : Fin t => QuantumDeterminants.Top (EH (E` using `ℂ) k r) (u - ((i : ℕ) : ℂ)) (a (τ i)) (b i)) = (List.ofFn fun i : Fin t => ((u - ((i : ℕ) : ℂ)), a (τ i), b i)).map (fun p => QuantumDeterminants.Top (EH (E := ℂ) k r) p.1 p.2.1 p.2.2) := by`. Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Establish `e2 : (List.ofFn fun i : Fin t => fun y : Vs => (if a (τ i) = b i then (u - ((i : ℕ) : ℂ)) • y else 0) + EcRep (Hpk k r) σ (Matrix.single (a (τ i)) (b i) 1) y).foldr (fun T h => T h) w = (List.ofFn fun i : Fin t => ((u - ((i : ℕ) : ℂ)), a (τ i), b i)).foldr (fun p y => stepV σ p.1 …`. Establish `e3 : (List.ofFn fun i : Fin t => fun y : Vs => (if a (τ i) = b i then (u - ((i : ℕ) : ℂ)) • y else 0) + EcRep (Hpk k r) σ (Matrix.single (a (τ i)) (b i) 1) y) = (List.ofFn fun i : Fin t => ((u - ((i : ℕ) : ℂ)), a (τ i), b i)).map (fun (p : ℂ × Fin (2 * r + k + 1) × Fin (2 * r + k …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[e3, List.foldr_map]`. Rewrite using `[e1, e2]`. Conclude with `(steps hrep ℓ _ w hw).2 g hg`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qminor_coeff (hrep : IsCRepOn (UH (Hpk k r)) σ) (ℓ : Vs →L[ℂ] ℂ) {t : ℕ}
     (a b : Fin t → Fin (2 * r + k + 1)) (u : ℂ) {w : Vs} (hw : SV σ w) {g : Mx k r} (hg : g ∈ GV k r) :
@@ -258,7 +258,7 @@ theorem qminor_coeff (hrep : IsCRepOn (UH (Hpk k r)) σ) (ℓ : Vs →L[ℂ] ℂ
   exact (steps hrep ℓ _ w hw).2 g hg
 
 /- English proof (translation)
-Introduce `t h a ha`. Substitute `h` using the available equality. Establish `: a = id` using `funext fun j => Fin.ext (ha j)`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem qmF_reindex {X : Type*} [AddCommGroup X] [Module ℂ X] {n : ℕ} (Eop : Fin n → Fin n → X → X) (u : ℂ) (x : X) :
     ∀ (t : ℕ) (h : t = n) (a : Fin t → Fin n), (∀ j, (a j).val = j.val) →
@@ -272,11 +272,11 @@ theorem qmF_reindex {X : Type*} [AddCommGroup X] [Module ℂ X] {n : ℕ} (Eop :
 end Qb1
 
 /- English proof (translation)
-Introduce `Vs _ _ k r σ v lam hrep hsm hC ℓ Y g hg`. Establish `hw : Qb1.SV σ v`. Introduce `g₀ hg₀`. Establish `hmem : ∀ x ∈ GV k r, x ∈ Glev k r 0` using `fun x hx => ⟨hx, fun a ha => absurd ha (by simp)⟩`. Take `⟨U, F, a, b, c, d⟩` from `hsm g₀ ⟨hmem g₀ hg₀, trivial⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨U, F, a, b, c, fun x hx hxG => d x hx (hmem x hxG)⟩`. Unfold `CV capL`. Rewrite using `[Qb1.qminor_coeff hrep ℓ _ _ _ hw hg, Qb1.qmF_reindex _ _ _ (mdim k r 0) (by simp [mdim]) (posL k r 0) (fun j => by simp [posL]), hC, map_smul, map_smul]`. Use `congr 1`. Use `Finset.prod_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [uC, mdim, Fin.val_zero, Nat.sub_zero]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem casimir_eigenvalue_coefficients : Formalism.FourierDecayAlt.Q.EigenCoeff := by
   intro Vs _ _ k r σ v lam hrep hsm hC ℓ Y g hg

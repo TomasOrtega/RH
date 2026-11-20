@@ -7,21 +7,21 @@ namespace GroundTheory.Heights₂.Heights.NumbersDVR
 namespace DegLTEventuallyConst
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `m hm hs`. Establish `hmN : m = N`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `k`. Establish `hk : (m k - N k).toNat = 0` using `(Finset.sum_eq_zero_iff.mp hs) k (Finset.mem_univ k)`. Establish `hle : N k ≤ m k` using `hm k`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hmN]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ d ih`. Introduce `m hm hs`. Choose the witnesses or unpack the hypotheses as in `⟨k, -, hk⟩ : ∃ k ∈ Finset.univ, (m k - N k).toNat ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[Finset.sum_eq_zero hne]`. Use linear arithmetic over natural numbers and integers. Take `⟨m', hm'⟩ : ∃ m' : K → ℤ, m' = m - Pi.single k (1 : ℤ)` from `⟨_, rfl⟩`. Establish `hm'k : m' k = m k - 1` using `by simp [hm']`. Establish `hm'j : ∀ j, j ≠ k → m' j = m j`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Simplify using `[hm', hj]`. Establish `hkk : N k + 1 ≤ m k` using `by omega`. Establish `hNm' : N ≤ m'`. Introduce `j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `show N j ≤ m' j`. Distinguish the cases in `hj : j = k`. Rewrite using `[hj, hm'k]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hm'j j hj]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hm j`. Establish `hs' : ∑ j, (m' j - N j).toNat = d`. Establish `e1` using `Finset.add_sum_erase Finset.univ (fun j => (m j - N j).toNat) (Finset.mem_univ k)`. Establish `e2` using `Finset.add_sum_erase Finset.univ (fun j => (m' j - N j).toNat) (Finset.mem_univ k)`. Establish `e3 : ∑ j ∈ Finset.univ.erase k, (m' j - N j).toNat = ∑ j ∈ Finset.univ.erase k, (m j - N j).toNat` using `Finset.sum_congr rfl fun j hj => by rw [hm'j j (Finset.ne_of_mem_erase hj)]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Simplify using `only [hm'k] at e2`. Use linear arithmetic over natural numbers and integers. Establish `step : g m - g m' = 0` using `by rw [hm']; exact h m hm k`. Rewrite using `[← ih _ hNm' hs']`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_of_unitSteps_eq_zero {K : Type} [Fintype K] [DecidableEq K] (g : (K → ℤ) → ℤ)
     (N : K → ℤ) (h : ∀ m, N ≤ m → ∀ k, g m - g (m - Pi.single k 1) = 0) :
@@ -71,9 +71,9 @@ theorem eq_of_unitSteps_eq_zero {K : Type} [Fintype K] [DecidableEq K] (g : (K �
     omega
 
 /- English proof (translation)
-Introduce `K _ _ n f hf bs`. Establish `hev : ∀ k : K, ∀ᶠ m in Filter.atTop, mixedDiff bs f m - mixedDiff bs f (m - Pi.single k 1) = 0`. Introduce `k`. Establish `hk` using `hf (Matrix.vecCons (Pi.single k 1) bs)`. Rewrite `hk` using `[(h1 K n bs f 0 0 0 (Pi.single k 1)).2.2.2.2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hk`. Take `⟨N, hN⟩` from `Filter.eventually_atTop.mp (Filter.eventually_all.mpr hev)`. Conclude with `⟨mixedDiff bs f N, Filter.eventually_atTop.mpr ⟨N, fun m hm => eq_of_unitSteps_eq_zero (mixedDiff bs f) N (fun m hm => hN m hm) _ m hm rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem proof (h1 : MixedDiffLinear.Statement) : DegLTEventuallyConst.Statement := by
   intro K _ _ n f hf bs

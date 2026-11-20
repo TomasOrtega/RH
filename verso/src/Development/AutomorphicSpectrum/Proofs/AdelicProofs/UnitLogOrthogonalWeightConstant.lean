@@ -6,27 +6,25 @@ namespace GlobalTheory.CompanionTheory.Ar.Giv
 open NumberField.InfinitePlace NumberField.Units NumberField.Units.dirichletUnitTheorem in
 
 /- English proof (translation)
-Introduce `F _ _ m hconj horth`. Establish `hdesc : ∀ sg sg' : F →+* ℂ, InfinitePlace.mk sg = InfinitePlace.mk sg' → m sg = m sg'`. Introduce `sg sg' h`. Break down `InfinitePlace.mk_eq_iff.mp h with h | h` into its components or cases. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h, hconj]`. Use `set mw : InfinitePlace F → ℝ := fun w => m w.embedding with hmw`. Establish `hmk : ∀ sg : F →+* ℂ, m sg = mw (InfinitePlace.mk sg)`. Introduce `sg`. Conclude with `hdesc _ _ (by simp [InfinitePlace.mk_embedding])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hplace : ∀ θ : (𝓞 F)ˣ, ∑ w : InfinitePlace F, (mult w : ℝ) * Real.log (w ((θ : 𝓞 F) : F)) * mw w = 0`. Introduce `θ`. Rewrite using `[← horth θ, ← Finset.sum_fiberwise Finset.univ (fun sg : F →+* ℂ => InfinitePlace.mk sg)]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hfib : ∀ sg ∈ Finset.univ.filter (fun sg : F →+* ℂ => InfinitePlace.mk sg = w), Real.log ‖sg ((θ : 𝓞 F) : F)‖ * m sg = Real.log (w ((θ : 𝓞 F) : F)) * mw w`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `sg hsg`. Establish `hsg' : InfinitePlace.mk sg = w` using `(Finset.mem_filter.mp hsg).2`. Rewrite using `[hmk sg, hsg', ← hsg', InfinitePlace.apply]`. Rewrite using `[Finset.sum_congr rfl hfib, Finset.sum_const, InfinitePlace.card_filter_mk_eq, nsmul_eq_mul, mul_assoc]`. Set `L : logSpace F →ₗ[ℝ] ℝ` to `{ toFun := fun x => ∑ w, x w * (mw w.1 - mw w₀) map_add' := fun x y => by simp [add_mul, Finset.sum_add_distrib] map_smul' := fun c x => by simp [Finset.mul_sum, mul_assoc] }`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLunit : ∀ θ : (𝓞 F)ˣ, L (logEmbedding F (Additive.ofMul θ)) = 0`. Introduce `θ`. Establish `h1 : ∑ w : InfinitePlace F, (mult w : ℝ) * Real.log (w ((θ : 𝓞 F) : F)) = 0`. Conclude with `sum_mult_mul_log θ` after adjusting the coercions. Establish `h2 : ∑ w : InfinitePlace F, (mult w : ℝ) * Real.log (w ((θ : 𝓞 F) : F)) * (mw w - mw w₀) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[mul_sub]`. Rewrite using `[Finset.sum_sub_distrib, hplace θ, ← Finset.sum_mul, h1]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[Fintype.sum_eq_add_sum_subtype_ne _ (w₀ : InfinitePlace F)]`. Simplify `h2` using `[L, logEmbedding_component]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hL : L = 0`. Use `LinearMap.ext fun x => ?_` and prove the remaining obligations. Establish `hx : x ∈ Submodule.span ℝ (unitLattice F : Set (logSpace F))`. Rewrite using `[unitLattice_span_eq_top]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, -, rfl⟩` from `hy`. Conclude with `hLunit (Additive.toMul a)`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `add y z _ _ hy hz => simp [hy, hz]`. Consider the case `smul c y _ hy => simp [hy]`. Establish `hconst : ∀ w : InfinitePlace F, mw w = mw w₀`. Introduce `w`. Distinguish the cases in `hw : w = w₀`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[hw]`. Use `LinearMap.congr_fun hL (Pi.single ⟨w, hw⟩ 1)` as an intermediate fact. Establish `h3 : mw w - mw w₀ = 0`. Simplify `this` using `[L, Pi.single_apply, Finset.sum_ite_eq]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Introduce `sg sg'`. Rewrite using `[hmk sg, hmk sg', hconst (InfinitePlace.mk sg), hconst (InfinitePlace.mk sg')]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_of_orthogonal_log_units : ∀ (F : Type) [Field F] [NumberField F] (m : (F →+* ℂ) → ℝ),
     (∀ sg, m (ComplexEmbedding.conjugate sg) = m sg) →

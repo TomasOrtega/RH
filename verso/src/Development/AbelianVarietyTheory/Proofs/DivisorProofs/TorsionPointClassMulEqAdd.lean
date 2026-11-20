@@ -26,7 +26,7 @@ noncomputable section
 namespace GlobalTheory.TorsSpec
 
 /- English proof (translation)
-Establish `e` using `Scheme.SpecMap_stalkMap_fromSpecStalk f (x := q)`. Establish `h1` using `h Ω (y ≫ Spec.map (f.stalkMap q)) z (by rw [Category.assoc, reassoc_of% e]; exact hz)`. Rewrite `h1` using `[Category.assoc, reassoc_of% e]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem valAt_comp_stalk {X' : Scheme.{0}} (G : Over X') [GrpObj G] (n : ℕ) {V : Scheme.{0}} (ℓ : V ⟶ X') {M : Type}
     (w : M → (V ⟶ G.left)) {W : Scheme.{0}} (f : W ⟶ (torsion G n).left) (q : W) (c : M)
@@ -39,7 +39,7 @@ theorem valAt_comp_stalk {X' : Scheme.{0}} (G : Over X') [GrpObj G] (n : ℕ) {V
   rwa [Category.assoc, reassoc_of% e] at h1
 
 /- English proof (translation)
-Establish `e : torsion.ι G n ≫ mulN G n = toUnit (torsion G n) ≫ (η : 𝟙_ (Over X') ⟶ G)` using `(pullback.condition (f := mulN G n) (g := (η : 𝟙_ (Over X') ⟶ G))).trans (congrArg (· ≫ (η : 𝟙_ (Over X') ⟶ G)) (toUnit_unique _ _))`. Rewrite using `[Category.assoc, e, ← Category.assoc, Hom.one_def]`. Use `congr 1`. Conclude with `toUnit_unique _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem comp_torsion_ι_mulN {X' : Scheme.{0}} (G : Over X') [GrpObj G] (n : ℕ) {Y : Over X'} (a : Y ⟶ torsion G n) :
     (a ≫ torsion.ι G n) ≫ mulN G n = 1 := by
@@ -51,27 +51,25 @@ theorem comp_torsion_ι_mulN {X' : Scheme.{0}} (G : Over X') [GrpObj G] (n : ℕ
   exact toUnit_unique _ _
 
 /- English proof (translation)
-Introduce `X' _ _ G _ _ _ n hn V _ ℓ _ M w hw _ hun hadd K _ _ t P Q PT QT RT hPT hQT hRT x cP cQ cR hcP hcQ hcR`. Use `haveI : Etale (torsion G n).hom := GlobalTheory.GrpTangent.etale_torsion G hn`. Establish `hιT : (torsion.ι G n).left ≫ G.hom = (torsion G n).hom` using `Over.w (torsion.ι G n)`. Establish `hPt : PT ≫ (torsion G n).hom = t`. Rewrite using `[← hιT, ← Category.assoc, hPT]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Over.w P`. Establish `hQt : QT ≫ (torsion G n).hom = t`. Rewrite using `[← hιT, ← Category.assoc, hQT]`. Conclude with `Over.w Q`. Set `h : pullback (torsion G n).hom (torsion G n).hom ⟶ X'` to `pullback.fst (torsion G n).hom (torsion G n).hom ≫ (torsion G n).hom`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI : Etale h := inferInstance`. Set `pq : Sp K ⟶ pullback (torsion G n).hom (torsion G n).hom` to `pullback.lift PT QT (hPt.trans hQt.symm)`. Use `haveI : IsDomain ((pullback (torsion G n).hom (torsion G n).hom).presheaf.stalk (pq x)) := isDomain_stalk_of_etale h (pq x)`. Take `⟨Ω, _, _, y, hy, -⟩` from `GlobalTheory.T.exists_dominant_geometricGenericPoint_spec_domain ((pullback (torsion G n).hom (torsion G n).hom).presheaf.stalk (pq x))`. Take `⟨z, hz⟩` from `GlobalTheory.T.exists_lift_geometricGenericPoint_stalk_of_flat h (pq x) ℓ Ω y hy`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `WO : Over X'` to `Over.mk h`. Set `A' : WO ⟶ torsion G n` to `Over.homMk (pullback.fst (torsion G n).hom (torsion G n).hom) rfl`. Set `B' : WO ⟶ torsion G n` to `Over.homMk (pullback.snd (torsion G n).hom (torsion G n).hom) pullback.condition.symm`. Set `A : WO ⟶ G` to `A' ≫ torsion.ι G n`. Set `B : WO ⟶ G` to `B' ≫ torsion.ι G n`.
+Establish an intermediate fact. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hs : (A * B) ≫ mulN G n = 1`. Use `letI : CommGroup (WO ⟶ G) := Hom.commGroup`. Rewrite using `[GlobalTheory.GrpTangent.comp_mulN, mul_pow, ← GlobalTheory.GrpTangent.comp_mulN, ← GlobalTheory.GrpTangent.comp_mulN, comp_torsion_ι_mulN, comp_torsion_ι_mulN, _root_.one_mul]`. Take `⟨sT, hsT⟩` from `exists_lift_torsion n (A * B) hs`. Set `g : Over.mk t ⟶ WO` to `Over.homMk pq (by show pq ≫ pullback.fst _ _ ≫ _ = t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[pullback.lift_fst_assoc, hPt])`. Establish `hgA : g ≫ A = P` using `by ext1`. Simplify using `only [A, A', g, pq, Over.comp_left, Over.homMk_left, pullback.lift_fst_assoc, hPT]`. Establish `hgB : g ≫ B = Q` using `by ext1`. Simplify using `only [B, B', g, pq, Over.comp_left, Over.homMk_left, pullback.lift_snd_assoc, hQT]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hRT' : pq ≫ sT.left = RT` using `by haveI := mono_torsion_ι G n`. Rewrite using `[← cancel_mono (torsion.ι G n).left, Category.assoc, ← Over.comp_left, hsT, hRT, ← hgA, ← hgB, ← MonObj.comp_mul]`. Both sides reduce to the same expression. Establish `e1 : (pullback.fst (torsion G n).hom (torsion G n).hom) (pq x) = PT x` using `by show (pq ≫ pullback.fst _ _) x = _`. Rewrite using `[pullback.lift_fst]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : (pullback.snd (torsion G n).hom (torsion G n).hom) (pq x) = QT x` using `by show (pq ≫ pullback.snd _ _) x = _`. Rewrite using `[pullback.lift_snd]`. Establish `e3 : sT.left (pq x) = RT x` using `by show (pq ≫ sT.left) x = _`. Rewrite using `[hRT']`. Rewrite `hcP` using `[← e1]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hcQ` using `[← e2]`. Rewrite `hcR` using `[← e3]`. Establish `hP'` using `valAt_comp_stalk G n ℓ w _ (pq x) cP hcP Ω y z hz`. Establish `hQ'` using `valAt_comp_stalk G n ℓ w _ (pq x) cQ hcQ Ω y z (by rw [← pullback.condition]; exact hz)`. Establish `hR'` using `valAt_comp_stalk G n ℓ w sT.left (pq x) cR hcR Ω y z (by rw [Over.w sT]; exact hz)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Set `k : Over.mk (z ≫ ℓ) ⟶ WO` to `Over.homMk (y ≫ (pullback (torsion G n).hom (torsion G n).hom).fromSpecStalk (pq x)) (by simpa [WO] using hz)`. Establish `hC` using `hadd Ω z cP cQ (k ≫ A) (k ≫ B) (Over.homMk (z ≫ w (cP + cQ)) (by simp [hw])) (by simpa [k, A, A'] using hP') (by simpa [k, B, B'] using hQ') rfl`. Rewrite `hC` using `[← MonObj.comp_mul, ← hsT]`. Establish `hC'` using `congrArg (fun u => u.left) hC`. Simplify using `only [Over.homMk_left, Over.comp_left, k] at hC'`.
-
-Use `hun Ω z cR (cP + cQ) ?_` and prove the remaining obligations. Rewrite using `[← hR']`. Simplify using `only [Category.assoc] at hC'`. Conclude with `hC'.symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valAt_mul : ∀ {X' : Scheme.{0}} [IsIntegral X'] [GlobalTheory.IsNormalScheme X'] (G : Over X') [GrpObj G] [IsCommMonObj G]
     [Smooth G.hom] (n : ℕ) (hn : IsUnit (n : Γ(X', ⊤))) {V : Scheme.{0}} [Nonempty V] (ℓ : V ⟶ X')

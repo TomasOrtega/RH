@@ -21,13 +21,11 @@ namespace GlobalTheory.HomAlgAny
 open MeasureTheory
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hT`. Establish `hV : (LinearMap.range T).restrictScalars ℝ ≠ ⊤`. Introduce `h'`. Apply `hT` to reduce the goal to its premises. Introduce `x`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : x ∈ (LinearMap.range T).restrictScalars ℝ` using `h' ▸ Submodule.mem_top`. Conclude with `LinearMap.mem_range.1 ((Submodule.restrictScalars_mem ℝ _ x).1 hx)`. Use `haveI : Countable Λ := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Establish `hcov : (Set.univ : Set (Fin g → ℂ)) ⊆ ⋃ l : Λ, (fun y => y + -(l : Fin g → ℂ)) ⁻¹' (((LinearMap.range T).restrictScalars ℝ : Submodule ℝ (Fin g → ℂ)) : Set (Fin g → ℂ))`. Introduce `x _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨z, hz⟩` from `h x`. Use `Set.mem_iUnion.2 ⟨⟨x - T z, hz⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, SetLike.mem_coe, Submodule.restrictScalars_mem]`. Conclude with `⟨z, by abel⟩`. Establish `h0 : volume (Set.univ : Set (Fin g → ℂ)) = 0` using `measure_mono_null hcov (measure_iUnion_null fun l => by`.
-
-Rewrite using `[measure_preimage_add_right]`. Conclude with `Measure.addHaar_submodule volume _ hV)`. Conclude with `(isOpen_univ.measure_ne_zero volume Set.univ_nonempty) h0`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem surjective_of_forall_sub_mem {g : ℕ} (T : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)) (Λ : Submodule ℤ (Fin g → ℂ))
     (hΛ : DiscreteTopology Λ) (h : ∀ x, ∃ z, x - T z ∈ Λ) : Function.Surjective T := by
@@ -53,7 +51,7 @@ theorem surjective_of_forall_sub_mem {g : ℕ} (T : (Fin g → ℂ) →ₗ[ℂ] 
   exact (isOpen_univ.measure_ne_zero volume Set.univ_nonempty) h0
 
 /- English proof (translation)
-Rewrite using `[← u.ker]`. Establish `e` using `u.ex_add (a - b) b`. Rewrite `e` using `[sub_add_cancel, h]`. Establish `e2` using `congrArg (· * (u.ex b)⁻¹) e`. Simplify using `using e2.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sub_mem_of_ex_eq {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) (a b : Fin g → ℂ)
     (h : u.ex a = u.ex b) : a - b ∈ u.Λ := by
@@ -64,7 +62,7 @@ theorem sub_mem_of_ex_eq {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ
   simpa using e2.symm
 
 /- English proof (translation)
-Substitute `hn hn'` using the available equality. Take `⟨hL, hL2⟩` from `abelianSchemeLaws_all`. Take `⟨f, ⟨hf, hfe⟩, -⟩` from `existsUnique_isMonHom_of_map_lattice hL hL2 AbLaw.CubeAssembly.cube_gen thetaUnifAV_all P P' P.L P'.L v v' F hF`. Conclude with `⟨f, hf, hfe⟩`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_of_polAV (P P' : Out.PolAV (Sp ℂ)) (n n' : ℕ) (v : HolUnif P.A P.L n) (v' : HolUnif P'.A P'.L n')
     (F : (Fin n → ℂ) →ₗ[ℂ] (Fin n' → ℂ)) (hn : P.g = n) (hn' : P'.g = n') (hF : ∀ z ∈ v.Λ, F z ∈ v'.Λ) :
@@ -78,15 +76,13 @@ theorem exists_of_polAV (P P' : Out.PolAV (Sp ℂ)) (n n' : ℕ) (v : HolUnif P.
 open GlobalTheory.HolUnifEnd GlobalTheory.HolUnifHom in
 
 /- English proof (translation)
-Take `⟨Q, v, i, r, J, R, m, hQ, hi, hr, hm, hJ, hR, hJΛ, hRΛ, hRJ⟩` from `exists_linear_factor A g hA hgA L u`. Take `⟨Q', v', i', r', J', R', m', hQ', hi', hr', hm', hJ', hR', hJΛ', hRΛ', hRJ'⟩` from `exists_linear_factor A' g' hA' hgA' L' u'`. Take `⟨β, hβ, hβe⟩` from `exists_of_polAV Q Q' (8 * g) (8 * g') v v' (J' ∘ₗ M ∘ₗ R) hQ hQ' (fun l hl => hJΛ' _ (hM _ (hRΛ _ hl)))`. Use `haveI := hi`. Use `haveI := hr'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI := hβ`. Establish `hφ : ∀ z, u.ex z ≫ i ≫ β ≫ r' = u'.ex ((m' * m) • M z)`. Introduce `z`. Establish `e` using `hβe (J z)`. Simplify using `only [LinearMap.comp_apply] at e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Category.assoc, ← hJ, ← Category.assoc, ← e, ← hR', hRJ', hRJ, map_nsmul, smul_smul]`. Use `hA'.proper` as an intermediate fact. Take `⟨α, hα, hαφ⟩` from `exists_factor_pow A A' hA (m' * m) (Nat.one_le_iff_ne_zero.2 (by positivity)) (i ≫ β ≫ r') fun y hy => by`. Take `⟨z, rfl⟩` from `u.ex_onto y`. Rewrite `hy` using `[← holUnif_ex_nsmul_eq_pow, u.ker]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hφ, u'.ker, ← map_nsmul]`. Conclude with `hM _ hy`. Use `⟨α, hα, fun w => ?_⟩` and prove the remaining obligations. Establish `hN0 : ((m' * m : ℕ) : ℂ) ≠ 0` using `by exact_mod_cast (show m' * m ≠ 0 by positivity)`. Establish `hw : (m' * m) • (((m' * m : ℕ) : ℂ)⁻¹ • w) = w`.
-
-Rewrite using `[← Nat.cast_smul_eq_nsmul ℂ, smul_smul, mul_inv_cancel₀ hN0, one_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Category.assoc, MonObj.comp_pow, Category.comp_id, ← holUnif_ex_nsmul_eq_pow, hw]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isMonHom_of_map_lattice (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj A'] (g g' : ℕ)
     (hA : IsAbelianScheme A) (hA' : IsAbelianScheme A') (hgA : SmoothOfRelativeDimension g A.hom)
@@ -122,19 +118,17 @@ theorem exists_isMonHom_of_map_lattice (A A' : Over (Sp ℂ)) [GrpObj A] [GrpObj
       rw [← Category.assoc, MonObj.comp_pow, Category.comp_id, ← holUnif_ex_nsmul_eq_pow, hw]
 
 /- English proof (translation)
-Introduce `A A' _ _ _ _ g g' hA hA' hg hg' e e' M he he' hM`. Take `⟨L, ⟨u⟩⟩` from `GlobalTheory.HomDescentQb.exists_holUnif A g hA hg`. Take `⟨L', ⟨u'⟩⟩` from `GlobalTheory.HomDescentQb.exists_holUnif A' g' hA' hg'`. Take `⟨t1, t2⟩` from `GlobalTheory.TorusTransfer.tangent_bijective u hg`. Take `⟨t1', t2'⟩` from `GlobalTheory.TorusTransfer.tangent_bijective u' hg'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hT, -⟩` from `GlobalTheory.existsUnique_linear_lift_of_isHolTo A hA L g g u t1 t2 e he.1 he.2.2.1`. Take `⟨T', hT', -⟩` from `GlobalTheory.existsUnique_linear_lift_of_isHolTo A' hA' L' g' g' u' t1' t2' e' he'.1 he'.2.2.1`. Establish `hTs : Function.Surjective T` using `surjective_of_forall_sub_mem T u.Λ u.discrete fun x => by`. Take `⟨z, hz⟩` from `he.2.1 (u.ex x)`. Conclude with `⟨z, sub_mem_of_ex_eq u _ _ (by rw [hT]; exact hz.symm)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hTi : Function.Injective T` using `LinearMap.injective_iff_surjective.2 hTs`. Set `Te : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `LinearEquiv.ofBijective T ⟨hTi, hTs⟩`. Establish `hTe : ∀ z, Te.symm (T z) = z` using `fun z => Te.symm_apply_apply z`. Set `F : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)` to `T' ∘ₗ M ∘ₗ Te.symm.toLinearMap`. Establish `hFT : ∀ z, F (T z) = T' (M z)` using `fun z => by simp only [F, LinearMap.comp_apply, LinearEquiv.coe_coe, hTe]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hF : ∀ x ∈ u.Λ, F x ∈ u'.Λ` using `fun x hx => by`. Take `⟨z, rfl⟩` from `hTs x`. Rewrite using `[hFT, ← u'.ker, hT']`. Use `hM z ?_` and prove the remaining obligations. Rewrite using `[← hT, u.ker]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hx`. Take `⟨α, hα, hαe⟩` from `exists_isMonHom_of_map_lattice A A' g g' hA hA' hg hg' L L' u u' F hF`. Establish `hex : ∀ z, e' (M z) = e z ≫ α` using `fun z => by`. Rewrite using `[← hT', ← hFT, hαe, hT]`. Use `⟨α, ⟨hα, hex⟩, fun f hf => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hA.smooth`. Use `haveI := hA'.proper`. Use `haveI : IsReduced A.left := GlobalTheory.isReduced_of_smooth_complex _ A.hom hA.smooth`. Use `GlobalTheory.ComplexPoints.over_hom_ext_of_complexPoints fun x => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `he.2.1 x`.
-
-Rewrite using `[← hf.2, hex]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_isMonHom_of_map_ker : ∀ (A A' : Over (Sp ℂ)) [GrpObj A] [IsCommMonObj A] [GrpObj A'] [IsCommMonObj A'] (g g' : ℕ), IsAbelianScheme A → IsAbelianScheme A' → SmoothOfRelativeDimension g A.hom → SmoothOfRelativeDimension g' A'.hom → ∀ (e : (Fin g → ℂ) → (Over.mk (𝟙 (Sp ℂ)) ⟶ A)) (e' : (Fin g' → ℂ) → (Over.mk (𝟙 (Sp ℂ)) ⟶ A')) (M : (Fin g → ℂ) →ₗ[ℂ] (Fin g' → ℂ)), IsExp (𝟙 (Sp ℂ)) e → IsExp (𝟙 (Sp ℂ)) e' → (∀ z, e z = 1 → e' (M z) = 1) → ∃! f : A ⟶ A', IsMonHom f ∧ ∀ z, e' (M z) = e z ≫ f := by
   intro A A' _ _ _ _ g g' hA hA' hg hg' e e' M he he' hM

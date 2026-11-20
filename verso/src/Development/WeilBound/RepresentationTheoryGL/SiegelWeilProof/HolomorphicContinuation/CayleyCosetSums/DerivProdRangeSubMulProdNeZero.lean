@@ -12,9 +12,9 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LVs
 variable {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `by_cases hi : i = (a : Fin n) <;> by_cases hj : j = (b : Fin n)`. Substitute `hi hj` using the available equality. Simplify using `[embOn, Matrix.single_apply]`. Apply the tactic sequence `simp only [embOn, Matrix.single_apply, hj, and_false, if_false] split_ifs with h h' <;> simp_all [Subtype.ext_iff]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Substitute using the available equality. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `simp only [embOn, Matrix.single_apply, hi, false_and, if_false] split_ifs with h h' <;> simp_all [Subtype.ext_iff]`. Apply the tactic sequence `simp only [embOn, Matrix.single_apply, hi, false_and, if_false] split_ifs with h h' <;> simp_all [Subtype.ext_iff]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem embOn_single_pf (s : Finset (Fin n)) (a b : s) :
     embOn s (Matrix.single a b (1 : ℂ)) = Matrix.single (a : Fin n) (b : Fin n) 1 := by
@@ -30,15 +30,15 @@ theorem embOn_single_pf (s : Finset (Fin n)) (a b : s) :
     split_ifs with h h' <;> simp_all [Subtype.ext_iff]
 
 /- English proof (translation)
-Take `⟨k, hk⟩ : ∃ k, n - m = k + 1` from `⟨n - m - 1, by omega⟩`. Establish `hm : n - (n - m) = m` using `by omega`. Rewrite using `[hm, hk]`. Use `set C : ℂ → ℂ := fun z => ∏ i ∈ Finset.range k, (((i + 1 : ℕ) : ℂ) - z) with hCdef`. Use `set B : ℂ → ℂ := fun z => ∏ i ∈ Finset.range m, ((i : ℂ) - m - z) with hBdef`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hfun : (fun z : ℂ => (∏ i ∈ Finset.range (k + 1), ((i : ℂ) - z)) * ∏ i ∈ Finset.range m, ((i : ℂ) - m - z)) = fun z => (C z * (0 - z)) * B z`. Use function extensionality and compare the values at `z`. Rewrite using `[Finset.prod_range_succ']`. Simplify using `[C, B]`. Establish `hC : DifferentiableAt ℂ C 0` using `DifferentiableAt.fun_finsetProd (fun i _ => by fun_prop)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : DifferentiableAt ℂ B 0` using `DifferentiableAt.fun_finsetProd (fun i _ => by fun_prop)`. Establish `key : HasDerivAt (fun z => (C z * (0 - z)) * B z) ((C 0 * (-1)) * B 0) 0`. Establish `h` using `(hC.hasDerivAt.mul ((hasDerivAt_id (0 : ℂ)).const_sub 0)).mul hB.hasDerivAt`. Apply the tactic sequence `convert h using 1 <;> first | rfl | simp`. Rewrite using `[hfun, key.deriv]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hC0 : C 0 ≠ 0`. Simplify using `only [C, sub_zero]`. Conclude with `Finset.prod_ne_zero_iff.mpr (fun i _ => by exact_mod_cast Nat.succ_ne_zero i)`. Establish `hB0 : B 0 ≠ 0`. Simplify using `only [B, sub_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_ne_zero_iff.mpr (fun i hi => ?_)` and prove the remaining obligations. Establish `hi' : i < m` using `Finset.mem_range.mp hi`. Rewrite using `[sub_ne_zero]`. Conclude with `hi'.ne` after adjusting the coercions. Simplify using `[hC0, hB0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deriv_prod_range_sub_mul_prod_ne_zero (n m : ℕ) (hmn : m < n) :
     deriv (fun z : ℂ => (∏ i ∈ Finset.range (n - m), ((i : ℂ) - z)) *

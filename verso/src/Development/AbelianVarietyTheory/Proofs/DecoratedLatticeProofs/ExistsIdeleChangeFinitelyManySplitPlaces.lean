@@ -16,7 +16,7 @@ open GlobalTheory.FinPl.FrameLat
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `a ha`. Unfold `idOff`. Rewrite using `[Submodule.mem_iInf]`. Introduce and unpack `⟨w, rfl⟩`. Conclude with `(Submodule.mem_iInf _).1 (Submodule.mem_inf.1 ha).2 ⟨w, fun e => hxy e.symm⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem idAt_le_idOff {x y : Pl D} (hxy : x ≠ y) : idAt D (· = x) ≤ idOff D (· = y) := by
   intro a ha
@@ -26,7 +26,7 @@ theorem idAt_le_idOff {x y : Pl D} (hxy : x ≠ y) : idAt D (· = x) ≤ idOff D
   exact (Submodule.mem_iInf _).1 (Submodule.mem_inf.1 ha).2 ⟨w, fun e => hxy e.symm⟩
 
 /- English proof (translation)
-Take `⟨⟨ε, -, -, -, h1, h2⟩, -⟩` from `GlobalTheory.FinPl.localComponents D (· = y)`. Establish `hb'` using `(h1 b).1 hb`. Establish `ha'` using `(h2 a).1 (idAt_le_idOff hxy ha)`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem mul_eq_zero_of_ne {x y : Pl D} (hxy : x ≠ y) {a b : AE D} (ha : a ∈ idAt D (· = x))
     (hb : b ∈ idAt D (· = y)) : a * b = 0 := by
@@ -42,33 +42,33 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `ht0 : q.pr (incA D h) ≠ 0`. Introduce `e`. Conclude with `hh ((map_eq_zero_iff (q.pr.comp (incA D)) (q.pr.comp (incA D)).injective).1 e)`. Take `⟨t, ht⟩ : ∃ t : k, t = q.pr (incA D h)` from `⟨_, rfl⟩`. Rewrite `ht0` using `[← ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hsdef⟩ : ∃ s : k, s = t⁻¹` from `⟨_, rfl⟩`. Take `⟨f, hfdef⟩ : ∃ f : AE D, f = q.e + cA D q.e` from `⟨_, rfl⟩`. Establish `hf : ∀ b ∈ idAt D (· = q.v), f * b = b` using `fun b hb => by rw [hfdef]; exact (idem_iff q b).1 hb`. Establish `hfm : f ∈ idAt D (· = q.v)` using `by rw [hfdef]; exact sum_mem_idAt q`. Establish `hff : f * f = f` using `hf _ hfm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcf : cA D f = f` using `by rw [hfdef, map_add, cA_cA, add_comm]`. Establish `hec : q.e * cA D q.e = 0` using `q.split.2.1`. Establish `hce : cA D q.e * q.e = 0` using `cAe_mul_e q`. Establish `hcee : cA D q.e * cA D q.e = cA D q.e` using `by rw [← map_mul, q.split.1]`. Establish `hsc : ∀ c, q.sec c * cA D q.e = 0` using `fun c => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(cA D q.e)) * e_mul_sec q c + q.sec c * hec`. Establish `hcem : cA D q.e ∈ idAt D (· = q.v)` using `by rw [← sec_one]; exact csec_mem_idAt (p := q) 1`. Take `⟨u, hudef⟩ : ∃ u : AE D, u = q.sec s + cA D q.e` from `⟨_, rfl⟩`. Take `⟨u', hu'def⟩ : ∃ u' : AE D, u' = q.sec t + cA D q.e` from `⟨_, rfl⟩`. Establish `hu : u ∈ idAt D (· = q.v)` using `by rw [hudef]; exact add_mem (sec_mem_idAt q _) hcem`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : u' ∈ idAt D (· = q.v)` using `by rw [hu'def]; exact add_mem (sec_mem_idAt q _) hcem`. Establish `hcu : cA D u ∈ idAt D (· = q.v)`. Rewrite using `[hudef, map_add, cA_cA]`. Conclude with `add_mem (csec_mem_idAt (p := q) _) (e_mem_idAt q)`. Establish `hst : q.sec s * q.sec t = q.e` using `by rw [← sec_mul, hsdef, inv_mul_cancel₀ ht0, sec_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huu : u * u' = f`. Establish `h1` using `hsc s`. Establish `h2 : cA D q.e * q.sec t = 0` using `by rw [mul_comm]; exact hsc t`. Rewrite using `[hudef, hu'def, hfdef]`. Take the linear combination `hst + h1 + h2 + hcee`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmm : (m : AE D) * ((m⁻¹ : (AE D)ˣ) : AE D) = 1` using `m.mul_inv`. Take `⟨mi, hmi⟩ : ∃ mi : AE D, mi = ((m⁻¹ : (AE D)ˣ) : AE D)` from `⟨_, rfl⟩`. Rewrite `hmm` using `[← hmi]`. Take `⟨w, hw⟩ : ∃ w : AE D, w = (m : AE D) * (1 - f) + u` from `⟨_, rfl⟩`. Take `⟨w', hw'⟩ : ∃ w' : AE D, w' = mi * (1 - f) + u'` from `⟨_, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hww : w * w' = 1`. Rewrite using `[hw, hw']`. Take the linear combination `(1 - f) ^ 2 * hmm + hff - (m : AE D) * hf _ hu' - mi * hf _ hu + huu`. Establish `hcw : cA D w = cA D (m : AE D) * (1 - f) + cA D u`. Rewrite using `[hw, map_add, map_mul, map_sub, map_one, hcf]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨Units.mkOfMulEqOne w w' hww, fun x hx a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hfa : f * a = 0` using `mul_eq_zero_of_ne (Ne.symm hx) hfm ha`. Establish `hua : u * a = 0` using `mul_eq_zero_of_ne (Ne.symm hx) hu ha`. Establish `hcua : cA D u * a = 0` using `mul_eq_zero_of_ne (Ne.symm hx) hcu ha`. Rewrite using `[Units.val_mkOfMulEqOne, hcw, hw]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Take a linear combination of the given relations to obtain the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Take the linear combination `(-(m : AE D)) * hfa + hua`. Take the linear combination `(-(cA D (m : AE D))) * hfa + hcua`. Rewrite using `[Units.val_mkOfMulEqOne]`. Establish `hb : incA D h * a ∈ idAt D (· = q.v)` using `Ideal.mul_mem_left _ _ ha`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwa : ∀ b ∈ idAt D (· = q.v), w * b = u * b` using `fun b hb => by`. Rewrite using `[hw]`. Take the linear combination `(-(m : AE D)) * hf b hb`. Establish `hcwa : ∀ b ∈ idAt D (· = q.v), cA D w * b = cA D u * b` using `fun b hb => by`. Rewrite using `[hcw]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Take the linear combination `(-(cA D (m : AE D))) * hf b hb`. Establish `hc2 : cA D u * (incA D h * a) ∈ idAt D (· = q.v)` using `Ideal.mul_mem_left _ _ hb`. Establish `hA : q.sec s * incA D h = q.e`. Rewrite using `[sec_mul_right, ← ht, hsdef, inv_mul_cancel₀ ht0, sec_one]`. Establish `hB : cA D (q.sec s) * incA D h = cA D q.e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e0 : incA D h = cA D (incA D h)` using `by rw [cA_incA, hs]`. Rewrite using `[e0, ← map_mul, hA]`. Establish `hC1 : cA D q.e * cA D (q.sec s) = cA D (q.sec s)` using `by rw [← map_mul, e_mul_sec]`. Establish `hD : q.sec s * q.e = q.sec s` using `by rw [mul_comm, e_mul_sec]`. Establish `hkey : u * cA D u * incA D h = f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hudef, hfdef, map_add, cA_cA]`. Take the linear combination `(incA D h) * ((-(q.sec s)) * hC1 + (cA D (q.sec s)) * hsc s + hD + hce + hC1) + hA + hB`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_change_one (q : SplitPt D k) (h : D.host.E) (hh : h ≠ 0) (hs : star h = h) (m : (AE D)ˣ) :
     ∃ m' : (AE D)ˣ, (∀ x, x ≠ q.v → ∀ a ∈ idAt D (· = x),
@@ -146,13 +146,13 @@ theorem exists_change_one (q : SplitPt D k) (h : D.host.E) (hh : h ≠ 0) (hs : 
       _ = a := by rw [hkey, hf a ha]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact ⟨m, fun _ _ _ _ => ⟨rfl, rfl⟩, fun _ hi => absurd hi List.not_mem_nil⟩`. Consider the case `cons i l ih`. Take `⟨m₁, hA₁, hB₁⟩` from `ih`. Take `⟨m₂, hA₂, hB₂⟩` from `exists_change_one (p i) h hh hs m₁`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m₂, fun x hx a ha => ?_, fun j hj a ha => ?_⟩` and prove the remaining obligations. Establish `e2` using `hA₂ x (hx i List.mem_cons_self) a ha`. Establish `e1` using `hA₁ x (fun j hj => hx j (List.mem_cons_of_mem _ hj)) a ha`. Conclude with `⟨e2.1.trans e1.1, e2.2.trans e1.2⟩`. Distinguish the cases in `e : j = i`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Substitute `e` using the available equality. Conclude with `hB₂ a ha`. Establish `hj' : j ∈ l` using `(List.mem_cons.1 hj).resolve_left e`. Establish `hne : (p j).v ≠ (p i).v` using `fun e' => e (hp e')`. Establish `hb : incA D h * a ∈ idAt D (· = (p j).v)` using `Ideal.mul_mem_left _ _ ha`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `(hA₂ _ hne _ hb).2`. Establish `hc : cA D (m₁ : AE D) * (incA D h * a) ∈ idAt D (· = (p j).v)` using `Ideal.mul_mem_left _ _ hb`. Establish `e2` using `(hA₂ _ hne _ hc).1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_change_list {ι : Type} (p : ι → SplitPt D k) (hp : Function.Injective fun i => (p i).v) (h : D.host.E)
     (hh : h ≠ 0) (hs : star h = h) (m : (AE D)ˣ) (l : List ι) :
@@ -186,7 +186,7 @@ end GlobalTheory.FinPl.IdeleChange
 open GlobalTheory.FinPl.IdeleChange in
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ ι p I P hP h hh hs m`. Take `⟨m', hA, hB⟩` from `exists_change_list p hP.inj h hh hs m I`. Use `⟨m', fun x hx a ha => hA x (fun i _ e => hx ((hP.mem x).2 ⟨i, e⟩)) a ha, fun x hx a ha => ?_⟩` and prove the remaining obligations. Take `⟨i, rfl⟩` from `(hP.mem x).1 hx`. Rewrite using `[hB i (hP.all i) a ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.FinPl.exists_idele_change_split : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type) (p : ι → SplitPt D k) (I : List ι) (P : Pl D → Prop), Places p I P → ∀ h : D.host.E, h ≠ 0 → star h = h → ∀ m : (AE D)ˣ, ∃ m' : (AE D)ˣ, (∀ x, ¬ P x → ∀ a ∈ idAt D (· = x), (m' : AE D) * a = (m : AE D) * a ∧ cA D (m' : AE D) * a = cA D (m : AE D) * a) ∧ ∀ x, P x → ∀ a ∈ idAt D (· = x), a ∈ intAt D (· = x) ↔ (m' : AE D) * cA D (m' : AE D) * incA D h * a ∈ intAt D (· = x) := by
   intro D k _ _ _ _ ι p I P hP h hh hs m

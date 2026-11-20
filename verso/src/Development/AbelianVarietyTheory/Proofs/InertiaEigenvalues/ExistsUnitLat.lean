@@ -26,7 +26,7 @@ noncomputable def unitLat (G : Type) [Group G] [TopologicalSpace G] (Qp LL O : T
       stable := fun g x hx => by simpa using hx }
 
 /- English proof (translation)
-Introduce `l _ K LL`. Establish `hO : Function.Injective (algebraMap (↥(OL LL)) ↥LL.1)` using `Subtype.val_injective`. Use `⟨unitLat (↥(GK K)) ℚ_[l] ↥LL.1 ↥(OL LL) hO, fun _ _ => rfl, (1 : ↥LL.1), ?_, rfl⟩` and prove the remaining obligations. Use `show (1 : ↥LL.1) ≠ 0`. Conclude with `one_ne_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_unitLat : ∀ (l : ℕ) [Fact l.Prime] (K LL : FinExt l), ∃ one : LocLat ↥(GK K) ℚ_[l] ↥LL.1 ↥(OL LL), (∀ g x, one.ρ g x = x) ∧ ∃ e : one.V, e ≠ 0 ∧ one.L.T = Submodule.span ↥(OL LL) {e} := by
   intro l _ K LL

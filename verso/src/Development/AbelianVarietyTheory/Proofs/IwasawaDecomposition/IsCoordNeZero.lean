@@ -19,13 +19,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F} {Z : Model Xo c β}
 
 /- English proof (translation)
-Establish `h1 : spMap (RingHom.id k) = 𝟙 _` using `Spec.map_id _`. Establish `h3 : spMap (dualMap (RingHom.id k)) = 𝟙 _`. Rewrite using `[← Spec.map_id]`. Use `congr 1`. Apply the tactic sequence `ext r <;> simp [dualMap]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨rfl, rfl, h⟩` from `h`. Take `⟨e1, e2, h'⟩` from `h'`. Rewrite `e1` using `[h1, Category.id_comp]`. Substitute `e1` using the available equality. Use `⟨rfl, e2, fun τ i => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose a a1 a2 a3 using h τ`. Take `⟨cf, b1, b2, b3⟩` from `h' τ i`. Simplify using `only [h3, Category.id_comp] at b3`. Set `A : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) k` to `fun j i => a i j`. Establish `hA : A.BlockTriangular id` using `fun j k hk => a2 k j hk`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c1, c2⟩` from `Guard.tri_mulVec hA b2`. Use `⟨A.mulVec cf, ?_, c1, tanLinG _ (fun j => GlobalTheory.FactorDepth.isTanAtG_map _ ψ (f.tan τ j)) _ A cf _ a3 b3⟩` and prove the remaining obligations. Rewrite using `[c2, b1, show A i i = t τ i from a1 i, Units.val_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tri_trans {R k : Type} [CommRing R] [Field k] {φ : c.F →+* R} {φ' φ'' : c.F →+* k} {x : Sp R ⟶ Z.X}
     {x' x'' : Sp k ⟶ Z.X} {f : EigFrame Z φ x} {ψ : R →+* k} {g : EigFrame Z φ' x'} {g' : EigFrame Z φ'' x''}

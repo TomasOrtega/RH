@@ -14,13 +14,13 @@ namespace GlobalTheory.GoodDepth
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.DIV.Cons Formalism.L2.DIV Formalism.L2.Pj Formalism.L2.Indef Formalism.L2.Indef.Tree Formalism.L2.FormalSeriesBounds GlobalTheory.GoodDepth GlobalTheory.RunDepth
 
 /- English proof (translation)
-Introduce `D L T hp`. Establish `hh` using `hp.1`. Use `⟨?_, ?_, hh.1, D.host.hostE_isGalois, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `z z' h`. Conclude with `(plOf_bijective_card D).1.1 (GlobalTheory.LeafCompare.tauEmb_inj h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Prove the components needed by the constructor for the conclusion. Introduce `hτ`. Take `⟨t, ht⟩` from `GlobalTheory.LeafCompare.exists_tau T.Q hh τ hτ`. Take `⟨z, hz⟩` from `(plOf_bijective_card D).1.2 t`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z, by rw [ht, ← hz]⟩`. Introduce and unpack `⟨z, rfl⟩`. Conclude with `hh.2.2.2 _`. Introduce `σ τ`. Conclude with `D.host.galE_injective (by`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[D.host.galE_mul, D.host.galE_mul, mul_comm])`. Introduce `p hp h2 hq hd`. Conclude with `GlobalTheory.GoodDepth.not_dvd_discr_host D.R D.host p hp h2 hq hd`. Introduce `la hla z x`. Conclude with `GlobalTheory.FrobPlace.frob_place D L T.Q.H _ T.Q.c la hla z x`.
+A detailed English derivation is pending.
 -/
 theorem placeTie_of_pins : ∀ (D : D7) (L : SizeData₂ D) (T : Core D), T.Q.Pins →
     PlaceTie (numOf D L) T.Q.c (fun z => DV.tauEmb D (plOf D z)) := by

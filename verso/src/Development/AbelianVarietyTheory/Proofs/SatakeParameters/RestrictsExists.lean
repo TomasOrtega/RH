@@ -19,23 +19,23 @@ variable {K L Ω : Type} [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [Is
   {A : ValuationSubring Ω} {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 L)}
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.DelEps.WeilRes.mem_Dec_iff.2 fun x => GlobalTheory.DelEps.WeilRes.mem_Dec_iff.1 hσ x`.
+A detailed English derivation is pending.
 -/
 theorem res_mem_Dec {σ : G L Ω} (hσ : σ ∈ Dec (F := L) A) :
     AlgEquiv.restrictScalarsHom K σ ∈ Dec (F := K) A :=
   GlobalTheory.DelEps.WeilRes.mem_Dec_iff.2 fun x => GlobalTheory.DelEps.WeilRes.mem_Dec_iff.1 hσ x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨res_mem_Dec hσ.1, fun x hx => hσ.2 x hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem res_mem_Ine {σ : G L Ω} (hσ : σ ∈ Ine (F := L) A) :
     AlgEquiv.restrictScalarsHom K σ ∈ Ine (F := K) A :=
   ⟨res_mem_Dec hσ.1, fun x hx => hσ.2 x hx⟩
 
 /- English proof (translation)
-Take `⟨a, b, hab⟩` from `(mem_Weil h').1 σ.2`. Establish `hQ : normV v' = normV v ^ v'.asIdeal.inertiaDeg (𝓞 K)`. Rewrite using `[GlobalTheory.DelEps.WeilRes.normV_eq_pow (K := K) v', GlobalTheory.DelEps.WeilRes.under_eq h h']`. Use `⟨v'.asIdeal.inertiaDeg (𝓞 K) * a, v'.asIdeal.inertiaDeg (𝓞 K) * b, res_mem_Dec hab.1, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h2` using `hab.2 x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[hQ, ← pow_mul, ← pow_mul]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem res_mem_Weil (h : IsPlaceOver A v) (h' : IsPlaceOver A v') (σ : Weil h') :
     AlgEquiv.restrictScalarsHom K (σ : G L Ω) ∈ Weil h := by
@@ -58,13 +58,13 @@ def resI : Ine (F := L) A →* Ine (F := K) A :=
     fun σ => res_mem_Ine σ.2
 
 /- English proof (translation)
-The claim follows from `((UpperTheory.V.Af.continuous_restrictScalarsHom K L Ω).comp continuous_subtype_val).subtype_mk _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_resI : Continuous (resI (K := K) (L := L) (Ω := Ω) (A := A)) :=
   ((UpperTheory.V.Af.continuous_restrictScalarsHom K L Ω).comp continuous_subtype_val).subtype_mk _
 
 /- English proof (translation)
-The claim follows from `Subtype.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem resW_ineIncl (h : IsPlaceOver A v) (h' : IsPlaceOver A v') (τ : Ine (F := L) A) :
     resW h h' (ineIncl h' τ) = ineIncl h (resI τ) := Subtype.ext rfl

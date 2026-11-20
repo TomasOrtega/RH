@@ -3,25 +3,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Use `haveI : Algebra.IsIntegral O (B ⧸ P) := Algebra.IsIntegral.of_finite O (B ⧸ P)`. Establish `hcomap : ∀ a : O, algebraMap O (B ⧸ P) a = 0 ↔ algebraMap O B a ∈ P`. Introduce `a`. Rewrite using `[IsScalarTower.algebraMap_apply O B (B ⧸ P), Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Distinguish the cases in `hc : ∃ c : O, c ≠ 0 ∧ algebraMap O B c ∈ P`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc0, hcP⟩` from `hc left`. Apply `IsLocalRing.eq_maximalIdeal` to reduce the goal to its premises. Establish `hQ : (P.comap (algebraMap O B)).IsMaximal`. Apply `Ideal.IsPrime.isMaximal (Ideal.comap_isPrime _ _)` to reduce the goal to its premises. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hmem : c ∈ P.comap (algebraMap O B)` using `hcP`. Rewrite `hmem` using `[h]`. Conclude with `hc0 ((Submodule.mem_bot O).1 hmem)`. Establish `hbot : (⊥ : Ideal (B ⧸ P)).comap (algebraMap O (B ⧸ P)) = P.comap (algebraMap O B)`. Use extensionality with `a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, Ideal.mem_bot, Ideal.mem_comap, hcomap]`. Use `haveI : (⊥ : Ideal (B ⧸ P)).IsPrime := Ideal.bot_prime`. Establish `hmax` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := O) (⊥ : Ideal (B ⧸ P)) (hbot ▸ hQ)`. Rewrite using `[Ideal.Quotient.maximal_ideal_iff_isField_quotient]`. Conclude with `Ring.isField_iff_maximal_bot.2 hmax`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `push_neg at hc right`. Use `⟨hc, ?_⟩` and prove the remaining obligations. Establish `hinj : Function.Injective (algebraMap O (B ⧸ P))`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Assume the negation of the conclusion as `h0`. Conclude with `hc a h0 ((hcomap a).1 ha)`. Use `haveI : Module.IsTorsionFree O (B ⧸ P) := NoZeroSMulDivisors.iff_algebraMap_injective.2 hinj`. Use `haveI : Module.IsTorsionFree O K := NoZeroSMulDivisors.iff_algebraMap_injective.2 (FaithfulSMul.algebraMap_injective O K)`. Use `haveI : Algebra.IsAlgebraic O (B ⧸ P) := Algebra.IsIntegral.isAlgebraic`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Set `τ : (B ⧸ P) →ₐ[O] K` to `IsAlgClosed.lift`. Use `⟨τ.comp (Ideal.Quotient.mkₐ O P), ?_⟩` and prove the remaining obligations. Establish `hτ : RingHom.ker (τ : (B ⧸ P) →+* K) = ⊥`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := O)` to reduce the goal to its premises. Use extensionality with `a`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, Ideal.mem_bot]`. Express the relevant statement in the definitionally equal form `τ (algebraMap O (B ⧸ P) a) = 0 ↔ a = 0`. Rewrite using `[AlgHom.commutes]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
-
-Conclude with `FaithfulSMul.algebraMap_injective O K (h.trans (map_zero _).symm)`. Introduce `h`. Rewrite using `[h, map_zero]`. Establish `hτi : Function.Injective τ` using `(RingHom.injective_iff_ker_eq_bot (τ : (B ⧸ P) →+* K)).2 hτ`. Use extensionality with `b`.
-
-Rewrite using `[RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `τ (Ideal.Quotient.mk P b) = 0 ↔ b ∈ P`. Rewrite using `[map_eq_zero_iff τ hτi, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prime_maximal_or_kernel (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     (K : Type) [Field K] [Algebra O K] [IsAlgClosed K] [FaithfulSMul O K]
@@ -82,13 +78,11 @@ private theorem prime_maximal_or_kernel (O : Type) [CommRing O] [IsDomain O] [Is
     rw [map_eq_zero_iff τ hτi, Ideal.Quotient.eq_zero_iff_mem]
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x I hM P hP hIP`. Set `φ : 𝒜 0 →ₗ[O] A ⧸ I` to `(Ideal.Quotient.mkₐ O I).toLinearMap ∘ₗ (𝒜 0).subtype`. Establish `hr : (LinearMap.range φ).FG`. Establish `: LinearMap.range φ = (𝒜 0).map (Ideal.Quotient.mkₐ O I).toLinearMap`. Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hM`. Use `haveI : Module.Finite O (LinearMap.range φ) := Module.Finite.iff_fg.2 hr`. Use `haveI : Module.Finite O (𝒜 0 ⧸ LinearMap.ker φ) := Module.Finite.equiv φ.quotKerEquivRange.symm`. Set `ψ : 𝒜 0 →ₗ[O] (𝒜 0 ⧸ P)` to `(Ideal.Quotient.mkₐ O P).toLinearMap`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hk : LinearMap.ker φ ≤ LinearMap.ker ψ` using `fun b hb => Ideal.Quotient.eq_zero_iff_mem.2 (hIP b (Ideal.Quotient.eq_zero_iff_mem.1 hb))`. Use `haveI : Module.Finite O (𝒜 0 ⧸ P) := by`. Use `Module.Finite.of_surjective ((LinearMap.ker φ).liftQ ψ hk) fun y => ?_` and prove the remaining obligations. Take `⟨b, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Conclude with `⟨Submodule.Quotient.mk b, rfl⟩`.
-
-Conclude with `prime_maximal_or_kernel O K (𝒜 0) P`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.emb_holds :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

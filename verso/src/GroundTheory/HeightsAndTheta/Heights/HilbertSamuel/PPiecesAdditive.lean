@@ -16,23 +16,21 @@ namespace PiecesAdditiveAlt
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Set `T : J → Set ((Σ k, ι k) → ℂ)` to `fun j => mcPts P ∩ S j ∩ {z | ∀ k, blockNormSq z k = 1}`. Set `C : J → Set ((Σ k, ι k × ι k) → ℂ)` to `fun j => projPt '' T j`. Establish `hT : ∀ j, IsCompact (T j)`. Introduce `j`. Use `isCompact_sphere.of_isClosed_subset ?_ inter_subset_right` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: T j = ({z | ∀ f ∈ P, eval z (map (Int.castRingHom ℂ) f) = 0} ∩ S j) ∩ {z | ∀ k, blockNormSq z k = 1}`. Use extensionality with `z`. Simplify using `only [T, mcPts, mem_inter_iff, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨-, h1⟩, h2⟩, h3⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨h1, h2⟩, h3⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`. Use `⟨⟨⟨fun k => ?_, h1⟩, h2⟩, h3⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `h3 k` as an intermediate fact. Simplify using `[blockNormSq, hcon] at this`. Rewrite using `[this]`. Conclude with `((isClosed_zeros P).inter (hS j)).inter isCompact_sphere.isClosed`. Establish `hC : ∀ j, IsCompact (C j)` using `fun j => (hT j).image_of_continuousOn (contDiffOn_projPt.continuousOn.mono fun z hz => hz.1.1.1)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : ∀ j, ∀ z ∈ mcPts P, z ∈ S j → projPt z ∈ C j`. Introduce `j z hz hzj`. Take `⟨c, hc, hc1⟩` from `exists_smul_sphere hz.1`. Conclude with `⟨_, ⟨⟨mcPts_smul hP c hc hz, hsm j c z hc hzj⟩, hc1⟩, projPt_smul c hc z⟩`. Establish `hdisj : ∀ j j', j ≠ j' → Disjoint (C j) (C j')`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `j j' hne`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `e ⟨z, ⟨⟨hzP, hzs⟩, -⟩, rfl⟩ ⟨w, ⟨⟨hwP, hwt⟩, -⟩, hw⟩`. Take `⟨c, hc, rfl⟩` from `exists_smul_of_projPt_eq hzP.1 hwP.1 hw.symm`. Conclude with `hne ((huniq _ hwP).unique (hsm j c z hc hzs) hwt)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨f, h0, h1, -⟩` from `exists_contMDiffMap_zero_one_nhds_of_isClosed 𝓘(ℝ, (Σ k, ι k × ι k) → ℂ) (n := ⊤) (isClosed_biUnion_finset fun j _ => (hC j).isClosed) (hC i).isClosed (Set.disjoint_iUnion₂_left.2 fun j hj => hdisj j i (Finset.ne_of_mem_erase hj))`. Use `⟨fun z => f (projPt z), ?_, fun c z hc => by simp only [projPt_smul c hc], ?_⟩` and prove the remaining obligations. Conclude with `(contMDiff_iff_contDiff.mp f.contMDiff).comp_contDiffOn contDiffOn_projPt`. Introduce `z hz`. Take `⟨j, hj, -⟩` from `huniq z hz`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hji : j = i`. Substitute `hji` using the available equality. Rewrite using `[Set.indicator_of_mem hj]`. Conclude with `h1.self_of_nhdsSet _ (hmem j z hz hj)`. Establish `hzi : z ∉ S i` using `fun h => hji ((huniq z hz).unique hj h)`.
-
-Rewrite using `[Set.indicator_of_notMem hzi]`. Conclude with `h0.self_of_nhdsSet _ (Set.mem_iUnion₂.2 ⟨j, Finset.mem_erase.2 ⟨hji, Finset.mem_univ _⟩, hmem j z hz hj⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_weight {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) {J : Type} [Fintype J]
     {S : J → Set ((Σ k, ι k) → ℂ)} (hS : ∀ i, IsClosed (S i))
@@ -96,7 +94,7 @@ theorem exists_weight {P : Ideal (MRing ι)} (hP : IsMultiHomogIdeal P) {J : Typ
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Unfold `sheetDensity`. Use `split_ifs with hγ`. Rewrite using `[Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sheetDensity_sum (P : Ideal (MRing ι)) {e : ℕ}
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (φ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
@@ -110,13 +108,13 @@ theorem sheetDensity_sum (P : Ideal (MRing ι)) {e : ℕ}
   · simp
 
 /- English proof (translation)
-Take `⟨u, hus, hui, hu⟩` from `exists_weight hP.2.1.2.1 hS hsm huniq i`. Set `B : ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι` to `HermLine.ofWeight u hui`. Establish `hB : IsSmoothHerm B` using `Real.contDiff_exp.comp_contDiffOn hus.neg`. Establish `hlog : ∀ z, logNorm B 1 z = u z`. Introduce `z`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[logNorm, B, HermLine.ofWeight]`. Establish `hhom : IsMultiHomog (1 : MRing ι) 0`. Introduce `m hm k`. Rewrite `hm` using `[MvPolynomial.support_one, Finset.mem_singleton]`. Substitute `hm` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Establish `hnot : (1 : MRing ι) ∉ P` using `fun h => hP.2.1.1.ne_top ((Ideal.eq_top_iff_one P).2 h)`. Establish `hsec : IsSectionOn P B 1` using `⟨0, fun k => by simp [B, HermLine.ofWeight], hhom, hnot⟩`. Use `(hInt K ι P e Ψ L B 1 hP hΨ hL hB hsec).congr (Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `finsum_mem_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GroundTheory.Heights₂.Heights.Inter.DiagRAux.sheetDensity_congr_mcPts P Ψ (fun _ _ _ => rfl) (fun z hz => (hlog z).trans (hu z hz)) y w`.
+A detailed English derivation is pending.
 -/
 theorem integrable_piece (hInt : PtsIntegrableStatement) {P : Ideal (MRing ι)} {e : ℕ}
     {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {L : Fin e → ReciprocityTheory.ChartRestriction.G.Geo.HermLine ι}
@@ -150,11 +148,11 @@ end PiecesAdditiveAlt
 open PiecesAdditiveAlt in
 
 /- English proof (translation)
-Introduce `K _ ι _ P e L J _ S c hP hL hS hsm huniq`. Unfold `ptsIntegral`. Use `split_ifs with hΨ`. Unfold `ptsIntegralAt`. Establish `hlin : ∀ y, (∑ᶠ w ∈ fibre P hΨ.choose y, sheetDensity P hΨ.choose (pot L) (fun z => ∑ i, c i * (S i).indicator (fun _ => (1 : ℝ)) z) y w) = ∑ i, c i * ∑ᶠ w ∈ fibre P hΨ.choose y, sheetDensity P hΨ.choose (pot L) ((S i).indicator fun _ => (1 : ℝ)) y w`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Establish `hfin` using `fibreFinite K ι P e _ hP hΨ.choose_spec y`. Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ hfin, sheetDensity_sum, Finset.mul_sum]`. Conclude with `Finset.sum_comm`. Simplify using `only [hlin]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_finsetSum _ fun i _ => (integrable_piece hInt hP hΨ.choose_spec hL hS hsm huniq i).const_mul (c i)]`. Simplify using `only [integral_const_mul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem PiecesAdditive.proof (hInt : PtsIntegrableStatement) : PiecesAdditive.Statement := by
   intro K _ ι _ P e L J _ S c hP hL hS hsm huniq

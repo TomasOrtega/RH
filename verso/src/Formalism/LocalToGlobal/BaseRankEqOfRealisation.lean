@@ -19,9 +19,9 @@ variable {Rc : Formalism.L2.RecT ex} {P : RowSideFamily ex} {Dcf : ∀ Zs : DefS
   {S : Formalism.L2.SG.SpectralTiesReal.STiesR Rc} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `h1 : finrank D.what₂.LL (Fin P.S0.D → D.what₂.LL) = finrank D.what₂.LL ex.p0.s.RR.V` using `P.I.eRR0.finrank_eq`. Establish `h2 : finrank D.what₂.LL ex.p0.s.RR.V = Fintype.card ex.p0.s.RR.ι` using `finrank_eq_card_basis ex.p0.s.RR.b`. Establish `h3 : finrank ℂ D.what₂.EE0 = Fintype.card ex.p0.s.RR.ι` using `finrank_eq_card_basis (Basis.mk ex.p0.s.jEE_basis.1 (le_of_eq ex.p0.s.jEE_basis.2.symm))`. Establish `h4 : finrank ℂ D.what₂.EE0 = D.what₂.D0`. Simplify using `using finrank_eq_card_basis D.what₂.onb0.toBasis`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `h1` using `[finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem base_rank_eq_of_tied_level (P : RowSideFamily ex) : D.what₂.D0 = P.S0.D := by
   have h1 : finrank D.what₂.LL (Fin P.S0.D → D.what₂.LL) = finrank D.what₂.LL ex.p0.s.RR.V := P.I.eRR0.finrank_eq
@@ -34,7 +34,7 @@ theorem base_rank_eq_of_tied_level (P : RowSideFamily ex) : D.what₂.D0 = P.S0.
   omega
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `hS`. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem D_of_heq {Bs : DefBase D.what₂.LL} {Df Df' : DefSide Bs} (h : Df = Df') {S0 : IndefData Df} {S1 : IndefData Df'}
     (hS : HEq S0 S1) : S0.D = S1.D := by
@@ -43,7 +43,7 @@ theorem D_of_heq {Bs : DefBase D.what₂.LL} {Df Df' : DefSide Bs} (h : Df = Df'
   rfl
 
 /- English proof (translation)
-Establish `hD` using `D_of_heq (congrArg (fun Z => P.A3.side3 P.P0 P.ψ0 Z) Q.zs) Q.s0`. Establish `hz : (P.A3.side3 P.P0 P.ψ0 (Q.Rl.toCx3 (faceT P Dcf Spf Zscf)).zs).dQ P.A3.fam3.base3.μ0 = (P.A3.side3 P.P0 P.ψ0 P.Zs).dQ P.A3.fam3.base3.μ0` using `by rw [Q.zs]`. Rewrite using `[base_rank_eq_of_tied_level P, ← hD]`. Conclude with `hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem base_rank_eq_of_realisation (Q : RealT Rc P Dcf Spf Zscf S Ks) :
     D.what₂.D0 = (P.A3.A.fam.R P.A3.A.fam.μ0).dZ (P.A3.A.fam.lvl P.P0 P.ψ0) (P.Zs.Z P.A3.A.fam.μ0) := by
@@ -54,7 +54,7 @@ theorem base_rank_eq_of_realisation (Q : RealT Rc P Dcf Spf Zscf S Ks) :
   exact hz
 
 /- English proof (translation)
-Substitute `h` using the available equality. Consider the cases of `hS`. Both sides reduce to the same expression.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem mu_of_heq {Bs : DefBase D.what₂.LL} {Df Df' : DefSide Bs} (h : Df = Df') {S0 : IndefData Df} {S1 : IndefData Df'}
     (hS : HEq S0 S1) : S0.μ = S1.μ := by
@@ -63,15 +63,15 @@ theorem mu_of_heq {Bs : DefBase D.what₂.LL} {Df Df' : DefSide Bs} (h : Df = Df
   rfl
 
 /- English proof (translation)
-The claim follows from `mu_of_heq (congrArg (fun Z => P.A3.side3 P.P0 P.ψ0 Z) Q.zs) Q.s0`.
+A detailed English derivation is pending.
 -/
 theorem mu_eq (Q : RealT Rc P Dcf Spf Zscf S Ks) : Q.Rl.mu = P.S0.μ :=
   mu_of_heq (congrArg (fun Z => P.A3.side3 P.P0 P.ψ0 Z) Q.zs) Q.s0
 
 /- English proof (translation)
-Apply `tupAllUsed_of_cover` to reduce the goal to its premises. Introduce `t`. Break down `Q.charW.tup.mu_used t with h | ⟨w, h⟩` into its components or cases. Conclude with `Or.inl h`. Use `Or.inr ⟨D.plEq.symm w, ?_⟩ show t = P.S0.μ (D.plEq (D.plEq.symm w))` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mu_eq Q, Equiv.apply_symm_apply]`. Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tupAllUsed_of_real (Q : RealT Rc P Dcf Spf Zscf S Ks) : TupAllUsed P := by
   apply tupAllUsed_of_cover

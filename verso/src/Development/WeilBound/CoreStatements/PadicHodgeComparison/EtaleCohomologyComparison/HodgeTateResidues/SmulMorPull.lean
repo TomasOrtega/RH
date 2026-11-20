@@ -21,7 +21,7 @@ variable {R₁ R₂ R₃ R₄ : Type} [CommRing R₁] [CommRing R₂] [CommRing 
   {σ₁ : R₁ →+* R₂} {σ₂ : R₂ →+* R₄} {σ₃ : R₁ →+* R₃} {σ₄ : R₃ →+* R₄}
 
 /- English proof (translation)
-Use `haveI : RingHomCompTriple σ₁ σ₂ (σ₂.comp σ₁) := ⟨rfl⟩`. Use `haveI : RingHomCompTriple σ₃ σ₄ (σ₂.comp σ₁) := ⟨RingHom.ext hσ⟩`. Rewrite using `[pull_pull (σ₂.comp σ₁), pull_pull (σ₂.comp σ₁)]`. Conclude with `CrystallineSemistableComparison.P.prism (m₁.comp m₂) (m₃.comp m₄) η hτ j x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sq4 (m₁ : CH.Mor F₁ F₂ σ₁) (m₂ : CH.Mor F₂ F₄ σ₂) (m₃ : CH.Mor F₁ F₃ σ₃) (m₄ : CH.Mor F₃ F₄ σ₄)
     (hσ : ∀ a, σ₄ (σ₃ a) = σ₂ (σ₁ a)) (η : m₂.G ⋙ m₁.G ⟶ m₄.G ⋙ m₃.G)
@@ -43,7 +43,7 @@ def smulMor (c : R₂) (m : CH.Mor F₁ F₂ σ₁) : CH.Mor F₁ F₂ σ₁ whe
     rw [m.nat, map_smul]
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem smulMor_pull (c : R₂) (m : CH.Mor F₁ F₂ σ₁) (j : ℕ) (x : CH.H F₁ j) : (smulMor c m).pull j x = c • m.pull j x := by
   obtain ⟨z, rfl⟩ := Submodule.Quotient.mk_surjective _ x
@@ -65,7 +65,7 @@ def nlHom {T T' : Thick (nlFun γ p X q κ)} (φ : T.B →+* T'.B) (comm : ∀ r
     rw [h1, h2, Ideal.quotientMap_mk, comm])) (hpt _)))
 
 /- English proof (translation)
-Establish `e : Ideal.quotientMap J (RingHom.id B₀) h = RingHom.id _` using `by ext; rfl`. Rewrite using `[e, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem spec_id {B₀ : Type} [CommRing B₀] (J : Ideal B₀) (h) {Z : Scheme.{0}} (y : Spec (CommRingCat.of (B₀ ⧸ J)) ⟶ Z) :
     Spec.map (CommRingCat.ofHom (Ideal.quotientMap J (RingHom.id B₀) h)) ≫ y = y := by
@@ -83,7 +83,7 @@ variable {R₁ R₂ R₃ R₄ : Type} [CommRing R₁] [CommRing R₂] [CommRing 
   {a₁ b₁ : IdF Φ₁.A} {a₂ b₂ : IdF Φ₂.A} {a₃ b₃ : IdF Φ₃.A} {a₄ b₄ : IdF Φ₄.A}
 
 /- English proof (translation)
-Use `sq4 (m₁.sq h₁ k₁) (m₂.sq h₂ k₂) (m₃.sq h₃ k₃) (m₄.sq h₄ k₄) hσ η (fun T x => ?_) j x` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `sq_surj _ _ x`. Conclude with `Subtype.ext (congrArg (Ideal.Quotient.mk _) (hρ T y))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem genA (hσ : ∀ a, σ₄ (σ₃ a) = σ₂ (σ₁ a)) (η : m₂.G ⋙ m₁.G ⟶ m₄.G ⋙ m₃.G)
     (hρ : ∀ (T : C₄) (x : Φ₁.A.obj (m₁.G.obj (m₂.G.obj T))), m₄.ρ T (m₃.ρ _ ((Φ₁.A.map (η.app T)).hom x)) = m₂.ρ T (m₁.ρ _ x))
@@ -95,9 +95,9 @@ theorem genA (hσ : ∀ a, σ₄ (σ₃ a) = σ₂ (σ₁ a)) (η : m₂.G ⋙ m
   exact Subtype.ext (congrArg (Ideal.Quotient.mk _) (hρ T y))
 
 /- English proof (translation)
-Use `Eq.trans ?_ (smulMor_pull c (m₄.sqC c₄ h₄ k₄) j _)` and prove the remaining obligations. Use `sq4 (m₁.sqC c₁ h₁ k₁) (m₂.sq h₂ k₂) (m₃.sq h₃ k₃) (smulMor c (m₄.sqC c₄ h₄ k₄)) hσ η (fun T x => ?_) j x` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `sq_surj _ _ x`. Establish `e : c • (algebraMap R₄ _ c₄ * m₄.ρ T (m₃.ρ _ ((Φ₁.A.map (η.app T)).hom y))) = m₂.ρ T (algebraMap R₂ _ c₁ * m₁.ρ (m₂.G.obj T) y)`. Rewrite using `[hρ, map_mul, m₂.comm, hc, map_mul, Algebra.smul_def, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subtype.ext (congrArg (Ideal.Quotient.mk _) e)`.
+A detailed English derivation is pending.
 -/
 theorem genB (c₁ : R₂) (c c₄ : R₄) (hσ : ∀ a, σ₄ (σ₃ a) = σ₂ (σ₁ a)) (hc : σ₂ c₁ = c * c₄) (η : m₂.G ⋙ m₁.G ⟶ m₄.G ⋙ m₃.G)
     (hρ : ∀ (T : C₄) (x : Φ₁.A.obj (m₁.G.obj (m₂.G.obj T))), m₄.ρ T (m₃.ρ _ ((Φ₁.A.map (η.app T)).hom x)) = m₂.ρ T (m₁.ρ _ x))
@@ -113,7 +113,7 @@ theorem genB (c₁ : R₂) (c c₄ : R₄) (hσ : ∀ a, σ₄ (σ₃ a) = σ₂
   exact Subtype.ext (congrArg (Ideal.Quotient.mk _) e)
 
 /- English proof (translation)
-Use `sq4 (m₁.sq h k) (sqLe e₂ f₂) (sqLe e₁ f₁) (m₁.sq h' k') (fun _ => rfl) (𝟙 m₁.G) (fun T x => ?_) j x` and prove the remaining obligations. Take `⟨y, hy, rfl⟩` from `sq_surj _ _ x`. Use `Subtype.ext (congrArg (Ideal.Quotient.mk _) ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `m₁.ρ T ((Φ₁.A.map (𝟙 _)).hom y) = m₁.ρ T y`. Rewrite using `[Φ₁.A.map_id]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -143,7 +143,7 @@ variable {O : Type} [CommRing O] {A A' : Type} [CommRing A] [CommRing A'] [Algeb
     (show PtOver X q κ B₀ from mm.pt.app B₀ y).1.2 = (show PtOver X' q' κ B₀ from y).1.2 ≫ nm.u)
 
 /- English proof (translation)
-Introduce `T x hx`. Establish `e : T.obj.i (sA ((l : A) ^ n)) = T.obj.i ((l : A') ^ n)` using `by rw [map_pow sA, map_natCast]`. Establish `hx' : (show T.obj.B from x) ∈ T.obj.pdPow r.toNat ⊔ Ideal.span {T.obj.i (sA ((l : A) ^ n))}` using `hx`. Rewrite `hx'` using `[e]`. Conclude with `hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem std_le (r : ℤ) : (nm.smor _ _ hm).Le (stdI (TS γ q l s {⊤}) (some r) ((l : A) ^ n)) (stdI (TS γ' q' l s' {⊤}) (some r) ((l : A') ^ n)) := by
   intro T x hx
@@ -154,7 +154,7 @@ theorem std_le (r : ℤ) : (nm.smor _ _ hm).Le (stdI (TS γ q l s {⊤}) (some r
 
 include hd in
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (d.ρ x)`. Rewrite using `[hd x a ha.symm, ← ha]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem r_comm (T : Thick (nlFun γ' 0 X' q' (κA O I'))) (x : R) :
     iBar ((nm.mor 0).obj T) l n (d.ρ x) = iBar T l n (d'.ρ (σ x)) := by
@@ -181,7 +181,7 @@ def rNat : (nm.smor _ _ hm).G ⋙ redG q s d {⊤} ⟶ redG q' s' d' {⊤} ⋙ m
 
 include hd hpt in
 /- English proof (translation)
-Establish `key` using `sq4 (F₁ := (B.pdS (nlFun δ l X q κ) c r).fn) (F₃ := (B.pdS (nlFun δ l X' q' κ) c r).fn) (redSub q s {⊤} d c lam hc r) ((nm.smor _ _ hm).sq (std_le nm hm (r : ℤ)) (std_le nm hm ((r : ℤ) + 1))) (pdOm (L := nlFun δ l X q κ) (L' := nlFun δ l X' q' κ) (c := c) (c' := c) mm sΛ hs r) (r …`. Use `key (fun T x => ?_) j x` and prove the remaining obligations. Take `⟨x, hx⟩` from `x`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective (I := lnT T.obj l n) x`. Conclude with `Subtype.ext rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem genD {Λ : Type} [CommRing Λ] (c : Λ →+* R) (lam : Λ →+* A) (lam' : Λ →+* A') (hc : ∀ a, d.ρ (c a) = Ideal.Quotient.mk _ (lam a))
     (hc' : ∀ a, d'.ρ (c a) = Ideal.Quotient.mk _ (lam' a)) (sΛ : Λ →+* Λ) (hs : ∀ a, σ (c a) = c (sΛ a))

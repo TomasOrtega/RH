@@ -19,30 +19,30 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r g n : ℕ} (X : D
   (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (x : Frame X.Ψ r)
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Dict.hx, mulVec_add, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hx_add_left (z z' w : Fin g → ℂ) :
     hx X bas idx x (z + z') w = hx X bas idx x z w + hx X bas idx x z' w := by
   simp only [GlobalTheory.Dict.hx, mulVec_add, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Dict.hx, mulVec_add, star_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hx_add_right (z w w' : Fin g → ℂ) :
     hx X bas idx x z (w + w') = hx X bas idx x z w + hx X bas idx x z w' := by
   simp only [GlobalTheory.Dict.hx, mulVec_add, star_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Dict.hx, mulVec_smul, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hx_smul_left (c : ℂ) (z w : Fin g → ℂ) :
     hx X bas idx x (c • z) w = c * hx X bas idx x z w := by
   simp only [GlobalTheory.Dict.hx, mulVec_smul, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hc : ContDiff ℝ (⊤ : ℕ∞) (fun z : ℂ => star z)` using `Complex.conjCLE.contDiff`. Establish `h1 : ∀ (k : Fin n) (i : Fin g), ContDiff ℝ (⊤ : ℕ∞) fun z : Fin n → Fin g → ℂ => (hMat X bas idx x *ᵥ z k) i`. Introduce `k i`. Simplify using `only [mulVec, dotProduct]`. Use `fun_prop`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : ∀ k : Fin n, ContDiff ℝ (⊤ : ℕ∞) fun z : Fin n → Fin g → ℂ => hx X bas idx x (z k) (z k)`. Introduce `k`. Express the relevant statement in the definitionally equal form `ContDiff ℝ _ fun z : Fin n → Fin g → ℂ => ∑ i, (hMat X bas idx x *ᵥ z k) i * ∑ j, imInv X bas idx x i j * star ((hMat X bas idx x *ᵥ z k) j)`. Conclude with `ContDiff.sum fun i _ => (h1 k i).mul (ContDiff.sum fun j _ => contDiff_const.mul (hc.comp (h1 k j)))`. Conclude with `(contDiff_const.mul (ContDiff.sum fun k _ => h2 k)).neg.cexp`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem contDiff_gaussR : ContDiff ℝ (⊤ : ℕ∞) (gaussR X bas idx x : (Fin n → Fin g → ℂ) → ℂ) := by
   have hc : ContDiff ℝ (⊤ : ℕ∞) (fun z : ℂ => star z) := Complex.conjCLE.contDiff
@@ -61,9 +61,9 @@ theorem contDiff_gaussR : ContDiff ℝ (⊤ : ℕ∞) (gaussR X bas idx x : (Fin
   exact (contDiff_const.mul (ContDiff.sum fun k _ => h2 k)).neg.cexp
 
 /- English proof (translation)
-Establish `h1 : ∑ k, hx X bas idx x (a k) (z k) = conj (∑ k, hx X bas idx x (z k) (a k))`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => hsym _ _`. Simplify using `only [gaussR, ← Complex.exp_add, Pi.add_apply, hx_add_left, hx_add_right, hx_smul_left, Finset.sum_add_distrib, ← Finset.mul_sum, h1]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `∑ k, hx X bas idx x (z k) (a k) = S`. Establish `h2` using `Complex.sub_conj S`. Move the coercions through the operations in `at h2`. Take the linear combination `(-(π : ℂ) / 2) * h2`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem gaussR_mul_factor (hsym : ∀ z w, hx X bas idx x w z = conj (hx X bas idx x z w))
     (z a : Fin n → Fin g → ℂ) :
@@ -85,17 +85,17 @@ end GlobalTheory.Ker.RealHeis
 namespace GlobalTheory.Ker
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g q0 hr bas idx n hs hn x hxd φ hφ`. Take `⟨⟨L, hL⟩, him, -, -, hinv⟩` from `GlobalTheory.T.realPeriodMap_homeomorph_riemannForm_density E r X g q0 hr bas idx n hs hn x hxd`. Take `⟨hsym, -, -, -, -, -, -, hga⟩` from `GlobalTheory.Dict.hx_laws E r X g bas idx n hs hn x hxd`. Establish `hLf : zR X idx x = (L : WR X n → Fin n → Fin g → ℂ)` using `funext fun v => (hL v).symm`. Use `⟨?_, fun y v => ?_, fun γ hγ v => ?_, fun ψ hψ => ⟨fun h => ?_, ?_⟩, fun a => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ContDiff ℝ (⊤ : ℕ∞) (thA X bas idx φ x)` using `(AnalyticOnNhd.contDiff (𝕜 := ℂ) (SCV.analyticOnNhd_of_differentiable (ThetaHol.differentiable_thA idx hs hφ hxd) _)).restrict_scalars ℝ`. Establish `h2` using `((RealHeis.contDiff_gaussR X bas idx x).mul h1).comp L.contDiff`. Rewrite `h2` using `[← hLf]`. Conclude with `h2`. Establish `h1` using `((heisG_laws E r X g bas idx n hs hn).2.2.2 y φ hφ).2.2.2.2 x hxd (zR X idx x v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : zR X idx x (v + embR X y) = zR X idx x v + zR X idx x (embR X y)`. Rewrite using `[hLf, map_add]`. Establish `h3` using `RealHeis.gaussR_mul_factor X bas idx x hsym (zR X idx x v) (zR X idx x (embR X y))`. Rewrite `h3` using `[him]`. Rewrite using `[thR, thR, h1, h2, ← _root_.mul_assoc, ← _root_.mul_assoc, ← h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[thR, thR, hinv γ hγ v, (wG_laws E r X g bas idx n hs hn γ hγ φ hφ).2.1 x hxd]`. Simplify using `only [gaussR, (hga γ hγ).2.2.2]`. Establish `hone : IsUn X (1 : GL (Fin r) E)` using `fun u w => by simp`. Use `((wG_laws E r X g bas idx n hs hn 1 hone φ hφ).2.2.1 ψ hψ).2.2 x hxd ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `z`. Take `⟨v, rfl⟩` from `L.surjective z`. Establish `h1` using `congrFun h v`. Rewrite `h1` using `[thR, thR, ← hL]`. Conclude with `mul_left_cancel₀ (Complex.exp_ne_zero _) h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `v`. Simplify using `only [thR, UnAct.thA_add idx hs hxd hφ hψ, Pi.add_apply, mul_add]`. Use function extensionality and compare the values at `v`. Simplify using `only [thR, UnAct.thA_smul, Pi.smul_apply, smul_eq_mul, mul_left_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thR_laws : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ x ∈ X.dom, ∀ φ : TF n g, IsSB φ → ContDiff ℝ (⊤ : ℕ∞) (thR X bas idx φ x : WR X n → ℂ) ∧ (∀ (y : Matrix (Fin n) (Fin r) E) (v : WR X n), thR X bas idx (heisG X bas y φ) x v = cexp (-(π * I * (EFR X v (embR X y) : ℝ))) * thR X bas idx φ x (v + embR X y)) ∧ (∀ γ : GL (Fin r) E, IsUn X γ → ∀ v : WR X n, thR X bas idx (wG X bas idx γ φ) (lact γ x) (fun τ k => ((γ : Matrix (Fin r) (Fin r) E).map τ.1) *ᵥ v τ k) = thR X bas idx φ x v) ∧ (∀ ψ, IsSB ψ → (thR X bas idx φ x = (thR X bas idx ψ x : WR X n → ℂ) → φ = ψ) ∧ thR X bas idx (φ + ψ) x = (thR X bas idx φ x + thR X bas idx ψ x : WR X n → ℂ)) ∧ ∀ a : ℂ, thR X bas idx (a • φ) x = (a • thR X bas idx φ x : WR X n → ℂ) := by
   intro E _ _ _ r X g q0 hr bas idx n hs hn x hxd φ hφ

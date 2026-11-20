@@ -7,39 +7,33 @@ open IsLocalRing
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `V W _ _ _ _ _ _ hV hW io hio hinj F _ _ _ _ hcomp`. Take `⟨hVd, -, hV0⟩` from `(GlobalTheory.LN.cDvr_iff V).1 hV`. Take `⟨hWd, -, -⟩` from `(GlobalTheory.LN.cDvr_iff W).1 hW`. Use `set φV : V →+* F := (algebraMap (FractionRing V) F).comp (algebraMap V _) with hφV`. Use `set φW : W →+* F := (algebraMap (FractionRing W) F).comp (algebraMap W _) with hφW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφWinj : Function.Injective φW` using `(algebraMap (FractionRing W) F).injective.comp (IsFractionRing.injective W _)`. Establish `hφVinj : Function.Injective φV` using `(algebraMap (FractionRing V) F).injective.comp (IsFractionRing.injective V _)`. Use `haveI : CharZero F := (RingHom.charZero_iff hφVinj).1 hV0`. Establish `hc : ∀ v, φW (io v) = φV v` using `hcomp`. Use `letI := io.toAlgebra`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.Finite V W := hio`. Take `⟨n, gens, hspan⟩` from `Module.Finite.exists_fin (R := V) (M := W)`. Use `⟨n, ?_⟩` and prove the remaining obligations. Introduce `T' hT' f hf hirr`. Use `set s : Finset F := Finset.univ.image (fun i => φW (gens i)) with hs`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcard : s.card ≤ n`. Combine the equalities or inequalities in the displayed calculation. Establish `K1 : ∀ w : W, φW w ∈ Submodule.span T' (s : Set F)`. Introduce `w`. Establish `hw : w ∈ Submodule.span V (Set.range gens)` using `by rw [hspan]; trivial`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `Submodule.subset_span (by simp [hs])`. Consider the case `zero => simp`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul v x _ hx`. Establish `: φW (v • x) = (f v) • φW x`. Rewrite using `[Algebra.smul_def, map_mul, Subring.smul_def, smul_eq_mul, hf]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg (· * φW x) (hc v)`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ hx`. Establish `h1 : (1 : F) ∈ Submodule.span T' (s : Set F)` using `by simpa using K1 1`. Establish `hmul : ∀ x ∈ s, ∀ y ∈ s, x * y ∈ Submodule.span T' (s : Set F)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `x hx y hy`. Simplify using `only [hs, Finset.mem_image, Finset.mem_univ, true_and] at hx hy`. Take `⟨i, rfl⟩` from `hx`. Take `⟨j, rfl⟩` from `hy`. Rewrite using `[← map_mul]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Conclude with `K1 _`. Take `⟨T'', hT'', hle, hsT, hdom, hden⟩` from `GlobalTheory.T.exists_dominating_dvr_containing_finset F T' hT' s h1 hmul`. Establish `K2 : ∀ x ∈ Submodule.span T' (s : Set F), x ∈ T''`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Consider the case `mem x hx => exact hsT x hx`. Consider the case `zero => exact T''.zero_mem`. Consider the case `add x y _ _ hx hy => exact T''.add_mem hx hy`. Consider the case `smul t x _ hx => rw [Subring.smul_def, smul_eq_mul]`. Conclude with `T''.mul_mem (hle t.2) hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Set `g : W →+* T''` to `φW.codRestrict T'' (fun w => K2 _ (K1 w))`. Establish `hg : ∀ w, (g w : F) = φW w` using `fun w => rfl`. Establish `hginj : Function.Injective g` using `fun a b h => hφWinj (by simpa [hg] using congrArg Subtype.val h)`. Use `haveI := hT''`. Take `⟨πV, hπV⟩` from `IsDiscreteValuationRing.exists_irreducible V`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfπ` using `hirr πV hπV`. Take `⟨ϖ, hϖ, e', he1, he2, hassoc⟩` from `GlobalTheory.T.exists_irreducible_pow_associated_le_card_of_span F T' T'' hT' hT'' hle hdom s hden (f πV) hfπ`. Take `⟨πW, hπW⟩` from `IsDiscreteValuationRing.exists_irreducible W`. Establish `hioπ : io πV ≠ 0` using `fun h => hπV.ne_zero (hinj (by rw [h, map_zero]))`. Take `⟨a, ha⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hioπ hπW`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hgπ : g πW ≠ 0` using `fun h => hπW.ne_zero (hginj (by rw [h, map_zero]))`. Take `⟨k, hk⟩` from `IsDiscreteValuationRing.associated_pow_irreducible hgπ hϖ`. Establish `hgio : g (io πV) = Subring.inclusion hle (f πV)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hg, hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hf πV).symm`. Establish `hA : Associated (ϖ ^ e') (ϖ ^ (k * a))`. Establish `h2 : Associated (g (io πV)) ((g πW) ^ a)`. Rewrite using `[← map_pow]`. Conclude with `ha.map g`.
-
-Rewrite `h2` using `[hgio]`. Rewrite using `[pow_mul]`. Conclude with `hassoc.symm.trans (h2.trans hk.pow_pow)`. Establish `hka : e' = k * a`. Apply `le_antisymm` to reduce the goal to its premises.
-
-Conclude with `(pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 hA.dvd`. Conclude with `(pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit).1 hA.symm.dvd`. Establish `hk0 : k ≠ 0` using `by rintro rfl; simp at hka; omega`. Establish `ha0 : a ≠ 0` using `by rintro rfl; simp at hka; omega`. Use `⟨T'', hT'', g, k, hle, fun w => rfl, Nat.one_le_iff_ne_zero.2 hk0, ?_, ?_⟩` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Introduce `π hπ`. Conclude with `⟨ϖ, hϖ, ((IsDiscreteValuationRing.associated_of_irreducible W hπ hπW).map g).trans hk⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dvr_over_finite_ext : ∀ (V W : Type) [CommRing V] [IsDomain V] [IsLocalRing V] [CommRing W] [IsDomain W] [IsLocalRing W], GlobalTheory.LN.CDvr V → GlobalTheory.LN.CDvr W → ∀ io : V →+* W, io.Finite → Function.Injective io → ∀ (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing V) F] [Algebra (FractionRing W) F], (∀ v, algebraMap (FractionRing W) F (algebraMap W _ (io v)) = algebraMap (FractionRing V) F (algebraMap V _ v)) → ∃ N : ℕ, ∀ (T' : Subring F) (_ : IsDiscreteValuationRing T') (f : V →+* T'), (∀ v, (f v : F) = algebraMap (FractionRing V) F (algebraMap V _ v)) → (∀ π, Irreducible π → Irreducible (f π)) → ∃ (T'' : Subring F) (_ : IsDiscreteValuationRing T'') (g : W →+* T'') (e : ℕ), T' ≤ T'' ∧ (∀ w, (g w : F) = algebraMap (FractionRing W) F (algebraMap W _ w)) ∧ 1 ≤ e ∧ e ≤ N ∧ ∀ π, Irreducible π → ∃ ϖ : T'', Irreducible ϖ ∧ Associated (g π) (ϖ ^ e) := by
   classical

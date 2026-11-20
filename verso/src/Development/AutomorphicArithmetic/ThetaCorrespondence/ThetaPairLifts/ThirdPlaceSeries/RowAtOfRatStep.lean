@@ -39,20 +39,20 @@ section AtTw
 variable {Q Q' : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x), Pt Fm x hx i →
   (Fm.D x i).what₂.places.Pl → Fin (Fm.D x i).R.m → Prop}
 /- English proof (translation)
-The claim follows from `Closed.imp (Closed.and h h') fun _ _ _ H => let ⟨x0, K⟩ := _root_.GlobalTheory.BigTop.EventuallyAtPoints.and H.1 H.2 ⟨x0, fun x hx h0 i p r m w hw j => ⟨(K x hx h0 i p r).1 m w hw j, (K x hx h0 i p r).2 m w hw j⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem TwistConditions.and (h : _root_.GlobalTheory.BigOn.Exp.TwistConditions Q) (h' : _root_.GlobalTheory.BigOn.Exp.TwistConditions Q') : _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x hx i p w j => Q Fm x hx i p w j ∧ Q' Fm x hx i p w j :=
   Closed.imp (Closed.and h h') fun _ _ _ H =>
     let ⟨x0, K⟩ := _root_.GlobalTheory.BigTop.EventuallyAtPoints.and H.1 H.2
     ⟨x0, fun x hx h0 i p r m w hw j => ⟨(K x hx h0 i p r).1 m w hw j, (K x hx h0 i p r).2 m w hw j⟩⟩
 /- English proof (translation)
-The claim follows from `Closed.imp h fun Fm _ _ ⟨x0, K⟩ => ⟨x0, fun x hx h0 i p r m w hw j => f Fm x hx i p r m w hw j (K x hx h0 i p r m w hw j)⟩`.
+A detailed English derivation is pending.
 -/
 theorem TwistConditions.imp (h : _root_.GlobalTheory.BigOn.Exp.TwistConditions Q) (f : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i), p.PointConditions' →
     More p → ∀ w, (Fm.D x i).plEq w ∈ p.R.twPl → ∀ j, Q Fm x hx i p w j → Q' Fm x hx i p w j) : _root_.GlobalTheory.BigOn.Exp.TwistConditions Q' :=
   Closed.imp h fun Fm _ _ ⟨x0, K⟩ => ⟨x0, fun x hx h0 i p r m w hw j => f Fm x hx i p r m w hw j (K x hx h0 i p r m w hw j)⟩
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, one_pos, fun _ _ _ => ⟨⟨0, fun _ => 0, fun _ => 0, fun _ => 0⟩, fun Fm _ _ _ => ⟨0, fun x hx _ i p => f Fm x hx i p⟩⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem TwistConditions.of_forall (f : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x) (p : Pt Fm x hx i), p.PointConditions' →
     More p → ∀ w, (Fm.D x i).plEq w ∈ p.R.twPl → ∀ j, Q Fm x hx i p w j) : _root_.GlobalTheory.BigOn.Exp.TwistConditions Q :=
@@ -83,7 +83,7 @@ def RationalityHypothesis : Prop := _root_.GlobalTheory.BigOn.Exp.TwistCondition
       ∀ (ρ : Setup (Fm.D x i).ntw) (hρ : ρ.Good) (b : Bool), RatRow YS' v₀' hρ ((Fm.ex x hx i).nch.twI w) j b →
         RatRow p.nexp p.v₀ hρ ((Fm.ex x hx i).nch.twI w) j b
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.BigOn.Exp.TwistConditions.imp h fun Fm x hx i _ _ _ _ _ j ⟨T', _, Rl', cG', S', YS', F', κ', v₀', O', hV', h1, h2, h3⟩ ρ hρ hp hL => h3 ρ hρ _ (hR _ _ _ _ _ _ T' Rl' cG' S' YS' F' κ' v₀' O' ρ hρ _ j _ hV' (h2 ρ hp) hL ⟨(Fm.params x hx i).level_split _ (Fm.D x …`.
+A detailed English derivation is pending.
 -/
 theorem twist_at_statement_of_ratHypAt (h : _root_.GlobalTheory.BigOn.Exp.RationalityHypothesis) (hR : RatStep) : _root_.GlobalTheory.BigOn.Exp.ConditionAtPlace :=
   _root_.GlobalTheory.BigOn.Exp.TwistConditions.imp h fun Fm x hx i _ _ _ _ _ j ⟨T', _, Rl', cG', S', YS', F', κ', v₀', O', hV', h1, h2, h3⟩ ρ hρ hp hL =>
@@ -122,7 +122,7 @@ def TwistUpperBound₂ : Prop := _root_.GlobalTheory.BigOn.Exp.CanonicalFits fun
 def TwistLowerBound : Prop := _root_.GlobalTheory.BigOn.Exp.CanonicalFits fun _ _ _ _ p w j _ hρ ν rd => twLat p w j hρ ν ≤ realTw p rd
 def InductionConditions : Prop := _root_.GlobalTheory.BigOn.Exp.CanonicalExists ∧ _root_.GlobalTheory.BigOn.Exp.CanonicalProjection₂ ∧ _root_.GlobalTheory.BigOn.Exp.TwAdmAlt ∧ _root_.GlobalTheory.BigOn.Exp.ConditionAtPlace ∧ _root_.GlobalTheory.BigOn.Exp.CompatibilityRational ∧ _root_.GlobalTheory.BigOn.Exp.RecursiveSide ∧ _root_.GlobalTheory.BigOn.Exp.AdaptedExistence₂ ∧ _root_.GlobalTheory.BigOn.Exp.ConjugateBase ∧ _root_.GlobalTheory.BigOn.Exp.ConjugateTwist ∧ _root_.GlobalTheory.BigOn.Exp.BaseUpperBound₂ ∧ _root_.GlobalTheory.BigOn.Exp.BaseLowerBound₂ ∧ _root_.GlobalTheory.BigOn.Exp.TwistUpperBound₂ ∧ _root_.GlobalTheory.BigOn.Exp.TwistLowerBound
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.BigOn.Exp.TwistConditions.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and h1 (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and h2 h3)) fun _ _ _ _ _ _ hm _ _ _ ⟨a1, a2, a3⟩ => ⟨hm.2.2.series, fun Z => let ⟨ρ, hρ, hs, ha⟩ := a3 Z.ρ Z.good Z.pin have hL …`.
+A detailed English derivation is pending.
 -/
 theorem exists_exportTie_fit_at_tw (h1 : _root_.GlobalTheory.BigOn.Exp.TwAdmAlt) (h2 : _root_.GlobalTheory.BigOn.Exp.ConditionAtPlace) (h3 : _root_.GlobalTheory.BigOn.Exp.AdaptedExistence₂) : _root_.GlobalTheory.BigOn.Exp.TwistConditions fun Fm x _ i p w j => Nonempty (ExportTie p.nexp p.v₀) ∧
     ∀ Z : ExportTie p.nexp p.v₀, ∃ (ρ : Setup (Fm.D x i).ntw) (hρ : ρ.Good) (ν : ℂ), SameBut Z.ρ ρ ∧ Fit p w j hρ ν :=
@@ -132,9 +132,9 @@ theorem exists_exportTie_fit_at_tw (h1 : _root_.GlobalTheory.BigOn.Exp.TwAdmAlt)
     let ⟨ν, hn, hr⟩ := a2 ρ hρ ha.1 hL
     ⟨ρ, hρ, ν, hs, ha, hn, ⟨hr.1, hr.2.1 _ _ _ a1.1 a1.2.1⟩, hL⟩⟩
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13⟩` from `h`. Use `Closed.imp (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and (_root_.GlobalTheory.BigOn.Exp.exists_exportTie_fit_at_tw h3 h4 h7) (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and h1 (_root_.GlobalTheory.BigOn.Exp.TwistConditions.and h2 (_root_.GlobalTheory.BigOn.Exp.TwistCondit …` and prove the remaining obligations. Take `⟨⟨⟨Z⟩, a0⟩, ⟨rd, hc, hβ⟩, a2, a5, a6, a8, a9, a10, a11, a12, a13⟩` from `K x hx h0 i p r m ((Fm.D x i).plEq.symm v) (by rwa [Equiv.apply_symm_apply]) j`. Take `⟨ρ, hρ, ν, hs, hf⟩` from `a0 Z`. Take `⟨hN, hR⟩` from `a5 Z`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r1, r2⟩` from `a6 Z hR`. Establish `b1` using `le_antisymm (a10 ρ hρ ν rd hf hc) (a11 ρ hρ ν rd hf hc)`. Establish `b2` using `le_antisymm (a12 ρ hρ ν rd hf hc) (a13 ρ hρ ν rd hf hc)`. Simplify using `only [realBase, realTw, Equiv.apply_symm_apply] at b1 b2`. Conclude with `⟨rd, hβ, a2 rd hc, (b1.trans (a8 Z.ρ ρ Z.good hρ _ ν Z.pin hs hN hR hf).symm).trans r1.symm, (b2.trans (a9 Z.ρ ρ Z.good hρ _ ν Z.pin hs hN hR hf).symm).trans r2.symm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem InductionConditions.exportSt (h : _root_.GlobalTheory.BigOn.Exp.InductionConditions) : _root_.GlobalTheory.BigOn.ExportedStatement := by
   obtain ⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13⟩ := h

@@ -15,31 +15,29 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.HopfPoints
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ _ _ _ A _ _ _ _ _ F T h l`. Take `⟨hfin, hsep, -⟩` from `finite_points_separate_rank R K A`. Establish `hRK : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Set `p : (A →ₐ[R] R) → (K ⊗[R] A →ₐ[K] K)` to `fun s => Algebra.TensorProduct.lift (AlgHom.id K K) ((Algebra.ofId R K).comp s) (fun _ _ => .all _ _)`. Establish `hp : ∀ s (k : K) (a : A), p s (k ⊗ₜ a) = k * algebraMap R K (s a)` using `fun s k a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `[p, Algebra.ofId_apply]`. Use `haveI : Finite (A →ₐ[R] R) := Finite.of_injective (fun s : A →ₐ[R] R => (Algebra.ofId R K).comp s) fun s t hst => by`. Use extensionality with `a`. Conclude with `hRK (DFunLike.congr_fun hst a)`. Establish `sep : ∀ x : K ⊗[R] A, (∀ s, p s x = 0) → x = 0`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨⟨a, c⟩, hc⟩` from `IsLocalizedModule.surj (nonZeroDivisors R) (TensorProduct.mk R K A 1) x`. Establish `ha : a = 0` using `hsep a fun ψ => by`. Take `⟨g, rfl⟩` from `exists_algHom_comp_eq (A := R) (K := K) ψ`. Establish `h1 : p g ((c : R) • x) = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← algebraMap_smul K, map_smul, hx, smul_zero]`. Establish `h2 : (c : R) • x = (1 : K) ⊗ₜ[R] a` using `hc`. Rewrite `h1` using `[h2, hp, _root_.one_mul]`. Conclude with `h1`. Establish `h2 : (c : R) • x = (1 : K) ⊗ₜ[R] a` using `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[ha, TensorProduct.tmul_zero, ← algebraMap_smul K, smul_eq_zero]`. Use `h2.resolve_left fun h0 => nonZeroDivisors.coe_ne_zero c (hRK ?_)` and prove the remaining obligations. Rewrite using `[h0, map_zero]`. Set `g : CartierDual R A →ₗ[R] A` to `(TensorProduct.lid R A).toLinearMap ∘ₗ (LinearMap.applyₗ T) ∘ₗ (LinearMap.rTensorHom A) ∘ₗ (CartierDual.toDual R A).toLinearMap`. Establish `hg : ∀ φ : CartierDual R A, g φ = TensorProduct.lid R A (φ.ofConv.rTensor A T)` using `fun _ => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `key : ∀ s : A →ₐ[R] R, F ((1 : K) ⊗ₜ[R] (toConv s.toLinearMap : CartierDual R A)) = g.baseChange K ((1 : K) ⊗ₜ[R] (toConv s.toLinearMap : CartierDual R A))`. Introduce `s`. Rewrite using `[← sub_eq_zero]`. Use `sep _ fun s' => ?_` and prove the remaining obligations. Rewrite using `[map_sub, sub_eq_zero, LinearMap.baseChange_tmul, hp, _root_.one_mul, hg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Use `(h s s').symm.trans (congrArg _ ?_)` and prove the remaining obligations. Use `clear h hg g`. Proceed by induction on `T with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Consider the case `tmul a b => simp`. Set `B : K ⊗[R] CartierDual R A →ₗ[K] Module.Dual K (K ⊗[R] A)` to `(CartierDual.toDual K (K ⊗[R] A)).toLinearMap ∘ₗ CartierDual.baseChangeLinear R K A`. Establish `hB : Function.Injective B` using `(CartierDual.toDual K (K ⊗[R] A)).injective.comp (CartierDual.baseChangeLinear_bijective K).1`. Set `v : (A →ₐ[R] R) → K ⊗[R] CartierDual R A` to `fun s => (1 : K) ⊗ₜ[R] (toConv s.toLinearMap : CartierDual R A)`. Establish `hBv : ∀ s, B (v s) = (p s).toLinearMap` using `fun s => by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a`. Use `CartierDual.baseChangeLinear_tmul_tmul (R := R) K 1 1 (toConv s.toLinearMap : CartierDual R A) a` as an intermediate fact. Simplify using `only [LinearMap.comp_apply, TensorProduct.AlgebraTensorModule.curry_apply, TensorProduct.curry_apply, LinearMap.restrictScalars_apply, AlgHom.toLinearMap_apply, hp]`. Use `this.trans ?_` and prove the remaining obligations. Simplify using `[Algebra.smul_def]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : B ((1 : K) ⊗ₜ[R] l) ∈ Submodule.span K (Set.range fun s => B (v s))`. Use `mem_span_of_iInf_ker_le_ker fun x hx => ?_` and prove the remaining obligations. Establish `: x = 0` using `sep x fun s => by`. Use `(Submodule.mem_iInf _).1 hx s` as an intermediate fact. Rewrite `this` using `[hBv]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Establish `hmem' : (1 : K) ⊗ₜ[R] l ∈ Submodule.span K (Set.range v)`. Establish `e : (Set.range fun s => B (v s)) = B '' Set.range v`. Rewrite using `[← Set.range_comp]`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite `hmem` using `[e, ← Submodule.map_span]`. Take `⟨y, hy, hyl⟩` from `hmem`. Rewrite using `[← hB hyl]` and apply the resulting hypothesis. Use `⟨g l, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← LinearMap.baseChange_tmul]`. Conclude with `LinearMap.eqOn_span (f := F) (g := g.baseChange K) (by rintro _ ⟨s, rfl⟩; exact key s) hmem'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_of_integral_tensor : ∀ (R K : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [IsAlgClosed K] [CharZero K] [Algebra R K] [IsFractionRing R K] (A : Type) [CommRing A] [HopfAlgebra R A] [IsCocomm R A] [Module.Finite R A] [Module.Projective R A] (F : K ⊗[R] CartierDual R A →ₗ[K] K ⊗[R] A) (T : A ⊗[R] A), (∀ s s' : A →ₐ[R] R, algebraMap R K (Algebra.TensorProduct.lift s s' (fun _ _ => .all _ _) T) = Algebra.TensorProduct.lift (AlgHom.id K K) ((Algebra.ofId R K).comp s') (fun _ _ => .all _ _) (F ((1 : K) ⊗ₜ[R] (toConv s.toLinearMap : CartierDual R A)))) → ∀ l : CartierDual R A, ∃ a : A, F ((1 : K) ⊗ₜ[R] l) = (1 : K) ⊗ₜ[R] a := by
   intro R K _ _ _ _ _ _ _ _ A _ _ _ _ _ F T h l

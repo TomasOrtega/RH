@@ -6,7 +6,7 @@ open MeasureTheory
 namespace UpperTheory.ConvolutionTheory.L1
 
 /- English proof (translation)
-Simplify using `only [List.ofFn_eq_map]`. Conclude with `continuous_list_prod (f := fun i (y : Fin m → G) => y i) _ fun i _ => continuous_apply i`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cont_prodFn {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (m : ℕ) :
     Continuous fun y : Fin m → G => (List.ofFn y).prod := by
@@ -14,9 +14,7 @@ private theorem cont_prodFn {G : Type} [Group G] [TopologicalSpace G] [IsTopolog
   exact continuous_list_prod (f := fun i (y : Fin m → G) => y i) _ fun i _ => continuous_apply i
 
 /- English proof (translation)
-Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun j => ?_) i` and prove the remaining obligations. Simplify using `only [fib, Fin.snoc_last]`. Conclude with `((cont_prodFn m).comp continuous_snd).inv.mul continuous_fst`. Simplify using `only [fib, Fin.snoc_castSucc]`.
-
-Conclude with `(continuous_apply j).comp continuous_snd`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cont_fib {G : Type} [Group G] [MeasurableSpace G] [TopologicalSpace G] [IsTopologicalGroup G] (m : ℕ) :
     Continuous fun p : G × (Fin m → G) => fib p.2 p.1 := by
@@ -28,7 +26,7 @@ private theorem cont_fib {G : Type} [Group G] [MeasurableSpace G] [TopologicalSp
     exact (continuous_apply j).comp continuous_snd
 
 /- English proof (translation)
-Rewrite using `[List.ofFn_succ']`. Simplify using `[fib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem prod_fib {G : Type} [Group G] [MeasurableSpace G] {m : ℕ} (y : Fin m → G) (x : G) :
     (List.ofFn (fib y x)).prod = x := by
@@ -36,9 +34,9 @@ private theorem prod_fib {G : Type} [Group G] [MeasurableSpace G] {m : ℕ} (y :
   simp [fib]
 
 /- English proof (translation)
-Establish `hK : IsCompact ((fun g : Fin (m + 1) → G => fun i : Fin m => g i.castSucc) '' tsupport Φ)` using `hs.isCompact.image (continuous_pi fun i => continuous_apply _)`. Establish `h0 : ∀ x y, y ∉ ((fun g : Fin (m + 1) → G => fun i : Fin m => g i.castSucc) '' tsupport Φ) → Φ (fib y x) = 0`. Introduce `x y hy`. Assume the negation of the conclusion as `h`. Conclude with `hy ⟨fib y x, subset_tsupport _ h, funext fun i => by simp [fib]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hK, h0, fun x => ?_⟩` and prove the remaining obligations. Use `Continuous.integrable_of_hasCompactSupport ?_ (HasCompactSupport.intro hK (h0 x))` and prove the remaining obligations. Conclude with `hc.comp ((cont_fib m).comp (Continuous.prodMk_right x))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem integrable_fib {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G]
     [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G) [μ.IsHaarMeasure] (m : ℕ)
@@ -60,17 +58,15 @@ end UpperTheory.ConvolutionTheory.L1
 
 open UpperTheory.ConvolutionTheory.L1 in
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ m Φ hc hs`. Take `⟨K, hK, h0, hint⟩` from `integrable_fib μ m Φ hc hs`. Establish `hsup : ∀ x, push μ m Φ x ≠ 0 → ∃ g, Φ g ≠ 0 ∧ (List.ofFn g).prod = x`. Introduce `x hx`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hx` to reduce the goal to its premises. Establish `: ∀ y : Fin m → G, Φ (fib y x) = 0` using `fun y => by`. Assume the negation of the conclusion as `h'`. Conclude with `h ⟨_, h', prod_fib y x⟩`. Simplify using `[push, this]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, hsup, hint, ?_, ?_⟩` and prove the remaining obligations. Establish `e : push μ m Φ = fun x => ∫ y in K, Φ (fib y x) ∂(Measure.pi fun _ => μ)`. Use function extensionality and compare the values at `x`. Conclude with `(setIntegral_eq_integral_of_forall_compl_eq_zero (h0 x)).symm`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `continuous_parametric_integral_of_continuous (f := fun x y => Φ (fib y x)) (hc.comp (cont_fib m)) hK`. Use `HasCompactSupport.intro (hs.isCompact.image (cont_prodFn (m + 1))) fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Take `⟨g, hg, rfl⟩` from `hsup x h`. Conclude with `hx ⟨g, subset_tsupport _ hg, rfl⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Use function extensionality and compare the values at `x`. Simplify using `[push, integral_const_mul]`. Introduce `Ψ hc' hs'`. Take `⟨_, _, _, hint'⟩` from `integrable_fib μ m Ψ hc' hs'`.
-
-Use function extensionality and compare the values at `x`. Simplify using `only [push, Pi.add_apply]`. Conclude with `integral_add (hint x) (hint' x)`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.pushTest :
     UpperTheory.ConvolutionTheory.L1.PushTest := by

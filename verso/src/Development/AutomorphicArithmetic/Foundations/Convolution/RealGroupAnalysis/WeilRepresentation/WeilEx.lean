@@ -18,13 +18,11 @@ open Neutral.B1 Formalism.L2.Host Formalism.ConjugateSelfDual GlobalTheory.CuspR
 open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.C
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D`. Establish `hδ : D.δ ≠ 0`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Introduce `h`. Use `D.neg (InfinitePlace.embedding_of_isReal (IsTotallyReal.isReal w))` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[h, map_zero]`. Conclude with `lt_irrefl _ this`. Take `⟨η, hq, hsq, hn, hk⟩` from `etaEx F E D`. Take `⟨O⟩` from `opsEx F D.δ η.1 hδ`. Take `⟨Om, h1, h2, h3⟩` from `chunk F _ O.N O.M O.W (opsRel F D.δ η.1 O hδ hsq) (opsGauss F D.δ η.1 O hδ hsq (idxEta F E D η.1 hsq hk)) (generic F)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hO : IsOm D.δ η.1 Om` using `⟨fun b φ v => h1 b ▸ O.N_apply b φ v, fun a φ v => h2 a ▸ O.M_apply a φ v, fun φ v => h3 ▸ O.W_apply φ v⟩`. Take `⟨L, hL⟩` from `UpperTheory.ConvolutionTheory.R2.D.lEx F E D`. Conclude with `⟨{ η := η, Om := Om, L := L, quad := hq, η_sq := hsq, η_norm := hn, Om_n := hO.n, Om_m := hO.m, Om_w := hO.w, L_apply := hL comm := UpperTheory.ConvolutionTheory.R2.D.comm F E D η.1 Om L hn hO.n hO.m hO.w hL th_Om := thOm F D.δ η.1 Om hδ hO th_L := fun γ φ => by`. Rewrite using `[← UpperTheory.ConvolutionTheory.R2.D.thL F E D γ φ.1]`. Conclude with `congrArg Th (funext (hL _ φ))`.
-
-Use `level := level F D.δ η.1 Om hO`. Use `unr := fun φ => unrOf F _ (level F D.δ η.1 Om hO φ)`. Use `cont := cont F D.δ η.1 Om η.2.1 hO }⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.weilEx :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E), St.WeilEx D := by

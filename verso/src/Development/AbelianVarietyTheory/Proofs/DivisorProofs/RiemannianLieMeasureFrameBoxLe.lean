@@ -24,39 +24,33 @@ namespace GlobalTheory.CovTop.VolUp.FrameBox
 open Matrix
 
 /- English proof (translation)
-Introduce `E _ _ _ r κ p q Ψ G x σ A e hr hI t ht`. Use `set W := (realLie Ψ G).comap (fromFrame x) with hW`. Use `set z : Fin r := ⟨0, hr⟩ with hz`. Use `set d := sgnR σ e with hd_def`. Establish `hd : ∀ τ a, d τ a = 1 ∨ d τ a = -1` using `fun τ a => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `simp only [d, sgnR]; split_ifs <;> simp`. Establish `hinv` using `det_ne_zero_of_isIdent hI`. Establish `hvW : ∀ k, boxVec d z k ∈ W` using `fun k => (GlobalTheory.T.mem_realLie_iff_traceFree_skew_signs E r κ p q Ψ G x σ A e hI _).2 (GlobalTheory.T.skewHermitianBasisVector_traceFreeSkewCond E r Ψ d z hd k)`. Set `K` to `Ψ × {ab : Fin r × Fin r // ab ≠ (z, z)}`. Set `w : K → W` to `fun k => ⟨boxVec d z k, hvW k⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdual` using `GlobalTheory.T.skewHermitianCoordinate_dual_basisVector E r Ψ d z hd`. Establish `hcoord : ∀ (g : K → ℝ) j, boxCoord z j ((∑ k, g k • w k : W) : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) = g j`. Introduce `g j`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, map_sum, map_smul, w, hdual, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Fintype.sum_eq_single j (fun k hk => by rw [if_neg (Ne.symm hk)])]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos rfl]`. Establish `hli : LinearIndependent ℝ w`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg j`. Use `hcoord g j` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `this` using `[hg]`. Simplify using `using this.symm`. Establish `hcardK : Fintype.card K = Ψ.card * (r ^ 2 - 1)`. Simplify using `[K, Fintype.card_prod, Fintype.card_coe, sq]`. Establish `hfin : Fintype.card K = Module.finrank ℝ W`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `le_antisymm hli.fintype_card_le_finrank ?_` and prove the remaining obligations. Rewrite using `[hcardK]`. Break down `Ψ.eq_empty_or_nonempty with h0 | ⟨τ0, hτ0⟩` into its components or cases. Establish `hs : Subsingleton W` using `⟨fun a b => Subtype.ext (PiLp.ext fun m => by`. Use `m.1.2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[h0] at this)⟩`. Rewrite using `[Module.finrank_zero_of_subsingleton]`. Conclude with `Nat.zero_le _`. Establish `hG : G.det ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `(hinv ⟨τ0, hτ0⟩).2` to reduce the goal to its premises. Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det, h, map_zero]`. Conclude with `finrank_comap_realLie_le Ψ G x hr hG fun τ => (hinv τ).1`. Establish `hspan : Submodule.span ℝ (Set.range w) = ⊤` using `hli.span_eq_top_of_card_eq_finrank' hfin`. Establish `hrep : ∀ Y : W, Y = ∑ k, boxCoord z k (Y : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) • w k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y`. Establish `hYs : Y ∈ Submodule.span ℝ (Set.range w)` using `hspan ▸ Submodule.mem_top`. Take `⟨c, hc⟩` from `Submodule.mem_span_range_iff_exists_fun ℝ |>.1 hYs`. Establish `h2 : ∀ j, boxCoord z j (Y : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) = c j`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hc]`. Conclude with `hcoord _ j`. Repeatedly rewrite using `[h2]`. Conclude with `hc.symm`. Use `set S := {X : Ψ → Fin r → Fin r → ℂ | ∀ τ a b, ‖((mat x τ)⁻¹ * Matrix.of (X τ) * mat x τ) a b‖ < t} with hS_def`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSo : IsOpen S`. Simplify using `only [hS_def, Set.setOf_forall]`. Use `isOpen_iInter_of_finite fun τ => isOpen_iInter_of_finite fun a => isOpen_iInter_of_finite fun b => isOpen_lt ?_ continuous_const` and prove the remaining obligations. Establish `: Continuous fun X : Ψ → Fin r → Fin r → ℂ => Matrix.of (X τ)` using `continuous_apply τ`. Conclude with `(((continuous_const.matrix_mul this).matrix_mul continuous_const).matrix_elem a b).norm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hf : Measurable (fun Y : W => fromFrame x Y.1)` using `((fromFrame x).comp W.subtype).continuous_of_finiteDimensional.measurable`. Unfold `riemLie`. Rewrite using `[Measure.map_apply hf hSo.measurableSet, OrthonormalBasis.addHaar_eq_volume]`. Establish `key1 : ∀ τ (M : Matrix (Fin r) (Fin r) ℂ), (mat x τ)⁻¹ * (mat x τ * M * (mat x τ)⁻¹) * mat x τ = M` using `fun τ M => by`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_right _ _ (hinv τ).1.isUnit, Matrix.nonsing_inv_mul_cancel_left _ _ (hinv τ).1.isUnit]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hsub : (fun Y : W => fromFrame x Y.1) ⁻¹' S ⊆ {y : W | ∃ c : K → ℝ, (∀ k, |c k| ≤ t) ∧ y = ∑ k, c k • w k}`. Introduce `Y hY`. Establish `hY' : ∀ τ a b, ‖(Y : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) (τ, a, b)‖ < t`. Introduce `τ a b`. Use `hY τ a b` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Matrix.of (fromFrame x Y.1 τ) = mat x τ * Matrix.of (fun a b => (Y : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) (τ, a, b)) * (mat x τ)⁻¹` using `rfl`. Rewrite `this` using `[e1, key1]`. Then use the resulting hypothesis. Use `⟨fun k => boxCoord z k (Y : EuclideanSpace ℂ (Ψ × Fin r × Fin r)), fun k => ?_, hrep Y⟩` and prove the remaining obligations. Take `⟨τ, ⟨⟨a, b⟩, hab⟩⟩` from `k`. Simplify using `only [boxCoord]`.
-
-Use `split_ifs`. Conclude with `(Complex.abs_re_le_norm _).trans (hY' _ _ _).le`. Conclude with `(Complex.abs_im_le_norm _).trans (hY' _ _ _).le`. Conclude with `(Complex.abs_im_le_norm _).trans (hY' _ _ _).le`. Use `(measure_mono hsub).trans ((GlobalTheory.T.volume_coordinateBox_le_hadamard W K w t ht.le hfin).trans (ENNReal.ofReal_le_ofReal ?_))` and prove the remaining obligations.
-
-Establish `hn : ∀ k, ‖w k‖ = √2` using `fun k => GlobalTheory.T.norm_skewHermitianBasisVector_eq_sqrt_two E r Ψ d z hd k`. Simplify using `only [hn, Finset.prod_const, Finset.card_univ]`. Rewrite using `[hcardK, ← mul_pow]`. Establish `h2 : 2 * t * √2 ≤ 3 * t`. Establish `hs : √2 ≤ 3 / 2`.
-
-Rewrite using `[Real.sqrt_le_left (by norm_num)]; norm_num`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `pow_le_pow_left₀ (by positivity) h2 _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem riemLie_frameBox_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (κ : Type) (p q : κ → ℕ) (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (x : Frame Ψ r) (σ : κ ≃ Ψ) (A : ∀ ρ, Matrix (Fin (p ρ) ⊕ Fin (q ρ)) (Fin r) ℂ) (e : ∀ ρ, Fin (p ρ) ⊕ Fin (q ρ) ≃ Fin r), 1 ≤ r → IsIdent p q Ψ G x σ A e → ∀ t : ℝ, 0 < t → riemLie Ψ G x {X | ∀ τ a b, ‖((mat x τ)⁻¹ * Matrix.of (X τ) * mat x τ) a b‖ < t} ≤ ENNReal.ofReal ((3 * t) ^ (Ψ.card * (r ^ 2 - 1))) := by
   classical

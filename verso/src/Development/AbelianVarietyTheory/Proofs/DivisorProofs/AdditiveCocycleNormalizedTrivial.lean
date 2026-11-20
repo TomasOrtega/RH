@@ -10,7 +10,7 @@ open scoped Real ContDiff
 namespace GlobalTheory.PeriodCocycle
 
 /- English proof (translation)
-Use `Prod.ext rfl ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `only [transl, per, Pi.add_apply, Complex.ofReal_add, Matrix.vecMul, dotProduct, add_mul, Finset.sum_add_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem transl_add {g : ℕ} {E : Type} (τ : E → Matrix (Fin g) (Fin g) ℂ) (x y : Fl g) (P : Pt E g) :
     transl τ (x + y) P = transl τ x (transl τ y P) := by
@@ -21,7 +21,7 @@ theorem transl_add {g : ℕ} {E : Type} (τ : E → Matrix (Fin g) (Fin g) ℂ) 
   ring
 
 /- English proof (translation)
-Use `Prod.ext rfl ?_` and prove the remaining obligations. Use function extensionality and compare the values at `j`. Simplify using `only [transl, per, Matrix.vecMul, dotProduct, Pi.single_apply, Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp_all`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem transl_inr {g : ℕ} {E : Type} (τ : E → Matrix (Fin g) (Fin g) ℂ) (i : Fin g) (P : Pt E g) :
     transl τ (Pi.single (Sum.inr i) (1 : ℝ)) P = (P.1, P.2 + Pi.single i 1) := by
@@ -32,27 +32,25 @@ theorem transl_inr {g : ℕ} {E : Type} (τ : E → Matrix (Fin g) (Fin g) ℂ) 
   split_ifs <;> simp_all
 
 /- English proof (translation)
-Introduce `g E _ _ _ U τ hτ H hH hcoc hq b hb`. Establish `mem_tr : ∀ {W : Set E} (x : Fl g) (P : Pt E g), P ∈ cov W g → transl τ x P ∈ cov W g` using `fun x P hP => ⟨hP.1, Set.mem_univ _⟩`. Establish `q_mem : ∀ i, (Pi.single i (1 : ℝ) : Fl g) ∈ stdLat g` using `fun i => Submodule.subset_span ⟨i, by simp⟩`. Establish `hper : ∀ l ∈ stdLat g, ∀ P ∈ cov U g, ∀ i : Fin g, H l (P.1, P.2 + Pi.single i 1) = H l P`. Introduce `l hl P hP i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e1` using `hcoc l hl _ (q_mem (Sum.inr i)) P hP`. Establish `e2` using `hcoc _ (q_mem (Sum.inr i)) l hl P hP`. Rewrite `e1` using `[hq i P hP, add_zero, transl_inr]`. Rewrite `e2` using `[hq i _ (mem_tr _ _ hP), zero_add, add_comm]`. Rewrite using `[← e1, e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set h : Fin g → Pt E g → ℂ := fun k => H (Pi.single (Sum.inl k) 1) with hh`. Establish `hrel : ∀ k m, ∀ P ∈ cov U g, h k (transl τ (Pi.single (Sum.inl m) (1 : ℝ)) P) - h k P = h m (transl τ (Pi.single (Sum.inl k) (1 : ℝ)) P) - h m P`. Introduce `k m P hP`. Establish `e1` using `hcoc _ (q_mem (Sum.inl k)) _ (q_mem (Sum.inl m)) P hP`. Establish `e2` using `hcoc _ (q_mem (Sum.inl m)) _ (q_mem (Sum.inl k)) P hP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[add_comm]`. Simplify using `only [hh]`. Take the linear combination `e2 - e1`. Take `⟨V, hVo, hbV, hVU, K, hK, hKper, c, hc, hcK⟩` from `GlobalTheory.T.quasiperiodic_difference_symmetric_family hτ h (fun k => hH _ (q_mem _)) (fun k P hP i => hper _ (q_mem _) P hP i) hrel b hb`. Establish `covVU : cov V g ⊆ cov U g` using `fun P hP => ⟨hVU hP.1, trivial⟩`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨V, hVo, hbV, hVU, K, hK, fun l b' => ∑ k, (l (Sum.inl k) : ℂ) * c k b', ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `l _`. Conclude with `DifferentiableOn.fun_sum fun k _ => (hc k).const_mul _`. Introduce `l _ l' _ b' _`. Simplify using `[add_mul, Finset.sum_add_distrib]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `l hl P hP`. Establish `key` using `GlobalTheory.T.lattice_cocycle_zero_of_generators (U := V) (τ := τ) (fun l P => H l P - (K (transl τ l P) - K P + ∑ k, (l (Sum.inl k) : ℂ) * c k P.1)) ?_ ?_ l hl P hP`. Conclude with `sub_eq_zero.mp key`. Introduce `l hl l' hl' P hP`. Use `hcoc l hl l' hl' P (covVU hP)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [transl_add, Pi.add_apply, Complex.ofReal_add, add_mul, Finset.sum_add_distrib]`. Rewrite using `[this]`. Simplify using `only [transl]`. Expand and normalize the polynomial expressions, which then agree. Introduce `i P hP`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Consider the cases of `i with`. Consider the case `inl k`. Use `hcK k P hP` as an intermediate fact. Simplify using `only [hh] at this`. Establish `hs : ∑ j, ((Pi.single (Sum.inl k) (1 : ℝ) : Fl g) (Sum.inl j) : ℂ) * c j P.1 = c k P.1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_eq_single k]`. Simplify using the standard rewrite rules. Introduce `j _ hj`. Simplify using `[Pi.single_apply, hj]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Use `show H _ P - (K _ - K P + ∑ j, ((Pi.single (Sum.inl k) (1 : ℝ) : Fl g) (Sum.inl j) : ℂ) * c j P.1) = 0`. Rewrite using `[hs, this]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `inr i => show H _ P - (K _ - K P + _) = 0`. Rewrite using `[transl_inr, hKper P hP i, hq i P (covVU hP)]`.
-
-Simplify using `[Pi.single_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_coboundary_add_char : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [FiniteDimensional ℂ E] {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ}, IsPeriodMap U τ → ∀ H : Fl g → Pt E g → ℂ, (∀ l ∈ stdLat g, DifferentiableOn ℂ (H l) (cov U g)) → (∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∀ P ∈ cov U g, H (l + l') P = H l (transl τ l' P) + H l' P) → (∀ i : Fin g, ∀ P ∈ cov U g, H (Pi.single (Sum.inr i) (1 : ℝ)) P = 0) → ∀ b ∈ U, ∃ V : Set E, IsOpen V ∧ b ∈ V ∧ V ⊆ U ∧ ∃ K : Pt E g → ℂ, DifferentiableOn ℂ K (cov V g) ∧ ∃ μ : Fl g → E → ℂ, (∀ l ∈ stdLat g, DifferentiableOn ℂ (μ l) V) ∧ (∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∀ b' ∈ V, μ (l + l') b' = μ l b' + μ l' b') ∧ ∀ l ∈ stdLat g, ∀ P ∈ cov V g, H l P = K (transl τ l P) - K P + μ l P.1 := by
   intro g E _ _ _ U τ hτ H hH hcoc hq b hb

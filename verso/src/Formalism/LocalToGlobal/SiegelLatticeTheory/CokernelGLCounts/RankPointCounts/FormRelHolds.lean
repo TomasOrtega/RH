@@ -7,19 +7,19 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.FlagStabilizerTensors.RootLat
 namespace Formalism.L2.SG.Pf
 
 /- English proof (translation)
-The claim follows from `formRelC_of (fun D X Y u u' => Formalism.L2.SG.Pf.RowForm.RealDecompL.realDecompC_of X Y u u' (Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u')) Formalism.L2.SG.Pf.RelChar.relCharC_holds`.
+A detailed English derivation is pending.
 -/
 theorem formRelC_holds : Formalism.L2.SG.Pf.FormRel.FormRelC :=
   formRelC_of (fun D X Y u u' => Formalism.L2.SG.Pf.RowForm.RealDecompL.realDecompC_of X Y u u'
     (Formalism.L2.SG.LeadingMinorsNonvanishing.atSomeAll_holds D X Y u u')) Formalism.L2.SG.Pf.RelChar.relCharC_holds
 
 /- English proof (translation)
-The claim follows from `formNGC_of_rel formRelC_holds`.
+A detailed English derivation is pending.
 -/
 theorem formNGC_holds : Formalism.L2.SG.NGVanish.FormNGC := formNGC_of_rel formRelC_holds
 
 /- English proof (translation)
-The claim follows from `formGC_of_rel formRelC_holds`.
+A detailed English derivation is pending.
 -/
 theorem formGC_holds : Formalism.L2.SG.Pf.MainEqVanish.FormGC := formGC_of_rel formRelC_holds
 

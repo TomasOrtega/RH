@@ -7,19 +7,17 @@ open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F _ _ M₀ t`. Use `haveI := M₀.haar`. Use `haveI := M₀.right`. Establish `hm : ∀ s : (A F)ˣ, Measurable (cD s : G1 F → G1 F)` using `fun s => (M.continuous_cD s).measurable`. Set `e : G1 F ≃ₜ* G1 F` to `{ toFun := cD t invFun := cD t⁻¹ left_inv := fun g => by rw [M.cD_cD, inv_mul_cancel, M.cD_one] right_inv := fun g => by rw [M.cD_cD, mul_inv_cancel, M.cD_one] map_mul' := M.cD_mul t continuous_toFun := M.continuous_cD t continuous_invFun := M.continuous_cD t⁻¹ }`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : (M₀.μ.map (cD t)).IsHaarMeasure := e.isHaarMeasure_map M₀.μ`. Take `⟨c, hc⟩ : ∃ c : ℝ≥0, M₀.μ.map (cD t) = c • M₀.μ` from `⟨_, Measure.isMulLeftInvariant_eq_smul (M₀.μ.map (cD t)) M₀.μ⟩`. Establish `h2 : M₀.μ.map (cD (t * t)) = M₀.μ`. Establish `: (cD (t * t) : G1 F → G1 F) = (fun g => g * mD t) ∘ (fun g => (mD t)⁻¹ * g)`. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `M.cD_sq t g`. Rewrite using `[this, ← Measure.map_map (measurable_mul_const _) (measurable_const_mul _), map_mul_left_eq_self, map_mul_right_eq_self]`. Establish `h3 : M₀.μ.map (cD (t * t)) = (c * c) • M₀.μ`. Establish `: (cD (t * t) : G1 F → G1 F) = cD t ∘ cD t`. Use function extensionality and compare the values at `g`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(M.cD_cD t t g).symm`. Rewrite using `[this, ← Measure.map_map (hm t) (hm t), hc, Measure.map_smul, hc, smul_smul]`. Take `⟨K, hK, hK1⟩` from `exists_compact_mem_nhds (1 : G1 F)`. Establish `hpos : M₀.μ K ≠ 0` using `(Measure.measure_pos_of_mem_nhds M₀.μ hK1).ne'`. Establish `hfin : M₀.μ K ≠ ∞` using `hK.measure_lt_top.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : ((c * c : ℝ≥0) : ℝ≥0∞) * M₀.μ K = M₀.μ K`. Use `congrArg (fun m : Measure (G1 F) => m K) (h3.symm.trans h2)` as an intermediate fact. Simplify `this` using `[ENNReal.smul_def]`. Establish `h5 : ((c * c : ℝ≥0) : ℝ≥0∞) = 1`. Establish `h6 : ((c * c : ℝ≥0) : ℝ≥0∞) * M₀.μ K = 1 * M₀.μ K` using `by rw [h4, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `(ENNReal.mul_left_inj hpos hfin).1 h6`. Establish `h7 : c * c = 1` using `by exact_mod_cast h5`. Establish `h8 : c = 1`. Use `(mul_self_eq_one_iff (a := (c : ℝ))).1 (by exact_mod_cast h7)` as an intermediate fact. Break down `this with h | h` into its components or cases.
-
-Conclude with `h` after adjusting the coercions. Use `c.coe_nonneg` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨hm t, ?_⟩` and prove the remaining obligations. Rewrite using `[hc, h8, one_smul]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.M.cdMeas :
     ∀ (F : Type) [Field F] [NumberField F] (M₀ : Meas F) (t : (A F)ˣ), MeasurePreserving (cD t) M₀.μ M₀.μ := by

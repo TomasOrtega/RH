@@ -16,7 +16,7 @@ open MvPolynomial
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `harishChandraHom_isSymmetric z`.
+A detailed English derivation is pending.
 -/
 theorem harishChandraHom_mem_symmetricSubalgebra (z : Subalgebra.center ℂ (U n)) :
     harishChandraHom z ∈ symmetricSubalgebra (Fin n) ℂ :=
@@ -26,7 +26,7 @@ noncomputable def capelliCenter (k : ℕ) : Subalgebra.center ℂ (U n) :=
   ⟨capelli (k + 1), capelli_mem_center _⟩
 
 /- English proof (translation)
-The claim follows from `adjoin_eq_symmetricSubalgebra _ (fun _ => harishChandraHom_isSymmetric _) (fun k => totalDegree_harishChandraHom_capelli_sub k)`.
+A detailed English derivation is pending.
 -/
 theorem adjoin_harishChandraHom_capelli :
     Algebra.adjoin ℂ (Set.range fun k : Fin n => harishChandraHom (capelliCenter (n := n) k)) =
@@ -35,9 +35,9 @@ theorem adjoin_harishChandraHom_capelli :
     (fun k => totalDegree_harishChandraHom_capelli_sub k)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨z, rfl⟩`. Conclude with `harishChandraHom_isSymmetric z`. Rewrite using `[← adjoin_harishChandraHom_capelli, Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨k, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨_, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem range_harishChandraHom :
     (harishChandraHom (n := n)).range = symmetricSubalgebra (Fin n) ℂ := by

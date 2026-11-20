@@ -20,9 +20,9 @@ section General
 variable {e : ℕ} {X : Type} [TopologicalSpace X]
 
 /- English proof (translation)
-Use `⟨fun x j => ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[← hU x]`. Conclude with `(hP.1 x j).congr fun t ht => (hφ x _ ht.2).symm`. Rewrite `hy` using `[← hU x, ← hU x']`. Take `⟨W, hW, hyW, G, hG, hd⟩` from `hP.2 x x' y hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨W, hW, hyW, G, hG, fun z hz => ?_⟩` and prove the remaining obligations. Rewrite `hz` using `[← hU x, ← hU x']`. Rewrite using `[← hφ x z hz.1.2, ← hφ x' z hz.2, hd z hz]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPotential_congr (A : FinHolAtlas e X) {P Q : LocPot X} (hU : ∀ x, P.U x = Q.U x)
     (hφ : ∀ x, ∀ z ∈ P.U x, P.φ x z = Q.φ x z) (hP : IsPotential A P) : IsPotential A Q := by
@@ -36,9 +36,9 @@ theorem isPotential_congr (A : FinHolAtlas e X) {P Q : LocPot X} (hU : ∀ x, P.
     rw [← hφ x z hz.1.2, ← hφ x' z hz.2, hd z hz]
 
 /- English proof (translation)
-Unfold `mInt`. Use `split_ifs with hP`. Unfold `integralWith`. Use `Finset.sum_congr rfl fun j _ => setIntegral_congr_fun (A.chart j).open_target.measurableSet fun y hy => ?_` and prove the remaining obligations. Distinguish the cases in `hg : g ((A.chart j).symm y) = 0`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hg]`. Rewrite using `[h j y hy hg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mInt_congr (A : FinHolAtlas e X) (Φ Φ' : Fin e → LocPot X) (g : X → ℝ)
     (h : ∀ j, ∀ y ∈ (A.chart j).target, g ((A.chart j).symm y) ≠ 0 →
@@ -54,7 +54,7 @@ theorem mInt_congr (A : FinHolAtlas e X) (Φ Φ' : Fin e → LocPot X) (g : X �
   · rfl
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.Geo.maDens_congr fun _ => h`.
+A detailed English derivation is pending.
 -/
 theorem locDens_congr_germ (A : FinHolAtlas e X) (P Q : LocPot X) (j : Fin A.n) (y : Fin e → ℂ)
     (h : (fun y' => P.φ ((A.chart j).symm y) ((A.chart j).symm y')) =ᶠ[𝓝 y]
@@ -63,7 +63,7 @@ theorem locDens_congr_germ (A : FinHolAtlas e X) (P Q : LocPot X) (j : Fin A.n) 
   ReciprocityTheory.ChartRestriction.G.Geo.maDens_congr fun _ => h
 
 /- English proof (translation)
-The claim follows from `((A.chart j).continuousAt_symm hy).preimage_mem_nhds (hS.mem_nhds hyS)`.
+A detailed English derivation is pending.
 -/
 theorem eventually_symm_mem (A : FinHolAtlas e X) (j : Fin A.n) {y : Fin e → ℂ}
     (hy : y ∈ (A.chart j).target) {S : Set X} (hS : IsOpen S) (hyS : (A.chart j).symm y ∈ S) :
@@ -71,9 +71,9 @@ theorem eventually_symm_mem (A : FinHolAtlas e X) (j : Fin A.n) {y : Fin e → �
   ((A.chart j).continuousAt_symm hy).preimage_mem_nhds (hS.mem_nhds hyS)
 
 /- English proof (translation)
-Introduce `j t ht`. Establish `hto : (A.chart j).target ∩ (A.chart j).symm ⁻¹' Set.univ ∈ 𝓝 t`. Simplify using `using (A.chart j).open_target.mem_nhds ht.1`. Distinguish the cases in `htC : (A.chart j).symm t ∈ C`. Use `(((hu j).contDiffAt hto).congr_of_eventuallyEq ?_).contDiffWithinAt filter_upwards [eventually_symm_mem A j ht.1 hC.isOpen htC] with t' ht'` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Set.indicator_of_mem ht']`. Use `((contDiffAt_const (c := (0 : ℝ))).congr_of_eventuallyEq ?_).contDiffWithinAt filter_upwards [eventually_symm_mem A j ht.1 hC.compl.isOpen htC] with t' ht'` and prove the remaining obligations. Simplify using `[Set.indicator_of_notMem ht']`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem smooth_indicator (A : FinHolAtlas e X) {C : Set X} (hC : IsClopen C) {u : X → ℝ}
     (hu : A.Smooth u) : A.Smooth (C.indicator u) := by
@@ -89,19 +89,17 @@ theorem smooth_indicator (A : FinHolAtlas e X) {C : Set X} (hC : IsClopen C) {u 
     simp [Set.indicator_of_notMem ht']
 
 /- English proof (translation)
-Use `set w := C.indicator u with hw_def`. Establish `hw : A.Smooth w` using `smooth_indicator A hC hu`. Establish `hΦw : IsPotential A (Φ + LocPot.ofFun w)` using `isPotentialAdd A _ _ hΦ (isPotential_ofFun A w hw)`. Establish `hg : Continuous (C.indicator fun _ : X => (1 : ℝ))` using `hC.continuous_indicator continuous_const`. Establish `hg' : Continuous (Cᶜ.indicator fun _ : X => (1 : ℝ))` using `hC.compl.continuous_indicator continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : (fun _ : X => (1 : ℝ)) = fun x => 1 * C.indicator (fun _ => (1 : ℝ)) x + Cᶜ.indicator (fun _ => (1 : ℝ)) x`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ C`. Simplify using `[hx]`. Simplify using `[hx]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `mIntLinear A (fun _ => Φ) (fun _ => hΦ) 1 _ _ (mIntegrableCont A _ (fun _ => hΦ) _ hg) (mIntegrableCont A _ (fun _ => hΦ) _ hg')`. Establish `h2` using `mIntLinear A (fun _ => Φ + LocPot.ofFun w) (fun _ => hΦw) 1 _ _ (mIntegrableCont A _ (fun _ => hΦw) _ hg) (mIntegrableCont A _ (fun _ => hΦw) _ hg')`. Rewrite `h1`, `h2` using `[← hsplit]`. Establish `h3 : mInt A (fun _ => Φ + LocPot.ofFun w) (fun _ => 1) = mInt A (fun _ => Φ) (fun _ => 1)` using `massIndep A (fun _ => Φ) (fun _ => w) (fun _ => hΦ) (fun _ => hw)`. Establish `h4 : mInt A (fun _ => Φ + LocPot.ofFun w) (Cᶜ.indicator fun _ => (1 : ℝ)) = mInt A (fun _ => Φ) (Cᶜ.indicator fun _ => (1 : ℝ))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mInt_congr A _ _ _ fun j y hy hne => locDens_congr_germ A _ _ j y ?_` and prove the remaining obligations. Establish `hyC : (A.chart j).symm y ∈ Cᶜ`. Assume the negation of the conclusion as `h`. Conclude with `hne (Set.indicator_of_notMem h _)`. Use `filter_upwards [eventually_symm_mem A j hy hC.compl.isOpen hyC] with y' hy'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show Φ.φ _ _ + w _ = Φ.φ _ _`. Rewrite using `[hw_def, Set.indicator_of_notMem hy', add_zero]`. Establish `h5 : mInt A (fun _ => Φ + LocPot.ofFun w) (C.indicator fun _ => (1 : ℝ)) = mInt A (fun _ => Θ) (C.indicator fun _ => (1 : ℝ))`. Use `mInt_congr A _ _ _ fun j y hy hne => ?_` and prove the remaining obligations. Establish `hyC : (A.chart j).symm y ∈ C`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h`. Conclude with `hne (Set.indicator_of_notMem h _)`. Rewrite using `[hΘ j y hy hyC]`. Use `locDens_congr_germ A _ _ j y ?_` and prove the remaining obligations. Use `filter_upwards [eventually_symm_mem A j hy hC.isOpen hyC] with y' hy'`.
-
-Use `show Φ.φ _ _ + w _ = Φ.φ _ _ + u _`. Rewrite using `[hw_def, Set.indicator_of_mem hy']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem massIndep_clopen [CompactSpace X] [T2Space X] (A : FinHolAtlas e X) {Φ : LocPot X}
     (hΦ : IsPotential A Φ) (Θ : LocPot X) (u : X → ℝ) (hu : A.Smooth u) {C : Set X}

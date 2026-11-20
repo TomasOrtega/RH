@@ -9,11 +9,11 @@ namespace Formalism.InvariantFactorPaths.ColumnFamilies
 open Formalism.InvariantFactorPaths.GelfandTsetlinBases (dGT gtBox)
 
 /- English proof (translation)
-Introduce `m _ lam hlam Sg hSg`. Establish `hS : Sg = gtBox lam`. Use extensionality with `nu`. Rewrite using `[hSg, Formalism.InvariantFactorPaths.GelfandTsetlinBases.Branch.mem_gtBox]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h i`. Conclude with `⟨(h.2 i).2, (h.2 i).1⟩`. Introduce `h`. Use `⟨Formalism.InvariantFactorPaths.GelfandTsetlinBases.Branch.gtBox_anti hlam ((Formalism.InvariantFactorPaths.GelfandTsetlinBases.Branch.mem_gtBox lam nu).2 h), fun i => ⟨(h i).2, (h i).1⟩⟩` and prove the remaining obligations. Rewrite using `[qk_dMu_eq_dGT (m + 1) lam hlam, hS]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show ∑ κ ∈ gtBox lam, dGT m κ = _`. Use `sum_congr rfl fun nu hnu => ?_` and prove the remaining obligations. Rewrite using `[qk_dMu_eq_dGT m nu (Formalism.InvariantFactorPaths.GelfandTsetlinBases.Branch.gtBox_anti hlam hnu)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem branching_count_holds : CntBranch := by
   intro m _ lam hlam Sg hSg

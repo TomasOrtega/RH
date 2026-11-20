@@ -19,7 +19,7 @@ def EtaLocAt (D : Formalism.BasicNotions.D7) : Prop :=
   ∀ p : PlF D, (if ∀ x : (D.s.atP p).Ep, x ≠ 0 → IsUnit x then (-1 : ℝ) else 1) = etaF D.host.E D.host.F p.asIdeal
 
 /- English proof (translation)
-Introduce `p` and use `Formalism.L2.SG.Pf.AlTieLG.etaLoc_of_tied hL p`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem etaLocAt_of_tied {D : Formalism.BasicNotions.D7} (hL : Formalism.L2.SG.Pf.LocCP.LocTied D) : EtaLocAt D := fun p => Formalism.L2.SG.Pf.AlTieLG.etaLoc_of_tied hL p
 
@@ -43,11 +43,11 @@ def DensMultIntAt (D : Formalism.BasicNotions.D7) : Prop :=
         Formalism.HermitianLatticesTheory.IsIntegralLat (VS D).hT (MMof D F0 F') → Multipliable (densP L δ ϖ (Tn u) (Tn u') Z)
 
 /- English proof (translation)
-Introduce `δ M _ p c hc`. Take `⟨hK, hF, -⟩` from `field_dictionary_holds D`. Establish `hm` using `Formalism.L2.SG.Pf.NcArithG.rm_eq D`. Establish `hk5 : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq` using `PI.UnitaryGroupMassFormula.CntFormula.residue_field_card D p`. Establish `hmax : p.asIdeal.IsMaximal` using `p.isMaximal`. Establish `hpos` using `alphaStd_pos hK hF hmax (D.R.k - 1 - c)`. Rewrite using `[eq_div_iff hpos.ne', alpha_split' (K := D.host.E) p.asIdeal (show D.R.k - 1 - c ≤ D.R.r by omega), mul_comm]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `Formalism.L2.SG.DensExact.densProd`. Rewrite using `[hq, hη p, show D.R.r + 1 - (2 * (D.R.rS + 1) + c) = D.R.k - 1 - c + 1 by omega]`. Use `Finset.prod_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem densProdValAt_of {D : Formalism.BasicNotions.D7} (hη : EtaLocAt D) : DensProdValAt D := by
   intro δ M _ p c hc
@@ -66,13 +66,13 @@ theorem densProdValAt_of {D : Formalism.BasicNotions.D7} (hη : EtaLocAt D) : De
   rw [zpow_neg, zpow_natCast]
 
 /- English proof (translation)
-Introduce `δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI p`. Take `⟨A, a, hAO, hAdet, hG, hc⟩` from `h2 D δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI p`. Establish `hSD` using `h1 D δ M hA L p`. Take `⟨-, -, hUr, -⟩` from `perpendicular_definition_holds D u u' hT F0 what₂ hR Z F' hz hZ hP`. Establish `hm` using `Formalism.L2.SG.Pf.NcArithG.rm_eq D`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk5 : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`. Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hcard : Fintype.card (Fin (D.R.rS + 1) ⊕ Fin (D.R.rS + 1)) ≤ Module.finrank (D.s.atP p).Ep (L.V p)`. Rewrite using `[L.rank p, Fintype.card_sum, Fintype.card_fin]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hcle : cJ (VS D).hT (UPair D F0 F') (MMof D F0 F') p.asIdeal ≤ 2 * (D.R.rS + 1)`. Use `Formalism.L2.SG.Pf.Asm.cJ_le (VS D).hT (UPair D F0 F') (MMof D F0 F') p.asIdeal` as an intermediate fact. Rewrite `this` using `[hUr, hm]`. Conclude with `this`. Unfold `densP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[hG, local_density_corank (D.s.atP p).Fp (D.s.atP p).Ep (M p) (D.s.atP p).lf (D.s.atP p).char0 (L.V p) (L.H p) (lattice₂ L p (VS D).L0) hSD (ϖ p) (hϖ p) _ A a hAO hAdet hcard, L.rank p, Fintype.card_sum, Fintype.card_fin, hc, show D.R.rS + 1 + (D.R.rS + 1) = 2 * (D.R.rS + 1) by r …`. Conclude with `h5 δ M hA p _ hcle`.
+A detailed English derivation is pending.
 -/
 theorem densValAt_of (h1 : LocSelfDual) (h2 : GaPlusDiag) {D : Formalism.BasicNotions.D7} (h5 : DensProdValAt D) :
     ∀ (δ : ∀ p : PlF D, (D.s.atP p).Fp)
@@ -108,21 +108,19 @@ theorem densValAt_of (h1 : LocSelfDual) (h2 : GaPlusDiag) {D : Formalism.BasicNo
   exact h5 δ M hA p _ hcle
 
 /- English proof (translation)
-Introduce `δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI`. Establish `hval` using `densValAt_of h1 h2 h5 δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI`. Take `⟨-, -, hUr, -⟩` from `perpendicular_definition_holds D u u' hT F0 what₂ hR Z F' hz hZ hP`. Establish `hm` using `Formalism.L2.SG.Pf.NcArithG.rm_eq D`. Establish `hk5 : D.R.m + 3 ≤ D.R.k` using `D.R.m_add_three_le_k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Establish `hs : Summable (fun p : PlF D => densP L δ ϖ (Tn u) (Tn u') Z p - 1)`. Use `Summable.of_norm_bounded_eventually ((PI.UnitaryGroupMassFormula.CntFormula.prime_zeta_two D.host.F).mul_left 6) ?_` and prove the remaining obligations. Use `filter_upwards [(absNorm_small_finite D).compl_mem_cofinite] with p hp`. Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq, not_lt] at hp`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcle : cJ (VS D).hT (UPair D F0 F') (MMof D F0 F') p.asIdeal ≤ 2 * (D.R.rS + 1)`. Use `Formalism.L2.SG.Pf.Asm.cJ_le (VS D).hT (UPair D F0 F') (MMof D F0 F') p.asIdeal` as an intermediate fact. Rewrite `this` using `[hUr, hm]`. Conclude with `this`. Take `⟨-, hup, hlow⟩` from `Formalism.L2.SG.Pf.DensLoc.ratio_bounds (K := D.host.E) p.asIdeal (by linarith) (j := D.R.k - 1 - cJ (VS D).hT (UPair D F0 F') (MMof D F0 F') p.asIdeal) (n := D.R.r) (s := 2) (by omega) (by omega) (by norm_num)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlow'` using `hlow hp`. Rewrite using `[hval p, Real.norm_eq_abs]`. Use `set x : ℝ := ((Ideal.absNorm p.asIdeal : ℝ))⁻¹ with hx`. Establish `hx0 : 0 ≤ x` using `inv_nonneg.2 (by linarith)`. Establish `hx3 : x ≤ 1 / 3` using `by rw [hx, one_div]; exact inv_anti₀ (by norm_num) hp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx2 : x ^ 2 ≤ 1 / 9` using `by nlinarith`. Establish `hx2n : 0 ≤ x ^ 2` using `sq_nonneg x`. Establish `h2n : (0 : ℝ) ≤ 2 * x ^ 2` using `by positivity`. Establish `h3n : (0 : ℝ) ≤ 3 * x ^ 2` using `by positivity`. Establish `e1` using `Real.abs_exp_sub_one_le (x := 2 * x ^ 2) (by rw [abs_of_nonneg h2n]; linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2` using `Real.abs_exp_sub_one_le (x := -(3 * x ^ 2)) (by rw [abs_neg, abs_of_nonneg h3n]; linarith)`. Rewrite `e1` using `[abs_of_nonneg h2n]`. Rewrite `e2` using `[abs_neg, abs_of_nonneg h3n]`. Establish `hq : 6 * (1 / ((Ideal.absNorm p.asIdeal : ℝ) ^ 2)) = 6 * x ^ 2` using `by rw [hx, inv_pow, one_div]`. Rewrite using `[hq, abs_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Use `(abs_le.mp e2).1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Use `(abs_le.mp e1).2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Use `Real.multipliable_one_add_of_summable hs` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem densMultIntAt_of (h1 : LocSelfDual) (h2 : GaPlusDiag) {D : Formalism.BasicNotions.D7} (h5 : DensProdValAt D) :
     DensMultIntAt D := by
@@ -167,7 +165,7 @@ theorem densMultIntAt_of (h1 : LocSelfDual) (h2 : GaPlusDiag) {D : Formalism.Bas
   simpa using this
 
 /- English proof (translation)
-Introduce `δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP`. Conclude with `⟨fun hI => ⟨densValAt_of h1 h2 h5 δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI, h6 δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI⟩, fun hI => h3 D δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem densAllAt_of_steps (h1 : LocSelfDual) (h2 : GaPlusDiag) (h3 : NotIntDens) {D : Formalism.BasicNotions.D7}
     (h5 : DensProdValAt D) (h6 : DensMultIntAt D) : Formalism.L2.SG.Pf.DensLoc.DensAllAt D := by
@@ -177,7 +175,7 @@ theorem densAllAt_of_steps (h1 : LocSelfDual) (h2 : GaPlusDiag) (h3 : NotIntDens
     fun hI => h3 D δ M hA L u u' hT F0 what₂ hR ϖ hϖ Z F' hz hZ hP hI⟩
 
 /- English proof (translation)
-Establish `h1 : LocSelfDual` using `local_self_dual_holds`. Establish `hF : DualityBasisChange.FrameBasisL` using `DualityBasisChange.frameBasisL_holds`. Establish `h2 : GaPlusDiag` using `DualityBasisChange.gaPlusDiag_of hF jordan_decomposition_holds`. Establish `h5 : DensProdValAt D` using `densProdValAt_of (etaLocAt_of_tied hL)`. Conclude with `densAllAt_of_steps h1 h2 (DualityBasisChange.not_integral_density_of_self_dual h1 hF) h5 (densMultIntAt_of h1 h2 h5)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem densAllAt_of_tied {D : Formalism.BasicNotions.D7} (hL : Formalism.L2.SG.Pf.LocCP.LocTied D) : Formalism.L2.SG.Pf.DensLoc.DensAllAt D := by
   have h1 : LocSelfDual := local_self_dual_holds
@@ -187,14 +185,14 @@ theorem densAllAt_of_tied {D : Formalism.BasicNotions.D7} (hL : Formalism.L2.SG.
   exact densAllAt_of_steps h1 h2 (DualityBasisChange.not_integral_density_of_self_dual h1 hF) h5 (densMultIntAt_of h1 h2 h5)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.DensLoc.densLocBound_at (densAllAt_of_tied hL)`.
+A detailed English derivation is pending.
 -/
 theorem densLocBound_of_tied {D : Formalism.BasicNotions.D7} (hL : Formalism.L2.SG.Pf.LocCP.LocTied D) : Formalism.L2.SG.DataCut.DensLocBound D := Formalism.L2.SG.Pf.DensLoc.densLocBound_at (densAllAt_of_tied hL)
 
 def DensInputT : Prop := ∀ D : Formalism.BasicNotions.D7, Formalism.L2.SG.Pf.LocCP.LocTied D → Formalism.L2.SG.DataInst.DensInputAt D
 
 /- English proof (translation)
-Introduce `D hL` and use `Formalism.L2.SG.DataCut.densInputAt_of_loc (densLocBound_of_tied hL)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem densInputT_holds : DensInputT := fun D hL => Formalism.L2.SG.DataCut.densInputAt_of_loc (densLocBound_of_tied hL)
 

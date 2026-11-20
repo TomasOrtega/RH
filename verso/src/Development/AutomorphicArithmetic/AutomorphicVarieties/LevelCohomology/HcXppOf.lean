@@ -14,16 +14,16 @@ private def eGb {k : Type} [CommRing k] (a : k) : Gb k (-2) :=
     fin_cases i <;> fin_cases j <;> first | (exfalso; revert h; decide) | simp⟩ : gw k (-2))
 
 /- English proof (translation)
-Use `show Matrix.single 2 0 a 2 0 = a`. Conclude with `Matrix.single_apply_same _ _ _`.
+A detailed English derivation is pending.
 -/
 private theorem eGb_val {k : Type} [CommRing k] (a : k) : (eGb a).val 2 0 = a := by
   show Matrix.single 2 0 a 2 0 = a
   exact Matrix.single_apply_same _ _ _
 
 /- English proof (translation)
-Establish `hX : ∀ a b, UpperTheory.V.U3.wt a b ≠ -2 → (X.val : Matrix (Fin 3) (Fin 3) k) a b = 0` using `X.2`. Establish `hY : ∀ a b, UpperTheory.V.U3.wt a b ≠ -2 → (Y.val : Matrix (Fin 3) (Fin 3) k) a b = 0` using `Y.2`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `a b`. Distinguish the cases in `hab : a = 2 ∧ b = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Take `⟨rfl, rfl⟩` from `hab`. Conclude with `h`. Apply the tactic sequence `have hw : UpperTheory.V.U3.wt a b ≠ -2 := by revert hab fin_cases a <;> fin_cases b <;> first | decide | simp [UpperTheory.V.U3.wt, UpperTheory.V.U3.wt1]`. Conclude with `(hX a b hw).trans (hY a b hw).symm`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem gb_ext {k : Type} [CommRing k] {X Y : Gb k (-2)} (h : X.val 2 0 = Y.val 2 0) : X = Y := by
   have hX : ∀ a b, UpperTheory.V.U3.wt a b ≠ -2 → (X.val : Matrix (Fin 3) (Fin 3) k) a b = 0 := X.2
@@ -48,13 +48,13 @@ Both sides reduce to the same expression.
 private theorem gb_sub {k : Type} [CommRing k] (X Y : Gb k (-2)) : (X - Y).val 2 0 = X.val 2 0 - Y.val 2 0 := rfl
 
 /- English proof (translation)
-Rewrite using `[gRep_val, adRep_baseLift_apply]`. Establish `hw : UpperTheory.V.U3.wt 2 0 = -2` using `by decide`. Establish `r0 : Fin.rev (0 : Fin 3) = 2` using `rfl`. Establish `r2 : Fin.rev (2 : Fin 3) = 0` using `rfl`. Rewrite using `[hw, r0, r2, zpow_neg, zpow_ofNat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : c = ((η g : ℤ) : k) * (((Ψ g ^ 2)⁻¹ : kˣ) : k)`. Establish `h0 : c * (((Ψ g ^ 2 : kˣ)) : k) * (((Ψ g ^ 2)⁻¹ : kˣ) : k) = c` using `Units.mul_inv_cancel_right _ _`. Rewrite `h0` using `[Units.val_pow_eq_pow_val, hc]`. Conclude with `h0.symm`. Rewrite using `[hc']`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Int.units_eq_one_or (η g) with h1 | h1` into its components or cases. Rewrite using `[if_pos h1, h1]`. Simplify using `only [Units.val_one, Int.cast_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (by rw [h1]; decide), h1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Units.val_neg, Units.val_one, Int.cast_neg, Int.cast_one]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem gb_rep {k D : Type} [CommRing k] [Group D] (η : D →* ℤˣ) (Ψ : D →* kˣ) (g : D) (X : Gb k (-2))
     (c : k) (hc : c * (Ψ g : k) ^ 2 = ((η g : ℤ) : k)) :
@@ -81,17 +81,15 @@ private theorem gb_rep {k D : Type} [CommRing k] [Group D] (η : D →* ℤˣ) (
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O iR iL G' Γ ι iG iT iTG iΓ iTΓ F γ hγ hmain`. Use `show Subsingleton (F.selmerCohomologyQuotient (-2))`. Use `Submodule.Quotient.subsingleton_iff.2 ?_` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce and unpack `⟨f, hf⟩ -`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `show f ∈ B1 (F.gbar (-2))`. Take `⟨hZ, hL⟩` from `Submodule.mem_inf.1 hf`. Take `⟨hcont, hcoc⟩` from `(mem_Z1_iff_cocycle _ _).1 hZ`. Establish `hZL : ∀ v, F.res1 (-2) v f ∈ Z1 (F.gloc (-2) v) ∧ (v ≠ F.vl → ∀ s ∈ F.Nv v, F.res1 (-2) v f s = 0) ∧ (v = F.vl → (-2 : ℤ) < 0 → F.res1 (-2) v f ∈ B1 (F.gloc (-2) v)) ∧ (v = F.vl → (-2 : ℤ) = 0 → ∀ s ∈ F.Iv v, F.res1 (-2) v f s = 0)` using `fun v => (Submodule.mem_iInf _).1 hL v`. Establish `hlc : IsLocallyConstant (fun g => (f g).val 2 0)` using `((IsLocallyConstant.iff_continuous _).2 hcont).comp (fun X : UpperTheory.V.UnitaryThreeInertia.Gb (ResidueField O) (-2) => X.val 2 0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨m, hm⟩` from `hmain (fun g => (f g).val 2 0) hlc (by`. Introduce `g h`. Use `show (f (g * h)).val 2 0 = (f g).val 2 0 + γ g * (f h).val 2 0`. Rewrite using `[hcoc g h, gb_add, gb_rep F.η F.Ψbar g _ (γ g) (hγ g)])`. Use the proof step `(by`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Introduce `v hv s hs`. Establish `h0 : f (F.loc v s) = 0` using `(hZL v).2.1 hv s hs`. Use `show (f (F.loc v s)).val 2 0 = 0`. Rewrite using `[h0]`. Use the proof step `rfl)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `(by`. Take `⟨m, hm⟩` from `(mem_coboundaries1 _ _).1 ((hZL F.vl).2.2.1 rfl (by norm_num))`. Use `⟨m.val 2 0, fun s => ?_⟩` and prove the remaining obligations. Establish `h' : f (F.loc F.vl s) = F.gbar (-2) (F.loc F.vl s) m - m` using `hm s`. Use `show (f (F.loc F.vl s)).val 2 0 = _`.
-
-Rewrite using `[h', gb_sub, gb_rep F.η F.Ψbar _ _ (γ _) (hγ _)])`. Rewrite using `[mem_coboundaries1]`. Use `⟨eGb m, fun g => gb_ext ?_⟩` and prove the remaining obligations. Rewrite using `[gb_sub, gb_rep F.η F.Ψbar g _ (γ g) (hγ g), eGb_val]`. Conclude with `hm g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.X.xppOf :
     ∀ {O : Type} [CommRing O] [IsLocalRing O] {G' Γ ι : Type} [Group G'] [TopologicalSpace G'] [IsTopologicalGroup G'] [Group Γ] [TopologicalSpace Γ] (F : UnitaryThreeInertia.Frame O G' Γ ι) (γ : Γ → ResidueField O), (∀ g, γ g * (F.Ψbar g : ResidueField O) ^ 2 = ((F.η g : ℤ) : ResidueField O)) → (∀ z : Γ → ResidueField O, IsLocallyConstant z → (∀ g h, z (g * h) = z g + γ g * z h) → (∀ v, v ≠ F.vl → ∀ s ∈ F.Nv v, z (F.loc v s) = 0) → (∃ m, ∀ s, z (F.loc F.vl s) = γ (F.loc F.vl s) * m - m) → ∃ m, ∀ g, z g = γ g * m - m) → F.Xpp := by

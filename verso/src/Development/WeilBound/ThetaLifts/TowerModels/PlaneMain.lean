@@ -24,41 +24,31 @@ structure IsEps (σ : E →ₐ[F] E) (B : Base F E) (ε : E) (κ : ℂ) (D : Sub
   bas : ∀ v : B.P, IsSplitBasis (B.τ v) X.L (X.bas v)
 
 /- English proof (translation)
-Establish `hcm : IsCMExt F E σ` using `hB.cm`. Establish `hκ0 : κ ≠ 0` using `left_ne_zero_of_mul_eq_one hκ1`. Apply the tactic sequence `have hεε : ε * ε = 1 := by rcases hε with rfl | rfl <;> simp`. Establish `hεL : ∀ a ∈ Y.L, ε • a ∈ Y.L` using `fun a ha => by`. Break down `hε with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using ha`. Simplify using `using ha`. Establish `hdet : Y.J.det ≠ 0` using `fun h0 => by`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Use `det_ne_zero_of_hasSig (hY.sig w) ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.det_smul, show (Y.J.map (B.emb w).1).det = (B.emb w).1 Y.J.det from (RingHom.map_det _ _).symm, h0, map_zero, mul_zero]`. Take `⟨θ₀, hθ₀⟩ : ∃ θ : 𝓞 E, (θ : E) + σ θ = 1` from `by haveI : Algebra.Unramified (𝓞 F) (𝓞 E) := hB.unram`. Conclude with `GlobalTheory.exists_integer_add_conj_eq_one_of_formallyUnramified F E σ hB.cm inferInstance`. Take `⟨x₀, hx₀, hx₀x₀⟩` from `exists_isotropic hcm B.emb (by omega) hr hs hdet hε hY.herm hκ0 hκ hY.sig`. Take `⟨x, y, hxx, hyy, hxy, hL, hP⟩` from `exists_adapted_pair hcm hdet hε hY.herm D hD1 Y.L hY.lat hY.dual θ₀ hθ₀ B.P B.τ hDτ x₀ hx₀ hx₀x₀`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hyx : form σ Y.J y x = ε`. Use `form_swap hcm hY.herm x y` as an intermediate fact. Rewrite `this` using `[hxy, map_one]`. Take the linear combination `-ε * this - form σ Y.J y x * hεε`. Take `⟨ι, P, hPι, horth, hcomp⟩` from `exists_compl (σ := σ) n n₁ Y.J x y hn hxx hyy hxy (by rw [hyx]; exact left_ne_zero_of_mul_eq_one hεε)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsplit : ∀ z ∈ Y.L, ∃ (s t : E) (u : Fin n₁ → E), s • x ∈ Y.L ∧ t • y ∈ Y.L ∧ ι *ᵥ u ∈ Y.L ∧ z = s • x + ι *ᵥ u + t • y`. Introduce `z hz`. Take `⟨u, hu⟩` from `hcomp (z - form σ Y.J z y • x - (ε * form σ Y.J z x) • y) (by`. Rewrite using `[form_sub_left, form_sub_left, form_smul_left, form_smul_left, hxx, hyx]`. Take the linear combination `-form σ Y.J z x * hεε) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[form_sub_left, form_sub_left, form_smul_left, form_smul_left, hxy, hyy]`. Use the proof step `ring)`. Establish `ht : (ε * form σ Y.J z x) • y ∈ Y.L` using `by rw [mul_smul]; exact hεL _ (hL z hz).1`. Use `⟨_, _, u, (hL z hz).2, ht, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← hu]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Conclude with `Y.L.sub_mem (Y.L.sub_mem hz (hL z hz).2) ht`. Rewrite using `[← hu]`. Normalize the expressions using the abelian group laws. Use `set L₁ := Y.L.comap ((Matrix.mulVecLin ι).restrictScalars (𝓞 E)) with hL₁def`. Establish `hlat₁ : L₁.IsLattice E` using `isLattice_comap n n₁ Y.L ι P hPι hY.lat`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hx0 : x ≠ 0` using `by rintro rfl; simp [form] at hxy`. Take `⟨𝔟, h𝔟⟩` from `exists_ideal n Y.L hY.lat x hx0`. Use `set J₁ := ιᵀ * Y.J * ι.map σ with hJ₁`. Establish `hform₁ : ∀ u u', form σ J₁ u u' = form σ Y.J (ι *ᵥ u) (ι *ᵥ u')` using `form_gram Y.J ι`. Set `e : InfinitePlace F → E →+* ℂ` to `fun w => (B.emb w).1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hreal : ∀ w, HasSig (κ • J₁.map (e w)) (r - 1) (s - 1) ∧ ∃ θ θ₁, IsCartan (κ • Y.J.map (e w)) θ ∧ IsCartan (κ • J₁.map (e w)) θ₁ ∧ θ * ι.map (e w) = ι.map (e w) * θ₁ ∧ (κ • fun i => e w (y i)) = (2 : ℂ) • θ *ᵥ fun i => e w (x i)` using `fun w => by`. Establish `cg : (ι.map (e w))ᵀ * (κ • Y.J.map (e w)) * (ι.map (e w)).map star = κ • J₁.map (e w)`. Rewrite using `[Matrix.mul_smul, Matrix.smul_mul, map_gram hcm]`. Rewrite using `[← cg]`. Use `real_plane _ _ _ _ (P.map (e w)) hn (map_herm hcm _ (hκ _) hY.herm) ?_ ?_ ?_ ?_ ?_ ?_ (hY.sig w)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, ← map_form hcm, hxx, map_zero, smul_zero]`. Rewrite using `[star_smul, Matrix.mulVec_smul, Matrix.smul_mulVec, smul_dotProduct, dotProduct_smul, dotProduct_smul, ← map_form hcm, hyy, map_zero, smul_zero, smul_zero, smul_zero]`. Rewrite using `[star_smul, Matrix.mulVec_smul, Matrix.smul_mulVec, dotProduct_smul, dotProduct_smul, ← map_form hcm, hxy, map_one, smul_eq_mul, smul_eq_mul, mul_one, mul_comm, hκ1]`. Rewrite using `[Matrix.smul_mulVec, Matrix.mulVec_smul, map_orth hcm _ Y.J ι x (fun u => (horth u).1), smul_zero]`. Rewrite using `[star_smul, Matrix.mulVec_smul, Matrix.smul_mulVec, Matrix.mulVec_smul, Matrix.mulVec_smul, map_orth hcm _ Y.J ι y (fun u => (horth u).2), smul_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite using `[← Matrix.map_mul, hPι, Matrix.map_one _ (map_zero _) (map_one _)]`. Use `choose hsig₁ θ θ₁ hθ hθ₁ hθι hθx using hreal`. Use `haveI := hlat₁`. Establish `hb₁ : ∀ v : B.P, ∃ β, IsSplitBasis (B.τ v) L₁ β` using `fun v => exists_isSplitBasis (B.τ v) L₁ hcm`. Use `choose β₁ hβ₁ using hb₁`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Set `bas₁ : ∀ v : Pl F, GL (Fin n₁) (Fv F v)` to `fun v => if h : v ∈ B.P then β₁ ⟨v, h⟩ else 1`. Establish `hbas₁ : ∀ v : B.P, bas₁ v = β₁ v` using `fun v => by simp only [bas₁, dif_pos v.2]`. Use `choose β hβ using fun v : B.P => exists_basis (B.τ v) n n₁ Y.L x y ι (β₁ v) i₀ i₁ hn h01 h1n hY.lat hsplit (hP v).1 (hP v).2 (hβ₁ v)`. Set `bas : ∀ v : Pl F, GL (Fin n) (Fv F v)` to `fun v => if h : v ∈ B.P then β ⟨v, h⟩ else Y.bas v`. Establish `hbas : ∀ v : B.P, bas v = β v` using `fun v => by simp only [bas, dif_pos v.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `Y₁ : Spc F E n₁` to `⟨J₁, L₁, θ₁, bas₁⟩`. Set `Y' : Spc F E n` to `⟨Y.J, Y.L, θ, bas⟩`. Use `⟨Y', Y₁, ⟨x, y, ι, 𝔟⟩, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `{ herm := hY.herm, sig := hY.sig, lat := hY.lat, dual := hY.dual, cartan := hθ bas := fun v => by`. Rewrite using `[show (GlobalTheory.ThK.reS Y Y').bas v = β v from hbas v]`.
-
-Conclude with `(hβ v).2 }`. Conclude with `{ herm := fun i j => by show σ (J₁ j i) = ε * J₁ i j`. Rewrite using `[← form_single (σ := σ) J₁ j i, ← form_single (σ := σ) J₁ i j, hform₁, hform₁, form_swap hcm hY.herm]`. Use `sig := hsig₁`. Use `lat := hlat₁`.
-
-Use `dual := fun u => by show u ∈ L₁ ↔ ∀ u' ∈ L₁, form σ J₁ u u' ∈ D`. Use `⟨fun hu u' hu' => ?_, fun H => ?_⟩` and prove the remaining obligations. Rewrite using `[hform₁]`. Conclude with `(hY.dual _).1 hu _ hu'`. Use `show ι *ᵥ u ∈ Y.L`.
-
-Use `(hY.dual _).2 fun z hz => ?_` and prove the remaining obligations. Take `⟨_, _, u', -, -, hu', hz'⟩` from `hsplit z hz`. Rewrite using `[hz', form_add_right, form_add_right, form_smul_right, form_smul_right, (horth u).1, (horth u).2, mul_zero, mul_zero, zero_add, add_zero, ← hform₁]`. Conclude with `H u' hu'`. Use `cartan := hθ₁`.
-
-Use `bas := fun v => by`. Rewrite using `[show Y₁.bas v = β₁ v from hbas₁ v]`. Conclude with `hβ₁ v }`. Conclude with `{ rank := hn, xx := hxx, yy := hyy, xy := hxy, orth := horth, gram := rfl, low := fun u => Iff.rfl split := hsplit ideal := h𝔟 cartan := fun w => ⟨hθι w, κ⁻¹ * 2, mul_ne_zero (inv_ne_zero hκ0) two_ne_zero, by`. Rewrite using `[mul_smul]`.
-
-Conclude with `(eq_inv_smul_iff₀ hκ0).2 (hθx w)⟩`. Use `bas := fun v i => by`. Rewrite using `[show (GlobalTheory.ThK.reS Y Y').bas v = β v from hbas v, show Y₁.bas v = β₁ v from hbas₁ v]`. Conclude with `(hβ v).1 i }`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_plane {B : Base F E} (hB : B.IsGood σ) {ε : E} (hε : ε = 1 ∨ ε = -1) {κ : ℂ} (hκ1 : κ * star κ = 1)
     (hκ : ∀ e : E →+* ℂ, star κ * e ε = κ) (D : Submodule (𝓞 E) E) (hD1 : (1 : E) ∈ D)
@@ -173,14 +163,14 @@ theorem exists_plane {B : Base F E} (hB : B.IsGood σ) {ε : E} (hε : ε = 1 �
               exact (hβ v).1 i }
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨by simpa using h.herm, by simpa using h.sig, h.lat, h.dual, by simpa using h.cartan, h.bas⟩, fun h => ⟨by simpa using h.herm, by simpa using h.sig, h.lat, h.dual, by simpa using h.cartan, h.bas⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isHerm_iff {B : Base F E} {n : ℕ} {X : Spc F E n} {r s : ℕ} : X.IsHerm σ B r s ↔ IsEps σ B 1 1 (intE E) X r s :=
   ⟨fun h => ⟨by simpa using h.herm, by simpa using h.sig, h.lat, h.dual, by simpa using h.cartan, h.bas⟩,
     fun h => ⟨by simpa using h.herm, by simpa using h.sig, h.lat, h.dual, by simpa using h.cartan, h.bas⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨by simpa using h.skew, h.sig, h.lat, h.dual, h.cartan, h.bas⟩, fun h => ⟨by simpa using h.herm, h.sig, h.lat, h.dual, h.cartan, h.bas⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSkew_iff {B : Base F E} {n : ℕ} {X : Spc F E n} {r s : ℕ} :
     X.IsSkew σ B r s ↔ IsEps σ B (-1) Complex.I (codE E) X r s :=

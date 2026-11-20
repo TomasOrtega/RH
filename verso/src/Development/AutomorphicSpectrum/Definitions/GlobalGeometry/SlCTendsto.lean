@@ -20,7 +20,7 @@ def jp : ℕ := D.R.m - ((i : ℕ) + 1)
 def pp : ℕ := (D.R.sigW ((i : ℕ) + 1)).1
 
 /- English proof (translation)
-Use `i.2` as an intermediate fact. Use `D.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [pp, jp, Ranks.sigW, Ranks.r]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem pp_add_jp : pp D i + jp D i = D.R.r := by
   have := i.2
@@ -87,7 +87,7 @@ structure SharpGeo (Q : Par D) (M : ℕ) : Type 1 where
   e_val : ∀ i Z, evC (gen i) Z (e i Z) = 1 ∧ ∀ Z', Z' ≠ Z → evC (gen i) Z' (e i Z) = 0
 
 /- English proof (translation)
-Rewrite using `[S.comps i]`. Conclude with `Fintype.card_pos_iff.mpr ⟨(S.dict i _ 1).1⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SharpGeo.card_pos {Q : Par D} {M : ℕ} (S : SharpGeo Q M) (i : Fin D.R.m) : 0 < Nat.card (Comp (S.Xo i) S.c) := by
   rw [S.comps i]
@@ -134,7 +134,7 @@ def slC {up : RW D} (B : MbarIn S i up) (Z : Cmp S i) : ℝ :=
   limUnder (𝓝[>] (0 : ℚ)) fun s => B.top Z s / (((Dn D : ℝ) + 1) * B.dg Z s)
 
 /- English proof (translation)
-The claim follows from `tendsto_nhds_limUnder (B.conv Z)`.
+A detailed English derivation is pending.
 -/
 theorem slC_tendsto {up : RW D} (B : MbarIn S i up) (Z : Cmp S i) :
     Tendsto (fun s => B.top Z s / (((Dn D : ℝ) + 1) * B.dg Z s)) (𝓝[>] 0) (𝓝 (slC S i B Z)) :=

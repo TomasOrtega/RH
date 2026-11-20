@@ -13,11 +13,11 @@ variable {ι : Type*} [Fintype ι] {κ : ι → Type*} [∀ i, Fintype (κ i)] {
   [∀ i j, MeasurableSpace (Y i j)]
 
 /- English proof (translation)
-Use `⟨(MeasurableEquiv.piCurry Y).measurable, ?_⟩` and prove the remaining obligations. Use `symm`. Use `Measure.pi_eq_generateFrom (C := fun i => Set.univ.pi '' Set.univ.pi fun j => {s : Set (Y i j) | MeasurableSet s}) (fun i => generateFrom_pi) (fun i => isPiSystem_pi) (fun i => Measure.FiniteSpanningSetsIn.pi fun j => (μ i j).toFiniteSpanningSetsIn) fun s hs => ?_` and prove the remaining obligations. Use `choose S hS hSs using hs`. Establish `hpre : (MeasurableEquiv.piCurry Y) ⁻¹' (Set.univ.pi s) = Set.univ.pi fun p : (i : ι) × κ i => S p.1 p.2`.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `f`. Simplify using `only [Set.mem_preimage, Set.mem_univ_pi, ← hSs, MeasurableEquiv.piCurry_apply, Sigma.forall]`. Both sides reduce to the same expression. Rewrite using `[Measure.map_apply (MeasurableEquiv.piCurry Y).measurable (MeasurableSet.univ_pi fun i => by`. Rewrite using `[← hSs i]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `MeasurableSet.univ_pi fun j => hS i j (Set.mem_univ j)), hpre, Measure.pi_pi,`. Use the proof step `Fintype.prod_sigma]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← hSs i, Measure.pi_pi]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_piCurry (μ : ∀ i j, Measure (Y i j)) [∀ i j, SigmaFinite (μ i j)] :
     MeasurePreserving (MeasurableEquiv.piCurry Y) (Measure.pi fun p : (i : ι) × κ i => μ p.1 p.2)
@@ -51,7 +51,7 @@ def restrictCols (P : Finset C) (X : Matrix A C k) : Matrix A P k := Matrix.of f
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype A] in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[restrictCols, setCols, j.2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem restrictCols_setCols (P : Finset C) (Y : Matrix A C k) (U : Matrix A P k) :
     restrictCols P (setCols P Y U) = U := by
@@ -59,14 +59,14 @@ Use extensionality with `i j`. Simplify using `[restrictCols, setCols, j.2]`.
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype A] in
 /- English proof (translation)
-Apply the tactic sequence `ext i j; by_cases h : j ∈ P <;> simp [restrictCols, setCols, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 @[simp] theorem setCols_restrictCols (P : Finset C) (Y : Matrix A C k) : setCols P Y (restrictCols P Y) = Y := by
   ext i j; by_cases h : j ∈ P <;> simp [restrictCols, setCols, h]
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [Fintype A] in
 /- English proof (translation)
-Apply the tactic sequence `ext i j; by_cases h : j ∈ P <;> simp [setCols, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 @[simp] theorem setCols_setCols (P : Finset C) (Y : Matrix A C k) (U V : Matrix A P k) :
     setCols P (setCols P Y U) V = setCols P Y V := by
@@ -74,16 +74,14 @@ Apply the tactic sequence `ext i j; by_cases h : j ∈ P <;> simp [setCols, h]`.
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fintype A] in
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => continuous_pi fun j => (continuous_apply (j : C)).comp (continuous_apply i)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_restrictCols (P : Finset C) : Continuous (restrictCols (k := k) (A := A) P) :=
   continuous_pi fun i => continuous_pi fun j => (continuous_apply (j : C)).comp (continuous_apply i)
 
 omit [ValuativeRel k] [IsNonarchimedeanLocalField k] [Fintype A] in
 /- English proof (translation)
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Distinguish the cases in `h : j ∈ P`. Simplify using `only [setCols, of_apply, dif_pos h]`. Conclude with `(continuous_apply (⟨j, h⟩ : P)).comp (continuous_apply i)`. Simplify using `only [setCols, of_apply, dif_neg h]`.
-
-Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_setCols (P : Finset C) (Y : Matrix A C k) : Continuous (setCols P Y) := by
   refine continuous_pi fun i => continuous_pi fun j => ?_
@@ -94,7 +92,7 @@ theorem continuous_setCols (P : Finset C) (Y : Matrix A C k) : Continuous (setCo
     exact continuous_const
 
 /- English proof (translation)
-Use `haveI := t2Space k`. Use `⟨hΞ.1.comp_continuous (continuous_setCols P Y), HasCompactSupport.intro (hΞ.2.image (continuous_restrictCols P)) fun U hU => ?_⟩` and prove the remaining obligations. Conclude with `image_eq_zero_of_notMem_tsupport fun h => hU ⟨_, h, restrictCols_setCols P Y U⟩`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem comp_setCols_mem_SB {Ξ : Matrix A C k → ℂ} (hΞ : Ξ ∈ SB (Matrix A C k)) (P : Finset C)
     (Y : Matrix A C k) : (fun U => Ξ (setCols P Y U)) ∈ SB (Matrix A P k) := by
@@ -104,7 +102,7 @@ theorem comp_setCols_mem_SB {Ξ : Matrix A C k → ℂ} (hΞ : Ξ ∈ SB (Matrix
   exact image_eq_zero_of_notMem_tsupport fun h => hU ⟨_, h, restrictCols_setCols P Y U⟩
 
 /- English proof (translation)
-Simplify using `only [pairCols, dotProduct, Fintype.sum_sigma]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairCols_eq_dotProduct (P : Finset C) (Y : Matrix A C k) (U : Matrix A P k) :
     pairCols P Y U = (fun p : (_ : A) × P => U p.1 p.2) ⬝ᵥ (fun p : (_ : A) × P => Y p.1 p.2) := by
@@ -115,7 +113,7 @@ variable [MeasurableSpace k] [BorelSpace k]
 omit [DecidableEq C] in
 
 /- English proof (translation)
-Use `haveI := secondCountable k`. Use `haveI := t2Space k`. Use `haveI : (Measure.pi fun _ : B => m).IsAddHaarMeasure := inferInstance`. Conclude with `Measure.pi.isAddHaarMeasure (fun _ : A => (Measure.pi fun _ : B => m))`.
+A detailed English derivation is pending.
 -/
 theorem isAddHaarMeasure_volM (m : Measure k) [m.IsAddHaarMeasure] (B : Type*) [Fintype B] :
     (volM m A B).IsAddHaarMeasure := by
@@ -126,7 +124,7 @@ theorem isAddHaarMeasure_volM (m : Measure k) [m.IsAddHaarMeasure] (B : Type*) [
 omit [DecidableEq C] in
 
 /- English proof (translation)
-Establish `h` using `measurePreserving_piCurry (Y := fun (_ : A) (_ : B) => k) (fun _ _ => m)`. Conclude with `(h.integral_comp' (g := f)).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_volM (m : Measure k) [SigmaFinite m] (B : Type*) [Fintype B] (f : Matrix A B k → ℂ) :
     ∫ U, f U ∂(volM m A B) =
@@ -135,7 +133,7 @@ theorem integral_volM (m : Measure k) [SigmaFinite m] (B : Type*) [Fintype B] (f
   exact (h.integral_comp' (g := f)).symm
 
 /- English proof (translation)
-Rewrite using `[fourierInt, integral_volM]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[pairCols_eq_dotProduct]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fourierInt_eq_pi (ψ : AddChar k Circle) (m : Measure k) [SigmaFinite m] (P : Finset C)
     (Φ : Matrix A C k → ℂ) (Y : Matrix A C k) :
@@ -153,7 +151,7 @@ namespace GlobalTheory.ColFourier
 variable {k : Type*} [Field k] [ValuativeRel k]
 
 /- English proof (translation)
-Introduce `x` and use `by simpa only [AddChar.inv_apply', inv_eq_one] using h x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem hasConductor_inv {ψ : AddChar k Circle} {c : kˣ} (h : HasConductor ψ c) : HasConductor ψ⁻¹ c := fun x => by
   simpa only [AddChar.inv_apply', inv_eq_one] using h x

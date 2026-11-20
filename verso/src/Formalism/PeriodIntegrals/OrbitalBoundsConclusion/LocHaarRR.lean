@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.LocHaarRR
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalHaarSubgroup.MemOrdR
 
 /- English proof (translation)
-The claim follows from `PI.LocHaarRRW.target`.
+A detailed English derivation is pending.
 -/
 theorem local_haar_real_real : PI.LocHaarRR.Target := PI.LocHaarRRW.target

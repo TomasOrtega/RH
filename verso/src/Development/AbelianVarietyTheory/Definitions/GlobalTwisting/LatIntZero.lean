@@ -33,7 +33,7 @@ def Per (d : ℕ) (ι : ℂ ≃+* ℂ_[q]) (δ₀ : ℂ) (θ : ℂ → ℂ) (Ω 
   ‖Ω‖ = 1 ∧ ThetaLaws ι d (Ω / ι δ₀) θ ∧ ∃ M : Mdl q, M.ι = ι ∧ IsOK d M.L ∧ M.MChart (Ω / ι δ₀)
 
 /- English proof (translation)
-Introduce `κ _ v _`. Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Introduce `k j f _`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem latInt_zero (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (Λ : AddSubgroup V) : LatInt ι ω Λ (fun _ => 0) := by
   intro κ _ v _
@@ -42,11 +42,11 @@ theorem latInt_zero (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (Λ : AddSubgroup V)
   simp
 
 /- English proof (translation)
-Introduce `κ _ v _`. Use `⟨ContinuousMap.evalCLM ℂ_[q] 0, ?_, ?_⟩` and prove the remaining obligations. Use `ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun f => ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `f.norm_coe_le_norm 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k j f hf`. Rewrite using `[ContinuousMap.evalCLM_apply, hf]`. Consider the cases of `k with`. Consider the case `zero => simp`. Consider the case `succ k`.
+Rewrite the conclusion using the stated equalities. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[iteratedFDeriv_const_of_ne (Nat.succ_ne_zero k), Finset.prod_eq_zero (Finset.mem_univ 0)]`. Simplify using the standard rewrite rules. Simplify using `[zc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem latInt_one (ι : ℂ ≃+* ℂ_[q]) (ω : ℂ_[q]) (Λ : AddSubgroup V) : LatInt ι ω Λ (fun _ => 1) := by
   intro κ _ v _

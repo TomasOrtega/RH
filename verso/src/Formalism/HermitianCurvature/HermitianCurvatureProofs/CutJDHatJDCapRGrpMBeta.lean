@@ -11,25 +11,25 @@ namespace RvB
 variable {k r : ℕ}
 
 /- English proof (translation)
-Simplify using `only [eI, esI, ne_eq, Fin.ext_iff]`. Use `a.isLt` as an intermediate fact. Use `b.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem eI_ne_esI (a b : Fin r) : eI k r a ≠ esI k r b := by
   simp only [eI, esI, ne_eq, Fin.ext_iff]; have := a.isLt; have := b.isLt; omega
 
 /- English proof (translation)
-Simplify using `only [eI, Fin.ext_iff] at h`. Conclude with `Fin.ext h`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eI_inj {a b : Fin r} (h : eI k r a = eI k r b) : a = b := by
   simp only [eI, Fin.ext_iff] at h; exact Fin.ext h
 
 /- English proof (translation)
-Simplify using `only [esI, Fin.ext_iff] at h; have := a.isLt; have := b.isLt; exact Fin.ext (by omega)`.
+Simplify using the standard rewrite rules.
 -/
 theorem esI_inj {a b : Fin r} (h : esI k r a = esI k r b) : a = b := by
   simp only [esI, Fin.ext_iff] at h; have := a.isLt; have := b.isLt; exact Fin.ext (by omega)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [bvec, Matrix.mulVec_single_one, Matrix.col_apply, Pi.single_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx3.w1_apply, Formalism.FourierDecayAlt.P.Qx3.sw_e, Formalism.FourierDecayAlt.P.Qx3.dd_e]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem w1_mulVec_bvec_eI (a : Fin r) (c : ℂ) : Q.w1 k r a c *ᵥ bvec (eI k r a) = c • bvec (esI k r a) := by
   funext p
@@ -38,7 +38,7 @@ theorem w1_mulVec_bvec_eI (a : Fin r) (c : ℂ) : Q.w1 k r a c *ᵥ bvec (eI k r
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [bvec, Matrix.mulVec_single_one, Matrix.col_apply, Pi.single_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx3.w1_apply, Formalism.FourierDecayAlt.P.Qx3.sw_es, Formalism.FourierDecayAlt.P.Qx3.dd_es]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem w1_mulVec_bvec_esI (a : Fin r) (c : ℂ) : Q.w1 k r a c *ᵥ bvec (esI k r a) = (star c)⁻¹ • bvec (eI k r a) := by
   funext p
@@ -47,11 +47,11 @@ theorem w1_mulVec_bvec_esI (a : Fin r) (c : ℂ) : Q.w1 k r a c *ᵥ bvec (esI k
   split_ifs <;> simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Rewrite using `[Matrix.mulVec, dotProduct, Finset.sum_eq_single (Formalism.FourierDecayAlt.P.Qx3.sw k b p)]`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx3.w1_apply, if_pos (Formalism.FourierDecayAlt.P.Qx3.sw_sw b p).symm]`. Break down `Formalism.FourierDecayAlt.P.Qx3.tri b p with h | h | ⟨h1', h2'⟩` into its components or cases. Substitute `h` using the available equality.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality.
 
-Rewrite using `[Formalism.FourierDecayAlt.P.Qx3.sw_e, h2, h1, mul_zero]`. Substitute `h` using the available equality. Rewrite using `[Formalism.FourierDecayAlt.P.Qx3.sw_es, h1, h2, mul_zero]`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx3.sw_o b h1' h2', Formalism.FourierDecayAlt.P.Qx3.dd_o b c h1' h2', one_mul]`. Introduce `q _ hq`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: p ≠ Formalism.FourierDecayAlt.P.Qx3.sw k b q` using `fun h => hq (by rw [h, Formalism.FourierDecayAlt.P.Qx3.sw_sw])`. Rewrite using `[Formalism.FourierDecayAlt.P.Qx3.w1_apply, if_neg this, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem w1_mulVec_eq_self_of_eI_esI_eq_zero (b : Fin r) (c : ℂ) (v : Fin (2 * r + k + 1) → ℂ) (h1 : v (eI k r b) = 0)
     (h2 : v (esI k r b) = 0) : Q.w1 k r b c *ᵥ v = v := by
@@ -68,7 +68,7 @@ theorem w1_mulVec_eq_self_of_eI_esI_eq_zero (b : Fin r) (c : ℂ) (v : Fin (2 * 
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons b L ih`. Rewrite using `[List.map_cons, List.prod_cons, ← Matrix.mulVec_mulVec, ih, w1_mulVec_eq_self_of_eI_esI_eq_zero b _ v (hv b).1 (hv b).2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem wl_fixv (c : Fin r → ℂ) (L : List (Fin r)) (v : Fin (2 * r + k + 1) → ℂ)
     (hv : ∀ b, v (eI k r b) = 0 ∧ v (esI k r b) = 0) : (L.map fun b => Q.w1 k r b (c b)).prod *ᵥ v = v := by
@@ -78,11 +78,11 @@ theorem wl_fixv (c : Fin r → ℂ) (L : List (Fin r)) (v : Fin (2 * r + k + 1) 
     rw [List.map_cons, List.prod_cons, ← Matrix.mulVec_mulVec, ih, w1_mulVec_eq_self_of_eI_esI_eq_zero b _ v (hv b).1 (hv b).2]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons b L ih`. Rewrite `hL` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, ← Matrix.mulVec_mulVec, ih hL.2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[if_neg hL.1, w1_mulVec_bvec_eI, if_pos List.mem_cons_self]`. Establish `hmem : (a ∈ b :: L) ↔ a ∈ L` using `by simp [hab]`. Distinguish the cases in `h1 : a ∈ L`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h1, if_pos (hmem.2 h1), Matrix.mulVec_smul, Formalism.FourierDecayAlt.P.Qx3.reflection_fixes_basis_vector b _ (fun h => eI_ne_esI b a h.symm) (fun h => hab (esI_inj h))]`. Rewrite using `[if_neg h1, if_neg (fun h => h1 (hmem.1 h)), Formalism.FourierDecayAlt.P.Qx3.reflection_fixes_basis_vector b _ (fun h => hab (eI_inj h)) (fun h => eI_ne_esI a b h)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem wl_e (c : Fin r → ℂ) (L : List (Fin r)) (hL : L.Nodup) (a : Fin r) :
     (L.map fun b => Q.w1 k r b (c b)).prod *ᵥ bvec (eI k r a) =
@@ -103,11 +103,11 @@ theorem wl_e (c : Fin r → ℂ) (L : List (Fin r)) (hL : L.Nodup) (a : Fin r) :
           (fun h => hab (eI_inj h)) (fun h => eI_ne_esI a b h)]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons b L ih`. Rewrite `hL` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, ← Matrix.mulVec_mulVec, ih hL.2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Rewrite using `[if_neg hL.1, w1_mulVec_bvec_esI, if_pos List.mem_cons_self]`. Establish `hmem : (a ∈ b :: L) ↔ a ∈ L` using `by simp [hab]`. Distinguish the cases in `h1 : a ∈ L`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h1, if_pos (hmem.2 h1), Matrix.mulVec_smul, Formalism.FourierDecayAlt.P.Qx3.reflection_fixes_basis_vector b _ (fun h => hab (eI_inj h)) (fun h => eI_ne_esI a b h)]`. Rewrite using `[if_neg h1, if_neg (fun h => h1 (hmem.1 h)), Formalism.FourierDecayAlt.P.Qx3.reflection_fixes_basis_vector b _ (fun h => eI_ne_esI b a h.symm) (fun h => hab (esI_inj h))]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem wl_es (c : Fin r → ℂ) (L : List (Fin r)) (hL : L.Nodup) (a : Fin r) :
     (L.map fun b => Q.w1 k r b (c b)).prod *ᵥ bvec (esI k r a) =
@@ -134,40 +134,40 @@ theorem wc_list (c : Fin r → ℂ) : Q.wCell k r (Fin.last r) c =
     (((List.finRange r).filter fun a => a.val < (Fin.last r).val).map fun a => Q.w1 k r a (c a)).prod := rfl
 
 /- English proof (translation)
-The claim follows from `(List.nodup_finRange r).filter _`.
+A detailed English derivation is pending.
 -/
 theorem wc_nodup : ((List.finRange r).filter fun a : Fin r => a.val < (Fin.last r).val).Nodup :=
   (List.nodup_finRange r).filter _
 
 /- English proof (translation)
-Rewrite using `[List.mem_filter]; exact ⟨List.mem_finRange a, by simp [a.isLt]⟩`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem wc_mem (a : Fin r) : a ∈ ((List.finRange r).filter fun a : Fin r => a.val < (Fin.last r).val) := by
   rw [List.mem_filter]; exact ⟨List.mem_finRange a, by simp [a.isLt]⟩
 
 /- English proof (translation)
-Rewrite using `[wc_list, wl_e c _ wc_nodup, if_pos (wc_mem a)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem W_e (c : Fin r → ℂ) (a : Fin r) :
     Q.wCell k r (Fin.last r) c *ᵥ bvec (eI k r a) = c a • bvec (esI k r a) := by
   rw [wc_list, wl_e c _ wc_nodup, if_pos (wc_mem a)]
 
 /- English proof (translation)
-Rewrite using `[wc_list, wl_es c _ wc_nodup, if_pos (wc_mem a)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem W_es (c : Fin r → ℂ) (a : Fin r) :
     Q.wCell k r (Fin.last r) c *ᵥ bvec (esI k r a) = (star (c a))⁻¹ • bvec (eI k r a) := by
   rw [wc_list, wl_es c _ wc_nodup, if_pos (wc_mem a)]
 
 /- English proof (translation)
-Rewrite using `[wc_list, wl_fixv c _ v hv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem W_fix (c : Fin r → ℂ) (v : Fin (2 * r + k + 1) → ℂ) (hv : ∀ b, v (eI k r b) = 0 ∧ v (esI k r b) = 0) :
     Q.wCell k r (Fin.last r) c *ᵥ v = v := by
   rw [wc_list, wl_fixv c _ v hv]
 
 /- English proof (translation)
-Establish `hW' : Wᴴ * Hpk k r * W = Hpk k r` using `hW`. Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hW']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_uh {W : Q.Mx k r} (hW : W ∈ UH (Hpk k r)) (x y : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (W *ᵥ x) (W *ᵥ y) = herm (Hpk k r) x y := by
@@ -176,7 +176,7 @@ theorem herm_uh {W : Q.Mx k r} (hW : W ∈ UH (Hpk k r)) (x y : Fin (2 * r + k +
   rw [Matrix.star_mulVec, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hW']
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[star_smul, smul_dotProduct, smul_eq_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_smul_right (x w : Fin (2 * r + k + 1) → ℂ) (s : ℂ) :
     herm (Hpk k r) x (s • w) = star s * herm (Hpk k r) x w := by
@@ -184,7 +184,7 @@ theorem herm_smul_right (x w : Fin (2 * r + k + 1) → ℂ) (s : ℂ) :
   rw [star_smul, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Unfold `herm bvec`. Rewrite using `[Matrix.mulVec_single_one]`. Simplify using `[dotProduct, Pi.single_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem herm_bvec (p q : Fin (2 * r + k + 1)) : herm (Hpk k r) (bvec q) (bvec p) = Hpk k r p q := by
   unfold herm bvec
@@ -196,9 +196,9 @@ section what₂
 variable {c : Fin r → ℂ} {g : Q.Mx k r}
 
 /- English proof (translation)
-Establish `hW : Q.wCell k r (Fin.last r) c ∈ UH (Hpk k r)` using `(Formalism.FourierDecayAlt.P.Qx3.wlist_glev hc ((List.finRange r).filter fun a : Fin r => a.val < (Fin.last r).val)).1`. Establish `hca : star (c a) ≠ 0` using `star_ne_zero.2 (hc a)`. Establish `he : bvec (eI k r a) = Q.wCell k r (Fin.last r) c *ᵥ (star (c a) • bvec (esI k r a))`. Rewrite using `[Matrix.mulVec_smul, W_es, smul_smul, mul_inv_cancel₀ hca, one_smul]`. Establish `hges : g *ᵥ bvec (esI k r a) = bvec (esI k r a)` using `(hg.2 a (by simp [a.isLt])).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mulVec_mulVec, he, herm_uh hW, herm_smul_right, star_star, ← hges, herm_uh hg.1, herm_bvec, Formalism.FourierDecayAlt.P.Qx3.hpk_row_es]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem row_e (hc : c ∈ OmX r) (hg : g ∈ Q.Glev k r (Fin.last r)) (a : Fin r) (q : Fin (2 * r + k + 1)) :
     herm (Hpk k r) ((Q.wCell k r (Fin.last r) c * g) *ᵥ bvec q) (bvec (eI k r a)) =
@@ -214,7 +214,7 @@ theorem row_e (hc : c ∈ OmX r) (hg : g ∈ Q.Glev k r (Fin.last r)) (a : Fin r
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hW : Q.wCell k r (Fin.last r) c ∈ UH (Hpk k r)` using `(Formalism.FourierDecayAlt.P.Qx3.wlist_glev hc ((List.finRange r).filter fun a : Fin r => a.val < (Fin.last r).val)).1`. Establish `hzf : Q.wCell k r (Fin.last r) c *ᵥ z = z` using `W_fix c z fun b => ⟨hz _ (Or.inl (by simp [eI])), hz _ (Or.inr (by simp [esI]; have := b.isLt; omega))⟩`. Use `conv_lhs => rw [← hzf]`. Rewrite using `[← Matrix.mulVec_mulVec, herm_uh hW]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem herm_wCell_last_mul_mulVec_eq_of_inWb (hc : c ∈ OmX r) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (v : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) ((Q.wCell k r (Fin.last r) c * g) *ᵥ v) z = herm (Hpk k r) (g *ᵥ v) z := by
@@ -226,13 +226,13 @@ theorem herm_wCell_last_mul_mulVec_eq_of_inWb (hc : c ∈ OmX r) {z : Fin (2 * r
   rw [← Matrix.mulVec_mulVec, herm_uh hW]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hg.2 a (by simp [a.isLt])`. Establish `hz1 : z (esI k r a) = 0` using `hz _ (Or.inr (by simp [esI]; have := a.isLt; omega))`. Establish `hz2 : z (eI k r a) = 0` using `hz _ (Or.inl (by simp [eI]))`. Rewrite using `[h1, h2]`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Simplify using `only [herm, bvec, Matrix.mulVec_single_one, dotProduct, Matrix.col_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.FourierDecayAlt.P.Qx3.hpk_col_e]`. Use `split_ifs with h`. Substitute `h` using the available equality.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[hz1]`. Simplify using the standard rewrite rules. Simplify using `only [herm, bvec, Matrix.mulVec_single_one, dotProduct, Matrix.col_apply]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Formalism.FourierDecayAlt.P.Qx3.hpk_col_es]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using `[hz2]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem row_z_e (hg : g ∈ Q.Glev k r (Fin.last r)) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (a : Fin r) :
     herm (Hpk k r) (g *ᵥ bvec (eI k r a)) z = 0 ∧ herm (Hpk k r) (g *ᵥ bvec (esI k r a)) z = 0 := by
@@ -266,7 +266,7 @@ def Arow (c : Fin r → ℂ) (J : Fin (r + k) → Fin (2 * r + k + 1)) (t : Fin 
     else if q = J ⟨p.val - r - 1, by have := p.isLt; omega⟩ then 1 else 0
 
 /- English proof (translation)
-Establish `e : A = A.updateRow p (l • A p')` using `by rw [← hA, Matrix.updateRow_eq_self]`. Rewrite using `[e, Matrix.det_updateRow_smul, Matrix.det_zero_of_row_eq h (by rw [Matrix.updateRow_self, Matrix.updateRow_ne h.symm]), mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_prop {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} {p p' : Fin m} (h : p ≠ p') (l : ℂ) (hA : A p = l • A p') :
     A.det = 0 := by
@@ -275,9 +275,9 @@ theorem det_prop {m : ℕ} {A : Matrix (Fin m) (Fin m) ℂ} {p p' : Fin m} (h : 
     Matrix.det_zero_of_row_eq h (by rw [Matrix.updateRow_self, Matrix.updateRow_ne h.symm]), mul_zero]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `Matrix.det_eq_zero_of_row_eq_zero i (fun j => by simp)`. Consider the case `insert x s hx ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_insert hx, Finset.sum_insert hx, Matrix.det_updateRow_add, Matrix.det_updateRow_smul, ih]`.
+A detailed English derivation is pending.
 -/
 theorem det_updateRow_sum' {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) (i : Fin m) {ι : Type} (s : Finset ι)
     (a : ι → ℂ) (v : ι → Fin m → ℂ) :
@@ -291,7 +291,7 @@ theorem det_updateRow_sum' {m : ℕ} (A : Matrix (Fin m) (Fin m) ℂ) (i : Fin m
     rw [Finset.sum_insert hx, Finset.sum_insert hx, Matrix.det_updateRow_add, Matrix.det_updateRow_smul, ih]
 
 /- English proof (translation)
-Introduce `i j h`. Simplify using `only [colsV, Fin.lt_def] at h ⊢`. Apply the tactic sequence `split_ifs <;> omega`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem colsV_strictMono (t : Fin (k + 1)) : StrictMono (colsV k r t) := by
   intro i j h
@@ -299,7 +299,7 @@ theorem colsV_strictMono (t : Fin (k + 1)) : StrictMono (colsV k r t) := by
   split_ifs <;> omega
 
 /- English proof (translation)
-Simplify using `only [jSetR, Finset.mem_filter, Finset.mem_univ, true_and]`. Use `colsV_strictMono (k := k) (r := r) t` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion.
 -/
 theorem colsV_mem_jSet (t : Fin (k + 1)) : colsV k r t ∈ jSetR k r := by
   classical
@@ -307,9 +307,9 @@ theorem colsV_mem_jSet (t : Fin (k + 1)) : colsV k r t ∈ jSetR k r := by
   convert colsV_strictMono (k := k) (r := r) t
 
 /- English proof (translation)
-Set `f : ℕ → ℂ` to `fun i => if h : i < r then c ⟨i, h⟩ else 1`. Establish `h1 : ∏ p : Fin (2 * r + k + 1), (if h : p.val < r then c ⟨p.val, h⟩ else 1) = ∏ i ∈ Finset.range (2 * r + k + 1), f i` using `Fin.prod_univ_eq_prod_range f _`. Establish `h2 : ∏ a : Fin r, c a = ∏ i ∈ Finset.range r, f i`. Rewrite using `[← Fin.prod_univ_eq_prod_range f r]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[f, a.isLt]`. Rewrite using `[h1, h2, ← Finset.prod_range_mul_prod_Ico f (show r ≤ 2 * r + k + 1 by omega)]`. Rewrite using `[Finset.prod_eq_one (s := Finset.Ico r (2 * r + k + 1)) (fun i hi => by`. Simplify using `only [Finset.mem_Ico] at hi; simp [f, show ¬ i < r by omega]), mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_d (c : Fin r → ℂ) :
     ∏ p : Fin (2 * r + k + 1), (if h : p.val < r then c ⟨p.val, h⟩ else 1) = ∏ a : Fin r, c a := by
@@ -325,7 +325,7 @@ theorem prod_d (c : Fin r → ℂ) :
     simp only [Finset.mem_Ico] at hi; simp [f, show ¬ i < r by omega]), mul_one]
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Arow, Matrix.of_apply, Matrix.diagonal_apply, colsV, eI, wI, Fin.ext_iff, Nat.not_lt_zero, if_false]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem arow_zero (c : Fin r → ℂ) (h0 : 0 < k + 1) :
     Arow c (colsV k r ⟨0, h0⟩) ⟨0, h0⟩ = Matrix.diagonal fun p => if h : p.val < r then c ⟨p.val, h⟩ else 1 := by
@@ -339,13 +339,13 @@ end dets
 section dets2
 
 /- English proof (translation)
-Use extensionality with `p q`. Simplify using `only [Matrix.submatrix_apply, id, Equiv.swap_apply_def]`. Distinguish the cases in `h1 : p = (⟨r, by omega⟩ : Fin (2 * r + k + 1))`. Substitute `h1` using the available equality. Simplify using `only [if_true]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Arow, Matrix.of_apply, colsV, wI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Distinguish the cases in `h2 : p = (⟨r + 1 + t, by omega⟩ : Fin (2 * r + k + 1))`. Substitute `h2` using the available equality. Simplify using `only [if_neg h1, if_true]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `only [Arow, Matrix.of_apply, colsV, wI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Simplify using `only [if_neg h1, if_neg h2]`. Establish `h1' : p.val ≠ r` using `fun h => h1 (Fin.ext h)`. Establish `h2' : p.val ≠ r + 1 + t` using `fun h => h2 (Fin.ext h)`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Arow, Matrix.of_apply, colsV, wI, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem arow_succ (c : Fin r → ℂ) (t : ℕ) (ht : t + 1 < k + 1) :
     Arow c (colsV k r ⟨t + 1, ht⟩) ⟨t + 1, ht⟩ =
@@ -370,7 +370,7 @@ theorem arow_succ (c : Fin r → ℂ) (t : ℕ) (ht : t + 1 < k + 1) :
       split_ifs <;> first | rfl | omega
 
 /- English proof (translation)
-The claim follows from `| 0, ht => by rw [arow_zero c ht, Matrix.det_diagonal, prod_d, pow_zero, one_mul] | t + 1, ht => by rw [arow_succ c t ht, Matrix.det_permute, Equiv.Perm.sign_swap (by simp only [ne_eq, Fin.ext_iff]; omega), det_arow_colsV c t (by omega), pow_succ] push_cast ring`.
+A detailed English derivation is pending.
 -/
 theorem det_arow_colsV (c : Fin r → ℂ) :
     ∀ (t : ℕ) (ht : t < k + 1), (Arow c (colsV k r ⟨t, ht⟩) ⟨t, ht⟩).det = (-1) ^ t * ∏ a, c a
@@ -386,21 +386,19 @@ end dets2
 section dets3
 
 /- English proof (translation)
-Distinguish the cases in `hA : ∃ j : Fin (r + k), (J j).val < r`. Take `⟨j, hj⟩` from `hA`. Establish `hJj : ∀ h, J ⟨r + 1 + j.val - r - 1, h⟩ = J j` using `fun h => congrArg J (Fin.ext (by show r + 1 + j.val - r - 1 = j.val; omega))`. Use `det_prop (p := ⟨(J j).val, by omega⟩) (p' := ⟨r + 1 + j.val, by omega⟩) (by simp only [ne_eq, Fin.ext_iff]; omega) (c ⟨(J j).val, hj⟩) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `q`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Arow, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, dif_pos hj, dif_neg (show ¬ (r + 1 + j.val < r) by omega), dif_neg (show ¬ (r + 1 + j.val = r) by omega), hJj]`. Establish `: eI k r ⟨(J j).val, hj⟩ = J j` using `Fin.ext rfl`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp`. Use `push Not at hA`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hB : ∃ j, J j = wI k r t`. Take `⟨j, hj⟩` from `hB`. Establish `hJj : ∀ h, J ⟨r + 1 + j.val - r - 1, h⟩ = J j` using `fun h => congrArg J (Fin.ext (by show r + 1 + j.val - r - 1 = j.val; omega))`. Use `Matrix.det_zero_of_row_eq (i := ⟨r, by omega⟩) (j := ⟨r + 1 + j.val, by omega⟩) (by simp only [ne_eq, Fin.ext_iff]; omega) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `q`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Arow, Matrix.of_apply, dif_neg (show ¬ (r < r) by omega), dif_neg (show ¬ (r + 1 + j.val < r) by omega), dif_neg (show ¬ (r + 1 + j.val = r) by omega), hJj, hj]`. Conclude with `dif_pos trivial`. Use `push Not at hB`. It suffices to derive a contradiction. Apply `hne` to reduce the goal to its premises.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hsub : Finset.image J Finset.univ ⊆ Finset.image (colsV k r t) Finset.univ`. Introduce `q hq`. Take `⟨j, -, rfl⟩` from `Finset.mem_image.1 hq`. Establish `h1` using `hA j`. Establish `h2 : (J j).val ≠ r + t.val` using `fun h => hB j (Fin.ext (by simp [wI, h]))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hlt` using `(J j).isLt`. Use `Finset.mem_image.2 ⟨⟨if (J j).val < r + t.val then (J j).val - r else (J j).val - r - 1, by` and prove the remaining obligations. Apply the tactic sequence `have := t.isLt; split_ifs <;> omega⟩, Finset.mem_univ _, Fin.ext ?_⟩`. Simplify using `only [colsV]`. Apply the tactic sequence `split_ifs <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcard : (Finset.image (colsV k r t) Finset.univ).card ≤ (Finset.image J Finset.univ).card`. Rewrite using `[Finset.card_image_of_injective _ hJ.injective, Finset.card_image_of_injective _ (colsV_strictMono t).injective]`. Establish `heq` using `Finset.eq_of_subset_of_card_le hsub hcard`. Establish `hrange : Set.range J = Set.range (colsV k r t)`. Use `congrArg (fun s : Finset (Fin (2 * r + k + 1)) => (s : Set (Fin (2 * r + k + 1)))) heq` as an intermediate fact.
-
-Simplify `this` using `[Finset.coe_image]`. Conclude with `(hJ.range_inj (colsV_strictMono t)).1 hrange`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem det_arow_ne (c : Fin r → ℂ) (J : Fin (r + k) → Fin (2 * r + k + 1)) (hJ : StrictMono J) (t : Fin (k + 1))
     (hne : J ≠ colsV k r t) : (Arow c J t).det = 0 := by
@@ -454,9 +452,9 @@ section cell
 variable {c : Fin r → ℂ} {g : Q.Mx k r}
 
 /- English proof (translation)
-Use extensionality with `p q`. Rewrite using `[Matrix.updateRow_apply]`. Distinguish the cases in `hp : p = (⟨r, by omega⟩ : Fin (2 * r + k + 1))`. Rewrite using `[if_pos hp]`. Substitute `hp` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Substitute using the available equality.
 
-Simplify using `only [Arow, Matrix.of_apply, dif_neg (lt_irrefl r), bvec, Pi.single_apply]`. Rewrite using `[dif_pos trivial]`. Rewrite using `[if_neg hp]`. Establish `hp' : p.val ≠ r` using `fun h => hp (Fin.ext h)`. Simplify using `only [Arow, Matrix.of_apply, dif_neg hp']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem arow_update (c : Fin r → ℂ) (J : Fin (r + k) → Fin (2 * r + k + 1)) (t : Fin (k + 1)) :
     (Arow c J ⟨0, by omega⟩).updateRow ⟨r, by omega⟩ (bvec (wI k r t)) = Arow c J t := by
@@ -472,13 +470,13 @@ theorem arow_update (c : Fin r → ℂ) (J : Fin (r + k) → Fin (2 * r + k + 1)
     simp only [Arow, Matrix.of_apply, dif_neg hp']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Rewrite using `[Finset.sum_apply]`. Simplify using `only [Pi.smul_apply, bvec, Pi.single_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Distinguish the cases in `hq : r ≤ q.val ∧ q.val ≤ r + k`. Take `⟨t0, rfl⟩ : ∃ t0 : Fin (k + 1), q = wI k r t0` from `⟨⟨q.val - r, by omega⟩, Fin.ext (by simp only [wI]; omega)⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_eq_single t0 (fun t _ ht => if_neg (fun h => ht (by`. Simplify using `only [wI, Fin.ext_iff] at h; exact Fin.ext (by omega)))) (fun h => absurd (Finset.mem_univ _) h), if_pos rfl]`. Rewrite using `[Finset.sum_eq_zero (fun t _ => if_neg (fun h => hq (by`. Rewrite using `[h]`. Simplify using `only [wI]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `t.isLt` as an intermediate fact. Use the proof step `omega)))]`. Distinguish the cases in `h1 : q.val < r`. Establish `: q = eI k r ⟨q.val, h1⟩` using `Fin.ext rfl`. Rewrite using `[this]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(row_z_e hg hz _).1`. Establish `hq2 : r + k < q.val` using `by omega`. Establish `: q = esI k r ⟨2 * r + k - q.val, by have` using `q.isLt; omega⟩ := Fin.ext (by simp only [esI]; have := q.isLt; omega)`. Rewrite using `[this]`. Conclude with `(row_z_e hg hz _).2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yrow_sum (hg : g ∈ Q.Glev k r (Fin.last r)) {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) :
     (fun q => herm (Hpk k r) (g *ᵥ bvec q) z) =
@@ -502,13 +500,13 @@ theorem yrow_sum (hg : g ∈ Q.Glev k r (Fin.last r)) {z : Fin (2 * r + k + 1) �
       rw [this]; exact (row_z_e hg hz _).2
 
 /- English proof (translation)
-Establish `hM : (Matrix.of fun p q => rowV k r z (Q.wCell k r (Fin.last r) c * g) J p q) = (Arow c J ⟨0, by omega⟩).updateRow ⟨r, by omega⟩ (∑ t : Fin (k + 1), herm (Hpk k r) (g *ᵥ bvec (wI k r t)) z • bvec (wI k r t))`. Rewrite using `[← yrow_sum hg hz]`. Use extensionality with `p q`. Rewrite using `[Matrix.updateRow_apply]`. Distinguish the cases in `hp : p = (⟨r, by omega⟩ : Fin (2 * r + k + 1))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos hp]`. Substitute `hp` using the available equality. Simplify using `only [Matrix.of_apply, rowV, dif_neg (lt_irrefl r)]`. Rewrite using `[dif_pos trivial]`. Conclude with `herm_wCell_last_mul_mulVec_eq_of_inWb hc hz (bvec q)`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hp]`. Establish `hp' : p.val ≠ r` using `fun h => hp (Fin.ext h)`. Simplify using `only [Matrix.of_apply, rowV, Arow]`. Distinguish the cases in `h1 : p.val < r`. Rewrite using `[dif_pos h1, dif_pos h1, row_e hc hg]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg h1, dif_neg h1, dif_neg hp', dif_neg hp']`. Unfold `alJ`. Rewrite using `[hM, det_updateRow_sum' _ _ Finset.univ]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[arow_update]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alJ_cell (hc : c ∈ OmX r) (hg : g ∈ Q.Glev k r (Fin.last r)) {z : Fin (2 * r + k + 1) → ℂ}
     (hz : inWb k r z) (J : Fin (r + k) → Fin (2 * r + k + 1)) :
@@ -538,9 +536,9 @@ theorem alJ_cell (hc : c ∈ OmX r) (hg : g ∈ Q.Glev k r (Fin.last r)) {z : Fi
   rw [arow_update]
 
 /- English proof (translation)
-Rewrite using `[alJ_cell hc hg hz]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : J = colsV k r s`. Substitute `h` using the available equality. Establish `hd : (Arow c (colsV k r s) s).det = (-1) ^ (s : ℕ) * ∏ a, c a` using `det_arow_colsV c s.val s.isLt`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[hd, if_pos rfl, mul_one]`. Rewrite using `[det_arow_ne c J hJ s h, if_neg h, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem alJ_val (hc : c ∈ OmX r) (hg : g ∈ Q.Glev k r (Fin.last r)) {z : Fin (2 * r + k + 1) → ℂ}
     (hz : inWb k r z) (J : Fin (r + k) → Fin (2 * r + k + 1)) (hJ : StrictMono J) :
@@ -560,17 +558,17 @@ end cell
 end RvB
 
 /- English proof (translation)
-Introduce `k r`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Introduce `E _ _ z z' Y f hz c hc g hg`. Establish `hsm : ∀ J ∈ jSetR k r, StrictMono J` using `fun J hJ => by classical`. Simplify `hJ` using `[jSetR]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hL : rvhatOp k r z z' Y f (Q.wCell k r (Fin.last r) c * g) = ∑ t : Fin (k + 1), ∑ s : Fin (k + 1), (((-1 : ℂ) ^ (t : ℕ) * z' (wI k r t)) * (herm (Hpk k r) (g *ᵥ bvec (wI k r s)) z * ((-1) ^ (s : ℕ) * ∏ a, c a))) • qminorOp (Q.EH k r) (colsV k r s) (colsV k r t) (Q.uC k r (Fin.las …`. Unfold `rvhatOp`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl fun J hJ => by rw [RvB.alJ_val hc hg hz J (hsm J hJ)]]`. Repeatedly rewrite using `[Finset.mul_sum, Finset.sum_smul]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single (colsV k r s)]`. Rewrite using `[if_pos rfl, mul_one]`. Introduce `J _ hJ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[if_neg hJ, mul_zero, mul_zero, zero_smul]`. Introduce `h`. Conclude with `absurd (RvB.colsV_mem_jSet s) h`. Establish `hR : NLv k r z z' 0 (Q.uC k r (Fin.last r) Y - 1) f (Q.wCell k r (Fin.last r) c * g) = ∑ s : Fin (k + 1), ∑ t : Fin (k + 1), (((-1 : ℂ) ^ ((s : ℕ) + (t : ℕ))) * herm (Hpk k r) (g *ᵥ bvec (wI k r s)) z * z' (wI k r t)) • qminorOp (Q.EH k r) (colsV k r s) (colsV k r t) (Q.uC k r (F …` using `by show (∑ s : Fin (k + 1), ∑ t : Fin (k + 1), (((-1 : ℂ) ^ ((s : ℕ) + (t : ℕ))) * herm (Hpk k r) ((Q.wCell k r (Fin.last r) c * g) *ᵥ bvec (wI k r s)) z * z' (wI k r t)) • qminorOp (Q.EH k r) (colsV k r s) (colsV k r t) (Q.uC k r (Fin.last r) Y - 1) f (Q.wCell k r (Fin.last r) c …`. Simplify using `only [RvB.herm_wCell_last_mul_mulVec_eq_of_inWb hc hz]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, hR, Finset.smul_sum, Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Rewrite using `[pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mirror_residue_beta_holds : JDRvBeta := by
   intro k r

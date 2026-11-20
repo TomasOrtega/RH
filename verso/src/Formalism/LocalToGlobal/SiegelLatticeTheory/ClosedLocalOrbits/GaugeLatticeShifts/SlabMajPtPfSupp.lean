@@ -14,13 +14,13 @@ namespace Formalism.L2.SG.Pf.SlabMajPt
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hTF` using `Full.frameTie (X := X) u u'`. Establish `hKk` using `Formalism.L2.SG.Closed.TermK_holds (F0 := X.Fu u) (F0' := X.Fu u') (Y.cs u) (Y.cs u') t`. Establish `hNk` using `Formalism.L2.SG.Closed.AdmN_holds (Y.cs u) (Y.cs u') hTF t`. Establish `hGk` using `Formalism.L2.SG.Closed.AdmPar_holds (Y.cs u) (Y.cs u') hTF t`. Take `⟨h, hc, -, hlev⟩` from `Formalism.L2.SG.Pf.NormSteps.levi_onto_reduction Y.TR (Y.cs u') ⟨t.lam', t.mem'⟩ (levi Y.TR (kOf X u u' ((Y.cs u).h ((Y.cs u).base t.lam) : X.B.I.Gf) ((Y.cs u').h ((Y.cs u').base t.lam') : X.B.I.Gf) t.pt))⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hNc` using `Formalism.L2.SG.NormCut.ncong_colDiff u' _ _ hc`. Establish `hGc` using `Formalism.L2.SG.NormCut.good_of_ncong X hc hNc`. Establish `hKkc` using `Formalism.L2.SG.Pf.unitaryCongruence.K_mul X.B.I hKk hc`. Establish `hNkc` using `Formalism.L2.SG.NormCut.ncong_mul X hKk hNk hNc`. Establish `hGkc` using `Formalism.L2.SG.NormCut.good_mul X hGk hGc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlevkc` using `Formalism.L2.SG.NormCut.levi_mul Y.TR hGk hGc`. Rewrite `hlevkc` using `[hlev, mul_inv_cancel]`. Establish `hK2` using `Formalism.L2.SG.NormCut.mem_level_of_unitriangular Y.TR hGkc hNkc (fun v => by`. Rewrite using `[hlevkc, Pi.one_apply]`. Conclude with `Formalism.L2.SG.GGMirabolic.isUni_one)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h, _, Y.hK.2.2.1 _ hK2, ?_⟩` and prove the remaining obligations. Simplify using `only [Formalism.L2.SG.Pf.Slab.aB, kOf, Formalism.L2.SG.Pf.NormSteps.colDS]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem term_supp {D : D7} {X : Formalism.L2.SG.HidaSetting.HidaSetting D} (Y : Full X) (u u' : D.what₂.Word)
     (t : GTerm X u u' (X.Fu u) (X.Fu u') (Y.what₂ u) (Y.what₂ u')) :

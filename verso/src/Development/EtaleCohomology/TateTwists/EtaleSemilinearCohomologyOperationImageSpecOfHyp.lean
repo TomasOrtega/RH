@@ -5,7 +5,7 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace LateralTheory.EtaleFoundations
 
 /- English proof (translation)
-The claim follows from `hImage₂`.
+A detailed English derivation is pending.
 -/
 theorem etale_semilinear_cohomology_operation_image_spec_of_hyp
     (hImage₂ : ∀ (S R : Type) [CommRing S] [CommRing R] {I : Cx S} {J : Cx R} (ρ : SemiMap I J),

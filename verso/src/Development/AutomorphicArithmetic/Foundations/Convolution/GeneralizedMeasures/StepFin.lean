@@ -20,11 +20,11 @@ private noncomputable def trCc {G : Type*} [Group G] [TopologicalSpace G] [IsTop
     exact hx ⟨h⁻¹ * x, subset_tsupport _ hne, by simp⟩
 
 /- English proof (translation)
-Establish `e` using `π.map_comp_integrated ν h (UnitaryRep.ccToL1 ν β)`. Establish `e2 : UnitaryRep.leftTranslate ν h (UnitaryRep.ccToL1 ν β) = UnitaryRep.ccToL1 ν (trCc h β)`. Use `Lp.ext ?_` and prove the remaining obligations. Establish `hc` using `(β.continuous.memLp_of_hasCompactSupport (μ := ν) (p := 1) β.hasCompactSupport).coeFn_toLp`. Establish `hc'` using `((trCc h β).continuous.memLp_of_hasCompactSupport (μ := ν) (p := 1) (trCc h β).hasCompactSupport).coeFn_toLp`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [UnitaryRep.coeFn_leftTranslate ν h (UnitaryRep.ccToL1 ν β), hc', (measurePreserving_mul_left ν h⁻¹).quasiMeasurePreserving.ae_eq_comp hc] with x h1 h2 h3`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `(UnitaryRep.ccToL1 ν β : G → ℂ) (h⁻¹ * x) = (UnitaryRep.ccToL1 ν (trCc h β)) x`. Rewrite using `[show (UnitaryRep.ccToL1 ν β : G → ℂ) (h⁻¹ * x) = β (h⁻¹ * x) from h3, show (UnitaryRep.ccToL1 ν (trCc h β) : G → ℂ) x = trCc h β x from h2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[e2]`. Conclude with `congrArg (fun A : H →L[ℂ] H => A v) e`.
+A detailed English derivation is pending.
 -/
 private theorem map_integrated_trCc {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
@@ -51,7 +51,7 @@ private theorem map_integrated_trCc {H : Type*} [NormedAddCommGroup H] [InnerPro
   exact congrArg (fun A : H →L[ℂ] H => A v) e
 
 /- English proof (translation)
-Unfold `UnitaryRep.ccToL1`. Rewrite using `[← MemLp.toLp_const_smul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem ccToL1_smul {G : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] [OpensMeasurableSpace G]
     (ν : Measure G) [IsFiniteMeasureOnCompacts ν] (a : ℂ) (f : CompactlySupportedContinuousMap G ℂ) :
@@ -61,9 +61,9 @@ private theorem ccToL1_smul {G : Type*} [Group G] [TopologicalSpace G] [Measurab
   rfl
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Rewrite using `[Finset.sum_empty, Finset.sum_empty]`. Unfold `UnitaryRep.ccToL1`. Conclude with `MemLp.toLp_zero _`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Treat this case separately.
 
-Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ← ih]`. Unfold `UnitaryRep.ccToL1`. Rewrite using `[← MemLp.toLp_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem ccToL1_finsetSum {G ι : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] [OpensMeasurableSpace G]
     (ν : Measure G) [IsFiniteMeasureOnCompacts ν] (s : Finset ι) (f : ι → CompactlySupportedContinuousMap G ℂ) :
@@ -81,7 +81,7 @@ private theorem ccToL1_finsetSum {G ι : Type*} [Group G] [TopologicalSpace G] [
     rfl
 
 /- English proof (translation)
-Rewrite using `[ccToL1_finsetSum, map_sum]`. Simplify using `only [ccToL1_smul, map_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem integrated_sum {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {G ι : Type*} [Group G] [TopologicalSpace G] [MeasurableSpace G] [OpensMeasurableSpace G]
@@ -92,7 +92,7 @@ private theorem integrated_sum {H : Type*} [NormedAddCommGroup H] [InnerProductS
   simp only [ccToL1_smul, map_smul]
 
 /- English proof (translation)
-The claim follows from `integrated_sum m ((rightRegularRep (rationalGLOne K n) μ).compHom (MultiplicityOne.finProj K n) MultiplicityOne.continuous_finProj) s a f`.
+A detailed English derivation is pending.
 -/
 private theorem Ofin_sum {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure] {ι : Type*} (s : Finset ι) (a : ι → ℂ) (f : ι → TF K n) :
@@ -100,7 +100,7 @@ private theorem Ofin_sum {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Me
   integrated_sum m ((rightRegularRep (rationalGLOne K n) μ).compHom (MultiplicityOne.finProj K n) MultiplicityOne.continuous_finProj) s a f
 
 /- English proof (translation)
-Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Conclude with `map_integrated_trCc m ((rightRegularRep (rationalGLOne K n) μ).compHom (MultiplicityOne.finProj K n) MultiplicityOne.continuous_finProj) y e v`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem rhoF_comp_Ofin {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (m : Measure (AdelicGLn.FiniteAdelicGL K n)) [m.IsHaarMeasure] (y : AdelicGLn.FiniteAdelicGL K n) (e : TF K n) :
@@ -110,7 +110,7 @@ private theorem rhoF_comp_Ofin {K : Type} [Field K] [NumberField K] {n : ℕ} (�
     ((rightRegularRep (rationalGLOne K n) μ).compHom (MultiplicityOne.finProj K n) MultiplicityOne.continuous_finProj) y e v
 
 /- English proof (translation)
-Unfold `cf`. Rewrite using `[map_mul, finAt_mul, (UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cf_local {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl K) (y : GL (Fin n) (w.adicCompletion K))
     (x : AdelicGLn.FiniteAdelicGL K n) : cf w (AdelicGLn.localEmbedding w y * x) = y * cf w x := by
@@ -118,11 +118,11 @@ private theorem cf_local {K : Type} [Field K] [NumberField K] {n : ℕ} (w : Pl 
   rw [map_mul, finAt_mul, (UpperTheory.ConvolutionTheory.Tf.locEmb K n w).2.1]
 
 /- English proof (translation)
-Establish `hop : ∀ c : G ⧸ J, IsOpen ((QuotientGroup.mk : G → G ⧸ J) ⁻¹' {c})` using `fun c => by`. Establish `: (QuotientGroup.mk : G → G ⧸ J) ⁻¹' {c} = (fun g => c.out⁻¹ * g) ⁻¹' (J : Set G)`. Use extensionality with `g`. Simplify using `only [Set.mem_preimage, Set.mem_singleton_iff, SetLike.mem_coe]`. Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `eq_comm`. Rewrite using `[this]`. Conclude with `hJ.preimage (continuous_const_mul _)`. Take `⟨t, ht⟩` from `hc.isCompact.elim_finite_subcover _ hop fun y _ => Set.mem_iUnion.2 ⟨QuotientGroup.mk y, rfl⟩`. Use `⟨t, fun y hy => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc', hyc⟩` from `Set.mem_iUnion₂.1 (ht (subset_tsupport _ hy))`. Rewrite using `[show (QuotientGroup.mk y : G ⧸ J) = c from hyc]`. Conclude with `hc'`.
+A detailed English derivation is pending.
 -/
 private theorem exists_cover {G : Type*} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (J : Subgroup G)
     (hJ : IsOpen (J : Set G)) (h : G → ℂ) (hc : HasCompactSupport h) :
@@ -143,13 +143,13 @@ private theorem exists_cover {G : Type*} [Group G] [TopologicalSpace G] [IsTopol
   exact hc'
 
 /- English proof (translation)
-Establish `hind : ∀ c : G ⧸ J, (J : Set G).indicator (1 : G → ℂ) (c.out⁻¹ * y) = if (QuotientGroup.mk y : G ⧸ J) = c then 1 else 0` using `fun c => by`. Establish `: c.out⁻¹ * y ∈ (J : Set G) ↔ (QuotientGroup.mk y : G ⧸ J) = c`. Rewrite using `[SetLike.mem_coe, ← QuotientGroup.eq, QuotientGroup.out_eq']`. Conclude with `eq_comm`. Distinguish the cases in `hh : (QuotientGroup.mk y : G ⧸ J) = c`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hh, Set.indicator_of_mem (this.2 hh)]`. Both sides reduce to the same expression. Rewrite using `[if_neg hh, Set.indicator_of_notMem (fun q => hh (this.1 q))]`. Establish `hout : h (QuotientGroup.mk y : G ⧸ J).out = h y`. Establish `hk : (QuotientGroup.mk y : G ⧸ J).out⁻¹ * y ∈ J`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientGroup.eq, QuotientGroup.out_eq']`. Use `hinv _ hk (QuotientGroup.mk y : G ⧸ J).out` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel_left]`. Conclude with `this.symm`. Simplify using `only [hind, mul_ite, mul_one, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[Finset.sum_ite_eq]`. Use `split_ifs with hm`. Conclude with `hout`. Assume the negation of the conclusion as `hne`. Conclude with `hm (ht y (Ne.symm hne))`.
+A detailed English derivation is pending.
 -/
 private theorem coset_sum {G : Type*} [Group G] (J : Subgroup G) (h : G → ℂ) (hinv : ∀ k ∈ J, ∀ x, h (x * k) = h x)
     (t : Finset (G ⧸ J)) (ht : ∀ y, h y ≠ 0 → (QuotientGroup.mk y : G ⧸ J) ∈ t) (y : G) :
@@ -176,21 +176,21 @@ private theorem coset_sum {G : Type*} [Group G] (J : Subgroup G) (h : G → ℂ)
     exact hm (ht y (Ne.symm hne))
 
 /- English proof (translation)
-Introduce `K _ _ n hn μ _ m _ w J hJ h hc hinv r hr e₀ e₁ h0 h1`. Establish `htr : ∀ (y : GL (Fin n) (w.adicCompletion K)) x, trCc (AdelicGLn.localEmbedding w y) e₀ x = r x * (J : Set _).indicator 1 (y⁻¹ * cf w x)` using `fun y x => by show e₀ ((AdelicGLn.localEmbedding w y)⁻¹ * x) = _`. Rewrite using `[h0, ← map_inv, hr, cf_local]`. Use `⟨fun u => ?_, ?_⟩` and prove the remaining obligations. Use `((UpperTheory.ConvolutionTheory.Tf.commPrj K n μ _).2.1 _).2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨k, hk, rfl⟩`. Establish `e : trCc (AdelicGLn.localEmbedding w k) e₀ = e₀`. Use extensionality with `x`. Rewrite using `[htr, h0]`. Use `congr 1`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Distinguish the cases in `hx : cf w x ∈ (J : Set _)`. Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem (J.mul_mem (J.inv_mem hk) hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem]`. Introduce `q`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hx (by simpa using J.mul_mem hk q)`. Use `congrArg (fun A : LL μ →L[ℂ] LL μ => A u) (rhoF_comp_Ofin μ m (AdelicGLn.localEmbedding w k) e₀)` as an intermediate fact. Simplify `this` using `[e]`. Take `⟨t, ht⟩` from `exists_cover J hJ h hc`. Establish `hfs : (∑ᶠ c : GL (Fin n) (w.adicCompletion K) ⧸ J, h c.out • rhoL μ w c.out) = ∑ c ∈ t, h c.out • rhoL μ w c.out`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_eq_sum_of_support_subset _ fun c hc' => ?_` and prove the remaining obligations. Establish `hne : h c.out ≠ 0` using `fun q => hc' (by simp [q])`. Use `ht _ hne` as an intermediate fact. Rewrite `this` using `[QuotientGroup.out_eq']`. Then use the resulting hypothesis. Establish `he : e₁ = ∑ c ∈ t, h c.out • trCc (AdelicGLn.localEmbedding w c.out) e₀`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Rewrite using `[h1, CompactlySupportedContinuousMap.sum_apply]`. Simplify using `only [CompactlySupportedContinuousMap.smul_apply, htr, smul_eq_mul]`. Rewrite using `[← coset_sum J h hinv t ht (cf w x), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfs, he]`. Rewrite using `[Ofin_sum]`. Use `ContinuousLinearMap.ext fun v => ?_` and prove the remaining obligations. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[← rhoF_comp_Ofin]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.GM.stepFin :
     StepFin := by

@@ -30,21 +30,19 @@ abbrev algDn (S : Type) [CommRing S] [Algebra d.c₂.F S] : Algebra c.F S :=
   ((algebraMap d.c₂.F S).comp (d.eF : c.F →+* d.c₂.F)).toAlgebra
 
 /- English proof (translation)
-Take `⟨e, hu, w, p, hw, p₁, p₂, H⟩` from `(frOver_iff d _ _).1 h`. Take `⟨e', hu', w', p', hw', p₁', p₂', H'⟩` from `(frOver_iff d _ _).1 h'`. Take `rfl : w = w'` from `rigidified_iso_unique GlobalTheory.abelianSchemeLaws_all.1.globalFns (UnivPol.pol d.Xo₂) Xo.univ.t.PP.isLB d.m.φ w w' hw.1 hw'.1 _ _ hw.2 hw'.2`. Take `⟨ex, bu, b, b₁, b₂, hbs⟩` from `hb`. Establish `ex' : y'.x = y.x` using `by rw [← e', ← e, ex]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨a, a₁, a₂⟩` from `exists_pm (G := Xo.univ.t.G) (x := y.x) (fst (Over.mk y'.x) Xo.univ.t.G).left (snd (Over.mk y'.x) Xo.univ.t.G).left (by rw [← ex']; exact pm_cond _)`. Take `⟨q, k, q₁, q₂, hk, -⟩` from `exists_pm_iso d.m e'`. Take `rfl : p' = q` from `pm_ext (p₁'.trans q₁.symm) (p₂'.trans q₂.symm)`. Establish `sq : p' ≫ a = b ≫ p`. Use `pm_ext ?_ ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, a₁, p₁', Category.assoc, p₁, ← Category.assoc, b₁]`. Rewrite using `[Category.assoc, a₂, p₂', Category.assoc, p₂, b₂]`. Use `⟨ex', fun τ i => ?_, a, a₁, a₂, ?_⟩` and prove the remaining obligations. Take `⟨cf, c₁, c₂, hcf⟩` from `bu τ i`. Use `⟨cf, c₁, c₂, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(comb_iff d.m e (fun j => (y₂.tan τ j).1) cf (ex ▸ (y₂'.tan τ i).1)).1 hcf` as an intermediate fact. Rewrite `this` using `[funext (hu τ), hu']`. Conclude with `this`. Use `(pull_scal_iff a₁ (fst (Over.mk y.x) Xo.univ.t.G).left (toΓ S (t none)) y.s y'.s).2 fun Z r z i hi => ?_` and prove the remaining obligations. Establish `er : (r ≫ k) ≫ p' = r` using `by rw [Category.assoc, hk, Category.comp_id]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j, hj⟩` from `exists_chart d.Xo₂.univ.t.PP.isLB ((snd (Over.mk y₂'.x) d.Xo₂.univ.t.G).left ((r ≫ k) z))`. Establish `hi₀ : (snd (Over.mk y'.x) Xo.univ.t.G).left (((r ≫ k) ≫ p') z) ∈ Xo.univ.t.PP.L.U i` using `(congrArg (fun x => (snd (Over.mk y'.x) Xo.univ.t.G).left x ∈ Xo.univ.t.PP.L.U i) (pt_eq er z)).mpr hi`. Establish `hi' : d.m.φ ((snd (Over.mk y₂'.x) d.Xo₂.univ.t.G).left ((r ≫ k) z)) ∈ Xo.univ.t.PP.L.U i` using `(congrArg (· ∈ Xo.univ.t.PP.L.U i) (pt_eq p₁' ((r ≫ k) z))).mp hi₀`. Establish `k₂` using `H' Z (r ≫ k) z i j hi' hj`. Establish `k₁` using `(pull_scal_iff b₁ (fst (Over.mk y₂.x) d.Xo₂.univ.t.G).left (toΓ S (t none)) y₂.s y₂'.s).1 hbs Z (r ≫ k) z j hj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₃` using `H Z ((r ≫ k) ≫ b) z i j ((congrArg (fun t => d.m.φ t ∈ Xo.univ.t.PP.L.U i) (pt_eq b₁ ((r ≫ k) z))).mpr hi') ((congrArg (· ∈ d.Xo₂.univ.t.PP.L.U j) (pt_eq b₁ ((r ≫ k) z))).mpr hj)`. Establish `e2 : r ≫ a = ((r ≫ k) ≫ b) ≫ p`. Combine the equalities or inequalities in the displayed calculation. Establish `e3 : (r ≫ a) ≫ (fst (Over.mk y.x) Xo.univ.t.G).left = ((r ≫ k) ≫ b) ≫ (fst (Over.mk y₂.x) d.Xo₂.univ.t.G).left`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, a₂]`. Use `_ = ((r ≫ k) ≫ p') ≫ (fst (Over.mk y'.x) Xo.univ.t.G).left := by rw [er]`. Use `_ = (r ≫ k) ≫ (fst (Over.mk y₂'.x) d.Xo₂.univ.t.G).left := by rw [Category.assoc, p₂']`. Use `_ = ((r ≫ k) ≫ b) ≫ (fst (Over.mk y₂.x) d.Xo₂.univ.t.G).left := by rw [Category.assoc (r ≫ k) b, b₂]`. Establish `e4 : ((r ≫ k) ≫ b) ≫ (snd (Over.mk y₂.x) d.Xo₂.univ.t.G).left = (r ≫ k) ≫ (snd (Over.mk y₂'.x) d.Xo₂.univ.t.G).left` using `by rw [Category.assoc, b₁]`.
-
-Rewrite using `[e3, e2, k₃, e4]`. Use `conv_lhs => rw [← er]`. Rewrite using `[k₂, k₁, mul_left_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frBor_down {S : Type} [CommRing S] [Algebra c.F S] [Algebra d.c₂.F S] {t : Ix Dw → Sˣ}
     {y y' : FrPt Xo c S} {y₂ y₂' : FrPt d.Xo₂ d.c₂ S} (h : FrOver d y₂ y) (h' : FrOver d y₂' y')
@@ -102,9 +100,9 @@ theorem frBor_down {S : Type} [CommRing S] [Algebra c.F S] [Algebra d.c₂.F S] 
     rw [k₂, k₁, mul_left_comm]
 
 /- English proof (translation)
-Use `GlobalTheory.ClassSumCompare.exists_frUnder d hc y₂ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, hO hK, ← Category.assoc, y₂.x_over]`. Unfold `sOf`. Rewrite using `[GlobalTheory.ClsVal.Cmp.spMap_comp']`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `x`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← hc]`. Conclude with `congrArg _ (Subtype.ext rfl)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem below_exists (hO : GlobalTheory.ClsVal.Cmp.OverBase d) (hK : KA l ≤ KA d.l₂) {S : Type} [CommRing S]
     [Algebra c.F S] [Algebra d.c₂.F S] (hc : ∀ a : c.F, algebraMap d.c₂.F S (d.eF a) = algebraMap c.F S a)
@@ -136,14 +134,14 @@ instance tRing_reduced {K : Type} [Field K] (p : TRing K) : IsReduced p.R :=
   (Ideal.isRadical_iff_quotient_reduced p.I).1 p.rad
 
 /- English proof (translation)
-The claim follows from `ReciprocityTheory.ChartRestriction.G.PullbackSections.wtRed_of Xo c (GlobalTheory.TransferCompare.evalWD_framed Xo c) (GlobalTheory.TransferCompare.allTest_framed Xo c) (GlobalTheory.borDesc_and_wtField _ _ _ _ Xo c).2 (GlobalTheory.framedPoint_baseChange_clauses _ _ _ _ Xo c).2. …`.
+A detailed English derivation is pending.
 -/
 theorem wtRed (Xo : Moduli Dw l) (c : Coeff l) : ReciprocityTheory.ChartRestriction.G.PullbackSections.WtRed Xo c :=
   ReciprocityTheory.ChartRestriction.G.PullbackSections.wtRed_of Xo c (GlobalTheory.TransferCompare.evalWD_framed Xo c) (GlobalTheory.TransferCompare.allTest_framed Xo c)
     (GlobalTheory.borDesc_and_wtField _ _ _ _ Xo c).2 (GlobalTheory.framedPoint_baseChange_clauses _ _ _ _ Xo c).2.2.2
 
 /- English proof (translation)
-Set `_` to `algDn d p.R`. Introduce `y hy`. Establish `h : ∃ y : FrPt Xo c p.R, FrOver d u y` using `⟨y, hy⟩`. Unfold `pullRule`. Rewrite using `[dif_pos h, GlobalTheory.ClassSumCompare.frUnder_unique d h.choose_spec hy]`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullRule_eq (f : Rul Xo c) (p : TRing d.c₂.F) (u : FrPt d.Xo₂ d.c₂ p.R) :
     letI := algDn d p.R
@@ -162,13 +160,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {n : ℕ} (d : DeltaDat Xo c n)
 
 /- English proof (translation)
-Use `⟨fun p q φ u u' hm => ?_, fun p t u u' hb => ?_⟩` and prove the remaining obligations. Use `letI := algDn d p.R`. Use `letI := algDn d q.R`. Take `⟨y, hy⟩` from `below_exists d hO hK (S := p.R) (fun _ => rfl) u`. Take `⟨y', hy'⟩` from `below_exists d hO hK (S := q.R) (fun _ => rfl) u'`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `φc : p.R →ₐ[c.F] q.R` to `⟨φ.toRingHom, fun a => φ.commutes (d.eF a)⟩`. Take `⟨w, hw⟩` from `GlobalTheory.TransferCompare.frBC_framed Xo c p.R q.R φc y`. Establish `hw' : FrOver d u' w` using `GlobalTheory.FrameLift.frOver_map d (ψ := φc) (ψ₂ := φ) rfl hy hw hm`. Take `rfl : y' = w` from `GlobalTheory.ClassSumCompare.frUnder_unique d hy' hw'`. Use `show pullRule d f q u' = φ (pullRule d f p u)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pullRule_eq d f q u' y' hy', pullRule_eq d f p u y hy]`. Conclude with `GlobalTheory.SupLawProbe.evR_map (GlobalTheory.TransferCompare.evalWD_framed Xo c) f hf.1 φc y (GlobalTheory.TransferCompare.allTest_framed Xo c p.R y) y' hw`. Use `letI := algDn d p.R`. Take `⟨y, hy⟩` from `below_exists d hO hK (S := p.R) (fun _ => rfl) u`. Take `⟨y', hy'⟩` from `below_exists d hO hK (S := p.R) (fun _ => rfl) u'`.
-
-Use `show pullRule d f p u' = wchar (ex Dw a m) t * pullRule d f p u`. Rewrite using `[pullRule_eq d f p u' y' hy', pullRule_eq d f p u y hy]`. Conclude with `wtRed Xo c a m f hf p.R t y y' (frBor_down d hy hy' hb)`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullRule_mem (hO : GlobalTheory.ClsVal.Cmp.OverBase d) (hK : KA l ≤ KA d.l₂) {a : (E →+* ℂ) × ℕ → ℕ} {m : ℕ}
     {f : Rul Xo c} (hf : f ∈ sec Xo c a m) : pullRule d f ∈ sec d.Xo₂ d.c₂ a m := by
@@ -193,13 +189,11 @@ theorem pullRule_mem (hO : GlobalTheory.ClsVal.Cmp.OverBase d) (hK : KA l ≤ KA
     exact wtRed Xo c a m f hf p.R t y y' (frBor_down d hy hy' hb)
 
 /- English proof (translation)
-Establish `key : ∀ (p : TRing d.c₂.F) (φ : p.R →ₐ[d.c₂.F] k) (u : FrPt d.Xo₂ d.c₂ p.R), FrMap φ u y₂ → φ (pullRule d f p u) = evR Xo c f y`. Introduce `p φ u hu`. Use `letI := algDn d p.R`. Take `⟨z, hz⟩` from `below_exists d hO hK (S := p.R) (fun _ => rfl) u`. Set `φc : p.R →ₐ[c.F] k` to `⟨φ.toRingHom, fun a => (φ.commutes (d.eF a)).trans (hc a)⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨w, hw⟩` from `GlobalTheory.TransferCompare.frBC_framed Xo c p.R k φc z`. Establish `hw' : FrOver d y₂ w` using `GlobalTheory.FrameLift.frOver_map d (ψ := φc) (ψ₂ := φ) rfl hz hw hu`. Take `rfl : y = w` from `GlobalTheory.ClassSumCompare.frUnder_unique d hy hw'`. Rewrite using `[pullRule_eq d f p u z hz]`. Conclude with `(GlobalTheory.SupLawProbe.evR_map (GlobalTheory.TransferCompare.evalWD_framed Xo c) f hf.1 φc z (GlobalTheory.TransferCompare.allTest_framed Xo c p.R z) y hw).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hT` using `GlobalTheory.TransferCompare.allTest_framed d.Xo₂ d.c₂ k y₂`. Establish `e : evR d.Xo₂ d.c₂ (pullRule d f) y₂ = hT.choose_spec.choose (pullRule d f hT.choose hT.choose_spec.choose_spec.choose)`. Unfold `evR evalAt`. Rewrite using `[dif_pos hT]`. Rewrite using `[e]`.
-
-Conclude with `key _ _ _ hT.choose_spec.choose_spec.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evR_pullRule (hO : GlobalTheory.ClsVal.Cmp.OverBase d) (hK : KA l ≤ KA d.l₂) {a : (E →+* ℂ) × ℕ → ℕ} {m : ℕ}
     {f : Rul Xo c} (hf : f ∈ sec Xo c a m) {k : Type} [Field k] [Algebra c.F k] [Algebra d.c₂.F k]
@@ -233,11 +227,11 @@ open NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G.Geo.Tor R
   Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.Pj GlobalTheory.CoverRead
 
 /- English proof (translation)
-Introduce `D T hT j hj σ _ C _ a n f hf`. Establish `hpq : (T.Q.Dw j).p ≠ (T.Q.Dw j).q`. Introduce `e`. Establish `h1` using `GlobalTheory.Dict.sig_add_of_pins T.Q hT.pins hj`. Take `⟨k, hk⟩` from `r_odd D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use linear arithmetic over natural numbers and integers. Establish `hA : T.Q.l.A = 1` using `hT.pins.2.1.2`. Establish `hO` using `GlobalTheory.ClsVal.Cmp.overBase_of_ne hpq hA C.d`. Establish `hK : KA T.Q.l ≤ KA C.d.l₂` using `GlobalTheory.Models.RankZero.KA_le_of_eq_one hA _`. Take `⟨hf', hv⟩` from `(GlobalTheory.FieldBC.rulBC_sec_val_linear _ _ _ _ _ _ _ C.hle).1 a n f hf`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨pullRule C.d (GlobalTheory.FieldBC.rulBC C.hle f), pullRule_mem C.d hO hK hf', ?_⟩` and prove the remaining obligations. Introduce `k _ _ _ _ h hc y₂ y hy`. Rewrite using `[evR_pullRule C.d hO hK hf' hc y₂ y hy, hv k h y]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pull : ∀ (D : D7) (T : CoreJ D), LawsJ T → ∀ j, Formalism.L2.Pj.InR D j → ∀ σ : T.Q.c.F →+* ℂ,
     GoodEmb T.Q.c σ → ∀ C : Cover T j σ, C.d.IsLev → ∀ (a : (D.host.E →+* ℂ) × ℕ → ℕ) (n : ℕ),

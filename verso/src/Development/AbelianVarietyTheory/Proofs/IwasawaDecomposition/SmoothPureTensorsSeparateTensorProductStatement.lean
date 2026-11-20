@@ -8,7 +8,7 @@ open GlobalTheory.Mem Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR Forma
 open scoped InnerProductSpace
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.Mem.PureSep.exists_ellT_ne_zero` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FIwasawaDecomposition%2FSmoothPureTensorsSeparateTensorProduct.lean&line=32#L32)
 -/

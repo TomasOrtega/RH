@@ -17,33 +17,29 @@ noncomputable section
 namespace GlobalTheory.UnipHermCover
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n n₁ V H hherm hxx0 hyy0 hxy0 horth0 hspan`. Establish `hσ : ∀ a, σ (σ a) = a` using `cm_conj_conj hcm`. Take `⟨δ, hδ0, hδ⟩` from `GlobalTheory.UnipMassHerm.exists_anti hcm`. Set `W' : Spc F E n` to `⟨δ • V.J, V.L, V.θ, V.bas⟩`. Set `H'' : Plane E n n₁` to `⟨H.x, (-δ⁻¹) • H.y, H.ι, H.𝔟⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hform : ∀ v w, form σ W'.J v w = δ * form σ V.J v w` using `GlobalTheory.UnipMassHerm.form_smul_mat σ V.J δ`. Establish `hσt : σ (-δ⁻¹) = δ⁻¹` using `by rw [map_neg, map_inv₀, hδ, inv_neg, neg_neg]`. Establish `hxx : form σ W'.J H''.x H''.x = 0` using `by rw [hform]; show δ * form σ V.J H.x H.x = 0; rw [hxx0, mul_zero]`. Establish `hyy : form σ W'.J H''.y H''.y = 0`. Rewrite using `[hform]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show δ * form σ V.J ((-δ⁻¹) • H.y) ((-δ⁻¹) • H.y) = 0`. Rewrite using `[GlobalTheory.UnipMassHerm.form_smul_left, GlobalTheory.UnipMassHerm.form_smul_right, hyy0]`. Expand and normalize the polynomial expressions, which then agree. Establish `hxy : form σ W'.J H''.x H''.y = 1`. Rewrite using `[hform]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show δ * form σ V.J H.x ((-δ⁻¹) • H.y) = 1`. Rewrite using `[GlobalTheory.UnipMassHerm.form_smul_right, hxy0, hσt, mul_one, mul_inv_cancel₀ hδ0]`. Establish `horth : ∀ u, form σ W'.J (H''.ι *ᵥ u) H''.x = 0 ∧ form σ W'.J (H''.ι *ᵥ u) H''.y = 0`. Introduce `u`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hform]`. Use `show δ * form σ V.J (H.ι *ᵥ u) H.x = 0`. Rewrite using `[(horth0 u).1, mul_zero]`. Rewrite using `[hform]`. Use `show δ * form σ V.J (H.ι *ᵥ u) ((-δ⁻¹) • H.y) = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[GlobalTheory.UnipMassHerm.form_smul_right, (horth0 u).2]`. Expand and normalize the polynomial expressions, which then agree. Establish `hspan'' : ∀ v : Fin n → E, ∃ (s t : E) (u : Fin n₁ → E), v = s • H''.x + H''.ι *ᵥ u + t • H''.y`. Introduce `v`. Take `⟨s, t, u, hv⟩` from `hspan v`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨s, t * -δ, u, ?_⟩` and prove the remaining obligations. Use `show v = s • H.x + H.ι *ᵥ u + (t * -δ) • (-δ⁻¹) • H.y`. Rewrite using `[smul_smul, show t * -δ * -δ⁻¹ = t by field_simp, hv]`. Establish `horthA : ∀ z, hA σ W'.J (incM F H''.ι *ᵥ z) (incV F H''.x) = 0`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA_incM_incV]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Establish `h1` using `(horth (Pi.single j 1)).1`. Rewrite `h1` using `[Matrix.mulVec_single_one]`. Rewrite using `[show (fun i => H''.ι i j) = H''.ι.col j from rfl, h1, map_zero, mul_zero]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `hyp : Hyp σ W' H''`. Use `⟨hσ, fun i j => ?_, by rw [hA_incV, hxx, map_zero], horthA⟩` and prove the remaining obligations. Use `show σ (δ * V.J j i) = -(δ * V.J i j)`. Rewrite using `[map_mul, hδ, hherm]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨K', hK', hcov'⟩` from `cocompact hyp hxx hyy hxy horth hspan''`. Establish `hUG` using `GlobalTheory.UnipMassHerm.UG_smul (F := F) σ V.J hδ0`. Set `φ : UA σ W'.J →* UA σ V.J` to `Subgroup.inclusion hUG.le`. Set `φ' : UA σ V.J →* UA σ W'.J` to `Subgroup.inclusion hUG.ge`. Establish `hmap : (unip σ W' H'').map φ ≤ unip σ V H`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[unip, MonoidHom.map_closure]`. Use `Subgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `hu`. Establish `hmap' : (unip σ V H).map φ' ≤ unip σ W' H''`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[unip, MonoidHom.map_closure]`. Use `Subgroup.closure_mono ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Conclude with `hu`. Set `Ψ : unip σ W' H'' → unip σ V H` to `fun g => ⟨φ g.1, hmap ⟨g.1, g.2, rfl⟩⟩`.
-
-Establish `hΨ : Continuous Ψ` using `Continuous.subtype_mk (Continuous.subtype_mk (continuous_subtype_val.comp continuous_subtype_val) _) _`. Use `⟨Ψ '' K', hK'.image hΨ, fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ', hγ'⟩` from `hcov' ⟨φ' g.1, hmap' ⟨g.1, g.2, rfl⟩⟩`. Use `⟨⟨Ψ γ'.1, ?_⟩, ⟨_, hγ', ?_⟩⟩` and prove the remaining obligations. Conclude with `Subgroup.mem_subgroupOf.2 (Subgroup.mem_subgroupOf.2 (Subgroup.mem_subgroupOf.1 (Subgroup.mem_subgroupOf.1 γ'.2)))`.
-
-Conclude with `unip_ext rfl`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cocompact_herm : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n n₁ : ℕ) (V : Spc F E n) (H : Plane E n n₁), (∀ i j, σ (V.J j i) = V.J i j) → form σ V.J H.x H.x = 0 → form σ V.J H.y H.y = 0 → form σ V.J H.x H.y = 1 → (∀ u, form σ V.J (H.ι *ᵥ u) H.x = 0 ∧ form σ V.J (H.ι *ᵥ u) H.y = 0) → (∀ v : Fin n → E, ∃ (s t : E) (u : Fin n₁ → E), v = s • H.x + H.ι *ᵥ u + t • H.y) → ∃ K : Set (unip σ V H), IsCompact K ∧ ∀ g : unip σ V H, ∃ γ : (ratU σ V.J).subgroupOf (unip σ V H), γ • g ∈ K := by
   intro F E _ _ _ _ _ σ hcm n n₁ V H hherm hxx0 hyy0 hxy0 horth0 hspan

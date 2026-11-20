@@ -44,13 +44,13 @@ Both sides reduce to the same expression.
 theorem inclR_eq (x : E) : inclR (F := F) (AF F) x = (1 : AF F) ⊗ₜ[F] x := rfl
 
 /- English proof (translation)
-Conclude with `IsModuleTopology.continuous_of_linearMap (R := AF F) ((bsA F E).coord k)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_coord (k : Fin (Module.finrank F E)) : Continuous fun z : AE F E => (bsA F E).repr z k := by
   exact IsModuleTopology.continuous_of_linearMap (R := AF F) ((bsA F E).coord k)
 
 /- English proof (translation)
-Rewrite using `[inclR_eq, Algebra.TensorProduct.basis_repr_tmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coord_inclR (x : E) (k : Fin (Module.finrank F E)) :
     (bsA F E).repr (inclR (F := F) (AF F) x) k = algebraMap F (AF F) ((bsE F E).repr x k) := by
@@ -58,11 +58,9 @@ theorem coord_inclR (x : E) (k : Fin (Module.finrank F E)) :
   simp
 
 /- English proof (translation)
-Take `⟨U, hU, hU0⟩` from `GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero F`. Use `⟨⋂ k, (fun z : AE F E => (bsA F E).repr z k) ⁻¹' U, ?_, ?_⟩` and prove the remaining obligations. Use `Filter.iInter_mem.2 fun k => ?_` and prove the remaining obligations. Conclude with `(continuous_coord k).continuousAt.preimage_mem_nhds (by simpa using hU)`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h : ∀ k, (bsE F E).repr x k = 0`. Introduce `k`. Apply `hU0` to reduce the goal to its premises. Rewrite using `[← coord_inclR]`. Conclude with `Set.mem_iInter.1 hx k`.
-
-Conclude with `(bsE F E).forall_coord_eq_zero_iff.1 h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_nhds_inclR : ∃ V ∈ 𝓝 (0 : AE F E), ∀ x : E, inclR (F := F) (AF F) x ∈ V → x = 0 := by
   obtain ⟨U, hU, hU0⟩ := GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero F
@@ -78,11 +76,11 @@ theorem exists_nhds_inclR : ∃ V ∈ 𝓝 (0 : AE F E), ∀ x : E, inclR (F := 
     exact (bsE F E).forall_coord_eq_zero_iff.1 h
 
 /- English proof (translation)
-Take `⟨K, hK, hKa⟩` from `GlobalTheory.AdeleCocompact.exists_compact_adele F`. Use `⟨(bsA F E).equivFun.symm '' Set.univ.pi (fun _ => K), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(isCompact_univ_pi fun _ => hK).image (IsModuleTopology.continuous_of_linearMap (bsA F E).equivFun.symm.toLinearMap)`. Introduce `z choose y hy using fun k => hKa ((bsA F E).repr z k)`. Establish `hx : ∀ k, (bsE F E).repr ((bsE F E).equivFun.symm (-y)) k = -y k`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Rewrite using `[← (bsE F E).equivFun_apply, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression. Use `⟨(bsE F E).equivFun.symm (-y), (bsA F E).equivFun (inclR (F := F) (AF F) ((bsE F E).equivFun.symm (-y)) + z), ?_, ?_⟩` and prove the remaining obligations. Introduce `k _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(bsA F E).equivFun_apply, map_add, Finsupp.add_apply, coord_inclR, hx, map_neg, neg_add_eq_sub]`. Conclude with `hy k`. Conclude with `LinearEquiv.symm_apply_apply _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_AE : ∃ C : Set (AE F E), IsCompact C ∧ ∀ z : AE F E, ∃ x : E, inclR (F := F) (AF F) x + z ∈ C := by
   obtain ⟨K, hK, hKa⟩ := GlobalTheory.AdeleCocompact.exists_compact_adele F
@@ -113,25 +111,25 @@ Both sides reduce to the same expression.
 theorem ratM_eq {σ : E →ₐ[F] E} (d : SD σ) : d.ratM = ratMx F E d.m d.n := rfl
 
 /- English proof (translation)
-Simplify using `[incM, Matrix.map_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incM_add {α β : Type} (X Z : Matrix α β E) : incM F (X + Z) = incM F X + incM F Z := by
   simp [incM, Matrix.map_add]
 
 /- English proof (translation)
-Simplify using `[incM, Matrix.map_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incM_neg {α β : Type} (X : Matrix α β E) : incM F (-X) = -incM F X := by
   simp [incM, Matrix.map_neg]
 
 /- English proof (translation)
-Simplify using `[incM]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incM_zero {α β : Type} : incM F (0 : Matrix α β E) = 0 := by
   simp [incM]
 
 /- English proof (translation)
-Use `haveI : Nontrivial (AF F) := by show Nontrivial (AdeleRing (𝓞 F) F)`. Unfold `AdeleRing`. Use `infer_instance`. Conclude with `Algebra.TensorProduct.includeRight_injective (algebraMap F (AF F)).injective`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem inclR_injective : Function.Injective (inclR (F := F) (E := E) (AF F)) := by
   haveI : Nontrivial (AF F) := by
@@ -141,7 +139,7 @@ theorem inclR_injective : Function.Injective (inclR (F := F) (E := E) (AF F)) :=
   exact Algebra.TensorProduct.includeRight_injective (algebraMap F (AF F)).injective
 
 /- English proof (translation)
-Introduce `X Z h`. Use extensionality with `i j`. Conclude with `inclR_injective (congrFun (congrFun h i) j)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem incM_injective {α β : Type} : Function.Injective (incM F : Matrix α β E → Matrix α β (AE F E)) := by
   intro X Z h
@@ -149,11 +147,11 @@ theorem incM_injective {α β : Type} : Function.Injective (incM F : Matrix α �
   exact inclR_injective (congrFun (congrFun h i) j)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Proceed by induction on `h using AddSubgroup.closure_induction with`. Consider the case `mem x hx => exact hx`. Consider the case `zero => exact ⟨0, incM_zero⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨X, rfl⟩` from `hx`. Take `⟨Z, rfl⟩` from `hy`. Conclude with `⟨X + Z, incM_add X Z⟩`. Consider the case `neg x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨X, rfl⟩` from `hx`. Conclude with `⟨-X, incM_neg X⟩`. Introduce and unpack `⟨X, rfl⟩`. Conclude with `AddSubgroup.subset_closure ⟨X, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_ratMx {p q : ℕ} {x : Mx F E p q} : x ∈ ratMx F E p q ↔ ∃ X, incM F X = x := by
   constructor
@@ -172,7 +170,7 @@ theorem mem_ratMx {p q : ℕ} {x : Mx F E p q} : x ∈ ratMx F E p q ↔ ∃ X, 
     exact AddSubgroup.subset_closure ⟨X, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `mem_ratMx`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem coe_ratMx (p q : ℕ) : (ratMx F E p q : Set (Mx F E p q)) = Set.range (incM F) := by
   ext x
@@ -202,7 +200,7 @@ instance ratMx_discrete {p q : ℕ} : DiscreteTopology (ratMx F E p q) := by
     exact Set.mem_singleton_iff.2 (Subtype.ext incM_zero)
 
 /- English proof (translation)
-The claim follows from `(Module.finBasis ℚ E).equivFun.injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_E : Countable E := (Module.finBasis ℚ E).equivFun.injective.countable
 
@@ -215,7 +213,7 @@ instance ratMx_countable {p q : ℕ} : Countable (ratMx F E p q) := by
   exact h.to_subtype
 
 /- English proof (translation)
-Take `⟨C, hC, hCx⟩` from `exists_compact_AE (F := F) (E := E)`. Use `⟨Set.univ.pi fun _ => Set.univ.pi fun _ => C, isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => hC, fun x => ?_⟩` and prove the remaining obligations. Use `choose X hX using fun i j => hCx (x i j)`. Conclude with `⟨incM F (Matrix.of X), mem_ratMx.2 ⟨_, rfl⟩, fun i _ j _ => hX i j⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ratMx_cocompact (p q : ℕ) : ∃ K : Set (Mx F E p q), IsCompact K ∧ ∀ x, ∃ γ ∈ ratMx F E p q, γ + x ∈ K := by
   obtain ⟨C, hC, hCx⟩ := exists_compact_AE (F := F) (E := E)
@@ -225,9 +223,9 @@ theorem ratMx_cocompact (p q : ℕ) : ∃ K : Set (Mx F E p q), IsCompact K ∧ 
   exact ⟨incM F (Matrix.of X), mem_ratMx.2 ⟨_, rfl⟩, fun i _ j _ => hX i j⟩
 
 /- English proof (translation)
-Take `⟨K, hK, hKx⟩` from `ratMx_cocompact (F := F) (E := E) p q`. Take `⟨D, -, -, hD⟩` from `GlobalTheory.exists_isAddFundamentalDomain_addSubgroup (ratMx F E p q)`. Use `set μ : Measure (Mx F E p q) := Measure.addHaar`. Establish `htop : μ D ≠ ⊤` using `(GlobalTheory.measure_addFundamentalDomain_lt_top_of_cocompact (ratMx F E p q) hK hKx μ (hD μ)).ne`. Establish `h0 : μ D ≠ 0` using `(hD μ).measure_ne_zero (NeZero.ne μ)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(μ D)⁻¹ • μ, D, ?_, hD _, ?_⟩` and prove the remaining obligations. Conclude with `Measure.IsAddHaarMeasure.smul μ (ENNReal.inv_ne_zero.2 htop) (ENNReal.inv_ne_top.2 h0)`. Rewrite using `[Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel h0 htop]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cov (p q : ℕ) : ∃ (ν : Measure (Mx F E p q)) (𝓕 : Set (Mx F E p q)),
     ν.IsAddHaarMeasure ∧ IsAddFundamentalDomain (ratMx F E p q) 𝓕 ν ∧ ν 𝓕 = 1 := by
@@ -242,11 +240,7 @@ theorem exists_cov (p q : ℕ) : ∃ (ν : Measure (Mx F E p q)) (𝓕 : Set (Mx
   · rw [Measure.smul_apply, smul_eq_mul, ENNReal.inv_mul_cancel h0 htop]
 
 /- English proof (translation)
-Establish `hσc : Continuous (cA σ)` using `IsModuleTopology.continuous_of_linearMap (R := AF F) (cA σ).toLinearMap`. Use `haveI : LocallyCompactSpace (Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) := inferInstanceAs (LocallyCompactSpace (Fin n ⊕ Fin n → Fin n ⊕ Fin n → AE F E))`. Use `haveI : LocallyCompactSpace (Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (GL (Fin n ⊕ Fin n) (AE F E)) := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) := inferInstanceAs (SecondCountableTopology (Fin n ⊕ Fin n → Fin n ⊕ Fin n → AE F E))`.
-
-Use `haveI : SecondCountableTopology (Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (GL (Fin n ⊕ Fin n) (AE F E)) := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI : T2Space (GL (Fin n ⊕ Fin n) (AE F E)) := Units.isEmbedding_embedProduct.t2Space`. Establish `hc : IsClosed (UG (cA σ) (dbl (incM F Y.J)) : Set (GL (Fin n ⊕ Fin n) (AE F E)))`. Establish `hv : Continuous fun g : GL (Fin n ⊕ Fin n) (AE F E) => (g : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E))` using `Units.continuous_val`.
-
-Conclude with `isClosed_eq ((hv.matrix_transpose.matrix_mul continuous_const).matrix_mul (hv.matrix_map hσc)) continuous_const`. Conclude with `⟨inferInstance, hc.isClosedEmbedding_subtypeVal.locallyCompactSpace, inferInstanceAs (T2Space (UG (cA σ) (dbl (incM F Y.J)))), hc.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem doubled_group_topological_properties (σ : E →ₐ[F] E) {n : ℕ} (Y : Spc F E n) : IsTopologicalGroup (G2 σ Y) ∧ LocallyCompactSpace (G2 σ Y) ∧
     T2Space (G2 σ Y) ∧ SecondCountableTopology (G2 σ Y) := by

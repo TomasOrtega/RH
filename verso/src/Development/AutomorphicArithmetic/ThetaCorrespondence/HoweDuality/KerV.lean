@@ -9,27 +9,23 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 open UpperTheory.Lit.HoweDuality GlobalTheory.HoweGlobalPair
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ Bs a a' G Xc om om' R Rf hM v`. Establish `hT` using `hM.triple`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `hM.fin.inv v hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `g ⟨h, hh, hg⟩ x hx`. Establish `hx' : Rf.p v (x : (Fin a × Fin (a + a') → Fv F v) → ℂ) = 0` using `hx`. Establish `h0 : Acts (evFin F v) (om' (1, h)) (0 : (Fin a' × Fin (a + a') → Fv F v) → ℂ) 0`. Introduce `r _`. Establish `ht : tens (evFin F v) (0 : (Fin a' × Fin (a + a') → Fv F v) → ℂ) r = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `y`. Simplify using `[tens]`. Rewrite using `[ht, map_zero]`. Establish `e` using `hM.fin.equiv v h hh x x.2 0 (zero_mem _) (g x) (g x).2 0 (zero_mem _) (hg x) h0 (by rw [hx', map_zero])`. Use `show Rf.p v ((g x : SB _) : (Fin a × Fin (a + a') → Fv F v) → ℂ) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e, map_zero]`. Introduce `hKe`. Establish `hbot : (SB (Fin a × Fin (a + a') → Fv F v)).map (Rf.p v) = ⊥`. Rewrite using `[Submodule.eq_bot_iff]`. Introduce and unpack `_ ⟨ψ, hψ, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (⟨ψ, hψ⟩ : SB (Fin a × Fin (a + a') → Fv F v)) ∈ LinearMap.ker (Rf.p v ∘ₗ (SB (Fin a × Fin (a + a') → Fv F v)).subtype)`. Rewrite using `[hKe]`. Conclude with `Submodule.mem_top`. Conclude with `hm`. Rewrite `hbot` using `[hM.fin.onto v]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use `haveI := hM.fin.nontriv v`. Conclude with `top_ne_bot hbot`. Introduce `N hKN hst hne`. Establish `key : ∀ x : SB (Fin a × Fin (a + a') → Fv F v), Rf.p v x ∈ (N.map (SB (Fin a × Fin (a + a') → Fv F v)).subtype).map (Rf.p v) → x ∈ N`. Introduce and unpack `x ⟨_, ⟨n, hn, rfl⟩, hpn⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hk : x - n ∈ N` using `hKN (by`. Rewrite using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Conclude with `hpn.symm)`. Use `N.add_mem hn hk` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `hM.fin.irred v ((N.map (SB (Fin a × Fin (a + a') → Fv F v)).subtype).map (Rf.p v)) (by` into its components or cases. Introduce `h hh ψ hψ ψ₁ hψ₁ hact hpm`. Establish `hx : (⟨ψ, hψ⟩ : SB (Fin a × Fin (a + a') → Fv F v)) ∈ N` using `key ⟨ψ, hψ⟩ hpm`. Establish `e` using `GlobalTheory.ThK.LocalOps.acts_unique v _ hψ hact (GlobalTheory.HoweGlobal.FinPlace.locOp_acts hT v hh ⟨ψ, hψ⟩)`. Conclude with `Submodule.mem_map_of_mem ⟨GlobalTheory.HoweGlobal.FinPlace.locOp hT v hh ⟨ψ, hψ⟩, hst _ (GlobalTheory.HoweGlobal.FinPlace.locOp_mem hT v hh) _ hx, e.symm⟩) with h0 | htop`.
+It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x hx`. Establish `hmem : Rf.p v x ∈ (N.map (SB (Fin a × Fin (a + a') → Fv F v)).subtype).map (Rf.p v)` using `Submodule.mem_map_of_mem ⟨x, hx, rfl⟩`. Rewrite `hmem` using `[h0]`. Conclude with `(Submodule.mem_bot ℂ).1 hmem`. It suffices to derive a contradiction.
-
-Apply `hne` to reduce the goal to its premises. Rewrite using `[Submodule.eq_top_iff']`. Introduce `x`. Apply `key` to reduce the goal to its premises. Rewrite using `[htop]`.
-
-Conclude with `Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Lit.HoweDuality.kerV :
     ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {Bs : Base F E} {a a' : ℕ} {G : Geo σ a a'} {Xc : Chars F E} {om : Rep σ G.V G.W} {om' : Rep σ G.V' G.W} {R : RealMaps F a a'} {Rf : FinMaps F a a'}, IsMatched Bs G Xc om om' R Rf → ∀ v : Pl F, relFin om v ≤ LinearMap.ker (Rf.p v ∘ₗ (SB (Fin a × Fin (a + a') → Fv F v)).subtype) ∧ Stable (opFin om v) (LinearMap.ker (Rf.p v ∘ₗ (SB (Fin a × Fin (a + a') → Fv F v)).subtype)) ∧ LinearMap.ker (Rf.p v ∘ₗ (SB (Fin a × Fin (a + a') → Fv F v)).subtype) ≠ ⊤ ∧ ∀ N : Submodule ℂ ↥(SB (Fin a × Fin (a + a') → Fv F v)), LinearMap.ker (Rf.p v ∘ₗ (SB (Fin a × Fin (a + a') → Fv F v)).subtype) ≤ N → Stable (opFin om v) N → N ≠ ⊤ → N ≤ LinearMap.ker (Rf.p v ∘ₗ (SB (Fin a × Fin (a + a') → Fv F v)).subtype) := by

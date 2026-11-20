@@ -14,11 +14,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w}
 
 /- English proof (translation)
-Use `⟨TensorProduct.prodRight ℂ ℂ V V' V'', fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x y => obtain ⟨y1, y2⟩ := y`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul x y => obtain ⟨y1, y2⟩ := y`. Simplify using the standard rewrite rules.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem gsplit_tensor_sum {V V' V'' : Type} [AddCommGroup V] [Module ℂ V] [FiniteDimensional ℂ V]
     [AddCommGroup V'] [Module ℂ V'] [FiniteDimensional ℂ V'] [AddCommGroup V''] [Module ℂ V'']
@@ -35,7 +35,7 @@ theorem gsplit_tensor_sum {V V' V'' : Type} [AddCommGroup V] [Module ℂ V] [Fin
     | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨n1, a, rfl⟩` from `x.exists_rep`. Take `⟨n2, b, rfl⟩` from `y.exists_rep`. Take `⟨n3, c, rfl⟩` from `z.exists_rep`. Rewrite using `[WD.lpSum_mk, WD.lpChar_mk, WD.lpChar_mk, WD.lpChar_mk, WD.lpSum_mk]`. Conclude with `WD.sound (gsplit_tensor_sum a b c)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gsplit_lpChar_lpSum (x y z : WD h) :
     x.lpChar (y.lpSum z) = (x.lpChar y).lpSum (x.lpChar z) := by
@@ -65,7 +65,7 @@ theorem gsplitEquiv_apply (n : ℕ) (v : Fin (n + 1) → ℂ) :
     gsplitEquiv n v = (fun _ => v 0, fun j => v j.succ) := rfl
 
 /- English proof (translation)
-Rewrite using `[WD.lpOfChar, WD.lpSum_mk]`. Use `WD.sound ⟨gsplitEquiv n, fun σ v => ?_, fun v => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun j => ?_) <;> simp [gsplitEquiv_apply]`. Simplify using `only [gsplitEquiv_apply, WDRep.diag_N, WDRep.sum_N, WDRep.ofChars_N, LinearMap.zero_apply, LinearMap.prodMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem gsplit_diag_succ {n : ℕ} (c : Fin (n + 1) → ℂˣ) :
     WD.mk (WDRep.diag h c) =
@@ -79,7 +79,7 @@ theorem gsplit_diag_succ {n : ℕ} (c : Fin (n + 1) → ℂˣ) :
     rfl
 
 /- English proof (translation)
-Take `⟨m, a, rfl⟩` from `y.exists_rep`. Rewrite `hy` using `[WD.lpDim_mk, Module.finrank_fin_fun]`. Substitute `hy` using the available equality. Rewrite using `[WD.lpSum_mk]`. Conclude with `WD.sound ⟨LinearEquiv.ofFinrankEq _ _ (by simp), fun _ _ => Subsingleton.elim _ _, fun _ => Subsingleton.elim _ _⟩`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lpSum_self_of_dim_zero (y : WD h) (hy : y.lpDim = 0) : y.lpSum y = y := by
   obtain ⟨m, a, rfl⟩ := y.exists_rep
@@ -90,7 +90,7 @@ theorem lpSum_self_of_dim_zero (y : WD h) (hy : y.lpDim = 0) : y.lpSum y = y := 
     fun _ => Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Establish `h1` using `hε.add E w h ψ hψ hψ1 y y`. Rewrite `h1` using `[lpSum_self_of_dim_zero y hy]`. Conclude with `mul_left_cancel (a := ε E w h ψ y) (by rw [mul_one]; exact h1.symm)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsilon_eq_one_of_dim_zero {ε : EpsFamily A} (hε : IsDeligneEps ε) (ψ : AddChar (w.adicCompletion E) Circle)
     (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (y : WD h) (hy : y.lpDim = 0) : ε E w h ψ y = 1 := by
@@ -99,7 +99,7 @@ theorem epsilon_eq_one_of_dim_zero {ε : EpsFamily A} (hε : IsDeligneEps ε) (�
   exact mul_left_cancel (a := ε E w h ψ y) (by rw [mul_one]; exact h1.symm)
 
 /- English proof (translation)
-Take `⟨m, a, rfl⟩` from `x.exists_rep`. Rewrite using `[WD.lpChar_mk, WD.lpDim_mk, Module.finrank_tensorProduct]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lpChar_diag_dim_zero (x : WD h) (c : Fin 0 → ℂˣ) : (x.lpChar (WD.mk (WDRep.diag h c))).lpDim = 0 := by
   obtain ⟨m, a, rfl⟩ := x.exists_rep
@@ -107,7 +107,7 @@ theorem lpChar_diag_dim_zero (x : WD h) (c : Fin 0 → ℂˣ) : (x.lpChar (WD.mk
   simp
 
 /- English proof (translation)
-The claim follows from `| 0, c => by rw [Fin.prod_univ_zero] exact epsilon_eq_one_of_dim_zero hε ψ hψ hψ1 _ (lpChar_diag_dim_zero x c) | n + 1, c => by rw [gsplit_diag_succ, gsplit_lpChar_lpSum, hε.add E w h ψ hψ hψ1, lpChar_lpOfChar, gsplit_eps hε ψ hψ hψ1 x n, Fin.prod_univ_succ]`.
+A detailed English derivation is pending.
 -/
 theorem gsplit_eps {ε : EpsFamily A} (hε : IsDeligneEps ε) (ψ : AddChar (w.adicCompletion E) Circle)
     (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (x : WD h) :
@@ -123,7 +123,7 @@ theorem gsplit_eps {ε : EpsFamily A} (hε : IsDeligneEps ε) (ψ : AddChar (w.a
 end Split
 
 /- English proof (translation)
-Take `⟨n, c, rfl⟩` from `Unram.exists_diag hu`. Establish `hn : (WD.mk (WDRep.diag h c)).lpDim = n` using `by rw [WD.lpDim_mk, Module.finrank_fin_fun]`. Use `⟨fun j => c (Fin.cast hn j), fun ε hε ψ hψ hψ1 x => ?_⟩` and prove the remaining obligations. Rewrite using `[gsplit_eps hε ψ hψ hψ1 x n c]`. Conclude with `(Fintype.prod_equiv (finCongr hn) _ _ fun j => rfl).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eps_unr_split {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : IsPlaceOver A w) (u : WD h) (hu : u.unr) :

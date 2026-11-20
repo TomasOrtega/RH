@@ -20,9 +20,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Xo : Moduli D l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Take `⟨u, h1, h2, h3⟩` from `h`. Use `⟨spMap (GlobalTheory.CompanionTheory.Ar.dualMap ψ) ≫ u, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, h1, ← Category.assoc, ← Category.assoc]`. Use `congr 1`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `spec_dual_alg ψ`. Rewrite using `[Category.assoc, h2]`. Rewrite using `[Category.assoc, h3]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tied_pull (Y : Model Xo c β) {B F : Type} [CommRing B] [CommRing F] (ψ : B →+* F)
     {y : Sp B ⟶ Xo.XF c} {y' : Sp F ⟶ Xo.XF c} (hy : y' = spMap ψ ≫ y)
@@ -38,7 +38,7 @@ theorem tied_pull (Y : Model Xo c β) {B F : Type} [CommRing B] [CommRing F] (ψ
   · rw [Category.assoc, h3]
 
 /- English proof (translation)
-Take `⟨u, h1, rfl, -⟩` from `h`. Establish `hp : IsPullback Y.m0.toSABMap.φ Y.oF.t.G.hom Xo.univ.t.G.hom (pullback.fst _ _)` using `Y.m0.cart.1`. Rewrite using `[Category.assoc, hp.w, ← Category.assoc, h1, Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem tied_over (Y : Model Xo c β) {B : Type} [CommRing B] {y : Sp B ⟶ Xo.XF c}
     {V : Sp (DualNumber B) ⟶ Xo.univ.t.G.left} {V' : Sp (DualNumber B) ⟶ Y.t.G.left} (h : Tied Y y V V') :
@@ -48,11 +48,11 @@ theorem tied_over (Y : Model Xo c β) {B : Type} [CommRing B] {y : Sp B ⟶ Xo.X
   rw [Category.assoc, hp.w, ← Category.assoc, h1, Category.assoc]
 
 /- English proof (translation)
-Take `⟨u, hu, rfl⟩` from `h`. Set `P : Formalism.L2.Pj.tEps x' ⟶ Formalism.L2.Pj.tEps x` to `epsBase ψ hx`. Set `Q : (Formalism.L2.Pj.tEps x ⟶ Xo.univ.t.G) →* (Formalism.L2.Pj.tEps x' ⟶ Xo.univ.t.G)` to `{ toFun := fun f => P ≫ f, map_one' := comp_one _, map_mul' := fun a b => comp_mul _ _ _ }`. Use `⟨fun i => P ≫ u i, fun i => ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `spMap (GlobalTheory.CompanionTheory.Ar.dualMap ψ) ≫ (u i).left = _`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hu i, ← GlobalTheory.CompanionTheory.Ar.FrameEig.epsMul_eq, ← GlobalTheory.CompanionTheory.Ar.FrameEig.epsMul_eq, ← Category.assoc, ← Category.assoc]`. Use `congr 1`. Conclude with `spec_dual_eps ψ (cf i)`. Establish `: (List.ofFn fun i => P ≫ u i).prod = P ≫ (List.ofFn u).prod`. Express the relevant statement in the definitionally equal form `(List.ofFn fun i => Q (u i)).prod = Q (List.ofFn u).prod`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_list_prod, List.map_ofFn]`. Both sides reduce to the same expression. Rewrite using `[this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isCombAt_pull {B F : Type} [CommRing B] [CommRing F] (ψ : B →+* F) {x : Sp B ⟶ Xo.X} {x' : Sp F ⟶ Xo.X}
     (hx : spMap ψ ≫ x = x') {m : ℕ} {vs : Fin m → (Sp (DualNumber B) ⟶ Xo.univ.t.G.left)} {cf : Fin m → B}
@@ -76,9 +76,9 @@ theorem isCombAt_pull {B F : Type} [CommRing B] [CommRing F] (ψ : B →+* F) {x
     rfl
 
 /- English proof (translation)
-Use `choose V hT hC using hV`. Establish `hT'` using `fun i => tied_pull Y ψ hy (hT i)`. Use `⟨fun i => Over.homMk (spMap (GlobalTheory.CompanionTheory.Ar.dualMap ψ) ≫ V i) (tied_over Y (hT' i)), fun i => ?_, hT'⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.Ar.FrameEig.isComb_iff]`. Establish `hx : spMap ψ ≫ x₀ = under y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx₀, hy]`. Conclude with `(Category.assoc _ _ _).symm`. Use `isCombAt_pull ψ hx (hC i)` as an intermediate fact. Simplify using `only [← hv] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_pulled (Y : Model Xo c β) {B F : Type} [CommRing B] [Field F] (ψ : B →+* F) (yB : Sp B ⟶ Xo.XF c)
     (y : Sp F ⟶ Xo.XF c) (hy : y = spMap ψ ≫ yB) (x₀ : Sp B ⟶ Xo.X) (hx₀ : x₀ = under yB) {n : ℕ} (v : Vecs y n)
@@ -101,17 +101,15 @@ theorem exists_pulled (Y : Model Xo c β) {B F : Type} [CommRing B] [Field F] (�
   exact this
 
 /- English proof (translation)
-Establish `h : genPt (Z.ξ₀ ≫ Y.j) ⤳ centre (y ≫ Y.j)`. Establish `h1 : genPt Z.ξ₀ ⤳ y (IsLocalRing.closedPoint F)` using `(Z.closure _).1 (hU ⟨_, rfl⟩)`. Establish `h2` using `h1.map Y.j.continuous`. Simplify using `only [genPt, centre, Scheme.Hom.comp_apply]`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hqr : centre (y ≫ Y.j) ∈ x.opensRange`. Rewrite using `[← hθ]`. Express the relevant statement in the definitionally equal form `(spMap θF ≫ x) (IsLocalRing.closedPoint F) ∈ Set.range x`. Simplify using `only [Scheme.Hom.comp_apply]`. Conclude with `⟨_, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hqx : (Y.X.fromSpecStalk (centre (y ≫ Y.j))) (IsLocalRing.closedPoint (Y.X.presheaf.stalk (centre (y ≫ Y.j)))) ∈ x.opensRange`. Rewrite using `[Scheme.fromSpecStalk_closedPoint]`. Conclude with `hqr`. Take `⟨θ', hθ'⟩` from `exists_lift (A := Y.X.presheaf.stalk (centre (y ≫ Y.j))) x _ hqx`. Use `⟨h, θ', hθ', ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : spMap ((genMap (Z.ξ₀ ≫ Y.j) ⟨centre (y ≫ Y.j), h⟩).comp θ') ≫ x = spMap φ₂ ≫ x`. Establish `e1 : spMap ((genMap (Z.ξ₀ ≫ Y.j) ⟨centre (y ≫ Y.j), h⟩).comp θ') = spMap (genMap (Z.ξ₀ ≫ Y.j) ⟨centre (y ≫ Y.j), h⟩) ≫ spMap θ'`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e1, Category.assoc, hθ', hφ]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `spec_genMap _ _`. Conclude with `congrArg (fun g => g.hom) (Spec.map_injective ((cancel_mono x).1 h1))`. Establish `h1 : spMap ((Scheme.stalkClosedPointTo (y ≫ Y.j)).hom.comp θ') ≫ x = spMap θF ≫ x`. Establish `e1 : spMap ((Scheme.stalkClosedPointTo (y ≫ Y.j)).hom.comp θ') = spMap (Scheme.stalkClosedPointTo (y ≫ Y.j)).hom ≫ spMap θ'`. Simplify using `only [spMap, ← Spec.map_comp]`.
-
-Both sides reduce to the same expression. Rewrite using `[e1, Category.assoc, hθ', hθ]`. Conclude with `spec_centre _`. Conclude with `congrArg (fun g => g.hom) (Spec.map_injective ((cancel_mono x).1 h1))`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_germ (Y : Model Xo c β) {U : Set (Xo.XF c)} (Z : CptOver Y U) {R : Type} [CommRing R]
     (x : Sp R ⟶ Y.X) [IsOpenImmersion x] (φ₂ : R →+* Z.Ω) (hφ : spMap φ₂ ≫ x = Z.ξ₀ ≫ Y.j) {F : Type} [Field F]
@@ -152,7 +150,7 @@ theorem exists_germ (Y : Model Xo c β) {U : Set (Xo.XF c)} (Z : CptOver Y U) {R
     exact congrArg (fun g => g.hom) (Spec.map_injective ((cancel_mono x).1 h1))
 
 /- English proof (translation)
-Use `⟨h, epsBase θ' h₁ ≫ e, ⟨isTanAt_base _ _ ht, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hb, ← h₂, ← spMap_dual_comp]`. Simplify using `[epsBase, spMap]`. Rewrite using `[hv', ← h₃, ← spMap_dual_comp]`. Simplify using `[epsBase, spMap]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem valAt_of_chart (Y : Model Xo c β) {U : Set (Xo.XF c)} (Z : CptOver Y U) {R : Type} [CommRing R]
     (x : Sp R ⟶ Y.X) (φ₂ : R →+* Z.Ω) {F : Type} [Field F] (y : Sp F ⟶ Xo.XF c) (θF : R →+* F)
@@ -170,7 +168,7 @@ theorem valAt_of_chart (Y : Model Xo c β) {U : Set (Xo.XF c)} (Z : CptOver Y U)
     simp [epsBase, spMap]
 
 /- English proof (translation)
-Substitute `hw` using the available equality. Conclude with `h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem sameVec_of_tied (Y : Model Xo c β) {F : Type} [Field F] {y : Sp F ⟶ Xo.XF c}
     {v : epsAt (under y) ⟶ Xo.univ.t.G} {v' : epsAt (y ≫ Y.j) ⟶ Y.t.G} {w : Sp (DualNumber F) ⟶ Y.t.G.left}
@@ -181,27 +179,23 @@ theorem sameVec_of_tied (Y : Model Xo c β) {F : Type} [Field F] {y : Sp F ⟶ X
 end GlobalTheory.CompanionTheory.Ar.LocFn.FieldStage
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c U τ O _ β Y Z φ a b S _ _ z hp hq R _ x _ φ₂ e₁ e₂ f b₁ b₂ α κ B _ _ θ C₁ C₂ hφ hrep hξ ha hb hf ht₁ ht₂ hb₁ hb₂ hθ hC₁ hC₂ hV₁ hV₂ F _ ψ y hy hU v w hv hw`. Establish `e0 : ∀ {A : Type} [CommRing A] (g : A →+* B), spMap (ψ.comp g) = spMap ψ ≫ spMap g` using `fun g => by`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Establish `hyS : under y = spMap (ψ.comp (algebraMap S B)) ≫ z.x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hy, e0]`. Simplify using `only [under, Category.assoc, zPt_fst]`. Establish `hys : y ≫ pullback.snd _ _ = spMap ((ψ.comp (algebraMap S B)).comp (algebraMap c.F S))`. Rewrite using `[hy]`. Simplify using `only [Category.assoc, zPt_snd]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Take `⟨v', w', hv', hw', hfr⟩` from `GlobalTheory.CompanionTheory.Ar.FrameEig.isFramed_frPt E H D l Xo c τ S z F (ψ.comp (algebraMap S B)) y hp hq hyS hys`. Establish `ev : v' = v` using `funext fun i => Over.OverMorphism.ext ((hv' i).trans (hv i).symm)`. Establish `ew : w' = w` using `funext fun i => Over.OverMorphism.ext ((hw' i).trans (hw i).symm)`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hfr` using `[ev, ew]`. Establish `hF` using `hfr U hU`. Establish `hzx : spMap (algebraMap S B) ≫ z.x = under (spMap (algebraMap S B) ≫ zPt z)`. Simplify using `only [under, Category.assoc, zPt_fst]`. Establish `hvv : ∀ k, (v k).left = spMap (GlobalTheory.CompanionTheory.Ar.dualMap ψ) ≫ (spMap (Formalism.L2.Pj.dualMap (algebraMap S B)) ≫ z.u τ (k.cast hp.symm))` using `fun k => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hv k, ← Category.assoc]`. Conclude with `congrArg (· ≫ _) (GlobalTheory.CompanionTheory.Ar.LieVB.spMap_dual_comp (algebraMap S B) ψ).symm`. Establish `hww : ∀ k, (w k).left = spMap (GlobalTheory.CompanionTheory.Ar.dualMap ψ) ≫ (spMap (Formalism.L2.Pj.dualMap (algebraMap S B)) ≫ z.u (ComplexEmbedding.conjugate τ) (k.cast hq.symm))` using `fun k => by`. Rewrite using `[hw k, ← Category.assoc]`. Conclude with `congrArg (· ≫ _) (GlobalTheory.CompanionTheory.Ar.LieVB.spMap_dual_comp (algebraMap S B) ψ).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨v₀, hc₁, hT₁⟩` from `FieldStage.exists_pulled Y ψ _ y hy _ hzx v _ hvv C₁ (fun i => spMap (Formalism.L2.Pj.dualMap θ) ≫ (e₁ i).left) hV₁`. Take `⟨w₀, hc₂, hT₂⟩` from `FieldStage.exists_pulled Y ψ _ y hy _ hzx w _ hww C₂ (fun i => spMap (Formalism.L2.Pj.dualMap θ) ≫ (e₂ i).left) hV₂`. Establish `hu₁ : IsUnit (ψ.mapMatrix C₁).det`. Rewrite using `[← RingHom.map_det]`. Conclude with `hC₁.map ψ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu₂ : IsUnit (ψ.mapMatrix C₂).det`. Rewrite using `[← RingHom.map_det]`. Conclude with `hC₂.map ψ`. Establish `hF₀ : IsFramed U τ ((ψ.comp (algebraMap S B)).comp (algebraMap c.F S)) y v₀ w₀` using `⟨hF.1, hF.2.1, GlobalTheory.T.eigen_frame_of_unit_det_change Xo.X F Xo.univ.t.G (under y) (𝓞 E) Xo.univ.t.act _ D.p v v₀ (ψ.mapMatrix C₁) hF.2.2.1 hc₁ hu₁, GlobalTheory.T.eigen_frame_of_unit_det_change Xo.X F Xo.univ.t.G (under y) (𝓞 E) Xo.univ.t.act _ D.q w w₀ (ψ.mapMatrix C₂) h …`. Establish `hθF : spMap (ψ.comp θ) ≫ x = y ≫ Y.j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[e0, Category.assoc, hθ, hy]`. Simplify using `only [Category.assoc]`. Take `⟨h, θ', g₁, g₂, g₃⟩` from `FieldStage.exists_germ Y Z x φ₂ hξ y hU (ψ.comp θ) hθF`. Establish `hval₁ : ∀ i, ∃ v', Z.M.ValAt (y ≫ Y.j) (b₁ i) v' ∧ SameVec Y y (v₀ i) v'` using `fun i => ⟨GlobalTheory.CompanionTheory.Ar.LieTangent.epsBase (ψ.comp θ) hθF ≫ e₁ i, FieldStage.valAt_of_chart Y Z x φ₂ y (ψ.comp θ) h θ' g₁ g₂ g₃ (b₁ i) (e₁ i) (ht₁ i) (hb₁ i) _ rfl, FieldStage.sameVec_of_tied Y (hT₁ i) (by`. Rewrite using `[← Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `congrArg (· ≫ _) (GlobalTheory.CompanionTheory.Ar.LieVB.spMap_dual_comp θ ψ))⟩`. Establish `hval₂ : ∀ i, ∃ v', Z.M.ValAt (y ≫ Y.j) (b₂ i) v' ∧ SameVec Y y (w₀ i) v'` using `fun i => ⟨GlobalTheory.CompanionTheory.Ar.LieTangent.epsBase (ψ.comp θ) hθF ≫ e₂ i, FieldStage.valAt_of_chart Y Z x φ₂ y (ψ.comp θ) h θ' g₁ g₂ g₃ (b₂ i) (e₂ i) (ht₂ i) (hb₂ i) _ rfl, FieldStage.sameVec_of_tied Y (hT₂ i) (by`. Rewrite using `[← Category.assoc]`. Conclude with `congrArg (· ≫ _) (GlobalTheory.CompanionTheory.Ar.LieVB.spMap_dual_comp θ ψ))⟩`. Take `⟨h', s, hs₁, hs₂⟩` from `hrep F _ y v₀ w₀ b₁ b₂ α κ hF₀ ha hb hval₁ hval₂`.
-
-Establish `hs : s = θ' f` using `Z.gen.inj ⟨_, h'⟩ (hs₁.trans (hf.symm.trans (by rw [← g₂]; rfl)))`. Establish `hvalue : φ F y v₀ w₀ = ψ (θ f)`. Rewrite using `[← hs₂, hs]`. Conclude with `RingHom.congr_fun g₃ f`. Establish `hchg` using `hφ.chg F _ y v w v₀ w₀ (ψ.mapMatrix C₁) (ψ.mapMatrix C₂) hF hF₀ hc₁ hc₂`.
-
-Rewrite `hchg` using `[hvalue, ← RingHom.map_det, ← RingHom.map_det]`. Conclude with `hchg.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CompanionTheory.Ar.LocFn.function_of_frames_at_field_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (U : Set (Xo.XF c)) (τ : E →+* ℂ) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (Z : CptOver Y U) (φ : FrameFn Xo c) (a : ⋀[Z.Ω]^D.p Z.V) (b : ⋀[Z.Ω]^D.q Z.V) (S : Type) [CommRing S] [Algebra c.F S] (z : Formalism.L2.Pj.FrPt Xo c S) (hp : D.mult τ = D.p) (hq : D.mult (ComplexEmbedding.conjugate τ) = D.q) (R : Type) [CommRing R] (x : Sp R ⟶ Y.X) [IsOpenImmersion x] (φ₂ : R →+* Z.Ω) (e₁ : Fin D.p → (epsAt x ⟶ Y.t.G)) (e₂ : Fin D.q → (epsAt x ⟶ Y.t.G)) (f : R) (b₁ : Fin D.p → Z.V) (b₂ : Fin D.q → Z.V) (α κ : Z.Ω) (B : Type) [CommRing B] [Algebra S B] (θ : R →+* B) (C₁ : Matrix (Fin D.p) (Fin D.p) B) (C₂ : Matrix (Fin D.q) (Fin D.q) B), IsLineFn U τ φ → Represents Y U τ Z.M a b φ → spMap φ₂ ≫ x = Z.ξ₀ ≫ Y.j → a = α • exteriorPower.ιMulti Z.Ω D.p b₁ → b = κ • exteriorPower.ιMulti Z.Ω D.q b₂ → φ₂ f = α / κ → (∀ i, GlobalTheory.CompanionTheory.Ar.IsTanAt Y.t.G x (e₁ i)) → (∀ i, GlobalTheory.CompanionTheory.Ar.IsTanAt Y.t.G x (e₂ i)) → (∀ i, (Z.M.pt (b₁ i)).left = spMap (GlobalTheory.CompanionTheory.Ar.dualMap φ₂) ≫ (e₁ i).left) → (∀ i, (Z.M.pt (b₂ i)).left = spMap (GlobalTheory.CompanionTheory.Ar.dualMap φ₂) ≫ (e₂ i).left) → spMap θ ≫ x = spMap (algebraMap S B) ≫ zPt z ≫ Y.j → IsUnit C₁.det → IsUnit C₂.det → (∀ i, ∃ V : Sp (DualNumber B) ⟶ Xo.univ.t.G.left, Tied Y (spMap (algebraMap S B) ≫ zPt z) V (spMap (Formalism.L2.Pj.dualMap θ) ≫ (e₁ i).left) ∧ Formalism.L2.Pj.IsCombAt (spMap (algebraMap S B) ≫ z.x) (fun k => spMap (Formalism.L2.Pj.dualMap (algebraMap S B)) ≫ z.u τ (k.cast hp.symm)) (C₁ i) V) → (∀ i, ∃ V : Sp (DualNumber B) ⟶ Xo.univ.t.G.left, Tied Y (spMap (algebraMap S B) ≫ zPt z) V (spMap (Formalism.L2.Pj.dualMap θ) ≫ (e₂ i).left) ∧ Formalism.L2.Pj.IsCombAt (spMap (algebraMap S B) ≫ z.x) (fun k => spMap (Formalism.L2.Pj.dualMap (algebraMap S B)) ≫ z.u (ComplexEmbedding.conjugate τ) (k.cast hq.symm)) (C₂ i) V) → ∀ (F : Type) [Field F] (ψ : B →+* F) (y : Sp F ⟶ Xo.XF c), y = spMap ψ ≫ spMap (algebraMap S B) ≫ zPt z → Set.range y ⊆ U → ∀ (v : Vecs y D.p) (w : Vecs y D.q), (∀ i, (v i).left = spMap (Formalism.L2.Pj.dualMap (ψ.comp (algebraMap S B))) ≫ z.u τ (i.cast hp.symm)) → (∀ j, (w j).left = spMap (Formalism.L2.Pj.dualMap (ψ.comp (algebraMap S B))) ≫ z.u (ComplexEmbedding.conjugate τ) (j.cast hq.symm)) → φ F y v w * ψ C₂.det = ψ (θ f) * ψ C₁.det := by
   intro E _ _ _ H D l Xo c U τ O _ β Y Z φ a b S _ _ z hp hq R _ x _ φ₂ e₁ e₂ f b₁ b₂ α κ B _ _ θ C₁ C₂ hφ hrep hξ ha hb

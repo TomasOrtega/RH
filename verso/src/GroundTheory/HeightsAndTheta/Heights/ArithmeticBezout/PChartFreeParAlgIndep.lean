@@ -10,19 +10,17 @@ open Cardinal
 noncomputable section
 
 /- English proof (translation)
-Introduce `F _ n e K L _ _ _ _ _ _ u t η hu hK hL hrel hchart j₀ hj₀ htr`. Establish `halg` using `h F n e K L u t η hK hL hrel hchart j₀ hj₀`. Use `set A₀ := Algebra.adjoin F (Set.range fun m => η m * (η j₀)⁻¹) with hA₀`. Use `set w : Fin e × {j : Fin n // j ≠ j₀} → L := fun p => algebraMap K L (u (p.1, p.2.1)) with hw`. Establish `hinj : Function.Injective (Sum.elim (fun i : Fin e => ((i, j₀) : Fin e × Fin n)) (fun p : Fin e × {j : Fin n // j ≠ j₀} => ((p.1, p.2.1) : Fin e × Fin n)))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rintro (i | ⟨i, j, hj⟩) (i' | ⟨i', j', hj'⟩) hij <;>`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, Prod.mk.injEq, Sum.inl.injEq, Sum.inr.injEq, reduceCtorEq, Subtype.mk.injEq] at hij ⊢`. Conclude with `hij.1`. Conclude with `absurd hij.2.symm hj'`. Conclude with `absurd hij.2 hj`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hij`. Establish `hcount : (e : Cardinal) + #(Fin e × {j : Fin n // j ≠ j₀}) ≤ #(Fin e × Fin n)`. Combine the equalities or inequalities in the displayed calculation. Establish `huL : AlgebraicIndependent F (fun q => algebraMap K L (u q))` using `hu.map' (f := IsScalarTower.toAlgHom F K L) (algebraMap K L).injective`. Establish `hK_le : (e : Cardinal) + #(Fin e × {j : Fin n // j ≠ j₀}) ≤ Algebra.trdeg F K` using `hcount.trans hu.cardinalMk_le_trdeg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL_le : (e : Cardinal) + #(Fin e × {j : Fin n // j ≠ j₀}) ≤ Algebra.trdeg F L` using `hcount.trans huL.cardinalMk_le_trdeg`. Establish `hind : AlgebraicIndependent A₀ w` using `Vertical.FreeParAlgIndep.algebraicIndependent_of_trdeg A₀ w htr hL_le`. Use `⟨IntermediateField.algebraicIndependent_adjoin_iff.2 hind, ?_⟩` and prove the remaining obligations. Establish `hbasis : IsTranscendenceBasis A₀ w` using `hind.isTranscendenceBasis_iff_isAlgebraic.2 halg`. Establish `: FaithfulSMul F A₀` using `(faithfulSMul_iff_algebraMap_injective F A₀).2 (algebraMap F A₀).injective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: FaithfulSMul A₀ L` using `(faithfulSMul_iff_algebraMap_injective A₀ L).2 Subtype.val_injective`. Establish `: FaithfulSMul F K` using `(faithfulSMul_iff_algebraMap_injective F K).2 (algebraMap F K).injective`. Establish `: FaithfulSMul K L` using `(faithfulSMul_iff_algebraMap_injective K L).2 (algebraMap K L).injective`. Establish `hA₀L` using `trdeg_add_eq F A₀ (A := L)`. Establish `hKL` using `trdeg_add_eq F K (A := L)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hA₀L` using `[← hbasis.cardinalMk_eq_trdeg]`. Establish `hup : Algebra.trdeg F L ≤ (e : Cardinal) + #(Fin e × {j : Fin n // j ≠ j₀})`. Rewrite using `[← hA₀L]`. Use `gcongr`. Establish `hfin : (e : Cardinal) + #(Fin e × {j : Fin n // j ≠ j₀}) < ℵ₀` using `Cardinal.add_lt_aleph0 (Cardinal.natCast_lt_aleph0) (Cardinal.lt_aleph0_of_finite _)`.
-
-Establish `h0 : Algebra.trdeg K L + ((e : Cardinal) + #(Fin e × {j : Fin n // j ≠ j₀})) ≤ 0 + ((e : Cardinal) + #(Fin e × {j : Fin n // j ≠ j₀}))`. Rewrite using `[zero_add, add_comm]`. Combine the equalities or inequalities in the displayed calculation. Establish `hz : Algebra.trdeg K L = 0` using `nonpos_iff_eq_zero.1 ((Cardinal.add_le_add_iff_of_lt_aleph0 hfin).1 h0)`. Conclude with `trdeg_eq_zero_iff.1 hz`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ChartFreeParAlgIndep.proof (h : ChartParAlgebraic.Statement) : ChartFreeParAlgIndep.Statement := by
   intro F _ n e K L _ _ _ _ _ _ u t η hu hK hL hrel hchart j₀ hj₀ htr

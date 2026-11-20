@@ -10,21 +10,21 @@ open scoped WithZero TensorProduct
 namespace GlobalTheory.CNorm
 
 /- English proof (translation)
-Introduce `p F E _ _ _ _ _ ζ δ θ σ hq S SE hSE`. Establish `hp` using `hq.prime`. Take `⟨-, hrk, hgal, -, -, -, hemb⟩` from `kummer_galois p F E ζ δ θ σ hq`. Establish `h1 : SE.card = ∑ v ∈ S, (SE.filter (fun w => w.under (𝓞 F) = v)).card` using `Finset.card_eq_sum_card_fiberwise (fun w hw => (hSE w).1 hw)`. Establish `h2 : tNon p F δ S = ∑ v ∈ S, if (∀ r : v.adicCompletion F, r ^ p ≠ algebraMap F (v.adicCompletion F) δ) then 1 else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Finset.card_filter, tNon, ← Set.ncard_coe_finset]`. Use `congr 1`. Use extensionality with `v`. Simplify using the standard rewrite rules. Rewrite using `[h1, h2, Finset.mul_sum, ← Finset.sum_add_distrib, mul_comm, ← smul_eq_mul, ← Finset.sum_const]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_le_sum (fun v hv => ?_)` and prove the remaining obligations. Distinguish the cases in `hs : ∀ r : v.adicCompletion F, r ^ p ≠ algebraMap F (v.adicCompletion F) δ`. Take `⟨w, hw⟩` from `(places_over F E).2.1 v`. Establish `: 0 < (SE.filter (fun w => w.under (𝓞 F) = v)).card` using `Finset.card_pos.2 ⟨w, Finset.mem_filter.2 ⟨(hSE w).2 (hw ▸ hv), hw⟩⟩`. Rewrite using `[if_pos hs]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Rewrite `hs` using `[if_neg hs] push Not`. Take `⟨r, hr⟩` from `hs`. Establish `hδ : δ ≠ 0` using `fun h0 => hq.nonpow 0 (by rw [h0, zero_pow hp.ne_zero])`. Establish `hr0 : r ≠ 0`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `hr` using `[h0, zero_pow hp.ne_zero, eq_comm, map_eq_zero]`. Conclude with `hδ hr`. Take `⟨ψ, hψ⟩` from `hemb (v.adicCompletion F) r hr`. Take `⟨ψ', hψ'⟩` from `hemb (v.adicCompletion F) (algebraMap F (v.adicCompletion F) ζ * r) (by rw [mul_pow, ← map_pow, hq.root.pow_eq_one, map_one, one_mul, hr])`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hne : ψ ≠ ψ'`. Introduce `h`. Rewrite `hψ'` using `[← h, hψ, eq_comm, mul_eq_right₀ hr0, ← map_one (algebraMap F (v.adicCompletion F))]`. Conclude with `hq.root.ne_one hp.one_lt ((algebraMap F (v.adicCompletion F)).injective hψ')`. Take `⟨w, w', hww, hw, hw'⟩` from `two_places_of_embeddings F E v ψ ψ' hne`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `ncard_places_over_eq_of_prime_degree p F E hp hrk v w w' hww hw hw'`. Establish `h4 : (SE.filter (fun w => w.under (𝓞 F) = v)).card = p`. Rewrite using `[← h3, ← Set.ncard_coe_finset]`. Use `congr 1`. Use extensionality with `u`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `only [Finset.coe_filter, Set.mem_setOf_eq]`. Conclude with `⟨fun h => h.2, fun h => ⟨(hSE u).2 (h ▸ hv), h⟩⟩`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem prime_mul_card_le_card_over : ∀ (p : ℕ) (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (ζ δ : F) (θ : E) (σ : E ≃ₐ[F] E), IsKum p ζ δ θ σ → ∀ (S : Finset (HeightOneSpectrum (𝓞 F))) (SE : Finset (HeightOneSpectrum (𝓞 E))), (∀ w : HeightOneSpectrum (𝓞 E), w ∈ SE ↔ w.under (𝓞 F) ∈ S) → p * S.card ≤ SE.card + (p - 1) * tNon p F δ S := by
   intro p F E _ _ _ _ _ ζ δ θ σ hq S SE hSE

@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `k _ X p r E` and use `VMetric.isometric_det_dual k X p E.E r E.h E.cInf`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem HermVB.isometric_det_dual :
     ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (r : ℕ) (E : HermVB p r),

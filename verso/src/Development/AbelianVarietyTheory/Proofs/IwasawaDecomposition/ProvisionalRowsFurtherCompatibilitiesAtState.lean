@@ -24,21 +24,21 @@ variable {K : Type} [Field K] [NumberField K] [StarRing K] {G : Type} [Group G] 
 def castEq {m m' : Mat1 K G} (h : m = m') : (Fin m'.n → K) ≃ₗ[K] (Fin m.n → K) := h ▸ LinearEquiv.refl K _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `t.forms`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem forms_cast {m m' : Mat1 K G} {s : Sp1 O φ G} (h : m = m') (t : Tie1 σ m s) :
     FormsTie σ (t.j.comp (castEq h).toLinearMap) m'.H m'.E s.e := by
   subst h; exact t.forms
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `t.latT`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem lat_cast {m m' : Mat1 K G} {s : Sp1 O φ G} (h : m = m') (t : Tie1 σ m s) :
     OLatTie σ s.lat (t.j.comp (castEq h).toLinearMap) m'.N := by
   subst h; exact t.latT
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `t.cen z a ha x`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem cen_cast {m m' : Mat1 K G} {s : Sp1 O φ G} (h : m = m') (t : Tie1 σ m s)
     (z : Subalgebra.center ℂ (MonoidAlgebra ℂ G)) (a : MonoidAlgebra K G)
@@ -47,7 +47,7 @@ theorem cen_cast {m m' : Mat1 K G} {s : Sp1 O φ G} (h : m = m') (t : Tie1 σ m 
   subst h; exact t.cen z a ha x
 
 /- English proof (translation)
-Substitute `hμ` using the available equality. Substitute `h` using the available equality. Take `rfl : j = (tA μ).j` from `eq_of_heq hj`. Conclude with `⟨rfl, fun x x' hx => congrArg _ (funext fun a => hx a a rfl)⟩`.
+Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sameOn_tie {τ : Type} (mA : τ → Mat1 K G) (s : τ → Sp1 O φ G) (tA : ∀ μ, Tie1 σ (mA μ) (s μ)) {μ μ' : τ} (hμ : μ = μ')
     {m' : Mat1 K G} (h : mA μ' = m') (j : (Fin m'.n → K) →ₛₗ[σ] (s μ).A.T) (hj : HEq j ((tA μ').cast h).j) :
@@ -57,7 +57,7 @@ theorem sameOn_tie {τ : Type} (mA : τ → Mat1 K G) (s : τ → Sp1 O φ G) (t
   exact ⟨rfl, fun x x' hx => congrArg _ (funext fun a => hx a a rfl)⟩
 
 /- English proof (translation)
-Substitute `hμ` using the available equality. Substitute `h` using the available equality. Substitute `h'` using the available equality. Conclude with `⟨rfl, fun x x' hx => (funext fun a => hx a a rfl).trans (eq_of_heq (hj x')).symm⟩`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem sameOn_cast {τ : Type} (mL : τ → Mat1 K G) {μ μ' : τ} (hμ : μ = μ') {m' m'' : Mat1 K G} (h : mL μ = m') (h' : mL μ' = m'')
     (j : (Fin m''.n → K) → Fin (mL μ).n → K) (hj : ∀ x, HEq (j x) x) : SameOn (castEq h) j := by
@@ -67,7 +67,7 @@ theorem sameOn_cast {τ : Type} (mL : τ → Mat1 K G) {μ μ' : τ} (hμ : μ =
 end Gen
 
 /- English proof (translation)
-Take `⟨plg, iso, h1, -, -, h4⟩` from `z.pins.keep.grp`. Establish `hP : z.R.Pg = (X.B.primes px).vGs` using `z.lev.Pg`. Use `⟨plg.trans (Equiv.subtypeEquivRight fun x => by rw [hP]; exact Iff.rfl), iso, h1, fun g kv => ?_⟩` and prove the remaining obligations. Conclude with `(z.idG g (plg kv).1 _ (plg kv).2).symm.trans (h4 g kv)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem stdIso_dat {X : Stages} {px : PreX X.B.toPre} {I : ColIn X.B px} {hX : X.B.fields.Ok} {T : TwDat X.B}
     {Wt : Set X.B.places.Pl} (z : Dat X I hX T Wt) : StdIso X px (z.R.eG.trans z.cG) := by
@@ -81,9 +81,9 @@ variable {B : Base} {f : Fr B.toPre} {T : TwDat B} {w : ColW B f T}
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Establish `e : mLU (w.st Z') w.I hX Xg' tr' a ((i : ℕ) + 1) = lMat (D` using `(w.st Z').toD7) (famR (w.st Z') w.I hX Set.univ Xg' tr').A (lev0 w.I) (chr0 w.I) i (tAll w.I a) := by`. Establish `hi : 1 ≤ (i : ℕ) + 1 ∧ (i : ℕ) + 1 ≤ (w.st Z').toD7.R.m` using `⟨by omega, i.2⟩`. Unfold `mLU`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hi]`. Conclude with `(by with_unfolding_all exact ((Eq.refl (lMat (D := (w.st Z').toD7) (famR (w.st Z') w.I hX Set.univ Xg' tr').A (lev0 w.I) (chr0 w.I) i (tAll w.I a))) :))`. Conclude with `(by with_unfolding_all exact ((heq_of_eq e) :))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mLU_eq (Z Z' : w.Lt) (hX : B.fields.Ok) {Xg Xg' : Finset (Gc B w.px → B.LL)} {tr tr' : TrI B w.px} (h1 : Xg' = Xg)
     (h2 : tr' = tr) (a : w.I.ι) (i : Fin (w.st Z').toD7.R.m) :
@@ -101,7 +101,7 @@ theorem mLU_eq (Z Z' : w.Lt) (hX : B.fields.Ok) {Xg Xg' : Finset (Gc B w.px → 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Take `rfl : j' = j` from `eq_of_heq hj`. Conclude with `h y`.
+Substitute using the available equality. Substitute using the available equality. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem crd_eq (Z : w.Lt) (hX : B.fields.Ok) {Xg Xg' : Finset (Gc B w.px → B.LL)} {tr tr' : TrI B w.px} (h1 : Xg' = Xg)
     (h2 : tr' = tr) (a : w.I.ι) (M : Hs) (e : Df.MtCx w.I a ≃ₗ[ℂ] M.T)
@@ -116,7 +116,7 @@ theorem crd_eq (Z : w.Lt) (hX : B.fields.Ok) {Xg Xg' : Finset (Gc B w.px → B.L
   exact h y
 
 /- English proof (translation)
-The claim follows from `Algebra.algebra_ext _ _ fun y => σ.injective ((hi y).trans (hi' y).symm)`.
+A detailed English derivation is pending.
 -/
 theorem algebra_eq {k L : Type} [Field k] [Field L] (σ : L →+* ℂ) (v : k → ℂ) (i i' : Algebra k L)
     (hi : ∀ y, σ (@algebraMap k L _ _ i y) = v y) (hi' : ∀ y, σ (@algebraMap k L _ _ i' y) = v y) : i = i' :=
@@ -125,7 +125,7 @@ theorem algebra_eq {k L : Type} [Field k] [Field L] (σ : L →+* ℂ) (v : k �
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `ei : ((by with_unfolding_all exact (i :))) = i'` using `algebra_eq (w.st Z').toD7.what₂.embLL v _ i' ((by with_unfolding_all exact (hi :))) hi'`. Substitute `ei` using the available equality. Establish `eR : ((by with_unfolding_all exact ((real3 (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) ⟨Z'.W, Z'.V, Z'.S, Z'.N, Z'.G⟩ (iK := i) R) :))) = R' := eq_of_heq ((by with_unfolding_all exact (hR.symm :)))`. Substitute `eR` using the available equality. Conclude with `(by with_unfolding_all exact (h :))`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem brgStd_copy0 (Z Z' : w.Lt) (hX : B.fields.Ok) (U : Set w.I.ι) (Xg : Finset (Gc B w.px → B.LL)) (tr : TrI B w.px)
     (k : Type) [Field k] [NumberField k] (v : k → ℂ)
@@ -146,7 +146,7 @@ theorem brgStd_copy0 (Z Z' : w.Lt) (hX : B.fields.Ok) (U : Set w.I.ι) (Xg : Fin
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Substitute `h1` using the available equality. Substitute `h2` using the available equality. Establish `ec : ((by with_unfolding_all exact ((coreJ (a` using `⟨Z.W, Z.V, Z.S, Z.N, Z.G⟩) ⟨Z'.W, Z'.V, Z'.S, Z'.N, Z'.G⟩ c) :))) = c' := (by with_unfolding_all exact ((eq_of_heq hc.symm) :))`. Substitute `ec` using the available equality. Conclude with `(by with_unfolding_all exact ((brgStd_copy0 Z Z' hX U Xg' tr' c.Q.c.F (fun y => (y : ℂ)) i ((i')) ((hi)) ((hi')) R ((R')) ((hR)) h) : _))`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem brgStd_copy (Z Z' : w.Lt) (hX : B.fields.Ok) (U : Set w.I.ι) {Xg Xg' : Finset (Gc B w.px → B.LL)} {tr tr' : TrI B w.px}
     (h1 : Xg' = Xg) (h2 : tr' = tr) (c : Formalism.L2.Pj.CoreJ (w.st Z).toD7) (c' : Formalism.L2.Pj.CoreJ (w.st Z').toD7)
@@ -168,7 +168,7 @@ variable {Z₀ : w.Lt} {hX : B.fields.Ok} {Wt : Set B.places.Pl} {z₀ : Dat (w.
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `h` using `mLU_eq Z₀ o.Z hX m.Xg m.tr a i`. Establish `h'` using `q.mL a ((i : ℕ) + 1)`. Conclude with `(by with_unfolding_all exact ((eq_of_heq ((heq_of_eq h').trans h)) :))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mL_all (m : Moved o) (i : Fin (w.st o.Z).toD7.R.m) (a : w.I.ι) :
     q.p.mL a ((i : ℕ) + 1) =
@@ -212,7 +212,7 @@ def allT (h : o.Fits) (m : Moved o) (s : Side0 o) :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((sameOn_tie (mAU (w.st o.Z) w.I hX m.z.Xg m.z.tr true) (q.p.sA true) (m.t.tA true) (congrFun r.tup t) (m.t.hA true t) (((r.Y.jA t))) (((r.jA t)))) : _))`.
+A detailed English derivation is pending.
 -/
 theorem jA_same (h : o.Fits) {m : Moved o} {s : Side0 o} (r : ReadPk m s) (t) :
     SameOn ((allT h m s).jA (r.Y.tup t)) (r.Y.jA t) := (by with_unfolding_all exact ((sameOn_tie (mAU (w.st o.Z) w.I hX m.z.Xg m.z.tr true) (q.p.sA true) (m.t.tA true) (congrFun r.tup t) (m.t.hA true t)
@@ -221,7 +221,7 @@ theorem jA_same (h : o.Fits) {m : Moved o} {s : Side0 o} (r : ReadPk m s) (t) :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((sameOn_tie (mAU (w.st o.Z) w.I hX m.z.Xg m.z.tr false) (q.p.sA false) (m.t.tA false) (congrFun r.tup t) (m.t.hA false t) (((r.Y.jA0 t))) (((r.jA0 t)))) : _))`.
+A detailed English derivation is pending.
 -/
 theorem rowReading_baseLevel_sameOn_allTuples (h : o.Fits) {m : Moved o} {s : Side0 o} (r : ReadPk m s) (t) :
     SameOn ((allT h m s).jA0 (r.Y.tup t)) (r.Y.jA0 t) := (by with_unfolding_all exact ((sameOn_tie (mAU (w.st o.Z) w.I hX m.z.Xg m.z.tr false) (q.p.sA false) (m.t.tA false) (congrFun r.tup t) (m.t.hA false t)
@@ -230,7 +230,7 @@ theorem rowReading_baseLevel_sameOn_allTuples (h : o.Fits) {m : Moved o} {s : Si
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((sameOn_cast (fun a => q.p.mL a ((i : ℕ) + 1)) (congrFun r.tup t) (mL_all m i (r.Y.tup t)) (m.t.hL i t) (fun x => (by with_unfolding_all exact ((r.Y.eMt i t ((x))) : _))) ((by with_unfolding_all exact ((r.eMt i t) :)))) :))`.
+A detailed English derivation is pending.
 -/
 theorem eMt_same (h : o.Fits) {m : Moved o} {s : Side0 o} (r : ReadPk m s) (i : Fin (w.st o.Z).toD7.R.m) (t) :
     SameOn ((allT h m s).eMt i (r.Y.tup t)) (r.Y.eMt i t) := (by with_unfolding_all exact ((sameOn_cast (fun a => q.p.mL a ((i : ℕ) + 1)) (congrFun r.tup t) (mL_all m i (r.Y.tup t)) (m.t.hL i t)
@@ -239,7 +239,7 @@ theorem eMt_same (h : o.Fits) {m : Moved o} {s : Side0 o} (r : ReadPk m s) (i : 
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((crd_eq Z₀ hX m.Xg m.tr a (q.p.sA true a).A (q.per.e a) (q.t.tA true a).j (((m.t.tA true a).j)) (((m.tA true a))) (q.per.crd a) ((y))) : _))`.
+A detailed English derivation is pending.
 -/
 theorem crd_moved (h : o.Fits) (m : Moved o) (s : Side0 o) (a : w.C.Tup) (y) :
     IsCrd w.I hX a (q.per.e a)
@@ -250,7 +250,7 @@ theorem crd_moved (h : o.Fits) (m : Moved o) (s : Side0 o) (a : w.C.Tup) (y) :
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `(m.t.ch b).junk μ (fun hu => h ?_) j` and prove the remaining obligations. Break down `hu with hu | ⟨v, hu⟩` into its components or cases. Conclude with `Or.inl hu`. Conclude with `Or.inr ⟨v, hu.trans ((congrFun r.tup _).symm.trans (r.Y.muAt v).symm)⟩`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 -/
 theorem io_junk {m : Moved o} {s : Side0 o} (r : ReadPk m s) (μ : (w.D o.Z).what₂.Tup) (h : ¬ Used0 (w.D o.Z) μ) (b : Bool) (j : ℕ) :
     (q.p.ch b).io μ j = 0 := by
@@ -262,7 +262,7 @@ theorem io_junk {m : Moved o} {s : Side0 o} (r : ReadPk m s) (μ : (w.D o.Z).wha
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-The claim follows from `brgStd_copy Z₀ o.Z hX _ m.Xg m.tr z₀.core m.z.core z₀.alg m.z.alg z₀.alg_eq m.z.alg_eq z₀.R m.z.R ((by with_unfolding_all exact (c.core :))) ((by with_unfolding_all exact (c.R :))) h`.
+A detailed English derivation is pending.
 -/
 theorem std_moved {m : Moved o} (c : m.Copy) (h : z₀.Std) : m.z.Std :=
   brgStd_copy Z₀ o.Z hX _ m.Xg m.tr z₀.core m.z.core z₀.alg m.z.alg z₀.alg_eq m.z.alg_eq z₀.R m.z.R ((by with_unfolding_all exact (c.core :))) ((by with_unfolding_all exact (c.R :))) h
@@ -270,9 +270,9 @@ theorem std_moved {m : Moved o} (c : m.Copy) (h : z₀.Std) : m.z.Std :=
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `K B f T w _ _ _ P x hη t ht`. Establish `key : ∀ (r : R3.RowsAre (w.st x.o.Z) w.I P.hX T P.Wt (Equiv.refl _) x.s.p0), x.rowsAre hη = r → ∀ h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12, Nonempty (RXs (⟨P.hX, r, h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12⟩ : RowsT K w x.o.Z P.Wt x.s.p0))` using `?_`. Conclude with `key t.r ht.symm t.exAt t.inGeo t.grpAt t.grp t.mu t.exact t.untw t.emt0 t.emt t.etaF t.rowInt t.idx`. Introduce `r hr`. Proceed by induction on `hr`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12`. Establish `hc` using `x.m.core P.core`. Conclude with `⟨{ all := (by with_unfolding_all exact ((allT x.fits x.m x.s) :)) jA_use := (by with_unfolding_all exact ((jA_same x.fits x.r) :)) movedReadingSameMaps_baseReading_agrees := (by with_unfolding_all exact ((rowReading_baseLevel_sameOn_allTuples x.fits x.r) :)) eMt_use := (by with_u …`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem rxs_of_state : ∀ (K : Ctx) (B : Base) (f : Fr B.toPre) (T : TwDat B) (w : ColW B f T), K.Over B.toPre → Forced K B T →
     pinAnd HasPk K B f T w → ∀ (P : Pre2 K w) (x : St P) (hη : ∀ j v, 1 ≤ j → j ≤ B.R.m → x.o.η j v = P.q.eta j v), ∀ t : RowsT K w x.o.Z P.Wt x.s.p0, t.r = x.rowsAre hη → Nonempty (RXs t) := by

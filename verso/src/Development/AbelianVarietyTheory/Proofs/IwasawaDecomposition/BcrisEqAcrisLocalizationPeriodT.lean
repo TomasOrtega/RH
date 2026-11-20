@@ -21,7 +21,7 @@ namespace GlobalTheory.MemLoc.BcrisT
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `GlobalTheory.RingIface.alg_mem_kerP l ?_` and prove the remaining obligations. Rewrite using `[map_sub, map_one, WittVector.fontaineTheta_teichmuller, he, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mu_mem_kerP (e : Per.Fl l) (he : e.untilt = 1) :
     algebraMap (Per.Ainf l) (Per.AinfP l) (Per.tm e - 1) ∈ Per.kerP l := by
@@ -29,7 +29,7 @@ theorem mu_mem_kerP (e : Per.Fl l) (he : e.untilt = 1) :
   rw [map_sub, map_one, WittVector.fontaineTheta_teichmuller, he, sub_self]
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CrisIncl.factorial_mul_ev l e y he hy 1`. Rewrite `h` using `[Finset.sum_range_one]`. Simplify using `only [Nat.factorial_one, Nat.cast_one, one_mul, pow_zero, zero_add, Nat.div_one, pow_one] at h`. Rewrite using `[GlobalTheory.RingIface.mem_filtration_iff_mem_kerTheta_pow, h, Ideal.Quotient.eq_zero_iff_mem, pow_one]`. Conclude with `mu_mem_kerP e he`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLog_mem_fil (e : Per.Fl l) (he : e.untilt = 1) (y : Per.BdRp l) (hy : Per.IsLog l e y) :
     y ∈ Per.FilP l 1 := by
@@ -43,11 +43,11 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `y hy`. Rewrite `hy` using `[pow_zero]`. Establish `h1 : (1 : Per.Fl l).untilt = 1` using `map_one _`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `LogAdd.log_add l 1 1 y y y h1 h1 hy hy (by rwa [mul_one])`. Rewrite using `[Nat.cast_zero, zero_mul]`. Conclude with `left_eq_add.1 h`. Consider the case `succ n ih`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hn : (e ^ n).untilt = 1` using `by rw [map_pow, he, one_pow]`. Take `⟨t, u, ht, -, -⟩` from `GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l (e ^ n) hn`. Establish `h1` using `(GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l (e ^ n) t hn ht).2.2.2 j hj`. Establish `h` using `LogAdd.log_add l (e ^ n) e (j t) x y hn he h1 hx (by rwa [← pow_succ])`. Rewrite using `[h, ih _ h1, Nat.cast_succ, add_mul, one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLog_pow (j : Per.Acris l →+* Per.BdRp l) (hj : IsCrisP j) (e : Per.Fl l) (he : e.untilt = 1)
     (x : Per.BdRp l) (hx : Per.IsLog l e x) (n : ℕ) :
@@ -69,7 +69,7 @@ theorem isLog_pow (j : Per.Acris l →+* Per.BdRp l) (hj : IsCrisP j) (e : Per.F
     rw [h, ih _ h1, Nat.cast_succ, add_mul, one_mul]
 
 /- English proof (translation)
-Establish `hl : (e ^ l).untilt = 1` using `by rw [map_pow, he, one_pow]`. Take `⟨-, -, h2, h3⟩` from `GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l e t he ht`. Establish `h4` using `(GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l (e ^ l) _ hl h2).2.2.2 j hj`. Apply `GlobalTheory.T.acrisToBdRPlus_injective l j hj` to reduce the goal to its premises. Rewrite using `[isLog_pow j hj e he _ (h3 j hj) l _ h4, pow_one, map_mul, map_natCast]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_log (j : Per.Acris l →+* Per.BdRp l) (hj : IsCrisP j) (e : Per.Fl l) (he : e.untilt = 1)
     (t : Per.Acris l) (ht : IsLogA e t) : phiA l t = (l : Per.Acris l) ^ 1 * t := by
@@ -80,11 +80,11 @@ theorem phi_log (j : Per.Acris l →+* Per.BdRp l) (hj : IsCrisP j) (e : Per.Fl 
   rw [isLog_pow j hj e he _ (h3 j hj) l _ h4, pow_one, map_mul, map_natCast]
 
 /- English proof (translation)
-Establish `he : C.ε.untilt = 1` using `(core_isEps l C).1`. Take `⟨t, u, ht, -, htu⟩` from `GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l C.ε he`. Establish `e1 : t = C.t` using `(GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l C.ε C.t he C.t_log).1 t ht`. Take `⟨w, hw, -⟩` from `GlobalTheory.T.exists_teichmullerTiltMinusOne_pow_div_envelope l C.ε he`. Establish `hw0 : (l : Per.Acris0 l) * w = algebraMap (Per.Ainf l) (Per.Acris0 l) (mu C.ε) ^ (l - 1)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using hw`. Establish `hw1` using `congrArg (algebraMap (Per.Acris0 l) (Per.Acris l)) hw0`. Rewrite `hw1` using `[map_mul, map_natCast, map_pow]`. Establish `e2 : algebraMap (Per.Acris0 l) (Per.Acris l) (algebraMap (Per.Ainf l) (Per.Acris0 l) (mu C.ε)) = algebraMap (Per.Ainf l) (Per.Acris l) (mu C.ε)` using `(GlobalTheory.RingIface.tower l _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hw1` using `[e2]`. Rewrite using `[← e1, htu, mul_pow, ← hw1]`. Conclude with `(dvd_mul_right _ _).mul_right _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem l_dvd (C : Core l) : (l : Per.Acris l) ∣ C.t ^ (l - 1) := by
   have he : C.ε.untilt = 1 := (core_isEps l C).1
@@ -103,15 +103,13 @@ theorem l_dvd (C : Core l) : (l : Per.Acris l) ∣ C.t ^ (l - 1) := by
   exact (dvd_mul_right _ _).mul_right _
 
 /- English proof (translation)
-Establish `hyu` using `GlobalTheory.CrisLoc.unit_of_root l e he hne`. Take `⟨t, u, ht, hu, htu⟩` from `GlobalTheory.T.exists_log_teichmuller_acris_eq_mu_mul_unit l e he`. Establish `hlog` using `(GlobalTheory.T.acris_logTeichmuller_unique_galois_frobenius_bdR l e t he ht).2.2.2 C.j C.j_cris`. Take `⟨z, k, hz⟩` from `GlobalTheory.T.acris_frobenius_eigen_fil_eq_qlMul_tPow l C 1 t (phi_log C.j C.j_cris e he t ht) (isLog_mem_fil e he _ hlog)`. Establish `hz0 : z ≠ 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hz` using `[map_zero, map_zero, zero_mul, htu]`. Establish `h` using `congrArg (algebraMap (Per.Acris l) (Per.Bcris l)) hz`. Rewrite `h` using `[map_zero, map_mul, map_mul, map_pow, map_natCast]`. Establish `hU : IsUnit (0 : Per.Bcris l)`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← h]`. Conclude with `((GlobalTheory.T.fontaine_t_isUnit_bcris_and_uniformizer_bdRPlus l C).2.2.2.pow k).mul (hyu.mul (hu.map _))`. Conclude with `not_isUnit_zero hU`. Establish `hs` using `congrArg ((algebraMap (Per.Ainf l) (Per.Acris l)).comp (Per.zA l)) (PadicInt.unitCoeff_spec hz0)`. Rewrite `hs` using `[map_mul, map_pow, map_natCast]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU` using `(PadicInt.unitCoeff hz0).isUnit.map ((algebraMap (Per.Ainf l) (Per.Acris l)).comp (Per.zA l))`. Establish `h1 : algebraMap (Per.Ainf l) (Per.Acris l) (mu e) ∣ ((algebraMap (Per.Ainf l) (Per.Acris l)).comp (Per.zA l)) z * C.t ^ 1`. Rewrite using `[RingHom.comp_apply, ← hz, htu]`. Conclude with `(dvd_mul_right _ _).mul_left _`. Rewrite `h1` using `[hs, mul_assoc, hU.dvd_mul_left]`.
-
-Use `⟨(l - 1) * z.valuation + 1, h1.trans ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, pow_mul]`. Conclude with `mul_dvd_mul_right (pow_dvd_pow_of_dvd (l_dvd C) _) _`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mu_dvd_pt (C : Core l) [Nontrivial (Per.Bcris l)] (e : Per.Fl l) (he : e.untilt = 1) (hne : e ≠ 1) :
     ∃ r : ℕ, algebraMap (Per.Ainf l) (Per.Acris l) (Per.tm e - 1) ∣ C.t ^ r := by
@@ -141,7 +139,7 @@ theorem mu_dvd_pt (C : Core l) [Nontrivial (Per.Bcris l)] (e : Per.Fl l) (he : e
   exact mul_dvd_mul_right (pow_dvd_pow_of_dvd (l_dvd C) _) _
 
 /- English proof (translation)
-Take `⟨e, he, hne⟩` from `GlobalTheory.CrisLoc.exists_root_ne_one l`. Take `⟨n, x, hx⟩` from `GlobalTheory.CrisLoc.exists_mul_pow_eq l e he hne b`. Take `⟨r, c, hc⟩` from `mu_dvd_pt C e he hne`. Use `⟨r * n, x * c ^ n, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_pow, pow_mul, hc, mul_pow, map_mul, map_mul, map_pow, ← mul_assoc, hx]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem away_pt (C : Core l) [Nontrivial (Per.Bcris l)] (b : Per.Bcris l) :
     ∃ (r : ℕ) (x : Per.Acris l),
@@ -157,7 +155,7 @@ end GlobalTheory.MemLoc.BcrisT
 namespace GlobalTheory.MemLoc
 
 /- English proof (translation)
-Break down `subsingleton_or_nontrivial (Per.Bcris l) with h | h` into its components or cases. Conclude with `⟨0, 0, Subsingleton.elim _ _⟩`. Conclude with `BcrisT.away_pt C b`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bcris_eq_acris_localization_periodT_alt (l : ℕ) [Fact l.Prime] (C : Core l) (b : Per.Bcris l) :
     ∃ (r : ℕ) (x : Per.Acris l),

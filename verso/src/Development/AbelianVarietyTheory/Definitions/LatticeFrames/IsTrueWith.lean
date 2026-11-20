@@ -55,7 +55,7 @@ def IsTrueWith (P : TP) (D : D7) (O : Obj D) : Prop :=
 def IsTrue (D : D7) (O : Obj D) : Prop := IsTrueWith (fun _ _ _ _ _ _ _ _ => True) D O
 
 /- English proof (translation)
-Take `⟨K, B, f, T, w, Z, O', p, hp, e⟩` from `hD`. Consider the cases of `e`. Conclude with `h K B f T w Z _ p hp`.
+Extract witnesses or component facts from the available result. Split into cases according to the possible forms of the given data. A detailed English derivation is pending.
 -/
 theorem IsTrueWith.ind {P : TP} {R : ∀ D : D7, Obj D → Prop}
     (h : ∀ K B f T (w : ColW B f T) (Z : w.Lt) (O : Obj (w.D Z)) (p : TruePt K w Z O), P K B f T w Z O p → R (w.D Z) O)
@@ -65,7 +65,7 @@ theorem IsTrueWith.ind {P : TP} {R : ∀ D : D7, Obj D → Prop}
   exact h K B f T w Z _ p hp
 
 /- English proof (translation)
-The claim follows from `IsTrueWith.ind (fun K B f T w Z O p _ => h K B f T w Z O p) hD`.
+A detailed English derivation is pending.
 -/
 theorem IsTrue.ind {R : ∀ D : D7, Obj D → Prop}
     (h : ∀ K B f T (w : ColW B f T) (Z : w.Lt) (O : Obj (w.D Z)), TruePt K w Z O → R (w.D Z) O)
@@ -73,7 +73,7 @@ theorem IsTrue.ind {R : ∀ D : D7, Obj D → Prop}
   IsTrueWith.ind (fun K B f T w Z O p _ => h K B f T w Z O p) hD
 
 /- English proof (translation)
-The claim follows from `IsTrue.ind (R := fun _ O => Nonempty (SelB O.ex)) (fun _ _ _ _ _ _ _ p => ⟨p.S⟩) h`.
+A detailed English derivation is pending.
 -/
 theorem IsTrue.selB {D : D7} {O : Obj D} (h : IsTrue D O) : Nonempty (SelB O.ex) :=
   IsTrue.ind (R := fun _ O => Nonempty (SelB O.ex)) (fun _ _ _ _ _ _ _ p => ⟨p.S⟩) h
@@ -84,7 +84,7 @@ abbrev objF {eps : ℝ} (Fm : FamP eps) (x : ℝ) (hx : Fm.x1 < x) (i : Fm.Ix x)
 def TrueF {eps : ℝ} (Fm : FamP eps) : Prop := ∀ x (hx : Fm.x1 < x) (i : Fm.Ix x), IsTrue (Fm.D x i) (objF Fm x hx i)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun x _ hx i => (h x hx i).selB⟩`.
+Supply the required witnesses or components.
 -/
 theorem TrueF.selBF {eps : ℝ} {Fm : FamP eps} (h : TrueF Fm) : SelBF Fm := ⟨0, fun x _ hx i => (h x hx i).selB⟩
 

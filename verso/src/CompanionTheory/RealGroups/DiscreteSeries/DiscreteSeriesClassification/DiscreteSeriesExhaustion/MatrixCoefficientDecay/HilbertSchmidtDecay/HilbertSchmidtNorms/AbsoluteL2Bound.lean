@@ -4,7 +4,7 @@ import CompanionTheory.SpectralGeometry.LocalGlobalProofs.StableLattices.Integra
 namespace CompanionTheory.RgExh.Dec.L.AB
 
 /- English proof (translation)
-The claim follows from `absolute_l2_of_line_chain GlobalTheory.CompanionTheory.LineChainProof.lineChain`.
+A detailed English derivation is pending.
 -/
 theorem absolute_l2_bound : CompanionTheory.RgExh.Dec.L.AbsoluteL2Bound := absolute_l2_of_line_chain GlobalTheory.CompanionTheory.LineChainProof.lineChain
 

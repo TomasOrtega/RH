@@ -8,21 +8,19 @@ noncomputable section
 namespace PI.OkpW
 
 /- English proof (translation)
-Introduce `K _ _ c p _ τ hK hc hp2 hP`. Use `show closure (Set.range fun a : 𝓞 K => (τ (a : K), τ (c (a : K)))) = closure (Subring.closure (gens p) : Set (ℂ_[p] × ℂ_[p]))`. Establish `hqn : ∀ (a : 𝓞 K) (n : ℕ), (p : 𝓞 K) ∣ a ^ ((p ^ 2) ^ n) - a` using `fun a n => pow_q_sub hK hP a n`. Establish `hq : ∀ b : 𝓞 K, (p : 𝓞 K) ∣ b ^ (p ^ 2) - b` using `fun b => by simpa using hqn b 1`. Use `set cO : 𝓞 K →+* 𝓞 K := RingOfIntegers.mapRingHom c with hcO`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfrob : ∀ a : 𝓞 K, (p : 𝓞 K) ∣ cO a - a ^ p` using `fun a => c_frob hK c hc hp2 hP a`. Establish `hcoe : ∀ a : 𝓞 K, ((cO a : 𝓞 K) : K) = c (a : K)` using `fun a => rfl`. Use `set ψ : 𝓞 K →+* ℂ_[p] × ℂ_[p] := RingHom.prod (τ.comp (algebraMap (𝓞 K) K)) (τ.comp ((algebraMap (𝓞 K) K).comp cO)) with hψ`. Establish `hR : Set.range (fun a : 𝓞 K => (τ (a : K), τ (c (a : K)))) = (ψ.range : Set (ℂ_[p] × ℂ_[p]))`. Rewrite using `[RingHom.coe_range]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Both sides reduce to the same expression. Apply `Set.Subset.antisymm` to reduce the goal to its premises. Apply `closure_minimal _ isClosed_closure` to reduce the goal to its premises. Introduce and unpack `_ ⟨a, rfl⟩`. Rewrite using `[Metric.mem_closure_iff]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `ε hε`. Establish `hp1 : (p : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ (by exact_mod_cast (Fact.out : p.Prime).one_lt)`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hε hp1`. Take `⟨r, hr, h1, h2⟩` from `approx τ cO hqn hfrob n a`. Use `⟨r, hr, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Prod.dist_eq, dist_eq_norm, dist_eq_norm]`. Rewrite `h2` using `[hcoe]`. Conclude with `max_lt (lt_of_le_of_lt h1 hn) (lt_of_le_of_lt h2 hn)`. Establish `hsub : gens p ⊆ (ψ.range.topologicalClosure : Set (ℂ_[p] × ℂ_[p]))`. Introduce and unpack `x ⟨ζ, hζ, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha⟩` from `teich_surj hq hK τ hP hζ`. Establish `hb : teich τ (cO a) = teich τ a ^ p` using `teich_c τ hq a (cO a) (hfrob a)`. Use `show (_ : ℂ_[p] × ℂ_[p]) ∈ closure (ψ.range : Set (ℂ_[p] × ℂ_[p]))`. Establish `hlim : Tendsto (fun k => (tseq τ a k, tseq τ (cO a) k)) atTop (𝓝 (ζ, ζ ^ p))`. Rewrite using `[← ha, ← hb]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(teich_spec τ hq a).1.prodMk_nhds (teich_spec τ hq (cO a)).1`. Apply `mem_closure_of_tendsto hlim` to reduce the goal to its premises. Use `Filter.Eventually.of_forall fun k => ?_` and prove the remaining obligations. Use `RingHom.mem_range.mpr ⟨a ^ ((p ^ 2) ^ k), ?_⟩` and prove the remaining obligations. Simplify using `[hψ, tseq]`.
-
-Rewrite using `[hR]`. Conclude with `closure_minimal (SetLike.coe_subset_coe.mpr (Subring.closure_le.mpr hsub)) isClosed_closure`.
+A detailed English derivation is pending.
 -/
 theorem okpInert_main : PI.OkpInert := by
   intro K _ _ c p _ τ hK hc hp2 hP

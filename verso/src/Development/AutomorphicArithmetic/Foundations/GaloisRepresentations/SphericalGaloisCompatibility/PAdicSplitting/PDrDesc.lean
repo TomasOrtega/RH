@@ -8,15 +8,15 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.ToralGalois.R2
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι n π r hr w hall P AI hT A hA O _ _ _ Bw hj`. Take `⟨X, PM, u, h', hinf, hcl⟩` from `hall A hA`. Take `⟨O', _, _, _, Bw', hj', hjj, hdesc⟩` from `GlobalTheory.DRDescent.deRham_descends E X.K Ω A w u hA h' l P AI hT n r hr O Bw hj`. Take `⟨hdR, hjump⟩` from `hcl P AI hT A h' O' Bw' hj'`. Use `⟨hdesc hdR, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `τ LL' τ' hind J hJ`. Take `⟨φ, hφ⟩` from `IntermediateField.exists_algHom_of_splits (fun s : Om l => ⟨Algebra.IsIntegral.isIntegral s, IsAlgClosed.splits _⟩) ((IntermediateField.val LL'.1).comp τ')`. Establish `hφx : ∀ x : E, φ (Bw.j (algebraMap E Ω x)) = τ x`. Introduce `x`. Use `congrArg (fun f => f ⟨Bw.j (algebraMap E Ω x), Bw.j_E x⟩) hφ` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [AlgHom.comp_apply, IntermediateField.val_mk] at this`. Rewrite using `[this, hind x]`. Both sides reduce to the same expression. Set `LL'' : FinExt l` to `⟨Bw'.Kw.1.map φ, inferInstance⟩`. Set `τ'' : ↥Bw'.Kw.1 →ₐ[ℚ_[l]] ↥LL''.1` to `(IntermediateField.equivMap Bw'.Kw.1 φ).toAlgHom`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `τL : X.K →+* Om l` to `φ.toRingHom.comp (Bw'.j.comp (algebraMap X.K Ω))`. Establish `hτL : τL.comp (algebraMap E X.K) = τ`. Use extensionality with `x`. Use `show φ (Bw'.j (algebraMap X.K Ω (algebraMap E X.K x))) = τ x`. Rewrite using `[← IsScalarTower.algebraMap_apply E X.K Ω, hjj, hφx]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hind' : IsInduced Bw' τL τ''` using `fun x => rfl`. Establish `hJ' : J.map (fun n : ℤ => (n : ℂ)) = ((CG.mk PM).infChar (ι.toRingHom.comp τL)).map (fun z => ((n : ℂ) - 1) / 2 - z)`. Rewrite using `[hinf, RingHom.comp_assoc, hτL, hJ]`. Conclude with `GlobalTheory.JumpsDescend.jumps_descend E X.K Ω A w u hA h' l P AI hT n r hr O Bw O' Bw' hj hj' hjj τ τL hτL J (hjump τL LL'' τ'' hind' J hJ')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.ToralGalois.R2.drDesc :
     DRDesc := by

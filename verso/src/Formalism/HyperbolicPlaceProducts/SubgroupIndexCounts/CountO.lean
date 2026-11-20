@@ -9,11 +9,11 @@ namespace Formalism.SLP.P
 namespace CountO
 
 /- English proof (translation)
-Establish `hmax : (Ideal.span {(p : ℤ)}).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hp).irreducible`. Establish `hne : Ideal.span {(p : ℤ)} ≠ ⊥`. Simplify using `[hp.ne_zero]`. Use `⟨IsDedekindDomain.primesOverFinset (Ideal.span {(p : ℤ)}) (𝓞 E), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.card_primesOverFinset_le_finrank (𝓞 E) ℚ E hne`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP hpP`. Rewrite using `[IsDedekindDomain.mem_primesOverFinset_iff hne]`. Use `⟨hP.isPrime, ⟨?_⟩⟩` and prove the remaining obligations. Use `Ideal.IsMaximal.eq_of_le hmax ?_ ?_` and prove the remaining obligations. Conclude with `(Ideal.comap_ne_top _ hP.ne_top)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Ideal.span_le]`. Simplify using `using hpP`.
+A detailed English derivation is pending.
 -/
 theorem primes_card (E : Type) [Field E] [NumberField E] (p : ℕ) (hp : p.Prime) :
     ∃ Ps : Finset (Ideal (𝓞 E)), Ps.card ≤ finrank ℚ E ∧
@@ -38,15 +38,13 @@ section DedekindLFunctions
 variable {R : Type} [CommRing R] [IsDedekindDomain R]
 
 /- English proof (translation)
-Set `Rp` to `Localization.AtPrime P`. Establish `: IsDiscreteValuationRing Rp` using `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain R hP Rp`. Establish `hinj : Function.Injective (algebraMap R Rp)` using `IsLocalization.injective Rp P.primeCompl_le_nonZeroDivisors`. Set `f : ι → ℕ∞` to `fun i => IsDiscreteValuationRing.addVal Rp (algebraMap R Rp (c i))`. Take `⟨j, hj, hjc⟩` from `hc`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨i0, hi0, hmin⟩` from `Finset.exists_min_image t f ⟨j, hj⟩`. Establish `hi0ne : c i0 ≠ 0`. Introduce `h0`. Establish `h1 : f i0 = ⊤` using `by simp [f, h0]`. Establish `h2 : f j ≠ ⊤`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [f, ne_eq, IsDiscreteValuationRing.addVal_eq_top_iff]`. Conclude with `(map_ne_zero_iff _ hinj).mpr hjc`. Conclude with `h2 (top_le_iff.mp (h1 ▸ hmin j hj))`. Establish `hdvd : ∀ i ∈ t, algebraMap R Rp (c i0) ∣ algebraMap R Rp (c i)` using `fun i hi => (IsDiscreteValuationRing.addVal_le_iff_dvd).mp (hmin i hi)`. Use `choose! w hw using hdvd`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples P.primeCompl t w`. Establish `hb' : ∀ i ∈ t, ∃ r : R, algebraMap R Rp r = (b : R) • w i` using `fun i hi => RingHom.mem_rangeS.mp (hb i hi)`. Use `choose! d hd using hb'`. Use `⟨i0, hi0, hi0ne, (b : R), b.2, d, fun i hi => ?_⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises.
-
-Rewrite using `[map_mul, map_mul, hd i hi, hw i hi, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_local_min (P : Ideal R) [P.IsPrime] (hP : P ≠ ⊥) {ι : Type} (t : Finset ι)
     (c : ι → R) (hc : ∃ i ∈ t, c i ≠ 0) :
@@ -80,13 +78,11 @@ theorem exists_local_min (P : Ideal R) [P.IsPrime] (hP : P ≠ ⊥) {ι : Type} 
   ring
 
 /- English proof (translation)
-Take `⟨i0, hi0, hne0, s, hs, d, hd⟩` from `exists_local_min P hP t g hne`. Use `⟨i0, hi0, d, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : s * g i0 = g i0 * d i0` using `hd i0 hi0`. Establish `h2 : d i0 = s`. Apply `mul_left_cancel₀ hne0` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← h1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2]`. Conclude with `hs`. Apply `htf (g i0) hne0` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.smul_sum]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, hd i hi]`. Use `_ = s • ∑ i ∈ t, g i • v i := by rw [Finset.smul_sum]`.
-
-Use `_ = 0 := by rw [hg, smul_zero]`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rel_not_mem {X : Type} [AddCommGroup X] [Module R X]
     (htf : ∀ a : R, a ≠ 0 → ∀ x : X, a • x = 0 → x = 0)
@@ -109,25 +105,21 @@ theorem exists_rel_not_mem {X : Type} [AddCommGroup X] [Module R X]
       _ = 0 := by rw [hg, smul_zero]
 
 /- English proof (translation)
-Establish `hex : ∃ n, ∃ s : Finset X, s.card = n ∧ Submodule.span R (s : Set X) ⊔ P • ⊤ = ⊤`. Take `⟨s, hs⟩` from `Module.Finite.fg_top (R := R) (M := X)`. Conclude with `⟨s.card, s, rfl, by rw [hs, top_sup_eq]⟩`. Take `⟨s, hsc, hs⟩` from `Nat.find_spec hex`. Use `⟨s, ?_, hs⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsc]`. Assume the negation of the conclusion as `hlt`. Use `push Not at hlt`. Establish `hnli : ¬ LinearIndependent R (fun x : s => (x : X))` using `fun h => by`. Use `hli s _ h` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[Fintype.card_coe]`. Use linear arithmetic over natural numbers and integers. Rewrite `hnli` using `[linearIndependent_iff']`. Use `push Not at hnli`. Take `⟨t, g, hg, i, hit, hgi⟩` from `hnli`.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i0, hi0, d, hd0, hd⟩` from `exists_rel_not_mem htf P hP t (fun x : s => (x : X)) g hg ⟨i, hit, hgi⟩`. Use `set s' := s.erase (i0 : X) with hs'def`. Establish `hmem : (i0 : X) ∈ Submodule.span R (s' : Set X) ⊔ P • ⊤`. Take `⟨a, b, hb, hab⟩` from `Ideal.IsMaximal.exists_inv hPm hd0`. Establish `h1 : d i0 • (i0 : X) ∈ Submodule.span R (s' : Set X)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : d i0 • (i0 : X) = - ∑ i ∈ t.erase i0, d i • (i : X)`. Rewrite `hd` using `[← Finset.add_sum_erase t _ hi0]`. Conclude with `eq_neg_of_add_eq_zero_left hd`. Rewrite using `[h2]`. Use `Submodule.neg_mem _ (Submodule.sum_mem _ fun i hi => Submodule.smul_mem _ _ (Submodule.subset_span ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hne : i ≠ i0` using `Finset.ne_of_mem_erase hi`. Simplify using `only [s', Finset.coe_erase, Set.mem_sdiff, Finset.mem_coe, Set.mem_singleton_iff]`. Conclude with `⟨i.2, fun h => hne (Subtype.ext h)⟩`. Establish `h3 : (i0 : X) = a • (d i0 • (i0 : X)) + b • (i0 : X)`. Rewrite using `[smul_smul, ← add_smul, hab, one_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h3]`. Conclude with `Submodule.add_mem _ (Submodule.mem_sup_left (Submodule.smul_mem _ _ h1)) (Submodule.mem_sup_right (Submodule.smul_mem_smul hb Submodule.mem_top))`. Establish `hs' : Submodule.span R (s' : Set X) ⊔ P • ⊤ = ⊤`. Rewrite using `[eq_top_iff]`. Use `le_trans hs.ge (sup_le ?_ le_sup_right)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Distinguish the cases in `hx0 : x = (i0 : X)`. Rewrite using `[hx0]`. Conclude with `hmem`.
-
-Conclude with `Submodule.mem_sup_left (Submodule.subset_span (by simp [s', hx0, hx]))`. Establish `hcard : s'.card < Nat.find hex`. Rewrite using `[← hsc, hs'def, Finset.card_erase_of_mem i0.2]`. Establish `: 0 < s.card` using `Finset.card_pos.mpr ⟨i0, i0.2⟩`. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `Nat.find_min hex hcard ⟨s', rfl, hs'⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_gen_mod (P : Ideal R) [hPm : P.IsMaximal] (hP : P ≠ ⊥) {X : Type}
     [AddCommGroup X] [Module R X] [Module.Finite R X]
@@ -185,13 +177,13 @@ theorem exists_gen_mod (P : Ideal R) [hPm : P.IsMaximal] (hP : P ≠ ⊥) {X : T
   exact Nat.find_min hex hcard ⟨s', rfl, hs'⟩
 
 /- English proof (translation)
-Set `F : (X →ₗ[R] R ⧸ P) → (s → R ⧸ P)` to `fun φ x => φ x`. Establish `hF : Function.Injective F`. Introduce `φ₁ φ₂ h`. Establish `hle : Submodule.span R (s : Set X) ⊔ P • ⊤ ≤ LinearMap.ker (φ₁ - φ₂)`. Use `sup_le ?_ ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.span_le]`. Introduce `x hx`. Use `congrFun h ⟨x, hx⟩` as an intermediate fact. Simplify using `only [F] at this`. Simplify using `[this]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Submodule.smul_le.mpr fun r hr n _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.mem_ker, map_smul, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.mpr hr, zero_mul]`. Rewrite `hle` using `[hs, top_le_iff, LinearMap.ker_eq_top, sub_eq_zero]`. Conclude with `hle`. Establish `: Finite (X →ₗ[R] R ⧸ P)` using `Finite.of_injective F hF`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨this, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_hom_le (P : Ideal R) [P.IsMaximal] [Finite (R ⧸ P)] {X : Type}
     [AddCommGroup X] [Module R X] (k : ℕ) (s : Finset X) (hsk : s.card ≤ k)
@@ -226,19 +218,17 @@ section DedekindLFunctions
 variable {R : Type} [CommRing R] [IsDedekindDomain R]
 
 /- English proof (translation)
-Establish `hcardQ : Nat.card (X ⧸ L) = Nat.card (R ⧸ P)` using `hL`. Establish `: Nontrivial (R ⧸ P)` using `Ideal.Quotient.nontrivial_iff.mpr hPm.ne_top`. Establish `hfin : Finite (X ⧸ L)` using `Nat.finite_of_card_ne_zero (by rw [hcardQ]; exact Nat.card_pos.ne')`. Establish `hnt : Nontrivial (X ⧸ L)`. Rewrite using `[← Finite.one_lt_card_iff_nontrivial, hcardQ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finite.one_lt_card`. Take `⟨v, hv⟩` from `exists_ne (0 : X ⧸ L)`. Set `τ : R →ₗ[R] X ⧸ L` to `LinearMap.toSpanSingleton R (X ⧸ L) v`. Establish `hker : P ≤ LinearMap.ker τ`. Introduce `a ha`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective L v`. Simplify using `only [LinearMap.mem_ker, τ, LinearMap.toSpanSingleton_apply]`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Conclude with `hPL (Submodule.smul_mem_smul ha Submodule.mem_top)`. Set `τ' : R ⧸ P →ₗ[R] X ⧸ L` to `Submodule.liftQ P τ hker`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective τ'`. Rewrite using `[← LinearMap.ker_eq_bot, eq_bot_iff]`. Introduce `z hz`. Take `⟨a, rfl⟩` from `Submodule.Quotient.mk_surjective P z`. Rewrite `hz` using `[LinearMap.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz' : a • v = 0` using `hz`. Rewrite using `[Submodule.mem_bot, Submodule.Quotient.mk_eq_zero]`. Assume the negation of the conclusion as `ha`. Take `⟨b, i, hi, hbi⟩` from `Ideal.IsMaximal.exists_inv hPm ha`. Establish `hiv : i • v = 0` using `hker hi`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Apply `hv` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hbij : Function.Bijective τ'` using `hinj.bijective_of_nat_card_le (by rw [hcardQ])`. Set `e` to `LinearEquiv.ofBijective τ' hbij`. Use `⟨e.symm.toLinearMap ∘ₗ L.mkQ, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[LinearEquiv.ker_comp, Submodule.ker_mkQ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_ker (P : Ideal R) [hPm : P.IsMaximal] [Finite (R ⧸ P)] {X : Type}
     [AddCommGroup X] [Module R X] (L : Submodule R X) (hPL : P • ⊤ ≤ L)
@@ -285,11 +275,11 @@ def hyp (P : Ideal R) (X : Type) [AddCommGroup X] [Module R X] : Set (Submodule 
   {L | P • ⊤ ≤ L ∧ L.toAddSubgroup.index = Nat.card (R ⧸ P)}
 
 /- English proof (translation)
-Take `⟨hfin, hcard⟩` from `hhom`. Set `F : Submodule R X → (X →ₗ[R] R ⧸ P)` to `fun L => if h : L ∈ hyp P X then Classical.choose (exists_hom_ker P L h.1 h.2) else 0`. Establish `hF : ∀ L ∈ hyp P X, LinearMap.ker (F L) = L`. Introduce `L hL`. Simplify using `only [F, dif_pos hL]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Classical.choose_spec (exists_hom_ker P L hL.1 hL.2)`. Establish `hinj : Set.InjOn F (hyp P X)`. Introduce `L₁ h₁ L₂ h₂ h`. Rewrite using `[← hF L₁ h₁, ← hF L₂ h₂, h]`. Establish `hfinS : (hyp P X).Finite` using `Set.Finite.of_finite_image (Set.toFinite _) hinj`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hfinS, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem hyp_count (P : Ideal R) [P.IsMaximal] [Finite (R ⧸ P)] {X : Type}
     [AddCommGroup X] [Module R X] (k : ℕ)
@@ -314,9 +304,9 @@ theorem hyp_count (P : Ideal R) [P.IsMaximal] [Finite (R ⧸ P)] {X : Type}
     _ ≤ _ := hcard
 
 /- English proof (translation)
-Take `⟨L, hL, hNL⟩` from `(eq_top_or_exists_le_coatom N).resolve_left hN`. Establish `hs : IsSimpleModule R (X ⧸ L)` using `isSimpleModule_iff_isCoatom.mpr hL`. Take `⟨P, hPm, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp hs`. Use `⟨P, hPm, L, ⟨?_, ?_⟩, hNL⟩` and prove the remaining obligations. Use `Submodule.smul_le.mpr fun r hr n _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Submodule.Quotient.mk_eq_zero, ← e.map_eq_zero_iff, Submodule.Quotient.mk_smul, map_smul, Algebra.smul_def, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem.mpr hr, zero_mul]`. Conclude with `Nat.card_congr e.toEquiv`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hyp_above {X : Type} [AddCommGroup X] [Module R X] [Module.Finite R X]
     (N : Submodule R X) (hN : N ≠ ⊤) :
@@ -345,25 +335,25 @@ def mulSub (R X : Type) [CommRing R] [AddCommGroup X] [Module R X] (c : ℕ) : S
   LinearMap.range (c • (LinearMap.id : X →ₗ[R] X))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem nsmul_mem_mulSub (c : ℕ) (x : X) : c • x ∈ mulSub R X c := ⟨x, by simp⟩
 
 /- English proof (translation)
-Take `⟨w, rfl⟩` from `hy`. Conclude with `⟨w, by simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_mulSub {c : ℕ} {y : X} (hy : y ∈ mulSub R X c) : ∃ w : X, y = c • w := by
   obtain ⟨w, rfl⟩ := hy
   exact ⟨w, by simp⟩
 
 /- English proof (translation)
-Use `set K := N ⊔ mulSub R X a with hK`. Establish `hle : N.toAddSubgroup ≤ K.toAddSubgroup` using `Submodule.toAddSubgroup_mono le_sup_left`. Establish `hdvd : K.toAddSubgroup.index ∣ a * b` using `hN ▸ AddSubgroup.index_dvd_of_le hle`. Establish `hne : K.toAddSubgroup.index ≠ 0` using `fun h => (Nat.mul_pos ha hb).ne' (Nat.eq_zero_of_zero_dvd (h ▸ hdvd))`. Establish `hcop : Nat.Coprime K.toAddSubgroup.index b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Nat.coprime_of_dvd` to reduce the goal to its premises. Introduce `q hq hqK hqb`. Establish `: Fact q.Prime` using `⟨hq⟩`. Establish `: Finite (X ⧸ K.toAddSubgroup)` using `Nat.finite_of_card_ne_zero hne`. Take `⟨z, hz⟩` from `exists_prime_addOrderOf_dvd_card' (G := X ⧸ K.toAddSubgroup) q hqK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x, rfl⟩` from `QuotientAddGroup.mk_surjective z`. Establish `hax : a • (x : X ⧸ K.toAddSubgroup) = 0`. Rewrite using `[← QuotientAddGroup.mk_nsmul, QuotientAddGroup.eq_zero_iff]`. Conclude with `Submodule.mem_sup_right (nsmul_mem_mulSub a x)`. Establish `hqa : q ∣ a` using `hz ▸ addOrderOf_dvd_of_nsmul_eq_zero hax`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : q ∣ Nat.gcd a b` using `Nat.dvd_gcd hqa hqb`. Rewrite `h1` using `[hab.gcd_eq_one, Nat.dvd_one]`. Conclude with `hq.one_lt.ne' h1`. Conclude with `hcop.dvd_of_dvd_mul_right hdvd`.
+A detailed English derivation is pending.
 -/
 theorem index_sup_mulSub_dvd (N : Submodule R X) {a b : ℕ} (hab : a.Coprime b)
     (ha : 0 < a) (hb : 0 < b) (hN : N.toAddSubgroup.index = a * b) :
@@ -390,15 +380,13 @@ theorem index_sup_mulSub_dvd (N : Submodule R X) {a b : ℕ} (hab : a.Coprime b)
   exact hcop.dvd_of_dvd_mul_right hdvd
 
 /- English proof (translation)
-Establish `hkill : ∀ w : X, (a * b) • w ∈ N` using `fun w => by`. Use `AddSubgroup.nsmul_index_mem N.toAddSubgroup w` as an intermediate fact. Rewrite `this` using `[hN]`. Conclude with `this`. Use `le_antisymm ?_ (le_inf le_sup_left le_sup_left)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `x ⟨hx1, hx2⟩`. Take `⟨y1, hy1, z1, hz1, rfl⟩` from `Submodule.mem_sup.mp hx1`. Take `⟨y2, hy2, z2, hz2, h2⟩` from `Submodule.mem_sup.mp hx2`. Take `⟨w1, rfl⟩` from `mem_mulSub hz1`. Take `⟨w2, rfl⟩` from `mem_mulSub hz2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set x := y1 + a • w1 with hxdef`. Establish `hbx : b • x ∈ N`. Rewrite using `[hxdef, smul_add, smul_smul, mul_comm b a]`. Conclude with `N.add_mem (N.toAddSubgroup.nsmul_mem hy1 b) (hkill w1)`. Establish `hax : a • x ∈ N`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h2, smul_add, smul_smul]`. Conclude with `N.add_mem (N.toAddSubgroup.nsmul_mem hy2 a) (hkill w2)`. Establish `h` using `Nat.gcd_eq_gcd_ab a b`. Rewrite `h` using `[hab.gcd_eq_one, Nat.cast_one]`. Establish `e1 : x = (Nat.gcdA a b) • (a • x) + (Nat.gcdB a b) • (b • x)`.
-
-Rewrite using `[← natCast_zsmul, ← natCast_zsmul, ← mul_smul, ← mul_smul, ← add_smul, mul_comm, mul_comm (Nat.gcdB a b), ← h, one_smul]`. Rewrite using `[e1]`. Conclude with `N.add_mem (N.toAddSubgroup.zsmul_mem hax _) (N.toAddSubgroup.zsmul_mem hbx _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_sup_mulSub (N : Submodule R X) {a b : ℕ} (hab : a.Coprime b)
     (hN : N.toAddSubgroup.index = a * b) :
@@ -429,9 +417,9 @@ theorem inf_sup_mulSub (N : Submodule R X) {a b : ℕ} (hab : a.Coprime b)
   exact N.add_mem (N.toAddSubgroup.zsmul_mem hax _) (N.toAddSubgroup.zsmul_mem hbx _)
 
 /- English proof (translation)
-Establish `e1 : (N.comap L.subtype).toAddSubgroup = N.toAddSubgroup.comap L.subtype.toAddMonoidHom`. Use extensionality with `x`. Both sides reduce to the same expression. Establish `e2 : L.subtype.toAddMonoidHom.range = L.toAddSubgroup`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[e1, AddSubgroup.index_comap, e2]`. Conclude with `AddSubgroup.relIndex_mul_index (Submodule.toAddSubgroup_mono h)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem index_comap_mul (N L : Submodule R X) (h : N ≤ L) :
     (N.comap L.subtype).toAddSubgroup.index * L.toAddSubgroup.index = N.toAddSubgroup.index := by
@@ -444,19 +432,15 @@ theorem index_comap_mul (N L : Submodule R X) (h : N ≤ L) :
   exact AddSubgroup.relIndex_mul_index (Submodule.toAddSubgroup_mono h)
 
 /- English proof (translation)
-Set `F : Submodule R X → Submodule R X × Submodule R X` to `fun N => (N ⊔ mulSub R X a, N ⊔ mulSub R X b)`. Establish `hmaps : ∀ N ∈ idxSet R X (a * b), F N ∈ idxSet R X a ×ˢ idxSet R X b`. Introduce `N hN`. Establish `hN' : N.toAddSubgroup.index = a * b` using `hN`. Establish `d1` using `index_sup_mulSub_dvd N hab ha hb hN'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d2` using `index_sup_mulSub_dvd N hab.symm hb ha (by rw [hN', mul_comm])`. Establish `hinf` using `inf_sup_mulSub N hab hN'`. Establish `hle : a * b ≤ (N ⊔ mulSub R X a).toAddSubgroup.index * (N ⊔ mulSub R X b).toAddSubgroup.index`. Rewrite using `[← hN']`. Use `conv_lhs => rw [← hinf]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `AddSubgroup.index_inf_le (H := (N ⊔ mulSub R X a).toAddSubgroup) (K := (N ⊔ mulSub R X b).toAddSubgroup)`. Use `set i1 := (N ⊔ mulSub R X a).toAddSubgroup.index`. Use `set i2 := (N ⊔ mulSub R X b).toAddSubgroup.index`. Establish `l1 : i1 ≤ a` using `Nat.le_of_dvd ha d1`. Establish `l2 : i2 ≤ b` using `Nat.le_of_dvd hb d2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : i1 = a`. Use `le_antisymm l1 ?_` and prove the remaining obligations. Establish `: a * b ≤ i1 * b` using `hle.trans (Nat.mul_le_mul_left _ l2)`. Conclude with `Nat.le_of_mul_le_mul_right this hb`. Establish `e2 : i2 = b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `le_antisymm l2 ?_` and prove the remaining obligations. Establish `: a * b ≤ a * i2` using `hle.trans (Nat.mul_le_mul_right _ l1)`. Conclude with `Nat.le_of_mul_le_mul_left this ha`. Conclude with `⟨e1, e2⟩`. Establish `hinj : Set.InjOn F (idxSet R X (a * b))`.
-
-Introduce `N₁ h₁ N₂ h₂ h`. Simplify using `only [F, Prod.mk.injEq] at h`. Rewrite using `[← inf_sup_mulSub N₁ hab h₁, ← inf_sup_mulSub N₂ hab h₂, h.1, h.2]`. Use `⟨Set.Finite.of_finite_image ((h1.prod h2).subset (Set.image_subset_iff.mpr hmaps)) hinj, ?_⟩` and prove the remaining obligations. Rewrite using `[← Set.ncard_prod]`.
-
-Conclude with `Set.ncard_le_ncard_of_injOn F hmaps hinj (h1.prod h2)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_count {a b : ℕ} (hab : a.Coprime b) (ha : 0 < a) (hb : 0 < b)
     (h1 : (idxSet R X a).Finite) (h2 : (idxSet R X b).Finite) :
@@ -515,7 +499,7 @@ def LIB (X : Type) [AddCommGroup X] [Module (𝓞 E) X] (k : ℕ) : Prop :=
 variable {E}
 
 /- English proof (translation)
-Introduce `a ha x hx`. Conclude with `Subtype.ext (h a ha x (congrArg Subtype.val hx))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem TF.submodule {X : Type} [AddCommGroup X] [Module (𝓞 E) X] (h : TF E X)
     (L : Submodule (𝓞 E) X) : TF E L := by
@@ -523,7 +507,7 @@ theorem TF.submodule {X : Type} [AddCommGroup X] [Module (𝓞 E) X] (h : TF E X
   exact Subtype.ext (h a ha x (congrArg Subtype.val hx))
 
 /- English proof (translation)
-Introduce `ι _ v hv`. Conclude with `h ι (L.subtype ∘ v) (hv.map' L.subtype (Submodule.ker_subtype L))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem LIB.submodule {X : Type} [AddCommGroup X] [Module (𝓞 E) X] {k : ℕ} (h : LIB E X k)
     (L : Submodule (𝓞 E) X) : LIB E L k := by
@@ -531,13 +515,11 @@ theorem LIB.submodule {X : Type} [AddCommGroup X] [Module (𝓞 E) X] {k : ℕ} 
   exact h ι (L.subtype ∘ v) (hv.map' L.subtype (Submodule.ker_subtype L))
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_natCast]`. Use `letI : Field (𝓞 E ⧸ P) := Ideal.Quotient.field P`. Distinguish the cases in `hfin : Finite (𝓞 E ⧸ P)`. Take `⟨ℓ, hℓ⟩` from `CharP.exists (𝓞 E ⧸ P) haveI := hℓ haveI : Fintype (𝓞 E ⧸ P) := Fintype.ofFinite _`. Take `⟨n, hℓp, hn⟩` from `FiniteField.card (𝓞 E ⧸ P) ℓ`.
+Rewrite the conclusion using the stated equalities. Equip the data with the indicated structure. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hdvd : ℓ ∣ Nat.card (𝓞 E ⧸ P)`. Rewrite using `[Nat.card_eq_fintype_card, hn]`. Conclude with `dvd_pow_self ℓ (PNat.ne_zero n)`. Establish `h2 : ℓ ∣ p` using `hℓp.dvd_of_dvd_pow (dvd_trans hdvd h)`. Conclude with `(CharP.cast_eq_zero_iff (𝓞 E ⧸ P) ℓ p).2 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Infinite (𝓞 E ⧸ P) := not_finite_iff_infinite.1 hfin`. Rewrite `h` using `[Nat.card_eq_zero_of_infinite]`. Establish `h0 : p ^ e = 0` using `zero_dvd_iff.1 h`. Establish `hp : p = 0`. Break down `Nat.eq_zero_or_pos e with he | he` into its components or cases.
-
-Simplify using `[he] at h0`. Conclude with `(pow_eq_zero_iff (Nat.pos_iff_ne_zero.1 he)).1 h0`. Simplify using `[hp]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_of_card_dvd {P : Ideal (𝓞 E)} [P.IsMaximal] {p e : ℕ}
     (h : Nat.card (𝓞 E ⧸ P) ∣ p ^ e) : ((p : ℕ) : 𝓞 E) ∈ P := by
@@ -563,9 +545,9 @@ theorem mem_of_card_dvd {P : Ideal (𝓞 E)} [P.IsMaximal] {p e : ℕ}
     simp [hp]
 
 /- English proof (translation)
-Use `⟨s.finite_toSet.biUnion (fun b hb => ht b hb), ?_⟩` and prove the remaining obligations. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.set_biUnion_insert, Finset.sum_insert ha]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `ih'` using `ih (fun b hb => ht b (Finset.mem_insert_of_mem hb))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem ncard_biUnion_le {α β : Type} (s : Finset β) (t : β → Set α)
     (ht : ∀ b ∈ s, (t b).Finite) :
@@ -581,41 +563,35 @@ theorem ncard_biUnion_le {α β : Type} (s : Finset β) (t : β → Set α)
       _ ≤ _ := Nat.add_le_add_left ih' _
 
 /- English proof (translation)
-Proceed by induction on `e using Nat.strong_induction_on with`. Consider the case `_ e ih`. Introduce `X _ _ _ htf hli`. Break down `Nat.eq_zero_or_pos e with rfl | he` into its components or cases. Establish `h1 : idxSet (𝓞 E) X (p ^ 0) = {⊤}`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use extensionality with `N`. Simplify using `only [idxSet, pow_zero, Set.mem_ofPred_eq, AddSubgroup.index_eq_one, Set.mem_singleton_iff, Submodule.toAddSubgroup_eq_top]`. Rewrite using `[h1]`. Simplify using the standard rewrite rules. Establish `: IsNoetherian (𝓞 E) X` using `isNoetherian_of_isNoetherianRing_of_finite _ _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set n := finrank ℚ E with hn_def`. Establish `hn : 0 < n` using `Module.finrank_pos`. Take `⟨Ps, hPs, hPmem⟩` from `primes_card E p hp`. Set `G : Finset (Ideal (𝓞 E))` to `Ps.filter (fun P => P.IsMaximal ∧ Nat.card (𝓞 E ⧸ P) ∣ p ^ e)`. Establish `hGf : ∀ P ∈ G, ∃ f : ℕ, 1 ≤ f ∧ f ≤ e ∧ Nat.card (𝓞 E ⧸ P) = p ^ f`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Take `⟨_, hPm, hdvd⟩` from `Finset.mem_filter.mp hP`. Take `⟨f, hfe, hf⟩` from `(Nat.dvd_prime_pow hp).mp hdvd`. Use `⟨f, ?_, hfe, hf⟩` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos f with rfl | hf0` into its components or cases.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-It suffices to derive a contradiction. Establish `: Nontrivial (𝓞 E ⧸ P)` using `Ideal.Quotient.nontrivial_iff.mpr hPm.ne_top`. Establish `h2 : 1 < Nat.card (𝓞 E ⧸ P)` using `Finite.one_lt_card`. Rewrite `h2` using `[hf, pow_zero]`. Conclude with `lt_irrefl _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `hf0`. Use `choose! f hf1 hfe hfc using hGf`. Set `A : Ideal (𝓞 E) → Submodule (𝓞 E) X → Set (Submodule (𝓞 E) X)` to `fun P L => (Submodule.map L.subtype) '' idxSet (𝓞 E) L (p ^ (e - f P))`. Establish `hhyp : ∀ P ∈ G, (hyp P X).Finite ∧ (hyp P X).ncard ≤ (p ^ f P) ^ k`. Introduce `P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hPm : P.IsMaximal` using `(Finset.mem_filter.mp hP).2.1`. Establish `hP0 : P ≠ ⊥` using `(Ideal.bot_lt_of_maximal P (RingOfIntegers.not_isField E)).ne'`. Take `⟨s, hsk, hs⟩` from `exists_gen_mod P hP0 htf k hli`. Use `hyp_count P k (card_hom_le P k s hsk hs)` as an intermediate fact. Rewrite `this` using `[hfc P hP]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `this`. Establish `hA : ∀ P ∈ G, ∀ L ∈ hyp P X, (A P L).Finite ∧ (A P L).ncard ≤ n ^ (e - f P) * (p ^ (e - f P)) ^ k`. Introduce `P hP L _`. Establish `h` using `ih (e - f P) (by have := hf1 P hP; omega) L (htf.submodule L) (hli.submodule L)`. Conclude with `⟨h.1.image _, (Set.ncard_image_le h.1).trans h.2⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Set `H : Ideal (𝓞 E) → Finset (Submodule (𝓞 E) X)` to `fun P => if h : P ∈ G then (hhyp P h).1.toFinset else ∅`. Establish `hH : ∀ P ∈ G, ∀ L, L ∈ H P ↔ L ∈ hyp P X`. Introduce `P hP L`. Simplify using `only [H, dif_pos hP, Set.Finite.mem_toFinset]`. Establish `hHc : ∀ P ∈ G, (H P).card ≤ (p ^ f P) ^ k`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `P hP`. Simplify using `only [H, dif_pos hP]`. Rewrite using `[← Set.ncard_eq_toFinset_card _ (hhyp P hP).1]`. Conclude with `(hhyp P hP).2`. Establish `hcover : idxSet (𝓞 E) X (p ^ e) ⊆ ⋃ P ∈ G, ⋃ L ∈ H P, A P L`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `N hN`. Establish `hN' : N.toAddSubgroup.index = p ^ e` using `hN`. Establish `hNtop : N ≠ ⊤`. Introduce and unpack `rfl`. Establish `h1 : (⊤ : Submodule (𝓞 E) X).toAddSubgroup.index = 1` using `by simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[hN']`. Conclude with `(Nat.one_lt_pow he.ne' hp.one_lt).ne' h1`. Take `⟨P, hPm, L, hL, hNL⟩` from `exists_hyp_above N hNtop`. Establish `hdvd : Nat.card (𝓞 E ⧸ P) ∣ p ^ e`. Rewrite using `[← hL.2, ← hN']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `AddSubgroup.index_dvd_of_le (Submodule.toAddSubgroup_mono hNL)`. Establish `hPG : P ∈ G` using `Finset.mem_filter.mpr ⟨hPmem P hPm (mem_of_card_dvd hdvd), hPm, hdvd⟩`. Establish `hrel : (N.comap L.subtype).toAddSubgroup.index = p ^ (e - f P)`. Establish `h1` using `index_comap_mul N L hNL`. Rewrite `h1` using `[hL.2, hfc P hPG, hN']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h2 : p ^ (e - f P) * p ^ f P = p ^ e`. Rewrite using `[← pow_add, Nat.sub_add_cancel (hfe P hPG)]`. Conclude with `Nat.eq_of_mul_eq_mul_right (pow_pos hp.pos _) (h1.trans h2.symm)`. Establish `hmemA : N ∈ A P L`. Use `⟨N.comap L.subtype, hrel, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Submodule.map_comap_subtype, inf_eq_right.mpr hNL]`. Conclude with `Set.mem_iUnion₂.mpr ⟨P, hPG, Set.mem_iUnion₂.mpr ⟨L, (hH P hPG L).mpr hL, hmemA⟩⟩`. Establish `hinner : ∀ P ∈ G, (⋃ L ∈ H P, A P L).Finite ∧ (⋃ L ∈ H P, A P L).ncard ≤ n ^ (e - 1) * (p ^ e) ^ k`. Introduce `P hP`. Take `⟨hfin, hle⟩` from `ncard_biUnion_le (H P) (A P) (fun L hL => (hA P hP L ((hH P hP L).mp hL)).1)`.
-
-Use `⟨hfin, hle.trans ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_const, smul_eq_mul]`. Use `_ ≤ (p ^ f P) ^ k * (n ^ (e - f P) * (p ^ (e - f P)) ^ k) := Nat.mul_le_mul_right _ (hHc P hP)`. Use `_ = n ^ (e - f P) * (p ^ e) ^ k := by`.
-
-Rewrite using `[mul_left_comm, ← mul_pow, ← pow_add, Nat.add_sub_cancel' (hfe P hP)]`. Use `_ ≤ n ^ (e - 1) * (p ^ e) ^ k := Nat.mul_le_mul_right _ (Nat.pow_le_pow_right hn (by have := hf1 P hP; omega))`. Take `⟨hfinU, hleU⟩` from `ncard_biUnion_le G (fun P => ⋃ L ∈ H P, A P L) (fun P hP => (hinner P hP).1)`. Use `⟨hfinU.subset hcover, (Set.ncard_le_ncard hcover hfinU).trans (hleU.trans ?_)⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[← mul_assoc, ← pow_succ', Nat.sub_add_cancel he]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_prime_pow (k p : ℕ) (hp : p.Prime) (e : ℕ) :
     ∀ (X : Type) [AddCommGroup X] [Module (𝓞 E) X] [Module.Finite (𝓞 E) X],
@@ -733,17 +709,17 @@ end CountO
 
 open CountO in
 /- English proof (translation)
-Introduce `E _ _ M _ _ _ _ j hj`. Use `set k := finrank (𝓞 E) M`. Establish `htf : TF E M` using `fun a ha x hx => by`. Establish `h` using `Module.Flat.isSMulRegular_of_nonZeroDivisors (M := M) (mem_nonZeroDivisors_of_ne_zero ha)`. Conclude with `h (hx.trans (smul_zero a).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hli : LIB E M k` using `fun ι _ v hv => hv.fintype_card_le_finrank`. Establish `key : ∀ j : ℕ, 1 ≤ j → (idxSet (𝓞 E) M j).Finite ∧ (idxSet (𝓞 E) M j).ncard ≤ finrank ℚ E ^ (Nat.primeFactorsList j).length * j ^ k`. Introduce `j`. Proceed by induction on `j using Nat.recOnPosPrimePosCoprime with`. Consider the case `prime_pow p e hp _`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `_`. Establish `h` using `count_prime_pow k p hp e M htf hli`. Rewrite using `[hp.primeFactorsList_pow, List.length_replicate]`. Conclude with `h`. Consider the case `zero => intro h`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `one`. Introduce `_`. Establish `h` using `count_prime_pow k 2 Nat.prime_two 0 M htf hli`. Simplify using `using h`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Consider the case `coprime a b ha hb hab iha ihb`. Introduce `_`. Take `⟨fa, ca⟩` from `iha (by omega)`. Take `⟨fb, cb⟩` from `ihb (by omega)`. Take `⟨fab, cab⟩` from `mul_count hab (by omega) (by omega) fa fb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Use `⟨fab, cab.trans ?_⟩` and prove the remaining obligations. Rewrite using `[(Nat.perm_primeFactorsList_mul (by omega) (by omega)).length_eq, List.length_append, pow_add, mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `key j hj`.
+A detailed English derivation is pending.
 -/
 theorem card_submodules_of_index_le : Formalism.SLP.SubmoduleIndexCountO := by
   intro E _ _ M _ _ _ _ j hj

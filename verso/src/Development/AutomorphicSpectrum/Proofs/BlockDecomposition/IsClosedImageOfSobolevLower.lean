@@ -11,7 +11,7 @@ open Formalism.REAL Formalism.MainNotions.S Formalism.L2.Theta Matrix MeasureThe
 namespace GlobalTheory.CompanionTheory.SmoothClosed
 
 /- English proof (translation)
-Introduce `k Xs hX`. Simplify `(hu k Xs hX).sub (hv k Xs hX)` using `only [map_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smoothVec_sub {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     {Lie : Set (Matrix (Fin n) (Fin n) ℂ)} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {u v : H}
@@ -20,7 +20,7 @@ theorem smoothVec_sub {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductS
   simpa only [map_sub] using (hu k Xs hX).sub (hv k Xs hX)
 
 /- English proof (translation)
-Establish `h : Filter.Tendsto (fun k => u k - y) Filter.atTop (nhds (y - y))` using `hu.sub_const y`. Rewrite `h` using `[sub_self]`. Simplify `(hq.tendsto 0).comp h` using `[Function.comp_def, map_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tendsto_seminorm_sub {E : Type} [AddCommGroup E] [Module ℂ E] [TopologicalSpace E] [IsTopologicalAddGroup E]
     {q : Seminorm ℂ E} (hq : Continuous q) {u : ℕ → E} {y : E} (hu : Filter.Tendsto u Filter.atTop (nhds y)) :
@@ -30,17 +30,15 @@ theorem tendsto_seminorm_sub {E : Type} [AddCommGroup E] [Module ℂ E] [Topolog
   simpa [Function.comp_def, map_zero] using (hq.tendsto 0).comp h
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hmod T hT hlow`. Use `haveI : FirstCountableTopology E := hmod.withSeminorms.firstCountableTopology`. Use `IsSeqClosed.isClosed ?_` and prove the remaining obligations. Introduce `x y hx hxy`. Use `choose w hw hTw using hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcauchy : ∀ S : List (List (Matrix (Fin n) (Fin n) ℂ)), (∀ l ∈ S, ∀ X ∈ l, X ∈ lieSet ε) → ∀ δ > 0, ∃ K, ∀ k ≥ K, ∀ m ≥ K, sobNorm σ S (w k - w m) < δ`. Introduce `S hS δ hδ`. Take `⟨q, hq, hqb⟩` from `hlow S hS`. Establish `ht` using `tendsto_seminorm_sub hq hxy`. Take `⟨K, hK⟩` from `Filter.eventually_atTop.1 (ht.eventually (gt_mem_nhds (half_pos hδ)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Use `⟨K, fun k hk m hm => ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨w0, hw0, hconv⟩` from `GlobalTheory.CompanionTheory.SobComplete.smoothVec_complete n ε H σ hU hI w hw hcauchy`. Use `⟨w0, hw0, ?_⟩` and prove the remaining obligations. Take `⟨-, hT2⟩` from `hT`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT' : Filter.Tendsto (fun k => T (w k)) Filter.atTop (nhds (T w0))`. Use `(hmod.withSeminorms.tendsto_nhds _ _).2 ?_` and prove the remaining obligations. Introduce `i δ hδ`. Take `⟨S, C, hS, hb⟩` from `hT2 i`. Establish `hC : Filter.Tendsto (fun k => C * sobNorm σ S (w k - w0)) Filter.atTop (nhds 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Simplify using `using (hconv S hS).const_mul C`. Use `filter_upwards [hC.eventually (gt_mem_nhds hδ)] with k hk`. Combine the equalities or inequalities in the displayed calculation. Establish `hx' : Filter.Tendsto (fun k => T (w k)) Filter.atTop (nhds y)`. Simplify using `only [hTw]`.
-
-Conclude with `hxy`. Conclude with `tendsto_nhds_unique hT' hx'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_image_of_sobolev_lower : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)), IsURepOn (UJset ε) σ → IsIrredOn (UJset ε) σ → ∀ (E : Type) [AddCommGroup E] [Module ℂ E] [UniformSpace E] [IsUniformAddGroup E] [CompleteSpace E] [T2Space E] (p : ℕ → Seminorm ℂ E) (π dπ : Matrix (Fin n) (Fin n) ℂ → (E →L[ℂ] E)), IsSmoothModRep ε p π dπ → ∀ T : H →ₗ[ℂ] E, IsSmoothGMap ε σ p π T → (∀ S : List (List (Matrix (Fin n) (Fin n) ℂ)), (∀ l ∈ S, ∀ X ∈ l, X ∈ lieSet ε) → ∃ q : Seminorm ℂ E, Continuous q ∧ ∀ w, SmoothVec (lieSet ε) σ w → sobNorm σ S w ≤ q (T w)) → IsClosed (T '' {w | SmoothVec (lieSet ε) σ w}) := by
   intro n ε H _ _ _ σ hU hI E _ _ _ _ _ _ p π dπ hmod T hT hlow

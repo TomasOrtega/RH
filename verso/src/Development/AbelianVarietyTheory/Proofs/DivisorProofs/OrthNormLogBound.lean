@@ -18,7 +18,7 @@ variable {n : ℕ} {lam : DomWeight (n + 1)} {sg : DomWeight n}
 def sgN (lam : DomWeight (n + 1)) (sg : DomWeight n) : Fin n → ℕ := fun i => (sg.w i - lam.w (Fin.last n)).toNat
 
 /- English proof (translation)
-Introduce `i`. Establish `: 0 ≤ sg.w i - lam.w i.succ ∧ 0 ≤ lam.w i.castSucc - sg.w i` using `h i`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem interlace_w (h : Br.Interlace rfl lam sg) : Formalism.BranchingDeterminantCap.Interlace lam.w sg.w := by
   intro i
@@ -26,7 +26,7 @@ theorem interlace_w (h : Br.Interlace rfl lam sg) : Formalism.BranchingDetermina
   omega
 
 /- English proof (translation)
-Establish `h1` using `(interlace_w h i).2`. Establish `h2` using `lam.anti (Fin.le_last i.succ)`. Unfold `sgN`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem sgN_cast (h : Br.Interlace rfl lam sg) (i : Fin n) : (sgN lam sg i : ℤ) = sg.w i - lam.w (Fin.last n) := by
   have h1 := (interlace_w h i).2
@@ -35,7 +35,7 @@ theorem sgN_cast (h : Br.Interlace rfl lam sg) (i : Fin n) : (sgN lam sg i : ℤ
   omega
 
 /- English proof (translation)
-Introduce `i`. Use `interlace_w h i` as an intermediate fact. Simplify using `only [lamZ_lamN, sgN_cast h]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem interlace_N (h : Br.Interlace rfl lam sg) : Formalism.BranchingDeterminantCap.Interlace (lamZ (lamN lam)) (fun i => (sgN lam sg i : ℤ)) := by
   intro i
@@ -44,13 +44,13 @@ theorem interlace_N (h : Br.Interlace rfl lam sg) : Formalism.BranchingDetermina
   omega
 
 /- English proof (translation)
-Establish `hb : ∀ s, (Br.bBr rfl lam sg s).toNat = lamN lam s - sgN lam sg s`. Introduce `s`. Establish `h1` using `lamN_cast lam s`. Establish `h2` using `sgN_cast h s`. Establish `h3 : Br.bBr rfl lam sg s = lam.w s.castSucc - sg.w s` using `rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Use linear arithmetic over natural numbers and integers. Establish `ha : ∀ s, (Br.aBr rfl lam sg s).toNat = sgN lam sg s - nuNext (lamN lam) s`. Introduce `s`. Establish `h1` using `nuNext_cast lam s`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `sgN_cast h s`. Establish `h3 : Br.aBr rfl lam sg s = sg.w s - lam.w s.succ` using `rfl`. Rewrite using `[h3]`. Use linear arithmetic over natural numbers and integers. Unfold `Br.xiBr xiB`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Rewrite using `[map_prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, map_pow, rename_initMinor, rename_initMinor, ha, hb]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem xiBr_eq (h : Br.Interlace rfl lam sg) (K : Type) [Field K] :
     Br.xiBr K rfl lam sg = incl K n (xiB K (lamN lam) (sgN lam sg)) := by
@@ -75,13 +75,13 @@ theorem xiBr_eq (h : Br.Interlace rfl lam sg) (K : Type) [Field K] :
   congr 2
 
 /- English proof (translation)
-Unfold `extremal hw`. Rewrite using `[map_prod, Fin.prod_univ_castSucc]`. Establish `h0 : lam.natW (Fin.last n) = 0`. Use `natW_top lam (Fin.last n)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[h0, Nat.zero_sub, pow_zero, mul_one]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_pow]`. Use `congr 1`. Conclude with `(rename_initMinor K (Fin.castLE (by have := i.2; omega) : Fin (i.val + 1) → Fin (n + 1)) (by have := i.2; omega)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `h1` using `nuNext_cast lam i`. Establish `h2` using `natW_top lam i.succ`. Establish `h3 : nuNext lam.natW i.castSucc = lam.natW i.succ`. Unfold `nuNext`. Rewrite using `[dif_pos (by simp)]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h3]`. Establish `h4 : lamN lam i = lam.natW i.castSucc` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem extremal_eq (lam : DomWeight (n + 1)) (K : Type) [Field K] :
     extremal K (n + 1) lam = incl K n (hw K (Nat.le_succ n) (lamN lam)) := by
@@ -106,9 +106,9 @@ theorem extremal_eq (lam : DomWeight (n + 1)) (K : Type) [Field K] :
     omega
 
 /- English proof (translation)
-Unfold `Formalism.REAL.fockF fockB`. Rewrite using `[support_map_of_injective _ (algebraMap ℝ ℂ).injective, Complex.re_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Establish `: ∀ (x : ℝ) (k : ℕ), ((algebraMap ℝ ℂ x) * (starRingEnd ℂ) (algebraMap ℝ ℂ x) * (k : ℂ)).re = x * x * k`. Introduce `x k`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Rewrite using `[coeff_map]`. Conclude with `this _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fockF_map {σ : Type} (f : MvPolynomial σ ℝ) :
     (Formalism.REAL.fockF (map (algebraMap ℝ ℂ) f) (map (algebraMap ℝ ℂ) f)).re = fockB f f := by
@@ -122,7 +122,7 @@ theorem fockF_map {σ : Type} (f : MvPolynomial σ ℝ) :
   exact this _ _
 
 /- English proof (translation)
-Simplify using `only [xiB, map_prod, map_mul, map_pow, initMinor, RingHom.map_det]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Apply the tactic sequence `congr 3 <;> ext1 a b <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_xiB (l s : Fin n → ℕ) : map (algebraMap ℝ ℂ) (xiB ℝ l s) = xiB ℂ l s := by
   simp only [xiB, map_prod, map_mul, map_pow, initMinor, RingHom.map_det]
@@ -130,9 +130,9 @@ theorem map_xiB (l s : Fin n → ℕ) : map (algebraMap ℝ ℂ) (xiB ℝ l s) =
   congr 3 <;> ext1 a b <;> simp
 
 /- English proof (translation)
-Establish `h1` using `xiNorm n (lamN lam) (sgN lam sg) (interlace_N h)`. Establish `h2` using `(fockPos _ _ (GlobalTheory.Branching.xiB_ne_zero (lamN lam) (sgN lam sg))).1`. Establish `h3` using `(fockPos _ _ (hwNe ℂ (n + 1) n (Nat.le_succ n) (lamN lam))).1`. Establish `e : hw ℂ (Nat.le_succ n) (lamN lam) = map (algebraMap ℝ ℂ) (hw ℝ (Nat.le_succ n) (lamN lam))` using `(lclosedeq_hw_map _ _ _).symm`. Rewrite `h1`, `h2` using `[← map_xiB, fockF_map]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1`, `h3` using `[e, fockF_map]`. Unfold `Br.kapBr`. Rewrite using `[xiBr_eq h, extremal_eq, fockB_incl, fockB_incl]`. Conclude with `⟨div_pos h2 h3, (div_le_iff₀ h3).2 h1⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem kap_bounds (h : Br.Interlace rfl lam sg) :
     0 < Br.kapBr ℝ rfl lam sg ∧ Br.kapBr ℝ rfl lam sg ≤ weylProd (lamZ (lamN lam)) := by
@@ -148,7 +148,7 @@ theorem kap_bounds (h : Br.Interlace rfl lam sg) :
   exact ⟨div_pos h2 h3, (div_le_iff₀ h3).2 h1⟩
 
 /- English proof (translation)
-Unfold `DomWeight.spread`. Rewrite using `[dif_pos (Nat.succ_pos n)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spread_eq (lam : DomWeight (n + 1)) : lam.spread = lam.w 0 - lam.w (Fin.last n) + (n + 1 : ℕ) := by
   unfold DomWeight.spread
@@ -156,9 +156,9 @@ theorem spread_eq (lam : DomWeight (n + 1)) : lam.spread = lam.w 0 - lam.w (Fin.
   rfl
 
 /- English proof (translation)
-Establish `ha : Antitone (lamZ (lamN lam))` using `fun a b hab => by`. Use `lam.anti hab` as an intermediate fact. Simplify using `only [lamZ_lamN]`. Use linear arithmetic over natural numbers and integers. Use `(kap_bounds h).2.trans ((weylDimBound n _ ha).2.trans ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `ha (Fin.zero_le (Fin.last n))`. Use `pow_le_pow_left₀ (add_nonneg (by exact_mod_cast sub_nonneg.2 h0) (Nat.cast_nonneg n)) ?_ _` and prove the remaining obligations. Rewrite `hA` using `[spread_eq]`. Simplify using `only [lamZ_lamN]`. Move the coercions through the operations in `at hA ⊢`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -177,18 +177,18 @@ theorem kap_le (h : Br.Interlace rfl lam sg) {A : ℝ} (hA : ((lam.spread : ℤ)
   linarith
 
 /- English proof (translation)
-Use `Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun v _ => Finset.prod_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cBr_eq (lam : DomWeight (n + 1)) (sg : DomWeight n) : Br.cBr rfl lam sg = cCap lam.w sg.w := by
   refine Finset.prod_congr rfl fun i _ => Finset.prod_congr rfl fun v _ => Finset.prod_congr rfl fun j _ => ?_
   ring
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `capConst n lam.w sg.w (interlace_w h)`. Rewrite using `[cBr_eq]`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `e : GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.dOne rfl lam sg = d1 lam.w sg.w` using `rfl`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : |((cCap lam.w sg.w : ℤ) : ℝ)| ≤ ((lam.w 0 - lam.w (Fin.last n) + (n : ℤ) - 1 : ℤ) : ℝ) ^ (n * (d1 lam.w sg.w).toNat)` using `by exact_mod_cast h2`. Use `h3.trans ?_` and prove the remaining obligations. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Establish `h0` using `lam.anti (Fin.zero_le (Fin.last n))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `pow_le_pow_left₀ (by exact_mod_cast (by omega : (0 : ℤ) ≤ lam.w 0 - lam.w (Fin.last n) + (n : ℤ) - 1)) ?_ _` and prove the remaining obligations. Rewrite `hA` using `[spread_eq]`. Move the coercions through the operations in `at hA ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem c_bounds (h : Br.Interlace rfl lam sg) {A : ℝ} (hA : ((lam.spread : ℤ) : ℝ) ≤ A) :
     Br.cBr rfl lam sg ≠ 0 ∧ |((Br.cBr rfl lam sg : ℤ) : ℝ)| ≤ A ^ (n * (GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.dOne rfl lam sg).toNat) := by
@@ -209,13 +209,13 @@ theorem c_bounds (h : Br.Interlace rfl lam sg) {A : ℝ} (hA : ((lam.spread : �
   linarith
 
 /- English proof (translation)
-Take `⟨c1, c2⟩` from `c_bounds h hA`. Establish `k1` using `(kap_bounds h).1`. Establish `k2` using `kap_le h hA`. Establish `c0 : ((Br.cBr rfl lam sg : ℤ) : ℝ) ≠ 0` using `by exact_mod_cast c1`. Establish `hd : 0 ≤ GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.dOne rfl lam sg` using `(interlaceIdent n lam.w sg.w (interlace_w h)).2.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd' : (((GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.dOne rfl lam sg).toNat : ℕ) : ℝ) = ((GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.dOne rfl lam sg : ℤ) : ℝ)`. Conclude with `congrArg (Int.cast : ℤ → ℝ) (Int.toNat_of_nonneg hd)` after adjusting the coercions. Establish `he : (((n + 1) * n / 2 : ℕ) : ℝ) = ((n : ℝ) + 1) * n / 2`. Rewrite using `[Nat.cast_div (by rw [mul_comm]; exact (Nat.even_mul_succ_self n).two_dvd) (by norm_num)]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Use `⟨by positivity, ?_⟩` and prove the remaining obligations. Establish `l1` using `Real.log_le_log (abs_pos.2 c0) c2`. Establish `l2` using `Real.log_le_log k1 k2`. Rewrite `l1` using `[Real.log_pow, Real.log_abs, Nat.cast_mul, hd']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `l2` using `[Real.log_pow, he]`. Rewrite using `[Real.log_mul (pow_ne_zero 2 c0) k1.ne', Real.log_pow]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem one_position (h : Br.Interlace rfl lam sg) {A : ℝ} (hA : ((lam.spread : ℤ) : ℝ) ≤ A) :
     0 < ((Br.cBr rfl lam sg : ℤ) : ℝ) ^ 2 * Br.kapBr ℝ rfl lam sg ∧
@@ -243,9 +243,9 @@ theorem one_position (h : Br.Interlace rfl lam sg) {A : ℝ} (hA : ((lam.spread 
   linarith
 
 /- English proof (translation)
-Use `⟨2, fun ι _ N n hN lam sg h1 a ha => ?_⟩` and prove the remaining obligations. Use `⟨?_, ?_, GlobalTheory.BrNormCompare.last_ineq hN lam sg h1 a ha⟩` and prove the remaining obligations. Substitute `hN` using the available equality. Conclude with `Finset.prod_pos fun τ _ => (one_position (h1 τ) (ha τ)).1`. Substitute `hN` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Substitute using the available equality. Replace the relevant objects with their definitions.
 
-Unfold `GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.orthNormSq`. Rewrite using `[Real.log_prod fun τ _ => (one_position (h1 τ) (ha τ)).1.ne']`. Conclude with `Finset.sum_le_sum fun τ _ => (one_position (h1 τ) (ha τ)).2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthNormLogBound : GlobalTheory.IndefiniteRowSideFullHecke.OrthogonalNormSquareSum.OrthNormLogBound := by
   refine ⟨2, fun ι _ N n hN lam sg h1 a ha => ?_⟩

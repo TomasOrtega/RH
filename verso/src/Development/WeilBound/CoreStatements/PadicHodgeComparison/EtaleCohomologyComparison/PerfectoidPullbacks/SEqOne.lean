@@ -17,11 +17,11 @@ def pdP {B : Type} [CommRing B] {J : Ideal B} (δ : DividedPowers J) (r : ℕ) :
     z = (l.map fun q => δ.dpow q.1 q.2).prod}
 
 /- English proof (translation)
-Establish `: pdP δ r ≤ (pdP δ' r).comap f`. Use `Ideal.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, hr, rfl⟩`. Use `Ideal.subset_span ⟨l.map fun q => (q.1, f q.2), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨q', hq', rfl⟩` from `List.mem_map.1 hq`. Conclude with `hf.1 (Ideal.mem_map_of_mem f (hl q' hq'))`. Simplify `hr` using `[List.map_map, Function.comp_def]`. Rewrite using `[map_list_prod, List.map_map, List.map_map]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `List.map_congr_left fun q hq => ?_` and prove the remaining obligations. Conclude with `(hf.2 q.2 (hl q hq)).symm`. Conclude with `this hx`.
+A detailed English derivation is pending.
 -/
 theorem dividedPowerFiltration_map {B B' : Type} [CommRing B] [CommRing B'] {J : Ideal B} {J' : Ideal B'} {δ : DividedPowers J}
     {δ' : DividedPowers J'} {f : B →+* B'} (hf : IsDPMorphism δ δ' f) (r : ℕ) {x : B} (hx : x ∈ pdP δ r) :
@@ -137,7 +137,7 @@ variable {γ : DividedPowers I} {p : ℕ} {X : Scheme.{0}} {q : X ⟶ Spec (Comm
 instance : IsEmpty (nlFun γ p X q κ).ι := inferInstanceAs (IsEmpty Empty)
 
 /- English proof (translation)
-The claim follows from `Finset.prod_of_isEmpty _`.
+A detailed English derivation is pending.
 -/
 theorem prod_e {M : Type} [CommMonoid M] (f : (nlFun γ p X q κ).ι → M) : ∏ j, f j = 1 := Finset.prod_of_isEmpty _
 
@@ -173,7 +173,7 @@ def mkT (B : Type) [CommRing B] (i : R →+* B) (J : Ideal B) (δ : DividedPower
   hv := (map_one _).trans (prod_e _).symm
 
 /- English proof (translation)
-Establish `h` using `T.hs`. Rewrite `h` using `[prod_e]`. Use `ext`. Simplify using `using h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem s_eq_one (T : Thick (nlFun γ p X q κ)) : T.s = 1 := by
   have h := T.hs
@@ -199,7 +199,7 @@ def mkH {T T' : Thick (nlFun γ p X q κ)} (φ : T.B →+* T'.B) (comm : ∀ r, 
   hv j := j.elim
 
 /- English proof (translation)
-The claim follows from `Thick.Hom.ext h (funext fun j => j.elim)`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext {T T' : Thick (nlFun γ p X q κ)} {f g : T ⟶ T'} (h : f.φ = g.φ) : f = g :=
   Thick.Hom.ext h (funext fun j => j.elim)
@@ -279,7 +279,7 @@ def NMor.bar (m : NMor γ q κ γ' q' κ' σ) : R ⧸ I →+* R' ⧸ I' :=
   Ideal.quotientMap I' σ fun _ hx => m.hI.1 (Ideal.mem_map_of_mem σ hx)
 
 /- English proof (translation)
-Use extensionality with `a`. Take `⟨r, hr⟩` from `Ideal.Quotient.mk_surjective (κ a)`. Rewrite using `[RingHom.comp_apply, RingHom.comp_apply, m.hκ a r hr.symm, ← hr]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem NMor.bar_κ (m : NMor γ q κ γ' q' κ' σ) : m.bar.comp κ = κ'.comp m.g := by
   ext a

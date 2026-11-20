@@ -27,9 +27,9 @@ Both sides reduce to the same expression.
 theorem riemannBil_apply (ξ x y : E) : riemannBil ξ x y = riemann ξ x y := rfl
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h0`. Establish `h1` using `hx (IsCMField.complexConj E (ξ * x)⁻¹)`. Rewrite `h1` using `[riemann, IsCMField.complexConj_apply_apply, mul_inv_cancel₀ (mul_ne_zero hξ h0)]`. Rewrite `h1` using `[show (1 : E) = algebraMap ℚ E 1 by simp, Algebra.trace_algebraMap]`. Use `Module.finrank_pos (R := ℚ) (M := E)` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `at h1`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem riemann_left_nondeg (ξ : E) (hξ : ξ ≠ 0) (x : E) (hx : ∀ y, riemann ξ x y = 0) : x = 0 := by
   by_contra h0
@@ -64,19 +64,17 @@ def gram (ξ : E) : Matrix (Fin (Module.finrank ℚ E)) (Fin (Module.finrank ℚ
   LinearMap.toMatrix₂ (Module.finBasis ℚ E) (Module.finBasis ℚ E) (riemannBil ξ)
 
 /- English proof (translation)
-Simplify using `[gram, LinearMap.toMatrix₂_apply, riemannBil_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gram_apply (ξ : E) (i j) : gram ξ i j = riemann ξ (Module.finBasis ℚ E i) (Module.finBasis ℚ E j) := by
   simp [gram, LinearMap.toMatrix₂_apply, riemannBil_apply]
 
 /- English proof (translation)
-Introduce `hd`. Take `⟨v, hv, hv0⟩` from `Matrix.exists_vecMul_eq_zero_iff.mpr hd`. Apply `hv` to reduce the goal to its premises. Use `set b := Module.finBasis ℚ E`. Establish `hx : (∑ i, v i • b i) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `riemann_left_nondeg ξ hξ` to reduce the goal to its premises. Introduce `y`. Rewrite using `[← riemannBil_apply, ← b.sum_repr y]`. Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _`. Use `congrFun hv0 j` as an intermediate fact. Simplify using `only [Matrix.vecMul, dotProduct, gram_apply, Pi.zero_apply] at this`. Conclude with `mul_eq_zero_of_right _ this`. Use `b.linearIndependent` as an intermediate fact.
-
-Conclude with `Fintype.linearIndependent_iff.mp this v hx |> funext`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gram_det_ne_zero (ξ : E) (hξ : ξ ≠ 0) : (gram ξ).det ≠ 0 := by
   intro hd
@@ -102,17 +100,17 @@ namespace GlobalTheory.DualFormExists
 variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 /- English proof (translation)
-Rewrite using `[← ((Module.finBasis ℚ E).constr ℂ).finrank_eq, Module.finrank_fin_fun]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_coh : Module.finrank ℂ (Coh E) = Module.finrank ℚ E := by
   rw [← ((Module.finBasis ℚ E).constr ℂ).finrank_eq, Module.finrank_fin_fun]
 
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc`. Use `set Gc := (gram ξ).map (Rat.castHom ℂ)`. Establish `hdet : Gc.det ≠ 0`. Rewrite using `[show Gc = (Rat.castHom ℂ).mapMatrix (gram ξ) from rfl, ← RingHom.map_det]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using gram_det_ne_zero ξ hξ`. Establish `hv : Matrix.vecMul c Gc = 0`. Use function extensionality and compare the values at `j`. Use `LinearMap.congr_fun hc (Module.finBasis ℚ E j)` as an intermediate fact. Simplify `this` using `[Matrix.vecMul, dotProduct, Gc, gram_apply, riemannCl_apply]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Take `⟨i, hi⟩` from `h`. Conclude with `hdet (Matrix.exists_vecMul_eq_zero_iff.mp ⟨c, fun h0 => hi (by simp [h0]), hv⟩)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem riemannCl_linInd (ξ : E) (hξ : ξ ≠ 0) :
     LinearIndependent ℂ (fun i => riemannCl ξ (Module.finBasis ℚ E i)) := by
@@ -136,15 +134,15 @@ def clBasis (ξ : E) (hξ : ξ ≠ 0) : Module.Basis (Fin (Module.finrank ℚ E)
   basisOfLinearIndependentOfCardEqFinrank (riemannCl_linInd ξ hξ) (by simp [finrank_coh])
 
 /- English proof (translation)
-Simplify using `[clBasis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem clBasis_apply (ξ : E) (hξ : ξ ≠ 0) (i) : clBasis ξ hξ i = riemannCl ξ (Module.finBasis ℚ E i) := by
   simp [clBasis]
 
 /- English proof (translation)
-Establish `h : riemannCl ξ x = (clBasis ξ hξ).equivFun.symm (fun i => (((Module.finBasis ℚ E).repr x i : ℚ) : ℂ))`. Rewrite using `[Module.Basis.equivFun_symm_apply]`. Use `conv_lhs => rw [← riemannClL_apply, ← (Module.finBasis ℚ E).sum_repr x]`. Simplify using `only [map_sum, map_smul, clBasis_apply, riemannClL_apply]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `y`. Simplify using `[Rat.smul_def]`. Rewrite using `[h, ← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clBasis_repr (ξ : E) (hξ : ξ ≠ 0) (x : E) (i) :
     (clBasis ξ hξ).repr (riemannCl ξ x) i = (((Module.finBasis ℚ E).repr x i : ℚ) : ℂ) := by
@@ -162,13 +160,11 @@ end GlobalTheory.DualFormExists
 namespace GlobalTheory.DualFormExists
 
 /- English proof (translation)
-Introduce `E _ _ _ ξ hξ`. Use `set b := Module.finBasis ℚ E`. Use `set cb := clBasis ξ hξ`. Use `set Gc : Matrix (Fin (Module.finrank ℚ E)) (Fin (Module.finrank ℚ E)) ℂ := fun i j => ((gram ξ i j : ℚ) : ℂ)`. Use `⟨Matrix.toLinearMap₂ cb cb Gc, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `x y`. Rewrite using `[Matrix.toLinearMap₂_apply]`. Simplify using `only [cb, clBasis_repr]`. Rewrite using `[← riemannBil_apply, ← Matrix.toLinearMap₂_toMatrix₂ b b (riemannBil ξ), Matrix.toLinearMap₂_apply]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[Gc, gram, b]`. Introduce `B' hB'`. Apply `LinearMap.ext_basis cb cb` to reduce the goal to its premises. Introduce `i j`. Rewrite using `[Matrix.toLinearMap₂_apply_basis, clBasis_apply, clBasis_apply, hB']`.
-
-Simplify using `[Gc, gram_apply, b]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualForm_existsUnique : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (ξ : E), ξ ≠ 0 →
     ∃! B : LinearMap.BilinForm ℂ (Coh E), IsDualForm ξ B := by

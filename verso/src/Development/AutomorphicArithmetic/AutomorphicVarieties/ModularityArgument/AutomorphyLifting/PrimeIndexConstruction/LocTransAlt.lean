@@ -16,7 +16,7 @@ open private UpperTheory.V.Af.RealLocalComponent.exists_comp UpperTheory.V.Af.Re
 namespace UpperTheory.V.Z.Win.Birth
 
 /- English proof (translation)
-Use extensionality with `g`. Use `⟨fun ⟨k, _, e⟩ => ⟨k, e⟩, fun ⟨k, e⟩ => ⟨k, ?_, e⟩⟩` and prove the remaining obligations. Use `haveI : Subsingleton (w.adicCompletionIntegers F ⧸ IsLocalRing.maximalIdeal (w.adicCompletionIntegers F) ^ 0) := Ideal.Quotient.subsingleton_iff.2 (by simp)`. Conclude with `Subsingleton.elim _ _`.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem level_zero_eq_maximal_compact {F : Type} [Field F] [NumberField F] (w : Pl F) : K1 w 0 = GlobalTheory.LFun.KGL w 2 := by
   ext g
@@ -26,7 +26,7 @@ private theorem level_zero_eq_maximal_compact {F : Type} [Field F] [NumberField 
   exact Subsingleton.elim _ _
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.CuspRep.finId_det_locGL w (GeneralLinearGroup.scalar (Fin 1) x)`. Rewrite `h`, the goal using `[locGL, GlobalTheory.CuspRep.cornerGL_scalar]`. Rewrite using `[finGL, GlobalTheory.CuspRep.cornerGL_scalar]`. Use `congr 1`. Conclude with `(congrArg (finId F) (GlobalTheory.CuspRep.CG.det_oneByOne _)).symm.trans (h.trans (congrArg (localIdele F w) (GlobalTheory.CuspRep.CG.det_oneByOne _)))`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem scalar_fin {F : Type} [Field F] [NumberField F] (w : Pl F) (x : (w.adicCompletion F)ˣ) :
     finGL F 2 (locGL F 2 w (GeneralLinearGroup.scalar (Fin 2) x)) = GeneralLinearGroup.scalar (Fin 2) (localIdele F w x) := by
@@ -38,9 +38,9 @@ private theorem scalar_fin {F : Type} [Field F] [NumberField F] (w : Pl F) (x : 
     (h.trans (congrArg (localIdele F w) (GlobalTheory.CuspRep.CG.det_oneByOne _)))
 
 /- English proof (translation)
-Take `⟨N, a, -, h⟩` from `Wc.hkReps uopSum F w c`. Establish `hx' : p x ∈ Hi.fixd ρ' (K1 w c)` using `fun u hu => by rw [← hp, hx u hu]`. Use `⟨p x, h0, hx', ?_⟩` and prove the remaining obligations. Rewrite using `[(h W ρ' _ hx').2]`. Establish `e` using `(h V ρ x hx).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[hU]`. Establish `e2` using `congrArg p e`. Rewrite `e2` using `[map_smul, map_sum]`. Rewrite using `[e2]`. Simplify using `only [hp]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem hasU_of_map {F : Type} [Field F] [NumberField F] (w : Pl F) {V W : Type} [AddCommGroup V] [Module ℂ V]
     [AddCommGroup W] [Module ℂ W] {ρ : Representation ℂ (GL (Fin 2) (w.adicCompletion F)) V}
@@ -59,13 +59,13 @@ private theorem hasU_of_map {F : Type} [Field F] [NumberField F] (w : Pl F) {V W
   simp only [hp]
 
 /- English proof (translation)
-Introduce `F _ _ _ π w`. Use `⟨fun ⟨x, hx0, hx⟩ => ?_, fun σ hσ => ⟨fun c lam ⟨x, hx0, hx, hU⟩ => ?_, fun ω hω z v => ?_⟩⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `UpperTheory.V.Af.RealLocalComponent.exists_comp admissibleReal π w`. Establish `hi` using `UpperTheory.V.Af.RealLocalComponent.isotypic π w σ hσ`. Take `⟨B, hB⟩` from `(UpperTheory.V.Af.Nf.satLoc' F 2 w σ).1 (GlobalTheory.CuspRep.LocSph.exists_fixed_of_mem_iSup (π.locRep w) σ.ρ σ.irred (fun f : {f : σ.V →ₗ[ℂ] π.V // ∀ g v, f (σ.ρ g v) = π.finPart (locGL F 2 w g) (f v)} => f.1) (fun f => f.2) (GlobalTheory.LFun.KGL w 2 : Set _) x hx0 (fun k hk = …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨B, ((UpperTheory.V.Af.Nf.satLoc' F 2 w σ).2 _ _ hi B).2 hB⟩`. Establish `hi` using `UpperTheory.V.Af.RealLocalComponent.isotypic π w σ hσ`. Take `⟨p, h0, hp⟩` from `UpperTheory.V.Sd.Wc.sep_of_sum σ.ρ σ.irred (π.locRep w) hi.2 x hx0`. Conclude with `hasU_of_map w p hp h0 hx hU`. Take `⟨f, h0, hf⟩` from `hσ`.
+Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinj : LinearMap.ker f = ⊥` using `((isIrreducible_iff σ.ρ).1 σ.irred).2 _ (fun g v hv => by`. Rewrite `hv`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[hf, hv, map_zero]) |>.resolve_right fun e => h0 (LinearMap.ker_eq_top.1 e)`. Use `LinearMap.ker_eq_bot.1 hinj ?_` and prove the remaining obligations. Rewrite using `[hf, map_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subtype.ext (Subtype.ext (funext fun g => ?_))` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(f v).1.1 (g * finGL F 2 (locGL F 2 w (GeneralLinearGroup.scalar (Fin 2) z))) = ((ω.loc w z : ℂˣ) : ℂ) * (f v).1.1 g`. Rewrite using `[scalar_fin, ← GlobalTheory.CuspRep.scalar_comm, hω _ _ (f v).2]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.V.Z.Win.Birth.locTrans : LocTrans := by
   intro F _ _ _ π w

@@ -36,12 +36,12 @@ instance (j w) : TopologicalSpace (OcC X j w) := inferInstanceAs (TopologicalSpa
 instance (j w) : IsTopologicalRing (OcC X j w) := inferInstanceAs (IsTopologicalRing ↥(OL (X.Kx j w)))
 
 /- English proof (translation)
-The claim follows from `Formalism.BasicNotions.Examples₂.LB.OL_adic (X.Kx j w)`.
+A detailed English derivation is pending.
 -/
 theorem oc_adic (j w) : IsAdic (IsLocalRing.maximalIdeal (OcC X j w)) := Formalism.BasicNotions.Examples₂.LB.OL_adic (X.Kx j w)
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.G.IntCl.complete ℤ_[what₂.places.resChar w] ℚ_[what₂.places.resChar w] ↥(X.Kx j w).1 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem oc_complete (j w) : IsAdicComplete (IsLocalRing.maximalIdeal (OcC X j w)) (OcC X j w) :=
   Formalism.L2.G.IntCl.complete ℤ_[what₂.places.resChar w] ℚ_[what₂.places.resChar w] ↥(X.Kx j w).1 inferInstance
@@ -50,9 +50,9 @@ def ecC (j : ℕ) (w : what₂.places.Pl) : what₂.LL →+* FractionRing (OcC X
   Formalism.BasicNotions.Examples₂.TwB.embF (X.Kx j w) (X.E.emb w) (X.hKx j w)
 
 /- English proof (translation)
-Rewrite using `[X.E.emb_w]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hm : Formalism.BasicNotions.Examples₂.TwB.phiL (X.Kx j w) (X.E.emb w) (X.hKx j w) x ∈ OL (X.Kx j w)` using `(Formalism.BasicNotions.Examples₂.LB.mem_OL (X.Kx j w) _).mpr hx`. Conclude with `⟨⟨_, hm⟩, (Formalism.BasicNotions.Examples₂.LB.toFrac_eq_iff (X.Kx j w) _ ⟨_, hm⟩).mpr rfl⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Introduce and unpack `⟨a, ha⟩`. Establish `h1` using `(Formalism.BasicNotions.Examples₂.LB.toFrac_eq_iff (X.Kx j w) _ a).mp ha`. Establish `h2` using `(Formalism.BasicNotions.Examples₂.LB.mem_OL (X.Kx j w) _).mp a.2`. Rewrite `h2` using `[h1]`. Conclude with `h2`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ecC_w (j : ℕ) (w : what₂.places.Pl) (x : what₂.LL) :
     0 ≤ what₂.places.val w x ↔ ecC X j w x ∈ (algebraMap (OcC X j w) (FractionRing (OcC X j w))).range := by
@@ -90,9 +90,9 @@ def iVC (j : ℕ) (w : what₂.places.Pl) : what₂.MtL (what₂.muTw w) j →�
     rfl
 
 /- English proof (translation)
-Establish `e : (fun a => iVC X j w (b a)) = fun a => b.baseChange (FractionRing (OcC X j w)) a`. Use function extensionality and compare the values at `a`. Rewrite using `[Module.Basis.baseChange_apply]`. Both sides reduce to the same expression. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨(b.baseChange _).linearIndependent, (b.baseChange _).span_eq⟩`.
+Supply the required witnesses or components.
 -/
 theorem iVC_basis (j : ℕ) (w : what₂.places.Pl)
     (b : Module.Basis (Module.Free.ChooseBasisIndex what₂.LL (what₂.MtL (what₂.muTw w) j)) what₂.LL (what₂.MtL (what₂.muTw w) j)) :

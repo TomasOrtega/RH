@@ -12,7 +12,7 @@ namespace SemilocalBasisHermitianTwistDivisors
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_loc_iff' (w : HeightOneSpectrum (𝓞 K)) {d : ℕ} (M : Submodule (𝓞 K) (Fin d → K))
     (x : Fin d → K) :
@@ -21,9 +21,9 @@ lemma mem_loc_iff' (w : HeightOneSpectrum (𝓞 K)) {d : ℕ} (M : Submodule (�
   Iff.rfl
 
 /- English proof (translation)
-Apply `Submonoid.subset_closure` to reduce the goal to its premises. Use `⟨h1, fun t ht htw => h2 ?_⟩` and prove the remaining obligations. Establish `hct : cO K t = x`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `star (t : K) = (x : K)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `ht' : (t : K) = star (x : K)` using `ht`. Rewrite using `[ht', star_star]`. Rewrite using `[← hct]`. Conclude with `Ideal.mem_map_of_mem _ htw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_hcompl (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) (h1 : x ∉ w.asIdeal)
     (h2 : x ∉ (conjPl w).asIdeal) : x ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) w.asIdeal := by
@@ -38,7 +38,7 @@ lemma mem_hcompl (w : HeightOneSpectrum (𝓞 K)) (x : 𝓞 K) (h1 : x ∉ w.asI
   exact Ideal.mem_map_of_mem _ htw
 
 /- English proof (translation)
-Apply `Submonoid.closure_le.mpr` to reduce the goal to its premises. Introduce `s hs`. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Introduce and unpack `rfl`. Conclude with `hs.1 w.asIdeal.zero_mem`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 lemma hcompl_le (w : HeightOneSpectrum (𝓞 K)) :
     Formalism.HermitianLatticesTheory.hcompl (K := K) w.asIdeal ≤ nonZeroDivisors (𝓞 K) := by
@@ -52,7 +52,7 @@ abbrev A (w : HeightOneSpectrum (𝓞 K)) : Subalgebra (𝓞 K) K :=
   Localization.subalgebra.ofField K (Formalism.HermitianLatticesTheory.hcompl (K := K) w.asIdeal) (hcompl_le w)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma mem_A (w : HeightOneSpectrum (𝓞 K)) (x : K) :
     x ∈ A w ↔ ∃ (a s : 𝓞 K) (_ : s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) w.asIdeal),
@@ -60,20 +60,20 @@ lemma mem_A (w : HeightOneSpectrum (𝓞 K)) (x : K) :
   Iff.rfl
 
 /- English proof (translation)
-The claim follows from `IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (hcompl_le w hs)`.
+A detailed English derivation is pending.
 -/
 lemma algebraMap_ne_zero (w : HeightOneSpectrum (𝓞 K)) {s : 𝓞 K}
     (hs : s ∈ Formalism.HermitianLatticesTheory.hcompl (K := K) w.asIdeal) : algebraMap (𝓞 K) K s ≠ 0 :=
   IsFractionRing.to_map_ne_zero_of_mem_nonZeroDivisors (hcompl_le w hs)
 
 /- English proof (translation)
-Apply `((({⊥, w.asIdeal, (conjPl w).asIdeal} : Set (Ideal (𝓞 K))).toFinite.image (Ideal.map (algebraMap (𝓞 K) (A w))))).subset` to reduce the goal to its premises. Introduce `P hP`. Establish `hP' : P.IsPrime` using `hP`. Take `⟨hQ, hdisj⟩` from `(IsLocalization.isPrime_iff_isPrime_disjoint (Formalism.HermitianLatticesTheory.hcompl (K := K) w.asIdeal) (A w) P).mp hP'`. Use `⟨P.comap (algebraMap (𝓞 K) (A w)), ?_, IsLocalization.map_under (Formalism.HermitianLatticesTheory.hcompl (K := K) w.asIdeal) (A w) P⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set Q := P.comap (algebraMap (𝓞 K) (A w))`. Establish `hsub : (Q : Set (𝓞 K)) ⊆ (w.asIdeal : Set (𝓞 K)) ∪ ((conjPl w).asIdeal : Set (𝓞 K))`. Introduce `x hx`. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_union, SetLike.mem_coe, not_or] at hn`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Conclude with `Set.disjoint_left.mp hdisj (mem_hcompl w x hn.1 hn.2) hx`. Distinguish the cases in `hb : Q = ⊥`. Conclude with `Or.inl hb`. Establish `hmax : Q.IsMaximal` using `hQ.isMaximal hb`. Break down `Ideal.subset_union.mp hsub with h | h` into its components or cases.
+Prove the first alternative. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the second alternative.
 
-Conclude with `Or.inr (Or.inl (hmax.eq_of_le w.isPrime.ne_top h))`. Conclude with `Or.inr (Or.inr (hmax.eq_of_le (conjPl w).isPrime.ne_top h))`.
+A detailed English derivation is pending.
 -/
 lemma primes_finite (w : HeightOneSpectrum (𝓞 K)) :
     {P : Ideal (A w) | P.IsPrime}.Finite := by
@@ -99,17 +99,15 @@ lemma primes_finite (w : HeightOneSpectrum (𝓞 K)) :
   · exact Or.inr (Or.inr (hmax.eq_of_le (conjPl w).isPrime.ne_top h))
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hsx⟩`. Establish `hs0` using `algebraMap_ne_zero w hs`. Establish `hu : (algebraMap (𝓞 K) K s)⁻¹ ∈ A w` using `(mem_A w _).mpr ⟨1, s, hs, by simp⟩`. Establish `hx : x = (⟨_, hu⟩ : A w) • (s • x)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Subalgebra.smul_def, ← algebraMap_smul K s x, smul_smul]`. Simplify using `[hs0]`. Rewrite using `[hx]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span hsx)`. Introduce `hx`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact (mem_loc_iff' w M y).mpr ⟨1, one_mem _, by simpa using hy⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add y z _ _ hy hz => exact Submodule.add_mem _ hy hz`. Consider the case `smul a y _ hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hsy⟩` from `(mem_loc_iff' w M y).mp hy`. Take `⟨r, t, ht, hat⟩` from `(mem_A w a).mp a.2`. Use `(mem_loc_iff' w M _).mpr ⟨t * s, mul_mem ht hs, ?_⟩` and prove the remaining obligations. Establish `ht0` using `algebraMap_ne_zero w ht`. Establish `he : (t * s) • (a • y) = r • (s • y)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[Subalgebra.smul_def, hat, ← algebraMap_smul K (t * s), ← algebraMap_smul K r, ← algebraMap_smul K s, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[map_mul]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[he]`.
-
-Conclude with `M.smul_mem r hsy`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_loc_iff_span (w : HeightOneSpectrum (𝓞 K)) {d : ℕ} (M : Submodule (𝓞 K) (Fin d → K))
     (x : Fin d → K) :
@@ -147,19 +145,19 @@ end SemilocalBasisHermitianTwistDivisors
 open SemilocalBasisHermitianTwistDivisors in
 
 /- English proof (translation)
-Introduce `K _ _ _ d L hL w`. Establish `: IsDedekindDomain (A w)` using `IsLocalization.isDedekindDomain (𝓞 K) (hcompl_le w) (A w)`. Establish `: IsPrincipalIdealRing (A w)` using `IsPrincipalIdealRing.of_finite_primes (primes_finite w)`. Use `set N : Submodule (A w) (Fin d → K) := Submodule.span (A w) (L : Set (Fin d → K)) with hN`. Establish `: Module.Finite (A w) N`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `hL.fg`. Rewrite using `[Module.Finite.iff_fg]`. Use `⟨s, ?_⟩` and prove the remaining obligations. Rewrite using `[hN, ← hs, Submodule.span_span_of_tower]`. Establish `: Module.IsTorsionFree (A w) N` using `inferInstance`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `b` to `Module.Free.chooseBasis (A w) N`. Set `v : Module.Free.ChooseBasisIndex (A w) N → Fin d → K` to `fun i => (b i : Fin d → K)`. Establish `hliA : LinearIndependent (A w) v` using `b.linearIndependent.map' N.subtype N.ker_subtype`. Establish `hli : LinearIndependent K v` using `(LinearIndependent.iff_fractionRing (A w) K).mp hliA`. Establish `hspanA : Submodule.span (A w) (Set.range v) = N`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Set.range v = N.subtype '' Set.range b`. Rewrite using `[← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[this, Submodule.span_image, b.span_eq, Submodule.map_top, Submodule.range_subtype]`. Establish `hspan : ⊤ ≤ Submodule.span K (Set.range v)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hL.span_eq_top, Submodule.span_le]`. Introduce `x hx`. Establish `hxN : x ∈ Submodule.span (A w) (Set.range v)`. Rewrite using `[hspanA]`. Conclude with `Submodule.subset_span hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Submodule.span_le_restrictScalars (A w) K _ hxN`. Set `bK : Basis _ K (Fin d → K)` to `Basis.mk hli hspan`. Establish `hcard : Fintype.card (Module.Free.ChooseBasisIndex (A w) N) = d`. Rewrite using `[← Module.finrank_eq_card_basis bK, Module.finrank_fin_fun]`. Set `e` to `Fintype.equivFinOfCardEq hcard`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `⟨v ∘ e.symm, hli.comp _ e.symm.injective, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Rewrite using `[mem_loc_iff_span, mem_loc_iff_span, Submodule.span_span_of_tower, EquivLike.range_comp, hspanA]`.
+A detailed English derivation is pending.
 -/
 theorem semilocal_basis_exists : LocBasisEx := by
   intro K _ _ _ d L hL w

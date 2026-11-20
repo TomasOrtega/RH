@@ -11,9 +11,9 @@ noncomputable section
 namespace RootLogNormBoundAlt
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.norm_eq]`. Establish `hs : ∑ I, ‖(WithLp.toLp 2 v : EuclideanSpace ℂ (PlIdx j m)) I‖ ^ 2 = ‖a‖ ^ 2 * ∑ I : PlIdx j m, ‖(colsOf (onePipe Z) I).det‖ ^ 2`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Simplify using `[hv, mul_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[hs, Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`. Conclude with `mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt (h₃ j m Z hZ)) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_block_le (h₃ : PlueckerKernel.Statement) (j m : ℕ) (Z : Matrix (Fin j) (Fin m) ℂ)
     (hZ : ∀ a b, ‖Z a b‖ = 1) (a : ℂ) (v : PlIdx j m → ℂ)
@@ -29,9 +29,9 @@ theorem norm_block_le (h₃ : PlueckerKernel.Statement) (j m : ℕ) (Z : Matrix 
   exact mul_le_mul_of_nonneg_left (Real.sqrt_le_sqrt (h₃ j m Z hZ)) (norm_nonneg _)
 
 /- English proof (translation)
-Establish `hb` using `norm_block_le h₃ j m Z hZ a v hv`. Establish `ha' : 0 < ‖a‖` using `norm_pos_iff.mpr ha`. Establish `hm : (0 : ℝ) < (1 + m : ℝ) ^ j` using `by positivity`. Establish `hl` using `Real.log_le_log hv0 hb`. Rewrite `hl` using `[Real.log_mul ha'.ne' (Real.sqrt_pos.mpr hm).ne', Real.log_sqrt hm.le, Real.log_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Real.log_div ha'.ne' hv0.ne']`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_block (h₃ : PlueckerKernel.Statement) (j m : ℕ) (Z : Matrix (Fin j) (Fin m) ℂ)
     (hZ : ∀ a b, ‖Z a b‖ = 1) (a : ℂ) (ha : a ≠ 0) (v : PlIdx j m → ℂ)
@@ -50,13 +50,13 @@ end RootLogNormBoundAlt
 open RootLogNormBoundAlt in
 
 /- English proof (translation)
-Introduce `f j m ζ hζ z hz`. Establish `hpos : ∀ τ : Fin f, 0 < ‖WithLp.toLp 2 (fun I : PlIdx j m => z ⟨τ, I⟩)‖` using `fun τ => (fsMetric (PlIdx j m)).pos _ fun h0 => by`. Take `⟨i, hi⟩` from `hz.1 τ`. Conclude with `hi (congrFun h0 i)`. Establish `key : ∀ τ : Fin f, -((j : ℝ) / 2 * Real.log (1 + m)) ≤ Real.log (‖z ⟨τ, plAnchor j m⟩‖ / ‖WithLp.toLp 2 (fun I : PlIdx j m => z ⟨τ, I⟩)‖)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Take `⟨ζ', hζ', hz'⟩` from `h₂ f j m ζ hζ z hz τ`. Conclude with `log_block h₃ j m ζ' (fun a b => by`. Take `⟨k, hk, h⟩` from `hζ' a b`. Conclude with `Complex.norm_eq_one_of_pow_eq_one h hk.ne')`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `_ (h₁ f j m ζ hζ z hz τ) _ hz' (hpos τ)`. Establish `hne : ∀ τ ∈ (Finset.univ : Finset (Fin f)), ‖z ⟨τ, plAnchor j m⟩‖ / ‖WithLp.toLp 2 (fun I : PlIdx j m => z ⟨τ, I⟩)‖ ≠ 0` using `fun τ _ => div_ne_zero (norm_ne_zero_iff.mpr (h₁ f j m ζ hζ z hz τ)) (hpos τ).ne'`. Establish `e : logNorm (fsMulti (plBlocks f j m)) (rootAnchorSection f j m) z = ∑ τ, Real.log (‖z ⟨τ, plAnchor j m⟩‖ / ‖WithLp.toLp 2 (fun I : PlIdx j m => z ⟨τ, I⟩)‖)`. Rewrite using `[← Real.log_prod hne]`. Simplify using `[logNorm, fsMulti, HermLine.ofMetrics, fsMetric, rootAnchorSection, Finset.prod_div_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[grassConst]`. Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := Finset.sum_le_sum fun τ _ => key τ`.
+A detailed English derivation is pending.
 -/
 theorem RootLogNormBound.proof (h₁ : RootAnchorNonzero.Statement) (h₂ : RootPointConj.Statement)
     (h₃ : PlueckerKernel.Statement) : RootLogNormBound.Statement := by

@@ -34,11 +34,11 @@ variable {Xo : Moduli Dw l} {c : Coeff l} [StarRing (𝓞 E)]
 variable {S : Type} [CommRing S] [Algebra c.F S] [Algebra ℚ S] {y : FrPt Xo c S}
 
 /- English proof (translation)
-Establish `hFK : C.B.FK S = C.B.G.F`. Use function extensionality and compare the values at `i`. Use `first`. Consider the case `simp [FB.FK, FGLaw.mapF]`. Consider the case `(ext n; simp [FB.FK, FGLaw.mapF, MvPowerSeries.coeff_map])`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hφ' : IsExpOf (C.B.FK S) C.uvec φ`. Rewrite using `[hFK]`. Conclude with `hφ`. Unfold `chartVal`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun b _ => ?_` and prove the remaining obligations. Conclude with `tie_alg (C.B.FK S) C.uvec φ hφ' (colOf m b) _`.
+A detailed English derivation is pending.
 -/
 theorem tie_val (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × Fin (dL Dw)) S)
     (hφ : IsExpOf C.B.G.F C.uvec φ) (k : ℕ) {n : ℕ} (f : Fin n → MvPowerSeries (Fin 1 × Fin C.d) S)
@@ -61,17 +61,15 @@ theorem tie_val (C : ChartAt Xo c y) (φ : Fin C.d → MvPowerSeries (Fin 1 × F
   exact tie_alg (C.B.FK S) C.uvec φ hφ' (colOf m b) _
 
 /- English proof (translation)
-Establish `hpt : ∀ {n : ℕ} (j : Fin n) (i : Fin d), MvPowerSeries.constantCoeff (pt S d j i) = 0`. Introduce `n j i`. Simplify using `[pt]`. Establish `hlg : ∀ (j : Fin 2) (i : Fin d), MvPowerSeries.constantCoeff (lg B.G j i) = 0`. Introduce `j i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ReciprocityTheory.ChartRestriction.G.TB.LogPf.constantCoeff_ev (fun j' i' => by fin_cases j' first`. Consider the case `exact hpt j i'`. Consider the case `simp [pt])`. Use the proof step `((HarmInvB.logOf_props B.G).1 i)`. Unfold `diagL`.
+Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `ReciprocityTheory.ChartRestriction.G.TB.LogPf.constantCoeff_ev ?_ ?_` and prove the remaining obligations. Introduce `j i fin_cases j`. Use `first`. Consider the case `exact hpt 0 i`. Consider the case `simp [pt]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Replace the relevant objects with their definitions.
 
-Conclude with `ReciprocityTheory.ChartRestriction.G.TB.LogPf.constantCoeff_ev (fun j' i' => by fin_cases j' first`. Consider the case `exact hpt 0 i'`. Consider the case `simp [pt])`. Use the proof step `(B.A.const w0 i)`. Unfold `bilL`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Treat this case separately.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_sum]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Use `first`.
-
-Consider the case `simp [hlg]`. Consider the case `simp [hlg, MvPowerSeries.smul_eq_C_mul]`. Consider the case `(rw [← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_smul, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, map_mul, hlg] simp)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem cc_diagL {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB S d O) (w0 : O) (cc : Fin d → Fin d → S) :
     MvPowerSeries.constantCoeff (diagL B w0 cc) = 0 := by
@@ -120,19 +118,17 @@ end HarmInvPf
 open HarmInvPf in
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ hs S _ _ _ y C cc hsym hbal k n D f f' hj a P hP hD`. Take `⟨h0, h1, hadd⟩` from `HarmInvB.logOf_props C.B.G`. Take `⟨ε, hinv, htr⟩` from `ReciprocityTheory.ChartRestriction.G.TB.WickVanishing.formal_exp_law S C.d C.B.G (fun i => logOf C.B.G i) h0 h1 hadd`. Establish `hφ` using `isExpOf_expPhi C.B.G C.uvec (fun i => logOf C.B.G i) ε h1 hinv htr`. Use `set φ := ExpOf.expPhi C.uvec ε with hφdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set t : Fin 1 × Fin (dL Dw) → S := fun q => algebraMap c.F S (embK c ((ltIdx Dw).symm q.2).1 H.w0) with ht`. Establish `hta : ∀ q, MvPowerSeries.constantCoeff (t q • (MvPowerSeries.X q : MvPowerSeries (Fin 1 × Fin (dL Dw)) S)) = 0` using `fun q => by rw [MvPowerSeries.smul_eq_C_mul, map_mul, MvPowerSeries.constantCoeff_X, mul_zero]`. Establish `hact : ∀ j, MvPowerSeries.subst (fun p : Fin 1 × Fin C.d => φ p.2) (C.B.A.act H.w0 j) = MvPowerSeries.subst (fun q => t q • (MvPowerSeries.X q : MvPowerSeries (Fin 1 × Fin (dL Dw)) S)) (φ j)` using `fun j => hA E H Dw l Xo c S y C φ hφ H.w0 j`. Establish `hcd : MvPowerSeries.subst (fun p : Fin 1 × Fin C.d => φ p.2) (diagL C.B H.w0 cc) = ReciprocityTheory.ChartRestriction.G.TB.quadCol (n` using `1) (HarmInvB.qβ cc C.uvec t) := by`. Establish `e` using `HarmInvB.compL_diagL C.B H.w0 cc C.uvec ε hinv _ hta hact`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[HarmInvB.quad_form]`. Conclude with `e`. Establish `hφs : MvPowerSeries.HasSubst (fun p : Fin 1 × Fin C.d => φ p.2)` using `HarmInvB.hasSubst0 fun p => hφ.const p.2`. Establish `hccd : MvPowerSeries.constantCoeff ((k : S) • diagL C.B H.w0 cc) = 0`. Rewrite using `[MvPowerSeries.smul_eq_C_mul, map_mul, cc_diagL, mul_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set EL := FB.expS S ((k : S) • C.B.hL S C.h H.w0) with hEL`. Establish `hjet : ∀ b, psJet D (compL φ (f' b * EL)) = psJet D (compL φ (f b * EL) * PowerSeries.subst ((k : S) • ReciprocityTheory.ChartRestriction.G.TB.quadCol (n` using `1) (HarmInvB.qβ cc C.uvec t)) (PowerSeries.exp S)) := by`. Introduce `b`. Establish `e1 : psJet D (f' b * EL) = psJet D (f b * expP ((k : S) • diagL C.B H.w0 cc) * EL)`. Rewrite using `[FBIdJet.psJet_mul, hj b, ← FBIdJet.psJet_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `e2` using `HarmInvA.psJet_subst_congr D (fun p : Fin 1 × Fin C.d => φ p.2) (fun p => hφ.const p.2) e1`. Establish `e3 : MvPowerSeries.subst (fun p : Fin 1 × Fin C.d => φ p.2) (f b * expP ((k : S) • diagL C.B H.w0 cc) * EL) = compL φ (f b * EL) * PowerSeries.subst ((k : S) • ReciprocityTheory.ChartRestriction.G.TB.quadCol (n` using `1) (HarmInvB.qβ cc C.uvec t)) (PowerSeries.exp S) := by`. Rewrite using `[MvPowerSeries.subst_mul hφs, MvPowerSeries.subst_mul hφs, expP, HarmInvA.subst_exp _ (fun p => hφ.const p.2) _ hccd, MvPowerSeries.subst_smul hφs, hcd, compL, MvPowerSeries.subst_mul hφs]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `e2.trans (congrArg (psJet D) e3)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hβ : ∀ i j, HarmInvB.qβ cc C.uvec t i j ≠ 0 → ((ltIdx Dw).symm j).1 = ComplexEmbedding.conjugate ((ltIdx Dw).symm i).1`. Introduce `i j hne`. Use `hbal ((ltIdx Dw).symm i) ((ltIdx Dw).symm j) fun h0' => hne ?_` and prove the remaining obligations. Establish `e : HarmInvB.qβ cc C.uvec t i j = (∑ a, ∑ b, cc a b * C.uvec ((ltIdx Dw).symm i) a * C.uvec ((ltIdx Dw).symm j) b) * t (0, j)`. Simplify using `only [HarmInvB.qβ, Finset.sum_mul]`.
-
-Rewrite using `[e, h0', zero_mul]`. Rewrite using `[tie_val C φ hφ k f' P, tie_val C φ hφ k f P]`. Conclude with `hK E H Dw l c S k n D (fun b => compL φ (f b * EL)) (fun b => compL φ (f' b * EL)) (HarmInvB.qβ cc C.uvec t) hβ hjet a P hP hD`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem harmInv_of_kill (hK : HarmKillJetSt) (hA : ExpActOfSt) : HarmInvSt := by
   intro E _ _ _ H Dw l Xo c _ hs S _ _ _ y C cc hsym hbal k n D f f' hj a P hP hD
@@ -186,7 +182,7 @@ theorem harmInv_of_kill (hK : HarmKillJetSt) (hA : ExpActOfSt) : HarmInvSt := by
     (HarmInvB.qβ cc C.uvec t) hβ hjet a P hP hD
 
 /- English proof (translation)
-The claim follows from `harmInv_of_kill (fun _ _ _ _ _ _ _ c _ _ _ _ k n D g g' β hβ hj a P hP hD => HarmInvC.harm_kill_jet c k n D g g' β hβ hj a P hP hD) hA`.
+A detailed English derivation is pending.
 -/
 theorem harmInv_of (hA : ExpActOfSt) : HarmInvSt :=
   harmInv_of_kill (fun _ _ _ _ _ _ _ c _ _ _ _ k n D g g' β hβ hj a P hP hD =>

@@ -14,23 +14,23 @@ def gen (E : Spc) (n : ℕ) (T : Scheme.{0}ᵒᵖ) (s : Sx E n T) : ((((chainsP 
   Finsupp.single (ULift.up s) 1
 
 /- English proof (translation)
-The claim follows from `Finsupp.mapDomain_single`.
+A detailed English derivation is pending.
 -/
 theorem res_gen (E : Spc) (n : ℕ) {T T' : Scheme.{0}ᵒᵖ} (f : T ⟶ T') (s : Sx E n T) :
     ((((chainsP R).obj E).X n).map f).hom (gen E n T s) = gen E n T' (((E.obj (op (SimplexCategory.mk n))).map f) s) :=
   Finsupp.mapDomain_single
 
 /- English proof (translation)
-The claim follows from `Finsupp.mapDomain_single`.
+A detailed English derivation is pending.
 -/
 theorem aug_gen {E E' : Spc} (g : E ⟶ E') (n : ℕ) (T : Scheme.{0}ᵒᵖ) (s : Sx E n T) :
     ((((chainsP R).map g).f n).app T).hom (gen E n T s) = gen E' n T (((g.app _).app T) s) :=
   Finsupp.mapDomain_single
 
 /- English proof (translation)
-Establish `hd : ((chainsP R).obj E).d (n+1) n = ∑ i : Fin (n+2), ((-1 : ℤ)^(i:ℕ)) • (freeP R).map (E.δ i)` using `AlgebraicTopology.AlternatingFaceMapComplex.obj_d_eq _ n`. Rewrite using `[hd, NatTrans.app_sum]`. Use `erw [ModuleCat.hom_sum, LinearMap.sum_apply]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `i _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[NatTrans.app_zsmul]`. Use `erw [ModuleCat.hom_zsmul, LinearMap.smul_apply]`. Use `congr 1`. Conclude with `Finsupp.mapDomain_single`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem d_gen (E : Spc) (n : ℕ) (T : Scheme.{0}ᵒᵖ) (s : Sx E (n+1) T) :
     (((((chainsP R).obj E).d (n+1) n).app T).hom (gen E (n+1) T s)) =
@@ -64,7 +64,7 @@ instance {T : Scheme.{0}ᵒᵖ} : Quiver.IsThin (Z.flip.obj T).Elements := fun a
   infer_instance
 
 /- English proof (translation)
-Establish `ht : Quiver.IsThin (Z.flip.obj T).Elements` using `inferInstance`. Conclude with `ComposableArrows.ext (F := ch Z x) (G := ch Z y) h (fun _ _ => (ht _ _).elim _ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sx_ext {n : ℕ} {T : Scheme.{0}ᵒᵖ} (x y : Sx (hoc Z) n T)
     (h : ∀ k, (ch Z x).obj k = (ch Z y).obj k) : x = y := by
@@ -79,16 +79,16 @@ def pt {T : Scheme.{0}ᵒᵖ} (e : (Z.flip.obj T).Elements) : Sx (hoc Z) 0 T :=
   ComposableArrows.mk₀ e
 
 /- English proof (translation)
-Conclude with `sx_ext Z _ _ fun k => rfl`.
+A detailed English derivation is pending.
 -/
 theorem cone_δ_zero {n : ℕ} {T : Scheme.{0}ᵒᵖ} (x : Sx (hoc Z) n T) (e : (Z.flip.obj T).Elements)
     (φ : e ⟶ (ch Z x).obj 0) : ((hoc Z).δ 0).app T (cone Z x e φ) = x := by
   exact sx_ext Z _ _ fun k => rfl
 
 /- English proof (translation)
-Apply `sx_ext` to reduce the goal to its premises. Introduce `k`. Use `Fin.cases ?_ (fun j => ?_) k` and prove the remaining obligations. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `(ch Z (cone Z x e φ)).obj (i.succ.succAbove j.succ) = (ch Z x).obj (i.succAbove j)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Fin.succ_succAbove_succ]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cone_δ_succ {n : ℕ} {T : Scheme.{0}ᵒᵖ} (x : Sx (hoc Z) (n+1) T) (e : (Z.flip.obj T).Elements)
     (φ : e ⟶ (ch Z x).obj 0) (i : Fin (n+2)) (φ' : e ⟶ (ch Z (((hoc Z).δ i).app T x)).obj 0) :
@@ -102,7 +102,7 @@ theorem cone_δ_succ {n : ℕ} {T : Scheme.{0}ᵒᵖ} (x : Sx (hoc Z) (n+1) T) (
     rfl
 
 /- English proof (translation)
-Apply `sx_ext` to reduce the goal to its premises. Introduce `k`. Rewrite using `[Fin.fin_one_eq_zero k]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cone_δ_one {T : Scheme.{0}ᵒᵖ} (x : Sx (hoc Z) 0 T) (e : (Z.flip.obj T).Elements)
     (φ : e ⟶ (ch Z x).obj 0) : ((hoc Z).δ 1).app T (cone Z x e φ) = pt Z e := by
@@ -134,20 +134,20 @@ def Lh (R : Type) [CommRing R] (n : ℕ) : (((chainsP R).obj (hoc Z)).X n).obj T
   Finsupp.linearCombination (ULift.{1} R) (fun s : ULift (Sx (hoc Z) n T) => L Z f π e R n s.down)
 
 /- English proof (translation)
-Conclude with `(Finsupp.linearCombination_single _ _ _).trans (one_smul _ _)`.
+A detailed English derivation is pending.
 -/
 theorem Lh_gen (R : Type) [CommRing R] (n : ℕ) (s : Sx (hoc Z) n T) : Lh Z f π e R n (gen (hoc Z) n T s) = L Z f π e R n s := by
   exact (Finsupp.linearCombination_single _ _ _).trans (one_smul _ _)
 
 /- English proof (translation)
-Conclude with `(FunctorToTypes.naturality ((hoc Z).δ i) f s).symm`.
+A detailed English derivation is pending.
 -/
 theorem rs_δ {n : ℕ} (s : Sx (hoc Z) (n+1) T) (i : Fin (n+2)) :
     rs Z f (((hoc Z).δ i).app T s) = ((hoc Z).δ i).app W (rs Z f s) := by
   exact (FunctorToTypes.naturality ((hoc Z).δ i) f s).symm
 
 /- English proof (translation)
-Unfold `Good`. Rewrite using `[hπ, rs_δ]`. Conclude with `⟨h.some ≫ (ch Z (rs Z f s)).map (homOfLE (Fin.zero_le _))⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem good_δ (hπ : ∀ n (s : Sx (hoc Z) (n+1) T) i, π n (((hoc Z).δ i).app T s) = π (n+1) s)
     {n : ℕ} {s : Sx (hoc Z) (n+1) T} (h : Good Z f π e s) (i : Fin (n+2)) : Good Z f π e (((hoc Z).δ i).app T s) := by
@@ -162,7 +162,7 @@ variable {J : Type} [Preorder J] (Z : J ⥤ PSh) {T W : Scheme.{0}ᵒᵖ} (f : T
   {Y : Type} (π : ∀ n, Sx (hoc Z) n T → Y) (e : Y → (Z.flip.obj W).Elements)
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Substitute `ha` using the available equality. Establish `ht : Quiver.IsThin (Z.flip.obj W).Elements` using `inferInstance`. Rewrite using `[(ht _ _).elim φ φ']`.
+Substitute using the available equality. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cone_congr {n : ℕ} {x x' : Sx (hoc Z) n W} {a a' : (Z.flip.obj W).Elements} (hx : x = x') (ha : a = a')
     (φ : a ⟶ (ch Z x).obj 0) (φ' : a' ⟶ (ch Z x').obj 0) : cone Z x a φ = cone Z x' a' φ' := by
@@ -172,15 +172,15 @@ theorem cone_congr {n : ℕ} {x x' : Sx (hoc Z) n W} {a a' : (Z.flip.obj W).Elem
   rw [(ht _ _).elim φ φ']
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem L_good (R : Type) [CommRing R] {n : ℕ} {s : Sx (hoc Z) n T} (h : Good Z f π e s) :
     L Z f π e R n s = gen (hoc Z) (n+1) W (cone Z (rs Z f s) (e (π n s)) h.some) := dif_pos h
 
 /- English proof (translation)
-Rewrite using `[L_good Z f π e R h, d_gen, Fin.sum_univ_succ, d_gen, map_sum, cone_δ_zero]`. Simplify using `only [Fin.val_zero, pow_zero, one_smul, map_zsmul, Lh_gen]`. Rewrite using `[add_assoc, ← Finset.sum_add_distrib, Finset.sum_eq_zero, add_zero]`. Introduce `j _`. Establish `hg` using `good_δ Z f π e hπ h j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[L_good Z f π e R hg, Fin.val_succ, pow_succ, mul_neg_one, neg_smul, neg_add_eq_zero, cone_δ_succ Z (rs Z f s) _ _ j (under Z (rs Z f s) _ h.some j)]`. Use `congr 2`. Apply `cone_congr` to reduce the goal to its premises. Conclude with `(rs_δ Z f s j).symm`. Rewrite using `[hπ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_succ (R : Type) [CommRing R]
     (hπ : ∀ n (s : Sx (hoc Z) (n+1) T) i, π n (((hoc Z).δ i).app T s) = π (n+1) s)
@@ -201,7 +201,7 @@ theorem key_succ (R : Type) [CommRing R]
   · rw [hπ]
 
 /- English proof (translation)
-Rewrite using `[L_good Z f π e R h, d_gen, Fin.sum_univ_two]`. Simplify using `only [Fin.val_zero, Fin.val_one, pow_zero, pow_one, one_smul, neg_smul, cone_δ_zero, cone_δ_one, ← sub_eq_add_neg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem key_zero (R : Type) [CommRing R] (s : Sx (hoc Z) 0 T) (h : Good Z f π e s) :
     (((((chainsP R).obj (hoc Z)).d 1 0).app W).hom (L Z f π e R 0 s)) =
@@ -219,11 +219,11 @@ def Sup (E : Spc) (n : ℕ) (T : Scheme.{0}ᵒᵖ) (z : (((chainsP R).obj E).X n
   ∀ u : ULift (Sx E n T), (show ULift (Sx E n T) →₀ ULift.{1} R from z) u ≠ 0 → u.down ∈ G
 
 /- English proof (translation)
-Set `w : ULift (Sx E n T) →₀ ULift.{1} R` to `z`. Establish `hw : z = ∑ u ∈ w.support, w u • gen E n T u.down`. Express the relevant statement in the definitionally equal form `w = _`. Use `conv_lhs => rw [← Finsupp.sum_single w]`. Simplify using `only [Finsupp.sum, gen]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun u _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Finsupp.single u (w u) = w u • Finsupp.single u (1 : ULift.{1} R)`. Rewrite using `[Finsupp.smul_single_one]`. Rewrite using `[hw, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun u hu => ?_` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, map_smul, h _ (hz u (Finsupp.mem_support_iff.mp hu))]`.
+A detailed English derivation is pending.
 -/
 theorem eq_on_sup {E : Spc} {n : ℕ} {T : Scheme.{0}ᵒᵖ} {M : Type*} [AddCommGroup M] [Module (ULift.{1} R) M]
     (A B : (((chainsP R).obj E).X n).obj T →ₗ[ULift.{1} R] M) {G : Set (Sx E n T)}
@@ -242,9 +242,9 @@ theorem eq_on_sup {E : Spc} {n : ℕ} {T : Scheme.{0}ᵒᵖ} {M : Type*} [AddCom
   rw [map_smul, map_smul, h _ (hz u (Finsupp.mem_support_iff.mp hu))]
 
 /- English proof (translation)
-Establish `hd : ((chainsP R).obj (disc.obj P)).d (0+1) 0 = ∑ i : Fin (0+2), ((-1 : ℤ)^(i:ℕ)) • (freeP R).map ((disc.obj P).δ i)` using `AlgebraicTopology.AlternatingFaceMapComplex.obj_d_eq _ 0`. Establish `h0 : ((chainsP R).obj (disc.obj P)).d 1 0 = 0`. Rewrite using `[hd, Fin.sum_univ_two]`. Simplify using `[SimplicialObject.δ, disc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Rewrite using `[h0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem disc_d (P : PSh) (T : Scheme.{0}ᵒᵖ) (y : (((chainsP R).obj (disc.obj P)).X 1).obj T) :
     ((((chainsP R).obj (disc.obj P)).d 1 0).app T).hom y = 0 := by
@@ -265,9 +265,9 @@ variable {J : Type} [Preorder J] (Z : J ⥤ PSh) {T W : Scheme.{0}ᵒᵖ} (f : T
   {Y : Type} (π : ∀ n, Sx (hoc Z) n T → Y) (e : Y → (Z.flip.obj W).Elements)
 
 /- English proof (translation)
-Establish `hgen : ∀ s ∈ {s | Good Z f π e s}, ((((((chainsP R).obj (hoc Z)).d (n+2) (n+1)).app W).hom ∘ₗ Lh Z f π e R (n+1)) + Lh Z f π e R n ∘ₗ ((((chainsP R).obj (hoc Z)).d (n+1) n).app T).hom) (gen (hoc Z) (n+1) T s) = ((((chainsP R).obj (hoc Z)).X (n+1)).map f).hom (gen (hoc Z) (n+1) T …`. Introduce `s hs`. Rewrite using `[LinearMap.add_apply, LinearMap.comp_apply, LinearMap.comp_apply, Lh_gen, key_succ Z f π e R hπ s hs, res_gen]`. Establish `hA` using `eq_on_sup _ _ hgen z hz`. Rewrite `hA` using `[LinearMap.add_apply, LinearMap.comp_apply, LinearMap.comp_apply, hc n, map_zero, add_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨_, hA⟩`.
+Supply the required witnesses or components.
 -/
 theorem bdy_succ (hπ : ∀ n (s : Sx (hoc Z) (n+1) T) i, π n (((hoc Z).δ i).app T s) = π (n+1) s)
     {n : ℕ} (z : (((chainsP R).obj (hoc Z)).X (n+1)).obj T) (hc : Cyc _ (n+1) T z)
@@ -289,7 +289,7 @@ def Qh {P : PSh} (e : P.obj T → (Z.flip.obj W).Elements) :
   Finsupp.linearCombination (ULift.{1} R) (fun s : ULift (P.obj T) => gen (hoc Z) 0 W (pt Z (e s.down)))
 
 /- English proof (translation)
-Conclude with `(Finsupp.linearCombination_single _ _ _).trans (one_smul _ _)`.
+A detailed English derivation is pending.
 -/
 theorem Qh_gen {P : PSh} (e : P.obj T → (Z.flip.obj W).Elements) (y : P.obj T) :
     Qh (R := R) Z (T := T) e (gen (disc.obj P) 0 T y) = gen (hoc Z) 0 W (pt Z (e y)) := by
@@ -299,18 +299,18 @@ abbrev pa {P : PSh} (a : hoc Z ⟶ disc.obj P) (T : Scheme.{0}ᵒᵖ) (n : ℕ) 
   (a.app (op (SimplexCategory.mk n))).app T s
 
 /- English proof (translation)
-The claim follows from `ConcreteCategory.congr_hom (NatTrans.congr_app (a.naturality (SimplexCategory.δ i).op) T) s`.
+A detailed English derivation is pending.
 -/
 theorem pa_δ {P : PSh} (a : hoc Z ⟶ disc.obj P) (T : Scheme.{0}ᵒᵖ) (n : ℕ) (s : Sx (hoc Z) (n+1) T) (i : Fin (n+2)) :
     pa Z a T n (((hoc Z).δ i).app T s) = pa Z a T (n+1) s :=
   ConcreteCategory.congr_hom (NatTrans.congr_app (a.naturality (SimplexCategory.δ i).op) T) s
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `succ k => exact bdy_succ Z f (pa Z a T) e (fun k s i => pa_δ Z a T k s i) z hc hz`. Consider the case `zero`. Take `⟨y, hy⟩` from `hb`. Establish `ha0 : ((((chainsP R).map a).f 0).app T).hom z = 0`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← hy]`. Conclude with `disc_d P T y`. Establish `hgen : ∀ s ∈ {s | Good Z f (pa Z a T) e s}, ((((((chainsP R).obj (hoc Z)).d 1 0).app W).hom ∘ₗ Lh Z f (pa Z a T) e R 0) + Qh (R` using `R) Z e ∘ₗ ((((chainsP R).map a).f 0).app T).hom) (gen (hoc Z) 0 T s) = ((((chainsP R).obj (hoc Z)).X 0).map f).hom (gen (hoc Z) 0 T s) := by`. Introduce `s hs`. Rewrite using `[LinearMap.add_apply, LinearMap.comp_apply, LinearMap.comp_apply, Lh_gen, key_zero Z f _ e R s hs, aug_gen, Qh_gen, res_gen, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA` using `eq_on_sup _ _ hgen z hz`. Rewrite `hA` using `[LinearMap.add_apply, LinearMap.comp_apply, LinearMap.comp_apply, ha0, map_zero, add_zero]`. Conclude with `⟨_, hA⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem bdy_abs {P : PSh} (a : hoc Z ⟶ disc.obj P) (e : P.obj T → (Z.flip.obj W).Elements)
     {n : ℕ} (z : (((chainsP R).obj (hoc Z)).X n).obj T) (hc : Cyc _ n T z)
@@ -341,9 +341,9 @@ end Bd
 section Geo
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => obtain ⟨j, hj⟩ := hcov y; exact ⟨j, hj, by simp⟩`. Consider the case `insert a S _ ih`. Take `⟨l, hl, hb⟩` from `ih (fun j hj => hS j (Finset.mem_insert_of_mem hj))`. Take `⟨m, hma, hml, hm⟩` from `hdir y a l (hS a (Finset.mem_insert_self _ _)) hl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨m, hm, fun j hj => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.mp hj with rfl | hj` into its components or cases. Conclude with `hma`. Conclude with `hml.trans (hb j hj)`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem exists_below {J : Type} [Preorder J] {X : Scheme.{0}} (r : J → Set X)
     (hcov : ∀ x : X, ∃ j, x ∈ r j)
@@ -361,9 +361,9 @@ theorem exists_below {J : Type} [Preorder J] {X : Scheme.{0}} (r : J → Set X)
     · exact hml.trans (hb j hj)
 
 /- English proof (translation)
-Use `⟨F.inf O, ?_, fun p hp => Finset.inf_le hp⟩` and prove the remaining obligations. Proceed by induction on `F using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a F ha ih`. Rewrite using `[Finset.inf_insert]`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨h a (Finset.mem_insert_self a F), ih fun p hp => h p (Finset.mem_insert_of_mem hp)⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_open {T : Scheme.{0}} (t : T) {Y : Type} (F : Finset Y) (O : Y → T.Opens) (h : ∀ p ∈ F, t ∈ O p) :
     ∃ V : T.Opens, t ∈ V ∧ ∀ p ∈ F, V ≤ O p := by
@@ -376,7 +376,7 @@ theorem exists_open {T : Scheme.{0}} (t : T) {Y : Type} (F : Finset Y) (O : Y �
     exact ⟨h a (Finset.mem_insert_self a F), ih fun p hp => h p (Finset.mem_insert_of_mem hp)⟩
 
 /- English proof (translation)
-Apply `yoneda.map_injective` to reduce the goal to its premises. Simplify using `using hc j k g`.
+Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem coc_eq {J : Type} [Preorder J] (D : J ⥤ Scheme.{0}) {X : Scheme.{0}} (c : ∀ j, D.obj j ⟶ X)
     (hc : Coc (D ⋙ yoneda) fun j => yoneda.map (c j)) {j k : J} (g : j ⟶ k) : D.map g ≫ c k = c j := by
@@ -394,21 +394,19 @@ theorem aug_val {J : Type} [Preorder J] (D : J ⥤ Scheme.{0}) {X : Scheme.{0}} 
 end Geo
 
 /- English proof (translation)
-Introduce `J _ D X c hopen hcov hdir hc R _ n T x hx hb t`. Set `Z` to `D ⋙ yoneda`. Set `xs : ULift (Sx (hoc Z) n T) →₀ ULift.{1} R` to `x`. Set `v : ULift (Sx (hoc Z) n T) → (Z.flip.obj T).Elements` to `fun u => (ch Z u.down).obj 0`. Set `g : ULift (Sx (hoc Z) n T) → (T.unop ⟶ X)` to `fun u => pa Z (aug _ hc) T n u.down`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hg : ∀ u, g u = (show T.unop ⟶ D.obj (v u).1 from (v u).2) ≫ c (v u).1` using `fun u => aug_val D c hc u.down`. Set `S : (T.unop ⟶ X) → Finset J` to `fun g' => ((xs.support).filter (fun u => g u = g')).image (fun u => (v u).1)`. Establish `hS : ∀ g', ∀ j ∈ S g', g' t ∈ Set.range (c j)`. Introduce `g' j hj`. Simplify using `only [S, Finset.mem_image, Finset.mem_filter] at hj`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take `⟨u, ⟨-, rfl⟩, rfl⟩` from `hj`. Rewrite using `[hg u]`. Conclude with `⟨_, (Scheme.Hom.comp_apply _ _ _).symm⟩`. Use `choose l hl1 hl2 using fun g' => exists_below (fun j => Set.range (c j)) hcov hdir (g' t) (S g') (hS g')`. Take `⟨V, htV, hVO⟩` from `exists_open t (xs.support.image g) (fun g' => g' ⁻¹ᵁ (c (l g')).opensRange) (fun g' _ => hl1 g')`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨V, htV, ?_⟩` and prove the remaining obligations. Break down `xs.support.eq_empty_or_nonempty with hF | ⟨u0, -⟩` into its components or cases. Establish `hx0 : x = 0` using `Finsupp.support_eq_empty.mp hF`. Rewrite using `[hx0, map_zero]`. Conclude with `⟨0, map_zero _⟩`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `e : (T.unop ⟶ X) → (Z.flip.obj (op V)).Elements` to `fun g' => if h : Set.range (V.ι ≫ g').base ⊆ Set.range (c (l g')).base then ⟨l g', IsOpenImmersion.lift (c (l g')) (V.ι ≫ g') h⟩ else ⟨(v u0).1, V.ι ≫ (show T.unop ⟶ D.obj (v u0).1 from (v u0).2)⟩`. Use `bdy_abs Z V.ι.op (aug _ hc) e x hx hb ?_` and prove the remaining obligations. Introduce `u hu`. Establish `hsu : u ∈ xs.support` using `Finsupp.mem_support_iff.mpr hu`. Establish `hmem : g u ∈ xs.support.image g` using `Finset.mem_image_of_mem g hsu`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrange : Set.range (V.ι ≫ g u).base ⊆ Set.range (c (l (g u))).base`. Introduce and unpack `_ ⟨w, rfl⟩`. Establish `hw : V.ι w ∈ V`. Conclude with `(Scheme.Opens.range_ι V).le ⟨w, rfl⟩`. Conclude with `hVO _ hmem hw`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : l (g u) ≤ (v u).1` using `hl2 _ _ (Finset.mem_image.mpr ⟨u, Finset.mem_filter.mpr ⟨hsu, rfl⟩, rfl⟩)`. Establish `he : e (g u) = ⟨l (g u), IsOpenImmersion.lift (c (l (g u))) (V.ι ≫ g u) hrange⟩` using `dif_pos hrange`. Use `show Nonempty (e (g u) ⟶ _)`. Rewrite using `[he]`. Use `⟨⟨homOfLE hle, ?_⟩⟩` and prove the remaining obligations.
-
-Express the relevant statement in the definitionally equal form `IsOpenImmersion.lift (c (l (g u))) (V.ι ≫ g u) hrange ≫ D.map (homOfLE hle) = V.ι ≫ (show T.unop ⟶ D.obj (v u).1 from (v u).2)`. Rewrite using `[← cancel_mono (c (v u).1), Category.assoc, coc_eq D c hc, IsOpenImmersion.lift_fac, Category.assoc, ← hg u]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : EtaleAugInjAt := by
   classical
@@ -464,7 +462,7 @@ theorem main : EtaleAugInjAt := by
 end UpperTheory.Cb.ConeDifferentials
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _` and use `UpperTheory.Cb.ConeDifferentials.main`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Cb.hocolimAugmentation_injective_of_purity_inputs :
     LateralTheory.CohomologicalPurity.LeafAW → LateralTheory.CohomologicalPurity.LeafBd → LateralTheory.CohomologicalPurity.LeafExc → LateralTheory.CohomologicalPurity.LeafHens → LateralTheory.CohomologicalPurity.LeafIndExc → LateralTheory.CohomologicalPurity.LeafThom → LateralTheory.CohomologicalPurity.LeafChart → LateralTheory.CohomologicalPurity.LeafCl → LateralTheory.CohomologicalPurity.TubeCut.EtaleAugInjAt :=

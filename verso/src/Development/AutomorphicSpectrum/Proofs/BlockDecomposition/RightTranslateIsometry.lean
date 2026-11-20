@@ -16,11 +16,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.FinDiscOrth
 
 /- English proof (translation)
-Establish `key : ∀ z : Sm E N, ∀ hz : z ∈ squareIntegrableSmoothSubmoduleGL μ, ∃ h' : rt E N g z ∈ squareIntegrableSmoothSubmoduleGL μ, l2Map μ (rt E N g z) = R (latticeGL E N) μ g (l2Map μ z)`. Introduce `z hz`. Establish `h' : rt E N g z ∈ squareIntegrableSmoothSubmoduleGL μ` using `((mem_l2Sub μ).1 hz).mul_right g`. Use `⟨h', ?_⟩` and prove the remaining obligations. Rewrite using `[l2Map_apply μ h', l2Map_apply μ hz, right_translate_toL2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨hx', ex⟩` from `key x hx`. Take `⟨hy', ey⟩` from `key y hy`. Use `⟨hx', ?_⟩` and prove the remaining obligations. Set `U : L2 (latticeGL E N) μ →ₗᵢ[ℂ] L2 (latticeGL E N) μ` to `⟨(R (latticeGL E N) μ g).toLinearMap, norm_R g⟩`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Rewrite using `[ex, ey]`. Conclude with `U.inner_map_map _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rt_mem_l2Sub_and_inner_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (N : ℕ) (μ : Measure (GA E N))
     [μ.IsHaarMeasure] [μ.IsMulRightInvariant] (g : GA E N) (x y : Sm E N) (hx : x ∈ squareIntegrableSmoothSubmoduleGL μ) (hy : y ∈ squareIntegrableSmoothSubmoduleGL μ) :

@@ -14,15 +14,15 @@ variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Establish `hUnit : IsUnit y.det`. Establish `h1 : yᴴ * Hpk k r * y = Hpk k r` using `hy`. Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hH` using `Formalism.MainNotions.BesselShellMomentBounds.Hpk_det_unit k r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (yᴴ).det * y.det = 1`. Apply `hH.mul_left_cancel` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Conclude with `IsUnit.of_mul_eq_one ((yᴴ).det) (by rw [mul_comm]; exact h3)`. Establish `hNI` using `Formalism.MainNotions.InverseNormDecayBounds.normInvP k r`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgx : 1 ≤ Formalism.FourierDecayAlt.B.gN x` using `(hNI.1 x hx).2`. Establish `hgy : 1 ≤ Formalism.FourierDecayAlt.B.gN y` using `(hNI.1 y hy).2`. Establish `hsub : Formalism.FourierDecayAlt.B.gN x ≤ Formalism.FourierDecayAlt.B.gN y * Formalism.FourierDecayAlt.B.gN (y⁻¹ * x)`. Use `hNI.2 y (y⁻¹ * x)` as an intermediate fact. Rewrite `this` using `[Matrix.mul_nonsing_inv_cancel_left _ _ hUnit]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hlow : Formalism.FourierDecayAlt.B.gN x / Formalism.FourierDecayAlt.B.gN y ≤ Formalism.FourierDecayAlt.B.gN (y⁻¹ * x)`. Rewrite using `[div_le_iff₀ (by linarith)]`. Combine the linear relations using `[mul_comm (Formalism.FourierDecayAlt.B.gN y) (Formalism.FourierDecayAlt.B.gN (y⁻¹ * x))]`. Establish `h0x : 0 < Formalism.FourierDecayAlt.B.gN x` using `by linarith`. Establish `h0y : 0 < Formalism.FourierDecayAlt.B.gN y` using `by linarith`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.div_rpow h0x.le h0y.le, Real.rpow_neg h0y.le a, div_inv_eq_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gN_lshift {x y : Mx k r} (hx : x ∈ UH (Hpk k r)) (hy : y ∈ UH (Hpk k r)) {a : ℝ} (ha : 0 ≤ a) :
     Formalism.FourierDecayAlt.B.gN (y⁻¹ * x) ^ (-a) ≤ Formalism.FourierDecayAlt.B.gN y ^ a * Formalism.FourierDecayAlt.B.gN x ^ (-a) := by
@@ -54,7 +54,7 @@ theorem gN_lshift {x y : Mx k r} (hx : x ∈ UH (Hpk k r)) (hy : y ∈ UH (Hpk k
         rw [Real.div_rpow h0x.le h0y.le, Real.rpow_neg h0y.le a, div_inv_eq_mul, mul_comm]
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h`. Use `⟨max C 0, fun x hx => ?_⟩` and prove the remaining obligations. Establish `hg : 1 ≤ Formalism.FourierDecayAlt.B.gN x` using `((Formalism.MainNotions.InverseNormDecayBounds.normInvP k r).1 x hx).2`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem decBd_mono {σ : Mx k r → (H →L[ℂ] H)} {a b : ℝ} {u' u : H} (hab : b ≤ a) (h : DecBd σ a u' u) :
     DecBd σ b u' u := by
@@ -68,19 +68,19 @@ theorem decBd_mono {σ : Mx k r → (H →L[ℂ] H)} {a b : ℝ} {u' u : H} (hab
         mul_le_mul_of_nonneg_left (Real.rpow_le_rpow_of_exponent_le hg (by linarith)) (le_max_right _ _)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `h`. Establish `hNI` using `Formalism.MainNotions.InverseNormDecayBounds.normInvP k r`. Establish `hUnit : ∀ g ∈ UH (Hpk k r), IsUnit g.det`. Introduce `g hg`. Establish `h1 : gᴴ * Hpk k r * g = Hpk k r` using `hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `congrArg Matrix.det h1`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hH` using `Formalism.MainNotions.BesselShellMomentBounds.Hpk_det_unit k r`. Establish `h3 : (gᴴ).det * g.det = 1`. Apply `hH.mul_left_cancel` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `IsUnit.of_mul_eq_one ((gᴴ).det) (by rw [mul_comm]; exact h3)`. Establish `hmul : ∀ a ∈ UH (Hpk k r), ∀ c ∈ UH (Hpk k r), a * c ∈ UH (Hpk k r)`. Introduce `a ha c hc`. Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : cᴴ * Hpk k r * c = Hpk k r` using `hc`. Use `show (a * c)ᴴ * Hpk k r * (a * c) = Hpk k r`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hinv : y⁻¹ ∈ UH (Hpk k r)`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd` using `hUnit y hy`. Establish `hy' : yᴴ * Hpk k r * y = Hpk k r` using `hy`. Use `show (y⁻¹)ᴴ * Hpk k r * y⁻¹ = Hpk k r`. Combine the equalities or inequalities in the displayed calculation. Use `⟨max C 0 * Formalism.FourierDecayAlt.B.gN y ^ b, fun x hx => ?_⟩` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hyx : y⁻¹ * x ∈ UH (Hpk k r)` using `hmul _ hinv _ hx`. Establish `hsx : σ x = (σ y).comp (σ (y⁻¹ * x))`. Rewrite using `[← hSg.2.1 y hy _ hyx, Matrix.mul_nonsing_inv_cancel_left _ _ (hUnit y hy)]`. Set `li : H →ₗᵢ[ℂ] H` to `{ toLinearMap := (σ y : H →ₗ[ℂ] H), norm_map' := hSg.2.2 y hy }`. Establish `hin : ⟪σ y w0, σ x u⟫_ℂ = ⟪w0, σ (y⁻¹ * x) u⟫_ℂ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsx, ContinuousLinearMap.comp_apply]`. Conclude with `li.inner_map_map w0 (σ (y⁻¹ * x) u)`. Establish `hg1 : 1 ≤ Formalism.FourierDecayAlt.B.gN (y⁻¹ * x)` using `(hNI.1 _ hyx).2`. Rewrite using `[hin]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem decBd_left {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
     (hds : IsDSHpk k r ε lam σ) (hSg : Cv.SigU σ) {w0 u : H} {b : ℝ} (hb : 0 ≤ b) (h : DecBd σ b w0 u)
@@ -132,9 +132,9 @@ theorem decBd_left {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1
     _ = max C 0 * Formalism.FourierDecayAlt.B.gN y ^ b * Formalism.FourierDecayAlt.B.gN x ^ (-b) := by ring
 
 /- English proof (translation)
-Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨g, hg, rfl⟩` from `hx`. Conclude with `decBd_left hds hSg hb h hg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact Formalism.MainNotions.InverseNormDecayBounds.decBd_zero_left σ b u`. Consider the case `add x y _ _ hx hy => exact Formalism.MainNotions.InverseNormDecayBounds.decBd_add_left hx hy`. Consider the case `smul c x _ hx => exact Formalism.MainNotions.InverseNormDecayBounds.decBd_smul_left c hx`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem decBd_DD_left {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
     (hds : IsDSHpk k r ε lam σ) (hSg : Cv.SigU σ) {w0 u : H} {b : ℝ} (hb : 0 ≤ b) (h : DecBd σ b w0 u) :
@@ -149,11 +149,11 @@ theorem decBd_DD_left {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k 
   | smul c x _ hx => exact Formalism.MainNotions.InverseNormDecayBounds.decBd_smul_left c hx
 
 /- English proof (translation)
-Take `⟨⟨ε, lam, -, hds⟩, hHaar, -, -, ⟨-, hW1⟩, ⟨κ0, -, -, hN⟩, -⟩` from `id hG`. Substitute `hN` using the available equality. Establish `: IsFiniteMeasure μW` using `⟨by rw [hW1]; exact ENNReal.one_lt_top⟩`. Establish `: SFinite μG` using `sfinite_haar hHaar`. Take `⟨C, hC⟩` from `huv`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C', hC'⟩` from `hvv`. Establish `hI : ∀ x ∈ UH (Hpk k r), Integrable (beF z c π σ (σ x u) v) (μW.prod (haarLie (Nset k r) κ0))` using `fun x hx => int_beF_of_bd hds hGr hPi hM hb (bd_shift hSg hb hC hx) hSS`. Establish `hIv : Integrable (beF z c π σ v v) (μW.prod (haarLie (Nset k r) κ0))` using `int_beF_of_bd hds hGr hPi hM hb hC' hSS`. Establish `hD` using `dInt_of_bd hds hGr hHaar hM.1 hb hC hGg hSS`. Take `⟨hint, heq⟩` from `normId_pair hG hGr hSg hPi hPs hM hS hu hI hIv hD ξ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨hint, heq, ?_⟩` and prove the remaining obligations. Rewrite using `[← heq, ofReal_integral_eq_lintegral_ofReal hint (ae_of_all _ fun _ => by positivity)]`. Apply `lintegral_congr` to reduce the goal to its premises. Introduce `x`. Simplify using `only [ENNReal.ofReal_pow, norm_nonneg, ofReal_norm, enorm_eq_nnnorm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem normId_of_bd {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {μW μN μG ν : Measure (Mt k r)} {σ : Mx k r → (H →L[ℂ] H)}
@@ -189,7 +189,7 @@ theorem normId_of_bd {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r �
   simp only [ENNReal.ofReal_pow, norm_nonneg, ofReal_norm, enorm_eq_nnnorm]
 
 /- English proof (translation)
-Take `⟨ε, lam, -, hds⟩` from `hG.1`. Conclude with `normId_of_bd hG hGr hSg hPi hPs hM hS hu0 ha (Formalism.MainNotions.InverseNormDecayBounds.decDD hds ha hD u hu v hv) (Formalism.MainNotions.InverseNormDecayBounds.decDD hds ha hD v hv v hv) hGg hSS ξ`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem normId_DD {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {μW μN μG ν : Measure (Mt k r)} {σ : Mx k r → (H →L[ℂ] H)}
@@ -216,7 +216,7 @@ def DecInfAt (σ : Mx k r → (H →L[ℂ] H)) (a : ℝ) : Prop :=
       ‖⟪v0, σ x w⟫_ℂ‖ ≤ C * (Ws.map fun W => ‖dsigW σ W w‖).sum * Formalism.FourierDecayAlt.B.gN x ^ (1 - a)
 
 /- English proof (translation)
-Take `⟨C, Ws, -, hC⟩` from `hI v0 hv0`. Use `⟨C * (Ws.map fun W => ‖dsigW σ W w‖).sum, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `hC w hw x hx`. Rewrite using `[show -(a - 1) = 1 - a by ring]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem decBd_of_decInf {σ : Mx k r → (H →L[ℂ] H)} {a : ℝ} (hI : DecInfAt σ a) {v0 w : H}
     (hv0 : IsKFinHpk (k := k) (r := r) σ v0) (hw : w ∈ smoothVecs (k := k) (r := r) σ) :
@@ -227,7 +227,7 @@ theorem decBd_of_decInf {σ : Mx k r → (H →L[ℂ] H)} {a : ℝ} (hI : DecInf
   rwa [show -(a - 1) = 1 - a by ring]
 
 /- English proof (translation)
-Establish `hb : 0 ≤ a - 1` using `by linarith`. Establish `hw0K` using `Formalism.MainNotions.DoubleDerivativeSmoothness.kfinHpk_of_lowUnitH hw0`. Establish `huv : DecBd σ (a - 1) v u` using `decBd_DD_left hds hSg hb (decBd_of_decInf hI hw0K hu) v hv`. Establish `hvv : DecBd σ (a - 1) v v` using `decBd_mono (by linarith) (Formalism.MainNotions.InverseNormDecayBounds.decDD hds (by linarith) hD v hv v hv)`. Conclude with `normId_of_bd hG hGr hSg hPi hPs hM hS hu0 hb huv hvv hGg hSS ξ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem normId_smDD {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {μW μN μG ν : Measure (Mt k r)} {σ : Mx k r → (H →L[ℂ] H)}
@@ -253,7 +253,7 @@ theorem normId_smDD {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r →
   exact normId_of_bd hG hGr hSg hPi hPs hM hS hu0 hb huv hvv hGg hSS ξ
 
 /- English proof (translation)
-The claim follows from `normId_of_bd hG hGr hSg hPi hPs hM hS hu0 (by linarith) (decBd_of_decInf hI hvK hu) (decBd_of_decInf hI hvK hv) hGg hSS ξ`.
+A detailed English derivation is pending.
 -/
 theorem normId_smK {z : Fin (2 * r + k + 1) → ℂ} {c : ℂ} {π : Mx k r → (Wp →L[ℂ] Wp)}
     {μW μN μG ν : Measure (Mt k r)} {σ : Mx k r → (H →L[ℂ] H)}

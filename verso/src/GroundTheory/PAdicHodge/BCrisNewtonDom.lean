@@ -18,9 +18,7 @@ local notation "𝔸" => Localization.Away (p : AInf K p)
 variable {ρ : ℝ}
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, gn_zero]`. Conclude with `hM`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.sum_insert hi]`.
-
-Conclude with `(gn_add_le hρ0 hρ1 _ _).trans_lt (max_lt (h i (Finset.mem_insert_self i s)) (ih fun k hk => h k (Finset.mem_insert_of_mem hk)))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gn_sum_lt (hρ0 : 0 < ρ) (hρ1 : ρ < 1) {ι : Type*} (s : Finset ι) (f : ι → 𝔸) {M : ℝ}
     (hM : 0 < M) (h : ∀ i ∈ s, gn K p ρ (f i) < M) : gn K p ρ (∑ i ∈ s, f i) < M := by
@@ -33,7 +31,7 @@ theorem gn_sum_lt (hρ0 : 0 < ρ) (hρ1 : ρ < 1) {ι : Type*} (s : Finset ι) (
       (ih fun k hk => h k (Finset.mem_insert_of_mem hk)))
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq]`. Simplify using `only [map_sum, map_mul, map_pow, Ideal.Quotient.eq.2 ha, Ideal.Quotient.eq.2 hb]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sum_sub_sum_mem {R : Type*} [CommRing R] (I : Ideal R) (d : ℕ) (C : ℕ → R) {a a' b b' : R}
     (ha : a - a' ∈ I) (hb : b - b' ∈ I) :
@@ -53,21 +51,19 @@ theorem algebraMap_acrisZero_algebraMap (w : AInf K p) :
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Establish `hρ0 : 0 < ρ` using `norm_p_pos.trans_le hp0`. Use `set g := fun i => gn K p ρ (algebraMap (AInf K p) 𝔸 (x i)) * Fa ^ i * Fb ^ (d - i) with hg`. Take `⟨n, hn⟩` from `exists_pow_lt_of_lt_one hpos hρ1`. Use `set N := max n (max Na Nb)`. Establish `hN : ρ ^ N < g j` using `(pow_le_pow_of_le_one hρ0.le hρ1.le (le_max_left _ _)).trans_lt hn`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨ca, hca⟩` from `exists_approx a N`. Take `⟨cb, hcb⟩` from `exists_approx b N`. Establish `hFa` using `hsa N ((le_max_left _ _).trans (le_max_right _ _)) ca hca`. Establish `hFb` using `hsb N ((le_max_right _ _).trans (le_max_right _ _)) cb hcb`. Use `set T : ℕ → ACrisZero K p := fun i => algebraMap (AInf K p) (ACrisZero K p) (x i) * ca ^ i * cb ^ (d - i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `set S : ACrisZero K p := ∑ i ∈ Finset.range (d + 1), T i`. Establish `hS : algebraMap _ (ACris K p) (0 : ACrisZero K p) - algebraMap _ (ACris K p) S ∈ Ideal.span {(p : ACris K p) ^ N}`. Establish `eS : algebraMap (ACrisZero K p) (ACris K p) S = ∑ i ∈ Finset.range (d + 1), algebraMap (AInf K p) (ACris K p) (x i) * algebraMap (ACrisZero K p) (ACris K p) ca ^ i * algebraMap (ACrisZero K p) (ACris K p) cb ^ (d - i)`. Simplify using `only [S, T, map_sum, map_mul, map_pow, algebraMap_acrisZero_algebraMap]`. Establish `key` using `sum_sub_sum_mem (Ideal.span {(p : ACris K p) ^ N}) d (fun i => algebraMap (AInf K p) (ACris K p) (x i)) hca hcb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[hsum, zero_sub, ← eS]`. Rewrite using `[map_zero, zero_sub]`. Conclude with `key`. Establish `hle` using `gn_sub_le_of_mem hp0 hρ1 hS`. Rewrite `hle` using `[ZeroMemClass.coe_zero, zero_sub, gn_neg hρ0 hρ1]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hT : ∀ i, gn K p ρ ((T i : ACrisZero K p) : 𝔸) = g i`. Introduce `i`. Simplify using `only [T, MulMemClass.coe_mul, SubmonoidClass.coe_pow]`. Rewrite using `[gn_mul hρ0 hρ1, gn_mul hρ0 hρ1, gn_pow hρ0 hρ1, gn_pow hρ0 hρ1, hFa, hFb]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hSsum : ((S : ACrisZero K p) : 𝔸) = ∑ i ∈ Finset.range (d + 1), ((T i : ACrisZero K p) : 𝔸)`. Simplify using `only [S]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hrest : gn K p ρ (∑ i ∈ (Finset.range (d + 1)).erase j, ((T i : ACrisZero K p) : 𝔸)) < g j` using `gn_sum_lt hρ0 hρ1 _ _ hpos fun i hi => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hT]`. Conclude with `hdom i (Finset.mem_of_mem_erase hi) (Finset.ne_of_mem_erase hi)`. Establish `hsplit : ((S : ACrisZero K p) : 𝔸) = ((T j : ACrisZero K p) : 𝔸) + ∑ i ∈ (Finset.range (d + 1)).erase j, ((T i : ACrisZero K p) : 𝔸)`. Rewrite using `[hSsum, Finset.add_sum_erase _ (fun i => ((T i : ACrisZero K p) : 𝔸)) hj]`. Establish `hSj : gn K p ρ ((S : ACrisZero K p) : 𝔸) = g j`.
-
-Rewrite using `[← hT j]`. Use `gn_eq_of_gn_sub_lt hρ0 hρ1 ?_` and prove the remaining obligations. Rewrite using `[hsplit, sub_add_cancel_left, gn_neg hρ0 hρ1, hT j]`. Conclude with `hrest`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem false_of_dominant (hp0 : ‖(p : K)‖ ≤ ρ) (hρ1 : ρ < 1) {a b : ACris K p} {Na Nb : ℕ}
     {Fa Fb : ℝ}

@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `r generalizing n with`. Consider the case `zero => simp`. Consider the case `succ r ih`. Rewrite using `[Function.iterate_succ_apply', GlobalTheory.EisM.Uo, ih]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -23,9 +23,9 @@ theorem zs_iter_Uo {R : Type*} [CommRing R] (l r : ℕ) (a : ℕ → R) (n : ℕ
     congr 1; ring
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Distinguish the cases in `hz : IsUnit z`. Take `⟨u, rfl⟩` from `hz`. Establish `h1 : (θ (u : ZMod N)) ^ Fintype.card (ZMod N)ˣ = 1`. Rewrite using `[← map_pow, ← Units.val_pow_eq_pow_val, pow_card_eq_one, Units.val_one, map_one]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : ‖ι.symm (θ (u : ZMod N))‖ ^ Fintype.card (ZMod N)ˣ = 1`. Rewrite using `[← norm_pow, ← map_pow, h1, map_one, norm_one]`. Conclude with `((pow_eq_one_iff_of_nonneg (norm_nonneg _) Fintype.card_ne_zero).1 h2).le`. Rewrite using `[MulChar.map_nonunit θ hz, map_zero, norm_zero]`. Conclude with `zero_le_one`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zs_norm_char_le_one {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) {N : ℕ} (hN : 0 < N)
     (θ : DirichletCharacter ℂ N) (z : ZMod N) : ‖ι.symm (θ z)‖ ≤ 1 := by
@@ -40,9 +40,9 @@ theorem zs_norm_char_le_one {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* �
   · rw [MulChar.map_nonunit θ hz, map_zero, norm_zero]; exact zero_le_one
 
 /- English proof (translation)
-Establish `h1 : (cexp (2 * π * Complex.I * (y * d) / N)) ^ N = 1`. Rewrite using `[← Complex.exp_nat_mul, Complex.exp_eq_one_iff]`. Use `⟨(y : ℤ) * d, ?_⟩` and prove the remaining obligations. Establish `: (N : ℂ) ≠ 0` using `by exact_mod_cast hN.ne'`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Clear the denominators using the available nonvanishing facts. Establish `h2 : ‖ι.symm (cexp (2 * π * Complex.I * (y * d) / N))‖ ^ N = 1`. Rewrite using `[← norm_pow, ← map_pow, h1, map_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hN.ne').1 h2`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zs_norm_exp {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) {N : ℕ} (hN : 0 < N) (y : ℕ) (d : ℤ) :
     ‖ι.symm (cexp (2 * π * Complex.I * (y * d) / N))‖ = 1 := by
@@ -57,7 +57,7 @@ theorem zs_norm_exp {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) {N : 
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hN.ne').1 h2
 
 /- English proof (translation)
-Unfold `GlobalTheory.EisM.hat`. Rewrite using `[map_sum]`. Use `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one fun y _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, norm_mul, zs_norm_exp ι hN, mul_one]`. Conclude with `zs_norm_char_le_one ι hN θ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zs_norm_hat_le_one {l : ℕ} [Fact l.Prime] (ι : PadicAlgCl l ≃+* ℂ) {N : ℕ} (hN : 0 < N)
     (θ : DirichletCharacter ℂ N) (d : ℤ) : ‖ι.symm (GlobalTheory.EisM.hat (fun z => θ z) d)‖ ≤ 1 := by

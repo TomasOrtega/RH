@@ -17,14 +17,14 @@ namespace GlobalTheory.TowU.WeylModel
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Simplify using `[AdelicSvN.act, Matrix.fromBlocks_map, Matrix.fromBlocks_mulVec, Matrix.map_neg, Matrix.neg_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_weyl {κ : Type} [Fintype κ] [DecidableEq κ] (w : (κ → AF F) × (κ → AF F)) :
     AdelicSvN.act (Matrix.fromBlocks 0 1 (-1) 0 : Matrix (κ ⊕ κ) (κ ⊕ κ) F) w = (w.2, -w.1) := by
   simp [AdelicSvN.act, Matrix.fromBlocks_map, Matrix.fromBlocks_mulVec, Matrix.map_neg, Matrix.neg_mulVec]
 
 /- English proof (translation)
-Rewrite using `[AddChar.map_neg_eq_inv, Complex.inv_eq_conj (GlobalTheory.StdCharFromIsStd.norm_psi hψ t)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_psi {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (t : AF F) : conj (ψ t) = ψ (-t) := by
   rw [AddChar.map_neg_eq_inv, Complex.inv_eq_conj (GlobalTheory.StdCharFromIsStd.norm_psi hψ t)]
@@ -34,23 +34,21 @@ end GlobalTheory.TowU.WeylModel
 open GlobalTheory.TowU.WeylModel in
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ _`. Use `haveI : SecondCountableTopology (AF F) := GlobalTheory.AdelicUnitaryTop.secondCountable_adele F`. Use `letI : MeasurableSpace (κ → AF F) := borel _`. Use `haveI : BorelSpace (κ → AF F) := ⟨rfl⟩`. Use `letI : MeasurableSpace (κ ⊕ κ → AF F) := borel _`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `haveI : BorelSpace (κ ⊕ κ → AF F) := ⟨rfl⟩`. Set `μ : Measure (κ → AF F)` to `Measure.addHaar`. Apply the tactic sequence `let E : (κ → AF F) × (κ → AF F) ≃+ (κ ⊕ κ → AF F) := { toFun := fun p => Sum.elim p.1 p.2 invFun := fun x => (x ∘ Sum.inl, x ∘ Sum.inr) left_inv := fun p => by simp right_inv := fun x => by simp map_add' := fun p q => by funext i; cases i <;> rfl }`. Establish `hc : Continuous E` using `(Homeomorph.sumArrowHomeomorphProdArrow (X := AF F) (ι := κ) (ι' := κ)).symm.continuous`. Establish `hc' : Continuous E.symm` using `(Homeomorph.sumArrowHomeomorphProdArrow (X := AF F) (ι := κ) (ι' := κ)).continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `H : (κ → AF F) × (κ → AF F) ≃ₜ (κ ⊕ κ → AF F)` to `{ toEquiv := E.toEquiv, continuous_toFun := hc, continuous_invFun := hc' }`. Set `ν : Measure (κ ⊕ κ → AF F)` to `Measure.map E (μ.prod μ)`. Use `haveI : ν.IsAddHaarMeasure := E.isAddHaarMeasure_map _ hc hc'`. Set `ε₁ : κ → ℤˣ` to `fun _ => 1`. Set `ε₂ : κ ⊕ κ → ℤˣ` to `Sum.elim (fun _ => 1) (fun _ => -1)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Take `⟨S, S', hS, hSf⟩` from `GlobalTheory.T.adelicFourier_realises_weylElement F ψ hψ κ μ inferInstance ε₁`. Take `⟨Sd, Sd', hSd, hSdf⟩` from `GlobalTheory.T.adelicFourier_realises_weylElement F ψ hψ (κ ⊕ κ) ν inferInstance ε₂`. Use `⟨S, S', ?_, Sd, Sd', ?_, fun φ₁ h₁ φ₂ h₂ => ?_⟩` and prove the remaining obligations. Use `hS using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[act_weyl]`. Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> simp [ε₁]`. Use `hSd using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `w`. Apply the tactic sequence `refine Prod.ext (funext fun i => ?_) (funext fun i => ?_) <;> rcases i with i | i <;>`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[dblAct, act_weyl, ε₂]`. Use function extensionality and compare the values at `y`. Establish `hν : ν = Measure.map H.toMeasurableEquiv (μ.prod μ)` using `rfl`. Establish `e₂ : star (S (star φ₂)) (y ∘ Sum.inr) = ∫ x, φ₂ x * ψ (-(∑ i, ((ε₁ i : ℤ) : AF F) * x i * (y ∘ Sum.inr) i)) ∂μ`. Rewrite using `[Pi.star_apply, hSf (star φ₂) (GlobalTheory.ConjSch.star_mem_schA κ φ₂ h₂), Complex.star_def, ← integral_conj]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[map_mul, conj_psi hψ, Pi.star_apply, Complex.star_def, Complex.conj_conj]`. Rewrite using `[hSdf _ (GlobalTheory.SchwartzBox.boxFun_mem_schA F κ κ φ₁ h₁ φ₂ h₂), hν, integral_map_equiv]`. Express the relevant statement in the definitionally equal form `_ = S φ₁ (y ∘ Sum.inl) * star (S (star φ₂)) (y ∘ Sum.inr)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[e₂, hSf φ₁ h₁, ← integral_prod_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun p => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ₁ p.1 * φ₂ p.2 * ψ (∑ i, ((ε₂ i : ℤ) : AF F) * Sum.elim p.1 p.2 i * y i) = _`. Establish `es : ∑ i, ((ε₂ i : ℤ) : AF F) * Sum.elim p.1 p.2 i * y i = ∑ i, ((ε₁ i : ℤ) : AF F) * p.1 i * (y ∘ Sum.inl) i + -(∑ i, ((ε₁ i : ℤ) : AF F) * p.2 i * (y ∘ Sum.inr) i)`. Simplify using `[Fintype.sum_sum_type, ε₁, ε₂]`.
-
-Rewrite using `[es, AddChar.map_add_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TowU.realised_weyl2 : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ] [DecidableEq κ], ∃ (S : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)) (S' : ((κ → AF F) → ℂ) →ₗ[ℂ] ((κ → AF F) → ℂ)), IsOp2 ψ (GlobalTheory.AdelicSvN.act (Matrix.fromBlocks 0 1 (-1) 0 : Matrix (κ ⊕ κ) (κ ⊕ κ) F)) S S' := by
   intro F _ _ ψ hψ κ _ _

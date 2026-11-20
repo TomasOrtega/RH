@@ -8,7 +8,7 @@ open GlobalTheory GlobalTheory.HTLat GlobalTheory.Published.AbVarRed GlobalTheor
 attribute [local instance] Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.AV.AbVar.exists_grpObj_of_image) | (exact GlobalTheory.AV.AbVar.exists_grpObj_of_image) | (intros; apply GlobalTheory.AV.AbVar.exists_grpObj_of_image <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.exists_subgroupScheme_of_geometricallyIntegral_image : ∀ (K : Type) [Field K] (A B : AbVar K) (f : A ⟶ B) (Z : Over (Sp K)) (p : A.X ⟶ Z) (i : Z ⟶ B.X), p ≫ i = f.hom → Surjective p.left → IsClosedImmersion i.left → GeometricallyIntegral Z.hom → ∃ _ : GrpObj Z, IsMonHom p ∧ IsMonHom i := by
   first | (exact @GlobalTheory.AV.AbVar.exists_grpObj_of_image) | (exact GlobalTheory.AV.AbVar.exists_grpObj_of_image) | (intros; apply GlobalTheory.AV.AbVar.exists_grpObj_of_image  <;> assumption)

@@ -18,28 +18,28 @@ namespace GlobalTheory.AdForm.RamCont
 variable {D : D7}
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Conclude with `GlobalTheory.AdForm.RdLaw.infM_mul θ V g h τ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem infM_mul' (θ : InfFam D) (V : HSp D) {n : ℕ} (hn : V.rank = n) (g h : GA D V) (τ : D.what₂.Tau) :
     infM θ V hn (g * h) τ = infM θ V hn g τ * infM θ V hn h τ := by
   subst hn; exact GlobalTheory.AdForm.RdLaw.infM_mul θ V g h τ
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Conclude with `GlobalTheory.AdForm.RdLaw.infM_fin θ V k hk τ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem infM_fin' (θ : InfFam D) (V : HSp D) {n : ℕ} (hn : V.rank = n) (k : GA D V) (hk : k ∈ GfC V) (τ : D.what₂.Tau) :
     infM θ V hn k τ = 1 := by
   subst hn; exact GlobalTheory.AdForm.RdLaw.infM_fin θ V k hk τ
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Conclude with `GlobalTheory.AdForm.RdLaw.continuous_infM θ hθ V τ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem continuous_infM' (θ : InfFam D) (hθ : IsInfFam θ) (V : HSp D) {n : ℕ} (hn : V.rank = n) (τ : D.what₂.Tau) :
     Continuous fun g : GA D V => infM θ V hn g τ := by
   subst hn; exact GlobalTheory.AdForm.RdLaw.continuous_infM θ hθ V τ
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show GlobalTheory.AdForm.RdLaw.PGL D V.rank (matHom V (g * h)) = GlobalTheory.AdForm.RdLaw.PGL D V.rank (matHom V g) * GlobalTheory.AdForm.RdLaw.PGL D V.rank (matHom V h)`. Rewrite using `[map_mul, map_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pf_mul (V : HSp D) (g h : GA D V) :
     GlobalTheory.AdForm.RdLaw.pf V (g * h) = GlobalTheory.AdForm.RdLaw.pf V g * GlobalTheory.AdForm.RdLaw.pf V h := by
@@ -49,14 +49,14 @@ theorem pf_mul (V : HSp D) (g h : GA D V) :
   rw [map_mul, map_mul]
 
 /- English proof (translation)
-Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← pf_mul, inv_mul_cancel, GlobalTheory.AdForm.RdLaw.pf_one]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem pf_inv (V : HSp D) (g : GA D V) : GlobalTheory.AdForm.RdLaw.pf V g⁻¹ = (GlobalTheory.AdForm.RdLaw.pf V g)⁻¹ := by
   apply eq_inv_of_mul_eq_one_left
   rw [← pf_mul, inv_mul_cancel, GlobalTheory.AdForm.RdLaw.pf_one]
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CentreTarget.mem_GinfC, ← pf_inv, GlobalTheory.CentreTarget.mt_mul, Matrix.map_mul, GlobalTheory.AdForm.RdLaw.mt_pf, GlobalTheory.AdForm.RdLaw.PM_map, GlobalTheory.AdForm.RdLaw.finPart_eps, RingHom.map_sub, RingHom.map_one, GlobalTheory.AdForm.RdLaw.finPart_eps, sub …`. Use `show (matHom V 1).1.map _ = 1`. Rewrite using `[map_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pf_inv_mul_mem (V : HSp D) (g : GA D V) : (GlobalTheory.AdForm.RdLaw.pf V g)⁻¹ * g ∈ GinfC V := by
   rw [GlobalTheory.CentreTarget.mem_GinfC, ← pf_inv, GlobalTheory.CentreTarget.mt_mul, Matrix.map_mul, GlobalTheory.AdForm.RdLaw.mt_pf,
@@ -67,7 +67,7 @@ theorem pf_inv_mul_mem (V : HSp D) (g : GA D V) : (GlobalTheory.AdForm.RdLaw.pf 
   rw [map_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Rewrite using `[infM_mul' θ V hn k, infM_mul' θ V hn _ d, infM_fin' θ V hn _ (inv_mem (GlobalTheory.AdForm.RdLaw.pf_fin V d)), one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infM_mul_pf (θ : InfFam D) (V : HSp D) {n : ℕ} (hn : V.rank = n) (k d : GA D V) (τ : D.what₂.Tau) :
     infM θ V hn (k * ((GlobalTheory.AdForm.RdLaw.pf V d)⁻¹ * d)) τ = infM θ V hn k τ * infM θ V hn d τ := by
@@ -78,35 +78,29 @@ end GlobalTheory.AdForm.RamCont
 namespace GlobalTheory.AdForm.RamCont
 
 /- English proof (translation)
-Introduce `B X I hI hPins l Z u a Ch A hA θ hθ j hj φ hφ b y`. Take `⟨hreps, -, -⟩` from `GlobalTheory.T.chartLevels_reps_represent_unitaryDoubleCosets I hI hPins l Z u a Ch A hA j hj b`. Establish `hchi` using `GlobalTheory.T.continuous_chartLevelCharacters_adelic_tuple I hI hPins l Z u a Ch A hA j hj b`. Take `⟨hval, hrd⟩` from `GlobalTheory.T.scalarForms_on_charts_of_trueColumnTuple I hI hPins l Z u a Ch A hA θ hθ j hj φ hφ`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA (I.rec7 l Z).sp.cm.sig ((I.rec7 l Z).sp.X j).gram` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `g0`. Take `⟨γ, hγ, c, k, hk, κ, hκ, e0⟩` from `hreps.dec g0`. Take `⟨P, -, hP⟩` from `hval c.1`. Set `V` to `(I.rec7 l Z).sp.X j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `hn` to `rankN (I.rec7 l Z) j hj`. Establish `hpc : Continuous fun g : GA (I.rec7 l Z) V => GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g)` using `(GlobalTheory.AdForm.RdLaw.continuous_pf V).comp (continuous_mul_left g0⁻¹)`. Set `p : GA (I.rec7 l Z) V → GfC V` to `fun g => ⟨GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g), GlobalTheory.AdForm.RdLaw.pf_fin V _⟩`. Establish `hp : Continuous p` using `hpc.subtype_mk _`. Set `O : Set (GA (I.rec7 l Z) V)` to `{g | GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g) ∈ A.U j b}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hO : IsOpen O`. Establish `h1` using `hreps.opn.preimage hp`. Establish `e : O = p ⁻¹' (((A.U j b).subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V))`. Use extensionality with `g`. Use `show GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g) ∈ A.U j b ↔ p g ∈ (A.U j b).subgroupOf (GfC V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Subgroup.mem_subgroupOf]`. Rewrite using `[e]`. Conclude with `h1`. Establish `hg0 : g0 ∈ O` using `by show GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g0) ∈ A.U j b`. Rewrite using `[inv_mul_cancel, GlobalTheory.AdForm.RdLaw.pf_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `one_mem _`. Set `G : GA (I.rec7 l Z) V → ℂ` to `fun g => if h : GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g) ∈ A.U j b then ((A.chi j b ⟨_, h⟩ : ℂˣ) : ℂ) else 0`. Establish `hG : ContinuousAt G g0`. Establish `hc : ContinuousOn G O`. Rewrite using `[continuousOn_iff_continuous_restrict]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `e : (fun x : O => G x.1) = fun x : O => ((A.chi j b ⟨GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * x.1), x.2⟩ : ℂˣ) : ℂ)`. Use function extensionality and compare the values at `x`. Conclude with `dif_pos x.2`. Use `show Continuous fun x : O => G x.1`. Rewrite using `[e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hchi.comp ((hpc.comp continuous_subtype_val).subtype_mk _)`. Conclude with `hc.continuousAt (hO.mem_nhds hg0)`. Set `M : GA (I.rec7 l Z) V → (I.rec7 l Z).what₂.Tau → Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) ℂ` to `fun g τ => (show Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) ℂ from infM θ V hn k τ * infM θ V hn (g0⁻¹ * g) τ) * y.1 τ`. Establish `hMu : ∀ g τ, IsUnit (M g τ).det` using `fun g τ => by`. Simplify using `only [M]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `erw [det_mul, det_mul]`. Conclude with `((GlobalTheory.AdForm.RdVal.infM_unit θ V hn k τ).mul (GlobalTheory.AdForm.RdVal.infM_unit θ V hn _ τ)).mul (y.2 τ)`. Establish `hM : ∀ τ, Continuous fun g => (1 : (I.rec7 l Z).what₂.Tau → Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) ℂ) τ * M g τ`. Introduce `τ`. Establish `h1 : Continuous fun g : GA (I.rec7 l Z) V => infM θ V hn (g0⁻¹ * g) τ` using `(continuous_infM' θ hθ V hn τ).comp (continuous_mul_left g0⁻¹)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show Continuous fun g : GA (I.rec7 l Z) V => (1 : (I.rec7 l Z).what₂.Tau → Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) ℂ) τ * ((show Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) ℂ from infM θ V hn k τ * infM θ V hn (g0⁻¹ * g) τ) * y.1 τ)`. Conclude with `continuous_const.matrix_mul ((continuous_const.matrix_mul h1).matrix_mul continuous_const)`. Set `Φ : GA (I.rec7 l Z) V → ℂ` to `fun g => (∏ τ, ((1 : (I.rec7 l Z).what₂.Tau → Matrix (Fin (B.R.N j)) (Fin (B.R.N j)) ℂ) τ * M g τ).det ^ shiftOf (Formalism.L2.Forms.lamT (D := I.rec7 l Z) u j) τ) * MvPolynomial.eval (fun q : (I.rec7 l Z).what₂.Tau × Fin ((I.rec7 l Z).R.N j) × Fin ((I.rec7 l Z).R.N j) => ((1 : ( …`. Establish `hΦ : Continuous Φ`. Use `Continuous.mul (continuous_finset_prod _ fun τ _ => ((hM τ).matrix_det).zpow₀ _ fun g => Or.inl ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Pi.one_apply, one_mul]`. Conclude with `(hMu g τ).ne_zero`. Conclude with `(MvPolynomial.continuous_eval P).comp (continuous_pi fun q => (hM q.1).matrix_elem q.2.1 q.2.2)`. Use `ContinuousAt.congr (f := fun g => ((A.chi j b ⟨κ, hκ⟩ : ℂˣ) : ℂ) * G g * Φ g) ((continuousAt_const.mul hG).mul hΦ.continuousAt) ?_` and prove the remaining obligations. Use `filter_upwards [hO.mem_nhds hg0] with g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hU : GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g) ∈ A.U j b` using `hg`. Establish `hδi : (GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g))⁻¹ * (g0⁻¹ * g) ∈ GinfC V` using `pf_inv_mul_mem V _`. Establish `hδf : GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g) ∈ GfC V` using `GlobalTheory.AdForm.RdLaw.pf_fin V _`. Establish `hκf : κ * GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g) ∈ GfC V` using `mul_mem (hreps.le hκ) hδf`. Establish `eg : g = γ * (A.h j b c * (k * ((GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g))⁻¹ * (g0⁻¹ * g)))) * (κ * GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g))`.
-
-Establish `hc` using `Formalism.IndefR.Eqv.Act.comm_inf_fin hδi hκf`. Combine the equalities or inequalities in the displayed calculation. Set `y' : (I.chain l u a).Y j` to `⟨M g, hMu g⟩`. Establish `htr : IsTr (G` using `fun _ => 1) (infM θ V hn (k * ((GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g))⁻¹ * (g0⁻¹ * g)))) ⟨y.1, y.2⟩ ⟨y'.1, y'.2⟩ := by`. Introduce `τ`.
-
-Rewrite using `[infM_mul_pf θ V hn k (g0⁻¹ * g) τ]`. Both sides reduce to the same expression. Establish `key` using `hrd b y γ hγ c _ (mul_mem hk hδi) ⟨κ * GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g), mul_mem hκ hU⟩ y' htr`. Rewrite using `[show A.rd θ j hj b φ y g = _ from (congrArg (A.rd θ j hj b φ y) eg).trans key]`. Establish `e1 : (⟨κ * GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g), mul_mem hκ hU⟩ : A.U j b) = ⟨κ, hκ⟩ * ⟨GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g), hU⟩` using `rfl`.
-
-Establish `e2 : G g = ((A.chi j b ⟨GlobalTheory.AdForm.RdLaw.pf V (g0⁻¹ * g), hU⟩ : ℂˣ) : ℂ)` using `dif_pos hU`. Establish `e3 : Φ g = φ c.1 y'` using `congrFun hP ⟨M g, hMu g⟩`. Rewrite using `[e1, map_mul, Units.val_mul, e2, e3, mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rd_continuous : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (Ch : ℕ → Type) (A : TwDat I l Z u a Ch), A.Is → ∀ θ, IsInfFam θ → ∀ j (hj : j ≤ B.R.m), ∀ φ ∈ (I.fm l u a).Fi j, ∀ b y, Continuous (A.rd θ j hj b φ y) := by
   classical

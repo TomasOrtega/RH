@@ -113,27 +113,27 @@ def IndFEt (A O : Type) [CommRing A] [CommRing O] [Algebra A O] : Prop :=
   MorphismProperty.ind.{0} (RingHom.toMorphismProperty fun f => f.Etale ∧ f.Finite) (CommRingCat.ofHom (algebraMap A O))
 
 /- English proof (translation)
-Take `⟨J, _, _, D, t, s, hs, hj⟩` from `h`. Conclude with `⟨J, inferInstance, inferInstance, D, t, s, hs, fun j => ⟨(hj j).1.1, (hj j).2⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IndFEt.indEt {A O : Type} [CommRing A] [CommRing O] [Algebra A O] (h : IndFEt A O) : IndEt A O := by
   obtain ⟨J, _, _, D, t, s, hs, hj⟩ := h
   exact ⟨J, inferInstance, inferInstance, D, t, s, hs, fun j => ⟨(hj j).1.1, (hj j).2⟩⟩
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.le_ind _ _ (RingHom.etale_algebraMap.2 inferInstance)`.
+A detailed English derivation is pending.
 -/
 theorem indEt_of_etale (A O : Type) [CommRing A] [CommRing O] [Algebra A O] [Algebra.Etale A O] : IndEt A O :=
   MorphismProperty.le_ind _ _ (RingHom.etale_algebraMap.2 inferInstance)
 
 /- English proof (translation)
-The claim follows from `MorphismProperty.le_ind _ _ ⟨RingHom.etale_algebraMap.2 inferInstance, RingHom.finite_algebraMap.2 inferInstance⟩`.
+A detailed English derivation is pending.
 -/
 theorem indFEt_of_finite_etale (A O : Type) [CommRing A] [CommRing O] [Algebra A O] [Algebra.Etale A O] [Module.Finite A O] :
     IndFEt A O :=
   MorphismProperty.le_ind _ _ ⟨RingHom.etale_algebraMap.2 inferInstance, RingHom.finite_algebraMap.2 inferInstance⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.IndEtaleUnion.isIndEtale_of_forall_finset A O h`.
+A detailed English derivation is pending.
 -/
 theorem indEt_of_forall_finset (A O : Type) [CommRing A] [CommRing O] [Algebra A O]
     (h : ∀ s : Finset O, ∃ T : Subalgebra A O, Algebra.Etale A T ∧ (s : Set O) ⊆ T) : IndEt A O :=
@@ -208,17 +208,17 @@ def descMod (A B : Type) [CommRing A] [CommRing B] [Algebra A B] (u : (B ⊗[A] 
     (Algebra.TensorProduct.includeLeft : B →ₐ[A] B ⊗[A] B).toLinearMap
 
 /- English proof (translation)
-The claim follows from `indFEt_of_finite_etale A A`.
+A detailed English derivation is pending.
 -/
 example (A : Type) [CommRing A] : IndFEt A A := indFEt_of_finite_etale A A
 
 /- English proof (translation)
-The claim follows from `(indFEt_of_finite_etale A A).indEt`.
+A detailed English derivation is pending.
 -/
 example (A : Type) [CommRing A] : IndEt A A := (indFEt_of_finite_etale A A).indEt
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.isStrictHenselisation_real_complex.2.2.2`.
+A detailed English derivation is pending.
 -/
 example : IndEt ℝ ℂ := GlobalTheory.IndefiniteRowSideFullHecke.ProjectiveSpaceOverSpec.isStrictHenselisation_real_complex.2.2.2
 
@@ -227,7 +227,7 @@ def idCone (E : Spc) : Cone (Functor.fromPUnit.{0} E) where
   π := { app := fun _ => 𝟙 E, naturality := fun _ _ _ => by simp }
 
 /- English proof (translation)
-Introduce `n`. Use `⟨fun x => ⟨⟨⟨⟩⟩, x, pull_id R E F n x⟩, fun i y hy => ⟨i, 𝟙 i, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[CategoryTheory.Functor.map_id]`. Conclude with `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem contCone_idCone (F : Shv R) (E : Spc) : ContCone R F (idCone E) := by
   intro n

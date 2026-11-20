@@ -17,21 +17,21 @@ namespace GlobalTheory.AdSpan
 variable {D : D7}
 
 /- English proof (translation)
-The claim follows from `Module.Basis.toMatrix_mul_toMatrix_flip _ _`.
+A detailed English derivation is pending.
 -/
 theorem frameMatrix_mul_frameMatrixInv (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) : frP S b * frPinv S b = 1 :=
   Module.Basis.toMatrix_mul_toMatrix_flip _ _
 
 /- English proof (translation)
-The claim follows from `Module.Basis.toMatrix_mul_toMatrix_flip _ _`.
+A detailed English derivation is pending.
 -/
 theorem frPinv_mul_frP (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) : frPinv S b * frP S b = 1 :=
   Module.Basis.toMatrix_mul_toMatrix_flip _ _
 
 /- English proof (translation)
-Use `⟨frameMatrix_mul_frameMatrixInv S b, frPinv_mul_frP S b, ?_, ?_⟩` and prove the remaining obligations. Use `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.embMat_isom D.sp.cm (reS S b) S LinearMap.id (fun x y => rfl)` as an intermediate fact. Establish `e : (LinearMap.toMatrix (reS S b).frame S.frame) LinearMap.id = frP S b` using `LinearMap.toMatrix_id_eq_basis_toMatrix b S.frame`. Rewrite using `[← e]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.embMat_isom D.sp.cm S (reS S b) LinearMap.id (fun x y => rfl)` as an intermediate fact. Establish `e : (LinearMap.toMatrix S.frame (reS S b).frame) LinearMap.id = frPinv S b` using `LinearMap.toMatrix_id_eq_basis_toMatrix S.frame b`. Rewrite using `[← e]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoPair_re (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) :
     GlobalTheory.VolTransport.IsoPair (D.sp.cm.sig : D.host.E →+* D.host.E) (reS S b).gram S.gram (frP S b) (frPinv S b) := by
@@ -49,7 +49,7 @@ def reGrp (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) : GA D (reS S
   GlobalTheory.VolTransport.conjA (isoPair_re S b)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.VolTransport.conjA_mat (isoPair_re S b) h`.
+A detailed English derivation is pending.
 -/
 theorem mt_reGrp (S : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) (h : GA D (reS S b)) :
     mt S (reGrp S b h) = HMul.hMul (α := Matrix (Fin S.rank) (Fin S.rank) (AE D))
@@ -66,7 +66,7 @@ theorem finHom_eq (V : HSp D) (g : GA D V) :
     ((finHom V g : GL _ _) : Matrix (Fin V.rank) (Fin V.rank) _) = finMat D.sp.cm.sig V.gram g := rfl
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Unfold `reW`. Conclude with `continuous_id.matrix_mul continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem reW_continuous (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V) : Continuous (reW S T b) := by
   haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
@@ -75,7 +75,7 @@ theorem reW_continuous (S T : HSp D) (b : Module.Basis (Fin S.rank) D.host.E S.V
 
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Rewrite using `[Matrix.mul_assoc, h, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mul_cancel {m n : ℕ} (x : Matrix (Fin m) (Fin n) (AE D)) (A B : Matrix (Fin n) (Fin n) (AE D))
     (h : A * B = 1) : x * A * B = x := by
@@ -87,51 +87,51 @@ def reWinv (x : WO S T) : WO (reS S b) T :=
   HMul.hMul (α := Matrix (Fin T.rank) (Fin S.rank) (AE D)) x ((frP S b).map (incA D))
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, frPinv_mul_frP, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frPinv_frP_A : HMul.hMul (α := Matrix (Fin S.rank) (Fin S.rank) (AE D)) ((frPinv S b).map (incA D))
     ((frP S b).map (incA D)) = 1 := by
   rw [← Matrix.map_mul, frPinv_mul_frP, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, frameMatrix_mul_frameMatrixInv, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_frameMatrix_mul_map_frameMatrixInv : HMul.hMul (α := Matrix (Fin S.rank) (Fin S.rank) (AE D)) ((frP S b).map (incA D))
     ((frPinv S b).map (incA D)) = 1 := by
   rw [← Matrix.map_mul, frameMatrix_mul_frameMatrixInv, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-The claim follows from `mul_mul_cancel x _ _ (map_frameMatrix_mul_map_frameMatrixInv S b)`.
+A detailed English derivation is pending.
 -/
 theorem reW_reWinv (x : WO S T) : reW S T b (reWinv S T b x) = x :=
   mul_mul_cancel x _ _ (map_frameMatrix_mul_map_frameMatrixInv S b)
 
 /- English proof (translation)
-The claim follows from `mul_mul_cancel x _ _ (frPinv_frP_A S b)`.
+A detailed English derivation is pending.
 -/
 theorem reWinv_reW (x : WO (reS S b) T) : reWinv S T b (reW S T b x) = x :=
   mul_mul_cancel x _ _ (frPinv_frP_A S b)
 
 /- English proof (translation)
-The claim follows from `Matrix.add_mul (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) y _`.
+A detailed English derivation is pending.
 -/
 theorem reW_add (x y : WO (reS S b) T) : reW S T b (x + y) = reW S T b x + reW S T b y :=
   Matrix.add_mul (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) y _
 
 /- English proof (translation)
-The claim follows from `Matrix.zero_mul (α := AE D) (l := Fin T.rank) ((frPinv S b).map (incA D))`.
+A detailed English derivation is pending.
 -/
 theorem reW_zero : reW S T b 0 = 0 :=
   Matrix.zero_mul (α := AE D) (l := Fin T.rank) ((frPinv S b).map (incA D))
 
 /- English proof (translation)
-The claim follows from `Matrix.add_mul (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) y _`.
+A detailed English derivation is pending.
 -/
 theorem reWinv_add (x y : WO S T) : reWinv S T b (x + y) = reWinv S T b x + reWinv S T b y :=
   Matrix.add_mul (x : Matrix (Fin T.rank) (Fin S.rank) (AE D)) y _
 
 /- English proof (translation)
-Use `haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)`. Unfold `reWinv`. Conclude with `continuous_id.matrix_mul continuous_const`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem reWinv_continuous : Continuous (reWinv S T b) := by
   haveI : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) (AE D)
@@ -162,7 +162,7 @@ def reFEquiv : (WO S T → ℂ) ≃ₗ[ℂ] (WO (reS S b) T → ℂ) :=
       rw [reWinv_reW] }
 
 /- English proof (translation)
-Simplify using `only [hO, Matrix.trace, Matrix.mul_apply, Matrix.diag, Matrix.map_apply, Matrix.transpose_apply, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Use `(Finset.sum_congr rfl fun b _ => Finset.sum_comm).trans ?_` and prove the remaining obligations. Use `Finset.sum_comm.trans ?_` and prove the remaining obligations. Conclude with `Finset.sum_congr rfl fun d _ => Finset.sum_comm`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hO_eq_trace (V : HSp D) (x y : WO V T) :
     hO V T x y = Matrix.trace (((V.gram⁻¹).map (incA D) * (y.map (cA D))ᵀ * T.gram.map (incA D)) * x) := by
@@ -174,9 +174,9 @@ theorem hO_eq_trace (V : HSp D) (x y : WO V T) :
   exact Finset.sum_congr rfl fun d _ => Finset.sum_comm
 
 /- English proof (translation)
-Establish `h` using `(isoPair_re S b).2.2.1`. Establish `e1 : (frP S b)⁻¹ = frPinv S b` using `Matrix.inv_eq_left_inv (frPinv_mul_frP S b)`. Establish `e2 : (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frP S b))⁻¹ = Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frPinv S b)`. Use `Matrix.inv_eq_left_inv ?_` and prove the remaining obligations. Rewrite using `[← Formalism.UG.cT_mul, frameMatrix_mul_frameMatrixInv, Formalism.UG.cT_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h' : ((reS S b).gram : Matrix (Fin S.rank) (Fin S.rank) D.host.E) = Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frP S b) * S.gram * frP S b` using `h.symm`. Rewrite using `[h', Matrix.mul_inv_rev, Matrix.mul_inv_rev, e1, e2, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_gram_re : ((reS S b).gram⁻¹ : Matrix (Fin S.rank) (Fin S.rank) D.host.E) =
     frPinv S b * S.gram⁻¹ * Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frPinv S b) := by
@@ -191,7 +191,7 @@ theorem inv_gram_re : ((reS S b).gram⁻¹ : Matrix (Fin S.rank) (Fin S.rank) D.
   rw [h', Matrix.mul_inv_rev, Matrix.mul_inv_rev, e1, e2, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul, Matrix.transpose_mul, ← h]`. Rewrite using `[show Gi * ((P.map c)ᵀ * (y.map c)ᵀ) * GT * (x * P) = (Gi * (P.map c)ᵀ * ((y.map c)ᵀ * GT * x)) * P by simp only [Matrix.mul_assoc]]`. Rewrite using `[Matrix.trace_mul_comm]`. Simplify using `only [Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_inverseGram_conj_smul_eq {R : Type*} [CommRing R] (c : R →+* R) {m n : ℕ} (Gi Gi' P : Matrix (Fin n) (Fin n) R)
     (GT : Matrix (Fin m) (Fin m) R)
@@ -204,7 +204,7 @@ theorem trace_inverseGram_conj_smul_eq {R : Type*} [CommRing R] (c : R →+* R) 
   simp only [Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[inv_gram_re]`. Establish `e : (((frPinv S b).map (incA D)).map (cA D))ᵀ = (Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (frPinv S b)).map (incA D)`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[e, Matrix.map_mul, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_key : HMul.hMul (α := Matrix (Fin S.rank) (Fin S.rank) (AE D))
     (HMul.hMul (α := Matrix (Fin S.rank) (Fin S.rank) (AE D)) ((frPinv S b).map (incA D)) ((S.gram⁻¹).map (incA D)))
@@ -217,21 +217,21 @@ theorem gram_key : HMul.hMul (α := Matrix (Fin S.rank) (Fin S.rank) (AE D))
   rw [e, Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Rewrite using `[hO_eq_trace, hO_eq_trace]`. Conclude with `trace_inverseGram_conj_smul_eq (cA D) _ _ _ _ x y (gram_key S b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hO_reW (x y : WO (reS S b) T) : hO S T (reW S T b x) (reW S T b y) = hO (reS S b) T x y := by
   rw [hO_eq_trace, hO_eq_trace]
   exact trace_inverseGram_conj_smul_eq (cA D) _ _ _ _ x y (gram_key S b)
 
 /- English proof (translation)
-Simplify using `only [symplOH, symplO, hO_reW]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symplOH_reW (x y : WO (reS S b) T) :
     symplOH S T (reW S T b x) (reW S T b y) = symplOH (reS S b) T x y := by
   simp only [symplOH, symplO, hO_reW]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [heisO, reF_apply, reW_add, symplOH_reW]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem heisO_reF (ψ : AddChar (AF D.host.F) ℂ) (w : WO (reS S b) T) (f : WO S T → ℂ) :
     heisO ψ (reS S b) T w (reF S T b f) = reF S T b (heisO ψ S T (reW S T b w) f) := by
@@ -239,25 +239,23 @@ theorem heisO_reF (ψ : AddChar (AF D.host.F) ℂ) (w : WO (reS S b) T) (f : WO 
   simp only [heisO, reF_apply, reW_add, symplOH_reW]
 
 /- English proof (translation)
-The claim follows from `(Matrix.map_mul (f := incA D) (L := γ) (M := frPinv S b)).symm`.
+A detailed English derivation is pending.
 -/
 theorem reW_ratW (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     reW S T b (ratW T (reS S b) γ) = ratW T S (γ * frPinv S b) :=
   (Matrix.map_mul (f := incA D) (L := γ) (M := frPinv S b)).symm
 
 /- English proof (translation)
-The claim follows from `(Matrix.map_mul (f := incA D) (L := γ) (M := frP S b)).symm`.
+A detailed English derivation is pending.
 -/
 theorem reWinv_ratW (γ : Matrix (Fin T.rank) (Fin S.rank) D.host.E) :
     reWinv S T b (ratW T S γ) = ratW T (reS S b) (γ * frP S b) :=
   (Matrix.map_mul (f := incA D) (L := γ) (M := frP S b)).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, hγ⟩`. Use `⟨γ * frP S b, ?_⟩` and prove the remaining obligations. Establish `h1 : reWinv S T b (ratW T S γ) = x`. Rewrite using `[← reWinv_reW S T b x]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (reWinv S T b) hγ`. Rewrite `h1` using `[reWinv_ratW]`. Conclude with `h1`. Introduce and unpack `⟨γ, hγ⟩`. Use `⟨HMul.hMul (α := Matrix (Fin T.rank) (Fin S.rank) D.host.E) γ (frPinv S b), ?_⟩` and prove the remaining obligations.
-
-Establish `h1 : reW S T b (ratW T (reS S b) γ) = reW S T b x` using `congrArg (reW S T b) hγ`. Conclude with `(reW_ratW S T b γ).symm.trans h1`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_ratL_reW (x : WO (reS S b) T) : reW S T b x ∈ ratL T S ↔ x ∈ ratL T (reS S b) := by
   constructor
@@ -273,7 +271,7 @@ theorem mem_ratL_reW (x : WO (reS S b) T) : reW S T b x ∈ ratL T S ↔ x ∈ r
     exact (reW_ratW S T b γ).symm.trans h1
 
 /- English proof (translation)
-Rewrite using `[show A * (x * Pi) * (P * M * Pi) = A * x * (Pi * P) * M * Pi by simp only [Matrix.mul_assoc], h, Matrix.mul_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem block_frame_conjugation_identity {R : Type*} [Ring R] {m n : ℕ} (A : Matrix (Fin m) (Fin m) R) (x : Matrix (Fin m) (Fin n) R)
     (M P Pi : Matrix (Fin n) (Fin n) R) (h : Pi * P = 1) : A * x * M * Pi = A * (x * Pi) * (P * M * Pi) := by
@@ -281,7 +279,7 @@ theorem block_frame_conjugation_identity {R : Type*} [Ring R] {m n : ℕ} (A : M
     Matrix.mul_one]
 
 /- English proof (translation)
-Unfold `actO reW`. Rewrite using `[← map_inv, mt_reGrp]`. Conclude with `block_frame_conjugation_identity _ _ _ _ _ (frPinv_frP_A S b)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem reW_actO (h : GA D (reS S b)) (g : GA D T) (x : WO (reS S b) T) :
     reW S T b (actO (reS S b) T h g x) = actO S T (reGrp S b h) g (reW S T b x) := by
@@ -290,14 +288,14 @@ theorem reW_actO (h : GA D (reS S b)) (g : GA D T) (x : WO (reS S b) T) :
   exact block_frame_conjugation_identity _ _ _ _ _ (frPinv_frP_A S b)
 
 /- English proof (translation)
-Rewrite using `[← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_one {R : Type*} [Semiring R] (f : D.host.E →+* R) {n : ℕ} (A B : Matrix (Fin n) (Fin n) D.host.E)
     (h : A * B = 1) : A.map f * B.map f = 1 := by
   rw [← Matrix.map_mul, h, Matrix.map_one _ (map_zero _) (map_one _)]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Combine the equalities or inequalities in the displayed calculation. Introduce and unpack `rfl`. Rewrite using `[Matrix.mul_one, h1]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_eq_one_iff {R : Type*} [Ring R] {n : ℕ} (X P Pi : Matrix (Fin n) (Fin n) R) (h1 : P * Pi = 1)
     (h2 : Pi * P = 1) : P * X * Pi = 1 ↔ X = 1 := by
@@ -309,7 +307,7 @@ theorem conj_eq_one_iff {R : Type*} [Ring R] {n : ℕ} (X P Pi : Matrix (Fin n) 
     rw [Matrix.mul_one, h1]
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.VolTransport.conjA_finMat (isoPair_re S b) h`. Simplify using `only [GinfC, MonoidHom.mem_ker, Units.ext_iff, finHom_eq, Units.val_one]`. Use `Iff.trans (Eq.to_iff (congrArg (· = (1 : Matrix (Fin S.rank) (Fin S.rank) _)) e)) ?_` and prove the remaining obligations. Conclude with `conj_eq_one_iff _ _ _ (map_mul_one _ _ _ (frameMatrix_mul_frameMatrixInv S b)) (map_mul_one _ _ _ (frPinv_mul_frP S b))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem reGrp_mem_GinfC (h : GA D (reS S b)) : reGrp S b h ∈ GinfC S ↔ h ∈ GinfC (reS S b) := by
   have e := GlobalTheory.VolTransport.conjA_finMat (isoPair_re S b) h
@@ -318,18 +316,18 @@ theorem reGrp_mem_GinfC (h : GA D (reS S b)) : reGrp S b h ∈ GinfC S ↔ h ∈
   exact conj_eq_one_iff _ _ _ (map_mul_one _ _ _ (frameMatrix_mul_frameMatrixInv S b)) (map_mul_one _ _ _ (frPinv_mul_frP S b))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.VolTransport.conjA_rat (isoPair_re S b) h hh`.
+A detailed English derivation is pending.
 -/
 theorem reGrp_mem_GQ (h : GA D (reS S b)) (hh : h ∈ GQ (reS S b)) : reGrp S b h ∈ GQ S :=
   GlobalTheory.VolTransport.conjA_rat (isoPair_re S b) h hh
 
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Rewrite using `[Matrix.map_mul]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hP : (Pi.map (incA D)).map φ * (P.map (incA D)).map φ = 1`. Rewrite using `[Matrix.map_map, Matrix.map_map]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_mul_one (φ.comp (incA D)) Pi P h`. Establish `e : x.map φ * (Pi.map (incA D)).map φ * (P.map (incA D)).map φ = x.map φ`. Rewrite using `[Matrix.mul_assoc, hP, Matrix.mul_one]`. Rewrite using `[← e, hx, Matrix.zero_mul]`. Introduce `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx, Matrix.zero_mul]`.
+A detailed English derivation is pending.
 -/
 theorem map_mul_eq_zero_iff {R : Type*} [Ring R] {m n : ℕ} (φ : AE D →+* R) (x : Matrix (Fin m) (Fin n) (AE D))
     (P Pi : Matrix (Fin n) (Fin n) D.host.E) (h : Pi * P = 1) :
@@ -346,7 +344,7 @@ theorem map_mul_eq_zero_iff {R : Type*} [Ring R] {m n : ℕ} (φ : AE D →+* R)
   · intro hx; rw [hx, Matrix.zero_mul]
 
 /- English proof (translation)
-The claim follows from `map_mul_eq_zero_iff φ x (frP S b) (frPinv S b) (frPinv_mul_frP S b)`.
+A detailed English derivation is pending.
 -/
 theorem reW_map_eq_zero {R : Type*} [Ring R] (φ : AE D →+* R) (x : WO (reS S b) T) :
     (reW S T b x).map φ = 0 ↔ x.map φ = 0 :=

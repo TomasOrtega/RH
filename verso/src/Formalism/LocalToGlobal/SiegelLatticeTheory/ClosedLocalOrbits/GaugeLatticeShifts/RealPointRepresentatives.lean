@@ -16,21 +16,19 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D)
 
 /- English proof (translation)
-Set `ψ : InfinitePlace X.B.I.F → D.host.E →+* ℂ` to `fun v => (X.B.I.φ v).comp X.ιE.symm.toRingHom`. Set `P : InfinitePlace X.B.I.F → Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ` to `fun v => (L.map (ψ v)).map star`. Set `P' : InfinitePlace X.B.I.F → Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) ℂ` to `fun v => (sgn D.R.rS * U.map (ψ v) * sgn D.R.rS)ᵀ`. Establish `hzz : ∀ (w' : D.what₂.Word) v, hJ (X.B.I.ε v) (rv X.B.I v (X.zR w')) (rv X.B.I v (X.zR w')) ≠ 0`. Introduce `w' v`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(HermitianSumRootCoordinateFrames.FrameAtV_holds D X w' v).2.2.2.2.2.1]`. Conclude with `neg_ne_zero.2 (Complex.ofReal_ne_zero.2 (HermitianSumRootCoordinateFrames.FrameAtV_holds D X w' v).2.2.2.2.2.2)`. Establish `hs : ∀ v, ∃ s : Formalism.REAL.UJ (X.B.I.ε v), InN (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) (uMat s) ∧ ∀ a, uMat s *ᵥ fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) a = ∑ c, P v a c • fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u)) c` using `fun v => ThreeBlockFrameInverses.NRealize_holds X.B.I.n D.R.rS (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u)) (HermitianSumRootCoordinateFrames.FrameAtV_holds D X u v).1 (HermitianSumRootCoordinateFrames.FrameAtV_holds D X u v).2.1 …`. Establish `hs' : ∀ v, ∃ s : Formalism.REAL.UJ (X.B.I.ε v), InN (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u')) (uMat s) ∧ ∀ a, uMat s *ᵥ fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u')) a = ∑ c, P' v a c • fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u')) …` using `fun v => ThreeBlockFrameInverses.NRealize_holds X.B.I.n D.R.rS (X.B.I.ε v) (fun a => rv X.B.I v (X.eR a)) (fun a => rv X.B.I v (X.fR a)) (rv X.B.I v (X.zR u')) (HermitianSumRootCoordinateFrames.FrameAtV_holds D X u' v).1 (HermitianSumRootCoordinateFrames.FrameAtV_holds D X u' v). …`. Use `choose s hsN hsP using hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose s' hs'N hs'P using hs'`. Establish `hsN' : s ∈ X.NinfU u` using `fun v => hsN v`. Establish `hs'N' : s' ∈ X.NinfU u'` using `fun v => hs'N v`. Establish `hsS : s ∈ X.SinfU u` using `fun v => (hsN v).1`. Establish `hs'S : s' ∈ X.SinfU u'` using `fun v => (hs'N v).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hPt : IsPtRep X u u' w (s * γ * s'⁻¹)`. Introduce `v`. Establish `hg : s⁻¹ * (s * γ * s'⁻¹) * s' = γ` using `by group`. Establish `h4` using `HermitianSumRootCoordinateFrames.ZhatNAct_holds _ _ (X.B.I.ε v) (fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u))) (fam (fun a => rv X.B.I v (X.eR a)) (rv X.B.I v (X.zR u'))) (uMat (s v)) (uMat (s⁻¹ v)) (uMat (s' v)) (uMat ((s * γ * s'⁻¹) v)) (P v) (P' v) (InfCut.uMat_inv …`. Establish `hγv : uMat (s⁻¹ v) * uMat ((s * γ * s'⁻¹) v) * uMat (s' v) = uMat (γ v)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [uMat, Pi.mul_apply, Subgroup.coe_mul, Units.val_mul]`. Use `_ = uMat (γ v) := by rw [hg]`. Rewrite `h4` using `[hγv, ← zx_eq, ← zx_eq]`. Establish `h5 : ZhatO (ZX X u u' 1 γ v) = (L * ptMat w * U).map (ψ v)` using `hZ v`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `h5` using `[Matrix.map_mul, Matrix.map_mul, zhatO_eq, h4]`. Establish `hPs : (P v).map star = L.map (ψ v)`. Use extensionality with `i j`. Simplify using `only [P, Matrix.map_apply, star_star]`. Establish `hPt' : (P' v)ᵀ = sgn D.R.rS * U.map (ψ v) * sgn D.R.rS` using `Matrix.transpose_transpose _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h5` using `[hPs, hPt']`. Establish `h6 : L.map (ψ v) * ZhatO (ZX X u u' 1 (s * γ * s'⁻¹) v) * U.map (ψ v) = L.map (ψ v) * ptC X v w * U.map (ψ v)`. Use `Eq.trans ?_ h5` and prove the remaining obligations. Rewrite using `[zhatO_eq]`. Simplify using `only [Matrix.mul_assoc, sgn_sq, Matrix.mul_one]`.
-
-Conclude with `cancel (by rw [det_lo (isLoUni_map _ hLo)]; exact one_ne_zero) (by rw [det_up (isUpUni_map _ hUp)]; exact one_ne_zero) h6`. Conclude with `⟨_, hPt⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ptRep (u u' : D.what₂.Word) (γ : X.B.I.Ginf) (w : Point D.host.E (D.R.rS + 1))
     (L U : Formalism.L2.SG.PairVal.MatR D) (hLo : IsLoUni L) (hUp : IsUpUni U)

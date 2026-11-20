@@ -12,9 +12,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.SwEisIwa
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `GlobalTheory.Doubling.exists_isMaj V`. Take `⟨Φ, p, -, hQ, hK, -, -⟩` from `hC D χ V a ha`. Introduce `g`. Take `⟨q, k, hk, hqk⟩` from `(GlobalTheory.Eis.isIwasawa_Khat (GlobalTheory.Core.Rk.IP.hasIwasawa_Khat D V a ha)).1 (Φ.symm g * (p : GA D (dblSp V))⁻¹)`. Use `⟨Φ ((q : GA D (dblSp V)) * p), (hQ _).1 (Subgroup.mul_mem _ q.2 p.2), Φ ((p : GA D (dblSp V))⁻¹ * k * p), (hK k).1 hk, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Φ.symm g = (q : GA D (dblSp V)) * k * p`. Rewrite using `[← hqk, inv_mul_cancel_right]`. Establish `h2 : (q : GA D (dblSp V)) * p * ((p : GA D (dblSp V))⁻¹ * k * p) = (q : GA D (dblSp V)) * k * p` using `by group`. Rewrite using `[← map_mul, h2, ← h1]`. Conclude with `(Φ.apply_symm_apply g).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iwa_of_rank (hC : Chart) (D : D7) (χ : (AE D)ˣ →* Circle) (V : HSp D) :
     Iwa ((adCM D.sp.cm.sig χ).uQ (-1) (Set.univ : Set (Fin V.rank))) ((adCM D.sp.cm.sig χ).uK (-1) (Fin V.rank)) := by
@@ -33,7 +33,7 @@ theorem iwa_of_rank (hC : Chart) (D : D7) (χ : (AE D)ˣ →* Circle) (V : HSp D
   exact (Φ.apply_symm_apply g).symm
 
 /- English proof (translation)
-Introduce `hC D χ n` and use `iwa_of_rank hC D χ (Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral n)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem eIwa : EIwa := fun hC D χ n =>
   iwa_of_rank hC D χ (Examples₂.posSpace (E := D.host.E) Examples₂.star_isIntegral n)

@@ -3,17 +3,15 @@ import Mathlib
 namespace Bl.general_b_fact_third_ter
 
 /- English proof (translation)
-Introduce `E _ _ _ W _ _ _ _ L hL y`. Establish `hy : y ∈ Submodule.span E (L : Set W)` using `by rw [hL]; exact Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by rw [one_smul]; exact hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by rw [smul_zero]; exact L.zero_mem⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x z _ _ ihx ihz`. Take `⟨a, ha, hax⟩` from `ihx`. Take `⟨b, hb, hbz⟩` from `ihz`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `L.smul_mem b hax`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem a hbz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul c x _ ihx`. Take `⟨a, ha, hax⟩` from `ihx`. Take `⟨⟨n, s⟩, hs⟩` from `IsLocalization.surj (nonZeroDivisors (NumberField.RingOfIntegers E)) c`. Establish `hs0 : (s : NumberField.RingOfIntegers E) ≠ 0` using `nonZeroDivisors.ne_zero s.2`. Use `⟨(s : NumberField.RingOfIntegers E) * a, mul_ne_zero hs0 ha, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `key : ((s : NumberField.RingOfIntegers E) * a) • (c • x) = n • (a • x)`. Rewrite using `[mul_comm, mul_smul, ← smul_assoc (s : NumberField.RingOfIntegers E) c x, Algebra.smul_def, mul_comm, smul_comm a (c * algebraMap _ E (s : NumberField.RingOfIntegers E)) x]`. Simplify using `only at hs`. Rewrite using `[hs, algebraMap_smul]`. Rewrite using `[key]`.
-
-Conclude with `L.smul_mem n hax`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goal1 :
   ∀ {E : Type} [inst : Field.{0} E] [NumberField.{0} E] [StarRing.{0} E] {W : Type} [inst_3 : AddCommGroup.{0} W]

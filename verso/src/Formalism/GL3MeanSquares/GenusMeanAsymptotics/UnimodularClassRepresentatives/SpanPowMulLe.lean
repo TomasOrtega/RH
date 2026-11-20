@@ -19,19 +19,19 @@ def InP (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a : K) : Prop :=
   ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ∃ z ∈ extP K 𝔭 ^ k, jK z = jK (ι t) * a
 
 /- English proof (translation)
-Establish `e : ∀ t : 𝓞 F, jK (ι t) = algebraMap F K (t : F)` using `fun t => rfl`. Simplify using `only [CongrP, InP, e]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem congrP_iff_inP (𝔭 : Ideal (𝓞 F)) (k : ℕ) (a b : K) : CongrP 𝔭 k a b ↔ InP 𝔭 k (a - b) := by
   have e : ∀ t : 𝓞 F, jK (ι t) = algebraMap F K (t : F) := fun t => rfl
   simp only [CongrP, InP, e]
 
 /- English proof (translation)
-Introduce `a b hab` and use `RingOfIntegers.ext hab`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jK_inj : Function.Injective (jK) := fun a b hab => RingOfIntegers.ext hab
 
 /- English proof (translation)
-Take `⟨t₁, ht₁, z₁, hz₁, e₁⟩` from `ha`. Take `⟨t₂, ht₂, z₂, hz₂, e₂⟩` from `hb`. Use `⟨t₁ * t₂, fun hm => (h𝔭.mem_or_mem hm).elim ht₁ ht₂, ι t₂ * z₁ + ι t₁ * z₂, Ideal.add_mem _ (Ideal.mul_mem_left _ _ hz₁) (Ideal.mul_mem_left _ _ hz₂), ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_mul, e₁, e₂]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem InP.add {𝔭 : Ideal (𝓞 F)} [h𝔭 : 𝔭.IsPrime] {k : ℕ} {a b : K} (ha : InP 𝔭 k a)
     (hb : InP 𝔭 k b) : InP 𝔭 k (a + b) := by
@@ -43,16 +43,16 @@ theorem InP.add {𝔭 : Ideal (𝓞 F)} [h𝔭 : 𝔭.IsPrime] {k : ℕ} {a b : 
   ring
 
 /- English proof (translation)
-Take `⟨t, ht, z, hz, e⟩` from `ha`. Conclude with `⟨t, ht, -z, neg_mem hz, by rw [map_neg, e, mul_neg]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem InP.neg {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : K} (ha : InP 𝔭 k a) : InP 𝔭 k (-a) := by
   obtain ⟨t, ht, z, hz, e⟩ := ha
   exact ⟨t, ht, -z, neg_mem hz, by rw [map_neg, e, mul_neg]⟩
 
 /- English proof (translation)
-Take `⟨t₁, ht₁, z₁, hz₁, e₁⟩` from `ha`. Take `⟨t₂, ht₂, z₂, hz₂, e₂⟩` from `hb`. Use `⟨t₁ * t₂, fun hm => (h𝔭.mem_or_mem hm).elim ht₁ ht₂, z₁ * z₂, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add]`. Conclude with `Ideal.mul_mem_mul hz₁ hz₂`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, e₁, e₂]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem InP.mul {𝔭 : Ideal (𝓞 F)} [h𝔭 : 𝔭.IsPrime] {k l : ℕ} {a b : K} (ha : InP 𝔭 k a)
     (hb : InP 𝔭 l b) : InP 𝔭 (k + l) (a * b) := by
@@ -65,14 +65,14 @@ theorem InP.mul {𝔭 : Ideal (𝓞 F)} [h𝔭 : 𝔭.IsPrime] {k l : ℕ} {a b 
     ring
 
 /- English proof (translation)
-Take `⟨t, ht, z, hz, e⟩` from `ha`. Conclude with `⟨t, ht, z, Ideal.pow_le_pow_right hkl hz, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem InP.mono {𝔭 : Ideal (𝓞 F)} {k l : ℕ} (hkl : l ≤ k) {a : K} (ha : InP 𝔭 k a) : InP 𝔭 l a := by
   obtain ⟨t, ht, z, hz, e⟩ := ha
   exact ⟨t, ht, z, Ideal.pow_le_pow_right hkl hz, e⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, (Ideal.ne_top_iff_one _).mp h𝔭.ne_top, z, hz, by rw [map_one, map_one, one_mul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem inP_jK {𝔭 : Ideal (𝓞 F)} [h𝔭 : 𝔭.IsPrime] {k : ℕ} {z : 𝓞 K} (hz : z ∈ extP K 𝔭 ^ k) :
     InP 𝔭 k (jK z) := ⟨1, (Ideal.ne_top_iff_one _).mp h𝔭.ne_top, z, hz, by rw [map_one, map_one, one_mul]⟩
@@ -91,9 +91,9 @@ def SP (K : Type) {F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [N
   neg_mem' := fun ha => ha.neg
 
 /- English proof (translation)
-Use `show InP 𝔭 0 a ↔ _`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, z, -, e⟩`. Conclude with `⟨t, ht, z, e⟩`. Introduce and unpack `⟨t, ht, z, e⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨t, ht, z, by simp, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_SP {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {a : K} :
     a ∈ SP K 𝔭 ↔ ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ∃ z : 𝓞 K, jK z = jK (ι t) * a := by
@@ -105,15 +105,15 @@ theorem mem_SP {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {a : K} :
     exact ⟨t, ht, z, by simp, e⟩
 
 /- English proof (translation)
-Establish `hp : 𝔭.IsPrime` using `inferInstance`. Establish `key : ∀ s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ι t = s}, ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ι t = s`. Introduce `s hs`. Proceed by induction on `hs using Submonoid.closure_induction with`. Consider the case `mem x hx => exact hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `one => exact ⟨1, (Ideal.ne_top_iff_one _).mp hp.ne_top, map_one _⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨t₁, ht₁, rfl⟩` from `hx`. Take `⟨t₂, ht₂, rfl⟩` from `hy`. Conclude with `⟨t₁ * t₂, fun hm => (hp.mem_or_mem hm).elim ht₁ ht₂, map_mul _ _ _⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Express the relevant statement in the definitionally equal form `a ∈ SP K 𝔭 ↔ ∃ s ∈ Submonoid.closure {s : 𝓞 K | ∃ t : 𝓞 F, t ∉ 𝔭 ∧ ι t = s}, s • a ∈ (1 : Submodule (𝓞 K) K)`. Rewrite using `[mem_SP]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, z, e⟩`. Use `⟨ι t, Submonoid.subset_closure ⟨t, ht, rfl⟩, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.mem_one]`. Conclude with `⟨z, by rw [e, Algebra.smul_def]⟩`. Introduce and unpack `⟨s, hs, hsa⟩`. Take `⟨t, ht, rfl⟩` from `key s hs`. Rewrite `hsa` using `[Submodule.mem_one]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hz⟩` from `hsa`. Conclude with `⟨t, ht, z, by rw [hz, Algebra.smul_def]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_SP_iff_locF {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {a : K} :
     a ∈ SP K 𝔭 ↔ a ∈ locF 𝔭 (1 : Submodule (𝓞 K) K) := by
@@ -143,22 +143,22 @@ theorem mem_SP_iff_locF {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {a : K} :
     exact ⟨t, ht, z, by rw [hz, Algebra.smul_def]⟩
 
 /- English proof (translation)
-The claim follows from `mem_SP.mpr ⟨1, (Ideal.ne_top_iff_one _).mp (Ideal.IsPrime.ne_top inferInstance), z, by rw [map_one, map_one, one_mul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem jK_mem_SP {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] (z : 𝓞 K) : jK z ∈ SP K 𝔭 := mem_SP.mpr ⟨1, (Ideal.ne_top_iff_one _).mp (Ideal.IsPrime.ne_top inferInstance), z,
   by rw [map_one, map_one, one_mul]⟩
 
 /- English proof (translation)
-The claim follows from `ha.mono (Nat.zero_le _)`.
+A detailed English derivation is pending.
 -/
 theorem InP.mem_SP {𝔭 : Ideal (𝓞 F)} [𝔭.IsPrime] {k : ℕ} {a : K} (ha : InP 𝔭 k a) : a ∈ SP K 𝔭 := ha.mono (Nat.zero_le _)
 
 /- English proof (translation)
-Take `⟨t, ht, z, hz, e⟩` from `ha`. Establish `hι : ∀ c : 𝓞 F, conjO K (ι c) = ι c`. Introduce `c`. Apply `RingOfIntegers.ext` to reduce the goal to its premises. Use `show star (algebraMap F K (c : F)) = algebraMap F K (c : F)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `(hF _).mpr ⟨_, rfl⟩`. Establish `hι' : (conjO K).comp (algebraMap (𝓞 F) (𝓞 K)) = algebraMap (𝓞 F) (𝓞 K)` using `RingHom.ext hι`. Use `⟨t, ht, conjO K z, ?_, ?_⟩` and prove the remaining obligations. Establish `h1 : conjO K z ∈ (extP K 𝔭 ^ k).map (conjO K)` using `Ideal.mem_map_of_mem _ hz`. Rewrite `h1` using `[Ideal.map_pow, extP, Ideal.map_map, hι']`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1 : jK (conjO K z) = star (jK z)` using `rfl`. Establish `s2 : star (jK (ι t)) = jK (ι t)` using `(hF _).mpr ⟨_, rfl⟩`. Rewrite using `[s1, e, star_mul, s2, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem InP.conj (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : K} (ha : InP 𝔭 k a) :
     InP 𝔭 k (star a) := by
@@ -177,13 +177,13 @@ theorem InP.conj (hF : IsFixF K F) {𝔭 : Ideal (𝓞 F)} {k : ℕ} {a : K} (ha
     rw [s1, e, star_mul, s2, mul_comm]
 
 /- English proof (translation)
-Establish `hne : 𝔭 ≠ ⊥` using `fun h0 => RingOfIntegers.not_isField F (Ring.isField_iff_maximal_bot.mpr (h0 ▸ h𝔭))`. Choose the witnesses or unpack the hypotheses as in `⟨π₀, hπ1, hπ2⟩ : ∃ x ∈ 𝔭 ^ 1, x ∉ 𝔭 ^ (1 + 1) := by`. Establish `hlt : 𝔭 ^ (1 + 1) < 𝔭 ^ 1` using `Ideal.pow_succ_lt_pow hne 1`. Take `⟨x, hx1, hx2⟩` from `SetLike.exists_of_lt hlt`. Conclude with `⟨x, hx1, hx2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hπ1` using `[pow_one]`. Establish `hπ2' : π₀ ∉ 𝔭 ^ 2` using `hπ2`. Take `⟨J, hJ⟩ : 𝔭 ∣ Ideal.span {π₀}` from `Ideal.dvd_iff_le.mpr ((Ideal.span_singleton_le_iff_mem _).mpr hπ1)`. Establish `hJ𝔭 : ¬ J ≤ 𝔭`. Introduce `hle`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hπ2'` to reduce the goal to its premises. Establish `h3 : Ideal.span {π₀} ≤ 𝔭 ^ 2`. Rewrite using `[hJ, pow_two]`. Conclude with `Ideal.mul_mono_right hle`. Conclude with `h3 (Ideal.subset_span rfl)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s₀, hsJ, hs𝔭⟩` from `SetLike.not_le_iff_exists.mp hJ𝔭`. Use `⟨π₀, hπ1, hπ2', s₀, hs𝔭, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ, mul_comm 𝔭 J]`. Conclude with `Ideal.mul_mono_left ((Ideal.span_singleton_le_iff_mem _).mpr hsJ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unif0 {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :
     ∃ π₀ ∈ 𝔭, π₀ ∉ 𝔭 ^ 2 ∧ ∃ s₀ : 𝓞 F, s₀ ∉ 𝔭 ∧ Ideal.span {s₀} * 𝔭 ≤ Ideal.span {π₀} := by
@@ -210,7 +210,7 @@ theorem exists_unif0 {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) :
   exact Ideal.mul_mono_left ((Ideal.span_singleton_le_iff_mem _).mpr hsJ)
 
 /- English proof (translation)
-Establish `h1 : (Ideal.span {s₀} * 𝔭) ^ k ≤ Ideal.span {π₀} ^ k` using `Ideal.pow_right_mono h k`. Rewrite `h1` using `[mul_pow, Ideal.span_singleton_pow, Ideal.span_singleton_pow]`. Establish `h2` using `Ideal.map_mono (f := algebraMap (𝓞 F) (𝓞 K)) h1`. Rewrite `h2` using `[Ideal.map_mul, Ideal.map_span, Ideal.map_span, Set.image_singleton, Set.image_singleton, Ideal.map_pow]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_pow_mul_le {𝔭 : Ideal (𝓞 F)} {π₀ s₀ : 𝓞 F}
     (h : Ideal.span {s₀} * 𝔭 ≤ Ideal.span {π₀}) (k : ℕ) :

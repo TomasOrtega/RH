@@ -6,13 +6,13 @@ open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h2 : Module.finrank F E = 2` using `Unram.finrank_eq`. Use `haveI : Module.Finite F E := Module.finite_of_finrank_pos (by omega)`. Establish `hb : IsBaseChange A.K (IsScalarTower.toAlgHom F E A.L).toLinearMap` using `A.push.symm.out`. Set `b0` to `Module.finBasisOfFinrankEq F E h2`. Set `b : Module.Basis (Fin 2) A.K A.L` to `hb.basis b0`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hN : ∀ y, A.NL y = (Algebra.leftMulMatrix b y).det` using `fun y => Algebra.norm_eq_matrix_det b y`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `: A.NL = fun y => (Algebra.leftMulMatrix b y).det` using `funext hN`. Rewrite using `[this]`. Use `Continuous.matrix_det ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Set `f : A.L →ₗ[F] A.K` to `((b.coord i).comp (LinearMap.mulRight A.K (b j))).restrictScalars F`. Establish `hf : Continuous f` using `IsModuleTopology.continuous_of_linearMap f`. Use `hf.congr fun y => ?_` and prove the remaining obligations. Simplify using `[f, Algebra.leftMulMatrix_eq_repr_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hN, map_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem etale_norm_continuous_and_zero (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E]
     [NormedAlgebra F E] [StarRing E] [Unram F E] (A : Et F E) : Continuous A.NL ∧ A.NL 0 = 0 := by

@@ -8,7 +8,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.CompactGelfandAverage.I
 namespace PI.UnitaryGroupMassFormula.GelfCpt
 
 /- English proof (translation)
-The claim follows from `gelfCpt_of_steps avgStep mulStep`.
+A detailed English derivation is pending.
 -/
 theorem gelfCpt_of : PI.UMultOne.IntSpan → PI.UMultOne.ConvComm → PI.UMultOne.GelfandCompact :=
   gelfCpt_of_steps avgStep mulStep

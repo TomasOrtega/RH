@@ -48,9 +48,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 attribute [-instance] GlobalTheory.CompHt.fintypePsi
 
 /- English proof (translation)
-Introduce `hE p _ C _ _ _ v O _ _ _ hv hp hc G`. Use `⟨fun κ hκ w => HT.hodge_tate_cokernel_sharp p C v O hv hp hc G κ ?_ w, hE p C v O hv hp hc G⟩` and prove the remaining obligations. Use `split_ifs at hκ with h2`. Substitute `h2` using the available equality. Establish `h4 : (4 : C) = ((2 : ℕ) : C) * ((2 : ℕ) : C)` using `by norm_num`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hκ` using `[h4, map_mul]`. Establish `h1 : (2 - 1 : ℕ) = 1` using `rfl`. Rewrite using `[h1, pow_one]`. Conclude with `hκ.trans (mul_le_of_le_one_left' hp.le)`. Conclude with `hκ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.farguesHodgeTate_of_farguesExact : HT.FarguesExact → HT.FarguesHodgeTate := by
   intro hE p _ C _ _ _ v O _ _ _ hv hp hc G

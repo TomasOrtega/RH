@@ -5,7 +5,7 @@ open scoped Matrix
 open NumberField IsDedekindDomain
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.totallyComplex_span_embeddings_and_finrank` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FFoundationProofs%2FTotallyComplexSpanEmbeddingsAndFinrank.lean&line=9#L9)
 -/

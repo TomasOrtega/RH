@@ -41,9 +41,9 @@ def unipSet (σ : E →ₐ[F] E) {n n₁ : ℕ} (X : Spc F E n) (H : Plane E n n
     rw [neg_smul, ← sub_eq_add_neg, eq_sub_iff_add_eq]; exact this
 
 /- English proof (translation)
-Establish `hc : unip σ X H = unipSet σ X H`. Apply `le_antisymm` to reduce the goal to its premises. Conclude with `(Subgroup.closure_le _).2 fun v hv => hv`. Introduce `v hv`. Conclude with `Subgroup.subset_closure hv`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hc]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem mem_unip_iff (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (σ : E →ₐ[F] E) (n n₁ : ℕ) (X : Spc F E n) (H : Plane E n n₁) (u : UA σ X.J) : u ∈ unip σ X H ↔

@@ -18,7 +18,7 @@ def V0 (D : RealPlaceData k r Wp Wq) (L : Finset (Fin (r + 2))) : Set (Mat k r) 
   {x | 0 < Gf k r D.z D.z' x} ∩ ⋂ l ∈ L, {x | Dmin k r D.z D.z' x l ≠ 0}
 
 /- English proof (translation)
-Unfold `V0`. Use `(isOpen_lt continuous_const (Gf_cont D.z D.z')).inter ?_` and prove the remaining obligations. Use `isOpen_biInter_finset (fun l _ => ?_)` and prove the remaining obligations. Conclude with `isOpen_ne_fun (Dmin_cont D.z D.z' l) continuous_const`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma isOpen_big_cell_set (D : RealPlaceData k r Wp Wq) (L : Finset (Fin (r + 2))) : IsOpen (V0 D L) := by
   unfold V0
@@ -27,25 +27,23 @@ lemma isOpen_big_cell_set (D : RealPlaceData k r Wp Wq) (L : Finset (Fin (r + 2)
   exact isOpen_ne_fun (Dmin_cont D.z D.z' l) continuous_const
 
 /- English proof (translation)
-Simplify using `only [C6.domL, V0, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]`.
+Simplify using the standard rewrite rules.
 -/
 lemma mem_domL (D : RealPlaceData k r Wp Wq) (L : Finset (Fin (r + 2))) (g : Mat k r) :
     g ∈ C6.domL D L ↔ g ∈ GV k r ∧ g ∈ V0 D L := by
   simp only [C6.domL, V0, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_iInter]
 
 /- English proof (translation)
-Conclude with `⟨hg.1, hg.2.1⟩`.
+Supply the required witnesses or components.
 -/
 lemma domL_gpos {D : RealPlaceData k r Wp Wq} {L : Finset (Fin (r + 2))} {g : Mat k r} (hg : g ∈ C6.domL D L) :
     g ∈ GPos D := by
   exact ⟨hg.1, hg.2.1⟩
 
 /- English proof (translation)
-Establish `hlast : Dmin k r D.z D.z' g (Fin.last (r + 1)) ≠ 0`. Introduce `h0`. Establish `hG : 0 < Gf k r D.z D.z' g` using `hg.2.1`. Simplify using `only [Gf, h0, Complex.normSq_zero, zero_sub] at hG`. Use `mul_nonneg (mul_pos D.T_pos D.T'_pos).le (Complex.normSq_nonneg (Dmin k r D.z D.z' g ⟨r, by omega⟩))` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hab, -, -⟩` from `he`. Use `⟨fun l hl => ?_, fun _ => ?_⟩` and prove the remaining obligations. Break down `hab l hl with hl | rfl` into its components or cases. Conclude with `hg.2.2 l hl`.
-
-Conclude with `hlast`. Conclude with `hg.2.1.ne'` after adjusting the coercions.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 lemma nz_of_domL {D : RealPlaceData k r Wp Wq} {L : Finset (Fin (r + 2))} {g : Mat k r} (hg : g ∈ C6.domL D L)
     {nf : ℕ} {e : CT k r nf × List (Mat k r)} (he : Good L e) :
@@ -65,7 +63,7 @@ lemma nz_of_domL {D : RealPlaceData k r Wp Wq} {L : Finset (Fin (r + 2))} {g : M
   · exact_mod_cast hg.2.1.ne'
 
 /- English proof (translation)
-Proceed by induction on `Lf with`. Consider the case `nil => simp [shape]`. Consider the case `cons e Lf ih`. Simplify using `only [shape] at ih ⊢`. Simplify using `[ih, List.sum_append]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 lemma shape_flatMap' (D : RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf → Mat k r → C6.EndH Wp Wq)
     (F : Mat k r → (Wq →L[ℂ] Wp)) (Lf : FS k r nf) (f : CT k r nf × List (Mat k r) → FS k r nf) (g : Mat k r) :
@@ -77,11 +75,11 @@ lemma shape_flatMap' (D : RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf → 
     simp [ih, List.sum_append]
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro n _ hf`. Simplify `hf` using `[Rw]`. Consider the case `cons X w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `n hw hf`. Rewrite using `[Rw_cons']`. Use `CkOn_Dx (x := (false, X)) (hw X (by simp)) (ih (n + 1) (fun Y hY => hw Y (List.mem_cons_of_mem _ hY)) ?_)` and prove the remaining obligations. Establish `e : n + 1 + (w.length : ℕ∞) = n + ((X :: w).length : ℕ∞)`. Simplify using `only [List.length_cons, Nat.cast_add, Nat.cast_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `hf`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma ckOn_rw_of_ckOn_add_length {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E] {UU : Set (Mat k r)}
     {f : Mat k r → E} : ∀ (w : List (Mat k r)) (n : ℕ∞), (∀ X ∈ w, inLie k r X) →
@@ -98,19 +96,17 @@ private lemma ckOn_rw_of_ckOn_add_length {E : Type*} [NormedAddCommGroup E] [Nor
     rw [e]; exact hf
 
 /- English proof (translation)
-Introduce `Lf`. Proceed by induction on `Lf with`. Consider the case `nil`. Introduce `_ _`. Simplify using `only [shape, step, List.map_nil, List.sum_nil, List.flatMap_nil]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hasDerivAt_const _ _`. Consider the case `cons e Lf ih`. Introduce `hL hm`. Establish `he : Good L e` using `hL e (by simp)`. Establish `hgp` using `domL_gpos hg`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnz` using `nz_of_domL hg he`. Establish `hcv` using `hasDerivAt_cv D fib hfib hX hgp e.1 hnz.1 hnz.2 he.2.1`. Establish `hRw : CkOn 1 (GV k r) (Rw e.2 F)`. Use `ckOn_rw_of_ckOn_add_length e.2 1 he.2.2 (sCkOn_mono ?_ hF)` and prove the remaining obligations. Use `hm e (by simp)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_comm]`. Conclude with `this` after adjusting the coercions. Establish `hR : HasDerivAt (fun s => Rw e.2 F (crv (false, X) g s)) (Rw (X :: e.2) F g) 0`. Rewrite using `[Rw_cons']`. Conclude with `CkOn_diff (x := (false, X)) hX hRw hgp.1 hgp.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcv'` using `((ContinuousLinearMap.restrictScalarsL ℂ (Wq →L[ℂ] Wp) (Wq →L[ℂ] Wp) ℝ ℝ).hasFDerivAt).comp_hasDerivAt (0 : ℝ) hcv`. Establish `h1` using `hcv'.clm_apply hR`. Establish `h2` using `ih (fun e' he' => hL e' (List.mem_cons_of_mem _ he')) (fun e' he' => hm e' (List.mem_cons_of_mem _ he'))`. Establish `h3` using `h1.add h2`. Use `show HasDerivAt (fun s => cv D fib e.1 (crv (false, X) g s) (Rw e.2 F (crv (false, X) g s)) + shape D fib F Lf (crv (false, X) g s)) _ 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h3.congr_deriv ?_` and prove the remaining obligations. Rewrite using `[crv_zero]`. Establish `hs : shape D fib F (step D X (e :: Lf)) g = shape D fib F (stepOne D X e) g + shape D fib F (step D X Lf) g`. Simplify using `only [step, shape_flatMap', List.map_cons, List.sum_cons]`. Rewrite using `[hs]`.
-
-Use `congr 1`. Simplify using `only [shape, stepOne, List.map_append, List.map_map, List.sum_append, Function.comp_def, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`. Rewrite using `[← list_sum_apply, crv_zero]`. Apply the tactic sequence `try rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma hasDerivAt_shape_crv_of_good (D : RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf → Mat k r → C6.EndH Wp Wq)
     (hfib : ∀ j, CkOn ⊤ (GPos D) (fib j)) (L : Finset (Fin (r + 2))) {m : ℕ} {F : Mat k r → (Wq →L[ℂ] Wp)}
@@ -156,7 +152,7 @@ private lemma hasDerivAt_shape_crv_of_good (D : RealPlaceData k r Wp Wq) {nf : �
     try rfl
 
 /- English proof (translation)
-Establish `hd` using `hasDerivAt_shape_crv_of_good D fib hfib L hF hX hg Lf hL hm`. Rewrite using `[← hd.deriv]`. Conclude with `Dx_eq (false, X) (shape D fib F Lf) g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem step_eq (D : RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf → Mat k r → C6.EndH Wp Wq)
     (hfib : ∀ j, CkOn ⊤ (GPos D) (fib j)) (L : Finset (Fin (r + 2))) {m : ℕ} {F : Mat k r → (Wq →L[ℂ] Wp)}
@@ -168,17 +164,15 @@ theorem step_eq (D : RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf → Mat k
   exact Dx_eq (false, X) (shape D fib F Lf) g
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro Lf _ _ _ g _`. Both sides reduce to the same expression. Consider the case `cons X w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Introduce `Lf hw hL hm g hg`. Establish `hX : inLie k r X` using `hw X (by simp)`. Establish `hw' : ∀ Y ∈ w, inLie k r Y` using `fun Y hY => hw Y (List.mem_cons_of_mem _ hY)`. Establish `hm' : ∀ e ∈ Lf, e.2.length + w.length ≤ m` using `fun e he => by`. Use `hm e he` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [List.length_cons] at this`. Use linear arithmetic over natural numbers and integers. Establish `hev : (fun t : ℝ => Rw w (shape D fib F Lf) (crv (false, X) g t)) =ᶠ[𝓝 0] (fun t => shape D fib F (steps D w Lf) (crv (false, X) g t))`. Establish `hV : g ∈ V0 D L` using `((mem_domL D L g).1 hg).2`. Use `filter_upwards [crv_ev (x := (false, X)) (isOpen_big_cell_set D L) hV] with t ht`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ih Lf hw' hL hm' _ ((mem_domL D L _).2 ⟨crv_mem (x := (false, X)) hX hg.1 t, ht⟩)`. Establish `hgood` using `good_steps D w hw' Lf hL`. Establish `hstep` using `step_eq D fib hfib L hF hX (Lf := steps D w Lf) (fun e he => (hgood e he).1) (fun e he => by`. Take `⟨-, e0, he0, hle⟩` from `hgood e he`. Use `hm e0 he0` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [List.length_cons] at this`. Use the proof step `omega) hg`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Rw_cons']`. Conclude with `Dx_eq (false, X) _ g`.
-
-Use `_ = deriv (fun t : ℝ => shape D fib F (steps D w Lf) (crv (false, X) g t)) 0 := hev.deriv_eq`. Use `_ = RdV X (shape D fib F (steps D w Lf)) g := (Dx_eq (false, X) _ g).symm`. Use `_ = shape D fib F (steps D (X :: w) Lf) g := hstep`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem expand (D : RealPlaceData k r Wp Wq) {nf : ℕ} (fib : Fin nf → Mat k r → C6.EndH Wp Wq)
     (hfib : ∀ j, CkOn ⊤ (GPos D) (fib j)) (L : Finset (Fin (r + 2))) {m : ℕ} {F : Mat k r → (Wq →L[ℂ] Wp)}

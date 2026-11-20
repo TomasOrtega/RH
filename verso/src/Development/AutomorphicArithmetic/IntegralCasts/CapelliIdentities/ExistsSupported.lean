@@ -1,13 +1,13 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `F _ _ p`. Establish `hp : p.asIdeal ∈ nonZeroDivisors (Ideal (NumberField.RingOfIntegers F))` using `mem_nonZeroDivisors_of_ne_zero p.ne_bot`. Take `⟨n, hn, hpow⟩` from `(isOfFinOrder_of_finite (ClassGroup.mk0 ⟨p.asIdeal, hp⟩)).exists_pow_eq_one`. Rewrite `hpow` using `[← map_pow]`. Establish `hprin : (p.asIdeal ^ n).IsPrincipal` using `(ClassGroup.mk0_eq_one_iff (pow_mem hp n)).1 hpow`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨π, hπ⟩` from `hprin`. Establish `hπ' : p.asIdeal ^ n = Ideal.span {π}` using `hπ`. Establish `hmem : π ∈ p.asIdeal ^ n` using `hπ' ▸ Ideal.mem_span_singleton_self π`. Use `⟨π, ?_, Ideal.pow_le_self hn.ne' hmem, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `hπ'` using `[Ideal.span_singleton_zero]`. Conclude with `pow_ne_zero n p.ne_bot hπ'`. Introduce `v hv hπv`. Establish `hle : p.asIdeal ^ n ≤ v.asIdeal`. Rewrite using `[hπ', Ideal.span_le, Set.singleton_subset_iff]`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hπv`. Establish `hle' : p.asIdeal ≤ v.asIdeal` using `v.isPrime.le_of_pow_le hle`. Conclude with `hv (IsDedekindDomain.HeightOneSpectrum.ext (p.isMaximal.eq_of_le v.isPrime.ne_top hle').symm)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qo8.exists_supported :
     ∀ {F : Type} [inst : Field F] [NumberField F]

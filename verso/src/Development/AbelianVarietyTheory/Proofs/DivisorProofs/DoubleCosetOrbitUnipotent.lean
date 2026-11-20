@@ -24,19 +24,19 @@ Both sides reduce to the same expression.
 theorem mat_mul' {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g h : UA σ J) : mat (g * h) = mat g * mat h := rfl
 
 /- English proof (translation)
-The claim follows from `g.1.mul_inv`.
+A detailed English derivation is pending.
 -/
 theorem mat_mul_inv {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) : mat g * mat g⁻¹ = 1 :=
   g.1.mul_inv
 
 /- English proof (translation)
-The claim follows from `g.1.inv_mul`.
+A detailed English derivation is pending.
 -/
 theorem mat_inv_mul {n : ℕ} {J : Matrix (Fin n) (Fin n) E} (g : UA σ J) : mat g⁻¹ * mat g = 1 :=
   g.1.inv_mul
 
 /- English proof (translation)
-Unfold `formA`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.vecMul_vecMul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem formA_col {d j : ℕ} (J : Matrix (Fin d) (Fin d) E) (Y : Matrix (Fin d) (Fin j) E) (z : Fin d → AE F E) (k : Fin j) :
     formA σ J z (incV F fun i => Y i k) = (z ᵥ* (incM F J * (incM F Y).map (cA σ))) k := by
@@ -45,11 +45,11 @@ theorem formA_col {d j : ℕ} (J : Matrix (Fin d) (Fin d) E) (Y : Matrix (Fin d)
   rfl
 
 /- English proof (translation)
-Establish `hiso : (mat h)ᵀ * incM F J * (mat h).map (cA σ) = incM F J` using `h.2`. Establish `hmap : ∀ M N : Matrix (Fin d) (Fin d) (AE F E), (M * N).map (cA σ) = M.map (cA σ) * N.map (cA σ)` using `fun M N => Matrix.map_mul (f := (cA σ).toRingHom)`. Establish `hmap' : ((mat h⁻¹) * incM F Y).map (cA σ) = (mat h⁻¹).map (cA σ) * (incM F Y).map (cA σ)` using `Matrix.map_mul (f := (cA σ).toRingHom)`. Establish `hmap'' : (incM F Y * C).map (cA σ) = (incM F Y).map (cA σ) * C.map (cA σ)` using `Matrix.map_mul (f := (cA σ).toRingHom)`. Establish `h1 : (mat h).map (cA σ) * (mat h⁻¹).map (cA σ) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hmap, mat_mul_inv]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h2 : (mat h)ᵀ * incM F J = incM F J * (mat h⁻¹).map (cA σ)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h1, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = incM F J * (mat h⁻¹).map (cA σ) := by rw [← Matrix.mul_assoc, hiso]`. Rewrite using `[← Matrix.vecMul_transpose, Matrix.vecMul_vecMul, ← Matrix.mul_assoc, h2, Matrix.mul_assoc, ← hmap', hC, hmap'', ← Matrix.mul_assoc, ← Matrix.vecMul_vecMul, hv, Matrix.zero_vecMul]`.
+A detailed English derivation is pending.
 -/
 theorem perp_map {d j : ℕ} {J : Matrix (Fin d) (Fin d) E} (Y : Matrix (Fin d) (Fin j) E) (h : UA σ J)
     (C : Matrix (Fin j) (Fin j) (AE F E)) (hC : mat h⁻¹ * incM F Y = incM F Y * C) (v : Fin d → AE F E)
@@ -72,20 +72,20 @@ theorem perp_map {d j : ℕ} {J : Matrix (Fin d) (Fin d) E} (Y : Matrix (Fin d) 
     hmap'', ← Matrix.mul_assoc, ← Matrix.vecMul_vecMul, hv, Matrix.zero_vecMul]
 
 /- English proof (translation)
-Simplify using `only [formA_col, funext_iff, Pi.zero_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem perp_iff {d j : ℕ} (J : Matrix (Fin d) (Fin d) E) (Y : Matrix (Fin d) (Fin j) E) (z : Fin d → AE F E) :
     (∀ k, formA σ J z (incV F fun i => Y i k) = 0) ↔ z ᵥ* (incM F J * (incM F Y).map (cA σ)) = 0 := by
   simp only [formA_col, funext_iff, Pi.zero_apply]
 
 /- English proof (translation)
-Take `⟨hu1, hu2, hu3⟩` from `hu`. Establish `hm : mat (g * u * g⁻¹) = mat g * mat u * mat g⁻¹` using `rfl`. Establish `hCi : mat g⁻¹⁻¹ * incM F Y = incM F Y * C` using `by rw [inv_inv]; exact hC`. Establish `hback : ∀ z, mat g *ᵥ (mat g⁻¹ *ᵥ z) = z` using `fun z => by`. Rewrite using `[Matrix.mulVec_mulVec, mat_mul_inv, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, fun z hz => ?_, fun z k => ?_⟩` and prove the remaining obligations. Rewrite using `[hm, Matrix.mul_assoc, hC', ← Matrix.mul_assoc, Matrix.mul_assoc (mat g), hu1, Matrix.mul_assoc, ← hC', ← Matrix.mul_assoc, mat_mul_inv, Matrix.one_mul]`. Establish `hw` using `perp_map (J := W.J) Y g⁻¹ C hCi z ((perp_iff W.J Y z).1 hz)`. Take `⟨a, ha⟩` from `hu2 _ ((perp_iff W.J Y _).2 hw)`. Use `⟨C *ᵥ a, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hm, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ha, Matrix.mulVec_add, hback, Matrix.mulVec_mulVec, hC, ← Matrix.mulVec_mulVec]`. Establish `h3 : mat (g * u * g⁻¹) *ᵥ z - z = mat g *ᵥ (mat u *ᵥ (mat g⁻¹ *ᵥ z) - mat g⁻¹ *ᵥ z)`. Rewrite using `[Matrix.mulVec_sub, hback, hm, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Establish `h4` using `(perp_iff W.J Y _).1 fun k => hu3 (mat g⁻¹ *ᵥ z) k`. Rewrite using `[h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(perp_iff W.J Y _).2 (perp_map (J := W.J) Y g C' hC' _ h4) k`.
+A detailed English derivation is pending.
 -/
 theorem conj_gen {d j : ℕ} (W : Spc F E d) (Y : Matrix (Fin d) (Fin j) E) (g : UA σ W.J)
     (C C' : Matrix (Fin j) (Fin j) (AE F E)) (hC : mat g * incM F Y = incM F Y * C)
@@ -116,17 +116,17 @@ theorem conj_gen {d j : ℕ} (W : Spc F E d) (Y : Matrix (Fin d) (Fin j) E) (g :
     exact (perp_iff W.J Y _).2 (perp_map (J := W.J) Y g C' hC' _ h4) k
 
 /- English proof (translation)
-Take `⟨g₀, hg₀⟩` from `MonoidHom.mem_range.1 (Subgroup.mem_subgroupOf.1 hg)`. Establish `hm : mat g = (g₀ : Matrix (Fin d) (Fin d) E).map (inclR (F` using `F) (AF F)) := by show g.1.val = _`. Rewrite using `[← hg₀]`. Both sides reduce to the same expression. Establish `hv : ∀ y, mat g *ᵥ incV F y = incV F ((g₀ : Matrix (Fin d) (Fin d) E) *ᵥ y)` using `fun y => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hm]`. Use function extensionality and compare the values at `k`. Simplify using `[incV, Matrix.mulVec, dotProduct, map_sum, map_mul]`. Establish `hP' : ∀ x, x ∈ diagSub (AE F E) finSumFinEquiv ↔ mat (γ * i (1, g) * γ⁻¹) *ᵥ x ∈ diagSub (AE F E) finSumFinEquiv` using `fun x => hP x`. Establish `key : ∀ a : Fin j → E, ∃ b, (g₀ : Matrix (Fin d) (Fin d) E) *ᵥ (Y *ᵥ a) = Y *ᵥ b`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Establish `h2` using `(hP' _).1 ((hiff (Y *ᵥ a)).2 ⟨a, rfl⟩)`. Establish `h3 : mat (γ * i (1, g) * γ⁻¹) *ᵥ (mat γ *ᵥ pairVec finSumFinEquiv 0 (incV F (Y *ᵥ a))) = mat γ *ᵥ pairVec finSumFinEquiv 0 (incV F ((g₀ : Matrix (Fin d) (Fin d) E) *ᵥ (Y *ᵥ a)))`. Rewrite using `[mat_mul', mat_mul', Matrix.mulVec_mulVec, Matrix.mul_assoc, mat_inv_mul, Matrix.mul_one, ← Matrix.mulVec_mulVec, hi, blkMat_mulVec, ← hv, Matrix.mulVec_zero]`. Rewrite `h2` using `[h3]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hiff _).1 h2`. Use `choose b hb using key`. Use `⟨incM F (Matrix.of fun l k => b (Pi.single k 1) l), ?_⟩` and prove the remaining obligations. Establish `hA : (g₀ : Matrix (Fin d) (Fin d) E) * Y = Y * Matrix.of fun l k => b (Pi.single k 1) l`. Use extensionality with `i' k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `congrFun (hb (Pi.single k 1)) i'` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_mulVec, Matrix.mulVec_single_one, Matrix.col_apply]`. Rewrite using `[this, Matrix.mul_apply]`. Simplify using `[Matrix.mulVec, dotProduct]`. Rewrite using `[hm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show _ * Y.map _ = Y.map _ * _`. Rewrite using `[← Matrix.map_mul, hA, Matrix.map_mul]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem span_stable {d j : ℕ} (W : Spc F E d) (W₂ : Spc F E (d + d))
     (i : UA σ W.J × UA σ W.J →* UA σ W₂.J) (hi : ∀ h h', mat (i (h, h')) = blkMat finSumFinEquiv (mat h) (mat h'))
@@ -168,15 +168,13 @@ theorem span_stable {d j : ℕ} (W : Spc F E d) (W₂ : Spc F E (d + d))
   rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _hcm B d r s W _hW W₂ _hW₂ i hi γ _hγ j Y _hY _hiso hiff g hg hP n hn`. Take `⟨C, hC⟩` from `span_stable W W₂ i hi γ Y hiff g hg hP`. Establish `hP2 : γ * i (1, g⁻¹) * γ⁻¹ ∈ siegelOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype`. Establish `e : γ * i (1, g⁻¹) * γ⁻¹ = (γ * i (1, g) * γ⁻¹)⁻¹`. Rewrite using `[show ((1 : UA σ W.J), g⁻¹) = ((1 : UA σ W.J), g)⁻¹ by simp, map_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[e]`. Conclude with `inv_mem hP`. Take `⟨C', hC'⟩` from `span_stable W W₂ i hi γ Y hiff g⁻¹ (inv_mem hg) hP2`. Unfold `GlobalTheory.ThKLiftCusp.unipSp at hn ⊢`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hn using Subgroup.closure_induction with`. Consider the case `mem x hx => exact Subgroup.subset_closure (conj_gen W Y g C C' hC hC' x hx)`. Consider the case `one => simp`. Consider the case `mul x y _ _ hx hy`. Establish `e : g * (x * y) * g⁻¹ = (g * x * g⁻¹) * (g * y * g⁻¹)` using `by group`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[e]`. Conclude with `mul_mem hx hy`. Consider the case `inv x _ hx`. Establish `e : g * x⁻¹ * g⁻¹ = (g * x * g⁻¹)⁻¹` using `by group`. Rewrite using `[e]`.
-
-Conclude with `inv_mem hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_unipSp : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (B : Base F E) (d r s : ℕ) (W : Spc F E d), W.IsSkew σ B r s →

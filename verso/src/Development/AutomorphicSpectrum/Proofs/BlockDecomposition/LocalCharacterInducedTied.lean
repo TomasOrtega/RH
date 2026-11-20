@@ -15,15 +15,15 @@ namespace GlobalTheory.CompanionTheory.HLCMul
 open Formalism.MainNotions.N Module
 
 /- English proof (translation)
-Establish `hm : ∀ τ a, multV (P.PD K) ν₃ τ a = if a = J₁ τ + J₂ τ then 1 else 0`. Introduce `τ a`. Use `GlobalTheory.TwistJump.multV_twist_char l P AI T K LL (Fin 1 → ↥LL.1) ν₁ ν₃ ν₂ χ₂ h₂ (fun g x => by rw [h₃, h₁, smul_smul, mul_comm]) d₂ τ (J₂ τ) (m₂ τ) (a - J₂ τ)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[this, m₁]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [sub_eq_iff_eq_add]`. Use `⟨?_, hm⟩` and prove the remaining obligations. Use `haveI := K.2`. Use `haveI := (GlobalTheory.Per.TiedDdR.ddR_finrank_le l P AI T K LL _ ν₃).1`. Establish `hc : Fintype.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = finrank ℚ_[l] ↥K.1`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Establish `hone : ∀ τ, finrank ↥LL.1 ↥(DdRE (P.PD K) ν₃ τ) = 1`. Introduce `τ`. Take `⟨hf, hle, -⟩` from `(GlobalTheory.Per.Components.components_finrank l P AI T K LL _ ν₃).1 τ`. Establish `hm1` using `hm τ (J₁ τ + J₂ τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hm1` using `[if_pos rfl, multV]`. Establish `hfil : finrank ↥LL.1 ↥(FildR (P.PD K) ν₃ τ (J₁ τ + J₂ τ)) ≤ finrank ↥LL.1 ↥(DdRE (P.PD K) ν₃ τ)` using `Submodule.finrank_mono (inf_le_left : FildR (P.PD K) ν₃ τ _ ≤ DdRE (P.PD K) ν₃ τ)`. Simplify using `only [finrank_fin_fun, finrank_self, Module.finrank_pi, Fintype.card_fin] at hle`. Use linear arithmetic over natural numbers and integers. Take `⟨e1, -⟩` from `GlobalTheory.DeRhamSplit.finrank_DdR (P.PD K) ν₃ hc 0`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[IsDR, e1, Finset.sum_congr rfl fun τ _ => hone τ]`. Simplify using `[hc]`.
+A detailed English derivation is pending.
 -/
 theorem char_mul {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T : LocTied l P AI)
     (K LL : FinExt l) (hcard : Nat.card (↥K.1 →ₐ[ℚ_[l]] ↥LL.1) = finrank ℚ_[l] ↥K.1)
@@ -61,7 +61,7 @@ theorem char_mul {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P) (T
   simp [hc]
 
 /- English proof (translation)
-Use extensionality with `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Simplify using `[LocBridge.repE, PositivityTheory.HodgeLocalCharacter.HLC.toGL1, Matrix.mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem repE_apply {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E Ω]
     {Gw : Subgroup (Ω ≃ₐ[E] Ω)} {O : Type} [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O]
@@ -73,9 +73,9 @@ theorem repE_apply {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [
   simp [LocBridge.repE, PositivityTheory.HodgeLocalCharacter.HLC.toGL1, Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Introduce and unpack `E Ω _ _ _ _ _ l _ P AI ⟨T⟩ w A _ O _ _ _ Bw _ LL' hLL ψ₁ ψ₂ J₁ J₂ ⟨-, m₁⟩ ⟨d₂, m₂⟩`. Establish `hcard` using `GlobalTheory.DeRhamSplit.card_emb Bw.Kw LL' fun τ x => hLL (Bw.LL_split τ x)`. Take `⟨a, b⟩` from `char_mul P AI T Bw.Kw LL' hcard (Bw.repE LL' ((PositivityTheory.HodgeLocalCharacter.HLC.toGL1 ↥LL'.1).comp ψ₁)) (Bw.repE LL' ((PositivityTheory.HodgeLocalCharacter.HLC.toGL1 ↥LL'.1).comp ψ₂)) (Bw.repE LL' ((PositivityTheory.HodgeLocalCharacter.HLC.toGL1 ↥LL'.1).comp (ψ₁ * ψ₂))) ( …`. Use `⟨?_, fun τ c => ?_⟩` and prove the remaining obligations. Unfold `IsDR at a`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Simplify `a` using `[LocBridge.IsdRE]`. Simplify `b τ c` using `[LocBridge.multE]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isdRJ_mul : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω] {l : ℕ} [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) →
     ∀ (w : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω), IsPlaceOver A w →

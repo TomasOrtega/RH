@@ -10,13 +10,13 @@ open GlobalTheory.TamSU GlobalTheory.SUVol GlobalTheory.UCls GlobalTheory.AdLat 
 namespace GlobalTheory.TamSU
 
 /- English proof (translation)
-Introduce `E _ _ _ r G Λ hr hU hS v`. Use `set q : ℝ := (Ideal.absNorm v.asIdeal : ℝ) with hq`. Establish `hq0 : q ≠ 0`. Rewrite using `[hq, Nat.cast_ne_zero, Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `v.ne_bot`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hconst : ∀ k, 1 ≤ k → (locCount (IsCMField.complexConj E).toAlgHom Gᵀ Λ v k : ℝ) / q ^ (k * (r ^ 2 - 1)) = locFactor E r v`. Introduce `k hk`. Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base`. Rewrite using `[GlobalTheory.T.local_count_one_eq_residue_order E r G Λ hr hU hS v, one_mul]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `succ k hk ih`. Rewrite using `[← ih, GlobalTheory.T.local_count_recursion E r G Λ hr hU hS v k hk, Nat.cast_mul, Nat.cast_pow, ← hq, add_mul, one_mul, pow_add]`. Clear the denominators using the available nonvanishing facts. Unfold `locVol`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Tendsto.limUnder_eq` to reduce the goal to its premises. Apply `tendsto_const_nhds.congr'` to reduce the goal to its premises. Use `filter_upwards [eventually_ge_atTop 1] with k hk`. Conclude with `(hconst k hk).symm`.
+A detailed English derivation is pending.
 -/
 theorem locVol_selfDual_eq_locFactor : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ)
     (G : Matrix (Fin r) (Fin r) E) (Λ : Submodule (𝓞 E) (Fin r → E)), 2 ≤ r → Unr E → SelfDualLat G Λ →

@@ -17,7 +17,7 @@ open ReciprocityTheory.Neutral.Bridge
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `h0 : 0 < ‖1 - z‖` using `lt_of_lt_of_le (by rw [norm_one, hz]; linarith) (norm_sub_norm_le 1 z)`. Rewrite using `[norm_inv, Real.exp_neg]`. Use `inv_anti₀ h0 ((norm_sub_le _ _).trans ?_)` and prove the remaining obligations. Rewrite using `[norm_one, hz, add_comm]`. Conclude with `Real.add_one_le_exp x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exp_neg_le_norm_inv {z : ℂ} {x : ℝ} (hx : x < 1) (hz : ‖z‖ = x) : Real.exp (-x) ≤ ‖(1 - z)⁻¹‖ := by
   have h0 : 0 < ‖1 - z‖ := lt_of_lt_of_le (by rw [norm_one, hz]; linarith) (norm_sub_norm_le 1 z)
@@ -27,7 +27,7 @@ theorem exp_neg_le_norm_inv {z : ℂ} {x : ℝ} (hx : x < 1) (hz : ‖z‖ = x) 
   exact Real.add_one_le_exp x
 
 /- English proof (translation)
-Rewrite using `[← Complex.ofReal_one, ← Complex.ofReal_sub, norm_inv, Complex.norm_real, Real.norm_of_nonneg (by linarith), le_inv_comm₀ (Real.exp_pos x) (by linarith), ← Real.exp_neg]`. Combine the linear relations using `[Real.add_one_le_exp (-x)]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem exp_le_inv {x : ℝ} (hx : x < 1) : Real.exp x ≤ ‖(1 - (x : ℂ))⁻¹‖ := by
   rw [← Complex.ofReal_one, ← Complex.ofReal_sub, norm_inv, Complex.norm_real, Real.norm_of_nonneg (by linarith),
@@ -35,21 +35,19 @@ theorem exp_le_inv {x : ℝ} (hx : x < 1) : Real.exp x ≤ ‖(1 - (x : ℂ))⁻
   linarith [Real.add_one_le_exp (-x)]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨Λ, ⟨hA, hP⟩, -⟩` from `(H K χ hu).2 hne`. Take `⟨C, hC⟩` from `exists_bound_primeIdealZetaSum_not_prime (K := K)`. Use `set A : Set (HeightOneSpectrum (𝓞 K)) := {w | ¬ (Ideal.absNorm w.asIdeal).Prime}`. Establish `key : ∀ s : ℝ, 1 < s → Real.exp (NumberField.Set.primeIdealZetaSum (Set.univ : Set (HeightOneSpectrum (𝓞 K))) s - 2 * (C + hS.toFinset.card)) ≤ ‖Λ s‖` using `fun s hs => by set x : HeightOneSpectrum (𝓞 K) → ℝ := fun w => (Ideal.absNorm w.asIdeal : ℝ) ^ (-s) with hx`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `x0 : ∀ w, 0 ≤ x w` using `fun w => by positivity`. Establish `x1 : ∀ w, x w < 1` using `fun w => Real.rpow_lt_one_of_one_lt_of_neg (by linarith [DedekindZetaReal.two_le_absNorm K w]) (by linarith)`. Establish `xc : ∀ w : HeightOneSpectrum (𝓞 K), ((Ideal.absNorm w.asIdeal : ℕ) : ℂ) ^ (-(s : ℂ)) = x w` using `fun w => by`. Rewrite using `[hx, Complex.ofReal_cpow (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `sx : Summable x` using `summable_absNorm_rpow K hs`. Establish `s1 : HasSum (fun w => x w - 2 * (A.indicator x w + (hS.toFinset : Set _).indicator x w)) (∑' w, x w - 2 * (∑' w : A, x w + ∑ w ∈ hS.toFinset, x w))` using `sx.hasSum.sub (((hasSum_subtype_iff_indicator.1 (sx.subtype A).hasSum).add (hasSum_subtype_iff_indicator.1 (hS.toFinset.hasSum x))).mul_left 2)`. Establish `le : ∀ w, Real.exp (x w - 2 * (A.indicator x w + (hS.toFinset : Set _).indicator x w)) ≤ ‖eulerFactor χ s w‖` using `fun w => by`. Distinguish the cases in `hw : w ∈ A ∨ w ∈ (hS.toFinset : Set _)`. Establish `a1` using `Set.indicator_nonneg (s := A) (fun v _ => x0 v) w`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `Set.indicator_nonneg (s := (hS.toFinset : Set _)) (fun v _ => x0 v) w`. Use `le_trans (b := Real.exp (-x w)) (Real.exp_le_exp.2 ?_) ?_` and prove the remaining obligations. Apply the tactic sequence `rcases hw with hw | hw <;> rw [Set.indicator_of_mem hw] at * <;> linarith`. Unfold `eulerFactor split_ifs`. Conclude with `exp_neg_le_norm_inv (x1 w) (by`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, xc, Complex.norm_real, Real.norm_of_nonneg (x0 w)]`. Conclude with `(congrArg (· * x w) (hu _)).trans (one_mul _))`. Rewrite using `[norm_one]; exact Real.exp_le_one_iff.2 (by linarith [x0 w])`. Use `push Not at hw`. Establish `hl` using `h w (by simpa using hw.2) (not_not.1 hw.1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Set.indicator_of_notMem hw.1, Set.indicator_of_notMem hw.2, eulerFactor, if_pos (show χ.UnrAt w from fun y _ => hl y), show χ.val w = 1 from hl _, xc]`. Simplify using `using exp_le_inv (x1 w)`. Use `le_trans (Real.exp_le_exp.2 ?_) (le_of_tendsto_of_tendsto' s1.rexp (hP s hs).norm fun T => Finset.prod_le_prod (fun _ _ => (Real.exp_pos _).le) fun w _ => le w)` and prove the remaining obligations. Establish `e1 : ∑' w : A, x w ≤ C` using `hC s hs`. Establish `e2 : ∑ w ∈ hS.toFinset, x w ≤ hS.toFinset.card`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `using Finset.sum_le_card_nsmul _ _ 1 fun w _ => (x1 w).le`. Rewrite using `[NumberField.Set.primeIdealZetaSum_def, tsum_univ x]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hc : Tendsto (fun s : ℝ => ‖Λ s‖) (𝓝[>] 1) (𝓝 ‖Λ 1‖)` using `(hA.continuousAt.tendsto.comp ((Complex.continuous_ofReal.tendsto' 1 1 (by simp)).mono_left nhdsWithin_le_nhds)).norm`. Use `not_tendsto_nhds_of_tendsto_atTop (tendsto_atTop_mono' _ ?_ (Real.tendsto_exp_atTop.comp (tendsto_atTop_add_const_right _ (-(2 * (C + hS.toFinset.card))) (tendsto_primeIdealZetaSum_univ K)))) _ hc` and prove the remaining obligations.
-
-Use `filter_upwards [self_mem_nhdsWithin] with s hs using key s hs`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hchar_eq_one (H : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) (χ : HChar K) (hu : χ.IsUnitary)
     {S : Set (HeightOneSpectrum (𝓞 K))} (hS : S.Finite)
@@ -103,7 +101,7 @@ theorem hchar_eq_one (H : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) (�
   filter_upwards [self_mem_nhdsWithin] with s hs using key s hs
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hn`. Use `push Not at hn`. Take `⟨t, ht⟩` from `GlobalTheory.HeckeOne.exists_normChar_ne_one (K := K)`. Conclude with `ht (hchar_eq_one H _ (GlobalTheory.HeckeOne.isUnitary_normChar t) hS fun w h1 h2 => absurd h2 (hn w h1))`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_prime_norm (H : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) {S : Set (HeightOneSpectrum (𝓞 K))} (hS : S.Finite) :
     ∃ w ∉ S, (Ideal.absNorm w.asIdeal).Prime := by
@@ -113,13 +111,13 @@ theorem exists_prime_norm (H : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOn
   exact ht (hchar_eq_one H _ (GlobalTheory.HeckeOne.isUnitary_normChar t) hS fun w h1 h2 => absurd h2 (hn w h1))
 
 /- English proof (translation)
-Take `⟨C, hC, hc⟩` from `GlobalTheory.IdeleCovolume.exists_compact_idele K`. Establish `: CompactSpace (Ideles K ⧸ M)` using `⟨by`. Use `(hC.image (QuotientGroup.continuous_mk (N := M))).of_isClosed_subset isClosed_univ fun q _ => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `QuotientGroup.mk_surjective q`. Take `⟨k, n, hk⟩` from `hc y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨_, hk, by`. Rewrite using `[mul_comm]`. Conclude with `QuotientGroup.mk_mul_of_mem y (mul_mem (h1 k) (zpow_mem h2 n))⟩⟩`. Assume the negation of the conclusion as `hz`. Take `⟨χ, hχ⟩` from `GroundTheory.Automorphic.CompactAbelianFourier.exists_char_ne_one (C := Ideles K ⧸ M) (g := z) fun e => hz ((QuotientGroup.eq_one_iff z).1 e)`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `c : Ideles K →* Circle` to `χ.toMonoidHom.comp (QuotientGroup.mk' M)`. Establish `cc : Continuous c` using `χ.continuous.comp QuotientGroup.continuous_mk`. Establish `c1 : ∀ y ∈ M, Circle.toUnits (c y) = 1` using `fun y hy => by`. Rewrite using `[show c y = χ (y : Ideles K ⧸ M) from rfl, (QuotientGroup.eq_one_iff y).2 hy, map_one, map_one]`. Set `X : HChar K` to `⟨Circle.toUnits.comp c, Units.continuous_iff.2 ⟨continuous_subtype_val.comp cc, (continuous_subtype_val.comp cc.inv).congr fun x => Circle.coe_inv (c x)⟩, fun k => c1 _ (h1 k)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hchar_eq_one H X (fun x => Circle.norm_coe (c x)) hS fun w a b x => c1 _ (h w a b x)` as an intermediate fact. Conclude with `hχ (Circle.ext (congrArg (fun Y : HChar K => ((Y.1 z : ℂˣ) : ℂ)) this))`.
+A detailed English derivation is pending.
 -/
 theorem closed_eq_top [IsTotallyComplex K] (H : GlobalTheory.Published.HeckeLEntireAndNonzeroAtOne) (M : Subgroup (Ideles K))
     (hM : IsClosed (M : Set (Ideles K))) (h1 : ∀ k, diagUnits K k ∈ M) (h2 : GlobalTheory.IdeleCovolume.eIdele K ∈ M)

@@ -11,23 +11,17 @@ open scoped TensorProduct ENNReal NNReal Matrix
 namespace GlobalTheory.CompanionTheory.SW.GramFib
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm m' hm' S`. Establish `hU` using `GlobalTheory.CompanionTheory.SW.KUnits.units_val_isOpenEmbedding F E σ hσ R hR`. Take `⟨hTR, hLC, hSC, hT2, -⟩` from `id hR`. Use `haveI := hTR`. Use `haveI := hLC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hSC`. Use `haveI := hT2`. Take `⟨hTK, hLK, hSK, hTK2, -, -, -, hBor, -, -⟩` from `GlobalTheory.CompanionTheory.SW.TopK.topTens_props F E σ hσ R`. Use `haveI := hTK`. Use `haveI := hLK`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := hSK`. Use `haveI := hTK2`. Use `haveI := hBor n M`. Take `⟨hL, hS2, hT, hB, hg⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ R n`. Use `haveI := hL`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `haveI := hS2`. Use `haveI := hT`. Use `haveI := hB`. Take `⟨g, hgc, hgf⟩` from `hg M J hJ`. Set `B : Set (HermR R σ n)` to `{S | IsUnit (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det}`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hBo : IsOpen B`. Establish `h1 : Continuous fun S : HermR R σ n => (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det` using `Continuous.matrix_det continuous_subtype_val`. Establish `h2 : B = (fun S : HermR R σ n => (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)).det) ⁻¹' Set.range (Units.val : (R ⊗[F] E)ˣ → R ⊗[F] E)`. Use extensionality with `S`. Simplify using `[B, IsUnit]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`. Conclude with `hU.isOpen_range.preimage h1`. Establish `hUB : {X | IsUnit (gramR R σ J X).det} = g ⁻¹' B`. Use extensionality with `X`. Simplify using `[B, hgf X]`.
-
-Establish `hι : Function.Injective (Subtype.val : HermR R σ n → Matrix (Fin n) (Fin n) (R ⊗[F] E))` using `Subtype.val_injective`. Establish `h1 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (g ⁻¹' B) ν B m`. Rewrite using `[← hUB]`. Conclude with `hm`. Establish `h2 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.IsFibreFamily μ (gramR R σ J) Subtype.val (g ⁻¹' B) ν B m'`.
-
-Rewrite using `[← hUB]`. Conclude with `hm'`. Distinguish the cases in `hS : S ∈ B`. Conclude with `(GlobalTheory.CompanionTheory.SW.FibreUniq.fibreFamily_eq _ _ _ μ ν (gramR R σ J) g Subtype.val hι hgc hgf B B hBo hBo subset_rfl m' m h2 h1 S hS)`. Establish `a` using `(GlobalTheory.CompanionTheory.SW.FibreFam.fibre_family_basic _ _ _ μ ν (gramR R σ J) g Subtype.val hι hgc hgf B hBo m h1).2.1 S hS`.
-
-Establish `b` using `(GlobalTheory.CompanionTheory.SW.FibreFam.fibre_family_basic _ _ _ μ ν (gramR R σ J) g Subtype.val hι hgc hgf B hBo m' h2).2.1 S hS`. Rewrite using `[a, b]`.
+A detailed English derivation is pending.
 -/
 theorem fibre_unique : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → ∀ (R : Type) [CommRing R] [Algebra F R] [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R], IsLocR R → ∀ (n : ℕ), ∀ (μ : Measure (Fin n → Fin M → R ⊗[F] E)) (ν : Measure (HermR R σ n)) (m : HermR R σ n → Measure (Fin n → Fin M → R ⊗[F] E)), μ.IsAddHaarMeasure → ν.IsAddHaarMeasure → IsGramFib R σ J n μ ν m → ∀ m', IsGramFib R σ J n μ ν m' → ∀ S, m S = m' S := by
   intro F E _ _ _ _ _ σ hσ M J hJ R _ _ _ _ _ hR n μ ν m hμ hν hm m' hm' S

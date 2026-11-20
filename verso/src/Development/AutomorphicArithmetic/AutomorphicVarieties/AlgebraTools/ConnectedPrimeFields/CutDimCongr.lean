@@ -9,9 +9,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h p hp`. Rewrite using `[← hp.radical_le_iff (I := I), h, hp.radical_le_iff]`. Introduce `h`. Rewrite using `[Ideal.radical_eq_sInf I, Ideal.radical_eq_sInf J]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `p`. Simplify using `only [Set.mem_setOf_eq]`. Conclude with `⟨fun ⟨h1, h2⟩ => ⟨(h p h2).mp h1, h2⟩, fun ⟨h1, h2⟩ => ⟨(h p h2).mpr h1, h2⟩⟩`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 private theorem cut_rad_iff {R : Type} [CommRing R] (I J : Ideal R) :
     I.radical = J.radical ↔ ∀ p : Ideal R, p.IsPrime → (I ≤ p ↔ J ≤ p) := by
@@ -26,7 +26,7 @@ private theorem cut_rad_iff {R : Type} [CommRing R] (I J : Ideal R) :
     exact ⟨fun ⟨h1, h2⟩ => ⟨(h p h2).mp h1, h2⟩, fun ⟨h1, h2⟩ => ⟨(h p h2).mpr h1, h2⟩⟩
 
 /- English proof (translation)
-Establish `e : PrimeSpectrum.zeroLocus (I : Set R) = PrimeSpectrum.zeroLocus (J : Set R)`. Rewrite using `[← PrimeSpectrum.zeroLocus_radical, h, PrimeSpectrum.zeroLocus_radical]`. Rewrite using `[ringKrullDim_quotient, ringKrullDim_quotient, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cut_dim_congr {R : Type} [CommRing R] {I J : Ideal R} (h : I.radical = J.radical) :
     ringKrullDim (R ⧸ I) = ringKrullDim (R ⧸ J) := by
@@ -35,11 +35,9 @@ private theorem cut_dim_congr {R : Type} [CommRing R] {I J : Ideal R} (h : I.rad
   rw [ringKrullDim_quotient, ringKrullDim_quotient, e]
 
 /- English proof (translation)
-Use `haveI : Nontrivial (R ⧸ I) := Ideal.Quotient.nontrivial_iff.mpr h`. Use `haveI : IsLocalRing (R ⧸ I) := IsLocalRing.of_surjective' (Ideal.Quotient.mk I) Ideal.Quotient.mk_surjective`. Establish `h1` using `ringKrullDim_ne_top (R := R ⧸ I)`. Establish `h2` using `ringKrullDim_ne_bot (R := R ⧸ I)`. Generalize the expression as in `ringKrullDim (R ⧸ I) = d at h1 h2 ⊢`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => exact absurd rfl h2`. Consider the case `coe d`. Proceed by induction on `d using ENat.recTopCoe with`. Consider the case `top => exact absurd rfl h1`.
-
-Consider the case `coe n => exact ⟨n, rfl⟩`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem cut_dim_nat {R : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     {I : Ideal R} (h : I ≠ ⊤) : ∃ n : ℕ, ringKrullDim (R ⧸ I) = n := by
@@ -57,11 +55,9 @@ private theorem cut_dim_nat {R : Type} [CommRing R] [IsLocalRing R] [IsNoetheria
     | coe n => exact ⟨n, rfl⟩
 
 /- English proof (translation)
-Rewrite using `[ReciprocityTheory.CA.ringKrullDim_quotient_eq_quotient_comap_of_isIntegral (A := A)]`. Apply `cut_dim_congr` to reduce the goal to its premises. Rewrite using `[cut_rad_iff]`. Introduce `p hp`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `le_trans Ideal.le_comap_map h`. Introduce `hJ haveI := hp`. Take `⟨Q, -, hQ, hQp⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral p (⊥ : Ideal R) (by simp [← RingHom.ker_eq_comap_bot, (RingHom.injective_iff_ker_eq_bot _).mp (FaithfulSMul.algebraMap_injective A R)])`. Establish `hle : J.map (algebraMap A R) ≤ Q` using `Ideal.map_le_iff_le_comap.mpr (hQp ▸ hJ)`.
-
-Conclude with `hQp ▸ Ideal.comap_mono hle`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cut_dim_map {A R : Type} [CommRing A] [CommRing R] [Algebra A R]
     [Algebra.IsIntegral A R] [FaithfulSMul A R] (J : Ideal A) :
@@ -82,11 +78,11 @@ private theorem cut_dim_map {A R : Type} [CommRing A] [CommRing R] [Algebra A R]
     exact hQp ▸ Ideal.comap_mono hle
 
 /- English proof (translation)
-Establish `hm : (maximalIdeal R).radical = maximalIdeal R` using `(maximalIdeal.isMaximal R).isPrime.radical`. Rewrite using `[← hm, cut_rad_iff]`. Introduce `p hp`. Prove the components needed by the constructor for the conclusion. Introduce `hIp haveI : Ring.KrullDimLE 0 (R ⧸ I) := Ring.krullDimLE_iff.mpr (by simp [h]) haveI := hp haveI hpm : (p.map (Ideal.Quotient.mk I)).IsPrime := Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker]) haveI hmax : (p.map (Ideal.Quotient.mk I)).IsMaxima …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpc : p = (p.map (Ideal.Quotient.mk I)).comap (Ideal.Quotient.mk I)`. Rewrite using `[Ideal.comap_map_of_surjective _ Ideal.Quotient.mk_surjective, ← RingHom.ker_eq_comap_bot, Ideal.mk_ker, sup_eq_left.mpr hIp]`. Establish `hpmax : p.IsMaximal`. Rewrite using `[hpc]`. Conclude with `Ideal.comap_isMaximal_of_surjective _ Ideal.Quotient.mk_surjective`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsLocalRing.eq_maximalIdeal hpmax]`. Introduce `hmp`. Conclude with `(IsLocalRing.le_maximalIdeal hI).trans hmp`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem cut_rad_max {R : Type} [CommRing R] [IsLocalRing R] {I : Ideal R} (hI : I ≠ ⊤)
     (h : ringKrullDim (R ⧸ I) = 0) : I.radical = maximalIdeal R := by
@@ -111,7 +107,7 @@ private theorem cut_rad_max {R : Type} [CommRing R] [IsLocalRing R] {I : Ideal R
     exact (IsLocalRing.le_maximalIdeal hI).trans hmp
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Use `haveI : Subsingleton (R ⧸ (⊤ : Ideal R)) := Ideal.Quotient.subsingleton_iff.mpr rfl`. Rewrite `h` using `[ringKrullDim_eq_bot_of_subsingleton, WithBot.bot_add]`. Conclude with `hk h.symm`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cut_ne_top {R : Type} [CommRing R] {I : Ideal R} {k : WithBot ℕ∞}
     (h : ringKrullDim (R ⧸ I) + 1 = k) (hk : k ≠ ⊥) : I ≠ ⊤ := by
@@ -121,51 +117,45 @@ private theorem cut_ne_top {R : Type} [CommRing R] {I : Ideal R} {k : WithBot �
   exact hk h.symm
 
 /- English proof (translation)
-Introduce `A R _ _ _ _ _ _ _ _ _ _ hCM`. Use `haveI : IsNoetherianRing A := hCM.1`. Use `haveI : IsNoetherianRing R := isNoetherian_of_tower A inferInstance`. Establish `hRA : ringKrullDim R = ringKrullDim A` using `ReciprocityTheory.CA.ringKrullDim_eq_of_isIntegral_of_injective (FaithfulSMul.algebraMap_injective A R)`. Take `⟨N, hN, -⟩` from `hCM.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hxs_ne : ∀ xs : List A, (∀ x ∈ xs, x ∈ maximalIdeal A) → Ideal.ofList xs ≠ ⊤`. Introduce `xs hxs`. Conclude with `ne_top_of_le_ne_top (maximalIdeal.isMaximal A).ne_top (Ideal.span_le.mpr fun y hy => hxs y hy)`. Establish `hsup_ne : ∀ b c : Ideal R, b ≠ ⊤ → c ≠ ⊤ → b ⊔ c ≠ ⊤` using `fun b c hb hc => ne_top_of_le_ne_top (maximalIdeal.isMaximal R).ne_top (sup_le (IsLocalRing.le_maximalIdeal hb) (IsLocalRing.le_maximalIdeal hc))`. Establish `key : ∀ d : ℕ, ∀ (xs : List A) (b c : Ideal R), (∀ x ∈ xs, x ∈ maximalIdeal A) → ringKrullDim (A ⧸ Ideal.ofList xs) + xs.length = ringKrullDim A → (b ⊓ c).radical = ((Ideal.ofList xs).map (algebraMap A R)).radical → b ≠ ⊤ → c ≠ ⊤ → ringKrullDim (R ⧸ (b ⊔ c)) < ringKrullDim (R ⧸ b …`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `xs b c hxs hdim hrad hb hc hlt1 hlt2 hd`. Establish `hbc` using `hsup_ne b c hb hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hd0 : ringKrullDim (R ⧸ (b ⊔ c)) = 0` using `by rw [hd, Nat.cast_zero]`. Establish `hmax` using `cut_rad_max hbc hd0`. Assume the negation of the conclusion as `hcon`. Take `⟨a, ha⟩` from `cut_dim_nat (hxs_ne xs hxs)`. Establish `hdim' : a + xs.length = N`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h'` using `hdim`. Rewrite `h'` using `[ha, hN]`. Conclude with `h'` after adjusting the coercions. Establish `hcon' : ¬ N ≤ 0 + 1 + xs.length`. Introduce `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `hcon` to reduce the goal to its premises. Rewrite using `[hRA, hN]`. Conclude with `h'` after adjusting the coercions. Establish `h2 : 2 ≤ ringKrullDim (A ⧸ Ideal.ofList xs)`. Rewrite using `[ha]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(by omega : 2 ≤ a)` after adjusting the coercions. Conclude with `base hCM xs b c hxs hdim h2 hrad hmax (by rwa [hd0] at hlt1) (by rwa [hd0] at hlt2)`. Consider the case `succ d ih`. Introduce `xs b c hxs hdim hrad hb hc hlt1 hlt2 hd`. Establish `hpos_bc : 0 < ringKrullDim (R ⧸ (b ⊔ c))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hd]`. Conclude with `Nat.succ_pos d` after adjusting the coercions. Establish `hpos_b : 0 < ringKrullDim (R ⧸ b)` using `hpos_bc.trans hlt1`. Establish `hpos_c : 0 < ringKrullDim (R ⧸ c)` using `hpos_bc.trans hlt2`. Establish `hpos_J : 0 < ringKrullDim (R ⧸ (Ideal.ofList xs).map (algebraMap A R))`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `e1 : ringKrullDim (R ⧸ (Ideal.ofList xs).map (algebraMap A R)) = ringKrullDim (R ⧸ (b ⊓ c))` using `cut_dim_congr hrad.symm`. Establish `e2 : ringKrullDim (R ⧸ (b ⊔ c)) ≤ ringKrullDim (R ⧸ (b ⊓ c))` using `ringKrullDim_le_of_surjective (Ideal.Quotient.factor (inf_le_sup : b ⊓ c ≤ b ⊔ c)) (Ideal.Quotient.factor_surjective inf_le_sup)`. Rewrite using `[e1]`. Conclude with `hpos_bc.trans_le e2`. Take `⟨x, hxm, hx⟩` from `drop (A := A) ({b ⊔ c, b, c, (Ideal.ofList xs).map (algebraMap A R)} : Finset (Ideal R)) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `I hI`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton] at hI`. Break down `hI with rfl | rfl | rfl | rfl` into its components or cases. Use `exacts [hpos_bc, hpos_b, hpos_c, hpos_J])`. Establish `hxbc` using `hx (b ⊔ c) (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxb` using `hx b (by simp)`. Establish `hxc` using `hx c (by simp)`. Establish `hxJ` using `hx ((Ideal.ofList xs).map (algebraMap A R)) (by simp)`. Take `⟨kb, hkb⟩` from `cut_dim_nat hb`. Take `⟨kc, hkc⟩` from `cut_dim_nat hc`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hb' : b ⊔ Ideal.span {algebraMap A R x} ≠ ⊤` using `cut_ne_top hxb (by rw [hkb]; simp)`. Establish `hc' : c ⊔ Ideal.span {algebraMap A R x} ≠ ⊤` using `cut_ne_top hxc (by rw [hkc]; simp)`. Take `⟨kb', hkb'⟩` from `cut_dim_nat hb'`. Take `⟨kc', hkc'⟩` from `cut_dim_nat hc'`. Establish `hbcs : (b ⊔ Ideal.span {algebraMap A R x}) ⊔ (c ⊔ Ideal.span {algebraMap A R x}) = (b ⊔ c) ⊔ Ideal.span {algebraMap A R x}` using `(sup_sup_distrib_right b c _).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, he⟩` from `cut_dim_nat (hsup_ne _ _ hb' hc')`. Rewrite `hxbc` using `[← hbcs, he, hd]`. Rewrite `hxb` using `[hkb', hkb]`. Rewrite `hxc` using `[hkc', hkc]`. Rewrite `hlt1` using `[hd, hkb]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `hlt2` using `[hd, hkc]`. Establish `ne : e + 1 = d + 1` using `by exact_mod_cast hxbc`. Establish `nb : kb' + 1 = kb` using `by exact_mod_cast hxb`. Establish `nc : kc' + 1 = kc` using `by exact_mod_cast hxc`. Establish `lb : d + 1 < kb` using `by exact_mod_cast hlt1`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `lc : d + 1 < kc` using `by exact_mod_cast hlt2`. Establish `hxs' : ∀ y ∈ x :: xs, y ∈ maximalIdeal A`. Introduce `y hy`. Break down `List.mem_cons.mp hy with rfl | hy` into its components or cases. Conclude with `hxm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hxs y hy`. Establish `hJ' : (Ideal.ofList (x :: xs)).map (algebraMap A R) = (Ideal.ofList xs).map (algebraMap A R) ⊔ Ideal.span {algebraMap A R x}`. Rewrite using `[Ideal.ofList_cons, Ideal.map_sup, Ideal.map_span, Set.image_singleton, sup_comm]`. Take `⟨a, ha⟩` from `cut_dim_nat (hxs_ne xs hxs)`. Take `⟨a', ha'⟩` from `cut_dim_nat (hxs_ne (x :: xs) hxs')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hxJ` using `[← hJ', cut_dim_map, cut_dim_map, ha, ha']`. Establish `na : a' + 1 = a` using `by exact_mod_cast hxJ`. Establish `hdimN : a + xs.length = N`. Establish `h'` using `hdim`. Rewrite `h'` using `[ha, hN]`.
+Rewrite the conclusion using the stated equalities. The claim follows by propositional logic. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h'` after adjusting the coercions. Establish `hdim' : ringKrullDim (A ⧸ Ideal.ofList (x :: xs)) + (x :: xs).length = ringKrullDim A`. Rewrite using `[ha', hN, List.length_cons]`. Conclude with `(by omega : a' + (xs.length + 1) = N)` after adjusting the coercions. Establish `hrad' : ((b ⊔ Ideal.span {algebraMap A R x}) ⊓ (c ⊔ Ideal.span {algebraMap A R x})).radical = ((Ideal.ofList (x :: xs)).map (algebraMap A R)).radical`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hJ', cut_rad_iff]`. Introduce `p hp`. Establish `hr` using `(cut_rad_iff _ _).mp hrad p hp`. Rewrite `hr` using `[hp.inf_le]`. Rewrite using `[hp.inf_le, sup_le_iff, sup_le_iff, sup_le_iff]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-The claim follows by propositional logic. Establish `h1' : ringKrullDim (R ⧸ ((b ⊔ Ideal.span {algebraMap A R x}) ⊔ (c ⊔ Ideal.span {algebraMap A R x}))) < ringKrullDim (R ⧸ (b ⊔ Ideal.span {algebraMap A R x}))`. Rewrite using `[he, hkb']`. Conclude with `(by omega : e < kb')` after adjusting the coercions. Establish `h2' : ringKrullDim (R ⧸ ((b ⊔ Ideal.span {algebraMap A R x}) ⊔ (c ⊔ Ideal.span {algebraMap A R x}))) < ringKrullDim (R ⧸ (c ⊔ Ideal.span {algebraMap A R x}))`.
-
-Rewrite using `[he, hkc']`. Conclude with `(by omega : e < kc')` after adjusting the coercions. Establish `hfin` using `ih (x :: xs) _ _ hxs' hdim' hrad' hb' hc' h1' h2' (by rw [he]; exact_mod_cast (by omega : e = d))`. Establish `heq : ((d : WithBot ℕ∞) + 1 + ((x :: xs).length : WithBot ℕ∞)) = ((d + 1 : ℕ) : WithBot ℕ∞) + 1 + (xs.length : WithBot ℕ∞)`. Rewrite using `[List.length_cons]`.
-
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← heq]`. Conclude with `hfin`. Introduce `xs b c hxs hdim hrad hb hc hlt1 hlt2`.
-
-Take `⟨d, hd⟩` from `cut_dim_nat (hsup_ne b c hb hc)`. Rewrite using `[hd]`. Conclude with `key d xs b c hxs hdim hrad hb hc hlt1 hlt2 hd`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.cut :
     ∀ {A R : Type} [CommRing A] [IsLocalRing A] [IsDomain A] [CommRing R] [IsLocalRing R] [IsDomain R] [Algebra A R] [Module.Finite A R] [FaithfulSMul A R] [IsAdicComplete (maximalIdeal A) A], ReciprocityTheory.CA.IsCM A → ∀ (xs : List A) (b c : Ideal R),

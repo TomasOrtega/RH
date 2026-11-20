@@ -18,9 +18,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Establish `hE : IsIntegral (𝓞 E) w`. Use `⟨Polynomial.X ^ 2 - Polynomial.C (algebraMap (𝓞 F) (𝓞 E) t) * Polynomial.X + Polynomial.C (algebraMap (𝓞 F) (𝓞 E) n), by monicity!, ?_⟩` and prove the remaining obligations. Establish `h1 : algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) t) = algebraMap F E t` using `rfl`. Establish `h2 : algebraMap (𝓞 E) E (algebraMap (𝓞 F) (𝓞 E) n) = algebraMap F E n` using `rfl`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_sub, Polynomial.eval₂_mul, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_C, h1, h2, ← ht, ← hn]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `isIntegral_trans (R := ℤ) w hE`.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem isIntegral_of_trace_norm (w : E) (t n : 𝓞 F) (ht : w + σ w = algebraMap F E t)
     (hn : w * σ w = algebraMap F E n) : IsIntegral ℤ w := by
@@ -35,15 +35,13 @@ theorem isIntegral_of_trace_norm (w : E) (t n : 𝓞 F) (ht : w + σ w = algebra
   exact isIntegral_trans (R := ℤ) w hE
 
 /- English proof (translation)
-Establish `hσ` using `GlobalTheory.SelfDualLatticeCompare.conj_conj h`. Set `W : 𝓞 E` to `⟨w, isIntegral_of_trace_norm w t n ht hn⟩`. Set `s : 𝓞 E →+* 𝓞 E` to `RingOfIntegers.mapRingHom (σ : E →+* E)`. Establish `hs : ∀ y : 𝓞 E, ((s y : 𝓞 E) : E) = σ y` using `fun _ => rfl`. Establish `hW : ((W : 𝓞 E) : E) = w` using `rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a, ha⟩` from `GlobalTheory.UnramifiedDiscriminant.exists_int_of_conj_eq h ((s x * W - x * s W) * (W - s W)) (by`. Express the relevant statement in the definitionally equal form `σ ((σ (x : E) * w - (x : E) * σ w) * (w - σ w)) = (σ (x : E) * w - (x : E) * σ w) * (w - σ w)`. Simplify using `only [map_mul, map_sub, hσ]`. Use the proof step `ring)`. Take `⟨b, hb⟩` from `GlobalTheory.UnramifiedDiscriminant.exists_int_of_conj_eq h ((x - s x) * (W - s W)) (by`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `σ (((x : E) - σ x) * (w - σ w)) = ((x : E) - σ x) * (w - σ w)`. Simplify using `only [map_mul, map_sub, hσ]`. Use the proof step `ring)`. Establish `ha' : algebraMap F E a = (σ x * w - x * σ w) * (w - σ w)`. Conclude with `congrArg (algebraMap (𝓞 E) E) ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hb' : algebraMap F E b = (x - σ x) * (w - σ w)`. Conclude with `congrArg (algebraMap (𝓞 E) E) hb`. Use `⟨a, b, ?_⟩` and prove the remaining obligations. Establish `hd : algebraMap F E ((t ^ 2 - 4 * n : 𝓞 F) : F) = (algebraMap F E t) ^ 2 - 4 * algebraMap F E n`. Use `push_cast`.
-
-Simplify using `[map_sub, map_pow, map_mul, map_ofNat]`. Rewrite using `[hd, ha', hb', ← ht, ← hn]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_coords (h : IsCMExt F E σ) (w : E) (t n : 𝓞 F) (ht : w + σ w = algebraMap F E t)
     (hn : w * σ w = algebraMap F E n) (x : 𝓞 E) :
@@ -76,21 +74,21 @@ theorem exists_coords (h : IsCMExt F E σ) (w : E) (t n : 𝓞 F) (ht : w + σ w
   ring
 
 /- English proof (translation)
-Rewrite using `[← Algebra.smul_def, ← Algebra.smul_def, ← TensorProduct.smul_tmul', TensorProduct.tmul_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tmul_move {K : Type} [Field K] [Algebra F K] (m : K) (r : F) (e : E) :
     (algebraMap F K r * m) ⊗ₜ[F] e = m ⊗ₜ[F] (algebraMap F E r * e) := by
   rw [← Algebra.smul_def, ← Algebra.smul_def, ← TensorProduct.smul_tmul', TensorProduct.tmul_smul]
 
 /- English proof (translation)
-Rewrite using `[TensorProduct.add_tmul, TensorProduct.add_tmul, add_add_add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coords_add {K : Type} [Field K] [Algebra F K] (a b a' b' : K) (w : E) :
     (a ⊗ₜ[F] (1 : E) + b ⊗ₜ[F] w) + (a' ⊗ₜ[F] (1 : E) + b' ⊗ₜ[F] w) = (a + a') ⊗ₜ[F] (1 : E) + (b + b') ⊗ₜ[F] w := by
   rw [TensorProduct.add_tmul, TensorProduct.add_tmul, add_add_add_comm]
 
 /- English proof (translation)
-Rewrite using `[TensorProduct.neg_tmul, TensorProduct.neg_tmul, neg_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coords_neg {K : Type} [Field K] [Algebra F K] (a b : K) (w : E) :
     -(a ⊗ₜ[F] (1 : E) + b ⊗ₜ[F] w) = (-a) ⊗ₜ[F] (1 : E) + (-b) ⊗ₜ[F] w := by
@@ -105,17 +103,17 @@ namespace GlobalTheory.FixedUnitNorm.Coords
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D v w t n ht hn hv z hz`. Establish `hcm` using `GlobalTheory.AdelicU.isCMExt_host D`. Establish `hcoe : ∀ r : 𝓞 D.host.F, ((algebraMap (𝓞 D.host.F) (v.adicCompletionIntegers D.host.F) r : v.adicCompletionIntegers D.host.F) : Fv D.host.F v) = algebraMap D.host.F (Fv D.host.F v) (r : D.host.F)` using `fun r => rfl`. Establish `hmem : ∀ r : 𝓞 D.host.F, algebraMap D.host.F (Fv D.host.F v) (r : D.host.F) ∈ v.adicCompletionIntegers D.host.F` using `fun r => hcoe r ▸ (algebraMap (𝓞 D.host.F) (v.adicCompletionIntegers D.host.F) r).2`. Take `⟨u, hu⟩` from `((GlobalTheory.SelfDualGenus.isUnit_algebraMap_iff v (t ^ 2 - 4 * n)).2 hv).exists_left_inv`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set U : Fv D.host.F v := ((u : v.adicCompletionIntegers D.host.F) : Fv D.host.F v) with hU`. Establish `hu' : U * algebraMap D.host.F (Fv D.host.F v) ((t ^ 2 - 4 * n : 𝓞 D.host.F) : D.host.F) = 1`. Use `congrArg (fun y : v.adicCompletionIntegers D.host.F => (y : Fv D.host.F v)) hu` as an intermediate fact. Rewrite `this` using `[MulMemClass.coe_mul, hcoe, OneMemClass.coe_one]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem y hy`. Take `⟨c, hc, x, rfl⟩` from `hy`. Take `⟨a, b, hab⟩` from `exists_coords hcm w t n ht hn x`. Use `⟨c * U * algebraMap D.host.F (Fv D.host.F v) (a : D.host.F), mul_mem (mul_mem hc u.2) (hmem a), c * U * algebraMap D.host.F (Fv D.host.F v) (b : D.host.F), mul_mem (mul_mem hc u.2) (hmem b), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc' : c = algebraMap D.host.F (Fv D.host.F v) ((t ^ 2 - 4 * n : 𝓞 D.host.F) : D.host.F) * (c * U)`. Rewrite using `[mul_comm, mul_assoc, hu', mul_one]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[TensorProduct.tmul_add, tmul_move, tmul_move]`. Use `_ = _ := by rw [mul_comm (algebraMap D.host.F (Fv D.host.F v) (a : D.host.F)), mul_comm (algebraMap D.host.F (Fv D.host.F v) (b : D.host.F))]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `zero => exact ⟨0, zero_mem _, 0, zero_mem _, by simp⟩`. Consider the case `add y y' _ _ h h'`. Take `⟨a, ha, b, hb, rfl⟩` from `h`. Take `⟨a', ha', b', hb', rfl⟩` from `h'`. Use `⟨a + a', add_mem ha ha', b + b', add_mem hb hb', ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `coords_add a b a' b' w`. Consider the case `neg y _ h`. Take `⟨a, ha, b, hb, rfl⟩` from `h`. Use `⟨-a, neg_mem ha, -b, neg_mem hb, ?_⟩` and prove the remaining obligations. Conclude with `coords_neg a b w`.
+A detailed English derivation is pending.
 -/
 theorem mem_intV_coords : ∀ (D : D7) (v : Pl D) (w : D.host.E) (t n : 𝓞 D.host.F),
     w + D.sp.cm.sig w = algebraMap D.host.F D.host.E t → w * D.sp.cm.sig w = algebraMap D.host.F D.host.E n →

@@ -17,17 +17,17 @@ variable {K V W : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V] 
   [IsScalarTower (𝓞 K) K W] {H : HermSpace K V} {HW : HermSpace K W} {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[← H.herm, h, star_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem B_swap {x y : V} (h : H.B x y = 0) : H.B y x = 0 := by
   rw [← H.herm, h, star_zero]
 
 /- English proof (translation)
-Establish `key : ∀ b : Fin r, H.B (F.e b.castSucc) (F.e a) = 0`. Introduce `b`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact F.zperp b`. Consider the case `cast c => exact F.iso b c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `: F.X ≤ LinearMap.ker (H.B.flip (F.e a))`. Unfold `FlagD.X FlagD.Xa`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, -, rfl⟩`. Simplify using `using key b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this hx`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem X_B_e (F : FlagD H r) (a : Fin (r + 1)) (x : V) (hx : x ∈ F.X) : H.B x (F.e a) = 0 := by
   have key : ∀ b : Fin r, H.B (F.e b.castSucc) (F.e a) = 0 := by
@@ -43,9 +43,9 @@ theorem X_B_e (F : FlagD H r) (a : Fin (r + 1)) (x : V) (hx : x ∈ F.X) : H.B x
   simpa using this hx
 
 /- English proof (translation)
-Establish `: F.X ≤ LinearMap.ker (H.B.flip v)`. Unfold `FlagD.X FlagD.Xa`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨b, -, rfl⟩`. Simplify using `using hv b.castSucc`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this hx`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem X_B_perp (F : FlagD H r) {v : V} (hv : ∀ a : Fin (r + 1), H.B (F.e a) v = 0) (x : V) (hx : x ∈ F.X) :
     H.B x v = 0 := by
@@ -57,7 +57,7 @@ theorem X_B_perp (F : FlagD H r) {v : V} (hv : ∀ a : Fin (r + 1), H.B (F.e a) 
   simpa using this hx
 
 /- English proof (translation)
-Unfold `V0`. Proceed by induction on `a using Fin.lastCases with`. Consider the case `last => exact Submodule.mem_sup_right (Submodule.subset_span (Set.mem_insert _ _))`. Consider the case `cast c => exact Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.subset_span ⟨c, c.2, rfl⟩))`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem flag_vector_mem_base_lattice (F : FlagD H r) (a : Fin (r + 1)) : F.e a ∈ V0 F F := by
   unfold V0
@@ -66,11 +66,11 @@ theorem flag_vector_mem_base_lattice (F : FlagD H r) (a : Fin (r + 1)) : F.e a �
   | cast c => exact Submodule.mem_sup_left (Submodule.mem_sup_left (Submodule.subset_span ⟨c, c.2, rfl⟩))
 
 /- English proof (translation)
-Rewrite using `[wSp, mem_perp_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h a`. Conclude with `B_swap (h _ (flag_vector_mem_base_lattice F a))`. Introduce `h x hx`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `B_swap` to reduce the goal to its premises. Establish `: V0 F F ≤ LinearMap.ker (H.B.flip v)`. Unfold `V0`. Use `sup_le (sup_le ?_ ?_) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using X_B_perp F h y hy`. Introduce `y hy`. Simplify using `using X_B_perp F h y hy`. Apply the tactic sequence `rintro _ (rfl | rfl) <;> simpa [FlagD.z] using h (Fin.last r)`. Simplify using `using this hx`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_wSp (F : FlagD H r) (v : V) : v ∈ wSp F F ↔ ∀ a, H.B (F.e a) v = 0 := by
   rw [wSp, mem_perp_iff]
@@ -88,9 +88,9 @@ theorem mem_wSp (F : FlagD H r) (v : V) : v ∈ wSp F F ↔ ∀ a, H.B (F.e a) v
     simpa using this hx
 
 /- English proof (translation)
-Simplify using `only [flagPairDefinitePartLattice, latL, Submodule.mem_inf, Submodule.restrictScalars_mem]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨-, h1⟩, h2⟩`. Conclude with `⟨h1, h2⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨?_, h1⟩, h2⟩` and prove the remaining obligations. Rewrite using `[uPerp, mem_perp_iff]`. Rewrite `h2` using `[wSp, mem_perp_iff]`. Conclude with `fun x hx => h2 x ((le_sup_left : F.X ⊔ F.X ≤ V0 F F) hx)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_perp_lattice_flag_iff (F : FlagD H r) (Λ : Submodule (𝓞 K) V) (v : V) :
     v ∈ flagPairDefinitePartLattice F F Λ ↔ v ∈ Λ ⊔ rs (𝓞 K) F.X ∧ v ∈ wSp F F := by
@@ -106,66 +106,64 @@ theorem mem_perp_lattice_flag_iff (F : FlagD H r) (Λ : Submodule (𝓞 K) V) (v
 variable {F : FlagD H r} {e : W →ₗ[K] V}
 
 /- English proof (translation)
-The claim follows from `(hE.2 _).2 (Submodule.mem_sup_left ⟨w, rfl⟩) a`.
+A detailed English derivation is pending.
 -/
 theorem e_perp (hE : IsEmb F HW e) (w : W) (a : Fin (r + 1)) : H.B (F.e a) (e w) = 0 :=
   (hE.2 _).2 (Submodule.mem_sup_left ⟨w, rfl⟩) a
 
 /- English proof (translation)
-The claim follows from `(mem_wSp F _).2 (e_perp hE w)`.
+A detailed English derivation is pending.
 -/
 theorem e_wSp (hE : IsEmb F HW e) (w : W) : e w ∈ wSp F F := (mem_wSp F _).2 (e_perp hE w)
 
 /- English proof (translation)
-The claim follows from `(mem_wSp F _).2 fun a => B_swap (X_B_e F a x hx)`.
+A detailed English derivation is pending.
 -/
 theorem X_wSp (x : V) (hx : x ∈ F.X) : x ∈ wSp F F :=
   (mem_wSp F _).2 fun a => B_swap (X_B_e F a x hx)
 
 /- English proof (translation)
-Take `⟨_, ⟨w, rfl⟩, z, hz, h⟩` from `Submodule.mem_sup.1 ((hE.2 v).1 ((mem_wSp F v).1 hv))`. Conclude with `⟨w, by rw [← h]; simpa using hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem decomp (hE : IsEmb F HW e) {v : V} (hv : v ∈ wSp F F) : ∃ w, v - e w ∈ F.X := by
   obtain ⟨_, ⟨w, rfl⟩, z, hz, h⟩ := Submodule.mem_sup.1 ((hE.2 v).1 ((mem_wSp F v).1 hv))
   exact ⟨w, by rw [← h]; simpa using hz⟩
 
 /- English proof (translation)
-The claim follows from `X_B_perp F (e_perp hE w) x hx`.
+A detailed English derivation is pending.
 -/
 theorem XB_e (hE : IsEmb F HW e) (x : V) (hx : x ∈ F.X) (w : W) : H.B x (e w) = 0 :=
   X_B_perp F (e_perp hE w) x hx
 
 /- English proof (translation)
-The claim follows from `(mem_perp_lattice_flag_iff F Λ _).trans ⟨fun h => h.1, fun h => ⟨h, e_wSp hE w⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem memL_e (hE : IsEmb F HW e) (Λ : Submodule (𝓞 K) V) (w : W) :
     e w ∈ flagPairDefinitePartLattice F F Λ ↔ w ∈ lat0 F e Λ :=
   (mem_perp_lattice_flag_iff F Λ _).trans ⟨fun h => h.1, fun h => ⟨h, e_wSp hE w⟩⟩
 
 /- English proof (translation)
-The claim follows from `(mem_perp_lattice_flag_iff F Λ x).2 ⟨Submodule.mem_sup_right hx, X_wSp x hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem X_L (Λ : Submodule (𝓞 K) V) (x : V) (hx : x ∈ F.X) : x ∈ flagPairDefinitePartLattice F F Λ :=
   (mem_perp_lattice_flag_iff F Λ x).2 ⟨Submodule.mem_sup_right hx, X_wSp x hx⟩
 
 /- English proof (translation)
-Use `set L := flagPairDefinitePartLattice F F Λ with hL`. Use `set M := lat0 F e Λ with hM`. Use `set DW := Formalism.HermitianLatticesTheory.dual HW.B.flip M with hDW`. Use `set DV := dual H L with hDV`. Establish `hmemW : ∀ w, w ∈ DW ↔ ∀ y ∈ M, HW.B w y ∈ (1 : Submodule (𝓞 K) K)` using `fun w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hDW, Formalism.HermitianLatticesTheory.dualBasic_mem_dual]`. Simplify using `only [LinearMap.flip_apply]`. Establish `hin : ∀ w : DW, e w ∈ DV`. Introduce and unpack `⟨w, hw⟩`. Rewrite using `[hDV, mem_dual_iff, hspan]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨e_wSp hE w, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨w', hw'⟩` from `decomp hE ((mem_perp_lattice_flag_iff F Λ x).1 hx).2`. Establish `hw'M : w' ∈ M` using `(memL_e hE Λ w').1 (by simpa using L.sub_mem hx (X_L Λ _ hw'))`. Establish `h1 : H.B (e w) x = HW.B w w'`. Establish `e1 : x = e w' + (x - e w')` using `by abel`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[e1, map_add, B_swap (XB_e hE _ hw' w), add_zero, hE.1]`. Rewrite using `[h1]`. Conclude with `(hmemW w).1 hw w' hw'M`. Set `f : DW →ₗ[𝓞 K] DV` to `LinearMap.codRestrict DV ((e.restrictScalars (𝓞 K)).comp DW.subtype) (fun w => hin w)`. Set `Φ` to `(L.comap DV.subtype).mkQ ∘ₗ f`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : LinearMap.ker Φ = M.comap DW.subtype`. Use extensionality with `w`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.mem_comap]`. Conclude with `memL_e hE Λ w`. Establish `hsurj : Function.Surjective Φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `q`. Take `⟨⟨v, hv⟩, rfl⟩` from `Submodule.mkQ_surjective _ q`. Establish `hv'` using `(mem_dual_iff H L v).1 hv`. Rewrite `hv'` using `[hspan]`. Take `⟨w, hw⟩` from `decomp hE hv'.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hwD : w ∈ DW` using `(hmemW w).2 fun y hy => by`. Establish `h1 : HW.B w y = H.B v (e y)`. Rewrite using `[← hE.1]`. Establish `e1 : v = e w + (v - e w)` using `by abel`. Use `conv_rhs => rw [e1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Rewrite using `[map_add, LinearMap.add_apply, XB_e hE (v - e w) hw y, add_zero]`. Rewrite using `[h1]`. Conclude with `hv'.2 _ ((memL_e hE Λ y).2 hy)`. Use `⟨⟨w, hwD⟩, ?_⟩` and prove the remaining obligations. Use `show Submodule.Quotient.mk (f ⟨w, hwD⟩) = Submodule.Quotient.mk ⟨v, hv⟩`.
-
-Rewrite using `[Submodule.Quotient.eq]`. Use `show e w - v ∈ L`. Use `L.neg_mem (X_L Λ _ hw)` as an intermediate fact. Simplify using `using this`. Conclude with `⟨(Submodule.quotEquivOfEq _ _ hker.symm).trans (Φ.quotKerEquivOfSurjective hsurj)⟩`.
+A detailed English derivation is pending.
 -/
 theorem quotEquiv (hE : IsEmb F HW e) (Λ : Submodule (𝓞 K) V)
     (hspan : Submodule.span K (flagPairDefinitePartLattice F F Λ : Set V) = wSp F F) :
@@ -231,13 +229,13 @@ open LatticeOrthogonalComplement
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `D large₂ X Y u hS W HW hE Λ hΛ`. Take `⟨hCM, -, -, -, -, -, -, -, -, -, -, hg, -⟩` from `GlobalTheory.T.unitaryHostFieldArithmeticConditions D large₂ hS`. Take `⟨N, hF, hF', -, hT, -, hTerm, -, -⟩` from `GlobalTheory.T.fixedFrameSelfNormalFormExists_proof D large₂ X Y u hS Λ (Or.inl hΛ)`. Establish `hg1 : 1 ≤ gS D` using `by omega`. Take `⟨-, -, -, hLat, -, hNe⟩` from `GlobalTheory.DegCnt.PrimPerp.main _ _ (HV D) hCM D.R.rS N (gS D) Λ hg1 hTerm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `hLat`, `hNe` using `[hF, hF']`. Rewrite `hNe` using `[hT]`. Establish `hAd : Adapt (F0 X u) (F0 X u) N.𝔡 N`. Use `adapt_self N` as an intermediate fact. Rewrite `this` using `[hF, hF']`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Take `⟨⟨hInt, -⟩, -⟩` from `GlobalTheory.DegAsm.isDat_datOf _ _ _ (HV D) HW W.subtype hCM D.R.rS (F0 X u) (F0 X u) N.𝔡 N (gS D) Λ hg1 hE hAd hTerm`. Establish `hd : (datOf (F0 X u) (F0 X u) W.subtype (gS D) Λ).1 = lat0 (F0 X u) W.subtype Λ`. Use extensionality with `w`. Express the relevant statement in the definitionally equal form `W.subtype w ∈ flagPairDefinitePartLattice (F0 X u) (F0 X u) Λ ⊔ rs _ (F0 X u).X ↔ w ∈ lat0 (F0 X u) W.subtype Λ`. Rewrite using `[sup_eq_left.2 (fun x hx => X_L Λ x hx), memL_e hE Λ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hd ▸ hInt, ?_⟩` and prove the remaining obligations. Take `⟨q⟩` from `quotEquiv hE Λ hLat.2`. Take `⟨i⟩` from `hNe`. Conclude with `⟨q.trans i⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lat0C : LatticeNormalizationCondition := by
   intro D large₂ X Y u hS W HW hE Λ hΛ

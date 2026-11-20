@@ -23,13 +23,13 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.SiegLower
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `DVR.exists_gen_of_isLB_local (V := K) (L.pull (eSec A)) (pull_isLB hL _)`. Set `M : RigLB A` to `⟨L, r, hL, hr⟩`. Take `⟨t, ht⟩` from `AbLaw.CubeProj.exists_gen_theta_abelianVariety globalFns_holds K A hA (AbelianProjective.isProjBy_of_isAbelianScheme K A hA) L hL`. Take `⟨t', ht', hn⟩` from `AbLaw.Cube.exists_normalised hL t ht`. Set `cub : CubicalStr A M` to `AbLaw.Cube.cubicalOfNormalised globalFns_holds hA M t' ht' hn`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hx' : (x ^ d) ^ n = 1` using `by rw [← pow_mul, mul_comm, hx]`. Establish `hy' : (y ^ d) ^ n = 1` using `by rw [← pow_mul, mul_comm, hy]`. Take `⟨w, hw⟩` from `exists_weil cub hx' hy'`. Establish `h₁ : Out.WeilIs A L n (x ^ d) (y ^ d) w` using `(weilIs_iff cub globalFns_holds hA hx' hy' hw w).2 rfl`. Establish `h'` using `CommPairing.weilIs_symm hL h`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : ∀ j : ℕ, Out.WeilIs A L ((n * d : ℕ) : ℤ) (y ^ (j + 1)) x (c⁻¹ ^ (j + 1))` using `fun j => by`. Proceed by induction on `j with`. Consider the case `zero => rwa [zero_add, pow_one, pow_one]`. Consider the case `succ j ih => rw [pow_succ, pow_succ c⁻¹]`. Conclude with `SiegelTypings.weilIs_mul hA hL ih h'`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨j, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero hd`. Establish `h₂` using `CommPairing.weilIs_symm hL (hp j)`. Rewrite `h₂` using `[inv_pow, inv_inv, Nat.cast_mul]`. Rewrite using `[PairingLevels.weilIs_value_eq globalFns_holds hA hL ht h₂ h₁]`. Conclude with `h₁`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_lower_field {K : Type} [Field K] [IsAlgClosed K] {A : Over (Sp K)} [GrpObj A] [IsCommMonObj A]
     (hA : IsAbelianScheme A) {L : LB A.left} (hL : L.IsLB) {n d : ℕ} (hd : d ≠ 0) {T : Over (Sp K)} {x y : T ⟶ A}
@@ -59,11 +59,11 @@ theorem weilIs_lower_field {K : Type} [Field K] [IsAlgClosed K] {A : Over (Sp K)
 variable {h N : ℕ} {B' : Type} [CommRing B'] {ζ' : B'} {S : Scheme.{0}} {s' : S ⟶ Sp B'}
 
 /- English proof (translation)
-Take `⟨c, φ, φ₂, pb, sq, iso, -⟩` from `(siegPre_pullback h N B' ζ' S _ s' _ p C rfl).1`. Establish `key : ∀ q : Sp K ⟶ S, q = 𝟙 _ ≫ p → ∀ (x y : Over.mk q ⟶ C.A) (u : Kˣ), x ^ (n * d) = 1 → y ^ (n * d) = 1 → Out.WeilIs C.A C.diag ((n * d : ℕ) : ℤ) x y (unitOn u) → Out.WeilIs C.A C.diag n (x ^ d) (y ^ d) (unitOn (u ^ d))`. Introduce and unpack `q rfl x y u hx hy H`. Set `e` to `ObjPull.pushEquiv pb (Over.mk (𝟙 (Sp K)))`. Take `⟨x, rfl⟩` from `e.surjective x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `e.surjective y`. Establish `tr` using `fun (k : ℤ) (a b : Over.mk (𝟙 (Sp K)) ⟶ c.A) (v : Γ(Sp K, ⊤)ˣ) => weilIs_grpPullback_of_comm S _ C.A c.A p φ C.diag c.diag (pull_isLB C.isLB _) (pull_isLB c.isLB _) pb (SiegelPull.diag_iso sq iso) (Over.mk (𝟙 _)) k a b (e a) (e b) v rfl rfl`. Establish `hx' : x ^ (n * d) = 1` using `e.injective ((map_pow e _ _).trans (hx.trans (map_one e).symm))`. Establish `hy' : y ^ (n * d) = 1` using `e.injective ((map_pow e _ _).trans (hy.trans (map_one e).symm))`. Establish `H'` using `(tr _ _ _ _).1 (weilIs_lower_field c.ab (pull_isLB c.isLB _) hd hx' hy' ((tr _ _ _ _).2 H))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `H'` using `[map_pow, map_pow]`. Establish `e' : unitOn (u ^ d) = unitOn u ^ d` using `map_pow _ _ _`. Rewrite using `[e']`. Conclude with `H'`. Conclude with `key p (Category.id_comp p).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilIs_lower (C : SiegPre h N ζ' s') {K : Type} [Field K] [IsAlgClosed K] (p : Sp K ⟶ S) {n d : ℕ} (hd : d ≠ 0) :
     ∀ (x y : Over.mk p ⟶ C.A) (u : Kˣ), x ^ (n * d) = 1 → y ^ (n * d) = 1 →
@@ -137,7 +137,7 @@ def lower (C : SiegPre h N ζ' s') {n d : ℕ} (hN : N = n * d) (h0 : N ≠ 0) {
       exact H
 
 /- English proof (translation)
-Use `⟨(IsPullback.of_horiz_isIso ⟨by simp⟩ : IsPullback (𝟙 G.left) G.hom G.hom (𝟙 S)), fun T x y x₀ y₀ hx hy => ?_⟩` and prove the remaining obligations. Use `Eq.trans ?_ (Category.comp_id _).symm` and prove the remaining obligations. Conclude with `mul_left_congr (b := T.hom) (Category.comp_id _) x₀ y₀ x y (hx.trans (Category.comp_id _)) (hy.trans (Category.comp_id _))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isGrpPullback_id (G : Over S) [GrpObj G] : IsGrpPullback G G (𝟙 S) (𝟙 G.left) := by
   refine ⟨(IsPullback.of_horiz_isIso ⟨by simp⟩ : IsPullback (𝟙 G.left) G.hom G.hom (𝟙 S)),
@@ -147,15 +147,15 @@ theorem isGrpPullback_id (G : Over S) [GrpObj G] : IsGrpPullback G G (𝟙 S) (�
     (hy.trans (Category.comp_id _))
 
 /- English proof (translation)
-The claim follows from `(LBIso.chartPull (Geo.Tor.chartPullPull L (𝟙 _) (𝟙 _) rfl) (chartPullId L) (lbIso_refl hL)).symm`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_pull_id {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) : LBIso L (L.pull (𝟙 X)) :=
   (LBIso.chartPull (Geo.Tor.chartPullPull L (𝟙 _) (𝟙 _) rfl) (chartPullId L) (lbIso_refl hL)).symm
 
 /- English proof (translation)
-Introduce `h n N B B' _ _ ζ ζ' j S s' C h0 _ hn hj`. Establish `sq : IsSquare (G'` using `C.A) (G := C.A) (𝟙 _) (𝟙 _) := ⟨by simp, by simp⟩`. Use `⟨lower C (Nat.mul_div_cancel' hn).symm h0 j hj, ⟨𝟙 _, isGrpPullback_id C.A, ⟨𝟙 _, sq, lbIso_pull_id C.isLB⟩, fun a => ?_⟩, ⟨𝟙 _, isGrpPullback_id C.A, ⟨𝟙 _, sq, lbIso_pull_id C.isLB⟩, fun a => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[pow_one]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_one]`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_lower : ∀ (h n N : ℕ) (B B' : Type) [CommRing B] [CommRing B'] (ζ : B) (ζ' : B') (j : B →+* B')
     (S : Scheme.{0}) (s' : S ⟶ Sp B') (C : SiegPre h N ζ' s'), N ≠ 0 → IsUnit (N : B') → n ∣ N → j ζ = ζ' ^ (N / n) →

@@ -13,14 +13,14 @@ variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {G : Over X} [GrpObj G] {ξ : S
   {E : Type} [AddCommGroup E] [Module Ω E]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])`.
+A detailed English derivation is pending.
 -/
 theorem dualMap_comp {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (φ : R →+* R') (ψ : R' →+* R'') :
     dualMap (ψ.comp φ) = (dualMap ψ).comp (dualMap φ) :=
   RingHom.ext fun a => TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `dualMap φ (TrivSqZeroExt.inl a) = TrivSqZeroExt.inl (φ a)`. Conclude with `TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])`.
+Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem dualMap_algebraMap {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+* R') (a : R) :
     dualMap φ (algebraMap R (DualNumber R) a) = algebraMap R' (DualNumber R') (φ a) := by
@@ -28,7 +28,7 @@ theorem dualMap_algebraMap {R R' : Type} [CommRing R] [CommRing R'] (φ : R →+
   exact TrivSqZeroExt.ext (by simp [dualMap]) (by simp [dualMap])
 
 /- English proof (translation)
-Establish `h : (spMap (starRingEnd ℂ)) (IsLocalRing.closedPoint ℂ) = IsLocalRing.closedPoint ℂ` using `Subsingleton.elim (α := PrimeSpectrum ℂ) _ _`. Conclude with `congrArg (fun p => z p) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem centre_conj (z : Spec (CommRingCat.of ℂ) ⟶ X) : centre (spMap (starRingEnd ℂ) ≫ z) = centre z := by
   have h : (spMap (starRingEnd ℂ)) (IsLocalRing.closedPoint ℂ) = IsLocalRing.closedPoint ℂ :=
@@ -36,9 +36,9 @@ theorem centre_conj (z : Spec (CommRingCat.of ℂ) ⟶ X) : centre (spMap (starR
   exact congrArg (fun p => z p) h
 
 /- English proof (translation)
-Substitute `hx` using the available equality. Use `⟨v, hv, ?_⟩` and prove the remaining obligations. Establish `h1 : Spec.map φ' = Spec.map (φ ≫ CommRingCat.ofHom (starRingEnd ℂ))`. Rewrite using `[← cancel_mono (X.fromSpecStalk x), H, Spec.map_comp, Category.assoc]`. Establish `h2 : φ' = φ ≫ CommRingCat.ofHom (starRingEnd ℂ)` using `Spec.map_injective h1`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Substitute `h2` using the available equality. Establish `h3 : dualMap (φ ≫ CommRingCat.ofHom (starRingEnd ℂ)).hom = (dualMap (starRingEnd ℂ)).comp (dualMap φ.hom)` using `dualMap_comp _ _`. Rewrite using `[h3, CommRingCat.ofHom_comp, Spec.map_comp]`. Conclude with `Category.assoc _ _ _`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extends_conj (M : LieModel G ξ E) {x x' : X} (hx : x = x') (h : genPt ξ ⤳ x) (h' : genPt ξ ⤳ x') (e : E)
     (v : epsAt (X.fromSpecStalk x) ⟶ G) (hv : M.Extends ⟨x, h⟩ e v)
@@ -70,9 +70,9 @@ def conjVec (z : Spec (CommRingCat.of ℂ) ⟶ X) (w : epsAt z ⟶ G) : epsAt (s
     rw [← Category.assoc, h3, Category.assoc])
 
 /- English proof (translation)
-Take `⟨h, v, hv, hl⟩` from `hw`. Establish `hc` using `centre_conj z`. Establish `h' : genPt ξ ⤳ centre (spMap (starRingEnd ℂ) ≫ z)` using `hc ▸ h`. Take `⟨v', hv', hl'⟩` from `extends_conj M hc.symm h h' e v hv (Scheme.stalkClosedPointTo z) (Scheme.stalkClosedPointTo (spMap (starRingEnd ℂ) ≫ z)) (by`. Use `(Scheme.Spec_stalkClosedPointTo_fromSpecStalk (spMap (starRingEnd ℂ) ≫ z)).trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrArg (spMap (starRingEnd ℂ) ≫ ·) (Scheme.Spec_stalkClosedPointTo_fromSpecStalk z).symm)`. Use `⟨h', v', hv', ?_⟩` and prove the remaining obligations. Establish `: (conjVec z w).left = spMap (dualMap (starRingEnd ℂ)) ≫ w.left` using `rfl`. Rewrite using `[this, hl]`. Conclude with `hl'.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_conj (M : LieModel G ξ E) (z : Spec (CommRingCat.of ℂ) ⟶ X) (e : E) (w : epsAt z ⟶ G)
     (hw : M.ValAt z e w) : M.ValAt (spMap (starRingEnd ℂ) ≫ z) e (conjVec z w) := by
@@ -89,7 +89,7 @@ theorem valAt_conj (M : LieModel G ξ E) (z : Spec (CommRingCat.of ℂ) ⟶ X) (
   exact hl'.symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y S Ω _ _ K _ J _ y 𝔐 z r b Γ ⟨v, hv, hG⟩`. Use `⟨fun i => conjVec z (v i), fun i => valAt_conj 𝔐.M z (b i) (v i) (hv i), fun p q => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.hodge_inner_product_conjugate E H 𝔐.X 𝔐.t z (v p) (v q) (conjVec z (v p)) (conjVec z (v q)) (Γ p q) rfl rfl (hG p q)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gramAt_conj_point : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (S : Finset ℕ) (Ω : Type) [Field Ω] [CharZero Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (z : Spec (CommRingCat.of ℂ) ⟶ 𝔐.X) (r : ℕ) (b : Fin r → 𝔐.Li) (Γ : Matrix (Fin r) (Fin r) ℂ), 𝔐.M.GramAt 𝔐.t.PP.L z b Γ → 𝔐.M.GramAt 𝔐.t.PP.L (spMap (starRingEnd ℂ) ≫ z) b (Γ.map (starRingEnd ℂ)) := by
   intro E _ _ _ H D l Xo c Y S Ω _ _ K _ J _ y 𝔐 z r b Γ ⟨v, hv, hG⟩

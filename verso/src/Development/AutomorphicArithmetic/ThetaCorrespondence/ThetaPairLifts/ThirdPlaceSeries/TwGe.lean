@@ -23,17 +23,17 @@ set_option maxHeartbeats 800000
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.BigOn.Exp
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 hA hC`. Establish `h4'` using `GlobalTheory.SerStdFit.seriesRat_of_seriesRatS h4`. Establish `hD` using `_root_.GlobalTheory.T.realization_embedding_compatible_alt`. Establish `hR` using `_root_.GlobalTheory.T.adForm_eq_levelTrace_singleSeries h1 h2 h3 h4'`. Establish `hG` using `_root_.GlobalTheory.T.twisted_embedding_compatibility_rows_alt h1 h2 h3 h4' hA hC`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `_root_.GlobalTheory.T.schroedinger_ext_zero_product_vacuum_alt`. Unfold `_root_.GlobalTheory.BigOn.Exp.TwistLowerBound`. Unfold `_root_.GlobalTheory.BigOn.Exp.CanonicalFits _root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt at hD hG hS ⊢`. Unfold `_root_.GlobalTheory.BigOn.Exp.TwistConditions _root_.GlobalTheory.BigOn.AtPtsAlt at hR`. Use `(((hD.and hR).and hG).and hS).imp fun Fm CH _ H => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x0, hx0⟩` from `((H.1.1.1.and H.1.1.2).and H.1.2).and H.2`. Use `⟨x0, fun x hx h0 i p hp hM w hw j ρ hρ ν rd hfit hcan => ?_⟩` and prove the remaining obligations. Take `⟨⟨⟨k1, k2⟩, k3⟩, k4⟩` from `hx0 x hx h0 i p hp`. Establish `d` using `k1 hM w hw j ρ hρ ν rd hfit hcan`. Establish `r` using `k2 hM w hw j`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `g` using `k3 hM w hw j ρ hρ ν rd hfit hcan`. Establish `s` using `k4 hM w hw j ρ hρ ν rd hfit hcan`. Take `⟨-, e, he1, he2⟩` from `hfit.1`. Unfold `twLat`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Take `⟨n, h, w', a, κ, N, hN, hκ, hhw, ha⟩` from `g e he1 he2 z hz`. Use `choose y hy hyv using fun k => r (h k) (hhw k).1 (w' k) (hhw k).2`. Take `⟨b, hb⟩` from `s e he1 he2 z n a y κ N hy hN hκ (ha y hyv)`. Rewrite using `[d e he1 he2 z n (fun k => b * a k) y hy hb]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun k _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨y k, Submodule.subset_span ⟨h k, (hhw k).1, w' k, (hhw k).2, fun v => ?_⟩, rfl⟩)` and prove the remaining obligations. Rewrite using `[one_smul]`. Conclude with `hyv k v`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twGe_alt : GlobalTheory.Published.CuspRapidDecay → GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.Published.RayClassFieldSt →
     GlobalTheory.SerStd.SeriesRatS → _root_.GlobalTheory.BigOn.Exp.TwAdmAlt → _root_.GlobalTheory.BigOn.Exp.TwistCharacter → _root_.GlobalTheory.BigOn.Exp.TwistLowerBound := by

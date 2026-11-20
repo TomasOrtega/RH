@@ -15,9 +15,9 @@ namespace GlobalTheory.RosAddPair
 open GlobalTheory.TauBalAdd
 
 /- English proof (translation)
-Introduce `S A _ _ Lr cu hG hA f₁ g₁ f₂ g₂ f g _ _ _ _ hf hg u₁ u₂ u hu₁ hu₂ hu h₁ h₂ h₀ T z J hJ x y`. Substitute `hf hg` using the available equality. Establish `key` using `ros_sum cu hG hA f₁ g₁ f₂ g₂ u₁ hu₁ h₁ u₂ hu₂ h₂ u hu h₀ hJ x y`. Establish `C : IsCub (cubV cu z J)` using `isCub_cubV cu hJ`. Rewrite `key` using `[C.s01 x, C.s12 _ x]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem ros_val_padd : ∀ {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {Lr : RigLB A} (cu : CubicalStr A Lr), GlobalFnsSt →
     IsAbelianScheme A →

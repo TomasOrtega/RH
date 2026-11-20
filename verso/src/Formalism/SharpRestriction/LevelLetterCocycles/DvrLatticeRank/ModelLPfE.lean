@@ -7,9 +7,9 @@ namespace Formalism.MainNotions.N.Ln34.MLE
 open Formalism.WeaklyAdmissibleFiltrations Formalism.BasicNotions Formalism.BasicNotions.Loc TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Fin.elim0, Fin.elim0, by simp⟩`. Consider the case `tmul a s => exact ⟨1, fun _ => a, fun _ => s, by simp⟩`. Consider the case `add t t' ht ht'`. Take `⟨m, a, s, rfl⟩` from `ht`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨m', a', s', rfl⟩` from `ht'`. Use `⟨m + m', Fin.append a a', Fin.append s s', ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_add]`. Simplify using `[Fin.append_left, Fin.append_right]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_fin_sum {O M N' : Type*} [CommRing O] [AddCommGroup M] [Module O M] [AddCommGroup N']
     [Module O N'] (t : M ⊗[O] N') : ∃ (m : ℕ) (a : Fin m → M) (s : Fin m → N'), t = ∑ j, a j ⊗ₜ s j := by
@@ -48,7 +48,7 @@ theorem smulLA_tmul (a : LetA O n) (e : W.EE) (s : LcQ W T π' c) :
     smulLA W T π' c a (e ⊗ₜ s) = (algebraMap (LetA O n) W.EE a * e) ⊗ₜ s := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e s => simp only [smulLA_tmul, map_mul, mul_assoc]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem smulLA_smulLA (a b : LetA O n) (x : LA W T π' c) :
     smulLA W T π' c a (smulLA W T π' c b x) = smulLA W T π' c (a * b) x := by
@@ -58,7 +58,7 @@ theorem smulLA_smulLA (a b : LetA O n) (x : LA W T π' c) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul e s`. Rewrite using `[smulLA_tmul, TensorProduct.smul_tmul', Algebra.smul_def, IsScalarTower.algebraMap_apply O (LetA O n) W.EE]`. Consider the case `add x y hx hy => rw [smul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem smul_eq_smulLA (o : O) (x : LA W T π' c) :
     o • x = smulLA W T π' c (algebraMap O (LetA O n) o) x := by
@@ -70,9 +70,9 @@ theorem smul_eq_smulLA (o : O) (x : LA W T π' c) :
   | add x y hx hy => rw [smul_add, map_add, hx, hy]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hx`. Take `⟨m, a, s, rfl⟩` from `exists_fin_sum t`. Establish `hs : ∀ j, ∃ yy : ↥(NcS W T (c - 1)), Submodule.Quotient.mk yy = ((s j : ↥(⊤ : Submodule O _)) : LcQ W T π' c)` using `fun j => Submodule.Quotient.mk_surjective _ _`. Use `choose yy hyy using hs`. Use `⟨m, a, fun j => (yy j : W.DD T), ⟨fun j => (yy j).2, ?_⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht, map_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[toLA_tmul, ← hyy j]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem rep_exists {x : LA W T π' c} (hx : x ∈ LamLA W T π' Eπ h' c ⊤) :
     ∃ (m : ℕ) (a : Fin m → ↥W.AΔ) (y : Fin m → W.DD T), IsRepL W T π' Eπ h' c x a y := by
@@ -88,11 +88,11 @@ theorem rep_exists {x : LA W T π' c} (hx : x ∈ LamLA W T π' Eπ h' c ⊤) :
   rfl
 
 /- English proof (translation)
-Take `⟨hy, hx⟩` from `h`. Take `⟨hy', hx'⟩` from `h₂`. Use `⟨fun j => ?_, ?_⟩` and prove the remaining obligations. Use `Fin.addCases (fun j => ?_) (fun j => ?_) j` and prove the remaining obligations. Rewrite using `[Fin.append_left]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hy j`. Rewrite using `[Fin.append_right]`. Conclude with `hy' j`. Rewrite using `[map_add, hx, hx', Fin.sum_univ_add]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [Fin.append_left]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [Fin.append_right]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rep_append {x x' : LA W T π' c} {m m' : ℕ} {a : Fin m → ↥W.AΔ} {y : Fin m → W.DD T}
     {a' : Fin m' → ↥W.AΔ} {y' : Fin m' → W.DD T} (h : IsRepL W T π' Eπ h' c x a y)
@@ -112,7 +112,7 @@ theorem rep_append {x x' : LA W T π' c} {m m' : ℕ} {a : Fin m → ↥W.AΔ} {
       simp only [Fin.append_right]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [expS, Pi.add_apply, Fin.sum_univ_add, Fin.append_left, Fin.append_right]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem expS_append (ζ : LL) {m m' : ℕ} (a : Fin m → ↥W.AΔ) (y : Fin m → W.DD T)
     (a' : Fin m' → ↥W.AΔ) (y' : Fin m' → W.DD T) :
@@ -122,9 +122,9 @@ theorem expS_append (ζ : LL) {m m' : ℕ} (a : Fin m → ↥W.AΔ) (y : Fin m �
   simp only [expS, Pi.add_apply, Fin.sum_univ_add, Fin.append_left, Fin.append_right]
 
 /- English proof (translation)
-Take `⟨hy, hx⟩` from `h`. Use `⟨hy, ?_⟩` and prove the remaining obligations. Rewrite using `[smulLA_smulLA, mul_comm, ← smulLA_smulLA, hx, map_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[smulLA_tmul, ← map_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rep_smul {x : LA W T π' c} {m : ℕ} {a : Fin m → ↥W.AΔ} {y : Fin m → W.DD T}
     (h : IsRepL W T π' Eπ h' c x a y) {b : LetA O n} (hb : b ∈ W.AΔ) :

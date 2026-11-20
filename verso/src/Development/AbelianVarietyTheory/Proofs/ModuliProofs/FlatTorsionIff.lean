@@ -30,9 +30,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
   {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Take `⟨Gt, _, _, Φ, hΦ, -⟩` from `exists_represents D`. Take `⟨x, rfl⟩` from `(Φ T).surjective g`. Take `⟨x', rfl⟩` from `(Φ T').surjective g'`. Rewrite `hp` using `[isPull_iff_comp hΦ]`. Rewrite `hg`, the goal using `[tors_iff hΦ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← hp, ← MonObj.comp_pow, hg, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tors_of_isPull [IsNoetherianRing R] {D : DegPre R} {k : ℕ} {T T' : Over (Sp R)} (h : T' ⟶ T) {g : GtPt D T}
     {g' : GtPt D T'} (hp : GtPt.IsPull h.left g g') (hg : FlatIsoUnitGenerator.GtTors k g) : FlatIsoUnitGenerator.GtTors k g' := by

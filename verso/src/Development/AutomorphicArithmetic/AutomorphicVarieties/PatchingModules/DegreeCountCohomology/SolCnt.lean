@@ -7,7 +7,7 @@ section aux
 variable {A C C' : Type} [CommRing A] [AddCommGroup C] [Module A C] [AddCommGroup C'] [Module A C']
 
 /- English proof (translation)
-Rewrite using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sc_mem (a : A) (x : C) :
     x ∈ (Ideal.span {a} • ⊤ : Submodule A C) ↔ ∃ c, a • c = x := by
@@ -15,7 +15,7 @@ private theorem sc_mem (a : A) (x : C) :
   simp
 
 /- English proof (translation)
-Proceed by induction on `n generalizing y with`. Consider the case `zero => simpa using hy`. Consider the case `succ n ih`. Rewrite `hy` using `[pow_succ, mul_smul]`. Conclude with `h y (ih _ hy)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sc_tf {t : A} (h : ∀ y : C, t • y = 0 → y = 0) (n : ℕ) (y : C)
     (hy : t ^ n • y = 0) : y = 0 := by
@@ -26,11 +26,9 @@ private theorem sc_tf {t : A} (h : ∀ y : C, t • y = 0 → y = 0) (n : ℕ) (
     exact h y (ih _ hy)
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite (S.map T.mkQ)`. Use `choose g hg using fun q : S.map T.mkQ => Submodule.mem_map.1 q.2`. Use `⟨Finset.univ.image g, ?_, ?_⟩` and prove the remaining obligations. Introduce `f hf`. Take `⟨q, -, rfl⟩` from `Finset.mem_image.1 hf`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hg q).1`. Introduce `x hx`. Use `⟨g ⟨T.mkQ x, Submodule.mem_map_of_mem hx⟩, Finset.mem_image_of_mem _ (Finset.mem_univ _), ?_⟩` and prove the remaining obligations. Establish `e` using `(hg ⟨T.mkQ x, Submodule.mem_map_of_mem hx⟩).2`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_sub, sub_eq_zero]`.
-
-Conclude with `e.symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sc_cover (S T : Submodule A C) [Finite (S.map T.mkQ)] :
     ∃ F : Finset C, (∀ f ∈ F, f ∈ S) ∧ ∀ x ∈ S, ∃ f ∈ F, x - f ∈ T := by
@@ -48,11 +46,11 @@ private theorem sc_cover (S T : Submodule A C) [Finite (S.map T.mkQ)] :
     exact e.symm
 
 /- English proof (translation)
-Set `φ : (B.map T.mkQ) × F → C ⧸ T` to `fun p => (p.1 : C ⧸ T) + T.mkQ (p.2 : C)`. Establish `hsub : ((S.map T.mkQ : Submodule A (C ⧸ T)) : Set (C ⧸ T)) ⊆ Set.range φ`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨f, hf, b, hb, hT⟩` from `h x hx`. Use `⟨(⟨T.mkQ b, Submodule.mem_map_of_mem hb⟩, ⟨f, hf⟩), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `show T.mkQ b + T.mkQ f = T.mkQ x`. Rewrite using `[← map_add, Submodule.mkQ_apply, Submodule.mkQ_apply, Submodule.Quotient.eq]`. Use `T.neg_mem hT using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hfin : (Set.range φ).Finite` using `Set.finite_range φ`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(hfin.subset hsub).to_subtype, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Nat.card_prod, Nat.card_eq_fintype_card (α := F), Fintype.card_coe]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sc_count (S T B : Submodule A C) [Finite (B.map T.mkQ)] (F : Finset C)
     (h : ∀ x ∈ S, ∃ f ∈ F, ∃ b ∈ B, x - f - b ∈ T) :
@@ -76,9 +74,7 @@ private theorem sc_count (S T B : Submodule A C) [Finite (B.map T.mkQ)] (F : Fin
       rw [Nat.card_prod, Nat.card_eq_fintype_card (α := F), Fintype.card_coe]
 
 /- English proof (translation)
-Use `haveI : Finite ((⊥ : Submodule A C).map T.mkQ) := by`. Rewrite using `[Submodule.map_bot]`. Use `infer_instance`. Use `(sc_count S T ⊥ F fun x hx => ?_).1` and prove the remaining obligations. Take `⟨f, hf, hx'⟩` from `h x hx`.
-
-Conclude with `⟨f, hf, 0, Submodule.zero_mem _, by rwa [sub_zero]⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem sc_fin (S T : Submodule A C) (F : Finset C)
     (h : ∀ x ∈ S, ∃ f ∈ F, x - f ∈ T) : Finite (S.map T.mkQ) := by
@@ -89,7 +85,7 @@ private theorem sc_fin (S T : Submodule A C) (F : Finset C)
   exact ⟨f, hf, 0, Submodule.zero_mem _, by rwa [sub_zero]⟩
 
 /- English proof (translation)
-Conclude with `Finite.of_injective _ (Submodule.inclusion_injective (Submodule.map_mono (f := T.mkQ) h))`.
+A detailed English derivation is pending.
 -/
 private theorem sc_mono {S S' : Submodule A C} (T : Submodule A C) (h : S ≤ S')
     [Finite (S'.map T.mkQ)] : Finite (S.map T.mkQ) := by
@@ -99,14 +95,14 @@ private abbrev scS (t : A) (Φ : C →ₗ[A] C') (m : ℕ) : Submodule A C :=
   (Ideal.span {t ^ m} • ⊤ : Submodule A C').comap Φ
 
 /- English proof (translation)
-Rewrite using `[Submodule.mem_comap, sc_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem scS_mem (t : A) (Φ : C →ₗ[A] C') (m : ℕ) (x : C) :
     x ∈ scS t Φ m ↔ ∃ y, t ^ m • y = Φ x := by
   rw [Submodule.mem_comap, sc_mem]
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[scS_mem]`. Take `⟨y, hy⟩` from `hx`. Use `⟨t ^ (n - m) • y, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_smul, ← pow_add, Nat.add_sub_cancel' h, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem scS_anti (t : A) (Φ : C →ₗ[A] C') {m n : ℕ} (h : m ≤ n) :
     scS t Φ n ≤ scS t Φ m := by
@@ -117,9 +113,9 @@ private theorem scS_anti (t : A) (Φ : C →ₗ[A] C') {m n : ℕ} (h : m ≤ n)
   rw [← mul_smul, ← pow_add, Nat.add_sub_cancel' h, hy]
 
 /- English proof (translation)
-Rewrite `hc`, the goal using `[scS_mem]`. Take `⟨y, hy⟩` from `hc`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `e : t ^ j • (t ^ m • y - Φ c) = 0`. Rewrite using `[smul_sub, ← mul_smul, ← pow_add, add_comm j m, hy, map_smul, sub_self]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sub_eq_zero.1 (sc_tf h j _ e)`.
+A detailed English derivation is pending.
 -/
 private theorem scS_div {t : A} (Φ : C →ₗ[A] C') (h : ∀ y : C', t • y = 0 → y = 0) {m j : ℕ}
     {c : C} (hc : t ^ j • c ∈ scS t Φ (m + j)) : c ∈ scS t Φ m := by
@@ -131,17 +127,17 @@ private theorem scS_div {t : A} (Φ : C →ₗ[A] C') (h : ∀ y : C', t • y =
   exact sub_eq_zero.1 (sc_tf h j _ e)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Use `sc_fin _ _ {0} ?_` and prove the remaining obligations. Introduce `x _`. Use `⟨0, Finset.mem_singleton_self _, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[sub_zero, sc_mem]`. Conclude with `⟨x, by rw [pow_zero, one_smul]⟩`. Consider the case `succ m ih => classical haveI := ih haveI : Finite ((scS t Φ (m + 1)).map (Ideal.span {t ^ m} • ⊤ : Submodule A C).mkQ) := sc_mono _ (scS_anti t Φ (Nat.le_succ m))`. Take `⟨F, hF, hFc⟩` from `sc_cover (scS t Φ (m + 1)) (Ideal.span {t ^ m} • ⊤ : Submodule A C)`. Take `⟨G, -, hGc⟩` from `sc_cover (scS t Φ 1) (Ideal.span {t} • ⊤ : Submodule A C)`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `sc_fin _ _ (Finset.image₂ (fun f g => f + t ^ m • g) F G) ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨f, hf, hxf⟩` from `hFc x hx`. Rewrite `hxf` using `[sc_mem]`. Take `⟨c, hc⟩` from `hxf`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc1 : c ∈ scS t Φ 1`. Apply `scS_div Φ h (j := m)` to reduce the goal to its premises. Rewrite using `[hc, show 1 + m = m + 1 from add_comm 1 m]`. Conclude with `Submodule.sub_mem _ hx (hF f hf)`. Take `⟨g, hg, hcg⟩` from `hGc c hc1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f + t ^ m • g, Finset.mem_image₂_of_mem hf hg, ?_⟩` and prove the remaining obligations. Rewrite `hcg`, the goal using `[sc_mem]`. Take `⟨d, hd⟩` from `hcg`. Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ, mul_smul, hd, smul_sub, hc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws.
+A detailed English derivation is pending.
 -/
 private theorem scS_fin {t : A} (Φ : C →ₗ[A] C') (h : ∀ y : C', t • y = 0 → y = 0)
     [Finite ((scS t Φ 1).map (Ideal.span {t} • ⊤ : Submodule A C).mkQ)] (m : ℕ) :
@@ -178,15 +174,15 @@ private theorem scS_fin {t : A} (Φ : C →ₗ[A] C') (h : ∀ y : C', t • y =
     abel
 
 /- English proof (translation)
-Set `I : ℕ → Submodule A (C ⧸ (Ideal.span {t} • ⊤ : Submodule A C))` to `fun M => (scS t Φ M).map (Ideal.span {t} • ⊤ : Submodule A C).mkQ`. Establish `hfin : ∀ M, Finite (I (M + 1))` using `fun M => sc_mono _ (scS_anti t Φ (Nat.le_add_left 1 M))`. Take `⟨_, ⟨n, rfl⟩, hn⟩` from `wellFounded_lt.has_min (Set.range fun M => Nat.card (I (M + 1))) ⟨_, 0, rfl⟩`. Use `⟨n + 1, fun M x hx => ?_⟩` and prove the remaining obligations. Break down `le_or_gt M (n + 1) with hM | hM` into its components or cases.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `⟨x, scS_anti t Φ hM hx, 0, by rw [smul_zero, sub_self]⟩`. Take `⟨k, rfl⟩ : ∃ k, M = k + 1` from `⟨M - 1, by omega⟩ haveI := hfin n haveI := hfin k`. Establish `hle : I (k + 1) ≤ I (n + 1)` using `Submodule.map_mono (scS_anti t Φ (by omega))`. Establish `hcard : Nat.card (I (n + 1)) ≤ Nat.card (I (k + 1))` using `not_lt.1 (hn _ ⟨k, rfl⟩)`. Establish `hbij : Function.Bijective (Submodule.inclusion hle)` using `(Submodule.inclusion_injective hle).bijective_of_nat_card_le hcard`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `hbij.2 ⟨(Ideal.span {t} • ⊤ : Submodule A C).mkQ x, Submodule.mem_map_of_mem hx⟩`. Establish `hz2 : (z : C ⧸ (Ideal.span {t} • ⊤ : Submodule A C)) ∈ (scS t Φ (k + 1)).map (Ideal.span {t} • ⊤ : Submodule A C).mkQ` using `z.2`. Take `⟨s, hs, hsz⟩` from `Submodule.mem_map.1 hz2`. Establish `e : (z : C ⧸ (Ideal.span {t} • ⊤ : Submodule A C)) = (Ideal.span {t} • ⊤ : Submodule A C).mkQ x`. Establish `e0` using `congrArg Subtype.val hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e0` using `[Submodule.coe_inclusion]`. Conclude with `e0`. Establish `hq : (Ideal.span {t} • ⊤ : Submodule A C).mkQ x = (Ideal.span {t} • ⊤ : Submodule A C).mkQ s` using `e.symm.trans hsz.symm`. Establish `hxs : x - s ∈ (Ideal.span {t} • ⊤ : Submodule A C)` using `(Submodule.Quotient.eq _).1 hq`. Take `⟨c, hc⟩` from `(sc_mem t (x - s)).1 hxs`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨s, hs, c, hc⟩`.
+A detailed English derivation is pending.
 -/
 private theorem scS_stab {t : A} (Φ : C →ₗ[A] C')
     [Finite ((scS t Φ 1).map (Ideal.span {t} • ⊤ : Submodule A C).mkQ)] :
@@ -222,11 +218,11 @@ private theorem scS_stab {t : A} (Φ : C →ₗ[A] C')
     exact ⟨s, hs, c, hc⟩
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Introduce `x _`. Conclude with `⟨0, Submodule.zero_mem _, x, by rw [pow_zero, one_smul, sub_zero]⟩`. Consider the case `succ j ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `x hx`. Take `⟨s1, hs1, c1, hc1⟩` from `h0 (max M (m0 + j + 1)) x (scS_anti t Φ (Nat.le_add_right m0 (j + 1)) hx)`. Establish `hc1' : c1 ∈ scS t Φ (m0 + j)`. Apply `scS_div Φ h (j := 1)` to reduce the goal to its premises. Rewrite using `[pow_one, hc1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.sub_mem _ hx (scS_anti t Φ (le_max_right _ _) hs1)`. Take `⟨s2, hs2, c2, hc2⟩` from `ih c1 hc1'`. Use `⟨s1 + t • s2, Submodule.add_mem _ (scS_anti t Φ (le_max_left _ _) hs1) (Submodule.smul_mem _ _ hs2), c2, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_succ', mul_smul, hc2, smul_sub, hc1]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem scS_step {t : A} (Φ : C →ₗ[A] C') (h : ∀ y : C', t • y = 0 → y = 0) {m0 : ℕ}
     (h0 : ∀ M, ∀ x ∈ scS t Φ m0, ∃ s ∈ scS t Φ M, ∃ c, t • c = x - s) (j M : ℕ) :
@@ -250,27 +246,25 @@ private theorem scS_step {t : A} (Φ : C →ₗ[A] C') (h : ∀ y : C', t • y 
     abel
 
 /- English proof (translation)
-Establish `h1' : ∀ j M (x : C), ∃ s : C, ∃ c : C, x ∈ scS t Φ (m0 + j) → s ∈ scS t Φ M ∧ t ^ j • c = x - s`. Introduce `j M x`. Distinguish the cases in `hx : x ∈ scS t Φ (m0 + j)`. Take `⟨s, hs, c, hc⟩` from `h1 j M x hx`. Conclude with `⟨s, c, fun _ => ⟨hs, hc⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, 0, fun h => absurd h hx⟩`. Use `choose sf cf hsc using h1'`. Set `rem : ℕ → C` to `fun n => Nat.rec x (fun i r => sf (j + i) (m0 + j + i + 1) r) n`. Establish `rem_succ : ∀ n, rem (n + 1) = sf (j + n) (m0 + j + n + 1) (rem n)` using `fun n => rfl`. Set `d : ℕ → C` to `fun n => cf (j + n) (m0 + j + n + 1) (rem n)`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Q : ℕ → C` to `fun n => ∑ i ∈ Finset.range n, t ^ i • d i`. Establish `hrem : ∀ n, rem n ∈ scS t Φ (m0 + j + n) ∧ x - rem n = t ^ j • Q n`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hx, ?_⟩` and prove the remaining obligations. Use `show x - x = t ^ j • ∑ i ∈ Finset.range 0, t ^ i • d i`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Take `⟨hs, hc⟩` from `hsc (j + n) (m0 + j + n + 1) (rem n) (by rw [← add_assoc]; exact ih.1)`.
+Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨by rw [rem_succ, ← add_assoc]; exact hs, ?_⟩` and prove the remaining obligations. Use `show x - rem (n + 1) = t ^ j • ∑ i ∈ Finset.range (n + 1), t ^ i • d i`. Rewrite using `[Finset.sum_range_succ, smul_add]`. Use `show x - rem (n + 1) = t ^ j • Q n + t ^ j • t ^ n • d n`. Rewrite using `[← ih.2, ← mul_smul, ← pow_add, rem_succ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show _ = _ + t ^ (j + n) • cf (j + n) (m0 + j + n + 1) (rem n)`. Rewrite using `[hc]`. Normalize the expressions using the abelian group laws. Establish `hQ : ∀ {m n : ℕ}, m ≤ n → Q m ≡ Q n [SMOD (Ideal.span {t} ^ m • ⊤ : Submodule A C)]`. Introduce `m n hmn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SModEq.sub_mem, Ideal.span_singleton_pow]`. Establish `e : Q n - Q m = ∑ i ∈ Finset.Ico m n, t ^ i • d i` using `by show ∑ i ∈ Finset.range n, t ^ i • d i - ∑ i ∈ Finset.range m, t ^ i • d i = _`. Rewrite using `[← Finset.sum_range_add_sum_Ico _ hmn]`. Normalize the expressions using the abelian group laws. Rewrite using `[← neg_sub, e]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `Submodule.neg_mem _ (Submodule.sum_mem _ fun i hi => ?_)` and prove the remaining obligations. Rewrite using `[sc_mem]`. Use `⟨t ^ (i - m) • d i, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_smul, ← pow_add, Nat.add_sub_cancel' (Finset.mem_Ico.1 hi).1]`. Take `⟨L, hL⟩` from `IsPrecomplete.prec' (I := Ideal.span {t}) Q hQ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨x - t ^ j • L, ?_, L, by abel⟩` and prove the remaining obligations. Apply `IsHausdorff.haus' (I := Ideal.span {t})` to reduce the goal to its premises. Introduce `n`. Rewrite using `[SModEq.zero, Ideal.span_singleton_pow, sc_mem]`. Establish `e2` using `hL n`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `e2` using `[SModEq.sub_mem, Ideal.span_singleton_pow, sc_mem]`. Take `⟨a, ha⟩` from `e2`. Take `⟨b, hb⟩` from `(scS_mem t Φ n (rem n)).1 (scS_anti t Φ (by omega) (hrem n).1)`. Establish `hx' : x = rem n + t ^ j • Q n` using `by rw [← (hrem n).2]; abel`. Use `⟨b + t ^ j • Φ a, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[smul_add, hb, smul_comm (t ^ n) (t ^ j), ← map_smul Φ (t ^ n) a, ha, hx']`. Simplify using `only [map_add, map_sub, map_smul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 private theorem scS_lim {t : A} (Φ : C →ₗ[A] C') [IsPrecomplete (Ideal.span {t}) C]
     [IsHausdorff (Ideal.span {t}) C'] {m0 : ℕ}
@@ -334,14 +328,14 @@ private theorem scS_lim {t : A} (Φ : C →ₗ[A] C') [IsPrecomplete (Ideal.span
   abel
 
 /- English proof (translation)
-The claim follows from `sc_tf h j _ (by rwa [map_smul] at hc)`.
+A detailed English derivation is pending.
 -/
 private theorem sc_kerdiv {t : A} (Φ : C →ₗ[A] C') (h : ∀ y : C', t • y = 0 → y = 0) {j : ℕ}
     {c : C} (hc : Φ (t ^ j • c) = 0) : Φ c = 0 :=
   sc_tf h j _ (by rwa [map_smul] at hc)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[scS_mem]`. Conclude with `⟨0, by rw [smul_zero, LinearMap.mem_ker.1 hx]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem sc_kerS (t : A) (Φ : C →ₗ[A] C') (m : ℕ) : LinearMap.ker Φ ≤ scS t Φ m := by
   intro x hx
@@ -349,11 +343,11 @@ private theorem sc_kerS (t : A) (Φ : C →ₗ[A] C') (m : ℕ) : LinearMap.ker 
   exact ⟨0, by rw [smul_zero, LinearMap.mem_ker.1 hx]⟩
 
 /- English proof (translation)
-Use `haveI : Finite ((LinearMap.ker Φ).map (Ideal.span {t} • ⊤ : Submodule A C).mkQ) := sc_mono _ (sc_kerS t Φ 1)`. Take `⟨F, hF, hFc⟩` from `sc_cover (LinearMap.ker Φ) (Ideal.span {t} • ⊤ : Submodule A C)`. Use `⟨F.subtype (· ∈ LinearMap.ker Φ), fun x => ?_⟩` and prove the remaining obligations. Take `⟨f, hf, hxf⟩` from `hFc x x.2`. Use `⟨⟨f, hF f hf⟩, Finset.mem_subtype.2 hf, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `(sc_mem t _).1 hxf`. Establish `hc0 : Φ c = 0`. Apply `sc_kerdiv Φ h (j := 1)` to reduce the goal to its premises. Rewrite using `[pow_one, hc, map_sub, LinearMap.mem_ker.1 x.2, LinearMap.mem_ker.1 (hF f hf), sub_zero]`. Rewrite using `[sc_mem]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨⟨c, hc0⟩, Subtype.ext hc⟩`.
+A detailed English derivation is pending.
 -/
 private theorem exists_finset_ker_cover_mod_span_smul_module {t : A} (Φ : C →ₗ[A] C') (h : ∀ y : C', t • y = 0 → y = 0)
     [Finite ((scS t Φ 1).map (Ideal.span {t} • ⊤ : Submodule A C).mkQ)] :
@@ -374,13 +368,11 @@ private theorem exists_finset_ker_cover_mod_span_smul_module {t : A} (Φ : C →
   exact ⟨⟨c, hc0⟩, Subtype.ext hc⟩
 
 /- English proof (translation)
-Take `⟨F, hF⟩` from `exists_finset_ker_cover_mod_span_smul_module Φ h`. Use `haveI : IsHausdorff (Ideal.span {t}) (LinearMap.ker Φ) := ⟨fun x hx => by`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (x : C) = 0`. Apply `IsHausdorff.haus' (I := Ideal.span {t}) (x : C)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `n`. Establish `e` using `hx n`. Rewrite `e`, the goal using `[SModEq.zero, Ideal.span_singleton_pow, sc_mem]`. Take `⟨c, hc⟩` from `e`. Conclude with `⟨c, by rw [← hc]; rfl⟩⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Finite (LinearMap.ker Φ ⧸ (Ideal.span {t} • ⊤ : Submodule A (LinearMap.ker Φ))) := by`. Use `Finite.of_surjective (fun f : F => Submodule.Quotient.mk (f : LinearMap.ker Φ)) ?_` and prove the remaining obligations. Introduce `q`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨f, hf, hxf⟩` from `hF x`.
-
-Conclude with `⟨⟨f, hf⟩, (Submodule.Quotient.eq _).2 (by rw [← neg_sub]; exact Submodule.neg_mem _ hxf)⟩`. Conclude with `(UpperTheory.V.abelian₂.nakayama A (Ideal.span {t}) (LinearMap.ker Φ)).2 Module.Finite.of_finite`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem sc_kerfin {t : A} (Φ : C →ₗ[A] C') (h : ∀ y : C', t • y = 0 → y = 0)
     [IsPrecomplete (Ideal.span {t}) A] [IsHausdorff (Ideal.span {t}) C]
@@ -406,13 +398,11 @@ private theorem sc_kerfin {t : A} (Φ : C →ₗ[A] C') (h : ∀ y : C', t • y
   exact (UpperTheory.V.abelian₂.nakayama A (Ideal.span {t}) (LinearMap.ker Φ)).2 Module.Finite.of_finite
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `(Module.Finite.fg_top : (⊤ : Submodule A K).FG)`. Use `choose sf hsf using fun z : K => h z z.2`. Use `⟨∑ g ∈ S, sf g, fun z hz => ?_⟩` and prove the remaining obligations. Establish `key : ∀ w : K, w ∈ Submodule.span A (S : Set K) → t ^ (∑ g ∈ S, sf g) • (w : C) ∈ B`. Introduce `w hw`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem g hg`. Establish `hle : sf g ≤ ∑ g ∈ S, sf g` using `Finset.single_le_sum (fun _ _ => Nat.zero_le _) hg`. Rewrite using `[← Nat.sub_add_cancel hle, pow_add, mul_smul]`. Conclude with `B.smul_mem _ (hsf g)`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [Submodule.coe_add, smul_add]`. Conclude with `B.add_mem hx hy`. Consider the case `smul a x _ hx => rw [Submodule.coe_smul, smul_comm]`. Conclude with `B.smul_mem a hx`.
-
-Conclude with `key ⟨z, hz⟩ (hS ▸ Submodule.mem_top)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem sc_unif {t : A} (K B : Submodule A C) [Module.Finite A K]
     (h : ∀ z ∈ K, ∃ s : ℕ, t ^ s • z ∈ B) : ∃ s : ℕ, ∀ z ∈ K, t ^ s • z ∈ B := by
@@ -435,29 +425,25 @@ private theorem sc_unif {t : A} (K B : Submodule A C) [Module.Finite A K]
 end aux
 
 /- English proof (translation)
-Introduce `A C C' _ _ _ _ _ _ _ _ t Φ B ht hC hC' hA hCc hC'h hfin hB hBk`. Use `haveI := hA`. Use `haveI := hCc`. Use `haveI := hC'h`. Use `haveI hf1 : Finite ((scS t Φ 1).map (Ideal.span {t} • ⊤ : Submodule A C).mkQ) := by show Finite (((Ideal.span {t ^ 1} • ⊤ : Submodule A C').comap Φ).map (Ideal.span {t} • ⊤ : Submodule A C).mkQ)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[pow_one]`. Conclude with `hfin`. Establish `hkf : Module.Finite A (LinearMap.ker Φ)` using `sc_kerfin Φ hC'`. Use `haveI := hkf`. Take `⟨s, hs⟩` from `sc_unif (t := t) (LinearMap.ker Φ) B fun z hz => hBk z (LinearMap.mem_ker.1 hz)`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hA0 : ∀ y : A, t • y = 0 → y = 0` using `fun y hy => by`. Rewrite `hy` using `[smul_eq_mul]`. Conclude with `(mul_eq_zero.1 hy).resolve_left ht.ne_zero`. Take `⟨F1, hF1⟩` from `exists_finset_ker_cover_mod_span_smul_module Φ hC'`. Use `haveI : Finite ((scS t (0 : LinearMap.ker Φ →ₗ[A] A) 1).map (Ideal.span {t} • ⊤ : Submodule A (LinearMap.ker Φ)).mkQ) := sc_fin _ _ F1 (fun x _ => hF1 x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := scS_fin (0 : LinearMap.ker Φ →ₗ[A] A) hA0 s`. Take `⟨Gk, -, hGk⟩` from `sc_cover (scS t (0 : LinearMap.ker Φ →ₗ[A] A) s) (Ideal.span {t ^ s} • ⊤ : Submodule A (LinearMap.ker Φ))`. Set `G : Finset C` to `Gk.map (Function.Embedding.subtype _)`. Establish `hG : ∀ k ∈ LinearMap.ker Φ, ∃ g ∈ G, k - g ∈ B`. Introduce `k hk`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨g, hg, hkg⟩` from `hGk ⟨k, hk⟩ (by rw [scS_mem]; exact ⟨0, by simp⟩)`. Take `⟨y, hy⟩` from `(sc_mem _ _).1 hkg`. Use `⟨(g : C), Finset.mem_map_of_mem (Function.Embedding.subtype _) hg, ?_⟩` and prove the remaining obligations. Establish `e` using `hs y y.2`. Rewrite `e` using `[← Submodule.coe_smul, hy]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `e`. Take `⟨m0, h0⟩` from `scS_stab (t := t) Φ`. Establish `h1` using `scS_step Φ hC' h0`. Use `haveI := scS_fin Φ hC' m0`. Take `⟨F0, -, hF0c⟩` from `sc_cover (scS t Φ m0) (Ideal.span {t ^ m0} • ⊤ : Submodule A C)`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Set `N` to `G.card * F0.card`. Set `P` to `∑ i ∈ Finset.range m0, Nat.card ((scS t Φ i).map (Ideal.span {t ^ i} • ⊤ : Submodule A C).mkQ)`. Establish `hq : 1 < Nat.card (IsLocalRing.ResidueField A)` using `Finite.one_lt_card`. Use `⟨hkf, N + P, fun m => ?_⟩` and prove the remaining obligations. Use `haveI hSm := scS_fin Φ hC' m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `haveI hBm : Finite (B.map (Ideal.span {t ^ m} • ⊤ : Submodule A C).mkQ) := sc_mono _ (hB.trans (sc_kerS t Φ m))`. Use `⟨hSm, ?_⟩` and prove the remaining obligations. Establish `hNP : N + P ≤ Nat.card (IsLocalRing.ResidueField A) ^ (N + P)` using `(Nat.lt_pow_self hq).le`. Establish `hB1 : 1 ≤ Nat.card (B.map (Ideal.span {t ^ m} • ⊤ : Submodule A C).mkQ)` using `Nat.card_pos`. Break down `lt_or_ge m m0 with hm | hm` into its components or cases.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hP : Nat.card ((scS t Φ m).map (Ideal.span {t ^ m} • ⊤ : Submodule A C).mkQ) ≤ P` using `Finset.single_le_sum (f := fun i => Nat.card ((scS t Φ i).map (Ideal.span {t ^ i} • ⊤ : Submodule A C).mkQ)) (fun _ _ => Nat.zero_le _) (Finset.mem_range.2 hm)`. Combine the equalities or inequalities in the displayed calculation. Take `⟨j, rfl⟩ : ∃ j, m = m0 + j` from `⟨m - m0, by omega⟩`. Establish `hcov : ∀ x ∈ scS t Φ (m0 + j), ∃ f ∈ Finset.image₂ (fun g f => g + t ^ j • f) G F0, ∃ b ∈ B, x - f - b ∈ (Ideal.span {t ^ (m0 + j)} • ⊤ : Submodule A C)`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, c, hc⟩` from `scS_lim Φ h1 j x hx`. Establish `hcS : c ∈ scS t Φ m0`. Apply `scS_div Φ hC' (j := j)` to reduce the goal to its premises. Rewrite using `[hc]`. Conclude with `Submodule.sub_mem _ hx (sc_kerS t Φ _ (LinearMap.mem_ker.2 hk))`.
-
-Take `⟨f, hf, hcf⟩` from `hF0c c hcS`. Take `⟨d, hd⟩` from `(sc_mem _ _).1 hcf`. Take `⟨g, hg, hkg⟩` from `hG k (LinearMap.mem_ker.2 hk)`. Use `⟨g + t ^ j • f, Finset.mem_image₂_of_mem hg hf, k - g, hkg, ?_⟩` and prove the remaining obligations. Rewrite using `[sc_mem]`.
-
-Use `⟨d, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_add, mul_comm, mul_smul, hd, smul_sub, hc]`. Normalize the expressions using the abelian group laws. Take `⟨-, hcard⟩` from `sc_count _ _ B _ hcov`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.solCnt :
     ∀ (A C C' : Type) [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] [Finite (IsLocalRing.ResidueField A)] [AddCommGroup C] [Module A C] [AddCommGroup C'] [Module A C'] (t : A) (Φ : C →ₗ[A] C') (B : Submodule A C), Irreducible t → (∀ y : C, t • y = 0 → y = 0) → (∀ y : C', t • y = 0 → y = 0) → IsAdicComplete (Ideal.span {t}) A → IsAdicComplete (Ideal.span {t}) C → IsHausdorff (Ideal.span {t}) C' → Finite (((Ideal.span {t} • ⊤ : Submodule A C').comap Φ).map (Ideal.span {t} • ⊤ : Submodule A C).mkQ) → B ≤ LinearMap.ker Φ → (∀ z, Φ z = 0 → ∃ s : ℕ, t ^ s • z ∈ B) → Module.Finite A (LinearMap.ker Φ) ∧ ∃ e : ℕ, ∀ m : ℕ, Finite (((Ideal.span {t ^ m} • ⊤ : Submodule A C').comap Φ).map (Ideal.span {t ^ m} • ⊤ : Submodule A C).mkQ) ∧ Nat.card (((Ideal.span {t ^ m} • ⊤ : Submodule A C').comap Φ).map (Ideal.span {t ^ m} • ⊤ : Submodule A C).mkQ) ≤ Nat.card (B.map (Ideal.span {t ^ m} • ⊤ : Submodule A C).mkQ) * Nat.card (IsLocalRing.ResidueField A) ^ e := by

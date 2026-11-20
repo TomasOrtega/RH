@@ -11,7 +11,7 @@ open CategoryTheory TensorProduct MvPowerSeries GlobalTheory GlobalTheory.PDiv G
 namespace GlobalTheory.Katz
 
 /- English proof (translation)
-Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Rewrite using `[AlgHom.comp_apply, MvPolynomial.coeToMvPowerSeries.algHom_apply, MvPolynomial.aeval_X]`. Simplify using `only [MvPolynomial.coe_X, map_X]`. Conclude with `GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate K (Fin d) A x hx i`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evA_comp_coe {K A : Type} [Field K] [CommRing A] [Algebra K A] {d : ℕ}
     (x : Fin d → A) (hx : ∀ i, IsNilpotent (x i)) :
@@ -23,13 +23,13 @@ theorem evA_comp_coe {K A : Type} [Field K] [CommRing A] [Algebra K A] {d : ℕ}
   exact GlobalTheory.T.powerSeriesEvalAtNilpotent_X_eq_coordinate K (Fin d) A x hx i
 
 /- English proof (translation)
-Take `⟨x, hres, haug, hsurj⟩` from `GlobalTheory.T.exists_coordinates_generate_connected_levels p K h G hG`. Establish `hmem : ∀ n i, x n i ∈ augIdeal K (G.A n)` using `fun n i => by`. Simplify using `[augIdeal, haug n i]`. Establish `hnil : ∀ n i, IsNilpotent (x n i)` using `fun n i => hG n _ (hmem n i)`. Use `⟨_, ⟨{ x := x, nil := hnil, res := hres, aug := haug, presents := ⟨?_, ?_⟩ }⟩⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `n a`. Take `⟨P, hP⟩` from `hsurj n a`. Use `⟨(P : MvPowerSeries _ K), ?_⟩` and prove the remaining obligations. Use `congrArg (fun φ => φ P) (evA_comp_coe (x n) (hnil n))` as an intermediate fact. Simplify using `only [AlgHom.comp_apply, MvPolynomial.coeToMvPowerSeries.algHom_apply] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hP, ← this]`. Both sides reduce to the same expression. Introduce `N`. Use `⟨N, fun f hf α hα => ?_⟩` and prove the remaining obligations. Establish `hq : ∀ i, x N i ^ (p ^ N) ∈ frobKerIdeal (p ^ N) K (G.A N)` using `fun i => pow_mem_frobKerIdeal (hmem N i)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.coeff_eq_zero_of_evA_eq_zero_of_le_finrank' K (G.A N) _ (p ^ N) (x N) (hnil N) _ (hsurj N) hq (GlobalTheory.T.pow_finrank_omega_le_finrank_frobeniusKernel p K h G N) f hf α (lt_of_lt_of_le hα (Nat.lt_pow_self (Fact.out : p.Prime).one_lt).le)`.
+A detailed English derivation is pending.
 -/
 theorem exists_chart_of_isConn (p : ℕ) [Fact p.Prime] (K : Type) [Field K] (h : (p : K) = 0)
     (G : PDivGroup p K) (hG : G.IsConn) : ∃ d, Nonempty (Chart G d) := by

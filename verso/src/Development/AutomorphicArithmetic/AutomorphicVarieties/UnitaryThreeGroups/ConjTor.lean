@@ -3,7 +3,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups
 open Matrix UpperTheory.V.U3
 
 /- English proof (translation)
-Distinguish the cases in `hs : s = 1`. Substitute `hs` using the available equality. Conclude with `sgnAct_one _`. Simplify using `only [sgnAct, MonoidHom.coe_mk, OneHom.coe_mk, if_neg hs]`. Conclude with `theta_tor t`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem sgnAct_tor {R : Type} [CommRing R] (s : ℤˣ) (t : Rˣ) :
     sgnAct 3 R s (tor R t) = tor R t := by
@@ -14,23 +14,23 @@ private theorem sgnAct_tor {R : Type} [CommRing R] (s : ℤˣ) (t : Rˣ) :
     exact theta_tor t
 
 /- English proof (translation)
-Simplify using `[conjBy, MulAut.conj_apply, SemidirectProduct.mul_left, SemidirectProduct.inv_left, sgnAct_tor, map_inv]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conj_left {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (t : Rˣ) (g : G) :
     (conjBy (tor R t) r g).left = tor R t * (r g).left * tor R t⁻¹ := by
   simp [conjBy, MulAut.conj_apply, SemidirectProduct.mul_left, SemidirectProduct.inv_left, sgnAct_tor, map_inv]
 
 /- English proof (translation)
-Simplify using `[conjBy, MulAut.conj_apply, SemidirectProduct.mul_right, SemidirectProduct.inv_right]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conj_right {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (t : Rˣ) (g : G) :
     (conjBy (tor R t) r g).right = (r g).right := by
   simp [conjBy, MulAut.conj_apply, SemidirectProduct.mul_right, SemidirectProduct.inv_right]
 
 /- English proof (translation)
-Use `show (((conjBy (tor R t) r g).left : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) a b = _`. Rewrite using `[conj_left, Units.val_mul, Units.val_mul, tor_val, tor_val, mul_diagonal, diagonal_mul]`. Establish `key : ((t ^ wt1 a : Rˣ) : R) * ((t⁻¹ ^ wt1 b : Rˣ) : R) = ((t ^ wt a b : Rˣ) : R)`. Rewrite using `[← Units.val_mul, wt, _root_.zpow_sub, _root_.inv_zpow]`. Rewrite using `[← key, GG.mat]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 private theorem conj_mat {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (t : Rˣ) (g : G)
     (a b : Fin 3) :
@@ -43,7 +43,7 @@ private theorem conj_mat {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R)
   ring
 
 /- English proof (translation)
-Simplify using `only [zmat, Matrix.sub_apply, conj_mat, mul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conj_zmat {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (t : Rˣ) (c g₁ : G)
     (a b : Fin 3) :
@@ -51,13 +51,13 @@ private theorem conj_zmat {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R
   simp only [zmat, Matrix.sub_apply, conj_mat, mul_sub]
 
 /- English proof (translation)
-Introduce `G R _ _ r t`. Use `⟨conj_mat r t, conj_right r t, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `c g₁ h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Rewrite using `[conj_mat, h.atc]`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[wt]`. Simplify using `[Matrix.one_apply_ne hab]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[conj_zmat, h.z12, mul_zero]`. Rewrite using `[conj_zmat, h.z21, mul_zero]`. Introduce `c g₁`. Unfold `zeta`. Rewrite using `[conj_zmat]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[wt]`. Introduce `η Ψ`. Use `MonoidHom.ext fun g => ?_` and prove the remaining obligations. Use `SemidirectProduct.ext ?_ (conj_right _ t g)` and prove the remaining obligations. Rewrite using `[conj_left, unitaryThreeReflection_left, ← map_mul, ← map_mul, mul_inv_cancel_comm]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.U3.conjBy_tor :
     ∀ {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (t : Rˣ),

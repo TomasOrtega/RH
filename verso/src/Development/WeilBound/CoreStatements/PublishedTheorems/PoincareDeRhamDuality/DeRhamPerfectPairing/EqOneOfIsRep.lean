@@ -21,9 +21,9 @@ section General
 variable {R : Type} [CommRing R] {Y : Scheme.{0}} (s : Y ⟶ Sp R)
 
 /- English proof (translation)
-Introduce `y hy`. Take `⟨U', hU', hy', hsub⟩` from `exists_isAffineOpen_mem_and_subset (U := U) hy`. Establish `hP : (Pt.aff s ⟨U', hU'⟩).In U'` using `hU'.fromSpec_preimage_self.ge`. Establish `h2` using `h _ (hP.mono hsub)`. Establish `: y ∈ Set.range hU'.fromSpec` using `by rw [hU'.range_fromSpec]; exact hy'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨z, rfl⟩` from `this`. Conclude with `h2 (Set.mem_univ z)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem le_of_pts {U V : Y.Opens} (h : ∀ P : Pt s, P.In U → P.In V) : U ≤ V := by
   intro y hy
@@ -35,16 +35,16 @@ theorem le_of_pts {U V : Y.Opens} (h : ∀ P : Pt s, P.In U → P.In V) : U ≤ 
   exact h2 (Set.mem_univ z)
 
 /- English proof (translation)
-Rewrite using `[← φ.pt, valR_spMap_comp _ _ _ h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valR_hom {P Q : Pt s} (φ : P.Hom Q) {U : Y.Opens} (h : P.In U) (f : Γ(Y, U)) :
     valR Q.x U f = φ.ρ (valR P.x U f) := by
   rw [← φ.pt, valR_spMap_comp _ _ _ h]; rfl
 
 /- English proof (translation)
-Set `F : PtFn s` to `fun P ↦ if h : ∃ k, P.In (W k) then a h.choose P else 0`. Establish `hF : ∀ k (P : Pt s), P.In U → P.In (W k) → F P = a k P` using `fun k P hU hk ↦ by`. Establish `h : ∃ k, P.In (W k)` using `⟨k, hk⟩`. Simplify using `only [F, dif_pos h]`. Conclude with `h₁ _ _ P hU h.choose_spec hk`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf⟩` from `GlobalTheory.T.exists_section_of_natural_on_algebraPoints_of_cover R Y s J (fun k ↦ U ⊓ W k) U (fun k ↦ inf_le_left) (by rw [← inf_iSup_eq, hW, inf_top_eq]) F fun k P Q φ hP ↦ by`. Rewrite using `[hF k P (hP.mono inf_le_left) (hP.mono inf_le_right), hF k Q ((hP.map φ).mono inf_le_left) ((hP.map φ).mono inf_le_right)]`. Conclude with `h₂ k P Q φ hP`. Conclude with `⟨f, fun k P hU hk ↦ (hf k P (hU.inf hk)).symm.trans (hF k P hU hk)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_secA {J : Type} (W : J → Y.Opens) (hW : ⨆ k, W k = ⊤) (U : Y.Opens) (a : J → PtFn s)
     (h₁ : ∀ k k' (P : Pt s), P.In U → P.In (W k) → P.In (W k') → a k P = a k' P)
@@ -64,26 +64,26 @@ theorem exists_secA {J : Type} (W : J → Y.Opens) (hW : ⨆ k, W k = ⊤) (U : 
   exact ⟨f, fun k P hU hk ↦ (hf k P (hU.inf hk)).symm.trans (hF k P hU hk)⟩
 
 /- English proof (translation)
-Rewrite using `[← valR_mul _ _ h, Units.mul_inv, valR_one _ _ h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem valR_mul_inv {C : Type} [CommRing C] (x : Sp C ⟶ Y) (U : Y.Opens) (h : ⊤ ≤ x ⁻¹ᵁ U) (u : Γ(Y, U)ˣ) :
     valR x U u.val * valR x U u⁻¹.val = 1 := by
   rw [← valR_mul _ _ h, Units.mul_inv, valR_one _ _ h]
 
 /- English proof (translation)
-Set `a : M.ι → J → PtFn s` to `fun i k P ↦ valR P.x _ (M.g i (c k)).val * valR P.x _ (u k).val`. Set `a' : M.ι → J → PtFn s` to `fun i k P ↦ valR P.x _ (M.g i (c k))⁻¹.val * valR P.x _ (u k)⁻¹.val`. Establish `e₁ : ∀ i k k' (P : Pt s), P.In (M.U i) → P.In (W k) → P.In (W k') → a i k P = a i k' P`. Introduce `i k k' P hi hk hk'`. Simplify using `only [a]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hu k k' P hk hk', ← _root_.mul_assoc, valR_cocycle M hM P.x i (c k) (c k') ((hi.inf (hk.mono (hc k))).inf (hk'.mono (hc k')))]`. Establish `e₂ : ∀ i k (P : Pt s), P.In (M.U i) → P.In (W k) → a i k P * a' i k P = 1`. Introduce `i k P hi hk`. Simplify using `only [a, a']`. Rewrite using `[_root_.mul_mul_mul_comm, valR_mul_inv _ _ (hi.inf (hk.mono (hc k))), valR_mul_inv _ _ hk, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e₃ : ∀ i k k' (P : Pt s), P.In (M.U i) → P.In (W k) → P.In (W k') → a' i k P = a' i k' P`. Introduce `i k k' P hi hk hk'`. Establish `h1` using `e₂ i k P hi hk`. Establish `h2` using `e₂ i k' P hi hk'`. Rewrite `h2` using `[← e₁ i k k' P hi hk hk']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `(a' i k' P) * h1 - (a' i k P) * h2`. Establish `n₁ : ∀ i k, IsNat (M.U i ⊓ W k) (a i k)` using `fun i k P Q φ hP ↦ by`. Simplify using `only [a]`. Rewrite using `[map_mul, valR_hom s φ (hP.mono inf_le_right), valR_hom s φ (hP.mono (inf_le_inf_left _ (hc k)))]`. Establish `n₂ : ∀ i k, IsNat (M.U i ⊓ W k) (a' i k)` using `fun i k P Q φ hP ↦ by`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [a']`. Rewrite using `[map_mul, valR_hom s φ (hP.mono inf_le_right), valR_hom s φ (hP.mono (inf_le_inf_left _ (hc k)))]`. Use `choose f hf using fun i ↦ exists_secA s W hW (M.U i) (a i) (e₁ i) (n₁ i)`. Use `choose f' hf' using fun i ↦ exists_secA s W hW (M.U i) (a' i) (e₃ i) (n₂ i)`. Establish `hff : ∀ i, f i * f' i = 1` using `fun i ↦ eq_of_valR_eq_on_cover s W hW _ _ _ fun P k hi hk ↦ by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[valR_mul _ _ hi, valR_one _ _ hi, hf i k P hi hk, hf' i k P hi hk, e₂ i k P hi hk]`. Use `⟨⟨fun i ↦ Units.mkOfMulEqOne _ _ (hff i)⟩, fun i j ↦ Units.ext ?_⟩` and prove the remaining obligations. Use `eq_of_valR_eq_on_cover s W hW _ _ _ fun P k hij hk ↦ ?_` and prove the remaining obligations. Establish `hi : P.In (M.U i)` using `hij.mono inf_le_left`. Establish `hj : P.In (M.U j)` using `hij.mono inf_le_right`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Units.val_mul, valR_mul _ _ hij]`. Express the relevant statement in the definitionally equal form `valR P.x _ ((Y.presheaf.map (homOfLE inf_le_left).op).hom (f i)) = _ * valR P.x _ ((Y.presheaf.map (homOfLE inf_le_right).op).hom (f j))`. Rewrite using `[valR_res _ _ hij, valR_res _ _ hij, hf i k P hi hk, hf j k P hj hk]`. Simplify using `only [a]`. Rewrite using `[← _root_.mul_assoc, valR_cocycle M hM P.x i j (c k) (hij.inf (hk.mono (hc k)))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem triv_of_local {M : LB Y} (hM : M.IsLB) {J : Type} (W : J → Y.Opens) (hW : ⨆ k, W k = ⊤) (c : J → M.ι)
     (hc : ∀ k, W k ≤ M.U (c k)) (u : ∀ k, Γ(Y, W k)ˣ)
@@ -153,19 +153,19 @@ def fstHomPt (P : Pt (epsR K ⊗ A).hom) : DualNumber K →+* P.B :=
   (Spec.preimage (P.x ≫ (fst (epsR K) A).left : Sp P.B ⟶ Sp (DualNumber K))).hom
 
 /- English proof (translation)
-The claim follows from `Spec.map_preimage _`.
+A detailed English derivation is pending.
 -/
 theorem spMap_fstHomPt (P : Pt (epsR K ⊗ A).hom) : spMap (fstHomPt P) = P.x ≫ (fst (epsR K) A).left :=
   Spec.map_preimage _
 
 /- English proof (translation)
-Rewrite using `[← map_mul, DualNumber.eps_mul_eps, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fstHomPt_sq (P : Pt (epsR K ⊗ A).hom) : fstHomPt P DualNumber.eps * fstHomPt P DualNumber.eps = 0 := by
   rw [← map_mul, DualNumber.eps_mul_eps, map_zero]
 
 /- English proof (translation)
-Establish `e : spMap ((fstHomPt P).comp (algebraMap K (DualNumber K))) = spMap (algebraMap K P.B)`. Rewrite using `[GlobalTheory.Cris.spMap_comp, spMap_fstHomPt, ← P.w, Category.assoc]`. Conclude with `congrArg (P.x ≫ ·) (Over.w (fst (epsR K) A))`. Conclude with `congrArg CommRingCat.Hom.hom (Spec.map_injective e)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fstHomPt_comp (P : Pt (epsR K ⊗ A).hom) :
     (fstHomPt P).comp (algebraMap K (DualNumber K)) = algebraMap K P.B := by
@@ -175,15 +175,15 @@ theorem fstHomPt_comp (P : Pt (epsR K ⊗ A).hom) :
   exact congrArg CommRingCat.Hom.hom (Spec.map_injective e)
 
 /- English proof (translation)
-Take `⟨x', v', hx', hv', hw⟩` from `(sndPt P).isTransl_trx v`. Establish `i1 : (evEps _ (fstHomPt_sq P)).comp (algebraMap P.B (DualNumber P.B)) = RingHom.id _` using `RingHom.ext fun b ↦ by simp [evEps, TrivSqZeroExt.algebraMap_eq_inl]`. Establish `i2 : (evEps _ (fstHomPt_sq P)).comp (dualMap (algebraMap K P.B)) = fstHomPt P` using `RingHom.ext fun c ↦ by`. Establish `h1 : ∀ k, algebraMap K P.B k = fstHomPt P (algebraMap K _ k)` using `fun k ↦ (RingHom.congr_fun (fstHomPt_comp P) k).symm`. Establish `h2 : c = algebraMap K _ c.fst + algebraMap K _ c.snd * DualNumber.eps`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Use `conv_rhs => rw [h2, map_add, map_mul, ← h1, ← h1]`. Simplify using `[evEps, dualMap, Algebra.smul_def, TrivSqZeroExt.algebraMap_eq_inl]`. Set `y : Over.mk (spMap (algebraMap K P.B)) ⟶ epsR K ⊗ A` to `Over.homMk P.x P.w`. Set `j : Over.mk (spMap (algebraMap K P.B)) ⟶ Over.mk (spMap ((algebraMap P.B (DualNumber P.B)).comp (algebraMap K P.B)))` to `Over.homMk (spMap (evEps _ (fstHomPt_sq P))) (by`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `spMap _ ≫ spMap _ = spMap _`. Rewrite using `[← GlobalTheory.Cris.spMap_comp, ← RingHom.comp_assoc, i1, RingHom.id_comp])`. Establish `e1 : j ≫ x' = y ≫ snd (epsR K) A`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `spMap _ ≫ x'.left = P.x ≫ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx', ← Category.assoc, ← GlobalTheory.Cris.spMap_comp, i1, GlobalTheory.Cris.spMap_id, Category.id_comp]`. Establish `e2 : j ≫ v' = y ≫ fst (epsR K) A ≫ v`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `spMap _ ≫ v'.left = P.x ≫ (fst (epsR K) A).left ≫ v.left`. Rewrite using `[hv', ← Category.assoc, ← GlobalTheory.Cris.spMap_comp, i2, spMap_fstHomPt, Category.assoc]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : y ≫ ((fst (epsR K) A ≫ v) * snd (epsR K) A) = j ≫ (x' * v')`. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul, e1, e2, _root_.mul_comm]`. Rewrite using `[← hw]`. Conclude with `congrArg Over.Hom.left e3`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pt_transl [IsCommMonObj A] (v : epsR K ⟶ A) (P : Pt (epsR K ⊗ A).hom) :
     P.x ≫ (lift (fst (epsR K) A ≫ v) (snd (epsR K) A) ≫ μ[A]).left =
@@ -219,29 +219,27 @@ theorem pt_transl [IsCommMonObj A] (v : epsR K ⟶ A) (P : Pt (epsR K ⊗ A).hom
   exact congrArg Over.Hom.left e3
 
 /- English proof (translation)
-Set `a` to `(lift (fst (epsR K) A ≫ v) (snd (epsR K) A) ≫ μ[A]).left`. Set `b` to `(snd (epsR K) A).left`. Set `p : (epsR K ⊗ A).left ⟶ Sp (DualNumber K)` to `(fst (epsR K) A).left`. Establish `hab : ∀ (U : A.left.Opens) (P : Pt (epsR K ⊗ A).hom), P.In (b ⁻¹ᵁ U) → ⊤ ≤ (P.x ≫ a) ⁻¹ᵁ U`. Introduce `U P hP`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (sndPt P).In U` using `hP`. Establish `h2 : ⊤ ≤ ((sndPt P).trx v) ⁻¹ᵁ U` using `h1.tr hv`. Simplify using `only [a]`. Rewrite using `[pt_transl]`. Conclude with `fun z _ ↦ h2 (Set.mem_univ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `hle : ∀ U : A.left.Opens, b ⁻¹ᵁ U ≤ a ⁻¹ᵁ U` using `fun U ↦ le_of_pts (epsR K ⊗ A).hom (hab U)`. Establish `hsq : ∀ U, constFn p U DualNumber.eps * constFn p U DualNumber.eps = 0` using `fun U ↦ by`. Simplify using `only [constFn, ← map_mul, DualNumber.eps_mul_eps, map_zero]`. Use `triv_of_local (epsR K ⊗ A).hom (LB.isLB_linComb hL _ _) (fun j ↦ b ⁻¹ᵁ V j) (by rw [← Scheme.Hom.preimage_iSup, hV, Scheme.Hom.preimage_top]) (fun j _ ↦ τ j) ?_ (fun j ↦ Units.mkOfMulEqOne (1 + constFn p _ DualNumber.eps * (b.app (V j)).hom (n j)) (1 - constFn p _ DualNumber.eps …` and prove the remaining obligations. Introduce `j y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Set.mem_iInter.2 fun k ↦ ?_` and prove the remaining obligations. Use `fin_cases k`. Conclude with `hle _ (hτ j hy)`. Conclude with `hτ j hy`. Introduce `j j' P hj hj'`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hu : ∀ j, P.In (b ⁻¹ᵁ V j) → valR P.x (b ⁻¹ᵁ V j) (1 + constFn p _ DualNumber.eps * (b.app (V j)).hom (n j)) = 1 + fstHomPt P DualNumber.eps * valR (sndPt P).x _ (n j)` using `fun j hj ↦ by`. Rewrite using `[valR_add _ _ hj, valR_mul _ _ hj, valR_one _ _ hj, valR_constFn _ _ _ hj, ← valR_comp]`. Both sides reduce to the same expression. Establish `q : (sndPt P).In (V j)` using `hj`. Establish `q' : (sndPt P).In (V j')` using `hj'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `qq : (sndPt P).In (L.U (τ j) ⊓ L.U (τ j'))` using `(q.mono (hτ j)).inf (q'.mono (hτ j'))`. Establish `hw : ∀ j, b ⁻¹ᵁ V j ≤ LB.wchart L ![a, b] fun _ ↦ τ j`. Introduce `j y hy`. Use `Set.mem_iInter.2 fun k ↦ ?_` and prove the remaining obligations. Use `fin_cases k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hle _ (hτ j hy)`. Conclude with `hτ j hy`. Establish `hPw : P.In (LB.wchart L ![a, b] (fun _ ↦ τ j) ⊓ LB.wchart L ![a, b] fun _ ↦ τ j')` using `(hj.mono (hw j)).inf (hj'.mono (hw j'))`. Establish `la : LB.wchart L ![a, b] (fun _ ↦ τ j) ⊓ LB.wchart L ![a, b] (fun _ ↦ τ j') ≤ a ⁻¹ᵁ (L.U (τ j) ⊓ L.U (τ j'))` using `le_inf (inf_le_left.trans (LB.wchart_le L ![a, b] _ 0)) (inf_le_right.trans (LB.wchart_le L ![a, b] _ 0))`. Establish `lb : LB.wchart L ![a, b] (fun _ ↦ τ j) ⊓ LB.wchart L ![a, b] (fun _ ↦ τ j') ≤ b ⁻¹ᵁ (L.U (τ j) ⊓ L.U (τ j'))` using `le_inf (inf_le_left.trans (LB.wchart_le L ![a, b] _ 1)) (inf_le_right.trans (LB.wchart_le L ![a, b] _ 1))`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `eg : (LB.LinComb L ![a, b] ![1, -1]).g (fun _ ↦ τ j) (fun _ ↦ τ j') = res la (pullU a _ (L.g (τ j) (τ j'))) * res lb (pullU b _ (L.g (τ j) (τ j'))⁻¹)`. Simplify using `only [LB.LinComb, Fin.prod_univ_two, Matrix.cons_val_zero, Matrix.cons_val_one, zpow_one, zpow_neg, map_inv]`. Both sides reduce to the same expression. Establish `ev : valR P.x _ ((LB.LinComb L ![a, b] ![1, -1]).g (fun _ ↦ τ j) (fun _ ↦ τ j')).val = valR (P.x ≫ a) _ (L.g (τ j) (τ j')).val * valR (sndPt P).x _ (L.g (τ j) (τ j'))⁻¹.val`. Rewrite using `[eg, Units.val_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `(valR_mul _ _ hPw _ _).trans (congrArg₂ (· * ·) ?_ ?_)` and prove the remaining obligations. Conclude with `(valR_res _ la hPw _).trans (valR_comp _ _ _ _).symm`. Conclude with `(valR_res _ lb hPw _).trans (valR_comp _ _ _ _).symm`. Establish `et : valR (P.x ≫ a) _ (L.g (τ j) (τ j')).val = valR (sndPt P).x _ (L.g (τ j) (τ j')).val + (valR ((sndPt P).trx v) _ (L.g (τ j) (τ j')).val).snd * fstHomPt P DualNumber.eps`. Simplify using `only [a]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[pt_transl, valR_spMap_comp _ _ _ (qq.tr hv), ← fst_valR_trx (sndPt P) hv _ qq]`. Both sides reduce to the same expression. Establish `h1` using `valR_mul_inv (sndPt P).x _ qq (L.g (τ j) (τ j'))`. Establish `h2` using `hn j j' (sndPt P) q q'`. Establish `h3` using `fstHomPt_sq P`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Use `(hu j hj).trans (Eq.trans ?_ (congrArg₂ (· * ·) ev (hu j' hj')).symm)` and prove the remaining obligations. Rewrite using `[et]`. Simplify using `only [dlog] at h2`. Generalize the expression as in `valR (sndPt P).x _ (L.g (τ j) (τ j')).val = g at *`. Generalize the expression as in `valR (sndPt P).x _ (L.g (τ j) (τ j'))⁻¹.val = g' at *`.
-
-Generalize the expression as in `(valR ((sndPt P).trx v) _ (L.g (τ j) (τ j')).val).snd = w at *`. Generalize the expression as in `valR (sndPt P).x _ (n j) = m at *`. Generalize the expression as in `valR (sndPt P).x _ (n j') = m' at *`. Generalize the expression as in `fstHomPt P DualNumber.eps = e at *`. Take the linear combination `(-(1 + e * m')) * h1 + e * h2 - (w * g' * m') * h3`.
+Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem triv_translDiff [IsCommMonObj A] {L : LB A.left} (hL : L.IsLB) {v : epsR K ⟶ A} (hv : IsTangent v)
     {J : Type} (V : J → A.left.Opens) (hV : ⨆ j, V j = ⊤) (τ : J → L.ι) (hτ : ∀ j, V j ≤ L.U (τ j))
@@ -325,15 +323,13 @@ theorem triv_translDiff [IsCommMonObj A] {L : LB A.left} (hL : L.IsLB) {v : epsR
     linear_combination (-(1 + e * m')) * h1 + e * h2 - (w * g' * m') * h3
 
 /- English proof (translation)
-Rewrite `hF` using `[hodgeFiltration_eq_range]`. Take `⟨ω, hω⟩` from `hF`. Take `⟨g, hg⟩` from `H1.mk_eq_mk.1 hω.symm`. Take `⟨G, h1, h2⟩` from `hc`. Establish `hg' : ∀ (P Q : GPt A) (φ : P.Hom Q), GlobalTheory.Cris.ev c φ.triv = g Q.triv - φ.ρ (g P.triv)` using `fun P Q φ ↦ by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `congrFun (congrFun (congrFun hg P.triv) Q.triv) φ.triv`. Establish `z : ω.1.1 P.triv Q.triv φ.triv = 0` using `ω.2 φ.triv rfl rfl`. Establish `key : ∀ x y t : Q.B, x = y - t → t = 0 → y = x` using `fun x y t a b ↦ by rw [a, b, sub_zero]`. Conclude with `key _ _ _ e z`. Establish `ex : ∀ j, ∃ n : Γ(A.left, V j), ∀ P : GPt A, P.In (V j) → G j P - g P.triv = valR P.x _ n` using `fun j ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `GlobalTheory.T.exists_section_of_natural_on_algebraPoints_of_cover K _ (A.hom ≫ 𝟙 (Sp K)) Unit (fun _ ↦ V j) (V j) (fun _ ↦ le_rfl) (le_iSup (fun _ : Unit ↦ V j) ()) (fun P ↦ G j P - g P.triv) fun _ P Q φ hP ↦ by`. Establish `a` using `h1 j P Q φ hP`. Rewrite `a` using `[hg']`. Establish `key : ∀ x y z t : Q.B, x - y = z - t → z - x = t - y` using `fun x y z t h ↦ by linear_combination -h`. Conclude with `(key _ _ _ _ a).trans (map_sub φ.ρ _ _).symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨n, hn ()⟩`. Use `choose n hn using ex`. Establish `ht` using `triv_translDiff hL hv V hV τ hτ n fun j j' P hj hj' ↦ by`. Rewrite using `[← hn j P hj, ← hn j' P hj', sub_sub_sub_cancel_right]`. Conclude with `h2 j j' P hj hj'`.
-
-Establish `hD : (Out.translDiff A L v).IsLB` using `LB.isLB_linComb hL _ _`. Use `hK (DualNumber K) _ v fun p ↦ ⟨⊤, trivial, (cls_eq_zero_iff (pull_isLB hD _)).1 ?_⟩` and prove the remaining obligations. Rewrite using `[cls_pull hD, (cls_eq_zero_iff hD).2 ht, map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_isRep [IsCommMonObj A] {L : LB A.left} (hL : L.IsLB) (hK : Out.KTriv A L) {v : epsR K ⟶ A}
     (hv : IsTangent v) {J : Type} (V : J → A.left.Opens) (hV : ⨆ j, V j = ⊤) (τ : J → L.ι)

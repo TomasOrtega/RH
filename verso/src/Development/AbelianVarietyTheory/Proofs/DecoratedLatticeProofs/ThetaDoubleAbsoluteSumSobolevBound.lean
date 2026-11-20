@@ -27,9 +27,7 @@ namespace GlobalTheory.Unf.DoubleSum
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Use `(enorm_integral_le_lintegral_enorm _).trans ?_` and prove the remaining obligations. Use `(lintegral_mono (g := fun _ => ⨆ w, ‖f w‖ₑ) fun a => ?_).trans ?_` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[enorm_mul, ← ofReal_norm (u a), hu, ENNReal.ofReal_one, one_mul]`. Conclude with `le_iSup (fun w => ‖f w‖ₑ) _`.
-
-Rewrite using `[setLIntegral_const, h, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enorm_integral_le {α β : Type} [MeasurableSpace α] {μ : Measure α} {𝓕 : Set α} (h : μ 𝓕 = 1) (u : α → ℂ)
     (hu : ∀ a, ‖u a‖ = 1) (p : α → β) (f : β → ℂ) : ‖∫ a in 𝓕, u a * f (p a) ∂μ‖ₑ ≤ ⨆ w, ‖f w‖ₑ := by
@@ -41,7 +39,7 @@ theorem enorm_integral_le {α β : Type} [MeasurableSpace α] {μ : Measure α} 
   · rw [setLIntegral_const, h, mul_one]
 
 /- English proof (translation)
-Rewrite using `[ENNReal.coe_mul, ENNReal.coe_toNNReal hM, ENNReal.coe_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem rearrange (C₁ C₂ : ℝ≥0) (p s M : ℝ≥0∞) (hM : M ≠ ⊤) :
     p * ((C₁ + C₂) * s) * M = ((C₁ + C₂) * M.toNNReal : ℝ≥0) * p * s := by
@@ -53,7 +51,7 @@ section Source
 variable {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (v : VolM D T.rank ρ)
 
 /- English proof (translation)
-Simplify using `only [HypDec.mixS, HypDec.integrandS_eq]`. Conclude with `enorm_integral_le v.covol.2.2 _ (fun _ => hψ.1.2.1 _) _ f`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem enorm_mixS_le (hψ : IsStdChar D ψ (-1)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) (w : WO S₀ T) :
     ‖d.mixS T ψ v.μ v.𝓕 f x w‖ₑ ≤ ⨆ w, ‖f w‖ₑ := by
@@ -61,7 +59,7 @@ theorem enorm_mixS_le (hψ : IsStdChar D ψ (-1)) (f : WO S T → ℂ) (x : Mx D
   exact enorm_integral_le v.covol.2.2 _ (fun _ => hψ.1.2.1 _) _ f
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `h1` using `d.integrableOn_mixS hψ.1.1 v.covol hf x w`. Establish `h2` using `d.integrableOn_mixS hψ.1.1 v.covol hg x w`. Simplify using `only [HypDec.mixS, HypDec.integrandS_eq, Pi.add_apply, mul_add] at h1 h2 ⊢`. Conclude with `integral_add h1 h2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mixS_add (hψ : IsStdChar D ψ (-1)) {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g)
     (x : Mx D T.rank ρ) : d.mixS T ψ v.μ v.𝓕 (f + g) x = d.mixS T ψ v.μ v.𝓕 f x + d.mixS T ψ v.μ v.𝓕 g x := by
@@ -72,7 +70,7 @@ theorem mixS_add (hψ : IsStdChar D ψ (-1)) {f g : WO S T → ℂ} (hf : IsThet
   exact integral_add h1 h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [HypDec.mixS, HypDec.integrandS_eq, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mixS_smul (c : ℂ) (f : WO S T → ℂ) (x : Mx D T.rank ρ) :
     d.mixS T ψ v.μ v.𝓕 (c • f) x = c • d.mixS T ψ v.μ v.𝓕 f x := by
@@ -87,7 +85,7 @@ def dualPt (ρ : ℕ) : Mx D ρ T.rank →+ Mx D T.rank ρ where
   map_add' _ _ := by rw [Matrix.add_mul, smul_add, adj_add]
 
 /- English proof (translation)
-Establish `h : Continuous fun b : Mx D ρ T.rank => (b ⬝ giA T : Mx D ρ T.rank)` using `continuous_id.matrix_mul continuous_const`. Conclude with `continuous_adj.comp (f := fun b : Mx D ρ T.rank => incA D D.host.xi0⁻¹ • (b ⬝ giA T : Mx D ρ T.rank)) (continuous_matrix fun i j => continuous_const.mul (h.matrix_elem i j))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_dualPt : Continuous (dualPt T ρ) := by
   have h : Continuous fun b : Mx D ρ T.rank => (b ⬝ giA T : Mx D ρ T.rank) := continuous_id.matrix_mul continuous_const
@@ -95,9 +93,9 @@ theorem continuous_dualPt : Continuous (dualPt T ρ) := by
     (continuous_matrix fun i j => continuous_const.mul (h.matrix_elem i j))
 
 /- English proof (translation)
-Establish `e : ∀ z : AE D, infPart D (cA D z) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D z)` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul a x => rfl`. Consider the case `add a b ha hb => rw [RingHom.map_add, RingHom.map_add, RingHom.map_add, RingHom.map_add, ha, hb]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[e, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem infPart_cA {a : AE D} (h : infPart D a = 0) : infPart D (cA D a) = 0 := by
   have e : ∀ z : AE D, infPart D (cA D z) = sigR (Ainf D.host.F) D.sp.cm.sig (infPart D z) := fun z => by
@@ -108,7 +106,7 @@ theorem infPart_cA {a : AE D} (h : infPart D a = 0) : infPart D (cA D a) = 0 := 
   rw [e, h, map_zero]
 
 /- English proof (translation)
-Establish `h : (b ⬝ giA T).map (infPart D) = 0` using `by rw [Matrix.map_mul, hb, Matrix.zero_mul]`. Use function extensionality and compare the values at `i j`. Use `infPart_cA (a := incA D D.host.xi0⁻¹ * (b ⬝ giA T) j i) ?_` and prove the remaining obligations. Rewrite using `[map_mul, show infPart D ((b ⬝ giA T) j i) = 0 from congrFun (congrFun h j) i, mul_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualPt_fin {b : Mx D ρ T.rank} (hb : b.map (infPart D) = 0) : (dualPt T ρ b).map (infPart D) = 0 := by
   have h : (b ⬝ giA T).map (infPart D) = 0 := by rw [Matrix.map_mul, hb, Matrix.zero_mul]
@@ -117,7 +115,7 @@ theorem dualPt_fin {b : Mx D ρ T.rank} (hb : b.map (infPart D) = 0) : (dualPt T
   rw [map_mul, show infPart D ((b ⬝ giA T) j i) = 0 from congrFun (congrFun h j) i, mul_zero]
 
 /- English proof (translation)
-Establish `h` using `d.hO_ext T x 0 0 (dualPt T ρ b) 0 0`. Simplify using `only [map_zero, zero_add, add_zero, hO_eq_trace S₀, Matrix.mul_zero, trace_zero] at h`. Rewrite using `[symplO_eq, h, show pairS T (0 : Mx D T.rank ρ) 0 = 0 by simp [pairS], add_zero, pairS]`. Use `congr 1`. Rewrite using `[show dualPt T ρ b = adj (incA D D.host.xi0⁻¹ • (b ⬝ giA T)) from rfl, adj_adj, Matrix.smul_mul, trace_smul, smul_eq_mul, ← mul_assoc, ← map_mul, mul_inv_cancel₀ (GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D), map_one, one_mul, Matrix.mul_assoc, giA_gA_cancel, trace_m …`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem symplO_dualPt (x : Mx D T.rank ρ) (b : Mx D ρ T.rank) :
     symplO S T (d.extX T x) (d.extY T (dualPt T ρ b)) = Algebra.trace (AF D.host.F) (AE D) (x ⬝ b).trace := by
@@ -135,7 +133,7 @@ section Target
 variable {S T T₀ : HSp D} {σ : ℕ} (d : HypDec T T₀ σ) (v : VolM D σ S.rank)
 
 /- English proof (translation)
-Simplify using `only [HypDec.mixT, HypDec.integrandT_eq]`. Conclude with `enorm_integral_le v.covol.2.2 _ (fun _ => hψ.1.2.1 _) _ f`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem enorm_mixT_le (hψ : IsStdChar D ψ (-1)) (f : WO S T → ℂ) (y : Mx D S.rank σ) (w : WO S T₀) :
     ‖d.mixT S ψ v.μ v.𝓕 f y w‖ₑ ≤ ⨆ w, ‖f w‖ₑ := by
@@ -143,7 +141,7 @@ theorem enorm_mixT_le (hψ : IsStdChar D ψ (-1)) (f : WO S T → ℂ) (y : Mx D
   exact enorm_integral_le v.covol.2.2 _ (fun _ => hψ.1.2.1 _) _ f
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Establish `h1` using `d.integrableOn_mixT hψ.1.1 v.covol hf y w`. Establish `h2` using `d.integrableOn_mixT hψ.1.1 v.covol hg y w`. Simplify using `only [HypDec.mixT, HypDec.integrandT_eq, Pi.add_apply, mul_add] at h1 h2 ⊢`. Conclude with `integral_add h1 h2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mixT_add (hψ : IsStdChar D ψ (-1)) {f g : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) (hg : IsThetaFunO ψ S T g)
     (y : Mx D S.rank σ) : d.mixT S ψ v.μ v.𝓕 (f + g) y = d.mixT S ψ v.μ v.𝓕 f y + d.mixT S ψ v.μ v.𝓕 g y := by
@@ -154,7 +152,7 @@ theorem mixT_add (hψ : IsStdChar D ψ (-1)) {f g : WO S T → ℂ} (hf : IsThet
   exact integral_add h1 h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [HypDec.mixT, HypDec.integrandT_eq, Pi.smul_apply, smul_eq_mul, mul_left_comm _ c, integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mixT_smul (c : ℂ) (f : WO S T → ℂ) (y : Mx D S.rank σ) :
     d.mixT S ψ v.μ v.𝓕 (c • f) y = c • d.mixT S ψ v.μ v.𝓕 f y := by
@@ -174,7 +172,7 @@ def val (x : Mx D T.rank ρ) (y : Mx D S₀.rank σ) (f : WO S T → ℂ) : ℂ 
   d'.mixT S₀ ψ v'.μ v'.𝓕 (d.mixS T ψ v.μ v.𝓕 f x) y 0
 
 /- English proof (translation)
-Rewrite using `[val, (GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d v f hf).2.1, mixT_smul, symplO_dualPt]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_extY (hψ : IsStdChar D ψ (-1)) (x : Mx D T.rank ρ) (y : Mx D S₀.rank σ) (b : Mx D ρ T.rank)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -184,7 +182,7 @@ theorem val_extY (hψ : IsStdChar D ψ (-1)) (x : Mx D T.rank ρ) (y : Mx D S₀
   rfl
 
 /- English proof (translation)
-Rewrite using `[val, (GlobalTheory.T.heisenbergOperator_thetaFunctional_mixedSourceModel D ψ hψ S S₀ T ρ d v f hf).2.2.1, (GlobalTheory.T.heisenbergThetaMixedModelTarget_of_mixedModel D ψ hψ S₀ T T₀ σ d' v'.μ v'.𝓕 v'.covol _ ((GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions …`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem val_incX (hψ : IsStdChar D ψ (-1)) (x : Mx D T.rank ρ) (y : Mx D S₀.rank σ) (ξ : Mx D σ S₀.rank)
     {f : WO S T → ℂ} (hf : IsThetaFunO ψ S T f) :
@@ -197,7 +195,7 @@ theorem val_incX (hψ : IsStdChar D ψ (-1)) (x : Mx D T.rank ρ) (y : Mx D S₀
   rfl
 
 /- English proof (translation)
-Establish `h1 : (d'.incX S₀ ξ).map (infPart D) = 0` using `by rw [HypDec.incX_apply, Matrix.map_mul, h, Matrix.mul_zero]`. Rewrite using `[HypDec.matrixExtendByZero_apply, Matrix.map_mul, h1, Matrix.zero_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ext_zero_incX_finite_part_zero {ξ : Mx D σ S₀.rank} (h : ξ.map (infPart D) = 0) :
     (d.ext0 T (d'.incX S₀ ξ)).map (infPart D) = 0 := by
@@ -205,7 +203,7 @@ theorem ext_zero_incX_finite_part_zero {ξ : Mx D σ S₀.rank} (h : ξ.map (inf
   rw [HypDec.matrixExtendByZero_apply, Matrix.map_mul, h1, Matrix.zero_mul]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [zero_nsmul, zero_nsmul, Matrix.mul_zero, Matrix.zero_mul]`. Consider the case `succ n ih => rw [succ_nsmul, succ_nsmul, Matrix.mul_add, Matrix.add_mul, trace_add, trace_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem trace_nsmul {a b : ℕ} (n : ℕ) (x : Mx D a b) (z : Mx D b a) : (x ⬝ (n • z)).trace = ((n • x) ⬝ z).trace := by
   induction n with
@@ -215,19 +213,17 @@ theorem trace_nsmul {a b : ℕ} (n : ℕ) (x : Mx D a b) (z : Mx D b a) : (x ⬝
 end Double
 
 /- English proof (translation)
-Introduce `D ψ hψ θ hθ S T ρ σ`. Use `choose N hN using GlobalTheory.T.tsum_adelicMatrixSchwartzMajorant_rational_ne_top D θ hθ`. Use `⟨N T.rank ρ + N (S.rank - 2 * ρ) σ, fun S₀ T₀ d d' v v' K₀ hK₀ => ?_⟩` and prove the remaining obligations. Establish `hr : S.rank - 2 * ρ = S₀.rank` using `by have := d.rank_add; omega`. Rewrite using `[hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set k := N T.rank ρ + N S₀.rank σ with hk`. Establish `hmv` using `fun f hf => (GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D ψ hψ).1 S S₀ T ρ d v.μ v.𝓕 v.covol f hf`. Establish `c1 : Continuous fun b => d.extY T (dualPt T ρ b)` using `continuous_dualPt.matrix_mul continuous_const`. Establish `c2 : Continuous fun ξ => d.ext0 T (d'.incX S₀ ξ)` using `(continuous_const.matrix_mul continuous_id).matrix_mul continuous_const`. Take `⟨K, hK, hbox⟩` from `GlobalTheory.T.character_annihilator_compact_box D ψ hψ ρ T.rank _ (c1.continuousAt.preimage_mem_nhds (by rwa [map_zero, map_zero]))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨K', hK', hbox'⟩` from `GlobalTheory.T.character_annihilator_compact_box D ψ hψ σ S₀.rank _ (c2.continuousAt.preimage_mem_nhds (by rwa [map_zero, map_zero]))`. Take `⟨C₁, hC₁⟩` from `GlobalTheory.T.mixedCoordinate_decay_realEntries D ψ hψ θ hθ S S₀ T ρ d v k`. Take `⟨C₂, hC₂⟩` from `GlobalTheory.T.bounded_functional_theta_estimate D ψ hψ θ hθ S T σ S₀.rank d'.jX d.p0 k`. Establish `hM` using `ENNReal.mul_ne_top (hN T.rank ρ K hK) (hN S₀.rank σ K' hK')`. Use `⟨(C₁ + C₂) * ENNReal.toNNReal ((∑' x : ratMx D T.rank ρ, ENNReal.ofReal (maj θ K (N T.rank ρ) x)) * ∑' y : ratMx D S₀.rank σ, ENNReal.ofReal (maj θ K' (N S₀.rank σ) y)), fun n hn f hf hlev => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(GlobalTheory.T.double_sum_weighted_bound D θ _ _ _ _ K K' (N T.rank ρ) (N S₀.rank σ) n hn ((C₁ + C₂) * supSob ψ θ k f) (fun x y => ‖val ψ d d' v v' x y f‖ₑ) (fun x y hne => ⟨hbox _ fun b hb hfin => ?_, hbox' _ fun ξ hξ hfin => ?_⟩) (fun x y => ?_) (fun x y => ?_)).trans (le_of_e …` and prove the remaining obligations. Establish `h` using `val_extY d d' v v' hψ x y (n • b) hf`. Rewrite `h` using `[map_nsmul, map_nsmul, hlev (d.extY T (dualPt T ρ b)) hb (by rw [HypDec.extY_apply, Matrix.map_mul, dualPt_fin hfin, Matrix.zero_mul]), trace_nsmul]`. Conclude with `(mul_eq_right₀ (enorm_ne_zero.1 hne)).1 h.symm`. Establish `h` using `val_incX d d' v v' hψ x y (n • ξ) hf`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[map_nsmul, map_nsmul, hlev (d.ext0 T (d'.incX S₀ ξ)) hξ (ext_zero_incX_finite_part_zero d d' hfin), trace_nsmul, AddChar.map_neg_eq_inv]`. Conclude with `inv_eq_one.1 ((mul_eq_right₀ (enorm_ne_zero.1 hne)).1 h.symm)`. Use `(mul_le_mul_left (enorm_mixT_le d' v' hψ _ _ _) _).trans ?_` and prove the remaining obligations. Rewrite using `[ENNReal.iSup_mul]`. Conclude with `iSup_le fun w => (hC₁ f hf x w).trans (mul_le_mul_left le_self_add _)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `(hC₂ (val ψ d d' v v' x y) y (fun f g hf hg => ?_) (fun c f _ => ?_) (fun f _ => ?_) (fun ξ f hf => val_incX d d' v v' hψ x y ξ hf) f hf).trans (mul_le_mul_left le_add_self _)` and prove the remaining obligations. Rewrite using `[val, mixS_add d v hψ hf hg, mixT_add d' v' hψ (hmv f hf x) (hmv g hg x)]`. Both sides reduce to the same expression. Rewrite using `[val, mixS_smul, mixT_smul]`. Both sides reduce to the same expression.
-
-Conclude with `(enorm_mixT_le d' v' hψ _ _ _).trans (iSup_le fun w => enorm_mixS_le d v hψ f x w)`. Conclude with `rearrange _ _ _ _ _ hM`.
+A detailed English derivation is pending.
 -/
 theorem absSum₂_le : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ θ : InfFam D, IsInfFam θ → ∀ (S T : HSp D) (ρ σ : ℕ), ∃ k : ℕ, ∀ (S₀ T₀ : HSp D) (d : HypDec S S₀ ρ) (d' : HypDec T T₀ σ) (v : VolM D T.rank ρ) (v' : VolM D σ S₀.rank), ∀ K₀ ∈ nhds (0 : WO S T), ∃ C : ℝ≥0, ∀ n : ℕ, 0 < n → ∀ f : WO S T → ℂ, IsThetaFunO ψ S T f → (∀ u ∈ K₀, u.map (infPart D) = 0 → heisO ψ S T (n • u) f = f) → GlobalTheory.IndefiniteRowSideFullHecke.WordMatrixSeminorms.absSum₂ ψ d d' v.μ v.𝓕 v'.μ v'.𝓕 f ≤ C * (n : ℝ≥0∞) ^ k * supSob ψ θ k f := by
   intro D ψ hψ θ hθ S T ρ σ

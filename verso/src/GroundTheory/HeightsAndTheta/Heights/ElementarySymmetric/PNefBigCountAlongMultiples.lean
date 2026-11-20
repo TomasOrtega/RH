@@ -15,7 +15,7 @@ noncomputable section
 namespace NefBigCountAlongMultiples
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Establish `hfs : (fsH ι).a j = 1` using `rfl`. Simplify using `only [HermLine.zcomb, Pi.sub_apply, Pi.add_apply, Pi.smul_apply, smul_eq_mul, hfs]`. Rewrite using `[Nat.cast_mul, Nat.cast_sub hkq.le]`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -31,11 +31,9 @@ theorem two_zcomb_sub_one {K : Type} [Fintype K] {ι : K → Type} [∀ k, Finty
   ring
 
 /- English proof (translation)
-Take `⟨b, hb1, hev⟩` from `hAC K ι Ω y D (HermLine.constShift N ((p : ℝ) * C)) P0 II hD hII har hb hP0 (isSemipositiveRel_constShift hsp _) (isConjInvariantH_constShift hci _) (by rw [constShift_a]; exact hamp) (by rw [constShift_a]; exact hamp2) (by rw [constShift_a]; exact hampl) (ε / 4 * (q : ℝ) ^ (D + …`. Establish `htop : II K ι (mCoordIdeal y) (D + 1) (fun _ => HermLine.constShift N ((p : ℝ) * C)) = II K ι (mCoordIdeal y) (D + 1) (fun _ => N) - ((D : ℝ) + 1) * ((p : ℝ) * C) * (genDeg (mCoordIdeal y) D N.a : ℝ)`. Rewrite using `[ConstantShift.proof K ι (II K ι) (mCoordIdeal y) D N _ (hII K ι) har hsp.1, hGD K ι Ω y D N har hsp.1]`. Establish `hfin` using `(hPk K ι Ω y D A (chartLat y A.a) har hb hsA (fun τ _ hs' c hc' => isIntegral_algebraMap (x := (⟨_, hs' c hc'⟩ : chartRingZ y c)))).1`. Use `⟨q * b, Nat.one_le_iff_ne_zero.2 (Nat.mul_ne_zero (by omega) (by omega)), ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hev] with j hj`. Establish `hX : (0 : ℝ) ≤ ((b * j : ℕ) : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
-
-Use `_ ≤ (II K ι (mCoordIdeal y) (D + 1) (fun _ => HermLine.constShift N ((p : ℝ) * C)) - ε / 4 * (q : ℝ) ^ (D + 1)) * (((b * j : ℕ) : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)) := mul_le_mul_of_nonneg_right (by rw [htop]; linarith) hX`. Use `_ ≤ _ := hj`. Use `_ ≤ smallSectionCount (IsSmallH (mCoordIdeal y) y A) (chartLat y A.a) (q * (b * j)) := NefCountAlongMultiples.count_shift_le he0 (hmap (b * j)) (hfin _)`. Use `_ = _ := by rw [mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem along_of_shift (hAC : AmpleCountAlongMultiples.StatementAmple) (hGD : GenDegGeomDeg.Statement)
     (hPk : PackingStatement)
@@ -83,19 +81,19 @@ theorem along_of_shift (hAC : AmpleCountAlongMultiples.StatementAmple) (hGD : Ge
     _ = _ := by rw [mul_assoc]
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ y D A P0 II hD hII har hb hA ε hε`. Establish `: CharZero Ω` using `ArithmeticVolumeDegreeZero.charZero_of_horizontal y har.2.2.1`. Set `_ : LinearOrder K` to `LinearOrder.lift' _ (Fintype.equivFin K).injective`. Set `_ : ∀ k, LinearOrder (ι k)` to `fun k => LinearOrder.lift' _ (Fintype.equivFin (ι k)).injective`. Take `⟨k, e, C, -, hC, he0, -, -, hpq, hconv⟩` from `hG2 K ι Ω y D A P0 II hD hII har hb hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ, hδc⟩` from `hconv (ε / 4) (by linarith)`. Establish `hg0 : (0 : ℝ) < (genDeg (mCoordIdeal y) D A.a : ℝ)` using `by exact_mod_cast hA.big`. Take `⟨q, hq⟩` from `exists_nat_gt ((k : ℝ) + 1 / δ + 4 * (((D : ℝ) + 1) * C * ((genDeg (mCoordIdeal y) D A.a : ℝ) + ε / 4)) / ε)`. Establish `hX0 : 0 ≤ 4 * (((D : ℝ) + 1) * C * ((genDeg (mCoordIdeal y) D A.a : ℝ) + ε / 4)) / ε`. Check the signs of the components of the expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `hδ' : 0 < 1 / δ` using `by positivity`. Establish `hkq : k * 1 < q`. Establish `: (k : ℝ) < q` using `by linarith`. Rewrite using `[mul_one]`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq1 : 1 ≤ q` using `by omega`. Establish `hqpos : (0 : ℝ) < q` using `by exact_mod_cast hq1`. Establish `hpqδ : ((1 : ℕ) : ℝ) / q < δ`. Establish `h1 : 1 / δ < q` using `by linarith`. Rewrite `h1` using `[div_lt_iff₀ hδ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.cast_one, div_lt_iff₀ hqpos]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hqC : ((D : ℝ) + 1) * C * ((genDeg (mCoordIdeal y) D A.a : ℝ) + ε / 4) < q * (ε / 4)`. Establish `h1 : 4 * (((D : ℝ) + 1) * C * ((genDeg (mCoordIdeal y) D A.a : ℝ) + ε / 4)) / ε < q` using `by linarith`. Rewrite `h1` using `[div_lt_iff₀ hε]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hsp, hci, hamp, hampl, hmap⟩` from `hpq 1 q one_pos hkq`. Take `⟨htop, hdeg⟩` from `hδc 1 q one_pos (by omega) hpqδ`. Establish `hamp2 : ∃ c : ℕ, 1 ≤ c ∧ KH.AmpleV ℚ (KH.genIdeal y) (c • (HermLine.zcomb A (fsH ι) ((q : ℤ) - k * ((1 : ℕ) : ℤ)) ((1 : ℕ) : ℤ)).a - fun _ => 1)`. Use `⟨2, by norm_num, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[two_zcomb_sub_one A q k (by omega)]`. Conclude with `hNA K ι Ω y D A P0 (2 * (q - k)) 1 har hA.normalForm_baseLattice_le_dualSpan_sup_line hA.semipos (by omega) le_rfl`. Conclude with `along_of_shift hAC hGD hPk hD hII har hb hA.normalForm_baseLattice_le_dualSpan_sup_line hA.semipos.1 hq1 hε hsp hci hamp hamp2 hampl he0 hmap (NefCountAlongMultiples.num_bound hε hqpos hC htop hdeg hqC)`.
+A detailed English derivation is pending.
 -/
 theorem proof (hG2 : G2.Statement) (hAC : AmpleCountAlongMultiples.StatementAmple)
     (hNA : NefAmpleGeneric.Statement) (hGD : GenDegGeomDeg.Statement) (hPk : PackingStatement) :

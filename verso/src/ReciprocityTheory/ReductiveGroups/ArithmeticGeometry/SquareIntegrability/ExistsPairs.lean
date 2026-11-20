@@ -13,26 +13,26 @@ namespace DimC
 variable {ι : Type} [Fintype ι]
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.inner_apply, RCLike.inner_apply]`. Apply the tactic sequence `all_goals (refine Finset.sum_congr rfl fun i _ => ?_; ring)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Hf_inner (v w : EuclideanSpace ℂ ι) : Hf v w = inner ℂ w v := by
   simp only [Hf, PiLp.inner_apply, RCLike.inner_apply]
   all_goals (refine Finset.sum_congr rfl fun i _ => ?_; ring)
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.add_apply, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_add_l (v v' w : EuclideanSpace ℂ ι) : Hf (v + v') w = Hf v w + Hf v' w := by
   simp only [Hf, PiLp.add_apply, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Hf_add_r (v w w' : EuclideanSpace ℂ ι) : Hf v (w + w') = Hf v w + Hf v w' := by
   simp only [Hf, PiLp.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_smul_l (a : ℂ) (v w : EuclideanSpace ℂ ι) : Hf (a • v) w = a * Hf v w := by
   simp only [Hf, PiLp.smul_apply, smul_eq_mul, Finset.mul_sum]
@@ -40,7 +40,7 @@ theorem Hf_smul_l (a : ℂ) (v w : EuclideanSpace ℂ ι) : Hf (a • v) w = a *
   ring
 
 /- English proof (translation)
-Simplify using `only [Hf, PiLp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_smul_r (a : ℂ) (v w : EuclideanSpace ℂ ι) : Hf v (a • w) = (starRingEnd ℂ) a * Hf v w := by
   simp only [Hf, PiLp.smul_apply, smul_eq_mul, map_mul, Finset.mul_sum]
@@ -48,7 +48,7 @@ theorem Hf_smul_r (a : ℂ) (v w : EuclideanSpace ℂ ι) : Hf v (a • w) = (st
   ring
 
 /- English proof (translation)
-Simplify using `only [Hf, map_sum, map_mul, Complex.conj_conj]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Hf_swap (v w : EuclideanSpace ℂ ι) : Hf w v = (starRingEnd ℂ) (Hf v w) := by
   simp only [Hf, map_sum, map_mul, Complex.conj_conj]
@@ -56,7 +56,7 @@ theorem Hf_swap (v w : EuclideanSpace ℂ ι) : Hf w v = (starRingEnd ℂ) (Hf v
   ring
 
 /- English proof (translation)
-Rewrite using `[Hf_inner]`. Use `first`. Consider the case `exact_mod_cast inner_self_eq_norm_sq_to_K (𝕜 := ℂ) v`. Consider the case `(rw [inner_self_eq_norm_sq_to_K]; simp)`. Consider the case `(rw [inner_self_eq_norm_sq_to_K]; norm_cast)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Hf_self (v : EuclideanSpace ℂ ι) : Hf v v = ((‖v‖ ^ 2 : ℝ) : ℂ) := by
   rw [Hf_inner]
@@ -66,13 +66,13 @@ theorem Hf_self (v : EuclideanSpace ℂ ι) : Hf v v = ((‖v‖ ^ 2 : ℝ) : �
     | (rw [inner_self_eq_norm_sq_to_K]; norm_cast)
 
 /- English proof (translation)
-Rewrite using `[Hf_self, Complex.ofReal_im]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Hf_self_im (v : EuclideanSpace ℂ ι) : (Hf v v).im = 0 := by
   rw [Hf_self, Complex.ofReal_im]
 
 /- English proof (translation)
-Establish `h` using `map_sum (AddMonoidHom.mk' (fun x => Hf x w) (fun x x' => Hf_add_l x x' w)) (fun i => a i • v i) Finset.univ`. Simplify using `only [AddMonoidHom.mk'_apply, Hf_smul_l] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Hf_sum_l {k : ℕ} (a : Fin k → ℂ) (v : Fin k → EuclideanSpace ℂ ι) (w : EuclideanSpace ℂ ι) :
     Hf (∑ i, a i • v i) w = ∑ i, a i * Hf (v i) w := by
@@ -82,7 +82,7 @@ theorem Hf_sum_l {k : ℕ} (a : Fin k → ℂ) (v : Fin k → EuclideanSpace ℂ
   exact h
 
 /- English proof (translation)
-Establish `h` using `map_sum (AddMonoidHom.mk' (fun x => Hf v x) (fun x x' => Hf_add_r v x x')) (fun i => a i • w i) Finset.univ`. Simplify using `only [AddMonoidHom.mk'_apply, Hf_smul_r] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Hf_sum_r {k : ℕ} (a : Fin k → ℂ) (v : EuclideanSpace ℂ ι) (w : Fin k → EuclideanSpace ℂ ι) :
     Hf v (∑ l, a l • w l) = ∑ l, (starRingEnd ℂ) (a l) * Hf v (w l) := by
@@ -92,14 +92,14 @@ theorem Hf_sum_r {k : ℕ} (a : Fin k → ℂ) (v : EuclideanSpace ℂ ι) (w : 
   exact h
 
 /- English proof (translation)
-Rewrite using `[← Int.cast_smul_eq_zsmul ℂ, Hf_smul_l]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Hf_zsmul_l (c : ℤ) (v w : EuclideanSpace ℂ ι) : (Hf (c • v) w).im = c * (Hf v w).im := by
   rw [← Int.cast_smul_eq_zsmul ℂ, Hf_smul_l]
   simp
 
 /- English proof (translation)
-Rewrite using `[← Int.cast_smul_eq_zsmul ℂ, Hf_smul_r]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Hf_zsmul_r (c : ℤ) (v w : EuclideanSpace ℂ ι) : (Hf v (c • w)).im = c * (Hf v w).im := by
   rw [← Int.cast_smul_eq_zsmul ℂ, Hf_smul_r]
@@ -110,7 +110,7 @@ variable (Y : GT ι)
 def nz (x y : EuclideanSpace ℂ ι) : ℤ := ⌊(Hf x y).im⌋
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `Y.integral x y hx hy`. Rewrite using `[nz, hk, Int.floor_intCast]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem nz_eq {x y : EuclideanSpace ℂ ι} (hx : x ∈ lat Y.b) (hy : y ∈ lat Y.b) :
     (nz x y : ℝ) = (Hf x y).im := by
@@ -135,23 +135,23 @@ def Bz : lat Y.b →ₗ[ℤ] lat Y.b →ₗ[ℤ] ℤ :=
       rw [smul_eq_mul, Int.cast_mul, nz_eq Y x.2 (c • y).2, nz_eq Y x.2 y.2, Submodule.coe_smul, Hf_zsmul_r])
 
 /- English proof (translation)
-Simplify using `only [Bz, LinearMap.mk₂_apply]`. Conclude with `nz_eq Y x.2 y.2`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Bz_apply (x y : lat Y.b) : ((Bz Y x y : ℤ) : ℝ) = (Hf (x : EuclideanSpace ℂ ι) y).im := by
   simp only [Bz, LinearMap.mk₂_apply]
   exact nz_eq Y x.2 y.2
 
 /- English proof (translation)
-Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[Bz_apply, Int.cast_zero, Hf_self_im]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Bz_alt (x : lat Y.b) : Bz Y x x = 0 := by
   apply Int.cast_injective (α := ℝ)
   rw [Bz_apply, Int.cast_zero, Hf_self_im]
 
 /- English proof (translation)
-Take `⟨x, hx, h⟩` from `Y.perfect φ.toAddMonoidHom`. Use `⟨⟨x, hx⟩, LinearMap.ext fun y => ?_⟩` and prove the remaining obligations. Apply `Int.cast_injective (α := ℝ)` to reduce the goal to its premises. Rewrite using `[Bz_apply]`. Establish `h'` using `h y`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h'` using `[LinearMap.toAddMonoidHom_coe]`. Conclude with `h'.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Bz_surj (φ : lat Y.b →ₗ[ℤ] ℤ) : ∃ x, Bz Y x = φ := by
   obtain ⟨x, hx, h⟩ := Y.perfect φ.toAddMonoidHom
@@ -163,15 +163,15 @@ theorem Bz_surj (φ : lat Y.b →ₗ[ℤ] ℤ) : ∃ x, Bz Y x = φ := by
   exact h'.symm
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_eq_card_basis (Y.b.restrictScalars ℤ), Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rank_lat : finrank ℤ (lat Y.b) = 2 * Fintype.card ι := by
   rw [Module.finrank_eq_card_basis (Y.b.restrictScalars ℤ), Fintype.card_fin]
 
 /- English proof (translation)
-Take `⟨k, hk, e, f, hee, hef⟩` from `DimA.sympl _ (lat Y.b) rfl (Bz Y) (Bz_alt Y) (Bz_surj Y)`. Rewrite `hk` using `[rank_lat]`. Take `rfl : k = Fintype.card ι` from `by omega`. Use `⟨fun i => e i, fun j => f j, fun i => (e i).2, fun j => (f j).2, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← Bz_apply, hee]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `rw [← Bz_apply, hef]; split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem exists_pairs : ∃ e f : Fin (Fintype.card ι) → EuclideanSpace ℂ ι,
     (∀ i, e i ∈ lat Y.b) ∧ (∀ j, f j ∈ lat Y.b) ∧ (∀ i j, (Hf (e i) (e j)).im = 0) ∧
@@ -191,23 +191,23 @@ variable {Y} (e f : Fin (Fintype.card ι) → EuclideanSpace ℂ ι)
 
 include hee hef in
 /- English proof (translation)
-Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc j`. Establish `hS : ∀ i l, (Hf (e i) (e l)).im = 0` using `hee`. Establish `h0 : ∀ y, ∑ i, c i * Hf (e i) y = 0`. Introduce `y`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Hf_sum_l, hc]`. Simplify using `[Hf]`. Establish `hre : ∀ l, ∑ i, (c i).re * (Hf (e i) (e l)).re = 0`. Introduce `l`. Establish `h` using `congrArg Complex.re (h0 (e l))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `h` using `[Complex.re_sum, Complex.mul_re, hS]`. Establish `him : ∀ l, ∑ i, (c i).im * (Hf (e i) (e l)).re = 0`. Introduce `l`. Establish `h` using `congrArg Complex.im (h0 (e l))`. Simplify `h` using `[Complex.im_sum, Complex.mul_im, hS]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hzero : ∀ r : Fin (Fintype.card ι) → ℝ, (∀ l, ∑ i, r i * (Hf (e i) (e l)).re = 0) → ∑ i, ((r i : ℂ)) • e i = 0`. Introduce `r hr`. Establish `hcol : ∀ l, ∑ i, (r i : ℂ) * Hf (e i) (e l) = 0`. Introduce `l`. Apply `Complex.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `hr l` using `[Complex.re_sum, hS]`. Simplify using `[Complex.im_sum, hS]`. Establish `hH : Hf (∑ i, ((r i : ℂ)) • e i) (∑ l, ((r l : ℂ)) • e l) = 0`. Rewrite using `[Hf_sum_l]`. Simplify using `only [Hf_sum_r, Complex.conj_ofReal, Finset.mul_sum]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `_ = 0 := by rw [hcol l, mul_zero]`. Rewrite `hH` using `[Hf_self]`. Establish `h2 : ‖∑ i, ((r i : ℂ)) • e i‖ ^ 2 = 0` using `by exact_mod_cast hH`. Conclude with `norm_eq_zero.1 ((pow_eq_zero_iff two_ne_zero).1 h2)`. Establish `hcoef : ∀ r : Fin (Fintype.card ι) → ℝ, ∑ i, ((r i : ℂ)) • e i = 0 → r j = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `r hr0`. Establish `h1 : (Hf (∑ i, ((r i : ℂ)) • e i) (f j)).im = r j`. Rewrite using `[Hf_sum_l]`. Simplify using `[Complex.im_sum, hef]`. Rewrite `h1` using `[hr0]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h1.symm` using `[Hf]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `using hcoef (fun i => (c i).re) (hzero _ hre)`. Simplify using `using hcoef (fun i => (c i).im) (hzero _ him)`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem e_li : LinearIndependent ℂ e := by
   rw [Fintype.linearIndependent_iff]
@@ -262,7 +262,7 @@ def eb : Module.Basis (Fin (Fintype.card ι)) ℂ (EuclideanSpace ℂ ι) :=
     ((e_li e f hee hef).span_eq_top_of_card_eq_finrank' (by simp)).ge
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Module.Basis.mk_apply _ _ _`. Consider the case `simp [eb]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eb_apply (i) : eb e f hee hef i = e i := by
   first
@@ -286,19 +286,19 @@ def S (i l : Fin (Fintype.card ι)) : ℂ := Hf (e i) (e l)
 def Qf (z : Fin (Fintype.card ι) → ℂ) : ℂ := ∑ i, ∑ l, z i * z l * S e i l
 
 /- English proof (translation)
-Simplify using `only [Phi, Pi.add_apply, add_smul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Phi_add (z w : Fin (Fintype.card ι) → ℂ) : Phi e (z + w) = Phi e z + Phi e w := by
   simp only [Phi, Pi.add_apply, add_smul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[Phi, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Phi_single (l : Fin (Fintype.card ι)) : Phi e (Pi.single l 1) = e l := by
   simp [Phi, Pi.single_apply]
 
 /- English proof (translation)
-Simplify using `only [Phi, tau]`. Use `conv_rhs => rw [← (eb e f hee hef).sum_repr (f j)]`. Simplify using `only [eb_apply]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Phi_tau (j : Fin (Fintype.card ι)) : Phi e (tau e f hee hef j) = f j := by
   simp only [Phi, tau]
@@ -307,7 +307,7 @@ theorem Phi_tau (j : Fin (Fintype.card ι)) : Phi e (tau e f hee hef j) = f j :=
 
 include hee in
 /- English proof (translation)
-Simplify using `only [S]`. Rewrite using `[Hf_swap]`. Conclude with `Complex.conj_eq_iff_im.2 (hee i l)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem S_symm (i l : Fin (Fintype.card ι)) : S e l i = S e i l := by
   simp only [S]
@@ -316,9 +316,9 @@ theorem S_symm (i l : Fin (Fintype.card ι)) : S e l i = S e i l := by
 
 include hee in
 /- English proof (translation)
-Establish `h : ∑ i, ∑ l, w i * z l * S e i l = ∑ i, ∑ l, z i * w l * S e i l`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[S_symm e hee i l]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `expand : ∀ i l, (z i + w i) * (z l + w l) * S e i l = z i * z l * S e i l + w i * w l * S e i l + z i * w l * S e i l + w i * z l * S e i l`. Introduce `i l`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Qf, Pi.add_apply, expand, Finset.sum_add_distrib, h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem Qf_add (z w : Fin (Fintype.card ι) → ℂ) :
     Qf e (z + w) = Qf e z + Qf e w + 2 * ∑ i, ∑ l, z i * w l * S e i l := by
@@ -336,17 +336,17 @@ theorem Qf_add (z w : Fin (Fintype.card ι) → ℂ) :
 
 include hee hef in
 /- English proof (translation)
-Establish `hS : ∀ i l, (S e i l).im = 0` using `fun i l => hee i l`. Establish `hi : ∀ i, Hf (e i) (f j) = ∑ l, tau e f hee hef j l * S e i l + 2 * I * (if i = j then 1 else 0)`. Introduce `i`. Establish `h1 : Hf (e i) (f j) = ∑ l, (starRingEnd ℂ) (tau e f hee hef j l) * S e i l` using `by conv_lhs => rw [← Phi_tau e f hee hef j]`. Simplify using `only [Phi, Hf_sum_r]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `him` using `hef i j`. Rewrite `him`, the goal using `[h1]`. Use `split_ifs at him ⊢ with hij`. Apply `Complex.ext` to reduce the goal to its premises.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.re_sum, hS]`. Simplify using `[Complex.im_sum, hS] at him ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[Complex.re_sum, hS]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Complex.im_sum, hS] at him ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [Phi, Hf_sum_l, hi, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Combine the linear equalities and inequalities to obtain the conclusion. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_eq_single j]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Introduce `b _ hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem key (z : Fin (Fintype.card ι) → ℂ) (j : Fin (Fintype.card ι)) :
     Hf (Phi e z) (f j) = (∑ i, ∑ l, z i * tau e f hee hef j l * S e i l) + 2 * I * z j := by
@@ -395,17 +395,17 @@ def hF (q : ℕ) (F : EuclideanSpace ℂ ι → ℂ) (z : Fin (Fintype.card ι) 
 
 include hee in
 /- English proof (translation)
-Establish `hmain : ∀ Fv a b c L : ℂ, L + a + b = c → cexp L * cexp a * Fv * cexp b = Fv * cexp c`. Introduce `Fv a b c L h`. Rewrite using `[← h, Complex.exp_add, Complex.exp_add]`. Expand and normalize the polynomial expressions, which then agree. Establish `hka : Y.ka (e l) = cexp (Lk Y e l)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Lk, Complex.exp_log]`. Introduce `h0`. Establish `h1` using `Y.ka_abs (e l) (he l)`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hPhi : Phi e (z + Pi.single l 1) = Phi e z + e l`. Rewrite using `[Phi_add, Phi_single]`. Establish `hsec` using `hFs.2 (e l) (he l) (Phi e z)`. Establish `hX : Hf (Phi e z) (e l) = ∑ i, z i * Hf (e i) (e l)`. Simplify using `only [Phi, Hf_sum_l]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQs : Qf e (Pi.single l 1) = Hf (e l) (e l)`. Simplify using `[Qf, S, Pi.single_apply]`. Establish `hsum2 : ∑ i, ∑ m, z i * (Pi.single l (1 : ℂ) : Fin (Fintype.card ι) → ℂ) m * S e i m = ∑ i, z i * Hf (e i) (e l)`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[S, Pi.single_apply]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hQ : Qf e (z + Pi.single l 1) = Qf e z + Hf (e l) (e l) + 2 * ∑ i, z i * Hf (e i) (e l)`. Rewrite using `[Qf_add e hee, hQs, hsum2]`. Establish `hL : ∑ m, Lk Y e m * ((z + Pi.single l 1 : Fin (Fintype.card ι) → ℂ) m) = ∑ m, Lk Y e m * z m + Lk Y e l`. Simplify using `[mul_add, Finset.sum_add_distrib, Pi.single_apply]`. Simplify using `only [hF]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPhi, hsec, hka]`. Use `hmain _ _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[hX, hQ, hL]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hF_per (he : ∀ i, e i ∈ lat Y.b) (q : ℕ) (F : EuclideanSpace ℂ ι → ℂ) (hFs : F ∈ Y.Sec q)
     (l : Fin (Fintype.card ι)) (z : Fin (Fintype.card ι) → ℂ) :
@@ -443,13 +443,13 @@ theorem hF_per (he : ∀ i, e i ∈ lat Y.b) (q : ℕ) (F : EuclideanSpace ℂ �
 
 include hee hef in
 /- English proof (translation)
-Establish `hmain : ∀ κ Fv a b c d g : ℂ, a + b = c + d + g → κ * cexp a * Fv * cexp b = κ * cexp c * cexp d * (Fv * cexp g)`. Introduce `κ Fv a b c d g h`. Establish `hb : b = c + d + g - a` using `by linear_combination h`. Rewrite using `[hb, Complex.exp_sub, Complex.exp_add, Complex.exp_add]`. Clear denominators, using `[Complex.exp_ne_zero]` for the nonvanishing conditions.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Apply the tactic sequence `all_goals ring`. Establish `hPhi : Phi e (z + tau e f hee hef j) = Phi e z + f j`. Rewrite using `[Phi_add, Phi_tau]`. Establish `hsec` using `hFs.2 (f j) (hf j) (Phi e z)`. Establish `hK` using `key e f hee hef z j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQ` using `Qf_add e hee z (tau e f hee hef j)`. Establish `hL : ∑ m, Lk Y e m * (z + tau e f hee hef j) m = ∑ m, Lk Y e m * z m + ∑ m, Lk Y e m * tau e f hee hef j m`. Simplify using `only [Pi.add_apply, mul_add, Finset.sum_add_distrib]`. Simplify using `only [hF]`. Rewrite using `[hPhi, hsec]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `hmain _ _ _ _ _ _ _ ?_` and prove the remaining obligations. Rewrite using `[hK, hQ, hL]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hF_qp (hf : ∀ j, f j ∈ lat Y.b) (q : ℕ) (F : EuclideanSpace ℂ ι → ℂ) (hFs : F ∈ Y.Sec q)
     (j : Fin (Fintype.card ι)) (z : Fin (Fintype.card ι) → ℂ) :
@@ -479,11 +479,11 @@ theorem hF_qp (hf : ∀ j, f j ∈ lat Y.b) (q : ℕ) (F : EuclideanSpace ℂ ι
   ring
 
 /- English proof (translation)
-Establish `hPhi : Differentiable ℂ (Phi e)`. Unfold `Phi`. Use `first`. Consider the case `fun_prop`. Consider the case `exact Differentiable.sum fun i _ => (differentiable_apply i).smul_const (e i)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `hQ : Differentiable ℂ (Qf e)`. Unfold `Qf`. Use `first`. Consider the case `fun_prop`. Consider the case `exact Differentiable.sum fun i _ => Differentiable.sum fun l _ => ((differentiable_apply i).mul (differentiable_apply l)).mul_const _`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Establish `hL : Differentiable ℂ (fun z : Fin (Fintype.card ι) → ℂ => ∑ l, Lk Y e l * z l)` using `by first`. Consider the case `fun_prop`. Consider the case `exact Differentiable.sum fun l _ => (differentiable_apply l).const_mul _`. Unfold `hF`. Conclude with `(hd.comp hPhi).mul (((differentiable_const _).mul hQ).sub hL).cexp`.
+Treat this case separately. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem hF_diff (q : ℕ) (F : EuclideanSpace ℂ ι → ℂ) (hd : Differentiable ℂ F) :
     Differentiable ℂ (hF Y e q F) := by
@@ -510,11 +510,11 @@ end Final
 section Count
 
 /- English proof (translation)
-Establish `hrl : Continuous fun x : Fin k → ℝ => DimB.rl x`. Unfold `DimB.rl`. Use `fun_prop`. Establish `hcont : Continuous fun x : Fin k → ℝ => Ψ (DimB.rl x + w)` using `hc.comp (hrl.add continuous_const)`. Use `(hcont.integrableOn_Icc (a := 0) (b := 1)).mono_set ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Use `Set.mem_Icc.2 ⟨Pi.le_def.2 fun i => ?_, Pi.le_def.2 fun i => ?_⟩` and prove the remaining obligations. Establish `h` using `hx i`. Simplify using `only [Set.mem_Ioc, Pi.zero_apply, zero_add] at h`. Conclude with `h.1.le`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `hx i`. Simplify using `only [Set.mem_Ioc, Pi.zero_apply, zero_add] at h`. Conclude with `h.2`.
+A detailed English derivation is pending.
 -/
 theorem av_int {k : ℕ} (Ψ : (Fin k → ℂ) → ℂ) (hc : Continuous Ψ) (w : Fin k → ℂ) :
     MeasureTheory.IntegrableOn (fun x => Ψ (DimB.rl x + w)) (DimB.ubox k) := by
@@ -534,7 +534,7 @@ theorem av_int {k : ℕ} (Ψ : (Fin k → ℂ) → ℂ) (hc : Continuous Ψ) (w 
     exact h.2
 
 /- English proof (translation)
-Simplify using `only [DimB.Av]`. Conclude with `MeasureTheory.integral_add (av_int Ψ hc w) (av_int Ψ' hc' w)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Av_add {k : ℕ} (Ψ Ψ' : (Fin k → ℂ) → ℂ) (hc : Continuous Ψ) (hc' : Continuous Ψ')
     (w : Fin k → ℂ) : DimB.Av (fun z => Ψ z + Ψ' z) w = DimB.Av Ψ w + DimB.Av Ψ' w := by
@@ -542,7 +542,7 @@ theorem Av_add {k : ℕ} (Ψ Ψ' : (Fin k → ℂ) → ℂ) (hc : Continuous Ψ)
   exact MeasureTheory.integral_add (av_int Ψ hc w) (av_int Ψ' hc' w)
 
 /- English proof (translation)
-Simplify using `only [DimB.Av]`. Use `first`. Consider the case `exact MeasureTheory.integral_const_mul c _`. Consider the case `exact MeasureTheory.integral_mul_left c _`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Av_smul {k : ℕ} (Ψ : (Fin k → ℂ) → ℂ) (c : ℂ) (w : Fin k → ℂ) :
     DimB.Av (fun z => c * Ψ z) w = c * DimB.Av Ψ w := by
@@ -581,15 +581,15 @@ theorem T_apply (q : ℕ) (F : Y.Sec q) (r : Fin (Fintype.card ι) → Fin q) :
 
 include hee hef in
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `F hT`. Establish `hall : ∀ m : Fin (Fintype.card ι) → ℤ, (∀ l, 0 ≤ m l ∧ m l < q) → DimB.Av (DimB.Pm (hF Y e q F.1) m) 0 = 0`. Introduce `m hm`. Use `set r : Fin (Fintype.card ι) → Fin q := fun l => ⟨(m l).toNat, by have := hm l; omega⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hm' : (fun l => ((r l : ℕ) : ℤ)) = m`. Use function extensionality and compare the values at `l`. Simplify using `only [r]`. Use `hm l` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `congrFun hT r` as an intermediate fact. Rewrite `this` using `[T_apply, hm', Pi.zero_apply]`. Conclude with `this`. Establish `h0` using `DimB.four_zero (by omega : 0 < q) (hF Y e q F.1) (hF_diff Y e q F.1 F.2.1) (hF_per Y e hee he q F.1 F.2) (tau e f hee hef) _ (hF_qp Y e f hee hef hf q F.1 F.2) hall`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `v`. Establish `hv : v = Phi e (fun i => (eb e f hee hef).repr v i)`. Rewrite using `[Phi]`. Use `conv_lhs => rw [← (eb e f hee hef).sum_repr v]`. Simplify using `[eb_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congrFun h0 (fun i => (eb e f hee hef).repr v i)` as an intermediate fact. Simplify using `only [hF, Pi.zero_apply, mul_eq_zero, Complex.exp_ne_zero, or_false] at this`. Rewrite using `[hv, this]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem T_inj (he : ∀ i, e i ∈ lat Y.b) (hf : ∀ j, f j ∈ lat Y.b) (q : ℕ) (hq : 1 ≤ q) :
     Function.Injective (T Y e q) := by
@@ -617,9 +617,9 @@ theorem T_inj (he : ∀ i, e i ∈ lat Y.b) (hf : ∀ j, f j ∈ lat Y.b) (q : �
   rw [hv, this]; rfl
 
 /- English proof (translation)
-Take `⟨e, f, he, hf, hee, hef⟩` from `exists_pairs Y`. Establish `hinj` using `T_inj Y e f hee hef he hf q hq`. Use `haveI hfin : FiniteDimensional ℂ (Y.Sec q) := Module.Finite.of_injective (T Y e q) hinj`. Use `⟨hfin, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.finrank_fintype_fun_eq_card, Fintype.card_fun, Fintype.card_fin, Fintype.card_fin]`.
+A detailed English derivation is pending.
 -/
 theorem dim_core (q : ℕ) (hq : 1 ≤ q) :
     FiniteDimensional ℂ (Y.Sec q) ∧ finrank ℂ (Y.Sec q) ≤ q ^ Fintype.card ι := by

@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace GlobalTheory.AzumayaLocal
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hz (fun a ha t _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[mul_smul_comm]`. Conclude with `Submodule.smul_mem_smul ha trivial`. Rewrite using `[mul_add]`. Conclude with `Submodule.add_mem _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_left {A Λ : Type} [CommRing A] [Ring Λ] [Algebra A Λ] {I : Ideal A} (w : Λ) {z : Λ}
     (hz : z ∈ I • (⊤ : Submodule A Λ)) : w * z ∈ I • (⊤ : Submodule A Λ) := by
@@ -18,7 +18,7 @@ theorem mem_left {A Λ : Type} [CommRing A] [Ring Λ] [Algebra A Λ] {I : Ideal 
   · rw [mul_add]; exact Submodule.add_mem _ hx hy
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hz (fun a ha t _ => ?_) (fun x y hx hy => ?_)` and prove the remaining obligations. Rewrite using `[smul_mul_assoc]`. Conclude with `Submodule.smul_mem_smul ha trivial`. Rewrite using `[add_mul]`. Conclude with `Submodule.add_mem _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_right {A Λ : Type} [CommRing A] [Ring Λ] [Algebra A Λ] {I : Ideal A} (w : Λ) {z : Λ}
     (hz : z ∈ I • (⊤ : Submodule A Λ)) : z * w ∈ I • (⊤ : Submodule A Λ) := by
@@ -29,9 +29,9 @@ theorem mem_right {A Λ : Type} [CommRing A] [Ring Λ] [Algebra A Λ] {I : Ideal
 end GlobalTheory.AzumayaLocal
 
 /- English proof (translation)
-Introduce `ℓ _ A _ _ _ _`. Establish `hmax : (maximalIdeal A).comap (algebraMap ℤ_[ℓ] A) = maximalIdeal ℤ_[ℓ]` using `IsLocalRing.eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (maximalIdeal A))`. Use `haveI : IsLocalHom (algebraMap ℤ_[ℓ] A) := ⟨fun x hx => by`. Assume the negation of the conclusion as `h`. Establish `: x ∈ (maximalIdeal A).comap (algebraMap ℤ_[ℓ] A)` using `by rw [hmax]; exact h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(mem_maximalIdeal _).1 this hx⟩`. Establish `: Finite (IsLocalRing.ResidueField ℤ_[ℓ])` using `Finite.of_equiv _ (PadicInt.residueField).symm.toEquiv`. Conclude with `Module.finite_of_finite (IsLocalRing.ResidueField ℤ_[ℓ])`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AzumayaLocal.finite_residueField : ∀ (ℓ : ℕ) [Fact ℓ.Prime] (A : Type) [CommRing A] [IsLocalRing A] [Algebra ℤ_[ℓ] A] [Module.Finite ℤ_[ℓ] A], Finite (IsLocalRing.ResidueField A) := by
   intro ℓ _ A _ _ _ _
@@ -45,9 +45,9 @@ theorem GlobalTheory.AzumayaLocal.finite_residueField : ∀ (ℓ : ℕ) [Fact �
   exact Module.finite_of_finite (IsLocalRing.ResidueField ℤ_[ℓ])
 
 /- English proof (translation)
-Introduce `A _ _ Λ _ _ _ u hu`. Set `f : Λ →ₗ[A] Λ` to `LinearMap.mulLeft A u`. Establish `hle : (⊤ : Submodule A Λ) ≤ LinearMap.range f ⊔ (maximalIdeal A) • (⊤ : Submodule A Λ)`. Introduce `y _`. Establish `hy : y = u * y - (u - 1) * y` using `by noncomm_ring`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hy]`. Conclude with `Submodule.sub_mem _ (Submodule.mem_sup_left ⟨y, rfl⟩) (Submodule.mem_sup_right (GlobalTheory.AzumayaLocal.mem_right y hu))`. Establish `htop : LinearMap.range f = ⊤` using `top_le_iff.1 (Submodule.le_of_le_smul_of_le_jacobson_bot Module.Finite.fg_top (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge hle)`. Take `⟨v, hv⟩` from `LinearMap.range_eq_top.1 htop 1`. Conclude with `⟨v, hv⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AzumayaLocal.exists_right_inverse : ∀ (A : Type) [CommRing A] [IsLocalRing A] (Λ : Type) [Ring Λ] [Algebra A Λ] [Module.Finite A Λ] (u : Λ), u - 1 ∈ (IsLocalRing.maximalIdeal A) • (⊤ : Submodule A Λ) → ∃ v : Λ, u * v = 1 := by
   intro A _ _ Λ _ _ _ u hu
@@ -65,13 +65,13 @@ theorem GlobalTheory.AzumayaLocal.exists_right_inverse : ∀ (A : Type) [CommRin
   exact ⟨v, hv⟩
 
 /- English proof (translation)
-Introduce `A _ _ Λ _ _ _ e he h y`. Set `g : Λ →ₗ[A] Λ` to `(LinearMap.mulRight A e).comp (LinearMap.mulLeft A e)`. Establish `hg : ∀ z, g z = e * z * e` using `fun z => rfl`. Establish `hge : g e = e` using `by rw [hg, he.eq, he.eq]`. Establish `hgg : ∀ z, g (e * z * e) = e * z * e`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z`. Rewrite using `[hg, ← mul_assoc, ← mul_assoc, he.eq, mul_assoc (e * z) e e, he.eq]`. Establish `hS : LinearMap.range g ≤ A ∙ e`. Use `Submodule.le_of_le_smul_of_le_jacobson_bot (by rw [LinearMap.range_eq_map]; exact Module.Finite.fg_top.map g) (IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨z, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc⟩` from `h z`. Establish `key : g z - c • e = g (e * z * e - c • e)`. Rewrite using `[map_sub, map_smul, hgg, hge, hg]`. Establish `hmem : g z - c • e ∈ (maximalIdeal A) • LinearMap.range g`. Rewrite using `[key, LinearMap.range_eq_map, ← Submodule.map_smul'']`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_map_of_mem hc`. Rewrite using `[show g z = c • e + (g z - c • e) by abel]`. Conclude with `Submodule.add_mem_sup (Submodule.smul_mem _ c (Submodule.mem_span_singleton_self e)) hmem`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 (hS ⟨y, rfl⟩)`. Conclude with `⟨c, hc.symm⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.AzumayaLocal.corner_eq_smul : ∀ (A : Type) [CommRing A] [IsLocalRing A] (Λ : Type) [Ring Λ] [Algebra A Λ] [Module.Finite A Λ] (e : Λ), IsIdempotentElem e → (∀ y : Λ, ∃ c : A, e * y * e - c • e ∈ (IsLocalRing.maximalIdeal A) • (⊤ : Submodule A Λ)) → ∀ y : Λ, ∃ c : A, e * y * e = c • e := by
   intro A _ _ Λ _ _ _ e he h y
@@ -99,17 +99,15 @@ theorem GlobalTheory.AzumayaLocal.corner_eq_smul : ∀ (A : Type) [CommRing A] [
 namespace GlobalTheory.AzumayaLocal
 
 /- English proof (translation)
-Introduce `ℓ _ A _ _ _ _ Λ _ _ _ _ n hn`. Use `haveI : IsAdicComplete (maximalIdeal A) A := GlobalTheory.CompleteFiniteExtension.isAdicComplete_of_finite_local ℤ_[ℓ] A`. Use `haveI : Finite (ResidueField A) := GlobalTheory.AzumayaLocal.finite_residueField ℓ A`. Use `haveI : Nontrivial Λ := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Conclude with `zero_ne_one (FaithfulSMul.algebraMap_injective A Λ (Subsingleton.elim (algebraMap A Λ 0) (algebraMap A Λ 1)))`. Use `set M := (maximalIdeal A) • (⊤ : Submodule A Λ) with hM`. Take `⟨x, h1, h2, N, a, b, h3⟩` from `GlobalTheory.T.exists_residue_idempotent' A Λ`. Take `⟨e, he, hex⟩` from `GlobalTheory.T.exists_idempotent_lift_adicComplete_free_algebra A (maximalIdeal A) Λ x h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcorner : ∀ y : Λ, ∃ c : A, e * y * e - c • e ∈ M`. Introduce `y`. Take `⟨c, hc⟩` from `h2 y`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `: e * y * e - c • e = (x * y * x - c • x) + ((e - x) * (y * e) + x * y * (e - x) - c • (e - x))`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [sub_mul, mul_sub, smul_sub, mul_assoc]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `M.add_mem hc (M.sub_mem (M.add_mem (mem_right _ hex) (mem_left _ hex)) (M.smul_mem c hex))`. Establish `hu : ∑ i, a i * e * b i - 1 ∈ M`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∑ i, a i * e * b i - 1 = (∑ i, a i * x * b i - 1) + ∑ i, a i * (e - x) * b i`. Simplify using `only [mul_sub, sub_mul, Finset.sum_sub_distrib]`. Normalize the expressions using the abelian group laws. Rewrite using `[this]`. Conclude with `M.add_mem h3 (M.sum_mem fun i _ => mem_right _ (mem_left _ hex))`.
-
-Take `⟨v, hv⟩` from `GlobalTheory.AzumayaLocal.exists_right_inverse A Λ _ hu`. Conclude with `GlobalTheory.T.nonempty_algEquiv_matrix_of_isAzumaya_of_full_idempotent A Λ n hn e he (GlobalTheory.AzumayaLocal.corner_eq_smul A Λ e he hcorner) ⟨N, a, fun i => b i * v, by`. Rewrite using `[← hv, Finset.sum_mul]`. Simplify using `only [mul_assoc]⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem azumaya_local_matrix : ∀ (ℓ : ℕ) [Fact ℓ.Prime] (A : Type) [CommRing A] [IsLocalRing A] [Algebra ℤ_[ℓ] A]
     [Module.Finite ℤ_[ℓ] A] (Λ : Type) [Ring Λ] [Algebra A Λ] [IsAzumaya A Λ] [Module.Free A Λ]

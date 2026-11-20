@@ -19,9 +19,9 @@ section Units
 variable {Y Z W : Scheme.{0}}
 
 /- English proof (translation)
-Apply `TopCat.Presheaf.section_ext Z.sheaf ⊤` to reduce the goal to its premises. Introduce `z hz`. Establish `h1` using `congrArg Units.val (h z)`. Unfold `gm pullU at h1`. Establish `m1 : τ₁ z ∈ (⊤ : Y.Opens)` using `trivial`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `m2 : τ₂ z ∈ (⊤ : Y.Opens)` using `trivial`. Rewrite `h1` using `[dif_pos m1, dif_pos m2]`. Simplify using `only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe] at h1`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem appTop_eq_of_gm (τ₁ τ₂ : Z ⟶ Y) (c₁ c₂ : Γ(Y, ⊤)ˣ) (h : ∀ z, gm τ₁ z ⊤ c₁ = gm τ₂ z ⊤ c₂) :
     τ₁.appTop.hom c₁.val = τ₂.appTop.hom c₂.val := by
@@ -36,9 +36,9 @@ theorem appTop_eq_of_gm (τ₁ τ₂ : Z ⟶ Y) (c₁ c₂ : Γ(Y, ⊤)ˣ) (h : 
   exact h1
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Unfold `gm pullU`. Establish `m1 : (r ≫ τ) w ∈ (⊤ : Y.Opens)` using `trivial`. Establish `m2 : r w ∈ (⊤ : Z.Opens)` using `trivial`. Rewrite using `[dif_pos m1, dif_pos m2]`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [MonoidHom.comp_apply, Units.coe_map, MonoidHom.coe_coe, Scheme.Hom.comp_app, CommRingCat.comp_apply]`. Rewrite using `[← h]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gm_comp_top (r : W ⟶ Z) (τ : Z ⟶ Y) (w : W) (c : Γ(Y, ⊤)ˣ) (c' : Γ(Z, ⊤)ˣ)
     (h : τ.appTop.hom c.val = c'.val) : gm (r ≫ τ) w ⊤ c = gm r w ⊤ c' := by
@@ -53,13 +53,13 @@ theorem gm_comp_top (r : W ⟶ Z) (τ : Z ⟶ Y) (w : W) (c : Γ(Y, ⊤)ˣ) (c' 
   rfl
 
 /- English proof (translation)
-Set `R` to `CommRingCat.of (Polynomial ℤ)`. Set `g : Γ(Z, ⊤) → (R ⟶ Γ(Z, ⊤))` to `fun c => CommRingCat.ofHom (Polynomial.eval₂RingHom (Int.castRingHom _) c)`. Set `φ : Γ(Z, ⊤) → (Z ⟶ Spec R)` to `fun c => Z.toSpecΓ ≫ Spec.map (g c)`. Establish `hrec : ∀ c, ((Scheme.ΓSpecIso R).inv ≫ (φ c).appTop).hom Polynomial.X = c`. Introduce `c`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (Scheme.ΓSpecIso R).inv ≫ (φ c).appTop = g c`. Simplify using `only [φ, Scheme.Hom.comp_appTop, Scheme.toSpecΓ_appTop, Scheme.ΓSpecIso_naturality, Iso.inv_hom_id_assoc]`. Rewrite using `[e]`. Conclude with `Polynomial.eval₂_X _ _`. Establish `hg : g a ≫ p.appTop = g b ≫ p.appTop`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `CommRingCat.hom_ext` to reduce the goal to its premises. Apply `Polynomial.ringHom_ext` to reduce the goal to its premises. Introduce `n`. Simplify using `[g]`. Simplify using `[g, h]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hφ : φ a = φ b`. Rewrite using `[← cancel_epi p]`. Simplify using `only [φ]`. Rewrite using `[← Category.assoc, ← Category.assoc, Scheme.toSpecΓ_naturality, Category.assoc, Category.assoc, ← Spec.map_comp, ← Spec.map_comp, hg]`. Rewrite using `[← hrec a, ← hrec b, hφ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem appTop_inj_of_epi (p : W ⟶ Z) [Epi p] {a b : Γ(Z, ⊤)} (h : p.appTop.hom a = p.appTop.hom b) : a = b := by
   classical
@@ -89,13 +89,11 @@ theorem appTop_inj_of_epi (p : W ⟶ Z) [Epi p] {a b : Γ(Z, ⊤)} (h : p.appTop
   rw [← hrec a, ← hrec b, hφ]
 
 /- English proof (translation)
-Substitute `hφ` using the available equality. Take `⟨ρ, hρ⟩` from `TLinPf.ratio_glue _ (TLinPf.linComb_cover L hL φ ε) t t' ht ht'`. Use `⟨ρ, fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Unfold `val`. Use `erw [hρ (fun k => J (r ≫ φ k)), map_mul]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Unfold `gm res pullU`. Establish `hm : r z ∈ L.wchart φ (fun k => J (r ≫ φ k))`. Unfold `LB.wchart`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun i => hJ (r ≫ φ i)`. Rewrite using `[dif_pos hm, dif_pos (show r z ∈ (⊤ : Y.Opens) from trivial)]`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, MonoidHom.coe_coe]`. Apply the tactic sequence `try erw [Function.comp_apply]`.
-
-Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Use `erw [← Scheme.Hom.germ_stalkMap_apply, ← Scheme.Hom.germ_stalkMap_apply]`. Use `erw [TopCat.Presheaf.germ_res_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_ratio {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ φ' : K → (Y ⟶ X)}
     {ε : K → ℤ} (hφ : φ = φ') (t : LB.Gen (LB.LinComb L φ ε)) (t' : LB.Gen (LB.LinComb L φ' ε)) (ht : t.IsGen)
@@ -121,11 +119,11 @@ theorem exists_ratio {X : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Finty
   erw [TopCat.Presheaf.germ_res_apply]
 
 /- English proof (translation)
-Unfold `val gm charGen res pullU`. Establish `hm : w z ∈ L.wchart PEmpty.elim (fun k => J (w ≫ k.elim))`. Unfold `LB.wchart`. Simplify using the standard rewrite rules. Rewrite using `[dif_pos hm, dif_pos (show (w ≫ (fst (splitTorus S X) G).left) z ∈ (⊤ : (splitTorus S X).left.Opens) from trivial)]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [MonoidHom.coe_comp, Function.comp_apply, Units.coe_map, MonoidHom.coe_coe, Scheme.Hom.comp_app, CommRingCat.comp_apply]`. Use `erw [Function.comp_apply]`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Use `erw [← Scheme.Hom.germ_stalkMap_apply, ← Scheme.Hom.germ_stalkMap_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `erw [TopCat.Presheaf.germ_res_apply]`. Simplify using `only [Units.coe_map, MonoidHom.coe_coe]`. Use `erw [← Scheme.Hom.germ_stalkMap_apply]`. Rewrite using `[Scheme.Hom.stalkMap_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem val_charGen {S : Scheme.{0}} (X : Type) [AddCommGroup X] (G : Over S) {L : LB Y} (χ : X)
     (w : W ⟶ (splitTorus S X ⊗ G).left) (z : W) (J : (W ⟶ Y) → L.ι) :
@@ -156,7 +154,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegPre R} {e : 
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G] (g : GtCoord I D e G)
 
 /- English proof (translation)
-Establish `hc` using `val_corr hJ (g.t_weight χ) w`. Rewrite `hc` using `[val_pull, val_mul, val_pull, val_charGen]`. Conclude with `hc`. Apply the tactic sequence `all_goals exact hJ`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_t_act (χ : D.X) {W : Scheme.{0}} (w : W ⟶ (WeightPf.Te D I e ⊗ thickObj R I e G).left) (z : W)
     {J : (W ⟶ D.P.A.left) → D.P.L.ι} (hJ : Good D.P.L z J) :

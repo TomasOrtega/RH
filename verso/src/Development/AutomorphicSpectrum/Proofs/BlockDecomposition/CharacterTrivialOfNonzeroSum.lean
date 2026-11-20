@@ -13,19 +13,17 @@ open GlobalTheory.CompanionTheory.FexTheta
 namespace GlobalTheory.CompanionTheory.FiniteQuotientCharacter
 
 /- English proof (translation)
-Introduce `m hm`. Establish `hex : ∀ r : A, ∃ s : A, r ∈ R → (s ∈ R ∧ ∃ l ∈ large₂, r + m = s + l)`. Introduce `r`. Distinguish the cases in `hr : r ∈ R`. Take `⟨s, ⟨hs, hl⟩, -⟩` from `hU (r + m) (T.add_mem (hR r hr) hm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨s, fun _ => ⟨hs, hl⟩⟩`. Conclude with `⟨r, fun h => absurd h hr⟩`. Use `choose ρ hρ using hex`. Establish `hinj : Set.InjOn ρ (R : Set A)`. Introduce `r hr r' hr' h`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, l, hl, e⟩` from `hρ r hr`. Take `⟨-, l', hl', e'⟩` from `hρ r' hr'`. Establish `hs : ρ r' = r' + m - l'` using `eq_sub_of_add_eq e'.symm`. Rewrite `e` using `[h, hs]`. Apply `(hU r (hR r hr)).unique` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components.
 
-Conclude with `⟨hr, 0, large₂.zero_mem, by simp⟩`. Use `⟨hr', l - l', large₂.sub_mem hl hl', ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hmul : ∀ r ∈ R, χ r * χ m = χ (ρ r)`. Introduce `r hr`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hs, l, hl, e⟩` from `hρ r hr`. Rewrite using `[← hχ r (hR r hr) m hm, e, hχ _ (hR _ hs) l (hL l hl).1, (hL l hl).2, mul_one]`. Establish `himg : R.image ρ = R`. Use `Finset.eq_of_subset_of_card_le ?_ ?_` and prove the remaining obligations. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr, rfl⟩` from `Finset.mem_image.1 hx`. Conclude with `(hρ r hr).1`. Rewrite using `[Finset.card_image_of_injOn hinj]`. Establish `hsum : (∑ r ∈ R, χ r) * χ m = ∑ r ∈ R, χ r`. Rewrite using `[Finset.sum_mul, Finset.sum_congr rfl hmul]`.
-
-Use `conv_rhs => rw [← himg]`. Rewrite using `[Finset.sum_image hinj]`. Conclude with `mul_left_cancel₀ hS (hsum.trans (mul_one _).symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_sum_representatives_ne_zero {A : Type} [AddCommGroup A] (T large₂ : AddSubgroup A)
     (R : Finset A) (χ : A → ℂ)

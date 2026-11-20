@@ -13,11 +13,11 @@ open MvPolynomial ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.Cha
 attribute [local instance] MvPolynomial.weightedGradedAlgebra
 
 /- English proof (translation)
-Introduce `K _ ι _ K' _ ι' _ κ v P' G hv hP`. Use `cyc_isMultiHomogIdeal_of_isHomogeneous fun k n f hf => ?_` and prove the remaining obligations. Rewrite using `[show (DirectSum.decompose (weightedHomogeneousSubmodule G.Φ (cycBlockWt k)) f n : MvPolynomial _ G.Φ) = weightedHomogeneousComponent (cycBlockWt k) n f from MvPolynomial.decompose'_apply _ _ f n]`. Take `⟨b, hb, F, e⟩` from `exists_clear G f`. Rewrite `hf`, the goal using `[fibreIdeal, RingHom.mem_ker]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hF : liftZ κ v F ∈ P'`. Rewrite using `[← G.genericFibre_ker_target, RingHom.mem_ker, aeval_liftZ, ← e, map_mul, aeval_C]`. Simplify using `[hf]`. Establish `hc : weightedHomogeneousComponent (cycBlockWt k.1) n (liftZ κ v F) ∈ P'`. Establish `hH` using `cyc_isHomogeneous_of_isMultiHomogIdeal hP k.1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hH n hF` as an intermediate fact. Rewrite `this` using `[show (DirectSum.decompose (weightedHomogeneousSubmodule ℤ (cycBlockWt k.1)) (liftZ κ v F) n : MRing ι') = weightedHomogeneousComponent (cycBlockWt k.1) n (liftZ κ v F) from MvPolynomial.decompose'_apply _ _ (liftZ κ v F) n]`. Then use the resulting hypothesis. Rewrite `hc` using `[liftZ_component hv, ← G.genericFibre_ker_target, RingHom.mem_ker, aeval_liftZ, ← component_map, ← e, weightedHomogeneousComponent_C_mul, map_mul, aeval_C]`. Conclude with `(mul_eq_zero.1 hc).resolve_left ((map_ne_zero _).2 hb)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FibreMultiHomog.proof : FibreMultiHomog.Statement := by
   intro K _ ι _ K' _ ι' _ κ v P' G hv hP

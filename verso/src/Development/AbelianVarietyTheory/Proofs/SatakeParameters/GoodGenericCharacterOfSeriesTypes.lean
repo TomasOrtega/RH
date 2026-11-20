@@ -21,25 +21,23 @@ namespace GlobalTheory.GoodGenericSer
 open GlobalTheory.GoodGenericInv
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hC s hOk hser`. Establish `hG` using `hC.base.grp`. Establish `hOk2 : A3.A.fam.Ok s` using `hOk.ok2`. Establish `hprod : ∀ χ ∈ A3.A.X, GlobalTheory.IndefiniteRowSideFullHecke.CuspidalProductMultiplicity.IsProdCuspChar D.what₂.embLL R.Pg D.R.r fun g => χ (R.eG.symm g)` using `GlobalTheory.T.goodCharacter_placewise_cuspidal_parabolic_product D G Pl0 T A3.A Ks R.toRealDat hG.record hser (fun χ hχ => hOk2.irr χ hχ)`. Use `letI : Fintype F.P0 := Fintype.ofFinite _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hsum : ∀ χ ∈ A3.A.X, ∑ h : F.P0, χ (h : G) * (((F.ψ0 h)⁻¹ : D.what₂.LLˣ) : D.what₂.LL) = (Fintype.card F.P0 : D.what₂.LL)` using `fun χ hχ => by`. Use `letI : Fintype F.lv2.P0 := (inferInstance : Fintype F.P0)`. Conclude with `GlobalTheory.RealOneVector.typeSum_base_eq_card D G Pl0 T A3.A Ks R.toRealDat F.lv2 hG.levels hprod χ hχ`. Establish `hone : ∀ χ ∈ A3.A.X, χ 1 ≠ 0` using `fun χ hχ h => GlobalTheory.FinGL.LeviChar.irrChar_one_ne_zero (GlobalTheory.GoodTypeGeneric.isIrrChar_of_isAbsIrrChar D.what₂.embLL (hOk2.irr χ hχ)) (by rw [h, map_zero])`. Establish `hcard : (Fintype.card F.P0 : D.what₂.LL) ≠ 0` using `Nat.cast_ne_zero.2 Fintype.card_ne_zero`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun χ hχ => GlobalTheory.GoodTypeGeneric.chiIdem_mul_lvlIdem_ne_zero _ _ (hone χ hχ) (by rw [hsum χ hχ]; exact hcard), fun χ hχ => ?_⟩` and prove the remaining obligations. Take `⟨ψ', -, hlev, -⟩` from `hG.levels`. Establish `hcls : ∀ g h, χ (g * h * g⁻¹) = χ h`. Take `⟨n, ρ, -, hρ⟩` from `hOk2.irr χ hχ`. Introduce `g h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(algebraMap D.what₂.LL (AlgebraicClosure D.what₂.LL)).injective` to reduce the goal to its premises. Rewrite using `[← hρ, ← hρ, ρ.char_conj]`. Establish `hmem : ∀ x : G0 R.Pg D.R.r, R.eG.symm x ∈ F.P0 → R.eG.symm (alternatingSignDiagonalLevelGroup R.Pg D.R.r * x * (alternatingSignDiagonalLevelGroup R.Pg D.R.r)⁻¹) ∈ F.P0`. Introduce `x hx`. Establish `h1 : x ∈ (P0 R.Pg D.R.r ψ').H` using `(congrArg LevelP.H hlev) ▸ (show x ∈ (R.toRealDat.levR F.lv2 false).H from hx)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `alternatingSignDiagonal_conj_mem_genericLevel ψ' h1`. Establish `h3 : _ ∈ (R.toRealDat.levR F.lv2 false).H` using `(congrArg LevelP.H hlev).symm ▸ h2`. Conclude with `h3`. Set `t : G` to `R.eG.symm (alternatingSignDiagonalLevelGroup R.Pg D.R.r)`. Establish `he : ∀ x, t * R.eG.symm x * t⁻¹ = R.eG.symm (alternatingSignDiagonalLevelGroup R.Pg D.R.r * x * (alternatingSignDiagonalLevelGroup R.Pg D.R.r)⁻¹)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x`. Simplify using `only [t, map_mul, map_inv]`. Establish `ht : ∀ h ∈ F.P0, t * h * t⁻¹ ∈ F.P0`. Introduce `h hh`. Take `⟨x, rfl⟩` from `R.eG.symm.surjective h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he]`. Conclude with `hmem x hh`. Establish `hψ : ∀ (h : G) (hh : h ∈ F.P0), F.ψ0 ⟨t * h * t⁻¹, ht h hh⟩ = (F.ψ0 ⟨h, hh⟩)⁻¹`. Introduce `h hh`. Take `⟨x, rfl⟩` from `R.eG.symm.surjective h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hs : (⟨t * R.eG.symm x * t⁻¹, ht _ hh⟩ : F.P0) = ⟨_, hmem x hh⟩` using `Subtype.ext (he x)`. Rewrite using `[hs]`. Apply `Units.ext` to reduce the goal to its premises. Apply `D.what₂.embLL.injective` to reduce the goal to its premises. Establish `hx1 : x ∈ (P0 R.Pg D.R.r ψ').H` using `(congrArg LevelP.H hlev) ▸ (show x ∈ (R.toRealDat.levR F.lv2 false).H from hh)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `k1 : Units.map D.what₂.embLL.toMonoidHom (F.ψ0 ⟨_, hmem x hh⟩) = (Units.map D.what₂.embLL.toMonoidHom (F.ψ0 ⟨_, hh⟩))⁻¹`. Combine the equalities or inequalities in the displayed calculation. Establish `k3` using `congrArg Units.val k1`. Simplify `k3` using `[Units.coe_map, Units.val_inv_eq_inv_val, map_inv₀]`. Use `GlobalTheory.GoodTypeGeneric.chiIdem_mul_lvlIdem_ne_zero _ _ (hone χ hχ) ?_` and prove the remaining obligations.
-
-Rewrite using `[typeSum_inv_eq F.P0 F.ψ0 χ hcls t ht hψ, hsum χ hχ]`. Conclude with `hcard`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodGenericCharacter_of_seriesTypes : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3), R.WeakCharacterisation F → ∀ s, A3.fam3.Ok3 s → (∀ k : Fin 2, haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩; ∃ (C : Formalism.IrreducibleCountingLemmas.TYPES.LabelConv (ZMod (D.host.g k))) (O : Formalism.IrreducibleCountingLemmas.TYPES.LabelMap (ZMod (D.host.g k)) C), ∀ f, D.ntypes.eSer k f = Formalism.L2.NT.eSerO O D.R.r f) → GoodGeneric A3.A.X F.P0 F.ψ0 ∧ GoodGeneric A3.A.X F.P0 F.ψ0⁻¹ := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F hC s hOk hser

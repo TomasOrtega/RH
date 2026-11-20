@@ -28,7 +28,7 @@ def IsoDefIffTypeAt (T : ThetaTied D X) : Prop :=
       F ∈ (⨅ τ, isoDef (gramAt D V τ) (X.actR V τ) (P τ)) ↔ ∀ τ, IsTypeAt θ V τ (P τ) (T.ev V F)
 
 /- English proof (translation)
-Introduce `τ _ _`. Break down `hd (tauE D τ) with h | h` into its components or cases. Conclude with `Or.inr (Or.inl (by rw [h]))`. Conclude with `Or.inl (by rw [h])`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative.
 -/
 theorem defOneIndef {V : HSp D} (hd : V.IsDefinite) : ∀ τ τ' : D.what₂.Tau, τ ≠ τ' →
     (V.sig (tauE D τ)).1 = 0 ∨ (V.sig (tauE D τ)).2 = 0 ∨ (V.sig (tauE D τ')).1 = 0 ∨ (V.sig (tauE D τ')).2 = 0 := by
@@ -38,7 +38,7 @@ theorem defOneIndef {V : HSp D} (hd : V.IsDefinite) : ∀ τ τ' : D.what₂.Tau
   · exact Or.inl (by rw [h])
 
 /- English proof (translation)
-Introduce `τ`. Break down `hd (tauE D τ) with h | h` into its components or cases. Conclude with `Or.inr (Or.inl (by rw [h]))`. Conclude with `Or.inl (by rw [h])`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Prove the second alternative. Prove the first alternative.
 -/
 theorem sParGap_of_isDefinite {V : HSp D} (hd : V.IsDefinite) (P : D.what₂.Tau → SPar) :
     ∀ τ, SParGap V.rank (V.sig (tauE D τ)).1 (V.sig (tauE D τ)).2 (P τ) := by
@@ -48,11 +48,9 @@ theorem sParGap_of_isDefinite {V : HSp D} (hd : V.IsDefinite) (P : D.what₂.Tau
   · exact Or.inl (by rw [h])
 
 /- English proof (translation)
-Introduce `V hs hd`. Take `⟨θ, hθ⟩` from `sm.1`. Rewrite using `[sm.2 θ hθ V hs]`. Use extensionality with `φ`. Conclude with `(h1 θ hθ V hs hd φ).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `typ := by`. Introduce `V hs hd P hP`. Take `⟨θ, hθ⟩` from `ty.1`. Use extensionality with `F`. Rewrite using `[ty.2 θ hθ V hs P hP (sParGap_of_isDefinite hd P) F]`.
-
-Conclude with `(h2 θ hθ V hs hd P hP F).symm`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThetaTiedDef.of_iff {T : ThetaTied D X} (sm : ThetaSmoothnessCondition T) (ty : TypTied T) (h1 : AutFunDefIffSm D)
     (h2 : IsoDefIffTypeAt T) : ThetaTiedDef T where
@@ -70,7 +68,7 @@ theorem ThetaTiedDef.of_iff {T : ThetaTied D X} (sm : ThetaSmoothnessCondition T
     exact (h2 θ hθ V hs hd P hP F).symm
 
 /- English proof (translation)
-Introduce `θ hθ V hs hd φ`. Establish `e : {φ | IsAutFunDef V φ} = {φ | IsAutFunSm θ V φ}` using `by rw [← h.ev_def V hs hd, sm.2 θ hθ V hs]`. Conclude with `Set.ext_iff.1 e φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ThetaTiedDef.autFunDefIffSm {T : ThetaTied D X} (h : ThetaTiedDef T) (sm : ThetaSmoothnessCondition T) : AutFunDefIffSm D := by
   intro θ hθ V hs hd φ
@@ -78,7 +76,7 @@ theorem ThetaTiedDef.autFunDefIffSm {T : ThetaTied D X} (h : ThetaTiedDef T) (sm
   exact Set.ext_iff.1 e φ
 
 /- English proof (translation)
-Introduce `θ hθ V hs hd P hP F`. Rewrite using `[← h.typ V hs hd P hP]`. Conclude with `ty.2 θ hθ V hs P hP (sParGap_of_isDefinite hd P) F`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ThetaTiedDef.isoDefIffTypeAt {T : ThetaTied D X} (h : ThetaTiedDef T) (ty : TypTied T) : IsoDefIffTypeAt T := by
   intro θ hθ V hs hd P hP F

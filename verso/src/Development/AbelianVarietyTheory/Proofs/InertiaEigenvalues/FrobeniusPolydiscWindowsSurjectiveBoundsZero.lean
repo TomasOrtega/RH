@@ -18,11 +18,11 @@ namespace GlobalTheory.PMonE
 open Finset Matrix
 
 /- English proof (translation)
-Establish `key : ∀ m r j, ‖coefB p ϖ lam π L U m r j‖ ≤ 1 ∧ (L < m → ‖coefB p ϖ lam π L U m r j‖ < 1)`. Introduce `m r j`. Simplify using `only [coefB, Matrix.of_apply]`. Use `split_ifs with hm`. Rewrite using `[norm_pow, norm_div]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `hb r j ((m : ℤ) - L)`. Establish `hpos : p ^ (h - (r : ℕ)) ≠ 0` using `pow_ne_zero _ (Fact.out : p.Prime).ne_zero`. Break down `eq_or_lt_of_le (norm_nonneg (lam r * π r ^ p ^ (r : ℕ))) with hc | hc` into its components or cases. Rewrite using `[← hc, div_zero, zero_pow hpos]`. Conclude with `⟨zero_le_one, fun _ => zero_lt_one⟩`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨pow_le_one₀ (div_nonneg (norm_nonneg _) hc.le) ((div_le_one hc).2 h1), fun hLm => ?_⟩` and prove the remaining obligations. Conclude with `pow_lt_one₀ (div_nonneg (norm_nonneg _) hc.le) ((div_lt_one hc).2 (h2 (by omega))) hpos`. Simplify using the standard rewrite rules. Conclude with `⟨fun m r j => (key m r j).1, fun m hm r j => (key m r j).2 hm⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem coefB_norm {F : Type} [NormedField F] (p : ℕ) [Fact p.Prime] [CharP F p] [PerfectRing F p] {h : ℕ}
     (ϖ : F) (lam π : Fin h → F) (L U : ℕ)
@@ -45,7 +45,7 @@ theorem coefB_norm {F : Type} [NormedField F] (p : ℕ) [Fact p.Prime] [CharP F 
   exact ⟨fun m r j => (key m r j).1, fun m hm r j => (key m r j).2 hm⟩
 
 /- English proof (translation)
-Simplify using `only [gsum, Matrix.mulVec_sum, Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gsum_mul_left {F : Type} [NormedField F] {m : Type} [Fintype m] (q D : ℕ) (A : Matrix m m F)
     (B : ℕ → Matrix m m F) (z : m → F) :
@@ -53,23 +53,21 @@ theorem gsum_mul_left {F : Type} [NormedField F] {m : Type} [Fintype m] (q D : �
   simp only [gsum, Matrix.mulVec_sum, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Use `set B := coefB p ϖ lam π L U with hBdef`. Take `⟨hB1, hB2⟩` from `coefB_norm p ϖ lam π L U hb`. Take `⟨hdet, hdet0⟩` from `GlobalTheory.T.normalizedRowCoefficientMatrices_det_norm F p h ϖ hϖ lam π hlam hπ hanti horth L U`. Take `⟨hN, hinv⟩` from `GlobalTheory.T.normal_inv_mul_and_norm_inv_le_one F (Fin h) L B hB1 hB2 hdet`. Establish `hdne : (B L).det ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `hdet` using `[h0, norm_zero]`. Conclude with `zero_ne_one hdet`. Establish `hdu : IsUnit (B L).det` using `isUnit_iff_ne_zero.2 hdne`. Establish `hc : ∀ r, lam r * π r ^ p ^ (r : ℕ) ≠ 0` using `fun r => mul_ne_zero (hlam r) (pow_ne_zero _ (hπ r))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `nb : (Fin h → F) → (Fin h → F)` to `fun b r => (b r / (lam r * π r ^ p ^ (r : ℕ))) ^ p ^ (h - (r : ℕ))`. Use `⟨fun n => (B L)⁻¹ * B n, hN, ?_, fun b => (B L)⁻¹ *ᵥ nb b, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.det_mul]`. Conclude with `mul_ne_zero (Matrix.isUnit_nonsing_inv_det (B L) hdu).ne_zero hdet0`. Introduce `b hbb i`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Apply `IsUltrametricDist.norm_sum_le_of_forall_le_of_nonneg zero_le_one` to reduce the goal to its premises. Introduce `j _`. Rewrite using `[norm_mul]`. Establish `h1 : ‖nb b j‖ ≤ 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [nb]`. Rewrite using `[norm_pow, norm_div]`. Conclude with `pow_le_one₀ (div_nonneg (norm_nonneg _) (norm_nonneg _)) ((div_le_one (norm_pos_iff.2 (hc j))).2 (hbb j))`. Conclude with `mul_le_one₀ (hinv i j) (norm_nonneg _) h1`. Establish `: nb 0 = 0`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `r`. Simplify using `only [nb, Pi.zero_apply, zero_div]`. Conclude with `zero_pow (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)`. Simplify using `only [this, Matrix.mulVec_zero]`. Introduce `z b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[gsum_mul_left]`. Prove the components needed by the constructor for the conclusion. Introduce `H r`. Establish `H2 : gsum (p ^ h) (L + U) B z = nb b`. Use `congrArg (fun v => B L *ᵥ v) H` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `only [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdu, Matrix.one_mulVec]`. Establish `H3` using `congrFun H2 r`. Rewrite `H3` using `[← GlobalTheory.T.windowSummedRow_pow_eq_additiveSystemPowerSum F p h ϖ lam π L U hL z r]`. Establish `H4` using `(iterateFrobenius_inj F p (h - (r : ℕ))).eq_iff.1 (by simpa [iterateFrobenius_def] using H3)`. Conclude with `(div_left_inj' (hc r)).1 H4`.
-
-Introduce `H`. Establish `H2 : gsum (p ^ h) (L + U) B z = nb b`. Use function extensionality and compare the values at `r`. Rewrite using `[← GlobalTheory.T.windowSummedRow_pow_eq_additiveSystemPowerSum F p h ϖ lam π L U hL z r, H r]`. Rewrite using `[H2]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normalize {F : Type} [NormedField F] [IsUltrametricDist F] (p : ℕ) [Fact p.Prime] [CharP F p]
     [PerfectRing F p] {h : ℕ} (ϖ : F) (hϖ : ϖ ≠ 0) (lam π : Fin h → F) (hlam : ∀ j, lam j ≠ 0)
@@ -127,25 +125,23 @@ theorem normalize {F : Type} [NormedField F] [IsUltrametricDist F] (p : ℕ) [Fa
       rw [H2]
 
 /- English proof (translation)
-Introduce `F _ _ _ _ p _ _ _ h ϖ hh hϖ lam hlam hanti horth hlt`. Take `⟨k, rfl⟩ : ∃ k, h = k + 1` from `⟨h - 1, by omega⟩`. Take `⟨π, hπ, hrel1, hrel2⟩` from `exists_window_radii F p k ϖ hϖ lam hlam hanti hlt`. Establish `hp` using `(Fact.out : p.Prime)`. Establish `hϖ0 : ϖ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < ‖ϖ‖`. Rewrite using `[hϖ]`. Conclude with `inv_pos.2 (by exact_mod_cast hp.pos)`. Conclude with `norm_pos_iff.1 this`. Establish `hbd` using `GlobalTheory.T.frobeniusWindowSeriesTerm_norm_le_rowBound F p k ϖ hϖ lam π hlam hanti hlt hπ hrel1 hrel2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : ∀ (r j : Fin (k + 1)) (n : ℤ), ‖term p ϖ lam π r j n‖ ≤ ‖lam r * π r ^ p ^ (r : ℕ)‖ ∧ (0 < n → ‖term p ϖ lam π r j n‖ < ‖lam r * π r ^ p ^ (r : ℕ)‖)` using `fun r j n => ⟨(hbd r j n).1, (hbd r j n).2.1⟩`. Establish `hπ0 : ∀ j, π j ≠ 0` using `fun j => (hπ j).1`. Establish `hGL` using `GlobalTheory.T.additiveSystem_generalLemma_all_orders`. Use `⟨fun j => ‖π j‖, fun r => ‖lam r * π r ^ p ^ (r : ℕ)‖, 2, fun j => ⟨norm_pos_iff.2 (hπ j).1, (hπ j).2⟩, fun r => norm_pos_iff.2 (mul_ne_zero (hlam r) (pow_ne_zero _ (hπ r).1)), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx r j n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hm` using `GlobalTheory.T.norm_frobeniusWindowSeriesTerm_mono F p (k + 1) ϖ lam π x hx r j n`. Conclude with `⟨hm.trans (hbd r j n).1, fun hn => hm.trans ((hbd r j n).2.2 (by exact_mod_cast hn))⟩`. Introduce `b hbnd`. Take `⟨M, hM, _, Φ, hΦ, _, hiff⟩` from `normalize p ϖ hϖ0 lam π hlam hπ0 hanti horth 2 2 (by norm_num) hb`. Take `⟨z, hz, hzb⟩` from `(hGL 2).1 F p (Fin (k + 1)) (k + 1) (2 + 2) (by omega) (by omega) M hM (Φ b) (hΦ b hbnd)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨winPt p π 2 z, ?_, fun r => ?_⟩` and prove the remaining obligations. Introduce `j`. Simplify using `only [winPt]`. Rewrite using `[norm_mul, norm_pow]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (pow_le_one₀ (norm_nonneg _) (hz j))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[rowT_eq_rowS]`. Conclude with `(hiff z b).1 hzb r`. Take `⟨M, hM, hM0, Φ, _, hΦ0, hiff⟩` from `normalize p ϖ hϖ0 lam π hlam hπ0 hanti horth 2 2 (by norm_num) hb`. Take `⟨M', hM', hM0', Φ', _, hΦ0', hiff'⟩` from `normalize p ϖ hϖ0 lam π hlam hπ0 hanti horth (2 - 1) (2 + 1) (by norm_num) hb`. Establish `c1` using `(hGL 2).2 F p (Fin (k + 1)) (k + 1) (2 + 2) (by omega) (by omega) M hM hM0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2` using `(hGL (2 - 1)).2 F p (Fin (k + 1)) (k + 1) ((2 - 1) + (2 + 1)) (by omega) (by omega) M' hM' hM0'`. Establish `d1` using `GlobalTheory.T.card_windowZeros_eq_integral_additiveSystem F p (k + 1) ϖ lam π hπ0 2 2 M (fun z => by simpa [hΦ0] using hiff z 0)`. Establish `d2` using `GlobalTheory.T.card_windowZeros_eq_integral_additiveSystem F p (k + 1) ϖ lam π hπ0 (2 - 1) (2 + 1) M' (fun z => by simpa [hΦ0'] using hiff' z 0)`. Establish `e1` using `GlobalTheory.T.card_windowZeros_inner_eq_shifted_outer F p (k + 1) 2 ϖ hϖ0 (by norm_num) lam π`. Establish `hq1 : 1 < p ^ (k + 1)` using `Nat.one_lt_pow (by omega) hp.one_lt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `cS : Nat.card {x : Fin (k + 1) → F // (∀ j, ‖x j‖ ≤ ‖π j‖) ∧ ∀ r, rowS p ϖ lam 2 2 x r = 0} = (p ^ (k + 1)) ^ ((k + 1) * 2)`. Rewrite using `[d1, c1, Fintype.card_fin]`. Establish `cI : Nat.card {x : Fin (k + 1) → F // (∀ j, ‖x j‖ ≤ ‖π j‖ ^ p ^ (k + 1)) ∧ ∀ r, rowT p ϖ lam 2 x r = 0} = (p ^ (k + 1)) ^ ((k + 1) * (2 - 1))`. Rewrite using `[e1, d2, c2, Fintype.card_fin]`. Assume the negation of the conclusion as `hcon`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hsub : ∀ x : {x : Fin (k + 1) → F // (∀ j, ‖x j‖ ≤ ‖π j‖) ∧ ∀ r, rowS p ϖ lam 2 2 x r = 0}, ∀ j, ‖x.1 j‖ ≤ ‖π j‖ ^ p ^ (k + 1)`. Introduce `x`. Assume the negation of the conclusion as `hx`. Use `push_neg at hx`. Conclude with `hcon ⟨x.1, x.2.1, hx, x.2.2⟩`.
-
-Use `haveI : Finite {x : Fin (k + 1) → F // (∀ j, ‖x j‖ ≤ ‖π j‖ ^ p ^ (k + 1)) ∧ ∀ r, rowT p ϖ lam 2 x r = 0} := Nat.finite_of_card_ne_zero (by rw [cI]; positivity)`. Establish `hle` using `Nat.card_le_card_of_injective (fun x : {x : Fin (k + 1) → F // (∀ j, ‖x j‖ ≤ ‖π j‖) ∧ ∀ r, rowS p ϖ lam 2 2 x r = 0} => (⟨x.1, hsub x, x.2.2⟩ : {x : Fin (k + 1) → F // (∀ j, ‖x j‖ ≤ ‖π j‖ ^ p ^ (k + 1)) ∧ ∀ r, rowT p ϖ lam 2 x r = 0})) (fun a b hab => Subtype.ext (by simpa using …`. Rewrite `hle` using `[cS, cI]`. Conclude with `absurd hle (not_le.2 (Nat.pow_lt_pow_right hq1 (by omega)))`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem winThm : WinThm := by
   intro F _ _ _ _ p _ _ _ h ϖ hh hϖ lam hlam hanti horth hlt

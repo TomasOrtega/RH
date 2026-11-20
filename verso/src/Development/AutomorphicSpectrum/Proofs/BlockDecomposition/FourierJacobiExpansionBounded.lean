@@ -22,19 +22,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.FJE
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (μ.restrict S) := ⟨by simp [hS]⟩`. Establish `hZs : ∀ y, StronglyMeasurable fun x => Z (y, x)` using `fun y => hZ.comp_measurable measurable_prodMk_left`. Establish `inner : ∀ y, ∑' i, (∫ x in S, c i x * Z (y, x) ∂μ) * a i y = ∫ x in S, Z (y, x) * T (y, x) ∂μ`. Introduce `y`. Establish `hint : ∀ i, Integrable (fun x => c i x * Z (y, x) * a i y) (μ.restrict S)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `Integrable.of_bound ((((hc i).mul (hZs y)).mul stronglyMeasurable_const).aestronglyMeasurable) (B * ‖a i y‖) (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hc1, one_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hB _) (norm_nonneg _)`. Establish `hsum : Summable fun i => ∫ x in S, ‖c i x * Z (y, x) * a i y‖ ∂μ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : ∀ i, ∫ x in S, ‖c i x * Z (y, x) * a i y‖ ∂μ = (∫ x in S, ‖Z (y, x)‖ ∂μ) * ‖a i y‖`. Introduce `i`. Simplify using `only [norm_mul, hc1, one_mul]`. Conclude with `integral_mul_const _ _`. Simplify using `only [h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(ha y).mul_left _`. Establish `h1` using `integral_tsum_of_summable_integral_norm hint hsum`. Combine the equalities or inequalities in the displayed calculation. Use `integral_congr_ae (ae_of_all _ fun x => ?_)` and prove the remaining obligations. Use `show ∑' i, c i x * Z (y, x) * a i y = Z (y, x) * T (y, x)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hTs, ← tsum_mul_left]`. Conclude with `tsum_congr fun i => by ring`. Simplify using `only [inner]`. Use `haveI hfin : IsFiniteMeasure ((μ.prod μ).restrict (S ×ˢ S)) := by`. Rewrite using `[← Measure.prod_restrict]`.
-
-Use `infer_instance`. Establish `hi : IntegrableOn (fun v => Z v * T v) (S ×ˢ S) (μ.prod μ)`. Use `Integrable.of_bound ((hZ.mul hT).aestronglyMeasurable) (B * B₂) (ae_of_all _ fun v => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hB v) (hB₂ v) (norm_nonneg _) ((norm_nonneg _).trans (hB v))`.
-
-Conclude with `(setIntegral_prod (fun v => Z v * T v) hi).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fold_abs {X ι : Type} [MeasurableSpace X] [Countable ι] (μ : Measure X) [SFinite μ] (S : Set X) (hS : μ S = 1)
     (Z T : X × X → ℂ) (hZ : StronglyMeasurable Z) (hT : StronglyMeasurable T) (B B₂ : ℝ)
@@ -79,23 +75,19 @@ theorem fold_abs {X ι : Type} [MeasurableSpace X] [Countable ι] (μ : Measure 
   exact (setIntegral_prod (fun v => Z v * T v) hi).symm
 
 /- English proof (translation)
-Introduce `D n ρ p hn M m ψ hψ b₀ F hF g θ hθ φ hφ B hB hZ`. Take `⟨hH, hfd, h1⟩` from `m.hμ`. Take `⟨i1, i2, i3, i4, -⟩` from `lattice_Mx D ρ p`. Use `haveI : BorelSpace (Mx D ρ p) := ⟨rfl⟩`. Use `haveI : SFinite m.μ := inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : IsFiniteMeasure (m.μ.restrict m.𝓕) := ⟨by simp [h1]⟩`. Use `haveI : Countable D.host.E := (Module.finBasis ℚ D.host.E).equivFun.toEquiv.injective.countable`. Use `haveI : Countable (Matrix (Fin ρ) (Fin p) D.host.E) := inferInstanceAs (Countable (Fin ρ → Fin p → D.host.E))`. Take `⟨-, -, hnorm, -, -, hcont⟩` from `GlobalTheory.T.heisenberg_character_bilinear_laws (ρ := ρ) (p := p) ψ hψ b₀`. Establish `hφc : Continuous φ` using `GlobalTheory.RegSch.CentreWeilComm.continuous_of_mem hθ ⟨φ, hφ⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hφi : Integrable φ m.μ` using `GlobalTheory.RegSch.CentreWeilComm.integrable_of_mem hθ m.μ ⟨φ, hφ⟩`. Take `⟨B₂, hB₂⟩` from `GlobalTheory.T.exists_bound_lattice_sum_norm_schwartzA θ hθ φ hφ`. Establish `hD` using `GlobalTheory.T.stronglyMeasurable_twisted_lattice_sum ψ hψ b₀ φ hφc.stronglyMeasurable (fun y => (hB₂ y).1)`. Use `set Z : Mx D ρ p × Mx D ρ p → ℂ := fun v => zc M m ψ b₀ F (M.nzx 0 v.2 * (M.sh v.1 * g)) with hZdef`. Establish `hpcm : StronglyMeasurable fun y => pc M m ψ b₀ F (M.sh y * g)` using `hZ.integral_prod_right' (ν := m.μ.restrict m.𝓕)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpcb : ∀ y, ‖pc M m ψ b₀ F (M.sh y * g)‖ ≤ B`. Introduce `y`. Establish `h` using `norm_integral_le_of_norm_le_const (μ := m.μ.restrict m.𝓕) (f := fun x => zc M m ψ b₀ F (M.nzx 0 x * (M.sh y * g))) (C := B) (ae_of_all _ fun x => hB y x)`. Use `show ‖∫ x in m.𝓕, zc M m ψ b₀ F (M.nzx 0 x * (M.sh y * g)) ∂m.μ‖ ≤ B`. Simplify `h` using `[Measure.real, h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hB0 : 0 ≤ B` using `(norm_nonneg _).trans (hpcb 0)`. Establish `hP : Integrable (fun y => pc M m ψ b₀ F (M.sh y * g) * conj (φ y)) m.μ`. Use `(hφi.norm.const_mul B).mono' (hpcm.aestronglyMeasurable.mul (Complex.continuous_conj.comp hφc).aestronglyMeasurable) (ae_of_all _ fun y => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul, RCLike.norm_conj]`. Conclude with `mul_le_mul_of_nonneg_right (hpcb y) (norm_nonneg _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hPξ : ∀ (y : Mx D ρ p) (ξ : Matrix (Fin ρ) (Fin p) D.host.E), pc M m ψ b₀ F (M.sh (rt ξ + y) * g) * conj (φ (rt ξ + y)) = (∫ x in m.𝓕, conj (chv ψ b₀ x (rt ξ)) * Z (y, x) ∂m.μ) * conj (φ (rt ξ + y))`. Introduce `y ξ`. Rewrite using `[← GlobalTheory.CompanionTheory.FJE.sh_add M (rt ξ) y, mul_assoc, GlobalTheory.T.partial_coefficient_heisenberg_expansion M m ψ hψ b₀ F hF ξ (M.sh y * g)]`. Establish `hfold` using `GlobalTheory.T.integral_eq_fundamental_domain_lattice_sum m _ hP`. Establish `hmain` using `fold_abs m.μ m.𝓕 h1 Z (fun v => conj (dsum ψ b₀ φ v.2 v.1)) hZ (Complex.continuous_conj.comp_stronglyMeasurable hD) B B₂ (fun v => hB v.1 v.2) (fun v => ?_) (fun (ξ : Matrix (Fin ρ) (Fin p) D.host.E) x => conj (chv ψ b₀ x (rt ξ))) (fun (ξ : Matrix (Fin ρ) (Fin p) D.host.E) y => c …`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[dsum, Complex.conj_tsum]`. Conclude with `tsum_congr fun ξ => map_mul _ _ _)`. Use `show ∫ y, pc M m ψ b₀ F (M.sh y * g) * conj (φ y) ∂m.μ = _`. Rewrite using `[hfold]`. Simplify using `only [hPξ]`.
-
-Rewrite using `[hmain]`. Simplify using `only [th_zero]`. Both sides reduce to the same expression. Rewrite using `[RCLike.norm_conj, dsum]`. Establish `hs : Summable fun ξ : Matrix (Fin ρ) (Fin p) D.host.E => ‖chv ψ b₀ v.2 (rt ξ) * φ (rt ξ + v.1)‖`.
-
-Simplify `(hB₂ v.1).1` using `only [norm_mul, hnorm, one_mul]`. Use `(norm_tsum_le_tsum_norm hs).trans ?_` and prove the remaining obligations. Simplify `(hB₂ v.1).2` using `only [norm_mul, hnorm, one_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem fj_fold_mean : ∀ {D : D7} {n ρ p : ℕ} {hn : ρ + p = n} (M : Maps D hn) (m : Meas D ρ p) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (b₀ : HermE D ρ) (F : G D n → ℂ), LeftInv (GF D n) F → ∀ (g : G D n) (θ : InfFam D), IsInfFam θ → ∀ φ ∈ schwartzA θ ρ p, ∀ B : ℝ, (∀ y x, ‖zc M m ψ b₀ F (M.nzx 0 x * (M.sh y * g))‖ ≤ B) → StronglyMeasurable (fun v : Mx D ρ p × Mx D ρ p => zc M m ψ b₀ F (M.nzx 0 v.2 * (M.sh v.1 * g))) → FJ M m ψ b₀ F g φ = ∫ v in m.𝓕 ×ˢ m.𝓕, zc M m ψ b₀ F (M.nzx 0 v.2 * (M.sh v.1 * g)) * conj (th ψ b₀ φ 0 v.2 v.1) ∂(m.μ.prod m.μ) := by
   intro D n ρ p hn M m ψ hψ b₀ F hF g θ hθ φ hφ B hB hZ

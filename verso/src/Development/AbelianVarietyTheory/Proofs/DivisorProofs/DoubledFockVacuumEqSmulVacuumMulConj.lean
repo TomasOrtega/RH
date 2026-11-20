@@ -23,7 +23,7 @@ def eR {R S : ℕ} : Ix R S → Ix (R + S) (S + R) :=
   Sum.elim (fun r => Sum.inr (Fin.natAdd S r)) (fun s => Sum.inl (Fin.natAdd R s))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.doubledSpaceFrame_colBlocks_eq α β P Q R S A C c`.
+A detailed English derivation is pending.
 -/
 theorem dbl_cols {α β : Type} [Fintype β] {P Q R S : ℕ} (A : Matrix α (Ix P Q) ℂ) (C : Matrix β (Ix R S) ℂ)
     (c : Matrix (Ix P Q) (Ix (R + S) (S + R)) ℂ) :
@@ -34,14 +34,14 @@ theorem dbl_cols {α β : Type} [Fintype β] {P Q R S : ℕ} (A : Matrix α (Ix 
   GlobalTheory.T.doubledSpaceFrame_colBlocks_eq α β P Q R S A C c
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.fockHeisenbergOperatorOfCoords_real_I_smul_signConj_one P Q R S c t`.
+A detailed English derivation is pending.
 -/
 theorem heisOp_rot_one {P Q R S : ℕ} (c : Matrix (Ix P Q) (Ix R S) ℂ) (t : ℝ) :
     heisOp (((t : ℂ) * Complex.I) • (Jm P Q * c * Jm R S)) 1 = ((t : ℂ) * Complex.I) • heisOp c 1 :=
   GlobalTheory.T.fockHeisenbergOperatorOfCoords_real_I_smul_signConj_one P Q R S c t
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.heisenberg_derivative_on_schwartz_tensor_conj F κ a₁ b₁ a₂ b₂ f g₁ g₂ f₀ h hg₁ hg₂ hh hf₀ x`.
+A detailed English derivation is pending.
 -/
 theorem box_deriv {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (a₁ b₁ a₂ b₂ : κ → AF F)
     (f g₁ g₂ : SInf F κ) (f₀ h : SInf F (κ ⊕ κ))
@@ -67,11 +67,11 @@ def conjS {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : SchwartzMap
     exact hC x
 
 /- English proof (translation)
-Simplify using `only [sumPl, LinearMap.sum_apply, Finset.smul_sum, atPl, PiTensorProduct.map_tprod]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `e : ∀ M : Module.End ℂ V, (fun i => Function.update (fun i => (LinearMap.id : V →ₗ[ℂ] V)) w M i v) = Function.update (fun _ => v) w (M v)`. Introduce `M`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hi : i = w`. Substitute `hi` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne hi]`. Rewrite using `[e, e, h w]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `MultilinearMap.map_update_smul _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem sumPl_smul_tprod {ι : Type} [Fintype ι] [DecidableEq ι] {V : Type} [AddCommGroup V] [Module ℂ V]
     (L L' : ι → Module.End ℂ V) (v : V) (z : ℂ) (h : ∀ w, L' w v = z • L w v) :
@@ -95,7 +95,7 @@ theorem sub_smul' {m n k : Type} (z : ℂ) (M : Matrix m n ℂ) (e : k → n) :
     (z • M).submatrix id e = z • M.submatrix id e := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun r hr => by ext i j; exact congrFun (congrFun (hu r hr) i) (Sum.inl j), fun r hr => by ext i j; exact congrFun (congrFun (hu r hr) i) (Sum.inr j)⟩`.
+Supply the required witnesses or components.
 -/
 theorem toCols_at {F E α β₁ β₂ : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {u : Matrix α (β₁ ⊕ β₂) (AE F E)} (hu : At (evI F) u) : At (evI F) u.toCols₁ ∧ At (evI F) u.toCols₂ :=
@@ -103,31 +103,27 @@ theorem toCols_at {F E α β₁ β₂ : Type} [Field F] [NumberField F] [Field E
    fun r hr => by ext i j; exact congrFun (congrFun (hu r hr) i) (Sum.inr j)⟩
 
 /- English proof (translation)
-Introduce `hD hV F E _ _ _ _ _ σ α β κ _ _ _ _ _ P Q R S ψ τ JA JB d dd a b A C Φ Φd hCM hψ hFr hΦ hdd hΦd`. Take `⟨D, hD1⟩` from `hD F E σ α β κ ψ JA JB d hψ`. Take `⟨Dd, hDd⟩` from `hD F E σ α (β ⊕ β) (κ ⊕ κ) ψ JA (dbl JB) dd hψ`. Use `set f₁ := Φ (PiTensorProduct.tprod ℂ fun _ => 1) with hf₁`. Take `⟨f₀, hf₀⟩` from `GlobalTheory.SchwartzBox.exists_schwartz_box f₁ (conjS f₁)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf₀' : ∀ x, f₀ x = f₁ (x ∘ Sum.inl) * star (f₁ (x ∘ Sum.inr))` using `fun x => hf₀ x`. Establish `hFrd` using `GlobalTheory.T.doubled_hermitian_space_frame_of_frame F E α β P Q R S τ JA JB a b A C hFr`. Establish `hder : ∀ u₁ : Matrix α β (AE F E), At (evI F) u₁ → ∀ c₁ : InfinitePlace F → Matrix (Ix P Q) (Ix R S) ℂ, (∀ w, u₁.map (piInf (τ w)) = A w * c₁ w * (C w)ᵀ) → D u₁ f₁ = Φ (sumPl (fun w => heisOp (c₁ w)) (PiTensorProduct.tprod ℂ fun _ => 1))` using `fun u₁ hu₁ c₁ hc₁ => GlobalTheory.SDUnique.sd_unique ((hD1 u₁ hu₁ f₁).1) (hΦ.2 u₁ hu₁ c₁ hc₁ _)`. Establish `hbox : ∀ u : Matrix α (β ⊕ β) (AE F E), At (evI F) u → ∀ x, Dd u f₀ x = D u.toCols₁ f₁ (x ∘ Sum.inl) * star (f₁ (x ∘ Sum.inr)) + f₁ (x ∘ Sum.inl) * star (D u.toCols₂ f₁ (x ∘ Sum.inr))`. Introduce `u hu x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hu₁, hu₂⟩` from `toCols_at hu`. Establish `e` using `hdd u.toCols₁ u.toCols₂`. Rewrite `e` using `[Matrix.fromCols_toCols]`. Use `box_deriv (d.e u.toCols₁).1 (d.e u.toCols₁).2 (d.e u.toCols₂).1 (d.e u.toCols₂).2 f₁ _ _ f₀ _ ((hD1 _ hu₁ f₁).2) ((hD1 _ hu₂ f₁).2) (fun y => ?_) hf₀' x` and prove the remaining obligations. Rewrite using `[(hDd u hu f₀).2 y, e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ u u' : Matrix α (β ⊕ β) (AE F E), At (evI F) u → At (evI F) u' → ∀ c : InfinitePlace F → Matrix (Ix P Q) (Ix (R + S) (S + R)) ℂ, (∀ w, u.map (piInf (τ w)) = A w * c w * (dblM (C w))ᵀ) → (∀ w, u'.map (piInf (τ w)) = A w * (((((1 : InfinitePlace F → ℤˣ) w : ℤ) : ℂ) * Comple …`. Introduce `u u' hu hu' c hc hc' f f' hf hf'`. Rewrite using `[← GlobalTheory.SDUnique.sd_unique ((hDd u hu f₀).1) hf, ← GlobalTheory.SDUnique.sd_unique ((hDd u' hu' f₀).1) hf']`. Take `⟨hu₁, hu₂⟩` from `toCols_at hu`. Take `⟨hu₁', hu₂'⟩` from `toCols_at hu'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hI : ∀ w, ((((1 : InfinitePlace F → ℤˣ) w : ℤ) : ℂ) * Complex.I) = ((1 : ℝ) : ℂ) * Complex.I` using `fun w => by simp`. Establish `h1` using `hder _ hu₁ (fun w => (c w).submatrix id eL) (fun w => by`. Rewrite using `[← (dbl_cols (A w) (C w) (c w)).1, ← hc w]`. Use the proof step `rfl)`. Establish `h2` using `hder _ hu₂ (fun w => (c w).submatrix id eR) (fun w => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← (dbl_cols (A w) (C w) (c w)).2.1, ← hc w]`. Use the proof step `rfl)`. Establish `h1'` using `hder _ hu₁' (fun w => (((1 : ℝ) : ℂ) * Complex.I) • (Jm P Q * (c w).submatrix id eL * Jm R S)) (fun w => by`. Rewrite using `[← (dbl_cols (A w) (C w) (c w)).2.2.1, ← sub_smul', ← hI w, ← (dbl_cols (A w) (C w) _).1, ← hc' w]`. Use the proof step `rfl)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h2'` using `hder _ hu₂' (fun w => (((-1 : ℝ) : ℂ) * Complex.I) • (Jm P Q * (c w).submatrix id eR * Jm R S)) (fun w => by`. Establish `e : (((-1 : ℝ) : ℂ) * Complex.I) • (Jm P Q * (c w).submatrix id eR * Jm R S) = ((((1 : InfinitePlace F → ℤˣ) w : ℤ) : ℂ) * Complex.I) • (-(Jm P Q * (c w).submatrix id eR * Jm R S))`. Rewrite using `[hI w, smul_neg, ← neg_smul]`. Use `congr 1`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, ← (dbl_cols (A w) (C w) (c w)).2.2.2, ← sub_smul', ← (dbl_cols (A w) (C w) _).2.1, ← hc' w]`. Use the proof step `rfl)`. Rewrite `h1'` using `[sumPl_smul_tprod _ _ _ _ (fun w => heisOp_rot_one _ 1)]`. Rewrite `h2'` using `[sumPl_smul_tprod _ _ _ _ (fun w => heisOp_rot_one _ (-1))]`.
+Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite `h1'`, `h2'` using `[map_smul]`. Use extensionality with `x`. Rewrite using `[SchwartzMap.smul_apply, hbox u' hu' x, hbox u hu x, h1', h2', h1, h2]`. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul, star_mul', Complex.star_def, map_mul, Complex.conj_ofReal, Complex.conj_I]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨z', hz'⟩` from `hV F E σ α (β ⊕ β) (κ ⊕ κ) P Q (R + S) (S + R) ψ τ JA (dbl JB) dd a b A (fun w => dblM (C w)) Φd hCM hψ hFrd hΦd f₀ 1 key`. Establish `hne1 : f₁ ≠ 0` using `fun h0 => GlobalTheory.T.tprod_constant_polynomials_ne_zero F P Q R S (hΦ.1 (h0.trans (map_zero Φ).symm))`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y, f₁ y ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `push_neg at h`. Conclude with `hne1 (SchwartzMap.ext h)`. Establish `hz0 : z' ≠ 0`. Introduce and unpack `rfl`. Establish `h` using `congrArg (fun g : SInf F (κ ⊕ κ) => g (Sum.elim y y)) hz'`.
-
-Simplify using `only [zero_smul, SchwartzMap.zero_apply, hf₀', Sum.elim_comp_inl, Sum.elim_comp_inr] at h`. Conclude with `mul_ne_zero hy (star_ne_zero.2 hy) h`. Use `⟨z'⁻¹, inv_ne_zero hz0, fun x => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (fun g : SInf F (κ ⊕ κ) => g x) hz'`. Simplify using `only [SchwartzMap.smul_apply, smul_eq_mul, hf₀'] at h`.
-
-Rewrite using `[mul_assoc, h, ← mul_assoc, inv_mul_cancel₀ hz0, one_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vac_box : DerEx → VacLine → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (α β κ : Type) [Fintype α]
     [DecidableEq α] [Fintype β] [DecidableEq β] [Fintype κ] (P Q R S : ℕ) (ψ : AddChar (AF F) ℂ)

@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.PureIndO
 
 /- English proof (translation)
-Introduce `F _ _ κ _ f φ hSB hstd`. Conclude with `Submodule.subset_span ⟨f, fun y => ∏ᶠ v, φ v fun i => evalV F v (y i), GlobalTheory.AdelicCoordSB.finprod_mem_SB F κ φ hSB hstd, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem pure_mem_schA : ∀ {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ] (f : SInf F κ)
     (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ), (∀ v, φ v ∈ SB _) → (∀ᶠ v in cofinite, φ v = GlobalTheory.FinComm.indO v) →

@@ -10,21 +10,21 @@ namespace GlobalTheory.CompanionTheory.UnitSemisimple
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `v`. Use `⟨0, zero_mem _, fun s hs => ?_⟩` and prove the remaining obligations. Establish `: s = 0` using `by simpa using hs`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `[this]`. Consider the case `insert a t _ ih`. Introduce `v`. Take `⟨w₁, hw₁, h₁⟩` from `ih v`. Take `⟨a₁, ha₁, h₂⟩` from `ih a`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hle : Submodule.span ℂ (t : Set V) ≤ Submodule.span ℂ ((insert a t : Finset V) : Set V)` using `Submodule.span_mono (by simp)`. Establish `ha : a ∈ Submodule.span ℂ ((insert a t : Finset V) : Set V)` using `Submodule.subset_span (by simp)`. Take `⟨x, hx⟩ : ∃ x, x = a - a₁` from `⟨_, rfl⟩`. Take `⟨u, hu⟩ : ∃ u, u = v - w₁` from `⟨_, rfl⟩`. Take `⟨c, hcdef⟩ : ∃ c, c = B u x / B x x` from `⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc : B u x = c * B x x`. Distinguish the cases in `hx0 : x = 0`. Simplify using `[hx0]`. Establish `h0 : B x x ≠ 0` using `fun h => by simpa [h] using hp x hx0`. Rewrite using `[hcdef]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Use `⟨w₁ + c • x, ?_, ?_⟩` and prove the remaining obligations. Use `add_mem (hle hw₁) (Submodule.smul_mem _ _ ?_)` and prove the remaining obligations. Rewrite using `[hx]`. Conclude with `sub_mem ha (hle ha₁)`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs`. Rewrite `hs` using `[Finset.coe_insert]`. Take `⟨b, z, hz, rfl⟩` from `Submodule.mem_span_insert.1 hs`. Establish `hz' : b • a₁ + z ∈ Submodule.span ℂ (t : Set V)` using `add_mem (Submodule.smul_mem _ _ ha₁) hz`. Establish `e1 : v - (w₁ + c • x) = u - c • x` using `by rw [hu]; abel`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : b • a + z = b • x + (b • a₁ + z)` using `by rw [hx, smul_sub]; abel`. Establish `k1 : B u (b • a₁ + z) = 0` using `by rw [hu]; exact h₁ _ hz'`. Establish `k2 : B x (b • a₁ + z) = 0` using `by rw [hx]; exact h₂ _ hz'`. Rewrite using `[e1, e2, map_sub, LinearMap.sub_apply, map_smul, LinearMap.smul_apply, (B u).map_add (b • x), (B x).map_add (b • x), k1, k2, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, hc]`. Simplify using `only [smul_eq_mul, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_proj_finset (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
     (hp : ∀ v, v ≠ 0 → 0 < (B v v).re) (t : Finset V) :
@@ -72,7 +72,7 @@ theorem exists_proj_finset (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
       ring
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h k hk`. Simplify using `using h ⟨k, hk⟩`. Introduce `h k`. Simplify using `using h k k.2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_fixed_iff {G : Type} [Group G] (ρ : Representation ℂ G V) (K : Subgroup G) (v : V) :
     v ∈ fixed ρ K ↔ ∀ k ∈ K, ρ k v = v := by
@@ -83,7 +83,7 @@ theorem mem_fixed_iff {G : Type} [Group G] (ρ : Representation ℂ G V) (K : Su
     simpa using h k k.2
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qf32.orbit_finite ρ K hK w hS`.
+A detailed English derivation is pending.
 -/
 theorem orbit_finite {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (ρ : Representation ℂ G V) (K : Subgroup G) (hK : IsCompact (K : Set G)) (w : V)
@@ -91,19 +91,17 @@ theorem orbit_finite {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGro
   _root_.UpperTheory.Reformulated.B.Qf32.orbit_finite ρ K hK w hS
 
 /- English proof (translation)
-Establish `hO` using `orbit_finite ρ K hK w hS`. Use `set O : Finset V := hO.toFinset with hOdef`. Establish `hmem : ∀ x, x ∈ O ↔ ∃ k ∈ K, ρ k w = x` using `fun x => by simp [hOdef]`. Establish `hinv : ∀ k ∈ K, ∀ x, ρ k⁻¹ (ρ k x) = x` using `fun k _ x => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hinv' : ∀ k ∈ K, ∀ x, ρ k (ρ k⁻¹ x) = x` using `fun k _ x => by`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Simplify using the standard rewrite rules. Establish `hst : ∀ k ∈ K, ∀ x ∈ O, ρ k x ∈ O`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk x hx`. Take `⟨l, hl, rfl⟩` from `(hmem x).1 hx`. Use `(hmem _).2 ⟨k * l, K.mul_mem hk hl, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, Module.End.mul_apply]`. Establish `hsW : ∑ x ∈ O, x ∈ W.toSubmodule`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun x hx => ?_` and prove the remaining obligations. Take `⟨l, _, rfl⟩` from `(hmem x).1 hx`. Conclude with `W.apply_mem_toSubmodule l hw`. Establish `hsF : ∑ x ∈ O, x ∈ fixed ρ K`. Rewrite using `[mem_fixed_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `k hk`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_nbij' (ρ k) (ρ k⁻¹) (fun x hx => hst k hk x hx) (fun x hx => hst _ (K.inv_mem hk) x hx) (fun x _ => hinv k hk x) (fun x _ => hinv' k hk x) (fun x _ => rfl)`. Establish `h0` using `huW _ ⟨hsW, hsF⟩`. Establish `hterm : ∀ x ∈ O, B u x = B u w`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `x hx`. Take `⟨l, hl, rfl⟩` from `(hmem x).1 hx`. Use `conv_lhs => rw [← hu l hl]`. Conclude with `hi l u w`. Rewrite `h0` using `[map_sum, Finset.sum_congr rfl hterm, Finset.sum_const]`.
-
-Establish `hne : O.card ≠ 0` using `Finset.card_ne_zero.2 ⟨w, (hmem w).2 ⟨1, K.one_mem, by simp⟩⟩`. Rewrite `h0` using `[nsmul_eq_mul]`. Conclude with `(mul_eq_zero.1 h0).resolve_left (by exact_mod_cast hne)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orthogonal_of_fixed {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     (ρ : Representation ℂ G V) (B : V →ₗ[ℂ] V →ₗ⋆[ℂ] ℂ)
@@ -161,17 +159,17 @@ def orth {G : Type} [Group G] (ρ : Representation ℂ G V) (B : V →ₗ[ℂ] V
     rw [← e, hi]; exact this
 
 /- English proof (translation)
-Introduce `G V _ _ _ _ _ ρ hbasis hadm hun W`. Take `⟨B, hh, hp, hi⟩` from `hun`. Use `⟨orth ρ B hi W, IsCompl.of_eq ?_ ?_⟩` and prove the remaining obligations. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises. Rewrite using `[Subrepresentation.toSubmodule_inf]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `(Submodule.eq_bot_iff _).2 fun v hv => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hv0`. Establish `h0 : B v v = 0` using `hv.2 v hv.1`. Simplify `hp v hv0` using `[h0]`. Apply `Subrepresentation.toSubmodule_injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Subrepresentation.toSubmodule_sup]`. Use `(Submodule.eq_top_iff').2 fun v => ?_` and prove the remaining obligations. Take `⟨K, hKo, hKc, hKv⟩` from `hbasis {g | ρ g v = v} ((hadm.1 v).mem_nhds (by simp))`. Establish `hfd : FiniteDimensional ℂ (fixed ρ K)` using `hadm.2 K hKo hKc`. Establish `hfd' : FiniteDimensional ℂ (W.toSubmodule ⊓ fixed ρ K : Submodule ℂ V)` using `Submodule.finiteDimensional_inf_right _ _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfg : (W.toSubmodule ⊓ fixed ρ K).FG` using `Module.Finite.iff_fg.1 hfd'`. Take `⟨t, ht⟩` from `hfg`. Take `⟨w, hw, hort⟩` from `exists_proj_finset B hp t v`. Rewrite `hw`, `hort` using `[ht]`. Establish `hfix : ∀ k ∈ K, ρ k (v - w) = v - w`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `k hk`. Establish `h1 : ρ k v = v` using `hKv hk`. Establish `h2 : ρ k w = w` using `(mem_fixed_iff ρ K w).1 hw.2 k hk`. Rewrite using `[map_sub, h1, h2]`. Establish `hmem : v - w ∈ (orth ρ B hi W).toSubmodule` using `fun y hy => orthogonal_of_fixed ρ B hi K hKc W (v - w) hfix hort y hy (hadm.1 y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: v = w + (v - w)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup hw.1 hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCompl : ∀ {G V : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup V] [Module ℂ V] (ρ : Representation ℂ G V), (∀ U ∈ nhds (1 : G), ∃ K : Subgroup G, IsOpen (K : Set G) ∧ IsCompact (K : Set G) ∧ (K : Set G) ⊆ U) → IsAdmissible ρ → IsUnitarisable ρ → ∀ W : Subrepresentation ρ, ∃ W' : Subrepresentation ρ, IsCompl W W' := by
   intro G V _ _ _ _ _ ρ hbasis hadm hun W

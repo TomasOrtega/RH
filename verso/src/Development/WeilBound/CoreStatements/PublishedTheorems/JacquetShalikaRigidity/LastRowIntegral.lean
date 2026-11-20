@@ -17,11 +17,11 @@ namespace LastRowIntegral
 open ValuativeRel
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Rewrite using `[h1, one_mul]`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[h0 j h, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-It suffices to derive a contradiction. Establish `h2` using `j.isLt`. Establish `h3 : (i : ℕ) < j` using `h`. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 theorem mul_apply_last {R : Type*} [CommRing R] {n : ℕ} (A B : Matrix (Fin n) (Fin n) R) (i : Fin n)
     (hi : (i : ℕ) + 1 = n) (h0 : ∀ j, j < i → A i j = 0) (h1 : A i i = 1) (c : Fin n) : (A * B) i c = B i c := by
@@ -39,11 +39,11 @@ theorem mul_apply_last {R : Type*} [CommRing R] {n : ℕ} (A B : Matrix (Fin n) 
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Unfold `lastRow`. Rewrite using `[Finset.sum_eq_single ⟨k - 1, by omega⟩]`. Rewrite using `[if_pos (by simp only; omega)]`. Introduce `j _ hj`. Rewrite using `[if_neg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hj` to reduce the goal to its premises. Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lastRow_eq {k : ℕ} (hk : 1 ≤ k) (g : GA E k) (c : Fin k) :
     lastRow g c = g.val ⟨k - 1, by omega⟩ c := by
@@ -56,7 +56,7 @@ theorem lastRow_eq {k : ℕ} (hk : 1 ≤ k) (g : GA E k) (c : Fin k) :
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Use function extensionality and compare the values at `c`. Rewrite using `[lastRow_eq hk, lastRow_eq hk, Units.val_mul]`. Use `mul_apply_last _ _ _ (by simp only; omega) (fun j hj => hn.1 _ _ hj) (hn.2.1 _) c` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem lastRow_UU {k : ℕ} (hk : 1 ≤ k) {n : GA E k} (hn : UU 0 n) (g : GA E k) :
     lastRow (n * g) = lastRow g := by
@@ -65,7 +65,7 @@ theorem lastRow_UU {k : ℕ} (hk : 1 ≤ k) {n : GA E k} (hn : UU 0 n) (g : GA E
   refine mul_apply_last _ _ _ (by simp only; omega) (fun j hj => hn.1 _ _ hj) (hn.2.1 _) c
 
 /- English proof (translation)
-Use `continuous_pi fun c => continuous_finsetSum _ fun i _ => ?_` and prove the remaining obligations. Use `split_ifs`. Conclude with `Units.continuous_val.matrix_elem i c`. Conclude with `continuous_const`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_lastRow {k : ℕ} : Continuous (lastRow : GA E k → Fin k → Ad E) := by
   refine continuous_pi fun c => continuous_finsetSum _ fun i _ => ?_
@@ -74,15 +74,15 @@ theorem continuous_lastRow {k : ℕ} : Continuous (lastRow : GA E k → Fin k �
   · exact continuous_const
 
 /- English proof (translation)
-The claim follows from `(continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_sFin : Continuous (sFin E) :=
   (continuous_const.prodMk continuous_id : Continuous fun x : Af E => ((0, x) : InfiniteAdeleRing E × Af E))
 
 /- English proof (translation)
-Establish `: (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))).Compatible` using `Valuation.Compatible.ofValuation _`. Establish `he` using `isEquiv (valuation (w.adicCompletion E)) (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ)))`. Establish `hO : 𝒪[w.adicCompletion E] = (w.adicCompletionIntegers E).toSubring`. Use extensionality with `y`. Rewrite using `[Valuation.mem_integer_iff, he.le_one_iff_le_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Iff.rfl`. Rewrite `hx` using `[hO]`. Conclude with `hx`.
+Unfold both sides to obtain the same proposition, which implies itself. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_int (w : Pl E) (x : w.adicCompletion E) (hx : x ∈ 𝒪[w.adicCompletion E]) :
     x ∈ w.adicCompletionIntegers E := by
@@ -104,11 +104,9 @@ namespace LastRowIntegral
 open ValuativeRel GroundTheory.Automorphic.Iwasawa
 
 /- English proof (translation)
-Take `⟨u, hu0, κ, hκ0, he⟩` from `exists_eq_mul_torusPow_iwasawaExponent F k h`. Use `set l := iwasawaExponent F k h`. Establish `hl : iwasawaExponent F m (ιw h) = pad m l`. Rewrite using `[he, map_mul, map_mul, ht]`. Conclude with `iwasawaExponent_eq F m (hu u hu0) (hκ κ hκ0)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ha` using `[hl]`. Establish `h0 : 0 ≤ l ⟨k - 1, by omega⟩`. Use `ha (show (⟨k - 1, by omega⟩ : Fin m) ≤ ⟨k, hkm⟩ from Fin.mk_le_mk.2 (by omega))` as an intermediate fact. Simplify `this` using `[pad, show k - 1 < k by omega]`. Take `⟨e, he'⟩` from `Int.eq_ofNat_of_zero_le h0`.
-
-Rewrite using `[he, Units.val_mul, Units.val_mul, Matrix.mul_assoc, mul_apply_last _ _ _ (by simp only; omega) (fun j hj => hu0.1 hj) (hu0.2 _) c, coe_torusPow, Matrix.diagonal_mul, he', zpow_natCast]`. Conclude with `Subring.mul_mem _ (Subring.pow_mem _ (GLnLocal.uniformizer F).2 _) (((GLnLocal.mem_integralGL_iff F k).1 hκ0).1 _ _)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem last_int {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
     {k m : ℕ} (hk : 1 ≤ k) (hkm : k < m) (ιw : GL (Fin k) F →* GL (Fin m) F)
@@ -135,27 +133,25 @@ theorem last_int {F : Type*} [Field F] [ValuativeRel F] [TopologicalSpace F] [Is
 end LastRowIntegral
 
 /- English proof (translation)
-Introduce `hG0 h5 h8 E _ _ _ m k hk hkm ψ hψ S hS ι hι α M U φ hP`. Take `⟨hex, hι5⟩` from `h5 E m k hkm.le`. Take `⟨-, hblk, hsurj, -, -, hcpt, -, hloc, hcInf, hUU, -⟩` from `hι5 ι hι`. Take `⟨-, -, -, -, -, -, -, -, -, -, hg0, -, -, -, -⟩` from `hG0 E k`. Take `⟨-, -, hW⟩` from `h8 E m ψ hψ S hS α φ hP.good hP.sat`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, -, hCblk, hCcpt, -, -, hB⟩` from `hP.bump`. Use `choose ιw hιw using fun w : Pl E => hex (w.adicCompletion E)`. Establish `hlw` using `fun w => hloc w (ιw w) (hιw w)`. Use `⟨(fun p => p.1 + p.2) '' ((lastRow '' (ι ⁻¹' C)) ×ˢ Set.pi Set.univ (fun _ => sFin E '' (GroundTheory.Global.integralFiniteAdeles (𝓞 E) E : Set (Af E)))), ?_, ?_⟩` and prove the remaining obligations. Conclude with `(((hcpt C hCcpt).image LastRowIntegral.continuous_lastRow).prod (isCompact_univ_pi fun _ => (GroundTheory.Global.isCompact_integralFiniteAdeles E).image LastRowIntegral.continuous_sFin)).image (continuous_fst.add continuous_snd)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `g hg`. Take `⟨hW1, hW2⟩` from `hW (ι g) hg`. Take `⟨g₀, h0i, h0S, h0in⟩` from `hg0 S g`. Establish `hinf : cInf (ι g₀) = cInf (ι g)`. Establish `e : g = g₀ * (g₀⁻¹ * g)` using `by group`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : cInf (g₀⁻¹ * g) = 1` using `by rw [map_mul, map_inv, h0i, inv_mul_cancel]`. Use `conv_rhs => rw [e, map_mul, map_mul, hcInf _ h1, mul_one]`. Establish `hSl : ∀ w ∈ S, cLoc w (ι g₀) = cLoc w (ι g)` using `fun w hw => by`. Rewrite using `[(hlw w).2.1, (hlw w).2.1, h0S w hw]`. Establish `hin : InS S (ι g₀)` using `fun w hw => by rw [(hlw w).2.1, h0in w hw, map_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hne` using `hW1 (ι g₀) hinf hSl hin`. Establish `hmir : Mir k (ι g₀)` using `fun i c h => hblk g₀ i c (h.imp id Nat.le_of_lt)`. Take `⟨n, c, hc, t, hn, -, heq, -, -⟩` from `hB (ι g₀) ⟨hin, hmir⟩ hne`. Take `⟨c', rfl⟩` from `hsurj c (hCblk c hc)`. Establish `hn' : n = ι (g₀ * c'⁻¹)` using `by rw [map_mul, map_inv, heq, mul_inv_cancel_right]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hU0 : UU 0 (g₀ * c'⁻¹)` using `(hUU _).1 (hn' ▸ hn)`. Establish `hA : lastRow g₀ = lastRow c'` using `by conv_lhs => rw [show g₀ = (g₀ * c'⁻¹) * c' by group]`. Conclude with `LastRowIntegral.lastRow_UU hk hU0 c'`. Use `⟨(lastRow g₀, lastRow g - lastRow g₀), ⟨⟨c', hc, hA.symm⟩, fun i _ => ?_⟩, by simp⟩` and prove the remaining obligations. Use `⟨pFin E ((lastRow g - lastRow g₀) i), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `v`. Express the relevant statement in the definitionally equal form `pLoc E v (pFin E ((lastRow g - lastRow g₀) i)) ∈ v.adicCompletionIntegers E`. Rewrite using `[Pi.sub_apply, LastRowIntegral.lastRow_eq hk, LastRowIntegral.lastRow_eq hk, map_sub, map_sub]`. Express the relevant statement in the definitionally equal form `(cLoc v g).val _ i - (cLoc v g₀).val _ i ∈ v.adicCompletionIntegers E`. Distinguish the cases in `hv : v ∈ S`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[h0S v hv, sub_self]`. Conclude with `zero_mem _`. Rewrite using `[h0in v hv]`. Use `sub_mem (LastRowIntegral.mem_int v _ ?_) (LastRowIntegral.mem_int v _ ?_)` and prove the remaining obligations. Establish `ha` using `hW2 v hv`.
+Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `ha` using `[(hlw v).2.1]`. Conclude with `LastRowIntegral.last_int hk hkm (ιw v) (hlw v).2.2.1 (hlw v).2.2.2.1 (hlw v).2.2.2.2 _ ha i`. Express the relevant statement in the definitionally equal form `(1 : Matrix (Fin k) (Fin k) (v.adicCompletion E)) _ i ∈ _`. Rewrite using `[Matrix.one_apply]`. Use `split_ifs`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Conclude with `zero_mem _`. Use `ad_ext ?_ rfl` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(infEq E).symm 0 = _`. Rewrite using `[map_zero]`.
-
-Express the relevant statement in the definitionally equal form `(0 : Cinf E) = pInf E ((lastRow g - lastRow g₀) i)`. Rewrite using `[Pi.sub_apply, LastRowIntegral.lastRow_eq hk, LastRowIntegral.lastRow_eq hk, map_sub]`. Express the relevant statement in the definitionally equal form `(0 : Cinf E) = (cInf g).val _ i - (cInf g₀).val _ i`. Rewrite using `[h0i, sub_self]`.
+A detailed English derivation is pending.
 -/
 theorem last_row_integral_of : jumpWindows.G0 → CornerEmbedding → K8 → K6 := by
   intro hG0 h5 h8 E _ _ _ m k hk hkm ψ hψ S hS ι hι α M U φ hP

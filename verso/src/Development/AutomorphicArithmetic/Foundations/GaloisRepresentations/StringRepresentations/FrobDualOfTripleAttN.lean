@@ -53,7 +53,7 @@ open scoped Pointwise
 namespace GlobalTheory.TripleUnramified
 
 /- English proof (translation)
-Introduce and unpack `D bkP i s ⟨ι, π₁, π, h1, -, hR, -⟩ v hv hg A hA σ hσ`. Take `⟨g, rfl⟩` from `exists_smul_eq_of_isPlaceOver (F := D.host.E) (D.nd.plOm.2 v) hA`. Establish `h` using `h1.unr v hv (hR.unr₁ v hg) _ (conj_mem_Ine_of_smul hσ)`. Establish `e : σ = g * (g⁻¹ * σ * g) * g⁻¹` using `by group`. Rewrite using `[e, map_mul, map_mul, h, mul_one, ← map_mul, mul_inv_cancel, map_one]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem unrRho_of_tripleAtt_n : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i),
     TripleAttN D.naut bkP i s → UnrRho i s := by
@@ -70,9 +70,9 @@ end
 namespace GlobalTheory.TripleGal.HodgeOfAtt
 
 /- English proof (translation)
-Introduce and unpack `D bkP i s ⟨ι, π₁, π, h₁, h, hR, -⟩ v hv r hr`. Establish `hg : (∀ k, D.ntw.l i ≠ D.host.g k) → ∀ k, v ∉ placesOver D.host.E (D.host.g k)` using `fun hk k => not_mem_placesOver_of_ne (D.ntw.lPrime i).out (D.host.g_prime k) (hk k) v hv`. Break down `hr with rfl | hr` into its components or cases. Conclude with `⟨(h₁.hodge v hv).1, fun hk => (h₁.hodge v hv).2.1 (hR.unr₁ v (hg hk)), (h₁.hodge v hv).2.2 (hR.mono₁ v)⟩`. Take `rfl : r = Tgl i s` from `hr`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(h.hodge v hv).1, fun hk => (h.hodge v hv).2.1 (hR.unr v (hg hk) (by`. Simplify using `using not_mem_pD D i hv)), (h.hodge v hv).2.2 (hR.mono v)⟩`.
+Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem hodgeL_of_tripleAtt_n : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i),
     TripleAttN D.naut bkP i s → HodgeL bkP i s := by
@@ -91,23 +91,23 @@ end GlobalTheory.TripleGal.HodgeOfAtt
 namespace GlobalTheory.TripleGal.Jumps
 
 /- English proof (translation)
-Introduce and unpack `D bkP i s ⟨ι, π₁, π, -, hA, hR, -⟩`. Set `S : (D.host.E →+* ℂ) → Multiset ℂ` to `fun τc => (D.naut.infG π τc).map fun z => -z - ((((1 - (D.R.t : ℝ)) / 2 : ℝ)) : ℂ)`. Establish `hint : ∀ τc, ∀ w ∈ S τc, ∃ n : ℤ, w = (n : ℂ)`. Introduce `τc w hw`. Take `⟨z, hz, rfl⟩` from `Multiset.mem_map.1 hw`.
+Assume the hypotheses and unpack their components. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, rfl⟩` from `(((D.naut.ralg_def π).1 hR.ralg) τc).2 z hz`. Take `⟨a, ha⟩` from `odd_rank D.R`. Take `⟨b, hb⟩` from `D.R.t_odd`. Use `⟨-n - a + b, ?_⟩` and prove the remaining obligations. Rewrite using `[ha, hb]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hinj : Function.Injective (fun n : ℤ => (n : ℂ))` using `Int.cast_injective`. Establish `hcast : ∀ τc, ((S τc).map fun z => ⌊z.re⌋).map (fun n : ℤ => (n : ℂ)) = S τc` using `fun τc => map_round_cast _ (hint τc)`. Use `⟨ι, fun τc => (S τc).map fun z => ⌊z.re⌋, ?_, ?_⟩` and prove the remaining obligations.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `v hv τ τc hτ a`. Rewrite using `[hA.jumps v hv τ τc hτ a]`. Use `Multiset.count_map_eq_count' (fun n : ℤ => (n : ℂ)) ((S τc).map fun z => ⌊z.re⌋) hinj a` as an intermediate fact. Rewrite `this` using `[hcast]`. Rewrite using `[← this]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `τc`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [S, Multiset.card_map, D.naut.infG_card]`. Apply `Multiset.map_injective hinj` to reduce the goal to its premises. Rewrite using `[hcast]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `: (((S τc).map fun z => ⌊z.re⌋).map (fun a => (D.R.t : ℤ) - 1 - a)).map (fun n : ℤ => (n : ℂ)) = (((S τc).map fun z => ⌊z.re⌋).map (fun n : ℤ => (n : ℂ))).map (fun w => (D.R.t : ℂ) - 1 - w)`. Simplify using `only [Multiset.map_map, Function.comp_def]`. Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[this, hcast]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [S, hR.anti τc, Multiset.map_map, Function.comp_def]`. Use `Multiset.map_congr rfl fun z _ => ?_` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Introduce `a ha`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : (a : ℂ) ∈ S τc`. Rewrite using `[← hcast τc]`. Conclude with `Multiset.mem_map_of_mem _ ha`. Take `⟨z, hz, hza⟩` from `Multiset.mem_map.1 h1`. Use `hR.window τc z hz a ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hza]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_jumpsAre_goodJ_n : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i),
     TripleAttN D.naut bkP i s → ∃ ι J, JumpsAre bkP i s ι J ∧ GoodJ D J := by
@@ -164,21 +164,21 @@ end GlobalTheory.TripleGal.Jumps
 namespace GlobalTheory.TripleFrobDual
 
 /- English proof (translation)
-Introduce and unpack `D bkP i s ⟨ι, π₁, π, -, hT, hR, -⟩ P hP - - A hA g g' hg hg'`. Take `rfl : g' = GlobalTheory.TwistDet.cConj D.ntw g` from `AlgEquiv.ext fun x => by rw [hg', GlobalTheory.TwistDet.cConj_apply]`. Take `⟨bar, -, hbar⟩` from `GlobalTheory.ConjPoly.exists_conj D`. Take `⟨hcj, hn, -⟩` from `hbar P`. Establish `hl : P ∉ placesOver D.host.E (D.ntw.l i)` using `fun h => hP (D.ntw.twistExcludedPlaces_contains_residueChar i h)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hl' : bar P ∉ placesOver D.host.E (D.ntw.l i)` using `fun h => hl (GlobalTheory.TwistDet.mem_placesOver_conj (GlobalTheory.TwistDet.isConjPl_symm hcj) h)`. Establish `hu` using `hR.unr P (fun k h => hP (D.ntw.placesOver_subset_exceptional i k h)) fun h => hP (D.ntw.primes_subset_exceptional i h)`. Take `⟨hu', he⟩` from `D.naut.csd_unr π P (bar P) hR.csd hcj hu`. Establish `hA'` using `GlobalTheory.TwistDet.isPlaceOver_moveVal_cc D.ntw hcj hA`. Establish `hg2` using `GlobalTheory.TwistDet.isFrob_cConj D.ntw hg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hg2` using `[← hn]`. Establish `e1` using `hT.frob P hl hu A g hA hg`. Establish `e2` using `hT.frob _ hl' hu' _ _ hA' hg2`. Rewrite `e1` using `[D.naut.frobEig_tw _ _ hu, ← Matrix.charpoly_map, Tgl_coe]`. Rewrite `e2` using `[D.naut.frobEig_tw _ _ hu', he, hn, ← Matrix.charpoly_map, Tgl_coe]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hinv : ∀ x, (Tmat i s x).map (rd i ι) * ((Tmat i s x)⁻¹).map (rd i ι) = 1` using `fun x => by`. Rewrite using `[← Matrix.map_mul, ← Tgl_coe, Matrix.mul_nonsing_inv _ (Matrix.isUnit_iff_isUnit_det _ |>.1 (Units.isUnit _)), Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hq : ((normV P : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 (GlobalTheory.ConjPoly.normV_ne_zero P)`. Establish `e3` using `charpoly_smul _ _ (hinv _) _ (((normV P : ℕ) : ℂ) ^ D.R.t) e1`. Establish `e4` using `GlobalTheory.ConjPoly.charpoly_smul_inv _ _ (hinv _) _ ((normV P : ℕ) : ℂ) e2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Polynomial.map_injective _ (rd_injective i ι)` to reduce the goal to its premises. Rewrite using `[Tdual, ← Matrix.transpose_smul, Matrix.charpoly_transpose, ← Matrix.charpoly_map, ← Matrix.charpoly_map, cyclotomicChar_frobenius_eq_normPlace i hl hA hg, cyclotomicChar_frobenius_eq_normPlace i hl' hA' hg2, hn]`. Use `Eq.trans ?_ (e4.trans (Eq.trans ?_ (e3.symm.trans ?_)))` and prove the remaining obligations. Use `congr 1`. Use extensionality with `a b`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[Multiset.map_map, Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h2` using `GlobalTheory.ConjPoly.cpow_sq hq ((1 - (D.R.t : ℝ)) / 2) (1 - D.R.t) (by push_cast; ring)`. Establish `h3 : ((normV P : ℕ) : ℂ) ^ (((1 - (D.R.t : ℝ)) / 2 : ℝ) : ℂ) ≠ 0` using `by simp [hq]`. Rewrite `h2` using `[zpow_sub₀ hq, zpow_one, zpow_natCast, div_eq_iff (pow_ne_zero _ hq)]`. Use `congr 2`. Rewrite using `[mul_inv, inv_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `a * h2`. Use `congr 1`. Use extensionality with `a b`. Simplify using the standard rewrite rules.
+Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem frobDual_of_tripleAtt_n : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i),
     TripleAttN D.naut bkP i s → FrobDual i s := by
@@ -231,27 +231,25 @@ end GlobalTheory.TripleFrobDual
 namespace GlobalTheory.TripleGal.HkFrobProof
 
 /- English proof (translation)
-Introduce and unpack `D bkP i s ⟨ι, π₁, π, -, hA, hR, hS⟩ P hP hsp σ hσ k hk`. Establish `hl : P ∉ placesOver D.host.E (D.ntw.l i)` using `fun h => hP (D.ntw.twistExcludedPlaces_contains_residueChar i h)`. Establish `hu : D.naut.unr (D.naut.locG π P)` using `hR.unr P (fun k h => hP (D.ntw.placesOver_subset_exceptional i k h)) (fun h => hP (D.ntw.primes_subset_exceptional i h))`. Establish `hpl : IsPlaceOver (F` using `D.host.E) (D.nd.plOm.1 P) P := D.nd.plOm.2 P`. Establish `hfr` using `hA.frob P hl hu _ _ hpl hσ`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hfr` using `[D.naut.frobEig_tw _ _ hu, ← Matrix.charpoly_map]`. Establish `he` using `(GlobalTheory.TripleGal.eps0_unram_frob D i P hl _ hpl).2 _ hσ`. Take `⟨h, hh, hrd⟩` from `hS P hP hsp k hk`. Establish `hq0 : (normV P : ℕ) ≠ 0`. Introduce `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `he` using `[h0]`. Conclude with `Units.ne_zero _ (he.trans Nat.cast_zero)`. Establish `hqC : ((normV P : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hq0`. Establish `hne` using `D.naut.frobEig_ne_zero _ hu`. Use `set q : ℂ := ((normV P : ℕ) : ℂ) with hq`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set α := D.naut.frobEig (D.naut.locG π P) with hα`. Establish `hcard : Multiset.card α = D.R.r`. Use `congrArg natDegree hfr` as an intermediate fact. Rewrite `this` using `[Matrix.charpoly_natDegree_eq_dim, natDegree_multiset_prod_X_sub_C_eq_card]`. Simplify using `using this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `heps : rd i ι ((eps0 D.ntw i σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) = q⁻¹`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[hq, ← map_natCast (rd i ι), ← he, ← map_mul, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, map_one]`. Establish `hMA : (Tmat i s σ).map (rd i ι) * ((Tgl i s σ⁻¹ : GL _ _) : Matrix (Fin D.R.r) (Fin D.R.r) (D.ntw.O0 i)).map (rd i ι) = 1`. Rewrite using `[← Tgl_coe, ← Matrix.map_mul, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hne' : (0 : ℂ) ∉ α.map (· * q ^ (((1 - (D.R.t : ℝ)) / 2 : ℝ) : ℂ))`. Introduce `hm`. Take `⟨a, ha, ha0⟩` from `Multiset.mem_map.1 hm`. Break down `mul_eq_zero.1 ha0 with h0 | h0` into its components or cases. Conclude with `hne (h0 ▸ ha)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hqC ((Complex.cpow_eq_zero_iff _ _).1 h0).1`. Establish `key` using `charpolyRev_smul_inv _ _ hMA _ hne' hfr (q⁻¹ ^ D.R.t)`. Establish `hes` using `GlobalTheory.normalised_esymm_eq_coeff D.R.r ((normV P : ℕ) : ℝ) (Nat.cast_pos.2 (Nat.pos_of_ne_zero hq0)) (α.map fun a => a⁻¹ * q ^ (-((D.R.r : ℂ) + D.R.t) / 2)) (by rw [Multiset.card_map, hcard]) k hk`. Rewrite `hes` using `[Complex.ofReal_natCast, ← hq, ← hrd]`. Establish `hmain : (-1 : D.ntw.O0 i) ^ k * ((normV P : ℕ) : D.ntw.O0 i) ^ (k * (k - 1) / 2) * h = (((((eps0 D.ntw i σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) ^ D.R.t) • Tmat i s σ).charpolyRev).coeff k`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `rd_injective i ι` to reduce the goal to its premises. Rewrite using `[coeff_charpolyRev_map, Matrix.map_smul' _ _ _ (map_mul _), map_pow (rd i ι) _ D.R.t, heps, key, map_mul, map_mul, map_pow, map_pow, map_neg, map_one, map_natCast, ← hq, hes, Multiset.map_map, Multiset.map_map]`. Use `congr 2`. Apply `Multiset.map_congr rfl` to reduce the goal to its premises. Introduce `a _`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Function.comp]`. Use `congr 3`. Establish `e1 : q ^ (((D.R.r : ℂ) - 1) / 2) * q ^ (-((D.R.r : ℂ) + D.R.t) / 2) = q⁻¹ ^ D.R.t * (q ^ (((1 - (D.R.t : ℝ)) / 2 : ℝ) : ℂ))⁻¹`. Rewrite using `[← Complex.cpow_add _ _ hqC, ← Complex.cpow_neg, inv_pow, ← Complex.cpow_natCast, ← Complex.cpow_neg, ← Complex.cpow_add _ _ hqC]`. Use `congr 1`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[mul_inv, mul_left_comm, e1]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hmain, hh]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hkFrob_of_tripleAtt_n : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i),
     TripleAttN D.naut bkP i s → HkFrob i s := by
@@ -321,15 +319,15 @@ end GlobalTheory.TripleGal.HkFrobProof
 namespace GlobalTheory.TripleGal
 
 /- English proof (translation)
-Introduce and unpack `D bkP i s ⟨ι, π₁, π, -, hA, hR, -⟩`. Use `⟨ι, fun v hl hS A hAv σ hσ z hz => ?_⟩` and prove the remaining obligations. Establish `hg : ∀ k, v ∉ placesOver D.host.E (D.host.g k)` using `fun k hk => hS ⟨Or.inl (Set.mem_iUnion.2 ⟨k, hk⟩), hl⟩`. Establish `hp : v ∉ D.ntw.pD i` using `fun hk => hS ⟨Or.inr (Finset.mem_coe.2 hk), hl⟩`. Establish `hu` using `hR.unr v hg hp`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hf` using `hA.frob v hl hu A σ hAv hσ`. Establish `ht` using `hA.temp v hl hu`. Rewrite `hf` using `[Tgl_coe]`. Rewrite `hz` using `[hf, D.naut.frobEig_tw _ _ hu, IsRoot.def, eval_multiset_prod, Multiset.prod_eq_zero_iff]`. Simplify using `only [Multiset.mem_map] at hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Take `⟨_, ⟨_, ⟨α, hα, rfl⟩, rfl⟩, h0⟩ : ∃ p, (∃ β, (∃ α, α ∈ D.naut.frobEig (D.naut.locG π v) ∧ α * ((normV v : ℕ) : ℂ) ^ (((1 - (D.R.t : ℝ)) / 2 : ℝ) : ℂ) = β) ∧ Polynomial.X - C β = p) ∧ eval z p = 0` from `hz`. Establish `hpos : 0 < normV v`. Establish `: Finite (𝓞 D.host.E ⧸ v.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ v.ne_bot`. Conclude with `Nat.card_pos`. Rewrite `h0` using `[eval_sub, eval_X, eval_C, sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, norm_mul, Complex.norm_natCast_cpow_of_pos hpos, Complex.ofReal_re]`. Establish `hq` using `GlobalTheory.PurityInvariants.one_lt_norm v`. Establish `h5 : (D.R.r : ℝ) + 5 ≤ D.R.t` using `by exact_mod_cast D.R.rank_add_five_le`. Establish `hq0 : (0 : ℝ) < ((normV v : ℕ) : ℝ)` using `by linarith`. Use `lt_of_le_of_lt (mul_le_mul_of_nonneg_right (ht α hα) (Real.rpow_nonneg hq0.le _)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Real.rpow_add hq0]`. Conclude with `Real.rpow_lt_one_of_one_lt_of_neg hq (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem pure_of_tripleAtt_n : ∀ (D : D7) (bkP : BlochKatoReduction.BK D) (i : D.ntw.Tw) (s : D.ntw.Sig i),
     TripleAttN D.naut bkP i s → ∃ ι, PureN i s ι := by
@@ -363,15 +361,15 @@ end GlobalTheory.TripleGal
 namespace GlobalTheory.PurityInvariants
 
 /- English proof (translation)
-Introduce `D i s ι hP v hl hS`. Establish `hq` using `one_lt_norm v`. Use `⟨fun A hA x hx => ?_, fun A hA x hx => ?_⟩` and prove the remaining obligations. Take `⟨σ, hσ⟩` from `exists_isFrob (F := D.host.E) hA`. Assume the negation of the conclusion as `hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1` using `isRoot_of_eigen (algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))) ι (Tmat i s σ) 1 x hx0 (by rw [one_smul]; exact hx σ hσ.1)`. Establish `h2` using `hP v hl hS A hA σ hσ _ h1`. Rewrite `h2` using `[map_one, norm_one]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨σ, hσ⟩` from `exists_isFrob (F := D.host.E) hA`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Assume the negation of the conclusion as `hx0`. Establish `hdet : IsUnit (Tmat i s σ).det`. Rewrite using `[← Tgl_coe]`. Conclude with `Matrix.isUnits_det_units _`. Establish `he : ((eps0 D.ntw i σ : (D.ntw.O0 i)ˣ) : D.ntw.O0 i) = (normV v : ℕ)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `cycZ_of_isFrob (F := D.host.E) (l := D.ntw.l i) hl hA hσ`. Use `show algebraMap ℤ_[D.ntw.l i] (D.ntw.O0 i) _ = _`. Rewrite using `[← map_natCast (algebraMap ℤ_[D.ntw.l i] (D.ntw.O0 i))]`. Conclude with `congrArg _ h`. Establish `h0` using `eigen_of_dual (algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))) (Tmat i s σ) hdet _ x (hx σ hσ.1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `isRoot_of_eigen (algebraMap (D.ntw.O0 i) (FractionRing (D.ntw.O0 i))) ι _ _ x hx0 h0`. Rewrite `h1` using `[Matrix.charpoly_transpose]`. Establish `h2` using `hP v hl hS A hA σ hσ _ h1`. Rewrite `h2` using `[he, map_natCast, map_natCast, Complex.norm_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem noInv_of_pure_n : ∀ (D : D7) (i : D.ntw.Tw) (s : D.ntw.Sig i) (ι : FractionRing (D.ntw.O0 i) →+* ℂ), PureN i s ι → ∀ v, v ∉ placesOver D.host.E (D.ntw.l i) → v ∉ Spl (X := D.ntw) i → NoInv i (Tmat i s) v ∧ NoInv i (Tdual i s) v := by
   intro D i s ι hP v hl hS

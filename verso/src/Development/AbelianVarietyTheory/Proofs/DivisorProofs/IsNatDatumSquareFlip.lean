@@ -20,7 +20,7 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `x hx` and use `h x ⟨hx.1, hx.2.trans (by rw [Units.val_pow_eq_pow_val, Units.val_pow_eq_pow_val, map_pow, map_pow] exact pow_le_pow_right_of_le_one' hϖ.mem he)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem condLE_mono {ϖ : kˣ} (hϖ : IsUnif ϖ) {e e' : ℕ} (he : e ≤ e') {χ : kˣ →* ℂˣ} (h : CondLE ϖ e χ) : CondLE ϖ e' χ :=
   fun x hx => h x ⟨hx.1, hx.2.trans (by
@@ -28,7 +28,7 @@ theorem condLE_mono {ϖ : kˣ} (hϖ : IsUnif ϖ) {e e' : ℕ} (he : e ≤ e') {�
     exact pow_le_pow_right_of_le_one' hϖ.mem he)⟩
 
 /- English proof (translation)
-Use `(GlobalTheory.SplitFlip.FourierDepth.fourier_exchange k A C ψ⁻¹ ϖ e' Pᶜ h.unif h.inv.cond).2 _ ?_` and prove the remaining obligations. Rewrite using `[← latA_blockLat]`. Conclude with `GlobalTheory.FrameDepth.hasDepth_phiA k A A' C μ (hμ := hμ) σ _ ϖ e' _ _ h.unif (h.one_le.trans he) (condLE_mono h.unif he h.condν) ((GlobalTheory.SplitFlip.FourierDepth.fourier_exchange k A' C ψ ϖ e' P h.unif h.cond).1 _ hΦ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNatDatum_squareFlip [MeasurableSpace k] [BorelSpace k] {A A' C : Type} [Fintype A] [DecidableEq A] [Fintype A']
     [DecidableEq A'] [Fintype C] [DecidableEq C] (μ : Measure (GL A' k)) [hμ : μ.IsHaarMeasure] (σ : A ⊕ A' ≃ C)
@@ -44,7 +44,7 @@ end Local
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}
 
 /- English proof (translation)
-Establish `h1` using `GivenAdm.givenLevel_open hL hw ((i : ℕ), (j : ℕ))`. Establish `h2` using `isOpen_map_invT h1.1 h1.2`. Use `isHaarMeasure_haarVol h2.1 h2.2` as an intermediate fact. Rewrite using `[flipAt, ← Grid.alpha_div_beta]`. Conclude with `isNatDatum_squareFlip _ _ ((Good.isGood_of_notMem hL W hw hb).square i i.2 j j.2) hn _ hΦ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isNatDatum_flipAt (hL : L.Is μ₀) (W : G.Weil) {t : T} (i j : Fin D.R.m) {w : Pl D.host.E} (hw : w ∈ locPl G t)
     (hb : ((D.host.QS * D.host.q * Ideal.absNorm D.host.ccK : ℕ) : 𝓞 D.host.E) ∉ w.asIdeal) {n : ℕ} (hn : depthAt G w ≤ n)
@@ -57,7 +57,7 @@ theorem isNatDatum_flipAt (hL : L.Is μ₀) (W : G.Weil) {t : T} (i j : Fin D.R.
   exact isNatDatum_squareFlip _ _ ((Good.isGood_of_notMem hL W hw hb).square i i.2 j j.2) hn _ hΦ
 
 /- English proof (translation)
-Use `⟨exists_idemSum_locPl hL G t, fun e he n Φ h => exists_hasLocal_small B ρ t i j hL he h, fun e he n Φ h => exists_hasLocal_big B ρ t i j hL he h, fun hb n Φ h => ?_⟩` and prove the remaining obligations. Take `⟨τ, τ', H⟩` from `exists_hasFlip_of_nat B ρ t i j hL (fun w hw => (h w hw).2) fun w hw => isNatDatum_flipAt hL W i j hw (hb w hw) (h w hw).1 (h w hw).2`. Use `⟨τ, τ', H, fun b => ?_⟩` and prove the remaining obligations. Take `⟨a, ha⟩` from `ρ.exists_matched i j b`. Conclude with `⟨a, ha t, a, b, τ, τ', n, Φ, ha t, h, H, rfl, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem local_tensors (hL : L.Is μ₀) {W : G.Weil} (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) :
     (∃ e, IsIdemSum e (locPl G t)) ∧
@@ -81,7 +81,7 @@ theorem local_tensors (hL : L.Is μ₀) {W : G.Weil} (B : Frames G) (ρ : RealMa
   exact ⟨a, ha t, a, b, τ, τ', n, Φ, ha t, h, H, rfl, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(local_tensors hL B ρ t i j).2.2.2 (fun _ hw => Good.badInt_notMem hL hde hc hw) n Φ h`.
+A detailed English derivation is pending.
 -/
 theorem exists_hasFlip (hL : L.Is μ₀) {W : G.Weil} (B : Frames G) (ρ : RealMatch W) (t : T) (i j : Fin D.R.m)
     (hde : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q))

@@ -20,7 +20,7 @@ variable {K : Type*} [Field K] [NumberField K] {n : ℕ}
 local notation "Γ₁" => Reduction.rationalGLOne K n
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[coe_retractOne, Subgroup.coe_mul, coe_retractOne, coe_retractOne, map_mul, mul_comm (detModule K n g), map_mul, mul_inv_rev]`. Simplify using `only [mul_assoc]`. Rewrite using `[← mul_assoc h (centralSection K n (detModule K n g))⁻¹, ← centralSection_inv_mul_comm (detModule K n g) h, mul_assoc (centralSection K n (detModule K n g))⁻¹]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem retractOne_mul (g h : AdelicGLn.AdelicGL K n) :
     retractOne (g * h) = retractOne g * retractOne h := by
@@ -33,35 +33,35 @@ theorem retractOne_mul (g h : AdelicGLn.AdelicGL K n) :
     mul_assoc (centralSection K n (detModule K n g))⁻¹]
 
 /- English proof (translation)
-Use `ext1`. Rewrite using `[coe_retractOne, (mem_normOneGL_iff_detModule).1 x.2, map_one, inv_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem retractOne_coe (x : normOneGL K n) : retractOne (x : AdelicGLn.AdelicGL K n) = x := by
   ext1
   rw [coe_retractOne, (mem_normOneGL_iff_detModule).1 x.2, map_one, inv_one, mul_one]
 
 /- English proof (translation)
-Rewrite using `[retractOne_mul, retractOne_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem retractOne_mul_coe (g : AdelicGLn.AdelicGL K n) (x : normOneGL K n) :
     retractOne (g * (x : AdelicGLn.AdelicGL K n)) = retractOne g * x := by
   rw [retractOne_mul, retractOne_coe]
 
 /- English proof (translation)
-Rewrite using `[retractOne_mul, retractOne_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem retractOne_coe_mul (x : normOneGL K n) (g : AdelicGLn.AdelicGL K n) :
     retractOne ((x : AdelicGLn.AdelicGL K n) * g) = x * retractOne g := by
   rw [retractOne_mul, retractOne_coe]
 
 /- English proof (translation)
-Rewrite using `[retractOne_mul, retract_infEmb]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem retractOne_mul_infEmb (g : AdelicGLn.AdelicGL K n) (a : archGroup K n) :
     retractOne (g * infEmb K n a) = retractOne g * archP K n a := by
   rw [retractOne_mul, retract_infEmb]
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Conclude with `Subtype.ext (Units.ext (Subsingleton.elim _ _))`. Use `ext1`. Rewrite using `[coe_retractOne, detModule_centralSection hn, mul_inv_cancel]`. Both sides reduce to the same expression.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem retractOne_centralSection (s : {r : ℝ // 0 < r}) : retractOne (centralSection K n s) = 1 := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
@@ -73,14 +73,14 @@ theorem retractOne_centralSection (s : {r : ℝ // 0 < r}) : retractOne (central
 def liftOne (F : normOneGL K n → ℂ) (g : AdelicGLn.AdelicGL K n) : ℂ := F (retractOne g)
 
 /- English proof (translation)
-Rewrite using `[liftOne, retractOne_coe]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem liftOne_coe (F : normOneGL K n → ℂ) (x : normOneGL K n) :
     liftOne F (x : AdelicGLn.AdelicGL K n) = F x := by
   rw [liftOne, retractOne_coe]
 
 /- English proof (translation)
-Rewrite using `[liftOne, liftOne, retractOne_mul, retractOne_centralSection, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem liftOne_centralSection_mul (F : normOneGL K n → ℂ) (s : {r : ℝ // 0 < r})
     (g : AdelicGLn.AdelicGL K n) : liftOne F (centralSection K n s * g) = liftOne F g := by
@@ -89,9 +89,9 @@ theorem liftOne_centralSection_mul (F : normOneGL K n → ℂ) (s : {r : ℝ // 
 variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => exact hX x hx`. Consider the case `zero => exact ⟨0, isContRep_zero⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨F, hF⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hG⟩` from `hy`. Conclude with `⟨F + G, hF.add hG⟩`. Consider the case `smul c x _ hx`. Take `⟨F, hF⟩` from `hx`. Conclude with `⟨c • F, hF.smul c⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isContRep_of_mem_span {X : Set (Lp ℂ 2 (quotientMeasure Γ₁ μ))}
     (hX : ∀ x ∈ X, ∃ F, IsContRep μ x F) {w : Lp ℂ 2 (quotientMeasure Γ₁ μ)}
@@ -108,13 +108,11 @@ theorem exists_isContRep_of_mem_span {X : Set (Lp ℂ 2 (quotientMeasure Γ₁ �
     exact ⟨c • F, hF.smul c⟩
 
 /- English proof (translation)
-Use `choose R hR using fun w : W => hW w w.2`. Set `T : W →ₗ[ℂ] (AdelicGLn.AdelicGL K n → ℂ)` to `{ toFun := fun w => liftOne (R w) map_add' := fun w₁ w₂ => by`. Establish `e : R (w₁ + w₂) = R w₁ + R w₂` using `(hR (w₁ + w₂)).unique (((hR w₁).add (hR w₂)).of_eq (Submodule.coe_add w₁ w₂).symm)`. Use function extensionality and compare the values at `g`. Simplify using `only [liftOne, e, Pi.add_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use the proof step `map_smul' := fun c w => by`. Establish `e : R (c • w) = c • R w` using `(hR (c • w)).unique (((hR w).smul c).of_eq (Submodule.coe_smul c w).symm)`. Use function extensionality and compare the values at `g`. Simplify using `only [liftOne, e, Pi.smul_apply, RingHom.id_apply] }`. Establish `hle : Submodule.span ℂ S ≤ LinearMap.range T`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Submodule.span_le]`. Introduce `f hf`. Take `⟨w, hw, F, hF, rfl⟩` from `hS f hf`. Use `⟨⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Use `show liftOne (R ⟨w, hw⟩) = liftOne F`.
-
-Rewrite using `[(hR ⟨w, hw⟩).unique hF]`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_span_liftOne (W : Submodule ℂ (Lp ℂ 2 (quotientMeasure Γ₁ μ)))
     [FiniteDimensional ℂ W] (hW : ∀ w ∈ W, ∃ F, IsContRep μ w F)
@@ -147,7 +145,7 @@ theorem finiteDimensional_span_liftOne (W : Submodule ℂ (Lp ℂ 2 (quotientMea
 variable (ν : Measure (archGroup K n)) [ν.IsHaarMeasure]
 
 /- English proof (translation)
-The claim follows from `congrFun (hrep.unique ((isContRep_integrated_archRepT μ ν hrep hb hκt.continuous hκt.2).of_eq (congrArg (toLp μ) hκv))) y`.
+A detailed English derivation is pending.
 -/
 theorem eq_integral_of_integrated_eq {v : CuspL2 μ} {Φ : normOneGL K n → ℂ}
     (hrep : IsContRep μ (toLp μ v) Φ) {C : ℝ} (hb : ∀ y, ‖Φ y‖ ≤ C) {κ : archGroup K n → ℂ}
@@ -159,7 +157,7 @@ theorem eq_integral_of_integrated_eq {v : CuspL2 μ} {Φ : normOneGL K n → ℂ
 omit [μ.IsHaarMeasure] in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Use `(hΦκ (y * archP K n x)).trans (integral_congr_ae (Eventually.of_forall fun a => ?_))` and prove the remaining obligations. Use `show κ a * Φ (y * archP K n x * archP K n a) = Φ (y * archP K n (x * a)) * κ a`. Rewrite using `[map_mul, mul_assoc y, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem slice_eq_integral {Φ : normOneGL K n → ℂ} {κ : archGroup K n → ℂ}
     (hΦκ : ∀ y, Φ y = ∫ a, κ a * Φ (y * archP K n a) ∂ν) (y : normOneGL K n) :
@@ -173,7 +171,7 @@ theorem slice_eq_integral {Φ : normOneGL K n → ℂ} {κ : archGroup K n → �
 omit [μ.IsHaarMeasure] in
 
 /- English proof (translation)
-Establish `hΨ : Continuous (fun x : archGroup K n => Φ (y * archP K n x))` using `hΦc.comp (continuous_const.mul continuous_archP)`. Rewrite using `[slice_eq_integral ν hΦκ y]`. Conclude with `(isExpLieAlgebra K n).isSmoothFun_integral_mul ν hΨ hκt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothFun_slice {Φ : normOneGL K n → ℂ} (hΦc : Continuous Φ) {κ : archGroup K n → ℂ}
     (hκt : (isExpLieAlgebra K n).IsTestFunction κ)
@@ -185,9 +183,9 @@ theorem isSmoothFun_slice {Φ : normOneGL K n → ℂ} (hΦc : Continuous Φ) {�
   exact (isExpLieAlgebra K n).isSmoothFun_integral_mul ν hΨ hκt
 
 /- English proof (translation)
-Take `⟨γ, hγ, hvec, hfun⟩` from `(isExpLieAlgebra K n).exists_uAction_integrated ν (archRepT μ) u hκt`. Use `⟨γ, hγ, ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `e : (⟨v, hs⟩ : (isExpLieAlgebra K n).smoothVectors (archRepT μ)) = ⟨(archRepT μ).integrated ν κ v, (isExpLieAlgebra K n).isSmoothVector_integrated (archRepT μ) ν hκt v⟩` using `Subtype.ext hκv.symm`. Conclude with `(congrArg (fun w => ((isExpLieAlgebra K n).uAction (archRepT μ) u w : CuspL2 μ)) e).trans (hvec v)`. Establish `hΨ : Continuous (fun x : archGroup K n => Φ (y * archP K n x))` using `hΦc.comp (continuous_const.mul continuous_archP)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (⟨fun x => Φ (y * archP K n x), isSmoothFun_slice ν hΦc hκt hΦκ y⟩ : (isExpLieAlgebra K n).smoothFuns (F` using `ℂ)) = ⟨fun g => ∫ a, (fun x : archGroup K n => Φ (y * archP K n x)) (g * a) * κ a ∂ν, (isExpLieAlgebra K n).isSmoothFun_integral_mul ν hΨ hκt⟩ := Subtype.ext (slice_eq_integral ν hΦκ y)`. Conclude with `(congrArg (fun f => ((isExpLieAlgebra K n).rightUAction (F := ℂ) u f : archGroup K n → ℂ)) e).trans (hfun _ hΨ)`.
+A detailed English derivation is pending.
 -/
 theorem exists_uAction_slice {v : CuspL2 μ} (hs : (isExpLieAlgebra K n).IsSmoothVector (archRepT μ) v)
     {Φ : normOneGL K n → ℂ} (hΦc : Continuous Φ) {κ : archGroup K n → ℂ}
@@ -228,45 +226,39 @@ def IsZKFinite (v : CuspL2 μ) : Prop :=
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨hs, hK, hZ⟩` from `hv`. Establish `hνH : (Measure.haar : Measure (archGroup K n)).IsHaarMeasure` using `inferInstance`. Take `⟨κ, U, Φ, C, hκt, hκv, hU, hrep, hb, hΦU, hcusp⟩` from `exists_contRep_of_zkFinite μ Measure.haar v hs hK hZ`. Establish `hΦκ` using `eq_integral_of_integrated_eq μ Measure.haar hrep hb hκt hκv`. Establish `hslice : ∀ g, archSlice (liftOne Φ) g = fun x => Φ (retractOne g * archP K n x)` using `fun g => funext fun x => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[archSlice_apply, liftOne, retractOne_mul_infEmb]`. Establish `hsm : IsArchSmooth (liftOne Φ)` using `fun g => by`. Rewrite using `[hslice g]`. Conclude with `isSmoothFun_slice Measure.haar hrep.1 hκt hΦκ _`. Establish `hfin : ∀ g, ∀ᶠ y in 𝓝 (1 : AdelicGLn.FiniteAdelicGL K n), liftOne Φ (g * finEmb K n y) = liftOne Φ g`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Use `filter_upwards [(finOpenSubgroup U hU).mem_nhds_one] with y hy`. Take `⟨u, hu, rfl⟩` from `Subgroup.mem_map.1 hy`. Use `show Φ (retractOne (g * finEmb K n (u : AdelicGLn.FiniteAdelicGL K n))) = Φ (retractOne g)`. Rewrite using `[retractOne_mul_finEmb g u.2]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hΦU u hu _`. Establish `hli : IsLeftInvariant (liftOne Φ)`. Introduce `γ g`. Establish `hγ1 : AdelicGLn.diagonal K n γ ∈ normOneGL K n` using `rationalGL_le_normOneGL ⟨γ, rfl⟩`. Establish `hγΓ : (⟨AdelicGLn.diagonal K n γ, hγ1⟩ : normOneGL K n) ∈ Γ₁` using `⟨γ, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(congrArg Φ (retractOne_coe_mul ⟨_, hγ1⟩ g)).trans (hrep.2.1 _ hγΓ _)`. Establish `hKf : IsKFinite (liftOne Φ)`. Unfold `IsKFinite`. Take `⟨W, hWdef⟩ : ∃ W : Submodule ℂ (Lp ℂ 2 (quotientMeasure Γ₁ μ)), W = Submodule.span ℂ (Set.range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => toLp μ (cuspRepT μ ⟨k, Reduction.maxCompact_le_normOneGL k.2⟩ v))` from `⟨_, rfl⟩`. Establish `hWfin : FiniteDimensional ℂ W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : W = (Submodule.span ℂ (Set.range fun k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)) => cuspRepT μ ⟨k, Reduction.maxCompact_le_normOneGL k.2⟩ v)).map (toLp μ : CuspL2 μ →ₗ[ℂ] Lp ℂ 2 (quotientMeasure Γ₁ μ))`. Rewrite using `[hWdef, Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `infer_instance`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `hgen : ∀ k : (Reduction.maxCompact : Subgroup (AdelicGLn.AdelicGL K n)), IsContRep μ (toLp μ (cuspRepT μ ⟨k, Reduction.maxCompact_le_normOneGL k.2⟩ v)) (fun y => Φ (y * ⟨k, Reduction.maxCompact_le_normOneGL k.2⟩))` using `fun k => (hrep.translate _).of_eq (toLp_cuspRepT μ _ v).symm`. Use `finiteDimensional_span_liftOne μ W ?_ _ ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite `hw` using `[hWdef]`. Use `exists_isContRep_of_mem_span μ ?_ hw` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨_, hgen k⟩`. Introduce and unpack `_ ⟨k, rfl⟩`. Use `⟨_, hWdef ▸ Submodule.subset_span ⟨k, rfl⟩, _, hgen k, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show Φ (retractOne (g * (k : AdelicGLn.AdelicGL K n))) = Φ (retractOne g * _)`. Rewrite using `[← retractOne_mul_coe g ⟨k, Reduction.maxCompact_le_normOneGL k.2⟩]`. Establish `hder : ∀ u : UEnv K n, ∃ F : normOneGL K n → ℂ, IsContRep μ (toLp μ ((isExpLieAlgebra K n).uAction (archRepT μ) u ⟨v, hs⟩ : CuspL2 μ)) F ∧ (uAction u ⟨liftOne Φ, hsm⟩ : AdelicGLn.AdelicGL K n → ℂ) = liftOne F`. Introduce `u`. Take `⟨γ, hγ, hvec, hfun⟩` from `exists_uAction_slice μ Measure.haar hs hrep.1 hκt hκv hΦκ u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun y => ∫ a, γ a * Φ (y * archP K n a) ∂Measure.haar, (isContRep_integrated_archRepT μ Measure.haar hrep hb hγ.continuous hγ.2).of_eq (congrArg (toLp μ) hvec).symm, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Rewrite using `[coe_uAction]`. Establish `e : sliceL g ⟨liftOne Φ, hsm⟩ = ⟨fun x => Φ (retractOne g * archP K n x), isSmoothFun_slice Measure.haar hrep.1 hκt hΦκ _⟩` using `Subtype.ext (hslice g)`. Use `show ((isExpLieAlgebra K n).rightUAction u (sliceL g ⟨liftOne Φ, hsm⟩) : archGroup K n → ℂ) 1 = _`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, hfun (retractOne g)]`. Use `show ∫ a, Φ (retractOne g * archP K n (1 * a)) * γ a ∂Measure.haar = ∫ a, γ a * Φ (retractOne g * archP K n a) ∂Measure.haar`. Use `integral_congr_ae (Eventually.of_forall fun a => ?_)` and prove the remaining obligations. Use `show Φ (retractOne g * archP K n (1 * a)) * γ a = γ a * Φ (retractOne g * archP K n a)`. Rewrite using `[one_mul, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZf : IsZFinite (⟨liftOne Φ, hsm⟩ : archSmooth K n)`. Unfold `IsZFinite`. Use `set X := (fun z => uAction z (⟨liftOne Φ, hsm⟩ : archSmooth K n)) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n)) with hX`. Take `⟨W, hWdef⟩ : ∃ W : Submodule ℂ (Lp ℂ 2 (quotientMeasure Γ₁ μ)), W = Submodule.span ℂ ((fun z => toLp μ ((isExpLieAlgebra K n).uAction (archRepT μ) z ⟨v, hs⟩ : CuspL2 μ)) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n)))` from `⟨_, rfl⟩`. Establish `hWfin : FiniteDimensional ℂ W`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Establish `e : W = (Submodule.span ℂ ((fun z => (isExpLieAlgebra K n).uAction (archRepT μ) z ⟨v, hs⟩) '' ((isExpLieAlgebra K n).centerU : Set (UEnv K n)))).map ((toLp μ : CuspL2 μ →ₗ[ℂ] Lp ℂ 2 (quotientMeasure Γ₁ μ)).comp ((isExpLieAlgebra K n).smoothVectors (archRepT μ)).subtype)`. Rewrite using `[hWdef, Submodule.map_span, Set.image_image]`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `infer_instance`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hT : Function.Injective (archSmooth K n).subtype` using `Subtype.val_injective`. Establish `hfd : FiniteDimensional ℂ (Submodule.span ℂ ((archSmooth K n).subtype '' X))`. Use `finiteDimensional_span_liftOne μ W ?_ _ ?_` and prove the remaining obligations. Introduce `w hw`. Rewrite `hw` using `[hWdef]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `exists_isContRep_of_mem_span μ ?_ hw` and prove the remaining obligations. Introduce and unpack `_ ⟨z, -, rfl⟩`. Take `⟨F, hF, -⟩` from `hder z`. Conclude with `⟨F, hF⟩`. Introduce and unpack `_ ⟨_, ⟨z, hz, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨F, hF, hFe⟩` from `hder z`. Conclude with `⟨_, hWdef ▸ Submodule.subset_span ⟨z, hz, rfl⟩, F, hF, hFe⟩`. Rewrite `hfd` using `[← Submodule.map_span]`. Conclude with `LinearEquiv.finiteDimensional (Submodule.equivMapOfInjective (archSmooth K n).subtype hT (Submodule.span ℂ X)).symm`. Establish `hmg : HasModerateGrowth (liftOne Φ)` using `⟨C, 0, fun g => by`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_zero, mul_one]`. Conclude with `hb _⟩`. Establish `hcu : IsCuspidal (liftOne Φ)`. Introduce `r hr hrn g`. Rewrite using `[← hcusp r hr hrn (retractOne g)]`.
-
-Unfold `constantTerm`. Use `setIntegral_congr_fun (measurableSet_unipFundamentalDomain (K := K) (n := n) (r := r)) fun X _ => ?_` and prove the remaining obligations. Use `show Φ (retractOne ((unipOne K n r X : AdelicGLn.AdelicGL K n) * g)) = _`. Rewrite using `[retractOne_coe_mul]`. Establish `haf : IsAutomorphicForm (liftOne Φ)` using `{ isLeftInvariant := hli isSmooth := ⟨hsm, hfin⟩ isKFinite := hKf isZFinite := hZf hasModerateGrowth := hmg }`.
-
-Use `⟨⟨liftOne Φ, haf, hcu⟩, ?_, fun s g => liftOne_centralSection_mul Φ s g⟩` and prove the remaining obligations. Use `Lp.ext ((coeFn_cuspToL2 μ ⟨liftOne Φ, haf, hcu⟩).trans (EventuallyEq.trans ?_ hrep.ae_eq_quotFun.symm))` and prove the remaining obligations. Use `Eventually.of_forall fun q => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `mk_surjective Γ₁ q`. Rewrite using `[cuspQuot_mk, quotFun_mk]`.
-
-Conclude with `liftOne_coe Φ y`.
+A detailed English derivation is pending.
 -/
 theorem exists_cuspForm_of_isZKFinite (v : CuspL2 μ) (hv : IsZKFinite μ v) :
     ∃ φ : cuspForms K n,
@@ -411,7 +403,7 @@ theorem exists_cuspForm_of_isZKFinite (v : CuspL2 μ) (hv : IsZKFinite μ v) :
   exact liftOne_coe Φ y
 
 /- English proof (translation)
-Take `⟨φ, hφ, hz⟩` from `exists_cuspForm_of_isZKFinite μ v hv`. Conclude with `⟨φ, Subtype.ext hφ, hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_cuspToL2_eq_of_isZKFinite (v : cuspidalL2 μ) (hv : IsZKFinite μ v) :
     ∃ φ : cuspForms K n, cuspToL2 μ φ = v ∧
@@ -421,7 +413,7 @@ theorem exists_cuspToL2_eq_of_isZKFinite (v : cuspidalL2 μ) (hv : IsZKFinite μ
   exact ⟨φ, Subtype.ext hφ, hz⟩
 
 /- English proof (translation)
-Introduce `v hv`. Take `⟨φ, hφ, -⟩` from `exists_cuspForm_of_isZKFinite μ v hv`. Conclude with `⟨φ, Set.mem_univ _, hφ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isZKFinite_subset_range_cuspToL2 :
     {v : CuspL2 μ | IsZKFinite μ v} ⊆
@@ -432,7 +424,7 @@ theorem isZKFinite_subset_range_cuspToL2 :
   exact ⟨φ, Set.mem_univ _, hφ⟩
 
 /- English proof (translation)
-The claim follows from `exists_cuspForm_of_isZKFinite μ v hv`.
+A detailed English derivation is pending.
 -/
 theorem exists_cuspForm_of_mem_summand (V : Submodule ℂ (CuspL2 μ)) [CompleteSpace V]
     (hV : (cuspRepT μ).IsInvariant V) (_hirr : ((cuspRepT μ).restrict V hV).IsIrreducible)

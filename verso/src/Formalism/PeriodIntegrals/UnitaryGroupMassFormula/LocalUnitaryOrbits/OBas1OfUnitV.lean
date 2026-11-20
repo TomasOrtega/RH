@@ -29,7 +29,7 @@ def ResAlg : Prop :=
           IsRes σ v ϖ (RingEquiv.prodComm (R := k) (S := k)).toRingHom π))
 
 /- English proof (translation)
-Introduce `hstd hL hsd hun`. Take `⟨e, he, -, he1, hsp⟩` from `Orb.orthoGen σ J ψ v Λ hU hstd hL hsd hun n (Fin 0) (fun i => i.elim0) (by simp) (fun i => i.elim0) ⟨1, (Orb.oSub v).1, by simp [Matrix.det_isEmpty]⟩`. Use `⟨e, fun x => ⟨fun hx => hsp x ⟨hx, fun i => i.elim0⟩, ?_⟩, he1⟩` and prove the remaining obligations. Introduce and unpack `⟨c, hc, rfl⟩`. Conclude with `Submodule.sum_mem _ fun i _ => Orb.oSmul v Λ hL (c i) (hc i) (e i) (he i).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem oBas1_of_unitV (hU : Orb.UnitV σ J ψ v Λ) : OBas1 σ J ψ v Λ := by
   intro hstd hL hsd hun
@@ -40,11 +40,9 @@ theorem oBas1_of_unitV (hU : Orb.UnitV σ J ψ v Λ) : OBas1 σ J ψ v Λ := by
   exact Submodule.sum_mem _ fun i _ => Orb.oSmul v Λ hL (c i) (hc i) (e i) (he i).1
 
 /- English proof (translation)
-Use `set Ts : Matrix (Fin a) (Fin a) (OR (E := E) v) := fun i j => ⟨T i j, hT i j⟩`. Establish `hdet : ((Ts.det : OR (E` using `E) v) : Fv F v ⊗[F] E) = T.det := by`. Rewrite using `[show ((Ts.det : OR (E := E) v) : Fv F v ⊗[F] E) = (OR (E := E) v).subtype Ts.det from rfl, RingHom.map_det]`. Both sides reduce to the same expression. Establish `hm : Ts.det * ⟨w, hw⟩ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subring.coe_mul, hdet]`. Conclude with `hd`. Establish `hu : IsUnit Ts.det` using `⟨⟨Ts.det, ⟨w, hw⟩, hm, by rw [mul_comm]; exact hm⟩, rfl⟩`. Use `hu.map π` as an intermediate fact.
-
-Rewrite `this` using `[RingHom.map_det]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_red {K : Type} [CommRing K] (π : OR (E := E) v →+* K) {a : ℕ}
     (T : Matrix (Fin a) (Fin a) (Fv F v ⊗[F] E)) (hT : ∀ i j, T i j ∈ OR (E := E) v)
@@ -65,17 +63,15 @@ theorem det_red {K : Type} [CommRing K] (π : OR (E := E) v →+* K) {a : ℕ}
   exact this
 
 /- English proof (translation)
-Introduce `hG ϖ hϖ`. Establish `hstd` using `hG.1`. Establish `hcm` using `hstd.1`. Establish `hJ : ∀ i j, σ (J j i) = J i j` using `hstd.2.1.1`. Take `⟨e, he, he1⟩` from `oBas1_of_unitV σ J ψ v Λ hU hstd hG.2.1 hG.2.2.1 hG.2.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hT` using `gY_mem σ J ψ v Λ hG`. Take `⟨w, hw, -, hd⟩` from `hG.2.2.2.2.2.2`. Establish `hconj : ∀ i j, gramR (Fv F v) σ J Y i j = sigR (Fv F v) σ (gramR (Fv F v) σ J Y j i)` using `fun i j => (Orb.hR_conj σ J v hcm hJ (Y j) (Y i)).symm`. Take `⟨k, _, _, hk, h⟩` from `hR hstd hG.2.2.2.1 ϖ hϖ`. Use `⟨k, inferInstance, inferInstance, hk, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Break down `h with ⟨hη, K, _, _, σ', π, hσ, h2, hne, hπ⟩ | ⟨hη, π, hπ⟩` into its components or cases. Use `Or.inl ⟨hη, K, inferInstance, inferInstance, σ', 1, fun i j => π ⟨_, hT i j⟩, hσ, h2, hne, ?_, by simp, ?_, det_red v π _ hT hw hd, card_cls σ J v Λ hcm hJ hG.2.2.1 he he1 (σ' : K →+* K) π hπ _ hT⟩` and prove the remaining obligations. Introduce `i j`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Introduce `i j`. Conclude with `(hπ.2.2 _ _ (hconj i j)).symm`. Use `Or.inr ⟨hη, 1, fun i j => π ⟨_, hT i j⟩, ?_, by simp, ?_, det_red v π _ hT hw hd, card_cls σ J v Λ hcm hJ hG.2.2.1 he he1 (RingEquiv.prodComm (R := k) (S := k)).toRingHom π hπ _ hT⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i j`. Distinguish the cases in `h : i = j`. Apply the tactic sequence `subst h; ext <;> simp`. Apply the tactic sequence `ext <;> simp [h, Ne.symm h]`. Introduce `i j`.
-
-Conclude with `(hπ.2.2 _ _ (hconj i j)).symm`.
+Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem redU_of (hU : Orb.UnitV σ J ψ v Λ) (hR : ResAlg σ J ψ v) (a : ℕ) (Y : TupV (E := E) v n a) :
     RedU σ J ψ v Λ a Y := by

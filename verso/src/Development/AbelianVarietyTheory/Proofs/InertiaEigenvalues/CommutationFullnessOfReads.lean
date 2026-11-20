@@ -24,9 +24,9 @@ def hLr (j : ℕ) (hL : ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j))
   ((hL k P).restrictScalars S.Ks).restrict (p := (S.A j).WK) (q := (S.A j).WK) fun x hx => hs k P x hx
 
 /- English proof (translation)
-Establish `hcomm : hLr S j hL hs k P * rhoKG S j hst (S.eG.symm g) = rhoKG S j hst (S.eG.symm g) * hLr S j hL hs k P`. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Conclude with `hc (S.eG.symm g) (show ↥(S.A j).WK from x).1`. Establish `h2` using `LinearMap.congr_fun (congrArg (Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j)) hcomm) z`. Rewrite `h2` using `[map_mul, map_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j) (hLr S j hL hs k P) ((readLL0 S i b (chiL S j hχ (S.eG.symm g)))⁻¹ • Module.End.baseChangeHom S.Ks (KB S i b) (FmK S j) (rhoKG S j hst (S.eG.symm g)) z) = (readLL0 S i b (chiL S j hχ (S.eG.symm g)))⁻¹ • Module.End.baseChangeHom S …`. Rewrite using `[map_smul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem hkFR_act (i : D.ntw.Tw) (j : ℕ) (b : Bool) (hL : ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j))
     (hs : HeckeStabR S j hL) (k : ℕ) (P : PlE D.host) (hst : RhoStab S j) (hχ : ChiInLL0 S j)
@@ -65,13 +65,13 @@ variable {LL Ks Ks' WL WL' G G' : Type} [Field LL] [NumberField LL] [Field Ks] [
   {A : Arith.FormsL LL Ks WL W G} {A' : Arith.FormsL LL Ks' WL' W' G'}
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul LL c w, map_smul, ← Y.eK_LL, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem iso_smul (Y : NX.FormsIso A A') (c : Ks) (w : WL) : Y.e (c • w) = Y.eK c • Y.e w := by
   rw [← algebraMap_smul LL c w, map_smul, ← Y.eK_LL, algebraMap_smul]
 
 /- English proof (translation)
-Apply `Y.e.injective` to reduce the goal to its premises. Rewrite using `[iso_smul]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem iso_symm_smul (Y : NX.FormsIso A A') (c : Ks') (y : WL') : Y.e.symm (c • y) = Y.eK.symm c • Y.e.symm y := by
   apply Y.e.injective
@@ -79,11 +79,11 @@ theorem iso_symm_smul (Y : NX.FormsIso A A') (c : Ks') (y : WL') : Y.e.symm (c �
   simp
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Conclude with `Submodule.span_le.2 fun x hx => by obtain ⟨h, -⟩ := hx; exact h`. Introduce `x hx`. Establish `h1 : Y.e x ∈ Submodule.span Ks' (A'.MK : Set WL')` using `h ▸ (Y.wk x).1 hx`. Establish `h2 : ∀ y ∈ Submodule.span Ks' (A'.MK : Set WL'), Y.e.symm y ∈ Submodule.span Ks (A.MK : Set WL)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy => exact Submodule.subset_span ((Y.mkK _).2 (by simpa using hy))`. Consider the case `zero => simp`. Consider the case `add a b _ _ ha hb => rw [map_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ ha hb`. Consider the case `smul c a _ ha => rw [iso_symm_smul]`. Conclude with `Submodule.smul_mem _ _ ha`. Simplify using `using h2 _ h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem iso_span (Y : NX.FormsIso A A') (h : Submodule.span Ks' (A'.MK : Set WL') = A'.WK) :
     Submodule.span Ks (A.MK : Set WL) = A.WK := by
@@ -115,18 +115,18 @@ def rdK (a : KB S i b) : FractionRing (D.ntw.O i) := a
 def oneT (x : FmK S j) : Fm S i j b := ((1 : KB S i b) ⊗ₜ[S.Ks] x : KB S i b ⊗[S.Ks] FmK S j)
 
 /- English proof (translation)
-The claim follows from `TensorProduct.tmul_zero _ _`.
+A detailed English derivation is pending.
 -/
 theorem oneT_zero : oneT S i j b 0 = 0 := TensorProduct.tmul_zero _ _
 
 /- English proof (translation)
-The claim follows from `TensorProduct.tmul_add _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem oneT_add (x y : FmK S j) : oneT S i j b (x + y) = oneT S i j b x + oneT S i j b y :=
   TensorProduct.tmul_add _ _ _
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 : KB S i b) ⊗ₜ[S.Ks] (c • x) = (ιK S i b c : KB S i b) • ((1 : KB S i b) ⊗ₜ[S.Ks] x)`. Rewrite using `[← TensorProduct.smul_tmul, TensorProduct.smul_tmul']`. Use `congr 1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem oneT_smul (c : S.Ks) (x : FmK S j) :
     oneT S i j b (c • x) = (rdF S i b c) • oneT S i j b x := by
@@ -135,23 +135,21 @@ theorem oneT_smul (c : S.Ks) (x : FmK S j) :
   congr 1
 
 /- English proof (translation)
-Set `B` to `Submodule.span (FractionRing (D.ntw.O i)) (Bsup S i j b : Set (Fm S i j b))`. Establish `aux : ∀ y ∈ Submodule.span S.Ks ((S.A j).MK : Set (S.WL j)), ∃ h : y ∈ (S.A j).WK, oneT S i j b (mkF S j y h) ∈ B`. Introduce `y hy`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨h, h'⟩` from `id hy`. Conclude with `⟨h, Submodule.subset_span (Submodule.subset_span ⟨mkF S j y h, hy, rfl⟩)⟩`. Consider the case `zero`. Use `⟨(S.A j).WK.zero_mem, ?_⟩` and prove the remaining obligations. Establish `: oneT S i j b (mkF S j 0 (S.A j).WK.zero_mem) = 0` using `oneT_zero S i j b`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy`. Take `⟨h1, h2⟩` from `hx`. Take `⟨h3, h4⟩` from `hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(S.A j).WK.add_mem h1 h3, ?_⟩` and prove the remaining obligations. Establish `: oneT S i j b (mkF S j (x + y) ((S.A j).WK.add_mem h1 h3)) = oneT S i j b (mkF S j x h1) + oneT S i j b (mkF S j y h3)` using `oneT_add S i j b (mkF S j x h1) (mkF S j y h3)`. Rewrite using `[this]`. Conclude with `Submodule.add_mem _ h2 h4`. Consider the case `smul c x _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `hx`. Use `⟨(S.A j).WK.smul_mem c h1, ?_⟩` and prove the remaining obligations. Establish `: oneT S i j b (mkF S j (c • x) ((S.A j).WK.smul_mem c h1)) = (rdF S i b c) • oneT S i j b (mkF S j x h1)` using `oneT_smul S i j b c (mkF S j x h1)`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hall : ∀ (a : KB S i b) (x : FmK S j), ((a ⊗ₜ[S.Ks] x : KB S i b ⊗[S.Ks] FmK S j) : Fm S i j b) ∈ B`. Introduce `a x`. Establish `hx : (show ↥(S.A j).WK from x).1 ∈ Submodule.span S.Ks ((S.A j).MK : Set (S.WL j))`. Rewrite using `[hS]`. Conclude with `(show ↥(S.A j).WK from x).2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h, h'⟩` from `aux _ hx`. Establish `e : ((a ⊗ₜ[S.Ks] x : KB S i b ⊗[S.Ks] FmK S j) : Fm S i j b) = (rdK S i b a) • oneT S i j b x`. Express the relevant statement in the definitionally equal form `a ⊗ₜ[S.Ks] x = a • ((1 : KB S i b) ⊗ₜ[S.Ks] x)`. Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately.
 
-Conclude with `Submodule.smul_mem _ _ h'`. Use `eq_top_iff.2 fun t _ => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `t ∈ B`. Proceed by induction on `(show KB S i b ⊗[S.Ks] FmK S j from t) using TensorProduct.induction_on with`. Consider the case `zero => exact Submodule.zero_mem _`.
-
-Consider the case `tmul a x => exact hall a x`. Consider the case `add x y hx hy => exact Submodule.add_mem _ hx hy`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Bsup_span (hS : Submodule.span S.Ks ((S.A j).MK : Set (S.WL j)) = (S.A j).WK) :
     Submodule.span (FractionRing (D.ntw.O i)) (Bsup S i j b : Set (Fm S i j b)) = ⊤ := by

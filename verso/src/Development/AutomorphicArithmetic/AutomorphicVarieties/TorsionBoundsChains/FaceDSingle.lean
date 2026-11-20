@@ -18,7 +18,7 @@ noncomputable def perm (G X : Type) [Group G] [MulAction G X] : Representation �
   map_mul' g h := by ext x y; simp [mul_smul]
 
 /- English proof (translation)
-Simplify using `[perm]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem perm_single {G X : Type} [Group G] [MulAction G X] (g : G) (x : X) (c : ℤ) :
     perm G X g (Finsupp.single x c) = Finsupp.single (g • x) c := by
@@ -59,7 +59,7 @@ noncomputable def aug (X : Type) : (X →₀ ℤ) →ₗ[ℤ] ℤ :=
   Finsupp.linearCombination ℤ (fun _ : X => (1 : ℤ))
 
 /- English proof (translation)
-Simplify using `only [faceD, LinearMap.sum_apply, LinearMap.smul_apply, Finsupp.lmapDomain_apply, Finsupp.mapDomain_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem faceD_single {Y X : Type} {k : ℕ} (face : Fin k → Y → X) (y : Y) (c : ℤ) :
     faceD face (Finsupp.single y c) =
@@ -68,7 +68,7 @@ theorem faceD_single {Y X : Type} {k : ℕ} (face : Fin k → Y → X) (y : Y) (
     Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Simplify using `[aug]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem aug_single {X : Type} (x : X) (c : ℤ) : aug X (Finsupp.single x c) = c := by
   simp [aug]

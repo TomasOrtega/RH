@@ -8,7 +8,7 @@ open scoped Formalism.Per
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[PadicInt.norm_p, inv_pow, ← zpow_natCast, ← zpow_neg, PadicInt.norm_le_pow_iff_mem_span_pow, ← PadicInt.ker_toZModPow, RingHom.mem_ker, map_sub, map_one, sub_eq_zero, Units.ext_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem units_map_toZModPow_eq_one_iff (l : ℕ) [Fact l.Prime] (m : ℕ) (u : ℤ_[l]ˣ) :
     Units.map (PadicInt.toZModPow (p := l) m).toMonoidHom u = 1 ↔
@@ -19,17 +19,15 @@ theorem units_map_toZModPow_eq_one_iff (l : ℕ) [Fact l.Prime] (m : ℕ) (u : �
   simp
 
 /- English proof (translation)
-Establish `hl : l ≠ 0` using `(Fact.out : l.Prime).ne_zero`. Set `φ : ∀ n : ℕ, G →* (ZMod (l ^ (k + n)))ˣ` to `fun n => (Units.map (PadicInt.toZModPow (p := l) (k + n)).toMonoidHom).comp η`. Establish `hmem : ∀ n g, g ∈ (φ n).ker ↔ ‖(η g : ℤ_[l]) - 1‖ ≤ ‖((l : ℕ) : ℤ_[l])‖ ^ (k + n)` using `fun n g => by`. Rewrite using `[MonoidHom.mem_ker]`. Conclude with `units_map_toZModPow_eq_one_iff l (k + n) (η g)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hlte : ∀ n, ‖(η (γ ^ l ^ n) : ℤ_[l]) - 1‖ = ‖((l : ℕ) : ℤ_[l])‖ ^ (k + n)` using `fun n => by`. Rewrite using `[map_pow, Units.val_pow_eq_pow_val]`. Conclude with `GlobalTheory.T.norm_pow_prime_pow_sub_one_of_norm_sub_one l _ k hk hγ n`. Use `⟨fun n => (φ n).ker, hmem, fun n => inferInstance, fun n => ?_, fun n => ?_, fun n => ?_, fun n h hh => ?_⟩` and prove the remaining obligations. Establish `: NeZero (l ^ (k + n))` using `⟨pow_ne_zero _ hl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Subgroup.index_ker]`. Conclude with `Nat.card_pos.ne'`. Establish `: NeZero (l ^ (k + n))` using `⟨pow_ne_zero _ hl⟩`. Rewrite using `[Subgroup.index_ker]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hmem n _).2 (hlte n).le`. Take `⟨i, hi⟩` from `GlobalTheory.T.padicInt_exists_pow_sub_norm_le_of_exact_level' l (η (γ ^ l ^ n) : ℤ_[l]) (η h : ℤ_[l]) (k + n) (by omega) (hlte n) ((hmem n h).1 hh)`. Use `⟨i, (hmem (n + 1) _).2 ?_⟩` and prove the remaining obligations. Use `set w : ℤ_[l]ˣ := η ((γ ^ l ^ n) ^ i) with hw`. Establish `hwv : (w : ℤ_[l]) = (η (γ ^ l ^ n) : ℤ_[l]) ^ i`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hw, map_pow η (γ ^ l ^ n) i, Units.val_pow_eq_pow_val]`. Establish `key : ((η (((γ ^ l ^ n) ^ i)⁻¹ * h) : ℤ_[l]ˣ) : ℤ_[l]) - 1 = -((w⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) * ((w : ℤ_[l]) - (η h : ℤ_[l]))`. Rewrite using `[map_mul, map_inv, ← hw, Units.val_mul, mul_sub, neg_mul, neg_mul, Units.inv_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key, norm_mul, norm_neg, hwv]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem congruence_chain_of_character {G : Type*} [Group G] (l : ℕ) [Fact l.Prime]
     (η : G →* ℤ_[l]ˣ) (γ : G) (k : ℕ) (hk : 2 ≤ k)
@@ -77,7 +75,7 @@ theorem congruence_chain_of_character {G : Type*} [Group G] (l : ℕ) [Fact l.Pr
       _ ≤ _ := by rw [one_mul]; exact hi
 
 /- English proof (translation)
-Introduce `l _ η γ k hk hγ` and use `congruence_chain_of_character l η γ k hk hγ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem galois_congruence_chain : ∀ (l : ℕ) [Fact l.Prime] (η : GQ l →* ℤ_[l]ˣ) (γ : GQ l) (k : ℕ), 2 ≤ k → ‖(η γ : ℤ_[l]) - 1‖ = ‖((l : ℕ) : ℤ_[l])‖ ^ k → ∃ H : ℕ → Subgroup (GQ l), (∀ n g, g ∈ H n ↔ ‖(η g : ℤ_[l]) - 1‖ ≤ ‖((l : ℕ) : ℤ_[l])‖ ^ (k + n)) ∧ (∀ n, (H n).Normal) ∧ (∀ n, (H n).index ≠ 0) ∧ (∀ n, (H n).index ≤ l ^ (k + n)) ∧ (∀ n, γ ^ l ^ n ∈ H n) ∧ ∀ n, ∀ h ∈ H n, ∃ i : ℕ, ((γ ^ l ^ n) ^ i)⁻¹ * h ∈ H (n + 1) :=
   fun l _ η γ k hk hγ => congruence_chain_of_character l η γ k hk hγ

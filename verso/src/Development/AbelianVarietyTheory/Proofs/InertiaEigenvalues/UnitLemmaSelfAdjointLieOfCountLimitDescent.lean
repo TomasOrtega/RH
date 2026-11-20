@@ -11,7 +11,7 @@ namespace GlobalTheory.UnitLemma.LieEnd
 open GlobalTheory.UnitLemma Polynomial Filter Topology
 
 /- English proof (translation)
-Unfold `UQ.eta val`. Rewrite using `[map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 hx) ((Valuation.ne_zero_iff _).2 hy), neg_add, zpow_add₀ (by norm_num)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_mul (K : UQ) {x y : K.E} (hx : x ≠ 0) (hy : y ≠ 0) : K.eta (x * y) = K.eta x * K.eta y := by
   unfold UQ.eta val
@@ -19,7 +19,7 @@ theorem eta_mul (K : UQ) {x y : K.E} (hx : x ≠ 0) (hy : y ≠ 0) : K.eta (x * 
     zpow_add₀ (by norm_num)]
 
 /- English proof (translation)
-Unfold `UQ.eta`. Rewrite using `[← mul_zpow]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem eta_sq (K : UQ) (x : K.E) : K.eta x * K.eta x = 1 := by
   unfold UQ.eta
@@ -27,7 +27,7 @@ theorem eta_sq (K : UQ) (x : K.E) : K.eta x * K.eta x = 1 := by
   norm_num
 
 /- English proof (translation)
-Introduce `hq`. Establish `hc` using `K.card_res`. Establish `hpos : 0 < Nat.card (IsLocalRing.ResidueField K.O)` using `Nat.card_pos`. Rewrite `hc` using `[hq]`. Simplify using `at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -40,9 +40,9 @@ theorem q_ne_zero (K : UQ) : K.q ≠ 0 := by
   omega
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible K.O`. Take `⟨y, hy⟩` from `K.c_int p`. Establish `hinj` using `IsFractionRing.injective K.O K.E`. Establish `hy' : K.c (algebraMap K.O K.E y) = algebraMap K.O K.E p` using `by rw [← hy, K.c_c]`. Establish `hy0 : y ≠ 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Establish `h0 : algebraMap K.O K.E p = 0` using `by simpa using hy`. Conclude with `hp.ne_zero ((map_eq_zero_iff _ hinj).1 h0)`. Use `⟨p * y, mul_ne_zero hp.ne_zero hy0, Ideal.mul_mem_right _ _ ((IsLocalRing.mem_maximalIdeal _).2 hp.not_isUnit), ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, hy, hy', mul_comm]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_small (K : UQ) : ∃ a : K.O, K.Small a := by
   obtain ⟨p, hp⟩ := IsDiscreteValuationRing.exists_irreducible K.O
@@ -59,13 +59,13 @@ theorem exists_small (K : UQ) : ∃ a : K.O, K.Small a := by
 variable {K : UQ}
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun y => Prod.ext (by simp) (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem mulLeft_prod (B₁ B₂ : InvAlg K) (x : B₁.A × B₂.A) :
     LinearMap.mulLeft K.E x = (LinearMap.mulLeft K.E x.1).prodMap (LinearMap.mulLeft K.E x.2) := LinearMap.ext fun y => Prod.ext (by simp) (by simp)
 
 /- English proof (translation)
-Use `show (LinearMap.mulLeft K.E ((B₁.g, B₂.g) : B₁.A × B₂.A)).charpoly = _`. Rewrite using `[mulLeft_prod]`. Conclude with `LinearMap.charpoly_prodMap _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_P (B₁ B₂ : InvAlg K) : (B₁.prod B₂).P = B₁.P * B₂.P := by
   show (LinearMap.mulLeft K.E ((B₁.g, B₂.g) : B₁.A × B₂.A)).charpoly = _
@@ -73,17 +73,17 @@ theorem prod_P (B₁ B₂ : InvAlg K) : (B₁.prod B₂).P = B₁.P * B₂.P := 
   exact LinearMap.charpoly_prodMap _ _
 
 /- English proof (translation)
-The claim follows from `Algebra.trace_prod_apply x`.
+A detailed English derivation is pending.
 -/
 theorem trace_prod (B₁ B₂ : InvAlg K) (x : B₁.A × B₂.A) :
     Algebra.trace K.E (B₁.A × B₂.A) x = Algebra.trace K.E B₁.A x.1 + Algebra.trace K.E B₂.A x.2 := Algebra.trace_prod_apply x
 
 /- English proof (translation)
-Establish `hw : ∀ k : ℕ, IsUnit (algebraMap K.O B.A a ^ k)`. Introduce `k`. Apply `IsUnit.pow` to reduce the goal to its premises. Rewrite using `[IsScalarTower.algebraMap_apply K.O K.E B.A]`. Conclude with `(IsUnit.mk0 _ ((map_ne_zero_iff _ (IsFractionRing.injective K.O K.E)).2 ha.1)).map _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hσ : B.σ (algebraMap K.O B.A a) = algebraMap K.O B.A a`. Rewrite using `[IsScalarTower.algebraMap_apply K.O K.E B.A, B.σ_alg, ha.2.2]`. Use `(h2 K B hB a ha x hx).congr fun k => ?_` and prove the remaining obligations. Establish `e : x * algebraMap K.O B.A a ^ (2 * k) = x * (algebraMap K.O B.A a ^ k * B.σ (algebraMap K.O B.A a ^ k))`. Rewrite using `[map_pow, hσ, ← pow_add, two_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, h1 K B hB x _ hx (hw k), Rat.cast_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem linLim (h1 : CountIdentity) (h2 : UnitaryLimit) (B : InvAlg K) (hB : B.LieReg) (a : K.O)
     (ha : K.Small a) (x : B.A) (hx : B.Plus x) : B.LinLim a x (B.N x : ℝ) := by
@@ -101,7 +101,7 @@ theorem linLim (h1 : CountIdentity) (h2 : UnitaryLimit) (B : InvAlg K) (hB : B.L
   rw [e, h1 K B hB x _ hx (hw k), Rat.cast_natCast]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `he`. Apply `h` to reduce the goal to its premises. Establish `: IsEmpty (B.X x)` using `Set.isEmpty_coe_sort.2 (Set.not_nonempty_iff_eq_empty.1 he)`. Establish `: IsEmpty (Orb K.O B.T (B.X x))` using `⟨fun o => isEmptyElim (Quot.out o)⟩`. Conclude with `finsum_of_isEmpty _`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem nonempty_of_N_ne_zero (B : InvAlg K) (x : B.A) (h : B.N x ≠ 0) : (B.X x).Nonempty := by
   by_contra he
@@ -111,15 +111,13 @@ theorem nonempty_of_N_ne_zero (B : InvAlg K) (x : B.A) (h : B.N x ≠ 0) : (B.X 
   exact finsum_of_isEmpty _
 
 /- English proof (translation)
-Introduce and unpack `⟨L, hL⟩`. Take `⟨⟨hfg, -⟩, -, hdual⟩` from `hL`. Establish `hmem : ∀ s : B.A, y * s ∈ L` using `fun s => (hdual _).2 fun z _ => by`. Establish `h0 : B.herm x (y * s) z = 0`. Unfold `InvAlg.herm`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[show x * (y * s) * B.σ z = y * (x * s * B.σ z) by ring]`. Conclude with `h _`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Take `⟨φ, hφ⟩` from `Module.Projective.exists_dual_eq_one K.E hy`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `htop : (⊤ : Submodule K.O K.E) ≤ L.map ((φ : B.A →ₗ[K.E] K.E).restrictScalars K.O)`. Introduce `e _`. Use `Submodule.mem_map.2 ⟨y * algebraMap K.E B.A e, hmem _, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.restrictScalars_apply, mul_comm, ← Algebra.smul_def, map_smul, hφ, smul_eq_mul, mul_one]`. Establish `: Module.Finite K.O K.E` using `⟨by rw [← top_le_iff.1 htop]; exact hfg.map _⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp⟩` from `IsDiscreteValuationRing.exists_irreducible K.O`. Establish `hp0 : algebraMap K.O K.E p ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective K.O K.E)).2 hp.ne_zero`. Take `⟨r, hr⟩` from `IsIntegrallyClosed.isIntegral_iff.1 (Algebra.IsIntegral.isIntegral (R := K.O) (algebraMap K.O K.E p)⁻¹)`. Apply `hp.not_isUnit` to reduce the goal to its premises. Establish `hpr : p * r = 1` using `IsFractionRing.injective K.O K.E (by rw [map_mul, hr, map_one, mul_inv_cancel₀ hp0])`.
-
-Conclude with `⟨⟨p, r, hpr, by rw [mul_comm, hpr]⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem X_empty (B : InvAlg K) (y : B.A) (hy : y ≠ 0) (h : ∀ z, Algebra.trace K.E B.A (y * z) = 0) (x : B.A) :
     ¬ (B.X x).Nonempty := by
@@ -149,13 +147,13 @@ theorem X_empty (B : InvAlg K) (y : B.A) (hy : y ≠ 0) (h : ∀ z, Algebra.trac
   exact ⟨⟨p, r, hpr, by rw [mul_comm, hpr]⟩, rfl⟩
 
 /- English proof (translation)
-Use `set b := Module.finBasis K.E B.A`. Establish `h' : (Matrix.of fun i j => B.herm 1 (b i) (b j)).det = 0` using `h`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_vecMul_eq_zero_iff.2 h'`. Establish `hj : ∀ j, Algebra.trace K.E B.A ((∑ i, v i • b i) * B.σ (b j)) = 0`. Introduce `j`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hvj` using `congrFun hv j`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.of_apply, InvAlg.herm, one_mul, Pi.zero_apply] at hvj`. Rewrite using `[Finset.sum_mul, map_sum]`. Simplify `hvj` using `[smul_mul_assoc]`. Use `⟨∑ i, v i • b i, fun h0 => hv0 (funext fun i => Fintype.linearIndependent_iff.1 b.linearIndependent v h0 i), ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Establish `hz : z = ∑ j, K.c (b.repr (B.σ z) j) • B.σ (b j)` using `by conv_lhs => rw [← B.σ_σ z, ← b.sum_repr (B.σ z)]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.smul_def, map_mul, B.σ_alg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, Finset.mul_sum, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[mul_smul_comm, map_smul, hj, smul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_rad (B : InvAlg K) (h : B.gramDet 1 = 0) :
     ∃ y : B.A, y ≠ 0 ∧ ∀ z, Algebra.trace K.E B.A (y * z) = 0 := by
@@ -181,12 +179,12 @@ theorem exists_rad (B : InvAlg K) (h : B.gramDet 1 = 0) :
   rw [mul_smul_comm, map_smul, hj, smul_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Units.isUnit _, (Quot.out k).2⟩`.
+Supply the required witnesses or components.
 -/
 theorem rep_plus (B : InvAlg K) (k : B.Cl) : B.Plus k.rep := ⟨Units.isUnit _, (Quot.out k).2⟩
 
 /- English proof (translation)
-Establish `hn : Algebra.norm K.E x ≠ 0` using `(hx.map (Algebra.norm K.E)).ne_zero`. Rewrite using `[GlobalTheory.T.gramDet_eq_norm_mul_gramDet_one K B x, eta_mul K hn h, mul_left_comm, eta_sq, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem eta_norm (B : InvAlg K) (h : B.gramDet 1 ≠ 0) (x : B.A) (hx : IsUnit x) :
     K.eta (Algebra.norm K.E x) = K.eta (B.gramDet 1) * K.eta (B.gramDet x) := by
@@ -194,30 +192,30 @@ theorem eta_norm (B : InvAlg K) (h : B.gramDet 1 ≠ 0) (x : B.A) (hx : IsUnit x
   rw [GlobalTheory.T.gramDet_eq_norm_mul_gramDet_one K B x, eta_mul K hn h, mul_left_comm, eta_sq, mul_one]
 
 /- English proof (translation)
-The claim follows from `(Rat.castHom ℝ).toAddMonoidHom.map_finsum_of_injective Rat.cast_injective f`.
+A detailed English derivation is pending.
 -/
 theorem cast_finsum {ι : Type} (f : ι → ℚ) : ((∑ᶠ i, f i : ℚ) : ℝ) = ∑ᶠ i, (f i : ℝ) := (Rat.castHom ℝ).toAddMonoidHom.map_finsum_of_injective Rat.cast_injective f
 
 /- English proof (translation)
-Introduce `K B₁ B₂ hg₁ hg₂ hsep`. Use `show (-(K.q : ℚ)) ^ (-val K.O (resultant B₁.P B₂.P)) * InvAlg.kapSum B₁ B₂ = B₁.stSum * B₂.stSum`. Take `⟨a, ha⟩` from `exists_small K`. Establish `hB : (B₁.prod B₂).LieReg` using `⟨Prod.ext hg₁ hg₂, by rw [prod_P]; exact hsep⟩`. Establish `hB₁ : B₁.LieReg` using `⟨hg₁, hsep.of_mul_left⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB₂ : B₂.LieReg` using `⟨hg₂, hsep.of_mul_right⟩`. Establish `hLD` using `h3 K B₁ B₂ hg₁ hg₂ hsep a ha (fun x => ((B₁.prod B₂).N x : ℝ)) (fun x => (B₁.N x : ℝ)) (fun x => (B₂.N x : ℝ)) (fun x hx => linLim h1 h2 _ hB a ha x hx) (fun x hx => linLim h1 h2 _ hB₁ a ha x hx) (fun x hx => linLim h1 h2 _ hB₂ a ha x hx)`. Simplify using `only [← Rat.cast_mul] at hLD`. Rewrite `hLD` using `[← cast_finsum, ← cast_finsum, ← cast_finsum]`. Establish `hq : (-(K.q : ℝ)) ^ val K.O (resultant B₁.P B₂.P) = (((-(K.q : ℚ)) ^ val K.O (resultant B₁.P B₂.P) : ℚ) : ℝ)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Rat.cast_zpow, Rat.cast_neg, Rat.cast_natCast]`. Rewrite `hLD` using `[hq, ← Rat.cast_mul, ← Rat.cast_mul]`. Establish `hQ` using `Rat.cast_injective hLD`. Establish `hq0 : (-(K.q : ℚ)) ≠ 0` using `by simpa using q_ne_zero K`. Distinguish the cases in `hd : B₁.gramDet 1 = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy0, hy⟩` from `exists_rad B₁ hd`. Establish `hN₁ : ∀ x, B₁.N x = 0` using `fun x =>`. Assume the negation of the conclusion as `fun hx => X_empty B₁ y hy0 hy x (nonempty_of_N_ne_zero B₁ x hx)`. Establish `hN : ∀ x, (B₁.prod B₂).N x = 0`. Introduce `x`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hx`. Use `X_empty (B₁.prod B₂) ((y, 0) : B₁.A × B₂.A) (fun h0 => hy0 (congrArg Prod.fst h0)) (fun z => ?_) x (nonempty_of_N_ne_zero _ x hx)` and prove the remaining obligations. Establish `key : ∀ w : B₁.A × B₂.A, Algebra.trace K.E (B₁.A × B₂.A) ((y, 0) * w) = 0` using `fun w => by`. Rewrite using `[trace_prod]`. Simplify using `[hy]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `key z`. Simplify using `[InvAlg.kapSum, InvAlg.stSum, hN, hN₁]`. Establish `he : K.eta (B₁.gramDet 1) * K.eta (B₁.gramDet 1) = 1` using `eta_sq K _`. Establish `hS : ∑ᶠ k : (B₁.prod B₂).Cl, K.eta (Algebra.norm K.E (InvAlg.Cl.rep k).1) * (B₁.prod B₂).N k.rep = K.eta (B₁.gramDet 1) * InvAlg.kapSum B₁ B₂`. Unfold `InvAlg.kapSum`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_finsum]`. Use `finsum_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[eta_norm B₁ hd _ (Prod.isUnit_iff.1 (rep_plus _ k).1).1, mul_assoc]`. Establish `hS₁ : ∑ᶠ k : B₁.Cl, K.eta (Algebra.norm K.E k.rep) * B₁.N k.rep = K.eta (B₁.gramDet 1) * B₁.stSum`. Unfold `InvAlg.stSum`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_finsum]`. Use `finsum_congr fun k => ?_` and prove the remaining obligations. Rewrite using `[eta_norm B₁ hd _ (rep_plus _ k).1]`. Distinguish the cases in `hk : B₁.N k.rep = 0`. Rewrite using `[hk, mul_zero, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.T.eta_gramDet_eq_one_of_selfDual_lattice K B₁ k.rep (rep_plus _ k).2 (nonempty_of_N_ne_zero B₁ _ hk), mul_one]`. Establish `hst : ∑ᶠ k : B₂.Cl, B₂.N k.rep = B₂.stSum` using `rfl`. Rewrite `hQ` using `[hS, hS₁, hst]`. Establish `hk : InvAlg.kapSum B₁ B₂ = (-(K.q : ℚ)) ^ val K.O (resultant B₁.P B₂.P) * (B₁.stSum * B₂.stSum)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, he, one_mul]`. Use `_ = K.eta (B₁.gramDet 1) * ((-(K.q : ℚ)) ^ val K.O (resultant B₁.P B₂.P) * (K.eta (B₁.gramDet 1) * B₁.stSum * B₂.stSum)) := by rw [hQ]`. Use `_ = (-(K.q : ℚ)) ^ val K.O (resultant B₁.P B₂.P) * (B₁.stSum * B₂.stSum) * (K.eta (B₁.gramDet 1) * K.eta (B₁.gramDet 1)) := by ring`. Use `_ = _ := by rw [he, mul_one]`. Rewrite using `[hk, ← mul_assoc, ← zpow_add₀ hq0, neg_add_cancel, zpow_zero, one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem unitLemmaLie_of (h1 : CountIdentity) (h2 : UnitaryLimit) (h3 : LinearDescent) : UnitLemmaLie := by
   intro K B₁ B₂ hg₁ hg₂ hsep

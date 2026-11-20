@@ -1,29 +1,27 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `K M N V U I J _ _ _ _ _ _ _ _ _ σ jm ev c0 b hspan hev hli hjm f hf`. Use `letI : Algebra K ℂ := σ.toAlgebra`. Establish `hσ : ∀ k : K, algebraMap K ℂ k = σ k` using `fun k => rfl`. Take `⟨lam, hlam⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap K ℂ) (LinearMap.ker_eq_bot.mpr (algebraMap K ℂ).injective)`. Establish `lam_mul : ∀ k z, lam (σ k * z) = k * lam z`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `k z`. Rewrite using `[← hσ, ← Algebra.smul_def, map_smul, smul_eq_mul]`. Establish `lam_one : lam 1 = 1`. Use `LinearMap.congr_fun hlam 1` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Set `B` to `Module.Basis.span hli`. Take `⟨Ψ, hΨ⟩` from `LinearMap.exists_extend (B.repr.toLinearMap)`. Establish `hΨb : ∀ j, Ψ (c0 (b j)) = Finsupp.single j 1`. Introduce `j`. Establish `h1` using `LinearMap.congr_fun hΨ (B j)`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, LinearEquiv.coe_coe, B.repr_self] at h1`. Rewrite `h1` using `[Module.Basis.span_apply]`. Then use the resulting hypothesis. Establish `hΨv : ∀ v j, Ψ (c0 v) j = σ (b.repr v j)`. Introduce `v j`. Use `conv_lhs => rw [← b.linearCombination_repr v, Finsupp.linearCombination_apply]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[map_finsuppSum, hΨb, Finsupp.single_apply, Finsupp.sum_apply]`. Introduce `h0`. Rewrite using `[h0, map_zero]`. Set `R : U →+ V` to `b.repr.symm.toLinearMap.toAddMonoidHom.comp ((Finsupp.mapRange.addMonoidHom lam.toAddMonoidHom).comp Ψ.toAddMonoidHom)`. Establish `hRrepr : ∀ u j, b.repr (R u) j = lam (Ψ u j)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u j`. Simplify using `[R]`. Establish `KR : ∀ (z : ℂ) (v : V), R (z • c0 v) = lam z • v`. Introduce `z v`. Apply `b.repr.injective` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `j`. Rewrite using `[hRrepr, map_smul, Finsupp.smul_apply, hΨv, smul_eq_mul, mul_comm, lam_mul, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_comm]`. Establish `Rc0 : ∀ v, R (c0 v) = v`. Introduce `v`. Use `KR 1 v` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[one_smul, lam_one, one_smul]`. Then use the resulting hypothesis. Establish `hf' : f ∈ Submodule.span ℂ (Set.range jm)` using `hspan ▸ Submodule.mem_top`. Take `⟨c, rfl⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.mp hf'`. Use `⟨c.sum fun m a => lam a • m, ?_⟩` and prove the remaining obligations. Apply `hev` to reduce the goal to its premises.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `h`. Take `⟨w, hw⟩` from `hf h`. Establish `hu : ∀ m, c0 (R (ev (jm m) h)) = ev (jm m) h`. Introduce `m`. Take `⟨v, hv⟩` from `hjm m h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hv, Rc0]`. Establish `e1 : ev (jm (c.sum fun m a => lam a • m)) h = c.sum fun m a => σ (lam a) • ev (jm m) h`. Simplify using `[Finsupp.sum, map_sum, map_smulₛₗ, Finset.sum_apply]`. Establish `e2 : ev (c.sum fun m a => a • jm m) h = c.sum fun m a => a • ev (jm m) h`. Simplify using `[Finsupp.sum, map_sum, Finset.sum_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e3 : c0 (R (c.sum fun m a => a • ev (jm m) h)) = c.sum fun m a => σ (lam a) • ev (jm m) h`. Simplify using `only [Finsupp.sum, map_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `conv_lhs => rw [← hu m]`. Rewrite using `[KR, map_smulₛₗ, hu m]`.
-
-Rewrite using `[e1, ← e3, ← e2, ← hw, Rc0]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.KN.mem_range_semilinear_of_values_mem_range :
     ∀ (K M N V U I J : Type) [Field K] [AddCommGroup M] [Module K M] [AddCommGroup N] [Module ℂ N] [AddCommGroup V] [Module K V] [AddCommGroup U] [Module ℂ U]

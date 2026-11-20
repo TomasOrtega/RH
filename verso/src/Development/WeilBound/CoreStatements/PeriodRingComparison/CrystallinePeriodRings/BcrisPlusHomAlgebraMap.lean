@@ -14,13 +14,13 @@ namespace Cmp6
 variable (l : ℕ) [Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[← acris_log_teichmuller_epsilon, RingEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cA_symm_tA : (cA l).symm (Formalism.Per6.tA l) = Reformulated.AutPerF.Acris.logTeich (eps0 l) := by
   rw [← acris_log_teichmuller_epsilon, RingEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Simplify using `using PositivityTheory.LocInh.isUnit_cB_l l`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isUnit_bcris_l : IsUnit ((l : ℕ) : Formalism.Per6.Bcris l) := by
   simpa using PositivityTheory.LocInh.isUnit_cB_l l
@@ -29,14 +29,14 @@ def bcrisPlusHom : Reformulated.AutPerF.BcrisPlus l (OC l) →+* Formalism.Per6.
   Reformulated.AutPerF.BcrisPlus.lift ((Formalism.Per6.cB l).comp (cA l).toRingHom) (isUnit_bcris_l l)
 
 /- English proof (translation)
-The claim follows from `Reformulated.AutPerF.BcrisPlus.lift_algebraMap _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem bcrisPlusHom_algebraMap (x : Reformulated.AutPerF.Acris l (OC l)) :
     bcrisPlusHom l (algebraMap _ _ x) = Formalism.Per6.cB l (cA l x) :=
   Reformulated.AutPerF.BcrisPlus.lift_algebraMap _ _ x
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(epsilon_isPrimitive l).exists_unit hε`. Rewrite using `[Reformulated.AutPerF.Acris.logTeich_padicPow, ← cA_symm_tA, map_mul, RingEquiv.apply_symm_apply, map_mul]`. Conclude with `(((a.isUnit.map (algebraMap ℤ_[l] (Reformulated.AutPerF.Acris l (OC l)))).map (cA l)).map (Formalism.Per6.cB l)).mul (Formalism.Per6.Loc2.isUnit_right _ _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_cB_cA_logTeich {ε : Reformulated.AutPerF.tateModule l (OC l)} (hε : Reformulated.AutPerF.IsPrimitive ε) :
     IsUnit (Formalism.Per6.cB l (cA l (Reformulated.AutPerF.Acris.logTeich ε))) := by
@@ -52,7 +52,7 @@ def bcrisHom : Reformulated.AutPerF.Bcris l (OC l) →+* Formalism.Per6.Bcris l 
     exact isUnit_cB_cA_logTeich l hε)
 
 /- English proof (translation)
-The claim follows from `(Reformulated.AutPerF.Bcris.lift_algebraMap _ _ _).trans (bcrisPlusHom_algebraMap l x)`.
+A detailed English derivation is pending.
 -/
 theorem bcrisHom_algebraMap (x : Reformulated.AutPerF.Acris l (OC l)) :
     bcrisHom l (algebraMap _ _ x) = Formalism.Per6.cB l (cA l x) :=
@@ -70,16 +70,16 @@ def bcrisInv : Formalism.Per6.Bcris l →+* Reformulated.AutPerF.Bcris l (OC l) 
       exact Reformulated.AutPerF.Bcris.isUnit_logTeich (epsilon_isPrimitive l))
 
 /- English proof (translation)
-The claim follows from `Formalism.Per6.Loc2.lift_mk₀ _ _ _ x`.
+A detailed English derivation is pending.
 -/
 theorem bcrisInv_cB (x : ACris.ACris ℂ_[l] l) :
     bcrisInv l (Formalism.Per6.cB l x) = algebraMap _ (Reformulated.AutPerF.Bcris l (OC l)) ((cA l).symm x) :=
   Formalism.Per6.Loc2.lift_mk₀ _ _ _ x
 
 /- English proof (translation)
-Establish `h : (bcrisInv l).comp (bcrisHom l) = RingHom.id _`. Use `Reformulated.AutPerF.Bcris.hom_ext fun y => ?_` and prove the remaining obligations. Establish `h2 : ((bcrisInv l).comp (bcrisHom l)).comp (algebraMap (Reformulated.AutPerF.BcrisPlus l (OC l)) (Reformulated.AutPerF.Bcris l (OC l))) = (RingHom.id _).comp (algebraMap _ _)`. Use `Reformulated.AutPerF.BcrisPlus.hom_ext fun z => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply, RingHom.id_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `bcrisInv l (bcrisHom l (algebraMap (Reformulated.AutPerF.Acris l (OC l)) _ z)) = algebraMap (Reformulated.AutPerF.Acris l (OC l)) _ z`. Rewrite using `[bcrisHom_algebraMap, bcrisInv_cB, RingEquiv.symm_apply_apply]`. Conclude with `RingHom.congr_fun h2 y`. Conclude with `RingHom.congr_fun h x`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcrisInv_bcrisHom (x : Reformulated.AutPerF.Bcris l (OC l)) : bcrisInv l (bcrisHom l x) = x := by
   have h : (bcrisInv l).comp (bcrisHom l) = RingHom.id _ := by
@@ -96,7 +96,7 @@ theorem bcrisInv_bcrisHom (x : Reformulated.AutPerF.Bcris l (OC l)) : bcrisInv l
   exact RingHom.congr_fun h x
 
 /- English proof (translation)
-Establish `h : (bcrisHom l).comp (bcrisInv l) = RingHom.id _`. Use `Formalism.Per6.Loc2.hom_ext fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `bcrisHom l (bcrisInv l (Formalism.Per6.cB l y)) = Formalism.Per6.cB l y`. Rewrite using `[bcrisInv_cB, bcrisHom_algebraMap, RingEquiv.apply_symm_apply]`. Conclude with `RingHom.congr_fun h x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bcrisHom_bcrisInv (x : Formalism.Per6.Bcris l) : bcrisHom l (bcrisInv l x) = x := by
   have h : (bcrisHom l).comp (bcrisInv l) = RingHom.id _ := by
@@ -110,14 +110,14 @@ def cBc : Reformulated.AutPerF.Bcris l (OC l) ≃+* Formalism.Per6.Bcris l :=
     (RingHom.ext (bcrisInv_bcrisHom l))
 
 /- English proof (translation)
-The claim follows from `bcrisHom_algebraMap l x`.
+A detailed English derivation is pending.
 -/
 theorem cBc_algebraMap (x : Reformulated.AutPerF.Acris l (OC l)) :
     cBc l (algebraMap _ _ x) = Formalism.Per6.cB l (cA l x) :=
   bcrisHom_algebraMap l x
 
 /- English proof (translation)
-The claim follows from `bcrisInv_cB l x`.
+A detailed English derivation is pending.
 -/
 theorem cBc_symm_cB (x : ACris.ACris ℂ_[l] l) :
     (cBc l).symm (Formalism.Per6.cB l x) = algebraMap _ (Reformulated.AutPerF.Bcris l (OC l)) ((cA l).symm x) :=

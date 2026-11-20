@@ -7,15 +7,15 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `hfg : I.FG` using `Module.Finite.iff_fg.1 inferInstance`. Take `⟨S, hS⟩` from `hfg`. Set `k : A → ℕ` to `fun x => if hx : x ∈ I then (h x hx).choose else 0`. Establish `hk : ∀ x ∈ I, f ^ k x * (c * x) = 0` using `fun x hx => by`. Simplify using `only [k, dif_pos hx]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(h x hx).choose_spec`. Use `⟨S.sup k, ?_⟩` and prove the remaining obligations. Establish `hle : I ≤ LinearMap.ker (LinearMap.mulLeft A (f ^ S.sup k * c))`. Rewrite using `[← hS, Submodule.span_le]`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hxI : x ∈ I` using `hS ▸ Submodule.subset_span hx`. Establish `hkx : k x ≤ S.sup k` using `Finset.le_sup (f := k) hx`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_ker, LinearMap.mulLeft_apply]`. Take `⟨j, hj⟩` from `Nat.exists_eq_add_of_le hkx`. Rewrite using `[hj, pow_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(f ^ j) * hk x hxI`. Apply `eq_of_smul_eq_smul (α := ↥I)` to reduce the goal to its premises. Introduce `y`. Use `hle y.2` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, LinearMap.mulLeft_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. By extensionality, compare the relevant components.
 
-Use `ext`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pow_mul_eq_zero_of_invertible {A : Type} [CommRing A] (I : Ideal A) (hI : Module.Invertible A ↥I)
     (f c : A) (h : ∀ x ∈ I, ∃ k : ℕ, f ^ k * (c * x) = 0) : ∃ K : ℕ, f ^ K * c = 0 := by
@@ -43,23 +43,21 @@ theorem pow_mul_eq_zero_of_invertible {A : Type} [CommRing A] (I : Ideal A) (hI 
   simp [this]
 
 /- English proof (translation)
-Use `set φ := algebraMap B.A (Localization M) with hφ`. Establish `hu : IsUnit (φ f)` using `IsLocalization.map_units (Localization M) (⟨f, hf⟩ : M)`. Establish `h1 : B.I.map φ = Ideal.span {φ d}`. Use `le_antisymm ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨k, hk⟩` from `hG.2 x hx`. Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hk`. Rewrite using `[Ideal.mem_comap, ← Ideal.unit_mul_mem_iff_mem _ (hu.pow k), ← map_pow, ← map_mul, ← hc, map_mul]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Conclude with `Ideal.mem_map_of_mem _ hG.1`. Use `⟨h1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_nonZeroDivisors_iff_right]`. Introduce `x hx`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective M x`. Rewrite `hx` using `[mul_comm, hφ, IsLocalization.mul_mk'_eq_mk'_of_mul, IsLocalization.mk'_eq_zero_iff]`. Take `⟨t, ht⟩` from `hx`. Take `⟨K, hK⟩` from `pow_mul_eq_zero_of_invertible B.I B.inv f ((t : B.A) * a) (fun x hx => by`. Take `⟨k, hk⟩` from `hG.2 x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Take `⟨c, hc⟩` from `Ideal.mem_span_singleton'.1 hk`. Conclude with `⟨k, by linear_combination c * ht - (t : B.A) * a * hc⟩)`. Rewrite using `[IsLocalization.mk'_eq_zero_iff]`. Conclude with `⟨⟨f ^ K * t, M.mul_mem (M.pow_mem hf K) t.2⟩, by simp only; linear_combination hK⟩`. Take `⟨n, hn⟩` from `B.bdd`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨n, fun x m hx => ?_⟩` and prove the remaining obligations. Rewrite `hx`, the goal using `[← h1]`. Take `⟨⟨a, s⟩, rfl⟩` from `IsLocalization.mk'_surjective M x`. Establish `e : ∀ j : ℕ, (l : Localization M) ^ j * IsLocalization.mk' (Localization M) a s = IsLocalization.mk' (Localization M) ((l : B.A) ^ j * a) s` using `fun j => by`. Rewrite using `[← IsLocalization.mul_mk'_eq_mk'_of_mul, map_pow, map_natCast]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx`, the goal using `[e, IsLocalization.mk'_mem_map_algebraMap_iff]`. Take `⟨s', hs', hI⟩` from `hx`. Use `⟨s', hs', ?_⟩` and prove the remaining obligations. Establish `h0 : (l : B.A ⧸ B.I) ^ m * Ideal.Quotient.mk B.I (s' * a) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk B.I), ← map_pow, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Use `hI using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `h2` using `hn _ ⟨m, h0⟩`. Rewrite `h2` using `[← map_natCast (Ideal.Quotient.mk B.I), ← map_pow, ← map_mul, Ideal.Quotient.eq_zero_iff_mem]`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem locAway_span_nzd_bdd (l : ℕ) [Fact l.Prime] (R : Type) [CommRing R] (B : Obj l R) (f d : B.A)
     (hG : GenAway B f d) (M : Submonoid B.A) (hf : f ∈ M) :

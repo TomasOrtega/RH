@@ -10,7 +10,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ M J hJ`. Establish `: FiniteDimensional F E` using `Module.finite_of_finrank_pos (by rw [hσ.2.2.1]; norm_num)`. Introduce `_ _ g μ hμ`. Conclude with `pres_snd (InfiniteAdeleRing F) (Af F) σ J (fun g' ν hν => h F E σ hσ M J hJ g' ν hν) g μ hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem modVAll_of_vmod (h : PI.VolSemiDirect.W.Cj.VMod) : PI.LevelKSplit.W.CD.ModVAll := by
   intro F E _ _ _ _ _ σ hσ M J hJ
@@ -20,7 +20,7 @@ theorem modVAll_of_vmod (h : PI.VolSemiDirect.W.Cj.VMod) : PI.LevelKSplit.W.CD.M
     (fun g' ν hν => h F E σ hσ M J hJ g' ν hν) g μ hμ
 
 /- English proof (translation)
-The claim follows from `modVAll_of_vmod PI.VolSemiDirect.W.Cj.unipotent_modulus_holds`.
+A detailed English derivation is pending.
 -/
 theorem modulus_all_extensions : PI.LevelKSplit.W.CD.ModVAll :=
   modVAll_of_vmod PI.VolSemiDirect.W.Cj.unipotent_modulus_holds

@@ -9,14 +9,14 @@ open scoped TensorProduct
 namespace UpperTheory.Gal.KunnethLefschetz
 
 /- English proof (translation)
-Rewrite using `[LateralTheory.EtaleTrace.pb_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem pbc {l : ℕ} [Fact l.Prime] {Z Y X : Scheme.{0}} (f : Z ⟶ Y) (g : Y ⟶ X) (n : ℤ) (x : V l X n) :
     pb l (f ≫ g) n x = pb l f n (pb l g n x) := by
   rw [LateralTheory.EtaleTrace.pb_comp]; rfl
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => exact R.one_nat f hu`. Consider the case `succ j ih`. Express the relevant statement in the definitionally equal form `pb l f _ (cupV l X _ (powV l x j) x) = cupV l Y _ (powV l (pb l f 2 x) j) (pb l f 2 x)`. Rewrite using `[R.nat, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem powV_pull {l : ℕ} [Fact l.Prime] (R : Ring l) {Y X : Scheme.{0}} (f : Y ⟶ X) (hu : IsUnit (l : Γ(X, ⊤)))
     (x : V l X 2) (j : ℕ) : pb l f _ (powV l x j) = powV l (pb l f 2 x) j := by
@@ -27,9 +27,9 @@ private theorem powV_pull {l : ℕ} [Fact l.Prime] (R : Ring l) {Y X : Scheme.{0
     rw [R.nat, ih]
 
 /- English proof (translation)
-Establish `hle : (⊤ : Submodule ℚ_[l] (V l E n)) ≤ LinearMap.range (pb l i n)`. Rewrite using `[← hP.span n, Submodule.span_le]`. Introduce and unpack `z ⟨j, a, h, u, rfl⟩`. Use `⟨cupV l W h (pb l s a u) (powV l e j), ?_⟩` and prove the remaining obligations. Rewrite using `[R.nat, pbc, powV_pull R i hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hle (Submodule.mem_top (x := b))`.
+A detailed English derivation is pending.
 -/
 private theorem pull_onto {l : ℕ} [Fact l.Prime] (R : Ring l) {E W X : Scheme.{0}} (i : E ⟶ W) (s : W ⟶ X)
     (hu : IsUnit (l : Γ(W, ⊤))) (e : V l W 2) (hP : PBQ l (i ≫ s) (pb l i 2 e)) (n : ℤ) (b : V l E n) :
@@ -42,11 +42,11 @@ private theorem pull_onto {l : ℕ} [Fact l.Prime] (R : Ring l) {E W X : Scheme.
   exact hle (Submodule.mem_top (x := b))
 
 /- English proof (translation)
-Use `set ξ := pb l i 2 e with hξdef`. Establish `h0 : ξ = cupV l E (zero_add 2) (pb l (i ≫ s) 0 u0) (pb l i 2 ε)`. Rewrite using `[hξdef, he, R.nat, pbc]`. Establish `h1 : ξ = pb l (i ≫ s) 2 (cupV l X (zero_add 2) u0 a) + cupV l E (zero_add 2) (pb l (i ≫ s) 0 (cupV l X (add_zero 0) u0 v)) ξ` using `by conv_lhs => rw [h0, hav]`. Rewrite using `[map_add, ← R.nat, ← R.assoc E 0 0 2 0 2 2 (add_zero 0) (zero_add 2) (zero_add 2) (zero_add 2), ← R.nat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : cupV l E (zero_add 2) (pb l (i ≫ s) 0 (oneV l X)) ξ = ξ`. Rewrite using `[R.one_nat _ uX, R.one_mul E uE]`. Establish `h3 : pb l (i ≫ s) 2 (cupV l X (zero_add 2) u0 a) + cupV l E (zero_add 2) (pb l (i ≫ s) 0 (cupV l X (add_zero 0) u0 v - oneV l X)) ξ = 0`. Rewrite using `[map_sub, map_sub, LinearMap.sub_apply, h2, ← add_sub_assoc, ← h1, sub_self]`. Establish `h4` using `hP.indep _ _ h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4` using `[sub_eq_zero]`. Rewrite using `[R.comm X 0 0 0 (add_zero 0) (add_zero 0) v u0, h4]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem unit_eq {l : ℕ} [Fact l.Prime] (R : Ring l) {E W X : Scheme.{0}} (i : E ⟶ W) (s : W ⟶ X)
     (uX : IsUnit (l : Γ(X, ⊤))) (uE : IsUnit (l : Γ(E, ⊤))) (e ε : V l W 2) (u0 a v : _)
@@ -73,15 +73,15 @@ private theorem unit_eq {l : ℕ} [Fact l.Prime] (R : Ring l) {E W X : Scheme.{0
   simp
 
 /- English proof (translation)
-Introduce `l _ k _ _ hl R G W E X px i s c hpair hprop U hoff e he0 hP n w h z hz`. Establish `hk : IsUnit (l : k)` using `isUnit_iff_ne_zero.2 hl`. Establish `uX` using `LPdCut.unit_of px hk`. Establish `uW` using `LPdCut.unit_of (s ≫ px) hk`. Establish `uE` using `LPdCut.unit_of (i ≫ s ≫ px) hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h02 : (0 : ℤ) + 2 * ((1 : ℕ) : ℤ) = 2` using `by norm_num`. Establish `hnw : n + 2 * ((1 : ℕ) : ℤ) = w` using `by push_cast; omega`. Establish `hn2 : n + 2 = w` using `by omega`. Take `⟨ε, hε⟩ : ∃ ε, G.g hpair h02 (oneV l E) = ε` from `⟨_, rfl⟩`. Take `⟨ε0, hε0⟩` from `G.onto hpair h02 U hoff hprop e he0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨u0, rfl⟩` from `hP.zero ε0`. Establish `he : e = cupV l W (zero_add 2) (pb l s 0 u0) ε`. Rewrite using `[← hε, ← G.proj hpair (add_zero 0) h02 h02 (zero_add 2), R.mul_one E uE, ← pbc, hε0]`. Take `⟨a, v, hav⟩` from `hP.two (pb l i 2 ε)`. Establish `hunit` using `unit_eq R i s uX uE e ε u0 a v he hP hav`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hε' : cupV l W (add_zero 2) e (pb l s 0 v) = ε`. Rewrite using `[R.comm W 2 0 2 (add_zero 2) (zero_add 2), he, ← R.assoc W 0 0 2 0 2 2 (add_zero 0) (zero_add 2) (zero_add 2) (zero_add 2), ← R.nat, hunit, R.one_nat _ uX, R.one_mul W uW]`. Simplify using the standard rewrite rules. Take `⟨b, hb⟩` from `G.onto hpair hnw U hoff hprop z hz`. Take `⟨m', rfl⟩` from `pull_onto R i s uW e hP n b`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hz' : z = cupV l W hn2 m' ε`. Rewrite using `[← hb, ← hε, ← G.proj hpair (add_zero n) hnw h02 hn2, R.mul_one E uE]`. Use `⟨cupV l W (zero_add n) (pb l s 0 v) m', ?_⟩` and prove the remaining obligations. Rewrite using `[hz', ← R.assoc W 2 0 n 2 n w (add_zero 2) h (zero_add n) h, hε', R.comm W n 2 w hn2 h, Int.negOnePow_even _ ⟨n, by ring⟩, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem divL_holds : DivL := by
   intro l _ k _ _ hl R G W E X px i s c hpair hprop U hoff e he0 hP n w h z hz

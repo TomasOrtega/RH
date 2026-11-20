@@ -14,13 +14,13 @@ universe u
 variable {k H : Type u} [CommRing k] [Group H] {A B : Rep.{u} k H}
 
 /- English proof (translation)
-The claim follows from `map_nsmul f.hom.toLinearMap n x`.
+A detailed English derivation is pending.
 -/
 theorem hom_nsmul_apply (f : A ⟶ B) (n : ℕ) (x : A) : f.hom (n • x) = n • f.hom x :=
   map_nsmul f.hom.toLinearMap n x
 
 /- English proof (translation)
-The claim follows from `map_zero f.hom.toLinearMap`.
+A detailed English derivation is pending.
 -/
 theorem hom_zero_apply (f : A ⟶ B) : f.hom 0 = 0 :=
   map_zero f.hom.toLinearMap
@@ -30,13 +30,13 @@ end Helpers
 variable {G : Type} [Group G] [Fintype G] {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `hH.exists_card_eq`. Establish `hcard : Fintype.card H = p ^ m` using `by rw [← Nat.card_eq_fintype_card, hm]`. Establish `key : ∀ (j : ℕ) (x : tateCohomology A n), p ^ j • x = 0 → x = 0`. Introduce `j`. Proceed by induction on `j with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro x hx`. Simplify using `using hx`. Consider the case `succ j ih`. Introduce `x hx`. Apply `ih` to reduce the goal to its premises.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `p • (p ^ j • x) = p • 0`. Rewrite using `[smul_zero, ← mul_smul, ← pow_succ']`. Conclude with `hx`. Establish `: Subsingleton (tateCohomology A n)` using `⟨fun x y => by`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key m x (hcard ▸ card_smul_tateCohomology A n x), key m y (hcard ▸ card_smul_tateCohomology A n y)]⟩`. Conclude with `ModuleCat.isZero_of_subsingleton _`.
+A detailed English derivation is pending.
 -/
 theorem isZero_tateCohomology_of_nsmul_injective {H : Type} [Group H] [Fintype H]
     (hH : IsPGroup p H) (A : Rep ℤ H) (n : ℤ)
@@ -62,11 +62,11 @@ theorem isZero_tateCohomology_of_nsmul_injective {H : Type} [Group H] [Fintype H
   exact ModuleCat.isZero_of_subsingleton _
 
 /- English proof (translation)
-Introduce `n`. Establish `hmono : Mono ((tateCohomologyFunctor n).map S.f)`. Establish `h : Mono ((tateCohomologyFunctor (n - 1 + 1)).map S.f)` using `(TateCohomology.exact₁ hS (n - 1)).mono_g ((h₃ (n - 1)).eq_of_src _ _)`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis. Establish `: (tateCohomologyFunctor (R` using `ℤ) (G := H) n).Additive := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Unfold `tateCohomologyFunctor`. Use `infer_instance`. Establish `hmono' : Mono ((tateCohomologyFunctor n).map (p • 𝟙 S.X₁))`. Rewrite using `[← hf, Functor.map_comp]`. Use `infer_instance`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmono'` using `[Functor.map_nsmul, CategoryTheory.Functor.map_id]`. Establish `hinj` using `(ModuleCat.mono_iff_injective _).1 hmono'`. Use `isZero_tateCohomology_of_nsmul_injective hH S.X₁ n fun a b hab => hinj ?_` and prove the remaining obligations. Simplify using `using hab`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tateAcyclic_of_shortExact_of_comp_eq_nsmul {H : Type} [Group H] [Fintype H]
     (hH : IsPGroup p H) {S : ShortComplex (Rep ℤ H)} (hS : S.ShortExact) (e : S.X₂ ≅ S.X₁)
@@ -87,19 +87,17 @@ theorem tateAcyclic_of_shortExact_of_comp_eq_nsmul {H : Type} [Group H] [Fintype
   simpa using hab
 
 /- English proof (translation)
-Set `f : A ⟶ A` to `p • 𝟙 A`. Establish `hf : Function.Injective f.hom` using `fun a b hab => by`. Establish `h : p • (a - b) = 0`. Rewrite using `[smul_sub, sub_eq_zero]`. Simplify `hab` using `[f, nsmul_id_hom_apply]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `sub_eq_zero.mp (hA _ h)`. Establish `: Mono f` using `(Rep.mono_iff_injective f).2 hf`. Set `S` to `ShortComplex.mk f (cokernel.π f) (cokernel.condition f)`. Establish `hS : S.ShortExact` using `{ exact := ShortComplex.exact_of_g_is_cokernel _ (cokernelIsCokernel f) mono_f := inferInstanceAs (Mono f) epi_g := coequalizer.π_epi }`. Establish `hC : IsZero (tateCohomology S.X₃ q)` using `(TateCohomology.exact₃ hS q).isZero_X₂ (h₁.eq_of_src _ _) (h₂.eq_of_tgt _ _)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hCt : ∀ y : S.X₃, p • y = 0`. Establish `hsurj : Function.Surjective (cokernel.π f).hom` using `(Rep.epi_iff_surjective _).1 coequalizer.π_epi`. Introduce `y`. Take `⟨x, rfl⟩` from `hsurj y`. Establish `h0` using `congrArg (fun φ : A ⟶ cokernel f => φ.hom x) (cokernel.condition f)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Rep.hom_comp, Rep.zero_hom] at h0`. Rewrite using `[← hom_nsmul_apply, ← nsmul_id_hom_apply]`. Conclude with `h0`. Take `⟨tC, cC⟩` from `tateAcyclic_cohTrivial_of_isZero_of_nsmul_eq_zero hG S.X₃ hCt q hC`. Establish `hf0 : S.f ≫ (Iso.refl S.X₁).hom = p • 𝟙 S.X₁` using `Category.comp_id _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `t` using `tateAcyclic_of_shortExact_of_comp_eq_nsmul hG hS (Iso.refl S.X₁) hf0 tC`. Use `⟨t, ?_⟩` and prove the remaining obligations. Introduce `H _`. Establish `hS' : (S.map (resFunctor H.subtype)).ShortExact` using `(shortExact_res H.subtype).2 hS`. Establish `h₃ : TateAcyclic (S.map (resFunctor H.subtype)).X₃`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[ShortComplex.map_X₃]`. Conclude with `cC H`. Establish `hf' : (S.map (resFunctor H.subtype)).f ≫ (Iso.refl (S.map (resFunctor H.subtype)).X₁).hom = p • 𝟙 (S.map (resFunctor H.subtype)).X₁` using `by show (resFunctor H.subtype).map (p • 𝟙 A) ≫ 𝟙 _ = _`. Rewrite using `[Category.comp_id, Functor.map_nsmul, CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
-
-Establish `c` using `tateAcyclic_of_shortExact_of_comp_eq_nsmul (hG.to_subgroup H) hS' (Iso.refl (S.map (resFunctor H.subtype)).X₁) hf' h₃`. Rewrite `c` using `[ShortComplex.map_X₁]`. Conclude with `c`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tateAcyclic_cohTrivial_of_isZero_of_isZero_of_noTorsion (hG : IsPGroup p G)
     (A : Rep ℤ G) (hA : ∀ x : A, p • x = 0 → x = 0) (q : ℤ)
@@ -147,17 +145,17 @@ theorem tateAcyclic_cohTrivial_of_isZero_of_isZero_of_noTorsion (hG : IsPGroup p
   exact c
 
 /- English proof (translation)
-Set `π : Rep.free ℤ G A.V ⟶ A` to `Rep.freeLift ℤ G A fun a => a`. Establish `hπ : Function.Surjective π.hom` using `fun a => ⟨Finsupp.single a (MonoidAlgebra.single 1 1), by`. Establish `hmod : A.hV2 = AddCommGroup.toIntModule A.V` using `Subsingleton.elim _ _`. Simplify using `only [π]`. Simplify using the standard rewrite rules.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[hmod]`. Conclude with `one_zsmul a⟩`. Establish `: Epi π` using `(Rep.epi_iff_surjective π).2 hπ`. Set `S` to `ShortComplex.mk (kernel.ι π) π (kernel.condition π)`. Establish `hS : S.ShortExact` using `{ exact := ShortComplex.exact_of_f_is_kernel _ (kernelIsKernel π) mono_f := equalizer.ι_mono epi_g := inferInstanceAs (Epi π) }`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfree : ∀ x : Rep.free ℤ G A.V, p • x = 0 → x = 0` using `fun x hx => (smul_eq_zero.mp hx).resolve_left (Fact.out : p.Prime).ne_zero`. Establish `hK : ∀ x : S.X₁, p • x = 0 → x = 0`. Establish `hinj : Function.Injective (kernel.ι π).hom` using `(Rep.mono_iff_injective _).1 equalizer.ι_mono`. Introduce `x hx`. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hom_zero_apply]`. Apply `hfree` to reduce the goal to its premises. Rewrite using `[← hom_nsmul_apply, hx, hom_zero_apply]`. Establish `h2 : TateAcyclic S.X₂` using `tateAcyclic_free A.V`. Establish `k₁ : IsZero (tateCohomology S.X₁ (q + 1))` using `h₁.of_iso (@asIso _ _ _ _ (TateCohomology.δ hS q) (isIso_δ_of_tateAcyclic hS h2 q)).symm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₂ : IsZero (tateCohomology S.X₁ (q + 1 + 1))` using `h₂.of_iso (@asIso _ _ _ _ (TateCohomology.δ hS (q + 1)) (isIso_δ_of_tateAcyclic hS h2 (q + 1))).symm`. Take `⟨tK, cK⟩` from `tateAcyclic_cohTrivial_of_isZero_of_isZero_of_noTorsion hG S.X₁ hK (q + 1) k₁ k₂`. Establish `t3` using `TateAcyclic.of_shortExact_X₁ hS h2 tK`. Establish `c2 : CohTrivial S.X₂` using `cohTrivial_free A.V`. Establish `c3` using `CohTrivial.of_shortExact_X₁ hS c2 cK`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨t3, c3⟩`.
+A detailed English derivation is pending.
 -/
 theorem tateAcyclic_cohTrivial_of_isZero_of_isZero (hG : IsPGroup p G) (A : Rep ℤ G) (q : ℤ)
     (h₁ : IsZero (tateCohomology A q)) (h₂ : IsZero (tateCohomology A (q + 1))) :
@@ -200,7 +198,7 @@ theorem tateAcyclic_cohTrivial_of_isZero_of_isZero (hG : IsPGroup p G) (A : Rep 
   exact ⟨t3, c3⟩
 
 /- English proof (translation)
-The claim follows from `(tateAcyclic_cohTrivial_of_isZero_of_isZero hG A q h₁ h₂).2`.
+A detailed English derivation is pending.
 -/
 theorem cohTrivial_of_isZero_of_isZero (hG : IsPGroup p G) (A : Rep ℤ G) (q : ℤ)
     (h₁ : IsZero (tateCohomology A q)) (h₂ : IsZero (tateCohomology A (q + 1))) :

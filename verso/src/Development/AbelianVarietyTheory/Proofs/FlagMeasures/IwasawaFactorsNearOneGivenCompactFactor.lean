@@ -12,7 +12,7 @@ open GlobalTheory.FlagLeviGroup
 variable {n : ℕ} {ε : Fin n → Bool}
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem J_sq : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   unfold Formalism.REAL.Jm
@@ -22,7 +22,7 @@ theorem J_sq : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   split_ifs <;> norm_num
 
 /- English proof (translation)
-Unfold `nrm Formalism.REAL.hs`. Use `congr 1`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Formalism.REAL.Jm, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nrm_J_conj (X : Matrix (Fin n) (Fin n) ℂ) : nrm (Formalism.REAL.Jm ε * X * Formalism.REAL.Jm ε) = nrm X := by
   unfold nrm Formalism.REAL.hs
@@ -32,9 +32,9 @@ theorem nrm_J_conj (X : Matrix (Fin n) (Fin n) ℂ) : nrm (Formalism.REAL.Jm ε 
   split_ifs <;> simp
 
 /- English proof (translation)
-Establish `hg : (uMat g)ᴴ * (Formalism.REAL.Jm ε * uMat g) = Formalism.REAL.Jm ε`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `g.2`. Establish `h1 : uMat g * uMat g⁻¹ = 1` using `by simp [uMat]`. Establish `h2 : Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε * uMat g = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, hg, J_sq]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[h2, Matrix.one_mul]`. Use `_ = Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε * (uMat g * uMat g⁻¹) := Matrix.mul_assoc _ _ _`. Use `_ = Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε := by rw [h1, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem uMat_inv_eq_Jm_conjTranspose_Jm (g : Formalism.REAL.UJ ε) :
     uMat g⁻¹ = Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε := by
@@ -50,7 +50,7 @@ private theorem uMat_inv_eq_Jm_conjTranspose_Jm (g : Formalism.REAL.UJ ε) :
     _ = Formalism.REAL.Jm ε * (uMat g)ᴴ * Formalism.REAL.Jm ε := by rw [h1, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `e : uMat g⁻¹ - 1 = Formalism.REAL.Jm ε * (uMat g - 1)ᴴ * Formalism.REAL.Jm ε`. Rewrite using `[uMat_inv_eq_Jm_conjTranspose_Jm, Matrix.conjTranspose_sub, Matrix.conjTranspose_one, Matrix.mul_sub, Matrix.sub_mul, Matrix.mul_one, J_sq]`. Rewrite using `[e, nrm_J_conj, nrm_conjTranspose]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem nrm_inv (g : Formalism.REAL.UJ ε) : nrm (uMat g⁻¹ - 1) = nrm (uMat g - 1) := by
   have e : uMat g⁻¹ - 1 = Formalism.REAL.Jm ε * (uMat g - 1)ᴴ * Formalism.REAL.Jm ε := by
@@ -59,9 +59,7 @@ theorem nrm_inv (g : Formalism.REAL.UJ ε) : nrm (uMat g⁻¹ - 1) = nrm (uMat g
   rw [e, nrm_J_conj, nrm_conjTranspose]
 
 /- English proof (translation)
-Establish `e : uMat (g * h) - 1 = (uMat g - 1) * (uMat h - 1) + (uMat g - 1) + (uMat h - 1)`. Rewrite using `[show uMat (g * h) = uMat g * uMat h from rfl]`. Use `noncomm_ring`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `nrm_add_le _ _`. Use `_ ≤ _ := by gcongr`. Conclude with `nrm_mul_le _ _`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem nrm_mul_sub_one (g h : Formalism.REAL.UJ ε) :
     nrm (uMat (g * h) - 1) ≤ nrm (uMat g - 1) * nrm (uMat h - 1) + nrm (uMat g - 1) + nrm (uMat h - 1) := by
@@ -78,11 +76,11 @@ theorem nrm_mul_sub_one (g h : Formalism.REAL.UJ ε) :
         exact nrm_mul_le _ _
 
 /- English proof (translation)
-Take `⟨hN, hM⟩` from `GlobalTheory.T.isotropicFlag_radical_lowers_levi_keeps n ε a j W hW`. Take `⟨htr, -, -, hmul⟩` from `GlobalTheory.T.trace_lowering_mul_keeping_isotropicFlag n ε a j W hW`. Establish `hX` using `hN u hu`. Take `⟨hm1, hm2⟩` from `hM m hm`. Establish `hY : uMat m * (uMat m)ᴴ - uMat m ∈ keeps ε W` using `sub_mem (hmul _ hm1 _ hm2) hm1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e : uMat (u * m) - 1 = (uMat u - 1) * uMat m + (uMat m - 1)`. Rewrite using `[show uMat (u * m) = uMat u * uMat m from rfl]`. Use `noncomm_ring`. Establish `key : ((((uMat u - 1) * uMat m) * (uMat m - 1)ᴴ).trace).re = 0`. Rewrite using `[Matrix.conjTranspose_sub, Matrix.conjTranspose_one, Matrix.mul_assoc, Matrix.mul_sub, Matrix.mul_one, htr _ hX _ hY, Complex.zero_re]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hh : Formalism.REAL.hs (uMat m - 1) ≤ Formalism.REAL.hs (uMat (u * m) - 1)`. Rewrite using `[e, hs_add, key]`. Combine the linear relations using `[hs_nonneg ((uMat u - 1) * uMat m)]`. Conclude with `Real.sqrt_le_sqrt hh`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem nrm_levi_le {a : ℕ} {j : Fin a → ℕ} {W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)} (hW : IsIsoFlag ε j W)
     {u m : Formalism.REAL.UJ ε} (hu : u ∈ flagN ε W) (hm : m ∈ flagM ε W) :
@@ -105,15 +103,15 @@ theorem nrm_levi_le {a : ℕ} {j : Fin a → ℕ} {W : Fin (a + 1) → Submodule
   exact Real.sqrt_le_sqrt hh
 
 /- English proof (translation)
-Introduce `n ε a j W hW t ht`. Take `⟨ρ, hρ0, hρ1, hρt⟩ : ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ 1 / 3 ∧ ρ ≤ t / 10` from `⟨min (1 / 3) (t / 10), lt_min (by norm_num) (by linarith), min_le_left _ _, min_le_right _ _⟩`. Use `⟨ρ, hρ0, ?_⟩` and prove the remaining obligations. Introduce `u hu m hm k hx hk`. Establish `hK0` using `nrm_nonneg (uMat k - 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hA : nrm (uMat (u * m) - 1) ≤ ρ * ρ + 2 * ρ`. Establish `h` using `nrm_mul_sub_one (u * m * k) k⁻¹`. Rewrite `h` using `[mul_inv_cancel_right, nrm_inv]`. Establish `: nrm (uMat (u * m * k) - 1) * nrm (uMat k - 1) ≤ ρ * ρ` using `mul_le_mul hx hk.le hK0 hρ0.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hM : nrm (uMat m - 1) ≤ nrm (uMat (u * m) - 1)` using `nrm_levi_le hW hu hm`. Establish `hM0` using `nrm_nonneg (uMat m - 1)`. Establish `hU : nrm (uMat u - 1) ≤ nrm (uMat (u * m) - 1) * nrm (uMat m - 1) + nrm (uMat (u * m) - 1) + nrm (uMat m - 1)`. Establish `h` using `nrm_mul_sub_one (u * m) m⁻¹`. Rewrite `h` using `[mul_inv_cancel_right, nrm_inv]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hρρ : ρ * ρ ≤ ρ / 3` using `by nlinarith`. Establish `hs0 : 0 ≤ ρ * ρ + 2 * ρ` using `by positivity`. Establish `hs1 : ρ * ρ + 2 * ρ ≤ 1` using `by linarith`. Establish `hprod : nrm (uMat (u * m) - 1) * nrm (uMat m - 1) ≤ ρ * ρ + 2 * ρ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Conclude with `⟨by linarith, by linarith, by linarith⟩`.
+Supply the required witnesses or components.
 -/
 theorem near : ∀ (n : ℕ) (ε : Fin n → Bool) (a : ℕ) (j : Fin a → ℕ) (W : Fin (a + 1) → Submodule ℂ (Fin n → ℂ)), IsIsoFlag ε j W → ∀ t : ℝ, 0 < t → ∃ ρ : ℝ, 0 < ρ ∧ ∀ u ∈ flagN ε W, ∀ m ∈ flagM ε W, ∀ k : Formalism.REAL.UJ ε, nrm (uMat (u * m * k) - 1) ≤ ρ → nrm (uMat k - 1) < ρ → nrm (uMat u - 1) < t ∧ nrm (uMat m - 1) < t ∧ nrm (uMat k - 1) < t := by
   intro n ε a j W hW t ht

@@ -49,14 +49,14 @@ def SumBoundHypothesis (D : D7) (B : WeightFamilies.Prov D) (P : ModuliIntegralC
       (X j h1 h2).rk ka (B.Mlat j ka) * D.R.f * D.R.m * large₂.sc.b * large₂.de2
 
 /- English proof (translation)
-Unfold `WeightFamilies.rho Ranks.sigW`. Conclude with `Nat.sub_eq_zero_of_le hj`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rho_eq_zero_of_ge {j : ℕ} (hj : D.R.m ≤ j) : WeightFamilies.rho D j = 0 := by
   unfold WeightFamilies.rho Ranks.sigW
   exact Nat.sub_eq_zero_of_le hj
 
 /- English proof (translation)
-Introduce and unpack `⟨xi, -, hne, -⟩`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Conclude with `absurd (hρ ▸ i.2 : i.1 < 0) (Nat.not_lt_zero _)`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem not_killed_of_rho {j : ℕ} (hρ : WeightFamilies.rho D j = 0) (CR T c : ℝ) (cu : B.Cu j)
     (χ : WeightFamilies.ExpoSet D (B.Xc j cu)) : ¬ WeightFamilies.Killed B CR T c cu χ := by
@@ -66,7 +66,7 @@ theorem not_killed_of_rho {j : ℕ} (hρ : WeightFamilies.rho D j = 0) (CR T c :
   exact absurd (hρ ▸ i.2 : i.1 < 0) (Nat.not_lt_zero _)
 
 /- English proof (translation)
-Unfold `WeightFamilies.MggK`. Simplify using `only [iInf_eq_top]`. Introduce `cu χ hk`. Conclude with `absurd hk (not_killed_of_rho hρ CR T c cu χ)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem MggK_eq_top_of_rho {j : ℕ} (hρ : WeightFamilies.rho D j = 0) (CR T c : ℝ) (ka : WeightFamilies.Wt D j) :
     WeightFamilies.MggK B CR T c j ka = ⊤ := by
@@ -76,7 +76,7 @@ theorem MggK_eq_top_of_rho {j : ℕ} (hρ : WeightFamilies.rho D j = 0) (CR T c 
   exact absurd hk (not_killed_of_rho hρ CR T c cu χ)
 
 /- English proof (translation)
-Unfold `WeightFamilies.MggIn`. Rewrite using `[MggK_eq_top_of_rho hρ]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem MggIn_eq_top_of_rho {j : ℕ} (hρ : WeightFamilies.rho D j = 0) (CR T c : ℝ) (ka : WeightFamilies.Wt D j) :
     WeightFamilies.MggIn B CR T c j ka = ⊤ := by
@@ -85,14 +85,14 @@ theorem MggIn_eq_top_of_rho {j : ℕ} (hρ : WeightFamilies.rho D j = 0) (CR T c
   rfl
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.subsingleton_iff.2 (MggIn_eq_top_of_rho hρ CR T c ka)`.
+A detailed English derivation is pending.
 -/
 theorem Qm_subsingleton_of_rho {j : ℕ} (hρ : WeightFamilies.rho D j = 0) (CR T c : ℝ) (ka : WeightFamilies.Wt D j) :
     Subsingleton (WeightFamilies.Qm B CR T c j ka) :=
   Submodule.Quotient.subsingleton_iff.2 (MggIn_eq_top_of_rho hρ CR T c ka)
 
 /- English proof (translation)
-Use `Qm_subsingleton_of_rho (B := B) hρ CR T c ka` as an intermediate fact. Unfold `WeightFamilies.rhoP`. Conclude with `Module.finrank_zero_of_subsingleton`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem rhoP_eq_zero_of_rho {j : ℕ} (hρ : WeightFamilies.rho D j = 0) (CR T c : ℝ) (ka : WeightFamilies.Wt D j) :
     WeightFamilies.rhoP B CR T c j ka = 0 := by
@@ -101,7 +101,7 @@ theorem rhoP_eq_zero_of_rho {j : ℕ} (hρ : WeightFamilies.rho D j = 0) (CR T c
   exact Module.finrank_zero_of_subsingleton
 
 /- English proof (translation)
-Unfold `WeightFamilies.lenAt`. Rewrite using `[Module.length_eq_zero_iff]`. Use `infer_instance`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lenAt_eq_zero_of_subsingleton (la : HeightOneSpectrum (𝓞 B.KO)) (N : Type) [AddCommGroup N] [Module (𝓞 B.KO) N]
     [Subsingleton N] : WeightFamilies.lenAt B la N = 0 := by
@@ -110,7 +110,7 @@ theorem lenAt_eq_zero_of_subsingleton (la : HeightOneSpectrum (𝓞 B.KO)) (N : 
   infer_instance
 
 /- English proof (translation)
-Use `Qm_subsingleton_of_rho (B := B) hρ CR T c ka` as an intermediate fact. Conclude with `lenAt_eq_zero_of_subsingleton la _`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lenAt_Qm_eq_zero_of_rho {j : ℕ} (hρ : WeightFamilies.rho D j = 0) (CR T c : ℝ) (ka : WeightFamilies.Wt D j)
     (la : HeightOneSpectrum (𝓞 B.KO)) (N : Submodule (𝓞 B.KO) (WeightFamilies.Qm B CR T c j ka)) :
@@ -119,7 +119,7 @@ theorem lenAt_Qm_eq_zero_of_rho {j : ℕ} (hρ : WeightFamilies.rho D j = 0) (CR
   exact lenAt_eq_zero_of_subsingleton la _
 
 /- English proof (translation)
-Unfold `rLa`. Rewrite using `[lenAt_Qm_eq_zero_of_rho (rho_eq_zero_of_ge hj), if_neg (not_lt.2 hj)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rLa_of_ge {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} {G : GlobalFamilyData X ka wL wF}
     {la : HeightOneSpectrum (𝓞 B.KO)} (hj : D.R.m ≤ j) (Q : LocalPointData G la) (CRm : ℝ) (T : ℕ) (c : ℝ) :
@@ -130,7 +130,7 @@ theorem rLa_of_ge {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} 
   simp
 
 /- English proof (translation)
-Rewrite using `[hT.2.2.2.2.2.2.2.2.2.1]`. Conclude with `rhoP_eq_zero_of_rho (rho_eq_zero_of_ge hj) CRm T c ka`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rq_eq_zero_of_ge {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData X ka wL wF) (hj : D.R.m ≤ j)
     {large₂ : SizeData₂ D} {S : Scal B} {CRm : ℝ} {T : ℕ} {c Gc Prw Ch Ah Cf Af : ℝ}
@@ -139,7 +139,7 @@ theorem rq_eq_zero_of_ge {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.W
   exact rhoP_eq_zero_of_rho (rho_eq_zero_of_ge hj) CRm T c ka
 
 /- English proof (translation)
-Unfold `LocalPointData.Net`. Use `finsum_nonneg fun ζ => mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) ?_` and prove the remaining obligations. Use `EReal.toReal_nonneg (le_trans ?_ (h (Q.y ζ)))` and prove the remaining obligations. Establish `h0 : (0 : ℝ) ≤ 2 * G.iet * X.phiC la (Q.y ζ)` using `mul_nonneg (mul_nonneg (by norm_num) (Nat.cast_nonneg _)) (Formalism.MainNotions.Gaps.T0.phiC_nonneg X la (Q.y ζ))`. Conclude with `h0` after adjusting the coercions.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Net_nonneg {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} {G : GlobalFamilyData X ka wL wF}
     {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la)
@@ -152,9 +152,7 @@ theorem Net_nonneg {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
   exact_mod_cast h0
 
 /- English proof (translation)
-Unfold `rLa`. Establish `h1 : (0 : ℝ) ≤ (if j < D.R.m then (T : ℝ) * (max 0 c / (2 * (G.iet : ℝ))) * Q.Net else 0)` using `by split_ifs with hj`. Conclude with `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (div_nonneg (le_max_left _ _) (mul_nonneg (by norm_num) (Nat.cast_nonneg _)))) (Net_nonneg Q (h hj))`. Conclude with `le_rfl`. Establish `h2 : (0 : ℝ) ≤ (Q.Ila.toNat : ℝ)` using `Nat.cast_nonneg _`.
-
-Conclude with `add_nonneg (add_nonneg (mul_nonneg (Nat.cast_nonneg _) (add_nonneg h2 h1)) (Nat.cast_nonneg _)) (Nat.cast_nonneg _)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rLa_nonneg {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} {G : GlobalFamilyData X ka wL wF}
     {la : HeightOneSpectrum (𝓞 B.KO)} (Q : LocalPointData G la) (CRm : ℝ) (T : ℕ) (c : ℝ)
@@ -171,7 +169,7 @@ theorem rLa_nonneg {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
     (Nat.cast_nonneg _)
 
 /- English proof (translation)
-The claim follows from `rLa_nonneg Q CRm T c fun hj y => (hT.2.2.2.2.2.2.2.2.2.2.2.2.2 hj).2.2.2.1 la y`.
+A detailed English derivation is pending.
 -/
 theorem rLa_nonneg_of_tied {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} {G : GlobalFamilyData X ka wL wF}
     {large₂ : SizeData₂ D} {S : Scal B} {CRm' : ℝ} {T' : ℕ} {c' Gc Prw Ch Ah Cf Af : ℝ}
@@ -185,7 +183,7 @@ def lenQ {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G : Glob
     (Set.range fun i : Fin G.rq => (Submodule.Quotient.mk (G.th i) : WeightFamilies.Qm B CRm T c j ka)))).toNat : ℝ)
 
 /- English proof (translation)
-Unfold `lenQ`. Rewrite using `[lenAt_Qm_eq_zero_of_rho (rho_eq_zero_of_ge hj)]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lenQ_of_ge {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData X ka wL wF) (hj : D.R.m ≤ j) (CRm : ℝ)
     (T : ℕ) (c : ℝ) (la : HeightOneSpectrum (𝓞 B.KO)) : lenQ G CRm T c la = 0 := by
@@ -194,13 +192,13 @@ theorem lenQ_of_ge {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j}
   simp
 
 /- English proof (translation)
-Distinguish the cases in `hj : j < D.R.m`. Establish `e : (fun la => rLa (Qf la) CRm T c * X.lN la) = fun la => (Nat.choose (T - 1) (WeightFamilies.dimY D j) : ℝ) * (((Qf la).Ila.toNat : ℝ) * X.lN la) + (Nat.choose (T - 1) (WeightFamilies.dimY D j) : ℝ) * ((T : ℝ) * (max 0 c / (2 * (G.iet : ℝ)))) * ((Qf la).Net * X.lN la) + (Formali …`. Use function extensionality and compare the values at `la`. Unfold `rLa lenQ`. Rewrite using `[if_pos hj]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h` using `(((hI.hasSum.mul_left (Nat.choose (T - 1) (WeightFamilies.dimY D j) : ℝ)).add ((hN hj).hasSum.mul_left ((Nat.choose (T - 1) (WeightFamilies.dimY D j) : ℝ) * ((T : ℝ) * (max 0 c / (2 * (G.iet : ℝ))))))).add hC.hasSum).add hQ.hasSum`. Rewrite using `[e]`. Use `⟨h.summable, h.tsum_eq.trans ?_⟩` and prove the remaining obligations. Rewrite using `[if_pos hj]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `e : (fun la => rLa (Qf la) CRm T c * X.lN la) = fun la => (Nat.choose (T - 1) (WeightFamilies.dimY D j) : ℝ) * (((Qf la).Ila.toNat : ℝ) * X.lN la) + (Formalism.MainNotions.Gaps.SizeBoundsAlt.gaussC (B.Mlat j ka) G.zc la : ℝ) * X.lN la + lenQ G CRm T c la * X.lN la`. Use function extensionality and compare the values at `la`. Unfold `rLa lenQ`. Rewrite using `[if_neg hj]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h` using `((hI.hasSum.mul_left (Nat.choose (T - 1) (WeightFamilies.dimY D j) : ℝ)).add hC.hasSum).add hQ.hasSum`. Rewrite using `[e]`. Use `⟨h.summable, h.tsum_eq.trans ?_⟩` and prove the remaining obligations. Rewrite using `[if_neg hj]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -247,7 +245,7 @@ theorem rLa_tsum_split {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt 
     ring
 
 /- English proof (translation)
-Establish `e : (fun la => lenQ G CRm T c la * X.lN la) = fun _ => (0 : ℝ)`. Use function extensionality and compare the values at `la`. Rewrite using `[lenQ_of_ge G hj, zero_mul]`. Rewrite using `[e]`. Conclude with `⟨summable_zero, tsum_zero⟩`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem lenQ_tsum_of_ge {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt D j} (G : GlobalFamilyData X ka wL wF) (hj : D.R.m ≤ j)
     (CRm : ℝ) (T : ℕ) (c : ℝ) :
@@ -259,11 +257,11 @@ theorem lenQ_tsum_of_ge {j : ℕ} {X : PJ D B P j} {ka wL wF : WeightFamilies.Wt
   exact ⟨summable_zero, tsum_zero⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hF`. Apply `Formalism.MainNotions.Gaps.SizeBoundsAlt.weight_ext` to reduce the goal to its premises. Use function extensionality and compare the values at `τ i`. Use `h2 τ i` as an intermediate fact. Simplify using `only [addL, wadd, wsmul]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `zify`. Combine the linear equalities and inequalities to obtain the conclusion. Use function extensionality and compare the values at `τ i`. Use `h3 τ i` as an intermediate fact. Simplify using `only [addL, wadd, wsmul]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `zify`. Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [addL, wadd, wsmul]`. Rewrite using `[h1, hn, hk]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ka_eq_addL {j : ℕ} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} (hF : IsF' ka wL wF T nP) (hn : wL.n = nW)
     (hk : ka.n = nP + T * nW) : ka = addL wF wL T := by
@@ -283,7 +281,7 @@ theorem ka_eq_addL {j : ℕ} {ka wL wF : WeightFamilies.Wt D j} {T nP nW : ℕ} 
     rw [h1, hn, hk]
 
 /- English proof (translation)
-Take `⟨hk, -, -, -, -, -, -, -, -, -, -, -, -, hV, hIL, hIF, -⟩` from `hC`. Conclude with `ka_eq_addL hIF hIL.1 (hk.trans hV)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ka_eq_addL_of_setC {j : ℕ} {large₂ : SizeData₂ D} {X : PJ D B P j} {CK C1 A1 : ℝ} {ka wL wF : WeightFamilies.Wt D j}
     {T nP nW : ℕ} {h0 : ℝ} (hC : SetC large₂ X CK C1 A1 ka wL wF T nP nW h0) : ka = addL wF wL T := by

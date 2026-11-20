@@ -7,15 +7,15 @@ namespace GlobalTheory.FlagInv
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {S : HSpace E} {r : ℕ} {T : E}
 
 /- English proof (translation)
-Use `show (F.fl.Xa j).map (a : S.V →ₗ[E] S.V) ≤ F.fl.Xa j`. Rewrite using `[Submodule.map_le_iff_le_comap]`. Unfold `Formalism.MainNotions.S.FlagG.Xa`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_setOf_eq] at hi`. Simplify using `only [SetLike.mem_coe, Submodule.mem_comap, LinearEquiv.coe_coe]`. Establish `hb` using `h (Fin.castSucc i)`. Establish `hf : frame F (Fin.castSucc i) = F.fl.e i`. Simplify using `[frame, Formalism.MainNotions.S.FlagG.fvec]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hb` using `[hf]`. Establish `hmono : Xflag F (Fin.castSucc i).val ≤ F.fl.Xa j` using `by show F.fl.Xa i.val ≤ F.fl.Xa j`. Unfold `Formalism.MainNotions.S.FlagG.Xa`. Apply `Submodule.span_mono` to reduce the goal to its premises. Apply `Set.image_mono` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Simplify using `only [Set.mem_setOf_eq] at hk ⊢`. Use linear arithmetic over natural numbers and integers. Establish `he : F.fl.e i ∈ F.fl.Xa j`. Unfold `Formalism.MainNotions.S.FlagG.Xa`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Conclude with `Submodule.subset_span ⟨i, hi, rfl⟩`. Use `Submodule.add_mem _ (hmono hb) he` as an intermediate fact. Unfold `Formalism.MainNotions.S.FlagG.Xa at this`. Simplify using `using this`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem map_Xflag_le (F : LFlag S r T) (a : S.V ≃ₗ[E] S.V)
     (h : ∀ b : Fin (r + 1), a (frame F b) - frame F b ∈ Xflag F b.val) (j : ℕ) :
@@ -47,7 +47,7 @@ theorem map_Xflag_le (F : LFlag S r T) (a : S.V ≃ₗ[E] S.V)
   simpa using this
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional E (Xflag F j) := by show FiniteDimensional E (Submodule.span E (F.fl.e '' {i | i.1 < j}))`. Conclude with `FiniteDimensional.span_of_finite E (Set.toFinite _)`. Conclude with `Submodule.eq_of_le_of_finrank_eq (map_Xflag_le F a h j) (LinearEquiv.finrank_map_eq a _)`.
+A detailed English derivation is pending.
 -/
 theorem map_Xflag_eq (F : LFlag S r T) (a : S.V ≃ₗ[E] S.V)
     (h : ∀ b : Fin (r + 1), a (frame F b) - frame F b ∈ Xflag F b.val) (j : ℕ) :
@@ -58,7 +58,7 @@ theorem map_Xflag_eq (F : LFlag S r T) (a : S.V ≃ₗ[E] S.V)
   exact Submodule.eq_of_le_of_finrank_eq (map_Xflag_le F a h j) (LinearEquiv.finrank_map_eq a _)
 
 /- English proof (translation)
-Rewrite `hx` using `[← map_Xflag_eq F a h j]`. Take `⟨y, hy, rfl⟩` from `hx`. Simplify using `using hy`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem symm_mem_Xflag (F : LFlag S r T) (a : S.V ≃ₗ[E] S.V)
     (h : ∀ b : Fin (r + 1), a (frame F b) - frame F b ∈ Xflag F b.val) (j : ℕ) {x : S.V}
@@ -68,9 +68,9 @@ theorem symm_mem_Xflag (F : LFlag S r T) (a : S.V ≃ₗ[E] S.V)
   simpa using hy
 
 /- English proof (translation)
-Introduce `E _ _ _ S r T F a h b`. Establish `hm` using `symm_mem_Xflag F a h b.val (h b)`. Establish `key : a⁻¹ (frame F b) - frame F b = -(a.symm (a (frame F b) - frame F b))` using `by show a.symm (frame F b) - frame F b = _`. Simplify using `[map_sub]`. Rewrite using `[key]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.neg_mem _ hm`.
+A detailed English derivation is pending.
 -/
 theorem inv_moves : ∀ {E : Type} [inst : Field E] [inst_1 : NumberField E] [inst_2 : StarRing E] {S : HSpace E} {r : ℕ} {T : E} (F : LFlag S r T) (a : S.V ≃ₗ[E] S.V), (∀ b : Fin (r + 1), a (frame F b) - frame F b ∈ Xflag F b.val) → ∀ b : Fin (r + 1), a⁻¹ (frame F b) - frame F b ∈ Xflag F b.val := by
   intro E _ _ _ S r T F a h b

@@ -9,15 +9,13 @@ namespace GlobalTheory.HatProductMembership
 open NumberField Formalism.BasicNotions Formalism.MainNotions.StandardLatticesGL3 GlobalTheory.FunObj.SqNum
 
 /- English proof (translation)
-Unfold `hatId at hx hy ⊢`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem a ha`. Take `⟨u, hu, s, hs, rfl⟩` from `ha`. Proceed by induction on `hy using AddSubgroup.closure_induction with`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `mem b hb`. Take `⟨v, hv, t, ht, rfl⟩` from `hb`. Use `AddSubgroup.subset_closure ⟨u * v, Ideal.mul_mem_mul hu hv, s * t, (OhE D).mul_mem hs ht, ?_⟩` and prove the remaining obligations. Establish `h : ((u * v : 𝓞 D.host.E) : D.host.E) = (u : D.host.E) * (v : D.host.E)` using `rfl`. Rewrite using `[h, map_mul]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Consider the case `zero => rw [mul_zero]`. Conclude with `zero_mem _`. Consider the case `add b c _ _ h1 h2 => rw [mul_add]`. Conclude with `add_mem h1 h2`.
+Expand and normalize the polynomial expressions, which then agree. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `neg b _ h => rw [mul_neg]`. Conclude with `neg_mem h`. Consider the case `zero => rw [zero_mul]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ h1 h2 => rw [add_mul]`.
-
-Conclude with `add_mem h1 h2`. Consider the case `neg a _ h => rw [neg_mul]`. Conclude with `neg_mem h`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_mem_hat_mul {D : D7} {I J : Ideal (𝓞 D.host.E)} {x y : AE D}
     (hx : x ∈ hatId D I) (hy : y ∈ hatId D J) : x * y ∈ hatId D (I * J) := by

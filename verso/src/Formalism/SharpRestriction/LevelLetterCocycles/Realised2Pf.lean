@@ -19,7 +19,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {v : AddValuation LL (WithTop ℚ)} {n : ℕ} [NeZero n] {W : LocWach PD LL O v n}
 
 /- English proof (translation)
-Take `⟨r, e, hli, hsp⟩` from `free_of hInj hFull hmod C i`. Use `⟨r, e, (Module.Basis.span hli).map (LinearEquiv.ofEq _ _ hsp), fun k => ?_⟩` and prove the remaining obligations. Simplify using `[Module.Basis.span_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem basis_of {I : BaseId W} {T : LocLat G Qp LL O} (hInj : I.Inj) (hFull : I.Full)
     (hmod : Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀) (C : Coord W I T) (i : ZMod n) :
@@ -30,7 +30,7 @@ theorem basis_of {I : BaseId W} {T : LocLat G Qp LL O} (hInj : I.Inj) (hFull : I
   simp [Module.Basis.span_apply]
 
 /- English proof (translation)
-Use `⟨Matrix.toLin' (Matrix.of fun l k => PowerSeries.constantCoeff (b₂.repr ⟨_, hf k⟩ l)), fun k => ⟨fun l => b₂.repr ⟨_, hf k⟩ l, ?_, fun l => by simp⟩⟩` and prove the remaining obligations. Establish `h` using `b₂.sum_repr ⟨_, hf k⟩`. Establish `h'` using `congrArg (fun x : ↥N₂ => (x : V₂)) h`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul, hb₂] at h'`. Conclude with `h'.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matrix_of {V₁ V₂ : Type} [AddCommGroup V₁] [Module (PowerSeries O) V₁] [AddCommGroup V₂]
     [Module (PowerSeries O) V₂] {N₂ : Submodule (PowerSeries O) V₂} {r₁ r₂ : ℕ} (f : V₁ → V₂)
@@ -49,9 +49,9 @@ variable [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal 
   [IsFractionRing O LL] [Fintype (K →ₐ[Qp] LL)]
 
 /- English proof (translation)
-Introduce `T₁ T₂ F hG hc₁ hc₂ hon j Gp S η h ty cuts arcLen hCu hKJ hJ hg hS hT`. Take `⟨C₁, C₂, C₀, hC, e₀, he₀⟩` from `Formalism.MainNotions.N.Ln03.Pf.coordSteps_holds hR hs hP9 hLem3 hDdR he hone hK h5 T₁ T₂ F hc₁ hc₂ hon`. Use `⟨{ C₁ := C₁, C₂ := C₂, C₀ := C₀, h := hC, e₀ := e₀, Ks := KsW W, Δ := DeltaT PD.p }, { he₀ := he₀, arcs := fun ϖ hϖ c hc => ?_ }⟩` and prove the remaining obligations. Establish `hp2 : PD.p ≠ 2` using `by omega`. Establish `hp9 : ∀ T : LocLat G Qp LL O, IsCrys PD T.ρ → Formalism.MainNotions.DeltaInvariantLattices.wachModuleOverLetters W T W.π₀` using `fun T hT => ((hP9 T hT hs hp2).2.2 (unram_of hK)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r₁, e₁, b₁, hb₁⟩` from `basis_of (baseIdOf_inj hR) (baseIdOf_full hR) (hp9 T₁ hc₁.2.2.2) C₁ (c - ((cutsOf hCu).ell c : ZMod n))`. Take `⟨r₂, e₂, b₂, hb₂⟩` from `basis_of (baseIdOf_inj hR) (baseIdOf_full hR) (hp9 T₂ hc₂.2.2.2) C₂ (c - ((cutsOf hCu).ell c : ZMod n))`. Take `⟨P, hP⟩` from `matrix_of (latHomOf hC).f e₁ e₂ b₂ hb₂ (fun k => (latHomOf hC).map_N _ _ (by rw [← hb₁ k]; exact (b₁ k).2))`. Conclude with `Formalism.MainNotions.N.Ln03.Pf.finalArc_holds Lb uZ ιZ hC c _ _ ϖ j _ _ Gp S η ty e₁ e₂ P hLevN hCmp hLevBφ hLevBΓ hLevΓ hLevφ hs hP4 hP4Lev hSat hP3 hP9 hP5 hDdR hHod hc₁ hc₂ hon hKJ hV hK hϖ hpm (Formalism.MainNotions.N.Ln03.Pf.hn_of hCu hc) hrich (glue2 hR) (cyclotomicFrobeni …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem realised2_pf (Lb : LevB W) (hR : Ring9 W) (e : W.DD W.one) (uZ : ℤ_[PD.p]ˣ)
     (ιZ : ℤ_[PD.p] →+* O)

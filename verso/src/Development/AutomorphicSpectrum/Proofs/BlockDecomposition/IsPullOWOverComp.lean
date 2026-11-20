@@ -17,7 +17,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CompanionTheory.Axis.PullO
 
 /- English proof (translation)
-Establish `H` using `_root_.GlobalTheory.CechDR.hasLoc_OAff s'`. Establish `hs` using `_root_.GlobalTheory.sep_of_factoring_cover (OAff s') G H hcov`. Establish `hg` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (OAff s') G H hcov hdir`. Establish `hv` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (OAff s') G H hcov hdir`. Conclude with `⟨_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg, _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem restrict_pull1_bijective_of_basis {R' : Type} [CommRing R'] {X' : Scheme.{0}} (s' : X' ⟶ Sp R')
     {C' : Type} [Category.{0} C'] [Quiver.IsThin C'] (G : C' ⥤ AffOp X')
@@ -43,7 +43,7 @@ variable {R'' : Type} [CommRing R''] {X X' X'' : Scheme.{0}}
 variable (ψ : X'' ⟶ X') (φ : X' ⟶ X)
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.CatCoh.CoefMap.pullCohomologyOne_comp]`. Use `GlobalTheory.CatCoh.CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app := fun _ => 𝟙 _, naturality := fun _ _ _ => Quiver.Hom.unop_inj (Subsingleton.elim _ _) } ?_ c` and prove the remaining obligations. Introduce `T b`. Rewrite using `[GlobalTheory.CatCoh.mp_id]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem triple_restriction_pair_restriction (s'' : X'' ⟶ Sp R'') (c : HO1 s'') :
     (cechTripleRestrictComposite ψ φ s'').pull1 ((pairRes (ψ ≫ φ) s'').pull1 c) =
@@ -54,7 +54,7 @@ theorem triple_restriction_pair_restriction (s'' : X'' ⟶ Sp R'') (c : HO1 s'')
   rw [GlobalTheory.CatCoh.mp_id]
 
 /- English proof (translation)
-Introduce `x y hxy`. Take `⟨x', rfl⟩` from `(pairRes_bijective (ψ ≫ φ) s'').1.2 x`. Take `⟨y', rfl⟩` from `(pairRes_bijective (ψ ≫ φ) s'').1.2 y`. Rewrite `hxy` using `[triple_restriction_pair_restriction, triple_restriction_pair_restriction]`. Rewrite using `[(restrict_pull1_bijective_of_basis s'' (cechTripleProjFirstThird ψ φ ⋙ pairFst (ψ ≫ φ)) (triple_cover_affine ψ φ s'') (exists_triple_below_two ψ φ s'')).1 hxy]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem triple_restriction_injective (s'' : X'' ⟶ Sp R'') : Function.Injective (cechTripleRestrictComposite ψ φ s'').pull1 := by
   intro x y hxy
@@ -73,9 +73,7 @@ variable {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] {X X' X'' :
   {φ : X' ⟶ X} {ψ : X'' ⟶ X'}
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.CatCoh.CoefMap.pullCohomologyOne_comp, ← GlobalTheory.CatCoh.CoefMap.pullCohomologyOne_comp]`. Use `GlobalTheory.CatCoh.CoefMap.pullCohomologyOne_eq_of_natTrans ((pairPull h'').comp (cechTripleRestrictComposite ψ φ s'')) ((pairPull h).comp (cechTriplePullbackSecond h')) { app := fun _ => 𝟙 _, naturality := fun _ _ _ => Quiver.Hom.unop_inj (Subsingleton.elim _ _) } ?_ a` and prove the remaining obligations. Introduce `T b`. Use `erw [GlobalTheory.CatCoh.mp_id]`. Use `show (CommRingCat.Hom.hom (Scheme.Hom.appLE φ _ _ _ ≫ Scheme.Hom.appLE ψ _ _ _)) b = CommRingCat.Hom.hom (Scheme.Hom.appLE (ψ ≫ φ) _ _ _) b`.
-
-Conclude with `congrArg (fun k => CommRingCat.Hom.hom k b) (Scheme.Hom.appLE_comp_appLE ψ φ _ _ _ _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tri_pull_pull (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ spMap τ)
     (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) (a : HO1 s) :
@@ -91,7 +89,7 @@ theorem tri_pull_pull (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫
   exact congrArg (fun k => CommRingCat.Hom.hom k b) (Scheme.Hom.appLE_comp_appLE ψ φ _ _ _ _ _)
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.CatCoh.CoefMap.pullCohomologyOne_comp, ← GlobalTheory.CatCoh.CoefMap.pullCohomologyOne_comp]`. Use `GlobalTheory.CatCoh.CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app := fun _ => 𝟙 _, naturality := fun _ _ _ => Quiver.Hom.unop_inj (Subsingleton.elim _ _) } ?_ a` and prove the remaining obligations. Introduce `T b`. Rewrite using `[GlobalTheory.CatCoh.mp_id]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem tri_res_pull (h' : ψ ≫ s' = s'' ≫ spMap τ) (a : HO1 s') :
     (cechTriplePullbackSecond (φ := φ) h').pull1 ((pairRes φ s').pull1 a) =
@@ -102,7 +100,7 @@ theorem tri_res_pull (h' : ψ ≫ s' = s'' ≫ spMap τ) (a : HO1 s') :
   rw [GlobalTheory.CatCoh.mp_id]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.CatCoh.CoefMap.pullCohomologyOne_comp, ← GlobalTheory.CatCoh.CoefMap.pullCohomologyOne_comp]`. Use `GlobalTheory.CatCoh.CoefMap.pullCohomologyOne_eq_of_natTrans _ _ { app := fun _ => 𝟙 _, naturality := fun _ _ _ => Quiver.Hom.unop_inj (Subsingleton.elim _ _) } ?_ a` and prove the remaining obligations. Introduce `T b`. Rewrite using `[GlobalTheory.CatCoh.mp_id]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem tri_res_res (a : HO1 s'') :
     (cechTripleRestrictFirst ψ φ s'').pull1 ((pairRes ψ s'').pull1 a) =
@@ -113,7 +111,7 @@ theorem tri_res_res (a : HO1 s'') :
   rw [GlobalTheory.CatCoh.mp_id]
 
 /- English proof (translation)
-Introduce `hab hbc`. Apply `triple_restriction_injective ψ φ s''` to reduce the goal to its premises. Unfold `IsPullO at hab hbc`. Rewrite using `[tri_pull_pull h h' h'' a, hab, tri_res_pull h' b, hbc, tri_res_res (φ := φ) c]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPullO_comp (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ spMap τ)
     (h'' : (ψ ≫ φ) ≫ s = s'' ≫ spMap (τ.comp σ)) (a : HO1 s) (b : HO1 s') (c : HO1 s'') :
@@ -126,7 +124,7 @@ theorem isPullO_comp (h : φ ≫ s = s' ≫ spMap σ) (h' : ψ ≫ s' = s'' ≫ 
 end Comp
 
 /- English proof (translation)
-Introduce `R _ X Y Z f g a b c hab hbc`. Conclude with `isPullO_comp (wOver g) (wOver f) (wOver (f ≫ g)) a b c hab hbc`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isPullO_wOver_comp : ∀ (R : Type) [CommRing R] (X Y Z : Over (Sp R)) (f : X ⟶ Y) (g : Y ⟶ Z)
     (a : HO1 Z.hom) (b : HO1 Y.hom) (c : HO1 X.hom), IsPullO (wOver g) a b → IsPullO (wOver f) b c →

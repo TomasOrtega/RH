@@ -20,24 +20,24 @@ def psiInt {ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace 
       D.castM (Nat.add_comm 1 ρ) b')
 
 /- English proof (translation)
-Rewrite using `[← castM_inv', LongWeylElement.lev_inv _ hh]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levA_inv (ρ : ℕ) {h : B.Mat k ρ} (hh : IsUnit h.det) :
     (D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ h))⁻¹ = D.castM (Nat.add_comm 1 ρ) (ιLev k 1 ρ h⁻¹) := by
   rw [← castM_inv', LongWeylElement.lev_inv _ hh]
 
 /- English proof (translation)
-Use `set κ : 1 + ρ = ρ + 1 := Nat.add_comm 1 ρ with hκ`. Establish `hH` using `Ux3.hpk_det k ρ`. Establish `hu0 : IsUnit (Matrix.of h0).det` using `HermitianFormFactor.UH_unit hH hh0.1`. Establish `hu0' : IsUnit (Matrix.of h0').det` using `HermitianFormFactor.UH_unit hH hh0'.1`. Establish `huy : IsUnit (Matrix.of y).det` using `HermitianFormFactor.UH_unit hH hy.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `huy' : IsUnit (Matrix.of y').det` using `HermitianFormFactor.UH_unit hH hy'.1`. Establish `hg : IsUnit (ιLev k 1 ρ (Matrix.of y * Matrix.of h0)).det` using `LongWeylElement.lev_unit _ (by rw [Matrix.det_mul]; exact huy.mul hu0)`. Establish `hg' : IsUnit (ιLev k 1 ρ (Matrix.of y' * Matrix.of h0')).det` using `LongWeylElement.lev_unit _ (by rw [Matrix.det_mul]; exact huy'.mul hu0')`. Establish `hconj : ∀ (g : B.Mat k (1 + ρ)) (hg : IsUnit g.det) (x : Mt k (1 + ρ)), (Matrix.of (conjM g⁻¹ x) : B.Mat k (1 + ρ)) = g⁻¹ * Matrix.of x * g`. Introduce `g hg x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `show g⁻¹ * Matrix.of x * g⁻¹⁻¹ = _`. Rewrite using `[Matrix.nonsing_inv_nonsing_inv _ hg]`. Establish `hψ1 : psi k (ρ + 1) B1.z cStd (Matrix.of (Qm ρ (a, y))) = psi k (ρ + 1) B1.z cStd (D.castM κ (Matrix.of (conjM ((ιLev k 1 ρ (Matrix.of y * Matrix.of h0))⁻¹) a))) * psi k ρ B0.z cStd (Matrix.of y)`. Rewrite using `[hz, psi_Qm ρ B0.z_mem ha hy, psi_castM, psi_castM, hconj _ hg, psi_conjLev ρ B0.z_mem ha hy hh0]`. Establish `hψ2 : psi k (ρ + 1) B1.z' cStd (Matrix.of (Qm ρ (a', y'))) = psi k (ρ + 1) B1.z' cStd (D.castM κ (Matrix.of (conjM ((ιLev k 1 ρ (Matrix.of y' * Matrix.of h0'))⁻¹) a'))) * psi k ρ B0.z' cStd (Matrix.of y')`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hz', psi_Qm ρ B0.z'_mem ha' hy', psi_castM, psi_castM, hconj _ hg', psi_conjLev ρ B0.z'_mem ha' hy' hh0']`. Establish `hπa : B1.π (Matrix.of (levA ρ h0)) = B0.π (Matrix.of h0)` using `(hπ _).symm`. Establish `hπb : B1.π' (Matrix.of (levA ρ h0'))⁻¹ = B0.π' (Matrix.of h0')⁻¹`. Rewrite using `[levA_apply, levA_inv ρ hu0', ← hπ']`. Establish `hpt : (Matrix.of (levA ρ h0))⁻¹ * (Matrix.of (Qm ρ (a, y)))⁻¹ * D.castM κ (U.mMap k 1 ρ (Matrix.of fun _ _ => c) γ) * Matrix.of (Qm ρ (a', y')) * Matrix.of (levA ρ h0') = (D.castM κ (Matrix.of (conjM ((ιLev k 1 ρ (Matrix.of y * Matrix.of h0))⁻¹) a)))⁻¹ * D.castM κ (U.mMap k 1 ρ ( …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hconj _ hg, hconj _ hg']`. Use `show (D.castM κ (ιLev k 1 ρ (Matrix.of h0)))⁻¹ * (D.castM κ (Matrix.of a * ιLev k 1 ρ (Matrix.of y)))⁻¹ * D.castM κ (U.mMap k 1 ρ (Matrix.of fun _ _ => c) γ) * D.castM κ (Matrix.of a' * ιLev k 1 ρ (Matrix.of y')) * D.castM κ (ιLev k 1 ρ (Matrix.of h0')) = _`. Rewrite using `[← castM_inv', ← castM_inv', ← castM_inv', ← Dx2.Tower.castM_mul, ← Dx2.Tower.castM_mul, ← Dx2.Tower.castM_mul, ← Dx2.Tower.castM_mul, ← Dx2.Tower.castM_mul, ← Dx2.Tower.castM_mul, sgs_alg ρ _ _ _ _ hu0 huy hu0' huy']`. Unfold `JF.integrand JF.xiP B.rho B.sgs psiInt`. Rewrite using `[hψ1, hψ2, hπa, hπb, hpt]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ContinuousLinearMap.smul_comp, ContinuousLinearMap.comp_smul, smul_smul]`. Use `congr 1`. Rewrite using `[star_mul']`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem pt_eq {ρ : ℕ} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] (B1 : B.RealPlaceData k (ρ + 1) Wp Wq) (B0 : B.RealPlaceData k ρ Wp Wq)

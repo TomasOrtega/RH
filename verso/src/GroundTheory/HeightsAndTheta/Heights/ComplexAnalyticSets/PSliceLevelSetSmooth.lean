@@ -33,53 +33,53 @@ def pot (ψ : ℝ → ℝ) (c u : ℝ) : ℝ := ∫ r in c..u, prim ψ c r
 variable {ψ : ℝ → ℝ}
 
 /- English proof (translation)
-The claim follows from `(hψ.integral_hasStrictDerivAt c u).hasDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_prim (hψ : Continuous ψ) (c u : ℝ) : HasDerivAt (prim ψ c) (ψ u) u :=
   (hψ.integral_hasStrictDerivAt c u).hasDerivAt
 
 /- English proof (translation)
-The claim follows from `continuous_iff_continuousAt.2 fun u => (hasDerivAt_prim hψ c u).continuousAt`.
+A detailed English derivation is pending.
 -/
 theorem continuous_prim (hψ : Continuous ψ) (c : ℝ) : Continuous (prim ψ c) :=
   continuous_iff_continuousAt.2 fun u => (hasDerivAt_prim hψ c u).continuousAt
 
 /- English proof (translation)
-The claim follows from `funext fun u => (hasDerivAt_prim hψ c u).deriv`.
+A detailed English derivation is pending.
 -/
 theorem deriv_prim (hψ : Continuous ψ) (c : ℝ) : deriv (prim ψ c) = ψ :=
   funext fun u => (hasDerivAt_prim hψ c u).deriv
 
 /- English proof (translation)
-The claim follows from `((continuous_prim hψ c).integral_hasStrictDerivAt c u).hasDerivAt`.
+A detailed English derivation is pending.
 -/
 theorem hasDerivAt_pot (hψ : Continuous ψ) (c u : ℝ) : HasDerivAt (pot ψ c) (prim ψ c u) u :=
   ((continuous_prim hψ c).integral_hasStrictDerivAt c u).hasDerivAt
 
 /- English proof (translation)
-The claim follows from `funext fun u => (hasDerivAt_pot hψ c u).deriv`.
+A detailed English derivation is pending.
 -/
 theorem deriv_pot (hψ : Continuous ψ) (c : ℝ) : deriv (pot ψ c) = prim ψ c :=
   funext fun u => (hasDerivAt_pot hψ c u).deriv
 
 /- English proof (translation)
-The claim follows from `contDiff_infty_iff_deriv.2 ⟨fun u => (hasDerivAt_prim hψ.continuous c u).differentiableAt, by rw [deriv_prim hψ.continuous]; exact hψ⟩`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_prim (hψ : ContDiff ℝ ∞ ψ) (c : ℝ) : ContDiff ℝ ∞ (prim ψ c) :=
   contDiff_infty_iff_deriv.2 ⟨fun u => (hasDerivAt_prim hψ.continuous c u).differentiableAt, by
     rw [deriv_prim hψ.continuous]; exact hψ⟩
 
 /- English proof (translation)
-The claim follows from `contDiff_infty_iff_deriv.2 ⟨fun u => (hasDerivAt_pot hψ.continuous c u).differentiableAt, by rw [deriv_pot hψ.continuous]; exact contDiff_prim hψ c⟩`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_pot (hψ : ContDiff ℝ ∞ ψ) (c : ℝ) : ContDiff ℝ ∞ (pot ψ c) :=
   contDiff_infty_iff_deriv.2 ⟨fun u => (hasDerivAt_pot hψ.continuous c u).differentiableAt, by
     rw [deriv_pot hψ.continuous]; exact contDiff_prim hψ c⟩
 
 /- English proof (translation)
-Establish `hEq : Set.EqOn ψ (fun _ => (0 : ℝ)) (Set.uIcc c u)` using `fun r hr => by`. Rewrite `hr` using `[Set.uIcc_of_le hu]`. Conclude with `hψz r hr.1`. Unfold `prim`. Rewrite using `[intervalIntegral.integral_congr hEq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem prim_eq_zero {c : ℝ} (hψz : ∀ r, c ≤ r → ψ r = 0) {u : ℝ} (hu : c ≤ u) : prim ψ c u = 0 := by
   have hEq : Set.EqOn ψ (fun _ => (0 : ℝ)) (Set.uIcc c u) := fun r hr => by
@@ -90,9 +90,9 @@ theorem prim_eq_zero {c : ℝ} (hψz : ∀ r, c ≤ r → ψ r = 0) {u : ℝ} (h
   simp
 
 /- English proof (translation)
-Establish `hEq : Set.EqOn (prim ψ c) (fun _ => (0 : ℝ)) (Set.uIcc c u)` using `fun r hr => by`. Rewrite `hr` using `[Set.uIcc_of_le hu]`. Conclude with `prim_eq_zero hψz hr.1`. Unfold `pot`. Rewrite using `[intervalIntegral.integral_congr hEq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem pot_eq_zero {c : ℝ} (hψz : ∀ r, c ≤ r → ψ r = 0) {u : ℝ} (hu : c ≤ u) : pot ψ c u = 0 := by
   have hEq : Set.EqOn (prim ψ c) (fun _ => (0 : ℝ)) (Set.uIcc c u) := fun r hr => by
@@ -103,7 +103,7 @@ theorem pot_eq_zero {c : ℝ} (hψz : ∀ r, c ≤ r → ψ r = 0) {u : ℝ} (hu
   simp
 
 /- English proof (translation)
-Unfold `prim`. Rewrite using `[← Real.norm_eq_abs, intervalIntegral.norm_integral_eq_norm_integral_uIoc]`. Use `(norm_integral_le_integral_norm _).trans ?_` and prove the remaining obligations. Simplify using `only [Real.norm_eq_abs]`. Conclude with `setIntegral_le_integral hint.abs (Eventually.of_forall fun _ => abs_nonneg _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem abs_prim_le (hint : Integrable ψ) (c u : ℝ) : |prim ψ c u| ≤ ∫ r, |ψ r| := by
   unfold prim
@@ -113,7 +113,7 @@ theorem abs_prim_le (hint : Integrable ψ) (c u : ℝ) : |prim ψ c u| ≤ ∫ r
   exact setIntegral_le_integral hint.abs (Eventually.of_forall fun _ => abs_nonneg _)
 
 /- English proof (translation)
-Establish `hH : hessC (fun _ : Fin (D + 1) → ℂ => a) y = 0`. Use extensionality with `i j`. Simplify using `[hessC]`. Unfold `maDens`. Rewrite using `[ChartMassCompact.mdisc_coord_zero _ 0 (by simpa using hH)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -131,11 +131,9 @@ section Sheets
 variable {n e : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin (e + 1)) (Fin n) ℂ}
 
 /- English proof (translation)
-Take `⟨-, rfl⟩` from `hx`. Establish `hsx : s (A *ᵥ x) = x` using `hs.choose_spec.2.2.2.1`. Establish `hG : ContDiffAt ℝ 2 (L ∘ s) (A *ᵥ x)` using `StokesOffDiscriminant.contDiffAt_comp_sheet hL hs`. Establish `hcons : (fun k => (fun _ => L : Fin (e + 1) → (Fin n → ℂ) → ℝ) k ∘ s) = Fin.cons (L ∘ s) (fun _ : Fin e => L ∘ s)`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `Fin.cases rfl (fun _ => rfl) k`. Establish `hch` using `(hchain e (fun _ => L ∘ s) F (L ∘ s) (A *ᵥ x) hF hG).1`. Establish `hLx : (L ∘ s) (A *ᵥ x) = L x` using `by simp [hsx]`. Rewrite `hch` using `[hLx]`. Rewrite using `[vecCons_comp, hcons]`.
-
-Conclude with `hch`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sheet_eq (hchain : MaDensChain.Statement) {F : ℝ → ℝ} (hF : ContDiff ℝ 2 F) (L : (Fin n → ℂ) → ℝ)
     (hL : SmoothNear (zeroSet I) L) {x : Fin n → ℂ} {y : Fin (e + 1) → ℂ}
@@ -159,31 +157,29 @@ theorem sheet_eq (hchain : MaDensChain.Statement) {F : ℝ → ℝ} (hF : ContDi
 end Sheets
 
 /- English proof (translation)
-Establish `hψcont` using `hψs.continuous`. Establish `hψint : Integrable ψ` using `hψcont.integrable_of_hasCompactSupport hψc`. Take `⟨b, hb⟩` from `hψc.isCompact.bddAbove`. Establish `hψz : ∀ r, b + 1 ≤ r → ψ r = 0` using `fun r hr => image_eq_zero_of_notMem_tsupport fun hmem => by linarith [hb hmem]`. Take `⟨U, hU, hSU, hLU⟩` from `hL`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hLc : ContinuousOn L (zeroSet I)` using `hLU.continuousOn.mono hSU`. Establish `hΦ : ContDiff ℝ ∞ (pot ψ (b + 1))` using `contDiff_pot hψs (b + 1)`. Establish `hΦ2 : ContDiff ℝ 2 (pot ψ (b + 1))` using `hΦ.of_le (WithTop.coe_le_coe.mpr le_top)`. Establish `hf : SmoothNear (zeroSet I) (pot ψ (b + 1) ∘ L)` using `⟨U, hU, hSU, hΦ.comp_contDiffOn hLU⟩`. Establish `hfc : HasCompactSupport (pot ψ (b + 1) ∘ L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨K, hK, hKL⟩` from `hLK (b + 1)`. Conclude with `HasCompactSupport.intro hK fun x hx => pot_eq_zero hψz (hKL x hx).le`. Establish `hsm : ∀ i, SmoothNear (zeroSet I) ((fun _ => L : Fin e → (Fin n → ℂ) → ℝ) i)` using `fun _ => ⟨U, hU, hSU, hLU⟩`. Establish `hsm' : ∀ i, SmoothNear (zeroSet I) ((vecCons (pot ψ (b + 1) ∘ L) fun _ => L : Fin (e + 1) → (Fin n → ℂ) → ℝ) i)`. Introduce `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.cases ?_ (fun j => ?_) i` and prove the remaining obligations. Conclude with `hf`. Conclude with `⟨U, hU, hSU, hLU⟩`. Establish `hfin : ∀ y, (fibre I A y).Finite` using `fun y => IndefiniteRowSideFullHecke.ComplexSets.fibre_finite hA y`. Establish `ha : Integrable (chartDens I A (fun _ => 1) (vecCons (pot ψ (b + 1) ∘ L) fun _ => L))` using `CutOffBoundaryBound.integrable_chartDens hCM hI hdim hA continuousOn_const hsm' (Or.inr ⟨0, hfc⟩)`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hPc : ContinuousOn (prim ψ (b + 1) ∘ L) (zeroSet I)` using `(continuous_prim hψcont (b + 1)).comp_continuousOn hLc`. Establish `hbm : Measurable (chartDens I A (prim ψ (b + 1) ∘ L) fun _ => L)` using `CutOffBoundaryBound.measurable_chartDens hI hdim hA hPc fun _ => ⟨U, hU, hSU, hLU⟩`. Establish `hbpt : ∀ y, |chartDens I A (prim ψ (b + 1) ∘ L) (fun _ => L) y| ≤ (∫ r, |ψ r|) * chartAbsDens I A (fun _ => 1) (fun _ => L) y`. Introduce `y`. Establish `hle` using `SliceCutChain.abs_chartDens_le_add hfin (prim ψ (b + 1) ∘ L) (fun _ => 0) (fun _ => 1) (fun _ => L) (∫ r, |ψ r|) (fun y x _ s _ => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.comp_apply, zero_mul, abs_zero, one_mul, zero_add, abs_mul]`. Conclude with `mul_le_mul_of_nonneg_right (abs_prim_le hψint _ _) (abs_nonneg _)) y`. Establish `h0 : chartAbsDens I A (fun _ => (0 : ℝ)) (fun _ => L) y = 0`. Simplify using `[chartAbsDens, sheetSum]`. Rewrite `hle` using `[h0, zero_add]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hbi : Integrable (chartDens I A (prim ψ (b + 1) ∘ L) fun _ => L)` using `(hMint.const_mul _).mono' hbm.aestronglyMeasurable (Eventually.of_forall fun y => by`. Rewrite using `[Real.norm_eq_abs]`. Conclude with `hbpt y)`. Establish `hpt : ∀ y, sheetSum I A (fun x s => |ψ (L x) * gradDens (fun _ : Fin e => L ∘ s) (L ∘ s) (L ∘ s) y|) y = chartDens I A (fun _ => 1) (vecCons (pot ψ (b + 1) ∘ L) fun _ => L) y - chartDens I A (prim ψ (b + 1) ∘ L) (fun _ => L) y`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Establish `hc` using `SliceCutChain.sheetSum_combo (hfin y) 1 0 (fun x s => (fun _ => (1 : ℝ)) x * maDens (fun k => (vecCons (pot ψ (b + 1) ∘ L) fun _ => L : Fin (e + 1) → (Fin n → ℂ) → ℝ) k ∘ s) y) (fun x s => (prim ψ (b + 1) ∘ L) x * maDens (fun k => (fun _ => L : Fin (e + 1) → (Fin n → ℂ) → ℝ) k ∘ …`. Rewrite using `[sheet_eq hchain hΦ2 L ⟨U, hU, hSU, hLU⟩ hx hs, deriv_pot hψcont, deriv_prim hψcont, abs_of_nonneg (mul_nonneg (hψ0 _) (hpos y x s hx hs))]`. Simplify using `only [Function.comp_apply]`. Use the proof step `ring)`. Unfold `chartDens`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Combine the linear relations using `[hc]`. Establish `hStk` using `hS n e I A (pot ψ (b + 1) ∘ L) (fun _ => 1) (fun _ => L) hI hdim hA hf (smoothNear_of_contDiff contDiff_const) hsm (Or.inl hfc)`. Establish `hzero : chartInt I A (pot ψ (b + 1) ∘ L) (vecCons (fun _ => 1) fun _ => L) = 0`. Establish `h0 : chartDens I A (pot ψ (b + 1) ∘ L) (vecCons (fun _ => 1) fun _ => L) = fun _ => 0`. Use function extensionality and compare the values at `y`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `chartDens`. Rewrite using `[CutOffDominated.sheetSum_eq_sum _ (hfin y)]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Use `split_ifs with hs`. Rewrite using `[vecCons_comp]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `mul_eq_zero_of_right _ (maDens_cons_const 1 _ _)`. Both sides reduce to the same expression. Unfold `chartInt`. Rewrite using `[h0, integral_zero]`. Establish `haint : ∫ y, chartDens I A (fun _ => 1) (vecCons (pot ψ (b + 1) ∘ L) fun _ => L) y = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `hStk.symm.trans hzero` as an intermediate fact. Conclude with `this`. Use `⟨(ha.sub hbi).congr (Eventually.of_forall fun y => by` and prove the remaining obligations. Simplify using `only [Pi.sub_apply]`. Conclude with `(hpt y).symm), ?_⟩`.
-
-Establish `hT : (∫ y, sheetSum I A (fun x s => |ψ (L x) * gradDens (fun _ : Fin e => L ∘ s) (L ∘ s) (L ∘ s) y|) y) = ∫ y, (chartDens I A (fun _ => 1) (vecCons (pot ψ (b + 1) ∘ L) fun _ => L) y - chartDens I A (prim ψ (b + 1) ∘ L) (fun _ => L) y)` using `integral_congr_ae (Eventually.of_forall hpt)`. Rewrite using `[hT, integral_sub ha hbi, haint, zero_sub, ← integral_neg]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_const_mul, mul_comm]`.
+A detailed English derivation is pending.
 -/
 theorem core {n e : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin (e + 1)) (Fin n) ℂ}
     (hS : StokesOnChart.Statement) (hchain : MaDensChain.Statement) (hCM : ChartMassCompact.Statement)
@@ -297,13 +293,13 @@ theorem core {n e : ℕ} {I : Ideal (MvPolynomial (Fin n) ℂ)} {A : Matrix (Fin
 end SliceLevelSetSmooth
 
 /- English proof (translation)
-Introduce `n e h W g ℓ A ψ hW hg hℓ hA hψs hψc hψ0`. Take `⟨hIp, hIdim, -⟩` from `SliceIdeal.proof n (e + 1) W g ℓ hW hg hℓ`. Establish `hMint` using `h₅ n (e + 1) h (W ⊔ Ideal.span {linForm ℓ - 1}) ℓ A hIp (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)) hIdim hA`. Establish `hslice0 : ∀ x ∈ zeroSet (W ⊔ Ideal.span {linForm ℓ - 1}), x ≠ 0`. Introduce `x hx hx0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hx _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self _))` as an intermediate fact. Substitute `hx0` using the available equality. Simplify using `[linForm] at this`. Establish `hLK : ∀ c : ℝ, ∃ K : Set (Fin n → ℂ), IsCompact K ∧ ∀ x ∉ K, c < Real.log (h.dualNorm x)` using `fun c => ⟨_, SliceCut.isCompact_sublevel h (Real.exp c), fun x hx => by`. Establish `hx' : Real.exp c < h.dualNorm x` using `lt_of_not_ge hx`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(Real.lt_log_iff_exp_lt ((Real.exp_pos c).trans hx')).2 hx'⟩`. Establish `hpos : ∀ y x s, x ∈ fibre (W ⊔ Ideal.span {linForm ℓ - 1}) A y → IsSheetAt (W ⊔ Ideal.span {linForm ℓ - 1}) A x s → 0 ≤ gradDens (fun _ : Fin e => (fun x => Real.log (h.dualNorm x)) ∘ s) ((fun x => Real.log (h.dualNorm x)) ∘ s) ((fun x => Real.log (h.dualNorm x)) ∘ s) y`. Introduce `y x s hx hs`. Take `⟨hxZ, rfl⟩` from `hx`. Use `h₂ n e h s (A *ᵥ x) _ (CutOffBoundaryBound.analyticAt_of_isSheetAt hs) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs.choose_spec.2.2.2.1]`. Conclude with `hslice0 x hxZ`. Conclude with `SliceLevelSetSmooth.core h₁ h₃ h₄ hIp hIdim hA _ (smoothNear_log_dualNorm_slice h W ℓ) hLK hpos hMint ψ hψs hψc hψ0`.
+A detailed English derivation is pending.
 -/
 theorem SliceLevelSetSmooth.proof (h₁ : StokesOnChart.Statement) (h₂ : LogNormGradDensNonneg.Statement)
     (h₃ : MaDensChain.Statement) (h₄ : ChartMassCompact.Statement) (h₅ : SliceMassFinite.Statement) :

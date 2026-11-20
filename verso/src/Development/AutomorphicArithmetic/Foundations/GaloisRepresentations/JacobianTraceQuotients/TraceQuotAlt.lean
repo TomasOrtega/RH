@@ -7,33 +7,29 @@ open UpperTheory.Gal.LocD UpperTheory.Gal.InertialTypesAlt.G UpperTheory.Gal.Joi
 open scoped Classical
 
 /- English proof (translation)
-Introduce `V W _ _ _ _ S _ B p T hB hBT hnil`. Establish `hTP : ∀ y ∈ Submodule.map p S, T y ∈ Submodule.map p S`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Conclude with `⟨B v, hB v, hBT v hv⟩`. Establish `hBS : ∀ v ∈ S, B v ∈ S` using `fun v _ => hB v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hRS : LinearMap.range B ≤ S`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `hB v`. Use `haveI : FiniteDimensional ℂ (LinearMap.range B) := Submodule.finiteDimensional_of_le hRS`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `trIn`. Rewrite using `[dif_pos hTP]`. Establish `h1 : LinearMap.trace ℂ (LinearMap.range B) (B.restrict (fun x _ => (⟨x, rfl⟩ : B x ∈ LinearMap.range B))) = LinearMap.trace ℂ S (B.restrict hBS)`. Establish `key` using `LinearMap.trace_restrict_eq_of_forall_mem ((LinearMap.range B).comap S.subtype) (B.restrict hBS) (fun x => show B x ∈ LinearMap.range B from ⟨x, rfl⟩)`. Rewrite using `[← key, ← LinearMap.trace_conj' _ (Submodule.comapSubtypeEquivOfLe hRS)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[h1]`. Use `set q : S →ₗ[ℂ] Submodule.map p S := p.submoduleMap S with hqdef`. Establish `hq : Function.Surjective q` using `p.submoduleMap_surjective S`. Use `haveI : FiniteDimensional ℂ (Submodule.map p S) := Module.Finite.of_surjective q hq`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Take `⟨s, hs⟩` from `q.exists_rightInverse_of_surjective (LinearMap.range_eq_top.mpr hq)`. Use `set BS := B.restrict hBS with hBSdef`. Use `set TP := T.restrict hTP with hTPdef`. Establish `hint : q ∘ₗ BS = TP ∘ₗ q`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `hBT x.1 x.2`. Establish `hT : TP = q ∘ₗ (BS ∘ₗ s)`. Rewrite using `[← LinearMap.comp_assoc, hint, LinearMap.comp_assoc, hs, LinearMap.comp_id]`. Rewrite using `[hT, LinearMap.trace_comp_comm']`. Use `set E : S →ₗ[ℂ] S := LinearMap.id - s ∘ₗ q with hEdef`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsplit : BS = (BS ∘ₗ s) ∘ₗ q + BS ∘ₗ E`. Use extensionality with `x`. Simplify using `[hEdef]`. Establish `hqs : ∀ y, q (s y) = y` using `fun y => LinearMap.congr_fun hs y`. Establish `hqB : ∀ y : S, q y = 0 → q (BS y) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Use `LinearMap.congr_fun hint y` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[this, hy, map_zero]`. Establish `hzero : LinearMap.trace ℂ S (BS ∘ₗ E) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.trace_comp_comm']`. Establish `hK : ∀ x, (E ∘ₗ BS) x ∈ LinearMap.ker q`. Introduce `x`. Simplify using `[hEdef, hqs]`. Rewrite using `[← LinearMap.trace_restrict_eq_of_forall_mem _ _ hK]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `set f := (E ∘ₗ BS).restrict (fun x _ => hK x) with hfdef`. Apply `IsNilpotent.eq_zero` to reduce the goal to its premises. Apply `LinearMap.isNilpotent_trace_of_isNilpotent` to reduce the goal to its premises. Rewrite using `[Module.End.isNilpotent_iff_of_finite]`. Introduce `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hk0 : q k.1 = 0` using `k.2`. Establish `hpk : p k.1.1 = 0` using `congrArg Subtype.val hk0`. Take `⟨m, hm⟩` from `hnil k.1.1 k.1.2 hpk`. Use `⟨m, ?_⟩` and prove the remaining obligations. Establish `step : ∀ n : ℕ, ((f ^ n) k).1.1 = (B ^ n) k.1.1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => rfl`. Consider the case `succ n ih`. Rewrite using `[pow_succ', Module.End.mul_apply, pow_succ', Module.End.mul_apply, ← ih]`.
-
-Establish `hy : q ((f ^ n) k).1 = 0` using `((f ^ n) k).2`. Use `show ((E (BS ((f ^ n) k).1)) : V) = B ((f ^ n) k).1.1`. Rewrite using `[hEdef, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.comp_apply, hqB _ hy, map_zero, sub_zero]`. Both sides reduce to the same expression. Apply `Subtype.ext` to reduce the goal to its premises.
-
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[step]`. Simplify using `using hm`. Use `conv_lhs => rw [hsplit]`. Rewrite using `[map_add, hzero, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Join.traceQuot :
     UpperTheory.Gal.Join.TraceQuot := by

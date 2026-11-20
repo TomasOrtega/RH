@@ -5,15 +5,15 @@ open Formalism.REAL (UJ KG toM toMK muK expG inG Jm Kset)
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `n ε Z`. Establish `key : ∀ a b, (Zᴴ * Jm ε + Jm ε * Z) a b = (starRingEnd ℂ) (Z b a) * (if ε b then (1 : ℂ) else -1) + (if ε a then (1 : ℂ) else -1) * Z a b`. Introduce `a b`. Simplify using `[Jm, Matrix.add_apply, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.conjTranspose_apply]`. Unfold `inG`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h a b`. Establish `hb` using `congrFun (congrFun h b) a`. Rewrite `hb` using `[key]`. Simplify using `only [Matrix.zero_apply] at hb`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε a) with ha | ha <;>`. Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε b) with hb' | hb' <;>`. Apply the tactic sequence `simp only [ha, hb', if_true, Bool.false_eq_true, if_false] at hb ⊢ <;>`. Apply the tactic sequence `first | linear_combination hb | linear_combination -hb`. Introduce `h`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Rewrite using `[key]`. Simplify using `only [Matrix.zero_apply]`. Establish `hb` using `h b a`. Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε a) with ha | ha <;>`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases Bool.eq_false_or_eq_true (ε b) with hb' | hb' <;>`. Apply the tactic sequence `simp only [ha, hb', if_true, Bool.false_eq_true, if_false] at hb ⊢ <;>`. Apply the tactic sequence `first | linear_combination hb | linear_combination -hb`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem pcLieEntry : ∀ (n : ℕ) (ε : Fin n → Bool) (Z : Matrix (Fin n) (Fin n) ℂ), inG ε Z ↔ ∀ a b, (starRingEnd ℂ) (Z a b) = -((if ε a then (1 : ℂ) else -1) * (if ε b then (1 : ℂ) else -1) * Z b a) := by
   intro n ε Z

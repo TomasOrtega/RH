@@ -10,18 +10,18 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Simplify using `only [rhoV]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem rearr_gap (n : ℕ) (a b : Fin n) : rhoV n a - rhoV n b = ((b : ℕ) : ℝ) - ((a : ℕ) : ℝ) := by
   simp only [rhoV]
   ring
 
 /- English proof (translation)
-Establish `hm : Monovary x y` using `hx.monovary hy`. Use `⟨hm.sum_mul_comp_perm_le_sum_mul, fun sx sy he => ?_⟩` and prove the remaining obligations. Establish `h2` using `hm.sum_mul_comp_perm_eq_sum_mul_iff.1 he`. Establish `hmono : StrictMono w`. Introduce `i j hij`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Break down `hc.lt_or_eq with hlt | heq` into its components or cases. Conclude with `absurd (h2 (show y (w i) < y (w j) from sy hlt)) (not_le.2 (sx hij))`. Conclude with `absurd (w.injective heq) (ne_of_gt hij)`.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `hmono.eq_id` as an intermediate fact. Use extensionality with `i`. Simplify using `[this]`.
+A detailed English derivation is pending.
 -/
 private theorem sum_mul_perm_le_and_eq_one_of_antitone {n : ℕ} (x y : Fin n → ℝ) (hx : Antitone x) (hy : Antitone y) (w : Equiv.Perm (Fin n)) :
     ∑ a, x a * y (w a) ≤ ∑ a, x a * y a ∧
@@ -41,11 +41,11 @@ private theorem sum_mul_perm_le_and_eq_one_of_antitone {n : ℕ} (x y : Fin n �
   simp [this]
 
 /- English proof (translation)
-Use `⟨?_, ⟨_, rfl⟩, fun hx => ?_, fun w => ?_, ?_⟩` and prove the remaining obligations. Introduce `a b hab`. Use `Tuple.monotone_sort (fun a => -x a) hab` as an intermediate fact. Simplify `this` using `[domC]`. Establish `: Tuple.sort (fun a => -x a) = Equiv.refl (Fin n)` using `Tuple.sort_eq_refl_iff_monotone.2 (fun a b hab => neg_le_neg (hx hab))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `[domC, this]`. Establish `h` using `Tuple.comp_perm_comp_sort_eq_comp_sort (f := fun a => -x a) (σ := w)`. Use function extensionality and compare the values at `a`. Use `show (x ∘ w) ((Tuple.sort ((fun a => -x a) ∘ w)) a) = x ((Tuple.sort fun a => -x a) a)`. Use `congrFun h a` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, neg_inj] at this`. Conclude with `this`. Unfold `nsq domC`. Conclude with `Equiv.sum_comp (Tuple.sort fun a => -x a) (fun a => x a ^ 2)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem rearr_lemma_2 {n : ℕ} (x : Fin n → ℝ) :
     Antitone (domC x) ∧ (∃ w : Equiv.Perm (Fin n), domC x = x ∘ w) ∧ (Antitone x → domC x = x) ∧
@@ -67,9 +67,9 @@ private theorem rearr_lemma_2 {n : ℕ} (x : Fin n → ℝ) :
     exact Equiv.sum_comp (Tuple.sort fun a => -x a) (fun a => x a ^ 2)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `h1 : ((a : ℕ) : ℝ) < ((b : ℕ) : ℝ)` using `by exact_mod_cast hab`. Combine the linear relations using `[rearr_gap n a b]`. Unfold `Dom`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Introduce `a b hab`. Use `⟨(b : ℕ) - (a : ℕ), ?_⟩` and prove the remaining obligations. Rewrite using `[rearr_gap, Nat.cast_sub (Fin.lt_def.mp hab).le]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem strictAnti_rhoV_and_dom_rhoV (n : ℕ) : StrictAnti (rhoV n) ∧ Dom (rhoV n) := by
   constructor
@@ -82,21 +82,21 @@ private theorem strictAnti_rhoV_and_dom_rhoV (n : ℕ) : StrictAnti (rhoV n) ∧
     rw [rearr_gap, Nat.cast_sub (Fin.lt_def.mp hab).le]
 
 /- English proof (translation)
-Unfold `Dom at hx`. Establish `hint : ∀ a b, ∃ k : ℤ, (x - rhoV n) a - (x - rhoV n) b = k`. Introduce `a b`. Break down `lt_trichotomy a b with h | h | h` into its components or cases. Take `⟨m, hm⟩` from `hx a b h`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Use `⟨(m : ℤ) - ((b : ℕ) : ℤ) + ((a : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply]`. Use `push_cast`. Combine the linear relations using `[rearr_gap n a b]`. Conclude with `⟨0, by simp [h]⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Supply the required witnesses or components.
 
-Take `⟨m, hm⟩` from `hx b a h`. Use `⟨-(m : ℤ) + ((a : ℕ) : ℤ) - ((b : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.sub_apply]`. Use `push_cast`. Combine the linear relations using `[rearr_gap n b a]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `⟨fun a b hab => ?_, ?_⟩` and prove the remaining obligations. Break down `hab.lt_or_eq with h | h` into its components or cases. Take `⟨m, hm⟩` from `hx a b h`. Establish `: (0 : ℝ) ≤ m` using `Nat.cast_nonneg m`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[h]`. Unfold `Dom`. Introduce `a b hab`. Take `⟨w, hw⟩` from `(rearr_lemma_2 (x - rhoV n)).2.1`. Establish `hanti` using `(rearr_lemma_2 (x - rhoV n)).1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨k, hk⟩` from `hint (w a) (w b)`. Establish `hk0 : (0 : ℝ) ≤ k`. Use `hanti hab.le` as an intermediate fact. Rewrite `this` using `[hw]`. Simplify using `only [Function.comp_apply] at this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk1 : (0 : ℤ) ≤ k` using `by exact_mod_cast hk0`. Use `⟨k.toNat, ?_⟩` and prove the remaining obligations. Rewrite using `[hw]`. Simplify using `only [Function.comp_apply]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hk, ← Int.cast_natCast, Int.toNat_of_nonneg hk1]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem antitone_and_dom_domC_sub_rhoV_of_dom (n : ℕ) (x : Wt n) (hx : Dom x) : Antitone x ∧ Dom (domC (x - rhoV n)) := by
   unfold Dom at hx
@@ -137,9 +137,9 @@ private theorem antitone_and_dom_domC_sub_rhoV_of_dom (n : ℕ) (x : Wt n) (hx :
     rw [hk, ← Int.cast_natCast, Int.toNat_of_nonneg hk1]
 
 /- English proof (translation)
-Establish `hsq : 0 ≤ ∑ a, (x a - y a) ^ 2` using `Finset.sum_nonneg (fun a _ => sq_nonneg _)`. Establish `hexp : ∑ a, (x a - y a) ^ 2 = nsq x - 2 * ∑ a, x a * y a + nsq y`. Unfold `nsq`. Rewrite using `[Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨by linarith, fun h2 => ?_⟩` and prove the remaining obligations. Establish `h0 : ∑ a, (x a - y a) ^ 2 = 0` using `by linarith`. Use function extensionality and compare the values at `a`. Use `(Finset.sum_eq_zero_iff_of_nonneg (fun a _ => sq_nonneg (x a - y a))).1 h0 a (Finset.mem_univ a)` as an intermediate fact. Conclude with `sub_eq_zero.mp (pow_eq_zero_iff (n := 2) (by norm_num) |>.mp this)`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem nsq_le_and_eq_of_nsq_le_sum_mul {n : ℕ} (x y : Fin n → ℝ) (h : nsq x ≤ ∑ a, x a * y a) :
     nsq x ≤ nsq y ∧ (nsq y ≤ nsq x → x = y) := by
@@ -155,7 +155,7 @@ private theorem nsq_le_and_eq_of_nsq_le_sum_mul {n : ℕ} (x y : Fin n → ℝ) 
   exact sub_eq_zero.mp (pow_eq_zero_iff (n := 2) (by norm_num) |>.mp this)
 
 /- English proof (translation)
-Introduce `n`. Conclude with `⟨fun x y hx hy w => sum_mul_perm_le_and_eq_one_of_antitone x y hx hy w, fun x => rearr_lemma_2 x, (strictAnti_rhoV_and_dom_rhoV n).1, (strictAnti_rhoV_and_dom_rhoV n).2, fun x hx => antitone_and_dom_domC_sub_rhoV_of_dom n x hx, fun x y h => nsq_le_and_eq_of_nsq_le_sum_mul x y h⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem UpperTheory.RealTr.rearr :
     ∀ n : ℕ, (∀ x y : Wt n, Antitone x → Antitone y → ∀ w : Equiv.Perm (Fin n), ∑ a, x a * y (w a) ≤ ∑ a, x a * y a ∧

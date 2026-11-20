@@ -5,9 +5,9 @@ open CategoryTheory AlgebraicGeometry TensorProduct
 open UpperTheory.Gal.crystallineComparison
 
 /- English proof (translation)
-Introduce `hsec het l Y T U hU`. Take `⟨hZ, hpts⟩` from `hsec l Y T U hU`. Establish `hfin` using `@IsFinite.finite_app _ _ _ T.fin U hU`. Use `letI : Algebra Γ(Y, U) Γ(T.Z, T.p ⁻¹ᵁ U) := (T.p.app U).hom.toAlgebra`. Use `EtAway.mk hfin (het l Y T U hU) ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `K _ _ _ hl`. Take `⟨e, -⟩` from `hpts K`. Rewrite using `[Nat.card_congr e]`. Conclude with `T.deg K hl _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.etAway_of :
     SecChart → EtChart → EtAwayChart := by

@@ -14,14 +14,14 @@ namespace LineChart
 def lineLift (w : ((k : Unit) → PBlk 2 k) → ℂ) : (Σ k : Unit, PBlk 2 k) → ℂ := fun p => w fun _ => p.2
 
 /- English proof (translation)
-Simplify using `[segre]`.
+Simplify using the standard rewrite rules.
 -/
 theorem segre_line (z : (Σ k : Unit, PBlk 2 k) → ℂ) (i : (k : Unit) → PBlk 2 k) :
     segre z i = z ⟨(), i ()⟩ := by
   simp [segre]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[segre_line]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem segre_lineLift (w : ((k : Unit) → PBlk 2 k) → ℂ) : segre (lineLift w) = w := by
   funext i
@@ -29,7 +29,7 @@ theorem segre_lineLift (w : ((k : Unit) → PBlk 2 k) → ℂ) : segre (lineLift
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨⟨⟩, i⟩` from `p`. Simplify using `only [lineLift, segre_line]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem lineLift_segre (z : (Σ k : Unit, PBlk 2 k) → ℂ) : lineLift (segre z) = z := by
   funext p
@@ -37,9 +37,9 @@ theorem lineLift_segre (z : (Σ k : Unit, PBlk 2 k) → ℂ) : lineLift (segre z
   simp only [lineLift, segre_line]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, -⟩`. Conclude with `h ()`. Introduce `h`. Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `k`. Conclude with `h`. Rewrite `hf` using `[Ideal.mem_bot]`. Substitute `hf` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_mcPts_bot (z : (Σ k : Unit, PBlk 2 k) → ℂ) :
     z ∈ mcPts (⊥ : Ideal (MRing (PBlk 2))) ↔ ∃ i, z ⟨(), i⟩ ≠ 0 := by
@@ -55,7 +55,7 @@ theorem mem_mcPts_bot (z : (Σ k : Unit, PBlk 2 k) → ℂ) :
       simp
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Function.ne_iff.mp hw`. Use `(mem_mcPts_bot _).2 ⟨i (), ?_⟩` and prove the remaining obligations. Simplify `hi` using `[lineLift]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lineLift_mem {w : ((k : Unit) → PBlk 2 k) → ℂ} (hw : w ≠ 0) :
     lineLift w ∈ mcPts (⊥ : Ideal (MRing (PBlk 2))) := by
@@ -64,7 +64,7 @@ theorem lineLift_mem {w : ((k : Unit) → PBlk 2 k) → ℂ} (hw : w ≠ 0) :
   simpa [lineLift] using hi
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `w hw`. Assume the negation of the conclusion as `hne`. Conclude with `hΨ _ (lineLift_mem hne) (by rw [segre_lineLift]; exact hw)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem injective_of_good {Ψ : (((k : Unit) → PBlk 2 k) → ℂ) →ₗ[ℂ] (Fin (1 + 1) → ℂ)}
     (hΨ : IsGoodProj (⊥ : Ideal (MRing (PBlk 2))) Ψ) : Function.Injective Ψ := by
@@ -74,7 +74,7 @@ theorem injective_of_good {Ψ : (((k : Unit) → PBlk 2 k) → ℂ) →ₗ[ℂ] 
   exact hΨ _ (lineLift_mem hne) (by rw [segre_lineLift]; exact hw)
 
 /- English proof (translation)
-Set `Ψ0` to `LinearEquiv.funCongrLeft ℂ ℂ (Equiv.funUnique Unit (Fin 2)).symm`. Use `⟨Ψ0.toLinearMap, fun z hz h0 => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `(mem_mcPts_bot z).1 hz`. Establish `hs : segre z = 0` using `Ψ0.map_eq_zero_iff.mp h0`. Conclude with `hi (by rw [← segre_line z (fun _ => i), hs]; rfl)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_good :
     ∃ Ψ : (((k : Unit) → PBlk 2 k) → ℂ) →ₗ[ℂ] (Fin (1 + 1) → ℂ), IsGoodProj (⊥ : Ideal (MRing (PBlk 2))) Ψ := by
@@ -85,29 +85,25 @@ theorem exists_good :
   exact hi (by rw [← segre_line z (fun _ => i), hs]; rfl)
 
 /- English proof (translation)
-Establish `hex` using `exists_good`. Use `set Ψ := hex.choose with hΨdef`. Establish `hΨ : IsGoodProj (⊥ : Ideal (MRing (PBlk 2))) Ψ` using `hex.choose_spec`. Establish `hinj` using `injective_of_good hΨ`. Establish `hrank : Module.finrank ℂ (((k : Unit) → PBlk 2 k) → ℂ) = Module.finrank ℂ (Fin (1 + 1) → ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Module.finrank_fintype_fun_eq_card, Module.finrank_fintype_fun_eq_card]`. Simplify using the standard rewrite rules. Establish `hsurj` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank hrank).mp hinj`. Use `set E := LinearEquiv.ofBijective Ψ ⟨hinj, hsurj⟩ with hE`. Use `set L := E.symm with hL`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hΨL : ∀ v, Ψ (L v) = v` using `E.apply_symm_apply`. Establish `hLΨ : ∀ w, L (Ψ w) = w` using `E.symm_apply_apply`. Use `⟨L, ?_⟩` and prove the remaining obligations. Establish `hLdiff : Differentiable ℂ fun v => L v` using `(LinearMap.toContinuousLinearMap L.toLinearMap).differentiable`. Establish `hcons : Differentiable ℂ fun y' : Fin 1 → ℂ => (Fin.cons 1 y' : Fin (1 + 1) → ℂ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[differentiable_pi]`. Introduce `c`. Use `Fin.cases ?_ (fun i => ?_) c` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Conclude with `differentiable_const _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Fin.cons_succ]`. Conclude with `differentiable_apply i`. Use `set γ0 : (Fin 1 → ℂ) → (Σ k : Unit, PBlk 2 k) → ℂ := fun y' => lineLift (L (Fin.cons 1 y')) with hγ0`. Establish `hγ0d : ∀ y', DifferentiableAt ℂ γ0 y'`. Introduce `y'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[differentiableAt_pi]`. Introduce `p`. Conclude with `((differentiable_apply (fun _ => p.2)).comp (hLdiff.comp hcons)) y'`. Establish `hγ0mem : ∀ y', γ0 y' ∈ mcPts (⊥ : Ideal (MRing (PBlk 2)))`. Introduce `y'`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hv : (Fin.cons 1 y' : Fin (1 + 1) → ℂ) ≠ 0` using `fun h => one_ne_zero (congrFun h 0)`. Conclude with `lineLift_mem ((L.map_ne_zero_iff).mpr hv)`. Unfold `geomDeg ptsIntegral`. Rewrite using `[dif_pos hex]`. Unfold `ptsIntegralAt`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `y`. Establish `hfib : fibre (⊥ : Ideal (MRing (PBlk 2))) Ψ y = {L (Fin.cons 1 y)}`. Use extensionality with `w`. Simplify using `only [fibre, Set.mem_ofPred_eq, Set.mem_singleton_iff]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, -, -, hw⟩`. Rewrite using `[← hw, hLΨ]`. Introduce and unpack `rfl`. Conclude with `⟨γ0 y, hγ0mem y, segre_lineLift _, hΨL _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsheet : IsSheet (⊥ : Ideal (MRing (PBlk 2))) Ψ y (L (Fin.cons 1 y)) γ0` using `⟨segre_lineLift _, Eventually.of_forall fun y' => ⟨hγ0d y', hγ0mem y', by rw [segre_lineLift, hΨL]⟩⟩`. Rewrite using `[hfib, finsum_mem_singleton]`. Unfold `sheetDensity`. Use `split_ifs with hγ`. Establish `hev : (fun y' => Real.log (A.h (hγ.choose y'))) =ᶠ[𝓝 y] fun y' => Real.log (A.h (lineLift (L (Fin.cons 1 y'))))` using `by filter_upwards [hγ.choose_spec.2] with y' hy'`.
-
-Establish `hs : segre (hγ.choose y') = L (Fin.cons 1 y')`. Rewrite using `[← hLΨ (segre (hγ.choose y')), hy'.2.2]`. Rewrite using `[← hs, lineLift_segre]`. Rewrite using `[one_mul]`. Conclude with `maDensity_congr_of_eventuallyEq fun _ => hev`.
-
-Conclude with `absurd ⟨γ0, hsheet⟩ hγ`.
+A detailed English derivation is pending.
 -/
 theorem geomDeg_eq_integral (A : HermLine (PBlk 2)) :
     ∃ L : (Fin (1 + 1) → ℂ) ≃ₗ[ℂ] (((k : Unit) → PBlk 2 k) → ℂ),

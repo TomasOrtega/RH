@@ -31,7 +31,7 @@ theorem toAdd_ordUnitsHom (x : Kˣ) :
 variable {K} in
 
 /- English proof (translation)
-Take `⟨x, hx, h⟩` from `exists_ord_eq K n`. Use `⟨Units.mk0 x hx, Multiplicative.toAdd.injective ?_⟩` and prove the remaining obligations. Rewrite using `[toAdd_ordUnitsHom, Units.val_mk0, h, toAdd_ofAdd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ordUnitsHom_eq (n : ℤ) :
     ∃ x : Kˣ, ordUnitsHom K x = Multiplicative.ofAdd (n : ℤ̂) := by
@@ -59,15 +59,15 @@ theorem localValuation_apply (a : fixedModule Ωˣ (⊤ : Subgroup (Ω ≃ₐ[K]
 variable {K Ω}
 
 /- English proof (translation)
-Substitute `hL` using the available equality. Set `` to `algebraicValuativeRel K Ω`. Set `` to `algebraicTopology K Ω`. Use `algebraicValuativeRel_valuativeExtension K Ω` as an intermediate fact. Use `algebraicTopology_isValuativeTopology K Ω` as an intermediate fact.
+Substitute using the available equality. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsc : IsSepClosed Ω` using `IsSepClosure.sep_closed K`. Rewrite using `[inertiaDegree_unramifiedDegree_fixingSubgroup]`. Establish `key : ∀ u : Lˣ, ordUnitsHom K (normUnits K L u) = Multiplicative.ofAdd (((residueDegree K L : ℤ) * ord (u : L) : ℤ) : ℤ̂)` using `fun u => by`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_ordUnitsHom, coe_normUnits, ord_norm, toAdd_ofAdd]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `z`. Simplify using `only [MonoidHom.mem_range, Subgroup.mem_map, MonoidHom.comp_apply, powMonoidHom_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, rfl⟩`. Take `⟨x, hx⟩` from `exists_ordUnitsHom_eq (K := K) (ord ((fixedModuleUnitsEquiv L a : Lˣ) : L))`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `⟨_, ⟨baseUnitsEquiv.symm x, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[localValuation_apply, localValuation_apply, MulEquiv.apply_symm_apply, hx, baseUnitsEquiv_norm, key]`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_pow, toAdd_ofAdd, toAdd_ofAdd, Int.cast_mul, Int.cast_natCast, nsmul_eq_mul]`. Introduce and unpack `⟨_, ⟨b, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨y, hy, hy'⟩` from `exists_ord_eq L (ord ((baseUnitsEquiv b : Kˣ) : K))`. Use `⟨(fixedModuleUnitsEquiv L).symm (Units.mk0 y hy), ?_⟩` and prove the remaining obligations. Rewrite using `[localValuation_apply, localValuation_apply, baseUnitsEquiv_norm, MulEquiv.apply_symm_apply, key, Units.val_mk0, hy']`. Apply `Multiplicative.toAdd.injective` to reduce the goal to its premises. Rewrite using `[toAdd_pow, toAdd_ordUnitsHom, toAdd_ofAdd, Int.cast_mul, Int.cast_natCast, nsmul_eq_mul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem range_localValuation_comp_norm_of_eq (H : Subgroup (Ω ≃ₐ[K] Ω))
     [(H.subgroupOf ⊤).FiniteIndex] (L : IntermediateField K Ω) [FiniteDimensional K L]
@@ -106,7 +106,7 @@ theorem range_localValuation_comp_norm_of_eq (H : Subgroup (Ω ≃ₐ[K] Ω))
       Int.cast_natCast, nsmul_eq_mul]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_ordUnitsHom_eq (K := K) n`. Conclude with `⟨baseUnitsEquiv.symm x, by rw [localValuation_apply, MulEquiv.apply_symm_apply, hx]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem intCast_mem_range_localValuation (n : ℤ) :
     Multiplicative.ofAdd (n : ℤ̂) ∈ (localValuation K Ω).range := by
@@ -132,7 +132,7 @@ noncomputable def localClassFieldData : ClassFieldData (Ω ≃ₐ[K] Ω) Ωˣ wh
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem localClassFieldData_deg : (localClassFieldData K Ω).deg = unramifiedDegree K Ω :=
   rfl
@@ -152,11 +152,11 @@ variable {K : Type*} [Field K] [ValuativeRel K] [TopologicalSpace K] [IsNonarchi
   {Ω : Type*} [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
 
 /- English proof (translation)
-Set `` to `algebraicValuativeRel K Ω`. Set `` to `algebraicTopology K Ω`. Use `algebraicValuativeRel_valuativeExtension K Ω` as an intermediate fact. Use `algebraicTopology_isValuativeTopology K Ω` as an intermediate fact. Establish `: Algebra.IsAlgebraic E Ω` using `Algebra.IsAlgebraic.tower_top (K := K) E`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `normal_extendScalars K' L' hEF hK hL` as an intermediate fact. Use `finiteDimensional_extendScalars hEF` as an intermediate fact. Establish `: IsGalois E (IntermediateField.extendScalars hEF)` using `isGalois_iff.2 ⟨inferInstance, inferInstance⟩`. Set `T` to `galoisTateModel K' L' hEF hK hL`. Establish `: IsCyclic (IntermediateField.extendScalars hEF ≃ₐ[E] IntermediateField.extendScalars hEF)` using `isCyclic_of_surjective T.quotientEquiv.toMonoidHom T.quotientEquiv.surjective`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[T.natCard_tateZero, natCard_tateZero_units, T.relIndex_eq_natCard, IsGalois.card_aut_eq_finrank]`. Rewrite using `[T.natCard_tateNegOne, natCard_tateNegOne_units]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCard_tate_of_isCyclic (K' L' : Subgroup (Ω ≃ₐ[K] Ω)) [(L'.subgroupOf K').Normal]
     [(L'.subgroupOf K').FiniteIndex] (E F : IntermediateField K Ω) [FiniteDimensional K E]
@@ -183,7 +183,7 @@ theorem natCard_tate_of_isCyclic (K' L' : Subgroup (Ω ≃ₐ[K] Ω)) [(L'.subgr
 variable (K Ω) in
 
 /- English proof (translation)
-Introduce `U V hVU _ hcyc`. Conclude with `natCard_tate_of_isCyclic (U : Subgroup (Ω ≃ₐ[K] Ω)) (V : Subgroup (Ω ≃ₐ[K] Ω)) (IntermediateField.fixedField (U : Subgroup (Ω ≃ₐ[K] Ω))) (IntermediateField.fixedField (V : Subgroup (Ω ≃ₐ[K] Ω))) (IntermediateField.fixedField_antitone hVU) (fixingSubgroup_fixedField_openSubgroup U …`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem classFieldAxiom_units : ClassFieldAxiom (Ω ≃ₐ[K] Ω) Ωˣ := by
   intro U V hVU _ hcyc
@@ -207,7 +207,7 @@ noncomputable def localClassFieldTheory : ClassFieldTheory (Ω ≃ₐ[K] Ω) Ω�
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem localClassFieldTheory_deg : (localClassFieldTheory K Ω).deg = unramifiedDegree K Ω :=
   rfl

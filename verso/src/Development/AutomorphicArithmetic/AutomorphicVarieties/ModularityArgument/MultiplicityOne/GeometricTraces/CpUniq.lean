@@ -24,9 +24,7 @@ open UpperTheory.V.Z.Mult UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V
 open NumberField IsDedekindDomain GlobalTheory.CuspRep GlobalTheory.PRep Formalism.UG Formalism.BasicNotions GlobalTheory.UnitaryBC Formalism.L2.Host GlobalTheory.BCT GlobalTheory.LFun
 
 /- English proof (translation)
-Establish `hid : e.toLinearEquiv.toLinearMap ∘ₗ LinearMap.id ∘ₗ e.toLinearEquiv.symm.toLinearMap = LinearMap.id`. Use `LinearMap.ext fun v => ?_` and prove the remaining obligations. Conclude with `e.toLinearEquiv.apply_symm_apply v`. Establish `h` using `GlobalTheory.BCT.twTr_conj_equiv G V V' ρ ρ' e K (K ⊓ GlobalTheory.BCT.rStab f ⊓ GlobalTheory.BCT.rStab fun y => f y⁻¹) f LinearMap.id`. Rewrite `h` using `[hid]`.
-
-Conclude with `h.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem trc_of_equiv {G V V' : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup V'] [Module ℂ V']
     {ρ : Representation ℂ G V} {ρ' : Representation ℂ G V'} (e : ρ.Equiv ρ') (K : Subgroup G) (f : G → ℂ) :
@@ -43,7 +41,7 @@ section Split
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {w : Pl E}
 
 /- English proof (translation)
-Rewrite using `[UL, if_pos hw]`. Discharge the goal by the elementary cases of `trivial`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 -/
 private theorem mem_UL (hw : IsSplitAt w) (g : GLw n w) : g ∈ UL n w := by
   rw [UL, if_pos hw]
@@ -58,7 +56,7 @@ private noncomputable def toUL (hw : IsSplitAt w) (τ : SmIrr (GLw n w)) : SmIrr
     exact (GlobalTheory.CuspRep.isIrreducible_iff _).2 ⟨h0, fun W hW => h W fun g x hx => hW ⟨g, mem_UL hw g⟩ x hx⟩
 
 /- English proof (translation)
-Take `⟨-, F, hF0, hFσ, hF⟩` from `h`. Use `⟨{ toFun := fun x => ⟨cLoc w x.1, mem_UL hw _⟩ map_one' := Subtype.ext (by simp) map_mul' := fun a b => Subtype.ext (by simp) }, fun _ => rfl, (toUL hw τ).irred, F, hF0, hFσ, fun x v => hF x v⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 -/
 private theorem isCompU_toUL (hw : IsSplitAt w) {σ : Submodule ℂ (UA E n → ℂ)} {τ : SmIrr (GLw n w)} (h : Cp σ w τ) :
     IsCompU σ w (toUL hw τ) := by
@@ -73,7 +71,7 @@ private noncomputable def equivOfUL (hw : IsSplitAt w) {τ τ' : SmIrr (GLw n w)
 end Split
 
 /- English proof (translation)
-Introduce `E _ _ _ hU n hn σ hσ w hw τ τ' h h'`. Take `⟨e⟩` from `(GlobalTheory.T.exists_unique_admissible_localComponent_definiteUnitary E hU n hn σ hσ w).2 (toUL hw τ) (toUL hw τ') (isCompU_toUL hw h) (isCompU_toUL hw h')`. Establish `e'` using `equivOfUL hw e`. Conclude with `⟨fun B hB => GlobalTheory.PrinSat.hasSatGL_of_equiv e'.symm hB, fun f => trc_of_equiv e' _ f⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem UpperTheory.V.Z.Mult.cpUniq :
     UpperTheory.V.Z.Mult.CpUniq := by

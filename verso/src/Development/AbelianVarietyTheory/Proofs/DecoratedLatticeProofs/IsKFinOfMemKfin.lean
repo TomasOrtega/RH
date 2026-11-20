@@ -18,11 +18,11 @@ noncomputable section
 namespace GlobalTheory.Core.Mi.StepSpans
 
 /- English proof (translation)
-Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h => exact h`. Consider the case `zero => exact ⟨⊥, inferInstance, Submodule.zero_mem _, fun g _ v hv => by`. Rewrite using `[(Submodule.mem_bot _).1 hv, map_zero]`. Conclude with `Submodule.zero_mem _⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨S₁, h1, h2, h3⟩` from `hx`. Take `⟨S₂, k1, k2, k3⟩` from `hy`. Use `⟨S₁ ⊔ S₂, inferInstance, Submodule.add_mem_sup h2 k2, fun g hg v hv => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.1 hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (h3 g hg a ha) (k3 g hg b hb)`. Consider the case `smul c x _ hx`. Take `⟨S₁, h1, h2, h3⟩` from `hx`. Conclude with `⟨S₁, h1, S₁.smul_mem c h2, h3⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isKFin_of_mem_kfin {D : D7} {V : HSp D} {S : D.what₂.Tau → SPar} (M : DSModel V S) (τ : D.what₂.Tau) {x : M.H τ}
     (hx : x ∈ GlobalTheory.IndefiniteRowSideFullHecke.ThetaSourceAction.kfin M τ) : IsKFin (M.ε τ) (M.σ τ) x := by

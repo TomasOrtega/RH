@@ -32,7 +32,7 @@ variable {H : Type} [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [Measu
   {Γ : Subgroup H} [Countable Γ] {𝓕 : Set H}
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.integrableOn_fundamentalDomain_mul_right h𝓕 y (fun h => star (F h) * F h) (fun γ hγ h => by simp only [hl γ hγ]) hi`. Establish `hm : AEStronglyMeasurable (fun h => F (h * y)) (μ.restrict 𝓕)` using `(hc.comp (continuous_mul_right y)).aestronglyMeasurable`. Rewrite using `[memLp_two_iff_integrable_sq_norm hm]`. Use `h1.norm.congr (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `[sq]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem memLp_translate (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) {F : H → ℂ} (hc : Continuous F)
     (hl : ∀ γ ∈ Γ, ∀ h, F (γ * h) = F h) (hi : IntegrableOn (fun h => star (F h) * F h) 𝓕 μ) (y : H) :
@@ -46,15 +46,15 @@ theorem memLp_translate (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) {F : H → ℂ}
   simp [sq]
 
 /- English proof (translation)
-Establish `hint : ∀ y y', IntegrableOn (fun h => star (F (h * y)) * F' (h * y')) 𝓕 μ` using `fun y y' => ((memLp_translate h𝓕 hc hl hi y).star).integrable_mul (memLp_translate h𝓕 hc' hl' hi' y')`. Establish `hu : ∀ γ ∈ Γ, ∀ h, (fun h => star (F (h * x)) * F' h) (γ * h) = (fun h => star (F (h * x)) * F' h) h`. Introduce `γ hγ h`. Simplify using `only [hl' γ hγ, mul_assoc, hl γ hγ]`. Establish `h1 : ∀ a ∈ A, ∫ h in 𝓕, star (F (h * a)) * F' h ∂μ = ∫ h in 𝓕, star (F (h * x)) * F' h ∂μ`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a ha`. Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `hA a ha`. Use `Eq.trans ?_ (GlobalTheory.setIntegral_fundamentalDomain_mul_right h𝓕 k₁ (fun h => star (F (h * x)) * F' h) hu)` and prove the remaining obligations. Use `congr 1`. Use function extensionality and compare the values at `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hr' k₁ hk₁, ← mul_assoc, hr k₂ hk₂, ← mul_assoc]`. Establish `h2 : ∀ a ∈ A', ∫ h in 𝓕, star (F h) * F' (h * a) ∂μ = ∫ h in 𝓕, star (F (h * x)) * F' h ∂μ`. Introduce `a ha`. Take `⟨k₁, hk₁, k₂, hk₂, rfl⟩` from `hA' a ha`. Use `Eq.trans ?_ (GlobalTheory.setIntegral_fundamentalDomain_mul_right h𝓕 (k₁ * x⁻¹) (fun h => star (F (h * x)) * F' h) hu)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `h`. Establish `: h * (k₁ * x⁻¹) * x = h * k₁` using `by group`. Simplify using `only [this]`. Rewrite using `[hr k₁ hk₁, ← mul_assoc, hr' k₂ hk₂]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Repeatedly rewrite using `[star_sum, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[integral_finset_sum _ fun a _ => by simpa [IntegrableOn] using hint a 1, integral_finset_sum _ fun a _ => by simpa [IntegrableOn] using hint 1 a, Finset.sum_congr rfl h1, Finset.sum_congr rfl h2, Finset.sum_const, Finset.sum_const, hcard]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_adjoint (h𝓕 : IsFundamentalDomain Γ 𝓕 μ) (K : Subgroup H) (x : H) (A A' : Finset H)
     {F F' : H → ℂ} (hc : Continuous F) (hc' : Continuous F')
@@ -101,7 +101,7 @@ section Translate
 open GlobalTheory.PointAtPlaceHom
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Unfold `Rder rTr`. Use `congr 1`. Use function extensionality and compare the values at `t`. Rewrite using `[mul_assoc, mul_assoc, oneP, comm_of_mem V (atTau_mem V τ _) hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem Rder_rTr {k : GA D V} (hk : k ∈ GfC V) (τ : D.what₂.Tau) (X : Matrix (Fin V.rank) (Fin V.rank) ℂ)
     (φ : GA D V → ℂ) : Rder θ V τ X (rTr V k φ) = rTr V k (Rder θ V τ X φ) := by
@@ -112,7 +112,7 @@ theorem Rder_rTr {k : GA D V} (hk : k ∈ GfC V) (τ : D.what₂.Tau) (X : Matri
   rw [mul_assoc, mul_assoc, oneP, comm_of_mem V (atTau_mem V τ _) hk]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih fun b hb => h b (List.mem_cons_of_mem _ hb), h a List.mem_cons_self]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem foldr_rTr {α : Type} (k : GA D V) (F : α → (GA D V → ℂ) → (GA D V → ℂ)) (l : List α)
     (h : ∀ a ∈ l, ∀ φ, F a (rTr V k φ) = rTr V k (F a φ)) (φ : GA D V → ℂ) :
@@ -123,9 +123,9 @@ theorem foldr_rTr {α : Type} (k : GA D V) (F : α → (GA D V → ℂ) → (GA 
     rw [List.foldr_cons, List.foldr_cons, ih fun b hb => h b (List.mem_cons_of_mem _ hb), h a List.mem_cons_self]
 
 /- English proof (translation)
-Unfold `gelf`. Rewrite using `[Finset.sum_congr rfl fun idx _ => foldr_rTr k _ _ (fun a ha ψ => ?_) φ]`. Use function extensionality and compare the values at `g`. Simplify using `only [rTr, Finset.sum_apply]`. Take `⟨b, rfl⟩` from `List.mem_ofFn.1 ha`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Unfold `RderC`. Rewrite using `[Rder_rTr hk, Rder_rTr hk]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gelf_rTr {k : GA D V} (hk : k ∈ GfC V) (τ : D.what₂.Tau) (n : ℕ) (φ : GA D V → ℂ) :
     gelf θ V τ n (rTr V k φ) = rTr V k (gelf θ V τ n φ) := by
@@ -139,21 +139,19 @@ theorem gelf_rTr {k : GA D V} (hk : k ∈ GfC V) (τ : D.what₂.Tau) (n : ℕ) 
     rfl
 
 /- English proof (translation)
-Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `{ left := fun γ hγ g => ?_, level := ?_, cont := h.cont.comp (continuous_mul_right k), smooth := fun n τs Xs hX g => ?_, zfin := ?_, growth := ?_ }` and prove the remaining obligations. Unfold `rTr`. Rewrite using `[mul_assoc, h.left γ hγ]`. Take `⟨U, hU, e⟩` from `h.level`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U.comap (MulAut.conj k⁻¹).toMonoidHom, hU.preimage ?_, fun u hu hf g => ?_⟩` and prove the remaining obligations. Use `show Continuous fun u : GA D V => k⁻¹ * u * k⁻¹⁻¹ fun_prop`. Establish `hu' : k⁻¹ * u * k⁻¹⁻¹ ∈ U` using `hu`. Use `e _ hu' (mul_mem (mul_mem (inv_mem hk) hf) (inv_mem (inv_mem hk))) (g * k)` as an intermediate fact. Unfold `rTr`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← this]`. Use `congr 1`. Use `group`. Use `h.smooth n τs Xs hX (g * k)` as an intermediate fact. Use `this using 2 with t` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `rTr`. Rewrite using `[mul_assoc, mul_assoc, comm_of_mem V (list_prod_mem fun a ha => ?_) hk]`. Take `⟨b, rfl⟩` from `List.mem_ofFn.1 ha`. Conclude with `atTau_mem V _ _`. Take `⟨W, hW, m, s⟩` from `h.zfin`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Use `⟨W.map (heckeLin V {k}), inferInstance, ⟨φ, m, ?_⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `g`. Simplify using `[heckeLin_apply, rTr]`. Introduce and unpack `τ n _ ⟨f, hf, rfl⟩`. Establish `e : ∀ f, heckeLin V {k} f = rTr V k f` using `fun f => by`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `g`. Simplify using `[heckeLin_apply, rTr]`. Conclude with `⟨_, s τ n f hf, by rw [e, e, gelf_rTr hk]⟩`. Take `⟨N, hN⟩` from `h.growth`. Use `⟨N, fun l hl x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Take `⟨C, hC⟩` from `hN l hl (x * k)`. Use `⟨C, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[foldr_rTr k _ l (fun a _ ψ => Rder_rTr hk _ _ ψ) φ]`. Unfold `rTr`. Rewrite using `[mul_assoc, comm_of_mem V hg hk, ← mul_assoc]`.
-
-Conclude with `hC g hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAutFunSm_rTr {k : GA D V} (hk : k ∈ GfC V) {φ : GA D V → ℂ} (h : IsAutFunSm θ V φ) :
     IsAutFunSm θ V (rTr V k φ) := by
@@ -199,13 +197,11 @@ theorem isAutFunSm_rTr {k : GA D V} (hk : k ∈ GfC V) {φ : GA D V → ℂ} (h 
 variable {M : DSModel V S} {J : Set (GA D V)} {χ : GA D V → ℂ}
 
 /- English proof (translation)
-Establish `e : ∀ v, heckeOn M {k} T v = rTr V k (T v)` using `fun v => by`. Use function extensionality and compare the values at `g`. Simplify using `[heckeOn, postOn_apply, heckeLin_apply, rTr]`. Use `⟨fun v => ?_, fun v => ?_, fun v k hk => hk.elim, fun τ g hg v w hw => ?_, fun τ v x => ?_⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isAutFunSm_rTr hk (h.aut v)`. Rewrite using `[e]`. Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Simplify using `only [rTr, mul_assoc]`. Conclude with `h.cusp v r C hC μ 𝓕 hμ h𝓕 (g * k)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[e, e, h.equiv τ g hg v w hw]`. Use function extensionality and compare the values at `x`. Unfold `rTr`. Rewrite using `[mul_assoc, mul_assoc, comm_of_mem V (atTau_mem V τ g) hk]`. Take `⟨ℓ, s, e'⟩` from `h.cont τ v (x * k)`.
-
-Conclude with `⟨ℓ, s, fun w => by rw [e, e']; rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isMultMap_single {T : MMap M} (h : IsMultMap θ M J χ T) {k : GA D V} (hk : k ∈ GfC V) :
     IsMultMap θ M ∅ χ (heckeOn M {k} T) := by
@@ -227,9 +223,9 @@ theorem isMultMap_single {T : MMap M} (h : IsMultMap θ M J χ T) {k : GA D V} (
     exact ⟨ℓ, s, fun w => by rw [e, e']; rfl⟩
 
 /- English proof (translation)
-Establish `e : heckeOn M R T = ∑ k ∈ R, heckeOn M {k} T`. Use extensionality with `v g`. Simplify using `[heckeOn, postOn_apply, heckeLin_apply, MultilinearMap.sum_apply]`. Establish `h0 : IsMultMap θ M ∅ χ (heckeOn M R T)`. Rewrite using `[← GlobalTheory.MultMem.mem_mult_iff, e]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `sum_mem fun k hk => (GlobalTheory.MultMem.mem_mult_iff ..).2 (isMultMap_single h (hR k hk))`. Conclude with `⟨h0.aut, h0.cusp, hl, h0.equiv, h0.cont⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isMultMap_heckeOn {T : MMap M} (h : IsMultMap θ M J χ T) {R : Finset (GA D V)} (hR : ∀ k ∈ R, k ∈ GfC V)
     (hl : ∀ v, ∀ k ∈ J, ∀ g, heckeLin V R (T v) (g * k) = χ k * heckeLin V R (T v) g) :
@@ -255,14 +251,14 @@ def RealUnif (P : HeightOneSpectrum (𝓞 D.host.E)) : Prop :=
     y ∈ P.asIdeal ∧ y ∉ P.asIdeal ^ 2
 
 /- English proof (translation)
-The claim follows from `have h1 := (GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e f h ((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 f h1.1 h1.2.1).1`.
+A detailed English derivation is pending.
 -/
 theorem exists_loc (h : IsPrimeIdem P e f) : ∃ L : Subgroup (GA D V), ∀ g, g ∈ L ↔ SuppF V f g :=
   have h1 := (GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e f h
   ((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 f h1.1 h1.2.1).1
 
 /- English proof (translation)
-Use `⟨fun a ha => ?_, fun g ⟨k₁, k₂, e⟩ => ?_⟩` and prove the remaining obligations. Take `⟨-, k₁, h₁, k₂, h₂, e⟩` from `h.1 a ha`. Conclude with `⟨⟨k₁, h₁.1, (hL _).2 h₁.2⟩, ⟨k₂, h₂.1, (hL _).2 h₂.2⟩, e⟩`. Take `⟨a, ha, hu⟩` from `h.2 g ⟨k₁, ⟨k₁.2.1, (hL _).1 k₁.2.2⟩, k₂, ⟨k₂.2.1, (hL _).1 k₂.2.2⟩, e⟩`. Conclude with `⟨a, ⟨ha.1, ha.2.1, (hL _).2 ha.2.2⟩, fun b hb => hu b ⟨hb.1, hb.2.1, (hL _).1 hb.2.2⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isDC_of_rep (hL : ∀ g, g ∈ L ↔ SuppF V f g) {α : GA D V} {R : Finset (GA D V)}
     (h : IsCosetRep V {k | k ∈ (J : Set (GA D V)) ∧ SuppF V f k} α R) : IsDC (J ⊓ L) α R := by
@@ -273,21 +269,21 @@ theorem isDC_of_rep (hL : ∀ g, g ∈ L ↔ SuppF V f g) {α : GA D V} {R : Fin
     exact ⟨a, ⟨ha.1, ha.2.1, (hL _).2 ha.2.2⟩, fun b hb => hu b ⟨hb.1, hb.2.1, (hL _).1 hb.2.2⟩⟩
 
 /- English proof (translation)
-Introduce `k hk` and use `⟨k, hk, 1, one_mem _, hk.2, (mul_one k).symm, fun l _ => Commute.one_left l⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem split_triv : ∀ k ∈ J ⊓ L, ∃ k₁ ∈ J ⊓ L, ∃ k₂ ∈ J ⊓ L, k₁ ∈ L ∧ k = k₁ * k₂ ∧ ∀ l ∈ L, Commute k₂ l :=
   fun k hk => ⟨k, hk, 1, one_mem _, hk.2, (mul_one k).symm, fun l _ => Commute.one_left l⟩
 
 /- English proof (translation)
-Establish `hK : {k | k ∈ (J : Set (GA D V)) ∧ SuppF V f k} = {k | k ∈ KsphC V ∅ ∧ SuppF V f k}` using `Set.ext fun k => and_congr_left fun hk => hJ k hk`. Establish `m1 : ∀ {a}, a ∈ KsphC V ∅ → SuppF V f a → a ∈ J ⊓ L` using `fun h1 h2 => ⟨(hJ _ h2).2 h1, (hL _).2 h2⟩`. Establish `m2 : ∀ {a}, a ∈ KsphC V ∅ → SuppF V f a → a ∈ (J ⊓ L) ⊓ L` using `fun h1 h2 => ⟨m1 h1 h2, (hL _).2 h2⟩`. Rewrite using `[hK]`. Break down `id h with ⟨hs, rfl⟩ | ⟨rfl, -⟩` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Take `⟨⟨ι, i1, i2, i3, i4, i5⟩, hR, -⟩` from `GlobalTheory.T.involution_spherical_hecke_anti V P e hs`. Use `⟨⟨ι, fun g hg => (hL _).2 (i1 g ((hL _).1 hg)), fun x hx y hy => i2 x y ((hL _).1 hx) ((hL _).1 hy), fun x hx => i3 x ((hL _).1 hx), fun k hk => ?_, fun g hg => ?_⟩, hR, ?_⟩` and prove the remaining obligations. Use `(hL _).1 hk.2` as an intermediate fact. Conclude with `m1 (i4 k ⟨(hJ k this).1 hk.1.1, this⟩) (i1 k this)`. Take `⟨a, ha, b, hb, e⟩` from `i5 g ((hL _).1 hg)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a, m2 ha.1 ha.2, b, m2 hb.1 hb.2, e⟩`. Introduce `ϖ ϖ' d g g' h1 h2 h3 h4 _ h5 h6 h7 h8`. Take `⟨a, ha, b, hb, e⟩` from `GlobalTheory.T.exists_hyperspecial_doubleCoset_of_elementaryDivisors V P e ϖ ϖ' d g g' hs h1 h2 h3 h4 h5 h6 h7 h8`. Conclude with `⟨⟨a, m1 ha.1 ha.2⟩, ⟨b, m1 hb.1 hb.2⟩, e⟩`. Establish `key` using `GlobalTheory.T.inert_place_hecke_double_cosets_inverse_reps_label V P f h hu`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨fun g => g⁻¹, fun g hg => inv_mem hg, fun x _ y _ => mul_inv_rev x y, fun x _ => inv_inv x, fun k hk => inv_mem hk.1, fun g hg => ?_⟩, fun g hg => (key g hg).2.1, ?_⟩` and prove the remaining obligations. Take `⟨a, b, ha, ha', hb, hb', e⟩` from `(key g ((hL _).1 hg)).1`. Conclude with `⟨a, m2 ha ha', b, m2 hb hb', e⟩`. Introduce `ϖ ϖ' d g g' h1 h2 h3 h4 h5 h6 h7 h8 h9`. Take `⟨a, b, ha, ha', hb, hb', e⟩` from `(key g h6).2.2 ϖ ϖ' d g' h1 h2 h3 h4 h5 h7 h8 h9`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨a, m1 ha ha'⟩, ⟨b, m1 hb hb'⟩, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem local_data (hu : RealUnif P) (h : IsPrimeIdem P e f) (hL : ∀ g, g ∈ L ↔ SuppF V f g)
     (hJ : ∀ g, SuppF V f g → (g ∈ (J : Set (GA D V)) ↔ g ∈ KsphC V ∅)) :
@@ -328,7 +324,7 @@ theorem local_data (hu : RealUnif P) (h : IsPrimeIdem P e f) (hL : ∀ g, g ∈ 
 variable {χ : GA D V → ℂ}
 
 /- English proof (translation)
-Introduce `k h` and use `by rw [hF k k.2.1, hχ k k.2.1 ((hL _).1 k.2.2)] simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem inv_loc (hL : ∀ g, g ∈ L ↔ SuppF V f g) (hχ : ∀ g ∈ (J : Set (GA D V)), SuppF V f g → χ g = 1)
     {F : GA D V → ℂ} (hF : ∀ k ∈ (J : Set (GA D V)), ∀ g, F (g * k) = χ k * F g) :
@@ -340,7 +336,7 @@ theorem inv_loc (hL : ∀ g, g ∈ L ↔ SuppF V f g) (hχ : ∀ g ∈ (J : Set 
 variable {Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))}
 
 /- English proof (translation)
-Introduce and unpack `P d R R' ⟨e, f, ϖ, α, -, hP, h1, h2, hd, hJ, hχ, hα, hD, hR, hc⟩ ⟨e', f', ϖ', α', -, hP', h1', h2', -, -, -, hα', hD', hR', hc'⟩ F hF`. Take `⟨rfl, rfl⟩` from `((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e f hP).2.2.2.1 e' f' hP'`. Take `⟨L, hL⟩` from `exists_loc (V := V) hP`. Conclude with `(GlobalTheory.HkB.dcOp_eq_and_level (J ⊓ L) L 1 α α' R R' F split_triv (fun _ _ => rfl) (fun a ha => (hL _).2 (hR a ha)) (fun a ha => (hL _).2 (hR' a ha)) (isDC_of_rep hL hc) (isDC_of_rep hL hc') ((local_data (hu P) hP hL hJ).2.2 ϖ ϖ' d α α' h1 h2 h1' h2' hd hα hα' hD hD') (inv_l …`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem labelUnique (hu : ∀ P : HeightOneSpectrum (𝓞 D.host.E), RealUnif P) :
     LabelUnique (J : Set (GA D V)) χ Sb := by
@@ -353,7 +349,7 @@ theorem labelUnique (hu : ∀ P : HeightOneSpectrum (𝓞 D.host.E), RealUnif P)
     ((local_data (hu P) hP hL hJ).2.2 ϖ ϖ' d α α' h1 h2 h1' h2' hd hα hα' hD hD') (inv_loc hL hχ hF)).1
 
 /- English proof (translation)
-Unfold `splitLab`. Rewrite using `[List.pairwise_append]`. Use `⟨by simp, by simp, fun a ha b hb => ?_⟩` and prove the remaining obligations. Rewrite using `[List.eq_of_mem_replicate ha, List.eq_of_mem_replicate hb]`. Evaluate the numerical expressions.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem splitLab_pairwise (n k : ℕ) : (splitLab n k).Pairwise fun a b => b ≤ a := by
   unfold splitLab
@@ -363,7 +359,7 @@ theorem splitLab_pairwise (n k : ℕ) : (splitLab n k).Pairwise fun a b => b ≤
   norm_num
 
 /- English proof (translation)
-Introduce and unpack `P k R ⟨e, ϖ, α, hS, he, h1, h2, hk, hJ, hχ, hα, hR, hc⟩`. Establish `hP : IsPrimeIdem P e (e + cA D e)` using `Or.inl ⟨he, rfl⟩`. Take `⟨L, hL⟩` from `exists_loc (V := V) hP`. Conclude with `⟨e, e + cA D e, ϖ, α⁻¹, hS, hP, h1, h2, splitLab_pairwise _ _, hJ, hχ, (hL _).1 (inv_mem ((hL _).2 hα.2.1)), GlobalTheory.T.elementary_divisors_inv_hecke_element_split_place V P e ϖ k α he h1 h2 hk hα, hR, hc⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem splitDict : SplitDict (J : Set (GA D V)) χ Sb := by
   rintro P k R ⟨e, ϖ, α, hS, he, h1, h2, hk, hJ, hχ, hα, hR, hc⟩
@@ -373,11 +369,11 @@ theorem splitDict : SplitDict (J : Set (GA D V)) χ Sb := by
     (hL _).1 (inv_mem ((hL _).2 hα.2.1)), GlobalTheory.T.elementary_divisors_inv_hecke_element_split_place V P e ϖ k α he h1 h2 hk hα, hR, hc⟩
 
 /- English proof (translation)
-Take `⟨e, f, ϖ, α, hS, hP, -, -, -, -, hχ, -, -, hR, hc⟩` from `h`. Take `⟨L, hL⟩` from `exists_loc (V := V) hP`. Establish `h0` using `(GlobalTheory.HkB.dcOp_eq_and_level (J ⊓ L) L 1 α α R R F split_triv (fun _ _ => rfl) (fun a ha => (hL _).2 (hR a ha)) (fun a ha => (hL _).2 (hR a ha)) (isDC_of_rep hL hc) (isDC_of_rep hL hc) ⟨1, 1, by simp⟩ (inv_loc hL hχ hF)).2`. Introduce `k hk g`. Take `⟨k₁, hk₁, k₂, hk₂, s₁, s₂, rfl⟩` from `hs e f hS hP k hk`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e f hP`. Establish `hc : ∀ a ∈ R, Commute a k₂` using `fun a ha => ((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 f h1.1 h1.2.1).2.2 (1 - f) a k₂ (by rw [mul_sub, mul_one, h1.1, sub_self]) (hR a ha) s₂`. Establish `h2 : heckeLin V R F (g * k₁) = heckeLin V R F g` using `by show dcOp R F (g * k₁) = dcOp R F g`. Simplify using `using h0 ⟨k₁, hk₁, (hL _).2 s₁⟩ g`. Rewrite using `[hm k₁ hk₁ k₂ hk₂, hχ k₁ hk₁ s₁, one_mul, ← h2, heckeLin_apply, heckeLin_apply, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[← hF k₂ hk₂, ← mul_assoc, mul_assoc _ k₂, ← (hc a ha).eq, mul_assoc _ a]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem level_heckeLin {d : List ℤ} {R : Finset (GA D V)}
     (hm : ∀ k ∈ J, ∀ k' ∈ J, χ (k * k') = χ k * χ k')
@@ -404,11 +400,11 @@ theorem level_heckeLin {d : List ℤ} {R : Finset (GA D V)}
   rw [← hF k₂ hk₂, ← mul_assoc, mul_assoc _ k₂, ← (hc a ha).eq, mul_assoc _ a]
 
 /- English proof (translation)
-Take `⟨e, f, ϖ, α, hS, hP, -, -, -, hJ, hχ, hα, -, hR, hc⟩` from `h`. Take `⟨e', f', ϖ', α', -, hP', -, -, -, -, -, hα', -, hR', hc'⟩` from `h'`. Establish `h1` using `(GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P e f hP`. Break down `h1.2.2.2.2 P' e' f' hP' with h0 | ⟨rfl, -⟩` into its components or cases. Use function extensionality and compare the values at `g`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [heckeLin_apply]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b hb => Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, mul_assoc, (((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).1 f h1.1 h1.2.1).2.2 f' a b h0 (hR a ha) (hR' b hb)).eq]`. Take `⟨L, hL⟩` from `exists_loc (V := V) hP`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hι, hrep, -⟩` from `local_data hu hP hL hJ`. Take `⟨A', hA', hc''⟩` from `hrep α⁻¹ ((hL _).1 (inv_mem ((hL _).2 hα)))`. Conclude with `(GlobalTheory.DoubleCosetComm.dcOp_comm_and_card (J ⊓ L) L 1 α α' R R' A' F split_triv (fun _ _ => rfl) hι (fun a ha => (hL _).2 (hR a ha)) (fun a ha => (hL _).2 (hR' a ha)) (fun a ha => (hL _).2 (hA' a ha)) (isDC_of_rep hL hc) (isDC_of_rep hL hc') (isDC_of_rep hL hc'') (inv_loc …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem comm_heckeLin (hu : RealUnif P) {P' : HeightOneSpectrum (𝓞 D.host.E)} {d d' : List ℤ}
     {R R' : Finset (GA D V)} (h : Hecke₂ V (J : Set (GA D V)) χ Sb P d R)
@@ -432,7 +428,7 @@ theorem comm_heckeLin (hu : RealUnif P) {P' : HeightOneSpectrum (𝓞 D.host.E)}
       (isDC_of_rep hL hc) (isDC_of_rep hL hc') (isDC_of_rep hL hc'') (inv_loc hL hχ hF)).1
 
 /- English proof (translation)
-Unfold `dualLab`. Rewrite using `[List.pairwise_reverse, List.pairwise_map]`. Conclude with `h.imp fun h => neg_le_neg h`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dualLab_pairwise {d : List ℤ} (h : d.Pairwise fun a b => b ≤ a) :
     (dualLab d).Pairwise fun a b => b ≤ a := by
@@ -441,7 +437,7 @@ theorem dualLab_pairwise {d : List ℤ} (h : d.Pairwise fun a b => b ≤ a) :
   exact h.imp fun h => neg_le_neg h
 
 /- English proof (translation)
-Break down `id h with ⟨hs, -⟩ | ⟨rfl, -⟩` into its components or cases. Conclude with `hs.1.1`. Conclude with `((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P f f h).1`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem idem_of_isPrimeIdem (h : IsPrimeIdem P e f) (V : HSp D) : e * e = e := by
   rcases id h with ⟨hs, -⟩ | ⟨rfl, -⟩
@@ -449,11 +445,11 @@ theorem idem_of_isPrimeIdem (h : IsPrimeIdem P e f) (V : HSp D) : e * e = e := b
   · exact ((GlobalTheory.T.supported_subgroup_split_commute_primeIdempotents V).2.2.1 P f f h).1
 
 /- English proof (translation)
-Take `⟨e, f, ϖ, α, hS, hP, h1, h2, hd, hJ, hχ, hα, hD, hR, hc⟩` from `h`. Take `⟨L, hL⟩` from `exists_loc (V := V) hP`. Take `⟨hι, hrep, -⟩` from `local_data hu hP hL hJ`. Establish `hα'` using `(hL _).1 (inv_mem ((hL _).2 hα))`. Take `⟨R', hR', hc'⟩` from `hrep α⁻¹ hα'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0 : (ϖ : D.host.E) ≠ 0` using `fun h0 => h2 (by`. Rewrite using `[show ϖ = 0 from RingOfIntegers.coe_eq_zero_iff.1 h0]`. Conclude with `zero_mem _)`. Use `⟨R', ⟨e, f, ϖ, α⁻¹, hS, hP, h1, h2, dualLab_pairwise hd, hJ, hχ, hα', (GlobalTheory.T.divisorsAt_inv_dualLabel_and_stabilizer_mul V e ϖ d α (idem_of_isPrimeIdem hP V) h0 hD).1, hR', hc'⟩, ?_, J ⊓ L, α, fun k hk => ⟨hk.1, hχ k hk.1 ((hL _).1 hk.2)⟩, fun a ha => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Conclude with `(GlobalTheory.DoubleCosetComm.dcOp_comm_and_card (W := ℂ) (J ⊓ L) L 1 α α R R R' 0 split_triv (fun _ _ => rfl) hι (fun a ha => (hL _).2 (hR a ha)) (fun a ha => (hL _).2 (hR a ha)) (fun a ha => (hL _).2 (hR' a ha)) (isDC_of_rep hL hc) (isDC_of_rep hL hc) (isDC_of_rep hL hc') (fun …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨k₁, k₂, e⟩` from `(isDC_of_rep hL hc).1 a ha`. Conclude with `⟨k₁, k₁.2, k₂, k₂.2, e⟩`. Take `⟨k₁, k₂, e⟩` from `(isDC_of_rep hL hc').1 a ha`. Conclude with `⟨k₁, k₁.2, k₂, k₂.2, e⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_dual (hu : RealUnif P) {d : List ℤ} {R : Finset (GA D V)}
     (h : Hecke₂ V (J : Set (GA D V)) χ Sb P d R) :
@@ -482,15 +478,13 @@ theorem exists_dual (hu : RealUnif P) {d : List ℤ} {R : Finset (GA D V)}
 end Local
 
 /- English proof (translation)
-Introduce `D V S θ M J χ Sb hu hθ hm hs`. Establish `keep : ∀ P d R, Hecke₂ V (J : Set (GA D V)) χ Sb P d R → ∀ T ∈ Mult θ M (J : Set (GA D V)) χ, heckeOn M R T ∈ Mult θ M (J : Set (GA D V)) χ`. Introduce `P d R h T hT`. Rewrite `hT`, the goal using `[GlobalTheory.MultMem.mem_mult_iff]`. Use `isMultMap_heckeOn hT (fun k hk => ?_) fun v => level_heckeLin hm (hs P) h (hT.lev v)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨_, _, _, _, -, -, -, -, -, -, -, -, -, -, hc⟩` from `h`. Conclude with `(hc.1 k hk).1`. Use `⟨labelUnique hu, splitDict, fun P d R h => ⟨keep P d R h, fun P' d' R' h' T hT => ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite `hT`, `ext1`, `v` using `[GlobalTheory.MultMem.mem_mult_iff]`. Conclude with `comm_heckeLin (hu P) h h' (hT.lev v)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨R', h', hcard, K, x, hK, hR, hR'⟩` from `exists_dual (hu P) h`. Use `⟨R', h', fun μ 𝓕 hμ hr h𝓕 hS T hT T' hT' c => ?_⟩` and prove the remaining obligations. Use `haveI : IsTopologicalGroup (GA D V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA _ _`. Use `haveI : BorelSpace (GA D V) := ⟨rfl⟩`. Use `haveI : Countable (GQ V) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig V.gram`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hS'` using `hS hθ hμ h𝓕`. Take `⟨c₁, h₁⟩` from `hS' _ (keep P d R h T hT) _ hT'`. Take `⟨c₂, h₂⟩` from `hS' _ hT _ (keep P _ R' h' T' hT')`. Take `⟨c₃, h₃⟩` from `hS' _ hT _ hT`. Take `⟨c₄, h₄⟩` from `hS' _ hT' _ hT'`.
-
-Rewrite `hT`, `hT'` using `[GlobalTheory.MultMem.mem_mult_iff]`. Establish `key : ∀ v v' : M.Vec, ∫ g in 𝓕, star (heckeOn M R T v g) * T' v' g ∂μ = ∫ g in 𝓕, star (T v g) * heckeOn M R' T' v' g ∂μ` using `fun v v' => integral_adjoint h𝓕 K x R R' (hT.aut v).cont (hT'.aut v').cont (hT.aut v).left (hT'.aut v').left (fun k hk g => by rw [hT.lev v k (hK k hk).1, (hK k hk).2, one_mul]) (fun k hk g => by rw [hT'.lev v' k (hK k hk).1, (hK k hk).2, one_mul]) (h₃ v v).1 (h₄ v' v').1 hR hR' …`. Conclude with `⟨fun H v v' => ⟨(h₂ v v').1, (key v v').symm.trans (H v v').2⟩, fun H v v' => ⟨(h₁ v v').1, (key v v').trans (H v v').2⟩⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem spherical_ops : ∀ {D : D7} (V : HSp D) {S : D.what₂.Tau → SPar} (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)) (M : DSModel V S) (J : Subgroup (GA D V)) (χ : GA D V → ℂ) (Sb : Finset (HeightOneSpectrum (𝓞 D.host.F))), (∀ (P : HeightOneSpectrum (𝓞 D.host.E)), ∃ x : 𝓞 D.host.F, ∃ y : 𝓞 D.host.E, (y : D.host.E) = algebraMap D.host.F D.host.E (x : D.host.F) ∧ y ∈ P.asIdeal ∧ y ∉ P.asIdeal ^ 2) → IsInfFam θ → (∀ k ∈ J, ∀ k' ∈ J, χ (k * k') = χ k * χ k') → (∀ (P : HeightOneSpectrum (𝓞 D.host.E)) e f, OffS D Sb P → IsPrimeIdem P e f → ∀ k ∈ J, ∃ k₁ ∈ J, ∃ k₂ ∈ J, SuppF V f k₁ ∧ SuppF V (1 - f) k₂ ∧ k = k₁ * k₂) → LabelUnique (J : Set (GA D V)) χ Sb ∧ SplitDict (J : Set (GA D V)) χ Sb ∧ ∀ P d R, Hecke₂ V (J : Set (GA D V)) χ Sb P d R → (∀ T ∈ Mult θ M (J : Set (GA D V)) χ, heckeOn M R T ∈ Mult θ M (J : Set (GA D V)) χ) ∧ (∀ P' d' R', Hecke₂ V (J : Set (GA D V)) χ Sb P' d' R' → ∀ T ∈ Mult θ M (J : Set (GA D V)) χ, heckeOn M R (heckeOn M R' T) = heckeOn M R' (heckeOn M R T)) ∧ ∃ R', Hecke₂ V (J : Set (GA D V)) χ Sb P (dualLab d) R' ∧ ∀ (μ : Measure (GA D V)) (𝓕 : Set (GA D V)), μ.IsHaarMeasure → μ.IsMulRightInvariant → IsFundamentalDomain (GQ V) 𝓕 μ → SchurMult θ M (J : Set (GA D V)) χ μ 𝓕 → ∀ T ∈ Mult θ M (J : Set (GA D V)) χ, ∀ T' ∈ Mult θ M (J : Set (GA D V)) χ, ∀ c, IsMultIP M μ 𝓕 (heckeOn M R T) T' c ↔ IsMultIP M μ 𝓕 T (heckeOn M R' T') c := by
   intro D V S θ M J χ Sb hu hθ hm hs

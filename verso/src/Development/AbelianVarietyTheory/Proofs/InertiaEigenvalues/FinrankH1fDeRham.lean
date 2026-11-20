@@ -26,7 +26,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
 
 include PD in
 /- English proof (translation)
-Use `nontrivial_of_ne PD.t 0 ?_` and prove the remaining obligations. Introduce `h`. Apply `PD.not_mem_filtration_two` to reduce the goal to its premises. Rewrite using `[h, map_zero]`. Conclude with `(PD.Fil 2).zero_mem`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_B : Nontrivial B := by
   refine nontrivial_of_ne PD.t 0 ?_
@@ -47,9 +47,9 @@ theorem incl_apply (v : V) : incl (Qp := Qp) (B := B) (LL := LL) v = v ⊗ₜ[Qp
 
 include PD in
 /- English proof (translation)
-Use `haveI := nontrivial_B PD`. Establish `h1 : Function.Injective (Algebra.linearMap Qp B)` using `(algebraMap Qp B).injective`. Establish `h2` using `Module.Flat.lTensor_preserves_injective_linearMap (M := V) _ h1`. Introduce `a b hab`. Establish `: (TensorProduct.rid Qp V).symm a = (TensorProduct.rid Qp V).symm b`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h2` to reduce the goal to its premises. Simplify `hab` using `[TensorProduct.rid_symm_apply]`. Conclude with `(TensorProduct.rid Qp V).symm.injective this`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem incl_injective : Function.Injective (fun v : V => v ⊗ₜ[Qp] (1 : B)) := by
   haveI := nontrivial_B PD
@@ -62,20 +62,20 @@ theorem incl_injective : Function.Injective (fun v : V => v ⊗ₜ[Qp] (1 : B)) 
   exact (TensorProduct.rid Qp V).symm.injective this
 
 /- English proof (translation)
-Simplify using `[actVB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem actVB_incl (g : G) (v : V) :
     actVB PD ρ g (v ⊗ₜ[Qp] (1 : B)) = (ρ g v) ⊗ₜ[Qp] (1 : B) := by
   simp [actVB]
 
 /- English proof (translation)
-Simplify using `[φVB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem φVB_incl (v : V) : φVB PD (LL := LL) (V := V) (v ⊗ₜ[Qp] (1 : B)) = v ⊗ₜ[Qp] (1 : B) := by
   simp [φVB]
 
 /- English proof (translation)
-Use `⟨v ⊗ₜ[Qp] (⟨1, PD.one_mem⟩ : (PD.Fil 0).restrictScalars Qp), ?_⟩` and prove the remaining obligations. Simplify using `[ιV]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem ιV_incl_mem (v : V) : ιV PD (LL := LL) (V := V) (v ⊗ₜ[Qp] (1 : B)) ∈ FilV PD (LL := LL) (V := V) 0 := by
   refine ⟨v ⊗ₜ[Qp] (⟨1, PD.one_mem⟩ : (PD.Fil 0).restrictScalars Qp), ?_⟩
@@ -99,7 +99,7 @@ def E : Submodule LL (V ⊗[Qp] B) where
 
 include PD in
 /- English proof (translation)
-The claim follows from `funext fun g => incl_injective PD (show c g ⊗ₜ[Qp] (1 : B) = c' g ⊗ₜ[Qp] (1 : B) by rw [hc, hc'])`.
+A detailed English derivation is pending.
 -/
 theorem cob_unique {x : V ⊗[Qp] B} {c c' : G → V}
     (hc : ∀ g, c g ⊗ₜ[Qp] (1 : B) = actVB PD ρ g x - x)
@@ -123,27 +123,27 @@ def cE : E PD ρ →ₗ[LL] finiteCocycles PD ρ where
     rw [← TensorProduct.smul_tmul', hx, map_smul, smul_sub]
 
 /- English proof (translation)
-The claim follows from `x.2.choose_spec.2 g`.
+A detailed English derivation is pending.
 -/
 theorem cE_spec (x : E PD ρ) (g : G) :
     ((cE PD ρ x : finiteCocycles PD ρ) : G → V) g ⊗ₜ[Qp] (1 : B) = actVB PD ρ g x - x :=
   x.2.choose_spec.2 g
 
 /- English proof (translation)
-The claim follows from `cob_unique PD ρ (cE_spec PD ρ x) hc`.
+A detailed English derivation is pending.
 -/
 theorem cE_eq (x : E PD ρ) (c : G → V) (hc : ∀ g, c g ⊗ₜ[Qp] (1 : B) = actVB PD ρ g x - x) :
     ((cE PD ρ x : finiteCocycles PD ρ) : G → V) = c :=
   cob_unique PD ρ (cE_spec PD ρ x) hc
 
 /- English proof (translation)
-Simplify using `[Dcris, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Dcris (x : V ⊗[Qp] B) : x ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g x = x := by
   simp [Dcris, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Introduce `x hx`. Use `⟨0, (finiteCocycles PD ρ).zero_mem, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[(mem_Dcris PD ρ x).1 hx g]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Dcris_le_E : Dcris PD ρ ≤ E PD ρ := by
   intro x hx
@@ -157,9 +157,9 @@ Both sides reduce to the same expression.
 theorem cob_apply (v : V) (g : G) : cob ρ v g = ρ g v - v := rfl
 
 /- English proof (translation)
-Use `⟨⟨?_, fun g h => ?_⟩, v ⊗ₜ[Qp] (1 : B), fun g => ?_⟩` and prove the remaining obligations. Establish `: (cob ρ v : G → V) = fun g => ρ g v + (-v)`. Use function extensionality and compare the values at `g`. Rewrite using `[cob_apply, sub_eq_add_neg]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hρ v).add continuous_const`. Simplify using `only [cob_apply, map_mul, Module.End.mul_apply, map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[actVB_incl, cob_apply, sub_tmul]`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coboundary_mem_blochKatoCocycles (hρ : ∀ x, Continuous fun g => ρ g x) (v : V) : cob ρ v ∈ finiteCocycles PD ρ := by
   refine ⟨⟨?_, fun g h => ?_⟩, v ⊗ₜ[Qp] (1 : B), fun g => ?_⟩
@@ -172,7 +172,7 @@ theorem coboundary_mem_blochKatoCocycles (hρ : ∀ x, Continuous fun g => ρ g 
   · rw [actVB_incl, cob_apply, sub_tmul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨cob ρ v, coboundary_mem_blochKatoCocycles PD ρ hρ v, fun g => by rw [actVB_incl, cob_apply, sub_tmul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem incl_mem_E (hρ : ∀ x, Continuous fun g => ρ g x) (v : V) :
     v ⊗ₜ[Qp] (1 : B) ∈ E PD ρ :=
@@ -182,9 +182,9 @@ def Θ : E PD ρ →ₗ[LL] FiniteCohomology PD ρ :=
   (Submodule.mkQ ((B1 ρ).comap (finiteCocycles PD ρ).subtype)).comp (cE PD ρ)
 
 /- English proof (translation)
-Introduce `q`. Take `⟨c, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨hc, x, hx⟩` from `c.2`. Use `⟨⟨x, c, c.2, hx⟩, ?_⟩` and prove the remaining obligations. Establish `: cE PD ρ ⟨x, c, c.2, hx⟩ = c` using `Subtype.ext (cE_eq PD ρ _ _ hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Θ, LinearMap.comp_apply, this, Submodule.mkQ_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Θ_surjective : Function.Surjective (Θ PD ρ) := by
   intro q
@@ -195,13 +195,13 @@ theorem Θ_surjective : Function.Surjective (Θ PD ρ) := by
   simp only [Θ, LinearMap.comp_apply, this, Submodule.mkQ_apply]
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker, Θ, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, Submodule.mem_comap, Submodule.subtype_apply]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv⟩`. Rewrite using `[Submodule.mem_sup]`. Use `⟨(x : V ⊗[Qp] B) - v ⊗ₜ[Qp] (1 : B), ?_, v ⊗ₜ[Qp] (1 : B), ⟨v, rfl⟩, sub_add_cancel _ _⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_Dcris]`. Introduce `g`. Establish `h1` using `cE_spec PD ρ x g`. Rewrite `h1` using `[← hv, cob_apply, sub_tmul]`. Rewrite using `[map_sub, actVB_incl]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Establish `: actVB PD ρ g (x : V ⊗[Qp] B) - ρ g v ⊗ₜ[Qp] (1 : B) - ((x : V ⊗[Qp] B) - v ⊗ₜ[Qp] (1 : B)) = (actVB PD ρ g (x : V ⊗[Qp] B) - x) - (ρ g v ⊗ₜ[Qp] (1 : B) - v ⊗ₜ[Qp] (1 : B))` using `by abel`. Rewrite using `[this, ← h1, sub_self]`. Introduce `hx`. Take `⟨d, hd, w, ⟨v, rfl⟩, hdw⟩` from `Submodule.mem_sup.1 hx`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨v, ?_⟩` and prove the remaining obligations. Use `symm`. Apply `cE_eq` to reduce the goal to its premises. Introduce `g`. Rewrite using `[cob_apply, sub_tmul, ← hdw, map_add, (mem_Dcris PD ρ d).1 hd g, incl_apply, actVB_incl]`.
+Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -248,7 +248,7 @@ def dE (x : E PD ρ) : DdR PD ρ :=
   ⟨(hinj _ _ (cE_spec PD ρ x)).2.choose, (hinj _ _ (cE_spec PD ρ x)).2.choose_spec.1⟩
 
 /- English proof (translation)
-The claim follows from `(hinj _ _ (cE_spec PD ρ x)).2.choose_spec.2`.
+A detailed English derivation is pending.
 -/
 theorem dE_spec (x : E PD ρ) :
     ιV PD (LL := LL) (V := V) (x : V ⊗[Qp] B) - (dE PD ρ hinj x : V ⊗[Qp] BdR) ∈ FilV PD (LL := LL) (V := V) 0 :=
@@ -276,15 +276,15 @@ def Λ₂ : E PD ρ →ₗ[LL] (DdR PD ρ ⧸ F0 PD ρ) where
 def Λ : E PD ρ →ₗ[LL] (Dcris PD ρ × (DdR PD ρ ⧸ F0 PD ρ)) := LinearMap.prod (Λ₁ PD ρ hinj) (Λ₂ PD ρ hinj)
 
 /- English proof (translation)
-Rewrite using `[LinearMap.mem_ker, Λ, LinearMap.prod_apply, Prod.mk_eq_zero]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `h1' : (x : V ⊗[Qp] B) - φVB PD (LL` using `LL) (V := V) x = 0 := congrArg Subtype.val h1`. Establish `h2'` using `(Submodule.Quotient.mk_eq_zero _).1 h2`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2'` using `[Submodule.mem_comap]`. Take `⟨v, hv⟩` from `hker x (sub_eq_zero.1 h1').symm (by`. Use `(FilV PD (LL := LL) (V := V) 0).add_mem (dE_spec PD ρ hinj x) h2'` as an intermediate fact. Simplify using `using this)`. Conclude with `⟨v, hv.symm⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 
-Introduce and unpack `⟨v, hv⟩`. Rewrite `hv` using `[incl_apply]`. Prove the components needed by the constructor for the conclusion. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(x : V ⊗[Qp] B) - φVB PD (LL := LL) (V := V) x = 0`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hv, φVB_incl, sub_self]`. Apply `(Submodule.Quotient.mk_eq_zero _).2` to reduce the goal to its premises. Rewrite using `[Submodule.mem_comap, Submodule.subtype_apply]`. Establish `h` using `(FilV PD (LL := LL) (V := V) 0).sub_mem (ιV_incl_mem PD (LL := LL) v) (dE_spec PD ρ hinj x)`. Rewrite `h` using `[← hv]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_ker_Λ (hρ : ∀ x, Continuous fun g => ρ g x)
     (hker : ∀ x : V ⊗[Qp] B, φVB PD (LL := LL) (V := V) x = x →
@@ -314,11 +314,11 @@ theorem mem_ker_Λ (hρ : ∀ x, Continuous fun g => ρ g x)
       simpa using h
 
 /- English proof (translation)
-Introduce and unpack `⟨d₁, q⟩`. Take `⟨d₂, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨x, y, c, hy, h1, h2, hc, hcx⟩` from `hdel d₁ d₁.2 d₂ d₂.2`. Use `⟨⟨x, c, hc, hcx⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[Λ, LinearMap.prod_apply]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Prod.ext (Subtype.ext h1) ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = Submodule.Quotient.mk _`. Rewrite using `[Submodule.Quotient.eq, Submodule.mem_comap, Submodule.subtype_apply]`. Establish `h` using `(FilV PD (LL := LL) (V := V) 0).sub_mem hy (dE_spec PD ρ hinj ⟨x, c, hc, hcx⟩)`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [Submodule.coe_sub, ← h2]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 -/
 theorem Λ_surjective
     (hdel : ∀ d₁ ∈ Dcris PD ρ, ∀ d₂ ∈ DdR PD ρ, ∃ (x : V ⊗[Qp] B) (y : V ⊗[Qp] BdR) (c : G → V),
@@ -341,17 +341,17 @@ theorem Λ_surjective
 end abelian₂
 
 /- English proof (translation)
-Simplify using `[H0V, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_H0V (v : V) : v ∈ H0V ρ ↔ ∀ g, ρ g v = v := by
   simp [H0V, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hy, v, rfl⟩`. Use `⟨v, (mem_H0V ρ v).2 fun g => ?_, rfl⟩` and prove the remaining obligations. Apply `incl_injective PD` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `(mem_Dcris PD ρ _).1 hy g` as an intermediate fact. Rewrite `this` using `[incl_apply, actVB_incl]`. Conclude with `this`. Introduce and unpack `⟨v, hv, rfl⟩`. Use `⟨(mem_Dcris PD ρ _).2 fun g => ?_, v, rfl⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[incl_apply, actVB_incl, (mem_H0V ρ v).1 hv g]`.
+A detailed English derivation is pending.
 -/
 theorem Dcris_inf_range :
     Dcris PD ρ ⊓ LinearMap.range (incl (Qp := Qp) (B := B) (LL := LL) (V := V)) =
@@ -369,23 +369,19 @@ theorem Dcris_inf_range :
     rw [incl_apply, actVB_incl, (mem_H0V ρ v).1 hv g]
 
 /- English proof (translation)
-Establish `hinc : Function.Injective (incl (Qp` using `Qp) (B := B) (LL := LL) (V := V)) := incl_injective PD`. Use `set R := LinearMap.range (incl (Qp := Qp) (B := B) (LL := LL) (V := V)) with hR`. Establish `hRE : R ≤ E PD ρ`. Introduce and unpack `_ ⟨v, rfl⟩`. Conclude with `incl_mem_E PD ρ hρ v`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRfr : finrank LL R = finrank LL V` using `LinearMap.finrank_range_of_inj hinc`. Use `haveI : Module.Finite LL R := Module.Finite.range _`. Establish `hkerΛ : LinearMap.ker (Λ PD ρ hinj) = R.comap (E PD ρ).subtype`. Use extensionality with `x`. Rewrite using `[mem_ker_Λ PD ρ hinj hρ hker x]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `ekΛ : LinearMap.ker (Λ PD ρ hinj) ≃ₗ[LL] R` using `(LinearEquiv.ofEq _ _ hkerΛ).trans (Submodule.comapSubtypeEquivOfLe hRE)`. Use `haveI : Module.Finite LL (LinearMap.ker (Λ PD ρ hinj)) := Module.Finite.equiv ekΛ.symm`. Use `haveI : Module.Finite LL (E PD ρ) := by`. Rewrite using `[Module.finite_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use `Submodule.fg_of_fg_map_of_fg_inf_ker (Λ PD ρ hinj) ?_ ?_` and prove the remaining obligations. Conclude with `IsNoetherian.noetherian _`. Rewrite using `[top_inf_eq]`. Conclude with `Module.Finite.iff_fg.mp inferInstance`. Use `set S := Dcris PD ρ ⊔ R with hS`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hSE : S ≤ E PD ρ` using `sup_le (Dcris_le_E PD ρ) hRE`. Establish `hkerΘ : LinearMap.ker (Θ PD ρ) = S.comap (E PD ρ).subtype`. Use extensionality with `x`. Rewrite using `[mem_ker_Θ PD ρ hρ x]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `frkerΘ : finrank LL (LinearMap.ker (Θ PD ρ)) = finrank LL S` using `((LinearEquiv.ofEq _ _ hkerΘ).trans (Submodule.comapSubtypeEquivOfLe hSE)).finrank_eq`. Use `haveI : Module.Finite LL (FiniteCohomology PD ρ) := Module.Finite.of_surjective _ (Θ_surjective PD ρ)`. Establish `ha` using `LinearMap.finrank_range_add_finrank_ker (Θ PD ρ)`. Rewrite `ha` using `[LinearMap.range_eq_top.2 (Θ_surjective PD ρ), finrank_top, frkerΘ]`. Establish `hb` using `Submodule.finrank_sup_add_finrank_inf_eq (Dcris PD ρ) R`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite `hb` using `[← hS, Dcris_inf_range PD ρ, ← (Submodule.equivMapOfInjective _ hinc _).finrank_eq, hRfr]`. Establish `hc` using `LinearMap.finrank_range_add_finrank_ker (Λ PD ρ hinj)`. Rewrite `hc` using `[LinearMap.range_eq_top.2 (Λ_surjective PD ρ hinj hdel), finrank_top, Module.finrank_prod, ekΛ.finrank_eq, hRfr]`. Establish `hd` using `Submodule.finrank_quotient_add_finrank (F0 PD ρ)`. Establish `he : finrank LL (F0 PD ρ) = finrank LL ↥(DdR PD ρ ⊓ FilV PD (LL` using `LL) (V := V) 0) := by`.
-
-Rewrite using `[← Submodule.map_comap_subtype]`. Conclude with `(Submodule.equivMapOfInjective _ (Submodule.injective_subtype _) _).finrank_eq`. Use `⟨inferInstance, ?_⟩` and prove the remaining obligations. Rewrite using `[← he, ← hd]`. Use `push_cast`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem H1f_dim_formula [FiniteDimensional LL V]
     (hρ : ∀ x, Continuous fun g => ρ g x)
@@ -450,7 +446,7 @@ theorem H1f_dim_formula [FiniteDimensional LL V]
 end Gen
 
 /- English proof (translation)
-Introduce `l _ P AI hT K LL _ _ _ O _ _ hO A hdr`. Establish `hfs` using `GlobalTheory.FundSeq.tensor_fundamental_sequence l P AI hT K LL A.V`. Establish `hfont` using `GlobalTheory.T.fontaine_bounds_crystalline_deRham_concrete_rings l P AI hT K LL O hO A`. Conclude with `H1f_dim_formula (P.PD K) A.ρ A.cont hfs.2 (fun d₁ h₁ d₂ h₂ => GlobalTheory.FundDel.connecting_cocycle l P AI hT K LL O hO A d₁ h₁ d₂ h₂) (GlobalTheory.CobCrisLift.coboundary_lift l P AI hT K LL O hO A hdr) hfont.1.1 hfont.2.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem h1f_finrank : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P), LocTied l P AI →
     ∀ (K : FinExt l) (LL : Type) [Field LL] [Algebra ℚ_[l] LL] [TopologicalSpace LL] (O : Type) [CommRing O]

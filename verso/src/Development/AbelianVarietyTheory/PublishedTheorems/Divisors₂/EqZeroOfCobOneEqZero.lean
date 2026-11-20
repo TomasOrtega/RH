@@ -42,16 +42,16 @@ def symCocycles : Submodule O (A ⊗[O] A) :=
   LinearMap.ker (cobTwo O A) ⊓ LinearMap.ker ((TensorProduct.comm O A A).toLinearMap - LinearMap.id)
 
 /- English proof (translation)
-Simplify using `[symCocycles, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_symCocycles {c : A ⊗[O] A} :
     c ∈ symCocycles O A ↔ cobTwo O A c = 0 ∧ TensorProduct.comm O A A c = c := by
   simp [symCocycles, sub_eq_zero]
 
 /- English proof (translation)
-Establish `h1 : ∀ t : A ⊗[O] A, TensorProduct.assoc O A A A (t ⊗ₜ 1) = ((TensorProduct.mk O A A).flip 1).lTensor A t` using `fun t => by`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [add_tmul, map_add, hx, hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `h2 : comul (R` using `O) (1 : A) = 1 ⊗ₜ 1 := by simp [Algebra.TensorProduct.one_def]`. Simplify using `only [cobTwo_apply, cobOne_apply, map_sub, tmul_sub, coassoc_apply, LinearMap.rTensor_tmul, LinearMap.lTensor_tmul, h1, h2, LinearMap.flip_apply, mk_apply]`. Rewrite using `[assoc_tmul 1 1 b]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cobTwo_cobOne (b : A) : cobTwo O A (cobOne O A b) = 0 := by
   have h1 : ∀ t : A ⊗[O] A, TensorProduct.assoc O A A A (t ⊗ₜ 1) =
@@ -67,7 +67,7 @@ theorem cobTwo_cobOne (b : A) : cobTwo O A (cobOne O A b) = 0 := by
   abel
 
 /- English proof (translation)
-The claim follows from `mem_symCocycles.2 ⟨cobTwo_cobOne b, by simp only [cobOne_apply, map_sub, comm_comul, comm_tmul]; abel⟩`.
+A detailed English derivation is pending.
 -/
 theorem cobOne_mem [IsCocomm O A] (b : A) : cobOne O A b ∈ symCocycles O A :=
   mem_symCocycles.2 ⟨cobTwo_cobOne b, by
@@ -77,22 +77,22 @@ abbrev pullbackTwo (f : A →ₐc[O] B) : A ⊗[O] A →ₗ[O] B ⊗[O] B :=
   TensorProduct.map (f : A →ₗ[O] B) (f : A →ₗ[O] B)
 
 /- English proof (translation)
-The claim follows from `LinearMap.congr_fun (CoalgHomClass.map_comp_comul f) a`.
+A detailed English derivation is pending.
 -/
 theorem pullTwo_comul (f : A →ₐc[O] B) (a : A) : pullbackTwo f (comul a) = comul (f a) :=
   LinearMap.congr_fun (CoalgHomClass.map_comp_comul f) a
 
 /- English proof (translation)
-Simplify using `[cobOne_apply, pullTwo_comul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pullTwo_cobOne (f : A →ₐc[O] B) (b : A) :
     pullbackTwo f (cobOne O A b) = cobOne O B (f b) := by
   simp [cobOne_apply, pullTwo_comul]
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b`. Establish `h` using `TensorProduct.map_map_assoc (f : A →ₗ[O] B) (f : A →ₗ[O] B) (f : A →ₗ[O] B) (comul a ⊗ₜ b)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `[cobTwo_apply, pullTwo_comul, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cobTwo_pullTwo (f : A →ₐc[O] B) (c : A ⊗[O] A) :
     cobTwo O B (pullbackTwo f c) = TensorProduct.map (f : A →ₗ[O] B) (pullbackTwo f) (cobTwo O A c) := by
@@ -105,7 +105,7 @@ theorem cobTwo_pullTwo (f : A →ₐc[O] B) (c : A ⊗[O] A) :
     simp [cobTwo_apply, pullTwo_comul, h]
 
 /- English proof (translation)
-Rewrite `hc`, the goal using `[mem_symCocycles]`. Conclude with `⟨by rw [cobTwo_pullTwo, hc.1, map_zero], by rw [← TensorProduct.map_comm, hc.2]⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pullTwo_mem (f : A →ₐc[O] B) {c : A ⊗[O] A} (hc : c ∈ symCocycles O A) :
     pullbackTwo f c ∈ symCocycles O B := by
@@ -113,7 +113,7 @@ theorem pullTwo_mem (f : A →ₐc[O] B) {c : A ⊗[O] A} (hc : c ∈ symCocycle
   exact ⟨by rw [cobTwo_pullTwo, hc.1, map_zero], by rw [← TensorProduct.map_comm, hc.2]⟩
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pullTwo_comp {D : Type} [CommRing D] [Bialgebra O D] (g : B →ₐc[O] D) (f : A →ₐc[O] B)
     (c : A ⊗[O] A) : pullbackTwo (g.comp f) c = pullbackTwo g (pullbackTwo f c) := by
@@ -123,7 +123,7 @@ theorem pullTwo_comp {D : Type} [CommRing D] [Bialgebra O D] (g : B →ₐc[O] D
   | tmul a b => simp
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a b => simp`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pullTwo_id (c : A ⊗[O] A) : pullbackTwo (BialgHom.id O A) c = c := by
   induction c with
@@ -132,11 +132,9 @@ theorem pullTwo_id (c : A ⊗[O] A) : pullbackTwo (BialgHom.id O A) c = c := by
   | tmul a b => simp
 
 /- English proof (translation)
-Establish `hp : IsPrimitiveElem O b`. Rewrite `hb` using `[cobOne_apply, sub_sub, sub_eq_zero]`. Conclude with `hb`. Use `⟨?_, hp.counit_eq_zero⟩` and prove the remaining obligations. Establish `key : ∀ k : ℕ, (WithConv.toConv (AlgHom.id O A) ^ k) b = k • b` using `fun k => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => simp [hp.counit_eq_zero]`. Consider the case `succ k ih`. Rewrite using `[pow_succ, AlgHom.convMul_apply, show comul b = _ from hp, succ_nsmul, ← ih]`. Simplify using the standard rewrite rules.
-
-Conclude with `(DFunLike.congr_fun (comp_mulBy_pts (AlgHom.id O A) k) b).trans (key k)`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mulBy_of_cobOne_eq_zero [IsCocomm O A] {b : A} (hb : cobOne O A b = 0) (k : ℕ) :
     mulBy O A k b = k • b ∧ counit (R := O) b = 0 := by
@@ -198,14 +196,14 @@ def rigToExt : G.RigExt →ₗ[O] G.VecExt :=
   Submodule.mapQ _ _ (LinearMap.fst O _ _) (by rintro _ ⟨b, rfl⟩; exact ⟨b, rfl⟩)
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨c, rfl⟩ := Submodule.mkQ_surjective _ x exact ⟨G.rigMk (c, 0), rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rigToExt_surjective : Function.Surjective G.rigToExt := fun x => by
   obtain ⟨c, rfl⟩ := Submodule.mkQ_surjective _ x
   exact ⟨G.rigMk (c, 0), rfl⟩
 
 /- English proof (translation)
-Introduce `x` and use `by obtain ⟨⟨c, w⟩, rfl⟩ := Submodule.mkQ_surjective _ x constructor · intro h obtain ⟨b, rfl⟩ : c ∈ LinearMap.range G.cob := (Submodule.Quotient.mk_eq_zero _).1 h refine ⟨w - G.dFun b, Eq.symm ((Submodule.Quotient.eq _).2 (LinearMap.mem_range.2 ⟨b, ?_⟩))⟩ simp · rintro ⟨w', h⟩ rw …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem exact_rigOfOmega_rigToExt : Function.Exact G.rigOfOmega G.rigToExt := fun x => by
   obtain ⟨⟨c, w⟩, rfl⟩ := Submodule.mkQ_surjective _ x
@@ -219,7 +217,7 @@ theorem exact_rigOfOmega_rigToExt : Function.Exact G.rigOfOmega G.rigToExt := fu
     exact (Submodule.Quotient.mk_eq_zero _).2 (zero_mem _)
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `mulBy_of_cobOne_eq_zero hb (p ^ n)`. Rewrite `h1` using `[G.mulBy_pow_self, h2, map_zero, ← Nat.cast_smul_eq_nsmul O, Nat.cast_pow]`. Conclude with `(smul_eq_zero.1 h1.symm).resolve_left (pow_ne_zero _ hp)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_cobOne_eq_zero [IsDomain O] (hp : (p : O) ≠ 0) (n : ℕ) {b : G.A n}
     (hb : cobOne O _ b = 0) : b = 0 := by
@@ -228,7 +226,7 @@ theorem eq_zero_of_cobOne_eq_zero [IsDomain O] (hp : (p : O) ≠ 0) (n : ℕ) {b
   exact (smul_eq_zero.1 h1.symm).resolve_left (pow_ne_zero _ hp)
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero _).2 fun w hw => ?_` and prove the remaining obligations. Take `⟨b, hb⟩` from `(Submodule.Quotient.mk_eq_zero _).1 hw`. Establish `h0 : b = 0` using `Subtype.ext (funext fun n => G.eq_zero_of_cobOne_eq_zero hp n (congrArg (fun x : G.cocycles × G.omega => x.1.1 n) hb))`. Rewrite `hb` using `[h0, map_zero]`. Conclude with `(congrArg Prod.snd hb).symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigOfOmega_injective [IsDomain O] (hp : (p : O) ≠ 0) :
     Function.Injective G.rigOfOmega := by
@@ -253,7 +251,7 @@ def cocyclesMap (f : G ⟶ H) : H.cocycles →ₗ[O] G.cocycles where
   map_smul' _ _ := Subtype.ext (funext fun n => map_smul (pullbackTwo (f.app n)) _ _)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun _ => pullTwo_cobOne _ _)`.
+A detailed English derivation is pending.
 -/
 theorem cocyclesMap_cob (f : G ⟶ H) (b : H.funs) :
     cocyclesMap f (H.cob b) = G.cob (funsMap f b) :=
@@ -266,7 +264,7 @@ def vecExtMap (f : G ⟶ H) : H.VecExt →ₗ[O] G.VecExt :=
 variable [Fact p.Prime]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (funext fun _ => cotMap_d _ _)`.
+A detailed English derivation is pending.
 -/
 theorem omegaMap_dFun (f : G ⟶ H) (b : H.funs) :
     omegaMap G H f (H.dFun b) = G.dFun (funsMap f b) :=
@@ -284,7 +282,7 @@ Both sides reduce to the same expression.
     rigExtMap f (H.rigMk (c, w)) = G.rigMk (cocyclesMap f c, omegaMap G H f w) := rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => by obtain ⟨⟨c, w⟩, rfl⟩ := Submodule.mkQ_surjective _ x exact congrArg G.rigMk (Prod.ext (Subtype.ext (funext fun _ => pullTwo_id _)) (LinearMap.congr_fun omegaMap_id w))`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem rigExtMap_id : rigExtMap (𝟙 G) = LinearMap.id :=
   LinearMap.ext fun x => by
@@ -293,7 +291,7 @@ The claim follows from `LinearMap.ext fun x => by obtain ⟨⟨c, w⟩, rfl⟩ :
       (LinearMap.congr_fun omegaMap_id w))
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun x => by obtain ⟨⟨c, w⟩, rfl⟩ := Submodule.mkQ_surjective _ x exact congrArg G.rigMk (Prod.ext (Subtype.ext (funext fun _ => pullTwo_comp _ _ _)) (LinearMap.congr_fun (omegaMap_comp f g) w))`.
+A detailed English derivation is pending.
 -/
 theorem rigExtMap_comp (f : G ⟶ H) (g : H ⟶ K) :
     rigExtMap (f ≫ g) = rigExtMap f ∘ₗ rigExtMap g :=
@@ -303,14 +301,14 @@ theorem rigExtMap_comp (f : G ⟶ H) (g : H ⟶ K) :
       (LinearMap.congr_fun (omegaMap_comp f g) w))
 
 /- English proof (translation)
-The claim follows from `congrArg G.rigMk (Prod.ext (map_zero (cocyclesMap f)) rfl)`.
+A detailed English derivation is pending.
 -/
 theorem rigExtMap_rigOfOmega (f : G ⟶ H) (w : H.omega) :
     rigExtMap f (H.rigOfOmega w) = G.rigOfOmega (omegaMap G H f w) :=
   congrArg G.rigMk (Prod.ext (map_zero (cocyclesMap f)) rfl)
 
 /- English proof (translation)
-Take `⟨⟨c, w⟩, rfl⟩` from `Submodule.mkQ_surjective _ x`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem rigToExt_rigExtMap (f : G ⟶ H) (x : H.RigExt) :
     G.rigToExt (rigExtMap f x) = vecExtMap f (H.rigToExt x) := by

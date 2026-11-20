@@ -13,7 +13,7 @@ section Mono
 variable {K : Type} [Field K] {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.monomial_eq, Finsupp.prod_fintype _ _ (fun a => pow_zero _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem br_monomial_eq (s : Fin r →₀ ℕ) (c : K) :
     (monomial s c : MvPolynomial (Fin r) K) = C c * ∏ a, X a ^ s a := by
@@ -23,19 +23,19 @@ def brRen (K : Type) [Field K] (r : ℕ) : MvPolynomial (Fin r) K →ₐ[K] MvPo
   rename fun a => ((), a)
 
 /- English proof (translation)
-Introduce `a b h` and use `congrArg Prod.snd h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem brRen_inj : Function.Injective (fun a : Fin r => ((), a)) := fun a b h => congrArg Prod.snd h
 
 /- English proof (translation)
-Rewrite using `[br_monomial_eq, map_mul, map_prod]`. Simplify using `only [brRen, rename_C, map_pow, rename_X, monoL]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem brRen_monomial (s : Fin r →₀ ℕ) (c : K) : brRen K r (monomial s c) = C c * monoL (K := K) (fun a => s a) := by
   rw [br_monomial_eq, map_mul, map_prod]
   simp only [brRen, rename_C, map_pow, rename_X, monoL]
 
 /- English proof (translation)
-Rewrite using `[br_monomial_eq]`. Simplify using `only [map_mul, map_prod, map_pow, expand_C, expand_X, brRen, rename_C, rename_X, monoL, ← pow_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem brRen_expand_monomial (P : ℕ) (s : Fin r →₀ ℕ) (c : K) :
     brRen K r (expand P (monomial s c)) = C c * monoL (K := K) (fun a => P * s a) := by
@@ -43,13 +43,13 @@ theorem brRen_expand_monomial (P : ℕ) (s : Fin r →₀ ℕ) (c : K) :
   simp only [map_mul, map_prod, map_pow, expand_C, expand_X, brRen, rename_C, rename_X, monoL, ← pow_mul]
 
 /- English proof (translation)
-Unfold `ddiv`. Rewrite using `[support_monomial, if_neg one_ne_zero, Finset.sum_singleton, coeff_monomial, if_pos rfl, one_mul]`. Use `split_ifs with h`. Use `congr 1`. Rewrite using `[Finsupp.prod]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Apply `Finset.prod_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `a _ ha`. Establish `h0 : α a = 0` using `by simpa using ha`. Establish `hM : M a = 0`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finsupp.le_def.1 h a` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `[h0, hM]`. Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, α a < M a := by`. Assume the negation of the conclusion as `hc`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at hc`. Conclude with `h (Finsupp.le_def.2 hc)`. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ a) (by simp [Nat.choose_eq_zero_of_lt ha]), monomial_zero]`.
+A detailed English derivation is pending.
 -/
 theorem br_ddiv_monomial (M α : Fin r →₀ ℕ) :
     ddiv M (monomial α (1 : K)) = monomial (α - M) (∏ a, (((α a).choose (M a) : ℕ) : K)) := by
@@ -74,7 +74,7 @@ theorem br_ddiv_monomial (M α : Fin r →₀ ℕ) :
     rw [Finset.prod_eq_zero (Finset.mem_univ a) (by simp [Nat.choose_eq_zero_of_lt ha]), monomial_zero]
 
 /- English proof (translation)
-Rewrite using `[br_ddiv_monomial, brRen_monomial, Formalism.MainNotions.G.Joints.divDer_monoL]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem brRen_ddiv (M α : Fin r →₀ ℕ) :
     brRen K r (ddiv M (monomial α (1 : K))) =
@@ -83,7 +83,7 @@ theorem brRen_ddiv (M α : Fin r →₀ ℕ) :
   congr 2
 
 /- English proof (translation)
-Rewrite using `[br_ddiv_monomial, monomial_mul, one_mul, map_mul, brRen_monomial, brRen_expand_monomial]`. Establish `h : (fun a => P * (δ + (β - κ)) a) = fun a => P * (β a - κ a + δ a)`. Use function extensionality and compare the values at `a`. Simplify using `[Finsupp.add_apply, add_comm]`. Rewrite using `[h, map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -105,21 +105,19 @@ section DER
 variable {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
 
 /- English proof (translation)
-Unfold `DER`. Introduce `_ r g ρ hρ M c hc`. Take `⟨T, coef, hT, hval⟩` from `h6 g r (fun a => M a) (fun a => ρ a) hρ c hc`. Set `e` to `T.equivFin`. Set `τ : Fin T.card → (Fin r → ℕ) × (Fin r → ℕ) × (Fin r → ℕ)` to `fun t => (e.symm t).1`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `key : ∀ x : WithTop ℚ, geQ x (c : ℝ) → ((c : ℕ) : WithTop ℚ) ≤ x`. Introduce `x hx`. Proceed by induction on `x using WithTop.recTopCoe with`. Consider the case `top => exact le_top`. Consider the case `coe q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `hq` using `hx q rfl`. Establish `hq' : ((c : ℕ) : ℚ) ≤ q` using `by exact_mod_cast hq`. Conclude with `hq'` after adjusting the coercions. Use `⟨T.card, fun t => algebraMap O (KK O) (coef (τ t)), fun t => Finsupp.equivFunOnFinite.symm (τ t).1, fun t => Finsupp.equivFunOnFinite.symm (τ t).2.1, fun t => Finsupp.equivFunOnFinite.symm (τ t).2.2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `t show (0 : WithTop ℚ) ≤ vK p (algebraMap O (KK O) (coef (τ t)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h0 : coef (τ t) = 0`. Rewrite using `[h0, map_zero, Formalism.MainNotions.G.GLWeightTheory.valuation_zero_alt p]`. Conclude with `le_top`. Rewrite using `[Formalism.MainNotions.G.Joints.vK_alg p _ h0]`. Conclude with `WithTop.coe_nonneg.2 (div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `t`. Establish `hb` using `(hT (τ t) (e.symm t).2).2`. Rewrite using `[br_absE, br_absE]`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`. Move the coercions through the operations in `at hb ⊢`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb`. Introduce `β γ show ((c : ℕ) : WithTop ℚ) ≤ vK p _`. Establish `hX : ∀ F : MvPolynomial (Fin r) (KK O), F.coeff γ = (brRen (KK O) r F).coeff (γ.mapDomain fun a => ((), a))` using `fun F => (coeff_rename_mapDomain _ brRen_inj F γ).symm`. Rewrite using `[hX, map_sub, map_sum, brRen_ddiv]`. Simplify using `only [brRen_term]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hα : (fun a => (ρ + p ^ g • β) a) = fun a => ρ a + p ^ g * β a`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Establish `hsum : (∑ t : Fin T.card, C (algebraMap O (KK O) (coef (τ t)) * ∏ a, (((β a).choose ((Finsupp.equivFunOnFinite.symm (τ t).2.2) a) : ℕ) : KK O)) * monoL (K` using `KK O) (fun a => (Finsupp.equivFunOnFinite.symm (τ t).1) a) * monoL (K := KK O) (fun a => p ^ g * (β a - (Finsupp.equivFunOnFinite.symm (τ t).2.2) a + (Finsupp.equivFunOnFinite.symm (τ t).2.1) a))) = ∑ x ∈ T, C (algebraMap O (KK O) (coef x) * ∏ a, (((β a).choose (x.2.2 a) : ℕ) : K …`. Simplify using `only [Finsupp.coe_equivFunOnFinite_symm]`.
-
-Rewrite using `[← Finset.sum_coe_sort T]`. Conclude with `Fintype.sum_equiv e.symm _ _ (fun t => rfl)`. Rewrite using `[hα, hsum]`. Conclude with `key _ (hval (fun a => β a) (γ.mapDomain fun a => ((), a)))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem brDER (S0 : UniformizedDVR p O) [CharZero (KK O)] (h6 : Formalism.MainNotions.PlaneGramData.DerivativeCongruenceAtRing p O) :
     DER (KK O) (vQ p S0) p := by

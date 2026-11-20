@@ -21,7 +21,7 @@ section Alg
 variable {Γ : Type} [Group Γ] {k k' : Type} [CommRing k] [CommRing k']
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Matrix.fromBlocks (r g : Matrix (Fin a) (Fin a) k) 0 0 (s g : Matrix (Fin b) (Fin b) k) (finSumFinEquiv.symm (Fin.castAdd b i)) (finSumFinEquiv.symm (Fin.castAdd b j)) = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem sumRep_ll {a b : ℕ} (r : Γ →* GL (Fin a) k) (s : Γ →* GL (Fin b) k) (g : Γ) (i j : Fin a) :
     (sumRep r s g : Matrix (Fin (a + b)) (Fin (a + b)) k) (Fin.castAdd b i) (Fin.castAdd b j) =
@@ -31,7 +31,7 @@ private theorem sumRep_ll {a b : ℕ} (r : Γ →* GL (Fin a) k) (s : Γ →* GL
   simp
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Matrix.fromBlocks (r g : Matrix (Fin a) (Fin a) k) 0 0 (s g : Matrix (Fin b) (Fin b) k) (finSumFinEquiv.symm (Fin.natAdd a i)) (finSumFinEquiv.symm (Fin.natAdd a j)) = _`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 private theorem sumRep_rr {a b : ℕ} (r : Γ →* GL (Fin a) k) (s : Γ →* GL (Fin b) k) (g : Γ) (i j : Fin b) :
     (sumRep r s g : Matrix (Fin (a + b)) (Fin (a + b)) k) (Fin.natAdd a i) (Fin.natAdd a j) =
@@ -41,7 +41,7 @@ private theorem sumRep_rr {a b : ℕ} (r : Γ →* GL (Fin a) k) (s : Γ →* GL
   simp
 
 /- English proof (translation)
-Use extensionality with `g i j`. Express the relevant statement in the definitionally equal form `f (Matrix.fromBlocks (r₁ g : Matrix (Fin a) (Fin a) k) 0 0 (r₂ g : Matrix (Fin b) (Fin b) k) (finSumFinEquiv.symm i) (finSumFinEquiv.symm j)) = Matrix.fromBlocks (mapRep f r₁ g : Matrix (Fin a) (Fin a) k') 0 0 (mapRep f r₂ g : Matrix (Fin b) (Fin b) k') (finSumFinEquiv.symm i) (f …`. Apply the tactic sequence `rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp [mapRep]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem map_sum' {a b : ℕ} (f : k →+* k') (r₁ : Γ →* GL (Fin a) k) (r₂ : Γ →* GL (Fin b) k) :
     mapRep f (sumRep r₁ r₂) = sumRep (mapRep f r₁) (mapRep f r₂) := by
@@ -53,11 +53,11 @@ private theorem map_sum' {a b : ℕ} (f : k →+* k') (r₁ : Γ →* GL (Fin a)
   rcases finSumFinEquiv.symm i with i | i <;> rcases finSumFinEquiv.symm j with j | j <;> simp [mapRep]
 
 /- English proof (translation)
-Set `M : Γ →* Matrix (Fin n) (Fin n) k` to `{ toFun := A map_one' := by`. Use extensionality with `i j`. Apply `hf` to reduce the goal to its premises. Rewrite using `[hA]`. Simplify using `[Matrix.one_apply, apply_ite f]`.
+Introduce a local definition for the expression. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `map_mul' := fun g h => by`. Use extensionality with `i j`. Apply `hf` to reduce the goal to its premises. Rewrite using `[hA, Matrix.mul_apply, map_sum]`. Simplify using `only [map_mul, hA, Units.val_mul, Matrix.mul_apply] }`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M.toHomUnits, ?_⟩` and prove the remaining obligations. Use extensionality with `g i j`. Simplify `hA g i j` using `[mapRep, M]`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem descend {n : ℕ} (f : k →+* k') (hf : Function.Injective f) (r : Γ →* GL (Fin n) k')
     (A : Γ → Matrix (Fin n) (Fin n) k) (hA : ∀ g i j, f (A g i j) = (r g : Matrix (Fin n) (Fin n) k') i j) :
@@ -86,9 +86,9 @@ variable {l : ℕ} [Fact l.Prime] {E Ω : Type} [Field E] [Field Ω] [Algebra E 
   {r : ↥Gw →* GL (Fin a) (Om l)} {s : ↥Gw →* GL (Fin b) (Om l)}
 
 /- English proof (translation)
-Establish `hf : Function.Injective (algebraMap ↥L.1 (Om l))` using `(algebraMap ↥L.1 (Om l)).injective`. Establish `e : ∀ g i j, algebraMap ↥L.1 (Om l) ((ρ g : Matrix _ _ ↥L.1) i j) = (sumRep r s g : Matrix (Fin (a + b)) (Fin (a + b)) (Om l)) i j` using `fun g i j => by`. Rewrite using `[← h.2]`. Simplify using `[mapRep]`. Take `⟨r₁, hr⟩` from `descend (algebraMap ↥L.1 (Om l)) hf r (fun g i j => (ρ g : Matrix _ _ ↥L.1) (Fin.castAdd b i) (Fin.castAdd b j)) (fun g i j => by rw [e, sumRep_ll])`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨s₁, hs⟩` from `descend (algebraMap ↥L.1 (Om l)) hf s (fun g i j => (ρ g : Matrix _ _ ↥L.1) (Fin.natAdd a i) (Fin.natAdd a j)) (fun g i j => by rw [e, sumRep_rr])`. Conclude with `⟨r₁, s₁, ⟨h.1, hr⟩, ⟨h.1, hs⟩, ⟨h.1, by rw [map_sum', hr, hs]⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem model_split {L : FinExt l} {ρ : ↥Gw →* GL (Fin (a + b)) ↥L.1}
     (h : IsModel Bw (sumRep r s) L ρ) :
@@ -111,15 +111,15 @@ end UpperTheory.Gal.Int.Div.LocalSums
 
 open UpperTheory.Gal.Int.Div.LocalSums in
 /- English proof (translation)
-Introduce `l _ P AI tied E Ω _ _ _ _ _ A O _ _ _ Bw a b r s`. Use `⟨fun hc => ?_, fun τ J J' hJ hJ' => ?_⟩` and prove the remaining obligations. Take `⟨L, ρ, hm, -⟩` from `id hc`. Take `⟨r₁, s₁, m₁, m₂, m⟩` from `model_split hm`. Take `⟨T⟩` from `id tied`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `he : ∀ g v, GlobalTheory.DirectSumLocal.splitEquiv (↥L.1) a b (Bw.repE L (sumRep r₁ s₁) g v) = (Bw.repE L r₁ g (GlobalTheory.DirectSumLocal.splitEquiv (↥L.1) a b v).1, Bw.repE L s₁ g (GlobalTheory.DirectSumLocal.splitEquiv (↥L.1) a b v).2)`. Introduce `g v`. Conclude with `GlobalTheory.DirectSumLocal.splitEquiv_sumRep r₁ s₁ _ v`. Take `⟨-, h2, -⟩` from `GlobalTheory.Per.DirectSumHT.directSum_hodgeTate l P AI T Bw.Kw L (Fin (a + b) → ↥L.1) (Bw.repE L (sumRep r₁ s₁)) (Fin a → ↥L.1) (Bw.repE L r₁) (Fin b → ↥L.1) (Bw.repE L s₁) (GlobalTheory.DirectSumLocal.splitEquiv (↥L.1) a b) he`. Establish `hc' : Bw.IsCrysE P L (sumRep r₁ s₁)` using `(m.isCrysAt_iff P).1 hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `h2.1 hc'`. Conclude with `⟨(m₁.isCrysAt_iff P).2 h3.1, (m₂.isCrysAt_iff P).2 h3.2⟩`. Take `⟨L, ρ, hm, hd, τ', t, -⟩` from `id hJ`. Take `⟨r₁, s₁, m₁, m₂, m⟩` from `model_split hm`. Establish `S` using `GlobalTheory.T.sumRep_deRham_iff_and_multiplicity_add l P AI tied E Ω _ O Bw L a b r₁ s₁`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hds` using `S.1.1 ((m.isdRAt_iff P).1 ⟨L, ρ, hm, hd⟩)`. Take `⟨K, hK⟩` from `m₂.exists_isJumpsAt P hds.2 t`. Rewrite using `[Multiset.le_iff_count]`. Introduce `n`. Establish `c` using `hJ.count_eq P m t n`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₁` using `hJ'.count_eq P m₁ t n`. Establish `c₂` using `hK.count_eq P m₂ t n`. Rewrite `c` using `[S.2]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Div.locSum_of :
     LocSum := by

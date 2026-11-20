@@ -5,15 +5,15 @@ namespace Formalism.GaloisIrreducibility
 open Finset
 
 /- English proof (translation)
-Use `set S : Subgroup G := (powMonoidHom D : G →* G).ker with hSdef`. Establish `hmem : ∀ a : G, a ∈ S ↔ a ^ D = 1` using `fun a => by simp [hSdef]`. Establish `hcardS : #{a : G | a ^ D = 1} = Nat.card S`. Rewrite using `[Nat.card_eq_fintype_card, ← Fintype.card_subtype]`. Conclude with `Fintype.card_congr (Equiv.subtypeEquivRight (fun a => (hmem a).symm))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hcardS]`. Establish `hK : IsCyclic (H ⊓ S : Subgroup G)` using `Subgroup.isCyclic_of_le inf_le_left`. Establish `h1 : Nat.card (H ⊓ S : Subgroup G) ≤ D`. Rewrite using `[← IsCyclic.exponent_eq_card]`. Apply `Nat.le_of_dvd hD` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Monoid.exponent_dvd_of_forall_pow_eq_one` to reduce the goal to its premises. Introduce `g`. Establish `: (g : G) ^ D = 1` using `(hmem g).1 g.2.2`. Use `ext`. Simplify using `using this`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : H.relIndex S ≤ 2`. Establish `hd` using `Subgroup.relIndex_dvd_index_of_normal H S`. Establish `hne : H.index ≠ 0` using `Subgroup.index_ne_zero_of_finite`. Conclude with `(Nat.le_of_dvd (Nat.pos_of_ne_zero hne) hd).trans hH`. Establish `h3 : Nat.card (H ⊓ S : Subgroup G) * H.relIndex S = Nat.card S`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Subgroup.relIndex_mul_relIndex (⊥ : Subgroup G) (H ⊓ S) S bot_le inf_le_right` as an intermediate fact. Rewrite `this` using `[Subgroup.inf_relIndex_right, Subgroup.relIndex_bot_left, Subgroup.relIndex_bot_left]`. Conclude with `this`. Rewrite using `[← h3]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_pow_eq_one_le_two_mul {G : Type*} [CommGroup G] [Fintype G] [DecidableEq G]
     (H : Subgroup G) [IsCyclic H] (hH : H.index ≤ 2) {D : ℕ} (hD : 0 < D) :
@@ -46,15 +46,15 @@ theorem card_pow_eq_one_le_two_mul {G : Type*} [CommGroup G] [Fintype G] [Decida
     _ = 2 * D := by ring
 
 /- English proof (translation)
-Establish `step1 : ((Finset.range n).filter (fun x => x ^ D ≡ 1 [MOD n])).card ≤ #{y : ZMod n | y ^ D = 1}`. Apply `Finset.card_le_card_of_injOn (fun x : ℕ => (x : ZMod n))` to reduce the goal to its premises. Introduce `x hx`. Simplify using `only [Finset.coe_filter, Finset.mem_range, Set.mem_ofPred_eq] at hx`. Simplify using `only [Finset.coe_filter, Finset.mem_univ, true_and, Set.mem_ofPred_eq]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `(ZMod.natCast_eq_natCast_iff (x ^ D) 1 n).2 hx.2` as an intermediate fact. Move the coercions through the operations in `at this`. Conclude with `this`. Introduce `x hx y hy hxy`. Simplify using `only [Finset.coe_filter, Finset.mem_range, Set.mem_ofPred_eq] at hx hy`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h` using `congrArg ZMod.val hxy`. Simplify using `only [ZMod.val_natCast] at h`. Rewrite `h` using `[Nat.mod_eq_of_lt hx.1, Nat.mod_eq_of_lt hy.1]`. Then use the resulting hypothesis. Use `step1.trans ?_` and prove the remaining obligations. Establish `hsub : ({y : ZMod n | y ^ D = 1} : Finset (ZMod n)) ⊆ Finset.image (fun u : (ZMod n)ˣ => (u : ZMod n)) (Finset.univ.filter (fun u : (ZMod n)ˣ => u ^ D = 1))`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy`. Simplify using `only [Finset.mem_filter, Finset.mem_univ, true_and] at hy`. Simplify using `only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and]`. Establish `h1 : y * y ^ (D - 1) = 1`. Rewrite using `[← pow_succ', Nat.sub_add_cancel hD, hy]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨y, y ^ (D - 1), h1, by rw [mul_comm]; exact h1⟩, ?_, rfl⟩` and prove the remaining obligations. Use `ext`. Simplify using `using hy`. Conclude with `(Finset.card_le_card hsub).trans Finset.card_image_le`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem card_residues_le_units (n D : ℕ) [NeZero n] (hD : 0 < D) :
     ((Finset.range n).filter (fun x => x ^ D ≡ 1 [MOD n])).card ≤
@@ -88,9 +88,9 @@ theorem card_residues_le_units (n D : ℕ) [NeZero n] (hD : 0 < D) :
   exact (Finset.card_le_card hsub).trans Finset.card_image_le
 
 /- English proof (translation)
-Establish `hc` using `Subgroup.card_mul_index (Subgroup.zpowers (ZMod.unitOfCoprime 5 h))`. Rewrite `hc` using `[Nat.card_zpowers, ← orderOf_units, ZMod.coe_unitOfCoprime, Nat.cast_ofNat, ZMod.orderOf_five, Nat.card_eq_fintype_card, ZMod.card_units_eq_totient, Nat.totient_prime_pow Nat.prime_two (by omega)]`. Establish `: 2 ^ (n + 2 - 1) * (2 - 1) = 2 ^ n * 2`. Rewrite using `[show n + 2 - 1 = n + 1 by omega, pow_succ]; norm_num`. Rewrite `hc` using `[this]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Nat.eq_of_mul_eq_mul_left (by positivity) hc`.
+A detailed English derivation is pending.
 -/
 theorem index_zpowers_five (n : ℕ) (h : Nat.Coprime 5 (2 ^ (n + 2))) :
     (Subgroup.zpowers (ZMod.unitOfCoprime 5 h)).index = 2 := by
@@ -104,11 +104,11 @@ theorem index_zpowers_five (n : ℕ) (h : Nat.Coprime 5 (2 ^ (n + 2))) :
   exact Nat.eq_of_mul_eq_mul_left (by positivity) hc
 
 /- English proof (translation)
-Introduce `l j D hl hD`. Establish `hD0 : 0 < D` using `hD`. Establish `: NeZero (l ^ j)` using `⟨pow_ne_zero _ hl.ne_zero⟩`. Use `(card_residues_le_units (l ^ j) D hD0).trans ?_` and prove the remaining obligations. Distinguish the cases in `hcyc : IsCyclic (ZMod (l ^ j))ˣ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Conclude with `card_pow_eq_one_le_two_mul (⊤ : Subgroup (ZMod (l ^ j))ˣ) (by rw [Subgroup.index_top]; norm_num) hD0`. Establish `hl2 : l = 2`. Assume the negation of the conclusion as `hne`. Conclude with `hcyc (ZMod.isCyclic_units_of_prime_pow l hl hne j)`. Substitute `hl2` using the available equality.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hj : ¬ j ≤ 2` using `fun hj => hcyc ((ZMod.isCyclic_units_two_pow_iff j).2 hj)`. Take `⟨n, rfl⟩ : ∃ n, j = n + 2` from `⟨j - 2, by omega⟩`. Establish `h5 : Nat.Coprime 5 (2 ^ (n + 2))` using `Nat.Coprime.pow_right _ (by norm_num)`. Conclude with `card_pow_eq_one_le_two_mul (Subgroup.zpowers (ZMod.unitOfCoprime 5 h5)) (by rw [index_zpowers_five n h5]) hD0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem residues_count_le : ResiduesLe := by
   classical

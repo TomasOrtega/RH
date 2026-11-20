@@ -12,7 +12,7 @@ open scoped TensorProduct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Establish `h0 : Tendsto (fun k : ℕ => ‖ϖ‖ ^ k * ‖c‖) atTop (𝓝 (0 * ‖c‖))` using `(tendsto_pow_atTop_nhds_zero_of_lt_one (norm_nonneg _) h).mul_const _`. Rewrite `h0` using `[zero_mul]`. Use `filter_upwards [h0.eventually (gt_mem_nhds one_pos)] with k hk`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, ← Valued.toNormedField.norm_le_one_iff, norm_mul, norm_pow]`. Conclude with `hk.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_pow_mul_mem {v : HeightOneSpectrum (𝓞 F)} {ϖ : Fv F v} (h : ‖ϖ‖ < 1) (c : Fv F v) :
     ∀ᶠ k : ℕ in atTop, ϖ ^ k * c ∈ v.adicCompletionIntegers F := by
@@ -24,9 +24,9 @@ theorem eventually_pow_mul_mem {v : HeightOneSpectrum (𝓞 F)} {ϖ : Fv F v} (h
   exact hk.le
 
 /- English proof (translation)
-Establish `h : ∀ᶠ k : ℕ in atTop, ∀ i, ϖ ^ k * (Algebra.TensorProduct.basis (Fv F v) bs).repr x i ∈ v.adicCompletionIntegers F` using `eventually_all.2 fun i => eventually_pow_mul_mem hG.unif_lt _`. Use `filter_upwards [h] with k hk`. Establish `hmem : ϖ ^ k • x ∈ (S : Set (Fv F v ⊗[F] E))`. Rewrite using `[hG.carrier]`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hk i` using `[map_smul]`. Conclude with `hmem`.
+A detailed English derivation is pending.
 -/
 theorem eventually_smul_mem {σ : E →ₐ[F] E} {M n d : ℕ} {J : Matrix (Fin M) (Fin M) E} {T : Matrix (Fin n) (Fin n) E}
     {bs : Module.Basis (Fin d) F E} {v : HeightOneSpectrum (𝓞 F)} {ψv : Fv F v → ℂ} {S : Subring (Fv F v ⊗[F] E)}
@@ -43,11 +43,11 @@ theorem eventually_smul_mem {σ : E →ₐ[F] E} {M n d : ℕ} {J : Matrix (Fin 
   exact hmem
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ M n d J T bs v ψv S σS ϖ ε hG b`. Establish `h : ∀ᶠ k : ℕ in atTop, ∀ a c, ϖ ^ k • (b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a c ∈ S` using `eventually_all.2 fun a => eventually_all.2 fun c => eventually_smul_mem hG _`. Take `⟨k, hk⟩` from `h.exists`. Establish `hX : PositivityTheory.PfSWUS.Loc.cT σS (Matrix.of fun a c => (⟨_, hk a c⟩ : S)) = Matrix.of fun a c => (⟨_, hk a c⟩ : S)`. Use extensionality with `a c`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hb` using `b.2 a c`. Simplify using `only [PositivityTheory.PfSWUS.Loc.cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.of_apply]`. Rewrite using `[hG.sig]`. Simplify using `only [sigR_smul]`. Conclude with `congrArg _ hb`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, _, hX, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `a c`. Use `show (b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a c = (ϖ ^ k)⁻¹ • ϖ ^ k • (b : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) a c`. Rewrite using `[smul_smul, inv_mul_cancel₀ (pow_ne_zero _ hG.unif_ne), one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exhaust : Exhaust := by
   intro F E _ _ _ _ _ σ M n d J T bs v ψv S σS ϖ ε hG b

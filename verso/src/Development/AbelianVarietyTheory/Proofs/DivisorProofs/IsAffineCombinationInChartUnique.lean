@@ -8,9 +8,9 @@ noncomputable section
 namespace GlobalTheory.SecGlue
 
 /- English proof (translation)
-Establish `e₁ : c.appLE V ⊤ hc.ge = c'.appLE V ⊤ hc'.ge`. Rewrite using `[← cancel_mono (Scheme.ΓSpecIso (CommRingCat.of S)).hom]`. Conclude with `CommRingCat.hom_ext (RingHom.ext e)`. Establish `a` using `IsAffineOpen.SpecMap_appLE_fromSpec c hV (isAffineOpen_top (Sp S)) hc.ge`. Establish `a'` using `IsAffineOpen.SpecMap_appLE_fromSpec c' hV (isAffineOpen_top (Sp S)) hc'.ge`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `a` using `[e₁, a', IsAffineOpen.fromSpec_top]`. Conclude with `((cancel_epi _).1 a).symm`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_chartHom_eq {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {S : Type}
     [CommRing S] (c c' : Sp S ⟶ Y) (hc : c ⁻¹ᵁ V = ⊤) (hc' : c' ⁻¹ᵁ V = ⊤)
@@ -24,7 +24,7 @@ theorem eq_of_chartHom_eq {Y : Scheme.{0}} {V : Y.Opens} (hV : IsAffineOpen V) {
   exact ((cancel_epi _).1 a).symm
 
 /- English proof (translation)
-Introduce `Y V hV S _ ι _ u c c' w a h h'`. Take `⟨hu, hc, hw, e⟩` from `h`. Take `⟨hu', hc', hw', e'⟩` from `h'`. Use `eq_of_chartHom_eq hV c c' hc hc' fun x => ?_` and prove the remaining obligations. Rewrite using `[e x, e' x]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem combIn_unique : ∀ (Y : Scheme.{0}) (V : Y.Opens), IsAffineOpen V → ∀ (S : Type) [CommRing S] (ι : Type) [Fintype ι]
     (u c c' : Sp S ⟶ Y) (w : ι → (Sp S ⟶ Y)) (a : ι → S),

@@ -13,7 +13,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `e : gs (𝟙 Y) y U a = (Y.presheaf.germ U y hy).hom a` using `gs_eq (𝟙 Y) y U hy a`. Rewrite using `[e]`. Conclude with `map_eq_zero_iff _ (germ_injective_of_isIntegral Y y hy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gs_id_eq_zero_iff {Y : Scheme.{0}} [IsIntegral Y] (y : Y) (U : Y.Opens) (hy : y ∈ U) (a : Γ(Y, U)) :
     gs (𝟙 Y) y U a = 0 ↔ a = 0 := by
@@ -22,11 +22,11 @@ theorem gs_id_eq_zero_iff {Y : Scheme.{0}} [IsIntegral Y] (y : Y) (U : Y.Opens) 
   exact map_eq_zero_iff _ (germ_injective_of_isIntegral Y y hy)
 
 /- English proof (translation)
-Establish `hm : y ∈ LB.wchart L φ (fun k => J (𝟙 Y ≫ φ k))` using `hJ.mem φ (𝟙 Y)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨j, hj⟩ h0`. Apply `hj` to reduce the goal to its premises. Establish `h1 : s.f (fun k => J (𝟙 Y ≫ φ k)) = 0` using `(gs_id_eq_zero_iff y _ hm _).1 h0`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `fn_ext (V := LB.wchart L φ j) fun x hx => ?_` and prove the remaining obligations. Establish `hne : (LB.wchart L φ j : Set Y).Nonempty` using `⟨x, hx⟩`. Take `⟨w, hw, hw'⟩` from `nonempty_preirreducible_inter (LB.wchart L φ j).isOpen (LB.wchart L φ (fun k => J (𝟙 Y ≫ φ k))).isOpen hne ⟨y, hm⟩`. Establish `h2` using `sec_trans s (𝟙 Y) w hw hw'`. Establish `h3 : gs (𝟙 Y) w (LB.wchart L φ (fun k => J (𝟙 Y ≫ φ k))) (s.f (fun k => J (𝟙 Y ≫ φ k))) = 0` using `(gs_id_eq_zero_iff w _ hw' _).2 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h3, mul_zero]`. Conclude with `congrArg (gs (𝟙 Y) x (LB.wchart L φ j)) ((gs_id_eq_zero_iff w _ hw _).1 h2)`. Introduce `h`. Conclude with `⟨fun k => J (𝟙 Y ≫ φ k), fun h0 => h ((gs_id_eq_zero_iff y _ hm _).2 h0)⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_iff_sval_ne_zero {Y X : Scheme.{0}} [IsIntegral Y] {L : LB X} {K : Type} [Fintype K]
     {φ : K → (Y ⟶ X)} {ε : K → ℤ} (s : LB.Sec (LB.LinComb L φ ε)) {y : Y} {J : (Y ⟶ X) → L.ι} (hJ : Good L y J) :
@@ -49,9 +49,9 @@ theorem exists_ne_zero_iff_sval_ne_zero {Y X : Scheme.{0}} [IsIntegral Y] {L : L
     exact ⟨fun k => J (𝟙 Y ≫ φ k), fun h0 => h ((gs_id_eq_zero_iff y _ hm _).2 h0)⟩
 
 /- English proof (translation)
-Introduce `Y X _ L hL K K' K'' _ _ _ φ ε φ' ε' φ'' ε'' s s' d h hs hs'`. Use `choose J hJ using fun χ : Y ⟶ X => exists_chart hL (χ (genericPoint Y))`. Establish `hG : Good L (genericPoint Y) J` using `hJ`. Take `⟨v, hv⟩` from `h _ J hG`. Rewrite `hs`, `hs'`, the goal using `[exists_ne_zero_iff_sval_ne_zero _ hG]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv]`. Conclude with `mul_ne_zero (mul_ne_zero hs hs') v.ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem exists_ne_zero_of_sval_eq_mul_unit : ∀ (Y X : Scheme.{0}) [IsIntegral Y] (L : LB X), L.IsLB → ∀ (K K' K'' : Type) [Fintype K] [Fintype K'] [Fintype K''] (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X)) (ε' : K' → ℤ) (φ'' : K'' → (Y ⟶ X)) (ε'' : K'' → ℤ) (s : LB.Sec (LB.LinComb L φ ε)) (s' : LB.Sec (LB.LinComb L φ' ε')) (d : LB.Sec (LB.LinComb L φ'' ε'')), (∀ (y : Y) (J), Good L y J → ∃ v : (Y.presheaf.stalk y)ˣ, sval d (𝟙 Y) y J = sval s (𝟙 Y) y J * sval s' (𝟙 Y) y J * v.val) → (∃ j, s.f j ≠ 0) → (∃ j, s'.f j ≠ 0) → ∃ j, d.f j ≠ 0 := by
   intro Y X _ L hL K K' K'' _ _ _ φ ε φ' ε' φ'' ε'' s s' d h hs hs'

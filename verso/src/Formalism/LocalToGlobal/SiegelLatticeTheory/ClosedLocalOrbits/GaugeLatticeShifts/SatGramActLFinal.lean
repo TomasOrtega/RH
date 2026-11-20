@@ -11,7 +11,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions.S Formalism.MainNo
 namespace Formalism.L2.SG.Pf.SatGramActL
 
 /- English proof (translation)
-The claim follows from `left_action_three_families hPD betaLift_holds (sMemLeft_holds hGen hPD) iotaLeft_holds (chiNLeft_holds hCB) ooLeft_holds fundConj_holds hIR hAR`.
+A detailed English derivation is pending.
 -/
 theorem left_action_of_local_data (hPD : ∀ D : D7, Formalism.L2.SG.Saturated.PDIso D)
     (hGen : ∀ D : D7, Formalism.L2.SG.Saturated.GenIso (VS D) D.R.rS (gS D))

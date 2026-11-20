@@ -57,27 +57,27 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.A
 import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.AutomorphicRankinSelberg.CharEq2
 
 /- English proof (translation)
-Establish `hVolMap : UpperTheory.V.Af.Rs.VolMap` using `UpperTheory.V.Af.Rs.volMap`. Establish `hStripFub : UpperTheory.V.Af.Rs.StripFub` using `UpperTheory.V.Af.Rs.stripFub hVolMap`. Establish `hStripIm : UpperTheory.V.Af.Rs.StripIm` using `UpperTheory.V.Af.Rs.stripIm hVolMap`. Establish `hFdFin : UpperTheory.V.Af.Rs.FdFin` using `UpperTheory.V.Af.Rs.fdFin hStripIm hVolMap`. Establish `hFdNull : UpperTheory.V.Af.Rs.FdNull` using `UpperTheory.V.Af.Rs.fdNull hVolMap`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFdPos : UpperTheory.V.Af.Rs.FdPos` using `UpperTheory.V.Af.Rs.fdPos hVolMap`. Establish `hStripInt : UpperTheory.V.Af.Rs.StripInt` using `UpperTheory.V.Af.Rs.stripInt hStripIm`. Establish `hFdCount : UpperTheory.V.Af.Rs.FdCount` using `UpperTheory.V.Af.Rs.fdCount hFdNull`. Establish `hUnfM : UpperTheory.V.Af.Rs.UnfM` using `UpperTheory.V.Af.Rs.unfM hFdFin hFdCount`. Establish `hRowBij : UpperTheory.V.Af.Rs.RowBij` using `UpperTheory.V.Af.Rs.rowBij`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRowRep : UpperTheory.V.Af.Rs.RowRep` using `UpperTheory.V.Af.Rs.rowRep`. Establish `hUnfold : UpperTheory.V.Af.Rs.Unfold` using `UpperTheory.V.Af.Rs.unfold hFdFin hUnfM hRowBij`. Establish `hGcdSum : UpperTheory.V.Af.Rs.GcdSum` using `UpperTheory.V.Af.Rs.gcdSum`. Establish `hKerBd : UpperTheory.V.Af.Rs.KerBd` using `UpperTheory.V.Af.Rs.kerBd`. Establish `hKerLow : UpperTheory.V.Af.Rs.KerLow` using `UpperTheory.V.Af.Rs.kerLow`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKerDiff : UpperTheory.V.Af.Rs.KerDiff` using `UpperTheory.V.Af.Rs.kerDiff`. Establish `hWTop : UpperTheory.V.Af.Rs.WTop` using `UpperTheory.V.Af.Rs.wTop`. Establish `hZDiff : UpperTheory.V.Af.Rs.ZDiff` using `UpperTheory.V.Af.Rs.zDiff hKerBd hKerDiff hWTop`. Establish `hZLow : UpperTheory.V.Af.Rs.ZLow` using `UpperTheory.V.Af.Rs.zLow hKerBd hKerLow hWTop`. Establish `hZInt : UpperTheory.V.Af.Rs.ZInt` using `UpperTheory.V.Af.Rs.zInt hFdFin hKerBd hWTop`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSwap : UpperTheory.V.Af.Rs.Swap` using `UpperTheory.V.Af.Rs.swap hFdFin hKerBd hWTop`. Establish `hTBdd : UpperTheory.V.Af.Rs.TBdd` using `UpperTheory.V.Af.Rs.tBdd hFdFin hZDiff hZInt`. Establish `hTTop : UpperTheory.V.Af.Rs.TTop` using `UpperTheory.V.Af.Rs.tTop hFdFin hFdPos hWTop hZDiff hZLow hZInt`. Establish `hClsEx : UpperTheory.V.Af.Rs.ClsEx` using `UpperTheory.V.Af.Rs.clsEx hRowBij`. Establish `hClsProp : UpperTheory.V.Af.Rs.ClsProp` using `UpperTheory.V.Af.Rs.clsProp hRowRep`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLBd : UpperTheory.V.Af.Rs.LBd` using `UpperTheory.V.Af.Rs.lBd`. Establish `hNicePet : UpperTheory.V.Af.Rs.NicePet` using `UpperTheory.V.Af.Rs.nicePet`. Establish `hPetChar : UpperTheory.V.Af.Rs.PetChar` using `UpperTheory.V.Af.Rs.petChar`. Establish `hPars : UpperTheory.V.Af.Rs.Pars` using `UpperTheory.V.Af.Rs.pars`. Establish `hMelSum : UpperTheory.V.Af.Rs.MelSum` using `UpperTheory.V.Af.Rs.melSum`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRankSum : UpperTheory.V.Af.Rs.RankSum` using `UpperTheory.V.Af.Rs.rankSum hStripFub hStripInt hNicePet hPars hMelSum`. Establish `hRankin : UpperTheory.V.Af.Rs.Rankin` using `UpperTheory.V.Af.Rs.rankin hStripFub hStripInt hNicePet hPars hRankSum`. Establish `hArFact : UpperTheory.V.Af.Rs.ArFact` using `UpperTheory.V.Af.Rs.arFact`. Establish `hArSum : UpperTheory.V.Af.Rs.ArSum` using `UpperTheory.V.Af.Rs.arSum`. Establish `hCmp : UpperTheory.V.Af.Rs.Cmp` using `UpperTheory.V.Af.Rs.cmp hRankSum hRankin hArFact hArSum`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDeplete : UpperTheory.V.Af.Rs.Deplete` using `UpperTheory.V.Af.Rs.deplete`. Establish `hSl2Two : UpperTheory.V.Af.Rn.Sl2Two` using `UpperTheory.V.Af.Rn.sl2Two`. Establish `hLowTwo : UpperTheory.V.Af.Rn.LowTwo` using `UpperTheory.V.Af.Rn.lowTwo hSl2Two`. Establish `hHolTwo : UpperTheory.V.Af.Rn.HolTwo` using `UpperTheory.V.Af.Rn.holTwo hLowTwo`. Establish `hNoLow : UpperTheory.V.Af.Rn.NoLow` using `UpperTheory.V.Af.Rn.noLow UpperTheory.V.Af.Rn.centChar`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSatHerm : UpperTheory.V.Af.Rn.SatHerm` using `UpperTheory.V.Af.Rn.satHerm`. Establish `hHermOf : UpperTheory.V.Af.Rn.HermOf` using `UpperTheory.V.Af.Rn.hermOf`. Establish `hEigOfLow : UpperTheory.V.Af.Rn.EigOfLow` using `UpperTheory.V.Af.Rn.eigOfLow UpperTheory.V.Af.Rn.centChar`. Establish `hUnitTw : UpperTheory.V.Af.Rn.UnitTw` using `UpperTheory.V.Af.Rn.unitTw`. Establish `hEvPl : UpperTheory.V.Af.Rn.EvPl` using `UpperTheory.V.Af.Rn.evPl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hNewHerm : UpperTheory.V.Af.Rn.NewHerm` using `UpperTheory.V.Af.Rn.newHerm UpperTheory.V.Af.newformRep hUnitTw hHermOf hSatHerm`. Establish `hPolyInj : UpperTheory.V.Af.Rn.PolyInj` using `UpperTheory.V.Af.Rn.polyInj`. Establish `hTEq : UpperTheory.V.Af.Rs.TEq` using `UpperTheory.V.Af.Rs.tEq hRowBij hStripInt hUnfold hGcdSum hKerBd hSwap hLBd`. Establish `hCore : UpperTheory.V.Af.Rs.Core` using `UpperTheory.V.Af.Rs.core hTBdd hTTop hClsEx hClsProp hTEq hLBd hNicePet hPetChar hCmp`. Establish `hCharEq2 : UpperTheory.V.Af.Rs.CharEq2` using `UpperTheory.V.Af.Rs.charEq2 hCore hDeplete`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `UpperTheory.V.Af.Rn.repNewform_of (UpperTheory.V.Af.Rn.newAE_of hUnitTw hHermOf (UpperTheory.V.Af.Rn.holAll_of UpperTheory.V.Br.holVec hHolTwo hNoLow) hEigOfLow hSatHerm hEvPl hNewHerm UpperTheory.V.Br.minNew hCharEq2) hEvPl hPolyInj (fun w => (UpperTheory.V.Af.Nf.places w).1.pos …`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.repNewform :
     UpperTheory.V.Published.RepNewform := by

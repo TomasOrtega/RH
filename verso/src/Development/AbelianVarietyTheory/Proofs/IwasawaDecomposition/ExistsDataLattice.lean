@@ -15,11 +15,11 @@ open GlobalTheory.Up.Definite GlobalTheory.LatFin
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ}
 
 /- English proof (translation)
-Establish `hcol : (γ : Matrix (Fin r) (Fin r) E) *ᵥ (Pi.single b 1) = fun a => (γ : Matrix (Fin r) (Fin r) E) a b`. Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `h1` using `congrArg φ (hγ.1 (Pi.single b 1) (Pi.single b 1))`. Rewrite `h1` using `[map_herm_one_self, map_herm_one_self, hcol]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : ∑ a, ‖φ ((Pi.single b 1 : Fin r → E) a)‖ ^ 2 = 1`. Apply the tactic sequence `rw [Finset.sum_eq_single b] <;> simp +contextual`. Establish `h3` using `Complex.ofReal_injective h1`. Rewrite `h3` using `[h2]`. Establish `h4` using `Finset.single_le_sum (f := fun a => ‖φ ((γ : Matrix (Fin r) (Fin r) E) a b)‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ a)`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h4` using `[h3]`. Use polynomial arithmetic with `[norm_nonneg (φ ((γ : Matrix (Fin r) (Fin r) E) a b))]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_entry_le_one {Λ : Submodule (𝓞 E) (Fin r → E)} {γ : GL (Fin r) E}
     (hγ : IsUStab (1 : Matrix (Fin r) (Fin r) E) Λ γ) (φ : E →+* ℂ) (a b : Fin r) :
@@ -39,9 +39,9 @@ theorem norm_entry_le_one {Λ : Submodule (𝓞 E) (Fin r → E)} {γ : GL (Fin 
   nlinarith [norm_nonneg (φ ((γ : Matrix (Fin r) (Fin r) E) a b))]
 
 /- English proof (translation)
-Take `⟨k, hk, hi⟩` from `exists_common_den Λ hfg`. Use `choose l hl hm using fun b : Fin r => exists_int_smul_mem Λ hsp (Pi.single b 1)`. Establish `hfin` using `Set.Finite.pi' fun _ : Fin r => Set.Finite.pi' fun b : Fin r => finite_bounded (data E r).Ψ (data E r).cmType (k * l b) (mul_ne_zero hk (hl b)) 1`. Use `Set.Finite.of_finite_image (f := fun γ : GL (Fin r) E => fun a b => (γ : Matrix (Fin r) (Fin r) E) a b) (hfin.subset ?_) (fun x _ y _ h => Units.ext h)` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, hγ, rfl⟩ a b`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun τ => norm_entry_le_one hγ τ.1 a b⟩` and prove the remaining obligations. Use `hi _ ((hγ.2 _).1 (hm b)) a` as an intermediate fact. Rewrite `this` using `[Matrix.mulVec_smul, Matrix.mulVec_single_one]`. Simplify `this` using `[mul_assoc, Matrix.col]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem finite_stab (Λ : Submodule (𝓞 E) (Fin r → E)) (hfg : Λ.FG)
     (hsp : Submodule.span E (Λ : Set (Fin r → E)) = ⊤) :
@@ -64,13 +64,13 @@ open scoped ComplexConjugate ComplexOrder Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [IsCMField E] in
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `hΛ`. Take `⟨d, hd, hint⟩` from `exists_integral_multiples ℤ ℚ (s.biUnion fun x => Finset.univ.image x)`. Use `⟨d, hd, fun x hx => ?_⟩` and prove the remaining obligations. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Introduce `a`. Establish `h` using `hint (x a) (Finset.mem_biUnion.2 ⟨x, hx, Finset.mem_image_of_mem _ (Finset.mem_univ a)⟩)`. Rewrite `h` using `[zsmul_eq_mul]`. Then use the resulting hypothesis. Consider the case `zero => intro a`. Simplify using `using isIntegral_zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `add x y _ _ hx hy => intro a`. Simplify `(hx a).add (hy a)` using `[mul_add]`. Consider the case `smul k x _ hx`. Introduce `a`. Establish `h : (d : E) * (k • x) a = algebraMap (𝓞 E) E k * ((d : E) * x a)`.
+Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Pi.smul_apply, Algebra.smul_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `(RingOfIntegers.isIntegral_coe k).mul (hx a)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_int_mul_isIntegral_of_fg (Λ : Submodule (𝓞 E) (Fin r → E)) (hΛ : Λ.FG) :
     ∃ d : ℤ, d ≠ 0 ∧ ∀ x ∈ Λ, ∀ a, IsIntegral ℤ ((d : E) * x a) := by
@@ -98,13 +98,11 @@ open scoped ComplexConjugate ComplexOrder Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [IsCMField E] in
 /- English proof (translation)
-Establish `hmem : ∀ b : Fin r, (Pi.single b 1 : Fin r → E) ∈ Submodule.span E (Λ : Set (Fin r → E))` using `fun b => hspan ▸ Submodule.mem_top`. Use `choose f t ht _ hsum using fun b => Submodule.mem_span_iff_exists_finset_subset.1 (hmem b)`. Take `⟨c, hc, hcint⟩` from `exists_integral_multiples ℤ ℚ (Finset.univ.biUnion fun b => (t b).image (f b))`. Use `⟨c, hc, fun b => ?_⟩` and prove the remaining obligations. Establish `key : ∀ v ∈ t b, (c : E) • (f b v • v) ∈ Λ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v hv`. Establish `hI : IsIntegral ℤ ((c : E) * f b v)`. Establish `h` using `hcint (f b v) (Finset.mem_biUnion.2 ⟨b, Finset.mem_univ _, Finset.mem_image_of_mem _ hv⟩)`. Rewrite `h` using `[zsmul_eq_mul]`. Then use the resulting hypothesis. Establish `h : (c : E) • (f b v • v) = (⟨_, hI⟩ : 𝓞 E) • v`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_smul]`. Both sides reduce to the same expression. Rewrite using `[h]`. Conclude with `Λ.smul_mem _ (ht b hv)`. Rewrite using `[← hsum b, Finset.smul_sum]`.
-
-Conclude with `Λ.sum_mem key`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_int_smul_single_mem_of_span_eq_univ (Λ : Submodule (𝓞 E) (Fin r → E))
     (hspan : Submodule.span E (Λ : Set (Fin r → E)) = ⊤) :
@@ -132,7 +130,7 @@ open NumberField in
 open scoped ComplexConjugate ComplexOrder Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 /- English proof (translation)
-Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.emb_cc, map_intCast, map_intCast]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cc_intCast' (n : ℤ) : _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (n : E) = n := by
   obtain ⟨φ⟩ : Nonempty (E →+* ℂ) := inferInstance
@@ -144,9 +142,9 @@ open scoped ComplexConjugate ComplexOrder Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 omit [IsCMField E] in
 /- English proof (translation)
-Establish `hT` using `Embeddings.finite_of_norm_le E ℂ B`. Establish `hpi : (Set.univ.pi fun _ : Fin r => Set.univ.pi fun _ : Fin r => {x : E | IsIntegral ℤ x ∧ ∀ φ : E →+* ℂ, ‖φ x‖ ≤ B}).Finite` using `Set.Finite.pi fun _ => Set.Finite.pi fun _ => hT`. Establish `hinj : Function.Injective fun γ : GL (Fin r) E => fun a b => c * (γ : Matrix (Fin r) (Fin r) E) a b`. Introduce `γ δ h`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Conclude with `mul_left_cancel₀ hc (congrFun (congrFun h a) b)`. Use `(hpi.preimage hinj.injOn).subset fun γ hγ => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_setOf_eq]`. Conclude with `fun a b => hγ a b`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 private theorem finite_GL_of_integral_bounded_scaled_entries (c : E) (hc : c ≠ 0) (B : ℝ) :
     {γ : GL (Fin r) E | ∀ a b, IsIntegral ℤ (c * (γ : Matrix (Fin r) (Fin r) E) a b) ∧
@@ -168,29 +166,27 @@ open scoped ComplexConjugate ComplexOrder Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} in
 
 /- English proof (translation)
-Introduce `E _ _ _ r Λ hfg hspan`. Take `⟨d, hd, hdint⟩` from `exists_int_mul_isIntegral_of_fg Λ hfg`. Take `⟨c, hc, hcmem⟩` from `exists_int_smul_single_mem_of_span_eq_univ Λ hspan`. Establish `hdc : ((d * c : ℤ) : E) ≠ 0` using `by exact_mod_cast mul_ne_zero hd hc`. Use `⟨{ _root_.GlobalTheory.Up.Definite.data E r with Λ := Λ Λ_fg := hfg Λ_span := hspan den := (d : 𝓞 E) * (d : 𝓞 E) den_ne := by exact_mod_cast mul_ne_zero hd hd Λ_int := ?_ Γ_stab := ?_ Γ_index := ?_ transv := by` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ξ _ hiso s _ _`. Express the relevant statement in the definitionally equal form `_root_.ReciprocityTheory.ChartRestriction.G.FD.herm (1 : Matrix (Fin r) (Fin r) E) ξ ξ = 0 at hiso`. Take `⟨φ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Establish `h1` using `congrArg φ hiso`. Rewrite `h1` using `[_root_.GlobalTheory.Up.Definite.map_herm_one_self, map_zero, Complex.ofReal_eq_zero, Finset.sum_eq_zero_iff_of_nonneg fun _ _ => sq_nonneg _]`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hξ : ∀ a, ξ a = 0` using `fun a => by simpa using h1 a (Finset.mem_univ a)`. Use `⟨1, Subgroup.one_mem _, ?_⟩` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `[_root_.GlobalTheory.Up.Definite.data, _root_.ReciprocityTheory.ChartRestriction.G.FD.transvMat, hξ, Matrix.one_apply] }, rfl⟩`. Introduce `x hx y hy show IsIntegral ℤ ((((d : 𝓞 E) * (d : 𝓞 E) : 𝓞 E) : E) * _root_.ReciprocityTheory.ChartRestriction.G.FD.herm (1 : Matrix (Fin r) (Fin r) E) x y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[_root_.GlobalTheory.Up.Definite.herm_one, Finset.mul_sum]`. Use `IsIntegral.sum _ fun a _ => ?_` and prove the remaining obligations. Establish `h : (((d : 𝓞 E) * (d : 𝓞 E) : 𝓞 E) : E) * (x a * _root_.ReciprocityTheory.ChartRestriction.G.FD.cc (y a)) = ((d : E) * x a) * _root_.ReciprocityTheory.ChartRestriction.G.FD.cc ((d : E) * y a)`. Rewrite using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.cc_mul, cc_intCast', show (((d : 𝓞 E) * (d : 𝓞 E) : 𝓞 E) : E) = (d : E) * (d : E) by simp]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h]`. Conclude with `(hdint x hx a).mul (_root_.ReciprocityTheory.ChartRestriction.G.FD.isIntegral_cc (hdint y hy a))`. Introduce `γ hγ`. Express the relevant statement in the definitionally equal form `γ ∈ (⊥ : Subgroup (GL (Fin r) E)) at hγ`. Rewrite `hγ` using `[Subgroup.mem_bot]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Substitute `hγ` using the available equality. Simplify using `[_root_.ReciprocityTheory.ChartRestriction.G.FD.IsUStab]`. Use `⟨(finite_GL_of_integral_bounded_scaled_entries ((d * c : ℤ) : E) hdc ‖((d * c : ℤ) : ℂ)‖).toFinset, fun γ hγ => ⟨γ, ?_, by simp⟩⟩` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Introduce `a b`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcol : (γ : Matrix (Fin r) (Fin r) E) *ᵥ (Pi.single b 1) = fun a => (γ : Matrix (Fin r) (Fin r) E) a b`. Use extensionality with `a`. Simplify using the standard rewrite rules. Establish `hnorm : ∀ φ : E →+* ℂ, ‖φ ((γ : Matrix (Fin r) (Fin r) E) a b)‖ ≤ 1`. Introduce `φ`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h0 : _root_.ReciprocityTheory.ChartRestriction.G.FD.herm (1 : Matrix (Fin r) (Fin r) E) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ Pi.single b 1) ((γ : Matrix (Fin r) (Fin r) E) *ᵥ Pi.single b 1) = _root_.ReciprocityTheory.ChartRestriction.G.FD.herm (1 : Matrix (Fin r) (Fin r) E) (Pi.sin …` using `hγ.1 _ _`. Establish `h1` using `congrArg φ h0`. Rewrite `h1` using `[_root_.GlobalTheory.Up.Definite.map_herm_one_self, _root_.GlobalTheory.Up.Definite.map_herm_one_self, hcol]`. Establish `h2 : ∑ a, ‖φ ((Pi.single b 1 : Fin r → E) a)‖ ^ 2 = 1`. Apply the tactic sequence `rw [Finset.sum_eq_single b] <;> simp +contextual`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h3` using `Complex.ofReal_injective h1`. Rewrite `h3` using `[h2]`. Establish `h4` using `Finset.single_le_sum (f := fun a => ‖φ ((γ : Matrix (Fin r) (Fin r) E) a b)‖ ^ 2) (fun _ _ => sq_nonneg _) (Finset.mem_univ a)`. Rewrite `h4` using `[h3]`. Use polynomial arithmetic with `[norm_nonneg (φ ((γ : Matrix (Fin r) (Fin r) E) a b))]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, fun φ => ?_⟩` and prove the remaining obligations. Establish `hmemγ` using `(hγ.2 _).mp (hcmem b)`. Establish `hi` using `hdint _ hmemγ a`. Rewrite `hi` using `[Matrix.mulVec_smul, hcol]`. Simplify using `only [Pi.smul_apply, smul_eq_mul] at hi`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h : ((d * c : ℤ) : E) * (γ : Matrix (Fin r) (Fin r) E) a b = (d : E) * ((c : E) * (γ : Matrix (Fin r) (Fin r) E) a b)`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h]`. Conclude with `hi`.
-
-Rewrite using `[map_mul, norm_mul, map_intCast]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (hnorm φ)`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Member.LatData.exists_data_lattice : ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (r : ℕ)
     (Λ : Submodule (𝓞 E) (Fin r → E)), Λ.FG → Submodule.span E (Λ : Set (Fin r → E)) = ⊤ →

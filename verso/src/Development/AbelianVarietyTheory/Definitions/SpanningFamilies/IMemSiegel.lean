@@ -32,7 +32,7 @@ def haar (φ : Matrix κ ι K → ℂ) : ℂ := if h : IsSB φ then haarAt h.cho
 def ip (φ ψ : Matrix κ ι K → ℂ) : ℂ := haar fun x => φ x * conj (ψ x)
 
 /- English proof (translation)
-Use `⟨1, Nat.one_pos, fun x hx => ?_, fun x y _ => rfl⟩` and prove the remaining obligations. Conclude with `absurd rfl hx`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSB_zero : IsSB (0 : Matrix κ ι K → ℂ) := by
   refine ⟨1, Nat.one_pos, fun x hx => ?_, fun x y _ => rfl⟩
@@ -70,9 +70,9 @@ def heisS (a b : Matrix κ ι ℚ) (φ : Matrix κ ι ℚ → ℂ) : Matrix κ �
   φ (x - b) * cexp (Real.pi * I * ((∑ k, (2 * (x k ⬝ᵥ a k) - a k ⬝ᵥ b k) : ℚ) : ℂ))
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `[Matrix.IsSymm]`. Establish `him : (I • (1 : Matrix ι ι ℂ)).map Complex.im = 1`. Use extensionality with `i j`. Apply the tactic sequence `by_cases hij : i = j <;> simp [Matrix.one_apply, hij]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[him]`. Conclude with `Matrix.PosDef.one`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem I_mem_siegel : (I • (1 : Matrix ι ι ℂ)) ∈ Siegel ι := by
   refine ⟨?_, ?_⟩

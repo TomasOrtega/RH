@@ -18,9 +18,9 @@ variable {F L Ω : Type u} [Field F] [NumberField F] [Field L] [NumberField L] [
   (ιs : ∀ v : S, Ω →ₐ[F] AlgebraicClosure ((v : HeightOneSpectrum (𝓞 F)).adicCompletion F))
 
 /- English proof (translation)
-Establish `h3 : ∃ f : Ω →ₐ[L] AlgebraicClosure ((gsLocalPlace hL ιs p.1 p.2.out).1.adicCompletion L), f = gsLocalEmbeddingOver hL ιs p.1 p.2.out` using `⟨_, rfl⟩`. Take `⟨f, hf⟩` from `h3`. Establish `h2` using `exists_eq_comp_of_normal (ι'.comp (maxUnramifiedOutside L Ω (placesOver S)).val) (f.comp (maxUnramifiedOutside L Ω (placesOver S)).val)`. Take `⟨g, hg⟩` from `h2`. Use `⟨g, fun σ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gsBaseChange_mackeyFamily hL ιs p σ).trans ?_` and prove the remaining obligations. Substitute `hf` using the available equality. Conclude with `(congrArg (fun ψ => decompHom ((gsLocalPlace hL ιs p.1 p.2.out).1.adicCompletion L) ψ (gsMackeyLocalEquiv hL ιs p.1 p.2.out σ)) hg).trans (decompHom_comp _ g _)`.
+Reduce the conclusion to the remaining proof obligations. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem exists_gsBaseChange_mackeyFamily_eq (p : MackeyIndex (gsOpenSubgroup S hL) (gsFinFamily S ιs))
     (ι' : Ω →ₐ[L] AlgebraicClosure ((gsLocalPlace hL ιs p.1 p.2.out).1.adicCompletion L)) :

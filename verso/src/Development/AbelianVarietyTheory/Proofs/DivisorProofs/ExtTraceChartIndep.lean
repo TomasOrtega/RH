@@ -14,11 +14,11 @@ open scoped ContDiff ComplexOrder
 namespace GlobalTheory.SecForm
 
 /- English proof (translation)
-Establish `hh` using `trans_eventually T a b i hv`. Establish `e : midIn T b i =ᶠ[𝓝 v] fun w => chg (gIn T a b i w) (midIn T a i w)` using `hh.mono fun w hw => hw.2.2.1`. Establish `hK : MContDiffAt 1 (midIn T a i) v` using `(isPosFrame_midIn T a i).isHermFrame.one hv.1`. Establish `hp : ∀ᶠ x in 𝓝 v, (midIn T a i x).PosDef` using `mem_of_superset ((isOpen_chartSet T a i).mem_nhds hv.1) fun x hx => (isPosFrame_midIn T a i).posDef x hx`. Establish `hg` using `holo_gIn T a b i hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : MContDiffAt 1 (gIn T a b i) v` using `hg.1.of_le (by norm_cast)`. Establish `hA0 : ∀ η, mdbar (gIn T a b i) v η = 0` using `hg.2.self_of_nhds`. Establish `ht : ∀ᶠ x in 𝓝 v, (gIn T a b i x).toBlocks₂₁ = 0` using `hh.mono fun w hw => hw.2.2.2.2`. Establish `hu : IsUnit (gIn T a b i v).det`. Establish `ha : (A.e i).symm v ∈ T.U a` using `hv.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb : (A.e i).symm v ∈ T.U b` using `hv.2.2`. Establish `h1 : T.g a b ((A.e i).symm v) * T.g b a ((A.e i).symm v) = 1`. Rewrite using `[T.g_mul a b a _ ⟨⟨ha, hb⟩, ha⟩, T.g_self a _ ha]`. Conclude with `Matrix.isUnit_det_of_right_inverse h1`. Rewrite using `[extTrace_congr e, extTrace_chg hK hp hA hu hA0 ht]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extTrace_midIn_indep {M : Type} [TopologicalSpace M] {n : ℕ} {A : HolAtlas M n} (T : HermSeq A 1 1)
     (a b : T.κ) (i : A.ι) {v : V n} (hv : v ∈ chartSet T a i ∩ chartSet T b i) :

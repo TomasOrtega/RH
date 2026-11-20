@@ -13,7 +13,7 @@ abbrev tl {I J : Cx R} {U : Scheme.{0}} {w : ℤ} (p : {p : ℤ × ℤ // p.1 + 
   DirectSum.lof (ULift.{1} R) _ (fun p : {p : ℤ × ℤ // p.1 + p.2 = w} => Sec (I.X p.1.1) U ⊗[ULift.{1} R] Sec (J.X p.1.2) U) p (a ⊗ₜ b)
 
 /- English proof (translation)
-The claim follows from `DirectSum.linearMap_ext _ fun p => TensorProduct.ext' fun a b => h p a b`.
+A detailed English derivation is pending.
 -/
 theorem tu_ext {I J : Cx R} {U : Scheme.{0}} {w : ℤ} {M : Type 1} [AddCommGroup M] [Module (ULift.{1} R) M]
     {f g : Tens I J U w →ₗ[ULift.{1} R] M}
@@ -21,7 +21,7 @@ theorem tu_ext {I J : Cx R} {U : Scheme.{0}} {w : ℤ} {M : Type 1} [AddCommGrou
   DirectSum.linearMap_ext _ fun p => TensorProduct.ext' fun a b => h p a b
 
 /- English proof (translation)
-Simplify using `[tl, Tens.res, DirectSum.lmap_lof]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tu_res_lof {I J : Cx R} {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -29,7 +29,7 @@ theorem tu_res_lof {I J : Cx R} {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (p : 
   simp [tl, Tens.res, DirectSum.lmap_lof]
 
 /- English proof (translation)
-Simplify using `[tl, Pair.lift, DirectSum.toModule_lof]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tu_lift_lof {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) (p : {p : ℤ × ℤ // p.1 + p.2 = w})
     (a : Sec (I.X p.1.1) U) (b : Sec (J.X p.1.2) U) :
@@ -37,13 +37,13 @@ theorem tu_lift_lof {I J K : Cx R} (μ : Pair I J K) (U : Scheme.{0}) (w : ℤ) 
   simp [tl, Pair.lift, DirectSum.toModule_lof]
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tu_sec_res_id {F : Shv R} {U : Scheme.{0}} (a : Sec F U) : Sec.res (𝟙 U) a = a := by
   simp [Sec.res]
 
 /- English proof (translation)
-Simplify using `[Sec.res]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tu_sec_res_comp {F : Shv R} {W V U : Scheme.{0}} (f : W ⟶ V) (g : V ⟶ U) (a : Sec F U) :
     Sec.res (f ≫ g) a = Sec.res f (Sec.res g a) := by
@@ -62,7 +62,7 @@ def TP (I J : Cx R) (w : ℤ) : Scheme.{0}ᵒᵖ ⥤ ModuleCat.{1} (ULift.{1} R)
     rw [tu_res_lof, tu_res_lof, tu_res_lof, tu_sec_res_comp, tu_sec_res_comp]
 
 /- English proof (translation)
-Establish `: (μ.lift V w).comp (Tens.res g w) = ((K.X w).obj.map g.op).hom.comp (μ.lift U w)`. Use `tu_ext fun p a b => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply]`. Rewrite using `[tu_res_lof, tu_lift_lof, tu_lift_lof, ← μ.nat]`. Conclude with `LinearMap.congr_fun this x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tu_lift_nat {I J K : Cx R} (μ : Pair I J K) {V U : Scheme.{0}} (g : V ⟶ U) (w : ℤ) (x : Tens I J U w) :
     μ.lift V w (Tens.res g w x) = Sec.res g (μ.lift U w x) := by
@@ -79,11 +79,11 @@ def Lf {I J K : Cx R} (μ : Pair I J K) (w : ℤ) : TP I J w ⟶ (K.X w).obj whe
     exact tu_lift_nat μ g.unop w x
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `U x' y' hxy`. Set `x : Tens I J U.unop w` to `x'`. Set `y : Tens I J U.unop w` to `y'`. Establish `hxy' : τ.lift U.unop w x = τ.lift U.unop w y` using `hxy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h0 : τ.lift U.unop w (x - y) = 0`. Rewrite using `[map_sub]`. Conclude with `sub_eq_zero.mpr hxy'`. Take `⟨S, hS, hP⟩` from `hτ.2 U.unop w (x - y) h0`. Use `Scheme.etaleTopology.superset_covering ?_ hS` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `V g hg`. Establish `h1 : Tens.res g w (x - y) = 0` using `hP V g hg`. Rewrite `h1` using `[map_sub, sub_eq_zero]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tu_locInj {I J T : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (w : ℤ) :
     Presheaf.IsLocallyInjective Scheme.etaleTopology.{0} (Lf τ w) := by
@@ -102,9 +102,9 @@ theorem tu_locInj {I J T : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (w : ℤ)
   exact h1
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `U y`. Take `⟨S, hS, hP⟩` from `hτ.1 U w y`. Use `Scheme.etaleTopology.superset_covering ?_ hS` and prove the remaining obligations. Introduce `V g hg`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨x, hx⟩` from `hP V g hg`. Conclude with `⟨x, hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tu_locSurj {I J T : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (w : ℤ) :
     Presheaf.IsLocallySurjective Scheme.etaleTopology.{0} (Lf τ w) := by
@@ -117,7 +117,7 @@ theorem tu_locSurj {I J T : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (w : ℤ
   exact ⟨x, hx⟩
 
 /- English proof (translation)
-Use `tu_locInj τ hτ w` as an intermediate fact. Use `tu_locSurj τ hτ w` as an intermediate fact. Conclude with `GrothendieckTopology.W_of_isLocallyBijective _ _`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem etaleTensorPairingLift_isSheafifyLocalIso {I J T : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (w : ℤ) :
     Scheme.etaleTopology.{0}.W (Lf τ w) := by
@@ -129,14 +129,14 @@ def uf {I J T K : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (μ : Pair I J K) 
   ((etaleTensorPairingLift_isSheafifyLocalIso τ hτ w) _ (K.X w).property).2 (Lf μ w) |>.choose
 
 /- English proof (translation)
-The claim follows from `((etaleTensorPairingLift_isSheafifyLocalIso τ hτ w) _ (K.X w).property).2 (Lf μ w) |>.choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem uf_spec {I J T K : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (μ : Pair I J K) (w : ℤ) :
     Lf τ w ≫ uf τ hτ μ w = Lf μ w :=
   ((etaleTensorPairingLift_isSheafifyLocalIso τ hτ w) _ (K.X w).property).2 (Lf μ w) |>.choose_spec
 
 /- English proof (translation)
-Use `congrArg (fun φ => (φ.app (op U)).hom x) (uf_spec τ hτ μ w)` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem uf_lift {I J T K : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (μ : Pair I J K) (w : ℤ) (U : Scheme.{0})
     (x : Tens I J U w) : ((uf τ hτ μ w).app (op U)).hom (τ.lift U w x) = μ.lift U w x := by
@@ -144,7 +144,7 @@ theorem uf_lift {I J T K : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (μ : Pai
   exact this
 
 /- English proof (translation)
-Use `uf_lift τ hτ μ w U (tl (w := w) ⟨(s, t), h⟩ a b)` as an intermediate fact. Rewrite `this` using `[tu_lift_lof, tu_lift_lof]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem uf_mul {I J T K : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (μ : Pair I J K) (U : Scheme.{0})
     (s t w : ℤ) (h : s + t = w) (a : Sec (I.X s) U) (b : Sec (J.X t) U) :
@@ -153,9 +153,9 @@ theorem uf_mul {I J T K : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (μ : Pair
   rwa [tu_lift_lof, tu_lift_lof] at this
 
 /- English proof (translation)
-Apply `((etaleTensorPairingLift_isSheafifyLocalIso τ hτ i) _ (K.X (i + 1)).property).1` to reduce the goal to its premises. Use `NatTrans.ext (funext fun U => ModuleCat.hom_ext (tu_ext fun p a b => ?_))` and prove the remaining obligations. Take `⟨⟨s, t⟩, h⟩` from `p`. Simplify using `only [NatTrans.comp_app, ModuleCat.hom_comp]`. Express the relevant statement in the definitionally equal form `((K.d i (i + 1)).hom.app U).hom (((uf τ hτ μ i).app (op U.unop)).hom (τ.lift U.unop i (tl _ a b))) = ((uf τ hτ μ (i + 1)).app (op U.unop)).hom (((T.d i (i + 1)).hom.app U).hom (τ.lift U.unop i (tl _ a b)))`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[tu_lift_lof, uf_mul]`. Establish `l1` using `μ.leibniz U.unop s t i h a b`. Establish `l2` using `τ.leibniz U.unop s t i h a b`. Simplify using `only [Sec.map] at l1 l2`. Rewrite using `[l1, l2, map_add, Units.smul_def, Units.smul_def, map_zsmul, uf_mul, uf_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem uf_comm {I J T K : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (μ : Pair I J K) (i : ℤ) :
     uf τ hτ μ i ≫ (K.d i (i + 1)).hom = (T.d i (i + 1)).hom ≫ uf τ hτ μ (i + 1) := by
@@ -180,7 +180,7 @@ def uc {I J T K : Cx R} (τ : Pair I J T) (hτ : τ.IsTensor) (μ : Pair I J K) 
     exact uf_comm τ hτ μ i
 
 /- English proof (translation)
-Introduce `R _ I J T K τ hτ μ`. Use `⟨uc τ hτ μ, fun U s t w h a b => ?_⟩` and prove the remaining obligations. Simplify using `only [HomologicalComplex.id_f, pa_sec_map_id]`. Conclude with `uf_mul τ hτ μ U s t w h a b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem t_pa_tens_univ_of : t_pa_tens_univ := by
   intro R _ I J T K τ hτ μ

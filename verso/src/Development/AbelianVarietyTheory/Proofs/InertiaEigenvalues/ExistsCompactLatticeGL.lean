@@ -19,7 +19,7 @@ namespace GlobalTheory.IdeleCovolume
 open NumberField.Units NumberField.Units.dirichletUnitTheorem in
 
 /- English proof (translation)
-The claim follows from `|t w + Real.log (w (u : E)) + n| ≤ R := by first | exact @_root_.GlobalTheory.IntegerUnitBound.exists_unit_int_abs_le | exact _root_.GlobalTheory.IntegerUnitBound.exists_unit_int_abs_le | (apply _root_.GlobalTheory.IntegerUnitBound.exists_unit_int_abs_le <;> assumption) | (intros …`.
+A detailed English derivation is pending.
 -/
 theorem exists_bound_log (E : Type) [Field E] [NumberField E] :
     ∃ R : ℝ, ∀ t : InfinitePlace E → ℝ, ∃ (u : (𝓞 E)ˣ) (n : ℤ), ∀ w : InfinitePlace E,
@@ -33,11 +33,11 @@ theorem exists_bound_log (E : Type) [Field E] [NumberField E] :
   | (intros; exact _root_.GlobalTheory.IntegerUnitBound.exists_unit_int_abs_le ..)
 
 /- English proof (translation)
-Establish `h2` using `(Units.isClosedEmbedding_embedProduct (α := A)).isCompact_preimage (hC.prod (hC.image MulOpposite.continuous_op))`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h1'⟩`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1, _, h1', rfl⟩`. Introduce and unpack `⟨h1, m, hm, hm'⟩`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Establish `: m = ((g⁻¹ : Aˣ) : A)` using `MulOpposite.op_injective hm'`. Rewrite using `[← this]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_units {A : Type} [Monoid A] [TopologicalSpace A] [ContinuousMul A] [T1Space A] {C : Set A}
     (hC : IsCompact C) : IsCompact {x : Aˣ | (x : A) ∈ C ∧ ((x⁻¹ : Aˣ) : A) ∈ C} := by
@@ -60,7 +60,7 @@ abbrev diag : Eˣ →* (Ad E)ˣ := Units.map (algebraMap E (Ad E)).toMonoidHom
 def eIdele : (Ad E)ˣ := infId E (expU fun _ : InfinitePlace E => ((1 : ℝ) : ℂ))
 
 /- English proof (translation)
-Establish `h : ∀ x, pInf E (sInf E x) = x` using `fun x => (infEq E).symm_apply_apply x`. Express the relevant statement in the definitionally equal form `pInf E (1 - sInf E 1 + sInf E _) w = _`. Simplify using `only [map_add, map_sub, map_one, h, sub_self, zero_add]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pInf_eIdele (w : InfinitePlace E) : pInf E (eIdele E : Ad E) w = Complex.exp 1 := by
   have h : ∀ x, pInf E (sInf E x) = x := fun x => (infEq E).symm_apply_apply x
@@ -69,18 +69,18 @@ theorem pInf_eIdele (w : InfinitePlace E) : pInf E (eIdele E : Ad E) w = Complex
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(1 : Af E) - 0 + 0 = 1`. Simplify using the standard rewrite rules.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem pFin_eIdele : pFin E (eIdele E : Ad E) = 1 := by
   change (1 : Af E) - 0 + 0 = 1
   simp
 
 /- English proof (translation)
-Establish `h1 : IsCompact (Set.pi Set.univ fun _ : InfinitePlace E => Metric.closedBall (0 : ℂ) r)` using `isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Establish `h2` using `(h1.image (continuous_infEq E)).prod (GlobalTheory.AdeleCocompact.isCompact_integral E)`. Establish `h3 : IsCompact (X` using `Ad E) _ := h2`. Use `Eq.mpr (congrArg IsCompact (Set.ext fun x => ?_)) h3` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h, h'⟩`. Conclude with `⟨⟨pInf E x, fun w _ => mem_closedBall_zero_iff.2 (h w), (infEq E).apply_symm_apply _⟩, h'⟩`. Introduce and unpack `⟨⟨y, hy, e⟩, h'⟩`. Use `⟨fun w => ?_, h'⟩` and prove the remaining obligations. Establish `: pInf E x = y` using `(infEq E).symm_apply_eq.2 e.symm`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `mem_closedBall_zero_iff.1 (hy w trivial)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_box (r : ℝ) :
     IsCompact {x : Ad E | (∀ w, ‖pInf E x w‖ ≤ r) ∧ ∀ v, pFin E x v ∈ v.adicCompletionIntegers E} := by
@@ -99,21 +99,19 @@ theorem isCompact_box (r : ℝ) :
     exact mem_closedBall_zero_iff.1 (hy w trivial)
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E`. Take `⟨R, hR⟩` from `exists_bound_log E`. Use `⟨_, isCompact_units (isCompact_box E (Real.exp R)), fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨u, n, hu⟩` from `hR fun w => Real.log ‖pInf E (a : Ad E) w‖`. Set `k : Eˣ` to `Units.map (algebraMap (𝓞 E) E).toMonoidHom u`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨k, n, ?_⟩` and prove the remaining obligations. Establish `hk : diag E k ∈ GlobalTheory.Mem.Chr.unitIdl E` using `fun v => by`. Establish `h1 : ∀ z : (𝓞 E)ˣ, Valued.v (pFin E (diag E (Units.map (algebraMap (𝓞 E) E).toMonoidHom z) : Ad E) v) ≤ 1` using `fun z => HeightOneSpectrum.coe_mem_adicCompletionIntegers v (z : 𝓞 E)`. Establish `h2` using `h1 u⁻¹`. Rewrite `h2` using `[map_inv, map_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e : pFin E (diag E k : Ad E) v * pFin E (((diag E k)⁻¹ : (Ad E)ˣ) : Ad E) v = 1` using `congrArg (fun a : Ad E => a.2 v) (diag E k).mul_inv`. Establish `e'` using `congrArg Valued.v e`. Rewrite `e'` using `[map_mul, map_one]`. Conclude with `eq_one_of_one_le_mul_left (h1 u) h2 e'.ge`. Establish `he : eIdele E ∈ GlobalTheory.Mem.Chr.unitIdl E` using `fun v => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `Valued.v (pFin E (eIdele E : Ad E) v) = 1`. Rewrite using `[pFin_eIdele]`. Conclude with `map_one _`. Establish `hmem : diag E k * eIdele E ^ n * a ∈ GlobalTheory.Mem.Chr.unitIdl E` using `mul_mem (mul_mem hk (zpow_mem he n)) ha`. Set `N : InfinitePlace E → ((Ad E)ˣ →* ℝ)` to `fun w => ((normHom (α := ℂ)).toMonoidHom.comp (((Pi.evalRingHom (fun _ : InfinitePlace E => ℂ) w).comp (pInf E)).toMonoidHom)).comp (Units.coeHom _)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : ∀ w x, N w x = ‖pInf E (x : Ad E) w‖` using `fun _ _ => rfl`. Establish `hpos : ∀ w x, 0 < N w x` using `fun w x => lt_of_le_of_ne (hN w x ▸ norm_nonneg _) ((Group.isUnit x).map (N w)).ne_zero.symm`. Establish `hlog : ∀ w, |Real.log (N w (diag E k * eIdele E ^ n * a))| ≤ R` using `fun w => by`. Establish `h1 : N w (diag E k) = w (u : E)`. Rewrite using `[hN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `‖pInf E (algebraMap E (Ad E) (u : E)) w‖ = _`. Rewrite using `[pInf_algebraMap, InfinitePlace.norm_embedding_eq]`. Establish `h2 : Real.log (N w (eIdele E)) = 1`. Rewrite using `[hN, pInf_eIdele, Complex.norm_exp, Real.log_exp, Complex.one_re]`. Rewrite using `[map_mul, map_mul, Real.log_mul (mul_pos (hpos _ _) (hpos _ _)).ne' (hpos _ _).ne', Real.log_mul (hpos _ _).ne' (hpos _ _).ne', map_zpow, Real.log_zpow, h2, h1, hN]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `hu w using 2` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Use `⟨⟨fun w => ?_, fun v => (hmem v).le⟩, fun w => ?_, fun v => (inv_mem hmem v).le⟩` and prove the remaining obligations. Rewrite using `[← hN, ← Real.log_le_iff_le_exp (hpos _ _)]`. Conclude with `(abs_le.1 (hlog w)).2`.
-
-Rewrite using `[← hN, ← Real.log_le_iff_le_exp (hpos _ _), map_inv, Real.log_inv]`. Combine the linear relations using `[(abs_le.1 (hlog w)).1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_compact_unit : ∃ K : Set (Ad E)ˣ, IsCompact K ∧ ∀ a ∈ GlobalTheory.Mem.Chr.unitIdl E,
     ∃ (k : Eˣ) (n : ℤ), diag E k * eIdele E ^ n * a ∈ K := by
@@ -162,11 +160,11 @@ theorem exists_compact_unit : ∃ K : Set (Ad E)ˣ, IsCompact K ∧ ∀ a ∈ Gl
     linarith [(abs_le.1 (hlog w)).1]
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `exists_compact_unit E`. Set `S : Subgroup (Ad E)ˣ` to `GlobalTheory.Mem.Chr.unitIdl E ⊔ (diag E).range`. Use `haveI : S.FiniteIndex := GlobalTheory.Mem.UnitIndex.finiteIndex_unitIdl_sup E`. Use `⟨⋃ q : (Ad E)ˣ ⧸ S, (· * q.out) '' K, isCompact_iUnion fun q => hK.image (continuous_id.mul continuous_const), fun x => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `QuotientGroup.mk_out_eq_mul S x`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, _, ⟨k, rfl⟩, e⟩` from `Subgroup.mem_sup.1 (inv_mem s.2)`. Take `⟨k', n, hk⟩` from `h a ha`. Use `⟨k' * k⁻¹, n, Set.mem_iUnion.2 ⟨(x : (Ad E)ˣ ⧸ S), _, hk, ?_⟩⟩` and prove the remaining obligations. Establish `: a = (s : (Ad E)ˣ)⁻¹ * (diag E k)⁻¹` using `eq_mul_inv_of_mul_eq e`. Simplify using `only [hs, map_mul, map_inv, this]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[mul_comm, mul_left_comm, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_compact_idele : ∃ K : Set (Ad E)ˣ, IsCompact K ∧ ∀ x : (Ad E)ˣ,
     ∃ (k : Eˣ) (n : ℤ), diag E k * eIdele E ^ n * x ∈ K := by
@@ -184,11 +182,11 @@ theorem exists_compact_idele : ∃ K : Set (Ad E)ˣ, IsCompact K ∧ ∀ x : (Ad
   simp [mul_comm, mul_left_comm, mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : ∀ v : InfinitePlace E, ‖(eIdele E : Ad E).1 v‖ = Real.exp 1` using `fun v => by`. Use `pInf_eIdele E v` as an intermediate fact. Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbedding v).norm_map_of_map_zero (map_zero _)]`. Use `(congrArg norm this).trans ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_exp, Complex.one_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∀ v : HeightOneSpectrum (𝓞 E), ‖(eIdele E : Ad E).2 v‖ = 1` using `fun v => by`. Express the relevant statement in the definitionally equal form `‖pFin E (eIdele E : Ad E) v‖ = 1`. Rewrite using `[pFin_eIdele]`. Conclude with `norm_one`. Express the relevant statement in the definitionally equal form `1 < (∏ v : InfinitePlace E, ‖(eIdele E : Ad E).1 v‖ ^ v.mult) * (∏ᶠ v : HeightOneSpectrum (𝓞 E), ‖(eIdele E : Ad E).2 v‖)`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Simplify using `only [h1, h2, finprod_one, mul_one]`. Rewrite using `[Finset.prod_pow_eq_pow_sum, InfinitePlace.sum_mult_eq]`. Conclude with `one_lt_pow₀ (Real.one_lt_exp_iff.2 one_pos) Module.finrank_pos.ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_lt_ideleNorm_eIdele : 1 < ideleNorm (E := E) (eIdele E) := by
   have h1 : ∀ v : InfinitePlace E, ‖(eIdele E : Ad E).1 v‖ = Real.exp 1 := fun v => by
@@ -207,11 +205,11 @@ theorem one_lt_ideleNorm_eIdele : 1 < ideleNorm (E := E) (eIdele E) := by
   exact one_lt_pow₀ (Real.one_lt_exp_iff.2 one_pos) Module.finrank_pos.ne'
 
 /- English proof (translation)
-Take `⟨U, hU, h⟩` from `GlobalTheory.AdeleDiscrete.exists_nhds_zero_principal_eq_zero E`. Establish `hL : 0 < Real.log (ideleNorm (E` using `E) (eIdele E)) := Real.log_pos (one_lt_ideleNorm_eIdele E)`. Establish `h1 : (fun x : (Ad E)ˣ => (x : Ad E) - 1) ⁻¹' U ∈ 𝓝 (1 : (Ad E)ˣ)` using `(Units.continuous_val.sub continuous_const).continuousAt.preimage_mem_nhds (by simpa using hU)`. Establish `h2 : {x : (Ad E)ˣ | |Real.log (ideleNorm (E` using `E) x)| < Real.log (ideleNorm (E := E) (eIdele E))} ∈ 𝓝 (1 : (Ad E)ˣ) := (isOpen_lt (continuous_ideleNorm.log ideleNorm_ne_zero).abs continuous_const).mem_nhds (by simpa using hL)`. Use `⟨_, Filter.inter_mem h1 h2, fun k n ⟨h3, h4⟩ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h5 : ideleNorm (E` using `E) (diag E k) = 1 := ideleNorm_principalIdele k`. Rewrite `h4` using `[Set.mem_setOf_eq, map_mul, h5, one_mul, map_zpow, Real.log_zpow, abs_mul, abs_of_pos hL, mul_lt_iff_lt_one_left hL]`. Establish `hn : n = 0` using `Int.abs_lt_one_iff.1 (by exact_mod_cast h4)`. Substitute `hn` using the available equality. Rewrite `h3`, the goal using `[zpow_zero, mul_one]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h6` using `h ((k : E) - 1) (by rw [map_sub, map_one]; exact h3)`. Rewrite using `[show k = 1 from Units.ext (sub_eq_zero.1 h6), map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_nhds_idele : ∃ W ∈ 𝓝 (1 : (Ad E)ˣ), ∀ (k : Eˣ) (n : ℤ), diag E k * eIdele E ^ n ∈ W →
     diag E k * eIdele E ^ n = 1 := by
@@ -236,7 +234,7 @@ abbrev toGL : (Ad E)ˣ →* GA E 1 := GeneralLinearGroup.scalar (Fin 1)
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `Units.ext (by change (Matrix.scalar (Fin 1) (x : Ad E)).det = x simp)`.
+A detailed English derivation is pending.
 -/
 theorem det_toGL (x : (Ad E)ˣ) : GeneralLinearGroup.det (toGL E x) = x :=
   Units.ext (by
@@ -245,7 +243,7 @@ theorem det_toGL (x : (Ad E)ˣ) : GeneralLinearGroup.det (toGL E x) = x :=
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `Matrix.scalar (Fin 1) (g : Matrix (Fin 1) (Fin 1) (Ad E)).det i j = _`. Rewrite using `[Subsingleton.elim i 0, Subsingleton.elim j 0, Matrix.det_fin_one]`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem toGL_det (g : GA E 1) : toGL E (GeneralLinearGroup.det g) = g := by
   ext i j
@@ -255,7 +253,7 @@ theorem toGL_det (g : GA E 1) : toGL E (GeneralLinearGroup.det g) = g := by
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `Continuous.units_map _ (by change Continuous fun x : Ad E => Matrix.diagonal fun _ : Fin 1 => x exact (continuous_pi fun _ => continuous_id).matrix_diagonal)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_toGL : Continuous (toGL E) :=
   Continuous.units_map _ (by
@@ -263,7 +261,7 @@ theorem continuous_toGL : Continuous (toGL E) :=
     exact (continuous_pi fun _ => continuous_id).matrix_diagonal)
 
 /- English proof (translation)
-Rewrite using `[splitCentre, det_infGL, eIdele]`. Use `congr 1`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(Matrix.scalar (Fin 1) _).det = _`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem det_splitCentre : GeneralLinearGroup.det (splitCentre E 1 1) = eIdele E := by
   rw [splitCentre, det_infGL, eIdele]
@@ -274,19 +272,19 @@ theorem det_splitCentre : GeneralLinearGroup.det (splitCentre E 1 1) = eIdele E 
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `Units.ext (by rw [ratGL, GlobalTheory.CuspRep.det_map]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem det_ratGL (g : GL (Fin 1) E) : GeneralLinearGroup.det (ratGL E 1 g) = diag E (GeneralLinearGroup.det g) :=
   Units.ext (by rw [ratGL, GlobalTheory.CuspRep.det_map]; rfl)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hg`. Establish `: latticeGL E 1 ≤ ((diag E).range ⊔ Subgroup.zpowers (eIdele E)).comap GeneralLinearGroup.det`. Use `sup_le ?_ ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `Subgroup.mem_sup_left ⟨_, (det_ratGL E g).symm⟩`. Rewrite using `[Subgroup.zpowers_le, Subgroup.mem_comap, det_splitCentre]`. Conclude with `Subgroup.mem_sup_right (Subgroup.mem_zpowers _)`. Take `⟨_, ⟨k, rfl⟩, _, ⟨n, rfl⟩, e⟩` from `Subgroup.mem_sup.1 (this hg)`. Conclude with `⟨k, n, e⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `⟨k, n, e⟩`. Establish `h1 : toGL E (diag E k) = ratGL E 1 (GeneralLinearGroup.scalar (Fin 1) k)`. Rewrite using `[← toGL_det E (ratGL E 1 _), det_ratGL]`. Use `congr 2`. Use `Units.ext ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `_ = (Matrix.scalar (Fin 1) (k : E)).det`. Simplify using the standard rewrite rules. Rewrite using `[← toGL_det E g, ← e, map_mul, map_zpow, ← det_splitCentre, toGL_det, h1]`. Conclude with `Subgroup.mul_mem_sup ⟨_, rfl⟩ ⟨n, rfl⟩`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latticeGL (g : GA E 1) :
     g ∈ latticeGL E 1 ↔ ∃ (k : Eˣ) (n : ℤ), diag E k * eIdele E ^ n = GeneralLinearGroup.det g := by
@@ -311,9 +309,9 @@ theorem mem_latticeGL (g : GA E 1) :
     exact Subgroup.mul_mem_sup ⟨_, rfl⟩ ⟨n, rfl⟩
 
 /- English proof (translation)
-Take `⟨W, hW, h⟩` from `exists_nhds_idele E`. Use `discreteTopology_of_isOpen_singleton_one ?_` and prove the remaining obligations. Establish `h1 : (fun γ : latticeGL E 1 => GeneralLinearGroup.det (γ : GA E 1)) ⁻¹' W ∈ 𝓝 1` using `(GeneralLinearGroup.continuous_det.comp continuous_subtype_val).continuousAt.preimage_mem_nhds (by simpa using hW)`. Use `isOpen_iff_mem_nhds.2 ?_` and prove the remaining obligations. Introduce and unpack `_ rfl`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Filter.mem_of_superset h1 fun γ hγ => ?_` and prove the remaining obligations. Take `⟨k, n, e⟩` from `(mem_latticeGL E γ).1 γ.2`. Use `Subtype.ext ?_` and prove the remaining obligations. Establish `h2` using `h k n (e ▸ hγ)`. Rewrite using `[← toGL_det E γ, ← e, h2, map_one]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -332,7 +330,7 @@ theorem discrete_latticeGL : DiscreteTopology (latticeGL E 1) := by
   rfl
 
 /- English proof (translation)
-Take `⟨K, hK, h⟩` from `exists_compact_idele E`. Use `⟨toGL E '' K, hK.image (continuous_toGL E), fun g => ?_⟩` and prove the remaining obligations. Take `⟨k, n, hk⟩` from `h (GeneralLinearGroup.det g)`. Conclude with `⟨toGL E (diag E k * eIdele E ^ n), (mem_latticeGL E _).2 ⟨k, n, (det_toGL E _).symm⟩, _, hk, by rw [map_mul (toGL E), toGL_det]⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_compact_latticeGL :
     ∃ K : Set (GA E 1), IsCompact K ∧ ∀ g, ∃ γ ∈ latticeGL E 1, γ * g ∈ K := by
@@ -343,13 +341,9 @@ theorem exists_compact_latticeGL :
     _, hk, by rw [map_mul (toGL E), toGL_det]⟩
 
 /- English proof (translation)
-Use `⟨fun _ _ => rfl, ?_⟩` and prove the remaining obligations. Use `letI : MeasurableSpace (GA E 1) := borel _`. Use `haveI : BorelSpace (GA E 1) := ⟨rfl⟩`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_adele E`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_adele E`.
+Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_adeleRing_numberField E`. Use `haveI : LocallyCompactSpace (Matrix (Fin 1) (Fin 1) (Ad E)) := inferInstanceAs (LocallyCompactSpace (Fin 1 → Fin 1 → Ad E))`. Use `haveI : LocallyCompactSpace (Matrix (Fin 1) (Fin 1) (Ad E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isClosedEmbedding.locallyCompactSpace`. Use `haveI : LocallyCompactSpace (GA E 1) := Units.isClosedEmbedding_embedProduct.locallyCompactSpace`. Use `haveI : SecondCountableTopology (Matrix (Fin 1) (Fin 1) (Ad E)) := inferInstanceAs (SecondCountableTopology (Fin 1 → Fin 1 → Ad E))`.
-
-Use `haveI : SecondCountableTopology (Matrix (Fin 1) (Fin 1) (Ad E))ᵐᵒᵖ := MulOpposite.opHomeomorph.symm.isEmbedding.secondCountableTopology`. Use `haveI : SecondCountableTopology (GA E 1) := Units.isEmbedding_embedProduct.secondCountableTopology`. Use `haveI := discrete_latticeGL E`. Use `haveI : Countable (latticeGL E 1) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨K, hK, hcov⟩` from `exists_compact_latticeGL E`.
-
-Take `⟨𝓕, h𝓕⟩` from `GlobalTheory.FundDomDiscrete.exists_isFundamentalDomain (latticeGL E 1) Measure.haar`. Use `⟨Measure.haar, 𝓕, inferInstance, h𝓕, ?_⟩` and prove the remaining obligations. Establish `h` using `GlobalTheory.integrableOn_fundamentalDomain_of_cocompact _ (latticeGL E 1) K hK hcov Measure.haar inferInstance 𝓕 h𝓕 (fun _ => c ^ 2) continuous_const fun _ _ _ => rfl`. Simplify `h.2` using `only [HasFiniteIntegral, enorm_pow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isSqInt_const (c : ℂ) : IsSqInt fun _ : GA E 1 => c := by
   refine ⟨fun _ _ => rfl, ?_⟩
@@ -378,7 +372,7 @@ theorem isSqInt_const (c : ℂ) : IsSqInt fun _ : GA E 1 => c := by
   simpa only [HasFiniteIntegral, enorm_pow] using h.2
 
 /- English proof (translation)
-Introduce `E _ _ _` and use `isDiscrete_const fun c => isSqInt_const E (c * 1)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isDiscrete_const_one : ∀ (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E],
     GlobalTheory.UnitaryBC.IsDiscrete (Submodule.span ℂ {GlobalTheory.CuspRep.oneFn E 1}) :=

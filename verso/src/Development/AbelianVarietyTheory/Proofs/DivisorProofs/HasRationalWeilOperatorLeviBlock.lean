@@ -10,22 +10,22 @@ namespace GlobalTheory.RatWeilOp
 variable {κ : Type} [Fintype κ] [DecidableEq κ]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.transpose_transpose (hᵀ * g), Matrix.transpose_mul, Matrix.transpose_transpose, hg, Matrix.transpose_one]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem levi_transpose_mul {R : Type} [CommRing R] {g h : Matrix κ κ R} (hg : gᵀ * h = 1) : hᵀ * g = 1 := by
   rw [← Matrix.transpose_transpose (hᵀ * g), Matrix.transpose_mul, Matrix.transpose_transpose, hg, Matrix.transpose_one]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.transpose_map, ← Matrix.map_mul, hg, Matrix.map_one _ (map_zero f) (map_one f)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem levi_map {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {g h : Matrix κ κ R} (hg : gᵀ * h = 1) :
     (g.map f)ᵀ * h.map f = 1 := by
   rw [← Matrix.transpose_map, ← Matrix.map_mul, hg, Matrix.map_one _ (map_zero f) (map_one f)]
 
 /- English proof (translation)
-Establish `h1` using `levi_transpose_mul hg`. Establish `e1 : x ⬝ᵥ h *ᵥ w.2 = (hᵀ *ᵥ x) ⬝ᵥ w.2` using `by rw [Matrix.dotProduct_mulVec, Matrix.mulVec_transpose]`. Establish `e2 : (g *ᵥ w.1) ⬝ᵥ h *ᵥ w.2 = w.1 ⬝ᵥ w.2`. Rewrite using `[Matrix.dotProduct_mulVec, ← Matrix.mulVec_transpose, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Establish `e3 : hᵀ *ᵥ (x + g *ᵥ w.1) = hᵀ *ᵥ x + w.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_add, Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]`. Simplify using `only [schr]`. Rewrite using `[e1, e2, e3]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem schr_mulVec_transpose {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {g h : Matrix κ κ R}
     (hg : gᵀ * h = 1) (w : (κ → R) × (κ → R)) (Φ : (κ → R) → ℂ) (x : κ → R) :
@@ -40,7 +40,7 @@ theorem schr_mulVec_transpose {R : Type} [CommRing R] [Invertible (2 : R)] (ψ :
   rw [e1, e2, e3]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Rewrite using `[Matrix.fromBlocks_map, act_fromBlocks, Matrix.map_zero _ (map_zero _), Matrix.zero_mulVec, Matrix.zero_mulVec, add_zero, zero_add, LinearMap.funLeft_apply, Matrix.transpose_map]`. Conclude with `schr_mulVec_transpose ψ (levi_map (algebraMap F R) hg) w Φ x`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem funLeft_schr_levi {F R : Type} [Field F] [CommRing R] [Algebra F R] [Invertible (2 : R)] (ψ : AddChar R ℂ)
     {g h : Matrix κ κ F} (hg : gᵀ * h = 1) (w : (κ → R) × (κ → R)) (Φ : (κ → R) → ℂ) :
@@ -53,7 +53,7 @@ theorem funLeft_schr_levi {F R : Type} [Field F] [CommRing R] [Algebra F R] [Inv
   exact schr_mulVec_transpose ψ (levi_map (algebraMap F R) hg) w Φ x
 
 /- English proof (translation)
-Establish `mem : ∀ (S : X ≃ₜ X), ∀ φ ∈ (SB X : Set (X → ℂ)), φ ∘ S ∈ (SB X : Set (X → ℂ))` using `fun S φ hφ => ⟨hφ.1.comp_continuous S.continuous, hφ.2.comp_homeomorph S⟩`. Use `⟨fun φ hφ => mem T φ hφ, fun φ _ ψ _ e => LinearMap.funLeft_injective_of_surjective _ _ _ T.surjective e, fun φ hφ => ⟨φ ∘ T.symm, mem T.symm φ hφ, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `[LinearMap.funLeft_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem bijOn_funLeft_homeomorph {X : Type} [TopologicalSpace X] (T : X ≃ₜ X) :
     Set.BijOn (LinearMap.funLeft ℂ ℂ T) (SB X : Set (X → ℂ)) (SB X : Set (X → ℂ)) := by
@@ -84,7 +84,7 @@ def mulVecHomeo {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing 
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite using `[InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem evI_algebraMap (c : F) : evI F (algebraMap F (AF F) c) = mixedEmbedding F c := by
   rw [InfiniteAdeleRing.mixedEmbedding_eq_algebraMap_comp]; rfl
@@ -126,7 +126,7 @@ theorem mulVecCLE_apply (M N : Matrix κ κ (mixedEmbedding.mixedSpace F)) (h1 :
     mulVecCLE M N h1 h2 x = M *ᵥ x := rfl
 
 /- English proof (translation)
-Establish `h1` using `levi_transpose_mul hg`. Establish `h2 : g * hᵀ = 1` using `(Matrix.mul_eq_one_comm_of_card_eq κ κ F rfl).mp h1`. Conclude with `⟨by rw [← Matrix.map_mul, h1, Matrix.map_one _ (map_zero f) (map_one f)], by rw [← Matrix.map_mul, h2, Matrix.map_one _ (map_zero f) (map_one f)]⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem levi_map_mul {R : Type} [CommRing R] (f : F →+* R) {g h : Matrix κ κ F} (hg : gᵀ * h = 1) :
     hᵀ.map f * g.map f = 1 ∧ g.map f * hᵀ.map f = 1 := by
@@ -136,7 +136,7 @@ theorem levi_map_mul {R : Type} [CommRing R] (f : F →+* R) {g h : Matrix κ κ
     by rw [← Matrix.map_mul, h2, Matrix.map_one _ (map_zero f) (map_one f)]⟩
 
 /- English proof (translation)
-Introduce `i` and use `sum_mem fun j _ => mul_mem (hM i j) (hx j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulVec_mem_integers (v : Pl F) (M : Matrix κ κ (Fv F v))
     (hM : ∀ i j, M i j ∈ v.adicCompletionIntegers F) (x : κ → Fv F v) (hx : ∀ i, x i ∈ v.adicCompletionIntegers F) :
@@ -150,11 +150,11 @@ namespace GlobalTheory.RatWeilOp
 variable {κ : Type} [Fintype κ] [DecidableEq κ] {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `key : (∀ i, (M *ᵥ x) i ∈ v.adicCompletionIntegers F) ↔ ∀ i, x i ∈ v.adicCompletionIntegers F`. Use `⟨fun hx => ?_, mulVec_mem_integers v M hM x⟩` and prove the remaining obligations. Establish `e : x = N *ᵥ (M *ᵥ x)` using `by rw [Matrix.mulVec_mulVec, hNM, Matrix.one_mulVec]`. Rewrite using `[e]`. Conclude with `mulVec_mem_integers v N hN _ hx`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `ind`. Distinguish the cases in `hx : ∀ i, x i ∈ v.adicCompletionIntegers F`. Establish `hx'` using `(key.2 hx)`. Rewrite using `[Set.indicator_of_mem (show M *ᵥ x ∈ {y : κ → Fv F v | ∀ i, y i ∈ v.adicCompletionIntegers F} from hx'), Set.indicator_of_mem (show x ∈ {y : κ → Fv F v | ∀ i, y i ∈ v.adicCompletionIntegers F} from hx)]`. Both sides reduce to the same expression.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hx' : ¬ ∀ i, (M *ᵥ x) i ∈ v.adicCompletionIntegers F` using `fun h' => hx (key.1 h')`. Rewrite using `[Set.indicator_of_notMem (show M *ᵥ x ∉ {y : κ → Fv F v | ∀ i, y i ∈ v.adicCompletionIntegers F} from hx'), Set.indicator_of_notMem (show x ∉ {y : κ → Fv F v | ∀ i, y i ∈ v.adicCompletionIntegers F} from hx)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ind_mulVec (v : Pl F) (M N : Matrix κ κ (Fv F v)) (hNM : N * M = 1)
     (hM : ∀ i j, M i j ∈ v.adicCompletionIntegers F) (hN : ∀ i j, N i j ∈ v.adicCompletionIntegers F) (x : κ → Fv F v) :
@@ -182,11 +182,11 @@ variable {κ : Type} [Fintype κ] [DecidableEq κ] {F : Type} [Field F] [NumberF
 open scoped Classical in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [LinearMap.funLeft_apply, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Function.comp_apply, SchwartzMap.compCLMOfContinuousLinearEquiv_apply, mulVecCLE_apply]`. Use `congr 1`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← evIHom_apply, RingHom.map_mulVec, Matrix.map_map]`. Establish `e : (evIHom ∘ algebraMap F (AF F)) = mixedEmbedding F` using `funext fun c => evI_algebraMap c`. Rewrite using `[e]`. Both sides reduce to the same expression. Use `finprod_congr fun v => congrArg (φ v) (funext fun i => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← AlgHom.coe_toRingHom, RingHom.map_mulVec, Matrix.map_map]`. Establish `e : ((evFin F v : AF F →+* Fv F v) ∘ algebraMap F (AF F)) = algebraMap F (Fv F v)`. Use function extensionality and compare the values at `fun c => (evFin F v).commutes c`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem funLeft_pure_levi {g h : Matrix κ κ F} (hI1 : hᵀ.map (mixedEmbedding F) * g.map (mixedEmbedding F) = 1)
     (hI2 : g.map (mixedEmbedding F) * hᵀ.map (mixedEmbedding F) = 1) (f : SInf F κ) (φ : ∀ v : Pl F, (κ → Fv F v) → ℂ) :
@@ -211,9 +211,9 @@ theorem funLeft_pure_levi {g h : Matrix κ κ F} (hI1 : hᵀ.map (mixedEmbedding
     rfl
 
 /- English proof (translation)
-Simplify using `only [thetaSum, LinearMap.funLeft_apply]`. Establish `e : ∀ ξ : κ → F, (hᵀ.map (algebraMap F (AF F)) *ᵥ fun i => algebraMap F (AF F) (ξ i)) = fun i => algebraMap F (AF F) ((hᵀ *ᵥ ξ) i)` using `fun ξ => funext fun i => (RingHom.map_mulVec _ _ _ _).symm`. Simplify using `only [e]`. Establish `h1` using `levi_transpose_mul hg`. Establish `h2 : g * hᵀ = 1` using `(Matrix.mul_eq_one_comm_of_card_eq κ κ F rfl).mp h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `eq : (κ → F) ≃ (κ → F)` to `{ toFun := fun ξ => hᵀ *ᵥ ξ, invFun := fun ξ => g *ᵥ ξ, left_inv := fun ξ => by`. Simplify using `only [Matrix.mulVec_mulVec, h2, Matrix.one_mulVec]`. Use `right_inv := fun ξ => by`. Simplify using `only [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec] }`. Conclude with `Equiv.tsum_eq eq (fun ξ : κ → F => Φ fun i => algebraMap F (AF F) (ξ i))`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaSum_funLeft_levi {g h : Matrix κ κ F} (hg : gᵀ * h = 1) (Φ : (κ → AF F) → ℂ) :
     thetaSum F (LinearMap.funLeft ℂ ℂ (fun x : κ → AF F => hᵀ.map (algebraMap F (AF F)) *ᵥ x) Φ) = thetaSum F Φ := by
@@ -239,9 +239,9 @@ namespace GlobalTheory.RatWeilOp
 open scoped Classical in
 
 /- English proof (translation)
-Take `⟨hI1, hI2⟩` from `levi_map_mul (mixedEmbedding F) hg`. Establish `hv : ∀ v : Pl F, (hᵀ.map (algebraMap F (Fv F v))) * g.map (algebraMap F (Fv F v)) = 1 ∧ g.map (algebraMap F (Fv F v)) * hᵀ.map (algebraMap F (Fv F v)) = 1` using `fun v => levi_map_mul _ hg`. Use `⟨LinearMap.funLeft ℂ ℂ (fun x : κ → AF F => hᵀ.map (algebraMap F (AF F)) *ᵥ x), 1, SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (mulVecCLE _ _ hI1 hI2), fun v => LinearMap.funLeft ℂ ℂ (fun x : κ → Fv F v => hᵀ.map (algebraMap F (Fv F v)) *ᵥ x), one_ne_zero, ?_, fun v => bijOn_fun …` and prove the remaining obligations. Introduce `f`. Use `⟨SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (mulVecCLE _ _ hI1 hI2).symm f, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `DFunLike.ext _ _ fun x => ?_` and prove the remaining obligations. Simplify using `only [SchwartzMap.compCLMOfContinuousLinearEquiv_apply, Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply]`. Establish `hint : ∀ᶠ v : Pl F in cofinite, ∀ i j, algebraMap F (Fv F v) (h i j) ∈ v.adicCompletionIntegers F ∧ algebraMap F (Fv F v) (g i j) ∈ v.adicCompletionIntegers F` using `eventually_all.2 fun i => eventually_all.2 fun j => (eventually_algebraMap_mem_integers _).and (eventually_algebraMap_mem_integers _) filter_upwards [hint] with v hv'`. Use function extensionality and compare the values at `x`. Conclude with `ind_mulVec v _ _ (hv v).2 (fun i j => (hv' j i).1) (fun i j => (hv' i j).2) x`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem hasOp_levi (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ) (κ : Type) [Fintype κ] [DecidableEq κ]
     (g h : Matrix κ κ F) (hg : gᵀ * h = 1) : HasOp ψ (Matrix.fromBlocks g 0 0 h) := by

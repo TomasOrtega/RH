@@ -26,7 +26,7 @@ def shift (G : Geo F) : (Fin G.N → F) →ₗ[F] Module.End F (Tot G) where
 def incl (X : Data F) (j : ℕ) : X.V j →ₗ[F] Tot X.toGeo := LinearMap.single F _ j ∘ₗ (X.V j).subtype
 
 /- English proof (translation)
-Introduce `a b h` and use `Subtype.ext (by simpa [incl] using congrFun h j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem incl_injective (X : Data F) (j : ℕ) : Function.Injective (incl X j) := fun a b h =>
   Subtype.ext (by simpa [incl] using congrFun h j)

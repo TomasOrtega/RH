@@ -12,7 +12,7 @@ namespace UpperTheory.V.Af.Sol
 def RC (F : Type) [Field F] [NumberField F] : Prop := IsTotallyReal F ∨ IsCMField F
 
 /- English proof (translation)
-The claim follows from `Or.inl inferInstance`.
+Prove the first alternative.
 -/
 theorem rc_rat : RC ℚ := Or.inl inferInstance
 
@@ -26,7 +26,7 @@ def SameSign (μ : G F Ω →* (Qbar l)ˣ) : Prop := ∀ c c' : G F Ω, IsConjEl
 
 omit [NumberField F] in
 /- English proof (translation)
-Introduce `_ _ _ _` and use `rfl`.
+Fix the arbitrary inputs and assume any hypotheses. Both sides reduce to the same expression.
 -/
 theorem sameSign_one : SameSign (1 : G F Ω →* (Qbar l)ˣ) := fun _ _ _ _ => rfl
 

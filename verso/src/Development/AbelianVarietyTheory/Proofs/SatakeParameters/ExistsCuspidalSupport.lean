@@ -12,19 +12,17 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil
 namespace GlobalTheory.CuspidalSupportZero
 
 /- English proof (translation)
-Use `haveI : Subsingleton (GL (Fin 0) k) := ⟨fun _ _ => Units.ext (Subsingleton.elim _ _)⟩`. Set `d : Fin 0 → ℕ` to `fun a => a.elim0`. Set `σ : ∀ a, Irr k (d a)` to `fun a => a.elim0`. Use `⟨0, d, σ, π.irr, fun a => a.elim0, ?_⟩` and prove the remaining obligations. Set `e : (Σ a, Fin (d a)) ≃ Fin 0` to `Equiv.equivOfIsEmpty _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨e, ?_⟩` and prove the remaining obligations. Take `⟨φ⟩` from `GlobalTheory.LocGL.SupportRing.nonempty_equiv_unit (k := k) e (fun a => (σ a).π)`. Establish `hirr` using `π.irr`. Choose the witnesses or unpack the hypotheses as in `⟨v₀, hv₀⟩ : ∃ v : π.V, v ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Use `push_neg at h`. Apply `(bot_ne_top : (⊥ : Subrepresentation π.π) ≠ ⊤)` to reduce the goal to its premises. Use extensionality with `v`. Simplify using `[h v]`. Set `L : Subrepresentation π.π` to `⟨ℂ ∙ v₀, fun g v hv => by`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim g 1, map_one]`. Conclude with `hv⟩`. Establish `hL : L = ⊤`. Break down `eq_bot_or_eq_top L with h | h` into its components or cases. It suffices to derive a contradiction.
+Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: v₀ ∈ L.toSubmodule` using `Submodule.mem_span_singleton_self v₀`. Rewrite `this` using `[h]`. Conclude with `hv₀ ((Submodule.mem_bot ℂ).1 this)`. Conclude with `h`. Set `f : (multiProd e fun a => (σ a).π).IntertwiningMap π.π` to `{ toLinearMap := (LinearMap.toSpanSingleton ℂ π.V v₀) ∘ₗ φ.toLinearEquiv.toLinearMap isIntertwining' := fun g => by`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Subsingleton.elim g 1, map_one, map_one]`. Use `rfl }`. Use `IsSubquotient.of_surjective f fun v => ?_` and prove the remaining obligations. Establish `hv : v ∈ L.toSubmodule` using `by rw [hL]; trivial`. Take `⟨c, rfl⟩` from `Submodule.mem_span_singleton.1 hv`.
-
-Use `⟨φ.toLinearEquiv.symm c, ?_⟩` and prove the remaining obligations. Use `show (LinearMap.toSpanSingleton ℂ π.V v₀) (φ.toLinearEquiv (φ.toLinearEquiv.symm c)) = c • v₀`. Use `erw [LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isCuspSupport_zero (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (π : Irr k 0) :

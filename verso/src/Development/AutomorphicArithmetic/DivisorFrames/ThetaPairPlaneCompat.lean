@@ -14,7 +14,7 @@ open GlobalTheory.ConeSmallUnf
 open GlobalTheory.ThK.UnipDom GlobalTheory.ThK.UnipDom.Inverse
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [GlobalTheory.WeilM.schr, Pi.smul_apply, smul_eq_mul, ← mul_assoc, ← AddChar.map_add_eq_mul, Prod.fst_add, Prod.snd_add, add_assoc]`. Use `congr 2`. Simplify using `only [add_dotProduct, dotProduct_add]`. Take the linear combination `(-(v.1 ⬝ᵥ w.2)) * invOf_mul_self (2 : R)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem schr_schr' {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : AddChar R ℂ) {κ : Type} [Fintype κ]
     (v w : (κ → R) × (κ → R)) (Φ : (κ → R) → ℂ) :
@@ -28,7 +28,7 @@ private theorem schr_schr' {R : Type} [CommRing R] [Invertible (2 : R)] (ψ : Ad
   linear_combination (-(v.1 ⬝ᵥ w.2)) * invOf_mul_self (2 : R)
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.WeilM.Darboux.rho]`. Rewrite using `[schr_schr', ← co.form, smul_smul, ← AddChar.map_add_eq_mul, neg_add_cancel, AddChar.map_zero_eq_one, one_smul, map_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem rho_add' {R : Type} [CommRing R] [Invertible (2 : R)] {U : Type} [AddCommGroup U] [Module R U]
     {B : U → U → R} {κ : Type} [Fintype κ] (co : GlobalTheory.WeilM.Darboux B κ) (ψ : AddChar R ℂ)
@@ -39,9 +39,9 @@ private theorem rho_add' {R : Type} [CommRing R] [Invertible (2 : R)] {U : Type}
     map_add]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hTens, Matrix.vecMulVec_apply, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring`. Use `_ = _ := by`. Rewrite using `[dotProduct, dotProduct, Finset.sum_mul_sum]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Rewrite using `[Finset.mul_sum, Finset.mul_sum, Finset.sum_mul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => by ring`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem hTens_vmv {R A : Type} [CommRing R] [CommRing A] [Algebra R A] (c : A →ₐ[R] A) {α β : Type}
     [Fintype α] [Fintype β] (JA : Matrix α α A) (JB : Matrix β β A) (p p' : α → A) (q q' : β → A) :
@@ -63,11 +63,11 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Unfold `fA`. Rewrite using `[dotProduct_comm, Matrix.dotProduct_mulVec]`. Establish `hz : ((incM F J *ᵥ fun i => cA σ (incV F x i)) ᵥ* incM F ι) = 0`. Use function extensionality and compare the values at `j`. Establish `h0` using `h (Pi.single j 1)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Rewrite `h0` using `[form, Matrix.mulVec_single_one]`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.col_apply] at h0`. Establish `: ((incM F J *ᵥ fun i => cA σ (incV F x i)) ᵥ* incM F ι) j = inclR (F` using `F) (AF F) (∑ i, ι i j * ∑ k, J i k * σ (x k)) := by`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.mulVec, incM, incV, Matrix.map_apply, cA_inclR, map_sum, map_mul]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Pi.zero_apply, h0, map_zero]`. Rewrite using `[hz, zero_dotProduct]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem fA_iota {σ : E →ₐ[F] E} {d d₁ : ℕ} (J : Matrix (Fin d) (Fin d) E) (ι : Matrix (Fin d) (Fin d₁) E)
     (x : Fin d → E) (h : ∀ v, form σ J (ι *ᵥ v) x = 0) (η : Fin d₁ → AE F E) :
@@ -87,9 +87,9 @@ private theorem fA_iota {σ : E →ₐ[F] E} {d d₁ : ℕ} (J : Matrix (Fin d) 
   rw [hz, zero_dotProduct]
 
 /- English proof (translation)
-Establish `hJ' : ∀ i k, cA σ (incM F J i k) = incM F J k i`. Introduce `i k`. Simplify using `[incM, cA_inclR, hJ]`. Simplify using `only [fA, dotProduct, Matrix.mulVec, map_sum, map_mul, cA_cA hσ, hJ', Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem fA_swap' {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = J i j) (v w : Fin n → AE F E) :
@@ -102,14 +102,14 @@ private theorem fA_swap' {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {n : 
   ring
 
 /- English proof (translation)
-Simplify using `only [fA, dotProduct, Matrix.mulVec, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem fA_add_right' (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (v w w' : Fin n → AE F E) :
     fA σ J v (w + w') = fA σ J v w + fA σ J v w' := by
   simp only [fA, dotProduct, Matrix.mulVec, Pi.add_apply, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Rewrite using `[symp, hTens_vmv, neg_one_mul, map_neg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem symp_vmv (σ : E →ₐ[F] E) {n d : ℕ} (J : Matrix (Fin n) (Fin n) E) (JW : Matrix (Fin d) (Fin d) E)
     (p q : Fin n → AE F E) (w : Fin d → AE F E) :
@@ -121,17 +121,17 @@ private theorem symp_vmv (σ : E →ₐ[F] E) {n d : ℕ} (J : Matrix (Fin n) (F
 end
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d n₁ X W X₁ M M₂ H j₀ j₁ χX χW om om₂ r s r₁ s₁ r' s' hP hP₂ hH e₁ he u hu z β hv w Ψ hΨ`. Establish `hstd : IsStd B.ψ` using `hP.base.std`. Establish `hσ : ∀ e, σ (σ e) = e` using `sigma_sigma hP.base.cm`. Establish `hsch : ∀ γ, ∀ Φ ∈ schA F (Fin n × Fin d), M.co.rho B.ψ γ Φ ∈ schA F (Fin n × Fin d)` using `fun γ Φ hΦ => GlobalTheory.HeisSchA.rho_mem_schA M B.ψ hstd γ Φ hΦ`. Establish `himpl` using `(IsUWeilPair.isUSplitting hP.weil).impl (u, (1 : UA σ W.J)) (Matrix.vecMulVec (mat u⁻¹ *ᵥ incV F H.y) w) Ψ hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hact : actAB (cA σ) (u, (1 : UA σ W.J)) (Matrix.vecMulVec (mat u⁻¹ *ᵥ incV F H.y) w) = Matrix.vecMulVec (incV F H.y) w` using `by show mat u * _ * (1 : Matrix (Fin d) (Fin d) (AE F E))ᵀ = _`. Rewrite using `[Matrix.transpose_one, Matrix.mul_one, Matrix.mul_vecMulVec, Matrix.mulVec_mulVec, ← GlobalTheory.ThK.UnipDom.Inverse.mat_mul, mul_inv_cancel, GlobalTheory.ThK.UnipDom.Inverse.mat_one, Matrix.one_mulVec]`. Rewrite `himpl` using `[hact]`. Establish `hI : incM F (1 : Matrix (Fin d) (Fin d) E) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `hix : fA σ X.J (incM F H.ι *ᵥ z) (incV F H.x) = 0` using `fA_iota X.J H.ι H.x (fun v => (hH.orth v).1) z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiy : fA σ X.J (incM F H.ι *ᵥ z) (incV F H.y) = 0` using `fA_iota X.J H.ι H.y (fun v => (hH.orth v).2) z`. Establish `hxi : fA σ X.J (incV F H.x) (incM F H.ι *ᵥ z) = 0` using `by rw [fA_swap' hσ hP.herm.herm, hix, map_zero]`. Establish `hxy : fA σ X.J (incV F H.x) (incV F H.y) = 1` using `by rw [fA_incV, hH.xy, map_one]`. Establish `hsum : Matrix.vecMulVec (mat u⁻¹ *ᵥ incV F H.y) w = Matrix.vecMulVec (β • incV F H.x) w + Matrix.vecMulVec (incM F H.ι *ᵥ z + incV F H.y) w`. Rewrite using `[hv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.add_apply, Matrix.vecMulVec_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hsum2 : Matrix.vecMulVec (incM F H.ι *ᵥ z + incV F H.y) w = Matrix.vecMulVec (incM F H.ι *ᵥ z) w + Matrix.vecMulVec (incV F H.y) w`. Use extensionality with `i j`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.add_apply, Matrix.vecMulVec_apply, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Establish `hΨA` using `hsch (Matrix.vecMulVec (incV F H.y) w) Ψ hΨ`. Establish `h2 : M.co.rho B.ψ (Matrix.vecMulVec (incM F H.ι *ᵥ z + incV F H.y) w) Ψ = M.co.rho B.ψ (Matrix.vecMulVec (incM F H.ι *ᵥ z) w) (M.co.rho B.ψ (Matrix.vecMulVec (incV F H.y) w) Ψ)`. Rewrite using `[hsum2, rho_add', symp_vmv, hiy, zero_mul, map_zero, neg_zero, mul_zero, neg_zero, AddChar.map_zero_eq_one, one_smul]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hinv` using `he.inv (Matrix.vecMulVec (β • incV F H.x) w) ⟨β • w, (GlobalTheory.ThK.IsoZero.vmv_smul_right _ _ _).symm⟩ _ (hsch (Matrix.vecMulVec (incM F H.ι *ᵥ z + incV F H.y) w) Ψ hΨ)`. Establish `hheis` using `he.Heisenberg₂ (Matrix.vecMulVec z w) _ hΨA`. Rewrite `hheis` using `[hI, Matrix.transpose_one, Matrix.mul_one, Matrix.mul_vecMulVec]`. Rewrite using `[← himpl, GlobalTheory.T.adapted_plane_pair_theta_integral hKP.base F E σ B n d X W M χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ M₂ om₂ r₁ s₁ hH hP₂ e₁ he u hu _ (hsch _ Ψ hΨ), hsum, rho_add', map_smul, hinv, h2, hheis, symp_vmv, fA_smul_left, fA_add_right', hxi, hxy, zero_add, mul_one, …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.theta_pair_plane_compat :
     GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)

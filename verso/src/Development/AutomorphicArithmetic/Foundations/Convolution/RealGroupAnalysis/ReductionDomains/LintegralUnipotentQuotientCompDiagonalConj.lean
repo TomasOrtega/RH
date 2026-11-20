@@ -11,19 +11,19 @@ open scoped Classical ENNReal NNReal Pointwise
 open UpperTheory.ConvolutionTheory.R2
 
 /- English proof (translation)
-Introduce `F _ _ M₀ u hu hN t`. Take `⟨β, hβ⟩` from `M.wtEx F`. Establish `h1` using `M.wtOne F β hβ`. Establish `hcm : ∀ s : (A F)ˣ, Measurable (cD s : G1 F → G1 F)` using `fun s => (M.continuous_cD s).measurable`. Establish `hβ' : Measurable fun g => β (cD t⁻¹ g)` using `hβ.1.comp (hcm _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu' : Measurable fun g => u (cD t g)` using `hu.comp (hcm _)`. Establish `hN' : ∀ b g, u (cD t (nU b * g)) = u (cD t g)`. Introduce `b g`. Rewrite using `[M.cD_mul, M.cD_nU, hN]`. Establish `hc : ∀ g, ∫⁻ b, β (cD t⁻¹ (nU b * g)) ∂(adeleMeasure F) = ENNReal.ofReal (ab t)⁻¹`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `g`. Establish `hf : Measurable fun b : A F => β (nU b * cD t⁻¹ g)` using `hβ.1.comp ((M.continuous_nU.mul continuous_const).measurable)`. Establish `hs : Measurable fun x : A F => (t : IdeleGroup F) • x`. Establish `: Continuous fun x : A F => (t : IdeleGroup F) • x`. Simplify using `only [Units.smul_def, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `continuous_const.mul continuous_id`. Conclude with `this.measurable`. Establish `e` using `lintegral_map (μ := adeleMeasure F) hf hs`. Rewrite `e` using `[map_smul_adeleMeasure, lintegral_smul_measure, h1]`. Establish `e2 : ∀ b : A F, β (cD t⁻¹ (nU b * g)) = β (nU ((t : IdeleGroup F) • b) * cD t⁻¹ g)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `b`. Rewrite using `[M.cD_mul, M.cD_nU, inv_inv, Units.smul_def, smul_eq_mul, mul_comm b]`. Repeatedly rewrite using `[e2]`. Rewrite using `[← e, smul_eq_mul, mul_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `M.wtA F M₀ β (fun g => u (cD t g)) 1 hβ.1 h1 hu' hN'`. Establish `a2` using `M.wtA F M₀ (fun g => β (cD t⁻¹ g)) u _ hβ' hc hu hN`. Establish `a3` using `(M.cdMeas F M₀ t).lintegral_comp (f := fun h => u h * β (cD t⁻¹ h)) (hu.mul hβ')`. Establish `e3 : ∀ g, β (cD t⁻¹ (cD t g)) = β g`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[M.cD_cD, inv_mul_cancel, M.cD_one]`. Simplify using `only [e3] at a3`. Rewrite `a1` using `[one_mul]`. Rewrite using `[← a1, a3, a2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.M.lintegral_unipotent_quotient_comp_diagonal_conj :
     ∀ (F : Type) [Field F] [NumberField F] (M₀ : Meas F) (u : G1 F → ℝ≥0∞), Measurable u → (∀ b g, u (nU b * g) = u g) → ∀ t, (M.J0 M₀ fun g => u (cD t g)) = ENNReal.ofReal (ab t)⁻¹ * M.J0 M₀ u := by

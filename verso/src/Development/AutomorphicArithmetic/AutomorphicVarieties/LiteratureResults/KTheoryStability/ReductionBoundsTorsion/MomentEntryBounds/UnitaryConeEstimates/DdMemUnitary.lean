@@ -10,7 +10,7 @@ def dd {R : Type*} [CommRing R] (N : ℕ) (u : R) : Matrix (Fin N) (Fin N) R :=
   diagonal fun i => if (i : ℕ) = 0 then u else 1
 
 /- English proof (translation)
-Unfold `dd`. Rewrite using `[diagonal_map (map_zero f)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dd_map {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) (N : ℕ) (u : R) :
     (dd N u).map f = dd N (f u) := by
@@ -21,7 +21,7 @@ theorem dd_map {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S) (N : ℕ)
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `dd`. Rewrite using `[diagonal_mul_diagonal]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dd_mul {R : Type*} [CommRing R] (N : ℕ) (u v : R) : dd N u * dd N v = dd N (u * v) := by
   unfold dd
@@ -31,14 +31,14 @@ theorem dd_mul {R : Type*} [CommRing R] (N : ℕ) (u v : R) : dd N u * dd N v = 
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `dd`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem dd_one {R : Type*} [CommRing R] (N : ℕ) : dd N (1 : R) = 1 := by
   unfold dd
   simp
 
 /- English proof (translation)
-Take `⟨n, rfl⟩ : ∃ n, N = n + 1` from `⟨N - 1, by omega⟩`. Unfold `dd`. Rewrite using `[det_diagonal, Fin.prod_univ_succ]`. Simplify using `[Fin.val_succ]`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem det_dd {R : Type*} [CommRing R] {N : ℕ} (hN : 1 ≤ N) (u : R) : (dd N u).det = u := by
   obtain ⟨n, rfl⟩ : ∃ n, N = n + 1 := ⟨N - 1, by omega⟩
@@ -47,9 +47,9 @@ theorem det_dd {R : Type*} [CommRing R] {N : ℕ} (hN : 1 ≤ N) (u : R) : (dd N
   simp [Fin.val_succ]
 
 /- English proof (translation)
-Unfold `dd`. Rewrite using `[star_eq_conjTranspose, diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Simplify using `only [Pi.star_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem star_dd (N : ℕ) (c : ℂ) : star (dd N c) = dd N (star c) := by
   unfold dd
@@ -60,13 +60,13 @@ theorem star_dd (N : ℕ) (c : ℂ) : star (dd N c) = dd N (star c) := by
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[mem_unitaryGroup_iff, star_dd, dd_mul, Unitary.mul_star_self_of_mem hc, dd_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dd_mem_unitary (N : ℕ) {c : ℂ} (hc : c ∈ unitary ℂ) : dd N c ∈ unitaryGroup (Fin N) ℂ := by
   rw [mem_unitaryGroup_iff, star_dd, dd_mul, Unitary.mul_star_self_of_mem hc, dd_one]
 
 /- English proof (translation)
-Apply the tactic sequence `split_ifs <;> simp [hc]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_dd_apply {N : ℕ} {c : ℂ} (hc : ‖c‖ = 1) (j : Fin N) :
     ‖(if (j : ℕ) = 0 then c else 1 : ℂ)‖ = 1 := by
@@ -77,9 +77,9 @@ def ddGL {R : Type*} [CommRing R] (N : ℕ) (u : Rˣ) : GL (Fin N) R :=
     by rw [dd_mul, Units.inv_mul, dd_one]⟩
 
 /- English proof (translation)
-Use `⟨d⁻¹ ^ ((N : ℂ)⁻¹), ?_, ?_⟩` and prove the remaining obligations. Introduce `h`. Use `Complex.cpow_nat_inv_pow d⁻¹ hN` as an intermediate fact. Rewrite `this` using `[h, zero_pow hN]`. Conclude with `inv_ne_zero hd this.symm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.cpow_nat_inv_pow _ hN, inv_mul_cancel₀ hd]`.
+A detailed English derivation is pending.
 -/
 theorem exists_root {N : ℕ} (hN : N ≠ 0) {d : ℂ} (hd : d ≠ 0) : ∃ z : ℂ, z ≠ 0 ∧ z ^ N * d = 1 := by
   refine ⟨d⁻¹ ^ ((N : ℂ)⁻¹), ?_, ?_⟩
@@ -90,9 +90,9 @@ theorem exists_root {N : ℕ} (hN : N ≠ 0) {d : ℂ} (hd : d ≠ 0) : ∃ z : 
   · rw [Complex.cpow_nat_inv_pow _ hN, inv_mul_cancel₀ hd]
 
 /- English proof (translation)
-Establish `hu : IsUnit A.det` using `isUnit_iff_ne_zero.2 hA`. Establish `h2 : A * (z • X) = A * (c • B)`. Rewrite using `[Matrix.mul_smul, Matrix.mul_smul, ← Matrix.smul_mul, h]`. Establish `h3 : z • X = c • B`. Use `congrArg (fun Y => A⁻¹ * Y) h2` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `[← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu]`. Rewrite using `[mul_smul, ← h3, smul_smul, inv_mul_cancel₀ hz, one_smul]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem cancel_left {N : ℕ} {A X B : Matrix (Fin N) (Fin N) ℂ} (hA : A.det ≠ 0) {z c : ℂ} (hz : z ≠ 0)
     (h : (z • A) * X = c • (A * B)) : X = (z⁻¹ * c) • B := by
@@ -106,11 +106,11 @@ theorem cancel_left {N : ℕ} {A X B : Matrix (Fin N) (Fin N) ℂ} (hA : A.det �
 
 open NumberField in
 /- English proof (translation)
-Set `f : Units.torsion L × (Fin (Units.rank L) → Fin N) → (𝓞 L)ˣ` to `fun p => (p.1 : (𝓞 L)ˣ) * ∏ i, Units.fundSystem L i ^ ((p.2 i : ℕ) : ℤ)`. Use `⟨(Set.finite_range f).toFinset, fun u => ?_⟩` and prove the remaining obligations. Take `⟨⟨ζ, e⟩, hu, -⟩` from `Units.exist_unique_eq_mul_prod L u`. Establish `h1 : ∀ i, 0 ≤ e i % N` using `fun i => Int.emod_nonneg (e i) (by omega)`. Establish `h2 : ∀ i, e i % N < N` using `fun i => Int.emod_lt_of_pos (e i) (by omega)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨∏ i, Units.fundSystem L i ^ (e i / N), f (ζ, fun i => ⟨(e i % N).toNat, by` and prove the remaining obligations. Use `h2 i; have := h1 i; omega⟩), by simp, ?_⟩` as an intermediate fact. Establish `hsplit : ∀ i, Units.fundSystem L i ^ e i = (Units.fundSystem L i ^ (e i / N)) ^ N * Units.fundSystem L i ^ (((e i % N).toNat : ℕ) : ℤ)`. Introduce `i`. Rewrite using `[Int.toNat_of_nonneg (h1 i), ← zpow_natCast, ← _root_.zpow_mul, ← _root_.zpow_add]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Combine the linear relations using `[Int.mul_ediv_add_emod (e i) N]`. Rewrite using `[hu]`. Simplify using `only [f]`. Rewrite using `[Finset.prod_congr rfl (fun i _ => hsplit i), Finset.prod_mul_distrib, Finset.prod_pow]`.
+Reduce the equality to equality of the corresponding arguments. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 The two sides agree by associativity and commutativity.
 -/

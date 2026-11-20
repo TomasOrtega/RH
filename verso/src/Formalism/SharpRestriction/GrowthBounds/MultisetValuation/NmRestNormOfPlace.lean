@@ -13,7 +13,7 @@ attribute [local instance] Formalism.MainNotions.G.GAtP.ringO Formalism.MainNoti
 variable {p : ℕ} [hp : Fact p.Prime] {X : Sys p}
 
 /- English proof (translation)
-Take `⟨K', nf, ac, um, -, hpn, hball, vp, hvp⟩` from `nm_ext Y h`. Use `letI : Algebra (K0 p) K' := ((algebraMap Y.Kc K').comp (algebraMap (K0 p) Y.Kc)).toAlgebra`. Use `haveI : IsScalarTower (K0 p) Y.Kc K' := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Conclude with `⟨ea_NormExt.mk K' vp hvp hpn hball⟩`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nm_restNorm (Y : Pend X) (h : (p : Y.Kc)⁻¹ ∉ Y.Oc) : ea_RestNorm Y := by
   obtain ⟨K', nf, ac, um, -, hpn, hball, vp, hvp⟩ := nm_ext Y h
@@ -22,7 +22,7 @@ theorem nm_restNorm (Y : Pend X) (h : (p : Y.Kc)⁻¹ ∉ Y.Oc) : ea_RestNorm Y 
   exact ⟨ea_NormExt.mk K' vp hvp hpn hball⟩
 
 /- English proof (translation)
-The claim follows from `nm_restNorm Y (nm_pinv_of_place Y v)`.
+A detailed English derivation is pending.
 -/
 theorem nm_restNorm_of_place (Y : Pend X) (v : X.Pl) : ea_RestNorm Y := nm_restNorm Y (nm_pinv_of_place Y v)
 

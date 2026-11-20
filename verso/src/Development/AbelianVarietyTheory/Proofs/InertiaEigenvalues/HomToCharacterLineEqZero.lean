@@ -13,9 +13,9 @@ open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.Models
 
 /- English proof (translation)
-Use `⟨fun i => (M.χ_lat e h1 h2 i).1, fun i => ?_, fun i => (M.χ_lat e h1 h2 i).2.1⟩` and prove the remaining obligations. Establish `ht : (1 : ℤ) ≤ Dt.t` using `by exact_mod_cast Dt.one_le_letterBlockLength`. Establish `a` using `Dt.range i (Dt.w i) (Multiset.mem_add.2 (Or.inr (mem_block.2 ⟨le_rfl, by omega⟩)))`. Establish `b` using `Dt.range i (Dt.w i + Dt.t - 1) (Multiset.mem_add.2 (Or.inr (mem_block.2 ⟨by omega, by omega⟩)))`. Rewrite using `[(M.χ_lat e h1 h2 i).2.2.1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨sh_le_sh_of_le (by omega) _, sh_le_sh_of_le (by unfold TopData.wst; omega) _⟩`.
+Supply the required witnesses or components.
 -/
 theorem ModTh.abc_Nχ_of_range {k G : Type} [Field k] [Group G] {l n : ℕ} {R : RingPG k l} {F : DFun R n G}
     {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt) (e : ℤ) (h1 : -1 ≤ e) (h2 : e < Dt.t) :
@@ -28,19 +28,19 @@ theorem ModTh.abc_Nχ_of_range {k G : Type} [Field k] [Group G] {l n : ℕ} {R :
   exact ⟨sh_le_sh_of_le (by omega) _, sh_le_sh_of_le (by unfold TopData.wst; omega) _⟩
 
 /- English proof (translation)
-Introduce `k G _ _ l n _ _ _ R F r Dt M T1 T2 T3 e h1 h2 A₁ j p hj hinj hp`. Assume the negation of the conclusion as `hne`. Establish `hsurj : Function.Surjective p`. Choose the witnesses or unpack the hypotheses as in `⟨x, hx⟩ : ∃ x, p x ≠ 0 := by`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at h`. Conclude with `hne (LinearMap.ext h)`. Establish `hx0 : p x 0 ≠ 0` using `fun h => hx (funext fun i => by rw [Subsingleton.elim i 0]; exact h)`. Introduce `y`. Use `⟨(y 0 / p x 0) • x, funext fun i => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Subsingleton.elim i 0, map_smul, Pi.smul_apply, smul_eq_mul, div_mul_cancel₀ _ hx0]`. Establish `hT` using `GlobalTheory.T.obj_and_abc_of_model F M M.T M.Nstd M.std_model`. Establish `hsub` using `GlobalTheory.T.model_preimage_of_injective_finDimRepModelHom F M A₁ M.T j M.Nstd hj hinj M.std_model`. Establish `hq` using `ModTh.model_push_of_surjective F M A₁ (chr (M.ω ^ (-e))) p _ hp hsurj hsub`. Establish `hN` using `GlobalTheory.T.obj_and_abc_of_model F M _ _ hq`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hχ` using `M.abc_Nχ_of_range e h1 h2`. Establish `hs : sen ((F.D (chr (M.ω ^ (-e)))).γ 0) (M.Nχ e 0) (e : k) ≠ 0`. Rewrite using `[(M.χ_lat e h1 h2 0).2.2.2]`. Unfold `resCount`. Rewrite using `[Ne, Multiset.card_eq_zero, Multiset.filter_eq_nil]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `h`. Conclude with `h e (Multiset.mem_singleton_self e) (by simp)`. Take `⟨a, ha, hsa⟩` from `GlobalTheory.T.senWeights_close_of_height_gamma_conditions (F.D (chr (M.ω ^ (-e)))) Dt _ _ hN.2 hχ 0 (e : k) hs`. Establish `hle` using `GlobalTheory.T.senMultiplicity_subquotient_lattice_le F M.T A₁ (chr (M.ω ^ (-e))) j p Dt.w Dt.wst M.Nstd hT.1 hj hinj hp hsurj hT.2 0 ((e : k) + a)`. Establish `hstd : resCount (Dt.U 0) (Dt.w 0) ((e : k) + a) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the relevant objects with their definitions.
 
-Rewrite using `[← M.std_sen]`. Use linear arithmetic over natural numbers and integers. Unfold `resCount at hstd`. Rewrite `hstd` using `[Ne, Multiset.card_eq_zero, Multiset.filter_eq_nil]`. Use `push Not at hstd`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Take `⟨u, hu, hu'⟩` from `hstd`. Rewrite `ha` using `[abs_le]`. Use `(GlobalTheory.T.admissibleLetterData_window_arithmetic (k := k) Dt T1 T2 T3 0).2.1 u hu (Dt.w 0 + e + a) (by omega) (by omega) ?_` and prove the remaining obligations. Move the coercions through the operations in `at hu' ⊢`. Take the linear combination `hu'`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ModTh.hom_chr_eq_zero : ∀ {k G : Type} [Field k] [Group G] {l n : ℕ} [Fact l.Prime] [CharP k l] [NeZero n] {R : RingPG k l} (F : DFun R n G) {r : ℕ} {Dt : TopData n r} (M : ModTh F Dt), Dt.T1 l → Dt.T2 l → Dt.T3 l → ∀ (e : ℤ), -1 ≤ e → e < Dt.t → ∀ (A₁ : Ob k G) (j : (Fin A₁.m → k) →ₗ[k] (Fin M.T.m → k)) (p : (Fin A₁.m → k) →ₗ[k] (Fin 1 → k)), IsHom A₁ M.T j → Function.Injective j → IsHom A₁ (chr (M.ω ^ (-e))) p → p = 0 := by
   intro k G _ _ l n _ _ _ R F r Dt M T1 T2 T3 e h1 h2 A₁ j p hj hinj hp

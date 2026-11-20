@@ -5,21 +5,17 @@ open NumberField MvPowerSeries IsLocalRing ReciprocityTheory.PGsh ReciprocityThe
 namespace GlobalTheory.PowLim
 
 /- English proof (translation)
-Set `R : Subring C` to `{ carrier := {x | 0 ≤ v x} mul_mem' := fun {a b} ha hb => by`. Establish `ha' : 0 ≤ v a` using `ha`. Establish `hb' : 0 ≤ v b` using `hb`. Use `show 0 ≤ v (a * b)`. Rewrite using `[v.map_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_nonneg ha' hb'`. Use the proof step `one_mem' := by show 0 ≤ v 1`. Rewrite using `[v.map_one]`. Use the proof step `add_mem' := fun {a b} ha hb => le_trans (le_min ha hb) (v.map_add _ _)`. Use the proof step `zero_mem' := by show 0 ≤ v 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[v.map_zero]`. Conclude with `le_top`. Use the proof step `neg_mem' := fun {a} ha => by show 0 ≤ v (-a)`. Rewrite using `[v.map_neg]`. Conclude with `ha }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `haR : a ∈ R` using `ha`. Establish `hbR : b ∈ R` using `hb`. Establish `hdR : a - b ∈ R` using `R.sub_mem haR hbR`. Take `⟨r, hr⟩` from `exists_add_pow_prime_eq hp (⟨a - b, hdR⟩ : R) ⟨b, hbR⟩`. Establish `hr'` using `congrArg (fun z : R => (z : C)) hr`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Simplify using `only [Subring.coe_pow, Subring.coe_add, Subring.coe_mul, Subring.coe_natCast, sub_add_cancel] at hr'`. Take `⟨k, hk⟩ : ∃ k, p = k + 2` from `⟨p - 2, by have := hp.two_le; omega⟩`. Establish `e : a ^ p - b ^ p = (a - b) * (a - b) * (a - b) ^ k + (p : C) * (a - b) * (b * r)`. Rewrite using `[hr']`. Establish `: (a - b) ^ p = (a - b) * (a - b) * (a - b) ^ k` using `by rw [hk]; ring`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree. Establish `h1 : (0 : WithTop ℝ) ≤ v ((a - b) ^ k)` using `R.pow_mem hdR k`. Establish `h2 : (0 : WithTop ℝ) ≤ v (b * (r : C))` using `R.mul_mem hbR r.2`. Establish `hε : (ε : WithTop ℝ) ≤ v (a - b)` using `le_trans (WithTop.coe_le_coe.2 hεt) ht`.
-
-Establish `hε1' : (ε : WithTop ℝ) ≤ 1` using `by exact_mod_cast hε1`. Rewrite using `[e]`. Use `le_trans (le_min ?_ ?_) (v.map_add _ _)` and prove the remaining obligations. Rewrite using `[v.map_mul, v.map_mul, WithTop.coe_add]`. Conclude with `le_trans (add_le_add ht hε) (le_add_of_nonneg_right h1)`.
-
-Rewrite using `[v.map_mul, v.map_mul, WithTop.coe_add, hvp, add_comm (t : WithTop ℝ)]`. Conclude with `le_trans (add_le_add hε1' ht) (le_add_of_nonneg_right h2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_prime_step {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {p : ℕ}
     (hp : p.Prime) (hvp : v (p : C) = 1) {a b : C} (ha : 0 ≤ v a) (hb : 0 ≤ v b) {t ε : ℝ}
@@ -67,17 +63,17 @@ theorem pow_prime_step {C : Type} [Field C] (v : AddValuation C (WithTop ℝ)) {
     exact le_trans (add_le_add hε1' ht) (le_add_of_nonneg_right h2)
 
 /- English proof (translation)
-Introduce `C _ v p hp hvp x y hx hy hxy r`. Establish `hx' : 0 ≤ v x` using `hx`. Establish `hy' : 0 ≤ v y` using `hy`. Choose the witnesses or unpack the hypotheses as in `⟨ε, hε0, hε1, hε⟩ : ∃ ε : ℝ, 0 < ε ∧ ε ≤ 1 ∧ (ε : WithTop ℝ) ≤ v (x - y) := by`. Generalize the expression as in `v (x - y) = w at hxy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable.
 
-Proceed by induction on `w using WithTop.recTopCoe with`. Consider the case `top => exact ⟨1, one_pos, le_rfl, le_top⟩`. Consider the case `coe s`. Establish `hs : 0 < s` using `by exact_mod_cast hxy`. Conclude with `⟨min s 1, lt_min hs one_pos, min_le_right _ _, WithTop.coe_le_coe.2 (min_le_left _ _)⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `hpow : ∀ (z : C) (n : ℕ), 0 ≤ v z → 0 ≤ v (z ^ n)`. Introduce `z n hz`. Rewrite using `[v.map_pow]`. Conclude with `nsmul_nonneg hz n`. Establish `key : ∀ N : ℕ, ((((N : ℝ) + 1) * ε : ℝ) : WithTop ℝ) ≤ v (x ^ p ^ N - y ^ p ^ N)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `N`. Proceed by induction on `N with`. Consider the case `zero => simpa using hε`. Consider the case `succ N ih`. Establish `hN : (0 : ℝ) ≤ N` using `Nat.cast_nonneg N`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `pow_prime_step v hp hvp (hpow x (p ^ N) hx') (hpow y (p ^ N) hy') (t := ((N : ℝ) + 1) * ε) (ε := ε) (by nlinarith) hε1 ih` as an intermediate fact. Rewrite `this` using `[← pow_mul, ← pow_mul, ← pow_succ]`. Use `le_trans (WithTop.coe_le_coe.2 (le_of_eq ?_)) this` and prove the remaining obligations. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `exists_nat_gt (r / ε)`. Use `⟨M, fun N hN => le_trans (WithTop.coe_le_coe.2 ?_) (key N)⟩` and prove the remaining obligations. Establish `h1 : (M : ℝ) ≤ N` using `by exact_mod_cast hN`. Rewrite `hM` using `[div_lt_iff₀ hε0]`. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem pow_prime_pow_close : ∀ (C : Type) [Field C] (v : AddValuation C (WithTop ℝ)) (p : ℕ), p.Prime → v (p : C) = 1 → ∀ x y : C, IsIntV v x → IsIntV v y → 0 < v (x - y) → ∀ r : ℝ, ∃ N₀ : ℕ, ∀ N, N₀ ≤ N → (r : WithTop ℝ) ≤ v (x ^ p ^ N - y ^ p ^ N) := by
   intro C _ v p hp hvp x y hx hy hxy r

@@ -7,11 +7,11 @@ open scoped Matrix
 open GlobalTheory.HodgeCoh GlobalTheory.CechDR Polynomial UpperTheory.Gal.W2
 
 /- English proof (translation)
-Introduce `O _ bar g ρ D P P' H hP hH hc hP'`. Establish `hdet : LinearMap.det (Matrix.toLin' H) ≠ 0` using `by rwa [LinearMap.det_toLin']`. Set `h : (Fin g → ℂ) ≃ₗ[ℂ] (Fin g → ℂ)` to `LinearMap.equivOfDetNeZero _ hdet`. Establish `happ : ∀ z, h z = H *ᵥ z` using `fun z => rfl`. Establish `key` using `IsPeriod.comp_linearEquiv O bar D g ρ ρ P h hP (fun a z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[happ, happ, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hc])`. Establish `hEq : P' = (↑h : (Fin g → ℂ) →ₗ[ℂ] (Fin g → ℂ)).toAddMonoidHom.comp P`. Use extensionality with `x`. Simplify using `[hP', happ]`. Rewrite using `[hEq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.W2.perLin_of :
     UpperTheory.Gal.W2.PerLin := by

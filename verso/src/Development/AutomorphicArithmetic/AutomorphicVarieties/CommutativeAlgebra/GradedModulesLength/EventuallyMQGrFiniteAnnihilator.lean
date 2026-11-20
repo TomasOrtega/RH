@@ -10,7 +10,7 @@ import Formalism.SharpRestriction.ValuationFrobeniusEpsilon.LeastPrimeTwists.Quo
 open IsLocalRing Filter Formalism.MainNotions.V.Pf.V2.Calc UpperTheory.V.Alg UpperTheory.V.Alg.M
 
 /- English proof (translation)
-Establish `h : (GMod.self X.𝒜).IsGr X.𝒜` using `⟨fun ha hx => SetLike.mul_mem_graded (A := X.𝒜) ha hx, DirectSum.Decomposition.isInternal X.𝒜, inferInstanceAs (Module.Finite X.R X.R)⟩`. Conclude with `((ruleGr k X _ h).1 J hJ).2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem quotient_homogeneous_graded {k : ℕ} (X : HidaSetting k) (J : Ideal X.R) (hJ : (GMod.self X.𝒜).IsHomSub J) :
     ((GMod.self X.𝒜).quo J).IsGr X.𝒜 := by
@@ -20,11 +20,9 @@ private theorem quotient_homogeneous_graded {k : ℕ} (X : HidaSetting k) (J : I
   exact ((ruleGr k X _ h).1 J hJ).2
 
 /- English proof (translation)
-Establish `: IsNoetherianRing X.R` using `Std.isNoetherianRing X.𝒜 X.std`. Establish `h1 : I.map (algebraMap X.B X.R) * Irr X.𝒜 ≤ (J ⊔ I'.map (algebraMap X.B X.R)).radical`. Rewrite using `[Ideal.radical_eq_sInf]`. Use `le_sInf ?_` and prove the remaining obligations. Introduce and unpack `p ⟨hp, hpp⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Distinguish the cases in `hi : Irr X.𝒜 ≤ p`. Conclude with `Ideal.mul_le_right.trans hi`. Conclude with `Ideal.mul_le_left.trans (h p hpp hi (le_sup_left.trans hp) (le_sup_right.trans hp))`. Take `⟨n, hn⟩` from `Ideal.exists_pow_le_of_le_radical_of_fg h1 (IsNoetherian.noetherian _)`. Use `⟨n, kill_holds k X _ (quotient_homogeneous_graded X J hJ) I I' n (hn.trans (sup_le_sup_right ?_ _))⟩` and prove the remaining obligations.
-
-Conclude with `(Ideal.annihilator_quotient (I := J)).ge`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem power_ideal_kills_graded_pieces {k : ℕ} (X : HidaSetting k) (J : Ideal X.R) (hJ : (GMod.self X.𝒜).IsHomSub J)
     (I I' : Ideal X.B)
@@ -44,13 +42,11 @@ private theorem power_ideal_kills_graded_pieces {k : ℕ} (X : HidaSetting k) (J
   exact (Ideal.annihilator_quotient (I := J)).ge
 
 /- English proof (translation)
-Establish `hp : (RingHom.ker σ).IsPrime` using `RingHom.ker_isPrime σ`. Unfold `locLen`. Rewrite using `[Module.length_eq_zero_iff]`. Assume the negation of the conclusion as `hs`. Rewrite `hs` using `[not_subsingleton_iff_nontrivial]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : (⟨RingHom.ker σ, hp⟩ : PrimeSpectrum B) ∈ Module.support B (N ⧸ (I' • ⊤ : Submodule B N))`. Rewrite using `[Module.support_quotient]`. Conclude with `⟨hs, hI'⟩`. Rewrite `h1` using `[Module.mem_support_iff_of_finite]`. Establish `h2 : b ^ n ∈ Module.annihilator B (N ⧸ (I' • ⊤ : Submodule B N))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Module.mem_annihilator]`. Introduce `y`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, Submodule.mem_smul_top_iff]`. Conclude with `h (Submodule.smul_mem_smul (Ideal.pow_mem_pow hb n) y.2)`.
-
-Conclude with `hσ (hp.mem_of_pow_mem n (h1 h2))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem localized_length_zero {O B K M : Type} [CommRing O] [CommRing B] [Algebra O B] [Field K] [Algebra O K]
     [AddCommGroup M] [Module B M] (σ : B →ₐ[O] K) (N : Submodule B M) [Module.Finite B N]
@@ -74,11 +70,11 @@ private theorem localized_length_zero {O B K M : Type} [CommRing O] [CommRing B]
   exact hσ (hp.mem_of_pow_mem n (h1 h2))
 
 /- English proof (translation)
-Establish `h1 : Module.Finite O g.range` using `Module.Finite.iff_fg.2 hg`. Establish `h2 : Module.Finite O (B ⧸ RingHom.ker g)` using `Module.Finite.equiv (Ideal.quotientKerEquivRange g).symm.toLinearEquiv`. Establish `h3 : Module.Finite O (B ⧸ (L ⊔ RingHom.ker g))` using `Module.Finite.of_surjective (Ideal.Quotient.factorₐ O (le_sup_right : RingHom.ker g ≤ L ⊔ RingHom.ker g)).toLinearMap (Ideal.Quotient.factor_surjective le_sup_right)`. Use `Module.finite_of_surjective_of_ker_le_nilradical (Ideal.Quotient.factorₐ O (le_sup_left : L ≤ L ⊔ RingHom.ker g)) (Ideal.Quotient.factor_surjective le_sup_left) ?_ (IsNoetherian.noetherian _)` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Establish `hy' : y ∈ L ⊔ RingHom.ker g` using `Ideal.Quotient.eq_zero_iff_mem.1 hy`. Take `⟨a, ha, c, hc, rfl⟩` from `Submodule.mem_sup.1 hy'`. Use `mem_nilradical.2 ⟨n, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, Ideal.Quotient.eq_zero_iff_mem.2 ha, zero_add, ← map_pow, Ideal.Quotient.eq_zero_iff_mem]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h (Ideal.pow_mem_pow hc n)`.
+A detailed English derivation is pending.
 -/
 private theorem finite_quotient_of_kernel_pow {O B C : Type} [CommRing O] [CommRing B] [Algebra O B] [IsNoetherianRing B]
     [CommRing C] [Algebra O C] (g : B →ₐ[O] C) (hg : (LinearMap.range g.toLinearMap).FG)
@@ -101,19 +97,17 @@ private theorem finite_quotient_of_kernel_pow {O B C : Type} [CommRing O] [CommR
   exact h (Ideal.pow_mem_pow hc n)
 
 /- English proof (translation)
-Introduce `O _ _ _ _ _ K _ _ _ _ A _ _ 𝒜 _ _ x hW r s r' s' m Q hF hG h2 h3 J hJ hs hZ`. Establish `fg` using `fg_holds O A 𝒜 x hW`. Establish `hstd : Std (mGr Q)` using `std_holds (𝒜 0) A 3 _ fun i => by fin_cases i`. Conclude with `fg _`. Conclude with `fg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Conclude with `(Submodule.fg_span_singleton _).sup (((fg _).mul (fg _)).mul (fg _))`. Set `X : HidaSetting 3` to `{ B := 𝒜 0, R := mR Q, 𝒜 := mGr Q, std := hstd }`. Set `g : 𝒜 0 →ₐ[O] A ⧸ Q.ideal` to `(Ideal.Quotient.mkₐ O Q.ideal).comp (IsScalarTower.toAlgHom O (𝒜 0) A)`. Establish `hgk : ∀ b : 𝒜 0, b ∈ RingHom.ker g ↔ (b : A) ∈ Q.ideal` using `fun b => Ideal.Quotient.eq_zero_iff_mem`. Establish `hg : (LinearMap.range g.toLinearMap).FG`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Unfold `M2 at h2`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨b, b.2, rfl⟩`. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨⟨b, hb⟩, rfl⟩`. Take `⟨n, hn⟩` from `power_ideal_kills_graded_pieces X J hJ (RingHom.ker g) ⊥ fun p hp hi hJp _ => Ideal.map_le_iff_le_comap.2 fun b hb => (zi_holds O A 𝒜 x hW r s r' s' m Q p hp hi (hs.trans hJp) fun i => hJp (hZ i)).1 b ((hgk b).1 hb)`. Take `⟨n', hn'⟩` from `power_ideal_kills_graded_pieces X J hJ (maximalIdeal (𝒜 0)) (idD 𝒜) fun p hp hi hJp hD => zii_holds O K A 𝒜 x hW r s r' s' m Q hF hG h2 h3 p hp hi (hs.trans hJp) (fun i => hJp (hZ i)) hD`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `filter_upwards [hn, hn'] with d hd hd'`. Establish `hfin : Module.Finite (𝒜 0) ((mQ Q J).gr d)` using `(ruleFin 3 X _ (quotient_homogeneous_graded X J hJ)).1 d`. Use `⟨finite_quotient_of_kernel_pow g hg _ n fun c hc => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Module.mem_annihilator]`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `hd (Submodule.smul_mem_smul hc y.2)` as an intermediate fact. Rewrite `this` using `[Submodule.bot_smul, Submodule.mem_bot]`. Conclude with `Subtype.ext this`. Introduce and unpack `σ (hσ | ⟨b, hb, hσ⟩)`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
-
-Use `localized_length_zero σ _ _ _ n' hd' hσ (algebraMap O _ ϖ) (fun hu => hϖ.not_isUnit (IsLocalHom.map_nonunit _ hu)) ?_` and prove the remaining obligations. Rewrite using `[AlgHom.commutes]`. Conclude with `(map_ne_zero_iff _ (FaithfulSMul.algebraMap_injective O K)).2 hϖ.ne_zero`. Conclude with `localized_length_zero σ _ _ _ n hd bot_le b ((hgk b).2 hb) hσ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Alg.M.eventually_mQ_gr_finite_annihilator :
     ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (maximalIdeal O) O] [CharZero O]

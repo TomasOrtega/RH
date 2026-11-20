@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.IsFlatLift
 import Development.WeilBound.CoreStatements.PublishedTheorems.NadelVanishingPairs.NadelVanishingLemmas.FrobeniusSplittingClosed
 open GlobalTheory GlobalTheory.DI
 /- English proof (citation)
-Apply `GlobalTheory.DI.phi_closed` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FPublishedTheorems%2FNadelVanishingPairs%2FNadelVanishingLemmas%2FFrobeniusSplittingClosed.lean&line=52#L52)
 -/

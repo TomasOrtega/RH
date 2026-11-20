@@ -25,26 +25,26 @@ def Fixed {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
 variable {R : Type} [CommRing R] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-The claim follows from `Submonoid.subset_closure (Or.inl ⟨i, j, c, h, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 lemma transvection_mem {i j : ι} (h : i ≠ j) (c : R) :
     Matrix.transvection i j c ∈ elem R ι :=
   Submonoid.subset_closure (Or.inl ⟨i, j, c, h, rfl⟩)
 
 /- English proof (translation)
-The claim follows from `Submonoid.subset_closure (Or.inr ⟨D, h, rfl⟩)`.
+A detailed English derivation is pending.
 -/
 lemma diagonal_mem {D : ι → R} (h : ∀ i, IsUnit (D i)) : Matrix.diagonal D ∈ elem R ι :=
   Submonoid.subset_closure (Or.inr ⟨D, h, rfl⟩)
 
 /- English proof (translation)
-Proceed by induction on `hA using Submonoid.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨i, j, c, h, rfl⟩ | ⟨D, hD, rfl⟩` into its components or cases. Use `⟨Matrix.transvection i j (-c), transvection_mem h _, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.transvection_mul_transvection_same _ _ h]`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨Matrix.diagonal (fun i => (((hD i).unit⁻¹ : Rˣ) : R)), diagonal_mem (fun i => Units.isUnit _), ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(hD i).val_inv_mul`. Consider the case `one => exact ⟨1, one_mem _, one_mul _⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨a, ha, ha'⟩` from `hx`. Take `⟨b, hb, hb'⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨b * a, mul_mem hb ha, by rw [mul_assoc, ← mul_assoc a, ha', one_mul, hb']⟩`.
+A detailed English derivation is pending.
 -/
 lemma exists_left_inv {A : Matrix ι ι R} (hA : A ∈ elem R ι) :
     ∃ B ∈ elem R ι, B * A = 1 := by
@@ -67,7 +67,7 @@ lemma exists_left_inv {A : Matrix ι ι R} (hA : A ∈ elem R ι) :
     exact ⟨b * a, mul_mem hb ha, by rw [mul_assoc, ← mul_assoc a, ha', one_mul, hb']⟩
 
 /- English proof (translation)
-Take `⟨B, hB, hBT⟩` from `exists_left_inv hT`. Establish `: A = B * (T * A)` using `by rw [← mul_assoc, hBT, one_mul]`. Rewrite using `[this]`. Conclude with `mul_mem hB h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_of_mul_left {T A : Matrix ι ι R} (hT : T ∈ elem R ι) (h : T * A ∈ elem R ι) :
     A ∈ elem R ι := by
@@ -77,7 +77,7 @@ lemma mem_of_mul_left {T A : Matrix ι ι R} (hT : T ∈ elem R ι) (h : T * A �
   exact mul_mem hB h
 
 /- English proof (translation)
-Take `⟨B, hB, hBT⟩` from `exists_left_inv hT`. Establish `hTB : T * B = 1` using `mul_eq_one_comm.mp hBT`. Establish `: A = (A * T) * B` using `by rw [mul_assoc, hTB, mul_one]`. Rewrite using `[this]`. Conclude with `mul_mem h hB`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_of_mul_right {T A : Matrix ι ι R} (hT : T ∈ elem R ι) (h : A * T ∈ elem R ι) :
     A ∈ elem R ι := by
@@ -88,7 +88,7 @@ lemma mem_of_mul_right {T A : Matrix ι ι R} (hT : T ∈ elem R ι) (h : A * T 
   exact mul_mem h hB
 
 /- English proof (translation)
-Take `⟨B, _, hBA⟩` from `exists_left_inv hA`. Establish `: B.det * A.det = 1` using `by rw [← Matrix.det_mul, hBA, Matrix.det_one]`. Conclude with `IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact this)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isUnit_det_of_mem {A : Matrix ι ι R} (hA : A ∈ elem R ι) : IsUnit A.det := by
   obtain ⟨B, _, hBA⟩ := exists_left_inv hA
@@ -96,19 +96,19 @@ lemma isUnit_det_of_mem {A : Matrix ι ι R} (hA : A ∈ elem R ι) : IsUnit A.d
   exact IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact this)
 
 /- English proof (translation)
-Establish `key : ∀ t : Finset ι, k ∉ t → rowOp k (fun j => if j ∈ t then c j else 0) ∈ elem R ι`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: rowOp k (fun j => if j ∈ (∅ : Finset ι) then c j else 0) = (1 : Matrix ι ι R)`. Use extensionality with `a b`. Simplify using `[rowOp]`. Rewrite using `[this]`. Conclude with `one_mem _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert i t hi ih`. Introduce `hk`. Establish `hki : k ≠ i` using `fun h => hk (h ▸ Finset.mem_insert_self _ _)`. Establish `hkt : k ∉ t` using `fun h => hk (Finset.mem_insert_of_mem h)`. Establish `: rowOp k (fun j => if j ∈ insert i t then c j else 0) = rowOp k (fun j => if j ∈ t then c j else 0) * Matrix.transvection k i (c i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Distinguish the cases in `hb : b = i`. Substitute `hb` using the available equality. Rewrite using `[Matrix.mul_transvection_apply_same]`. Distinguish the cases in `ha : a = k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `ha` using the available equality. Simplify using `[rowOp, Matrix.one_apply, hi, hki, hkt]`. Simplify using `[rowOp, Matrix.one_apply, ha]`. Rewrite using `[Matrix.mul_transvection_apply_of_ne _ _ _ _ hb]`. Simplify using `[rowOp, Finset.mem_insert, hb]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `mul_mem (ih hkt) (transvection_mem hki _)`. Use `key (Finset.univ.erase k) (by simp)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using `[hc]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma rowOp_mem (k : ι) (c : ι → R) (hc : c k = 0) : rowOp k c ∈ elem R ι := by
   have key : ∀ t : Finset ι, k ∉ t → rowOp k (fun j => if j ∈ t then c j else 0) ∈ elem R ι := by
@@ -147,19 +147,19 @@ lemma rowOp_mem (k : ι) (c : ι → R) (hc : c k = 0) : rowOp k c ∈ elem R ι
   · simp [h]
 
 /- English proof (translation)
-Establish `key : ∀ t : Finset ι, k ∉ t → colOp k (fun j => if j ∈ t then c j else 0) ∈ elem R ι`. Introduce `t`. Proceed by induction on `t using Finset.induction_on with`. Consider the case `empty`. Introduce `_`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `: colOp k (fun j => if j ∈ (∅ : Finset ι) then c j else 0) = (1 : Matrix ι ι R)`. Use extensionality with `a b`. Simplify using `[colOp]`. Rewrite using `[this]`. Conclude with `one_mem _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `insert i t hi ih`. Introduce `hk`. Establish `hki : k ≠ i` using `fun h => hk (h ▸ Finset.mem_insert_self _ _)`. Establish `hkt : k ∉ t` using `fun h => hk (Finset.mem_insert_of_mem h)`. Establish `: colOp k (fun j => if j ∈ insert i t then c j else 0) = Matrix.transvection i k (c i) * colOp k (fun j => if j ∈ t then c j else 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a b`. Distinguish the cases in `ha : a = i`. Substitute `ha` using the available equality. Rewrite using `[Matrix.transvection_mul_apply_same]`. Distinguish the cases in `hb : b = k`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hb` using the available equality. Simplify using `[colOp, Matrix.one_apply, hi, hki.symm, hkt]`. Simplify using `[colOp, Matrix.one_apply, hb, Ne.symm hb]`. Rewrite using `[Matrix.transvection_mul_apply_of_ne _ _ _ _ ha]`. Simplify using `[colOp, Finset.mem_insert, ha]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `mul_mem (transvection_mem hki.symm _) (ih hkt)`. Use `key (Finset.univ.erase k) (by simp)` as an intermediate fact. Use `this using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Simplify using `[hc]`. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma colOp_mem (k : ι) (c : ι → R) (hc : c k = 0) : colOp k c ∈ elem R ι := by
   have key : ∀ t : Finset ι, k ∉ t → colOp k (fun j => if j ∈ t then c j else 0) ∈ elem R ι := by
@@ -198,7 +198,7 @@ lemma colOp_mem (k : ι) (c : ι → R) (hc : c k = 0) : colOp k c ∈ elem R ι
   · simp [h]
 
 /- English proof (translation)
-Rewrite using `[rowOp, add_mul, one_mul, Matrix.add_apply, Matrix.mul_apply]`. Use `congr 1`. Apply the tactic sequence `by_cases h : i = k <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 lemma rowOp_mul_apply (k : ι) (c : ι → R) (A : Matrix ι ι R) (i j : ι) :
     (rowOp k c * A) i j = A i j + if i = k then ∑ l, c l * A l j else 0 := by
@@ -207,7 +207,7 @@ lemma rowOp_mul_apply (k : ι) (c : ι → R) (A : Matrix ι ι R) (i j : ι) :
   by_cases h : i = k <;> simp [h]
 
 /- English proof (translation)
-Rewrite using `[colOp, add_mul, one_mul, Matrix.add_apply, Matrix.mul_apply]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 lemma colOp_mul_apply (k : ι) (c : ι → R) (A : Matrix ι ι R) (i j : ι) :
     (colOp k c * A) i j = A i j + c i * A k j := by
@@ -216,7 +216,7 @@ lemma colOp_mul_apply (k : ι) (c : ι → R) (A : Matrix ι ι R) (i j : ι) :
   simp
 
 /- English proof (translation)
-Rewrite using `[rowOp, mul_add, mul_one, Matrix.add_apply, Matrix.mul_apply]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 lemma mul_rowOp_apply (k : ι) (c : ι → R) (A : Matrix ι ι R) (i j : ι) :
     (A * rowOp k c) i j = A i j + A i k * c j := by
@@ -225,29 +225,25 @@ lemma mul_rowOp_apply (k : ι) (c : ι → R) (A : Matrix ι ι R) (i j : ι) :
   simp
 
 /- English proof (translation)
-Take `⟨ui, hui⟩` from `hu.exists_right_inv`. Use `set v : ι → R := fun i => if i = k then 0 else -(A i k * ui) with hv`. Use `set x : ι → R := fun j => if j = k then 0 else -(ui * A k j) with hx`. Use `set D : ι → R := Function.update (fun _ => 1) k ui with hD`. Establish `hDu : ∀ i, IsUnit (D i)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `i`. Distinguish the cases in `h : i = k`. Substitute `h` using the available equality. Simplify using `only [hD, Function.update_self]`. Conclude with `IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact hui)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hD, Function.update_of_ne h]`. Establish `hCm` using `colOp_mem k v (by simp [hv])`. Establish `hRm` using `rowOp_mem k x (by simp [hx])`. Establish `hDm` using `diagonal_mem hDu`. Use `set A4 : Matrix ι ι R := Matrix.diagonal D * ((colOp k v * A) * rowOp k x) with hA4`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `have entry : ∀ i j, A4 i j = D i * ((A i j + v i * A k j) + (A i k + v i * A k k) * x j) := by`. Introduce `i j`. Rewrite using `[hA4, Matrix.diagonal_mul, mul_rowOp_apply, colOp_mul_apply, colOp_mul_apply]`. Establish `hF4 : Fixed s A4`. Introduce `i j hij`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[entry]`. Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality. Distinguish the cases in `hj : j = i`. Substitute `hj` using the available equality.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `[hv, hx, hD, Matrix.one_apply]`. Rewrite using `[mul_comm]`. Conclude with `hui`. Establish `: A i i * ui = 1` using `hui`. Simplify using `only [hv, hx, if_true, hj, if_false, hD, Function.update_self, Matrix.one_apply, Ne.symm hj]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-(ui * A i j)) * this`. Distinguish the cases in `hj : j = k`. Substitute `hj` using the available equality. Simplify using `[hv, hx, hi, hD, Function.update_of_ne hi, Matrix.one_apply]`. Establish `: A j j * ui = 1` using `hui`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `(-A i j) * this`. Establish `hDi : D i = 1` using `by simp [hD, Function.update_of_ne hi]`. Establish `hvx : (A i k + v i * A k k) = 0`. Establish `: A k k * ui = 1` using `hui`. Simplify using `only [hv, hi, if_false]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(-A i k) * this`. Rewrite using `[hDi, hvx, zero_mul, add_zero, one_mul]`. Break down `hij with h | h` into its components or cases. Establish `hi' : i ∉ insert k s` using `by simp [hi, h]`. Establish `h0 : A i k = 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF i k (Or.inl hi'), Matrix.one_apply_ne hi]`. Rewrite using `[hF i j (Or.inl hi')]`. Simplify using `[hv, hi, h0]`. Establish `hj' : j ∉ insert k s` using `by simp [hj, h]`. Establish `h0 : A k j = 0`.
-
-Rewrite using `[hF k j (Or.inr hj'), Matrix.one_apply_ne (Ne.symm hj)]`. Rewrite using `[hF i j (Or.inr hj'), h0, mul_zero, add_zero]`. Establish `hdet : IsUnit A4.det`. Rewrite using `[hA4, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul]`. Conclude with `(isUnit_det_of_mem hDm).mul (((isUnit_det_of_mem hCm).mul hA).mul (isUnit_det_of_mem hRm))`.
-
-Establish `h4` using `ih A4 hdet hF4`. Conclude with `mem_of_mul_left hCm (mem_of_mul_right hRm (mem_of_mul_left hDm h4))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma mem_of_unit_pivot {s : Finset ι} {k : ι}
     (ih : ∀ A : Matrix ι ι R, IsUnit A.det → Fixed s A → A ∈ elem R ι)
@@ -314,23 +310,21 @@ lemma mem_of_unit_pivot {s : Finset ι} {k : ι}
   exact mem_of_mul_left hCm (mem_of_mul_right hRm (mem_of_mul_left hDm h4))
 
 /- English proof (translation)
-Use `set B := A⁻¹ with hB`. Establish `hBA : B * A = 1` using `Matrix.nonsing_inv_mul A hA`. Establish `hsum : ∑ l, B k l * A l k = 1`. Use `congrFun (congrFun hBA k) k` as an intermediate fact. Simplify `this` using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hzero : ∀ l, l ∉ insert k s → A l k = 0`. Introduce `l hl`. Establish `hlk : l ≠ k` using `fun h => hl (h ▸ Finset.mem_insert_self _ _)`. Rewrite using `[hF l k (Or.inl hl), Matrix.one_apply_ne hlk]`. Establish `hsplit : ∑ l, B k l * A l k = B k k * A k k + ∑ l ∈ s, B k l * A l k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Finset.sum_insert (f := fun l => B k l * A l k) hk]`. Use `symm`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises. Introduce `l _ hl`. Rewrite using `[hzero l hl, mul_zero]`.
+Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set b := ∑ l ∈ s, B k l * A l k with hb`. Establish `hcop : IsCoprime (A k k) b` using `⟨B k k, 1, by rw [one_mul, ← hsplit, hsum]⟩`. Take `⟨t, ht⟩` from `hR _ _ hcop`. Use `set w : ι → R := fun l => if l ∈ s then t * B k l else 0 with hw`. Establish `hwsum : ∀ j, ∑ l, w l * A l j = t * ∑ l ∈ s, B k l * A l j`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `j`. Rewrite using `[Finset.mul_sum, ← Finset.sum_subset (Finset.subset_univ s)]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `l hl`. Simplify using `[hw, hl, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `l _ hl`. Simplify using `[hw, hl]`. Use `⟨w, by simp [hw, hk], ?_, ?_⟩` and prove the remaining obligations. Introduce `i j hij`. Rewrite using `[rowOp_mul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Distinguish the cases in `hi : i = k`. Substitute `hi` using the available equality. Establish `hj : j ∉ insert i s`. Break down `hij with h | h` into its components or cases. Conclude with `absurd (Finset.mem_insert_self _ _) h`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hji : i ≠ j` using `fun h => hj (h ▸ Finset.mem_insert_self _ _)`. Rewrite using `[if_pos rfl, hwsum, hF i j (Or.inr hj), Finset.sum_eq_zero, mul_zero, add_zero]`. Introduce `l hl`. Establish `hlj : l ≠ j` using `fun h => hj (h ▸ Finset.mem_insert_of_mem hl)`.
-
-Rewrite using `[hF l j (Or.inr hj), Matrix.one_apply_ne hlj, mul_zero]`. Rewrite using `[if_neg hi, add_zero]`. Conclude with `hF i j hij`. Rewrite using `[rowOp_mul_apply, if_pos rfl, hwsum]`. Conclude with `ht`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma exists_unit_pivot (hR : ∀ a b : R, IsCoprime a b → ∃ t, IsUnit (a + t * b))
     {s : Finset ι} {k : ι} {A : Matrix ι ι R} (hA : IsUnit A.det)
@@ -384,13 +378,11 @@ lemma exists_unit_pivot (hR : ∀ a b : R, IsCoprime a b → ∃ t, IsUnit (a + 
     exact ht
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Introduce `A _ hF`. Establish `: A = 1`. Use extensionality with `i j`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `hF i j (Or.inl (by simp))`. Rewrite using `[this]`. Conclude with `one_mem _`. Consider the case `insert k s hk ih`. Introduce `A hA hF`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw0, hwF, hwu⟩` from `exists_unit_pivot hR hA hF hk`. Establish `hm` using `rowOp_mem k w hw0`. Establish `hdet : IsUnit (rowOp k w * A).det`. Rewrite using `[Matrix.det_mul]`. Conclude with `(isUnit_det_of_mem hm).mul hA`.
-
-Conclude with `mem_of_mul_left hm (mem_of_unit_pivot ih hdet hwF hk hwu)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma mem_of_fixed (hR : ∀ a b : R, IsCoprime a b → ∃ t, IsUnit (a + t * b))
     (s : Finset ι) : ∀ A : Matrix ι ι R, IsUnit A.det → Fixed s A → A ∈ elem R ι := by
@@ -412,11 +404,11 @@ lemma mem_of_fixed (hR : ∀ a b : R, IsCoprime a b → ∃ t, IsUnit (a + t * b
     exact mem_of_mul_left hm (mem_of_unit_pivot ih hdet hwF hk hwu)
 
 /- English proof (translation)
-Introduce `R _ hR ι _ _ p ht hd hm A hA`. Establish `hmem : A ∈ elem R ι` using `mem_of_fixed hR Finset.univ A hA (fun i j h => by simp at h)`. Establish `key : ∀ B ∈ elem R ι, p B`. Introduce `B hB`. Proceed by induction on `hB using Submonoid.closure_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Break down `hx with ⟨i, j, c, h, rfl⟩ | ⟨D, hD, rfl⟩` into its components or cases. Conclude with `ht i j c h`. Conclude with `hd D hD`. Consider the case `one`.
+Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `hd (fun _ => 1) (fun _ => isUnit_one)` as an intermediate fact. Simplify using `using this`. Consider the case `mul x y hx hy px py`. Conclude with `hm x y (isUnit_det_of_mem hx) (isUnit_det_of_mem hy) px py`. Conclude with `key A hmem`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem matrix_induction :
     ∀ (R : Type) [CommRing R], (∀ a b : R, IsCoprime a b → ∃ t, IsUnit (a + t * b)) →

@@ -31,18 +31,18 @@ theorem aop_apply (D : Submodule ℂ H) (T : H → H) (hadd : ∀ u ∈ D, ∀ v
     aop D T hadd hsm u = T u + Complex.I • (u : H) := rfl
 
 /- English proof (translation)
-Rewrite using `[← Complex.conj_eq_iff_im, inner_conj_symm]`. Conclude with `h.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem im_inner_self (T : H → H) (u : H) (h : ⟪T u, u⟫_ℂ = ⟪u, T u⟫_ℂ) : (⟪T u, u⟫_ℂ).im = 0 := by
   rw [← Complex.conj_eq_iff_im, inner_conj_symm]
   exact h.symm
 
 /- English proof (translation)
-Establish `h1 : ‖T u + Complex.I • u‖ ^ 2 = ‖T u‖ ^ 2 + ‖u‖ ^ 2`. Rewrite using `[@norm_add_sq ℂ, inner_smul_right, norm_smul, Complex.norm_I, one_mul]`. Establish `h2 : RCLike.re (Complex.I * ⟪T u, u⟫_ℂ) = 0` using `by show (Complex.I * ⟪T u, u⟫_ℂ).re = 0`. Rewrite using `[Complex.mul_re, Complex.I_re, Complex.I_im, im_inner_self T u h]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[h2]`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : ‖u‖ ^ 2 ≤ ‖T u + Complex.I • u‖ ^ 2`. Rewrite using `[h1]`. Use polynomial arithmetic with `[sq_nonneg ‖T u‖]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[norm_nonneg u, norm_nonneg (T u + Complex.I • u)]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem norm_le_aop (T : H → H) (u : H) (h : ⟪T u, u⟫_ℂ = ⟪u, T u⟫_ℂ) : ‖u‖ ≤ ‖T u + Complex.I • u‖ := by
   have h1 : ‖T u + Complex.I • u‖ ^ 2 = ‖T u‖ ^ 2 + ‖u‖ ^ 2 := by
@@ -65,39 +65,35 @@ namespace Formalism.L2.SG.Pf.admitted
 open Formalism.MainNotions.S Formalism.REAL Formalism.MainNotions.BridgeCPX Formalism.L2.SG.Pf.admitted.BoundedOperators
 
 /- English proof (translation)
-Introduce `n ε H _ _ _ σ hU hI D _hD hst T hadd hsm hsym hcomm`. Distinguish the cases in `h0 : ∀ v ∈ D, v = 0`. Use `⟨0, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[h0 v hv]`. Use `hsm 0 0 D.zero_mem` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using this`. Use `push Not at h0`. Take `⟨u0, hu0D, hu0⟩` from `h0`. Set `A` to `aop D T hadd hsm`. Establish `hbd : ∀ u : D, ‖D.subtype u‖ ≤ 1 * ‖A u‖`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Rewrite using `[one_mul]`. Conclude with `norm_le_aop T u (hsym u u.2 u u.2)`. Establish `hAg : ∀ (g : UJ ε) (u : D), σ (umat g) (A u) = A ⟨σ (umat g) u, hst g u u.2⟩`. Introduce `g u`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[aop_apply, aop_apply, map_add, map_smul, hcomm g u u.2]`. Use `set S := (LinearMap.range A)ᗮ with hS`. Establish `hSst : ∀ (g : UJ ε), ∀ x ∈ S, σ (umat g) x ∈ S`. Introduce `g x hx`. Rewrite using `[Submodule.mem_orthogonal]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `y ⟨u, rfl⟩`. Rewrite using `[← inv_inv g, ← rep_inner_left hU g⁻¹, hAg]`. Conclude with `(Submodule.mem_orthogonal _ _).1 hx _ ⟨_, rfl⟩`. Establish `hdense : DenseRange A`. Break down `Formalism.MainNotions.BridgeCSchur.irr_of hI S (Submodule.isClosed_orthogonal _) hSst with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : (LinearMap.range A).topologicalClosure = ⊤` using `Submodule.topologicalClosure_eq_top_iff.2 h`. Establish `h3` using `(Submodule.dense_iff_topologicalClosure_eq_top).2 h2`. Conclude with `h3`. It suffices to derive a contradiction. Establish `hm : A ⟨u0, hu0D⟩ ∈ S` using `by rw [h]; trivial`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hz : ⟪A ⟨u0, hu0D⟩, A ⟨u0, hu0D⟩⟫_ℂ = 0` using `(Submodule.mem_orthogonal _ _).1 hm _ ⟨_, rfl⟩`. Rewrite `hz` using `[inner_self_eq_zero]`. Use `hbd ⟨u0, hu0D⟩` as an intermediate fact. Rewrite `this` using `[hz, norm_zero, mul_zero]`. Conclude with `hu0 (norm_le_zero_iff.1 this)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations.
 
-Set `R : H →L[ℂ] H` to `LinearMap.extendOfNorm D.subtype A`. Establish `hR : ∀ u : D, R (A u) = u` using `fun u => LinearMap.extendOfNorm_eq hdense ⟨1, hbd⟩ u`. Establish `hRg : ∀ (g : UJ ε), R.comp (σ (umat g)) = (σ (umat g)).comp R`. Introduce `g`. Use extensionality with `x`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `hdense.induction_on x (isClosed_eq (by fun_prop) (by fun_prop)) ?_` and prove the remaining obligations. Introduce `u`. Simplify using `only [ContinuousLinearMap.comp_apply]`. Rewrite using `[hAg, hR, hR]`. Set `U : Set (H →L[ℂ] H)` to `Set.range (fun g : UJ ε => σ (umat g))`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hstar : ∀ V ∈ U, star V ∈ U`. Introduce and unpack `V ⟨g, rfl⟩`. Use `⟨g⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[ContinuousLinearMap.star_eq_adjoint, ContinuousLinearMap.eq_adjoint_iff]`. Introduce `x y`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[rep_inner_left hU, inv_inv]`. Establish `hirr : ∀ S' : Submodule ℂ H, IsClosed (S' : Set H) → (∀ V ∈ U, ∀ v ∈ S', V v ∈ S') → S' = ⊥ ∨ S' = ⊤` using `fun S' hS' h => Formalism.MainNotions.BridgeCSchur.irr_of hI S' hS' (fun g v hv => h _ ⟨g, rfl⟩ v hv)`. Establish `hcommR : ∀ V ∈ U, Commute R V`. Introduce and unpack `V ⟨g, rfl⟩`. Conclude with `hRg g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨lam, hlam⟩` from `Formalism.MainNotions.BridgeCSchur.schur_bounded U hstar hirr R hcommR`. Establish `hkey : ∀ u : D, (u : H) = lam • (T u + Complex.I • (u : H))`. Introduce `u`. Establish `h1` using `hR u`. Rewrite `h1` using `[hlam, _root_.smul_apply, one_apply_eq_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1.symm`. Establish `hlam0 : lam ≠ 0`. Introduce `hl`. Use `hkey ⟨u0, hu0D⟩` as an intermediate fact. Rewrite `this` using `[hl, zero_smul]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Conclude with `hu0 this`. Use `set mu : ℂ := lam⁻¹ - Complex.I with hmu`. Establish `hT : ∀ v ∈ D, T v = mu • v`. Introduce `v hv`. Establish `h1 : v = lam • (T v + Complex.I • v)` using `hkey ⟨v, hv⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h2 : lam⁻¹ • v = T v + Complex.I • v`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hmu, sub_smul, h2]`. Normalize the expressions using the abelian group laws. Establish `hreal : mu.im = 0`.
-
-Establish `h1` using `hsym u0 hu0D u0 hu0D`. Rewrite `h1` using `[hT u0 hu0D, inner_smul_left, inner_smul_right]`. Establish `hne : ⟪u0, u0⟫_ℂ ≠ 0` using `by rwa [ne_eq, inner_self_eq_zero]`. Establish `h2` using `mul_right_cancel₀ hne h1`. Conclude with `Complex.conj_eq_iff_im.1 h2`.
-
-Use `⟨mu.re, fun v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[hT v hv]`. Use `congr 1`. Conclude with `Complex.ext (by simp) (by simp [hreal])`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem c3 : SchurSymmetricDense := by
   intro n ε H _ _ _ σ hU hI D _hD hst T hadd hsm hsym hcomm

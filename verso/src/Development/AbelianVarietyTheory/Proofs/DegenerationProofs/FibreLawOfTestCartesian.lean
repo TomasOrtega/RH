@@ -13,7 +13,7 @@ open GlobalTheory.ZJ
 namespace GlobalTheory.ZJ
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Use `⟨pushHom h T, fun _ => rfl, fun c => ?_⟩` and prove the remaining obligations. Conclude with `⟨Over.homMk (h.1.lift c.left T.hom (Over.w c)) (h.1.lift_snd _ _ _), Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem exists_sectionHom {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G'] {f : S' ⟶ S}
     {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) (T : Over S') (a : T.left ⟶ S) (ha : a = T.hom ≫ f) :
@@ -24,9 +24,9 @@ theorem exists_sectionHom {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpOb
     Over.OverMorphism.ext (h.1.lift_fst _ _ _)⟩
 
 /- English proof (translation)
-Establish `e` using `congrArg (fun z => z.left) (map_one (pushHom h (𝟙_ (Over S'))))`. Establish `e₁ : (1 : 𝟙_ (Over S') ⟶ G') = η[G']`. Rewrite using `[Hom.one_def]`. Simplify using the standard rewrite rules. Rewrite `e` using `[e₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `e.trans ?_` and prove the remaining obligations. Use `show (toUnit _ ≫ η[G]).left = _`. Simplify using `[eSec]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eSec_comp_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G] [GrpObj G']
     {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsGrpPullback G' G f φ) :
@@ -40,9 +40,9 @@ theorem eSec_comp_of_isGrpPullback {S S' : Scheme.{0}} {G : Over S} {G' : Over S
   simp [eSec]
 
 /- English proof (translation)
-Take `⟨ψ, rfl⟩` from `Spec.map_surjective r`. Establish `h : PrimeSpectrum.comap ψ.hom (IsLocalRing.closedPoint K) = IsLocalRing.closedPoint V`. Establish `: (Spec.map ψ) (IsLocalRing.closedPoint K) ∈ Set.range (Spec.map ψ)` using `⟨_, rfl⟩`. Rewrite `this` using `[hr]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `ψ' : V →+* K` to `ψ.hom`. Establish `: IsLocalHom ψ'` using `(IsLocalRing.isLocalHom_iff_comap_closedPoint ψ').2 h`. Use `⟨spMap (IsLocalRing.ResidueField.lift ψ'), ?_⟩` and prove the remaining obligations. Rewrite using `[← Spec.map_comp]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_fac_residue (V K : Type) [CommRing V] [IsLocalRing V] [Field K] (r : Sp K ⟶ Sp V)
     (hr : Set.range r = {IsLocalRing.closedPoint V}) :
@@ -59,7 +59,7 @@ theorem exists_fac_residue (V K : Type) [CommRing V] [IsLocalRing V] [Field K] (
   congr 1
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `exists_fac_residue τ.V K r hr`. Take `⟨S, hS⟩` from `τ.split`. Take `⟨E, -, -, -, -, hE⟩` from `gtBaseChange _ _ s S _ hS`. Establish `: IsCommMonObj ((Over.pullback (spMap (IsLocalRing.residue τ.V))).obj τ.H)` using `Functor.isCommMonObj_obj`. Conclude with `⟨_, _, Functor.isCommMonObj_obj, E, _, hE, (isGrpPullback_pullback _ s).comp (isGrpPullback_pullback τ.H _)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Core.Test.exists_isGt_fibre {C : Core} {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ C.Z} (τ : C.Test y)
     (K : Type) [Field K] (r : Sp K ⟶ Sp τ.V) (hr : Set.range r = {IsLocalRing.closedPoint τ.V}) :
@@ -73,13 +73,11 @@ theorem Core.Test.exists_isGt_fibre {C : Core} {p : ℕ} [Fact p.Prime] {y : Sp 
     (isGrpPullback_pullback _ s).comp (isGrpPullback_pullback τ.H _)⟩
 
 /- English proof (translation)
-Use `C.proper` as an intermediate fact. Establish `: IsSeparated C.GG.hom` using `inferInstanceAs (IsSeparated (C.G.ι ≫ C.P.hom))`. Establish `: IsDominant (Out.jK τ.V)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`. Rewrite using `[CommRingCat.hom_ofHom, (RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective τ.V _)]`. Conclude with `bot_le)⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext_of_isDominant_of_isSeparated C.GG.hom ?_ (Out.jK τ.V) ?_` and prove the remaining obligations. Establish `h₁ : (eSec τ.H ≫ τ.H.hom : Sp τ.V ⟶ Sp τ.V) = 𝟙 _` using `Over.w η[τ.H]`. Establish `h₂ : C.e ≫ C.GG.hom = 𝟙 _` using `C.e_sec`. Rewrite using `[Category.assoc, Category.assoc, τ.f_over, h₂, Category.comp_id]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ τ.y₀) h₁).trans (Category.id_comp _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₁` using `@eSec_comp_of_isGrpPullback _ _ _ _ (_) (_) _ _ τ.φ_cart`. Establish `h₂` using `eSec_comp_of_isGrpPullback (isGrpPullback_pullback τ.H (Out.jK τ.V))`. Rewrite using `[← reassoc_of% τ.yK_fac, C.e_zero]`. Use `Eq.trans ?_ ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ C.a) h₁) |>.trans (Category.assoc _ _ _))` and prove the remaining obligations. Rewrite using `[τ.φ_f]`.
-
-Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ τ.f) h₂.symm).trans (Category.assoc _ _ _))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Core.Test.eSec_comp_f {C : Core} {p : ℕ} [Fact p.Prime] {y : Sp (OO p) ⟶ C.Z} (τ : C.Test y) :
     (eSec τ.H ≫ τ.f : Sp τ.V ⟶ C.G.toScheme) = τ.y₀ ≫ C.e := by
@@ -101,19 +99,19 @@ theorem Core.Test.eSec_comp_f {C : Core} {p : ℕ} [Fact p.Prime] {y : Sp (OO p)
     exact (Category.assoc _ _ _).symm.trans ((congrArg (· ≫ τ.f) h₂.symm).trans (Category.assoc _ _ _))
 
 /- English proof (translation)
-Introduce `C hC p _ y y' τ τ' K _ _ r r' hr hr' hy c d c' d' hc hd`. Take `⟨G₁, _, _, E₁, φ₁, g₁, h₁⟩` from `τ.exists_isGt_fibre K r hr`. Take `⟨G₂, _, _, E₂, φ₂, g₂, h₂⟩` from `τ'.exists_isGt_fibre K r' hr'`. Establish `P₁` using `h₁.1.paste_horiz (hC p y τ)`. Establish `P₂` using `h₂.1.paste_horiz (hC p y' τ')`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `i : G₁ ⟶ G₂` to `Over.homMk (P₂.lift (φ₁ ≫ τ.f) G₁.hom (by rw [P₁.w, hy])) (P₂.lift_snd _ _ _)`. Establish `hi : i.left ≫ φ₂ ≫ τ'.f = φ₁ ≫ τ.f` using `P₂.lift_fst _ _ _`. Establish `u₁ : η[G₁].left ≫ φ₁ ≫ τ.f = (r ≫ τ.y₀ ≫ C.e : Sp K ⟶ C.G.toScheme)` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ τ.f) (eSec_comp_of_isGrpPullback h₁)).trans ((Category.assoc _ _ _).trans (congrArg (r ≫ ·) τ.eSec_comp_f)))`. Establish `u₂ : η[G₂].left ≫ φ₂ ≫ τ'.f = (r' ≫ τ'.y₀ ≫ C.e : Sp K ⟶ C.G.toScheme)` using `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ τ'.f) (eSec_comp_of_isGrpPullback h₂)).trans ((Category.assoc _ _ _).trans (congrArg (r' ≫ ·) τ'.eSec_comp_f)))`. Establish `hone : η[G₁] ≫ i = η[G₂]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `P₂.hom_ext` to reduce the goal to its premises. Rewrite using `[Over.comp_left, Category.assoc, hi, u₁, u₂]`. Conclude with `(Category.assoc _ _ _).symm.trans ((congrArg (· ≫ C.e) hy).trans (Category.assoc _ _ _))`. Rewrite using `[Over.w, Over.w]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `isMonHom_of_isGt_of_one K E₁ E₂ G₁ G₂ g₁ g₂ i hone` as an intermediate fact. Take `⟨ρ₁, l₁, s₁⟩` from `exists_sectionHom h₁ (Over.mk (𝟙 _)) r (Category.id_comp _).symm`. Take `⟨ρ₂, l₂, -⟩` from `exists_sectionHom h₂ (Over.mk (𝟙 _)) r' (Category.id_comp _).symm`. Establish `key : ∀ x, (ρ₁ x).left ≫ τ.f = (ρ₂ (x ≫ i)).left ≫ τ'.f` using `fun x => by`. Rewrite using `[l₁, l₂, Over.comp_left, Category.assoc, Category.assoc, Category.assoc, hi]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `inj : ∀ (x) (z : Over.mk r' ⟶ τ'.H), (ρ₁ x).left ≫ τ.f = z.left ≫ τ'.f → z = ρ₂ (x ≫ i)` using `fun x z hz => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `(hC p y' τ').hom_ext` to reduce the goal to its premises. Conclude with `hz.symm.trans (key x)`. Rewrite using `[Over.w, Over.w]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c, rfl⟩` from `s₁ c`. Take `⟨d, rfl⟩` from `s₁ d`. Take `rfl` from `inj c c' hc`. Take `rfl` from `inj d d' hd`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_mul, ← map_mul, ← MonObj.mul_comp]`. Conclude with `key _`. Rewrite using `[← map_inv, ← map_inv, ← GrpObj.inv_comp]`. Conclude with `key _`.
+A detailed English derivation is pending.
 -/
 theorem Core.fibLaw_of_testCart : ∀ C : Core, C.TestCart → C.FibLaw := by
   intro C hC p _ y y' τ τ' K _ _ r r' hr hr' hy c d c' d' hc hd

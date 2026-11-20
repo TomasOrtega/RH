@@ -31,23 +31,19 @@ noncomputable section
 namespace GlobalTheory.HarmLine
 
 /- English proof (translation)
-Introduce `σ _ k l N z y κ α β G P hG hGv hJ`. Establish `hd : ∀ u, u ∉ G.vars → ∀ Q : MvPolynomial σ ℂ, MvPolynomial.pderiv u (G * Q) = G * MvPolynomial.pderiv u Q`. Introduce `u hu Q`. Rewrite using `[Derivation.leibniz, MvPolynomial.pderiv_eq_zero_of_notMem_vars hu, smul_zero, add_zero, smul_eq_mul]`. Establish `hz : ∀ c Q, MvPolynomial.pderiv (z c) (G * Q) = G * MvPolynomial.pderiv (z c) Q` using `fun c Q => hd _ (fun h => (hGv _ h).1 c rfl) Q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hy : ∀ c Q, MvPolynomial.pderiv (y c) (G * Q) = G * MvPolynomial.pderiv (y c) Q` using `fun c Q => hd _ (fun h => (hGv _ h).2 c rfl) Q`. Establish `hmix : ∀ i j, GlobalTheory.Capelli.mixedOp ℂ z y i j (G * P) = G * GlobalTheory.Capelli.mixedOp ℂ z y i j P`. Introduce `i j`. Rewrite using `[GlobalTheory.Capelli.mixedOp_apply, GlobalTheory.Capelli.mixedOp_apply, mul_sub, Finset.mul_sum, Finset.mul_sum]`. Simplify using `only [hz, hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg₂ (· - ·) (Finset.sum_congr rfl fun _ _ => by ring) (Finset.sum_congr rfl fun _ _ => by ring)`. Establish `hrz : ∀ c c', GlobalTheory.Capelli.rowOp ℂ z c c' (G * P) = G * GlobalTheory.Capelli.rowOp ℂ z c c' P`. Introduce `c c'`. Simplify using `only [GlobalTheory.Capelli.rowOp_apply, hz, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hry : ∀ c c', GlobalTheory.Capelli.rowOp ℂ y c c' (G * P) = G * GlobalTheory.Capelli.rowOp ℂ y c c' P`. Introduce `c c'`. Simplify using `only [GlobalTheory.Capelli.rowOp_apply, hy, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => by ring`. Take `⟨h1, h2, h3, h4, h5, h6, h7⟩` from `hJ`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨fun i j hij => ?_, fun i => ?_, fun c c' h => ?_, fun c => ?_, fun d d' h => ?_, fun d => ?_, fun c d => ?_⟩` and prove the remaining obligations. Use `h1 i j hij` as an intermediate fact. Rewrite `this` using `[hmix]`. Conclude with `(mul_eq_zero.1 this).resolve_left hG`. Use `h2 i` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[hmix, ← mul_smul_comm]`. Conclude with `mul_left_cancel₀ hG this`. Use `h3 c c' h` as an intermediate fact. Rewrite `this` using `[hrz]`. Conclude with `(mul_eq_zero.1 this).resolve_left hG`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h4 c` as an intermediate fact. Rewrite `this` using `[hrz, ← mul_smul_comm]`. Conclude with `mul_left_cancel₀ hG this`. Use `h5 d d' h` as an intermediate fact. Rewrite `this` using `[hry]`.
-
-Conclude with `(mul_eq_zero.1 this).resolve_left hG`. Use `h6 d` as an intermediate fact. Rewrite `this` using `[hry, ← mul_smul_comm]`. Conclude with `mul_left_cancel₀ hG this`. Use `h7 c d` as an intermediate fact.
-
-Simplify using `only [hy, hz, ← Finset.mul_sum] at this`. Conclude with `(mul_eq_zero.1 this).resolve_left hG`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem loc_jointTop : ∀ {σ : Type} [DecidableEq σ] {k l N : ℕ} (z : Fin k × Fin N → σ) (y : Fin l × Fin N → σ) (κ : Fin N → ℂ) (α : Fin k → ℂ) (β : Fin l → ℂ) (G P : MvPolynomial σ ℂ), G ≠ 0 → (∀ v ∈ G.vars, (∀ u, z u ≠ v) ∧ ∀ u, y u ≠ v) → GlobalTheory.CompactHarm.JointTop z y κ α β (G * P) → GlobalTheory.CompactHarm.JointTop z y κ α β P := by
   intro σ _ k l N z y κ α β G P hG hGv hJ
@@ -98,31 +94,29 @@ theorem loc_jointTop : ∀ {σ : Type} [DecidableEq σ] {k l N : ℕ} (z : Fin k
     exact (mul_eq_zero.1 this).resolve_left hG
 
 /- English proof (translation)
-Introduce `D n m w lam P P' hP0 hH hH' hN hN' hK hK'`. Use `set κ : D.what₂.Tau → Fin n → ℂ := fun τ a => lam τ a - (m : ℂ) / 2 + ((m - w.p τ : ℕ) : ℂ) with hκ`. Establish `hJ` using `GlobalTheory.T.jointHighestWeightHarmonic_of_fock_lowestKType D n m w lam P hH hN hK`. Establish `hJ'` using `GlobalTheory.T.jointHighestWeightHarmonic_of_fock_lowestKType D n m w lam P' hH' hN' hK'`. Establish `hU : ∀ τ : D.what₂.Tau, ∃ Q₀ : MvPolynomial (Fin m × Fin n) ℂ, ∀ α β f, GlobalTheory.CompactHarm.JointTop (GlobalTheory.HarmLine.zR m n (w.p τ)) (GlobalTheory.HarmLine.yR m n (w.p τ)) (κ τ) α β f → ∃ r : ℂ, f = r • Q₀` using `fun τ => GlobalTheory.T.jointHighestWeightHarmonic_multiplicity_one_covering _ _ (GlobalTheory.HarmLine.zR_inj m n (w.p τ)) (GlobalTheory.HarmLine.yR_inj m n (w.p τ)) (GlobalTheory.HarmLine.zR_ne_yR m n (w.p τ)) (GlobalTheory.HarmLine.zR_yR_cover m n (w.p τ)) (κ τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `choose Q₀ hQ₀ using hU`. Set `Q : D.what₂.Tau → PolF D m n` to `fun τ => MvPolynomial.rename (Prod.mk τ) (Q₀ τ)`. Establish `hfac : ∀ (τ : D.what₂.Tau) (P : PolF D m n) α β, GlobalTheory.CompactHarm.JointTop (Prod.mk τ ∘ GlobalTheory.HarmLine.zR m n (w.p τ)) (Prod.mk τ ∘ GlobalTheory.HarmLine.yR m n (w.p τ)) (κ τ) α β P → ∃ R : PolF D m n, P = Q τ * R ∧ ∀ v ∈ R.vars, v.1 ≠ τ`. Introduce `τ P α β h`. Take `⟨s, f, g, hPs, hf, hg⟩` from `GlobalTheory.T.isJointHighestWeightHarmonic_slice_outer_variables (Prod.mk τ) (fun a b h => (Prod.mk.inj h).2) _ _ _ _ _ P h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `choose! r hr using fun i (hi : i ∈ s) => hQ₀ τ α β (f i) (hf i hi)`. Use `⟨∑ i ∈ s, r i • g i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hPs, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i hi => ?_` and prove the remaining obligations. Rewrite using `[hr i hi, map_smul, smul_mul_assoc, mul_smul_comm]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `v hv hvτ`. Take `⟨i, hi, hvi⟩` from `Finset.mem_biUnion.1 (MvPolynomial.vars_sum_subset _ _ hv)`. Establish `hvi' : v ∈ (g i).vars`. Rewrite `hvi` using `[MvPolynomial.smul_eq_C_mul]`. Use `MvPolynomial.vars_mul (MvPolynomial.C (r i)) (g i) hvi` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `using this`. Conclude with `hg i hi v hvi' ⟨v.2, by rw [← hvτ]⟩`. Establish `hQne : ∀ τ, Q τ ≠ 0`. Introduce `τ h0`. Take `⟨α, β, hτ⟩` from `hJ τ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Take `⟨R, hR, -⟩` from `hfac τ P α β hτ`. Conclude with `hP0 (by rw [hR, h0, zero_mul])`. Establish `hE : ∀ s : Finset D.what₂.Tau, ∀ P : PolF D m n, (∀ τ ∈ s, ∃ α β, GlobalTheory.CompactHarm.JointTop (Prod.mk τ ∘ GlobalTheory.HarmLine.zR m n (w.p τ)) (Prod.mk τ ∘ GlobalTheory.HarmLine.yR m n (w.p τ)) (κ τ) α β P) → ∃ R : PolF D m n, P = (∏ τ ∈ s, Q τ) * R ∧ ∀ v ∈ R.vars, v.1 ∉ …`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `empty => intro P _; exact ⟨P, by simp, by simp⟩`. Consider the case `insert τ₀ s hτ₀ ih`. Introduce `P hPs`. Take `⟨R, hPR, hRv⟩` from `ih P (fun τ hτ => hPs τ (Finset.mem_insert_of_mem hτ))`. Take `⟨α, β, hJ0⟩` from `hPs τ₀ (Finset.mem_insert_self _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hG0 : (∏ τ ∈ s, Q τ) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun τ _ => hQne τ`. Establish `hGv : ∀ v ∈ (∏ τ ∈ s, Q τ).vars, v.1 ∈ s`. Introduce `v hv`. Take `⟨τ, hτ, hv'⟩` from `Finset.mem_biUnion.1 (MvPolynomial.vars_prod _ hv)`. Use `MvPolynomial.vars_rename (Prod.mk τ) (Q₀ τ) hv'` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, -, rfl⟩` from `Finset.mem_image.1 this`. Conclude with `hτ`. Establish `hJR` using `loc_jointTop _ _ _ α β _ R hG0 (fun v hv => ⟨fun u h => hτ₀ (by have := hGv v hv; rw [← h] at this; simpa using this), fun u h => hτ₀ (by have := hGv v hv; rw [← h] at this; simpa using this)⟩) (hPR ▸ hJ0)`. Take `⟨R', hRR', hR'v⟩` from `hfac τ₀ R α β hJR`. Use `⟨R', by rw [hPR, hRR', Finset.prod_insert hτ₀]; ring, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `v hv`. Rewrite using `[Finset.mem_insert, not_or]`. Use `⟨fun h => hR'v v hv h, hRv v ?_⟩` and prove the remaining obligations. Establish `hR'0 : R' ≠ 0` using `by rintro rfl; simp at hv`. Rewrite using `[hRR', MvPolynomial.mem_vars_iff_degreeOf_ne_zero, MvPolynomial.degreeOf_mul_eq (hQne τ₀) hR'0]`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[MvPolynomial.mem_vars_iff_degreeOf_ne_zero]`. Use linear arithmetic over natural numbers and integers. Take `⟨R, hR, hRv⟩` from `hE Finset.univ P (fun τ _ => hJ τ)`. Take `⟨R', hR', hR'v⟩` from `hE Finset.univ P' (fun τ _ => hJ' τ)`. Establish `hc : ∀ R : PolF D m n, (∀ v ∈ R.vars, v.1 ∉ (Finset.univ : Finset D.what₂.Tau)) → R = MvPolynomial.C (R.coeff 0)` using `fun R h => MvPolynomial.vars_eq_empty_iff_eq_C.1 (Finset.eq_empty_of_forall_notMem fun v hv => h v hv (Finset.mem_univ _))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hR` using `[hc R hRv]`. Rewrite `hR'` using `[hc R' hR'v]`. Establish `hc0 : R.coeff 0 ≠ 0`. Introduce `h0`. Apply `hP0` to reduce the goal to its premises.
-
-Rewrite using `[hR, h0]`. Simplify using the standard rewrite rules. Use `⟨R'.coeff 0 / R.coeff 0, ?_⟩` and prove the remaining obligations. Rewrite using `[hR', hR, MvPolynomial.smul_eq_C_mul, ← mul_assoc, mul_comm (MvPolynomial.C _) (∏ τ, Q τ), mul_assoc, ← MvPolynomial.C_mul, div_mul_cancel₀ _ hc0]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem joint_line : ∀ (D : D7) (n m : ℕ) (w : GlobalTheory.ExportSeries.Weight D n) (lam : D.what₂.Tau → Fin n → ℂ) (P P' : PolF D m n), P ≠ 0 → GlobalTheory.LowestKType.IsHarm w P → GlobalTheory.LowestKType.IsHarm w P' → GlobalTheory.LowestKType.IsNHw w lam P → GlobalTheory.LowestKType.IsNHw w lam P' → GlobalTheory.LowestKType.IsKHw w P → GlobalTheory.LowestKType.IsKHw w P' → ∃ c : ℂ, P' = c • P := by
   intro D n m w lam P P' hP0 hH hH' hN hN' hK hK'

@@ -15,9 +15,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7} (w : Point D.host.E (D.R.rS + 1))
 
 /- English proof (translation)
-Unfold `selfP upperM at *`. Rewrite using `[qbar_qbar]`. Use `⟨fun h => ?_, fun h => ?_⟩` and prove the remaining obligations. Establish `: qbar w q = q` using `h.symm`. Rewrite `hu` using `[this]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ hu`. Conclude with `lt_asymm hu h`.
+A detailed English derivation is pending.
 -/
 theorem upper_qbar {q : FreeE w} (hu : upperM w q) : ¬ selfP w (qbar w q) ∧ ¬ upperM w (qbar w q) := by
   unfold selfP upperM at *
@@ -28,11 +28,11 @@ theorem upper_qbar {q : FreeE w} (hu : upperM w q) : ¬ selfP w (qbar w q) ∧ �
   · exact lt_asymm hu h
 
 /- English proof (translation)
-Unfold `selfP upperM at *`. Rewrite using `[qbar_qbar]`. Break down `lt_or_eq_of_le (not_lt.1 hu) with h | h` into its components or cases. Conclude with `h`. It suffices to derive a contradiction.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hs` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Establish `h2 : pinv w q.1.2 = q.1.1` using `h.symm`. Establish `h3 : q.1.2 = pinv w q.1.1` using `by rw [← h2, pinv_pinv]`. Simplify using `only [qbar]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, ← h3]`.
+A detailed English derivation is pending.
 -/
 theorem lower_qbar {q : FreeE w} (hs : ¬ selfP w q) (hu : ¬ upperM w q) : upperM w (qbar w q) := by
   unfold selfP upperM at *
@@ -47,7 +47,7 @@ theorem lower_qbar {q : FreeE w} (hs : ¬ selfP w q) (hu : ¬ upperM w q) : uppe
     rw [h2, ← h3]
 
 /- English proof (translation)
-Unfold `hgt`. Use `q.1.2.isLt` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem hgt_le (q : FreeE w) : hgt w q ≤ D.R.rS := by
   unfold hgt; have := q.1.2.isLt; omega
@@ -58,21 +58,19 @@ variable (δ : ∀ p : PlF D, (D.s.atP p).Fp) (M : ∀ p : PlF D, Loc.Model (D.s
   (hA : ∀ q, Agree δ M q)
 
 /- English proof (translation)
-The claim follows from `sgm_cases q.1.1 q.1.2`.
+A detailed English derivation is pending.
 -/
 theorem sgq_cases (q : FreeE w) : sgq w q = (1 : D.host.E) ∨ sgq w q = -1 := sgm_cases q.1.1 q.1.2
 
 /- English proof (translation)
-Apply the tactic sequence `rcases sgq_cases w q with e | e <;> rw [e] <;> ring`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sgq_sq (q : FreeE w) : sgq w q * sgq w q = (1 : D.host.E) := by
   rcases sgq_cases w q with e | e <;> rw [e] <;> ring
 
 include hA in
 /- English proof (translation)
-Use `dd_conj δ M hA hk hx` as an intermediate fact. Break down `sgq_cases w q with e | e` into its components or cases. Rewrite using `[e, one_mul]`. Conclude with `this`. Rewrite using `[e, neg_one_mul]`.
-
-Conclude with `(ddPow D h : Submodule (𝓞 D.host.E) D.host.E).neg_mem this`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sg_dd {h : ℕ} (hk : h ≤ D.R.rS) (q : FreeE w) {x : D.host.E} (hx : x ∈ ddPow D h) :
     sgq w q * D.conjF x ∈ ddPow D h := by
@@ -83,9 +81,7 @@ theorem sg_dd {h : ℕ} (hk : h ≤ D.R.rS) (q : FreeE w) {x : D.host.E} (hx : x
 
 include hA in
 /- English proof (translation)
-Use `qd_conj δ M hA hk hx` as an intermediate fact. Break down `sgq_cases w q with e | e` into its components or cases. Rewrite using `[e, one_mul]`. Conclude with `this`. Rewrite using `[e, neg_one_mul]`.
-
-Conclude with `(qdPow D h : Submodule (𝓞 D.host.E) D.host.E).neg_mem this`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sg_qd {h : ℕ} (hk : h ≤ D.R.rS) (q : FreeE w) {x : D.host.E} (hx : x ∈ qdPow D h) :
     sgq w q * D.conjF x ∈ qdPow D h := by
@@ -95,19 +91,19 @@ theorem sg_qd {h : ℕ} (hk : h ≤ D.R.rS) (q : FreeE w) {x : D.host.E} (hx : x
   · rw [e, neg_one_mul]; exact (qdPow D h : Submodule (𝓞 D.host.E) D.host.E).neg_mem this
 
 /- English proof (translation)
-Rewrite using `[qdPow_mem_iff, mul_div_cancel_left₀ _ gS_ne]`. Conclude with `hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gS_mul_qd (h : ℕ) {x : D.host.E} (hx : x ∈ ddPow D h) : ((gS D : ℕ) : D.host.E) * x ∈ qdPow D h := by
   rw [qdPow_mem_iff, mul_div_cancel_left₀ _ gS_ne]; exact hx
 
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul]`. Conclude with `(I : Submodule (𝓞 D.host.E) D.host.E).toAddSubmonoid.nsmul_mem hx m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nat_mul_mem (I : FI D) (m : ℕ) {x : D.host.E} (hx : x ∈ I) : (m : D.host.E) * x ∈ I := by
   rw [← nsmul_eq_mul]; exact (I : Submodule (𝓞 D.host.E) D.host.E).toAddSubmonoid.nsmul_mem hx m
 
 /- English proof (translation)
-Substitute `hE` using the available equality. Simplify using `only [map_sub, map_mul, map_natCast, Formalism.MainNotions.BridgeLemma.conjF_inv, hsc]`. Take the linear combination `(1 - (m : D.host.E)) * (c - y) * hs`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem self_id (s y c E : D.host.E) (m : ℕ) (hs : s * s = 1) (hsc : D.conjF s = s)
     (hE : E = y - s * D.conjF (c - y)) :

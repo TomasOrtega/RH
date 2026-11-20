@@ -7,7 +7,7 @@ open ReciprocityTheory.ChartRestriction.G.FD (Data Frame Bor rmul lact mat col d
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ShFam.PerPoly.periods_le_of_mem_lattice` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FPeriodsPolynomialGrowthLatticeVectorArc.lean&line=96#L96)
 -/

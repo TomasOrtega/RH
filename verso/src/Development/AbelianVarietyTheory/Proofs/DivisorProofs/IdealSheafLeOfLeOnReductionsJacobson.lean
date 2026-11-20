@@ -15,9 +15,9 @@ open ReciprocityTheory.ChartRestriction.G.Out GlobalTheory.AbLaw GlobalTheory.Fo
 namespace GlobalTheory.FormalAlg
 
 /- English proof (translation)
-Establish `hu : IsUnit ((X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom g)` using `X.toRingedSpace.isUnit_res_basicOpen g`. Establish `key : (a.ideal U).map (X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom ≤ (a'.ideal U).map (X.presheaf.map (homOfLE (X.basicOpen_le g)).op).hom`. Use `Ideal.map_le_iff_le_comap.2 fun s hs => ?_` and prove the remaining obligations. Rewrite using `[Ideal.mem_comap]`. Use `(Ideal.unit_mul_mem_iff_mem _ hu).1 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← map_mul]`. Conclude with `Ideal.mem_map_of_mem _ (h s hs)`. Rewrite using `[← a.map_ideal_basicOpen, ← a'.map_ideal_basicOpen]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideal_le_on_basicOpen {X : Scheme.{0}} (a a' : X.IdealSheafData) (U : X.affineOpens)
     (g : Γ(X, U)) (h : ∀ s ∈ a.ideal U, g * s ∈ a'.ideal U) :
@@ -35,29 +35,25 @@ theorem ideal_le_on_basicOpen {X : Scheme.{0}} (a a' : X.IdealSheafData) (U : X.
   exact key
 
 /- English proof (translation)
-The claim follows from `TopologicalSpace.Opens.mem_iSup.1 ((iSup_affineOpens_eq_top X).ge (Set.mem_univ x))`.
+A detailed English derivation is pending.
 -/
 theorem exists_affineOpen_mem {X : Scheme.{0}} (x : X) : ∃ U : X.affineOpens, x ∈ U.1 :=
   TopologicalSpace.Opens.mem_iSup.1 ((iSup_affineOpens_eq_top X).ge (Set.mem_univ x))
 
 /- English proof (translation)
-Introduce `R _ I hI V _ p a a' hUC hle`. Set `S` to `{U : V.affineOpens // a.ideal U ≤ a'.ideal U}`. Establish `h1 : ∀ x : V, x ∉ a'.support → ∃ U : S, x ∈ U.1.1`. Introduce `x hx`. Take `⟨U, hU⟩` from `exists_affineOpen_mem x`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[Scheme.IdealSheafData.mem_support_iff_of_mem hU, Scheme.mem_zeroLocus_iff]`. Use `push_neg at hx`. Take `⟨f, hf, hxf⟩` from `hx`. Conclude with `⟨⟨V.affineBasicOpen f, ideal_le_on_basicOpen a a' U f fun s _ => Ideal.mul_mem_right _ _ hf⟩, hxf⟩`. Establish `h2 : ∀ x : V, I ≤ (p x).asIdeal → ∃ U : S, x ∈ U.1.1`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨U, hU⟩` from `exists_affineOpen_mem x`. Use `haveI : IsNoetherianRing Γ(V, U) := IsLocallyNoetherian.component_noetherian U`. Take `⟨r, hr, hr'⟩` from `GlobalTheory.T.krull_intersection_ideal_local_form Γ(V, U) (I.map (cst p U.1)) (a.ideal U) (a'.ideal U) (fun e => by`. Use `hle e U` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Scheme.IdealSheafData.ideal_sup, Pi.sup_apply, baseIdeal_ideal, Ideal.map_pow] at this)` and apply the resulting hypothesis. Use `⟨⟨V.affineBasicOpen (1 - r), ideal_le_on_basicOpen a a' U _ hr'⟩, ?_⟩` and prove the remaining obligations. Establish `hsupp : x ∈ (baseIdeal p I).support` using `(GlobalTheory.T.baseIdealSheafOfIdeal_comap_specMap_support.2.2 R V p I x).2 hx`. Rewrite `hsupp` using `[Scheme.IdealSheafData.mem_support_iff_of_mem hU, baseIdeal_ideal, Scheme.mem_zeroLocus_iff]`. Establish `hxr` using `hsupp r hr`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show x ∈ V.basicOpen (1 - r)`. Rewrite `hxr`, the goal using `[Scheme.mem_basicOpen _ _ _ hU]`. Rewrite using `[map_sub, map_one]`. Conclude with `IsLocalRing.isUnit_one_sub_self_of_mem_nonunits _ hxr`. Set `O : V.Opens` to `⨆ U : S, U.1.1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ` using `GlobalTheory.T.eq_empty_of_isClosed_of_universallyClosed_of_le_jacobson R I hI a'.subscheme (a'.subschemeι ≫ p) hUC (a'.subschemeι ⁻¹' (O : Set V)ᶜ) (O.isOpen.isClosed_compl.preimage a'.subschemeι.continuous) (fun z hz hIz => hz (by`. Take `⟨U, hU⟩` from `h2 (a'.subschemeι z) (by simpa using hIz)`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨U, hU⟩))`. Establish `hO : O = ⊤`. Rewrite using `[eq_top_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x _`. Assume the negation of the conclusion as `hxO`. Distinguish the cases in `hx : x ∈ a'.support`. Establish `hx' : x ∈ Set.range a'.subschemeι`. Rewrite using `[Scheme.IdealSheafData.range_subschemeι]`.
-
-Conclude with `hx`. Take `⟨z, rfl⟩` from `hx'`. Establish `: z ∈ (∅ : Set a'.subscheme)` using `hZ ▸ hxO`. Conclude with `this`. Take `⟨U, hU⟩` from `h1 x hx`.
-
-Conclude with `hxO (TopologicalSpace.Opens.mem_iSup.2 ⟨U, hU⟩)`. Conclude with `Scheme.IdealSheafData.le_of_iSup_eq_top (fun U : S => U.1) hO (fun U => U.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem le_of_le_reductions : ∀ (R : Type) [CommRing R] (I : Ideal R), I ≤ Ideal.jacobson ⊥ →
     ∀ (V : Scheme.{0}) [IsLocallyNoetherian V] (p : V ⟶ Spec (CommRingCat.of R))

@@ -12,13 +12,13 @@ section Alg
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Establish `h0 : (Matrix.of fun (i j : Fin n) => if i ≤ m ∧ j.val = m.val + 1 then u i else 0) * (Matrix.of fun (i j : Fin n) => if i ≤ m ∧ j.val = m.val + 1 then v i else 0) = 0`. Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Matrix.zero_apply]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h1 : k ≤ m`. Establish `: ¬ (i ≤ m ∧ k.val = m.val + 1)` using `fun h => by`. Use `Fin.le_def.1 h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg this, zero_mul]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Establish `: ¬ (k ≤ m ∧ j.val = m.val + 1)` using `fun h => h1 h.1`. Rewrite using `[if_neg this, mul_zero]`. Unfold `colM`. Rewrite using `[add_mul, mul_add, mul_add, h0, one_mul, one_mul, mul_one, add_zero, add_assoc, add_eq_left]`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [Matrix.add_apply, Matrix.of_apply, Matrix.zero_apply]`. Use `split_ifs`. Rewrite using `[add_comm]`. Conclude with `congrFun huv i`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem colM_mul_neg (m : Fin n) (u v : Fin n → R) (huv : u + v = 0) : colM m u * colM m v = 1 := by
   have h0 : (Matrix.of fun (i j : Fin n) => if i ≤ m ∧ j.val = m.val + 1 then u i else 0) *
@@ -64,9 +64,9 @@ Both sides reduce to the same expression.
 private theorem dlt_apply (m : Fin n) (ξ u : Fin n → R) : dlt m ξ u = dotLe m ξ u - u m := rfl
 
 /- English proof (translation)
-Rewrite using `[dlt_apply, sub_eq_zero]`. Unfold `dotLe`. Rewrite using `[Finset.sum_eq_single m]`. Simplify using the standard rewrite rules. Introduce `j _ hj`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[Matrix.one_apply_ne hj.symm]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem dlt_one (m : Fin n) (u : Fin n → R) : dlt m ((1 : Matrix (Fin n) (Fin n) R) m) u = 0 := by
   rw [dlt_apply, sub_eq_zero]
@@ -78,9 +78,9 @@ private theorem dlt_one (m : Fin n) (u : Fin n → R) : dlt m ((1 : Matrix (Fin 
   · simp
 
 /- English proof (translation)
-Rewrite using `[dlt_apply]`. Unfold `dotLe`. Rewrite using `[Finset.sum_eq_single j]`. Distinguish the cases in `h : m = j`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `[sub_mul]`. Simplify using `[hj, Matrix.one_apply_ne h, Pi.single_eq_of_ne h]`. Introduce `k _ hk`. Simplify using `[Pi.single_eq_of_ne hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem dlt_single (m : Fin n) (ξ : Fin n → R) (j : Fin n) (hj : j ≤ m) (y : R) :
     dlt m ξ (Pi.single j y) = (ξ j - (1 : Matrix (Fin n) (Fin n) R) m j) * y := by
@@ -101,7 +101,7 @@ section Top
 variable {K : Type} [NormedField K] [CompleteSpace K] {n : ℕ}
 
 /- English proof (translation)
-Use `letI I := Matrix.linftyOpNormedRing (n := Fin n) (α := K)`. Establish `hcs : @CompleteSpace (Matrix (Fin n) (Fin n) K) I.toMetricSpace.toPseudoMetricSpace.toUniformSpace` using `inferInstanceAs (CompleteSpace (Fin n → Fin n → K))`. Establish `h` using `(@Units.isOpenMap_val (Matrix (Fin n) (Fin n) K) I (@instHasSummableGeomSeriesOfCompleteSpace _ I hcs)) _ U.isOpen`. Conclude with `h.mem_nhds ⟨1, U.one_mem, rfl⟩`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem img_nhds (U : OpenSubgroup (GL (Fin n) K)) :
     {M : Matrix (Fin n) (Fin n) K | ∃ s ∈ U, s.val = M} ∈ 𝓝 (1 : Matrix (Fin n) (Fin n) K) := by
@@ -113,11 +113,9 @@ private theorem img_nhds (U : OpenSubgroup (GL (Fin n) K)) :
   exact h.mem_nhds ⟨1, U.one_mem, rfl⟩
 
 /- English proof (translation)
-Establish `hc : Continuous fun u : Fin n → K => colM m u`. Unfold `colM`. Use `continuous_const.add (continuous_matrix fun i j => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `continuous_apply i`. Conclude with `continuous_const`. Establish `h0 : colM m (0 : Fin n → K) = 1`. Use extensionality with `i j`. Simplify using `[colM]`.
-
-Use `hc.continuousAt (x := 0)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, h0]`. Conclude with `this (img_nhds U)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem col_nhds (m : Fin n) (U : OpenSubgroup (GL (Fin n) K)) :
     ∀ᶠ u in 𝓝 (0 : Fin n → K), ∃ s ∈ U, s.val = colM m u := by
@@ -135,17 +133,15 @@ private theorem col_nhds (m : Fin n) (U : OpenSubgroup (GL (Fin n) K)) :
   exact this (img_nhds U)
 
 /- English proof (translation)
-Establish `hc : Continuous fun u : Fin n → K => rowM m (u + (1 : Matrix (Fin n) (Fin n) K) m)`. Unfold `rowM`. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Simplify using `only [Matrix.of_apply]`. Use `split_ifs`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `(continuous_apply j).add continuous_const`. Conclude with `continuous_const`. Establish `h0 : rowM m ((0 : Fin n → K) + (1 : Matrix (Fin n) (Fin n) K) m) = 1`. Use extensionality with `i j`. Simplify using `only [rowM, Matrix.of_apply, zero_add]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `split_ifs with h`. Rewrite using `[h.1]`. Both sides reduce to the same expression. Establish `h1` using `hc.continuousAt (x := 0)`. Rewrite `h1` using `[ContinuousAt, h0]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨ε, hε, h2⟩` from `Metric.mem_nhds_iff.1 (h1 (img_nhds U))`. Use `⟨Metric.ball 0 ε, Metric.ball_mem_nhds _ hε, fun ξ hξ => ?_⟩` and prove the remaining obligations. Establish `h3 : (fun j => if j ≤ m then ξ j - (1 : Matrix (Fin n) (Fin n) K) m j else 0) ∈ Metric.ball (0 : Fin n → K) ε`. Rewrite using `[Metric.mem_ball, dist_pi_lt_iff hε]`. Introduce `j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `split_ifs with h`. Conclude with `hξ j h`. Simplify using `using hε`. Take `⟨s, hs, e⟩` from `h2 h3`. Use `⟨s, hs, e.trans ?_⟩` and prove the remaining obligations.
-
-Use extensionality with `i j`. Simplify using `only [rowM, Matrix.of_apply, Pi.add_apply]`. Distinguish the cases in `h : i = m ∧ j ≤ m`. Simplify using `[h]`. Rewrite using `[if_neg h, if_neg h]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem row_nhds (m : Fin n) (U : OpenSubgroup (GL (Fin n) K)) :
     ∃ V ∈ 𝓝 (0 : K), ∀ ξ : Fin n → K, (∀ j, j ≤ m → ξ j - (1 : Matrix (Fin n) (Fin n) K) m j ∈ V) →
@@ -183,29 +179,27 @@ private theorem row_nhds (m : Fin n) (U : OpenSubgroup (GL (Fin n) K)) :
   · rw [if_neg h, if_neg h]
 
 /- English proof (translation)
-Take `⟨V, hV, hrow⟩` from `row_nhds m U`. Take `⟨L₁, ho, hc, hL₁⟩` from `hD V hV`. Set `L : AddSubgroup (Fin n → K)` to `AddSubgroup.pi Set.univ fun _ => L₁`. Establish `hLo : IsOpen (L : Set (Fin n → K))` using `isOpen_set_pi Set.finite_univ fun _ _ => ho`. Establish `hLc : IsCompact (L : Set (Fin n → K))` using `isCompact_univ_pi fun _ => hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `N : Set (Fin n → K)` to `{u | u ∈ L ∧ (∃ s ∈ U, s.val = colM m u) ∧ ψ (u m) = 1}`. Establish `hN : N ∈ 𝓝 (0 : Fin n → K)`. Use `Filter.inter_mem (hLo.mem_nhds L.zero_mem) (Filter.inter_mem (col_nhds m U) ?_)` and prove the remaining obligations. Conclude with `(continuous_apply m).continuousAt (x := (0 : Fin n → K)) hψ`. Set `L₀` to `AddSubgroup.closure N`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : L₀ ≤ L` using `(AddSubgroup.closure_le _).2 fun u hu => hu.1`. Establish `hL₀ : IsOpen (L₀ : Set (Fin n → K))` using `L₀.isOpen_of_mem_nhds (Filter.mem_of_superset hN AddSubgroup.subset_closure)`. Establish `hidx : L₀.relIndex L ≠ 0` using `by haveI : CompactSpace L := isCompact_iff_compactSpace.1 hLc`. Use `AddSubgroup.quotient_finite_of_isOpen (L₀.addSubgroupOf L) (hL₀.preimage continuous_subtype_val)` as an intermediate fact. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, hT, hTL, hsum⟩` from `hA _ L₀ L hle hidx`. Establish `hcard : (T.card : ℂ) ≠ 0` using `by exact_mod_cast hT.card_pos.ne'`. Use `⟨∑ t ∈ T, Finsupp.single (colU m t) ((T.card : ℂ)⁻¹ * ψ (-t m)), fun ξ => if ∀ u ∈ L, ψ (dlt m ξ u) = 1 then 1 else 0, ?_, fun ξ hξ => ?_, fun W hW p ξ hp => ?_⟩` and prove the remaining obligations. Simplify using `[dlt_one]`. Establish `h1 : ∀ u ∈ L, ψ (dlt m ξ u) = 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Conclude with `hξ (if_neg h)`. Use `hrow ξ fun j hj => hL₁ _ fun y hy => ?_` and prove the remaining obligations. Rewrite using `[← dlt_single m ξ j hj]`. Use `h1 _ fun k _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using `using hy`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `L₁.zero_mem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e1 : comb (∑ t ∈ T, Finsupp.single (colU m t) ((T.card : ℂ)⁻¹ * ψ (-t m))) W p = (T.card : ℂ)⁻¹ * (∑ t ∈ T, ψ (dlt m ξ t)) * W p`. Unfold `comb`. Rewrite using `[← Finsupp.sum_finsetSum_index (by simp) (by intros; ring), Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[Finsupp.sum_single_index (by simp), hp t (colU m t) rfl, dlt_apply, sub_eq_add_neg, AddChar.map_add_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Distinguish the cases in `h0 : W p = 0`. Simplify using `[h0]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only`. Use `split_ifs with h`. Rewrite using `[Finset.sum_congr rfl fun t ht => h t (hTL t ht)]`. Simplify using `[hcard]`. Use `push Not at h`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2 : ∀ x ∈ L₀, ψ.compAddMonoidHom (dlt m ξ) x = 1`. Introduce `x hx`. Proceed by induction on `hx using AddSubgroup.closure_induction with`. Consider the case `mem u hu`. Take `⟨-, ⟨s, hs, e⟩, h3⟩` from `hu`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Establish `h4` using `hp u s e`. Rewrite `h4` using `[hW p s hs]`. Establish `h5 : ψ (dotLe m ξ u) = 1` using `mul_right_cancel₀ h0 (by rw [← h4, one_mul])`. Rewrite using `[AddChar.compAddMonoidHom_apply, dlt_apply, AddChar.map_sub_eq_div, h5, h3, div_one]`. Consider the case `zero => simp`.
-
-Consider the case `add x y _ _ hx hy => rw [AddChar.map_add_eq_mul, hx, hy, one_mul]`. Consider the case `neg x _ hx => rw [AddChar.map_neg_eq_inv, hx, inv_one]`. Use `hsum _ h2 h` as an intermediate fact. Simplify using `only [AddChar.compAddMonoidHom_apply] at this`. Rewrite using `[this, mul_zero]`.
+Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem step_gen (hA : AvgChar) (ψ : AddChar K ℂ) (hψ : ∀ᶠ x in 𝓝 (0 : K), ψ x = 1)
     (hD : ∀ V ∈ 𝓝 (0 : K), ∃ L : AddSubgroup K, IsOpen (L : Set K) ∧ IsCompact (L : Set K) ∧
@@ -284,7 +278,7 @@ end Top
 end UpperTheory.V.Af.Smo
 
 /- English proof (translation)
-Introduce `hA hD E _ _ w ψ hψ h1 n m _ U`. Conclude with `UpperTheory.V.Af.Smo.step_gen hA ψ hψ (hD E w ψ h1) m U`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.locStep :
     UpperTheory.V.Af.Smo.AvgChar → UpperTheory.V.Af.Smo.LocDual → UpperTheory.V.Af.Smo.LocStep := by

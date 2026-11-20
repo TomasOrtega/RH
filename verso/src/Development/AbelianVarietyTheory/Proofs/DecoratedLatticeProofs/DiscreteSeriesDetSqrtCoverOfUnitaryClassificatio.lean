@@ -18,9 +18,9 @@ noncomputable section
 namespace GlobalTheory.CoverDS
 
 /- English proof (translation)
-Introduce `hcl`. Take `⟨hE, hX, hU, hI, hM, hK, -⟩` from `GlobalTheory.ClassificationConsequences.consequences_of_dsClass (GlobalTheory.Published.discreteSeriesClassification_iff.1 hcl)`. Establish `hC : GlobalTheory.Published.DiscreteSeriesCoverExists` using `GlobalTheory.Published.CoverSeries.of_upq (GlobalTheory.Published.discreteSeriesUpqExists_iff_dsExists.2 hE) (fun p q h T U hU => ((GlobalTheory.T.harishChandraModules_indefiniteUnitaryGroup.1 p q h T).1 U hU).2.1)`. Introduce `p q hn T`. Use `choose D hD using fun lam : {lam : Ix p q → ℚ // IsParam lam} => hC p q T lam.1 lam.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨D, fun lam => GlobalTheory.T.hasDiscreteSeriesKTypes_of_hasParam_cover hM hK hI p q hn T (D lam) lam.1 lam.2 (hD lam), fun R => ?_⟩` and prove the remaining obligations. Take `⟨lam, hl, hR⟩` from `GlobalTheory.T.exists_param_coverDiscreteSeries hX p q hn T R`. Conclude with `⟨⟨lam, hl⟩, GlobalTheory.T.coverDiscreteSeriesUnitarilyEquiv_of_sameParam hU p q hn T R (D ⟨lam, hl⟩) lam hl hR (hD _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem discreteSeriesCover_of_classification :
     GlobalTheory.Published.DiscreteSeriesClassification → GlobalTheory.Published.DiscreteSeriesCover := by

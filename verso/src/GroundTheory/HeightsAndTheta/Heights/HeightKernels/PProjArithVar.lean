@@ -19,13 +19,13 @@ def aff (l : Fin n) : ProjField K (n + 1) := xc K n l.succ / xc K n 0
 
 omit [NumberField K] in
 /- English proof (translation)
-The claim follows from `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr (X_ne_zero j)`.
+A detailed English derivation is pending.
 -/
 theorem xc_ne_zero (j : Fin (n + 1)) : xc K n j ≠ 0 :=
   (map_ne_zero_iff _ (IsFractionRing.injective _ _)).mpr (X_ne_zero j)
 
 /- English proof (translation)
-Simplify using `only [projSpaceCoord, map_mul, xc]`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_eq (m : Module.Free.ChooseBasisIndex ℤ (𝓞 K)) (j : Fin (n + 1)) :
     projSpaceCoord K (n + 1) ⟨(), (m, j)⟩ =
@@ -37,15 +37,15 @@ def dehom : MvPolynomial (Fin (n + 1)) K →+* MvPolynomial (Fin n) K :=
   (aeval (Fin.cases 1 X : Fin (n + 1) → MvPolynomial (Fin n) K)).toRingHom
 
 /- English proof (translation)
-Set `L` to `Localization.Away (X 0 : MvPolynomial (Fin (n + 1)) K)`. Establish `hu : IsUnit (dehom K n (X 0))` using `by simp [dehom]`. Establish `hv : IsUnit (xc K n 0)` using `(xc_ne_zero K n 0).isUnit`. Set `ψ : L →+* MvPolynomial (Fin n) K` to `IsLocalization.Away.lift (X 0) hu`. Set `ι : L →+* ProjField K (n + 1)` to `IsLocalization.Away.lift (X 0) hv`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `s : Fin n → L` to `fun l => IsLocalization.mk' L (X l.succ) (⟨X 0, Submonoid.mem_powers _⟩ : Submonoid.powers (X 0 : MvPolynomial (Fin (n + 1)) K))`. Establish `hψ : ψ ∘ s = X`. Use function extensionality and compare the values at `l`. Conclude with `(IsLocalization.lift_mk'_spec _ _ _ _).mpr (by simp [dehom])`. Establish `hι : ι ∘ s = aff K n`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `l`. Use `(IsLocalization.lift_mk'_spec _ _ _ _).mpr ?_` and prove the remaining obligations. Use `xc_ne_zero K n 0` as an intermediate fact. Simplify using `only [aff]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hs : AlgebraicIndependent ℚ s`. Use `AlgebraicIndependent.of_comp ψ.toRatAlgHom ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `AlgebraicIndependent ℚ (ψ ∘ s)`. Rewrite using `[hψ]`. Conclude with `(algebraicIndependent_X (Fin n) K).restrictScalars (algebraMap ℚ K).injective`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : Function.Injective (algebraMap (MvPolynomial (Fin (n + 1)) K) L)` using `IsLocalization.injective L (powers_le_nonZeroDivisors_of_noZeroDivisors (X_ne_zero 0))`. Establish `hinj : Function.Injective ι` using `(IsLocalization.lift_injective_iff _).mpr fun a b => hL.eq_iff.trans (IsFractionRing.injective _ (ProjField K (n + 1))).eq_iff.symm`. Rewrite using `[← hι]`. Conclude with `hs.map' (f := ι.toRatAlgHom) hinj`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aff_indep : AlgebraicIndependent ℚ (aff K n) := by
   let L := Localization.Away (X 0 : MvPolynomial (Fin (n + 1)) K)
@@ -82,17 +82,15 @@ end ProjectiveArithmeticVariety
 open ProjectiveArithmeticVariety in
 
 /- English proof (translation)
-Introduce `K _ _ i hi`. Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by omega⟩`. Take `⟨m₀⟩` from `(integralBasis K).index_nonempty`. Establish `hω : ∀ m, algebraMap K (ProjField K (n + 1)) (integralBasis K m) / algebraMap K (ProjField K (n + 1)) (integralBasis K m₀) = algebraMap K (ProjField K (n + 1)) (integralBasis K m / integralBasis K m₀)` using `fun m => (map_div₀ _ _ _).symm`. Establish `hω₀ : algebraMap K (ProjField K (n + 1)) (integralBasis K m₀) ≠ 0` using `(map_ne_zero_iff _ (algebraMap K (ProjField K (n + 1))).injective).mpr ((integralBasis K).ne_zero m₀)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx₀` using `xc_ne_zero K n 0`. Establish `ratio : ∀ m j, projSpaceCoord K (n + 1) ⟨(), (m, j)⟩ / projSpaceCoord K (n + 1) ⟨(), (m₀, 0)⟩ = algebraMap K (ProjField K (n + 1)) (integralBasis K m / integralBasis K m₀) * (xc K n j / xc K n 0)`. Introduce `m j`. Rewrite using `[coord_eq, coord_eq, ← hω]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Use `show IsArithVar (mCoordIdeal (projSpaceCoord K (n + 1))) (n + 1)`. Use `h Unit (projBlocks K (n + 1)) (ProjField K (n + 1)) (projSpaceCoord K (n + 1)) (fun _ => (m₀, 0)) n (aff K n) ⟨()⟩ (fun _ => ?_) (aff_indep K n) (fun l => ?_) ?_` and prove the remaining obligations. Rewrite using `[coord_eq]`. Conclude with `mul_ne_zero hω₀ hx₀`. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `⟨⟨(), (m₀, l.succ)⟩, ?_⟩` and prove the remaining obligations. Simplify using `only [ratio, div_self ((integralBasis K).ne_zero m₀), map_one, one_mul, aff]`. Introduce and unpack `r ⟨⟨u, m, j⟩, rfl⟩`. Consider the cases of `u`. Use `show IsAlgebraic _ (projSpaceCoord K (n + 1) ⟨(), (m, j)⟩ / projSpaceCoord K (n + 1) ⟨(), (m₀, 0)⟩)`.
+Assume the hypotheses and unpack their components. Split into cases according to the possible forms of the given data. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ratio]`. Use `IsAlgebraic.mul ?_ ?_` and prove the remaining obligations. Conclude with `(IsAlgebraic.algebraMap (A := ProjField K (n + 1)) (Algebra.IsAlgebraic.isAlgebraic (R := ℚ) (integralBasis K m / integralBasis K m₀))).tower_top (L := IntermediateField.adjoin ℚ (Set.range (aff K n)))`. Establish `hmem : xc K n j / xc K n 0 ∈ IntermediateField.adjoin ℚ (Set.range (aff K n))`. Use `Fin.cases ?_ (fun l => ?_) j` and prove the remaining obligations.
-
-Rewrite using `[div_self hx₀]`. Conclude with `one_mem _`. Conclude with `IntermediateField.subset_adjoin _ _ ⟨l, rfl⟩`. Conclude with `isAlgebraic_algebraMap (R := IntermediateField.adjoin ℚ (Set.range (aff K n))) (A := ProjField K (n + 1)) ⟨_, hmem⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ProjArithVar.proof (h : CoordConeArithVar.Statement) : ProjArithVar.Statement := by
   intro K _ _ i hi

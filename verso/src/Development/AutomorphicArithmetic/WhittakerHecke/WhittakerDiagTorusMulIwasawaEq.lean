@@ -15,7 +15,7 @@ private theorem sc_val {R : Type} [CommRing R] (z : Rˣ) :
     (Matrix.GeneralLinearGroup.scalar (Fin 2) z).val = Matrix.diagonal fun _ => (z : R) := rfl
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Units.val_mul, Units.val_mul, gl_val, gl_val]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aE, nU, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem aE_nU (y : (A ℚ)ˣ) (b : A ℚ) :
     aE y * gl (nU b) = gl (nU ((y : A ℚ) * b)) * aE y := by
@@ -25,9 +25,9 @@ private theorem aE_nU (y : (A ℚ)ˣ) (b : A ℚ) :
   fin_cases i <;> fin_cases j <;> simp [aE, nU, Matrix.mul_apply, Fin.sum_univ_two, mul_comm]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Rewrite using `[Units.val_mul, Units.val_mul, gl_val, sc_val]`. Establish `hz : ((ζ⁻¹ : (A ℚ)ˣ) : A ℚ) * (ζ : A ℚ) = 1` using `Units.inv_mul ζ`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [aE, mD, Matrix.mul_apply, Fin.sum_univ_two, Matrix.diagonal]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Take the linear combination `(-(y : A ℚ) * (ζ : A ℚ)) * hz`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem aE_mD (y ζ : (A ℚ)ˣ) :
     aE y * gl (mD ζ) = Matrix.GeneralLinearGroup.scalar (Fin 2) ζ⁻¹ * aE (y * ζ ^ 2) := by
@@ -39,7 +39,7 @@ private theorem aE_mD (y ζ : (A ℚ)ˣ) :
   linear_combination (-(y : A ℚ) * (ζ : A ℚ)) * hz
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [UpperTheory.ConvolutionTheory.RankTwoDescent.em, nE, Matrix.GeneralLinearGroup.map_apply, gl_val]`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp [nU, Dat.mkE]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem em_nU {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) (x : A ℚ) :
     em E (gl (nU x)) = nE D ![x, 0] := by
@@ -49,7 +49,7 @@ private theorem em_nU {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) (x : 
   fin_cases i <;> fin_cases j <;> simp [nU, Dat.mkE]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Simplify using `only [UpperTheory.ConvolutionTheory.RankTwoDescent.em, Matrix.GeneralLinearGroup.map_apply, sc_val, coe_ideleEmbedding]`. Apply the tactic sequence `by_cases e : i = j <;> simp [e, Matrix.diagonal]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem em_sc {E : Type} [Field E] [NumberField E] (z : (A ℚ)ˣ) :
     em E (Matrix.GeneralLinearGroup.scalar (Fin 2) z) = Matrix.GeneralLinearGroup.scalar (Fin 2) (ideleEmbedding ℚ E z) := by
@@ -59,7 +59,7 @@ private theorem em_sc {E : Type} [Field E] [NumberField E] (z : (A ℚ)ˣ) :
   by_cases e : i = j <;> simp [e, Matrix.diagonal]
 
 /- English proof (translation)
-Unfold `Wo`. Use `integral_congr_ae (Eventually.of_forall fun u => ?_)` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[← mul_assoc, hl κ hκ]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem Wo_lev {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) {φ : GL (Fin 2) (A E) → ℂ} {N : ℕ}
     (hl : ∀ k, Lev N k → ∀ g, φ (g * em E k) = φ g) {κ : GL (Fin 2) (A ℚ)} (hκ : Lev N κ) (h : GL (Fin 2) (A E)) :
@@ -70,11 +70,11 @@ private theorem Wo_lev {E : Type} [Field E] [NumberField E] (D : Dat ℚ E) {φ 
   rw [← mul_assoc, hl κ hκ]
 
 /- English proof (translation)
-Introduce `E _ _ D ω φ hφ N hl y ζ b r κ hκ`. Take `⟨-, -, hn, hz⟩` from `UpperTheory.whittakerFunction_continuous_bounded_equivariant E D ω φ hφ`. Establish `e : aE y * (gl (nU b) * gl (mD ζ) * r * κ) = gl (nU ((y : A ℚ) * b)) * (Matrix.GeneralLinearGroup.scalar (Fin 2) ζ⁻¹ * (aE (y * ζ ^ 2) * r)) * κ`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 
-Use `_ = gl (nU ((y : A ℚ) * b)) * (aE y * gl (mD ζ)) * r * κ := by`. Rewrite using `[aE_nU]`. Simplify using `only [mul_assoc]`. Use `_ = _ := by rw [aE_mD]; simp only [mul_assoc]`. Establish `hN : ideleNorm ℚ E (ideleEmbedding ℚ E ζ⁻¹) = ζ⁻¹ ^ 2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ideleNorm_ideleEmbedding, Module.finrank_eq_card_basis D.b, Fintype.card_fin]`. Rewrite using `[e, map_mul, Wo_lev D hl hκ, map_mul, map_mul, em_nU D, em_sc, hn, hz, hN, map_pow]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.whittaker_diagTorus_mul_iwasawa_eq :
     ∀ (E : Type) [Field E] [NumberField E] (D : Dat ℚ E) (ω : HChar ℚ) (φ : GL (Fin 2) (A E) → ℂ), admitted D ω φ →

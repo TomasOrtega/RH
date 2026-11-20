@@ -3,13 +3,13 @@ import Development.EtaleCohomology.DivisorCycles.OpenCoset
 namespace LateralTheory.DivDb.SpecPtPf
 
 /- English proof (translation)
-Introduce `C R σ _ _ _ _ _ _ x G hG hx`. Set `I : Ideal (MvPolynomial σ C)` to `RingHom.ker (MvPolynomial.aeval (R := C) x)`. Establish `hI : I.IsPrime` using `RingHom.ker_isPrime _`. Set `P : MvPolynomial σ C` to `∏ g ∈ hG.toFinset, g`. Establish `hP : MvPolynomial.aeval x P ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Simplify using `only [P, map_prod]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun g hg => hx g (hG.mem_toFinset.mp hg)`. Establish `hPI : P ∉ I.radical`. Rewrite using `[hI.radical]`. Conclude with `hP`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hPI` using `[← MvPolynomial.vanishingIdeal_zeroLocus_eq_radical (K := C), MvPolynomial.mem_vanishingIdeal_iff]`. Use `push Not at hPI`. Take `⟨y, hy, hyP⟩` from `hPI`. Rewrite `hy` using `[MvPolynomial.mem_zeroLocus_iff]`. Use `⟨y, fun f hf => ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Use `hy f (RingHom.mem_ker.mpr hf)` as an intermediate fact. Simplify `this` using `[MvPolynomial.coe_aeval_eq_eval]`. Simplify using `only [P, map_prod] at hyP`. Conclude with `(Finset.prod_ne_zero_iff.mp hyP) g (hG.mem_toFinset.mpr hg)`.
+A detailed English derivation is pending.
 -/
 theorem SpecPt_of : LateralTheory.DivDb.SpecPt := by
   intro C R σ _ _ _ _ _ _ x G hG hx

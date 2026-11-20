@@ -10,7 +10,7 @@ open private spl_bar from Development.AutomorphicArithmetic.AutomorphicVarieties
 namespace UpperTheory.V.Keep
 
 /- English proof (translation)
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;> simp at h ⊢ <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem pairs (e : ℕ) (he : 2 ≤ e) (i j : Fin 4)
     (h : (![e + 1, e, 1, 0] : Fin 4 → ℕ) i = (![e + 1, e, 1, 0] : Fin 4 → ℕ) j + 1) :
@@ -18,7 +18,7 @@ private theorem pairs (e : ℕ) (he : 2 ≤ e) (i j : Fin 4)
   fin_cases i <;> fin_cases j <;> simp at h ⊢ <;> omega
 
 /- English proof (translation)
-Apply the tactic sequence `rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp [hx, Ne.symm hx]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem ne_of_pair {k : Type} [Field k] (x : k) (hx : x ≠ 1) (i j : Fin 4)
     (h : (i = 0 ∧ j = 1) ∨ (i = 2 ∧ j = 3) ∨ (i = 1 ∧ j = 2)) :
@@ -26,7 +26,7 @@ private theorem ne_of_pair {k : Type} [Field k] (x : k) (hx : x ≠ 1) (i j : Fi
   rcases h with ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ <;> simp [hx, Ne.symm hx]
 
 /- English proof (translation)
-Establish `hinj` using `injective_zpow_iff_not_isOfFinOrder.2 hc`. Establish `key : c ^ (2 * (m : ℤ)) = c ^ (2 * ((n : ℤ) + 1))`. Rewrite using `[← ha, h, mul_pow, hb, ← zpow_natCast c 2, ← zpow_add]`. Use `congr 1`. Use `hinj key` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -40,15 +40,13 @@ private theorem exp_step {M : Type} [CommGroup M] (a b c : M) (m n : ℕ) (hc : 
   omega
 
 /- English proof (translation)
-Use `set z : c.O := (a : c.O) - (b : c.O) * (d : c.O) with hz`. Establish `hnorm : ‖((z : c.O) : PadicAlgCl l)‖ < 1`. Establish `hd` using `GlobalTheory.CoefCoord.norm_unit c d`. Establish `hsplit : ((z : c.O) : PadicAlgCl l) = -(x - ((a : c.O) : PadicAlgCl l)) + (y - ((b : c.O) : PadicAlgCl l)) * ((d : c.O) : PadicAlgCl l)`. Rewrite using `[hz, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Use `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt ?_ ?_)` and prove the remaining obligations. Rewrite using `[norm_neg]` and apply the resulting hypothesis.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_mul, hd, mul_one]`. Conclude with `hy`. Establish `hmem : z ∈ maximalIdeal c.O`. Rewrite using `[mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `GlobalTheory.CoefCoord.norm_unit c hu.unit` as an intermediate fact. Simplify using `only [IsUnit.unit_spec] at this`. Rewrite `hnorm` using `[this]`. Conclude with `lt_irrefl _ hnorm`. Establish `h0 : residue c.O z = 0` using `(residue_eq_zero_iff _).2 hmem`.
-
-Rewrite `h0` using `[hz, map_sub, map_mul, sub_eq_zero]`. Conclude with `h0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem res_step {l : ℕ} [Fact l.Prime] (c : Coef l) (a b d : c.Oˣ) (x y : PadicAlgCl l)
     (hx : ‖x - ((a : c.O) : PadicAlgCl l)‖ < 1) (hy : ‖y - ((b : c.O) : PadicAlgCl l)‖ < 1)
@@ -83,9 +81,9 @@ section
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
 
 /- English proof (translation)
-Take `⟨-, -, hal, hth, -⟩` from `barFacts D hD`. Establish `h1 : Raw.bar (1 : G ℚ Ω →* c.Oˣ) g = 1`. Simplify using `[Raw.bar]`. Establish `hth' : Raw.bar D.th g = Raw.bar D.ξ g`. Rewrite using `[hth, hp, mul_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `cases pr <;> fin_cases i <;> simp [chi, lab, Raw.ps, hal g, hth', hp, h1]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem bar_chi (D : Raw Ω c) (hD : D.Good) (pr : Bool) (g : G ℚ Ω) (hp : Raw.bar D.Psi g = 1) (i : Fin 4) :
     Raw.bar (chi D pr i) g = (![Raw.bar D.ξ g, 1, Raw.bar D.ξ g, 1] : Fin 4 → ResidueField c.O) i := by
@@ -99,21 +97,19 @@ private theorem bar_chi (D : Raw Ω c) (hD : D.Good) (pr : Bool) (g : G ℚ Ω) 
 end
 
 /- English proof (translation)
-Introduce `hinf Ω _ _ _ l _ c D T hD hT hLoc r A hA κ hord i j heq`. Take `⟨-, -, -, -, -, hrbar, hrb, -⟩` from `barFacts D hD`. Establish `hstep : ∀ s : Dec (F` using `T.F) A, κ i s = κ j s * cycBar T.F Ω l s.1 := by`. Introduce `s`. Rewrite using `[heq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hres : ∀ s : Dec (F` using `T.F) A, Raw.bar (chi D T.pr i) (resQ T.F s.1) = Raw.bar (chi D T.pr j) (resQ T.F s.1) * Raw.bar (chiO ℚ Ω l c.O) (resQ T.F s.1) := by`. Introduce `s`. Establish `h2` using `congrArg Units.val (hstep s)`. Rewrite `h2` using `[Units.val_mul]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `res_step c _ _ _ _ _ (hord.red i s) (hord.red j s) h2`. Break down `hLoc A hA with ⟨g, hgI, hom⟩ | ⟨g, hgD, hom, hps, hal⟩` into its components or cases. Take `⟨hξ, hΨ⟩` from `(hrbar _).1 (hT.ineL A hA g hgI)`. Establish `e1` using `hres ⟨g, Ine_le_Dec A hgI⟩`. Establish `hall : ∀ k, (![Raw.bar D.ξ (resQ T.F g), 1, Raw.bar D.ξ (resQ T.F g), 1] : Fin 4 → ResidueField c.O) k = 1`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Use `fin_cases k`. Conclude with `hξ`. Both sides reduce to the same expression. Conclude with `hξ`.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `e1` using `[bar_chi D hD T.pr _ hΨ, bar_chi D hD T.pr _ hΨ, hall, hall, one_mul, ← hD.om_bar]`. Conclude with `hom e1.symm`. Establish `hΨ : Raw.bar D.Psi (resQ T.F g) = 1`. Rewrite `hps` using `[hrb]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `cases h : T.pr <;> simp [wPs, h] at hps <;> exact hps`. Establish `hξ : Raw.bar D.ξ (resQ T.F g) ≠ 1`. Rewrite `hal` using `[hrb]`. Simplify `hal` using `[wAl]`. Take `⟨U, hU, hw⟩` from `hord.wts`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨s, hs, hc⟩` from `hinf T.F Ω l A hA U hU`. Set `sD : Dec (F` to `T.F) A := ⟨s, Ine_le_Dec A (Subgroup.mem_inf.1 hs).2⟩`. Establish `hnum : D.wts4 i = D.wts4 j + 1` using `exp_step _ _ _ _ _ hc (hstep sD) (hw i sD hs) (hw j sD hs)`. Establish `hp` using `pairs D.e hD.two_le i j hnum`. Establish `e1` using `hres ⟨g, hgD⟩`.
-
-Rewrite `e1` using `[bar_chi D hD T.pr _ hΨ, bar_chi D hD T.pr _ hΨ, ← hD.om_bar, hom, mul_one]`. Conclude with `ne_of_pair _ hξ i j hp e1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unlF : UnlF := by
   intro hinf Ω _ _ _ l _ c D T hD hT hLoc r A hA κ hord i j heq

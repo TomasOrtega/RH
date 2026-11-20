@@ -17,31 +17,31 @@ noncomputable section
 namespace GlobalTheory.USepGen
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw _ l Xo c C X₁ act u π hL V _ _ _ _ t P yK x' hx' hgen`. Take `⟨-, ⟨G, iG, α, β, hα, hβ, hLab, hf⟩, -, -⟩` from `hL`. Take `⟨tK, ⟨m₁⟩, ⟨m₂⟩⟩` from `hgen`. Use `P.U.gen_hom` as an intermediate fact. Establish `: IsMonHom P.U.gen.symm.hom` using `by show IsMonHom P.U.gen.inv; infer_instance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `gpA : IsGrpPullback P.A.A t.G (jK V) (P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK V))` using `((isGrpPullback_of_iso P.U.gen.symm).comp (isGrpPullback_pullback t.G (jK V))).congr (Category.id_comp _) rfl`. Establish `w₁ : (P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK V)) ≫ t.G.hom = (P.A.A.hom ≫ 𝟙 _) ≫ jK V`. Rewrite using `[gpA.1.w, Category.comp_id]`. Set `κ : P.A.A.left ⟶ tK.G.left` to `m₁.cart.1.lift _ _ w₁`. Establish `hκ₁ : κ ≫ m₁.φ = P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK V)` using `m₁.cart.1.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hκ₂ : κ ≫ tK.G.hom = P.A.A.hom ≫ 𝟙 _` using `m₁.cart.1.lift_snd _ _ _`. Establish `gκ : IsGrpPullback P.A.A tK.G (𝟙 _) κ` using `m₁.cart.cancel (gpA.congr (Category.id_comp _).symm hκ₁.symm) hκ₂`. Establish `w₂ : m₂.φ ≫ Xo.univ.t.G.hom = (tK.G.hom ≫ x') ≫ u ≫ pullback.fst _ _`. Rewrite using `[m₂.cart.1.w]`. Simplify using `only [Category.assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `lam : tK.G.left ⟶ G.left` to `hβ.1.lift _ _ w₂`. Establish `hl₁ : lam ≫ β = m₂.φ` using `hβ.1.lift_fst _ _ _`. Establish `hl₂ : lam ≫ G.hom = tK.G.hom ≫ x'` using `hβ.1.lift_snd _ _ _`. Establish `gl : IsGrpPullback tK.G G x' lam` using `hβ.cancel (m₂.cart.congr (Category.assoc _ _ _) hl₁.symm) hl₂`. Use `⟨κ ≫ lam ≫ α, (gκ.comp (gl.comp hα)).congr (by rw [Category.id_comp, hx']) rfl, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hA` using `P.A.isLB`. Establish `hT` using `t.PP.isLB`. Establish `hK` using `tK.PP.isLB`. Establish `hU` using `Xo.univ.t.PP.isLB`. Establish `hP` using `X₁.ρ.P.isLB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨w, hw⟩` from `P.U.ext`. Establish `hc : P.U.gen.inv.left ≫ P.U.gen.hom.left = 𝟙 _`. Rewrite using `[← Over.comp_left, Iso.inv_hom_id]`. Both sides reduce to the same expression. Establish `e₁ : LBIso (P.A.L.pull (𝟙 _)) (P.U.LG.L.pull (P.U.gen.inv.left ≫ pullback.fst t.G.hom (jK V)))` using `GlobalTheory.GenSpread.lbIso_pull_comp P.U.gen.inv.left hc.symm rfl ⟨w, hw⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite `e₁` using `[P.bundle, ← hκ₁]`. Establish `e₀ : LBIso P.A.L (P.A.L.pull (𝟙 _))` using `GlobalTheory.SiegelPullComp.iso_pull_id hA`. Take `⟨w₁, hw₁, -⟩` from `m₁.lin`. Take `⟨w₂, hw₂, -⟩` from `m₂.lin`. Establish `e₂ : LBIso (tK.PP.L.pull κ) (t.PP.L.pull (κ ≫ m₁.φ))` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso ⟨w₁, hw₁⟩ κ rfl`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e₃ : LBIso (tK.PP.L.pull κ) (Xo.univ.t.PP.L.pull (κ ≫ m₂.φ))` using `GlobalTheory.GenSpread.lbIso_pull_of_lbIso ⟨w₂, hw₂⟩ κ rfl`. Establish `e₄ : LBIso (X₁.ρ.P.L.pull (κ ≫ lam ≫ α)) (Xo.univ.t.PP.L.pull (κ ≫ m₂.φ))` using `GlobalTheory.GenSpread.lbIso_pull_comp (κ ≫ lam) (Category.assoc _ _ _).symm (by rw [← hl₁, Category.assoc]) hLab`. Use `LBIso.trans hA (pull_isLB hA _) (pull_isLB hP _) e₀ ?_` and prove the remaining obligations. Use `LBIso.trans (pull_isLB hA _) (pull_isLB hT _) (pull_isLB hP _) e₁ ?_` and prove the remaining obligations. Use `LBIso.trans (pull_isLB hT _) (pull_isLB hK _) (pull_isLB hP _) e₂.symm ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `LBIso.trans (pull_isLB hK _) (pull_isLB hU _) (pull_isLB hP _) e₃ ?_` and prove the remaining obligations. Conclude with `e₄.symm`. Introduce `a`. Take `⟨f, hfα, hfβ⟩` from `hf a`. Use `letI := H.starRing`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hext` using `P.lin.ext (H.bar a)`. Establish `hg : (P.oA.act (H.bar a)).left ≫ P.U.gen.inv.left = P.U.gen.inv.left ≫ ((Over.pullback (jK V)).map (t.act.act (H.bar a))).left`. Establish `: P.oA.act (H.bar a) ≫ P.U.gen.inv = P.U.gen.inv ≫ (Over.pullback (jK V)).map (t.act.act (H.bar a))`. Rewrite using `[Iso.eq_inv_comp, ← Category.assoc, ← hext, Category.assoc, Iso.hom_inv_id, Category.comp_id]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, this, Over.comp_left]`. Establish `s₁ : (P.oA.act (H.bar a)).left ≫ κ = κ ≫ (tK.act.act (H.bar a)).left`. Apply `m₁.cart.1.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hκ₁, Category.assoc, m₁.act, ← Category.assoc κ, hκ₁, ← Category.assoc, hg, Category.assoc, Category.assoc]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pullback.lift_fst _ _ _`. Rewrite using `[Category.assoc, hκ₂, Category.assoc, Over.w, hκ₂, ← Category.assoc, Over.w]`. Establish `s₂ : (tK.act.act (H.bar a)).left ≫ lam = lam ≫ f.left`. Apply `hβ.1.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, hfβ]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl₁, ← Category.assoc lam β, hl₁]`. Conclude with `m₂.act _`. Rewrite using `[Category.assoc, hl₂, ← Category.assoc, Over.w, Category.assoc, Over.w, hl₂]`. Rewrite using `[← Category.assoc, s₁, Category.assoc, ← Category.assoc _ lam, s₂, Category.assoc, hfα]`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genfib_pull : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H), 1 ≤ Dw.p + Dw.q → ∀ (l : Geo.Tor.Level H) (Xo : Moduli Dw l) (c : Coeff l) (C : UCompact Xo c), ∀ (X₁ : GlobalTheory.GSep.GSet) (act : 𝓞 E → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)) (u : Sp (ratHull X₁.S.R) ⟶ Xo.XF c) (π : X₁.M.Z ⟶ C.Z), GlobalTheory.GSep.ULink C X₁ act u π → ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], IsCN V → ∀ (t : SAB H (Sp V)) (P : PELUnif (maximalIdeal V) t) (yK : X₁.S.R →+* FractionRing V) (x' : Sp (FractionRing V) ⟶ Sp (ratHull X₁.S.R)), x' ≫ spMap (toRat X₁.S.R) = spMap yK → GenOf Xo c (x' ≫ u) t → ∃ φ : P.A.A.left ⟶ X₁.ρ.P.A.left, IsGrpPullback P.A.A X₁.ρ.P.A (spMap yK) φ ∧ LBIso P.A.L (X₁.ρ.P.L.pull φ) ∧ ∀ a, (letI := H.starRing; (P.oA.act (H.bar a)).left) ≫ φ = φ ≫ (act a).left := by
   intro E _ _ _ H Dw _ l Xo c C X₁ act u π hL V _ _ _ _ t P yK x' hx' hgen

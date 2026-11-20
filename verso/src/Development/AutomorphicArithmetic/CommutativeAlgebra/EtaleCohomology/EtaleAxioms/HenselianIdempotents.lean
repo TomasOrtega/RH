@@ -14,52 +14,52 @@ import Development.EtaleCohomology.EtaleSheaves.SurjectiveCharts.EtaleSurjective
 namespace UpperTheory.Et.HenselianIdempotents
 
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LJacPf.LJac_of`.
+A detailed English derivation is pending.
 -/
 theorem a0 : LateralTheory.E.HensIdemCut.LJac := LateralTheory.E.LJacPf.LJac_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LMonicPf.LMonic_of`.
+A detailed English derivation is pending.
 -/
 theorem a1 : LateralTheory.E.HensIdemCut.LMonic := LateralTheory.E.LMonicPf.LMonic_of
 /- English proof (translation)
-The claim follows from `UpperTheory.liftIdempotentFactorization_holds`.
+A detailed English derivation is pending.
 -/
 theorem a2 : LateralTheory.E.LIdemLiftPf.LFact := UpperTheory.liftIdempotentFactorization_holds
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LIdemLiftPf.LIdemLift_of a2`.
+A detailed English derivation is pending.
 -/
 theorem a3 : LateralTheory.E.LChartPf.LIdemLift := LateralTheory.E.LIdemLiftPf.LIdemLift_of a2
 /- English proof (translation)
-The claim follows from `LateralTheory.E.FiniteChartSurjPf.FiniteChartSurj_of`.
+A detailed English derivation is pending.
 -/
 theorem a4 : LateralTheory.E.LSurjChartPf.FiniteChartSurj := LateralTheory.E.FiniteChartSurjPf.FiniteChartSurj_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LSurjChartPf.etale_surjective_chart_of_finite_chart_surj a4`.
+A detailed English derivation is pending.
 -/
 theorem a5 : LateralTheory.E.LChartPf.LSurjChart := LateralTheory.E.LSurjChartPf.etale_surjective_chart_of_finite_chart_surj a4
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LChartPf.LChart_of a3 a5`.
+A detailed English derivation is pending.
 -/
 theorem a6 : LateralTheory.E.LEtaleLiftPf.LChart := LateralTheory.E.LChartPf.LChart_of a3 a5
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LEtaleLiftPf.LEtaleLift_of a6`.
+A detailed English derivation is pending.
 -/
 theorem a7 : LateralTheory.E.LFactorPf.LEtaleLift := LateralTheory.E.LEtaleLiftPf.LEtaleLift_of a6
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LFactorPf.LFactor_of a7`.
+A detailed English derivation is pending.
 -/
 theorem a8 : LateralTheory.E.HensIdemCut.LFactor := LateralTheory.E.LFactorPf.LFactor_of a7
 /- English proof (translation)
-The claim follows from `LateralTheory.E.LIdemPf.LIdem_of`.
+A detailed English derivation is pending.
 -/
 theorem a9 : LateralTheory.E.HensIdemCut.LIdem := LateralTheory.E.LIdemPf.LIdem_of
 /- English proof (translation)
-The claim follows from `LateralTheory.E.HensIdemCut.goal_of a0 a1 a8 a9`.
+A detailed English derivation is pending.
 -/
 theorem a10 : LateralTheory.E.t_E1Cut.HensIdem := LateralTheory.E.HensIdemCut.goal_of a0 a1 a8 a9
 
 /- English proof (translation)
-The claim follows from `a10`.
+A detailed English derivation is pending.
 -/
 theorem intersectionNumber_baseChange : LateralTheory.E.t_E1Cut.HensIdem := a10
 

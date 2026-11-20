@@ -13,13 +13,13 @@ def moveVal (c : Ω ≃+* Ω) (B : ValuationSubring Ω) : ValuationSubring Ω :=
   B.comap (c.symm : Ω →+* Ω)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_moveVal (c : Ω ≃+* Ω) (B : ValuationSubring Ω) (y : Ω) :
     y ∈ moveVal c B ↔ c.symm y ∈ B := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', mem_moveVal, mem_moveVal, map_inv₀, map_eq_zero_iff _ c.symm.injective]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem moveVal_lt_one (c : Ω ≃+* Ω) (B : ValuationSubring Ω) (y : Ω) :
     (moveVal c B).valuation y < 1 ↔ B.valuation (c.symm y) < 1 := by
@@ -42,11 +42,11 @@ theorem conjAut_apply (c : Ω ≃+* Ω)
     conjAut c hc σ x = c (σ (c.symm x)) := rfl
 
 /- English proof (translation)
-Establish `hd : σ ∈ Dec (F` using `E) B := hσ.1`. Use `⟨?_, fun x hx => ?_⟩` and prove the remaining obligations. Use `show conjAut c hc σ ∈ Dec (F := E) (moveVal c B)`. Rewrite using `[mem_Dec]`. Use extensionality with `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, AlgEquiv.smul_def]`. Take `⟨z, rfl⟩` from `(conjAut c hc σ).surjective x`. Establish `h1 : ((conjAut c hc σ)⁻¹ : G E Ω) (conjAut c hc σ z) = z` using `(conjAut c hc σ).symm_apply_apply z`. Rewrite using `[h1, mem_moveVal, mem_moveVal, conjAut_apply, RingEquiv.symm_apply_apply, apply_mem_iff_of_mem_Dec hd]`. Rewrite using `[moveVal_lt_one, map_sub, conjAut_apply, RingEquiv.symm_apply_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hσ.2` to reduce the goal to its premises. Rewrite `hx`, the goal using `[ValuationSubring.valuation_le_one_iff]`. Conclude with `hx`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjAut_mem_ine [NumberField E] (c : Ω ≃+* Ω)
     (hc : ∀ x : E, ∃ y : E, c.symm (algebraMap E Ω x) = algebraMap E Ω y) {B : ValuationSubring Ω}
@@ -69,7 +69,7 @@ theorem conjAut_mem_ine [NumberField E] (c : Ω ≃+* Ω)
 end General
 
 /- English proof (translation)
-Set `φ : D.host.E →+* ℂ` to `Classical.choice inferInstance`. Apply `φ.injective` to reduce the goal to its premises. Establish `h` using `fun y => D.host.conjE_apply φ y`. Conclude with `(h _).trans ((congrArg (starRingEnd ℂ) (h x)).trans (Complex.conj_conj _))`.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem host_conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x := by
   let φ : D.host.E →+* ℂ := Classical.choice inferInstance
@@ -78,7 +78,7 @@ theorem host_conj_conj (D : D7) (x : D.host.E) : D.host.conj (D.host.conj x) = x
   exact (h _).trans ((congrArg (starRingEnd ℂ) (h x)).trans (Complex.conj_conj _))
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `D.ntw.cc_cm.1`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj]`. Conclude with `(D.host.conjE_apply (j.comp (algebraMap D.host.E D.nd.Om)) x).symm`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cc_algebraMap_host (D : D7) (x : D.host.E) :
     D.ntw.cc (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x) := by
@@ -89,16 +89,16 @@ theorem cc_algebraMap_host (D : D7) (x : D.host.E) :
     (j.comp (algebraMap D.host.E D.nd.Om)) x).symm
 
 /- English proof (translation)
-Rewrite using `[RingEquiv.symm_apply_eq, cc_algebraMap_host, host_conj_conj]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_symm_algebraMap_host (D : D7) (x : D.host.E) :
     D.ntw.cc.symm (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x) := by
   rw [RingEquiv.symm_apply_eq, cc_algebraMap_host, host_conj_conj]
 
 /- English proof (translation)
-Introduce `y`. Establish `hi : IsIntegral ℤ (D.host.conj (y : D.host.E))` using `(y.isIntegral_coe).map_of_comp_eq (RingHom.id ℤ) (D.host.conj : D.host.E →+* D.host.E) (by ext; simp)`. Set `x : 𝓞 D.host.E` to `⟨_, hi⟩`. Establish `hx : (x : D.host.E) = D.host.conj (y : D.host.E)` using `rfl`. Rewrite using `[moveVal_lt_one, cc_symm_algebraMap_host, ← hx, hB x]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h x y (by rw [hx, host_conj_conj])`.
+A detailed English derivation is pending.
 -/
 theorem isPlaceOver_moveVal (D : D7) {P P' : HeightOneSpectrum (𝓞 D.host.E)}
     (h : IsConjPl D.host P P') {B : ValuationSubring D.nd.Om} (hB : IsPlaceOver B P) :

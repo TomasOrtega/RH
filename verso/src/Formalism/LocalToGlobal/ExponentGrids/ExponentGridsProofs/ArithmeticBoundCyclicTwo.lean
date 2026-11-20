@@ -23,7 +23,7 @@ open Formalism.DivisionValues.PlaceSumConjugation
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_mul_spanSingleton]`. Conclude with `FractionalIdeal.count_mul K w ((FractionalIdeal.spanSingleton_ne_zero_iff).2 ha) ((FractionalIdeal.spanSingleton_ne_zero_iff).2 hb)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vw_mul' (w : HeightOneSpectrum (𝓞 K)) (a b : K) (ha : a ≠ 0) (hb : b ≠ 0) :
     vw w (a * b) = vw w a + vw w b := by
@@ -34,14 +34,14 @@ theorem vw_mul' (w : HeightOneSpectrum (𝓞 K)) (a b : K) (ha : a ≠ 0) (hb : 
     ((FractionalIdeal.spanSingleton_ne_zero_iff).2 hb)
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem vw_one' (w : HeightOneSpectrum (𝓞 K)) : vw w (1 : K) = 0 := by
   unfold vw
   rw [FractionalIdeal.spanSingleton_one, FractionalIdeal.count_one]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp [vw_one']`. Consider the case `succ n ih`. Rewrite using `[pow_succ, vw_mul' w _ _ (pow_ne_zero n ha) ha, ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

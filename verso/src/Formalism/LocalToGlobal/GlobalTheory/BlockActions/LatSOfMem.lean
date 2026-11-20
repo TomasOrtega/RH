@@ -15,7 +15,7 @@ def LatLocGlob : Prop :=
     x ∈ Λ
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem latS_of_mem {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
     (Λ : Submodule (𝓞 E) (Fin n → E)) (x : Fin n → E) (hx : x ∈ Λ) :

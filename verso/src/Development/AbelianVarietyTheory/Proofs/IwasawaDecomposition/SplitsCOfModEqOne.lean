@@ -11,9 +11,9 @@ namespace GlobalTheory.Mem.Chr
 open Classical in
 
 /- English proof (translation)
-Introduce `R H p hp h`. Establish `hd16 : H.d % 16 = 7` using `H.hyp.2.2.2.1`. Establish `hpos : 0 < H.QS * H.q * H.d` using `Nat.pos_of_ne_zero H.condN_ne_zero`. Establish `hlt : 1 < H.QS * H.q * H.d` using `lt_of_lt_of_le (by omega : 1 < H.d) (Nat.le_of_dvd hpos (dvd_mul_left _ _))`. Use `(GlobalTheory.HostSplit.split_of_one_mod R H p hp ?_).1` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h]`. Conclude with `Nat.mod_eq_of_lt hlt`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem splitsC_of_modEq_one : ∀ (R : Ranks) (H : Formalism.BasicNotions.Host R) (p : ℕ), p.Prime →
     p ≡ 1 [MOD H.QS * H.q * H.d] → SplitsC H.E p := by

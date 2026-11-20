@@ -15,9 +15,9 @@ namespace GlobalTheory.CompanionTheory.EisUnfold.Orth
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h : LinearMap.mulLeft (AF D.host.F) (incA D e) = LinearMap.baseChange (AF D.host.F) (LinearMap.mulLeft D.host.F e)`. Use extensionality with `b`. Simplify using `[TensorProduct.AlgebraTensorModule.curry_apply, incA, inclR, LinearMap.baseChange_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Simplify using `only [trA, Algebra.trace_apply]`. Express the relevant statement in the definitionally equal form `LinearMap.trace _ _ (LinearMap.mulLeft (AF D.host.F) (incA D e)) = algebraMap _ _ (LinearMap.trace _ _ (LinearMap.mulLeft D.host.F e))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trA_incA_eq (e : D.host.E) :
     trA (incA D e) =
@@ -33,13 +33,13 @@ theorem trA_incA_eq (e : D.host.E) :
   rw [h, LinearMap.trace_baseChange]
 
 /- English proof (translation)
-Establish `hE` using `D.host.toHostAx.der.finrank_E`. Establish `hF` using `D.host.toHostAx.der.finrank_F`. Establish `hpos : 0 < Module.finrank ℚ D.host.F` using `Module.finrank_pos`. Establish `htow` using `Module.finrank_mul_finrank ℚ D.host.F D.host.E`. Establish `h2 : Module.finrank D.host.F D.host.E = 2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hpos`, `htow` using `[hF]`. Rewrite `htow` using `[hE]`. Establish `h4 : 2 * D.R.ord * Module.finrank D.host.F D.host.E = 2 * D.R.ord * 2`. Rewrite using `[htow]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `Nat.eq_of_mul_eq_mul_left hpos h4`. Establish `hhalf : trA (half D) = 1`. Rewrite using `[half, trA_incA_eq]`. Establish `: (1 / 2 : D.host.E) = algebraMap D.host.F D.host.E (1 / 2)`. Rewrite using `[map_div₀, map_one, map_ofNat]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, Algebra.trace_algebraMap, h2]`. Evaluate the numerical expressions. Establish `hlin : trA (x • half D) = x * trA (half D)`. Simplify using `only [trA, map_smul, smul_eq_mul]`. Rewrite using `[hlin, hhalf, mul_one]`.
+Evaluate the numerical expressions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trA_smul_half (x : AF D.host.F) :
     trA (x • half D) = x := by
@@ -64,7 +64,7 @@ theorem trA_smul_half (x : AF D.host.F) :
   rw [hlin, hhalf, mul_one]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.StdUnn.inner]`. Rewrite using `[← rat_conjTranspose, gA, ← Matrix.mul_assoc, ← rat_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_rat_eq (V : HSp D) {s : ℕ} (q : Matrix (Fin V.rank) (Fin s) D.host.E) (y : Mx D V.rank s) :
     GlobalTheory.StdUnn.inner V (rat q) y = rat (qᴴ * V.gram) ⬝ y := by
@@ -72,7 +72,7 @@ theorem inner_rat_eq (V : HSp D) {s : ℕ} (q : Matrix (Fin V.rank) (Fin s) D.ho
   rw [← rat_conjTranspose, gA, ← Matrix.mul_assoc, ← rat_mul]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.StdUnn.inner, Matrix.mul_add, Matrix.trace_add, trA, map_add, AddChar.map_add_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chi_add (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) {s : ℕ} (x y u : Mx D V.rank s) :
     ψ (trA (Matrix.trace (GlobalTheory.StdUnn.inner V x (y + u)))) =
@@ -80,9 +80,9 @@ theorem chi_add (ψ : AddChar (AF D.host.F) ℂ) (V : HSp D) {s : ℕ} (x y u : 
   simp only [GlobalTheory.StdUnn.inner, Matrix.mul_add, Matrix.trace_add, trA, map_add, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `mem_ratMx.mp hγ`. Establish `htr : ∀ {n : ℕ} (M : Matrix (Fin n) (Fin n) D.host.E), Matrix.trace (rat M) = incA D (Matrix.trace M)`. Introduce `n M`. Simplify using `[rat, Matrix.trace, map_sum]`. Rewrite using `[inner_rat_eq]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `ψ (trA (Matrix.trace (rat (qᴴ * V.gram) * rat g))) = 1`. Rewrite using `[← rat_mul, htr, trA_incA_eq]`. Conclude with `hψ.2.2.1 _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chi_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (V : HSp D) {s : ℕ}
     (q : Matrix (Fin V.rank) (Fin s) D.host.E) {γ : Mx D V.rank s} (hγ : γ ∈ ratMx D V.rank s) :
@@ -97,13 +97,13 @@ theorem chi_rat {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (V
   exact hψ.2.2.1 _
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `hψ.2.2.2`. Establish `hM : qᴴ * V.gram ≠ 0`. Introduce `h`. Apply `hq` to reduce the goal to its premises. Establish `h1 : qᴴ = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_nonsing_inv_cancel_right V.gram qᴴ (gram_isUnit_det V), h, Matrix.zero_mul]`. Simplify using `using congrArg Matrix.conjTranspose h1`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, (qᴴ * V.gram) i j ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hM (Matrix.ext hne)`. Establish `key : ∀ (A : Mx D s V.rank) (c : AE D), Matrix.trace (A * Matrix.single j i c) = A i j * c`. Introduce `A c`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, Matrix.single_apply, ite_and, mul_ite, mul_zero]`. Simplify using `[Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Matrix.single j i (incA D ((qᴴ * V.gram) i j)⁻¹ * (x • half D)), ?_⟩` and prove the remaining obligations. Rewrite using `[inner_rat_eq]`. Express the relevant statement in the definitionally equal form `ψ (trA (Matrix.trace (rat (qᴴ * V.gram) * Matrix.single j i (incA D ((qᴴ * V.gram) i j)⁻¹ * (x • half D))))) ≠ 1`. Rewrite using `[key, show rat (qᴴ * V.gram) i j = incA D ((qᴴ * V.gram) i j) from rfl, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hij, map_one, one_mul, trA_smul_half]`. Conclude with `hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chi_ne_one {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.host.F ψ) (V : HSp D) {s : ℕ}
     {q : Matrix (Fin V.rank) (Fin s) D.host.E} (hq : q ≠ 0) :
@@ -132,17 +132,15 @@ theorem exists_chi_ne_one {ψ : AddChar (AF D.host.F) ℂ} (hψ : IsCharAF D.hos
   exact hx
 
 /- English proof (translation)
-Introduce `D ψ hψ V s μs 𝓕s hcov q`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Establish `h0 : ∀ y : Mx D V.rank s, ψ (trA (Matrix.trace (inner V (rat (0 : Matrix (Fin V.rank) (Fin s) D.host.E)) y))) = 1`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[GlobalTheory.StdUnn.inner, rat_zero, adj_zero, trA]`. Repeatedly rewrite using `[h0]`. Rewrite using `[MeasureTheory.setIntegral_const]`. Simplify using `[Measure.real, hcov.2.2]`. Introduce `hq`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, hu⟩` from `exists_chi_ne_one hψ V hq`. Use `set φ : Mx D V.rank s → ℂ := fun y => ψ (trA (Matrix.trace (inner V (rat q) y))) with hφ`. Establish `hper : ∀ γ ∈ ratMx D V.rank s, ∀ a, φ (γ + a) = φ a`. Introduce `γ hγ a`. Simplify using `only [hφ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chi_add, chi_rat hψ V q hγ, one_mul]`. Establish `h1` using `covolOne_integral_add hcov φ hper u`. Establish `h2 : ∀ a, φ (a + u) = φ u * φ a`. Introduce `a`. Simplify using `only [hφ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chi_add, mul_comm]`. Simplify using `only [h2] at h1`. Rewrite `h1` using `[MeasureTheory.integral_const_mul]`. Establish `h3 : (φ u - 1) * ∫ y in 𝓕s, φ y ∂μs = 0` using `by rw [sub_mul, h1, one_mul, sub_self]`. Break down `mul_eq_zero.mp h3 with h | h` into its components or cases.
-
-Conclude with `absurd (sub_eq_zero.mp h) hu`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem orthogonality : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsCharAF D.host.F ψ → ∀ (V : HSp D) (s : ℕ)
     (μs : Measure (Mx D V.rank s)) (𝓕s : Set (Mx D V.rank s)), IsCovolOne (ratMx D V.rank s) μs 𝓕s →

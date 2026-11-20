@@ -9,9 +9,9 @@ namespace Formalism.MainNotions.Gaps.EtaleWeightGaps
 variable {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D}
 
 /- English proof (translation)
-Unfold `Concl`. Use `⟨r, hr0, hrs, hrb, ?_⟩` and prove the remaining obligations. Introduce `la e he V' hV'`. Establish `hT : (0 : ℝ) ≤ (T : ℝ) * nus la` using `mul_nonneg (Nat.cast_nonneg _) (hnu la)`. Establish `he0 : (0 : ℤ) ≤ e`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hT.trans he`. Conclude with `h` after adjusting the coercions. Use `lift e to ℕ using he0 with n`. Establish `h` using `hloc la n (by exact_mod_cast he) V' hV'`. Simplify `h` using `only [Int.cast_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem concl_of_nat {j : ℕ} (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightFamilies.Wt D j) (T : ℕ)
     (nus : HeightOneSpectrum (𝓞 B.KO) → ℝ) (β : ℝ) (r : HeightOneSpectrum (𝓞 B.KO) → ℝ)
@@ -36,9 +36,9 @@ theorem concl_of_nat {j : ℕ} (X : PJ D B P j) (S : Scal B) (ka wL wF : WeightF
   simpa only [Int.cast_natCast] using h
 
 /- English proof (translation)
-Unfold `Conclusion1Of2`. Introduce `large₂ X K H Ch Ah Cq Aq C2 A2 CR CT hA hB hEx j h1 h2 S ka wL wF T nP nW h0 nus hH`. Take `⟨G, Gc, PH, Prw, Pet, Pd, hT, hD, hSh, hP, Qf, hOk, hHt⟩` from `hEx j h1 h2 S ka wL wF T nP nW h0 nus hH`. Establish `hsum` using `hS large₂ X K H Ch Ah Cq Aq C2 A2 CR CT hA hB j h1 h2 S ka wL wF T nP nW h0 nus hH G Gc PH Prw Pet Pd hT hD hSh hP Qf hOk hHt`. Establish `hloc` using `hL large₂ X K H Ch Ah Cq Aq C2 A2 CR CT hA hB j h1 h2 S ka wL wF T nP nW h0 nus hH G Gc PH Prw Pet Pd hT hD hSh hP`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `concl_of_nat (X j h1 h2) S ka wL wF T nus _ (fun la => rLa (Qf la) K.CRm T (cc D large₂ C2 A2 CR wL)) hH.2.2.2.1.1 hsum.1 hsum.2.1 hsum.2.2 (fun la e he V' hV' => hloc la (Qf la) (hOk la) (hHt.1 la) e he V' hV')`.
+A detailed English derivation is pending.
 -/
 theorem theorem_zero_of_local_and_sum (hL : LocalBoundHypothesis D B P) (hS : SumBoundHypothesis D B P) : Conclusion1Of2 (D := D) (B := B) (P := P) := by
   unfold Conclusion1Of2

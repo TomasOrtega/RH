@@ -14,7 +14,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Secon
   [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Rewrite using `[hW Ψ hΨ]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Establish `hm : Measurable (fun s : G => Ψ (s * z))` using `hΨ.comp (measurable_id.mul measurable_const)`. Use `conv_rhs => rw [← hinv]`. Rewrite using `[lintegral_map hm measurable_inv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weil_inv {μ μS ν : Measure G} [SFinite μS] [SFinite ν]
     (hW : ∀ f : G → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μ = ∫⁻ x, ∫⁻ s, f (s * x) ∂μS ∂ν)
@@ -33,7 +33,7 @@ variable {HH : Type} [NormedAddCommGroup HH] [InnerProductSpace ℂ HH] [Complet
   ‖⟪σ a w, σ γ (σ b w)⟫_ℂ‖ₑ * ‖W a‖ₑ * ‖W' b‖ₑ
 
 /- English proof (translation)
-Unfold `PhiGG`. Establish `h1 : Continuous (fun p : G × G => ⟪σ p.1 w, σ γ (σ p.2 w)⟫_ℂ)` using `Continuous.inner (𝕜 := ℂ) ((hσ.2.2.2 w).comp continuous_fst) ((σ γ).continuous.comp ((hσ.2.2.2 w).comp continuous_snd))`. Conclude with `((h1.enorm.measurable).mul ((hW.comp continuous_fst).enorm.measurable)).mul ((hW'.comp continuous_snd).enorm.measurable)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_PhiGG {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) {W : G → V} {W' : G → V'}
     (hW : Continuous W) (hW' : Continuous W') (γ : G) :
@@ -46,19 +46,17 @@ theorem measurable_PhiGG {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w 
     ((hW'.comp continuous_snd).enorm.measurable)
 
 /- English proof (translation)
-Establish `hΦ` using `measurable_PhiGG hσ w hWc hWc' γ`. Establish `hpt : ∀ z z' s s', s ∈ S → s' ∈ S' → ‖⟪σ z w, σ (s * γ * s'⁻¹) (σ z' w)⟫_ℂ‖ₑ * ‖W z‖ₑ * ‖W' z'‖ₑ = PhiGG σ w W W' γ (s⁻¹ * z) (s'⁻¹ * z')`. Introduce `z z' s s' hs hs'`. Unfold `PhiGG`. Rewrite using `[coef_shift hσ w γ z s z' s']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ‖W (s⁻¹ * z)‖ₑ = ‖W z‖ₑ`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, hWS _ (hiS s hs)]`. Establish `e2 : ‖W' (s'⁻¹ * z')‖ₑ = ‖W' z'‖ₑ`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, hWS' _ (hiS' s' hs')]`. Rewrite using `[e1, e2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `haeS : ∀ᵐ s ∂μS, s ∈ S` using `by rw [ae_iff]; exact h0`. Establish `haeS' : ∀ᵐ s ∂μS', s ∈ S'` using `by rw [ae_iff]; exact h0'`. Establish `hin : ∀ z z', ∫⁻ s, ∫⁻ s', ‖⟪σ z w, σ (s * γ * s'⁻¹) (σ z' w)⟫_ℂ‖ₑ * ‖W z‖ₑ * ‖W' z'‖ₑ ∂μS' ∂μS = ∫⁻ s, ∫⁻ s', PhiGG σ w W W' γ (s⁻¹ * z) (s'⁻¹ * z') ∂μS' ∂μS`. Introduce `z z'`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [haeS] with s hs`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [haeS'] with s' hs'`. Conclude with `hpt z z' s s' hs hs'`. Simplify using `only [hin]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hswap : ∀ z, ∫⁻ z', ∫⁻ s, ∫⁻ s', PhiGG σ w W W' γ (s⁻¹ * z) (s'⁻¹ * z') ∂μS' ∂μS ∂ν' = ∫⁻ s, ∫⁻ z', ∫⁻ s', PhiGG σ w W W' γ (s⁻¹ * z) (s'⁻¹ * z') ∂μS' ∂ν' ∂μS`. Introduce `z`. Establish `hm : Measurable (Function.uncurry fun z' s : G => ∫⁻ s', PhiGG σ w W W' γ (s⁻¹ * z) (s'⁻¹ * z') ∂μS')`. Establish `hg : Measurable (fun q : (G × G) × G => ((q.1.2⁻¹ * z, q.2⁻¹ * q.1.1) : G × G))` using `(((measurable_snd.comp measurable_fst).inv.mul measurable_const)).prodMk ((measurable_snd.inv).mul (measurable_fst.comp measurable_fst))`. Establish `h3 : Measurable (fun q : (G × G) × G => PhiGG σ w W W' γ (q.1.2⁻¹ * z) (q.2⁻¹ * q.1.1))` using `hΦ.comp hg`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h3.lintegral_prod_right'`. Conclude with `lintegral_lintegral_swap hm.aemeasurable`. Simplify using `only [hswap]`. Establish `hy : ∀ a, ∫⁻ z', ∫⁻ s', PhiGG σ w W W' γ a (s'⁻¹ * z') ∂μS' ∂ν' = ∫⁻ y, PhiGG σ w W W' γ a y ∂μ`. Introduce `a`.
-
-Conclude with `weil_inv hWe' hinv' (fun y => PhiGG σ w W W' γ a y) (hΦ.comp (measurable_const.prodMk measurable_id))`. Simplify using `only [hy]`. Establish `hmy : Measurable (fun a => ∫⁻ y, PhiGG σ w W W' γ a y ∂μ)` using `hΦ.lintegral_prod_right'`. Conclude with `weil_inv hWe hinv (fun a => ∫⁻ y, PhiGG σ w W W' γ a y ∂μ) hmy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem quad_eq_GG {μ μS ν μS' ν' : Measure G} [SFinite μS] [SFinite ν] [SFinite μS'] [SFinite ν'] [SFinite μ]
     {S S' : Set G} {σ : G → (HH →L[ℂ] HH)} (hσ : IsUnitRep σ) (w : HH) {W : G → V} {W' : G → V'}
@@ -116,15 +114,13 @@ theorem quad_eq_GG {μ μS ν μS' ν' : Measure G} [SFinite μS] [SFinite ν] [
   exact weil_inv hWe hinv (fun a => ∫⁻ y, PhiGG σ w W W' γ a y ∂μ) hmy
 
 /- English proof (translation)
-Use `lintegral_congr fun z => ?_` and prove the remaining obligations. Use `set H : G → ℝ≥0∞ := fun y => ‖⟪σ z w, σ y w⟫_ℂ‖ₑ * ‖W y‖ₑ with hHdef`. Establish `hHm : Measurable H`. Establish `h1 : Continuous (fun y => ⟪σ z w, σ y w⟫_ℂ)` using `Continuous.inner (𝕜 := ℂ) continuous_const (hσ.2.2.2 w)`. Conclude with `(h1.enorm.measurable).mul hWc.enorm.measurable`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ s ∂μS, s ∈ S` using `by rw [ae_iff]; exact h0`. Establish `hin : ∀ z', ∫⁻ s, ‖⟪σ z w, σ s (σ z' w)⟫_ℂ‖ₑ * ‖W z‖ₑ * ‖W z'‖ₑ ∂μS = ‖W z‖ₑ * ∫⁻ s, H (s * z') ∂μS`. Introduce `z'`. Rewrite using `[← lintegral_const_mul (‖W z‖ₑ) (f := fun s => H (s * z')) (hHm.comp (measurable_mul_const z'))]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `filter_upwards [hae] with s hs`. Simplify using `only [hHdef]`. Establish `e1 : σ s (σ z' w) = σ (s * z') w` using `(rep_mul_apply hσ s z' w)`. Establish `e2 : ‖W z'‖ₑ = ‖W (s * z')‖ₑ`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm, hWS s hs z']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Rewrite using `[e1, e2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hin]`. Establish `hmeas : Measurable (fun z' : G => ∫⁻ s, H (s * z') ∂μS)`. Establish `h2 : Measurable (fun p : G × G => H (p.2 * p.1))` using `hHm.comp (measurable_snd.mul measurable_fst)`.
-
-Conclude with `h2.lintegral_prod_right'`. Rewrite using `[lintegral_const_mul (‖W z‖ₑ) (f := fun z' => ∫⁻ s, H (s * z') ∂μS) hmeas]`. Use `congr 1`. Conclude with `(hWe H hHm).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem triple_lintegral_eq {μ μS ν : Measure G} [SFinite μS] [SFinite ν] {S : Set G} {σ : G → (HH →L[ℂ] HH)}
     (hσ : IsUnitRep σ) (w : HH) {W : G → V} (hWc : Continuous W)

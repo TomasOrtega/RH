@@ -8,47 +8,43 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory.TameJoint
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ M _ φ P A L γ π w hA hker hL hγ hw hγL hπ he σ hσ`. Establish `hL0 : L ≠ 0` using `by rintro rfl; exact hL (by simp)`. Establish `hn : 0 < L` using `Nat.pos_of_ne_zero hL0`. Establish `hLA : ¬ A.valuation (L : Ω) < 1`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hL` to reduce the goal to its premises. Rewrite using `[← hA]`. Simplify using `using h`. Use `set ζ := γ π / π with hζ`. Establish `hζn : ζ ^ L = 1`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hζ, div_pow, ← map_pow, he, AlgEquiv.commutes, div_self]`. Rewrite using `[← he]`. Conclude with `pow_ne_zero _ hπ`. Establish `hred : ∀ {N : Type} [Monoid N] (x : N), x ^ L = 1 → ∀ a : ℕ, x ^ a = x ^ (a % L)`. Introduce `N _ x hx a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← Nat.div_add_mod a L, pow_add, pow_mul, hx, one_pow, one_mul]`. Establish `hvζ : A.valuation ζ = 1`. Establish `hp : A.valuation ζ ^ L = 1` using `by rw [← map_pow, hζn, map_one]`. Break down `lt_trichotomy (A.valuation ζ) 1 with hl | he' | hg` into its components or cases. Conclude with `absurd hp (pow_lt_one₀ zero_le' hl hL0).ne`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he'`. Conclude with `absurd hp (one_lt_pow₀ hg hL0).ne'`. Establish `hfixζ : ∀ τ ∈ ReciprocityTheory.Gal.Ine (F` using `E) A, τ ζ = ζ := by`. Introduce `τ hτ`. Use `GlobalTheory.TameCharDet.eq_of_pow_eq_one_of_val_lt A L hLA ?_ hζn (hτ.2 ζ hvζ.le)` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_pow, hζn, map_one]`. Establish `hfixπ : ∀ τ : Formalism.ConjugateSelfDual.G E Ω, (∀ y : Ω, y ≠ 0 → A.valuation (τ y / y - 1) < 1) → τ π = π`. Introduce `τ hτ`. Establish `h1 : (τ π / π) ^ L = 1`. Rewrite using `[div_pow, ← map_pow, he, AlgEquiv.commutes, div_self]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← he]`. Conclude with `pow_ne_zero _ hπ`. Establish `h2` using `GlobalTheory.TameCharDet.eq_of_pow_eq_one_of_val_lt A L hLA h1 (one_pow L) (hτ π hπ)`. Rewrite `h2` using `[div_eq_one_iff_eq hπ]`. Then use the resulting hypothesis. Establish `hopenH : ∀ (H : Subgroup (Formalism.ConjugateSelfDual.G E Ω)), IsOpen (H : Set (Formalism.ConjugateSelfDual.G E Ω)) → ∀ U : Set (Formalism.ConjugateSelfDual.G E Ω), (∀ τ ∈ U, ∀ g ∈ H, τ * g ∈ U) → IsOpen U`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `H hH U hU`. Rewrite using `[isOpen_iff_mem_nhds]`. Introduce `τ hτ`. Rewrite using `[← map_mul_left_nhds_one τ]`. Conclude with `Filter.mem_map.2 (Filter.mem_of_superset (hH.mem_nhds (one_mem _)) fun g hg => hU τ hτ g hg)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hint : IsIntegral E π` using `Algebra.IsIntegral.isIntegral π`. Use `haveI : FiniteDimensional E (IntermediateField.adjoin E {π}) := IntermediateField.adjoin.finiteDimensional hint`. Establish `hHo : IsOpen ((IntermediateField.adjoin E {π}).fixingSubgroup : Set (Formalism.ConjugateSelfDual.G E Ω))` using `IntermediateField.fixingSubgroup_isOpen _`. Establish `hloc : ∀ c : Ω, IsClosed {τ : Formalism.ConjugateSelfDual.G E Ω | τ π = c}`. Introduce `c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[← isOpen_compl_iff]`. Use `hopenH _ hHo _ fun τ hτ g hg => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq] at hτ ⊢`. Rewrite using `[AlgEquiv.mul_apply, (IntermediateField.mem_fixingSubgroup_iff _ _).1 hg π (IntermediateField.mem_adjoin_simple_self E π)]` and apply the resulting hypothesis. Establish `hfib : ∀ c : M, IsClosed {τ : Formalism.ConjugateSelfDual.G E Ω | φ τ = c}`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Introduce `c`. Rewrite using `[← isOpen_compl_iff]`. Use `hopenH _ hker _ fun τ hτ g hg => ?_` and prove the remaining obligations. Simplify using `only [Set.mem_compl_iff, Set.mem_setOf_eq] at hτ ⊢`. Rewrite using `[map_mul, (MonoidHom.mem_ker).1 hg, mul_one]` and apply the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Set `T : Set (Formalism.ConjugateSelfDual.G E Ω)` to `⋃ a ∈ Finset.range L, {τ | φ τ = φ γ ^ a ∧ τ π = ζ ^ a * π}`. Establish `hTc : IsClosed T`. Use `isClosed_biUnion_finset fun a _ => ?_` and prove the remaining obligations. Conclude with `(hfib _).inter (hloc _)`. Set `Q : Formalism.ConjugateSelfDual.G E Ω → Prop` to `fun τ => τ ∈ ReciprocityTheory.Gal.Ine (F := E) A ∧ ∃ a : ℕ, φ τ = φ γ ^ a ∧ τ π = ζ ^ a * π`.
+Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hQ : ∀ τ ∈ Subgroup.closure (insert γ {σ : Formalism.ConjugateSelfDual.G E Ω | ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1}), Q τ`. Introduce `τ hτ`. Proceed by induction on `hτ using Subgroup.closure_induction with`. Consider the case `mem x hx`. Break down `hx with rfl | hx` into its components or cases.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Conclude with `⟨hγ.1, 1, (pow_one _).symm, by rw [pow_one, hζ, div_mul_cancel₀ _ hπ]⟩`. Conclude with `⟨GlobalTheory.TameGenPowers.wild_mem_Ine hx, 0, by rw [hw x hx, pow_zero], by rw [hfixπ x hx, pow_zero, one_mul]⟩`. Consider the case `one => exact ⟨one_mem _, 0, by rw [map_one, pow_zero], by rw [pow_zero, one_mul]; rfl⟩`. Consider the case `mul x y _ _ ihx ihy`. Take `⟨hxI, a, ha, haπ⟩` from `ihx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hyI, b, hb, hbπ⟩` from `ihy`. Use `⟨mul_mem hxI hyI, a + b, by rw [map_mul, ha, hb, pow_add], ?_⟩` and prove the remaining obligations. Rewrite using `[AlgEquiv.mul_apply, hbπ, map_mul, map_pow, hfixζ x hxI, haπ, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `inv x _ ihx`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hxI, a, ha, haπ⟩` from `ihx`. Establish `hiI : x⁻¹ ∈ ReciprocityTheory.Gal.Ine (F` using `E) A := inv_mem hxI`. Establish `hex : a * (L - 1) + a = a * L`. Rewrite using `[← Nat.mul_succ, Nat.succ_eq_add_one, Nat.sub_add_cancel hn]`. Use `⟨hiI, a * (L - 1), ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_inv, ha]`. Use `symm`. Use `eq_inv_of_mul_eq_one_left ?_` and prove the remaining obligations. Rewrite using `[← pow_add, hex, pow_mul', hγL, one_pow]`. Establish `hxx : (x⁻¹ : Formalism.ConjugateSelfDual.G E Ω) (x π) = π`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← AlgEquiv.mul_apply, inv_mul_cancel]`. Both sides reduce to the same expression. Establish `h1 : π = ζ ^ a * (x⁻¹ : Formalism.ConjugateSelfDual.G E Ω) π`. Establish `h2` using `congrArg (fun y => (x⁻¹ : Formalism.ConjugateSelfDual.G E Ω) y) haπ`. Rewrite `h2` using `[hxx, map_mul, map_pow, hfixζ _ hiI]`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `h2`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hex, pow_mul', hζn, one_pow, one_mul]`. Use `_ = ζ ^ (a * (L - 1)) * (ζ ^ a * (x⁻¹ : Formalism.ConjugateSelfDual.G E Ω) π) := by ring`. Use `_ = ζ ^ (a * (L - 1)) * π := by rw [← h1]`.
-
-Establish `hST : ((Subgroup.closure (insert γ {σ : Formalism.ConjugateSelfDual.G E Ω | ∀ y : Ω, y ≠ 0 → A.valuation (σ y / y - 1) < 1}) : Subgroup (Formalism.ConjugateSelfDual.G E Ω)) : Set (Formalism.ConjugateSelfDual.G E Ω)) ⊆ T`. Introduce `τ hτ`. Take `⟨-, a, ha, haπ⟩` from `hQ τ hτ`. Use `Set.mem_biUnion (x := a % L) (Finset.mem_coe.2 (Finset.mem_range.2 (Nat.mod_lt _ hn))) ?_` and prove the remaining obligations. Conclude with `⟨by rw [ha, hred _ hγL a], by rw [haπ, hred _ hζn a]⟩`.
-
-Establish `hσT : σ ∈ T` using `closure_minimal hST hTc (hγ.2 hσ)`. Simplify using `only [T, Set.mem_iUnion] at hσT`. Take `⟨a, -, h⟩` from `hσT`. Conclude with `⟨a, h⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_pow_joint : ∀ {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {M : Type} [CommGroup M] (φ : Formalism.ConjugateSelfDual.G E Ω →* M) (P : HeightOneSpectrum (𝓞 E)) (A : ValuationSubring Ω) (L : ℕ)

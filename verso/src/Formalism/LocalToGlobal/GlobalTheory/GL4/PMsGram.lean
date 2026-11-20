@@ -27,9 +27,9 @@ def CoordCount (S : HSpace E) (q : ℕ) (ρ B2 : ℝ) : Prop :=
       (∀ c, b c ∈ L) → (∀ c, meanAbs (S.hT (b c) (b c)) ≤ ρ) → (keyOf S b L).2 ∈ C (keyOf S b L).1
 
 /- English proof (translation)
-Establish `hpt : ∀ φ : E →+* ℂ, ‖φ (S.hT x y)‖ ≤ (‖φ (S.hT x x)‖ + ‖φ (S.hT y y)‖) / 2`. Introduce `φ`. Establish `h` using `hCS φ x y`. Use polynomial arithmetic with `[sq_nonneg (‖φ (S.hT x x)‖ - ‖φ (S.hT y y)‖), norm_nonneg (φ (S.hT x y)), norm_nonneg (φ (S.hT x x)), norm_nonneg (φ (S.hT y y))]`. Unfold `meanAbs at *`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions.
 
-Establish `hd : (0 : ℝ) < (Module.finrank ℚ E : ℝ)` using `Nat.cast_pos.mpr Module.finrank_pos`. Rewrite `hx`, `hy`, the goal using `[div_le_iff₀ hd]`. Establish `hs` using `Finset.sum_le_sum fun φ (_ : φ ∈ (Finset.univ : Finset (E →+* ℂ))) => hpt φ`. Rewrite `hs` using `[← Finset.sum_div, Finset.sum_add_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem meanAbs_entry (S : HSpace E) (hCS : CSAt S) {ρ : ℝ} {x y : S.V} (hx : meanAbs (S.hT x x) ≤ ρ)
     (hy : meanAbs (S.hT y y) ≤ ρ) : meanAbs (S.hT x y) ≤ ρ := by
@@ -46,25 +46,23 @@ theorem meanAbs_entry (S : HSpace E) (hCS : CSAt S) {ρ : ℝ} {x y : S.V} (hx :
   linarith
 
 /- English proof (translation)
-Take `⟨hfin, hcard⟩` from `Formalism.HermitianLattices.ExplicitEstimates.mean_count_of_moduli_space E ρ hρ`. Take `⟨C, hCc, hCm⟩` from `hC`. Use `set Z : Finset E := hfin.toFinset.image (fun x : 𝓞 E => (x : E)) with hZ`. Establish `hZc : (Z.card : ℝ) ≤ (2 * ρ + 1) ^ Module.finrank ℚ E`. Use `le_trans ?_ hcard` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: Z.card ≤ hfin.toFinset.card` using `Finset.card_image_le`. Rewrite `this` using `[← Set.ncard_eq_toFinset_card _ hfin]`. Conclude with `this` after adjusting the coercions. Set `G : Finset (Matrix (Fin S.rank) (Fin S.rank) E)` to `Fintype.piFinset fun _ => Fintype.piFinset fun _ => Z`. Establish `hGc : (G.card : ℝ) ≤ ((2 * ρ + 1) ^ Module.finrank ℚ E) ^ (S.rank * S.rank)`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: G.card = (Z.card ^ S.rank) ^ S.rank` using `by show (Fintype.piFinset fun _ => Fintype.piFinset fun _ => Z : Finset (Fin S.rank → Fin S.rank → E)).card = _`. Rewrite using `[Fintype.card_piFinset]`. Simplify using `[Fintype.card_piFinset, Finset.prod_const]`. Rewrite using `[this, pow_mul]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pow_le_pow_left₀ (pow_nonneg (by positivity) _) (pow_le_pow_left₀ (by positivity) hZc S.rank) S.rank`. Set `K` to `G.biUnion fun g => (C g).image fun c => (g, c)`. Use `⟨K, ?_, fun L hL hq => ?_⟩` and prove the remaining obligations. Establish `hK : (K.card : ℝ) ≤ G.card * Real.exp B2`. Establish `h1 : K.card ≤ ∑ g ∈ G, ((C g).image fun c => (g, c)).card` using `Finset.card_biUnion_le`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : K.card ≤ ∑ g ∈ G, (C g).card` using `h1.trans (Finset.sum_le_sum fun g _ => Finset.card_image_le)`. Establish `h2 : (K.card : ℝ) ≤ ∑ g ∈ G, ((C g).card : ℝ)` using `by exact_mod_cast h3`. Use `le_trans h2 ?_` and prove the remaining obligations. Use `le_trans (Finset.sum_le_sum fun g _ => hCc g) ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Establish `hlog : 0 ≤ Real.log (2 * ρ + 1)` using `Real.log_nonneg (by linarith)`. Break down `Nat.eq_zero_or_pos K.card with h0 | h0` into its components or cases. Rewrite using `[h0, Nat.cast_zero, Real.log_zero]`. Check the signs of the components of the expression. Establish `hGpos : (0 : ℝ) < G.card`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `: (0 : ℝ) < G.card * Real.exp B2` using `lt_of_lt_of_le (by exact_mod_cast h0) hK`. Conclude with `pos_of_mul_pos_left this (Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.log_pow, Real.log_pow]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Take `⟨b, hbL, hbs⟩` from `hS L hL hq`. Use `⟨b, Finset.mem_biUnion.2 ⟨(keyOf S b L).1, ?_, Finset.mem_image.2 ⟨(keyOf S b L).2, hCm L b hL hq hbL hbs, rfl⟩⟩⟩` and prove the remaining obligations. Establish `key : ∀ i j, (keyOf S b L).1 i j ∈ Z`. Introduce `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem` using `(mem_dualSub S L (b j)).1 (hq.1 _ (hbL j)) (b i) (hbL i)`. Take `⟨z, hz⟩` from `hmem`. Establish `hzm : z ∈ hfin.toFinset`. Rewrite using `[Set.Finite.mem_toFinset]`. Use `show meanAbs (z : E) ≤ ρ`.
-
-Establish `: (z : E) = S.hT (b i) (b j)` using `hz`. Rewrite using `[this]`. Apply the tactic sequence `exact meanAbs_entry S hCS (hbs i) (hbs j)`. Conclude with `Finset.mem_image.2 ⟨z, hzm, hz⟩`. Conclude with `Fintype.mem_piFinset.2 fun i => Fintype.mem_piFinset.2 fun j => key i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keyBound_of (S : HSpace E) (q : ℕ) (ρ B2 : ℝ) (hρ : 0 ≤ ρ) (hB2 : 0 ≤ B2)
     (hS : ShortFrame S q ρ) (hCS : CSAt S) (hC : CoordCount S q ρ B2) :

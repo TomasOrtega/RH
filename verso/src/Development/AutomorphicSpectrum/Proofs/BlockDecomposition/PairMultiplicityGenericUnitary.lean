@@ -23,7 +23,7 @@ structure MorQ (T : V →ₗ[ℂ] W) (E1 E2 : Fin n → Fin n → Module.End ℂ
   h2 : ∀ a b y, T (E2 a b y) = F2 a b (T y)
 
 /- English proof (translation)
-Simplify using `[adLq, Module.End.mul_apply, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem adLq_apply (s : Bool) (p q : Fin n) (x : Cq n V) :
     adLq s p q x = ∑ t : Bool, ∑ i : Pos n, ∑ k : Pos n,
@@ -31,7 +31,7 @@ theorem adLq_apply (s : Bool) (p q : Fin n) (x : Cq n V) :
   simp [adLq, Module.End.mul_apply, LinearMap.sum_apply]
 
 /- English proof (translation)
-Simplify using `only [adLq_apply, map_sum, map_smul, lift_cre', lift_ann']`.
+Simplify using the standard rewrite rules.
 -/
 theorem lift_adLq (T : V →ₗ[ℂ] W) (s : Bool) (p q : Fin n) (x : Cq n V) :
     liftq n T (adLq s p q x) = adLq s p q (liftq n T x) := by
@@ -42,14 +42,14 @@ section MorLemmas
 variable {T : V →ₗ[ℂ] W} {E1 E2 : Fin n → Fin n → Module.End ℂ V} {F1 F2 : Fin n → Fin n → Module.End ℂ W}
 
 /- English proof (translation)
-Apply the tactic sequence `cases s <;> simp [Ts, h.h1, h.h2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem MorQ.Ts_eq (h : MorQ T E1 E2 F1 F2) (s : Bool) (p q : Fin n) (y : V) :
     T (Ts E1 E2 s p q y) = Ts F1 F2 s p q (T y) := by
   cases s <;> simp [Ts, h.h1, h.h2]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Conclude with `h.Ts_eq s p q (y A)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem MorQ.lift_Ts (h : MorQ T E1 E2 F1 F2) (s : Bool) (p q : Fin n) (y : Cq n V) :
     liftq n T (liftq n (Ts E1 E2 s p q) y) = liftq n (Ts F1 F2 s p q) (liftq n T y) := by
@@ -57,14 +57,14 @@ theorem MorQ.lift_Ts (h : MorQ T E1 E2 F1 F2) (s : Bool) (p q : Fin n) (y : Cq n
   exact h.Ts_eq s p q (y A)
 
 /- English proof (translation)
-The claim follows from `h.lift_Ts _ _ _ y`.
+A detailed English derivation is pending.
 -/
 theorem MorQ.lift_Tl (h : MorQ T E1 E2 F1 F2) (i : Lt n) (y : Cq n V) :
     liftq n T (liftq n (Tl E1 E2 i) y) = liftq n (Tl F1 F2 i) (liftq n T y) :=
   h.lift_Ts _ _ _ y
 
 /- English proof (translation)
-Rewrite using `[bd_apply, bd_apply]`. Simplify using `only [map_add, map_smul, map_sum, lift_cre', lift_ann', h.lift_Tl]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem MorQ.bd (h : MorQ T E1 E2 F1 F2) (x : Cq n V) :
     liftq n T (bdq E1 E2 x) = bdq F1 F2 (liftq n T x) := by
@@ -72,32 +72,32 @@ theorem MorQ.bd (h : MorQ T E1 E2 F1 F2) (x : Cq n V) :
   simp only [map_add, map_smul, map_sum, lift_cre', lift_ann', h.lift_Tl]
 
 /- English proof (translation)
-Simplify using `only [lFq, LinearMap.add_apply, map_add, h.lift_Ts, lift_adLq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem MorQ.lF (h : MorQ T E1 E2 F1 F2) (s : Bool) (p q : Fin n) (x : Cq n V) :
     liftq n T (lFq E1 E2 s p q x) = lFq F1 F2 s p q (liftq n T x) := by
   simp only [lFq, LinearMap.add_apply, map_add, h.lift_Ts, lift_adLq]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.PairMult.c1, LinearMap.smul_apply, LinearMap.add_apply, map_smul, map_add, h.lF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem MorQ.cc1 (h : MorQ T E1 E2 F1 F2) (p q : Fin n) (x : Cq n V) :
     liftq n T (c1 E1 E2 p q x) = c1 F1 F2 p q (liftq n T x) := by
   simp only [GlobalTheory.CompanionTheory.PairMult.c1, LinearMap.smul_apply, LinearMap.add_apply, map_smul, map_add, h.lF]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.PairMult.c2, LinearMap.smul_apply, LinearMap.sub_apply, map_smul, map_sub, h.lF]`.
+Simplify using the standard rewrite rules.
 -/
 theorem MorQ.cc2 (h : MorQ T E1 E2 F1 F2) (p q : Fin n) (x : Cq n V) :
     liftq n T (c2 E1 E2 p q x) = c2 F1 F2 p q (liftq n T x) := by
   simp only [GlobalTheory.CompanionTheory.PairMult.c2, LinearMap.smul_apply, LinearMap.sub_apply, map_smul, map_sub, h.lF]
 
 /- English proof (translation)
-Use `FreeAlgebra.induction ℂ _ (motive := fun b => ∀ x : Cq n V, liftq n T (evB lev (c1 E1 E2) (c2 E1 E2) b x) = evB lev (c1 F1 F2) (c2 F1 F2) b (liftq n T x)) ?_ ?_ ?_ ?_ b` and prove the remaining obligations. Introduce `r x`. Simplify using `only [AlgHom.commutes, Module.algebraMap_end_apply, map_smul]`. Introduce `p x`. Simplify using `only [evB, FreeAlgebra.lift_ι_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Conclude with `h.cc1 _ _ x`. Conclude with `h.cc2 _ _ x`. Simplify using the standard rewrite rules. Introduce `a b ha hb x`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, Module.End.mul_apply, ha, hb]`. Introduce `a b ha hb x`. Simplify using `only [map_add, LinearMap.add_apply, ha, hb]`.
+A detailed English derivation is pending.
 -/
 theorem MorQ.evC (h : MorQ T E1 E2 F1 F2) (lev : Fin n → ℕ) (b : FreeAlgebra ℂ (Bool × Fin n × Fin n)) :
     ∀ x : Cq n V, liftq n T (evB lev (c1 E1 E2) (c2 E1 E2) b x) = evB lev (c1 F1 F2) (c2 F1 F2) b (liftq n T x) := by
@@ -117,11 +117,11 @@ theorem MorQ.evC (h : MorQ T E1 E2 F1 F2) (lev : Fin n → ℕ) (b : FreeAlgebra
     simp only [map_add, LinearMap.add_apply, ha, hb]
 
 /- English proof (translation)
-Use `FreeAlgebra.induction ℂ _ (motive := fun a => ∀ y : V, T (ev2 E1 E2 a y) = ev2 F1 F2 a (T y)) ?_ ?_ ?_ ?_ a` and prove the remaining obligations. Introduce `r y`. Simplify using `only [AlgHom.commutes, Module.algebraMap_end_apply, map_smul]`. Introduce `p y`. Simplify using `only [ev2, FreeAlgebra.lift_ι_apply]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hp : p.1 = true`. Simplify using `[hp, h.h1]`. Simplify using `[hp, h.h2]`. Introduce `a b ha hb y`. Simplify using `only [map_mul, Module.End.mul_apply, ha, hb]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a b ha hb y`. Simplify using `only [map_add, LinearMap.add_apply, map_add, ha, hb]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem MorQ.ev (h : MorQ T E1 E2 F1 F2) (a : FreeAlgebra ℂ (Bool × Fin n × Fin n)) :
     ∀ y : V, T (ev2 E1 E2 a y) = ev2 F1 F2 a (T y) := by
@@ -139,7 +139,7 @@ theorem MorQ.ev (h : MorQ T E1 E2 F1 F2) (a : FreeAlgebra ℂ (Bool × Fin n × 
     simp only [map_add, LinearMap.add_apply, map_add, ha, hb]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Conclude with `h.ev a (x A)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem MorQ.lift_ev (h : MorQ T E1 E2 F1 F2) (a : FreeAlgebra ℂ (Bool × Fin n × Fin n)) (x : Cq n V) :
     liftq n T (liftq n (ev2 E1 E2 a) x) = liftq n (ev2 F1 F2 a) (liftq n T x) := by
@@ -149,19 +149,19 @@ theorem MorQ.lift_ev (h : MorQ T E1 E2 F1 F2) (a : FreeAlgebra ℂ (Bool × Fin 
 end MorLemmas
 
 /- English proof (translation)
-Use `FreeAlgebra.induction ℂ _ (motive := fun b => ∀ x : Cq n V, SuppQ (inUL lev) x → SuppQ (inUL lev) (evB lev (c1 E1 E2) (c2 E1 E2) b x) ∧ (∀ j, DegQ j x → DegQ j (evB lev (c1 E1 E2) (c2 E1 E2) b x)) ∧ bdq E1 E2 (evB lev (c1 E1 E2) (c2 E1 E2) b x) = evB lev (c1 E1 E2) (c2 E1 E2) b ( …` and prove the remaining obligations. Introduce `r x hx`. Simplify using `only [AlgHom.commutes, Module.algebraMap_end_apply, map_smul]`. Conclude with `⟨Submodule.smul_mem (supSub V _) r hx, fun j hj => Submodule.smul_mem (supSub V _) r hj, trivial⟩`. Introduce `c x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hs` using `(hR n lev V E1 E2 hlev hE x hx).1`. Simplify using `only [evB, FreeAlgebra.lift_ι_apply]`. Distinguish the cases in `hc : lev c.2.1 = lev c.2.2`. Take `⟨t1, t2, t3⟩` from `hs true _ _ hc`. Take `⟨f1, f2, f3⟩` from `hs false _ _ hc`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[if_pos hc]`. Distinguish the cases in `h1 : c.1 = true`. Simplify using `only [h1, if_true, GlobalTheory.CompanionTheory.PairMult.c1, LinearMap.smul_apply, LinearMap.add_apply, map_smul, map_add]`. Use `⟨Submodule.smul_mem (supSub V _) _ (Submodule.add_mem (supSub V _) t1 f1), fun j hj => Submodule.smul_mem (supSub V _) _ (Submodule.add_mem (supSub V _) (t2 j hj) (f2 j hj)), ?_⟩` and prove the remaining obligations. Rewrite using `[t3, f3]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [h1, Bool.false_eq_true, if_false, GlobalTheory.CompanionTheory.PairMult.c2, LinearMap.smul_apply, LinearMap.sub_apply, map_smul, map_sub]`. Use `⟨Submodule.smul_mem (supSub V _) _ (Submodule.sub_mem (supSub V _) t1 f1), fun j hj => Submodule.smul_mem (supSub V _) _ (Submodule.sub_mem (supSub V _) (t2 j hj) (f2 j hj)), ?_⟩` and prove the remaining obligations. Rewrite using `[t3, f3]`. Rewrite using `[if_neg hc]`. Simplify using `only [LinearMap.zero_apply, map_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `⟨Submodule.zero_mem (supSub V _), fun j _ => Submodule.zero_mem (supSub V _), trivial⟩`. Introduce `a b ha hb x hx`. Take `⟨h1, h2, h3⟩` from `hb x hx`. Take `⟨h4, h5, h6⟩` from `ha _ h1`. Simplify using `only [map_mul, Module.End.mul_apply]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `⟨h4, fun j hj => h5 j (h2 j hj), by rw [h6, h3]⟩`. Introduce `a b ha hb x hx`. Take `⟨h1, h2, h3⟩` from `ha x hx`. Take `⟨h4, h5, h6⟩` from `hb x hx`. Simplify using `only [map_add, LinearMap.add_apply]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Conclude with `⟨Submodule.add_mem (supSub V _) h1 h4, fun j hj => Submodule.add_mem (supSub V _) (h2 j hj) (h5 j hj), by rw [h3, h6]⟩`.
+Supply the required witnesses or components.
 -/
 theorem evC_facts (hR : LeviRel) {lev : Fin n → ℕ} (hlev : Monotone lev) {E1 E2 : Fin n → Fin n → Module.End ℂ V}
     (hE : PairRel E1 E2) (b : FreeAlgebra ℂ (Bool × Fin n × Fin n)) :
@@ -208,11 +208,11 @@ theorem evC_facts (hR : LeviRel) {lev : Fin n → ℕ} (hlev : Monotone lev) {E1
       by rw [h3, h6]⟩
 
 /- English proof (translation)
-Rewrite using `[bd_apply, bd_apply]`. Establish `hk : ∀ i : Lt n, liftq n T (liftq n (Tl E1 E2 i) (annq i x)) = liftq n (Tl E1 E2 i) (annq i (liftq n T x))`. Introduce `i`. Distinguish the cases in `hi : S i`. Use function extensionality and compare the values at `A`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← lift_ann']`. Simplify using `only [lift_apply]`. Conclude with `(LinearMap.congr_fun (hT i hi).eq _).symm`. Rewrite using `[← lift_ann', ann_zero hx hi]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_smul, map_sum, lift_cre', lift_ann' T, hk]`.
+A detailed English derivation is pending.
 -/
 theorem lift_bd_comm {E1 E2 : Fin n → Fin n → Module.End ℂ V} {S : Lt n → Prop} {T : Module.End ℂ V}
     (hT : ∀ i, S i → Commute (Tl E1 E2 i) T) {x : Cq n V} (hx : SuppQ S x) :
@@ -231,7 +231,7 @@ theorem lift_bd_comm {E1 E2 : Fin n → Fin n → Module.End ℂ V} {S : Lt n �
   simp only [map_add, map_smul, map_sum, lift_cre', lift_ann' T, hk]
 
 /- English proof (translation)
-Introduce `A hA`. Assume the negation of the conclusion as `h`. Establish `: A ≠ ∅` using `fun h0 => h (by simp [h0])`. Conclude with `hA (by simp [Pi.single_apply, this])`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem single_degree_zero (v : V) : DegQ 0 (Pi.single ∅ v : Cq n V) := by
   intro A hA
@@ -240,9 +240,9 @@ theorem single_degree_zero (v : V) : DegQ 0 (Pi.single ∅ v : Cq n V) := by
   exact hA (by simp [Pi.single_apply, this])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Distinguish the cases in `h : A = ∅`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Pi.single_apply, if_neg h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `h0`. Conclude with `h (card_eq_zero.mp (hx A h0))`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem eq_single {x : Cq n V} (hx : DegQ 0 x) : x = Pi.single ∅ (x ∅) := by
   funext A
@@ -254,7 +254,7 @@ theorem eq_single {x : Cq n V} (hx : DegQ 0 x) : x = Pi.single ∅ (x ∅) := by
     exact h (card_eq_zero.mp (hx A h0))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Distinguish the cases in `h : A = ∅`. Substitute `h` using the available equality. Simplify using `[lift_apply]`. Simplify using `[lift_apply, Pi.single_apply, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem lift_single (T : V →ₗ[ℂ] W) (v : V) :
     liftq n T (Pi.single ∅ v : Cq n V) = Pi.single ∅ (T v) := by
@@ -265,7 +265,7 @@ theorem lift_single (T : V →ₗ[ℂ] W) (v : V) :
   · simp [lift_apply, Pi.single_apply, h]
 
 /- English proof (translation)
-Rewrite using `[lFq, LinearMap.add_apply, lift_single, adLq_apply]`. Simplify using `[ann_eq_zero_of_degree_zero _ (single_degree_zero (n := n) v)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem lF_single (E1 E2 : Fin n → Fin n → Module.End ℂ V) (s : Bool) (p q : Fin n) (v : V) :
     lFq E1 E2 s p q (Pi.single ∅ v : Cq n V) = Pi.single ∅ (Ts E1 E2 s p q v) := by
@@ -273,7 +273,7 @@ theorem lF_single (E1 E2 : Fin n → Fin n → Module.End ℂ V) (s : Bool) (p q
   simp [ann_eq_zero_of_degree_zero _ (single_degree_zero (n := n) v)]
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.PairMult.c1, LinearMap.smul_apply, LinearMap.add_apply, lF_single, ← Pi.single_add, ← Pi.single_smul]`. Use `congr 1`. Simplify using `only [Ts, if_true, Bool.false_eq_true, if_false, LinearMap.add_apply, LinearMap.sub_apply]`. Use `module`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chainOp_apply_single_empty (E1 E2 : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (v : V) :
     c1 E1 E2 p q (Pi.single ∅ v : Cq n V) = Pi.single ∅ (E1 p q v) := by
@@ -283,7 +283,7 @@ theorem chainOp_apply_single_empty (E1 E2 : Fin n → Fin n → Module.End ℂ V
   module
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.CompanionTheory.PairMult.c2, LinearMap.smul_apply, LinearMap.sub_apply, lF_single, ← Pi.single_sub, ← Pi.single_smul]`. Use `congr 1`. Simplify using `only [Ts, if_true, Bool.false_eq_true, if_false, LinearMap.add_apply, LinearMap.sub_apply]`. Use `module`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem second_operator_single (E1 E2 : Fin n → Fin n → Module.End ℂ V) (p q : Fin n) (v : V) :
     c2 E1 E2 p q (Pi.single ∅ v : Cq n V) = Pi.single ∅ (E2 p q v) := by
@@ -293,11 +293,11 @@ theorem second_operator_single (E1 E2 : Fin n → Fin n → Module.End ℂ V) (p
   module
 
 /- English proof (translation)
-Use `FreeAlgebra.induction ℂ _ (motive := fun b => ∀ v : V, evB lev (c1 E1 E2) (c2 E1 E2) b (Pi.single ∅ v : Cq n V) = Pi.single ∅ (evB lev E1 E2 b v)) ?_ ?_ ?_ ?_ b` and prove the remaining obligations. Introduce `r v`. Simplify using `only [AlgHom.commutes, Module.algebraMap_end_apply]`. Rewrite using `[Pi.single_smul]`. Introduce `p v`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [evB, FreeAlgebra.lift_ι_apply]`. Use `split_ifs`. Conclude with `chainOp_apply_single_empty E1 E2 _ _ v`. Conclude with `second_operator_single E1 E2 _ _ v`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb v`. Simplify using `only [map_mul, Module.End.mul_apply, ha, hb]`. Introduce `a b ha hb v`. Simplify using `only [map_add, LinearMap.add_apply, ha, hb, Pi.single_add]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evC_single (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End ℂ V) (b : FreeAlgebra ℂ (Bool × Fin n × Fin n)) :
     ∀ v : V, evB lev (c1 E1 E2) (c2 E1 E2) b (Pi.single ∅ v : Cq n V) = Pi.single ∅ (evB lev E1 E2 b v) := by
@@ -318,7 +318,7 @@ theorem evC_single (lev : Fin n → ℕ) (E1 E2 : Fin n → Fin n → Module.End
     simp only [map_add, LinearMap.add_apply, ha, hb, Pi.single_add]
 
 /- English proof (translation)
-Introduce `A hA`. Assume the negation of the conclusion as `h`. Establish `: A ≠ {i}` using `fun h0 => h (by simp [h0])`. Conclude with `hA (by simp [Pi.single_apply, this])`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem single_one_deg (i : Lt n) (y : V) : DegQ 1 (Pi.single {i} y : Cq n V) := by
   intro A hA
@@ -327,15 +327,15 @@ theorem single_one_deg (i : Lt n) (y : V) : DegQ 1 (Pi.single {i} y : Cq n V) :=
   exact hA (by simp [Pi.single_apply, this])
 
 /- English proof (translation)
-Use function extensionality and compare the values at `A`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Rewrite using `[if_pos rfl, ann_apply]`. Distinguish the cases in `hA : k ∈ A`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `: A ≠ ∅` using `fun h0 => by simp [h0] at hA`. Simplify using `[hA, Pi.single_apply, this]`. Distinguish the cases in `h0 : A = ∅`. Substitute `h0` using the available equality. Simplify using `[sgL]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: insert k A ≠ {k}`. Introduce `h`. Take `⟨l, hl⟩` from `nonempty_iff_ne_empty.mpr h0`. Use `h ▸ mem_insert_of_mem hl` as an intermediate fact. Rewrite `this` using `[mem_singleton]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hA (this ▸ hl)`. Simplify using `[hA, Pi.single_apply, this, h0]`. Rewrite using `[if_neg hk, ann_apply]`. Distinguish the cases in `hA : k ∈ A`. Simplify using `[hA]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: insert k A ≠ {i}`. Introduce `h`. Use `h ▸ mem_insert_self k A` as an intermediate fact. Conclude with `hk (mem_singleton.mp this)`. Simplify using `[hA, Pi.single_apply, this]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ann_single (k i : Lt n) (y : V) :
     annq k (Pi.single {i} y : Cq n V) = if k = i then Pi.single ∅ y else 0 := by
@@ -366,11 +366,11 @@ theorem ann_single (k i : Lt n) (y : V) :
       simp [hA, Pi.single_apply, this]
 
 /- English proof (translation)
-Rewrite using `[bd_apply]`. Establish `h2 : ∀ i' j k : Lt n, cq i' j k • creq k (annq j (annq i' (Pi.single {i} y : Cq n V))) = 0`. Introduce `i' j k`. Rewrite using `[ann_eq_zero_of_degree_zero j (ann_deg i' (single_one_deg i y))]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [h2, sum_const_zero, smul_zero, add_zero]`. Simplify using `only [ann_single]`. Rewrite using `[Finset.sum_eq_single i]`. Simplify using `[lift_single]`. Introduce `k _ hk`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem bd_single (E1 E2 : Fin n → Fin n → Module.End ℂ V) (i : Lt n) (y : V) :
     bdq E1 E2 (Pi.single {i} y : Cq n V) = Pi.single ∅ (Tl E1 E2 i y) := by
@@ -388,9 +388,7 @@ theorem bd_single (E1 E2 : Fin n → Fin n → Module.End ℂ V) (i : Lt n) (y :
   · simp
 
 /- English proof (translation)
-Introduce `A hA l hl`. Distinguish the cases in `h : A = {i}`. Substitute `h` using the available equality. Rewrite using `[mem_singleton.1 hl]`. Conclude with `hi`.
-
-Conclude with `absurd (by simp [Pi.single_apply, h]) hA`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_one_supp {P : Lt n → Prop} {i : Lt n} (hi : P i) (y : V) : SuppQ P (Pi.single {i} y : Cq n V) := by
   intro A hA l hl
@@ -401,9 +399,9 @@ theorem single_one_supp {P : Lt n → Prop} {i : Lt n} (hi : P i) (y : V) : Supp
   · exact absurd (by simp [Pi.single_apply, h]) hA
 
 /- English proof (translation)
-Introduce `a b c d`. Use `LinearMap.ext fun y => hT ?_` and prove the remaining obligations. Establish `key` using `LinearMap.congr_fun (hF a b c d) (T y)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at key ⊢`. Rewrite using `[map_sub, h, h, h, h, key]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `by_cases h1 : b = c <;> by_cases h2 : d = a <;> simp [h1, h2, h]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gl_of_inj {T : V →ₗ[ℂ] W} (hT : Function.Injective T) {E : Fin n → Fin n → Module.End ℂ V}
     {F : Fin n → Fin n → Module.End ℂ W} (h : ∀ a b y, T (E a b y) = F a b (T y)) (hF : GlRel F) : GlRel E := by
@@ -415,9 +413,9 @@ theorem gl_of_inj {T : V →ₗ[ℂ] W} (hT : Function.Injective T) {E : Fin n �
   by_cases h1 : b = c <;> by_cases h2 : d = a <;> simp [h1, h2, h]
 
 /- English proof (translation)
-Use `⟨gl_of_inj hT h.h1 hF.1, gl_of_inj hT h.h2 hF.2.1, fun a b c d => ?_⟩` and prove the remaining obligations. Use `show _ * _ = _ * _`. Use `LinearMap.ext fun y => hT ?_` and prove the remaining obligations. Establish `key` using `LinearMap.congr_fun (hF.2.2 a b c d).eq (T y)`. Simplify using `only [Module.End.mul_apply] at key ⊢`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h.h1, h.h2, h.h2, h.h1, key]`.
+A detailed English derivation is pending.
 -/
 theorem pair_of_inj {T : V →ₗ[ℂ] W} (hT : Function.Injective T) {E1 E2 : Fin n → Fin n → Module.End ℂ V}
     {F1 F2 : Fin n → Fin n → Module.End ℂ W} (h : MorQ T E1 E2 F1 F2) (hF : PairRel F1 F2) : PairRel E1 E2 := by
@@ -440,13 +438,11 @@ def HypAB (n : ℕ) (lev : Fin n → ℕ) (a b : FreeAlgebra ℂ (Bool × Fin n 
     ∀ x : V, ∃ w : Lt n → V, ev2 E1 E2 a x - evB lev E1 E2 b x = ∑ l : Lt n, if inUL lev l then Tl E1 E2 l (w l) else 0
 
 /- English proof (translation)
-Introduce `V _ _ E1 E2 hE x _ hx _`. Take `⟨w, hw⟩` from `(hA V E1 E2 hE).2 (x ∅)`. Set `t : Cq n V` to `∑ l : Lt n, if inUL lev l then Pi.single {l} (w l) else 0`. Use `⟨t, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Submodule.sum_mem (supSub V _) fun l _ => ?_ split_ifs with h` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `single_one_supp h _`. Conclude with `Submodule.zero_mem (supSub V _)`. Use `Submodule.sum_mem (supSub V _) fun l _ => ?_ split_ifs` and prove the remaining obligations. Conclude with `single_one_deg l _`. Conclude with `Submodule.zero_mem (supSub V _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `e : bdq E1 E2 t = Pi.single ∅ (∑ l : Lt n, if inUL lev l then Tl E1 E2 l (w l) else 0)`. Establish `h1 : ∀ l : Lt n, bdq E1 E2 (if inUL lev l then (Pi.single {l} (w l) : Cq n V) else 0) = Pi.single ∅ (if inUL lev l then Tl E1 E2 l (w l) else 0)`. Introduce `l`. Use `split_ifs`. Conclude with `bd_single E1 E2 l _`.
-
-Simplify using the standard rewrite rules. Simplify using `only [t, map_sum, h1]`. Conclude with `(map_sum (AddMonoidHom.single (fun _ : Finset (Lt n) => V) ∅) _ _).symm`. Rewrite using `[e, ← hw, eq_single hx, lift_single, evC_single, ← Pi.single_sub]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem shift_zero {lev : Fin n → ℕ} {a b : FreeAlgebra ℂ (Bool × Fin n × Fin n)} {S : Lt n → Prop}
     (hA : HypAB n lev a b S) : ShiftAt n lev a b S 0 := by
@@ -475,35 +471,33 @@ theorem shift_zero {lev : Fin n → ℕ} {a b : FreeAlgebra ℂ (Bool × Fin n �
     simp
 
 /- English proof (translation)
-Introduce `V _ _ E1 E2 hE x hxS hx hxb`. Take `⟨Y, _, _, F1, F2, π, hF, hπ, h1, h2, hY⟩` from `coverQ lev E1 E2 hE`. Establish `hm : MorQ π F1 F2 E1 E2` using `⟨h1, h2⟩`. Set `x' : Cq n Y` to `fun A => if x A = 0 then 0 else Function.surjInv hπ (x A)`. Establish `hx'π : liftq n π x' = x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `A`. Distinguish the cases in `h : x A = 0`. Simplify using `[lift_apply, x', h]`. Simplify using `[lift_apply, x', h, Function.surjInv_eq hπ]`. Establish `hne : ∀ A, x' A ≠ 0 → x A ≠ 0`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `A hA0 h0`. Conclude with `hA0 (by simp [x', h0])`. Establish `hx'D : DegQ (j + 1) x'` using `fun A h => hx A (hne A h)`. Establish `hx'S : SuppQ S x'` using `fun A h => hxS A (hne A h)`. Establish `hz0 : liftq n π (bdq F1 F2 x') = 0` using `by rw [hm.bd, hx'π, hxb]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk1 : ∀ a b, ∀ y ∈ LinearMap.ker π, F1 a b y ∈ LinearMap.ker π`. Introduce `a b y hy`. Rewrite `hy`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[h1, hy, map_zero]`. Establish `hk2 : ∀ a b, ∀ y ∈ LinearMap.ker π, F2 a b y ∈ LinearMap.ker π`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b y hy`. Rewrite `hy`, the goal using `[LinearMap.mem_ker]`. Rewrite using `[h2, hy, map_zero]`. Set `G1 : Fin n → Fin n → Module.End ℂ (LinearMap.ker π)` to `fun a b => (F1 a b).restrict (hk1 a b)`. Set `G2 : Fin n → Fin n → Module.End ℂ (LinearMap.ker π)` to `fun a b => (F2 a b).restrict (hk2 a b)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hι : MorQ (LinearMap.ker π).subtype G1 G2 F1 F2` using `⟨fun _ _ _ => rfl, fun _ _ _ => rfl⟩`. Establish `hinj : Function.Injective (LinearMap.ker π).subtype` using `Submodule.injective_subtype _`. Establish `hG : PairRel G1 G2` using `pair_of_inj hinj hι hF`. Set `z' : Cq n (LinearMap.ker π)` to `fun A => ⟨bdq F1 F2 x' A, congrFun hz0 A⟩`. Establish `hz' : liftq n (LinearMap.ker π).subtype z' = bdq F1 F2 x'` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne' : ∀ A, z' A ≠ 0 → bdq F1 F2 x' A ≠ 0`. Introduce `A hA0 h0`. Conclude with `hA0 (Subtype.ext h0)`. Establish `hzD : DegQ j z'` using `fun A h => bd_deg F1 F2 hx'D A (hne' A h)`. Establish `hzS : SuppQ S z'` using `fun A h => bd_supp F1 F2 (cq_closed hS) hx'S A (hne' A h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hzc : bdq G1 G2 z' = 0`. Use function extensionality and compare the values at `A`. Apply `hinj` to reduce the goal to its premises. Establish `e` using `congrFun (hι.bd z') A`. Rewrite `e` using `[hz']`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e2 : bdq F1 F2 (bdq F1 F2 x') = 0` using `LinearMap.congr_fun (bdq_sq hF) x'`. Rewrite `e` using `[e2]`. Simplify `e` using `[lift_apply]`. Take `⟨w', hw'S, hw'D, hw'⟩` from `IH (LinearMap.ker π) G1 G2 hG z' hzS hzD hzc`. Establish `e1 : liftq n (ev2 F1 F2 a) (bdq F1 F2 x') - evB lev (c1 F1 F2) (c2 F1 F2) b (bdq F1 F2 x') = bdq F1 F2 (liftq n (LinearMap.ker π).subtype w')`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `congrArg (liftq n (LinearMap.ker π).subtype) hw'` as an intermediate fact. Rewrite `this` using `[map_sub, hι.lift_ev, hι.evC lev, hι.bd, hz']`. Then use the resulting hypothesis. Set `u : Cq n Y` to `liftq n (ev2 F1 F2 a) x' - evB lev (c1 F1 F2) (c2 F1 F2) b x' - liftq n (LinearMap.ker π).subtype w'`. Establish `hx'U : SuppQ (inUL lev) x'` using `fun A h l hl => hS.1 l (hx'S A h l hl)`. Take `⟨f1, f2, f3⟩` from `evC_facts hR hlev hF b x' hx'U`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hub : bdq F1 F2 u = 0`. Establish `cc` using `lift_bd_comm (hA Y F1 F2 hF).1 hx'S`. Simplify using `only [u, map_sub]`. Rewrite using `[← cc, f3, e1, sub_self]`. Establish `huD : DegQ (j + 1) u`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1 : liftq n (ev2 F1 F2 a) x' ∈ supSub Y (fun A => A.card = j + 1)` using `lift_mem _ hx'D`. Establish `d2 : evB lev (c1 F1 F2) (c2 F1 F2) b x' ∈ supSub Y (fun A => A.card = j + 1)` using `f2 _ hx'D`. Establish `d3 : liftq n (LinearMap.ker π).subtype w' ∈ supSub Y (fun A => A.card = j + 1)` using `lift_mem _ hw'D`. Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ d1 d2) d3`. Establish `huS : SuppQ (inUL lev) u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `d1 : liftq n (ev2 F1 F2 a) x' ∈ supSub Y (fun A => ∀ i ∈ A, inUL lev i)` using `lift_mem _ hx'U`. Establish `d2 : evB lev (c1 F1 F2) (c2 F1 F2) b x' ∈ supSub Y (fun A => ∀ i ∈ A, inUL lev i)` using `f1`. Establish `d3 : liftq n (LinearMap.ker π).subtype w' ∈ supSub Y (fun A => ∀ i ∈ A, inUL lev i)` using `lift_mem _ hw'S`. Conclude with `Submodule.sub_mem _ (Submodule.sub_mem _ d1 d2) d3`. Take `⟨t, htS, htD, ht⟩` from `hY j u huS huD hub`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨liftq n π t, lift_mem π htS, lift_mem π htD, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm.bd, ht]`. Establish `e0 : liftq n π (liftq n (LinearMap.ker π).subtype w') = 0`. Use function extensionality and compare the values at `A`. Conclude with `(w' A).2`.
-
-Simplify using `only [u, map_sub, e0, sub_zero]`. Rewrite using `[hm.lift_ev, hm.evC lev, hx'π]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shift_step (hR : LeviRel) {lev : Fin n → ℕ} (hlev : Monotone lev) {a b : FreeAlgebra ℂ (Bool × Fin n × Fin n)}
     {S : Lt n → Prop} (hS : IsSubL lev S) (hA : HypAB n lev a b S) {j : ℕ} (IH : ShiftAt n lev a b S j) :
@@ -588,9 +582,9 @@ theorem shift_step (hR : LeviRel) {lev : Fin n → ℕ} (hlev : Monotone lev) {a
   rw [hm.lift_ev, hm.evC lev, hx'π]
 
 /- English proof (translation)
-Introduce `n lev S a b hlev hS hA V _ _ E1 E2 hE j`. Establish `key : ∀ j, ShiftAt n lev a b S j`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => exact shift_zero hA`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j ih => exact shift_step hR hlev hS hA ih`. Conclude with `key j V E1 E2 hE`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem genCOU2_of (hR : LeviRel) : GenCOU2 := by
   intro n lev S a b hlev hS hA V _ _ E1 E2 hE j
@@ -602,7 +596,7 @@ theorem genCOU2_of (hR : LeviRel) : GenCOU2 := by
   exact key j V E1 E2 hE
 
 /- English proof (translation)
-The claim follows from `genCOU2_of GlobalTheory.CompanionTheory.PairMult.leviRel`.
+A detailed English derivation is pending.
 -/
 theorem genCOU2 : GenCOU2 := genCOU2_of GlobalTheory.CompanionTheory.PairMult.leviRel
 

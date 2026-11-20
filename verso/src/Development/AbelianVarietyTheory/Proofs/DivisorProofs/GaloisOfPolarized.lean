@@ -84,7 +84,7 @@ def GaloisOfPolarized : Prop :=
                 (ι : Formalism.ConjugateSelfDual.Qbar l →+* ℂ) = frobPoly (Formalism.ConjugateSelfDual.normV w) m (B.map fun b : ℂˣ => (b : ℂ))
 
 /- English proof (translation)
-Simplify using `[spehInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spehInf_one (A : Multiset ℂ) : spehInf 1 A = A := by simp [spehInf]
 

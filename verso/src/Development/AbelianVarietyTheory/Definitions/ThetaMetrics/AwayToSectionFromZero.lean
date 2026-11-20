@@ -25,7 +25,7 @@ variable {A σ : Type} [CommRing A] [SetLike σ A] [AddSubgroupClass σ A] (𝒜
 variable {𝒜} in
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun y => HomogeneousLocalization.val_injective _ ?_)` and prove the remaining obligations. Conclude with `h y.1 y.2`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ProjFrac.ext {U : (Proj 𝒜).Opens} {s t : Γ(Proj 𝒜, U)}
     (h : ∀ x hx, _root_.GlobalTheory.ProjFrac.ev 𝒜 U x hx s =
@@ -40,7 +40,7 @@ theorem ev_resG {U V : (Proj 𝒜).Opens} (h : V ≤ U) (x : Proj 𝒜) (hx : x 
     ev 𝒜 V x hx (resG (Proj 𝒜) h s) = ev 𝒜 U x (h hx) s := rfl
 
 /- English proof (translation)
-Rewrite using `[Scheme.mem_basicOpen _ _ _ hx]`. Use `Iff.trans ?_ (HomogeneousLocalization.isUnit_iff_isUnit_val 𝒜 x.asHomogeneousIdeal.toIdeal (s.1 ⟨x, hx⟩)).symm` and prove the remaining obligations. Rewrite using `[← Proj.stalkIso'_germ 𝒜 U x hx s]`. Conclude with `(isUnit_map_iff (Proj.stalkIso' 𝒜 x) _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_basicOpen_iff {U : (Proj 𝒜).Opens} (s : Γ(Proj 𝒜, U)) (x : Proj 𝒜) (hx : x ∈ U) :
     x ∈ (Proj 𝒜).basicOpen s ↔ IsUnit (ev 𝒜 U x hx s) := by
@@ -69,7 +69,7 @@ theorem ev_frac (x : Proj 𝒜) (hx : x ∈ U) :
     ev 𝒜 U x hx (frac 𝒜 U a b ha hb hU) = Localization.mk a ⟨b, hU hx⟩ := rfl
 
 /- English proof (translation)
-Rewrite using `[ev_frac, Localization.mk_eq_mk']`. Conclude with `IsLocalization.mk'_spec _ a (⟨b, hU hx⟩ : x.asHomogeneousIdeal.toIdeal.primeCompl)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_frac_mul_den (x : Proj 𝒜) (hx : x ∈ U) :
     ev 𝒜 U x hx (frac 𝒜 U a b ha hb hU) * algebraMap A _ b = algebraMap A _ a := by
@@ -90,7 +90,7 @@ variable {U V : (Proj 𝒜).Opens} {d d' : ℕ} {a b a' b' : A} {ha : a ∈ 𝒜
   {hU' : U ≤ Proj.basicOpen 𝒜 b'} in
 
 /- English proof (translation)
-Use `_root_.GlobalTheory.ProjFrac.ext fun x hx => ?_` and prove the remaining obligations. Rewrite using `[_root_.GlobalTheory.ProjFrac.ev_frac, _root_.GlobalTheory.ProjFrac.ev_frac, Localization.mk_eq_mk_iff, Localization.r_iff_exists]`. Conclude with `⟨1, by simp only [OneMemClass.coe_one, one_mul]; linear_combination h⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.ProjFrac.frac_eq (h : a * b' = a' * b) :
     _root_.GlobalTheory.ProjFrac.frac 𝒜 U a b ha hb hU =
@@ -108,7 +108,7 @@ variable {U V : (Proj 𝒜).Opens} {d d' : ℕ} {a b a' b' : A} {ha : a ∈ 𝒜
   {hU' : U ≤ Proj.basicOpen 𝒜 b'} in
 
 /- English proof (translation)
-Use `_root_.GlobalTheory.ProjFrac.ext fun x hx => ?_` and prove the remaining obligations. Rewrite using `[map_mul, _root_.GlobalTheory.ProjFrac.ev_frac, _root_.GlobalTheory.ProjFrac.ev_frac, _root_.GlobalTheory.ProjFrac.ev_frac, Localization.mk_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.ProjFrac.frac_mul :
     _root_.GlobalTheory.ProjFrac.frac 𝒜 U a b ha hb hU *
@@ -128,7 +128,7 @@ variable {U V : (Proj 𝒜).Opens} {d d' : ℕ} {a b a' b' : A} {ha : a ∈ 𝒜
   {hU' : U ≤ Proj.basicOpen 𝒜 b'} in
 
 /- English proof (translation)
-The claim follows from `_root_.GlobalTheory.ProjFrac.frac_mul.trans (_root_.GlobalTheory.ProjFrac.frac_eq h)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ProjFrac.frac_mul_eq {d'' : ℕ} {a'' b'' : A} {ha'' : a'' ∈ 𝒜 d''}
     {hb'' : b'' ∈ 𝒜 d''} {hU'' : U ≤ Proj.basicOpen 𝒜 b''} (h : a * a' * b'' = a'' * (b * b')) :
@@ -145,7 +145,7 @@ variable {U V : (Proj 𝒜).Opens} {d d' : ℕ} {a b a' b' : A} {ha : a ∈ 𝒜
   {hU' : U ≤ Proj.basicOpen 𝒜 b'} in
 
 /- English proof (translation)
-Use `_root_.GlobalTheory.ProjFrac.ext fun x hx => ?_` and prove the remaining obligations. Rewrite using `[map_add, _root_.GlobalTheory.ProjFrac.ev_frac, _root_.GlobalTheory.ProjFrac.ev_frac, _root_.GlobalTheory.ProjFrac.ev_frac, Localization.add_mk_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.ProjFrac.frac_add {a₂ : A} {ha₂ : a₂ ∈ 𝒜 d} :
     _root_.GlobalTheory.ProjFrac.frac 𝒜 U (a + a₂) b (add_mem ha ha₂) hb hU =
@@ -163,7 +163,7 @@ variable {U V : (Proj 𝒜).Opens} {d d' : ℕ} {a b a' b' : A} {ha : a ∈ 𝒜
   {hU' : U ≤ Proj.basicOpen 𝒜 b'} in
 
 /- English proof (translation)
-Use `_root_.GlobalTheory.ProjFrac.ext fun x hx => ?_` and prove the remaining obligations. Rewrite using `[map_one, _root_.GlobalTheory.ProjFrac.ev_frac]`. Conclude with `Localization.mk_self (⟨b, hU hx⟩ : x.asHomogeneousIdeal.toIdeal.primeCompl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ProjFrac.frac_self :
     _root_.GlobalTheory.ProjFrac.frac 𝒜 U b b hb hb hU = 1 := by
@@ -179,7 +179,7 @@ variable {U V : (Proj 𝒜).Opens} {d d' : ℕ} {a b a' b' : A} {ha : a ∈ 𝒜
   {hU' : U ≤ Proj.basicOpen 𝒜 b'} in
 
 /- English proof (translation)
-Use `_root_.GlobalTheory.ProjFrac.ext fun x hx => ?_` and prove the remaining obligations. Rewrite using `[map_zero, _root_.GlobalTheory.ProjFrac.ev_frac, Localization.mk_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem _root_.GlobalTheory.ProjFrac.frac_zero :
     _root_.GlobalTheory.ProjFrac.frac 𝒜 U 0 b (zero_mem _) hb hU = 0 := by
@@ -194,7 +194,7 @@ variable {U V : (Proj 𝒜).Opens} {d d' : ℕ} {a b a' b' : A} {ha : a ∈ 𝒜
   {hU' : U ≤ Proj.basicOpen 𝒜 b'} in
 
 /- English proof (translation)
-Use `_root_.GlobalTheory.ProjFrac.ext fun x hx => ?_` and prove the remaining obligations. Rewrite using `[map_pow, _root_.GlobalTheory.ProjFrac.ev_frac, Localization.mk_pow]`. Conclude with `(_root_.GlobalTheory.ProjFrac.ev_frac (a := a ^ n) (b := b ^ n) (ha := SetLike.pow_mem_graded n ha) (hb := SetLike.pow_mem_graded n hb) (hU := fun x hx h => hU hx (x.isPrime.mem_of_pow_mem n h)) x hx).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ProjFrac.frac_pow (n : ℕ) :
     _root_.GlobalTheory.ProjFrac.frac 𝒜 U a b ha hb hU ^ n =
@@ -214,15 +214,13 @@ variable {U V : (Proj 𝒜).Opens} {d d' : ℕ} {a b a' b' : A} {ha : a ∈ 𝒜
   {hU' : U ≤ Proj.basicOpen 𝒜 b'} in
 
 /- English proof (translation)
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hVU : (Proj 𝒜).basicOpen (_root_.GlobalTheory.ProjFrac.frac 𝒜 U a b ha hb hU) ≤ U` using `(Proj 𝒜).basicOpen_le _`. Establish `hxU : x ∈ U` using `hVU hx`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hres : IsUnit (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG (Proj 𝒜) hVU (_root_.GlobalTheory.ProjFrac.frac 𝒜 U a b ha hb hU))` using `(Proj 𝒜).toRingedSpace.isUnit_res_basicOpen _`. Establish `hunit` using `hres.map (_root_.GlobalTheory.ProjFrac.ev 𝒜 _ x hx)`. Establish `heq : _root_.GlobalTheory.ProjFrac.ev 𝒜 _ x hx (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG (Proj 𝒜) hVU (_root_.GlobalTheory.ProjFrac.frac 𝒜 U a b ha hb hU)) = Localization.mk a ⟨b, hU hxU⟩` using `(_root_.GlobalTheory.ProjFrac.ev_resG hVU x hx _).trans (_root_.GlobalTheory.ProjFrac.ev_frac x hxU)`. Rewrite `hunit` using `[heq]`. Establish `hnum : IsUnit (algebraMap A (Localization.AtPrime x.asHomogeneousIdeal.toIdeal) a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← IsLocalization.mk'_spec (Localization.AtPrime x.asHomogeneousIdeal.toIdeal) a (⟨b, hU hxU⟩ : x.asHomogeneousIdeal.toIdeal.primeCompl), ← Localization.mk_eq_mk']`. Conclude with `hunit.mul (IsLocalization.map_units _ _)`. Conclude with `⟨hxU, (IsLocalization.AtPrime.isUnit_to_map_iff _ _ a).1 hnum⟩`. Introduce and unpack `⟨hxU, hxa⟩`. Establish `hWU : U ⊓ Proj.basicOpen 𝒜 a ≤ U` using `inf_le_left`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hunit : IsUnit (_root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.resG (Proj 𝒜) hWU (_root_.GlobalTheory.ProjFrac.frac 𝒜 U a b ha hb hU))`. Rewrite using `[_root_.GlobalTheory.ProjFrac.resG_frac]`. Conclude with `IsUnit.of_mul_eq_one (_root_.GlobalTheory.ProjFrac.frac 𝒜 _ b a hb ha inf_le_right) ((_root_.GlobalTheory.ProjFrac.frac_mul_eq (a'' := a) (b'' := a) (ha'' := ha) (hb'' := ha) (hU'' := inf_le_right) (by ring)).trans _root_.GlobalTheory.ProjFrac.frac_self)`. Establish `hb` using `(Proj 𝒜).basicOpen_of_isUnit hunit`. Establish `hx : x ∈ U ⊓ Proj.basicOpen 𝒜 a` using `⟨hxU, hxa⟩`.
-
-Rewrite `hx` using `[← hb]`. Conclude with `((Proj 𝒜).basicOpen_res _ (homOfLE hWU).op ▸ hx).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.ProjFrac.basicOpen_frac :
     (Proj 𝒜).basicOpen (_root_.GlobalTheory.ProjFrac.frac 𝒜 U a b ha hb hU) =
@@ -292,7 +290,7 @@ variable {B τ : Type} [CommRing B] [SetLike τ B] [AddSubgroupClass τ B] {ℬ 
   (φ : 𝒜 →+*ᵍ ℬ) (hφ : HomogeneousIdeal.irrelevant ℬ ≤ (HomogeneousIdeal.irrelevant 𝒜).map φ)
 
 /- English proof (translation)
-Use `Subtype.ext <| funext fun p ↦ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `HomogeneousLocalization.mk _ = .mk _`. Use `ext`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_app_frac (U : (Proj 𝒜).Opens) {d : ℕ} (a b : A) (ha : a ∈ 𝒜 d) (hb : b ∈ 𝒜 d)
     (hU : U ≤ Proj.basicOpen 𝒜 b) :

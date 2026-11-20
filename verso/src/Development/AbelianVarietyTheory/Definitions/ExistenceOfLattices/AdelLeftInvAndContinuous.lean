@@ -36,19 +36,19 @@ open GlobalTheory.Member
 namespace GlobalTheory.MemberModel
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r C hC dict hd Kf hK`. Establish `last : ∀ g k γ, C.Mark g k γ → ∃ δ ∈ (C.M.X k).Γ, dict g = ⟨k, lact δ (C.fr (γ * g) k)⟩`. Introduce `g k γ hm`. Take `⟨γ₀, hm₀, hf⟩` from `hd.1 g`. Establish `hu` using `GlobalTheory.MarkUniq.mark_unique D H Dw l Xo c σ V r C hC g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : (dict g).1 = k` using `hu.1 _ _ _ _ hm₀ hm`. Substitute `hk` using the available equality. Take `⟨δ, hδ, he⟩` from `hu.2 _ γ γ₀ hm hm₀`. Use `⟨δ, hδ, ?_⟩` and prove the remaining obligations. Rewrite using `[← he, ← hf]`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨?_, ?_, ?_, ?_, last⟩` and prove the remaining obligations. Introduce `γ hγ g`. Take `⟨γ₀, hm₀, hf⟩` from `hd.1 g`. Establish `hm` using `(GlobalTheory.Member.mark_move D H Dw l Xo c σ V r C hC g _ γ₀ hm₀).1 γ hγ`. Take `⟨δ, hδ, he⟩` from `last _ _ _ hm`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨δ, hδ, ?_⟩` and prove the remaining obligations. Rewrite using `[he, hf, mul_assoc, inv_mul_cancel_left]`. Introduce `k hk g`. Take `⟨γ₀, hm₀, hf⟩` from `hd.1 g`. Establish `hk'` using `(hK k).1 hk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hm` using `(GlobalTheory.Member.mark_move D H Dw l Xo c σ V r C hC g _ γ₀ hm₀).2.1 k hk'.2`. Take `⟨δ, hδ, he⟩` from `last _ _ _ hm`. Use `⟨δ, hδ, ?_⟩` and prove the remaining obligations. Rewrite using `[he, hf, ← mul_assoc, (GlobalTheory.Member.fr_orthonormal_unit D H Dw l Xo c σ V r C hC (γ₀ * g) (dict g).1).2.2.2.2.1 k hk'.1]`. Introduce `g`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ₀, -, hf⟩` from `hd.1 g`. Rewrite using `[hf]`. Conclude with `(GlobalTheory.Member.fr_orthonormal_unit D H Dw l Xo c σ V r C hC (γ₀ * g) (dict g).1).2.1`. Introduce `g τ i`. Take `⟨γ₀, -, hf⟩` from `hd.1 g`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf]`. Conclude with `(GlobalTheory.Member.fr_orthonormal_unit D H Dw l Xo c σ V r C hC (γ₀ * g) (dict g).1).2.2.1 τ i`.
+A detailed English derivation is pending.
 -/
 theorem dict_invariant : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ dict, C.IsDict dict → ∀ Kf : Subgroup (GA D V), IsLevelK V l.M Kf → (∀ γ ∈ GQ V, ∀ g, ∃ γ' ∈ (C.M.X (dict g).1).Γ, dict (γ * g) = ⟨(dict g).1, lact γ' (dict g).2⟩) ∧ (∀ k ∈ Kf, ∀ g, ∃ γ' ∈ (C.M.X (dict g).1).Γ, dict (g * k) = ⟨(dict g).1, lact γ' (dict g).2⟩) ∧ (∀ g, (dict g).2 ∈ (C.M.X (dict g).1).dom) ∧ (∀ g τ i, ‖dmin (C.M.X (dict g).1).Gm (dict g).2 τ i‖ = 1) ∧ ∀ g k γ, C.Mark g k γ → ∃ δ ∈ (C.M.X k).Γ, dict g = ⟨k, lact δ (C.fr (γ * g) k)⟩ := by
   intro D H Dw l Xo c σ V r C hC dict hd Kf hK
@@ -86,7 +86,7 @@ theorem dict_invariant : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.
     exact (GlobalTheory.Member.fr_orthonormal_unit D H Dw l Xo c σ V r C hC (γ₀ * g) (dict g).1).2.2.1 τ i
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Conclude with `Matrix.mul_assoc (α := ℂ) _ (mat x τ) (mat b τ)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem frame_rmul_lact {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ : Finset (E →+* ℂ)} {r : ℕ}
     (γ : GL (Fin r) E) (x b : Frame Ψ r) : rmul (lact γ x) b = lact γ (rmul x b) := by
@@ -94,9 +94,9 @@ theorem frame_rmul_lact {E : Type} [Field E] [NumberField E] [IsCMField E] {Ψ :
   exact Matrix.mul_assoc (α := ℂ) _ (mat x τ) (mat b τ)
 
 /- English proof (translation)
-Take `⟨γ', hm', he⟩` from `hd.1 g`. Establish `hu` using `GlobalTheory.MarkUniq.mark_unique D H Dw l Xo c σ V r C hC g`. Establish `hk : k = (dict g).1` using `hu.1 _ _ _ _ hm hm'`. Substitute `hk` using the available equality. Take `⟨δ, hδ, e⟩` from `hu.2 _ _ _ hm hm'`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `⟨δ, hδ, ?_⟩` and prove the remaining obligations. Rewrite using `[← e, ← he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dict_eq_of_mark (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H)
     (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r) (hC : C.OK)
@@ -112,11 +112,11 @@ theorem dict_eq_of_mark (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.T
   rw [← e, ← he]
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r C hC dict hd`. Use `⟨fun g h hh => ?_, fun k x hx => ?_⟩` and prove the remaining obligations. Take `⟨γ, hm, he⟩` from `hd.1 g`. Establish `hm2` using `(GlobalTheory.Member.mark_move D H Dw l Xo c σ V r C hC g _ γ hm).2.2.1 h hh`. Take `⟨δ, hδ, e⟩` from `dict_eq_of_mark D H Dw l Xo c σ V r C hC dict hd (g * h) _ γ hm2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨δ, hδ, ?_⟩` and prove the remaining obligations. Rewrite using `[e, ← mul_assoc, (GlobalTheory.Member.fr_orthonormal_unit D H Dw l Xo c σ V r C hC (γ * g) _).2.2.2.2.2.1 h, ← he]`. Take `⟨x₀, b, hb, ho, hx₀⟩` from `(GlobalTheory.UnitFrames.frame_mul_triangular_orthonormal D.host.E r (C.M.X k).p0 (C.M.X k).Ψ (C.M.X k).Gm (C.M.X k).Gm_herm).1 x hx`. Take `⟨u, hu, hux⟩` from `(GlobalTheory.Member.fr_orthonormal_unit D H Dw l Xo c σ V r C hC 1 k).2.2.2.2.2.2 x₀ ho`. Take `⟨f, hf, hm⟩` from `GlobalTheory.Member.exists_finite_mark D H Dw l Xo c σ V r C hC k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hm2` using `(GlobalTheory.Member.mark_move D H Dw l Xo c σ V r C hC f k 1 hm).2.2.1 u hu`. Take `⟨δ, hδ, e⟩` from `dict_eq_of_mark D H Dw l Xo c σ V r C hC dict hd (f * u) k 1 hm2`. Use `⟨f * u, δ, hδ, b, hb, ?_⟩` and prove the remaining obligations. Rewrite using `[e, one_mul, ← (GlobalTheory.UnitarySplit.real_finite_split D V).2.1 u hu f hf, (GlobalTheory.Member.fr_orthonormal_unit D H Dw l Xo c σ V r C hC u k).2.2.2.2.1 f hf, hux, hx₀, frame_rmul_lact]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dict_real_equivariant_onto : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ dict, C.IsDict dict → (∀ g, ∀ h ∈ GinfC V, ∃ γ' ∈ (C.M.X (dict g).1).Γ, dict (g * h) = ⟨(dict g).1, lact γ' (rmul (dict g).2 (archMat V C.th C.hr (fun k => C.fr 1 k) h (dict g).1))⟩) ∧ ∀ k, ∀ x ∈ (C.M.X k).dom, ∃ g, ∃ γ ∈ (C.M.X k).Γ, ∃ b ∈ Bor (C.M.X k).Ψ r, dict g = ⟨k, rmul (lact γ x) b⟩ := by
   intro D H Dw l Xo c σ V r C hC dict hd
@@ -137,11 +137,11 @@ theorem dict_real_equivariant_onto : ∀ (D : D7) (H : ReciprocityTheory.ChartRe
       (GlobalTheory.Member.fr_orthonormal_unit D H Dw l Xo c σ V r C hC u k).2.2.2.2.1 f hf, hux, hx₀, frame_rmul_lact]
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r C hC dict hd Kf hK`. Take `⟨h1, h2, h3, -, -⟩` from `dict_invariant D H Dw l Xo c σ V r C hC dict hd Kf hK`. Take `⟨h4, h5⟩` from `dict_real_equivariant_onto D H Dw l Xo c σ V r C hC dict hd`. Use `⟨h1, h2, ⟨fun k => C.fr 1 k, fun k => ⟨(GlobalTheory.Member.fr_orthonormal_unit D H Dw l Xo c σ V r C hC 1 k).2.1, hd.2 k⟩, h4⟩, h3, h5, ?_⟩` and prove the remaining obligations. Introduce and unpack `g g' ⟨δ, hδ, he⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨γ, hγ, hf⟩` from `hd.1 g`. Take `⟨γ', hγ', hf'⟩` from `hd.1 g'`. Rewrite `hγ'`, `hf'` using `[he]`. Simplify using `only at hγ' hf'`. Take `⟨γ₁, hγ₁, hm, hfr⟩` from `(GlobalTheory.Member.mark_move D H Dw l Xo c σ V r C hC g _ γ hγ).2.2.2 δ hδ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify by unfolding definitions. Extract witnesses or component facts from the available result.
 
-Establish `hk` using `GlobalTheory.Member.mem_level_of_mark_of_frame_eq D H Dw l Xo c σ V r C hC Kf hK g g' _ _ _ hm hγ' (by rw [hfr, ← hf, hf'])`. Use `⟨γ'⁻¹ * (γ₁ * γ), mul_mem (inv_mem hγ'.1) hm.1, _, hk, ?_⟩` and prove the remaining obligations. Use `group`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dictIsUnif_of_isDict : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ dict, C.IsDict dict → ∀ Kf : Subgroup (GA D V), IsLevelK V l.M Kf → DictIsUnif V dict Kf C.th C.hr := by
   intro D H Dw l Xo c σ V r C hC dict hd Kf hK
@@ -160,21 +160,19 @@ theorem dictIsUnif_of_isDict : ∀ (D : D7) (H : ReciprocityTheory.ChartRestrict
   group
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r C hC dict hd mu hmul hrat hm la P hP`. Establish `: IsModuleTopology (AF D.host.F) (AF D.host.F ⊗[D.host.F] D.host.E)` using `⟨rfl⟩`. Establish `: Module.Finite D.host.F D.host.E` using `Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `: IsTopologicalRing (AF D.host.F ⊗[D.host.F] D.host.E)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Establish `: IsTopologicalGroup (GA D V)` using `inferInstanceAs (IsTopologicalGroup (HR (AF D.host.F) D.sp.cm.sig V.gram))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : 0 < l.M` using `lt_of_lt_of_le (by norm_num) l.three_le`. Take `⟨⟨Kf, hKf⟩, hnb⟩` from `GlobalTheory.Member.PrincLevel.exists_levelK_and_nhds D V l.M`. Take `⟨h1, -, h3, -, h5⟩` from `dict_invariant D H Dw l Xo c σ V r C hC dict hd Kf hKf`. Establish `hχ` using `hC.base.chi`. Establish `hsec : ∀ k, (C.M.X k).IsSec (la k) (P k)` using `fun k => (hP k).1.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `γ hγ g`. Take `⟨γ', hγ', he⟩` from `h1 γ hγ g`. Use `show mu (γ * g) * P (dict (γ * g)).1 (dict (γ * g)).2 = mu g * P (dict g).1 (dict g).2`. Rewrite using `[he, hmul, hrat γ hγ, one_mul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show mu g * P (dict g).1 (lact γ' (dict g).2) = _`. Rewrite using `[(hsec _).2.2 γ' hγ' _ (h3 g), hχ, one_mul]`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `g₀`. Take `⟨γ, hmk, -⟩` from `hd.1 g₀`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Generalize the expression as in `(dict g₀).1 = k at hmk`. Establish `hfr` using `fun h => GlobalTheory.Member.fr_orthonormal_unit D H Dw l Xo c σ V r C hC h k`. Establish `hPc : ContinuousOn (P k) (C.M.X k).dom` using `(hsec k).1.continuousOn`. Establish `hx : Continuous (fun g : GA D V => C.fr (γ * g) k)` using `(hfr 1).2.2.2.1.comp (continuous_const.mul continuous_id)`. Establish `hc : Continuous (fun g => mu g * P k (C.fr (γ * g) k))` using `hm.mul (hPc.comp_continuous hx fun g => (hfr _).2.1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : {g : GA D V | FinCong V l.M (g₀⁻¹ * g)} ∈ 𝓝 g₀`. Establish `hcont : ContinuousAt (fun g : GA D V => g₀⁻¹ * g) g₀` using `(continuous_const.mul continuous_id).continuousAt`. Establish `h0` using `hnb hM`. Rewrite `h0` using `[← inv_mul_cancel g₀]`. Conclude with `hcont h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `heq : (fun g => mu g * P k (C.fr (γ * g) k)) =ᶠ[𝓝 g₀] adel V dict mu P` using `by filter_upwards [hN] with g hg`. Establish `hmk'` using `(GlobalTheory.Member.mark_move D H Dw l Xo c σ V r C hC g₀ k γ hmk).2.1 _ hg`. Rewrite `hmk'` using `[mul_inv_cancel_left]`. Take `⟨δ, hδ, he⟩` from `h5 g k γ hmk'`. Use `show mu g * P k (C.fr (γ * g) k) = mu g * P (dict g).1 (dict g).2`.
-
-Rewrite using `[he]`. Use `show _ = mu g * P k (lact δ (C.fr (γ * g) k))`. Rewrite using `[(hsec k).2.2 δ hδ _ (hfr _).2.1, hχ, one_mul]`. Conclude with `hc.continuousAt.congr heq`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adel_leftInv_and_continuous : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ dict, C.IsDict dict → ∀ mu : GA D V → ℂ, (∀ g g', mu (g * g') = mu g * mu g') → (∀ γ ∈ GQ V, mu γ = 1) → Continuous mu → ∀ (la : ∀ k, Wt (C.M.X k).Ψ r) (P : FDSec C.M.X), IsHolCusp C.M.X la P → (∀ γ ∈ GQ V, ∀ g, adel V dict mu P (γ * g) = adel V dict mu P g) ∧ Continuous (adel V dict mu P) := by
   intro D H Dw l Xo c σ V r C hC dict hd mu hmul hrat hm la P hP
@@ -224,13 +222,13 @@ theorem adel_leftInv_and_continuous : ∀ (D : D7) (H : ReciprocityTheory.ChartR
     exact hc.continuousAt.congr heq
 
 /- English proof (translation)
-Introduce `D H Dw l Xo c σ V r C hC Kf hK χ hχ hχF`. Establish `hS` using `GlobalTheory.firstFiveLaws.1.secBaseChange`. Establish `hT` using `GlobalTheory.firstFiveLaws.2.1.secTwist`. Establish `hneg : GlobalTheory.FrameUnif.NegXi C.M` using `(GlobalTheory.Member.exists_ctx D H Dw l Xo c σ V r C.hr C.ι hC.iota hC.pos hC.lA hC.good).2.1 C hC`. Take `⟨un, hun⟩` from `GlobalTheory.FrameUnif.exists_framesOK hS hT _ H Dw l Xo c σ C.g C.e C.F r C.M hC.good hC.base hneg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨dict, hd⟩` from `GlobalTheory.Member.Ctx.exists_isDict D H Dw l Xo c σ V r C hC`. Take `⟨mu, hval, hmul, hnorm, hrat, hcont⟩` from `GlobalTheory.Member.exists_muVal D V χ hχ hχF`. Establish `hU` using `GlobalTheory.FrameUnif.isUnf_built hS _ H Dw l Xo c σ C.g C.e C.F r C.M un hC.good hC.base hneg hun`. Establish `: IsReduced (CAt σ)` using `inferInstanceAs (IsReduced ℂ)`. Use `⟨un, dict, mu, hd, hun, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `{ unf := (Formalism.L2.PjFree.isUnf_ofPj (C.unf un)).1 hU unTest := fun k x => GlobalTheory.Frames.allTest_of_secBaseChange hS _ H Dw l Xo c (CAt σ) (un k x) chi1 := hC.base.chi modelW := hC.modelW familyUniformisationBasePointOrthogonal := hC.orth muUnit := ⟨hmul, hnorm, hrat, ( …` and prove the remaining obligations. Take `⟨Pm, h1, h2, h3, h4, -⟩` from `hun.1 k x`. Conclude with `⟨Pm, h1, h2, h3, h4⟩`. Take `⟨γ, ⟨h1, h2, h3⟩, h4⟩` from `hd.1 h`. Use `⟨γ, h1, h2, h3, fun τ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `congrFun h4 τ`.
+A detailed English derivation is pending.
 -/
 theorem exists_pkgLaws : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (V : HSp D) (r : ℕ) (C : Ctx Xo c σ V r), C.OK → ∀ Kf : Subgroup (GA D V), IsLevelK V l.M Kf → ∀ χ : (AE D)ˣ →* Circle, IsHeckeChar D χ → (∀ a, χ (idF D a) = 1) → ∃ un dict mu, C.IsDict dict ∧ GlobalTheory.FrameUnif.FramesOK C.e C.F C.M un ∧ PkgLaws V C.hr C.ι Kf χ (C.unf un) dict mu C.x₀ := by
   intro D H Dw l Xo c σ V r C hC Kf hK χ hχ hχF
@@ -265,9 +263,9 @@ theorem exists_pkgLaws : ∀ (D : D7) (H : ReciprocityTheory.ChartRestriction.G.
     exact congrFun h4 τ
 
 /- English proof (translation)
-Introduce `h`. Establish `h1` using `GlobalTheory.Member.Inhab.latG_one_span V`. Rewrite `h1` using `[← h.emb.2, LinearMap.range_zero]`. Establish `h2 : (Pi.single ⟨0, hV⟩ 1 : Fin V.rank → D.host.E) ∈ Submodule.span D.host.E ((⊥ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)) : Set _)`. Rewrite using `[h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Discharge the goal by the elementary cases of `trivial`. Rewrite `h2` using `[Submodule.bot_coe, Submodule.span_zero_singleton, Submodule.mem_bot]`. Simplify using `using congrFun h2 ⟨0, hV⟩`.
+Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem not_iotaOK_zero {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host D.host.E} (Dw : Datum H) (V : HSp D)
     (hV : 0 < V.rank) : ¬ IotaOK Dw V 0 := by
@@ -281,7 +279,7 @@ theorem not_iotaOK_zero {D : D7} {H : ReciprocityTheory.ChartRestriction.G.Geo.T
   simpa using congrFun h2 ⟨0, hV⟩
 
 /- English proof (translation)
-Unfold `IsRat at *`. Rewrite using `[map_mul, map_mul, ha, hb]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem isRat_mul {D : D7} (V : HSp D) {a b : GA D V} {a' b' : GL (Fin V.rank) D.host.E}
     (ha : IsRat V a a') (hb : IsRat V b b') : IsRat V (a * b) (a' * b') := by
@@ -289,7 +287,7 @@ theorem isRat_mul {D : D7} (V : HSp D) {a b : GA D V} {a' b' : GL (Fin V.rank) D
   rw [map_mul, map_mul, ha, hb]
 
 /- English proof (translation)
-Take `⟨l, Xo, c, σ, C, hC, h3, hn, -⟩` from `GlobalTheory.Member.Inhab.exists_ctx_ok_at_lift D j hj`. Take `⟨⟨Kf, hK⟩, -⟩` from `GlobalTheory.Member.PrincLevel.exists_levelK_and_nhds D (D.sp.W j) l.M`. Take `⟨un, dict, mu, h1, -, h2⟩` from `exists_pkgLaws D _ _ l Xo c σ _ _ C hC Kf hK 1 ⟨continuous_const, fun _ => rfl⟩ (fun _ => rfl)`. Conclude with `⟨l, Xo, c, σ, C, Kf, hC, h3, hn, hK, un, dict, mu, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_ctx_dict_pkg (D : D7) (j : ℕ) (hj : 1 ≤ j ∧ j ≤ D.R.m) :
     ∃ (l : Level (hostOfRecord D)) (Xo : Moduli (datumW D j hj) l) (c : Coeff l) (σ : c.F →+* ℂ)

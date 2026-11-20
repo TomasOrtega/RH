@@ -12,13 +12,13 @@ set_option autoImplicit false
 namespace GlobalTheory.Pinch.Aff
 
 /- English proof (translation)
-Take `⟨U, U', V, u, p, j, n, k, hu, hp, hj, hx, hn, hl⟩` from `h`. Use `⟨U, U', V, u, p, j ≫ eB.inv, n, k ≫ eC.inv, hu, ?_, inferInstance, ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify `hp` using `[hb]`. Take `⟨t, ht⟩` from `hx`. Use `⟨t, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[ht]`. Simplify `hn` using `[he]`. Introduce `T a a' h`. Take `⟨y, hy1, hy2⟩` from `hl T a a' h`. Use `⟨y ≫ eY.inv, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: eY.inv ≫ i = i₂ ≫ eB.inv`. Rewrite using `[Iso.inv_comp_eq, ← Category.assoc, ← hi]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, this, ← Category.assoc, hy1, Category.assoc]`. Establish `: eY.inv ≫ q = q₂ ≫ eC.inv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Iso.inv_comp_eq, ← Category.assoc, ← hq]`. Simplify using the standard rewrite rules. Rewrite using `[Category.assoc, this, ← Category.assoc, hy2, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pinched_of_iso (g : ℕ) {S S' Z B' C Y B₂ C₂ Y₂ : Scheme.{0}} {s' : S' ⟶ S} {z : Z ⟶ S}
     {b' : B' ⟶ S'} {e : C ⟶ Z} {i : Y ⟶ B'} {q : Y ⟶ C}
@@ -45,9 +45,9 @@ theorem pinched_of_iso (g : ℕ) {S S' Z B' C Y B₂ C₂ Y₂ : Scheme.{0}} {s'
       rw [Category.assoc, this, ← Category.assoc, hy2, Category.assoc]
 
 /- English proof (translation)
-Establish `w : k.op ≫ g.op = h.op ≫ f.op`. Apply `Quiver.Hom.unop_inj` to reduce the goal to its premises. Simplify using `only [unop_comp, Quiver.Hom.unop_op]`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, Spec.map_comp]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `H.w.symm`. Conclude with `(IsPullback.of_map Scheme.Spec w H.flip).unop`.
+A detailed English derivation is pending.
 -/
 theorem isPushout_of_isPullback_Spec {A B C D : CommRingCat.{0}} {f : A ⟶ B} {g : A ⟶ C} {h : B ⟶ D}
     {k : C ⟶ D} (H : IsPullback (Spec.map h) (Spec.map k) (Spec.map f) (Spec.map g)) :
@@ -65,25 +65,21 @@ end GlobalTheory.Pinch.Aff
 namespace GlobalTheory.Pinch.Aff
 
 /- English proof (translation)
-Introduce `H R _ _ R' _ _ _ hinj c hc g B' C Y b' e i q hB hC hsm hss h1 h2 y`. Use `haveI : IsAffine Y := IsAffine.of_isPullback h1`. Use `haveI := hsm`. Use `set φc : CommRingCat.of R' ⟶ Γ(B', ⊤) := Spec.preimage (B'.isoSpec.inv ≫ b') with hφc`. Use `set δc : CommRingCat.of (R ⧸ c) ⟶ Γ(C, ⊤) := Spec.preimage (C.isoSpec.inv ≫ e) with hδc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set πc : Γ(B', ⊤) ⟶ Γ(Y, ⊤) := Spec.preimage (Y.isoSpec.inv ≫ i ≫ B'.isoSpec.hom) with hπc`. Use `set ψc : Γ(C, ⊤) ⟶ Γ(Y, ⊤) := Spec.preimage (Y.isoSpec.inv ≫ q ≫ C.isoSpec.hom) with hψc`. Establish `eφ : spMap φc.hom = B'.isoSpec.inv ≫ b'` using `by simp [spMap, φc]`. Establish `eδ : spMap δc.hom = C.isoSpec.inv ≫ e` using `by simp [spMap, δc]`. Establish `eπ : spMap πc.hom = Y.isoSpec.inv ≫ i ≫ B'.isoSpec.hom` using `by simp [spMap, πc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `eψ : spMap ψc.hom = Y.isoSpec.inv ≫ q ≫ C.isoSpec.hom` using `by simp [spMap, ψc]`. Establish `hφs : φc.hom.Smooth`. Rewrite using `[← HasRingHomProperty.Spec_iff (P := @Smooth), hφc, Spec.map_preimage]`. Use `infer_instance`. Establish `hδ : δc = (Scheme.ΓSpecIso (CommRingCat.of (R ⧸ c))).inv ≫ e.appTop`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[hδc, Spec.map_preimage, Spec.map_comp, Iso.inv_comp_eq, ← Category.assoc, Scheme.isoSpec_hom_naturality, Category.assoc, Scheme.isoSpec_Spec_hom, ← Spec.map_comp, Iso.inv_hom_id, Spec.map_id, Category.comp_id]`. Establish `hδs : δc.hom.IsStandardSmoothOfRelativeDimension g`. Rewrite using `[hδ, CommRingCat.hom_comp]`. Conclude with `(RingHom.isStandardSmoothOfRelativeDimension_respectsIso.cancel_left_isIso _ _).mpr hss`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hp1 : IsPushout (CommRingCat.ofHom (φc.hom.comp (algebraMap R R'))) (CommRingCat.ofHom (Ideal.Quotient.mk c)) (CommRingCat.ofHom πc.hom) (CommRingCat.ofHom (ψc.hom.comp δc.hom))`. Apply `isPushout_of_isPullback_Spec` to reduce the goal to its premises. Simplify using `only [CommRingCat.ofHom_comp, Spec.map_comp]`. Express the relevant statement in the definitionally equal form `IsPullback (spMap πc.hom) (spMap ψc.hom ≫ spMap δc.hom) (spMap φc.hom ≫ spMap (algebraMap R R')) (spMap (Ideal.Quotient.mk c))`. Rewrite using `[eφ, eδ, eπ, eψ]`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `refine IsPullback.of_iso h1 Y.isoSpec B'.isoSpec (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp`. Establish `hp2 : IsPushout (CommRingCat.ofHom (δc.hom.comp (Ideal.Quotient.mk c))) (CommRingCat.ofHom (algebraMap R R')) (CommRingCat.ofHom ψc.hom) (CommRingCat.ofHom (πc.hom.comp φc.hom))`. Apply `isPushout_of_isPullback_Spec` to reduce the goal to its premises. Simplify using `only [CommRingCat.ofHom_comp, Spec.map_comp]`. Express the relevant statement in the definitionally equal form `IsPullback (spMap ψc.hom) (spMap πc.hom ≫ spMap φc.hom) (spMap δc.hom ≫ spMap (Ideal.Quotient.mk c)) (spMap (algebraMap R R'))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[eφ, eδ, eπ, eψ]`. Apply the tactic sequence `refine IsPullback.of_iso h2 Y.isoSpec C.isoSpec (Iso.refl _) (Iso.refl _) ?_ ?_ ?_ ?_ <;> simp`. Establish `hP` using `H R R' hinj c hc g Γ(B', ⊤) Γ(C, ⊤) Γ(Y, ⊤) φc.hom δc.hom πc.hom ψc.hom hφs hδs hp1 hp2 (Y.isoSpec.hom y)`. Establish `hpt : spMap πc.hom (Y.isoSpec.hom y) = B'.isoSpec.hom (i y)`. Rewrite using `[eπ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `hP` using `[hpt]`. Use `pinched_of_iso g B'.isoSpec C.isoSpec Y.isoSpec ?_ ?_ ?_ ?_ (i y) hP` and prove the remaining obligations. Rewrite using `[eφ]`. Simplify using the standard rewrite rules.
-
-Rewrite using `[eδ]`. Simplify using the standard rewrite rules. Rewrite using `[eπ]`. Simplify using the standard rewrite rules. Rewrite using `[eψ]`.
-
-Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pinched_affine_of_spec : (∀ (R : Type) [CommRing R] [IsNoetherianRing R] (R' : Type) [CommRing R'] [Algebra R R'] [Module.Finite R R'], Function.Injective (algebraMap R R') → ∀ c : Ideal R, (∀ x ∈ c, ∀ r : R', ∃ y ∈ c, algebraMap R R' y = algebraMap R R' x * r) → ∀ (g : ℕ) (C' D E : Type) [CommRing C'] [CommRing D] [CommRing E] (φ : R' →+* C') (δ : R ⧸ c →+* D) (π : C' →+* E) (ψ : D →+* E), φ.Smooth → δ.IsStandardSmoothOfRelativeDimension g → IsPushout (CommRingCat.ofHom (φ.comp (algebraMap R R'))) (CommRingCat.ofHom (Ideal.Quotient.mk c)) (CommRingCat.ofHom π) (CommRingCat.ofHom (ψ.comp δ)) → IsPushout (CommRingCat.ofHom (δ.comp (Ideal.Quotient.mk c))) (CommRingCat.ofHom (algebraMap R R')) (CommRingCat.ofHom ψ) (CommRingCat.ofHom (π.comp φ)) → ∀ y : Sp E, GlobalTheory.Pinch.Pinched g (spMap (algebraMap R R')) (spMap (Ideal.Quotient.mk c)) (spMap φ) (spMap δ) (spMap π) (spMap ψ) (spMap π y)) → ∀ (R : Type) [CommRing R] [IsNoetherianRing R] (R' : Type) [CommRing R'] [Algebra R R'] [Module.Finite R R'], Function.Injective (algebraMap R R') → ∀ c : Ideal R, (∀ x ∈ c, ∀ r : R', ∃ y ∈ c, algebraMap R R' y = algebraMap R R' x * r) → ∀ (g : ℕ) (B' C Y : Scheme.{0}) (b' : B' ⟶ Sp R') (e : C ⟶ Sp (R ⧸ c)) (i : Y ⟶ B') (q : Y ⟶ C), IsAffine B' → IsAffine C → Smooth b' → e.appTop.hom.IsStandardSmoothOfRelativeDimension g → IsPullback i (q ≫ e) (b' ≫ spMap (algebraMap R R')) (spMap (Ideal.Quotient.mk c)) → IsPullback q (i ≫ b') (e ≫ spMap (Ideal.Quotient.mk c)) (spMap (algebraMap R R')) → ∀ y : Y, GlobalTheory.Pinch.Pinched g (spMap (algebraMap R R')) (spMap (Ideal.Quotient.mk c)) b' e i q (i y) := by
   intro H R _ _ R' _ _ _ hinj c hc g B' C Y b' e i q hB hC hsm hss h1 h2 y

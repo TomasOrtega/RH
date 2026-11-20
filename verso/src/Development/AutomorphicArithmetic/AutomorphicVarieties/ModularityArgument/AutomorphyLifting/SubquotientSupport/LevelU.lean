@@ -33,7 +33,7 @@ attribute [local instance 2000] UpperTheory.V.W.coefLocal
 open UpperTheory.V.Hi.LvR
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `W.exists_determinantPair_map_of_algHom l F O n r B.B T g B.u`. Conclude with `(B.univ T p).unique ⟨h1.trans hp.1, fun v i => (h2 v i).trans (hp.2 v i)⟩ hp`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem base_object_hom_ext {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ}
     {r : Resid F O n} (B : UniversalOrdinaryDeterminantRing r) (T : Type) [CommRing T] [Algebra O T] [Alg.IsCO O T] (f g : B.B →ₐ[O] T)
@@ -43,7 +43,7 @@ private theorem base_object_hom_ext {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {O
   exact (B.univ T p).unique ⟨h1.trans hp.1, fun v i => (h2 v i).trans (hp.2 v i)⟩ hp
 
 /- English proof (translation)
-Establish `e : Λ.toPair p (Λ.κ v i ⟨γ, hγ⟩ : Λ.Λˣ) = (p.ψ v i γ : R)` using `by have h := congrArg Units.val (DFunLike.congr_fun (Λ.toPair_spec r p v i) (⟨γ, hγ⟩ : F.Iv v)); exact h`. Rewrite using `[hx, map_sub, map_mul, map_one, AlgHom.commutes, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem lam_val {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O] {n : ℕ}
     {r : Resid F O n} (Λ : LamObj r) {R : Type} [CommRing R] [Algebra O R] [Alg.IsCO O R] (p : Pair r R) (v : F.Vl) (i : Fin n)
@@ -54,7 +54,7 @@ private theorem lam_val {l : ℕ} [Fact l.Prime] {F : W.GFrame l} {O : Type} [Co
   rw [hx, map_sub, map_mul, map_one, AlgHom.commutes, e]
 
 /- English proof (translation)
-Establish `e2 : Z.map P.subtype = N₀` using `h.trans (Submodule.ext h₀)`. Conclude with `⟨((Z.equivMapOfInjective P.subtype P.injective_subtype).trans (LinearEquiv.ofEq _ _ e2)).toAddEquiv, fun z => ⟨rfl, h ▸ Submodule.mem_map_of_mem z.2⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 private theorem eq_sub {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (P N N₀ : Submodule A M) (Z : Submodule A P)
     (h : Z.map P.subtype = N) (h₀ : ∀ f, f ∈ N ↔ f ∈ N₀) :
@@ -64,7 +64,7 @@ private theorem eq_sub {A M : Type} [CommRing A] [AddCommGroup M] [Module A M] (
     fun z => ⟨rfl, h ▸ Submodule.mem_map_of_mem z.2⟩⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `(hw (algebraMap _ (𝓞 L) x)).symm.trans (hv x)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 private theorem under_eq {L Ω : Type} [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω]
     {A : ValuationSubring Ω} {w : Plc L} {v : Plc (Lp L)} (hw : IsPlaceOver A w) (hv : IsPlaceOver A v) :
@@ -79,9 +79,9 @@ private def ProjAt {A G M : Type} [CommRing A] [Group G] [AddCommGroup M] [Modul
 
 set_option maxHeartbeats 3200000 in
 /- English proof (translation)
-Take `⟨θ', a', lam, hw', e1, e2, hl, hd, hJ⟩` from `LvW.step1 P l L Ω s n hn V0 Q0 c r ι A κ hi hu m τ₀ ty θ th hw a rs V h Q hsub hp B'`. Take `⟨hop, hM⟩` from `LvW.step2 P l L Ω s n hn V0 Q0 c r ι A κ hi hu m τ₀ ty θ th hw a rs V h Q hsub hp B' hS K0 θ' a' e1 e2`. Take `⟨ρ, α, h1, h2, h3, h4, h5, h6⟩` from `@LvW.umodAbs P.litN L Ω _ _ _ _ _ l _ n c (hset Q τ₀) (axU P.litN l L Ω s n hn V Q c m τ₀) A _ _ _ θ' hw' a' dq ι (PU (rUp h) ι) (autU P l L Ω s n hn V Q c (rUp h) ι m τ₀ (typeFor_up h hp ι τ₀ ty)) (fun _ => ⟨0, fun _ _ _ => le_rfl⟩) trivial (hd _) (neatU l L Ω s n hn V Q c m τ₀) …`. Establish `key` using `levelUR2SmulKey P.litN l L Ω s n hn V0 V Q0 Q c m τ₀ A θ hw a K0 (kMax Q τ₀) (p0 h) (continuous_levelChangeBaseGroupHom h) (surjective_levelChangeBaseGroupHom h) (levelChangeBaseGroupHom_apply_projection h hp) (opUp Q0 Q hsub τ₀) (fun _ => rfl) (fun _ _ => ⟨_, rfl⟩) θ' a' hw' e1 …`. Establish `h4' : ∀ (K K' : (hset Q τ₀).Lev) [((Subgroup.pi Set.univ K'.1).subgroupOf (Subgroup.pi Set.univ K.1)).Normal], (∀ q, K'.1 q ≤ K.1 q) → ProjAt ρ (Subgroup.pi Set.univ K.1) (Subgroup.pi Set.univ K'.1)` using `fun K K' _ hle => h4 K K' hle`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e0, he0⟩` from `eq_sub _ _ ((hset Q0 τ₀).MK θ a K0) _ (h3 (kMax Q τ₀)).1 hM`. Use `⟨_, _, _, ρ, α, lam, hl, h1, h2, fun K hK => (h3 ⟨K, hK⟩).2, fun K K' hK hK' hN hle => @h4' ⟨K, hK⟩ ⟨K', hK'⟩ hN hle, ⟨e0, fun t x x' hx => Subtype.ext ?_⟩, h6⟩` and prove the remaining obligations. Conclude with `((he0 x').1.trans (congrArg Subtype.val hx)).trans (key t ⟨x.1.1, (he0 x).2⟩ (e0 x) (he0 x).1.symm)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem s3 (P : Af.HypothesesH) (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ) (hn : 1 ≤ n)
     (V0 : s.Lev) (Q0 : QData V0) (c : Coef l) (r : Resid V0.frame c.O n) (ι : Qbar l ≃+* ℂ)
@@ -115,15 +115,15 @@ private theorem s3 (P : Af.HypothesesH) (l : ℕ) [Fact l.Prime] (L Ω : Type) [
 
 set_option maxHeartbeats 1600000 in
 /- English proof (translation)
-Establish `hN` using `P.litN`. Establish `hC : Pa.CohP` using `⟨hN.coh.lf, hN.coh.lt, hN.coh.le, hN.coh.gf, hN.coh.ge, hN.coh.gw, hN.coh.pt, GlobalTheory.Published.TameLocal_of_duality hN.coh.lt⟩`. Establish `hA0` using `axU hN l L Ω s n hn V0 Q0 c m τ₀`. Take `⟨wv, e, hwt⟩ : ∃ (wt : Pa.WtVars (Pa.locOf r) c.O n (n * Module.finrank ℚ (Lp L))) (e : Pa.abelian₂ c.O Empty (n * Module.finrank ℚ (Lp L)) ≃ₐ[c.O] A), ∀ k, ∃ hγ : wt.γ k ∈ V0.frame.Iv (wt.v k), residue c.O (wt.c k) * (r.psib (wt.v k) (wt.i k) (wt.γ k) : ResidueField c.O) = 1 ∧ e …` from `levelUR2WtVars l L Ω s n V0 c r B ⟨A, κ, hi, hu⟩ (W.locCFT hN.aut.art hC l L Ω s)`. Use `choose hγ hres hX using hwt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨μ, hμ1, hμ2, hμ3⟩` from `levelUR2BaseAct L Ω l n c _ hA0 A θ hw a K B.B B.u.D B.u.ψ _ J hJ`. Take `⟨-, hfin, hfree⟩` from `(hiComm L Ω l n c _ hA0 A θ hw K).2.2.2 a`. Take `⟨b, eb, hb, heb⟩` from `levelUR2BasePack l L Ω s V0 c.O n r B J _ wv A e (LamObj.toPair ⟨A, κ, hi, hu⟩ B.u) hres (fun k => lam_val ⟨A, κ, hi, hu⟩ B.u _ _ _ (hγ k) _ _ (hX k)) _ μ hμ1 hμ2`. Substitute `hb` using the available equality. Use `⟨b, fun V h q v w Bq hp hv hvS hV hw' hBv _ => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `rfl : (fun j => (w j).under (𝓞 (Lp L))) = v` from `funext fun j => under_eq (hw' j) (hBv j)`. Establish `hsub : V0.S' ⊆ V.S'` using `hS ▸ V.sub`. Take `⟨p', hp1, hp2⟩` from `pairUp h hn hp B.u`. Take `⟨B'⟩` from `W.b0Ex (W.phiAll hC) l L Ω s V c n (rUp h) B.B ⟨p'⟩`. Take `⟨β, hβ, -⟩` from `B'.univ B.B p'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hβ1 : B'.u.D.map β.toRingHom = B.u.D.comap (p0 h)` using `hβ.1.trans hp1`. Establish `hβ2 : ∀ (v : Vl l L) i, @Eq (Dec (F` using `L) (s.A v.1) →* B.Bˣ) (W.pushCh β.toRingHom (B'.u.ψ v i)) (B.u.ψ v i) := fun v i => (hβ.2 v i).trans (hp2 v i)`. Take `⟨M, _, _, ρ, α, lam, hl, h1, h2, h3, h4, ⟨e0, he0⟩, h6⟩` from `@s3 P l _ L Ω _ _ _ _ _ _ s n hn V0 Q0 c r ι A _ _ _ κ hi hu m τ₀ ty θ th hw a rs V h (qUp V w hv hvS hV) (instDecidableEqFin q) hsub hp B' hS K B β hβ1 hβ2 μ hμ3`. Take `⟨hI, hNm⟩` from `levelUR2IwLev l L n q w`. Establish `h4w : @ProjAt A (GV n w) M _ _ _ _ ρ (Pa.UIw n w) (Pa.UIw1 l n w) hNm` using `@h4 (fun j => AlgebraTools.iwC _ n ⊤) (fun j => AlgebraTools.iwC _ n (Pa.ellC l _)) (fun j => ⟨(hI j ⊤).1, (hI j ⊤).2.1⟩) (fun j => ⟨(hI j _).1, (hI j _).2.1⟩) hNm fun j => (hI j _).2.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ρ', h7, h8⟩` from `h4w`. Use `@levelUR2ModPack l _ L Ω _ _ _ _ _ _ s V0 c.O _ _ _ n r B J _ b V h q w (rN h) (rN_compat h) B'.B _ _ _ (pairN h B'.u) A _ _ e lam (fun k => ?_) β ⟨hβ1, hβ2⟩ M _ _ ρ α h1 h2 (h3 (fun j => AlgebraTools.iwC _ n (Pa.ellC l _)) fun j => ⟨(hI j _).1, (hI j _).2.1⟩) hNm ρ' h7 h8 (e0.tr …` and prove the remaining obligations. Rewrite using `[hX k, map_sub, map_mul, map_one, AlgHom.commutes]`. Conclude with `congrArg (fun z => algebraMap c.O B'.B (b.wt.c k) * z - 1) (hl (b.wt.v k) (b.wt.i k) (b.wt.γ k) (hγ k))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem s4 (P : Af.HypothesesH) (l : ℕ) [Fact l.Prime] (L Ω : Type) [Field L] [NumberField L] [IsCMField L] [Field Ω] [Algebra L Ω] [IsAlgClosure L Ω] (s : HidaSetting l L Ω) (n : ℕ) (hn : 1 ≤ n)
     (V0 : s.Lev) (Q0 : QData V0) (c : Coef l) (r : Resid V0.frame c.O n) (ι : Qbar l ≃+* ℂ)

@@ -10,7 +10,7 @@ section Local
 variable {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
 
 /- English proof (translation)
-Introduce `j V hV hle hh`. Take `⟨r, hr, e⟩` from `h j V hV hle hh`. Conclude with `⟨r, Ideal.map_mono hIJ hr, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem psiIn_mono (D : DegPre R) (χ : D.X) {I J : Ideal R} (hIJ : I ≤ J) (h : D.PsiIn χ I) : D.PsiIn χ J := by
   intro j V hV hle hh
@@ -18,7 +18,7 @@ theorem psiIn_mono (D : DegPre R) (χ : D.X) {I J : Ideal R} (hIJ : I ≤ J) (h 
   exact ⟨r, Ideal.map_mono hIJ hr, e⟩
 
 /- English proof (translation)
-Unfold `Formalism.L2.Pj.ordPsi`. Conclude with `le_antisymm (iSup₂_le fun n hn => absurd (psiIn_mono D χ le_top hn) h) zero_le`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem ordPsi_of_pole (D : DegPre R) (χ : D.X) (h : ¬ D.PsiIn χ ⊤) : ordPsi D χ = 0 := by
   unfold Formalism.L2.Pj.ordPsi
@@ -36,17 +36,17 @@ open AlgebraicGeometry CategoryTheory ReciprocityTheory.ChartRestriction.G Recip
 variable {R : Type} [CommRing R] [IsDomain R]
 
 /- English proof (translation)
-Take `⟨j0, hc0, h0, e0⟩` from `hr`. Prove the components needed by the constructor for the conclusion. Introduce `hJ`. Take `⟨r', hr', e'⟩` from `hJ j0 ⊤ (AlgebraicGeometry.isAffineOpen_top _) hc0 h0`. Establish `hrr : r' = DegPre.toOpen ⊤ r` using `GlobalTheory.PsiCoordLocal.jK_app_inj ⊤ (e'.trans e0.symm)`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hrr` using the available equality. Rewrite `hr'` using `[← Ideal.mem_comap, Ideal.comap_map_of_bijective _ GlobalTheory.PsiCoordLocal.toOpen_top_bijective]`. Then use the resulting hypothesis. Introduce `hJ j V hV hle h`. Establish `h'` using `GlobalTheory.PsiCoordLocal.generic_le D χ j0 (le_top.trans hc0 : V ≤ _)`. Take `⟨u, hu⟩` from `GlobalTheory.PsiCoordLocal.exists_trans D χ j j0 hle (le_top.trans hc0) h h'`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨(u : _) * DegPre.toOpen V r, Ideal.mul_mem_left _ _ (Ideal.mem_map_of_mem _ hJ), ?_⟩` and prove the remaining obligations. Establish `hres` using `congrArg Units.val hu`. Simplify using `only [ReciprocityTheory.ChartRestriction.G.Semi.res, ReciprocityTheory.ChartRestriction.G.Semi.pullU, Units.val_mul, Units.coe_map, MonoidHom.coe_coe] at hres`. Rewrite using `[map_mul]`. Use `Eq.trans ?_ hres.symm` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Establish `hVt : (TopologicalSpace.Opens.map (jK R).base).obj V ≤ (TopologicalSpace.Opens.map (jK R).base).obj ⊤` using `fun x _ => trivial`. Establish `e1` using `congrArg (CommRingCat.Hom.hom ((TK R).left.presheaf.map (CategoryTheory.homOfLE hVt).op)) e0`. Use `Eq.trans ?_ (e1.trans ?_)` and prove the remaining obligations. Establish `hnat` using `AlgebraicGeometry.Scheme.Hom.naturality (jK R) (CategoryTheory.homOfLE (le_top : V ≤ ⊤)).op`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ht : DegPre.toOpen V r = (CommRingCat.Hom.hom ((AlgebraicGeometry.Spec (CommRingCat.of R)).presheaf.map (CategoryTheory.homOfLE (le_top : V ≤ ⊤)).op)) (DegPre.toOpen ⊤ r)`. Simplify using `only [DegPre.toOpen, RingHom.comp_apply, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Rewrite using `[ht, ← CommRingCat.comp_apply, hnat, CommRingCat.comp_apply]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem psiIn_iff {D : DegPre R} {χ : D.X} {r : R} (hr : PsiCoord D χ r) (J : Ideal R) : D.PsiIn χ J ↔ r ∈ J := by
   obtain ⟨j0, hc0, h0, e0⟩ := hr
@@ -83,7 +83,7 @@ theorem psiIn_iff {D : DegPre R} {χ : D.X} {r : R} (hr : PsiCoord D χ r) (J : 
 variable [IsDiscreteValuationRing R]
 
 /- English proof (translation)
-Establish `hm : maximalIdeal R = Ideal.span {ϖ}` using `(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ`. Establish `hmem : ∀ k, (u : R) * ϖ ^ n ∈ maximalIdeal R ^ k ↔ k ≤ n`. Introduce `k`. Rewrite using `[hm, Ideal.span_singleton_pow, Ideal.mem_span_singleton, Units.dvd_mul_left, pow_dvd_pow_iff hϖ.ne_zero hϖ.not_isUnit]`. Conclude with `le_antisymm (iSup₂_le fun k hk => Nat.cast_le.2 ((hmem k).1 hk)) (le_iSup₂_of_le (f := fun (k : ℕ) (_ : (u : R) * ϖ ^ n ∈ maximalIdeal R ^ k) => (k : ℕ∞)) n ((hmem n).2 le_rfl) le_rfl)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iSup_pow_mem {ϖ : R} (hϖ : Irreducible ϖ) (u : Rˣ) (n : ℕ) :
     (⨆ (k : ℕ) (_ : (u : R) * ϖ ^ n ∈ maximalIdeal R ^ k), (k : ℕ∞)) = n := by

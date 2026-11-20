@@ -11,11 +11,11 @@ section Abstract
 variable {X : Type*} [MeasurableSpace X] {T : X → X → X} {G R : Set X} {μG μR ν : Measure X}
 
 /- English proof (translation)
-Establish `h1` using `hW (B.indicator 1) (measurable_one.indicator hB)`. Rewrite `h1` using `[lintegral_indicator_one hB, hn]`. Establish `h2 : ∫⁻ x, B.indicator (fun _ => μR Set.univ) x ∂ν ≤ ∫⁻ x, (∫⁻ s, B.indicator (1 : X → ℝ≥0∞) (T s x) ∂μR) ∂ν`. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ B`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hx, ← lintegral_one]`. Use `le_of_eq (lintegral_congr_ae ?_)` and prove the remaining obligations. Use `filter_upwards [hR] with s hs`. Rewrite using `[Set.indicator_of_mem (hst s hs x hx)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_notMem hx]`. Conclude with `zero_le`. Rewrite `h2` using `[← h1, lintegral_indicator_const hB, nonpos_iff_eq_zero, mul_eq_zero]`. Conclude with `h2.resolve_left (by simpa using h0)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem null_of_stable (hR : ∀ᵐ s ∂μR, s ∈ R) (h0 : μR ≠ 0)
     (hW : ∀ f : X → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μG = ∫⁻ x, (∫⁻ s, f (T s x) ∂μR) ∂ν)
@@ -35,21 +35,17 @@ theorem null_of_stable (hR : ∀ᵐ s ∂μR, s ∈ R) (h0 : μR ≠ 0)
   exact h2.resolve_left (by simpa using h0)
 
 /- English proof (translation)
-Take `⟨g, hg0, hgm, hgi⟩` from `exists_pos_lintegral_lt_of_sigmaFinite μG (ε := 1) one_ne_zero`. Use `set ψ : X → ℝ≥0∞ := fun x => (g x : ℝ≥0∞) with hψ`. Establish `hψm : Measurable ψ` using `hgm.coe_nnreal_ennreal`. Establish `hTx : ∀ x, Measurable fun s => T s x` using `fun x => hT.comp (measurable_id.prodMk measurable_const)`. Use `set I : X → ℝ≥0∞ := fun x => ∫⁻ s, ψ (T s x) ∂μR with hI`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hIm : Measurable I` using `Measurable.lintegral_prod_left (f := fun s x => ψ (T s x)) (hψm.comp hT)`. Establish `hI0 : ∀ x, I x ≠ 0`. Introduce `x hx`. Establish `h` using `(lintegral_eq_zero_iff (hψm.comp (hTx x))).1 hx`. Apply `h0` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← ae_eq_bot, ← Filter.eventually_false_iff_eq_bot]`. Use `filter_upwards [h] with s hs`. Use `hg0 (T s x)` as an intermediate fact. Simplify using `[hψ] at hs`. Conclude with `this.ne' hs`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hIfin : ∀ᵐ x ∂ν, I x < ∞`. Use `ae_lt_top hIm ?_` and prove the remaining obligations. Rewrite using `[← hW ψ hψm]`. Conclude with `(hgi.trans ENNReal.one_lt_top).ne`. Establish `key : ∀ x, ∫⁻ ρ, ψ (T ρ x) * (I (T ρ x))⁻¹ ∂μR = I x * (I x)⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Rewrite using `[show I x * (I x)⁻¹ = ∫⁻ ρ, ψ (T ρ x) * (I x)⁻¹ ∂μR from (lintegral_mul_const (I x)⁻¹ (f := fun s => ψ (T s x)) (hψm.comp (hTx x))).symm]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hR] with s hs`. Establish `: I (T s x) = I x` using `hinv s hs x ψ hψm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Establish `hφm : Measurable fun x => ψ x * (I x)⁻¹` using `hψm.mul hIm.inv`. Use `⟨fun x => ψ x * (I x)⁻¹, hφm, fun x => ?_, fun F hF hFi => ?_⟩` and prove the remaining obligations. Rewrite using `[key]`. Conclude with `ENNReal.mul_inv_le_one _`.
-
-Use `show _ = ∫⁻ x, ψ x * (I x)⁻¹ * F x ∂μG`. Rewrite using `[hW (fun x => ψ x * (I x)⁻¹ * F x) (hφm.mul hF)]`. Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hG, hIfin] with x hx hx'`. Establish `h1 : ∫⁻ s, ψ (T s x) * (I (T s x))⁻¹ * F (T s x) ∂μR = ∫⁻ s, ψ (T s x) * (I (T s x))⁻¹ * F x ∂μR`.
-
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hR] with s hs`. Rewrite using `[hFi s hs x hx]`. Rewrite using `[h1, lintegral_mul_const (F x) (f := fun s => ψ (T s x) * (I (T s x))⁻¹) (hφm.comp (hTx x)), key, ENNReal.mul_inv_cancel (hI0 x) hx'.ne, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_cut [SigmaFinite μG] [SFinite μR] (hT : Measurable (Function.uncurry T))
     (hR : ∀ᵐ s ∂μR, s ∈ R) (h0 : μR ≠ 0)
@@ -105,9 +101,9 @@ theorem exists_cut [SigmaFinite μG] [SFinite μR] (hT : Measurable (Function.un
 end Abstract
 
 /- English proof (translation)
-Establish `hs' : sᴴ * Hpk k r * s = Hpk k r` using `hs`. Establish `: (s * x)ᴴ * Hpk k r * (s * x) = xᴴ * Hpk k r * x`. Rewrite using `[conjTranspose_mul]`. Use `conv_rhs => rw [← hs']`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (s * x)ᴴ * Hpk k r * (s * x) = Hpk k r ↔ xᴴ * Hpk k r * x = Hpk k r`. Rewrite using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem mul_mem_iff {k r : ℕ} {s : Mat k r} (hs : s ∈ GG k r) (x : Mat k r) :
     s * x ∈ GG k r ↔ x ∈ GG k r := by
@@ -120,7 +116,7 @@ theorem mul_mem_iff {k r : ℕ} {s : Mat k r} (hs : s ∈ GG k r) (x : Mat k r) 
   rw [this]
 
 /- English proof (translation)
-Use `IsClosed.measurableSet ?_` and prove the remaining obligations. Establish `h : Continuous fun x : Mt k r => (Matrix.of x : Mat k r)` using `continuous_id`. Conclude with `isClosed_eq (f := fun x : Mt k r => (Matrix.of x : Mat k r)ᴴ * Hpk k r * Matrix.of x) ((h.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul h) continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurable_G (k r : ℕ) : MeasurableSet {x : Mt k r | Matrix.of x ∈ GG k r} := by
   refine IsClosed.measurableSet ?_
@@ -129,7 +125,7 @@ theorem measurable_G (k r : ℕ) : MeasurableSet {x : Mt k r | Matrix.of x ∈ G
     ((h.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul h) continuous_const
 
 /- English proof (translation)
-Establish `h : Continuous fun x : Mt k r => (Matrix.of x : Mat k r)` using `continuous_id`. Conclude with `(h.comp continuous_fst).matrix_mul (h.comp continuous_snd)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_act (k r : ℕ) :
     Continuous (Function.uncurry fun s x : Mt k r => lmulM (Matrix.of s) x) := by
@@ -137,17 +133,15 @@ theorem continuous_act (k r : ℕ) :
   exact (h.comp continuous_fst).matrix_mul (h.comp continuous_snd)
 
 /- English proof (translation)
-Introduce `k r R μG μR ν hR hG hμ hU hW`. Use `haveI := hG.1`. Use `haveI := hμ.1`. Use `set T : Mt k r → Mt k r → Mt k r := fun s x => lmulM (Matrix.of s) x with hT`. Establish `hTm : Measurable (Function.uncurry T)` using `(continuous_act k r).measurable`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hae : ∀ᵐ s ∂μR, s ∈ {x : Mt k r | Matrix.of x ∈ R}` using `hμ.2.2.1`. Establish `hW' : ∀ f : Mt k r → ℝ≥0∞, Measurable f → ∫⁻ x, f x ∂μG = ∫⁻ x, (∫⁻ s, f (T s x) ∂μR) ∂ν` using `hW`. Establish `hmem : ∀ s : Mt k r, Matrix.of s ∈ R → ∀ x : Mt k r, (Matrix.of (T s x) ∈ GG k r ↔ Matrix.of x ∈ GG k r)` using `fun s hs x => mul_mem_iff (hR.1 hs) (Matrix.of x)`. Establish `h1 : ν {x | Matrix.of x ∉ GG k r} = 0` using `null_of_stable hae hμ.2.1 hW' (measurable_G k r).compl (fun s hs x hx h => hx ((hmem s hs x).1 h)) hG.2.2.1`. Establish `h1' : ∀ᵐ x ∂ν, x ∈ {x : Mt k r | Matrix.of x ∈ GG k r}` using `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h1, fun A hA hst hn => ?_, ?_⟩` and prove the remaining obligations. Establish `h2 : ν (A ∩ {x : Mt k r | Matrix.of x ∈ GG k r}) = 0` using `null_of_stable hae hμ.2.1 hW' (hA.inter (measurable_G k r)) (fun s hs x hx => ⟨(hst _ hs x hx.2).2 hx.1, (hmem s hs x).2 hx.2⟩) (measure_mono_null Set.inter_subset_left hn)`. Use `measure_mono_null (fun x hx => ?_) (measure_union_null h2 h1)` and prove the remaining obligations. Distinguish the cases in `h : Matrix.of x ∈ GG k r`. Conclude with `Or.inl ⟨hx, h⟩`.
+Consider separately whether the proposition holds or fails. Prove the first alternative. Prove the second alternative. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Or.inr h`. Take `⟨φ, hφ, hle, hF⟩` from `exists_cut hTm hae hμ.2.1 hW' h1' (by`. Introduce `ρ hρ x f hf`. Establish `hTx : Measurable fun s => T s x` using `hTm.comp (measurable_id.prodMk measurable_const)`. Establish `hc : Continuous fun x : Mt k r => (Matrix.of x : Mat k r)` using `continuous_id`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : Measurable (rmulM (k` using `k) (r := r) (Matrix.of ρ)) := by`. Establish `hc' : Continuous (rmulM (k` using `k) (r := r) (Matrix.of ρ)) := hc.matrix_mul continuous_const`. Conclude with `hc'.measurable`. Use `conv_rhs => rw [← hU.1 (Matrix.of ρ) hρ]`. Rewrite using `[lintegral_map (f := fun s => f (T s x)) (hf.comp hTx) hr]`.
-
-Use `lintegral_congr fun s => congrArg f ?_` and prove the remaining obligations. Conclude with `(Matrix.mul_assoc (Matrix.of s) (Matrix.of ρ) (Matrix.of x)).symm)`. Conclude with `⟨φ, ⟨hφ, fun x _ => hle x⟩, fun F hFm hFi => hF F hFm fun ρ hρ x hx => hFi _ hρ x hx⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem cut_quotient : ∀ (k r : ℕ) (R : Set (Mat k r)) (μG μR ν : Measure (Mt k r)), IsClosedSub k r R → IsHaarOn (GG k r) μG → IsHaarOn R μR → IsUnimod R μR → IsQuotMeas μG μR ν → ν {x | Matrix.of x ∉ GG k r} = 0 ∧ (∀ A : Set (Mt k r), MeasurableSet A → (∀ ρ ∈ R, ∀ x, Matrix.of x ∈ GG k r → (lmulM ρ x ∈ A ↔ x ∈ A)) → μG A = 0 → ν A = 0) ∧ ∃ φ, SubCut (GG k r) μR φ ∧ ∀ F : Mt k r → ℝ≥0∞, Measurable F → (∀ ρ ∈ R, ∀ x, Matrix.of x ∈ GG k r → F (lmulM ρ x) = F x) → ∫⁻ x, F x ∂ν = ∫⁻ x, φ x * F x ∂μG := by
   intro k r R μG μR ν hR hG hμ hU hW

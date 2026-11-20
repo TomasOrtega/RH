@@ -9,7 +9,7 @@ set_option autoImplicit false
 namespace Formalism.L2.FormalSeriesBounds
 
 /- English proof (translation)
-The claim follows from `rank_maximal_self_of_eigen first_vanishing_core funEqCore_holds curve_linear_term_unconditional aLinAdj_holds RowTiePKey.keyEig_holds`.
+A detailed English derivation is pending.
 -/
 theorem rank_maximal_self_unconditional : RankMaximalSelfOfNondegenerate :=
   rank_maximal_self_of_eigen first_vanishing_core funEqCore_holds curve_linear_term_unconditional aLinAdj_holds RowTiePKey.keyEig_holds

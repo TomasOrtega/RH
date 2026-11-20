@@ -14,11 +14,11 @@ noncomputable section
 namespace GlobalTheory.LevCmp
 
 /- English proof (translation)
-Set `N : Finset X → Submodule K V` to `fun P => ⨅ x ∈ P, LinearMap.ker ((LinearMap.proj (R := K) (φ := fun _ : X => W) x).comp V.subtype)`. Establish `hN : ∀ P (f : V), f ∈ N P ↔ ∀ x ∈ P, (f : X → W) x = 0`. Introduce `P f`. Simplify using `[N, Submodule.mem_iInf]`. Take `⟨_, ⟨P, rfl⟩, hmin⟩` from `(wellFounded_lt (α := Submodule K V)).has_min (Set.range N) ⟨_, ⟨∅, rfl⟩⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨P, fun f hf h0 => ?_⟩` and prove the remaining obligations. Establish `key : ∀ x, N P ≤ N (insert x P)`. Introduce `x`. Establish `hle : N (insert x P) ≤ N P` using `fun g hg => (hN _ _).2 fun y hy => (hN _ _).1 hg y (Finset.mem_insert_of_mem hy)`. Assume the negation of the conclusion as `hne`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hmin _ ⟨_, rfl⟩ (lt_of_le_of_ne hle fun h => hne h.ge)`. Use function extensionality and compare the values at `x`. Conclude with `(hN _ _).1 (key x ((hN P ⟨f, hf⟩).2 h0)) x (Finset.mem_insert_self x P)`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem exists_finset_eval_eq_zero {X K W : Type} [Field K] [AddCommGroup W] [Module K W]
     (V : Submodule K (X → W)) [FiniteDimensional K V] :
@@ -52,7 +52,7 @@ def coordCx (e : K →+* ℂ) (b : Module.Basis ι K W) (b' : Module.Basis ι �
     simp only [map_smul, LinearEquiv.apply_symm_apply]; funext i; simp only [Pi.smul_apply, smul_eq_mul, map_mul, RingHom.id_apply])
 
 /- English proof (translation)
-Simplify using `only [coordCx, LinearMap.coe_mk, AddHom.coe_mk, LinearEquiv.apply_symm_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coordCx_coord (e : K →+* ℂ) (b : Module.Basis ι K W) (b' : Module.Basis ι ℂ W') (w : W) (i : ι) :
     b'.equivFun (coordCx e b b' w) i = e (b.equivFun w i) := by
@@ -61,47 +61,45 @@ theorem coordCx_coord (e : K →+* ℂ) (b : Module.Basis ι K W) (b' : Module.B
 end Omega
 
 /- English proof (translation)
-Introduce `L _ _ _ n K _ e W W' _ _ _ _ ρ ρ' J χ hW hN hfin`. Take `⟨ι, _, _, b, b', hM⟩` from `hW`. Use `letI : Algebra K ℂ := e.toAlgebra`. Set `β` to `Module.Basis.ofVectorSpace K ℂ`. Set `ω` to `coordCx e b b'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hωc : ∀ w i, b'.equivFun (ω w) i = e (b.equivFun w i)` using `fun w i => coordCx_coord e b b' w i`. Establish `hρ : ∀ γ w i, b.equivFun (ρ γ w) i = ∑ k, LinearMap.toMatrix b b (ρ γ) i k * b.equivFun w k`. Introduce `γ w i`. Use `congrFun (LinearMap.toMatrix_mulVec_repr b b (ρ γ) w) i` as an intermediate fact. Simplify using `only [Module.Basis.equivFun_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `hρ' : ∀ γ w i, b'.equivFun (ρ' γ w) i = ∑ k, e (LinearMap.toMatrix b b (ρ γ) i k) * b'.equivFun w k`. Introduce `γ w i`. Use `congrFun (LinearMap.toMatrix_mulVec_repr b' b' (ρ' γ) w) i` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[hM γ]`. Simplify using `only [Module.Basis.equivFun_apply]`. Rewrite using `[← this]`. Both sides reduce to the same expression. Establish `hωρ : ∀ γ w, ω (ρ γ w) = ρ' γ (ω w)` using `fun γ w => b'.equivFun.injective (funext fun i => by rw [hωc, hρ, hρ', map_sum]; simp only [map_mul, hωc])`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hβ1 : ∀ (y : K) (z : ℂ) α, β.repr (e y * z) α = y * β.repr z α`. Introduce `y z α`. Rewrite using `[show e y * z = y • z from rfl, map_smul, Finsupp.smul_apply, smul_eq_mul]`. Set `V` to `NX.TypeSpF L n K ρ J χ`. Set `v` to `Module.finBasis K V`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hωV : ∀ f ∈ V, (fun g => ω (f g)) ∈ NG.TypeSp ρ' J (cx e χ)`. Introduce and unpack `f ⟨h1, h2⟩`. Take `⟨N, hN0, hNc⟩` from `hN`. Use `⟨⟨fun γ g => by simp only [h1, hωρ], N, hN0, fun κ hκ g => ?_⟩, fun κ => ?_⟩` and prove the remaining obligations. Take `⟨h, h1'⟩` from `hNc κ hκ show ω (f (g * κ)) = ω (f g)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `h2 ⟨κ, h⟩ g` as an intermediate fact. Rewrite using `[this, h1', Units.val_one, one_smul]`. Use function extensionality and compare the values at `g show ω (f (g * κ)) = ((cx e χ κ : ℂˣ) : ℂ) • ω (f g)`. Rewrite using `[h2, map_smulₛₗ, cx_apply]`. Establish `hlinK : LinearIndependent K (fun j => ((v j : V) : GAf L n → W))` using `v.linearIndependent.map' V.subtype V.ker_subtype`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hli : LinearIndependent ℂ (fun j => fun g => ω (((v j : V) : GAf L n → W) g))`. Rewrite `hlinK`, the goal using `[Fintype.linearIndependent_iff]`. Introduce `c hc j`. Establish `hcoord : ∀ g i, ∑ j, c j * e (b.equivFun (((v j : V) : GAf L n → W) g) i) = 0`. Introduce `g i`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun F => b'.equivFun (F g) i) hc` as an intermediate fact. Simplify `this` using `only [Finset.sum_apply, Pi.smul_apply, map_sum, map_smul, Pi.smul_apply, smul_eq_mul, hωc, Pi.zero_apply, map_zero]`. Establish `hα : ∀ α, ∀ j, β.repr (c j) α = 0`. Introduce `α`. Apply `hlinK` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use function extensionality and compare the values at `g`. Apply `b.equivFun.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Use `congrArg (fun z => β.repr z α) (hcoord g i)` as an intermediate fact. Simplify using `only [map_sum, Finsupp.coe_finset_sum, Finset.sum_apply, mul_comm (c _), hβ1, map_zero, Finsupp.coe_zero, Pi.zero_apply] at this`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_apply, Pi.smul_apply, map_sum, map_smul, smul_eq_mul, map_zero, Pi.zero_apply]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Conclude with `β.repr.injective (by ext α; simp [hα α j])`. Establish `hspanV : ∀ a : Fin (Module.finrank K V) → K, (fun g => ω ((∑ j, a j • ((v j : V) : GAf L n → W)) g)) ∈ Submodule.span ℂ (Set.range fun j => fun g => ω (((v j : V) : GAf L n → W) g))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Establish `: (fun g => ω ((∑ j, a j • ((v j : V) : GAf L n → W)) g)) = ∑ j, e (a j) • fun g => ω (((v j : V) : GAf L n → W) g)`. Use function extensionality and compare the values at `g`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, map_sum, map_smulₛₗ]`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hspan : NG.TypeSp ρ' J (cx e χ) = Submodule.span ℂ (Set.range fun j => fun g => ω (((v j : V) : GAf L n → W) g))`. Use `le_antisymm ?_ (Submodule.span_le.2 (by rintro _ ⟨j, rfl⟩; exact hωV _ (v j).2))` and prove the remaining obligations. Introduce and unpack `F ⟨⟨hF1, -⟩, hF2⟩`. Establish `hFk : ∀ (κ : J) g, F (g * κ) = e (χ κ) • F g` using `fun κ g => congrFun (hF2 κ) g`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `fa : _ → GAf L n → W` to `fun α g => b.equivFun.symm fun i => β.repr (b'.equivFun (F g) i) α`. Establish `hfa : ∀ α g i, b.equivFun (fa α g) i = β.repr (b'.equivFun (F g) i) α`. Introduce `α g i`. Simplify using `only [fa, LinearEquiv.apply_symm_apply]`. Establish `hfaV : ∀ α, fa α ∈ V`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `α`. Use `⟨fun γ g => b.equivFun.injective (funext fun i => ?_), fun κ g => b.equivFun.injective (funext fun i => ?_)⟩` and prove the remaining obligations. Rewrite using `[hfa, hF1, hρ', hρ, map_sum, Finsupp.coe_finset_sum, Finset.sum_apply]`. Simplify using `only [hβ1, hfa]`. Rewrite using `[hfa, hFk, map_smul, Pi.smul_apply, smul_eq_mul, hβ1, map_smul, Pi.smul_apply, smul_eq_mul, hfa]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨P, hP⟩` from `exists_finset_eval_eq_zero V`. Set `S` to `P.biUnion fun g => Finset.univ.biUnion fun i => (β.repr (b'.equivFun (F g) i)).support`. Establish `hzero : ∀ α ∉ S, fa α = 0`. Introduce `α hα`. Use `hP _ (hfaV α) fun g hg => b.equivFun.injective (funext fun i => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[hfa, map_zero, Pi.zero_apply]`. Assume the negation of the conclusion as `h`. Conclude with `hα (Finset.mem_biUnion.2 ⟨g, hg, Finset.mem_biUnion.2 ⟨i, Finset.mem_univ _, Finsupp.mem_support_iff.2 h⟩⟩)`. Establish `hsub : ∀ g i, (β.repr (b'.equivFun (F g) i)).support ⊆ S`. Introduce `g i α hα`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hS`. Use `congrArg (fun f => b.equivFun (f g) i) (hzero α hS)` as an intermediate fact. Simplify using `only [hfa, Pi.zero_apply, map_zero] at this`. Conclude with `(Finsupp.mem_support_iff.1 hα) this`. Establish `hFeq : F = ∑ α ∈ S, β α • fun g => ω (fa α g)`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Apply `b'.equivFun.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, map_sum, map_smul, smul_eq_mul, hωc, hfa]`. Use `conv_lhs => rw [← β.linearCombination_repr (b'.equivFun (F g) i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.linearCombination_apply, Finsupp.sum_of_support_subset _ (hsub g i) (fun a c => c • β a) (fun _ _ => zero_smul _ _)]`. Conclude with `Finset.sum_congr rfl fun α _ => mul_comm _ _`. Rewrite using `[hFeq]`. Use `Submodule.sum_mem _ fun α _ => Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hrep` using `congrArg Subtype.val (v.sum_repr ⟨fa α, hfaV α⟩)`.
-
-Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at hrep`. Rewrite using `[← hrep]`. Conclude with `hspanV _`. Rewrite using `[hspan, finrank_span_eq_card hli, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_typeSp_cx : ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (n : ℕ) (K : Type) [Field K] (e : K →+* ℂ) (W W' : Type) [AddCommGroup W] [Module K W] [AddCommGroup W'] [Module ℂ W'] (ρ : Representation K (GQ L n) W) (ρ' : Representation ℂ (GQ L n) W') (J : Subgroup (GAf L n)) (χ : J →* Kˣ), WtMatch e ρ ρ' → (∃ N : ℕ, 0 < N ∧ ∀ κ, NG.Cong L n N κ → ∃ h : κ ∈ J, χ ⟨κ, h⟩ = 1) → FiniteDimensional K (NX.TypeSpF L n K ρ J χ) → Module.finrank ℂ (NG.TypeSp ρ' J (cx e χ)) = Module.finrank K (NX.TypeSpF L n K ρ J χ) := by
   intro L _ _ _ n K _ e W W' _ _ _ _ ρ ρ' J χ hW hN hfin

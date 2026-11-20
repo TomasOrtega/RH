@@ -21,7 +21,7 @@ namespace GlobalTheory.LieFilt.Reg
 open GlobalTheory.ShFam.Pad.Guard
 
 /- English proof (translation)
-Establish `hu : ∀ k : Fin 1, IsTanAtG t x ((fun _ => v) k)` using `fun _ => hv`. Take `⟨hw, he⟩` from `GlobalTheory.TanSec.Norm.exists_tanEv_comb t hV hm hu (comb_smul hu (isCombAtG_single t x hu 0) δ)`. Establish `h1 : ‖tanEv t hw hV (m b)‖ ≤ 1` using `(GlobalTheory.TanSec.Norm.mem_latDR_iff_tanEv t hX hx hO hV hm hw).1 h b`. Rewrite `h1` using `[he b]`. Simplify `h1` using `[hδ]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem norm_tanEv_le_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {X : Scheme.{0}} (t : SAB H X) (hX : X.IsSeparated) {C : Type} [NontriviallyNormedField C] [IsUltrametricDist C]
@@ -36,21 +36,21 @@ theorem norm_tanEv_le_one {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   simpa [hδ] using h1
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z F _ _ e X W q jB πB ρ d hq hn pb hρ M r g τ t ht hL ch V hle hV f hf A hA`. Establish `hI` using `IntCritPf.intCrit F X W q _ jB d hq hn pb`. Establish `: IsProper Z.s` using `projProper _ _ _ Z.proj`. Establish `hsep : Z.X.IsSeparated` using `⟨by rw [← Limits.terminal.comp_from Z.s]; infer_instance⟩`. Establish `key : ∀ b i, ∃ f₀ : Γ(X, V), jB.app V f₀ = A b i` using `fun b i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hI _ hV _ fun v ε xg xt h1 h2 h3 hx => ?_` and prove the remaining obligations. Take `⟨hp, hio, -⟩` from `ioOf_spec F v ε`. Use `haveI : Fact (resP v).Prime := ⟨hp⟩`. Establish `hxU : ⊤ ≤ (xg ≫ jB) ⁻¹ᵁ V` using `fun p hp => hx hp`. Take `⟨δ, hδ, hd⟩` from `CoordReg.lieLat_at Z hL v hp ε xg xt h1 h2 V f hf h3 hxU`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk : ArIn.ind ∅ (resP v) = false` using `by simp [ArIn.ind]`. Rewrite `hd` using `[CoordReg.lat_ind_empty]`. Establish `hδ1 : ‖δ‖ = 1`. Rewrite using `[hδ, if_neg (fun h => Bool.false_ne_true (hk.symm.trans h.1)), neg_zero, Real.rpow_zero]`. Generalize the expression as in `ioOf (resP v) ε = io at hio hd`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Establish `h4 : (spMap io ≫ xg) ≫ πB ≫ genStr Z ≫ spMap e.toRingHom = spMap (io.comp (algebraMap F (AlgebraicClosure F)))`. Rewrite using `[Category.assoc, h1, sp_comp]`. Establish `hy : ⊤ ≤ ((spMap io ≫ xg) ≫ jB) ⁻¹ᵁ V` using `fun p _ => hxU (Set.mem_univ _)`. Establish `b2` using `ht.1 V f hf _ _ hy _ h4`. Rewrite `b2` using `[show t V f hf _ _ hy = _ from funext fun k => ht.2.2 V f hf _ _ _ xg hxU hy k, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5` using `(hd _ (b2.1 i)).1 ⟨Pi.single i 1, fun k => by`. Distinguish the cases in `hk : k = i`. Substitute `hk` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_eq_of_ne hk], isCombAtG_single Z.t _ (fun j => (b2.1 j).1) i⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Set `ioO : ε.O →+* intO ℂ_[resP v]` to `(io.comp ε.O.subtype).codRestrict _ fun b => (hio b).2 b.2`. Establish `hx0 : spMap (intO ℂ_[resP v]).subtype ≫ spMap ioO ≫ xt ≫ ρ = spMap io ≫ xg ≫ πB ≫ genι Z`. Rewrite using `[← hρ, ← Category.assoc xg, ← h2, ← Category.assoc, ← Category.assoc, ← Category.assoc, ← Category.assoc, sp_comp, sp_comp]`. Both sides reduce to the same expression. Establish `hO : ⊤ ≤ (spMap ioO ≫ xt ≫ ρ) ⁻¹ᵁ ch.U` using `fun p _ => hle (h3 (Set.mem_univ (spMap ioO p)))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg : ⊤ ≤ (xg ≫ πB ≫ genι Z) ⁻¹ᵁ ch.U`. Rewrite using `[← hρ]`. Conclude with `fun p hp => hle (hxU hp)`. Establish `hC : ⊤ ≤ (spMap io ≫ xg ≫ πB ≫ genι Z) ⁻¹ᵁ ch.U` using `fun p _ => hg (Set.mem_univ (spMap io p))`. Establish `h6` using `norm_tanEv_le_one Z.t hsep hx0 hO hC ch.isFrame (b2.1 i).1 hδ1 h5 b`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv` using `((ht.1 V f hf _ xg hxU _ h1).1 i).1`. Rewrite `h6` using `[GlobalTheory.LocM.tanEv_baseChange _ _ _ Z.t _ _ ch.U hg _ hv _ io _ hC, ← hA _ xg hxU hx i hv hg b]`. Conclude with `(hio _).1 h6`. Use `choose A₀ hA₀ using key`. Conclude with `⟨Matrix.of A₀, Matrix.ext hA₀⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_regular : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H}

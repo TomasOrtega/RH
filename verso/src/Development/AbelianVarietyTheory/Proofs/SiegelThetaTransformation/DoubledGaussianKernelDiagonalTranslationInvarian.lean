@@ -24,7 +24,7 @@ noncomputable def kRow (x₁ x₂ : Frame X.Ψ r) (z w : Fin g → ℂ) : ℂ :=
   ∑ τ, cz' X idx x₁ x₂ τ (z, w) ⬝ᵥ (imH (dblZ X x₁ x₂ τ))⁻¹ *ᵥ cz X idx x₁ x₂ τ (z, w)
 
 /- English proof (translation)
-Simplify using `only [kZero, Finset.prod_mul_distrib, ← Complex.exp_sum, ← Finset.mul_sum, kRow]`. Rewrite using `[Finset.sum_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem kZero_eq (x₁ x₂ : Frame X.Ψ r) (z w : Fin n → Fin g → ℂ) :
     kZero X idx x₁ x₂ z w =
@@ -35,11 +35,11 @@ theorem kZero_eq (x₁ x₂ : Frame X.Ψ r) (z w : Fin n → Fin g → ℂ) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `expo_row idx hs h₁ h₂ y y z (star z')`. Establish `e0 : ∀ τ : X.Ψ, Data.emb τ.1 (0 : Fin r → E) = 0` using `fun τ => by`. Use function extensionality and compare the values at `a`. Simplify using `[Data.emb]`. Establish `e1 : (fun i => conj ((pv X idx x₂ y + z') i)) = star z' + star (per X x₂ y ∘ idx)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[pv, add_comm]`. Rewrite using `[e1, add_comm (pv X idx x₁ y) z]`. Simplify using `only [sub_self, e0, star_zero, zero_dotProduct, dotProduct_zero, add_zero, Finset.sum_const_zero, mul_zero, Pi.zero_apply, star_star, hermForm_Hm] at h`. Simplify using `only [cc, map_zero, mul_zero, Finset.sum_const_zero, Rat.cast_zero, add_zero] at h`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem kRow_per (hs : IsSympl X bas) {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ ∈ X.dom) (h₂ : x₂ ∈ X.dom)
     (y : Fin r → E) (z z' : Fin g → ℂ) :
@@ -59,7 +59,7 @@ theorem kRow_per (hs : IsSympl X bas) {x₁ x₂ : Frame X.Ψ r} (h₁ : x₁ �
   exact h
 
 /- English proof (translation)
-Use `continuous_finsetSum _ fun τ _ => ?_` and prove the remaining obligations. Conclude with `(cz' X idx x₁ x₂ τ).continuous_of_finiteDimensional.dotProduct (continuous_const.matrix_mulVec (cz X idx x₁ x₂ τ).continuous_of_finiteDimensional)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_kRow (x₁ x₂ : Frame X.Ψ r) :
     Continuous fun p : (Fin g → ℂ) × (Fin g → ℂ) => kRow X idx x₁ x₂ p.1 p.2 := by
@@ -68,7 +68,7 @@ theorem continuous_kRow (x₁ x₂ : Frame X.Ψ r) :
     (continuous_const.matrix_mulVec (cz X idx x₁ x₂ τ).continuous_of_finiteDimensional)
 
 /- English proof (translation)
-The claim follows from `(continuous_const.matrix_mulVec continuous_id).dotProduct (continuous_const.matrix_mulVec (continuous_const.matrix_mulVec continuous_id).star)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hx (x : Frame X.Ψ r) :
     Continuous fun z : Fin g → ℂ => hx X bas idx x z z :=
@@ -76,23 +76,23 @@ theorem continuous_hx (x : Frame X.Ψ r) :
     (continuous_const.matrix_mulVec (continuous_const.matrix_mulVec continuous_id).star)
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g q0 hr bas idx n hs hn x₁ h₁ x₂ h₂ a b w`. Take `⟨⟨L₁, hL₁⟩, im₁, -, hd, -⟩` from `GlobalTheory.T.realPeriodMap_homeomorph_riemannForm_density E r X g q0 hr bas idx n hs hn x₁ h₁`. Take `⟨⟨L₂, hL₂⟩, im₂, -⟩` from `GlobalTheory.T.realPeriodMap_homeomorph_riemannForm_density E r X g q0 hr bas idx n hs hn x₂ h₂`. Establish `add₁ (u v : WR X n) : zR X idx x₁ (u + v) = zR X idx x₁ u + zR X idx x₁ v`. Rewrite using `[← hL₁, ← hL₁, ← hL₁, map_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `add₂ (u v : WR X n) : zR X idx x₂ (u + v) = zR X idx x₂ u + zR X idx x₂ v`. Rewrite using `[← hL₂, ← hL₂, ← hL₂, map_add]`. Establish `hE (w : WR X n) : EFR X w (a - b) = EFR X w a - EFR X w b`. Rewrite using `[← im₁, ← im₁, ← im₁, ← sub_im, ← Finset.sum_sub_distrib]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[eq_sub_iff_add_eq, ← GlobalTheory.Dict.fock_hx_add_right, ← Pi.add_apply (zR X idx x₁ (a - b)), ← add₁, sub_add_cancel]`. Establish `key : ∀ w : WR X n, π * I * (EFR X w (a - b) : ℝ) + (-(π / 2 * ∑ k, hx X bas idx x₁ (zR X idx x₁ (w + a) k) (zR X idx x₁ (w + a) k)) + conj (-(π / 2 * ∑ k, hx X bas idx x₂ (zR X idx x₂ (w + b) k) (zR X idx x₂ (w + b) k))) + π * ∑ k, kRow X idx x₁ x₂ (zR X idx x₁ (w + a) k) (fun i …`. Introduce `w`. Use `hd.induction_on w (isClosed_eq ?_ continuous_const) fun y => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `c₁ (k) : Continuous fun w : WR X n => zR X idx x₁ (w + a) k`. Simplify using `only [← hL₁]`. Use `fun_prop`. Establish `c₂ (k) : Continuous fun w : WR X n => zR X idx x₂ (w + b) k`. Simplify using `only [← hL₂]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `fun_prop`. Establish `c₃ : Continuous fun w : WR X n => EFR X w (a - b)`. Unfold `EFR hermC`. Use `fun_prop`. Establish `c₄` using `continuous_finsetSum Finset.univ fun k _ => (continuous_hx (bas := bas) idx x₁).comp (c₁ k)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c₅` using `continuous_finsetSum Finset.univ fun k _ => (continuous_hx (bas := bas) idx x₂).comp (c₂ k)`. Establish `c₆` using `continuous_finsetSum Finset.univ fun k _ => (continuous_kRow idx x₁ x₂).comp ((c₁ k).prodMk (c₂ k).star)`. Conclude with `(continuous_const.mul (continuous_ofReal.comp c₃)).add (((continuous_const.mul c₄).neg.add (continuous_conj.comp (continuous_const.mul c₅).neg)).add (continuous_const.mul c₆))`. Establish `i₁` using `sub_conj (∑ k, hx X bas idx x₁ (zR X idx x₁ (embR X y) k) (zR X idx x₁ a k))`. Establish `i₂` using `sub_conj (∑ k, hx X bas idx x₂ (zR X idx x₂ (embR X y) k) (zR X idx x₂ b k))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `i₁` using `[im₁]`. Rewrite `i₂` using `[im₂]`. Rewrite using `[hE, add₁, add₂]`. Simplify using `only [Pi.add_apply (zR X idx _ (embR X y)), zR_embR] at i₁ i₂ ⊢`. Simplify using `only [kRow_per idx hs h₁ h₂]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `s₁ (k)` using `GlobalTheory.Dict.fock_hx_conj X bas idx x₁ hs h₁ (pv X idx x₁ (y k)) (zR X idx x₁ a k)`. Establish `s₂ (k)` using `GlobalTheory.Dict.fock_hx_conj X bas idx x₂ hs h₂ (pv X idx x₂ (y k)) (zR X idx x₂ b k)`. Simplify using `only [GlobalTheory.Dict.fock_hx_add_left, GlobalTheory.Dict.fock_hx_add_right, GlobalTheory.Dict.fock_hx_smul_left, s₁, s₂, Finset.sum_add_distrib, ← Finset.mul_sum, ← map_sum, map_add, map_mul, map_neg, conj_conj, map_div₀, conj_ofReal, map_ofNat, map_one]`. Move the coercions through the operations in `at i₁ i₂ ⊢`. Take the linear combination `(-(π : ℂ) / 2) * i₁ + ((π : ℂ) / 2) * i₂`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `only [gaussR, kZero_eq, ← Complex.exp_conj]`. Use `congrArg cexp (key w)` as an intermediate fact. Simplify using `only [Complex.exp_add] at this`. Take the linear combination `(∏ τ : X.Ψ, (((aLin X x₁ x₂ τ).det * (aAnti X x₁ x₂ τ).det) ^ (n / 2))⁻¹) * this`.
+A detailed English derivation is pending.
 -/
 theorem kernel_diag : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → ∀ x₁ ∈ X.dom, ∀ x₂ ∈ X.dom, ∀ a b w : WR X n, cexp (π * I * (EFR X w (a - b) : ℝ)) * (gaussR X bas idx x₁ (zR X idx x₁ (w + a)) * conj (gaussR X bas idx x₂ (zR X idx x₂ (w + b))) * kZero X idx x₁ x₂ (zR X idx x₁ (w + a)) (fun k i => conj (zR X idx x₂ (w + b) k i))) = gaussR X bas idx x₁ (zR X idx x₁ a) * conj (gaussR X bas idx x₂ (zR X idx x₂ b)) * kZero X idx x₁ x₂ (zR X idx x₁ a) (fun k i => conj (zR X idx x₂ b k i)) := by
   intro E _ _ _ r X g q0 hr bas idx n hs hn x₁ h₁ x₂ h₂ a b w

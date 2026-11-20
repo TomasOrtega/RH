@@ -3,15 +3,13 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `R _ ϖ hc hs M _ _ _ _`. Set `b` to `Module.Free.chooseBasis R M`. Use `haveI : Fintype (Module.Free.ChooseBasisIndex R M) := Module.Free.ChooseBasisIndex.fintype R M`. Prove the components needed by the constructor for the conclusion. Introduce `x choose a ha using fun i => hc (fun j => b.equivFun (x j) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨b.equivFun.symm a, fun n => ?_⟩` and prove the remaining obligations. Use `choose c hc' using fun i => ha i n`. Use `⟨b.equivFun.symm c, ?_⟩` and prove the remaining obligations. Apply `b.equivFun.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_sub, map_sum, map_smul, LinearEquiv.apply_symm_apply, Pi.sub_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Conclude with `hc' i`. Introduce `m hm`. Apply `b.equivFun.injective` to reduce the goal to its premises. Use function extensionality and compare the values at `i`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show b.equivFun m i = b.equivFun 0 i`. Rewrite using `[map_zero]`. Use `show b.equivFun m i = 0`. Apply `hs` to reduce the goal to its premises. Introduce `n`.
-
-Take `⟨z, hz⟩` from `hm n`. Use `⟨b.equivFun z i, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, map_smul]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem freeModule_adicComplete_separated : ∀ {R : Type} [CommRing R] (ϖ : R), (∀ x : ℕ → R, ∃ a : R, ∀ n : ℕ, ∃ b : R, a - ∑ j ∈ Finset.range n, ϖ ^ j * x j = ϖ ^ n * b) → (∀ a : R, (∀ n : ℕ, ∃ b : R, a = ϖ ^ n * b) → a = 0) → ∀ (M : Type) [AddCommGroup M] [Module R M] [Module.Free R M] [Module.Finite R M], (∀ x : ℕ → M, ∃ y : M, ∀ n : ℕ, ∃ z : M, y - ∑ j ∈ Finset.range n, ϖ ^ j • x j = ϖ ^ n • z) ∧ (∀ m : M, (∀ n : ℕ, ∃ z : M, m = ϖ ^ n • z) → m = 0) := by
   intro R _ ϖ hc hs M _ _ _ _

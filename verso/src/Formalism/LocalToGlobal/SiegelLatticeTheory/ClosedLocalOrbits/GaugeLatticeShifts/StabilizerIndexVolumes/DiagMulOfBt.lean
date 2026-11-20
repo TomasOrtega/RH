@@ -12,9 +12,9 @@ section Tri
 variable {K : Type*} [Field K] {N : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single i]`. Introduce `k _ hk`. Break down `lt_or_gt_of_ne (hb.ne hk) with h | h` into its components or cases. Rewrite using `[hA h, zero_mul]`. Rewrite using `[hB h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem diag_mul_of_bt {α : Type*} [LinearOrder α] {b : Fin N → α} (hb : Function.Injective b)
     {A B : Matrix (Fin N) (Fin N) K} (hA : A.BlockTriangular b) (hB : B.BlockTriangular b) (i : Fin N) :
@@ -28,9 +28,7 @@ theorem diag_mul_of_bt {α : Type*} [LinearOrder α] {b : Fin N → α} (hb : Fu
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Use `haveI := M.invertibleOfIsUnitDet hdet`. Establish `hI : M⁻¹.BlockTriangular b` using `Matrix.blockTriangular_inv_of_blockTriangular hM`. Use `⟨hI, fun i => ?_⟩` and prove the remaining obligations. Establish `h1` using `congrFun (congrFun (Matrix.mul_nonsing_inv M hdet) i) i`. Rewrite `h1` using `[diag_mul_of_bt hb hM hI, hd, one_mul, Matrix.one_apply_eq]`.
-
-Conclude with `h1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uni_inv {α : Type*} [LinearOrder α] {b : Fin N → α} (hb : Function.Injective b)
     {M : Matrix (Fin N) (Fin N) K} (hM : M.BlockTriangular b) (hd : ∀ i, M i i = 1)
@@ -43,7 +41,7 @@ theorem uni_inv {α : Type*} [LinearOrder α] {b : Fin N → α} (hb : Function.
   exact h1
 
 /- English proof (translation)
-Introduce `i j hij`. Conclude with `(h i j).1 (OrderDual.toDual_lt_toDual.mp hij)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lo_bt {L : Matrix (Fin N) (Fin N) K} (h : Formalism.MainNotions.S.IsLoUni L) :
     L.BlockTriangular OrderDual.toDual := by
@@ -51,14 +49,14 @@ theorem lo_bt {L : Matrix (Fin N) (Fin N) K} (h : Formalism.MainNotions.S.IsLoUn
   exact (h i j).1 (OrderDual.toDual_lt_toDual.mp hij)
 
 /- English proof (translation)
-Introduce `i j hij`. Conclude with `(h i j).1 hij`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem up_bt {U : Matrix (Fin N) (Fin N) K} (h : Formalism.MainNotions.S.IsUpUni U) : U.BlockTriangular id := by
   intro i j hij
   exact (h i j).1 hij
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun hij => h (OrderDual.toDual_lt_toDual.mpr hij), ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hd i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lo_of {L : Matrix (Fin N) (Fin N) K} (h : L.BlockTriangular OrderDual.toDual)
     (hd : ∀ i, L i i = 1) : Formalism.MainNotions.S.IsLoUni L := by
@@ -68,7 +66,7 @@ theorem lo_of {L : Matrix (Fin N) (Fin N) K} (h : L.BlockTriangular OrderDual.to
   exact hd i
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun hij => h hij, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hd i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem up_of {U : Matrix (Fin N) (Fin N) K} (h : U.BlockTriangular id)
     (hd : ∀ i, U i i = 1) : Formalism.MainNotions.S.IsUpUni U := by
@@ -78,21 +76,21 @@ theorem up_of {U : Matrix (Fin N) (Fin N) K} (h : U.BlockTriangular id)
   exact hd i
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular (M := L) (lo_bt h)]`. Conclude with `Finset.prod_eq_one fun i _ => (h i i).2 rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lo_det {L : Matrix (Fin N) (Fin N) K} (h : Formalism.MainNotions.S.IsLoUni L) : L.det = 1 := by
   rw [Matrix.det_of_lowerTriangular (M := L) (lo_bt h)]
   exact Finset.prod_eq_one fun i _ => (h i i).2 rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (M := U) (up_bt h)]`. Conclude with `Finset.prod_eq_one fun i _ => (h i i).2 rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem up_det {U : Matrix (Fin N) (Fin N) K} (h : Formalism.MainNotions.S.IsUpUni U) : U.det = 1 := by
   rw [Matrix.det_of_upperTriangular (M := U) (up_bt h)]
   exact Finset.prod_eq_one fun i _ => (h i i).2 rfl
 
 /- English proof (translation)
-Use `lo_of ((lo_bt hA).mul (lo_bt hB)) fun i => ?_` and prove the remaining obligations. Rewrite using `[diag_mul_of_bt OrderDual.toDual.injective (lo_bt hA) (lo_bt hB), (hA i i).2 rfl, (hB i i).2 rfl, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lo_mul {A B : Matrix (Fin N) (Fin N) K} (hA : Formalism.MainNotions.S.IsLoUni A) (hB : Formalism.MainNotions.S.IsLoUni B) :
     Formalism.MainNotions.S.IsLoUni (A * B) := by
@@ -100,7 +98,7 @@ theorem lo_mul {A B : Matrix (Fin N) (Fin N) K} (hA : Formalism.MainNotions.S.Is
   rw [diag_mul_of_bt OrderDual.toDual.injective (lo_bt hA) (lo_bt hB), (hA i i).2 rfl, (hB i i).2 rfl, one_mul]
 
 /- English proof (translation)
-Use `up_of ((up_bt hA).mul (up_bt hB)) fun i => ?_` and prove the remaining obligations. Rewrite using `[diag_mul_of_bt Function.injective_id (up_bt hA) (up_bt hB), (hA i i).2 rfl, (hB i i).2 rfl, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem up_mul {A B : Matrix (Fin N) (Fin N) K} (hA : Formalism.MainNotions.S.IsUpUni A) (hB : Formalism.MainNotions.S.IsUpUni B) :
     Formalism.MainNotions.S.IsUpUni (A * B) := by
@@ -108,7 +106,7 @@ theorem up_mul {A B : Matrix (Fin N) (Fin N) K} (hA : Formalism.MainNotions.S.Is
   rw [diag_mul_of_bt Function.injective_id (up_bt hA) (up_bt hB), (hA i i).2 rfl, (hB i i).2 rfl, one_mul]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `uni_inv OrderDual.toDual.injective (lo_bt hA) (fun i => (hA i i).2 rfl) (by rw [lo_det hA]; exact isUnit_one)`. Conclude with `lo_of h1 h2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lo_inv {A : Matrix (Fin N) (Fin N) K} (hA : Formalism.MainNotions.S.IsLoUni A) : Formalism.MainNotions.S.IsLoUni A⁻¹ := by
   obtain ⟨h1, h2⟩ := uni_inv OrderDual.toDual.injective (lo_bt hA) (fun i => (hA i i).2 rfl)
@@ -116,7 +114,7 @@ theorem lo_inv {A : Matrix (Fin N) (Fin N) K} (hA : Formalism.MainNotions.S.IsLo
   exact lo_of h1 h2
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `uni_inv Function.injective_id (up_bt hA) (fun i => (hA i i).2 rfl) (by rw [up_det hA]; exact isUnit_one)`. Conclude with `up_of h1 h2`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem up_inv {A : Matrix (Fin N) (Fin N) K} (hA : Formalism.MainNotions.S.IsUpUni A) : Formalism.MainNotions.S.IsUpUni A⁻¹ := by
   obtain ⟨h1, h2⟩ := uni_inv Function.injective_id (up_bt hA) (fun i => (hA i i).2 rfl)
@@ -124,7 +122,7 @@ theorem up_inv {A : Matrix (Fin N) (Fin N) K} (hA : Formalism.MainNotions.S.IsUp
   exact up_of h1 h2
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun h => Matrix.one_apply_ne (ne_of_lt h), ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `Matrix.one_apply_eq i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem lo_one : Formalism.MainNotions.S.IsLoUni (1 : Matrix (Fin N) (Fin N) K) := by
   intro i j
@@ -133,7 +131,7 @@ theorem lo_one : Formalism.MainNotions.S.IsLoUni (1 : Matrix (Fin N) (Fin N) K) 
   exact Matrix.one_apply_eq i
 
 /- English proof (translation)
-Introduce `i j`. Use `⟨fun h => Matrix.one_apply_ne (ne_of_gt h), ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `Matrix.one_apply_eq i`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem up_one : Formalism.MainNotions.S.IsUpUni (1 : Matrix (Fin N) (Fin N) K) := by
   intro i j
@@ -144,13 +142,13 @@ theorem up_one : Formalism.MainNotions.S.IsUpUni (1 : Matrix (Fin N) (Fin N) K) 
 end Tri
 
 /- English proof (translation)
-Unfold `StClosed`. Introduce `E _ _ n W`. Simplify using `only [StSet, Set.mem_setOf_eq]`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `⟨by rw [Units.val_one]; exact lo_one, 1, up_one, ?_⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Units.val_one, Matrix.one_mul, Matrix.mul_one]`. Introduce and unpack `a ⟨ha, b, hb, hab⟩ a' ⟨ha', b', hb', hab'⟩`. Use `⟨?_, b' * b, up_mul hb' hb, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul]`. Conclude with `lo_mul ha ha'`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.val_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = W := by rw [hab', hab]`. Introduce and unpack `a ⟨ha, b, hb, hab⟩`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hbdet : IsUnit b.det` using `by rw [up_det hb]; exact isUnit_one`. Use `⟨?_, b⁻¹, up_inv hb, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `lo_inv ha`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem stClosed : StClosed := by
   unfold StClosed

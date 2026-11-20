@@ -8,7 +8,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.V.Z.Sym.Al
 
 /- English proof (translation)
-Take `⟨x, hx0, hx⟩` from `Valuation.IsNontrivial.exists_lt_one (v := valuation k)`. Conclude with `⟨Units.mk0 x (fun h => hx0 (by simp [h])), hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_small (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     ∃ s : kˣ, valuation k (s : k) < 1 := by
@@ -16,11 +16,9 @@ private theorem exists_small (k : Type) [Field k] [ValuativeRel k] [TopologicalS
   exact ⟨Units.mk0 x (fun h => hx0 (by simp [h])), hx⟩
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `exists_small k`. Distinguish the cases in `hx : valuation k (x : k) < 1`. Use `⟨x * p, p, ?_, hp, by simp⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left' hx.le) hp`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨p, p * x⁻¹, hp, ?_, by simp⟩` and prove the remaining obligations. Establish `h1 : 1 ≤ valuation k (x : k)` using `not_lt.1 hx`. Rewrite using `[Units.val_mul, map_mul, Units.val_inv_eq_inv_val, map_inv₀]`. Establish `h0 : valuation k (x : k) ≠ 0` using `by simp`. Establish `h2 : (valuation k (x : k))⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ h1`.
-
-Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' h2) hp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem split_small (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (x : kˣ) : ∃ s t : kˣ, valuation k (s : k) < 1 ∧ valuation k (t : k) < 1 ∧ x = s / t := by
@@ -37,11 +35,11 @@ private theorem split_small (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     exact lt_of_le_of_lt (mul_le_of_le_one_right' h2) hp
 
 /- English proof (translation)
-Introduce `k _ _ _ _`. Use `⟨fun χ h => isSmoothChar_of_isUnram fun x hx => h x hx, fun ψ b h => ?_⟩` and prove the remaining obligations. Establish `key : ∀ t : kˣ, valuation k (t : k) < 1 → (ψ 0 / ψ 1) t = b t`. Introduce `t ht`. Establish `h1` using `Units.val_injective (h t ht)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `mul_right_cancel h1`. Rewrite `h2` using `[torusChar_apply, torusChar_apply, Fin.prod_univ_two, Fin.prod_univ_two]`. Simplify `h2` using `[MonoidHom.div_apply, div_eq_mul_inv]`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Take `⟨s, t, hs, ht, rfl⟩` from `split_small k x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_div, map_div, key s hs, key t ht]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.V.Z.Sym.Al.unrSmooth :
     ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], (∀ χ : kˣ →* ℂˣ, (∀ u ∈ Hi.Uo k, χ u = 1) → IsSmoothChar χ) ∧

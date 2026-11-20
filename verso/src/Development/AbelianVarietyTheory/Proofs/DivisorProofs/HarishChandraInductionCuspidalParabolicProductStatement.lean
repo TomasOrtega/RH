@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.BlockTheory.DivisorBase.CuspidalProductM
 open CategoryTheory Polynomial Formalism.IrreducibleCountingLemmas.TYPES
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.HCInduction.isCuspProdChar_trace_hcRep` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHarishChandraInductionCuspidalParabolicProduct.lean&line=97#L97)
 -/

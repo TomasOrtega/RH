@@ -17,15 +17,13 @@ namespace HChar
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Establish `hpow : ∀ (w : InfinitePlace L) (u : (w.Completion)ˣ), ∃ y : (w.Completion)ˣ, y ^ n = u`. Introduce `w u`. Set `e` to `NumberField.InfinitePlace.Completion.ringEquivComplexOfIsComplex (IsTotallyComplex.isComplex w)`. Take `⟨z, hz⟩` from `IsAlgClosed.exists_pow_nat_eq (e (u : w.Completion)) hn`. Establish `hz0 : z ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hz` using `[zero_pow hn.ne']`. Conclude with `u.ne_zero (e.injective (by rw [map_zero]; exact hz.symm))`. Use `⟨Units.mk0 (e.symm z) (by simpa using hz0), Units.ext ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_pow_eq_pow_val, Units.val_mk0, ← map_pow, hz, RingEquiv.symm_apply_apply]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hχn : ∀ x, ((χ : Ideles L →* ℂˣ) x) ^ n = 1`. Introduce `x`. Establish `h'` using `congrArg (fun ψ : HChar L => (ψ : Ideles L →* ℂˣ) x) (show χ ^ n = 1 from h)`. Use `first`. Consider the case `simpa using h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `exact h'`. Use `show (χ : Ideles L →* ℂˣ) (infDiag k) = 1`. Simplify using `only [infDiag, MonoidHom.finset_prod_apply, map_prod, MonoidHom.comp_apply]`. Apply `Finset.prod_eq_one` to reduce the goal to its premises. Introduce `w _`.
-
-Take `⟨y, hy⟩` from `hpow w (atInf w k)`. Rewrite using `[← hy, map_pow, map_pow, hχn]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inf_eq_one_of_order [IsTotallyComplex L] {χ : HChar L} {n : ℕ} (hn : 0 < n) (h : χ.OrderDvd n) (k : Lˣ) :
     χ.inf k = 1 := by
@@ -66,9 +64,9 @@ section Tup
 variable {D : D7} {C : CharFrame D} {nch : NChoice D} (Tp : TupTied D C nch)
 
 /- English proof (translation)
-Take `⟨n, hn, h⟩` from `Tp.xi_fin μ`. Introduce `x`. Establish `h'` using `congrArg (fun ψ : HChar D.host.E => (ψ : Ideles D.host.E →* ℂˣ) x) (show Tp.xi μ ^ n = 1 from h)`. Establish `e : ((Tp.xi μ : Ideles D.host.E →* ℂˣ) x) ^ n = 1` using `by first`. Consider the case `simpa using h'`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately.
 
-Consider the case `exact h'`. Establish `e2 : ‖(((Tp.xi μ : Ideles D.host.E →* ℂˣ) x : ℂˣ) : ℂ)‖ ^ n = 1`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, e, Units.val_one, norm_one]`. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').mp e2`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem TupTied.xi_unitary (μ : D.what₂.Tup) : (Tp.xi μ).IsUnitary := by
   obtain ⟨n, hn, h⟩ := Tp.xi_fin μ
@@ -83,7 +81,7 @@ theorem TupTied.xi_unitary (μ : D.what₂.Tup) : (Tp.xi μ).IsUnitary := by
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hn.ne').mp e2
 
 /- English proof (translation)
-Introduce `x` and use `by show ‖((((C.mu0 j).1 x * (Tp.xi μ).1 x : ℂˣ)) : ℂ)‖ = 1 rw [Units.val_mul, norm_mul, (C.isMu0 j).unitary x, Tp.xi_unitary μ x, one_mul]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem TupTied.tup_unitary (μ : D.what₂.Tup) (j : Fin D.R.m) : (Tp.tup μ j).IsUnitary := fun x => by
   show ‖((((C.mu0 j).1 x * (Tp.xi μ).1 x : ℂˣ)) : ℂ)‖ = 1
@@ -94,9 +92,9 @@ end Tup
 def sCh (R : Ranks) : ℝ := ((R.t : ℝ) - 1) / 2 + (1 - (R.nV : ℝ)) / 2
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : R.chD g = 1` using `MonoidHom.mem_ker.mp hg`. Establish `h2 : R.chD (g * R.cc) = 1` using `MonoidHom.mem_ker.mp h`. Rewrite `h2` using `[map_mul, h1, one_mul]`. Simplify using `only [Formalism.HC.Frame.chD, Formalism.HC.Frame.cc, MonoidHom.comp_apply, MonoidHom.coe_fst, MonoidHom.coe_snd] at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `first`. Consider the case `(simp [c0] at h2; done)`. Consider the case `(simp only [c0] at h2; revert h2; decide)`. Consider the case `(revert h2; unfold c0; decide)`. Consider the case `(simp [c0] at h2; exact absurd h2 (by decide))`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mul_cc_not_mem_Psi_of_mem_Psi {R : Ranks} {g : R.GG} (hg : g ∈ R.Psi) : g * R.cc ∉ R.Psi := by
   intro h
@@ -112,7 +110,7 @@ theorem mul_cc_not_mem_Psi_of_mem_Psi {R : Ranks} {g : R.GG} (hg : g ∈ R.Psi) 
     | (simp [c0] at h2; exact absurd h2 (by decide))
 
 /- English proof (translation)
-The claim follows from `Prod.ext (by first | decide | exact Prod.ext (Int.units_mul_self _) (Int.units_mul_self _) | (simp [Formalism.HC.Frame.cc]; done)) (by show (1 : φ.MA) * 1 = 1 exact mul_one 1)`.
+A detailed English derivation is pending.
 -/
 theorem cc_mul_cc (φ : Formalism.HC.Frame) : φ.cc * φ.cc = 1 :=
   Prod.ext

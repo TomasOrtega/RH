@@ -11,33 +11,31 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hp hw`. Establish `hc` using `hp.base.cm`. Take `⟨hJ, -, hr⟩` from `hE F E σ B hp.base n X r s (Or.inl hp.herm)`. Take `⟨hJ', -, -⟩` from `hE F E σ B hp.base d W r' s' (Or.inr hp.skew)`. Take `⟨fr, hg, -, -, hint, -⟩` from `hS F E σ hc n X.J hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨fr', hg', -, -, -, -⟩` from `hS F E σ hc d W.J hJ'`. Take `⟨N, hN⟩` from `hL F E σ hc B.emb n d X.J W.J hJ hJ' fr fr' hg hg'`. Take `⟨k, hk⟩` from `latSum_redH hT hS hI hK hA hc B.emb hJ hJ' N`. Use `⟨k, fun φ hφ => ?_⟩` and prove the remaining obligations. Take `⟨p, C, hpc, hC, hb⟩` from `hQ F E σ B n d X W M χX χW om r s r' s' hp φ hφ N`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨C', K, hC', hK0, hb'⟩` from `hk C hC`. Take `⟨K₀, Ω, hK₀, hΩ, hi⟩` from `hint M.μ M.dom hp.good.haar hp.good.dom`. Take `⟨C₁, K₁, hC₁, h₁⟩` from `hK F E σ hc B.emb n d X.J W.J hJ hJ' Ω {1} hΩ isCompact_singleton C' N hC'`. Take `⟨K₂, h₂'⟩` from `hN C₁ hC₁`. Establish `ha0 : fr'.a 0 = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hg'.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`. Establish `h0 : (0 : Fin fr'.r → ℝ) ∈ Cone fr'.r` using `⟨fun _ _ _ => le_rfl, fun _ => le_rfl⟩`. Establish `hmeas : Measurable fun g : UA σ X.J => latSum B.emb C' N Set.univ g (1 : UA σ W.J) ^ (1 / 2 : ℝ)` using `(hM F E σ hc B.emb n d X.J W.J hJ hJ' C' N Set.univ hC' 1).pow_const _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set D : ℝ := (Module.finrank ℚ E : ℝ) with hD`. Establish `hD0 : 0 < D`. Rewrite using `[hD]`. Conclude with `Module.finrank_pos` after adjusting the coercions. Use `⟨NNReal.mk K hK0 • p, fun g => latSum B.emb C' N Set.univ g (1 : UA σ W.J) ^ (1 / 2 : ℝ), ?_, hmeas, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Conclude with `(continuous_const.mul hpc : Continuous fun f => K * p f)`. Establish `hq : fr.r = 0 ∨ d + 2 * fr.r < 2 * n`. Use `hr fr hg` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `hfin` using `(h2 n d fr.r 0 D hD0 hq (Or.inl rfl)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set c : ℝ≥0∞ := ((K₁ : ℝ≥0∞) * K₂) ^ (1 / 2 : ℝ) with hcdef`. Establish `hcfin : c < ⊤` using `ENNReal.rpow_lt_top_of_nonneg (by norm_num) (ENNReal.mul_ne_top ENNReal.coe_ne_top ENNReal.coe_ne_top)`. Establish `key` using `hi (fun t => c * ENNReal.ofReal (Real.exp (D * (d / 2 * ∑ i, t i)))) (by fun_prop) _ hmeas (fun γ hγ g => by`. Use `hI F E σ hc B.emb n d X.J W.J hJ hJ' C' N Set.univ (by simp) γ hγ 1 (one_mem _) g 1` as an intermediate fact. Rewrite `this` using `[mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this])`. Use the proof step `(fun t ht' κ hκ => by`. Establish `e1` using `h₁ Set.univ (fr.a t) 1 κ hκ 1 rfl`. Rewrite `e1` using `[mul_one]`. Establish `e2` using `h₂' t ht' 0 h0`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e2` using `[ha0]`. Establish `e3 : posWt n d t (0 : Fin fr'.r → ℝ) ≤ d * ∑ i, t i`. Simplify using `using (hP n d fr.r fr'.r t 0 ht' h0).1`. Establish `e4 : latSum B.emb C' N Set.univ (fr.a t * κ) (1 : UA σ W.J) ≤ ((K₁ : ℝ≥0∞) * K₂) * ENNReal.ofReal (Real.exp (D * (d / 2 * ∑ i, t i))) ^ (2 : ℝ)`. Use `e1.trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_assoc]`. Use `mul_le_mul_right (e2.trans (mul_le_mul_right ?_ _)) _` and prove the remaining obligations. Rewrite using `[ENNReal.ofReal_rpow_of_pos (Real.exp_pos _), ← Real.exp_mul]`. Use `ENNReal.ofReal_le_ofReal (Real.exp_le_exp.2 ?_)` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(ENNReal.rpow_le_rpow e4 (by norm_num)).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[ENNReal.mul_rpow_of_nonneg _ _ (by norm_num), ← ENNReal.rpow_mul]`. Evaluate the numerical expressions using `[hcdef])`. Use `key.trans_lt (ENNReal.mul_lt_top hK₀ ?_)` and prove the remaining obligations. Simplify using `only [mul_assoc c]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_const_mul' _ _ hcfin.ne]`. Conclude with `ENNReal.mul_lt_top hcfin hfin`. Introduce `f g h`. Establish `e` using `(hb f g h).trans (mul_le_mul_right (hb' g h) _)`. Establish `hpf : 0 ≤ p f` using `apply_nonneg p f`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e2 : ‖theta om (pureA F f φ) g h‖ₑ ^ (2 : ℝ) ≤ ENNReal.ofReal (K * p f * (ht h : ℝ) ^ k) ^ (2 : ℝ) * latSum B.emb C' N Set.univ g (1 : UA σ W.J)`. Rewrite using `[ENNReal.rpow_two, ENNReal.rpow_two]`. Use `e.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[← mul_assoc, ← ENNReal.ofReal_pow hpf, ← ENNReal.ofReal_mul (by positivity), ← ENNReal.ofReal_pow (by positivity)]`. Use `congr 2`.
-
-Expand and normalize the polynomial expressions, which then agree. Establish `e3` using `ENNReal.rpow_le_rpow e2 (show (0 : ℝ) ≤ 1 / 2 by norm_num)`. Rewrite `e3` using `[ENNReal.mul_rpow_of_nonneg _ _ (by norm_num), ← ENNReal.rpow_mul, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions using `at e3`. Simplify `e3` using `[NNReal.smul_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem domWeilU_of (hT : GrpTop) (hE : EpsOf) (hS : SiegelAll) (hQ : SqAll) (hI : LatInv) (hM : LatMeas) (hK : LatCpt)
     (hA : LatArch) (hL : LatTor) (hP : PosWt) (h2 : ConeIntegralsFinite) : DomWeilU := by

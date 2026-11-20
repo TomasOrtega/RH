@@ -53,7 +53,7 @@ variable {G M V₁ V₂ V₃ : Type} [Group G] [Group M] [AddCommGroup V₁] [Mo
     [AddCommGroup V₃] [Module ℂ V₃]
 
 /- English proof (translation)
-Take `⟨f, g, hf, hg, hi, hs, he⟩` from `h`. Use `⟨f, g, fun x v => ?_, fun x v => ?_, hi, hs, he⟩` and prove the remaining obligations. Simplify using `[GlobalTheory.SmGL.twist_apply, hf]`. Simplify using `[GlobalTheory.SmGL.twist_apply, hg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem ses_twist {ρ₁ : Representation ℂ G V₁} {ρ₂ : Representation ℂ G V₂} {ρ₃ : Representation ℂ G V₃} (χ : G →* ℂˣ)
     (h : Ses ρ₁ ρ₂ ρ₃) : Ses (twist ρ₁ χ) (twist ρ₂ χ) (twist ρ₃ χ) := by
@@ -63,9 +63,9 @@ theorem ses_twist {ρ₁ : Representation ℂ G V₁} {ρ₂ : Representation �
   · simp [GlobalTheory.SmGL.twist_apply, hg]
 
 /- English proof (translation)
-Use `⟨twMap ρ₁ ρ₂ N θ f hf, twMap ρ₂ ρ₃ N θ g hg, fun x v => ?_, fun x v => ?_, LinearMap.ker_eq_bot.1 h0, ?_, h1⟩` and prove the remaining obligations. Proceed by induction on `v using Submodule.Quotient.induction_on with`. Consider the case `H v => exact congrArg Submodule.Quotient.mk (hf (s x) v)`. Proceed by induction on `v using Submodule.Quotient.induction_on with`. Consider the case `H v => exact congrArg Submodule.Quotient.mk (hg (s x) v)`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Introduce `y`. Proceed by induction on `y using Submodule.Quotient.induction_on with`. Consider the case `H y`. Take `⟨v, rfl⟩` from `hsurj y`. Conclude with `⟨Submodule.Quotient.mk v, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ses_twAct {ρ₁ : Representation ℂ G V₁} {ρ₂ : Representation ℂ G V₂} {ρ₃ : Representation ℂ G V₃}
     (N : Subgroup G) (θ : N →* ℂˣ) (s : M →* G)
@@ -92,7 +92,7 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `v`. Establish `: {g : G | Representation.trivial ℂ G PUnit g v = v} = Set.univ` using `by ext g; simp`. Rewrite using `[this]`. Conclude with `isOpen_univ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmooth_punit {G : Type} [Group G] [TopologicalSpace G] : IsSmooth (Representation.trivial ℂ G PUnit) := by
   intro v
@@ -100,9 +100,9 @@ theorem isSmooth_punit {G : Type} [Group G] [TopologicalSpace G] : IsSmooth (Rep
   rw [this]; exact isOpen_univ
 
 /- English proof (translation)
-Take `⟨f, g, hf, hg, hi, hs, he⟩` from `h`. Use `ses_twist _ (ses_twAct (MirUin k (n + 1)) (mirChar k ψ n) _ (levi_stab ψ n) f g hf hg hs ?_ (GlobalTheory.T.mirabolic_phi_minus_exact k ψ hc n _ _ _ _ _ _ hA hB hC f g hf hg he))` and prove the remaining obligations. Establish `h0` using `GlobalTheory.T.mirabolic_phi_minus_exact k ψ hc n PUnit _ _ (Representation.trivial ℂ _ PUnit) A.ρ B.ρ isSmooth_punit hA hB 0 f (fun _ _ => by simp) hf (by rw [LinearMap.range_zero, LinearMap.ker_eq_bot.2 hi])`. Rewrite using `[← h0, LinearMap.range_eq_bot]`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[twMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ses_phiN (ψ : AddChar k Circle) (hc : Continuous ψ) {n : ℕ} {A B C : MRep k (n + 1)} (hA : IsSmooth A.ρ) (hB : IsSmooth B.ρ)
     (hC : IsSmooth C.ρ) (h : Ses A.ρ B.ρ C.ρ) : Ses (phiN ψ A).ρ (phiN ψ B).ρ (phiN ψ C).ρ := by
@@ -115,9 +115,9 @@ theorem ses_phiN (ψ : AddChar k Circle) (hc : Continuous ψ) {n : ℕ} {A B C :
   simp [twMap]
 
 /- English proof (translation)
-Take `⟨f, g, hf, hg, hi, hs, he⟩` from `h`. Use `ses_twist _ (ses_twAct (MirUin k n) 1 (levi k n) (levi_normalises n) f g hf hg hs ?_ (GlobalTheory.T.mirabolic_psi_minus_exact k n _ _ _ _ _ _ hA hB hC f g hf hg he))` and prove the remaining obligations. Establish `h0` using `GlobalTheory.T.mirabolic_psi_minus_exact k n PUnit _ _ (Representation.trivial ℂ _ PUnit) A.ρ B.ρ isSmooth_punit hA hB 0 f (fun _ _ => by simp) hf (by rw [LinearMap.range_zero, LinearMap.ker_eq_bot.2 hi])`. Rewrite using `[← h0, LinearMap.range_eq_bot]`. Use extensionality with `x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[twMap]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ses_psiN {n : ℕ} {A B C : MRep k n} (hA : IsSmooth A.ρ) (hB : IsSmooth B.ρ)
     (hC : IsSmooth C.ρ) (h : Ses A.ρ B.ρ C.ρ) : Ses (psiN A).ρ (psiN B).ρ (psiN C).ρ := by
@@ -130,38 +130,38 @@ theorem ses_psiN {n : ℕ} {A B C : MRep k n} (hA : IsSmooth A.ρ) (hB : IsSmoot
   simp [twMap]
 
 /- English proof (translation)
-The claim follows from `isSmooth_twist (GlobalTheory.T.smooth_phi_minus k ψ n _ A.ρ hA) (IsSmoothChar.comp (IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow _)) _ continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_phiN (ψ : AddChar k Circle) {n : ℕ} {A : MRep k (n + 1)} (hA : IsSmooth A.ρ) : IsSmooth (phiN ψ A).ρ :=
   isSmooth_twist (GlobalTheory.T.smooth_phi_minus k ψ n _ A.ρ hA)
     (IsSmoothChar.comp (IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow _)) _ continuous_subtype_val)
 
 /- English proof (translation)
-The claim follows from `isSmooth_twist (GlobalTheory.T.smooth_psi_minus k n _ A.ρ hA) (IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow _))`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_psiN {n : ℕ} {A : MRep k n} (hA : IsSmooth A.ρ) : IsSmooth (psiN A).ρ :=
   isSmooth_twist (GlobalTheory.T.smooth_psi_minus k n _ A.ρ hA) (IsSmoothChar.detChar (GlobalTheory.LocGL.isSmoothChar_absPow _))
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.BZFun.isSmooth_cInd _ _`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_prodGPn {m j : ℕ} (ρ : GRep k m) (τ : MRep k j) : IsSmooth (prodGPn ρ τ).ρ :=
   GlobalTheory.CompanionTheory.BZFun.isSmooth_cInd _ _
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.BZFun.isSmooth_cInd _ _`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_prodPGn {i t : ℕ} (τ : MRep k i) (σ : GRep k t) : IsSmooth (prodPGn τ σ).ρ :=
   GlobalTheory.CompanionTheory.BZFun.isSmooth_cInd _ _
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `hτ`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem isSmooth_mcast {a b : ℕ} (h : a = b) {τ : MRep k a} (hτ : IsSmooth τ.ρ) : IsSmooth (mcast h τ).ρ := by
   subst h; exact hτ
 
 /- English proof (translation)
-The claim follows from `isSmooth_comp h _ continuous_subtype_val`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_gres {n : ℕ} {π : GRep k (n + 1)} (h : IsSmooth π.ρ) : IsSmooth (gres π).ρ :=
   isSmooth_comp h _ continuous_subtype_val
@@ -173,41 +173,39 @@ variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `e.toIntertwiningMap.isIntertwining _ _ x v`.
+A detailed English derivation is pending.
 -/
 theorem eint {V W : Type} {G : Type} [Group G] [AddCommGroup V] [Module ℂ V] [AddCommGroup W] [Module ℂ W]
     {ρ : Representation ℂ G V} {σ : Representation ℂ G W} (e : ρ.Equiv σ) (x : G) (v : V) : e (ρ x v) = σ x (e v) :=
   e.toIntertwiningMap.isIntertwining _ _ x v
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Representation.Equiv.refl _⟩`.
+Supply the required witnesses or components.
 -/
 theorem giso_refl (A : GRep k n) : GIso A A := ⟨Representation.Equiv.refl _⟩
 /- English proof (translation)
-The claim follows from `h.map (·.symm)`.
+A detailed English derivation is pending.
 -/
 theorem giso_symm {A B : GRep k n} (h : GIso A B) : GIso B A := h.map (·.symm)
 /- English proof (translation)
-Take `⟨e⟩` from `h`. Take `⟨e'⟩` from `h'`. Conclude with `⟨e.trans e'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem giso_trans {A B C : GRep k n} (h : GIso A B) (h' : GIso B C) : GIso A C := by
   obtain ⟨e⟩ := h; obtain ⟨e'⟩ := h'; exact ⟨e.trans e'⟩
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Representation.Equiv.refl _⟩`.
+Supply the required witnesses or components.
 -/
 theorem miso_refl (A : MRep k n) : MIso A A := ⟨Representation.Equiv.refl _⟩
 /- English proof (translation)
-The claim follows from `h.map (·.symm)`.
+A detailed English derivation is pending.
 -/
 theorem miso_symm {A B : MRep k n} (h : MIso A B) : MIso B A := h.map (·.symm)
 /- English proof (translation)
-Take `⟨e⟩` from `h`. Take `⟨e'⟩` from `h'`. Conclude with `⟨e.trans e'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem miso_trans {A B C : MRep k n} (h : MIso A B) (h' : MIso B C) : MIso A C := by
   obtain ⟨e⟩ := h; obtain ⟨e'⟩ := h'; exact ⟨e.trans e'⟩
 /- English proof (translation)
-Take `⟨e⟩` from `h`. Conclude with `⟨Representation.Equiv.mk e.toLinearEquiv fun x => by`. Use extensionality with `v`. Use `show e (((dpow n s x : ℂˣ) : ℂ) • A.ρ x v) = ((dpow n s x : ℂˣ) : ℂ) • B.ρ x (e v)`. Rewrite using `[map_smul]`.
-
-Conclude with `congrArg _ (eint e x v)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem giso_tw {A B : GRep k n} (s : ℝ) (h : GIso A B) : GIso (A.tw s) (B.tw s) := by
   obtain ⟨e⟩ := h
@@ -217,22 +215,22 @@ theorem giso_tw {A B : GRep k n} (s : ℝ) (h : GIso A B) : GIso (A.tw s) (B.tw 
     rw [map_smul]
     exact congrArg _ (eint e x v)⟩
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `e`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem miso_mcast {a b : ℕ} (h : a = b) {A B : MRep k a} (e : MIso A B) : MIso (mcast h A) (mcast h B) := by
   subst h; exact e
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `e`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem giso_cast {a b : ℕ} (h : a = b) {A B : GRep k a} (e : GIso A B) : GIso (A.cast h) (B.cast h) := by
   subst h; exact e
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `giso_refl _`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem tw_cast {a b : ℕ} (h : a = b) (A : GRep k a) (s : ℝ) : GIso ((A.cast h).tw s) ((A.tw s).cast h) := by
   subst h; exact giso_refl _
 /- English proof (translation)
-Take `⟨e⟩` from `e`. Take `⟨e'⟩` from `e'`. Conclude with `⟨GlobalTheory.LocGL.multiProdEquiv _ (fun x => match x with`. Consider the case `false => e`. Consider the case `true => e')⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 -/
 theorem giso_prod {r t : ℕ} {A A' : GRep k r} {B B' : GRep k t} (e : GIso A A') (e' : GIso B B') :
     GIso (A.prod B) (A'.prod B') := by
@@ -249,13 +247,11 @@ variable {G V₀ V₁ V₂ V₃ : Type} [Group G] [AddCommGroup V₀] [Module �
   {ρ₀ : Representation ℂ G V₀} {ρ₁ : Representation ℂ G V₁} {ρ₂ : Representation ℂ G V₂} {ρ₃ : Representation ℂ G V₃}
 
 /- English proof (translation)
-Take `⟨f, g, hf, hg, hi, hs, he⟩` from `h`. Use `⟨e.toLinearEquiv.toLinearMap ∘ₗ f, g ∘ₗ e.symm.toLinearEquiv.toLinearMap, fun x v => ?_, fun x v => ?_, e.toLinearEquiv.injective.comp hi, hs.comp e.symm.toLinearEquiv.surjective, ?_⟩` and prove the remaining obligations. Use `show e (f (ρ₁ x v)) = ρ₀ x (e (f v))`. Rewrite using `[hf]`. Conclude with `eint e x _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use `show g (e.symm (ρ₀ x v)) = ρ₃ x (g (e.symm v))`. Rewrite using `[← hg]`. Conclude with `congrArg g (eint e.symm x v)`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce and unpack `⟨v, rfl⟩`. Establish `: f v ∈ LinearMap.ker g` using `he ▸ LinearMap.mem_range_self f v`. Simplify `this` using `[LinearMap.mem_ker, Representation.Equiv.symm_apply_apply]`. Introduce `hy`. Establish `: e.symm y ∈ LinearMap.range f` using `he ▸ hy`.
-
-Take `⟨v, hv⟩` from `this`. Conclude with `⟨v, by simp [hv]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ses_mid (e : ρ₂.Equiv ρ₀) (h : Ses ρ₁ ρ₂ ρ₃) : Ses ρ₁ ρ₀ ρ₃ := by
   obtain ⟨f, g, hf, hg, hi, hs, he⟩ := h
@@ -277,9 +273,9 @@ theorem ses_mid (e : ρ₂.Equiv ρ₀) (h : Ses ρ₁ ρ₂ ρ₃) : Ses ρ₁ 
       exact ⟨v, by simp [hv]⟩
 
 /- English proof (translation)
-Take `⟨f, g, hf, hg, hi, hs, he⟩` from `h`. Use `⟨f, e.toLinearEquiv.toLinearMap ∘ₗ g, hf, fun x v => ?_, hi, e.toLinearEquiv.surjective.comp hs, ?_⟩` and prove the remaining obligations. Use `show e (g (ρ₂ x v)) = ρ₀ x (e (g v))`. Rewrite using `[hg]`. Conclude with `eint e x _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[he]`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ses_right (e : ρ₃.Equiv ρ₀) (h : Ses ρ₁ ρ₂ ρ₃) : Ses ρ₁ ρ₂ ρ₀ := by
   obtain ⟨f, g, hf, hg, hi, hs, he⟩ := h
@@ -292,7 +288,7 @@ theorem ses_right (e : ρ₃.Equiv ρ₀) (h : Ses ρ₁ ρ₂ ρ₃) : Ses ρ�
     simp
 
 /- English proof (translation)
-Use `⟨0, e.toLinearEquiv.toLinearMap, fun x v => by simp, fun x v => eint e x v, Function.injective_of_subsingleton _, e.toLinearEquiv.surjective, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.range_zero]`. Conclude with `(LinearEquiv.ker e.toLinearEquiv).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ses_zero_left (e : ρ₂.Equiv ρ₃) [Subsingleton V₁] : Ses ρ₁ ρ₂ ρ₃ := by
   refine ⟨0, e.toLinearEquiv.toLinearMap, fun x v => by simp, fun x v => eint e x v,
@@ -301,9 +297,9 @@ theorem ses_zero_left (e : ρ₂.Equiv ρ₃) [Subsingleton V₁] : Ses ρ₁ ρ
   exact (LinearEquiv.ker e.toLinearEquiv).symm
 
 /- English proof (translation)
-Take `⟨f, g, hf, hg, hi, hs, he⟩` from `h`. Establish `hsurj : Function.Surjective f`. Introduce `y`. Establish `: y ∈ LinearMap.range f` using `by rw [he]; exact Subsingleton.elim (g y) 0`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨Representation.Equiv.mk (LinearEquiv.ofBijective f ⟨hi, hsurj⟩) fun x => by`. Use extensionality with `v`. Conclude with `hf x v⟩`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem equiv_of_ses_zero (h : Ses ρ₁ ρ₂ ρ₃) [Subsingleton V₃] : Nonempty (ρ₁.Equiv ρ₂) := by
   obtain ⟨f, g, hf, hg, hi, hs, he⟩ := h
@@ -325,14 +321,14 @@ def zeroG (n : ℕ) : GRep k n := ⟨PUnit, Representation.trivial ℂ _ PUnit�
 instance (n : ℕ) : Subsingleton (zeroG (k := k) n).V := inferInstanceAs (Subsingleton PUnit)
 
 /- English proof (translation)
-Take `⟨e⟩` from `h`. Conclude with `e.symm.toLinearEquiv.injective.subsingleton`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem subsingleton_of_giso {A B : GRep k n} (h : GIso A B) [Subsingleton A.V] : Subsingleton B.V := by
   obtain ⟨e⟩ := h
   exact e.symm.toLinearEquiv.injective.subsingleton
 
 /- English proof (translation)
-Consider the cases of `h with`. Consider the case `nil a X hs => exact Chain.nil _ _ (subsingleton_of_giso e)`. Consider the case `step hR hs hc => obtain ⟨e⟩ := e`. Conclude with `Chain.step hR (ses_mid e hs) hc`. Consider the case `skip hZ he hc => exact Chain.skip hZ (giso_trans he e) hc`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem Chain.iso {a b : ℕ} {X X' : GRep k n} (h : Chain R Z a b X) (e : GIso X X') : Chain R Z a b X' := by
   cases h with
@@ -341,7 +337,7 @@ theorem Chain.iso {a b : ℕ} {X X' : GRep k n} (h : Chain R Z a b X) (e : GIso 
   | skip hZ he hc => exact Chain.skip hZ (giso_trans he e) hc
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil a X hs => exact Chain.nil _ _ hs`. Consider the case `step h hs _ ih => exact Chain.step (hR _ _ h) hs ih`. Consider the case `skip h he _ ih => exact Chain.skip (hZ _ h) he ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem Chain.mono {a b : ℕ} {X : GRep k n} (h : Chain R Z a b X) (hR : ∀ c A, R c A → R' c A) (hZ : ∀ c, Z c → Z' c) :
     Chain R' Z' a b X := by
@@ -351,7 +347,7 @@ theorem Chain.mono {a b : ℕ} {X : GRep k n} (h : Chain R Z a b X) (hR : ∀ c 
   | skip h he _ ih => exact Chain.skip (hZ _ h) he ih
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil a X hs => exact Chain.nil _ _ hs`. Consider the case `step h hs _ ih => exact Chain.step (hR _ _ h) hs ih`. Consider the case `skip h he _ ih => exact Chain.skip (hZ _ h) he ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem Chain.shift {a b : ℕ} {X : GRep k n} (h : Chain R Z a b X) (hR : ∀ c A, R c A → R' (c + 1) A)
     (hZ : ∀ c, Z c → Z' (c + 1)) : Chain R' Z' (a + 1) (b + 1) X := by
@@ -361,9 +357,9 @@ theorem Chain.shift {a b : ℕ} {X : GRep k n} (h : Chain R Z a b X) (hR : ∀ c
   | skip h he _ ih => exact Chain.skip (hZ _ h) he ih
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro a _`. Conclude with `Chain.nil _ _ hX`. Consider the case `succ d ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a h`. Use `Chain.skip (h a le_rfl (by omega)) (giso_refl X) ?_` and prove the remaining obligations. Use `ih (a + 1) (fun c h1 h2 => h c (by omega) (by omega))` as an intermediate fact. Rewrite `this` using `[show a + 1 + d = a + (d + 1) by omega]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem chain_zero {X : GRep k n} (hX : Subsingleton X.V) : ∀ (d a : ℕ), (∀ c, a ≤ c → c < a + d → Z c) →
     Chain R Z a (a + d) X := by
@@ -380,7 +376,7 @@ def Top (R : ℕ → GRep k n → Prop) (Z : ℕ → Prop) (a : ℕ) (C : GRep k
   (∃ A, R a A ∧ GIso C A) ∨ (Z a ∧ Subsingleton C.V)
 
 /- English proof (translation)
-Break down `ht with ⟨A, hR, ⟨e⟩⟩ | ⟨hZ, h0⟩` into its components or cases. Conclude with `Chain.step hR (ses_right e hs) hc`. Conclude with `Chain.skip hZ (equiv_of_ses_zero hs) hc`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem chain_top {a b : ℕ} {X Y C : GRep k n} (hs : Ses Y.ρ X.ρ C.ρ) (ht : Top R Z a C)
     (hc : Chain R Z (a + 1) b Y) : Chain R Z a b X := by
@@ -389,7 +385,7 @@ theorem chain_top {a b : ℕ} {X Y C : GRep k n} (hs : Ses Y.ρ X.ρ C.ρ) (ht :
   · exact Chain.skip hZ (equiv_of_ses_zero hs) hc
 
 /- English proof (translation)
-Take `⟨e⟩ : Nonempty (X.ρ.Equiv X.ρ)` from `⟨Representation.Equiv.refl _⟩`. Conclude with `chain_top (Y := zeroG n) (ses_zero_left e) ht (chain_zero inferInstance d _ hZ)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chain_top' {a : ℕ} {X : GRep k n} (ht : Top R Z a X) (d : ℕ) (hZ : ∀ c, a + 1 ≤ c → c < a + 1 + d → Z c) :
     Chain R Z a (a + 1 + d) X := by
@@ -397,7 +393,7 @@ theorem chain_top' {a : ℕ} {X : GRep k n} (ht : Top R Z a X) (d : ℕ) (hZ : �
   exact chain_top (Y := zeroG n) (ses_zero_left e) ht (chain_zero inferInstance d _ hZ)
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `nil a X hs => exact Chain.nil _ _ hs`. Consider the case `step h hs _ ih => exact Chain.step ⟨_, h, giso_refl _⟩ (ses_twist _ hs) ih`. Consider the case `skip h he _ ih => exact Chain.skip h (giso_tw s he) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem Chain.tw {a b : ℕ} {X : GRep k n} (s : ℝ) (h : Chain R Z a b X) :
     Chain (fun c A' => ∃ A, R c A ∧ GIso A' (A.tw s)) Z a b (X.tw s) := by

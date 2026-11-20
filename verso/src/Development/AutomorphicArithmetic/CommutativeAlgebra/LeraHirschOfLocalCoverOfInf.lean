@@ -35,17 +35,17 @@ private theorem map_inclLe (E : Spc) {a : Act} {Q R S : Pred a} (h : Q.Le R) (h'
   rfl
 
 /- English proof (translation)
-Introduce `A _ hx` and use `h A _ hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem comap_le {c a : Act} (π : Act.Hom c a) {Q' Q : Pred a} (h : Q'.Le Q) : (Q'.comap π).Le (Q.comap π) :=
   fun A _ hx => h A _ hx
 
 /- English proof (translation)
-Use `UpperTheory.stackProduct_isPullback_of_actionPullback E _ _ _ _ (fun _ _ => rfl) (fun _ _ => rfl) ?_ ?_` and prove the remaining obligations. Introduce `A x y hxy`. Establish `e : π.d.app A x.1 = y.1` using `congrArg Subtype.val hxy`. Establish `hx : Q'.P A (π.d.app A x.1)`. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `y.2`. Use `⟨⟨x.1, hx⟩, ⟨rfl, Subtype.ext e⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨h1, -⟩`. Establish `e1 : z.1 = x.1` using `congrArg Subtype.val h1`. Conclude with `Subtype.ext e1`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce `A g g' hg`. Conclude with `⟨g, ⟨rfl, hg⟩, fun z hz => hz.1⟩`.
+A detailed English derivation is pending.
 -/
 private theorem sq (E : Spc) {c a : Act} (π : Act.Hom c a) {Q' Q : Pred a} (h : Q'.Le Q) :
     IsPullback (Sp.map E (inclLe (comap_le π h))) (Sp.map E (π.sub Q')) (Sp.map E (π.sub Q)) (Sp.map E (inclLe h)) := by
@@ -63,11 +63,11 @@ private theorem sq (E : Spc) {c a : Act} (π : Act.Hom c a) {Q' Q : Pred a} (h :
     exact ⟨g, ⟨rfl, hg⟩, fun z hz => hz.1⟩
 
 /- English proof (translation)
-Use `UpperTheory.stackProduct_isPullback_of_actionPullback E _ _ _ _ (fun A z => rfl) (fun A z => rfl) ?_ ?_` and prove the remaining obligations. Introduce `A x y hxy`. Establish `hv : x.1 = y.1` using `congrArg Subtype.val hxy`. Use `⟨⟨x.1, x.2, ?_⟩, ⟨rfl, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hv]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `y.2`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hv`. Introduce and unpack `z ⟨hz, -⟩`. Establish `hz' : z.1 = x.1` using `congrArg Subtype.val hz`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hz'`. Introduce `A g k hgk`. Conclude with `⟨g, ⟨rfl, hgk⟩, fun z hz => hz.1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem sq_inf (E : Spc) {a : Act} {Q Q₁ Q₂ : Pred a} (h₁ : Q₁.Le Q) (h₂ : Q₂.Le Q) :
     IsPullback (Sp.map E (inclLe (show (Q₁.inf Q₂).Le Q₁ from fun _ _ h => h.1)))
@@ -89,11 +89,11 @@ private theorem sq_inf (E : Spc) {a : Act} {Q Q₁ Q₂ : Pred a} (h₁ : Q₁.L
     exact ⟨g, ⟨rfl, hgk⟩, fun z hz => hz.1⟩
 
 /- English proof (translation)
-Substitute `hu hv` using the available equality. Take `⟨h1, h2, h3⟩` from `h`. Use `⟨?_, ?_, fun n => ?_⟩` and prove the remaining obligations. Establish `: u' = inv e ≫ e ≫ u'` using `by simp`. Rewrite using `[this]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Establish `: v' = inv e' ≫ e' ≫ v'` using `by simp`. Rewrite using `[this]`. Use `infer_instance`. Establish `h4` using `h3 n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `: biprod.desc ((free R).map ((e ≫ u').app n)) ((free R).map ((e' ≫ v').app n)) = biprod.map ((free R).map (e.app n)) ((free R).map (e'.app n)) ≫ biprod.desc ((free R).map (u'.app n)) ((free R).map (v'.app n))`. Apply the tactic sequence `apply biprod.hom_ext' <;> simp`. Rewrite `h4` using `[this]`. Conclude with `epi_of_epi (biprod.map ((free R).map (e.app n)) ((free R).map (e'.app n))) _`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem cover_tr {R : Type} [CommRing R] {U U' V V' E : Spc} (u : U ⟶ E) (v : V ⟶ E) (u' : U' ⟶ E) (v' : V' ⟶ E)
     (e : U ⟶ U') (e' : V ⟶ V') [IsIso e] [IsIso e'] (hu : e ≫ u' = u) (hv : e' ≫ v' = v) (h : Cover2 R u v) :
@@ -116,11 +116,11 @@ private theorem cover_tr {R : Type} [CommRing R] {U U' V V' E : Spc} (u : U ⟶ 
     exact epi_of_epi (biprod.map ((free R).map (e.app n)) ((free R).map (e'.app n))) _
 
 /- English proof (translation)
-Use `UpperTheory.mayerVietoris_stackProduct_of_injective_of_locally_covered R E _ _ ?_ ?_ (fun _ => Function.bijective_id) (fun _ => Function.bijective_id) ?_` and prove the remaining obligations. Introduce `A x y h`. Establish `e` using `congrArg (fun w : {z // Q.P A z} => w.1) h`. Conclude with `Subtype.ext e`. Introduce `A x y h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `congrArg (fun w : {z // Q.P A z} => w.1) h`. Conclude with `Subtype.ext e`. Introduce `T x`. Take `⟨S, hS, hP⟩` from `hloc T x.1 x.2`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Break down `hP V g hg with h | h` into its components or cases. Conclude with `Or.inl ⟨⟨_, h⟩, rfl⟩`. Conclude with `Or.inr ⟨⟨_, h⟩, rfl⟩`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 private theorem cov (R : Type) [CommRing R] (E : Spc) {a : Act} {Q Q₁ Q₂ : Pred a} (h₁ : Q₁.Le Q) (h₂ : Q₂.Le Q)
     (hloc : ∀ (T : Scheme.{0}) (x : a.D.obj Γ(T, ⊤)), Q.P _ x →
@@ -141,9 +141,9 @@ private theorem cov (R : Type) [CommRing R] (E : Spc) {a : Act} {Q Q₁ Q₂ : P
     · exact Or.inr ⟨⟨_, h⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h1` using `UpperTheory.lerayHirsch_of_iso_square q (Sp.map E (π.sub Q')) sn u b hb d e _ L`. Establish `h2 : (fun j => pull _ fs _ _ (pull _ (Sp.map E (incl (Q.comap π))) _ _ (cl j))) = fun j => pull _ u _ _ (pull _ (Sp.map E (incl (Q'.comap π))) _ _ (cl j))`. Use function extensionality and compare the values at `j`. Rewrite using `[← pull_comp, ← pull_comp, ← hu, Category.assoc, map_incl]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 private theorem tr (q : ℕ) [NeZero q] (E : Spc) {c a : Act} (π : Act.Hom c a) {m : ℕ} (d e : Fin m → ℤ)
     (cl : ∀ j, Ht q (Sp E c) (d j) (e j)) {Q' Q : Pred a} (h : Q'.Le Q) {P B' : Spc}
@@ -162,13 +162,11 @@ private theorem tr (q : ℕ) [NeZero q] (E : Spc) {c a : Act} (π : Act.Hom c a)
 end UpperTheory.Glue
 
 /- English proof (translation)
-Introduce `q _ E _ c a π m d e cl Q Q₁ Q₂ h₁ h₂ hloc L₁ L₂ L₁₂`. Establish `hinf : (Q₁.inf Q₂).Le Q` using `fun A x hx => h₁ A x hx.1`. Establish `sq1` using `UpperTheory.Glue.sq E π h₁`. Establish `sq2` using `UpperTheory.Glue.sq E π h₂`. Establish `sqi` using `UpperTheory.Glue.sq_inf E h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hloc' : ∀ (T : Scheme.{0}) (x : c.D.obj Γ(T, ⊤)), (Q.comap π).P _ x → Loc T fun V g => (Q₁.comap π).P _ (c.D.map g.appTop x) ∨ (Q₂.comap π).P _ (c.D.map g.appTop x)`. Introduce `T x hx`. Take `⟨S, hS, hP⟩` from `hloc T _ hx`. Use `⟨S, hS, fun V g hg => ?_⟩` and prove the remaining obligations. Use `show Q₁.P _ _ ∨ Q₂.P _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[FunctorToTypes.naturality]`. Conclude with `hP V g hg`. Establish `sq' : IsPullback (Sp.map E (inclLe (UpperTheory.Glue.comap_le π hinf))) (Sp.map E (π.sub (Q₁.inf Q₂)) ≫ sqi.isoPullback.hom) (Sp.map E (π.sub Q)) (pullback.fst (Sp.map E (inclLe h₁)) (Sp.map E (inclLe h₂)) ≫ Sp.map E (inclLe h₁))`. Use `(UpperTheory.Glue.sq E π hinf).of_iso (Iso.refl _) (Iso.refl _) sqi.isoPullback (Iso.refl _) (by simp) (by simp) (by simp) ?_` and prove the remaining obligations. Rewrite using `[Iso.refl_hom, Category.comp_id, ← Category.assoc, IsPullback.isoPullback_hom_fst, UpperTheory.Glue.map_inclLe]`.
-
-Use `UpperTheory.lerayHirsch_of_mayerVietoris_cover q (Sp.map E (inclLe h₁)) (Sp.map E (inclLe h₂)) (Sp.map E (π.sub Q)) d e _ (UpperTheory.Glue.cov _ E h₁ h₂ hloc) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `UpperTheory.Glue.cover_tr (Sp.map E (inclLe (UpperTheory.Glue.comap_le π h₁))) (Sp.map E (inclLe (UpperTheory.Glue.comap_le π h₂))) _ _ sq1.isoPullback.hom sq2.isoPullback.hom sq1.isoPullback_hom_fst sq2.isoPullback_hom_fst (UpperTheory.Glue.cov _ E (UpperTheory.Glue.comap_le π h …`. Conclude with `UpperTheory.Glue.tr q E π d e cl h₁ _ _ sq1.isoPullback.inv (𝟙 _) sq1.isoPullback_inv_fst (by rw [sq1.isoPullback_inv_snd, Category.comp_id]) L₁`. Conclude with `UpperTheory.Glue.tr q E π d e cl h₂ _ _ sq2.isoPullback.inv (𝟙 _) sq2.isoPullback_inv_fst (by rw [sq2.isoPullback_inv_snd, Category.comp_id]) L₂`. Conclude with `UpperTheory.Glue.tr q E π d e cl hinf _ _ sq'.isoPullback.inv sqi.isoPullback.inv sq'.isoPullback_inv_fst (by rw [← sq'.isoPullback_inv_snd, Category.assoc, Category.assoc, Iso.hom_inv_id, Category.comp_id]) L₁₂`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.leraHirsch_of_local_cover_of_inf :
     ∀ (q : ℕ) [NeZero q] (E : Spc), Inv q E → ∀ {c a : Act} (π : Act.Hom c a) {m : ℕ} (d e : Fin m → ℤ) (cl : ∀ j, Ht q (Sp E c) (d j) (e j))

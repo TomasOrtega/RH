@@ -21,9 +21,9 @@ namespace GlobalTheory.GenericDec
 open ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison in
 
 /- English proof (translation)
-Use `exists_gen_transfer (L := LB.div (M.pull a) (N.pull a)) (L' := (LB.div M N).pull a) (fun p => ((fun _ => (p PUnit.unit).1), (fun _ => (p PUnit.unit).2))) (fun j y hy => ?_) (fun i j y hy => ?_) h` and prove the remaining obligations. Conclude with `⟨Set.mem_iInter.2 fun _ => (Set.mem_iInter.1 hy PUnit.unit).1, Set.mem_iInter.2 fun _ => (Set.mem_iInter.1 hy PUnit.unit).2⟩`. Establish `hM : a.base y ∈ M.U (i PUnit.unit).1 ⊓ M.U (j PUnit.unit).1` using `⟨(Set.mem_iInter.1 hy.1 PUnit.unit).1, (Set.mem_iInter.1 hy.2 PUnit.unit).1⟩`. Establish `hN : a.base y ∈ N.U (i PUnit.unit).2 ⊓ N.U (j PUnit.unit).2` using `⟨(Set.mem_iInter.1 hy.1 PUnit.unit).2, (Set.mem_iInter.1 hy.2 PUnit.unit).2⟩`. Use `(germ_pull (LB.div M N) a i j y hy ⟨⟨hM.1, hN.1⟩, ⟨hM.2, hN.2⟩⟩).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gU_pullU a _ y _ _).trans ?_` and prove the remaining obligations. Use `(congrArg _ (germ_div M N _ _ (a.base y) _)).trans ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_inv]`. Use `Eq.trans ?_ (germ_div _ _ _ _ y _).symm` and prove the remaining obligations. Conclude with `congrArg₂ (· * ·) ((germ_pull M a (fun _ => (i PUnit.unit).1) (fun _ => (j PUnit.unit).1) y _ hM).trans (gU_pullU a _ y _ _)).symm (congrArg (·⁻¹) ((germ_pull N a (fun _ => (i PUnit.unit).2) (fun _ => (j PUnit.unit).2) y _ hN).trans (gU_pullU a _ y _ _)).symm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gen_pull_div_of_gen_div {X Y : Scheme.{0}} (M N : LB X) (a : Y ⟶ X)
     (h : ∃ t : LB.Gen (LB.div (M.pull a) (N.pull a)), t.IsGen) :
@@ -46,7 +46,7 @@ theorem gen_pull_div_of_gen_div {X Y : Scheme.{0}} (M N : LB X) (a : Y ⟶ X)
       (congrArg (·⁻¹) ((germ_pull N a (fun _ => (i PUnit.unit).2) (fun _ => (j PUnit.unit).2) y _ hN).trans (gU_pullU a _ y _ _)).symm)
 
 /- English proof (translation)
-The claim follows from `PicGenericInj.exists_gen_of_generic R' G hG (LB.div Q P) (LB.isLB_div hQ hP) (gen_pull_div_of_gen_div Q P _ h)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_of_generic {R' : Type} [CommRing R'] [IsDomain R'] [IsNoetherianRing R'] [IsIntegrallyClosed R']
     [IsLocalRing R'] (G : Over (Sp R')) [GrpObj G] (hG : IsSemiAbelian G) {P Q : LB G.left} (hP : P.IsLB)
@@ -56,13 +56,13 @@ theorem lbIso_of_generic {R' : Type} [CommRing R'] [IsDomain R'] [IsNoetherianRi
     (gen_pull_div_of_gen_div Q P _ h)
 
 /- English proof (translation)
-Introduce `R' _ _ _ _ _ G _ hG L M hL hM hD`. Take `⟨N, a₀, r, a, β, hN, ha₀, hβ, H⟩` from `hD`. Establish `ext : ∀ i, ∃ B : G ⟶ G, IsMonHom B ∧ (Over.pullback (jK R')).map B = β i` using `fun i => (semiAbelian_hom_extend_generic R' G G hG hG (β i) (hβ i)).exists`. Use `choose B hBm hBe using ext`. Use `⟨N, a₀, r, a, B, hN, ha₀, hBm, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set f := pullback.fst G.hom (jK R') with hf`. Establish `hc : ∀ o : Option (Fin r), (o.elim (𝟙 _) fun i => (β i).left) ≫ f = f ≫ (o.elim (𝟙 G.left) fun i => (B i).left)`. Introduce `o`. Consider the cases of `o with`. Consider the case `none => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `some i`. Simplify using `only [Option.elim_some]`. Rewrite using `[← hBe i]`. Simplify using `only [hf, Over.pullback_map_left]`. Conclude with `pullback.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `i1` using `(lbIso_lbPow_pull hL f N).symm`. Establish `i5` using `GlobalTheory.SymExtend.lbIso_linComb_pull hM f (fun o : Option (Fin r) => o.elim (𝟙 _) fun i => (β i).left) (fun o : Option (Fin r) => o.elim (𝟙 G.left) fun i => (B i).left) (fun o => o.elim (a₀ : ℤ) fun i => (a i : ℤ)) f hc`. Establish `j1` using `i1.trans (pull_isLB (isLB_lbPow hL N) f) (isLB_lbPow (pull_isLB hL f) N) (LB.isLB_linComb (pull_isLB hM f) _ _) H`. Establish `j2` using `j1.trans (pull_isLB (isLB_lbPow hL N) f) (LB.isLB_linComb (pull_isLB hM f) _ _) (pull_isLB (LB.isLB_linComb hM _ _) f) i5`. Conclude with `lbIso_of_generic G hG (isLB_lbPow hL N) (LB.isLB_linComb hM _ _) j2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sqDec_of_generic : ∀ (R' : Type) [CommRing R'] [IsDomain R'] [IsNoetherianRing R'] [IsIntegrallyClosed R']
     [IsLocalRing R'] (G : Over (Sp R')) [GrpObj G], IsSemiAbelian G → ∀ (L M : LB G.left), L.IsLB → M.IsLB →

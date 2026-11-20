@@ -15,7 +15,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory.Moduli
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.moduliScheme_nonempty_at_every_level GlobalTheory.T.all_six_abelian_scheme_laws_hold.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.1 GlobalTheory.T.theorem_of_cube_polAbelianScheme GlobalTheory.T.theta_uniformisation_complex_abelian_varieties`.
+A detailed English derivation is pending.
 -/
 theorem moduli_scheme_exists : N1ab :=
   GlobalTheory.T.moduliScheme_nonempty_at_every_level GlobalTheory.T.all_six_abelian_scheme_laws_hold.1 GlobalTheory.T.all_six_abelian_scheme_laws_hold.2.1 GlobalTheory.T.theorem_of_cube_polAbelianScheme GlobalTheory.T.theta_uniformisation_complex_abelian_varieties

@@ -12,7 +12,7 @@ open SplitWeil
 variable {k : Type*} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n n' : Type*}
 
 /- English proof (translation)
-Use `⟨(IsLocallyConstant.iff_exists_open _).2 fun x => ?_, HasCompactSupport.intro' hc h.1 fun x hx => if_neg hx⟩` and prove the remaining obligations. Distinguish the cases in `hx : p x`. Conclude with `⟨_, h.2, hx, fun y hy => (if_pos hy).trans (if_pos hx).symm⟩`. Conclude with `⟨_, h.compl.2, hx, fun y hy => (if_neg hy).trans (if_neg hx).symm⟩`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem ite_mem_SB {X : Type*} [TopologicalSpace X] {p : X → Prop} [DecidablePred p] (h : IsClopen {x | p x})
     (hc : IsCompact {x | p x}) : (fun x => if p x then (1 : ℂ) else 0) ∈ SB X := by
@@ -24,9 +24,9 @@ theorem ite_mem_SB {X : Type*} [TopologicalSpace X] {p : X → Prop} [DecidableP
 variable [Fintype n] [Fintype n']
 
 /- English proof (translation)
-Use `haveI := t2Space k`. Take `⟨g, rfl⟩` from `exists_smul_lat (stdLat k n) L`. Establish `h : ((g • stdLat k n : Submodule 𝒪[k] (n → k)) : Set (n → k)) = ⋂ i, (fun x => ((g⁻¹ : GL n k).val *ᵥ x) i) ⁻¹' (𝒪[k] : Set k)`. Use extensionality with `x`. Simplify using `only [SetLike.mem_coe, mem_smul_iff, mem_stdLat, Set.mem_iInter, Set.mem_preimage]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[h]`. Use `isClopen_iInter_of_finite fun i => IsClopen.preimage ⟨(isCompact_int k).isClosed, isOpen_int k⟩ ?_` and prove the remaining obligations. Conclude with `(continuous_apply i).comp (continuous_const.matrix_mulVec continuous_id)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isClopen_lattice (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] : IsClopen (L : Set (n → k)) := by
   classical
@@ -44,7 +44,7 @@ theorem isClopen_lattice (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k] : IsC
 omit [Fintype n] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Simplify using `only [mem_stdLat]`. Use `⟨fun h i j => ?_, fun h y hy i => sum_mem fun j _ => mul_mem (h i j) (hy j)⟩` and prove the remaining obligations. Use `h (Pi.single j 1) (fun l => ?_) i` as an intermediate fact. Simplify using `using this`. Rewrite using `[Pi.single_apply] split_ifs exacts [one_mem _, zero_mem _]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem maps_stdLat_iff {x : Matrix n n' k} :
     (∀ y ∈ stdLat k n', x *ᵥ y ∈ stdLat k n) ↔ ∀ i j, x i j ∈ 𝒪[k] := by
@@ -58,13 +58,13 @@ theorem maps_stdLat_iff {x : Matrix n n' k} :
     exacts [one_mem _, zero_mem _]
 
 /- English proof (translation)
-Use `haveI := t2Space k`. Take `⟨g, rfl⟩` from `exists_smul_lat (stdLat k n') S`. Take `⟨h, rfl⟩` from `exists_smul_lat (stdLat k n) L`. Set `K : Set (Matrix n n' k)` to `Set.univ.pi fun _ => Set.univ.pi fun _ => (𝒪[k] : Set k)`. Establish `hKc : IsCompact K` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_int k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKo : IsOpen K` using `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_set_pi Set.finite_univ fun _ _ => isOpen_int k`. Establish `e : {x : Matrix n n' k | ∀ y ∈ g • stdLat k n', x *ᵥ y ∈ h • stdLat k n} = sideMul g h ⁻¹' K`. Use extensionality with `x`. Establish `h1 : sideMul g h x ∈ K ↔ ∀ i j, ((h⁻¹ : GL n k).val * x * g.val) i j ∈ 𝒪[k]` using `⟨fun H i j => H i trivial j trivial, fun H i _ j _ => H i j⟩`. Rewrite using `[Set.mem_preimage, h1, ← maps_stdLat_iff, Set.mem_setOf_eq]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mem_smul_iff, ← mulVec_mulVec]`. Use `⟨fun H y hy => H (g • y) (by simpa using hy), fun H y hy => ?_⟩` and prove the remaining obligations. Use `H _ hy` as an intermediate fact. Rewrite `this` using `[show g.val *ᵥ (g⁻¹ • y) = y from smul_inv_smul g y]`. Then use the resulting hypothesis. Rewrite using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨IsClopen.preimage ⟨hKc.isClosed, hKo⟩ (sideMul g h).continuous, (sideMul g h).isCompact_preimage.2 hKc⟩`.
+A detailed English derivation is pending.
 -/
 theorem isClopen_isCompact_maps (S : Submodule 𝒪[k] (n' → k)) (L : Submodule 𝒪[k] (n → k)) [S.IsLattice k]
     [L.IsLattice k] : IsClopen {x : Matrix n n' k | ∀ y ∈ S, x *ᵥ y ∈ L} ∧
@@ -90,7 +90,7 @@ theorem isClopen_isCompact_maps (S : Submodule 𝒪[k] (n' → k)) (L : Submodul
   exact ⟨IsClopen.preimage ⟨hKc.isClosed, hKo⟩ (sideMul g h).continuous, (sideMul g h).isCompact_preimage.2 hKc⟩
 
 /- English proof (translation)
-Conclude with `ite_mem_SB (isClopen_isCompact_maps S L).1 (isClopen_isCompact_maps S L).2`.
+A detailed English derivation is pending.
 -/
 theorem latInd_mem_SB (S : Submodule 𝒪[k] (n' → k)) (L : Submodule 𝒪[k] (n → k)) [S.IsLattice k] [L.IsLattice k] :
     latInd S L ∈ SB (Matrix n n' k) := by
@@ -98,9 +98,9 @@ theorem latInd_mem_SB (S : Submodule 𝒪[k] (n' → k)) (L : Submodule 𝒪[k] 
   exact ite_mem_SB (isClopen_isCompact_maps S L).1 (isClopen_isCompact_maps S L).2
 
 /- English proof (translation)
-Establish `e : {x : Matrix n n' k | Maps P Q x} = {x : Matrix n n' k | ∀ y ∈ P.ker, x *ᵥ y ∈ Q.ker} ∩ (fun x : Matrix n n' k => x *ᵥ P.vec - Q.vec) ⁻¹' (Q.ker : Set (n → k))`. Use extensionality with `x`. Conclude with `maps_iff_glue P.hasVal_vec Q.hasVal_vec`. Establish `h2` using `(isClopen_lattice Q.ker).preimage (f := fun x : Matrix n n' k => x *ᵥ P.vec - Q.vec) ((continuous_id.matrix_mulVec continuous_const).sub continuous_const)`. Take `⟨h1, hc⟩` from `isClopen_isCompact_maps P.ker Q.ker`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `⟨h1.inter h2, hc.inter_right h2.1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isClopen_isCompact_mapsPair (P : Pair k n') (Q : Pair k n) :
     IsClopen {x : Matrix n n' k | Maps P Q x} ∧ IsCompact {x : Matrix n n' k | Maps P Q x} := by
@@ -115,7 +115,7 @@ theorem isClopen_isCompact_mapsPair (P : Pair k n') (Q : Pair k n) :
   exact ⟨h1.inter h2, hc.inter_right h2.1⟩
 
 /- English proof (translation)
-Conclude with `ite_mem_SB (isClopen_isCompact_mapsPair P Q).1 (isClopen_isCompact_mapsPair P Q).2`.
+A detailed English derivation is pending.
 -/
 theorem phiOne_mem_SB (P : Pair k n') (Q : Pair k n) : phiOne P Q ∈ SB (Matrix n n' k) := by
   classical

@@ -10,7 +10,7 @@ open NumberField IsDedekindDomain Matrix in
 open scoped TensorProduct in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ n σ J T f bad S`. Use `⟨⟨S.Lb_fin, S.Lb_span⟩, S.Lb_int, S.Lb_dual, S.Lb_index, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `DFunLike.ne_iff.mp (S.fT_ne v hv)`. Conclude with `⟨x, x.2, fun hmem => hx (S.fT_L v hv x hmem)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem _root_.GlobalTheory.St.G.stepLevel_tLat : ∀ (F E : Type) [Field F] [NumberField F]
     [Field E] [NumberField E] [Algebra F E] (n : ℕ) (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E)

@@ -19,7 +19,7 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T : Type} {A3 : Forma
   {Y : GlobalTheory.Mem.R3.Read (A3 := A3) R.toRealDat F.lv2 X0} {M : MtFam D}
 
 /- English proof (translation)
-Use `show (R.cV i).ext _ x = (R.cV i).ext _ (x * (Ad.PV i).ψ h)`. Rewrite using `[GlobalTheory.DefLiftHecke.ext_mul _ hcv _ ((Ad.PV i).into h) x]`. Use `show (R.cV i).ρ x⁻¹ _ = _`. Simplify using `only [LinearMap.coe_mk, AddHom.coe_mk, preF_mul, hF, NG.rt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fV_rt (Ad : GlobalTheory.HeightCounting.MtAd Y M) (i : Fin D.R.m) (hcv : (R.cV i).Is) (h : Formalism.AUTREP.GAf D.host.E D.R.nV)
     (Fm Fm' : ↥(NG.AFall D.host.E D.R.nV (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)).wt.ρ))
@@ -31,11 +31,11 @@ theorem fV_rt (Ad : GlobalTheory.HeightCounting.MtAd Y M) (i : Fin D.R.m) (hcv :
   simp only [LinearMap.coe_mk, AddHom.coe_mk, preF_mul, hF, NG.rt]
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `fin_frame_surj (Ad.PV i) ((Formalism.L2.Theta.finHom (Vc D i)).rangeRestrict γ)`. Take `⟨z, hz⟩` from `fin_frame_surj (Ad.PV i) ((Formalism.L2.Theta.finHom (Vc D i)).rangeRestrict x)`. Establish `he : Formalism.L2.Theta.finHom (Vc D i) γ = Formalism.L2.Theta.finHom (Vc D i) ((Ad.PV i).ψ y)` using `(congrArg Subtype.val hy).symm`. Establish `hh' : y ∈ ReciprocityTheory.Aut.GQ D.host.E D.R.nV` using `(Ad.rat i _).2 ⟨γ, hγ, he⟩`. Use `show (R.cV i).ρ (γ * x)⁻¹ (Ad.eW D.what₂.mu0 (reference_tuple_used D) i ((Fm : Formalism.AUTREP.GAf D.host.E D.R.nV → (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)).wt.W) (preF (Ad.PV i) ((Formalism.L2.Theta.finHom (Vc D i)).rangeRestrict (γ * x))))) = (R.cV i).ρ x⁻¹ (Ad.eW D.wh …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : (Formalism.L2.Theta.finHom (Vc D i)).rangeRestrict γ * (Formalism.L2.Theta.finHom (Vc D i)).rangeRestrict x = (Formalism.L2.Theta.finHom (Vc D i)).rangeRestrict ((Ad.PV i).ψ (y * z))` using `(congrArg₂ (· * ·) hy.symm hz.symm).trans ((map_mul (Formalism.L2.Theta.finHom (Vc D i)).rangeRestrict _ _).symm.trans (congrArg (Formalism.L2.Theta.finHom (Vc D i)).rangeRestrict (map_mul (Ad.PV i).ψ y z).symm))`. Establish `key : preF (Ad.PV i) ((Formalism.L2.Theta.finHom (Vc D i)).rangeRestrict (γ * x)) = y * z` using `(congrArg (preF (Ad.PV i)) ((map_mul (Formalism.L2.Theta.finHom (Vc D i)).rangeRestrict γ x).trans hprod)).trans (preF_frame _ _)`. Establish `hz' : preF (Ad.PV i) ((Formalism.L2.Theta.finHom (Vc D i)).rangeRestrict x) = z` using `(congrArg (preF (Ad.PV i)) hz.symm).trans (preF_frame _ _)`. Rewrite using `[key, hz']`. Establish `e1` using `Fm.2.1 ⟨y, hh'⟩ z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `Ad.wt D.what₂.mu0 (reference_tuple_used D) i ⟨y, hh'⟩ γ hγ he ((Fm : Formalism.AUTREP.GAf D.host.E D.R.nV → (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)).wt.W) z)`. Rewrite using `[e1, e2, _root_.mul_inv_rev, map_mul, Module.End.mul_apply, ← Module.End.mul_apply ((R.cV i).ρ γ⁻¹), ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fV_rat (Ad : GlobalTheory.HeightCounting.MtAd Y M) (i : Fin D.R.m)
     (Fm : ↥(NG.AFall D.host.E D.R.nV (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)).wt.ρ))
@@ -76,7 +76,7 @@ theorem yv_apply {rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r} {i : Fin D.R.
       (fun τ => (lowT (R.MW i (sg0 D A3.A)) τ).subtype) (kUnit (R.MW i (sg0 D A3.A)))) x := rfl
 
 /- English proof (translation)
-Establish `he : RefTheta.eC hc (y' : X.A) = Formalism.IndefR.principalLevelFrame.actM (Y.PW i) (R.MW i (sg0 D A3.A)) g (RefTheta.eC hc (y : X.A))`. Rewrite using `[hy]`. Conclude with `(Classical.choose_spec (Classical.choose_spec hc)).2.2.2.1 g y`. Rewrite using `[RefTheta.yv_apply, RefTheta.yv_apply, he, lift_actM]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yv_rt {rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r} {i : Fin D.R.m} {j : ℕ} {hj : i.1 + 1 = j}
     {X : GlobalTheory.NPin.RowMod D rep j} (hc : IsCanonR Y i hj X)
@@ -87,9 +87,7 @@ theorem yv_rt {rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r} {i : Fin D.R.m} 
   rw [RefTheta.yv_apply, RefTheta.yv_apply, he, lift_actM]
 
 /- English proof (translation)
-Establish `hm : RefTheta.eC hc (y : X.A) ∈ LeftInvM (R.MW i (sg0 D A3.A))`. Apply `minf_le_leftInv R.θ (Y.PW i)` to reduce the goal to its premises. Rewrite using `[← (Classical.choose_spec (Classical.choose_spec hc)).2.2.1]`. Conclude with `Submodule.mem_map_of_mem y.2`. Rewrite using `[RefTheta.yv_apply, RefTheta.yv_apply]`.
-
-Conclude with `lift_left _ _ hm _ γ hγ x`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem yv_rat {rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r} {i : Fin D.R.m} {j : ℕ} {hj : i.1 + 1 = j}
     {X : GlobalTheory.NPin.RowMod D rep j} (hc : IsCanonR Y i hj X)
@@ -103,23 +101,21 @@ theorem yv_rat {rep : D.what₂.FT → NG.FinTyp D.host.E D.R.r} {i : Fin D.R.m}
   exact lift_left _ _ hm _ γ hγ x
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH hEx M Ad i X hc h g φ hφ Fm Fm' y y' hF hy`. Establish `hcore` using `(GlobalTheory.CoreOfWeak.core_of_weak R F hP.char hEx).1`. Establish `hW` using `hcore.thP.ωP i (t0 Y)`. Establish `hcv : (R.cV i).Is` using `hcore.models.cV i`. Establish `hth : ∀ v, IsThetaFunO R.ψ (Vc D i) (Wc D i) (φ v)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v`. Use `(hφ 1).1 v` as an intermediate fact. Simplify `this` using `[valAct1_apply]`. Establish `hV` using `hcore.models.νV i (t0 Y)`. Establish `hWm` using `hcore.models.νW i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : (R.νV i (t0 Y)).IsHaarMeasure := hV.1.1`. Use `haveI : (R.νV i (t0 Y)).IsMulRightInvariant := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D _ _ hV.1.1`. Use `haveI : (R.νW i).IsHaarMeasure := hWm.1.1`. Use `haveI : (R.νW i).IsMulRightInvariant := GlobalTheory.AdelicPointsUnimod.isMulRightInvariant_of_isHaarMeasure D _ _ hWm.1.1`. Use `haveI : Countable (Formalism.L2.Theta.GQ (Vc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig (Vc D i).gram`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Countable (Formalism.L2.Theta.GQ (Wc D i)) := Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma D.sp.cm.sig (Wc D i).gram`. Establish `inner : ∀ g₀, thIn (R.ωP i (t0 Y)) (RefTheta.fV Ad i) (R.νV i (t0 Y)) (R.fdV i (t0 Y)) (valAct1 (RefTheta.omStd Ad i (t0 Y)) (h, g) φ) Fm' g₀ = thIn (R.ωP i (t0 Y)) (RefTheta.fV Ad i) (R.νV i (t0 Y)) (R.fdV i (t0 Y)) φ Fm (g₀ * (Y.PW i).ψ g)`. Introduce `g₀`. Unfold `thIn`. Establish `e1 : ∀ h₀, thetaKO (R.ωP i (t0 Y)) h₀ g₀ (valAct1 (RefTheta.omStd Ad i (t0 Y)) (h, g) φ (RefTheta.fV Ad i Fm' h₀)) = thetaKO (R.ωP i (t0 Y)) (h₀ * (Ad.PV i).ψ h) (g₀ * (Y.PW i).ψ g) (φ (RefTheta.fV Ad i Fm (h₀ * (Ad.PV i).ψ h)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h₀`. Rewrite using `[valAct1_apply, RefTheta.fV_rt Ad i hcv h Fm Fm' hF h₀]`. Conclude with `thetaKO_act _ _ _ _ _`. Simplify using `only [e1]`. Use `(Formalism.IndefR.Eqv.rightInv_holds _ (Formalism.L2.Theta.GQ (Vc D i)) _ _ hV.2 (fun h₁ => thetaKO (R.ωP i (t0 Y)) h₁ (g₀ * (Y.PW i).ψ g) (φ (RefTheta.fV Ad i Fm h₁))) ?_ _).2` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Introduce `γ hγ h₁`. Rewrite using `[RefTheta.fV_rat Ad i Fm γ hγ h₁]`. Use `(GlobalTheory.thetaKO_rat_left_and_eigen_right _ _ _ _ _ _ hW _ (hth (RefTheta.fV Ad i Fm h₁))).1 γ hγ 1 (one_mem _) h₁ (g₀ * (Y.PW i).ψ g)` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis. Unfold `GlobalTheory.RefTheta.lamV GlobalTheory.ThetaTri.lamV`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Establish `e2 : ∀ g₀, star (RefTheta.yv hc y' g₀) * thIn (R.ωP i (t0 Y)) (RefTheta.fV Ad i) (R.νV i (t0 Y)) (R.fdV i (t0 Y)) (valAct1 (RefTheta.omStd Ad i (t0 Y)) (h, g) φ) Fm' g₀ = star (RefTheta.yv hc y (g₀ * (Y.PW i).ψ g)) * thIn (R.ωP i (t0 Y)) (RefTheta.fV Ad i) (R.νV i (t0 Y)) (R.fdV …`. Introduce `g₀`. Rewrite using `[inner, RefTheta.yv_rt hc g y y' hy]`. Simplify using `only [e2]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `(Formalism.IndefR.Eqv.rightInv_holds _ (Formalism.L2.Theta.GQ (Wc D i)) _ _ hWm.2 (fun g₁ => star (RefTheta.yv hc y g₁) * thIn (R.ωP i (t0 Y)) (RefTheta.fV Ad i) (R.νV i (t0 Y)) (R.fdV i (t0 Y)) φ Fm g₁) ?_ _).2` and prove the remaining obligations. Introduce `γ hγ g₁`. Rewrite using `[RefTheta.yv_rat hc y γ hγ g₁]`. Use `congr 1`. Unfold `thIn`.
-
-Use `congr 1`. Use function extensionality and compare the values at `h₁`. Use `(GlobalTheory.thetaKO_rat_left_and_eigen_right _ _ _ _ _ _ hW _ (hth (RefTheta.fV Ad i Fm h₁))).1 1 (one_mem _) γ hγ h₁ g₁` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem lamV_inv : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : Formalism.L2.DIV.FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : Formalism.IndefR.Links.RealDat3 D A3 Ks) (F : Formalism.IndefR.Links.Face3 D A3) (cG : Formalism.L2.DIV.G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := A3) R.toRealDat F.lv2 X0), GlobalTheory.Mem.R3.Pins R F cG → GlobalTheory.Mem.R3.Holds R F → R.toRealDat.ExAt → ∀ (M : MtFam D) (Ad : GlobalTheory.HeightCounting.MtAd Y M) (i : Fin D.R.m) (X : GlobalTheory.NPin.RowMod D (GlobalTheory.RefTheta.repY Y) (i.1 + 1)) (hc : GlobalTheory.RefTheta.IsCanonR Y i rfl X) (h : GAf D.host.E D.R.nV) (g : GAf D.host.E D.R.r) (φ : (R.cV i).W →ₗ[ℂ] (Formalism.IndefR.Datum.WO (Formalism.IndefR.Links.Vc D i) (Formalism.IndefR.Links.Wc D i) → ℂ)), φ ∈ GlobalTheory.RefTheta.Om Ad i hc → ∀ (Fm Fm' : ↥(NG.AFall D.host.E D.R.nV (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)).wt.ρ)) (y y' : ↥X.C), (Fm' : GAf D.host.E D.R.nV → (M D.what₂.mu0 (i.1 + 1) (by omega) (by omega)).wt.W) = NG.rt D.host.E D.R.nV h Fm → (y' : X.A) = X.ρ g y → GlobalTheory.RefTheta.lamV Ad i hc (GlobalTheory.ThetaTri.valAct1 (GlobalTheory.RefTheta.omStd Ad i (GlobalTheory.RefTheta.t0 Y)) (h, g) φ) Fm' y' = GlobalTheory.RefTheta.lamV Ad i hc φ Fm y := by
   intro D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y hP hH hEx M Ad i X hc h g φ hφ Fm Fm' y y' hF hy

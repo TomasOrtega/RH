@@ -41,7 +41,7 @@ def compositeValuationSubring {L : Type*} [Field L] (W : ValuationSubring L)
       exact V.zero_mem
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩`. Conclude with `⟨y.2, hy⟩`. Introduce and unpack `⟨h, hV⟩`. Conclude with `⟨⟨x, h⟩, hV, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_compositeValuationSubring {L : Type*} [Field L] (W : ValuationSubring L)
     (V : ValuationSubring (ResidueField W)) (x : L) :
@@ -53,20 +53,18 @@ theorem mem_compositeValuationSubring {L : Type*} [Field L] (W : ValuationSubrin
     exact ⟨⟨x, h⟩, hV, rfl⟩
 
 /- English proof (translation)
-Introduce `x hx` and use `((mem_compositeValuationSubring W V x).1 hx).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem compositeValuationSubring_le {L : Type*} [Field L] (W : ValuationSubring L)
     (V : ValuationSubring (ResidueField W)) : compositeValuationSubring W V ≤ W :=
   fun x hx => ((mem_compositeValuationSubring W V x).1 hx).1
 
 /- English proof (translation)
-Set `g' : O →+* W` to `g.codRestrict W.toSubring hg`. Set `f : O →+* ResidueField W` to `(residue W).comp g'`. Take `⟨V, hV, hloc⟩` from `IsLocalRing.exists_factor_valuationRing f`. Use `⟨compositeValuationSubring W V, compositeValuationSubring_le W V, fun x => (mem_compositeValuationSubring W V _).2 ⟨hg x, hV x⟩, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[ValuationSubring.mem_nonunits_iff_or]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Break down `eq_or_ne (g x) 0 with h0 | h0` into its components or cases. Conclude with `Or.inl h0`. Use `Or.inr fun hinv => ?_` and prove the remaining obligations. Take `⟨h, hres⟩` from `(mem_compositeValuationSubring W V _).1 hinv`. Establish `hmul : f x * residue W ⟨(g x)⁻¹, h⟩ = 1`.
+Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `residue W (g' x) * _ = 1`. Rewrite using `[← map_mul, ← map_one (residue W)]`. Use `congr 1`. Conclude with `Subtype.ext (mul_inv_cancel₀ h0)`. Establish `hu : IsUnit (f.codRestrict V.toSubring hV x)` using `isUnit_iff_exists_inv.2 ⟨⟨_, hres⟩, Subtype.ext hmul⟩`.
-
-Conclude with `(mem_maximalIdeal x).1 hx (hloc.1 x hu)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring_le_dominating {O L : Type*} [CommRing O] [IsLocalRing O]
     [Field L] (g : O →+* L) (W : ValuationSubring L) (hg : ∀ x, g x ∈ W) :
@@ -92,7 +90,7 @@ theorem exists_valuationSubring_le_dominating {O L : Type*} [CommRing O] [IsLoca
   exact (mem_maximalIdeal x).1 hx (hloc.1 x hu)
 
 /- English proof (translation)
-Introduce `O F L _ _ _ _ _ _ _ ι W hW`. Conclude with `exists_valuationSubring_le_dominating (ι.comp (algebraMap O F)) W fun x => hW _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_valuationSubring_le_dominating_of_fractionField :
     ∀ (O F L : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field F]

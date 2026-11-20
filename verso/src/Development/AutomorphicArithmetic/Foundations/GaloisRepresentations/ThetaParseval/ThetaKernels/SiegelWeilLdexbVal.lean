@@ -15,19 +15,19 @@ open GlobalTheory.Doubling (absE)
 namespace PositivityTheory.SiegelWeilFormula.Ldexb
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 /- English proof (translation)
-Take `⟨-, h2, h3⟩` from `hJ`. Use `set X := inFrame d.b (j p) with hX`. Establish `hsub : ∀ x y, X (Sum.map (Ald.em0 h) (Ald.em0 h) x) (Sum.map (Ald.em0 h) (Ald.em0 h) y) = inFrame b p x y` using `fun x y => by rw [← h2 p]; rfl`. Establish `hl : ∀ v, X (Sum.inl (Ald.i0 h)) v = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) (Sum.inl (Ald.i0 h)) v` using `fun v => (h3 p _ (by simp) v).1`. Establish `hl' : ∀ v, X v (Sum.inl (Ald.i0 h)) = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) v (Sum.inl (Ald.i0 h))` using `fun v => (h3 p _ (by simp) v).2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : ∀ v, X (Sum.inr (Ald.i0 h)) v = (1 : Matrix (Fin d.n ⊕ Fin d.n) (Fin d.n ⊕ Fin d.n) (AE F E)) (Sum.inr (Ald.i0 h)) v` using `fun v => (h3 p _ (by simp) v).1`. Prove the components needed by the constructor for the conclusion. Use `show X.toBlocks₂₁ = 0`. Use extensionality with `a c`. Use `show X (Sum.inr a) (Sum.inl c) = 0`.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : a = Ald.i0 h`. Substitute `ha` using the available equality. Rewrite using `[hr]`. Simplify using `[Matrix.one_apply]`. Distinguish the cases in `hc : c = Ald.i0 h`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hc` using the available equality. Rewrite using `[hl']`. Simplify using `[Matrix.one_apply]`. Take `⟨a', rfl⟩` from `(Ald.ne_last_iff_mem_range h a).1 ha`. Take `⟨c', rfl⟩` from `(Ald.ne_last_iff_mem_range h c).1 hc`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `hsub (Sum.inr a') (Sum.inl c')`. Simplify using `only [Sum.map_inr, Sum.map_inl] at e`. Rewrite using `[e]`. Conclude with `congrFun (congrFun hp a') c'`. Rewrite using `[det_last h X.toBlocks₁₁ (fun c => by show X (Sum.inl (Ald.i0 h)) (Sum.inl c) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[hl]`. Distinguish the cases in `hc : c = Ald.i0 h`. Substitute `hc` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply, hc, Ne.symm hc])]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use extensionality with `a c`. Establish `e` using `hsub (Sum.inl a) (Sum.inl c)`. Simplify using `only [Sum.map_inl] at e`. Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem jpar_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} {n : ℕ} (h : n + 1 = d.n) {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} {j : G2 σ Y →* d.G}
     (hJ : _root_.PositivityTheory.SiegelWeilFormula.Ald.IsJ_k d h b j) {p : G2 σ Y} (hp : ParF b p) :
@@ -67,9 +67,9 @@ theorem jpar_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} {n : ℕ}
     simp only [Sum.map_inl] at e
     exact e
 /- English proof (translation)
-Introduce `p t hpt k hk`. Take `⟨hpf, hdet⟩` from `par_to hb hpt`. Take `⟨hbig, hdet2⟩` from `_root_.PositivityTheory.SiegelWeilFormula.Ldexb.jpar_k h hJ hpf`. Take `⟨t', ht', hdt'⟩` from `par_of d.ok.frame hbig`. Use `show d.a (j (p * k)) = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, d.ok.hgt.val (j p) t' ht' (j k) hk]`. Use `congr 2`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Matrix.GeneralLinearGroup.val_det_apply]`. Rewrite using `[hdt', hdet2, hdet]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_pull_k {d : _root_.PositivityTheory.SiegelWeilFormula.SD_k σ} {n : ℕ} (h : n + 1 = d.n) {Y : Spc F E n} {b : GL (Fin n ⊕ Fin n) E} {j : G2 σ Y →* d.G}
     (hJ : _root_.PositivityTheory.SiegelWeilFormula.Ald.IsJ_k d h b j) (hb : IsFrame2 σ Y b) :

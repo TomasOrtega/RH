@@ -5,19 +5,17 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace GlobalTheory.EtC.AugExact
 
 /- English proof (translation)
-Set `e` to `(SimplicialObject.Augmented.ExtraDegeneracy.const B).homotopyEquiv`. Set `g : (AlgebraicTopology.alternatingFaceMapComplex C).obj ((SimplicialObject.const C).obj B) ⟶ (ChainComplex.single₀ C).obj B` to `e.hom`. Use `haveI : QuasiIso g := e.quasiIso_hom`. Establish `hg : g.f 0 = 𝟙 B` using `AlgebraicTopology.AlternatingFaceMapComplex.ε_app_f_zero _`. Rewrite using `[← quasiIso_iff_comp_right _ g, quasiIso_iff]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set φ := (AlgebraicTopology.alternatingFaceMapComplex C).map f ≫ g with hφ`. Establish `h0 : φ.f 0 = f.app (op (SimplexCategory.mk 0))`. Rewrite using `[hφ, HomologicalComplex.comp_f, hg]`. Conclude with `Category.comp_id _`. Establish `hd : ((AlgebraicTopology.alternatingFaceMapComplex C).obj K).d 1 0 = K.δ (n` using `0) 0 - K.δ (n := 0) 1 := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `(AlgebraicTopology.AlternatingFaceMapComplex.obj K).d (0 + 1) 0 = _`. Rewrite using `[AlgebraicTopology.AlternatingFaceMapComplex.obj_d_eq, Fin.sum_univ_two]`. Simplify using `[sub_eq_add_neg]`. Establish `w : (K.δ (n` using `0) 0 - K.δ (n := 0) 1) ≫ f.app (op (SimplexCategory.mk (0))) = 0 := by`. Simplify using `[Preadditive.sub_comp, SimplicialObject.δ_naturality, SimplicialObject.δ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : Epi (φ.f 0) ↔ Epi (f.app (op (SimplexCategory.mk (0))))` using `h0 ▸ Iff.rfl`. Establish `hz : QuasiIsoAt φ 0 ↔ (Epi (f.app (op (SimplexCategory.mk (0)))) ∧ (∃ w : (K.δ (n` using `0) 0 - K.δ (n := 0) 1) ≫ f.app (op (SimplexCategory.mk (0))) = 0, (ShortComplex.mk _ _ w).Exact)) := by`. Rewrite using `[ChainComplex.quasiIsoAt₀_iff, ShortComplex.quasiIso_iff_of_zeros' _ rfl rfl rfl]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨he.1 h2, w, (ShortComplex.exact_iff_of_iso ?_).1 h1⟩` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (Iso.refl _) ((Category.id_comp _).trans (hd.symm.trans (Category.comp_id _).symm)) ((Category.id_comp _).trans (h0.symm.trans (Category.comp_id _).symm))`. Introduce and unpack `⟨h1, _, h2⟩`. Use `⟨(ShortComplex.exact_iff_of_iso ?_).1 h2, he.2 h1⟩` and prove the remaining obligations. Conclude with `ShortComplex.isoMk (Iso.refl _) (Iso.refl _) (Iso.refl _) ((Category.id_comp _).trans (hd.trans (Category.comp_id _).symm)) ((Category.id_comp _).trans (h0.trans (Category.comp_id _).symm))`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hs : ∀ n : ℕ, QuasiIsoAt φ (n + 1) ↔ ((AlgebraicTopology.alternatingFaceMapComplex C).obj K).ExactAt (n + 1)` using `fun n => quasiIsoAt_iff_exactAt' _ _ (ChainComplex.exactAt_succ_single_obj _ _)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨(hz.1 (h 0)).1, (hz.1 (h 0)).2, fun n => (hs n).1 (h (n + 1))⟩`. Introduce and unpack `⟨h1, h2, h3⟩ i`.
-
-Consider the cases of `i with`. Consider the case `zero => exact hz.2 ⟨h1, h2⟩`. Consider the case `succ n => exact (hs n).2 (h3 n)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem augmented_exact_iff (C : Type 2) [Category.{1} C] [Abelian C] (K : SimplicialObject C) (B : C)
     (f : K ⟶ (SimplicialObject.const C).obj B) :

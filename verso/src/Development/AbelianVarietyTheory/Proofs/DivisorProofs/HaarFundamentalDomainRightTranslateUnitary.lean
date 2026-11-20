@@ -21,11 +21,11 @@ open GlobalTheory.BotMove
 open GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle GlobalTheory.Grid Formalism.L2.DIV Formalism.L2.Indef Formalism.IndefR.Mult MeasureTheory
 
 /- English proof (translation)
-Introduce `D V m fd g hm hfd`. Establish `hmeas : Measurable (fun x : GA D V => x * g⁻¹)` using `measurable_mul_const g⁻¹`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h` using `Measure.isHaarMeasure_map_mul_right m g⁻¹`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hfd.preimage_of_equiv (e := id) ?_ Function.bijective_id ?_` and prove the remaining obligations. Use `⟨measurable_mul_const g, ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map (measurable_mul_const g) hmeas]`. Establish `: ((fun x : GA D V => x * g) ∘ fun x => x * g⁻¹) = id`. Use function extensionality and compare the values at `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[this, Measure.map_id]`. Introduce `h x show (h • x) * g = h • (x * g)`. Simplify using `[Submonoid.smul_def, Subgroup.smul_def, mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.RightTranslateFundDomain.haar_and_fundDomain : ∀ {D : D7} {V : HSp D} (m : MeasureTheory.Measure (GA D V)) (fd : Set (GA D V)) (g : GA D V), m.IsHaarMeasure → MeasureTheory.IsFundamentalDomain (GQ V) fd m → (m.map (fun x => x * g⁻¹)).IsHaarMeasure ∧ MeasureTheory.IsFundamentalDomain (GQ V) ((fun x => x * g) ⁻¹' fd) (m.map (fun x => x * g⁻¹)) := by
   intro D V m fd g hm hfd

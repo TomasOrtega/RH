@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.DblBox
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.DefDoubling.measure_le_of_cover h𝓕 (C := C) fun x => by obtain ⟨γ, hγ, c, hcC, rfl⟩ := hc x exact ⟨⟨γ⁻¹, Γ.inv_mem hγ⟩, by simpa using hcC⟩).trans_lt hC.measure_lt_top`.
+A detailed English derivation is pending.
 -/
 theorem fundDomain_measure_lt_top_of_cocompact {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [MeasurableSpace G] [BorelSpace G] [SecondCountableTopology G] {Γ : Subgroup G} [Countable Γ] {μ : Measure G} [μ.IsHaarMeasure]
@@ -22,11 +22,11 @@ theorem fundDomain_measure_lt_top_of_cocompact {G : Type} [Group G] [Topological
     exact ⟨⟨γ⁻¹, Γ.inv_mem hγ⟩, by simpa using hcC⟩).trans_lt hC.measure_lt_top
 
 /- English proof (translation)
-Introduce `G H _ _ _ _ _ _ _ _ _ _ _ _ Γ Δ _ _ μ ν hμ hν 𝓕 𝓖 h𝓕 h𝓖 ⟨C, hC, hc⟩ ⟨D, hD, hd⟩ θ hθ hinv h0`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 (fundDomain_measure_lt_top_of_cocompact h𝓕 hC hc).ne`. Use `haveI : IsFiniteMeasure (ν.restrict 𝓖) := isFiniteMeasure_restrict.2 (fundDomain_measure_lt_top_of_cocompact h𝓖 hD hd).ne`. Take `⟨M, hM⟩` from `(hC.prod hD).exists_bound_of_continuousOn hθ.continuousOn`. Establish `hb : ∀ p : G × H, ‖θ p.1 p.2‖ ≤ M` using `fun p => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨γ, hγ, c, hcC, e1⟩` from `hc p.1`. Take `⟨δ, hδ, d, hdD, e2⟩` from `hd p.2`. Rewrite using `[e1, e2, hinv γ hγ δ hδ]`. Conclude with `hM (c, d) ⟨hcC, hdD⟩`. Establish `hi : Integrable (Function.uncurry θ) ((μ.restrict 𝓕).prod (ν.restrict 𝓖))` using `Integrable.of_bound hθ.aestronglyMeasurable M (Eventually.of_forall hb)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [setAverage_eq]`. Rewrite using `[integral_smul, integral_integral_swap hi]`. Simplify using `[h0]`.
+A detailed English derivation is pending.
 -/
 theorem integral_setAverage_eq_zero_of_cocompact : ∀ (G H : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
     [Group H] [TopologicalSpace H] [IsTopologicalGroup H] [SecondCountableTopology H] [MeasurableSpace H] [BorelSpace H]

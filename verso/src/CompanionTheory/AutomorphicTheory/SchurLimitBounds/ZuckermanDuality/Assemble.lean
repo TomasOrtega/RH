@@ -12,9 +12,9 @@ open scoped InnerProductSpace
 def PStar {n : ℕ} (lam : Fin n → ℝ) (c y : ℝ) : ℝ := ∏ s, (|y + lam s| + c)
 
 /- English proof (translation)
-Unfold `Formalism.QuantumDeterminants.capP PStar`. Rewrite using `[norm_prod]`. Use `Finset.prod_le_prod (fun s _ => norm_nonneg _) fun s _ => ?_` and prove the remaining obligations. Establish `e : (y : ℂ) + (μ s : ℂ) = ((y + μ s : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[e, Complex.norm_real, Real.norm_eq_abs]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨h1, h2⟩` from `abs_le.mp (h s)`. Apply the tactic sequence `rcases abs_cases (y + μ s) with ⟨h3, _⟩ | ⟨h3, _⟩ <;>`. Apply the tactic sequence `rcases abs_cases (y + lam s) with ⟨h4, _⟩ | ⟨h4, _⟩ <;> linarith`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_capP_le {n : ℕ} {lam μ : Fin n → ℝ} {c : ℝ} (h : μ ∈ Box lam c) (y : ℝ) :
     ‖Formalism.QuantumDeterminants.capP (fun s => (μ s : ℂ)) (y : ℂ)‖ ≤ PStar lam c y := by
@@ -28,9 +28,9 @@ theorem norm_capP_le {n : ℕ} {lam μ : Fin n → ℝ} {c : ℝ} (h : μ ∈ Bo
   rcases abs_cases (y + lam s) with ⟨h4, _⟩ | ⟨h4, _⟩ <;> linarith
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `h1` using `hg a b hab`. Take `⟨ha1, ha2⟩` from `abs_le.mp (hμ a)`. Take `⟨hb1, hb2⟩` from `abs_le.mp (hμ b)`. Apply the tactic sequence `rcases abs_cases (lam a - lam b) with ⟨h2, _⟩ | ⟨h2, _⟩ <;>`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rcases abs_cases (μ a - μ b) with ⟨h3, _⟩ | ⟨h3, _⟩ <;> linarith`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gap_of_box {n : ℕ} {ε : Fin n → Bool} {lam μ : Fin n → ℝ} {c h h₀ : ℝ} (hμ : μ ∈ Box lam c)
     (hg : PI.ZuckTensor.GapAtLeast ε lam h) (hh : h₀ + 2 * c ≤ h) : PI.ZuckTensor.GapAtLeast ε μ h₀ := by
@@ -54,15 +54,15 @@ def Wsp (k r : ℕ) (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace �
 variable {ε : Fin (2 * r + k + 1) → Bool} {μ μ' : Fin (2 * r + k + 1) → ℝ}
 
 /- English proof (translation)
-Use `letI : NormedAddCommGroup (B.Mat k r) := Matrix.normedAddCommGroup`. Use `letI : NormedSpace ℝ (B.Mat k r) := Matrix.normedSpace`. Unfold `Wsp at hF`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F hF`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨φ, T, hc, rfl⟩` from `hF`. Conclude with `hS hK k r ε μ φ _ T hc`. Consider the case `zero`. Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => 0, isOpen_univ, Set.mem_univ _, contDiffOn_const, fun g _ _ => rfl⟩`.
+Extract witnesses or component facts from the available result. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add F G _ _ hF hG`. Introduce `g₀ hg₀`. Take `⟨U, F', hU, hgU, hF', hFe⟩` from `hF g₀ hg₀`. Take `⟨V, G', hV, hgV, hG', hGe⟩` from `hG g₀ hg₀`. Use `⟨U ∩ V, fun g => F' g + G' g, hU.inter hV, ⟨hgU, hgV⟩, (hF'.mono Set.inter_subset_left).add (hG'.mono Set.inter_subset_right), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg hgG`. Simplify using `only [Pi.add_apply, hFe g hg.1 hgG, hGe g hg.2 hgG]`. Consider the case `smul a F _ hF`. Introduce `g₀ hg₀`. Take `⟨U, F', hU, hgU, hF', hFe⟩` from `hF g₀ hg₀`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨U, fun g => a • F' g, hU, hgU, hF'.const_smul a, ?_⟩` and prove the remaining obligations. Introduce `g hg hgG`. Simplify using `only [Pi.smul_apply, hFe g hg hgG]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ckOn_GV_of_mem_Wsp (hK : PI.KFinSmooth) (hS : CoefSmooth) {F : B.Mat k r → (Wq →L[ℂ] Wp)}
     (hF : F ∈ Wsp k r Wp Wq ε μ) : B.CkOn ⊤ (B.GV k r) F := by
@@ -92,7 +92,7 @@ private theorem ckOn_GV_of_mem_Wsp (hK : PI.KFinSmooth) (hS : CoefSmooth) {F : B
     simp only [Pi.smul_apply, hFe g hg hgG]
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, F', hU, hgU, hF', hFe⟩` from `ckOn_GV_of_mem_Wsp hK hS hF g₀ hg₀.1.1`. Conclude with `⟨U, F', hU, hgU, hF', fun g hg hgl => hFe g hg hgl.1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem wsp_smooth (hK : PI.KFinSmooth) (hS : CoefSmooth) {F : B.Mat k r → (Wq →L[ℂ] Wp)}
     (hF : F ∈ Wsp k r Wp Wq ε μ) : Q.SmoothLev k r 0 Set.univ F := by
@@ -101,7 +101,7 @@ theorem wsp_smooth (hK : PI.KFinSmooth) (hS : CoefSmooth) {F : B.Mat k r → (Wq
   exact ⟨U, F', hU, hgU, hF', fun g hg hgl => hFe g hg hgl.1⟩
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hf', he⟩` from `wsp_smooth hK hS hF g₀ (Dx1.LZ.glev0 hg₀)`. Conclude with `⟨U, f', hU, hgU, hf', fun g hg hgG => he g hg (Dx1.LZ.glev0 hgG).1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem wsp_ckOn (hK : PI.KFinSmooth) (hS : CoefSmooth) {F : B.Mat k r → (Wq →L[ℂ] Wp)}
     (hF : F ∈ Wsp k r Wp Wq ε μ) : B.CkOn ⊤ (B.GV k r) F := by
@@ -110,9 +110,9 @@ theorem wsp_ckOn (hK : PI.KFinSmooth) (hS : CoefSmooth) {F : B.Mat k r → (Wq �
   exact ⟨U, f', hU, hgU, hf', fun g hg hgG => he g hg (Dx1.LZ.glev0 hgG).1⟩
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h'`. Take `⟨φ, T, hφ, rfl⟩` from `h'`. Conclude with `hC hK k r ε A h hD μ φ _ T 5 hφ hg`. Consider the case `zero => exact JCx2.sq_inCC_zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add F F' _ _ h h' => exact JCx2.sq_inCC_add h h'`. Consider the case `smul c F _ h => exact JCx2.sq_inCC_smul c h`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem wsp_inCC (hK : PI.KFinSmooth) (hC : CoefCC) {A h : ℝ} (hD : KDecay k r ε A h)
     (hg : PI.ZuckTensor.GapAtLeast ε μ h) {F : B.Mat k r → (Wq →L[ℂ] Wp)} (hF : F ∈ Wsp k r Wp Wq ε μ) :
@@ -126,13 +126,13 @@ theorem wsp_inCC (hK : PI.KFinSmooth) (hC : CoefCC) {A h : ℝ} (hD : KDecay k r
   | smul c F _ h => exact JCx2.sq_inCC_smul c h
 
 /- English proof (translation)
-Establish `hG` using `Dx1.LZ.good_CV (k := k) (r := r) (E := Wq →L[ℂ] Wp) Y`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h`. Take `⟨φ, T, hφ, rfl⟩` from `h`. Conclude with `hE k r ε μ φ Wp Wq T hφ Y`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero`. Introduce `g hg`. Rewrite using `[Pi.zero_apply, smul_zero]`. Conclude with `hG.map_zero (Dx1.LZ.glev0 hg)`. Consider the case `add F F' hF hF' h h'`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g hg`. Establish `e` using `hG.lin F F' 1 (wsp_smooth hK hS hF) (wsp_smooth hK hS hF') g (Dx1.LZ.glev0 hg)`. Simplify using `only [one_smul] at e`. Rewrite using `[Pi.add_apply, smul_add, ← h g hg, ← h' g hg]`. Conclude with `e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Consider the case `smul c F hF h`. Introduce `g hg`. Establish `e` using `Dx1.LZ.good_smul_in hG (wsp_smooth hK hS hF) c (Dx1.LZ.glev0 hg)`. Rewrite using `[Pi.smul_apply, smul_comm, ← h g hg]`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wsp_eig (hK : PI.KFinSmooth) (hS : CoefSmooth) (hE : CoefEig) (Y : ℂ) {F : B.Mat k r → (Wq →L[ℂ] Wp)}
     (hF : F ∈ Wsp k r Wp Wq ε μ) :
@@ -159,19 +159,19 @@ theorem wsp_eig (hK : PI.KFinSmooth) (hS : CoefSmooth) (hE : CoefEig) (Y : ℂ) 
     exact e
 
 /- English proof (translation)
-Take `⟨c0, -, -, -, hβ, -⟩` from `b_any_of_xi k r Wp Wq D A hA`. Establish `cc : ∀ {G}, G ∈ Wsp k r Wp Wq ε μ → B.InCC A 5 G` using `fun h => wsp_inCC hK hC hD hg h`. Establish `cc' : ∀ {G}, G ∈ Wsp k r Wp Wq ε μ' → B.InCC A 5 G` using `fun h => wsp_inCC hK hC hD hg' h`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem F h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Establish `hFm : F ∈ Wsp k r Wp Wq ε μ` using `Submodule.subset_span h1`. Proceed by induction on `hF' using Submodule.span_induction with`. Consider the case `mem F' h2`. Establish `hFm' : F' ∈ Wsp k r Wp Wq ε μ'` using `Submodule.subset_span h2`. Rewrite using `[hβ F F' (cc hFm) (cc' hFm')]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨φ, T, hφ, rfl⟩` from `h1`. Take `⟨φ', T', hφ', rfl⟩` from `h2`. Rewrite using `[hB k r Wp Wq D _ _ (hP hE k r Wp Wq D ε μ μ' φ φ' T T' hφ hφ' hne), mul_zero]`. Consider the case `zero => exact Dx1.LZ.beta_zero_right D F`. Consider the case `add G G' hG hG' h h'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Establish `e` using `(JCx2.sq_beta_sesq D hA (cc' hG) (cc' hG') (cc hFm) 1).2`. Rewrite `e` using `[one_smul, h, h']`. Simplify using `using e`. Consider the case `smul c G hG h`. Establish `e` using `(JCx2.sq_beta_sesq D hA (cc' (Submodule.zero_mem _)) (cc' hG) (cc hFm) c).2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `e` using `[zero_add, h, Dx1.LZ.beta_zero_right]`. Simplify using `using e`. Consider the case `zero => exact beta_zero_left' D F'`. Consider the case `add G G' hG hG' h h'`. Establish `e` using `(JCx2.sq_beta_sesq D hA (cc hG) (cc hG') (cc' hF') 1).1`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `e` using `[one_smul, h, h']`. Simplify using `using e`. Consider the case `smul c G hG h`. Establish `e` using `(JCx2.sq_beta_sesq D hA (cc (Submodule.zero_mem _)) (cc hG) (cc' hF') c).1`. Rewrite `e` using `[zero_add, h, beta_zero_left']`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using e`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem wsp_orth (hK : PI.KFinSmooth) (hC : CoefCC) (hE : CoefEig) (hP : PhZero) (hB : BetaInfZero)
     (D : B.RealPlaceData k r Wp Wq) {A h : ℝ} (hA : B.AB k r ≤ A) (hD : KDecay k r ε A h)
@@ -211,13 +211,13 @@ theorem wsp_orth (hK : PI.KFinSmooth) (hC : CoefCC) (hE : CoefEig) (hP : PhZero)
     simpa using e
 
 /- English proof (translation)
-Proceed by induction on `hψ using Submodule.span_induction with`. Consider the case `mem φ hφ`. Take `⟨μ, hμ, hc⟩` from `hφ`. Conclude with `(le_iSup (fun ν : Box lam e => Wsp k r Wp Wq ε ν) ⟨μ, hμ⟩) (Submodule.subset_span ⟨φ, T, hc, rfl⟩)`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Submodule.zero_mem (⨆ ν : Box lam e, Wsp k r Wp Wq ε ν) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Establish `hxy : (fun g => (x + y) g • T) = (fun g => x g • T) + (fun g => y g • T)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `g`. Simplify using `[add_smul]`. Rewrite using `[hxy]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hax : (fun g => (a • x) g • T) = a • (fun g => x g • T)`. Use function extensionality and compare the values at `g`. Simplify using `[mul_smul]`. Rewrite using `[hax]`. Conclude with `Submodule.smul_mem _ a hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_iSup {lam : Fin (2 * r + k + 1) → ℝ} {e : ℝ} {ψ : B.Mat k r → ℂ} (hψ : ψ ∈ SpanBox k r ε lam e)
     (T : Wq →L[ℂ] Wp) : (fun g => ψ g • T) ∈ ⨆ ν : Box lam e, Wsp k r Wp Wq ε ν := by
@@ -243,11 +243,9 @@ theorem smul_mem_iSup {lam : Fin (2 * r + k + 1) → ℝ} {e : ℝ} {ψ : B.Mat 
     exact Submodule.smul_mem _ a hx
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `only [ContinuousLinearMap.sum_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.smulRight_apply, innerSL_apply_apply]`. Use `conv_lhs => rw [← (stdOrthonormalBasis ℂ Wq).sum_repr' v]`. Rewrite using `[map_sum]`. Repeatedly rewrite using `[map_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. By extensionality, compare the relevant components.
 
-Use `conv_lhs => arg 2`. Use extensionality with `b`. Rewrite using `[← (stdOrthonormalBasis ℂ Wp).sum_repr' (S (stdOrthonormalBasis ℂ Wq b))]`. Repeatedly rewrite using `[Finset.smul_sum]`. Rewrite using `[Finset.sum_comm]`.
-
-Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => smul_comm _ _ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem op_expand (S : Wq →L[ℂ] Wp) :
     S = ∑ a, ∑ b, ⟪stdOrthonormalBasis ℂ Wp a, S (stdOrthonormalBasis ℂ Wq b)⟫_ℂ •
@@ -275,13 +273,13 @@ variable {P : M.Par} {Wp Wq : Type} [NormedAddCommGroup Wp] [InnerProductSpace �
   [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq]
 
 /- English proof (translation)
-Take `⟨H, i1, i2, i3, σ, Pm, Qm, hlam, hσ, hQ, hP, hfG⟩` from `hf`. Use `set d : ℕ := (2 * P.r + 2) * p₀ with hd`. Use `set q : B.Mat P.k P.r → ℂ := fun g => ((Formalism.QuantumDeterminants.Gf P.k P.r p.T.base.z p.T.base.z' g ^ p₀ : ℝ) : ℂ) with hq`. Set `ea` to `stdOrthonormalBasis ℂ Wp`. Set `eb` to `stdOrthonormalBasis ℂ Wq`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `φ : Fin (Module.finrank ℂ Wp) → Fin (Module.finrank ℂ Wq) → B.Mat P.k P.r → ℂ` to `fun a b g => ⟪ContinuousLinearMap.adjoint Pm (ea a), σ g (Qm (eb b))⟫_ℂ`. Establish `hφ : ∀ a b, IsCoef P.k P.r ε lam (φ a b)` using `fun a b => ⟨H, i1, i2, i3, σ, Qm (eb b), ContinuousLinearMap.adjoint Pm (ea a), hlam, hσ, hQ _, hP _, fun _ _ => rfl⟩`. Set `F₁ : B.Mat P.k P.r → (Wq →L[ℂ] Wp)` to `∑ a, ∑ b, fun g => (q * φ a b) g • (innerSL ℂ (eb b)).smulRight (ea a)`. Establish `hF₁ : F₁ ∈ ⨆ ν : Box lam (d : ℝ), Wsp P.k P.r Wp Wq ε ν` using `Submodule.sum_mem _ fun a _ => Submodule.sum_mem _ fun b _ => smul_mem_iSup (h2 t hZ hZd P.k P.r ε lam h d q (φ a b) (h1 P.k P.r _ _ p₀) (hφ a b) hgap ht) _`. Establish `hFF : ∀ g ∈ B.GV P.k P.r, TBBx4.fpm p f (fun _ => ContinuousLinearMap.id ℂ Wq) p₀ g = F₁ g`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg`. Use `show q g • (f g).comp (ContinuousLinearMap.id ℂ Wq) = F₁ g`. Rewrite using `[ContinuousLinearMap.comp_id, op_expand (f g), hfG g hg]`. Simplify using `only [F₁, Finset.sum_apply, Finset.smul_sum, Pi.mul_apply, smul_smul, φ, ContinuousLinearMap.adjoint_inner_left, ContinuousLinearMap.comp_apply, ea, eb]`. Take `⟨c, hc, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp _ F₁).1 hF₁`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `e` to `c.support.equivFin.symm`. Establish `hgν : ∀ ν : Box lam (d : ℝ), PI.ZuckTensor.GapAtLeast ε ν.1 h₀` using `fun ν => gap_of_box ν.2 hgap hh`. Use `⟨A, c.support.card, fun i => c (e i), fun i y => Formalism.QuantumDeterminants.capP (fun s => ((e i).1.1 s : ℂ)) (y : ℂ), hA, fun i => wsp_ckOn hK h3 (hc _), fun i => wsp_inCC hK h4 hD (hgν _) (hc _), fun g hg => ?_, fun i y _ => wsp_eig hK h3 h5 _ (hc _), fun i y hy => (norm_cap …` and prove the remaining obligations. Rewrite using `[hFF g hg, ← hsum, Finsupp.sum, Finset.sum_apply, ← Finset.sum_coe_sort]`. Conclude with `(Equiv.sum_comp e fun ν : c.support => c ν g).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigStr_of_steps [CompleteSpace Wp] (h1 : GfPoly) (h2 : SpanPow) (h3 : CoefSmooth) (h4 : CoefCC)
     (h5 : CoefEig) (h6 : PhZero) (h7 : BetaInfZero) (hK : PI.KFinSmooth)

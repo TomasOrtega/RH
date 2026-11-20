@@ -11,13 +11,13 @@ open LocalFlat
 universe u
 
 /- English proof (translation)
-Set `e'` to `AlgebraTensorModule.cancelBaseChange A C C N' B`. Set `e` to `AlgebraTensorModule.cancelBaseChange A C C N B`. Establish `h1 : Function.Injective (ι.rTensor (C ⊗[A] B))` using `Module.Flat.rTensor_preserves_injective_linearMap ι hι`. Establish `key : ∀ z, (ι.restrictScalars A).rTensor B (e' z) = e (ι.rTensor (C ⊗[A] B) z)`. Introduce `z`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul n t`. Proceed by induction on `t with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [tmul_add, map_add, ha, hb]`. Consider the case `tmul c b => simp [e, e']`. Introduce `x y h`. Take `⟨x, rfl⟩` from `e'.surjective x`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `e'.surjective y`. Rewrite `h` using `[key, key]`. Rewrite using `[h1 (e.injective h)]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem rTensor_injective_of_flat_baseChange {A C B N' N : Type*} [CommRing A] [CommRing C]
     [Algebra A C] [AddCommGroup B] [Module A B] [Module.Flat C (C ⊗[A] B)]
@@ -45,15 +45,15 @@ theorem rTensor_injective_of_flat_baseChange {A C B N' N : Type*} [CommRing A] [
   rw [h1 (e.injective h)]
 
 /- English proof (translation)
-Set `e'` to `AlgebraTensorModule.cancelBaseChange A B B L N'`. Set `e` to `AlgebraTensorModule.cancelBaseChange A B B L N`. Establish `hι' : Function.Injective (ι.baseChange B)`. Use `(LinearMap.lTensor_inj_iff_rTensor_inj (M := B) ι).mpr hι` as an intermediate fact. Conclude with `this`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Function.Injective ((ι.baseChange B).lTensor L)` using `Module.Flat.lTensor_preserves_injective_linearMap _ hι'`. Establish `key : ∀ z, ι.lTensor L (e' z) = e ((ι.baseChange B).lTensor L z)`. Introduce `z`. Proceed by induction on `z with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b ha hb => simp only [map_add, ha, hb]`. Consider the case `tmul n t`. Proceed by induction on `t with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [tmul_add, map_add, ha, hb]`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul c b => simp [e, e']`. Introduce `x y h`. Take `⟨x, rfl⟩` from `e'.surjective x`. Take `⟨y, rfl⟩` from `e'.surjective y`. Rewrite `h` using `[key, key]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1 (e.injective h)]`.
+A detailed English derivation is pending.
 -/
 theorem rTensor_injective_of_flat {A B L N' N : Type*} [CommRing A] [CommRing B] [Algebra A B]
     [AddCommGroup L] [Module A L] [Module B L] [IsScalarTower A B L] [Module.Flat B L]
@@ -83,31 +83,29 @@ theorem rTensor_injective_of_flat {A B L N' N : Type*} [CommRing A] [CommRing B]
   rw [h1 (e.injective h)]
 
 /- English proof (translation)
-Use `set I := J.map (algebraMap R A) with hI`. Set `C` to `A ⧸ I`. Establish `hC : Function.Surjective (algebraMap A C)` using `Ideal.Quotient.mk_surjective`. Introduce `F _ _ f x hx`. Set `P : Ideal A` to `I ^ k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `G : Submodule A F` to `Submodule.comap f P`. Take `⟨x₁, rfl⟩` from `h F f x (Submodule.smul_mono_left (Ideal.pow_le_pow_right (Nat.le_succ k)) hx)`. Set `f' : G →ₗ[A] P` to `(f.domRestrict G).codRestrict P fun g => g.2`. Establish `hPeq : P = (J ^ k).map (algebraMap R A)` using `by rw [Ideal.map_pow]`. Establish `hT : Function.Injective ((TensorProduct.rid A M).toLinearMap ∘ₗ P.subtype.lTensor M)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hPeq]`. Conclude with `(TensorProduct.rid A M).injective.comp (FiniteFibreFlat.lTensor_map_injective (J ^ k))`. Establish `hsub : P.subtype ∘ₗ f' = f ∘ₗ G.subtype` using `rfl`. Establish `hle : I ^ (k + 1) ≤ P` using `Ideal.pow_le_pow_right (Nat.le_succ k)`. Set `incl : ↥(I ^ (k + 1)) →ₗ[A] P` to `Submodule.inclusion hle`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsurj : ∀ v ∈ (I ^ (k + 1) • ⊤ : Submodule A M), ∃ z : M ⊗[A] ↥(I ^ (k + 1)), TensorProduct.rid A M ((I ^ (k + 1)).subtype.lTensor M z) = v`. Introduce `v hv`. Use `Submodule.smul_induction_on hv (fun r hr n _ => ?_) ?_` and prove the remaining obligations. Conclude with `⟨n ⊗ₜ ⟨r, hr⟩, by simp⟩`. Introduce and unpack `_ _ ⟨a, rfl⟩ ⟨b, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨a + b, by simp only [map_add]⟩`. Take `⟨z, hz⟩` from `hsurj _ hx`. Establish `hy : f'.lTensor M x₁ = incl.lTensor M z`. Apply `hT` to reduce the goal to its premises. Simplify using `only [comp_apply, LinearEquiv.coe_coe, ← lTensor_comp_apply]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `he : P.subtype ∘ₗ incl = (I ^ (k + 1)).subtype` using `rfl`. Rewrite using `[hsub, he, hz, lTensor_comp_apply]`. Set `Q` to `C ⊗[A] P`. Set `p : P →ₗ[A] Q` to `TensorProduct.mk A C P 1`. Establish `hker : ∀ t : P, p t = 0 ↔ (t : A) ∈ I ^ (k + 1)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `t`. Establish `h1 : ker p = I • (⊤ : Submodule A P)` using `LinearMap.ker_tensorProductMk P`. Rewrite using `[← mem_ker, h1, Submodule.mem_smul_top_iff, pow_succ', smul_eq_mul]`. Set `g : G →ₗ[A] Q` to `p ∘ₗ f'`. Set `Pc : Submodule C Q` to `{ carrier := Set.range g add_mem' := by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ _ ⟨a, rfl⟩ ⟨b, rfl⟩`. Conclude with `⟨a + b, map_add _ _ _⟩`. Use the proof step `zero_mem' := ⟨0, map_zero _⟩`. Use the proof step `smul_mem' := by`. Introduce and unpack `c _ ⟨a, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨c, rfl⟩` from `hC c`. Conclude with `⟨c • a, by rw [map_smul, algebraMap_smul]⟩ }`. Set `g' : G →ₗ[A] Pc` to `g.codRestrict (Pc.restrictScalars A) fun a => ⟨a, rfl⟩`. Establish `hg' : Function.Surjective g'`. Introduce and unpack `⟨_, a, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨a, rfl⟩`. Establish `hι` using `hinj Pc Q Pc.subtype Subtype.val_injective`. Establish `h0 : g'.lTensor M x₁ = 0`. Apply `hι` to reduce the goal to its premises. Rewrite using `[map_zero, ← lTensor_comp_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `e1 : (Pc.subtype.restrictScalars A) ∘ₗ g' = p ∘ₗ f'` using `rfl`. Rewrite using `[e1, lTensor_comp_apply, hy, ← lTensor_comp_apply]`. Establish `e2 : p ∘ₗ incl = 0`. Use extensionality with `t`. Conclude with `(hker _).2 t.2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Simplify using the standard rewrite rules. Establish `hex` using `lTensor_exact M (LinearMap.exact_subtype_ker_map g') hg'`. Take `⟨w, rfl⟩` from `(hex x₁).1 h0`. Rewrite using `[← lTensor_comp_apply]`.
-
-Use `range_lTensor_le (M := M) (G.subtype ∘ₗ (ker g').subtype) _ (fun u => ?_) ⟨w, rfl⟩` and prove the remaining obligations. Establish `hu : g' u.1 = 0` using `u.2`. Establish `hu' : p (f' u.1) = 0` using `congrArg Subtype.val hu`. Conclude with `(hker _).1 hu'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relationsLift_succ {R : Type*} {A : Type u} {M : Type*} [CommRing R] [CommRing A]
     [Algebra R A] [AddCommGroup M] [Module R M] [Module A M] [IsScalarTower R A M]
@@ -190,9 +188,9 @@ theorem relationsLift_succ {R : Type*} {A : Type u} {M : Type*} [CommRing R] [Co
   exact (hker _).1 hu'
 
 /- English proof (translation)
-Use `flat_of_relationsLift L hJ fun n => ?_` and prove the remaining obligations. Proceed by induction on `n with`. Consider the case `zero`. Introduce `F _ _ f x _`. Conclude with `range_lTensor_le LinearMap.id _ (by simp) ⟨x, by simp⟩`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Consider the case `succ k ih => exact relationsLift_succ J k hinj ih`.
+A detailed English derivation is pending.
 -/
 theorem flat_of_injective_on_fibre {R : Type*} {A : Type u} {L : Type*} [CommRing R] [CommRing A]
     [CommRing L] [Algebra R A] [Algebra A L] [Algebra R L] [IsScalarTower R A L]
@@ -213,17 +211,15 @@ theorem flat_of_injective_on_fibre {R : Type*} {A : Type u} {L : Type*} [CommRin
   | succ k ih => exact relationsLift_succ J k hinj ih
 
 /- English proof (translation)
-Use `letI : Module A N' := Module.compHom N' (algebraMap A A')`. Use `letI : Module A N := Module.compHom N (algebraMap A A')`. Use `haveI t₁ : IsScalarTower A A' N' := ⟨fun a b n => by`. Express the relevant statement in the definitionally equal form `(a • b) • n = algebraMap A A' a • b • n`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `haveI t₂ : IsScalarTower A A' N := ⟨fun a b n => by`. Express the relevant statement in the definitionally equal form `(a • b) • n = algebraMap A A' a • b • n`. Rewrite using `[Algebra.smul_def, mul_smul]⟩`. Use `haveI t₃ : IsScalarTower A C N' := ⟨fun a b n => by`. Express the relevant statement in the definitionally equal form `(a • b) • n = algebraMap A A' a • b • n`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← smul_assoc, algebraMap_smul]⟩`. Use `haveI t₄ : IsScalarTower A C N := ⟨fun a b n => by`. Express the relevant statement in the definitionally equal form `(a • b) • n = algebraMap A A' a • b • n`. Rewrite using `[← smul_assoc, algebraMap_smul]⟩`. Establish `s₁` using `rTensor_injective_of_flat_baseChange (A := A) (C := C) (B := B) ι hι`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `s₂` using `rTensor_injective_of_flat (A := A) (B := B) (L := L) (ι.restrictScalars A) s₁`. Use `haveI c₁ := IsLocalization.tensorProduct_compatibleSMul S A' L N'`. Use `haveI c₂ := IsLocalization.tensorProduct_compatibleSMul S A' L N`. Set `e'` to `TensorProduct.equivOfCompatibleSMul A A' A' L N'`. Set `e` to `TensorProduct.equivOfCompatibleSMul A A' A' L N`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `key : ∀ z, e ((ι.restrictScalars A').lTensor L z) = (ι.restrictScalars A).lTensor L (e' z)`. Introduce `z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
-
-Consider the case `tmul l n => rfl`. Introduce `x y h`. Apply `e'.injective` to reduce the goal to its premises. Apply `s₂` to reduce the goal to its premises. Rewrite using `[← key, ← key, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lTensor_injective_of_fibre {A B A' L C N' N : Type} [CommRing A] [CommRing B] [CommRing A']
     [CommRing L] [CommRing C] [Algebra A B] [Algebra B L] [Algebra A L] [IsScalarTower A B L]
@@ -266,21 +262,13 @@ theorem lTensor_injective_of_fibre {A B A' L C N' N : Type} [CommRing A] [CommRi
   rw [← key, ← key, h]
 
 /- English proof (translation)
-Use `Module.flat_of_isLocalized_maximal B B (fun P _ => Localization.AtPrime P) (fun P _ => Algebra.linearMap B _) fun P _ => ?_` and prove the remaining obligations. Set `L` to `Localization.AtPrime P`. Set `q : Ideal A` to `P.under A`. Use `haveI : P.LiesOver q := ⟨rfl⟩`. Set `A'` to `Localization.AtPrime q`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Use `letI : Algebra A' L := Localization.AtPrime.algebraOfLiesOver q P`. Use `haveI : IsScalarTower A A' L := inferInstance`. Use `haveI : IsScalarTower R A' L := inferInstance`. Use `haveI : Module.Flat A A' := IsLocalization.flat A' q.primeCompl`. Use `haveI : Module.Flat B L := IsLocalization.flat L P.primeCompl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Module.Flat R L := .trans R B L`. Use `haveI : IsNoetherianRing A' := IsLocalization.isNoetherianRing q.primeCompl A' inferInstance`. Use `haveI : IsNoetherianRing L := IsLocalization.isNoetherianRing P.primeCompl L inferInstance`. Use `haveI hl : IsLocalHom (algebraMap A' L) := inferInstanceAs (IsLocalHom (Localization.localRingHom q P (algebraMap A B) Ideal.LiesOver.over))`. Set `p : Ideal R` to `(IsLocalRing.maximalIdeal A').comap (algebraMap R A')`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use `haveI hF : Module.Flat (A' ⧸ p.map (algebraMap R A')) ((A' ⧸ p.map (algebraMap R A')) ⊗[A] B) := by`. Set `I` to `p.map (algebraMap R A')`. Set `ψ : R →+* A' ⧸ I` to `(Ideal.Quotient.mk I).comp (algebraMap R A')`. Establish `hψ₁ : p ≤ RingHom.ker ψ` using `fun r hr => Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_map_of_mem _ hr)`. Establish `hψ₂ : p.primeCompl ≤ (IsUnit.submonoid (A' ⧸ I)).comap ψ`.
-
-Introduce `r hr`. Establish `: IsUnit (algebraMap R A' r)`. Assume the negation of the conclusion as `h`. Conclude with `hr h`. Conclude with `this.map (Ideal.Quotient.mk I)`.
-
-Use `H p.ResidueField (A' ⧸ I) (algebraMap R _) (Ideal.ResidueField.lift p ψ hψ₁ hψ₂) ?_` and prove the remaining obligations. Use extensionality with `r`. Conclude with `(Ideal.ResidueField.lift_algebraMap p ψ hψ₁ hψ₂ r).symm`. Use `haveI : Module.Flat A' L := by`. Use `flat_of_injective_on_fibre p ?_ ?_` and prove the remaining obligations.
-
-Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top]`. Establish `h0 : (IsLocalRing.maximalIdeal A').map (algebraMap A' L) ≤ IsLocalRing.maximalIdeal L` using `((IsLocalRing.local_hom_TFAE (algebraMap A' L)).out 0 2).mp hl`. Conclude with `(Ideal.map_mono Ideal.map_comap_le).trans h0`. Introduce `N' N _ _ _ _ _ _ _ _ ι hι`. Conclude with `lTensor_injective_of_fibre (A := A) (B := B) (A' := A') (L := L) (C := A' ⧸ p.map (algebraMap R A')) q.primeCompl ι hι`.
-
-Conclude with `.trans A A' L`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem flat_of_flat_fibres {R A B : Type} [CommRing R] [CommRing A] [CommRing B] [Algebra R A]
     [Algebra R B] [Algebra A B] [IsScalarTower R A B] [IsNoetherianRing A] [IsNoetherianRing B]

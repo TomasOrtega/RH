@@ -11,7 +11,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `_ _ P j` and use `relAmple_boxLB _ _ _ j (Out.powIsPowGrp P.A j) P.L P.isLB P.ample`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem relAmple_powObj_boxLB : ∀ (R : Type) [CommRing R] (P : Out.PolAV (Sp R)) (j : ℕ), Out.RelAmple (Out.powObj P.A j) (Out.boxLB P.L (Out.powPr P.A (n := j))) :=
   fun _ _ P j => relAmple_boxLB _ _ _ j (Out.powIsPowGrp P.A j) P.L P.isLB P.ample

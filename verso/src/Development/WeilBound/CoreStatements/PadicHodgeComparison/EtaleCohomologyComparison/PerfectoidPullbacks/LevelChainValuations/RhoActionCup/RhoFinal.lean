@@ -18,7 +18,7 @@ variable (S : LevSys (per l K)) (hS : S.Good) (hC : ∀ m, (S.L m).CrisOK)
 variable [FiniteDimensional ℚ_[l] K]
 
 /- English proof (translation)
-The claim follows from `rfl lam c := hS.dlam m c ι a := hS.dι m a o k := hS.dK m k tS n j x := rfl r n j x := nmHM_nmLevA_rHof_succ S hS hC M m s n j x red n j z := nmHM_redM _ l s none n j z b j z := nmHO_nmLevB_bMap S hS m M s _ _ j z μ j v := (nm_muB (nmLevB S hS m M) (Category.id_comp _) 1 s (hS.dK …`.
+A detailed English derivation is pending.
 -/
 theorem lev_good (M : Model l K) (m s : ℕ) : (homLev S hS m M s (qb_le (hS.lev (m + 1)) M s) (qb_le (hS.lev m) M s)
     (rHof (dOf S hS hC (m + 1)) (hcOf S hS hC (m + 1)) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s)).Good where
@@ -33,9 +33,9 @@ theorem lev_good (M : Model l K) (m s : ℕ) : (homLev S hS m M s (qb_le (hS.lev
   μ j v := (nm_muB (nmLevB S hS m M) (Category.id_comp _) 1 s (hS.dK m) j v).trans (congrArg _ (pullR_id' M.q j v))
 
 /- English proof (translation)
-Introduce `M a hM j m x f ⟨hM', s₀, hs₀⟩`. Use `⟨hM', ?_⟩` and prove the remaining obligations. Take `⟨s₁, hs₁⟩` from `chK_good S hS hC M hM (m + 1)`. Take `⟨s₂, hs₂⟩` from `chK_good S hS hC M hM m`. Use `⟨max s₀ (max s₁ s₂), fun s hs => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `GlobalTheory.T.realization_functorial (chK S hS hC M (m + 1) s) (chK S hS hC M m s) (homLev S hS m M s (qb_le (hS.lev (m + 1)) M s) (qb_le (hS.lev m) M s) (rHof (dOf S hS hC (m + 1)) (hcOf S hS hC (m + 1)) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s)) (hs₁ s (by omega)) (hs₂ …`. Conclude with `h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rho_lev_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m x f,
     rhoK S hS hC a j (m + 1) x f → rhoK S hS hC a j m x ((S.dB m).toAddMonoidHom.comp f) := by
@@ -52,7 +52,7 @@ theorem rho_lev_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m 
   exact h
 
 /- English proof (translation)
-Introduce `M a hM j m g x f ⟨hM', s₀, hs₀⟩`. Take `⟨s₁, hs₁⟩` from `chK_good S hS hC M hM m`. Use `⟨hM', max s₀ s₁, fun s hs => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.realization_functorial (chK S hS hC M m s) (chK S hS hC M m s) (homGal (hS.lev m) g M s (qb_le (hS.lev m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s)) (hs₁ s (by omega)) (hs₁ s (by omega)) (hG M m s g) (show (M.HS false j).lim from x).1 f (hs₀ s (by omega))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rho_act_of (hG : ∀ (M : Model l K) m s g, (homGal (hS.lev m) g M s (qb_le (hS.lev m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s)).Good) : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ j m (g : K.fixingSubgroup) x f,
     rhoK S hS hC a j m x f → rhoK S hS hC a j m (((dat Amp).H a).act j g x) (((S.L m).σB g).toAddMonoidHom.comp f) := by
@@ -63,9 +63,9 @@ theorem rho_act_of (hG : ∀ (M : Model l K) m s g, (homGal (hS.lev m) g M s (qb
     (hs₁ s (by omega)) (hs₁ s (by omega)) (hG M m s g) (show (M.HS false j).lim from x).1 f (hs₀ s (by omega))
 
 /- English proof (translation)
-Introduce `M N u hu a b μ hM hN j m x f f' ⟨_, s₀, h₀⟩ ⟨_, s₀', h₀'⟩ φ`. Take `⟨s₁, hs₁⟩` from `chK_good S hS hC M hM m`. Take `⟨s₂, hs₂⟩` from `chK_good S hS hC N hN m`. Take `⟨s, e0, e1, e2, e3⟩ : ∃ s, s₀ ≤ s ∧ s₀' ≤ s ∧ s₁ ≤ s ∧ s₂ ≤ s` from `⟨s₀ + s₀' + s₁ + s₂, by omega⟩`. Establish `h` using `GlobalTheory.T.realization_functorial (chK S hS hC N m s) (chK S hS hC M m s) _ (hs₂ s e3) (hs₁ s e2) (hP M N u hu m s) (show (N.HS false j).lim from x).1 f (h₀ s e0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `GlobalTheory.T.realization_unique (chK S hS hC M m s) (hs₁ s e2) _ f' _ (h₀' s e1) h`. Rewrite using `[e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rho_nat_of (hP : ∀ (M N : Model l K) (u : M.X ⟶ N.X) (hu : u ≫ N.p = M.p) m s,
     (homPull (hS.lev m) u hu s (qb_le (hS.lev m) N s) (qb_le (hS.lev m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) N s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s)).Good) : ∀ {M N : Model l K} {u : M.X ⟶ N.X} {hu : u ≫ N.p = M.p} {a : (dat Amp).Ch M} {b : (dat Amp).Ch N}
@@ -82,9 +82,9 @@ theorem rho_nat_of (hP : ∀ (M N : Model l K) (u : M.X ⟶ N.X) (hu : u ≫ N.p
   rfl
 
 /- English proof (translation)
-Introduce `M a hM m x f ⟨_, s₀, h₀⟩ hx φ`. Take `⟨s₁, hs₁⟩` from `chK_good S hS hC M hM m`. Take `⟨s, e0, e1⟩ : ∃ s, s₀ ≤ s ∧ s₁ ≤ s` from `⟨s₀ + s₁, by omega⟩`. Establish `h` using `h₀ s e0`. Rewrite using `[show (show (M.HS false 0).lim from x).1 = (cupOf (hS.lev m) M s (qb_le (hS.lev m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s)).oneS from`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `((one_iff (hS.lev m) M s (qb_le (hS.lev m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s) a x).1 hx)] at h`. Conclude with `GlobalTheory.T.realization_unit_class (chK S hS hC M m s) (hs₁ s e1) _ (hU M m s) f h φ`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem rho_one_of (hU : ∀ (M : Model l K) m s, (cupOf (hS.lev m) M s (qb_le (hS.lev m) M s) (rHof (dOf S hS hC m) (hcOf S hS hC m) M s)).Good) : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ m x f, rhoK S hS hC a 0 m x f → ((dat Amp).H a).one x →
     ∀ φ, f φ = algebraMap K (S.L m).B (φ (oneK M.q)) := by
@@ -97,7 +97,7 @@ theorem rho_one_of (hU : ∀ (M : Model l K) m s, (cupOf (hS.lev m) M s (qb_le (
   exact GlobalTheory.T.realization_unit_class (chK S hS hC M m s) (hs₁ s e1) _ (hU M m s) f h φ
 
 /- English proof (translation)
-Introduce `M a hM i j m x y z f g h hx hy hz hc e e' b b' φ`. Use `hx.2.elim fun s₀ h₀ => hy.2.elim fun s₁ h₁ => hz.2.elim fun s₂ h₂ => (chK_good S hS hC M hM m).elim fun s₃ h₃ => ?_` and prove the remaining obligations. Conclude with `cup_genA (hS.lev m) M (s₀ + s₁ + s₂ + s₃) _ _ (h₃ _ (by omega)) (cupOf_rHof_good _ M _ _ _ _) _ _ _ f g h (h₀ _ (by omega)) (h₁ _ (by omega)) (h₂ _ (by omega)) ((cup_iff_cS_lim (hS.lev m) M 0 (qb_le (hS.lev m) M 0) (rHof (dOf S hS hC m) (hcOf S hS hC m) M 0) a x y z).1 hc) b b' φ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem rho_cup_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ {i j : ℕ} m x y z f g h,
     rhoK S hS hC a i m x f → rhoK S hS hC a j m y g → rhoK S hS hC a (i + j) m z h → ((dat Amp).H a).cup x y z →
@@ -112,7 +112,7 @@ theorem rho_cup_pf : ∀ {M : Model l K} (a : (dat Amp).Ch M), M.Sm → ∀ {i j
 
 include hS hC in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{ ρ := rhoK S hS hC ex := rho_ex_pf S hS hC uniq := rho_uniq_pf S hS hC add := rho_add_pf S hS hC smul := rho_smul_pf S hS hC lin' := rho_lin'_pf S hS hC lev := rho_lev_pf S hS hC act := rho_act_of S hS hC fun M m s g => homGal_good_of_galRed _ g M s _ _ (galRed_rHof _ _ _ g M s …`.
+Supply the required witnesses or components.
 -/
 theorem rhoSys_ex : Nonempty (RhoSys S Model.Sm (dat Amp) fun a c => IsFirstChernDeRham _ (lineK a.1) c) :=
   ⟨{ ρ := rhoK S hS hC
@@ -130,7 +130,7 @@ theorem rhoSys_ex : Nonempty (RhoSys S Model.Sm (dat Amp) fun a c => IsFirstCher
      c1 := rho_firstChern_formula S hS hC }⟩
 
 /- English proof (translation)
-Take `⟨S, hS, hC⟩` from `CrystallineSemistableComparison.HT.levSys_ex (l := l) (K := K)`. Take `⟨P⟩` from `rhoSys_ex S hS hC`. Take `⟨A⟩` from `kap_abs (facts l K) (fun c => ⟨_, rfl⟩) hS P`. Conclude with `⟨⟨A.κ, A.lin, A.lin', A.act, A.nat, A.fil, A.cup, A.one⟩, A.c1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem crystalline_deRham_firstChern_exists : ∃ L : KapL (l := l) (K := K) Amp, LieComplementChartContDiffAt L := by
   obtain ⟨S, hS, hC⟩ := CrystallineSemistableComparison.HT.levSys_ex (l := l) (K := K)

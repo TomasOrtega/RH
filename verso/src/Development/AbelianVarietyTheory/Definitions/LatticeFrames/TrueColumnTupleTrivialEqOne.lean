@@ -118,7 +118,7 @@ def SelBF {eps : ℝ} (Fm : FamP eps) : Prop :=
   ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), Nonempty (SelB (Fm.ex x hx i))
 
 /- English proof (translation)
-The claim follows from `let ⟨x0, h⟩ := h; ⟨x0, fun x hx i h1 => (h x hx h1 i).elim fun s => ⟨s.g⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem SelBF.gTiedF {eps : ℝ} {Fm : FamP eps} (h : SelBF Fm) : Formalism.L2.G.GroupCompatibilityFamily Fm :=
   let ⟨x0, h⟩ := h; ⟨x0, fun x hx i h1 => (h x hx h1 i).elim fun s => ⟨s.g⟩⟩
@@ -170,7 +170,7 @@ def SelBJF {eps : ℝ} (Fm : FamP eps) : Prop :=
   ∃ x0 : ℝ, ∀ x, x0 ≤ x → ∀ (hx : Fm.x1 < x) (i : Fm.Ix x), Nonempty (SelBJ (Fm.ex x hx i))
 
 /- English proof (translation)
-The claim follows from `let ⟨x0, h⟩ := h; ⟨x0, fun x hx h1 i => (h x hx h1 i).elim fun s => ⟨s.toSelB⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem SelBJF.selBF {eps : ℝ} {Fm : FamP eps} (h : SelBJF Fm) : SelBF Fm :=
   let ⟨x0, h⟩ := h; ⟨x0, fun x hx h1 i => (h x hx h1 i).elim fun s => ⟨s.toSelB⟩⟩
@@ -178,7 +178,7 @@ theorem SelBJF.selBF {eps : ℝ} {Fm : FamP eps} (h : SelBJF Fm) : SelBF Fm :=
 variable {ex : Extra D L hT Gi Gl K Y cX}
 
 /- English proof (translation)
-Take `⟨y, hy, -⟩` from `J.piBar k`. Rewrite using `[← hy]`. Conclude with `(y : D.host.K).2`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SelC.Joints.sig_piG_mem {s : SelC ex} (J : s.Joints) (k : Fin 2) :
     Forms.sigD D ((s.cols.forms D.u₀).gl.piG k : D.host.E) ∈ D.host.K := by
@@ -187,7 +187,7 @@ theorem SelC.Joints.sig_piG_mem {s : SelC ex} (J : s.Joints) (k : Fin 2) :
   exact (y : D.host.K).2
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨-, w, -, hw⟩ := (J.qp _ p).1 h rw [s.tp.trueColumnChoices_heckeChar_reference_eq_one] at hw exact hw fun _ _ => rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem SelC.Joints.not_mem_primes_referenceTuple {s : SelC ex} (J : s.Joints) (p : ℕ) : p ∉ Y.Qp D.what₂.mu0 := fun h => by
   obtain ⟨-, w, -, hw⟩ := (J.qp _ p).1 h
@@ -195,13 +195,13 @@ theorem SelC.Joints.not_mem_primes_referenceTuple {s : SelC ex} (J : s.Joints) (
   exact hw fun _ _ => rfl
 
 /- English proof (translation)
-The claim follows from `J.mu0 j ▸ Host.CT.transport_isUnitary _ _ (s.cf.isMu0 j).unitary`.
+A detailed English derivation is pending.
 -/
 theorem SelB.Joints.heckeChar_isUnitary_of_joints {s : SelB ex} (J : s.Joints) (j : Fin D.R.m) : (s.ker.glob.mu0 j).IsUnitary :=
   J.mu0 j ▸ Host.CT.transport_isUnitary _ _ (s.cf.isMu0 j).unitary
 
 /- English proof (translation)
-Establish `h` using `J.tup D.what₂.mu0`. Rewrite `h` using `[s.tp.trueColumnChoices_heckeChar_reference_eq_one, map_one]`. Conclude with `Subtype.ext (h.inj (GlobalTheory.Mem.Col2.reads_one _))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SelB.Joints.trueColumn_tuple_trivial_eq_one {s : SelB ex} (J : s.Joints) : s.ker.tup D.what₂.mu0 = 1 := by
   have h := J.tup D.what₂.mu0
@@ -209,21 +209,21 @@ theorem SelB.Joints.trueColumn_tuple_trivial_eq_one {s : SelB ex} (J : s.Joints)
   exact Subtype.ext (h.inj (GlobalTheory.Mem.Col2.reads_one _))
 
 /- English proof (translation)
-The claim follows from `(J.tup μ).unique (h ▸ J.tup μ')`.
+A detailed English derivation is pending.
 -/
 theorem SelB.Joints.transport_xi_eq {s : SelB ex} (J : s.Joints) {μ μ' : D.what₂.Tup} (h : s.ker.tup μ = s.ker.tup μ') :
     Host.CT.transport s.ker.seam.iE (s.tp.xi μ) = Host.CT.transport s.ker.seam.iE (s.tp.xi μ') :=
   (J.tup μ).unique (h ▸ J.tup μ')
 
 /- English proof (translation)
-The claim follows from `(J.gside i _).1 ⟨P, h, Host.CT.asIdeal_plMap _ P⟩`.
+A detailed English derivation is pending.
 -/
 theorem SelB.Joints.div_plMap {s : SelB ex} (J : s.Joints) {i : Fin 2} {P : HeightOneSpectrum (𝓞 s.ker.X.E)} (h : P ∈ s.ker.Pr.vG i) :
     s.cf.P.Div i (Host.CT.plMap s.ker.seam.iE P) :=
   (J.gside i _).1 ⟨P, h, Host.CT.asIdeal_plMap _ P⟩
 
 /- English proof (translation)
-The claim follows from `J.om k v h 0 n hn (by have := D.R.two_le_m; omega)`.
+A detailed English derivation is pending.
 -/
 example {s : SelC ex} (J : s.Joints) (k : Fin 2) (v : HeightOneSpectrum (𝓞 D.host.F)) (h : (D.host.g k : 𝓞 D.host.F) ∈ v.asIdeal)
     (n : ℕ) (hn : n.Coprime (D.host.g k)) :
@@ -231,12 +231,12 @@ example {s : SelC ex} (J : s.Joints) (k : Fin 2) (v : HeightOneSpectrum (𝓞 D.
   J.om k v h 0 n hn (by have := D.R.two_le_m; omega)
 
 /- English proof (translation)
-Introduce `J` and use `h J.trueColumn_tuple_trivial_eq_one`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (s : SelB ex) (h : s.ker.tup D.what₂.mu0 ≠ 1) : ¬ s.Joints := fun J => h J.trueColumn_tuple_trivial_eq_one
 
 /- English proof (translation)
-The claim follows from `(s.cf.isMu0 j).atg i _ (J.div_plMap h) a ha x hx`.
+A detailed English derivation is pending.
 -/
 example {s : SelB ex} (J : s.Joints) {i : Fin 2} {P : HeightOneSpectrum (𝓞 s.ker.X.E)} (h : P ∈ s.ker.Pr.vG i) (j : Fin D.R.m)
     (a : ℕ) (ha : a.Coprime (D.host.g i)) (x : D.host.Eˣ) (hx : (x : D.host.E) = (a : D.host.E)) :

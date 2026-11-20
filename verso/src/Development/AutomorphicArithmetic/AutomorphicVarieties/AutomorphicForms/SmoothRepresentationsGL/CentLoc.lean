@@ -9,20 +9,18 @@ open UpperTheory.V.TR (Rinf Lie chart infGL pInf sInf toL lmul oneL invSet CuspS
 open scoped SchwartzMap FourierTransform RealInnerProductSpace ContDiff Topology
 
 /- English proof (translation)
-The claim follows from `Units.ext (Matrix.scalar_commute (y : K) (fun _ => Commute.all _ _) g.val).eq`.
+A detailed English derivation is pending.
 -/
 private theorem scalar_comm' {K : Type} [Field K] {n : ℕ} (y : Kˣ) (g : GL (Fin n) K) :
     GeneralLinearGroup.scalar (Fin n) y * g = g * GeneralLinearGroup.scalar (Fin n) y :=
   Units.ext (Matrix.scalar_commute (y : K) (fun _ => Commute.all _ _) g.val).eq
 
 /- English proof (translation)
-Use `set z : GL (Fin n) K := GeneralLinearGroup.scalar (Fin n) ϖ with hz`. Establish `hd : Formalism.UG.diagJ n (ϖ : K) n = z.val`. Simplify using `[Formalism.UG.diagJ, hz]`. Rewrite using `[finsum_eq_single _ (z : GL (Fin n) K ⧸ Formalism.UG.GLint (Fin n) O)]`. Take `⟨k, hk⟩` from `QuotientGroup.mk_out_eq_mul (Formalism.UG.GLint (Fin n) O) z`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hk, ← mul_assoc, hW _ _ k.2, Formalism.UG.Tj, Set.indicator_of_mem, Pi.one_apply, one_mul]`. Conclude with `⟨1, one_mem _, k, k.2, by simp [hd]⟩`. Introduce `c hc`. Rewrite using `[Formalism.UG.Tj, Set.indicator_of_notMem, zero_mul]`. Introduce and unpack `⟨a, ha, b, hb, e⟩`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `hc ?_` and prove the remaining obligations. Establish `e' : c.out = z * (a * b)`. Rewrite using `[← mul_assoc, hz, scalar_comm', ← hz]`. Conclude with `Units.ext (by rw [e, hd]; rfl)`. Rewrite using `[← QuotientGroup.out_eq' c, e']`.
-
-Conclude with `QuotientGroup.mk_mul_of_mem _ (mul_mem ha hb)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finsum_top {K : Type} [Field K] {n : ℕ} (O : Subring K) (ϖ : Kˣ) (W : GL (Fin n) K → ℂ)
     (hW : ∀ g, ∀ k ∈ Formalism.UG.GLint (Fin n) O, W (g * k) = W g) (g : GL (Fin n) K) :
@@ -46,9 +44,9 @@ private theorem finsum_top {K : Type} [Field K] {n : ℕ} (O : Subring K) (ϖ : 
     exact QuotientGroup.mk_mul_of_mem _ (mul_mem ha hb)
 
 /- English proof (translation)
-Establish `key : ∀ x : Kˣ, (x : K) ∈ O → ∀ i j, (GeneralLinearGroup.scalar (Fin n) x).val i j ∈ O` using `fun x hx i j => by`. Express the relevant statement in the definitionally equal form `Matrix.diagonal (fun _ => (x : K)) i j ∈ O`. Rewrite using `[Matrix.diagonal_apply]`. Use `split_ifs`. Conclude with `hx`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_mem _`. Use `GlobalTheory.AdelicU.mem_GLint_iff.2 ⟨key u h, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `key _ h'`.
+A detailed English derivation is pending.
 -/
 private theorem scalar_mem {K : Type} [Field K] {n : ℕ} (O : Subring K) (u : Kˣ) (h : (u : K) ∈ O)
     (h' : ((u⁻¹ : Kˣ) : K) ∈ O) : GeneralLinearGroup.scalar (Fin n) u ∈ Formalism.UG.GLint (Fin n) O := by
@@ -63,19 +61,17 @@ private theorem scalar_mem {K : Type} [Field K] {n : ℕ} (O : Subring K) (u : K
   exact key _ h'
 
 /- English proof (translation)
-Introduce `E _ _ n w B y`. Distinguish the cases in `hB : B.card = n`. Use `swap`. Conclude with `⟨0, fun W hW => absurd hW.card hB⟩`. Set `H : Subgroup (w.adicCompletion E)ˣ` to `{ carrier := {y | ∃ c : ℂ, c ≠ 0 ∧ ∀ W : GL (Fin n) (w.adicCompletion E) → ℂ, Eig w B W → ∀ g, W (g * GeneralLinearGroup.scalar (Fin n) y) = c * W g} one_mem' := ⟨1, one_ne_zero, fun W _ g => by simp⟩ mul_mem' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Introduce a local definition for the expression. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `a b ⟨c, hc, h⟩ ⟨d, hd, h'⟩`. Conclude with `⟨d * c, mul_ne_zero hd hc, fun W hW g => by rw [map_mul, ← mul_assoc, h' W hW, h W hW, mul_assoc]⟩`. Use the proof step `inv_mem' := by`. Introduce and unpack `a ⟨c, hc, h⟩`. Use `⟨c⁻¹, inv_ne_zero hc, fun W hW g => ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `h W hW (g * GeneralLinearGroup.scalar (Fin n) a⁻¹)` as an intermediate fact. Rewrite `this` using `[mul_assoc, ← map_mul, inv_mul_cancel, map_one, mul_one]`. Rewrite using `[this, inv_mul_cancel_left₀ hc] }`. It suffices to establish `hy : y ∈ H from hy.imp fun _ h => h.2`. Take `⟨p, hp⟩ : ∃ p, Formalism.UG.IsUnifV E w p` from `w.valuedAdicCompletion_surjective E _`.
+Rewrite the conclusion using the stated equalities. Reduce the argument to an intermediate assertion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp0 : p ≠ 0` using `fun h0 => by simp [Formalism.UG.IsUnifV, h0] at hp`. Establish `hne : GlobalTheory.LFun.satEig (Formalism.UG.qV E w) n B n ≠ 0`. Establish `hq` using `Multiset.powersetCard_self (B.map fun b : ℂˣ => (b : ℂ))`. Rewrite `hq` using `[Multiset.card_map, hB]`. Simplify using `[GlobalTheory.LFun.satEig, Multiset.esymm, hq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpH : Units.mk0 p hp0 ∈ H` using `⟨_, hne, fun W hW g => (finsum_top (Formalism.UG.Ov E w) (Units.mk0 p hp0) W hW.inv g).symm.trans (hW.eig p hp n le_rfl g)⟩`. Establish `hu : ∀ u : (w.adicCompletion E)ˣ, Valued.v (u : w.adicCompletion E) = 1 → u ∈ H` using `fun u h => ⟨1, one_ne_zero, fun W hW g => by`. Rewrite using `[one_mul]`. Use `hW.inv g _ (scalar_mem (Formalism.UG.Ov E w) u h.le ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Valued.v ((u⁻¹ : (w.adicCompletion E)ˣ) : w.adicCompletion E) ≤ 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Units.val_inv_eq_inv_val, map_inv₀, h, inv_one]⟩`. Establish `hy0 : Valued.v (y : w.adicCompletion E) ≠ 0` using `by simp`. Use `hu (y * Units.mk0 p hp0 ^ WithZero.log (Valued.v (y : w.adicCompletion E))) (by` as an intermediate fact. Establish `hp' : Valued.v p = WithZero.exp (-1 : ℤ)` using `hp`. Rewrite using `[Units.val_mul, Units.val_zpow_eq_zpow_val, map_mul, map_zpow₀, Units.val_mk0, hp', ← WithZero.exp_zsmul]`.
-
-Simplify using `[WithZero.exp_log hy0])`. Conclude with `(H.mul_mem_cancel_right (H.zpow_mem hpH _)).1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Smo.centLoc :
     UpperTheory.V.Af.Smo.CentLoc := by

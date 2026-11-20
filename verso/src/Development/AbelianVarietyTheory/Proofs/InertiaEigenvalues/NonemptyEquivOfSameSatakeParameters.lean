@@ -28,9 +28,9 @@ variable {G X V V' : Type} [Group G] [AddCommGroup X] [Module ℂ X] [AddCommGro
   [AddCommGroup V'] [Module ℂ V']
 
 /- English proof (translation)
-Set `R : Subrepresentation π` to `⟨U.map f.toLinearMap, by`. Introduce and unpack `g _ ⟨x, hx, rfl⟩`. Conclude with `⟨ρ g x, hU g x hx, f.isIntertwining _ _ g x⟩⟩`. Break down `eq_bot_or_eq_top R with h | h` into its components or cases. Establish `h1 : f u ∈ R.toSubmodule` using `⟨u, hu, rfl⟩`.
+Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `h1` using `[h]`. Conclude with `absurd h1 h0`. Establish `h1 : v ∈ R.toSubmodule` using `by rw [h]; trivial`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_eq_top {ρ : Representation ℂ G X} {π : Representation ℂ G V} (hπ : π.IsIrreducible)
     (f : ρ.IntertwiningMap π) (U : Submodule ℂ X) (hU : ∀ g, ∀ u ∈ U, ρ g u ∈ U) {u : X} (hu : u ∈ U)
@@ -48,13 +48,13 @@ theorem map_eq_top {ρ : Representation ℂ G X} {π : Representation ℂ G V} (
 variable [TopologicalSpace G] [IsTopologicalGroup G]
 
 /- English proof (translation)
-Introduce `u hu`. Assume the negation of the conclusion as `hu'`. Take `⟨x, hx, e⟩` from `map_eq_top hπ' f' (LinearMap.ker f.toLinearMap) (fun g y hy => by`. Establish `hy' : f y = 0` using `hy`. Use `show f (ρ g y) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[f.isIntertwining, hy', map_zero]) hu hu' (f' w)`. Establish `hx' : f x = 0` using `hx`. Take `⟨v, hv, ev⟩` from `IwahoriOnto.exists_fixed_map_eq hρ hK (f.toLinearMap.prod f'.toLinearMap) x fun g hg => by`. Establish `h1 : ρ g w = w` using `by simpa using hw ⟨g, hg⟩`. Use `Prod.ext ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show f (ρ g x) = f x`. Rewrite using `[f.isIntertwining, hx', map_zero]`. Use `show f' (ρ g x) = f' x`. Rewrite using `[f'.isIntertwining, e, ← f'.isIntertwining, h1]`. Take `⟨c, rfl⟩` from `hl v hv`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1 : f (c • w) = f x` using `congrArg Prod.fst ev`. Establish `e2 : f' (c • w) = f' x` using `congrArg Prod.snd ev`. Rewrite `e1` using `[hx', map_smul, smul_eq_zero]`. Rewrite `e2` using `[e1.resolve_right h0, zero_smul, map_zero, e]`. Conclude with `h0' e2.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_le {ρ : Representation ℂ G X} {π : Representation ℂ G V} {π' : Representation ℂ G V'}
     (hρ : IsSmooth ρ) (hπ' : π'.IsIrreducible) {K : Subgroup G} (hK : IsCompact (K : Set G))
@@ -83,13 +83,13 @@ theorem ker_le {ρ : Representation ℂ G X} {π : Representation ℂ G V} {π' 
   exact h0' e2.symm
 
 /- English proof (translation)
-Establish `hk` using `le_antisymm (ker_le hρ hπ' hK f f' hw h0 h0' hl) (ker_le hρ hπ hK f' f hw h0' h0 hl)`. Establish `hs : Function.Surjective f.toLinearMap` using `fun v => by`. Take `⟨x, -, e⟩` from `map_eq_top hπ f ⊤ (fun _ _ _ => trivial) trivial h0 v`. Conclude with `⟨x, e⟩`. Establish `hs' : Function.Surjective f'.toLinearMap` using `fun v => by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨x, -, e⟩` from `map_eq_top hπ' f' ⊤ (fun _ _ _ => trivial) trivial h0' v`. Conclude with `⟨x, e⟩`. Set `L : V ≃ₗ[ℂ] V'` to `(f.toLinearMap.quotKerEquivOfSurjective hs).symm ≪≫ₗ Submodule.quotEquivOfEq _ _ hk ≪≫ₗ f'.toLinearMap.quotKerEquivOfSurjective hs'`. Establish `hL : ∀ x, L (f x) = f' x` using `fun x => by`. Establish `: (f.toLinearMap.quotKerEquivOfSurjective hs).symm (f x) = Submodule.Quotient.mk x`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Simplify using `only [L, LinearEquiv.trans_apply, this]`. Both sides reduce to the same expression. Use `⟨Representation.Equiv.mk L fun g => LinearMap.ext fun v => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨x, rfl⟩` from `hs v`. Use `show L (π g (f x)) = π' g (L (f x))`. Rewrite using `[← f.isIntertwining, hL, hL, f'.isIntertwining]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem equiv_of_line {ρ : Representation ℂ G X} {π : Representation ℂ G V} {π' : Representation ℂ G V'}
     (hρ : IsSmooth ρ) (hπ : π.IsIrreducible) (hπ' : π'.IsIrreducible) {K : Subgroup G} (hK : IsCompact (K : Set G))
@@ -115,9 +115,9 @@ theorem equiv_of_line {ρ : Representation ℂ G X} {π : Representation ℂ G V
   rw [← f.isIntertwining, hL, hL, f'.isIntertwining]
 
 /- English proof (translation)
-Take `⟨v, hv, hv0⟩` from `(Submodule.ne_bot_iff _).1 hs`. Take `⟨u, rfl⟩` from `hf v`. Establish `hS : IsSmooth S.toRepresentation` using `IsSubquotient.isSmooth (ρ := ρ) ⟨S, .id _, Function.surjective_id⟩ hρ`. Take `⟨w, hw, hfw⟩` from `IwahoriOnto.exists_fixed_map_eq hS hK f.toLinearMap u fun h hh => by show f (S.toRepresentation h u) = f u`. Rewrite using `[f.isIntertwining]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using hv ⟨h, hh⟩`. Conclude with `⟨w, fun g => congrArg Subtype.val (hw g), fun h => hv0 (hfw.symm.trans h)⟩`.
+Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem exists_vector {ρ : Representation ℂ G X} {π : Representation ℂ G V} (hρ : IsSmooth ρ) {K : Subgroup G}
     (hK : IsCompact (K : Set G)) (S : Subrepresentation ρ) (f : S.toRepresentation.IntertwiningMap π)
@@ -134,15 +134,15 @@ theorem exists_vector {ρ : Representation ℂ G X} {π : Representation ℂ G V
   exact ⟨w, fun g => congrArg Subtype.val (hw g), fun h => hv0 (hfw.symm.trans h)⟩
 
 /- English proof (translation)
-Take `⟨S, f, hf⟩` from `h`. Take `⟨S', f', hf'⟩` from `h'`. Take `⟨w, hw, h0⟩` from `exists_vector hρ hK S f hf hs`. Take `⟨w', hw', h0'⟩` from `exists_vector hρ hK S' f' hf' hs'`. Establish `hl : ∀ z ∈ fixed ρ K, z ≠ 0 → ∀ v ∈ fixed ρ K, ∃ c : ℂ, v = c • z` using `fun z hz hz0 v hv => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEz : E z ≠ 0` using `fun e => hz0 (hE z hz e)`. Use `⟨E v / E z, sub_eq_zero.1 (hE _ (sub_mem hv (Submodule.smul_mem _ _ hz)) ?_)⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, smul_eq_mul, div_mul_cancel₀ _ hEz, sub_self]`. Establish `hw0 : w.1 ≠ 0` using `fun e => h0 (by rw [show w = 0 from Subtype.ext e, map_zero])`. Establish `hw0' : w'.1 ≠ 0` using `fun e => h0' (by rw [show w' = 0 from Subtype.ext e, map_zero])`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `hl _ hw' hw0' _ hw`. Establish `hc0 : c ≠ 0` using `fun e => hw0 (by rw [hc, e, zero_smul])`. Set `R : Subrepresentation ρ` to `⟨S.toSubmodule ⊓ S'.toSubmodule, fun g _ hv => ⟨S.apply_mem_toSubmodule g hv.1, S'.apply_mem_toSubmodule g hv.2⟩⟩`. Establish `hR : IsSmooth R.toRepresentation` using `IsSubquotient.isSmooth (ρ := ρ) ⟨R, .id _, Function.surjective_id⟩ hρ`. Set `F : R.toRepresentation.IntertwiningMap π` to `⟨f.toLinearMap ∘ₗ Submodule.inclusion inf_le_left, fun g => LinearMap.ext fun x => f.isIntertwining _ _ g (Submodule.inclusion inf_le_left x)⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `F' : R.toRepresentation.IntertwiningMap π'` to `⟨f'.toLinearMap ∘ₗ Submodule.inclusion inf_le_right, fun g => LinearMap.ext fun x => f'.isIntertwining _ _ g (Submodule.inclusion inf_le_right x)⟩`. Establish `hm : w.1 ∈ S'.toSubmodule` using `hc ▸ Submodule.smul_mem _ _ w'.2`. Use `equiv_of_line hR hπ hπ' hK F F' (w := ⟨w.1, w.2, hm⟩) (fun g => Subtype.ext (hw g)) h0 (fun e => ?_) fun v hv => ?_` and prove the remaining obligations. Establish `e1 : f' (c • w') = 0`. Rewrite using `[← e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg f' (Subtype.ext hc.symm)`. Rewrite `e1` using `[map_smul, smul_eq_zero]`. Conclude with `e1.elim hc0 h0'`. Take `⟨d, hd⟩` from `hl _ hw hw0 v.1 fun g => congrArg Subtype.val (hv g)`. Conclude with `⟨d, Subtype.ext hd⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem equiv_of_form {ρ : Representation ℂ G X} {π : Representation ℂ G V} {π' : Representation ℂ G V'}
     (hρ : IsSmooth ρ) (hπ : π.IsIrreducible) (hπ' : π'.IsIrreducible) {K : Subgroup G} (hK : IsCompact (K : Set G))
@@ -184,9 +184,9 @@ theorem equiv_of_form {ρ : Representation ℂ G X} {π : Representation ℂ G V
 end Abstract
 
 /- English proof (translation)
-Set `E : IndSp e σ →ₗ[ℂ] ℂ` to `⟨⟨fun f => f.1.1 1, fun _ _ => rfl⟩, fun _ _ => rfl⟩`. Use `equiv_of_form (isSmooth_parInd e σ) hπ hπ' SplitFlip.isCompact_KO E (fun u hu h0 => ?_) h h' hs hs'` and prove the remaining obligations. Use `Subtype.ext (Subtype.ext (funext fun x => ?_))` and prove the remaining obligations. Take `⟨p, c, hc, rfl⟩` from `MultiIrr.exists_parab_mul e x`. Establish `h1` using `congrArg (fun F : IndSp e σ => F.1.1 1) (hu ⟨c, hc⟩)`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [parInd_apply, MonoidHom.one_apply, Units.val_one, one_smul, one_mul] at h1`. Establish `h2 : u.1.1 1 = 0` using `h0`. Rewrite using `[parInd_law, h1, h2, map_zero, smul_zero]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem equiv_of_parInd {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {α n : Type} {m : α → Type} [Fintype α] [LinearOrder α] [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)]
@@ -206,7 +206,7 @@ theorem equiv_of_parInd {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace 
   rfl
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ h h'` and use `equiv_of_parInd _ _ h.1 h'.1 h.2.2 h'.2.2 h.2.1 h'.2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem equiv_of_hasSatake : BernsteinZelevinskyFiniteness → ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k] (n : ℕ) (α : Fin n → ℂˣ) (π π' : IrrRep (GL (Fin n) k)), HasSatake π.ρ α → HasSatake π'.ρ α → Nonempty (π.ρ.Equiv π'.ρ) :=
   fun _ _ _ _ _ _ _ _ _ _ _ h h' => equiv_of_parInd _ _ h.1 h'.1 h.2.2 h'.2.2 h.2.1 h'.2.1

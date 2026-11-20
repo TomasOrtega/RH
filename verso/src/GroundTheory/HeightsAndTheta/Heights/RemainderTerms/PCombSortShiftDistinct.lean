@@ -7,11 +7,11 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open Equiv
 
 /- English proof (translation)
-Introduce `m l hl q hq i j hij hqi hqj σ τ heq`. Establish `hr` using `congrArg Set.range heq`. Rewrite `hr` using `[σ.surjective.range_comp, τ.surjective.range_comp]`. Establish `hmem : l i ∈ Set.range (Function.update l j (l j - q))` using `⟨i, by rw [Function.update_of_ne hij]⟩`. Rewrite `hmem` using `[← hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k, hk⟩` from `hmem`. Distinguish the cases in `hki : k = i`. Substitute `hki` using the available equality. Rewrite `hk` using `[Function.update_self]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `hk` using `[Function.update_of_ne hki]`. Conclude with `hki (hl hk)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem CombSortShiftDistinct.proof : CombSortShiftDistinct.Statement := by
   intro m l hl q hq i j hij hqi hqj σ τ heq

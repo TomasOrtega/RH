@@ -17,9 +17,7 @@ open GlobalTheory.SS
 namespace GlobalTheory.SS
 
 /- English proof (translation)
-Use `letI : Algebra V L := ((algebraMap W L).comp (algebraMap V W)).toAlgebra`. Use `haveI : IsScalarTower V W L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : IsScalarTower V K L := IsScalarTower.of_algebraMap_eq' e`. Use `haveI : FaithfulSMul V W := by`. Rewrite using `[faithfulSMul_iff_algebraMap_injective]`.
-
-Establish `h : Function.Injective ((algebraMap W L).comp (algebraMap V W))`. Rewrite using `[e]`. Conclude with `(algebraMap K L).injective.comp (IsFractionRing.injective V K)`. Conclude with `Function.Injective.of_comp (f := algebraMap W L) h`. Conclude with `Module.Finite.of_isLocalization V W (nonZeroDivisors V)`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_finite_of_isFractionRing (V K W L : Type) [CommRing V] [IsDomain V] [Field K]
     [Algebra V K] [IsFractionRing V K] [CommRing W] [IsDomain W] [Field L] [Algebra V W] [Algebra W L] [Algebra K L]
@@ -37,15 +35,13 @@ theorem finiteDimensional_of_finite_of_isFractionRing (V K W L : Type) [CommRing
   exact Module.Finite.of_isLocalization V W (nonZeroDivisors V)
 
 /- English proof (translation)
-Use `haveI := finiteDimensional_of_finite_of_isFractionRing _ K W L e`. Set `σ : L →ₐ[K] PadicAlgCl p` to `IsAlgClosed.lift`. Set `K' : IntermediateField ℚ_[p] (PadicAlgCl p)` to `σ.fieldRange.restrictScalars ℚ_[p]`. Establish `h : K ≤ K'` using `fun x hx => ⟨algebraMap K L ⟨x, hx⟩, σ.commutes _⟩`. Set `τ : L →+* K'` to `σ.toRingHom.codRestrict K' fun x => ⟨x, rfl⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hτ : τ.comp (algebraMap K L) = (IntermediateField.inclusion h).toRingHom` using `RingHom.ext fun x => Subtype.ext (σ.commutes x)`. Establish `hK' : FiniteDimensional ℚ_[p] K'`. Use `letI : Algebra ℚ_[p] L := ((algebraMap K L).comp (algebraMap ℚ_[p] K)).toAlgebra`. Use `haveI : IsScalarTower ℚ_[p] K L := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `haveI : Module.Finite ℚ_[p] L := Module.Finite.trans K L`.
+Establish an intermediate fact. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Set `τ' : L →ₐ[ℚ_[p]] K'` to `{ τ with commutes' := fun x => Subtype.ext (σ.commutes (algebraMap ℚ_[p] K x)) }`. Use `Module.Finite.of_surjective τ'.toLinearMap ?_` and prove the remaining obligations. Introduce and unpack `⟨_, x, rfl⟩`. Conclude with `⟨x, rfl⟩`. Establish `hint : ∀ w : W, IsIntegral ℤ_[p] (τ (algebraMap W L w))` using `fun w => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `h₁ : (algebraMap (integralClosure ℤ_[p] K) W).IsIntegralElem w` using `Algebra.IsIntegral.isIntegral w`. Use `letI : Algebra (integralClosure ℤ_[p] K) K' := ((IntermediateField.inclusion h).toRingHom.comp (algebraMap (integralClosure ℤ_[p] K) K)).toAlgebra`. Use `haveI : IsScalarTower ℤ_[p] (integralClosure ℤ_[p] K) K' := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Establish `h₂` using `h₁.map (τ.comp (algebraMap W L))`. Rewrite `h₂` using `[RingHom.comp_assoc, e, ← RingHom.comp_assoc, hτ]`.
-
-Conclude with `isIntegral_trans (A := integralClosure ℤ_[p] K) _ h₂`. Conclude with `⟨K', h, hK', τ, (τ.comp (algebraMap W L)).codRestrict _ hint, hτ, RingHom.ext fun _ => rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_ringHom_integralClosure (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p))
     [FiniteDimensional ℚ_[p] K] (W L : Type) [CommRing W] [IsDomain W] [Field L]
@@ -83,9 +79,7 @@ theorem exists_ringHom_integralClosure (p : ℕ) [Fact p.Prime] (K : Intermediat
   exact ⟨K', h, hK', τ, (τ.comp (algebraMap W L)).codRestrict _ hint, hτ, RingHom.ext fun _ => rfl⟩
 
 /- English proof (translation)
-Introduce `p _ K _ P`. Use `haveI := GlobalTheory.DiscEval.isAdicComplete_integralClosure K`. Take `⟨W, L, _, _, _, _, _, _, _, _, e, hfin, -, -, G, _, ⟨i, hi⟩, hG⟩` from `GlobalTheory.T.principallyPolarizedAbelianVariety_potentialSemiAbelianModel (integralClosure ℤ_[p] K) K (GlobalTheory.DiscEval.finite_residueField_integralClosure K) P`. Take `⟨K', h, hK', τ, f, hτ, hf⟩` from `exists_ringHom_integralClosure p K W L e`. Use `⟨K', h, hK', (Over.pullback (spMap f)).obj G, inferInstance, IsSemiAbelian.pullback _ G hG, ?_⟩` and prove the remaining obligations.
-
-Conclude with `GlobalTheory.SplitReduction.exists_isGrpPullback_of_square hf hτ G P.A (((isGrpPullback_of_iso i).comp (isGrpPullback_pullback P.A (spMap (algebraMap K L)))).congr (Category.id_comp _) rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_semiAbelian_model_padic_polAV : ∀ (p : ℕ) [Fact p.Prime] (K : IntermediateField ℚ_[p] (PadicAlgCl p)) [FiniteDimensional ℚ_[p] K] (P : Out.PolAV (Sp K)), ∃ (K' : IntermediateField ℚ_[p] (PadicAlgCl p)) (h : K ≤ K'), FiniteDimensional ℚ_[p] K' ∧ ∃ (G : Over (Sp (integralClosure ℤ_[p] K'))) (_ : GrpObj G), IsSemiAbelian G ∧ ∃ φ : pullback G.hom (spMap (algebraMap (integralClosure ℤ_[p] K') K')) ⟶ P.A.left, IsGrpPullback ((Over.pullback (spMap (algebraMap (integralClosure ℤ_[p] K') K'))).obj G) P.A (spMap (IntermediateField.inclusion h).toRingHom) φ := by
   intro p _ K _ P

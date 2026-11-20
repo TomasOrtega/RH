@@ -42,9 +42,9 @@ def IsSum {n n₁ : ℕ} (Y : Spc F E n) (Y₁ : Spc F E n₁) (x y : Fin n → 
     Function.Injective ι.mulVec
 
 /- English proof (translation)
-Establish `h0 : ∀ z, form σ J 0 z = 0` using `fun z => by simp [form]`. Establish `h1` using `congrArg (fun z => form σ J z y) h`. Establish `h2` using `congrArg (fun z => form σ J z x) h`. Simplify using `only [GlobalTheory.KTowerPlane.form_add_left, GlobalTheory.KTowerPlane.form_smul_left, hxx, hyy, hxy, ho, h0, mul_zero, mul_one, add_zero, zero_add] at h1 h2`. Establish `ht` using `(mul_eq_zero.1 h2).resolve_right hyx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h` using `[h1, ht, zero_smul, zero_smul, zero_add, add_zero]`. Conclude with `⟨h1, ht, hi (by rw [h, Matrix.mulVec_zero])⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem parts_eq_zero {n n₁ : ℕ} {J : Matrix (Fin n) (Fin n) E} {x y : Fin n → E} {ι : Matrix (Fin n) (Fin n₁) E}
     (hxx : form σ J x x = 0) (hyy : form σ J y y = 0) (hxy : form σ J x y = 1) (hyx : form σ J y x ≠ 0)
@@ -60,19 +60,17 @@ theorem parts_eq_zero {n n₁ : ℕ} {J : Matrix (Fin n) (Fin n) E} {x y : Fin n
   exact ⟨h1, ht, hi (by rw [h, Matrix.mulVec_zero])⟩
 
 /- English proof (translation)
-Take `⟨hxx₀, hyy₀, hxy₀, horth₀, hg, hlow, hsplit₀, hinj⟩` from `h`. Establish `hx₀ : x₀ ≠ 0` using `by rintro rfl; simp [form] at hxy₀`. Establish `hy₀ : y₀ ≠ 0` using `by rintro rfl; simp [form] at hyx`. Take `⟨c, hc, hprim⟩` from `GlobalTheory.T.exists_rescale_primitive_in_lattice_at_split_primes F E σ hCM (n₁ + 2) Y.L hL x₀ y₀ hx₀ hy₀ B.P B.τ`. Establish `hσc : σ c ≠ 0` using `(map_ne_zero σ).2 hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set x := c • x₀ with hxdef`. Use `set y := (σ c)⁻¹ • y₀ with hydef`. Establish `hxx : form σ Y.J x x = 0` using `by rw [form_smul_left, form_smul_right, hxx₀, mul_zero, mul_zero]`. Establish `hyy : form σ Y.J y y = 0` using `by rw [form_smul_left, form_smul_right, hyy₀, mul_zero, mul_zero]`. Establish `hxy : form σ Y.J x y = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[form_smul_left, form_smul_right, hxy₀, map_inv₀, sigma_sigma hCM, mul_one, mul_inv_cancel₀ hc]`. Establish `hyx' : form σ Y.J y x ≠ 0`. Rewrite using `[form_smul_left, form_smul_right]`. Conclude with `mul_ne_zero (inv_ne_zero hσc) (mul_ne_zero hσc hyx)`. Establish `horth : ∀ u, form σ Y.J (ι *ᵥ u) x = 0 ∧ form σ Y.J (ι *ᵥ u) y = 0` using `fun u => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[form_smul_right, form_smul_right, (horth₀ u).1, (horth₀ u).2, mul_zero, mul_zero]`. Conclude with `⟨rfl, rfl⟩`. Establish `hsplit : ∀ z ∈ Y.L, ∃ (s t : E) (u : Fin n₁ → E), s • x ∈ Y.L ∧ t • y ∈ Y.L ∧ u ∈ Y₁.L ∧ z = s • x + ι *ᵥ u + t • y`. Introduce `z hz`. Take `⟨s', t, u, h1, h2, h3, rfl⟩` from `hsplit₀ z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `e1 : (s' / c) • x = s' • x₀` using `by rw [hxdef, smul_smul, div_mul_cancel₀ _ hc]`. Establish `e2 : (t * σ c) • y = t • y₀` using `by rw [hydef, smul_smul, mul_assoc, mul_inv_cancel₀ hσc, mul_one]`. Conclude with `⟨s' / c, t * σ c, u, e1 ▸ h1, e2 ▸ h2, h3, by rw [e1, e2]⟩`. Take `⟨𝔟, h𝔟⟩` from `GlobalTheory.T.exists_fractionalIdeal_mem_iff_smul_mem_lattice E (n₁ + 2) Y.L hL x (smul_ne_zero hc hx₀)`. Establish `eL : lowLat ι Y.L = Y₁.L` using `Submodule.ext fun u => (hlow u).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose βY hβY using fun v : B.P => GlobalTheory.T.exists_splitPlace_localLatticeBasis_hyperbolicPlane F E σ hCM v.1 (B.τ v) n₁ Y.L x y ι (Y₁.bas v) i₀ i₁ h01 h1n (fun z hz => by`. Take `⟨s, t, u, h1, h2, h3, h4⟩` from `hsplit z hz`. Conclude with `⟨s, t, u, h1, h2, (hlow u).1 h3, h4⟩)`. Use the proof step `(parts_eq_zero hxx hyy hxy hyx' horth hinj) (hprim v).1 (hprim v).2 (eL ▸ hb v)`. Use `⟨x, y, 𝔟, fun v => if h : v ∈ B.P then βY ⟨v, h⟩ else 1, ⟨hxx, hyy, hxy, horth, hg, hlow, hsplit, hinj⟩, h𝔟, fun v => ?_, fun v i => ?_⟩` and prove the remaining obligations.
-
-Simplify using `only [dif_pos v.2]`. Conclude with `(hβY v).1`. Simplify using `only [dif_pos v.2]`. Conclude with `(hβY v).2 i`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsSum.exists_bases (hCM : IsCMExt F E σ) (B : Base F E) {n₁ : ℕ} {Y : Spc F E (n₁ + 2)} {Y₁ : Spc F E n₁}
     {x₀ y₀ : Fin (n₁ + 2) → E} {ι : Matrix (Fin (n₁ + 2)) (Fin n₁) E} (h : IsSum σ Y Y₁ x₀ y₀ ι) (hyx : form σ Y.J y₀ x₀ ≠ 0)
@@ -118,9 +116,9 @@ theorem IsSum.exists_bases (hCM : IsCMExt F E σ) (B : Base F E) {n₁ : ℕ} {Y
   · simp only [dif_pos v.2]; exact (hβY v).2 i
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Take `⟨x, y, 𝔟, β, ⟨hxx, hyy, hxy, horth, hg, hlow, hsplit, hinj⟩, h𝔟, hβ, hβ'⟩` from `h.exists_bases hCM B (by rw [GlobalTheory.KTowerPlane.form_swap hCM hY.herm, h.2.2.1, map_one]; exact one_ne_zero) hY.lat hY₁.bas h01 h1n`. Take `⟨g, hgι⟩` from `LinearMap.exists_leftInverse_of_injective (Matrix.mulVecLin ι) (LinearMap.ker_eq_bot.2 hinj)`. Establish `hP : LinearMap.toMatrix' g * ι = 1`. Rewrite using `[← LinearMap.toMatrix'_toLin' ι, ← LinearMap.toMatrix'_comp, Matrix.toLin'_apply', hgι, LinearMap.toMatrix'_id]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `choose θ hθ using fun w => GlobalTheory.T.exists_cartanInvolution_extend_swapping_hyperbolicPair _ n₁ (Y.J.map (B.emb w).1) (fun i => (B.emb w).1 (x i)) (fun i => (B.emb w).1 (y i)) (ι.map (B.emb w).1) ((LinearMap.toMatrix' g).map (B.emb w).1) (Y₁.θ w) rfl (GlobalTheory.KTowerPla …`. Conclude with `⟨⟨Y.J, Y.L, θ, β⟩, ⟨x, y, ι, 𝔟⟩, ⟨hY.herm, hY.sig, hY.lat, hY.dual, fun w => (hθ w).1, hβ⟩, ⟨rfl, hxx, hyy, hxy, horth, hg, hlow, hsplit, h𝔟, fun w => ⟨(hθ w).2.1, 1, one_ne_zero, by rw [one_smul]; exact (hθ w).2.2.symm⟩, hβ'⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsSum.adapt_herm (hCM : IsCMExt F E σ) {B : Base F E} {n n₁ : ℕ} (hn : n = n₁ + 2) {Y : Spc F E n} {Y₁ : Spc F E n₁}
     {x₀ y₀ : Fin n → E} {ι : Matrix (Fin n) (Fin n₁) E} (h : IsSum σ Y Y₁ x₀ y₀ ι) {r s r₁ s₁ : ℕ} (hY : Y.IsHerm σ B r s)
@@ -144,7 +142,7 @@ theorem IsSum.adapt_herm (hCM : IsCMExt F E σ) {B : Base F E} {n n₁ : ℕ} (h
       fun w => ⟨(hθ w).2.1, 1, one_ne_zero, by rw [one_smul]; exact (hθ w).2.2.symm⟩, hβ'⟩⟩
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hτσ : ∀ (τ : E →+* ℂ) (a : E), τ (σ a) = star (τ a)` using `hCM.2.2.2`. Take `⟨x, y, 𝔟, β, ⟨hxx, hyy, hxy, horth, hg, hlow, hsplit, hinj⟩, h𝔟, hβ, hβ'⟩` from `h.exists_bases hCM B hyx hY.lat hY₁.bas h01 h1n`. Use `choose θ hθ using fun w => GlobalTheory.T.exists_cartanInvolution_hyperbolicSwap_extension n₁ (Complex.I • Y.J.map (B.emb w).1) (fun i => (B.emb w).1 (x i)) (fun i => (B.emb w).1 (y i)) (ι.map (B.emb w).1) (Y₁.θ w) (herm_map _ (hτσ _) hY.skew) (by rw [form_map _ (hτσ _), hxx, map …`. Conclude with `⟨⟨Y.J, Y.L, θ, β⟩, ⟨x, y, ι, 𝔟⟩, ⟨hY.skew, hY.sig, hY.lat, hY.dual, fun w => (hθ w).1, hβ⟩, ⟨rfl, hxx, hyy, hxy, horth, hg, hlow, hsplit, h𝔟, fun w => (hθ w).2, hβ'⟩⟩`.
+Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem IsSum.adapt_skew (hCM : IsCMExt F E σ) {B : Base F E} {n n₁ : ℕ} (hn : n = n₁ + 2) {Y : Spc F E n} {Y₁ : Spc F E n₁}
     {x₀ y₀ : Fin n → E} {ι : Matrix (Fin n) (Fin n₁) E} (h : IsSum σ Y Y₁ x₀ y₀ ι) (hyx : form σ Y.J y₀ x₀ ≠ 0) {r s r₁ s₁ : ℕ}
@@ -173,31 +171,31 @@ variable {D : D7}
 def crd (ε : D.host.E →+* D.host.E) (S : HSp D) (z : S.V) : Fin S.rank → D.host.E := fun i => ε (S.frame.equivFun z i)
 
 /- English proof (translation)
-The claim follows from `funext fun i => by simp [crd]`.
+A detailed English derivation is pending.
 -/
 theorem crd_add (ε : D.host.E →+* D.host.E) (S : HSp D) (z z' : S.V) : crd ε S (z + z') = crd ε S z + crd ε S z' :=
   funext fun i => by simp [crd]
 
 /- English proof (translation)
-The claim follows from `funext fun i => by simp [crd]`.
+A detailed English derivation is pending.
 -/
 theorem crd_smul (ε : D.host.E →+* D.host.E) (S : HSp D) (s : D.host.E) (z : S.V) : crd ε S (s • z) = ε s • crd ε S z :=
   funext fun i => by simp [crd]
 
 /- English proof (translation)
-Introduce `w` and use `⟨S.frame.equivFun.symm fun i => ε (w i), funext fun i => by simp only [crd, LinearEquiv.apply_symm_apply, hε]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem crd_surj {ε : D.host.E →+* D.host.E} (hε : ∀ a, ε (ε a) = a) (S : HSp D) : Function.Surjective (crd ε S) := fun w =>
   ⟨S.frame.equivFun.symm fun i => ε (w i), funext fun i => by simp only [crd, LinearEquiv.apply_symm_apply, hε]⟩
 
 /- English proof (translation)
-Introduce `_ _ h` and use `S.frame.equivFun.injective (funext fun i => ε.injective (congrFun h i))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem crd_inj (ε : D.host.E →+* D.host.E) (S : HSp D) : Function.Injective (crd ε S) := fun _ _ h =>
   S.frame.equivFun.injective (funext fun i => ε.injective (congrFun h i))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use `congrFun (LinearMap.toMatrix_mulVec_repr S₁.frame S.frame ι u) i` as an intermediate fact. Simplify using `only [crd, Module.Basis.equivFun_apply, ← this]`. Conclude with `(RingHom.map_mulVec ε _ _ i).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem crd_map (ε : D.host.E →+* D.host.E) {S S₁ : HSp D} (ι : S₁.V →ₗ[D.host.E] S.V) (u : S₁.V) :
     (LinearMap.toMatrix S₁.frame S.frame ι).map ε *ᵥ crd ε S₁ u = crd ε S (ι u) := by
@@ -207,12 +205,12 @@ theorem crd_map (ε : D.host.E →+* D.host.E) {S S₁ : HSp D} (ι : S₁.V →
   exact (RingHom.map_mulVec ε _ _ i).symm
 
 /- English proof (translation)
-The claim follows from `(S.herm.eq v u).symm`.
+A detailed English derivation is pending.
 -/
 theorem hD_swap (S : HSp D) (u v : S.V) : S.hD v u = star (S.hD u v) := (S.herm.eq v u).symm
 
 /- English proof (translation)
-Use `conv_lhs => rw [← S.frame.sum_repr u, ← S.frame.sum_repr v]`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, HSpace.gram, RingHom.id_apply, starRingEnd_apply, Module.Basis.equivFun_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hT_sum (S : HSp D) (u v : S.V) :
     S.hT u v = ∑ i, ∑ j, star (S.frame.equivFun u i) * S.gram i j * S.frame.equivFun v j := by
@@ -223,7 +221,7 @@ theorem hT_sum (S : HSp D) (u v : S.V) :
   refine Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `u hu`. Conclude with `S₁.nondeg.1 u fun v => by rw [← h, hu, map_zero, LinearMap.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isomEmb_inj {S S₁ : HSp D} {ι : S₁.V →ₗ[D.host.E] S.V} (h : HSpace.IsIsomEmb S₁ S ι) : Function.Injective ι := by
   rw [injective_iff_map_eq_zero]
@@ -231,19 +229,19 @@ theorem isomEmb_inj {S S₁ : HSp D} {ι : S₁.V →ₗ[D.host.E] S.V} (h : HSp
   exact S₁.nondeg.1 u fun v => by rw [← h, hu, map_zero, LinearMap.zero_apply]
 
 /- English proof (translation)
-Take `⟨-, hι, hxx, hyy, hxy, ho, hlow, hsp⟩` from `hs`. Establish `hσ : ∀ a, D.sp.cm.sig a = star a` using `fun _ => rfl`. Establish `hc' : star c ≠ 0` using `star_ne_zero.2 hc`. Use `⟨crd ε S x, (star c)⁻¹ • crd ε S y, (LinearMap.toMatrix S₁.frame S.frame ι).map ε, ⟨?_, ?_, ?_, fun u => ?_, ?_, fun u => ?_, fun z hz => ?_, fun u u' h => ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hJ, hxx, map_zero, mul_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[form_smul_left, form_smul_right, hJ, hyy, map_zero, mul_zero, mul_zero, mul_zero]`. Rewrite using `[form_smul_right, hJ, hxy, map_one, mul_one, map_inv₀, hσ, star_star, inv_mul_cancel₀ hc]`. Take `⟨u, rfl⟩` from `crd_surj hε S₁ u`. Rewrite using `[crd_map, form_smul_right, hJ, hJ, (ho u).1, (ho u).2, map_zero, mul_zero, mul_zero]`. Conclude with `⟨rfl, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `(GlobalTheory.KTowerPlane.form_single (σ := D.sp.cm.sig) _ i j).symm.trans (Eq.trans ?_ (GlobalTheory.KTowerPlane.form_single (σ := D.sp.cm.sig) Y₁.J i j))` and prove the remaining obligations. Rewrite using `[GlobalTheory.KTowerPlane.form_gram]`. Take `⟨u, hu⟩` from `crd_surj hε S₁ (Pi.single i 1)`. Take `⟨v, hv⟩` from `crd_surj hε S₁ (Pi.single j 1)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hu, ← hv, crd_map, crd_map, hJ, hJ₁, HSpace.hD, HSpace.hD, hι]`. Take `⟨u, rfl⟩` from `crd_surj hε S₁ u`. Rewrite using `[crd_map, hL, hL₁, hlow]`. Take `⟨z, rfl⟩` from `crd_surj hε S z`. Take `⟨s, r, u, h1, h2, h3, rfl⟩` from `hsp z ((hL z).1 hz)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : (ε r * star c) • (star c)⁻¹ • crd ε S y = crd ε S (r • y)`. Rewrite using `[smul_smul, mul_assoc, mul_inv_cancel₀ hc', mul_one, crd_smul]`. Use `⟨ε s, ε r * star c, crd ε S₁ u, ?_, ?_, (hL₁ u).2 h3, ?_⟩` and prove the remaining obligations. Rewrite using `[← crd_smul]`. Conclude with `(hL _).2 h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `(hL _).2 h2`. Rewrite using `[e, crd_map, crd_add, crd_add, crd_smul]`. Take `⟨u, rfl⟩` from `crd_surj hε S₁ u`. Take `⟨u', rfl⟩` from `crd_surj hε S₁ u'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[crd_map, crd_map]`. Rewrite using `[isomEmb_inj hι (crd_inj ε S h)]`. Rewrite using `[form_smul_left, hJ, hD_swap, hxy, star_one, map_one, mul_one]`. Conclude with `mul_ne_zero (inv_ne_zero hc') hc`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSum_of_split {S S₁ : HSp D} {Λ Λ₁ ι x y} (hs : PlaneSplit S S₁ Λ Λ₁ ι x y) {ε : D.host.E →+* D.host.E}
     (hε : ∀ a, ε (ε a) = a) {c : D.host.E} (hc : c ≠ 0) (Y : Spc D.host.F D.host.E S.rank) (Y₁ : Spc D.host.F D.host.E S₁.rank)
@@ -287,9 +285,9 @@ theorem isSum_of_split {S S₁ : HSp D} {Λ Λ₁ ι x y} (hs : PlaneSplit S S�
     exact mul_ne_zero (inv_ne_zero hc') hc
 
 /- English proof (translation)
-Use `mul_ne_zero ?_ (inv_ne_zero ?_)` and prove the remaining obligations. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`. Introduce `h`. Conclude with `D.host.ccK_ne_bot ((Ideal.map_eq_bot_iff_of_injective (RingOfIntegers.algebraMap.injective _ _)).1 h)`. Rewrite using `[FractionalIdeal.coeIdeal_ne_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1` using `D.host.𝔟_spec.1`. Rewrite `h1` using `[h, Ideal.bot_mul]`. Conclude with `differentIdeal_ne_bot h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scale_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   refine mul_ne_zero ?_ (inv_ne_zero ?_)
@@ -303,19 +301,19 @@ theorem scale_ne_zero (D : D7) : D.host.AA ≠ 0 := by
     exact differentIdeal_ne_bot h1
 
 /- English proof (translation)
-Take `⟨hr, hι, hxx, hyy, hxy, ho, hlow, hsp⟩` from `hs`. Establish `m : ∀ {S : HSp D} {Λ} (z : S.V), InLat S (GlobalTheory.SkewLat.scLat 𝔞 Λ) z ↔ ∀ c ∈ 𝔞⁻¹, InLat S Λ (c • z)` using `fun z => by`. Simplify using `only [InLat, map_smul]`. Both sides reduce to the same expression. Establish `hyx : S.hD y x = 1` using `by rw [hD_swap, hxy, star_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `l1 : ∀ (s r : D.host.E) u, S.hD (s • x + ι u + r • y) y = s` using `fun s r u => by`. Use `ho u` as an intermediate fact. Simplify using `only [HSpace.hD] at *`. Simplify using `[*]`. Establish `l2 : ∀ (s r : D.host.E) u, S.hD (s • x + ι u + r • y) x = r` using `fun s r u => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `ho u` as an intermediate fact. Simplify using `only [HSpace.hD] at *`. Simplify using `[*]`. Use `⟨hr, hι, hxx, hyy, hxy, ho, fun u => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Simplify using `only [m, hlow, map_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨c₀, hc₀, h0⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger (inv_ne_zero h𝔞)`. Establish `hc : algebraMap (𝓞 D.host.E) D.host.E c₀ ≠ 0` using `RingOfIntegers.coe_ne_zero_iff.2 hc₀`. Use `set c := algebraMap (𝓞 D.host.E) D.host.E c₀`. Take `⟨s, r, u, -, -, -, e⟩` from `hsp _ ((m z).1 hz c h0)`. Establish `ez : z = (c⁻¹ * s) • x + ι (c⁻¹ • u) + (c⁻¹ * r) • y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, mul_smul, mul_smul, ← smul_add, ← smul_add, ← e, inv_smul_smul₀ hc]`. Generalize the expression as in `c⁻¹ * s = s₀, c⁻¹ • u = u₀, c⁻¹ * r = r₀ at ez`. Establish `key : ∀ a ∈ 𝔞⁻¹, InLat S Λ (a • s₀ • x) ∧ InLat S Λ (a • r₀ • y) ∧ InLat S₁ Λ₁ (a • u₀)` using `fun a ha => by`. Take `⟨s', r', u', h1, h2, h3, e'⟩` from `hsp _ ((m z).1 hz a ha)`. Establish `e2 : (a * s₀) • x + ι (a • u₀) + (a * r₀) • y = s' • x + ι u' + r' • y`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e', ez, map_smul, mul_smul, mul_smul, smul_add, smul_add]`. Establish `es : a * s₀ = s'` using `by rw [← l1 (a * s₀) (a * r₀) (a • u₀), e2, l1]`. Establish `er : a * r₀ = r'` using `by rw [← l2 (a * s₀) (a * r₀) (a • u₀), e2, l2]`. Rewrite `e2` using `[es, er, add_left_inj, add_right_inj]`. Rewrite using `[smul_smul, smul_smul, es, er, isomEmb_inj hι e2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨h1, h2, h3⟩`. Conclude with `⟨s₀, r₀, u₀, (m _).2 fun a ha => (key a ha).1, (m _).2 fun a ha => (key a ha).2.1, (m _).2 fun a ha => (key a ha).2.2, ez⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem split_scLat {S S₁ : HSp D} {Λ Λ₁ ι x y} (hs : PlaneSplit S S₁ Λ Λ₁ ι x y)
     {𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 D.host.E)) D.host.E} (h𝔞 : 𝔞 ≠ 0) :
@@ -353,9 +351,9 @@ theorem split_scLat {S S₁ : HSp D} {Λ Λ₁ ι x y} (hs : PlaneSplit S S₁ �
     exact ⟨s₀, r₀, u₀, (m _).2 fun a ha => (key a ha).1, (m _).2 fun a ha => (key a ha).2.1, (m _).2 fun a ha => (key a ha).2.2, ez⟩
 
 /- English proof (translation)
-Take `⟨e, hJ, hL⟩` from `h`. Establish `hσ : ∀ a, D.sp.cm.sig a = star a` using `fun _ => rfl`. Use `⟨fun u v => ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `hJ' : ∀ i j, Y.J i j = c * S.gram i j` using `fun i j => by rw [hJ]; rfl`. Rewrite using `[starRingEnd_apply, ← hD_swap, HSpace.hD, hT_sum]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [form, dotProduct, Matrix.mulVec, crd, hσ, hJ', Finset.mul_sum, starRingEnd_apply, star_star]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[hL]`. Simplify using `only [crd, starRingEnd_apply, star_star]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem overH_crd {c : D.host.E} {S : HSp D} {Λ} {Y : Spc D.host.F D.host.E S.rank} (h : OverH c S Λ Y) :
     (∀ u v, form D.sp.cm.sig Y.J (crd (starRingEnd _) S u) (crd (starRingEnd _) S v) = c * starRingEnd _ (S.hD u v)) ∧
@@ -372,9 +370,9 @@ theorem overH_crd {c : D.host.E} {S : HSp D} {Λ} {Y : Spc D.host.F D.host.E S.r
     rfl
 
 /- English proof (translation)
-Take `⟨e, hJ, hL⟩` from `h`. Establish `hσ : ∀ a, D.sp.cm.sig a = star a` using `fun _ => rfl`. Use `⟨fun u v => ?_, fun z => ?_⟩` and prove the remaining obligations. Establish `hJ' : ∀ i j, Y.J i j = D.host.xi0 * S.gram j i` using `fun i j => by rw [hJ]; rfl`. Rewrite using `[RingHom.id_apply, HSpace.hD, hT_sum, Finset.sum_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [form, dotProduct, Matrix.mulVec, crd, hσ, hJ', Finset.mul_sum, RingHom.id_apply]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`. Rewrite using `[hL]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem overW_crd {S : HSp D} {Λ} {Y : Spc D.host.F D.host.E S.rank} (h : OverW S Λ Y) :
     (∀ u v, form D.sp.cm.sig Y.J (crd (RingHom.id _) S u) (crd (RingHom.id _) S v) = D.host.xi0 * RingHom.id _ (S.hD u v)) ∧
@@ -390,7 +388,7 @@ theorem overW_crd {S : HSp D} {Λ} {Y : Spc D.host.F D.host.E S.rank} (h : OverW
     rfl
 
 /- English proof (translation)
-Take `⟨x', y', ι', h, -⟩` from `isSum_of_split hs (ε := starRingEnd _) star_star hc Y Y₁ (overH_crd o).1 (overH_crd o₁).1 (overH_crd o).2 (overH_crd o₁).2`. Conclude with `h.adapt_herm hB.cm hs.1 hY hY₁ h01 h1n`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem plane_herm {B : Base D.host.F D.host.E} (hB : B.IsGood D.sp.cm.sig) {S S₁ : HSp D} {Λ Λ₁ ι x y}
     (hs : PlaneSplit S S₁ Λ Λ₁ ι x y) {c : D.host.E} (hc : c ≠ 0) {Y : Spc D.host.F D.host.E S.rank}
@@ -402,7 +400,7 @@ theorem plane_herm {B : Base D.host.F D.host.E} (hB : B.IsGood D.sp.cm.sig) {S S
   exact h.adapt_herm hB.cm hs.1 hY hY₁ h01 h1n
 
 /- English proof (translation)
-Take `rfl : S.rank = n` from `o.1`. Take `rfl : S₁.rank = n₁` from `o₁.1`. Take `⟨x', y', ι', h, h'⟩` from `isSum_of_split (split_scLat hs (scale_ne_zero D)) (ε := RingHom.id _) (fun _ => rfl) GlobalTheory.ChiGrid.cmHost_imaginaryGenerator_ne_zero Y Y₁ (overW_crd o).1 (overW_crd o₁).1 (overW_crd o).2 (overW_crd o₁).2`. Conclude with `h.adapt_skew hB.cm hs.1 h' hY hY₁ h01 h1n`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem plane_skew {B : Base D.host.F D.host.E} (hB : B.IsGood D.sp.cm.sig) {S S₁ : HSp D} {Λ Λ₁ ι x y}
     (hs : PlaneSplit S S₁ Λ Λ₁ ι x y) {n n₁ : ℕ} {Y : Spc D.host.F D.host.E n}
@@ -422,7 +420,7 @@ section Cast
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Conclude with `⟨Γ, H, H', R, h1, h2, h3, h4, h5, fun _ _ h => h⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem cast_rank (B : Base F E) {a b n : ℕ} (hn : n = b + 2) (Γ : Geo σ a n) (Γ₁ : Geo σ a b) (H : Plane E n b)
     (H' : Plane E (a + n) (a + b)) (R : RealMaps F a n) (h1 : Γ₁.V = Γ.V) (h2 : Γ₁.p = Γ.p) (h3 : Γ₁.q + 1 = Γ.q)
@@ -435,9 +433,9 @@ theorem cast_rank (B : Base F E) {a b n : ℕ} (hn : n = b + 2) (Γ : Geo σ a n
   exact ⟨Γ, H, H', R, h1, h2, h3, h4, h5, fun _ _ h => h⟩
 
 /- English proof (translation)
-Take `⟨oa, oa', ob, ob', R, Ra, Rb, da, db, m1, m2, k1, k2, hdb, k, hk⟩` from `GlobalTheory.SqStepBig.pair_reG hP hK hM hB g xa xb H g₂`. Use `⟨R, db / lb, k, div_ne_zero hdb hlb, ⟨oa, oa', Ra, m1, ?_⟩, ⟨ob, ob', Rb, m2, ?_⟩⟩` and prove the remaining obligations. Use `k1 using 1` and compare the differences between its conclusion and the goal. Clear the denominators using the available nonvanishing facts. Take the linear combination `-hk`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `k2 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[div_self', Circle.coe_one, mul_one, div_mul_cancel₀ _ hlb]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities.
 -/
 theorem const_pair (hP : GlobalTheory.FunPr.Hypotheses₂) (hK : ThetaIntegralsAgree) (hM : LocalMatching) {B : Base F E} (hB : B.IsGood σ)
     {a a' : ℕ} {Γ : Geo σ a a'} (g : Γ.IsGood B) {Xa Xb : Chars F E} (xa : Xa.IsGood B a a') (xb : Xb.IsGood B a a') {la lb : ℂ}
@@ -462,15 +460,15 @@ end Cast
 open GlobalTheory.SqStepBig in
 
 /- English proof (translation)
-Introduce `hP hK hM`. Use `gbig_of_three GlobalTheory.T.exists_realEmbeddings_sharedBase_towerStage (GlobalTheory.T.tower_stage_fit_factor hP hK hM) GlobalTheory.T.exists_realEmbeddings_sharedBase_towerStage ?_` and prove the remaining obligations. Introduce and unpack `D T Lc sc G μ₀ C x b qb qd - W S hψ hN i j p q A A' WW B' WW₁ X Y lam c e hX hY ⟨hA, ⟨ι, x, y, hs⟩, ι', x', y', hs'⟩ hF hc he t`. Take `⟨emb, hemb⟩` from `qb W hψ i j _ _ A A' WW X hX`. Take `⟨Bs, -, f⟩` from `hemb t`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hn : A'.rank = B'.rank + 2` using `hs.1`. Establish `f₁ : Fit G W i j t μ₀ Bs A.rank B'.rank` using `Fit.down_right (hn ▸ f)`. Take `⟨Γ, o, pΓ, qΓ, g, HX⟩` from `qd W hψ i j _ _ A A' WW X lam t Bs hX hF f`. Take `⟨Γ₁, o₁, pΓ₁, qΓ₁, g₁, HY⟩` from `qd W hψ i j _ _ A B' WW₁ Y c t Bs hY hc f₁`. Take `⟨U, H, hU, hH⟩` from `plane_herm f.2.1 hs (neg_ne_zero.2 one_ne_zero) o.2.1 o₁.2.1 g.hV' g₁.hV' (i₀ := 0) (i₁ := B'.rank + 1) (by omega) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨Z, H', hZ, hH'⟩` from `plane_skew f.2.1 hs' o.2.2 o₁.2.2 g.hW g₁.hW (i₀ := A.rank) (i₁ := A.rank + B'.rank + 1) (by omega) (by omega)`. Establish `eV : reS Γ₁.V Γ.V = reS Γ.V Γ.V` using `reS_congr Γ.V (o.1.eq (hA ▸ o₁.1))`. Establish `hV : (reS Γ.V Γ.V).IsHerm D.sp.cm.sig Bs (A.rank - Γ.p) Γ.p` using `g.hV`. Establish `g₂ : (reG Γ Γ.V U Z).IsGood Bs` using `isGood_reG g hV hU hZ`. Establish `g₃ : (reG Γ₁ Γ.V Γ₁.V' Γ₁.W).IsGood Bs` using `isGood_reG g₁ (by rw [eV, pΓ₁, ← pΓ]; exact hV) g₁.hV' g₁.hW`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨R, d, k, hd, c1, c2⟩` from `const_pair hP hK hM f.2.1 g f.2.2.2.1 f.2.2.2.2.1 (hF.1 μ₀) HX g₂`. Take `⟨R₁, d₁, k₁, hd₁, c3, c4⟩` from `const_pair hP hK hM f.2.1 g₁ f₁.2.2.2.1 f₁.2.2.2.2.1 (hc.1 μ₀) HY g₃`. Take `⟨Γ', K, K', R', e1, e2, e3, e4, e5, e6⟩` from `cast_rank Bs hn (reG Γ Γ.V U Z) (reG Γ₁ Γ.V Γ₁.V' Γ₁.W) H H' R eV (pΓ₁.trans pΓ.symm) (by show Γ₁.q + 1 = Γ.q; rw [qΓ, qΓ₁]) hH hH'`. Use `⟨Bs, B'.rank, Γ', _, K, K', R', R₁, d, d₁, k, k₁, f.1, hn, e1, e2, e3, e4, e5, hd, hd₁, ?_⟩` and prove the remaining obligations. Introduce and unpack `t' (rfl | rfl)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨e6 _ _ c1, c3⟩`. Conclude with `⟨e6 _ _ c2, c4⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem tower_stage_successor_relation : GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching →
   GBig fun {D} T _ _ G μ₀ _ _ _ => ∀ (W : G.Weil) (S : GridChoice W Set.univ), IsStdChar D W.ψ (-1) →

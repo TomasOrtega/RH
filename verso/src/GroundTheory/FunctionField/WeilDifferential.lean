@@ -16,7 +16,7 @@ variable {k K : Type*} [Field k] [Field K] [Algebra k K] [IsFunctionField k K]
 namespace Divisor
 
 /- English proof (translation)
-Introduce `v`. Rewrite using `[Repartition.mul_apply, map_mul, v.valuation_eq_exp_neg_ord hx]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← WithZero.exp_add, Finsupp.coe_sub, Pi.sub_apply, divisor_apply]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -32,19 +32,17 @@ theorem mul_mem_A {x : K} (hx : x ≠ 0) {E : Divisor k K} {a : Repartition k K}
       ring
 
 /- English proof (translation)
-Introduce `a ha`. Set `f : Place k K → K` to `fun v => if E v ≤ D v then a v else 0`. Establish `hf : {v : Place k K | f v ∉ v.ring}.Finite` using `a.finite_not_mem.subset fun v (hv : f v ∉ v.ring) => by show a v ∉ v.ring`. Introduce `h`. Apply `hv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [f]`. Use `split_ifs`. Conclude with `h`. Conclude with `v.ring.zero_mem`. Set `b` to `Repartition.mk f hf`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hb : b ∈ A D`. Introduce `v`. Express the relevant statement in the definitionally equal form `v.valuation (f v) ≤ _`. Simplify using `only [f]`. Use `split_ifs with h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ha v` as an intermediate fact. Rewrite `this` using `[Finsupp.sup_apply, sup_of_le_left h]`. Then use the resulting hypothesis. Rewrite using `[map_zero]`. Conclude with `zero_le`. Establish `hc : a - b ∈ A E`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Rewrite using `[Repartition.sub_apply]`. Express the relevant statement in the definitionally equal form `v.valuation (a v - f v) ≤ _`. Simplify using `only [f]`. Use `split_ifs with h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_self, map_zero]`. Conclude with `zero_le`. Rewrite using `[sub_zero]`. Use `ha v` as an intermediate fact. Rewrite `this` using `[Finsupp.sup_apply, sup_of_le_right (not_le.1 h).le]`. Then use the resulting hypothesis.
-
-Establish `: a = b + (a - b)` using `by abel`. Rewrite using `[this]`. Conclude with `Submodule.add_mem_sup hb hc`.
+A detailed English derivation is pending.
 -/
 theorem A_sup_le (D E : Divisor k K) : A (D ⊔ E) ≤ A D ⊔ A E := by
   classical
@@ -86,9 +84,9 @@ noncomputable def weilSpace (D : Divisor k K) : Submodule k (Module.Dual k (Repa
   (A D ⊔ principal k K).dualAnnihilator
 
 /- English proof (translation)
-Rewrite using `[weilSpace, Submodule.mem_dualAnnihilator]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun a ha => h a (Submodule.mem_sup_left ha), fun x => h _ (Submodule.mem_sup_right (diag_mem_principal x))⟩`. Introduce and unpack `⟨h1, h2⟩ a ha`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `⟨b, hb, c, ⟨x, rfl⟩, rfl⟩` from `Submodule.mem_sup.1 ha`. Rewrite using `[map_add, h1 b hb, h2 x, add_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_weilSpace {D : Divisor k K} {ω : Module.Dual k (Repartition k K)} :
     ω ∈ weilSpace D ↔ (∀ a ∈ A D, ω a = 0) ∧ ∀ x : K, ω (diag x) = 0 := by
@@ -102,13 +100,13 @@ theorem mem_weilSpace {D : Divisor k K} {ω : Module.Dual k (Repartition k K)} :
     rw [map_add, h1 b hb, h2 x, add_zero]
 
 /- English proof (translation)
-The claim follows from `Submodule.dualAnnihilator_anti (sup_le_sup_right (A_mono h) _)`.
+A detailed English derivation is pending.
 -/
 theorem weilSpace_anti {D E : Divisor k K} (h : D ≤ E) : weilSpace E ≤ weilSpace D :=
   Submodule.dualAnnihilator_anti (sup_le_sup_right (A_mono h) _)
 
 /- English proof (translation)
-Rewrite `hD`, `hE`, the goal using `[mem_weilSpace]`. Use `⟨fun a ha => ?_, hD.2⟩` and prove the remaining obligations. Take `⟨b, hb, c, hc, rfl⟩` from `Submodule.mem_sup.1 (A_sup_le D E ha)`. Rewrite using `[map_add, hD.1 b hb, hE.1 c hc, add_zero]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem weilSpace_sup {D E : Divisor k K} {ω : Module.Dual k (Repartition k K)}
     (hD : ω ∈ weilSpace D) (hE : ω ∈ weilSpace E) : ω ∈ weilSpace (D ⊔ E) := by
@@ -121,7 +119,7 @@ instance (D : Divisor k K) : FiniteDimensional k (weilSpace D) :=
   Module.Finite.equiv (Submodule.dualQuotEquivDualAnnihilator (A D ⊔ principal k K))
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `finrank k (A D ⊔ principal k K).dualAnnihilator = _`. Rewrite using `[indexOfSpeciality, ← (Submodule.dualQuotEquivDualAnnihilator (A D ⊔ principal k K)).finrank_eq, Subspace.dual_finrank_eq]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_weilSpace (D : Divisor k K) : finrank k (weilSpace D) = indexOfSpeciality D := by
   change finrank k (A D ⊔ principal k K).dualAnnihilator = _
@@ -130,13 +128,13 @@ theorem finrank_weilSpace (D : Divisor k K) : finrank k (weilSpace D) = indexOfS
     Subspace.dual_finrank_eq]
 
 /- English proof (translation)
-Take `⟨E₀, hE₀⟩` from `exists_eq_genusInt (k := k) (K := K)`. Use `⟨deg E₀ + genusInt k K, fun D hD => ?_⟩` and prove the remaining obligations. Establish `h1` using `le_genusInt (D - E₀)`. Rewrite `h1` using `[map_sub]`. Establish `hpos : 0 < finrank k (L (D - E₀))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (0 : ℤ) < finrank k (L (D - E₀))` using `by linarith`. Conclude with `this` after adjusting the coercions. Take `⟨z, hz⟩` from `finrank_pos_iff_exists_ne_zero.1 hpos`. Establish `hz0 : (z : K) ≠ 0` using `fun h => hz (Subtype.ext h)`. Establish `hzL` using `(mem_L_iff_le hz0).1 z.2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : E₀ ≤ D + divisor (z : K)`. Rewrite using `[← sub_nonneg]`. Use `hzL using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws. Establish `hD'` using `eq_genusInt_of_le hE₀ hle`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hD'` using `[finrank_L_add_divisor D hz0, map_add, deg_divisor, add_zero]`. Establish `hi` using `indexOfSpeciality_eq_genusInt D`. Establish `: (indexOfSpeciality D : ℤ) = 0` using `by linarith`. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_indexOfSpeciality_eq_zero :
     ∃ c : ℤ, ∀ D : Divisor k K, c ≤ deg D → indexOfSpeciality D = 0 := by
@@ -161,11 +159,11 @@ theorem exists_indexOfSpeciality_eq_zero :
   exact_mod_cast this
 
 /- English proof (translation)
-Take `⟨P⟩` from `Place.nonempty (k := k) (K := K)`. Use `set N : ℕ := (2 - genusInt k K).toNat with hN`. Use `⟨-(N • Finsupp.single P 1), ?_⟩` and prove the remaining obligations. Establish `h` using `indexOfSpeciality_eq_genusInt (-(N • Finsupp.single P 1) : Divisor k K)`. Establish `hdeg : deg (-(N • Finsupp.single P 1) : Divisor k K) = -(N * P.deg)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_neg, map_nsmul, deg_single, nsmul_eq_mul, one_mul]`. Establish `hP : (1 : ℤ) ≤ P.deg` using `by exact_mod_cast P.deg_pos`. Establish `hN' : (2 : ℤ) - genusInt k K ≤ N` using `Int.self_le_toNat _`. Establish `hl : (0 : ℤ) ≤ finrank k (L (-(N • Finsupp.single P 1) : Divisor k K))` using `Nat.cast_nonneg _`. Establish `hN0 : (0 : ℤ) ≤ N` using `Nat.cast_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : ℤ) ≤ indexOfSpeciality (-(N • Finsupp.single P 1) : Divisor k K)`. Rewrite using `[h, hdeg]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem exists_indexOfSpeciality_pos : ∃ D : Divisor k K, 0 < indexOfSpeciality D := by
   obtain ⟨P⟩ := Place.nonempty (k := k) (K := K)
@@ -214,7 +212,7 @@ def toDual : WeilDifferential k K →ₗ[k] Module.Dual k (Repartition k K) :=
   (weilDifferentials k K).subtype
 
 /- English proof (translation)
-The claim follows from `Subtype.val_injective`.
+A detailed English derivation is pending.
 -/
 theorem toDual_injective : Function.Injective (toDual (k := k) (K := K)) :=
   Subtype.val_injective
@@ -232,19 +230,19 @@ theorem toDual_mk (ω : Module.Dual k (Repartition k K)) (h : ∃ D : Divisor k 
   rfl
 
 /- English proof (translation)
-The claim follows from `(show weilDifferentials k K from ω).2`.
+A detailed English derivation is pending.
 -/
 theorem exists_mem (ω : WeilDifferential k K) : ∃ D : Divisor k K, toDual ω ∈ weilSpace D :=
   (show weilDifferentials k K from ω).2
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `ω.exists_mem`. Distinguish the cases in `hx : x = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: Repartition.mul (0 : K) = (0 : Repartition k K →ₗ[k] Repartition k K)`. Use extensionality with `a v`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[hx, this, LinearMap.comp_zero]`. Conclude with `zero_mem _`. Use `⟨D + divisor x, ?_⟩` and prove the remaining obligations. Rewrite `hD`, the goal using `[mem_weilSpace]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun a ha => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.comp_apply]`. Apply `hD.1` to reduce the goal to its premises. Use `mul_mem_A hx ha` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply, Repartition.mul_diag]`. Conclude with `hD.2 _`.
+A detailed English derivation is pending.
 -/
 theorem exists_comp_mul_mem (ω : WeilDifferential k K) (x : K) :
     ∃ D : Divisor k K, toDual ω ∘ₗ Repartition.mul x ∈ weilSpace D := by
@@ -278,7 +276,7 @@ theorem toDual_smul_apply (x : K) (ω : WeilDifferential k K) (a : Repartition k
   rfl
 
 /- English proof (translation)
-Use extensionality with `v`. Simplify using `[add_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mul_add_left (x y : K) (a : Repartition k K) :
     Repartition.mul (x + y) a = Repartition.mul x a + Repartition.mul y a := by
@@ -297,7 +295,7 @@ noncomputable instance : Module K (WeilDifferential k K) :=
       rw [Repartition.mul_one'])
 
 /- English proof (translation)
-Apply `toDual_injective` to reduce the goal to its premises. Use extensionality with `a`. Rewrite using `[toDual_smul_apply, map_smul, LinearMap.smul_apply, ← map_smul]`. Use `congr 1`. Use extensionality with `v`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -310,7 +308,7 @@ theorem algebraMap_smul (c : k) (ω : WeilDifferential k K) : algebraMap k K c �
   simp
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, mul_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smul_smul_scalar (c : k) (y : K) (ω : WeilDifferential k K) :
     (c • y) • ω = c • (y • ω) := by
@@ -329,13 +327,13 @@ theorem weilMap_apply (ω : WeilDifferential k K) (y : K) : weilMap ω y = toDua
   rfl
 
 /- English proof (translation)
-Rewrite using `[mem_weilSpace, mem_weilSpace]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun b hb => ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `hb' : Repartition.mul x⁻¹ b ∈ A D`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_mem_A (inv_ne_zero hx) hb` as an intermediate fact. Rewrite `this` using `[divisor_inv, sub_neg_eq_add, sub_add_cancel]`. Then use the resulting hypothesis. Use `h1 _ hb'` as an intermediate fact. Rewrite `this` using `[toDual_smul_apply, ← Repartition.mul_mul, mul_inv_cancel₀ hx, Repartition.mul_one']`. Then use the resulting hypothesis. Use `h2 (x⁻¹ * y)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[toDual_smul_apply, Repartition.mul_diag, ← _root_.mul_assoc, mul_inv_cancel₀ hx, one_mul]`. Then use the resulting hypothesis. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun a ha => ?_, fun y => ?_⟩` and prove the remaining obligations. Rewrite using `[toDual_smul_apply]`. Conclude with `h1 _ (mul_mem_A hx ha)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toDual_smul_apply, Repartition.mul_diag]`. Conclude with `h2 _`.
+A detailed English derivation is pending.
 -/
 theorem smul_mem_weilSpace_iff {x : K} (hx : x ≠ 0) (ω : WeilDifferential k K) (D : Divisor k K) :
     toDual (x • ω) ∈ weilSpace D ↔ toDual ω ∈ weilSpace (D - divisor x) := by
@@ -360,9 +358,9 @@ theorem smul_mem_weilSpace_iff {x : K} (hx : x ≠ 0) (ω : WeilDifferential k K
       exact h2 _
 
 /- English proof (translation)
-Take `⟨D, hD⟩` from `exists_indexOfSpeciality_pos (k := k) (K := K)`. Rewrite `hD` using `[← finrank_weilSpace]`. Establish `hne : weilSpace D ≠ ⊥`. Introduce `h`. Rewrite `hD` using `[h]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at hD`. Take `⟨φ, hφmem, hφ⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Use `⟨mk φ ⟨D, hφmem⟩, fun h => hφ ?_⟩` and prove the remaining obligations. Use `congrArg toDual h` as an intermediate fact. Rewrite `this` using `[toDual_mk, map_zero]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_ne_zero : ∃ ω : WeilDifferential k K, ω ≠ 0 := by
   obtain ⟨D, hD⟩ := exists_indexOfSpeciality_pos (k := k) (K := K)
@@ -381,33 +379,31 @@ noncomputable def toQuotDual (D : Divisor k K) :
   (Submodule.dualQuotEquivDualAnnihilator (A D ⊔ principal k K)).symm
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Take `⟨D₁, hD₁⟩` from `ω₁.exists_mem`. Take `⟨D₂, hD₂⟩` from `ω₂.exists_mem`. Take `⟨P⟩` from `Place.nonempty (k := k) (K := K)`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set s := genusInt k K with hs`. Use `set N : ℕ := (3 * s - deg D₁ - deg D₂).toNat + 1 with hN`. Use `set B : Divisor k K := N • Finsupp.single P 1 with hB`. Establish `hmem : ∀ {ω : WeilDifferential k K} {D : Divisor k K}, toDual ω ∈ weilSpace D → ∀ y ∈ L (B + D), weilMap ω y ∈ weilSpace (-B)`. Introduce `ω D hD y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[weilMap_apply]`. Distinguish the cases in `hy0 : y = 0`. Rewrite using `[hy0, zero_smul, map_zero]`. Conclude with `zero_mem _`. Rewrite using `[smul_mem_weilSpace_iff hy0]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Normalize the expressions using the abelian group laws.
 
-Use `weilSpace_anti ?_ hD` and prove the remaining obligations. Use `(mem_L_iff_le hy0).1 hy` as an intermediate fact. Rewrite using `[← sub_nonneg]`. Use `this using 1` and compare the differences between its conclusion and the goal. Normalize the expressions using the abelian group laws.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Set `Φ₀ : L (B + D₁) × L (B + D₂) →ₗ[k] Module.Dual k (Repartition k K)` to `((weilMap ω₁) ∘ₗ (L (B + D₁)).subtype).coprod ((weilMap ω₂) ∘ₗ (L (B + D₂)).subtype)`. Establish `hΦ₀ : ∀ p, Φ₀ p ∈ weilSpace (-B)` using `fun p => add_mem (hmem hD₁ _ p.1.2) (hmem hD₂ _ p.2.2)`. Establish `hΦ₀inj : Function.Injective Φ₀`. Use `(injective_iff_map_eq_zero Φ₀).2 ?_` and prove the remaining obligations. Introduce and unpack `⟨⟨y, hy⟩, ⟨z, hz⟩⟩ hp`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hsum : y • ω₁ + z • ω₂ = 0`. Apply `toDual_injective` to reduce the goal to its premises. Rewrite using `[map_add, map_zero]`. Conclude with `hp`. Distinguish the cases in `hz0 : z = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Both sides reduce to the same expression. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Substitute `hz0` using the available equality. Rewrite `hsum` using `[zero_smul, add_zero, smul_eq_zero]`. Break down `hsum with rfl | h` into its components or cases. Both sides reduce to the same expression. Conclude with `absurd h h₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-It suffices to derive a contradiction. Apply `hcon (-(y / z))` to reduce the goal to its premises. Establish `h' : z • ω₂ = -(y • ω₁)` using `eq_neg_of_add_eq_zero_right hsum`. Establish `e : (-(y / z)) • ω₁ = z⁻¹ • (z • ω₂)`. Rewrite using `[h', smul_neg, smul_smul, neg_smul, div_eq_inv_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[e, smul_smul, inv_mul_cancel₀ hz0, one_smul]`. Set `Φ` to `(toQuotDual (-B)).toLinearMap ∘ₗ LinearMap.codRestrict (weilSpace (-B)) Φ₀ hΦ₀`. Establish `hΦ : Function.Injective Φ` using `(toQuotDual (-B)).injective.comp fun p q h => hΦ₀inj (congrArg Subtype.val h)`. Establish `hfin` using `LinearMap.finrank_le_finrank_of_injective hΦ`. Rewrite `hfin` using `[Module.finrank_prod, Subspace.dual_finrank_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ ≤ indexOfSpeciality (-B) at hfin`. Establish `hi` using `indexOfSpeciality_eq_genusInt (-B)`. Establish `hP : (1 : ℤ) ≤ P.deg` using `by exact_mod_cast P.deg_pos`. Establish `hdegB : deg B = N * P.deg` using `by rw [hB, map_nsmul, deg_single, nsmul_eq_mul, one_mul]`. Establish `hNb : 3 * s - deg D₁ - deg D₂ + 1 ≤ (N : ℤ)`.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Int.self_le_toNat (3 * s - deg D₁ - deg D₂)` as an intermediate fact. Rewrite using `[hN]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hN0 : (0 : ℤ) ≤ N` using `Nat.cast_nonneg _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hBN : (N : ℤ) ≤ deg B` using `by rw [hdegB]; nlinarith`. Establish `hl0 : finrank k (L (-B)) = 0`. Rewrite using `[L_eq_bot_of_deg_neg (by rw [map_neg]; linarith)]`. Simplify using the standard rewrite rules. Establish `h1` using `le_genusInt (B + D₁)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h2` using `le_genusInt (B + D₂)`. Rewrite `h1`, `h2` using `[map_add]`. Rewrite `hi` using `[hl0, map_neg]`. Establish `: ((finrank k (L (B + D₁)) + finrank k (L (B + D₂)) : ℕ) : ℤ) ≤ indexOfSpeciality (-B)` using `by exact_mod_cast hfin`. Move the coercions through the operations in `at this hi`.
-
-Rewrite `h1`, `h2`, `hi` using `[← hs]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem exists_smul_eq {ω₁ : WeilDifferential k K} (h₁ : ω₁ ≠ 0) (ω₂ : WeilDifferential k K) :
     ∃ x : K, x • ω₁ = ω₂ := by
@@ -486,9 +482,9 @@ theorem exists_smul_eq {ω₁ : WeilDifferential k K} (h₁ : ω₁ ≠ 0) (ω�
   linarith
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_indexOfSpeciality_eq_zero (k := k) (K := K)`. Use `⟨c, fun D hD => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hle`. Use `push Not at hle`. Establish `h0 : finrank k (Repartition k K ⧸ (A D ⊔ principal k K)) = 0` using `hc D hle`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : Subsingleton (Repartition k K ⧸ (A D ⊔ principal k K))` using `Module.finrank_zero_iff.1 h0`. Establish `h1 : toQuotDual D ⟨toDual ω, hD⟩ = 0` using `LinearMap.ext fun q => by simp [Subsingleton.elim q 0]`. Establish `h2 : (⟨toDual ω, hD⟩ : weilSpace D) = 0` using `(toQuotDual D).injective (by rw [h1, map_zero])`. Conclude with `hω (toDual_injective (by rw [map_zero]; exact congrArg Subtype.val h2))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_deg_lt {ω : WeilDifferential k K} (hω : ω ≠ 0) :
     ∃ c : ℤ, ∀ D : Divisor k K, toDual ω ∈ weilSpace D → deg D < c := by
@@ -506,11 +502,11 @@ theorem exists_deg_lt {ω : WeilDifferential k K} (hω : ω ≠ 0) :
   exact hω (toDual_injective (by rw [map_zero]; exact congrArg Subtype.val h2))
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_deg_lt hω`. Take `⟨D₀, hD₀⟩` from `ω.exists_mem`. Take `⟨n, ⟨W, hW, rfl⟩, hmax⟩` from `Int.exists_greatest_of_bdd (P := fun n => ∃ D, toDual ω ∈ weilSpace D ∧ deg D = n) ⟨c, fun n ⟨D, hD, hn⟩ => hn ▸ (hc D hD).le⟩ ⟨deg D₀, D₀, hD₀, rfl⟩`. Use `⟨W, fun D => ⟨fun hD => ?_, fun h => weilSpace_anti h hW⟩⟩` and prove the remaining obligations. Establish `hsup` using `weilSpace_sup hD hW`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `hmax _ ⟨_, hsup, rfl⟩`. Establish `h2 : 0 ≤ (D ⊔ W) - W` using `sub_nonneg.2 le_sup_right`. Establish `h3 : deg ((D ⊔ W) - W) = 0`. Use `deg_nonneg h2` as an intermediate fact. Rewrite `this`, the goal using `[map_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `eq_zero_of_deg_eq_zero h2 h3`. Establish `: D ⊔ W = W` using `sub_eq_zero.1 h4`. Rewrite using `[← this]`. Conclude with `le_sup_left`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_divisor {ω : WeilDifferential k K} (hω : ω ≠ 0) :
     ∃ W : Divisor k K, ∀ D : Divisor k K, toDual ω ∈ weilSpace D ↔ D ≤ W := by
@@ -539,7 +535,7 @@ noncomputable def divisor (ω : WeilDifferential k K) : Divisor k K :=
   if h : ω = 0 then 0 else Classical.choose (exists_divisor h)
 
 /- English proof (translation)
-Rewrite using `[divisor, dif_neg hω]`. Conclude with `Classical.choose_spec (exists_divisor hω) D`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_weilSpace_iff_le_divisor {ω : WeilDifferential k K} (hω : ω ≠ 0) (D : Divisor k K) :
     toDual ω ∈ weilSpace D ↔ D ≤ ω.divisor := by
@@ -547,7 +543,7 @@ theorem mem_weilSpace_iff_le_divisor {ω : WeilDifferential k K} (hω : ω ≠ 0
   exact Classical.choose_spec (exists_divisor hω) D
 
 /- English proof (translation)
-Distinguish the cases in `hy : y = 0`. Rewrite using `[hy, zero_smul, map_zero]`. Conclude with `⟨fun _ => zero_mem _, fun _ => zero_mem _⟩`. Rewrite using `[smul_mem_weilSpace_iff hy, mem_weilSpace_iff_le_divisor hω, mem_L_iff_le hy, ← sub_nonneg]`. Apply the tactic sequence `constructor <;> intro h <;> convert h using 1 <;> abel`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem smul_mem_weilSpace_iff_mem_L {ω : WeilDifferential k K} (hω : ω ≠ 0) (D : Divisor k K)
     (y : K) : toDual (y • ω) ∈ weilSpace D ↔ y ∈ L (ω.divisor - D) := by

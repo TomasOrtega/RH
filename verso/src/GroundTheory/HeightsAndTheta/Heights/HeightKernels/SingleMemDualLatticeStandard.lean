@@ -11,13 +11,13 @@ open ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.ChartRestriction
 noncomputable section
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite using `[single_one_dotProduct]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨k, rfl⟩` from `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `h : j = k`. Substitute `h` using the available equality. Conclude with `⟨1, by simp⟩`. Conclude with `⟨0, by simp [h]⟩`. Consider the case `zero => exact ⟨0, by simp⟩`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add y z _ _ hy hz`. Take `⟨a, ha⟩` from `hy`. Take `⟨c, hc⟩` from `hz`. Conclude with `⟨a + c, by simp [ha, hc]⟩`. Consider the case `smul a y _ hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨c, hc⟩` from `hy`. Conclude with `⟨a * c, by simp [hc, Algebra.smul_def]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem single_mem_dualLattice_standard (K : Type) [Field K] [NumberField K] {i : ℕ} (j : Fin i) :
     (Pi.single j 1 : Fin i → K) ∈ dualLattice (HermLattice.standard K i) := by
@@ -48,7 +48,7 @@ def dualStdCoordMat (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K
 omit [DecidableEq T] in
 
 /- English proof (translation)
-Establish `h` using `congrArg (fun v : dualLattice (HermLattice.standard K i) => (v : Fin i → K)) (b.sum_repr ⟨Pi.single j 1, single_mem_dualLattice_standard K j⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dualStdCoordMat_sum (b : Module.Basis T ℤ (dualLattice (HermLattice.standard K i))) (j : Fin i) :
     ∑ t, dualStdCoordMat b () j t • (b t : Fin i → K) = Pi.single j 1 := by
@@ -86,12 +86,12 @@ def DualStdMetricPull.Statement : Prop :=
         (fsMulti (PBlk i)).h (linApply (ι₂ := PBlk i) (dualStdCoordMat b) z)
 
 /- English proof (translation)
-The claim follows from `dualStdCoordMat dualBasisStandard`.
+A detailed English derivation is pending.
 -/
 example : ∀ _ : Unit, Fin 1 → Unit → ℤ := dualStdCoordMat dualBasisStandard
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dualBasisStandard, dualEmbMatrix_standard_bijective, _, hP ℚ 1 _ Unit dualBasisStandard dualEmbMatrix_standard_bijective (Rat.castHom ℂ) (fun _ => 1) fun h => one_ne_zero (congrFun h 0)⟩`.
+Supply the required witnesses or components.
 -/
 example (hP : DualPtsOfPlane.Statement) :
     ∃ (b : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)))
@@ -102,7 +102,7 @@ example (hP : DualPtsOfPlane.Statement) :
       fun h => one_ne_zero (congrFun h 0)⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dualBasisStandard, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ _ : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)), 1 ≤ 1 :=
   ⟨dualBasisStandard, le_rfl⟩

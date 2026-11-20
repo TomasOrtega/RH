@@ -11,45 +11,37 @@ open MeasureTheory Set Metric
 noncomputable section
 
 /- English proof (translation)
-Introduce `D V K ψ ν hV hK hKV hψ hν hν0`. Break down `K.eq_empty_or_nonempty with hKe | hKne` into its components or cases. Conclude with `⟨0, fun n _ F _ w hw => by simp [hKe] at hw⟩`. Take `⟨r, hr0, hrV⟩` from `hK.exists_cthickening_subset_open hV hKV`. Use `set S := cthickening r K with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSc : IsCompact S` using `hK.cthickening`. Establish `hSne : S.Nonempty` using `hKne.mono (self_subset_cthickening K)`. Choose the witnesses or unpack the hypotheses as in `⟨M, hM⟩ : ∃ M : ℝ, ∀ x ∈ S, ‖fderiv ℝ (fderiv ℝ ψ) x‖ ≤ M := by`. Establish `h1` using `hψ.fderiv_of_isOpen hV (m := 1) (by norm_num)`. Conclude with `hSc.exists_bound_of_continuousOn ((h1.continuousOn_fderiv_of_isOpen hV le_rfl).mono hrV)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set M' := |M| with hM'`. Take `⟨x₀, hx₀, hmin⟩` from `hSc.exists_isMinOn hSne (hν.mono hrV)`. Use `set ν₀ := ν x₀ with hν₀`. Establish `hν₀pos : 0 < ν₀` using `hν0 x₀ (hrV hx₀)`. Use `set P : ℝ := (Real.pi * r ^ 2) ^ D with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hPpos : 0 < P` using `by positivity`. Establish `hprod : ∏ _j : Fin D, gaussDiscMass 0 r = P`. Rewrite using `[hP, Finset.prod_const, Finset.card_univ, Fintype.card_fin]`. Simplify using `[gaussDiscMass]`. Use `⟨Real.exp (M' * r ^ 2) / (ν₀ * P), fun n hn F hF w hw => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Establish `hnpos : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hsqrt : 0 < Real.sqrt n` using `Real.sqrt_pos.2 hnpos`. Use `set s := r / Real.sqrt n with hs`. Establish `hs2 : (n : ℝ) * s ^ 2 = r ^ 2`. Rewrite using `[hs, div_pow, Real.sq_sqrt hnpos.le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Establish `hsr : s ≤ r`. Rewrite using `[hs]`. Use `div_le_self hr0.le ?_` and prove the remaining obligations. Rewrite using `[Real.one_le_sqrt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hn` after adjusting the coercions. Use `set B := closedBall (0 : Fin D → ℂ) s with hB`. Establish `hzS : ∀ z ∈ B, closedBall w ‖z‖ ⊆ S` using `fun z hz => (closedBall_subset_closedBall ((mem_closedBall_zero_iff.1 hz).trans hsr)).trans (closedBall_subset_cthickening hw r)`. Establish `hwzS : ∀ z ∈ B, w + z ∈ S` using `fun z hz => hzS z hz (by`. Rewrite using `[mem_closedBall, dist_eq_norm, add_sub_cancel_left])`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set ℓ := fderiv ℝ ψ w with hℓ`. Use `set lam : (Fin D → ℂ) →L[ℂ] ℂ := StrongDual.extendRCLike (𝕜 := ℂ) ℓ with hlam`. Establish `hre : ∀ z, (lam z).re = ℓ z` using `fun z => by`. Rewrite using `[hlam, StrongDual.extendRCLike_apply]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set G : (Fin D → ℂ) → ℂ := fun z => F (w + z) * Complex.exp (((-(n : ℝ) / 2 : ℝ) : ℂ) * lam z) with hGdef`. Establish `hG0 : G 0 = F w` using `by simp [hGdef]`. Establish `hGan : AnalyticOnNhd ℂ G B`. Introduce `z hz`. Establish `haff : AnalyticAt ℂ (fun z : Fin D → ℂ => w + z) z` using `analyticAt_const.add analyticAt_id`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `((hF _ (hrV (hwzS z hz))).comp_of_eq haff rfl).mul ((analyticAt_const.mul (lam.analyticAt z)).cexp)`. Establish `hPn` using `PolydiscSubmean.proof D n (fun _ => 0) r G (by omega) hr0 (fun _ => le_rfl) hGan`. Simplify using `only [zero_mul, Finset.sum_const_zero, mul_zero, Real.exp_zero, mul_one] at hPn`. Rewrite `hPn` using `[hG0, hprod]`. Use `set k : ℝ := ν₀ * Real.exp (-(n : ℝ) * ψ w) * Real.exp (-(M' * r ^ 2)) with hk`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hk0 : 0 ≤ k` using `by positivity`. Establish `hpt : ∀ z ∈ B, ENNReal.ofReal (k * ‖G z‖ ^ 2) ≤ ENNReal.ofReal (‖F (w + z)‖ ^ 2 * Real.exp (-(n : ℝ) * ψ (w + z)) * ν (w + z))`. Introduce `z hz`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Establish `hGz : ‖G z‖ ^ 2 = ‖F (w + z)‖ ^ 2 * Real.exp (-(n : ℝ) * ℓ z)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Simplify using `only [hGdef]`. Rewrite using `[norm_mul, Complex.norm_exp, Complex.re_ofReal_mul, hre, mul_pow, sq (Real.exp _), ← Real.exp_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree. Establish `hT` using `ChartTaylorCover.taylor_le hV hψ ((hzS z hz).trans hrV) (fun x hx => (hM x (hzS z hz hx)).trans (le_abs_self M))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hz' : ‖z‖ ≤ s` using `mem_closedBall_zero_iff.1 hz`. Establish `hnz : (n : ℝ) * (M' * ‖z‖ ^ 2) ≤ M' * r ^ 2`. Combine the equalities or inequalities in the displayed calculation. Establish `hexp : Real.exp (-(M' * r ^ 2)) * (Real.exp (-(n : ℝ) * ψ w) * Real.exp (-(n : ℝ) * ℓ z)) ≤ Real.exp (-(n : ℝ) * ψ (w + z))`. Rewrite using `[← Real.exp_add, ← Real.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Real.exp_le_exp.2` to reduce the goal to its premises. Use `mul_le_mul_of_nonneg_left hT hnpos.le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hνz : ν₀ ≤ ν (w + z)` using `isMinOn_iff.1 hmin _ (hwzS z hz)`. Rewrite using `[hGz, hk]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0 : 0 ≤ ‖F (w + z)‖ ^ 2` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Establish `hΦ : MeasurePreserving (fun z : Fin D → ℂ => w + z) volume volume` using `measurePreserving_add_left volume w`. Establish `hemb : MeasurableEmbedding (fun z : Fin D → ℂ => w + z)` using `(Homeomorph.addLeft w).isClosedEmbedding.measurableEmbedding`. Establish `hint : ENNReal.ofReal (∫ z in B, ‖G z‖ ^ 2) ≤ ∫⁻ z in B, ENNReal.ofReal (‖G z‖ ^ 2)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.enorm_eq_ofReal_abs]`. Conclude with `ENNReal.ofReal_le_ofReal (le_abs_self _)`. Use `_ ≤ ∫⁻ z in B, ‖‖G z‖ ^ 2‖ₑ := enorm_integral_le_lintegral_enorm _`. Use `_ = _ := lintegral_congr fun z => Real.enorm_eq_ofReal (by positivity)`.
-
-Establish `hmain : ENNReal.ofReal (k * (‖F w‖ ^ 2 * ((n : ℝ) ^ D)⁻¹ * P)) ≤ ∫⁻ z in V, ENNReal.ofReal (‖F z‖ ^ 2 * Real.exp (-(n : ℝ) * ψ z) * ν z)`. Combine the equalities or inequalities in the displayed calculation. Establish `hC0 : 0 ≤ Real.exp (M' * r ^ 2) / (ν₀ * P) * (n : ℝ) ^ D` using `by positivity`. Establish `heq : Real.exp (M' * r ^ 2) / (ν₀ * P) * (n : ℝ) ^ D * (k * (‖F w‖ ^ 2 * ((n : ℝ) ^ D)⁻¹ * P)) = ‖F w‖ ^ 2 * Real.exp (-(n : ℝ) * ψ w)`. Establish `hnD : (n : ℝ) ^ D ≠ 0` using `by positivity`.
-
-Establish `he : Real.exp (M' * r ^ 2) * Real.exp (-(M' * r ^ 2)) = 1`. Rewrite using `[← Real.exp_add]`. Simplify using the standard rewrite rules. Establish `hνP : ν₀ * P ≠ 0` using `by positivity`. Rewrite using `[hk, div_eq_mul_inv]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[he, mul_inv_cancel₀ hnD, mul_inv_cancel₀ hνP]`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← ENNReal.ofReal_mul hC0, heq]`.
-
-Use `_ ≤ _ := by gcongr`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ChartSupBound.proof : ChartSupBound.Statement := by
   intro D V K ψ ν hV hK hKV hψ hν hν0

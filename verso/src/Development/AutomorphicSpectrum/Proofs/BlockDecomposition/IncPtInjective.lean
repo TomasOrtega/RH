@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.ElOnto
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use `⟨fun {X Y} f => ⟨⟨f.1, ?_⟩, rfl⟩⟩` and prove the remaining obligations. Apply `hu` to reduce the goal to its premises. Conclude with `(NatTrans.naturality_apply u ((testι l).map f.1) X.2).trans f.2`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem elMap_full {P P' : PAlg l ⥤ Type} (u : P ⟶ P') (hu : ∀ A, Function.Injective (u.app A)) : (elMap u).Full := by
   refine ⟨fun {X Y} f => ⟨⟨f.1, ?_⟩, rfl⟩⟩
@@ -18,7 +18,7 @@ theorem elMap_full {P P' : PAlg l ⥤ Type} (u : P ⟶ P') (hu : ∀ A, Function
   exact (NatTrans.naturality_apply u ((testι l).map f.1) X.2).trans f.2
 
 /- English proof (translation)
-Use `⟨fun {X Y} f g h => Subtype.ext ?_⟩` and prove the remaining obligations. Establish `h'` using `congrArg Subtype.val h`. Conclude with `h'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem elMap_faithful {P P' : PAlg l ⥤ Type} (u : P ⟶ P') : (elMap u).Faithful := by
   refine ⟨fun {X Y} f g h => Subtype.ext ?_⟩
@@ -28,7 +28,7 @@ theorem elMap_faithful {P P' : PAlg l ⥤ Type} (u : P ⟶ P') : (elMap u).Faith
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Introduce `a b h`. Establish `h'` using `congrArg Subtype.val h`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem inc_pt_injective {F : Fn O} (κ : O →+* OC l) (V : F.Sub) (A : PAlg l) :
     Function.Injective ((V.inc.pt κ).app A) := by
@@ -39,9 +39,9 @@ theorem inc_pt_injective {F : Fn O} (κ : O →+* OC l) (V : F.Sub) (A : PAlg l)
   exact h'
 
 /- English proof (translation)
-Introduce `l _ O _ F κ d 𝒜 S k n hn`. Use `⟨elMap_full _ (inc_pt_injective κ _), elMap_faithful _, ?_, ?_⟩` and prove the remaining obligations. Introduce `T α hα`. Conclude with `(𝒜.V α).in_map _ (T.2.1.2 α hα)`. Introduce `T hT`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨hs, hj⟩` from `(GlobalTheory.T.period_ring_base_change_from_universal T.1.obj n).2.2.2.2.2.2 k hn`. Use `⟨⟨T.1, ⟨⟨T.2.1, fun α hα => 𝒜.jac α _ _ (CommRingCat.ofHom (uJ k T.1.obj n)) T.2.1 hs hj (hT α hα)⟩, T.2.2⟩⟩, ⟨Iso.refl _⟩⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem onto_subEl : ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] (F : Fn O) (κ : O →+* OC l) {d : ℕ} (𝒜 : F.Atlas d) (S : Set 𝒜.A) (k : Bool) (n : ℕ), n ≠ 0 → Onto (subEl κ (Fn.Sub.inter 𝒜.V S)) fun T => ∀ α ∈ S, (𝒜.V α).In ((gT F κ k n).obj T).y.1.2 := by
   intro l _ O _ F κ d 𝒜 S k n hn

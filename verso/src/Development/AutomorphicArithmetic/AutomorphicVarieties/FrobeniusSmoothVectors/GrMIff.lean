@@ -3,9 +3,9 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Establish `h : ∀ i : ZMod 2, i = 0 ∨ i = 1` using `by decide`. Establish `s0 : sg R 0 = 1` using `pow_zero _`. Establish `s1 : sg R 1 = -1` using `pow_one _`. Establish `e : (0 : ZMod 2) - 1 = 1` using `by decide`. Apply the tactic sequence `rcases h i with rfl | rfl <;> rcases h j with rfl | rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[sub_self, s0, one_mul]`. Rewrite using `[e, s0, one_mul]`. Rewrite using `[sub_zero, s0, mul_one]`. Rewrite using `[sub_self, s0, s1, neg_mul_neg, one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem sg_sub (R : Type) [CommRing R] (i j : ZMod 2) : sg R (i - j) = sg R i * sg R j := by
   have h : ∀ i : ZMod 2, i = 0 ∨ i = 1 := by decide
@@ -19,7 +19,7 @@ private theorem sg_sub (R : Type) [CommRing R] (i j : ZMod 2) : sg R (i - j) = s
   · rw [sub_self, s0, s1, neg_mul_neg, one_mul]
 
 /- English proof (translation)
-Rewrite using `[← sg_sub, sub_self]`. Conclude with `pow_zero _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sg_sq (R : Type) [CommRing R] (i : ZMod 2) : sg R i * sg R i = 1 := by
   rw [← sg_sub, sub_self]
@@ -29,13 +29,13 @@ private def sgM (R : Type) [CommRing R] (α : Fin 3 → ZMod 2) : Matrix (Fin 3)
   Matrix.diagonal fun a => sg R (α a)
 
 /- English proof (translation)
-Simplify using `only [sgM, Matrix.diagonal_mul_diagonal, sg_sq, Matrix.diagonal_one]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sgM_sq (R : Type) [CommRing R] (α : Fin 3 → ZMod 2) : sgM R α * sgM R α = 1 := by
   simp only [sgM, Matrix.diagonal_mul_diagonal, sg_sq, Matrix.diagonal_one]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.ext_iff]`. Use `forall₂_congr fun a b => ?_` and prove the remaining obligations. Rewrite using `[sgM, sgM, Matrix.mul_diagonal, Matrix.diagonal_mul]`. Use `show σ (M a b) = sg R (α a - β b) * M a b ↔ σ (M a b) = _`. Rewrite using `[sg_sub, mul_right_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem grM_iff {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
     (α β : Fin 3 → ZMod 2) (M : Matrix (Fin 3) (Fin 3) R) :
@@ -47,7 +47,7 @@ private theorem grM_iff {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ
   rw [sg_sub, mul_right_comm]
 
 /- English proof (translation)
-Rewrite `h`, `h'`, the goal using `[grM_iff]`. Rewrite using `[map_mul, h, h']`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 private theorem grM_mul {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
     (α β γ : Fin 3 → ZMod 2) (M N : Matrix (Fin 3) (Fin 3) R) (h : GrM σ α β M) (h' : GrM σ β γ N) :
@@ -59,9 +59,9 @@ private theorem grM_mul {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ
     _ = sgM R α * (M * N) * sgM R γ := by rw [sgM_sq, Matrix.mul_one, Matrix.mul_assoc _ M]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[grM_iff]`. Establish `h1 : (σ : R →+* R).mapMatrix (g : Matrix (Fin 3) (Fin 3) R) * (σ : R →+* R).mapMatrix ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) = 1`. Rewrite using `[← map_mul, Units.mul_inv, map_one]`. Establish `h2 : sgM R β * ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) * sgM R α * (σ : R →+* R).mapMatrix (g : Matrix (Fin 3) (Fin 3) R) = 1`. Rewrite using `[h]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `(left_inv_eq_right_inv h2 h1).symm`.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem grM_inv {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
     (α β : Fin 3 → ZMod 2) (g : GL (Fin 3) R) (h : GrM σ α β (g : Matrix (Fin 3) (Fin 3) R)) :
@@ -79,11 +79,9 @@ private theorem grM_inv {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ
   exact (left_inv_eq_right_inv h2 h1).symm
 
 /- English proof (translation)
-Introduce `a b`. Unfold `Jmat`. Use `split_ifs with e`. Establish `: pq a - pq b = 0`. Substitute `e` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Substitute using the available equality. Evaluate the decidable proposition.
 
-Use `revert a`. Evaluate the decidable proposition. Rewrite using `[this]`. Use `show σ 1 = sg R 0 * 1`. Rewrite using `[map_one, mul_one]`.
-
-Conclude with `(pow_zero _).symm`. Conclude with `Submodule.zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem grM_J {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R) :
     GrM σ pq pq (Jmat R 3) := by
@@ -101,7 +99,7 @@ private theorem grM_J {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ :
   · exact Submodule.zero_mem _
 
 /- English proof (translation)
-Introduce `a b`. Establish `e : σ (M b a) = sg R (α b - β a) * M b a` using `h b a`. Use `show σ (M b a) = sg R (β a - α b) * M b a`. Rewrite using `[e, sg_sub, sg_sub, mul_comm (sg R (α b))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem grM_tr {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R)
     (α β : Fin 3 → ZMod 2) (M : Matrix (Fin 3) (Fin 3) R) (h : GrM σ α β M) : GrM σ β α Mᵀ := by
@@ -111,9 +109,9 @@ private theorem grM_tr {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ 
   rw [e, sg_sub, sg_sub, mul_comm (sg R (α b))]
 
 /- English proof (translation)
-Introduce `O R _ _ _ σ`. Use `⟨fun α => ?_, fun α β M N h h' a b => Submodule.sub_mem _ (h a b) (h' a b), grM_mul σ, grM_inv σ, fun e g h => ?_⟩` and prove the remaining obligations. Rewrite using `[grM_iff, map_one, Matrix.mul_one, sgM_sq]`. Break down `Int.units_eq_one_or e with rfl | rfl` into its components or cases. Rewrite using `[sgnAct_one]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[sgnAct_neg_one, theta_val]`. Conclude with `grM_mul σ _ pq _ _ _ (grM_mul σ _ pq _ _ _ (grM_J σ) (grM_tr σ _ _ _ (grM_inv σ _ _ g h))) (grM_J σ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.ep_grm :
     ∀ {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (σ : R →ₐ[O] R), (∀ α, GrM σ α α 1) ∧ (∀ α β M N, GrM σ α β M → GrM σ α β N → GrM σ α β (M - N)) ∧ (∀ α β γ M N, GrM σ α β M → GrM σ β γ N → GrM σ α γ (M * N)) ∧ (∀ α β (g : GL (Fin 3) R), GrM σ α β (g : Matrix (Fin 3) (Fin 3) R) → GrM σ β α ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R)) ∧ ∀ (e : ℤˣ) (g : GL (Fin 3) R), GrM σ pq pq (g : Matrix (Fin 3) (Fin 3) R) → GrM σ pq pq ((sgnAct 3 R e g : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) := by

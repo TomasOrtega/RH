@@ -1,11 +1,11 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `L W _ _ _ f p h q x`. Establish `hpow : ∀ (n : ℕ) (y : p), ((((LinearMap.restrict f h) ^ n) y : p) : W) = (f ^ n) (y : W)`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `succ n ih`. Introduce `y`. Rewrite using `[pow_succ, pow_succ, Module.End.mul_apply, Module.End.mul_apply, ih]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add a b ha hb`. Rewrite using `[map_add, map_add, LinearMap.add_apply, LinearMap.add_apply, Submodule.coe_add, ha, hb]`. Consider the case `monomial n a`. Rewrite using `[Polynomial.aeval_monomial, Polynomial.aeval_monomial, Module.End.mul_apply, Module.End.mul_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply, Submodule.coe_smul, hpow]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.Qh20.hfs_aeval_restrict :
     ∀ {L W : Type} [inst : Field L] [inst_1 : AddCommGroup W]

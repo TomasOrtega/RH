@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SphericalAlmost
 namespace PositivityTheory.jumpWindows
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.StrongMultOne.spherical_almost_everywhere_of_bounded`.
+A detailed English derivation is pending.
 -/
 theorem almost_everywhere_spherical_of_G1 : G1 → AlmostEverywhereSpherical :=
   GlobalTheory.CompanionTheory.StrongMultOne.spherical_almost_everywhere_of_bounded

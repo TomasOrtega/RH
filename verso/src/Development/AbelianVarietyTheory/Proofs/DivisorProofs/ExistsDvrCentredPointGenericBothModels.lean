@@ -13,9 +13,9 @@ namespace GlobalTheory.DvrTrait
 open GlobalTheory.Points
 
 /- English proof (translation)
-Establish `hs : ∀ w, y w ⤳ genericPoint M.Z` using `fun w => (hy w) ▸ specializes_rfl`. Establish `hm : ∀ x : Ω, x ∈ M.O (genericPoint M.Z)` using `fun x => by rw [RatModel.O_genericPoint]; trivial`. Set `β : Ω →+* K` to `(RatModel.valHomOf y _ hs).comp ((RingHom.id Ω).codRestrict (M.O (genericPoint M.Z)).toSubring hm)`. Use `⟨β, ?_⟩` and prove the remaining obligations. Take `⟨U, hU, hz, -⟩` from `exists_isAffineOpen_mem_and_subset (X := M.Z) (x := genericPoint M.Z) (U := ⊤) trivial`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `top_le_preimage_of_specializes hs hz`. Establish `h2 : ⊤ ≤ M.pt ⁻¹ᵁ U` using `M.top_le_preimage_pt ⟨_, hz⟩`. Use `ext_of_valR hU h1 (le_preimage_comp _ _ h2 (le_preimage_top _)) fun f => ?_` and prove the remaining obligations. Conclude with `((valR_spMap_comp β M.pt U h2 f).trans (RatModel.val_valF ((top_le_preimage_iff _ _).1 h1) f)).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_factor_pt {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
     {K : Type} [Field K] (y : Sp K ⟶ M.Z) (hy : ∀ w, y w = genericPoint M.Z) :
@@ -32,17 +32,15 @@ theorem exists_factor_pt {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M
   exact ((valR_spMap_comp β M.pt U h2 f).trans (RatModel.val_valF ((top_le_preimage_iff _ _).1 h1) f)).symm
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ _ Y X M f d hf hd hop z hz`. Take `⟨V, _, _, _, _, ξ, -, hξ, w, hw⟩` from `GlobalTheory.DvrCentre.exists_complete_dvr_centre o Ω M z`. Establish `ef : M.pt ≫ f = X.pt`. Establish `h` using `hf`. Establish `e : spMap (AlgHom.id o Ω).toRingHom = 𝟙 _` using `Spec.map_id _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[RatModel.IsHom, e, Category.id_comp]`. Conclude with `h`. Establish `ed : Y.pt ≫ d = X.pt`. Establish `h` using `hd`. Establish `e : spMap (AlgHom.id o Ω).toRingHom = 𝟙 _` using `Spec.map_id _`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[RatModel.IsHom, e, Category.id_comp]`. Conclude with `h`. Establish `hbot : ξ (⊥ : PrimeSpectrum V) = genericPoint M.Z`. Establish `h2 : (⊥ : PrimeSpectrum V) ⤳ w` using `(PrimeSpectrum.le_iff_specializes _ _).1 bot_le`. Establish `h3` using `h2.map ξ.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h3` using `[hw]`. Conclude with `(h3.antisymm (genericPoint_specializes _)).eq`. Establish `hy : ∀ u, (spMap (algebraMap V (FractionRing V)) ≫ ξ) u = genericPoint M.Z` using `fun u => by`. Use `(Scheme.Hom.comp_apply _ _ _).trans (Eq.trans (congrArg ξ ?_) hbot)` and prove the remaining obligations. Rewrite using `[Subsingleton.elim u (⊥ : PrimeSpectrum (FractionRing V))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `PrimeSpectrum.ext ((RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective V (FractionRing V)))`. Take `⟨κ, hκ⟩` from `exists_factor_pt M _ hy`. Establish `hsp : ∀ u : Sp V, (ξ ≫ f) u ⤳ f z` using `fun u => by`. Rewrite using `[← hξ, Scheme.Hom.comp_apply]`. Conclude with `((IsLocalRing.specializes_closedPoint (R := V) u).map ξ.continuous).map f.continuous`.
-
-Establish `hr : Set.range (ξ ≫ f) ⊆ Set.range d`. Introduce and unpack `_ ⟨u, rfl⟩`. Conclude with `(hsp u).mem_open d.isOpenEmbedding.isOpen_range hz`. Use `⟨V, inferInstance, inferInstance, inferInstance, ξ, IsOpenImmersion.lift d (ξ ≫ f) hr, κ, ⟨_, hξ⟩, hκ, ?_⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono d, Category.assoc, IsOpenImmersion.lift_fac, ← Category.assoc, hκ, Category.assoc, Category.assoc, ef, ed]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_trait : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] (Y X M : RatModel o Ω)
     (f : M.Z ⟶ X.Z) (d : Y.Z ⟶ X.Z), X.IsHom M (AlgHom.id o Ω) f → X.IsHom Y (AlgHom.id o Ω) d → IsOpenImmersion d →

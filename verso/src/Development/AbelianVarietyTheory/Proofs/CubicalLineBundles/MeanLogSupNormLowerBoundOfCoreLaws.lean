@@ -20,7 +20,7 @@ open GlobalTheory GlobalTheory.RunIn
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[Real.log_mul (by positivity) hs.ne', Real.log_mul (by norm_num) (by positivity), Real.log_mul h1.ne' h2.ne']`. Use `Real.log_le_log hs hsd` as an intermediate fact. Establish `h2' : Real.log 2 ≤ 1` using `by have := Real.log_le_sub_one_of_pos (x := 2) (by norm_num); linarith`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem log_two_mul_mul_le {g₁ g₂ s d L : ℝ} (h1 : 0 < g₁) (h2 : 0 < g₂) (hs : 0 < s) (hsd : s ≤ d) (hL : 0 ≤ L)
     (b1 : Real.log g₁ ≤ 9 * L + 1) (b2 : Real.log g₂ ≤ 9 * L + 1) :
@@ -31,31 +31,29 @@ theorem log_two_mul_mul_le {g₁ g₂ s d L : ℝ} (h1 : 0 < g₁) (h2 : 0 < g�
   linarith
 
 /- English proof (translation)
-Take `⟨C0, hC0, hroom⟩` from `GlobalTheory.T.exists_constant_cmEvaluation_fits_room`. Use `⟨C0, hC0, ?_⟩` and prove the remaining obligations. Introduce `D T h hG large₂ hg j w C A hC hA F hF hF0`. Establish `hj : InR D j`. Assume the negation of the conclusion as `hj`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hF0 (cutR_zero T.C hj F)`. Take `⟨hr, hpq, hf, hsd, hd1, hlogd, hwf, hsz⟩` from `GlobalTheory.WtSizes.sizes D T h j hj w`. Establish `hFC : F.1 ∈ T.C j w` using `cutR_le T.C j w F.2`. Establish `hhol : rdU (T.U j T.σ₀) F.1 ∈ holSub (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n)` using `((mem_cusp _ _ _ _ _ F.1).1 hFC).2 T.σ₀ T.good_σ₀`. Establish `hSS` using `Formalism.L2.Pj.abelian₂.holSub_SS siegelSpaceAlgebra_holds (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n) hhol`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : supE (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n) (rdU (T.U j T.σ₀) F.1) ≠ ⊤` using `supE_cusp_ne_top T.good_σ₀ hFC`. Establish `hF1 : F.1 ≠ 0` using `fun h0 => hF0 (Subtype.ext h0)`. Establish `hpos : 0 < supN (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n) (rdU (T.U j T.σ₀) F.1)`. Break down `(ENNReal.toReal_nonneg : 0 ≤ (supE (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n) (rdU (T.U j T.σ₀) F.1)).toReal).lt_or_eq with hlt | heq` into its components or cases. Conclude with `hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `absurd (h.supDef j hj (wtA w) w.n (dom_wtA w) T.σ₀ T.good_σ₀ F.1 hFC heq.symm) hF1`. Take `⟨k, z0, hz0, hlt⟩` from `Formalism.L2.Pj.abelian₂.half_max (T.U j T.σ₀).X (laU (T.U j T.σ₀) (wtA w) w.n) (rdU (T.U j T.σ₀) F.1) hpos hfin`. Establish `hhalf : ∀ x ∈ ((T.U j T.σ₀).X k).dom, ((T.U j T.σ₀).X k).pnorm (laU (T.U j T.σ₀) (wtA w) w.n k) (rdU (T.U j T.σ₀) F.1 k) x ≤ 2 * ((T.U j T.σ₀).X k).pnorm (laU (T.U j T.σ₀) (wtA w) w.n k) (rdU (T.U j T.σ₀) F.1 k) z0` using `fun x hx => (Formalism.L2.Pj.abelian₂.pnorm_le_supN _ _ _ hfin k x hx).trans hlt.le`. Establish `hposz : 0 < ((T.U j T.σ₀).X k).pnorm (laU (T.U j T.σ₀) (wtA w) w.n k) (rdU (T.U j T.σ₀) F.1 k) z0`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Xx, hX, hXg, hΛ⟩` from `GlobalTheory.LatticeData.dataXOfModel_of_gamAt D T hG j h hj T.σ₀ T.good_σ₀ k`. Take `⟨hMk, htr⟩` from `GlobalTheory.TransvModel.transv_model D T h j hj k Xx hX hXg hΛ`. Establish `g0` using `(D.host.g_prime 0).pos`. Establish `g1` using `(D.host.g_prime 1).pos`. Establish `hdpos : 0 < D.host.d` using `lt_of_le_of_lt (Nat.zero_le _) D.host.qd_big.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hN : 0 < Ideal.absNorm D.host.ccK` using `Nat.pos_of_ne_zero fun h0 => D.host.ccK_ne_bot (Ideal.absNorm_eq_zero_iff.1 h0)`. Establish `hM : (0 : ℝ) < ((D.host.g 0 * D.host.g 1 * Ideal.absNorm D.host.ccK * D.host.d : ℕ) : ℝ)`. Conclude with `Nat.mul_pos (Nat.mul_pos (Nat.mul_pos g0 g1) hN) hdpos` after adjusting the coercions. Generalize the expression as in `((D.host.g 0 * D.host.g 1 * Ideal.absNorm D.host.ccK * D.host.d : ℕ) : ℝ) = M at hMk htr hM`. Take `⟨x, lam, hx, hLB, hPx⟩` from `Formalism.L2.Pj.abelian₂.cm_frame_of_eq Xx ((T.U j T.σ₀).X k) hX _ _ z0 M w.size (hSS k) hM (hwf k) w.one_le_size hr (fun v hv hvv b hb hbi => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨γ, hγ, hγ'⟩` from `htr v hv hvv b hb hbi`. Conclude with `⟨γ, hγ, h.chiTriv j hj T.σ₀ T.good_σ₀ _ _ (dom_wtA w) k γ hγ, hγ'⟩) hz0 hhalf hposz`. Establish `hL : 0 ≤ large₂.sc.L` using `Real.rpow_nonneg (by linarith [large₂.sc.one_lt_alt]) _`. Establish `hf1 : 1 ≤ fdeg D.host.E`. Establish `h2` using `finrank_eq_two_mul_half_degree (E := D.host.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `h3 : 0 < Module.finrank ℚ D.host.E` using `Module.finrank_pos`. Establish `h4 : Module.finrank ℚ D.host.E = 2 * fdeg D.host.E` using `by exact_mod_cast h2`. Use linear arithmetic over natural numbers and integers. Establish `hlog : Real.log (M * Xx.k0) ≤ 19 * large₂.sc.L + 3 + Real.log (dE D.host.E)`. Rewrite using `[hMk, Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `log_two_mul_mul_le (by exact_mod_cast g0) (by exact_mod_cast g1) (Real.sqrt_pos.2 (by exact_mod_cast hdpos)) hsd hL (hg 0) (hg 1)`. Take `⟨hLa1, hr'⟩` from `hroom (fdeg D.host.E) D.R.r Xx.p0 (dE D.host.E) large₂.sc.L large₂.logOm M Xx.k0 w.size hf1 hr Xx.p0_le hd1 hL hM Xx.minWeight_pos w.one_le_size hlog`. Establish `hr''` using `hr' _ _ (Nat.cast_nonneg _) (by positivity) hsz C A hC hA`. Take `⟨_, χ, hχ, hOm⟩` from `GlobalTheory.LamT.exists_kronecker_logOm_core D T h large₂`. Establish `hsup : ∀ σ, (recB h).supN j w σ F = supC (T.Q.Xo j) T.Q.c (T.U j) (xiR D) (goodOf T.Q.c σ) (wtA w) w.n F.1` using `fun σ => by`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `cutN T.C T.Ns j w σ F = _`. Unfold `cutN Core.Ns`. Rewrite using `[if_pos hj]`. Establish `hSpos : ∀ σ, 0 < supC (T.Q.Xo j) T.Q.c (T.U j) (xiR D) (goodOf T.Q.c σ) (wtA w) w.n F.1` using `fun σ => by`. Rewrite using `[← hsup]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `lt_of_le_of_ne ((recB h).supN_nonneg j w σ F) fun h0 => hF0 (((recB h).supN_eq_zero j w σ F).1 h0.symm)`. Establish `h5` using `GlobalTheory.T.meanLogSupNorm_lowerBound_cmFrame_nonvanishing D.host.E T.Q.H (T.Q.Dw j) T.Q.l (T.Q.Xo j) T.Q.c D.R.r (T.U j) (xiR D) (h.unf j hj) (h.xiAbs j hj) (by rw [hpq]; exact hr) χ hχ (wtA w) w.n (dom_wtA w) F.1 hFC hF hSpos k ⟨x, hx⟩ Xx hX D.host.AA (AA_ne_zero Formalism.I …`. Establish `h3 : WeightFamilies.meanLogSup (recB h) F = (∑ σ : T.Q.c.F →+* ℂ, Real.log (supC (T.Q.Xo j) T.Q.c (T.U j) (xiR D) (goodOf T.Q.c σ) (wtA w) w.n F.1)) / (Module.finrank ℚ T.Q.c.F : ℝ)`. Rewrite using `[WeightFamilies.meanLogSup, NumberField.Embeddings.card T.Q.c.F ℂ]`. Conclude with `congrArg (· / _) (Finset.sum_congr rfl fun σ _ => congrArg Real.log (hsup σ))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h3]`. Use `le_trans ?_ h5` and prove the remaining obligations. Establish `hf' : Module.finrank ℚ D.host.E / 2 = D.R.f` using `hf`. Rewrite using `[hOm, hf']`. Establish `hP : WeightFamilies.PP0v D large₂ C A = C * ((fdeg D.host.E : ℝ) * D.R.r + large₂.sc.L + Real.log (dE D.host.E) + |large₂.logOm|) ^ A`.
-
-Rewrite using `[WeightFamilies.PP0v, hf, hlogd]`. Rewrite using `[hP]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem lamwAt_of_lawsCore : ∃ C0 : ℝ, 0 < C0 ∧ ∀ (D : D7) (T : Core D) (h : LawsCore T), GamAt T → ∀ (large₂ : SizeData₂ D), (∀ i, Real.log (D.host.g i) ≤ 9 * large₂.sc.L + 1) → ∀ (j : ℕ) (w : WeightFamilies.Wt D j) (C A : ℝ), C0 ≤ C → 2 ≤ A → Formalism.MainNotions.Gaps.EtaleWeightGaps.LAMwAt large₂ (recB h) j w C A := by
   classical

@@ -10,11 +10,11 @@ open Formalism.DivisionValues (vw lw)
 namespace GlobalTheory.FunObj.SqNum.LowVal
 
 /- English proof (translation)
-Use `letI : Algebra K ℂ := σ.toAlgebra`. Use `letI : Algebra (𝓞 K) ℂ := (σ.comp (algebraMap (𝓞 K) K)).toAlgebra`. Use `haveI : IsScalarTower (𝓞 K) K ℂ := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Use `haveI : IsScalarTower ℤ (𝓞 K) ℂ := IsScalarTower.of_algebraMap_eq' (Subsingleton.elim _ _)`. Establish `hβ : IsIntegral K β` using `⟨p, h.1, h.2.2⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `es : (c : K) • β = (c : ℂ) * β`. Rewrite using `[Algebra.smul_def, RingHom.algebraMap_toAlgebra, map_natCast]`. Establish `hγ : IsIntegral (𝓞 K) ((c : K) • β)`. Rewrite using `[es]`. Conclude with `hc.tower_top`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e1` using `IsIntegrallyClosed.minpoly_smul (R := K) hc0 hβ`. Establish `e2` using `minpoly.isIntegrallyClosed_eq_field_fractions' K hγ`. Rewrite `e1` using `[← h.eq_minpoly]`. Use `⟨(minpoly (𝓞 K) ((c : K) • β)).coeff 0, ?_⟩` and prove the remaining obligations. Rewrite using `[RingOfIntegers.coe_eq_algebraMap, ← coeff_map, ← e2, e1, coeff_scaleRoots, Nat.sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_zero_mul_pow_mem {K : Type} [Field K] [NumberField K] {σ : K →+* ℂ} {β : ℂ} {p : K[X]}
     (h : IsMinPol σ β p) {c : ℕ} (hc0 : (c : K) ≠ 0) (hc : IsIntegral ℤ ((c : ℂ) * β)) :
@@ -35,7 +35,7 @@ theorem coeff_zero_mul_pow_mem {K : Type} [Field K] [NumberField K] {σ : K →+
   rw [RingOfIntegers.coe_eq_algebraMap, ← coeff_map, ← e2, e1, coeff_scaleRoots, Nat.sub_zero]
 
 /- English proof (translation)
-Introduce `h`. Take `⟨x, y, e⟩` from `(Nat.isCoprime_iff_coprime.2 hn).map (Int.castRingHom (𝓞 K))`. Use `w.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 ?_)` and prove the remaining obligations. Rewrite using `[← e]`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (by simpa using h)) (Ideal.mul_mem_left _ _ (by simpa using hw))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_not_mem {K : Type} [Field K] [NumberField K] {w : Formalism.PairingDivisionLocalBalance.Pl K} {l n : ℕ} (hn : n.Coprime l)
     (hw : (l : 𝓞 K) ∈ w.asIdeal) : (n : 𝓞 K) ∉ w.asIdeal := by
@@ -46,19 +46,17 @@ theorem natCast_not_mem {K : Type} [Field K] [NumberField K] {w : Formalism.Pair
   exact add_mem (Ideal.mul_mem_left _ _ (by simpa using h)) (Ideal.mul_mem_left _ _ (by simpa using hw))
 
 /- English proof (translation)
-Introduce `K _ _ _ σ β p l N h hl ⟨n, hn, hi⟩ w hw`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hl.one_lt.ne' (Nat.coprime_zero_left l |>.1 hn)`. Establish `hc : IsIntegral ℤ (((n * l ^ N : ℕ) : ℂ) * β)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `hi using 1` and compare the differences between its conclusion and the goal. Use `push_cast`. Rewrite using `[zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree. Establish `hl0 : (l : K) ≠ 0` using `by exact_mod_cast hl.ne_zero`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn0' : (n : K) ≠ 0` using `by exact_mod_cast hn0`. Establish `hc0 : ((n * l ^ N : ℕ) : K) ≠ 0`. Use `push_cast`. Conclude with `mul_ne_zero hn0' (pow_ne_zero _ hl0)`. Take `⟨a, ha⟩` from `coeff_zero_mul_pow_mem h hc0 hc`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : 0 ≤ vw w (p.coeff 0 * ((n * l ^ N : ℕ) : K) ^ p.natDegree)`. Rewrite using `[ha]`. Conclude with `Formalism.DivisionValues.ValuationRepresentative.vw_int_nonneg w a`. Establish `hvn : vw w (n : K) = 0`. Use `Formalism.DivisionValues.ReductionFirst.vw_unit w (n : 𝓞 K) (natCast_not_mem hn hw)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `using this`. Establish `hvl` using `Formalism.PairingDivisionLocalBalance.vw_natCast_nonneg w l`. Distinguish the cases in `hp0 : p.coeff 0 = 0`. Rewrite using `[hp0, Formalism.DivisionValues.ValuationRepresentative.vw_zero]`. Establish `: (0 : ℤ) ≤ ((N * p.natDegree : ℕ) : ℤ)` using `Int.natCast_nonneg _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use the polynomial consequences of the given equalities and inequalities. Rewrite `h1` using `[Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ hp0 (pow_ne_zero _ hc0), Formalism.PairingDivisionLocalBalance.vw_pow w _ hc0]`. Move the coercions through the operations in `at h1`. Rewrite `h1` using `[Formalism.DivisionValues.ValuationRepresentative.vw_mul w _ _ hn0' (pow_ne_zero _ hl0), Formalism.PairingDivisionLocalBalance.vw_pow w _ hl0, hvn]`. Use `push_cast`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem vw_coeff_zero_ge : ∀ (K : Type) [Field K] [NumberField K] [StarRing K] (σ : K →+* ℂ) (β : ℂ) (p : K[X]) (l N : ℕ),
     GlobalTheory.FunObj.SqNum.IsMinPol σ β p → l.Prime → GlobalTheory.CMVal.IntAt l ((l : ℂ) ^ (N : ℤ) * β) →

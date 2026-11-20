@@ -53,9 +53,9 @@ def integrand (ψ : AddChar k Circle) (ν : Measure k) (μ : kˣ →* ℂˣ)
 omit [BorelSpace k] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `H h hh`. Establish `h1 : DoubleCoset.mk (R k n c 1) J h = DoubleCoset.mk (R k n c 1) J 1` using `H ⟨h, rfl, hh⟩`. Take `⟨r, hr, κ, hκ, e⟩` from `(DoubleCoset.eq _ _ _ _).1 h1.symm`. Conclude with `⟨r, hr, κ, hκ, by simpa using e⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `H _ ⟨h, rfl, hh⟩`. Take `⟨r, hr, κ, hκ, e⟩` from `H h hh`. Conclude with `((DoubleCoset.eq _ _ _ _).2 ⟨r, hr, κ, hκ, by simpa using e⟩).symm`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem oneCoset_iff (ψ : AddChar k Circle) (ν : Measure k) (μ : kˣ →* ℂˣ)
     (Φ : Matrix (n ⊕ Fin c) (n' ⊕ Fin (c + 1)) k → ℂ) (J : Subgroup (GL (n ⊕ Fin c) k)) :
@@ -119,7 +119,7 @@ def CollapseWeak : Prop :=
         ∃ κ : ℝ, 0 < κ ∧ CollapsesWith ν μX μG J bas ψ μ lam Φ κ
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ n _ _ c hc ν μX μG hν hX hG J ho hcp bas n' _ _ ψ hψ hψ1 μ lam Φ h1 h2`. Take `⟨κ, hκ, H'⟩` from `H k n c hc ν μX μG hν hX hG J ho hcp bas`. Conclude with `⟨κ, hκ, H' n' ψ hψ hψ1 μ lam Φ h1 h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Collapse.weak (H : Collapse) : CollapseWeak := by
   intro k _ _ _ _ _ _ n _ _ c hc ν μX μG hν hX hG J ho hcp bas n' _ _ ψ hψ hψ1 μ lam Φ h1 h2

@@ -10,13 +10,13 @@ open MvPolynomial
 universe u
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ K _ _ ι _ P d hP a`. Establish `hPprime : P.IsPrime` using `hP.multiProj.isPrime`. Establish `hϖP : (C ϖ : MRing ι O) ∉ P`. Introduce `h`. Establish `hmem : ϖ ∈ P.comap (C : O →+* MRing ι O)` using `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hmem` using `[hP.noTorsion, Ideal.mem_bot]`. Conclude with `hϖ.ne_zero hmem`. Establish `htors : ∀ x, C ϖ * x ∈ P → x ∈ P` using `fun x hx => (hPprime.mem_or_mem hx).resolve_left hϖP`. Establish `hhom : IsMultiHomogIdeal P` using `hP.multiProj.multiHomog`. Establish `hhilb : hilbFn (genFib P) = hilbFn (specialIdeal P)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `m`. Unfold `hilbFn`. Use `split_ifs`. Rewrite using `[h4 O K ι P hhom, h3 O ϖ hϖ K ι P hhom htors]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hg : gNum P a = intNum (IsLocalRing.ResidueField O) (specialIdeal P) a`. Unfold `gNum intNum`. Rewrite using `[hhilb]`. Rewrite using `[hg, h1 (IsLocalRing.ResidueField O) K ι d (specialIdeal P) (h5 O K ι P hhom) (h6 O ϖ hϖ K ι P d hP) a]`. Conclude with `h2 O ϖ hϖ K ι P (fun V => intNum (IsLocalRing.ResidueField O) V a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ConservationOfNumber.proof (h1 : IntNumAssoc.Statement.{u})
     (h2 : SpecialCycleEval.Statement.{u}) (h3 : SpecialPieceRank.Statement.{u})

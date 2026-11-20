@@ -9,13 +9,13 @@ open GlobalTheory.Nef Polynomial
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `k E _ _ _ _ _ hE m n G hG S q c w hc hw hpt`. Take `⟨hcfin, hcsum⟩` from `GlobalTheory.T.functionField_finite_support_sum_order_eq_zero k E hE c hc`. Establish `hcs : (Function.support fun P : Place k E => ord P c).Finite` using `hcfin.subset fun P hP => by`. Introduce `h1`. Apply `hP` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[ord, h1]`. Establish `hjs : ∀ j, (Function.support fun P : Place k E => ordVec P ((G P).mulVec (w j))).Finite` using `fun j => ((GlobalTheory.T.admissibleAdelicMatrixFamily_orders_finite k E hE 2 G hG).2 (w j) (hw j)).1.subset fun P hP => by`. Introduce `h1`. Apply `hP` to reduce the goal to its premises. Use `show ordVec P ((G P).mulVec (w j)) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ordVec, h1]`. Simplify using the standard rewrite rules. Establish `hss : (Function.support fun P : Place k E => ∑ j, ordVec P ((G P).mulVec (w j))).Finite` using `(Set.finite_iUnion fun j => hjs j).subset fun P hP => by`. Take `⟨j, -, hj⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hP`. Conclude with `Set.mem_iUnion.2 ⟨j, hj⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `degLine`. Rewrite using `[finsum_congr hpt, finsum_add_distrib hcs hss, hcsum, zero_add]`. Conclude with `finsum_sum_comm _ _ fun j _ => hjs j`.
+A detailed English derivation is pending.
 -/
 theorem degLine_eq_sum_of_split : ∀ (k E : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field E] [Algebra k E], IsFF k E → ∀ (m n : ℕ) (G : Place k E → Matrix (Fin 2) (Fin 2) E), admitted G → ∀ (S : Place k E → Matrix (Fin n) (Fin n) E) (q : Fin n → E) (c : E) (w : Fin m → Fin 2 → E), c ≠ 0 → (∀ j, w j ≠ 0) → (∀ P, ordVec P ((S P).mulVec q) = ord P c + ∑ j, ordVec P ((G P).mulVec (w j))) → degLine S q = ∑ j, degLine G (w j) := by
   intro k E _ _ _ _ _ hE m n G hG S q c w hc hw hpt

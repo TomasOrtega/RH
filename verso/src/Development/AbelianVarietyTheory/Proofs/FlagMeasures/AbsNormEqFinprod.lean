@@ -16,35 +16,33 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 variable {p : HeightOneSpectrum (𝓞 F)}
 
 /- English proof (translation)
-Rewrite using `[← A.val, (valuation A.Fp).vle_iff_le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_le_iff (A : LocAt F E sig p) (x y : F) :
     valuation A.Fp (A.ιF x) ≤ valuation A.Fp (A.ιF y) ↔ p.valuation F x ≤ p.valuation F y := by
   rw [← A.val, (valuation A.Fp).vle_iff_le]
 
 /- English proof (translation)
-The claim follows from `(Valuation.integer.integers (valuation K)).valuation_unit u`.
+A detailed English derivation is pending.
 -/
 theorem val_unit {K : Type} [Field K] [ValuativeRel K] (u : (𝒪[K])ˣ) :
     valuation K ((u : 𝒪[K]) : K) = 1 :=
   (Valuation.integer.integers (valuation K)).valuation_unit u
 
 /- English proof (translation)
-Use `haveI := A.lf`. Establish `h0 : (ϖ : A.Fp) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Establish `hv0 : valuation A.Fp ϖ ≠ 0` using `by simpa using h0`. Establish `hlt : valuation A.Fp ϖ < 1`. Use `lt_of_le_of_ne ϖ.2 fun h => hϖ.not_isUnit ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `((Valuation.integer.integers (valuation A.Fp)).isUnit_iff_valuation_eq_one).2 h`. Establish `hπ0 : π ≠ 0` using `by rintro rfl; simp at hπ; exact WithZero.exp_ne_zero hπ.symm`. Establish `hπ1 : valuation A.Fp (A.ιF π) < 1`. Establish `: ¬ valuation A.Fp (A.ιF 1) ≤ valuation A.Fp (A.ιF π)`. Rewrite using `[val_le_iff, hπ, map_one, not_le, ← WithZero.exp_zero, WithZero.exp_lt_exp]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Simplify to obtain the desired conclusion from the available facts.
 
-Evaluate the numerical expressions. Simplify using `using this`. Apply `le_antisymm` to reduce the goal to its premises. Take `⟨k, u, hk⟩` from `GlobalTheory.UnramVal.exists_eq_zpow_mul_unit hϖ ((map_ne_zero A.ιF).2 hπ0)`. Rewrite `hπ1`, the goal using `[hk, map_mul, val_unit, mul_one, map_zpow₀]`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hk1 : 0 < k` using `(zpow_lt_one_iff_right_of_lt_one₀ (zero_lt_iff.2 hv0) hlt).1 hπ1`. Combine the equalities or inequalities in the displayed calculation. Establish `hn : {z : A.Fp | valuation A.Fp z = valuation A.Fp ϖ} ∈ nhds (ϖ : A.Fp)`. Rewrite using `[IsValuativeTopology.mem_nhds_iff]`. Use `⟨Units.mk0 _ hv0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `_ ⟨z, hz, rfl⟩`. Conclude with `(valuation A.Fp).map_add_eq_of_lt_left hz`. Take `⟨y, hy⟩` from `A.dense.mem_nhds hn`. Establish `hy : valuation A.Fp (A.ιF y) = valuation A.Fp ϖ` using `hy`. Rewrite using `[← hy, val_le_iff, hπ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1 : ¬ p.valuation F 1 ≤ p.valuation F y`. Rewrite using `[← val_le_iff A, hy, map_one, map_one, not_le]`. Conclude with `hlt`. Rewrite `h1` using `[map_one, not_le]`. Distinguish the cases in `hz : p.valuation F y = 0`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `zero_le`. Rewrite `h1`, the goal using `[← WithZero.exp_log hz]`. Rewrite `h1` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
-
-Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem val_unif (A : LocAt F E sig p) {ϖ : 𝒪[A.Fp]} (hϖ : Irreducible ϖ) {π : F}
     (hπ : p.valuation F π = WithZero.exp (-1)) :
@@ -84,7 +82,7 @@ theorem val_unif (A : LocAt F E sig p) {ϖ : 𝒪[A.Fp]} (hϖ : Irreducible ϖ) 
       rw [WithZero.exp_le_exp]; omega
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `p.valuation_exists_uniformizer F`. Rewrite using `[← val_unif A hϖ hπ, ← map_pow, ← map_pow, val_le_iff, map_pow, hπ, ← WithZero.exp_nsmul, ← HeightOneSpectrum.intValuation_le_pow_iff_mem, ← HeightOneSpectrum.valuation_of_algebraMap (K := F)]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_pow_iff (A : LocAt F E sig p) {ϖ : 𝒪[A.Fp]} (hϖ : Irreducible ϖ) (x : 𝓞 F) (n : ℕ) :
     x ∈ p.asIdeal ^ n ↔ valuation A.Fp (A.ιF x) ≤ valuation A.Fp ϖ ^ n := by
@@ -94,7 +92,7 @@ theorem mem_pow_iff (A : LocAt F E sig p) {ϖ : 𝒪[A.Fp]} (hϖ : Irreducible �
   simp
 
 /- English proof (translation)
-Rewrite using `[← Associates.prime_pow_dvd_iff_le (Associates.mk_ne_zero.2 hI) p.associates_irreducible, ← Associates.mk_pow, Associates.mk_le_mk_iff_dvd, Ideal.dvd_iff_le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem le_pow_iff (I : Ideal (𝓞 F)) (hI : I ≠ 0) (n : ℕ) :
     I ≤ p.asIdeal ^ n ↔ n ≤ (Associates.mk p.asIdeal).count (Associates.mk I).factors := by
@@ -102,7 +100,7 @@ theorem le_pow_iff (I : Ideal (𝓞 F)) (hI : I ≠ 0) (n : ℕ) :
     ← Associates.mk_pow, Associates.mk_le_mk_iff_dvd, Ideal.dvd_iff_le]
 
 /- English proof (translation)
-Establish `h0 : (ϖ : K) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Use `⟨zero_lt_iff.2 (by simpa using h0), lt_of_le_of_ne ϖ.2 fun h => hϖ.not_isUnit ?_⟩` and prove the remaining obligations. Conclude with `((Valuation.integer.integers (valuation K)).isUnit_iff_valuation_eq_one).2 h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem val_lt_one {K : Type} [Field K] [ValuativeRel K] {ϖ : 𝒪[K]} (hϖ : Irreducible ϖ) :
     0 < valuation K ϖ ∧ valuation K ϖ < 1 := by
@@ -111,11 +109,11 @@ theorem val_lt_one {K : Type} [Field K] [ValuativeRel K] {ϖ : 𝒪[K]} (hϖ : I
   exact ((Valuation.integer.integers (valuation K)).isUnit_iff_valuation_eq_one).2 h
 
 /- English proof (translation)
-Establish `hun : IsUnit (algebraMap A.Fp A.Ep c)` using `(IsUnit.mk0 _ hc).map _`. Establish `hx : algebraMap A.Fp A.Ep x = algebraMap A.Fp A.Ep (x / c) * algebraMap A.Fp A.Ep c`. Rewrite using `[← map_mul, div_mul_cancel₀ _ hc]`. Establish `h1 : valuation A.Fp x ≤ valuation A.Fp c ↔ x / c ∈ 𝒪[A.Fp]`. Rewrite using `[Valuation.mem_integer_iff, map_div₀, div_le_one₀ (zero_lt_iff.2 (by simpa using hc))]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, ← GlobalTheory.UnramOrder.algebraMap_mem_iff L, Submodule.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨o, ho⟩`. Rewrite `ho` using `[hx]`. Establish `: (o : A.Ep) = algebraMap A.Fp A.Ep (x / c)` using `hun.mul_right_cancel ho`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Conclude with `o.2`. Introduce `h`. Conclude with `⟨⟨_, h⟩, hx.symm⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_span_iff (A : LocAt F E sig p) (L : LocE A.Fp A.Ep) {c : A.Fp} (hc : c ≠ 0) (x : A.Fp) :
     algebraMap A.Fp A.Ep x ∈ Submodule.span L.O {algebraMap A.Fp A.Ep c} ↔
@@ -135,13 +133,13 @@ theorem mem_span_iff (A : LocAt F E sig p) (L : LocE A.Fp A.Ep) {c : A.Fp} (hc :
     exact ⟨⟨_, h⟩, hx.symm⟩
 
 /- English proof (translation)
-Use `haveI := A.lf`. Take `⟨h0, h1⟩` from `val_lt_one hϖ`. Establish `hϖ0 : (ϖ : A.Fp) ≠ 0` using `fun h => hϖ.ne_zero (Subtype.ext h)`. Take `⟨k, u, rfl⟩` from `GlobalTheory.UnramVal.exists_eq_zpow_mul_unit hϖ hc`. Rewrite using `[GlobalTheory.UnramVal.vE_zpow_mul_unit L hϖ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : ∀ n : ℕ, n ≤ (Associates.mk p.asIdeal).count (Associates.mk I).factors ↔ (n : ℤ) ≤ k`. Introduce `n`. Rewrite using `[← le_pow_iff I hI]`. Establish `e1 : (n : ℤ) ≤ k ↔ Submodule.span L.O {algebraMap A.Fp A.Ep ((ϖ : A.Fp) ^ k * ((u : 𝒪[A.Fp]) : A.Fp))} ≤ Submodule.span L.O {algebraMap A.Fp A.Ep ((ϖ : A.Fp) ^ n)}`. Rewrite using `[Submodule.span_singleton_le_iff_mem, mem_span_iff A L (pow_ne_zero n hϖ0), map_mul, val_unit, mul_one, map_zpow₀, map_pow, ← zpow_natCast, zpow_le_zpow_iff_right_of_lt_one₀ h0 h1]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, ← h, Submodule.span_le, Set.image_subset_iff]`. Use `forall₂_congr fun x _ => ?_` and prove the remaining obligations. Rewrite using `[mem_pow_iff A hϖ, Set.mem_preimage, A.compat, SetLike.mem_coe, mem_span_iff A L (pow_ne_zero n hϖ0), map_pow]`. Establish `hk : 0 ≤ k` using `by simpa using (key 0).1 (Nat.zero_le _)`. Use `lift k to ℕ using hk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a` using `(key k).2 le_rfl`. Establish `b` using `(key _).1 le_rfl`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem vE_eq_count (A : LocAt F E sig p) (L : LocE A.Fp A.Ep) {ϖ : 𝒪[A.Fp]} (hϖ : Irreducible ϖ)
     (I : Ideal (𝓞 F)) (hI : I ≠ 0) {c : A.Fp} (hc : c ≠ 0)
@@ -172,7 +170,7 @@ theorem vE_eq_count (A : LocAt F E sig p) (L : LocE A.Fp A.Ep) {ϖ : 𝒪[A.Fp]}
   omega
 
 /- English proof (translation)
-Use `map_finprod ((Nat.castRingHom ℝ).toMonoidHom.comp (Ideal.absNorm (S := 𝓞 F)).toMonoidHom) (Ideal.hasFiniteMulSupport hI)` as an intermediate fact. Rewrite `this` using `[Ideal.finprod_heightOneSpectrum_factorization hI]`. Simplify `this.symm` using `[HeightOneSpectrum.maxPowDividing]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem absNorm_eq_finprod (I : Ideal (𝓞 F)) (hI : I ≠ 0) :
     ∏ᶠ p : HeightOneSpectrum (𝓞 F), (Ideal.absNorm p.asIdeal : ℝ) ^
@@ -183,21 +181,21 @@ theorem absNorm_eq_finprod (I : Ideal (𝓞 F)) (hI : I ≠ 0) :
   simpa [HeightOneSpectrum.maxPowDividing] using this.symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ sig A ϖ hϖ`. Establish `hq : ∀ p, resQ (ϖ p) = Ideal.absNorm p.asIdeal` using `fun p => (GlobalTheory.HL.PlacesInt.integers_local A).2.2.2 p _ (hϖ p)`. Use `⟨fun c hc => ?_, fun g hg hu => ?_⟩` and prove the remaining obligations. Establish `hI : differentIdeal ℤ (𝓞 F) ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `absNorm_differentIdeal F (𝓞 F)` as an intermediate fact. Rewrite `this` using `[h, map_zero]`. Conclude with `discr_ne_zero F (Int.natAbs_eq_zero.1 this.symm)`. Use `absNorm_eq_finprod _ hI` as an intermediate fact. Rewrite `this` using `[absNorm_differentIdeal F (𝓞 F), Nat.cast_natAbs, Int.cast_abs]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← this]`. Use `finprod_congr fun p => ?_` and prove the remaining obligations. Rewrite using `[vE_eq_count (A.loc p) (A.L p) (hϖ p) _ hI (c p).ne_zero (hc p), zpow_natCast, hq]`. Establish `hg' : (g : 𝓞 F) ≠ 0` using `Nat.cast_ne_zero.2 hg`. Establish `hI : Ideal.span {(g : 𝓞 F)} ≠ 0` using `by simpa using hg`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `absNorm_eq_finprod _ hI` as an intermediate fact. Rewrite `this` using `[Ideal.absNorm_span_natCast, RingOfIntegers.rank, Nat.cast_pow]`. Rewrite using `[← this]`. Use `finprod_congr fun p => ?_` and prove the remaining obligations. Establish `key` using `le_pow_iff (p := p) _ hI`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ideal.span_singleton_le_iff_mem] at key`. Use `split_ifs with h`. Take `⟨u, hu⟩` from `hu p h`. Take `⟨h0, h1⟩` from `val_lt_one (hϖ p)`. Establish `a` using `(key 1).1 (by simpa using h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `b : ¬ (g : 𝓞 F) ∈ p.asIdeal ^ 2`. Rewrite using `[mem_pow_iff (A.loc p) (hϖ p)]`. Establish `e : (A.loc p).ιF ((g : 𝓞 F) : F) = (g : (A.loc p).Fp)` using `by simp`. Rewrite using `[e, hu, map_mul, val_unit, one_mul, not_le]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `b` using `[key]`. Establish `: (Associates.mk p.asIdeal).count (Associates.mk (Ideal.span {(g : 𝓞 F)})).factors = 1` using `by omega`. Rewrite using `[this, pow_one, hq]`. Establish `b : ¬ (g : 𝓞 F) ∈ p.asIdeal ^ 1` using `by simpa using h`. Rewrite `b` using `[key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (Associates.mk p.asIdeal).count (Associates.mk (Ideal.span {(g : 𝓞 F)})).factors = 0` using `by omega`. Rewrite using `[this, pow_zero]`.
+A detailed English derivation is pending.
 -/
 theorem discr_and_level : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {sig : E →ₐ[F] E} (A : Places F E sig), ∀ ϖ : ∀ p, 𝒪[(A.loc p).Fp], (∀ p, Irreducible (ϖ p)) → (∀ c : ∀ p, ((A.loc p).Fp)ˣ, (∀ p, Submodule.span (A.L p).O ((fun x : 𝓞 F => (A.loc p).ιE (algebraMap F E x)) '' (differentIdeal ℤ (𝓞 F) : Set (𝓞 F))) = Submodule.span (A.L p).O {algebraMap (A.loc p).Fp (A.loc p).Ep (c p)}) → ∏ᶠ p, (resQ (ϖ p) : ℝ) ^ vE (A.L p) (ϖ p) (algebraMap (A.loc p).Fp (A.loc p).Ep (c p)) = |(NumberField.discr F : ℝ)|) ∧ ∀ g : ℕ, g ≠ 0 → (∀ p : HeightOneSpectrum (𝓞 F), (g : 𝓞 F) ∈ p.asIdeal → ∃ u : (𝒪[(A.loc p).Fp])ˣ, (g : (A.loc p).Fp) = ((u : 𝒪[(A.loc p).Fp]) : (A.loc p).Fp) * (ϖ p : (A.loc p).Fp)) → ∏ᶠ p : HeightOneSpectrum (𝓞 F), (if (g : 𝓞 F) ∈ p.asIdeal then (resQ (ϖ p) : ℝ) else 1) = (g : ℝ) ^ Module.finrank ℚ F := by
   intro F E _ _ _ _ _ sig A ϖ hϖ

@@ -22,7 +22,7 @@ open GlobalTheory.LatVal GlobalTheory.LatJet GlobalTheory.LatJet.An
 namespace GlobalTheory.LatJet.An
 
 /- English proof (translation)
-Introduce `hGM _ hHB _ hDR _ hS` and use `have hC : JetCalc := GlobalTheory.T.jet_calculus_statement jetAnalytic_of_steps hC (Chain.jetChain_of_jetCalc hC) (GlobalTheory.T.germ_existence_of_chart (GlobalTheory.T.chart_of_hilbert_blumenthal hHB) (holLift_of_jetCalc hC)) (GlobalTheory.T.coordinate_existence_of_periods hGM …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem jetAnalytic_of_periods :
     GlobalTheory.Published.GaussManinPeriods → GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.HilbertBlumenthal →

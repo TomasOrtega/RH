@@ -13,15 +13,15 @@ namespace GlobalTheory.IsoDescent
 variable {X X' Y Y' : Scheme.{0}}
 
 /- English proof (translation)
-Establish `hinj : ∀ U : Y.Opens, Function.Injective (m.app U).hom`. Introduce `U g g' h`. Use `(hd U ((m.app U).hom g) fun i e => fn_ext fun y hy => ?_).unique rfl h.symm` and prove the remaining obligations. Use `(gs_res (𝟙 Y') y e hy _).trans ((gs_pull (𝟙 Y') (t i) y (m ⁻¹ᵁ U) (e hy) _).trans ((gs_pull (𝟙 Y' ≫ t i) m y U (e hy) _).trans (Eq.trans ?_ (gs_pull (𝟙 Y') m y _ hy _).symm)))` and prove the remaining obligations. Rewrite using `[Category.assoc, ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hunit : ∀ (U : Y.Opens) (a : Γ(Y', m ⁻¹ᵁ U)ˣ), (∀ i (e : m ⁻¹ᵁ U ≤ t i ⁻¹ᵁ (m ⁻¹ᵁ U)), res e (pullU (t i) _ a) = a) → ∃ b : Γ(Y, U)ˣ, pullU m U b = a`. Introduce `U a ha`. Take `⟨g, hg, -⟩` from `hd U a.val fun i e => congrArg Units.val (ha i e)`. Take `⟨g', hg', -⟩` from `hd U (a⁻¹).val fun i e => congrArg Units.val (show res e (pullU (t i) _ a⁻¹) = a⁻¹ by rw [map_inv, map_inv, ha i e])`. Establish `h1 : g * g' = 1` using `hinj U (by rw [map_mul, map_one, hg, hg']; exact a.mul_inv)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `⟨⟨g, g', h1, (mul_comm _ _).trans h1⟩, Units.ext hg⟩`. Establish `hex : ∀ j, ∃ b : Γ(Y, M.U j)ˣ, pullU m _ b = a j`. Introduce `j`. Use `hunit _ _ fun i e => unit_ext fun y hy => ?_` and prove the remaining obligations. Use `(gm_res (𝟙 Y') y e hy _).trans ((gm_pull (𝟙 Y') (t i) y (m ⁻¹ᵁ M.U j) (e hy) _).trans ?_)` and prove the remaining obligations.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.id_comp]`. Conclude with `hinv i y j hy (e hy)`. Use `choose b hb using hex`. Use `⟨⟨b⟩, fun i j => Units.ext (hinj _ (congrArg Units.val (show pullU m _ _ = pullU m _ _ from unit_ext fun y hy => ?_)))⟩` and prove the remaining obligations. Establish `val : ∀ j, y ∈ m ⁻¹ᵁ M.U j → gm (𝟙 Y' ≫ m) y _ (b j) = gm (𝟙 Y') y _ (a j)` using `fun j hj => (gm_pull (𝟙 Y') m y _ hj _).symm.trans (congrArg _ (hb j))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gm_pull (𝟙 Y') m y _ hy _).trans (Eq.trans ?_ (gm_pull (𝟙 Y') m y _ hy _).symm)` and prove the remaining obligations. Use `((gm_res _ y _ hy _).trans (val i hy.1)).trans ((hc y i j hy.1 hy.2).trans (Eq.symm ?_))` and prove the remaining obligations. Conclude with `(map_mul _ _ _).trans (congrArg₂ (· * ·) (by rw [Category.id_comp]) ((gm_res _ y _ hy _).trans (val j hy.2)))`.
+A detailed English derivation is pending.
 -/
 theorem exists_gen_of_invariant (M : LB Y) (m : Y' ⟶ Y) {I : Type} (t : I → (Y' ⟶ Y')) (ht : ∀ i, t i ≫ m = m)
     (hd : ∀ (U : Y.Opens) (f : Γ(Y', m ⁻¹ᵁ U)),
@@ -66,13 +66,11 @@ theorem exists_gen_of_invariant (M : LB Y) (m : Y' ⟶ Y) {I : Type} (t : I → 
 variable {L : LB X} {L' : LB X'} {K K' : Type} [Fintype K] [Fintype K']
 
 /- English proof (translation)
-Establish `l₁ : ∀ p : (K' → L'.ι) × (K → L.ι), m ⁻¹ᵁ (LB.wchart L' φ' p.1 ⊓ LB.wchart L φ p.2) ≤ LB.wchart L' (fun k => m ≫ φ' k) p.1` using `fun p y hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.1 k`. Establish `l₂ : ∀ p : (K' → L'.ι) × (K → L.ι), m ⁻¹ᵁ (LB.wchart L' φ' p.1 ⊓ LB.wchart L φ p.2) ≤ LB.wchart L (fun k => m ≫ φ k) p.2` using `fun p y hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy.2 k`. Establish `v : ∀ (r : Y' ⟶ Y') (y : Y') (p : (K' → L'.ι) × (K → L.ι)), r y ∈ m ⁻¹ᵁ (LB.wchart L' φ' p.1 ⊓ LB.wchart L φ p.2) → gm r y _ (res (l₁ p) (u'.s p.1) * (res (l₂ p) (u.s p.2))⁻¹) = gm r y (LB.wchart L' (fun k => m ≫ φ' k) p.1) (u'.s p.1) * (gm r y (LB.wchart L (fun k => m ≫ φ k) p.2 …` using `fun r y p h => (map_mul _ _ _).trans (congrArg₂ (· * ·) (gm_res r y _ h _) ((map_inv _ _).trans (congrArg (·⁻¹) (gm_res r y _ h _))))`. Use `exists_gen_of_invariant (LB.div (LB.LinComb L' φ' ε') (LB.LinComb L φ ε)) m t ht hd (fun p => res (l₁ p) (u'.s p.1) * (res (l₂ p) (u.s p.2))⁻¹) (fun y p q hp hq => ?_) (fun i y p hp hp' => ?_)` and prove the remaining obligations. Use `(v (𝟙 Y') y p hp).trans (Eq.trans ?_ (congrArg₂ (· * ·) ((gm_div _ _ m y p q ⟨hp, hq⟩).trans (congrArg₂ (fun a b => a * b⁻¹) (gm_linComb L' φ' ε' m y p.1 q.1 hp.1 hq.1) (gm_linComb L φ ε m y p.2 q.2 hp.2 hq.2))) (v (𝟙 Y') y q hq)).symm)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gen_trans hu' (𝟙 Y') y (l₁ p hp) (l₁ q hq), gen_trans hu (𝟙 Y') y (l₂ p hp) (l₂ q hq), mul_inv, mul_mul_mul_comm]`. Simplify using `only [trF, Category.id_comp]`. Use `choose J hJ using fun χ : Y' ⟶ X => exists_chart hL (χ y) choose J' hJ' using fun χ : Y' ⟶ X' => exists_chart hL' (χ y)`. Establish `gJ : Good L y J` using `hJ`. Establish `gJ' : Good L' y J'` using `hJ'`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(v (t i) y p hp').trans (Eq.trans ?_ (v (𝟙 Y') y p hp).symm)` and prove the remaining obligations. Rewrite using `[gen_trans hu' (t i) y (l₁ p hp') (gJ'.mem _ _), gen_trans hu (t i) y (l₂ p hp') (gJ.mem _ _), gen_trans hu' (𝟙 Y') y (l₁ p hp) (gJ'.mem _ _), gen_trans hu (𝟙 Y') y (l₂ p hp) (gJ.mem _ _), mul_inv, mul_inv, mul_mul_mul_comm, mul_mul_mul_comm (trF _ _ (𝟙 Y') _ _ _)]`. Use `congrArg₂ (· * ·) ?_ (hinv i y J J' gJ gJ')` and prove the remaining obligations. Establish `e : ∀ {W : Scheme.{0}} (χ : Y ⟶ W), t i ≫ m ≫ χ = 𝟙 Y' ≫ m ≫ χ` using `fun χ => by`. Rewrite using `[reassoc_of% ht i, Category.id_comp]`.
-
-Conclude with `congrArg₂ (fun a b => a * b⁻¹) (Finset.prod_congr rfl fun k _ => congrArg (fun ψ : Y' ⟶ X' => gm ψ y (L'.U (p.1 k) ⊓ L'.U (J' ψ)) (L'.g (p.1 k) (J' ψ)) ^ ε' k) (e (φ' k))) (Finset.prod_congr rfl fun k _ => congrArg (fun ψ : Y' ⟶ X => gm ψ y (L.U (p.2 k) ⊓ L.U (J ψ)) (L.g (p.2 k) …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lbIso_of_invariant (hL : L.IsLB) (hL' : L'.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X'))
     (ε' : K' → ℤ) (m : Y' ⟶ Y) {I : Type} (t : I → (Y' ⟶ Y')) (ht : ∀ i, t i ≫ m = m)
@@ -120,7 +118,7 @@ theorem lbIso_of_invariant (hL : L.IsLB) (hL' : L'.IsLB) (φ : K → (Y ⟶ X)) 
         (fun ψ : Y' ⟶ X => gm ψ y (L.U (p.2 k) ⊓ L.U (J ψ)) (L.g (p.2 k) (J ψ)) ^ ε k) (e (φ k)))
 
 /- English proof (translation)
-The claim follows from `lbIso_of_invariant hL hL' φ ε φ' ε' (𝟙 Y) (I := PEmpty) PEmpty.elim (fun i => i.elim) (fun _ f _ => ⟨f, rfl, fun _ h => h⟩) _ (DVR.pullGen_isGen _ _ _ u hu (𝟙 Y)) _ (DVR.pullGen_isGen _ _ _ u' hu' (𝟙 Y)) (fun i => i.elim)`.
+A detailed English derivation is pending.
 -/
 theorem lbIso_of_gens (hL : L.IsLB) (hL' : L'.IsLB) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (φ' : K' → (Y ⟶ X'))
     (ε' : K' → ℤ) (u : LB.Gen (LB.LinComb L φ ε)) (hu : u.IsGen) (u' : LB.Gen (LB.LinComb L' φ' ε'))
@@ -168,7 +166,7 @@ def chartPullFlat (L : LB X) (F : X' ⟶ X) (e : ℤ) (ψ : K → (Y ⟶ X')) (�
       simp only [Category.assoc] }
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `H.chartPull (chartPullFlat L F e ψ ε f) (chartPullFlat L' F' e' ψ ε f)`. Conclude with `gen_chartPull (chartPullDiv _ _ f) w hw`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_gen_div_pull {W : Scheme.{0}} (L : LB X) (L' : LB X') (F : W ⟶ X) (F' : W ⟶ X') (e e' : ℤ)
     (ψ : K → (Y ⟶ W)) (ε : K → ℤ) (f : Y' ⟶ Y)

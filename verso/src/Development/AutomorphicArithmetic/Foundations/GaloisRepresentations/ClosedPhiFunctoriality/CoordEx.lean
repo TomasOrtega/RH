@@ -19,9 +19,9 @@ private def coordPair (P : LocPrime l) (L : FinExt l) (a : ℕ) :
       simp [TensorProduct.add_tmul])
 
 /- English proof (translation)
-Introduce `l _ P L a`. Use `⟨TensorProduct.liftAddHom (coordPair P L a) ?_, ?_⟩` and prove the remaining obligations. Introduce `r v b`. Use function extensionality and compare the values at `i`. Simplify using `only [coordPair, AddMonoidHom.mk'_apply, Pi.smul_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[show ((r • v i : ↥L.1) : Om l) = r • ((v i : ↥L.1) : Om l) from rfl]`. Conclude with `TensorProduct.smul_tmul r _ b`. Introduce `v b i`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem coordEx_holds : CoordEx := by
   intro l _ P L a

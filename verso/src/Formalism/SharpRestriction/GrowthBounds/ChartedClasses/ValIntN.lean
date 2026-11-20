@@ -40,7 +40,7 @@ structure AtHyp (Z : AtIn X0 Tw u μ w h Lv) (Gt : GatTies D) (c : LatCmp D) : P
 variable {Gt : GatTies D} {c : LatCmp D} {T : ∀ u : D.what₂.Word, Forms0 D u}
 
 /- English proof (translation)
-Introduce `j hj β` and use `core_of_R hj K A.fl_t A.fill (A.ties j hj β) ok := A.ok twUnit := A.twUnit valIntN := A.valIntN iwF := fun j hj β => iwF_of hj (Z.Fo j hj) (Z.Lc j hj) (Gt.gat_pos u w h) β fin := A.fin card := A.card`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem AtHyp.hyp {Z : AtIn X0 Tw u μ w h Lv} (A : AtHyp Z Gt c) (K : CmpTied D X0 T Gt c) : CmpJHyp c (Z.I Gt) where
   core := fun j hj β => core_of_R hj K A.fl_t A.fill (A.ties j hj β)
@@ -52,7 +52,7 @@ theorem AtHyp.hyp {Z : AtIn X0 Tw u μ w h Lv} (A : AtHyp Z Gt c) (K : CmpTied D
   card := A.card
 
 /- English proof (translation)
-The claim follows from `chX_stepInOf hj (Z.Fo j hj) (Z.Lc j hj) (Gt.gat_pos u w h) (fun β => (A.ties j hj β).sameU) (fun β => (A.ties j hj β).frRat) (A.hypC j hj)`.
+A detailed English derivation is pending.
 -/
 theorem AtHyp.chX {Z : AtIn X0 Tw u μ w h Lv} (A : AtHyp Z Gt c) (j : ℕ) (hj : j + 1 ≤ D.R.m) : ChX (((Z.I Gt).at' j hj).st) :=
   chX_stepInOf hj (Z.Fo j hj) (Z.Lc j hj) (Gt.gat_pos u w h) (fun β => (A.ties j hj β).sameU) (fun β => (A.ties j hj β).frRat)

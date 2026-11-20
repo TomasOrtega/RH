@@ -22,7 +22,7 @@ def FormalDegreeCompactDual : Prop :=
               (((b : ℕ) : ℝ) - ((a : ℕ) : ℝ))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem formalDegreeCompactDual_iff : FormalDegreeCompactDual ↔ GlobalTheory.Mem.Vol.FormalDegreeFormula₂ := Iff.rfl
 

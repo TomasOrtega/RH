@@ -6,27 +6,23 @@ open scoped TensorProduct Classical
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F M _ _ _ _ _ _ π c hadj hc hπ`. Establish `gen : ∀ S : Subring M, (∀ x : F, algebraMap F M x ∈ S) → π ∈ S → ∀ y : M, y ∈ S`. Introduce `S hS hpS y`. Set `A : Subalgebra F M` to `{ S with algebraMap_mem' := hS }`. Establish `hle : Algebra.adjoin F {π} ≤ A` using `Algebra.adjoin_le (Set.singleton_subset_iff.mpr (show π ∈ A from hpS))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `hle` using `[hadj]`. Conclude with `hle (Algebra.mem_top (x := y))`. Establish `hconj : ∀ φ : M →+* ℂ, φ π ≠ 0 ∧ (starRingEnd ℂ) (φ π) = φ ((c : M) / π)`. Introduce `φ`. Establish `hn : Complex.normSq (φ π) = (c : ℝ)` using `by rw [← Complex.sq_norm]; exact hπ φ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : φ π ≠ 0`. Introduce `h0`. Rewrite `hn` using `[h0, map_zero]`. Conclude with `hc (by exact_mod_cast hn.symm)`. Use `⟨hne, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared.
 
-Rewrite using `[map_div₀, map_ratCast, eq_div_iff hne, mul_comm, Complex.mul_conj, hn]`. Use `norm_cast`. Take `⟨φ₀⟩ : Nonempty (M →+* ℂ)` from `inferInstance`. Set `ψ : M →+* ℂ` to `(starRingEnd ℂ).comp φ₀`. Establish `hrange : ∀ y : M, ψ y ∈ φ₀.range`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `gen (Subring.comap ψ φ₀.range) ?_ ?_` and prove the remaining obligations. Introduce `x show ψ (algebraMap F M x) ∈ φ₀.range`. Use `⟨algebraMap F M (IsCMField.complexConj F x), ?_⟩` and prove the remaining obligations. Conclude with `(IsCMField.complexEmbedding_complexConj F (φ₀.comp (algebraMap F M)) x)`. Use `show ψ π ∈ φ₀.range`.
+Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `⟨(c : M) / π, ((hconj φ₀).2).symm⟩`. Set `e : M ≃+* φ₀.range` to `RingEquiv.ofBijective φ₀.rangeRestrict ⟨fun a b h => φ₀.injective (congrArg Subtype.val h), φ₀.rangeRestrict_surjective⟩`. Set `σ : M →+* M` to `e.symm.toRingHom.comp (ψ.codRestrict φ₀.range hrange)`. Establish `hσ0 : ∀ x : M, φ₀ (σ x) = (starRingEnd ℂ) (φ₀ x)`. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : e (σ x) = ψ.codRestrict φ₀.range hrange x` using `by simp [σ]`. Establish `h2 : ((e (σ x) : φ₀.range) : ℂ) = ((ψ.codRestrict φ₀.range hrange x : φ₀.range) : ℂ)` using `congrArg Subtype.val h1`. Conclude with `h2`. Establish `hσF : ∀ x : F, σ (algebraMap F M x) = algebraMap F M (IsCMField.complexConj F x)`. Introduce `x`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `φ₀.injective` to reduce the goal to its premises. Rewrite using `[hσ0]`. Conclude with `(IsCMField.complexEmbedding_complexConj F (φ₀.comp (algebraMap F M)) x).symm`. Establish `hσπ : σ π = (c : M) / π`. Apply `φ₀.injective` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[hσ0]`. Conclude with `(hconj φ₀).2`. Establish `hπ0 : π ≠ 0` using `fun h => (hconj φ₀).1 (by rw [h, map_zero])`. Use `⟨σ, hσF, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hσπ, div_mul_cancel₀ _ hπ0]`.
-
-Introduce `φ`. Use `gen (RingHom.eqLocus (φ.comp σ) ((starRingEnd ℂ).comp φ)) ?_ ?_` as an intermediate fact. Introduce `x`. Conclude with `this x`. Introduce `x show φ (σ (algebraMap F M x)) = (starRingEnd ℂ) (φ (algebraMap F M x))`.
-
-Rewrite using `[hσF]`. Conclude with `IsCMField.complexEmbedding_complexConj F (φ.comp (algebraMap F M)) x`. Use `show φ (σ π) = (starRingEnd ℂ) (φ π)`. Rewrite using `[hσπ]`. Conclude with `((hconj φ).2).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cm_conj_extends_of_adjoin :
     ∀ (F M : Type) [Field F] [NumberField F] [IsCMField F] [Field M] [NumberField M] [Algebra F M]

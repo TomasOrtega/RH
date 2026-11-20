@@ -30,7 +30,7 @@ def cmp (q : GlobalTheory.FinPl.SplitPt D k) (χ : (AE D)ˣ →* Circle) : kˣ �
   (Circle.toUnits.comp χ).comp (GlobalTheory.LocChar.unitsHom (ofSplit q))
 
 /- English proof (translation)
-Introduce `x a ha`. Establish `: GlobalTheory.LocChar.unitsHom (ofSplit q) x = a` using `Units.ext ha.symm`. Simplify using `only [cmp, MonoidHom.comp_apply, this]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem isComp_cmp (q : GlobalTheory.FinPl.SplitPt D k) (χ : (AE D)ˣ →* Circle) : (ofSplit q).IsComp χ (cmp q χ) := by
   intro x a ha
@@ -45,7 +45,7 @@ theorem cmp_apply (q : GlobalTheory.FinPl.SplitPt D k) (χ : (AE D)ˣ →* Circl
     ((cmp q χ x : ℂˣ) : ℂ) = (χ (GlobalTheory.LocChar.unitsHom (ofSplit q) x) : ℂ) := rfl
 
 /- English proof (translation)
-Establish `he1 : q.e * q.e = q.e` using `q.split.1`. Use `show finPart D (q.sec y + (1 - q.e)) ∈ intAE D`. Rewrite using `[(finPart D).map_add, (finPart D).map_sub, (finPart D).map_one]`. Conclude with `add_mem ((q.int_iff _).1 ((Valuation.mem_integer_iff _ _).2 hy.le)) (sub_mem (GlobalTheory.AdIdem.idempotent_mem_intAE D 1 (mul_one 1)) (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← (finPart D).map_mul, he1])))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitsHom_int (q : GlobalTheory.FinPl.SplitPt D k) (y : kˣ) (hy : valuation k (y : k) = 1) :
     finPart D ((GlobalTheory.LocChar.unitsHom (ofSplit q) y : (AE D)ˣ) : AE D) ∈ intAE D := by
@@ -57,13 +57,13 @@ theorem unitsHom_int (q : GlobalTheory.FinPl.SplitPt D k) (y : kˣ) (hy : valuat
       (GlobalTheory.AdIdem.idempotent_mem_intAE D _ (by rw [← (finPart D).map_mul, he1])))
 
 /- English proof (translation)
-Take `⟨ε, hε, hsum⟩` from `q.above`. Establish `he1 : q.e * q.e = q.e` using `q.split.1`. Establish `hec : q.e * cA D q.e = 0` using `q.split.2.1`. Establish `hes : q.e * q.sec x = q.sec x`. Use `q.sec_pr (q.sec x)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[q.pr_sec]`. Conclude with `this.symm`. Establish `hz : algebraMap (AF D.host.F) (AE D) ε * (q.sec x - q.e) = q.sec x - q.e`. Rewrite using `[← hsum]`. Take the linear combination `(1 - cA D q.e) * hes - he1 + (q.sec x - 1) * hec`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Take `⟨hi, hf⟩` from `(GlobalTheory.VacStabFixed.supp_iff hε _).1 hz`. Establish `hU : ((GlobalTheory.LocChar.unitsHom (ofSplit q) x : (AE D)ˣ) : AE D) = 1 + (q.sec x - q.e)` using `by show q.sec x + (1 - q.e) = _`. Expand and normalize the polynomial expressions, which then agree. Use `h _ ?_ (fun w hw => ?_) (unitsHom_int q x hx) ?_` and prove the remaining obligations. Rewrite using `[hU, (infPart D).map_add, (infPart D).map_one, hi, add_zero]`.
+Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hU, (finPart D).map_add, (finPart D).map_one, RingHom.map_add, RingHom.map_one, hf w hw, add_zero]`. Rewrite using `[← map_inv]`. Conclude with `unitsHom_int q x⁻¹ (by rw [Units.val_inv_eq_inv_val, map_inv₀, hx, inv_one])`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_trivial (q : GlobalTheory.FinPl.SplitPt D k) {χ : (AE D)ˣ →* Circle}
     (h : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D χ q.v) (x : kˣ) (hx : valuation k (x : k) = 1) :
@@ -89,7 +89,7 @@ theorem unit_trivial (q : GlobalTheory.FinPl.SplitPt D k) {χ : (AE D)ˣ →* Ci
     exact unitsHom_int q x⁻¹ (by rw [Units.val_inv_eq_inv_val, map_inv₀, hx, inv_one])
 
 /- English proof (translation)
-Establish `e : (x : k) = ((x : k) - 1) + 1` using `by ring`. Rewrite using `[e, Valuation.map_add_eq_of_lt_right _ (by rwa [map_one]), map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_eq_one_of_sub (x : kˣ) (hx : valuation k ((x : k) - 1) < 1) : valuation k (x : k) = 1 := by
   have e : (x : k) = ((x : k) - 1) + 1 := by ring
@@ -103,19 +103,17 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} {W : RealPack ex}
 
 /- English proof (translation)
-Introduce `heq`. Establish `hL` using `hP.bot.hyp.2.2.2.1.lev`. Take `⟨k, hk⟩` from `(hL.Pg PP).1 hPg`. Take `⟨⟨q, hq, hcard, -, hne⟩, -⟩` from `hL.Q_pl t P' hQ`. Establish `hmemK : ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (PP.under (𝓞 D.host.K)).asIdeal`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `(pk W).C.P.pb_over k`. Establish `hk' : PP.under (𝓞 D.host.K) = (pk W).C.P.pb k` using `hk`. Rewrite using `[hk']`. Conclude with `h`. Establish `hmemE : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ PP.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : algebraMap (𝓞 D.host.K) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ PP.asIdeal` using `hmemK`. Simplify using `using h2`. Establish `hmemF : ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ (PP.under (𝓞 D.host.F)).asIdeal` using `by show algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ PP.asIdeal`. Simplify using `using hmemE`. Rewrite `hmemF` using `[← heq]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hmemE' : ((D.host.g k : ℕ) : 𝓞 D.host.E) ∈ P'.asIdeal`. Establish `h2 : algebraMap (𝓞 D.host.F) (𝓞 D.host.E) ((D.host.g k : ℕ) : 𝓞 D.host.F) ∈ P'.asIdeal` using `hmemF`. Simplify using `using h2`. Use `haveI : Finite (kP P') := Nat.finite_of_card_ne_zero (by rw [hcard]; exact hq.ne_zero)`. Establish `: P'.asIdeal.IsPrime` using `P'.isPrime`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : Nontrivial (kP P') := inferInstance`. Use `haveI : Fintype (kP P') := Fintype.ofFinite _`. Establish `h0g : ((D.host.g k : ℕ) : kP P') = 0`. Use `(Ideal.Quotient.eq_zero_iff_mem (I := P'.asIdeal)).2 hmemE'` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0q : ((q : ℕ) : kP P') = 0`. Rewrite using `[← hcard, Nat.card_eq_fintype_card]`. Conclude with `Nat.cast_card_eq_zero (kP P')`. Establish `hd1 : ringChar (kP P') ∣ D.host.g k` using `ringChar.dvd h0g`. Establish `hd2 : ringChar (kP P') ∣ q` using `ringChar.dvd h0q`.
-
-Establish `hcop : Nat.Coprime q (D.host.g k)` using `(Nat.coprime_primes hq (D.host.g_prime k)).2 (hne k)`. Establish `h1 : ringChar (kP P') = 1` using `Nat.eq_one_of_dvd_coprimes hcop hd2 hd1`. Conclude with `CharP.ringChar_ne_one h1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem under_ne (hP : PkHyp W) (t : W.P.T) {PP P' : Formalism.L2.DIV.Pl D.host.E} (hPg : PP ∈ (pk W).Pg) (hQ : P' ∈ (pk W).Q t) :
     P'.under (𝓞 D.host.F) ≠ PP.under (𝓞 D.host.F) := by
@@ -153,9 +151,9 @@ theorem under_ne (hP : PkHyp W) (t : W.P.T) {PP P' : Formalism.L2.DIV.Pl D.host.
   exact CharP.ringChar_ne_one h1
 
 /- English proof (translation)
-Establish `hL` using `hP.bot.hyp.2.2.2.1.lev`. Use `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w hw => ?_` and prove the remaining obligations. Use `(GlobalTheory.LFun.unrAt_iff_of_chrEq (hL.xi t) w).2 ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hu`. Break down `(hL.Q_ram t w).1 hu with h | ⟨P', hP', hc⟩` into its components or cases.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `under_ne hP t hPg h hw`. Conclude with `under_ne hP t hPg hP' ((GlobalTheory.LevelPlaces.under_eq_of_isConjPl hc).trans hw)`.
+A detailed English derivation is pending.
 -/
 theorem xi_charUnramAt (hP : PkHyp W) (t : W.P.T) {PP : Formalism.L2.DIV.Pl D.host.E} (hPg : PP ∈ (pk W).Pg) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D ((pk W).toLevCh.xi t) (PP.under (𝓞 D.host.F)) := by
@@ -168,7 +166,7 @@ theorem xi_charUnramAt (hP : PkHyp W) (t : W.P.T) {PP : Formalism.L2.DIV.Pl D.ho
   · exact under_ne hP t hPg hP' ((GlobalTheory.LevelPlaces.under_eq_of_isConjPl hc).trans hw)
 
 /- English proof (translation)
-Establish `hL` using `hP.bot.hyp.2.2.2.1.lev`. Conclude with `GlobalTheory.SeeSaw.LevelTest.charUnramAt_of fun w _ => (GlobalTheory.LFun.unrAt_iff_of_chrEq hL.eta w).2 ((pk W).C.isEta.unr w)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eta_charUnramAt (hP : PkHyp W) (v : HeightOneSpectrum (𝓞 D.host.F)) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (pk W).eta v := by
@@ -178,29 +176,29 @@ theorem eta_charUnramAt (hP : PkHyp W) (v : HeightOneSpectrum (𝓞 D.host.F)) :
 end Pack
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u hP f v hR _ t n G pl hG i`. Establish `hq : (G i).q.v = (pl i).1.under (𝓞 D.host.F)` using `(hG.idem i).2`. Establish `hxi : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D ((pk W).toLevCh.xi t) (G i).q.v` using `hq ▸ xi_charUnramAt hP t (pl i).2`. Establish `heta : GlobalTheory.IndefiniteRowSideFullHecke.UnramifiedCharacter.CharUnramAt D (pk W).eta (G i).q.v` using `eta_charUnramAt hP _`. Set `M : ℕ → (AE D)ˣ →* Circle` to `(pk W).toLevCh.mu t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `μ : ℕ → (G i).kˣ →* ℂˣ` to `fun m => if 1 ≤ m ∧ m ≤ D.R.m then cmp (G i).q ((Lift.chrStep M (pk W).eta m).1⁻¹) else (G i).S.μ m`. Establish `hμ : ∀ m, 1 ≤ m → m ≤ D.R.m → μ m = cmp (G i).q ((Lift.chrStep M (pk W).eta m).1⁻¹)` using `fun m h1 h2 => if_pos ⟨h1, h2⟩`. Establish `hunit : ∀ m (x : (G i).kˣ), valuation (G i).k (x : (G i).k) = 1 → μ m x = (G i).S.μ m x`. Introduce `m x hx`. Distinguish the cases in `hm : 1 ≤ m ∧ m ≤ D.R.m`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hμ m hm.1 hm.2]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[cmp_apply, hG.mu i m hm.1 hm.2 x (GlobalTheory.LocChar.unitsHom (ofSplit (G i).q) x) rfl]`. Establish `hx1` using `unit_trivial (G i).q hxi x hx`. Establish `e : (Lift.chrStep M (pk W).eta m).1 = (Lift.chrStep (pk W).mu0 (pk W).eta m).1 * (pk W).toLevCh.xi t`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Lift.chrStep, M, LevCh.mu, Lift.tup]`. Use `split_ifs`. Conclude with `mul_right_comm _ _ _`. Both sides reduce to the same expression. Rewrite using `[MonoidHom.inv_apply, MonoidHom.inv_apply, e, MonoidHom.mul_apply, hx1, mul_one]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [μ, if_neg hm]`. Establish `htame : ∀ m, GlobalTheory.SplitWeil.IsTame (μ m)`. Introduce `m x hx`. Rewrite using `[hunit m x (val_eq_one_of_sub x hx)]`. Conclude with `(G i).S.tame m x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hm2 : Even D.R.m` using `D.R.m_even`. Use `⟨μ, htame, hunit, fun j ρ h => ?_, fun j σ h => ?_⟩` and prove the remaining obligations. Take `⟨-, -, hV, hW⟩` from `(hR.row t).sBF j ρ h`. Establish `hV' : ((f.t t).sBF j ρ h).χV = M (j + 1) * (pk W).eta⁻¹` using `hV`. Establish `hW' : ((f.t t).sBF j ρ h).χW = M (j + 1)` using `hW`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hodd : Odd (j + 1)`. Take `⟨r, hr⟩` from `hm2`. Conclude with `⟨j / 2, by omega⟩`. Establish `hμj : μ (j + 1) = cmp (G i).q ((M (j + 1) * (pk W).eta⁻¹)⁻¹)`. Rewrite using `[hμ (j + 1) (by omega) (by omega)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Lift.chrStep, if_pos hodd]`. Rewrite using `[hV', hW', hμj]`. Use `⟨isComp_cmp _ _, cmp (G i).q (M (j + 1)), isComp_cmp _ _, fun x hx => ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, cmp_apply, cmp_apply, Units.val_one, ← Circle.coe_mul, ← MonoidHom.mul_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e : M (j + 1) * (M (j + 1) * (pk W).eta⁻¹)⁻¹ = (pk W).eta`. Rewrite using `[_root_.mul_inv_rev, inv_inv, mul_comm, mul_assoc, inv_mul_cancel, mul_one]`. Rewrite using `[e, unit_trivial (G i).q heta x hx, Circle.coe_one]`. Take `⟨-, -, hV, hW⟩` from `(hR.row t).sFB j σ h`. Establish `hV' : ((f.t t).sFB j σ h).χV = M (j + 1 + 1)` using `hV`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hW' : ((f.t t).sFB j σ h).χW = M (j + 1 + 1) * (pk W).eta⁻¹` using `hW`. Establish `heven : ¬ Odd (j + 1 + 1)`. Take `⟨r, hr⟩` from `hm2`. Rewrite using `[Nat.not_odd_iff_even]`. Conclude with `⟨j / 2 + 1, by omega⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hμj : μ (j + 1 + 1) = cmp (G i).q (M (j + 1 + 1))⁻¹`. Rewrite using `[hμ (j + 1 + 1) (by omega) (by omega)]`. Simplify using `only [Lift.chrStep, if_neg heven]`. Rewrite using `[hV', hW', hμj]`. Use `⟨isComp_cmp _ _, cmp (G i).q (M (j + 1 + 1) * (pk W).eta⁻¹), isComp_cmp _ _, fun x hx => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, cmp_apply, cmp_apply, Units.val_one, ← Circle.coe_mul, ← MonoidHom.mul_apply]`. Establish `e : M (j + 1 + 1) * (pk W).eta⁻¹ * (M (j + 1 + 1))⁻¹ = (pk W).eta⁻¹`. Rewrite using `[mul_right_comm, mul_inv_cancel, one_mul]`. Rewrite using `[e, MonoidHom.inv_apply, unit_trivial (G i).q heta x hx, inv_one, Circle.coe_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gLoc_chars : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word), PkHyp W → ∀ (f : FamCh W u) (v : VCom f.c), f.RowOK → VTie f v → ∀ t (n : ℕ) (G : Fin n → GLoc v) pl, GRead f G pl → ∀ i, (G i).Chars (f.t t) := by
   intro D L hT Gi Gl Kc Yd cX ex W u hP f v hR _ t n G pl hG i

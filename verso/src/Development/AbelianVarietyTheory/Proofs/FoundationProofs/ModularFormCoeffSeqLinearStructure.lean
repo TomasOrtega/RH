@@ -7,7 +7,7 @@ open scoped MatrixGroups Real ComplexConjugate Manifold ModularForm
 namespace GlobalTheory.EisM.Lin
 
 /- English proof (translation)
-Rewrite using `[Complex.norm_exp, ← Real.exp_nat_mul]`. Use `congr 1`. Simplify using `[Complex.mul_re, Complex.mul_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem norm_term (n : ℕ) (τ : ℍ) :
     ‖cexp (2 * π * Complex.I * n * τ)‖ = (Real.exp (-2 * π * τ.im)) ^ n := by
@@ -17,13 +17,13 @@ theorem norm_term (n : ℕ) (τ : ℍ) :
   ring
 
 /- English proof (translation)
-Take `⟨C, A, hC⟩` from `ha`. Use `set r := Real.exp (-2 * π * τ.im) with hr`. Establish `r0 : 0 < r` using `Real.exp_pos _`. Establish `r1 : r < 1`. Rewrite using `[hr, Real.exp_lt_one_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `τ.im_pos` as an intermediate fact. Use `Real.pi_pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hs : Summable fun n : ℕ => ((n : ℝ)) ^ A * r ^ n` using `summable_pow_mul_geometric_of_norm_lt_one A (by rw [Real.norm_eq_abs, abs_of_pos r0]; exact r1)`. Establish `hs1 : Summable fun n : ℕ => (((n + 1 : ℕ) : ℝ)) ^ A * r ^ (n + 1)` using `(summable_nat_add_iff 1).mpr hs`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs2 : Summable fun n : ℕ => C * (((n : ℝ) + 1) ^ A * r ^ n)`. Apply `Summable.mul_left` to reduce the goal to its premises. Use `hs1.mul_right r⁻¹` as an intermediate fact. Use `this.congr (fun n => ?_)` and prove the remaining obligations. Use `push_cast`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ]`. Clear the denominators using the available nonvanishing facts. Use `Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => ?_) hs2` and prove the remaining obligations. Rewrite using `[norm_mul, norm_term, ← hr, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right (hC n) (pow_nonneg r0.le _)`.
+Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summ_norm (a : ℕ → ℂ) (ha : PolyB a) (τ : ℍ) :
     Summable fun n : ℕ => ‖a n * cexp (2 * π * Complex.I * n * τ)‖ := by
@@ -51,23 +51,23 @@ theorem summ_norm (a : ℕ → ℂ) (ha : PolyB a) (τ : ℍ) :
   exact mul_le_mul_of_nonneg_right (hC n) (pow_nonneg r0.le _)
 
 /- English proof (translation)
-The claim follows from `(summ_norm a ha τ).of_norm`.
+A detailed English derivation is pending.
 -/
 theorem summ (a : ℕ → ℂ) (ha : PolyB a) (τ : ℍ) :
     Summable fun n : ℕ => a n * cexp (2 * π * Complex.I * n * τ) :=
   (summ_norm a ha τ).of_norm
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, 0, fun n => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem polyB_zero : PolyB (0 : ℕ → ℂ) := ⟨0, 0, fun n => by simp⟩
 
 /- English proof (translation)
-Take `⟨C, A, hC⟩` from `ha`. Take `⟨D, B, hD⟩` from `hb`. Use `⟨|C| + |D|, A + B, fun n => ?_⟩` and prove the remaining obligations. Establish `h1 : (1 : ℝ) ≤ (n : ℝ) + 1` using `by have := n.cast_nonneg (α := ℝ); linarith`. Establish `hA : ((n : ℝ) + 1) ^ A ≤ ((n : ℝ) + 1) ^ (A + B)` using `pow_le_pow_right₀ h1 (by omega)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ((n : ℝ) + 1) ^ B ≤ ((n : ℝ) + 1) ^ (A + B)` using `pow_le_pow_right₀ h1 (by omega)`. Establish `p0 : 0 ≤ ((n : ℝ) + 1) ^ A` using `by positivity`. Establish `p1 : 0 ≤ ((n : ℝ) + 1) ^ B` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Apply `add_le_add` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(mul_le_mul_of_nonneg_right (le_abs_self C) p0).trans (mul_le_mul_of_nonneg_left hA (abs_nonneg C))`. Conclude with `(mul_le_mul_of_nonneg_right (le_abs_self D) p1).trans (mul_le_mul_of_nonneg_left hB (abs_nonneg D))`. Use `_ = (|C| + |D|) * ((n : ℝ) + 1) ^ (A + B) := by ring`.
+A detailed English derivation is pending.
 -/
 theorem polyB_add (a b : ℕ → ℂ) (ha : PolyB a) (hb : PolyB b) : PolyB (a + b) := by
   obtain ⟨C, A, hC⟩ := ha
@@ -89,7 +89,7 @@ theorem polyB_add (a b : ℕ → ℂ) (ha : PolyB a) (hb : PolyB b) : PolyB (a +
     _ = (|C| + |D|) * ((n : ℝ) + 1) ^ (A + B) := by ring
 
 /- English proof (translation)
-Take `⟨C, A, hC⟩` from `ha`. Use `⟨‖c‖ * C, A, fun n => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, smul_eq_mul, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC n) (norm_nonneg c)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polyB_smul (c : ℂ) (a : ℕ → ℂ) (ha : PolyB a) : PolyB (c • a) := by
   obtain ⟨C, A, hC⟩ := ha
@@ -98,13 +98,13 @@ theorem polyB_smul (c : ℂ) (a : ℕ → ℂ) (ha : PolyB a) : PolyB (c • a) 
   exact mul_le_mul_of_nonneg_left (hC n) (norm_nonneg c)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `[qs]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem qs_zero : qs (0 : ℕ → ℂ) = 0 := by
   funext τ; simp [qs]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `only [qs, Pi.add_apply, add_mul]`. Conclude with `(summ a ha τ).tsum_add (summ b hb τ)`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qs_add (a b : ℕ → ℂ) (ha : PolyB a) (hb : PolyB b) : qs (a + b) = qs a + qs b := by
   funext τ
@@ -112,7 +112,7 @@ theorem qs_add (a b : ℕ → ℂ) (ha : PolyB a) (hb : PolyB b) : qs (a + b) = 
   exact (summ a ha τ).tsum_add (summ b hb τ)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Simplify using `only [qs, Pi.smul_apply, smul_eq_mul, mul_assoc]`. Conclude with `tsum_mul_left`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem qs_smul (c : ℂ) (a : ℕ → ℂ) : qs (c • a) = c • qs a := by
   funext τ
@@ -120,9 +120,9 @@ theorem qs_smul (c : ℂ) (a : ℕ → ℂ) : qs (c • a) = c • qs a := by
   exact tsum_mul_left
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `h`. Establish `hdet : γ 0 0 * γ 1 1 - γ 0 1 * γ 1 0 = 1`. Use `γ.2` as an intermediate fact. Rewrite `this` using `[Matrix.det_fin_two]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨γ 0 0, -(γ 0 1 * m), ?_⟩` and prove the remaining obligations. Rewrite `hdet` using `[hm]`. Take the linear combination `hdet`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem coprime_of_level (L : ℕ) (γ : SL(2, ℤ)) (h : (L : ℤ) ∣ γ 1 0) : IsCoprime (γ 1 1) (L : ℤ) := by
   obtain ⟨m, hm⟩ := h
@@ -138,15 +138,15 @@ end GlobalTheory.EisM.Lin
 
 open GlobalTheory.EisM.Lin in
 /- English proof (translation)
-Introduce `k L χ`. Establish `lev : ∀ L' a, L ∣ L' → MF k L χ a → MF k L' χ a`. Introduce `L' a hL ⟨hp, hi⟩`. Use `⟨hp, fun γ hγ τ => hi γ ?_ τ⟩` and prove the remaining obligations. Conclude with `dvd_trans (Int.natCast_dvd_natCast.mpr hL) hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨polyB_zero, fun γ _ τ => by simp [qs_zero]⟩, ?_, ?_, ?_, lev, ?_⟩` and prove the remaining obligations. Introduce `a b ⟨ha, ia⟩ ⟨hb, ib⟩`. Establish `e` using `qs_add a b ha hb`. Use `⟨⟨polyB_add a b ha hb, fun γ hγ τ => ?_⟩, e⟩` and prove the remaining obligations. Rewrite using `[e, Pi.add_apply, Pi.add_apply, ia γ hγ τ, ib γ hγ τ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `c a ⟨ha, ia⟩`. Establish `e` using `qs_smul c a`. Use `⟨⟨polyB_smul c a ha, fun γ hγ τ => ?_⟩, e⟩` and prove the remaining obligations. Rewrite using `[e, Pi.smul_apply, Pi.smul_apply, smul_eq_mul, smul_eq_mul, ia γ hγ τ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `χ' a hχ ⟨ha, ia⟩`. Use `⟨ha, fun γ hγ τ => ?_⟩` and prove the remaining obligations. Rewrite using `[ia γ hγ τ, hχ _ (coprime_of_level L γ hγ)]`. Introduce `L' a hL ⟨hm, hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨lev L' a hL hm, hc⟩`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.EisM.mf_linear : ∀ (k L : ℕ) (χ : ℤ → ℂ), (MF k L χ 0) ∧ (∀ a b, MF k L χ a → MF k L χ b → MF k L χ (a + b) ∧ qs (a + b) = qs a + qs b) ∧ (∀ (c : ℂ) a, MF k L χ a → MF k L χ (c • a) ∧ qs (c • a) = c • qs a) ∧ (∀ χ' a, (∀ d : ℤ, IsCoprime d L → χ d = χ' d) → MF k L χ a → MF k L χ' a) ∧ (∀ L' a, L ∣ L' → MF k L χ a → MF k L' χ a) ∧ (∀ L' a, L ∣ L' → CF k L χ a → CF k L' χ a) := by
   intro k L χ

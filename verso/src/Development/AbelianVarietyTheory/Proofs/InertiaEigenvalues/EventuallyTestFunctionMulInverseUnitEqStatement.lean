@@ -9,7 +9,7 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.NonemptyMeasAn
 open GlobalTheory.JR Matrix MeasureTheory Filter Topology
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.eventually_testFn_mul_inverse_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FInertiaEigenvalues%2FEventuallyTestFunctionMulInverseUnitEq.lean&line=42#L42)
 -/

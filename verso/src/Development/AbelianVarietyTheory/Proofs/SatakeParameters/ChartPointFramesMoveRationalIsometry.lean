@@ -11,17 +11,17 @@ namespace GlobalTheory.RatFrame
 set_option maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Y cX ex t u μ St A dtU a hPin hTie i hi β x x₁ γ hγ h₁ g hg p hp P`. Establish `hx : ratA D.host.F (A.crd i hi) * x₁.1 * ratA D.host.F (A.fb i hi β P) = ratA D.host.F (seamGL t.seam g.1) * (ratA D.host.F (A.crd i hi) * x.1 * ratA D.host.F (A.fb i hi β P))`. Rewrite using `[h₁, hg, map_mul, map_mul, map_inv]`. Use `group`. Rewrite using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0` using `hp.frame P`. Distinguish the cases in `hP : P.1 ∈ t.Pr.vGs`. Establish `hD : (t.cst μ).D P = 1` using `(t.idx_ok μ).depthG P hP`. Establish `hq` using `GlobalTheory.TopStep.qOf_notMem_sq hPin.fields.ok t.pr_ok hP`. Establish `e1 : frsF t.sel (t.tup μ) p P = p.deco.1.liftFr ⟨P.1, hP⟩`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `frsF`. Rewrite using `[dif_pos hP]`. Establish `h1 : NearAt (seamP t.seam P.1) 1 (ratA D.host.F (A.crd i hi) * x.1 * ratA D.host.F (A.fb i hi β P)) (seamGL t.seam (p.deco.1.liftFr ⟨P.1, hP⟩))`. Rewrite using `[← e1, ← hD]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `e2 : frsF t.sel (t.tup μ) (((g, 1, 1) : UF t.X.E (D.R.N i) × GLG t.X.E (D.R.N i) t.Pr.vGs × GLQ t.X.E (D.R.N i) (QE t.sel (t.tup μ : Chr t.X.F t.X.E t.X.K))) • p) P = (((g, (1 : GLG t.X.E (D.R.N i) t.Pr.vGs)) : UF t.X.E (D.R.N i) × GLG t.X.E (D.R.N i) t.Pr.vGs) • p.deco).1.liftFr …`. Unfold `frsF`. Rewrite using `[dif_pos hP]`. Both sides reduce to the same expression. Establish `key` using `GlobalTheory.FrameRat.nearAt_liftFr_smul t.seam p.deco ⟨P.1, hP⟩ g hq _ h1`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e2, hD]`. Conclude with `key`. Establish `e : frsF t.sel (t.tup μ) (((g, 1, 1) : UF t.X.E (D.R.N i) × GLG t.X.E (D.R.N i) t.Pr.vGs × GLQ t.X.E (D.R.N i) (QE t.sel (t.tup μ : Chr t.X.F t.X.E t.X.K))) • p) P = g.1 * frsF t.sel (t.tup μ) p P`. Unfold `frsF`. Rewrite using `[dif_neg hP, dif_neg hP]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `show g.1 * _ * _ = _`. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite using `[e, map_mul, nearAt_rat_mul]`. Conclude with `h0`.
+A detailed English derivation is pending.
 -/
 theorem frame_rat : UnderTie (fun {D L hT Gi Gl Kc Y cX ex t u μ St} A dtU a =>
     ∀ i (hi : i ≤ D.R.m) (β : (St i hi).Ch) (x x₁ : UA D i hi) (γ : GL (Fin (D.R.N i)) D.host.E),

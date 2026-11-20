@@ -18,13 +18,11 @@ noncomputable section
 namespace GlobalTheory.ConjUIntegral
 
 /- English proof (translation)
-Introduce `D V J c hc h ν fd hν hfd dom hdom f hf`. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA D.sp.cm.sig V.gram` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA D.sp.cm.sig V.gram` as an intermediate fact. Establish `: IsTopologicalRing (AE D)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.isTopRing`. Establish `: BorelSpace (UB J)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ` to `GlobalTheory.ConjUTransport.conjEquiv V c hc h`. Establish `c1 : Continuous φ` using `GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.continuous_conjU V c h`. Establish `c2 : Continuous φ.symm` using `GlobalTheory.ConjUTransport.continuous_conjUInv V c hc h`. Set `H : GA D V ≃ₜ UB J` to `⟨φ.toEquiv, c1, c2⟩`. Establish `hme : MeasurableEmbedding (conjU V c h)` using `H.measurableEmbedding`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨hH, hfd'⟩` from `GlobalTheory.ConjUTransport.map_isHaar_isFundamentalDomain V c hc h ν fd hν hfd`. Establish `e1 : ∫ x in conjU V c h '' fd, f x ∂(ν.map (conjU V c h)) = ∫ u in fd, f (conjU V c h u) ∂ν`. Rewrite using `[hme.setIntegral_map, Set.preimage_image_eq _ hme.injective]`. Rewrite using `[← e1]`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU D.sp.cm.sig J`.
-
-Use `haveI := hH`. Use `haveI : SMulInvariantMeasure (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ratU D.sp.cm.sig J) (UB J) (ν.map (conjU V c h)) := ⟨fun γ A _ => measure_preimage_mul (ν.map (conjU V c h)) γ.1 A⟩`. Conclude with `hfd'.setIntegral_eq hdom fun γ x => hf γ.1 γ.2 x`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_conjU_eq : ∀ {D : D7} (V : HSp D) {J : Matrix (Fin V.rank) (Fin V.rank) D.host.E} (c : D.host.E), c ≠ 0 →
     ∀ (h : J = c • V.gram) (ν : Measure (GA D V)) (fd : Set (GA D V)), ν.IsHaarMeasure → IsFundamentalDomain (GQ V) fd ν →

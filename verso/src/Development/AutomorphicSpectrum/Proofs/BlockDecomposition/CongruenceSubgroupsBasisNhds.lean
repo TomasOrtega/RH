@@ -10,15 +10,13 @@ open scoped TensorProduct Topology
 namespace GlobalTheory.CompanionTheory.BZPhiPG.Onto
 
 /- English proof (translation)
-Establish `hc : Continuous fun B : Matrix (Fin m) (Fin m) k => 1 + B` using `continuous_const.add continuous_id`. Establish `hs : (fun B : Matrix (Fin m) (Fin m) k => 1 + B) ⁻¹' t ∈ 𝓝 (0 : Matrix (Fin m) (Fin m) k)`. Apply `hc.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Simplify using `using ht`. Establish `e : 𝓝 (0 : Fin m → Fin m → k) = Filter.pi fun a => 𝓝 ((0 : Fin m → Fin m → k) a)` using `nhds_pi`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hs' : ((fun B : Matrix (Fin m) (Fin m) k => 1 + B) ⁻¹' t : Set (Fin m → Fin m → k)) ∈ Filter.pi fun a => 𝓝 ((0 : Fin m → Fin m → k) a)`. Rewrite using `[← e]`. Conclude with `hs`. Take `⟨I, -, t₁, ht₁, hsub⟩` from `Filter.mem_pi.1 hs'`. Establish `h2 : ∀ a, ∃ t₂ : Fin m → Set k, (∀ b, t₂ b ∈ 𝓝 (0 : k)) ∧ Set.univ.pi t₂ ⊆ t₁ a`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a`. Establish `e' : 𝓝 (0 : Fin m → k) = Filter.pi fun b => 𝓝 ((0 : Fin m → k) b)` using `nhds_pi`. Establish `h : t₁ a ∈ Filter.pi fun b => 𝓝 ((0 : Fin m → k) b)`. Rewrite using `[← e']`. Conclude with `ht₁ a`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨J, -, t₂, ht₂, hJ⟩` from `Filter.mem_pi.1 h`. Conclude with `⟨t₂, ht₂, fun x hx => hJ fun b _ => hx b (Set.mem_univ b)⟩`. Use `choose t₂ ht₂ hsub₂ using h2`. Use `⟨⋂ a, ⋂ b, t₂ a b, Filter.iInter_mem.2 fun a => Filter.iInter_mem.2 fun b => ht₂ a b, fun A hA => ?_⟩` and prove the remaining obligations. Establish `hmem : A - 1 ∈ (fun B : Matrix (Fin m) (Fin m) k => 1 + B) ⁻¹' t` using `hsub fun a _ => hsub₂ a fun b _ => Set.mem_iInter.1 (Set.mem_iInter.1 (hA a b) a) b`.
-
-Simplify using `using hmem`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_entry_nhds {k : Type} [Field k] [TopologicalSpace k] [IsTopologicalRing k] (m : ℕ)
     {t : Set (Matrix (Fin m) (Fin m) k)} (ht : t ∈ 𝓝 (1 : Matrix (Fin m) (Fin m) k)) :
@@ -50,15 +48,15 @@ theorem exists_entry_nhds {k : Type} [Field k] [TopologicalSpace k] [IsTopologic
   simpa using hmem
 
 /- English proof (translation)
-Take `⟨u, hu, huO⟩` from `(mem_nhds_subtype ((GlobalTheory.BZMir.Mir k n : Set (GL (Fin (n + 1)) k))) 1 O).1 hO`. Establish `hu1 : u ∈ 𝓝 (1 : GL (Fin (n + 1)) k)` using `by simpa using hu`. Rewrite `hu1` using `[Units.isEmbedding_embedProduct.toIsInducing.nhds_eq_comap, Filter.mem_comap]`. Take `⟨w, hw, hwu⟩` from `hu1`. Rewrite `hw` using `[Units.embedProduct_apply, nhds_prod_eq, Filter.mem_prod_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨t₁, ht₁, t₂, ht₂, hsub⟩` from `hw`. Establish `ht₁' : t₁ ∈ 𝓝 (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k)` using `by simpa using ht₁`. Establish `ht₂' : MulOpposite.op ⁻¹' t₂ ∈ 𝓝 (1 : Matrix (Fin (n + 1)) (Fin (n + 1)) k)`. Establish `h` using `MulOpposite.continuous_op.continuousAt.preimage_mem_nhds ht₂`. Simplify using `using h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Take `⟨U₁, hU₁, h₁⟩` from `GlobalTheory.CompanionTheory.BZPhiPG.Onto.exists_entry_nhds (n + 1) ht₁'`. Take `⟨U₂, hU₂, h₂⟩` from `GlobalTheory.CompanionTheory.BZPhiPG.Onto.exists_entry_nhds (n + 1) ht₂'`. Take `⟨s₀, hs₀⟩` from `GlobalTheory.SplitWeil.exists_cball_subset (Filter.inter_mem hU₁ hU₂)`. Use `⟨s₀, fun s hs hss₀ g hg => ?_⟩` and prove the remaining obligations. Establish `hball : ∀ x : k, x ∈ GlobalTheory.SplitWeil.cball s → x ∈ GlobalTheory.SplitWeil.cball s₀`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `x hx`. Simplify using `only [GlobalTheory.SplitWeil.cball, Set.mem_setOf_eq] at hx ⊢`. Conclude with `le_trans hx hss₀`. Use `huO (hwu (hsub (Set.mem_prod.2 ⟨?_, ?_⟩)))` and prove the remaining obligations. Establish `hg' : GlobalTheory.CompanionTheory.BZPhiPG.Onto.NearOne s ((g : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)` using `hg.1 show ((g : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) ∈ t₁`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h₁ _ fun a b => (hs₀ (hball _ (hg' a b))).1`. Establish `hg' : GlobalTheory.CompanionTheory.BZPhiPG.Onto.NearOne s (((g : GL (Fin (n + 1)) k)⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k)` using `hg.2 show MulOpposite.op (((g : GL (Fin (n + 1)) k)⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) ∈ t₂`. Conclude with `h₂ _ fun a b => (hs₀ (hball _ (hg' a b))).2`.
+A detailed English derivation is pending.
 -/
 theorem congM_subset_nhds (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : ℕ) (O : Set (Mir k n)) (hO : O ∈ 𝓝 (1 : Mir k n)) :

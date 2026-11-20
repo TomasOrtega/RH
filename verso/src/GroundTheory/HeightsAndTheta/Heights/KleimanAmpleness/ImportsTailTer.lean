@@ -15,13 +15,13 @@ def SegreLiftRelDim.Statement : Prop :=
       relDim (segreLift ι F W) = relDim W
 
 /- English proof (translation)
-The claim follows from `NumbersDVR.isMultiProjPrime_bot`.
+A detailed English derivation is pending.
 -/
 theorem SegreLiftRelDim.hyps : IsMultiProjPrime (⊥ : Ideal (MRing (fun _ : Unit => Fin 2) ℚ)) :=
   NumbersDVR.isMultiProjPrime_bot
 
 /- English proof (translation)
-The claim follows from `h ℚ Unit (fun _ => Fin 2) ⊥ SegreLiftRelDim.hyps`.
+A detailed English derivation is pending.
 -/
 example (h : SegreLiftRelDim.Statement) := h ℚ Unit (fun _ => Fin 2) ⊥ SegreLiftRelDim.hyps
 

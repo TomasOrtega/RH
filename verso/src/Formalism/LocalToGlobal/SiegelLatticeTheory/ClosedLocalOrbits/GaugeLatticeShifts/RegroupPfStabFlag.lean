@@ -26,7 +26,7 @@ def toVHom : (Fin X.B.I.n → X.B.I.E) →+ (VS D).V where
   map_add' := Formalism.L2.SG.Pf.Level.toV_add X
 
 /- English proof (translation)
-The claim follows from `Formalism.L2.SG.Pf.Vanish2.tr_span X.ιE.toRingHom (toVHom X) (fun c x => Formalism.L2.SG.Pf.Level.toV_smul X c x) hw`.
+A detailed English derivation is pending.
 -/
 theorem toV_span {T : Set (Fin X.B.I.n → X.B.I.E)} {w : Fin X.B.I.n → X.B.I.E}
     (hw : w ∈ Submodule.span X.B.I.E T) :
@@ -34,13 +34,13 @@ theorem toV_span {T : Set (Fin X.B.I.n → X.B.I.E)} {w : Fin X.B.I.n → X.B.I.
   Formalism.L2.SG.Pf.Vanish2.tr_span X.ιE.toRingHom (toVHom X) (fun c x => Formalism.L2.SG.Pf.Level.toV_smul X c x) hw
 
 /- English proof (translation)
-Take `⟨M, -, -, h2, h3⟩` from `hs`. Take `⟨-, hsf⟩` from `Formalism.L2.SG.PoincareInHH.Cut.sratComp_holds X u' _ hS`. Take `⟨hfe, -⟩` from `hsf`. Establish `hf` using `hfe a`. Establish `hG : ∀ y, X.B.I.fmat s.2 *ᵥ Formalism.L2.SG.Pf.Vanish2.inclHom X.B.I y = Formalism.L2.SG.Pf.Vanish2.inclHom X.B.I ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) *ᵥ y)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[Formalism.L2.SG.Pf.Vanish2.inclHom_apply, Formalism.L2.SG.Pf.Vanish2.inclHom_apply, h2]`. Conclude with `Formalism.L2.SG.Pf.Level.incl_mulVec X _ y`. Establish `e` using `Formalism.L2.SG.Pf.Vanish2.tr_sub (Formalism.L2.SG.Pf.Vanish2.inclHom X.B.I) _ _ hG (X.eR a)`. Rewrite `e` using `[Formalism.L2.SG.Pf.Vanish2.inclHom_apply, Formalism.L2.SG.Pf.Vanish2.inclHom_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf` using `[e]`. Establish `hd` using `Formalism.L2.SG.Pf.Level.descend X _ _ hf`. Establish `hm : ((M : Matrix (Fin X.B.I.n) (Fin X.B.I.n) X.B.I.E) - 1) *ᵥ X.eR a = X.crd (σ (X.eX a) - X.eX a)` using `Formalism.L2.SG.Pf.Vanish2.mcrd X h3 (X.eX a)`. Rewrite `hd` using `[hm]`. Establish `ht` using `toV_span X hd`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[Formalism.L2.SG.Pf.Level.toV_crd, Set.image_image]`. Establish `e2 : (fun b => Formalism.L2.SG.Pf.Level.toV X (X.eR b)) = X.eX`. Use function extensionality and compare the values at `fun b => Formalism.L2.SG.Pf.Level.toV_crd X (X.eX b)`. Rewrite `ht` using `[e2]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem flag_e {u' : D.what₂.Word} {s : X.B.I.GA} {σ : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     (hs : RatLink X s σ) (hS : s ∈ Srat X u') (a : Fin D.R.rS) :
@@ -70,13 +70,13 @@ theorem flag_e {u' : D.what₂.Word} {s : X.B.I.GA} {σ : (VS D).V ≃ₗ[D.host
 end StabFlagPf
 
 /- English proof (translation)
-Introduce `D X Y u u' _ s σ hs _ hS j x hx`. Establish `e : ∀ k, Xflag (lf D (X.Fu u')) k = Submodule.span D.host.E (X.eX '' {i | i.1 < k})`. Introduce `k`. Use `show Submodule.span D.host.E ((X.Fu u').e '' {i | i.1 < k}) = _`. Rewrite using `[X.Fu_e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[e]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨a, ha, rfl⟩` from `hy`. Use `Submodule.span_mono ?_ (StabFlagPf.flag_e X hs hS a)` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨b, hb, rfl⟩`. Conclude with `⟨b, lt_of_lt_of_le hb (Nat.lt_succ_iff.1 ha), rfl⟩`. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz`. Rewrite using `[map_add, add_sub_add_comm]`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`. Rewrite using `[map_smul, ← smul_sub]`. Conclude with `Submodule.smul_mem _ _ hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem flag_stabilizer_holds : StabFlagC := by
   intro D X Y u u' _ s σ hs _ hS j x hx

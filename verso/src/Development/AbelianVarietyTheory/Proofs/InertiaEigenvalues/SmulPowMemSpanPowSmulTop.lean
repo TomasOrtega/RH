@@ -4,7 +4,7 @@ open scoped PowerSeries Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_singleton_pow]`. Establish `e : l ^ j • x = l ^ n • (l ^ (j - n) • x)`. Rewrite using `[smul_smul, ← pow_add, Nat.add_sub_cancel' h]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_pow_mem_span_pow_smul_top {O M : Type} [CommRing O] [AddCommGroup M] [Module O M]
     (l : O) (j n : ℕ) (x : M) (h : n ≤ j) :
@@ -16,9 +16,7 @@ theorem smul_pow_mem_span_pow_smul_top {O M : Type} [CommRing O] [AddCommGroup M
   exact Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top
 
 /- English proof (translation)
-Establish `hle : I ^ n • (⊤ : Submodule O M) ≤ (I ^ n • (⊤ : Submodule O N)).comap f`. Rewrite using `[Submodule.smul_le]`. Introduce `r hr y _`. Simplify using `only [Submodule.mem_comap, map_smul]`. Conclude with `Submodule.smul_mem_smul hr Submodule.mem_top`.
-
-Conclude with `hle hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_mem_pow_smul_top {O M N : Type} [CommRing O] [AddCommGroup M] [Module O M]
     [AddCommGroup N] [Module O N] (I : Ideal O) (n : ℕ) (f : M →ₗ[O] N) {x : M}
@@ -31,31 +29,31 @@ theorem map_mem_pow_smul_top {O M N : Type} [CommRing O] [AddCommGroup M] [Modul
   exact hle hx
 
 /- English proof (translation)
-Introduce `O Y Z _ _ _ _ _ l _ _ Lc P W c k hck hW hsat hrange y₀`. Establish `hsatn : ∀ n z, l ^ n • z ∈ W → z ∈ W`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro z h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Simplify using `using h`. Consider the case `succ n ih`. Introduce `z h`. Apply `ih` to reduce the goal to its premises. Apply `hsat` to reduce the goal to its premises.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[smul_smul, ← pow_succ']` and apply the resulting hypothesis. Establish `hPW : ∀ y, P y ∈ W`. Introduce `y`. Apply `hsatn k` to reduce the goal to its premises. Establish `h` using `W.sub_mem (hW y).2 (hW y).1`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify `h` using `[LinearMap.add_apply, LinearMap.smul_apply]`. Establish `hg : ∀ v, ∃ u, Lc u = l ^ c • P v` using `fun v => by`. Take `⟨u, hu⟩` from `hrange _ (hPW v)`. Conclude with `⟨u, hu⟩`. Use `choose g hg using hg`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd, hk⟩ : ∃ d, 1 ≤ d ∧ k = d + c` from `⟨k - c, by omega, by omega⟩`. Set `L' : Y →ₗ[O] Z` to `Lc + l ^ k • P`. Establish `hL' : ∀ y, L' y = Lc y + l ^ k • P y` using `fun y => rfl`. Set `s : ℕ → Y × Y` to `fun n => Nat.rec (y₀, -y₀) (fun i p => (p.1 + l ^ ((i + 1) * d) • g p.2, -g p.2)) n`. Establish `s_succ : ∀ n, s (n + 1) = ((s n).1 + l ^ ((n + 1) * d) • g (s n).2, -g (s n).2)` using `fun n => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s_zero : s 0 = (y₀, -y₀)` using `rfl`. Establish `inv : ∀ n, Lc y₀ - L' (s n).1 = l ^ (n * d) • l ^ k • P (s n).2`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[s_zero, hL']`. Simplify using the standard rewrite rules. Consider the case `succ n ih`. Rewrite using `[s_succ]`. Simplify using `only`.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, map_smul, ← sub_sub, ih, hL', hg, map_neg, smul_neg, smul_add, smul_smul, smul_smul, smul_smul, ← pow_add, ← pow_add, ← pow_add]`. Establish `e : n * d + k = (n + 1) * d + c`. Rewrite using `[hk, add_mul, one_mul, add_assoc]`. Rewrite using `[e, sub_add_eq_sub_sub, sub_self, zero_sub, smul_neg, smul_smul, ← pow_add]`. Establish `hcauchy : ∀ a b, a ≤ b → (s a).1 ≡ (s b).1 [SMOD (Ideal.span {l}) ^ a • (⊤ : Submodule O Y)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Proceed by induction on `b, hab using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ b hab ih`. Rewrite `ih`, the goal using `[SModEq.sub_mem]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[s_succ]`. Simplify using `only`. Establish `h2` using `smul_pow_mem_span_pow_smul_top l ((b + 1) * d) a (g (s b).2) (by nlinarith)`. Use `Submodule.sub_mem _ ih h2` as an intermediate fact. Rewrite `this` using `[sub_sub]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨y, hy⟩` from `IsPrecomplete.prec (IsAdicComplete.toIsPrecomplete) (fun {a b} h => hcauchy a b h)`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `key : Lc y₀ - L' y = 0`. Apply `IsHausdorff.haus' (I := Ideal.span {l})` to reduce the goal to its premises. Introduce `n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SModEq.sub_mem, sub_zero]`. Establish `h1 : Lc y₀ - L' y = (Lc y₀ - L' (s n).1) + L' ((s n).1 - y)`. Rewrite using `[map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[h1, inv, smul_smul, ← pow_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.add_mem _ (smul_pow_mem_span_pow_smul_top l _ n _ (by nlinarith)) ?_` and prove the remaining obligations. Conclude with `map_mem_pow_smul_top _ n L' ((SModEq.sub_mem).mp (hy n))`. Conclude with `(sub_eq_zero.mp key).symm`.
+A detailed English derivation is pending.
 -/
 theorem successive_approximation : ∀ {O Y Z : Type} [CommRing O] [AddCommGroup Y] [Module O Y]
     [AddCommGroup Z] [Module O Z] (l : O) [IsAdicComplete (Ideal.span {l}) Y]

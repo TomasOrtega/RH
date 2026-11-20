@@ -8,13 +8,13 @@ open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
 /- English proof (translation)
-Set `U : Submodule ℂ M` to `sInf {W | φ ∈ W ∧ ∀ o, ∀ x ∈ W, act o x ∈ W}`. Establish `hUC : U ≤ C` using `sInf_le ⟨hφ, hC⟩`. Establish `hφU : φ ∈ U` using `Submodule.mem_sInf.2 fun W hW => hW.1`. Establish `hUs : ∀ o, ∀ x ∈ U, act o x ∈ U` using `fun o x hx => Submodule.mem_sInf.2 fun W hW => hW.2 o x (Submodule.mem_sInf.1 hx W hW)`. Establish `hle` using `UpperTheory.V.TR.SS.le_sSup_minimal act U hUs fun W hW hs => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨D, -, d2, d3, d4⟩` from `hc W (hW.trans hUC) hs`. Use `⟨D ⊓ U, inf_le_right, fun o x hx => ⟨d2 o x hx.1, hUs o x hx.2⟩, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← inf_assoc, d3, bot_inf_eq]`. Rewrite using `[← sup_inf_assoc_of_le _ hW, d4, inf_eq_right.2 hUC]`. Assume the negation of the conclusion as `hn`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `h0 ((Submodule.mem_bot ℂ).1 ((hle.trans (sSup_le ?_)) hφU))` and prove the remaining obligations. Introduce and unpack `V ⟨v1, v2, v3, v4⟩`. Take `⟨D, d1, d2, d3, d4⟩` from `hc V (v1.trans hUC) v2`. Distinguish the cases in `hD : φ ∈ D`. Rewrite using `[← d3]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_inf le_rfl (v1.trans (sInf_le ⟨hD, d2⟩))`. Conclude with `absurd ⟨V, D, v1.trans hUC, d1, v2, v3, v4, d2, d3, d4, hD⟩ hn`.
+A detailed English derivation is pending.
 -/
 private theorem exists_minimal_compl {M O : Type*} [AddCommGroup M] [Module ℂ M] (act : O → Module.End ℂ M)
     (C : Submodule ℂ M) (hC : ∀ o, ∀ x ∈ C, act o x ∈ C)
@@ -43,13 +43,13 @@ private theorem exists_minimal_compl {M O : Type*} [AddCommGroup M] [Module ℂ 
   · exact absurd ⟨V, D, v1.trans hUC, d1, v2, v3, v4, d2, d3, d4, hD⟩ hn
 
 /- English proof (translation)
-Establish `hc : IsCompl (V.comap C.subtype) (D.comap C.subtype)`. Prove the components needed by the constructor for the conclusion. Rewrite using `[disjoint_iff, ← Submodule.comap_inf, h1, Submodule.comap_bot, Submodule.ker_subtype]`. Rewrite using `[codisjoint_iff, eq_top_iff]`. Introduce and unpack `⟨x, hx⟩ -`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨v, hv, d, hd, rfl⟩` from `Submodule.mem_sup.1 (h2.ge hx)`. Conclude with `Submodule.mem_sup.2 ⟨⟨v, hV hv⟩, hv, ⟨d, hD hd⟩, hd, rfl⟩`. Set `p : C →ₗ[ℂ] V` to `(Submodule.comapSubtypeEquivOfLe hV).toLinearMap ∘ₗ Submodule.projectionOnto _ _ hc`. Establish `hp : ∀ x : C, x.1 - (p x).1 ∈ D` using `fun x => by`. Take `⟨v, hv, d, hd, rfl⟩` from `Submodule.mem_sup.1 (hc.sup_eq_top.ge (Submodule.mem_top (x := x)))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e1 : Submodule.projectionOnto _ _ hc v = ⟨v, hv⟩` using `Submodule.projectionOnto_apply_left hc ⟨v, hv⟩`. Establish `e2 : Submodule.projectionOnto _ _ hc d = 0` using `Submodule.projectionOnto_apply_right hc ⟨d, hd⟩`. Establish `: (p (v + d)).1 = v.1`. Simplify using `only [p, LinearMap.comp_apply, map_add, e1, e2, map_zero, add_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using `using hd`. Use `⟨p, hp, fun x v h => Subtype.ext (sub_eq_zero.1 ((Submodule.mem_bot ℂ).1 (h1.le ⟨V.sub_mem (p x).2 v.2, ?_⟩)))⟩` and prove the remaining obligations. Use `D.sub_mem h (hp x)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem exists_proj {M : Type*} [AddCommGroup M] [Module ℂ M] {C V D : Submodule ℂ M} (hV : V ≤ C) (hD : D ≤ C)
     (h1 : V ⊓ D = ⊥) (h2 : V ⊔ D = C) :
@@ -76,9 +76,9 @@ private theorem exists_proj {M : Type*} [AddCommGroup M] [Module ℂ M] {C V D :
   rwa [sub_sub_sub_cancel_left] at this
 
 /- English proof (translation)
-Introduce `_ hb hc E _ _ _ a ha m hm φ h0`. Take `⟨V, D, v1, d1, v2, v3, v4, d2, h1, h2, hφ⟩` from `exists_minimal_compl act (CI a m) (hb E a m).1 (hc E a ha m) φ.2 fun h => h0 (Subtype.ext h)`. Take `⟨p, p1, p2⟩` from `exists_proj v1 d1 h1 h2`. Use `⟨⟨V, fun ψ hψ => (mem_CI.1 (v1 hψ)).1, v2, v3, v4⟩, fun t => ⟨hm t, fun u ψ hψ => (mem_CI.1 (v1 hψ)).2 t u⟩, p, fun h => hφ ?_, fun g x y hy => p2 _ _ ?_⟩` and prove the remaining obligations. Simplify `p1 φ` using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Use `d2 (.fin g) _ (p1 x)` as an intermediate fact. Rewrite `this` using `[map_sub]`. Rewrite using `[hy]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.S.cuspProj :
     UpperTheory.V.Cj.S.CapAct → UpperTheory.V.Cj.S.CiBasic → UpperTheory.V.Cj.S.CiCompl → UpperTheory.V.Cj.S.CuspProj := by

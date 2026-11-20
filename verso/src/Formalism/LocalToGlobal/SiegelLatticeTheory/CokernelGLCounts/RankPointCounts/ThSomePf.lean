@@ -26,11 +26,11 @@ structure MonoU (W : Matrix (Fin m) (Fin m) K) where
   hW : ∀ a b, W a b = if b = σ a then c a else 0
 
 /- English proof (translation)
-Set `inv : Matrix (Fin m) (Fin m) K` to `fun a b => if b = H.σ a then Ring.inverse (H.c a) else 0`. Establish `h : W * inv = 1`. Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (H.σ a)]`. Rewrite using `[H.hW, if_pos rfl]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [inv]`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Rewrite using `[if_pos (H.σσ b).symm, H.cσ, Matrix.one_apply_eq, Ring.mul_inverse_cancel _ (H.hcu b)]`. Rewrite using `[if_neg (fun h => hb (by rw [h, H.σσ])), mul_zero, Matrix.one_apply_ne (Ne.symm hb)]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `k _ hk`. Rewrite using `[H.hW, if_neg hk, zero_mul]`. Simplify using the standard rewrite rules. Conclude with `Matrix.isUnit_det_of_right_inverse h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem MonoU.det_unit {W : Matrix (Fin m) (Fin m) K} (H : MonoU W) : IsUnit W.det := by
   let inv : Matrix (Fin m) (Fin m) K := fun a b => if b = H.σ a then Ring.inverse (H.c a) else 0
@@ -53,11 +53,11 @@ section Corner
 variable {K : Type} [Field K] {r : ℕ}
 
 /- English proof (translation)
-Establish `e : (A + Matrix.of fun a b => if a = Fin.last r ∧ b = Fin.last r then c else 0) = A.updateCol (Fin.last r) ((fun a => A a (Fin.last r)) + (Pi.single (Fin.last r) c : Fin (r + 1) → K))`. Use extensionality with `a b`. Distinguish the cases in `hb : b = Fin.last r`. Substitute `hb` using the available equality. Rewrite using `[Matrix.updateCol_self]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : a = Fin.last r`. Substitute `ha` using the available equality. Simplify using the standard rewrite rules. Simplify using `[ha, Pi.single_eq_of_ne ha]`. Rewrite using `[Matrix.updateCol_ne hb]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hb]`. Rewrite using `[e, Matrix.det_updateCol_add, Formalism.L2.SG.Pf.ScalKindPf.det_updateCol_last_single]`. Use `congr 1`. Rewrite using `[Matrix.updateCol_eq_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem det_add_corner (A : Matrix (Fin (r + 1)) (Fin (r + 1)) K) (c : K) :
     (A + Matrix.of fun a b => if a = Fin.last r ∧ b = Fin.last r then c else 0).det =
@@ -95,11 +95,11 @@ variable {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
 
 /- English proof (translation)
-Establish `hsD : (D.s.atP p).split = none` using `LocModel.split_none_of_agree hA hsM`. Take `⟨-, hδ0, -, -, -, -⟩` from `hA`. Use `set w0 : (D.s.atP p).Ep := algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p) * (D.s.atP p).ιE (uP p : D.host.E) with hw0`. Use `set w1 : (D.s.atP p).Ep := algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (δ p)⁻¹ * (D.s.atP p).ιE ((uP p : D.host.E)⁻¹) with hw1`. Establish `hw01 : w0 * w1 = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hw0, hw1, mul_mul_mul_comm, ← map_mul, ← map_mul, mul_inv_cancel₀ hδ0, mul_inv_cancel₀ (by exact_mod_cast LocModel.unitAt_ne_zero₂ p), map_one, map_one, one_mul]`. Establish `htau : tau0 p T T' = 0` using `by simp only [tau0, hsD]`. Establish `hb : blkMod δ T T' p a s t = w1 ^ nu D.R.rS a (a + s - 1) * (D.s.atP p).ιE t`. Simplify using `only [blkMod, htau, ite_self, sub_zero, tMod, twist, qE, hsD, Ring.inverse_one, mul_one]`. Rewrite using `[LocModel.ring_inverse_pow_eq hw01]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw1u : IsUnit w1` using `IsUnit.of_mul_eq_one _ (by rw [mul_comm]; exact hw01)`. Establish `htu : IsUnit ((D.s.atP p).ιE t)` using `(isUnit_iff_ne_zero.2 ht0).map _`. Rewrite using `[hb]`. Conclude with `⟨(hw1u.pow _).mul htu, fun h0 => by rw [h0, pow_zero, one_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem blkMod_unitL (T T' : ℕ) (p : PlF D) (hA : Agree δ M p) (hsM : (M p).split = none) {t : D.host.E}
     (ht0 : t ≠ 0) (a s : ℕ) :
@@ -123,31 +123,29 @@ theorem blkMod_unitL (T T' : ℕ) (p : PlF D) (hA : Agree δ M p) (hsM : (M p).s
   exact ⟨(hw1u.pow _).mul htu, fun h0 => by rw [h0, pow_zero, one_mul]⟩
 
 /- English proof (translation)
-Establish `hcu : ∀ a : Fin (D.R.rS + 1), IsUnit (blkMod δ T T' p (1 + pSt w.1 a.val) (pSz w.1 a.val) (pTau w.1 a.val))` using `fun a => (blkMod_unitL T T' p hA hsM (pTau_ne' w a) _ _).1`. Set `H : MonoU (modMat δ T T' p w)` to `{ σ := sgF w c := fun a => blkMod δ T T' p (1 + pSt w.1 a.val) (pSz w.1 a.val) (pTau w.1 a.val) σσ := sgF_sgF w cσ := fun a => by simp only [sgF]; rw [pSt_pSig, pSz_pSig, pTau_pSig] hcu := hcu hW := modMat_apply' δ T T' p w }`. Distinguish the cases in `hD : Dmin w D.R.rS = 0`. Establish `: cornerSh δ T T' p w = 0` using `by unfold cornerSh; rw [if_pos hD]`. Rewrite using `[this]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : cornerM p (0 : (D.s.atP p).Ep) = 0` using `by ext a b; simp [cornerM]`. Rewrite using `[h0, add_zero]`. Conclude with `H.det_unit`. Take `⟨l0, t, hb, hs⟩` from `last_one w hD`. Establish `hz : zetaOf w = t` using `zeta_snoc w hD l0 t hb hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : t ≠ 0` using `(w.2.1 (t, 1) (by rw [hb]; simp)).1`. Establish `hpm` using `ptMat_last w l0 t hb hs`. Rewrite `hpm` using `[ptMat_apply']`. Establish `hσl : sgF w (Fin.last _) = Fin.last _`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpm` using `[if_neg (Ne.symm h)]`. Conclude with `ht0 hpm.symm`. Rewrite `hpm` using `[if_pos hσl.symm]`. Take `⟨c1, c2⟩` from `(cond_iff w (Fin.last _)).2 ⟨rfl, hσl⟩`. Establish `hst : pSt w.1 (Fin.last D.R.rS).val = D.R.rS`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Fin.val_last] at c1 c2 ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hcl : H.c (Fin.last _) = blkMod δ T T' p (D.R.rS + 1) 1 t` using `by show blkMod δ T T' p (1 + pSt w.1 (Fin.last D.R.rS).val) (pSz w.1 (Fin.last D.R.rS).val) (pTau w.1 (Fin.last D.R.rS).val) = _`. Rewrite using `[c2, hpm, hst, add_comm]`. Establish `hcu_l` using `H.hcu (Fin.last _)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hcu_l` using `[hcl]`. Establish `hcs : cornerSh δ T T' p w = ((nSh (blkMod δ T T' p (D.R.rS + 1) 1 t) : ℕ) : (D.s.atP p).Ep)`. Unfold `cornerSh`. Rewrite using `[if_neg hD, hz]`. Establish `hc : ∃ k : Fin 3, IsUnit (blkMod δ T T' p (D.R.rS + 1) 1 t + (((k : Fin 3) : ℕ) : (D.s.atP p).Ep))` using `⟨0, by simpa using hcu_l⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `hnsh : nSh (blkMod δ T T' p (D.R.rS + 1) 1 t) = ((hc.choose : Fin 3) : ℕ)`. Unfold `nSh`. Rewrite using `[dif_pos hc]`. Establish `hku` using `hc.choose_spec`. Set `c' : Fin (D.R.rS + 1) → (D.s.atP p).Ep` to `fun a => if a = Fin.last _ then blkMod δ T T' p (D.R.rS + 1) 1 t + (((hc.choose : Fin 3) : ℕ) : (D.s.atP p).Ep) else H.c a`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hσne : ∀ a, a ≠ Fin.last _ → H.σ a ≠ Fin.last _` using `fun a ha h => ha (by rw [← H.σσ a, h]; exact hσl)`. Set `H' : MonoU (modMat δ T T' p w + cornerM p (cornerSh δ T T' p w))` to `{ σ := H.σ c := c' σσ := H.σσ cσ := fun a => by`. Distinguish the cases in `ha : a = Fin.last _`. Establish `hs' : H.σ a = Fin.last _` using `by rw [ha]; exact hσl`. Simplify using `only [c', if_pos hs', if_pos ha]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [c', if_neg ha, if_neg (hσne a ha)]`. Conclude with `H.cσ a`. Use `hcu := fun a => by`. Distinguish the cases in `ha : a = Fin.last _`. Simplify using `only [c', if_pos ha]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Conclude with `hku`. Simplify using `only [c', if_neg ha]`. Conclude with `H.hcu a`. Use `hW := fun a b => by`. Rewrite using `[Matrix.add_apply, H.hW]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [cornerM, Matrix.of_apply, c']`. Distinguish the cases in `ha : a = Fin.last _`. Establish `hs' : H.σ a = Fin.last _` using `by rw [ha]; exact hσl`. Distinguish the cases in `hbl : b = Fin.last _`. Establish `hb' : b = H.σ a` using `by rw [hs', hbl]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_pos hb', if_pos ⟨ha, hbl⟩, if_pos hb', if_pos ha, ha, hcl, hcs, hnsh]`. Establish `hb' : ¬ b = H.σ a` using `by rw [hs']; exact hbl`. Rewrite using `[if_neg hb', if_neg (show ¬ (a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS) from fun h => hbl h.2), if_neg hb', add_zero]`. Rewrite using `[if_neg (show ¬ (a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS) from fun h => ha h.1), add_zero]`. Distinguish the cases in `hb' : b = H.σ a`.
-
-Rewrite using `[if_pos hb', if_pos hb', if_neg ha]`. Rewrite using `[if_neg hb', if_neg hb'] }`. Conclude with `H'.det_unit`.
+A detailed English derivation is pending.
 -/
 theorem monoShiftL (T T' : ℕ) (w : Point D.host.E (D.R.rS + 1)) (p : PlF D) (hA : Agree δ M p)
     (hsM : (M p).split = none) :
@@ -246,7 +244,7 @@ variable {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
 
 /- English proof (translation)
-Establish `e1 : frFac δ p a = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf ⟨δ, M, hA⟩ p a)` using `frFac_eq (⟨δ, M, hA⟩ : LocDat D) p a`. Establish `e2 : frFac δ p b = algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf ⟨δ, M, hA⟩ p b)` using `frFac_eq (⟨δ, M, hA⟩ : LocDat D) p b`. Simplify using `only [Formalism.L2.SG.CntLocal.ZhatLoc, Matrix.of_apply]`. Rewrite using `[e1, e2, (hA p).2.2.1, cj_alg, ← map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem zhatLoc_eq (hA : ∀ p, Agree δ M p) (p : PlF D) (Z : Formalism.L2.SG.PairVal.MatR D) (a b : Fin (D.R.rS + 1)) :
     Formalism.L2.SG.CntLocal.ZhatLoc M δ p Z a b =
@@ -259,27 +257,25 @@ theorem zhatLoc_eq (hA : ∀ p, Agree δ M p) (p : PlF D) (Z : Formalism.L2.SG.P
   rw [e1, e2, (hA p).2.2.1, cj_alg, ← map_mul]
 
 /- English proof (translation)
-The claim follows from `Matrix.isUnit_det_of_right_inverse (permSign_mul_self₂ p)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_det_signMatrix (p : PlF D) : IsUnit (LsDatumB.sgnP p).det :=
   Matrix.isUnit_det_of_right_inverse (permSign_mul_self₂ p)
 
 /- English proof (translation)
-Establish `hY : Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z * LsDatumB.sgnP p = Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf (⟨δ, M, hA⟩ : LocDat D) p a)) * (Z * Sg D.host.E D.R.rS).map (D.s.atP p).ιE * Matrix.diagonal (fun a => algebraMap (D.s.atP p).Fp (D.s.atP p).Ep (cf (⟨δ, M, hA⟩ : LocDat D) p …`. Establish `e0 : Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z = Formalism.L2.SG.CntLocal.ZhatLoc M δ p Z := by`. Simplify using `only [Formalism.L2.SG.CntLocal.ZZP, Loc.HermSp.ZZplusOf, hM]`. Rewrite using `[e0]`. Use extensionality with `a b`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [LsDatumB.sgnP, Sg, Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply]`. Rewrite using `[zhatLoc_eq hA p Z a b]`. Simplify using `only [map_mul, map_pow, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree. Use `set Zd : LocDat D := ⟨δ, M, hA⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `hR : (D.s.atP p).split = none` using `LocModel.split_none_of_agree (hA p) hM`. Use `set ι := (D.s.atP p).ιE`. Use `set al := algebraMap (D.s.atP p).Fp (D.s.atP p).Ep`. Use `set fr : Fin (D.R.rS + 1) → (D.s.atP p).Ep := fun a => al (cf Zd p a)`. Use `set fri : Fin (D.R.rS + 1) → (D.s.atP p).Ep := fun a => al (cfi Zd p a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Establish `hfr : ∀ a, fri a * fr a = 1` using `fun a => by simp only [fr, fri, ← map_mul, cfi_cf, map_one]`. Establish `hfr' : ∀ a, fr a * fri a = 1` using `fun a => by simp only [fr, fri, ← map_mul, cf_cfi, map_one]`. Establish `hmod : Matrix.diagonal fr * (ptMat w).map ι * Matrix.diagonal fr = modMat δ (D.mem u).A.T (D.mem u').A.T p w`. Use extensionality with `a b`. Rewrite using `[modMat_apply', Matrix.mul_diagonal, Matrix.diagonal_mul, Matrix.map_apply, ptMat_apply']`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Substitute using the available equality. Expand and normalize the polynomial expressions, which then agree.
 
-Distinguish the cases in `hb : b = sgF w a`. Rewrite using `[if_pos hb, if_pos hb, modMat_blk Zd]`. Simplify using `only [twist, qE, tau0, hR, Ring.inverse_one, mul_one, ite_self, sub_zero, map_mul, fr]`. Substitute `hb` using the available equality. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hb, if_neg hb, map_zero, mul_zero, zero_mul]`. Use `set L' := Matrix.diagonal fr * L.map ι * Matrix.diagonal fri`. Use `set U' := Matrix.diagonal fri * U.map ι * Matrix.diagonal fr`. Establish `hL' : IsLo L'` using `isLo_conj (isLo_map ι hL) fr fri hfr'`. Establish `hU' : IsUp U'` using `isUp_conj (isUp_map ι hU) fri fr hfr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z * LsDatumB.sgnP p = L' * modMat δ (D.mem u).A.T (D.mem u').A.T p w * U' := by`. Rewrite using `[hY, hZ, Matrix.map_mul, Matrix.map_mul, regroup fr fri hfr, hmod]`. Establish `e2 : Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z = L' * modMat δ (D.mem u).A.T (D.mem u').A.T p w * U' * LsDatumB.sgnP p := by`. Rewrite using `[← e1, Matrix.mul_assoc, permSign_mul_self₂, Matrix.mul_one]`. Establish `e3 : Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z + cornerM p (cornerSh δ (D.mem u).A.T (D.mem u').A.T p w) = L' * (modMat δ (D.mem u).A.T (D.mem u').A.T p w + cornerM p (cornerSh δ (D.mem u).A.T (D.mem u').A.T p w)) * U' * LsDatumB.sgnP p := by`.
-
-Rewrite using `[e2, Matrix.mul_add, Matrix.add_mul, Matrix.add_mul, loU_corner p _ ⟨hL'.1, hL'.2⟩ ⟨hU'.1, fun a b h => hU'.2 b a h⟩, corner_sgn]`. Rewrite using `[e3, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, det_lo hL', det_up hU', one_mul, mul_one]`. Conclude with `(monoShiftL _ _ w p (hA p) hM).mul (isUnit_det_signMatrix p)`.
+A detailed English derivation is pending.
 -/
 theorem detL (hA : ∀ p, Agree δ M p) (u u' : D.what₂.Word) (p : PlF D) (hM : (M p).split = none)
     (w : Point D.host.E (D.R.rS + 1)) (Z : Formalism.L2.SG.PairVal.MatR D) (L U : Formalism.L2.SG.PairVal.MatR D)
@@ -355,9 +351,9 @@ def cornerF {K : Type} [Field K] (r : ℕ) (c : K) : Matrix (Fin (r + 1)) (Fin (
   Matrix.of fun a b => if a = Fin.last r ∧ b = Fin.last r then c else 0
 
 /- English proof (translation)
-Establish `e1` using `det_add_corner (Matrix.of (fun a b => f a * A a b * f b)) c`. Unfold `cornerF`. Rewrite using `[e1]`. Establish `h1 : (Matrix.of (fun a b => f a * A a b * f b)) = Matrix.diagonal f * A * Matrix.diagonal f`. Use extensionality with `a b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Establish `h2 : (Matrix.of (fun a b => f a * A a b * f b)).submatrix Fin.castSucc Fin.castSucc = Matrix.diagonal (fun a : Fin r => f (Fin.castSucc a)) * A.submatrix Fin.castSucc Fin.castSucc * Matrix.diagonal (fun a : Fin r => f (Fin.castSucc a))`. Use extensionality with `a b`. Simplify using `[Matrix.mul_diagonal, Matrix.diagonal_mul]`. Rewrite using `[h2, h1, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, Matrix.det_mul, Matrix.det_diagonal, Matrix.det_diagonal, Fin.prod_univ_castSucc]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -397,7 +393,7 @@ variable {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
 
 /- English proof (translation)
-Establish `h1 : algebraMap Fp K q * algebraMap Fp K q⁻¹ = 1` using `by rw [← map_mul, mul_inv_cancel₀ hq, map_one]`. Establish `h` using `LocModel.ring_inverse_pow_eq h1 1`. Rewrite `h` using `[pow_one, pow_one]`. Rewrite using `[h, fst_proj_algebraMap, snd_proj_algebraMap]`. Conclude with `⟨rfl, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem proj_inverse_algebraMap {Fp K : Type} [Field Fp] [CommRing K] [Algebra Fp K] [Nontrivial K] (e : K ≃ₐ[Fp] Fp × Fp)
     (q : Fp) (hq : q ≠ 0) : p1 e (Ring.inverse (algebraMap Fp K q)) = q⁻¹ ∧ p2 e (Ring.inverse (algebraMap Fp K q)) = q⁻¹ := by
@@ -408,17 +404,15 @@ theorem proj_inverse_algebraMap {Fp K : Type} [Field Fp] [CommRing K] [Algebra F
   exact ⟨rfl, rfl⟩
 
 /- English proof (translation)
-Establish `hq : (sg.q : (D.s.atP p).Fp) ≠ 0` using `fun h => sg.q_irr.ne_zero (Subtype.ext h)`. Rewrite using `[RingHom.map_det]`. Establish `hX : (p1 sg.e).mapMatrix (Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z + cornerM p c) = ((sg.q : (D.s.atP p).Fp)⁻¹) • (Matrix.of (fun a b => cf ⟨δ, M, hA⟩ p a * ((p1 sg.e).comp (D.s.atP p).ιE) (Z a b) * cf ⟨δ, M, hA⟩ p b) + cornerF D.R.rS ((((D.mem u).A.T : ℕ) : (D.s.atP p).Fp) + (sg.q : (D.s.atP p).Fp) * p1 sg.e c)) := by`. Use extensionality with `a b`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, cornerF, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hZZ : Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z a b = g.e.symm ((g.e (Formalism.L2.SG.CntLocal.ZhatLoc M δ p Z a b)).1 / (g.q : (D.s.atP p).Fp), -((g.e (Formalism.L2.SG.CntLocal.ZhatLoc M δ p Z b a)).2 / (g.q : (D.s.atP p).Fp))) - (if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then g.e.symm (-(((D.mem u).A.T : ℕ) …`. Simplify using `only [Formalism.L2.SG.CntLocal.ZZP, Loc.HermSp.ZZplusOf, hsM, Matrix.of_apply]`. Establish `hp1Z : p1 sg.e (Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z a b) = cf ⟨δ, M, hA⟩ p b * cf ⟨δ, M, hA⟩ p a * ((p1 sg.e).comp (D.s.atP p).ιE) (Z a b) / (sg.q : (D.s.atP p).Fp) - (if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then -(((D.mem u).A.T : ℕ) : (D.s.atP p).Fp) / (sg.q : (D.s.atP p).Fp) else 0) := by`. Rewrite using `[hZZ, map_sub, hge, hgq, fst_proj_symm, zhatLoc_eq hA p Z a b, ← adeleInfiniteComponent_apply, map_mul, fst_proj_algebraMap]`. Use `split_ifs with h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[fst_proj_symm]`. Both sides reduce to the same expression. Rewrite using `[map_zero]`. Both sides reduce to the same expression. Establish `hp1c : p1 sg.e (cornerM p c a b) = if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then p1 sg.e c else 0`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [cornerM, Matrix.of_apply]`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `map_zero _`. Rewrite using `[map_add, hp1Z, hp1c]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts.
 
-Use `split_ifs`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hX, Matrix.det_smul, Fintype.card_fin]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstProj_det_corner (hA : ∀ p, Agree δ M p) (u u' : D.what₂.Word) (p : PlF D) (g : Loc.SplitG (M p).L)
     (hsM : (M p).split = some g) (sg : Loc.SplitAt (D.s.atP p).Fp (D.s.atP p).Ep (D.s.atP p).cj (Loc.resChar p))
@@ -482,17 +476,15 @@ variable {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
 
 /- English proof (translation)
-Establish `hq : (sg.q : (D.s.atP p).Fp) ≠ 0` using `fun h => sg.q_irr.ne_zero (Subtype.ext h)`. Rewrite using `[RingHom.map_det]`. Establish `hX : (p2 sg.e).mapMatrix (Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z + cornerM p c) = (-(sg.q : (D.s.atP p).Fp)⁻¹) • (Matrix.of (fun a b => cf ⟨δ, M, hA⟩ p a * ((p2 sg.e).comp (D.s.atP p).ιE) (Z b a) * cf ⟨δ, M, hA⟩ p b) + cornerF D.R.rS ((((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) - (sg.q : (D.s.atP p).Fp) * p2 sg.e c)) := by`. Use extensionality with `a b`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, Matrix.of_apply, cornerF, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hZZ : Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z a b = g.e.symm ((g.e (Formalism.L2.SG.CntLocal.ZhatLoc M δ p Z a b)).1 / (g.q : (D.s.atP p).Fp), -((g.e (Formalism.L2.SG.CntLocal.ZhatLoc M δ p Z b a)).2 / (g.q : (D.s.atP p).Fp))) - (if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then g.e.symm (-(((D.mem u).A.T : ℕ) …`. Simplify using `only [Formalism.L2.SG.CntLocal.ZZP, Loc.HermSp.ZZplusOf, hsM, Matrix.of_apply]`. Establish `hp2Z : p2 sg.e (Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z a b) = -(cf ⟨δ, M, hA⟩ p a * cf ⟨δ, M, hA⟩ p b * ((p2 sg.e).comp (D.s.atP p).ιE) (Z b a) / (sg.q : (D.s.atP p).Fp)) - (if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then (((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) / (sg.q : (D.s.atP p).Fp) else 0) := by`. Rewrite using `[hZZ, map_sub, hge, hgq, snd_proj_symm, zhatLoc_eq hA p Z b a, ← adele_ext_components, map_mul, snd_proj_algebraMap]`. Use `split_ifs with h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[snd_proj_symm]`. Both sides reduce to the same expression. Rewrite using `[map_zero]`. Both sides reduce to the same expression. Establish `hp2c : p2 sg.e (cornerM p c a b) = if a = Fin.last D.R.rS ∧ b = Fin.last D.R.rS then p2 sg.e c else 0`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [cornerM, Matrix.of_apply]`. Use `split_ifs`. Both sides reduce to the same expression. Conclude with `map_zero _`. Rewrite using `[map_add, hp2Z, hp2c]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts.
 
-Use `split_ifs`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[hX, Matrix.det_smul, Fintype.card_fin]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secondProj_det_corner (hA : ∀ p, Agree δ M p) (u u' : D.what₂.Word) (p : PlF D) (g : Loc.SplitG (M p).L)
     (hsM : (M p).split = some g) (sg : Loc.SplitAt (D.s.atP p).Fp (D.s.atP p).Ep (D.s.atP p).cj (Loc.resChar p))
@@ -540,11 +532,11 @@ theorem secondProj_det_corner (hA : ∀ p, Agree δ M p) (u u' : D.what₂.Word)
   rw [hX, Matrix.det_smul, Fintype.card_fin]
 
 /- English proof (translation)
-Establish `hq : (sg.q : (D.s.atP p).Fp) ≠ 0` using `fun h => sg.q_irr.ne_zero (Subtype.ext h)`. Use `haveI : Nontrivial (D.s.atP p).Ep := PI.ProdFormulaE.Base.nontrivial (D.s.atP p)`. Take `⟨hi1, hi2⟩` from `proj_inverse_algebraMap sg.e (sg.q : (D.s.atP p).Fp) hq`. Establish `hnu : nu D.R.rS (D.R.rS + 1) (D.R.rS + 1 + 1 - 1) = 0` using `by unfold nu; omega`. Establish `hc : (D.R.rS + 1 + 1 - 1 = D.R.rS + 1 ∧ (1 : ℕ) = 1)` using `⟨by omega, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [blkMod, tMod, if_pos hc, hnu, pow_zero, Ring.inverse_one, one_mul, twist, qE, tau0, hsD]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_mul, if_pos (show D.R.rS + 1 + 1 - 1 = D.R.rS + 1 ∧ True from ⟨by omega, trivial⟩), map_mul, fst_proj_symm, fst_proj_symm, hi1, adeleInfiniteComponent_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[map_sub, map_mul, if_pos (show D.R.rS + 1 + 1 - 1 = D.R.rS + 1 ∧ True from ⟨by omega, trivial⟩), map_mul, snd_proj_symm, snd_proj_symm, hi2, adele_ext_components]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem blkMod_comps (p : PlF D) (sg : Loc.SplitAt (D.s.atP p).Fp (D.s.atP p).Ep (D.s.atP p).cj (Loc.resChar p))
     (hsD : (D.s.atP p).split = some sg) (T T' : ℕ) (ζ : D.host.E) :
@@ -567,17 +559,15 @@ theorem blkMod_comps (p : PlF D) (sg : Loc.SplitAt (D.s.atP p).Fp (D.s.atP p).Ep
     ring
 
 /- English proof (translation)
-Distinguish the cases in `h0 : a ≠ 0 ∧ b ≠ 0`. Conclude with `⟨0, by simpa using h0⟩`. Distinguish the cases in `h1 : a + 1 ≠ 0 ∧ b + 1 ≠ 0`. Conclude with `⟨1, by simpa using h1⟩`. Use `⟨2, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.val_two, Nat.cast_ofNat]`. Establish `h2 : (2 : K) ≠ 0` using `two_ne_zero`. Rewrite `h0`, `h1` using `[not_and_or, not_ne_iff, not_ne_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `ha`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `h0 with h0 | h0` into its components or cases. Rewrite `ha` using `[h0]`. Simplify using `at ha`. Break down `h1 with h1 | h1` into its components or cases. Establish `: (1 : K) = 0` using `by linear_combination ha - h1`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `one_ne_zero this`. Establish `: (1 : K) = 0` using `by linear_combination h1 - h0`. Conclude with `one_ne_zero this`. Introduce `hb`. Break down `h0 with h0 | h0` into its components or cases.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Break down `h1 with h1 | h1` into its components or cases. Establish `: (1 : K) = 0` using `by linear_combination h1 - h0`. Conclude with `one_ne_zero this`. Establish `: (1 : K) = 0` using `by linear_combination hb - h1`. Conclude with `one_ne_zero this`.
-
-Rewrite `hb` using `[h0]`. Simplify using `at hb`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_k {K : Type} [Field K] [CharZero K] (a b : K) :
     ∃ k : Fin 3, a + ((k : ℕ) : K) ≠ 0 ∧ b + ((k : ℕ) : K) ≠ 0 := by
@@ -625,14 +615,14 @@ variable {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
 
 /- English proof (translation)
-Unfold `leadMinorE`. Rewrite using `[dif_pos le_rfl]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem leadMinor_top (Z : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) :
     leadMinorE Z (D.R.rS + 1) = Z.det := by
   unfold leadMinorE; rw [dif_pos le_rfl]; rfl
 
 /- English proof (translation)
-Unfold `leadMinorE`. Rewrite using `[dif_pos (Nat.le_succ _)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem leadMinor_r (Z : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) :
     leadMinorE Z D.R.rS = (Z.submatrix Fin.castSucc Fin.castSucc).det := by
@@ -641,53 +631,47 @@ theorem leadMinor_r (Z : Matrix (Fin (D.R.rS + 1)) (Fin (D.R.rS + 1)) D.host.E) 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Establish `hsp` using `(hA p).2.2.2.2.2`. Rewrite `hsp` using `[hsM]`. Break down `hsD : (D.s.atP p).split with _ | sg` into its components or cases. Rewrite `hsp` using `[hsD]`. Conclude with `hsp.elim`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hsp` using `[hsD]`. Take `⟨hge, hgq⟩` from `hsp`. Establish `hq : (sg.q : (D.s.atP p).Fp) ≠ 0` using `fun h => sg.q_irr.ne_zero (Subtype.ext h)`. Use `haveI := (D.s.atP p).char0`. Use `haveI : Nontrivial (D.s.atP p).Ep := PI.ProdFormulaE.Base.nontrivial (D.s.atP p)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ y : (D.s.atP p).Ep, p1 sg.e y ≠ 0 → p2 sg.e y ≠ 0 → IsUnit y` using `fun y h1 h2 => by`. Establish `hu : IsUnit (sg.e y)` using `Prod.isUnit_iff.2 ⟨isUnit_iff_ne_zero.2 h1, isUnit_iff_ne_zero.2 h2⟩`. Use `hu.map sg.e.symm` as an intermediate fact. Rewrite `this` using `[AlgEquiv.symm_apply_apply]`. Then use the resulting hypothesis. Establish `hr` using `Formalism.L2.SG.Pf.ScalKindPf.dmin_eq hc D.R.rS (Nat.le_succ _)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hr1` using `Formalism.L2.SG.Pf.ScalKindPf.dmin_eq hc (D.R.rS + 1) le_rfl`. Rewrite `hr1` using `[Formalism.L2.SG.Pf.ScalKindPf.sgnL_succ]`. Rewrite `hr` using `[leadMinor_r]`. Rewrite `hr1` using `[leadMinor_top]`. Generalize the expression as in `ZhatL (lf D F0) F' = Z at hr hr1 ⊢`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs` using `Formalism.L2.SG.Pf.ScalKindPf.sgnL_ne (D := D) D.R.rS`. Establish `hpt : Dmin w (D.R.rS + 1) ≠ 0`. Rewrite using `[Formalism.L2.SG.Pf.dmin_top]`. Conclude with `Formalism.MainNotions.BridgeLemma.ptMat_det_ne w`. Establish `hdetZ : Z.det ≠ 0` using `fun h => hpt (by rw [hr1, h, mul_zero])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hcfl : cf (⟨δ, M, hA⟩ : LocDat D) p (Fin.last D.R.rS) = 1` using `by simp [cf]`. Use `set P := ∏ a : Fin D.R.rS, cf (⟨δ, M, hA⟩ : LocDat D) p (Fin.castSucc a) with hPdef`. Establish `hP : P ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => by`. Simplify using `only [cf]`. Conclude with `pow_ne_zero _ (inv_ne_zero (yP_ne _ p))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `v1 : ∀ c : (D.s.atP p).Ep, p1 sg.e (Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z + cornerM p c).det = ((sg.q : (D.s.atP p).Fp)⁻¹) ^ (D.R.rS + 1) * (P ^ 2 * (((p1 sg.e).comp (D.s.atP p).ιE) Z.det + ((((D.mem u).A.T : ℕ) : (D.s.atP p).Fp) + (sg.q : (D.s.atP p).Fp) * p1 sg.e c) * ((p1 sg.e).comp (D.s.atP p).ιE) (Z.submatrix Fin.castSucc Fin.castSuc …`. Introduce `c`. Rewrite using `[firstProj_det_corner hA u u' p g hsM sg hge hgq Z c]`. Establish `h` using `det_diag_mul (cf (⟨δ, M, hA⟩ : LocDat D) p) (Z.map ((p1 sg.e).comp (D.s.atP p).ιE)) ((((D.mem u).A.T : ℕ) : (D.s.atP p).Fp) + (sg.q : (D.s.atP p).Fp) * p1 sg.e c)`. Simplify using `only [Matrix.map_apply] at h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd1 : (Z.map ((p1 sg.e).comp (D.s.atP p).ιE)).det = ((p1 sg.e).comp (D.s.atP p).ιE) Z.det` using `(RingHom.map_det ((p1 sg.e).comp (D.s.atP p).ιE) Z).symm`. Establish `hd1s : ((Z.map ((p1 sg.e).comp (D.s.atP p).ιE)).submatrix Fin.castSucc Fin.castSucc).det = ((p1 sg.e).comp (D.s.atP p).ιE) (Z.submatrix Fin.castSucc Fin.castSucc).det` using `(RingHom.map_det ((p1 sg.e).comp (D.s.atP p).ιE) _).symm`. Rewrite using `[h, hcfl, hd1, hd1s, ← hPdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `v2 : ∀ c : (D.s.atP p).Ep, p2 sg.e (Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p Z + cornerM p c).det = (-(sg.q : (D.s.atP p).Fp)⁻¹) ^ (D.R.rS + 1) * (P ^ 2 * (((p2 sg.e).comp (D.s.atP p).ιE) Z.det + ((((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) - (sg.q : (D.s.atP p).Fp) * p2 sg.e c) * ((p2 sg.e).comp (D.s.atP p).ιE) (Z.submatrix Fin.castSucc Fin.castS …`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Rewrite using `[secondProj_det_corner hA u u' p g hsM sg hge hgq Z c]`. Establish `h` using `det_diag_mul (cf (⟨δ, M, hA⟩ : LocDat D) p) (Z.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose ((((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) - (sg.q : (D.s.atP p).Fp) * p2 sg.e c)`. Simplify using `only [Matrix.transpose_apply, Matrix.map_apply] at h`. Establish `hd2 : (Z.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose.det = ((p2 sg.e).comp (D.s.atP p).ιE) Z.det`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Matrix.det_transpose]`. Conclude with `(RingHom.map_det ((p2 sg.e).comp (D.s.atP p).ιE) Z).symm`. Establish `hd2s : ((Z.map ((p2 sg.e).comp (D.s.atP p).ιE)).transpose.submatrix Fin.castSucc Fin.castSucc).det = ((p2 sg.e).comp (D.s.atP p).ιE) (Z.submatrix Fin.castSucc Fin.castSucc).det`. Rewrite using `[← Matrix.transpose_submatrix, Matrix.det_transpose]`. Conclude with `(RingHom.map_det ((p2 sg.e).comp (D.s.atP p).ιE) _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h, hcfl, hd2, hd2s, ← hPdef]`. Expand and normalize the polynomial expressions, which then agree. Establish `hqi : ((sg.q : (D.s.atP p).Fp)⁻¹) ^ (D.R.rS + 1) ≠ 0` using `pow_ne_zero _ (inv_ne_zero hq)`. Establish `hqi' : (-(sg.q : (D.s.atP p).Fp)⁻¹) ^ (D.R.rS + 1) ≠ 0` using `pow_ne_zero _ (neg_ne_zero.2 (inv_ne_zero hq))`. Establish `hP2 : P ^ 2 ≠ 0` using `pow_ne_zero _ hP`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hD : Dmin w D.R.rS = 0`. Establish `hcs : cornerSh δ (D.mem u).A.T (D.mem u').A.T p w = 0` using `by unfold cornerSh; rw [if_pos hD]`. Establish `hDr : (Z.submatrix Fin.castSucc Fin.castSucc).det = 0`. Rewrite `hD` using `[hr]`. Conclude with `(mul_eq_zero.1 hD).resolve_left hs`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hcs]`. Use `key _ ?_ ?_` and prove the remaining obligations. Rewrite using `[v1, hDr]`. Simplify using `only [map_zero, mul_zero, add_zero]`. Conclude with `mul_ne_zero hqi (mul_ne_zero hP2 ((map_ne_zero ((p1 sg.e).comp (D.s.atP p).ιE)).2 hdetZ))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[v2, hDr]`. Simplify using `only [map_zero, mul_zero, add_zero]`. Conclude with `mul_ne_zero hqi' (mul_ne_zero hP2 ((map_ne_zero ((p2 sg.e).comp (D.s.atP p).ιE)).2 hdetZ))`. Establish `hDr : (Z.submatrix Fin.castSucc Fin.castSucc).det ≠ 0` using `fun h => hD (by rw [hr, h, mul_zero])`. Establish `hζZ : Z.det = zetaOf w * (Z.submatrix Fin.castSucc Fin.castSucc).det`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `zetaOf`. Rewrite using `[hr1, hr, mul_div_mul_left _ _ hs, div_mul_cancel₀ _ hDr]`. Take `⟨b1, b2⟩` from `blkMod_comps (δ := δ) p sg hsD (D.mem u).A.T (D.mem u').A.T (zetaOf w)`. Take `⟨k, hk1, hk2⟩` from `exists_k (p1 sg.e (blkMod δ (D.mem u).A.T (D.mem u').A.T p (D.R.rS + 1) 1 (zetaOf w))) (p2 sg.e (blkMod δ (D.mem u).A.T (D.mem u').A.T p (D.R.rS + 1) 1 (zetaOf w)))`. Establish `hex : ∃ k : Fin 3, IsUnit (blkMod δ (D.mem u).A.T (D.mem u').A.T p (D.R.rS + 1) 1 (zetaOf w) + (((k : Fin 3) : ℕ) : (D.s.atP p).Ep))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨k, key _ ?_ ?_⟩` and prove the remaining obligations. Rewrite using `[map_add (p1 sg.e), map_natCast (p1 sg.e)]`. Conclude with `hk1`. Rewrite using `[map_add (p2 sg.e), map_natCast (p2 sg.e)]`. Conclude with `hk2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hcs : cornerSh δ (D.mem u).A.T (D.mem u').A.T p w = (((hex.choose : Fin 3) : ℕ) : (D.s.atP p).Ep)`. Unfold `cornerSh nSh`. Rewrite using `[if_neg hD, dif_pos hex]`. Establish `hu` using `hex.choose_spec`. Establish `hu1 : p1 sg.e (blkMod δ (D.mem u).A.T (D.mem u').A.T p (D.R.rS + 1) 1 (zetaOf w) + (((hex.choose : Fin 3) : ℕ) : (D.s.atP p).Ep)) ≠ 0` using `fun h => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hu.map (p1 sg.e)` as an intermediate fact. Rewrite `this` using `[h]`. Conclude with `not_isUnit_zero this`. Establish `hu2 : p2 sg.e (blkMod δ (D.mem u).A.T (D.mem u').A.T p (D.R.rS + 1) 1 (zetaOf w) + (((hex.choose : Fin 3) : ℕ) : (D.s.atP p).Ep)) ≠ 0` using `fun h => by`. Use `hu.map (p2 sg.e)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[h]`. Conclude with `not_isUnit_zero this`. Rewrite `hu1` using `[map_add (p1 sg.e), map_natCast (p1 sg.e) ((hex.choose : Fin 3) : ℕ)]`. Rewrite `hu2` using `[map_add (p2 sg.e), map_natCast (p2 sg.e) ((hex.choose : Fin 3) : ℕ)]`. Simplify using `only [b1] at hu1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [b2] at hu2`. Establish `hqq : (sg.q : (D.s.atP p).Fp) * (sg.q : (D.s.atP p).Fp)⁻¹ = 1` using `mul_inv_cancel₀ hq`. Establish `h1' : ((p1 sg.e).comp (D.s.atP p).ιE) Z.det = p1 sg.e ((D.s.atP p).ιE (zetaOf w)) * ((p1 sg.e).comp (D.s.atP p).ιE) (Z.submatrix Fin.castSucc Fin.castSucc).det`. Use `congrArg ((p1 sg.e).comp (D.s.atP p).ιE) hζZ` as an intermediate fact. Rewrite `this` using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `h2' : ((p2 sg.e).comp (D.s.atP p).ιE) Z.det = p2 sg.e ((D.s.atP p).ιE (zetaOf w)) * ((p2 sg.e).comp (D.s.atP p).ιE) (Z.submatrix Fin.castSucc Fin.castSucc).det`. Use `congrArg ((p2 sg.e).comp (D.s.atP p).ιE) hζZ` as an intermediate fact. Rewrite `this` using `[map_mul]`. Conclude with `this`.
-
-Rewrite using `[hcs]`. Use `key _ ?_ ?_` and prove the remaining obligations. Rewrite using `[v1, map_natCast (p1 sg.e) ((hex.choose : Fin 3) : ℕ)]`. Use `mul_ne_zero hqi (mul_ne_zero hP2 ?_)` and prove the remaining obligations. Establish `e : ((p1 sg.e).comp (D.s.atP p).ιE) Z.det + ((((D.mem u).A.T : ℕ) : (D.s.atP p).Fp) + (sg.q : (D.s.atP p).Fp) * (((hex.choose : Fin 3) : ℕ) : (D.s.atP p).Fp)) * ((p1 sg.e).comp (D.s.atP p).ιE) (Z.submatrix Fin.castSucc Fin.castSucc).det = (sg.q : (D.s.atP p).Fp) * ((p1 sg.e ((D.s …`.
-
-Take the linear combination `h1' - ((p1 sg.e ((D.s.atP p).ιE (zetaOf w)) + (((D.mem u).A.T : ℕ) : (D.s.atP p).Fp)) * ((p1 sg.e).comp (D.s.atP p).ιE) (Z.submatrix Fin.castSucc Fin.castSucc).det) * hqq`. Rewrite using `[e]`. Conclude with `mul_ne_zero (mul_ne_zero hq hu1) ((map_ne_zero ((p1 sg.e).comp (D.s.atP p).ιE)).2 hDr)`. Rewrite using `[v2, map_natCast (p2 sg.e) ((hex.choose : Fin 3) : ℕ)]`. Use `mul_ne_zero hqi' (mul_ne_zero hP2 ?_)` and prove the remaining obligations.
-
-Establish `e : ((p2 sg.e).comp (D.s.atP p).ιE) Z.det + ((((D.mem u').A.T : ℕ) : (D.s.atP p).Fp) - (sg.q : (D.s.atP p).Fp) * (((hex.choose : Fin 3) : ℕ) : (D.s.atP p).Fp)) * ((p2 sg.e).comp (D.s.atP p).ιE) (Z.submatrix Fin.castSucc Fin.castSucc).det = -(sg.q : (D.s.atP p).Fp) * (-(p2 sg.e (( …`. Take the linear combination `h2' - ((p2 sg.e ((D.s.atP p).ιE (zetaOf w)) + (((D.mem u').A.T : ℕ) : (D.s.atP p).Fp)) * ((p2 sg.e).comp (D.s.atP p).ιE) (Z.submatrix Fin.castSucc Fin.castSucc).det) * hqq`. Rewrite using `[e]`. Conclude with `mul_ne_zero (mul_ne_zero (neg_ne_zero.2 hq) hu2) ((map_ne_zero ((p2 sg.e).comp (D.s.atP p).ιE)).2 hDr)`.
+A detailed English derivation is pending.
 -/
 theorem detG (hA : ∀ p, Agree δ M p) (u u' : D.what₂.Word) (p : PlF D) (g : Loc.SplitG (M p).L)
     (hsM : (M p).split = some g) {F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E)}
@@ -851,19 +835,19 @@ variable {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
   {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => (h a a).2 rfl, fun a b hab => (h a b).1 hab⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLo_of_uni' {K : Type} [CommRing K] {n : ℕ} {L : Matrix (Fin n) (Fin n) K} (h : IsLoUni L) : IsLo L :=
   ⟨fun a => (h a a).2 rfl, fun a b hab => (h a b).1 hab⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun a => (h a a).2 rfl, fun a b hab => (h b a).1 hab⟩`.
+Supply the required witnesses or components.
 -/
 theorem isUp_of_uni' {K : Type} [CommRing K] {n : ℕ} {U : Matrix (Fin n) (Fin n) K} (h : IsUpUni U) : IsUp U :=
   ⟨fun a => (h a a).2 rfl, fun a b hab => (h b a).1 hab⟩
 
 /- English proof (translation)
-Unfold `cornerSh`. Use `split_ifs`. Conclude with `(M p).R.zero_mem`. Conclude with `natCast_mem (M p).R _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cornerSh_mem (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) :
     cornerSh δ T T' p w ∈ (M p).R := by
@@ -873,15 +857,13 @@ theorem cornerSh_mem (T T' : ℕ) (p : PlF D) (w : Point D.host.E (D.R.rS + 1)) 
   · exact natCast_mem (M p).R _
 
 /- English proof (translation)
-Introduce `γ w hγ p`. Establish `hex` using `hNR γ w hγ`. Establish `hn : nrep γ = some hex.choose` using `dif_pos hex`. Take `⟨-, -, hL, hU, e⟩` from `hex.choose_spec`. Establish `hz : zT γ = ZhatL (lf D F0) hex.choose.2.1` using `by unfold zT; rw [hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hpt : ptT γ = hex.choose.1` using `by unfold ptT; rw [hn]`. Establish `hc : IsInCell (ZhatOM (ZhatL (lf D F0) hex.choose.2.1)) hex.choose.1` using `⟨_, _, hL, hU, e⟩`. Establish `hint : ∀ a b, (Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p (zT γ) + cornerM p (cornerSh δ (D.mem u).A.T (D.mem u').A.T p hex.choose.1)) a b ∈ (M p).R := fun a b => by`. Rewrite using `[Matrix.add_apply]`. Use `(M p).R.add_mem (hInt γ w hγ p a b) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [cornerM, Matrix.of_apply]`. Use `split_ifs`. Conclude with `cornerSh_mem _ _ p _`. Conclude with `(M p).R.zero_mem`. Establish `hdet : IsUnit (Formalism.L2.SG.CntLocal.ZZP (M` using `M) δ u u' p (zT γ) + cornerM p (cornerSh δ (D.mem u).A.T (D.mem u').A.T p hex.choose.1)).det := by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Break down `hsM : (M p).split with _ | g` into its components or cases. Conclude with `detL hA u u' p hsM hex.choose.1 _ _ _ (isLo_of_uni' hL) (isUp_of_uni' hU) (by rw [← zhatOM_eq]; exact e)`. Conclude with `detG hA u u' p g hsM hex.choose.1 hc`. Use `show thL M δ (D.mem u).A.T (D.mem u').A.T p (ptT γ) (Formalism.L2.SG.CntLocal.ZZP (M := M) δ u u' p (zT γ)) ≠ none`.
-
-Rewrite using `[hpt]`. Unfold `thL clsOf`. Rewrite using `[dif_pos ⟨hint, hdet⟩]`. Conclude with `Option.some_ne_none _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thSome_of (hA : ∀ p, Agree δ M p) {u u' : D.what₂.Word} {F0 : FlagG (VS D) D.R.rS (Formalism.L2.SG.CntLocal.Tn u)}
     {what₂ : Finset (Submodule (𝓞 D.host.E) (VS D).V)} (hNR : NormRepElig u u' F0 what₂)
@@ -927,7 +909,7 @@ open NumberField Formalism.MainNotions.S Formalism.MainNotions.S.Lat Formalism.M
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `ThSomePf.thSome_of hA hNR hInt`.
+A detailed English derivation is pending.
 -/
 theorem thSome_holds_of {D : Formalism.BasicNotions.D7} {δ : ∀ p : PlF D, (D.s.atP p).Fp}
     {M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep} (hA : ∀ p, Agree δ M p) {u u' : D.what₂.Word}

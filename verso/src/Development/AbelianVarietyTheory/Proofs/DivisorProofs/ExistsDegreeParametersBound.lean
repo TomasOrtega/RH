@@ -54,9 +54,9 @@ section Weights
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H}
 
 /- English proof (translation)
-Introduce `a i hai`. Establish `h0 : ∀ k, 0 ≤ gap (la τ) k` using `fun k => by`. Distinguish the cases in `hk : k + 1 < Dw.p + Dw.q`. Conclude with `hg.trans (h τ k hk)`. Rewrite using `[gap, dif_neg hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e` using `ofGaps_gap (la τ) a i`. Use `Finset.sum_le_sum_of_subset_of_nonneg (f := gap (la τ)) (Finset.range_mono (show (a : ℕ) ≤ i from hai)) fun k _ _ => h0 k` as an intermediate fact. Rewrite `e` using `[ofGaps]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem antitone_of_gapGe {g : ℤ} (hg : 0 ≤ g) {la : AllWt.Weight Dw} (h : GapGe g la) (τ : Psi H) : Antitone (la τ) := by
   intro a i hai
@@ -71,9 +71,9 @@ theorem antitone_of_gapGe {g : ℤ} (hg : 0 ≤ g) {la : AllWt.Weight Dw} (h : G
   linarith
 
 /- English proof (translation)
-Establish `h₁ : GapGe (FlagTan.dimFlag Dw + 3) P.u₁` using `h.gaps.mono (by`. Use `push_cast`. Conclude with `le_mul_of_one_le_right (by positivity) (by omega))`. Introduce `i τ k hk`. Establish `a` using `h₁ τ k hk`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b` using `(P.gap_rem τ k).1`. Apply the tactic sequence `have c : -2 ≤ gap (FlagTan.kap Dw τ) k := by rw [gap_kap τ hk]; split_ifs <;> omega`. Establish `d : 0 ≤ gap (P.u₁ τ) k` using `le_trans (by positivity) a`. Simplify using `only [WtPar.wt, WtPar.uc, WtPar.u₂, Pi.add_apply, Pi.smul_apply, gap_add, gap_nsmul]`. Use polynomial arithmetic with `[mul_nonneg (Int.natCast_nonneg i) d, mul_nonneg (Int.natCast_nonneg (FlagTan.dimFlag Dw)) d]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem gapGe_wt_of_wtBig {P : WtPar Dw} (h : WtBig P) : ∀ i, GapGe (FlagTan.dimFlag Dw + 1) (P.wt i) := by
   have h₁ : GapGe (FlagTan.dimFlag Dw + 3) P.u₁ := h.gaps.mono (by
@@ -92,15 +92,13 @@ end Weights
 variable {D : D7} {T : Core D} {j : ℕ} {Y : Deep T j}
 
 /- English proof (translation)
-Take `⟨TF, R, ω, h⟩` from `GlobalTheory.T.deep_model_weight_section hP hG hQ hN hPr hS hC hL D T j Y e o hY hE Z P hW hA`. Establish `hPk : 0 ≤ PP * κ` using `mul_nonneg hPP hκ`. Set `k : Consts` to `⟨Λ, β, Real.exp (PP * κ), Real.exp (PP * κ), 0, hβ, Real.one_le_exp hPk, Real.one_le_exp hPk⟩`. Set `th : R.L.Sec` to `0`. Establish `r₁` using `GlobalTheory.T.cuspForm_ratios_generate_at_flagSpace_genericPoint TF.X Z Y.U P.u₁ ⟨R.toModif⟩ hBir.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `r₂` using `GlobalTheory.T.cuspForm_ratios_generate_at_flagSpace_genericPoint TF.X Z Y.U P.u₂ ⟨R.toModif⟩ hBir.2`. Establish `hΛ₀ : 1 ≤ Real.exp (CompHt.dimFlag (T.Q.Dw j) * PP * (κ / P.T + 1))` using `Real.one_le_exp (by positivity)`. Establish `sh : ∀ i ≤ P.T, (h.data f₁ f₂ th k).ShortFamily i (Real.exp (PP * κ))` using `fun i hi => by`. Take `⟨m, v, l, s, n⟩` from `hsh i hi`. Conclude with `GlobalTheory.HSApp.shortFamily_of_spanning _ _ _ _ _ _ TF Z _ Y.U P R ω _ _ _ _ h f₁ f₂ th k i hi _ m v l s n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `s0 : (h.data f₁ f₂ th k).ShortFamily 0 (Real.exp (CompHt.dimFlag (T.Q.Dw j) * PP * (κ / P.T + 1)))`. Take `⟨m, v, l, s, n⟩` from `h0`. Conclude with `GlobalTheory.HSApp.shortFamily_of_spanning _ _ _ _ _ _ TF Z _ Y.U P R ω _ _ _ _ h f₁ f₂ th k 0 P.T.zero_le _ m v l s n`. Establish `hDT : FlagTan.dimFlag (T.Q.Dw j) ≤ P.T` using `(Nat.le_succ _).trans h.le_T`. Establish `hyp` using `GlobalTheory.T.geoHyp_of_ready_of_shortFamily hP hG hQ hN hPr hS hC hL D T j Y e o hY hE Z TF P R ω h f₁ f₂ th k _ hW r₁ r₂ hberg hΛ hfr hΛ₀ s0 (sh _ hDT) (sh _ le_rfl)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `GlobalTheory.T.hilbertSamuel_component_short_basis_bound hQ _ _ _ _ _ _ _ TF.X Z _ Y.U P R ω _ _ _ _ h f₁ f₂ th k _ hyp`. Establish `hrk : Y.rkC (P.wt P.T) Z = Module.finrank Y.d.c₂.F (cuspOn Y.U Z (wtOf _ (P.wt P.T) 0))` using `by show ((Formalism.HN.rkK _ : ℕ) : ℝ) = _`. Rewrite using `[Formalism.HN.rkK, (h.good _ le_rfl).2.2, finrank_top]`. Rewrite `hC` using `[Real.log_exp]`. Use `⟨by exact_mod_cast (h.geo f₁ f₂ th k).one_le_n, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hrk]`. Conclude with `hC`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem claim_at (hP : Hypotheses₂) (hG : GlobalTheory.Published.GrothendieckDeformation) (hQ : Quoted)
     (hN : GlobalTheory.Published.NadelVanishingAndNonKltDivisor) (hPr : GlobalTheory.Published.Principalisation)
@@ -150,17 +148,17 @@ theorem claim_at (hP : Hypotheses₂) (hG : GlobalTheory.Published.GrothendieckD
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hX h2 hG hQ hS hK hL hDG hSz hF`. Establish `hP` using `GlobalTheory.T.stronger_published_hypotheses_imply h2`. Establish `H₄` using `GlobalTheory.T.good_weight_antitone_gap h2`. Establish `H₃ : Covers fun Fm x _ ι p i Y PP _ => ∀ Z, Real.log (Y.dg (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ Z) ≤ PP`. Apply the tactic sequence `apply GlobalTheory.T.log_degree_le_weight_bound <;> assumption`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `Closed.imp (Closed.and (Closed.and (Closed.and (GlobalTheory.T.exists_cusp_frame_weights h2 hDG hSz hF) (GlobalTheory.T.birational_on_weight_parameters hX hG hQ hS h2 hSz)) (Closed.and H₃ wtBig_run)) (Closed.and (Closed.and (GlobalTheory.T.weight_parameter_strict_antitone hSz) (G …` and prove the remaining obligations. Introduce and unpack `eps Fm CH - ⟨⟨⟨⟨_, -, a₁⟩, _, -, a₂⟩, ⟨_, -, a₃⟩, _, -, a₄⟩, ⟨⟨_, -, a₅⟩, _, -, a₆⟩, ⟨_, -, a₇⟩, _, -, a₈⟩`. Take `⟨x0, a⟩` from `(((a₁.and a₂).and (a₃.and a₄)).and ((a₅.and a₆).and (a₇.and a₈)))`. Use `clear a₁ a₂ a₃ a₄ a₅ a₆ a₇ a₈`. Use `⟨0, le_rfl, x0, fun x hx hle ι p hp i hi Y hY Z => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨⟨⟨a₁, a₂⟩, a₃, a₄⟩, ⟨a₅, a₆⟩, a₇, a₈⟩` from `a x hx hle ι p hp`. Use `clear a`. Take `⟨⟨f₂⟩, f₁, Λ, β, hΛ, hβ, hn, hlβ, hlΛ, hfr, hberg⟩` from `a₁ i hi Y hY Z`. Establish `hW` using `a₄ i hi`. Take `⟨hp1, hq1, hE, -⟩` from `a₅ i hi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hLaw, hIn, -, -, -, -, -, -, -, -, -, -, hPP, -⟩` from `a₆ i hi Y hY`. Take `⟨hPk, hsh⟩` from `a₈ i hi Y hY`. Establish `hg` using `gapGe_wt_of_wtBig hW`. Establish `hPP0 : 0 ≤ (Fm.parT x hx ι).PP` using `le_trans (by positivity) hPP`. Establish `hκ0 : 0 ≤ kap p i` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c₁, c₂⟩` from `claim_at hP hG hQ h2.q15 h2.q16 hS hK.toroidalChartsForFan hL hY.1 hE Z hW (fun j _ => (H₄ _ p.T hLaw _ hp1 hq1 hE hIn Y _ _ hY.1 _ (fun τ => antitone_of_gapGe (by positivity) (hg j) τ) (fun τ => le_trans (by omega) (hg j τ ((dat p i).p - 1) (by omega)))).1) hPP0 hκ0 f₂ f₁ hΛ hβ …`. Use `⟨f₁.n, Λ, β, _, _, _, c₁, hΛ, hβ, Real.one_le_exp hPk, Real.one_le_exp hPk, hn, hlβ, a₃ i hi Y hY Z, hlΛ, (Real.log_exp _).le, (Real.log_exp _).le, ?_, c₂⟩` and prove the remaining obligations. Establish `e₁ : 0 ≤ CompHt.dimFlag (dat p i) * (Fm.parT x hx ι).PP * (kap p i / lenT p i (Fm.parT x hx ι).PP + 1)`. Check the signs of the components of the expression. Establish `e₂ : 0 ≤ (lenT p i (Fm.parT x hx ι).PP : ℝ) * (Fm.parT x hx ι).PP` using `by positivity`.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Establish `e₃ : 0 ≤ 2 * (Fm.parT x hx ι).PP * (kap p i / lenT p i (Fm.parT x hx ι).PP) * CompHt.dimFlag (dat p i)`. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem hsClaim_short : GlobalTheory.CovTop.HypothesesX → Hypotheses2 → GlobalTheory.Published.GrothendieckDeformation → GlobalTheory.HSCore.Quoted → GlobalTheory.Published.SiegelToroidalIntegral → GlobalTheory.Published.ToroidalForFanKS → GlobalTheory.Published.SemiAbelianLieSeminegative → DeepGood → Size → FlatDeg → Covers fun Fm x _ ι p i Y PP _ => ∀ Z, ∃ n Λ β ΛD ΛT J : ℝ, 1 ≤ n ∧ 1 ≤ Λ ∧ 1 ≤ β ∧ 1 ≤ ΛD ∧ 1 ≤ ΛT ∧ Real.log n ≤ PP ∧ Real.log β ≤ PP ∧ Real.log (Y.dg (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ Z) ≤ PP ∧ Real.log Λ ≤ PP * (kap p i / lenT p i PP + 1) ∧ Real.log ΛD ≤ PP * kap p i ∧ Real.log ΛT ≤ PP * kap p i ∧ J ≤ 4 * (CompHt.dimFlag (dat p i) * PP * (kap p i / lenT p i PP + 1) + lenT p i PP * PP) + 2 * PP * (kap p i / lenT p i PP) * CompHt.dimFlag (dat p i) ∧ Formalism.NormVectorIdentities.Items.HSClaimS 26 (lenT p i PP) (CompHt.dimFlag (dat p i)) n 1 Λ β ΛD ΛT J (Y.dg (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ Z) (Y.ht (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).u₁ Z) (Y.rkC ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) Z) (Y.degC ((⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)).wt (lenT p i PP)) Z) := by
   intro hX h2 hG hQ hS hK hL hDG hSz hF

@@ -86,7 +86,7 @@ open GlobalTheory.Mem.Top GlobalTheory.Mem.LiteralAutomorphy
 namespace GlobalTheory.Mem.LiteralAutomorphy
 
 /- English proof (translation)
-Introduce `hw hm P hJ ht K WC LM TA FS` and use `GlobalTheory.Mem.LiteralAutomorphy.evLgG_gridA_of_exGrid (GlobalTheory.Mem.LiteralAutomorphy.exGrid_of (GlobalTheory.Mem.LiteralAutomorphy.weilEx_of_classicalTheorems P) (isEx_of_separates FS (GlobalTheory.RowEx.linB P (GlobalTheory.PairLift.liftsCuspidal_of_classicalTheorems P)) …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem evLgG_gridA_of_join : GlobalTheory.Published.HoweDualityReal → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.LocalMatching → GlobalTheory.FunPr.Hypotheses₂ → GlobalTheory.Mem.LiteralAutomorphy.JoinOut → GlobalTheory.Published.HeckeTateFunctionalEquation → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.WeilConvergence → GlobalTheory.SquareSt.LocalMatching → GlobalTheory.SquareSt.ThetaIntegralsAgree → GlobalTheory.IndefiniteRowSideFullHecke.LevelPlusSubgroup.FunctionalsSeparate → ∃ CF0 : ℝ, ∀ CF, CF0 ≤ CF → EvLgG (GridA CF) :=
   fun hw hm P hJ ht K WC LM TA FS =>

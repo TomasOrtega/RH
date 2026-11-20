@@ -18,11 +18,11 @@ namespace GlobalTheory.MixDens.ThetaFrame
 open ReciprocityTheory.ChartRestriction.G.AR.Inst.CurvPf
 
 /- English proof (translation)
-Establish `hU : ∀ a c : Fin m, c < a → Tᴴᵀ a c = 0` using `fun a c hac => by`. Simplify using `[Matrix.transpose_apply, Matrix.conjTranspose_apply, hT a c hac]`. Establish `h1` using `sub_LMU hk T M Tᴴᵀ hT hU`. Establish `h2` using `sub_LMU hk T N Tᴴᵀ hT hU`. Rewrite `h1` using `[show Tᵀ * M * Tᴴᵀ = chg T M from rfl, h, Matrix.submatrix_one _ (Fin.castLE_injective hk)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[show Tᵀ * N * Tᴴᵀ = chg T N from rfl]`. Rewrite using `[h2]`. Use `set P := (T.submatrix (Fin.castLE hk) (Fin.castLE hk))ᵀ`. Use `set Q := Tᴴᵀ.submatrix (Fin.castLE hk) (Fin.castLE hk)`. Use `set A := M.submatrix (Fin.castLE hk) (Fin.castLE hk)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : P * (A * Q) = 1` using `by rw [← Matrix.mul_assoc]; exact h1.symm`. Establish `e2 : A * (Q * P) = 1`. Rewrite using `[← Matrix.mul_assoc]`. Conclude with `mul_eq_one_comm.1 e1`. Rewrite using `[Matrix.inv_eq_right_inv e2, Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_sub_inv_mul {m k : ℕ} (hk : k ≤ m) (M N T : Matrix (Fin m) (Fin m) ℂ)
     (hT : ∀ a c : Fin m, c < a → T a c = 0) (h : chg T M = 1) :
@@ -44,7 +44,7 @@ theorem trace_sub_inv_mul {m k : ℕ} (hk : k ≤ m) (M N T : Matrix (Fin m) (Fi
   rw [Matrix.inv_eq_right_inv e2, Matrix.mul_assoc, Matrix.trace_mul_comm, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[sum_eq_castLE hk]`. Simplify using `[Matrix.trace]`. Introduce `c hc`. Simplify using `[not_lt.2 hc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem trace_sub_eq_sum {m k : ℕ} (hk : k ≤ m) (A : Matrix (Fin m) (Fin m) ℂ) :
     (A.submatrix (Fin.castLE hk) (Fin.castLE hk)).trace = ∑ c : Fin m, if (c : ℕ) < k then A c c else 0 := by
@@ -54,7 +54,7 @@ theorem trace_sub_eq_sum {m k : ℕ} (hk : k ≤ m) (A : Matrix (Fin m) (Fin m) 
     simp [not_lt.2 hc]
 
 /- English proof (translation)
-Establish `e : Bᵀ * (G * Bᴴᵀ) = 1` using `by rw [← Matrix.mul_assoc]; exact h`. Establish `hinv : (Bᵀ)⁻¹ = G * Bᴴᵀ` using `Matrix.inv_eq_right_inv e`. Simplify using `only [chg, Matrix.transpose_mul, Matrix.transpose_nonsing_inv, hinv, Matrix.mul_neg, Matrix.neg_mul, Matrix.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem chg_neg_mul {m : ℕ} (G F B : Matrix (Fin m) (Fin m) ℂ) (h : chg B G = 1) :
     chg B (-(Fᵀ * G)) = -(B⁻¹ * F * B)ᵀ := by
@@ -64,7 +64,7 @@ theorem chg_neg_mul {m : ℕ} (G F B : Matrix (Fin m) (Fin m) ℂ) (h : chg B G 
     Matrix.mul_assoc]
 
 /- English proof (translation)
-Unfold `logMinorDer`. Rewrite using `[trace_sub_inv_mul _ _ _ T hT h, chg_chg, chg_neg_mul G F (uni n * T) (by rw [← chg_chg]; exact h), trace_sub_eq_sum]`. Simplify using `only [Matrix.neg_apply, Matrix.transpose_apply]`.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem logMinorDer_eq {m : ℕ} (G F : Matrix (Fin m) (Fin m) ℂ) (n : Low m → ℂ) (T : Matrix (Fin m) (Fin m) ℂ)
     (hT : ∀ a c : Fin m, c < a → T a c = 0) (h : chg T (chg (uni n) G) = 1) (j : Fin (m + 1)) :
@@ -80,11 +80,11 @@ end GlobalTheory.MixDens.ThetaFrame
 open GlobalTheory.MixDens.ThetaFrame in
 
 /- English proof (translation)
-Introduce `m G F n T hT h i`. Unfold `theta`. Rewrite using `[logMinorDer_eq G F n T hT h, logMinorDer_eq G F n T hT h, ← Complex.sub_re, ← Finset.sum_sub_distrib]`. Use `congr 1`. Rewrite using `[show ((uni n * T)⁻¹ * F * (uni n * T)) i i = ∑ c : Fin m, if c = i then ((uni n * T)⁻¹ * F * (uni n * T)) c c else 0 by simp]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Simplify using `only [Fin.coe_castSucc, Fin.val_succ]`. Distinguish the cases in `hci : c = i`. Substitute `hci` using the available equality. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Establish `: (c : ℕ) ≠ i` using `fun e => hci (Fin.ext e)`. Distinguish the cases in `hc : (c : ℕ) < i`. Rewrite using `[if_pos hc, if_pos (by omega), if_neg hci]; ring`. Rewrite using `[if_neg hc, if_neg (by omega), if_neg hci]; ring`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem GlobalTheory.MixDens.theta_eq_re_diag : ∀ {m : ℕ} (G F : Matrix (Fin m) (Fin m) ℂ) (n : Low m → ℂ)
     (T : Matrix (Fin m) (Fin m) ℂ), (∀ a c : Fin m, c < a → T a c = 0) → chg T (chg (uni n) G) = 1 →

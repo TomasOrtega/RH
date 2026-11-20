@@ -33,7 +33,7 @@ def segMap (E : Fin (N + 1) ≃ ((k : K) → J k)) :
   aeval (segPt E fun p => (X p : MRing J))
 
 /- English proof (translation)
-Rewrite using `[segMap, comp_aeval_apply]`. Simplify using `only [segPt, map_prod, aeval_X]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem aeval_segMap {R : Type} [CommRing R] (E : Fin (N + 1) ≃ ((k : K) → J k)) (v : (Σ k, J k) → R)
     (g : MRing (fun _ : Unit => Fin (N + 1))) : aeval v (segMap E g) = aeval (segPt E v) g := by
@@ -42,7 +42,7 @@ theorem aeval_segMap {R : Type} [CommRing R] (E : Fin (N + 1) ≃ ((k : K) → J
   rfl
 
 /- English proof (translation)
-Simplify using `only [segPt, Equiv.apply_symm_apply, Finset.prod_div_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem seg_ratio {Ω : Type} [Field Ω] (E : Fin (N + 1) ≃ ((k : K) → J k)) (y : (Σ k, J k) → Ω)
     (c : (k : K) → J k) (p : Σ _ : Unit, Fin (N + 1)) :
@@ -50,11 +50,11 @@ theorem seg_ratio {Ω : Type} [Field Ω] (E : Fin (N + 1) ≃ ((k : K) → J k))
   simp only [segPt, Equiv.apply_symm_apply, Finset.prod_div_distrib]
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨⟨k, i⟩, rfl⟩`. Establish `h1` using `seg_ratio_update y c hc k i`. Use `Algebra.subset_adjoin ⟨⟨(), E.symm (Function.update c k i)⟩, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [segPt, Equiv.apply_symm_apply]`. Conclude with `h1`. Rewrite using `[Algebra.adjoin_le_iff]`. Introduce and unpack `_ ⟨p, rfl⟩`. Rewrite using `[SetLike.mem_coe]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [seg_ratio]`. Conclude with `prod_mem fun k _ => Algebra.subset_adjoin ⟨⟨k, E p.2 k⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem adjoin_ratios_seg {Ω : Type} [Field Ω] [Algebra ℚ Ω] (E : Fin (N + 1) ≃ ((k : K) → J k))
     (y : (Σ k, J k) → Ω) (c : (k : K) → J k) (hc : ∀ k, y ⟨k, c k⟩ ≠ 0) :
@@ -76,11 +76,11 @@ theorem adjoin_ratios_seg {Ω : Type} [Field Ω] [Algebra ℚ Ω] (E : Fin (N + 
     exact prod_mem fun k _ => Algebra.subset_adjoin ⟨⟨k, E p.2 k⟩, rfl⟩
 
 /- English proof (translation)
-Set `ev : MvPolynomial σ ℤ →ₐ[ℤ] S` to `aeval fun p => (⟨v p, hv p⟩ : S)`. Establish `hev : ∀ g, ((ev g : S) : Ω) = aeval v g` using `fun g => by`. Proceed by induction on `g using MvPolynomial.induction_on with`. Consider the case `C a => simp [ev]`. Consider the case `add p q hp hq => simp only [map_add, Subalgebra.coe_add, hp, hq]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `mul_X p i hp => simp only [map_mul, Subalgebra.coe_mul, hp]`. Simplify using `[ev]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h g hg s hs => h _ (Ideal.mem_map_of_mem _ hg) s (hs.trans (hφ g).symm)`. Introduce `h g hg s hs`.
+Treat this case separately. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : I.map φ ≤ q.comap ev` using `Ideal.map_le_iff_le_comap.2 fun g hg => h g hg _ ((hev _).trans (hφ g))`. Establish `e : s = ev g` using `Subtype.ext (hs.trans (hev g).symm)`. Rewrite using `[e]`. Conclude with `hle hg`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem clause_map {σ τ Ω : Type} [Field Ω] [Algebra ℚ Ω] (S : Subalgebra ℚ Ω) (v : σ → Ω) (hv : ∀ p, v p ∈ S)
     (v₁ : τ → Ω) (φ : MvPolynomial τ ℤ →ₐ[ℤ] MvPolynomial σ ℤ) (hφ : ∀ g, aeval v (φ g) = aeval v₁ g)
@@ -103,15 +103,13 @@ theorem clause_map {σ τ Ω : Type} [Field Ω] [Algebra ℚ Ω] (S : Subalgebra
     exact hle hg
 
 /- English proof (translation)
-Introduce `c hc`. Establish `h0 : ∀ k : Unit, segPt E y ⟨k, E.symm c⟩ ≠ 0` using `fun k => by`. Simplify using `only [segPt, Equiv.apply_symm_apply]`. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Take `⟨m, f, b, hf, hb, hsum, hS⟩` from `h (fun _ => E.symm c) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA` using `adjoin_ratios_seg E y c hc`. Use `⟨m, f, b, fun l => ?_, fun l => ?_, hsum, fun l hfl S hSeq => ?_⟩` and prove the remaining obligations. Rewrite using `[hA]`. Conclude with `hf l`. Rewrite using `[hA]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hb l`. Establish `hS' : S = Algebra.adjoin ℚ (insert (f l)⁻¹ (Set.range fun p : Σ _ : Unit, Fin (N + 1) => segPt E y p / segPt E y ⟨p.1, E.symm c⟩))`. Rewrite using `[hSeq, ← Algebra.adjoin_insert_adjoin, hA, Algebra.adjoin_insert_adjoin]`. Take `⟨hsm, z, n, hn, hli, hspan, hq⟩` from `hS l hfl S hS'`. Use `⟨hsm, z, n, hn, hli, hspan, fun q hqp => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : ∀ p : Σ k, J k, y p / y ⟨p.1, c p.1⟩ ∈ S` using `fun p => by`. Rewrite using `[hSeq]`. Conclude with `Algebra.subset_adjoin (Set.mem_insert_of_mem _ ⟨p, rfl⟩)`. Rewrite using `[← hq q hqp]`. Use `clause_map S _ hv _ (segMap E) (fun g => ?_) bd₁ q` and prove the remaining obligations.
-
-Rewrite using `[aeval_segMap]`. Use `congr 2`. Use function extensionality and compare the values at `p`. Conclude with `(seg_ratio E y c p).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isSncModel_seg {Ω : Type} [Field Ω] [Algebra ℚ Ω] [∀ k, Fintype (J k)]
     (E : Fin (N + 1) ≃ ((k : K) → J k)) (y : (Σ k, J k) → Ω) (e : ℕ)
@@ -144,13 +142,11 @@ theorem isSncModel_seg {Ω : Type} [Field Ω] [Algebra ℚ Ω] [∀ k, Fintype (
   exact (seg_ratio E y c p).symm
 
 /- English proof (translation)
-Establish `hval : ∀ g, eval w (map (Int.castRingHom ℂ) (segMap E g)) = eval (segPt E w) (map (Int.castRingHom ℂ) g)` using `fun g => by`. Rewrite using `[eval_map_int, eval_map_int, aeval_segMap]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`. Use `⟨fun _ => ?_, fun g hg => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose c hc using hw`. Use `⟨E.symm c, ?_⟩` and prove the remaining obligations. Simplify using `only [segPt, Equiv.apply_symm_apply]`. Conclude with `Finset.prod_ne_zero_iff.2 fun k _ => hc k`. Rewrite using `[← hval]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h _ (Ideal.mem_map_of_mem _ hg)`. Introduce and unpack `⟨-, h⟩`. Use `⟨hw, fun f hf => ?_⟩` and prove the remaining obligations. Establish `hle : bd₁.map (segMap E) ≤ RingHom.ker (aeval w : MRing J →ₐ[ℤ] ℂ)` using `Ideal.map_le_iff_le_comap.2 fun g hg => by`. Establish `h1` using `h g hg`.
-
-Rewrite `h1` using `[eval_map_int, ← aeval_segMap]`. Conclude with `h1`. Rewrite using `[eval_map_int]`. Conclude with `hle hf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mcPts_seg (E : Fin (N + 1) ≃ ((k : K) → J k)) (bd₁ : Ideal (MRing (fun _ : Unit => Fin (N + 1))))
     (w : (Σ k, J k) → ℂ) (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) :
@@ -183,13 +179,13 @@ variable {Sc : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω)
   {R : Type} [CommRing R] [IsLocalRing R] {z : Spec (CommRingCat.of R) ⟶ Sc}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h, 1, map_one _, map_one _⟩`.
+Supply the required witnesses or components.
 -/
 theorem valAt_one (h : genPt ξ ⤳ centre z) : ValAt ξ z (1 : Ω) (1 : R) :=
   ⟨h, 1, map_one _, map_one _⟩
 
 /- English proof (translation)
-Take `⟨h, s, rfl, rfl⟩` from `ha`. Take `⟨-, s', rfl, rfl⟩` from `hb`. Conclude with `⟨h, s * s', map_mul _ _ _, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem valAt_mul {a b : Ω} {r t : R} (ha : ValAt ξ z a r) (hb : ValAt ξ z b t) : ValAt ξ z (a * b) (r * t) := by
   obtain ⟨h, s, rfl, rfl⟩ := ha
@@ -197,7 +193,7 @@ theorem valAt_mul {a b : Ω} {r t : R} (ha : ValAt ξ z a r) (hb : ValAt ξ z b 
   exact ⟨h, s * s', map_mul _ _ _, map_mul _ _ _⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using valAt_one h`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.prod_insert hi]`. Conclude with `valAt_mul (H i (Finset.mem_insert_self i s)) (ih fun j hj => H j (Finset.mem_insert_of_mem hj))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valAt_prod {α : Type} (h : genPt ξ ⤳ centre z) (s : Finset α) (a : α → Ω) (r : α → R)
     (H : ∀ i ∈ s, ValAt ξ z (a i) (r i)) : ValAt ξ z (∏ i ∈ s, a i) (∏ i ∈ s, r i) := by
@@ -210,13 +206,11 @@ theorem valAt_prod {α : Type} (h : genPt ξ ⤳ centre z) (s : Finset α) (a : 
       (ih fun j hj => H j (Finset.mem_insert_of_mem hj))
 
 /- English proof (translation)
-Take `⟨hb, hr⟩` from `h`. Use `⟨fun _ => ?_, fun _ j hj => ?_⟩` and prove the remaining obligations. Use `choose c hc using hb`. Use `⟨E.symm c, ?_⟩` and prove the remaining obligations. Simplify using `only [segPt, Equiv.apply_symm_apply]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `isUnit_iff_ne_zero.2 (Finset.prod_ne_zero_iff.2 fun k _ => (hc k).ne_zero)`. Establish `huj : ∀ k, IsUnit (w ⟨k, E j k⟩)` using `fun k => isUnit_iff_ne_zero.2 (Finset.prod_ne_zero_iff.1 (show (∏ k, w ⟨k, E j k⟩) ≠ 0 from hj.ne_zero) k (Finset.mem_univ k))`. Establish `h0 : ∀ k, y ⟨k, E j k⟩ ≠ 0` using `fun k => (hr k _ (huj k)).1`. Use `⟨Finset.prod_ne_zero_iff.2 fun k _ => h0 k, fun i => ?_⟩` and prove the remaining obligations. Use `choose r hrv hrw using fun k => (hr k _ (huj k)).2 (E i k)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hgen : genPt ξ ⤳ centre z`. Take `⟨k⟩` from `‹Nonempty K›`. Conclude with `(hrv k).choose`. Use `⟨∏ k, r k, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `valAt_prod hgen Finset.univ _ _ fun k _ => hrv k`.
-
-Rewrite `h1` using `[Finset.prod_div_distrib]`. Conclude with `h1`. Use `show (∏ k, w ⟨k, E i k⟩) = (∏ k, r k) * ∏ k, w ⟨k, E j k⟩`. Rewrite using `[← Finset.prod_mul_distrib]`. Conclude with `Finset.prod_congr rfl fun k _ => hrw k`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordsAt_seg [Nonempty K] (E : Fin (N + 1) ≃ ((k : K) → J k)) (y : (Σ k, J k) → Ω)
     (z : Spec (CommRingCat.of ℂ) ⟶ Sc) (w : (Σ k, J k) → ℂ) (h : CoordsAt ξ y z w) :
@@ -247,25 +241,21 @@ theorem coordsAt_seg [Nonempty K] (E : Fin (N + 1) ≃ ((k : K) → J k)) (y : (
 end Val
 
 /- English proof (translation)
-Use `haveI hE : IsEmpty (Σ k, J k) := ⟨fun p => isEmptyElim p.1⟩`. Set `c : (k : K) → J k` to `fun k => isEmptyElim k`. Take `⟨m, f, a, hf, ha, hsum, hS⟩` from `hs c (fun k => isEmptyElim k)`. Establish `hr : (Set.range fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) = ∅` using `Set.range_eq_empty _`. Rewrite `hf`, `ha`, `hS` using `[hr]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf`, `ha` using `[Algebra.adjoin_empty]`. Choose the witnesses or unpack the hypotheses as in `⟨l, hl⟩ : ∃ l, f l ≠ 0 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Simplify using `[hall] at hsum`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hsm, zz, n, hn, hli, hspan, hq⟩` from `hS l hl _ rfl`. Use `set S : Subalgebra ℚ Ω := Algebra.adjoin ℚ (insert (f l)⁻¹ ∅) with hSdef`. Establish `hbot : S ≤ ⊥`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ (rfl | h)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht⟩` from `Algebra.mem_bot.1 (hf l)`. Conclude with `Algebra.mem_bot.2 ⟨t⁻¹, by rw [← ht, map_inv₀]⟩`. Conclude with `absurd h (Set.notMem_empty _)`. Establish `hD : ∀ s : S, KaehlerDifferential.D ℚ S s = 0` using `fun s => by`. Take `⟨t, ht⟩` from `Algebra.mem_bot.1 (hbot s.2)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `e1 : s = algebraMap ℚ S t` using `Subtype.ext ht.symm`. Rewrite using `[e1]`. Conclude with `(KaehlerDifferential.D ℚ S).map_algebraMap t`. Use `haveI hFe : IsEmpty (Fin e) := ⟨fun i => hli.ne_zero i (hD _)⟩`. Establish `hcl` using `hq ⊥ Ideal.isPrime_bot`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨g, hg, s, hs1, hs0⟩ : ∃ g ∈ bd, ∃ s : S, (s : Ω) = aeval (fun p : Σ k, J k => y p / y ⟨p.1, c p.1⟩) g ∧ s ∉ (⊥ : Ideal S) := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Take `⟨i, -⟩` from `hcl.1 hall`. Conclude with `isEmptyElim i`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, hz⟩`. It suffices to derive a contradiction. Establish `h1` using `hz g hg`. Rewrite `h1`, `hs1` using `[eq_C_of_isEmpty g]`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. It suffices to derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Apply `hs0` to reduce the goal to its premises. Rewrite using `[Ideal.mem_bot]`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `at h1 hs1`. Simplify using `[hs1, h1]`.
-
-Introduce and unpack `⟨h, hp⟩`. It suffices to derive a contradiction. Take `⟨A, zA, nA, qA, hpa, hqA, hl'⟩` from `hP _ (hB _ hp)`. Take `⟨R, -, hRl, hbd⟩` from `hpa.pts qA hqA`. Establish `hR : R = regAt ξ ⟨centre z, h⟩` using `Subring.ext fun a => (hRl a).trans (hl' a).symm`.
-
-Take `⟨i, -⟩` from `hbd.1 ⟨_, hp, hR.symm⟩`. Conclude with `isEmptyElim i`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem points_of_isEmpty [IsEmpty K] [∀ k, Fintype (J k)] {Ω : Type} [Field Ω] [CharZero Ω] {Sc : Scheme.{0}}
     {ξ : Sp Ω ⟶ Sc} (y : (Σ k, J k) → Ω) (e : ℕ) (B : Set (Cpt ξ)) (bd : Ideal (MRing J))
@@ -328,13 +318,11 @@ namespace GlobalTheory.CompanionTheory.Ar.GeoModel
 open Seg in
 
 /- English proof (translation)
-Introduce `Ω _ _ X ξ K _ J _ y e B hT hB hP`. Take `⟨c₀, -⟩` from `hT.cover ⟨genPt ξ, specializes_rfl⟩`. Use `haveI : Nonempty ((k : K) → J k) := ⟨c₀⟩`. Establish `hcard : 0 < Nat.card ((k : K) → J k)` using `Nat.card_pos`. Take `⟨N, hN⟩` from `Nat.exists_eq_succ_of_ne_zero hcard.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `E : Fin (N + 1) ≃ ((k : K) → J k)` to `(Finite.equivFinOfCardEq hN).symm`. Establish `hTx : CoordTie ℤ ξ (fun j : Fin (N + 1) => ∏ k, y ⟨k, E j k⟩)` using `CoordBase.coordTie_reindex E hT`. Take `⟨bd₁, hs, hpt⟩` from `GlobalTheory.T.exists_snc_model_of_patches Ω X ξ N _ e B hTx hB hP`. Establish `hs'` using `isSncModel_seg E y e bd₁ hs`. Use `⟨bd₁.map (segMap E), hs', fun z w hw => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `isEmpty_or_nonempty K with hK | hK` into its components or cases. Conclude with `points_of_isEmpty y e B _ hs' hB hP z w`. Establish `hnz : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0` using `fun k => by`. Take `⟨i, hi⟩` from `hw.1 k`. Conclude with `⟨i, hi.ne_zero⟩`.
-
-Rewrite using `[mem_mcPts_seg E bd₁ w hnz]`. Conclude with `hpt z _ (coordsAt_seg E y z w hw)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isSncModel_of_sncPts : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (X : Scheme.{0}) (ξ : Sp Ω ⟶ X) (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (e : ℕ) (B : Set (Cpt ξ)), CoordTie ℤ ξ (fun c' : (k : K) → J k => ∏ k, y ⟨k, c' k⟩) → (∀ p ∈ B, Char0 ξ p) → SncPts ξ e B → ∃ bd : Ideal (MRing J), Cmp.IsSncModel y e bd ∧ ∀ (z : Spec (CommRingCat.of ℂ) ⟶ X) w, CoordsAt ξ y z w → (w ∈ mcPts bd ↔ ∃ h : genPt ξ ⤳ centre z, (⟨centre z, h⟩ : Cpt ξ) ∈ B) := by
   intro Ω _ _ X ξ K _ J _ y e B hT hB hP

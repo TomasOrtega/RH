@@ -16,11 +16,11 @@ namespace GroundTheory.Heights₂.Heights.Targets
 open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.AnForm.M Filter Topology
 
 /- English proof (translation)
-Take `⟨hs, hd⟩` from `hP`. Use `⟨fun x j => ?_, fun x x' y hy => ?_⟩` and prove the remaining obligations. Establish `h` using `hs x j`. Rewrite `h` using `[hU x]`. Use `h.congr fun w hw => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp_apply]`. Conclude with `(hφ x _ ((hU x).symm ▸ hw.2)).symm`. Rewrite `hy` using `[← hU x, ← hU x']`. Take `⟨W, hW, hyW, G, hG, hGe⟩` from `hd x x' y hy`. Use `⟨W, hW, hyW, G, hG, fun z hz => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[← hU x, ← hU x']`. Rewrite using `[← hφ x z hz.1.2, ← hφ x' z hz.2]`. Conclude with `hGe z hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ProjPotMassPos.isPotential_congr {e : ℕ} {X : Type} [TopologicalSpace X]
     {A : FinHolAtlas e X} {P Q : LocPot X} (hU : ∀ x, P.U x = Q.U x)
@@ -40,11 +40,11 @@ theorem ProjPotMassPos.isPotential_congr {e : ℕ} {X : Type} [TopologicalSpace 
     exact hGe z hz
 
 /- English proof (translation)
-Set `L : HermLine ι` to `CurveDegreeVert.fsLine (fun _ : K => 2)`. Establish `hL : L.h = fun z => ∏ k, Real.sqrt (∑ i : ι k, ‖z ⟨k, i⟩‖ ^ 2) ^ ((2 : ℕ) : ℤ)`. Use function extensionality and compare the values at `z`. Simplify using `only [L, CurveDegreeVert.fsLine, HermLine.ofMetrics, fsMetric, EuclideanSpace.norm_eq]`. Establish `h1` using `isPotentialPullback R.A BV Subtype.val hH (potOf R L) (isPotential_potOf R (CurveDegreeVert.isSmoothHerm_fsLine _))`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `ProjPotMassPos.isPotential_congr (P := (potOf R L).pullback Subtype.val hH.1) (fun _ => rfl) (fun y z hz => ?_) h1` and prove the remaining obligations. Establish `hm` using `(R.mem y.1 z.1 hz).1`. Use `show Real.log (L.h (R.lift y.1 z.1)) = ∑ k, Real.log (∑ i, ‖R.lift y.1 z.1 ⟨k, i⟩‖ ^ 2)`. Establish `hpos : ∀ k, 0 < ∑ i, ‖R.lift y.1 z.1 ⟨k, i⟩‖ ^ 2` using `fun k => by`. Take `⟨i, hi⟩` from `hm k`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_lt_of_le (pow_pos (norm_pos_iff.2 hi) 2) (Finset.single_le_sum (f := fun i => ‖R.lift y.1 z.1 ⟨k, i⟩‖ ^ 2) (fun i _ => by positivity) (Finset.mem_univ i))`. Rewrite using `[hL]`. Simplify using `only [zpow_natCast, Real.sq_sqrt (hpos _).le]`. Conclude with `Real.log_prod (fun k _ => (hpos k).ne')`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ProjPotMassPos.isPotential_multiprojPot {K : Type} [Fintype K] {ι : K → Type}
     [∀ k, Fintype (ι k)] {P J : Ideal (MRing ι)} {n : ℕ} {R : AnLogRes P J (n + 1)} {V : Set R.X}
@@ -69,25 +69,23 @@ theorem ProjPotMassPos.isPotential_multiprojPot {K : Type} [Fintype K] {ι : K �
   exact Real.log_prod (fun k _ => (hpos k).ne')
 
 /- English proof (translation)
-Introduce `K _ ι _ P J n R V BV hH hV C hC hCF`. Take `⟨x, hxC, hxF⟩` from `hCF`. Establish `: CompactSpace V` using `isCompact_iff_compactSpace.mp hV.isCompact`. Establish `hPot : ∀ _ : Fin n, IsPotential BV (multiprojPot R V)` using `fun _ => ProjPotMassPos.isPotential_multiprojPot hH`. Establish `hCont` using `locDensCont BV (fun _ => multiprojPot R V) hPot`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDs` using `hD K ι P J n R V BV hH`. Establish `hMI : MIntegrable BV (fun _ => multiprojPot R V) (C.indicator fun _ => (1 : ℝ))`. Introduce `i Kc hK hKc`. Establish `hS : IsOpen ((BV.chart i).target ∩ (BV.chart i).symm ⁻¹' C)` using `(BV.chart i).isOpen_inter_preimage_symm hC`. Use `IntegrableOn.congr_fun ((((hCont i).mono hK).integrableOn_compact hKc).indicator hS.measurableSet) (fun y hy => ?_) hKc.measurableSet` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hyC : (BV.chart i).symm y ∈ C`. Rewrite using `[Set.indicator_of_mem (show y ∈ (BV.chart i).target ∩ (BV.chart i).symm ⁻¹' C from ⟨hK hy, hyC⟩), Set.indicator_of_mem hyC, one_mul]`. Rewrite using `[Set.indicator_of_notMem (show y ∉ (BV.chart i).target ∩ (BV.chart i).symm ⁻¹' C from fun h => hyC h.2), Set.indicator_of_notMem hyC, zero_mul]`. Establish `hPn : Nonempty (ChartPartition BV)` using `existsPartition BV`. Unfold `mInt`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hPn]`. Unfold `integralWith`. Use `set χ := hPn.some`. Establish `hnn : ∀ i, ∀ y ∈ (BV.chart i).target, 0 ≤ χ.χ i ((BV.chart i).symm y) * C.indicator (fun _ => (1 : ℝ)) ((BV.chart i).symm y) * locDens BV (fun _ => multiprojPot R V) i y` using `fun i y hy => mul_nonneg (mul_nonneg (χ.nonneg i _) (Set.indicator_nonneg (fun _ _ => zero_le_one) _)) (hDs i y hy).1`. Choose the witnesses or unpack the hypotheses as in `⟨j, hj⟩ : ∃ j, 0 < χ.χ j x := by`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Establish `h1` using `χ.sum_eq_one x`. Establish `h2 : ∑ j, χ.χ j x ≤ 0` using `Finset.sum_nonpos fun j _ => h j`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_pos' (fun i _ => setIntegral_nonneg (BV.chart i).open_target.measurableSet (hnn i)) ⟨j, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Establish `hxj : x ∈ (BV.chart j).source` using `χ.tsupport_subset j (subset_tsupport _ hj.ne')`. Use `set u := BV.chart j x`. Establish `hut : u ∈ (BV.chart j).target` using `(BV.chart j).map_source hxj`. Establish `hsu : (BV.chart j).symm u = x` using `(BV.chart j).left_inv hxj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hχc : ContinuousAt (fun y => χ.χ j ((BV.chart j).symm y)) u`. Establish `h` using `(χ.smooth j j).continuousOn`. Rewrite `h` using `[Set.preimage_univ, Set.inter_univ]`. Conclude with `h.continuousAt ((BV.chart j).open_target.mem_nhds hut)`. Establish `hev : ∀ᶠ y in 𝓝 u, y ∈ (BV.chart j).target ∧ 0 < χ.χ j ((BV.chart j).symm y) * C.indicator (fun _ => (1 : ℝ)) ((BV.chart j).symm y) * locDens BV (fun _ => multiprojPot R V) j y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hC' : ∀ᶠ y in 𝓝 u, (BV.chart j).symm y ∈ C` using `((BV.chart j).continuousAt_symm hut).preimage_mem_nhds (by rw [hsu]; exact hC.mem_nhds hxC)`. Establish `hD' : ∀ᶠ y in 𝓝 u, 0 < locDens BV (fun _ => multiprojPot R V) j y` using `((hCont j).continuousAt ((BV.chart j).open_target.mem_nhds hut)).eventually (lt_mem_nhds ((hDs j u hut).2 (by rw [hsu]; exact hxF)))`. Establish `hχ' : ∀ᶠ y in 𝓝 u, 0 < χ.χ j ((BV.chart j).symm y)` using `hχc.eventually (lt_mem_nhds (show 0 < χ.χ j ((BV.chart j).symm u) by rw [hsu]; exact hj))`. Use `filter_upwards [(BV.chart j).open_target.mem_nhds hut, hC', hD', hχ'] with y h1 h2 h3 h4`. Use `⟨h1, mul_pos (mul_pos h4 ?_) h3⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Set.indicator_of_mem h2]`. Conclude with `one_pos`. Take `⟨W, hWs, hWo, huW⟩` from `mem_nhds_iff.mp hev`. Establish `hint` using `integrableOn_weight BV χ (fun _ => multiprojPot R V) _ hMI j`. Rewrite using `[setIntegral_pos_iff_support_of_nonneg_ae (ae_restrict_of_forall_mem (BV.chart j).open_target.measurableSet (hnn j)) hint]`.
-
-Use `lt_of_lt_of_le (hWo.measure_pos volume ⟨u, huW⟩) (measure_mono fun y hy => ?_)` and prove the remaining obligations. Conclude with `⟨(hWs hy).2.ne', (hWs hy).1⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ProjPotMassPos.of_found (hD : ProjPotDens.Statement) : ProjPotMassPos.Statement := by
   intro K _ ι _ P J n R V BV hH hV C hC hCF

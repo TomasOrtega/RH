@@ -6,9 +6,9 @@ namespace Formalism.L2.Th1.G
 open Formalism.L2.Th1.C
 
 /- English proof (translation)
-Introduce `p _ l linv ph hF hu h1 hSh h2 O _ _ τ hE hB hN hA n m _ _ _ w hw δ hδ Th G hG hT H _ _ N0 N1 A u th Q2 hAx hth hu1 hQ0 hQ hlin TT colN ht hht hht1 I nu1 nu2 size e1 e2 e3 nn`. Establish `hp0 : ((p : ℕ) : ℂ_[p]) ≠ 0` using `Nat.cast_ne_zero.mpr (Fact.out : p.Prime).ne_zero`. Take `⟨J, hJ, hJe⟩` from `hI ℂ_[p] l linv ph p hF hu h1 hSh O τ hE hB hN hA n m w hw δ hδ Th G hG hT`. Take `⟨sg, hsg, hsge⟩` from `hC ℂ_[p] n _ (jet l ph 2) th (fun j => τ (w j)) A (betaPair H N0 N1 u) Q2 h2 (TwoKernelNormBounds.norm_mul_le_one_of_half _ _ _ (norm_pos_iff.mpr hp0) hSh.1 hth) hAx (TwoKernelNormBounds.constantCoeff_betaPair H N0 N1 u) hQ0 hQ hlin J hJ`. Rewrite using `[hJe, hsge]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Formalism.DworkPowerSeriesWeights.thmBGauss p H N0 N1 (jet l ph 2) u hSh.1 hu1 sg hsg TT colN ht hht hht1 I nu1 nu2 size e1 e2 e3 nn`.
+A detailed English derivation is pending.
 -/
 theorem IntDThmBGauss_of (hI : IntAtD) (hC : ShapeCong) : IntDThmBGauss := by
   intro p _ l linv ph hF hu h1 hSh h2 O _ _ τ hE hB hN hA n m _ _ _ w hw δ hδ Th G hG hT

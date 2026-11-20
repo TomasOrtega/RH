@@ -10,7 +10,7 @@ open IsDedekindDomain NumberField Matrix GlobalTheory.ChiGrid GlobalTheory.FunOb
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.FormVal
 /- English proof (translation)
-Introduce `_` and use `form_fin_inf_of GlobalTheory.T.integralGoodForm_values_mem_scaledDualWeylLattice GlobalTheory.T.baseTupleGoodForm_values_bounded_by_classSum GlobalTheory.T.kernelLossBound_nonneg_and_level_card_le_exp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem form_value_eq_finite_mul_infinite : _root_.GlobalTheory.FunPr.ThetaLocalInputs → FinFormK ∧ InfFormK := fun _ =>
   form_fin_inf_of GlobalTheory.T.integralGoodForm_values_mem_scaledDualWeylLattice GlobalTheory.T.baseTupleGoodForm_values_bounded_by_classSum GlobalTheory.T.kernelLossBound_nonneg_and_level_card_le_exp
@@ -22,7 +22,7 @@ section
 open GlobalTheory.SumSize GlobalTheory.RowClaim
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.FormVal.form_value_eq_finite_mul_infinite | exact _root_.GlobalTheory.FormVal.form_value_eq_finite_mul_infinite | (intros; apply _root_.GlobalTheory.FormVal.form_value_eq_finite_mul_infinite <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.form_value_finite_infinite_factorization : _root_.GlobalTheory.FunPr.ThetaLocalInputs → FinFormK ∧ InfFormK := by
   first | exact @_root_.GlobalTheory.FormVal.form_value_eq_finite_mul_infinite | exact _root_.GlobalTheory.FormVal.form_value_eq_finite_mul_infinite | (intros; apply _root_.GlobalTheory.FormVal.form_value_eq_finite_mul_infinite <;> assumption)

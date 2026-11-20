@@ -18,7 +18,7 @@ namespace GlobalTheory.CompanionTheory.CtS.TjChar
 open GlobalTheory.WeylGL (tor tor_val tor_add tor_const_comm IntM intM_tor intM_doset)
 
 /- English proof (translation)
-Rewrite using `[Finset.sum_boole, Fin.card_filter_val_lt]`. Use `push_cast`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem sum_ite_lt (n m : ℕ) : ∑ j : Fin n, (if (j : ℕ) < m then (1 : ℤ) else 0) = min (n : ℤ) m := by
   rw [Finset.sum_boole, Fin.card_filter_val_lt]
@@ -26,17 +26,15 @@ theorem sum_ite_lt (n m : ℕ) : ∑ j : Fin n, (if (j : ℕ) < m then (1 : ℤ)
   rfl
 
 /- English proof (translation)
-Establish `hi` using `i.2`. Establish `hc : a i = 0 ∨ a i = 1`. Use `h0 i` as an intermediate fact. Use `h1 i` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Break down `hc with hc | hc` into its components or cases. Establish `hle : ∑ j, a j ≤ ∑ j : Fin n, (if (j : ℕ) < (i : ℕ) then (1 : ℤ) else 0)`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hj`. Conclude with `h1 j`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Establish `: a j ≤ a i` using `ha (Fin.le_def.2 (by omega))`. Use linear arithmetic over natural numbers and integers. Rewrite `hle` using `[hs, sum_ite_lt]`. Establish `: k ≤ (i : ℕ)` using `by omega`. Rewrite using `[hc, if_neg (by omega)]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle : ∑ j : Fin n, (if (j : ℕ) < (i : ℕ) + 1 then (1 : ℤ) else 0) ≤ ∑ j, a j`. Use `Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Use `split_ifs with hj`. Establish `: a i ≤ a j` using `ha (Fin.le_def.2 (by omega))`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `h0 j`. Rewrite `hle` using `[hs, sum_ite_lt]`. Establish `: (i : ℕ) < k`. Move the coercions through the operations in `at hle`. Use linear arithmetic over natural numbers and integers.
-
-Rewrite using `[hc, if_pos this]`.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem antitone_eq {n k : ℕ} {a : Fin n → ℤ} (ha : Antitone a) (h0 : ∀ i, 0 ≤ a i) (h1 : ∀ i, a i ≤ 1)
     (hs : ∑ i, a i = (k : ℤ)) (i : Fin n) : a i = if (i : ℕ) < k then 1 else 0 := by
@@ -70,9 +68,9 @@ theorem antitone_eq {n k : ℕ} {a : Fin n → ℤ} (ha : Antitone a) (h0 : ∀ 
 variable {E : Type} [Field E] [NumberField E] {w : HeightOneSpectrum (𝓞 E)} {n : ℕ} {ϖ : w.adicCompletion E}
 
 /- English proof (translation)
-Establish `hx : Valued.v x ≠ 0`. Rewrite using `[h]`. Conclude with `WithZero.exp_ne_zero`. Establish `e : WithZero.unzero hx = Multiplicative.ofAdd (-m)`. Apply `WithZero.coe_injective` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[WithZero.coe_unzero, h]`. Both sides reduce to the same expression. Unfold `ordL`. Rewrite using `[dif_neg hx, e]`. Simplify using the standard rewrite rules.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ordL_eq_of_v {x : w.adicCompletion E} {m : ℤ} (h : Valued.v x = WithZero.exp (-m)) : ordL x = m := by
   have hx : Valued.v x ≠ 0 := by
@@ -87,7 +85,7 @@ theorem ordL_eq_of_v {x : w.adicCompletion E} {m : ℤ} (h : Valued.v x = WithZe
   simp
 
 /- English proof (translation)
-Rewrite using `[map_zpow₀, hu]`. Establish `: ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) = WithZero.exp (-1)` using `rfl`. Rewrite using `[this, ← WithZero.exp_zsmul]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem v_zpow_eq (hu : IsUnifV E w ϖ) (m : ℤ) : Valued.v (ϖ ^ m) = WithZero.exp (-m) := by
   rw [map_zpow₀, hu]
@@ -96,7 +94,7 @@ theorem v_zpow_eq (hu : IsUnifV E w ϖ) (m : ℤ) : Valued.v (ϖ ^ m) = WithZero
   simp
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, map_mul, ih, v_zpow_eq hu, ← WithZero.exp_add]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -110,7 +108,7 @@ theorem v_prod_zpow (hu : IsUnifV E w ϖ) (a : Fin n → ℤ) (s : Finset (Fin n
     ring
 
 /- English proof (translation)
-Apply `ordL_eq_of_v` to reduce the goal to its premises. Establish `h1 : Valued.v c.val.det = 1` using `GlobalTheory.SphGal.isUnitAt_det_of_mem hc`. Establish `h2 : Valued.v d.val.det = 1` using `GlobalTheory.SphGal.isUnitAt_det_of_mem hd`. Rewrite using `[Units.val_mul, Units.val_mul, Matrix.det_mul, Matrix.det_mul, map_mul, map_mul, h1, h2, tor_val, Matrix.det_diagonal, v_prod_zpow hu]`. Simplify using the standard rewrite rules.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ordL_det (h0 : ϖ ≠ 0) (hu : IsUnifV E w ϖ) {c d : GL (Fin n) (w.adicCompletion E)}
     (hc : c ∈ GLint (Fin n) (Ov E w)) (hd : d ∈ GLint (Fin n) (Ov E w)) (a : Fin n → ℤ) :
@@ -123,7 +121,7 @@ theorem ordL_det (h0 : ϖ ≠ 0) (hu : IsUnifV E w ϖ) {c d : GL (Fin n) (w.adic
   simp
 
 /- English proof (translation)
-Apply `inv_eq_of_mul_eq_one_right` to reduce the goal to its premises. Rewrite using `[← tor_add]`. Use `ext1`. Simplify using `[tor_val]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tor_inv (h0 : ϖ ≠ 0) (a : Fin n → ℤ) : (tor h0 a)⁻¹ = tor h0 (-a) := by
   apply inv_eq_of_mul_eq_one_right
@@ -132,7 +130,7 @@ theorem tor_inv (h0 : ϖ ≠ 0) (a : Fin n → ℤ) : (tor h0 a)⁻¹ = tor h0 (
   simp [tor_val]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[tor_val, Matrix.diagonal_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem tor_one_val (h0 : ϖ ≠ 0) (x : GL (Fin n) (w.adicCompletion E)) :
     (tor h0 (fun _ => 1) * x : GL (Fin n) (w.adicCompletion E)).val = ϖ • x.val := by
@@ -140,7 +138,7 @@ theorem tor_one_val (h0 : ϖ ≠ 0) (x : GL (Fin n) (w.adicCompletion E)) :
   simp [tor_val, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => intM_doset h ⟨c⁻¹, Subgroup.inv_mem _ hc, d⁻¹, Subgroup.inv_mem _ hd, by rw [e]; group⟩, fun h => intM_doset h ⟨c, hc, d, hd, e⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem intM_iff {c d x y : GL (Fin n) (w.adicCompletion E)} (hc : c ∈ GLint (Fin n) (Ov E w))
     (hd : d ∈ GLint (Fin n) (Ov E w)) (e : x = c * y * d) : IntM x ↔ IntM y :=
@@ -148,7 +146,7 @@ theorem intM_iff {c d x y : GL (Fin n) (w.adicCompletion E)} (hc : c ∈ GLint (
     fun h => intM_doset h ⟨c, hc, d, hd, e⟩⟩
 
 /- English proof (translation)
-The claim follows from `(intM_iff hc hd rfl).trans (intM_tor h0 hu a)`.
+A detailed English derivation is pending.
 -/
 theorem isInt_iff (h0 : ϖ ≠ 0) (hu : IsUnifV E w ϖ) {c d : GL (Fin n) (w.adicCompletion E)}
     (hc : c ∈ GLint (Fin n) (Ov E w)) (hd : d ∈ GLint (Fin n) (Ov E w)) (a : Fin n → ℤ) :
@@ -156,9 +154,9 @@ theorem isInt_iff (h0 : ϖ ≠ 0) (hu : IsUnifV E w ϖ) {c d : GL (Fin n) (w.adi
   (intM_iff hc hd rfl).trans (intM_tor h0 hu a)
 
 /- English proof (translation)
-Rewrite using `[← tor_one_val h0]`. Establish `e : tor h0 (fun _ => 1) * (c * tor h0 a * d)⁻¹ = d⁻¹ * tor h0 ((fun _ => 1) + -a) * c⁻¹`. Rewrite using `[tor_add, _root_.mul_inv_rev, _root_.mul_inv_rev, tor_inv, ← mul_assoc (tor h0 fun _ => 1) d⁻¹, tor_const_comm]`. Use `group`. Establish `h` using `(intM_iff (Subgroup.inv_mem _ hd) (Subgroup.inv_mem _ hc) e).trans (intM_tor h0 hu _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h.trans (forall_congr' fun i => ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isInt_dual_iff (h0 : ϖ ≠ 0) (hu : IsUnifV E w ϖ) {c d : GL (Fin n) (w.adicCompletion E)}
     (hc : c ∈ GLint (Fin n) (Ov E w)) (hd : d ∈ GLint (Fin n) (Ov E w)) (a : Fin n → ℤ) :
@@ -178,13 +176,13 @@ namespace GlobalTheory.CompanionTheory.CtS
 open GlobalTheory.CompanionTheory.CtS.TjChar in
 
 /- English proof (translation)
-Introduce `E _ _ w n k ϖ hu hk g`. Establish `h0 : ϖ ≠ 0` using `fun h => by simp [IsUnifV, h] at hu`. Rewrite using `[GlobalTheory.WeylGL.Tj_eq h0 k]`. Use `split_ifs with h`. Take `⟨h1, h2, h3⟩` from `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, c, hc, d, hd, rfl⟩` from `GlobalTheory.WeylGL.cartan h0 hu g`. Establish `ha0` using `(isInt_iff h0 hu hc hd a).1 h1`. Establish `ha1` using `(isInt_dual_iff h0 hu hc hd a).1 h2`. Rewrite `h3` using `[ordL_det h0 hu hc hd]`. Establish `e : a = fun i : Fin n => if (i : ℕ) < k then 1 else 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `(antitone_eq ha ha0 ha1 h3)`. Substitute `e` using the available equality. Conclude with `GlobalTheory.WeylGL.dosetInd_of_mem ⟨c, hc, d, hd, rfl⟩`. Use `GlobalTheory.WeylGL.dosetInd_of_not ?_` and prove the remaining obligations. Introduce and unpack `⟨c, hc, d, hd, rfl⟩`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `h ⟨(isInt_iff h0 hu hc hd _).2 fun i => ?_, (isInt_dual_iff h0 hu hc hd _).2 fun i => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> omega`. Apply the tactic sequence `split_ifs <;> omega`. Rewrite using `[ordL_det h0 hu hc hd, sum_ite_lt, min_eq_right (by exact_mod_cast hk)]`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Tj_eq_ite : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n k : ℕ) (ϖ : w.adicCompletion E), IsUnifV E w ϖ → k ≤ n → ∀ g : GL (Fin n) (w.adicCompletion E), Tj ℂ n (Ov E w) ϖ k g = if IsInt w g.val ∧ IsInt w (ϖ • (g⁻¹).val) ∧ ordL g.val.det = (k : ℤ) then 1 else 0 := by
   intro E _ _ w n k ϖ hu hk g

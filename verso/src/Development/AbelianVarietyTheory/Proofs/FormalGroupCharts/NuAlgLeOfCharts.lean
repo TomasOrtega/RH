@@ -24,11 +24,11 @@ open GlobalTheory.ChartCmp
 namespace GlobalTheory.ChartCmp
 
 /- English proof (translation)
-Take `⟨x'', -, hx''u, -, -⟩` from `GlobalTheory.T.pushChartAlt E H T.V t t' n d x`. Establish `hd : d = d'` using `GlobalTheory.T.universalJetCoordinates_dim_unique T.V t'.G d d' x'' x' (hx''u hu) hu'`. Substitute `hd` using the available equality. Take `⟨φ, φi, hrel, hlin⟩` from `GlobalTheory.T.formal_biextensions_related_of_triple_map_over_id E H hs T.V t t' n hsurj d B B' (Fin d) (Fin d) tg tg' uv uv' x x' e e' hc hc' hu hu' hf hf'`. Use `GlobalTheory.T.biextension_depth_le_of_related E H Dw l Xo c hs T io d B B' φ φi h h' u u' hrel hg hg' heig ?_ ε k a N` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `ℓ`. Establish `hu1 : u ℓ = fun i => algebraMap T.V T.Fr (uT ℓ i)` using `funext (huT ℓ)`. Establish `hu2 : u' ℓ = fun j => algebraMap T.V T.Fr (uT' ℓ j)` using `funext (huT' ℓ)`. Rewrite using `[hu1, hu2, hlin (uT ℓ) (uT' ℓ) (v ℓ) (hv ℓ) (hv' ℓ)]`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `RingHom.map_mulVec (algebraMap T.V T.Fr) (dLin φ) (uT' ℓ) i`.
+A detailed English derivation is pending.
 -/
 theorem nuAlg_le_of_charts {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)] (hs : ∀ a : 𝓞 E, star a = H.bar a)
@@ -68,21 +68,19 @@ theorem nuAlg_le_of_charts {E : Type} [Field E] [NumberField E] [IsCMField E] {H
   exact RingHom.map_mulVec (algebraMap T.V T.Fr) (dLin φ) (uT' ℓ) i
 
 /- English proof (translation)
-Use `letI := H.starRing`. Introduce `hs T io y C C' e k a n`. Use `letI := io.toAlgebra`. Take `⟨BT, hF, hA, hP1, hP2, hSy, hAd, hK⟩` from `GlobalTheory.integralChart_formalBiext E H Dw l Xo c T io y C`. Take `⟨BT', hF', hA', hP1', hP2', hSy', hAd', hK'⟩` from `GlobalTheory.integralChart_formalBiext E H Dw l Xo c T io y C'`.
+Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hFK, hActK, hG, hGc⟩` from `hK T.Fr`. Take `⟨hFK', hActK', hG', hGc'⟩` from `hK' T.Fr`. Rewrite using `[GlobalTheory.T.localChartDepth_eq_integralBiextDepth E H Dw l Xo c T io y C BT hFK hActK e k a n, GlobalTheory.T.localChartDepth_eq_integralBiextDepth E H Dw l Xo c T io y C' BT' hFK' hActK' e k a n]`. Take `⟨nm, hnm⟩` from `GlobalTheory.T.exists_iso_integralModels_matching_lieBases E H Dw l Xo c T io _ C.I C'.I`. Establish `hsurj` using `GlobalTheory.T.surjective_appTop_integralModel_square E H Dw l Xo c T io _ C'.I`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hU` using `GlobalTheory.PowGerm.univSt_holds E H Dw l Xo c T io y`. Establish `e1 : MvPowerSeries.map (algebraMap T.Fr T.Fr) C.ch.h = C.ch.h`. Use `ext`. Simplify using the standard rewrite rules. Establish `e2 : MvPowerSeries.map (algebraMap T.Fr T.Fr) C'.ch.h = C'.ch.h`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `ext`. Simplify using the standard rewrite rules. Rewrite `hGc` using `[e1]`. Rewrite `hGc'` using `[e2]`. Establish `gen` using `C.gen`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `gen'` using `C'.gen`. Unfold `IsGenFibreChart at gen gen'`. Use `nuAlg_le_of_charts Xo c hs T io C.I.G C'.I.G nm hsurj (chD C.ch) (chD C'.ch) BT BT' C.tgT C'.tgT (fun j => Pi.single j 1) (fun j => Pi.single j 1) C.xT C'.xT C.eT C'.eT ?_ ?_ (hU C) (hU C') ?_ ?_ C.ch.h C'.ch.h ((hG _).2 hGc) ((hG' _).2 hGc') C.uvecT C'.uvecT (fun ℓ => (C.I.ub ℓ. …` and prove the remaining obligations. Rewrite using `[hF, hA]`. Conclude with `C.chartT`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hF', hA']`. Conclude with `C'.chartT`. Rewrite using `[hF, hA, hP1, hP2, hSy, hAd]`. Conclude with `C.frameT`. Rewrite using `[hF', hA', hP1', hP2', hSy', hAd']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `C'.frameT`. Introduce `ℓ`. Rewrite using `[hnm]`. Conclude with `C'.dirT ℓ`. Introduce `b ℓ`.
-
-Establish `h2 : dAct T.Fr BT' b = dAct T.Fr C'.ch.B b`. Use function extensionality and compare the values at `i j`. Simplify using `only [dAct, hActK' b]`. Rewrite using `[h2]`. Conclude with `GlobalTheory.PowGerm.eigDirSt E H Dw l Xo c T io y C' b ℓ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuLocC_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H}
     {l : Level H} (Xo : Moduli Dw l) (c : Coeff l) :
@@ -136,7 +134,7 @@ theorem nuLocC_le {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E
     exact GlobalTheory.PowGerm.eigDirSt E H Dw l Xo c T io y C' b ℓ
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c inst hs`. Establish `hst : inst = H.starRing` using `GlobalTheory.PowGerm.starSt E H inst hs`. Substitute `hst` using the available equality. Introduce `T io y C C' e k a n`. Conclude with `le_antisymm (nuLocC_le Xo c hs T io y C C' e k a n) (nuLocC_le Xo c hs T io y C' C e k a n)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem chartIndep_holds : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ChartIndep Xo c := by
   intro E _ _ _ H Dw l Xo c inst hs

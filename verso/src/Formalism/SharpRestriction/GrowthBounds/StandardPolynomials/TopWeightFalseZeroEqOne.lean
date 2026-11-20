@@ -27,7 +27,7 @@ def tgWM (X : Loc) (j : Fin (numSeg X.TT)) (A : MonH X) (ω : (X.TT × Bool) × 
 variable (O : Type) [CommRing O] [IsDomain O]
 
 /- English proof (translation)
-Establish `h1 : IsWeightedHomogeneous ω (∏ i : Fin (segS X.TT j), ∏ c : Fin (X.m + 1), ((MvPolynomial.X ((topOdd X j i, true), c) : RHH O X) ^ A ((topOdd X j i, true), c) * MvPolynomial.X ((topOdd X j i, false), c) ^ A ((topOdd X j i, false), c))) (∑ i : Fin (segS X.TT j), ∑ c : Fin (X.m + …` using `IsWeightedHomogeneous.prod _ _ _ (fun i _ => IsWeightedHomogeneous.prod _ _ _ (fun c _ => ((isWeightedHomogeneous_X _ ω _).pow _).mul ((isWeightedHomogeneous_X _ ω _).pow _)))`. Establish `h2 : IsWeightedHomogeneous ω (∏ c : Fin (X.m + 1), ((MvPolynomial.X ((topEnd X j, true), c) : RHH O X) ^ A ((topEnd X j, true), c) * MvPolynomial.X ((topEnd X j, false), c) ^ A ((topEnd X j, false), c))) (∑ c : Fin (X.m + 1), (A ((topEnd X j, true), c) • ω ((topEnd X j, true), c) …` using `IsWeightedHomogeneous.prod _ _ _ (fun c _ => ((isWeightedHomogeneous_X _ ω _).pow _).mul ((isWeightedHomogeneous_X _ ω _).pow _))`. Conclude with `h1.mul h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tg_segMon_wh (j : Fin (numSeg X.TT)) (A : MonH X) (ω : (X.TT × Bool) × Fin (X.m + 1) → ℕ) :
     IsWeightedHomogeneous ω (segMon O X j A) (tgWM X j A ω) := by
@@ -49,43 +49,39 @@ theorem tg_segMon_wh (j : Fin (numSeg X.TT)) (A : MonH X) (ω : (X.TT × Bool) �
   exact h1.mul h2
 
 /- English proof (translation)
-Set `ω' : BVar (2 * segS X.TT j + 1) X.m (X.seg C0 CE1 CE2 j).t → ℕ` to `fun v => symLev X.p C0 CE1 CE2 X j v * ω (symVar C0 CE1 CE2 X j v)`. Set `ωL : Fin (2 * segS X.TT j + 1 + 1) → ℕ` to `fun a => ω' (Sum.inl (a, 0))`. Establish `h1 : ∀ a c, ω' (Sum.inl (a, c)) = ωL a`. Introduce `a c`. Simplify using `only [ω', ωL, symLev, symVar]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> rw [hc _ c 0]`. Establish `e0 : ∀ i : Fin (segS X.TT j), finPos (2 * segS X.TT j + 1) (2 * (i : ℕ)) = Fin.castSucc (⟨2 * i.val, by omega⟩ : Fin (2 * segS X.TT j + 1))`. Introduce `i`. Use `i.2` as an intermediate fact. Apply `Fin.ext` to reduce the goal to its premises.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show min (2 * i.val) (2 * segS X.TT j + 1) = 2 * i.val`. Use linear arithmetic over natural numbers and integers. Establish `e1 : ∀ i : Fin (segS X.TT j), finPos (2 * segS X.TT j + 1) (2 * (i : ℕ) + 1) = Fin.castSucc (⟨2 * i.val + 1, by omega⟩ : Fin (2 * segS X.TT j + 1))`. Introduce `i`. Use `i.2` as an intermediate fact.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Fin.ext` to reduce the goal to its premises. Use `show min (2 * i.val + 1) (2 * segS X.TT j + 1) = 2 * i.val + 1`. Use linear arithmetic over natural numbers and integers. Establish `hW : ∀ i : Fin (segS X.TT j), ωL (Fin.castSucc (⟨2 * i.val, by omega⟩ : Fin (2 * segS X.TT j + 1))) = (X.seg C0 CE1 CE2 j).P X.p i * ω ((topOdd X j i, true), Fin.succ 0)`. Introduce `i`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ωL, ω']`. Rewrite using `[symbol_variable_lower_letter, symbol_level_lower_letter]`. Establish `hE : ∀ i : Fin (segS X.TT j), ωL (Fin.castSucc (⟨2 * i.val + 1, by omega⟩ : Fin (2 * segS X.TT j + 1))) = (X.seg C0 CE1 CE2 j).P X.p i * ω ((topOdd X j i, false), Fin.succ 0)`. Introduce `i`. Simplify using `only [ωL, ω']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sv_E, sl_E]`. Establish `hUU : ωL (Fin.castSucc (⟨2 * segS X.TT j, by omega⟩ : Fin (2 * segS X.TT j + 1))) = ω ((topEnd X j, true), Fin.succ 0)`. Simplify using `only [ωL, ω']`. Rewrite using `[sv_U, sl_U, one_mul]`. Establish `hXi : ωL (Fin.last _) = ω ((topEnd X j, false), Fin.succ 0)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ωL, ω']`. Rewrite using `[sv_xi, sl_xi, one_mul]`. Establish `hZ : ∀ (l : Fin (X.seg C0 CE1 CE2 j).t) (β : Bool), ω' (Sum.inr (Fin.castSucc l, β)) = (X.seg C0 CE1 CE2 j).P X.p (uTop (X.seg C0 CE1 CE2 j) l) * ω ((topOdd X j (uTop (X.seg C0 CE1 CE2 j) l), !β), 0)`. Introduce `l β`. Simplify using `only [ω']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[sv_Z, sl_Z]`. Establish `hx : ∀ β : Bool, ω' (Sum.inr (Fin.last (X.seg C0 CE1 CE2 j).t, β)) = ω ((topEnd X j, !β), 0)`. Introduce `β`. Simplify using `only [ω']`. Rewrite using `[symbol_variable_last, symbol_level_last, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2 : ∀ l : Fin (X.seg C0 CE1 CE2 j).t, ω' (Sum.inr (Fin.castSucc l, false)) + ω' (Sum.inr (Fin.castSucc l, true)) = ωL (finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ))) + ωL (finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ) + 1))`. Introduce `l`. Rewrite using `[hZ, hZ, e0, e1, hW, hE, ← mul_add, ← mul_add]`. Use `congr 1`. Conclude with `hU _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ω' (Sum.inr (Fin.last (X.seg C0 CE1 CE2 j).t, false)) + ω' (Sum.inr (Fin.last (X.seg C0 CE1 CE2 j).t, true)) = ωL (Fin.castSucc ⟨2 * segS X.TT j, by omega⟩) + ωL (Fin.last _)`. Rewrite using `[hx, hx, hUU, hXi]`. Conclude with `hP`. Establish `hEh : ∀ l : Fin (X.seg C0 CE1 CE2 j).t, IsWeightedHomogeneous ω' ((BDk C0 CE1 CE2 mu X β j).Ehat O (r` using `X.m) l) (ωL (finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ))) + ωL (finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ) + 1))) := by`. Introduce `l`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `IsWeightedHomogeneous.add ?_ (IsWeightedHomogeneous.sum _ _ _ fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[← h2 l]`. Conclude with `(isWeightedHomogeneous_X _ ω' _).mul (isWeightedHomogeneous_X _ ω' _)`. Use `(isWeightedHomogeneous_X (KK O) ω' (Sum.inl (finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ)), c))).mul (isWeightedHomogeneous_X (KK O) ω' (Sum.inl (finPos (2 * segS X.TT j + 1) (2 * (uTop (X.seg C0 CE1 CE2 j) l : ℕ) + 1), c)))` as an intermediate fact. Rewrite `this` using `[h1, h1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Establish `hEp : IsWeightedHomogeneous ω' ((BDk C0 CE1 CE2 mu X β j).Eplus O (r` using `X.m)) (ωL (Fin.castSucc ⟨2 * segS X.TT j, by omega⟩) + ωL (Fin.last _)) := by`. Use `IsWeightedHomogeneous.add ?_ (IsWeightedHomogeneous.sum _ _ _ fun c _ => ?_)` and prove the remaining obligations. Rewrite using `[← h3]`. Conclude with `(isWeightedHomogeneous_X _ ω' _).mul (isWeightedHomogeneous_X _ ω' _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(isWeightedHomogeneous_X (KK O) ω' (Sum.inl (Fin.castSucc (⟨2 * segS X.TT j, by omega⟩ : Fin (2 * segS X.TT j + 1)), c))).mul (isWeightedHomogeneous_X (KK O) ω' (Sum.inl (Fin.last (2 * segS X.TT j + 1), c)))` as an intermediate fact. Rewrite `this` using `[h1, h1]`. Conclude with `this`. Establish `hA` using `IsWeightedHomogeneous.prod Finset.univ (fun l : Fin (X.seg C0 CE1 CE2 j).t => (BDk C0 CE1 CE2 mu X β j).Ehat O (r := X.m) l ^ ju l) _ (fun l _ => (hEh l).pow (ju l))`. Establish `hB` using `hEp.pow (L.jp j)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hY` using `wh_chain (t := (X.seg C0 CE1 CE2 j).t) ω' ωL h1 du Gu hG`. Establish `hall` using `(hA.mul hB).mul hY`. Establish `hfin` using `wh_aeval ω (symVar C0 CE1 CE2 X j) (symLev X.p C0 CE1 CE2 X j) _ _ hall`. Use `wh_congr hfin ?_` and prove the remaining obligations. Establish `hs1 : ∑ a : Fin (2 * segS X.TT j + 1), jE (X.seg C0 CE1 CE2 j) ju (a.val / 2) * ωL (Fin.castSucc a) = ∑ i : Fin (segS X.TT j), (jE (X.seg C0 CE1 CE2 j) ju i.val * ((X.seg C0 CE1 CE2 j).P X.p i * ω ((topOdd X j i, true), Fin.succ 0)) + jE (X.seg C0 CE1 CE2 j) ju i.val * ((X.seg C0 …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sum_chain]`. Establish `t0 : jE (X.seg C0 CE1 CE2 j) ju ((2 * segS X.TT j) / 2) = 0`. Rewrite using `[Nat.mul_div_cancel_left _ (by norm_num)]; exact jE_top _ ju`. Use `show (∑ i : Fin (segS X.TT j), (jE (X.seg C0 CE1 CE2 j) ju ((2 * i.val) / 2) * ωL _ + jE (X.seg C0 CE1 CE2 j) ju ((2 * i.val + 1) / 2) * ωL _)) + jE (X.seg C0 CE1 CE2 j) ju ((2 * segS X.TT j) / 2) * ωL _ = _`. Rewrite using `[t0, zero_mul, add_zero]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hW, hE, show 2 * i.val / 2 = i.val by omega, show (2 * i.val + 1) / 2 = i.val by omega]`. Establish `hs2 : ∑ a : Fin (2 * segS X.TT j + 1), du a * ωL (Fin.castSucc a) = ∑ i : Fin (segS X.TT j), (du (chW i) * ((X.seg C0 CE1 CE2 j).P X.p i * ω ((topOdd X j i, true), Fin.succ 0)) + du (chE i) * ((X.seg C0 CE1 CE2 j).P X.p i * ω ((topOdd X j i, false), Fin.succ 0))) + du (chU _) * ω …`. Rewrite using `[sum_chain, hUU]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hW, hE]`. Both sides reduce to the same expression. Simplify using `only [smul_eq_mul]`. Rewrite using `[← tie_sum (X.seg C0 CE1 CE2 j) ju ωL, hs1, hs2, hUU, hXi]`.
-
-Unfold `tgHD`. Establish `e : ∑ i : Fin (segS X.TT j), (X.seg C0 CE1 CE2 j).P X.p i * ((jE (X.seg C0 CE1 CE2 j) ju i.val + du (chW i)) * ω ((topOdd X j i, true), Fin.succ 0) + (jE (X.seg C0 CE1 CE2 j) ju i.val + du (chE i)) * ω ((topOdd X j i, false), Fin.succ 0)) = ∑ i : Fin (segS X.TT j), (jE (X.seg C0 …`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`. Rewrite using `[e]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tg_head_wh (L : LvDat C0 CE1 CE2 mu X β) (j : Fin (numSeg X.TT)) (ju : Fin (X.seg C0 CE1 CE2 j).t → ℕ)
     (Gu : MvPolynomial (Fin (2 * segS X.TT j + 1) × Fin X.m) (KK O)) (du : Fin (2 * segS X.TT j + 1) → ℕ)
@@ -229,9 +225,9 @@ def tgWN (X : Loc) : (X.TT × Bool) × Fin (X.m + 1) → ℕ := fun v =>
   if ((hhLetters X.TT).vec v.1 = true ∧ 1 ≤ v.2.val) ∨ ((hhLetters X.TT).vec v.1 = false ∧ v.2.val < 1) then 1 else 0
 
 /- English proof (translation)
-Unfold `ndM degUS`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations. Unfold `tgWN`. Distinguish the cases in `h : ((hhLetters X.TT).vec v.1 = true ∧ 1 ≤ v.2.val) ∨ ((hhLetters X.TT).vec v.1 = false ∧ v.2.val < 1)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos h, smul_eq_mul, mul_one]`. Rewrite using `[if_neg h, if_neg h, smul_eq_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem weight_tgWN (X : Loc) (m : MonH X) : Finsupp.weight (tgWN X) m = ndM X m := by
   unfold ndM degUS
@@ -243,24 +239,24 @@ theorem weight_tgWN (X : Loc) (m : MonH X) : Finsupp.weight (tgWN X) m = ndM X m
   · rw [if_neg h, if_neg h, smul_eq_mul, mul_zero]
 
 /- English proof (translation)
-Simplify using `[tgWN, hhLetters]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tgWN_true_zero_eq_zero (X : Loc) (t : X.TT) : tgWN X ((t, true), 0) = 0 := by simp [tgWN, hhLetters]
 /- English proof (translation)
-Simplify using `[tgWN, hhLetters]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tgWN_ts (X : Loc) (t : X.TT) (c : Fin X.m) : tgWN X ((t, true), c.succ) = 1 := by simp [tgWN, hhLetters]
 /- English proof (translation)
-Simplify using `[tgWN, hhLetters]`.
+Simplify using the standard rewrite rules.
 -/
 theorem top_weight_false_zero_eq_one (X : Loc) (t : X.TT) : tgWN X ((t, false), 0) = 1 := by simp [tgWN, hhLetters]
 /- English proof (translation)
-Simplify using `[tgWN, hhLetters]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tgWN_fs (X : Loc) (t : X.TT) (c : Fin X.m) : tgWN X ((t, false), c.succ) = 0 := by simp [tgWN, hhLetters]
 
 /- English proof (translation)
-Unfold `tgHD tgWM nuSeg`. Simplify using `only [Fin.sum_univ_succ, tgWN_true_zero_eq_zero, tgWN_ts, top_weight_false_zero_eq_one, tgWN_fs, mul_one, mul_zero, add_zero, zero_add, Finset.sum_add_distrib, Finset.sum_const_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem tg_nd_eval {C0 CE1 CE2 mu : ℝ} {X : Loc} [NeZero X.m] {β : GlobalTheory X} (L : LvDat C0 CE1 CE2 mu X β)
     (j : Fin (numSeg X.TT)) (ju : Fin (X.seg C0 CE1 CE2 j).t → ℕ) (du : Fin (2 * segS X.TT j + 1) → ℕ) (A : MonH X) :

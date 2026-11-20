@@ -23,7 +23,7 @@ variable (P : DegData (PowerSeries k) (Ideal.span {PowerSeries.X})) [Module (�
   (oP : letI := H.starRing; P.toPre.OAct (𝓞 E))
 
 /- English proof (translation)
-Establish `W : GlobalTheory.LN.Match a PowerSeries.C PowerSeries.X P.toPre oP φ he w e` using `d`. Conclude with `GlobalTheory.MatchRigid.exists_transport W hF hu GlobalTheory.abelianSchemeLaws_all.1.globalFns hn q₀`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_move (φ : P.toPre.P.A.left ⟶ a.D₀.P.A.left)
     (he : eSec P.toPre.P.A ≫ φ = spMap (PowerSeries.C (R := k)) ≫ eSec a.D₀.P.A)
@@ -38,7 +38,7 @@ theorem exists_move (φ : P.toPre.P.A.left ⟶ a.D₀.P.A.left)
   exact GlobalTheory.MatchRigid.exists_transport W hF hu GlobalTheory.abelianSchemeLaws_all.1.globalFns hn q₀
 
 /- English proof (translation)
-Take `⟨-, rfl, -⟩` from `GlobalTheory.DataRigid.dataRigid E H D l c k bF a P oP φ₁ φ₂ he₁ he₂ w₁ w₂ e₁ e₂ d₁ d₂ h`. Conclude with `⟨fun y _ => ⟨0, by simp⟩, fun y => by simp⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem levelAgree_transition_congruent_mod_level (φ₁ φ₂ : P.toPre.P.A.left ⟶ a.D₀.P.A.left)
     (he₁ : eSec P.toPre.P.A ≫ φ₁ = spMap (PowerSeries.C (R := k)) ≫ eSec a.D₀.P.A)
@@ -54,16 +54,16 @@ theorem levelAgree_transition_congruent_mod_level (φ₁ φ₂ : P.toPre.P.A.lef
 end Identification
 
 /- English proof (translation)
-The claim follows from `exists_qkPt GlobalTheory.abelianSchemeLaws_all.1.mulN (Or.inr GlobalTheory.abelianSchemeLaws_all.1.polBaseChange) hB hn.ne' y`.
+A detailed English derivation is pending.
 -/
 theorem exists_lattice_part {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (hB : D.TauBimult) (F : Type) [Field F]
     [IsAlgClosed F] [Algebra (FractionRing R) F] (n : ℕ) (hn : 0 < n) (y : D.X) : ∃ p : QkPt D F n, p.y = y :=
   exists_qkPt GlobalTheory.abelianSchemeLaws_all.1.mulN (Or.inr GlobalTheory.abelianSchemeLaws_all.1.polBaseChange) hB hn.ne' y
 
 /- English proof (translation)
-Establish `hf' : f.comp (algebraMap (FractionRing R) F) = algebraMap (FractionRing R) F'` using `RingHom.ext hf`. Take `⟨h, h₁, h₂⟩` from `p.eq`. Use `⟨⟨p.y, gtExt D f hf' p.g, gtExt D f hf' h, (isNsmul_iff_eq _ _ _).2 ?_, ?_⟩, rfl, (eq_gtExt_iff f hf' _ _).1 rfl⟩` and prove the remaining obligations. Rewrite using `[(isNsmul_iff_eq _ _ _).1 h₁, map_nsmul]`. Use `(isIota_iff_val _ _).2 ⟨?_, fun χ y J hJ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gtExt_b, ((isIota_iff_val _ _).1 h₂).1, comp_cP]`. Rewrite using `[gtExt_val f hf' _ χ hJ, tauVal, ← extMap_jFK f hf']`. Conclude with `(val_corr hJ (h₂.2 χ) _).trans (val_pull hJ _ _ _)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_extension {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F F' : Type) [Field F]
     [Algebra (FractionRing R) F] [Field F'] [Algebra (FractionRing R) F'] (f : F →+* F')
@@ -80,15 +80,15 @@ theorem exists_extension {R : Type} [CommRing R] [IsDomain R] (D : DegPre R) (F 
       exact (val_corr hJ (h₂.2 χ) _).trans (val_pull hJ _ _ _)
 
 /- English proof (translation)
-Set `_` to `H.starRing`. Establish `hG` using `GlobalTheory.abelianSchemeLaws_all.1.globalFns`. Establish `h₀ : 0 < l.M` using `lt_of_lt_of_le three_pos l.three_le`. Take `⟨m, hm, mb, hb, hsum⟩` from `Submodule.mem_sup.1 (l.coprime ▸ Submodule.mem_top : (1 : 𝓞 E) ∈ l.Mb ⊔ _)`. Establish `xM : x ^ l.M = 1`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `hx _ (Ideal.mul_le_left (l.prod.ge (Ideal.subset_span rfl)) : (l.M : 𝓞 E) ∈ l.Mb)`. Rewrite `e` using `[← _root_.mul_one (l.M : 𝓞 E), act_nsmul, a.oa.onB.map_one, MonObj.comp_pow, Category.comp_id]`. Then use the resulting hypothesis. Establish `ex : x ≫ a.oa.onB.act mb = x`. Establish `e₁ : x ≫ a.oa.onB.act (m + mb) = x` using `by rw [hsum, a.oa.onB.map_one, Category.comp_id]`. Rewrite `e₁` using `[a.oa.onB.map_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((_root_.one_mul _).symm.trans (congrArg (· * _) (hx m hm).symm)).trans ((MonObj.comp_mul _ _ _).symm.trans e₁)`. Take `⟨p, -, hp⟩` from `exists_qkPt_of_torsion a.bimult h₀.ne' xM`. Take `⟨-, I, -, -, hI⟩` from `a.geom F ⟨H.rt0, c.le (IntermediateField.subset_adjoin _ _ (by simp))⟩ ⟨zeta l.A, c.le (IntermediateField.subset_adjoin _ _ (by simp))⟩ rfl rfl _ rfl`. Take `⟨v, hv⟩` from `I.onto _ h₀ p`. Establish `hmv : mb • v ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)` using `Submodule.smul_mem_smul hb trivial`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨q, hq, -⟩` from `existsUnique_qkExt a.bimult (algebraMap (FractionRing k) F) (RingHom.comp_id _) (a.eta (mb • v))`. Establish `e : QkPt.Equiv a.D₀ F q (qkSmul a.bimult hG a.oa mb p)` using `equiv_trans a.bimult (hI _ hmv q hq) (equiv_trans a.bimult (equiv_symm a.bimult ((qkAct_iff a.bimult hG a.oa _ _ _).1 (I.lin _ h₀ mb v))) (qkSmul_congr a.bimult hG a.oa mb hv))`. Take `⟨z, -, hz⟩` from `(equiv_iff a.bimult _ _).1 e`. Establish `hb' : x = q.g.b * cP a.D₀ _ z`. Use `congrArg GtPtF.b hz` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[add_b, iota_b]`. Rewrite using `[← this, ← ex, ← hp]`. Conclude with `(gtSmul_b hG a.oa mb p.g).symm`. Rewrite using `[hb']`. Conclude with `Subgroup.mul_mem _ (Subgroup.subset_closure (.inr ⟨_, hmv, q, hq, rfl⟩)) (Subgroup.subset_closure (.inl ⟨z, rfl⟩))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_closure_level (F : Type) [Field F] [IsAlgClosed F] [Algebra (FractionRing k) F]
     (x : TF (R := k) F ⟶ a.D₀.P.A) (hx : letI := H.starRing; ∀ m ∈ l.Mb, x ≫ a.oa.onB.act m = 1) :

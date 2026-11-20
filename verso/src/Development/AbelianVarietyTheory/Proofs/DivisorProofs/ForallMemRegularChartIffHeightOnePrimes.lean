@@ -11,7 +11,7 @@ open GlobalTheory.Desc
 namespace GlobalTheory.Desc
 
 /- English proof (translation)
-Use `letI : Algebra (Y.presheaf.stalk (f z)) (X.presheaf.stalk z) := (f.stalkMap z).hom.toAlgebra`. Use `haveI : Module.Flat (Y.presheaf.stalk (f z)) (X.presheaf.stalk z) := Flat.stalkMap f z`. Use `haveI : IsLocalHom (algebraMap (Y.presheaf.stalk (f z)) (X.presheaf.stalk z)) := inferInstanceAs (IsLocalHom (f.stalkMap z).hom)`. Use `haveI : Algebra.HasGoingDown (Y.presheaf.stalk (f z)) (X.presheaf.stalk z) := Algebra.HasGoingDown.of_flat`. Conclude with `GroundTheory.Arith.SchemeCoh.ringKrullDim_le_of_hasGoingDown`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem ringKrullDim_stalk_le_of_flat {X Y : Scheme.{0}} (f : X ⟶ Y) [Flat f] (z : X) :
     ringKrullDim (Y.presheaf.stalk (f z)) ≤ ringKrullDim (X.presheaf.stalk z) := by
@@ -23,13 +23,11 @@ theorem ringKrullDim_stalk_le_of_flat {X Y : Scheme.{0}} (f : X ⟶ Y) [Flat f] 
   exact GroundTheory.Arith.SchemeCoh.ringKrullDim_le_of_hasGoingDown
 
 /- English proof (translation)
-Use `haveI := (σ.C x).semi.smooth`. Use `haveI : Flat (spMap (σ.ρ x)) := by`. Rewrite using `[HasRingHomProperty.Spec_iff (P := @Flat)]`. Conclude with `σ.flat x`. Establish `h1` using `(ringKrullDim_stalk_le_of_flat (spMap (σ.ρ x)) ((σ.C x).G.hom z)).trans (ringKrullDim_stalk_le_of_flat (σ.C x).G.hom z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Rewrite `h1` using `[hz.1]`. Establish `hf : σ.f ∈ (spMap (σ.ρ x) ((σ.C x).G.hom z)).asIdeal` using `hz.2`. Generalize the expression as in `spMap (σ.ρ x) ((σ.C x).G.hom z) = p at h1 hf ⊢`. Use `letI : Algebra σ.R ((Sp σ.R).presheaf.stalk p) := StructureSheaf.stalkAlgebra σ.R p`. Use `haveI : p.asIdeal.IsPrime := PrimeSpectrum.isPrime (R := σ.R) p`.
+Equip the data with the indicated structure. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsLocalization.AtPrime ((Sp σ.R).presheaf.stalk p) p.asIdeal := StructureSheaf.IsLocalization.to_stalk σ.R p`. Rewrite `h1` using `[IsLocalization.AtPrime.ringKrullDim_eq_height p.asIdeal]`. Use `le_antisymm (by exact_mod_cast h1) ?_` and prove the remaining obligations. Establish `hlt : (⊥ : Ideal σ.R) < p.asIdeal` using `bot_lt_iff_ne_bot.2 fun h => σ.hf (by rwa [h, Ideal.mem_bot] at hf)`. Establish `h2` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt`.
-
-Conclude with `le_add_self.trans h2`.
+A detailed English derivation is pending.
 -/
 theorem Setup.height_under_vert (σ : Setup) (x : Sp σ.R) (z : (σ.C x).G.left)
     (hz : Vert (σ.C x).G.hom (σ.ρ x σ.f) z) :
@@ -54,7 +52,7 @@ theorem Setup.height_under_vert (σ : Setup) (x : Sp σ.R) (z : (σ.C x).G.left)
   exact le_add_self.trans h2
 
 /- English proof (translation)
-Introduce `σ u`. Use `⟨fun h p _ _ => h p, fun h x z hz => ?_⟩` and prove the remaining obligations. Establish `h1` using `h _ (σ.height_under_vert x z hz) hz.2`. Rewrite `h1` using `[← (GlobalTheory.T.gaussProperty_codimOne_chart_heightOnePrime σ x z hz).2]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Setup.forall_mem_W_iff : ∀ (σ : Setup) (u : σ.A.left.functionField),
     (∀ x : Sp σ.R, u ∈ σ.W x) ↔ ∀ p : Sp σ.R, p.asIdeal.height = 1 → σ.f ∈ p.asIdeal → u ∈ σ.W p := by

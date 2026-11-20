@@ -18,9 +18,9 @@ namespace GlobalTheory.SchwartzMaj
 variable {D : D7}
 
 /- English proof (translation)
-Use `letI ti : TopologicalSpace (Ainf D.host.F ⊗[D.host.F] D.host.E) := moduleTopology (Ainf D.host.F) (Ainf D.host.F ⊗[D.host.F] D.host.E)`. Take `⟨e, he, hec, hes⟩ : ∃ e : AE D ≃+* (Ainf D.host.F ⊗[D.host.F] D.host.E) × (Af D.host.F ⊗[D.host.F] D.host.E), (∀ z, (e z).1 = infPart D z ∧ (e z).2 = finPart D z) ∧ Continuous e ∧ Continuous e.symm` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Use `⟨?_, fun z => e.symm (0, z), hes.comp (continuous_const.prodMk continuous_id), fun z => ?_⟩` and prove the remaining obligations. Establish `: (finPart D : AE D → _) = fun z => (e z).2` using `funext fun z => (he z).2.symm`. Rewrite using `[this]`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `continuous_snd.comp hec`. Rewrite using `[← (he _).2, RingEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_section (D : D7) : Continuous (finPart D) ∧
     ∃ s : (Af D.host.F ⊗[D.host.F] D.host.E) → AE D, Continuous s ∧ ∀ z, finPart D (s z) = z := by
@@ -36,9 +36,9 @@ theorem finPart_section (D : D7) : Continuous (finPart D) ∧
   · rw [← (he _).2, RingEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Distinguish the cases in `hx : GlobalTheory.Unf.InBox K x`. Establish `hx' : GlobalTheory.Unf.InBox K' x` using `let ⟨k, hk, h0⟩ := hx`. Use the proof step `⟨k, h hk, h0⟩`. Unfold `GlobalTheory.Unf.maj`. Rewrite using `[if_pos hx, if_pos hx']`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : GlobalTheory.Unf.maj θ K N x = 0` using `by unfold GlobalTheory.Unf.maj; rw [if_neg hx]`. Rewrite using `[h0]`. Conclude with `GlobalTheory.Unf.maj_nonneg θ K' N x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maj_mono (θ : InfFam D) {m n : ℕ} {K K' : Set (Mx D m n)} (h : K ⊆ K') (N : ℕ) (x : Mx D m n) :
     GlobalTheory.Unf.maj θ K N x ≤ GlobalTheory.Unf.maj θ K' N x := by
@@ -51,11 +51,9 @@ theorem maj_mono (θ : InfFam D) {m n : ℕ} {K K' : Set (Mx D m n)} (h : K ⊆ 
     exact GlobalTheory.Unf.maj_nonneg θ K' N x
 
 /- English proof (translation)
-Use `set a : ℝ := ∑ _τ : D.what₂.Tau, ∑ _i : Fin m, ∑ _j : Fin n, (1 : ℝ) with ha`. Establish `ha0 : 0 ≤ a` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => zero_le_one`. Use `⟨1 + a, by linarith, fun x => ?_⟩` and prove the remaining obligations. Use `set y : D.what₂.Tau → Fin m → Fin n → ℂ := fun τ i j => compAt θ τ x i j with hy`. Establish `h1 : GlobalTheory.Unf.realSize θ x ≤ a * ‖y‖`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ha]`. Simplify using `only [Finset.sum_mul, one_mul]`. Use `Finset.sum_le_sum fun τ _ => Finset.sum_le_sum fun i _ => Finset.sum_le_sum fun j _ => ?_` and prove the remaining obligations. Conclude with `(norm_le_pi_norm (y τ i) j).trans ((norm_le_pi_norm (y τ) i).trans (norm_le_pi_norm y τ))`. Establish `h2` using `norm_nonneg y`.
-
-Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem realSize_le (θ : InfFam D) (m n : ℕ) : ∃ c : ℝ, 0 ≤ c ∧ ∀ x : Mx D m n,
     1 + GlobalTheory.Unf.realSize θ x ≤
@@ -77,15 +75,15 @@ def HasMaj (θ : InfFam D) {m n : ℕ} (φ : Mx D m n → ℂ) : Prop :=
   Continuous φ ∧ ∃ K : Set (Mx D m n), IsCompact K ∧ ∀ N : ℕ, ∃ C : ℝ, ∀ x, ‖φ x‖ ≤ C * GlobalTheory.Unf.maj θ K N x
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨continuous_const, ∅, isCompact_empty, fun _ => ⟨0, fun _ => by simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem HasMaj.zero (θ : InfFam D) (m n : ℕ) : HasMaj θ (0 : Mx D m n → ℂ) :=
   ⟨continuous_const, ∅, isCompact_empty, fun _ => ⟨0, fun _ => by simp⟩⟩
 
 /- English proof (translation)
-Take `⟨hc, K, hK, hb⟩` from `h`. Take `⟨hc', K', hK', hb'⟩` from `h'`. Use `⟨hc.add hc', K ∪ K', hK.union hK', fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hb N`. Take `⟨C', hC'⟩` from `hb' N`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨|C| + |C'|, fun x => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖φ x‖ ≤ |C| * GlobalTheory.Unf.maj θ (K ∪ K') N x` using `(hC x).trans (mul_le_mul (le_abs_self C) (maj_mono θ Set.subset_union_left N x) (GlobalTheory.Unf.maj_nonneg θ K N x) (abs_nonneg C))`. Establish `h2 : ‖φ' x‖ ≤ |C'| * GlobalTheory.Unf.maj θ (K ∪ K') N x` using `(hC' x).trans (mul_le_mul (le_abs_self C') (maj_mono θ Set.subset_union_right N x) (GlobalTheory.Unf.maj_nonneg θ K' N x) (abs_nonneg C'))`. Rewrite using `[add_mul]`. Conclude with `(norm_add_le (φ x) (φ' x)).trans (add_le_add h1 h2)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HasMaj.add {θ : InfFam D} {m n : ℕ} {φ φ' : Mx D m n → ℂ} (h : HasMaj θ φ) (h' : HasMaj θ φ') :
     HasMaj θ (φ + φ') := by
@@ -105,9 +103,9 @@ theorem HasMaj.add {θ : InfFam D} {m n : ℕ} {φ φ' : Mx D m n → ℂ} (h : 
   exact (norm_add_le (φ x) (φ' x)).trans (add_le_add h1 h2)
 
 /- English proof (translation)
-Take `⟨hc, K, hK, hb⟩` from `h`. Use `⟨hc.const_smul a, K, hK, fun N => ?_⟩` and prove the remaining obligations. Take `⟨C, hC⟩` from `hb N`. Use `⟨‖a‖ * C, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, norm_smul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_mul_of_nonneg_left (hC x) (norm_nonneg a)`.
+A detailed English derivation is pending.
 -/
 theorem HasMaj.smul {θ : InfFam D} {m n : ℕ} {φ : Mx D m n → ℂ} (a : ℂ) (h : HasMaj θ φ) : HasMaj θ (a • φ) := by
   obtain ⟨hc, K, hK, hb⟩ := h
@@ -118,21 +116,21 @@ theorem HasMaj.smul {θ : InfFam D} {m n : ℕ} {φ : Mx D m n → ℂ} (a : ℂ
   exact mul_le_mul_of_nonneg_left (hC x) (norm_nonneg a)
 
 /- English proof (translation)
-Take `⟨hfc, s, hs, hsec⟩` from `finPart_section D`. Establish `hgc : Continuous g` using `hg.1.continuous`. Establish `hgs : HasCompactSupport g` using `hg.2`. Establish `hy : Continuous fun x : Mx D m n => (fun τ i j => compAt θ τ x i j : D.what₂.Tau → Fin m → Fin n → ℂ)` using `continuous_pi fun τ => continuous_pi fun i => continuous_pi fun j => (GlobalTheory.RealWeil.continuous_compAt hθ τ m n).matrix_elem i j`. Establish `hz : Continuous fun x : Mx D m n => (fun i j => finPart D (x i j) : Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E)` using `continuous_pi fun i => continuous_pi fun j => hfc.comp (continuous_id.matrix_elem i j)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `t : (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → Mx D m n` to `fun z => Matrix.of fun i j => s (z i j)`. Establish `ht : Continuous t` using `continuous_matrix fun i j => hs.comp ((continuous_apply j).comp (continuous_apply i))`. Use `⟨(f.continuous.comp hy).mul (hgc.comp hz), t '' tsupport g, hgs.isCompact.image ht, fun N => ?_⟩` and prove the remaining obligations. Take `⟨G, hG⟩` from `hgs.exists_bound_of_continuous hgc`. Establish `hG0 : 0 ≤ G` using `(norm_nonneg _).trans (hG 0)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc0, hc⟩` from `realSize_le θ m n`. Choose the witnesses or unpack the hypotheses as in `⟨S, hS⟩ : ∃ S : ℝ, ∀ y, (1 + ‖y‖) ^ N * ‖f y‖ ≤ S := by`. Establish `h` using `fun y => SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (N, 0)) (k := N) (n := 0) le_rfl le_rfl f y`. Simplify using `only [norm_iteratedFDeriv_zero] at h`. Conclude with `⟨_, h⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `hS0 : 0 ≤ S` using `le_trans (by positivity) (hS 0)`. Use `⟨c ^ N * S * G, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h0 : g (fun i j => finPart D (x i j)) = 0`. Simplify using `only [h0, mul_zero, norm_zero]`. Conclude with `mul_nonneg (by positivity) (GlobalTheory.Unf.maj_nonneg θ _ N x)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hin : GlobalTheory.Unf.InBox (t '' tsupport g) x`. Use `⟨t fun i j => finPart D (x i j), ⟨_, subset_tsupport g h0, rfl⟩, ?_⟩` and prove the remaining obligations. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `finPart D (x i j - s (finPart D (x i j))) = 0`. Rewrite using `[(finPart D).map_sub, hsec, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr` using `GlobalTheory.Unf.realSize_nonneg θ x`. Unfold `GlobalTheory.Unf.maj`. Rewrite using `[if_pos hin, le_mul_inv_iff₀ (by positivity), norm_mul]`. Establish `h1` using `hc x`. Establish `h2` using `hS (fun τ i j => compAt θ τ x i j)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `hG (fun i j => finPart D (x i j))`. Generalize the expression as in `(fun τ i j => compAt θ τ x i j : D.what₂.Tau → Fin m → Fin n → ℂ) = y at h1 h2 ⊢`. Generalize the expression as in `g (fun i j => finPart D (x i j)) = b at h3 ⊢`. Establish `h4 : (1 + GlobalTheory.Unf.realSize θ x) ^ N ≤ c ^ N * (1 + ‖y‖) ^ N`. Rewrite using `[← mul_pow]`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `pow_le_pow_left₀ (by linarith) h1 N`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem hasMaj_pure {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (f : SchwartzMap (D.what₂.Tau → Fin m → Fin n → ℂ) ℂ)
     (g : (Fin m → Fin n → Af D.host.F ⊗[D.host.F] D.host.E) → ℂ)
@@ -185,7 +183,7 @@ theorem hasMaj_pure {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} (f : Schwart
       _ ≤ c ^ N * S * G := by gcongr
 
 /- English proof (translation)
-Use `Submodule.span_induction (p := fun φ _ => HasMaj θ φ) ?_ (HasMaj.zero θ m n) (fun _ _ _ _ h h' => h.add h') (fun a _ _ h => h.smul a) hφ` and prove the remaining obligations. Introduce and unpack `_ ⟨f, g, hg, rfl⟩`. Conclude with `hasMaj_pure hθ f g hg`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem hasMaj_of_mem {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} {φ : Mx D m n → ℂ}
     (hφ : φ ∈ GlobalTheory.IndefiniteRowSideFullHecke.ModerateGrowthSchwartz.schwartzA θ m n) : HasMaj θ φ := by
@@ -195,7 +193,7 @@ theorem hasMaj_of_mem {θ : InfFam D} (hθ : IsInfFam θ) {m n : ℕ} {φ : Mx D
   exact hasMaj_pure hθ f g hg
 
 /- English proof (translation)
-Introduce `D θ hθ m n φ hφ` and use `hasMaj_of_mem hθ ((GlobalTheory.T.isSchwartzBruhat_iff_mem_adelicMatrixSchwartzSpace D θ hθ m n φ).1 hφ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem continuous_and_le_maj : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (m n : ℕ) (φ : Mx D m n → ℂ),
     GlobalTheory.IndefiniteRowSideFullHecke.SchwartzBruhatMixedFamilies.IsSchwartzBruhat φ → Continuous φ ∧ ∃ K : Set (Mx D m n), IsCompact K ∧

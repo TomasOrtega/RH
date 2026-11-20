@@ -6,29 +6,25 @@ open Polynomial
 namespace LateralTheory.E.LIdemPf
 
 /- English proof (translation)
-Introduce `A _ I B _ φ hJ b hb N g h hg hh hgh`. Use `set J := I.map φ with hJdef`. Set `π` to `Ideal.Quotient.mk J`. Set `ψ : A ⧸ I →+* B ⧸ J` to `Ideal.quotientMap J φ Ideal.le_comap_map`. Establish `hcomp : ψ.comp (Ideal.Quotient.mk I) = π.comp φ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using `[ψ, π, Ideal.quotientMap_mk]`. Establish `key : ∀ p : A[X], π (p.eval₂ φ b) = (p.map (Ideal.Quotient.mk I)).eval₂ ψ (π b)`. Introduce `p`. Rewrite using `[Polynomial.hom_eval₂, Polynomial.eval₂_map, hcomp]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set G := g.eval₂ φ b with hGdef`. Use `set H := h.eval₂ φ b with hHdef`. Use `set e := π b with hedef`. Establish `hG : π G = e ^ N` using `by rw [key, hg]; simp`. Establish `hH : π H = (e - 1) ^ N` using `by rw [key, hh]; simp [eval₂_pow, eval₂_sub, eval₂_X, eval₂_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `he : e * e = e`. Establish `: π (b * b - b) = 0` using `Ideal.Quotient.eq_zero_iff_mem.mpr hb`. Rewrite `this` using `[map_sub, map_mul]`. Conclude with `sub_eq_zero.mp this`. Establish `hcop : IsCoprime (e ^ N) ((e - 1) ^ N)` using `(show IsCoprime e (e - 1) from ⟨1, -1, by ring⟩).pow`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take `⟨u, v, huv⟩` from `hcop`. Take `⟨u', rfl⟩` from `Ideal.Quotient.mk_surjective u`. Take `⟨v', rfl⟩` from `Ideal.Quotient.mk_surjective v`. Use `set s := u' * G + v' * H with hsdef`. Establish `hs : π s = π 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify using `only [hsdef, map_add, map_mul, hG, hH, map_one]`. Conclude with `huv`. Establish `hsJ : s - 1 ∈ Ideal.jacobson (⊥ : Ideal B)` using `hJ (Ideal.Quotient.eq.mp hs)`. Establish `hunit : IsUnit s`. Use `(Ideal.mem_jacobson_bot.mp hsJ) 1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `using this`. Take `⟨w, hw⟩` from `hunit`. Establish `hsum : (↑w⁻¹ * u') * G + (↑w⁻¹ * v') * H = 1`. Establish `: (↑w⁻¹ : B) * s = 1` using `by rw [← hw]; exact Units.inv_mul w`. Rewrite `this` using `[hsdef]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `this`. Use `⟨(↑w⁻¹ * u') * G, ?_, ?_⟩` and prove the remaining obligations. Use `show (↑w⁻¹ * u') * G * ((↑w⁻¹ * u') * G) = (↑w⁻¹ * u') * G`. Take the linear combination `((↑w⁻¹ * u') * G) * hsum - (↑w⁻¹ * u') * (↑w⁻¹ * v') * hgh`. Rewrite using `[← Ideal.Quotient.eq]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Express the relevant statement in the definitionally equal form `π ((↑w⁻¹ * u') * G) = e`. Establish `hsum'` using `congrArg π hsum`. Simplify using `only [map_add, map_mul, map_one, hG, hH] at hsum' ⊢`. Use `set α := π ↑w⁻¹ * π u'`. Use `set γ := π ↑w⁻¹ * π v'`.
+Establish an intermediate fact. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Consider the cases of `N with`. Consider the case `zero`. Establish `h0 : (1 : B ⧸ J) = 0`. Use `congrArg π hgh` as an intermediate fact. Simplify `this` using `[map_mul, hG, hH]`.
-
-Use `subsingleton_of_zero_eq_one h0.symm` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Consider the case `succ n`. Establish `hp : e ^ (n + 1) = e` using `IsIdempotentElem.pow_succ_eq n he`. Establish `h1 : e * (e - 1) ^ (n + 1) = 0`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite `hsum'`, the goal using `[hp]`. Take the linear combination `e * hsum' - α * he - γ * h1`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem LIdem_of : LateralTheory.E.HensIdemCut.LIdem := by
   intro A _ I B _ φ hJ b hb N g h hg hh hgh

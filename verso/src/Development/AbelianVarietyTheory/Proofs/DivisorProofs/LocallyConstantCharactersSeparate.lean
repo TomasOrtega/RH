@@ -14,9 +14,9 @@ open Set Function
 variable {Z : Type} [TopologicalSpace Z]
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `hf`. Use `⟨?_, h2.mono (by rw [Set.support_indicator]; exact inter_subset_right)⟩` and prove the remaining obligations. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `x`. Distinguish the cases in `hx : x ∈ V`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `filter_upwards [hV.isOpen.mem_nhds hx, ((IsLocallyConstant.iff_eventually_eq f).1 h1 x)] with y hy hy'`. Simplify using `[Set.indicator_apply, hy, hx, hy']`. Use `filter_upwards [hV.isClosed.isOpen_compl.mem_nhds hx] with y hy`. Establish `hy' : y ∉ V` using `hy`. Simplify using `[Set.indicator_apply, hy', hx]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem indicator_mem {V : Set Z} (hV : IsClopen V) {f : Z → ℂ} (hf : f ∈ SB Z) :
     V.indicator f ∈ SB Z := by
@@ -35,7 +35,7 @@ def PairNull (β : (Z → ℂ) → (Z → ℂ) → ℂ) (U V : Set Z) : Prop :=
   ∀ f' ∈ SB Z, ∀ g' ∈ SB Z, (∀ z ∉ U, f' z = 0) → (∀ z ∉ V, g' z = 0) → β f' g' = 0
 
 /- English proof (translation)
-Introduce `f' hf' g' hg' h1 h2`. Conclude with `h f' hf' g' hg' (fun z hz => h1 z (fun h => hz (hU h))) (fun z hz => h2 z (fun h => hz (hV h)))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem PairNull.mono {β : (Z → ℂ) → (Z → ℂ) → ℂ} {U V U' V' : Set Z} (h : PairNull β U V)
     (hU : U' ⊆ U) (hV : V' ⊆ V) : PairNull β U' V' := by
@@ -43,9 +43,9 @@ theorem PairNull.mono {β : (Z → ℂ) → (Z → ℂ) → ℂ} {U V U' V' : Se
   exact h f' hf' g' hg' (fun z hz => h1 z (fun h => hz (hU h))) (fun z hz => h2 z (fun h => hz (hV h)))
 
 /- English proof (translation)
-Introduce `f' hf' g' hg' hU hVV'`. Rewrite using `[← Set.indicator_self_add_compl V g', hadd2 f' hf' _ (indicator_mem hVc hg') _ (indicator_mem hVc.compl hg')]`. Establish `a` using `h f' hf' (V.indicator g') (indicator_mem hVc hg') hU (fun z hz => by simp [Set.indicator_apply, hz])`. Establish `b` using `h' f' hf' (Vᶜ.indicator g') (indicator_mem hVc.compl hg') hU (fun z hz => by`. Distinguish the cases in `hzV : z ∈ V`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `[Set.indicator_apply, hzV]`. Establish `: g' z = 0` using `hVV' z (by simp [hzV, hz])`. Simplify using `[Set.indicator_apply, hzV, this])`. Rewrite using `[a, b, add_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem PairNull.union_right {β : (Z → ℂ) → (Z → ℂ) → ℂ}
     (hadd2 : ∀ f ∈ SB Z, ∀ g ∈ SB Z, ∀ g' ∈ SB Z, β f (g + g') = β f g + β f g')
@@ -65,15 +65,15 @@ theorem PairNull.union_right {β : (Z → ℂ) → (Z → ℂ) → ℂ}
   rw [a, b, add_zero]
 
 /- English proof (translation)
-Introduce `f' hf' g' hg' hU hV`. Establish `e1 : χ * f' = χ x • f'`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : χ z = χ x`. Simplify using `[hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hU z hz]`. Establish `e2 : χ * g' = χ y • g'`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : χ z = χ y`. Simplify using `[hz]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hV z hz]`. Establish `key` using `hχβ f' hf' g' hg'`. Rewrite `key` using `[e1, e2, (hsm _ f' hf' _ (Submodule.smul_mem _ _ hg')).1, (hsm _ f' hf' g' hg').2]`. Establish `hy : starRingEnd ℂ (χ y) * χ y = 1`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq, hχn y]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hne : χ x * starRingEnd ℂ (χ y) ≠ 1`. Introduce `h`. Apply `hχne` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Establish `h0 : (1 - χ x * starRingEnd ℂ (χ y)) * β f' g' = 0`. Take the linear combination `(-1 : ℂ) * key`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases. Conclude with `absurd (sub_eq_zero.1 h).symm hne`. Conclude with `h`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem base (β : (Z → ℂ) → (Z → ℂ) → ℂ)
     (hsm : ∀ (a : ℂ), ∀ f ∈ SB Z, ∀ g ∈ SB Z, β (a • f) g = a * β f g ∧ β f (a • g) = starRingEnd ℂ a * β f g)
@@ -108,7 +108,7 @@ theorem base (β : (Z → ℂ) → (Z → ℂ) → ℂ)
   · exact h
 
 /- English proof (translation)
-Establish `hcl : IsClosed (support f)`. Establish `: support f = (f ⁻¹' {0})ᶜ` using `by ext z; simp`. Rewrite using `[this]`. Conclude with `(hf.1.isOpen_fiber 0).isClosed_compl`. Conclude with `hf.2.isCompact.of_isClosed_subset hcl (subset_tsupport f)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem support_isCompact {f : Z → ℂ} (hf : f ∈ SB Z) : IsCompact (support f) := by
   have hcl : IsClosed (support f) := by
@@ -122,27 +122,25 @@ end GlobalTheory.SBOrth
 open Set Function
 
 /- English proof (translation)
-Introduce `Z _ β hadd1 hadd2 hsm hsep f hf g hg hfg`. Establish `hz1 : ∀ f' ∈ SB Z, ∀ g' ∈ SB Z, (∀ z, f' z = 0) → β f' g' = 0`. Introduce `f' hf' g' hg' h0`. Establish `: f' = (0:ℂ) • f'` using `by funext z; simp [h0 z]`. Rewrite using `[this, (hsm 0 f' hf' g' hg').1, zero_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz2 : ∀ f' ∈ SB Z, ∀ g' ∈ SB Z, (∀ z, g' z = 0) → β f' g' = 0`. Introduce `f' hf' g' hg' h0`. Establish `: g' = (0:ℂ) • g'` using `by funext z; simp [h0 z]`. Rewrite using `[this, (hsm 0 f' hf' g' hg').2, map_zero, zero_mul]`. Establish `inner : ∀ x, f x ≠ 0 → ∃ U V : Set Z, IsClopen U ∧ IsClopen V ∧ x ∈ U ∧ support g ⊆ V ∧ GlobalTheory.SBOrth.PairNull β U V`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `x hx`. Use `(GlobalTheory.SBOrth.support_isCompact hg).induction_on (p := fun S => ∃ U V : Set Z, IsClopen U ∧ IsClopen V ∧ x ∈ U ∧ S ⊆ V ∧ GlobalTheory.SBOrth.PairNull β U V) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `⟨univ, ∅, isClopen_univ, isClopen_empty, mem_univ _, subset_rfl, ?_⟩` and prove the remaining obligations. Introduce `f' hf' g' hg' _ h2`. Conclude with `hz2 f' hf' g' hg' (fun z => h2 z (by simp))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `S T hST ⟨U, V, hU, hV, hxU, hTV, hP⟩`. Conclude with `⟨U, V, hU, hV, hxU, hST.trans hTV, hP⟩`. Introduce and unpack `S T ⟨U, V, hU, hV, hxU, hSV, hP⟩ ⟨U', V', hU', hV', hxU', hTV', hP'⟩`. Use `⟨U ∩ U', V ∪ V', hU.inter hU', hV.union hV', ⟨hxU, hxU'⟩, union_subset_union hSV hTV', ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.SBOrth.PairNull.union_right hadd2 hV (hP.mono inter_subset_left subset_rfl) (hP'.mono inter_subset_right subset_rfl)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hxy : x ≠ y`. Introduce and unpack `rfl`. Conclude with `hy ((mul_eq_zero.1 (hfg x)).resolve_left hx)`. Take `⟨χ, hχlc, hχn, hχne, hχβ⟩` from `hsep x y hxy`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨χ ⁻¹' {χ y}, mem_nhdsWithin_of_mem_nhds ((hχlc.isOpen_fiber _).mem_nhds rfl), ?_⟩` and prove the remaining obligations. Conclude with `⟨χ ⁻¹' {χ x}, χ ⁻¹' {χ y}, hχlc.isClopen_fiber _, hχlc.isClopen_fiber _, rfl, subset_rfl, GlobalTheory.SBOrth.base β hsm x y χ hχlc hχn hχne hχβ⟩`. Choose the witnesses or unpack the hypotheses as in `⟨U, hUc, hfU, hQ⟩ : ∃ U : Set Z, IsClopen U ∧ support f ⊆ U ∧ ∀ f' ∈ SB Z, (∀ z ∉ U, f' z = 0) → β f' g = 0 := by`. Use `(GlobalTheory.SBOrth.support_isCompact hf).induction_on (p := fun S => ∃ U : Set Z, IsClopen U ∧ S ⊆ U ∧ ∀ f' ∈ SB Z, (∀ z ∉ U, f' z = 0) → β f' g = 0) ?_ ?_ ?_ ?_` and prove the remaining obligations. Use `⟨∅, isClopen_empty, subset_rfl, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `f' hf' h1`. Conclude with `hz1 f' hf' g hg (fun z => h1 z (by simp))`. Introduce and unpack `S T hST ⟨U, hU, hTU, hQ⟩`. Conclude with `⟨U, hU, hST.trans hTU, hQ⟩`. Introduce and unpack `S T ⟨U, hU, hSU, hQ⟩ ⟨U', hU', hTU', hQ'⟩`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨U ∪ U', hU.union hU', union_subset_union hSU hTU', ?_⟩` and prove the remaining obligations. Introduce `f' hf' h1`. Rewrite using `[← Set.indicator_self_add_compl U f', hadd1 _ (GlobalTheory.SBOrth.indicator_mem hU hf') _ (GlobalTheory.SBOrth.indicator_mem hU.compl hf') g hg]`. Establish `a` using `hQ (U.indicator f') (GlobalTheory.SBOrth.indicator_mem hU hf') (fun z hz => by simp [Set.indicator_apply, hz])`. Establish `b` using `hQ' (Uᶜ.indicator f') (GlobalTheory.SBOrth.indicator_mem hU.compl hf') (fun z hz => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hzU : z ∈ U`. Simplify using `[Set.indicator_apply, hzU]`. Establish `: f' z = 0` using `h1 z (by simp [hzU, hz])`. Simplify using `[Set.indicator_apply, hzU, this])`. Rewrite using `[a, b, add_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx`. Take `⟨U, V, hU, hV, hxU, hgV, hP⟩` from `inner x hx`. Use `⟨U, mem_nhdsWithin_of_mem_nhds (hU.isOpen.mem_nhds hxU), U, hU, subset_rfl, ?_⟩` and prove the remaining obligations. Introduce `f' hf' h1`. Conclude with `hP f' hf' g hg h1 (fun z hz => by`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `hz (hgV hne))`. Conclude with `hQ f hf (fun z hz => by`. Assume the negation of the conclusion as `hne`. Conclude with `hz (hfU hne))`.
+Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SBOrth.sesq_eq_zero_of_mul_eq_zero : ∀ (Z : Type) [TopologicalSpace Z] (β : (Z → ℂ) → (Z → ℂ) → ℂ),
     (∀ f ∈ SB Z, ∀ f' ∈ SB Z, ∀ g ∈ SB Z, β (f + f') g = β f g + β f' g) → (∀ f ∈ SB Z, ∀ g ∈ SB Z, ∀ g' ∈ SB Z, β f (g + g') = β f g + β f g') →

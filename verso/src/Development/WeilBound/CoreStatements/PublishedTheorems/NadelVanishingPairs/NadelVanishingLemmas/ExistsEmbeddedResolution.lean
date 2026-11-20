@@ -23,13 +23,13 @@ namespace GlobalTheory.LogResStep
 open GlobalTheory.Cartier.CartierDiv in
 
 /- English proof (translation)
-Introduce `x hx h` and use `hx (by simpa using h.neg)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem supp_neg_le {X : Scheme.{0}} [IsIntegral X] (D : CartierDiv X) : (-D).supp ≤ D.supp := fun x hx h =>
   hx (by simpa using h.neg)
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [(CartierDiv.supp_eq_bot_iff (D := (0 : CartierDiv X))).2 rfl]`. Consider the case `succ m ih => exact (succ_nsmul D m ▸ CartierDiv.supp_add_le _ _).trans (sup_le ih le_rfl)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem supp_nsmul_le {X : Scheme.{0}} [IsIntegral X] (D : CartierDiv X) (m : ℕ) : (m • D).supp ≤ D.supp := by
   induction m with
@@ -37,9 +37,9 @@ theorem supp_nsmul_le {X : Scheme.{0}} [IsIntegral X] (D : CartierDiv X) (m : �
   | succ m ih => exact (succ_nsmul D m ▸ CartierDiv.supp_add_le _ _).trans (sup_le ih le_rfl)
 
 /- English proof (translation)
-Establish `key : ∀ C : Closeds Y, C ≠ ⊤ → genericPoint Y ∉ C` using `fun C hC h => hC <| by`. Use extensionality with `x`. Simplify using `only [Closeds.coe_top, Set.mem_univ, iff_true]`. Conclude with `((genericPoint_spec Y).mem_closed_set_iff C.isClosed).1 h (Set.mem_univ x)`. Introduce `h`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: genericPoint Y ∈ Z ⊔ W` using `by rw [h]; trivial`. Break down `this with h' | h'` into its components or cases. Conclude with `key Z hZ h'`. Conclude with `key W hW h'`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sup_ne_top {Y : Scheme.{0}} [IsIntegral Y] {Z W : Closeds Y} (hZ : Z ≠ ⊤) (hW : W ≠ ⊤) : Z ⊔ W ≠ ⊤ := by
   have key : ∀ C : Closeds Y, C ≠ ⊤ → genericPoint Y ∉ C := fun C hC h => hC <| by
@@ -55,33 +55,27 @@ end GlobalTheory.LogResStep
 
 open GlobalTheory.LogResStep in
 /- English proof (translation)
-Introduce `hP k _ _ X _ p n η m G hη Y₀ _ s₀ _ hsm hproj hbij Z hZ A hA`. Use `haveI : SmoothOfRelativeDimension n (s₀ ≫ p) := hsm`. Use `haveI : Smooth (s₀ ≫ p) := SmoothOfRelativeDimension.smooth n _`. Use `haveI : IsLocallyNoetherian Y₀ := LocallyOfFiniteType.isLocallyNoetherian (s₀ ≫ p)`. Use `set η₀ := EtaleKlt.ratPull p s₀ n η with hη₀def`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hη₀ : η₀ ≠ 0` using `fun h => hη ((GlobalTheory.T.rationalTopFormPullback_bijective_birational k X Y₀ p s₀ hbij n).1 (h.trans (map_zero _).symm))`. Take `⟨K₀, hK₀⟩` from `(GlobalTheory.T.canonical_divisor_of_form k Y₀ (s₀ ≫ p) n η₀ hη₀).1`. Use `set D₀ : CartierDiv Y₀ := pullCart s₀ G - m • K₀ with hD₀`. Use `set Z' : Closeds Y₀ := Z ⊔ D₀.supp with hZ'`. Establish `hZ'top : Z' ≠ ⊤` using `sup_ne_top hZ D₀.supp_ne_top`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `set I : Y₀.IdealSheafData := Scheme.IdealSheafData.vanishingIdeal Z' with hIdef`. Establish `hIsupp : (I.support : Set Y₀) = Z'` using `Scheme.IdealSheafData.coe_support_vanishingIdeal Z'`. Establish `hI : I ≠ ⊥`. Introduce `h`. Apply `hZ'top` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[← hIsupp, h]`. Simplify using the standard rewrite rules. Take `⟨Y, t, hYi, hsmY, hprojY, -, hiso, heff, hsnc⟩` from `hP k n Y₀ (s₀ ≫ p) inferInstance hsm hproj I hI`. Use `haveI := hYi`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne` using `Principalise.nonempty_compl_support hI`. Use `haveI : IsDominant t := GlobalTheory.T.isDominant_of_isIso_restrict' Y₀ Y t I.support.compl hne hiso`. Use `haveI : SmoothOfRelativeDimension n (t ≫ s₀ ≫ p) := hsmY`. Use `haveI : SmoothOfRelativeDimension n ((t ≫ s₀) ≫ p) := by rw [Category.assoc]; exact hsmY`. Use `haveI : Smooth (t ≫ s₀ ≫ p) := SmoothOfRelativeDimension.smooth n _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hsmY' : SmoothOfRelativeDimension n ((t ≫ s₀) ≫ p)` using `by rw [Category.assoc]; exact hsmY`. Establish `hprojY' : IsProjOver ((t ≫ s₀) ≫ p)` using `by rw [Category.assoc]; exact hprojY`. Use `haveI : IsLocallyNoetherian Y := LocallyOfFiniteType.isLocallyNoetherian (t ≫ s₀ ≫ p)`. Establish `hcomp` using `GlobalTheory.T.pullback_composition_compatible k X Y₀ Y p s₀ t`. Establish `hbt` using `GlobalTheory.T.functionFieldMap_bijective_of_isIso_restrict' Y₀ Y t I.support.compl hne hiso`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbij' : Function.Bijective (functionFieldMap (t ≫ s₀))`. Rewrite using `[hcomp.1, RingHom.coe_comp]`. Conclude with `hbt.comp hbij`. Establish `hη₁ : EtaleKlt.ratPull p (t ≫ s₀) n η ≠ 0` using `fun h => hη ((GlobalTheory.T.rationalTopFormPullback_bijective_birational k X Y p (t ≫ s₀) hbij' n).1 (h.trans (map_zero _).symm))`. Take `⟨K, hK⟩` from `(GlobalTheory.T.canonical_divisor_of_form k Y ((t ≫ s₀) ≫ p) n _ hη₁).1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Establish `hK' : IsDivOfForm K (EtaleKlt.ratPull (s₀ ≫ p) t n η₀)` using `((hcomp.2.2 n η K).1 hK)`. Establish `hB : ∀ y : Y, y ∈ (I.comap t).support ↔ t y ∈ Z'` using `fun y => by`. Rewrite using `[← SetLike.mem_coe, Scheme.IdealSheafData.support_comap]`. Express the relevant statement in the definitionally equal form `t y ∈ (I.support : Set Y₀) ↔ _`. Rewrite using `[hIsupp]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hkiso` using `GlobalTheory.T.canonical_divisor_birational_compare k Y₀ Y (s₀ ≫ p) n t I.support.compl hne hiso η₀ hη₀ K₀ K hK₀ hK'`. Establish `heq : pullCart (t ≫ s₀) G - m • K = pullCart t D₀ + m • (-(K - pullCart t K₀))`. Rewrite using `[hcomp.2.1 G, hD₀]`. Express the relevant statement in the definitionally equal form `_ = pullCartHom t (pullCart s₀ G - m • K₀) + _`.
+Prove the second alternative. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[map_sub, map_nsmul]`. Express the relevant statement in the definitionally equal form `_ = pullCart t (pullCart s₀ G) - m • pullCart t K₀ + _`. Rewrite using `[smul_neg, nsmul_sub]`. Normalize the expressions using the abelian group laws. Use `⟨Y, hYi, t, inferInstance, K, (I.comap t).support, ⟨hsmY', hprojY', hbij', hK, hsnc, ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[heq]`. Use `(CartierDiv.supp_add_le _ _).trans (sup_le ?_ ?_)` and prove the remaining obligations. Introduce `y hy`. Rewrite using `[hB]`. Conclude with `Or.inr ((GlobalTheory.T.cartierDivisorPullback_support_and_effective Y₀ Y t D₀).1 y hy)`.
-
-Introduce `y hy`. Establish `hy'` using `supp_neg_le _ (supp_nsmul_le _ m hy)`. Rewrite using `[hB]`. Assume the negation of the conclusion as `hc`. Use `hkiso y ?_ hy'` and prove the remaining obligations.
-
-Introduce `hm`. Establish `: t y ∈ (I.support : Set Y₀)` using `hm`. Rewrite `this` using `[hIsupp]`. Conclude with `hc this`. Introduce `y hy`.
-
-Rewrite using `[hB]`. Conclude with `Or.inl hy`. Conclude with `GlobalTheory.T.blowup_ample_relative k Y₀ Y (s₀ ≫ p) n t hproj hprojY I hiso heff A hA`.
+Rewrite the conclusion using the stated equalities. Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.exists_logRes_ample : GlobalTheory.Published.Principalisation → ∀ (k : Type) [Field k] [CharZero k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k) (n : ℕ) (η : RatForms p n) (m : ℕ) (G : CartierDiv X), η ≠ 0 → ∀ (Y₀ : Scheme.{0}) [IsIntegral Y₀] (s₀ : Y₀ ⟶ X) [IsDominant s₀], SmoothOfRelativeDimension n (s₀ ≫ p) → IsProjOver (s₀ ≫ p) → Function.Bijective (functionFieldMap s₀) → ∀ (Z : Closeds Y₀), Z ≠ ⊤ → ∀ (A : LB Y₀) (hA : IsAmpleLB A), ∃ (Y : Scheme.{0}) (_ : IsIntegral Y) (t : Y ⟶ Y₀) (_ : IsDominant t) (K : CartierDiv Y) (B : Closeds Y), IsLogRes p n η m G (t ≫ s₀) K B ∧ (∀ y, t y ∈ Z → y ∈ B) ∧ ∃ (c : ℕ) (E : CartierDiv Y) (A₁ : LB Y) (hA₁ : IsAmpleLB A₁), 0 < c ∧ E.Eff ∧ E.supp ≤ B ∧ c • CechPic.pull t (cls A hA.isLB) = cls A₁ hA₁.isLB + toPic E := by
   intro hP k _ _ X _ p n η m G hη Y₀ _ s₀ _ hsm hproj hbij Z hZ A hA

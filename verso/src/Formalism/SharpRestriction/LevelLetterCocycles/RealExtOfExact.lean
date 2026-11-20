@@ -31,13 +31,13 @@ def BKExt (W : LocWach PD LL O v n) (e : W.DD W.one) : Prop :=
 def coef {e : W.DD W.one} (hB : UnitBasis W e) (x : W.DD W.one) : W.EE := (hB x).choose
 
 /- English proof (translation)
-The claim follows from `(hB x).choose_spec.1`.
+A detailed English derivation is pending.
 -/
 theorem coef_spec {e : W.DD W.one} (hB : UnitBasis W e) (x : W.DD W.one) : x = coef hB x • e :=
   (hB x).choose_spec.1
 
 /- English proof (translation)
-The claim follows from `(hB x).choose_spec.2 ε h`.
+A detailed English derivation is pending.
 -/
 theorem coef_unique {e : W.DD W.one} (hB : UnitBasis W e) {x : W.DD W.one} {ε : W.EE}
     (h : x = ε • e) : ε = coef hB x :=
@@ -61,29 +61,29 @@ theorem sec_apply {e : W.DD W.one} (hB : UnitBasis W e) (E : W.DD Y) (x : W.DD W
     sec hB E x = coef hB x • E := rfl
 
 /- English proof (translation)
-Rewrite using `[sec_apply, ← coef_unique hB (one_smul W.EE e).symm, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_e {e : W.DD W.one} (hB : UnitBasis W e) (E : W.DD Y) : sec hB E e = E := by
   rw [sec_apply, ← coef_unique hB (one_smul W.EE e).symm, one_smul]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_smul W.EE a x, map_smul, algebraMap_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem sec_smulA {e : W.DD W.one} (hB : UnitBasis W e) (E : W.DD Y) (a : LetA O n)
     (x : W.DD W.one) : sec hB E (a • x) = a • sec hB E x := by
   rw [← algebraMap_smul W.EE a x, map_smul, algebraMap_smul]
 
 /- English proof (translation)
-Rewrite using `[sec_apply, map_smul, hE, ← coef_spec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_sec {e : W.DD W.one} (hB : UnitBasis W e) {E : W.DD Y} (π : LatHom Y.L W.one.L)
     (hE : W.map π E = e) (x : W.DD W.one) : W.map π (sec hB E x) = x := by
   rw [sec_apply, map_smul, hE, ← coef_spec]
 
 /- English proof (translation)
-Rewrite using `[sec_apply, sec_apply, W.γD_smul, hE]`. Use `congr 1`. Apply `coef_unique` to reduce the goal to its premises. Establish `h1` using `congrArg (W.γD W.one g) (coef_spec hB x)`. Rewrite `h1` using `[W.γD_smul, he]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem γ_sec {e : W.DD W.one} (hB : UnitBasis W e) {E : W.DD Y} (g : W.Gam)
     (he : W.γD W.one g e = e) (hE : W.γD Y g E = E) (x : W.DD W.one) :
@@ -137,30 +137,30 @@ theorem toY_coe (hB : UnitBasis W e) (X : ExtIn e ι π E) (C : Coord W I T) (C�
       W.map ι (C.t i p.1) + sec hB E (C₀.t i p.2) := rfl
 
 /- English proof (translation)
-The claim follows from `(X.exact _).2 ⟨u, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem map_π_ι (X : ExtIn e ι π E) (u : W.DD T) : W.map π (W.map ι u) = 0 :=
   (X.exact _).2 ⟨u, rfl⟩
 
 /- English proof (translation)
-The claim follows from `(AddEquiv.map_eq_zero_iff (C.θ i)).1 (Subtype.ext h)`.
+A detailed English derivation is pending.
 -/
 private theorem coord_eq_zero_of_t_eq_zero {T' : LocLat G Qp LL O} (C : Coord W I T') (i : ZMod n) (x : C.V)
     (h : C.t i x = 0) : x = 0 :=
   (AddEquiv.map_eq_zero_iff (C.θ i)).1 (Subtype.ext h)
 
 /- English proof (translation)
-Establish `hπι : ∀ u, W.map π (W.map ι u) = 0` using `map_π_ι X`. Prove the components needed by the constructor for the conclusion. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨a, b⟩ hp`. Establish `h0 : W.map ι (C.t i a) + sec hB E (C₀.t i b) = 0` using `(toY_coe hB X C C₀ i (a, b)).symm.trans (congrArg Subtype.val hp)`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hb : C₀.t i b = 0`. Establish `h2` using `congrArg (W.map π) h0`. Rewrite `h2` using `[map_add, hπι, map_sec hB π X.πE, zero_add, map_zero]`. Conclude with `h2`. Establish `hb0 : b = 0` using `coord_eq_zero_of_t_eq_zero C₀ i b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[hb, map_zero, add_zero]`. Establish `ha : C.t i a = 0` using `X.inj (h0.trans (map_zero _).symm)`. Conclude with `Prod.ext (coord_eq_zero_of_t_eq_zero C i a ha) hb0`. Introduce and unpack `⟨y, hy⟩`. Take `⟨hyl, hyΔ⟩` from `id hy`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx⟩ : ∃ x, x = W.map π y` from `⟨_, rfl⟩`. Establish `hxl : (letE i : LetA O n) • x = x` using `by rw [hx, ← map_smulA, hyl]`. Establish `hxΔ : ∀ δ ∈ W.DelF, W.γD W.one δ x = x` using `fun δ hδ => by`. Rewrite using `[hx, ← W.map_γ, hyΔ δ hδ]`. Take `⟨u, hu⟩` from `(X.exact (y - sec hB E x)).1 (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_sec hB π X.πE, hx, sub_self])`. Establish `hul : (letE i : LetA O n) • u = u` using `X.inj (by`. Rewrite using `[map_smulA, hu, smul_sub, hyl, ← sec_smulA, hxl])`. Establish `huΔ : ∀ δ ∈ W.DelF, W.γD T δ u = u` using `fun δ hδ => X.inj (by`. Rewrite using `[W.map_γ, hu, map_sub, hyΔ δ hδ, γ_sec hB δ (X.eΔ δ hδ) (X.EΔ δ hδ), hxΔ δ hδ])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨((C.θ i).symm ⟨u, hul, huΔ⟩, (C₀.θ i).symm ⟨x, hxl, hxΔ⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[toY_coe]`. Simplify using `only [Coord.t, AddEquiv.apply_symm_apply]`. Rewrite using `[hu, sub_add_cancel]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toY_bij (hB : UnitBasis W e) (X : ExtIn e ι π E) (C : Coord W I T) (C₀ : Coord W I W.one)
     (i : ZMod n) : Function.Bijective (toY hB X C C₀ i) := by
@@ -234,7 +234,7 @@ def realExtOf (hB : UnitBasis W e) (X : ExtIn e ι π E) (C : Coord W I T) (C₀
       crys' := X.crys1 }
 
 /- English proof (translation)
-Use `show Function.Injective (LinearMap.inl (PowerSeries O) C.V C₀.V) ∧ ∀ x : C.V × C₀.V, LinearMap.snd (PowerSeries O) C.V C₀.V x = 0 ↔ ∃ u, LinearMap.inl (PowerSeries O) C.V C₀.V u = x`. Use `⟨LinearMap.inl_injective, fun x => ⟨fun h => ⟨x.1, Prod.ext rfl h.symm⟩, ?_⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨u, rfl⟩`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem realExtOf_exact (hB : UnitBasis W e) (X : ExtIn e ι π E) (C : Coord W I T)
     (C₀ : Coord W I W.one) : (realExtOf hB X C C₀).Exact := by
@@ -260,7 +260,7 @@ theorem t_pairY (hB : UnitBasis W e) (X : ExtIn e ι π E) (C : Coord W I T) (C�
     (coordY hB X C C₀).t i (pairY hB X C C₀ a b) = W.map ι (C.t i a) + sec hB E (C₀.t i b) := rfl
 
 /- English proof (translation)
-Rewrite using `[t_pairY, C.t_zero, map_zero, zero_add, he₀, sec_smulA, sec_e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coordY_t_e₀ (hB : UnitBasis W e) (X : ExtIn e ι π E) (C : Coord W I T) (C₀ : Coord W I W.one)
     (e₀ : C₀.V) (he₀ : ∀ i, C₀.t i e₀ = (letE i : LetA O n) • e) (k : ZMod n) :
@@ -268,7 +268,7 @@ theorem coordY_t_e₀ (hB : UnitBasis W e) (X : ExtIn e ι π E) (C : Coord W I 
   rw [t_pairY, C.t_zero, map_zero, zero_add, he₀, sec_smulA, sec_e]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Simplify using `only [letE, Pi.mul_apply, Pi.single_apply, Pi.zero_apply]`. Apply the tactic sequence `split_ifs with h1 h2 <;> simp_all`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem letE_mul_letE_eq_zero_of_ne (i j : ZMod n) (h : i ≠ j) : (letE i : LetA O n) * letE j = 0 := by
   funext k
@@ -276,9 +276,9 @@ private theorem letE_mul_letE_eq_zero_of_ne (i j : ZMod n) (h : i ≠ j) : (letE
   split_ifs with h1 h2 <;> simp_all
 
 /- English proof (translation)
-Unfold `tot`. Rewrite using `[Finset.smul_sum, Finset.sum_eq_single i]`. Conclude with `C.t_letter i (y i)`. Introduce `j _ hj`. Rewrite using `[← C.t_letter j (y j), smul_smul, letE_mul_letE_eq_zero_of_ne i j (Ne.symm hj), zero_smul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`.
+A detailed English derivation is pending.
 -/
 private theorem letE_smul_tot_eq_t {T' : LocLat G Qp LL O} (C : Coord W I T') (y : ZMod n → C.V)
     (i : ZMod n) : (letE i : LetA O n) • tot C y = C.t i (y i) := by
@@ -291,14 +291,14 @@ private theorem letE_smul_tot_eq_t {T' : LocLat G Qp LL O} (C : Coord W I T') (y
     exact absurd (Finset.mem_univ i) h
 
 /- English proof (translation)
-Simplify using `only [Coord.t, map_sub, AddSubgroup.coe_sub]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem coord_t_sub {T' : LocLat G Qp LL O} (C : Coord W I T') (i : ZMod n) (a b : C.V) :
     C.t i (a - b) = C.t i a - C.t i b := by
   simp only [Coord.t, map_sub, AddSubgroup.coe_sub]
 
 /- English proof (translation)
-Use `⟨fun _ => pairY hB X C C₀ 0 e₀, fun i => rfl, fun i => ?_, fun i => ?_⟩` and prove the remaining obligations. Apply `Coord.t_inj (coordY hB X C C₀) i show (coordY hB X C C₀).t i ((y i, 0) : C.V × C₀.V) = (coordY hB X C C₀).t i ((latOf (coordY hB X C C₀)).φ i (pairY hB X C C₀ 0 e₀) - pairY hB X C C₀ 0 e₀)` to reduce the goal to its premises. Rewrite using `[coord_t_sub, t_φ, coordY_t_e₀ hB X C C₀ e₀ he₀, coordY_t_e₀ hB X C C₀ e₀ he₀, coordY_t_apply_eq_map_add_sec, C₀.t_zero, map_zero, add_zero, φD_smulA, φA_letE, ← smul_sub, ← hy, ← map_smulA, letE_smul_tot_eq_t]`. Apply `Coord.t_inj (coordY hB X C C₀) i show (coordY hB X C C₀).t i ((z i, 0) : C.V × C₀.V) = (coordY hB X C C₀).t i ((latOf (coordY hB X C C₀)).γ i (pairY hB X C C₀ 0 e₀) - pairY hB X C C₀ 0 e₀)` to reduce the goal to its premises. Rewrite using `[coord_t_sub, t_γ, coordY_t_e₀ hB X C C₀ e₀ he₀, coordY_t_apply_eq_map_add_sec, C₀.t_zero, map_zero, add_zero, γD_smulA, γA_letE, ← smul_sub, ← hz, ← map_smulA, letE_smul_tot_eq_t]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rep_of (hB : UnitBasis W e) (X : ExtIn e ι π E) (C : Coord W I T) (C₀ : Coord W I W.one)
     (e₀ : C₀.V) (he₀ : ∀ i, C₀.t i e₀ = (letE i : LetA O n) • e) (y z : ZMod n → C.V)
@@ -320,11 +320,9 @@ theorem rep_of (hB : UnitBasis W e) (X : ExtIn e ι π E) (C : Coord W I T) (C�
       γD_smulA, γA_letE, ← smul_sub, ← hz, ← map_smulA, letE_smul_tot_eq_t]
 
 /- English proof (translation)
-Introduce `δ hδ`. Establish `hsum : ∑ i, (letE i : LetA O n) = 1`. Use function extensionality and compare the values at `k`. Simplify using `[letE, Finset.sum_apply, Pi.single_apply]`. Establish `key : ∀ i, W.γD W.one δ ((letE i : LetA O n) • e) = (letE i : LetA O n) • e` using `fun i => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← he₀ i]`. Conclude with `C₀.t_Δ i e₀ δ hδ`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_smul, map_sum]`. Simplify using `only [key]`.
-
-Use `_ = e := by rw [hsum, one_smul]`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eΔ_of (C₀ : Coord W I W.one) (e₀ : C₀.V) (he₀ : ∀ i, C₀.t i e₀ = (letE i : LetA O n) • e) :
     ∀ δ ∈ W.DelF, W.γD W.one δ e = e := by
@@ -342,9 +340,9 @@ theorem eΔ_of (C₀ : Coord W I W.one) (e₀ : C₀.V) (he₀ : ∀ i, C₀.t i
     _ = e := by rw [hsum, one_smul]
 
 /- English proof (translation)
-Introduce `κ hκ`. Simplify using `only [Zf, ZfD, AddSubgroup.mem_comap, Submodule.mem_toAddSubgroup, Submodule.mem_map, Submodule.mem_comap] at hκ`. Take `⟨w, hw, hweq⟩` from `hκ`. Establish `h1 : (w : W.DD T × W.DD T).1 = tot C κ.1` using `congrArg Prod.fst hweq`. Establish `h2 : (w : W.DD T × W.DD T).2 = tot C κ.2` using `congrArg Prod.snd hweq`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Y', ι', π', hses, hcY, hinj, hex, E', hEΔ, hπE, hy, hz⟩` from `hX T hcr w hw`. Establish `X' : ExtIn e ι' π' E'` using `⟨hinj, hex, eΔ_of C₀ e₀ he₀, hEΔ, hπE, hcr, hcY.2.2.2, hone⟩`. Use `⟨realExtOf hB X' C C₀, realExtOf_exact hB X' C C₀, hses, hcY, ?_⟩` and prove the remaining obligations. Conclude with `rep_of hB X' C C₀ e₀ he₀ κ.1 κ.2 (by rw [← h1]; exact hy) (by rw [← h2]; exact hz)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ext_of (hB : UnitBasis W e) (hX : BKExt W e) (hcr : IsCrys PD T.ρ) (hone : IsCrys PD W.one.ρ)
     (C : Coord W I T)
@@ -365,27 +363,25 @@ theorem ext_of (hB : UnitBasis W e) (hX : BKExt W e) (hcr : IsCrys PD T.ρ) (hon
 end Rep
 
 /- English proof (translation)
-Take `⟨hN, -, -, htor⟩` from `hU`. Establish `hb` using `W.N_base W.one hcr`. Establish `he : e ∈ W.N W.one`. Rewrite using `[hN]`. Conclude with `Submodule.mem_span_singleton_self e`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hex : ∀ x : W.DD W.one, ∃ ε : W.EE, x = ε • e`. Introduce `x`. Use `hb.inductionOn x (fun x => ∃ ε : W.EE, x = ε • e) ⟨0, (zero_smul _ _).symm⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce `m`. Establish `hm : (m : W.DD W.one) ∈ Submodule.span (LetA O n) {e}`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hN]`. Conclude with `m.2`. Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 hm`. Conclude with `⟨algebraMap (LetA O n) W.EE a, by rw [algebraMap_smul, ha, Submodule.subtype_apply]⟩`. Introduce and unpack `s x ⟨ε, hε⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨s * ε, by rw [hε, mul_smul]⟩`. Introduce and unpack `x₁ x₂ ⟨ε₁, h₁⟩ ⟨ε₂, h₂⟩`. Conclude with `⟨ε₁ + ε₂, by rw [h₁, h₂, add_smul]⟩`. Establish `hφinj : Function.Injective (LinearMap.toSpanSingleton (LetA O n) (↥(W.N W.one)) ⟨e, he⟩)`. Introduce `a b hab`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : (a - b) • e = 0`. Establish `h3` using `congrArg Subtype.val hab`. Simplify using `only [LinearMap.toSpanSingleton_apply, Submodule.coe_smul] at h3`. Rewrite using `[sub_smul, h3, sub_self]`. Conclude with `sub_eq_zero.1 (htor _ h')`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hφsurj : Function.Surjective (LinearMap.toSpanSingleton (LetA O n) (↥(W.N W.one)) ⟨e, he⟩)`. Introduce `m`. Establish `hm : (m : W.DD W.one) ∈ Submodule.span (LetA O n) {e}`. Rewrite using `[← hN]`. Conclude with `m.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨a, ha⟩` from `Submodule.mem_span_singleton.1 hm`. Conclude with `⟨a, Subtype.ext (by simpa using ha)⟩`. Set `ψ` to `LinearEquiv.ofBijective _ ⟨hφinj, hφsurj⟩`. Set `g : ↥(W.N W.one) →ₗ[LetA O n] W.EE` to `(Algebra.linearMap (LetA O n) W.EE).comp ψ.symm.toLinearMap`. Establish `hψ : ψ.symm ⟨e, he⟩ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearEquiv.symm_apply_eq]`. Use `show (⟨e, he⟩ : ↥(W.N W.one)) = LinearMap.toSpanSingleton (LetA O n) (↥(W.N W.one)) ⟨e, he⟩ 1`. Rewrite using `[LinearMap.toSpanSingleton_apply, one_smul]`. Establish `hg : g ⟨e, he⟩ = 1`. Simplify using `only [g, LinearMap.comp_apply, LinearEquiv.coe_coe, hψ, Algebra.linearMap_apply, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLe : hb.lift g e = 1`. Establish `h4` using `hb.lift_eq g ⟨e, he⟩`. Rewrite `h4` using `[hg]`. Conclude with `h4`. Establish `hL : ∀ ε : W.EE, hb.lift g (ε • e) = ε`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `ε`. Rewrite using `[map_smul, hLe, smul_eq_mul, mul_one]`. Introduce `x`. Take `⟨ε, hε⟩` from `hex x`. Use `⟨ε, hε, fun ε' hε' => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hL ε', ← hε', hε, hL]`.
+A detailed English derivation is pending.
 -/
 theorem unitBasis_of (hU : UnitGen W e) (hcr : IsCrys PD W.one.ρ) : UnitBasis W e := by
   obtain ⟨hN, -, -, htor⟩ := hU
@@ -445,7 +441,7 @@ theorem unitBasis_of (hU : UnitGen W e) (hcr : IsCrys PD W.one.ρ) : UnitBasis W
   rw [← hL ε', ← hε', hε, hL]
 
 /- English proof (translation)
-Establish `hone : IsCrys PD W.one.ρ`. Take `⟨Y', ι', π', hses, hcY, -⟩` from `hX T hcr 0 (by convert (latticeFiniteCohomology PD T.L).zero_mem using 1; exact map_zero _)`. Conclude with `(hH.2.1 T Y' W.one ι' π' hses hcY).2.1.2.2.2`. Conclude with `ext_of (unitBasis_of hU hone) hX hcr hone C C₀ e₀ he₀`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ext_of' [NeZero n] (hU : UnitGen W e) (hH : HodgeExact PD LL O) (hX : BKExt W e)
     (hcr : IsCrys PD T.ρ) (C : Coord W I T) (C₀ : Coord W I W.one) (e₀ : C₀.V)

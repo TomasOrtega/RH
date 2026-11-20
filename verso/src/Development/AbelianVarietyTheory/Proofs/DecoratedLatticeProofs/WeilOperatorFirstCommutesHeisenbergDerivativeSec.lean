@@ -20,7 +20,7 @@ namespace GlobalTheory.DerivComm
 variable {D : D7} {ψ : AddChar (AF D.host.F) ℂ}
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `GlobalTheory.WeilVacMove.exists_bound hψ (GlobalTheory.BiTransfer.isThetaFunO_join (GlobalTheory.BiTransfer.sumDec A (GlobalTheory.ChiGrid.negSp A')) h)`. Use `⟨B, fun u v => ?_⟩` and prove the remaining obligations. Use `hB (GlobalTheory.BiTransfer.inlH (GlobalTheory.BiTransfer.sumDec A (GlobalTheory.ChiGrid.negSp A')) S u + GlobalTheory.BiTransfer.inrH (GlobalTheory.BiTransfer.sumDec A (GlobalTheory.ChiGrid.negSp A')) S v)` as an intermediate fact. Rewrite `this` using `[GlobalTheory.BiTransfer.join_inl_inr]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_biBound (hψ : IsStdChar D ψ (-1)) {A S A' : HSp D} {C : WO A S → WO S A' → ℂ}
     (h : IsBiTheta ψ A S A' C) : ∃ B : ℝ, ∀ u v, ‖C u v‖ ≤ B := by
@@ -32,39 +32,35 @@ theorem exists_biBound (hψ : IsStdChar D ψ (-1)) {A S A' : HSp D} {C : WO A S 
   rwa [GlobalTheory.BiTransfer.join_inl_inr] at this
 
 /- English proof (translation)
-Introduce `D ψ A S A' χA χS χS' χA' oma omb hA hB hBi G hG M' hM hM0 p u v`. Establish `hψ : IsStdChar D ψ (-1)` using `hA.std`. Use `set G' : WO A S → WO S A' → ℂ := fun u v => GlobalTheory.WeilVacMove.dLine ψ S A' M' (G u) v with hG'def`. Establish `hG' : IsBiTheta ψ A S A' G'` using `(GlobalTheory.T.isJointlySmoothBiTheta_heisenbergDeriv D ψ hψ A S A' G hG).2 M' hM hM0`. Use `set H : WO A S → WO S A' → ℂ := fun u v => oma p (fun u' => G u' v) u with hHdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : IsBiTheta ψ A S A' H` using `(hBi ψ A S A' χA χS χS' χA' oma omb hA hB G hG).1 p`. Use `set H' : WO A S → WO S A' → ℂ := fun u v => oma p (fun u' => G' u' v) u with hH'def`. Establish `hH' : IsBiTheta ψ A S A' H'` using `(hBi ψ A S A' χA χS χS' χA' oma omb hA hB G' hG').1 p`. Use `set c : ℝ → ℂ := fun s => ψ (symplOH S A' v (M' s)) with hcdef`. Establish `hc : Continuous c` using `hψ.1.1.comp (GlobalTheory.WeilVacMove.continuous_symplOH S A' continuous_const hM)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc1 : ∀ s, ‖c s‖ = 1` using `fun s => hψ.1.2.1 _`. Establish `hheis : ∀ (f : WO S A' → ℂ) s, heisO ψ S A' (M' s) f v = c s * f (v + M' s)` using `fun f s => rfl`. Establish `hvm : Continuous fun s => v + M' s` using `continuous_const.add hM`. Establish `hG'c : Continuous fun q : ℝ × WO A S => G' q.2 (v + M' q.1)` using `hG'.cont.comp (f := fun q : ℝ × WO A S => (q.2, v + M' q.1)) (continuous_snd.prodMk (hvm.comp continuous_fst))`. Establish `hH'c : Continuous fun q : ℝ × WO A S => H' q.2 (v + M' q.1)` using `hH'.cont.comp (f := fun q : ℝ × WO A S => (q.2, v + M' q.1)) (continuous_snd.prodMk (hvm.comp continuous_fst))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF0 : Continuous fun q : ℝ × WO A S => c q.1 * G' q.2 (v + M' q.1)` using `(hc.comp continuous_fst).mul hG'c`. Establish `hoF0 : Continuous fun q : ℝ × WO A S => c q.1 * H' q.2 (v + M' q.1)` using `(hc.comp continuous_fst).mul hH'c`. Use `set F : ℝ → WO A S → ℂ := fun s u' => c s * G' u' (v + M' s) with hFdef`. Establish `hFth : ∀ s, IsThetaFunO ψ A S (F s)` using `fun s => GlobalTheory.WeilVacMove.isTheta_smul (c s) (GlobalTheory.FrComb.slice_left hG' (v + M' s))`. Establish `hFc : Continuous fun q : ℝ × WO A S => F q.1 q.2` using `hF0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨B1, hB1⟩` from `exists_biBound hψ hG'`. Establish `hFb : ∃ C : ℝ, ∀ a x, ‖F a x‖ ≤ C` using `⟨B1, fun a x => by`. Rewrite using `[hFdef, norm_mul, hc1, one_mul]`. Conclude with `hB1 _ _⟩`. Establish `hoF : ∀ s, oma p (F s) = fun u => c s * H' u (v + M' s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `s`. Establish `e : F s = c s • (fun u' => G' u' (v + M' s))` using `rfl`. Rewrite using `[e, map_smul]`. Both sides reduce to the same expression. Establish `hoFc : Continuous fun q : ℝ × WO A S => oma p (F q.1) q.2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hoF]`. Conclude with `hoF0`. Take `⟨B2, hB2⟩` from `exists_biBound hψ hH'`. Establish `hoFb : ∃ C : ℝ, ∀ a x, ‖oma p (F a) x‖ ≤ C` using `⟨B2, fun a x => by`. Rewrite using `[hoF, norm_mul, hc1, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hB2 _ _⟩`. Establish `hftc : ∀ u' t, ∫ s in (0 : ℝ)..t, F s u' = c t * G u' (v + M' t) - G u' v`. Introduce `u' t`. Establish `hd : ∀ s, HasDerivAt (fun t : ℝ => heisO ψ S A' (M' t) (G u') v) (heisO ψ S A' (M' s) (G' u') v) s` using `fun s => GlobalTheory.WeilVacMove.hasDerivAt_line hψ hM hM0 (GlobalTheory.FrComb.slice_right hG u') v s`. Establish `hcont : Continuous fun s => F s u'` using `hF0.comp (f := fun s : ℝ => (s, u')) (continuous_id.prodMk continuous_const)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `intervalIntegral.integral_eq_sub_of_hasDerivAt (a := 0) (b := t) (fun s _ => hd s) (hcont.intervalIntegrable _ _)` as an intermediate fact. Express the relevant statement in the definitionally equal form `∫ s in (0 : ℝ)..t, heisO ψ S A' (M' s) (G' u') v = _`. Rewrite using `[this, hheis, hheis]`. Simplify using `only [hcdef, map_zero, add_zero, GlobalTheory.WeilVacMove.symplOH_zero_right, AddChar.map_zero_eq_one, one_mul]`. Use `set φ : ℝ → ℂ := fun t => c t * H u (v + M' t) with hφdef`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `set k : ℝ → ℂ := fun s => c s * H' u (v + M' s) with hkdef`. Establish `hk : Continuous k` using `hoF0.comp (f := fun s : ℝ => (s, u)) (continuous_id.prodMk continuous_const)`. Establish `hφint : ∀ t, 0 ≤ t → φ t = φ 0 + ∫ s in (0 : ℝ)..t, k s`. Introduce `t ht`. Use `haveI : IsFiniteMeasure (volume.restrict (Set.Ioc (0 : ℝ) t)) := isFiniteMeasure_restrict.2 measure_Ioc_lt_top.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hth : IsThetaFunO ψ A S (fun x => ∫ a, F a x ∂(volume.restrict (Set.Ioc (0 : ℝ) t)))`. Establish `e : (fun x => ∫ a, F a x ∂(volume.restrict (Set.Ioc (0 : ℝ) t))) = c t • (fun u' => G u' (v + M' t)) - (fun u' => G u' v)`. Use function extensionality and compare the values at `x`. Rewrite using `[← intervalIntegral.integral_of_le ht, hftc]`. Both sides reduce to the same expression.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `GlobalTheory.WeilVacMove.isTheta_sub (GlobalTheory.WeilVacMove.isTheta_smul _ (GlobalTheory.FrComb.slice_left hG _)) (GlobalTheory.FrComb.slice_left hG v)`. Establish `hcomm` using `GlobalTheory.T.weilOperator_integral_comm_of_bounded_finiteMeasure D ψ A S χA χS oma hA ℝ (volume.restrict (Set.Ioc (0 : ℝ) t)) F p hFth hFc hFb hoFc hoFb hth u`. Establish `e1 : (fun y => ∫ a, F a y ∂(volume.restrict (Set.Ioc (0 : ℝ) t))) = c t • (fun u' => G u' (v + M' t)) - (fun u' => G u' v)`. Use function extensionality and compare the values at `x`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← intervalIntegral.integral_of_le ht, hftc]`. Both sides reduce to the same expression. Rewrite `hcomm` using `[e1, map_sub, map_smul]`. Establish `e2 : ∫ a, oma p (F a) u ∂(volume.restrict (Set.Ioc (0 : ℝ) t)) = ∫ s in (0 : ℝ)..t, k s`. Rewrite using `[intervalIntegral.integral_of_le ht]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `MeasureTheory.integral_congr_ae (Filter.Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show oma p (F s) u = k s`. Rewrite using `[hoF]`. Rewrite `hcomm` using `[e2]`. Establish `e3 : φ 0 = H u v`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hφdef]`. Simplify using `only [map_zero, add_zero, GlobalTheory.WeilVacMove.symplOH_zero_right, hcdef, AddChar.map_zero_eq_one, one_mul]`. Rewrite using `[e3, ← hcomm]`. Simplify using `only [hφdef, hHdef, LinearMap.sub_apply, Pi.sub_apply, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `h1 : HasDerivAt φ (GlobalTheory.WeilVacMove.dLine ψ S A' M' (H u) v) 0` using `(GlobalTheory.WeilVacMove.hasDerivAt_zero_and_isTheta hψ hM hM0 (GlobalTheory.FrComb.slice_right hH u)).1 v`. Establish `h2 : HasDerivWithinAt φ (k 0) (Set.Ici 0) 0`. Establish `h3 : HasDerivAt (fun t => φ 0 + ∫ s in (0 : ℝ)..t, k s) (k 0) 0` using `((hk.integral_hasStrictDerivAt 0 0).hasDerivAt).const_add _`. Use `h3.hasDerivWithinAt.congr (fun t ht => hφint t ht) (hφint 0 le_rfl)` and prove the remaining obligations. Establish `h4` using `(uniqueDiffWithinAt_Ici (0 : ℝ)).eq_deriv _ h1.hasDerivWithinAt h2`.
-
-Establish `e4 : k 0 = H' u v`. Simplify using `only [hkdef, hcdef, map_zero, add_zero, GlobalTheory.WeilVacMove.symplOH_zero_right, AddChar.map_zero_eq_one, one_mul]`. Rewrite `h4` using `[e4]`. Conclude with `h4.symm`.
+A detailed English derivation is pending.
 -/
 theorem om_dLine_right : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (A S A' : HSp D) (χA χS χS' χA' : (AE D)ˣ →* Circle) (oma : Om A S) (omb : Om S A'), IsWeilDatumO ψ A S χA χS oma → IsWeilDatumO ψ S A' χS' χA' omb → BiAct D → ∀ G : WO A S → WO S A' → ℂ, IsBiTheta ψ A S A' G → ∀ M' : ℝ →+ WO S A', Continuous M' → (∀ s, (M' s).map (finPart D) = 0) → ∀ p u v, oma p (fun u' => GlobalTheory.WeilVacMove.dLine ψ S A' M' (G u') v) u = GlobalTheory.WeilVacMove.dLine ψ S A' M' (fun v' => oma p (fun u' => G u' v') u) v := by
   intro D ψ A S A' χA χS χS' χA' oma omb hA hB hBi G hG M' hM hM0 p u v

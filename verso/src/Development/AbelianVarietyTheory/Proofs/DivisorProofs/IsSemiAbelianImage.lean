@@ -13,7 +13,7 @@ open GlobalTheory.Mum
 namespace GlobalTheory.Mum.IdemImage
 
 /- English proof (translation)
-Introduce `S G' _ _ hG e he hee`. Establish `hsm : GlobalTheory.SS.SmConn G'` using `⟨hG.comm, hG.smooth, hG.separated, hG.quasiCompact, hG.geomConnected⟩`. Take `⟨G, hgrp, inc, pr, hG₁, hinc, hpr, hip, hpi⟩` from `GlobalTheory.SS.smConn_idempotent_splits S G' hsm e he hee`. Conclude with `⟨G, hgrp, hG₁.1, inc, pr, GlobalTheory.SS.isSemiAbelian_of_retract S G' G hG hG₁ inc pr hpr hip, hinc, hpr, hip, hpi⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSemiAbelian_image : ∀ (S : Scheme.{0}) (G' : Over S) [GrpObj G'] [IsCommMonObj G'], IsSemiAbelian G' → ∀ e : G' ⟶ G', IsMonHom e → e ≫ e = e → ∃ (G : Over S) (_ : GrpObj G) (_ : IsCommMonObj G) (inc : G ⟶ G') (pr : G' ⟶ G), IsSemiAbelian G ∧ IsMonHom inc ∧ IsMonHom pr ∧ inc ≫ pr = 𝟙 G ∧ pr ≫ inc = e := by
   intro S G' _ _ hG e he hee

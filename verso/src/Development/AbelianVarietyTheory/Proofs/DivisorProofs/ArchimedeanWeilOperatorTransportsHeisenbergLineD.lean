@@ -12,21 +12,21 @@ noncomputable section
 namespace GlobalTheory.HeisTransport
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hB hX hW hM hWeil g hg h hh T hT hTi u hu f f₁ hf`. Establish `hS` using `IsUWeilPair.isUSplitting hWeil`. Use `set ψ := B.ψ with hψ`. Use `set p : UA σ X.J × UA σ W.J := (g, h) with hp`. Establish `hrest : ∀ (φ : SInf F (Fin n × Fin d)) (g' : (Fin n × Fin d → Af F) → ℂ), g' ∈ SB (Fin n × Fin d → Af F) → Rest (evI F) (⇑φ) (fun x => g' (fun i => (x i).2))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `φ g' hg'`. Use `⟨fun x z hz => ?_, Submodule.subset_span ⟨φ, g', hg', rfl⟩⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `g' (fun i => (x i + z i).2) = g' (fun i => (x i).2)`. Use `congr 1`. Use function extensionality and compare the values at `i`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(x i).2 + (z i).2 = (x i).2`. Rewrite using `[GlobalTheory.RealLift.fin_eq_zero_of_at hz, add_zero]`. Establish `hpure : ∀ (φ : SInf F (Fin n × Fin d)) (g' : (Fin n × Fin d → Af F) → ℂ), g' ∈ SB (Fin n × Fin d → Af F) → om p (pureA F φ g') = pureA F (T φ) g'` using `fun φ g' hg' => hT φ _ (hrest φ g' hg')`. Establish `h0 : ∀ v : Matrix (Fin n) (Fin d) (AE F E), ∀ t : ℝ, M.heisLine ψ v t 0 = 0`. Introduce `v t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `[Model.heisLine, Darboux.rho, schr]`. Take `⟨D, hD⟩` from `GlobalTheory.HeisDer.derEx F E σ (Fin n) (Fin d) (Fin n × Fin d) ψ (incM F X.J) (incM F W.J) M.co hB.std`. Establish `hSDD` using `(hD u hu f).1`. Establish `hL` using `GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) f f₁ (D u f)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hAD : ActsD (evI F) (M.heisLine ψ u) f (D u f)` using `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) f (D u f) f₁).1 _ (h0 u) hSDD`. Establish `hf₁ : f₁ = D u f` using `hL.2.2.1 _ hf hAD`. Rewrite `hSDD` using `[← hf₁]`. Establish `himpl : ∀ t : ℝ, ∀ Φ ∈ schA F (Fin n × Fin d), M.heisLine ψ (mat g * u * (mat h).transpose) t (om p Φ) = om p (M.heisLine ψ u t Φ)`. Introduce `t Φ hΦ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e` using `hS.impl p (realAd F t • u) Φ hΦ`. Simplify using `only [Model.heisLine]`. Rewrite using `[e]`. Use `congr 2`. Simplify using `only [actAB, hp, mat, Matrix.mul_smul, Matrix.smul_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSD : GlobalTheory.RealLift.SD (M.heisLine ψ (mat g * u * (mat h).transpose)) (T f) (T f₁)`. Introduce `g' hg' l hl`. Establish `hΦ : pureA F (⇑f) g' ∈ schA F (Fin n × Fin d)` using `Submodule.subset_span ⟨f, g', hg', rfl⟩`. Establish `e : (fun t => l (M.heisLine ψ (mat g * u * (mat h).transpose) t (pureA F (⇑(T f)) g'))) = fun t => (l ∘ₗ om p) (M.heisLine ψ u t (pureA F (⇑f) g'))`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← hpure f g' hg', himpl t _ hΦ]`. Both sides reduce to the same expression. Rewrite using `[e, ← hpure f₁ g' hg']`. Conclude with `hSDD g' hg' (l ∘ₗ om p) (hS.adm p l hl)`. Conclude with `(GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) (T f) (T f₁) (T f₁)).1 _ (h0 _) hSD`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actsD_heisLine_transport : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)

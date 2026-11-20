@@ -19,13 +19,13 @@ open GlobalTheory.RecDict
 namespace GlobalTheory.LevelHalf
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `Ideal.dvd_iff_le.2 hle`. Establish `hN'` using `congrArg Ideal.absNorm hC`. Rewrite `hN'` using `[map_mul, hN]`. Take `⟨i, hi, hieq⟩` from `(Nat.dvd_prime_pow hp).1 (Dvd.intro _ hN'.symm)`. Establish `hi1 : i = 1` using `by interval_cases i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hieq` using `[pow_zero, Ideal.absNorm_eq_one_iff]`. Conclude with `absurd hieq h1`. Both sides reduce to the same expression. It suffices to derive a contradiction. Rewrite `hN'` using `[hieq]`.
+Rewrite the indicated hypotheses using the stated equalities. Both sides reduce to the same expression. It suffices to derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : Ideal.absNorm C = 1` using `Nat.eq_of_mul_eq_mul_left (by have := hp.pos; positivity) (hN'.symm.trans (mul_one _).symm)`. Rewrite `hc` using `[Ideal.absNorm_eq_one_iff]`. Rewrite `hC` using `[hc, Ideal.mul_top]`. Conclude with `h2 hC.symm`. Rewrite `hieq` using `[hi1, pow_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨Ideal.isPrime_of_irreducible_absNorm (by rw [hieq]; exact hp.prime.irreducible), ?_⟩` and prove the remaining obligations. Introduce `h`. Rewrite `hieq` using `[h, Ideal.absNorm_bot]`. Conclude with `hp.ne_zero hieq.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_of_between {K : Type} [Field K] [NumberField K] {p : ℕ} (hp : p.Prime)
     (hN : Ideal.absNorm (Ideal.span {(p : 𝓞 K)}) = p ^ 2) (J : Ideal (𝓞 K))
@@ -53,9 +53,9 @@ theorem prime_of_between {K : Type} [Field K] [NumberField K] {p : ℕ} (hp : p.
   exact hp.ne_zero hieq.symm
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Take `⟨u, v, huv⟩` from `hab`. Establish `e : x = (u * a) * x + x * (v * b)` using `by linear_combination (-x) * huv`. Rewrite using `[e]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Ideal.add_mem _ (Ideal.mul_mem_mul (Ideal.mul_mem_left _ _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self a))) (Ideal.mem_sup_left hx)) (Ideal.mul_mem_mul (Ideal.mem_sup_left hx) (Ideal.mul_mem_left _ _ (Ideal.mem_sup_right (Ideal.mem_span_singleton_self b))))`. Rewrite using `[Ideal.sup_mul, Ideal.mul_sup, Ideal.mul_sup, Ideal.span_singleton_mul_span_singleton]`. Use `sup_le (sup_le Ideal.mul_le_left Ideal.mul_le_left) (sup_le Ideal.mul_le_right ?_)` and prove the remaining obligations. Rewrite using `[Ideal.span_singleton_le_iff_mem]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem eq_sup_mul_sup {S : Type} [CommRing S] (I : Ideal S) (a b : S) (hab : IsCoprime a b)
     (h : a * b ∈ I) : I = (I ⊔ Ideal.span {a}) * (I ⊔ Ideal.span {b}) := by
@@ -74,11 +74,11 @@ theorem eq_sup_mul_sup {S : Type} [CommRing S] (I : Ideal S) (a b : S) (hab : Is
     rwa [Ideal.span_singleton_le_iff_mem]
 
 /- English proof (translation)
-Establish `hσ : (Ideal.span {(p : S)}).map σ = Ideal.span {(p : S)}`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h' : I.map σ ⊔ Ideal.span {(p : S)} = ⊤`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `congrArg (Ideal.map σ) h` as an intermediate fact. Rewrite `this` using `[Ideal.map_sup, hσ, Ideal.map_top]`. Then use the resulting hypothesis. Establish `h3 : IsCoprime (I * I.map σ) (Ideal.span {(p : S)})` using `IsCoprime.mul_left (Ideal.isCoprime_iff_sup_eq.2 h) (Ideal.isCoprime_iff_sup_eq.2 h')`. Rewrite `h3` using `[Ideal.isCoprime_iff_sup_eq, sup_eq_right.2 hm]`. Conclude with `hp h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `hI : I ≤ Ideal.span {(p : S)}` using `sup_eq_right.1 h`. Establish `hI' : I.map σ ≤ Ideal.span {(p : S)}` using `hσ ▸ Ideal.map_mono hI`. Conclude with `hp (top_le_iff.1 (hc ▸ sup_le hI hI'))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sup_ne {S : Type} [CommRing S] (σ : S →+* S) (I : Ideal S) (p : ℕ)
     (hp : Ideal.span {(p : S)} ≠ ⊤) (hm : I * I.map σ ≤ Ideal.span {(p : S)}) (hc : I ⊔ I.map σ = ⊤) :
@@ -100,29 +100,25 @@ theorem sup_ne {S : Type} [CommRing S] (σ : S →+* S) (I : Ideal S) (p : ℕ)
     exact hp (top_le_iff.1 (hc ▸ sup_le hI hI'))
 
 /- English proof (translation)
-Introduce `D Q hQ`. Establish `hM : Q.l.M = D.host.g 0 * D.host.g 1` using `hQ.2.1.1`. Establish `hrt : (Q.H.rt : D.host.E) = D.host.sqrtMinusD` using `hQ.1.2.1`. Establish `hw : Q.H.w0 = w0E D`. Establish `h1` using `Q.H.two_weight_eq_one_add_root`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `two_w0E D`. Establish `h3 : Q.H.rt = rtE D` using `RingOfIntegers.ext hrt`. Rewrite `h1` using `[h3, ← h2]`. Conclude with `mul_left_cancel₀ two_ne_zero h1`. Use `set f := algebraMap (𝓞 D.host.K) (𝓞 D.host.E) with hf`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set I := Q.l.Mb with hI`. Establish `hIm : (I.comap f).map f = I`. Apply `le_antisymm Ideal.map_comap_le` to reduce the goal to its premises. Use `Q.l.fromK.le.trans ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `a ⟨ha, ha'⟩`. Establish `hr : a ∈ (f.toIntAlgHom).range`. Use `(Algebra.adjoin_le ?_ : Algebra.adjoin ℤ {Q.H.w0} ≤ (f.toIntAlgHom).range) ha'` and prove the remaining obligations. Rewrite using `[Set.singleton_subset_iff, hw]`. Conclude with `⟨LPb.w0K D, LPb.algebraMap_w0K D⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨y, hy⟩` from `hr`. Establish `hy' : f y = a` using `hy`. Rewrite `ha`, the goal using `[← hy']`. Conclude with `Ideal.mem_map_of_mem f ha`. Establish `hprod` using `Q.l.prod`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hprod` using `[hM, Nat.cast_mul]`. Establish `hmap : ∀ p : ℕ, (I.comap f ⊔ Ideal.span {(p : 𝓞 D.host.K)}).map f = I ⊔ Ideal.span {(p : 𝓞 D.host.E)}`. Introduce `p`. Rewrite using `[Ideal.map_sup, hIm, Ideal.map_span, Set.image_singleton, map_natCast]`. Establish `hspan : ∀ p : ℕ, (Ideal.span {(p : 𝓞 D.host.K)}).map f = Ideal.span {(p : 𝓞 D.host.E)}`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Rewrite using `[Ideal.map_span, Set.image_singleton, map_natCast]`. Establish `key : ∀ k : Fin 2, (I.comap f ⊔ Ideal.span {((D.host.g k : ℕ) : 𝓞 D.host.K)}).IsPrime ∧ (I.comap f ⊔ Ideal.span {((D.host.g k : ℕ) : 𝓞 D.host.K)}) ≠ ⊥`. Introduce `k`. Establish `hm : I * I.map (Q.H.bar : 𝓞 D.host.E →+* 𝓞 D.host.E) ≤ Ideal.span {((D.host.g k : ℕ) : 𝓞 D.host.E)}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hI, hprod, Ideal.span_singleton_le_span_singleton]`. Use `fin_cases k`. Conclude with `dvd_mul_right _ _`. Conclude with `dvd_mul_left _ _`. Take `⟨h1, h2⟩` from `sup_ne _ I _ (LPb.span_p_ne_top D (D.host.g_prime k)) hm Q.l.coprime`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `prime_of_between (D.host.g_prime k) (LPb.absNorm_span_p D _) _ le_sup_right ?_ ?_` and prove the remaining obligations. Introduce `h`. Apply `h1` to reduce the goal to its premises. Rewrite using `[← hmap, h, Ideal.map_top]`. Introduce `h`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Apply `h2` to reduce the goal to its premises. Rewrite using `[← hmap, h, hspan]`. Use `⟨fun k => ⟨_, (key k).1, (key k).2⟩, fun k => Ideal.mem_sup_right (Ideal.mem_span_singleton_self _), ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.prod_univ_two]`. Use `show I = (I.comap f ⊔ _).map f * (I.comap f ⊔ _).map f`.
-
-Rewrite using `[hmap, hmap]`. Apply `eq_sup_mul_sup` to reduce the goal to its premises. Use `Nat.isCoprime_iff_coprime.2 ((Nat.coprime_primes (D.host.g_prime 0) (D.host.g_prime 1)).2 D.host.g_ne)` as an intermediate fact. Simplify using `using this.map (Int.castRingHom (𝓞 D.host.E))`. Rewrite using `[← Ideal.span_singleton_le_iff_mem, ← hprod]`.
-
-Conclude with `Ideal.mul_le_left`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem half_eq_prod : ∀ (D : D7) (Q : Par D), Q.Pins → ∃ pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K), (∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (pb k).asIdeal) ∧ Q.l.Mb = ∏ k, (pb k).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E)) := by
   intro D Q hQ

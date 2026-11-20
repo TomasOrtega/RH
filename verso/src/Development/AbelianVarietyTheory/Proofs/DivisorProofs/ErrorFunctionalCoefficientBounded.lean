@@ -27,14 +27,14 @@ def totLin (τ : ι) : Pol ι N →ₗ[ℝ] ℝ :=
   degLin ι N ∘ₗ ∑ i : Fin N, (pderiv (R := ℝ) (τ, i)).toLinearMap
 
 /- English proof (translation)
-Simplify using `only [shLin, shF, LinearMap.comp_apply, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem shLin_apply (j : ℕ) (τ : ι) (F : Pol ι N) : shLin j τ F = shF j τ F := by
   simp only [shLin, shF, LinearMap.comp_apply, LinearMap.sum_apply]
   rfl
 
 /- English proof (translation)
-Simplify using `only [totLin, totF, LinearMap.comp_apply, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem totLin_apply (τ : ι) (F : Pol ι N) : totLin τ F = totF τ F := by
   simp only [totLin, totF, LinearMap.comp_apply, LinearMap.sum_apply]
@@ -42,7 +42,7 @@ theorem totLin_apply (τ : ι) (F : Pol ι N) : totLin τ F = totF τ F := by
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Simplify using `only [ev, invForm, pLow, pHigh, map_sum, map_add, map_mul, eval_C, pow_one, eval_X]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_filter_add_sum_filter_not Finset.univ (fun i : Fin N => (i : ℕ) < j) (lam τ)]`. Simplify using `only [not_lt]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ev_invForm (j : ℕ) (al be : ι → ℝ) (lam : ι → Fin N → ℝ) :
     ev lam (invForm j al be) = ∑ τ, ((al τ - be τ) *
@@ -54,11 +54,11 @@ theorem ev_invForm (j : ℕ) (al be : ι → ℝ) (lam : ι → Fin N → ℝ) :
   ring
 
 /- English proof (translation)
-Introduce `ι _ _ N j PP hh vol c al be E hE h`. Set `EE : Pol ι N →ₗ[ℝ] ℝ` to `PP - vol • (hh - ∑ τ, (al τ - be τ) • shLin j τ - ∑ τ, be τ • totLin τ)`. Establish `hEE : ∀ F, EE F = PP F - vol * (hh F - ∑ τ, (al τ - be τ) * shF j τ F - ∑ τ, be τ * totF τ F)`. Introduce `F`. Simplify using `only [EE, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.sum_apply, shLin_apply, totLin_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `⟨EE, fun m hm => ?_, fun F => by rw [hEE]; ring⟩` and prove the remaining obligations. Use `(GlobalTheory.FlagPoly.coeff_eq_of_polarisation ι N (dimFl ι N + 1) EE E (fun lam => ?_) m hm).2.trans (hE m)` and prove the remaining obligations. Rewrite using `[hEE, h, ev_invForm, sub_sub, ← Finset.sum_add_distrib, Finset.mul_sum]`. Establish `: ∀ τ, (al τ - be τ) * shF j τ (linRoot lam ^ (dimFl ι N + 1)) + be τ * totF τ (linRoot lam ^ (dimFl ι N + 1)) = -(((dimFl ι N : ℝ) + 1) * flagDeg ι N lam * ((al τ - be τ) * ∑ i ∈ Finset.univ.filter (fun i : Fin N => (i : ℕ) < j), lam τ i + be τ * ∑ i, lam τ i))`. Introduce `τ`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(GlobalTheory.T.shift_functional_linear_root_power ι N j lam τ).1, (GlobalTheory.T.shift_functional_linear_root_power ι N j lam τ).2]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [this, Finset.sum_neg_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem functional_form : ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (j : ℕ) (PP hh : Pol ι N →ₗ[ℝ] ℝ) (vol c : ℝ) (al be : ι → ℝ) (E : Pol ι N), CoefLe E c → (∀ lam, PP (linRoot lam ^ (dimFl ι N + 1)) = vol * (hh (linRoot lam ^ (dimFl ι N + 1)) + ((dimFl ι N : ℝ) + 1) * flagDeg ι N lam * ev lam (invForm j al be)) + ev lam E) → ∃ EE : Pol ι N →ₗ[ℝ] ℝ, (∀ m : (ι × Fin N) →₀ ℕ, m.degree = dimFl ι N + 1 → |EE (monomial m 1)| ≤ c) ∧ ∀ F : Pol ι N, PP F = vol * (hh F - ∑ τ, (al τ - be τ) * shF j τ F - ∑ τ, be τ * totF τ F) + EE F := by
   intro ι _ _ N j PP hh vol c al be E hE h

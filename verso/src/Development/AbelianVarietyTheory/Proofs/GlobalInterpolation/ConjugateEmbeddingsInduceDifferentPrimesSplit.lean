@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.ConjPlace
 
 /- English proof (translation)
-Establish `h1 : IsIntegral (NormedField.valuation (K` using `ℂ_[q])).integer x := hx.tower_top`. Establish `h2` using `(Valuation.integer.integers (NormedField.valuation (K := ℂ_[q]))).mem_of_integral h1`. Establish `h3 : ‖x‖₊ ≤ 1` using `h2`. Conclude with `h3` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_isIntegral {q : ℕ} [Fact q.Prime] {x : ℂ_[q]} (hx : IsIntegral ℤ x) : ‖x‖ ≤ 1 := by
   have h1 : IsIntegral (NormedField.valuation (K := ℂ_[q])).integer x := hx.tower_top
@@ -17,14 +17,14 @@ theorem norm_le_one_of_isIntegral {q : ℕ} [Fact q.Prime] {x : ℂ_[q]} (hx : I
   exact_mod_cast h3
 
 /- English proof (translation)
-The claim follows from `norm_le_one_of_isIntegral (by convert map_isIntegral_int j (RingOfIntegers.isIntegral_coe y); exact Subsingleton.elim _ _)`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_int {q : ℕ} [Fact q.Prime] {K : Type} [Field K] (j : K →+* ℂ_[q]) (y : 𝓞 K) :
     ‖j (y : K)‖ ≤ 1 :=
   norm_le_one_of_isIntegral (by convert map_isIntegral_int j (RingOfIntegers.isIntegral_coe y); exact Subsingleton.elim _ _)
 
 /- English proof (translation)
-Establish `e : ((n : ℤ) : ℂ_[q]) = algebraMap ℚ_[q] ℂ_[q] ((n : ℤ) : ℚ_[q])` using `(map_intCast _ n).symm`. Rewrite using `[e]`. Conclude with `PadicComplex.norm_extends' (p := q) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_intCast_eq (q : ℕ) [Fact q.Prime] (n : ℤ) : ‖((n : ℤ) : ℂ_[q])‖ = ‖((n : ℤ) : ℚ_[q])‖ := by
   have e : ((n : ℤ) : ℂ_[q]) = algebraMap ℚ_[q] ℂ_[q] ((n : ℤ) : ℚ_[q]) := (map_intCast _ n).symm
@@ -32,18 +32,18 @@ theorem norm_intCast_eq (q : ℕ) [Fact q.Prime] (n : ℤ) : ‖((n : ℤ) : ℂ
   exact PadicComplex.norm_extends' (p := q) _
 
 /- English proof (translation)
-Rewrite using `[norm_intCast_eq]`. Conclude with `Padic.norm_intCast_lt_one_iff`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_intCast_lt_one_iff (q : ℕ) [Fact q.Prime] (n : ℤ) : ‖((n : ℤ) : ℂ_[q])‖ < 1 ↔ (q : ℤ) ∣ n := by
   rw [norm_intCast_eq]
   exact Padic.norm_intCast_lt_one_iff
 
 /- English proof (translation)
-Establish `hl : legendreSym q (-(d : ℤ)) = 1` using `by rw [jacobiSym.legendreSym.to_jacobiSym]; exact h`. Establish `h0 : ((-(d : ℤ) : ℤ) : ZMod q) ≠ 0`. Introduce `h0`. Rewrite `hl` using `[(legendreSym.eq_zero_iff q _).2 h0]`. Conclude with `zero_ne_one hl`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `(legendreSym.eq_one_iff q h0).1 hl`. Use `⟨?_, ⟨(r.val : ℤ), ?_⟩⟩` and prove the remaining obligations. Introduce `hd`. Apply `h0` to reduce the goal to its premises. Conclude with `(ZMod.intCast_zmod_eq_zero_iff_dvd _ _).2 (dvd_neg.2 hd)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← ZMod.intCast_zmod_eq_zero_iff_dvd]`. Move the coercions through the operations in `at hr ⊢`. Rewrite using `[ZMod.natCast_zmod_val]`. Take the linear combination `(-1 : ZMod q) * hr`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_sq_add (q : ℕ) [Fact q.Prime] (d : ℕ) (h : jacobiSym (-(d : ℤ)) q = 1) :
     ¬ (q : ℤ) ∣ d ∧ ∃ t : ℤ, (q : ℤ) ∣ t ^ 2 + d := by
@@ -63,29 +63,25 @@ theorem exists_sq_add (q : ℕ) [Fact q.Prime] (d : ℕ) (h : jacobiSym (-(d : �
     linear_combination (-1 : ZMod q) * hr
 
 /- English proof (translation)
-Take `⟨hnd, t, ht⟩` from `exists_sq_add q d hj`. Establish `hint : IsIntegral ℤ s` using `⟨Polynomial.X ^ 2 + Polynomial.C (d : ℤ), Polynomial.monic_X_pow_add_C _ two_ne_zero, by simp [sq, hs]⟩`. Set `B : 𝓞 K` to `⟨s, hint⟩`. Set `j : E →+* ℂ_[q]` to `ι.toRingHom.comp φ`. Set `jK : K →+* ℂ_[q]` to `j.comp (algebraMap K E)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hc' : c (s : E) = -(s : E)` using `hc`. Establish `hsE : (s : E) * (s : E) = -(d : E)`. Use `congrArg (fun x : K => (x : E)) hs` as an intermediate fact. Simplify using `using this`. Establish `hcoe : ∀ u : ℤ, (((B + u : 𝓞 K) : K) : E) = (s : E) + (u : E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `u`. Use `push_cast`. Both sides reduce to the same expression. Establish `hle : ∀ y : 𝓞 K, ‖j ((y : K) : E)‖ ≤ 1` using `fun y => norm_le_one_of_int jK y`. Establish `hodd : ∀ u : ℤ, (q : ℤ) ∣ 2 * u → (q : ℤ) ∣ u`.
+Fix the arbitrary inputs or assume the hypotheses. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u h`. Break down `(Nat.prime_iff_prime_int.mp (Fact.out : q.Prime)).dvd_or_dvd h with h2 | h2` into its components or cases. It suffices to derive a contradiction. Establish `: q ∣ 2` using `by exact_mod_cast h2`. Conclude with `hq2 ((Nat.prime_dvd_prime_iff_eq Fact.out Nat.prime_two).1 this)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `key : ∀ u : ℤ, (u = t ∨ u = -t) → ‖j (((B + u : 𝓞 K) : K) : E)‖ < 1 → 1 ≤ ‖j (c (((B + u : 𝓞 K) : K) : E))‖`. Introduce `u hu h1`. Assume the negation of the conclusion as `h2`. Use `push_neg at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : c (((B + u : 𝓞 K) : K) : E) = -(s : E) + (u : E)`. Rewrite using `[hcoe, map_add, map_intCast, hc']`. Establish `hsum : j (((B + u : 𝓞 K) : K) : E) + j (c (((B + u : 𝓞 K) : K) : E)) = (((2 * u : ℤ)) : ℂ_[q])`. Rewrite using `[e2, hcoe, ← map_add]`. Establish `: (s : E) + (u : E) + (-(s : E) + (u : E)) = ((2 * u : ℤ) : E)` using `by push_cast; ring`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, map_intCast]`. Establish `hlt : ‖(((2 * u : ℤ)) : ℂ_[q])‖ < 1`. Rewrite using `[← hsum]`. Conclude with `lt_of_le_of_lt (IsUltrametricDist.norm_add_le_max _ _) (max_lt h1 h2)`. Establish `hdu : (q : ℤ) ∣ u` using `hodd u ((norm_intCast_lt_one_iff q _).1 hlt)`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdt : (q : ℤ) ∣ t`. Break down `hu with rfl | rfl` into its components or cases. Conclude with `hdu`. Conclude with `dvd_neg.1 hdu`. Conclude with `hnd ((dvd_add_right (dvd_pow hdt two_ne_zero)).1 ht)`.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hprod : j (((B + t : 𝓞 K) : K) : E) * j (((B + (-t : ℤ) : 𝓞 K) : K) : E) = ((-(t ^ 2 + d) : ℤ) : ℂ_[q])`. Rewrite using `[← map_mul, hcoe, hcoe]`. Establish `: ((s : E) + (t : E)) * ((s : E) + ((-t : ℤ) : E)) = ((-(t ^ 2 + d) : ℤ) : E)`. Use `push_cast`. Take the linear combination `hsE`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[this, map_intCast]`. Establish `hpl : ‖((-(t ^ 2 + d) : ℤ) : ℂ_[q])‖ < 1` using `(norm_intCast_lt_one_iff q _).2 (dvd_neg.2 ht)`. Distinguish the cases in `h1 : ‖j (((B + t : 𝓞 K) : K) : E)‖ < 1`. Conclude with `⟨B + t, h1, key t (Or.inl rfl) h1⟩`. Use `push_neg at h1`.
-
-Establish `h2 : ‖j (((B + (-t : ℤ) : 𝓞 K) : K) : E)‖ < 1`. Assume the negation of the conclusion as `h2`. Use `push_neg at h2`. Rewrite `hpl` using `[← hprod, norm_mul]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Conclude with `⟨B + (-t : ℤ), h2, key (-t) (Or.inr rfl) h2⟩`.
+Use the polynomial consequences of the given equalities and inequalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_small_not_conj {E : Type} [Field E] [CharZero E] (K : IntermediateField ℚ E) (φ : E →+* ℂ) (c : E ≃ₐ[ℚ] E)
     (d q : ℕ) [Fact q.Prime] (hq2 : q ≠ 2) (hj : jacobiSym (-(d : ℤ)) q = 1) (ι : ℂ ≃+* ℂ_[q])
@@ -150,7 +146,7 @@ theorem exists_small_not_conj {E : Type} [Field E] [CharZero E] (K : Intermediat
     exact ⟨B + (-t : ℤ), h2, key (-t) (Or.inr rfl) h2⟩
 
 /- English proof (translation)
-Introduce `D q _ hq2 hj ι`. Take `⟨s, h1, h2⟩` from `sqrtInK D`. Conclude with `exists_small_not_conj D.host.K D.host.φ₀ D.host.conj D.host.d q hq2 hj ι s h1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem conj_place_ne : ∀ (D : D7) (q : ℕ) [Fact q.Prime], q ≠ 2 → jacobiSym (-(D.host.d : ℤ)) q = 1 →
     ∀ ι : ℂ ≃+* ℂ_[q], ∃ y : 𝓞 D.host.K, ‖ι (D.host.φ₀ ((y : D.host.K) : D.host.E))‖ < 1 ∧

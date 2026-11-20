@@ -20,18 +20,18 @@ variable {σ : E →ₐ[F] E} {B : Base F E} {nS nT : ℕ} {JS : Matrix (Fin nS)
   {Om : GAF σ JS × GAF σ JT →* Module.End ℂ (thetaSubF σ JS JT ξ₀ B.ψ)}
   {s : Matrix (IxF F nS nT) (IxF F nS nT) ℂ}
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.ThKW.AutLatA.mem_iff_k C hR hA y`.
+A detailed English derivation is pending.
 -/
 theorem finRatF_mem_iff_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hA : SelfDual (gamFF σ JS JT ξ₀ B.ψ) (latF F E nS nT Λ)) (y : Matrix (Fin nT) (Fin nS) E) :
     finRatF F y ∈ latF F E nS nT Λ ↔ y ∈ Λ := _root_.PositivityTheory.ThKW.AutLatA.mem_iff_k C hR hA y
 /- English proof (translation)
-The claim follows from `_root_.PositivityTheory.ThKW.AutLatA.finLat_k hB hG R`.
+A detailed English derivation is pending.
 -/
 theorem finite_lat_k (hB : _root_.UpperTheory.TP.W.GoodK σ B) (hG : GoodLat Λ) (R : ℝ) : {y | y ∈ Λ ∧ ‖infRatF (tauB B) y‖ ≤ R}.Finite :=
   _root_.PositivityTheory.ThKW.AutLatA.finLat_k hB hG R
 /- English proof (translation)
-The claim follows from `|Algebra.norm ℚ ((N : E) ^ M * (b ⊗ₖ aᵀ).det)| := _root_.PositivityTheory.ThKW.AutLatA.data_k C hG hR hO ha hb hΔ hd`.
+A detailed English derivation is pending.
 -/
 theorem finite_data_k (C : _root_.PositivityTheory.ThKW.Ctx_k σ B JS JT ξ₀ θ ι) (hG : GoodLat Λ) (hR : RatSD σ JS JT ξ₀ Λ)
     (hO : _root_.UpperTheory.TP.W.IsLatRepL σ JS JT ξ₀ B.ψ hc Λ w lam Om) {g : GAF σ JS} {h : GAF σ JT} {a b}

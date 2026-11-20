@@ -22,29 +22,25 @@ section Minor
 variable {R : Type} [CommRing R] {N j : ℕ}
 
 /- English proof (translation)
-Establish `hcb : cb ∉ S.erase ca` using `fun hh => absurd (hle _ (Finset.mem_of_mem_erase hh)) (not_le.2 hlt)`. Establish `hcard : (insert cb (S.erase ca)).card = S.card`. Rewrite using `[Finset.card_insert_of_notMem hcb, Finset.card_erase_add_one hca]`. Distinguish the cases in `e : I.card = S.card`. Use `swap`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MinorCalc.minorIJ_of_card_ne _ e, MinorCalc.minorIJ_of_card_ne _ e, MinorCalc.minorIJ_of_card_ne _ (hcard ▸ e), mul_zero, add_zero]`. Rewrite using `[MinorCalc.minorIJ_eq_det _ I S _ e rfl, MinorCalc.minorIJ_eq_det _ I S _ e rfl, MinorCalc.minorIJ_eq_det _ I _ _ e hcard]`. Use `set f := S.orderEmbOfFin rfl with hf`. Take `⟨i₀, hi₀⟩ : ca ∈ Set.range f` from `by rw [hf, Finset.range_orderEmbOfFin]; exact hca`. Establish `hfS : ∀ x, f x ∈ S` using `fun x => Finset.orderEmbOfFin_mem _ _ _`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf' : Function.update (f : _ → Fin N) i₀ cb = (insert cb (S.erase ca)).orderEmbOfFin hcard`. Use `Finset.orderEmbOfFin_unique hcard (fun x => ?_) fun x x' hx => ?_` and prove the remaining obligations. Distinguish the cases in `ex : x = i₀`. Substitute `ex` using the available equality. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.update_of_ne ex]`. Conclude with `Finset.mem_insert_of_mem (Finset.mem_erase.2 ⟨fun h' => ex (f.injective (h'.trans hi₀.symm)), hfS x⟩)`. Establish `h1 : x ≠ i₀`. Introduce and unpack `rfl`. Conclude with `absurd (hle _ (hfS x')) (not_le.2 (hi₀ ▸ f.strictMono hx))`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne h1]`. Distinguish the cases in `ex : x' = i₀`. Substitute `ex` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `(hle _ (hfS x)).trans_lt hlt`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne ex]`. Conclude with `f.strictMono hx`. Rewrite using `[← hf']`. Use `set g := I.orderEmbOfFin e`. Establish `e1 : (h * (1 + Matrix.single cb ca t)).submatrix g f = (h.submatrix g f).updateCol i₀ ((fun r => h (g r) ca) + t • fun r => h (g r) cb)`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use extensionality with `r x`. Rewrite using `[Matrix.submatrix_apply, Matrix.mul_add, Matrix.mul_one, Matrix.add_apply, Matrix.updateCol_apply]`. Use `split_ifs with ex`. Substitute `ex` using the available equality. Rewrite using `[hi₀, Matrix.mul_single_apply_same]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[mul_comm]`. Establish `hne : f x ≠ ca` using `fun h' => ex (f.injective (h'.trans hi₀.symm))`. Rewrite using `[show (h * single cb ca t) (g r) (f x) = 0 by simp [Matrix.mul_apply, Matrix.single_apply, hne.symm], add_zero]`. Both sides reduce to the same expression. Rewrite using `[e1, Matrix.det_updateCol_add, Matrix.det_updateCol_smul]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Use `congr 2`. Use extensionality with `r x`. Rewrite using `[Matrix.updateCol_apply]`. Use `split_ifs with ex`. Substitute `ex` using the available equality.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Matrix.submatrix_apply, hi₀]`. Both sides reduce to the same expression. Use `congr 1`. Use extensionality with `r x`. Rewrite using `[Matrix.updateCol_apply]`.
-
-Use `show _ = h (g r) (Function.update f i₀ cb x)`. Use `split_ifs with ex`. Substitute `ex` using the available equality. Rewrite using `[Function.update_self]`. Rewrite using `[Function.update_of_ne ex]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem minor_elementary_column_op (h : Matrix (Fin N) (Fin N) R) (S I : Finset (Fin N)) {ca cb : Fin N} (hca : ca ∈ S)
     (hle : ∀ c ∈ S, c ≤ ca) (hlt : ca < cb) (t : R) :
@@ -107,9 +103,9 @@ theorem minor_elementary_column_op (h : Matrix (Fin N) (Fin N) R) (S I : Finset 
 variable {a b ca cb : Fin N}
 
 /- English proof (translation)
-Unfold `lastCol at hca`. Use `minor_elementary_column_op h _ I ?_ (fun c hc => ?_) (by rw [Fin.lt_def]; omega) t` and prove the remaining obligations. Apply the tactic sequence `simp only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and] split_ifs at hca ⊢ <;> omega`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and] at hc`. Rewrite using `[Fin.le_def]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs at hca hc <;> omega`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem minor_elem (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hab : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1) (h : Matrix (Fin N) (Fin N) R) (I : Finset (Fin N))
@@ -124,16 +120,16 @@ theorem minor_elem (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hab : (b : ℕ) < j 
     split_ifs at hca hc <;> omega
 
 /- English proof (translation)
-Rewrite using `[Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem elem_apply (t : R) (r c : Fin N) : (1 + Matrix.single cb ca t : Matrix (Fin N) (Fin N) R) r c =
     (if r = c then 1 else 0) + if cb = r ∧ ca = c then t else 0 := by
   rw [Matrix.add_apply, Matrix.one_apply, Matrix.single_apply]
 
 /- English proof (translation)
-Use `⟨fun r => ?_, fun r c h => ?_⟩` and prove the remaining obligations. Rewrite using `[elem_apply, if_pos rfl, if_neg, add_zero]`. Introduce and unpack `⟨rfl, h⟩`. Rewrite `hcb` using `[h]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[elem_apply, if_neg h.ne, if_neg, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Rewrite `h` using `[Fin.lt_def]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem elem_lowerUni (hcb : (cb : ℕ) = ca + 1) (t : R) : IsLowerUni (1 + Matrix.single cb ca t) := by
   refine ⟨fun r => ?_, fun r c h => ?_⟩
@@ -145,7 +141,7 @@ theorem elem_lowerUni (hcb : (cb : ℕ) = ca + 1) (t : R) : IsLowerUni (1 + Matr
     rw [Fin.lt_def] at h; omega
 
 /- English proof (translation)
-Use `b.2` as an intermediate fact. Unfold `lastCol at hca`. Apply the tactic sequence `split_ifs at hca <;> omega`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem same_blk (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hab : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1) : ((ca : ℕ) < N - j ↔ (cb : ℕ) < N - j) := by
@@ -154,7 +150,7 @@ theorem same_blk (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hab : (b : ℕ) < j �
   split_ifs at hca <;> omega
 
 /- English proof (translation)
-Introduce `r c h` and use `by rw [elem_apply, if_neg, if_neg, add_zero] · rintro ⟨rfl, rfl⟩; exact h hS.symm · rintro rfl; exact h Iff.rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem elem_block (hS : ((ca : ℕ) < N - j ↔ (cb : ℕ) < N - j)) (t : R) :
     IsBlockDiag j (1 + Matrix.single cb ca t) := fun r c h => by
@@ -163,9 +159,9 @@ theorem elem_block (hS : ((ca : ℕ) < N - j ↔ (cb : ℕ) < N - j)) (t : R) :
   · rintro rfl; exact h Iff.rfl
 
 /- English proof (translation)
-Use `⟨fun r => ?_, fun r c h => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single r (fun x _ hx => ?_) (by simp), hA.1, hB.1, one_mul]`. Break down `lt_or_gt_of_ne hx with h | h` into its components or cases. Rewrite using `[hB.2 _ _ h, mul_zero]`. Rewrite using `[hA.2 _ _ h, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun x _ => ?_` and prove the remaining obligations. Break down `lt_or_ge r x with h' | h'` into its components or cases. Rewrite using `[hA.2 _ _ h', zero_mul]`. Rewrite using `[hB.2 _ _ (h'.trans_lt h), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem lowerUni_mul {A B : Matrix (Fin N) (Fin N) R} (hA : IsLowerUni A) (hB : IsLowerUni B) : IsLowerUni (A * B) := by
   refine ⟨fun r => ?_, fun r c h => ?_⟩
@@ -180,13 +176,11 @@ theorem lowerUni_mul {A B : Matrix (Fin N) (Fin N) R} (hA : IsLowerUni A) (hB : 
     · rw [hB.2 _ _ (h'.trans_lt h), mul_zero]
 
 /- English proof (translation)
-Rewrite using `[MinorCalc.minorIJ_mul_of_support _ _ _ _ fun k c hc hk => ?_]`. Rewrite using `[MinorCalc.minorIJ_eq_det (1 + Matrix.single cb ca t) _ _ _ rfl rfl, Matrix.det_of_lowerTriangular ((1 + Matrix.single cb ca t).submatrix _ _) (fun x x' hx => (elem_lowerUni hcb t).2 _ _ (((stepCols N j i).orderEmbOfFin rfl).strictMono (by exact hx))),`. Use the proof step `]`. Establish `hone : ∀ x, (1 + Matrix.single cb ca t).submatrix ((stepCols N j i).orderEmbOfFin rfl) ((stepCols N j i).orderEmbOfFin rfl) x x = 1` using `fun x => (elem_lowerUni hcb t).1 _`. Simplify using `only [hone, Finset.prod_const_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[elem_apply, if_neg, if_neg, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Apply `hk` to reduce the goal to its premises. Establish `hi' : (i : ℕ) ≠ a` using `fun e => hi (Fin.ext e)`. Use `b.2` as an intermediate fact.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `i.2` as an intermediate fact. Unfold `lastCol at hca`. Simplify using `only [stepCols, Finset.mem_filter, Finset.mem_univ, true_and] at hc ⊢`. Apply the tactic sequence `split_ifs at hca hc ⊢ <;> omega`. Introduce and unpack `rfl`.
-
-Conclude with `hk hc`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem minor_other (hj : j ≤ N) (hb : (b : ℕ) = a + 1) (hab : (b : ℕ) < j ∨ j ≤ (a : ℕ))
     (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1) (h : Matrix (Fin N) (Fin N) R) (I : Finset (Fin N))
@@ -217,7 +211,7 @@ variable {y : (Σ k, ι k) → Φ} {Ψ : Type} [Fintype Ψ] [DecidableEq Ψ] {N 
   {τ : Ψ} {a b ca cb : Fin N} {k₀ : K}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Break down `q with ⟨_ | k, m⟩` into its components or cases. Simplify using `only [FlagModel.wCo, penCo, vecB]`. Rewrite using `[Finset.sum_congr rfl fun I _ => by rw [minor_elem M.j_le hb hab hca hcb], M.y_step _ _ hk m]`. Simplify using `only [CPts.minorIJ_map, mul_add, Finset.sum_add_distrib, map_sum, map_mul, Finset.mul_sum, mul_left_comm t]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -232,21 +226,21 @@ theorem wCo_eq (hb : (b : ℕ) = a + 1) (hab : (b : ℕ) < j ∨ j ≤ (a : ℕ)
   · rfl
 
 /- English proof (translation)
-The claim follows from `charZero_of_injective_ringHom (f := algebraMap M.Ω Φ) (algebraMap M.Ω Φ).injective`.
+A detailed English derivation is pending.
 -/
 theorem charZero_of_model (M : FlagModel y Ψ N j) : CharZero Φ :=
   charZero_of_injective_ringHom (f := algebraMap M.Ω Φ) (algebraMap M.Ω Φ).injective
 
 /- English proof (translation)
-Distinguish the cases in `hk : ∀ p, M.blk p ≠ some k`. Take `⟨i, hi⟩` from `M.x_ne ⟨k, hk⟩`. Conclude with `⟨i, by`. Rewrite using `[show y ⟨k, i⟩ = algebraMap M.Ω Φ (M.x ⟨⟨k, hk⟩, i⟩) from M.y_base ⟨⟨k, hk⟩, i⟩]`. Conclude with `(map_ne_zero _).2 hi⟩`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `push Not at hk`. Take `⟨p, hp⟩` from `hk`. Take `⟨F, hF, hG⟩` from `M.exists_frame`. Set `am` to `algebraMap M.Ω Φ`. Set `H : Matrix (Fin N) (Fin N) Φ` to `(F.T p.1)⁻¹.map am * M.g p.1`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hH : (F.T p.1).map am * H = M.g p.1` using `CPts.map_mul_inv_map am (hF.1 p.1).2 _`. Establish `hHb : IsBlockDiag j H` using `(((hF.1 p.1).1.inv (hF.1 p.1).2.isUnit).map am).mul (M.g_block p.1)`. Establish `hHd : H.det ≠ 0` using `fun h0 => (M.isUnit_det_g p.1).ne_zero (by rw [← hH, det_mul, h0, mul_zero])`. Apply the tactic sequence `obtain ⟨m, hm, -⟩ := GlobalTheory.T.step_rows_inverse_nonzero_entry Φ ⊤ N j p.2 H (ι k) (fun m I => am (F.u ⟨k, m⟩ I)) (fun I m => am (F.u' I ⟨k, m⟩)) M.j_le hHb (fun _ _ => ValuationSubring.mem_top _) hHd (ValuationSubring.mem_top _) (fun _ _ => ValuationSubring.mem_top _) (fun …`. Use `congrArg am (hF.2.2.1 p k hp I I' hI hI')` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[map_sum]`. Simplify using `only [map_mul] at this`. Rewrite using `[this]`. Apply the tactic sequence `split_ifs <;> simp)`. Use `⟨m, fun h0 => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `rel` using `CPts.frame_gen M hF (RingHom.id Φ) hp m hHb isBlockDiag_one blockTriangular_one (by`. Rewrite using `[Matrix.mul_one]`. Conclude with `hH)`. Simplify using `only [RingHom.id_apply, h0, mul_zero] at rel`. Conclude with `mul_ne_zero ((map_ne_zero am).2 (Finset.prod_ne_zero_iff.2 fun k' _ => zpow_ne_zero _ (M.x_chart_ne le_rfl hG k'))) hm rel.symm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem blocks_of_model (M : FlagModel y Ψ N j) (k : K) : ∃ i, y ⟨k, i⟩ ≠ 0 := by
   by_cases hk : ∀ p, M.blk p ≠ some k
@@ -279,53 +273,47 @@ theorem blocks_of_model (M : FlagModel y Ψ N j) (k : K) : ∃ i, y ⟨k, i⟩ �
         zpow_ne_zero _ (M.x_chart_ne le_rfl hG k'))) hm rel.symm
 
 /- English proof (translation)
-Establish `hbm : IsBlockMap (ι` using `ι) (ι' := iW ι k₀) (fun k => if k = k₀ then none else some k) v₁ := by`. Establish `hfst : ∀ p, (v₁ p).1 = if p.1 = k₀ then none else some p.1`. Introduce and unpack `⟨k, m⟩`. Distinguish the cases in `e : k = k₀`. Substitute `e` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[h2]`. Simplify using the standard rewrite rules. Rewrite using `[h1 _ e]`. Simplify using `[e]`. Establish `hinj : Function.Injective fun k => if k = k₀ then none else some k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `k k' e`. Simplify using `only at e`. Use `split_ifs at e with a b`. Rewrite using `[a, b]`. Conclude with `Option.some.inj e`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨hinj, ?_, hfst, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨k, m⟩ ⟨k', m'⟩ e`. Take `rfl : k = k'` from `hinj (by have := congrArg Sigma.fst e; rwa [hfst, hfst] at this)`. Distinguish the cases in `e' : k = k₀`. Substitute `e'` using the available equality.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Rewrite `e` using `[h2, h2]`. Consider the cases of `e`. Both sides reduce to the same expression. Rewrite `e` using `[h1 _ e', h1 _ e']`. Consider the cases of `e`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Both sides reduce to the same expression. Introduce and unpack `⟨_ | k, m⟩ ⟨k', e⟩`. Conclude with `⟨⟨k₀, m⟩, h2 m⟩`. Simplify using `only at e split_ifs at e with a`. Take `rfl` from `Option.some.inj e`.
+Supply the required witnesses or components. Simplify by unfolding definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨⟨k', m⟩, h1 _ a⟩`. Rewrite using `[imageZ_eq hbm]`. Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[← imageZ_eq hbm, wCo_eq M hb hab hk hca hcb]`. Introduce `f hf`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : f ∈ imageZ v₁ (mCoordIdeal (ext2 y k₀ fun m => y ⟨k₀, m⟩))` using `pen_le_zero _ _ _ _ hf`. Rewrite `h3` using `[imageZ_eq hbm]`. Use `h3 using 2` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `⟨k, m⟩`. Distinguish the cases in `e : k = k₀`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `e` using the available equality. Simplify using `only [Function.comp, h2]`. Both sides reduce to the same expression. Simplify using `only [Function.comp, h1 ⟨k, m⟩ e]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨B, hB, hind⟩` from `M.g_indep`. Set `ev : MvPolynomial (LowIdx Ψ N j) M.Ω →ₐ[M.Ω] Φ` to `aeval fun q => (M.g q.1.1 * B q.1.1) q.1.2.1 q.1.2.2`. Take `⟨c, hc, hz⟩` from `exists_scale M ev.toRingHom (algebraMap M.Ω Φ) (fun a => aeval_C _ a) M.g B M.g_block hB (fun q => aeval_X _ q) y M.y_base M.y_step`. Rewrite using `[mCoordIdeal_eq ev.toRingHom hind _ _ c hc hz]`. Set `φ` to `algebraMap Φ (RatFunc Φ)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS` using `same_blk M.j_le hb hab hca hcb`. Establish `hdiag : ∀ c, B τ c c ≠ 0` using `fun c h0 => by`. Establish `h1 : (M.g τ).det * (B τ).det = 1` using `by rw [← det_mul, (hB τ).2.2.det]`. Establish `h2 : ∏ i, B τ i i = 0` using `Finset.prod_eq_zero (Finset.mem_univ c) h0`. Rewrite `h1` using `[det_of_upperTriangular (hB τ).2.1, h2, mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `zero_ne_one h1`. Establish `hden : φ (B τ cb cb) - RatFunc.X * φ (B τ ca cb) ≠ 0` using `fun h0 => by`. Establish `h3 : algebraMap (Polynomial Φ) (RatFunc Φ) (Polynomial.C (B τ cb cb) - Polynomial.X * Polynomial.C (B τ ca cb)) = 0`. Rewrite using `[map_sub, map_mul, RatFunc.algebraMap_C, RatFunc.algebraMap_C, RatFunc.algebraMap_X, ← RatFunc.algebraMap_eq_C]`. Conclude with `h0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h4` using `congrArg (Polynomial.eval 0) ((map_eq_zero_iff _ (IsFractionRing.injective _ _)).1 h3)`. Conclude with `hdiag cb (by simpa [φ, RatFunc.algebraMap_eq_C] using h4)`. Establish `haa : φ (B τ ca ca) ≠ 0` using `(map_ne_zero φ).2 (hdiag ca)`. Establish `hbb : φ (B τ cb cb) ≠ 0` using `(map_ne_zero φ).2 (hdiag cb)`. Set `s : RatFunc Φ` to `RatFunc.X * φ (B τ ca ca) / (φ (B τ cb cb) - RatFunc.X * φ (B τ ca cb))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result.
 
-Establish `hs : φ (B τ ca ca) + s * φ (B τ ca cb) = φ (B τ ca ca) * φ (B τ cb cb) / (φ (B τ cb cb) - RatFunc.X * φ (B τ ca cb))`. Simplify using `only [s]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take `⟨V, hV1, hV2, -, hV⟩` from `GlobalTheory.CompanionTheory.Ar.PB.MoveTransvection.exists_conj (RatFunc Φ) N j ca cb ((B τ).map φ) RatFunc.X s hcb hS ((hB τ).1.map φ) ((hB τ).2.1.map φ) (fun c => (map_ne_zero φ).2 (hdiag c)) (by show φ _ + s * φ _ ≠ 0; rw [hs]; exact div_ne_zero (mul_ne_zero haa hbb) hden) (by …`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `G : Ψ → Matrix (Fin N) (Fin N) (RatFunc Φ)` to `fun τ' => if τ' = τ then (M.g τ).map φ * (1 + Matrix.single cb ca RatFunc.X) else (M.g τ').map φ`. Set `B' : Ψ → Matrix (Fin N) (Fin N) (RatFunc Φ)` to `fun τ' => if τ' = τ then V else (B τ').map φ`. Set `ψ : M.Ω →+* RatFunc Φ` to `φ.comp (algebraMap M.Ω Φ)`. Set `f : MvPolynomial (LowIdx Ψ N j) M.Ω →+* RatFunc Φ` to `eval₂Hom ψ fun q => (G q.1.1 * B' q.1.1) q.1.2.1 q.1.2.2`. Establish `hG1 : ∀ τ', IsBlockDiag j (G τ')` using `fun τ' => by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [G]`. Use `split_ifs`. Conclude with `((M.g_block τ).map φ).mul (elem_block hS _)`. Conclude with `(M.g_block τ').map φ`. Establish `hG2 : ∀ τ', IsBlockDiag j (B' τ') ∧ (B' τ').BlockTriangular id ∧ IsLowerUni (G τ' * B' τ')` using `fun τ' => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [G, B']`. Use `split_ifs`. Use `⟨hV1, hV2, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mul_assoc, hV, ← Matrix.mul_assoc, ← Matrix.map_mul]`. Conclude with `lowerUni_mul ((hB τ).2.2.map φ) (elem_lowerUni hcb s)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨(hB τ').1.map φ, (hB τ').2.1.map φ, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.map_mul]`. Conclude with `(hB τ').2.2.map φ`. Establish `hG3 : ∀ q : Σ k, baseIdx ι M.blk k, (M.wCo (τ, a) k₀ ca cb RatFunc.X ∘ v₁) ⟨q.1.1, q.2⟩ = ψ (M.x q)`. Introduce `q`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : q.1.1 ≠ k₀` using `fun e => q.1.2 _ (e ▸ hk)`. Simplify using `only [Function.comp, h1 ⟨q.1.1, q.2⟩ hne]`. Conclude with `congrArg φ (M.y_base q)`. Establish `hG4 : ∀ p k, M.blk p = some k → ∀ m : ι k, (M.wCo (τ, a) k₀ ca cb RatFunc.X ∘ v₁) ⟨k, m⟩ = ∑ I, ψ (M.coef ⟨k, m⟩ I) * minorIJ (G p.1) I (stepCols N j p.2)`. Introduce `p k hp m`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `e : k = k₀`. Substitute `e` using the available equality. Take `rfl` from `M.blk_inj _ _ _ hp hk`. Simplify using `only [Function.comp, h2, G, if_true]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp, h1 ⟨k, m⟩ e] show φ (y ⟨k, m⟩) = _`. Rewrite using `[M.y_step p k hp m, map_sum]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul]`. Use `congr 1`.
-
-Simplify using `only [G]`. Use `split_ifs with e'`. Rewrite using `[minor_other M.j_le hb hab hca hcb, CPts.minorIJ_map, e']`. Introduce and unpack `e''`. Apply `e` to reduce the goal to its premises.
-
-Establish `: p = (τ, a)` using `Prod.ext e' e''`. Rewrite `hp` using `[this, hk]`. Conclude with `(Option.some.inj hp).symm`. Rewrite using `[CPts.minorIJ_map]`. Take `⟨c', -, hz'⟩` from `exists_scale M f ψ (fun a => eval₂Hom_C _ _ a) G B' hG1 hG2 (fun q => eval₂Hom_X' _ _ q) (M.wCo (τ, a) k₀ ca cb RatFunc.X ∘ v₁) hG3 hG4`.
-
-Introduce `g hg`. Establish `hg' : coneOver (polyPt M) g = 0` using `hg`. Use `show mConeMap _ g = 0`. Rewrite using `[mConeMap_eq f _ _ c' hz', hg', map_zero, map_zero]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_snd (hb : (b : ℕ) = a + 1) (hab : (b : ℕ) < j ∨ j ≤ (a : ℕ)) (hk : M.blk (τ, a) = some k₀)
     (hca : (ca : ℕ) = lastCol N j a) (hcb : (cb : ℕ) = ca + 1)

@@ -17,7 +17,7 @@ open ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestrictio
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
 /- English proof (translation)
-Substitute `hφ` using the available equality. Simplify using `only [rs, resTop, scal, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Establish `key` using `congrArg (fun f => (CommRingCat.Hom.hom f) ((pZ.appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom r))) (φ.naturality (homOfLE (le_top : U ≤ ⊤)).op)`. Simplify using `only [CommRingCat.comp_apply] at key`. Rewrite using `[key, ← CommRingCat.comp_apply, ← Functor.map_comp]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -39,7 +39,7 @@ variable {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} {D : DegData R I}
   {G : Over (Spec (CommRingCat.of R))} [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-Substitute `hφ` using the available equality. Simplify using `only [rs, resTop, scal, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Establish `key` using `congrArg (fun f => (CommRingCat.Hom.hom f) ((pZ.appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom r))) (φ.naturality (homOfLE (le_top : U ≤ ⊤)).op)`. Simplify using `only [CommRingCat.comp_apply] at key`. Rewrite using `[key, ← CommRingCat.comp_apply, ← Functor.map_comp]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -55,13 +55,11 @@ lemma const_pull' {Y Z : Scheme.{0}} (φ : Y ⟶ Z) (pY : Y ⟶ Spec (CommRingCa
   rfl
 
 /- English proof (translation)
-Take `⟨S, hvan, hid⟩` from `h`. Use `⟨S, fun α hα j => ?_, fun p j₁ jf jt h1 hcoh => ?_⟩` and prove the remaining obligations. Use `show ((U.gt e).pG.left.app _).hom (resTop _ (scal D.toPre.P.A.hom r) * (f α).f j) = 0`. Rewrite using `[map_mul, hvan α hα j, mul_zero]`. Establish `e0` using `hid p j₁ jf jt h1 hcoh set W := U.expW e p j₁ S jf jt`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hG : (fstG I e G).left ≫ G.hom = ((Over.map (thick R I e)).obj (thickObj R I e G)).hom` using `Over.w _`. Establish `hB : (U.gt e).pG.left ≫ D.toPre.P.A.hom = ((Over.map (thick R I e)).obj (thickObj R I e G)).hom` using `Over.w _`. Establish `e1` using `congrArg (fun x => resTop W (scal ((Over.map (thick R I e)).obj (thickObj R I e G)).hom r) * x) e0`. Simplify using `only [Finset.mul_sum] at e1`. Use `e1 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [SecOps.secScale] erw [map_mul, map_mul, const_pull' (fstG I e G).left _ G.hom (Over.w _) r (U := U.LG.L.wchart (fun _ => 𝟙 G.left) j₁)]`. Conclude with `mul_left_comm _ _ _`. Use `Finset.sum_congr rfl (fun α _ => ?_)` and prove the remaining obligations. Simplify using `only [SecOps.secScale]`. Use `erw [map_mul, map_mul, const_pull' (U.gt e).pG.left _ D.toPre.P.A.hom (Over.w _) r (U := D.toPre.P.L.wchart (D.toPre.famφB α.1) (jf α.1))]`.
-
-Conclude with `mul_assoc _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expandsAt_scale (U : UnifPre I D A G) (e k : ℕ)
     (σ : LB.Sec (LB.LinComb U.LG.L (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (k : ℤ))))
@@ -91,9 +89,9 @@ theorem expandsAt_scale (U : UnifPre I D A G) (e k : ℕ)
 end Scale
 
 /- English proof (translation)
-Establish `hbij` using `@hGF _ D.toPre.P.A D.toPre.P.grp D.toPre.P.isAb`. Take `⟨c0, hc0⟩` from `hbij.2 (f : Γ(D.toPre.P.A.left, ⊤))`. Take `⟨c1, hc1⟩` from `hbij.2 ((f⁻¹ : Γ(D.toPre.P.A.left, ⊤)ˣ) : Γ(D.toPre.P.A.left, ⊤))`. Establish `h01 : c0 * c1 = 1` using `hbij.1 (by rw [map_mul, hc0, hc1, Units.mul_inv, map_one])`. Use `⟨⟨c0, c1, h01, by rw [mul_comm]; exact h01⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `ext`. Conclude with `hc0.symm`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem b_units_const (hGF : GlobalFnsSt) (D : DegData V (maximalIdeal V)) (f : Γ(D.toPre.P.A.left, ⊤)ˣ) :
     ∃ c : Γ(Spec (CommRingCat.of V), ⊤)ˣ, f = Units.map (D.toPre.P.A.hom.appTop).hom.toMonoidHom c := by
@@ -108,21 +106,17 @@ theorem b_units_const (hGF : GlobalFnsSt) (D : DegData V (maximalIdeal V)) (f : 
 open scoped Classical in
 
 /- English proof (translation)
-Establish `hL : D.toPre.P.L.IsLB` using `D.toPre.P.isLB`. Establish `hs0 : LB.SameSum φ ε (K'` using `PEmpty) PEmpty.elim PEmpty.elim := by`. Rewrite using `[sameSum_iff_fsum, h0, fsum_empty]`. Take `⟨te, -, c2⟩` from `gen_transport hL hs0 t ht`. Set `j0 : PEmpty → D.toPre.P.L.ι` to `PEmpty.elim`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `f : Γ(D.toPre.P.A.left, ⊤)ˣ` to `res (le_of_eq (wchart_empty j0).symm) (te.s j0)`. Take `⟨c, hc⟩` from `b_units_const hGF D f`. Establish `hte : te.s j0 = res (fun _ _ => trivial : (LB.LinComb D.toPre.P.L (Y` using `D.toPre.P.A.left) (K := PEmpty) PEmpty.elim PEmpty.elim).U j0 ≤ D.toPre.P.A.hom ⁻¹ᵁ ⊤) (pullU D.toPre.P.A.hom ⊤ c) := by`. Establish `e1 : te.s j0 = res (le_of_eq (wchart_empty j0)) f`. Simplify using `only [f]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(res_back _ _ _).symm`. Rewrite using `[e1, hc, units_map_eq_res]`. Use `erw [res_res']`. Both sides reduce to the same expression. Establish `hzp : eSec D.toPre.P.A ≫ D.toPre.P.A.hom = 𝟙 _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Over.w η[D.toPre.P.A]`. Establish `key : (LB.pullGen D.toPre.P.L _ _ te (eSec D.toPre.P.A)).s j0 = res le_top c` using `by show res _ (pullU _ _ (te.s j0)) = _`. Rewrite using `[hte]`. Conclude with `pull_pull_id _ _ hzp _ _ c`. Establish `hz1 : LB.Gen.Corr D.toPre.P.L _ _ (K'` using `PEmpty) PEmpty.elim PEmpty.elim (LB.pullGen D.toPre.P.L _ _ te (eSec D.toPre.P.A)) (LB.oneGen D.toPre.P.L) := corr_trans hL (corr_pullGen (corr_symm c2) _) hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hc1 : c = 1`. Establish `e` using `hz1 j0 j0 (fun k => k.elim) (fun k => k.elim) (fun k => k.elim)`. Rewrite `e` using `[key]`. Express the relevant statement in the definitionally equal form `res _ (res _ c) = res _ (1 : Γ(Spec (CommRingCat.of V), _)ˣ) at e`. Rewrite `e` using `[map_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `erw [res_res'] at e`. Conclude with `eq_one_of_res_top _ (by ext y; simp [LB.wchart]) c e`. Establish `hte1 : te.s j0 = 1` using `by rw [hte, hc1, map_one, map_one]`. Introduce `j hj`. Establish `e` using `c2 j j0 hj (fun k => k.elim) (fun _ k => k.elim)`.
-
-Rewrite `e` using `[hte1]`. Use `erw [map_one] at e`. Establish `hle : LB.wchart D.toPre.P.L φ j ≤ LB.wchart D.toPre.P.L φ j ⊓ LB.wchart D.toPre.P.L PEmpty.elim j0` using `le_inf le_rfl (by rw [wchart_empty]; exact le_top)`. Establish `e2` using `congrArg (res hle) e`. Use `erw [map_one, res_res', res_refl'] at e2`.
-
-Conclude with `e2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gen_one_of_zero (hGF : GlobalFnsSt) (D : DegData V (maximalIdeal V)) {K : Type} [Fintype K]
     (φ : K → (D.toPre.P.A.left ⟶ D.toPre.P.A.left)) (ε : K → ℤ)
@@ -174,21 +168,17 @@ theorem gen_one_of_zero (hGF : GlobalFnsSt) (D : DegData V (maximalIdeal V)) {K 
   exact e2
 
 /- English proof (translation)
-Establish `hL : D.toPre.P.L.IsLB` using `D.toPre.P.isLB`. Establish `hA` using `oa.onB.rosati (star a)`. Rewrite `hA` using `[star_star]`. Take `⟨u0, hu0⟩` from `gen_of_local_base hL (rosatiφ D.toPre.P.A (oa.onB.act (star a)) (oa.onB.act a)) rosatiε hA`. Establish `hzp : zero2 D.toPre.P.A ≫ (toUnit (D.toPre.P.A ⊗ D.toPre.P.A)).left = 𝟙 _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [zero2, ← Over.comp_left]`. Rewrite using `[show _ ≫ toUnit (D.toPre.P.A ⊗ D.toPre.P.A) = 𝟙 _ from toUnit_unique _ _]`. Both sides reduce to the same expression. Establish `hone : (LB.oneGen D.toPre.P.L (Y` using `(𝟙_ (Over (Spec (CommRingCat.of V)))).left)).IsGen := by`. Introduce `i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show res _ 1 = _ * res _ 1`. Rewrite using `[map_one, map_one, _root_.mul_one]`. Simplify using `[LB.LinComb]`. Both sides reduce to the same expression. Use `exists_normalized_to hL _ _ u0 hu0 _ _ hzp _ _ _ hone ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := oa.onB.hom (star a)`. Use `haveI := oa.onB.hom a`. Establish `e : (fun k => zero2 D.toPre.P.A ≫ rosatiφ D.toPre.P.A (oa.onB.act (star a)) (oa.onB.act a) k) = fun _ => (η[D.toPre.P.A]).left`. Use function extensionality and compare the values at `i`. Establish `h1 : (η[D.toPre.P.A] : 𝟙_ _ ⟶ D.toPre.P.A) = 1` using `by rw [Hom.one_def, toUnit_unique (toUnit _) (𝟙 _), Category.id_comp]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (1 : 𝟙_ _ ⟶ D.toPre.P.A) * 1 = 1` using `_root_.mul_one _`. Use `fin_cases i`. Use `show (lift η[D.toPre.P.A] η[D.toPre.P.A]).left ≫ (padd D.toPre.P.A (fst _ _ ≫ oa.onB.act (star a)) (snd _ _)).left = _`. Rewrite using `[← Over.comp_left, padd_eq_mul, MonObj.comp_mul, lift_fst_assoc, lift_snd, IsMonHom.one_hom, h1, hm]`. Use `show (lift η[D.toPre.P.A] η[D.toPre.P.A]).left ≫ (fst _ _ ≫ oa.onB.act (star a)).left = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Over.comp_left, lift_fst_assoc, IsMonHom.one_hom]`. Use `show (lift η[D.toPre.P.A] η[D.toPre.P.A]).left ≫ (snd D.toPre.P.A D.toPre.P.A).left = _`. Rewrite using `[← Over.comp_left, lift_snd]`. Use `show (lift η[D.toPre.P.A] η[D.toPre.P.A]).left ≫ (padd D.toPre.P.A (fst _ _) (snd _ _ ≫ oa.onB.act a)).left = _`. Rewrite using `[← Over.comp_left, padd_eq_mul, MonObj.comp_mul, lift_fst, lift_snd_assoc, IsMonHom.one_hom, h1, hm]`.
-
-Use `show (lift η[D.toPre.P.A] η[D.toPre.P.A]).left ≫ (fst D.toPre.P.A D.toPre.P.A).left = _`. Rewrite using `[← Over.comp_left, lift_fst]`. Use `show (lift η[D.toPre.P.A] η[D.toPre.P.A]).left ≫ (snd _ _ ≫ oa.onB.act a).left = _`. Rewrite using `[← Over.comp_left, lift_snd_assoc, IsMonHom.one_hom]`. Rewrite using `[fsum_empty, e]`.
-
-Simplify using `[fsum, Fin.sum_univ_six, rosatiε, ← Finsupp.single_add]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_uR (D : DegData V (maximalIdeal V)) {O : Type} [CommRing O] [StarRing O] [Module O D.toPre.X]
     (oa : D.toPre.OAct O) (a : O) :
@@ -236,7 +226,7 @@ theorem exists_uR (D : DegData V (maximalIdeal V)) {O : Type} [CommRing O] [Star
   simp [fsum, Fin.sum_univ_six, rosatiε, ← Finsupp.single_add]
 
 /- English proof (translation)
-Substitute `hφ` using the available equality. Simplify using `only [scal, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 lemma scal_pull {Y Z : Scheme.{0}} (φ : Y ⟶ Z) (pY : Y ⟶ Spec (CommRingCat.of V)) (pZ : Z ⟶ Spec (CommRingCat.of V))
     (hφ : φ ≫ pZ = pY) (r : V) : φ.appTop.hom (scal pZ r) = scal pY r := by
@@ -244,19 +234,19 @@ lemma scal_pull {Y Z : Scheme.{0}} (φ : Y ⟶ Z) (pY : Y ⟶ Spec (CommRingCat.
   simp only [scal, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]
 
 /- English proof (translation)
-Simplify using `only [scal, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 lemma scal_mul {Y : Scheme.{0}} (p : Y ⟶ Spec (CommRingCat.of V)) (r r' : V) : scal p (r * r') = scal p r * scal p r' := by
   simp only [scal, map_mul]
 
 /- English proof (translation)
-The claim follows from `map_mul _ _ _`.
+A detailed English derivation is pending.
 -/
 lemma resTop_mul {Y : Scheme.{0}} (W : Y.Opens) (c c' : Γ(Y, ⊤)) : resTop W (c * c') = resTop W c * resTop W c' :=
   map_mul _ _ _
 
 /- English proof (translation)
-Simplify using `only [resTop]`. Establish `key` using `congrArg (fun f => (CommRingCat.Hom.hom f) c) (φ.naturality (homOfLE (le_top : U ≤ ⊤)).op)`. Simplify using `only [CommRingCat.comp_apply] at key`. Rewrite using `[key, ← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma app_resTop {Y Z : Scheme.{0}} (φ : Y ⟶ Z) (U : Z.Opens) {W : Y.Opens} (h : W ≤ φ ⁻¹ᵁ U) (c : Γ(Z, ⊤)) :
     (Y.presheaf.map (homOfLE h).op).hom ((φ.app U).hom (resTop U c)) = resTop W (φ.appTop.hom c) := by
@@ -267,7 +257,7 @@ lemma app_resTop {Y Z : Scheme.{0}} (φ : Y ⟶ Z) (U : Z.Opens) {W : Y.Opens} (
   rfl
 
 /- English proof (translation)
-Introduce `j₁ j₂ hj`. Establish `e` using `hs j₁ j₂ hj`. Use `show _ = _ * _`. Use `erw [map_mul, map_mul, e, app_resTop, resTop_mul]`. Conclude with `(_root_.mul_assoc _ _ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma secScal_scale {X Y Y' : Scheme.{0}} {L : LB X} {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
     {φ₁ : K₁ → (Y' ⟶ X)} {ε₁ : K₁ → ℤ} {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)}
@@ -281,9 +271,9 @@ lemma secScal_scale {X Y Y' : Scheme.{0}} {L : LB X} {K₁ K₂ : Type} [Fintype
   exact (_root_.mul_assoc _ _ _).symm
 
 /- English proof (translation)
-Introduce `(j : K → L.ι)`. Apply `sec_ext_cover (LB.wchart L φ j) (fun ρ => LB.wchart L φ j ⊓ piece L φ φ ρ) (fun _ => inf_le_left) (le_iSup_piece L φ φ hL _)` to reduce the goal to its premises. Introduce `ρ`. Establish `hV : LB.wchart L φ j ⊓ piece L φ φ ρ ≤ LB.wchart L φ j ⊓ LB.wchart L φ (ρ ∘ φ)` using `fun _ hy => ⟨hy.1, hy.2.1⟩`. Establish `hc : LB.Coh L φ (ρ ∘ φ)` using `fun k₁ k₂ e => by simp only [Function.comp, e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `es` using `sec_compat_rs s j (ρ ∘ φ) hV`. Establish `et` using `sec_compat_rs t j (ρ ∘ φ) hV`. Use `erw [es, et, h _ hc]`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma sec_eq_of_coh {X Y : Scheme.{0}} {L : LB X} (hL : L.IsLB) {K : Type} [Fintype K] {φ : K → (Y ⟶ X)}
     {ε : K → ℤ} (s t : LB.Sec (LB.LinComb L φ ε)) (h : ∀ j, LB.Coh L φ j → s.f j = t.f j) : ∀ j, s.f j = t.f j := by
@@ -303,11 +293,9 @@ section BackK
 variable {G : Over (Spec (CommRingCat.of V))}
 
 /- English proof (translation)
-Establish `hK : IsUnit (algebraMap V (FractionRing V) lam)`. Establish `h0 : algebraMap V (FractionRing V) lam ≠ 0`. Rewrite using `[Ne, ← map_zero (algebraMap V (FractionRing V))]`. Conclude with `(IsFractionRing.injective V (FractionRing V)).ne hlam`. Conclude with `h0.isUnit`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e : scal (pullback.snd G.hom (jK V) ≫ jK V) lam = (pullback.snd G.hom (jK V)).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv.hom (algebraMap V (FractionRing V) lam))`. Simplify using `only [scal, Scheme.Hom.comp_appTop, CommRingCat.comp_apply]`. Use `congr 1`. Use `congrArg (fun f => (CommRingCat.Hom.hom f) lam) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap V (FractionRing V))))` as an intermediate fact. Simplify using `only [CommRingCat.comp_apply, CommRingCat.hom_ofHom] at this`.
-
-Conclude with `this.symm`. Rewrite using `[e]`. Conclude with `(hK.map _).map _ |>.map _`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma scal_unit_K (lam : V) (hlam : lam ≠ 0) {W : (pullback G.hom (jK V)).Opens} :
     IsUnit (resTop W (scal (pullback.snd G.hom (jK V) ≫ jK V) lam)) := by
@@ -329,13 +317,13 @@ lemma scal_unit_K (lam : V) (hlam : lam ≠ 0) {W : (pullback G.hom (jK V)).Open
   exact (hK.map _).map _ |>.map _
 
 /- English proof (translation)
-The claim follows from `SecOps.resTop_res h c`.
+A detailed English derivation is pending.
 -/
 lemma rs_resTop {Y : Scheme.{0}} {W W' : Y.Opens} (h : W' ≤ W) (c : Γ(Y, ⊤)) : rs h (resTop W c) = resTop W' c :=
   SecOps.resTop_res h c
 
 /- English proof (translation)
-Simplify using `only [rs, ← CommRingCat.comp_apply]`. Rewrite using `[Scheme.Hom.naturality, Category.assoc, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma app_rs_alt {Y Z : Scheme.{0}} (φ : Y ⟶ Z) {U U' : Z.Opens} {W : Y.Opens} (o : U ≤ U') (w : W ≤ φ ⁻¹ᵁ U)
     (w' : W ≤ φ ⁻¹ᵁ U') (z : Γ(Z, U')) : rs w ((φ.app U).hom (rs o z)) = rs w' ((φ.app U').hom z) := by
@@ -344,7 +332,7 @@ lemma app_rs_alt {Y Z : Scheme.{0}} (φ : Y ⟶ Z) {U U' : Z.Opens} {W : Y.Opens
   rfl
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_app]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma comp_app_rs {X Y Z : Scheme.{0}} (φ : Y ⟶ Z) (ψ : Z ⟶ X) {U : X.Opens} {W : Y.Opens}
     (w : W ≤ (φ ≫ ψ) ⁻¹ᵁ U) (w' : W ≤ φ ⁻¹ᵁ (ψ ⁻¹ᵁ U)) (z : Γ(X, U)) :
@@ -353,7 +341,7 @@ lemma comp_app_rs {X Y Z : Scheme.{0}} (φ : Y ⟶ Z) (ψ : Z ⟶ X) {U : X.Open
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 lemma app_congr_rs {Y Z : Scheme.{0}} (φ ψ : Y ⟶ Z) (e : φ = ψ) {U : Z.Opens} {W : Y.Opens} (w : W ≤ φ ⁻¹ᵁ U)
     (w' : W ≤ ψ ⁻¹ᵁ U) (z : Γ(Z, U)) : rs w ((φ.app U).hom z) = rs w' ((ψ.app U).hom z) := by
@@ -361,21 +349,21 @@ lemma app_congr_rs {Y Z : Scheme.{0}} (φ ψ : Y ⟶ Z) (e : φ = ψ) {U : Z.Ope
   rfl
 
 /- English proof (translation)
-The claim follows from `app_resTop φ U w c`.
+A detailed English derivation is pending.
 -/
 lemma app_resTop_alt {Y Z : Scheme.{0}} (φ : Y ⟶ Z) {U : Z.Opens} {W : Y.Opens} (w : W ≤ φ ⁻¹ᵁ U) (c : Γ(Z, ⊤)) :
     rs w ((φ.app U).hom (resTop U c)) = resTop W (φ.appTop.hom c) := app_resTop φ U w c
 
 /- English proof (translation)
-Establish `h1` using `congrArg (rs wO) (congrArg (h.app O).hom hC)`. Rewrite `h1` using `[map_mul, map_mul, rs_mul, rs_mul]`. Establish `fσ : ∀ i, rs wO ((h.app O).hom (rs oa (σ i))) = resTop W (c i) * rs wSa (x i)`. Introduce `i`. Use `congrArg (rs wa) (hσ i)` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[rs_mul, rs_resTop, rs_rs, rs_rs]`. Rewrite using `[app_rs_alt h oa wO (wa.trans hWa)]`. Conclude with `this`. Establish `fτ : ∀ i, rs wO ((h.app O).hom (rs ob ((fl.app Ub).hom (τ i)))) = resTop W (c i) * rs wSb ((e.app Sb).hom (y i))`. Introduce `i`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `w1 : W ≤ h ⁻¹ᵁ (fl ⁻¹ᵁ Ub)` using `fun p hp => ob (wO hp)`. Establish `w2 : W ≤ (e ≫ h) ⁻¹ᵁ Ub` using `fun p hp => by`. Use `w1 hp` as an intermediate fact. Use `show p ∈ (e ≫ h) ⁻¹ᵁ Ub`. Rewrite using `[he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Establish `w3 : W ≤ e ⁻¹ᵁ (h ⁻¹ᵁ Ub)` using `w2`. Rewrite using `[app_rs_alt h ob wO w1, ← comp_app_rs h fl w1 w1, app_congr_rs (h ≫ fl) (e ≫ h) he.symm w1 w2, comp_app_rs e h w2 w3, ← app_rs_alt e hWb wb w3, hτ i, map_mul, rs_mul, app_resTop_alt, hce, app_rs_alt e hWb' wb wSb]`. Rewrite `h1` using `[fσ, fσ, fτ, fτ]`. Take `⟨u0, hu0⟩` from `hunit 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨u1, hu1⟩` from `hunit 1`. Rewrite `h1` using `[← hu0, ← hu1]`. Establish `h2 : (↑u0 * ↑u1) * (rs wSa (x 0) * rs wSb ((e.app Sb).hom (y 1))) = (↑u0 * ↑u1) * (rs wSa (x 1) * rs wSb ((e.app Sb).hom (y 0)))`. Take the linear combination `h1`. Conclude with `(Units.mul_right_inj (u0 * u1)).1 (by simpa [Units.val_mul] using h2)`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma shape_cross {Y Y' : Scheme.{0}} (h : Y' ⟶ Y) (e : Y' ⟶ Y') (fl : Y ⟶ Y) (he : e ≫ h = h ≫ fl)
     (c : Fin 2 → Γ(Y', ⊤)) (hce : ∀ i, e.appTop.hom (c i) = c i)
@@ -421,17 +409,11 @@ lemma shape_cross {Y Y' : Scheme.{0}} (h : Y' ⟶ Y) (e : Y' ⟶ Y') (fl : Y ⟶
   exact (Units.mul_right_inj (u0 * u1)).1 (by simpa [Units.val_mul] using h2)
 
 /- English proof (translation)
-Apply `sec_eq_of_coh hLG` to reduce the goal to its premises. Introduce `J _`. Establish `he : endK f ≫ pullback.fst G.hom (jK V) = pullback.fst G.hom (jK V) ≫ f.left`. Unfold `endK`. Conclude with `pullback.lift_fst _ _ _`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hce : ∀ i, (endK f).appTop.hom (scal (pullback.snd G.hom (jK V) ≫ jK V) (lam i)) = scal (pullback.snd G.hom (jK V) ≫ jK V) (lam i)` using `fun i => scal_pull (endK f) _ _ (by unfold endK; rw [← Category.assoc, pullback.lift_snd, Category.comp_id]) (lam i)`. Establish `hCJ` using `hC J`. Simplify using `only [mulSec, pullSec] at hCJ ⊢`. Use `erw [rs_rs, rs_rs] at hCJ`. Use `erw [rs_rs, rs_rs]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbase : ∀ p, (endK f ≫ pullback.fst G.hom (jK V)).base p = (pullback.fst G.hom (jK V) ≫ f.left).base p` using `fun p => by rw [he]`. Establish `mW : ∀ p ∈ LB.wchart LG (Sum.elim (fun _ : Fin 1 => pullback.fst G.hom (jK V)) (fun _ : Fin 1 => endK f ≫ pullback.fst G.hom (jK V))) J, (pullback.fst G.hom (jK V)).base p ∈ LG.U (J (Sum.inl 0)) ∧ (pullback.fst G.hom (jK V) ≫ f.left).base p ∈ LG.U (J (Sum.inr 0))` using `fun p hp => ⟨Set.mem_iInter.1 hp (Sum.inl 0), hbase p ▸ Set.mem_iInter.1 hp (Sum.inr 0)⟩`. Establish `f1 : ∀ (q : Fin 1), q = 0` using `fun q => Subsingleton.elim _ _`. Establish `key` using `shape_cross (pullback.fst G.hom (jK V)) (endK f) f.left he (fun i => scal (pullback.snd G.hom (jK V) ≫ jK V) (lam i)) hce (Ua := LB.wchart LG (fun _ : Fin 1 => 𝟙 G.left) (J ∘ Sum.inl)) (Ub := LB.wchart LG (fun _ : Fin 1 => 𝟙 G.left) (J ∘ Sum.inr)) (O := LB.wchart LG (Sum.elim (fu …`. Apply the tactic sequence `rcases q with q | q <;> rw [f1 q]`.
-
-Conclude with `(mW p hp).1`. Conclude with `(mW p hp).2)`. Use the proof step `(fun p hp => ⟨Set.mem_iInter.2 fun q => by rw [f1 q]; exact (mW p hp).1, Set.mem_iInter.2 fun q => by rw [f1 q]; exact (mW p hp).1⟩)`. Use the proof step `(fun p hp => Set.mem_iInter.2 fun q => by rw [f1 q]; exact (mW p hp).1)`. Use the proof step `(fun p hp => ⟨Set.mem_iInter.2 fun q => by rw [f1 q]; exact Set.mem_iInter.1 hp (Sum.inr 0), Set.mem_iInter.2 fun q => by rw [f1 q]; exact Set.mem_iInter.1 hp (Sum.inr 0)⟩)`.
-
-Use the proof step `(fun p hp => Set.mem_iInter.2 fun q => by rw [f1 q]; exact Set.mem_iInter.1 hp (Sum.inr 0))`. Use the proof step `(fun i => scal_unit_K (lam i) (hlam i))`. Use the proof step `(fun i => (σ i).f (J ∘ Sum.inl)) (fun i => (τ i).f (J ∘ Sum.inr))`. Use the proof step `(fun i => (s'' i).f (J ∘ Sum.inl)) (fun i => (s i).f (J ∘ Sum.inr)) hCJ`. Apply the tactic sequence `(fun i => hσ i _ _ (fun k₁ k₂ _ => by rcases k₁ with k₁ | k₁ <;> rcases k₂ with k₂ | k₂ <;> simp only [Sum.elim_inl, Sum.elim_inr] <;> congr 1 <;> exact Subsingleton.elim _ _))`.
-
-Apply the tactic sequence `(fun i => hτ i _ _ (fun k₁ k₂ _ => by rcases k₁ with k₁ | k₁ <;> rcases k₂ with k₂ | k₂ <;> simp only [Sum.elim_inl, Sum.elim_inr] <;> congr 1 <;> exact Subsingleton.elim _ _))`. Conclude with `key`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem cross_to_K (LG : LB G.left) (hLG : LG.IsLB) (f : G ⟶ G) (k m : ℕ)
     (σ : Fin 2 → LB.Sec (LB.LinComb LG (K := Fin 1) (fun _ => 𝟙 G.left) (fun _ => (m : ℤ))))

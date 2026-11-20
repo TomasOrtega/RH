@@ -12,7 +12,7 @@ section Single
 variable (F : Type) [Field F] [NumberField F]
 
 /- English proof (translation)
-Conclude with `Subtype.ext (funext fun v => h v)`.
+A detailed English derivation is pending.
 -/
 theorem adele_ext {x y : FiniteAdeleRing (𝓞 F) F} (h : ∀ v, evalV F v x = evalV F v y) : x = y := by
   exact Subtype.ext (funext fun v => h v)
@@ -30,7 +30,7 @@ def sglFun (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) : FiniteAde
     exact zero_mem _⟩
 
 /- English proof (translation)
-Use `show (Pi.single w a : (v : HeightOneSpectrum (𝓞 F)) → v.adicCompletion F) w = a`. Conclude with `Pi.single_eq_same w a`.
+A detailed English derivation is pending.
 -/
 theorem sgl_same (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) : evalV F w (sglFun F w a) = a := by
   classical
@@ -38,7 +38,7 @@ theorem sgl_same (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) : eva
   exact Pi.single_eq_same w a
 
 /- English proof (translation)
-Use `show (Pi.single w a : (u : HeightOneSpectrum (𝓞 F)) → u.adicCompletion F) v = 0`. Conclude with `Pi.single_eq_of_ne h a`.
+A detailed English derivation is pending.
 -/
 theorem sgl_ne (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) {v : HeightOneSpectrum (𝓞 F)} (h : v ≠ w) :
     evalV F v (sglFun F w a) = 0 := by
@@ -64,20 +64,20 @@ def sgl (w : HeightOneSpectrum (𝓞 F)) : w.adicCompletion F →ₗ[F] FiniteAd
     · simp only [sgl_ne F w _ h, smul_zero]
 
 /- English proof (translation)
-The claim follows from `sgl_same F w a`.
+A detailed English derivation is pending.
 -/
 theorem sgl_apply_same (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) : evalV F w (sgl F w a) = a := sgl_same F w a
 
 /- English proof (translation)
-The claim follows from `sgl_ne F w a h`.
+A detailed English derivation is pending.
 -/
 theorem sgl_apply_ne (w : HeightOneSpectrum (𝓞 F)) (a : w.adicCompletion F) {v : HeightOneSpectrum (𝓞 F)} (h : v ≠ w) :
     evalV F v (sgl F w a) = 0 := sgl_ne F w a h
 
 /- English proof (translation)
-Apply `adele_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[map_mul (evalV F v)]`. Distinguish the cases in `h : v = w`. Substitute `h` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using `only [sgl_apply_same]`. Simplify using `only [sgl_apply_ne F w _ h, mul_zero]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem sgl_mul (w : HeightOneSpectrum (𝓞 F)) (a b : w.adicCompletion F) : sgl F w (a * b) = sgl F w a * sgl F w b := by
   apply adele_ext
@@ -93,15 +93,15 @@ def iE (w : HeightOneSpectrum (𝓞 F)) : E ⊗[F] w.adicCompletion F →ₗ[F] 
   LinearMap.lTensor E (sgl F w)
 
 /- English proof (translation)
-The claim follows from `LinearMap.lTensor_tmul E (sgl F w) e a`.
+A detailed English derivation is pending.
 -/
 theorem iE_tmul (w : HeightOneSpectrum (𝓞 F)) (e : E) (a : w.adicCompletion F) :
     iE F E w (e ⊗ₜ[F] a) = e ⊗ₜ[F] sgl F w a := LinearMap.lTensor_tmul E (sgl F w) e a
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [zero_mul, map_zero]`. Consider the case `tmul e a`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp only [mul_zero, map_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `tmul e' b => simp only [Algebra.TensorProduct.tmul_mul_tmul, iE_tmul, sgl_mul]`. Consider the case `add y y' hy hy' => simp only [mul_add, map_add, hy, hy']`. Consider the case `add x x' hx hx' => simp only [add_mul, map_add, hx, hx']`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem iE_mul (w : HeightOneSpectrum (𝓞 F)) (x y : E ⊗[F] w.adicCompletion F) :
     iE F E w (x * y) = iE F E w x * iE F E w y := by
@@ -115,7 +115,7 @@ theorem iE_mul (w : HeightOneSpectrum (𝓞 F)) (x y : E ⊗[F] w.adicCompletion
   | add x x' hx hx' => simp only [add_mul, map_add, hx, hx']
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul e a => simp [prV, iE_tmul, sgl_apply_same]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem prV_iE_same (w : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] w.adicCompletion F) : prV (E := E) w (iE F E w x) = x := by
   induction x using TensorProduct.induction_on with
@@ -124,7 +124,7 @@ theorem prV_iE_same (w : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] w.adicComplet
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul e a => simp [prV, iE_tmul, sgl_apply_ne F w a h]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem prV_iE_ne (w : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] w.adicCompletion F) {v : HeightOneSpectrum (𝓞 F)} (h : v ≠ w) :
     prV (E := E) v (iE F E w x) = 0 := by
@@ -134,7 +134,7 @@ theorem prV_iE_ne (w : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] w.adicCompletio
   | add x y hx hy => simp only [map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `tmul e a => simp [sigR, iE_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sig_iE (σE : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] w.adicCompletion F) :
     sigR σE (FiniteAdeleRing (𝓞 F) F) (iE F E w x) = iE F E w (sigR σE (w.adicCompletion F) x) := by
@@ -146,14 +146,14 @@ theorem sig_iE (σE : E →ₐ[F] E) (w : HeightOneSpectrum (𝓞 F)) (x : E ⊗
 def epsW (w : HeightOneSpectrum (𝓞 F)) : E ⊗[F] FiniteAdeleRing (𝓞 F) F := iE F E w 1
 
 /- English proof (translation)
-Use `show iE F E w 1 * iE F E w 1 = iE F E w 1`. Rewrite using `[← iE_mul, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsW_idem (w : HeightOneSpectrum (𝓞 F)) : epsW F E w * epsW F E w = epsW F E w := by
   show iE F E w 1 * iE F E w 1 = iE F E w 1
   rw [← iE_mul, mul_one]
 
 /- English proof (translation)
-Use `show iE F E w 1 * iE F E w x = iE F E w x`. Rewrite using `[← iE_mul, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem epsW_mul_iE (w : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] w.adicCompletion F) :
     epsW F E w * iE F E w x = iE F E w x := by
@@ -161,7 +161,7 @@ theorem epsW_mul_iE (w : HeightOneSpectrum (𝓞 F)) (x : E ⊗[F] w.adicComplet
   rw [← iE_mul, one_mul]
 
 /- English proof (translation)
-Use `show iE F E w 1 * _ = _`. Simplify using `only [inclE, Algebra.TensorProduct.includeLeftRingHom_apply, Algebra.TensorProduct.one_def, iE_tmul, Algebra.TensorProduct.tmul_mul_tmul, one_mul, mul_one]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem epsW_mul_incl (w : HeightOneSpectrum (𝓞 F)) (e : E) :
     epsW F E w * inclE (F := F) (FiniteAdeleRing (𝓞 F) F) e = iE F E w (inclE (F := F) (w.adicCompletion F) e) := by
@@ -180,7 +180,7 @@ def mapE (X : Matrix n n (E ⊗[F] w.adicCompletion F)) : Matrix n n (E ⊗[F] F
   X.map (iE F E w)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mapE, Matrix.map_apply, Matrix.mul_apply, map_sum, iE_mul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mapE_mul (X Y : Matrix n n (E ⊗[F] w.adicCompletion F)) :
     mapE F E w (X * Y) = mapE F E w X * mapE F E w Y := by
@@ -188,14 +188,14 @@ theorem mapE_mul (X Y : Matrix n n (E ⊗[F] w.adicCompletion F)) :
   simp only [mapE, Matrix.map_apply, Matrix.mul_apply, map_sum, iE_mul]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mapE, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, epsW_mul_iE]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem eps_smul_mapE (X : Matrix n n (E ⊗[F] w.adicCompletion F)) : epsW F E w • mapE F E w X = mapE F E w X := by
   ext i j
   simp only [mapE, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, epsW_mul_iE]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mapE, Matrix.map_apply, Matrix.smul_apply, smul_eq_mul, sub_mul, one_mul, epsW_mul_iE, sub_self, Matrix.zero_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem compl_smul_mapE (X : Matrix n n (E ⊗[F] w.adicCompletion F)) : (1 - epsW F E w) • mapE F E w X = 0 := by
   ext i j
@@ -203,7 +203,7 @@ theorem compl_smul_mapE (X : Matrix n n (E ⊗[F] w.adicCompletion F)) : (1 - ep
     Matrix.zero_apply]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [mapE, Matrix.map_apply, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp [epsW]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mapE_one : mapE F E w (1 : Matrix n n (E ⊗[F] w.adicCompletion F)) = epsW F E w • 1 := by
   ext i j
@@ -227,17 +227,17 @@ theorem sec_val (X : GL n (E ⊗[F] w.adicCompletion F)) :
       (1 - epsW F E w) • 1 + mapE F E w (X : Matrix n n (E ⊗[F] w.adicCompletion F)) := rfl
 
 /- English proof (translation)
-The claim follows from `prV_iE_same F E w 1`.
+A detailed English derivation is pending.
 -/
 theorem prV_epsW_same : prV (E := E) w (epsW F E w) = 1 := prV_iE_same F E w 1
 
 /- English proof (translation)
-The claim follows from `prV_iE_ne F E w 1 h`.
+A detailed English derivation is pending.
 -/
 theorem prV_epsW_ne {v : HeightOneSpectrum (𝓞 F)} (h : v ≠ w) : prV (E := E) v (epsW F E w) = 0 := prV_iE_ne F E w 1 h
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show (RingHom.mapMatrix (prV (E := E) w)) (sec F E w X : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) = (X : Matrix n n (E ⊗[F] w.adicCompletion F))`. Rewrite using `[sec_val]`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, mapE, map_add, map_mul, map_sub, map_one, prV_epsW_same, prV_iE_same, sub_self, zero_mul, zero_add]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bc_sec_same (X : GL n (E ⊗[F] w.adicCompletion F)) : bc (prV (E := E) w) (sec F E w X) = X := by
   apply Units.ext
@@ -249,9 +249,9 @@ theorem bc_sec_same (X : GL n (E ⊗[F] w.adicCompletion F)) : bc (prV (E := E) 
     map_add, map_mul, map_sub, map_one, prV_epsW_same, prV_iE_same, sub_self, zero_mul, zero_add]
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use `show (RingHom.mapMatrix (prV (E := E) v)) (sec F E w X : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) = ((1 : GL n (E ⊗[F] v.adicCompletion F)) : Matrix n n (E ⊗[F] v.adicCompletion F))`. Rewrite using `[sec_val, Units.val_one]`. Use extensionality with `i j`. Simplify using `only [RingHom.mapMatrix_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, mapE, map_add, map_mul, map_sub, map_one, prV_epsW_ne F E w h, prV_iE_ne F E w _ h, sub_zero, one_mul, add_zero]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases hij : i = j <;> simp [hij, Matrix.one_apply]`.
+A detailed English derivation is pending.
 -/
 theorem bc_sec_ne (X : GL n (E ⊗[F] w.adicCompletion F)) {v : HeightOneSpectrum (𝓞 F)} (h : v ≠ w) :
     bc (prV (E := E) v) (sec F E w X) = 1 := by
@@ -265,9 +265,9 @@ theorem bc_sec_ne (X : GL n (E ⊗[F] w.adicCompletion F)) {v : HeightOneSpectru
   by_cases hij : i = j <;> simp [hij, Matrix.one_apply]
 
 /- English proof (translation)
-Establish `hε : sigR σE (FiniteAdeleRing (𝓞 F) F) (epsW F E w) = epsW F E w`. Rewrite using `[epsW, sig_iE, map_one]`. Use extensionality with `i j`. Simplify using `only [cT, Matrix.transpose_apply, Matrix.map_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul, mapE, map_add, map_mul, map_sub, map_one, hε, sig_iE]`. Distinguish the cases in `hij : i = j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem cT_sec_lemma (σE : E →ₐ[F] E) (X : Matrix n n (E ⊗[F] w.adicCompletion F)) :
     cT (sigR σE (FiniteAdeleRing (𝓞 F) F)) ((1 - epsW F E w) • (1 : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) +
@@ -282,7 +282,7 @@ private theorem cT_sec_lemma (σE : E →ₐ[F] E) (X : Matrix n n (E ⊗[F] w.a
   · simp [Matrix.one_apply_ne hij, Matrix.one_apply_ne (Ne.symm hij)]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, mapE, epsW_mul_incl]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem epsJ_lemma_4 (J : Matrix n n E) :
     epsW F E w • J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) =
@@ -291,9 +291,9 @@ private theorem epsJ_lemma_4 (J : Matrix n n E) :
   simp only [Matrix.smul_apply, smul_eq_mul, Matrix.map_apply, mapE, epsW_mul_incl]
 
 /- English proof (translation)
-Establish `h2 : ∀ (Z : Matrix n n (E ⊗[F] w.adicCompletion F)) (M : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)), (1 - epsW F E w) • (M * mapE F E w Z) = 0`. Introduce `Z M`. Rewrite using `[← Matrix.mul_smul, compl_smul_mapE, Matrix.mul_zero]`. Establish `h3 : mapE F E w Y * J' = mapE F E w (Y * Jw)`. Rewrite using `[← eps_smul_mapE F E w Y, Matrix.smul_mul, ← Matrix.mul_smul, hJ, mapE_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.add_mul, Matrix.mul_add, h3, Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_add, smul_smul, compl_idem _ (epsW_idem F E w), h2, compl_smul_mapE, ← mapE_mul, add_zero, zero_add, smul_zero]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem triple_lemma_2 (Y X Jw : Matrix n n (E ⊗[F] w.adicCompletion F))
     (J' : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hJ : epsW F E w • J' = mapE F E w Jw) :
@@ -309,7 +309,7 @@ private theorem triple_lemma_2 (Y X Jw : Matrix n n (E ⊗[F] w.adicCompletion F
     smul_add, smul_smul, compl_idem _ (epsW_idem F E w), h2, compl_smul_mapE, ← mapE_mul, add_zero, zero_add, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[← hJ, ← add_smul, sub_add_cancel, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem split_lemma_3 (Jw : Matrix n n (E ⊗[F] w.adicCompletion F))
     (J' : Matrix n n (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) (hJ : epsW F E w • J' = mapE F E w Jw) :
@@ -317,15 +317,15 @@ private theorem split_lemma_3 (Jw : Matrix n n (E ⊗[F] w.adicCompletion F))
   rw [← hJ, ← add_smul, sub_add_cancel, one_smul]
 
 /- English proof (translation)
-Establish `hX' : cT (sigR σE (w.adicCompletion F)) (X : Matrix n n (E ⊗[F] w.adicCompletion F)) * J.map (inclE (F` using `F) (w.adicCompletion F)) * (X : Matrix n n (E ⊗[F] w.adicCompletion F)) = J.map (inclE (F := F) (w.adicCompletion F)) := hX`. Use `show cT (sigR σE (FiniteAdeleRing (𝓞 F) F)) (sec F E w X : Matrix n n _) * J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F)) * (sec F E w X : Matrix n n _) = J.map (inclE (F := F) (FiniteAdeleRing (𝓞 F) F))`. Establish `hσ : sigR σE (FiniteAdeleRing (𝓞 F) F) (epsW F E w) = epsW F E w`. Rewrite using `[epsW, sig_iE, map_one]`. Establish `hc : cT (sigR σE (FiniteAdeleRing (𝓞 F) F)) (sec F E w X : Matrix n n _) = (1 - epsW F E w) • 1 + mapE F E w (cT (sigR σE (w.adicCompletion F)) (X : Matrix n n _))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sec_val]`. Use extensionality with `a b`. Distinguish the cases in `hab : a = b`. Substitute `hab` using the available equality. Simplify using `[cT, mapE, hσ, sig_iE]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[cT, mapE, hσ, sig_iE, Matrix.one_apply_ne hab, Matrix.one_apply_ne (Ne.symm hab)]`. Establish `hJ : epsW F E w • J.map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) = mapE F E w (J.map (inclE (F := F) (w.adicCompletion F))) := by`. Use extensionality with `a b`. Simplify using `only [Matrix.smul_apply, Matrix.map_apply, smul_eq_mul, mapE, epsW_mul_incl]`. Establish `hmid : ∀ Y Z : Matrix n n (E ⊗[F] w.adicCompletion F), mapE F E w Y * J.map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) * mapE F E w Z = mapE F E w (Y * J.map (inclE (F := F) (w.adicCompletion F)) * Z) := by`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Y Z`. Rewrite using `[mapE_mul, mapE_mul, ← hJ, Matrix.mul_smul, ← Matrix.smul_mul, eps_smul_mapE]`. Rewrite using `[hc, sec_val]`. Rewrite using `[Matrix.add_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_add, hmid, hX', ← hJ]`. Simplify using `only [Matrix.smul_mul, Matrix.mul_smul, Matrix.one_mul, Matrix.mul_one, smul_smul, compl_idem _ (epsW_idem F E w)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : (1 - epsW F E w) • (J.map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F)) * mapE F E w (X : Matrix n n _)) = 0 := by`. Rewrite using `[← Matrix.mul_smul, compl_smul_mapE, Matrix.mul_zero]`. Establish `h2 : (1 - epsW F E w) • (mapE F E w (cT (sigR σE (w.adicCompletion F)) (X : Matrix n n _)) * J.map (inclE (F` using `F) (FiniteAdeleRing (𝓞 F) F))) = 0 := by`. Rewrite using `[← Matrix.smul_mul, compl_smul_mapE, Matrix.zero_mul]`. Rewrite using `[h1, h2, add_zero, zero_add, ← add_smul, sub_add_cancel, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_mem_UPts (σE : E →ₐ[F] E) (J : Matrix n n E) {X : GL n (E ⊗[F] w.adicCompletion F)}
     (hX : X ∈ UPts σE J (w.adicCompletion F)) : sec F E w X ∈ UPts σE J (FiniteAdeleRing (𝓞 F) F) := by

@@ -51,7 +51,7 @@ section Zero
 variable {k r : ℕ}
 
 /- English proof (translation)
-Conclude with `⟨⊥, inferInstance, Submodule.zero_mem _, fun g _ x hx => by`. Rewrite `hx` using `[Submodule.mem_bot]`. Simplify using `[hx]⟩`.
+Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem isKFinHpk_zero (L : LocBessel k r) : IsKFinHpk (k := k) (r := r) L.σ (0 : L.Hs) := by
   exact ⟨⊥, inferInstance, Submodule.zero_mem _, fun g _ x hx => by
@@ -59,13 +59,13 @@ theorem isKFinHpk_zero (L : LocBessel k r) : IsKFinHpk (k := k) (r := r) L.σ (0
     simp [hx]⟩
 
 /- English proof (translation)
-Simplify using `[LocBessel.J, Formalism.QuantumDeterminants.besselJ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem J_zero (L : LocBessel k r) (g : Mx k r) : L.J (fun _ => 0) g = 0 := by
   simp [LocBessel.J, Formalism.QuantumDeterminants.besselJ]
 
 /- English proof (translation)
-Simplify using `[OrbInt, besselIntg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem orbInt_zero (L : LocBessel k r) (g : Mx k r) (ν : Measure (PairSp k r)) :
     OrbInt L (fun _ => 0) g ν = 0 := by
@@ -74,13 +74,13 @@ theorem orbInt_zero (L : LocBessel k r) (g : Mx k r) (ν : Measure (PairSp k r))
 end Zero
 
 /- English proof (translation)
-Introduce `L f κ₀ κ τ hκ₀ hκ hτ hc hN hN' hε hgap hf`. Take `⟨Φ, Ψ, Λ₀, Λ, h1, h2, h3⟩` from `h L κ₀ hκ₀ hc hN hN' hε hgap`. Take `⟨P, Q, hQ, hP, hfPQ⟩` from `hf`. Establish `hfeq : f = coefH L P Q` using `funext fun g => hfPQ g`. Substitute `hfeq` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Establish `hPQ : IsKFinPair L P Q` using `⟨hQ, hP⟩`. Distinguish the cases in `h0 : Λ₀ P Q = 0`. Use `⟨fun _ => 0, 1, one_ne_zero, ⟨0, 0, fun w => by simpa using isKFinHpk_zero L, fun x => by simpa using isKFinHpk_zero L, fun g => by simp⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `c μ hc0 hμ show L.J (fun _ => 0) _ = _`. Rewrite using `[(h1 P Q hPQ).1 c μ hc0 hμ, h0, J_zero]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `γ g μR ν hG hrep hst hroot hq show OrbInt L (fun _ => 0) g ν = _`. Rewrite using `[(h1 P Q hPQ).2 γ g μR ν hG hrep hst hroot hq, h0, orbInt_zero]`. Simplify using the standard rewrite rules. Take `⟨P₁, Q₁, hPQ₁, hΛ⟩` from `h3 κ τ hκ hτ P Q hPQ h0`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `⟨coefH L P₁ Q₁, Λ P₁ Q₁ κ τ / Λ₀ P Q, div_ne_zero hΛ h0, ⟨P₁, Q₁, hPQ₁.1, hPQ₁.2, fun g => rfl⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `c μ hc0 hμ`. Rewrite using `[(h2 P₁ Q₁ κ τ hκ hτ hPQ₁).1 c μ hc0 hμ, (h1 P Q hPQ).1 c μ hc0 hμ, smul_smul, div_mul_cancel₀ _ h0]`. Introduce `γ g μR ν hG hrep hst hroot hq`. Rewrite using `[(h2 P₁ Q₁ κ τ hκ hτ hPQ₁).2 γ g μR ν hG hrep hst hroot hq, (h1 P Q hPQ).2 γ g μR ν hG hrep hst hroot hq, smul_smul, div_mul_cancel₀ _ h0]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem oneBesselTor_of_rankOne (D : D7) (Cgf : ℝ) (h : RankOneTor D Cgf) : OneBesselTor D Cgf := by
   intro L f κ₀ κ τ hκ₀ hκ hτ hc hN hN' hε hgap hf

@@ -5,35 +5,35 @@ import Formalism.LocalToGlobal.TorsionIntegrality.GaussSumParity.KummerThetaLoga
 namespace Formalism.L2.Th1.D
 
 /- English proof (translation)
-The claim follows from `ring_a_facts`.
+A detailed English derivation is pending.
 -/
 theorem ringAFacts : RingAFacts := ring_a_facts
 /- English proof (translation)
-The claim follows from `KurIntegers_of ringAFacts`.
+A detailed English derivation is pending.
 -/
 theorem kurIntegers : KurIntegers := KurIntegers_of ringAFacts
 /- English proof (translation)
-The claim follows from `KurUnram_of kurIntegers`.
+A detailed English derivation is pending.
 -/
 theorem kurUnram : KurUnram := KurUnram_of kurIntegers
 /- English proof (translation)
-The claim follows from `unramified_completion_roots`.
+A detailed English derivation is pending.
 -/
 theorem kurRoots : KurRoots := unramified_completion_roots
 /- English proof (translation)
-The claim follows from `unramified_completion_complete`.
+A detailed English derivation is pending.
 -/
 theorem kurComplete : KurComplete := unramified_completion_complete
 /- English proof (translation)
-The claim follows from `FrobAIsom_of ringAFacts`.
+A detailed English derivation is pending.
 -/
 theorem frobAIsom : FrobAIsom := FrobAIsom_of ringAFacts
 /- English proof (translation)
-The claim follows from `KurFrob_of frobA frobAIsom kurIntegers kurUnram`.
+A detailed English derivation is pending.
 -/
 theorem kurFrob : KurFrob := KurFrob_of frobA frobAIsom kurIntegers kurUnram
 /- English proof (translation)
-The claim follows from `f_of_beta_hypotheses`.
+A detailed English derivation is pending.
 -/
 theorem fOfBetaHyp : FOfBetaHyp := f_of_beta_hypotheses
 

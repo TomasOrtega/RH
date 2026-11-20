@@ -11,19 +11,19 @@ open Formalism.BasicNotions Classical NumberField
 variable {D : D7} {u : D.what₂.Word}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h, hI⟩ x hx`. Conclude with `⟨_, hI x hx, X.fm.PtL_spec h x⟩`. Introduce `H`. Establish `hR : X.fm.PRat`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `hx : x ∈ Submodule.span D.what₂.LL ((X.fm.lat D.R.m).L : Set (X.fm.lat D.R.m).V)`. Rewrite using `[(X.fm.lat_good D.R.m).2.2]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction.
 
-Consider the case `mem x hx => obtain ⟨y, -, hy⟩ := H x hx`. Conclude with `⟨y, hy⟩`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add a b _ _ ha hb`. Take `⟨y, hy⟩` from `ha`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz⟩` from `hb`. Conclude with `⟨y + z, by simp [hy, hz]⟩`. Consider the case `smul c a _ ha`. Take `⟨y, hy⟩` from `ha`. Conclude with `⟨c • y, by simp only [LinearMap.map_smulₛₗ, hy, RingHom.id_apply]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨fun φ hφ => ?_, hR, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite `hφ` using `[← (X.fm.emb_basis D.R.m).2]`. Use `(Submodule.span_le (p := X.fm.ptC.comap (Pt X))).2 ?_ hφ` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Take `⟨y, hy⟩` from `hR ((X.fm.lat D.R.m).b a)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Use `show Pt X _ ∈ X.fm.ptC`. Establish `: Pt X (X.fm.emb D.R.m ((X.fm.lat D.R.m).b a)) = X.fm.ptEmb y` using `hy.symm`. Rewrite using `[this, ← X.fm.ptEmb_basis.2, ← X.fm.ptLat.b.sum_repr y, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Take `⟨y, hy, e⟩` from `H x hx`. Establish `: X.fm.PtL hR x = y` using `X.fm.ptEmb_inj ((X.fm.PtL_spec hR x).trans e.symm)`. Rewrite using `[this]`. Conclude with `hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptInt_iff (X : Ch D u) : PtInt X ↔
     ∀ x ∈ (X.fm.lat D.R.m).L, ∃ y ∈ X.fm.ptLat.L, X.fm.ptEmb y = Pt X (X.fm.emb D.R.m x) := by

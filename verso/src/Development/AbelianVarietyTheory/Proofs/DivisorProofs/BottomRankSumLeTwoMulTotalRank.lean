@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.SqTop.BotSmallProof
 
 /- English proof (translation)
-Establish `hmax : (Ideal.span {((ℓ : ℕ) : ℤ)} : Ideal ℤ).IsMaximal` using `PrincipalIdealRing.isMaximal_of_irreducible (Nat.prime_iff_prime_int.mp hℓ).irreducible`. Use `haveI hl : v.asIdeal.LiesOver (Ideal.span {((ℓ : ℕ) : ℤ)}) := by`. Use `⟨hmax.eq_of_le ?_ ?_⟩` and prove the remaining obligations. Conclude with `(v.isPrime.comap (algebraMap ℤ (𝓞 K))).ne_top`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff] show algebraMap ℤ (𝓞 K) ((ℓ : ℕ) : ℤ) ∈ v.asIdeal`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[map_natCast]`. Conclude with `hv`. Rewrite `h` using `[Ideal.absNorm_eq_pow_inertiaDeg' v.asIdeal hℓ]`. Conclude with `(Nat.prime_dvd_prime_iff_eq hp hℓ).1 (hp.dvd_of_dvd_pow h)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_dvd_absNorm {K : Type} [Field K] [NumberField K] (v : HeightOneSpectrum (𝓞 K)) {ℓ p : ℕ}
     (hℓ : ℓ.Prime) (hp : p.Prime) (hv : ((ℓ : ℕ) : 𝓞 K) ∈ v.asIdeal) (h : p ∣ Ideal.absNorm v.asIdeal) : p = ℓ := by
@@ -32,7 +32,7 @@ theorem eq_of_dvd_absNorm {K : Type} [Field K] [NumberField K] (v : HeightOneSpe
   exact (Nat.prime_dvd_prime_iff_eq hp hℓ).1 (hp.dvd_of_dvd_pow h)
 
 /- English proof (translation)
-Use `right`. Unfold `Formalism.BasicNotions.Host.cls primeClass at h`. Apply the tactic sequence `split_ifs at h with h1 h2 h3 h4 <;> first | exact h4 | cases h`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem splitIn_of_cls {D : D7} {p : ℕ} (h : D.host.cls p = .splitK) : SplitIn D p := by
   right
@@ -40,13 +40,11 @@ theorem splitIn_of_cls {D : D7} {p : ℕ} (h : D.host.cls p = .splitK) : SplitIn
   split_ifs at h with h1 h2 h3 h4 <;> first | exact h4 | cases h
 
 /- English proof (translation)
-Use `⟨?_, fun p hp hdvd => ?_⟩` and prove the remaining obligations. Unfold `levQ`. Conclude with `Finset.prod_pos fun v _ => pow_pos (Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)) _`. Unfold `levQ at hdvd`. Take `⟨v, hv, hd⟩` from `(Prime.dvd_finsetProd_iff hp.prime _).1 hdvd`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hd'` using `hp.dvd_of_dvd_pow hd`. Break down `P.mem_S0_of_sum_eq.1 hv with rfl | h1` into its components or cases. Rewrite using `[eq_of_dvd_absNorm _ (leastSplitAuxiliaryPrimeThetaChain_spec D).1 hp P.basePlace_over_qZero hd']`. Conclude with `Or.inr (Formalism.L2.Host.split_prime_jacobi_neg_d D)`. Break down `(S1_mem_OmF D).1 h1 with h | h | h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Prove the second alternative. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_of_dvd_absNorm _ (D.host.g_prime 0) hp h hd']`. Conclude with `splitIn_of_cls (hsplit _ (D.host.g_level 0))`. Rewrite using `[eq_of_dvd_absNorm _ (D.host.g_prime 1) hp h hd']`. Conclude with `splitIn_of_cls (hsplit _ (D.host.g_level 1))`. Rewrite using `[eq_of_dvd_absNorm _ D.host.pde_prime hp h hd']`.
-
-Conclude with `splitIn_of_cls (hsplit _ D.host.pde_level.1)`. Rewrite using `[eq_of_dvd_absNorm _ D.host.pde'_prime hp h hd']`. Conclude with `splitIn_of_cls (hsplit _ D.host.pde_level.2)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodLevel {D : D7} {T : Type} {L : LevCh D T} (P : Places L)
     (hsplit : ∀ p ∈ D.host.levelPrimes, D.host.cls p = .splitK) : GoodLevel D (levQ P) := by
@@ -70,9 +68,9 @@ theorem goodLevel {D : D7} {T : Type} {L : LevCh D T} (P : Places L)
         exact splitIn_of_cls (hsplit _ D.host.pde_level.2)
 
 /- English proof (translation)
-Establish `hQ : L.Q μ₀ = ∅`. Use extensionality with `PP`. Simplify using `only [Finset.notMem_empty, iff_false]`. Introduce `h`. Use `((hL.Q_ram μ₀ PP).2 (Or.inl h)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hL.xi_base]`. Introduce `x _`. Both sides reduce to the same expression. Use extensionality with `w`. Simplify using `[twPl, locPl, hQ]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem twPl_base {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc) {μ₀ : T} (hL : L.Is μ₀) :
     twPl G μ₀ = ∅ := by
@@ -88,9 +86,9 @@ theorem twPl_base {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridDat
   simp [twPl, locPl, hQ]
 
 /- English proof (translation)
-Introduce `k`. Establish `e : nuH G t i j = nuH G μ₀ i j * L.xiH t`. Simplify using `only [nuH, hL.xi_base, mul_one]`. Conclude with `mul_div_right_comm _ _ _`. Take `⟨n, hn, ho⟩` from `hL.xi_fin t`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, mul_inv, HChar.inf_mul, Units.val_mul, HChar.inf_inv (L.xiH t), Formalism.L2.Host.HChar.inf_eq_one_of_order hn ho k, inv_one, Units.val_one, mul_one]`. Conclude with `nuH_inv_hasInf hL G i j k`.
+A detailed English derivation is pending.
 -/
 theorem nuH_inv_hasInf_all {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc)
     (t : T) (i j : Fin D.R.m) : (nuH G t i j)⁻¹.HasInf (Formalism.L2.Host.embTau D)
@@ -104,7 +102,7 @@ theorem nuH_inv_hasInf_all {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ
   exact nuH_inv_hasInf hL G i j k
 
 /- English proof (translation)
-Establish `hm` using `D.R.two_le_m`. Establish `e1 : j * D.R.t ≤ D.R.m * D.R.t` using `Nat.mul_le_mul_right _ hj`. Establish `e2 : i * sLen D ≤ D.R.m * sLen D` using `Nat.mul_le_mul_right _ hi`. Establish `e3 : D.R.m * (D.R.t + sLen D + 1) = D.R.m * D.R.t + D.R.m * sLen D + D.R.m` using `by ring`. Simplify using `only [rankV, bigN, Ranks.r]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -117,7 +115,7 @@ theorem rankV_lt {D : D7} {i j : ℕ} (hi : i ≤ D.R.m) (hj : j ≤ D.R.m) : ra
   omega
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `ranks_exact D i j`. Establish `a1` using `rankV_lt (D := D) (i := i + 1) (j := j + 1) (by omega) (by omega)`. Establish `a2` using `rankV_lt (D := D) (i := i) (j := j) (by omega) (by omega)`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem bottomRank_sum_le_two_mul_totalRank (D : D7) (i j : Fin D.R.m) : botBig D i j + botSmall D i j ≤ 2 * bigN D := by
   obtain ⟨h1, h2, -⟩ := ranks_exact D i j
@@ -126,7 +124,7 @@ theorem bottomRank_sum_le_two_mul_totalRank (D : D7) (i j : Fin D.R.m) : botBig 
   omega
 
 /- English proof (translation)
-Unfold `maxWt`. Use `le_max_of_le_right ?_` and prove the remaining obligations. Use `Finset.le_sup (f := fun x : Fin D.R.m × Fin D.R.m × D.what₂.Tau => max (wtA D C x.1 x.2.1 x.2.2).natAbs (wtA' D C x.1 x.2.1 x.2.2).natAbs) (Finset.mem_univ (i, j, τ))` as an intermediate fact. Conclude with `this`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem natAbs_le_maxWt (D : D7) (C : ℝ) (i j : Fin D.R.m) (τ : D.what₂.Tau) :
     max (wtA D C i j τ).natAbs (wtA' D C i j τ).natAbs ≤ maxWt D C := by
@@ -137,7 +135,7 @@ theorem natAbs_le_maxWt (D : D7) (C : ℝ) (i j : Fin D.R.m) (τ : D.what₂.Tau
   exact this
 
 /- English proof (translation)
-Establish `l1` using `le_abs_self A`. Establish `l2` using `neg_abs_le A`. Establish `l3` using `le_abs_self A'`. Establish `l4` using `neg_abs_le A'`. Apply the tactic sequence `rcases hε with rfl | rfl <;> rcases hc with rfl | rfl <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem n_le_arith {n d ε c e A A' : ℤ} (hd : 0 ≤ d) (hε : ε = 1 ∨ ε = -1) (hc : c = e ∨ c = -e)
     (hw : 2 * n = ε * c - d) (hA : 2 * (A - A') = e - d) : n ≤ |A| + |A'| := by
@@ -148,11 +146,11 @@ theorem n_le_arith {n d ε c e A A' : ℤ} (hd : 0 ≤ d) (hε : ε = 1 ∨ ε =
   rcases hε with rfl | rfl <;> rcases hc with rfl | rfl <;> omega
 
 /- English proof (translation)
-Use `⟨hd ▸ bottomRank_sum_le_two_mul_totalRank D i j, fun τ => ?_⟩` and prove the remaining obligations. Establish `habs` using `GlobalTheory.SplitWeight.abs_weight_eq_abs_infType X.W.chV' X.W.ep' _ _ X.W.ep_pm.2 hc.2 (nuH_inv_hasInf_all hL G t i j) τ`. Establish `hw : 2 * (X.n τ : ℤ) = X.W.ep' * X.W.chV'.n τ - ((botBig D i j + botSmall D i j : ℕ) : ℤ)`. Rewrite using `[← hd]`. Conclude with `X.wt τ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hn` using `n_le_arith (Nat.cast_nonneg _) X.W.ep_pm.2 (abs_eq_abs.1 habs) hw (two_mul_wtA_sub D sc.cGap i j τ)`. Establish `hB` using `natAbs_le_maxWt D sc.cGap i j τ`. Establish `hB1` using `(le_max_left _ _).trans hB`. Establish `hB2` using `(le_max_right _ _).trans hB`. Establish `c1 : ((wtA D sc.cGap i j τ).natAbs : ℤ) = |wtA D sc.cGap i j τ|` using `Int.natCast_natAbs _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `c2 : ((wtA' D sc.cGap i j τ).natAbs : ℤ) = |wtA' D sc.cGap i j τ|` using `Int.natCast_natAbs _`. Establish `hB1' : ((wtA D sc.cGap i j τ).natAbs : ℤ) ≤ maxWt D sc.cGap` using `by exact_mod_cast hB1`. Establish `hB2' : ((wtA' D sc.cGap i j τ).natAbs : ℤ) ≤ maxWt D sc.cGap` using `by exact_mod_cast hB2`. Establish `n_le : (X.n τ : ℤ) ≤ 2 * maxWt D sc.cGap` using `by linarith`. Conclude with `n_le` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem small_of {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T} (hL : L.Is μ₀) (G : GridData L sc)
     (t : T) (i j : Fin D.R.m) {δ t0 : ℂ} {Q : ℕ} (X : Pair D ⊤ δ t0 Q) (hd : X.d = botBig D i j + botSmall D i j)
@@ -174,9 +172,7 @@ theorem small_of {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {μ₀ : T} (
   exact_mod_cast n_le
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ hR T Lc μ₀ hL G => ⟨?_, ?_, ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨⟨Pm, -, -⟩, -⟩` from `hR.size`. Conclude with `goodLevel G.pl Pm.level_split`. Conclude with `twPl_base G hL`. Introduce `δ t0 Q P P' t i j 𝔪 h`.
-
-Conclude with `⟨small_of hL G t i j P h.rank.2.2.1 h.chars, small_of hL G t i j P' (h.rank.2.2.2.trans h.rank.2.2.1) h.chars'⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem botSmall_holds : BotSmall := by
   refine ⟨0, fun ε CF _ => ⟨0, 0, fun C _ D large₂ _ _ hR T Lc μ₀ hL G => ⟨?_, ?_, ?_⟩⟩⟩

@@ -6,9 +6,9 @@ open NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F _ _ v ϖ h`. Apply `NNReal.eq` to reduce the goal to its premises. Rewrite using `[coe_nnnorm, FinitePlace.norm_def]`. Unfold `Formalism.UG.IsUnifV at h`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hne : ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ)) ≠ 0` using `WithZero.coe_ne_zero`. Rewrite using `[WithZeroMulInt.toNNReal_neg_apply _ hne]`. Simplify using `only [WithZero.unzero_coe, toAdd_ofAdd, zpow_neg, zpow_one, NNReal.coe_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem norm_uniformiser_eq_inv_absNorm :
     ∀ (F : Type) [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F)) (ϖ : v.adicCompletion F),

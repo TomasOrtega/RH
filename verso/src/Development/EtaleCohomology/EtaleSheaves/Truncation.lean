@@ -17,7 +17,7 @@ def comp (K : CochainComplex C ℤ) (a : ℤ) {k : ℕ} {i : ℤ} (hk : (eG a).f
   ((K.restriction (eG a)).extendXIso (eG a) hk).hom ≫ (K.restrictionXIso (eG a) hk).hom
 
 /- English proof (translation)
-Take `rfl : k = k'` from `(eG a).injective_f (hk.trans hk'.symm)`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem comp_indep (K : CochainComplex C ℤ) (a : ℤ) {k k' : ℕ} {i : ℤ} (hk : (eG a).f k = i)
     (hk' : (eG a).f k' = i) : comp K a hk = comp K a hk' := by
@@ -25,7 +25,7 @@ theorem comp_indep (K : CochainComplex C ℤ) (a : ℤ) {k k' : ℕ} {i : ℤ} (
   rfl
 
 /- English proof (translation)
-Rewrite using `[HomologicalComplex.extend_d_eq _ _ hi hj, HomologicalComplex.restriction_d_eq _ _ hi hj]`. Simplify using `only [comp, Category.assoc, Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem sq (K : CochainComplex C ℤ) (a : ℤ) {k : ℕ} {i j : ℤ} (hi : (eG a).f k = i) (hj : (eG a).f (k + 1) = j) :
     comp K a hi ≫ K.d i j = (sT K a).d i j ≫ comp K a hj := by
@@ -33,19 +33,19 @@ theorem sq (K : CochainComplex C ℤ) (a : ℤ) {k : ℕ} {i j : ℤ} (hi : (eG 
   simp only [comp, Category.assoc, Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `a + (k : ℤ) = i at hk`. Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 -/
 theorem le_of_f {a : ℤ} {k : ℕ} {i : ℤ} (hk : (eG a).f k = i) : a ≤ i := by
   change a + (k : ℤ) = i at hk; omega
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `a + ((i - a).toNat : ℤ) = i`. Use linear arithmetic over natural numbers and integers.
+Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 -/
 theorem f_toNat {a i : ℤ} (h : a ≤ i) : (eG a).f (i - a).toNat = i := by
   change a + ((i - a).toNat : ℤ) = i; omega
 
 /- English proof (translation)
-The claim follows from `HomologicalComplex.isZero_extend_X _ _ i (fun _ hk => by have := le_of_f hk; omega)`.
+A detailed English derivation is pending.
 -/
 theorem zero_below (K : CochainComplex C ℤ) {a i : ℤ} (h : i < a) : IsZero ((sT K a).X i) :=
   HomologicalComplex.isZero_extend_X _ _ i (fun _ hk => by have := le_of_f hk; omega)
@@ -64,7 +64,7 @@ def ιT (K : CochainComplex C ℤ) (a : ℤ) : sT K a ⟶ K where
     · exact (zero_below K (by omega)).eq_of_src _ _
 
 /- English proof (translation)
-Simplify using `only [ιT]`. Rewrite using `[dif_pos (le_of_f hk)]`. Apply `comp_indep` to reduce the goal to its premises.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem ιT_f (K : CochainComplex C ℤ) (a : ℤ) {k : ℕ} {i : ℤ} (hk : (eG a).f k = i) :
     (ιT K a).f i = comp K a hk := by
@@ -76,7 +76,7 @@ instance (K : CochainComplex C ℤ) (a : ℤ) {k : ℕ} {i : ℤ} (hk : (eG a).f
   dsimp only [comp]; infer_instance
 
 /- English proof (translation)
-Rewrite using `[ιT_f K a (f_toNat h)]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIso_ιT (K : CochainComplex C ℤ) {a i : ℤ} (h : a ≤ i) : IsIso ((ιT K a).f i) := by
   rw [ιT_f K a (f_toNat h)]; infer_instance
@@ -85,9 +85,9 @@ def sTMap {K L : CochainComplex C ℤ} (f : K ⟶ L) (a : ℤ) : sT K a ⟶ sT L
   HomologicalComplex.extendMap (HomologicalComplex.restrictionMap f (eG a)) (eG a)
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `only [HomologicalComplex.comp_f]`. Distinguish the cases in `h : a ≤ i`. Establish `hk` using `f_toNat h`. Rewrite using `[ιT_f K a hk, ιT_f L a hk]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sTMap, HomologicalComplex.extendMap_f _ _ hk, HomologicalComplex.restrictionMap_f' _ _ hk]`. Simplify using `only [comp, Category.assoc, Iso.inv_hom_id_assoc, Iso.inv_hom_id, Category.comp_id]`. Conclude with `(zero_below K (by omega)).eq_of_src _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ιT_nat {K L : CochainComplex C ℤ} (f : K ⟶ L) (a : ℤ) : sTMap f a ≫ ιT L a = ιT K a ≫ f := by
   ext i
@@ -109,9 +109,9 @@ def TruncData' : Prop := ∀ (R : Type) [CommRing R] {K L : Cx R} (f : K ⟶ L) 
     (∀ p : ℤ, p < -(n + 1) → IsZero (K'.X p) ∧ IsZero (L'.X p))
 
 /- English proof (translation)
-Introduce `R _ K L f n hz`. Use `⟨(n + 1).toNat, sT K (-(n + 1)), sT L (-(n + 1)), sTMap f _, ιT K _, ιT L _, fun i hi => ?_, ιT_nat f _, fun p hp => ⟨isIso_ιT K hp, isIso_ιT L hp⟩, fun p hp => ⟨zero_below K hp, zero_below L hp⟩⟩` and prove the remaining obligations. Distinguish the cases in `h : -(n + 1) ≤ i`. Establish `hi' : 0 < i` using `by omega`. Use `isIso_ιT K h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isIso_ιT L h` as an intermediate fact. Conclude with `⟨(hz i hi').1.of_iso (asIso ((ιT K _).f i)), (hz i hi').2.of_iso (asIso ((ιT L _).f i))⟩`. Conclude with `⟨zero_below K (by omega), zero_below L (by omega)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem truncData' : TruncData' := by
   intro R _ K L f n hz
@@ -127,9 +127,9 @@ theorem truncData' : TruncData' := by
 variable (R : Type) [CommRing R] (F : Shv R)
 
 /- English proof (translation)
-Establish `key : ∀ (m : ℤ) (z : HK R L F m), HK.pull R f' F m (HK.pull R h F m z) = HK.pull R g F m (HK.pull R f F m z)`. Introduce `m z`. Rewrite using `[← LateralTheory.E.TruncPf.pull_comp, ← LateralTheory.E.TruncPf.pull_comp, w]`. Use `⟨fun m hm y => ?_, fun x1 x2 hx => ?_⟩` and prove the remaining obligations. Take `⟨z', hz'⟩` from `hf'.1 m hm (HK.pull R g F m y)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨z, rfl⟩` from `(hh m (by omega)).2 z'`. Conclude with `⟨z, (hg m (by omega)).1 ((key m z).symm.trans hz')⟩`. Apply `(hh n le_rfl).1` to reduce the goal to its premises. Apply `hf'.2` to reduce the goal to its premises. Rewrite using `[key, key, hx]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem relK_of_square' {K L K' L' : Cx R} (f : K ⟶ L) (f' : K' ⟶ L') (g : K' ⟶ K) (h : L' ⟶ L)
     (w : f' ≫ h = g ≫ f) (n : ℤ)
@@ -149,11 +149,11 @@ theorem relK_of_square' {K L K' L' : Cx R} (f : K ⟶ L) (f' : K' ⟶ L') (g : K
     rw [key, key, hx]
 
 /- English proof (translation)
-Introduce `R _ F K L f n hz`. Take `⟨P, K', L', f', g, h, hb, w, hiso, hzero⟩` from `truncData' R f n hz`. Use `⟨P, K', L', f', hb, fun hp p => ?_, relK_of_square' R F f f' g h w n (hB R F g n fun q hq => (hiso q hq).1) (hB R F h n fun q hq => (hiso q hq).2)⟩` and prove the remaining obligations. Distinguish the cases in `hq : -(n + 1) ≤ -(p : ℤ)`. Use `(hiso _ hq).1` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `(hiso _ hq).2` as an intermediate fact. Use `relK_of_square R F (pieceC R f' p) (pieceC R f p) ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) (-(p : ℤ))).map (g.f _)) ((HomologicalComplex.single (Shv R) (ComplexShape.up ℤ) (-(p : ℤ))).map (h.f _)) ?_ n (fun m _ => pull_bij_of_iso R F _ m) (fun m _ => pull_bij_of_is …` and prove the remaining obligations. Simplify using `only [pieceC, ← Functor.map_comp]`. Use `congr 1`. Use `congrArg (fun φ => HomologicalComplex.Hom.f φ (-(p : ℤ))) w` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Simplify using `only [HomologicalComplex.comp_f] at this`. Conclude with `this.symm`. Conclude with `relK_of_isZero R F _ n (Functor.map_isZero _ (hzero _ (by omega)).1) (Functor.map_isZero _ (hzero _ (by omega)).2)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Trunc_of (hB : TruncBij) : LateralTheory.E.FiltPf.Trunc := by
   intro R _ F K L f n hz

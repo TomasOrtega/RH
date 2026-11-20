@@ -13,31 +13,29 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CharFin
 
 /- English proof (translation)
-Establish `hV : χ ⁻¹' Circle.centeredArc (Real.pi / 2) ∈ 𝓝 (1 : Rˣ)`. Use `((Circle.isOpen_centeredArc _).preimage hχ).mem_nhds ?_` and prove the remaining obligations. Rewrite using `[Set.mem_preimage, map_one, Circle.mem_centeredArc (by linarith [Real.pi_pos])]`. Simplify using `[Real.pi_pos]`. Rewrite `hV` using `[Units.isInducing_embedProduct.nhds_eq_comap, Filter.mem_comap]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨T, hT, hTV⟩` from `hV`. Take `⟨T1, hT1, T2, hT2, hTT⟩` from `mem_nhds_prod_iff.1 hT`. Set `f : B → R` to `fun b => s (1, 1 + b)`. Establish `hf : Continuous f` using `hs.comp (continuous_const.prodMk (continuous_const.add continuous_id))`. Establish `hf0 : f 0 = 1` using `by simpa [f] using hsz 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : f ⁻¹' T1 ∈ 𝓝 (0 : B)` using `hf.continuousAt.preimage_mem_nhds (by rw [hf0]; exact hT1)`. Establish `h2 : (fun b => MulOpposite.op (f b)) ⁻¹' T2 ∈ 𝓝 (0 : B)` using `(MulOpposite.continuous_op.comp hf).continuousAt.preimage_mem_nhds (by rw [Function.comp_apply, hf0]; exact hT2)`. Take `⟨N, hN, hNW⟩` from `hsmall _ (Filter.inter_mem h1 h2)`. Establish `hpinv : ∀ x : Rˣ, p x = 1 → p (x⁻¹ : Rˣ) = 1` using `fun x hx => by`. Use `congrArg p x.mul_inv` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_mul, hx, one_mul, map_one]`. Then use the resulting hypothesis. Set `G : Subgroup Rˣ` to `{ carrier := {x | p x = 1 ∧ q x ∈ S ∧ q (x⁻¹ : Rˣ) ∈ S} one_mem' := by simp mul_mem' := fun {x y} hx hy => by`. Use `⟨by simp [hx.1, hy.1], ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, map_mul]`. Conclude with `mul_mem hx.2.1 hy.2.1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_inv, Units.val_mul, map_mul]`. Conclude with `mul_mem hx.2.2 hy.2.2`. Use the proof step `inv_mem' := fun {x} hx => ⟨hpinv x hx.1, hx.2.2, by simpa using hx.2.1⟩ }`. Set `ψ : G →* S` to `{ toFun := fun x => ⟨q (x : Rˣ), x.2.2.1⟩ map_one' := by ext; simp map_mul' := fun x y => by ext; simp }`. Set `φ : G →* (S ⧸ Ideal.span {(N : S)})ˣ` to `((Ideal.Quotient.mk (Ideal.span {(N : S)})).toMonoidHom.comp ψ).toHomUnits`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hφ : ∀ x : G, φ x = 1 ↔ ∃ y ∈ S, q (x : Rˣ) - 1 = N • y`. Introduce `x`. Establish `: φ x = 1 ↔ Ideal.Quotient.mk (Ideal.span {(N : S)}) (ψ x) = Ideal.Quotient.mk _ 1`. Rewrite using `[Units.ext_iff]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[this, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Conclude with `⟨y, y.2, by simpa [ψ] using congrArg Subtype.val hy⟩`. Introduce and unpack `⟨y, hy, h⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨y, hy⟩, Subtype.ext (by simpa [ψ] using h)⟩`. Establish `hfx : ∀ x : G, φ x = 1 → ∃ y ∈ S, ((x : Rˣ) : R) = f (N • y)`. Introduce `x hx`. Take `⟨y, hy, h⟩` from `(hφ x).1 hx`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `hsz (x : Rˣ)` as an intermediate fact. Rewrite `this` using `[x.2.1]`. Simplify using `only [f, ← h, add_sub_cancel, this]`. Establish `harc : ∀ x : G, φ x = 1 → χ x ∈ Circle.centeredArc (Real.pi / 2)`. Introduce `x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy, h⟩` from `hfx x hx`. Take `⟨y', hy', h'⟩` from `hfx x⁻¹ (by rw [map_inv, hx, inv_one])`. Use `hTV (hTT ⟨?_, ?_⟩)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((x : Rˣ) : R) ∈ T1`. Rewrite using `[h]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(hNW y hy).1`. Express the relevant statement in the definitionally equal form `MulOpposite.op (((x⁻¹ : G) : Rˣ) : R) ∈ T2`. Rewrite using `[h']`. Conclude with `(hNW y' hy').2`. Establish `hker : ∀ x : G, φ x = 1 → χ x = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x hx`. Use `Circle.eq_one_of_forall_pow_mem_centeredArc_pi_div_two fun n _ => ?_` and prove the remaining obligations. Use `harc (x ^ n) (by rw [map_pow, hx, one_pow])` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_pow, map_pow]`. Then use the resulting hypothesis. Use `haveI := hfin N hN`.
-
-Use `⟨N, hN, fun x hx h => hker ⟨x, hx⟩ ((hφ _).2 h), Nat.card (S ⧸ Ideal.span {(N : S)})ˣ, Nat.card_pos, fun x hx => ?_⟩` and prove the remaining obligations. Use `hker ((⟨x, hx⟩ : G) ^ Nat.card (S ⧸ Ideal.span {(N : S)})ˣ) (by rw [map_pow, pow_card_eq_one'])` as an intermediate fact. Rewrite `this` using `[Subgroup.coe_pow, map_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem finite_order_of_small {R A B : Type} [CommRing R] [CommRing A] [CommRing B]
     [TopologicalSpace R] [TopologicalSpace A] [TopologicalSpace B] [ContinuousAdd B]
@@ -131,19 +129,19 @@ noncomputable def hatRing : Subring (RA F E) where
     (by rintro _ ⟨x, rfl⟩ _ ⟨y, rfl⟩; exact ⟨x * y, map_mul _ _ _⟩) hx hy
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_hatRing (z : RA F E) :
     z ∈ hatRing F E ↔ z ∈ hat1 F (Set.range (algebraMap (𝓞 E) E)) := Iff.rfl
 
 /- English proof (translation)
-Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz`. Take `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩` from `hz`. Take `⟨r, b, hb, rfl⟩` from `(strong_approximation_mod_nat F N hN).2 a ha`. Use `⟨algebraMap (𝓞 F) (𝓞 E) r * x, _, tmul_mem_adelicCompletion_of_integral F hb ⟨x, rfl⟩, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[TensorProduct.add_tmul, TensorProduct.smul_tmul', Algebra.algebraMap_eq_smul_one (r : F), TensorProduct.smul_tmul, Algebra.smul_def]`. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, 0, zero_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨x, u, hu, rfl⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨y, w, hw, rfl⟩` from `hy`. Use `⟨x + y, u + w, add_mem hu hw, ?_⟩` and prove the remaining obligations. Rewrite using `[show ((x + y : 𝓞 E) : E) = (x : E) + y from rfl, TensorProduct.tmul_add, smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `neg x _ hx`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Take `⟨x, u, hu, rfl⟩` from `hx`. Use `⟨-x, -u, neg_mem hu, ?_⟩` and prove the remaining obligations. Rewrite using `[show ((-x : 𝓞 E) : E) = -(x : E) from rfl, TensorProduct.tmul_neg, smul_neg]`. Normalize the expressions using the abelian group laws.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem exists_int_add_nsmul (N : ℕ) (hN : 0 < N) (z : RA F E)
     (hz : z ∈ hat1 F (Set.range (algebraMap (𝓞 E) E))) :
@@ -169,13 +167,11 @@ theorem exists_int_add_nsmul (N : ℕ) (hN : 0 < N) (z : RA F E)
     rw [show ((-x : 𝓞 E) : E) = -(x : E) from rfl, TensorProduct.tmul_neg, smul_neg]; abel
 
 /- English proof (translation)
-Set `ι : 𝓞 E →+* hatRing F E` to `((Algebra.TensorProduct.includeRight (R := F) (A := FiniteAdeleRing (𝓞 F) F) (B := E)).toRingHom.comp (algebraMap (𝓞 E) E)).codRestrict _ fun x => one_tmul_mem_adelicCompletionOfElementSet F ⟨x, rfl⟩`. Use `haveI : Finite (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)}) := Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hN.ne')`. Use `Finite.of_surjective (Ideal.quotientMap (I := Ideal.span {(N : 𝓞 E)}) (Ideal.span {(N : hatRing F E)}) ι ?_) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `ι N ∈ Ideal.span {(N : hatRing F E)}`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`. Introduce `z`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨x, w, hw, h⟩` from `exists_int_add_nsmul F E N hN z z.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Ideal.Quotient.mk _ x, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.quotientMap_mk, eq_comm, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Use `⟨⟨w, hw⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(z : RA F E) - (1 : FiniteAdeleRing (𝓞 F) F) ⊗ₜ[F] (x : E) = ((N : hatRing F E) : RA F E) * w`. Rewrite using `[h, add_sub_cancel_left, nsmul_eq_mul]`.
-
-Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_quotient_hatRing (N : ℕ) (hN : 0 < N) :
     Finite (hatRing F E ⧸ Ideal.span {(N : hatRing F E)}) := by
@@ -204,9 +200,9 @@ theorem finite_quotient_hatRing (N : ℕ) (hN : 0 < N) :
 end Integral
 
 /- English proof (translation)
-Unfold `intAE hat1`. Use `congr 1`. Use extensionality with `z`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, x, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩`. Introduce and unpack `⟨a, ha, _, ⟨x, rfl⟩, rfl⟩`. Conclude with `⟨a, ha, x, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem integralFiniteAdeles_eq_adelicCompletion_integers (D : D7) :
     intAE D = hat1 D.host.F (Set.range (algebraMap (𝓞 D.host.E) D.host.E)) := by
@@ -220,11 +216,9 @@ theorem integralFiniteAdeles_eq_adelicCompletion_integers (D : D7) :
     exact ⟨a, ha, x, rfl⟩
 
 /- English proof (translation)
-Introduce `D χ hχ`. Take `⟨e, he, -, he'⟩` from `GlobalTheory.AdSplit.exists_adele_equiv D.host.F D.host.E`. Use `haveI : IsModuleTopology (FiniteAdeleRing (𝓞 D.host.F) D.host.F) (RA D.host.F D.host.E) := ⟨rfl⟩`. Use `haveI : ContinuousAdd (RA D.host.F D.host.E) := IsModuleTopology.toContinuousAdd (FiniteAdeleRing (𝓞 D.host.F) D.host.F) _`. Establish `hsmall` using `(OpenLat.isOpen_nsmul_hat D.host.F D.host.E 0 ⊤ (by simp)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `finite_order_of_small (infPart D) (finPart D) e.symm he' (fun z => by` as an intermediate fact. Rewrite using `[RingEquiv.symm_apply_eq]`. Conclude with `Prod.ext (he z).1.symm (he z).2.symm)`. Use the proof step `(hatRing D.host.F D.host.E) hsmall (finite_quotient_hatRing D.host.F D.host.E) χ hχ`. Unfold `FinUnit`.
-
-Rewrite using `[integralFiniteAdeles_eq_adelicCompletion_integers]`. Conclude with `this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem char_finUnit_finite_order : ∀ (D : D7) (χ : (AE D)ˣ →* Circle), Continuous χ → ∃ N : ℕ, 0 < N ∧ (∀ x, FinUnit x → (∃ y ∈ intAE D, finPart D (x : AE D) - 1 = N • y) → χ x = 1) ∧ ∃ m : ℕ, 0 < m ∧ ∀ x, FinUnit x → χ x ^ m = 1 := by
   intro D χ hχ

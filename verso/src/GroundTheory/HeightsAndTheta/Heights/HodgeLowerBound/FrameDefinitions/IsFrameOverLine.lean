@@ -50,7 +50,7 @@ end Frames
 section Main
 
 /- English proof (translation)
-The claim follows from `D.j_le.trans (Nat.sub_le _ _)`.
+A detailed English derivation is pending.
 -/
 theorem ComponentData.j_le_N {II : IntersectionSystem} {Ψ : Type} [Fintype Ψ] {Ω : Type} [Field Ω]
     [Algebra ℚ Ω] {E : Ψ → Type} [∀ τ, AddCommGroup (E τ)] [∀ τ, Module Ω (E τ)]
@@ -108,7 +108,7 @@ namespace Line
 def lineF : Submodule Line.Ω (Fin 2 → Line.Ω) := Submodule.span Line.Ω {Pi.single 0 1}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨segreCoord_line_ne_zero l, one_mem _, one_ne_zero, (Pi.basisFun Line.Ω (Fin 2)).linearIndependent, trivial_frame_iff _ 2 _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFrameOver_line (l : Fin 2) :
     IsFrameOver yLine (trivialBundle (segreCoord yLine) 2) (fun _ : Unit => l) 1 ⇑(Pi.basisFun Line.Ω (Fin 2)) :=

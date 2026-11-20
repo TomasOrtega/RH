@@ -22,21 +22,19 @@ variable {X : Scheme.{0}} {ι : Type} {U : ι → X.Opens} {κ : ι → Type} [�
   {g : ∀ α β, κ α → κ β → Γ(X, U α ⊓ U β)}
 
 /- English proof (translation)
-Use `isQuasicoherent_of_affineCover (toMod g) U haff hU ?_ ?_` and prove the remaining obligations. Introduce `α f m`. Establish `hD : X.basicOpen f ≤ U α` using `X.basicOpen_le f`. Use `(haff α).isLocalization_basicOpen f` as an intermediate fact. Take `⟨⟨b, e, rfl⟩, hb⟩` from `IsLocalization.exist_integer_multiples_of_finite (Submonoid.powers f) (coord g α hD (show secGroup g (X.basicOpen f) from m))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose a ha using hb`. Use `⟨e, (ofCoord hc α le_rfl a : secGroup g (U α)), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `secRes g hD (ofCoord hc α le_rfl a) = (rs hD f ^ e) • (show secGroup g (X.basicOpen f) from m)`. Use `sec_ext_coord hc α hD (funext fun k => ?_)` and prove the remaining obligations. Rewrite using `[coord_res g hD α le_rfl hD, coord_ofCoord]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `congrFun ((coordEquiv hc α hD).map_smul (rs hD f ^ e) (show secGroup g (X.basicOpen f) from m)) k`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations. Establish `h2` using `ha k`. Rewrite `h2` using `[Algebra.smul_def, map_pow]`. Conclude with `h2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `α f m hm`. Establish `hD : X.basicOpen f ≤ U α` using `X.basicOpen_le f`. Use `(haff α).isLocalization_basicOpen f` as an intermediate fact. Establish `hz : ∀ k, ∃ e : ℕ, f ^ e * coord g α le_rfl (show secGroup g (U α) from m) k = 0` using `fun k => by`. Establish `h0 : algebraMap Γ(X, U α) Γ(X, X.basicOpen f) (coord g α le_rfl (show secGroup g (U α) from m) k) = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `coord_res g hD α le_rfl hD (show secGroup g (U α) from m) k`. Establish `h2 : secRes g hD (show secGroup g (U α) from m) = 0` using `hm`. Rewrite `h1` using `[h2]`. Conclude with `h1.symm.trans (congrFun (map_zero (coordEquiv hc α hD)) k)`. Take `⟨⟨_, e, rfl⟩, he⟩` from `(IsLocalization.map_eq_zero_iff (Submonoid.powers f) _ _).1 h0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨e, he⟩`. Use `choose e he using hz`. Use `⟨∑ k, e k, ?_⟩` and prove the remaining obligations. Use `(show (f ^ (∑ k, e k)) • (show secGroup g (U α) from m) = 0 from ?_)` and prove the remaining obligations. Use `sec_ext_coord hc α le_rfl (funext fun k => ?_)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `congrFun ((coordEquiv hc α le_rfl).map_smul (f ^ (∑ k, e k)) (show secGroup g (U α) from m)) k`. Use `h1.trans ?_` and prove the remaining obligations. Establish `h3` using `congrFun (map_zero (coordEquiv hc α le_rfl)) k`. Use `Eq.trans ?_ h3.symm` and prove the remaining obligations. Take `⟨c, hc'⟩` from `Nat.exists_eq_add_of_le (Finset.single_le_sum (f := e) (fun _ _ => Nat.zero_le _) (Finset.mem_univ k))`.
-
-Express the relevant statement in the definitionally equal form `f ^ (∑ k, e k) * coord g α le_rfl (show secGroup g (U α) from m) k = 0`. Rewrite using `[hc', pow_add, mul_comm (f ^ e k), mul_assoc, he k, mul_zero]`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isQuasicoherent_toMod (hc : Coc g) (haff : ∀ α, IsAffineOpen (U α)) (hU : iSup U = ⊤) :
     (toMod g).IsQuasicoherent := by
@@ -80,7 +78,7 @@ theorem isQuasicoherent_toMod (hc : Coc g) (haff : ∀ α, IsAffineOpen (U α)) 
     rw [hc', pow_add, mul_comm (f ^ e k), mul_assoc, he k, mul_zero]
 
 /- English proof (translation)
-Use `isQuasicoherent_toMod hc haff hU` as an intermediate fact. Use `isCoherent_of_affineCover (toMod g) U haff hU fun α => ?_` and prove the remaining obligations. Conclude with `Module.Finite.equiv (coordEquiv hc α le_rfl).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isCoherent_toMod (hc : Coc g) (haff : ∀ α, IsAffineOpen (U α)) (hU : iSup U = ⊤) :
     IsCoherent (toMod g) := by
@@ -102,11 +100,11 @@ variable {O : Type} [CommRing O] {Y : TopCat.{0}} {ι : Type} {P : (Opens Y)ᵒ�
   {U : ι → Opens Y}
 
 /- English proof (translation)
-Consider the cases of `p with`. Consider the case `zero`. Rewrite `hy` using `[coboundaries_zero, AddSubgroup.mem_bot]`. Substitute `hy` using the available equality. Rewrite using `[map_zero]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `succ p`. Rewrite `hy` using `[coboundaries_succ]`. Take `⟨τ, rfl⟩` from `hy`. Use `⟨(T p).symm τ, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(T (p + 1)).injective` to reduce the goal to its premises. Rewrite using `[hd, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symm_mem_B (K : Cx.{w} O) (T : ∀ n, K.X n ≃+ Cochain P U n)
     (hd : ∀ n x, T (n + 1) (K.d n x) = d P U n (T n x)) (p : ℕ) (y : Cochain P U p)
@@ -125,17 +123,15 @@ theorem symm_mem_B (K : Cx.{w} O) (T : ∀ n, K.X n ≃+ Cochain P U n)
     rw [hd, AddEquiv.apply_symm_apply, AddEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `hz : ∀ σ : cocycles P U p, K.d p ((T p).symm σ.1) = 0` using `fun σ => by`. Apply `(T (p + 1)).injective` to reduce the goal to its premises. Rewrite using `[hd, AddEquiv.apply_symm_apply, map_zero]`. Conclude with `σ.2`. Set `g₀ : cocycles P U p →+ K.Z p` to `{ toFun := fun σ => ⟨(T p).symm σ.1, hz σ⟩ map_zero' := Subtype.ext (map_zero _) map_add' := fun σ τ => Subtype.ext (map_add _ _ _) }`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f : cocycles P U p →+ K.H p` to `(Submodule.mkQ _).toAddMonoidHom.comp g₀`. Establish `hf : (coboundaries P U p).addSubgroupOf (cocycles P U p) ≤ f.ker`. Introduce `σ hσ`. Rewrite `hσ` using `[AddSubgroup.mem_addSubgroupOf]`. Rewrite using `[AddMonoidHom.mem_ker]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(Submodule.Quotient.mk_eq_zero _).2 (symm_mem_B K T hd p _ hσ)`. Set `Ψ : cechH P U p →+ K.H p` to `QuotientAddGroup.lift _ f hf`. Establish `hΨ : ∀ σ (hσ : d P U p σ = 0), Ψ (cls σ hσ) = K.cls ((T p).symm σ) (hz ⟨σ, (mem_cocycles σ).2 hσ⟩)` using `fun σ hσ => rfl`. Set `L : cechH P U p →ₗ[O] K.H p` to `{ toFun := Ψ map_add' := map_add Ψ map_smul' := fun c y => by`. Take `⟨σ, hσ, rfl⟩` from `exists_cls y`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : (T p).symm (push U (φ c) p σ) = c • (T p).symm σ`. Apply `(T p).injective` to reduce the goal to its premises. Rewrite using `[AddEquiv.apply_symm_apply, hT, AddEquiv.apply_symm_apply]`. Rewrite using `[hsm, cechHMap_cls, hΨ, hΨ, RingHom.id_apply]`. Express the relevant statement in the definitionally equal form `Submodule.Quotient.mk _ = c • Submodule.Quotient.mk _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← Submodule.Quotient.mk_smul]`. Conclude with `congrArg _ (Subtype.ext h1) }`. Use `Module.Finite.of_surjective L fun y => ?_` and prove the remaining obligations. Take `⟨⟨x, hx⟩, rfl⟩` from `Submodule.Quotient.mk_surjective _ y`. Establish `hσ : d P U p (T p x) = 0`.
-
-Rewrite using `[← hd]`. Conclude with `(congrArg (T (p + 1)) hx).trans (map_zero _)`. Use `⟨cls (T p x) hσ, ?_⟩` and prove the remaining obligations. Conclude with `(hΨ _ hσ).trans (congrArg _ (Subtype.ext ((T p).symm_apply_apply x)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem finite_H_of_cochain (K : Cx.{w} O) (T : ∀ n, K.X n ≃+ Cochain P U n)
     (hd : ∀ n x, T (n + 1) (K.d n x) = d P U n (T n x)) (p : ℕ) (φ : O → (P ⟶ P))
@@ -188,7 +184,7 @@ attribute [local instance] VB.fin
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Establish `: A = B` using `funext fun j => by`. Simplify `hAB (Pi.single j 1)` using `[Pi.single_apply]`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_rs_eq {C W : X.Opens} (h : W ≤ C) {n : Type} [Fintype n] (A B : n → Γ(X, C))
     (hAB : ∀ v : n → Γ(X, C), ∑ k, A k * v k = ∑ k, B k * v k) (v : n → Γ(X, W)) :
@@ -202,7 +198,7 @@ variable {O : Type} [CommRing O] {str : ∀ V : X.Opens, O →+* Γ(X, V)} {ι :
   {K : Cos.{w} O} (V : VB str U K)
 
 /- English proof (translation)
-Use `⟨(V.e n a).symm (Pi.single i v), ?_⟩` and prove the remaining obligations. Rewrite using `[AddEquiv.apply_symm_apply, Pi.single_eq_same]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_e (n : ℕ) (a : Fin (n + 1)) (i : Fin (n + 1) → ι) (v : V.κ (i a) → Γ(X, capO U i)) :
     ∃ x, V.e n a x i = v := by
@@ -211,11 +207,11 @@ theorem exists_e (n : ℕ) (a : Fin (n + 1)) (i : Fin (n + 1) → ι) (v : V.κ 
   rw [AddEquiv.apply_symm_apply, Pi.single_eq_same]
 
 /- English proof (translation)
-Establish `a01` using `le_inf (capO_le U i 0) (capO_le U i 1)`. Establish `a12` using `le_inf (capO_le U i 1) (capO_le U i 2)`. Establish `a02` using `le_inf (capO_le U i 0) (capO_le U i 2)`. Establish `key` using `sum_rs_eq hW (fun k'' => ∑ k', rs a01 (V.g (i 0) (i 1) k k') * rs a12 (V.g (i 1) (i 2) k' k'')) (fun k'' => rs a02 (V.g (i 0) (i 2) k k'')) (fun w => by`. Take `⟨x, rfl⟩` from `exists_e V 2 2 i w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← V.e_chg 2 0 2 x i k, V.e_chg 2 0 1 x i k]`. Simplify using `only [Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Rewrite using `[V.e_chg 2 1 2 x i k', Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun k'' _ => mul_assoc _ _ _) v`. Simplify using `only [map_sum, map_mul, rs_trans, Finset.sum_mul] at key`. Simplify using `only [Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Eq.trans (Finset.sum_congr rfl fun k'' _ => Finset.sum_congr rfl fun k' _ => (mul_assoc _ _ _).symm) key` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coc3 (i : Fin 3 → ι) (W : X.Opens) (hW : W ≤ capO U i) (h₁ : W ≤ U (i 0) ⊓ U (i 1))
     (h₂ : W ≤ U (i 1) ⊓ U (i 2)) (h₃ : W ≤ U (i 0) ⊓ U (i 2)) (v : V.κ (i 2) → Γ(X, W)) (k : V.κ (i 0)) :
@@ -240,11 +236,11 @@ theorem coc3 (i : Fin 3 → ι) (W : X.Opens) (hW : W ≤ capO U i) (h₁ : W �
   refine Eq.trans (Finset.sum_congr rfl fun k'' _ => Finset.sum_congr rfl fun k' _ => (mul_assoc _ _ _).symm) key
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `α W h v k`. Establish `hW : W ≤ capO U (fun _ : Fin 1 => α)` using `le_iInf fun _ => h.trans inf_le_left`. Establish `key` using `sum_rs_eq hW (fun k' => rs (le_inf (capO_le U (fun _ : Fin 1 => α) 0) (capO_le U (fun _ : Fin 1 => α) 0)) (V.g α α k k')) (fun k' => if k = k' then 1 else 0) (fun w => by`. Take `⟨x, rfl⟩` from `exists_e V 0 0 (fun _ : Fin 1 => α) w`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `V.e_chg 0 0 0 x (fun _ : Fin 1 => α) k` as an intermediate fact. Simplify using `only [ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `this.symm) v`. Apply the tactic sequence `have e2 : ∀ k', rs hW (if k = k' then (1 : Γ(X, capO U (fun _ : Fin 1 => α))) else 0) = if k = k' then 1 else 0 := fun k' => by split_ifs <;> simp`. Simplify using `only [rs_trans, e2, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true] at key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `key`. Introduce `α β γ W h₁ h₂ h₃ v k`. Use `coc3 V ![α, β, γ] W (le_iInf fun a => ?_) h₁ h₂ h₃ v k` and prove the remaining obligations. Use `fin_cases a`. Use `exacts [h₁.trans inf_le_left, h₁.trans inf_le_right, h₂.trans inf_le_right]`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem coc_of_VB : Coc V.g := by
   classical
@@ -278,19 +274,19 @@ open GroundTheory.Arith.SchemeCoh
 universe w
 
 /- English proof (translation)
-The claim follows from `(inter_eq_iInf U i).le`.
+A detailed English derivation is pending.
 -/
 theorem inter_le_capO {X : Scheme.{0}} {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) :
     inter (X := X.toTopCat) U i ≤ capO U i := (inter_eq_iInf U i).le
 
 /- English proof (translation)
-The claim follows from `(inter_eq_iInf U i).ge`.
+A detailed English derivation is pending.
 -/
 theorem capO_le_inter {X : Scheme.{0}} {ι : Type} (U : ι → X.Opens) {n : ℕ} (i : Fin n → ι) :
     capO U i ≤ inter (X := X.toTopCat) U i := (inter_eq_iInf U i).ge
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun α => funext fun k => rs_rs _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem secRes_secRes {X : Scheme.{0}} {ι : Type} {U : ι → X.Opens} {κ : ι → Type} [∀ α, Fintype (κ α)]
     (g : ∀ α β, κ α → κ β → Γ(X, U α ⊓ U β)) {A B C : X.Opens} (h : B ≤ A) (h' : C ≤ B) (h'' : C ≤ A)
@@ -298,7 +294,7 @@ theorem secRes_secRes {X : Scheme.{0}} {ι : Type} {U : ι → X.Opens} {κ : ι
   Subtype.ext <| funext fun α => funext fun k => rs_rs _ _ _ _
 
 /- English proof (translation)
-The claim follows from `Subtype.ext <| funext fun α => funext fun k => rs_self _ _`.
+A detailed English derivation is pending.
 -/
 theorem secRes_self {X : Scheme.{0}} {ι : Type} {U : ι → X.Opens} {κ : ι → Type} [∀ α, Fintype (κ α)]
     (g : ∀ α β, κ α → κ β → Γ(X, U α ⊓ U β)) {A : X.Opens} (h : A ≤ A) (s : secGroup g A) :
@@ -317,7 +313,7 @@ def toSec (n : ℕ) : K.X n ≃+ ∀ i : Fin (n + 1) → ι, secGroup V.g (capO 
     (coordEquiv (coc_of_VB V) (i 0) (capO_le U i 0)).symm.toAddEquiv)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Rewrite using `[coord_change V.g (i a) (i 0) _ (capO_le U i 0) (le_inf (capO_le U i a) (capO_le U i 0)), V.e_chg n a 0 x i k]`. Use `Finset.sum_congr rfl fun k' _ => ?_` and prove the remaining obligations. Establish `: coord V.g (i 0) (capO_le U i 0) (toSec V n x i) = V.e n 0 x i` using `(coordEquiv (coc_of_VB V) (i 0) (capO_le U i 0)).apply_symm_apply _`. Rewrite using `[this]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_toSec (n : ℕ) (x : K.X n) (i : Fin (n + 1) → ι) (a : Fin (n + 1)) :
     coord V.g (i a) (capO_le U i a) (toSec V n x i) = V.e n a x i := by
@@ -330,7 +326,7 @@ theorem coord_toSec (n : ℕ) (x : K.X n) (i : Fin (n + 1) → ι) (a : Fin (n +
   rw [this]
 
 /- English proof (translation)
-Use `sec_ext_coord (coc_of_VB V) (i (b.succAbove 0)) (capO_le U i _) (funext fun k => ?_)` and prove the remaining obligations. Rewrite using `[coord_toSec, V.e_δ n 0 b x i k, coord_res V.g (capO_comp U i b.succAbove) (i (b.succAbove 0)) (capO_le U (i ∘ b.succAbove) 0)]`. Conclude with `congrArg (rs _) (congrFun (coord_toSec V n x (i ∘ b.succAbove) 0) k).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toSec_δ (n : ℕ) (b : Fin (n + 2)) (x : K.X n) (i : Fin (n + 2) → ι) :
     toSec V (n + 1) (K.δ n b x) i =
@@ -341,9 +337,9 @@ theorem toSec_δ (n : ℕ) (b : Fin (n + 2)) (x : K.X n) (i : Fin (n + 2) → ι
   exact congrArg (rs _) (congrFun (coord_toSec V n x (i ∘ b.succAbove) 0) k).symm
 
 /- English proof (translation)
-Use `sec_ext_coord (coc_of_VB V) (i 0) (capO_le U i 0) (funext fun k => ?_)` and prove the remaining obligations. Rewrite using `[coord_toSec]`. Establish `h1` using `congrFun ((coordEquiv (coc_of_VB V) (i 0) (capO_le U i 0)).map_smul (str (capO U i) c) (toSec V n x i)) k`. Use `Eq.trans ?_ h1.symm` and prove the remaining obligations. Rewrite using `[V.e_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = _ * coord V.g (i 0) (capO_le U i 0) (toSec V n x i) k`. Rewrite using `[coord_toSec]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem toSec_smul (n : ℕ) (c : O) (x : K.X n) (i : Fin (n + 1) → ι) :
     toSec V n (c • x) i = str (capO U i) c • toSec V n x i := by
@@ -381,19 +377,19 @@ theorem str_eq {O : Type} [CommRing O] {X : Scheme.{0}} (q : X ⟶ Spec (CommRin
 attribute [local instance] VB.fin algebraOfOver in
 
 /- English proof (translation)
-Introduce `O _ _ X q _ ι _ U hU ha K V p`. Use `letI : X.Over (Spec (.of O)) := ⟨q⟩`. Establish `hprop : IsProper (X ↘ Spec (.of O))` using `‹IsProper q›`. Establish `hc` using `coc_of_VB V`. Establish `haff : ∀ α, IsAffineOpen (U α)` using `fun α => by`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ha 0 (fun _ => α)` as an intermediate fact. Establish `e : capO U (fun _ : Fin 1 => α) = U α` using `iInf_const`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `hcoh` using `isCoherent_toMod hc haff hU`. Use `hcoh.1` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin` using `finite_H_of_isProper (A := O) (toMod V.g) hcoh p`. Establish `hfinC : Module.Finite O (cechH (modulesAb (toMod V.g)).obj U p)` using `Module.Finite.equiv (cechHLinearEquivH U hU ha O (toMod V.g) p).symm`. Use `finite_H_of_cochain (P := (modulesAb (toMod V.g)).obj) (U := U) K.cx (fun n => toCochain V n) ?_ p (fun c => (modulesAbMap (smulHom (toMod V.g) (algebraMap O Γ(X, ⊤) c))).hom) (fun _ _ => rfl) ?_` and prove the remaining obligations. Introduce `n x`. Use function extensionality and compare the values at `i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[d_apply]`. Express the relevant statement in the definitionally equal form `secRes V.g (inter_le_capO U i) (toSec V (n + 1) (K.d n x) i) = _`. Rewrite using `[Cos.d_apply, map_sum, Finset.sum_apply, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Pi.smul_apply, map_zsmul, toSec_δ]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `H` using `(inter_le_comp (X := X.toTopCat) U i k.succAbove).trans (inter_le_capO U (i ∘ k.succAbove))`. Conclude with `congrArg _ ((secRes_secRes V.g _ _ H _).trans (secRes_secRes V.g (inter_le_capO U (i ∘ k.succAbove)) (inter_le_comp (X := X.toTopCat) U i k.succAbove) H _).symm)`. Introduce `c x`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `secRes V.g (inter_le_capO U i) (toSec V p (c • x) i) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[toSec_smul, secRes_smul]`. Establish `hs : rs (inter_le_capO U i) (((Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ q.appLE ⊤ (capO U i) le_top).hom c) = restrictTop (inter (X` using `X.toTopCat) U i) (algebraMap O Γ(X, ⊤) c) := by`. Rewrite using `[str_eq, rs_trans]`. Both sides reduce to the same expression. Rewrite using `[hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem finite_H_cx : ∀ {O : Type} [CommRing O] [IsNoetherianRing O] {X : Scheme.{0}} (q : X ⟶ Spec (CommRingCat.of O)) [IsProper q]
     {ι : Type} [Fintype ι] (U : ι → X.Opens) (hU : (⨆ α, U α) = ⊤) (ha : ∀ n (i : Fin (n + 1) → ι), IsAffineOpen (capO U i))

@@ -9,9 +9,9 @@ noncomputable section
 namespace GlobalTheory.OddFrame
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hneg`. Use `push_neg at hneg`. Establish `h0 : F j = 0` using `(hF j).eq_zero_of_neg hneg`. Take `⟨τ, hτ⟩` from `hdet`. Apply `hτ` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.det_eq_zero_of_column_eq_zero j` to reduce the goal to its premises. Introduce `i`. Simplify using `[evM, h0, SlashAction.zero_slash]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weights_nonneg_of_det {Γ : Subgroup SL(2, ℤ)} [Γ.FiniteIndex] {r : ℕ} {s : Fin r → SL(2, ℤ)}
     {w : Fin r → ℤ} {F : Fin r → ℍ → ℂ} (hF : ∀ j, IsMF Γ (w j) (F j))
@@ -26,11 +26,11 @@ theorem weights_nonneg_of_det {Γ : Subgroup SL(2, ℤ)} [Γ.FiniteIndex] {r : �
   simp [evM, h0, SlashAction.zero_slash]
 
 /- English proof (translation)
-Establish `hM : evM s (Function.update w j₀ w') (Function.update F j₀ G) τ = (evM s w F τ).updateCol j₀ (fun i => (G ∣[w'] s i) τ)`. Use extensionality with `i j`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify using `[evM, Matrix.updateCol_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[evM, Matrix.updateCol_apply, hj, Function.update_of_ne hj]`. Rewrite using `[hM, ← Matrix.det_updateCol_smul]`. Establish `hc : (E τ • fun i => (G ∣[w'] s i) τ) = fun i => ∑ j, (fun j => e j τ) j • (evM s w F τ) i j`. Use extensionality with `i`. Simplify using `[evM, hrel]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, Matrix.det_updateCol_sum, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_det_evM_update {r : ℕ} (s : Fin r → SL(2, ℤ)) (w : Fin r → ℤ) (F : Fin r → ℍ → ℂ)
     (j₀ : Fin r) (w' : ℤ) (G E : ℍ → ℂ) (e : Fin r → ℍ → ℂ)
@@ -51,27 +51,23 @@ theorem mul_det_evM_update {r : ℕ} (s : Fin r → SL(2, ℤ)) (w : Fin r → �
   rw [hc, Matrix.det_updateCol_sum, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `w F hn hF hdet`. Distinguish the cases in `hR : Reduces Γ w F`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Use `swap`. Conclude with `⟨w, F, hF, hdet, hR⟩`. Take `⟨j₀, w₀, G, E, e, hlt, hodd, hG, he, hne, hrel⟩` from `hR`. Use `set w₁ := Function.update w j₀ w₀ with hw₁`. Use `set F₁ := Function.update F j₀ G with hF₁`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hF' : ∀ j, Odd (w₁ j) ∧ IsMF Γ (w₁ j) (F₁ j)`. Introduce `j`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify using `[w₁, F₁, hodd, hG]`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [w₁, F₁, Function.update_of_ne hj]`. Conclude with `hF j`. Establish `hdet' : ∃ τ, (evM s w₁ F₁ τ).det ≠ 0`. Establish `hd0 : (fun τ => (evM s w F τ).det) ≠ 0`. Take `⟨τ, hτ⟩` from `hdet`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hτ (congrFun h τ)`. Establish `hmd : MDiff (fun τ => (evM s w F τ).det)` using `mdiff_det_evM s w (fun j => (hF j).2.2.1)`. Establish `hprod : e j₀ * (fun τ => (evM s w F τ).det) ≠ 0`. Rewrite using `[Ne, UpperHalfPlane.mul_eq_zero_iff (he j₀) hmd]`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg`. Conclude with `⟨hne, hd0⟩`. Choose the witnesses or unpack the hypotheses as in `⟨τ, hτ⟩ : ∃ τ, e j₀ τ * (evM s w F τ).det ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hprod (funext fun τ => by simpa using h τ)`. Use `⟨τ, fun h0 => hτ ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_det_evM_update s w F j₀ w₀ G E e hrel τ]`. Rewrite `h0` using `[show w₁ = Function.update w j₀ w₀ from rfl, show F₁ = Function.update F j₀ G from rfl]`. Rewrite using `[h0, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Establish `hnn` using `weights_nonneg_of_det (fun j => (hF j).2) hdet`. Establish `hnn'` using `weights_nonneg_of_det (fun j => (hF' j).2) hdet'`. Establish `hlt' : ∑ j, (w₁ j).toNat < n`. Rewrite using `[← hn]`. Apply `Finset.sum_lt_sum` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `j _`. Distinguish the cases in `hj : j = j₀`. Substitute `hj` using the available equality. Simplify using `only [w₁, Function.update_self]`. Use linear arithmetic over natural numbers and integers.
-
-Simplify using `only [w₁, Function.update_of_ne hj]`. Conclude with `le_rfl`. Use `⟨j₀, Finset.mem_univ _, ?_⟩` and prove the remaining obligations. Use `hnn' j₀` as an intermediate fact. Simplify using `only [w₁, Function.update_self] at this ⊢`.
-
-Use `hnn j₀` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Conclude with `ih _ hlt' w₁ F₁ rfl hF' hdet'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem oddFrame_descent_of_weight_sum (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteIndex] (r : ℕ) (s : Fin r → SL(2, ℤ)) :
     ∀ (n : ℕ) (w : Fin r → ℤ) (F : Fin r → ℍ → ℂ), ∑ j, (w j).toNat = n →
@@ -126,7 +122,7 @@ theorem oddFrame_descent_of_weight_sum (Γ : Subgroup SL(2, ℤ)) [Γ.FiniteInde
   exact ih _ hlt' w₁ F₁ rfl hF' hdet'
 
 /- English proof (translation)
-Introduce `Γ r s w F hΓ hF hdet`. Conclude with `oddFrame_descent_of_weight_sum Γ r s _ w F rfl hF hdet`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem descent : ∀ (Γ : Subgroup SL(2, ℤ)) (r : ℕ) (s : Fin r → SL(2, ℤ)) (w : Fin r → ℤ) (F : Fin r → ℍ → ℂ),
     Γ.FiniteIndex → (∀ j, Odd (w j) ∧ IsMF Γ (w j) (F j)) → (∃ τ, (evM s w F τ).det ≠ 0) →

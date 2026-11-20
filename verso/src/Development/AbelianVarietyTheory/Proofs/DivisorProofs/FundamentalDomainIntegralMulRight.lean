@@ -4,11 +4,9 @@ open MeasureTheory
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hmp : MeasurePreserving (fun g : G => g * a) μ μ` using `measurePreserving_mul_right μ a`. Establish `hme : MeasurableEmbedding (fun g : G => g * a)` using `measurableEmbedding_mulRight a`. Establish `h' : IsFundamentalDomain Γ ((fun g : G => g * a) ⁻¹' 𝓕) μ` using `h.preimage_of_equiv (e := id) hmp.quasiMeasurePreserving Function.bijective_id (fun γ x => by simp [Subgroup.smul_def, mul_assoc])`. Establish `hfa : ∀ (γ : Γ) (x : G), (fun g => f (g * a)) (γ • x) = (fun g => f (g * a)) x`. Introduce `γ x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Conclude with `hf γ γ.2 _`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h.integrableOn_iff h' (f := fun g => f (g * a)) hfa]`. Conclude with `(hmp.integrableOn_comp_preimage hme (f := f) (s := 𝓕)).symm`.
-
-Rewrite using `[h.setIntegral_eq h' (f := fun g => f (g * a)) hfa]`. Conclude with `hmp.setIntegral_preimage_emb hme f 𝓕`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fundamentalDomain_integral_mul_right {G : Type} [Group G] [MeasurableSpace G]
     [MeasurableMul G] (μ : Measure G) [μ.IsMulLeftInvariant] [μ.IsMulRightInvariant]

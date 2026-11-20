@@ -30,9 +30,7 @@ def pick (h : V →ₗ⋆[K] V →ₗ[K] K) (s₀ : Finset (Submodule (NumberFie
   if hq : ∃ N ∈ s₀, Quotient.mk (isoSetoid h) N = q then Classical.choose hq else ⊥
 
 /- English proof (translation)
-Establish `hq : ∃ N ∈ s₀, Quotient.mk (isoSetoid h) N = Quotient.mk (isoSetoid h) M` using `⟨M, hM, rfl⟩`. Establish `e : pick h s₀ (Quotient.mk (isoSetoid h) M) = Classical.choose hq`. Unfold `pick`. Conclude with `dif_pos hq`. Rewrite using `[e]`.
-
-Conclude with `Classical.choose_spec hq`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pick_spec (h : V →ₗ⋆[K] V →ₗ[K] K)
     (s₀ : Finset (Submodule (NumberField.RingOfIntegers K) V))
@@ -48,13 +46,13 @@ theorem pick_spec (h : V →ₗ⋆[K] V →ₗ[K] K)
   exact Classical.choose_spec hq
 
 /- English proof (translation)
-Establish `hsound : ∀ A B : Submodule (NumberField.RingOfIntegers K) V, (∃ g ∈ isom h, gmap g A = B) → Quotient.mk (isoSetoid h) A = Quotient.mk (isoSetoid h) B` using `fun A B hAB => Quotient.sound hAB`. Establish `hexact : ∀ A B : Submodule (NumberField.RingOfIntegers K) V, Quotient.mk (isoSetoid h) A = Quotient.mk (isoSetoid h) B → ∃ g ∈ isom h, gmap g A = B` using `fun A B e => Quotient.exact e`. Use `⟨s₀.image (fun N => pick h s₀ (Quotient.mk (isoSetoid h) N)), ?_, ?_⟩` and prove the remaining obligations. Introduce `M hM`. Take `⟨N, hN, rfl⟩` from `Finset.mem_image.mp hM`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `h₁ _ (pick_spec h s₀ hN).1`. Introduce `M hM`. Take `⟨N, hN, g, hg, e⟩` from `h₂ M hM`. Take `⟨g', hg', e'⟩` from `hexact _ _ (pick_spec h s₀ hN).2`. Establish `hE : gmap (g * g') (pick h s₀ (Quotient.mk (isoSetoid h) N)) = M`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[gmap_mul, e', e]`. Use `⟨pick h s₀ (Quotient.mk (isoSetoid h) N), ⟨Finset.mem_image.mpr ⟨N, hN, rfl⟩, g * g', (isom h).mul_mem hg hg', hE⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `P ⟨hP, g₁, hg₁, e₁⟩`. Take `⟨N₁, hN₁, rfl⟩` from `Finset.mem_image.mp hP`. Establish `hrel : Quotient.mk (isoSetoid h) (pick h s₀ (Quotient.mk (isoSetoid h) N₁)) = Quotient.mk (isoSetoid h) (pick h s₀ (Quotient.mk (isoSetoid h) N))`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hsound` to reduce the goal to its premises. Use `⟨(g * g')⁻¹ * g₁, (isom h).mul_mem ((isom h).inv_mem ((isom h).mul_mem hg hg')) hg₁, ?_⟩` and prove the remaining obligations. Rewrite using `[gmap_mul, e₁, ← hE, gmap_inv_gmap]`. Establish `hN : Quotient.mk (isoSetoid h) N₁ = Quotient.mk (isoSetoid h) N` using `(pick_spec h s₀ hN₁).2.symm.trans (hrel.trans (pick_spec h s₀ hN).2)`. Rewrite using `[hN]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reps (h : V →ₗ⋆[K] V →ₗ[K] K) (L : Submodule (NumberField.RingOfIntegers K) V)
     (s₀ : Finset (Submodule (NumberField.RingOfIntegers K) V))
@@ -94,13 +92,13 @@ end DefiniteClassRepresentatives
 
 open Formalism.HermitianLatticesTheory LatticeLiftIndependence DefiniteClassRepresentatives in
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ h hsymm hpos L hL`. Establish `hcard : ∀ M ∈ genus h L, 0 < Nat.card (autL h M)`. Introduce `M hM`. Establish `hfin : Set.Finite (autL h M)` using `final_autFinite K V h hsymm hpos M hM.1`. Establish `: Finite (autL h M)` using `hfin.to_subtype`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nonempty (autL h M)` using `⟨⟨1, (isom h).one_mem, gmap_one M⟩⟩`. Conclude with `Nat.card_pos`. Take `⟨s₀, h₁, h₂⟩` from `final_classSetFinite K V h hsymm hpos L hL`. Take `⟨s, hs⟩` from `exists_reps h L s₀ h₁ h₂`. Use `⟨⟨s, hs⟩, fun M hM => ⟨Nat.card (autL h M), hcard M hM, rfl⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨∏ N ∈ s, Nat.card (autL h N), Finset.prod_pos fun N hN => hcard N (hs.1 N hN), ?_⟩` and prove the remaining obligations. Introduce `M hM`. Take `⟨N, ⟨hN, g, hg, e⟩, -⟩` from `hs.2 M hM`. Use `⟨((∏ N' ∈ s.erase N, Nat.card (autL h N') : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Rewrite using `[← e, latWt_gmap h hg N, ← Finset.mul_prod_erase s _ hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hne : ((Nat.card (autL h N) : ℕ) : ℂ) ≠ 0`. Conclude with `(hcard N (hs.1 N hN)).ne'` after adjusting the coercions. Unfold `latWt`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem classRepsDefinite : ClassRepsDefinite := by
   intro K V _ _ _ _ _ _ _ _ h hsymm hpos L hL

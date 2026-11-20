@@ -18,15 +18,15 @@ open GlobalTheory GlobalTheory.Ex
 namespace GlobalTheory.Ex
 
 /- English proof (translation)
-Introduce `h₁ h₂ h₃ h₄ h₅ h₆ h₇ E _ _ _ H D l Xo c W₀ Y O' _ _ _ b ϖ a hb m hm hmu`. Establish `pt` using `GlobalTheory.ArcPoint.exists_point h₁ h₂ h₃ h₄ h₅ h₆ h₇ E H D l Xo c W₀ Y O' b ϖ a hb`. Establish `bad` using `GlobalTheory.Ex.Trait.hasArcData_at_trait h₁ h₂ h₃ h₄ h₅ h₆ h₇ E H D l Xo c W₀ Y O' b ϖ a hb`. Establish `good` using `GlobalTheory.Ex.GoodTrait.range_subset_abLocus h₁ h₂ h₃ h₄ h₅ h₆ h₇ E H D l Xo c W₀ Y O' b ϖ a hb`. Establish `fr₁` using `GlobalTheory.T.exists_single_polarisation_generator_all_traits h₁ h₂ h₃ h₄ h₅ h₆ h₇ E H D l Xo c W₀ Y O' b ϖ a hb`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `frm` using `GlobalTheory.OneBasis.exists_isFrame_pow_sq h₁ h₂ h₃ h₄ h₅ h₆ h₇ E H D l Xo c W₀ Y O' b ϖ a hb`. Establish `mono` using `GlobalTheory.Ex.Mono.mono h₁ h₂ h₃ h₄ h₅ h₆ h₇ E H D l Xo c W₀ Y O' b ϖ a hb`. Take `⟨R₁, _, _, g, y₁, gi, gf, n₁, hy, hr, ht⟩` from `pt`. Establish `td : GlobalTheory.LN.TraitData Y a g y₁` using `⟨hy, fun W _ _ _ hW φ gam hg χ hχ => ⟨good R₁ g y₁ gi gf n₁ ht hy W hW φ gam hg χ hχ, bad R₁ g y₁ gi gf n₁ hr hy W hW φ gam hg χ hχ⟩⟩`. Take `⟨R₂, _, _, h, h', hi, hf, n₂, hh, hθ⟩` from `fr₁ R₁ g y₁ gi gf n₁ td ht`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨td₂, hr₂, -⟩` from `mono R₁ g y₁ gi gf n₁ R₂ h h' hf hh`. Establish `gi₂ : Function.Injective (h.comp g)` using `hi.comp gi`. Establish `gf₂ : (h.comp g).Finite` using `hf.comp gf`. Take `⟨R₃, _, _, k, k', ki, kf, n₃, kk, hfm⟩` from `frm R₂ (h.comp g) (spMap h' ≫ y₁) gi₂ gf₂ n₂ (td₂ td) (hr₂ hr) hθ m hm hmu`. Take `⟨td₃, -, hfr⟩` from `mono R₂ (h.comp g) (spMap h' ≫ y₁) gi₂ gf₂ n₂ R₃ k k' kf kk`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨θ, hθ⟩` from `hθ`. Take `⟨f', hf'⟩` from `hfr 1 1 _ hθ`. Use `⟨R₃, inferInstance, inferInstance, k.comp (h.comp g), spMap k' ≫ spMap h' ≫ y₁, ki.comp gi₂, kf.comp gf₂, n₃, td₃ (td₂ td), ⟨f' 0, ?_⟩, hfm⟩` and prove the remaining obligations. Establish `e : (fun _ : Fin 1 => f' 0) = f'` using `funext fun i => by rw [Subsingleton.elim i 0]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf'`.
+A detailed English derivation is pending.
 -/
 theorem arcFam : HV → Laws6 → GlobalTheory.LN.UDvrSt → GlobalTheory.LN.HomExtSt → ThetaPtDeterminesSt → EndDeterminedOnTorsionSt →
     ThetaUnifAV → GlobalTheory.LN.ArcFamSt := by

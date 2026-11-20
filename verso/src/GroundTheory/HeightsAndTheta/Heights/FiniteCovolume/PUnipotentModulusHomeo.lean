@@ -13,7 +13,7 @@ variable {W : Type*} [AddCommGroup W] [Module E W] {ι : Type*} [Fintype ι] [De
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-The claim follows from `(continuous_star.comp hy).dotProduct (continuous_const.matrix_mulVec hy)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hForm_self (H : Matrix ι ι ℂ) {X : Type*} [TopologicalSpace X] {y : X → ι → ℂ}
     (hy : Continuous y) : Continuous fun x => hForm H (y x) (y x) :=
@@ -21,7 +21,7 @@ theorem continuous_hForm_self (H : Matrix ι ι ℂ) {X : Type*} [TopologicalSpa
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-The claim follows from `continuous_const.dotProduct (continuous_const.matrix_mulVec hy)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_hForm_right (H : Matrix ι ι ℂ) (u : ι → ℂ) {X : Type*} [TopologicalSpace X]
     {y : X → ι → ℂ} (hy : Continuous y) : Continuous fun x => hForm H u (y x) :=
@@ -29,14 +29,14 @@ theorem continuous_hForm_right (H : Matrix ι ι ℂ) (u : ι → ℂ) {X : Type
 
 omit [DecidableEq ι] in
 /- English proof (translation)
-Apply the tactic sequence `apply Complex.ext <;> simp [heisS]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem heisS_eq (H : Matrix ι ι ℂ) (y : ι → ℂ) (t : ℝ) :
     heisS H y t = ((-(hForm H y y).re / 2 : ℝ) : ℂ) + (t : ℂ) * Complex.I := by
   apply Complex.ext <;> simp [heisS]
 
 /- English proof (translation)
-Establish `hs : Continuous fun x => heisS H (y x) (t x)`. Simplify using `only [heisS_eq]`. Conclude with `(Complex.continuous_ofReal.comp ((Complex.continuous_re.comp (continuous_hForm_self H hy)).neg.div_const 2)).add ((Complex.continuous_ofReal.comp ht).mul continuous_const)`. Unfold `heisMat`. Conclude with `(continuous_const.add ((hy.add (hs.smul continuous_const)).matrix_vecMulVec continuous_const)).sub (continuous_const.matrix_vecMulVec ((continuous_star.comp hy).matrix_vecMul continuous_const))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_heisMat_heisS (H : Matrix ι ι ℂ) (a : ι → ℂ) {X : Type*} [TopologicalSpace X]
     {y : X → ι → ℂ} {t : X → ℝ} (hy : Continuous y) (ht : Continuous t) :
@@ -57,7 +57,7 @@ variable {h : HermitianForm F E W} {v : Basis ι E W} {x₀ w₀ : W}
 
 omit [NumberField F] [NumberField E] [IsTotallyReal F] [IsTotallyComplex E] in
 /- English proof (translation)
-The claim follows from `Units.continuous_val.comp ((continuous_apply w).comp (continuous_subtype_val.comp continuous_subtype_val))`.
+A detailed English derivation is pending.
 -/
 theorem continuous_unipRadical_at (w : InfinitePlace E) :
     Continuous fun n : unipRadical h v x₀ =>
@@ -66,7 +66,7 @@ theorem continuous_unipRadical_at (w : InfinitePlace E) :
     (continuous_subtype_val.comp continuous_subtype_val))
 
 /- English proof (translation)
-Take `⟨hH, -, -, -, hab⟩` from `hyperbolic_at_place h v hp w`. Establish `hyb : hForm (gramAt h v w) ((p.1 : InfinitePlace E → ι → ℂ) w) (vecAt v w₀ w) = 0`. Rewrite using `[← hForm_conj hH, (p.1.2 w).2, map_zero]`. Rewrite using `[heisU, heisPoint_val, heisMatAt, heisMat_mulVec, hab, hyb]`. Simplify using `only [one_smul, zero_smul, sub_zero, add_sub_cancel_left]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem heisU_heisPoint (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord h v x₀ w₀)
     (w : InfinitePlace E) :
@@ -79,7 +79,7 @@ theorem heisU_heisPoint (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord h v x
   simp only [one_smul, zero_smul, sub_zero, add_sub_cancel_left]
 
 /- English proof (translation)
-Take `⟨hH, -, -, -, hab⟩` from `hyperbolic_at_place h v hp w`. Establish `hba : hForm (gramAt h v w) (vecAt v w₀ w) (vecAt v x₀ w) = 1`. Rewrite using `[← hForm_conj hH, hab, map_one]`. Rewrite using `[heisU_heisPoint, hForm_add_right, hForm_smul_right, (p.1.2 w).2, hba]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hForm_heisU_heisPoint (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord h v x₀ w₀)
     (w : InfinitePlace E) :
@@ -92,7 +92,7 @@ theorem hForm_heisU_heisPoint (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord
   ring
 
 /- English proof (translation)
-Use `Prod.ext (Subtype.ext (funext fun w => ?_)) (funext fun w => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `heisYOf (w₀ := w₀) (heisPoint hp p) w = (p.1 : InfinitePlace E → ι → ℂ) w`. Rewrite using `[heisYOf, hForm_heisU_heisPoint, heisU_heisPoint, add_sub_cancel_right]`. Express the relevant statement in the definitionally equal form `(hForm (gramAt h v w) (vecAt v w₀ w) (heisU (w₀ := w₀) (heisPoint hp p) w)).im = p.2 w`. Rewrite using `[hForm_heisU_heisPoint, heisS_im]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem heisCoordOf_heisPoint (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord h v x₀ w₀) :
     heisCoordOf hp (heisPoint hp p) = p := by
@@ -103,9 +103,9 @@ theorem heisCoordOf_heisPoint (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord
     rw [hForm_heisU_heisPoint, heisS_im]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Take `⟨-, -, h3, h4⟩` from `heisYOf_spec hp n w`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[heisPoint_val]`. Use `conv_rhs => rw [h4]`. Conclude with `congrArg (heisMat (gramAt h v w) (vecAt v x₀ w) (heisYOf (w₀ := w₀) n w)) (eq_heisS h3).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem heisPoint_heisCoordOf (hp : IsHyperbolicPair h x₀ w₀) (n : unipRadical h v x₀) :
     heisPoint hp (heisCoordOf hp n) = n := by
@@ -153,9 +153,9 @@ theorem heisHomeo_apply (hp : IsHyperbolicPair h x₀ w₀) (p : HeisCoord h v x
     heisHomeo hp p = heisPoint hp p := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Pi.mul_apply, Units.val_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Rewrite using `[heisPoint_val, heisPoint_val, heisPoint_val, heisMatAt_mul hp p.1.2 q.1.2]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem heisPoint_mul (hp : IsHyperbolicPair h x₀ w₀) (p q : HeisCoord h v x₀ w₀) :
     heisPoint hp p * heisPoint hp q = heisPoint hp (p.1 + q.1, p.2 + q.2 - fun w =>
@@ -201,9 +201,9 @@ theorem heisConjLin_apply (g : archUnitary h v)
       ((g : InfinitePlace E → GL ι ℂ) w : Matrix ι ι ℂ) *ᵥ (y : InfinitePlace E → ι → ℂ) w := rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `w`. Apply `Units.ext` to reduce the goal to its premises. Establish `ha` using `(Subgroup.mem_inf.1 hg).1 w`. Establish `hu` using `archUnitary_at_place g w`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv, Pi.mul_apply, Pi.inv_apply, Units.val_mul]`. Rewrite using `[heisPoint_val, heisPoint_val, heisMatAt, heisMatAt, heisMat_conj hu ha, mul_assoc, Units.mul_inv, mul_one, heisConjLin_apply]`. Use `congr 1`. Simplify using `only [heisS, hForm_mulVec_of_unitary _ hu]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem heisPoint_conj (hp : IsHyperbolicPair h x₀ w₀) (g : archUnitary h v)
     (hg : g ∈ vecFixGroup h v x₀ ⊓ vecFixGroup h v w₀) (p : HeisCoord h v x₀ w₀) :

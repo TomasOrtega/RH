@@ -57,7 +57,7 @@ def IsPt (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0)
   ∃ z : ↥(Ld D u 0 (Nat.zero_le _) ((D.fm u).dn 0 v c g)), T.lv0.pr v _ z = x ∧ IsPtZ T v c g γ z y
 
 /- English proof (translation)
-Take `⟨γ, η, κ, h⟩` from `T.down_natural_level_zero v c g hg`. Conclude with `⟨(γ, η, κ), h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem dnMvL_ex (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0)
     (g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c)) (hg : g ≠ 0) :
@@ -68,7 +68,7 @@ theorem dnMvL_ex (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0)
   exact ⟨(γ, η, κ), h⟩
 
 /- English proof (translation)
-Take `⟨γ, η, κ, h⟩` from `T.up_natural_level_zero v c z hz`. Conclude with `⟨(γ, η, κ), h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem upMvL_ex (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0)
     (z : ↥(Ld D u 0 (Nat.zero_le _) c)) (hz : (D.fm u).fv 0 v c (T.lv0.pr v c z) = 1) :
@@ -80,9 +80,9 @@ theorem upMvL_ex (T : Forms0 D u) (v : (D.mem u).A.vT) (c : (D.mem u).C.cls 0)
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Take `⟨h1, h2, -, -, h5⟩` from `h`. Use `⟨h1, h2, fun f => funext fun s => ?_⟩` and prove the remaining obligations. Unfold `natTr0`. Rewrite using `[h5 f s _ ?_, Units.val_inv_eq_inv_val]`. Introduce `τ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Equiv.apply_symm_apply]`. Use `show (T.val0.eY s).1 τ = atInf (embT D) γ.1.1 τ * (atInf (embT D) ((γ.1⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix _ _ D.host.E) τ * (T.val0.eY s).1 τ)`. Rewrite using `[← mul_assoc]`. Simplify using `only [atInf, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), one_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dnMvL_dnMvs (T : Forms0 D u) {v : (D.mem u).A.vT} {c : (D.mem u).C.cls 0}
     {g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c)}
@@ -106,11 +106,11 @@ theorem dnMvL_dnMvs (T : Forms0 D u) {v : (D.mem u).A.vT} {c : (D.mem u).C.cls 0
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Unfold `IsUpMvF`. Take `⟨h1, h2, -, -, -, h6⟩` from `h`. Use `⟨γ, κ, h1, h2, ?_⟩` and prove the remaining obligations. Introduce `f`. Use function extensionality and compare the values at `s`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Unfold `natTr0`. Rewrite using `[h6 f s _ ?_, Units.val_inv_eq_inv_val]`. Introduce `τ`. Rewrite using `[Equiv.apply_symm_apply]`. Use `show (T.val0.eY s).1 τ = atInf (embT D) γ.1.1 τ * (atInf (embT D) ((γ.1⁻¹ : GL (Fin (D.R.N 0)) D.host.E) : Matrix _ _ D.host.E) τ * (T.val0.eY s).1 τ)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc]`. Simplify using `only [atInf, ← Matrix.map_mul, Units.mul_inv, Matrix.map_one _ (map_zero _) (map_one _), one_mul]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem upMvL_isUp (T : Forms0 D u) {v : (D.mem u).A.vT} {c : (D.mem u).C.cls 0}
     {z : ↥(Ld D u 0 (Nat.zero_le _) c)}
@@ -177,31 +177,27 @@ def ValDia (T : Forms0 D u) : Prop :=
 set_option maxHeartbeats 8000000 in
 
 /- English proof (translation)
-Unfold `DUPt0F`. Introduce `v c`. Take `⟨P, hP⟩ : ∃ P : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) → UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)) × UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) × T.cls0.lev.U, ∀ g, g ≠ 0 → DnMvL T v c g (P g).1 (P g).2.1 (P …` from `⟨fun g => if hg : g ≠ 0 then (dnMvL_ex T v c g hg).choose else 1, fun g hg => by simp only [dif_pos hg]; exact (dnMvL_ex T v c g hg).choose_spec⟩`. Take `⟨Z, hZ⟩ : ∃ Z : ∀ (g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c)) (_ : {x // (D.fm u).fv 0 v ((D.fm u).dn 0 v c g) x = 1}), ↥(Ld D u 0 (Nat.zero_le _) ((D.fm u).dn 0 v c g)), ∀ g x, T.lv0.pr v _ (Z g x) = x.1` from `⟨fun g x => (T.lv0.pr_surj v _ x.1).choose, fun g x => (T.lv0.pr_surj v _ x.1).choose_spec⟩`. Establish `hZ1 : ∀ g x, (D.fm u).fv 0 v _ (T.lv0.pr v _ (Z g x)) = 1` using `fun g x => by rw [hZ]; exact x.2`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Q, hQ⟩ : ∃ Q : ∀ (g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c)) (_ : {x // (D.fm u).fv 0 v ((D.fm u).dn 0 v c g) x = 1}), UJ (sigD D : D.host.E →+* D.host.E) (gramN D 0 (Nat.zero_le _)) × UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) …` from `⟨fun g x => (upMvL_ex T v _ (Z g x) (hZ1 g x)).choose, fun g x => (upMvL_ex T v _ (Z g x) (hZ1 g x)).choose_spec⟩`. Take `⟨Y, hY⟩ : ∃ Y : ∀ (g : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c)) (_ : {x // (D.fm u).fv 0 v ((D.fm u).dn 0 v c g) x = 1}), (D.fm u).lk 0 v c, ∀ g x, g ≠ 0 → IsPtZ T v c g (P g).1 (Z g x) (Y g x)` from `⟨fun g x => if hg : g ≠ 0 then (hE v c g hg _ _ _ (hP g hg) (Z g x)).choose else 0, fun g x hg => by simp only [dif_pos hg]; exact (hE v c g hg _ _ _ (hP g hg) (Z g x)).choose_spec⟩`. Establish `key : ∀ g, g ≠ 0 → ∀ z y, IsPtZ T v c g (P g).1 z y → g y = (D.fm u).fv 0 v _ (T.lv0.pr v _ z)`. Introduce `g hg z y hz0`. Take `⟨s, hs, hz, hy⟩` from `hz0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨-, -, -, h4, -⟩` from `hP g hg`. Establish `hres : T.atT.res v s ≠ 0` using `fun h0 => hs ((RingHom.mem_ker).2 h0)`. Establish `hx : (P g).1.1.1 *ᵥ (s • z).1 ∈ Lk T.atT 0 (Nat.zero_le _) v c`. Rewrite using `[Submodule.coe_smul, Matrix.mulVec_smul]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4'` using `h4 (s • z) hx`. Establish `e : T.lv0.prk v c ⟨_, hx⟩ = T.lv0.prk v c ⟨_, hz⟩`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Submodule.coe_smul, Matrix.mulVec_smul]`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h4'` using `[e, hy, T.lv0.pr_smul]`. Simplify using `only [map_smul, smul_eq_mul] at h4'`. Conclude with `(mul_left_cancel₀ hres h4').symm`. Establish `hpair : ∀ g (hg : g ≠ 0) x, IsPair T v c g (P g).2.1 (P g).2.2 (Q g x).2.1 (Y g x)` using `fun g hg x => ⟨hg, (P g).1, hP g hg, Z g x, (Q g x).1, (Q g x).2.2, hZ1 g x, hQ g x, hY g x hg⟩`. Use `⟨fun g => (P g).1, fun g => (P g).2.1, fun g => (P g).2.2, fun g x => (Q g x).2.1, ?_, ?_, Y, (vD v c).choose, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg`. Conclude with `dnMvL_dnMvs T (hP g hg)`. Introduce `g x`. Establish `h` using `upMvL_isUp T (hQ g x)`. Rewrite `h` using `[hZ]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg x`. Rewrite using `[key g hg _ _ (hY g x hg), hZ]`. Conclude with `x.2`. Introduce `g hg y hy`. Take `⟨x', z', hz', hpz⟩` from `hS v c g hg _ _ _ (hP g hg) y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx1 : (D.fm u).fv 0 v ((D.fm u).dn 0 v c g) x' = 1`. Rewrite using `[← hz', ← key g hg z' y hpz, hy]`. Use `⟨⟨x', hx1⟩, ?_, ?_⟩` and prove the remaining obligations. Conclude with `hW v c g hg _ _ _ (hP g hg) x' _ _ ⟨Z g ⟨x', hx1⟩, hZ g _, hY g _ hg⟩ ⟨z', hz', hpz⟩`. Introduce `x hx`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `hI v c g hg _ _ _ (hP g hg) x.1 x' y ⟨Z g x, hZ g x, ?_⟩ ⟨z', hz', hpz⟩` and prove the remaining obligations. Rewrite using `[← hx]`. Conclude with `hY g x hg`. Introduce `G hG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hD : ∀ p : PD D u v c, (p.1 : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c)) ≠ 0` using `fun p h0 => by`. Establish `h` using `p.1.2`. Rewrite `h` using `[h0, LinearMap.zero_apply]`. Conclude with `zero_ne_one h`. Use `⟨fun p hp => ?_, fun p q hpq => ?_, fun p q hpq => ?_, fun a q hq k hk δ hδ => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hpair _ (hD p) p.2`. Rewrite `h` using `[hp]`. Conclude with `vT v c G hG _ _ _ _ h`. Establish `h1` using `hpair _ (hD p) p.2`. Establish `h2` using `hpair _ q.1.2 q.2`.
-
-Rewrite `h2` using `[← hpq]`. Conclude with `vS v c G hG _ _ _ _ _ _ _ _ _ h1 h2`. Establish `h1` using `hpair _ p.1.2 p.2`. Establish `h2` using `hpair _ q.1.2 q.2`. Rewrite `h2` using `[← hpq]`.
-
-Conclude with `vS v c G hG _ _ _ _ _ _ _ _ _ h1 h2`. Establish `h` using `hpair _ q.1.2 q.2`. Rewrite `h` using `[hq]`. Conclude with `(vD v c).choose_spec G hG a _ _ _ _ h k hk δ hδ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dUPt0F_of (T : Forms0 D u) (hE : PtEx T) (hW : PtWd T) (hI : PtInj T) (hS : PtSurj T)
     (vS : ValSame T) (vT : ValTe T) (vD : ValDia T) : DUPt0F T := by

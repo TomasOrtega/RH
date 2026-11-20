@@ -194,7 +194,7 @@ def TieExt {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R 
       (fun i τ => Bridge.lamLdef (Vc D i).rank ((i : ℕ) + 1) τ) gramR c0R c0L
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem ioExt_ext {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) {V : NewLev D N}
     {X : NewFam A N} (Y : NewReal R V X) (h : IoExt R) : IoExt (extR R Y) := h
@@ -255,9 +255,9 @@ variable {O : ∀ i, OMDat T.toCore R i Unit (fun _ => A.μ0)}
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Establish `hP` using `h.2`. Establish `h1` using `hP.lift`. Establish `h2` using `hP.tuple`. Use `⟨h.1, ⟨h1.field, h1.std, h1.v0, ?_, h1.lev⟩, fun t => ⟨(h2 t).reps, (h2 t).B, (h2 t).xi, (h2 t).phi, (h2 t).half⟩, hP.act, hP.bad, hP.reps, hP.ep, hP.io, hP.w, hP.cov, hP.cxi, hP.model₂⟩` and prove the remaining obligations. Take `⟨g, c, c', h3, h4⟩` from `h1.c0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g, c, c', hT _ _ _ h3, h4⟩`.
+Supply the required witnesses or components.
 -/
 theorem omPins_ext (hT : TieExt R Y) {i : Fin D.R.m} (h : OMPins T R κ v₀ O i) :
     OMPins T (extR R Y) κ v₀ (fun i => omExt Y (O i)) i := by
@@ -272,14 +272,14 @@ theorem omPins_ext (hT : TieExt R Y) {i : Fin D.R.m} (h : OMPins T R κ v₀ O i
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem oneMapOf_ext {i : Fin D.R.m} (cc ph) :
     (omExt Y (O i)).OneMapOf (κ i) (v₀ i (sg0 D A)) cc ph ↔ (O i).OneMapOf (κ i) (v₀ i (sg0 D A)) cc ph := Iff.rfl
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `⟨cc, p, h'⟩` and use `(oneMapOf_ext Y _ _).2 (h ⟨cc, p, (oneMapOf_ext Y _ _).1 h'⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem phaseTie_ext {ph : Fin D.R.m → ℂ} {i : Fin D.R.m} (h : PhaseTie T R κ v₀ O ph i) :
     PhaseTie T (extR R Y) κ v₀ (fun i => omExt Y (O i)) ph i :=
@@ -287,7 +287,7 @@ theorem phaseTie_ext {ph : Fin D.R.m → ℂ} {i : Fin D.R.m} (h : PhaseTie T R 
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨h.core, h.host, h.curve, h.split, h.chi⟩, fun h => ⟨h.core, h.host, h.curve, h.split, h.chi⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem fixBase_ext (i : Fin D.R.m) (τ : ℂ ≃+* ℂ) : GlobalTheory.ConjTwist.FixBase T (extR R Y) i τ ↔ GlobalTheory.ConjTwist.FixBase T R i τ :=
   ⟨fun h => ⟨h.core, h.host, h.curve, h.split, h.chi⟩, fun h => ⟨h.core, h.host, h.curve, h.split, h.chi⟩⟩

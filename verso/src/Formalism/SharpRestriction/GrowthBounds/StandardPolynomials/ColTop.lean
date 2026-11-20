@@ -11,9 +11,9 @@ namespace Formalism.MainNotions.ColumnSystems.Pf
 open Formalism.MainNotions.G MvPolynomial Formalism.MainNotions.LemmaBAlt Formalism.MainNotions.ColumnSystems.Pf.Col Formalism.MainNotions.ColumnSystems.Pf.ColF Formalism.MainNotions.ColumnSystems.Pf.GenusGluing
 
 /- English proof (translation)
-Use `show _ = decide ((a : ℕ) % 2 = 0)`. Distinguish the cases in `h : (a : ℕ) < 2 * segS X.TT j`. Rewrite using `[lamS_succ_lt X j a h]`. Rewrite using `[lamS_succ_ge X j a h]`. Establish `: (a : ℕ) = 2 * segS X.TT j` using `by have := a.2; omega`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this]`.
+A detailed English derivation is pending.
 -/
 theorem col_lamS_vec {C0 CE1 CE2 mu : ℝ} {X : Loc} [NeZero X.m] {β : GlobalTheory X} (L : LvDat C0 CE1 CE2 mu X β)
     (j : Fin (numSeg X.TT)) (a : Fin (2 * segS X.TT j + 1)) : (lamS X j a.succ).2 = (L.LL j).vec a := by
@@ -25,30 +25,26 @@ theorem col_lamS_vec {C0 CE1 CE2 mu : ℝ} {X : Loc} [NeZero X.m] {β : GlobalTh
     simp [this]
 
 /- English proof (translation)
-Unfold `ka1 Loc.k Loc.Q`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 theorem column_kappa_nonneg (X : Loc) : 0 ≤ ka1 X := by
   unfold ka1 Loc.k Loc.Q
   positivity
 
 /- English proof (translation)
-Introduce `X _ _ O _ _ _ _ S hS hD hH hC mm hmm n hn1 hnc β hβ L j y hy`. Take `⟨hnum1, hnum2⟩` from `hNum X hD hH hC mm hmm n hn1 hnc j (β j) (hβ j)`. Establish `h2 : 2 ≤ numSeg X.TT` using `hH.1.2.2.2.1`. Establish `hG : segG X.TT j ≤ X.G'` using `(hH.1.2.2.2.2.1 j).1`. Establish `hs : segS X.TT j ≤ X.N1` using `(hH.1.2.2.2.2.1 j).2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : 2 * X.N1 + 2 ≤ X.m` using `hH.1.2.2.2.2.2.2.1`. Establish `hm : 2 * segS X.TT j + 1 < X.m` using `by omega`. Establish `hn' : 1 ≤ X.n'` using `by have := hD.2.2.1; omega`. Establish `hp : 0 < X.p` using `hD.1.pos`. Establish `h` using `ph_seg L j y hy (hβ j) hnum1 hnum2 hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvec` using `col_lamS_vec L j`. Establish `hmu : 0 ≤ mm + (n : ℝ) * ka1 X`. Establish `h1 : 0 ≤ mm`. Break down `hmm with h | h` into its components or cases. Rewrite using `[h]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h]`. Check the signs of the components of the expression. Establish `h3` using `column_kappa_nonneg X`. Check the signs of the components of the expression. Apply the tactic sequence `exact ⟨{ ι := ↥(colsS C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j y.1.1.mu) fin := inferInstance Kc := fun c => Kcol (KK O) y.1.1.mu c.1 (2 * segS X.TT j + 1) (y.1.2 c.1) dK := fun c => dKS X j y.1.1.mu c.1 pl := fun c => plS C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j c.1 fC := fun c => …`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Check the signs of the components of the expression. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[Finset.sum_coe_sort (colsS C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j y.1.1.mu) (fun c => dKS X j y.1.1.mu c i)]`. Conclude with `dKsum_seg L j y h i`. Use `Kprod := by`. Rewrite using `[Finset.prod_coe_sort (colsS C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j y.1.1.mu) (fun c => Kcol (KK O) y.1.1.mu c (2 * segS X.TT j + 1) (y.1.2 c))]`. Conclude with `Kprod_seg L j y (KK O)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Use `facC := fun c => colFac j y.1.1.mu y.1.2 S hS hn' h2 h hvec c.1`. Use `homC := fun c => colHomC j y.1.1.mu h (fun a => (hvec a).symm) c.1 _`. Use `fPol := fun c => colFPol j y.1.1.mu h2 y.1.2 c.1`. Use `polC := fun c => colPolC j y.1.1.mu h c.1 _`. Use `plQ := fun c l => colPlQ j hp h2 hG c.1 l`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `dgCQ := fun c l => colDgQ j y.1.1.mu hp h2 hG c.1 l`. Use `dgCY := fun c j' => colDgY j y.1.1.mu c.1 j'`. Use `a0le := by`. Establish `h0 : 0 ≤ a0Z C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j` using `sub_nonneg.2 hnum1`. Rewrite using `[Int.toNat_of_nonneg h0]`.
-
-Unfold `a0Z`. Rewrite using `[sub_add_cancel]`. Establish `h1 : ⌊(((X.seg C0 CE1 CE2 j).A0 X.p : ℤ) : ℝ) - (mm + (n : ℝ) * ka1 X)⌋ ≤ ⌊(((X.seg C0 CE1 CE2 j).A0 X.p : ℤ) : ℝ)⌋` using `Int.floor_le_floor (by linarith)`. Rewrite `h1` using `[Int.floor_intCast]`. Then use the resulting hypothesis. Use `plSum := by`.
-
-Rewrite using `[Finset.sum_coe_sort (colsS C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j y.1.1.mu) (fun c => plS C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j c)]`. Conclude with `plSum_seg L j y h`. Use `oSum := by`. Rewrite using `[Finset.sum_coe_sort (colsS C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j y.1.1.mu) (fun c => oCS C0 CE1 CE2 (mm + (n : ℝ) * ka1 X) X β j y.1.1.mu c)]`. Conclude with `oSum_seg L j y h }⟩`.
+A detailed English derivation is pending.
 -/
 theorem colsAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hNum : ColumnNumericsAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc) :
     ColsAt C0 CYb Cde Ck CD Cb CE1 CE2 Cc := by
@@ -115,7 +111,7 @@ theorem colsAt_of {C0 CYb Cde Ck CD Cb CE1 CE2 Cc : ℝ} (hNum : ColumnNumericsA
       exact oSum_seg L j y h }⟩
 
 /- English proof (translation)
-The claim follows from `TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => colsAt_of h) column_numerics_holds`.
+A detailed English derivation is pending.
 -/
 theorem restCols : RestCols :=
   TransportedAlt.mono (fun _ _ _ _ _ _ _ _ _ _ h => colsAt_of h) column_numerics_holds

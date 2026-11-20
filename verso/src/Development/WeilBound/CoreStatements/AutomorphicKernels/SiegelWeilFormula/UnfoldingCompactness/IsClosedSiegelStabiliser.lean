@@ -12,7 +12,7 @@ namespace PositivityTheory.SiegelWeilFormula.kunf
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Take `⟨p, t, hp, k, hk, rfl⟩` from `d.ok.hgt.iwa x`. Rewrite using `[d.ok.hgt.val p t hp k hk]`. Conclude with `absE_pos _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem a_pos (d : SD σ) (x : d.G) : 0 < d.a x := by
   obtain ⟨p, t, hp, k, hk, rfl⟩ := d.ok.hgt.iwa x
@@ -20,22 +20,20 @@ theorem a_pos (d : SD σ) (x : d.G) : 0 < d.a x := by
   exact absE_pos _
 
 /- English proof (translation)
-Simplify using `only [SD.Ht]`. Rewrite using `[Real.coe_toNNReal _ (a_pos d x).le]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ht_eq (d : SD σ) (x : d.G) : ((d.Ht x : ℝ) : ℂ) = (d.a x : ℂ) := by
   simp only [SD.Ht]
   rw [Real.coe_toNNReal _ (a_pos d x).le]
 
 /- English proof (translation)
-The claim follows from `SecA.isCompact_stdK' d.B d.Y d.ok.good d.b d.K d.ok.stdK`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_K (d : SD σ) : IsCompact (d.K : Set d.G) :=
   SecA.isCompact_stdK' d.B d.Y d.ok.good d.b d.K d.ok.stdK
 
 /- English proof (translation)
-Establish `e : (par2 σ d.Y : Set d.G) = (fun p : d.G => (inFrame d.b p).toBlocks₂₁) ⁻¹' {0}`. Use extensionality with `p`. Conclude with `mem_stabiliser_iff_lower_block_zero d.ok.frame p`. Rewrite using `[e]`. Establish `hfr` using `GlobalTheory.EisBL.DoubledParabolic.continuous_inFrame (σ := σ) (Y := d.Y) d.b`.
-
-Conclude with `isClosed_singleton.preimage (continuous_pi fun i => continuous_pi fun j => hfr.matrix_elem (Sum.inr i) (Sum.inl j))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_siegel_stabiliser (d : SD σ) : IsClosed (par2 σ d.Y : Set d.G) := by
   have e : (par2 σ d.Y : Set d.G) = (fun p : d.G => (inFrame d.b p).toBlocks₂₁) ⁻¹' {0} := by
@@ -47,9 +45,9 @@ theorem isClosed_siegel_stabiliser (d : SD σ) : IsClosed (par2 σ d.Y : Set d.G
     (continuous_pi fun i => continuous_pi fun j => hfr.matrix_elem (Sum.inr i) (Sum.inl j))
 
 /- English proof (translation)
-Use `GlobalTheory.Doubling.continuous_of_prod (P := par2 σ d.Y) (K := d.K) (isClosed_siegel_stabiliser d) (isCompact_K d) (fun g => ?_) ?_` and prove the remaining obligations. Take `⟨p, t, hp, k, hk, e⟩` from `d.ok.hgt.iwa g`. Conclude with `⟨⟨p, mem_parabolic_GL2_iff.2 ⟨t, hp⟩⟩, k, hk, e⟩`. Establish `hc : Continuous fun x : par2 σ d.Y × d.K => ((GlobalTheory.Doubling.absE F E (SecA.uDet x.1) : ℝ≥0) : ℝ)` using `NNReal.continuous_coe.comp (GlobalTheory.Doubling.continuous_absE.comp (SecA.continuous_uDet.comp continuous_fst))`. Use `hc.congr fun x => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨t, ht⟩` from `mem_parabolic_GL2_iff.1 x.1.2`. Rewrite using `[d.ok.hgt.val _ t ht _ x.2.2, SecA.uDet_eq ht]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem continuous_a (d : SD σ) : Continuous d.a := by
   refine GlobalTheory.Doubling.continuous_of_prod (P := par2 σ d.Y) (K := d.K) (isClosed_siegel_stabiliser d) (isCompact_K d)

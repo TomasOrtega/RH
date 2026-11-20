@@ -7,15 +7,15 @@ namespace GroundTheory.Heights₂.Heights.AnalyticLimit
 noncomputable section
 
 /- English proof (translation)
-Introduce `X _ _ _ D A R`. Use `choose g hgH hg using fun j k => hT D A R j k`. Establish `hO : ∀ j k, IsOpen (bdDom R j ∩ bdDom R k)` using `fun j k => (isOpen_bdDom R j).inter (isOpen_bdDom R k)`. Establish `hgC : ∀ j k, ContinuousOn (g j k) (bdDom R j ∩ bdDom R k)` using `fun j k => (hCC D A _ (hO j k)).2 _ (hgH j k)`. Establish `hcoc` using `hC D A R g hgC fun j k y hy => (hg j k y hy).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hwS, hwP, hwE⟩` from `hW D A R g hgH (fun j k y hy => (hg j k y hy).1) hcoc`. Establish `hd : ∀ j k, ∀ y ∈ bdDom R j ∩ bdDom R k, Real.log (w j y) / 2 = Real.log ‖g j k y‖ + Real.log (w k y) / 2`. Introduce `j k y hy`. Establish `hg0 : ‖g j k y‖ ≠ 0` using `norm_ne_zero_iff.mpr (hg j k y hy).1`. Rewrite using `[hwE j k y hy, Real.log_mul (pow_ne_zero 2 hg0) (hwP k y hy.2).ne', Real.log_pow]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `⟨fun j y => Real.log (w j y) / 2, fun j i => ?_, fun j k y hy => ?_, fun j k y hy => ?_⟩` and prove the remaining obligations. Conclude with `((hwS j i).log fun z hz => (hwP j _ hz.2).ne').div_const 2`. Take `⟨V, hV, hyV, hVW, G, hG, hGe⟩` from `hL D A _ (g j k) (hO j k) (hgH j k) (fun z hz => (hg j k z hz).1) y hy`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨V, hV, hyV, G, hG, fun z hz => ?_⟩` and prove the remaining obligations. Use `show Real.log (w j z) / 2 - Real.log (w k z) / 2 = (G z).re`. Rewrite using `[hd j k z hz.2, ← hGe z hz.1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hgp : 0 < ‖g j k y‖` using `norm_pos_iff.mpr (hg j k y hy).1`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only`. Rewrite using `[hd j k y hy, (hg j k y hy).2, norm_mul, neg_add, Real.exp_add, Real.exp_neg (Real.log _), Real.exp_log hgp]`. Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem BdMetric.proof (hCC : ChartCont.Statement) (hT : BdTransition.Statement)
     (hC : BdCocycle.Statement) (hL : LogNormHolo.Statement) (hW : BdWeight.Statement) :

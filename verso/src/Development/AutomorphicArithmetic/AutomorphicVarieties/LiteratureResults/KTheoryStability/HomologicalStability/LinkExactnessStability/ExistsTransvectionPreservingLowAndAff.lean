@@ -6,21 +6,19 @@ open GlobalTheory.SeqCx Matrix
 namespace GlobalTheory.ShearLow
 
 /- English proof (translation)
-Introduce `R _ n h t ht hht`. Establish `key : ∀ x y : ℕ →₀ R, y ∈ low R n → (x + y ∈ low R n ↔ x ∈ low R n)`. Introduce `x y hy`. Simplify using `only [low, Set.mem_setOf_eq, Finsupp.add_apply] at hy ⊢`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hx i hi`. Establish `hxi` using `hx i hi`. Rewrite `hxi` using `[hy i hi, add_zero]`. Conclude with `hxi`. Introduce `hx i hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx i hi, hy i hi, add_zero]`. Establish `hts : ∀ c : R, c • t ∈ low R n`. Introduce `c`. Simplify using `only [low, Set.mem_setOf_eq, Finsupp.smul_apply] at ht ⊢`. Introduce `i hi`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht i hi, smul_zero]`. Set `ψ : (ℕ →₀ R) ≃ₗ[R] (ℕ →₀ R)` to `{ toFun := fun x => x + h x • t invFun := fun x => x - h x • t map_add' := by`. Introduce `x y`. Simplify using `only [map_add, add_smul]`. Normalize the expressions using the abelian group laws.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Fix the arbitrary inputs or assume the hypotheses.
 
-Use the proof step `map_smul' := by`. Introduce `c x`. Simplify using `only [map_smul, smul_eq_mul, mul_smul, RingHom.id_apply, smul_add]`. Use `left_inv := by`. Introduce `x`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, map_smul, hht, smul_eq_mul, mul_zero, add_zero, add_sub_cancel_right]`. Use `right_inv := by`. Introduce `x`. Simplify using `only [map_sub, map_smul, hht, smul_eq_mul, mul_zero, sub_zero, sub_add_cancel] }`. Establish `hψ : ∀ x, ψ x = x + h x • t` using `fun x => rfl`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨ψ, hψ, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Rewrite using `[hψ]`. Conclude with `key x _ (hts _)`. Introduce `j x`.
-
-Rewrite using `[hψ]`. Simplify using `only [aff, Set.mem_setOf_eq]`. Establish `e : x + h x • t - (Finsupp.single j 1) = (x - Finsupp.single j 1) + h x • t` using `by abel`. Rewrite using `[e]`. Conclude with `key _ _ (hts _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (R : Type) [CommRing R] (n : ℕ) (h : (ℕ →₀ R) →ₗ[R] R) (t : ℕ →₀ R), t ∈ low R n → h t = 0 → ∃ ψ : (ℕ →₀ R) ≃ₗ[R] (ℕ →₀ R), (∀ x, ψ x = x + h x • t) ∧ (∀ x, ψ x ∈ low R n ↔ x ∈ low R n) ∧ ∀ j x, ψ x ∈ aff R n j ↔ x ∈ aff R n j := by
   intro R _ n h t ht hht
@@ -72,7 +70,7 @@ end GlobalTheory.ShearLow
 section
 open GlobalTheory.SeqCx Matrix
 /- English proof (translation)
-Use `first`. Consider the case `exact @GlobalTheory.ShearLow.main`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.exists_transvection_preserving_low_and_aff : ∀ (R : Type) [CommRing R] (n : ℕ) (h : (ℕ →₀ R) →ₗ[R] R) (t : ℕ →₀ R), t ∈ low R n → h t = 0 → ∃ ψ : (ℕ →₀ R) ≃ₗ[R] (ℕ →₀ R), (∀ x, ψ x = x + h x • t) ∧ (∀ x, ψ x ∈ low R n ↔ x ∈ low R n) ∧ ∀ j x, ψ x ∈ aff R n j ↔ x ∈ aff R n j := by
   first

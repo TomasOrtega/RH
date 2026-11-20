@@ -22,7 +22,7 @@ def Covers (X : Data E r) (x y : Frame X.Ψ r) : Prop :=
   y ∈ X.dom ∧ X.la1 y = X.la1 x ∧ ∀ ξ, X.IsIso ξ → ∃ ξ', X.IsIso ξ' ∧ X.tt ξ' y = X.tt ξ x
 
 /- English proof (translation)
-Use `⟨h'.1, h'.2.1.trans h.2.1, fun ξ hξ => ?_⟩` and prove the remaining obligations. Take `⟨ξ1, h1, e1⟩` from `h.2.2 ξ hξ`. Take `⟨ξ2, h2, e2⟩` from `h'.2.2 ξ1 h1`. Conclude with `⟨ξ2, h2, e2.trans e1⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Covers.trans {X : Data E r} {x y z : Frame X.Ψ r} (h : Covers X x y) (h' : Covers X y z) :
     Covers X x z := by

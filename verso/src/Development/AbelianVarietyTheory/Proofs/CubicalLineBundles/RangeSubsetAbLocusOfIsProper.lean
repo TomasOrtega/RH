@@ -13,7 +13,7 @@ open scoped CategoryTheory.Obj
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hE : ValuativeCriterion.Existence s` using `(UniversallyClosed.eq_valuativeCriterion ▸ (inferInstance : UniversallyClosed s) : (ValuativeCriterion.Existence ⊓ @QuasiCompact) s).1`. Take `⟨⟨l⟩⟩` from `hE { R := V, K := K, i₁ := y, i₂ := r, commSq := ⟨h⟩ }`. Conclude with `⟨l.l, l.fac_left, l.fac_right⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem valuative_lift_of_isProper {V K : Type} [CommRing V] [IsDomain V] [ValuationRing V] [Field K] [Algebra V K]
     [IsFractionRing V K] {X S : Scheme.{0}} (s : X ⟶ S) [IsProper s] (y : Sp K ⟶ X) (r : Sp V ⟶ S)
@@ -26,7 +26,7 @@ theorem valuative_lift_of_isProper {V K : Type} [CommRing V] [IsDomain V] [Valua
   exact ⟨l.l, l.fac_left, l.fac_right⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Use `(abLocus_pullback abLocusOne hG h x).2 ?_` and prove the remaining obligations. Introduce `K _ _ t _`. Use `infer_instance`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem range_subset_abLocus_of_isProper {S S' : Scheme.{0}} {G : Over S} {G' : Over S'} [GrpObj G]
     (hG : IsSemiAbelian G) {f : S' ⟶ S} {φ : G'.left ⟶ G.left} (h : IsPullback φ G'.hom G.hom f)
@@ -37,9 +37,9 @@ theorem range_subset_abLocus_of_isProper {S S' : Scheme.{0}} {G : Over S} {G' : 
   infer_instance
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y V K _ _ _ _ _ _ b y hy`. Use `projProper O Y.X Y.s Y.proj` as an intermediate fact. Take `⟨y', h₁, h₂⟩` from `valuative_lift_of_isProper Y.s (y ≫ Y.j) (spMap b) (by rw [Category.assoc, hy])`. Take `⟨PP', cub, sym, adj, prim, m, -⟩` from `sabPull Out.CubePf.cubePull y' Y.t`. Use `⟨y', _, m, h₂, h₁, fun hA => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `hA.proper` as an intermediate fact. Conclude with `range_subset_abLocus_of_isProper Y.t.semi m.cart.1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem model_point_extends :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l)

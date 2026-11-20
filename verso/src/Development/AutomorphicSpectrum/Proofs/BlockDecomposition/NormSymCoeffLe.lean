@@ -11,19 +11,19 @@ noncomputable def symCoeff (r : ℂ) (j : ℕ) : ℂ :=
   ∑ i ∈ range (2 * j + 1), r ^ ((i : ℤ) - (j : ℤ))
 
 /- English proof (translation)
-Simplify using `[symCoeff]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symCoeff_zero (r : ℂ) : symCoeff r 0 = 1 := by
   simp [symCoeff]
 
 /- English proof (translation)
-Unfold `symCoeff`. Establish `e : 2 * (j + 1) + 1 = (2 * j + 1) + 1 + 1` using `by ring`. Rewrite using `[e, sum_range_succ', sum_range_succ]`. Establish `h1 : ∀ i : ℕ, r ^ (((i + 1 : ℕ) : ℤ) - ((j + 1 : ℕ) : ℤ)) = r ^ ((i : ℤ) - (j : ℤ))`. Introduce `i`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[h1]`. Establish `h2 : r ^ (((2 * j + 1 : ℕ) : ℤ) - (j : ℤ)) = r ^ (j + 1)`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← zpow_natCast]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : r ^ (((0 : ℕ) : ℤ) - ((j + 1 : ℕ) : ℤ)) = r⁻¹ ^ (j + 1)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[inv_pow, ← zpow_natCast, ← zpow_neg]`. Use `congr 1`. Rewrite using `[h2, h3]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 -/
 theorem symCoeff_succ {r : ℂ} (j : ℕ) :
     symCoeff r (j + 1) = symCoeff r j + r ^ (j + 1) + r⁻¹ ^ (j + 1) := by
@@ -40,7 +40,7 @@ theorem symCoeff_succ {r : ℂ} (j : ℕ) :
   rw [h2, h3]
 
 /- English proof (translation)
-Unfold `symCoeff`. Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Simplify using `[norm_zpow, hr]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem norm_symCoeff_le {r : ℂ} (hr : ‖r‖ = 1) (j : ℕ) :
     ‖symCoeff r j‖ ≤ 2 * (j : ℝ) + 1 := by
@@ -49,27 +49,27 @@ theorem norm_symCoeff_le {r : ℂ} (hr : ‖r‖ = 1) (j : ℕ) :
   simp [norm_zpow, hr]
 
 /- English proof (translation)
-Establish `r0 : r ≠ 0`. Introduce `h`. Simplify using `[h] at hr`. Establish `hrX : ‖r * X‖ < 1` using `by simpa [hr] using hX`. Establish `hrX' : ‖r⁻¹ * X‖ < 1` using `by simpa [hr] using hX`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : Summable (fun j : ℕ => symCoeff r j * X ^ j)`. Establish `g1 : Summable (fun j : ℕ => (j : ℝ) ^ 1 * ‖X‖ ^ j)` using `summable_pow_mul_geometric_of_norm_lt_one 1 (by simpa using hX)`. Establish `g0 : Summable (fun j : ℕ => ‖X‖ ^ j)` using `summable_geometric_of_lt_one (norm_nonneg _) hX`. Use `Summable.of_norm_bounded ((g1.mul_left 2).add g0) ?_` and prove the remaining obligations. Introduce `j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul, norm_pow]`. Use `mul_le_mul_of_nonneg_right (norm_symCoeff_le hr j) (pow_nonneg (norm_nonneg X) j)` as an intermediate fact. Simplify `this` using `[add_mul, mul_assoc]`. Establish `hS` using `hsum.hasSum`. Use `set S := ∑' j : ℕ, symCoeff r j * X ^ j with hSdef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `hasSum_geometric_of_norm_lt_one hrX`. Establish `hB` using `hasSum_geometric_of_norm_lt_one hrX'`. Establish `hS1` using `(hasSum_nat_add_iff' 1).2 hS`. Establish `hA1` using `(hasSum_nat_add_iff' 1).2 hA`. Establish `hB1` using `(hasSum_nat_add_iff' 1).2 hB`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC` using `((hS.mul_right X).add hA1).add hB1`. Establish `hfun : (fun j : ℕ => symCoeff r (j + 1) * X ^ (j + 1)) = fun j : ℕ => symCoeff r j * X ^ j * X + (r * X) ^ (j + 1) + (r⁻¹ * X) ^ (j + 1)`. Use function extensionality and compare the values at `j`. Rewrite using `[symCoeff_succ, mul_pow, mul_pow, pow_succ X j]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hS1` using `[hfun]`. Establish `key` using `hS1.unique hC`. Simplify using `only [range_one, sum_singleton, symCoeff_zero, pow_zero, mul_one] at key`. Establish `n1 : (1 - r * X) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: r * X = 1` using `by linear_combination -h`. Simplify using `[this] at hrX`. Establish `n2 : (1 - r⁻¹ * X) ≠ 0`. Introduce `h`. Establish `: r⁻¹ * X = 1` using `by linear_combination -h`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[this] at hrX'`. Establish `n3 : (1 - X) ≠ 0`. Introduce `h`. Establish `: X = 1` using `by linear_combination -h`. Simplify using `[this] at hX`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `val : S = (1 + X) / ((1 - r * X) * (1 - r⁻¹ * X))`. Establish `hk : (1 - X) * S = (1 - r * X)⁻¹ + (1 - r⁻¹ * X)⁻¹ - 1`. Take the linear combination `key`. Establish `hq : (1 - r * X)⁻¹ + (1 - r⁻¹ * X)⁻¹ - 1 = (1 - X) * ((1 + X) / ((1 - r * X) * (1 - r⁻¹ * X)))`. Establish `hru : r * r⁻¹ = 1` using `mul_inv_cancel₀ r0`.
+Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab : (1 - r⁻¹ * X) + (1 - r * X) - (1 - r * X) * (1 - r⁻¹ * X) = (1 - X) * (1 + X)`. Take the linear combination `(-X ^ 2) * hru`. Generalize the expression as in `(1 - r * X) = a at n1 hab ⊢`. Generalize the expression as in `(1 - r⁻¹ * X) = b at n2 hab ⊢`. Clear the denominators using the available nonvanishing facts.
+Take a linear combination of the given relations to obtain the conclusion. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `hab`. Conclude with `mul_left_cancel₀ n3 (hk.trans hq)`. Rewrite `hS` using `[val]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem hasSum_symCoeff {r X : ℂ} (hr : ‖r‖ = 1) (hX : ‖X‖ < 1) :
     HasSum (fun j : ℕ => symCoeff r j * X ^ j) ((1 + X) / ((1 - r * X) * (1 - r⁻¹ * X))) := by
@@ -131,15 +131,15 @@ theorem hasSum_symCoeff {r X : ℂ} (hr : ‖r‖ = 1) (hX : ‖X‖ < 1) :
   rwa [val] at hS
 
 /- English proof (translation)
-Introduce `r X hr hX`. Establish `r0 : r ≠ 0`. Introduce `h`. Simplify using `[h] at hr`. Establish `n3 : (1 - X) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `h`. Establish `: X = 1` using `by linear_combination -h`. Simplify using `[this] at hX`. Establish `hterm : (fun j : ℕ => (∑ i ∈ range (2 * j + 1), r ^ i) * (r⁻¹ * X) ^ j) = fun j : ℕ => symCoeff r j * X ^ j`. Use function extensionality and compare the values at `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mul_pow, ← mul_assoc]`. Use `congr 1`. Unfold `symCoeff`. Rewrite using `[sum_mul]`. Use `sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[zpow_sub₀ r0, zpow_natCast, zpow_natCast, inv_pow, div_eq_mul_inv]`. Establish `hval : (1 - X ^ 2) * ((1 - r * X)⁻¹ * (1 - X)⁻¹ * (1 - r⁻¹ * X)⁻¹) = (1 + X) / ((1 - r * X) * (1 - r⁻¹ * X))`. Establish `hc` using `mul_inv_cancel₀ n3`. Rewrite using `[div_eq_mul_inv, mul_inv]`. Take the linear combination `((1 + X) * (1 - r * X)⁻¹ * (1 - r⁻¹ * X)⁻¹) * hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[hterm, hval]`. Conclude with `hasSum_symCoeff hr hX`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localSeries : E2b := by
   intro r X hr hX

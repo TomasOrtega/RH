@@ -10,9 +10,9 @@ open scoped ComplexOrder ENNReal
 namespace GlobalTheory.FreeOnDomain
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.FirstColumnConjugation.exists_conj_first_col_zero`. Consider the case `exact _root_.GlobalTheory.FirstColumnConjugation.exists_conj_first_col_zero`. Consider the case `(apply _root_.GlobalTheory.FirstColumnConjugation.exists_conj_first_col_zero <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.FirstColumnConjugation.exists_conj_first_col_zero <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.FirstColumnConjugation.exists_conj_first_col_zero <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.FirstColumnConjugation.exists_conj_first_col_zero ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_conj_first_col {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ) :
     ∃ P B : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ, P.det ≠ 0 ∧ (∀ a : Fin n, B a.succ 0 = 0) ∧ A * P = P * B := by
@@ -25,19 +25,19 @@ theorem exists_conj_first_col {n : ℕ} (A : Matrix (Fin (n + 1)) (Fin (n + 1)) 
   | (intros; exact _root_.GlobalTheory.FirstColumnConjugation.exists_conj_first_col_zero ..)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨1, 1, by simp, fun a => a.elim0, Subsingleton.elim _ _⟩`. Consider the case `succ n ih`. Take `⟨P, B, hP, hB, e⟩` from `exists_conj_first_col A`. Take `⟨Q, T, hQ, hT, e'⟩` from `ih (B.submatrix Fin.succ Fin.succ)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `D : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ` to `of (Fin.cons (Fin.cons 1 fun _ => 0) fun a => Fin.cons 0 (Q a))`. Set `T' : Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ` to `of (Fin.cons ((B * D) 0) fun a => Fin.cons 0 (T a))`. Establish `hD : D.det = Q.det`. Rewrite using `[det_succ_row_zero, Fin.sum_univ_succ]`. Simplify using `only [D, of_apply, Fin.cons_zero, Fin.cons_succ, mul_zero, zero_mul, Finset.sum_const_zero, add_zero, Fin.val_zero, pow_zero, one_mul, Fin.succAbove_zero]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Establish `hBD : B * D = D * T'`. Use extensionality with `a c`. Use `Fin.cases ?_ (fun a => ?_) a` and prove the remaining obligations. Rewrite using `[mul_apply (M := D), Fin.sum_univ_succ]`.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[D, T']`. Use `Fin.cases ?_ (fun c => ?_) c` and prove the remaining obligations. Simplify using `[D, T', mul_apply, Fin.sum_univ_succ, hB]`. Use `congrFun (congrFun e' a) c` as an intermediate fact. Simplify `this` using `[D, T', mul_apply, Fin.sum_univ_succ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨P * D, T', ?_, fun a c h => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_mul, hD]`. Conclude with `mul_ne_zero hP hQ`. Use `revert h`. Use `Fin.cases ?_ (fun a => ?_) a` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `h; exact absurd h (by simp)`. Use `Fin.cases ?_ (fun c => ?_) c` and prove the remaining obligations. Introduce `_`. Simplify using `[T']`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Simplify `hT a c (Fin.succ_lt_succ_iff.1 h)` using `[T']`. Rewrite using `[← Matrix.mul_assoc, e, Matrix.mul_assoc, hBD, Matrix.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_conj_triangular (n : ℕ) (A : Matrix (Fin n) (Fin n) ℂ) :
     ∃ P T : Matrix (Fin n) (Fin n) ℂ, P.det ≠ 0 ∧ (∀ a c, c < a → T a c = 0) ∧ A * P = P * T := by
@@ -75,9 +75,9 @@ theorem exists_conj_triangular (n : ℕ) (A : Matrix (Fin n) (Fin n) ℂ) :
     · rw [← Matrix.mul_assoc, e, Matrix.mul_assoc, hBD, Matrix.mul_assoc]
 
 /- English proof (translation)
-Rewrite `h` using `[moeb_zero, moeb_zero]`. Establish `h1 : F'.toBlocks₁₂ = F.toBlocks₁₂ * (F.toBlocks₂₂⁻¹ * F'.toBlocks₂₂)`. Rewrite using `[← Matrix.mul_assoc, ← h, nonsing_inv_mul_cancel_right _ _ h2']`. Establish `e : F' * fromBlocks 0 0 0 1 = F * fromBlocks (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 (F.toBlocks₂₂⁻¹ * F'.toBlocks₂₂)` using `by conv_lhs => rw [← fromBlocks_toBlocks F'] conv_rhs => enter [1]; rw [← fromBlocks_toBlocks F]`. Rewrite using `[fromBlocks_multiply, fromBlocks_multiply]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_zero, add_zero, zero_add, Matrix.mul_one, ← h1, mul_nonsing_inv_cancel_left _ _ h2]`. Establish `e2 : (F⁻¹ * F') * fromBlocks 0 0 0 1 = fromBlocks (0 : Matrix (Fin p) (Fin p) ℂ) 0 0 (F.toBlocks₂₂⁻¹ * F'.toBlocks₂₂)`. Rewrite using `[Matrix.mul_assoc, e, nonsing_inv_mul_cancel_left _ _ hF]`. Rewrite `e2` using `[← fromBlocks_toBlocks (F⁻¹ * F'), fromBlocks_multiply]`. Simplify using `using congrArg toBlocks₁₂ e2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem toBlocks₁₂_eq_zero {p q : ℕ} {F F' : Matrix (Fin p ⊕ Fin q) (Fin p ⊕ Fin q) ℂ} (hF : IsUnit F.det)
     (h2 : IsUnit F.toBlocks₂₂.det) (h2' : IsUnit F'.toBlocks₂₂.det) (h : moeb F' 0 = moeb F 0) :
@@ -98,19 +98,17 @@ theorem toBlocks₁₂_eq_zero {p q : ℕ} {F F' : Matrix (Fin p ⊕ Fin q) (Fin
   simpa using congrArg toBlocks₁₂ e2
 
 /- English proof (translation)
-Use `set G := reindex (idx hj) (idx hj) M with hG`. Take `⟨P, T, hP, hT, e⟩` from `exists_conj_triangular _ G.toBlocks₁₁`. Take `⟨Q, S, hQ, hS, e'⟩` from `exists_conj_triangular _ G.toBlocks₂₂`. Establish `hm : G * fromBlocks P 0 0 Q = fromBlocks P 0 0 Q * fromBlocks T 0 (Q⁻¹ * (G.toBlocks₂₁ * P)) S` using `by conv_lhs => rw [← fromBlocks_toBlocks G, hM]`. Rewrite using `[fromBlocks_multiply, fromBlocks_multiply]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, e, e', mul_nonsing_inv_cancel_left _ _ hQ.isUnit]`. Use `⟨(fromBlocks P 0 0 Q).submatrix (idx hj) (idx hj), (fromBlocks T 0 (Q⁻¹ * (G.toBlocks₂₁ * P)) S).submatrix (idx hj) (idx hj), ?_, fun a c hc ha => ?_, fun a c h => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[det_submatrix_equiv_self, det_fromBlocks_zero₁₂]`. Conclude with `mul_ne_zero hP hQ`. Take `⟨a, rfl⟩` from `(idx hj).symm.surjective a`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Take `⟨c, rfl⟩` from `(idx hj).symm.surjective c`. Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c`. Rewrite `hc` using `[idx_symm_inl]`. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite `ha` using `[idx_symm_inr]`. Conclude with `absurd a.2 ha`. Take `⟨a, rfl⟩` from `(idx hj).symm.surjective a`. Take `⟨c, rfl⟩` from `(idx hj).symm.surjective c`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Fin.lt_def]`. Apply the tactic sequence `rcases a with a | a <;> rcases c with c | c`. Rewrite `h` using `[idx_symm_inl, idx_symm_inl]`. Simplify using `using hT a c (by rw [Fin.lt_def]; omega)`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `h` using `[idx_symm_inl, idx_symm_inr]`. Use `a.2` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite `h` using `[idx_symm_inr, idx_symm_inr]`. Simplify using `using hS a c h`.
-
-Establish `: M = G.submatrix (idx hj) (idx hj)` using `by simp [hG]`. Rewrite using `[submatrix_mul_equiv, ← hm, ← submatrix_mul_equiv _ _ _ (idx hj), ← this]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_block {r j : ℕ} (hj : j ≤ r) (M : Matrix (Fin r) (Fin r) ℂ)
     (hM : (reindex (idx hj) (idx hj) M).toBlocks₁₂ = 0) :
@@ -149,17 +147,15 @@ theorem exists_conj_block {r j : ℕ} (hj : j ≤ r) (M : Matrix (Fin r) (Fin r)
     rw [submatrix_mul_equiv, ← hm, ← submatrix_mul_equiv _ _ _ (idx hj), ← this]
 
 /- English proof (translation)
-Introduce `E _ _ _ r j X hj Tau _ κ hp γ hγ x hx h`. Take `⟨x, ho, b₀, hb₀, rfl⟩` from `ortho_holds r X x hx`. Rewrite `h` using `[KU.lact_rmul', domPt_rmul X hj κ hb₀, domPt_rmul X hj κ hb₀]`. Establish `hx` using `IC.orth_mem_dom X ho`. Establish `hx'` using `IC.orth_mem_dom X (KU.isOrth_lact X hγ ho)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ τ : X.Ψ, ∃ b t : Matrix (Fin r) (Fin r) ℂ, b.det ≠ 0 ∧ (∀ a c : Fin r, (c : ℕ) < r - j → ¬ (a : ℕ) < r - j → b a c = 0) ∧ (∀ a c, c < a → t a c = 0) ∧ (mat x τ)⁻¹ * mat (lact γ x) τ * b = b * t`. Introduce `τ`. Use `exists_conj_block hj _ ?_` and prove the remaining obligations. Take `⟨s, rfl⟩` from `κ.surjective τ`. Establish `u0 : IsUnit (mat (x0F X) (κ s)).det` using `(det_x0F X _).isUnit`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hF : IsUnit (frameCo X hj x (κ s)).det`. Rewrite using `[frameCo, det_reindex_self, det_mul]`. Conclude with `(isUnit_nonsing_inv_det _ u0).mul (hx _).1.isUnit`. Use `toBlocks₁₂_eq_zero hF (frameCo_isUnit₂₂ X hj hp hx _) (frameCo_isUnit₂₂ X hj hp hx' _) (congrFun h s)` as an intermediate fact. Rewrite `this` using `[frameCo, frameCo, inv_reindex, Matrix.mul_inv_rev, nonsing_inv_nonsing_inv _ u0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [reindex_apply, submatrix_mul_equiv] at this ⊢`. Rewrite `this` using `[Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ u0]`. Then use the resulting hypothesis. Use `choose b t hb hb0 ht e using key`. Establish `e' : ∀ τ, mat (lact γ x) τ * b τ = mat x τ * b τ * t τ` using `fun τ => by`. Rewrite using `[Matrix.mul_assoc, ← e, Matrix.mul_assoc, mul_nonsing_inv_cancel_left _ _ (hx τ).1.isUnit]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `X.Γ_free γ hγ (rmul x fun τ => b τ) (GlobalTheory.PointOfFrames.rmul_mem_dom X hx _ hb (by rw [hp]; exact hb0)) (fun τ => t τ) (fun τ => ⟨?_, ht τ⟩) ?_` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `congrArg det (e' τ)`. Establish `h0' : (t τ).det = 0` using `h0`. Rewrite `h1` using `[det_mul, det_mul, h0', mul_zero]`.
-
-Conclude with `mul_ne_zero (hx' τ).1 (hb τ) h1`. Conclude with `(KU.lact_rmul' X γ x _).trans (funext e')`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_one_of_domPt_lact_eq : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r j : ℕ) (X : Data E r) (hj : j ≤ r) (Tau : Type) [Fintype Tau] (κ : Tau ≃ X.Ψ), X.p0 = r - j → ∀ γ ∈ X.Γ, ∀ x ∈ X.dom, domPt X hj κ (lact γ x) = domPt X hj κ x → γ = 1 := by
   intro E _ _ _ r j X hj Tau _ κ hp γ hγ x hx h

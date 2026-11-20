@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.DerivationPowerIdeal
 
 /- English proof (translation)
-Proceed by induction on `n generalizing x with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite `hx` using `[pow_succ' I (n + 1)]`. Use `Submodule.mul_induction_on hx ?_ ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a ha b hb`. Rewrite using `[Derivation.leibniz, smul_eq_mul, smul_eq_mul]`. Use `Ideal.add_mem _ ?_ (Ideal.mul_mem_right _ _ hb)` and prove the remaining obligations. Rewrite using `[pow_succ' I n]`. Conclude with `Ideal.mul_mem_mul ha (ih hb)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b ha hb`. Rewrite using `[map_add]`. Conclude with `Ideal.add_mem _ ha hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivation_mem_pow {A' : Type} [CommRing A'] {k : Type} [CommRing k] [Algebra k A']
     (I : Ideal A') (D : Derivation k A' A') (n : ℕ) {x : A'} (hx : x ∈ I ^ (n + 1)) :

@@ -30,7 +30,7 @@ def thickStr (n : ℕ) : thickFib f n ⟶ Spec (.of (O ⧸ IsLocalRing.maximalId
   pullback.snd _ _
 
 /- English proof (translation)
-The claim follows from `IsPullback.of_hasPullback _ _`.
+A detailed English derivation is pending.
 -/
 theorem thickFib_isPullback (n : ℕ) :
     IsPullback (thickι f n) (thickStr f n) f (Spec.map (CommRingCat.ofHom (thickQ O n))) :=
@@ -42,13 +42,13 @@ def thickTr (n : ℕ) : thickFib f n ⟶ thickFib f (n + 1) :=
     (by rw [Category.comp_id, ← Spec.map_comp, ← CommRingCat.ofHom_comp, thickR_comp])
 
 /- English proof (translation)
-The claim follows from `(pullback.lift_fst _ _ _).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem thickTr_ι (n : ℕ) : thickTr f n ≫ thickι f (n + 1) = thickι f n :=
   (pullback.lift_fst _ _ _).trans (Category.comp_id _)
 
 /- English proof (translation)
-The claim follows from `pullback.lift_snd _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem thickTr_str (n : ℕ) :
     thickTr f n ≫ thickStr f (n + 1) = thickStr f n ≫ Spec.map (CommRingCat.ofHom (thickR O n)) :=

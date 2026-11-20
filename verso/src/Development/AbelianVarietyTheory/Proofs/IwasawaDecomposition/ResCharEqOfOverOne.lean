@@ -11,7 +11,7 @@ open GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Me
 namespace GlobalTheory.Mem.SatForced
 
 /- English proof (translation)
-Establish `hp` using `D.what₂.places.resChar_prime v`. Establish `h1` using `GlobalTheory.TwistChoice.val_resChar_pos D v`. Establish `h2` using `(h ((D.what₂.places.resChar v : ℕ) : 𝓞 ↥D.LL0)).1 (by simpa using h1)`. Conclude with `GlobalTheory.TwistChoice.eq_resChar_of_pos D v' hp (by simpa using h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem resChar_eq_of_overOne (D : D7) {v v' : D.what₂.places.Pl} (h : GlobalTheory.TwistChoice.OverOne D v v') :
     D.what₂.places.resChar v = D.what₂.places.resChar v' := by
@@ -21,11 +21,11 @@ theorem resChar_eq_of_overOne (D : D7) {v v' : D.what₂.places.Pl} (h : GlobalT
   exact GlobalTheory.TwistChoice.eq_resChar_of_pos D v' hp (by simpa using h2)
 
 /- English proof (translation)
-Introduce `K D v v' h hv`. Take `⟨j, y, hy, hne⟩` from `hv`. Establish `key : D.what₂.places.resChar (D.plEq.symm y) = D.what₂.places.resChar v`. Break down `hy with e | e` into its components or cases. Rewrite using `[e, Equiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `GlobalTheory.Mem.NonzeroPlacesOverPrimes.resChar_symm_conjPl D v`. Use `⟨j, D.plEq v', Or.inl rfl, ?_⟩` and prove the remaining obligations. Establish `e2 : F0K K.s D (D.plEq v') j = F0K K.s D y j`. Unfold `F0K`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key, Equiv.symm_apply_apply, resChar_eq_of_overOne D h]`. Rewrite using `[e2]`. Conclude with `hne`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_W1F_of_overOne : ∀ (K : Ctx) (D : D7) (v v' : D.what₂.places.Pl), GlobalTheory.TwistChoice.OverOne D v v' →
     v ∈ placesWithNonzeroContentOrConj D (F0K K.s D) → v' ∈ placesWithNonzeroContentOrConj D (F0K K.s D) := by

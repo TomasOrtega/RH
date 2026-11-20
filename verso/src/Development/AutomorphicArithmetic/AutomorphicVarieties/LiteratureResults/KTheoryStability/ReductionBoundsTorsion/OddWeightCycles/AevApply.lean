@@ -16,13 +16,13 @@ def Aev (m : ℕ) {q : ℕ} (x : Pat L q) : Chn (Gm L m) q →ₗ[ℝ] ℝ :=
   evL (emb L m) (intP (ext (AT (N := m) x))) (one L m)
 
 /- English proof (translation)
-The claim follows from `evL_apply _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem Aev_apply (m : ℕ) {q : ℕ} (x : Pat L q) (z : Chn (Gm L m) q) :
     Aev m x z = ev (emb L m) (intP (ext (AT (N := m) x))) (one L m) z := evL_apply _ _ _ _
 
 /- English proof (translation)
-Establish `hI : ∀ g, FInv (ext (AT (N` using `m) x)) g := fInv_ext (hWI L m _ x)`. Rewrite using `[Aev_apply]`. Conclude with `(hE (Gm L m) (Gp L m) (Pos L m) (emb L m) k _ (fun g y => intP_inv hI (emb L m g) y) (hG hS L m _ _ hI).2).1 _ z hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Aev_bd (hE : SEv) (hS : SStokes) (hG : AGood) (hWI : WInv) {m k : ℕ} (x : Pat L (k + 1))
     (z : Chn (Gm L m) (k + 1)) (hz : IsBd z) : Aev m x z = 0 := by
@@ -32,9 +32,9 @@ theorem Aev_bd (hE : SEv) (hS : SStokes) (hG : AGood) (hWI : WInv) {m k : ℕ} (
     (hG hS L m _ _ hI).2).1 _ z hz
 
 /- English proof (translation)
-Rewrite using `[Aev_apply, Aev_apply, ev_stab hTS]`. Use `congr 1`. Use `intP_congr fun p hp => ?_` and prove the remaining obligations. Rewrite using `[ext_uniq (hPS L n n' _ h _ (fInv_ext (hWI L n' _ x))) hp]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [pullF]`. Rewrite using `[padL_one, ext_one (hWI L n' _ x), hWP L n n' _ h x]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem Aev_stab (hWP : WPad) (hWI : WInv) (hTS : TStab) (hPS : PStab) {n n' q : ℕ} (h : n ≤ n') (x : Pat L q)
     (z : Chn (Gm L n) q) : Aev n' x (cmap (stab (𝓞 L) n n' h) q z) = Aev n x z := by
@@ -47,9 +47,9 @@ theorem Aev_stab (hWP : WPad) (hWI : WInv) (hTS : TStab) (hPS : PStab) {n n' q :
   rw [padL_one, ext_one (hWI L n' _ x), hWP L n n' _ h x]
 
 /- English proof (translation)
-Rewrite using `[Aev_apply, Aev_apply, ev_blk hTB, ← ev_mul]`. Use `congr 1`. Rewrite using `[← intP_smul]`. Use `intP_congr fun p hp => ?_` and prove the remaining obligations. Rewrite using `[ext_uniq (hPB L d n _ _ (fInv_ext (hWI L (d * n) _ x))) hp]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using `only [pullF, add_zero]`. Rewrite using `[blkL_one, ext_one (hWI L (d * n) _ x), hWB L d n _ x, ext_smul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem Aev_blk (hWB : WBlk) (hWI : WInv) (hTB : TBlk) (hPB : PBlk) (d n : ℕ) {q : ℕ} (x : Pat L q)
     (z : Chn (Gm L n) q) : Aev (d * n) x (cmap (psi (𝓞 L) d n) q z) = (d : ℝ) ^ ncyc x.1 * Aev n x z := by
@@ -62,11 +62,11 @@ theorem Aev_blk (hWB : WBlk) (hWI : WInv) (hTB : TBlk) (hPB : PBlk) (d n : ℕ) 
   rw [blkL_one, ext_one (hWI L (d * n) _ x), hWB L d n _ x, ext_smul]
 
 /- English proof (translation)
-Establish `hc : ∀ i : Fin 2, ContinuousOn (ext (![AT (N` using `m) y, AT (N := m) y'] i)) (Pos L m) := by`. Introduce `i`. Use `fin_cases i`. Conclude with `(hG hS L m q _ (fInv_ext (hWI L m q y))).1`. Conclude with `(hG hS L m q _ (fInv_ext (hWI L m q y'))).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hsum : r • (AT (N` using `m) y + AT (N := m) y') = ∑ i : Fin 2, (fun _ => r) i • ![AT (N := m) y, AT (N := m) y'] i := by`. Simplify using `[Fin.sum_univ_two]`. Establish `h1 : ext (AT (N` using `m) x) = fun h => ∑ i : Fin 2, (fun _ => r) i • ext (![AT (N := m) y, AT (N := m) y'] i) h := by`. Use function extensionality and compare the values at `h`. Rewrite using `[he, hsum, ext_sum]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2` using `intP_sum (fun _ : Fin 2 => r) _ hc`. Rewrite using `[Aev_apply, Aev_apply, Aev_apply, h1, h2, ev_sum]`. Simplify using `[Fin.sum_univ_two, mul_add]`.
+A detailed English derivation is pending.
 -/
 theorem Aev_comb (hS : SStokes) (hG : AGood) (hWI : WInv) {m q : ℕ} (x y y' : Pat L q) (r : ℝ)
     (he : AT (N := m) x = r • (AT (N := m) y + AT (N := m) y')) (z : Chn (Gm L m) q) :
@@ -88,33 +88,31 @@ theorem Aev_comb (hS : SStokes) (hG : AGood) (hWI : WInv) {m q : ℕ} (x y y' : 
   simp [Fin.sum_univ_two, mul_add]
 
 /- English proof (translation)
-Introduce `L _ _ k hk`. Establish `hodd : Odd (k + 1)` using `hk.add_one`. Establish `hpos : 0 < k + 1` using `Nat.succ_pos k`. Establish `hrot : ncyc (finRotate (k + 1)) = 1` using `hR (k + 1) hpos`. Use `⟨fun w n => Aev n ((finRotate (k + 1), fun _ => w, false) : Pat L (k + 1)) + Aev n ((finRotate (k + 1), fun _ => w, true) : Pat L (k + 1)), ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n z hz`. Simplify using `only [LinearMap.add_apply]`. Rewrite using `[Aev_bd hE hS hG hWI _ z hz, Aev_bd hE hS hG hWI _ z hz, add_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `n n' h z _`. Simplify using `only [LinearMap.add_apply]`. Rewrite using `[Aev_stab hWP hWI hTS hPS h, Aev_stab hWP hWI hTS hPS h]`. Introduce `d n z _ _`. Simplify using `only [LinearMap.add_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[Aev_blk hWB hWI hTB hPB, Aev_blk hWB hWI hTB hPB]`. Simplify using `only [hrot, pow_one]`. Expand and normalize the polynomial expressions, which then agree. Introduce `N ω hω`. Take `⟨c, hc⟩` from `hF L N (k + 1) _ (uInv_of hω)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hone : ∀ x : Pat L (k + 1), ncyc x.1 = 1 → ∃ (r : ℝ) (w : InfinitePlace L), AT (N` using `N) x = r • (AT (N := N) ((finRotate (k + 1), fun _ => w, false) : Pat L (k + 1)) + AT (N := N) ((finRotate (k + 1), fun _ => w, true) : Pat L (k + 1))) := fun x hx => hWO L N (k + 1) x hodd hx`. Use `choose! rx wx hrw using hone`. Use `⟨fun w => ∑ x, if ncyc x.1 = 1 ∧ wx x = w then c x * rx x else 0, fun j n => ∑ x, (if ncyc x.1 = j then c x else 0) • Aev n x, ?_, ?_⟩` and prove the remaining obligations. Introduce `j _`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `n z hz`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_eq_zero fun x _ => by rw [Aev_bd hE hS hG hWI x z hz, mul_zero]`. Introduce `n n' h z _`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun x _ => by rw [Aev_stab hWP hWI hTS hPS h]`. Introduce `d n z _ _`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul]`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[Aev_blk hWB hWI hTB hPB]`. Use `split_ifs with hj`. Rewrite using `[hj]`. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `z _`. Establish `hcont : ∀ x : Pat L (k + 1), ContinuousOn (ext (AT (N` using `N) x)) (Pos L N) := fun x => (hG hS L N (k + 1) _ (fInv_ext (hWI L N (k + 1) x))).1`. Establish `h1 : intP ω = fun p => ∑ x, c x * intP (ext (AT (N` using `N) x)) p := by`. Rewrite using `[← intP_sum c _ hcont]`. Apply `intP_congr` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p hp`. Rewrite using `[ext_uniq hω hp, hc, ext_sum]`. Establish `e1 : ∀ x : Pat L (k + 1), (∑ w, (if ncyc x.1 = 1 ∧ wx x = w then c x * rx x else 0) * (Aev N ((finRotate (k + 1), fun _ => w, false) : Pat L (k + 1)) z + Aev N ((finRotate (k + 1), fun _ => w, true) : Pat L (k + 1)) z)) = if ncyc x.1 = 1 then c x * Aev N x z else 0`. Introduce `x`. Distinguish the cases in `h : ncyc x.1 = 1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, true_and, if_true, ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ]`. Rewrite using `[Aev_comb hS hG hWI _ _ _ _ (hrw x h) z]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `[h]`. Establish `e2 : ∀ x : Pat L (k + 1), (∑ j ∈ Finset.Icc 2 (k + 1), (if ncyc x.1 = j then c x else 0) * Aev N x z) = if ncyc x.1 = 1 then 0 else c x * Aev N x z`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Introduce `x`. Establish `hb` using `hWC (k + 1) x.1 hpos`. Simplify using `only [ite_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_Icc]`. Use `split_ifs with h1 h2 h2`. Use linear arithmetic over natural numbers and integers.
+Both sides reduce to the same expression. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Both sides reduce to the same expression. Use linear arithmetic over natural numbers and integers. Rewrite using `[h1, ev_sum]`. Simplify using `only [← Aev_apply, LinearMap.add_apply, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, Finset.sum_mul]`.
-
-Rewrite using `[Finset.sum_comm (s := (Finset.univ : Finset (InfinitePlace L))), Finset.sum_comm (s := Finset.Icc 2 (k + 1)), ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Rewrite using `[e1 x, e2 x]`. Apply the tactic sequence `split_ifs <;> ring`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem swtOdd (hE : SEv) (hS : SStokes) (hF : FFT) (hG : AGood) (hWP : WPad) (hWB : WBlk) (hWI : WInv)
     (hWC : WCyc) (hTS : TStab) (hTB : TBlk) (hPS : PStab) (hPB : PBlk) (hWO : WOneOdd) (hR : WRot) :

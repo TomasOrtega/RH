@@ -24,9 +24,9 @@ open GlobalTheory.FinPl.SuppShift
 variable {D : D7}
 
 /- English proof (translation)
-Take `⟨u, hu, b, c, rfl⟩` from `((flag_jacobi_structure D W W₀ σ d).1 n).1 hn`. Establish `hm : mt W (d.levi u * (d.nB b * d.nC c)) ⬝ d.j0 = d.j0 + d.jX ⬝ (u.1 ⬝ b)`. Rewrite using `[mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.nC_j0, d.nB_j0, Matrix.mul_add, d.wittDecomp_levi_inclAnisotropic, ← Matrix.mul_assoc, d.levi_jX, Matrix.mul_assoc]`. Use `(GlobalTheory.Unf.FB.snocCols_uni_iff (AE D) W.rank σ d.jX (d.j0 *ᵥ ratV z) (mt W _)).2 ⟨u, hu, (u.1 ⬝ b) *ᵥ ratV z, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mt_mul, mt_mul, Matrix.mul_assoc, Matrix.mul_assoc, d.nC_jX, d.nB_jX, d.levi_jX]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.mulVec_mulVec, hm, Matrix.add_mulVec, Matrix.mulVec_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem flagN_mem_Rgrp {W W₀ : HSp D} {σ : ℕ} (d : HypDec W W₀ σ) (z : Fin W₀.rank → D.host.E) {n : GA D W}
     (hn : n ∈ flagN d) : n ∈ Rgrp W (xLast d z) := by
@@ -40,9 +40,9 @@ theorem flagN_mem_Rgrp {W W₀ : HSp D} {σ : ℕ} (d : HypDec W W₀ σ) (z : F
   · rw [Matrix.mulVec_mulVec, hm, Matrix.add_mulVec, Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Use `(GlobalTheory.Unf.FB.snocCols_uni_iff (AE D) W.rank σ d.jX (d.j0 *ᵥ ratV (vecB o ζ)) (mt W _)).2 ⟨1, one_mem _, 0, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[d.wittDecomp_anisotropicEmbedding_inclX, Units.val_one, Matrix.mul_one]`. Rewrite using `[Matrix.mulVec_zero, add_zero, Matrix.mulVec_mulVec, d.wittDecomp_anisotropicEmbedding_inclAnisotropic, ← Matrix.mulVec_mulVec, vecB, GlobalTheory.Unf.FB.ratV_mulVec_rat]`. Express the relevant statement in the definitionally equal form `d.j0 *ᵥ (mt W₀ (o.emb (h, 1)) *ᵥ (o.jB *ᵥ ratV ζ)) = d.j0 *ᵥ (o.jB *ᵥ ratV ζ)`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Matrix.mulVec_mulVec, o.emb_jB, mt_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem embA_mem_Rgrp {W W₀ A L : HSp D} {σ : ℕ} (d : HypDec W W₀ σ) (o : OrthDec W₀ A L) (ζ : Fin L.rank → D.host.E)
     (h : GA D A) : d.emb0 (o.emb (h, 1)) ∈ Rgrp W (xLast d (vecB o ζ)) := by
@@ -56,11 +56,11 @@ theorem embA_mem_Rgrp {W W₀ A L : HSp D} {σ : ℕ} (d : HypDec W W₀ σ) (o 
     rw [Matrix.mulVec_mulVec, o.emb_jB, mt_one, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `key : ∀ {k : GA D W₀}, InK W₀ L₀ (· = v) k → ∀ y ∈ latV W L (· = v), mt W (d.emb0 k) *ᵥ y ∈ latV W L (· = v)`. Introduce `k hk y hy`. Take `⟨hX, hY, h0⟩` from `(hm y).1 hy`. Use `(hm _).2 ⟨fun i => ?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, d.wittDecomp_projX_anisotropicEmbedding]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hX i`. Rewrite using `[Matrix.mulVec_mulVec, d.wittDecomp_projY_anisotropicEmbedding]`. Conclude with `hY i`. Rewrite using `[Matrix.mulVec_mulVec, d.wittDecomp_projAnisotropic_anisotropicEmbedding, ← Matrix.mulVec_mulVec]`. Conclude with `(hk.2 _ (GlobalTheory.FinPl.FrameLat.latV_supp h0)).1 h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨GlobalTheory.IwaPlace.wittCoreEmbedding_preserves_supportedUnitarySubgroup d hκ.1, fun y _ => ⟨key hκ y, fun hy => ?_⟩⟩` and prove the remaining obligations. Establish `h` using `key (GlobalTheory.AscFin.inK_inv hκ) _ hy`. Rewrite `h` using `[Matrix.mulVec_mulVec, map_inv, mt_inv_mul, Matrix.one_mulVec]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem wittDec_embedding_preserves_latticeStabilizer {W W₀ : HSp D} {σ : ℕ} (d : HypDec W W₀ σ) {L : Lat W} {L₀ : Lat W₀} {v : Pl D} (hm : MonoAt d L L₀ v)
     {κ : GA D W₀} (hκ : InK W₀ L₀ (· = v) κ) : InK W L (· = v) (d.emb0 κ) := by
@@ -77,7 +77,7 @@ theorem wittDec_embedding_preserves_latticeStabilizer {W W₀ : HSp D} {σ : ℕ
   rwa [Matrix.mulVec_mulVec, map_inv, mt_inv_mul, Matrix.one_mulVec] at h
 
 /- English proof (translation)
-The claim follows from `(hκ.2 _ (GlobalTheory.FinPl.FrameLat.latV_supp hy)).1 hy`.
+A detailed English derivation is pending.
 -/
 theorem inK_maps {W : HSp D} {L : Lat W} {P : Pl D → Prop} {κ : GA D W} (hκ : InK W L P κ) (y : Fin W.rank → AE D)
     (hy : y ∈ latV W L P) : mt W κ *ᵥ y ∈ latV W L P := (hκ.2 _ (GlobalTheory.FinPl.FrameLat.latV_supp hy)).1 hy
@@ -91,19 +91,19 @@ variable {ψ : AddChar (AF D.host.F) ℂ} {V V₀ W W₀ : HSp D} {ρ σ : ℕ} 
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Take `⟨u, a, ha, hoff⟩` from `hC.pt`. Take `⟨b, hab, hb⟩` from `hS.a' a ha`. Take `⟨u', hu', hru⟩` from `inv_mem hr`. Establish `hc'` using `idAt_of_colMul dV hc`. Establish `hb' : colMul b i c ∈ latA W LW (· = v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.FinPl.LatMem.latO_maps hG.sdV hb hc`. Establish `e : (dV.extX W b) *ᵥ colMul dV.jX i c = colMul b i c`. Rewrite using `[mulVec_colMul, HypDec.extX_apply, Matrix.mul_assoc, dV.pX_jX, Matrix.mul_one]`. Conclude with `e ▸ h`. Establish `h1 : colMul (mt W (r * g * κ)⁻¹ ⬝ (x ⬝ u.1.1)) i c ∈ latA W LW (· = v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `add_mem ((hG.cols i c hc').1 hc) hb' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Establish `e1` using `GlobalTheory.DisjComb.mul_eq_zero_of_off (hoff k i) hc'`. Establish `e2` using `GlobalTheory.DisjComb.mul_eq_zero_of_off (hab k i) hc'`. Simplify using `only [Matrix.sub_apply] at e1 e2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [colMul, Pi.add_apply]`. Take the linear combination `e1 + e2`. Establish `h2` using `mulVec_latA q hq (mulVec_latA (mt W κ) (inK_maps hκ) h1)`. Rewrite `h2` using `[mulVec_colMul, mulVec_colMul]`. Establish `e : q ⬝ (mt W κ ⬝ (mt W (r * g * κ)⁻¹ ⬝ (x ⬝ u.1.1))) = q ⬝ (mt W g⁻¹ ⬝ x) ⬝ (u' * u.1).1`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc (mt W κ), ← mt_mul, show κ * (r * g * κ)⁻¹ = g⁻¹ * r⁻¹ by group, mt_mul, Matrix.mul_assoc, ← Matrix.mul_assoc (mt W r⁻¹), hru, Units.val_mul]`. Simplify using `only [Matrix.mul_assoc]`. Establish `hw` using `mem_UX.1 (mul_mem hu' u.2)`. Rewrite `h2` using `[e]`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[colMul, colMul, Matrix.mul_apply (M := q ⬝ (mt W g⁻¹ ⬝ x)), Finset.sum_eq_single i, (hw i i).2, mul_one]`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hi j h k, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hw j i).1 h, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem col_of_pt (hG : GoodAt dV dW x ψ LV LV₀ LW LW₀ v) (hS : StdAt dV dW p LV LW v) {r g κ : GA D W}
     (hr : r ∈ Rgrp W x) (hκ : InK W LW (· = v) κ) (hC : Cond dW p x y ψ (· = v) (r * g * κ))
@@ -145,21 +145,19 @@ theorem col_of_pt (hG : GoodAt dV dW x ψ LV LV₀ LW LW₀ v) (hS : StdAt dV dW
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Take `⟨u, hu', hru⟩` from `hr`. Establish `hU` using `mem_UX.1 hu'`. Establish `hE : MxAt (· = v) (Matrix.single i j s : Mx D ρ ρ)` using `fun k l => by`. Rewrite using `[Matrix.single_apply]`. Use `split_ifs`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hs`. Conclude with `zero_mem _`. Establish `hN : MxAt (· = v) (u.1 ⬝ (Matrix.single i j s : Mx D ρ ρ))` using `mxAt_mul_left _ hE`. Establish `e : mt W (r * g * κ)⁻¹ ⬝ (x ⬝ (u.1 ⬝ (Matrix.single i j s : Mx D ρ ρ))) = mt W κ⁻¹ ⬝ (mt W g⁻¹ ⬝ x ⬝ (Matrix.single i j s : Mx D ρ ρ))`. Rewrite using `[← Matrix.mul_assoc x, ← hru, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← mt_mul, show (r * g * κ)⁻¹ * r = κ⁻¹ * g⁻¹ by group, mt_mul]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Matrix.mul_assoc]`. Establish `h1` using `hC.shift _ hN (fun k l hkl => by`. Distinguish the cases in `hl : l = j`. Substitute `hl` using the available equality. Rewrite using `[Matrix.mul_single_apply_same, (hU k i).1 (by rw [Fin.le_def] at hkl; rw [Fin.lt_def]; omega), zero_mul]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ hl]) (by`. Use `(hS.a _ (mxAt_mul_left _ (mxAt_mul_left _ hN))).2 ?_` and prove the remaining obligations. Establish `h` using `sandwich_latO hG.sdV hG.sdW (mt W κ⁻¹) (inK_maps (GlobalTheory.AscFin.inK_inv hκ)) 1 (fun z hz => by rwa [Matrix.one_mulVec]) hu`. Rewrite using `[e]`. Use `h using 1` and compare the differences between its conclusion and the goal.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Simplify using `only [HypDec.extX_apply, Matrix.mul_assoc, Matrix.mul_one])`. Establish `e2 : upSum (u.1 ⬝ (Matrix.single i j s : Mx D ρ ρ)) = s`. Unfold `upSum`. Rewrite using `[Finset.sum_eq_single i, Finset.sum_eq_single j, if_pos hij, Matrix.mul_single_apply_same, (hU i i).2, one_mul]`. Introduce `l _ hl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ hl, ite_self]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Introduce `k _ hk`. Use `Finset.sum_eq_zero fun l _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `split_ifs with hl`. Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ fun h => hk (Fin.ext (by subst h; omega))]`. Both sides reduce to the same expression. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
-
-Rewrite `h1` using `[e2]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem psi_of_shift (hG : GoodAt dV dW x ψ LV LV₀ LW LW₀ v) (hS : StdAt dV dW p LV LW v) {r g κ : GA D W}
     (hr : r ∈ Rgrp W x) (hκ : InK W LW (· = v) κ) (hC : Cond dW p x y ψ (· = v) (r * g * κ))
@@ -208,33 +206,29 @@ end General
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Use `set g := dW.levi t * dW.emb0 γ with hg`. Establish `hgX : mt W g⁻¹ ⬝ dW.jX = dW.jX ⬝ (t⁻¹).1`. Rewrite using `[hg, _root_.mul_inv_rev, ← map_inv, ← map_inv, mt_mul, Matrix.mul_assoc, dW.levi_jX, cancel₂ (dW.wittDecomp_anisotropicEmbedding_inclX _)]`. Establish `hg0 : mt W g⁻¹ ⬝ dW.j0 = dW.j0 ⬝ mt W₀ γ⁻¹`. Rewrite using `[hg, _root_.mul_inv_rev, ← map_inv, ← map_inv, mt_mul, Matrix.mul_assoc, dW.wittDecomp_levi_inclAnisotropic, dW.wittDecomp_anisotropicEmbedding_inclAnisotropic]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD` using `col_of_pt hA hS hr hκ hC`. Establish `hti` using `inv_diag ht`. Use `⟨inK_levi dW hA.monoW ht htG (fun i => ?_) fun i => ?_, fun c hc => ?_⟩` and prove the remaining obligations. Apply the tactic sequence `refine int_of_stable dV hA.sdV hA.monoV i.castSucc (levi_entry dW htG i) ?_`. Use `stable_of_prim dV hA.sdV hA.monoV hA.prim i.castSucc i.succ (by simp) fun s' hs' hr' => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `psi_of_shift hA hS hr hκ hC i.castSucc i.succ (by simp) _ (Ideal.mul_mem_left _ _ hs') ?_` and prove the remaining obligations. Use `(GlobalTheory.FinPl.LatMem.mem_latO_iff D _ _ LV LW hA.sdV hA.sdW (· = v) _).2 ⟨mxAt_mul_right (mxAt_mul_left _ fun k l => ?_) _, fun y hy => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.single_apply] split_ifs`. Conclude with `Ideal.mul_mem_left _ _ hs'`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `(mt W g⁻¹ ⬝ xLast dW z ⬝ (Matrix.single i.castSucc i.succ (t.1 i i * s') : Mx D (σ + 1) (σ + 1)) ⬝ dV.pX) *ᵥ y ∈ _`. Rewrite using `[← Matrix.mulVec_mulVec, single_mulVec']`. Establish `h1` using `hr' _ (((hA.monoV y).1 hy).1 i.succ)`. Establish `h2` using `(hA.cols _ _ (idAt_of_colMul dV h1)).1 h1`. Use `h2 using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use function extensionality and compare the values at `k`. Rewrite using `[colMul, colMul, mul_xLast_castSucc, hgX, mul_diag _ hti, xLast_castSucc]`. Take the linear combination `(s' * (dV.pX *ᵥ y) i.succ * dW.jX k i) * inv_diag_mul ht i`. Apply the tactic sequence `refine int_of_stable dV hA.sdV hA.monoV i.castSucc (levi_entry dW (by rw [map_inv]; exact inv_mem htG) i) fun c hc => ?_`. Establish `hcol : ∀ k (j : Fin σ), (dW.jX ⬝ (Matrix.single i i 1 : Mx D σ σ) ⬝ dW.pX ⬝ (mt W g⁻¹ ⬝ xLast dW z)) k j.castSucc = dW.jX k i * (t⁻¹).1 i j` using `fun k j => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mul_assoc, mul_xLast_castSucc, Matrix.mul_assoc, hgX, Matrix.mul_assoc, cancel₂ dW.pX_jX, Matrix.one_mul, Matrix.mul_apply, Finset.sum_eq_single i, Matrix.mul_single_apply_same, mul_one]`. Introduce `l _ hl`. Rewrite using `[Matrix.mul_single_apply_of_ne _ _ _ _ _ hl, zero_mul]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hD (dW.jX ⬝ (Matrix.single i i 1 : Mx D σ σ) ⬝ dW.pX) (fun y hy => by`. Rewrite using `[← Matrix.mulVec_mulVec, single_mulVec', one_mul]`. Conclude with `((hA.monoW y).1 hy).1 i) i.castSucc`. Use the proof step `(fun j hj k => by`. Take `⟨j, rfl⟩` from `Fin.exists_castSucc_eq.2 (Fin.ne_last_of_lt hj)`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hcol, hti i j (Fin.castSucc_lt_castSucc_iff.1 hj).ne', mul_zero]) c hc`. Use `(hA.cols _ _ (Ideal.mul_mem_left _ _ (idAt_of_colMul dV hc))).2 ?_` and prove the remaining obligations. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Rewrite using `[colMul, colMul, hcol, xLast_castSucc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hε : (eps v * c) • ratV z = c • ratV z`. Rewrite using `[mul_smul]`. Use function extensionality and compare the values at `k`. Conclude with `eps_mul (latA_supp hc k)`.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h0 : colMul (xLast dW z) (Fin.last σ) (eps v * c) ∈ latA W LW (· = v)`. Establish `h` using `GlobalTheory.FinPl.VacFlat.wittCoreInclusion_mem_latticeCompletionAAScaledAtPlace dW hA.monoW hc`. Rewrite `h` using `[← hε, Matrix.mulVec_smul]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[colMul, xLast_last]`. Both sides reduce to the same expression. Establish `h1` using `hD (dW.j0 ⬝ dW.p0) (fun y hy => by`. Rewrite using `[← Matrix.mulVec_mulVec]`. Conclude with `GlobalTheory.FinPl.VacFlat.wittCoreInclusion_mem_latticeCompletionAtPlace dW hA.monoW ((hA.monoW y).1 hy).2.2) (Fin.last σ)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun j hj k => by`. Take `⟨j, rfl⟩` from `Fin.exists_castSucc_eq.2 hj.ne`. Rewrite using `[← Matrix.mul_assoc, mul_xLast_castSucc, Matrix.mul_assoc, hgX, Matrix.mul_assoc, cancel₂ dW.p0_jX, Matrix.zero_mul, Matrix.mul_zero, Matrix.zero_apply]) _`. Use the proof step `((hA.cols _ _ (Ideal.mul_mem_right _ _ (eps_idAt v))).2 h0)`. Establish `h2` using `mulVec_latA dW.p0 (fun y hy => ((hA.monoW y).1 hy).2.2) h1`.
-
-Rewrite `h2` using `[mulVec_colMul]`. Rewrite using `[← hε, Matrix.mulVec_smul]`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `k`. Rewrite using `[colMul, ← Matrix.mul_assoc, ← Matrix.mul_assoc, mul_xLast_last, Matrix.mul_assoc, hg0, cancel₂ dW.p0_j0, Matrix.one_mul, cancel₂ dW.p0_j0, Matrix.one_mul]`.
-
-Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem parts {ψ : AddChar (AF D.host.F) ℂ} {V V₀ W W₀ : HSp D} {σ : ℕ} {dV : HypDec V V₀ (σ + 1)} {dW : HypDec W W₀ σ}
     {p : Pieces V₀ W W₀ (σ + 1) σ} {z : Fin W₀.rank → D.host.E} {y : Mx D V₀.rank σ} {LV : Lat V} {LV₀ : Lat V₀} {LW : Lat W}
@@ -320,9 +314,9 @@ theorem parts {ψ : AddChar (AF D.host.F) ℂ} {V V₀ W W₀ : HSp D} {σ : ℕ
     rfl
 
 /- English proof (translation)
-Introduce `D ψ _ V V₀ W W₀ A L σ dV dW o ζ hζ p LV LV₀ LW LW₀ LA LL v hG hS hA hL hO h hh hC`. Take `⟨n, hnN, hnG, t, ht, htG, γ, hγ, κ, hκ, rfl⟩` from `GlobalTheory.IwaPlace.iwasawa_at_place D W W₀ σ dW LW LW₀ v (GlobalTheory.FinPl.TamePlaces.tame D v) hG.sdW hG.sdW₀ hG.monoW h hh`. Establish `hn` using `flagN_mem_Rgrp dW (vecB o ζ) hnN`. Rewrite `hC` using `[mul_assoc n]`. Take `⟨hK, hz⟩` from `parts hG hS ht htG γ hn hκ hC`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, k, hk, rfl⟩` from `GlobalTheory.AscFin.OrbitAny.orbitAny D W₀ A L o ζ hζ LW₀ LA LL v hG.sdW₀ hA hL hO γ hγ hz`. Use `⟨n * dW.emb0 (o.emb (a, 1)), mul_mem hn (embA_mem_Rgrp dW o ζ a), mul_mem hnG (GlobalTheory.IwaPlace.wittCoreEmbedding_preserves_supportedUnitarySubgroup dW (GlobalTheory.FinPl.SplitOrbit.emb_mem_grpAt o ha)), dW.emb0 k * dW.levi t * κ, GlobalTheory.AscFin.inK_mul (GlobalTheory.A …` and prove the remaining obligations. Rewrite using `[mul_assoc n (dW.levi t), ← dW.wittHyperbolic_anisotropic_commute_levi _ t, map_mul]`. Simplify using `only [mul_assoc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem oneCoset_good : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ), IsStdChar D ψ (-1) → ∀ (V V₀ W W₀ A L : HSp D) (σ : ℕ) (dV : HypDec V V₀ (σ + 1)) (dW : HypDec W W₀ σ) (o : OrthDec W₀ A L) (ζ : Fin L.rank → D.host.E), IsLineVec L ζ → ∀ (p : Pieces V₀ W W₀ (σ + 1) σ) (LV : Lat V) (LV₀ : Lat V₀) (LW : Lat W) (LW₀ : Lat W₀) (LA : Lat A) (LL : Lat L) (v : GlobalTheory.FinPl.Pl D), GoodAt dV dW (xLast dW (vecB o ζ)) ψ LV LV₀ LW LW₀ v → StdAt dV dW p LV LW v → IsSelfDualC A LA → IsSelfDualC L LL → OrthAt o LW₀ LA LL v → ∀ h ∈ grpAt W (· = v), Cond dW p (xLast dW (vecB o ζ)) 0 ψ (· = v) h → CosetAt W (Rgrp W (xLast dW (vecB o ζ))) LW v h := by
   intro D ψ _ V V₀ W W₀ A L σ dV dW o ζ hζ p LV LV₀ LW LW₀ LA LL v hG hS hA hL hO h hh hC

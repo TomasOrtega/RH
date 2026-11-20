@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Rodier.OpenFactor
 
 /- English proof (translation)
-Rewrite using `[← map_inv]`. Express the relevant statement in the definitionally equal form `((w⁻¹).permMatrix k * (g : Matrix (Fin N) (Fin N) k) * (w⁻¹⁻¹).permMatrix k) (w p) (w q) = _`. Simplify using `[Matrix.mul_apply, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem conj_perm_entry {k : Type} [Field k] {N : ℕ} (w : Equiv.Perm (Fin N)) (g : GL (Fin N) k) (p q : Fin N) :
     ((GroundTheory.Automorphic.permGL k w * g * (GroundTheory.Automorphic.permGL k w)⁻¹ : GL (Fin N) k) :
@@ -19,11 +19,9 @@ theorem conj_perm_entry {k : Type} [Field k] {N : ℕ} (w : Equiv.Perm (Fin N)) 
   simp [Matrix.mul_apply, Equiv.Perm.permMatrix, PEquiv.toMatrix_apply]
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hqp`. Establish `hm` using `Tuple.monotone_sort (wKey d hd) (not_lt.mp hqp)`. Express the relevant statement in the definitionally equal form `wKey d hd (wOpen d hd p) ≤ wKey d hd (wOpen d hd q) at hm`. Unfold `wKey at hm`. Rewrite `hm` using `[Prod.Lex.le_iff]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [ofLex_toLex] at hm`. Break down `hm with hlt | ⟨heq, _⟩` into its components or cases. Conclude with `lt_asymm hb (OrderDual.toDual_lt_toDual.mp hlt)`. Rewrite `heq` using `[OrderDual.toDual_inj]`. Rewrite `hb` using `[heq]`.
-
-Conclude with `lt_irrefl _ hb`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lt_of_blk_lt {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) {p q : Fin N}
     (hb : blk (stdBlocks d hd) (wOpen d hd p) < blk (stdBlocks d hd) (wOpen d hd q)) : q < p := by
@@ -43,14 +41,14 @@ variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchim
 variable {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N)
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unipU {u : GL (Fin N) k} : u ∈ unipU k d hd ↔
     u ∈ unipB k (Fin N) ∧ pm k (wOpen d hd) * u * (pm k (wOpen d hd))⁻¹ ∈ unipRadLower k (stdBlocks d hd) := by
   exact Iff.rfl
 
 /- English proof (translation)
-Conclude with `Iff.rfl`.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unipL {u : GL (Fin N) k} : u ∈ unipL k d hd ↔
     u ∈ unipB k (Fin N) ∧
@@ -58,11 +56,11 @@ theorem mem_unipL {u : GL (Fin N) k} : u ∈ unipL k d hd ↔
   exact Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SmGL.mem_parabLower_iff k]`. Introduce `a b i j hab`. Take `⟨p, hp⟩` from `(wOpen d hd).surjective (stdBlocks d hd ⟨a, i⟩)`. Take `⟨q, hq⟩` from `(wOpen d hd).surjective (stdBlocks d hd ⟨b, j⟩)`. Rewrite using `[← hp, ← hq]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Unfold `pm`. Rewrite using `[conj_perm_entry]`. Apply `((GlobalTheory.SmGL.mem_unipB k).mp hn).1` to reduce the goal to its premises. Apply `lt_of_blk_lt d hd` to reduce the goal to its premises. Rewrite using `[hp, hq, GlobalTheory.SmGL.blk_apply, GlobalTheory.SmGL.blk_apply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hab`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_parabLower {n : GL (Fin N) k} (hn : n ∈ unipB k (Fin N)) :
     pm k (wOpen d hd) * n * (pm k (wOpen d hd))⁻¹ ∈ parabLower k (stdBlocks d hd) := by
@@ -79,25 +77,21 @@ theorem conj_mem_parabLower {n : GL (Fin N) k} (hn : n ∈ unipB k (Fin N)) :
   exact hab
 
 /- English proof (translation)
-Establish `hc0` using `conj_mem_parabLower k d hd hn`. Use `set P := pm k (wOpen d hd) with hP`. Use `set e := stdBlocks d hd with he`. Establish `hc : P * n * P⁻¹ ∈ parab k (opp e)` using `hc0`. Take `⟨v, hv, hcv⟩` from `exists_levi_mul_unip k (opp e) ⟨P * n * P⁻¹, hc⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set L := leviEmb k (opp e) (leviProj k (opp e) ⟨P * n * P⁻¹, hc⟩) with hL`. Establish `hcv' : P * n * P⁻¹ = L * v` using `hcv`. Apply the tactic sequence `have hLentry : ∀ p q : Fin N, ((P⁻¹ * L * P : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) p q = if blk e (wOpen d hd p) = blk e (wOpen d hd q) then (n : Matrix (Fin N) (Fin N) k) p q else 0 := by`. Introduce `p q`. Apply the tactic sequence `have h1 := conj_perm_entry (wOpen d hd) (P⁻¹ * L * P) p q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [show GroundTheory.Automorphic.permGL k (wOpen d hd) = P from rfl] at h1`. Rewrite `h1` using `[show P * (P⁻¹ * L * P) * P⁻¹ = L by group]`. Rewrite using `[← h1]`. Take `⟨⟨x, i⟩, hxi⟩` from `e.surjective (wOpen d hd p)`. Take `⟨⟨y, j⟩, hyj⟩` from `e.surjective (wOpen d hd q)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hxi, ← hyj, GlobalTheory.SmGL.blk_apply, GlobalTheory.SmGL.blk_apply]`. Use `split_ifs with hxy`. Substitute `hxy` using the available equality. Use `(GlobalTheory.SmGL.leviEmb_apply_same k (opp e) (leviProj k (opp e) ⟨P * n * P⁻¹, hc⟩) x i j).trans ?_` and prove the remaining obligations. Use `(GlobalTheory.SmGL.leviProj_apply k (opp e) ⟨P * n * P⁻¹, hc⟩ x i j).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((P * n * P⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) (e ⟨x, i⟩) (e ⟨x, j⟩) = _`. Rewrite using `[hxi, hyj]`. Apply the tactic sequence `exact conj_perm_entry (wOpen d hd) n p q`. Conclude with `GlobalTheory.SmGL.leviEmb_apply_ne k (opp e) _ hxy i j`. Establish `haB : P⁻¹ * L * P ∈ unipB k (Fin N)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.SmGL.mem_unipB k]`. Use `⟨fun p q hqp => ?_, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[hLentry] split_ifs`. Conclude with `((GlobalTheory.SmGL.mem_unipB k).mp hn).1 p q hqp`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hLentry, if_pos rfl]`. Conclude with `((GlobalTheory.SmGL.mem_unipB k).mp hn).2 p`. Use `⟨P⁻¹ * L * P, ?_, P⁻¹ * v * P, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[mem_unipL k d hd]`. Use `⟨haB, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show P * (P⁻¹ * L * P) * P⁻¹ ∈ (leviEmb k e).range`. Rewrite using `[show P * (P⁻¹ * L * P) * P⁻¹ = L by group]`. Conclude with `⟨leviProj k (opp e) ⟨P * n * P⁻¹, hc⟩, rfl⟩`. Rewrite using `[mem_unipU k d hd]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Establish `hv' : v = L⁻¹ * (P * n * P⁻¹)`. Rewrite using `[hcv']`. Use `group`. Rewrite using `[show P⁻¹ * v * P = (P⁻¹ * L * P)⁻¹ * n by rw [hv']; group]`. Conclude with `Subgroup.mul_mem _ (Subgroup.inv_mem _ haB) hn`.
-
-Use `show P * (P⁻¹ * v * P) * P⁻¹ ∈ unipRadLower k e`. Rewrite using `[show P * (P⁻¹ * v * P) * P⁻¹ = v by group]`. Conclude with `hv`. Rewrite using `[show P⁻¹ * L * P * (P⁻¹ * v * P) = P⁻¹ * (L * v) * P by group, ← hcv'] group`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul {n : GL (Fin N) k} (hn : n ∈ unipB k (Fin N)) :
     ∃ a ∈ unipL k d hd, ∃ u ∈ unipU k d hd, n = a * u := by
@@ -155,9 +149,9 @@ theorem exists_mul {n : GL (Fin N) k} (hn : n ∈ unipB k (Fin N)) :
     group
 
 /- English proof (translation)
-Rewrite `hu`, the goal using `[mem_unipU k d hd]`. Use `⟨Subgroup.mul_mem _ (Subgroup.mul_mem _ hn hu.1) (Subgroup.inv_mem _ hn), ?_⟩` and prove the remaining obligations. Establish `hN` using `GlobalTheory.SmGL.parab_le_normalizer k (GlobalTheory.SmGL.opp (stdBlocks d hd)) (conj_mem_parabLower k d hd hn)`. Establish `key : pm k (wOpen d hd) * (n * u * n⁻¹) * (pm k (wOpen d hd))⁻¹ = (pm k (wOpen d hd) * n * (pm k (wOpen d hd))⁻¹) * (pm k (wOpen d hd) * u * (pm k (wOpen d hd))⁻¹) * (pm k (wOpen d hd) * n * (pm k (wOpen d hd))⁻¹)⁻¹` using `by group`. Rewrite using `[key]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Subgroup.mem_normalizer_iff.mp hN _).mp hu.2`.
+A detailed English derivation is pending.
 -/
 theorem conj_mem_unipU {n u : GL (Fin N) k} (hn : n ∈ unipB k (Fin N)) (hu : u ∈ unipU k d hd) :
     n * u * n⁻¹ ∈ unipU k d hd := by
@@ -173,7 +167,7 @@ theorem conj_mem_unipU {n u : GL (Fin N) k} (hn : n ∈ unipB k (Fin N)) (hu : u
 end GlobalTheory.CompanionTheory.Rodier.OpenFactor
 
 /- English proof (translation)
-Introduce `k _ _ _ _ h N d hd`. Conclude with `⟨fun n hn => GlobalTheory.CompanionTheory.Rodier.OpenFactor.exists_mul k d hd hn, fun n hn u hu => GlobalTheory.CompanionTheory.Rodier.OpenFactor.conj_mem_unipU k d hd hn hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.CompanionTheory.Rodier.unipB_eq_levi_mul_rad : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (h N : ℕ) (d : Fin h → ℕ) (hd : ∑ a, d a = N), (∀ n ∈ unipB k (Fin N), ∃ a ∈ unipL k d hd, ∃ u ∈ unipU k d hd, n = a * u) ∧ ∀ n ∈ unipB k (Fin N), ∀ u ∈ unipU k d hd, n * u * n⁻¹ ∈ unipU k d hd := by
   intro k _ _ _ _ h N d hd

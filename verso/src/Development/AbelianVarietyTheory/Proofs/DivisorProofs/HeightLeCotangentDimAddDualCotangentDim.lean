@@ -12,15 +12,15 @@ noncomputable section
 open CategoryTheory TensorProduct Coalgebra Bialgebra GlobalTheory GlobalTheory.PDiv GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Use `haveI : CharP K p := (CharP.charP_iff_prime_eq_zero (Fact.out : p.Prime)).2 h`. Establish `hp2 : 2 ≤ p` using `(Fact.out : p.Prime).two_le`. Establish `hdimD : Module.finrank K (G.dual.A 1) = p ^ G.dual.height`. Take `⟨q⟩ : Nonempty (PrimeSpectrum K)` from `inferInstance`. Establish `e` using `G.dual.rank_eq 1 q`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[Module.rankAtStalk_eq_finrank_of_free]`. Simplify using `using e`. Establish `hhD : G.dual.height = G.height` using `by simp`. Establish `hord` using `finrank_eq_ker_mul_range K (G.dual.A 1) _ ((relFrob h G.dual).app 1)`. Establish `hD : Module.finrank K (G.dual.A 1 ⧸ kerIdeal ((relFrob h G.dual).app 1)) ≤ p ^ Module.finrank K (Cot K (G.dual.A 1))`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GlobalTheory.T.frobeniusKernelIdeal_eq_kernel_relativeFrobenius p K h G.dual 1]`. Conclude with `GlobalTheory.T.finrank_frobenius_kernel_hopf_le_pow_cotangent p K (G.dual.A 1)`. Establish `hA : Module.finrank K (G.A 1 ⧸ kerIdeal ((relFrob h G).app 1)) ≤ p ^ Module.finrank K (Cot K (G.A 1))`. Rewrite using `[← GlobalTheory.T.frobeniusKernelIdeal_eq_kernel_relativeFrobenius p K h G 1]`. Conclude with `GlobalTheory.T.finrank_frobenius_kernel_hopf_le_pow_cotangent p K (G.A 1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hker : (kerIdeal ((relFrob h G).app 1)).restrictScalars K ≤ LinearMap.ker ((verschiebung h G).app 1 : G.A 1 →ₐ[K] (frobTwist h G).A 1).toLinearMap` using `fun a ha => GlobalTheory.T.app_one_eq_zero_of_kernel_ideal_of_comp_eq_prime_smul p K G (frobTwist h G) (relFrob h G) (verschiebung h G) (verschiebung_comp_relFrob h G) a ha`. Establish `hV` using `GlobalTheory.T.finrank_frobeniusDual_add_finrank_ker_verschiebung p K h G`. Establish `hq` using `Submodule.finrank_quotient_add_finrank ((kerIdeal ((relFrob h G).app 1)).restrictScalars K)`. Rewrite `hq` using `[(Submodule.Quotient.restrictScalarsEquiv K (kerIdeal ((relFrob h G).app 1))).finrank_eq]`. Establish `hmono` using `Submodule.finrank_mono hker`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hr : Module.finrank K (LinearMap.range ((relFrob h G.dual).app 1 : (frobTwist h G.dual).A 1 →ₐ[K] G.dual.A 1).toLinearMap) ≤ p ^ Module.finrank K (Cot K (G.A 1))` using `by omega`. Establish `key : p ^ G.height ≤ p ^ (Module.finrank K (Cot K (G.A 1)) + Module.finrank K (Cot K (G.dual.A 1)))`. Rewrite using `[pow_add, mul_comm, ← hhD, ← hdimD, hord]`. Conclude with `Nat.mul_le_mul hD hr`. Conclude with `(Nat.pow_le_pow_iff_right hp2).1 key`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PDivGroup.height_le_finrank_cot_add_finrank_cot_dual (p : ℕ) [Fact p.Prime] (K : Type)
     [Field K] (h : (p : K) = 0) (G : PDivGroup p K) :

@@ -10,17 +10,17 @@ open scoped ENNReal
 namespace GlobalTheory.FlagQuotHaar.TestFn
 
 /- English proof (translation)
-Introduce `E _ _ _ r X`. Establish `ho : IsOrth X (baseFr X)` using `fun τ => baseFr_mem X τ`. Establish `h0` using `IW.zero_mem_OmF X (baseFr X) ho`. Take `⟨ε, hε, hball⟩` from `Metric.nhds_basis_closedBall.mem_iff.mp ((OntoB.isOpen_OmF X (baseFr X)).mem_nhds h0)`. Use `set A : Set (V (nd X)) := Metric.closedBall 0 ε with hAdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hA : MeasurableSet A` using `measurableSet_closedBall`. Establish `hS` using `GlobalTheory.Unfold.measurableSet_satFrames X ho hA hball`. Use `⟨(GlobalTheory.Unfold.satFrames X (baseFr X) A).indicator 1, measurable_one.indicator hS, ?_, ?_⟩` and prove the remaining obligations. Introduce `x _ b hb`. Distinguish the cases in `hx : x ∈ GlobalTheory.Unfold.satFrames X (baseFr X) A`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.indicator_of_mem hx, Set.indicator_of_mem ((GlobalTheory.Unfold.rmul_mem_satFrames_iff X _ A x hb).mpr hx)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hx, Set.indicator_of_notMem fun h => hx ((GlobalTheory.Unfold.rmul_mem_satFrames_iff X _ A x hb).mp h)]`. Establish `heq : (fun z => (GlobalTheory.Unfold.satFrames X (baseFr X) A).indicator (1 : Frame X.Ψ r → ℝ≥0∞) (cpt X (baseFr X) z)) = A.indicator 1`. Use function extensionality and compare the values at `z`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hz : z ∈ A`. Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem ((GlobalTheory.Unfold.cpt_mem_satFrames_iff X ho A z).mpr hz)]`. Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hz, Set.indicator_of_notMem fun h => hz ((GlobalTheory.Unfold.cpt_mem_satFrames_iff X ho A z).mp h)]`. Rewrite using `[heq, lintegral_indicator_one hA]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, (GlobalTheory.SatFin.muF_lt_top_of_isCompact X (baseFr X) (isCompact_closedBall _ _) hball).ne⟩` and prove the remaining obligations. Unfold `muF`. Establish `hmeas : AEMeasurable (fun z => ENNReal.ofReal (densF X (baseFr X) z)) (volume.restrict (OmF X (baseFr X)))` using `ENNReal.measurable_ofReal.comp_aemeasurable (OntoB.densF_continuousOn.aemeasurable (OntoB.isOpen_OmF X (baseFr X)).measurableSet)`. Rewrite using `[Ne, withDensity_apply_eq_zero' hmeas]`. Establish `hset : {z | ENNReal.ofReal (densF X (baseFr X) z) ≠ 0} ∩ A = A`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.inter_eq_right.mpr fun z hz => ?_` and prove the remaining obligations. Use `show ENNReal.ofReal (densF X (baseFr X) z) ≠ 0`. Conclude with `(ENNReal.ofReal_pos.mpr (OntoB.densF_pos (hball hz))).ne'`. Rewrite using `[hset, Measure.restrict_apply hA, Set.inter_eq_left.mpr hball]`. Conclude with `(Metric.measure_closedBall_pos volume 0 hε).ne'`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invariant_test : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r), ∃ φ : Frame X.Ψ r → ℝ≥0∞, Measurable φ ∧ (∀ x ∈ X.dom, ∀ b ∈ Bor X.Ψ r, φ (rmul x b) = φ x) ∧ ∫⁻ z, φ (cpt X (baseFr X) z) ∂muF X (baseFr X) ≠ 0 ∧ ∫⁻ z, φ (cpt X (baseFr X) z) ∂muF X (baseFr X) ≠ ⊤ := by
   intro E _ _ _ r X

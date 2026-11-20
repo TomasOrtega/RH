@@ -11,17 +11,17 @@ open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions F
 namespace GlobalTheory.RunJoin
 
 /- English proof (translation)
-Take `⟨hA, hS, h3, -, -⟩` from `hP.hyp`. Prove the components needed by the constructor for the conclusion. Set `n : ℕ` to `(D.host.g 0 * D.host.g 1) ^ DF wL`. Use `GlobalTheory.PtTie.runNum_of_sizes D large₂ B P j hj X H C2 A2 7 ⟨(n : 𝓞 B.KO), 0, 0, 0⟩ ka wL wF Tn nP nW h0 hA hS h3 ⟨hP.p13, fun σ => ?_, hP.frd, hP.r8, hP.df⟩ (by norm_num)` and prove the remaining obligations. Establish `e : σ ((n : 𝓞 B.KO) : B.KO) = (n : ℂ)`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[show ((n : 𝓞 B.KO) : B.KO) = (n : B.KO) from map_natCast (algebraMap (𝓞 B.KO) B.KO) n, map_natCast]`. Use `show _ ≤ Real.log ‖σ ((n : 𝓞 B.KO) : B.KO)‖`. Rewrite using `[e, Complex.norm_natCast]`. Establish `e2 : Real.log (n : ℝ) = (DF wL : ℝ) * Real.log ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ))`. Simplify using `only [n]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[Real.log_pow]`. Establish `p : 0 ≤ Real.log ((D.host.g 0 : ℝ) * (D.host.g 1 : ℝ))`. Rewrite using `[← Nat.cast_mul]`. Conclude with `Real.log_natCast_nonneg _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `p' : (0 : ℝ) ≤ (DF wL : ℝ)` using `Nat.cast_nonneg _`. Rewrite using `[e2]`. Use polynomial arithmetic with `[mul_nonneg p' p]`. Establish `hrd : 2 * (D.R.f : ℝ) * D.R.m ≤ D.host.rdE` using `hA.2.2.2.2.2.2.2.2.2`. Establish `hf : 0 < D.R.f` using `by unfold Ranks.f Ranks.n; positivity`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : 0 < D.R.m` using `hj.1.trans hj.2`. Establish `hs : (0 : ℝ) < 2 * (D.R.f : ℝ) * D.R.m` using `by positivity`. Establish `hR : 0 < WeightFamilies.RRv D 7` using `Real.rpow_pos_of_pos (hs.trans_le hrd) _`. Establish `h5 : (2 * D.R.f * D.R.m : ℝ) ^ 4 * nW + 2 * (2 * D.R.f * D.R.m : ℝ) ^ 3 ≤ WeightFamilies.PPv D large₂ C2 A2` using `((le_max_left _ _).trans (le_max_right _ _)).trans hP.p13`. Establish `hPP : 0 < WeightFamilies.PPv D large₂ C2 A2` using `lt_of_lt_of_le (by positivity) h5`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD : 0 < DF wL` using `lt_of_lt_of_le (by norm_num) hP.df`. Establish `hq` using `modulus_pos_of_third_hypothesis h3`. Unfold `cc`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem PageOK.runNum {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (hj : InR D j) {large₂ : SizeData₂ D} {X : PJ D B P j}
     {H : KHyp} {C2 A2 CT : ℝ} {ka wL wF : WeightFamilies.Wt D j} {Tn nP nW : ℕ} {h0 : ℝ}
@@ -63,7 +63,7 @@ set_option maxHeartbeats 4000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `hH D T h hinj EX p j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hO hP G hG`. Take `⟨hR, hc⟩` from `hP.runNum hj`. Conclude with `⟨GlobalTheory.T.combinedValuationBound_algebraicPoints hH D T h j hj hinj EX wL _ hO hR ka wF _ G rfl (fun hm => ⟨(hG hm).1, (hG hm).2.2.1⟩), hc⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem combBound_run : (∀ (p : ℕ) [Fact p.Prime], Pdiv.ChartF.HTFSt p) → ∀ (D : D7) (T : Top D) (h : LawsP T) (hinj : Function.Injective D.what₂.OtoLL) (EX : ErrX D) (p j : ℕ) (hj : InR D j) (large₂ : SizeData₂ D) (H : KHyp) (C2 A2 CT : ℝ) (ka wL wF : WeightFamilies.Wt D j) (Tn nP nW : ℕ) (h0 : ℝ), GlobalTheory.PtTie.Oriented T EX → PageOK large₂ (recPJ h j hj) H C2 A2 CT ka wL wF Tn nP nW h0 → ∀ G : GlobalFamilyData (recPJ h j hj) ka wL wF, (j < D.R.m → EtaOK h j hj large₂ wL G.iet G.et) → CombBound G (scalOfP (recB h.toLawsCore) hinj EX p ka wL wF Tn) (cc D large₂ C2 A2 7 wL) (nusR h j wL) ∧ 0 < (cc D large₂ C2 A2 7 wL) := by
   intro hH D T h hinj EX p j hj large₂ H C2 A2 CT ka wL wF Tn nP nW h0 hO hP G hG

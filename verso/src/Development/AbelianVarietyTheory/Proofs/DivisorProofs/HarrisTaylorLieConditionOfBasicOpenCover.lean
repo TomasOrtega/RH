@@ -20,7 +20,7 @@ def lam : R' ⊗[ℤ] O →ₐ[R'] Module.End R' M :=
       Commute (Algebra.ofId R' (Module.End R' M) r) (μ.toIntAlgHom c)))
 
 /- English proof (translation)
-Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem lam_tmul (r : R') (c : O) : lam μ (r ⊗ₜ c) = algebraMap R' _ r * μ c := by
   exact Algebra.TensorProduct.lift_tmul _ _ _ _ _
@@ -28,19 +28,19 @@ theorem lam_tmul (r : R') (c : O) : lam μ (r ⊗ₜ c) = algebraMap R' _ r * μ
 def gen (τ : O →+* R') (c : O) : R' ⊗[ℤ] O := (1 : R') ⊗ₜ c - algebraMap R' (R' ⊗[ℤ] O) (τ c)
 
 /- English proof (translation)
-Rewrite using `[gen, map_sub, lam_tmul, AlgHom.commutes, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_gen (τ : O →+* R') (c : O) : lam μ (gen τ c) = μ c - algebraMap R' _ (τ c) := by
   rw [gen, map_sub, lam_tmul, AlgHom.commutes, map_one, one_mul]
 
 /- English proof (translation)
-Rewrite using `[lam_gen, LinearMap.sub_apply, Module.algebraMap_end_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem lam_gen_apply (τ : O →+* R') (c : O) (m : M) : lam μ (gen τ c) m = μ c m - τ c • m := by
   rw [lam_gen, LinearMap.sub_apply, Module.algebraMap_end_apply]
 
 /- English proof (translation)
-Rewrite using `[← List.prod_ofFn, map_list_prod, List.map_ofFn]`. Use `congr 1`. Conclude with `List.ofFn_inj.2 (funext fun i => lam_gen μ (τ i) (c i))`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem lam_prod_gen {a : ℕ} (τ : Fin a → O →+* R') (c : Fin a → O) :
     lam μ (∏ i, gen (τ i) (c i)) = (List.ofFn fun i => μ (c i) - algebraMap R' _ (τ i (c i))).prod := by
@@ -49,7 +49,7 @@ theorem lam_prod_gen {a : ℕ} (τ : Fin a → O →+* R') (c : Fin a → O) :
   exact List.ofFn_inj.2 (funext fun i => lam_gen μ (τ i) (c i))
 
 /- English proof (translation)
-Rewrite using `[← lam_prod_gen, hv, map_sum]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_erase_mul _ _ (Finset.mem_univ j), map_mul, Module.End.mul_apply, lam_gen_apply, hw, sub_self, map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem kill_of_decomp {a : ℕ} (τ : Fin a → O →+* R') (v : M) (w : Fin a → M)
     (hw : ∀ i c, μ c (w i) = τ i c • w i) (hv : v = ∑ i, w i) (c : Fin a → O) :
@@ -61,9 +61,9 @@ theorem kill_of_decomp {a : ℕ} (τ : Fin a → O →+* R') (v : M) (w : Fin a 
     sub_self, map_zero]
 
 /- English proof (translation)
-Establish `h'` using `congrArg (Ideal.map (algebraMap R' (R' ⊗[ℤ] O))) h`. Rewrite `h'` using `[Ideal.map_span, Ideal.map_top]`. Rewrite using `[eq_top_iff, ← h', Ideal.span_le]`. Introduce and unpack `_ ⟨_, ⟨x, rfl⟩, rfl⟩`. Establish `e : algebraMap R' (R' ⊗[ℤ] O) (τ₁ x - τ₂ x) = gen τ₂ x - gen τ₁ x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `only [gen, map_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[SetLike.mem_coe, e]`. Conclude with `sub_mem (Ideal.mem_sup_right (Ideal.subset_span ⟨x, rfl⟩)) (Ideal.mem_sup_left (Ideal.subset_span ⟨x, rfl⟩))`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sup_gen_eq_top (τ₁ τ₂ : O →+* R') (h : Ideal.span (Set.range fun x => τ₁ x - τ₂ x) = ⊤) :
     Ideal.span (Set.range (gen τ₁)) ⊔ Ideal.span (Set.range (gen τ₂)) = ⊤ := by
@@ -78,15 +78,13 @@ theorem sup_gen_eq_top (τ₁ τ₂ : O →+* R') (h : Ideal.span (Set.range fun
     (Ideal.mem_sup_left (Ideal.subset_span ⟨x, rfl⟩))
 
 /- English proof (translation)
-Use `letI : Module (R' ⊗[ℤ] O) M := Module.compHom M (lam μ).toRingHom`. Establish `hsm : ∀ (b : R' ⊗[ℤ] O) (m : M), b • m = lam μ b m` using `fun _ _ => rfl`. Set `I : Fin a → Ideal (R' ⊗[ℤ] O)` to `fun i => Ideal.span (Set.range (gen (τ i)))`. Establish `hp : ((Finset.univ : Finset (Fin a)) : Set (Fin a)).Pairwise fun i j => I i ⊔ I j = ⊤` using `fun i _ j _ hij => sup_gen_eq_top (τ i) (τ j) (hτ i j hij)`. Establish `hmem : v ∈ Submodule.torsionBySet (R' ⊗[ℤ] O) M ↑(⨅ i ∈ (Finset.univ : Finset (Fin a)), I i)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Ideal.prod_eq_iInf_of_pairwise_isCoprime (fun i hi j hj hij => (Ideal.isCoprime_iff_sup_eq).2 (hp hi hj hij))]`. Simplify using `only [I]`. Rewrite using `[Ideal.prod_span, ← Submodule.torsionBySet_eq_torsionBySet_span, Submodule.mem_torsionBySet_iff]`. Introduce and unpack `⟨b, hb⟩`. Take `⟨g, hg, rfl⟩` from `(Set.mem_finset_prod _ _ _).1 hb`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Establish `hc : ∀ i, ∃ c, gen (τ i) c = g i` using `fun i => hg (Finset.mem_univ i)`. Use `choose c hc using hc`. Use `show lam μ (∏ i, g i) v = 0`. Rewrite using `[show (∏ i, g i) = ∏ i, gen (τ i) (c i) from Finset.prod_congr rfl fun i _ => (hc i).symm, lam_prod_gen]`. Conclude with `hv c`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hmem` using `[← Submodule.iSup_torsionBySet_ideal_eq_torsionBySet_iInf hp, Submodule.mem_iSup_finset_iff_exists_sum]`. Take `⟨w, hw⟩` from `hmem`. Use `⟨fun i => w i, fun i c => ?_, hw.symm⟩` and prove the remaining obligations. Establish `h0` using `(Submodule.mem_torsionBySet_iff _ _).1 (w i).2 ⟨gen (τ i) c, Ideal.subset_span ⟨c, rfl⟩⟩`. Rewrite `h0` using `[hsm, lam_gen_apply, sub_eq_zero]`.
-
-Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem decomp_of_kill {a : ℕ} (τ : Fin a → O →+* R')
     (hτ : ∀ i j, i ≠ j → Ideal.span (Set.range fun x => τ i x - τ j x) = ⊤) (v : M)
@@ -125,7 +123,7 @@ open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalC
 open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.PullbackSections GlobalTheory.UPel.HT
 
 /- English proof (translation)
-Simplify using `only [spMap, ← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp_loc {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
@@ -134,17 +132,17 @@ theorem spMap_comp_loc {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f 
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {R' : Type} [CommRing R']
 
 /- English proof (translation)
-Establish `e1 : spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ spMap (algebraMap R' (DualNumber R')) = 𝟙 _`. Rewrite using `[spMap_comp_loc]`. Establish `: (TrivSqZeroExt.fstHom R' R' R').toRingHom.comp (algebraMap R' (DualNumber R')) = RingHom.id R'`. Use extensionality with `r`. Simplify using `[TrivSqZeroExt.algebraMap_eq_inl]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Conclude with `Spec.map_id _`. Set `j : Over.mk x ⟶ epsPtR x` to `Over.homMk (spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom) (by show spMap _ ≫ spMap (algebraMap R' (DualNumber R')) ≫ x = x`. Rewrite using `[← Category.assoc, e1, Category.id_comp])`. Set `h : epsPtR x ⟶ Over.mk x` to `Over.homMk (spMap (algebraMap R' (DualNumber R'))) rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ejh : j ≫ h = 𝟙 _` using `Over.OverMorphism.ext (by simp only [Over.comp_left, Over.homMk_left, j, h, e1]; rfl)`. Establish `e0 : Formalism.L2.Pj.homAt x (Formalism.L2.Pj.tm ((0 : R') • (LinearMap.id : R' →ₗ[R'] R'))) = h ≫ j`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Formalism.L2.Pj.homAt, Over.comp_left, Over.homMk_left, j, h, spMap_comp_loc]`. Use `congr 2`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext r <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`. Establish `es : Formalism.L2.Pj.smT x 0 v = h ≫ (j ≫ v)`. Rewrite using `[Formalism.L2.Pj.smT, e0, Category.assoc]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hj : j ≫ v = 1` using `Over.OverMorphism.ext (by simpa [j] using hv)`. Rewrite using `[es, hj, MonObj.comp_one]`. Introduce `hv`. Establish `hj : j ≫ v = 1`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `congrArg (fun φ => φ.left) hj` as an intermediate fact. Simplify `this` using `[j]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem tan_iff (x : Sp R' ⟶ S) (v : epsPtR x ⟶ A) :
     spMap (TrivSqZeroExt.fstHom R' R' R').toRingHom ≫ v.left = (1 : Over.mk x ⟶ A).left ↔
@@ -180,7 +178,7 @@ theorem tan_iff (x : Sp R' ⟶ S) (v : epsPtR x ⟶ A) :
     simpa [j] using this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `tanM_ext (Over.OverMorphism.ext h)`. Introduce `h`. Conclude with `congrArg (fun W => (tv W).left) h`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem scal_iff {p : ℕ} [Fact p.Prime] {D : Datum p} (act : OActN D.O A) (x : Sp R' ⟶ S) (c' : 𝓞 D.F) (c : R')
     (V : TanM x A) :
@@ -193,9 +191,9 @@ theorem scal_iff {p : ℕ} [Fact p.Prime] {D : Datum p} (act : OActN D.O A) (x :
     exact congrArg (fun W => (tv W).left) h
 
 /- English proof (translation)
-Rewrite using `[List.prod_ofFn]`. Establish `key : ∀ s : Finset (Fin n), tv (∑ i ∈ s, W i) = ∏ i ∈ s, tv (W i)`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => rw [Finset.sum_empty, Finset.prod_empty]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `insert i s hi ih => rw [Finset.sum_insert hi, Finset.prod_insert hi, tv_add, ih]`. Conclude with `key _`.
+Both sides reduce to the same expression. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tv_sum (x : Sp R' ⟶ S) {n : ℕ} (W : Fin n → TanM x A) :
     tv (∑ i, W i) = (List.ofFn fun i => tv (W i)).prod := by
@@ -221,9 +219,9 @@ def rho (x : Sp R' ⟶ S) (g : R' →+* R'') : epsPtR (spMap g ≫ x) ⟶ epsPtR
     rw [e])
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Formalism.L2.Pj.smT_left, rho, Over.homMk_left, ← Category.assoc, spMap_comp_loc]`. Establish `e : (epsMul (g c)).comp (Formalism.L2.Pj.dualMap g) = (Formalism.L2.Pj.dualMap g).comp (epsMul c)`. Apply the tactic sequence `refine RingHom.ext fun z => TrivSqZeroExt.ext ?_ ?_ <;>`. Simplify using `[Formalism.L2.Pj.dualMap, epsMul, mul_comm]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smT_rho (x : Sp R' ⟶ S) (g : R' →+* R'') (c : R') (w : epsPtR x ⟶ A) :
     Formalism.L2.Pj.smT (spMap g ≫ x) (g c) (rho x g ≫ w) = rho x g ≫ Formalism.L2.Pj.smT x c w := by
@@ -235,7 +233,7 @@ theorem smT_rho (x : Sp R' ⟶ S) (g : R' →+* R'') (c : R') (w : epsPtR x ⟶ 
   rw [e]
 
 /- English proof (translation)
-Rewrite using `[← map_zero g, smT_rho, tv_mem, MonObj.comp_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_tan (x : Sp R' ⟶ S) (g : R' →+* R'') (V : TanM x A) :
     Formalism.L2.Pj.smT (spMap g ≫ x) 0 (rho x g ≫ tv V) = 1 := by
@@ -254,25 +252,25 @@ def resHom (x : Sp R' ⟶ S) (g : R' →+* R'') : TanM x A →+ TanM (spMap g �
     rw [tv_res, tv_add, tv_add, tv_res, tv_res, MonObj.comp_mul])
 
 /- English proof (translation)
-The claim follows from `tanM_ext (by rw [tv_res, tv_smul, tv_smul, tv_res, smT_rho])`.
+A detailed English derivation is pending.
 -/
 theorem res_smul (x : Sp R' ⟶ S) (g : R' →+* R'') (c : R') (V : TanM x A) :
     res x g (c • V) = g c • res x g V :=
   tanM_ext (by rw [tv_res, tv_smul, tv_smul, tv_res, smT_rho])
 
 /- English proof (translation)
-The claim follows from `tanM_ext (by simp only [tv_res, tv_actR, Category.assoc])`.
+A detailed English derivation is pending.
 -/
 theorem res_actR {O : Type} [CommRing O] (Oa : OAct O A) (x : Sp R' ⟶ S) (g : R' →+* R'') (c : O) (V : TanM x A) :
     res x g (actR (x0 := x) Oa c V) = actR (x0 := spMap g ≫ x) Oa c (res x g V) :=
   tanM_ext (by simp only [tv_res, tv_actR, Category.assoc])
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero => intro τ c V`. Simplify using the standard rewrite rules. Consider the case `succ n ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `τ c V`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.prod_cons, List.prod_cons, Module.End.mul_apply, Module.End.mul_apply, ← ih (fun i => τ i.succ) (fun i => c i.succ), LinearMap.sub_apply, LinearMap.sub_apply, Module.algebraMap_end_apply, Module.algebraMap_end_apply]`. Express the relevant statement in the definitionally equal form `resHom x g _ = _`. Rewrite using `[map_sub]`. Express the relevant statement in the definitionally equal form `res x g _ - res x g _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[res_actR, res_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem res_prod {O : Type} [CommRing O] (Oa : OAct O A) (x : Sp R' ⟶ S) (g : R' →+* R'') :
     ∀ {a : ℕ} (τ : Fin a → O →+* R') (c : Fin a → O) (V : TanM x A),
@@ -293,9 +291,9 @@ theorem res_prod {O : Type} [CommRing O] (Oa : OAct O A) (x : Sp R' ⟶ S) (g : 
     rw [res_actR, res_smul]
 
 /- English proof (translation)
-Apply `tanM_ext` to reduce the goal to its premises. Rewrite using `[tv_zero]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `GlobalTheory.ArLieBase.hom_ext_dualNumber_away ht fun a => ?_` and prove the remaining obligations. Establish `h1 : rho x (algebraMap R' (Localization.Away (a : R'))) ≫ tv U = rho x (algebraMap R' (Localization.Away (a : R'))) ≫ (1 : epsPtR x ⟶ A)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[MonObj.comp_one]`. Conclude with `congrArg tv (h a.1 a.2)`. Conclude with `congrArg (fun φ => φ.left) h1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_res (x : Sp R' ⟶ S) (t : Finset R') (ht : Ideal.span (t : Set R') = ⊤) (U : TanM x A)
     (h : ∀ r ∈ t, res x (algebraMap R' (Localization.Away r)) U = 0) : U = 0 := by
@@ -310,17 +308,17 @@ theorem eq_zero_of_res (x : Sp R' ⟶ S) (t : Finset R') (ht : Ideal.span (t : S
   exact congrArg (fun φ => φ.left) h1
 
 /- English proof (translation)
-Introduce `p _ D R _ b S A _ _ act R' _ β x t ht hloc v hv`. Take `⟨hv1, hv2⟩` from `hv`. Set `τ : Fin D.a → 𝓞 D.F →+* R'` to `fun i => β.comp (b.t i)`. Establish `hτ : ∀ i j, i ≠ j → Ideal.span (Set.range fun y => τ i y - τ j y) = ⊤`. Introduce `i j hij`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h` using `congrArg (Ideal.map β) (b.comax i j hij)`. Rewrite `h` using `[Ideal.map_span, Ideal.map_top, ← Set.range_comp]`. Simplify `h` using `[τ, Function.comp_def, map_sub]`. Set `V : TanM x A` to `mkT v ((tan_iff x v).1 hv1)`. Establish `hVω : actR (x0` using `x) (act.toF D) D.ω V = β b.ρ • V := (scal_iff act x D.ω (β b.ρ) V).1 hv2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hkill : ∀ c : Fin D.a → 𝓞 D.F, (List.ofFn fun i => actR (x0` using `x) (act.toF D) (c i) - algebraMap R' _ (τ i (c i))).prod V = 0 := by`. Introduce `c`. Apply `eq_zero_of_res x t ht` to reduce the goal to its premises. Introduce `r hr`. Rewrite using `[res_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hω : actR (x0` using `spMap (algebraMap R' (Localization.Away r)) ≫ x) (act.toF D) D.ω (res x (algebraMap R' (Localization.Away r)) V) = ((algebraMap R' (Localization.Away r)).comp β) b.ρ • res x (algebraMap R' (Localization.Away r)) V := by`. Rewrite using `[← res_actR, hVω, res_smul]`. Both sides reduce to the same expression. Take `⟨w, hw, hvw⟩` from `hloc r hr (tv (res x (algebraMap R' (Localization.Away r)) V)) ⟨(tan_iff _ _).2 (tv_mem _), (scal_iff act _ D.ω _ _).2 hω⟩`. Set `W : Fin D.a → TanM (spMap (algebraMap R' (Localization.Away r)) ≫ x) A` to `fun i => mkT (w i) ((tan_iff _ _).1 (hw i 0).1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `kill_of_decomp (actR (x0 := spMap (algebraMap R' (Localization.Away r)) ≫ x) (act.toF D)) (fun i => (algebraMap R' (Localization.Away r)).comp (τ i)) _ W (fun i c' => ?_) ?_ c` and prove the remaining obligations. Conclude with `(scal_iff act _ c' _ (W i)).1 (hw i c').2`. Apply `tanM_ext` to reduce the goal to its premises. Rewrite using `[tv_sum]`. Conclude with `hvw`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨W, hW, hVW⟩` from `decomp_of_kill (actR (x0 := x) (act.toF D)) τ hτ V hkill`. Use `⟨fun i => tv (W i), fun i c => ⟨(tan_iff _ _).2 (tv_mem _), (scal_iff act x c _ (W i)).2 (hW i c)⟩, ?_⟩` and prove the remaining obligations. Use `show tv V = _`. Rewrite using `[hVW, tv_sum]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lieAt_of_cover : ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (R : Type) [CommRing R] (b : Base D R) (S : Scheme.{0})
     (A : Over S) [GrpObj A] [IsCommMonObj A] (act : OActN D.O A) (R' : Type) [CommRing R'] (β : R →+* R')

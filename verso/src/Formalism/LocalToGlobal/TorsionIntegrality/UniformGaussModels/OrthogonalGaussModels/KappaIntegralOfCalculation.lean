@@ -16,11 +16,11 @@ open Formalism.L2.Th1.CM (MaximalUnramifiedExtension)
 open Formalism.G (unitBall)
 
 /- English proof (translation)
-Introduce `l _ hl g2 g3 ε s2 hg2 hg3 hε hθ σ hU F hF hN n _ _ Θ γ hγ hK`. Take `⟨hFr, hF1, hall, hbin⟩` from `hC l hl g2 g3 ε s2 hg2 hg3 hε hθ σ hU F hF hN`. Establish `hσ : ∀ a : MaximalUnramifiedExtension l, ‖a‖ ≤ 1 → ‖σ a‖ ≤ 1` using `(frobSq (MaximalUnramifiedExtension l) l σ hU).2`. Set `_ : StarRing (BrC.Osub σ)` to `BrC.starO hσ`. Establish `hun : (Matrix.of fun a b => (⟨γ a b, BrC.mem_Osub.2 (hγ.1 a b)⟩ : BrC.Osub σ)).conjTranspose * (Matrix.of fun a b => (⟨γ a b, BrC.mem_Osub.2 (hγ.1 a b)⟩ : BrC.Osub σ)) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use extensionality with `a b`. Rewrite using `[Matrix.mul_apply, AddSubmonoidClass.coe_finsetSum, Matrix.one_apply]`. Establish `h` using `hγ.2 a b`. Apply the tactic sequence `have e : ((if a = b then (1 : BrC.Osub σ) else 0 : BrC.Osub σ) : MaximalUnramifiedExtension l) = if a = b then 1 else 0 := by split_ifs <;> rfl`. Rewrite using `[e, ← h]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `Formalism.L2.Th1.E.generalIntOf ℂ_[l] (unitBall ℂ_[l]) (fun _ => Iff.rfl) (lgF ℂ_[l] l) (expF ℂ_[l] l) (PowerSeries.map (MaximalUnramifiedExtension l).subtype (phFF l g2 g3 s2 ε)) hFr (BrC.Osub σ) ((MaximalUnramifiedExtension l).subtype.comp (BrC.Osub σ).subtype) (fun α => (hall …`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem kappa_integral_of_calculation (hC : CalcC) : uniformGaussModelConditionReformulated := by
   intro l _ hl g2 g3 ε s2 hg2 hg3 hε hθ σ hU F hF hN n _ _ Θ γ hγ hK
@@ -47,21 +47,19 @@ theorem kappa_integral_of_calculation (hC : CalcC) : uniformGaussModelConditionR
     n Θ (Matrix.of fun a b => (⟨γ a b, BrC.mem_Osub.2 (hγ.1 a b)⟩ : BrC.Osub σ)) hun hK
 
 /- English proof (translation)
-Introduce `l _ hl g2 g3 ε s2 hg2 hg3 hε hθ σ hU F hF hN N0 N1 ιr _ _ n _ f f' hff Θ hΘ`. Establish `hl2 : 2 ≤ l` using `by omega`. Take `⟨hFr, hF1, hall, hbin⟩` from `hC l hl g2 g3 ε s2 hg2 hg3 hε hθ σ hU F hF hN`. Take `⟨hf, hf', hG1, hG2, hG3⟩` from `hff`. Establish `hσ : ∀ a : MaximalUnramifiedExtension l, ‖a‖ ≤ 1 → ‖σ a‖ ≤ 1` using `(frobSq (MaximalUnramifiedExtension l) l σ hU).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `_ : StarRing (BrC.Osub σ)` to `BrC.starO hσ`. Establish `gram : ∀ (a b : ιr × Fin N0 × Fin N1 → n → MaximalUnramifiedExtension l) (ha : ∀ e i, ‖a e i‖ ≤ 1 ∧ σ (σ (a e i)) = a e i) (hb : ∀ e i, ‖b e i‖ ≤ 1 ∧ σ (σ (b e i)) = b e i) (e e' : ιr × Fin N0 × Fin N1) (c : BrC.Osub σ), ∑ i, σ (a e i) * b e' i = c.1 → ∑ i, star (⟨a e i, BrC.mem_ …`. Introduce `a b ha hb e e' c h`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← h, AddSubmonoidClass.coe_finsetSum]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hph : PowerSeries.constantCoeff (phL l g2 g3 s2 ε) = 0` using `hFr.2.2`. Establish `hPh0 : MvPowerSeries.constantCoeff (Formalism.L2.Th1.E.phSum (phL l g2 g3 s2 ε) : MvPowerSeries n ℂ_[l]) = 0` using `Formalism.L2.Th1.E.CompatibleChartOperations.cc_phSum hph`. Establish `hpt : ∀ i, Formalism.L2.Th1.C.IsPt (unitBall ℂ_[l]) (Formalism.L2.Th1.E.hypCoord (lgF ℂ_[l] l) (expF ℂ_[l] l) (MaximalUnramifiedExtension l).subtype f f' i)` using `fun i => Formalism.L2.Th1.C.Pts.isPt_flin hFr.1 hFr.2.1 (by`. Introduce and unpack `(e | e)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `(hall _ (hf e i).1 (hf e i).2).1`. Conclude with `(hall _ (hf' e i).1 (hf' e i).2).1)`. Apply the tactic sequence `(by rintro (e | e) <;> exact Formalism.L2.Th1.E.CompatibleChartOperations.isPt_X _)`. Take `⟨h3, h4, h5⟩` from `Formalism.L2.Th1.E.substExpInt ℂ_[l] n (Bool × ιr × Fin N0 × Fin N1) (Formalism.L2.Th1.E.hypCoord (lgF ℂ_[l] l) (expF ℂ_[l] l) (MaximalUnramifiedExtension l).subtype f f') (fun i => (hpt i).1) (fun i => (hpt i).2) (Formalism.L2.Th1.E.phSum (phL l g2 g3 s2 ε)) _ hPh0 hΘ`. Establish `hΘe : Θ = Formalism.DworkPowerSeriesWeights.mvExp (-(Formalism.L2.Th1.E.phSum (phL l g2 g3 s2 ε) : MvPowerSeries n ℂ_[l])) * (Formalism.DworkPowerSeriesWeights.mvExp (Formalism.L2.Th1.E.phSum (phL l g2 g3 s2 ε) : MvPowerSeries n ℂ_[l]) * Θ)`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_assoc]`. Use `Formalism.L2.Th1.C.mvExp_neg hPh0` as an intermediate fact. Rewrite `this` using `[← Formalism.L2.Th1.E.CompatibleChartOperations.mvExp_eq, ← Formalism.L2.Th1.E.CompatibleChartOperations.mvExp_eq]`. Rewrite using `[this, one_mul]`. Use `⟨_, _, h4, h5, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hF0 : MvPowerSeries.constantCoeff (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype F) = 0`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_map, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hF.1, map_zero]`. Establish `hcob : cob (MvPowerSeries.map (MaximalUnramifiedExtension l).subtype F) (lgF ℂ_[l] l) = 0`. Rewrite using `[← Formalism.L2.Th1.E.Joints.map_lgF' (MaximalUnramifiedExtension l).subtype l, ← Formalism.L2.Th1.E.mapCob _ _ _ _ _ hF.1, hF.2.2, map_zero]`. Rewrite using `[Formalism.L2.Th1.E.mapCob _ _ _ _ _ hF.1, Formalism.L2.Th1.E.sumEBridge ℂ_[l] (lgF ℂ_[l] l) (expF ℂ_[l] l) (BrC.logPair hl2) _ hF0 hcob]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(Formalism.L2.Th1.E.congIffSimeq ℂ_[l] (unitBall ℂ_[l]) (fun _ => Iff.rfl) _ _ _).1 ?_` and prove the remaining obligations. Rewrite using `[Formalism.L2.Th1.E.CompatibleChartOperations.subst_phSum _ fun i => (hpt i).1]`. Conclude with `Formalism.L2.Th1.C.hyperbolicSum ℂ_[l] (unitBall ℂ_[l]) (lgF ℂ_[l] l) (expF ℂ_[l] l) (PowerSeries.map (MaximalUnramifiedExtension l).subtype (phFF l g2 g3 s2 ε)) hFr (BrC.Osub σ) ((MaximalUnramifiedExtension l).subtype.comp (BrC.Osub σ).subtype) (fun α => (hall α.1 α.2.1 α.2.2).1 …`. Rewrite using `[hG3 e e']`. Apply the tactic sequence `split_ifs <;> rfl))`.
-
-Use the proof step `(Bool × ιr × Fin N0 × Fin N1)`. Use the proof step `(fun e => MvPowerSeries.X (false, e)) (fun e => MvPowerSeries.X (true, e))`. Use the proof step `(fun e => Formalism.L2.Th1.E.CompatibleChartOperations.isPt_X _) (fun e => Formalism.L2.Th1.E.CompatibleChartOperations.isPt_X _)`. Unfold `inHyp`. Rewrite using `[← h3, ← hΘe]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem HypShape_of (hC : CalcC) : HypShape := by
   intro l _ hl g2 g3 ε s2 hg2 hg3 hε hθ σ hU F hF hN N0 N1 ιr _ _ n _ f f' hff Θ hΘ

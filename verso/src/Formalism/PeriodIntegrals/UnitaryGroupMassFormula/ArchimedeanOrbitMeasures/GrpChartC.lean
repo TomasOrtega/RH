@@ -12,33 +12,31 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
   [T2Space G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
 
 /- English proof (translation)
-Establish `: (volume : Measure (EuclideanSpace ℝ ι × EuclideanSpace ℝ η)).IsAddHaarMeasure`. Rewrite using `[Measure.volume_eq_prod]`. Use `infer_instance`. Establish `: PolishSpace G` using `PI.AprimeInfA.polish_of_lcsc G`. Establish `hbox : ∀ ρ s, ρ ≤ r0 → s ≤ r0 → ball (0 : EuclideanSpace ℝ ι) ρ ×ˢ ball (0 : EuclideanSpace ℝ η) s ⊆ ball (0 : EuclideanSpace ℝ ι × EuclideanSpace ℝ η) r0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `ρ s hρ hs p hp`. Rewrite using `[mem_ball_zero_iff, Prod.norm_def]`. Conclude with `max_lt ((mem_ball_zero_iff.1 hp.1).trans_le hρ) ((mem_ball_zero_iff.1 hp.2).trans_le hs)`. Establish `himg : ∀ ρ s, tubeS H (κ '' ball 0 ρ) (χ '' ball 0 s) = (fun p : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => κ p.1 * (χ p.2 : G)) '' (ball 0 ρ ×ˢ ball 0 s)`. Introduce `ρ s`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, _, ⟨y, hy, rfl⟩, rfl⟩`. Conclude with `⟨(x, y), ⟨hx, hy⟩, rfl⟩`. Introduce and unpack `⟨⟨x, y⟩, ⟨hx, hy⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨κ x, ⟨x, hx, rfl⟩, χ y, ⟨y, hy, rfl⟩, rfl⟩`. Establish `hΦinj : InjOn (fun p : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => κ p.1 * (χ p.2 : G)) (ball 0 r0 ×ˢ ball 0 r0)`. Introduce `p hp q hq he`. Simplify using `only at he`. Establish `hm : (κ p.1)⁻¹ * κ q.1 ∈ H`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `: (κ p.1)⁻¹ * κ q.1 = (χ p.2 : G) * (χ q.2 : G)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `H.mul_mem (χ p.2).2 (H.inv_mem (χ q.2).2)`. Establish `h1` using `hinj _ hp.1 _ hq.1 hm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `he` using `[h1]`. Establish `h2 : (χ p.2 : G) = χ q.2` using `mul_left_cancel he`. Conclude with `Prod.ext h1 (hχi hp.2 hq.2 (Subtype.ext h2))`. Use `⟨hr0, hinj, ?_, ?_, ?_, ?_, hνH⟩` and prove the remaining obligations. Introduce `s hs hsr`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `measurableSet_ball.image_of_continuousOn_injOn (hχc.mono (ball_subset_ball hsr)) (hχi.mono (ball_subset_ball hsr))`. Introduce `ρ s hρ hρr hs hsr`. Rewrite using `[himg]`. Establish `hsub : ball (0 : EuclideanSpace ℝ ι) ρ ×ˢ ball (0 : EuclideanSpace ℝ η) s ⊆ ball 0 r0 ×ˢ ball 0 r0` using `prod_mono (ball_subset_ball hρr) (ball_subset_ball hsr)`. Establish `hc : ContinuousOn (fun p : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => κ p.1 * (χ p.2 : G)) (ball 0 ρ ×ˢ ball 0 s)` using `(hκc.comp continuousOn_fst fun p hp => ball_subset_ball hρr hp.1).mul (continuous_subtype_val.comp_continuousOn (hχc.comp continuousOn_snd fun p hp => ball_subset_ball hsr hp.2))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Conclude with `(measurableSet_ball.prod measurableSet_ball).image_of_continuousOn_injOn hc (hΦinj.mono hsub)`. Introduce `ρ hρ hρr`. Establish `: PolishSpace (H : Set G)` using `hH.polishSpace`. Establish `: PolishSpace H` using `this`. Establish `e1 : tubeS H (κ '' ball 0 ρ) univ = (fun p : EuclideanSpace ℝ ι × H => κ p.1 * (p.2 : G)) '' (ball 0 ρ ×ˢ univ)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨x, hx, rfl⟩, h, -, rfl⟩`. Conclude with `⟨(x, h), ⟨hx, mem_univ _⟩, rfl⟩`. Introduce and unpack `⟨⟨x, h⟩, ⟨hx, -⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `⟨κ x, ⟨x, hx, rfl⟩, h, mem_univ _, rfl⟩`. Rewrite using `[e1]`. Establish `hc : ContinuousOn (fun p : EuclideanSpace ℝ ι × H => κ p.1 * (p.2 : G)) (ball 0 ρ ×ˢ univ)` using `(hκc.comp continuousOn_fst fun p hp => ball_subset_ball hρr hp.1).mul (continuous_subtype_val.comp continuous_snd).continuousOn`. Establish `hi : InjOn (fun p : EuclideanSpace ℝ ι × H => κ p.1 * (p.2 : G)) (ball 0 ρ ×ˢ univ)`. Introduce `p hp q hq he`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only at he`. Establish `hm : (κ p.1)⁻¹ * κ q.1 ∈ H`. Establish `: (κ p.1)⁻¹ * κ q.1 = (p.2 : G) * (q.2 : G)⁻¹`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `H.mul_mem p.2.2 (H.inv_mem q.2.2)`. Establish `h1` using `hinj _ (ball_subset_ball hρr hp.1) _ (ball_subset_ball hρr hq.1) hm`. Rewrite `he` using `[h1]`. Establish `h2 : (p.2 : G) = q.2` using `mul_left_cancel he`. Conclude with `Prod.ext h1 (Subtype.ext h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `(measurableSet_ball.prod MeasurableSet.univ).image_of_continuousOn_injOn hc hi`. Introduce `ρ s hρ hρr hs hsr`. Establish `hB` using `hbox ρ s hρr hsr`. Establish `hBm : MeasurableSet (ball (0 : EuclideanSpace ℝ ι) ρ ×ˢ ball (0 : EuclideanSpace ℝ η) s)` using `measurableSet_ball.prod measurableSet_ball`. Establish `hF2 : ∀ p ∈ ball (0 : EuclideanSpace ℝ ι) ρ ×ˢ ball (0 : EuclideanSpace ℝ η) s, HasFDerivWithinAt F (F' p) (ball (0 : EuclideanSpace ℝ ι) ρ ×ˢ ball (0 : EuclideanSpace ℝ η) s) p` using `fun p hp => (hF p (hB hp)).mono hB`.
-
-Establish `e2 : (fun p : EuclideanSpace ℝ ι × EuclideanSpace ℝ η => κ p.1 * (χ p.2 : G)) '' (ball 0 ρ ×ˢ ball 0 s) = φ '' (F '' (ball 0 ρ ×ˢ ball 0 s))`. Rewrite using `[image_image]`. Conclude with `image_congr fun p hp => hΦ p (hB hp)`. Rewrite using `[himg, e2, hφ _ ((image_mono hB).trans hFU) (measurable_image_of_fderivWithin hBm hF2 (hFi.mono hB)), lintegral_image_eq_lintegral_abs_det_fderiv_mul volume hBm hF2 (hFi.mono hB)]`. Repeatedly rewrite using `[ENNReal.ofReal_mul (abs_nonneg _)]`.
+A detailed English derivation is pending.
 -/
 theorem tubeChart_of (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G) (hH : IsClosed (H : Set G))
     (ν : Measure H) {ι η : Type} [Fintype ι] [Fintype η]
@@ -150,7 +148,7 @@ theorem tubeChart_of (μ : Measure G) [μ.IsHaarMeasure] (H : Subgroup G) (hH : 
     simp_rw [ENNReal.ofReal_mul (abs_nonneg _)]
 
 /- English proof (translation)
-The claim follows from `hdet.mul (ContinuousAt.comp (g := D) hD hF)`.
+A detailed English derivation is pending.
 -/
 theorem contAt_dens {P : Type} [NormedAddCommGroup P] [NormedSpace ℝ P] {F : P → P} {F' : P → (P →L[ℝ] P)}
     {D : P → ℝ} (hF : ContinuousAt F 0) (hdet : ContinuousAt (fun p => |(F' p).det|) 0) (hD : ContinuousAt D (F 0)) :

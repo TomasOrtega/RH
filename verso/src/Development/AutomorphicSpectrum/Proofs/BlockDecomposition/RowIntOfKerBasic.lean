@@ -9,21 +9,17 @@ namespace GlobalTheory.CompanionTheory.KernelRows
 open PositivityTheory.Rg.BcB.E1
 
 /- English proof (translation)
-Introduce `hK X φ hφ`. Use `haveI : MeasurableConstSMul X.Γ X.G := ⟨fun γ => measurable_const_mul (γ : X.G)⟩`. Use `haveI : SMulInvariantMeasure X.Γ X.G X.μ := ⟨fun γ s _ => measure_preimage_mul _ γ.1 s⟩`. Establish `hc : Continuous φ` using `hφ.1`. Establish `hcs : HasCompactSupport φ` using `hφ.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : Continuous fun z : X.G => φ z⁻¹` using `hc.comp continuous_inv`. Establish `hcs' : HasCompactSupport fun z : X.G => φ z⁻¹` using `hcs.comp_homeomorph (Homeomorph.inv X.G)`. Establish `hfin1 : ∫⁻ z, ‖φ z‖ₑ ∂X.μ ≠ ⊤` using `(hc.integrable_of_hasCompactSupport (μ := X.μ) hcs).2.ne`. Establish `hfin2 : ∫⁻ z, ‖φ z⁻¹‖ₑ ∂X.μ ≠ ⊤` using `(hc'.integrable_of_hasCompactSupport (μ := X.μ) hcs').2.ne`. Establish `hb` using `(hK X φ hφ).2.2.2.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hν : X.ν = X.μ.restrict X.F` using `rfl`. Use `⟨∫⁻ z, ‖φ z‖ₑ ∂X.μ + ∫⁻ z, ‖φ z⁻¹‖ₑ ∂X.μ, ENNReal.add_ne_top.2 ⟨hfin1, hfin2⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `x`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hν, lintegral_tsum]`.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `tsum_congr fun γ => lintegral_congr fun y => ?_` and prove the remaining obligations. Rewrite using `[Subgroup.smul_def, smul_eq_mul, mul_assoc]`. Introduce `γ`. Conclude with `(hc.comp (by fun_prop)).enorm.aemeasurable`. Use `_ = ∫⁻ y, ‖φ (x⁻¹ * y)‖ₑ ∂X.μ := (X.fd.lintegral_eq_tsum'' (fun y => ‖φ (x⁻¹ * y)‖ₑ)).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ = ∫⁻ y, ‖φ y‖ₑ ∂X.μ := lintegral_mul_left_eq_self (fun y => ‖φ y‖ₑ) x⁻¹`. Use `_ ≤ _ := le_self_add`. Introduce `y`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hν, lintegral_tsum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `γ`. Conclude with `(hc.comp (by fun_prop)).enorm.aemeasurable`. Use `_ = ∑' γ : X.Γ, ∫⁻ x in X.F, ‖φ ((γ • x)⁻¹ * y)‖ₑ ∂X.μ := by`. Rewrite using `[← (Equiv.inv X.Γ).tsum_eq]`. Use `tsum_congr fun γ => lintegral_congr fun x => ?_` and prove the remaining obligations.
-
-Simplify using `[Subgroup.smul_def, smul_eq_mul, mul_inv_rev]`. Use `_ = ∫⁻ x, ‖φ (x⁻¹ * y)‖ₑ ∂X.μ := (X.fd.lintegral_eq_tsum'' (fun x => ‖φ (x⁻¹ * y)‖ₑ)).symm`. Use `_ = ∫⁻ z, ‖φ z⁻¹‖ₑ ∂X.μ := by`. Rewrite using `[← lintegral_mul_left_eq_self (fun x => ‖φ (x⁻¹ * y)‖ₑ) y]`. Use `lintegral_congr fun z => ?_` and prove the remaining obligations.
-
-Simplify using `[mul_inv_rev]`. Use `_ ≤ _ := le_add_self`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowInt_of_kerBasic : KerBasic → RowInt := by
   intro hK X φ hφ

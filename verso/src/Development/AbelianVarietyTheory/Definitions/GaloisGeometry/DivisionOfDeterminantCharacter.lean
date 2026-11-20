@@ -17,21 +17,19 @@ def Lacunary (J : Finset ℤ) : Prop :=
     (B.card : ℤ) * A.sum id ≠ (A.card : ℤ) * B.sum id
 
 /- English proof (translation)
-Introduce `A B hA hB` and use `h A B (hA.trans hK) (hB.trans hK)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Lacunary.mono {J K : Finset ℤ} (h : Lacunary J) (hK : K ⊆ J) : Lacunary K :=
   fun A B hA hB => h A B (hA.trans hK) (hB.trans hK)
 
 /- English proof (translation)
-Establish `key : ∀ A B : Finset ℤ, A ⊆ J → B ⊆ J → B.Nonempty → ∀ m ∈ A, (∀ b ∈ B, b < m) → (A.card : ℤ) * B.sum id < (B.card : ℤ) * A.sum id`. Introduce `A B hA hB hBn m hm hlt`. Establish `h1 : m ≤ A.sum id` using `Finset.single_le_sum (f := id) (fun x hx => (hpos x (hA hx)).le) hm`. Establish `hc : (A.card : ℤ) ≤ J.card` using `by exact_mod_cast Finset.card_le_card hA`. Establish `h2 : ∑ b ∈ B, (A.card : ℤ) * b < ∑ _b ∈ B, m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_lt_sum_of_nonempty hBn fun b hb => ?_` and prove the remaining obligations. Use `hg b (hB hb) m (hA hm) (hlt b hb)` as an intermediate fact. Use `mul_le_mul_of_nonneg_right hc (hpos b (hB hb)).le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h2` using `[← Finset.mul_sum, Finset.sum_const, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : (B.card : ℤ) * m ≤ B.card * A.sum id` using `mul_le_mul_of_nonneg_left h1 (by positivity)`. Conclude with `lt_of_lt_of_le h2 h3`. Introduce `A B hA hB hd hAn hBn`. Establish `hne : (A ∪ B).Nonempty` using `hAn.mono Finset.subset_union_left`. Establish `hmax : ∀ x ∈ A ∪ B, x ≤ (A ∪ B).max' hne` using `fun x hx => Finset.le_max' _ _ hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Finset.mem_union.1 (Finset.max'_mem _ hne) with hm | hm` into its components or cases. Use `(key A B hA hB hBn _ hm fun b hb => lt_of_le_of_ne (hmax b (Finset.mem_union_right _ hb)) ?_).ne'` and prove the remaining obligations. Introduce `e`. Conclude with `Finset.disjoint_left.1 hd hm (e ▸ hb)`. Use `(key B A hB hA hAn _ hm fun b hb => lt_of_le_of_ne (hmax b (Finset.mem_union_left _ hb)) ?_).ne` and prove the remaining obligations.
-
-Introduce `e`. Conclude with `Finset.disjoint_left.1 hd hb (e ▸ hm)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lacunary_of_growth {J : Finset ℤ} (hpos : ∀ x ∈ J, 0 < x) (hg : ∀ x ∈ J, ∀ y ∈ J, x < y → (J.card : ℤ) * x < y) :
     Lacunary J := by
@@ -61,11 +59,11 @@ theorem lacunary_of_growth {J : Finset ℤ} (hpos : ∀ x ∈ J, 0 < x) (hg : �
     exact Finset.disjoint_left.1 hd hb (e ▸ hm)
 
 /- English proof (translation)
-Introduce `h`. Establish `h02 : k ≠ k + 2` using `by omega`. Use `h {k, k + 2} {k + 1} ?_ ?_ ?_ (by simp) (by simp) ?_` and prove the remaining obligations. Introduce `x`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Introduce `x`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Finset.disjoint_singleton_right, Finset.mem_insert, Finset.mem_singleton]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[Finset.sum_pair h02, Finset.card_pair h02]`. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
+Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem not_lacunary_three (k : ℤ) : ¬ Lacunary ({k, k + 1, k + 2} : Finset ℤ) := by
   intro h
@@ -80,7 +78,7 @@ def wtJumps {a : ℕ} (lam : DomWeight a) : Finset ℤ :=
   Finset.univ.image fun k : Fin a => ((k : ℕ) : ℤ) - lam.w k
 
 /- English proof (translation)
-Introduce `i j hij`. Establish `h1` using `lam.anti hij.le`. Establish `h2 : (i : ℕ) < j` using `hij`. Simplify using `only`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem strictMono_jump {a : ℕ} (lam : DomWeight a) : StrictMono fun k : Fin a => ((k : ℕ) : ℤ) - lam.w k := by
   intro i j hij
@@ -90,13 +88,13 @@ theorem strictMono_jump {a : ℕ} (lam : DomWeight a) : StrictMono fun k : Fin a
   omega
 
 /- English proof (translation)
-Rewrite using `[wtJumps, Finset.card_image_of_injective _ (strictMono_jump lam).injective]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem card_wtJumps {a : ℕ} (lam : DomWeight a) : (wtJumps lam).card = a := by
   rw [wtJumps, Finset.card_image_of_injective _ (strictMono_jump lam).injective]; simp
 
 /- English proof (translation)
-Rewrite using `[wtJumps, Finset.image_val_of_injOn (strictMono_jump lam).injective.injOn, infOfWeight, Multiset.map_map, Multiset.map_map]`. Use `Multiset.map_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem wtJumps_val {a : ℕ} (lam : DomWeight a) :
     (wtJumps lam).val.map (fun n : ℤ => (n : ℂ)) = (infOfWeight lam).map (fun z => ((a : ℂ) - 1) / 2 - z) := by
@@ -107,7 +105,7 @@ theorem wtJumps_val {a : ℕ} (lam : DomWeight a) :
   ring
 
 /- English proof (translation)
-Establish `: wtJumps (⟨fun _ => 0, antitone_const⟩ : DomWeight 3) = {0, 0 + 1, 0 + 2}`. Simplify using `only [wtJumps]`. Evaluate the decidable proposition. Rewrite using `[this]`. Conclude with `not_lacunary_three 0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Evaluate the decidable proposition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example : ¬ Lacunary (wtJumps (⟨fun _ => 0, antitone_const⟩ : DomWeight 3)) := by
   have : wtJumps (⟨fun _ => 0, antitone_const⟩ : DomWeight 3) = {0, 0 + 1, 0 + 2} := by
@@ -116,7 +114,7 @@ example : ¬ Lacunary (wtJumps (⟨fun _ => 0, antitone_const⟩ : DomWeight 3))
   exact not_lacunary_three 0
 
 /- English proof (translation)
-The claim follows from `lacunary_of_growth (by decide) (by decide)`.
+A detailed English derivation is pending.
 -/
 example : Lacunary {1, 10, 100} := lacunary_of_growth (by decide) (by decide)
 

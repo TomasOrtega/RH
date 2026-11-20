@@ -5,15 +5,15 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Set `e` to `Algebra.TensorProduct.comm R K B`. Establish `h1 : IsIntegral R (e x)` using `hx.map e.toAlgHom`. Establish `h2 : IsIntegral B (e x)` using `h1.tower_top`. Take `⟨y, hy⟩` from `(TensorProduct.toIntegralClosure_bijective_of_smooth (R := R) (S := B) (B := K)).2 ⟨e x, h2⟩`. Establish `hy' : (TensorProduct.toIntegralClosure R B K y : B ⊗[R] K) = e x` using `congrArg Subtype.val hy`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ y : B ⊗[R] integralClosure R K, ∃ b : B, (TensorProduct.toIntegralClosure R B K y : B ⊗[R] K) = b ⊗ₜ[R] (1 : K)`. Introduce `y`. Proceed by induction on `y with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `tmul b c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨r, hr⟩` from `IsIntegrallyClosed.isIntegral_iff.1 c.2`. Use `⟨r • b, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.smul_tmul, ← Algebra.algebraMap_eq_smul_one, hr]`. Both sides reduce to the same expression. Consider the case `add u v hu hv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately.
 
-Take `⟨a, ha⟩` from `hu`. Take `⟨b, hb⟩` from `hv`. Conclude with `⟨a + b, by rw [map_add, Subalgebra.coe_add, ha, hb, TensorProduct.add_tmul]⟩`. Take `⟨b, hb⟩` from `key y`. Use `⟨b, e.injective ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hy', hb]`. Simplify using `[e]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_one_tmul_eq_of_isIntegral_smooth_fractionField
     (R K B : Type) [CommRing R] [IsDomain R] [IsIntegrallyClosed R] [Field K] [Algebra R K]
@@ -45,11 +45,11 @@ theorem exists_one_tmul_eq_of_isIntegral_smooth_fractionField
   simp [e]
 
 /- English proof (translation)
-Introduce `S₁ K₁ T _ _ _ _ _ _ _ _ hE hI`. Set `i : T →ₐ[S₁] K₁ ⊗[S₁] T` to `Algebra.TensorProduct.includeRight`. Establish `hi : Function.Injective i` using `Algebra.TensorProduct.includeRight_injective (IsFractionRing.injective S₁ K₁)`. Establish `hint : ∀ t : T, i t ∈ integralClosure S₁ (K₁ ⊗[S₁] T)` using `fun t => (Algebra.IsIntegral.isIntegral (R := S₁) t).map i`. Set `φ : T →ₐ[S₁] integralClosure S₁ (K₁ ⊗[S₁] T)` to `i.codRestrict _ hint`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφ : Function.Bijective φ`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Conclude with `hi (congrArg Subtype.val hab)`. Introduce and unpack `⟨x, hx⟩`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `exists_one_tmul_eq_of_isIntegral_smooth_fractionField S₁ K₁ T x hx`. Conclude with `⟨b, Subtype.ext hb.symm⟩`. Conclude with `Algebra.Etale.of_equiv (AlgEquiv.ofBijective φ hφ)`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem etale_integralClosure_tensor_of_etale_of_isIntegral :
     ∀ (S₁ K₁ T : Type) [CommRing S₁] [IsDomain S₁] [IsIntegrallyClosed S₁] [Field K₁]

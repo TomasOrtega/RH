@@ -18,13 +18,13 @@ noncomputable section
 namespace GlobalTheory.Poinc.PartLe
 
 /- English proof (translation)
-Substitute `hT` using the available equality. Establish `hsc : ∀ x, l.q (m • x) = (m : ℝ) ^ 2 * l.q x` using `fun x => by`. Rewrite using `[← natCast_zsmul, QuadraticMap.map_smul, zsmul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hm0 : (m : ℝ) ^ 2 ≠ 0`. Use `GlobalTheory.ZH.GlobalGen.N_pos S` as an intermediate fact. Rewrite `this` using `[hm]`. Conclude with `this.ne'` after adjusting the coercions. Establish `hlab : l.yy (m • a) = QuotientAddGroup.mk (m • χ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_nsmul, ha, QuotientAddGroup.mk_nsmul]`. Establish `hwt : w = l.wt (m • χ)` using `AddMonoidHom.ext fun t => (hw t).trans (l.wt_eq _ _ hlab t).symm`. Establish `key` using `GlobalTheory.ZH.WeightBound.main GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 GlobalTheory.ZH.uTors_closed o Ω S ρ p y₀ u l hint (m • χ) (fun v => by`. Establish `e : m • χ + S.N • v = m • (χ + m • v)` using `by rw [hm, smul_add, smul_smul, sq]`. Rewrite using `[e, hsc, hsc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (hmin v) (sq_nonneg _)) h hh i`. Establish `e : l.q (m • χ) / S.N = l.q χ`. Rewrite using `[hsc, hm, Nat.cast_pow, mul_div_cancel_left₀ _ hm0]`. Rewrite `key` using `[e, ← hwt]`. Simplify `key` using `only [map_sum, map_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem ubound {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o Ω] {S : ThetaSys o Ω} {ρ : S.Real}
     {p : ℕ} [Fact p.Prime] {y₀ : S.R →+* PadicAlgCl p} (u : ρ.UTest p y₀) (l : u.Lab)
@@ -59,37 +59,33 @@ theorem ubound {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] [ArithBase o
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `g n F W Z i X₁ h1 h2 h3 h4 h5 h6 h7 ε₁ h8 D z₁ z₂ hz p _ c yy₁ _ y h hy yy hl _ a ν κ hν hmin`. Substitute `hy` using the available equality. Take `⟨-, hHH⟩` from `GlobalTheory.Poinc.isLab_onto_and_ker g n F W Z i D.X h1 h2 h3 h4 h5 h6 D.proj D.ε D.diag p _ (D.lift c y h) yy hl`. Take `⟨c₀, hc, R', fg, frac, hth, hev, ρ', ε', -, -, hR', y₀, hy₀, u, l, j, hq, hyy, -⟩` from `hl`. Establish `hlift : ∀ (b : D.X.S.Gam) μ, yy b = QuotientAddGroup.mk μ → l.yy b = QuotientAddGroup.mk (j.symm μ)`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `b μ hb`. Take `⟨χ, hχ⟩` from `QuotientAddGroup.mk_surjective (l.yy b)`. Establish `e1` using `hyy b χ hχ.symm`. Rewrite `e1` using `[hb, QuotientAddGroup.eq]`. Take `⟨w, hw⟩` from `e1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hχ, eq_comm, QuotientAddGroup.eq]`. Use `⟨j.symm w, ?_⟩` and prove the remaining obligations. Simplify using `only [nsmulAddMonoidHom_apply] at hw ⊢`. Rewrite using `[← map_nsmul, hw, map_add, map_neg, j.symm_apply_apply]`. Establish `hker : yy.ker = l.yy.ker`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `b`. Simplify using `only [AddMonoidHom.mem_ker]`. Prove the components needed by the constructor for the conclusion. Introduce `hb`. Use `hlift b 0 hb` as an intermediate fact.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis. Introduce `hb`. Use `hyy b 0 hb` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis. Establish `hint : ∀ a : D.X.o₁, ‖y₀ (algebraMap D.X.o₁ R' a)‖ ≤ 1` using `fun a => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[hy₀]`. Conclude with `RatModel.norm_val_le_one rfl ((D.X.M.O _).algebraMap_mem a)`. Establish `hδ0` using `(GlobalTheory.UnitTheta.closure_unit_theta GlobalTheory.abelianSchemeLaws_all.1 GlobalTheory.abelianSchemeLaws_all.2 GlobalTheory.ZH.uTors_closed _ _ _ ρ' p y₀ u l hint).1`. Establish `hb : GSum.base X₁ z₁ ∈ X₁.S.supI X₁.M z₁`. Establish `hne : (X₁.S.supI X₁.M z₁).Nonempty` using `X₁.div z₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GSum.base, dif_pos hne]`. Conclude with `hne.some_mem`. Establish `hx₀` using `GlobalTheory.T.thetaSetup_dividingLabel_persists_deeperLevel g n F W Z i X₁ h1 h2 h3 h4 h5 h6 h7 ε₁ h8 D z₁ _ hb _ hz`. Establish `hmem : GSum.lift D (y (cPt p)) (κ : X₁.S.Gam) ∈ l.yy.ker`. Rewrite using `[← hker, hHH, GSum.lift]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs with hex`. Conclude with `hex.choose_spec.1`. Conclude with `zero_mem _`. Establish `key` using `ubound (S := D.X.S.rechart c₀ hc R' fg frac hth hev) u l hint (m := D.m) D.sq (hlift a ν hν) (fun v => by`. Rewrite using `[hq, hq, map_add, map_nsmul, j.apply_symm_apply]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (Int.cast_le.2 (hmin _ ⟨j v, rfl⟩)) c.scale_pos.le)`. Use the proof step `(T := D.X.S.TT D.X.M (y (cPt p))) (by rw [← hker, hHH]; rfl) (GSum.wtChar D _ a) (fun _ => rfl) hmem D.X.ρ.i₀`. Rewrite `key` using `[hq, j.apply_symm_apply, hy₀]`. Unfold `GSum.part`. Generalize the expression as in `D.lab (GSum.base X₁ z₁) = x₀ at hx₀`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Use `set Sg := ∑ j, algebraMap D.X.o₁ D.X.Ω₁ (D.X.S.proj (D.X.S.TT D.X.M (y (cPt p))) (GSum.wtChar D _ a) j D.X.ρ.i₀) * D.X.S.ev (GSum.lift D (y (cPt p)) (κ : X₁.S.Gam)) j with hSg`. Establish `hsp : ∀ w, (gPt p ≫ y) w ⤳ (gPt p ≫ y) (IsLocalRing.closedPoint (PadicAlgCl p))` using `RatModel.specializes_of_range_eq (RatModel.range_eq_singleton _ _)`. Establish `hgz : (gPt p ≫ y) (IsLocalRing.closedPoint (PadicAlgCl p)) ⤳ y (cPt p)` using `RatModel.gPt_specializes rfl _`. Establish `hle : (D.X.S.rechart c₀ hc R' fg frac hth hev).delta y₀ ≤ ‖D.X.M.val (gPt p ≫ y) (c₀ * D.X.S.th x₀)‖`. Use `ciSup_le fun x => (congrArg norm (hy₀ _)).trans_le ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ‖D.X.M.val (gPt p ≫ y) (c₀ * D.X.S.th x)‖ ≤ _`. Establish `e : c₀ * D.X.S.th x = D.X.S.th x / D.X.S.th x₀ * (c₀ * D.X.S.th x₀)`. Use `hx₀.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite using `[e, RatModel.val_mul hsp (RatModel.O_le_of_specializes hgz (hx₀.2 x)) (hR' (hth _)), norm_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_le_of_le_one_left (norm_nonneg _) (RatModel.norm_val_le_one rfl (hx₀.2 x))`. Establish `hpos` using `hδ0.trans_le hle`. Establish `hSR : c₀ * Sg ∈ R'`. Rewrite using `[hSg, Finset.mul_sum]`. Use `sum_mem fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_left_comm]`. Conclude with `mul_mem (R'.algebraMap_mem _) (hev _ _)`. Establish `key' : ‖D.X.M.val (gPt p ≫ y) (c₀ * Sg)‖ ≤ ‖D.X.M.val (gPt p ≫ y) (c₀ * D.X.S.th x₀)‖ * Real.exp (-(c.sc * (qW W c.T.β ν : ℤ)))`. Use `le_trans (le_of_eq ?_) (key.trans (mul_le_mul_of_nonneg_right hle (Real.exp_pos _).le))` and prove the remaining obligations. Use `congr 2`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[hSg, Finset.mul_sum, AddSubmonoidClass.coe_finset_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => mul_left_comm _ _ _`. Establish `hO : Sg / D.X.S.th x₀ ∈ D.X.M.O ((gPt p ≫ y) (IsLocalRing.closedPoint (PadicAlgCl p)))`. Take `⟨v, hv⟩` from `((RatModel.val_ne_zero_iff (RatModel.range_eq_singleton (gPt p ≫ y) _) ⟨c₀ * D.X.S.th x₀, hR' (hth x₀)⟩).1 (norm_pos_iff.1 hpos)).exists_right_inv`. Establish `hv' : c₀ * D.X.S.th x₀ * (v : D.X.Ω₁) = 1` using `congrArg Subtype.val hv`.
-
-Establish `e : Sg / D.X.S.th x₀ = c₀ * Sg * v`. Rewrite using `[div_eq_iff hx₀.1]`. Take the linear combination `(-Sg) * hv'`. Rewrite using `[e]`. Conclude with `mul_mem (hR' hSR) v.2`.
-
-Establish `e : c₀ * Sg = Sg / D.X.S.th x₀ * (c₀ * D.X.S.th x₀)`. Use `hx₀.1` as an intermediate fact. Clear the denominators using the available nonvanishing facts. Rewrite `key'` using `[e, RatModel.val_mul hsp hO (hR' (hth _)), norm_mul, mul_comm]`. Conclude with `le_of_mul_le_mul_left key' hpos`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (W : Matrix (Fin 8) (Fin 8) ℤ) (Z : Scheme.{0}) (i : F.X ⟶ Z) (X₁ : Setup F W i), 1 ≤ g → 3 ≤ n → Odd n → IsOpenImmersion i → IsE8 W → ThetaInt F W i → IsProjOver X₁.M.s → ∀ (ε₁ : Matrix (Fin 8) (Fin 8) ℤ → (X₁.ρ.P.A ⟶ X₁.ρ.P.A)), IsDiagEnd F W X₁.ρ.P X₁.u ε₁ → ∀ (D : Deep X₁ ε₁) (z₁ : X₁.M.Z) (z₂ : D.X.M.Z), D.q z₂ = z₁ → ∀ (p : ℕ) [Fact p.Prime] (c : CTrait X₁ p z₁) (yy₁ : X₁.S.Gam →+ ModN (X₁.S.r * X₁.S.N) (Fin 8 → c.T.D.toPre.X)), IsLab X₁ ε₁ c yy₁ → ∀ (y : Sp (OO p) ⟶ D.X.M.Z) (h : y ≫ D.q = c.y), y (cPt p) = z₂ → ∀ yy : D.X.S.Gam →+ ModN (D.X.S.r * D.X.S.N) (Fin 8 → c.T.D.toPre.X), IsLab D.X D.ε (D.lift c y h) yy → D.Compat yy₁ yy → ∀ a ν κ, yy a = QuotientAddGroup.mk ν → (∀ χ, CongMod D.m χ ν → qW W c.T.β ν ≤ qW W c.T.β χ) → ‖D.X.M.val (gPt p ≫ y) (GSum.part D z₁ z₂ a κ)‖ ≤ Real.exp (-(c.sc * (qW W c.T.β ν : ℤ))) := by
   intro g n F W Z i X₁ h1 h2 h3 h4 h5 h6 h7 ε₁ h8 D z₁ z₂ hz p _ c yy₁ _ y h hy yy hl _ a ν κ hν hmin

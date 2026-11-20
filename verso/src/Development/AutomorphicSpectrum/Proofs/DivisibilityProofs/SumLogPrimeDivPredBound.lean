@@ -4,15 +4,15 @@ import Development.AutomorphicSpectrum.Proofs.DivisibilityProofs.SumLogDivPredLe
 namespace GlobalTheory.CompanionTheory.Ar.Flat
 
 /- English proof (translation)
-Establish `hB0 : (0 : ℝ) < B`. Establish `: (128 : ℝ) ≤ B` using `by exact_mod_cast hB`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpB : (B : ℝ) + 1 ≤ p` using `by exact_mod_cast hp`. Establish `hp1 : (0 : ℝ) < (p : ℝ) - 1` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB1 : (0 : ℝ) < (B : ℝ) + 1` using `by linarith`. Establish `hp0 : (0 : ℝ) < p` using `by linarith`. Establish `hlog : Real.log p ≤ Real.log ((B : ℝ) + 1) + ((p : ℝ) - B - 1) / ((B : ℝ) + 1)`. Establish `h1` using `Real.log_le_sub_one_of_pos (div_pos hp0 hB1)`. Rewrite `h1` using `[Real.log_div hp0.ne' hB1.ne']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : (p : ℝ) / ((B : ℝ) + 1) - 1 = ((p : ℝ) - B - 1) / ((B : ℝ) + 1)`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[div_le_div_iff₀ hp1 hB0]`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : (0 : ℝ) ≤ (p : ℝ) - B - 1` using `by linarith`. Establish `hfrac : (B : ℝ) * (((p : ℝ) - B - 1) / ((B : ℝ) + 1)) ≤ ((p : ℝ) - B - 1) * Real.log ((B : ℝ) + 1)`. Establish `h3 : (B : ℝ) / ((B : ℝ) + 1) ≤ Real.log ((B : ℝ) + 1)`. Use `le_trans ?_ hL` and prove the remaining obligations. Rewrite using `[div_le_one hB1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `h4 : Real.log p * B ≤ (Real.log ((B : ℝ) + 1) + ((p : ℝ) - B - 1) / ((B : ℝ) + 1)) * B` using `mul_le_mul_of_nonneg_right hlog hB0.le`. Use polynomial arithmetic with `[h4, hfrac]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem log_div_pred_le_of_lt (B p : ℕ) (hB : 128 ≤ B) (hp : B < p) (hL : 1 ≤ Real.log ((B : ℝ) + 1)) :
     Real.log p / ((p : ℝ) - 1) ≤ Real.log ((B : ℝ) + 1) / B := by
@@ -45,27 +45,25 @@ theorem log_div_pred_le_of_lt (B p : ℕ) (hB : 128 ≤ B) (hp : B < p) (hL : 1 
   nlinarith [h4, hfrac]
 
 /- English proof (translation)
-Introduce `B bad S hB hcard hS`. Establish `hBR : (128 : ℝ) ≤ B` using `by exact_mod_cast hB`. Establish `hB0 : (0 : ℝ) < B` using `by linarith`. Establish `hlogB : (4.85 : ℝ) ≤ Real.log B`. Establish `h128 : Real.log 128 = 7 * Real.log 2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show (128 : ℝ) = 2 ^ 7 by norm_num, Real.log_pow]`. Evaluate the numerical expressions. Establish `h2` using `Real.log_two_gt_d9`. Establish `h3 : Real.log 128 ≤ Real.log B` using `Real.log_le_log (by norm_num) hBR`. Rewrite `h3` using `[h128]`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Evaluate the numerical expressions using `at h2 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hLle : Real.log ((B : ℝ) + 1) ≤ Real.log B + 1 / B`. Establish `hpos : (0 : ℝ) < ((B : ℝ) + 1) / B` using `by positivity`. Establish `h1` using `Real.log_le_sub_one_of_pos hpos`.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[Real.log_div (by positivity) hB0.ne']`. Establish `h2 : ((B : ℝ) + 1) / B - 1 = 1 / B`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hLge : 1 ≤ Real.log ((B : ℝ) + 1)`. Establish `: Real.log B ≤ Real.log ((B : ℝ) + 1)` using `Real.log_le_log hB0 (by linarith)`. Evaluate the numerical expressions using `at hlogB`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hinv : 1 / (B : ℝ) ≤ 1`.
+Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[div_le_one hB0]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[← Finset.sum_filter_add_sum_filter_not S (fun p => p ≤ B)]`. Establish `hsmall : ∑ p ∈ S.filter (fun p => p ≤ B), Real.log p / ((p : ℝ) - 1) ≤ Real.log B + 17 / 5`. Use `GlobalTheory.CompanionTheory.Ar.Small.sum_log_div_pred_le (B : ℝ) _ (by linarith) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `p hp`. Take `⟨hpS, hpB⟩` from `Finset.mem_filter.mp hp`. Conclude with `⟨(hS p hpS).1, by exact_mod_cast hpB⟩`. Establish `hlarge : ∑ p ∈ S.filter (fun p => ¬ p ≤ B), Real.log p / ((p : ℝ) - 1) ≤ Real.log ((B : ℝ) + 1)`. Establish `hsub : S.filter (fun p => ¬ p ≤ B) ⊆ bad`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `p hp`. Take `⟨hpS, hpB⟩` from `Finset.mem_filter.mp hp`. Conclude with `(hS p hpS).2.resolve_left hpB`. Establish `hc : (S.filter (fun p => ¬ p ≤ B)).card ≤ B` using `(Finset.card_le_card hsub).trans hcard`. Establish `h1 : ∑ p ∈ S.filter (fun p => ¬ p ≤ B), Real.log p / ((p : ℝ) - 1) ≤ (S.filter (fun p => ¬ p ≤ B)).card • (Real.log ((B : ℝ) + 1) / B)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_le_card_nsmul _ _ _ ?_` and prove the remaining obligations. Introduce `p hp`. Conclude with `log_div_pred_le_of_lt B p hB (not_le.mp (Finset.mem_filter.mp hp).2) hLge`. Establish `h2 : (S.filter (fun p => ¬ p ≤ B)).card • (Real.log ((B : ℝ) + 1) / B) ≤ (B : ℝ) * (Real.log ((B : ℝ) + 1) / B)`. Rewrite using `[nsmul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_right (by exact_mod_cast hc) ?_` and prove the remaining obligations. Conclude with `div_nonneg (by linarith) hB0.le`. Establish `h3 : (B : ℝ) * (Real.log ((B : ℝ) + 1) / B) = Real.log ((B : ℝ) + 1)`. Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Evaluate the numerical expressions using `at hlogB`. Combine the linear equalities and inequalities to obtain the conclusion.
+Clear the denominators using the available nonvanishing facts. Combine the linear equalities and inequalities to obtain the conclusion. Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem sum_log_div_pred_SB :
     ∀ (B : ℕ) (bad S : Finset ℕ), 128 ≤ B → bad.card ≤ B →

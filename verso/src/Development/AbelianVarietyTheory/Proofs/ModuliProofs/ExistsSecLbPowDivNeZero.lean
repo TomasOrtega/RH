@@ -31,11 +31,11 @@ def chartPullTw (L N : LB X) (t : ℕ) : ChartPull (LB.div (lbPow L t) N) (tw (p
     exact (map_zpow _ _ _).trans (zpow_neg_one _)
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_chart hN y`. Take `⟨a, hle, hya⟩` from `ha.exists_basicOpen_le (V := N.U k) ⟨y, hk⟩ hy`. Take `⟨m, -, σ, hσ⟩` from `exists_nonzeroLocus_eq_basicOpen hL s a`. Take `⟨e, u, hu⟩` from `exists_sec_of_le_chart (M := pw N (-1)) (isLB_pw hN (-1)) hL (n * m) (powSecFn σ) (fun z j j' hj hj' => by`. Establish `hz : z ∈ L.U j ⊓ L.U j'` using `⟨hj, hj'⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e` using `congrArg (gs (𝟙 X) z _) (powSecFn_compat σ j j')`. Rewrite using `[gs_res _ z _ hz, gs_mul _ z _ hz, gs_res _ z _ hz, gs_pow _ z _ hz, gs_unit _ z _ hz] at e)` and apply the resulting hypothesis. Use the proof step `(X.basicOpen a) (fun z j hj => by`. Rewrite using `[isUnit_gs_iff (𝟙 X) z _ hj, ← nonzeroLocus_inf_powSecFn, hσ]`. Conclude with `⟨fun h => ⟨h, hj⟩, fun h => h.1⟩) k hle`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n * m * e, chartSec (chartPullTw L N _) u, ?_⟩` and prove the remaining obligations. Rewrite using `[nonzeroLocus_chartSec_id (chartPullTw L N _) u fun z j hj => ⟨((fun _ => j.2 : PUnit → L.ι), j.1), (⟨mem_powChart.2 hj.2, hj.1⟩ : z ∈ powChart L (fun _ => j.2) ⊓ N.U j.1)⟩]`. Conclude with `hu hya`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sec_div [CompactSpace X] [QuasiSeparatedSpace X] {L N : LB X} (hL : L.IsLB) (hN : N.IsLB) {n : ℕ}
     (s : (lbPow L n).Sec) (ha : IsAffineOpen (nonzeroLocus s)) (y : X) (hy : y ∈ nonzeroLocus s) :
@@ -58,7 +58,7 @@ theorem exists_sec_div [CompactSpace X] [QuasiSeparatedSpace X] {L N : LB X} (hL
   exact hu hya
 
 /- English proof (translation)
-Establish `hy' : y ∈ ⨆ k, X.basicOpen (u.f k)` using `hy`. Take `⟨k, hk⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy'`. Use `⟨k, fun h0 => ?_⟩` and prove the remaining obligations. Rewrite `hk` using `[h0, Scheme.basicOpen_zero]`. Conclude with `absurd hk (by simp)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_f_ne_zero {M : LB X} (u : M.Sec) {y : X} (hy : y ∈ nonzeroLocus u) : ∃ j, u.f j ≠ 0 := by
   have hy' : y ∈ ⨆ k, X.basicOpen (u.f k) := hy
@@ -74,9 +74,9 @@ namespace GlobalTheory
 open PowDominates
 
 /- English proof (translation)
-Introduce `h K _ _ P N hN`. Take `⟨m, s, hc, hs⟩` from `veryAmple_lbPow h.ample K P 4 le_rfl`. Use `polAV_isIntegral_of_isAlgClosed K P` as an intermediate fact. Take `⟨_, _⟩` from `TwistGen.compact_quasiSeparated (isLB_lbPow P.isLB 4) s hc fun i => (hs i).1`. Take `⟨y⟩ : Nonempty P.A.left` from `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 (show y ∈ ⨆ i, Out.nonzeroLocus (s i) by rw [hc]; trivial)`. Take `⟨t, u, hu⟩` from `exists_sec_div P.isLB hN (s i) (hs i).1 y hi`. Conclude with `⟨t, u, exists_f_ne_zero u hu⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_sec_lbPow_div_ne_zero : Out.Laws → ∀ (K : Type) [Field K] [IsAlgClosed K] (P : Out.PolAV (Sp K)) (N : LB P.A.left), N.IsLB → ∃ (n : ℕ) (s : (LB.div (lbPow P.L n) N).Sec), ∃ j, s.f j ≠ 0 := by
   intro h K _ _ P N hN

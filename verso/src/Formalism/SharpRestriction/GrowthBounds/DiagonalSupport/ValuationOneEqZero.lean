@@ -13,7 +13,7 @@ section Bij
 variable {n' r : ℕ} [NeZero n'] (Fr : Frames n' r) {L₁ N₁ : ℕ}
 
 /- English proof (translation)
-Establish `hn : (0 : ℤ) < n'` using `by exact_mod_cast NeZero.pos n'`. Establish `h0 : 0 ≤ x % n'` using `Int.emod_nonneg _ hn.ne'`. Establish `h1 : x % n' < n'` using `Int.emod_lt_of_pos _ hn`. Simplify using `only [posOf]`. Rewrite using `[Nat.mod_eq_of_lt (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -26,15 +26,15 @@ theorem dg_posOf_val (x : ℤ) : ((posOf n' x).val : ℤ) = x % n' := by
   omega
 
 /- English proof (translation)
-Establish `hn : (0 : ℤ) < n'` using `by exact_mod_cast NeZero.pos n'`. Establish `hv` using `congrArg (fun t : Fin n' => (t.val : ℤ)) h`. Simplify using `only [dg_posOf_val] at hv`. Establish `e1` using `Int.mul_ediv_add_emod a n'`. Establish `e2` using `Int.mul_ediv_add_emod b n'`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk : a - b = n' * (a / n' - b / n')`. Rewrite `e1` using `[hv]`. Take the linear combination `e2 - e1`. Establish `hlt : a - b < n'` using `by linarith [ha.2, hb.1]`. Establish `hgt : -(n' : ℤ) < a - b` using `by linarith [ha.1, hb.2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hlt`, `hgt` using `[hk]`. Establish `h1 : a / n' - b / n' < 1`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `h2 : -1 < a / n' - b / n'`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Use the polynomial consequences of the given equalities and inequalities. Establish `h3 : a / n' - b / n' = 0` using `by omega`.
+Assume the negation of the conclusion and derive a contradiction. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `hk` using `[h3, mul_zero]`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem dg_posOf_inj {y a b : ℤ} (ha : y ≤ a ∧ a < y + n') (hb : y ≤ b ∧ b < y + n') (h : posOf n' a = posOf n' b) :
     a = b := by
@@ -64,9 +64,9 @@ theorem dg_posOf_inj {y a b : ℤ} (ha : y ≤ a ∧ a < y + n') (hb : y ≤ b �
 variable {Fr}
 
 /- English proof (translation)
-Introduce `i' hii' hi'`. Proceed by induction on `i' with`. Consider the case `zero => omega`. Consider the case `succ k ih`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hii' with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `lt_trans (ih h (by omega)) (hV.2.2.1 j k (by omega))`. Substitute `h` using the available equality. Conclude with `hV.2.2.1 j i (by omega)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem dg_fr_lt (hV : Fr.Valid L₁ N₁) (j : ℤ) (i : ℕ) : ∀ i', i < i' → i' < r → Fr.fr j i < Fr.fr j i' := by
   intro i' hii' hi'
@@ -79,7 +79,7 @@ theorem dg_fr_lt (hV : Fr.Valid L₁ N₁) (j : ℤ) (i : ℕ) : ∀ i', i < i' 
       exact hV.2.2.1 j i (by omega)
 
 /- English proof (translation)
-Break down `h.lt_or_eq with h | h` into its components or cases. Conclude with `(dg_fr_lt hV j i i' h h').le`. Substitute `h` using the available equality. Conclude with `le_rfl`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem dg_fr_le (hV : Fr.Valid L₁ N₁) (j : ℤ) {i i' : ℕ} (h : i ≤ i') (h' : i' < r) : Fr.fr j i ≤ Fr.fr j i' := by
   rcases h.lt_or_eq with h | h
@@ -88,7 +88,7 @@ theorem dg_fr_le (hV : Fr.Valid L₁ N₁) (j : ℤ) {i i' : ℕ} (h : i ≤ i')
     exact le_rfl
 
 /- English proof (translation)
-Apply `strictMono_int_of_lt_succ` to reduce the goal to its premises. Introduce `j`. Conclude with `lt_of_lt_of_le (hV.2.2.2.1 j) (dg_fr_le hV (j + 1) (Nat.zero_le _) (by omega))`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem dg_z_mono (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) : StrictMono fun j : ℤ => Fr.fr j (r - 1) := by
   apply strictMono_int_of_lt_succ
@@ -96,28 +96,28 @@ theorem dg_z_mono (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) : StrictMono fun j : 
   exact lt_of_lt_of_le (hV.2.2.2.1 j) (dg_fr_le hV (j + 1) (Nat.zero_le _) (by omega))
 
 /- English proof (translation)
-Establish `h` using `hV.2.2.2.1 (j - 1)`. Rewrite `h` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem frame_end_lt_next_start (hV : Fr.Valid L₁ N₁) (j : ℤ) : Fr.fr (j - 1) (r - 1) < Fr.fr j 0 := by
   have h := hV.2.2.2.1 (j - 1)
   rwa [sub_add_cancel] at h
 
 /- English proof (translation)
-Simplify using `[llPos, Finset.orderEmbOfFin_apply, hl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dg_llPos_eq (j : ℤ) (l : ℕ) (hl : l < (Fr.LLset j).card) :
     llPos Fr j l = (Fr.LLset j).orderEmbOfFin rfl ⟨l, hl⟩ := by
   simp [llPos, Finset.orderEmbOfFin_apply, hl]
 
 /- English proof (translation)
-Rewrite using `[dg_llPos_eq j l hl]`. Conclude with `Finset.orderEmbOfFin_mem _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dg_llPos_mem (j : ℤ) (l : ℕ) (hl : l < (Fr.LLset j).card) : llPos Fr j l ∈ Fr.LLset j := by
   rw [dg_llPos_eq j l hl]
   exact Finset.orderEmbOfFin_mem _ _ _
 
 /- English proof (translation)
-Simplify using `[Frames.LLset, Finset.mem_filter, Finset.mem_Ioo]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dg_mem_LL {j t : ℤ} : t ∈ Fr.LLset j ↔ (Fr.fr (j - 1) (r - 1) < t ∧ t < Fr.fr j 0) ∧ posOf n' t ∈ Fr.TT := by
   simp [Frames.LLset, Finset.mem_filter, Finset.mem_Ioo]
@@ -125,9 +125,9 @@ theorem dg_mem_LL {j t : ℤ} : t ∈ Fr.LLset j ↔ (Fr.fr (j - 1) (r - 1) < t 
 variable {J : ℕ} [NeZero J] {nL : ZMod J → ℕ}
 
 /- English proof (translation)
-Take `⟨j, l | m⟩` from `x`. Establish `hl : l.val < (Fr.LLset (segZ j)).card` using `by rw [← hnL j]; exact l.2`. Establish `hmem` using `dg_mem_LL.mp (dg_llPos_mem (segZ j) l.val hl)`. Use `⟨hmem.1.1, ?_⟩` and prove the remaining obligations. Conclude with `le_trans hmem.1.2.le (dg_fr_le hV _ (Nat.zero_le _) (by omega))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `lt_of_lt_of_le (frame_end_lt_next_start hV (segZ j)) (dg_fr_le hV _ (Nat.zero_le _) (by omega))`. Conclude with `dg_fr_le hV _ (by omega) (by omega)`.
+A detailed English derivation is pending.
 -/
 theorem dg_posTL_mem (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) (x : TL J nL r) :
     Fr.fr (segZ x.1 - 1) (r - 1) < posTL Fr x ∧ posTL Fr x ≤ Fr.fr (segZ x.1) (r - 1) := by
@@ -141,41 +141,41 @@ theorem dg_posTL_mem (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hnL : ∀ j, nL j
     · exact dg_fr_le hV _ (by omega) (by omega)
 
 /- English proof (translation)
-Simplify using `only [segZ]`. Conclude with `⟨by positivity, by exact_mod_cast ZMod.val_lt j⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem dg_segZ_range (j : ZMod J) : 0 ≤ segZ j ∧ segZ j < J := by
   simp only [segZ]
   exact ⟨by positivity, by exact_mod_cast ZMod.val_lt j⟩
 
 /- English proof (translation)
-Establish `h' : (j.val : ℤ) = j'.val` using `h`. Conclude with `ZMod.val_injective J (by exact_mod_cast h')`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dg_segZ_inj {j j' : ZMod J} (h : segZ j = segZ j') : j = j' := by
   have h' : (j.val : ℤ) = j'.val := h
   exact ZMod.val_injective J (by exact_mod_cast h')
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `hx` using `dg_posTL_mem hV hr hnL x`. Establish `hy` using `dg_posTL_mem hV hr hnL y`. Establish `hmono` using `(dg_z_mono hV hr).monotone`. Establish `hseg : segZ x.1 = segZ y.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Establish `h1 : Fr.fr (segZ x.1) (r - 1) ≤ Fr.fr (segZ y.1 - 1) (r - 1)` using `hmono (by omega)`. Rewrite `hx` using `[hxy]`. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `h1 : Fr.fr (segZ y.1) (r - 1) ≤ Fr.fr (segZ x.1 - 1) (r - 1)` using `hmono (by omega)`. Rewrite `hx` using `[hxy]`. Use linear arithmetic over natural numbers and integers. Establish `hj : x.1 = y.1` using `dg_segZ_inj hseg`. Take `⟨j, a⟩` from `x`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨j', b⟩` from `y`. Simplify using `only at hj`. Substitute `hj` using the available equality. Establish `hab : a = b`. Apply the tactic sequence `rcases a with l | m <;> rcases b with l' | m'`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hl : l.val < (Fr.LLset (segZ j)).card` using `by rw [← hnL j]; exact l.2`. Establish `hl' : l'.val < (Fr.LLset (segZ j)).card` using `by rw [← hnL j]; exact l'.2`. Establish `e : llPos Fr (segZ j) l.val = llPos Fr (segZ j) l'.val` using `hxy`. Rewrite `e` using `[dg_llPos_eq _ _ hl, dg_llPos_eq _ _ hl']`. Establish `e2` using `(Finset.orderEmbOfFin (Fr.LLset (segZ j)) rfl).injective e`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e3 : l.val = l'.val` using `Fin.mk.inj e2`. Rewrite using `[Fin.ext e3]`. It suffices to derive a contradiction. Establish `hl : l.val < (Fr.LLset (segZ j)).card` using `by rw [← hnL j]; exact l.2`. Establish `hmem` using `dg_mem_LL.mp (dg_llPos_mem (segZ j) l.val hl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. It suffices to derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : llPos Fr (segZ j) l.val = Fr.fr (segZ j) (r - 1 - m'.val)` using `hxy`. Establish `h0 : Fr.fr (segZ j) 0 ≤ Fr.fr (segZ j) (r - 1 - m'.val)` using `dg_fr_le hV _ (Nat.zero_le _) (by omega)`. Establish `h5` using `hmem.1.2`. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. It suffices to derive a contradiction.
 
-Establish `hl : l'.val < (Fr.LLset (segZ j)).card` using `by rw [← hnL j]; exact l'.2`. Establish `hmem` using `dg_mem_LL.mp (dg_llPos_mem (segZ j) l'.val hl)`. Establish `e : Fr.fr (segZ j) (r - 1 - m.val) = llPos Fr (segZ j) l'.val` using `hxy`. Establish `h0 : Fr.fr (segZ j) 0 ≤ Fr.fr (segZ j) (r - 1 - m.val)` using `dg_fr_le hV _ (Nat.zero_le _) (by omega)`. Establish `h5` using `hmem.1.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `e : Fr.fr (segZ j) (r - 1 - m.val) = Fr.fr (segZ j) (r - 1 - m'.val)` using `hxy`. Establish `hm : r - 1 - m.val = r - 1 - m'.val`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis.
 
-Use `dg_fr_lt hV (segZ j) _ _ h (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `dg_fr_lt hV (segZ j) _ _ h (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `e3 : m.val = m'.val` using `by omega`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite using `[Fin.ext e3]`. Rewrite using `[hab]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem dg_posTL_inj (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) :
     Function.Injective (posTL Fr : TL J nL r → ℤ) := by
@@ -235,9 +235,9 @@ theorem dg_posTL_inj (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hnL : ∀ j, nL j
   rw [hab]
 
 /- English proof (translation)
-Establish `hm` using `dg_posTL_mem hV hr hnL x`. Establish `hs` using `dg_segZ_range x.1`. Establish `hmono` using `(dg_z_mono hV hr).monotone`. Establish `hJ' : (J : ℤ) = (Fr.J : ℤ)` using `by rw [hJ]`. Establish `h1 : Fr.fr (-1) (r - 1) ≤ Fr.fr (segZ x.1 - 1) (r - 1)` using `hmono (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Fr.fr (segZ x.1) (r - 1) ≤ Fr.fr (-1 + (Fr.J : ℤ)) (r - 1)` using `hmono (by omega)`. Establish `h3` using `hV.2.1 (-1) (r - 1)`. Apply the tactic sequence `constructor <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_window (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card)
     (x : TL J nL r) :
@@ -252,7 +252,7 @@ theorem dg_window (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J) (hnL 
   constructor <;> omega
 
 /- English proof (translation)
-Introduce `x y hxy`. Establish `hx` using `dg_window hV hr hJ hnL x`. Establish `hy` using `dg_window hV hr hJ hnL y`. Conclude with `dg_posTL_inj hV hr hnL (dg_posOf_inj hx hy hxy)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dg_inj (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) :
     Function.Injective fun x : TL J nL r => posOf n' (posTL Fr x) := by
@@ -262,11 +262,11 @@ theorem dg_inj (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J) (hnL : �
   exact dg_posTL_inj hV hr hnL (dg_posOf_inj hx hy hxy)
 
 /- English proof (translation)
-Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `_ ht0`. Conclude with `⟨0, le_rfl, le_antisymm ht0 h0⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ k ih`. Introduce `hk htk`. Distinguish the cases in `hle : t ≤ Fr.fr j k`. Take `⟨i', hi', he⟩` from `ih (by omega) hle`. Conclude with `⟨i', by omega, he⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `push_neg at hle`. Break down `htk.lt_or_eq with hlt | heq` into its components or cases. Conclude with `absurd ht (hV.2.2.2.2.2.1 j k t (by omega) hle hlt)`. Conclude with `⟨k + 1, le_rfl, heq⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dg_frame (hV : Fr.Valid L₁ N₁) (j t : ℤ) (ht : posOf n' t ∈ Fr.TT) (h0 : Fr.fr j 0 ≤ t) :
     ∀ i, i < r → t ≤ Fr.fr j i → ∃ i' ≤ i, t = Fr.fr j i' := by
@@ -286,29 +286,25 @@ theorem dg_frame (hV : Fr.Valid L₁ N₁) (j t : ℤ) (ht : posOf n' t ∈ Fr.T
       · exact ⟨k + 1, le_rfl, heq⟩
 
 /- English proof (translation)
-Introduce `s hs`. Establish `hn : (0 : ℤ) < n'` using `by exact_mod_cast NeZero.pos n'`. Choose the witnesses or unpack the hypotheses as in `⟨t, ht1, ht2, hpos⟩ : ∃ t : ℤ, Fr.fr (-1) (r - 1) < t ∧ t ≤ Fr.fr (-1) (r - 1) + n' ∧ posOf n' t = s := by`. Use `⟨Fr.fr (-1) (r - 1) + 1 + ((s.val : ℤ) - (Fr.fr (-1) (r - 1) + 1)) % n', ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Int.emod_nonneg ((s.val : ℤ) - (Fr.fr (-1) (r - 1) + 1)) hn.ne'` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Use `Int.emod_lt_of_pos ((s.val : ℤ) - (Fr.fr (-1) (r - 1) + 1)) hn` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Apply `Fin.ext` to reduce the goal to its premises. Establish `h1` using `dg_posOf_val (n' := n') (Fr.fr (-1) (r - 1) + 1 + ((s.val : ℤ) - (Fr.fr (-1) (r - 1) + 1)) % n')`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h2 : (Fr.fr (-1) (r - 1) + 1 + ((s.val : ℤ) - (Fr.fr (-1) (r - 1) + 1)) % n') % n' = s.val`. Rewrite using `[Int.emod_def ((s.val : ℤ) - (Fr.fr (-1) (r - 1) + 1)) n']`. Establish `e : Fr.fr (-1) (r - 1) + 1 + ((s.val : ℤ) - (Fr.fr (-1) (r - 1) + 1) - n' * (((s.val : ℤ) - (Fr.fr (-1) (r - 1) + 1)) / n')) = (s.val : ℤ) + n' * (-(((s.val : ℤ) - (Fr.fr (-1) (r - 1) + 1)) / n'))` using `by ring`. Rewrite using `[e, Int.add_mul_emod_self_left, Int.emod_eq_of_lt (by positivity) (by exact_mod_cast s.2)]`. Rewrite `h1` using `[h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h1` after adjusting the coercions. Establish `hJ1 : 1 ≤ J` using `Nat.one_le_iff_ne_zero.mpr (NeZero.ne J)`. Establish `hper` using `hV.2.1 (-1) (r - 1)`. Establish `hJc : ((J - 1 : ℕ) : ℤ) = -1 + (Fr.J : ℤ)`. Rewrite using `[← hJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `[Nat.cast_sub hJ1]`. Expand and normalize the polynomial expressions, which then agree. Establish `hwit : t ≤ Fr.fr ((J - 1 : ℕ) : ℤ) (r - 1)`. Rewrite using `[hJc, hper]`. Conclude with `ht2`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∃ k : ℕ, t ≤ Fr.fr (k : ℤ) (r - 1)` using `⟨J - 1, hwit⟩`. Establish `hkspec : t ≤ Fr.fr ((Nat.find hex : ℕ) : ℤ) (r - 1)` using `Nat.find_spec hex`. Establish `hkJ : Nat.find hex ≤ J - 1` using `Nat.find_min' hex hwit`. Establish `hklow : Fr.fr (((Nat.find hex : ℕ) : ℤ) - 1) (r - 1) < t`. Break down `Nat.eq_zero_or_pos (Nat.find hex) with h0 | h0` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[h0, Nat.cast_zero, zero_sub]`. Conclude with `ht1`. Establish `hm` using `Nat.find_min hex (show Nat.find hex - 1 < Nat.find hex by omega) push_neg at hm`. Establish `e : (((Nat.find hex - 1 : ℕ)) : ℤ) = ((Nat.find hex : ℕ) : ℤ) - 1` using `by omega`. Rewrite `hm` using `[e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`. Establish `hseg : segZ ((Nat.find hex : ℕ) : ZMod J) = ((Nat.find hex : ℕ) : ℤ)`. Simplify using `only [segZ, ZMod.val_natCast]`. Rewrite using `[Nat.mod_eq_of_lt (by omega)]`. Establish `hsT : posOf n' t ∈ Fr.TT` using `by rw [hpos]; exact hs`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `htl : t < Fr.fr ((Nat.find hex : ℕ) : ℤ) 0`. Establish `hmemLL : t ∈ Fr.LLset ((Nat.find hex : ℕ) : ℤ)` using `dg_mem_LL.mpr ⟨⟨hklow, htl⟩, hsT⟩`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, (Fr.LLset ((Nat.find hex : ℕ) : ℤ)).orderEmbOfFin rfl i = t := by`. Establish `hr' : t ∈ Set.range ((Fr.LLset ((Nat.find hex : ℕ) : ℤ)).orderEmbOfFin rfl)`. Rewrite using `[Finset.range_orderEmbOfFin]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmemLL`. Conclude with `hr'`. Establish `hiL : i.val < nL ((Nat.find hex : ℕ) : ZMod J)`. Rewrite using `[hnL, hseg]`. Conclude with `i.2`.
-
-Use `⟨⟨((Nat.find hex : ℕ) : ZMod J), Sum.inl ⟨i.val, hiL⟩⟩, ?_⟩` and prove the remaining obligations. Use `show posOf n' (llPos Fr (segZ ((Nat.find hex : ℕ) : ZMod J)) i.val) = s`. Rewrite using `[hseg, dg_llPos_eq _ _ i.2, Fin.eta, hi, hpos]`. Use `push_neg at htl`. Take `⟨i', hi', he⟩` from `dg_frame hV ((Nat.find hex : ℕ) : ℤ) t hsT htl (r - 1) (by omega) hkspec`.
-
-Use `⟨⟨((Nat.find hex : ℕ) : ZMod J), Sum.inr ⟨r - 1 - i', by omega⟩⟩, ?_⟩` and prove the remaining obligations. Use `show posOf n' (Fr.fr (segZ ((Nat.find hex : ℕ) : ZMod J)) (r - 1 - (r - 1 - i'))) = s`. Rewrite using `[hseg, show r - 1 - (r - 1 - i') = i' by omega, ← he, hpos]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dg_surj (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J) (hnL : ∀ j, nL j = (Fr.LLset (segZ j)).card) :
     ∀ s ∈ Fr.TT, ∃ x : TL J nL r, posOf n' (posTL Fr x) = s := by
@@ -380,7 +376,7 @@ theorem dg_surj (hV : Fr.Valid L₁ N₁) (hr : 1 ≤ r) (hJ : J = Fr.J) (hnL : 
 end Bij
 
 /- English proof (translation)
-The claim follows from `digFacts_of Fr p O hk nL hp.pos (dg_inj hV hr hJ hnL) (dg_surj hV hr hJ hnL) d hd`.
+A detailed English derivation is pending.
 -/
 theorem digFacts {n' r K m : ℕ} [NeZero n'] (Fr : Frames n' r) (p : ℕ) (hp : p.Prime) (O : Type) [CommRing O]
     [IsDomain O] [CharZero (KK O)] (hk : m + 1 = r + K) {J : ℕ} [NeZero J] (nL : ZMod J → ℕ) (L₁ N₁ : ℕ)

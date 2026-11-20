@@ -14,11 +14,11 @@ variable {V : Type} [AddCommGroup V] [Module K V] [FiniteDimensional K V] [Modul
   [IsScalarTower (𝓞 K) K V]
 
 /- English proof (translation)
-Use `Set.Finite.of_finite_image (f := fun n : 𝓞 F => algebraMap F K (n : F)) ?_ (fun a _ b _ hab => RingOfIntegers.ext ((algebraMap F K).injective hab))` and prove the remaining obligations. Use `(NumberField.Embeddings.finite_of_norm_le K ℂ T).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨n, hn, rfl⟩`. Use `⟨map_isIntegral_int (algebraMap F K) (RingOfIntegers.isIntegral_coe n), fun φ => ?_⟩` and prove the remaining obligations. Establish `hst : star (algebraMap F K (n : F)) = algebraMap F K (n : F)` using `(hF _).mpr ⟨_, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc` using `hK.2.1 φ (algebraMap F K (n : F))`. Rewrite `hc` using `[hst]`. Take `⟨r, hr⟩` from `Complex.conj_eq_iff_real.mp hc.symm`. Establish `h1` using `hn φ`. Simplify using `only at h1 ⊢`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h1`, the goal using `[hr]`. Rewrite `h1` using `[Complex.ofReal_re]`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos h1.1]`. Conclude with `h1.2`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boxSet_finite (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (T : ℝ) :
     (boxSet K F T).Finite := by
@@ -39,7 +39,7 @@ theorem boxSet_finite (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF :
   exact h1.2
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨φ⟩` from `(inferInstance : Nonempty (K →+* ℂ))`. Use `(hn φ).1` as an intermediate fact. Simplify using `at this`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem ne_zero_of_mem_boxSet {T : ℝ} {n : 𝓞 F} (hn : n ∈ boxSet K F T) : n ≠ 0 := by
   rintro rfl
@@ -48,7 +48,7 @@ theorem ne_zero_of_mem_boxSet {T : ℝ} {n : 𝓞 F} (hn : n ∈ boxSet K F T) :
   simp at this
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hlt`. Use `box_inter_eq_empty hK hF (b := Ideal.span {n}) (not_le.mp hlt)` as an intermediate fact. Establish `hmem : n ∈ {n' : 𝓞 F | n' ∈ boxSet K F T ∧ n' ∈ Ideal.span {n}}` using `⟨hn, Ideal.mem_span_singleton_self n⟩`. Rewrite `hmem` using `[this]`. Conclude with `hmem`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_le_of_mem_boxSet (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {T : ℝ} {n : 𝓞 F}
     (hn : n ∈ boxSet K F T) :
@@ -65,9 +65,9 @@ def eFac (K : Type) {F : Type} [Field K] [Field F] [NumberField F] [Algebra F K]
   1 - etaF K F 𝔭 ^ m * (Ideal.absNorm 𝔭 : ℝ) ^ (-(m : ℤ))
 
 /- English proof (translation)
-Establish `hq : (1 : ℝ) < (Ideal.absNorm 𝔭 : ℝ)` using `by exact_mod_cast two_le_absNorm h𝔭`. Establish `h1` using `IdealNormInequalities.zpow_neg_lt_one hq hm`. Establish `h0 : 0 ≤ (Ideal.absNorm 𝔭 : ℝ) ^ (-(m : ℤ))` using `zpow_nonneg (by linarith) _`. Establish `hη : |etaF K F 𝔭 ^ m| = 1`. Rewrite using `[abs_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `etaF`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h2 : etaF K F 𝔭 ^ m * (Ideal.absNorm 𝔭 : ℝ) ^ (-(m : ℤ)) ≤ (Ideal.absNorm 𝔭 : ℝ) ^ (-(m : ℤ))`. Combine the equalities or inequalities in the displayed calculation. Unfold `eFac`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Replace the relevant objects with their definitions.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -88,11 +88,11 @@ theorem eFac_pos {𝔭 : Ideal (𝓞 F)} (h𝔭 : 𝔭.IsMaximal) {m : ℕ} (hm 
   linarith
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < (Ideal.absNorm 𝔭 : ℝ)`. Use `two_le_absNorm h𝔭` as an intermediate fact. Conclude with `(by omega : 0 < Ideal.absNorm 𝔭)` after adjusting the coercions. Use `set k0 := 2 * vd h L 𝔭 + 2 * vF 𝔭 n + 2`. Use `⟨k0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Use `Tendsto.limUnder_eq (tendsto_atTop_of_eventually_const (i₀ := k0) fun k hk => ?_)` and prove the remaining obligations. Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base => rfl`. Consider the case `succ k hk ih`. Rewrite using `[← ih, nkCount_succ hK hF hs hd hL hLi h𝔭 hn hk]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `2 * finrank K V - 1 = r`. Rewrite using `[add_mul, one_mul, pow_add]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem alphaN_eq_stage (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}
@@ -116,9 +116,9 @@ theorem alphaN_eq_stage (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF
     field_simp
 
 /- English proof (translation)
-Establish `hq : (0 : ℝ) < (Ideal.absNorm 𝔭 : ℝ)`. Use `two_le_absNorm h𝔭` as an intermediate fact. Conclude with `(by omega : 0 < Ideal.absNorm 𝔭)` after adjusting the coercions. Take `⟨C, hC⟩` from `nkCount_le hK hF hs hd hL hLi hm h𝔭`. Use `⟨C, fun n hn => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `alphaN_eq_stage hK hF hs hd hL hLi h𝔭 hn`. Rewrite using `[hk]`. Conclude with `⟨by positivity, (div_le_iff₀ (by positivity)).mpr (hC k n)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem alphaN_bound (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F)
     {h : V →ₗ⋆[K] V →ₗ[K] K} (hs : h.IsSymm) (hd : IsTotPosDef h) {L : Submodule (𝓞 K) V}

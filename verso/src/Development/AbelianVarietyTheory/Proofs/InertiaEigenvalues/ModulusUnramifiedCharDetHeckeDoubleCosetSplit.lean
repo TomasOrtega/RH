@@ -19,7 +19,7 @@ section Local
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Conclude with `(GlobalTheory.SplitUnif.mem_max v u).2 (lt_of_le_of_ne (u : v.adicCompletionIntegers F).2 hne) u.isUnit`.
+Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem valued_unit (u : (v.adicCompletionIntegers F)ˣ) :
     Valued.v (algebraMap (v.adicCompletionIntegers F) (Fv F v) u) = 1 := by
@@ -27,11 +27,11 @@ theorem valued_unit (u : (v.adicCompletionIntegers F)ˣ) :
   exact (GlobalTheory.SplitUnif.mem_max v u).2 (lt_of_le_of_ne (u : v.adicCompletionIntegers F).2 hne) u.isUnit
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `v.intValuation_exists_uniformizer`. Establish `hφ : ∀ s : 𝓞 F, Valued.v (algebraMap F (Fv F v) s) = v.intValuation s` using `fun s => (v.valuedAdicCompletion_eq_valuation' _).trans (HeightOneSpectrum.valuation_of_algebraMap v s)`. Set `p₀ : v.adicCompletionIntegers F` to `⟨algebraMap F (Fv F v) t, GlobalTheory.SplitUnif.map_mem v _ t⟩`. Establish `hp₀ : Valued.v (p₀ : Fv F v) = WithZero.exp (-1)` using `(hφ t).trans ht`. Take `⟨w, hw⟩` from `IsDiscreteValuationRing.associated_of_irreducible _ hp (GlobalTheory.SplitUnif.irreducible_of_valued v p₀ hp₀)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `congrArg (fun y : v.adicCompletionIntegers F => Valued.v (y : Fv F v)) hw` as an intermediate fact. Express the relevant statement in the definitionally equal form `Valued.v ((p : Fv F v) * (w : v.adicCompletionIntegers F)) = Valued.v (p₀ : Fv F v) at this`. Rewrite `this` using `[map_mul, hp₀]`. Establish `hw1` using `valued_unit v w`. Rewrite using `[← this]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = _ * Valued.v (algebraMap (v.adicCompletionIntegers F) (Fv F v) w)`. Rewrite using `[hw1, mul_one]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valued_irreducible {p : v.adicCompletionIntegers F} (hp : Irreducible p) :
     Valued.v (algebraMap (v.adicCompletionIntegers F) (Fv F v) p) = WithZero.exp (-1) := by
@@ -52,7 +52,7 @@ theorem valued_irreducible {p : v.adicCompletionIntegers F} (hp : Irreducible p)
   rfl
 
 /- English proof (translation)
-Establish `hφ : ∀ s : 𝓞 F, Valued.v (algebraMap F (Fv F v) s) = v.intValuation s` using `fun s => (v.valuedAdicCompletion_eq_valuation' _).trans (HeightOneSpectrum.valuation_of_algebraMap v s)`. Conclude with `GlobalTheory.SplitUnif.card_residueField v (algebraMap F (Fv F v)) v (fun _ => rfl) fun s => by`. Rewrite using `[hφ, HeightOneSpectrum.intValuation_lt_one_iff_mem]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_residue_eq :
     Nat.card (IsLocalRing.ResidueField (v.adicCompletionIntegers F)) = Ideal.absNorm v.asIdeal := by
@@ -68,9 +68,9 @@ section Chart
 variable {D : D7} {e : AE D} {v : HeightOneSpectrum (𝓞 D.host.F)} {π : AE D →+* Fv D.host.F v}
 
 /- English proof (translation)
-Establish `h3 : π ((x⁻¹ * d : (AE D)ˣ) : AE D) = algebraMap (Ov D v) (Fv D.host.F v) u`. Rewrite using `[Units.val_mul, π.map_mul, h1, ← mul_assoc, ← π.map_mul, Units.inv_mul, π.map_one, one_mul]`. Establish `h4` using `hχ (x⁻¹ * d) ?_ ((hπ.2.2.2 _).2 ⟨u, h3.symm⟩) ((hπ.2.2.2 _).2 ⟨(u⁻¹ : (Ov D v)ˣ), ?_⟩)`. Rewrite `h4` using `[χ.map_mul, χ.map_inv, inv_mul_eq_one, eq_comm]`. Then use the resulting hypothesis. Establish `h5 : (1 - e) * ((x⁻¹ : (AE D)ˣ) : AE D) = 1 - e` using `by conv_lhs => rw [← hx1, mul_assoc, Units.mul_inv, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[Units.val_mul, ← mul_assoc, h5, hd1]`. Rewrite using `[map_units_inv, map_units_inv, h3]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem chi_of_unit_gen (hπ : Chart e v π) {x d : (AE D)ˣ} (hx1 : (1 - e) * (x : AE D) = 1 - e)
     (hd1 : (1 - e) * (d : AE D) = 1 - e) {A : Type} [CommGroup A] {χ : (AE D)ˣ →* A}
@@ -91,21 +91,19 @@ end Chart
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D V P e hP ϖ hϖ hϖ2 x hx k α hα k₁ hk₁ k₂ hk₂ z hz`. Establish `he` using `hP.1`. Take `⟨v, π, hπ⟩` from `GlobalTheory.T.exists_place_chart_of_splitIdempotent e he`. Take `⟨⟨p, hpϖ, hp⟩, hq⟩` from `GlobalTheory.T.splitChart_uniformiser_and_residueCard e P v π hP hπ ϖ hϖ hϖ2`. Take `⟨β, hβ⟩` from `GlobalTheory.T.exists_splitFrame_selfDualLattice_completion e v π he hπ V`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `st` using `GlobalTheory.T.mem_hyperspecial_iff_gInt_of_suppAt_split e v π he hπ V β hβ`. Establish `hH : Hk (Ov D v) p k (rho V π β (k₁ * α * k₂))`. Rewrite using `[map_mul, map_mul]`. Conclude with `(GlobalTheory.T.heckeElement_component_mem_standardDoubleCoset e v π he hπ V β hβ (ϖ : D.host.E) p k α hpϖ hα).mul ((st _ hk₁.2).1 hk₁.1) ((st _ hk₂.2).1 hk₂.1)`. Take `⟨u, hu⟩` from `hH.2.2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hx1 : (1 - e) * (x : AE D) = 1 - e`. Rewrite using `[hx]`. Conclude with `one_sub_mul_idem he.1 _`. Establish `hx2 : π x = algebraMap (Ov D v) (Fv D.host.F v) p`. Rewrite using `[hx, π.map_add, π.map_mul, π.map_sub, π.map_one, hπ.map_e he.1, one_mul, sub_self, add_zero, hpϖ]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hz1 : (1 - e) * (z : AE D) = 1 - e`. Rewrite using `[hz]`. Conclude with `one_sub_mul_idem he.1 _`. Establish `hz2 : π (z : AE D) = algebraMap (Ov D v) (Fv D.host.F v) (p ^ k * u)`. Rewrite `hu` using `[rho_val, Matrix.det_mul_comm, ← Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hz, π.map_add, π.map_mul, π.map_sub, π.map_one, hπ.map_e he.1, one_mul, sub_self, add_zero]`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Conclude with `hu`. Use `⟨?_, fun A _ χ hχ => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitLinear.absFin_split D e v π he hπ z hz1, GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absV]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ((Units.map π.toMonoidHom z : (Fv D.host.F v)ˣ) : Fv D.host.F v) = π (z : AE D)` using `rfl`. Establish `e2 : Ideal.absNorm v.asIdeal = Ideal.absNorm P.asIdeal`. Rewrite using `[← card_residue_eq, hq]`. Establish `hv1 : Valued.v (algebraMap (Ov D v) (Fv D.host.F v) p) = WithZero.exp (-1)` using `valued_irreducible v hp`. Establish `hv2 : Valued.v (algebraMap (Ov D v) (Fv D.host.F v) u) = 1` using `valued_unit v u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e1, hz2, map_mul, map_mul, map_pow, map_pow, hv1, hv2, mul_one, e2, ← WithZero.exp_nsmul, WithZero.log_exp, nsmul_eq_mul, mul_neg_one, _root_.zpow_neg, zpow_natCast]`. Establish `h1 : π (z : AE D) = π ((x ^ k : (AE D)ˣ) : AE D) * algebraMap (Ov D v) (Fv D.host.F v) u`. Rewrite using `[hz2, Units.val_pow_eq_pow_val, π.map_pow, hx2, ← RingHom.map_pow, ← RingHom.map_mul]`. Establish `h2 : ∀ j : ℕ, (1 - e) * ((x ^ j : (AE D)ˣ) : AE D) = 1 - e` using `fun j => by`. Proceed by induction on `j with`.
-
-Consider the case `zero => rw [pow_zero, Units.val_one, mul_one]`. Consider the case `succ j ih => rw [pow_succ, Units.val_mul, ← mul_assoc, ih, hx1]`. Conclude with `(chi_of_unit_gen hπ (h2 k) hz1 hχ h1).trans (χ.map_pow x k)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem det_modulus_chi : ∀ (D : D7) (V : HSp D) (P : Pl D.host.E) (e : AE D), IsIdemAt e P → ∀ ϖ : 𝓞 D.host.E, ϖ ∈ P.asIdeal → ϖ ∉ P.asIdeal ^ 2 → ∀ x : (AE D)ˣ, (x : AE D) = e * incA D (ϖ : D.host.E) + (1 - e) → ∀ (k : ℕ) (α : GA D V), IsHeckeElt V e (ϖ : D.host.E) k α → ∀ k₁ ∈ Mult.locPart V (KsphC V ∅) e, ∀ k₂ ∈ Mult.locPart V (KsphC V ∅) e, ∀ z : (AE D)ˣ, IsDetAt e V (k₁ * α * k₂) z → GlobalTheory.IndefiniteRowSideFullHecke.SplitLinearModelNorm.absFin D z = (((Ideal.absNorm P.asIdeal : ℕ) : ℝ) ^ k)⁻¹ ∧ ∀ (A : Type) [CommGroup A] (χ : (AE D)ˣ →* A), (∀ y : (AE D)ˣ, (1 - e) * (y : AE D) = 1 - e → finPart D (e * (y : AE D)) ∈ intAE D → finPart D (e * ((y⁻¹ : (AE D)ˣ) : AE D)) ∈ intAE D → χ y = 1) → χ z = χ x ^ k := by
   intro D V P e hP ϖ hϖ hϖ2 x hx k α hα k₁ hk₁ k₂ hk₂ z hz

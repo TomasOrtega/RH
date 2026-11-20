@@ -19,9 +19,9 @@ namespace GlobalTheory.LineDegMono
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.LocalUnitApproximation.main`. Consider the case `exact _root_.GlobalTheory.LocalUnitApproximation.main`. Consider the case `(apply _root_.GlobalTheory.LocalUnitApproximation.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.LocalUnitApproximation.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.LocalUnitApproximation.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.LocalUnitApproximation.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem (M : Submodule (𝓞 K) (Fin n → K)) {y : Fin n → K}
     (hy : y ∈ Submodule.span K (M : Set (Fin n → K))) :
@@ -35,9 +35,9 @@ theorem exists_smul_mem (M : Submodule (𝓞 K) (Fin n → K)) {y : Fin n → K}
   | (intros; exact _root_.GlobalTheory.LocalUnitApproximation.main ..)
 
 /- English proof (translation)
-Unfold `latRank`. Establish `hle : Submodule.span K (lineLat L x : Set (Fin n → K)) ≤ Submodule.span K {x}`. Rewrite using `[Submodule.span_le]`. Introduce `y hy`. Conclude with `(Submodule.mem_inf.mp hy).2`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem latRank_lineLat_le (L : Submodule (𝓞 K) (Fin n → K)) {x : Fin n → K} (hx : x ≠ 0) :
     latRank K (lineLat L x) ≤ 1 := by
@@ -51,7 +51,7 @@ theorem latRank_lineLat_le (L : Submodule (𝓞 K) (Fin n → K)) {x : Fin n →
     _ = 1 := finrank_span_singleton hx
 
 /- English proof (translation)
-Unfold `latRank`. Establish `hle : Submodule.span K {y} ≤ Submodule.span K (E : Set (Fin n → K))` using `Submodule.span_mono (Set.singleton_subset_iff.mpr hy)`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem one_le_latRank_of_mem {E : Submodule (𝓞 K) (Fin n → K)} {y : Fin n → K} (hy : y ∈ E) (hy0 : y ≠ 0) :
     1 ≤ latRank K E := by
@@ -62,7 +62,7 @@ theorem one_le_latRank_of_mem {E : Submodule (𝓞 K) (Fin n → K)} {y : Fin n 
     _ ≤ _ := Submodule.finrank_mono hle
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span K (M : Set (Fin n → K))` using `by rw [hM.2]; trivial`. Take `⟨d, hd, hdx⟩` from `exists_smul_mem M hx`. Use `⟨d, hd, Submodule.mem_inf.mpr ⟨hdx, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Submodule.restrictScalars_mem, ← algebraMap_smul K d x]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_lineLat {M : Submodule (𝓞 K) (Fin n → K)} (hM : Full M) (x : Fin n → K) :
     ∃ d : 𝓞 K, d ≠ 0 ∧ d • x ∈ lineLat M x := by
@@ -77,19 +77,19 @@ end GlobalTheory.LineDegMono
 open GlobalTheory.LineDegMono in
 
 /- English proof (translation)
-Introduce `K' _ _ n m hW' h' β M' M x hβ hiso hM' hM hβM hx`. Establish `hβx : β x ≠ 0` using `fun h0 => hx (hβ (by rw [h0, map_zero]))`. Establish `hE'fg : (lineLat M' x).FG` using `Submodule.FG.of_le hM'.1 inf_le_left`. Establish `hEfg : (lineLat M (β x)).FG` using `Submodule.FG.of_le hM.1 inf_le_left`. Establish `hmap : ∀ y ∈ lineLat M' x, β y ∈ lineLat M (β x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Take `⟨hy1, hy2⟩` from `Submodule.mem_inf.mp hy`. Rewrite `hy2` using `[Submodule.restrictScalars_mem, Submodule.mem_span_singleton]`. Take `⟨c, rfl⟩` from `hy2`. Use `Submodule.mem_inf.mpr ⟨hβM _ hy1, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.restrictScalars_mem, map_smul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _)`. Take `⟨d, hd, hdx⟩` from `exists_smul_mem_lineLat hM' x`. Establish `hdK : algebraMap (𝓞 K') K' d ≠ 0` using `by simpa using hd`. Establish `hdx0 : d • x ≠ 0` using `by rw [← algebraMap_smul K' d x]; exact smul_ne_zero hdK hx`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hβdx0 : β (d • x) ≠ 0` using `fun h0 => hdx0 (hβ (by rw [h0, map_zero]))`. Establish `hr' : latRank K' (lineLat M' x) = 1` using `le_antisymm (latRank_lineLat_le M' hx) (one_le_latRank_of_mem hdx hdx0)`. Establish `hr : latRank K' (lineLat M (β x)) = 1` using `le_antisymm (latRank_lineLat_le M hβx) (one_le_latRank_of_mem (hmap _ hdx) hβdx0)`. Take `⟨w, hw⟩` from `exists_isFrame (lineLat M (β x)) hEfg`. Establish `hnn : ∀ σ i, 0 ≤ h'.nrm σ (w i)` using `fun σ i => Real.sqrt_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `deg_le_deg_add hW' h' (lineLat M' x) (lineLat M (β x)) hE'fg hEfg β hβ hmap (fun _ => 1) (fun σ => 1 + ∑ i, h'.nrm σ (w i)) (fun _ => one_pos) (fun σ => add_pos_of_pos_of_nonneg one_pos (Finset.sum_nonneg fun i _ => hnn σ i)) (fun σ k v => by`. Establish `: h'.gram σ (fun i => β (v i)) = hW'.gram σ v`. Use extensionality with `i j`. Simplify using `only [HermFam.gram, Matrix.of_apply, hiso]`. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using Matrix.PosSemidef.zero)`. Use `w hw (fun σ i => by`. Use `Finset.single_le_sum (fun j _ => hnn σ j) (Finset.mem_univ i)` as an intermediate fact. Use the proof step `linarith)`. Establish `hml : meanLog K' (fun _ => (1 : ℝ)) = 0` using `by simp [meanLog]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hrr : ((latRank K' (lineLat M (β x)) : ℝ) - latRank K' (lineLat M' x)) = 0`. Rewrite using `[hr, hr']`. Simplify using the standard rewrite rules. Rewrite `key` using `[hml, hrr]`. Simplify using `using key`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.deg_lineLat_le_deg_lineLat_map : ∀ (K' : Type) [Field K'] [NumberField K'] (n m : ℕ)
     (hW' : HermFam K' (Fin n → K')) (h' : HermFam K' (Fin m → K')) (β : (Fin n → K') →ₗ[K'] (Fin m → K'))

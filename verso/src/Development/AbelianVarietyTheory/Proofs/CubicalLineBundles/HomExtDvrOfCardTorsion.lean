@@ -11,7 +11,7 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory.CM
 
 /- English proof (translation)
-Introduce `h`. Conclude with `homExtDvr_iff.2 (GlobalTheory.existsUnique_hom_extension_semiAbelian_dvr (GlobalTheory.AbelianSubgroupFinite.finite_of_no_torsion h))`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem homExtDvr_of_card_torsion : (∀ (k : Type) [Field k] [IsAlgClosed k] (B : Over (Sp k)) [GrpObj B] (g n : ℕ), IsAbelianScheme B → SmoothOfRelativeDimension g B.hom → (n : k) ≠ 0 → Nat.card {x : (𝟙_ (Over (Sp k)) ⟶ B) // x ^ n = 1} = n ^ (2 * g)) → HomExtDvr := by
   intro h

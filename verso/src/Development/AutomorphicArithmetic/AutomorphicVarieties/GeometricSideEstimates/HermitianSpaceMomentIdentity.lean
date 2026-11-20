@@ -4,17 +4,17 @@ open UpperTheory.V.Lit.Geo
 open GlobalTheory.CuspRep GlobalTheory.GKCoh UpperTheory.V.Af GlobalTheory.UnitaryBC UpperTheory.V.Lit.Dr UpperTheory.V.Lit.Bor
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha L hL g p`. Take `⟨-, h2⟩` from `UpperTheory.hermitian_space_geometric_estimate E a ha L hL`. Establish `hP : ∀ (i j : Fin a) (w : NumberField.InfinitePlace E), (fun x : Fin a → Cinf E => star (x i w) * x j w) ∈ poly E a`. Introduce `i j w`. Establish `h1 : (fun x : Fin a → Cinf E => star (x i w)) ∈ poly E a` using `Algebra.subset_adjoin ⟨ { toFun := fun x => star (x i w) map_add' := fun x y => by simp map_smul' := fun c x => by simp }, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2 : (fun x : Fin a → Cinf E => x j w) ∈ poly E a` using `Algebra.subset_adjoin ⟨ { toFun := fun x => x j w map_add' := fun x y => rfl map_smul' := fun c x => rfl }, rfl⟩`. Conclude with `(poly E a).mul_mem h1 h2`. Establish `hS : ∀ (w : NumberField.InfinitePlace E) (i j : Fin a), HasSum (fun v : lat L g => (pg (fun x : Fin a → Cinf E => star (x i w) * x j w) (pt (rt g) v.1) * p j i w).re) (gsum L (pg (fun x : Fin a → Cinf E => star (x i w) * x j w)) g * p j i w).re`. Introduce `w i j`. Conclude with `Complex.hasSum_re ((((h2 _ (hP i j w)).1 g).hasSum).mul_right (p j i w))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT` using `hasSum_sum (s := Finset.univ) fun w _ => hasSum_sum (s := Finset.univ) fun i _ => hasSum_sum (s := Finset.univ) fun j _ => hS w i j`. Establish `hq : ∀ x : Fin a → Cinf E, quad p x * gauss x = ∑ w : NumberField.InfinitePlace E, ∑ i, ∑ j, (pg (fun x : Fin a → Cinf E => star (x i w) * x j w) x * p j i w).re`. Introduce `x`. Simplify using `only [quad, Finset.sum_mul, pg, dotProduct, Matrix.vecMul, Finset.sum_apply, Complex.re_sum, Pi.mul_apply, Pi.star_apply]`. Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← Complex.re_mul_ofReal]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hq]`. Rewrite using `[hT.tsum_eq]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [UpperTheory.V.Lit.Bor.trF, Matrix.trace, Matrix.diag, Matrix.mul_apply, Finset.sum_apply, Complex.re_sum, Finset.sum_div, Pi.mul_apply]`. Use `Finset.sum_congr rfl fun w _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← Complex.div_ofReal_re]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `mean L _ g * _ = _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[mean]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.hermitian_space_moment_identity :
     MomQuad := by

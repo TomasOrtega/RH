@@ -21,7 +21,7 @@ def dg {a : ℕ} (d : Fin a → ℂˣ) : GL (Fin a) ℂ where
 def tor (a k : ℕ) (z : Circle) : GL (Fin a) ℂ := dg fun i => if i.val < k then Circle.toUnits z else 1
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Matrix.diagonal _ = _`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `by_cases h : i.val < k <;> simp [h]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tor_coe (a k : ℕ) (z : Circle) : ((tor a k z : GL (Fin a) ℂ) : Matrix (Fin a) (Fin a) ℂ) =
     Matrix.diagonal fun i => if i.val < k then (z : ℂ) else 1 := by
@@ -81,7 +81,7 @@ def famOf {W : Wt E a} (n : UA E a → GL (Fin a) ℂ) (ν : DomWeight a) {Q : T
   ∑ q, (LinearMap.mulLeft ℂ fun g => pev (P q) (n g * y₂) * delta ν (X q * (n g * y₁))) ∘ₗ (f q).1
 
 /- English proof (translation)
-Simplify using `[famOf, LinearMap.sum_apply, Finset.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem famOf_apply {W : Wt E a} (n : UA E a → GL (Fin a) ℂ) (ν : DomWeight a) {Q : Type} [Fintype Q] (f : Q → algForms W)
     (P : Q → MvPolynomial (Fin a × Fin a) ℂ) (X : Q → GL (Fin a) ℂ) (y₁ y₂ : GL (Fin a) ℂ) (v : W.Sp) (g : UA E a) :

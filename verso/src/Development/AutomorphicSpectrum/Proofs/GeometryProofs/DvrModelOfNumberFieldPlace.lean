@@ -15,19 +15,19 @@ section Scheme
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
 /- English proof (translation)
-Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian s`. Establish `: QuasiSeparated s` using `(quasiSeparated_iff_quasiSeparatedSpace s).2 inferInstance`. Use `IsProper.of_valuativeCriterion s fun S => ?_` and prove the remaining obligations. Set `V : ValuationSubring S.K` to `(ValuationRing.valuation S.R S.K).valuationSubring`. Establish `hV : ∀ a : S.R, algebraMap S.R S.K a ∈ V` using `fun a => (ValuationRing.mem_integer_iff S.R S.K _).2 ⟨a, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `f : S.R →+* V` to `(algebraMap S.R S.K).codRestrict V hV`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce `a b h`. Conclude with `IsFractionRing.injective S.R S.K (congrArg Subtype.val h)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨y, hy⟩`. Take `⟨a, rfl⟩` from `(ValuationRing.mem_integer_iff S.R S.K y).1 hy`. Conclude with `⟨a, rfl⟩`. Set `eH : CommRingCat.of S.R ≅ CommRingCat.of V` to `(RingEquiv.ofBijective f hf).toCommRingCatIso`. Establish `hc : eH.hom ≫ CommRingCat.ofHom (algebraMap V S.K) = CommRingCat.ofHom (algebraMap S.R S.K)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Both sides reduce to the same expression. Establish `hc' : Spec.map (CommRingCat.ofHom (algebraMap S.R S.K)) = Spec.map (CommRingCat.ofHom (algebraMap V S.K)) ≫ Spec.map eH.hom`. Rewrite using `[← Spec.map_comp, hc]`. Establish `hi : Spec.map eH.hom ≫ Spec.map eH.inv = 𝟙 _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Spec.map_comp, eH.inv_hom_id, Spec.map_id]`. Establish `hi' : Spec.map eH.inv ≫ Spec.map eH.hom = 𝟙 _`. Rewrite using `[← Spec.map_comp, eH.hom_inv_id, Spec.map_id]`. Take `⟨z, ⟨-, hz⟩, huniq⟩` from `coord_point_extends X Ω ξ κ x hT S.K V S.i₁ (hall _)`. Set `L : S.commSq.LiftStruct` to `{ l := Spec.map eH.inv ≫ z fac_left := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc', Category.assoc, reassoc_of% hi, hz]`. Use `fac_right := specZIsTerminal.hom_ext _ _ }`. Use `⟨⟨⟨L⟩, fun L' => ?_⟩⟩` and prove the remaining obligations. Establish `h1 : Spec.map eH.hom ≫ L'.l = z`. Use `huniq _ ⟨hall _, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← Category.assoc, ← hc']`. Conclude with `L'.fac_left`. Apply `CommSq.LiftStruct.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `L'.l = Spec.map eH.inv ≫ z`. Rewrite using `[← h1, reassoc_of% hi']`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProper_of_coordTie {κ : Type} [Finite κ] {x : κ → Ω} (hall : ∀ q : X, genPt ξ ⤳ q)
     (hT : CoordTie ℤ ξ x) (s : X ⟶ Spec (CommRingCat.of ℤ)) [LocallyOfFiniteType s] [QuasiCompact s] :
@@ -73,17 +73,15 @@ theorem isProper_of_coordTie {κ : Type} [Finite κ] {x : κ → Ω} (hall : ∀
   rw [← h1, reassoc_of% hi']
 
 /- English proof (translation)
-Set `ev : Γ(X, ⊤) →+* Ω` to `(X.presheaf.germ ⊤ (genPt ξ) trivial ≫ CoordExtend.gpC ξ).hom`. Establish `hev' : ∀ (r : X) (hr : genPt ξ ⤳ r) (hrU : r ∈ (⊤ : X.Opens)) (g : Γ(X, ⊤)), genMap ξ ⟨r, hr⟩ ((X.presheaf.germ ⊤ r hrU).hom g) = ev g`. Introduce `r hr hrU g`. Express the relevant statement in the definitionally equal form `(X.presheaf.germ ⊤ r hrU ≫ X.presheaf.stalkSpecializes hr ≫ CoordExtend.gpC ξ).hom g = _`. Rewrite using `[TopCat.Presheaf.germ_stalkSpecializes_assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hev : ∀ (q : Cpt ξ) (g : Γ(X, ⊤)), genMap ξ q ((X.presheaf.germ ⊤ q.1 trivial).hom g) = ev g` using `fun q g => hev' q.1 q.2 trivial g`. Establish `hinj : Function.Injective ev` using `fun a b h => RegSection.section_eq hG ⊤ (fun q _ => hall q) a b fun q _ => (hev ⟨q, hall q⟩ a).trans (h.trans (hev ⟨q, hall q⟩ b).symm)`. Establish `hsec : ∀ a : R, ∃ g : Γ(X, ⊤), ev g = f a`. Introduce `a`. Take `⟨g, hg, -⟩` from `RegSection.existsUnique_section X Ω ξ hG ⊤ (fun q _ => hall q) (f a) ⟨genPt ξ, trivial⟩ (fun q _ => hreg a ⟨q, hall q⟩)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨g, (hev ⟨genPt ξ, hall _⟩ g).symm.trans (hg _ trivial)⟩`. Use `choose φ' hφ' using hsec`. Set `φ : R →+* Γ(X, ⊤)` to `{ toFun := φ' map_one' := hinj (by rw [hφ', map_one, map_one]) map_mul' := fun a b => hinj (by rw [hφ', map_mul, map_mul, hφ', hφ']) map_zero' := hinj (by rw [hφ', map_zero, map_zero]) map_add' := fun a b => hinj (by rw [hφ', map_add, map_add, hφ', hφ']) }`. Use `⟨X.toSpecΓ ≫ Spec.map (CommRingCat.ofHom φ), ?_, fun p ρ hρ => ?_⟩` and prove the remaining obligations. Establish `h0 : Spec.map (CoordExtend.gpC ξ) ≫ X.fromSpecStalk (genPt ξ) = ξ` using `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ξ ≫ X.toSpecΓ = Spec.map (X.presheaf.germ ⊤ (genPt ξ) trivial ≫ CoordExtend.gpC ξ)`. Rewrite using `[Spec.map_comp, ← Scheme.fromSpecStalk_toSpecΓ, ← Category.assoc, h0]`. Rewrite using `[← Category.assoc, h1, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hφ' a`. Rewrite using `[← Category.assoc, Scheme.fromSpecStalk_toSpecΓ, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `a`. Apply `hG.inj p` to reduce the goal to its premises.
-
-Use `(hev p (φ' a)).trans ((hφ' a).trans (hρ a).symm)` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_toSpec [IsLocallyNoetherian X] (hall : ∀ q : X, genPt ξ ⤳ q) (hG : IsCptGen ξ) {R : Type} [CommRing R]
     (f : R →+* Ω) (hreg : ∀ (a : R) (q : Cpt ξ), f a ∈ regAt ξ q) :
@@ -139,17 +137,17 @@ section Base
 variable {X : Scheme.{0}} {Ω : Type} [Field Ω] {ξ : Spec (CommRingCat.of Ω) ⟶ X}
 
 /- English proof (translation)
-Set `j : Spec (CommRingCat.of O) ⟶ Spec (CommRingCat.of R)` to `Spec.map (CommRingCat.ofHom (algebraMap R O))`. Establish `: IsPreimmersion j` using `IsPreimmersion.of_isLocalization M`. Establish `hcomp : ξ ≫ t = Spec.map (CommRingCat.ofHom (algebraMap O Ω)) ≫ j`. Rewrite using `[ht, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Set `ξ'` to `pullback.lift ξ (Spec.map (CommRingCat.ofHom (algebraMap O Ω))) hcomp`. Establish `hg : ξ' ≫ pullback.fst t j = ξ` using `pullback.lift_fst _ _ _`. Establish `hs : ξ' ≫ pullback.snd t j = Spec.map (CommRingCat.ofHom (algebraMap O Ω))` using `pullback.lift_snd _ _ _`. Establish `hD : Dominates ξ' ξ (pullback.fst t j) (RingHom.id Ω)` using `PushLoc.dominates_id hg`. Establish `hgp : pullback.fst t j (genPt ξ') = genPt ξ` using `hD.map_genPt`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hall' : ∀ q' : (pullback t j : Scheme.{0}), genPt ξ' ⤳ q'`. Introduce `q'`. Use `((pullback.fst t j).isEmbedding.isInducing.specializes_iff).1 ?_` and prove the remaining obligations. Rewrite using `[hgp]`. Conclude with `hall _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨pullback t j, ξ', pullback.snd t j, pullback.fst t j, inferInstance, hs, hg, PushLoc.isCptGen_of hg hG, hall', fun p' p hp a => ?_, fun p hp => ?_⟩` and prove the remaining obligations. Establish `e : p = PushLoc.emb hD p'` using `Subtype.ext hp`. Rewrite using `[e, PushLoc.regAt_emb hD p']`. Set `E : X.presheaf.stalk p.1 ≃+* (genMap ξ p).range` to `RingEquiv.ofBijective (genMap ξ p).rangeRestrict ⟨fun a b h => hG.inj p (congrArg Subtype.val h), (genMap ξ p).rangeRestrict_surjective⟩`. Set `ρ : O →+* X.presheaf.stalk p.1` to `E.symm.toRingHom.comp ((algebraMap O Ω).codRestrict (genMap ξ p).range hp)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hρ : ∀ b, genMap ξ p (ρ b) = algebraMap O Ω b` using `fun b => congrArg Subtype.val (E.apply_symm_apply ((algebraMap O Ω).codRestrict (genMap ξ p).range hp b))`. Establish `h1 : X.fromSpecStalk p.1 ≫ t = Spec.map (CommRingCat.ofHom ρ : CommRingCat.of O ⟶ X.presheaf.stalk p.1) ≫ j`. Rewrite using `[hst p (ρ.comp (algebraMap R O)) fun a => hρ _, ← Spec.map_comp]`. Both sides reduce to the same expression. Set `w` to `pullback.lift (X.fromSpecStalk p.1) _ h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨w (IsLocalRing.closedPoint _), hall' _⟩, ?_⟩` and prove the remaining obligations. Establish `e : w ≫ pullback.fst t j = X.fromSpecStalk p.1` using `pullback.lift_fst _ _ _`. Use `(Scheme.Hom.comp_apply w (pullback.fst t j) _).symm.trans ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Scheme.fromSpecStalk_closedPoint`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_baseChange {R O : Type} [CommRing R] [CommRing O] [Algebra R O] (M : Submonoid R) [IsLocalization M O]
     [Algebra O Ω] (hall : ∀ q : X, genPt ξ ⤳ q) (hG : IsCptGen ξ) (t : X ⟶ Spec (CommRingCat.of R)) [IsProper t]
@@ -208,7 +206,7 @@ variable {F' : Type} [Field F'] [NumberField F'] (v : HeightOneSpectrum (𝓞 F'
 noncomputable abbrev intAt : Subring F' := (v.valuation F').integer
 
 /- English proof (translation)
-Establish `h0 : (a : F') ≠ 0` using `fun h' => by simp [h'] at h`. Establish `hi : v.valuation F' (a : F')⁻¹ ≤ 1` using `by rw [map_inv₀, h, inv_one]`. Conclude with `IsUnit.of_mul_eq_one (⟨(a : F')⁻¹, hi⟩ : intAt v) (Subtype.ext (mul_inv_cancel₀ h0))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isUnit_intAt {a : intAt v} (h : v.valuation F' (a : F') = 1) : IsUnit a := by
   have h0 : (a : F') ≠ 0 := fun h' => by simp [h'] at h
@@ -244,23 +242,23 @@ instance : IsLocalization.AtPrime (intAt v) v.asIdeal where
     simpa using (FaithfulSMul.algebraMap_injective (𝓞 F') F') h'
 
 /- English proof (translation)
-The claim follows from `IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 F') v.ne_bot (intAt v)`.
+A detailed English derivation is pending.
 -/
 theorem isDVR_intAt : IsDiscreteValuationRing (intAt v) :=
   IsLocalization.AtPrime.isDiscreteValuationRing_of_dedekind_domain (𝓞 F') v.ne_bot (intAt v)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, rfl⟩`. Establish `h1 : v.valuation F' ((u : intAt v) : F') * v.valuation F' (((u⁻¹ : (intAt v)ˣ) : intAt v) : F') = 1`. Rewrite using `[← map_mul, ← Subring.coe_mul, Units.mul_inv, Subring.coe_one, map_one]`. Rewrite `h1` using `[hπ]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2 : v.valuation F' (((u⁻¹ : (intAt v)ˣ) : intAt v) : F') ≤ 1` using `(u⁻¹ : (intAt v)ˣ).1.2`. Establish `h3 : WithZero.exp (-1 : ℤ) < 1`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Establish `h4` using `mul_le_of_le_one_right' (a := WithZero.exp (-1 : ℤ)) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite `h4` using `[h1]`. Conclude with `absurd h3 (not_lt.2 h4)`. Introduce and unpack `a b rfl`. Establish `h0 : ∀ c : intAt v, v.valuation F' (c : F') ≠ 0 → ∃ m : ℤ, m ≤ 0 ∧ v.valuation F' (c : F') = WithZero.exp m`. Introduce `c hc`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨WithZero.log _, ?_, (WithZero.exp_log hc).symm⟩` and prove the remaining obligations. Use `c.2` as an intermediate fact. Rewrite using `[← WithZero.exp_le_exp, WithZero.exp_log hc, WithZero.exp_zero]`. Conclude with `this`. Establish `hab : v.valuation F' (a : F') * v.valuation F' (b : F') = WithZero.exp (-1 : ℤ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, ← Subring.coe_mul, hπ]`. Establish `hne : WithZero.exp (-1 : ℤ) ≠ 0` using `WithZero.exp_ne_zero`. Take `⟨m, hm, ema⟩` from `h0 a fun h => hne (by rw [← hab, h, zero_mul])`. Take `⟨n, hn, emb⟩` from `h0 b fun h => hne (by rw [← hab, h, mul_zero])`. Rewrite `hab` using `[ema, emb, ← WithZero.exp_add, WithZero.exp_inj]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Prove the first alternative.
 
-Take `rfl | rfl : m = 0 ∨ n = 0` from `by omega`. Conclude with `Or.inl (isUnit_intAt v (by rw [ema, WithZero.exp_zero]))`. Conclude with `Or.inr (isUnit_intAt v (by rw [emb, WithZero.exp_zero]))`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem irreducible_intAt {π : intAt v} (hπ : v.valuation F' (π : F') = WithZero.exp (-1 : ℤ)) : Irreducible π := by
   constructor
@@ -295,15 +293,15 @@ theorem irreducible_intAt {π : intAt v} (hπ : v.valuation F' (π : F') = WithZ
 end Place
 
 /- English proof (translation)
-Introduce `X Ω _ ξ κ _ x F' _ _ ψ v π hall hT hN hπ`. Take `⟨s₀, hft, hqc, -⟩` from `GlobalTheory.CompanionTheory.Ar.ChartFType.main X Ω ξ κ x hall hT`. Establish `hprop : IsProper s₀` using `isProper_of_coordTie hall hT s₀`. Establish `: IsLocallyNoetherian X` using `LocallyOfFiniteType.isLocallyNoetherian s₀`. Take `⟨t, ht, hst⟩` from `exists_toSpec hall hT.gen (ψ.comp (algebraMap (𝓞 F') F')) fun a q => hN q _ ((map_isIntegral_int ψ (RingOfIntegers.isIntegral_coe a)).tower_top)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htp : IsProper t`. Establish `e : t ≫ Spec.map (CommRingCat.ofHom (algebraMap ℤ (𝓞 F'))) = s₀` using `specZIsTerminal.hom_ext _ _`. Establish `: IsProper (t ≫ Spec.map (CommRingCat.ofHom (algebraMap ℤ (𝓞 F'))))` using `e ▸ hprop`. Conclude with `IsProper.of_comp t (Spec.map (CommRingCat.ofHom (algebraMap ℤ (𝓞 F'))))`. Set `alg : Algebra (intAt v) Ω` to `(ψ.comp (intAt v).subtype).toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmap : ∀ b : intAt v, algebraMap (intAt v) Ω b = ψ (b : F')` using `fun _ => rfl`. Take `⟨X', ξ', s, g, h1, h2, h3, h4, h5, h6, h7⟩` from `exists_baseChange (O := intAt v) v.asIdeal.primeCompl hall hT.gen t ht hst`. Establish `hπ1 : v.valuation F' π ≤ 1`. Rewrite using `[hπ, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Evaluate the numerical expressions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨intAt v, inferInstance, inferInstance, isDVR_intAt v, alg, X', ξ', s, g, ⟨π, hπ1⟩, h1, irreducible_intAt v hπ, ?_, h2, h3, h4, h5, rfl, ?_, h6, fun p hp => h7 p fun b => hp _ b.2⟩` and prove the remaining obligations. Introduce `a b h`. Conclude with `Subtype.ext (ψ.injective h)`. Introduce `a`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨b, b.2, rfl⟩`. Introduce and unpack `⟨b, hb, rfl⟩`. Conclude with `⟨⟨b, hb⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_localisation : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (κ : Type) [Finite κ] (x : κ → Ω) (F' : Type) [Field F'] [NumberField F'] (ψ : F' →+* Ω) (v : HeightOneSpectrum (𝓞 F')) (π : F'), (∀ q : X, genPt ξ ⤳ q) → CoordTie ℤ ξ x → NormalCpt ξ → v.valuation F' π = WithZero.exp (-1 : ℤ) → ∃ (O : Type) (_ : CommRing O) (_ : IsDomain O) (_ : IsDiscreteValuationRing O) (_ : Algebra O Ω) (X' : Scheme.{0}) (ξ' : Spec (CommRingCat.of Ω) ⟶ X') (s : X' ⟶ Spec (CommRingCat.of O)) (g : X' ⟶ X) (ϖ : O), IsProper s ∧ Irreducible ϖ ∧ Function.Injective (algebraMap O Ω) ∧ ξ' ≫ s = Spec.map (CommRingCat.ofHom (algebraMap O Ω)) ∧ ξ' ≫ g = ξ ∧ IsCptGen ξ' ∧ (∀ q' : X', genPt ξ' ⤳ q') ∧ algebraMap O Ω ϖ = ψ π ∧ (∀ a : Ω, a ∈ (algebraMap O Ω).range ↔ ∃ b : F', v.valuation F' b ≤ 1 ∧ ψ b = a) ∧ (∀ (p' : Cpt ξ') (p : Cpt ξ), p.1 = g p'.1 → ∀ a : Ω, a ∈ regAt ξ' p' ↔ a ∈ regAt ξ p) ∧ ∀ p : Cpt ξ, (∀ a : F', v.valuation F' a ≤ 1 → ψ a ∈ regAt ξ p) → ∃ p' : Cpt ξ', g p'.1 = p.1 := by
   intro X Ω _ ξ κ _ x F' _ _ ψ v π hall hT hN hπ

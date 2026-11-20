@@ -18,9 +18,9 @@ variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {Ω : 
 omit [∀ k, Fintype (ι k)] in
 
 /- English proof (translation)
-Introduce `c hc`. Establish `h : ∏ k, y ⟨k, c k⟩ ^ (-(((n + j : ℕ) : ℤ) * a k)) = (∏ k, y ⟨k, c k⟩ ^ (-((n : ℤ) * a k))) * ∏ k, y ⟨k, c k⟩ ^ (-((j : ℤ) * a k))`. Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_add₀ (hc k)]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, show s * t * ((∏ k, y ⟨k, c k⟩ ^ (-((n : ℤ) * a k))) * ∏ k, y ⟨k, c k⟩ ^ (-((j : ℤ) * a k))) = (s * ∏ k, y ⟨k, c k⟩ ^ (-((n : ℤ) * a k))) * (t * ∏ k, y ⟨k, c k⟩ ^ (-((j : ℤ) * a k))) by ring]`. Conclude with `mul_mem (hs c hc) (ht c hc)`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mem_chartLat {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n j : ℕ} {s t : Ω} (hs : s ∈ chartLat y a n)
     (ht : t ∈ chartLat y a j) : s * t ∈ chartLat y a (n + j) := by
@@ -38,7 +38,7 @@ theorem mul_mem_chartLat {y : (Σ k, ι k) → Ω} {a : K → ℤ} {n j : ℕ} {
   exact mul_mem (hs c hc) (ht c hc)
 
 /- English proof (translation)
-Introduce `dg dh g h z hg hh hd he hz`. Use `(hs dg dh g h z hg hh hd he hz).trans ?_` and prove the remaining obligations. Establish `h0 : 0 ≤ A.h z ^ τ` using `pow_nonneg (A.pos z hz.1).le τ`. Conclude with `mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hc (norm_nonneg (eval z (map (Int.castRingHom ℂ) h)))) h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isBoundedH_mono {P : Ideal (MRing ι)} {y : (Σ k, ι k) → Ω} {A : HermLine ι} {τ : ℕ} {s : Ω}
     {c c' : ℝ} (hs : IsBoundedH P y A τ c s) (hc : c ≤ c') : IsBoundedH P y A τ c' s := by
@@ -49,21 +49,21 @@ theorem isBoundedH_mono {P : Ideal (MRing ι)} {y : (Σ k, ι k) → Ω} {A : He
     (mul_le_mul_of_nonneg_right hc (norm_nonneg (eval z (map (Int.castRingHom ℂ) h)))) h0
 
 /- English proof (translation)
-Use `set F : ℝ := ((D + 1).factorial : ℝ) with hFdef`. Establish `hF0 : 0 < F` using `by positivity`. Establish `hlin : ∀ c : ℝ, (fun n : ℕ => (n : ℝ) + c) ~[atTop] fun n : ℕ => (n : ℝ)` using `fun c => IsEquivalent.refl.add_isLittleO ((isLittleO_const_id_atTop c).comp_tendsto tendsto_natCast_atTop_atTop)`. Establish `hu : (fun n : ℕ => ((n : ℝ) + m) ^ (D + 1) - (n : ℝ) ^ (D + 1)) =o[atTop] fun n : ℕ => (n : ℝ) ^ (D + 1)` using `(hlin m).pow (D + 1)`. Establish `hv : (fun n : ℕ => ((n : ℝ) + (m + 1)) ^ D) =o[atTop] fun n : ℕ => (n : ℝ) ^ (D + 1)` using `((hlin (m + 1)).pow D).isBigO.trans_isLittleO ((isLittleO_pow_pow_atTop_of_lt (Nat.lt_succ_self D)).comp_tendsto tendsto_natCast_atTop_atTop)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set c₁ := δ / (2 * (|b| + 1)) with hc₁`. Use `set c₂ := δ / (2 * F * (|E| + 1)) with hc₂`. Establish `hc₁0 : 0 < c₁` using `by positivity`. Establish `hc₂0 : 0 < c₂` using `by positivity`. Establish `hbc : |b| * c₁ ≤ δ / 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[hc₁, mul_div_assoc', div_le_div_iff₀ (by positivity) (by norm_num)]`. Use polynomial arithmetic with `[abs_nonneg b]`. Establish `hEc : F * (|E| * c₂) ≤ δ / 2`. Rewrite using `[hc₂, mul_div_assoc', mul_div_assoc', div_le_div_iff₀ (by positivity) (by norm_num)]`. Use polynomial arithmetic with `[abs_nonneg E]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hu.def hc₁0, hv.def hc₂0] with n h1 h2`. Introduce `N hnN hNn`. Establish `hn0 : (0 : ℝ) ≤ n` using `n.cast_nonneg`. Establish `hN1 : (n : ℝ) ≤ N` using `by exact_mod_cast hnN`. Establish `hN2 : (N : ℝ) ≤ n + m` using `by exact_mod_cast hNn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : (0 : ℝ) ≤ (n : ℝ) ^ (D + 1)` using `by positivity`. Establish `hpow : (N : ℝ) ^ (D + 1) ≤ ((n : ℝ) + m) ^ (D + 1)` using `pow_le_pow_left₀ (by positivity) hN2 _`. Establish `hpow' : (n : ℝ) ^ (D + 1) ≤ (N : ℝ) ^ (D + 1)` using `pow_le_pow_left₀ hn0 hN1 _`. Establish `hv' : ((N : ℝ) + 1) ^ D ≤ ((n : ℝ) + (m + 1)) ^ D` using `pow_le_pow_left₀ (by positivity) (by linarith) _`. Rewrite `h1` using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hw, abs_of_nonneg (by linarith)]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h2` using `[Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hw, abs_of_nonneg (by positivity)]`. Establish `hb : b * (N : ℝ) ^ (D + 1) ≤ b * (n : ℝ) ^ (D + 1) + |b| * (((n : ℝ) + m) ^ (D + 1) - (n : ℝ) ^ (D + 1))`. Break down `le_total 0 b with hb | hb` into its components or cases. Rewrite using `[abs_of_nonneg hb]`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[abs_nonneg b, mul_le_mul_of_nonpos_left hpow' hb]`. Establish `hE : E * ((N : ℝ) + 1) ^ D ≤ |E| * ((n : ℝ) + (m + 1)) ^ D` using `(mul_le_mul_of_nonneg_right (le_abs_self E) (by positivity)).trans (mul_le_mul_of_nonneg_left hv' (abs_nonneg E))`. Establish `hb2 : |b| * (((n : ℝ) + m) ^ (D + 1) - (n : ℝ) ^ (D + 1)) ≤ δ / 2 * (n : ℝ) ^ (D + 1)` using `(mul_le_mul_of_nonneg_left h1 (abs_nonneg b)).trans (by rw [← mul_assoc]; exact mul_le_mul_of_nonneg_right hbc hw)`. Establish `hE2 : |E| * F * ((n : ℝ) + (m + 1)) ^ D ≤ δ / 2 * (n : ℝ) ^ (D + 1)`. Use `mul_le_mul_of_nonneg_left h2 (mul_nonneg (abs_nonneg E) hF0.le)` as an intermediate fact.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right hEc hw]`. Establish `key : b * (N : ℝ) ^ (D + 1) + F * (E * ((N : ℝ) + 1) ^ D) ≤ (b + δ) * (n : ℝ) ^ (D + 1)`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hE hF0.le]`. Rewrite using `[show b * ((N : ℝ) ^ (D + 1) / F) + E * ((N : ℝ) + 1) ^ D = (b * (N : ℝ) ^ (D + 1) + F * (E * ((N : ℝ) + 1) ^ D)) / F by field_simp, ← mul_div_assoc]`. Conclude with `div_le_div_of_nonneg_right key hF0.le`.
+A detailed English derivation is pending.
 -/
 theorem eventually_shift_le (D m : ℕ) (b E δ : ℝ) (hδ : 0 < δ) :
     ∀ᶠ n : ℕ in atTop, ∀ N : ℕ, n ≤ N → N ≤ n + m →
@@ -124,27 +124,25 @@ end EuclideanSections
 open EuclideanSections in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ _ y D A P0 II hD hII har hb hA hconj`. Take `⟨r, φ, hinj, hdisc, hlat, hsup, hcon, ⟨Cr, hr⟩, m, hm, hdeg⟩` from `hP K ι Ω y D A P0 II hD hII har hb hA hconj`. Take `⟨C, hC⟩` from `hG K ι Ω y D A P0 hD har hb hA`. Use `⟨r, φ, hinj, hdisc, hlat, hsup, ⟨Cr, hr⟩, fun ε hε => ?_⟩` and prove the remaining obligations. Use `set C₁ := max C 1 with hC₁`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hC₁1 : (1 : ℝ) ≤ C₁` using `le_max_right _ _`. Establish `hlog : 0 ≤ Real.log C₁` using `Real.log_nonneg hC₁1`. Use `set I := II K ι (mCoordIdeal y) (D + 1) (fun _ => A) with hI`. Take `⟨Q, hQ⟩` from `eventually_atTop.1 (hdeg (ε / 2) (half_pos hε))`. Use `filter_upwards [eventually_shift_le D m (I + ε / 2) (Cr * Real.log C₁) (ε / 2) (half_pos hε), eventually_ge_atTop (m * Q)] with n hn hnQ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `_ _`. Establish `hqQ : Q ≤ n / m + 1` using `Nat.le_succ_of_le ((Nat.le_div_iff_mul_le hm).2 (by rw [mul_comm]; exact hnQ))`. Establish `hnN : n ≤ m * (n / m + 1)` using `(Nat.lt_mul_div_succ n hm).le`. Establish `hNn : m * (n / m + 1) ≤ n + m`. Use `Nat.mul_div_le n m` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Reduce the argument to an intermediate assertion.
 
-Rewrite using `[mul_add, mul_one]`. Use linear arithmetic over natural numbers and integers. It suffices to establish `main : ∀ N : ℕ, n ≤ N → N ≤ n + m → -Real.log (ZLattice.covolume (imageLattice (φ N))) ≤ (I + ε / 2) * ((N : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)) → -Real.log (ZLattice.covolume (imageLattice (φ n))) ≤ (I + ε) * ((n : ℝ) ^ (D + 1) / ((D + 1).factorial : ℝ)) from main _ hnN hNn …`. Introduce `N hnN hNn h1`. Take `⟨j, rfl⟩` from `Nat.exists_eq_add_of_le hnN`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨t, ht, ht0, hts⟩` from `hS K ι Ω y D A P0 har hb hA j`. Set `ψ : chartLat y A.a n →+ chartLat y A.a (n + j)` to `{ toFun := fun s => ⟨(s : Ω) * t, mul_mem_chartLat s.2 ht⟩ map_zero' := by ext; simp map_add' := fun s s' => by ext; simp [add_mul] }`. Establish `hψ : Function.Injective ψ` using `fun s s' h => Subtype.ext (mul_right_cancel₀ ht0 (congrArg Subtype.val h))`. Establish `hψn : ∀ s, ‖φ (n + j) (ψ s)‖ ≤ ‖φ n s‖` using `fun s => hcon n j s ⟨t, ht⟩ (ψ s) hts rfl`. Establish `hclos : AddSubgroup.closure {s : chartLat y A.a (n + j) | IsBoundedH (mCoordIdeal y) y A (n + j) C₁ (s : Ω)} = ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[AddSubgroup.eq_top_iff']`. Introduce `x`. Establish `hx : (x : Ω) ∈ AddSubgroup.closure {s | s ∈ chartLat y A.a (n + j) ∧ IsBoundedH (mCoordIdeal y) y A (n + j) C s}`. Rewrite using `[hC (n + j)]`. Conclude with `x.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `key : ∀ z (hz : z ∈ AddSubgroup.closure {s | s ∈ chartLat y A.a (n + j) ∧ IsBoundedH (mCoordIdeal y) y A (n + j) C s}), ∃ hz' : z ∈ chartLat y A.a (n + j), (⟨z, hz'⟩ : chartLat y A.a (n + j)) ∈ AddSubgroup.closure {s : chartLat y A.a (n + j) | IsBoundedH (mCoordIdeal y) y A (n + …`. Introduce `z hz`. Proceed by induction on `hz using AddSubgroup.closure_induction with`. Consider the case `mem z hz => exact ⟨hz.1, AddSubgroup.subset_closure (isBoundedH_mono hz.2 (le_max_left _ _))⟩`. Consider the case `zero => exact ⟨zero_mem _, zero_mem _⟩`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add z w _ _ hz hw`. Take `⟨hz', hz''⟩` from `hz`. Take `⟨hw', hw''⟩` from `hw`. Conclude with `⟨add_mem hz' hw', add_mem hz'' hw''⟩`. Consider the case `neg z _ hz`.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hz', hz''⟩` from `hz`. Conclude with `⟨neg_mem hz', neg_mem hz''⟩`. Take `⟨_, hx'⟩` from `key x hx`. Conclude with `hx'`. Establish `hbound : ∀ s ∈ {s : chartLat y A.a (n + j) | IsBoundedH (mCoordIdeal y) y A (n + j) C₁ (s : Ω)}, ‖φ (n + j) s‖ ≤ C₁` using `fun s hs => hsup (n + j) C₁ s (by linarith) hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h2` using `hL (chartLat y A.a (n + j)) (chartLat y A.a n) (r (n + j)) (r n) (φ (n + j)) (φ n) ψ _ C₁ (hinj _) (hinj _) hψ hψn hclos hbound hC₁1`. Establish `h3 : (r (n + j) : ℝ) * Real.log C₁ ≤ Cr * Real.log C₁ * (((n + j : ℕ) : ℝ) + 1) ^ D`. Use `mul_le_mul_of_nonneg_right (hr (n + j)) hlog` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4` using `hn (n + j) (Nat.le_add_right n j) hNn`.
-
-Establish `h5 : I + ε / 2 + ε / 2 = I + ε` using `by ring`. Rewrite `h4` using `[h5]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem EuclideanSections.proof (hP : EuclideanSectionsPower.Statement) (hS : SmallSectionsNonzero.Statement)
     (hL : SublatticeDegree.Statement) (hG : SuccessiveMinimaSpan.Statement) : EuclideanSections.Statement := by

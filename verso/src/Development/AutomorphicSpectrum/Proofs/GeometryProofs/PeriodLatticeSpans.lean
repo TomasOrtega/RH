@@ -21,9 +21,9 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.Ar.Flat.PerSpan
 
 /- English proof (translation)
-Use `hA.proper` as an intermediate fact. Take `⟨H, m, s, hH, hs, -⟩` from `GlobalTheory.SymVeryAmple.exists_symmetric_veryAmple ℂ A hA`. Establish `hp : IsProjOver A.hom` using `(GlobalTheory.isProjOver_iff_isProper_and_exists_isAmpleLB A.hom).2 ⟨inferInstance, H, GlobalTheory.isAmpleLB_of_veryAmpleBy hs⟩`. Establish `h1` using `PtsOver.compactSpace (F := ℂ) hp (𝟙 _)`. Establish `h2` using `PtsOver.t2Space (C := ℂ) A.hom (𝟙 _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨(overHomeomorph A).symm.compactSpace, (overHomeomorph A).symm.t2Space⟩`.
+Supply the required witnesses or components.
 -/
 theorem compact_alt_alt (A : Over (Sp ℂ)) [GrpObj A] (hA : IsAbelianScheme A) :
     CompactSpace (𝟙_ (Over (Sp ℂ)) ⟶ A) ∧ T2Space (𝟙_ (Over (Sp ℂ)) ⟶ A) := by
@@ -36,27 +36,23 @@ theorem compact_alt_alt (A : Over (Sp ℂ)) [GrpObj A] (hA : IsAbelianScheme A) 
   exact ⟨(overHomeomorph A).symm.compactSpace, (overHomeomorph A).symm.t2Space⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Take `⟨ℓ, hℓ, hle⟩` from `Submodule.exists_le_ker_of_lt_top W (lt_top_iff_ne_top.2 hne)`. Set `f : Multiplicative (Fin g → ℂ) →* H` to `MonoidHom.mk' (fun z => π z.toAdd) fun a b => hadd _ _`. Establish `: SigmaCompactSpace (Multiplicative (Fin g → ℂ))` using `inferInstanceAs (SigmaCompactSpace (Fin g → ℂ))`. Establish `hopen : IsOpenMap f` using `MonoidHom.isOpenMap_of_sigmaCompact f hs hc`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : IsOpen (π '' ball 0 1)` using `hopen _ (isOpen_ball (x := (0 : Fin g → ℂ)) (ε := 1))`. Establish `h0 : π 0 = 1`. Use `hadd 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hne' : (interior (π '' ball 0 1)).Nonempty`. Rewrite using `[hU.interior_eq]`. Conclude with `⟨π 0, 0, mem_ball_self one_pos, rfl⟩`. Take `⟨t, ht⟩` from `compact_covered_by_mul_left_translates (isCompact_univ (X := H)) hne'`. Use `choose lift hlift using hs`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ℓ'` to `LinearMap.toContinuousLinearMap ℓ`. Establish `heq : ∀ a b, π a = π b → ℓ a = ℓ b` using `fun a b h => by`. Establish `h1 : π (a - b) = 1`. Use `hadd (a - b) b` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `right_eq_mul.1 this`. Establish `h2` using `hle (hW _ h1)`. Rewrite `h2` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hbd : ∀ z, ‖ℓ z‖ ≤ ‖ℓ'‖ + ∑ c ∈ t, ‖ℓ (lift c)‖` using `fun z => by`. Choose the witnesses or unpack the hypotheses as in `⟨c, hct, hcz⟩ : ∃ c ∈ t, c * π z ∈ π '' ball 0 1 := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Use `ht (Set.mem_univ (π z))` as an intermediate fact. Simplify using `using this`. Take `⟨w, hw, hwz⟩` from `hcz`. Establish `h1 : π w = π (lift c + z)` using `by rw [hwz, hadd, hlift]`. Establish `h2` using `heq _ _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[map_add]`. Establish `h3 : ℓ z = ℓ w - ℓ (lift c)` using `by rw [h2]; ring`. Establish `h4 : ‖ℓ w‖ ≤ ‖ℓ'‖`. Use `ℓ'.le_opNorm w` as an intermediate fact. Establish `hw' : ‖w‖ ≤ 1` using `by simpa using (mem_ball_zero_iff.1 hw).le`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `h5 : ‖ℓ (lift c)‖ ≤ ∑ c ∈ t, ‖ℓ (lift c)‖` using `Finset.single_le_sum (f := fun c => ‖ℓ (lift c)‖) (fun _ _ => norm_nonneg _) hct`. Rewrite using `[h3]`. Conclude with `(norm_sub_le _ _).trans (add_le_add h4 h5)`. Choose the witnesses or unpack the hypotheses as in `⟨v, hv⟩ : ∃ v, ℓ v ≠ 0 := by`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Conclude with `hℓ (LinearMap.ext hcon)`. Use `set C := ‖ℓ'‖ + ∑ c ∈ t, ‖ℓ (lift c)‖`. Establish `hC : 0 ≤ C` using `(norm_nonneg _).trans (hbd 0)`.
-
-Use `hbd (((C + 1 : ℝ) / ‖ℓ v‖ : ℂ) • v)` as an intermediate fact. Rewrite `this` using `[map_smul, smul_eq_mul, norm_mul]`. Establish `hn : ‖ℓ v‖ ≠ 0` using `norm_ne_zero_iff.2 hv`. Establish `h6 : ‖((C + 1 : ℝ) / ‖ℓ v‖ : ℂ)‖ * ‖ℓ v‖ = C + 1`. Rewrite using `[norm_div, Complex.norm_real, Complex.norm_real, norm_norm, Real.norm_eq_abs, abs_of_nonneg (by linarith), div_mul_cancel₀ _ hn]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem eq_top_of_compact_quotient (g : ℕ) (H : Type) [Group H] [TopologicalSpace H] [IsTopologicalGroup H]
     [CompactSpace H] [T2Space H] (π : (Fin g → ℂ) → H) (hadd : ∀ z w, π (z + w) = π z * π w) (hc : Continuous π)
@@ -133,13 +129,13 @@ def ofFibre (y : 𝟙_ (Over (Sp ℂ)) ⟶ (Over.pullback x).obj G) : Over.mk x 
     exact Category.id_comp x)
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (pullback.lift_fst _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem ofFibre_toFibre (p : Over.mk x ⟶ G) : ofFibre G x (toFibre G x p) = p :=
   Over.OverMorphism.ext (pullback.lift_fst _ _ _)
 
 /- English proof (translation)
-Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Establish `h' : y.left ≫ pullback.snd G.hom x = 𝟙 _` using `Over.w y`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Conclude with `pullback.lift_fst _ _ _`. Conclude with `(pullback.lift_snd _ _ _).trans h'.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem toFibre_ofFibre (y : 𝟙_ (Over (Sp ℂ)) ⟶ (Over.pullback x).obj G) : toFibre G x (ofFibre G x y) = y := by
   refine Over.OverMorphism.ext ?_
@@ -149,7 +145,7 @@ theorem toFibre_ofFibre (y : 𝟙_ (Over (Sp ℂ)) ⟶ (Over.pullback x).obj G) 
   · exact (pullback.lift_snd _ _ _).trans h'.symm
 
 /- English proof (translation)
-Set `ρ : Over.mk x ⟶ Over.mk ((𝟙_ (Over (Sp ℂ))).hom ≫ x)` to `Over.homMk (𝟙 _) (by simp)`. Establish `e : ∀ a, ofFibre G x a = ρ ≫ Out.toBase pullback.condition a` using `fun a => Over.OverMorphism.ext (by simp [ofFibre, ρ, Out.toBase])`. Rewrite using `[e, e, e, GlobalTheory.UU.toBase_mul_pullback, MonObj.comp_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofFibre_mul (y y' : 𝟙_ (Over (Sp ℂ)) ⟶ (Over.pullback x).obj G) :
     ofFibre G x (y * y') = ofFibre G x y * ofFibre G x y' := by
@@ -159,7 +155,7 @@ theorem ofFibre_mul (y y' : 𝟙_ (Over (Sp ℂ)) ⟶ (Over.pullback x).obj G) :
   rw [e, e, e, GlobalTheory.UU.toBase_mul_pullback, MonObj.comp_mul]
 
 /- English proof (translation)
-Use `ofFibre_mul G x (toFibre G x p) (toFibre G x p')` as an intermediate fact. Rewrite `this` using `[ofFibre_toFibre, ofFibre_toFibre]`. Rewrite using `[← this, toFibre_ofFibre]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem toFibre_mul (p p' : Over.mk x ⟶ G) : toFibre G x (p * p') = toFibre G x p * toFibre G x p' := by
   have := ofFibre_mul G x (toFibre G x p) (toFibre G x p')
@@ -169,7 +165,7 @@ theorem toFibre_mul (p p' : Over.mk x ⟶ G) : toFibre G x (p * p') = toFibre G 
 end Fibre
 
 /- English proof (translation)
-Use `ofFibre_mul G x 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_mul.1 this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ofFibre_one {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] (x : Sp ℂ ⟶ Sp R) :
     ofFibre G x 1 = 1 := by
@@ -178,9 +174,9 @@ theorem ofFibre_one {R : Type} [CommRing R] (G : Over (Sp R)) [GrpObj G] (x : Sp
   exact left_eq_mul.1 this
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h1, h2⟩` from `h U f`. Establish `hj : Differentiable ℂ (fun z : V' => (b, z))` using `(differentiable_const _).prodMk differentiable_id`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `h1.preimage hj.continuous`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify `h3` using `only [Set.preimage_setOf_eq, Set.mem_prod, Set.mem_univ, and_true, hb, true_and]`. Conclude with `h2.comp hj.differentiableOn fun z hz => ⟨⟨hb, trivial⟩, hz.2⟩`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isHolTo_slice_at {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup V'] [NormedSpace ℂ V']
     {X : Scheme.{0}} {B : Set V} {b : V} (hb : b ∈ B) {c : V × V' → (Sp ℂ ⟶ X)}
@@ -194,7 +190,7 @@ theorem isHolTo_slice_at {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V
   · exact h2.comp hj.differentiableOn fun z hz => ⟨⟨hb, trivial⟩, hz.2⟩
 
 /- English proof (translation)
-The claim follows from `isHolTo_slice_at (V := Fin n → ℂ) (V' := Fin g → ℂ) (X := G.left) (b := b) (B := B) (c := fun bz => (e.ex bz.1 bz.2).left) hb e.hol`.
+A detailed English derivation is pending.
 -/
 theorem isHolTo_ex_slice {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {g n : ℕ}
     {M : LieModel G (𝟙 (Sp R)) (Fin g → R)} {B : Set (Fin n → ℂ)} {ψ : (Fin n → ℂ) → (R →+* ℂ)}
@@ -204,9 +200,9 @@ theorem isHolTo_ex_slice {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {g
     (c := fun bz => (e.ex bz.1 bz.2).left) hb e.hol
 
 /- English proof (translation)
-Introduce `U f`. Take `⟨h1, h2⟩` from `h U f`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `h3` using `h1.preimage (continuous_snd (X := V) (Y := V'))`. Simplify `h3` using `only [Set.preimage_setOf_eq, Set.mem_prod, Set.mem_univ, and_self, true_and]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h2.comp differentiable_snd.differentiableOn fun z hz => ⟨trivial, hz.2⟩`.
+A detailed English derivation is pending.
 -/
 theorem isHolTo_snd {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup V'] [NormedSpace ℂ V']
     {X : Scheme.{0}} {c : V' → (Sp ℂ ⟶ X)} (h : IsHolTo Set.univ c) :
@@ -237,7 +233,7 @@ def famExpAtPoint {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] {g n : �
     · exact (hφ.tendsto (b₀, _)).eventually h4
 
 /- English proof (translation)
-Take `⟨h, -, hh⟩` from `exists_linear_lift_of_additive_family R G g 0 M Set.univ (fun _ => ψ b) (famExpAtPoint e hb) m Set.univ (fun _ z => u z) isOpen_univ subset_rfl (fun _ _ z w => hadd z w) (isHolTo_snd (V := Fin 0 → ℂ) (X := G.left) (c := fun z => (u z).left) hhol)`. Conclude with `⟨h 0, (hh 0 trivial).1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_linear_lift_at_point (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (g n : ℕ)
     (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ))
@@ -257,24 +253,24 @@ def expUnit (z : ℂ) : Γ(Sp ℂ, ⊤)ˣ :=
   Units.map gammaEquiv.symm.toRingHom.toMonoidHom (Units.mk0 (Complex.exp z) (Complex.exp_ne_zero z))
 
 /- English proof (translation)
-The claim follows from `gammaEquiv.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem gamma_expUnit (z : ℂ) : gammaEquiv (expUnit z).val = Complex.exp z := gammaEquiv.apply_symm_apply _
 
 /- English proof (translation)
-The claim follows from `Units.ext (gammaEquiv.injective h)`.
+A detailed English derivation is pending.
 -/
 theorem expUnit_ext {u v : Γ(Sp ℂ, ⊤)ˣ} (h : gammaEquiv u.val = gammaEquiv v.val) : u = v :=
   Units.ext (gammaEquiv.injective h)
 
 /- English proof (translation)
-The claim follows from `expUnit_ext (by rw [Units.val_mul, map_mul, gamma_expUnit, gamma_expUnit, gamma_expUnit, Complex.exp_add])`.
+A detailed English derivation is pending.
 -/
 theorem expUnit_add (z w : ℂ) : expUnit (z + w) = expUnit z * expUnit w :=
   expUnit_ext (by rw [Units.val_mul, map_mul, gamma_expUnit, gamma_expUnit, gamma_expUnit, Complex.exp_add])
 
 /- English proof (translation)
-The claim follows from `expUnit_ext (by rw [gamma_expUnit, h, Units.val_one, map_one])`.
+A detailed English derivation is pending.
 -/
 theorem expUnit_eq_one {z : ℂ} (h : Complex.exp z = 1) : expUnit z = 1 :=
   expUnit_ext (by rw [gamma_expUnit, h, Units.val_one, map_one])
@@ -284,19 +280,19 @@ variable {X : Type} [AddCommGroup X] {d : ℕ} (β : Module.Basis (Fin d) ℤ X)
 def pairing (w : Fin d → ℂ) (χ : X) : ℂ := ∑ a, ((β.repr χ a : ℤ) : ℂ) * w a
 
 /- English proof (translation)
-Simplify using `[pairing, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairing_add_left (z w : Fin d → ℂ) (χ : X) : pairing β (z + w) χ = pairing β z χ + pairing β w χ := by
   simp [pairing, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[pairing, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairing_add_right (w : Fin d → ℂ) (χ χ' : X) : pairing β w (χ + χ') = pairing β w χ + pairing β w χ' := by
   simp [pairing, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `[pairing, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairing_basis (w : Fin d → ℂ) (a : Fin d) : pairing β w (β a) = w a := by
   simp [pairing, Finsupp.single_apply]
@@ -309,7 +305,7 @@ def torusExp (w : Fin d → ℂ) : 𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (Sp ℂ)
   (GlobalTheory.splitTorusPointsEquiv (Sp ℂ) X _).symm (torusHom β w)
 
 /- English proof (translation)
-Rewrite using `[torusExp, torusExp, torusExp, ← map_mul]`. Use `congr 1`. Use extensionality with `χ`. Use `show (expUnit _).val = (expUnit _ * expUnit _).val`. Rewrite using `[pairing_add_left, expUnit_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusExp_add (z w : Fin d → ℂ) : torusExp β (z + w) = torusExp β z * torusExp β w := by
   rw [torusExp, torusExp, torusExp, ← map_mul]
@@ -319,7 +315,7 @@ theorem torusExp_add (z w : Fin d → ℂ) : torusExp β (z + w) = torusExp β z
   rw [pairing_add_left, expUnit_add]
 
 /- English proof (translation)
-Establish `e : ∀ (φ : Multiplicative X →* U) (χ : X), φ (Multiplicative.ofAdd χ) = ∏ a, φ (Multiplicative.ofAdd (β a)) ^ (β.repr χ a)` using `fun φ χ => by conv_lhs => rw [← β.sum_repr χ]`. Rewrite using `[ofAdd_sum, map_prod]`. Conclude with `Finset.prod_congr rfl fun a _ => by rw [ofAdd_zsmul, map_zpow]`. Use `MonoidHom.ext fun χ => ?_` and prove the remaining obligations. Conclude with `(e f χ.toAdd).trans ((Finset.prod_congr rfl fun a _ => by rw [h a]).trans (e f' χ.toAdd).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem monoidHom_ext_basis {U : Type} [CommGroup U] {f f' : Multiplicative X →* U}
     (h : ∀ a, f (Multiplicative.ofAdd (β a)) = f' (Multiplicative.ofAdd (β a))) : f = f' := by
@@ -332,7 +328,7 @@ theorem monoidHom_ext_basis {U : Type} [CommGroup U] {f f' : Multiplicative X �
   exact (e f χ.toAdd).trans ((Finset.prod_congr rfl fun a _ => by rw [h a]).trans (e f' χ.toAdd).symm)
 
 /- English proof (translation)
-Introduce `s` and use `by let u := GlobalTheory.splitTorusPointsEquiv (Sp ℂ) X (𝟙_ (Over (Sp ℂ))) s let w : Fin d → ℂ := fun a => Complex.log (gammaEquiv (u (Multiplicative.ofAdd (β a))).val) refine ⟨w, ?_⟩ have : torusHom β w = u := monoidHom_ext_basis β fun a => by refine expUnit_ext ?_ show gammaEqu …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem torusExp_surjective : Function.Surjective (torusExp (X := X) β) := fun s => by
   let u := GlobalTheory.splitTorusPointsEquiv (Sp ℂ) X (𝟙_ (Over (Sp ℂ))) s
@@ -348,9 +344,9 @@ theorem torusExp_surjective : Function.Surjective (torusExp (X := X) β) := fun 
   exact (GlobalTheory.splitTorusPointsEquiv (Sp ℂ) X _).symm_apply_apply s
 
 /- English proof (translation)
-Establish `: torusHom (X` using `X) β (Pi.single a (2 * Real.pi * Complex.I)) = 1 := by`. Use `MonoidHom.ext fun χ => expUnit_eq_one ?_` and prove the remaining obligations. Establish `e : pairing β (Pi.single a (2 * Real.pi * Complex.I)) χ.toAdd = ((β.repr χ.toAdd a : ℤ) : ℂ) * (2 * Real.pi * Complex.I)`. Simplify using `[pairing, Pi.single_apply]`. Rewrite using `[e]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Complex.exp_int_mul_two_pi_mul_I _`. Rewrite using `[torusExp, this, map_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusExp_period (a : Fin d) : torusExp (X := X) β (Pi.single a (2 * Real.pi * Complex.I)) = 1 := by
   have : torusHom (X := X) β (Pi.single a (2 * Real.pi * Complex.I)) = 1 := by
@@ -363,7 +359,7 @@ theorem torusExp_period (a : Fin d) : torusExp (X := X) β (Pi.single a (2 * Rea
   rw [torusExp, this, map_one]
 
 /- English proof (translation)
-Rewrite using `[valAt'_eq_valR, valR_eq _ _ (le_preimage_top _)]`. Establish `h3 : (t.left ≫ Rosenlicht.torusFst (Sp ℂ) X).appLE ⊤ ⊤ (le_preimage_top _) = (t.left ≫ Rosenlicht.torusFst (Sp ℂ) X).appTop`. Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression. Simplify using `only [valMap, h3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -378,7 +374,7 @@ theorem valAt'_torusFst (t : 𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (Sp ℂ) X) (�
   rfl
 
 /- English proof (translation)
-The claim follows from `valAt'_torusFst t α`.
+A detailed English derivation is pending.
 -/
 theorem valAt'_torusFst' (t : 𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (Sp ℂ) X) (α : torusRing ZU X) :
     valAt' (t.left ≫ pullback.fst (splitTorusAff ZU X).hom (toZ (Sp ℂ))) ⊤
@@ -386,7 +382,7 @@ theorem valAt'_torusFst' (t : 𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (Sp ℂ) X) (
   valAt'_torusFst t α
 
 /- English proof (translation)
-Establish `e : GlobalTheory.SplitTorusPoints.toHom (torusExp β w) = torusHom β w` using `(GlobalTheory.splitTorusPointsEquiv (Sp ℂ) X _).apply_symm_apply _`. Rewrite using `[← GlobalTheory.SplitTorusPoints.toHom_val, e]`. Conclude with `gamma_expUnit _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem torusExp_hol_char (w : Fin d → ℂ) (χ : X) : gammaEquiv ((Rosenlicht.coord (torusExp β w)).hom (AddMonoidAlgebra.single χ 1)) = Complex.exp (pairing β w χ) := by
   have e : GlobalTheory.SplitTorusPoints.toHom (torusExp β w) = torusHom β w :=
@@ -395,18 +391,18 @@ theorem torusExp_hol_char (w : Fin d → ℂ) (χ : X) : gammaEquiv ((Rosenlicht
   exact gamma_expUnit _
 
 /- English proof (translation)
-Unfold `pairing`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem differentiable_pairing (χ : X) : Differentiable ℂ (fun w : Fin d → ℂ => pairing β w χ) := by
   unfold pairing
   fun_prop
 
 /- English proof (translation)
-Proceed by induction on `α using AddMonoidAlgebra.induction_linear with`. Consider the case `zero => simp`. Consider the case `add f f' hf hf'`. Simplify using `only [map_add]`. Conclude with `hf.add hf'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `single χ r`. Establish `e : (AddMonoidAlgebra.single χ r : AddMonoidAlgebra (ULift.{0} ℤ) X) = r.down • AddMonoidAlgebra.single χ 1`. Rewrite using `[AddMonoidAlgebra.smul_single]`. Use `congr 1`. Use `ext`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `e' : ∀ w : Fin d → ℂ, gammaEquiv ((Rosenlicht.coord (torusExp β w)).hom (AddMonoidAlgebra.single χ r)) = r.down • Complex.exp (pairing β w χ)` using `fun w => by`. Rewrite using `[← torusExp_hol_char, e, map_zsmul, map_zsmul]`. Simplify using `only [e']`. Conclude with `((differentiable_pairing β χ).cexp).const_smul _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_torusExp_coord (α : torusRing ZU X) :
     Differentiable ℂ (fun w : Fin d → ℂ => gammaEquiv ((Rosenlicht.coord (torusExp β w)).hom α)) := by
@@ -429,9 +425,9 @@ theorem differentiable_torusExp_coord (α : torusRing ZU X) :
     exact ((differentiable_pairing β χ).cexp).const_smul _
 
 /- English proof (translation)
-Establish `h1 : IsHolTo Set.univ (fun w => (torusExp (X` using `X) β w).left ≫ Rosenlicht.torusFst (Sp ℂ) X) := by`. Use `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_of_affine (T := Spec (torusRing ZU X)) isOpen_univ fun r => ?_` and prove the remaining obligations. Take `⟨α, rfl⟩ : ∃ α, r = (Scheme.ΓSpecIso (torusRing ZU X)).inv.hom α` from `⟨(Scheme.ΓSpecIso (torusRing ZU X)).hom.hom r, by simp⟩`. Simplify using `only [valAt'_torusFst]`. Conclude with `(differentiable_torusExp_coord β α).differentiableOn.congr fun w _ => valAt'_torusFst _ α`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h2 : IsHolTo (V` using `Fin d → ℂ) Set.univ (fun _ => 𝟙 (Sp ℂ)) := fun U f => ⟨by simp only [Set.mem_univ, true_and]; exact isOpen_const, differentiableOn_const _⟩`. Conclude with `GlobalTheory.HolPullback.isHolTo_of_components (Fin d → ℂ) Set.univ _ _ _ _ (pullback.fst _ _) (pullback.snd _ _) _ _ _ (IsPullback.of_hasPullback (splitTorusAff ZU X).hom (toZ (Sp ℂ))) isOpen_univ h1 (by`. Use `h2 using 2 with w` and compare the differences between its conclusion and the goal. Conclude with `Over.w (torusExp (X := X) β w))`.
+Apply an available result and prove the equalities needed to match it to the conclusion. A detailed English derivation is pending.
 -/
 theorem isHolTo_torusExp : IsHolTo Set.univ (fun w => (torusExp (X := X) β w).left) := by
   have h1 : IsHolTo Set.univ (fun w => (torusExp (X := X) β w).left ≫ Rosenlicht.torusFst (Sp ℂ) X) := by
@@ -449,7 +445,7 @@ theorem isHolTo_torusExp : IsHolTo Set.univ (fun w => (torusExp (X := X) β w).l
       exact Over.w (torusExp (X := X) β w))
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, torusExp (Module.finBasis ℤ X), torusExp_add _, isHolTo_torusExp _, torusExp_surjective _, torusExp_period _⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_torusExp (X : Type) [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] :
     ∃ (d : ℕ) (t : (Fin d → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ splitTorus (Sp ℂ) X)),
@@ -466,33 +462,31 @@ namespace GlobalTheory.CompanionTheory.Ar.Flat
 open PerSpan
 
 /- English proof (translation)
-Introduce `R _ G _ _ g n M B ψ e hG b hb`. Take `⟨T⟩` from `hG.fibres ℂ (spMap (ψ b))`. Establish `hsurj` using `GlobalTheory.T.exponential_surjective_semiabelian R G g n M B ψ e hG b hb`. Establish `hq` using `T.q_hom`. Establish `hi` using `T.i_hom`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI := T.addCommGroup`. Use `letI := T.grpB`. Use `T.free` as an intermediate fact. Use `T.finite` as an intermediate fact. Use `hG.smooth` as an intermediate fact.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `T.q_quasiCompact` as an intermediate fact. Use `T.q_surjective` as an intermediate fact. Establish `hlft : LocallyOfFiniteType T.q.left`. Establish `: LocallyOfFiniteType (T.q.left ≫ T.B.hom)`. Rewrite using `[Over.w]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show LocallyOfFiniteType (pullback.snd G.hom (spMap (ψ b)))`. Use `infer_instance`. Conclude with `locallyOfFiniteType_of_comp _ T.B.hom`. Take `⟨d, t, tadd, thol, tsurj, tper⟩` from `exists_torusExp T.X`. Use `(compact_alt_alt T.B T.isAbelian).1` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `(compact_alt_alt T.B T.isAbelian).2` as an intermediate fact. Use `isTopologicalGroup_over (C := ℂ) T.B` as an intermediate fact. Set `x` to `spMap (ψ b)`. Set `u : (Fin d → ℂ) → (Over.mk x ⟶ G)` to `fun w => ofFibre G x (t w ≫ T.i)`. Establish `uadd : ∀ z w, u (z + w) = u z * u w` using `fun z w => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Simplify using `only [u, tadd, MonObj.mul_comp, ofFibre_mul]`. Establish `uhol : IsHolTo Set.univ (fun z => (u z).left)` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.isHolTo_comp thol (T.i.left ≫ pullback.fst G.hom x)`. Take `⟨h, hh⟩` from `exists_linear_lift_at_point R G g n M B ψ e b hb d u uadd uhol`. Establish `hW : ∀ a, h (Pi.single a (2 * Real.pi * Complex.I)) ∈ Submodule.span ℂ (e.per b)` using `fun a => by`. Use `Submodule.subset_span ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `show e.ex b _ = 1`. Rewrite using `[hh]`. Simplify using `only [u, tper, MonObj.one_comp, ofFibre_one]`. Establish `hW' : ∀ w, h w ∈ Submodule.span ℂ (e.per b)` using `fun w => by`. Establish `e1 : w = ∑ a, (w a / (2 * Real.pi * Complex.I)) • (Pi.single a (2 * Real.pi * Complex.I) : Fin d → ℂ)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `c`. Establish `h2 : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Simplify using `[Finset.sum_apply, Pi.single_apply, h2]`. Rewrite using `[e1, map_sum]`. Conclude with `Submodule.sum_mem _ fun a _ => by`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem _ _ (hW a)`. Set `π : (Fin g → ℂ) → (𝟙_ (Over (Sp ℂ)) ⟶ T.B)` to `fun z => toFibre G x (e.ex b z) ≫ T.q`. Use `eq_top_of_compact_quotient g _ π (fun z w => ?_) ?_ (fun y => ?_) _ (fun z hz => ?_)` and prove the remaining obligations. Simplify using `only [π, e.add b hb, toFibre_mul, MonObj.mul_comp]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(continuous_over_comp T.q).comp ?_` and prove the remaining obligations. Use `(isEmbedding_left _).continuous_iff.2 ?_` and prove the remaining obligations. Use `(isEmbedding_of_isPullback (C := ℂ) (IsPullback.of_hasPullback G.hom x)).continuous_iff.2 ?_` and prove the remaining obligations. Use `Continuous.prodMk ?_ ?_` and prove the remaining obligations. Use `isHolTo_ex_slice e hb` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `(continuous_of_differentiableOn (fun U f => ?_)).congr fun z => (pullback.lift_fst _ _ _).symm` and prove the remaining obligations. Simplify using `using this U f`. Conclude with `continuous_const.congr fun z => (pullback.lift_snd _ _ _).symm`. Take `⟨p, hp⟩` from `GlobalTheory.SS.SemiDivisible.exists_lift_point T.q y`. Take `⟨z, hz⟩` from `hsurj (ofFibre G x p)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Simplify using `only [π, hz, toFibre_ofFibre, hp]`. Establish `hk : toFibre G x (e.ex b z) ≫ T.q = toUnit _ ≫ η[T.B]` using `hz`. Set `s` to `T.isKernel.lift (toFibre G x (e.ex b z)) (toUnit _) hk`. Establish `hs : s ≫ T.i = toFibre G x (e.ex b z)` using `T.isKernel.lift_fst _ _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨w, hw⟩` from `tsurj s`. Establish `h1 : e.ex b (h w) = e.ex b z`. Rewrite using `[hh]`. Simplify using `only [u, hw, hs, ofFibre_toFibre]`. Establish `h2 : z - h w ∈ e.per b` using `by show e.ex b _ = 1`.
-
-Use `e.add b hb (z - h w) (h w)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel, h1]`. Conclude with `right_eq_mul.1 this`. Use `Submodule.add_mem _ (Submodule.subset_span h2) (hW' w)` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_per_eq_top : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G] (g n : ℕ)
     (M : LieModel G (𝟙 (Sp R)) (Fin g → R)) (B : Set (Fin n → ℂ)) (ψ : (Fin n → ℂ) → (R →+* ℂ))

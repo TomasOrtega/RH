@@ -15,13 +15,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.DefiniteClassAvg
 
 /- English proof (translation)
-Use `⟨measurable_mul_const g, ?_⟩` and prove the remaining obligations. Use `set c := Measure.haarScalarFactor (Measure.map (· * g) μ) μ with hcdef`. Establish `e : Measure.map (· * g) μ = c • μ` using `Measure.isMulLeftInvariant_eq_smul _ _`. Establish `hpre : (· * g) ⁻¹' (J : Set G) = J`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.mem_preimage, SetLike.mem_coe]`. Conclude with `J.mul_mem_cancel_right hg`. Establish `h1 : Measure.map (· * g) μ J = μ J`. Rewrite using `[Measure.map_apply (measurable_mul_const g) hJ.measurableSet, hpre]`. Rewrite `h1` using `[e, Measure.smul_apply, ENNReal.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ((c : ENNReal)) = 1`. Establish `h2 : (c : ENNReal) * μ J / μ J = (c : ENNReal)` using `ENNReal.mul_div_cancel_right h0 htop`. Rewrite `h2` using `[h1, ENNReal.div_self h0 htop]`. Conclude with `h2.symm`. Establish `hc' : c = 1` using `by exact_mod_cast hc`.
-
-Rewrite using `[e, hc', one_smul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measurePreserving_mul_right_of_mem {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G]
     [LocallyCompactSpace G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G] (μ : Measure G)
@@ -45,9 +43,9 @@ theorem measurePreserving_mul_right_of_mem {G : Type} [Group G] [TopologicalSpac
   rw [e, hc', one_smul]
 
 /- English proof (translation)
-Establish `hg' : MeasurePreserving (MeasurableEquiv.mulRight g) μ μ` using `hg`. Establish `h2 : IsFundamentalDomain Γ ((fun x => x * g) '' 𝓕) μ` using `h𝓕.image_of_equiv (MeasurableEquiv.mulRight g).toEquiv hg'.symm.quasiMeasurePreserving (Equiv.refl _) (fun γ x => by show (γ • x) * g = γ • (x * g)`. Simplify using `only [Subgroup.smul_def, smul_eq_mul, mul_assoc])`. Rewrite using `[← hg.setIntegral_image_emb (measurableEmbedding_mulRight g) f 𝓕]`. Use `h2.setIntegral_eq h𝓕 ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `γ x`. Rewrite using `[Subgroup.smul_def, smul_eq_mul]`. Conclude with `hf γ γ.2 x`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_comp_mul_right_of_mp {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (μ : Measure G)
     [μ.IsMulLeftInvariant]
@@ -71,23 +69,21 @@ end GlobalTheory.DefiniteClassAvg
 namespace GlobalTheory.DefiniteClassAvg
 
 /- English proof (translation)
-Establish `key : ∀ x, ∀ k' ∈ Kf, ∀ w, f (x * (k' * j w)) = f (x * j w)`. Introduce `x k' hk' w`. Rewrite using `[hcomm k' hk' w, ← mul_assoc, hfr k' hk']`. Establish `hbd : ∃ C, ∀ x, ‖f x‖ ≤ C`. Establish `hi : ∀ i, ∃ C, ∀ v, ‖f (h i * j v)‖ ≤ C` using `fun i => (isCompact_range ((hf.comp (continuous_const.mul hj)).norm)).bddAbove.imp fun C hC v => hC ⟨v, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `choose B hB using hi`. Use `⟨∑ i, |B i|, fun x => ?_⟩` and prove the remaining obligations. Take `⟨i, ⟨γ, hγ, k, hk, rfl⟩, -⟩` from `huniq x`. Take `⟨k', hk', w, rfl⟩` from `hdec k hk`. Rewrite using `[mul_assoc, hfl γ hγ, key _ k' hk' w]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hB i w).trans ((le_abs_self _).trans (Finset.single_le_sum (f := fun i => |B i|) (fun i _ => abs_nonneg _) (Finset.mem_univ i)))`. Take `⟨C, hC⟩` from `hbd`. Establish `hFl : ∀ γ ∈ Γ, ∀ x, ∫ v, f (γ * x * j v) ∂ν = ∫ v, f (x * j v) ∂ν`. Introduce `γ hγ x`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `v`. Rewrite using `[mul_assoc, hfl γ hγ]`. Establish `hFr : ∀ k ∈ K, ∀ x, ∫ v, f (x * k * j v) ∂ν = ∫ v, f (x * j v) ∂ν`. Introduce `k hk x`. Take `⟨k', hk', w, rfl⟩` from `hdec k hk`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ v, f (x * (k' * j w) * j v) = f (x * j (w * v))`. Introduce `v`. Establish `: x * (k' * j w) * j v = x * j (w * v) * k'`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hcomm k' hk' w]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mul_assoc]`. Use `_ = x * j w * (j v * k') := by rw [hcomm k' hk' v]`. Use `_ = x * j (w * v) * k' := by rw [map_mul]; simp only [mul_assoc]`. Rewrite using `[this, hfr k' hk']`. Repeatedly rewrite using `[e]`.
+Rewrite the conclusion repeatedly using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `integral_mul_left_eq_self (fun v => f (x * j v)) w`. Take `⟨hfin𝓕, -, hFeq⟩` from `GlobalTheory.Ker.integral_fundamentalDomain_eq_sum_doubleCoset G μ Γ K 𝓕 h𝓕 hK hKfin ι h huniq hfin (fun x => ∫ v, f (x * j v) ∂ν) hFl hFr`. Use `haveI : IsFiniteMeasure (μ.restrict 𝓕) := isFiniteMeasure_restrict.2 hfin𝓕`. Establish `hint : IntegrableOn f 𝓕 μ` using `Integrable.of_bound hf.aestronglyMeasurable C (Filter.Eventually.of_forall hC)`. Use `⟨hint, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hc : Continuous fun p : G × U => f (p.1 * j p.2)` using `hf.comp (continuous_fst.mul (hj.comp continuous_snd))`. Establish `hI : Integrable (Function.uncurry fun x v => f (x * j v)) ((μ.restrict 𝓕).prod ν)` using `Integrable.of_bound hc.aestronglyMeasurable C (Filter.Eventually.of_forall fun p => hC _)`. Establish `hsh : ∀ v, ∫ x in 𝓕, f (x * j v) ∂μ = ∫ x in 𝓕, f x ∂μ` using `fun v => setIntegral_comp_mul_right_of_mp μ Γ 𝓕 h𝓕 f hfl (j v) (hrt v)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[integral_integral_swap hI]`.
-
-Simplify using `only [hsh]`. Simplify using the standard rewrite rules. Use `_ = _ := hFeq`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_eq_sum_avg (G : Type) [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] [SecondCountableTopology G] (μ : Measure G) [μ.IsMulLeftInvariant] (Γ K Kf : Subgroup G) [Countable Γ]
@@ -163,17 +159,17 @@ noncomputable def finPart (V : HSp D) (y : GA D V) : GA D V :=
   Eqv.UI.brg (Eqv.UI.framesV D V) (1, ((Eqv.UI.brg (Eqv.UI.framesV D V)).symm y).2)
 
 /- English proof (translation)
-The claim follows from `(Eqv.brg_mem_GinfC _ _).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem realPart_mem (V : HSp D) (y : GA D V) : realPart V y ∈ GinfC V := (Eqv.brg_mem_GinfC _ _).2 rfl
 
 /- English proof (translation)
-The claim follows from `(Eqv.brg_mem_GfC _ _).2 rfl`.
+A detailed English derivation is pending.
 -/
 theorem finPart_mem (V : HSp D) (y : GA D V) : finPart V y ∈ GfC V := (Eqv.brg_mem_GfC _ _).2 rfl
 
 /- English proof (translation)
-Unfold `realPart finPart`. Rewrite using `[← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`. Conclude with `(Eqv.UI.brg (Eqv.UI.framesV D V)).apply_symm_apply y`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem realPart_mul_finPart (V : HSp D) (y : GA D V) : realPart V y * finPart V y = y := by
   unfold realPart finPart
@@ -181,21 +177,21 @@ theorem realPart_mul_finPart (V : HSp D) (y : GA D V) : realPart V y * finPart V
   exact (Eqv.UI.brg (Eqv.UI.framesV D V)).apply_symm_apply y
 
 /- English proof (translation)
-Rewrite using `[← Eqv.Act.comm_inf_fin (realPart_mem V y) (finPart_mem V y)]`. Conclude with `realPart_mul_finPart V y`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finPart_mul_realPart (V : HSp D) (y : GA D V) : finPart V y * realPart V y = y := by
   rw [← Eqv.Act.comm_inf_fin (realPart_mem V y) (finPart_mem V y)]
   exact realPart_mul_finPart V y
 
 /- English proof (translation)
-The claim follows from `(Eqv.UI.brg (Eqv.UI.framesV D V)).continuous.comp ((continuous_fst.comp (Eqv.UI.brg (Eqv.UI.framesV D V)).symm.continuous).prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_realPart (V : HSp D) : Continuous (realPart V) :=
   (Eqv.UI.brg (Eqv.UI.framesV D V)).continuous.comp
     ((continuous_fst.comp (Eqv.UI.brg (Eqv.UI.framesV D V)).symm.continuous).prodMk continuous_const)
 
 /- English proof (translation)
-Establish `h : finHom V a = 1` using `ha`. Use `show Formalism.UG.bc (Lev.swapAE D) (finHom V a) = 1`. Rewrite using `[h, map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finE_eq_one_of_mem {V : HSp D} {a : GA D V} (ha : a ∈ GinfC V) : Lev.finE V a = 1 := by
   have h : finHom V a = 1 := ha
@@ -203,27 +199,25 @@ theorem finE_eq_one_of_mem {V : HSp D} {a : GA D V} (ha : a ∈ GinfC V) : Lev.f
   rw [h, map_one]
 
 /- English proof (translation)
-Use `conv_rhs => rw [← realPart_mul_finPart V y]`. Rewrite using `[map_mul, finE_eq_one_of_mem (realPart_mem V y), one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finE_finPart (V : HSp D) (y : GA D V) : Lev.finE V (finPart V y) = Lev.finE V y := by
   conv_rhs => rw [← realPart_mul_finPart V y]
   rw [map_mul, finE_eq_one_of_mem (realPart_mem V y), one_mul]
 
 /- English proof (translation)
-The claim follows from `Subgroup.mem_inf.2 ⟨finPart_mem V y, by show Lev.finE V (finPart V y) ∈ K; rw [finE_finPart]; exact h⟩`.
+A detailed English derivation is pending.
 -/
 theorem finPart_mem_levA (V : HSp D) {K : Subgroup (GL (Fin V.rank) (Lev.EAf D))} {y : GA D V}
     (h : Lev.finE V y ∈ K) : finPart V y ∈ Lev.levA V K :=
   Subgroup.mem_inf.2 ⟨finPart_mem V y, by show Lev.finE V (finPart V y) ∈ K; rw [finE_finPart]; exact h⟩
 
 /- English proof (translation)
-Establish `hT` using `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Establish `hG` using `hT.2.2.2.2.1`. Rewrite using `[continuous_iff_continuousAt]`. Introduce `x0`. Set `p : GA D V → GinfC V` to `fun x => ⟨realPart V (x0⁻¹ * x), realPart_mem V _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hp : Continuous p` using `((continuous_realPart V).comp (continuous_mul_left x0⁻¹)).subtype_mk _`. Establish `hev : (fun x => Φ (x0 * (p x : GA D V))) =ᶠ[𝓝 x0] Φ`. Establish `hn : (fun x => x0⁻¹ * x) ⁻¹' ((K.comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V)) ∈ 𝓝 x0` using `(ho.preimage (continuous_mul_left x0⁻¹)).mem_nhds (by`. Simplify using `only [Set.mem_preimage, inv_mul_cancel, SetLike.mem_coe]`. Conclude with `(K.comap (Lev.finE V)).one_mem)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `filter_upwards [hn] with x hx`. Establish `hx' : Lev.finE V (x0⁻¹ * x) ∈ K` using `hx`. Establish `hq` using `finPart_mem_levA V hx'`. Use `show Φ (x0 * realPart V (x0⁻¹ * x)) = Φ x`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `((hc x0).comp hp).continuousAt.congr hev`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem continuous_of_level (V : HSp D) (K : Subgroup (GL (Fin V.rank) (Lev.EAf D)))
     (ho : IsOpen ((K.comap (Lev.finE V) : Subgroup (GA D V)) : Set (GA D V))) (Φ : GA D V → ℂ)
@@ -254,11 +248,11 @@ end GlobalTheory.DefiniteClassAvg
 namespace GlobalTheory.DefiniteClassAvg
 
 /- English proof (translation)
-Introduce `x`. Use `(existsUnique_congr fun i => ?_).1 (hy (π x))` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨γ, k, e⟩`. Use `⟨γ, γ.2, ((γ : G) * a i)⁻¹ * x, ?_, by group⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Subgroup.mem_comap, map_mul, map_inv, map_mul, ha, e]`. Express the relevant statement in the definitionally equal form `(π γ * y i)⁻¹ * (π γ * y i * k) ∈ J`. Rewrite using `[inv_mul_cancel_left]`. Conclude with `k.2`. Introduce and unpack `⟨γ, hγ, k, hk, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨γ, hγ⟩, ⟨π k, hk⟩, by rw [map_mul, map_mul, ha]; rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_doubleCoset {G H : Type} [Group G] [Group H] (π : G →* H) (Γ : Subgroup G) (J : Subgroup H) {I : Type}
     (y : I → H) (hy : Bridge.IsReps (π.comp Γ.subtype) J y) (a : I → G) (ha : ∀ i, π (a i) = y i) :

@@ -5,11 +5,11 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.WeaklyAdmissibl
 namespace GlobalTheory.Cyc
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `succ n ih`. Take `⟨z, hz⟩` from `ih`. Use `⟨z + (n.choose 2 : ℕ) + y * z, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : (1 + y) ^ n = 1 + y * ((n : R) + (n.choose 2 : ℕ) * y + y ^ 2 * z)`. Rewrite using `[← hz]`. Expand and normalize the polynomial expressions, which then agree. Establish `hc : (n + 1).choose 2 = n + n.choose 2`. Rewrite using `[Nat.choose_succ_succ' n 1, Nat.choose_one_right]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pow_succ, h, hc]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem geom_sum_one_add_expand {R : Type*} [CommRing R] (y : R) (n : ℕ) :
     ∃ z : R, (1 + y) ^ n - 1 = y * ((n : R) + (n.choose 2 : ℕ) * y + y ^ 2 * z) := by
@@ -29,17 +29,17 @@ theorem geom_sum_one_add_expand {R : Type*} [CommRing R] (y : R) (n : ℕ) :
 variable {l : ℕ} [hl : Fact l.Prime]
 
 /- English proof (translation)
-Rewrite using `[PadicInt.norm_add_eq_max_of_ne h.ne', max_eq_left h.le]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem padicInt_norm_add_eq_of_lt {a b : ℤ_[l]} (h : ‖b‖ < ‖a‖) : ‖a + b‖ = ‖a‖ := by
   rw [PadicInt.norm_add_eq_max_of_ne h.ne', max_eq_left h.le]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `geom_sum_one_add_expand (x - 1) n`. Rewrite `hz` using `[add_sub_cancel]`. Establish `hn1 : ‖(n : ℤ_[l])‖ = 1`. Apply `le_antisymm (PadicInt.norm_le_one _)` to reduce the goal to its premises. Assume the negation of the conclusion as `h`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at h`. Establish `h' : ‖((n : ℤ) : ℤ_[l])‖ < 1` using `by simpa using h`. Rewrite `h'` using `[PadicInt.norm_int_lt_one_iff_dvd]`. Conclude with `hn (Int.natCast_dvd_natCast.mp h')`. Establish `e : (n : ℤ_[l]) + (n.choose 2 : ℕ) * (x - 1) + (x - 1) ^ 2 * z = n + (x - 1) * ((n.choose 2 : ℕ) + (x - 1) * z)` using `by ring`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz, norm_mul, e, padicInt_norm_add_eq_of_lt, hn1, mul_one]`. Rewrite using `[hn1, norm_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (PadicInt.norm_le_one _)) hx`.
+A detailed English derivation is pending.
 -/
 theorem norm_pow_sub_one_of_not_dvd (x : ℤ_[l]) (hx : ‖x - 1‖ < 1) (n : ℕ) (hn : ¬ l ∣ n) :
     ‖x ^ n - 1‖ = ‖x - 1‖ := by
@@ -59,15 +59,13 @@ theorem norm_pow_sub_one_of_not_dvd (x : ℤ_[l]) (hx : ‖x - 1‖ < 1) (n : �
   exact lt_of_le_of_lt (mul_le_of_le_one_right (norm_nonneg _) (PadicInt.norm_le_one _)) hx
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `geom_sum_one_add_expand (x - 1) l`. Rewrite `hz` using `[add_sub_cancel]`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `hi0 : (0 : ℝ) < (l : ℝ)⁻¹` using `by positivity`. Establish `hi1 : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hl1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : (l : ℝ)⁻¹ * (l : ℝ)⁻¹ < (l : ℝ)⁻¹` using `mul_lt_of_lt_one_right hi0 hi1`. Establish `hA : ‖((l.choose 2 : ℕ) : ℤ_[l]) * (x - 1)‖ < (l : ℝ)⁻¹`. Rewrite using `[norm_mul]`. Distinguish the cases in `h : l = 2`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_left (norm_nonneg _) (PadicInt.norm_le_one _)) (h2 h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hlt : 2 < l` using `lt_of_le_of_ne hl.out.two_le (Ne.symm h)`. Take `⟨c, hc⟩` from `hl.out.dvd_choose_self (k := 2) (by norm_num) hlt`. Establish `: ‖((l.choose 2 : ℕ) : ℤ_[l])‖ ≤ (l : ℝ)⁻¹`. Rewrite using `[hc, Nat.cast_mul, norm_mul, PadicInt.norm_p]`. Conclude with `mul_le_of_le_one_right hi0.le (PadicInt.norm_le_one _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `lt_of_le_of_lt (mul_le_mul this hx (norm_nonneg _) hi0.le) hsq`. Establish `hB : ‖(x - 1) ^ 2 * z‖ < (l : ℝ)⁻¹`. Rewrite using `[norm_mul, sq, norm_mul]`. Use `lt_of_le_of_lt (mul_le_of_le_one_right (by positivity) (PadicInt.norm_le_one _)) ?_` and prove the remaining obligations. Conclude with `lt_of_le_of_lt (mul_le_mul hx hx (norm_nonneg _) hi0.le) hsq`.
-
-Rewrite using `[hz, norm_mul, add_assoc, padicInt_norm_add_eq_of_lt]`. Rewrite using `[PadicInt.norm_p]`. Conclude with `lt_of_le_of_lt (PadicInt.nonarchimedean _ _) (max_lt hA hB)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_prime_sub_one (x : ℤ_[l]) (hx : ‖x - 1‖ ≤ (l : ℝ)⁻¹)
     (h2 : l = 2 → ‖x - 1‖ < (l : ℝ)⁻¹) :
@@ -97,15 +95,13 @@ theorem norm_pow_prime_sub_one (x : ℤ_[l]) (hx : ‖x - 1‖ ≤ (l : ℝ)⁻�
   exact lt_of_le_of_lt (PadicInt.nonarchimedean _ _) (max_lt hA hB)
 
 /- English proof (translation)
-Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `hi1 : (l : ℝ)⁻¹ < 1` using `inv_lt_one_of_one_lt₀ hl1`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `x hx h2`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hd : l ∣ n`. Take `⟨m, rfl⟩` from `hd`. Establish `hm : m ≠ 0` using `by rintro rfl; simp at hn`. Establish `hlt : m < l * m` using `lt_mul_of_one_lt_left (Nat.pos_of_ne_zero hm) hl.out.one_lt`. Establish `key` using `norm_pow_prime_sub_one x hx h2`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : ‖x ^ l - 1‖ ≤ ‖x - 1‖`. Rewrite using `[key]`. Conclude with `mul_le_of_le_one_right (norm_nonneg _) (PadicInt.norm_le_one _)`. Rewrite using `[pow_mul, ih m hlt hm (x ^ l) (hle.trans hx) (fun h => hle.trans_lt (h2 h)), key, Nat.cast_mul, norm_mul, mul_assoc]`. Establish `hn1 : ‖(n : ℤ_[l])‖ = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm (PadicInt.norm_le_one _)` to reduce the goal to its premises. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Establish `h' : ‖((n : ℤ) : ℤ_[l])‖ < 1` using `by simpa using h`. Rewrite `h'` using `[PadicInt.norm_int_lt_one_iff_dvd]`.
-
-Conclude with `hd (Int.natCast_dvd_natCast.mp h')`. Rewrite using `[norm_pow_sub_one_of_not_dvd x (hx.trans_lt hi1) n hd, hn1, mul_one]`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_pow_nat_sub_one (n : ℕ) (hn : n ≠ 0) : ∀ (x : ℤ_[l]), ‖x - 1‖ ≤ (l : ℝ)⁻¹ →
     (l = 2 → ‖x - 1‖ < (l : ℝ)⁻¹) → ‖x ^ n - 1‖ = ‖x - 1‖ * ‖(n : ℤ_[l])‖ := by
@@ -133,13 +129,13 @@ theorem norm_pow_nat_sub_one (n : ℕ) (hn : n ≠ 0) : ∀ (x : ℤ_[l]), ‖x 
       rw [norm_pow_sub_one_of_not_dvd x (hx.trans_lt hi1) n hd, hn1, mul_one]
 
 /- English proof (translation)
-Introduce `l hl s u hs h2 hu n hn`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast hl.out.one_lt`. Establish `hx : ‖(u : ℤ_[l]) - 1‖ ≤ (l : ℝ)⁻¹`. Rewrite using `[hu, ← zpow_neg_one]`. Conclude with `zpow_le_zpow_right₀ hl1.le (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx2 : l = 2 → ‖(u : ℤ_[l]) - 1‖ < (l : ℝ)⁻¹` using `fun h => by`. Use `h2 h` as an intermediate fact. Rewrite using `[hu, ← zpow_neg_one]`. Conclude with `zpow_lt_zpow_right₀ hl1 (by omega)`. Take `⟨m, rfl | rfl⟩` from `n.eq_nat_or_neg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : m ≠ 0` using `by rintro rfl; simp at hn`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val, norm_pow_nat_sub_one m hm _ hx hx2, hu, Int.cast_natCast]`. Establish `hm : m ≠ 0` using `by rintro rfl; simp at hn`. Establish `e : (((u ^ m)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) - 1 = -((((u ^ m)⁻¹ : ℤ_[l]ˣ) : ℤ_[l]) * (((u ^ m : ℤ_[l]ˣ) : ℤ_[l]) - 1))`. Rewrite using `[mul_sub, Units.inv_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[zpow_neg, zpow_natCast, e, norm_neg, norm_mul, PadicInt.norm_units, one_mul, Units.val_pow_eq_pow_val, norm_pow_nat_sub_one m hm _ hx hx2, hu, Int.cast_neg, norm_neg, Int.cast_natCast]`.
+A detailed English derivation is pending.
 -/
 theorem norm_unit_zpow_sub_one :
     ∀ (l : ℕ) [Fact l.Prime], ∀ (s : ℕ) (u : ℤ_[l]ˣ), 1 ≤ s → (l = 2 → 2 ≤ s) →

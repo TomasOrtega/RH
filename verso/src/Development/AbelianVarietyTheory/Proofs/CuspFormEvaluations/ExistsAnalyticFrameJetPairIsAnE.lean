@@ -11,11 +11,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AnVal
 
 /- English proof (translation)
-Take `⟨-, h1, hmul, -⟩` from `GlobalTheory.T.cmFrame_jetPoints_are_exponential_jets E H Dw l Xo c y g ty el Φ n m`. Establish `key : ∀ L : List (Fin n), Φ.toAnFr.JetMap m (L.foldr (fun k acc => padd Xo.univ.t.G (xs k) acc) (pzero Xo.univ.t.G (jO y g m n))).left (L.map Λ).sum`. Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => exact h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `cons k L ih => exact (hmul _ _ _ _ (hx k) ih).1`. Establish `hs : (((List.finRange n).filter (fun x => decide (x ∈ I))).map Λ).sum = ∑ i ∈ I, Λ i`. Rewrite using `[← List.sum_toFinset _ ((List.nodup_finRange n).filter _)]`. Use `congr 1`. Use extensionality with `i`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[← hs]`. Conclude with `key _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jetMap_psum {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H}
     {Xo : Moduli Dw l} {c : Coeff l} [Algebra c.F ℂ] {y : FrPt Xo c ℂ} {g : ℕ} {ty : Fin g → (E →+* ℂ)}
@@ -40,11 +40,9 @@ theorem jetMap_psum {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host
   exact key _
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ y g ty el Φ`. Establish `h : ∀ m, ∃ τ : FrTy y g Φ.jx m, τ.IsGen ∧ Φ.toAnFr.JetRd m (cφ ![jpt y g Φ.jx m (0 : Fin 2), jpt y g Φ.jx m (1 : Fin 2)]) (cε 2) τ (psumL 2 g)`. Introduce `m`. Use `GlobalTheory.T.exists_generator_jet_reading _ Xo.univ.t.G Xo.univ.t.PP y.x g Φ.toAnFr 2 m _ (cφ ![jpt y g Φ.jx m (0 : Fin 2), jpt y g Φ.jx m (1 : Fin 2)]) (cε 2) (psumL 2 g) ?_` and prove the remaining obligations. Introduce `I`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `jetMap_psum Φ 2 m _ (fun i => LinearMap.proj i) ?_ I.down` and prove the remaining obligations. Establish `h0` using `(GlobalTheory.T.cmFrame_jetPoints_are_exponential_jets E H Dw l Xo c y g ty el Φ 2 m).1`. Introduce `i`. Use `fin_cases i`. Conclude with `h0 0`.
-
-Conclude with `h0 1`. Use `choose e he using h`. Conclude with `⟨e, he⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isAnE : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [Algebra c.F ℂ] (y : FrPt Xo c ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (el : Fin g ≃ Lt1 Dw) (Φ : AnPt y g ty el), ∃ e : ∀ m, FrTy y g Φ.jx m, Φ.IsAnE e := by
   intro E _ _ _ H Dw l Xo c _ y g ty el Φ

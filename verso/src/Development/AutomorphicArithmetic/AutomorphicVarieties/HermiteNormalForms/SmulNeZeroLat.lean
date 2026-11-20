@@ -24,20 +24,20 @@ Both sides reduce to the same expression.
 @[simp] theorem qc_apply (y : NZ L N) (h : HS L N) : qc L N y h = q h y.1 := rfl
 
 /- English proof (translation)
-Use extensionality with `h`. Conclude with `⟨fun H y hy => H ⟨y, hy⟩, fun H y => H y.1 y.2⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem poly_qc : ConeExtensionAcyclic.poly (qc L N) = Ry L N := by
   ext h; exact ⟨fun H y hy => H ⟨y, hy⟩, fun H y => H y.1 y.2⟩
 
 open ComplexOrder in
 /- English proof (translation)
-Introduce `w` and use `(hh w).conjTranspose_mul_mul_same _`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smul_mem_Psd (g : Gm L N) {h : HS L N} (hh : h ∈ Psd L N) : g • h ∈ Psd L N :=
   fun w => (hh w).conjTranspose_mul_mul_same _
 
 /- English proof (translation)
-Introduce `e` and use `hy (by rw [← inv_smul_smul g y, e, smul_zero])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem smul_ne_zero_lat (g : Gm L N) {y : Lat L N} (hy : y ≠ 0) : g • y ≠ 0 :=
   fun e => hy (by rw [← inv_smul_smul g y, e, smul_zero])
@@ -51,9 +51,9 @@ Both sides reduce to the same expression.
 @[simp] theorem actL_apply (g : Gm L N) (h : HS L N) : actL g h = g • h := rfl
 
 /- English proof (translation)
-Use `⟨?_, fun k hk => ?_⟩` and prove the remaining obligations. Use `hh.1` as an intermediate fact. Rewrite `this`, the goal using `[poly_qc]`. Conclude with `smul_mem_Ry g this`. Establish `: g⁻¹ • k = 0` using `hh.2 _ fun y hy => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hk ⟨g • y.1, smul_ne_zero_lat g y.2⟩ (by simpa [q_smul] using hy)` as an intermediate fact. Simplify `this` using `[q_smul]`. Rewrite using `[← smul_inv_smul g k, this, smul_zero]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isVert_smul (g : Gm L N) {h : HS L N} (hh : ConeExtensionAcyclic.IsVert (qc L N) h) :
     ConeExtensionAcyclic.IsVert (qc L N) (g • h) := by
@@ -83,9 +83,9 @@ Both sides reduce to the same expression.
 theorem Vx.smul_val (g : Gm L N) (v : Vx L N) : (g • v).1 = g • v.1 := rfl
 
 /- English proof (translation)
-Take `⟨x, hx, hj⟩` from `ht`. Use `⟨x.comp (actL g⁻¹), fun k hk h0 => ?_, fun j h' hh' => ?_⟩` and prove the remaining obligations. Conclude with `hx _ (smul_mem_Psd _ hk) (fun e => h0 (by`. Establish `e' : g⁻¹ • k = 0` using `e`. Rewrite using `[← smul_inv_smul g k, e', smul_zero]))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hh'` using `[poly_qc]`. Use `hj j (g⁻¹ • h') (by rw [poly_qc]; exact smul_mem_Ry _ hh')` as an intermediate fact. Simplify `this` using `[Vx.smul_val]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem smul_mem_simp (g : Gm L N) {n : ℕ} {t : Fin n → Vx L N}
     (ht : t ∈ ConeExtensionAcyclic.simp (qc L N) (Psd L N) n) :

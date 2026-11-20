@@ -8,7 +8,7 @@ open scoped ComplexOrder
 namespace GlobalTheory.CompanionTheory.CommAlg
 
 /- English proof (translation)
-Conclude with `@PositivityTheory.Xgf.skew_hermitian_diagonalizable`.
+A detailed English derivation is pending.
 -/
 theorem skewHermitian_congr_diag : ∀ (R : Type) [CommRing R] [StarRing R] [Finite (MaximalSpectrum R)] (n : ℕ) (G : Matrix (Fin n) (Fin n) R), Gᴴ = -G → IsUnit G.det → (∀ m : Ideal R, m.IsMaximal → ∃ a : R, a - star a ∉ m) → ∃ T : Matrix (Fin n) (Fin n) R, IsUnit T.det ∧ (T * G * Tᴴ).IsDiag := by
   exact @PositivityTheory.Xgf.skew_hermitian_diagonalizable

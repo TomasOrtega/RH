@@ -2,13 +2,13 @@ import Mathlib
 import Development.AutomorphicArithmetic.AutomorphicVarieties.UnitaryThreeGroups.BaseRepGL3NormalisedOfPsiEqOne
 
 /- English proof (translation)
-Establish `key : ∀ v : Fin m → R, P.mulVec (Q.mulVec v) = v` using `fun v => by`. Rewrite using `[Matrix.mulVec_mulVec, hPQ, Matrix.one_mulVec]`. Establish `mem : ∀ v : Fin m → R, v ∈ S.comap P.mulVecLin ↔ P.mulVec v ∈ S` using `fun v => Iff.rfl`. Establish `hst : ∀ g ∈ U, ∀ v ∈ S.comap P.mulVecLin, (a g).mulVec v ∈ S.comap P.mulVecLin`. Introduce `g hg v hv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hv`, the goal using `[mem]`. Rewrite using `[H g hg, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, key]`. Conclude with `hS g hg _ hv`. Break down `hirr _ hst with h0 | h1` into its components or cases. Use `left`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_bot_iff]`. Introduce `v hv`. Establish `h2 : Q.mulVec v ∈ S.comap P.mulVecLin` using `by rw [mem, key]; exact hv`. Rewrite `h2` using `[h0, Submodule.mem_bot]`. Rewrite using `[Submodule.mem_bot, ← key v, h2, Matrix.mulVec_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `right`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Establish `h2 : Q.mulVec v ∈ S.comap P.mulVecLin` using `by rw [h1]; exact Submodule.mem_top`. Rewrite `h2` using `[mem, key]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.G5.irr_conj {G R : Type} [Group G] [CommRing R] {m : ℕ}
     {U : Subgroup G} {a a' : G → Matrix (Fin m) (Fin m) R} (P Q : Matrix (Fin m) (Fin m) R)
@@ -39,7 +39,7 @@ private theorem UpperTheory.Reformulated.B.G5.irr_conj {G R : Type} [Group G] [C
     rwa [mem, key] at h2
 
 /- English proof (translation)
-Introduce `G R _ _ m U a a' h H hirr`. Conclude with `UpperTheory.Reformulated.B.G5.irr_conj _ _ (Units.mul_inv h) H hirr`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.G5.matIrr_conj :
     ∀ {G R : Type} [inst : Group G] [inst_1 : CommRing R] {m : ℕ}

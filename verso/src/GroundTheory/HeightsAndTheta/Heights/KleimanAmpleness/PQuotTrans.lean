@@ -18,9 +18,9 @@ variable {n : ℕ} {U : Finset (Fin n)} {R : Type u} [CommRing R] {G : Cell U �
   [∀ I, AddCommGroup (G I)] [∀ I, Module R (G I)] {ρ : ∀ I J : Cell U, I.1 ⊆ J.1 → G I →ₗ[R] G J}
 
 /- English proof (translation)
-Unfold `Cech.H`. Rewrite using `[Submodule.Quotient.subsingleton_iff, Submodule.comap_subtype_eq_top]`. Prove the components needed by the constructor for the conclusion. Introduce `h z hz`. Conclude with `h (LinearMap.mem_ker.mpr hz)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h z hz`. Conclude with `h z (LinearMap.mem_ker.mp hz)`.
+A detailed English derivation is pending.
 -/
 theorem subsingleton_H_one_iff :
     Subsingleton (Cech.H G ρ 1) ↔
@@ -34,13 +34,13 @@ theorem subsingleton_H_one_iff :
     exact h z (LinearMap.mem_ker.mp hz)
 
 /- English proof (translation)
-Use `wlog h : j < k generalizing j k`. Establish `h' : k < j` using `lt_of_le_of_ne (not_lt.mp h) hjk.symm`. Rewrite using `[this hk hj hjk.symm h', neg_neg]`. Establish `hmem : j ∈ J.filter (· < k)` using `Finset.mem_filter.mpr ⟨hj, h⟩`. Establish `e1 : (J.erase j).filter (· < k) = (J.filter (· < k)).erase j` using `by rw [Finset.filter_erase]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : (J.erase k).filter (· < j) = J.filter (· < j)`. Rewrite using `[Finset.filter_erase]`. Apply `Finset.erase_eq_of_notMem` to reduce the goal to its premises. Simplify using `only [Finset.mem_filter, not_and, not_lt]`. Introduce `_`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h.le`. Establish `hb : 1 ≤ (J.filter (· < k)).card` using `Finset.card_pos.mpr ⟨j, hmem⟩`. Unfold `Cech.sgn`. Rewrite using `[e1, e2, Finset.card_erase_of_mem hmem]`. Take `⟨b', hb'⟩ : ∃ b', (J.filter (· < k)).card = b' + 1` from `⟨_, (Nat.sub_add_cancel hb).symm⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hb', Nat.add_sub_cancel, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem sgn_mul_sgn_erase {J : Finset (Fin n)} {j k : Fin n} (hj : j ∈ J) (hk : k ∈ J) (hjk : j ≠ k) :
     Cech.sgn J j * Cech.sgn (J.erase j) k = -(Cech.sgn J k * Cech.sgn (J.erase k) j) := by
@@ -62,13 +62,13 @@ theorem sgn_mul_sgn_erase {J : Finset (Fin n)} {j k : Fin n} (hj : j ∈ J) (hk 
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `J`. Establish `key : ∀ (K K' : Cech.Idx U 0) (h : K.1.1 ⊆ J.1.1) (h' : K'.1.1 ⊆ J.1.1), K = K' → ρ K.1 J.1 h (w K) = ρ K'.1 J.1 h' (w K')`. Introduce and unpack `K _ h h' rfl`. Both sides reduce to the same expression. Rewrite using `[Cech.d_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Cech.d_apply, map_sum, map_zsmul, hρ, Finset.smul_sum, smul_smul]`. Rewrite using `[Pi.zero_apply, Finset.sum_sigma']`. Use `Finset.sum_involution (fun p _ => ⟨⟨p.2.1, Finset.mem_of_mem_erase p.2.2⟩, ⟨p.1.1, Finset.mem_erase.mpr ⟨(Finset.mem_erase.mp p.2.2).1.symm, p.1.2⟩⟩⟩) ?_ ?_ (fun _ _ => Finset.mem_univ _) (fun p _ => rfl)` and prove the remaining obligations. Introduce and unpack `⟨⟨j, hj⟩, ⟨k, hk⟩⟩ -`. Establish `hk'` using `Finset.mem_erase.mp hk`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hidx : Cech.face (Cech.face J ⟨j, hj⟩) ⟨k, hk⟩ = Cech.face (Cech.face J ⟨k, hk'.2⟩) ⟨j, Finset.mem_erase.mpr ⟨hk'.1.symm, hj⟩⟩` using `Subtype.ext (Subtype.ext (Finset.erase_right_comm))`. Simplify using `only`. Rewrite using `[key _ _ _ (((Cech.face_subset _ _).trans (Cech.face_subset _ _))) hidx, ← add_smul]`. Establish `hs : Cech.sgn J.1.1 j * Cech.sgn (Cech.face J ⟨j, hj⟩).1.1 k = -(Cech.sgn J.1.1 k * Cech.sgn (Cech.face J ⟨k, hk'.2⟩).1.1 j)` using `sgn_mul_sgn_erase hj hk'.2 hk'.1.symm`. Rewrite using `[hs, neg_add_cancel, zero_smul]`.
+Establish an intermediate fact. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨⟨j, hj⟩, ⟨k, hk⟩⟩ - - heq`. Conclude with `(Finset.mem_erase.mp hk).1 (congrArg (fun p => p.1.1) heq)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem d_one_d_zero
     (hρ : ∀ (I J K : Cell U) (h : I.1 ⊆ J.1) (h' : J.1 ⊆ K.1) (m : G I),
@@ -100,13 +100,13 @@ theorem d_one_d_zero
     exact (Finset.mem_erase.mp hk).1 (congrArg (fun p => p.1.1) heq)
 
 /- English proof (translation)
-Rewrite `hA`, `hC`, the goal using `[subsingleton_H_one_iff]`. Introduce `z hz`. Establish `hπd` using `Cech.mapC_d (R := R) (G := B) (G' := C) π hπ`. Establish `hιd` using `Cech.mapC_d (R := R) (G := A) (G' := B) ι hι`. Take `⟨wc, hwc⟩` from `hC (Cech.mapC (R := R) (G := B) (G' := C) π 1 z) (by rw [← hπd, hz, map_zero])`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose w hw using fun I : Cech.Idx U 0 => hsurj I.1 (wc I)`. Establish `hmw : Cech.mapC (R` using `R) (G := B) (G' := C) π 0 w = wc := funext hw`. Establish `hr : Cech.mapC (R` using `R) (G := B) (G' := C) π 1 (z - Cech.d B ρB 0 w) = 0 := by`. Rewrite using `[map_sub, hπd 0, hmw, hwc, sub_self]`. Use `choose g hg using fun J : Cech.Idx U 1 => hex J.1 _ (congrFun hr J)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hg' : Cech.mapC (R` using `R) (G := A) (G' := B) ι 1 g = z - Cech.d B ρB 0 w := funext hg`. Establish `hdg : Cech.d A ρA 1 g = 0`. Establish `h2 : Cech.mapC (R` using `R) (G := A) (G' := B) ι (1 + 1) (Cech.d A ρA 1 g) = 0 := by`. Rewrite using `[hιd 1 g, hg', map_sub, hz, d_one_d_zero hρB, sub_zero]`. Use function extensionality and compare the values at `J`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hinj J.1 ((congrFun h2 J).trans (map_zero (ι J.1)).symm)`. Take `⟨v, hv⟩` from `hA g hdg`. Use `⟨w + Cech.mapC (R := R) (G := A) (G' := B) ι 0 v, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ← hιd, hv, hg', add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem subsingleton_H_one_of_exact {A B C : Cell U → Type v}
     [∀ I, AddCommGroup (A I)] [∀ I, Module R (A I)] [∀ I, AddCommGroup (B I)] [∀ I, Module R (B I)]
@@ -149,17 +149,17 @@ end CechFacts
 end QuotTrans
 
 /- English proof (translation)
-Introduce `S _ Ω _ _ N x E _ _ _ _ F₁ F₂ F₃ h32 h21 h23 h12`. Unfold `SubSystem.quotH at h23 h12 ⊢`. Set `π : ∀ I, (F₁.sub I ⧸ SubSystem.quotSub F₁ F₃ I) →ₗ[S] (F₁.sub I ⧸ SubSystem.quotSub F₁ F₂ I)` to `fun I => (SubSystem.quotSub F₁ F₃ I).mapQ (SubSystem.quotSub F₁ F₂ I) LinearMap.id (fun y hy => h32 I hy)`. Set `incl : ∀ I, F₂.sub I →ₗ[S] F₁.sub I` to `fun I => { toFun := fun y => ⟨y, h21 I y.2⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Set `ι : ∀ I, (F₂.sub I ⧸ SubSystem.quotSub F₂ F₃ I) →ₗ[S] (F₁.sub I ⧸ SubSystem.quotSub F₁ F₃ I)` to `fun I => (SubSystem.quotSub F₂ F₃ I).mapQ (SubSystem.quotSub F₁ F₃ I) (incl I) (fun _ hy => hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `QuotTrans.subsingleton_H_one_of_exact ι π ?_ ?_ ?_ ?_ ?_ ?_ h23 h12` and prove the remaining obligations. Introduce `I J h m`. Proceed by induction on `m using Submodule.Quotient.induction_on`. Both sides reduce to the same expression. Introduce `I J h m`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `m using Submodule.Quotient.induction_on`. Both sides reduce to the same expression. Introduce `I`. Rewrite using `[← LinearMap.ker_eq_bot, Submodule.eq_bot_iff]`. Introduce `q hq`.
+Proceed by induction. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `q using Submodule.Quotient.induction_on with`. Consider the case `H y`. Conclude with `(Submodule.Quotient.mk_eq_zero _).mpr ((Submodule.Quotient.mk_eq_zero (SubSystem.quotSub F₁ F₃ I)).mp (LinearMap.mem_ker.mp hq))`. Introduce `I q`. Proceed by induction on `q using Submodule.Quotient.induction_on with`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `H y => exact ⟨Submodule.Quotient.mk y, rfl⟩`. Introduce `I b hb`. Proceed by induction on `b using Submodule.Quotient.induction_on with`. Consider the case `H y`. Establish `hy : (y : E) ∈ F₂.sub I` using `(Submodule.Quotient.mk_eq_zero (SubSystem.quotSub F₁ F₂ I)).mp hb`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨Submodule.Quotient.mk ⟨y, hy⟩, rfl⟩`. Introduce `I J K h h' m`. Proceed by induction on `m using Submodule.Quotient.induction_on`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem QuotTrans.proof : QuotTrans.Statement.{u, v, w} := by
   intro S _ Ω _ _ N x E _ _ _ _ F₁ F₂ F₃ h32 h21 h23 h12

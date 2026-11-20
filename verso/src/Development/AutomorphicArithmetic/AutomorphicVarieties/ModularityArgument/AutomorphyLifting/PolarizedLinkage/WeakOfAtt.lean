@@ -8,9 +8,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.SplitWeil GlobalTheory.Loc
 open UpperTheory.GalN.V GroundTheory.Global.SemiLocal UpperTheory.V.Published UpperTheory.V.Z.ImaginaryQuadraticEtaCharacter
 
 /- English proof (translation)
-Establish `e : ∀ (q : ℕ) (C : Multiset ℂˣ), algSat n q C = C.map fun α : ℂˣ => (((q : ℝ) ^ (((n : ℝ) - 1) / 2) : ℝ) : ℂ) * (α : ℂ)` using `fun q C => by`. Simplify using `only [algSat, Multiset.bind_def, Multiset.pure_def, Multiset.bind_singleton, Multiset.map_map, Function.comp_def]`. Simplify using `only [e, Multiset.map_map, Function.comp_def]`. Use `Multiset.map_congr rfl fun α _ => ?_` and prove the remaining obligations. Establish `h : (((q ^ f : ℕ) : ℝ)) ^ (((n : ℝ) - 1) / 2) = ((q : ℝ) ^ (((n : ℝ) - 1) / 2)) ^ f`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg q), ← Real.rpow_mul (Nat.cast_nonneg q), mul_comm]`. Rewrite using `[h, mul_pow, Units.val_pow_eq_pow_val, Complex.ofReal_pow]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem algSat_map_pow (n q f : ℕ) (B : Multiset ℂˣ) :
     (algSat n q B).map (· ^ f) = algSat n (q ^ f) (B.map (· ^ f)) := by
@@ -25,11 +25,9 @@ private theorem algSat_map_pow (n q f : ℕ) (B : Multiset ℂˣ) :
   rw [h, mul_pow, Units.val_pow_eq_pow_val, Complex.ofReal_pow]
 
 /- English proof (translation)
-Introduce `K L Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι n r π P hπ hP`. Establish `hcl : IsAlgClosure L Ω` using `⟨IsAlgClosure.isAlgClosed K, Algebra.IsAlgebraic.tower_top (K := K) L⟩`. Use `filter_upwards [(GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.tendsto_under K L).eventually hπ.2, hP.2] with w h1 h2 f hf`. Take `⟨B, hB, hE⟩` from `h1`. Take `⟨B', hB', hE'⟩` from `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Establish `h3` using `(UpperTheory.frobenius_power_compatibility K L Ω l ι w f hf).1 n r _ hE`. Rewrite `h3` using `[algSat_map_pow, ← hf]`. Establish `e` using `(UpperTheory.hecke_eigenvalue_basic_properties L Ω l ι w).2.2 n _ _ _ h3 hE'`. Rewrite using `[e]`.
-
-Conclude with `hB'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Win.weakOfAtt : UpperTheory.V.Z.Win.WeakOfAtt := by
   intro K L Ω _ _ _ _ _ _ _ _ _ _ _ _ l _ ι n r π P hπ hP

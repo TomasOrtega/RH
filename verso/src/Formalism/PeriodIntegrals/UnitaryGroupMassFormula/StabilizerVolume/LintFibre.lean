@@ -14,17 +14,15 @@ variable {G Y : Type*} [Group G] [MeasurableSpace G] [MeasurableMul G] [Measurab
   [MulAction G Y]
 
 /- English proof (translation)
-Establish `: Countable ((Γ ⊓ H).subgroupOf H)` using `countable_subgroupOf`. Establish `: MeasurableSMul ((Γ ⊓ H).subgroupOf H) H` using `{ measurable_const_smul := fun c => measurable_const_mul (c : H) measurable_smul_const := fun x => (measurable_mul_const x).comp measurable_subtype_coe }`. Establish `: SMulInvariantMeasure ((Γ ⊓ H).subgroupOf H) H μ'` using `⟨fun c t _ => measure_preimage_mul μ' (c : H) t⟩`. Establish `hg : Measurable fun k : H => s * (k : G)⁻¹` using `(measurable_const_mul s).comp (measurable_inv.comp measurable_subtype_coe)`. Use `set F : H → ℝ≥0∞ := fun k => cfun Γ A y0 (s * (k : G)⁻¹) * ρ ((s * (k : G)⁻¹)⁻¹) with hF`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFm : Measurable F`. Rewrite using `[hF]`. Conclude with `((meas_cfun Γ y0 hA).comp hg).mul (hρ.comp hg.inv)`. Establish `hinv : ∫⁻ k, F k⁻¹ ∂μ' = ∫⁻ k, F k ∂μ'`. Conclude with `(Measure.measurePreserving_inv μ').lintegral_comp hFm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∫⁻ k, cfun Γ A y0 (s * (k : G)) * ρ ((s * (k : G))⁻¹) ∂μ' = ∫⁻ k, F k ∂μ'`. Rewrite using `[← hinv]`. Use `lintegral_congr fun k => ?_` and prove the remaining obligations. Simplify using `only [hF, InvMemClass.coe_inv, inv_inv]`. Establish `hmem : ∀ δ : (Γ ⊓ H).subgroupOf H, ((δ : H) : G) ∈ Γ` using `fun δ => (Subgroup.mem_inf.1 (Subgroup.mem_subgroupOf.1 δ.2)).1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcoe : ∀ (δ : (Γ ⊓ H).subgroupOf H) (k : H), ((δ • k : H) : G) = ((δ : H) : G) * (k : G)` using `fun _ _ => rfl`. Establish `hpt : ∀ k : H, ∑' δ : (Γ ⊓ H).subgroupOf H, F (δ • k) = cntN Γ A ((k : G) * s⁻¹) * ρ ((k : G) * s⁻¹)`. Introduce `k`. Establish `hδ : ∀ δ : (Γ ⊓ H).subgroupOf H, F (δ • k) = (∑' x : orbS Γ y0, A.indicator (fun _ => (1 : ℝ≥0∞)) (repO Γ y0 x * (((δ : H) : G) * ((k : G) * s⁻¹)))) * ρ ((k : G) * s⁻¹)`. Introduce `δ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← hρi _ (hmem δ) ((k : G) * s⁻¹)]`. Simplify using `only [hF, hcoe, cfun, mul_inv_rev, inv_inv, mul_assoc]`. Establish `hrep` using `sum_rep_eq (Γ := Γ) y0 hH (fun g => A.indicator (fun _ => (1 : ℝ≥0∞)) (g * ((k : G) * s⁻¹)))`. Simplify using `only [mul_assoc] at hrep`. Rewrite using `[tsum_congr hδ, ENNReal.tsum_mul_right, ENNReal.tsum_comm, hrep, cntN]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem lint_fibre {Γ H : Subgroup G} [Countable Γ] (μ' : Measure H) [μ'.IsMulLeftInvariant]
     [μ'.IsInvInvariant] (y0 : Y) (hH : ∀ k : G, k ∈ H ↔ k • y0 = y0) [Countable (orbS Γ y0)]

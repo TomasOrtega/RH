@@ -26,7 +26,7 @@ def ThresholdPowerLowerBound (C₀ : ℝ) : Prop :=
       X.th p j x ≤ ((p ^ X.Rj p K j : ℕ) : ℝ) * (X.thc p K j b x - (((r + K) * X.Ns : ℕ) : ℝ))
 
 /- English proof (translation)
-Simplify using `only [Dat.toLate, Finset.mem_filter]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_late {n' r : ℕ} [NeZero n'] (X : Dat n' r) (j x : ℤ) :
     x ∈ X.toLate j ↔ x ∈ X.F.letters j ∧ ¬ X.F.IsW j x := by
@@ -40,9 +40,9 @@ variable (D : Formalism.BasicNotions.D7) (hV : Formalism.MainNotions.CovariantDe
 include hV
 
 /- English proof (translation)
-Establish `h` using `vg_prod D hV (R := R) S (X.toLate j) (fun x => ∏ c : Fin r, (MvPolynomial.X (x, c) : MvPolynomial (ℤ × Fin r) R) ^ e (x, Fin.castAdd K c)) (fun x => ∑ c : Fin r, (e (x, Fin.castAdd K c) : ℤ) * (if Even x then 0 else -1)) (fun x _ => vg_prod D hV S Finset.univ _ _ (fun c _ => vg_p …`. Establish `e1 : (∑ x ∈ X.toLate j, ∑ c : Fin r, (e (x, Fin.castAdd K c) : ℤ) * (if Even x then 0 else -1)) = -(X.dS K j e : ℤ)`. Unfold `Dat.dS`. Use `push_cast`. Rewrite using `[← Finset.sum_neg_distrib]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h` using `[e1]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vg_ellP : ((-(X.dS K j e : ℤ) : ℤ) : WithTop ℤ) ≤ valS LZ S (X.ellP K R j e) := by
   have h := vg_prod D hV (R := R) S (X.toLate j)
@@ -60,9 +60,9 @@ theorem vg_ellP : ((-(X.dS K j e : ℤ) : ℤ) : WithTop ℤ) ≤ valS LZ S (X.e
   exact h
 
 /- English proof (translation)
-Establish `h` using `lg_prod D hV (R := R) S (X.toLate j) (fun x => ∏ c : Fin K, (MvPolynomial.X (x, c) : MvPolynomial (ℤ × Fin K) R) ^ e (x, Fin.natAdd r c)) (fun x => ∑ c : Fin K, (e (x, Fin.natAdd r c) : ℤ) * (if Even x then 1 else 0)) (fun x _ => lg_prod D hV S Finset.univ _ _ (fun c _ => lg_pow …`. Establish `e1 : (∑ x ∈ X.toLate j, ∑ c : Fin K, (e (x, Fin.natAdd r c) : ℤ) * (if Even x then 1 else 0)) = (X.dV K j e : ℤ)`. Unfold `Dat.dV`. Use `push_cast`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `split_ifs <;> simp`. Rewrite `h` using `[e1]`. Conclude with `h`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lg_ellN : lam1S LZ S (X.ellN K R j e) ≤ (((X.dV K j e : ℤ) : ℤ) : WithBot ℤ) := by
   have h := lg_prod D hV (R := R) S (X.toLate j)
@@ -79,11 +79,11 @@ theorem lg_ellN : lam1S LZ S (X.ellN K R j e) ≤ (((X.dV K j e : ℤ) : ℤ) : 
   exact h
 
 /- English proof (translation)
-Establish `h` using `vg_prod D hV (R := R) S (X.toLate j) (fun x' => X.detPl R j x' ^ X.sg p K j x') (fun x' => if x' = x then (X.sg p K j x : ℤ) else 0) (fun x' hx' => by`. Distinguish the cases in `hxx : x' = x`. Substitute `hxx` using the available equality. Rewrite using `[if_pos rfl]`. Establish `h1 : ((1 : ℤ) : WithTop ℤ) ≤ valS LZ S (X.detPl R j x')`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `Dat.detPl valS`. Rewrite using `[sDegs_det LZ S _ (X.row j x') hinj (fun i => ⟨hS i, by simp [LZ, hev x' hx' i]⟩)]`. Simplify using the standard rewrite rules. Use `vg_pow D hV S h1 (X.sg p K j x')` as an intermediate fact. Simplify using `using this`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[if_neg hxx]`. Use `vg_pow D hV S (vg_det D hV (R := R) S (X.row j x') (hev x' hx')) (X.sg p K j x')` as an intermediate fact. Simplify `this)` using `[Dat.detPl]`. Rewrite `h` using `[Finset.sum_ite_eq' (X.toLate j) x, if_pos hx]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem vg_DlSeg (hev : ∀ x' ∈ X.toLate j, ∀ i, Even (X.row j x' i)) (x : ℤ) (hx : x ∈ X.toLate j)
     (hinj : Function.Injective (X.row j x)) (hS : ∀ i, X.row j x i ∈ S) :
@@ -107,7 +107,7 @@ theorem vg_DlSeg (hev : ∀ x' ∈ X.toLate j, ∀ i, Even (X.row j x' i)) (x : 
   exact h
 
 /- English proof (translation)
-Unfold `Dat.Aw`. Conclude with `vg_mul D hV S (vg_mul D hV S (vg_pow D hV S ha _) (vg_ellP D hV X K j e S)) (vg_DlSeg D hV X p K j S hev x hx hinj hS)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vg_Aw (hev : ∀ x' ∈ X.toLate j, ∀ i, Even (X.row j x' i)) (x : ℤ) (hx : x ∈ X.toLate j)
     (hinj : Function.Injective (X.row j x)) (hS : ∀ i, X.row j x i ∈ S)
@@ -120,7 +120,7 @@ theorem vg_Aw (hev : ∀ x' ∈ X.toLate j, ∀ i, Even (X.row j x' i)) (x : ℤ
     (vg_DlSeg D hV X p K j S hev x hx hinj hS)
 
 /- English proof (translation)
-Unfold `Dat.Gw`. Conclude with `lg_mul D hV S (lg_pow D hV S ha _) (lg_ellN D hV X K j e S)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem lg_Gw (ka : Fin (segN X.F j + 1) → Fin K → ℤ) (I'' : ℤ → Finset (Fin K)) (a : ℤ)
     (ha : lam1S LZ S (segRen X.F j R K (Psi R ka I'')) ≤ (a : WithBot ℤ)) :
@@ -131,14 +131,14 @@ theorem lg_Gw (ka : Fin (segN X.F j + 1) → Fin K → ℤ) (I'' : ℤ → Finse
 end AG
 
 /- English proof (translation)
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h hQ]`.
+Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem int_ineq (Q κ ν dS dV s mS kN : ℤ) (hQ : 0 ≤ Q) (h : κ + (kN + 1) ≤ ν) (hd : dS + dV ≤ kN * Q)
     (hm : mS < Q) : Q * κ + dV + (mS + s) ≤ Q * ν + -dS + s := by
   nlinarith [mul_le_mul_of_nonneg_left h hQ]
 
 /- English proof (translation)
-Unfold `geR`. Introduce `z hz`. Rewrite `h` using `[hz]`. Establish `h' : a ≤ z` using `WithTop.coe_le_coe.mp h`. Conclude with `ht.trans (by exact_mod_cast h')`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geR_of_le {v : WithTop ℤ} {a : ℤ} {t : ℝ} (h : (a : WithTop ℤ) ≤ v) (ht : t ≤ (a : ℝ)) : geR v t := by
   unfold geR
@@ -148,29 +148,27 @@ theorem geR_of_le {v : WithTop ℤ} {a : ℤ} {t : ℝ} (h : (a : WithTop ℤ) �
   exact ht.trans (by exact_mod_cast h')
 
 /- English proof (translation)
-Introduce `p n' r K _ _ _ X O _ _ _ S j b e q I' I'' hc x hx hW`. Establish `: Fact p.Prime` using `⟨hc.hX.prime⟩`. Take `⟨i, rfl⟩` from `segE_surj X.F j hx`. Take `⟨nu, ka⟩` from `q`. Take `⟨b', b'', ⟨P1, h1⟩, ⟨P2, h2⟩, hcond⟩` from `hc.hq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hI'` using `hc.hI'`. Establish `hI''` using `hc.hI''`. Simplify using `only at h1 h2 hcond hI' hI'' ⊢`. Establish `hF3 : ∀ (N n : ℕ) [NeZero n] (LL : Letters (Fin N)) (B : Fin N → ℕ) (th M : Fin N → ℤ), Formalism.MainNotions.CovariantDegrees.A3at (FF O) N n LL B th M` using `fun N n _ LL B th M => (hA3 p O S N n LL B th M).2`. Rewrite `hI'`, `hcond`, the goal using `[← h1]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hI''`, `hcond`, the goal using `[← h2]`. Establish `u1` using `standard_polynomial_mem_bounds (segLL X.F j) b' (hF3 _ r _ b') P1 I' hI'`. Establish `u2` using `standard_polynomial_mem_bounds (segLL X.F j) b'' (hF3 _ K _ b'') P2 I'' hI''`. Take `⟨sA1, sA2, -, -⟩` from `seg_val X.F j (Psi (FF O) P1.mu I') i`. Take `⟨-, -, sG3, sG4⟩` from `seg_val X.F j (Psi (FF O) P2.mu I'') i`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨cE, cO, cR⟩` from `(hcond i).2 hW`. Establish `hxl : segE X.F j i ∈ X.toLate j` using `(mem_late X j _).mpr ⟨hx, hW⟩`. Establish `hM : X.Mw p K j e P2.mu (segE X.F j i) = ((p ^ X.Rj p K j : ℕ) : ℤ) * (if Even (segE X.F j i) then P2.mu i.succ 0 else P2.mu i.castSucc 0) + (X.dV K j e : ℤ)` using `(segE_strictMono X.F j).injective.extend_apply _ _ i`. Establish `hrows` using `hRow p n' r K X hc.hX j`. Establish `hev : ∀ x' ∈ X.toLate j, ∀ i, Even (X.row j x' i)` using `fun x' hx' i => ((hrows x' hx').2 i).2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinj` using `(hrows _ hxl).1`. Establish `hlt : ∀ a, X.row j (segE X.F j i) a < segE X.F j i` using `fun a => ((hrows _ hxl).2 a).2.2`. Establish `n0` using `hN0 p n' r K X hc.hX j e hc.he`. Establish `n1` using `hN1 p n' r K X hc.hX hc.hLa hc.hk j`. Establish `n2` using `hN2 p n' r K X hc.hX hc.hLa hc.hk j b hc.h2 _ hxl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n0' : (X.dS K j e : ℤ) + (X.dV K j e : ℤ) ≤ (((r + K) * X.Ns : ℕ) : ℤ) * ((p ^ X.Rj p K j : ℕ) : ℤ)`. Conclude with `n0` after adjusting the coercions. Establish `n1' : (X.mStar : ℤ) < ((p ^ X.Rj p K j : ℕ) : ℤ)` using `by exact_mod_cast n1`. Establish `hm0 : (X.m0 K : ℤ) = (((r + K) * X.Ns : ℕ) : ℤ) + 1` using `by unfold Dat.m0; push_cast; ring`. Establish `vlt` using `vg_Aw D hV X p K (R := FF O) j e {y | y < segE X.F j i} hev _ hxl hinj hlt P1.mu I' (P1.mu i.castSucc (lastIdx r)) (by rw [sA2]; exact (u1.2 i.castSucc).1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `vle` using `vg_Aw D hV X p K (R := FF O) j e {y | y ≤ segE X.F j i} hev _ hxl hinj (fun a => (hlt a).le) P1.mu I' (P1.mu i.succ (lastIdx r)) (by rw [sA1]; exact (u1.2 i.succ).1)`. Use `⟨fun he => ⟨?_, ?_⟩, fun he => ⟨?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hM, if_pos he]`. Conclude with `lg_Gw D hV X p K j e _ P2.mu I'' _ (by rw [sG3]; exact (u2.2 i.succ).2)`. Use `le_trans (WithTop.coe_le_coe.mpr ?_) vlt` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hM, if_pos he]`. Unfold `Dat.mg`. Establish `hce` using `(cE he).1`. Rewrite `hce` using `[hm0]`. Conclude with `int_ineq _ _ _ _ _ _ _ _ (Int.natCast_nonneg _) hce n0' n1'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM, if_neg he]`. Conclude with `lg_Gw D hV X p K j e _ P2.mu I'' _ (by rw [sG4]; exact (u2.2 i.castSucc).2)`. Use `le_trans (WithTop.coe_le_coe.mpr ?_) vle` and prove the remaining obligations. Rewrite using `[hM, if_neg he]`. Unfold `Dat.mg`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Establish `hce` using `(cO he).1`. Rewrite `hce` using `[hm0]`. Conclude with `int_ineq _ _ _ _ _ _ _ _ (Int.natCast_nonneg _) hce n0' n1'`. Use `geR_of_le vlt ?_` and prove the remaining obligations. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hQ : (0 : ℝ) ≤ ((p : ℝ) ^ X.Rj p K j)` using `by positivity`. Establish `n0r : (X.dS K j e : ℝ) + (X.dV K j e : ℝ) ≤ (((r : ℝ) + K) * X.Ns) * (p : ℝ) ^ X.Rj p K j`. Conclude with `n0` after adjusting the coercions. Establish `hdV : (0 : ℝ) ≤ (X.dV K j e : ℝ)` using `Nat.cast_nonneg _`. Establish `hs : (0 : ℝ) ≤ (X.sg p K j (segE X.F j i) : ℝ)` using `Nat.cast_nonneg _`.
-
-Move the coercions through the operations in `at n2`. Use `mul_le_mul_of_nonneg_left cR hQ` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem column_conditions_of_numeric_bounds (D : Formalism.BasicNotions.D7) (hV : Formalism.MainNotions.CovariantDegrees.ValuationsAdditive D) (hA3 : Formalism.MainNotions.CovariantDegrees.DefiniteRankOne D) (C₀ : ℝ)
     (hRow : LateIndexInjective) (hN0 : EllDegreeLePowerBound) (hN1 : PowerExceedsMaxMultiplicity C₀) (hN2 : ThresholdPowerLowerBound C₀) : ColumnConditionsWithMargin C₀ := by

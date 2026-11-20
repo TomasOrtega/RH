@@ -8,19 +8,15 @@ open IsLocalRing IsDedekindDomain IsDedekindDomain.HeightOneSpectrum
 namespace GlobalTheory.OddLocalNorm
 
 /- English proof (translation)
-Set `T` to `QuadraticAlgebra S d 0`. Use `haveI : Module.Finite O T := Module.Finite.trans S T`. Set `I : Ideal T` to `(maximalIdeal O).map (algebraMap O T)`. Establish `hI : I ≤ (⊥ : Ideal T).jacobson`. Use `le_sInf fun M hM => Ideal.map_le_iff_le_comap.2 ?_` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `haveI := hM.2`. Conclude with `(eq_maximalIdeal (Ideal.isMaximal_comap_of_isIntegral_of_isMaximal (R := O) M)).ge`. Use `haveI : HenselianRing T I := GlobalTheory.henselianRing_of_finite O I hI`. Use `haveI : Finite (O ⧸ maximalIdeal O) := inferInstanceAs (Finite (ResidueField O))`. Use `haveI : Module.Finite O (T ⧸ I) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ O I).toLinearMap Ideal.Quotient.mk_surjective`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `haveI : Module.Finite (O ⧸ maximalIdeal O) (T ⧸ I) := Module.Finite.of_restrictScalars_finite O _ _`. Use `haveI : Finite (T ⧸ I) := Module.finite_of_finite (O ⧸ maximalIdeal O)`. Establish `hc : ∀ s : S, starRingEnd T (algebraMap S T s) = algebraMap S T s`. Introduce `s`. Apply the tactic sequence `ext <;> simp [T, starRingEnd_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcO : (starRingEnd T).comp (algebraMap O T) = algebraMap O T` using `by ext1 r`. Rewrite using `[RingHom.comp_apply, IsScalarTower.algebraMap_apply O S T, hc]`. Establish `hcI : I ≤ I.comap (starRingEnd T)`. Rewrite using `[Ideal.map_le_iff_le_comap, Ideal.comap_comap, hcO]`. Conclude with `Ideal.le_comap_map`.
+Apply the first step, then apply the next step to every resulting obligation. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2S : IsUnit (2 : S)`. Simplify `h2.map (algebraMap O S)` using `only [map_ofNat]`. Take `⟨x, hx⟩` from `GlobalTheory.HenselianNorm.exists_norm_eq T I (starRingEnd T) (fun x => star_star x) (fun x hx => hcI hx) ⟨⟨0, 1⟩, by`. Establish `h : ((⟨0, 1⟩ : T) - starRingEnd T ⟨0, 1⟩) * ((⟨0, 1⟩ : T) - starRingEnd T ⟨0, 1⟩) = algebraMap S T (2 * 2 * d)`. Apply the tactic sequence `ext <;> simp [T, starRingEnd_apply]`.
-
-Expand and normalize the polynomial expressions, which then agree. Conclude with `isUnit_of_mul_isUnit_left (h ▸ ((h2S.mul h2S).mul hd).map (algebraMap S T))⟩`. Use the proof step `(algebraMap S T m) (hc m) (hm.map _)`. Use `⟨x.re, x.im, ?_⟩` and prove the remaining obligations. Use `congrArg QuadraticAlgebra.re hx` as an intermediate fact.
-
-Simplify using `[T, starRingEnd_apply] at this`. Take the linear combination `-this`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_eq_of_finite (O : Type) {S : Type} [CommRing O] [HenselianLocalRing O]
     [Finite (ResidueField O)] [CommRing S] [Algebra O S] [Module.Finite O S]
@@ -66,9 +62,9 @@ theorem exists_eq_of_finite (O : Type) {S : Type} [CommRing O] [HenselianLocalRi
   linear_combination -this
 
 /- English proof (translation)
-Set `S` to `Algebra.adjoin O ({m, m', d, d'} : Set A)`. Use `haveI : Module.Finite O S := Algebra.finite_adjoin_of_finite_of_isIntegral (Set.toFinite _) (by`. Apply the tactic sequence `rintro x (rfl | rfl | rfl | rfl) <;> assumption)`. Establish `h1 : m ∈ S` using `Algebra.subset_adjoin (by simp)`. Establish `h1' : m' ∈ S` using `Algebra.subset_adjoin (by simp)`.
+Introduce a local definition for the expression. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : d ∈ S` using `Algebra.subset_adjoin (by simp)`. Establish `h3' : d' ∈ S` using `Algebra.subset_adjoin (by simp)`. Take `⟨a, b, h⟩` from `exists_eq_of_finite O h2 (m := (⟨m, h1⟩ : S)) (d := ⟨d, h3⟩) (IsUnit.of_mul_eq_one ⟨m', h1'⟩ (Subtype.ext hm)) (IsUnit.of_mul_eq_one ⟨d', h3'⟩ (Subtype.ext hd))`. Conclude with `⟨a, b, congrArg Subtype.val h⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_eq_of_isIntegral (O : Type) {A : Type} [CommRing O] [HenselianLocalRing O]
     [Finite (ResidueField O)] [CommRing A] [Algebra O A]
@@ -87,15 +83,13 @@ theorem exists_eq_of_isIntegral (O : Type) {A : Type} [CommRing O] [HenselianLoc
   exact ⟨a, b, congrArg Subtype.val h⟩
 
 /- English proof (translation)
-Introduce `L _ _ v hv m m' d d' hm hd im im' id id'`. Take `⟨hH, hF⟩` from `GlobalTheory.IntAdicHensel.henselianLocalRing_and_finite_residueField v`. Use `letI : Algebra (v.adicCompletionIntegers ℚ) (v.adicCompletion ℚ ⊗[ℚ] L) := ((algebraMap (v.adicCompletion ℚ) (v.adicCompletion ℚ ⊗[ℚ] L)).comp (v.adicCompletionIntegers ℚ).subtype).toAlgebra`. Establish `key : ∀ x : v.adicCompletion ℚ ⊗[ℚ] L, (∃ f : Polynomial (v.adicCompletion ℚ), f.Monic ∧ (∀ i, f.coeff i ∈ v.adicCompletionIntegers ℚ) ∧ Polynomial.aeval x f = 0) → IsIntegral (v.adicCompletionIntegers ℚ) x`. Introduce and unpack `x ⟨f, hf, hc, hx⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨g, hg, -, hgm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic (f := (v.adicCompletionIntegers ℚ).subtype) ((Polynomial.lifts_iff_coeff_lifts f).2 fun n => ⟨⟨_, hc n⟩, rfl⟩) hf`. Use `⟨g, hgm, ?_⟩` and prove the remaining obligations. Rewrite `hx` using `[← hg, Polynomial.aeval_def, Polynomial.eval₂_map]`. Conclude with `hx`. Establish `h2 : (2 : ℤ) ∉ v.asIdeal` using `fun h => hv ((PrincipalIdealRing.isMaximal_of_irreducible Int.prime_two.irreducible).eq_of_le v.isPrime.ne_top ((Ideal.span_singleton_le_iff_mem _).2 h)).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2u : IsUnit (2 : v.adicCompletionIntegers ℚ)`. Rewrite using `[adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Establish `h` using `valuedAdicCompletion_eq_valuation' v (2 : ℚ)`. Establish `h' : v.valuation ℚ (2 : ℚ) = 1`. Use `(valuation_eq_one_iff_notMem v (K := ℚ) (r := (2 : ℤ))).2 h2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Rewrite `h` using `[h']`. Rewrite using `[← h]`. Use `congr 1`. Conclude with `(map_ofNat (algebraMap ℚ (v.adicCompletion ℚ)) 2).symm`.
-
-Conclude with `exists_eq_of_isIntegral (v.adicCompletionIntegers ℚ) h2u hm hd (key _ im) (key _ im') (key _ id) (key _ id')`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_eq_sq_sub_mul_sq : ∀ (L : Type) [Field L] [NumberField L] (v : IsDedekindDomain.HeightOneSpectrum ℤ), v.asIdeal ≠ Ideal.span {2} →
     ∀ m m' d d' : v.adicCompletion ℚ ⊗[ℚ] L, m * m' = 1 → d * d' = 1 →

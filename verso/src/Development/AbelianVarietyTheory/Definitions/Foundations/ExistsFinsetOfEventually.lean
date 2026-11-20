@@ -18,13 +18,13 @@ def cyl (pa : ∀ w, X → Ya w) (pf : ∀ v, X → Yf v) (K : ∀ v, Set (Yf v)
 variable {pa : ∀ w, X → Ya w} {pf : ∀ v, X → Yf v} {K K' : ∀ v, Set (Yf v)}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_cyl {S : Finset V} {A : ∀ w, Set (Ya w)} {B : ∀ v, Set (Yf v)} {x : X} :
     x ∈ cyl pa pf K S A B ↔ (∀ w, pa w x ∈ A w) ∧ (∀ v ∈ S, pf v x ∈ B v) ∧ ∀ v ∉ S, pf v x ∈ K v := Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Set.ext fun _ => and_congr_right fun _ => ⟨fun h v => (Classical.em (v ∈ S)).elim (h.1 v) (h.2 v), fun h => ⟨fun v _ => h v, fun v _ => h v⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem cyl_self (S : Finset V) (A : ∀ w, Set (Ya w)) :
     cyl pa pf K S A K = {x | (∀ w, pa w x ∈ A w) ∧ ∀ v, pf v x ∈ K v} :=
@@ -34,11 +34,9 @@ theorem cyl_self (S : Finset V) (A : ∀ w, Set (Ya w)) :
 open Classical in
 
 /- English proof (translation)
-Use `Set.ext fun x => and_congr_right fun _ => ⟨fun ⟨h1, h2⟩ => ⟨fun v _ => ?_, fun v hv => ?_⟩, fun ⟨h1, h2⟩ => ⟨fun v hv => ?_, fun v hv => ?_⟩⟩` and prove the remaining obligations. Distinguish the cases in `hv : v ∈ S`. Simplify `h1 v hv` using `[hv]`. Simplify `h2 v hv` using `[hv]`. Rewrite using `[hK v hv]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h2 v fun h' => hv (h h')`. Simplify `h1 v (h hv)` using `[hv]`. Distinguish the cases in `hT : v ∈ T`. Simplify `h1 v hT` using `[hv]`. Rewrite using `[← hK v hT]`.
-
-Conclude with `h2 v hT`.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cyl_eq_of_subset {S T : Finset V} (h : S ⊆ T) (hK : ∀ v ∉ T, K v = K' v) (A : ∀ w, Set (Ya w))
     (B : ∀ v, Set (Yf v)) : cyl pa pf K' S A B = cyl pa pf K T A fun v => if v ∈ S then B v else K' v := by
@@ -65,21 +63,19 @@ def IsCylProd (pa : ∀ w, X → Ya w) (pf : ∀ v, X → Yf v) (K : ∀ v, Set 
 variable {μa : ∀ w, Measure (Ya w)} {μf : ∀ v, Measure (Yf v)} {μ : Measure X}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(eventually_cofinite.1 h).toFinset, fun v hv => by simpa using hv⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_finset_of_eventually {p : V → Prop} (h : ∀ᶠ v in cofinite, p v) : ∃ S : Finset V, ∀ v ∉ S, p v :=
   ⟨(eventually_cofinite.1 h).toFinset, fun v hv => by simpa using hv⟩
 
 /- English proof (translation)
-The claim follows from `S.eventually_cofinite_notMem.mono h`.
+A detailed English derivation is pending.
 -/
 theorem eventually_of_finset {p : V → Prop} (S : Finset V) (h : ∀ v ∉ S, p v) : ∀ᶠ v in cofinite, p v :=
   S.eventually_cofinite_notMem.mono h
 
 /- English proof (translation)
-Use `⟨eventually_of_finset S₀ h1, fun S hS A B hA hB => ?_⟩` and prove the remaining obligations. Rewrite using `[cyl_eq_of_subset (K := K) (T := S ∪ S₀) Finset.subset_union_left (fun v hv => hK v fun h' => hv (Finset.mem_union_right _ h')), h _ Finset.subset_union_right _ _ hA fun v _ => ?_]`. Use `congr 1`. Rewrite using `[← Finset.prod_subset Finset.subset_union_left fun v _ hv => by simp only [if_neg hv, hS v hv]]`. Conclude with `Finset.prod_congr rfl fun v hv => by simp only [if_pos hv]`.
-
-Use `split_ifs with hv exacts [hB v hv, hK' v]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCylProd_of_large (hK' : ∀ v, MeasurableSet (K' v)) (S₀ : Finset V) (h1 : ∀ v ∉ S₀, μf v (K' v) = 1)
     (hK : ∀ v ∉ S₀, K v = K' v)
@@ -97,7 +93,7 @@ theorem isCylProd_of_large (hK' : ∀ v, MeasurableSet (K' v)) (S₀ : Finset V)
     exacts [hB v hv, hK' v]
 
 /- English proof (translation)
-Take `⟨S₀, hS⟩` from `exists_finset_of_eventually (h.1.and hK)`. Conclude with `isCylProd_of_large hK' S₀ (fun v hv => (hS v hv).2 ▸ (hS v hv).1) (fun v hv => (hS v hv).2) fun S hs => h.2 S fun v hv => (hS v fun h' => hv (hs h')).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem IsCylProd.congr (h : IsCylProd pa pf K μa μf μ) (hK' : ∀ v, MeasurableSet (K' v))
     (hK : ∀ᶠ v in cofinite, K v = K' v) : IsCylProd pa pf K' μa μf μ := by
@@ -106,7 +102,7 @@ theorem IsCylProd.congr (h : IsCylProd pa pf K μa μf μ) (hK' : ∀ v, Measura
     fun S hs => h.2 S fun v hv => (hS v fun h' => hv (hs h')).1
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `exists_finset_of_eventually h.1`. Rewrite using `[← cyl_self S, h.2 S hS A K hA fun v _ => hK v, finprod_eq_prod_of_mulSupport_subset _ (s := S)]`. Conclude with `fun v hv => by_contra fun h' => hv (hS v h')`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsCylProd.measure_level (h : IsCylProd pa pf K μa μf μ) (hK : ∀ v, MeasurableSet (K v))
     {A : ∀ w, Set (Ya w)} (hA : ∀ w, MeasurableSet (A w)) :
@@ -116,9 +112,9 @@ theorem IsCylProd.measure_level (h : IsCylProd pa pf K μa μf μ) (hK : ∀ v, 
   exact fun v hv => by_contra fun h' => hv (hS v h')
 
 /- English proof (translation)
-Take `⟨S₀, hS⟩` from `exists_finset_of_eventually h.1`. Use `isCylProd_of_large hK (S₀ ∪ T) (fun v hv => ?_) (fun _ _ => rfl) fun S hs A B hA hB => ?_` and prove the remaining obligations. Rewrite `hv` using `[Finset.notMem_union]`. Rewrite using `[hd v hv.2, one_smul, hS v hv.1]`. Rewrite using `[Finset.prod_subset (Finset.subset_union_right.trans hs) fun v _ hv => hd v hv]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Measure.smul_apply, smul_eq_mul, Finset.prod_mul_distrib]`. Rewrite using `[h.2 S (fun v hv => hS v fun h' => hv (hs (Finset.mem_union_left _ h'))) A B hA hB, mul_mul_mul_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsCylProd.smul (h : IsCylProd pa pf K μa μf μ) (hK : ∀ v, MeasurableSet (K v)) (c : W → ℝ≥0∞)
     (d : V → ℝ≥0∞) (T : Finset V) (hd : ∀ v ∉ T, d v = 1) :
@@ -133,7 +129,7 @@ theorem IsCylProd.smul (h : IsCylProd pa pf K μa μf μ) (hK : ∀ v, Measurabl
     rw [h.2 S (fun v hv => hS v fun h' => hv (hs (Finset.mem_union_left _ h'))) A B hA hB, mul_mul_mul_comm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨h.1, fun S hS A B hA hB => by rw [e.map_apply, ← h.2 S hS A B hA hB] congr 1 ext x simp only [mem_preimage, mem_cyl, ha, hf]⟩`.
+Supply the required witnesses or components.
 -/
 theorem IsCylProd.map {X' : Type} [MeasurableSpace X'] (h : IsCylProd pa pf K μa μf μ) (e : X ≃ᵐ X')
     {pa' : ∀ w, X' → Ya w} {pf' : ∀ v, X' → Yf v} (ha : ∀ w x, pa' w (e x) = pa w x)
@@ -171,9 +167,9 @@ variable {pa : ∀ w, X →* Ya w} {pf : ∀ v, X →* Yf v} {K K' : ∀ v, Subg
 omit [∀ v, TopologicalSpace (Yf v)] in
 
 /- English proof (translation)
-Establish `: ∀ v, ∃ z : Yf v, (∀ v' (e : j v' = v), z = e ▸ y v') ∧ (v ∉ range j → z = 1)` using `fun v => by`. Distinguish the cases in `hv : v ∈ range j`. Take `⟨u, rfl⟩` from `hv`. Conclude with `⟨y u, fun v' e => by obtain rfl := hj e; rfl, fun h => absurd ⟨u, rfl⟩ h⟩`. Conclude with `⟨1, fun v' e => absurd ⟨v', e⟩ hv, fun _ => rfl⟩`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose z h1 h2 using this`. Conclude with `⟨z, fun v' => h1 _ v' rfl, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_extend_one {V' : Type} {j : V' → V} (hj : Function.Injective j) (y : ∀ v', Yf (j v')) :
     ∃ z : ∀ v, Yf v, (∀ v', z (j v') = y v') ∧ ∀ v ∉ range j, z v = 1 := by
@@ -186,23 +182,21 @@ theorem exists_extend_one {V' : Type} {j : V' → V} (hj : Function.Injective j)
   exact ⟨z, fun v' => h1 _ v' rfl, h2⟩
 
 /- English proof (translation)
-Establish `hl : ∀ x : H, (∀ v, pf (j v) x ∈ K (j v)) ↔ ∀ v, pf v x ∈ K v` using `fun x => ⟨fun hx v => by`. Distinguish the cases in `hv : v ∈ range j`. Take `⟨u, rfl⟩` from `hv`. Conclude with `hx u`. Rewrite using `[((hH x).1 x.2).2 v hv]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `one_mem _, fun hx v => hx _⟩`. Use `⟨fun w => (h.continuous_pa _).comp continuous_subtype_val, fun v => (h.continuous_pf _).comp continuous_subtype_val, fun v => h.isOpen_K _, fun v => h.isCompact_K _, fun x y ha hf => Subtype.ext (h.ext _ _ (fun w => ?_) fun v => ?_), fun x => hj.tendsto_cofinite.eventually (h.eve …` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ range i`. Take `⟨u, rfl⟩` from `hw`. Conclude with `ha u`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[((hH x).1 x.2).1 w hw, ((hH y).1 y.2).1 w hw]`. Distinguish the cases in `hv : v ∈ range j`. Take `⟨u, rfl⟩` from `hv`. Conclude with `hf u`. Rewrite using `[((hH x).1 x.2).2 v hv, ((hH y).1 y.2).2 v hv]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨a', ha1, ha2⟩` from `exists_extend_one hi a`. Take `⟨y', hy1, hy2⟩` from `exists_extend_one hj y`. Take `⟨x, hx1, hx2⟩` from `h.exists_eq a' y' (((eventually_cofinite.1 hy).image j).subset fun v hv => by`. Distinguish the cases in `hr : v ∈ range j`. Take `⟨u, rfl⟩` from `hr`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Apply an available result and prove the equalities needed to match it to the conclusion. Establish an intermediate fact.
 
-Conclude with `⟨u, fun hu => hv (show y' (j u) ∈ K (j u) by rw [hy1]; exact hu), rfl⟩`. Conclude with `absurd (show y' v ∈ K v by rw [hy2 v hr]; exact one_mem _) hv)`. Conclude with `⟨⟨x, (hH x).2 ⟨fun w hw => (hx1 w).trans (ha2 w hw), fun v hv => (hx2 v).trans (hy2 v hv)⟩⟩, fun w => (hx1 _).trans (ha1 w), fun v => (hx2 _).trans (hy1 v)⟩`. Use `h.isOpen_level.preimage (continuous_subtype_val (p := (· ∈ H))) using 1` and compare the differences between its conclusion and the goal. Conclude with `Set.ext hl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `hc : IsClosed (H : Set X)`. Establish `: (H : Set X) = (⋂ w ∉ range i, pa w ⁻¹' {1}) ∩ ⋂ v ∉ range j, pf v ⁻¹' {1}` using `Set.ext fun x => by simpa using hH x`. Rewrite using `[this]`. Conclude with `(isClosed_biInter fun w _ => isClosed_singleton.preimage (h.continuous_pa w)).inter (isClosed_biInter fun v _ => isClosed_singleton.preimage (h.continuous_pf v))`. Establish `: ∀ w, ∃ D : Set (Ya w), IsCompact D ∧ (∀ u (e : i u = w), D = e ▸ C u) ∧ (w ∉ range i → D = {1})` using `fun w => by`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hw : w ∈ range i`. Take `⟨u, rfl⟩` from `hw`. Conclude with `⟨C u, hC u, fun v' e => by obtain rfl := hi e; rfl, fun h => absurd ⟨u, rfl⟩ h⟩`. Conclude with `⟨{1}, isCompact_singleton, fun v' e => absurd ⟨v', e⟩ hw, fun _ => rfl⟩`. Use `choose D hD h1 h2 using this`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(congrArg IsCompact (Set.ext fun x => ?_)).mpr (hc.isClosedEmbedding_subtypeVal.isCompact_preimage (h.isCompact_level D hD))` and prove the remaining obligations. Use `and_congr (Iff.intro (fun hx w => ?_) (fun hx u => ?_) : (∀ u, pa (i u) x ∈ C u) ↔ ∀ w, pa w x ∈ D w) (hl x)` and prove the remaining obligations. Distinguish the cases in `hw : w ∈ range i`. Take `⟨u, rfl⟩` from `hw`. Rewrite using `[h1 _ u rfl]`.
-
-Conclude with `hx u`. Rewrite using `[h2 w hw]`. Conclude with `((hH x).1 x.2).1 w hw`. Use `hx (i u)` as an intermediate fact. Rewrite `this` using `[h1 _ u rfl]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem IsRestrGroup.subgroup [∀ w, T1Space (Ya w)] [∀ v, T1Space (Yf v)] (h : IsRestrGroup pa pf K)
     {W' V' : Type} {i : W' → W} {j : V' → V} (hi : Function.Injective i) (hj : Function.Injective j)
@@ -258,7 +252,7 @@ theorem IsRestrGroup.subgroup [∀ w, T1Space (Ya w)] [∀ v, T1Space (Yf v)] (h
       rwa [h1 _ u rfl] at this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun w => w.elim, h.continuous_pf, h.isOpen_K, h.isCompact_K, fun x y _ hf => h.ext x y isEmptyElim hf, h.eventually_mem, fun _ y hy => (h.exists_eq isEmptyElim y hy).imp fun _ hx => ⟨fun w => w.elim, hx.2⟩, h.isOpen_level, fun _ _ => by simpa using h.isCompact_level isEmptyElim …`.
+Supply the required witnesses or components.
 -/
 theorem IsRestrGroup.noArch [IsEmpty W] (h : IsRestrGroup pa pf K) : IsRestrGroup (noArch X) pf K :=
   ⟨fun w => w.elim, h.continuous_pf, h.isOpen_K, h.isCompact_K, fun x y _ hf => h.ext x y isEmptyElim hf,
@@ -270,13 +264,13 @@ def levelAway (pf : ∀ v, X →* Yf v) (K : ∀ v, Subgroup (Yf v)) (S : Finset
 
 omit [TopologicalSpace X] [∀ v, TopologicalSpace (Yf v)] in
 /- English proof (translation)
-Simplify using `[levelAway, Subgroup.mem_iInf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_levelAway {S : Finset V} {x : X} : x ∈ levelAway pf K S ↔ ∀ v ∉ S, pf v x ∈ K v := by
   simp [levelAway, Subgroup.mem_iInf]
 
 /- English proof (translation)
-Use `Subgroup.isOpen_mono (H₁ := levelAway pf K ∅) (fun x hx => ?_) ?_` and prove the remaining obligations. Conclude with `mem_levelAway.2 fun v _ => mem_levelAway.1 hx v (by simp)`. Use `h.isOpen_level using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using `[mem_levelAway]`.
+Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsRestrGroup.isOpen_levelAway [IsTopologicalGroup X] (h : IsRestrGroup pa pf K) (S : Finset V) :
     IsOpen (levelAway pf K S : Set X) := by
@@ -299,7 +293,7 @@ def IsHaarProdFin (pf : ∀ v, X →* Yf v) (K : ∀ v, Subgroup (Yf v)) (μf : 
 variable {μa : ∀ w, Measure (Ya w)} {μf : ∀ v, Measure (Yf v)} {μ μ' : Measure X}
 
 /- English proof (translation)
-Simplify using `[IsHaarProdFin, IsHaarProd, IsCylProd, cyl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isHaarProdFin_iff : IsHaarProdFin pf K μf μ ↔ (∀ v, (μf v).IsHaarMeasure) ∧ μ.IsHaarMeasure ∧
     (∀ᶠ v in cofinite, μf v (K v) = 1) ∧
@@ -310,7 +304,7 @@ theorem isHaarProdFin_iff : IsHaarProdFin pf K μf μ ↔ (∀ v, (μf v).IsHaar
 variable [BorelSpace X] [∀ w, BorelSpace (Ya w)] [∀ v, BorelSpace (Yf v)] [IsTopologicalGroup X]
 
 /- English proof (translation)
-Establish `: cyl (fun w => pa w) (fun v => pf v) (fun v => (K v : Set (Yf v))) S A B = (⋂ w, pa w ⁻¹' A w) ∩ ((⋂ v ∈ S, pf v ⁻¹' B v) ∩ levelAway pf K S)`. Use extensionality with `x`. Simplify using `[mem_cyl, mem_levelAway]`. Rewrite using `[this]`. Conclude with `(MeasurableSet.iInter fun w => (h.continuous_pa w).measurable (hA w)).inter ((S.measurableSet_biInter fun v hv => (h.continuous_pf v).measurable (hB v hv)).inter (h.isOpen_levelAway S).measurableSet)`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRestrGroup.measurableSet_cyl (h : IsRestrGroup pa pf K) {S : Finset V} {A : ∀ w, Set (Ya w)}
     {B : ∀ v, Set (Yf v)} (hA : ∀ w, MeasurableSet (A w)) (hB : ∀ v ∈ S, MeasurableSet (B v)) :
@@ -327,7 +321,7 @@ theorem IsRestrGroup.measurableSet_cyl (h : IsRestrGroup pa pf K) {S : Finset V}
 omit [BorelSpace X] [∀ w, BorelSpace (Ya w)] [IsTopologicalGroup X] in
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Use `⟨fun w => IsHaarMeasure.nnreal_smul _ (hc w), fun v => IsHaarMeasure.nnreal_smul _ (hd0 v), IsHaarMeasure.nnreal_smul _ (mul_ne_zero (Finset.prod_ne_zero_iff.2 fun w _ => hc w) (Finset.prod_ne_zero_iff.2 fun v _ => hd0 v)), ?_⟩` and prove the remaining obligations. Use `h4.smul (fun v => (hK v).measurableSet) (fun w => c w) (fun v => d v) T fun v hv => by simp [hd v hv]` as an intermediate fact. Simplify `this` using `only [ENNReal.smul_def, ENNReal.coe_mul, ENNReal.ofNNReal_finsetProd]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem IsHaarProd.smul (h : IsHaarProd pa pf K μa μf μ) (hK : ∀ v, IsOpen (K v : Set (Yf v))) (c : W → ℝ≥0)
     (d : V → ℝ≥0) (hc : ∀ w, c w ≠ 0) (hd0 : ∀ v, d v ≠ 0) (T : Finset V) (hd : ∀ v ∉ T, d v = 1) :
@@ -345,11 +339,11 @@ variable [LocallyCompactSpace X] [SecondCountableTopology X] [∀ w, IsTopologic
 omit [∀ w, IsTopologicalGroup (Ya w)] in
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4⟩` from `h`. Take `⟨-, -, h3', h4'⟩` from `h'`. Take `⟨S, hS⟩` from `exists_finset_of_eventually h4.1`. Set `C : ∀ w, TopologicalSpace.PositiveCompacts (Ya w)` to `fun w => Classical.arbitrary _`. Establish `e` using `h4.2 S hS (fun w => C w) _ (fun w => (C w).isCompact.measurableSet) fun v _ => (hK v).measurableSet`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e'` using `h4'.2 S hS (fun w => C w) _ (fun w => (C w).isCompact.measurableSet) fun v _ => (hK v).measurableSet`. Establish `h0 : (∏ w, μa w (C w)) * ∏ v ∈ S, μf v (K v) ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun w _ => (measure_pos_of_nonempty_interior _ (C w).interior_nonempty).ne') (Finset.prod_ne_zero_iff.2 fun v _ => ((hK v).measure_pos _ ⟨1, one_mem _⟩).ne')`. Establish `ht : (∏ w, μa w (C w)) * ∏ v ∈ S, μf v (K v) ≠ ∞` using `ENNReal.mul_ne_top (ENNReal.prod_ne_top fun w _ => (C w).isCompact.measure_lt_top.ne) (ENNReal.prod_ne_top fun v _ => (hK' v).measure_lt_top.ne)`. Establish `hm` using `isMulLeftInvariant_eq_smul μ μ'`. Rewrite `e` using `[hm, Measure.smul_apply, e', ENNReal.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `: (haarScalarFactor μ μ' : ℝ≥0∞) = 1` using `(ENNReal.mul_left_inj h0 ht).1 (e.trans (one_mul _).symm)`. Rewrite using `[hm, ENNReal.coe_eq_one.1 this, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsHaarProd.unique (hK : ∀ v, IsOpen (K v : Set (Yf v))) (hK' : ∀ v, IsCompact (K v : Set (Yf v)))
     (h : IsHaarProd pa pf K μa μf μ) (h' : IsHaarProd pa pf K μa μf μ') : μ = μ' := by
@@ -376,17 +370,15 @@ variable [∀ w, SecondCountableTopology (Ya w)] [∀ v, IsTopologicalGroup (Yf 
 omit [LocallyCompactSpace X] [SecondCountableTopology X] [∀ w, T2Space (Ya w)] in
 
 /- English proof (translation)
-Set `π : X →* (∀ w, Ya w) × ∀ v : S, Yf v` to `(MonoidHom.pi pa).prod (MonoidHom.pi fun v : S => pf v)`. Establish `hπ : Measurable π` using `((continuous_pi h.continuous_pa).prodMk (continuous_pi fun v : S => h.continuous_pf v)).measurable`. Set `m : Measure ((∀ w, Ya w) × ∀ v : S, Yf v)` to `(ν.restrict (levelAway pf K S)).map π`. Establish `hm : ∀ s, MeasurableSet s → m s = ν (π ⁻¹' s ∩ levelAway pf K S)` using `fun s hs => by`. Rewrite using `[Measure.map_apply hπ hs, Measure.restrict_apply (hπ hs)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hc : ∀ (A : ∀ w, Set (Ya w)) (B : ∀ v, Set (Yf v)), (∀ w, MeasurableSet (A w)) → (∀ v ∈ S, MeasurableSet (B v)) → m (univ.pi A ×ˢ univ.pi fun v : S => B v) = ν (cyl (fun w => pa w) (fun v => pf v) (fun v => (K v : Set (Yf v))) S A B)` using `fun A B hA hB => by`. Rewrite using `[hm _ ((MeasurableSet.univ_pi hA).prod (MeasurableSet.univ_pi fun v => hB v v.2))]`. Use `congrArg ν (Set.ext fun t => ?_)` and prove the remaining obligations. Simplify using `only [mem_inter_iff, mem_preimage, mem_prod, mem_univ_pi, mem_cyl, SetLike.mem_coe, mem_levelAway, and_assoc]`. Conclude with `and_congr_right fun _ => and_congr_left fun _ => Subtype.forall`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `haveI : m.IsMulLeftInvariant := (forall_measure_preimage_mul_iff m).1 fun y s hs => by`. Take `⟨z, hz1, hz2⟩` from `exists_extend_one (j := fun v : S => v.1) Subtype.val_injective y.2`. Establish `hz3 : ∀ v ∉ S, z v ∈ K v` using `fun v hv => by rw [hz2 v (by simpa using hv)]; exact one_mem _`. Take `⟨x, hx1, hx2⟩` from `h.exists_eq y.1 z (eventually_of_finset S hz3)`. Establish `hx : π x = y` using `Prod.ext (funext hx1) (funext fun v => (hx2 v).trans (hz1 v))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxU : x ∈ levelAway pf K S` using `mem_levelAway.2 fun v hv => hx2 v ▸ hz3 v hv`. Rewrite using `[hm _ (measurable_const_mul y hs), hm _ hs, ← measure_preimage_mul ν x (π ⁻¹' s ∩ _)]`. Use `congrArg ν (Set.ext fun t => ?_)` and prove the remaining obligations. Simplify using `[hx, Subgroup.mul_mem_cancel_left _ hxU]`. Set `C : ∀ w, TopologicalSpace.PositiveCompacts (Ya w)` to `fun w => Classical.arbitrary _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsFiniteMeasureOnCompacts m := ⟨fun s hs => by`. Use `measure_lt_top_of_isCompact_of_isMulLeftInvariant (univ.pi (fun w => interior (C w)) ×ˢ univ.pi fun v : S => (K v : Set (Yf v))) ((isOpen_set_pi finite_univ fun w _ => isOpen_interior).prod (isOpen_set_pi finite_univ fun v _ => h.isOpen_K v)) ((univ_pi_nonempty_iff.2 fun w => (C …` and prove the remaining obligations. Rewrite using `[hc _ (fun v => K v) (fun w => isOpen_interior.measurableSet) fun v _ => (h.isOpen_K v).measurableSet, cyl_self]`. Use `ne_top_of_le_ne_top (h.isCompact_level (fun w => C w) fun w => (C w).isCompact).measure_lt_top.ne (measure_mono fun x hx => ⟨fun w => interior_subset (hx.1 w), hx.2⟩)⟩` and prove the remaining obligations. Use `⟨haarScalarFactor m ((Measure.pi μa).prod (Measure.pi fun v : S => μf v)), fun A B hA hB => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← hc A B hA hB]`. Use `conv_lhs => rw [isMulLeftInvariant_eq_smul m ((Measure.pi μa).prod (Measure.pi fun v : S => μf v))]`. Rewrite using `[Measure.smul_apply, Measure.prod_prod, Measure.pi_pi, Measure.pi_pi, ENNReal.smul_def, smul_eq_mul, Finset.prod_coe_sort S fun v => μf v (B v)]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRestrGroup.exists_factor (h : IsRestrGroup pa pf K) (μa : ∀ w, Measure (Ya w)) (μf : ∀ v, Measure (Yf v))
     [∀ w, (μa w).IsHaarMeasure] [∀ v, (μf v).IsHaarMeasure] (ν : Measure X) [ν.IsHaarMeasure] (S : Finset V) :
@@ -434,15 +426,15 @@ theorem IsRestrGroup.exists_factor (h : IsRestrGroup pa pf K) (μa : ∀ w, Meas
     Finset.prod_coe_sort S fun v => μf v (B v)]
 
 /- English proof (translation)
-Use `existsUnique_of_exists_of_unique ?_ fun _ _ => IsHaarProd.unique h.isOpen_K h.isCompact_K` and prove the remaining obligations. Take `⟨S₀, hS⟩` from `exists_finset_of_eventually h1`. Set `ν : Measure X` to `haar`. Set `C : ∀ w, TopologicalSpace.PositiveCompacts (Ya w)` to `fun w => Classical.arbitrary _`. Set `t` to `ν {x | (∀ w, pa w x ∈ C w) ∧ ∀ v, pf v x ∈ K v}`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `k` to `(∏ w, μa w (C w)) * ∏ v ∈ S₀, μf v (K v)`. Establish `k0 : k ≠ 0` using `mul_ne_zero (Finset.prod_ne_zero_iff.2 fun w _ => (measure_pos_of_nonempty_interior _ (C w).interior_nonempty).ne') (Finset.prod_ne_zero_iff.2 fun v _ => ((h.isOpen_K v).measure_pos _ ⟨1, one_mem _⟩).ne')`. Establish `kt : k ≠ ∞` using `ENNReal.mul_ne_top (ENNReal.prod_ne_top fun w _ => (C w).isCompact.measure_lt_top.ne) (ENNReal.prod_ne_top fun v _ => (h.isCompact_K v).measure_lt_top.ne)`. Establish `tt : t ≠ ∞` using `(h.isCompact_level (fun w => C w) fun w => (C w).isCompact).measure_lt_top.ne`. Establish `t0 : t ≠ 0` using `by choose a ha using fun w => (C w).interior_nonempty`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx1, hx2⟩` from `h.exists_eq a 1 (Eventually.of_forall fun v => one_mem _)`. Establish `ho : IsOpen ((⋂ w, pa w ⁻¹' interior (C w)) ∩ {x | ∀ v, pf v x ∈ K v})` using `(isOpen_iInter_of_finite fun w => isOpen_interior.preimage (h.continuous_pa w)).inter h.isOpen_level`. Use `ne_bot_of_le_ne_bot (ho.measure_pos ν ⟨x, mem_iInter.2 fun w => ?_, fun v => ?_⟩).ne' (measure_mono fun y hy => ⟨fun w => interior_subset (mem_iInter.1 hy.1 w), hy.2⟩)` and prove the remaining obligations. Rewrite using `[mem_preimage, hx1]`. Conclude with `ha w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx2]`. Conclude with `one_mem _`. Use `⟨(k / t) • ν, ha, hf, IsHaarMeasure.smul ν (ENNReal.div_ne_zero.2 ⟨k0, tt⟩) (ENNReal.div_ne_top kt t0), isCylProd_of_large (fun v => (h.isOpen_K v).measurableSet) S₀ hS (fun _ _ => rfl) fun S hs A B hA hB => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h.exists_factor μa μf ν S`. Establish `e` using `hc (fun w => C w) (fun v => K v) (fun w => (C w).isCompact.measurableSet) fun v _ => (h.isOpen_K v).measurableSet`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[cyl_self, ← Finset.prod_subset hs fun v _ hv => hS v hv]`. Establish `e' : k / t * c = 1`. Rewrite using `[div_eq_mul_inv, mul_right_comm, mul_comm k, ← show t = c * k from e, ENNReal.mul_inv_cancel t0 tt]`. Rewrite using `[Measure.smul_apply, hc A B hA hB, smul_eq_mul, ← mul_assoc, e', one_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsRestrGroup.existsUnique_isHaarProd (h : IsRestrGroup pa pf K) (μa : ∀ w, Measure (Ya w))
     (μf : ∀ v, Measure (Yf v)) [ha : ∀ w, (μa w).IsHaarMeasure] [hf : ∀ v, (μf v).IsHaarMeasure]
@@ -481,9 +473,9 @@ theorem IsRestrGroup.existsUnique_isHaarProd (h : IsRestrGroup pa pf K) (μa : �
 omit [∀ w, SecondCountableTopology (Ya w)] [∀ v, LocallyCompactSpace (Yf v)] [∀ v, SecondCountableTopology (Yf v)] in
 
 /- English proof (translation)
-Use `⟨fun g => IsHaarProd.unique hX.isOpen_K hX.isCompact_K ?_ h⟩` and prove the remaining obligations. Take `⟨h1, h2, h3, h4⟩` from `h`. Take `⟨S₀, hS⟩` from `exists_finset_of_eventually (h4.1.and (hX.eventually_mem g))`. Use `⟨h1, h2, inferInstance, isCylProd_of_large (fun v => (hX.isOpen_K v).measurableSet) S₀ (fun v hv => (hS v hv).1) (fun _ _ => rfl) fun S hs A B hA hB => ?_⟩` and prove the remaining obligations. Establish `e` using `h4.2 S (fun v hv => (hS v fun h' => hv (hs h')).1) (fun w => (· * pa w g) ⁻¹' A w) (fun v => (· * pf v g) ⁻¹' B v) (fun w => measurable_mul_const _ (hA w)) fun v hv => measurable_mul_const _ (hB v hv)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [measure_preimage_mul_right] at e`. Rewrite using `[Measure.map_apply (measurable_mul_const g) (hX.measurableSet_cyl hA hB), ← e]`. Use `congrArg μ (Set.ext fun x => ?_)` and prove the remaining obligations. Simplify using `only [mem_preimage, mem_cyl, map_mul]`. Conclude with `and_congr_right fun _ => and_congr_right fun _ => forall₂_congr fun v hv => (K v).mul_mem_cancel_right (hS v fun h' => hv (hs h')).2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsHaarProd.isMulRightInvariant (h : IsHaarProd pa pf K μa μf μ) (hX : IsRestrGroup pa pf K)
     [∀ w, (μa w).IsMulRightInvariant] [∀ v, (μf v).IsMulRightInvariant] : μ.IsMulRightInvariant := by
@@ -510,11 +502,11 @@ omit [LocallyCompactSpace X] [SecondCountableTopology X] [∀ w, IsTopologicalGr
   [∀ w, LocallyCompactSpace (Ya w)] [∀ w, T2Space (Ya w)] [∀ w, SecondCountableTopology (Ya w)] in
 
 /- English proof (translation)
-Take `⟨h1, -, h3, h4⟩` from `h`. Take `⟨S₀, hS⟩` from `exists_finset_of_eventually h4.1`. Establish `hS' : ∀ T : Finset V, S ∪ S₀.map (Function.Embedding.subtype _) ⊆ T → ∀ v : {v // v ∉ S}, v.1 ∉ T → μf v (K v) = 1` using `fun T hT v hv => hS v fun h' => hv (hT (Finset.mem_union_right _ (Finset.mem_map_of_mem _ h')))`. Use `⟨h1, hf, e.isHaarMeasure_map _, isCylProd_of_large (fun v => (hK v).measurableSet) (S ∪ S₀.map (Function.Embedding.subtype _)) (fun v hv => hS' _ le_rfl ⟨v, fun h' => hv (Finset.mem_union_left _ h')⟩ hv) (fun _ _ => rfl) fun T hT A B hA hB => ?_⟩` and prove the remaining obligations. Establish `hST : S ⊆ T` using `Finset.subset_union_left.trans hT`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e1` using `h4.2 (T.subtype _) (fun v hv => hS' T hT v (by simpa using hv)) A (fun v => B v) hA fun v hv => hB v (by simpa using hv)`. Establish `e2 : e ⁻¹' cyl (fun w => pa w) (fun v => pf v) (fun v => (K v : Set (Yf v))) T A B = (univ.pi fun v : S => B v) ×ˢ cyl (fun w => pa' w) (fun v => pf' v) (fun v => (K v : Set (Yf v))) (T.subtype _) A fun v => B v`. Use extensionality with `p`. Simplify using `only [mem_preimage, mem_cyl, mem_prod, mem_univ_pi, Finset.mem_subtype, ea, ← eS, ← ef]`. Use `⟨fun ⟨a, b, c⟩ => ⟨fun v => b v (hST v.2), a, fun v hv => b v hv, fun v hv => c v hv⟩, fun ⟨a, b, c, d⟩ => ⟨b, fun v hv => ?_, fun v hv => d ⟨v, fun h' => hv (hST h')⟩ hv⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `h' : v ∈ S`. Use `exacts [a ⟨v, h'⟩, c ⟨v, h'⟩ hv]`. Rewrite using `[show ((Measure.pi fun v : S => μf v).prod ν).map e = ((Measure.pi fun v : S => μf v).prod ν).map e.toHomeomorph.toMeasurableEquiv from rfl, MeasurableEquiv.map_apply]`. Use `erw [e2]`. Rewrite using `[Measure.prod_prod, e1, Measure.pi_pi, mul_left_comm, Finset.prod_coe_sort S fun v => μf v (B v), Finset.prod_subtype_eq_prod_filter fun v => μf v (B v), ← Finset.prod_filter_mul_prod_filter_not T (· ∈ S), Finset.filter_mem_eq_inter, Finset.inter_eq_right.2 hST]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsHaarProd.prod_away {S : Finset V} {pa' : ∀ w, X' →* Ya w} {pf' : ∀ v : {v // v ∉ S}, X' →* Yf v}
     {ν : Measure X'} (h : IsHaarProd pa' pf' (fun v => K v) μa (fun v => μf v) ν) [hf : ∀ v, (μf v).IsHaarMeasure]
@@ -556,9 +548,9 @@ omit [LocallyCompactSpace X] [SecondCountableTopology X] [∀ w, T2Space (Ya w)]
   [∀ v, LocallyCompactSpace (Yf v)] [∀ v, SecondCountableTopology (Yf v)] [∀ v, BorelSpace (Yf v)] in
 
 /- English proof (translation)
-Take `⟨h2, h3, h4, h5⟩` from `isHaarProdFin_iff.1 h`. Use `⟨ha, h2, e.isHaarMeasure_map _, h4, fun S hS A B hA hB => ?_⟩` and prove the remaining obligations. Establish `e2 : e ⁻¹' cyl (fun w => pa w) (fun v => pf v) (fun v => (K v : Set (Yf v))) S A B = univ.pi A ×ˢ {x | (∀ v ∈ S, pf' v x ∈ B v) ∧ ∀ v ∉ S, pf' v x ∈ K v}`. Use extensionality with `p`. Simplify using `[mem_cyl, ea, ef]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[show ((Measure.pi μa).prod ν).map e = ((Measure.pi μa).prod ν).map e.toHomeomorph.toMeasurableEquiv from rfl, MeasurableEquiv.map_apply]`. Use `erw [e2]`. Rewrite using `[Measure.prod_prod, h5 S hS B hB, Measure.pi_pi]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsHaarProdFin.prod_arch {pf' : ∀ v, X' →* Yf v} {ν : Measure X'} (h : IsHaarProdFin pf' K μf ν)
     [ha : ∀ w, (μa w).IsHaarMeasure] (e : ((∀ w, Ya w) × X') ≃ₜ* X)
@@ -581,7 +573,7 @@ omit [LocallyCompactSpace X] [SecondCountableTopology X] [∀ w, IsTopologicalGr
   [∀ v, BorelSpace (Yf v)] [LocallyCompactSpace X'] [SecondCountableTopology X'] in
 
 /- English proof (translation)
-The claim follows from `haveI := h.2.2.1 ⟨h.1, h.2.1, e.isHaarMeasure_map _, h.2.2.2.map e.toHomeomorph.toMeasurableEquiv ea ef⟩`.
+A detailed English derivation is pending.
 -/
 theorem IsHaarProd.map {pa' : ∀ w, X' →* Ya w} {pf' : ∀ v, X' →* Yf v} {ν : Measure X'}
     (h : IsHaarProd pa' pf' K μa μf ν) (e : X' ≃ₜ* X) (ea : ∀ w x, pa w (e x) = pa' w x)
@@ -604,14 +596,14 @@ instance {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Measu
   isHaarMeasure_haarMeasure _
 
 /- English proof (translation)
-The claim follows from `haarMeasure_self`.
+A detailed English derivation is pending.
 -/
 @[simp] theorem normHaar_self {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [MeasurableSpace G]
     [BorelSpace G] (K : Subgroup G) (ho : IsOpen (K : Set G)) (hc : IsCompact (K : Set G)) :
     normHaar K ho hc K = 1 := haarMeasure_self
 
 /- English proof (translation)
-Use `⟨fun h => Measure.ext fun s hs => ?_, ?_⟩` and prove the remaining obligations. Simplify `h.2 ∅ (fun v => v.elim) (fun _ => s) (fun _ => s) (fun _ => hs) fun v => v.elim` using `[cyl]`. Introduce and unpack `rfl`. Use `⟨Eventually.of_forall fun v => v.elim, fun S _ A B _ _ => ?_⟩` and prove the remaining obligations. Simplify using `[cyl, Finset.eq_empty_of_isEmpty S, Unique.forall_iff]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 example {Y : Type} [MeasurableSpace Y] (ν μ : Measure Y) :
     IsCylProd (W := Unit) (V := Empty) (Ya := fun _ => Y) (Yf := fun _ => Y) (fun _ => id) (fun _ => id)

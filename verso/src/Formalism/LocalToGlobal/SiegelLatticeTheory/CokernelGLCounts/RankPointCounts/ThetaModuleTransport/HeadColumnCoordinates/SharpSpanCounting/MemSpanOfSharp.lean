@@ -20,7 +20,7 @@ def PcL' {t : Term V M r} (hg : GoodL H t) : H.Wb t.f' →ₗ[E] E × E :=
     (omP_mem H t.f' t.f (unit_swap H t.f t.f' hg.2.2.2.1)) (z_mem H t.f' t.T' hg.2.2.1)
 
 /- English proof (translation)
-Use `show H.h u (H.MMfam t (Sum.inl a)) = H.h u (t.f a)`. Simplify using `only [HermSp.MMfam, hg.1, Sum.elim_inl]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sharp_inl {t : Term V M r} (hg : GoodL H t) (u : ↥(MMsharp H t)) (a : Fin (r + 1)) :
     (sharpEquiv H t (unit_gramH H hg) u (Sum.inl a) : E) = H.h u (t.f a) := by
@@ -28,7 +28,7 @@ theorem sharp_inl {t : Term V M r} (hg : GoodL H t) (u : ↥(MMsharp H t)) (a : 
   simp only [HermSp.MMfam, hg.1, Sum.elim_inl]
 
 /- English proof (translation)
-Use `show H.h u (H.MMfam t (Sum.inr b)) = H.h u (t.f' b)`. Simplify using `only [HermSp.MMfam, hg.1, Sum.elim_inr]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sharp_inr {t : Term V M r} (hg : GoodL H t) (u : ↥(MMsharp H t)) (b : Fin (r + 1)) :
     (sharpEquiv H t (unit_gramH H hg) u (Sum.inr b) : E) = H.h u (t.f' b) := by
@@ -36,7 +36,7 @@ theorem sharp_inr {t : Term V M r} (hg : GoodL H t) (u : ↥(MMsharp H t)) (b : 
   simp only [HermSp.MMfam, hg.1, Sum.elim_inr]
 
 /- English proof (translation)
-Establish `h` using `((mem_MMsharp_iff H t u).1 u.2).1`. Simplify using `only [HermSp.MMfam, hg.1] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_span_of_sharp {t : Term V M r} (hg : GoodL H t) (u : ↥(MMsharp H t)) :
     (u : V) ∈ Submodule.span E (Set.range (Sum.elim t.f t.f')) := by
@@ -45,21 +45,19 @@ theorem mem_span_of_sharp {t : Term V M r} (hg : GoodL H t) (u : ↥(MMsharp H t
   exact h
 
 /- English proof (translation)
-Use extensionality with `⟨d, c⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨u, hu, rfl⟩, he⟩`. Use `⟨sharpEquiv H t (unit_gramH H hg) u, fun a => ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[sharp_inl H hg]`. Conclude with `(mem_perpX_iff H t.f u).1 hu a`. Rewrite using `[← he] beta_reduce`. Rewrite using `[Psi_mk]`. Use `Prod.ext rfl (Prod.ext ?_ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show H.h u (t.f (Fin.last r)) = _`. Rewrite using `[sharp_inl H hg]`. Use `show H.h u (omP H t.f t.f') = _`. Rewrite using `[h_omP, lamStarC]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Assume the hypotheses and unpack their components.
 
-Rewrite using `[sharp_inr H hg]`. Both sides reduce to the same expression. Introduce and unpack `⟨Y, hY, he⟩ set u := (sharpEquiv H t (unit_gramH H hg)).symm Y with hu`. Establish `hYu : sharpEquiv H t (unit_gramH H hg) u = Y` using `by rw [hu, LinearEquiv.apply_symm_apply]`. Establish `hX : (u : V) ∈ H.perp (H.X t.f)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mem_perpX_iff]`. Introduce `a`. Rewrite using `[← sharp_inl H hg, hYu, hY a]`. Both sides reduce to the same expression. Use `⟨(ddMk H t u, H.mkW t.f ⟨u, hX⟩), ⟨u, hX, rfl⟩, ?_⟩` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[he]`. Use `beta_reduce`. Rewrite using `[Psi_mk, hYu]`. Use `Prod.ext rfl (Prod.ext ?_ ?_)` and prove the remaining obligations. Use `show H.h u (t.f (Fin.last r)) = _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← sharp_inl H hg, hYu]`. Use `show H.h u (omP H t.f t.f') = _`. Rewrite using `[h_omP, lamStarC]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations. Rewrite using `[← sharp_inr H hg u, hYu]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem gam_image {t : Term V M r} (hg : GoodL H t) :
     (fun p => (Psi H hg p.1, PcL H hg p.2)) '' Gam H t =
@@ -104,19 +102,17 @@ theorem gam_image {t : Term V M r} (hg : GoodL H t) :
       rfl
 
 /- English proof (translation)
-Use extensionality with `⟨d, c⟩`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨_, ⟨u, hu, rfl⟩, he⟩`. Use `⟨sharpEquiv H t (unit_gramH H hg) u, fun a => ?_, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[sharp_inr H hg]`. Conclude with `(mem_perpX_iff H t.f' u).1 hu a`. Rewrite using `[← he] beta_reduce`. Rewrite using `[Psi_mk]`. Use `Prod.ext rfl (Prod.ext ?_ ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show H.h u (omP H t.f' t.f) = _`. Rewrite using `[h_omP_swap H t.f t.f' hg.2.2.2.1, lamC, Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[sharp_inl H hg]`. Use `show H.h u (t.f' (Fin.last r)) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[sharp_inr H hg]`. Introduce and unpack `⟨Y, hY, he⟩ set u := (sharpEquiv H t (unit_gramH H hg)).symm Y with hu`. Establish `hYu : sharpEquiv H t (unit_gramH H hg) u = Y` using `by rw [hu, LinearEquiv.apply_symm_apply]`. Establish `hX : (u : V) ∈ H.perp (H.X t.f')`. Rewrite using `[mem_perpX_iff]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `a`. Rewrite using `[← sharp_inr H hg, hYu, hY a]`. Both sides reduce to the same expression. Use `⟨(ddMk H t u, H.mkW t.f' ⟨u, hX⟩), ⟨u, hX, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[he]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `beta_reduce`. Rewrite using `[Psi_mk, hYu]`. Use `Prod.ext rfl (Prod.ext ?_ ?_)` and prove the remaining obligations. Use `show H.h u (omP H t.f' t.f) = _`. Rewrite using `[h_omP_swap H t.f t.f' hg.2.2.2.1, lamC, Matrix.mulVec, dotProduct]`.
-
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← sharp_inl H hg u, hYu]`. Use `show H.h u (t.f' (Fin.last r)) = _`. Rewrite using `[← sharp_inr H hg, hYu]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gam_image' {t : Term V M r} (hg : GoodL H t) :
     (fun p => (Psi H hg p.1, PcL' H hg p.2)) '' Gam' H t =
@@ -159,9 +155,9 @@ theorem gam_image' {t : Term V M r} (hg : GoodL H t) :
       rw [← sharp_inr H hg, hYu]
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨u₁, hu₁, rfl⟩ _ ⟨u₂, hu₂, rfl⟩ hc`. Simplify using `only [PcL, coordW_mk, Prod.mk.injEq] at hc`. Use `show H.mkW t₂.f ⟨u₂, hu₂⟩ = φ (H.mkW t₁.f ⟨u₁, hu₁⟩)`. Rewrite using `[mkW_decomp H t₂.f t₂.f' t₂.T t₂.T' hg₂.2.1 hg₂.2.2.1 hg₂.2.2.2.1 hg₂.2.2.2.2 ⟨u₂, hu₂⟩ (mem_span_of_sharp H hg₂ u₂), mkW_decomp H t₁.f t₁.f' t₁.T t₁.T' hg₁.2.1 hg₁.2.2.1 hg₁.2.2.2.1 hg₁.2.2.2.2 ⟨u₁, hu₁⟩ (mem_span_of_sharp H hg₁ u₁), map_add, map_smul, map_smul, hz, ho]`. Establish `hT' : algebraMap F E t₂.T = algebraMap F E t₁.T` using `by rw [hT]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at hc ⊢`. Rewrite using `[hc.1, hc.2, hT']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gam_sep {t₁ t₂ : Term V M r} (hg₁ : GoodL H t₁) (hg₂ : GoodL H t₂) (hT : t₂.T = t₁.T)
     (φ : H.Wb t₁.f ≃ₗ[E] H.Wb t₂.f)
@@ -181,9 +177,9 @@ theorem gam_sep {t₁ t₂ : Term V M r} (hg₁ : GoodL H t₁) (hg₂ : GoodL H
   rw [hc.1, hc.2, hT']
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨u₁, hu₁, rfl⟩ _ ⟨u₂, hu₂, rfl⟩ hc`. Simplify using `only [PcL', coordW_mk, Prod.mk.injEq] at hc`. Use `show H.mkW t₂.f' ⟨u₂, hu₂⟩ = φ' (H.mkW t₁.f' ⟨u₁, hu₁⟩)`. Rewrite using `[mkW_decomp' H t₂.f t₂.f' t₂.T t₂.T' hg₂.2.1 hg₂.2.2.1 hg₂.2.2.2.1 hg₂.2.2.2.2 ⟨u₂, hu₂⟩ (mem_span_of_sharp H hg₂ u₂), mkW_decomp' H t₁.f t₁.f' t₁.T t₁.T' hg₁.2.1 hg₁.2.2.1 hg₁.2.2.2.1 hg₁.2.2.2.2 ⟨u₁, hu₁⟩ (mem_span_of_sharp H hg₁ u₁), map_add, map_smul, map_smul, hz, ho]`. Establish `hT' : algebraMap F E t₂.T' = algebraMap F E t₁.T'` using `by rw [hT]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only at hc ⊢`. Rewrite using `[hc.1, hc.2, hT']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gam_sep' {t₁ t₂ : Term V M r} (hg₁ : GoodL H t₁) (hg₂ : GoodL H t₂) (hT : t₂.T' = t₁.T')
     (φ' : H.Wb t₁.f' ≃ₗ[E] H.Wb t₂.f')

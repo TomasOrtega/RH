@@ -9,9 +9,9 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace PositivityTheory.PfEss.Zc2
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ hUC h N Γ σ y hd hd' hΓ hΓσ hseg`. Establish `hnl : ∀ a b : Fin h, a < b → σ.symm b < σ.symm a → ¬(Γ a).Linked (Γ b)`. Introduce `a b hab hba hl`. Break down `Segment.linked_iff_precedes.mp hl with hp | hp` into its components or cases. Conclude with `hΓ a b hab hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Use `hΓσ (σ.symm b) (σ.symm a) hba` as an intermediate fact. Simplify using `only [Equiv.apply_symm_apply] at this`. Conclude with `this hp`. Conclude with `reach_of_inv hUC hd hseg _ σ rfl hnl hd'`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cs_reorderord : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.Published.IrreducibleAdmissibleGL → LUnlinkedComm k → ∀ {h N : ℕ} (Γ : Fin h → Segment k) (σ : Equiv.Perm (Fin h)) (y : Fin h → IrrGL k) (hd : ∑ a, (y a).1 = N) (hd' : ∑ a, (y (σ a)).1 = N), (∀ i j, i < j → ¬ (Γ i).Precedes (Γ j)) → (∀ i j, i < j → ¬ (Γ (σ i)).Precedes (Γ (σ j))) → (∀ i, IsLSeg (Γ i) (y i).rep) → Nonempty ((prodIrr y hd).Equiv (prodIrr (y ∘ σ) hd')) := by
   intro k _ _ _ _ _ hUC h N Γ σ y hd hd' hΓ hΓσ hseg

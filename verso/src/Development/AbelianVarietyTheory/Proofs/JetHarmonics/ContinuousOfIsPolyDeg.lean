@@ -11,19 +11,19 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 open MeasureTheory Filter Topology in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Proceed by induction on `Θ with`. Consider the case `nil => exact ⟨0, le_rfl, fun G B hG g _ => by`. Simplify using `[_root_.Formalism.FourierDecayAlt.B.opApply, _root_.Formalism.FourierDecayAlt.P.B4.gN_rpow_nonneg, mul_nonneg (mul_nonneg le_rfl (_root_.Formalism.FourierDecayAlt.P.B4.cc_nonneg hG))]⟩`. Consider the case `cons T Θ ih`. Take `⟨C₁, hC₁0, hC₁⟩` from `ih (fun S hS => hΘ S (List.mem_cons_of_mem _ hS))`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨hlen, Q, hQ, hcoef⟩` from `hΘ T List.mem_cons_self`. Take `⟨CQ, hCQ0, hCQ⟩` from `_root_.PI.UnitaryCorollaryDerivatives.pb_nonneg (_root_.PI.UnitaryCorollaryDerivatives.pb_poly hQ) 0`. Establish `hunit : ∀ X ∈ List.map _root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.nrm T.word, _root_.Formalism.FourierDecayAlt.B.unitLie k r X`. Introduce `X hX`. Take `⟨Y, hY, rfl⟩` from `List.mem_map.mp hX`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.nrm_unit (T.word_lie Y hY)`. Use `set ν : ℝ := ‖((List.map _root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.nz T.word).prod : ℂ)‖ with hν`. Use `⟨CQ * ν + C₁, by positivity, fun G B hG g hg => ?_⟩` and prove the remaining obligations. Establish `hgpos : 0 < _root_.Formalism.FourierDecayAlt.B.gN g` using `_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.gN_pos hg`. Establish `hB : 0 ≤ B` using `_root_.Formalism.FourierDecayAlt.P.B4.cc_nonneg hG`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRw : _root_.Formalism.FourierDecayAlt.B.CCle A 0 (_root_.Formalism.FourierDecayAlt.B.Rw (List.map _root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.nrm T.word) G) B` using `_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_Rw hunit (_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_m (by simpa using hlen) hG)`. Establish `hRw'` using `hRw.2 [] [] (by simp) (by simp) (by simp) g hg`. Simplify using `only [_root_.Formalism.FourierDecayAlt.B.dLR, List.foldr_nil, _root_.Formalism.FourierDecayAlt.B.Rw] at hRw'`. Establish `hword : ‖_root_.Formalism.FourierDecayAlt.B.Rw (List.map _root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.nrm T.word) G g‖ ≤ B * _root_.Formalism.FourierDecayAlt.B.gN g ^ (-A)`. Rewrite using `[Real.rpow_neg hgpos.le, ← div_eq_mul_inv, le_div_iff₀ (Real.rpow_pos_of_pos hgpos _), mul_comm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `hRw'` using `[_root_.Formalism.FourierDecayAlt.B.Rw]`. Establish `hQg : ‖Q g‖ ≤ CQ * _root_.Formalism.FourierDecayAlt.B.gN g ^ (κ : ℝ)`. Use `hCQ [] (by simp) (by simp) g hg` as an intermediate fact. Simplify `this` using `[_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.Dw]`. Establish `hterm : ‖(T.coef g) (_root_.Formalism.FourierDecayAlt.B.Rw T.word G g)‖ ≤ CQ * ν * B * _root_.Formalism.FourierDecayAlt.B.gN g ^ ((κ : ℝ) - A)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hcoef, ContinuousLinearMap.smul_apply, ContinuousLinearMap.id_apply, norm_smul, congrFun (_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.Rw_scale T.word G) g, norm_smul, ← hν, sub_eq_add_neg, Real.rpow_add hgpos]`. Combine the equalities or inequalities in the displayed calculation. Establish `hrest` using `hC₁ G B hG g hg`. Establish `hsplit : _root_.Formalism.FourierDecayAlt.B.opApply (T :: Θ) G g = (T.coef g) (_root_.Formalism.FourierDecayAlt.B.Rw T.word G g) + _root_.Formalism.FourierDecayAlt.B.opApply Θ G g`. Simplify using `[_root_.Formalism.FourierDecayAlt.B.opApply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 private lemma norm_opApply_le_of_polynomial_coeffs_lemma {k r : ℕ} {Wp Wq : Type}
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -80,11 +80,11 @@ private lemma norm_opApply_le_of_polynomial_coeffs_lemma {k r : ℕ} {Wp Wq : Ty
 open MeasureTheory Filter Topology in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 /- English proof (translation)
-Apply `_root_.Formalism.FourierDecayAlt.P.PBE.opApply_continuousOn` to reduce the goal to its premises. Introduce `T hT`. Take `⟨-, Q, hQ, hcoef⟩` from `hΘ T hT`. Establish `hQc : Continuous Q` using `(_root_.Formalism.FourierDecayAlt.P.poly_adm (n := 0) hQ).1.continuous`. Establish `hRw : ContinuousOn (_root_.Formalism.FourierDecayAlt.B.Rw T.word G) (_root_.Formalism.FourierDecayAlt.B.GV k r)` using `_root_.Formalism.FourierDecayAlt.P.PBE.ckOn_continuousOn' subset_rfl (_root_.Formalism.FourierDecayAlt.P.MinorPolynomials.ckOn_Rw_top hG T.word_lie)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfun : (fun g => (T.coef g) (_root_.Formalism.FourierDecayAlt.B.Rw T.word G g)) = fun g => Q g • _root_.Formalism.FourierDecayAlt.B.Rw T.word G g`. Use function extensionality and compare the values at `g`. Rewrite using `[hcoef]`. Simplify using the standard rewrite rules. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hQc.continuousOn.smul hRw`.
+A detailed English derivation is pending.
 -/
 private lemma continuousOn_opApply_of_polynomial_coeffs_lemma_2 {k r : ℕ} {Wp Wq : Type}
     [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
@@ -112,35 +112,33 @@ open MeasureTheory Filter Topology in
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace in
 
 /- English proof (translation)
-Take `⟨c₃, hc₃⟩` from `_root_.Formalism.FourierDecayAlt.P.PBE.vecV_tendsto`. Use `⟨c₃, ?_⟩` and prove the remaining obligations. Introduce `Wp Wq _ _ _ _ _ _ P p o κ Θ F A hΘ hF hCC hA cut hcut γ`. Unfold `_root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp at hΘ`. Establish `hΘ' : ∀ T ∈ Θ, T.word.length ≤ o ∧ ∃ Q : _root_.Formalism.FourierDecayAlt.B.Mat P.k P.r → ℂ, _root_.Formalism.FourierDecayAlt.U.IsPolyDeg κ Q ∧ ∀ g, T.coef g = Q g • ContinuousLinearMap.id ℂ (Wq →L[ℂ] Wp)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Introduce `T hT`. Take `⟨hl, Q, hQ, hc, -⟩` from `hΘ T hT`. Conclude with `⟨hl, Q, hQ, hc⟩`. Establish `hcutφ : ∀ n : ℕ, cut n = fun g => _root_.Formalism.FourierDecayAlt.P.JCx2.pdPhi (((n : ℝ) + 1)⁻¹ • g)`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[hcut]`. Both sides reduce to the same expression. Establish `hψ : ∀ (n : ℕ) g, cut n g = 1 - _root_.Formalism.FourierDecayAlt.P.JCx2.pdPsi ((n : ℝ) + 1) g`. Introduce `n g`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h : _root_.Formalism.FourierDecayAlt.P.JCx2.pdPsi ((n : ℝ) + 1) g = 1 - _root_.Formalism.FourierDecayAlt.P.JCx2.pdPhi (((n : ℝ) + 1)⁻¹ • g)` using `rfl`. Rewrite using `[hcutφ, h]`. Expand and normalize the polynomial expressions, which then agree. Unfold `_root_.Formalism.FourierDecayAlt.B.InCC at hCC`. Take `⟨b, hb⟩` from `hCC`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Establish `hb0 : 0 ≤ b` using `_root_.Formalism.FourierDecayAlt.P.B4.cc_nonneg hb`. Establish `hb1 : _root_.Formalism.FourierDecayAlt.B.CCle (A - 1) o F b` using `_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_mono_A (by linarith) hb`. Take `⟨K, hK0, hK⟩` from `_root_.Formalism.FourierDecayAlt.P.JCx2.pd_cut_ccle (k := P.k) (r := P.r) (E := Wq →L[ℂ] Wp) o`. Establish `hGn : ∀ n : ℕ, _root_.Formalism.FourierDecayAlt.B.CCle (A - 1) o (fun g => cut n g • F g) (b + K * b)`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hR : (0 : ℝ) < (n : ℝ) + 1` using `by positivity`. Establish `h3` using `_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_add hb1 (_root_.Formalism.FourierDecayAlt.P.BetaSesquilinearity.CCle_smul (-1 : ℂ) (hK ((n : ℝ) + 1) hR A F b hb))`. Use `_root_.Formalism.FourierDecayAlt.P.JCx2.pd_ccle_mono_c (_root_.Formalism.FourierDecayAlt.P.JCx2.mn_ccle_congr ?_ h3) ?_` and prove the remaining obligations. Introduce `g _`. Rewrite using `[hψ n g, sub_smul, one_smul, neg_one_smul, sub_eq_add_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[norm_neg, norm_one, one_mul]`. Combine the linear relations using `[div_le_self (mul_nonneg hK0 hb0) (by linarith : (1 : ℝ) ≤ (n : ℝ) + 1)]`. Establish `hG0 : _root_.Formalism.FourierDecayAlt.B.CCle (A - 1) o F (b + K * b)` using `_root_.Formalism.FourierDecayAlt.P.JCx2.pd_ccle_mono_c hb1 (by nlinarith)`. Take `⟨C, hC0, hC⟩` from `norm_opApply_le_of_polynomial_coeffs_lemma o κ (A - 1) Θ hΘ'`. Establish `hexp : (κ : ℝ) - (A - 1) = -(A - 1 - κ)` using `by ring`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hckn : ∀ n : ℕ, _root_.Formalism.FourierDecayAlt.B.CkOn ⊤ (_root_.Formalism.FourierDecayAlt.B.GV P.k P.r) (fun g => cut n g • F g)`. Introduce `n`. Establish `h` using `(_root_.Formalism.FourierDecayAlt.P.JCx2.pd_cut_nice (R := (n : ℝ) + 1) (by positivity) hF).1`. Rewrite using `[hcutφ n]`. Conclude with `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `_root_.Formalism.FourierDecayAlt.KB.Pl.V`. Use `hc₃ P.k P.r Wp Wq p.T.base p.ν' p.m₀ γ (A - 1 - κ) hA (fun n => _root_.Formalism.FourierDecayAlt.B.opApply Θ (fun g => cut n g • F g)) (_root_.Formalism.FourierDecayAlt.B.opApply Θ F) (C * (b + K * b)) (by positivity) (fun n => (continuousOn_opApply_of_polynomial_coeffs_lemma_2 o …` and prove the remaining obligations. Use `hC _ _ (hGn n) g hg.1` as an intermediate fact. Rewrite using `[hexp] at this)` and apply the resulting hypothesis. Use the proof step `(fun g hg => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hC _ _ hG0 g hg.1` as an intermediate fact. Rewrite using `[hexp] at this) ?_` and apply the resulting hypothesis. Introduce `g _`. Use `set S : _root_.Formalism.FourierDecayAlt.B.Mat P.k P.r → ℝ := fun h => ∑ i, ∑ j, Complex.normSq (h i j) with hS`. Establish `hScont : Continuous S` using `continuous_finset_sum _ fun i _ => continuous_finset_sum _ fun j _ => Complex.continuous_normSq.comp ((continuous_apply j).comp (continuous_apply i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hO : IsOpen {h | S h < S g + 1}` using `isOpen_lt hScont continuous_const`. Take `⟨N, hN⟩` from `exists_nat_ge (S g + 1)`. Apply `tendsto_const_nhds.congr'` to reduce the goal to its premises. Rewrite using `[Filter.EventuallyEq, Filter.eventually_atTop]`. Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `symm`. Apply `_root_.Formalism.FourierDecayAlt.P.JCTx6.Pos.opApply_congr_open Θ hO _ g (by simp)` to reduce the goal to its premises. Introduce `h hh`. Establish `hSh : S h < S g + 1` using `hh`. Establish `hS0 : 0 ≤ S h` using `Finset.sum_nonneg fun i _ => Finset.sum_nonneg fun j _ => Complex.normSq_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnN : (N : ℝ) ≤ n` using `by exact_mod_cast hn`. Establish `hpos : (0 : ℝ) < (n : ℝ) + 1` using `by positivity`. Establish `hscaled : ∑ i, ∑ j, Complex.normSq ((((n : ℝ) + 1)⁻¹ • h) i j) = ((n : ℝ) + 1)⁻¹ * ((n : ℝ) + 1)⁻¹ * S h`. Simplify using `only [hS, Matrix.smul_apply, Complex.real_smul, Complex.normSq_mul, Complex.normSq_ofReal, Finset.mul_sum]`. Establish `hle : ((n : ℝ) + 1)⁻¹ * ((n : ℝ) + 1)⁻¹ * S h ≤ 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[← mul_inv, inv_mul_le_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hone : cut n h = 1`. Rewrite using `[hcut, hscaled, Real.smoothTransition.one_of_one_le (by linarith)]`. Simplify using the standard rewrite rules.
-
-Simplify using `only [hone, one_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HatNF.vecV_cut_polyOp : ∃ c₃ : ℝ, ∀ (Wp Wq : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq] [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wp] [FiniteDimensional ℂ Wq] (P : _root_.Formalism.FourierDecayAlt.M.Par) (p : _root_.Formalism.FourierDecayAlt.KB.Pl P Wp Wq) (o κ : ℕ) (Θ : _root_.Formalism.FourierDecayAlt.B.DiffOp P.k P.r Wp Wq) (F : _root_.Formalism.FourierDecayAlt.B.Mat P.k P.r → (Wq →L[ℂ] Wp)) (A : ℝ), _root_.Formalism.FourierDecayAlt.P.CutMP.PolyOp o κ Θ → _root_.Formalism.FourierDecayAlt.B.CkOn ⊤ (_root_.Formalism.FourierDecayAlt.B.GV P.k P.r) F → _root_.Formalism.FourierDecayAlt.B.InCC A o F → c₃ * ((P.r : ℝ) + 1) ^ 2 * ((P.r : ℝ) * ((2 * P.r + P.k + 1 : ℕ) : ℝ) + 1) ≤ A - 1 - κ → ∀ cut : ℕ → _root_.Formalism.FourierDecayAlt.B.Mat P.k P.r → ℂ, (∀ n g, cut n g = ((Real.smoothTransition ((4 - ∑ i, ∑ j, Complex.normSq ((((n : ℝ) + 1)⁻¹ • g) i j)) / 3) : ℝ) : ℂ)) → ∀ γ : _root_.Formalism.FourierDecayAlt.C.LPt, Filter.Tendsto (fun n => p.V (_root_.Formalism.FourierDecayAlt.B.opApply Θ (fun g => cut n g • F g)) γ) Filter.atTop (nhds (p.V (_root_.Formalism.FourierDecayAlt.B.opApply Θ F) γ)) := by
   obtain ⟨c₃, hc₃⟩ := _root_.Formalism.FourierDecayAlt.P.PBE.vecV_tendsto

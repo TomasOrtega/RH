@@ -17,7 +17,7 @@ def frameCast {Z : Model Xo c β} {R : Type} [CommRing R] {φ : c.F →+* R} {x 
     (g : EigFrame Z φ x) : EigFrame Z φ x' := h ▸ g
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Z.jQ_over]`. Conclude with `pullback.lift_snd _ _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ptF_jQ_over (Z : Model Xo c β) {σ : c.F →+* ℂ} (P : FrPt Xo c (CAt σ)) :
     (GlobalTheory.AllWt.ptF (S := CAt σ) P ≫ Z.jQ) ≫ genStr Z = spMap σ := by

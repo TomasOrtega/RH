@@ -4,31 +4,29 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.LamLowNumericalEnd
 namespace UpperTheory.Mu
 
 /- English proof (translation)
-Take `⟨e⟩ : Nonempty (Fin f ≃ ι)` from `⟨(Fintype.equivFinOfCardEq hcard).symm⟩`. Establish `hw1 : (0 : ℝ) < w` using `by exact_mod_cast hw0`. Establish `hc : 0 < ((w : ℝ) / 2) ^ n` using `by positivity`. Establish `hm' : 1 / ((2 : ℝ) ^ n * (n.factorial : ℝ)) ≤ ((w : ℝ) / 2) ^ n * mass`. Use `le_trans (le_of_eq ?_) (mul_le_mul_of_nonneg_left hm hc.le)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (0 : ℝ) < n.factorial` using `by exact_mod_cast n.factorial_pos`. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts. Establish `hm0 : 0 < mass` using `lt_of_lt_of_le (by positivity) hm`. Establish `hE0 : 0 < E` using `lt_of_lt_of_le (Real.exp_pos _) hE`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : (1 : ℝ) ≤ r` using `by exact_mod_cast h1`. Establish `hn8 : (8 : ℝ) ≤ n` using `by exact_mod_cast h8`. Establish `hrn : 2 * (r : ℝ) ≤ n` using `by exact_mod_cast h2`. Establish `hf1 : (1 : ℝ) ≤ f` using `by exact_mod_cast hf`. Establish `hs : Real.sqrt 2 ≤ 3 / 2` using `Real.sqrt_le_iff.2 ⟨by norm_num, by norm_num⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `GlobalTheory.lamLow_numerical_end f n r L' dmax (((w : ℝ) / 2) ^ n * mass * dim) 1 _ (fun a => H (e a)) (fun _ => 1) (fun a => dk (e a)) (fun a => (J (e a))⁻¹) h8 h2 h1 hf hL hn hd0 hd (hm'.trans (le_mul_of_one_le_right (mul_pos hc hm0).le hdim)) one_pos (by rw [Real.log_one, abs …`. Use `(hdeg (e a)).1` as an intermediate fact. Use `(hdeg (e a)).2` as an intermediate fact. Use `gcongr`. Use the proof step `linarith)⟩) rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[e.sum_comp fun ρ => Real.log (H ρ), e.prod_comp fun ρ => H ρ * 1 * dk ρ / (J ρ)⁻¹]`. Establish `hP : 0 < mass * dim * 1 * ∏ ρ, H ρ * 1 * dk ρ / (J ρ)⁻¹`. Use `mul_pos (by positivity) (Finset.prod_pos fun ρ _ => ?_)` and prove the remaining obligations. Use `hH ρ` as an intermediate fact. Use `hk ρ` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Use `hJ ρ` as an intermediate fact. Check the signs of the components of the expression. Establish `hlw : Real.log (((w : ℝ) / 2) ^ n) ≤ 4 * (n * f)`. Establish `b0 : (w : ℝ) / 2 ≤ (2 * f) ^ 2`. Establish `: (w : ℝ) ≤ 8 * (f : ℝ) ^ 2` using `by exact_mod_cast hw`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `b1` using `Real.log_le_log (by positivity) b0`. Establish `b2` using `Real.log_le_sub_one_of_pos (x := 2 * (f : ℝ)) (by positivity)`. Rewrite `b1`, the goal using `[Real.log_pow]`. Move the coercions through the operations in `at b1`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: Real.log ((w : ℝ) / 2) ≤ 4 * f` using `by linarith only [b1, b2]`. Combine the linear relations using `only [mul_le_mul_of_nonneg_left this (Nat.cast_nonneg (α := ℝ) n)]`. Rewrite `key` using `[show ((w : ℝ) / 2) ^ n * mass * dim * 1 * ∏ ρ, H ρ * 1 * dk ρ / (J ρ)⁻¹ = ((w : ℝ) / 2) ^ n * (mass * dim * 1 * ∏ ρ, H ρ * 1 * dk ρ / (J ρ)⁻¹) by ring, Real.log_mul hc.ne' hP.ne']`. Establish `e1 : (∏ ρ, dk ρ) * dim * (idx * mass) * (∏ ρ, H ρ) * nrm / dO * (∏ ρ, J ρ) * E = (mass * dim * 1 * ∏ ρ, H ρ * 1 * dk ρ / (J ρ)⁻¹) * (E / (dO * dS))`. Simplify using `only [div_inv_eq_mul, mul_one, Finset.prod_mul_distrib]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: idx * nrm * dS = 1` using `by rw [hidx, inv_mul_cancel₀ hS.1.ne']`. Establish `h3` using `hO.1.ne'`. Establish `h4` using `hS.1.ne'`. Clear the denominators using the available nonvanishing facts. Take the linear combination `((∏ ρ, dk ρ) * (∏ ρ, H ρ) * (∏ ρ, J ρ)) * this`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hq : 0 < E / (dO * dS)` using `div_pos hE0 (mul_pos hO.1 hS.1)`. Rewrite using `[e1]`. Use `⟨mul_pos hP hq, ?_⟩` and prove the remaining obligations. Rewrite using `[Real.log_mul hP.ne' hq.ne', Real.log_div hE0.ne' (mul_pos hO.1 hS.1).ne', Real.log_mul hO.1.ne' hS.1.ne']`. Establish `a1` using `(Real.le_log_iff_exp_le hE0).2 hE`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a2` using `(Real.log_le_iff_le_exp hO.1).2 hO.2`. Establish `a3` using `(Real.log_le_iff_le_exp hS.1).2 hS.2`. Establish `a4 : 10 * ((r : ℝ) * f) + 4 * (n * f) ≤ 6 * (f * (n : ℝ) ^ 2 * L')`. Establish `b0 : (0 : ℝ) ≤ f` using `Nat.cast_nonneg _`. Establish `b1 : (r : ℝ) * f ≤ n * f` using `mul_le_mul_of_nonneg_right (by linarith only [hrn, hr]) b0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b2 : (n : ℝ) ≤ (n : ℝ) ^ 2` using `by nlinarith only [hn8]`. Establish `b3 : (n : ℝ) * f ≤ (n : ℝ) ^ 2 * f` using `mul_le_mul_of_nonneg_right b2 b0`. Establish `b4 : (n : ℝ) ^ 2 * f * 5.5 ≤ (n : ℝ) ^ 2 * f * L'` using `mul_le_mul_of_nonneg_left hL (by positivity)`. Establish `b5 : (0 : ℝ) ≤ (n : ℝ) ^ 2 * f` using `by positivity`. Combine the linear relations using `only [b1, b3, b4, b5]`.
-
-Combine the linear relations using `only [key, hlw, a1, a2, a3, a4]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem numeric_bound {ι : Type} [Fintype ι] {w : ℕ} (f n r : ℕ) (hcard : Fintype.card ι = f) (L' dmax mass dim idx nrm E dO dS : ℝ)
     (H dk J deg : ι → ℝ) (h8 : 8 ≤ n) (h2 : 2 * r ≤ n) (h1 : 1 ≤ r) (hf : 1 ≤ f) (hL : (5.5 : ℝ) ≤ L') (hn : Real.log n ≤ L')

@@ -24,7 +24,7 @@ Both sides reduce to the same expression.
 theorem mat_one : mat (1 : UA σ J) = 1 := rfl
 
 /- English proof (translation)
-Rewrite using `[← mat_mul, inv_mul_cancel, mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_mul (a : UA σ J) : mat a⁻¹ * mat a = 1 := by
   rw [← mat_mul, inv_mul_cancel, mat_one]
@@ -32,15 +32,15 @@ theorem mat_inv_mul (a : UA σ J) : mat a⁻¹ * mat a = 1 := by
 def Rel (v : Fin n → AE F E) (a b : UA σ J) : Prop := ∃ l : (AE F E)ˣ, mat (a * b⁻¹) *ᵥ v = l.1 • v
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, by rw [mul_inv_cancel, mat_one, Matrix.one_mulVec, Units.val_one, one_smul]⟩`.
+Supply the required witnesses or components.
 -/
 theorem rel_refl (v : Fin n → AE F E) (a : UA σ J) : Rel v a a :=
   ⟨1, by rw [mul_inv_cancel, mat_one, Matrix.one_mulVec, Units.val_one, one_smul]⟩
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `h`. Use `⟨l⁻¹, ?_⟩` and prove the remaining obligations. Establish `hi : b * a⁻¹ = (a * b⁻¹)⁻¹` using `by group`. Establish `key : mat (b * a⁻¹) *ᵥ (mat (a * b⁻¹) *ᵥ v) = v`. Rewrite using `[Matrix.mulVec_mulVec, hi, mat_inv_mul, Matrix.one_mulVec]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `key` using `[hl, Matrix.mulVec_smul]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[smul_smul, ← Units.val_mul, inv_mul_cancel, Units.val_one, one_smul]`. Use `_ = (l⁻¹).1 • v := by rw [key]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_symm (v : Fin n → AE F E) {a b : UA σ J} (h : Rel v a b) : Rel v b a := by
   obtain ⟨l, hl⟩ := h
@@ -54,7 +54,7 @@ theorem rel_symm (v : Fin n → AE F E) {a b : UA σ J} (h : Rel v a b) : Rel v 
     _ = (l⁻¹).1 • v := by rw [key]
 
 /- English proof (translation)
-Take `⟨l, hl⟩` from `h₁`. Take `⟨m, hm⟩` from `h₂`. Use `⟨l * m, ?_⟩` and prove the remaining obligations. Establish `hs : a * c⁻¹ = (a * b⁻¹) * (b * c⁻¹)` using `by group`. Rewrite using `[hs, mat_mul, ← Matrix.mulVec_mulVec, hm, Matrix.mulVec_smul, hl, smul_smul, Units.val_mul, mul_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem rel_trans (v : Fin n → AE F E) {a b c : UA σ J} (h₁ : Rel v a b) (h₂ : Rel v b c) : Rel v a c := by
   obtain ⟨l, hl⟩ := h₁
@@ -72,11 +72,11 @@ end GlobalTheory.ConeSmallCTReps
 open GlobalTheory.ConeSmallCTReps in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J x`. Set `S` to `setoidRat (σ := σ) (J := J) (incV F x)`. Use `⟨Set.range (fun q : Quotient S => (q.out : UA σ J)), ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨q, rfl⟩`. Conclude with `q.out.2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `γ hγ`. Set `g : ratU σ J` to `⟨γ, hγ⟩`. Use `⟨((⟦g⟧ : Quotient S).out : UA σ J), ⟨⟨_, rfl⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Establish `h : S.r (⟦g⟧ : Quotient S).out g` using `Quotient.mk_out (s := S) g`. Conclude with `rel_symm _ h`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce and unpack `t ⟨⟨q, rfl⟩, ht⟩`. Establish `h1 : S.r g q.out` using `ht`. Establish `h2 : S.r q.out (⟦g⟧ : Quotient S).out` using `rel_trans _ (rel_symm _ h1) (rel_symm _ (Quotient.mk_out (s := S) g))`. Establish `: q = ⟦g⟧` using `Quotient.out_equiv_out.mp h2`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ConeSmallCT.exists_isReps : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ)
     (J : Matrix (Fin n) (Fin n) E) (x : Fin n → E), ∃ T : Set (UA σ J), GlobalTheory.ConeSmallCT.IsReps T x := by

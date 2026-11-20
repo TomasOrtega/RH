@@ -35,7 +35,7 @@ def adCoef (γ : GL (Fin a) (Cinf E)) (p : Fin (Module.finrank ℝ (Lie E a)) ×
   lieCoord E a p.1 (toL ((γ⁻¹).val * Matrix.of (lieBasis E a p.2) * γ.val))
 
 /- English proof (translation)
-The claim follows from `(lieBasis E a).sum_repr X`.
+A detailed English derivation is pending.
 -/
 theorem sum_lieCoord (X : Lie E a) : ∑ i, ((lieBasis E a).coord i X) • lieBasis E a i = X :=
   (lieBasis E a).sum_repr X

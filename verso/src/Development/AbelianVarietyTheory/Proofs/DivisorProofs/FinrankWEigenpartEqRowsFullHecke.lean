@@ -30,7 +30,7 @@ namespace GlobalTheory.DimFull
 open GlobalTheory.CuspMult GlobalTheory.PartDims
 
 /- English proof (translation)
-Simplify using `[dualLab, List.map_reverse, Function.comp_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dualLab_twice (d : List ℤ) : dualLab (dualLab d) = d := by
   simp [dualLab, List.map_reverse, Function.comp_def]
@@ -42,9 +42,9 @@ section Adj
 variable {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
 
 /- English proof (translation)
-Establish `hadj` using `hN.2 P hP (Finsupp.single d 1)`. Establish `hc : GlobalTheory.Hk3.dualC (Finsupp.mapRange star (star_zero ℂ) (Finsupp.single d (1 : ℂ))) = Finsupp.single (dualLab d) 1`. Simplify using `[GlobalTheory.Hk3.dualC, Finsupp.mapRange_single, Finsupp.mapDomain_single]`. Rewrite `hadj` using `[hc]`. Establish `e` using `LinearMap.adjoint_inner_right (h P (Finsupp.single d 1)) x x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `e` using `[hadj, h1, h2, inner_smul_left, inner_smul_right]`. Establish `h0 : (inner ℂ x x : ℂ) ≠ 0` using `inner_self_ne_zero.2 hx`. Conclude with `(mul_right_cancel₀ h0 e).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem star_eq_of_normal {ok : Pl D.host.E → Prop} {h : Pl D.host.E → (List ℤ →₀ ℂ) → Module.End ℂ H}
     (hN : GlobalTheory.Hk3.NormalFam ok h) {P : Pl D.host.E} (hP : ok P) (d : List ℤ) {x : H} (hx : x ≠ 0) {a b : ℂ}
@@ -61,7 +61,7 @@ theorem star_eq_of_normal {ok : Pl D.host.E → Prop} {h : Pl D.host.E → (List
 end Adj
 
 /- English proof (translation)
-Unfold `GlobalTheory.Hk3.evC`. Rewrite using `[Finsupp.sum_single_index (by simp)]`. Simplify using `[hd]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem evC_single (V : HSp D) (P : Pl D.host.E) (a : List ℤ → ℂ) {d : List ℤ} (hd : IsLab V P d) :
     GlobalTheory.Hk3.evC V P a (Finsupp.single d 1) = a d := by
@@ -74,21 +74,21 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.lev.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)`. Conclude with `GlobalTheory.T.finite_group_lifts_to_parahoric_level _ _ _ _ _ hc rfl (GlobalTheory.T.typePlaces_not_pairwise_conjugate R.C.P R.Pg h.lev.Pg)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem liftsY' (h : Core R F) : LiftsExist (Yc D 0) (R.βY 0) (R.dat0 R.triv) := by
   obtain ⟨c, hc⟩ := h.lev.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)
   exact GlobalTheory.T.finite_group_lifts_to_parahoric_level _ _ _ _ _ hc rfl (GlobalTheory.T.typePlaces_not_pairwise_conjugate R.C.P R.Pg h.lev.Pg)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.lev.βW i`. Conclude with `GlobalTheory.T.finite_group_lifts_to_parahoric_level _ _ _ _ _ hc rfl (GlobalTheory.T.typePlaces_not_pairwise_conjugate R.C.P R.Pg h.lev.Pg)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem liftsW' (h : Core R F) (i : Fin D.R.m) : LiftsExist (Wc D i) (R.βW i) (R.datWp i R.triv) := by
   obtain ⟨c, hc⟩ := h.lev.βW i
   exact GlobalTheory.T.finite_group_lifts_to_parahoric_level _ _ _ _ _ hc rfl (GlobalTheory.T.typePlaces_not_pairwise_conjugate R.C.P R.Pg h.lev.Pg)
 
 /- English proof (translation)
-Establish `l1` using `GlobalTheory.T.isLabel_thetaLiftSpace_iff_dual (s := 0) R F h i Q d hQ`. Establish `l2` using `GlobalTheory.T.isLabel_thetaLiftSpace_iff_dual (s := 0) R F h i Q (dualLab d) hQ`. Establish `w` using `l1.2.2 hd`. Establish `y` using `l1.1.1 w`. Conclude with `⟨y, w, l2.2.2 y⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem lab_dual (h : Core R F) (i : Fin D.R.m) {Q : Pl D.host.E} (hQ : Good R A.μ0 Q) {d : List ℤ}
     (hd : IsLab (Yc D 0) Q d) : IsLab (Yc D 0) Q (dualLab d) ∧ IsLab (Wc D i) Q d ∧ IsLab (Wc D i) Q (dualLab d) := by
@@ -99,9 +99,9 @@ theorem lab_dual (h : Core R F) (i : Fin D.R.m) {Q : Pl D.host.E} (hQ : Good R A
   exact ⟨y, w, l2.2.2 y⟩
 
 /- English proof (translation)
-Take `⟨o, -, hN, -, hev, -⟩` from `GlobalTheory.T.exists_sphericalOperators_rows_normal_eigenspaces R F h hS SF hSF`. Establish `hdd` using `(lab_dual h i hQ hd).1`. Establish `h1` using `hev c Q hQ (Finsupp.single d 1) x hx`. Establish `h2` using `hev c Q hQ (Finsupp.single (dualLab d) 1) x hx`. Rewrite `h1` using `[evC_single _ _ _ hd]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[evC_single _ _ _ hdd, dualLab_twice]`. Conclude with `star_eq_of_normal hN hQ d h0 h1 h2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rel_of_E (h : Core R F) (hS : SchurAll R) {SF} (hSF : IsSF R SF) (i : Fin D.R.m) {c : Pl D.host.E → List ℤ → ℂ} {x : R.HE.H}
     (hx : x ∈ EEc R SF c) (h0 : x ≠ 0) {Q : Pl D.host.E} (hQ : Good R A.μ0 Q) {d : List ℤ} (hd : IsLab (Yc D 0) Q d) :
@@ -115,9 +115,9 @@ theorem rel_of_E (h : Core R F) (hS : SchurAll R) {SF} (hSF : IsSF R SF) (i : Fi
   exact star_eq_of_normal hN hQ d h0 h1 h2
 
 /- English proof (translation)
-Take `⟨o, -, hN, -, -, -, hev, -⟩` from `GlobalTheory.T.sphericalOperators_forms_on_rank_space_normal R F h hS hI SF hSF i`. Take `⟨-, hw, hwd⟩` from `lab_dual h i hQ hd`. Establish `h1` using `hev c Q hQ (Finsupp.single (dualLab d) 1) x hx`. Establish `h2` using `hev c Q hQ (Finsupp.single d 1) x hx`. Rewrite `h1` using `[evC_single _ _ _ hwd]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[evC_single _ _ _ hw]`. Use `star_eq_of_normal hN hQ (dualLab d) h0 h1 ?_` and prove the remaining obligations. Rewrite using `[dualLab_twice]`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitary_relation_labels_of_W_eigenvector (h : Core R F) (hS : SchurAll R) (hI : ∀ χ ∈ A.X, IsAbsIrrChar χ) {SF} (hSF : IsSF R SF) (i : Fin D.R.m)
     {c : Pl D.host.E → List ℤ → ℂ} {x : (R.HW i (sg0 D A)).H}
@@ -134,7 +134,7 @@ theorem unitary_relation_labels_of_W_eigenvector (h : Core R F) (hS : SchurAll R
   exact h2
 
 /- English proof (translation)
-Take `⟨-, hg, -⟩` from `GlobalTheory.T.theta_lift_levels_good_primes_properties R F h.lev`. Introduce `hc`. Rewrite `hc` using `[Nat.cast_pow]`. Conclude with `(hg _ _ hQ).1 (Q.isPrime.mem_of_pow_mem c hc)`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_Y (h : Core R F) {Q : Pl D.host.E} (hQ : Good R A.μ0 Q) (c : ℕ) :
     (((((D.host.g 0 * D.host.g 1) ^ c : ℕ)) : 𝓞 D.host.E)) ∉ Q.asIdeal := by
@@ -144,7 +144,7 @@ theorem good_Y (h : Core R F) {Q : Pl D.host.E} (hQ : Good R A.μ0 Q) (c : ℕ) 
   exact (hg _ _ hQ).1 (Q.isPrime.mem_of_pow_mem c hc)
 
 /- English proof (translation)
-Introduce `hc`. Rewrite `hc` using `[one_pow, Nat.cast_one]`. Conclude with `Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_pow_not_mem_height_one_asIdeal {Q : Pl D.host.E} (c : ℕ) : ((((1 ^ c : ℕ)) : 𝓞 D.host.E)) ∉ Q.asIdeal := by
   intro hc
@@ -152,7 +152,7 @@ theorem one_pow_not_mem_height_one_asIdeal {Q : Pl D.host.E} (c : ℕ) : ((((1 ^
   exact Q.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 hc)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.lev.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)`. Take `⟨-, -, hoff, -⟩` from `GlobalTheory.T.theta_lift_levels_good_primes_properties R F h.lev`. Rewrite using `[(GlobalTheory.T.level_operators_at_prime_off_level_datum (Yc D 0) (R.βY 0) (R.ΛY 0) _ (R.dat0 R.triv) hc Q (good_Y h hQ c) (fun PP hPP => hQ PP (Or.inl (hPP.resolve_right (Finset.notMem_empty _))))).2.1 SF d B]`. Conclude with `⟨fun x => x.2, fun x => ⟨(hoff SF hSF Q).2 hQ, x⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem hecke_Y (h : Core R F) {SF} (hSF : IsSF R SF) {Q : Pl D.host.E} (hQ : Good R A.μ0 Q) (d : List ℤ) (B : Finset (GA D (Yc D 0))) :
     Hecke₂ (Yc D 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) SF Q d B ↔
@@ -164,7 +164,7 @@ theorem hecke_Y (h : Core R F) {SF} (hSF : IsSF R SF) {Q : Pl D.host.E} (hQ : Go
   exact ⟨fun x => x.2, fun x => ⟨(hoff SF hSF Q).2 hQ, x⟩⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.lev.βW i`. Take `⟨-, -, hoff, -⟩` from `GlobalTheory.T.theta_lift_levels_good_primes_properties R F h.lev`. Rewrite using `[(GlobalTheory.T.level_operators_at_prime_off_level_datum (Wc D i) (R.βW i) (R.ΛW i) _ (R.datWp i R.triv) hc Q (one_pow_not_mem_height_one_asIdeal c) (fun PP hPP => hQ PP (Or.inl (hPP.resolve_right (Finset.notMem_empty _))))).2.1 SF d B]`. Conclude with `⟨fun x => x.2, fun x => ⟨(hoff SF hSF Q).2 hQ, x⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isHeckeOpFull_iff_sphOp (h : Core R F) {SF} (hSF : IsSF R SF) (i : Fin D.R.m) {Q : Pl D.host.E} (hQ : Good R A.μ0 Q) (d : List ℤ)
     (B : Finset (GA D (Wc D i))) :
@@ -177,7 +177,7 @@ theorem isHeckeOpFull_iff_sphOp (h : Core R F) {SF} (hSF : IsSF R SF) (i : Fin D
   exact ⟨fun x => x.2, fun x => ⟨(hoff SF hSF Q).2 hQ, x⟩⟩
 
 /- English proof (translation)
-Take `⟨-, -, hoff, -⟩` from `GlobalTheory.T.theta_lift_levels_good_primes_properties R F h.lev`. Take `⟨e, f, ϖ, α, hO, -⟩` from `hB`. Conclude with `(hoff SF hSF Q).1 hO`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem good_of_hecke {V : HSp D} (h : Core R F) {SF} (hSF : IsSF R SF) {J : Set (GA D V)} {χ : GA D V → ℂ} {Q : Pl D.host.E} {d : List ℤ}
     {B : Finset (GA D V)} (hB : Hecke₂ V J χ SF Q d B) : Good R A.μ0 Q := by
@@ -186,9 +186,9 @@ theorem good_of_hecke {V : HSp D} (h : Core R F) {SF} (hSF : IsSF R SF) {J : Set
   exact (hoff SF hSF Q).1 hO
 
 /- English proof (translation)
-Distinguish the cases in `hQ : Good R A.μ0 Q`. Take `⟨c, hc⟩` from `h.lev.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)`. Take `⟨c', hc'⟩` from `h.lev.βW i`. Rewrite using `[hecke_Y h hSF hQ, isHeckeOpFull_iff_sphOp h hSF i hQ]`. Conclude with `GlobalTheory.T.isometry_matching_lattices_matches_spherical_ops (Yc D 0) (Wc D i) (R.βY 0) (R.βW i) R.Pg j Φ (R.ΛY 0) (R.ΛW i) _ _ hc hc' hΦ Q (good_Y h hQ c) (one_pow_not_mem_height_one_asIdeal c') d B`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun e => absurd (good_of_hecke h hSF e) hQ, fun e => absurd (good_of_hecke h hSF e) hQ⟩`.
+A detailed English derivation is pending.
 -/
 theorem hecke_trans (h : Core R F) {SF} (hSF : IsSF R SF) (i : Fin D.R.m)
     {j : Matrix (Fin (Wc D i).rank) (Fin (Yc D 0).rank) (Lev.EAf D)} {Φ : GfC (Yc D 0) ≃ₜ* GfC (Wc D i)}
@@ -209,7 +209,7 @@ section Alg
 variable {H H' X : Type} [Group H] [Group H'] [AddCommGroup X] [Module ℂ X]
 
 /- English proof (translation)
-Simplify using `[map_sub, map_sum, Representation.asAlgebraHom_single, Finset.sum_map, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem alg_comp (ρ : Representation ℂ H' X) (Φ : H ≃* H') (B : Finset H) (z : ℂ) (v : X) :
     Representation.asAlgebraHom (ρ.comp Φ.toMonoidHom : Representation ℂ H X)
@@ -220,18 +220,18 @@ theorem alg_comp (ρ : Representation ℂ H' X) (Φ : H ≃* H') (B : Finset H) 
 end Alg
 
 /- English proof (translation)
-Introduce `_ hv` and use `((GlobalTheory.CuspMult.CutFull.mem_killed_union ρ I I' _).1 hv).1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem killed_le_left {H X : Type} [Group H] [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ H X)
     (I I' : Set (MonoidAlgebra ℂ H)) : killed ρ (I ∪ I') ≤ killed ρ I :=
   fun _ hv => ((GlobalTheory.CuspMult.CutFull.mem_killed_union ρ I I' _).1 hv).1
 
 /- English proof (translation)
-Use extensionality with `v`. Rewrite using `[GlobalTheory.CuspMult.CutFull.mem_killed_union, GlobalTheory.CuspMult.CutFull.mem_killed_union, hE]`. Use `and_congr_right fun _ => ?_` and prove the remaining obligations. Rewrite using `[mem_killed, mem_killed]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `hk x ⟨Q, d, B', hB', rfl⟩`. Establish `hm : (B'.map Φ.symm.toEquiv.toEmbedding).map Φ.toEquiv.toEmbedding = B'`. Use extensionality with `y`. Simplify using `[Finset.mem_map]`. Use `hk _ ⟨Q, d, B'.map Φ.symm.toEquiv.toEmbedding, (hI _ _ _).2 (by rw [hm]; exact hB'), rfl⟩` as an intermediate fact.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `this` using `[alg_comp, hm]`. Conclude with `this`. Introduce and unpack `hk x ⟨Q, d, B, hB, rfl⟩`. Rewrite using `[alg_comp]`. Conclude with `hk _ ⟨Q, d, _, (hI _ _ _).1 hB, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem killed_union_comp {H H' X ι κ : Type} [Group H] [Group H'] [AddCommGroup X] [Module ℂ X] (ρ : Representation ℂ H' X) (Φ : H ≃* H')
     {E : Set (MonoidAlgebra ℂ H)} {E' : Set (MonoidAlgebra ℂ H')}
@@ -258,13 +258,13 @@ theorem killed_union_comp {H H' X ι κ : Type} [Group H] [Group H'] [AddCommGro
     exact hk _ ⟨Q, d, _, (hI _ _ _).1 hB, rfl⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.lev.βY 0 (lt_of_lt_of_le two_pos D.R.two_le_m)`. Take `⟨c', hc'⟩` from `h.lev.βW i`. Establish `hrk : (Yc D 0).rank = (Wc D i).rank` using `rank_zeroth_component_eq.trans (rank_weight_component_eq i).symm`. Take `⟨j, Φ, hΦ⟩` from `GlobalTheory.T.exists_finiteAdelic_isometry_matching_frames (Yc D 0) (Wc D i) (R.βY 0) (R.ΛY 0) _ (R.βW i) (R.ΛW i) _ R.Pg hrk hc hc' (GlobalTheory.T.typePlaces_not_pairwise_conjugate R.C.P R.Pg h.lev.Pg)`. Establish `e1 : (goodPart R.θ M₀ (levS _ (R.βY 0) (R.dat0 P)) (levChi _ (R.βY 0) (R.dat0 P)) R.e0 ⊓ partFull R.θ M₀ (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) SF a : Submodule ℂ (MMap M₀)) = _` using `GlobalTheory.CuspMult.CutFull.good_partFull_eq_killed R.θ M₀ (R.βY 0) (R.dat0 R.triv) R.eG (RealDat.eC (A := A) D.what₂.embLL) P SF a rfl rfl (liftsY' h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e2 : (R.Wat i (sg0 D A) P ⊓ partFull R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) SF a : Submodule ℂ (MMap (R.MW i (sg0 D A)))) = _` using `GlobalTheory.CuspMult.CutFull.good_partFull_eq_killed R.θ (R.MW i (sg0 D A)) (R.βW i) (R.datWp i R.triv) R.eG (RealDat.eC (A := A) (sg0 D A)) P SF a rfl rfl (liftsW' h i)`. Establish `e3 : RealDat.eC (A` using `A) (sg0 D A) = RealDat.eC (A := A) D.what₂.embLL := by rw [sign_at_base_place_eq_embedding R]`. Establish `hl` using `GlobalTheory.T.isometry_matches_parahoric_levels (Yc D 0) (Wc D i) (R.βY 0) (R.βW i) D.R.r D.R.t (r_le_Y 0) (r_le_rank_Wc i) R.Pg R.chi (fun _ _ => 1) j Φ hΦ`. Establish `e4 : killed ((finRep (R.MW i (sg0 D A))).comp Φ.toMulEquiv.toMonoidHom : Representation ℂ (GfC (Yc D 0)) _) (eqSet (Yc D 0) (R.βY 0) (R.dat0 R.triv) R.eG (RealDat.eC (A` using `A) D.what₂.embLL) P (∅ : Set Empty) Empty.elim Empty.elim Empty.elim) = killed (finRep (R.MW i (sg0 D A))) (eqSet (Wc D i) (R.βW i) (R.datWp i R.triv) R.eG (RealDat.eC (A := A) D.what₂.embLL) P (∅ : Set Empty) Empty.elim Empty.elim Empty.elim) := GlobalTheory.T.levelTypeHecke_kil …`. Establish `e5` using `killed_union_comp (finRep (R.MW i (sg0 D A))) Φ.toMulEquiv e4 (fun Q d B => Hecke₂ (Yc D 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) SF Q d (B.map ⟨Subtype.val, Subtype.val_injective⟩)) (fun Q d B => Hecke₂ (Wc D i) (levS _ (R.βW i) (R.datWp i R.triv) …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `f1`, the goal using `[e1]`. Rewrite `f2`, the goal using `[e2, e3]`. Use `erw [← e5] at f2 ⊢`. Use `GlobalTheory.T.finrank_killed_eq_of_equal_multiplicities _ _ _ (finRep M₀) _ _ _ _ (hD R.θ h.models.inf _ _ M₀) (GlobalTheory.T.irreducibleAdmissibleDecomposable_comp_equiv _ _ _ _ _ Φ (hD R.θ h.models.inf _ _ (R.MW i (sg0 D A)))) ?_ (fun x hx => isOpen_stab rfl rfl (killed_le_le …` and prove the remaining obligations. Introduce `W _ _ σ h1 h2 h3`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[homInto_comp]`. Use `hM i M₀ j Φ hΦ W σ h1 h2 (isGoodRep_of_killed (P := P) (ok := (∅ : Set Empty)) (pl := Empty.elim) (q := Empty.elim) (Sg := Empty.elim) rfl rfl (liftsY' h) fun e => h3 ?_)` and prove the remaining obligations. Conclude with `le_bot_iff.1 (e ▸ killed_le_left _ _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem count (h : Core R F) (hD : CuspDecomp D) (hM : MultEq R) (i : Fin D.R.m)
     (M₀ : DSModel (Yc D 0) (parA (Ptw D) 0)) (P : LevelP R.Pg D.R.r ℂ) {SF} (hSF : IsSF R SF) (a : Pl D.host.E → List ℤ → ℂ)
@@ -319,11 +319,11 @@ theorem count (h : Core R F) (hD : CuspDecomp D) (hM : MultEq R) (i : Fin D.R.m)
   exact le_bot_iff.1 (e ▸ killed_le_left _ _ _)
 
 /- English proof (translation)
-Establish `hm : rTup (R.βY 0) (R.dat0 R.triv) (finE (Yc D 0) κ) ∈ (levPOf R.eG D.what₂.embLL Pp ψ).H` using `hκ.2.2`. Establish `h1` using `levChi_withP (β := R.βY 0) (L := R.dat0 R.triv) rfl rfl (levPOf R.eG D.what₂.embLL Pp ψ⁻¹) κ`. Establish `h2` using `levChi_withP (β := R.βY 0) (L := R.dat0 R.triv) rfl rfl (levPOf R.eG D.what₂.embLL Pp ψ) κ`. Use `replace h2 := h2.trans (congrArg Units.val (extendOne_of_mem (P := (levPOf R.eG D.what₂.embLL Pp ψ).H) (levPOf R.eG D.what₂.embLL Pp ψ).chi hm))`. Use `replace h1 := h1.trans (congrArg Units.val (extendOne_of_mem (P := (levPOf R.eG D.what₂.embLL Pp ψ⁻¹).H) (levPOf R.eG D.what₂.embLL Pp ψ⁻¹).chi hm))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `h1.trans (Eq.trans ?_ (congrArg star h2).symm)` and prove the remaining obligations. Establish `h3 : (levPOf R.eG D.what₂.embLL Pp ψ⁻¹).chi ⟨_, hm⟩ = ((levPOf R.eG D.what₂.embLL Pp ψ).chi ⟨_, hm⟩)⁻¹`. Conclude with `map_inv (Units.map D.what₂.embLL.toMonoidHom) _`. Establish `h4 : IsOfFinOrder ((levPOf R.eG D.what₂.embLL Pp ψ).chi ⟨_, hm⟩)`. Establish `: Finite (G0 R.Pg D.R.r)` using `Finite.of_equiv _ R.eG.toEquiv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `MonoidHom.isOfFinOrder _ (isOfFinOrder_of_finite _)`. Establish `h5 : ‖(((levPOf R.eG D.what₂.embLL Pp ψ).chi ⟨_, hm⟩ : ℂˣ) : ℂ)‖ = 1` using `((Units.coeHom ℂ).isOfFinOrder h4).norm_eq_one`. Rewrite using `[h3, Units.val_inv_eq_inv_val, Complex.inv_eq_conj h5]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem star_levChi' (Pp : Subgroup G) (ψ : Pp →* D.what₂.LLˣ) {κ : GA D (Yc D 0)}
     (hκ : κ ∈ levS _ (R.βY 0) (R.dat0 (levPOf R.eG D.what₂.embLL Pp ψ))) :
@@ -345,19 +345,19 @@ theorem star_levChi' (Pp : Subgroup G) (ψ : Pp →* D.what₂.LLˣ) {κ : GA D 
   rfl
 
 /- English proof (translation)
-Establish `hl : levPOf R.eG (sg0 D A) P ψ⁻¹ = levPOf R.eG D.what₂.embLL P ψ⁻¹` using `by rw [sign_at_base_place_eq_embedding R]`. Rewrite using `[hl]`. Establish `hW : R.Wat i (sg0 D A) (levPOf R.eG D.what₂.embLL P ψ⁻¹) ≤ R.Wat i (sg0 D A) R.triv` using `goodPart_le_flag (L := R.datWp i R.triv) R.θ _ rfl rfl _ _`. Establish `hE : R.EEat (levPOf R.eG D.what₂.embLL P ψ) ≤ R.EEat R.triv` using `goodPart_le_flag (L := R.dat0 R.triv) R.θ _ rfl rfl _ _`. Establish `eW : (Wcc R SF i c ⊓ (R.Wat i (sg0 D A) (levPOf R.eG D.what₂.embLL P ψ⁻¹)).comap (R.HW i _).e : Submodule ℂ _) = (R.Wat i (sg0 D A) (levPOf R.eG D.what₂.embLL P ψ⁻¹) ⊓ partFull R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) SF c …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `x`. Conclude with `⟨fun hx => ⟨hx.2, hx.1.2⟩, fun hx => ⟨⟨hW hx.1, hx.2⟩, hx.1⟩⟩`. Establish `eE : (EEc R SF c ⊓ (R.EEat (levPOf R.eG D.what₂.embLL P ψ)).comap R.HE.e : Submodule ℂ _) = (R.EEat (levPOf R.eG D.what₂.embLL P ψ) ⊓ partFull R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) SF (fun Q d => c Q (dualLab d))).comap R.HE.e`. Use extensionality with `x`. Conclude with `⟨fun hx => ⟨hx.2, hx.1⟩, fun hx => ⟨hx.2, hx.1⟩⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Supply the required witnesses or components.
 
-Rewrite using `[eW, eE]`. Take `⟨M₀, cc, hcc⟩` from `exists_conjModel (S' := parA (Ptw D) 0) (fun τ => by rw [Nat.zero_min]; exact (dualPar_dualPar _).symm) (R.MY 0)`. Establish `hχ0 : ∀ k ∈ levS _ (R.βY 0) (R.dat0 R.triv), levChi _ (R.βY 0) (R.dat0 R.triv) k = star (levChi _ (R.βY 0) (R.dat0 R.triv) k)`. Introduce `k hk`. Establish `h1 : levChi _ (R.βY 0) (R.dat0 R.triv) k = 1` using `(mem_levi_flag_of_mem_parabolic (L := R.dat0 R.triv) rfl rfl R.triv hk).2.2`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[h1, star_one]`. Establish `hr` using `GlobalTheory.ConjFull.conj_rank_full R.θ (R.MY 0) M₀ cc hcc (levS _ (R.βY 0) (R.dat0 (levPOf R.eG D.what₂.embLL P ψ))) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 (levPOf R.eG D.what₂.embLL P ψ))) (levChi _ (R.βY 0) (R.dat0 (levPOf R.eG D.what₂.embLL P ψ⁻¹))) (le …`. Establish `hU : partFull R.θ M₀ (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) SF (fun Q d => star (c Q (dualLab d))) = partFull R.θ M₀ (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) SF c`. Establish `key : ∀ Q d B, Hecke₂ (Yc D 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) SF Q d B → star (c Q (dualLab d)) = c Q d` using `fun Q d B hB => hrel Q (good_of_hecke hC hSF hB) d ⟨B, (hecke_Y hC hSF (good_of_hecke hC hSF hB) d B).1 hB⟩`. Use extensionality with `U`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[GlobalTheory.CuspMult.CutFull.mem_partFull_iff, GlobalTheory.CuspMult.CutFull.mem_partFull_iff]`. Use `and_congr_right fun _ => ⟨fun hh Q d B hB v x => ?_, fun hh Q d B hB v x => ?_⟩` and prove the remaining obligations. Rewrite using `[← key Q d B hB]`. Conclude with `hh Q d B hB v x`. Rewrite using `[key Q d B hB]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hh Q d B hB v x`. Rewrite `hr` using `[hU]`. Establish `hr' : Module.rank ℂ (R.EEat (levPOf R.eG D.what₂.embLL P ψ) ⊓ partFull R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) SF (fun Q d => c Q (dualLab d)) : Submodule ℂ (MMap (R.MY 0))) = Module.rank ℂ (goodPart R.θ M₀ (levS _ (R.βY 0) (R.dat0 (levP …` using `hr`. Establish `fE` using `(finrank_comap hC.models.HE (U := R.EEat (levPOf R.eG D.what₂.embLL P ψ) ⊓ partFull R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 R.triv)) (levChi _ (R.βY 0) (R.dat0 R.triv)) SF (fun Q d => c Q (dualLab d))) (inf_le_left.trans hE))`. Establish `fW` using `(finrank_comap (hC.models.HW i (sg0 D A)) (U := R.Wat i (sg0 D A) (levPOf R.eG D.what₂.embLL P ψ⁻¹) ⊓ partFull R.θ (R.MW i (sg0 D A)) (levS _ (R.βW i) (R.datWp i R.triv)) (levChi _ (R.βW i) (R.datWp i R.triv)) SF c) (inf_le_left.trans (hW.trans inf_le_left)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[fW.1, fE.1]`. Establish `f1` using `Module.rank_lt_aleph0_iff.1 (lt_of_eq_of_lt hr'.symm (Module.rank_lt_aleph0_iff.2 fE.2))`. Rewrite using `[← count hC hD hM i M₀ _ hSF c f1 fW.2]`. Conclude with `congrArg Cardinal.toNat hr'.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_rel {s : ℕ} (hs : A.fam.Ok s) (hC : Core R F) (hX : GoodStable A.X) (hD : CuspDecomp D) (hM : MultEq R) {SF} (hSF : IsSF R SF)
     (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) (i : Fin D.R.m) (c : Pl D.host.E → List ℤ → ℂ)
@@ -428,11 +428,9 @@ end GlobalTheory.DimFull
 open GlobalTheory.DimFull in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F s hs hC hS hX hD hM SF hSF P ψ i c`. Distinguish the cases in `hrel : ∀ Q, Good R A.μ0 Q → ∀ d, IsLab (Yc D 0) Q d → star (c Q (dualLab d)) = c Q d`. Conclude with `finrank_rel hs hC hX hD hM hSF P ψ i c hrel`. Establish `h1 : Wcc R SF i c = ⊥`. Assume the negation of the conclusion as `hne`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨x, hx, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Conclude with `hrel fun Q hQ d hd => unitary_relation_labels_of_W_eigenvector hC hS hs.irr hSF i hx h0 hQ hd`. Establish `h2 : EEc R SF c = ⊥`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx, h0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`.
-
-Conclude with `hrel fun Q hQ d hd => rel_of_E hC hS hSF i hx h0 hQ hd`. Rewrite using `[h1, h2, bot_inf_eq, bot_inf_eq, finrank_bot, finrank_bot]`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.DimFull.dim_parts_full : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) {s : ℕ}, A.fam.Ok s → Core R F → SchurAll R → GoodStable A.X → GlobalTheory.CuspMult.CuspDecomp D → GlobalTheory.CuspMult.MultEq R → ∀ SF, IsSF R SF → ∀ (P : Subgroup G) (ψ : P →* D.what₂.LLˣ) i c, Module.finrank ℂ (Wcc R SF i c ⊓ (R.Wat i (sg0 D A) (levPOf R.eG (sg0 D A) P ψ⁻¹)).comap (R.HW i _).e : Submodule ℂ _) = Module.finrank ℂ (EEc R SF c ⊓ (R.EEat (levPOf R.eG D.what₂.embLL P ψ)).comap R.HE.e : Submodule ℂ _) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F s hs hC hS hX hD hM SF hSF P ψ i c

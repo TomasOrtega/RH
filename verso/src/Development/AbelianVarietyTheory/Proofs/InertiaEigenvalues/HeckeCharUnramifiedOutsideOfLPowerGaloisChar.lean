@@ -19,41 +19,37 @@ namespace GlobalTheory.UnramPull
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `D N art hart r l n hl hp c χ hc hcorr Q hQ hlQ hine`. Introduce `x hx1 hx2 hx3 hxQ`. Take `⟨ι, h1, h2, h3⟩` from `GlobalTheory.HostAdeleIso.exists_finiteAdele_equiv D`. Establish `hidem` using `GlobalTheory.PlaceIdem.exists_isPlIdem D ι h1 h2 h3`. Take `⟨M, hM, hprod⟩` from `GlobalTheory.CharLocProd.char_eq_prod_locK D ι h1 h2 hidem c χ hc`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose e he hinf he1 he0 using hidem`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Take `⟨S, k, hS, hS'⟩` from `GlobalTheory.finiteIdele_exists_local_approx D.host.E M hM (Units.map ((ι : _ →+* _).comp (finPart D)).toMonoidHom x)`. Use `set f := idem Q + cA D (idem Q) with hf`. Establish `hcf : cA D f = f` using `by rw [hf, map_add, GlobalTheory.DualPairCheck.cA_cA, add_comm]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfe : ∀ P ∈ Q, idemAt P * f = idemAt P`. Introduce `P hP`. Establish `k1 : idemAt P * idem Q = idemAt P` using `GlobalTheory.PlaceModelSum.mul_sum_orth (fun a ha => (hQ.isIdemAt ha).1) (fun a ha b hb hab => hQ.mul_eq_zero ha hb hab) hP`. Establish `k2 : idemAt P * cA D (idem Q) = 0`. Rewrite using `[idem, map_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Finset.sum_eq_zero fun j hj => hQ.mul_conj hP hj`. Rewrite using `[hf, mul_add, k1, k2, add_zero]`. Establish `hdelta : ∀ P e', GlobalTheory.IdemSupport.IsDelta Φ P e' → e P = e'` using `fun P e' h' => GlobalTheory.IdemSupport.delta_unique hΦ ((GlobalTheory.IdemSupport.tie_iff hΦ (he P).1 (hinf P) P).1 (he P).2.2) h'`. Establish `hcomp : ∀ P, (∃ a, e P = a ∧ a * f = a) → ι (finPart D (x : AE D)) P = 1`. Introduce and unpack `P ⟨a, hea, haf⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k : e P * (x : AE D) = e P` using `by rw [hea, ← haf, mul_assoc, hxQ]`. Establish `k' : ι (finPart D (e P * (x : AE D))) P = ι (finPart D (e P)) P` using `by rw [k]`. Establish `e5 : ι (finPart D (e P * (x : AE D))) = ι (finPart D (e P)) * ι (finPart D (x : AE D))`. Rewrite using `[map_mul (finPart D) (e P) (x : AE D), map_mul ι]`. Rewrite `k'` using `[e5]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `ι (finPart D (e P)) P * ι (finPart D (x : AE D)) P = ι (finPart D (e P)) P at k'`. Rewrite `k'` using `[he1 P, one_mul]`. Then use the resulting hypothesis. Establish `hstar : ∀ z : D.host.E, star z = D.host.conj z` using `bridge_star_holds D.R D.host`. Establish `hconj : ∀ P' v : Pl D.host.E, Formalism.BasicNotions.IsConjPl D.host P' v → v = GlobalTheory.IdemSupport.cP P'`. Introduce `P' v h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.IdemSupport.eq_of_le fun y hy => ?_).symm` and prove the remaining obligations. Use `(h (GlobalTheory.IdemSupport.cO D y) y ?_).1 hy` and prove the remaining obligations. Rewrite using `[GlobalTheory.IdemSupport.cO_coe, ← hstar, star_star]`. Establish `hlconj : ∀ P' v : Pl D.host.E, Formalism.BasicNotions.IsConjPl D.host P' v → (((l : ℕ) : 𝓞 D.host.E) ∈ P'.asIdeal ↔ ((l : ℕ) : 𝓞 D.host.E) ∈ v.asIdeal)`. Introduce `P' v h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Establish an intermediate fact.
 
-Use `h _ _ ?_` and prove the remaining obligations. Use `push_cast`. Conclude with `(map_natCast _ l).symm`. Establish `hv : ∀ P : HeightOneSpectrum (𝓞 D.host.E), Valued.v (ι (finPart D (x : AE D)) P) = 1`. Introduce `P`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a` using `(h2 _).1 hx2 P`. Establish `b` using `(h2 _).1 hx3 P`. Establish `e' : Valued.v (ι (finPart D (x : AE D)) P) * Valued.v (ι (finPart D ((x⁻¹ : (AE D)ˣ) : AE D)) P) = 1`. Rewrite using `[← map_mul]`. Establish `: ι (finPart D (x : AE D)) P * ι (finPart D ((x⁻¹ : (AE D)ˣ) : AE D)) P = 1`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(ι (finPart D (x : AE D)) * ι (finPart D ((x⁻¹ : (AE D)ˣ) : AE D))) P = 1`. Rewrite using `[← map_mul, ← map_mul, Units.mul_inv, map_one, map_one]`. Both sides reduce to the same expression. Rewrite using `[this, map_one]`. Use `le_antisymm a ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `key` using `hprod x hx1 S k (fun P hP => ⟨(hS P hP).1, (hS P hP).2.1⟩) hS'`. Apply `Subtype.ext` to reduce the goal to its premises. Use `key.trans (Finset.prod_eq_one fun P hP => ?_)` and prove the remaining obligations. Take `⟨a, -, b⟩` from `hS P hP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a' : Valued.v (ι (finPart D (x : AE D)) P) = P.valuation D.host.E (k P : D.host.E)` using `a`. Establish `b' : Valued.v (ι (finPart D (x : AE D)) P - algebraMap D.host.E _ (k P : D.host.E)) ≤ WithZero.exp (-1 : ℤ) * P.valuation D.host.E (k P : D.host.E)` using `b`. Rewrite `a'` using `[hv P]`. Rewrite `b'` using `[← a', mul_one]`. Establish `hun : Formalism.L2.Host.IsUnitAt P (Formalism.L2.Host.atFin P (k P))` using `by show Valued.v (((k P : D.host.E)) : P.adicCompletion D.host.E) = _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[HeightOneSpectrum.valuedAdicCompletion_eq_valuation', ← a']`. Establish `: χ.locK P (k P) = 1` using `by show χ.loc P (Formalism.L2.Host.atFin P (k P)) = 1`. Distinguish the cases in `hPQ : P ∈ Q ∨ ∃ P' ∈ Q, Formalism.BasicNotions.IsConjPl D.host P' P`. Establish `hlP : ((l : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal`. Break down `hPQ with hPQ | ⟨P', hP', hc'⟩` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hlQ P hPQ`. Conclude with `fun hm => hlQ P' hP' ((hlconj P' P hc').2 hm)`. Establish `h1P : ι (finPart D (x : AE D)) P = 1`. Use `hcomp P ?_` and prove the remaining obligations. Break down `hPQ with hPQ | ⟨P', hP', hc'⟩` into its components or cases.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨idemAt P, hdelta P _ (GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ (hQ.isIdemAt hPQ)), hfe P hPQ⟩`. Use `⟨cA D (idemAt P'), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hconj P' P hc']`. Conclude with `hdelta _ _ (GlobalTheory.IdemSupport.delta_conj hΦ (GlobalTheory.IdemSupport.delta_of_isIdemAt hΦ (hQ.isIdemAt hP')))`. Rewrite using `[← hcf, ← map_mul, hfe P' hP']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `ht` using `GlobalTheory.ToricDistribution.levelLe_one_of_pow hl (hcorr.pow hp) hlP`. Use `ht _ hun ?_` and prove the remaining obligations. Rewrite `b'` using `[h1P]`. Establish `e4 : ((Formalism.L2.Host.atFin P (k P) : (P.adicCompletion D.host.E)ˣ) : P.adicCompletion D.host.E) - 1 = -(1 - algebraMap D.host.E _ (k P : D.host.E))` using `by show algebraMap D.host.E _ (k P : D.host.E) - 1 = _`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[e4, Valuation.map_neg]`. Simplify using `using b'`. Use `push_neg at hPQ`. Take `⟨B, hB⟩` from `ReciprocityTheory.Gal.exists_isPlaceOver N.Om P`. Conclude with `GlobalTheory.ToricDistribution.Corr.unr hart hcorr hB (hine P hPQ.1 hPQ.2 B hB) _ hun`.
-
-Use `show ((χ.locK P (k P) : ℂˣ) : ℂ) = 1`. Rewrite using `[this, Units.val_one]`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unramOutside_of_corr : ∀ (D : D7) (N : NData D.R D.host D.what₂) (art : Neutral.B1.Ideles D.host.E →* GlobalTheory.HeckeGal.Gab D.host.E N.Om), GlobalTheory.HeckeGal.IsGlobalArtin art → ∀ (r : G D.host.E N.Om →* ℂˣ) (l n : ℕ), l.Prime → (∀ σ, r σ ^ (l ^ n) = 1) → ∀ (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E), ChrEq c χ → GlobalTheory.ToricDistribution.Corr art r χ → ∀ Q : Finset (Pl D.host.E), SplitSet Q → (∀ P ∈ Q, ((l : ℕ) : 𝓞 D.host.E) ∉ P.asIdeal) → (∀ v : Pl D.host.E, v ∉ Q → (∀ P ∈ Q, ¬ Formalism.BasicNotions.IsConjPl D.host P v) → ∀ B : ValuationSubring N.Om, IsPlaceOver B v → ∀ σ ∈ Ine (F := D.host.E) B, r σ = 1) → GlobalTheory.ExportSeries.UnramOutside c Q := by
   intro D N art hart r l n hl hp c χ hc hcorr Q hQ hlQ hine

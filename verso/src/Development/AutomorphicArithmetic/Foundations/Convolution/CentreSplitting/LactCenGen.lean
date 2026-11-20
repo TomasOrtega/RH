@@ -11,7 +11,7 @@ open scoped TensorProduct
 namespace UpperTheory.ConvolutionTheory.Dp
 
 /- English proof (translation)
-Use `Eq.trans ?_ (toLp_integrated_archRepT μ ν (γ := β) β.continuous β.hasCompactSupport w).symm` and prove the remaining obligations. Rewrite using `[Oinf, UnitaryRep.integrated_ccToL1_apply]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem oinf_toLp {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
     (ν : Measure (archGroup K n)) [ν.IsHaarMeasure] (β : TI K n) (w : CuspL2 μ) :
@@ -21,7 +21,7 @@ theorem oinf_toLp {K : Type} [Field K] [NumberField K] {n : ℕ} (μ : Measure (
   rfl
 
 /- English proof (translation)
-Establish `h : rUC (c ⊗ₜ p) = algebraMap ℂ _ c * (isExpLieAlgebra K n).rightUAction (F` using `ℂ) p := Algebra.TensorProduct.lift_tmul _ _ _ c p`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rUC_tmul {K : Type} [Field K] [NumberField K] {n : ℕ} (c : ℂ) (p : UEnv K n) (f : (isExpLieAlgebra K n).smoothFuns (F := ℂ))
     (g : archGroup K n) : (rUC (c ⊗ₜ p) f).1 g = c * ((isExpLieAlgebra K n).rightUAction p f).1 g := by
@@ -32,15 +32,15 @@ theorem rUC_tmul {K : Type} [Field K] [NumberField K] {n : ℕ} (c : ℂ) (p : U
 
 set_option maxHeartbeats 800000 in
 /- English proof (translation)
-Introduce `p hp q hq φ hφ`. Take `⟨h, hl⟩` from `lactSpec K n ((1 : ℂ) ⊗ₜ p + Complex.I ⊗ₜ q) β hβ`. Establish `hT : (isExpLieAlgebra K n).IsTestFunction β` using `⟨hβ, β.hasCompactSupport⟩`. Set `f : (isExpLieAlgebra K n).smoothFuns (F` to `ℂ) := ⟨fun g => β g⁻¹, h⟩`. Establish `e : (fun g => f.1 g⁻¹) = β` using `funext fun g => by simp only [f, inv_inv]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : (isExpLieAlgebra K n).IsTestFunction fun g => f.1 g⁻¹` using `e ▸ hT`. Establish `hπ : ∀ g, ‖archRepT μ g‖ ≤ 1` using `fun g => ContinuousLinearMap.opNorm_le_bound _ zero_le_one fun v => by`. Rewrite using `[one_mul]`. Conclude with `((archURepT μ).norm_map g v).le`. Establish `key : ∀ z ∈ (isExpLieAlgebra K n).centerU, (archRepT μ).integrated ν (fun g => ((isExpLieAlgebra K n).rightUAction z f).1 g⁻¹) (cuspVecL μ φ) = (archRepT μ).integrated ν β (cuspVecL μ (uActionCusp K n z φ))` using `fun z hz => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (kernel_uAction _ ν (archRepT μ) z f hf).2, central_integrated _ ν (archRepT μ) hπ hG hz hf (isSmoothVector_cuspToL2 μ hφ), uAction_cuspToL2 μ hφ, e]`. Establish `e2 : (lact ((1 : ℂ) ⊗ₜ p + Complex.I ⊗ₜ q) β : archGroup K n → ℂ) = fun g => ((isExpLieAlgebra K n).rightUAction p f).1 g⁻¹ + Complex.I * ((isExpLieAlgebra K n).rightUAction q f).1 g⁻¹`. Use function extensionality and compare the values at `g`. Establish `h3` using `rUC_tmul 1 p f g⁻¹`. Rewrite `h3` using `[one_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hl g, map_add, ← h3, ← rUC_tmul Complex.I q f g⁻¹]`. Both sides reduce to the same expression. Establish `h1` using `(kernel_uAction _ ν (archRepT μ) p f hf).1`. Establish `h2` using `(kernel_uAction _ ν (archRepT μ) q f hf).1`. Establish `h4 : ∀ (γ : TI K n) ψ, Oinf μ ν γ (clsL μ ψ) = toLp μ ((archRepT μ).integrated ν γ (cuspVecL μ ψ))` using `fun γ ψ => oinf_toLp μ ν γ _`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : Oinf μ ν β (clsL μ (uActionCusp K n p φ + Complex.I • uActionCusp K n q φ)) = Oinf μ ν β (clsL μ (uActionCusp K n p φ)) + Complex.I • Oinf μ ν β (clsL μ (uActionCusp K n q φ))`. Rewrite using `[(clsL μ).map_add, (clsL μ).map_smul, (Oinf μ ν β).map_add, (Oinf μ ν β).map_smul]`. Rewrite using `[h5, h4, h4, h4, e2, (isExpLieAlgebra K n).integrated_add_kernel ν _ h1 (h2.const_mul _), IsExpLieAlgebra.integrated_const_mul_kernel, key p hp, key q hq, (toLp μ).map_add, (toLp μ).map_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lactCen_of_gen (K : Type) [Field K] [NumberField K] (n : ℕ)
     (hG : Subgroup.closure (Set.range (isExpLieAlgebra K n).expG) = ⊤) (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]

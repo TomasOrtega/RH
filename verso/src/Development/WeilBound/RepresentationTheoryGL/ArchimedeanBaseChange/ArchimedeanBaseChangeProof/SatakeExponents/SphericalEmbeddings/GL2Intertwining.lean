@@ -11,11 +11,9 @@ open PositivityTheory.Rg.BcB.N3 PositivityTheory.Rg.BcB.N3.Pse
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {n : ℕ}
 
 /- English proof (translation)
-Take `⟨p, hp, x, hx, rfl⟩` from `(GlobalTheory.SmGL.LeviInt.levi_integral_facts k (Fin n) (Fin n) (fun _ => Unit) (points (Fin n))).2.2.2.2.2.2.2.2 g`. Use `⟨((twist ((ofChar (torusChar fun i => unrChar k (α i))).comp (leviTorus k (Fin n)).symm.toMonoidHom) (deltaHalf k (fun _ : Fin n => Unit))).comp (leviProj k (points (Fin n))) ⟨p, hp⟩) 1, fun v hv => ?_⟩` and prove the remaining obligations. Establish `h1 : v.1.1 (p * x) = v.1.1 p`. Establish `h` using `congrArg (fun u : IndSp (points (Fin n)) ((ofChar (torusChar fun i => unrChar k (α i))).comp (leviTorus k (Fin n)).symm.toMonoidHom) => u.1.1 p) (hv ⟨x, hx⟩)`. Rewrite `h` using `[MonoidHom.one_apply, Units.val_one, one_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Establish `h2` using `v.1.2 ⟨p, hp⟩ 1`. Rewrite `h2` using `[mul_one]`. Rewrite using `[h1, h2]`. Use `conv_lhs => rw [show v.1.1 1 = v.1.1 1 • (1 : ℂ) by simp]`.
-
-Rewrite using `[map_smul, smul_eq_mul, mul_comm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_scalar_fixed_indSp_unrChar (α : Fin n → ℂˣ) (g : GL (Fin n) k) :
     ∃ c : ℂ, ∀ v : IndSp (points (Fin n))
@@ -38,9 +36,9 @@ private theorem exists_scalar_fixed_indSp_unrChar (α : Fin n → ℂˣ) (g : GL
   rw [map_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`. Take `⟨c, hc⟩` from `exists_scalar_fixed_indSp_unrChar α g`. Use `show w.1.1 1 • v.1.1 g = v.1.1 1 • w.1.1 g`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc v hv, hc w hw, smul_eq_mul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem kline (α : Fin n → ℂˣ) {v w : IndSp (points (Fin n))
     ((ofChar (torusChar fun i => unrChar k (α i))).comp (leviTorus k (Fin n)).symm.toMonoidHom)}
@@ -55,9 +53,9 @@ theorem kline (α : Fin n → ℂˣ) {v w : IndSp (points (Fin n))
   ring
 
 /- English proof (translation)
-Introduce `h1`. Apply `h0` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `g`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨c, hc⟩` from `exists_scalar_fixed_indSp_unrChar α g`. Rewrite using `[hc w hw, h1, mul_zero]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem one_ne_zero_of_fixed (α : Fin n → ℂˣ) {w : IndSp (points (Fin n))
     ((ofChar (torusChar fun i => unrChar k (α i))).comp (leviTorus k (Fin n)).symm.toMonoidHom)}

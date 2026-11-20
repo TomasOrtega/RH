@@ -10,26 +10,26 @@ namespace DiscreteGroups.T1.G
 variable (X : Ctx)
 
 /- English proof (translation)
-Rewrite using `[← ofReal_norm_eq_enorm, Complex.norm_conj, ofReal_norm_eq_enorm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem enorm_conj' (a : ℂ) : ‖starRingEnd ℂ a‖ₑ = ‖a‖ₑ := by
   rw [← ofReal_norm_eq_enorm, Complex.norm_conj, ofReal_norm_eq_enorm]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Complex.continuous_ofReal.comp hφ.1.norm, hφ.2.mono' (fun w hw => subset_tsupport _ (by simpa [Function.mem_support] using hw))⟩`.
+Supply the required witnesses or components.
 -/
 theorem tst_norm {φ : X.G → ℂ} (hφ : Tst φ) : Tst (fun w => ((‖φ w‖ : ℝ) : ℂ)) :=
   ⟨Complex.continuous_ofReal.comp hφ.1.norm,
     hφ.2.mono' (fun w hw => subset_tsupport _ (by simpa [Function.mem_support] using hw))⟩
 
 /- English proof (translation)
-Establish `hU : (⋃ γ : X.Γ, γ • X.F) =ᵐ[X.μ] (Set.univ : Set X.G)` using `X.fd.iUnion_smul_ae_eq`. Establish `hμ : X.μ = X.μ.restrict (⋃ γ : X.Γ, γ • X.F)`. Rewrite using `[Measure.restrict_congr_set hU, Measure.restrict_univ]`. Rewrite using `[hμ, aestronglyMeasurable_iUnion_iff]`. Introduce `γ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmp : MeasurePreserving (fun y : X.G => (γ : X.G)⁻¹ * y) (X.μ.restrict (γ • X.F)) X.ν`. Establish `h0 : MeasurePreserving (fun y : X.G => (γ : X.G)⁻¹ * y) X.μ X.μ` using `measurePreserving_mul_left X.μ _`. Establish `h1` using `h0.restrict_preimage_emb (MeasurableEquiv.mulLeft ((γ : X.G)⁻¹)).measurableEmbedding X.F`. Establish `h2 : (fun y : X.G => (γ : X.G)⁻¹ * y) ⁻¹' X.F = γ • X.F`. Use extensionality with `y`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[Set.mem_smul_set_iff_inv_smul_mem, Subgroup.smul_def]`. Rewrite `h1` using `[h2]`. Conclude with `h1`. Use `(hf.comp_measurePreserving hmp).congr (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Use `hinv γ⁻¹ y` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem aesm_of_inv {f : X.G → ℂ} (hinv : ∀ γ : X.Γ, ∀ y, f ((γ : X.G) * y) = f y)
     (hf : AEStronglyMeasurable f X.ν) : AEStronglyMeasurable f X.μ := by
@@ -51,9 +51,9 @@ theorem aesm_of_inv {f : X.G → ℂ} (hinv : ∀ γ : X.Γ, ∀ y, f ((γ : X.G
   simpa using this
 
 /- English proof (translation)
-Establish `hmp : MeasurePreserving (fun y : X.G => y * z⁻¹) X.μ X.μ` using `measurePreserving_mul_right X.μ _`. Establish `hfd : IsFundamentalDomain X.Γ ((fun y : X.G => y * z⁻¹) ⁻¹' X.F) X.μ` using `X.fd.preimage_of_equiv hmp.quasiMeasurePreserving (e := id) Function.bijective_id (fun γ y => by simp [Subgroup.smul_def, mul_assoc])`. Establish `h1 : ∫⁻ x in X.F, g (x * z) ∂X.μ = ∫⁻ y in (fun y : X.G => y * z⁻¹) ⁻¹' X.F, g y ∂X.μ`. Rewrite using `[← hmp.setLIntegral_comp_preimage_emb (MeasurableEquiv.mulRight z⁻¹).measurableEmbedding (fun x => g (x * z)) X.F]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show ∫⁻ x in X.F, g (x * z) ∂X.μ = ∫⁻ x in X.F, g x ∂X.μ`. Rewrite using `[h1, hfd.setLIntegral_eq X.fd g (fun γ y => by simpa [Subgroup.smul_def] using hinv γ y)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lint_rt (hr : X.μ.IsMulRightInvariant) {g : X.G → ℝ≥0∞}
     (hinv : ∀ γ : X.Γ, ∀ y, g ((γ : X.G) * y) = g y) (z : X.G) :

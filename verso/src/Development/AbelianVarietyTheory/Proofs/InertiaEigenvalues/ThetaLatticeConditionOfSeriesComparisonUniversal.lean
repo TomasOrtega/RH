@@ -15,13 +15,11 @@ set_option maxHeartbeats 800000
 namespace GlobalTheory.SeriesTie
 
 /- English proof (translation)
-Introduce `i hi j hj b k Q M χ hψ a hQa`. Take `⟨hj1, hj2⟩` from `Finset.mem_Icc.1 hj`. Take `⟨n, rfl⟩` from `Nat.exists_eq_add_of_le' hj1`. Set `j' : Fin D.R.m` to `⟨n, hj2⟩`. Establish `T` using `T i j' b`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Distinguish the cases in `hoff : InRange D.ntw i Q ∧ ∀ a', ρ.xi i j' b D.nexp Q M (T.cls a) (T.coef a) a' ∈ Set.range (rd i j' b)`. Use `choose x hx using hoff.2`. Rewrite using `[T.thU_eq Q M a hoff.1 x hx]`. Take `⟨z, hz, hzr⟩` from `exists_mem_thPsi_of_mem_span T (hR i hi j' b) hψ hoff.1.2.1 a (f := specXi ρ D.nexp i j' b k Q M χ (T.cls a) (T.coef a)) (by`. Rewrite using `[GlobalTheory.T.specialised_universal_series_eq_twisted_thetaSeries ρ hρ D.nexp hY i j' b k Q M χ hψ]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.twistedSeries_specialisedUniversalDatum_mem_span ρ hρ D.nexp hY i j' b k Q M χ hψ hoff.1 _ _ _ (T.dat a) fun v hv h => Finset.disjoint_left.1 hQa hv ((T.lev_iff a v).2 h))`. Establish `e : z = Formalism.MainNotions.IntegralHeckeForms.specU D.nexp i ((j' : ℕ) + 1) b Q M k χ (grpSum D.nexp (ρ.ch i) Q M x)`. Use `T.injective_rdK k (hzr.trans ?_)` and prove the remaining obligations. Rewrite using `[rdK_specU_grpSum hρ (rd i j' b) k Q M χ x, specXi]`. Conclude with `Finset.sum_congr rfl fun a' _ => by rw [hx a']`.
-
-Rewrite using `[← e]`. Conclude with `hz`. Rewrite using `[T.thU_off Q M a hoff, map_zero]`. Conclude with `zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaLatticeCondition_of_seriesComparison_universalChar {D : D7} {ρ : Setup D.ntw} {hρ : ρ.Good} {rd : Rds D.nexp ρ} (T : Comparison₂ hρ rd)
     (hY : GlobalTheory.UnivChar.IsUnivChar D.nexp) (hR : ∀ i, D.ntw.NonzeroIndexPlace i → ∀ j b, RatTwist hρ (rd i j b)) :
@@ -50,7 +48,7 @@ theorem thetaLatticeCondition_of_seriesComparison_universalChar {D : D7} {ρ : S
     exact zero_mem _
 
 /- English proof (translation)
-Introduce `_ _ _ _ F L` and use `thetaLatticeCondition_of_seriesComparison_universalChar F.tie F.univ fun i hi j b => (L.rat i hi j b).2.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem thetaLatticeCondition_of_fullSeriesComparison : ∀ (D : D7) (ρ : Setup D.ntw) (hρ : ρ.Good) (rd : Rds D.nexp ρ), FullTie hρ rd →
     GlobalTheory.TwInputs.Laws hρ rd → Formalism.MainNotions.IntegralHeckeForms.TwistedSeriesSpecialisation D.nexp :=

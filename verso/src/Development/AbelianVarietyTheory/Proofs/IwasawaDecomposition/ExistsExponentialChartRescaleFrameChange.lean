@@ -10,39 +10,33 @@ set_option autoImplicit false
 namespace GlobalTheory.ShFam.Hor.LogCh
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c O _ β Z σ n g e0 ex ρ A hρ hball hhol hsymm hjoint hexp hA hdet`. Establish `hss : ∀ z : Fin n → ℂ, (Homeomorph.smulOfNeZero (ρ⁻¹ : ℝ) (inv_ne_zero hρ.ne')).symm z = ρ • z` using `fun z => by`. Simplify using `[Homeomorph.smulOfNeZero, Units.smul_def]`. Establish `hnorm : ∀ z : Fin n → ℂ, ‖ρ • z‖ < ρ ↔ ‖z‖ < 1` using `fun z => by`. Rewrite using `[norm_smul, Real.norm_eq_abs, abs_of_pos hρ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_lt_iff_lt_one_right hρ`. Set `e1` to `e0.trans (OpenPartialHomeomorph.ofSet (Metric.ball (0 : Fin n → ℂ) ρ) Metric.isOpen_ball)`. Set `hs : (Fin n → ℂ) ≃ₜ (Fin n → ℂ)` to `Homeomorph.smulOfNeZero (ρ⁻¹ : ℝ) (inv_ne_zero hρ.ne')`. Set `e` to `e1.transHomeomorph hs`. Establish `he_app : ∀ x, e x = ρ⁻¹ • e0 x` using `fun x => rfl`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `he_symm : ∀ z, e.symm z = e0.symm (ρ • z)` using `fun z => by`. Simplify using `[e, e1, hs, Homeomorph.smulOfNeZero, Units.smul_def]`. Establish `he_src : e.source = e0.source ∩ {x | ‖e0 x‖ < ρ}`. Use extensionality with `x`. Simplify using `[e, e1]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hss' : ∀ z, hs.symm z = ρ • z` using `hss`. Establish `he_tgt : e.target = Metric.ball 0 1`. Use extensionality with `z`. Use `show z ∈ (e1.transHomeomorph hs).target ↔ _`. Rewrite using `[OpenPartialHomeomorph.transHomeomorph_target, Set.mem_preimage, hss']`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ρ • z ∈ (e0.trans (OpenPartialHomeomorph.ofSet (Metric.ball (0 : Fin n → ℂ) ρ) Metric.isOpen_ball)).target ↔ _`. Rewrite using `[OpenPartialHomeomorph.trans_target]`. Use `show ρ • z ∈ Metric.ball (0 : Fin n → ℂ) ρ ∧ ρ • z ∈ e0.target ↔ _`. Rewrite using `[mem_ball_zero_iff, mem_ball_zero_iff]`. Prove the components needed by the constructor for the conclusion.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce and unpack `⟨h, -⟩`. Conclude with `(hnorm z).1 h`. Introduce `h`. Conclude with `⟨(hnorm z).2 h, hball (mem_ball_zero_iff.2 ((hnorm z).2 h))⟩`. Establish `hsrc : ∀ x ∈ e.source, x ∈ e0.source ∧ ‖e0 x‖ < ρ` using `fun x hx => by`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hx` using `[he_src]`. Conclude with `hx`. Use `⟨e, fun x w => ex x (A (e0 x) *ᵥ w), ⟨he_tgt, ?_, ?_, ?_, ?_, ?_⟩, he_src, fun x _ => he_app x, fun _ _ _ => rfl⟩` and prove the remaining obligations. Introduce `k V _ _ _ B x hB hx hm`. Establish `hd` using `hhol k V B x hB hx fun b hb => (hsrc _ (hm hb)).1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(hd.const_mul ((ρ⁻¹ : ℝ) : ℂ)).congr fun b _ => ?_` and prove the remaining obligations. Simplify using `[he_app, Complex.real_smul]`. Rewrite using `[he_tgt]`. Use `GlobalTheory.HolPeriods.isHolTo_congr (GlobalTheory.HolPeriods.isHolTo_comp hsymm Metric.isOpen_ball (φ := fun z => ρ • z) ?_ ?_) fun z _ => by rw [he_symm]` and prove the remaining obligations. Conclude with `differentiableOn_id.const_smul ρ`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `z hz`. Conclude with `hball (mem_ball_zero_iff.2 ((hnorm z).2 (mem_ball_zero_iff.1 hz)))`. Introduce `x hx v w`. Take `⟨h1, h2⟩` from `hsrc x hx`. Simplify using `only [Matrix.mulVec_add]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `(hexp x h1 h2).1 _ _`. Rewrite using `[he_tgt]`. Establish `hmaps : Set.MapsTo (fun zw : (Fin n → ℂ) × (Fin g → ℂ) => (ρ • zw.1, A (ρ • zw.1) *ᵥ zw.2)) (Metric.ball 0 1 ×ˢ Set.univ) (Metric.ball 0 ρ ×ˢ Set.univ)` using `fun zw hzw => ⟨mem_ball_zero_iff.2 ((hnorm _).2 (mem_ball_zero_iff.1 hzw.1)), trivial⟩`. Establish `hdiff : DifferentiableOn ℂ (fun zw : (Fin n → ℂ) × (Fin g → ℂ) => (ρ • zw.1, A (ρ • zw.1) *ᵥ zw.2)) (Metric.ball 0 1 ×ˢ Set.univ)`. Establish `h1 : DifferentiableOn ℂ (fun zw : (Fin n → ℂ) × (Fin g → ℂ) => ρ • zw.1) (Metric.ball 0 1 ×ˢ Set.univ)` using `differentiableOn_fst.const_smul ρ`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h1.prodMk (differentiableOn_pi.2 fun i => ?_)` and prove the remaining obligations. Simplify using `only [Matrix.mulVec, dotProduct]`. Use `DifferentiableOn.fun_sum fun j _ => ?_` and prove the remaining obligations. Establish `hij : DifferentiableOn ℂ (fun zw : (Fin n → ℂ) × (Fin g → ℂ) => A (ρ • zw.1) i j) (Metric.ball 0 1 ×ˢ Set.univ)`. Establish `hA2 : DifferentiableOn ℂ (fun z => (Matrix.of.symm (A z) : Fin g → Fin g → ℂ)) (Metric.ball 0 ρ)` using `hA`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hL : DifferentiableOn ℂ (fun z => A z i j) (Metric.ball 0 ρ)` using `differentiableOn_pi.1 (differentiableOn_pi.1 hA2 i) j`. Conclude with `hL.comp h1 fun zw hzw => (hmaps hzw).1`. Conclude with `hij.mul (differentiableOn_pi.1 differentiableOn_snd j)`. Use `GlobalTheory.HolPeriods.isHolTo_congr (GlobalTheory.HolPeriods.isHolTo_comp hjoint (Metric.isOpen_ball.prod isOpen_univ) hdiff hmaps) fun zw hzw => ?_` and prove the remaining obligations. Establish `hz : ρ • zw.1 ∈ e0.target` using `hball (hmaps hzw).1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [he_symm, e0.right_inv hz]`. Rewrite using `[he_symm]`. Introduce `x hx`. Take `⟨h1, h2⟩` from `hsrc x hx`. Establish `hU : IsUnit (A (e0 x)).det` using `hdet _ (mem_ball_zero_iff.2 h2)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Set `k` to `Matrix.toLinearEquiv' (A (e0 x)) (Matrix.invertibleOfIsUnitDet _ hU)`. Establish `hk : ∀ w, k w = A (e0 x) *ᵥ w` using `fun _ => rfl`. Establish `hD : ∀ w v, IsDerivAt0 (fun u => (ex x (A (e0 x) *ᵥ u)).left) w v ↔ IsDerivAt0 (fun u => (ex x u).left) (A (e0 x) *ᵥ w) v` using `fun w v => by`. Simplify `GlobalTheory.HolPeriods.isDerivAt0_comp_equiv (fun u => (ex x u).left) k w v` using `only [hk]`. Take `⟨-, hT1, hT2⟩` from `hexp x h1 h2`.
-
-Use `⟨fun w => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [hD]`. Conclude with `hT1 _`. Take `⟨w', hw', hu⟩` from `hT2 v hv`. Use `⟨k.symm w', ?_, fun w hw => ?_⟩` and prove the remaining obligations.
-
-Use `beta_reduce`. Rewrite using `[hD, ← hk, k.apply_symm_apply]`. Conclude with `hw'`. Use `beta_reduce at hw`. Rewrite `hw` using `[hD, ← hk]`.
-
-Rewrite using `[← hu _ hw, k.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isExpChart_rescale : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Z : Model Xo c β) (σ : c.F →+* ℂ) (n g : ℕ) (e0 : OpenPartialHomeomorph (CxPts (genStr Z) σ) (Fin n → ℂ)) (ex : ExpMaps Z σ g) (ρ : ℝ) (A : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ), 0 < ρ → Metric.ball 0 ρ ⊆ e0.target → (∀ j, HolAlong e0.source fun x => e0 x j) → IsHolTo e0.target (fun z => (e0.symm z).1) → IsHolTo (Metric.ball 0 ρ ×ˢ Set.univ) (fun zw : (Fin n → ℂ) × (Fin g → ℂ) => (ex (e0.symm zw.1) zw.2).left) → (∀ x ∈ e0.source, ‖e0 x‖ < ρ → IsExpAt Z.t (x.1 ≫ genι Z) (ex x)) → DifferentiableOn ℂ A (Metric.ball 0 ρ) → (∀ z ∈ Metric.ball (0 : Fin n → ℂ) ρ, IsUnit (A z).det) → ∃ (e : OpenPartialHomeomorph (CxPts (genStr Z) σ) (Fin n → ℂ)) (ex' : ExpMaps Z σ g), IsExpChart e ex' ∧ e.source = e0.source ∩ {x | ‖e0 x‖ < ρ} ∧ (∀ x ∈ e.source, e x = ρ⁻¹ • e0 x) ∧ ∀ x ∈ e.source, ∀ w, ex' x w = ex x (A (e0 x) *ᵥ w) := by
   intro E _ _ _ H Dw l Xo c O _ β Z σ n g e0 ex ρ A hρ hball hhol hsymm hjoint hexp hA hdet

@@ -22,14 +22,14 @@ def projPt (z : (Σ k, ι k) → ℂ) : (Σ k, ι k × ι k) → ℂ :=
 def conjVec (z : (Σ k, ι k) → ℂ) : (Σ k, ι k) → ℂ := fun p => conj (z p)
 
 /- English proof (translation)
-Simplify using `[blockNormSq, norm_mul, mul_pow, Finset.mul_sum]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blockNormSq_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) (k : K) :
     blockNormSq (fun p => c p.1 * z p) k = ‖c k‖ ^ 2 * blockNormSq z k := by
   simp [blockNormSq, norm_mul, mul_pow, Finset.mul_sum]
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `hz k`. Conclude with `Finset.sum_pos' (fun j _ => sq_nonneg _) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem blockNormSq_pos {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) (k : K) :
     0 < blockNormSq z k := by
@@ -37,9 +37,9 @@ theorem blockNormSq_pos {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i
   exact Finset.sum_pos' (fun j _ => sq_nonneg _) ⟨i, Finset.mem_univ _, pow_pos (norm_pos_iff.mpr hi) 2⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Establish `hc2 : c q.1 * conj (c q.1) = ((‖c q.1‖ ^ 2 : ℝ) : ℂ)`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `hne : c q.1 * conj (c q.1) ≠ 0` using `mul_ne_zero (hc q.1) ((map_ne_zero _).2 (hc q.1))`. Simplify using `only [projPt, blockNormSq_smul, map_mul, Complex.ofReal_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hc2, show c q.1 * z ⟨q.1, q.2.1⟩ * (conj (c q.1) * conj (z ⟨q.1, q.2.2⟩)) = (c q.1 * conj (c q.1)) * (z ⟨q.1, q.2.1⟩ * conj (z ⟨q.1, q.2.2⟩)) by ring, mul_div_mul_left _ _ hne]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem projPt_smul (c : K → ℂ) (hc : ∀ k, c k ≠ 0) (z : (Σ k, ι k) → ℂ) :
     projPt (fun p => c p.1 * z p) = projPt z := by
@@ -52,7 +52,7 @@ theorem projPt_smul (c : K → ℂ) (hc : ∀ k, c k ≠ 0) (z : (Σ k, ι k) �
     (c q.1 * conj (c q.1)) * (z ⟨q.1, q.2.1⟩ * conj (z ⟨q.1, q.2.2⟩)) by ring, mul_div_mul_left _ _ hne]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `[conjVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conjVec_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
     conjVec (fun p => c p.1 * z p) = fun p => conj (c p.1) * conjVec z p := by
@@ -60,14 +60,14 @@ theorem conjVec_smul (c : K → ℂ) (z : (Σ k, ι k) → ℂ) :
   simp [conjVec]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `[conjVec]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem conjVec_conjVec (z : (Σ k, ι k) → ℂ) : conjVec (conjVec z) = z := by
   funext p
   simp [conjVec]
 
 /- English proof (translation)
-Simplify using `only [Set.setOf_forall, Set.setOf_exists]`. Conclude with `isOpen_iInter_of_finite fun k => isOpen_iUnion fun i => isOpen_ne_fun (continuous_apply _) continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
   simp only [Set.setOf_forall, Set.setOf_exists]
@@ -75,7 +75,7 @@ theorem isOpen_blockNonzero : IsOpen {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z
     isOpen_ne_fun (continuous_apply _) continuous_const
 
 /- English proof (translation)
-Introduce `k` and use `let ⟨i, hi⟩ := hz k ⟨i, (map_ne_zero _).2 hi⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem conjVec_mem_blockNonzero {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     ∀ k, ∃ i, conjVec z ⟨k, i⟩ ≠ 0 := fun k =>
@@ -83,15 +83,15 @@ theorem conjVec_mem_blockNonzero {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, 
   ⟨i, (map_ne_zero _).2 hi⟩
 
 /- English proof (translation)
-The claim follows from `contDiff_pi.2 fun p => Complex.conjCLE.contDiff.comp (contDiff_apply ℝ ℂ p)`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_conjVec : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (conjVec (ι := ι)) :=
   contDiff_pi.2 fun p => Complex.conjCLE.contDiff.comp (contDiff_apply ℝ ℂ p)
 
 /- English proof (translation)
-Use `contDiffOn_pi.2 fun q => ?_` and prove the remaining obligations. Establish `hN : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun z : (Σ k, ι k) → ℂ => blockNormSq z q.1` using `ContDiff.sum fun i _ => (contDiff_norm_sq ℝ).comp (contDiff_apply ℝ ℂ _)`. Establish `hinv` using `hN.contDiffOn.inv (s := {z : (Σ k, ι k) → ℂ | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0}) fun z hz => (blockNormSq_pos hz q.1).ne'`. Establish `hconj : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) fun z : (Σ k, ι k) → ℂ => conj (z ⟨q.1, q.2.2⟩)` using `Complex.conjCLE.contDiff.comp (contDiff_apply ℝ ℂ _)`. Use `(((contDiff_apply ℝ ℂ ⟨q.1, q.2.1⟩).mul hconj).contDiffOn).mul (Complex.ofRealCLM.contDiff.comp_contDiffOn hinv)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `this.congr fun z _ => ?_` and prove the remaining obligations. Simplify using `[projPt, div_eq_mul_inv]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem contDiffOn_projPt :
     ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (projPt (ι := ι)) {z | ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0} := by
@@ -108,15 +108,13 @@ theorem contDiffOn_projPt :
   simp [projPt, div_eq_mul_inv]
 
 /- English proof (translation)
-Establish `hNz : ∀ k, (blockNormSq z k : ℂ) ≠ 0` using `fun k => Complex.ofReal_ne_zero.2 (blockNormSq_pos hz k).ne'`. Establish `hNw : ∀ k, (blockNormSq w k : ℂ) ≠ 0` using `fun k => Complex.ofReal_ne_zero.2 (blockNormSq_pos hw k).ne'`. Use `choose j hj using hz`. Establish `hrel : ∀ k i, z ⟨k, i⟩ * conj (z ⟨k, j k⟩) / (blockNormSq z k : ℂ) = w ⟨k, i⟩ * conj (w ⟨k, j k⟩) / (blockNormSq w k : ℂ)` using `fun k i => congrFun h ⟨k, (i, j k)⟩`. Establish `hwj : ∀ k, w ⟨k, j k⟩ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Establish `e` using `hrel k (j k)`. Rewrite `e` using `[hk, map_zero, mul_zero, zero_div, div_eq_zero_iff]`. Break down `e with e | e` into its components or cases. Conclude with `hj k (mul_self_eq_zero.1 (by simpa [Complex.mul_conj] using e))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `hNz k e`. Use `⟨fun k => conj (z ⟨k, j k⟩) * (blockNormSq w k : ℂ) / ((blockNormSq z k : ℂ) * conj (w ⟨k, j k⟩)), fun k => ?_, ?_⟩` and prove the remaining obligations. Conclude with `div_ne_zero (mul_ne_zero ((map_ne_zero _).2 (hj k)) (hNw k)) (mul_ne_zero (hNz k) ((map_ne_zero _).2 (hwj k)))`. Use function extensionality and compare the values at `p`. Take `⟨k, i⟩` from `p`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `e` using `hrel k i`. Establish `hcw : conj (w ⟨k, j k⟩) ≠ 0` using `(map_ne_zero _).2 (hwj k)`. Rewrite `e` using `[div_eq_div_iff (hNz k) (hNw k)]`. Use `show w ⟨k, i⟩ = _ * z ⟨k, i⟩`. Rewrite using `[div_mul_eq_mul_div, eq_div_iff (mul_ne_zero (hNz k) hcw)]`.
-
-Take the linear combination `-e`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_smul_of_projPt_eq {z w : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0)
     (hw : ∀ k, ∃ i, w ⟨k, i⟩ ≠ 0) (h : projPt z = projPt w) :
@@ -149,7 +147,7 @@ theorem exists_smul_of_projPt_eq {z w : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i
     linear_combination -e
 
 /- English proof (translation)
-Proceed by induction on `f using MvPolynomial.induction_on with`. Consider the case `C a => simp`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `mul_X p i hp => simp [hp, conjVec]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eval_conjVec (f : MRing ι) (z : (Σ k, ι k) → ℂ) :
     eval (conjVec z) (map (Int.castRingHom ℂ) f) = conj (eval z (map (Int.castRingHom ℂ) f)) := by
@@ -159,14 +157,14 @@ theorem eval_conjVec (f : MRing ι) (z : (Σ k, ι k) → ℂ) :
   | mul_X p i hp => simp [hp, conjVec]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨conjVec_mem_blockNonzero hz.1, fun f hf => by rw [eval_conjVec, hz.2 f hf, map_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem conjVec_mem_mcPts {P : Ideal (MRing ι)} {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) :
     conjVec z ∈ mcPts P :=
   ⟨conjVec_mem_blockNonzero hz.1, fun f hf => by rw [eval_conjVec, hz.2 f hf, map_zero]⟩
 
 /- English proof (translation)
-Introduce `d g h θ hg hh hgh`. Rewrite using `[eval_conjVec, eval_conjVec, hz d g h θ hg hh hgh, map_mul, NumberField.ComplexEmbedding.conjugate_coe_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem liesOver_conjVec {Ω F : Type} [Field Ω] [Field F] [Algebra F Ω]
     {y : (Σ k, ι k) → Ω} {sg : F →+* ℂ} {z : (Σ k, ι k) → ℂ} (hz : LiesOver y sg z) :
@@ -176,7 +174,7 @@ theorem liesOver_conjVec {Ω F : Type} [Field Ω] [Field F] [Algebra F Ω]
     NumberField.ComplexEmbedding.conjugate_coe_eq]
 
 /- English proof (translation)
-Introduce `d g h θ hg hh hgh`. Rewrite using `[eval_smul_homog g d hg, eval_smul_homog h d hh, hz d g h θ hg hh hgh]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem liesOver_smul {Ω F : Type} [Field Ω] [Field F] [Algebra F Ω]
     {y : (Σ k, ι k) → Ω} {sg : F →+* ℂ} {z : (Σ k, ι k) → ℂ} (hz : LiesOver y sg z) (c : K → ℂ) :
@@ -186,7 +184,7 @@ theorem liesOver_smul {Ω F : Type} [Field Ω] [Field F] [Algebra F Ω]
   ring
 
 /- English proof (translation)
-Simplify using `only [LiesOver, Set.setOf_forall]`. Conclude with `isClosed_iInter fun d => isClosed_iInter fun g => isClosed_iInter fun h => isClosed_iInter fun θ => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_eq (MvPolynomial.continuous_eval _) (continuous_const.mul (MvPolynomial.continuous_eval _))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_liesOver {Ω F : Type} [Field Ω] [Field F] [Algebra F Ω]
     (y : (Σ k, ι k) → Ω) (sg : F →+* ℂ) : IsClosed {z : (Σ k, ι k) → ℂ | LiesOver y sg z} := by
@@ -196,7 +194,7 @@ theorem isClosed_liesOver {Ω F : Type} [Field Ω] [Field F] [Algebra F Ω]
       isClosed_iInter fun _ => isClosed_eq (MvPolynomial.continuous_eval _) (continuous_const.mul (MvPolynomial.continuous_eval _))
 
 /- English proof (translation)
-Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun f => isClosed_iInter fun _ => isClosed_eq (MvPolynomial.continuous_eval _) continuous_const`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isClosed_zeros (P : Ideal (MRing ι)) :
     IsClosed {z : (Σ k, ι k) → ℂ | ∀ f ∈ P, eval z (map (Int.castRingHom ℂ) f) = 0} := by
@@ -204,9 +202,9 @@ theorem isClosed_zeros (P : Ideal (MRing ι)) :
   exact isClosed_iInter fun f => isClosed_iInter fun _ => isClosed_eq (MvPolynomial.continuous_eval _) continuous_const
 
 /- English proof (translation)
-Establish `hN : ∀ k, Continuous fun z : (Σ k, ι k) → ℂ => blockNormSq z k` using `fun k => continuous_finset_sum _ fun i _ => ((continuous_apply _).norm).pow 2`. Use `Metric.isCompact_of_isClosed_isBounded ?_ ?_` and prove the remaining obligations. Simplify using `only [Set.setOf_forall]`. Conclude with `isClosed_iInter fun k => isClosed_eq (hN k) continuous_const`. Use `(Metric.isBounded_iff_subset_closedBall 0).2 ⟨1, fun z hz => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.mem_closedBall, dist_zero_right]`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun p => ?_` and prove the remaining obligations. Establish `h1 : ‖z ⟨p.1, p.2⟩‖ ^ 2 ≤ blockNormSq z p.1` using `Finset.single_le_sum (f := fun i => ‖z ⟨p.1, i⟩‖ ^ 2) (fun i _ => sq_nonneg _) (Finset.mem_univ p.2)`. Rewrite `h1` using `[hz p.1]`. Use polynomial arithmetic with `[norm_nonneg (z p)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem isCompact_sphere : IsCompact {z : (Σ k, ι k) → ℂ | ∀ k, blockNormSq z k = 1} := by
   have hN : ∀ k, Continuous fun z : (Σ k, ι k) → ℂ => blockNormSq z k := fun k =>
@@ -223,9 +221,9 @@ theorem isCompact_sphere : IsCompact {z : (Σ k, ι k) → ℂ | ∀ k, blockNor
     nlinarith [norm_nonneg (z p)]
 
 /- English proof (translation)
-Set `c : K → ℂ` to `fun k => (((Real.sqrt (blockNormSq z k))⁻¹ : ℝ) : ℂ)`. Use `⟨c, fun k => ?_, fun k => ?_⟩` and prove the remaining obligations. Use `blockNormSq_pos hz k` as an intermediate fact. Conclude with `Complex.ofReal_ne_zero.2 (inv_ne_zero (Real.sqrt_pos.2 this).ne')`. Use `blockNormSq_pos hz k` as an intermediate fact.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[blockNormSq_smul c z k]`. Simplify using `only [c]`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.2 (Real.sqrt_pos.2 this)), inv_pow, Real.sq_sqrt this.le, inv_mul_cancel₀ this.ne']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_sphere {z : (Σ k, ι k) → ℂ} (hz : ∀ k, ∃ i, z ⟨k, i⟩ ≠ 0) :
     ∃ c : K → ℂ, (∀ k, c k ≠ 0) ∧ ∀ k, blockNormSq (fun p => c p.1 * z p) k = 1 := by
@@ -245,37 +243,33 @@ end EmbeddingWeight
 open EmbeddingWeight in
 
 /- English proof (translation)
-Introduce `K _ ι _ Ω _ F _ _ _ y Λ hpos hconjΛ huniq`. Set `S : (F →+* ℂ) → Set ((Σ k, ι k) → ℂ)` to `fun sg => {z | z ∈ mcPts (mCoordIdeal y) ∧ LiesOver y sg z}`. Set `C : (F →+* ℂ) → Set ((Σ k, ι k × ι k) → ℂ)` to `fun sg => projPt '' S sg`. Establish `hSmul : ∀ sg z (c : K → ℂ), (∀ k, c k ≠ 0) → z ∈ S sg → (fun p => c p.1 * z p) ∈ S sg` using `fun sg z c hc hz => ⟨mcPts_smul (CoordinateConeArithVar.isMultiHomogIdeal y) c hc hz.1, liesOver_smul hz.2 c⟩`. Establish `hC : ∀ sg, IsCompact (C sg)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `sg`. Establish `hK : IsCompact (S sg ∩ {z | ∀ k, blockNormSq z k = 1})`. Use `isCompact_sphere.of_isClosed_subset ?_ inter_subset_right` and prove the remaining obligations. Establish `: S sg ∩ {z | ∀ k, blockNormSq z k = 1} = ({z | ∀ f ∈ mCoordIdeal y, eval z (map (Int.castRingHom ℂ) f) = 0} ∩ {z | LiesOver y sg z}) ∩ {z | ∀ k, blockNormSq z k = 1}`. Use extensionality with `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [S, mcPts, mem_inter_iff, mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨⟨-, h1⟩, h2⟩, h3⟩`. Conclude with `⟨⟨h1, h2⟩, h3⟩`. Introduce and unpack `⟨⟨h1, h2⟩, h3⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨⟨fun k => ?_, h1⟩, h2⟩, h3⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Use `h3 k` as an intermediate fact. Simplify using `[blockNormSq, hcon] at this`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `((isClosed_zeros _).inter (isClosed_liesOver y sg)).inter isCompact_sphere.isClosed`. Establish `heq : C sg = projPt '' (S sg ∩ {z | ∀ k, blockNormSq z k = 1})`. Use `Subset.antisymm ?_ (image_mono inter_subset_left)` and prove the remaining obligations. Introduce and unpack `e ⟨z, hz, rfl⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨c, hc, hc1⟩` from `exists_smul_sphere hz.1.1`. Conclude with `⟨_, ⟨hSmul sg z c hc hz, hc1⟩, projPt_smul c hc z⟩`. Rewrite using `[heq]`. Conclude with `hK.image_of_continuousOn (contDiffOn_projPt.continuousOn.mono fun z hz => hz.1.1.1)`. Establish `hdisj : ∀ sg tg, sg ≠ tg → Disjoint (C sg) (C tg)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce `sg tg hne`. Rewrite using `[Set.disjoint_left]`. Introduce and unpack `e ⟨z, ⟨hzP, hzs⟩, rfl⟩ ⟨w, ⟨hwP, hwt⟩, hw⟩`. Take `⟨c, hc, rfl⟩` from `exists_smul_of_projPt_eq hzP.1 hwP.1 hw.symm`. Conclude with `hne ((huniq _ hwP).unique (liesOver_smul hzs c) hwt)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hsep : ∀ sg, ∃ χ : ((Σ k, ι k × ι k) → ℂ) → ℝ, ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) χ ∧ (∀ᶠ e in 𝓝ˢ (⋃ tg ∈ Finset.univ.erase sg, C tg), χ e = 0) ∧ (∀ᶠ e in 𝓝ˢ (C sg), χ e = 1)`. Introduce `sg`. Take `⟨f, h0, h1, -⟩` from `exists_contMDiffMap_zero_one_nhds_of_isClosed 𝓘(ℝ, (Σ k, ι k × ι k) → ℂ) (n := ⊤) (isClosed_biUnion_finset fun tg _ => (hC tg).isClosed) (hC sg).isClosed (Set.disjoint_iUnion₂_left.2 fun tg htg => hdisj tg sg (Finset.ne_of_mem_erase htg))`. Conclude with `⟨f, contMDiff_iff_contDiff.mp f.contMDiff, h0, h1⟩`. Use `choose χ hχs hχ0 hχ1 using hsep`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `g : ((Σ k, ι k × ι k) → ℂ) → ℝ` to `fun e => ∑ sg, Real.log (Λ sg) * χ sg e`. Establish `hg : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) g` using `ContDiff.sum fun sg _ => contDiff_const.mul (hχs sg)`. Establish `hloc : ∀ sg, ∀ e ∈ C sg, ∀ᶠ e' in 𝓝 e, g e' = Real.log (Λ sg)`. Introduce `sg e he`. Establish `: ∀ tg, ∀ᶠ e' in 𝓝 e, χ tg e' = if tg = sg then 1 else 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Introduce `tg`. Distinguish the cases in `htg : tg = sg`. Substitute `htg` using the available equality. Simplify using `using (hχ1 tg).filter_mono (nhds_le_nhdsSet he)`. Simplify using `only [htg, if_false]`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hχ0 tg).filter_mono (nhds_le_nhdsSet (Set.mem_iUnion₂.2 ⟨sg, Finset.mem_erase.2 ⟨Ne.symm htg, Finset.mem_univ _⟩, he⟩))`. Use `filter_upwards [Filter.eventually_all.2 this] with e' he'`. Simplify using `only [g, he', mul_ite, mul_one, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Set `u : ((Σ k, ι k) → ℂ) → ℝ` to `fun z => (g (projPt z) + g (projPt (conjVec z))) / 2`. Establish `hu_smul : ∀ (c : K → ℂ) z, (∀ k, c k ≠ 0) → (fun z => -u z) (fun p => c p.1 * z p) = (fun z => -u z) z`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c z hc`. Establish `h2 : projPt (conjVec (fun p => c p.1 * z p)) = projPt (conjVec z)`. Rewrite using `[conjVec_smul]`. Conclude with `projPt_smul (fun k => conj (c k)) (fun k => (map_ne_zero _).2 (hc k)) _`. Simplify using `only [u, projPt_smul c hc, h2]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨HermLine.ofWeight (fun z => -u z) hu_smul, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `hg.comp_contDiffOn (contDiffOn_projPt (ι := ι))`. Establish `h2` using `hg.comp_contDiffOn ((contDiffOn_projPt (ι := ι)).comp contDiff_conjVec.contDiffOn fun z hz => conjVec_mem_blockNonzero hz)`. Establish `hu` using `((h1.add h2).div_const (2 : ℝ)).neg.neg`. Conclude with `Real.contDiff_exp.comp_contDiffOn hu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Introduce `z`. Express the relevant statement in the definitionally equal form `Real.exp (-(-u (conjVec z))) = Real.exp (-(-u z))`. Simplify using `only [u, conjVec_conjVec, add_comm]`. Introduce `z hz sg hsg`. Establish `hzC : projPt z ∈ C sg` using `⟨z, ⟨hz, hsg⟩, rfl⟩`.
-
-Establish `hzC' : projPt (conjVec z) ∈ C (NumberField.ComplexEmbedding.conjugate sg)` using `⟨conjVec z, ⟨conjVec_mem_mcPts hz, liesOver_conjVec hsg⟩, rfl⟩`. Establish `hcont : ContinuousAt projPt z` using `contDiffOn_projPt.continuousOn.continuousAt (isOpen_blockNonzero.mem_nhds hz.1)`. Establish `hcont' : ContinuousAt (fun w => projPt (conjVec w)) z` using `(contDiffOn_projPt.continuousOn.continuousAt (isOpen_blockNonzero.mem_nhds (conjVec_mem_blockNonzero hz.1))).comp contDiff_conjVec.continuous.continuousAt`. Use `filter_upwards [Filter.Tendsto.eventually hcont (hloc sg _ hzC), Filter.Tendsto.eventually hcont' (hloc _ _ hzC')] with w hw1 hw2`. Express the relevant statement in the definitionally equal form `Real.exp (-(-u w)) = Λ sg`.
-
-Simplify using `only [u, hw1, hw2, hconjΛ, neg_neg, add_self_div_two, Real.exp_log (hpos sg)]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem EmbeddingWeight.proof : EmbeddingWeight.Statement := by
   intro K _ ι _ Ω _ F _ _ _ y Λ hpos hconjΛ huniq

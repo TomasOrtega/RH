@@ -21,9 +21,9 @@ def carry (M : ℕ) (P : Ideal (𝓞 E)) (A B : Lt E n) : Set (Matrix (Fin n) (F
   {h | h ∈ DH E n M ∧ ∃ X ∈ Nb M P A, Moves h B X}
 
 /- English proof (translation)
-Establish `hu' : h * ccT h = 1` using `mul_eq_one_comm.1 hu`. Use extensionality with `w`. Establish `hw : h *ᵥ (ccT h *ᵥ w) = w`. Rewrite using `[Matrix.mulVec_mulVec, hu', Matrix.one_mulVec]`. Establish `key` using `(h1 (ccT h *ᵥ w)).symm.trans (h2 (ccT h *ᵥ w))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[hw]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem moves_unique {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1) {B X Y : Lt E n}
     (h1 : Moves h B X) (h2 : Moves h B Y) : X = Y := by
@@ -35,9 +35,9 @@ theorem moves_unique {h : Matrix (Fin n) (Fin n) E} (hu : ccT h * h = 1) {B X Y 
   rwa [hw] at key
 
 /- English proof (translation)
-Use `⟨?_, 1, one_pos, Nat.coprime_one_left _, 0, fun k i => ?_, by simp⟩` and prove the remaining obligations. Establish `h1 : ccT (1 : Matrix (Fin n) (Fin n) E) = 1`. Unfold `ccT`. Rewrite using `[Matrix.map_one _ (by simp [cc]) (by simp [cc]), Matrix.transpose_one]`. Rewrite using `[h1, mul_one]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.zero_apply]`. Conclude with `isIntegral_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem one_mem_UJset' {M : ℕ} : (1 : Matrix (Fin n) (Fin n) E) ∈ DH E n M := by
   refine ⟨?_, 1, one_pos, Nat.coprime_one_left _, 0, fun k i => ?_, by simp⟩
@@ -49,7 +49,7 @@ private theorem one_mem_UJset' {M : ℕ} : (1 : Matrix (Fin n) (Fin n) E) ∈ DH
     exact isIntegral_zero
 
 /- English proof (translation)
-Take `⟨-, s, -, hs, y, -, e⟩` from `hh`. Rewrite `e` using `[(Nat.coprime_zero_right _).1 hs]`. Simplify `e` using `[sub_eq_zero]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem eq_one_of_mem_DH_zero {h : Matrix (Fin n) (Fin n) E} (hh : h ∈ DH E n 0) : h = 1 := by
   obtain ⟨-, s, -, hs, y, -, e⟩ := hh
@@ -57,9 +57,9 @@ private theorem eq_one_of_mem_DH_zero {h : Matrix (Fin n) (Fin n) E} (hh : h ∈
   simpa [sub_eq_zero] using e
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos M with rfl | hM` into its components or cases. Take `rfl` from `eq_one_of_mem_DH_zero hg`. Use `⟨?_, fun h hh => by rw [one_mul]; exact hh⟩` and prove the remaining obligations. Establish `hc` using `hg.1`. Rewrite `hc` using `[mul_one]`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hc]`. Conclude with `hg`. Conclude with `(finite_cls_and_stab E n M hM).2.2.2.1.2 g hg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_mul_div_mul_mul_inv_of_mul_inv_mul_eq {M : ℕ} {g : Matrix (Fin n) (Fin n) E} (hg : g ∈ DH E n M) :
     ccT g ∈ DH E n M ∧ ∀ h ∈ DH E n M, g * h ∈ DH E n M := by
@@ -73,11 +73,11 @@ private theorem eq_mul_div_mul_mul_inv_of_mul_inv_mul_eq {M : ℕ} {g : Matrix (
   · exact (finite_cls_and_stab E n M hM).2.2.2.1.2 g hg
 
 /- English proof (translation)
-Establish `hgg : g * ccT g = 1` using `mul_eq_one_comm.1 hg.1`. Use extensionality with `h`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hh, mh⟩`. Use `⟨ccT g * h, ⟨(eq_mul_div_mul_mul_inv_of_mul_inv_mul_eq (eq_mul_div_mul_mul_inv_of_mul_inv_mul_eq hg).1).2 h hh, fun v => ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mh v, m ((ccT g * h) *ᵥ v), Matrix.mulVec_mulVec, ← mul_assoc, hgg, one_mul]`. Use `show g * (ccT g * h) = h`. Rewrite using `[← mul_assoc, hgg, one_mul]`. Introduce and unpack `⟨k, ⟨hk, mk⟩, rfl⟩`. Use `⟨(eq_mul_div_mul_mul_inv_of_mul_inv_mul_eq hg).2 k hk, fun v => ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use `show v ∈ B ↔ (g * k) *ᵥ v ∈ X`. Rewrite using `[mk v, m (k *ᵥ v), Matrix.mulVec_mulVec]`.
+A detailed English derivation is pending.
 -/
 theorem transporter_eq {M : ℕ} {g : Matrix (Fin n) (Fin n) E} (hg : g ∈ DH E n M) {B X : Lt E n}
     (m : Moves g B X) :
@@ -96,7 +96,7 @@ theorem transporter_eq {M : ℕ} {g : Matrix (Fin n) (Fin n) E} (hg : g ∈ DH E
     rw [mk v, m (k *ᵥ v), Matrix.mulVec_mulVec]
 
 /- English proof (translation)
-Introduce `a b hab`. Establish `key` using `congrArg (fun x => ccT g * x) hab`. Simplify `key` using `only [← mul_assoc, hu, one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mul_inj {g : Matrix (Fin n) (Fin n) E} (hu : ccT g * g = 1) :
     Function.Injective fun h : Matrix (Fin n) (Fin n) E => g * h := by
@@ -105,17 +105,17 @@ theorem mul_inj {g : Matrix (Fin n) (Fin n) E} (hu : ccT g * g = 1) :
   simpa only [← mul_assoc, hu, one_mul] using key
 
 /- English proof (translation)
-Establish `memC : ∀ h, h ∈ carry M P A B ↔ h ∈ DH E n M ∧ ∃ X ∈ Nb M P A, Moves h B X` using `fun _ => Iff.rfl`. Establish `memN : ∀ X, X ∈ nbIn M P A B ↔ X ∈ Nb M P A ∧ ∃ h ∈ DH E n M, Moves h B X` using `fun _ => Iff.rfl`. Establish `hex : ∀ X ∈ nbIn M P A B, ∃ g ∈ DH E n M, Moves g B X` using `fun X hX => ((memN X).1 hX).2`. Use `choose! g hg hgm using hex`. Establish `hmv : ∀ X ∈ nbIn M P A B, ∀ k, Moves k B B → Moves (g X * k) B X`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X hX k mk v`. Rewrite using `[mk v, hgm X hX (k *ᵥ v), Matrix.mulVec_mulVec]`. Set `F : Lt E n × Matrix (Fin n) (Fin n) E → Matrix (Fin n) (Fin n) E` to `fun p => g p.1 * p.2`. Establish `himg : F '' (nbIn M P A B ×ˢ {h ∈ DH E n M | Moves h B B}) = carry M P A B`. Use extensionality with `h`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨X, k⟩, ⟨hX, hk, mk⟩, rfl⟩`. Conclude with `(memC _).2 ⟨(eq_mul_div_mul_mul_inv_of_mul_inv_mul_eq (hg X hX)).2 k hk, X, ((memN X).1 hX).1, hmv X hX k mk⟩`. Introduce `hh`. Take `⟨hh, X, hXN, mh⟩` from `(memC h).1 hh`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hX : X ∈ nbIn M P A B` using `(memN X).2 ⟨hXN, h, hh, mh⟩`. Take `⟨k, hk, rfl⟩` from `(Set.ext_iff.1 (transporter_eq (hg X hX) (hgm X hX)) h).1 ⟨hh, mh⟩`. Conclude with `⟨(X, k), ⟨hX, hk⟩, rfl⟩`. Establish `hinj : Set.InjOn F (nbIn M P A B ×ˢ {h ∈ DH E n M | Moves h B B})`. Introduce and unpack `⟨X, k⟩ ⟨hX, hk, mk⟩ ⟨Y, k'⟩ ⟨hY, hk', mk'⟩ e`.
+Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e' : g X * k = g Y * k'` using `e`. Establish `m1` using `hmv X hX k mk`. Establish `m2` using `hmv Y hY k' mk'`. Rewrite `m1` using `[e']`. Establish `hXY : X = Y` using `moves_unique ((eq_mul_div_mul_mul_inv_of_mul_inv_mul_eq (hg Y hY)).2 k' hk').1 m1 m2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `hXY` using the available equality. Conclude with `Prod.ext rfl (mul_inj (hg X hX).1 e')`. Rewrite using `[← himg, hinj.ncard_image, Set.ncard_prod]`.
+A detailed English derivation is pending.
 -/
 theorem ncard_carry {M : ℕ} {P : Ideal (𝓞 E)} {A B : Lt E n} (hN : (Nb M P A).Finite)
     (hB : {h ∈ DH E n M | Moves h B B}.Finite) :
@@ -154,11 +154,11 @@ theorem ncard_carry {M : ℕ} {P : Ideal (𝓞 E)} {A B : Lt E n} (hN : (Nb M P 
   rw [← himg, hinj.ncard_image, Set.ncard_prod]
 
 /- English proof (translation)
-Take `⟨hh, X, hXN, mh⟩` from `hh`. Establish `hh' : h * ccT h = 1` using `mul_eq_one_comm.1 hh.1`. Establish `hc : ccT h ∈ DH E n M` using `(eq_mul_div_mul_mul_inv_of_mul_inv_mul_eq hh).1`. Take `⟨Y, -, mY⟩` from `(finite_cls_and_stab E n M hM).2.2.2.2 (ccT h) hc A hA`. Establish `hX : X ∈ Vset E n M` using `hXN.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hgc, -, hnb⟩` from `neighbours E n M q P hM hP`. Establish `hAX : A ∈ Nb M (conjI P) X` using `((hnb A hA).2.2.1 X hX).1 hXN`. Establish `hequiv` using `((neighbours E n M q (conjI P) hM hgc).2.2 X hX).2.2.2.2.2`. Establish `hmXB : Moves (ccT h) X B` using `Nbr.move_inv hh' mh`. Use `show ccT h ∈ DH E n M ∧ ∃ Y ∈ Nb M (conjI P) B, Moves (ccT h) A Y`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨hc, Y, (hequiv (ccT h) hc B hB hmXB A Y mY).1 hAX, mY⟩`.
+A detailed English derivation is pending.
 -/
 theorem ccT_mem_carry {M q : ℕ} {P : Ideal (𝓞 E)} (hM : 0 < M) (hP : GoodPrime M q P)
     {A B : Lt E n} (hA : A ∈ Vset E n M) (hB : B ∈ Vset E n M) {h : Matrix (Fin n) (Fin n) E}
@@ -176,11 +176,11 @@ theorem ccT_mem_carry {M q : ℕ} {P : Ideal (𝓞 E)} (hM : 0 < M) (hP : GoodPr
   exact ⟨hc, Y, (hequiv (ccT h) hc B hB hmXB A Y mY).1 hAX, mY⟩
 
 /- English proof (translation)
-Establish `hcc : ∀ k : Matrix (Fin n) (Fin n) E, ccT (ccT k) = k`. Introduce `k`. Use extensionality with `i j`. Simplify using `[ccT, Nbr.cc_cc]`. Establish `hgc : GoodPrime M q (conjI P)` using `Nbr.good_conj hP`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `himg : (ccT : Matrix (Fin n) (Fin n) E → Matrix (Fin n) (Fin n) E) '' carry M P A B = carry M (conjI P) B A`. Use extensionality with `k`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h, hh, rfl⟩`. Conclude with `ccT_mem_carry hM hP hA hB hh`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hk`. Use `⟨ccT k, ?_, hcc k⟩` and prove the remaining obligations. Establish `key` using `ccT_mem_carry hM hgc hB hA hk`. Rewrite `key` using `[Nbr.conjI_conjI]`. Then use the resulting hypothesis. Rewrite using `[← himg, Set.ncard_image_of_injective _ (Function.LeftInverse.injective hcc)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ncard_carry_symm {M q : ℕ} {P : Ideal (𝓞 E)} (hM : 0 < M) (hP : GoodPrime M q P)
     {A B : Lt E n} (hA : A ∈ Vset E n M) (hB : B ∈ Vset E n M) :
@@ -203,13 +203,13 @@ theorem ncard_carry_symm {M q : ℕ} {P : Ideal (𝓞 E)} (hM : 0 < M) (hP : Goo
   rw [← himg, Set.ncard_image_of_injective _ (Function.LeftInverse.injective hcc)]
 
 /- English proof (translation)
-Take `⟨-, -, hstab, -, -⟩` from `finite_cls_and_stab E n M hM`. Take `⟨hgc, -, hnb⟩` from `neighbours E n M q P hM hP`. Establish `hnb'` using `(neighbours E n M q (conjI P) hM hgc).2.2`. Establish `h1` using `ncard_carry (P := P) (A := A) (B := B) (hnb A hA).1 (hstab B hB).1`. Establish `h2` using `ncard_carry (P := conjI P) (A := B) (B := A) (hnb' B hB).1 (hstab A hA).1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `ncard_carry_symm hM hP hA hB`. Establish `key : (nbIn M P A B).ncard * {h ∈ DH E n M | Moves h B B}.ncard = (nbIn M (conjI P) B A).ncard * {h ∈ DH E n M | Moves h A A}.ncard`. Rewrite using `[← h1, ← h2, h3]`. Establish `hne : ∀ Λ ∈ Vset E n M, (({h ∈ DH E n M | Moves h Λ Λ}.ncard : ℕ) : ℂ) ≠ 0`. Introduce `Λ hΛ h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw` using `(hstab Λ hΛ).2`. Normalize the coercions in `at h0`. Simplify using `only [wt, h0] at hw`. Simplify using `at hw`. Simplify using `only [wt]`.
+Establish an intermediate fact. Put the expressions in a common number system so they can be compared. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Rewrite using `[inv_mul_eq_div, inv_mul_eq_div, div_eq_div_iff (hne A hA) (hne B hB)]`. Conclude with `key` after adjusting the coercions.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wt_mul_nbIn {M q : ℕ} {P : Ideal (𝓞 E)} (hM : 0 < M) (hP : GoodPrime M q P)
     {A B : Lt E n} (hA : A ∈ Vset E n M) (hB : B ∈ Vset E n M) :
@@ -235,11 +235,11 @@ theorem wt_mul_nbIn {M q : ℕ} {P : Ideal (𝓞 E)} (hM : 0 < M) (hP : GoodPrim
   exact_mod_cast key
 
 /- English proof (translation)
-Establish `hq` using `Quot.eqvGen_exact e`. Use `clear e`. Proceed by induction on `hq with`. Consider the case `rel x y hxy => exact hxy`. Consider the case `refl x => exact ⟨1, one_mem_UJset', fun v => by rw [Matrix.one_mulVec]⟩`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `symm x y _ ih`. Take `⟨h, hh, m⟩` from `ih`. Conclude with `⟨ccT h, (eq_mul_div_mul_mul_inv_of_mul_inv_mul_eq hh).1, Nbr.move_inv (mul_eq_one_comm.1 hh.1) m⟩`. Consider the case `trans x y z _ _ ih1 ih2`. Take `⟨h, hh, m⟩` from `ih1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk, m'⟩` from `ih2`. Conclude with `⟨k * h, (eq_mul_div_mul_mul_inv_of_mul_inv_mul_eq hk).2 h hh, fun v => by rw [m v, m' (h *ᵥ v), Matrix.mulVec_mulVec]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem exists_moves_of_cls_eq {M : ℕ} {a b : Vset E n M}
     (e : (Quot.mk _ a : Cls E n M) = Quot.mk _ b) : ∃ h ∈ DH E n M, Moves h a.1 b.1 := by
@@ -257,17 +257,15 @@ private theorem exists_moves_of_cls_eq {M : ℕ} {a b : Vset E n M}
     exact ⟨k * h, (eq_mul_div_mul_mul_inv_of_mul_inv_mul_eq hk).2 h hh, fun v => by rw [m v, m' (h *ᵥ v), Matrix.mulVec_mulVec]⟩
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty (Cls E n M) with hE | hE` into its components or cases. Establish `h0 : Nb M P A = ∅`. Use extensionality with `X`. Simplify using `only [Set.mem_empty_iff_false, iff_false]`. Conclude with `fun hX => hE.false (Quot.mk _ ⟨X, hX.1⟩)`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `[h0]`. Set `cl : Lt E n → Cls E n M` to `fun X => if hX : X ∈ Vset E n M then Quot.mk _ ⟨X, hX⟩ else hE.some`. Establish `hcl : ∀ X (hX : X ∈ Vset E n M), cl X = Quot.mk _ ⟨X, hX⟩` using `fun X hX => dif_pos hX`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hN, ← Finset.sum_fiberwise_of_maps_to (s := hN.toFinset) (t := Finset.univ) (g := cl) (fun _ _ => Finset.mem_univ _)]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hset : ((hN.toFinset.filter fun X => cl X = c : Finset (Lt E n)) : Set (Lt E n)) = nbIn M P A (Quot.out c).1`. Use extensionality with `X`. Simplify using `only [Finset.coe_filter, Set.Finite.mem_toFinset, Set.mem_ofPred_eq, nbIn]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hX, hc⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hX, exists_moves_of_cls_eq ((Quot.out_eq c).trans ((hcl X hX.1).symm.trans hc).symm)⟩`. Introduce and unpack `⟨hX, h, hh, m⟩`. Use `⟨hX, ?_⟩` and prove the remaining obligations. Rewrite using `[hcl X hX.1]`. Conclude with `(Quot.sound (⟨h, hh, m⟩ : ∃ h ∈ DH E n M, Moves h (Quot.out c).1 X)).symm.trans (Quot.out_eq c)`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hval : ∀ X ∈ hN.toFinset.filter (fun X => cl X = c), f X = f (Quot.out c).1`. Introduce `X hX`. Rewrite `hX` using `[Finset.mem_filter, Set.Finite.mem_toFinset]`. Take `⟨h, hh, m⟩` from `exists_moves_of_cls_eq ((Quot.out_eq c).trans ((hcl X hX.1.1).symm.trans hX.2).symm)`. Conclude with `hf h hh _ (Quot.out c).2 X hX.1.1 m`.
-
-Rewrite using `[Finset.sum_congr rfl hval, Finset.sum_const, nsmul_eq_mul, ← Set.ncard_coe_finset, hset]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_nb {M : ℕ} [Fintype (Cls E n M)] {P : Ideal (𝓞 E)} {A : Lt E n}
     (hN : (Nb M P A).Finite) {f : Lt E n → ℂ} (hf : IsClassFn M f) :
@@ -311,23 +309,21 @@ end NbAvg
 open NbAvg in
 
 /- English proof (translation)
-Introduce `E _ _ _ n M q P hM hP f hf`. Take `⟨hcls, -, -, -, -⟩` from `finite_cls_and_stab E n M hM`. Set `_ : Fintype (Cls E n M)` to `Fintype.ofFinite _`. Take `⟨hgc, -, hnb⟩` from `neighbours E n M q P hM hP`. Establish `hnb'` using `(neighbours E n M q (conjI P) hM hgc).2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf' : IsClassFn M f` using `hf`. Establish `hone : IsClassFn M (fun _ : Lt E n => (1 : ℂ))` using `fun _ _ _ _ _ _ _ => rfl`. Establish `hcount : ∀ d : Cls E n M, ((q : ℂ) - 1) * ∑ c : Cls E n M, ((nbIn M (conjI P) (Quot.out d).1 (Quot.out c).1).ncard : ℂ) = (q : ℂ) ^ n - 1`. Introduce `d`. Take `⟨hfin, hcnt, -⟩` from `hnb' _ (Quot.out d).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hs` using `NbAvg.sum_nb hfin hone`. Simplify using `only [mul_one] at hs`. Establish `h1 : ∑ᶠ X ∈ Nb M (conjI P) (Quot.out d).1, (1 : ℂ) = ((Nb M (conjI P) (Quot.out d).1).ncard : ℂ)`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin, Finset.sum_const, nsmul_eq_mul, mul_one, Set.ncard_eq_toFinset_card _ hfin]`. Rewrite `hs` using `[h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hs]`. Establish `hq1 : 1 ≤ q` using `hP.1.one_lt.le`. Establish `hqn : 1 ≤ q ^ n` using `Nat.one_le_pow _ _ hP.1.pos`. Establish `hc` using `congrArg (fun x : ℕ => (x : ℂ)) hcnt`. Simplify using `only [Nat.cast_mul, Nat.cast_sub hq1, Nat.cast_sub hqn, Nat.cast_pow, Nat.cast_one] at hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `hc`. Establish `hsum : ∀ c : Cls E n M, ∑ᶠ X ∈ Nb M P (Quot.out c).1, f X = ∑ d : Cls E n M, ((nbIn M P (Quot.out c).1 (Quot.out d).1).ncard : ℂ) * f (Quot.out d).1` using `fun c => NbAvg.sum_nb (hnb _ (Quot.out c).2).1 hf'`. Simplify using `only [classSum, finsum_eq_sum_of_fintype, hsum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[← wt_mul_nbIn hM hP (Quot.out c).2 (Quot.out d).2]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = ∑ d : Cls E n M, ∑ c : Cls E n M, ((q : ℂ) - 1) * ((wt M (Quot.out d).1 : ℂ) * ((nbIn M (conjI P) (Quot.out d).1 (Quot.out c).1).ncard : ℂ)) * f (Quot.out d).1 := Finset.sum_comm`. Use `_ = ∑ d : Cls E n M, ((wt M (Quot.out d).1 : ℂ) * f (Quot.out d).1) * (((q : ℂ) - 1) * ∑ c : Cls E n M, ((nbIn M (conjI P) (Quot.out d).1 (Quot.out c).1).ncard : ℂ)) := by`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = ((q : ℂ) ^ n - 1) * ∑ d : Cls E n M, (wt M (Quot.out d).1 : ℂ) * f (Quot.out d).1 := by`. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[hcount d]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem classSum_nb :
   ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n M q : ℕ) (P : Ideal (𝓞 E)), 0 < M → GoodPrime M q P → ∀ f : Lt E n → ℂ, (∀ h ∈ DH E n M, ∀ Λ ∈ Vset E n M, ∀ Λ' ∈ Vset E n M, Moves h Λ Λ' → f Λ' = f Λ) → ((q : ℂ) - 1) * classSum M (fun Λ => ∑ᶠ Λ' ∈ Nb M P Λ, f Λ') = ((q : ℂ) ^ n - 1) * classSum M f := by

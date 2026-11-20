@@ -5,11 +5,11 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.GaloisLibrary.Selm
 open ReciprocityTheory.Gal UpperTheory.V.Base
 
 /- English proof (translation)
-Establish `e : (U' ⊓ D).relIndex (U ⊓ D) = U'.relIndex (U ⊓ D)`. Unfold `Subgroup.relIndex`. Use `congr 1`. Use extensionality with `x`. Simplify using `only [Subgroup.mem_subgroupOf, Subgroup.mem_inf]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h => h.1, fun h => ⟨h, x.2.2⟩⟩`. Rewrite using `[e]`. Establish `k : ∀ K : Subgroup G, U'.relIndex K = Nat.card (K.map (QuotientGroup.mk' U'))` using `fun K => by`. Rewrite using `[← Subgroup.relIndex_ker, QuotientGroup.ker_mk']`. Rewrite using `[k, k]`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subgroup.card_dvd_of_le (Subgroup.map_mono inf_le_left)`.
+A detailed English derivation is pending.
 -/
 private theorem relIndex_inf_dvd {G : Type} [Group G] (U' U D : Subgroup G) [U'.Normal] :
     (U' ⊓ D).relIndex (U ⊓ D) ∣ U'.relIndex U := by
@@ -26,7 +26,7 @@ private theorem relIndex_inf_dvd {G : Type} [Group G] (U' U D : Subgroup G) [U'.
   exact Subgroup.card_dvd_of_le (Subgroup.map_mono inf_le_left)
 
 /- English proof (translation)
-Rewrite `hx` using `[← Nat.cast_smul_eq_nsmul R]`. Conclude with `(hn.smul_eq_zero).1 hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem eq_zero_of_nsmul {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {n : ℕ}
     (hn : IsUnit (n : R)) {x : N} (hx : n • x = 0) : x = 0 := by
@@ -34,17 +34,15 @@ private theorem eq_zero_of_nsmul {R N : Type} [CommRing R] [AddCommGroup N] [Mod
   exact (hn.smul_eq_zero).1 hx
 
 /- English proof (translation)
-Introduce `R G M _ _ _ _ _ _ _ _ _ _ ρ hρ U' U _ h hop hu 𝒟 h𝒟`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `x hx`. Establish `h0 : resU ρ h x.1 = 0` using `congrArg Subtype.val hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Subtype.ext (eq_zero_of_nsmul hu (kerResSmul R G M ρ U' U h x.1 h0))`. Use extensionality with `y`. Rewrite using `[selEig, eig_one]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ g`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subtype.ext (restriction_mem_invariant_H1 ρ h x.1 g)`. Introduce `hy`. Establish `hy' : y.1 ∈ invariantsUnderSubgroupH1 ρ U U'` using `fun g => congrArg Subtype.val (hy g)`. Establish `h1` using `corInv R G M ρ hρ U' U h hop y.1 hy'`. Rewrite `h1` using `[← Nat.cast_smul_eq_nsmul R]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨v, hv⟩` from `hu.exists_left_inv`. Establish `h2` using `Submodule.smul_mem _ v h1`. Rewrite `h2` using `[smul_smul, hv, one_smul]`. Take `⟨x, hx⟩` from `h2`. Establish `hxs : x ∈ LocSel ρ U 𝒟`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_locSel]`. Introduce `D hD`. Establish `hu' : IsUnit (((U' ⊓ D).relIndex (U ⊓ D) : ℕ) : R)` using `isUnit_of_dvd_unit (Nat.cast_dvd_cast (relIndex_inf_dvd U' U D)) hu`. Use `eq_zero_of_nsmul hu' (kerResSmul R G M ρ _ _ (inf_le_inf_right D h) _ ?_)` and prove the remaining obligations. Rewrite using `[resU_resU, ← resU_resU ρ inf_le_left h, hx]`.
-
-Conclude with `mem_locSel.1 y.2 D hD`. Conclude with `⟨⟨x, hxs⟩, Subtype.ext hx⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Base.selUnit :
     ∀ (R G M : Type) [CommRing R] [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [AddCommGroup M] [Module R M]

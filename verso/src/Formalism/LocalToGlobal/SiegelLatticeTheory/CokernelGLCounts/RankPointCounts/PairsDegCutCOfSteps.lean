@@ -10,7 +10,7 @@ open Formalism.L2.SG.Full
 namespace Formalism.L2.SG.KappaOffDiagonal
 
 /- English proof (translation)
-The claim follows from `pairsDegCutC_of_cut hFold hFE hOI hIV hJP hTy hDl cosetsC_holds hDim (PgLe.pgLeC_of hS hRC)`.
+A detailed English derivation is pending.
 -/
 theorem pairsDegCutC_of_steps (hFold : FoldOKC) (hFE : FundExistsC) (hOI : OOIntAllC)
     (hIV : IrrVecC) (hJP : JPosC) (hTy : TypeC) (hDl : DelC) (hDim : DimFormC)

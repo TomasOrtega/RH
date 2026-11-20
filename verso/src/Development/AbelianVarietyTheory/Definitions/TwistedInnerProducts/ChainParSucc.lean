@@ -216,7 +216,7 @@ def ChainUp (D : D7) : Prop :=
         ∃ x : s.CC c, (∀ y, ip y x = ip₀ (Θ y) u) ∧ IsPar x (chainPar c B k)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Reach.zero, Function.surjective_id⟩`.
+Supply the required witnesses or components.
 -/
 example (c : Com D) (s₀ : PiLocalization₂ D) : Reach c s₀ 0 s₀ LinearMap.id ∧ Function.Surjective (LinearMap.id : s₀.CC c →ₗ[ℂ] s₀.CC c) :=
   ⟨Reach.zero, Function.surjective_id⟩

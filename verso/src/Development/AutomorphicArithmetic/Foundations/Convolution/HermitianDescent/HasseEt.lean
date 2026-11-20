@@ -9,7 +9,7 @@ open scoped TensorProduct
 namespace UpperTheory.ConvolutionTheory.D
 
 /- English proof (translation)
-Establish `h : Algebra.lmul T (I → S) f = LinearMap.pi (fun i => (Algebra.lmul T S (f i)).comp (LinearMap.proj i))`. Use extensionality with `g i`. Simplify using the standard rewrite rules. Rewrite using `[Algebra.norm_apply, h, LinearMap.det_pi]`. Both sides reduce to the same expression.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem norm_pi' (T S I : Type) [CommRing T] [CommRing S] [Algebra T S] [Module.Free T S]
     [Module.Finite T S] [Fintype I] [DecidableEq I] (f : I → S) :
@@ -22,7 +22,7 @@ private theorem norm_pi' (T S I : Type) [CommRing T] [CommRing S] [Algebra T S] 
   rfl
 
 /- English proof (translation)
-Take `⟨z, rfl⟩` from `h`. Set `e2 : T ⊗[F] E ≃ₐ[T] (I → T ⊗[K] L)` to `(Algebra.TensorProduct.cancelBaseChange F K T T E).symm.trans ((Algebra.TensorProduct.congr AlgEquiv.refl e).trans (Algebra.TensorProduct.piRight K T T (fun _ : I => L)))`. Use `⟨∏ i, e2 z i, ?_⟩` and prove the remaining obligations. Rewrite using `[map_prod, ← norm_pi', Algebra.norm_eq_of_algEquiv e2 z]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem norm_down (F E K L I T : Type) [Field F] [Field E] [Algebra F E]
     [FiniteDimensional F E] [Field K] [Algebra F K] [Field L] [Algebra K L] [FiniteDimensional K L]
@@ -38,9 +38,9 @@ private theorem norm_down (F E K L I T : Type) [Field F] [Field E] [Algebra F E]
   rw [map_prod, ← norm_pi', Algebra.norm_eq_of_algEquiv e2 z]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `h`. Take `⟨i0⟩` from `‹Nonempty I›`. Use `⟨e.symm (Pi.mulSingle i0 y), ?_⟩` and prove the remaining obligations. Rewrite using `[← Algebra.norm_eq_of_algEquiv e, AlgEquiv.apply_symm_apply, norm_pi', Finset.prod_eq_single i0]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j _ hj`. Simplify using `[Pi.mulSingle_eq_of_ne hj]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem norm_up (F E K L I : Type) [Field F] [Field E] [Algebra F E]
     [FiniteDimensional F E] [Field K] [Algebra F K] [Field L] [Algebra K L] [FiniteDimensional K L]
@@ -58,7 +58,7 @@ private theorem norm_up (F E K L I : Type) [Field F] [Field E] [Algebra F E]
   · simp
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `h`. Use `⟨Algebra.TensorProduct.map (Algebra.TensorProduct.productMap ψ ρ) (AlgHom.id F E) z, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.CNorm.tensor_norm_map, hz]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem transfer (F E A F' T : Type) [Field F] [Field E] [Algebra F E]
     [FiniteDimensional F E] [CommRing A] [Algebra F A] [CommRing F'] [Algebra F F'] [CommRing T]
@@ -70,7 +70,7 @@ private theorem transfer (F E A F' T : Type) [Field F] [Field E] [Algebra F E]
   simp
 
 /- English proof (translation)
-Use `letI : Algebra F T := ((algebraMap K T).comp (algebraMap F K)).toAlgebra`. Use `haveI : IsScalarTower F K T := IsScalarTower.of_algebraMap_eq fun _ => rfl`. Conclude with `norm_down F E K L I T e _ (transfer F E A F' T { ψ with commutes' := hψ } ((IsScalarTower.toAlgHom F K T).comp π) x h)`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem local_step (F E K L I A F' T : Type) [Field F] [Field E] [Algebra F E]
     [FiniteDimensional F E] [Field K] [Algebra F K] [Field L] [Algebra K L] [FiniteDimensional K L]
@@ -84,11 +84,9 @@ private theorem local_step (F E K L I A F' T : Type) [Field F] [Field E] [Algebr
     ((IsScalarTower.toAlgHom F K T).comp π) x h)
 
 /- English proof (translation)
-Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨L, _, _, _, _, I, _, _, _, hC, ⟨e⟩⟩` from `UpperTheory.exists_cyclic_galois_tensor_algEquiv_pi F E K`. Use `haveI : NumberField L := NumberField.of_module_finite K L`. Use `norm_up F E K L I e _ (GlobalTheory.T.hasseNormPrinciple_of_isCyclic K L inferInstance hC (π x) hx ⟨fun w => ?_, fun a => ?_⟩)` and prove the remaining obligations. Take `⟨φ, hφ⟩` from `GlobalTheory.QNorm.exists_ringHom_adicCompletion_under F K w`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Conclude with `local_step F E K L I A _ _ e π φ hφ x (hf _)`. Use `letI := a`. Take `⟨v, hv, hσ⟩` from `GlobalTheory.CNorm.exists_isReal_embedding_eq_hom ((algebraMap K ℝ).comp (algebraMap F K))`. Use `local_step F E K L I A v.Completion ℝ e π (InfinitePlace.Completion.extensionEmbeddingOfIsReal hv) (fun b => ?_) x (hi v)` and prove the remaining obligations. Use `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hv ((WithAbs.equiv v.1).symm b)` as an intermediate fact.
-
-Rewrite `this` using `[hσ]`. Conclude with `this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem field_case (F E K A : Type) [Field F] [NumberField F] [Field E] [NumberField E]
     [Algebra F E] [IsGalois F E] [IsCyclic (E ≃ₐ[F] E)] [Field K] [NumberField K] [Algebra F K]
@@ -115,17 +113,13 @@ end UpperTheory.ConvolutionTheory.D
 
 open UpperTheory.ConvolutionTheory.D in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ A _ _ _ _ x hf hi`. Use `haveI : FiniteDimensional F E := Module.Finite.of_restrictScalars_finite ℚ F E`. Use `haveI : IsArtinianRing A := IsArtinianRing.of_finite F A`. Establish `key : ∀ m : MaximalSpectrum A, ∃ y : (A ⧸ m.asIdeal) ⊗[F] E, Algebra.norm (A ⧸ m.asIdeal) y = Ideal.Quotient.mk m.asIdeal (x : A)`. Introduce `m`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `haveI := m.isMaximal`. Use `letI := Ideal.Quotient.field m.asIdeal`. Use `haveI : NumberField (A ⧸ m.asIdeal) := NumberField.of_module_finite F _`. Conclude with `field_case F E (A ⧸ m.asIdeal) A (Ideal.Quotient.mkₐ F m.asIdeal) x (x.isUnit.map (Ideal.Quotient.mkₐ F m.asIdeal)).ne_zero hf hi`. Use `choose y hy using key`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `b` to `Module.finBasis F E`. Set `c : Fin (Module.finrank F E) → A` to `fun j => (IsArtinianRing.equivPi A).symm fun m => (Algebra.TensorProduct.basis _ b).repr (y m) j`. Establish `hc : ∀ m j, Ideal.Quotient.mk m.asIdeal (c j) = (Algebra.TensorProduct.basis _ b).repr (y m) j`. Introduce `m j`. Use `congrFun ((IsArtinianRing.equivPi A).apply_symm_apply fun m => (Algebra.TensorProduct.basis _ b).repr (y m) j) m` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `this`. Use `⟨∑ j, c j ⊗ₜ[F] b j, ?_⟩` and prove the remaining obligations. Apply `(IsArtinianRing.equivPi A).injective` to reduce the goal to its premises. Use function extensionality and compare the values at `m`. Establish `h1 : Algebra.TensorProduct.map (Ideal.Quotient.mkₐ F m.asIdeal) (AlgHom.id F E) (∑ j, c j ⊗ₜ[F] b j) = y m` using `by conv_rhs => rw [← (Algebra.TensorProduct.basis _ b).sum_repr (y m)]`.
-
-Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Algebra.TensorProduct.map_tmul, Algebra.TensorProduct.basis_apply, ← hc m j, TensorProduct.smul_tmul', smul_eq_mul, mul_one]`. Both sides reduce to the same expression. Establish `h2` using `GlobalTheory.CNorm.tensor_norm_map (Ideal.Quotient.mkₐ F m.asIdeal) (∑ j, c j ⊗ₜ[F] b j)`.
-
-Rewrite `h2` using `[h1, hy]`. Conclude with `h2.symm`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.D.hasseEt : UpperTheory.ConvolutionTheory.D.HasseEt := by
   intro F E _ _ _ _ _ _ _ A _ _ _ _ x hf hi

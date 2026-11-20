@@ -43,7 +43,7 @@ section
 variable {S R : Type} [CommRing S] [CommRing R]
 
 /- English proof (translation)
-Rewrite using `[show (ULift.up (k : T) : ULift.{1} T) = ((k : ULift.{1} T)) from rfl]`. Conclude with `Int.cast_smul_eq_zsmul _ k x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ulift_intCast_smul {T : Type} [CommRing T] (M : ModuleCat.{1} (ULift.{1} T)) (x : M) (k : ℤ) :
     (ULift.up (k : T) : ULift.{1} T) • x = k • x := by
@@ -91,9 +91,9 @@ Both sides reduce to the same expression.
 theorem restr_eq (φ : R →+* S) : restr φ = sheafCompose _ (ModuleCat.restrictScalars.{1} (liftHom φ)) := rfl
 
 /- English proof (translation)
-Rewrite using `[restr_eq]`. Establish `adj₁` using `Sheaf.adjunction Scheme.etaleTopology.{0} (ModuleCat.extendRestrictScalarsAdj.{1, 1, 1} (liftHom φ))`. Establish `adj₂` using `Sheaf.adjunction Scheme.etaleTopology.{0} (ModuleCat.restrictCoextendScalarsAdj.{1, 1, 1} (liftHom φ))`. Use `adj₁.isRightAdjoint` as an intermediate fact. Use `adj₂.isLeftAdjoint` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `j : sheafCompose Scheme.etaleTopology.{0} (ModuleCat.restrictScalars.{1} (liftHom φ)) ≅ Sheaf.composeAndSheafify Scheme.etaleTopology.{0} (ModuleCat.restrictScalars.{1} (liftHom φ))` to `(Functor.rightUnitor _).symm ≪≫ Functor.isoWhiskerLeft _ (sheafificationNatIso _ _)`. Conclude with `⟨inferInstance, preservesFiniteColimits_of_natIso j.symm⟩`.
+Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem restr_exact (φ : R →+* S) : PreservesFiniteLimits (restr φ) ∧ PreservesFiniteColimits (restr φ) := by
   rw [restr_eq]
@@ -111,7 +111,7 @@ instance restr_preservesHomology (φ : R →+* S) : (restr φ).PreservesHomology
   infer_instance
 
 /- English proof (translation)
-Unfold `rAug`. Establish `h1 : QuasiIso ((rcx φ).map ε)` using `HomologicalComplex.quasiIso_map_of_preservesHomology ε (restr φ)`. Establish `h2 : QuasiIso ((HomologicalComplex.singleMapHomologicalComplex (restr φ) (ComplexShape.up ℤ) 0).inv.app F)` using `quasiIso_of_isIso _`. Conclude with `quasiIso_comp (hφ := h2) (hφ' := h1) _ _`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rAug_quasiIso (φ : R →+* S) {F : Shv S} {C : Cx S} (ε : sgl F ⟶ C) [QuasiIso ε] : QuasiIso (rAug φ ε) := by
   unfold rAug
@@ -126,7 +126,7 @@ section
 variable {R S : Type} [CommRing R] [CommRing S]
 
 /- English proof (translation)
-Establish `h : sglι ((restr φ).obj F) ≫ (rAug φ ε).f 0 = (restr φ).map (sglι F ≫ ε.f 0)` using `by set_option backward.isDefEq.respectTransparency false in`. Simplify using `[rAug, sglι, CochainComplex.singleFunctor, CochainComplex.singleFunctors]`. Use `congrArg (fun m => Sec.map m (show Sec ((restr φ).obj F) U from a)) h` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem rAug_f_zero (φ : R →+* S) {F : Shv S} {C : Cx S} (ε : sgl F ⟶ C) (U : Scheme.{0}) (a : Sec F U) :
     Sec.map ((rAug φ ε).f 0) (Sec.map (sglι ((restr φ).obj F)) (show Sec ((restr φ).obj F) U from a)) =

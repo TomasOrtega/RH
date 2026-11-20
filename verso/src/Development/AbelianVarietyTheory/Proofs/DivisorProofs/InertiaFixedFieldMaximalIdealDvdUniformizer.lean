@@ -14,7 +14,7 @@ set_option autoImplicit false
 namespace GlobalTheory.FixInertUnram
 
 /- English proof (translation)
-Rewrite using `[ValuationSubring.mem_nonunits_iff]`. Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[← A.valuation_le_one_iff, map_inv₀, not_le, one_lt_inv₀ ((Valuation.pos_iff _).2 hx)]`. Simplify using `[hx]`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_nonunits_iff' {F : Type} [Field F] (A : ValuationSubring F) (x : F) :
     x ∈ A.nonunits ↔ x = 0 ∨ x⁻¹ ∉ A := by
@@ -25,17 +25,17 @@ theorem mem_nonunits_iff' {F : Type} [Field F] (A : ValuationSubring F) (x : F) 
     simp [hx]
 
 /- English proof (translation)
-Introduce `R K Ω _ _ _ _ _ _ _ _ _ _ V hV π hπ x hx hxV`. Set `L : IntermediateField K Ω` to `(FiniteGaloisIntermediateField.adjoin K ({x} : Set Ω)).toIntermediateField`. Establish `hxL : x ∈ L` using `FiniteGaloisIntermediateField.subset_adjoin K ({x} : Set Ω) rfl`. Set `W : ValuationSubring L` to `V.comap (algebraMap L Ω)`. Establish `hW : IsAbove R K W.toSubring`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Unfold `IsAbove at hV ⊢`. Rewrite using `[← hV]`. Use extensionality with `y`. Both sides reduce to the same expression. Set `y : L` to `⟨x, hxL⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `hfix : ∀ τ ∈ inertia K W, τ y = y`. Introduce `τ hτ`. Take `⟨σ, hσ, he⟩` from `GlobalTheory.T.exists_inertia_element_restricting_to_finite_galois R K Ω V hV L τ hτ`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← he y]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IntermediateField.mem_fixedField_iff _ _).1 hx σ hσ`. Establish `hyW : y ∈ W.nonunits`. Rewrite `hxV`, the goal using `[mem_nonunits_iff']`. Break down `hxV with h | h` into its components or cases. Conclude with `Or.inl (Subtype.ext h)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Reduce the conclusion to the remaining proof obligations.
 
-Use `Or.inr fun h' => h ?_` and prove the remaining obligations. Establish `: ((y⁻¹ : L) : Ω) ∈ V` using `h'`. Simplify using `using this`. Establish `key` using `GlobalTheory.T.inertia_fixed_pos_valuation_dvd_uniformiser R K L W hW π hπ y hfix hyW`. Establish `: ((y / algebraMap K L (algebraMap R K π) : L) : Ω) ∈ V` using `key`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem div_uniformizer_mem : ∀ (R K Ω : Type) [CommRing R] [IsDomain R] [IsDiscreteValuationRing R]
     [PerfectField (ResidueField R)] [Field K] [Algebra R K] [IsFractionRing R K] [Field Ω] [Algebra K Ω]

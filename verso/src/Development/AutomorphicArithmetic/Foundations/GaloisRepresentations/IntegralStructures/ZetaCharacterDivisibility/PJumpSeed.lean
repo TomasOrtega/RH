@@ -14,15 +14,15 @@ open PositivityTheory.AutomorphicGaloisHodgeTate.Div (DivWCoreLac SenWLac HTLac 
 open UpperTheory.Gal.Int.Div
 
 /- English proof (translation)
-Introduce `h1 h2 h3 h4 h5 E Ω _ _ _ _ _ _ l _ ι a dd U r ρ hss hcov w hcrys hocc P AI hT A hA O _ _ _ Bw hj`. Establish `hc` using `hcrys P AI hT A hA O Bw hj`. Establish `hdr` using `((h4 l P AI hT E Ω A O Bw a (r.comp (Dec (F := E) A).subtype) (r.comp (Dec (F := E) A).subtype)).1 hc).1`. Use `⟨hc, hdr, ?_⟩` and prove the remaining obligations. Introduce `τ LL' τ' hτ lam J hw hJ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨Jr, hJr, hcard⟩` from `h5 l P AI hT E Ω A O Bw a _ hdr τ LL' τ' hτ`. Take `⟨J', hJ', hsub⟩` from `hocc P AI hT A hA O Bw hj τ LL' τ' hτ lam J hw hJ`. Take `⟨m, n, e, hin⟩` from `h1 _ _ a dd r ρ hcov`. Establish `hR` using `h2 _ _ a m n e r hss`. Establish `hcomp : (blockRep (a` using `fun _ : Fin m => a) e fun _ => r).comp (Dec (F := E) A).subtype = blockRep (a := fun _ : Fin m => a) e fun _ => r.comp (Dec (F := E) A).subtype := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use extensionality with `g i j`. Both sides reduce to the same expression. Establish `hjR : IsJumpsAt P Bw ((blockRep (a` using `fun _ : Fin m => a) e fun _ => r).comp (Dec (F := E) A).subtype) τ (∑ _ : Fin m, Jr) := by`. Rewrite using `[hcomp]`. Conclude with `GlobalTheory.BlockSum.isJumpsAt_blockRep P Bw e hτ fun _ => hJr`.
+By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hle : J' ≤ ∑ _ : Fin m, Jr` using `(h3 E Ω l dd n ρ _ hR hin ι w P AI hT A hA O Bw hj).2 τ _ _ hjR hJ'`. Establish `hJeq : J = (wtJumps lam).val` using `Multiset.map_injective Int.cast_injective (hJ.trans (wtJumps_val lam).symm)`. Establish `hnd : J.Nodup` using `hJeq ▸ (wtJumps lam).nodup`. Establish `hJc : J.card = a` using `by rw [hJeq]; exact card_wtJumps lam`. Establish `hss' : J ⊆ Jr` using `fun j hjJ => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨_, -, hj'⟩` from `Multiset.mem_sum.1 (Multiset.mem_of_le hle (hsub j hjJ))`. Conclude with `hj'`. Establish `hJJ : J = Jr` using `Multiset.eq_of_le_of_card_le ((Multiset.le_iff_subset hnd).2 hss') (by rw [hcard, hJc])`. Rewrite using `[hJJ]`. Conclude with `hJr`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Div.jumpSeed_of :
     CoverIn → SSBlock → SubLoc → LocConj → JumpCard → JumpCondition := by

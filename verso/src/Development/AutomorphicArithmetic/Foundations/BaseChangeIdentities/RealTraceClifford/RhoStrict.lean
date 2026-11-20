@@ -14,13 +14,13 @@ open Formalism.REAL (GlRel IsWeight KHighest Cas)
 private def dM {n : ℕ} (x : Wt n) : ℝ := ∑ a, ∑ b, (x a - x b) ^ 2
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+A detailed English derivation is pending.
 -/
 private theorem dM_nonneg {n : ℕ} (x : Wt n) : 0 ≤ dM x :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
 
 /- English proof (translation)
-Unfold `dM`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Chain the equalities or inequalities of the calculation.
 -/
 private theorem dM_perm {n : ℕ} (x : Wt n) (w : Equiv.Perm (Fin n)) : dM (x ∘ w) = dM x := by
   unfold dM
@@ -29,7 +29,7 @@ private theorem dM_perm {n : ℕ} (x : Wt n) (w : Equiv.Perm (Fin n)) : dM (x �
     _ = ∑ a, ∑ b, (x a - x b) ^ 2 := Equiv.sum_comp w (fun a => ∑ b, (x a - x b) ^ 2)
 
 /- English proof (translation)
-Establish `h : ∀ a, ∑ b, (x a - x b) ^ 2 = n * x a ^ 2 - 2 * x a * (∑ b, x b) + ∑ b, x b ^ 2`. Introduce `a`. Simplify using `only [sub_sq, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.mul_sum, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Unfold `dM`. Simplify using `only [h, Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul, ← Finset.mul_sum, ← Finset.sum_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -45,9 +45,9 @@ private theorem dM_eq {n : ℕ} (x : Wt n) :
   ring
 
 /- English proof (translation)
-Use `choose m hm using h`. Establish `h1 : dM x = ((∑ a, ∑ b, (m a b) ^ 2 : ℤ) : ℝ)`. Simplify using `[dM, hm]`. Establish `h0 : 0 ≤ ∑ a, ∑ b, (m a b) ^ 2` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _`. Take `⟨k, hk⟩` from `Int.eq_ofNat_of_zero_le h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨k, by rw [h1, hk]; simp⟩`.
+A detailed English derivation is pending.
 -/
 private theorem dM_nat {n : ℕ} (x : Wt n) (h : ∀ a b, ∃ m : ℤ, x a - x b = m) :
     ∃ k : ℕ, dM x = k := by
@@ -60,9 +60,9 @@ private theorem dM_nat {n : ℕ} (x : Wt n) (h : ∀ a b, ∃ m : ℤ, x a - x b
   exact ⟨k, by rw [h1, hk]; simp⟩
 
 /- English proof (translation)
-Break down `lt_trichotomy a b with hab | rfl | hab` into its components or cases. Take `⟨m, hm⟩` from `h a b hab`. Conclude with `⟨m, by simp [hm]⟩`. Conclude with `⟨0, by simp⟩`. Take `⟨m, hm⟩` from `h b a hab`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨-m, by push_cast; linarith⟩`.
+Supply the required witnesses or components.
 -/
 private theorem dom_int {n : ℕ} {x : Wt n} (h : Dom x) (a b : Fin n) :
     ∃ m : ℤ, x a - x b = m := by
@@ -74,9 +74,9 @@ private theorem dom_int {n : ℕ} {x : Wt n} (h : Dom x) (a b : Fin n) :
     exact ⟨-m, by push_cast; linarith⟩
 
 /- English proof (translation)
-Establish `h : ∑ i, (r i * u (Equiv.swap a b i) - r i * u i) = (r a - r b) * (u b - u a)`. Rewrite using `[← Finset.sum_subset (Finset.subset_univ {a, b})]`. Rewrite using `[Finset.sum_pair hab]`. Simplify using `only [Equiv.swap_apply_left, Equiv.swap_apply_right]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Introduce `i _ hi`. Simplify using `only [Finset.mem_insert, Finset.mem_singleton, not_or] at hi`. Rewrite using `[Equiv.swap_apply_of_ne_of_ne hi.1 hi.2, sub_self]`. Rewrite `h` using `[Finset.sum_sub_distrib]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private theorem sum_swap {n : ℕ} (r u : Wt n) {a b : Fin n} (hab : a ≠ b) :
     ∑ i, r i * u (Equiv.swap a b i) = ∑ i, r i * u i + (r a - r b) * (u b - u a) := by
@@ -92,13 +92,13 @@ private theorem sum_swap {n : ℕ} (r u : Wt n) {a b : Fin n} (hab : a ≠ b) :
   linarith
 
 /- English proof (translation)
-Take `⟨hre, hdom, hanti, -, -, -⟩` from `rearr n`. Establish `hex : ∃ a b, a < b ∧ (κ ∘ w) a < (κ ∘ w) b`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hu : Antitone (κ ∘ w)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Break down `hab.lt_or_eq with h | rfl` into its components or cases. Conclude with `hcon a b h`. Conclude with `le_rfl`. Apply `hne` to reduce the goal to its premises.
+Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hdom (κ ∘ w)).2.2.1 hu`. Establish `h2` using `(hdom κ).2.2.2.1 w`. Establish `h3` using `(hdom κ).2.2.1 hκ`. Rewrite using `[← h1, h2, h3]`. Take `⟨a, b, hab, hlt⟩` from `hex`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(hre (rhoV n) κ hanti.antitone hκ (w * Equiv.swap a b)).1`. Establish `h2` using `sum_swap (rhoV n) (κ ∘ w) hab.ne`. Establish `h3 : ∑ i, rhoV n i * (κ ∘ w) (Equiv.swap a b i) = ∑ i, rhoV n i * κ ((w * Equiv.swap a b) i)` using `rfl`. Establish `h4 : 0 < (rhoV n a - rhoV n b) * ((κ ∘ w) b - (κ ∘ w) a)` using `mul_pos (sub_pos.2 (hanti hab)) (sub_pos.2 hlt)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem rho_strict {n : ℕ} {κ : Wt n} (hκ : Antitone κ) (w : Equiv.Perm (Fin n))
     (hne : κ ∘ w ≠ κ) : ∑ a, rhoV n a * (κ ∘ w) a < ∑ a, rhoV n a * κ a := by
@@ -125,13 +125,13 @@ private theorem rho_strict {n : ℕ} {κ : Wt n} (hκ : Antitone κ) (w : Equiv.
   linarith
 
 /- English proof (translation)
-Establish `hs` using `rho_strict hκ w hne`. Establish `hn : 0 < n`. Break down `Nat.eq_zero_or_pos n with rfl | h` into its components or cases. Simplify using `at hs`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hnR : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `e1 : ∑ a, (κ ∘ w) a = ∑ a, κ a` using `Equiv.sum_comp w κ`. Establish `e2 : ∑ a, (κ ∘ w) a ^ 2 = ∑ a, κ a ^ 2` using `Equiv.sum_comp w (fun a => κ a ^ 2)`. Establish `q : ∀ u : Wt n, ∑ a, (u + rhoV n) a ^ 2 = ∑ a, u a ^ 2 + 2 * ∑ a, rhoV n a * u a + ∑ a, rhoV n a ^ 2`. Introduce `u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.add_apply, add_sq, Finset.sum_add_distrib, Finset.mul_sum]`. Use `congr 1`. Use `congr 1`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`. Establish `l : ∀ u : Wt n, ∑ a, (u + rhoV n) a = ∑ a, u a + ∑ a, rhoV n a`.
+Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `u`. Simplify using `only [Pi.add_apply, Finset.sum_add_distrib]`. Rewrite using `[dM_eq, dM_eq, q, q, l, l, e1, e2]`. Use `mul_lt_mul_of_pos_left hs hnR` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 private theorem dM_lt {n : ℕ} {κ : Wt n} (hκ : Antitone κ) (w : Equiv.Perm (Fin n))
     (hne : κ ∘ w ≠ κ) : dM (κ ∘ w + rhoV n) < dM (κ + rhoV n) := by
@@ -158,19 +158,19 @@ private theorem dM_lt {n : ℕ} {κ : Wt n} (hκ : Antitone κ) (w : Equiv.Perm 
   nlinarith
 
 /- English proof (translation)
-Establish `key : ∀ (d a : ℕ) (h : a + d < n), (d : ℝ) ≤ x ⟨a, by omega⟩ - x ⟨a + d, h⟩`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero => intro a h`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules.
 
-Consider the case `succ d ih`. Introduce `a h`. Establish `h1` using `ih a (by omega)`. Establish `h2 : x ⟨a + d + 1, h⟩ < x ⟨a + d, by omega⟩` using `hx (by simp [Fin.lt_def])`. Take `⟨m, hm⟩` from `hi ⟨a + d, by omega⟩ ⟨a + d + 1, h⟩`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h3 : (0 : ℝ) < m` using `by rw [← hm]; linarith`. Establish `h4 : (1 : ℝ) ≤ m` using `by exact_mod_cast (by exact_mod_cast h3 : (0 : ℤ) < m)`. Establish `h5 : x ⟨a + (d + 1), h⟩ = x ⟨a + d + 1, h⟩` using `rfl`. Use `push_cast`. Rewrite using `[h5]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Introduce `a b hab`. Take `⟨m, hm⟩` from `hi a b`. Establish `hd : a.val + (b.val - a.val) < n` using `by have := b.2; have := Fin.lt_def.1 hab; omega`. Establish `h1` using `key (b.val - a.val) a.val hd`.
+Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (⟨a.val + (b.val - a.val), hd⟩ : Fin n) = b` using `by ext; have := Fin.lt_def.1 hab; simp; omega`. Rewrite `h1` using `[h2]`. Establish `h3 : (((b.val - a.val : ℕ) : ℤ) : ℝ) ≤ m`. Rewrite using `[← hm]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4 : ((b.val - a.val : ℕ) : ℤ) ≤ m` using `by exact_mod_cast h3`. Take `⟨t, ht⟩` from `Int.eq_ofNat_of_zero_le (sub_nonneg.2 h4)`. Use `⟨t, ?_⟩` and prove the remaining obligations. Establish `h5 : ((b.val - a.val : ℕ) : ℝ) = (b.val : ℝ) - a.val`. Rewrite using `[Nat.cast_sub (Fin.lt_def.1 hab).le]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h6 : (t : ℝ) = (m : ℝ) - ((b.val - a.val : ℕ) : ℝ)`. Establish `: ((t : ℤ) : ℝ) = ((m - ((b.val - a.val : ℕ) : ℤ) : ℤ) : ℝ)` using `by rw [ht]`. Simplify using `using this`. Simplify using `only [Pi.sub_apply, rhoV]`. Rewrite using `[h6, h5, ← hm]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -214,19 +214,19 @@ private theorem dom_sub {n : ℕ} {x : Wt n} (hx : StrictAnti x)
   ring
 
 /- English proof (translation)
-Simplify using `[cf, ex, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cf_ex {n : ℕ} (x y : Wt n) : cf (ex y) x = if y = x then 1 else 0 := by
   simp [cf, ex, AddMonoidAlgebra.coeff_single, Finsupp.single_apply]
 
 /- English proof (translation)
-Simplify using `[cf]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cf_zero {n : ℕ} (x : Wt n) : cf (0 : FR n) x = 0 := by
   simp [cf]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [cf_zero]`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha, Finset.sum_insert ha, ((cfBasic n).2.2.2.1 _ _ 0 x).1, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem cf_sum {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → FR n) (x : Wt n) :
     cf (∑ i ∈ s, f i) x = ∑ i ∈ s, cf (f i) x := by
@@ -237,24 +237,24 @@ private theorem cf_sum {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → FR n) (
     rw [Finset.sum_insert ha, Finset.sum_insert ha, ((cfBasic n).2.2.2.1 _ _ 0 x).1, ih]
 
 /- English proof (translation)
-Introduce `_ x` and use `by rw [cf_zero, cf_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem sym_zero {n : ℕ} : Sym (0 : FR n) := fun _ x => by rw [cf_zero, cf_zero]
 
 /- English proof (translation)
-Introduce `w x` and use `by rw [((cfBasic n).2.2.2.1 f g 0 _).1, ((cfBasic n).2.2.2.1 f g 0 x).1, hf, hg]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem sym_add {n : ℕ} {f g : FR n} (hf : Sym f) (hg : Sym g) : Sym (f + g) := fun w x => by
   rw [((cfBasic n).2.2.2.1 f g 0 _).1, ((cfBasic n).2.2.2.1 f g 0 x).1, hf, hg]
 
 /- English proof (translation)
-Introduce `w x` and use `by rw [((cfBasic n).2.2.2.1 f f c _).2, ((cfBasic n).2.2.2.1 f f c x).2, hf]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem sym_smul {n : ℕ} {f : FR n} (c : ℂ) (hf : Sym f) : Sym (c • f) := fun w x => by
   rw [((cfBasic n).2.2.2.1 f f c _).2, ((cfBasic n).2.2.2.1 f f c x).2, hf]
 
 /- English proof (translation)
-Introduce `w x` and use `by rw [cf_sum, cf_sum] exact Finset.sum_congr rfl fun i hi => h i hi w x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem sym_sum {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → FR n) (h : ∀ i ∈ s, Sym (f i)) :
     Sym (∑ i ∈ s, f i) := fun w x => by
@@ -262,13 +262,13 @@ private theorem sym_sum {n : ℕ} {ι : Type} (s : Finset ι) (f : ι → FR n) 
   exact Finset.sum_congr rfl fun i hi => h i hi w x
 
 /- English proof (translation)
-Introduce `v x`. Rewrite using `[cf_sum, cf_sum]`. Simplify using `only [cf_ex]`. Rewrite using `[← Equiv.sum_comp (Equiv.mulRight v⁻¹) (fun w : Equiv.Perm (Fin n) => if κ ∘ w = x then (1 : ℂ) else 0)]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (κ ∘ w = x ∘ v) ↔ (κ ∘ (Equiv.mulRight v⁻¹ w) = x)`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use function extensionality and compare the values at `b`. Use `congrFun h (v⁻¹ b)` as an intermediate fact.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `using this`. Introduce `h`. Use function extensionality and compare the values at `a`. Use `congrFun h (v a)` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [this]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sym_orbit {n : ℕ} (κ : Wt n) : Sym (∑ w : Equiv.Perm (Fin n), ex (κ ∘ w)) := by
   classical
@@ -290,11 +290,11 @@ private theorem sym_orbit {n : ℕ} (κ : Wt n) : Sym (∑ w : Equiv.Perm (Fin n
   simp only [this]
 
 /- English proof (translation)
-Establish `hadd` using `(cfBasic n).1`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [alt, Finset.sum_mul, Finset.mul_sum, smul_mul_assoc]`. Rewrite using `[Finset.sum_comm]`. Use `_ = ∑ v : Equiv.Perm (Fin n), ∑ w : Equiv.Perm (Fin n), sg v • (ex (rhoV n ∘ v) * ex (κ ∘ (w * v : Equiv.Perm (Fin n)))) := Finset.sum_congr rfl fun v _ => (Equiv.sum_comp (Equiv.mulRight v) (fun w : Equiv.Perm (Fin n) => sg v • (ex (rhoV n ∘ v) * ex (κ ∘ w)))).symm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `_ = ∑ w : Equiv.Perm (Fin n), alt (κ ∘ w + rhoV n) := by`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Simplify using `only [alt]`. Use `Finset.sum_congr rfl fun v _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hadd]`. Use `congr 2`. Use extensionality with `a`. Simplify using `[add_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem alt_orbit {n : ℕ} (κ : Wt n) :
     alt (rhoV n) * ∑ w : Equiv.Perm (Fin n), ex (κ ∘ w) =
@@ -320,20 +320,20 @@ private theorem alt_orbit {n : ℕ} (κ : Wt n) :
         simp [add_comm]
 
 /- English proof (translation)
-Unfold `sg`. Apply the tactic sequence `rcases Int.units_eq_one_or (Equiv.Perm.sign u) with h | h <;> simp [h]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem sg_sq {n : ℕ} (u : Equiv.Perm (Fin n)) : sg u * sg u = 1 := by
   unfold sg
   rcases Int.units_eq_one_or (Equiv.Perm.sign u) with h | h <;> simp [h]
 
 /- English proof (translation)
-Distinguish the cases in `hinj : Function.Injective z`. Take `⟨-, hdom, -, -, -, -⟩` from `rearr n`. Take `⟨han, ⟨u, hu⟩, -⟩` from `hdom z`. Establish `hs : StrictAnti (domC z)` using `han.strictAnti_of_injective (by rw [hu]; exact hinj.comp u.injective)`. Establish `hi' : ∀ a b, ∃ m : ℤ, domC z a - domC z b = m`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a b`. Rewrite using `[hu]`. Conclude with `hi _ _`. Establish `hD` using `dom_sub hs hi'`. Establish `hlt : dM (domC z - rhoV n + rhoV n) < N`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sub_add_cancel, hu, dM_perm]`. Conclude with `hz`. Take `⟨χ, hS, hχ⟩` from `ih _ hD hlt`. Rewrite `hχ` using `[sub_add_cancel, hu, (cfBasic n).2.2.2.2.2.2.2.1 z u]`. Use `⟨sg u • χ, sym_smul _ hS, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_smul_comm, hχ, smul_smul, sg_sq, one_smul]`. Use `⟨0, sym_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_zero, (cfBasic n).2.2.2.2.2.2.2.2.2.2.2.2 z hinj]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem step {n N : ℕ}
     (ih : ∀ κ : Wt n, Dom κ → dM (κ + rhoV n) < N →
@@ -361,27 +361,25 @@ private theorem step {n N : ℕ}
     rw [mul_zero, (cfBasic n).2.2.2.2.2.2.2.2.2.2.2.2 z hinj]
 
 /- English proof (translation)
-Introduce `n`. Take `⟨-, -, -, hDρ, hDD, -⟩` from `rearr n`. Establish `hint : ∀ κ : Wt n, Dom κ → ∀ (w : Equiv.Perm (Fin n)) a b, ∃ m : ℤ, (κ ∘ w + rhoV n) a - (κ ∘ w + rhoV n) b = m`. Introduce `κ hκ w a b`. Take `⟨m, hm⟩` from `dom_int hκ (w a) (w b)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m', hm'⟩` from `dom_int hDρ a b`. Use `⟨m + m', ?_⟩` and prove the remaining obligations. Simplify using `only [Pi.add_apply, Function.comp]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `main : ∀ N : ℕ, ∀ κ : Wt n, Dom κ → dM (κ + rhoV n) < N → ∃ χ : FR n, Sym χ ∧ alt (rhoV n) * χ = alt (κ + rhoV n)`. Introduce `N`. Proceed by induction on `N with`. Consider the case `zero`. Introduce `κ _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `absurd h (by simpa using dM_nonneg _)`. Consider the case `succ N ih`. Introduce `κ hκ hlt`. Establish `hanti` using `(hDD κ hκ).1`. Take `⟨k, hk⟩` from `dM_nat (κ ∘ (1 : Equiv.Perm (Fin n)) + rhoV n) (hint κ hκ 1)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hk' : dM (κ + rhoV n) = k` using `hk`. Establish `hterm : ∀ w : Equiv.Perm (Fin n), κ ∘ w ≠ κ → ∃ χ : FR n, Sym χ ∧ alt (rhoV n) * χ = alt (κ ∘ w + rhoV n)`. Introduce `w hw`. Use `step ih _ (hint κ hκ w) ?_` and prove the remaining obligations. Take `⟨k', hk''⟩` from `dM_nat _ (hint κ hκ w)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `dM_lt hanti w hw`. Rewrite `h1` using `[hk'', hk']`. Rewrite `hlt` using `[hk']`. Rewrite using `[hk'']`. Establish `h2 : k' < k` using `by exact_mod_cast h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : k < N + 1` using `by exact_mod_cast hlt`. Conclude with `(by omega : k' < N)` after adjusting the coercions. Use `choose! χ hχS hχ using hterm`. Use `set S : Finset (Equiv.Perm (Fin n)) := Finset.univ.filter (fun w => κ ∘ w = κ) with hS`. Establish `hc : ((S.card : ℂ)) ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: 0 < S.card` using `Finset.card_pos.2 ⟨1, by simp [hS]⟩`. Conclude with `this.ne'` after adjusting the coercions. Use `set T : FR n := ∑ w ∈ Finset.univ.filter (fun w : Equiv.Perm (Fin n) => ¬ κ ∘ w = κ), χ w with hT`. Use `⟨(S.card : ℂ)⁻¹ • ((∑ w : Equiv.Perm (Fin n), ex (κ ∘ w)) + (-1 : ℂ) • T), sym_smul _ (sym_add (sym_orbit κ) (sym_smul _ (sym_sum _ _ fun w hw => hχS w (by simpa using hw)))), ?_⟩` and prove the remaining obligations. Establish `e1 : alt (rhoV n) * T = ∑ w ∈ Finset.univ.filter (fun w : Equiv.Perm (Fin n) => ¬ κ ∘ w = κ), alt (κ ∘ w + rhoV n)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hT, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun w hw => hχ w (by simpa using hw)`. Establish `e2 : ∑ w ∈ S, alt (κ ∘ w + rhoV n) = (S.card : ℂ) • alt (κ + rhoV n)`. Establish `: ∀ w ∈ S, alt (κ ∘ w + rhoV n) = alt (κ + rhoV n)` using `fun w hw => by`. Rewrite using `[(Finset.mem_filter.1 hw).2]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl this, Finset.sum_const, Nat.cast_smul_eq_nsmul]`. Establish `e3` using `Finset.sum_filter_add_sum_filter_not Finset.univ (fun w : Equiv.Perm (Fin n) => κ ∘ w = κ) (fun w => alt (κ ∘ w + rhoV n))`. Rewrite using `[mul_smul_comm, mul_add, mul_smul_comm, alt_orbit, e1, ← e3, ← hS, e2]`. Simplify using `[smul_smul, hc]`. Introduce `κ hκ`.
-
-Take `⟨k, hk⟩` from `dM_nat (κ ∘ (1 : Equiv.Perm (Fin n)) + rhoV n) (hint κ hκ 1)`. Establish `hk' : dM (κ + rhoV n) = k` using `hk`. Conclude with `main (k + 1) κ hκ (by rw [hk']; exact_mod_cast Nat.lt_succ_self k)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.divEx :
     ∀ (n : ℕ) (κ : Wt n), Dom κ → ∃ χ : FR n, Sym χ ∧ alt (rhoV n) * χ = alt (κ + rhoV n) := by

@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory.SpanOrbitTop
 
 /- English proof (translation)
-Establish `hinv : ∀ (h : G) ⦃x : V⦄, x ∈ Submodule.span ℂ (Set.range fun g : G ↦ π g v) → π h x ∈ Submodule.span ℂ (Set.range fun g : G ↦ π g v)`. Introduce `h x hx`. Establish `hle : (Submodule.span ℂ (Set.range fun g : G ↦ π g v)).map (π h) ≤ Submodule.span ℂ (Set.range fun g : G ↦ π g v)`. Rewrite using `[Submodule.map_span_le]`. Introduce and unpack `_ ⟨g, rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `Submodule.subset_span ⟨h * g, by simp [map_mul]⟩`. Conclude with `hle (Submodule.mem_map_of_mem hx)`. Set `S : Subrepresentation π` to `⟨Submodule.span ℂ (Set.range fun g : G ↦ π g v), hinv⟩`. Establish `hvS : v ∈ S.toSubmodule` using `Submodule.subset_span ⟨1, by simp⟩`. Use `hπ` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. It suffices to derive a contradiction.
 
-Break down `eq_bot_or_eq_top S with h | h` into its components or cases. It suffices to derive a contradiction. Establish `hb : v ∈ (⊥ : Subrepresentation π).toSubmodule` using `h ▸ hvS`. Conclude with `hv ((Submodule.mem_bot ℂ).mp hb)`. Conclude with `congrArg Subrepresentation.toSubmodule h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem span_orbit_eq_top {G V : Type} [Group G] [AddCommGroup V] [Module ℂ V]
     (π : Representation ℂ G V) (hπ : Representation.IsIrreducible π) {v : V} (hv : v ≠ 0) :

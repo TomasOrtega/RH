@@ -16,31 +16,31 @@ open scoped Matrix ComplexOrder
 namespace GlobalTheory.CompanionTheory.Ar.ModelChart
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c Y X' jx t m τ n a p han hp hs hpt`. Establish `h0 : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) 1` using `Metric.mem_ball_self one_pos`. Set `fP` to `pullback.fst Y.s (spMap (algebraMap (𝓞 c.F) c.F))`. Set `sZ` to `pullback.snd jx fP`. Set `fZ` to `pullback.fst jx fP`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `j` to `pullback.fst sZ Y.jQ`. Set `g` to `pullback.snd sZ Y.jQ`. Use `Y.jQ_open` as an intermediate fact. Establish `hj : IsOpenImmersion j` using `inferInstance`. Set `k : pullback sZ Y.jQ ⟶ Xo.X` to `g ≫ pullback.fst _ _`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨tZ, ⟨mZ⟩⟩` from `exists_sab fZ t`. Take `⟨tU, ⟨mU⟩⟩` from `exists_sab g Y.oF.t`. Take `⟨q₁, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp m mZ`. Take `⟨q₂, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp Y.m mU`. Establish `e₁ : g ≫ Y.jQ ≫ fP = j ≫ fZ ≫ jx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a₁ : j ≫ sZ = g ≫ Y.jQ` using `pullback.condition`. Establish `a₂ : fZ ≫ jx = sZ ≫ fP` using `pullback.condition`. Rewrite using `[a₂, ← Category.assoc g, ← a₁, Category.assoc]`. Rewrite `q₂` using `[e₁]`. Establish `q₁' : SABMap tZ Y.t (fZ ≫ jx)` using `q₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨mj, -⟩` from `GlobalTheory.ObjMaps.exists_sab_cancel q₁' q₂`. Take `⟨mk, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp Y.m0.toSABMap mU`. Set `p' : (Fin n → ℂ) → (Sp ℂ ⟶ X')` to `fun u => if u ∈ Metric.ball (0 : Fin n → ℂ) 1 then p u else p 0`. Establish `hp'e : ∀ u ∈ Metric.ball (0 : Fin n → ℂ) 1, p' u = p u` using `fun u hu => if_pos hu`. Establish `hp' : IsHolTo (Metric.ball (0 : Fin n → ℂ) 1) p'` using `GlobalTheory.LocLift.isHolTo_congr hp hp'e`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs' : ∀ u, (p' u ≫ jx) ≫ Y.s = spMap τ ≫ spMap (algebraMap (𝓞 c.F) c.F)` using `fun u => by`. Establish `: p' u ≫ jx ≫ Y.s = spMap (τ.comp (algebraMap (𝓞 c.F) c.F))`. Distinguish the cases in `hu : u ∈ Metric.ball (0 : Fin n → ℂ) 1`. Rewrite using `[hp'e u hu]`. Conclude with `hs u hu`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [p', if_neg hu]`. Simplify `hs 0 h0` using `[h0]`. Rewrite using `[Category.assoc, this]`. Simplify using `[spMap]`. Set `q : (Fin n → ℂ) → (Sp ℂ ⟶ pullback Y.s (spMap (algebraMap (𝓞 c.F) c.F)))` to `fun u => pullback.lift (p' u ≫ jx) (spMap τ) (hs' u)`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq : IsHolTo (Metric.ball (0 : Fin n → ℂ) 1) q` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.holPair _ _ _ Y.s (spMap (algebraMap (𝓞 c.F) c.F)) n _ _ _ hs' Metric.isOpen_ball (GlobalTheory.LocLift.isHolTo_comp_hom hp' jx) (GlobalTheory.PeriodTests.isHolTo_const Metric.isOpen_ball _)`. Establish `hc : ∀ u, p' u ≫ jx = q u ≫ fP` using `fun u => (pullback.lift_fst _ _ _).symm`. Set `y : (Fin n → ℂ) → (Sp ℂ ⟶ pullback jx fP)` to `fun u => pullback.lift (p' u) (q u) (hc u)`. Establish `hy : IsHolTo (Metric.ball (0 : Fin n → ℂ) 1) y` using `ReciprocityTheory.ChartRestriction.G.PullbackSections.holPair _ _ _ jx fP n _ _ _ hc Metric.isOpen_ball hp' hq`. Establish `hpu : ∀ z ∈ Flat.punct n a 1, ∃ w : Sp ℂ ⟶ pullback sZ Y.jQ, w ≫ j = y z ∧ w ≫ k ≫ Xo.s = spMap (τ.comp (IntermediateField.inclusion c.le).toRingHom)` using `fun z hz => by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : Set.range (q z) ⊆ Set.range Y.jQ` using `hpt z hz (q z) ((pullback.lift_fst _ _ _).trans (by rw [hp'e z hz.1]))`. Set `w₀` to `IsOpenImmersion.lift Y.jQ (q z) hr`. Establish `hw₀ : w₀ ≫ Y.jQ = q z` using `IsOpenImmersion.lift_fac _ _ _`. Establish `hys : y z ≫ sZ = w₀ ≫ Y.jQ` using `(pullback.lift_snd _ _ _).trans hw₀.symm`. Use `⟨pullback.lift (y z) w₀ hys, pullback.lift_fst _ _ _, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h₁ : pullback.lift (y z) w₀ hys ≫ k = w₀ ≫ pullback.fst _ _`. Simplify using `only [k, g]`. Rewrite using `[pullback.lift_snd_assoc]`. Rewrite using `[← Category.assoc, h₁, Category.assoc, pullback.condition, ← Category.assoc]`. Establish `h₂ : w₀ ≫ pullback.snd Xo.s (spMap (IntermediateField.inclusion c.le).toRingHom) = spMap τ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Y.jQ_over, ← Category.assoc, hw₀]`. Conclude with `pullback.lift_snd _ _ _`. Rewrite using `[h₂]`. Simplify using `[spMap]`. Take `⟨ρ, C, i, e, hρ, hρ1, -, ⟨mi⟩, -, -, hψ⟩` from `Flat.exists_bdryChart_of_hol E H D l Xo (τ.comp (IntermediateField.inclusion c.le).toRingHom) _ tZ _ j k tU n a y han hj ⟨mj⟩ ⟨mk⟩ hy hpu`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨mh, -⟩` from `GlobalTheory.ObjMaps.exists_sab_comp mZ mi`. Use `⟨ρ, C, i ≫ fZ, hρ, hρ1, ⟨mh⟩, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hin : (ρ : ℂ) • z ∈ Metric.ball (0 : Fin n → ℂ) 1`. Rewrite `hz`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hρ.le]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Rewrite the conclusion using the stated equalities.
 
-Use polynomial arithmetic with `[norm_nonneg z]`. Rewrite using `[← Category.assoc, hψ z hz, ← hp'e _ hin]`. Conclude with `pullback.lift_fst _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem exists_bdryChart_of_model : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (Y : Model Xo c (algebraMap (𝓞 c.F) c.F)) (X' : Scheme.{0}) (jx : X' ⟶ Y.X) (t : SAB H X') (m : SABMap t Y.t jx) (τ : c.F →+* ℂ) (n a : ℕ) (p : (Fin n → ℂ) → (Sp ℂ ⟶ X')), a ≤ n → IsHolTo (Metric.ball 0 1) p → (∀ u ∈ Metric.ball (0 : Fin n → ℂ) 1, p u ≫ jx ≫ Y.s = spMap (τ.comp (algebraMap (𝓞 c.F) c.F))) → (∀ u ∈ Flat.punct n a 1, ∀ x : Sp ℂ ⟶ pullback Y.s (spMap (algebraMap (𝓞 c.F) c.F)), x ≫ pullback.fst _ _ = p u ≫ jx → Set.range x ⊆ Set.range Y.jQ) → ∃ (ρ : ℝ) (C : Flat.BdryChart Xo (τ.comp (IntermediateField.inclusion c.le).toRingHom) n a) (h : Sp C.R ⟶ X'), 0 < ρ ∧ ρ ≤ 1 ∧ Nonempty (SABMap C.t t h) ∧ ∀ z ∈ Metric.ball (0 : Fin n → ℂ) 1, spMap (C.ψ z) ≫ h = p ((ρ : ℂ) • z) := by
   intro E _ _ _ H D l Xo c Y X' jx t m τ n a p han hp hs hpt

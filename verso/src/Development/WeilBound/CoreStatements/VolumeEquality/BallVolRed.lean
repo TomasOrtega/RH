@@ -16,7 +16,7 @@ variable {Ψ : Type} [Fintype Ψ] {j j' n : ℕ} (q : Ψ × Fin j × Fin j' ≃ 
 def permQ (π : Ψ ≃ Ψ) : Ψ × Fin j × Fin j' ≃ Fin n := (π.prodCongr (Equiv.refl _)).trans q
 
 /- English proof (translation)
-The claim follows from `Set.ext fun t => ⟨fun h τ => by obtain ⟨τ, rfl⟩ := π.surjective τ exact h τ, fun h τ => h (π τ)⟩`.
+A detailed English derivation is pending.
 -/
 theorem ballDom_permQ (π : Ψ ≃ Ψ) : ballDom (permQ q π) = ballDom q :=
   Set.ext fun t => ⟨fun h τ => by
@@ -24,25 +24,25 @@ theorem ballDom_permQ (π : Ψ ≃ Ψ) : ballDom (permQ q π) = ballDom q :=
     exact h τ, fun h τ => h (π τ)⟩
 
 /- English proof (translation)
-The claim follows from `congrArg Neg.neg (π.sum_comp fun τ => Real.log (1 - (ballMat q t τ)ᴴ * ballMat q t τ).det.re)`.
+A detailed English derivation is pending.
 -/
 theorem ballPot_permQ (π : Ψ ≃ Ψ) (t : Fin n → ℂ) : ballPot (permQ q π) t = ballPot q t :=
   congrArg Neg.neg (π.sum_comp fun τ => Real.log (1 - (ballMat q t τ)ᴴ * ballMat q t τ).det.re)
 
 /- English proof (translation)
-Simplify using `only [ballMeas, ballDens, ballDom_permQ, ballPot_permQ]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ballMeas_permQ (π : Ψ ≃ Ψ) : ballMeas (permQ q π) = ballMeas q := by
   simp only [ballMeas, ballDens, ballDom_permQ, ballPot_permQ]
 
 /- English proof (translation)
-The claim follows from `volume_preserving_pi (f := fun _ => Complex.conjLIE) fun _ => Complex.conjLIE.measurePreserving`.
+A detailed English derivation is pending.
 -/
 theorem star_measurePreserving : MeasurePreserving (star : (Fin n → ℂ) → Fin n → ℂ) volume volume :=
   volume_preserving_pi (f := fun _ => Complex.conjLIE) fun _ => Complex.conjLIE.measurePreserving
 
 /- English proof (translation)
-Establish `hemb : MeasurableEmbedding (star : (Fin n → ℂ) → Fin n → ℂ)` using `(Homeomorph.mk ⟨star, star, star_star, star_star⟩ continuous_star continuous_star).measurableEmbedding`. Rewrite using `[ballMeas_apply q hS hD, ballMeas_apply q (hemb.measurable hS) (fun t ht => by simpa using star_mem_ballDom (hD ht)), ← star_measurePreserving.setLIntegral_comp_preimage_emb hemb _ S]`. Simplify using `only [ballDens, ballPot_star]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ballMeas_star {S : Set (Fin n → ℂ)} (hS : MeasurableSet S) (hD : S ⊆ ballDom q) :
     ballMeas q (star ⁻¹' S) = ballMeas q S := by
@@ -54,7 +54,7 @@ theorem ballMeas_star {S : Set (Fin n → ℂ)} (hS : MeasurableSet S) (hD : S �
   simp only [ballDens, ballPot_star]
 
 /- English proof (translation)
-Rewrite using `[ballMeas_apply q hS hD]`. Conclude with `integral_eq_lintegral_of_nonneg_ae (Filter.Eventually.of_forall fun t => (Real.exp_pos _).le) (DictMeas.measurable_ballDens q).aestronglyMeasurable`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_ballDens {S : Set (Fin n → ℂ)} (hS : MeasurableSet S) (hD : S ⊆ ballDom q) :
     ∫ t in S, ballDens q t = (ballMeas q S).toReal := by
@@ -93,7 +93,7 @@ def permFam (F : UnivFam E Ψ j j' n g Λ) (π : Ψ ≃ Ψ) : UnivFam E Ψ j j' 
       exact hs τ
 
 /- English proof (translation)
-Establish `e : ballDom (permFam F π).q = ballDom F.q` using `ballDom_permQ F.q π`. Unfold `UnivFam.IsFundSet`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem permFam_fund {F : UnivFam E Ψ j j' n g Λ} (π : Ψ ≃ Ψ) {Γ : Subgroup (Λ ≃ₗ[𝓞 E] Λ)} {FF : Set (Fin n → ℂ)}
     (h : F.IsFundSet Γ FF) : (permFam F π).IsFundSet Γ FF := by
@@ -103,9 +103,9 @@ theorem permFam_fund {F : UnivFam E Ψ j j' n g Λ} (π : Ψ ≃ Ψ) {Γ : Subgr
   exact h
 
 /- English proof (translation)
-Use `⟨continuous_star.measurable h.1, fun t ht => ?_, fun t ht => ?_, fun t ht t' ht' ⟨γ, hγ, he⟩ => ?_⟩` and prove the remaining obligations. Use `show t ∈ ballDom F.q`. Simplify using `using star_mem_ballDom (h.2.1 ht)`. Take `⟨t', ht', γ, hγ, he⟩` from `h.2.2.1 (star t) (star_mem_ballDom (q := F.q) ht)`. Use `⟨star t', by simpa using ht', γ, hγ, eqvBy_conj (fun x => rfl) (fun x => ?_) he⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show star ((F.R (star (star t'))).P x) = _`. Rewrite using `[star_star]`. Use `star_injective (h.2.2.2 _ ht _ ht' ⟨γ, hγ, eqvBy_conj (fun x => ?_) (fun x => ?_) he⟩)` and prove the remaining obligations. Conclude with `(star_star _).symm`. Conclude with `(star_star _).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conjFam_fund {F : UnivFam E Ψ j j' n g Λ} {Γ : Subgroup (Λ ≃ₗ[𝓞 E] Λ)} {FF : Set (Fin n → ℂ)}
     (h : F.IsFundSet Γ FF) : (conjFam F).IsFundSet Γ (star ⁻¹' FF) := by
@@ -121,11 +121,11 @@ theorem conjFam_fund {F : UnivFam E Ψ j j' n g Λ} {Γ : Subgroup (Λ ≃ₗ[�
     · exact (star_star _).symm
 
 /- English proof (translation)
-Distinguish the cases in `h0 : ∀ τ, F.σ τ r = Complex.I * ((Real.sqrt d : ℝ) : ℂ)`. Conclude with `⟨F, FF, h0, Or.inl rfl, h, rfl⟩`. Take `⟨τ₀, h1⟩` from `not_forall.1 h0`. Establish `h2 : F.σ τ₀ r ^ 2 = (Complex.I * ((Real.sqrt d : ℝ) : ℂ)) ^ 2`. Rewrite using `[← map_pow, hr, mul_pow, Complex.I_sq, ← Complex.ofReal_pow, Real.sq_sqrt (Nat.cast_nonneg d)]`.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `h3` using `(sq_eq_sq_iff_eq_or_eq_neg.1 h2).resolve_left h1`. Use `⟨conjFam F, star ⁻¹' FF, fun τ => ?_, Or.inr rfl, conjFam_fund h, ballMeas_star F.q h.1 h.2.1⟩` and prove the remaining obligations. Use `show starRingEnd ℂ (F.σ τ r) = _`. Rewrite using `[hc τ τ₀, h3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem normalise (F : UnivFam E Ψ j j' n g Λ) (r : 𝓞 E) (d : ℕ) (hr : r ^ 2 = -(d : 𝓞 E))
     (hc : ∀ τ τ', F.σ τ r = F.σ τ' r) {Γ : Subgroup (Λ ≃ₗ[𝓞 E] Λ)} {FF : Set (Fin n → ℂ)} (h : F.IsFundSet Γ FF) :
@@ -145,9 +145,9 @@ theorem normalise (F : UnivFam E Ψ j j' n g Λ) (r : 𝓞 E) (d : ℕ) (hr : r 
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Establish `: ∀ τ, ∃ τ', σ' τ' = σ τ` using `fun τ => (h'.2 _).2 fun ⟨τ', e⟩ => by`. Establish `e1` using `hs' τ'`. Rewrite `e1` using `[e, RingHom.comp_apply, hs]`. Use `congrArg Complex.im e1` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `choose f hf using this`. Establish `hi : Function.Injective f` using `fun a b e => h.1 (by rw [← hf, ← hf, e])`. Conclude with `⟨Equiv.ofBijective f (Finite.injective_iff_bijective.1 hi), hf⟩`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_perm {σ σ' : Ψ → (𝓞 E →+* ℂ)} (h : IsCMFam σ) (h' : IsCMFam σ') (r : 𝓞 E) {c : ℝ} (hc : 0 < c)
     (hs : ∀ τ, σ τ r = Complex.I * (c : ℂ)) (hs' : ∀ τ, σ' τ r = Complex.I * (c : ℂ)) :
@@ -163,7 +163,7 @@ theorem exists_perm {σ σ' : Ψ → (𝓞 E →+* ℂ)} (h : IsCMFam σ) (h' : 
   exact ⟨Equiv.ofBijective f (Finite.injective_iff_bijective.1 hi), hf⟩
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Use `show τ.1 ((H.bar H.rt : 𝓞 E) : E) = τ'.1 ((H.bar H.rt : 𝓞 E) : E)`. Rewrite using `[H.bar_eq, IsCMField.complexEmbedding_complexConj, IsCMField.complexEmbedding_complexConj, τ.2, τ'.2]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem label_rt {H : Host E} {l : Level H} (c : Coeff l) (τ τ' : CMType H) :
     labelEmb c (.inr τ) H.rt = labelEmb c (.inr τ') H.rt := by
@@ -172,11 +172,11 @@ theorem label_rt {H : Host E} {l : Level H} (c : Coeff l) (τ τ' : CMType H) :
   rw [H.bar_eq, IsCMField.complexEmbedding_complexConj, IsCMField.complexEmbedding_complexConj, τ.2, τ'.2]
 
 /- English proof (translation)
-Introduce `_ E _ _ _ _ H D l Xo c Y n B FF hq hp hF k k'`. Establish `hn` using `fun k => normalise (B.F k) H.rt H.d H.rt_sq (fun τ τ' => by rw [B.σ_eq, B.σ_eq, RingHom.comp_apply, RingHom.comp_apply, label_rt c τ τ']) (hF k)`. Take `⟨F₁, FF₁, s₁, f₁, u₁, m₁⟩` from `hn k`. Take `⟨F₂, FF₂, s₂, f₂, u₂, m₂⟩` from `hn k'`. Establish `hd : 0 < Real.sqrt H.d` using `Real.sqrt_pos.2 (Nat.cast_pos.2 H.d_prime.pos)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨π, hπ⟩` from `exists_perm F₁.cm F₂.cm H.rt hd s₁ s₂`. Establish `hf : ∀ k (f : _ →ₗ[ℤ] _ →ₗ[ℤ] ℤ), (f = (B.F k).form ∨ f = -(B.F k).form) → f = (B.Di k).EF ∨ f = -(B.Di k).EF`. Introduce `k f hf`. Apply the tactic sequence `rcases hf with rfl | rfl <;> rcases B.form_eq k with e | e <;> rw [e] <;> simp`. Establish `key` using `h E H l (B.Di k) (B.Di k') (CMType H) D.p D.q n B.g F₁ (permFam F₂ π) (B.Γ k) (B.Γ k') FF₁ FF₂ _ (by omega) (by omega) (by omega) hd (funext hπ) s₁ (hf k _ f₁) (hf k' _ f₂) (B.mem_Γ k) (B.mem_Γ k') u₁ (permFam_fund π u₂)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[integral_ballDens _ (hF k).1 (hF k).2.1, integral_ballDens _ (hF k').1 (hF k').2.1, ← m₁, ← m₂, key]`. Conclude with `congrArg (fun μ : Measure (Fin n → ℂ) => (μ FF₂).toReal) (ballMeas_permQ F₂.q π)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ballVolEq_of (h : FamVol) : BallVolEq := by
   intro _ E _ _ _ _ H D l Xo c Y n B FF hq hp hF k k'

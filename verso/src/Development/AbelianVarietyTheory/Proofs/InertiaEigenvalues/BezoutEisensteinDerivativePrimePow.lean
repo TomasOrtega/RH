@@ -8,23 +8,21 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Introduce `l _ K bk`. Use `haveI : CharZero (Wq l bk.a) := GlobalTheory.charZero_wittVector_of_field l (Fq l bk.a)`. Establish `hirr : Irreducible (l : Wq l bk.a)` using `WittVector.irreducible l (k := Fq l bk.a)`. Establish `hprime : Prime (l : Wq l bk.a)` using `hirr.prime`. Establish `hP : (Ideal.span {(l : Wq l bk.a)}).IsPrime` using `(Ideal.span_singleton_prime hprime.ne_zero).2 hprime`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hE : bk.Ep.IsEisensteinAt (Ideal.span {(l : Wq l bk.a)})`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[bk.monic.leadingCoeff, Ideal.mem_span_singleton]`. Conclude with `fun h => hirr.not_isUnit (isUnit_of_dvd_one h)`. Introduce `n hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mem_span_singleton.2 (bk.dvd_coeff n hn)`. Take `⟨w, hw⟩` from `bk.coeff_zero`. Rewrite using `[hw, Ideal.span_singleton_pow, Ideal.mem_span_singleton, pow_two]`. Introduce `h`. Establish `h2 : (l : Wq l bk.a) ∣ (w : Wq l bk.a)` using `(mul_dvd_mul_iff_left hprime.ne_zero).1 h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Conclude with `hirr.not_isUnit (isUnit_of_dvd_unit h2 w.isUnit)`. Establish `hirrE : Irreducible bk.Ep` using `hE.irreducible hP bk.monic.isPrimitive bk.deg_pos`. Set `F` to `FractionRing (Wq l bk.a)`. Use `haveI : CharZero F := charZero_of_injective_algebraMap (IsFractionRing.injective (Wq l bk.a) F)`. Establish `hirrF : Irreducible (bk.Ep.map (algebraMap (Wq l bk.a) F))` using `(bk.monic.irreducible_iff_irreducible_map_fraction_map).1 hirrE`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a, b, hab⟩` from `hirrF.separable`. Rewrite `hab` using `[Polynomial.derivative_map]`. Take `⟨⟨d₁, hd₁⟩, hA⟩` from `IsLocalization.integerNormalization_map_to_map (nonZeroDivisors (Wq l bk.a)) a`. Take `⟨⟨d₂, hd₂⟩, hB⟩` from `IsLocalization.integerNormalization_map_to_map (nonZeroDivisors (Wq l bk.a)) b`. Use `set A := IsLocalization.integerNormalization (nonZeroDivisors (Wq l bk.a)) a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `set B := IsLocalization.integerNormalization (nonZeroDivisors (Wq l bk.a)) b`. Establish `hd : d₁ * d₂ ≠ 0` using `mul_ne_zero (nonZeroDivisors.ne_zero hd₁) (nonZeroDivisors.ne_zero hd₂)`. Establish `key : Polynomial.C d₂ * A * bk.Ep + Polynomial.C d₁ * B * Polynomial.derivative bk.Ep = Polynomial.C (d₁ * d₂)`. Apply `Polynomial.map_injective (algebraMap (Wq l bk.a) F) (IsFractionRing.injective (Wq l bk.a) F)` to reduce the goal to its premises. Simplify using `only [Polynomial.map_add, Polynomial.map_mul, Polynomial.map_C, hA, hB, Polynomial.derivative_map]`.
+Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Algebra.smul_def, Polynomial.algebraMap_apply, map_mul, Polynomial.C_mul]`. Take the linear combination `(Polynomial.C (algebraMap (Wq l bk.a) F d₁) * Polynomial.C (algebraMap (Wq l bk.a) F d₂)) * hab`. Take `⟨m, u, hu⟩` from `WittVector.exists_eq_pow_p_mul' (p := l) (k := Fq l bk.a) (d₁ * d₂) hd`. Use `⟨m, Polynomial.C ((↑u⁻¹ : Wq l bk.a) * d₂) * A, Polynomial.C ((↑u⁻¹ : Wq l bk.a) * d₁) * B, ?_⟩` and prove the remaining obligations. Establish `: Polynomial.C ((l : Wq l bk.a) ^ m) = Polynomial.C (↑u⁻¹ : Wq l bk.a) * Polynomial.C (d₁ * d₂)`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hu, ← Polynomial.C_mul]`. Use `congr 1`. Rewrite using `[mul_comm, mul_assoc, Units.mul_inv, mul_one]`. Rewrite using `[this, ← key]`. Simplify using `only [Polynomial.C_mul]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem bezout_Ep_derivative : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K), ∃ (c : ℕ) (a b : Polynomial (Wq l bk.a)),
     a * bk.Ep + b * Polynomial.derivative bk.Ep = Polynomial.C ((l : Wq l bk.a) ^ c) := by

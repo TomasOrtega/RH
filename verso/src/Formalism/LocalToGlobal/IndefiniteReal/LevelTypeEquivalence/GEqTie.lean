@@ -19,15 +19,15 @@ section Lift
 variable {D : D7} (V : HSp D)
 
 /- English proof (translation)
-The claim follows from `(splitEquiv D).injective (funext h)`.
+A detailed English derivation is pending.
 -/
 theorem thetaC_inj {y y' : Ainf D.host.F ⊗[D.host.F] D.host.E} (h : ∀ τ, thetaC D τ y = thetaC D τ y') : y = y' :=
   (splitEquiv D).injective (funext h)
 
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `i j`. Use `show infPart D (matA D V (infOnly D V h) i j) = infPart D (matA D V h i j)`. Apply `thetaC_inj` to reduce the goal to its premises. Introduce `τ`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e` using `congrFun (congrFun (infMat_infOnly D V h τ) i) j`. Rewrite `e` using `[infMat_thetaC, infMat_thetaC]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infHom_infOnly (h : GA D V) : infHom V (infOnly D V h) = infHom V h := by
   apply Units.ext
@@ -40,9 +40,9 @@ theorem infHom_infOnly (h : GA D V) : infHom V (infOnly D V h) = infHom V h := b
   exact e
 
 /- English proof (translation)
-Take `⟨κ0, hκ0⟩` from `q.2`. Use `⟨(infOnly D V κ0)⁻¹ * κ0, ?_, ?_⟩` and prove the remaining obligations. Use `show infHom V ((infOnly D V κ0)⁻¹ * κ0) = 1`. Rewrite using `[map_mul, map_inv, infHom_infOnly, inv_mul_cancel]`. Establish `h1 : finHom V (infOnly D V κ0) = 1` using `infOnly_mem_GinfC D V κ0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_inv, h1, inv_one, one_mul, hκ0]`.
+A detailed English derivation is pending.
 -/
 theorem exists_finLift (q : Bridge.Gf V) : ∃ κ ∈ GfC V, finHom V κ = q := by
   obtain ⟨κ0, hκ0⟩ := q.2
@@ -59,7 +59,7 @@ section Ad
 variable {G Γ W : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] (ι : Γ →* G)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_adForms_iff (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ) (F : G → W) :
     F ∈ Bridge.AdForms ι ρ J χ ↔ ∀ (γ : Γ) (h : G) (k : J), F (ι γ * h * k) = (χ k : ℂ) • ρ γ (F h) := Iff.rfl
@@ -71,7 +71,7 @@ section Coef
 variable {D : D7} {V : HSp D} (c : CoefA V)
 
 /- English proof (translation)
-Establish `e1 : (finHom V).rangeRestrict (h * κ) = (finHom V).rangeRestrict h * (finHom V).rangeRestrict κ` using `map_mul _ _ _`. Establish `e2 : c.ρ (h * κ)⁻¹ = c.ρ h⁻¹`. Rewrite using `[_root_.mul_inv_rev, map_mul, hc.1 _ (Subgroup.inv_mem _ hκ), one_mul]`. Conclude with `congrArg₂ (fun (L : Module.End ℂ c.W) z => L (f z)) e2 e1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefExt_mul (hc : c.Is) (f : Bridge.Gf V → c.W) (h κ : GA D V) (hκ : κ ∈ GfC V) :
     c.ext f (h * κ) = c.ρ h⁻¹ (f ((finHom V).rangeRestrict h * (finHom V).rangeRestrict κ)) := by
@@ -81,9 +81,9 @@ theorem coefExt_mul (hc : c.Is) (f : Bridge.Gf V → c.W) (h κ : GA D V) (hκ :
   exact congrArg₂ (fun (L : Module.End ℂ c.W) z => L (f z)) e2 e1
 
 /- English proof (translation)
-Establish `e : c.toMap pr (Bridge.g0Act ch q F) v h = pr (c.ρ h⁻¹ ((((ch q)⁻¹ : ℂˣ) : ℂ) • F ((finHom V).rangeRestrict h * q))) v` using `rfl`. Establish `e2 : c.ρ h⁻¹ ((((ch q)⁻¹ : ℂˣ) : ℂ) • F ((finHom V).rangeRestrict h * q)) = (((ch q)⁻¹ : ℂˣ) : ℂ) • c.ρ h⁻¹ (F ((finHom V).rangeRestrict h * q))` using `LinearMap.map_smul _ _ _`. Establish `e3 : pr ((((ch q)⁻¹ : ℂˣ) : ℂ) • c.ρ h⁻¹ (F ((finHom V).rangeRestrict h * q))) = (((ch q)⁻¹ : ℂˣ) : ℂ) • pr (c.ρ h⁻¹ (F ((finHom V).rangeRestrict h * q)))` using `LinearMap.map_smul _ _ _`. Establish `e4 : (((ch q)⁻¹ : ℂˣ) : ℂ) = ((ch q : ℂˣ) : ℂ)⁻¹` using `Units.val_inv_eq_inv_val (ch q)`. Establish `e5` using `coefExt_mul c hc F h κ hκ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e6 : c.ext F (h * κ) = c.ρ h⁻¹ (F ((finHom V).rangeRestrict h * q))` using `hκq ▸ e5`. Establish `s1 : pr (c.ρ h⁻¹ ((((ch q)⁻¹ : ℂˣ) : ℂ) • F ((finHom V).rangeRestrict h * q))) v = (((ch q)⁻¹ : ℂˣ) : ℂ) * pr (c.ρ h⁻¹ (F ((finHom V).rangeRestrict h * q))) v` using `(congrArg (fun L : Dm →ₗ[ℂ] ℂ => L v) ((congrArg pr e2).trans e3)).trans (LinearMap.smul_apply _ _ _)`. Establish `s2 : (((ch q)⁻¹ : ℂˣ) : ℂ) * pr (c.ρ h⁻¹ (F ((finHom V).rangeRestrict h * q))) v = ((ch q : ℂˣ) : ℂ)⁻¹ * c.toMap pr F v (h * κ)` using `congrArg₂ (· * ·) e4 (congrArg (fun w => pr w v) e6.symm)`. Conclude with `e.trans (s1.trans s2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem toMap_g0Act (hc : c.Is) {Dm : Type} [AddCommGroup Dm] [Module ℂ Dm] (pr : c.W →ₗ[ℂ] Dm →ₗ[ℂ] ℂ)
     {Q : Subgroup (Bridge.Gf V)} (ch : Q →* ℂˣ) (q : Q) (κ : GA D V) (hκ : κ ∈ GfC V)
@@ -112,9 +112,9 @@ variable {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.w
 variable {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)
 
 /- English proof (translation)
-Take `⟨q1, hq1⟩` from `(R.B.R t).act_tie.red_surj g`. Take `⟨κ1, hκ1f, hκ1q⟩` from `exists_finLift D.sp.X' (q1 : Bridge.Gf D.sp.X')`. Establish `hq : finE D.sp.X' κ1 ∈ lev D.sp.cm D.sp.X'.gram R.βX (flagL (R.datXt t))`. Rewrite using `[finE_eq, hκ1q]`. Conclude with `q1.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨κ1, hκ1f, hq.1, ?_⟩` and prove the remaining obligations. Rewrite using `[finE_eq, hκ1q, ← hred t q1, hq1]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lift_X (hred : R.grp_red_R) (t : T) (g : G) : ∃ κ, IsLevelLift D.sp.X' R.βX (R.datXt t) (R.eG g) κ := by
   obtain ⟨q1, hq1⟩ := (R.B.R t).act_tie.red_surj g
@@ -125,7 +125,7 @@ theorem lift_X (hred : R.grp_red_R) (t : T) (g : G) : ∃ κ, IsLevelLift D.sp.X
   rw [finE_eq, hκ1q, ← hred t q1, hq1]
 
 /- English proof (translation)
-Use `show Formalism.UG.bc (swapAE D) (finHom D.sp.X' κ0) ∈ lev D.sp.cm D.sp.X'.gram R.βX (flagL (R.datXt t))`. Rewrite using `[← finE_eq]`. Conclude with `⟨hκ0.2.1, Subgroup.mem_top _⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_Q_of_lift (t : T) (g : G) {κ0 : GA D D.sp.X'} (hκ0 : IsLevelLift D.sp.X' R.βX (R.datXt t) (R.eG g) κ0) :
     (finHom D.sp.X').rangeRestrict κ0 ∈ (levEnv D.sp.X' R.βX (R.datXt t)).Q := by
@@ -134,7 +134,7 @@ theorem mem_Q_of_lift (t : T) (g : G) {κ0 : GA D D.sp.X'} (hκ0 : IsLevelLift D
   exact ⟨hκ0.2.1, Subgroup.mem_top _⟩
 
 /- English proof (translation)
-Apply `R.eG.injective` to reduce the goal to its premises. Rewrite using `[hred t ⟨_, mem_Q_of_lift R t g hκ0⟩]`. Conclude with `hκ0.2.2`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_of_lift (hred : R.grp_red_R) (t : T) (g : G) {κ0 : GA D D.sp.X'}
     (hκ0 : IsLevelLift D.sp.X' R.βX (R.datXt t) (R.eG g) κ0) :
@@ -144,7 +144,7 @@ theorem red_of_lift (hred : R.grp_red_R) (t : T) (g : G) {κ0 : GA D D.sp.X'}
   exact hκ0.2.2
 
 /- English proof (translation)
-Use `show actG0 D.sp.X' R.βX (R.datXt t) (R.eG g) F h = _`. Unfold `actG0`. Rewrite using `[dif_pos hex]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actX_apply (t : T) (g : G) (hex : ∃ κ, IsLevelLift D.sp.X' R.βX (R.datXt t) (R.eG g) κ) (F : GA D D.sp.X' → ℂ)
     (h : GA D D.sp.X') :
@@ -154,7 +154,7 @@ theorem actX_apply (t : T) (g : G) (hex : ∃ κ, IsLevelLift D.sp.X' R.βX (R.d
   rw [dif_pos hex]
 
 /- English proof (translation)
-Establish `hext` using `(R.B.R t).act_tie.act_eq g q0 hred0 x`. Conclude with `(hM.jX t _).trans (hext.trans (congrArg (Bridge.g0Act (levEnv D.sp.X' R.βX (R.datXt t)).ch q0) (hM.jX t x).symm))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jX_act (hM : R.IsModels) (t : T) (g : G) (x : A.fam.amb.FR t) (q0 : (levEnv D.sp.X' R.βX (R.datXt t)).Q)
     (hred0 : (R.B.R t).act_tie.red q0 = g) :
@@ -164,11 +164,11 @@ theorem jX_act (hM : R.IsModels) (t : T) (g : G) (x : A.fam.amb.FR t) (q0 : (lev
   exact (hM.jX t _).trans (hext.trans (congrArg (Bridge.g0Act (levEnv D.sp.X' R.βX (R.datXt t)).ch q0) (hM.jX t x).symm))
 
 /- English proof (translation)
-Introduce `hM hred t g x`. Establish `hex` using `lift_X R hred t g`. Establish `hκ0` using `hex.choose_spec`. Establish `hmem` using `mem_Q_of_lift R t g hκ0`. Establish `hred0` using `red_of_lift R hred t g hκ0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hch : (((levEnv D.sp.X' R.βX (R.datXt t)).ch ⟨_, hmem⟩ : ℂˣ) : ℂ) = levChi D.sp.X' R.βX (flagL (R.datXt t)) hex.choose` using `rfl`. Use `LinearMap.ext fun v => funext fun h => ?_` and prove the remaining obligations. Establish `e1` using `congrArg (fun F : Bridge.Gf D.sp.X' → R.cX.W => R.cX.toMap R.prX F v h) (jX_act R hM t g x _ hred0)`. Establish `e2` using `toMap_g0Act R.cX hM.cX R.prX (levEnv D.sp.X' R.βX (R.datXt t)).ch ⟨_, hmem⟩ hex.choose hκ0.1 rfl ((R.HX t).e (R.jX t x)) v h`. Establish `e3` using `actX_apply R t g hex (fX R t (R.jX t x) v) h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e1.trans (e2.trans ((congrArg (fun c : ℂ => c⁻¹ * R.cX.toMap R.prX ((R.HX t).e (R.jX t x)) v (h * hex.choose)) hch).trans e3.symm))`.
+A detailed English derivation is pending.
 -/
 theorem actTieXOf_holds : ActTieXOf R := by
   intro hM hred t g x

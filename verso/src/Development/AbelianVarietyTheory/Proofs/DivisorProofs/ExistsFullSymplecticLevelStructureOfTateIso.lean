@@ -12,7 +12,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor NumberField
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Apply `RingOfIntegers.ext` to reduce the goal to its premises. Rewrite using `[H.bar_eq, H.bar_eq]`. Conclude with `IsCMField.complexConj_apply_apply E _`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bar_bar (a : 𝓞 E) : H.bar (H.bar a) = a := by
   apply RingOfIntegers.ext
@@ -20,19 +20,19 @@ theorem bar_bar (a : 𝓞 E) : H.bar (H.bar a) = a := by
   exact IsCMField.complexConj_apply_apply E _
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `hL`. Establish `h1 : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `by rw [l.coprime]; trivial`. Take `⟨n, hn, m, hm, hnm⟩` from `Submodule.mem_sup.1 h1`. Establish `hbn : H.bar n ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `Ideal.mem_map_of_mem _ hn`. Establish `hbm : H.bar m ∈ l.Mb`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m0, hm0, rfl⟩` from `(Ideal.mem_map_iff_of_surjective _ H.bar.surjective).1 hm`. Simplify `hm0` using `[bar_bar]`. Establish `hbar1 : H.bar n + H.bar m = 1` using `by rw [← map_add, hnm, map_one]`. Establish `hxN : H.bar n - m ∈ l.Mb`. Establish `e : H.bar n - m = n - H.bar m` using `by linear_combination hbar1 - hnm`.
+Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `sub_mem hn hbm`. Establish `hxN' : H.bar n - m ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `sub_mem hbn hm`. Establish `hx : H.bar n - m ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)`. Establish `e : H.bar n - m = n * (H.bar n - m) + (H.bar n - m) * m`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `-(H.bar n - m) * hnm`. Rewrite using `[e]`. Conclude with `add_mem (Ideal.mul_mem_mul hn hxN') (Ideal.mul_mem_mul hxN hm)`. Establish `hnn : n * H.bar n ∈ l.Mb * l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `Ideal.mul_mem_mul hn hbn`. Rewrite `hx`, `hnn` using `[l.prod]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y1, hy1⟩` from `Ideal.mem_span_singleton'.1 hx`. Take `⟨y2, hy2⟩` from `Ideal.mem_span_singleton'.1 hnn`. Establish `hg : ((l.M : ℕ) : 𝓞 E) * l.A = (l.M' : 𝓞 E) * (Nat.gcd l.M l.A : ℕ)`. Use `Nat.gcd_mul_lcm l.M l.A` as an intermediate fact. Unfold `Level.M'`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(by rw [mul_comm (Nat.lcm _ _), this] : l.M * l.A = Nat.lcm l.M l.A * Nat.gcd l.M l.A)` after adjusting the coercions. Establish `hq' : (L : 𝓞 E) - 1 = (l.A : 𝓞 E) * q` using `by exact_mod_cast hq`. Use `⟨1 + ((L : 𝓞 E) - 1) * n, (Nat.gcd l.M l.A : 𝓞 E) * q * (y1 + ((L : 𝓞 E) - 1) * y2), (q : 𝓞 E) * n, Ideal.mul_mem_left _ _ hn, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hq']`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : H.bar (1 + ((L : 𝓞 E) - 1) * n) = 1 + ((L : 𝓞 E) - 1) * H.bar n`. Simplify using `[map_add, map_mul, map_sub, map_one, map_intCast]`. Rewrite using `[hb]`. Take the linear combination `((L : 𝓞 E) - 1) * hnm - ((L : 𝓞 E) - 1) * hy1 - ((L : 𝓞 E) - 1) ^ 2 * hy2 + (l.M : 𝓞 E) * (y1 + ((L : 𝓞 E) - 1) * y2) * hq' + (q : 𝓞 E) * (y1 + ((L : 𝓞 E) - 1) * y2) * hg`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_twist (l : Level H) (L : ℤ) (hL : (l.A : ℤ) ∣ L - 1) :
     ∃ u w c : 𝓞 E, c ∈ l.Mb ∧ u = 1 + (l.A : 𝓞 E) * c ∧
@@ -73,9 +73,9 @@ theorem exists_twist (l : Level H) (L : ℤ) (hL : (l.A : ℤ) ∣ L - 1) :
       + (l.M : 𝓞 E) * (y1 + ((L : 𝓞 E) - 1) * y2) * hq' + (q : 𝓞 E) * (y1 + ((L : 𝓞 E) - 1) * y2) * hg
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on ha ?_ ?_` and prove the remaining obligations. Introduce `r hr t _`. Establish `: c * r ∈ Ideal.span {((l.M : ℕ) : 𝓞 E)}` using `l.prod ▸ Ideal.mul_mem_mul hc hr`. Take `⟨s, hs⟩` from `Ideal.mem_span_singleton'.1 this`. Conclude with `⟨s • t, by rw [← mul_smul, ← hs, mul_comm, mul_smul, Nat.cast_smul_eq_nsmul]⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `x y ⟨x', hx'⟩ ⟨y', hy'⟩`. Conclude with `⟨x' + y', by rw [smul_add, hx', hy', smul_add]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem smul_mem_M (l : Level H) {D : Datum H} {c : 𝓞 E} (hc : c ∈ l.Mb) {a : D.La}
     (ha : a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La)) :
@@ -89,41 +89,39 @@ theorem smul_mem_M (l : Level H) {D : Datum H} {c : 𝓞 E} (hc : c ∈ l.Mb) {a
     exact ⟨x' + y', by rw [smul_add, hx', hy', smul_add]⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l k _ Q _ act e I z hz hzA`. Establish `hM'` using `M'_pos l`. Use `haveI : NeZero l.M' := ⟨hM'.ne'⟩`. Establish `hζ` using `I.ζ_prim l.M' hM'`. Take `⟨L, -, hcop, hL⟩` from `(hζ.isPrimitiveRoot_iff').1 hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `A_dvd_M' l`. Establish `hd0 : 0 < d` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hd; omega)`. Establish `hdiv : l.M' / l.A = d` using `by rw [hd, Nat.mul_div_cancel_left _ l.A_pos]`. Establish `hζA : I.ζ l.M' ^ d = I.ζ l.A`. Use `I.ζ_pow l.A d l.A_pos hd0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← hd]`. Then use the resulting hypothesis. Establish `hAL : (l.A : ℤ) ∣ (L : ℤ) - 1`. Establish `e1 : I.ζ l.M' ^ (L * d) = I.ζ l.M' ^ d`. Rewrite using `[pow_mul, hL, ← hdiv, hzA, hdiv, hζA]`. Establish `h2 : I.ζ l.M' ^ (((L : ℤ) - 1) * d) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[sub_mul, one_mul, zpow_sub, show ((L : ℤ) * d) = ((L * d : ℕ) : ℤ) by push_cast; ring, zpow_natCast, zpow_natCast, e1, mul_inv_cancel]`. Establish `h3` using `(hζ.zpow_eq_one_iff_dvd _).1 h2`. Rewrite `h3` using `[hd]`. Move the coercions through the operations in `at h3`. Conclude with `(mul_dvd_mul_iff_right (by exact_mod_cast hd0.ne')).1 h3`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨a', b', hab⟩` from `Nat.isCoprime_iff_coprime.2 hcop`. Take `⟨u, w, c, hc, hu, hw⟩` from `exists_twist l L hAL`. Use `set v : 𝓞 E := (a' : 𝓞 E) * H.bar u with hv`. Establish `hvu : v * u = 1 + (l.M' : 𝓞 E) * ((a' : 𝓞 E) * w - b')`. Establish `hab' : (a' : 𝓞 E) * (L : ℤ) + (b' : 𝓞 E) * ((l.M' : ℕ) : ℤ) = 1` using `by exact_mod_cast hab`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Move the coercions through the operations in `at hab'`. Rewrite using `[hv, mul_assoc, hw]`. Use `push_cast`. Take the linear combination `hab'`. Establish `key : ∀ a : D.La, v • u • a = a + l.M' • (((a' : 𝓞 E) * w - b') • a)`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[← mul_smul, hvu, add_smul, one_smul, mul_smul, Nat.cast_smul_eq_nsmul]`. Establish `key' : ∀ a : D.La, u • v • a = a + l.M' • (((a' : 𝓞 E) * w - b') • a)`. Introduce `a`. Rewrite using `[smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `key a`. Establish `hcong : ∀ a b : D.La, I.ev l.M' (a + l.M' • b) = I.ev l.M' a`. Introduce `a b`. Rewrite using `[I.add, (I.ker _ hM' _).2 ⟨b, rfl⟩, mul_one]`. Establish `hEF : ∀ a b : D.La, D.EF (u • a) (u • b) = L * D.EF a b + l.M' * D.EF a (w • b)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b`. Rewrite using `[D.adj, ← mul_smul, hw, add_smul, mul_smul, Nat.cast_smul_eq_nsmul]`. Simplify using `only [Int.cast_natCast, Nat.cast_smul_eq_nsmul, map_add, map_zsmul, map_nsmul, smul_eq_mul, nsmul_eq_mul]`. Use `⟨fun a => I.ev l.M' (u • a), ⟨?_, ?_, ?_, ?_, ?_⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `a b`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [smul_add, I.add]`. Introduce `c a`. Apply the tactic sequence `try simp only`. Rewrite using `[smul_comm, I.lin]`. Introduce `a`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `try simp only`. Rewrite using `[I.ker _ hM']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨b, hb⟩`. Use `⟨v • b - ((a' : 𝓞 E) * w - b') • a, ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components.
 
-Establish `h` using `congrArg (v • ·) hb`. Express the relevant statement in the definitionally equal form `v • u • a = v • (l.M' • b) at h`. Rewrite `h` using `[key, smul_comm v l.M' b]`. Rewrite using `[smul_sub, ← h]`. Normalize the expressions using the abelian group laws.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨b, rfl⟩`. Conclude with `⟨u • b, smul_comm _ _ _⟩`. Introduce `x`. Rewrite using `[I.onto _ hM']`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Introduce and unpack `⟨a0, rfl⟩; exact ⟨v • a0, by simp only [key', hcong]⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨u • a, rfl⟩`. Introduce `a b`. Establish `h` using `I.isom _ hM' (u • a) (u • b)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `h using 1` and compare the differences between its conclusion and the goal. Rewrite using `[hEF, zpow_add, zpow_mul, zpow_mul, zpow_natCast, zpow_natCast, hL, hζ.pow_eq_one, one_zpow, mul_one]`. Introduce `a`. Establish `htow : I.ev l.M' (u • a) ^ d = I.ev l.A (u • a)`. Use `I.tower l.A d l.A_pos hd0 (u • a)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[← hd]`. Then use the resulting hypothesis. Apply the tactic sequence `try simp only`. Rewrite using `[hdiv, htow, hu, add_smul, one_smul, mul_smul, Nat.cast_smul_eq_nsmul, I.add, (I.ker _ l.A_pos _).2 ⟨_, rfl⟩, mul_one]`. Introduce `a ha`. Take `⟨dM, hdM⟩` from `M_dvd_M' l`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Establish `hMp : 0 < l.M` using `by have := l.three_le; omega`. Establish `hdM0 : 0 < dM` using `Nat.pos_of_ne_zero (by rintro rfl; simp at hdM; omega)`. Establish `hdivM : l.M' / l.M = dM` using `by rw [hdM, Nat.mul_div_cancel_left _ hMp]`. Establish `htow : I.ev l.M' (u • a) ^ dM = I.ev l.M (u • a)`. Use `I.tower l.M dM hMp hdM0 (u • a)` as an intermediate fact.
-
-Rewrite `this` using `[← hdM]`. Then use the resulting hypothesis. Take `⟨y, hy⟩` from `smul_mem_M l hc ha`. Apply the tactic sequence `try simp only`. Rewrite using `[hdivM, htow, hu, add_smul, one_smul, mul_smul, hy, Nat.cast_smul_eq_nsmul, smul_comm, I.add, (I.ker _ hMp _).2 ⟨_, rfl⟩, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sympLevel_of_tate : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} (l : Level H) {k : Type} [Field k]
     {Q : Type} [Group Q] {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → kˣ → Prop} (I : TateIso D k Q act e)

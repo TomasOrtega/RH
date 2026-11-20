@@ -10,7 +10,7 @@ namespace Formalism.L2.SG.Pf.StabilizerIndexVolumes
 variable {E : Type} [Field E] [NumberField E] [StarRing E]
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.leadMinorE`. Rewrite using `[dif_pos le_rfl]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem leadMinor_top {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     Formalism.MainNotions.S.leadMinorE Z (r + 1) = Z.det := by
@@ -19,9 +19,9 @@ theorem leadMinor_top {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
   congr 1
 
 /- English proof (translation)
-Unfold `Formalism.MainNotions.S.leadMinorE`. Rewrite using `[dif_pos (Nat.le_succ r), Matrix.adjugate_fin_succ_eq_det_submatrix]`. Establish `: (-1 : E) ^ ((Fin.last r : ℕ) + (Fin.last r : ℕ)) = 1`. Rewrite using `[← two_mul, pow_mul]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[this, one_mul, Fin.succAbove_last]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem leadMinor_r {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
     Formalism.MainNotions.S.leadMinorE Z r = Z.adjugate (Fin.last r) (Fin.last r) := by
@@ -33,35 +33,31 @@ theorem leadMinor_r {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[isUnit_iff_ne_zero]`. Introduce `hdet`. Take `⟨v, hv0, hv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Use `set l := Fin.last r`. Use `set α : Fin (r + 1) → E := fun a => v (Sum.inl a)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set β : Fin (r + 1) → E := fun b => v (Sum.inr b)`. Establish `hJ : ∀ (c : E) (γ : Fin (r + 1) → E) (a : Fin (r + 1)), ∑ b, (if a = l ∧ b = l then c else 0) * γ b = if a = l then c * γ l else 0`. Introduce `c γ a`. Distinguish the cases in `ha : a = l`. Simplify using `[ha]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[ha]`. Establish `E1 : Z *ᵥ β = Pi.single l (T * α l)`. Use extensionality with `a`. Use `congrFun hv (Sum.inl a)` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, h11, h12, Pi.zero_apply] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite `this` using `[hJ]`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.single_apply]`. Distinguish the cases in `ha : a = l`. Rewrite `this`, the goal using `[if_pos ha]`. Take the linear combination `this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `this`, the goal using `[if_neg ha]`. Take the linear combination `this`. Establish `E2 : Z.conjTranspose *ᵥ α = Pi.single l (T' * β l)`. Use extensionality with `a`. Use `congrFun hv (Sum.inr a)` as an intermediate fact.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, h21, h22, Pi.zero_apply] at this`. Rewrite `this` using `[hJ]`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.single_apply, Matrix.conjTranspose_apply]`. Distinguish the cases in `ha : a = l`. Rewrite `this`, the goal using `[if_pos ha]`.
+Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `this`. Rewrite `this`, the goal using `[if_neg ha]`. Take the linear combination `this`. Establish `hZi : Z⁻¹ * Z = 1` using `nonsing_inv_mul _ hZ`. Establish `hZti : IsUnit Z.conjTranspose.det`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_conjTranspose]`. Conclude with `hZ.star`. Establish `Eβ : β = Z⁻¹ *ᵥ Pi.single l (T * α l)`. Rewrite using `[← E1, Matrix.mulVec_mulVec, hZi, Matrix.one_mulVec]`. Establish `Eα : α = (Z.conjTranspose)⁻¹ *ᵥ Pi.single l (T' * β l)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← E2, Matrix.mulVec_mulVec, nonsing_inv_mul _ hZti, Matrix.one_mulVec]`. Use `set ζ := Z⁻¹ l l`. Establish `hβl : β l = ζ * (T * α l)`. Use `congrFun Eβ l` as an intermediate fact. Rewrite using `[this, Matrix.mulVec_single]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[ζ]`. Establish `hαl : α l = star ζ * (T' * β l)`. Use `congrFun Eα l` as an intermediate fact. Rewrite using `[this, Matrix.mulVec_single, ← Matrix.conjTranspose_nonsing_inv]`. Simplify using `[ζ, Matrix.conjTranspose_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
 
-Establish `hD : Z.det ≠ 0` using `hZ.ne_zero`. Establish `hζ : ζ * Z.det = Formalism.MainNotions.S.leadMinorE Z r`. Rewrite using `[leadMinor_r, show ζ = Z⁻¹ l l from rfl, Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv', smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hαG : α l * (Formalism.MainNotions.S.leadMinorE Z (r + 1) * star (Formalism.MainNotions.S.leadMinorE Z (r + 1)) - T * T' * (Formalism.MainNotions.S.leadMinorE Z r * star (Formalism.MainNotions.S.leadMinorE Z r))) = 0`. Rewrite using `[leadMinor_top, ← hζ, star_mul']`. Establish `h3 : α l = star ζ * T' * ζ * T * α l`. Combine the equalities or inequalities in the displayed calculation. Take the linear combination `(Z.det * star Z.det) * h3`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hαl0 : α l = 0`. Break down `mul_eq_zero.mp hαG with h | h` into its components or cases. Conclude with `h`. Conclude with `absurd h hG`. Establish `hβ0 : β = 0` using `by rw [Eβ, hαl0]; simp`.
-
-Establish `hα0 : α = 0` using `by rw [Eα, show β l = 0 from by rw [hβ0]; rfl]; simp`. Apply `hv0` to reduce the goal to its premises. Use extensionality with `x`. Break down `x with a | b` into its components or cases. Conclude with `congrFun hα0 a`.
-
-Conclude with `congrFun hβ0 b`.
+By extensionality, compare the relevant components. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem gram_block_unit {r : ℕ} (Z : Matrix (Fin (r + 1)) (Fin (r + 1)) E) (T T' : E) (hTs : star T = T)
     (hT's : star T' = T') (hZ : IsUnit Z.det)

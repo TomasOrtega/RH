@@ -25,11 +25,11 @@ section Tensor
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {G : ι → Type} [∀ i, Group (G i)] [∀ i, Finite (G i)]
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil`. Simplify using `only [List.map_nil, List.prod_nil, List.not_mem_nil, if_false]`. Conclude with `tens_one.symm`. Consider the case `cons i L ih`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hL` using `[List.nodup_cons]`. Rewrite using `[List.map_cons, List.prod_cons, ih hL.2, plc, tens_mul]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `hj : j = i`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Simplify using `[hL.1]`. Simplify using `[Function.update_of_ne hj, hj]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_plc (a : ∀ i, MonoidAlgebra ℂ (G i)) (L : List ι) (hL : L.Nodup) :
     (L.map fun i => plc i (a i)).prod = tens (fun j => if j ∈ L then a j else 1) := by
@@ -53,11 +53,9 @@ local instance factGk (D : D7) (k : Fin 2) : Fact (D.host.g k).Prime := ⟨D.hos
 local instance neZeroGk (D : D7) (k : Fin 2) : NeZero (D.host.g k) := ⟨(D.host.g_prime k).ne_zero⟩
 
 /- English proof (translation)
-Establish `hsing : ∀ (π' : D.naut.CG a) w, isoLoc D.nd D.naut [⟨a, π', 1⟩] w = D.naut.locG π' w`. Introduce `π' w`. Use `show D.naut.lpSum (spehLoc D.nd D.naut ⟨a, π', 1⟩ w) (D.naut.lpZero w) = _`. Rewrite using `[D.naut.lpSum_zero]`. Unfold `spehLoc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 
-Simplify using `[D.naut.lpSum_zero, D.naut.lpTw_zero]`. Establish `h` using `hAN [⟨a, D.naut.tw (D.naut.tw π D.naut.etaT) D.naut.etaTinv, 1⟩] [⟨a, π, 1⟩] (by simp [ha]) (by simp [ha]) (Filter.Eventually.of_forall fun w => by`. Rewrite using `[hsing, hsing, D.naut.locG_tw, D.naut.locG_tw]`. Conclude with `(GlobalTheory.RowThetaParam.lpChar_eta_inv D.nd D.naut hT _).1)`. Rewrite `h` using `[List.singleton_perm_singleton]`.
-
-Use `injection h with _ h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tw_eta (D : D7) (hT : SumRepresentations.At.TieLP D.nd D.naut)
     (hAN : ∀ Pa Pa' : List (Part D.naut.CG), (∀ p ∈ Pa, 1 ≤ p.a ∧ p.d = 1) → (∀ p ∈ Pa', 1 ≤ p.a ∧ p.d = 1) →
@@ -77,7 +75,7 @@ theorem tw_eta (D : D7) (hT : SumRepresentations.At.TieLP D.nd D.naut)
   injection h with _ h2
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => rfl`. Consider the case `cons p L ih => show (⟨p.a, D.naut.tw (D.naut.tw p.π D.naut.etaT) D.naut.etaTinv, p.d⟩ : Part D.naut.CG) :: twistIso D.nd D.naut (twistIso D.nd D.naut L D.naut.etaT) D.naut.etaTinv = p :: L`. Rewrite using `[ih (fun q hq => hL q (List.mem_cons_of_mem _ hq)), tw_eta D hT hAN (hL p List.mem_cons_self)]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem twistIso_eta (D : D7) (hT : SumRepresentations.At.TieLP D.nd D.naut)
     (hAN : ∀ Pa Pa' : List (Part D.naut.CG), (∀ p ∈ Pa, 1 ≤ p.a ∧ p.d = 1) → (∀ p ∈ Pa', 1 ≤ p.a ∧ p.d = 1) →
@@ -92,7 +90,7 @@ theorem twistIso_eta (D : D7) (hT : SumRepresentations.At.TieLP D.nd D.naut)
     rw [ih (fun q hq => hL q (List.mem_cons_of_mem _ hq)), tw_eta D hT hAN (hL p List.mem_cons_self)]
 
 /- English proof (translation)
-Unfold `NTypes.goodPar NTypes.goodTuple goodSig`. Simplify using `only [D.ntypes.labPar_def, h1]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem goodPar_iff_goodSig (D : D7) (Sig : List (Part D.naut.CG)) (σ' : D.ntypes.Par)
     (h1 : ∀ w, isoLoc D.nd D.naut Sig w = D.ntypes.locPar σ' w) :
@@ -101,13 +99,11 @@ theorem goodPar_iff_goodSig (D : D7) (Sig : List (Part D.naut.CG)) (σ' : D.ntyp
   simp only [D.ntypes.labPar_def, h1]
 
 /- English proof (translation)
-Take `⟨P0, hP0, Pa0, hB0, hm⟩` from `(D.Z_tie i x).1 hx`. Take `⟨Pa, hB⟩` from `h1 i PI`. Establish `hperm : Pa0.Perm Pa` using `((h41 i).2.1 P0 PI (by rw [hP0]; exact Option.some_ne_none x) (hP0.trans hPI.symm)).1 Pa0 Pa hB0 hB`. Establish `hm'` using `hperm.subset hm`. Take `⟨l₁, l₂, rfl⟩` from `List.append_of_mem hm'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set m : Part D.naut.CG := ⟨1, D.naut.tw (D.naut.muC i) D.naut.etaTinv, D.R.t⟩ with hmdef`. Establish `hperm2 : (l₁ ++ m :: l₂).Perm ((l₁ ++ l₂) ++ [m])` using `List.perm_middle.trans (List.perm_append_singleton _ _).symm`. Establish `hB'` using `GlobalTheory.RowThetaParam.isBCV_of_perm D.nd D.naut hperm2 hB`. Establish `hL : ∀ p ∈ l₁ ++ l₂, 1 ≤ p.a` using `fun p hp => (hB.1 p (by`. Break down `List.mem_append.1 hp with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `List.mem_append_left _ h`. Conclude with `List.mem_append_right _ (List.mem_cons_of_mem _ h))).1`. Use `⟨twistIso D.nd D.naut (l₁ ++ l₂) D.naut.etaT, ?_⟩` and prove the remaining obligations. Establish `e : twistIso D.nd D.naut (twistIso D.nd D.naut (l₁ ++ l₂) D.naut.etaT ++ [muPart D.nd D.naut i]) D.naut.etaTinv = (l₁ ++ l₂) ++ [m]`. Rewrite using `[show twistIso D.nd D.naut (twistIso D.nd D.naut (l₁ ++ l₂) D.naut.etaT ++ [muPart D.nd D.naut i]) D.naut.etaTinv = twistIso D.nd D.naut (twistIso D.nd D.naut (l₁ ++ l₂) D.naut.etaT) D.naut.etaTinv ++ twistIso D.nd D.naut [muPart D.nd D.naut i] D.naut.etaTinv from List.map_append …`.
-
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `hB'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem param_of_Z (D : D7) (h0 : SumRepresentations.tie0 D) (h1 : SumRepresentations.adm1 D) (h5 : SumRepresentations.adm5 D) (h41 : SumRepresentations.Conclusion41 D)
     (i : D.nd.Loc) (x : D.nd.X i) (hx : x ∈ D.nd.Z i) (PI : D.naut.AV i) (hPI : D.naut.ptV i PI = some x) :
@@ -139,15 +135,13 @@ theorem param_of_Z (D : D7) (h0 : SumRepresentations.tie0 D) (h1 : SumRepresenta
   exact hB'
 
 /- English proof (translation)
-Establish `hon : ∀ σ' : D.ntypes.Par, F ∈ D.ntypes.MtPar (D.nd.mu i) (D.nd.j i) σ' → (D.ntypes.goodPar σ' → D.ntypes.onMt (D.nd.mu i) (D.nd.j i) D.ntypes.e0 F = F) ∧ (¬ D.ntypes.goodPar σ' → D.ntypes.onMt (D.nd.mu i) (D.nd.j i) D.ntypes.e0 F = 0)` using `fun σ' hF' => idempotent_action_on_forms D (D.ntypes.cenMt (D.nd.mu i) (D.nd.j i)) σ' F fun k v f hf => hSer i σ' k v f F hF' hf`. Establish `hmem : ∀ Sig (σ' : D.ntypes.Par), (∀ w, D.ntypes.locPar σ' w = isoLoc D.nd D.naut Sig w) → IsBCV D.nd D.naut i PI (twistIso D.nd D.naut (Sig ++ [muPart D.nd D.naut i]) D.naut.etaTinv) → F ∈ D.ntypes.MtPar (D.nd.mu i) (D.nd.j i) σ'`. Introduce `Sig σ' hσ hB`. Establish `hle : D.naut.typeV i PI ≤ D.ntypes.MtPar (D.nd.mu i) (D.nd.j i) σ'`. Rewrite using `[D.mtpar_tie i σ']`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `le_iSup₂_of_le PI ⟨Sig, fun w => (hσ w).symm, hB⟩ le_rfl`. Conclude with `hle hF`. Prove the components needed by the constructor for the conclusion. Introduce `hg`. Take `⟨-, Sig, ⟨P2, hP2, hB2⟩, hgs⟩` from `(D.Zgood_tie i x).1 hg`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨Pa, hB⟩` from `h1 i PI`. Establish `hperm` using `((h41 i).2.1 P2 PI (by rw [hP2]; exact Option.some_ne_none x) (hP2.trans hPI.symm)).1 _ Pa hB2 hB`. Establish `hBPI` using `GlobalTheory.RowThetaParam.isBCV_of_perm D.nd D.naut hperm.symm hB`. Take `⟨σ', hσ⟩` from `Q.Par_surj i x Sig ⟨P2, hP2, hB2⟩`. Conclude with `(hon σ' (hmem Sig σ' hσ hBPI)).1 ((goodPar_iff_goodSig D Sig σ' fun w => (hσ w).symm).2 hgs)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `hg`. Take `⟨Sig, hB⟩` from `param_of_Z D h0 h1 h5 h41 i x hx PI hPI`. Take `⟨σ', hσ⟩` from `Q.Par_surj i x Sig ⟨PI, hPI, hB⟩`. Use `(hon σ' (hmem Sig σ' hσ hB)).2 fun hgp => hg ?_` and prove the remaining obligations. Rewrite using `[D.Zgood_tie i x]`.
-
-Conclude with `⟨(D.Z_tie i x).1 hx, Sig, ⟨PI, hPI, hB⟩, (goodPar_iff_goodSig D Sig σ' fun w => (hσ w).symm).1 hgp⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eigen_action_at_good_point (D : D7) (Q : PairedCharacterCondition.Pend D) (hSer : GlobalTheory.TypeLeaf.SerLoc D) (h41 : SumRepresentations.Conclusion41 D)
     (h0 : SumRepresentations.tie0 D) (h1 : SumRepresentations.adm1 D) (h5 : SumRepresentations.adm5 D) (i : D.nd.Loc) (x : D.nd.X i) (hx : x ∈ D.nd.Z i)
@@ -184,21 +178,21 @@ theorem eigen_action_at_good_point (D : D7) (Q : PairedCharacterCondition.Pend D
     exact ⟨(D.Z_tie i x).1 hx, Sig, ⟨PI, hPI, hB⟩, (goodPar_iff_goodSig D Sig σ' fun w => (hσ w).symm).1 hgp⟩
 
 /- English proof (translation)
-Introduce `D Q hEig hCen hSer h41 _ h0 h1 h5 i _ _`. Set `zc : (∀ kv : (Σ k : Fin 2, D.nd.PlG k), Fin D.R.r → ZMod (D.host.g kv.1)) → ↥(Subalgebra.center (D.nd.O i) (MonoidAlgebra (D.nd.O i) (G0g D.nd)))` to `fun p => (hCen i fun kv => Formalism.CyclotomicNorms.monicOf (p kv)).choose`. Set `z : ↥(Subalgebra.center (D.nd.O i) (MonoidAlgebra (D.nd.O i) (G0g D.nd)))` to `∑ p, if goodVec D p then zc p else 0`. Establish `hp : ∀ p, PairedCharacterCondition.mapCoef (iotaO D.nd D.naut i) (zc p : MonoidAlgebra (D.nd.O i) (G0g D.nd)) = (D.what₂.restRowsFiniteGroupCard : ℂ) • tens (fun kv => ESer D kv (p kv))`. Introduce `p`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨L, hnd, hall, he⟩` from `(hCen i fun kv => Formalism.CyclotomicNorms.monicOf (p kv)).choose_spec`. Rewrite using `[he]`. Use `congr 1`. Establish `e1 : (L.map fun kv => ArithmeticCylinders.atPlace D kv.1 kv.2 (D.ntypes.eSer kv.1 (Formalism.CyclotomicNorms.monicOf (p kv)))) = L.map fun kv => plc kv (ESer D kv (p kv))` using `List.map_congr_left fun kv _ => atPlace_eq D kv.1 kv.2 _`. Rewrite using `[e1, prod_plc _ L hnd]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `j`. Rewrite using `[if_pos (hall j)]`. Establish `hz : PairedCharacterCondition.mapCoef (iotaO D.nd D.naut i) (z : MonoidAlgebra (D.nd.O i) (G0g D.nd)) = (D.what₂.restRowsFiniteGroupCard : ℂ) • D.ntypes.e0`. Rewrite using `[e0_eq, eGood, Finset.smul_sum, AddSubmonoidClass.coe_finsetSum]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show MonoidAlgebra.mapRingHom _ (iotaO D.nd D.naut i) _ = _`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Use `split_ifs with hg`. Conclude with `hp p`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Establish `hcen : D.ntypes.e0 ∈ Subalgebra.center ℂ (MonoidAlgebra ℂ (G0g D.nd))` using `Subalgebra.mem_center_iff.2 fun b => (goodElement_mem_center_groupAlgebra D b).symm`. Establish `hact : ∀ F, D.ntypes.onMt (D.nd.mu i) (D.nd.j i) (PairedCharacterCondition.mapCoef (iotaO D.nd D.naut i) (z : MonoidAlgebra (D.nd.O i) (G0g D.nd))) F = (D.what₂.restRowsFiniteGroupCard : ℂ) • D.ntypes.onMt (D.nd.mu i) (D.nd.j i) D.ntypes.e0 F`. Introduce `F`. Rewrite using `[hz]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `NTypes.onMt`. Rewrite using `[dif_pos (Subalgebra.smul_mem _ hcen _), dif_pos hcen, ← LinearMap.smul_apply, ← map_smul]`. Both sides reduce to the same expression. Use `⟨Q.zO i z, Q.zO_comm i z, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx u hu`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ : x ∈ D.nd.Z i` using `(D.Z_tie i x).2 ((D.Zgood_tie i x).1 hx).1`. Use `hEig i z x (D.what₂.restRowsFiniteGroupCard : D.nd.O i) (fun PI hPI F hF => by` as an intermediate fact. Rewrite using `[hact, (eigen_action_at_good_point D Q hSer h41 h0 h1 h5 i x hZ PI hPI F hF).1 hx, map_natCast]) u hu`. Rewrite using `[this, ← algebraMap_smul (KK D.nd i) (D.what₂.restRowsFiniteGroupCard : D.nd.O i) u, map_natCast, Int.cast_natCast]`. Introduce `x hx hxg u hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `hEig i z x 0 (fun PI hPI F hF => by` as an intermediate fact. Rewrite using `[hact, (eigen_action_at_good_point D Q hSer h41 h0 h1 h5 i x hx PI hPI F hF).2 hxg, smul_zero, map_zero, zero_smul]) u hu`. Rewrite using `[this, zero_smul]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ (D : D7) (Q : PairedCharacterCondition.Pend D), GlobalTheory.Pass.EigSpan Q → GlobalTheory.Pass.CentralElt D → GlobalTheory.TypeLeaf.SerLoc D →
     SumRepresentations.Conclusion41 D → SumRepresentations.tieLab D → SumRepresentations.tie0 D → SumRepresentations.adm1 D → SumRepresentations.adm5 D → KillingConditions.CommutingEndomorphismCondition D := by

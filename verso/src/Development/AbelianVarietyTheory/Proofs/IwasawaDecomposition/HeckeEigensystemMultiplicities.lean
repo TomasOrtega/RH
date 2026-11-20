@@ -11,24 +11,24 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 namespace GlobalTheory.AutPts
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.splitPlace_outside_nonHyperspecial_of_localisation`.
+A detailed English derivation is pending.
 -/
 theorem l0 : ∀ (D : D7) (cf : CharFrame D) (C : NChoice D) (tp : TupTied D cf C) (Pl : PlSide D) (M : MtFam D) (big : D.what₂.places.Pl → Finset ℂ) (X : LocNd (lay0 D)) (T : LocTw X) (Sp : NdSpec Pl M C big X T) (i : X.nd.Loc) (w : PlE D.host) (s : SplitPlace D.host.E), SplitOut X.nd i w → IsConjPl D.host w s.w → s.v ∉ gPl D ∪ qPl D (tp.tup (D.what₂.muTw (X.nd.w i)) ⟨X.nd.j i - 1, by have := X.nd.j_range i; omega⟩) := GlobalTheory.T.splitPlace_outside_nonHyperspecial_of_localisation
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isotypic_heckeOperator_hyperspecial_acts_by_scalar`.
+A detailed English derivation is pending.
 -/
 theorem l1 : ∀ (D : D7) (μ : D.what₂.Tup) (j : ℕ) (Mr : MtReal D μ j) (B : Set (HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)))), NG.IsProdLevel Mr.J → NG.HypOutside Mr.J Mr.χ B → ∀ (S : Submodule ℂ (GAf D.host.E D.R.nV → Mr.wt.W)), NG.IsIrrRep Mr.wt.ρ S → ∀ (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)) (k : ℕ), s.v ∉ B → IsUnif D.host.E s.v ϖ → 1 ≤ k → k ≤ D.R.nV → ∃ c : ℂ, ∀ y ∈ (NG.isoTyp Mr.wt.ρ S).comap Mr.real, NG.tN Mr.J s ϖ k (Mr.real y) = c • Mr.real y := GlobalTheory.T.isotypic_heckeOperator_hyperspecial_acts_by_scalar
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.heckeMultiplicity_eq_finrank_jointEigenspace`.
+A detailed English derivation is pending.
 -/
 theorem l2a : ∀ (D : D7) (Pl : PlSide D) (M : MtFam D) (C : NChoice D) (big : D.what₂.places.Pl → Finset ℂ) (X : LocNd (lay0 D)) (T : LocTw X) (Sp : NdSpec Pl M C big X T) (j : ℕ) (w : D.what₂.places.Pl) (i : X.nd.Loc) (h : i ∈ X.nd.locs j w) (x : X.nd.X i), X.nd.mult i x = Module.finrank (FractionRing (Sp.B.Oc j w)) ↥(⨅ (v : PlE D.host) (k : ℕ) (_ : GenAt D (D.what₂.places.resChar w) (Sp.B.Qc j w) v k), Module.End.eigenspace (Sp.B.hK j w v k) (algebraMap (Sp.B.Oc j w) (FractionRing (Sp.B.Oc j w)) (Sp.phO j w i h ((X.nd.hT i v k : X.nd.X i → X.nd.O i) x)))) := GlobalTheory.T.heckeMultiplicity_eq_finrank_jointEigenspace
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.finrank_jointEigenspace_coefficientField_complex`.
+A detailed English derivation is pending.
 -/
 theorem l2b : ∀ (D : D7) (M : MtFam D) (B : NLocBase D M) (j : ℕ) (w : D.what₂.places.Pl) (μ : D.what₂.Tup) (h1 : 1 ≤ j) (h2 : j ≤ D.R.m), μ = D.what₂.muTw w → ∀ (φ : FractionRing (B.Oc j w) →+* ℂ), (∀ x, φ (B.ec j w x) = D.what₂.embLL x) → ∀ (κ : PlE D.host → ℕ → FractionRing (B.Oc j w)) (E : Submodule ℂ (D.what₂.Mt μ j)), (∀ v k, GenAt D (D.what₂.places.resChar w) (B.Qc j w) v k → ∃ (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), IsConjPl D.host v s.w ∧ IsUnif D.host.E s.v ϖ) → (∀ v k (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), GenAt D (D.what₂.places.resChar w) (B.Qc j w) v k → IsConjPl D.host v s.w → IsUnif D.host.E s.v ϖ → ∀ (c : ℂ) (f f' : GAf D.host.E D.R.nV → (M μ j h1 h2).wt.W), NG.tN (M μ j h1 h2).J s ϖ k (c • f + f') = c • NG.tN (M μ j h1 h2).J s ϖ k f + NG.tN (M μ j h1 h2).J s ϖ k f') → (∀ y, y ∈ E ↔ ∀ v k (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), GenAt D (D.what₂.places.resChar w) (B.Qc j w) v k → IsConjPl D.host v s.w → IsUnif D.host.E s.v ϖ → NG.tN (M μ j h1 h2).J s ϖ k ((M μ j h1 h2).real y) = φ (κ v k) • (M μ j h1 h2).real y) → Module.finrank (FractionRing (B.Oc j w)) ↥(⨅ (v : PlE D.host) (k : ℕ) (_ : GenAt D (D.what₂.places.resChar w) (B.Qc j w) v k), Module.End.eigenspace (B.hK j w v k) (κ v k)) = Module.finrank ℂ E := GlobalTheory.T.finrank_jointEigenspace_coefficientField_complex
 
 /- English proof (translation)
-Substitute `hμ hj` using the available equality. Conclude with `id`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mt_tr {D : D7} (M : MtFam D) (Pr : ∀ (μ : D.what₂.Tup) (j : ℕ), MtReal D μ j → Prop) {μ μ' : D.what₂.Tup}
     {j j' : ℕ} (hμ : μ = μ') (hj : j = j') (a1 : 1 ≤ j) (a2 : j ≤ D.R.m) (b1 : 1 ≤ j') (b2 : j' ≤ D.R.m) :
@@ -36,9 +36,9 @@ theorem mt_tr {D : D7} (M : MtFam D) (Pr : ∀ (μ : D.what₂.Tup) (j : ℕ), M
   subst hμ hj; exact id
 
 /- English proof (translation)
-Establish `h : i ∈ X.nd.locs (X.nd.j i) (X.nd.w i)` using `(X.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩`. Establish `hl : X.nd.l i = D.what₂.places.resChar (X.nd.w i)` using `(X.nd.w_l i).symm`. Establish `hS : v ∈ X.nd.S i ↔ v ∈ placesS D (D.what₂.places.resChar (X.nd.w i))`. Rewrite using `[X.nd.S_def, hl]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Unfold `SplitOut GenAt`. Rewrite using `[hS, Sp.Q_eq _ _ i h, hl]`. The claim follows by propositional logic.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. The claim follows by propositional logic.
 -/
 theorem genAt_iff' {D : D7} {Pl : PlSide D} {M : MtFam D} {C : NChoice D} {big : D.what₂.places.Pl → Finset ℂ}
     {X : LocNd (lay0 D)} {T : LocTw X} (Sp : NdSpec Pl M C big X T) (i : X.nd.Loc) (v : PlE D.host) (k : ℕ) :
@@ -53,27 +53,25 @@ theorem genAt_iff' {D : D7} {Pl : PlSide D} {M : MtFam D} {C : NChoice D} {big :
   tauto
 
 /- English proof (translation)
-Establish `hop0 : ∀ p, Good p → op p 0 = 0` using `fun p hp => by`. Establish `h` using `hlin p hp 1 0 0`. Rewrite `h` using `[one_smul, add_zero, one_smul]`. Conclude with `(add_eq_left.1 h.symm)`. Establish `hopadd : ∀ p, Good p → ∀ f f' : Wf, op p (f + f') = op p f + op p f'` using `fun p hp f f' => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hlin p hp 1 f f'`. Establish `hopsmul : ∀ p, Good p → ∀ (c : ℂ) (f : Wf), op p (c • f) = c • op p f` using `fun p hp c f => by`. Simplify `hlin p hp c f 0` using `[hop0 p hp]`. Set `Es : Submodule ℂ V` to `{ carrier := {y | ∀ p, Good p → op p (real y) = lam p • real y} zero_mem' := fun p hp => by simp [hop0 p hp] add_mem' := fun {a b} ha hb p hp => by`. Simplify using `only [map_add, hopadd p hp, ha p hp, hb p hp, smul_add]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use the proof step `smul_mem' := fun c a ha p hp => by`. Simplify using `only [map_smul, hopsmul p hp, ha p hp, smul_comm c (lam p)] }`. Use `show y ∈ _ ↔ y ∈ Es`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `(iSup₂_le fun P hP => ?_ : (⨆ P ∈ {P | Q P}, typ P) ≤ Es) hy` and prove the remaining obligations. Introduce `z hz p hp`. Conclude with `(hQ P).1 hP p hp z hz`. Introduce `hy`. Establish `hy' : y ∈ ⨆ P, typ P` using `by rw [htop]; trivial`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Take `⟨f, hf, hsum⟩` from `(Submodule.mem_iSup_iff_exists_finsupp typ y).1 hy'`. Rewrite using `[← hsum]`. Use `Submodule.finsuppSum_mem _ _ _ _ fun P hPs => ?_` and prove the remaining obligations. Distinguish the cases in `h0 : f P = 0`. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Submodule.zero_mem _`. Use `(le_iSup₂ (f := fun P (_ : P ∈ {P | Q P}) => typ P) P ?_) (hf P)` and prove the remaining obligations. Use `show Q P`. Use `(hQ P).2 fun p hp => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `hsc P p hp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `choose cc hcc using fun P' => hsc P' p hp`. Establish `hz : ∑ P' ∈ f.support, (cc P' - lam p) • f P' = 0`. Apply `hreal` to reduce the goal to its premises. Rewrite using `[map_zero, map_sum]`. Establish `e1 : ∀ P' ∈ f.support, real ((cc P' - lam p) • f P') = op p (real (f P')) - lam p • real (f P')`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `P' _`. Rewrite using `[map_smul, hcc P' _ (hf P'), sub_smul]`. Rewrite using `[Finset.sum_congr rfl e1, Finset.sum_sub_distrib, ← Finset.smul_sum]`. Establish `e2 : ∀ s : Finset ι, op p (real (∑ P' ∈ s, f P')) = ∑ P' ∈ s, op p (real (f P'))`. Introduce `s`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [hop0 p hp]`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, map_add, hopadd p hp, ih]`. Establish `e3 : (∑ P' ∈ f.support, f P') = y` using `hsum`. Establish `e4 : ∑ P' ∈ f.support, op p (real (f P')) = op p (real y)` using `by rw [← e2, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `e5 : ∑ P' ∈ f.support, real (f P') = real y` using `by rw [← e3, map_sum]`. Rewrite using `[e4, e5, hy p hp, sub_self]`. Establish `hz'` using `((iSupIndep_iff_finsetSum_eq_zero_imp_eq_zero typ).1 hind) f.support (fun P' => (cc P' - lam p) • f P') (fun P' _ => Submodule.smul_mem _ _ (hf P')) hz P (Finsupp.mem_support_iff.2 h0)`. Establish `hcl : cc P = lam p`. Break down `smul_eq_zero.1 hz' with h | h` into its components or cases.
-
-Conclude with `sub_eq_zero.1 h`. Conclude with `absurd h h0`. Introduce `z hz`. Rewrite using `[hcc P z hz, hcl]`.
+A detailed English derivation is pending.
 -/
 theorem mem_iSup_iff {V Wf : Type} [AddCommGroup V] [Module ℂ V] [AddCommGroup Wf] [Module ℂ Wf] {ι : Type}
     [Finite ι] (real : V →ₗ[ℂ] Wf) (hreal : Function.Injective real) (typ : ι → Submodule ℂ V)
@@ -151,37 +149,33 @@ set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 400000 in
 
 /- English proof (translation)
-Introduce `D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI hstar hE hsp hCh big X T Sp i ι _ F irr hinj hsurj hne hind htop ptV hpt`. Establish `hmem : i ∈ X.nd.locs (X.nd.j i) (X.nd.w i)` using `(X.nd.locs_mem _ _ i).2 ⟨rfl, rfl⟩`. Establish `hj1 : X.nd.j i - 1 + 1 = X.nd.j i` using `by have := X.nd.j_range i; omega`. Set `jf : Fin D.R.m` to `⟨X.nd.j i - 1, by have := X.nd.j_range i; omega⟩`. Set `B` to `gPl D ∪ qPl D (tp.tup (D.what₂.muTw (X.nd.w i)) jf)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hprod : NG.IsProdLevel (mlX M X i).J` using `mt_tr M (fun _ _ Mr => NG.IsProdLevel Mr.J) (X.nd.mu_w i).symm hj1 _ _ _ _ (hMI.prod (X.nd.w i) jf)`. Establish `hhyp : NG.HypOutside (mlX M X i).J (mlX M X i).χ B` using `mt_tr M (fun _ _ Mr => NG.HypOutside Mr.J Mr.χ B) (X.nd.mu_w i).symm hj1 _ _ _ _ (hMI.hyp (X.nd.w i) jf)`. Establish `hbad : ∀ w (s : SplitPlace D.host.E), SplitOut X.nd i w → IsConjPl D.host w s.w → s.v ∉ B` using `fun w s hw hc => l0 D cf C tp A.pl M big X T Sp i w s hw hc`. Establish `hlin : ∀ w k (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), SplitOut X.nd i w → IsConjPl D.host w s.w → IsUnif D.host.E s.v ϖ → ∀ (c : ℂ) (f f' : GAf D.host.E D.R.nV → (mlX M X i).wt.W), NG.tN (mlX M X i).J s ϖ k (c • f + f') = c • NG.tN (mlX M …`. Introduce `w k s ϖ hw hc hu c f f'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfin` using `GlobalTheory.T.finite_cosets_heckeSet_at_splitPlace_outside_level D.host.E D.R.nV (mlX M X i).J (mlX M X i).χ B hhyp s ϖ k (hbad w s hw hc) hu`. Simplify using `only [NG.tN]`. Rewrite using `[GlobalTheory.PtLocalEig.heckeD_add _ _ _ _ hfin c f f', smul_add, smul_comm]`. Set `Par` to `PlE D.host × ℕ × (Σ s : SplitPlace D.host.E, s.v.adicCompletion (maximalRealSubfield D.host.E))`. Set `Good : Par → Prop` to `fun p => SplitOut X.nd i p.1 ∧ IsConjPl D.host p.1 p.2.2.1.w ∧ IsUnif D.host.E p.2.2.1.v p.2.2.2 ∧ 1 ≤ p.2.1 ∧ p.2.1 ≤ D.R.nV`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `op : Par → (GAf D.host.E D.R.nV → (mlX M X i).wt.W) → (GAf D.host.E D.R.nV → (mlX M X i).wt.W)` to `fun p => NG.tN (mlX M X i).J p.2.2.1 p.2.2.2 p.2.1`. Set `io : X.nd.O i →+* ℂ` to `((qCast (X.nd.w_l i) (A.pl.ι (X.nd.w i))).toRingHom.comp (Sp.iq i)).comp (algebraMap (X.nd.O i) (FractionRing (X.nd.O i)))`. Set `lam : X.nd.X i → Par → ℂ` to `fun x p => io ((X.nd.hT i p.1 p.2.1 : X.nd.X i → X.nd.O i) x)`. Establish `hdec : ∀ x y, y ∈ (⨆ P ∈ {P | ptV P = some x}, (NG.isoTyp (mlX M X i).wt.ρ (F P)).comap (mlX M X i).real) ↔ ∀ p, Good p → op p ((mlX M X i).real y) = lam x p • (mlX M X i).real y`. Introduce `x y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mem_iSup_iff (mlX M X i).real (mlX M X i).real_inj _ hind htop Good op (fun p hp => hlin _ _ _ _ hp.1 hp.2.1 hp.2.2.1) (fun P p hp => ?_) (lam x) (fun P => ptV P = some x) (fun P => ?_) y` and prove the remaining obligations. Conclude with `l1 D (X.nd.mu i) (X.nd.j i) (mlX M X i) B hprod hhyp (F P) (irr P) p.2.2.1 p.2.2.2 p.2.1 (hbad _ _ hp.1 hp.2.1) hp.2.2.1 hp.2.2.2.1 hp.2.2.2.2`. Rewrite using `[hpt P x]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `h ⟨w, k, s, ϖ⟩ ⟨hw, hc, hu, hk1, hk2⟩ z hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h w k s ϖ hw hc hu hk1 hk2 z hz`. Introduce `h w k s ϖ hw hc hu hk1 hk2 z hz`. Conclude with `h ⟨w, k, s, ϖ⟩ ⟨hw, hc, hu, hk1, hk2⟩ z hz`. Establish `hinjC : Function.Injective (Sp.iotaC (X.nd.j i) (X.nd.w i))`. Introduce `a b hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨a', rfl⟩` from `(Sp.phO _ _ i hmem).surjective a`. Take `⟨b', rfl⟩` from `(Sp.phO _ _ i hmem).surjective b`. Rewrite `hab` using `[← Sp.iotaC_coh, ← Sp.iotaC_coh]`. Establish `hio : Function.Injective io` using `(qCast (X.nd.w_l i) (A.pl.ι (X.nd.w i))).injective.comp ((Sp.iq i).injective.comp (IsFractionRing.injective (X.nd.O i) (FractionRing (X.nd.O i))))`. Rewrite using `[hio hab]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `φ : FractionRing (Sp.B.Oc (X.nd.j i) (X.nd.w i)) →+* ℂ` to `IsFractionRing.lift hinjC`. Establish `hφalg : ∀ z, φ (algebraMap _ _ z) = Sp.iotaC _ _ z` using `fun z => IsFractionRing.lift_algebraMap hinjC z`. Establish `hφK : φ.comp (Sp.phK _ _ i hmem).toRingHom = (qCast (X.nd.w_l i) (A.pl.ι (X.nd.w i))).toRingHom.comp (Sp.iq i)`. Apply `IsLocalization.ringHom_ext (nonZeroDivisors (X.nd.O i))` to reduce the goal to its premises. Use extensionality with `z`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, Sp.phK_alg, hφalg]`. Rewrite using `[← Sp.iotaC_coh]`. Establish `hφ : ∀ y, φ (Sp.B.ec _ _ y) = D.what₂.embLL y`. Introduce `y`. Rewrite using `[← Sp.phK_emb _ _ i hmem y, ← Sp.iq_LL i y]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun f : FractionRing (X.nd.O i) →+* ℂ => f (X.nd.embK i y)) hφK`. Establish `hdim : ∀ x, X.nd.mult i x = Module.finrank ℂ ↥(⨆ P ∈ {P | ptV P = some x}, (NG.isoTyp (mlX M X i).wt.ρ (F P)).comap (mlX M X i).real)`. Introduce `x`. Rewrite using `[l2a D A.pl M C big X T Sp (X.nd.j i) (X.nd.w i) i hmem x]`. Use `l2b D M Sp.B (X.nd.j i) (X.nd.w i) (X.nd.mu i) (X.nd.j_range i).1 (X.nd.j_range i).2 (X.nd.mu_w i) φ hφ (fun v k => algebraMap _ _ (Sp.phO _ _ i hmem ((X.nd.hT i v k : X.nd.X i → X.nd.O i) x))) _ ?_ ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `v k hvk`. Conclude with `GlobalTheory.T.splitEx_every_datum D v hvk.1`. Introduce `v k s ϖ hvk hc hu c f f'`. Conclude with `hlin v k s ϖ ((genAt_iff' Sp i v k).1 hvk).1 hc hu c f f'`. Introduce `y`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdec x y]`. Prove the components needed by the constructor for the conclusion. Introduce `h v k s ϖ hvk hc hu`. Take `⟨hv, hk1, hk2⟩` from `(genAt_iff' Sp i v k).1 hvk`. Establish `e` using `h ⟨v, k, s, ϖ⟩ ⟨hv, hc, hu, hk1, hk2⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite using `[hφalg, ← Sp.iotaC_coh]`. Conclude with `e`. Introduce and unpack `h ⟨v, k, s, ϖ⟩ ⟨hv, hc, hu, hk1, hk2⟩`. Establish `e` using `h v k s ϖ ((genAt_iff' Sp i v k).2 ⟨hv, hk1, hk2⟩) hc hu`. Rewrite `e` using `[hφalg, ← Sp.iotaC_coh]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `e`. Use `⟨fun x => ?_, hdim⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hno`. Use `push_neg at hno`. Establish `hbot : (⨆ P ∈ {P | ptV P = some x}, (NG.isoTyp (mlX M X i).wt.ρ (F P)).comap (mlX M X i).real) = ⊥` using `eq_bot_iff.2 (iSup₂_le fun P hP => absurd hP (hno P))`.
-
-Establish `h0` using `hdim x`. Rewrite `h0` using `[hbot, finrank_bot]`. Establish `hne0` using `X.nd.eig_ne i x`. Apply `hne0` to reduce the goal to its premises. Establish `: Module.Finite (FractionRing (X.nd.O i)) (TensorProduct (X.nd.O i) (FractionRing (X.nd.O i)) (X.nd.Mt i))` using `inferInstance`.
-
-Conclude with `Submodule.finrank_eq_zero.1 h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem pts : ∀ (D : D7) (cf : CharFrame D) (jE : D.host.E →+* Qb) (A : SideA D cf jE) (low : Finset ℕ) (Pq : HeightOneSpectrum (𝓞 (maximalRealSubfield D.host.E)) → PlE D.host) (S : RatDat D.ntw) (hL : ∀ j, ℕ → PlE D.host → Module.End D.what₂.LL (S.WL j)) (eig : ℕ → D.what₂.FT → ℕ → PlE D.host → ↥D.LL0) (θ : ∀ kk : Fin 2, Multiplicative (ZMod (D.host.g kk)) →* (↥D.LL0)ˣ) (Bs : SideB D cf A.row low Pq S hL eig θ) (M : MtFam D) (C : NChoice D) (tp : TupTied D cf C) (hCS : ChoiceSide D cf M Bs.exp C tp) (hMI : MtInput D M tp.tup C.Q) (hstar : ∀ x : D.LL0, star (x : D.what₂.LL) ∈ D.LL0) (hE : ∀ j g, ∃ z : ℤ, eExp D j g = z) (hsp : ∀ v, v ∈ placesOver D.host.E D.host.pde ∨ v ∈ placesOver D.host.E D.host.pde' → IsSplitPl D.host v) (hCh : GlobalTheory.RowTie.ChebSplit D.nd) (big : D.what₂.places.Pl → Finset ℂ) (X : LocNd (lay0 D)) (T : LocTw X) (Sp : NdSpec A.pl M C big X T) (i : X.nd.Loc) (ι : Type) [Finite ι] (F : ι → Submodule ℂ (GAf D.host.E D.R.nV → (mlX M X i).wt.W)) (irr : ∀ P, NG.IsIrrRep (mlX M X i).wt.ρ (F P)) (hinj : ∀ P P', NG.IsoRep (F P) (F P') → P = P') (hsurj : ∀ S', NG.IsIrrRep (mlX M X i).wt.ρ S' → (NG.isoTyp (mlX M X i).wt.ρ S').comap (mlX M X i).real ≠ ⊥ → ∃ P, NG.IsoRep (F P) S') (hne : ∀ P, (NG.isoTyp (mlX M X i).wt.ρ (F P)).comap (mlX M X i).real ≠ ⊥) (hind : iSupIndep (fun P => (NG.isoTyp (mlX M X i).wt.ρ (F P)).comap (mlX M X i).real)) (htop : ⨆ P, (NG.isoTyp (mlX M X i).wt.ρ (F P)).comap (mlX M X i).real = ⊤) (ptV : ι → Option (X.nd.X i)), (∀ P x, ptV P = some x ↔ (∀ (w : PlE D.host) (k : ℕ) (s : SplitPlace D.host.E) (ϖ : s.v.adicCompletion (maximalRealSubfield D.host.E)), SplitOut X.nd i w → IsConjPl D.host w s.w → IsUnif D.host.E s.v ϖ → 1 ≤ k → k ≤ D.R.nV → ∀ y ∈ ((NG.isoTyp (mlX M X i).wt.ρ (F P)).comap (mlX M X i).real), NG.tN (mlX M X i).J s ϖ k ((mlX M X i).real y) = (((qCast (X.nd.w_l i) (A.pl.ι (X.nd.w i))).toRingHom.comp (Sp.iq i)).comp (algebraMap (X.nd.O i) (FractionRing (X.nd.O i)))) ((X.nd.hT i w k : X.nd.X i → X.nd.O i) x) • (mlX M X i).real y)) → (∀ x, ∃ P, ptV P = some x) ∧ ∀ x, X.nd.mult i x = Module.finrank ℂ ↥(⨆ P ∈ {P | ptV P = some x}, ((NG.isoTyp (mlX M X i).wt.ρ (F P)).comap (mlX M X i).real)) := by
   intro D cf jE A low Pq S hL eig θ Bs M C tp hCS hMI hstar hE hsp hCh big X T Sp i ι _ F irr hinj hsurj hne hind

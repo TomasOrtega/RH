@@ -10,11 +10,9 @@ namespace GlobalTheory.CompanionTheory.KmVol
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use `haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k`. Establish `hO : IsCompact ((𝒪[k] : Subring k) : Set k)` using `IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Establish `hM : IsCompact {A : Matrix (Fin N) (Fin N) k | ∀ i j, A i j ∈ 𝒪[k]}`. Establish `h` using `isCompact_univ_pi fun _ : Fin N => isCompact_univ_pi fun _ : Fin N => hO`. Establish `e : {A : Matrix (Fin N) (Fin N) k | ∀ i j, A i j ∈ 𝒪[k]} = Set.univ.pi fun _ : Fin N => Set.univ.pi fun _ : Fin N => ((𝒪[k] : Subring k) : Set k)` using `Set.ext fun A => ⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e ▸ h`. Establish `h` using `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin N) (Fin N) k)).isCompact_preimage (hM.prod (hM.image MulOpposite.continuous_op))`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `⟨fun h => ⟨h.1, _, h.2, rfl⟩, fun ⟨h1, A, hA, e⟩ => ⟨h1, fun i j => by`.
-
-Establish `: A = ((g⁻¹ : GL (Fin N) k) : Matrix (Fin N) (Fin N) k)` using `MulOpposite.op_injective e`. Conclude with `this ▸ hA i j⟩⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_integralGL (N : ℕ) :
     IsCompact {g : GL (Fin N) k | (∀ i j, (g : Matrix (Fin N) (Fin N) k) i j ∈ 𝒪[k]) ∧
@@ -36,7 +34,7 @@ theorem isCompact_integralGL (N : ℕ) :
     exact this ▸ hA i j⟩⟩
 
 /- English proof (translation)
-Establish `key : ∀ (h : GL (Fin N) 𝒪[k]) (i j : Fin N), ((Matrix.GeneralLinearGroup.map (n` using `Fin N) (algebraMap 𝒪[k] k) h : GL (Fin N) k) : Matrix (Fin N) (Fin N) k) i j ∈ 𝒪[k] := fun h i j => ((h : Matrix (Fin N) (Fin N) 𝒪[k]) i j).2`. Introduce and unpack `g ⟨h, -, rfl⟩`. Use `⟨key h, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[← map_inv]`. Conclude with `key h⁻¹ i j`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Km_subset_integralGL (N m : ℕ) :
     (Zls.Km k N m : Set (GL (Fin N) k)) ⊆
@@ -52,7 +50,7 @@ theorem Km_subset_integralGL (N m : ℕ) :
   exact key h⁻¹ i j
 
 /- English proof (translation)
-Introduce `k _ _ _ _ N _ _ μ hμ m`. Use `lt_of_le_of_lt (measure_mono (Set.image_mono (Km_subset_integralGL N m))) ?_` and prove the remaining obligations. Conclude with `((isCompact_integralGL N).image QuotientGroup.continuous_mk).measure_lt_top`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem measure_image_Km_lt_top : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (N : ℕ) [MeasurableSpace (AdGL k N)] [BorelSpace (AdGL k N)] (μ : MeasureTheory.Measure (AdGL k N)), μ.IsHaarMeasure → ∀ m : ℕ, μ ((QuotientGroup.mk : GL (Fin N) k → AdGL k N) '' (Zls.Km k N m : Set (GL (Fin N) k))) < ⊤ := by
   intro k _ _ _ _ N _ _ μ hμ m

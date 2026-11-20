@@ -21,7 +21,7 @@ def pairSpan (V : HSp D) (φ c : GA D V → ℂ) : Submodule ℂ ((GA D V → �
     p = (l.foldr lineDer φ, l.foldr lineDer c)}
 
 /- English proof (translation)
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Conclude with `⟨Submodule.subset_span ⟨l, hl, rfl⟩, Submodule.subset_span ⟨l, hl, rfl⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem pairSpan_le (φ c : GA D V → ℂ) : pairSpan V φ c ≤ (derSpan V φ).prod (derSpan V c) := by
   refine Submodule.span_le.2 ?_
@@ -29,13 +29,11 @@ theorem pairSpan_le (φ c : GA D V → ℂ) : pairSpan V φ c ≤ (derSpan V φ)
   exact ⟨Submodule.subset_span ⟨l, hl, rfl⟩, Submodule.subset_span ⟨l, hl, rfl⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨oneP θ V τ X :: l, List.forall_mem_cons.2 ⟨isRealLine_oneP hθ V hX, hl⟩, rfl⟩`. Consider the case `zero`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Establish an intermediate fact.
 
-Use `Rder_smul (θ := θ) 0 (0 : GA D V → ℂ) τ X` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Simplify using `only [Prod.fst_zero, Prod.snd_zero, this]`. Conclude with `zero_mem (pairSpan V φ c)`. Consider the case `add x y hx hy ihx ihy`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `pairSpan_le φ c hx`. Establish `h2` using `pairSpan_le φ c hy`. Simplify using `only [Prod.fst_add, Prod.snd_add]`. Rewrite using `[Rder_add (derSpan_le hθ hφ h1.1) (derSpan_le hθ hφ h2.1) hX, Rder_add (derSpan_le hθ hc h1.2) (derSpan_le hθ hc h2.2) hX]`. Conclude with `add_mem ihx ihy`.
-
-Consider the case `smul a x _ ih`. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Rder_smul]`. Conclude with `Submodule.smul_mem _ a ih`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Rder_mem_pairSpan (hθ : IsInfFam θ) {φ c : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) (hc : c ∈ SmFun θ V) {τ : D.what₂.Tau}
     {X : Matrix (Fin V.rank) (Fin V.rank) ℂ} (hX : X ∈ lieAt V τ) {p : (GA D V → ℂ) × (GA D V → ℂ)}
@@ -61,7 +59,7 @@ theorem Rder_mem_pairSpan (hθ : IsInfFam θ) {φ c : GA D V → ℂ} (hφ : φ 
     exact Submodule.smul_mem _ a ih
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `GlobalTheory.SmoothAutCheck.parts_mem V τ Z`. Conclude with `add_mem (Rder_mem_pairSpan hθ hφ hc h1 hp) (Submodule.smul_mem _ Complex.I (Rder_mem_pairSpan hθ hφ hc h2 hp))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem RderC_mem_pairSpan (hθ : IsInfFam θ) {φ c : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) (hc : c ∈ SmFun θ V) (τ : D.what₂.Tau)
     (Z : Matrix (Fin V.rank) (Fin V.rank) ℂ) {p : (GA D V → ℂ) × (GA D V → ℂ)}
@@ -71,7 +69,7 @@ theorem RderC_mem_pairSpan (hθ : IsInfFam θ) {φ c : GA D V → ℂ} (hφ : φ
     (Submodule.smul_mem _ Complex.I (Rder_mem_pairSpan hθ hφ hc h2 hp))
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => exact Submodule.subset_span ⟨[], by simp, rfl⟩`. Consider the case `cons A L ih`. Take `⟨Z, rfl⟩` from `hL A List.mem_cons_self`. Conclude with `RderC_mem_pairSpan hθ hφ hc τ Z (ih fun B hB => hL B (List.mem_cons_of_mem _ hB))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem word_mem_pairSpan (hθ : IsInfFam θ) {φ c : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) (hc : c ∈ SmFun θ V) (τ : D.what₂.Tau)
     (L : List ((GA D V → ℂ) → GA D V → ℂ)) (hL : ∀ A ∈ L, ∃ Z, A = RderC θ V τ Z) :
@@ -83,9 +81,9 @@ theorem word_mem_pairSpan (hθ : IsInfFam θ) {φ c : GA D V → ℂ} (hφ : φ 
     exact RderC_mem_pairSpan hθ hφ hc τ Z (ih fun B hB => hL B (List.mem_cons_of_mem _ hB))
 
 /- English proof (translation)
-Establish `e : (gelf θ V τ k φ, gelf θ V τ k c) = ∑ idx : Fin (k + 1) → Fin V.rank, ((List.ofFn fun a : Fin (k + 1) => RderC θ V τ (Matrix.single (idx a) (idx (a + 1)) 1)).foldr (fun f acc => f acc) φ, (List.ofFn fun a : Fin (k + 1) => RderC θ V τ (Matrix.single (idx a) (idx (a + 1)) 1)).fo …`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Prod.fst_sum]`. Both sides reduce to the same expression. Rewrite using `[Prod.snd_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Use `Submodule.sum_mem _ fun idx _ => word_mem_pairSpan hθ hφ hc τ _ fun A hA => ?_` and prove the remaining obligations. Take `⟨a, rfl⟩` from `(List.mem_ofFn' _ _).1 hA`. Conclude with `⟨_, rfl⟩`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gelf_mem_pairSpan (hθ : IsInfFam θ) {φ c : GA D V → ℂ} (hφ : φ ∈ SmFun θ V) (hc : c ∈ SmFun θ V) (τ : D.what₂.Tau)
     (k : ℕ) : (gelf θ V τ k φ, gelf θ V τ k c) ∈ pairSpan V φ c := by
@@ -103,15 +101,13 @@ theorem gelf_mem_pairSpan (hθ : IsInfFam θ) {φ c : GA D V → ℂ} (hφ : φ 
 variable {m : ℕ} {X Y : Matrix (Fin V.rank) (Fin m) D.host.E}
 
 /- English proof (translation)
-Establish `hJ : IsHermND D.sp.cm.sig V.gram` using `⟨fun i j => V.herm.eq (V.frame j) (V.frame i), (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.gram_det_isUnit V).ne_zero⟩`. Proceed by induction on `hp using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Use `⟨?_, h l hl μ 𝓕 hμ h𝓕 h1 g⟩` and prove the remaining obligations.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC, hcov⟩` from `GlobalTheory.T.cocompact_standardParabolicUnipotentRadical_wittFrame _ _ _ (GlobalTheory.AdelicU.isCMExt_host D) _ _ hJ _ X Y hW T`. Establish `hcont` using `GlobalTheory.T.continuous_iteratedRealLineDeriv_unitaryAdelic _ _ _ (GlobalTheory.AdelicU.isCMExt_host D) _ _ hJ φ hφ.level hφ.cont hφ.smooth l hl`. Establish `hleft` using `GlobalTheory.UAut.ConstAut.leftInv_foldr (Γ := (GQ V ⊓ unip D.sp.cm.sig V.gram X T : Subgroup (GA D V))) (φ := φ) (fun γ hγ x => hφ.left γ hγ x) l`. Use `GlobalTheory.integrableOn_fundamentalDomain_of_cocompact _ _ C hC hcov μ hμ 𝓕 h𝓕 _ (hcont.comp (continuous_subtype_val.mul continuous_const)) fun γ hγ u => ?_` and prove the remaining obligations. Simplify using `only [Subgroup.coe_mul, mul_assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `hleft γ ⟨Subgroup.mem_subgroupOf.1 hγ, γ.2⟩ _`. Consider the case `zero => exact ⟨integrableOn_zero, by simp⟩`. Consider the case `add x y _ _ ihx ihy`. Use `⟨ihx.1.add ihy.1, ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.fst_add, Prod.snd_add, Pi.add_apply]`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ihx.2, ihy.2]`. Conclude with `(integral_add ihx.1 ihy.1).symm`. Consider the case `smul a x _ ih`. Use `⟨ih.1.const_mul a, ?_⟩` and prove the remaining obligations. Simplify using `only [Prod.smul_fst, Prod.smul_snd, Pi.smul_apply, smul_eq_mul]`.
-
-Rewrite using `[ih.2]`. Conclude with `(integral_const_mul a _).symm`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_of_mem_pairSpan (hW : IsWittFrame D.sp.cm.sig V.gram X Y) (T : Finset (Fin m)) {φ c : GA D V → ℂ}
     (hφ : IsSmModOn D.sp.cm.sig V.gram ((GQ V ⊓ unip D.sp.cm.sig V.gram X T : Subgroup (GA D V)) : Set (GA D V)) φ)
@@ -149,7 +145,7 @@ theorem good_of_mem_pairSpan (hW : IsWittFrame D.sp.cm.sig V.gram X Y) (T : Fins
     exact (integral_const_mul a _).symm
 
 /- English proof (translation)
-Introduce `D θ hθ V m X Y hW T φ c hφ hc h τ k μ 𝓕 hμ h𝓕 h1 g`. Establish `sφ : GlobalTheory.UAut.IsSm D.sp.cm.sig V.gram φ` using `hφ.smooth`. Conclude with `(good_of_mem_pairSpan hW T hφ h μ 𝓕 hμ h𝓕 h1 g (gelf_mem_pairSpan hθ (mem_smFun_of_isSm hθ sφ) (mem_smFun_of_isSm hθ hc) τ k)).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isConstAlong_gelf : ∀ (D : D7) (θ : D.what₂.Tau → (Ainf D.host.F ⊗[D.host.F] D.host.E →+* ℂ)), IsInfFam θ → ∀ (V : HSp D) (m : ℕ) (X Y : Matrix (Fin V.rank) (Fin m) D.host.E), GlobalTheory.SiegelSet.IsWittFrame D.sp.cm.sig V.gram X Y → ∀ (T : Finset (Fin m)) (φ c : GA D V → ℂ), IsSmModOn D.sp.cm.sig V.gram ((GQ V ⊓ unip D.sp.cm.sig V.gram X T : Subgroup (GA D V)) : Set (GA D V)) φ → GlobalTheory.UAut.IsSm D.sp.cm.sig V.gram c → (∀ l : List (ℝ → GA D V), (∀ γ ∈ l, GlobalTheory.SiegelSet.IsRealLine D.sp.cm.sig V.gram γ) → IsConstAlong D.sp.cm.sig V.gram X T (l.foldr GlobalTheory.SiegelSet.lineDer φ) (l.foldr GlobalTheory.SiegelSet.lineDer c)) → ∀ (τ : D.what₂.Tau) (k : ℕ), IsConstAlong D.sp.cm.sig V.gram X T (gelf θ V τ k φ) (gelf θ V τ k c) := by
   intro D θ hθ V m X Y hW T φ c hφ hc h τ k μ 𝓕 hμ h𝓕 h1 g

@@ -20,7 +20,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.TriFrame
 
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_right (valF_mul_inv hw u)`.
+A detailed English derivation is pending.
 -/
 theorem valF_inv {X : Scheme.{0}} {U : X.Opens} (u : Γ(X, U)ˣ) {F : Type} [Field F] {w : Sp F ⟶ X} (hw : ⊤ ≤ w ⁻¹ᵁ U) :
     valF w U (u⁻¹).val = (valF w U u.val)⁻¹ := eq_inv_of_mul_eq_one_right (valF_mul_inv hw u)
@@ -39,7 +39,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
 omit [IsDiscreteValuationRing (Z.i.c.V W)] in
 
 /- English proof (translation)
-Rewrite using `[valF_inv (M.r a i') fun q hq => ⟨(hw hq).1, (hw hq).2.2⟩, valF_inv (M.L.g i i') fun q hq => (hw hq).2, valF_inv (M.r a i) fun q hq => ⟨(hw hq).1, (hw hq).2.1⟩, M.trans k w a i i' hw, mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem trans_dual {b : Bool} {st : ((E →+* ℂ) × ℕ) ⊕ ℕ} {x : Letter Dw} (M : LineModel Z b st x) (a : Fin Z.m) (k : Type)
     [Field k] (w : Sp k ⟶ Z.X) (i i' : Fin M.L.n) (hw : ⊤ ≤ w ⁻¹ᵁ ((Z.U a).1 ⊓ (M.L.U i ⊓ M.L.U i'))) :
@@ -50,11 +50,11 @@ theorem trans_dual {b : Bool} {st : ((E →+* ℂ) × ℕ) ⊕ ℕ} {x : Letter 
 include hp hW hu hB hF hF'
 
 /- English proof (translation)
-Use `(exists_chart c f).elim fun a ha => ?_` and prove the remaining obligations. Use `(exists_flagPair ha ψ (h'.frame a) (h.frame a) (fun i => (pullLB _ _).isLB) (fun i => (pullLB _ _).isLB) (fun i => isGenOn_pullFn _ fun k _ w => (M' i).trans k w a) (fun i => isGenOn_pullFn _ fun k _ w => (M i).trans k w a) (tri_lie hp hW hB M' ha hF h hN) (tri_lie hp hW hB M ha …` and prove the remaining obligations. Use `⟨symmPair Q, fun i => ⟨firstChernClassTateTwist_pullback c f _ _ (hQ i).2.1, ?_⟩⟩` and prove the remaining obligations. Establish `e` using `(hQ i).2.2 _ (isRatio_pull (Z := nmodel Z) c f (NModel.GenIso.symm (u i)) ((M' i).r a) ((M i).r a) fun k _ w j j' h₁ h₂ => by`. Establish `e₁` using `hu i k w a j' j fun q hq => ⟨(h₂ hq).1, (h₂ hq).2.2, (h₂ hq).2.1⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h₃ : ⊤ ≤ w ⁻¹ᵁ ((nmodel Z).gen ⊓ ((M i).L.U j' ⊓ (M' i).L.U j))` using `fun q hq => ⟨h₁ hq, (h₂ hq).2.2, (h₂ hq).2.1⟩`. Establish `h₄ : ⊤ ≤ w ⁻¹ᵁ ((nmodel Z).gen ⊓ ((M' i).L.U j ⊓ (M i).L.U j'))` using `fun q hq => ⟨h₁ hq, (h₂ hq).2⟩`. Establish `e₂` using `valF_mul_inv h₃ ((u i).u j' j)`. Use `(congrArg (· * _) (valF_restrict _ h₄ _)).trans ?_` and prove the remaining obligations. Rewrite using `[← e₁, ← _root_.mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(congrArg (· * _) ((_root_.mul_comm _ _).trans e₂)).trans (_root_.one_mul _))`. Rewrite `e` using `[VertDiv.cls_pull, ← NModel.vRes_cls]`. Rewrite using `[cls_div_symmPair, e, ← map_neg, ← map_neg]`. Conclude with `congrArg _ (congrArg _ (neg_eq_iff_eq_neg.1 (NModel.GenIso.div_symm _ _ _).symm))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pair_lie (hN : StepNorms Dw p st x) (h' : IsLat Z (f.f ≫ (nmodel Z).compι c) x false false F' s)
     (h : IsLat Z (f.f ≫ (nmodel Z).compι c) x false true F fun a i => ψ.app _ (s a i)) :
@@ -83,11 +83,11 @@ theorem exists_pair_lie (hN : StepNorms Dw p st x) (h' : IsLat Z (f.f ≫ (nmode
   exact congrArg _ (congrArg _ (neg_eq_iff_eq_neg.1 (NModel.GenIso.div_symm _ _ _).symm))
 
 /- English proof (translation)
-Use `(exists_chart c f).elim fun a ha => ?_` and prove the remaining obligations. Use `(exists_flagPair ha ψ (h'.frame a) (h.frame a) (fun i => (pullLB _ _).isLB) (fun i => (pullLB _ _).isLB) (fun i => isGenOn_pullFn (L := (M i).L.dual) _ (trans_dual (M i) a)) (fun i => isGenOn_pullFn (L := (M' i).L.dual) _ (trans_dual (M' i) a)) (tri_dual hp hW hB M ha hF h hN) (t …` and prove the remaining obligations. Use `⟨Q, fun i => ⟨firstChernClassTateTwist_pullback c f _ _ (hQ i).1, ?_⟩⟩` and prove the remaining obligations. Establish `e` using `(hQ i).2.2 _ (isRatio_pull (Z := nmodel Z) c f (L := (M i).L.dual) (L' := (M' i).L.dual) (NModel.GenIso.dual (u i)) (fun k => ((M i).r a k)⁻¹) (fun k => ((M' i).r a k)⁻¹) fun k _ w j j' h₁ h₂ => by`. Establish `e₁` using `hu i k w a j j' h₂`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₂` using `valF_inv ((u i).u j j') (w := w) fun q hq => ⟨h₁ hq, (h₂ hq).2⟩`. Establish `e₃` using `valF_inv ((M i).r a j) (w := w) fun q hq => ⟨(h₂ hq).1, (h₂ hq).2.1⟩`. Establish `e₄` using `valF_inv ((M' i).r a j') (w := w) fun q hq => ⟨(h₂ hq).1, (h₂ hq).2.2⟩`. Use `(congrArg₂ (· * ·) e₂ e₃).trans (Eq.trans ?_ e₄.symm)` and prove the remaining obligations. Rewrite using `[← e₁, mul_inv])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[VertDiv.cls_pull, ← NModel.vRes_cls]`. Conclude with `e.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pair_dual (hN : StepNorms Dw p (fun i => st i.rev) fun i => x i.rev)
     (h' : IsLat Z (f.f ≫ (nmodel Z).compι c) x true true F' s)
@@ -121,7 +121,7 @@ variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {p : ℕ} 
   {W : ValuationSubring ℂ} {hW : (p : ℂ) ∈ W.nonunits} (z : AdmAt S κ hp hW)
 
 /- English proof (translation)
-Introduce `_ _ _ _ h _ hN c _ f hB _ P hP` and use `haveI := isDiscreteValuationRing_V z.Z.i.c hp hW haveI := P.iso hP.2.elim fun _ hs => (exists_pair_lie hp hW _ _ _ (fun i => z.isGenId_genId hp hW (h i)) c f hB (hP.1 ▸ P.vb) (hP.1 ▸ P.vb') P.ψ hN hs.1 hs.2).imp fun _ hQ i => ⟨(hQ i).1, congrArg Vert.Model.toQ (hQ i).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem readsLie : ReadsLie z := fun _ _ _ _ h _ hN c _ f hB _ P hP =>
   haveI := isDiscreteValuationRing_V z.Z.i.c hp hW
@@ -130,7 +130,7 @@ theorem readsLie : ReadsLie z := fun _ _ _ _ h _ hN c _ f hB _ P hP =>
     (hP.1 ▸ P.vb') P.ψ hN hs.1 hs.2).imp fun _ hQ i => ⟨(hQ i).1, congrArg Vert.Model.toQ (hQ i).2⟩
 
 /- English proof (translation)
-Introduce `_ _ _ _ h _ hN c _ f hB _ P hP` and use `haveI := isDiscreteValuationRing_V z.Z.i.c hp hW haveI := P.iso hP.2.elim fun _ hs => (exists_pair_dual hp hW _ _ _ (fun i => z.isGenId_genId hp hW (h i)) c f hB (hP.1 ▸ P.vb) (hP.1 ▸ P.vb') P.ψ hN hs.1 hs.2).imp fun _ hQ i => ⟨(hQ i).1, congrArg Vert.Model.toQ (hQ i).2⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem readsOm : ReadsOm z := fun _ _ _ _ h _ hN c _ f hB _ P hP =>
   haveI := isDiscreteValuationRing_V z.Z.i.c hp hW
@@ -141,12 +141,12 @@ theorem readsOm : ReadsOm z := fun _ _ _ _ h _ hN c _ f hB _ P hP =>
 end admitted
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ z` and use `readsLie z`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem readsLieSt : ReadsLieSt := fun _ _ _ _ _ _ _ _ _ z => readsLie z
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ z` and use `readsOm z`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem readsOmSt : ReadsOmSt := fun _ _ _ _ _ _ _ _ _ z => readsOm z
 

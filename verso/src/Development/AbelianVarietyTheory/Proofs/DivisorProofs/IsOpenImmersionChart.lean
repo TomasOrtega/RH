@@ -43,7 +43,7 @@ instance isOpenImmersion_chart (Z : LocM.Mdl Y i₀) (a : Fin Z.m) : IsOpenImmer
   (Z.U a).2.isOpenImmersion_fromSpec
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.image_top_eq_opensRange]`. Conclude with `(Z.U a).2.opensRange_fromSpec`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chart_image_top (Z : LocM.Mdl Y i₀) (a : Fin Z.m) : Z.chart a ''ᵁ ⊤ = (Z.U a).1 := by
   rw [Scheme.Hom.image_top_eq_opensRange]

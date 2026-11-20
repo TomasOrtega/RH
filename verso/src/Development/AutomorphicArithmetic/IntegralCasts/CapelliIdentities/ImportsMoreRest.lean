@@ -1,13 +1,9 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R A _ _ _ _ ev h`. Use `haveI hP : (RingHom.ker ev).IsPrime := RingHom.ker_isPrime ev`. Take `⟨Q, -, hQ, hQP⟩` from `Ideal.exists_ideal_over_prime_of_isIntegral (S := A) (RingHom.ker ev) ⊥ (by rw [← RingHom.ker_eq_comap_bot]; exact h)`. Use `haveI : Q.LiesOver (RingHom.ker ev) := ⟨hQP.symm⟩`. Use `letI : Algebra (R ⧸ RingHom.ker ev) ℂ := (RingHom.kerLift ev).toAlgebra`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI : FaithfulSMul (R ⧸ RingHom.ker ev) ℂ := (faithfulSMul_iff_algebraMap_injective _ _).2 (RingHom.kerLift_injective ev)`. Use `haveI : Algebra.IsAlgebraic (R ⧸ RingHom.ker ev) (A ⧸ Q) := Algebra.IsIntegral.isAlgebraic`. Use `haveI : FaithfulSMul (R ⧸ RingHom.ker ev) (A ⧸ Q) := inferInstance`. Use `haveI : IsDomain (R ⧸ RingHom.ker ev) := Ideal.Quotient.isDomain _`. Use `haveI : IsDomain (A ⧸ Q) := Ideal.Quotient.isDomain _`.
-
-Use `haveI : Module.IsTorsionFree (R ⧸ RingHom.ker ev) (A ⧸ Q) := Module.isTorsionFree_iff_faithfulSMul.2 ‹_›`. Use `haveI : Module.IsTorsionFree (R ⧸ RingHom.ker ev) ℂ := Module.isTorsionFree_iff_faithfulSMul.2 ‹_›`. Set `φ : (A ⧸ Q) →ₐ[R ⧸ RingHom.ker ev] ℂ` to `IsAlgClosed.lift`. Use `⟨(φ : (A ⧸ Q) →+* ℂ).comp (Ideal.Quotient.mk Q), ?_⟩` and prove the remaining obligations. Use extensionality with `r`.
-
-Conclude with `φ.commutes (Ideal.Quotient.mk (RingHom.ker ev) r)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Qi28.exists_extend.{u_1, u_2} :
     ∀ {R : Type u_1} {A : Type u_2} [inst : CommRing R] [inst_1 : CommRing A] [inst_2 : Algebra R A]

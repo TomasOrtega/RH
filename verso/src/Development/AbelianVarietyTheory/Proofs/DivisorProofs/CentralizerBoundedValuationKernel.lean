@@ -9,9 +9,9 @@ open scoped Classical
 namespace GlobalTheory.CentValHom
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Establish `h1` using `congrFun (congrFun h i) j`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[mul_diagonal, diagonal_mul]`. Rewrite using `[diagonal_apply_ne _ hij]`. Establish `hne : lam j - lam i ≠ 0` using `sub_ne_zero.2 (fun e => hij (hlam e).symm)`. Establish `h2 : W i j * (lam j - lam i) = 0` using `by rw [mul_sub, h1]; ring`. Conclude with `(mul_eq_zero.1 h2).resolve_right hne`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_diagonal_of_commute {F : Type*} [Field F] {n : ℕ} (lam : Fin n → F)
     (hlam : Function.Injective lam) (W : Matrix (Fin n) (Fin n) F)
@@ -27,11 +27,11 @@ theorem eq_diagonal_of_commute {F : Type*} [Field F] {n : ℕ} (lam : Fin n → 
     exact (mul_eq_zero.1 h2).resolve_right hne
 
 /- English proof (translation)
-Establish `hev : ∀ j, Module.End.HasEigenvalue (Matrix.toLin' A) (lam j)` using `fun j => (Module.End.hasEigenvalue_iff_isRoot_charpoly _ _).2 (by rw [Matrix.charpoly_toLin']; exact hroot j)`. Use `choose u hu using fun j => (hev j).exists_hasEigenvector`. Establish `hli : LinearIndependent F u` using `Module.End.eigenvectors_linearIndependent' (Matrix.toLin' A) lam hlam u hu`. Use `⟨Matrix.of fun i j => u j i, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.linearIndependent_cols_iff_isUnit]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Conclude with `hli`. Use extensionality with `i j`. Establish `h1` using `congrFun ((hu j).apply_eq_smul) i`. Rewrite `h1` using `[Matrix.toLin'_apply]`. Rewrite using `[mul_diagonal]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, Pi.smul_apply, smul_eq_mul] at h1`. Rewrite using `[h1, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_eigenbasis {F : Type*} [Field F] {n : ℕ} (A : Matrix (Fin n) (Fin n) F) (lam : Fin n → F)
     (hlam : Function.Injective lam) (hroot : ∀ j, A.charpoly.IsRoot (lam j)) :
@@ -52,43 +52,37 @@ theorem exists_eigenbasis {F : Type*} [Field F] {n : ℕ} (A : Matrix (Fin n) (F
     rw [h1, mul_comm]
 
 /- English proof (translation)
-Use `set φ : L →+* PadicAlgCl p := algebraMap L (PadicAlgCl p) with hφ`. Use `set χ := N.val.charpoly with hχ`. Establish `hsep' : (χ.map φ).Separable` using `hsep.map`. Use `set s : Finset (PadicAlgCl p) := (χ.map φ).roots.toFinset with hs_def`. Establish `hs : s.card = n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hs_def, Multiset.toFinset_card_of_nodup (nodup_roots hsep'), IsAlgClosed.card_roots_eq_natDegree, natDegree_map, hχ, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`. Use `set E : IntermediateField ℚ_[p] (PadicAlgCl p) := L ⊔ IntermediateField.adjoin ℚ_[p] (s : Set (PadicAlgCl p)) with hE_def`. Establish `hE : FiniteDimensional ℚ_[p] E`. Establish `: FiniteDimensional ℚ_[p] (IntermediateField.adjoin ℚ_[p] (s : Set (PadicAlgCl p)))` using `IntermediateField.finiteDimensional_adjoin (fun x _ => Algebra.IsIntegral.isIntegral x)`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Establish `hLE : L ≤ E` using `le_sup_left`. Use `set ι : L →+* E := (IntermediateField.inclusion hLE).toRingHom with hι`. Establish `hιφ : ((E.val : E →ₐ[ℚ_[p]] PadicAlgCl p) : E →+* PadicAlgCl p).comp ι = φ`. Use extensionality with `x`. Both sides reduce to the same expression.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `e : Fin n ≃ s` to `(s.equivFin.trans (finCongr hs)).symm`. Establish `hmem : ∀ j, ((e j : PadicAlgCl p)) ∈ E` using `fun j => (le_sup_right : IntermediateField.adjoin ℚ_[p] (s : Set (PadicAlgCl p)) ≤ E) (IntermediateField.subset_adjoin _ _ (e j).2)`. Set `lam : Fin n → E` to `fun j => ⟨e j, hmem j⟩`. Establish `hlam : Function.Injective lam`. Introduce `a b hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `congrArg Subtype.val hab`. Conclude with `e.injective (Subtype.ext h1)`. Use `set A : Matrix (Fin n) (Fin n) E := N.val.map ι with hA`. Establish `hroot : ∀ j, A.charpoly.IsRoot (lam j)`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h1 : (χ.map φ).IsRoot (e j : PadicAlgCl p)`. Establish `h2 : ((e j : s) : PadicAlgCl p) ∈ (χ.map φ).roots.toFinset` using `(e j).2`. Rewrite `h2` using `[Multiset.mem_toFinset]`. Conclude with `(mem_roots hsep'.ne_zero).1 h2`. Rewrite using `[hA, Matrix.charpoly_map, IsRoot.def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Subtype.val_injective` to reduce the goal to its premises. Establish `h3 : (((χ.map ι).eval (lam j) : E) : PadicAlgCl p) = ((E.val : E →ₐ[ℚ_[p]] PadicAlgCl p) : E →+* PadicAlgCl p) ((χ.map ι).eval (lam j))` using `rfl`. Rewrite using `[h3, eval_map, hom_eval₂, hιφ, ← eval_map]`. Conclude with `h1`. Take `⟨U, hU, hAU⟩` from `exists_eigenbasis A lam hlam hroot`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : diagonal lam = U⁻¹ * A * U`. Rewrite using `[Matrix.mul_assoc, hAU, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hU, Matrix.one_mul]`. Set `W : Subgroup.centralizer {N} → Matrix (Fin n) (Fin n) E` to `fun z => U⁻¹ * ((z : GL (Fin n) L).val.map ι) * U`. Establish `hcomm : ∀ z : Subgroup.centralizer {N}, ((z : GL (Fin n) L).val.map ι) * A = A * ((z : GL (Fin n) L).val.map ι)`. Introduce `z`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `Subgroup.mem_centralizer_iff.1 z.2 N (Set.mem_singleton N)`. Establish `h2 : N.val * (z : GL (Fin n) L).val = (z : GL (Fin n) L).val * N.val`. Rewrite using `[← Units.val_mul, ← Units.val_mul, h1]`. Rewrite using `[hA, ← Matrix.map_mul, ← Matrix.map_mul, h2]`. Establish `hdiag : ∀ z, W z = diagonal (fun i => W z i i)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Apply `eq_diagonal_of_commute lam hlam` to reduce the goal to its premises. Rewrite using `[hD]`. Simplify using `only [W, Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hU, Matrix.mul_nonsing_inv_cancel_left _ _ hU, ← Matrix.mul_assoc _ A U, hcomm z, Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hW1 : W 1 = 1`. Simplify using `only [W, OneMemClass.coe_one, Units.val_one]`. Rewrite using `[Matrix.map_one _ (map_zero ι) (map_one ι), Matrix.mul_one, Matrix.nonsing_inv_mul _ hU]`. Establish `hWmul : ∀ z w, W (z * w) = W z * W w`. Introduce `z w`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Establish `h1 : ((z * w : Subgroup.centralizer {N}) : GL (Fin n) L).val = (z : GL (Fin n) L).val * (w : GL (Fin n) L).val` using `rfl`. Use `show U⁻¹ * (((z * w : Subgroup.centralizer {N}) : GL (Fin n) L).val.map ι) * U = (U⁻¹ * ((z : GL (Fin n) L).val.map ι) * U) * (U⁻¹ * ((w : GL (Fin n) L).val.map ι) * U)`. Rewrite using `[h1, Matrix.map_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv_cancel_left _ _ hU]`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `μ : Fin n → (Subgroup.centralizer {N} →* E)` to `fun j => { toFun := fun z => W z j j map_one' := by simp only [hW1, Matrix.one_apply_eq] map_mul' := fun z w => by show W (z * w) j j = W z j j * W w j j`. Rewrite using `[hWmul]`. Use `conv_lhs => rw [hdiag z, hdiag w]`. Rewrite using `[diagonal_mul_diagonal, diagonal_apply_eq] }`. Set `μu : Fin n → (Subgroup.centralizer {N} →* Eˣ)` to `fun j => (μ j).toHomUnits`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `v : Subgroup.centralizer {N} →* Multiplicative (Fin n → ℤ)` to `{ toFun := fun z => Multiplicative.ofAdd (fun j => vK p E (μu j z)) map_one' := by`. Simplify using `only [map_one, vK_one]`. Both sides reduce to the same expression. Use the proof step `map_mul' := fun z w => by`. Simplify using `only [map_mul, vK_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `rfl }`. Use `⟨v, ∑ i, ∑ k, ∑ j, ‖((U i j : E) : PadicAlgCl p)‖ * ‖((U⁻¹ j k : E) : PadicAlgCl p)‖, ?_⟩` and prove the remaining obligations. Introduce `z hz i k`. Establish `hv0 : ∀ j, vK p E (μu j z) = 0`. Introduce `j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : (fun j => vK p E (μu j z)) = 0` using `ofAdd_eq_one.1 hz`. Conclude with `congrFun h1 j`. Establish `hnorm : ∀ j, ‖((W z j j : E) : PadicAlgCl p)‖ = 1` using `fun j => (mem_UK_iff p E hE (μu j z)).2 (hv0 j)`. Establish `hz' : (z : GL (Fin n) L).val.map ι = U * diagonal (fun j => W z j j) * U⁻¹`. Rewrite using `[← hdiag z]`.
-
-Simplify using `only [W, Matrix.mul_assoc]`. Rewrite using `[Matrix.mul_nonsing_inv _ hU, Matrix.mul_one, Matrix.mul_nonsing_inv_cancel_left _ _ hU]`. Establish `hent : ((((z : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i k : L) : PadicAlgCl p) = ((((z : GL (Fin n) L).val.map ι) i k : E) : PadicAlgCl p)` using `rfl`. Rewrite using `[hent, hz']`. Rewrite using `[Matrix.mul_apply]`.
-
-Simplify using `only [mul_diagonal, IntermediateField.coe_sum, IntermediateField.coe_mul]`. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, norm_mul, hnorm j, mul_one]`. Use `_ ≤ ∑ k', ∑ j, ‖((U i j : E) : PadicAlgCl p)‖ * ‖((U⁻¹ j k' : E) : PadicAlgCl p)‖ := Finset.single_le_sum (f := fun k' => ∑ j, ‖((U i j : E) : PadicAlgCl p)‖ * ‖((U⁻¹ j k' : E) : PadicAlgCl p)‖) (fun _ _ => Finset.sum_nonneg fun _ _ => mul_nonneg (norm_nonneg _) (norm_nonneg _)) …`.
-
-Use `_ ≤ _ := Finset.single_le_sum (f := fun i' => ∑ k', ∑ j, ‖((U i' j : E) : PadicAlgCl p)‖ * ‖((U⁻¹ j k' : E) : PadicAlgCl p)‖) (fun _ _ => Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => mul_nonneg (norm_nonneg _) (norm_nonneg _)) (Finset.mem_univ i)`.
+A detailed English derivation is pending.
 -/
 theorem exists_valHom_bounded_ker (p : ℕ) [Fact p.Prime] (L : IntermediateField ℚ_[p] (PadicAlgCl p))
     (hL : FiniteDimensional ℚ_[p] L) (n : ℕ) (N : GL (Fin n) L) (hsep : N.val.charpoly.Separable) :
@@ -218,7 +212,7 @@ theorem exists_valHom_bounded_ker (p : ℕ) [Fact p.Prime] (L : IntermediateFiel
           (Finset.mem_univ i)
 
 /- English proof (translation)
-Introduce `p _ L hL n N hsep` and use `exists_valHom_bounded_ker p L hL n N hsep`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem centralizer_valHom_bounded_ker : ∀ (p : ℕ) [Fact p.Prime] (L : IntermediateField ℚ_[p] (PadicAlgCl p)), FiniteDimensional ℚ_[p] L →
     ∀ (n : ℕ) (N : GL (Fin n) L), N.val.charpoly.Separable →

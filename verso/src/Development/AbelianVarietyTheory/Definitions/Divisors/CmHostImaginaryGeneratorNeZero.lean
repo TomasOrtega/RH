@@ -16,11 +16,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h1 : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0`. Conclude with `(Ideal.absNorm_eq_zero_iff.not.2 D.host.ccK_ne_bot)` after adjusting the coercions. Establish `h2 : D.host.sqrtMinusD ≠ 0`. Introduce `h`. Use `D.host.sqrtMinusD_sq` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h]`. Establish `hd : (D.host.d : D.host.E) ≠ 0`. Use `D.host.qd_big.2` as an intermediate fact. Conclude with `(by omega : D.host.d ≠ 0)` after adjusting the coercions. Apply `hd` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Take the linear combination `this`. Unfold `Formalism.BasicNotions.Host.xi0`. Conclude with `div_ne_zero (by norm_num) (mul_ne_zero h1 h2)`.
+A detailed English derivation is pending.
 -/
 theorem cmHost_imaginaryGenerator_ne_zero : D.host.xi0 ≠ 0 := by
   have h1 : (Ideal.absNorm D.host.ccK : D.host.E) ≠ 0 := by
@@ -63,9 +63,9 @@ Both sides reduce to the same expression.
 theorem negSp_gram (V : HSp D) : (negSp V).gram = -V.gram := rfl
 
 /- English proof (translation)
-Use extensionality with `g`. Establish `e : JR (F` using `D.host.F) (AF D.host.F) (-V.gram) = -JR (F := D.host.F) (AF D.host.F) V.gram := by`. Use extensionality with `i j`. Simplify using `[JR]`. Use `show Formalism.UG.cT _ g.1 * JR (AF D.host.F) V.gram * g.1 = JR (AF D.host.F) V.gram ↔ Formalism.UG.cT _ g.1 * JR (AF D.host.F) (-V.gram) * g.1 = JR (AF D.host.F) (-V.gram)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+A detailed English derivation is pending.
 -/
 theorem HR_neg (V : HSp D) :
     HR (AF D.host.F) D.sp.cm.sig V.gram = HR (AF D.host.F) D.sp.cm.sig (negSp V).gram := by
@@ -84,15 +84,15 @@ Both sides reduce to the same expression.
 theorem mt_negGA (V : HSp D) (g : GA D V) : mt (negSp V) (negGA V g) = mt V g := rfl
 
 /- English proof (translation)
-The claim follows from `Continuous.subtype_mk (continuous_subtype_val (p := fun g => g ∈ HR (AF D.host.F) D.sp.cm.sig V.gram)) _`.
+A detailed English derivation is pending.
 -/
 theorem continuous_negGA (V : HSp D) : Continuous (negGA V) :=
   Continuous.subtype_mk (continuous_subtype_val (p := fun g => g ∈ HR (AF D.host.F) D.sp.cm.sig V.gram)) _
 
 /- English proof (translation)
-Use `⟨h.1, fun y => (h.2 y).trans (forall₂_congr fun x _ => ?_)⟩` and prove the remaining obligations. Establish `e : ∑ i, ∑ j, star (x i) * (negSp V).gram i j * y j = -∑ i, ∑ j, star (x i) * V.gram i j * y j`. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show star (x i) * (-V.gram i j) * y j = _`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Conclude with `⟨fun ⟨b, hb⟩ => ⟨-b, by simp [hb]⟩, fun ⟨b, hb⟩ => ⟨-b, by simp [hb]⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isSelfDualC_neg {V : HSp D} {Λ : Submodule (𝓞 D.host.E) (Fin V.rank → D.host.E)} (h : IsSelfDualC V Λ) :
     IsSelfDualC (negSp V) Λ := by
@@ -160,7 +160,7 @@ def stairId (𝔞 𝔞' : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) (c : ℕ)
   𝔞 ^ (c - p.1) * (𝔞' ^ (p.1 + 1))⁻¹
 
 /- English proof (translation)
-Establish `h1 : c - p.1 = (c - q.1) + 1` using `by have := q.2; omega`. Unfold `stairId`. Rewrite using `[h1, hpq, pow_succ 𝔞' (p.1 + 1), pow_succ 𝔞]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem stairId_succ {𝔞 𝔞' : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} (h : 𝔞' ≠ 0) {c : ℕ} (p q : Fin c)
     (hpq : q.1 = p.1 + 1) : stairId 𝔞 𝔞' c p = 𝔞 * 𝔞' * stairId 𝔞 𝔞' c q := by
@@ -170,7 +170,7 @@ theorem stairId_succ {𝔞 𝔞' : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E} 
   field_simp
 
 /- English proof (translation)
-Establish `h1 : c - p.rev.1 = p.1 + 1` using `by have := p.2; rw [Fin.val_rev]; omega`. Establish `h2 : p.rev.1 + 1 = c - p.1` using `by have := p.2; rw [Fin.val_rev]; omega`. Unfold `stairId`. Rewrite using `[h1, h2, mul_inv, inv_inv, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem stairId_rev (𝔞 𝔞' : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) {c : ℕ} (p : Fin c) :
     stairId 𝔞' 𝔞 c p.rev = (stairId 𝔞 𝔞' c p)⁻¹ := by
@@ -191,7 +191,7 @@ def iso (ρ : ℕ) (h : 2 * ρ ≤ c) : Matrix (Fin B.rank) (Fin ρ) D.host.E :=
   d.a.submatrix id (Fin.castLE (by omega))
 
 /- English proof (translation)
-Rewrite using `[← d.gram]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_sub {k l : ℕ} (f : Fin k → Fin c) (g : Fin l → Fin c) :
     Formalism.UG.cT (D.sp.cm.sig : D.host.E →+* D.host.E) (d.a.submatrix id f) * B.gram * d.a.submatrix id g =
@@ -199,15 +199,15 @@ theorem gram_sub {k l : ℕ} (f : Fin k → Fin c) (g : Fin l → Fin c) :
   rw [← d.gram]; rfl
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `Fintype.linearIndependent_iff.2 fun u hu i => ?_` and prove the remaining obligations. Establish `h1 : d.iso ρ h *ᵥ u = 0`. Rewrite using `[← hu]`. Use function extensionality and compare the values at `k`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[mulVec, dotProduct, Finset.sum_apply, mul_comm]`. Establish `h2` using `d.gram_sub (fun q : Fin ρ => (Fin.castLE (by omega) q : Fin c).rev) (Fin.castLE (by omega) : Fin ρ → Fin c)`. Establish `h3 : (antiDiagonalSignGramMatrix c ε).submatrix (fun q : Fin ρ => (Fin.castLE (by omega) q : Fin c).rev) (Fin.castLE (by omega) : Fin ρ → Fin c) = 1`. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Use `p.2` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `q.2` as an intermediate fact. Simplify using `only [submatrix_apply, antiDiagonalSignGramMatrix, Fin.val_rev, Fin.val_castLE, one_apply, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | omega`. Establish `h4` using `congrArg (· *ᵥ u) (h2.trans h3)`. Simplify using `only [one_mulVec, ← mulVec_mulVec] at h4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h4` using `[show d.a.submatrix id (Fin.castLE (by omega) : Fin ρ → Fin c) = d.iso ρ h from rfl, h1, mulVec_zero, mulVec_zero]`. Conclude with `(congrFun h4 i).symm`. Use `(d.gram_sub _ _).trans ?_` and prove the remaining obligations. Use `Matrix.ext fun p q => ?_` and prove the remaining obligations. Use `p.2` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `q.2` as an intermediate fact. Simplify using `only [submatrix_apply, antiDiagonalSignGramMatrix, Fin.val_castLE, Matrix.zero_apply]`. Rewrite using `[if_neg (by omega)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIsoSub_iso (ρ : ℕ) (h : 2 * ρ ≤ c) : IsIsoSub B (d.iso ρ h) := by
   refine ⟨?_, ?_⟩
@@ -292,14 +292,14 @@ def congLev (hc : CMData F E) (J : Matrix (Fin n) (Fin n) E) (Λ : Submodule (�
 variable {hc : CMData F E} {J : Matrix (Fin n) (Fin n) E} {Λ : Submodule (𝓞 E) (Fin n → E)}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_congLev {𝔪 : Ideal (𝓞 E)} {g : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F)} : g ∈ congLev hc J Λ 𝔪 ↔
     g ∈ UA hc J ∧ g ∈ Formalism.UG.stabGL (hatL (F := F) Λ) ∧
     ∀ x ∈ hatL (F := F) Λ, g.1 *ᵥ x - x ∈ hatL (F := F) (𝔪 • Λ) := Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `g`. Rewrite using `[mem_congLev, Submodule.top_smul]`. Conclude with `⟨fun h => ⟨h.1, h.2.1⟩, fun h => ⟨h.1, h.2, fun x hx => Submodule.sub_mem _ ((h.2 x).1 hx) hx⟩⟩`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem congLev_top : congLev hc J Λ ⊤ = UA hc J ⊓ Formalism.UG.stabGL (hatL (F := F) Λ) := by
   ext g
@@ -307,7 +307,7 @@ theorem congLev_top : congLev hc J Λ ⊤ = UA hc J ⊓ Formalism.UG.stabGL (hat
   exact ⟨fun h => ⟨h.1, h.2.1⟩, fun h => ⟨h.1, h.2, fun x hx => Submodule.sub_mem _ ((h.2 x).1 hx) hx⟩⟩
 
 /- English proof (translation)
-Introduce and unpack `g ⟨g1, g2, g3⟩`. Use `⟨g1, g2, fun x hx => ?_⟩` and prove the remaining obligations. Use `Submodule.span_mono ?_ (g3 x hx)` and prove the remaining obligations. Conclude with `Set.image_mono (Submodule.smul_mono_left h)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem congLev_mono {𝔪 𝔫 : Ideal (𝓞 E)} (h : 𝔪 ≤ 𝔫) : congLev hc J Λ 𝔪 ≤ congLev hc J Λ 𝔫 := by
   rintro g ⟨g1, g2, g3⟩
@@ -348,9 +348,9 @@ def cosInd (e : AE D) {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.h
   (cosSet e κ).indicator 1
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `h.fg`. Use `haveI : Module.Finite (𝓞 D.host.E) Λ' := Module.Finite.iff_fg.2 h'`. Set `f : homLat Λ Λ' →ₗ[𝓞 D.host.E] (s → Λ')` to `{ toFun := fun x y => ⟨x.1 *ᵥ y.1, x.2 _ (hs ▸ Submodule.subset_span y.2)⟩ map_add' := fun x x' => funext fun y => Subtype.ext (add_mulVec x.1 x'.1 y.1) map_smul' := fun r x => funext fun y => Subtype.ext (smul_mulVec r x.1 y.1) }`. Use `Module.Finite.of_injective f ((injective_iff_map_eq_zero f).2 fun x hx => Subtype.ext ?_)` and prove the remaining obligations. Establish `h1 : Submodule.span D.host.E (s : Set (Fin n → D.host.E)) = ⊤`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h.span_eq_top, ← hs, Submodule.span_span_of_tower]`. Establish `h2 : Matrix.mulVecLin x.1 = 0` using `LinearMap.ext_on h1 fun y hy => congrArg Subtype.val (congrFun hx ⟨y, hy⟩)`. Conclude with `Matrix.toLin'.injective (by rw [Matrix.toLin'_apply', h2]; simp)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem homLat_fg {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} (h : Submodule.IsLattice D.host.E Λ) (h' : Λ'.FG) :
@@ -368,7 +368,7 @@ theorem homLat_fg {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.
   exact Matrix.toLin'.injective (by rw [Matrix.toLin'_apply', h2]; simp)
 
 /- English proof (translation)
-Use `haveI := homLat_fg h h'`. Use `haveI : Finite (𝓞 D.host.E ⧸ 𝔪) := Ideal.finiteQuotientOfFreeOfNeBot 𝔪 h𝔪`. Use `haveI : Module.Finite (𝓞 D.host.E ⧸ 𝔪) (homLat Λ Λ' ⧸ (𝔪 • ⊤ : Submodule (𝓞 D.host.E) (homLat Λ Λ'))) := Module.Finite.of_restrictScalars_finite (𝓞 D.host.E) _ _`. Conclude with `Module.finite_of_finite (𝓞 D.host.E ⧸ 𝔪) (M := homLat Λ Λ' ⧸ (𝔪 • ⊤ : Submodule (𝓞 D.host.E) (homLat Λ Λ')))`.
+A detailed English derivation is pending.
 -/
 theorem finite_cos {m n : ℕ} {Λ : Submodule (𝓞 D.host.E) (Fin n → D.host.E)}
     {Λ' : Submodule (𝓞 D.host.E) (Fin m → D.host.E)} (h : Submodule.IsLattice D.host.E Λ) (h' : Λ'.FG)
@@ -392,7 +392,7 @@ example : antiDiagonalSignGramMatrix 4 (-1 : ℤ) = !![0, 0, 0, 1; 0, 0, 1, 0; 0
 abbrev diagSp (D : D7) (n : ℕ) (neg : Fin n → Bool) (p q : ℕ) : HSp D := Examples₂.stdSpace Examples₂.star_isIntegral n neg p q
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => Examples₂.stdSpace_gram_apply _ n neg p q i j`.
+A detailed English derivation is pending.
 -/
 theorem diagSp_gram (n : ℕ) (neg : Fin n → Bool) (p q : ℕ) :
     (diagSp D n neg p q).gram = Matrix.diagonal fun i : Fin n => (Examples₂.sgn (neg i) : D.host.E) :=

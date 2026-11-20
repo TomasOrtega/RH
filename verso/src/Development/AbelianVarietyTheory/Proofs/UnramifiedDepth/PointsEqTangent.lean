@@ -12,9 +12,9 @@ private lemma comp_assoc' {R₀ : Type} [CommRing R₀] {A B C D : LAlg R₀} (h
     (g : LHom B C) (f : LHom A B) : (h.comp g).comp f = h.comp (g.comp f) := rfl
 
 /- English proof (translation)
-Establish `h : (fun m : Fin g → N => ∑ k, b k ⊗ₜ[R] m k) = (TensorProduct.equivFinsuppOfBasisLeft (N` using `N) b).symm ∘ Finsupp.equivFunOnFinite.symm := by`. Use function extensionality and compare the values at `m`. Simplify using `only [Function.comp, TensorProduct.equivFinsuppOfBasisLeft_symm_apply]`. Rewrite using `[Finsupp.sum_fintype _ _ (by simp)]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h]`. Conclude with `(LinearEquiv.bijective _).comp (Equiv.bijective _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma coords_bijective {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] {g : ℕ} (b : Module.Basis (Fin g) R M) :
@@ -30,7 +30,7 @@ private lemma coords_bijective {R M N : Type} [CommRing R] [AddCommGroup M] [Mod
   exact (LinearEquiv.bijective _).comp (Equiv.bijective _)
 
 /- English proof (translation)
-Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => (map_nsmul (TensorProduct.mk R M N (b k)) n (m k)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma coords_nsmul {R M N : Type} [CommRing R] [AddCommGroup M] [Module R M]
     [AddCommGroup N] [Module R N] {g : ℕ} (b : Module.Basis (Fin g) R M) (n : ℕ)
@@ -45,7 +45,7 @@ variable {R₀ : Type} [CommRing R₀] {p : ℕ} [Fact p.Prime] {g : ℕ} {B : B
   {σ : Oe ≃ₐ[ℤ_[p]] Oe} {cp : (Tw.O : Type)} (D : Dat p g B Tw Dt Oe σ cp)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (Classical.choose_spec (D.fin.univ Tw.O (LHom.id Tw.O) (ptOf B D.L.τ t) (D.pt_p t)))`.
+A detailed English derivation is pending.
 -/
 private lemma ptMap_spec (t : Nb p g) :
     (D.ptMap t).comp (D.fin.sO (D.ptIdx t)) = LHom.id Tw.O ∧
@@ -56,7 +56,7 @@ private lemma ptMap_spec (t : Nb p g) :
     (D.fin.univ Tw.O (LHom.id Tw.O) (ptOf B D.L.τ t) (D.pt_p t)))
 
 /- English proof (translation)
-Simplify using `[ptOf]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma ptOf_zero : ptOf B D.L.τ (0 : Nb p g) = 0 := by
   simp [ptOf]
@@ -64,19 +64,17 @@ private lemma ptOf_zero : ptOf B D.L.τ (0 : Nb p g) = 0 := by
 end
 
 /- English proof (translation)
-Introduce `R₀ _ p _ g B Tw Dt _ Oe _ _ σ cp D S s π hπ hs`. Take `⟨-, h2, h3⟩` from `ptMap_spec D 0`. Rewrite `h2`, `h3` using `[ptOf_zero D]`. Use `⟨fun m hm => ?_, fun φ hφ hπφ => ?_⟩` and prove the remaining obligations. Establish `hz : p • B.tg π hπ (∑ k, D.ch.gb k ⊗ₜ[R₀] m k) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← map_nsmul, coords_nsmul]`. Simplify using `[hm]`. Take `⟨i, φ, e1, e2, e3⟩` from `D.fin.univ S s _ hz`. Establish `h4` using `h3 i (π.comp φ) (by rw [comp_assoc', e1, hs]) (by rw [B.map_comp, e2]; exact (B.tg_ker π hπ _).2 ⟨_, rfl⟩)`. Take `⟨hi, hφ⟩` from `h4`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Substitute `hi` using the available equality. Use `⟨φ, ⟨e1, eq_of_heq hφ, e2⟩, fun φ' h' => ?_⟩` and prove the remaining obligations. Conclude with `eq_of_heq (e3 _ φ' h'.1 h'.2.2).2`. Establish `h0 : B.map π (B.map φ (D.fin.y (D.ptIdx 0))) = 0`. Rewrite using `[← B.map_comp, hπφ, h2]`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨v, hv⟩` from `(B.tg_ker π hπ _).1 h0`. Establish `hb` using `coords_bijective (N := π.ker) D.ch.gb`. Take `⟨m, hm⟩` from `hb.2 v`. Establish `hm' : ∑ k, D.ch.gb k ⊗ₜ[R₀] m k = v` using `hm`. Establish `hp : p • v = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `B.tg_inj π hπ` to reduce the goal to its premises. Rewrite using `[map_nsmul, hv, ← map_nsmul, D.fin.y_p, map_zero, map_zero]`. Use `⟨m, ⟨fun k => ?_, by rw [hm', hv]⟩, fun m' h' => ?_⟩` and prove the remaining obligations. Establish `: (fun k => p • m k) = (0 : Fin g → π.ker)`. Apply `hb.1` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show ∑ k, D.ch.gb k ⊗ₜ[R₀] (p • m k) = ∑ k, D.ch.gb k ⊗ₜ[R₀] (0 : Fin g → π.ker) k`. Rewrite using `[← coords_nsmul, hm', hp]`. Simplify using the standard rewrite rules. Conclude with `congrFun this k`. Apply `hb.1` to reduce the goal to its premises.
-
-Apply `B.tg_inj π hπ` to reduce the goal to its premises. Use `show B.tg π hπ (∑ k, D.ch.gb k ⊗ₜ[R₀] m' k) = B.tg π hπ (∑ k, D.ch.gb k ⊗ₜ[R₀] m k)`. Rewrite using `[← h'.2, hm', hv]`.
+Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem points_eq_tangent :
   (∀ {R₀ : Type} [CommRing R₀] {p : ℕ} [Fact p.Prime] {g : ℕ} {B : BX R₀} {Tw : ATowerL R₀ p} {Dt : DualTower Tw} [Algebra ℤ_[p] (Tw.O : Type)] {Oe : Type} [CommRing Oe] [Algebra ℤ_[p] Oe] {σ : Oe ≃ₐ[ℤ_[p]] Oe} {cp : (Tw.O : Type)} (D : Dat p g B Tw Dt Oe σ cp), ∀ (S : LAlg R₀) (s : LHom Tw.O S) (π : LHom S Tw.O) (hπ : π.SqZero), π.comp s = LHom.id Tw.O →

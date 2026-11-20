@@ -6,11 +6,11 @@ open Module CrystallineSemistableComparison.Pb.Kap
 namespace GlobalTheory.CompanionTheory.KapUniq
 
 /- English proof (translation)
-Set `bs` to `Module.finBasis K V`. Establish `h0 : ∑ s, (f (bs.coord s) - f' (bs.coord s)) • μ (bs s) = 0`. Take `⟨u, rfl⟩` from `hc`. Use `congrArg (fun x => ((u⁻¹ : Bˣ) : B) • x) (h _ bs)` as an intermediate fact. Simplify `this` using `[smul_smul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hco : ∀ s, f (bs.coord s) = f' (bs.coord s)` using `fun s => sub_eq_zero.mp (hind _ bs _ h0 s)`. Establish `key : ∀ F : Dual K V →+ B, (∀ (k : K) (φ : Dual K V), F (k • φ) = o k * F φ) → ∀ φ : Dual K V, F φ = ∑ s, F (bs.coord s) * o (φ (bs s))`. Introduce `F hF φ`. Establish `e : ∑ s, φ (bs s) • bs.coord s = φ` using `bs.sum_dual_apply_smul_coord φ`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun s _ => by rw [hF, mul_comm]`. Use extensionality with `φ`. Rewrite using `[key f hf, key f' hf']`. Conclude with `Finset.sum_congr rfl fun s _ => by rw [hco]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_unit_smul_combination {K B V M : Type*} [Field K] [CommRing B] [AddCommGroup V]
     [Module K V] [FiniteDimensional K V] [AddCommGroup M] [Module B M]
@@ -44,13 +44,13 @@ theorem eq_of_unit_smul_combination {K B V M : Type*} [Field K] [CommRing B] [Ad
   exact Finset.sum_congr rfl fun s _ => by rw [hco]
 
 /- English proof (translation)
-Introduce and unpack `⟨hfs, e, z, hz, hzb⟩ ⟨hfs', e', z', hz', hzb'⟩`. Use `haveI := hC.fin j`. Establish `hw : C.b j (((C.ℓ : A) ^ e) • z' - ((C.ℓ : A) ^ e') • z) = 0`. Apply `hC.sep` to reduce the goal to its premises. Introduce `n`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, map_smul, map_smul, hz n, hz' n, smul_smul, smul_smul, mul_comm, sub_self]`. Establish `hb : ∀ (a : A) (y : C.Z j), C.b j (a • y) = C.ι a • C.b j y` using `fun a y => (C.b j).map_smulₛₗ a y`. Use `(eq_of_unit_smul_combination C.o (C.μ j) ((C.ℓ : B) ^ (e + e')) (hC.unit.pow _) ?_ f' f hfs' hfs ?_).symm` and prove the remaining obligations. Introduce `m bs g hg s`. Take `⟨g0, _, hu⟩` from `hC.basis j bs 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hu g hg.symm`. Establish `h2` using `hu 0 (by simp)`. Conclude with `congrFun (h1.trans h2.symm) s`. Introduce `m bs`. Establish `h` using `hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[map_sub, hb, hb, ← hzb bs, ← hzb' bs]`. Simplify using `only [map_pow, map_natCast, smul_smul] at h`. Repeatedly rewrite using `[sub_smul, Finset.sum_sub_distrib, smul_sub]`. Rewrite using `[← h, pow_add, mul_comm ((C.ℓ : B) ^ e') ((C.ℓ : B) ^ e)]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_unique {Λ A B K : Type} [CommRing Λ] [CommRing A] [CommRing B] [Field K]
     (C : Chain.{1} Λ A B K) (hC : C.Good) {j : ℕ} (x : ∀ n, C.S n j)

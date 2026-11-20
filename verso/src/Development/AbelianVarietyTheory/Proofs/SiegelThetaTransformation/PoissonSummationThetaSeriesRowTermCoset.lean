@@ -12,7 +12,7 @@ variable {ι : Type} [Fintype ι]
 
 omit [Fintype ι] in
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[qv]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem qv_smul (v : ι → ℚ) (r : ℚ) : qv (r • v) = (r : ℂ) • qv v := by
   ext i; simp [qv]
@@ -22,33 +22,31 @@ open scoped ComplexConjugate Real in
 variable {ι : Type} [Fintype ι] in
 
 /- English proof (translation)
-Introduce `ι _ _ R hR τ hτ hτ' hdet`. Establish `hτS : _root_.GlobalTheory.IsSiegel τ` using `hτ`. Establish `hRc : (R : ℂ) ≠ 0` using `by exact_mod_cast hR.ne'`. Use `set Ω : Matrix ι ι ℂ := ((R ^ 2 : ℕ) : ℂ) • τ with hΩdef`. Establish `hΩ : _root_.GlobalTheory.IsSiegel Ω` using `hτS.natCast_smul (pow_pos hR 2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΩinv : Ω⁻¹ = ((R : ℂ) ^ 2)⁻¹ • τ⁻¹`. Apply `Matrix.inv_eq_left_inv` to reduce the goal to its premises. Rewrite using `[hΩdef, smul_mul_smul_comm, Matrix.nonsing_inv_mul τ hdet]`. Use `push_cast`. Rewrite using `[inv_mul_cancel₀ (pow_ne_zero 2 hRc), one_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `T1 : ∀ (a : ι → ℚ) (ζ : ι → ℂ) (m : ι → ℤ), _root_.GlobalTheory.SW.FourierJ.gs τ ζ (a + (R : ℚ) • _root_.GlobalTheory.SW.FourierJ.zv m) = _root_.GlobalTheory.riemannThetaTerm (fun i => (a i : ℝ) / R) 0 Ω ((R : ℂ) • ζ) m`. Introduce `a ζ m`. Establish `hv : _root_.GlobalTheory.SW.qv (a + (R : ℚ) • _root_.GlobalTheory.SW.FourierJ.zv m) = (R : ℂ) • fun i => ((m i : ℤ) : ℂ) + (((a i : ℝ) / R : ℝ) : ℂ)`. Use function extensionality and compare the values at `i`. Simplify using `only [_root_.GlobalTheory.SW.qv, _root_.GlobalTheory.SW.FourierJ.zv, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [_root_.GlobalTheory.riemannThetaTerm_def, _root_.GlobalTheory.SW.FourierJ.gs, hv, Pi.zero_apply, Complex.ofReal_zero, add_zero]`. Generalize the expression as in `(fun i => ((m i : ℤ) : ℂ) + (((a i : ℝ) / R : ℝ) : ℂ)) = x`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [hΩdef, Matrix.smul_mulVec, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `T2 : ∀ (a : ι → ℚ) (ζ : ι → ℂ) (m : ι → ℤ), _root_.GlobalTheory.SW.FourierJ.ech (a ⬝ᵥ ((R : ℚ)⁻¹ • _root_.GlobalTheory.SW.FourierJ.zv m)) * _root_.GlobalTheory.SW.FourierJ.gs (-τ⁻¹) (ζ ᵥ* τ⁻¹) ((R : ℚ)⁻¹ • _root_.GlobalTheory.SW.FourierJ.zv m) = _root_.GlobalTheory.riemannThetaTe …`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ζ m`. Establish `hv : _root_.GlobalTheory.SW.qv ((R : ℚ)⁻¹ • _root_.GlobalTheory.SW.FourierJ.zv m) = (R : ℂ)⁻¹ • fun i => ((m i : ℤ) : ℂ)`. Use function extensionality and compare the values at `i`. Simplify using `[_root_.GlobalTheory.SW.qv, _root_.GlobalTheory.SW.FourierJ.zv]`. Establish `hsymm : ζ ᵥ* τ⁻¹ = τ⁻¹ *ᵥ ζ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.mulVec_transpose, hτS.isSymm.inv.eq]`. Establish `hq : (((a ⬝ᵥ ((R : ℚ)⁻¹ • _root_.GlobalTheory.SW.FourierJ.zv m) : ℚ)) : ℂ) = (fun i => ((m i : ℤ) : ℂ)) ⬝ᵥ fun i => (((a i : ℝ) / R : ℝ) : ℂ)`. Simplify using `only [dotProduct, Pi.smul_apply, _root_.GlobalTheory.SW.FourierJ.zv, smul_eq_mul]`. Use `push_cast`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsplit : (fun i => (Ω⁻¹ *ᵥ ((R : ℂ) • ζ)) i + (((a i : ℝ) / R : ℝ) : ℂ)) = Ω⁻¹ *ᵥ ((R : ℂ) • ζ) + fun i => (((a i : ℝ) / R : ℝ) : ℂ)` using `rfl`. Simplify using `only [_root_.GlobalTheory.riemannThetaTerm_def, Pi.zero_apply, Complex.ofReal_zero, add_zero, hsplit]`. Rewrite using `[_root_.GlobalTheory.SW.FourierJ.gs, _root_.GlobalTheory.SW.FourierJ.ech, ← Complex.exp_add, hv, hsymm, hq]`. Generalize the expression as in `(fun i => ((m i : ℤ) : ℂ)) = x`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hΩinv, Matrix.neg_mulVec, Matrix.smul_mulVec, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, dotProduct_neg, dotProduct_add, smul_eq_mul]`. Apply the tactic sequence `first | (field_simp; ring) | field_simp | ring`. Use `⟨_root_.GlobalTheory.siegelGaussIntegral Ω, ?_, fun a ζ => ?_⟩` and prove the remaining obligations. Establish `h` using `hΩ.siegelGaussIntegral_sq_mul_det`. Rewrite `h` using `[hΩdef, smul_smul, Matrix.det_smul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[show ((-I) * (R : ℂ) ^ 2) = -I * ((R ^ 2 : ℕ) : ℂ) by push_cast; ring]`. Conclude with `h`. Establish `hS1` using `hΩ.summable_norm_riemannThetaTerm (fun i => (a i : ℝ) / R) 0 ((R : ℂ) • ζ)`. Establish `hS2` using `hΩ.neg_inv.summable_norm_riemannThetaTerm 0 (fun i => (a i : ℝ) / R) (Ω⁻¹ *ᵥ ((R : ℂ) • ζ))`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hS1.congr fun m => by rw [T1]`. Use `hS2.congr fun m => ?_` and prove the remaining obligations. Rewrite using `[← T2, norm_mul, _root_.GlobalTheory.SW.FourierJ.norm_ech, one_mul]`. Establish `e1 : ∑' m : ι → ℤ, _root_.GlobalTheory.SW.FourierJ.gs τ ζ (a + (R : ℚ) • _root_.GlobalTheory.SW.FourierJ.zv m) = _root_.GlobalTheory.riemannTheta (fun i => (a i : ℝ) / R) 0 Ω ((R : ℂ) • ζ)`. Rewrite using `[_root_.GlobalTheory.riemannTheta_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `tsum_congr fun m => T1 a ζ m`. Establish `e2 : ∑' m : ι → ℤ, _root_.GlobalTheory.SW.FourierJ.ech (a ⬝ᵥ ((R : ℚ)⁻¹ • _root_.GlobalTheory.SW.FourierJ.zv m)) * _root_.GlobalTheory.SW.FourierJ.gs (-τ⁻¹) (ζ ᵥ* τ⁻¹) ((R : ℚ)⁻¹ • _root_.GlobalTheory.SW.FourierJ.zv m) = _root_.GlobalTheory.riemannTheta 0 (fun i => (a i : ℝ) / R) …`. Rewrite using `[_root_.GlobalTheory.riemannTheta_def]`. Conclude with `tsum_congr fun m => T2 a ζ m`. Establish `hw : (R : ℂ) • ζ ⬝ᵥ Ω⁻¹ *ᵥ ((R : ℂ) • ζ) = ζ ⬝ᵥ τ⁻¹ *ᵥ ζ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hΩinv]`. Simplify using `only [Matrix.smul_mulVec, Matrix.mulVec_smul, dotProduct_smul, smul_dotProduct, smul_eq_mul]`. Apply the tactic sequence `first | (field_simp; ring) | field_simp`. Rewrite using `[e1, e2, hΩ.riemannTheta_eq_neg_inv, hw]`. Establish `hexp : cexp (π * I * (ζ ⬝ᵥ τ⁻¹ *ᵥ ζ)) * cexp (-(π * I) * (ζ ⬝ᵥ τ⁻¹ *ᵥ ζ)) = 1`.
-
-Rewrite using `[← Complex.exp_add, ← Complex.exp_zero]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(_root_.GlobalTheory.siegelGaussIntegral Ω * _root_.GlobalTheory.riemannTheta 0 (fun i => (a i : ℝ) / R) (-Ω⁻¹) (Ω⁻¹ *ᵥ ((R : ℂ) • ζ))) * hexp`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.SW.FourierJ.Row.poisson_class : ∀ (ι : Type) [Fintype ι] [DecidableEq ι]
     (R : ℕ), 0 < R → ∀ τ ∈ _root_.GlobalTheory.SW.Siegel ι, -τ⁻¹ ∈ _root_.GlobalTheory.SW.Siegel ι →

@@ -12,9 +12,9 @@ namespace GlobalTheory.Mem.Top.Bl
 open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.Inhab Formalism.L2.Host GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Mem GlobalTheory.Mem.Col2 GlobalTheory.Mem.Top GlobalTheory.Mem.Top.GroupRetwisting NumberField IsDedekindDomain
 
 /- English proof (translation)
-Use `choose Z hZ gZ using fun (B : Pre) (Ξ : Set (HChar B.host.E)) => InEx.exists_holds 1 Ξ`. Use `⟨fun _ _ _ => ∅, fun _ _ _ _ => ∅, fun _ _ _ _ _ => ∅, fun B _ _ _ Ξ => Z B Ξ, by simp, fun B _ _ _ Ξ => hZ B Ξ, fun B f T _ hH _ _ => ?_⟩` and prove the remaining obligations. Establish `hf` using `(TwFin.tw_fin B f T).1`. Establish `ht` using `InEx.isTwist_of_mem_set B f T`. Establish `h2 : ∀ z ∈ Z B.toPre (T.set f), ∃ x, B.embLL x = z` using `fun z hz => B.mem_LLC.1 (hH.2 z hz)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hold` using `fun ξ hξ => gZ B.toPre _ hf B.LL B.embLL h2 ξ hξ (ht ξ hξ).1`. Use `⟨fun ξ hξ P => RingHom.mem_range.1 ((hold ξ hξ).1 _), fun ξ hξ P hP => ?_⟩` and prove the remaining obligations. Take `⟨ζ, hζ⟩` from `((hold ξ hξ).2 P hP).2`. Conclude with `⟨ζ, by simpa using hζ⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lg_vals_roots (K : Ctx) : large₂ K fun B f T =>
     (∀ ξ ∈ T.set f, ∀ P, ∃ z : B.LL, B.embLL z = ((ξ.val P : ℂˣ) : ℂ)) ∧
@@ -31,13 +31,13 @@ theorem lg_vals_roots (K : Ctx) : large₂ K fun B f T =>
   exact ⟨ζ, by simpa using hζ⟩
 
 /- English proof (translation)
-Use `EvG.imp ((evG_of_ev (ev_preX_frame h2b)).inter (evG_of_ev TwEx.evLg_canonical)) fun K _ _ _ _ H => ?_` and prove the remaining obligations. Use `((H.2.inter (InEx.lg_colIn K)).inter (lg_vals_roots K)).imp ?_` and prove the remaining obligations. Introduce and unpack `B f T hO ⟨⟨hc, hl⟩, hv, hr⟩ ⟨⟨δ, hδ⟩, hp⟩ - -`. Take `⟨X₀⟩` from `(H.1 _ hO).1`. Take `⟨Pv, d, hsel, habove, hhalf, hd1, hd2⟩` from `exists_half_selection_split_places B`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨X, I, a1, pins, ht, hj, es, a2, a3, a4, -⟩` from `hc hp ⟨X₀⟩ Pv hsel`. Establish `hxi : ∀ a, I.xi a ∈ T.set f` using `fun a => a4 ▸ ⟨a, rfl⟩`. Use `⟨⟨X, I, a1, a2, a3, a4, pins, TrueColsTest.laws a1, TrueColsTest.law0 a1 _, δ, hδ, hl.2.2, hl.2.1⟩, ⟨?_⟩⟩` and prove the remaining obligations. Use `{ isTw := ht jets := hj hX := FieldsLaws.fields_ok B above := fun v => es ▸ habove v half := es ▸ hhalf d3b := d selectedPlacesAgree := ⟨fun v hv => es ▸ hd1 v hv, fun v hv => es ▸ hd2 v hv⟩ vals := fun a P _ => hv _ (hxi a) P roots := fun a P hP => ?_ }` and prove the remaining obligations. Establish `htw : Chr.IsTwist B.host I.S (I.xi a)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[a3]`. Conclude with `InEx.isTwist_of_mem_set B f T _ (hxi a)`. Take `⟨P', h1, h2⟩` from `InEx.exists_ram_of_mem_QE B (es ▸ hsel) (I.tup a) htw (a1.xi_reads a) hP`. Take `⟨ζ, hζ⟩` from `hr _ (hxi a) P' h1`. Use `⟨ζ, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.cardQuot_apply, ← Ideal.absNorm_apply, h2]`. Conclude with `hζ`.
+A detailed English derivation is pending.
 -/
 theorem step_colW_pinned (h2b : StandardLattice.SiegelMassRatioCM) :
     Step KPx (fun _ _ _ _ => True) fun K B f T => ∃ w : ColW B f T, Pinned K B f T w := by

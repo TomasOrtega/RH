@@ -10,13 +10,11 @@ namespace GlobalTheory.FlatLine
 open IntermediateField in
 
 /- English proof (translation)
-Establish `hb : IsIntegral K b` using `(isAlgebraic_of_norm_const P₀ fun P => by rw [h P, h P₀]).isIntegral`. Use `haveI : FiniteDimensional K K⟮b⟯ := adjoin.finiteDimensional hb`. Establish `key : ∀ ψ : K⟮b⟯ →ₐ[K] ℂ, ψ (AdjoinSimple.gen K b) = a` using `fun ψ => by`. Use `letI : Algebra K⟮b⟯ ℂ := ψ.toRingHom.toAlgebra`. Take `⟨Q⟩` from `GlobalTheory.nonempty_algHom_complex_of_countable K⟮b⟯ Ω`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `P : Ω →ₐ[K] ℂ` to `{ Q.toRingHom with commutes' := fun k => (Q.commutes (algebraMap K K⟮b⟯ k)).trans (ψ.commutes k) }`. Rewrite using `[← h P]`. Conclude with `(Q.commutes (AdjoinSimple.gen K b)).symm`. Establish `hsub : Subsingleton (K⟮b⟯ →ₐ[K] ℂ)` using `⟨fun ψ χ => (adjoin.powerBasis hb).algHom_ext (by rw [adjoin.powerBasis_gen, key, key])⟩`. Establish `h1 : Module.finrank K K⟮b⟯ = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `AlgHom.card K K⟮b⟯ ℂ`. Establish `h3 : Fintype.card (K⟮b⟯ →ₐ[K] ℂ) ≤ 1` using `Fintype.card_le_one_iff_subsingleton.2 hsub`. Establish `h4 : 0 < Module.finrank K K⟮b⟯` using `Module.finrank_pos`. Use linear arithmetic over natural numbers and integers. Take `⟨k, hk⟩` from `mem_bot.1 (finrank_adjoin_simple_eq_one_iff.1 h1)`.
-
-Conclude with `⟨k, by rw [← h P₀, ← hk, P₀.commutes]⟩`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_range_of_embeddings_const {K Ω : Type} [Field K] [CharZero K] [Field Ω] [Countable Ω] [Algebra K Ω]
     [Algebra K ℂ] (P₀ : Ω →ₐ[K] ℂ) {b : Ω} {a : ℂ} (h : ∀ P : Ω →ₐ[K] ℂ, P b = a) :
@@ -44,15 +42,15 @@ theorem mem_range_of_embeddings_const {K Ω : Type} [Field K] [CharZero K] [Fiel
 open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor ReciprocityTheory.ChartRestriction.G.FD Formalism.L2.Pj GlobalTheory.AllWt
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U hσ hU h1 g hg a ha`. Take `⟨hL, -, h, -⟩` from `GlobalTheory.Reg.evLaws_genFr_atlas E H Dw l Xo c`. Take `⟨Z⟩` from `(GlobalTheory.GeomIrr.compNe_and_exists_fnAlgClosed E H Dw l Xo c h1).1`. Take `⟨⟨P₀⟩, hP⟩` from `GlobalTheory.GenericReading.embedding_read_at_frame E H Dw l Xo c σ r U hσ hU h Z`. Establish `hi` using `idem_mem_secZ Z`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `hi` using `[secZ_zero_eq]`. Establish `key : ∀ P : Om Z →ₐ[c.F] CAt σ, toC (P (evC h Z g)) = a` using `fun P => by`. Take `⟨k, x, y', t, hm, ht⟩` from `hP P`. Take `⟨w, -, hw⟩` from `GlobalTheory.CompBij.rdU_eq_of_reads U h k Z x P y' t hm ht 0 0`. Establish `hz : (⟨k, x.1⟩ : Σ k, Frame (U.X k).Ψ r) ∈ framesOn U Z` using `⟨x.2, liesOn_frBor ht (liesOn_frMap hm (liesOn_genFr h Z))⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `hw _ hi`. Establish `h2 : rdU U (idem Z) k x = 1`. Simplify using `only [rdU, LinearMap.coe_mk, AddHom.coe_mk, x.2, dif_pos]`. Conclude with `evR_idem (S := CAt σ) hz.2 (haveI : IsReduced (CAt σ) := inferInstanceAs (IsReduced ℂ); hL.test _ _)`. Establish `h3 : evC h Z (idem Z) = 1` using `evR_idem (liesOn_genFr h Z) (hL.test _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[h2, h3, map_one, mul_one]`. Rewrite using `[← hw g hg, h1]`. Conclude with `(one_mul _).trans (ha k x x.2)`. Establish `hfin : FiniteDimensional ℚ c.F` using `c.fin`. Establish `hcF : Countable c.F` using `Cardinal.mk_le_aleph0_iff.1 (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `Algebra.IsAlgebraic.cardinalMk_le_max ℚ c.F)` using `[Cardinal.mkRat]`. Use `haveI hk : Countable (kap Z) := GlobalTheory.GenericReading.countable_of_fg_top ((GlobalTheory.Reg.kap_fg_trdeg E H Dw l Xo c).1 Z)`. Establish `hO : Countable (Om Z)` using `GlobalTheory.GenericReading.countable_fractionRing_mvPolynomial _ _`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`. Conclude with `mem_range_of_embeddings_const (K := c.F) (b := evC h Z g) P₀ key`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem const_value_mem_range : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E]
     (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l)

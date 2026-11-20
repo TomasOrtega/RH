@@ -5,11 +5,11 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry ReciprocityTheory.Ch
 namespace GlobalTheory.CompanionTheory.ClosedFibre
 
 /- English proof (translation)
-Introduce `R _ I hI X hX Z hZ h`. Use `haveI := hI`. Use `haveI := hX`. Assume the negation of the conclusion as `hne`. Take `⟨x, hx⟩` from `Set.nonempty_iff_ne_empty.mpr hne`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hcl : IsClosed (X.hom.base '' Z)` using `X.hom.isClosedMap _ hZ`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal (X.hom.base x).asIdeal (X.hom.base x).isPrime.ne_top`. Set `q : PrimeSpectrum R` to `⟨m, hm.isPrime⟩`. Establish `hsp : (X.hom.base x) ⤳ q` using `(PrimeSpectrum.le_iff_specializes _ _).mp hle`. Establish `hq : q ∈ X.hom.base '' Z` using `hsp.mem_closed hcl ⟨x, hx, rfl⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨y, hy, hyq⟩` from `hq`. Apply `h y hy` to reduce the goal to its premises. Rewrite using `[hyq]`. Conclude with `(IsAdicComplete.le_jacobson_bot (I := I)).trans (sInf_le ⟨bot_le, hm⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem closed_missing_closedFibre_empty : ∀ (R : Type) [CommRing R] (I : Ideal R), IsAdicComplete I R →
   ∀ (X : Over (Spec (CommRingCat.of R))), UniversallyClosed X.hom →

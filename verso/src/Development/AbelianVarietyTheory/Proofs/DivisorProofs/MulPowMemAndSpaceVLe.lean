@@ -15,11 +15,11 @@ namespace GlobalTheory.HSCore
 variable {K : Type} [Field K] [NumberField K]
 
 /- English proof (translation)
-Establish `hne : β.1 ≠ 0` using `fun h0 => by`. Use `β.2` as an intermediate fact. Rewrite `this` using `[h0, Finsupp.degree_eq_sum]`. Simplify using `at this`. Take `⟨i, hi⟩` from `Finsupp.ne_iff.1 hne`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hle : Finsupp.single i 1 ≤ β.1`. Rewrite using `[Finsupp.single_le_iff]`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply] at hi`. Use linear arithmetic over natural numbers and integers. Establish `e : β.1 = (β.1 - Finsupp.single i 1) + Finsupp.single i 1` using `(tsub_add_cancel_of_le hle).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use `⟨i, ⟨β.1 - Finsupp.single i 1, ?_⟩, e⟩` and prove the remaining obligations. Establish `h2` using `β.2`. Rewrite `h2` using `[e, Finsupp.degree_eq_sum, Finset.sum_congr rfl (fun x _ => Finsupp.add_apply _ _ x), Finset.sum_add_distrib, ← Finsupp.degree_eq_sum, ← Finsupp.degree_eq_sum, Finsupp.degree_single]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem monoDeg_succ_split {ι : Type} [Fintype ι] {a : ℕ} (β : MonoDeg ι (a + 1)) :
     ∃ (i : ι) (α : MonoDeg ι a), β.1 = α.1 + Finsupp.single i 1 := by
@@ -40,15 +40,13 @@ theorem monoDeg_succ_split {ι : Type} [Fintype ι] {a : ℕ} (β : MonoDeg ι (
   omega
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `zero`. Introduce `j l h _ α m hm`. Substitute `h` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality.
 
-Establish `: mulPow X.toGeo s (rfl : j + 0 = j + 0) α m = m`. Unfold `mulPow`. Conclude with `mulMono_zero _ _ _ _ _ _`. Rewrite using `[this]`. Conclude with `hm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ a ih`. Introduce `j l h hl β m hm`. Substitute `h` using the available equality. Take `⟨i, α, e⟩` from `monoDeg_succ_split β`. Establish `hk : j + a < X.T` using `by omega`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Establish `key : mulPow X.toGeo s (rfl : j + (a + 1) = j + (a + 1)) β m = X.mulW (j + a) (s i) (mulPow X.toGeo s (rfl : j + a = j + a) α m)`. Unfold `mulPow`. Rewrite using `[Geo.mulW_apply]`. Conclude with `mulMono_succ _ _ _ α β i e _ _ _ m`. Rewrite using `[key]`.
-
-Conclude with `hX.mem hk (s i) ⟨_, ih j (j + a) rfl (by omega) α m hm⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulPow_mem (X : Data K) (s : Fin X.D → Fin X.N → K) (hX : X.MulStable) :
     ∀ (a j l : ℕ) (h : j + a = l), l ≤ X.T → ∀ (α : MonoDeg (Fin X.D) a), ∀ m ∈ X.V j,
@@ -77,7 +75,7 @@ theorem mulPow_mem (X : Data K) (s : Fin X.D → Fin X.N → K) (hX : X.MulStabl
     exact hX.mem hk (s i) ⟨_, ih j (j + a) rfl (by omega) α m hm⟩
 
 /- English proof (translation)
-Introduce `K _ _ X s hX`. Use `⟨mulPow_mem X s hX, ?_⟩` and prove the remaining obligations. Use `sup_le (X.global_le X.T le_rfl) (iSup_le fun α => ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨m, hm, rfl⟩`. Conclude with `mulPow_mem X s hX _ _ _ _ le_rfl α m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mulPow_mem_and_spaceV_le : ∀ (K : Type) [Field K] [NumberField K] (X : Data K) (s : Fin X.D → Fin X.N → K),
     X.MulStable → (∀ (a j l : ℕ) (h : j + a = l), l ≤ X.T → ∀ (α : MonoDeg (Fin X.D) a), ∀ m ∈ X.V j,

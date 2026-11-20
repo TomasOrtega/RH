@@ -5,9 +5,9 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `Ω Ω₁ Ω₂ _ _ _ i₁ i₂`. Use `letI : Algebra Ω Ω₁ := i₁.toAlgebra`. Use `letI : Algebra Ω Ω₂ := i₂.toAlgebra`. Use `haveI : Nontrivial (Ω₁ ⊗[Ω] Ω₂) := inferInstance`. Take `⟨m, hm⟩` from `Ideal.exists_maximal (Ω₁ ⊗[Ω] Ω₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(Ω₁ ⊗[Ω] Ω₂) ⧸ m, Ideal.Quotient.field m, (Ideal.Quotient.mk m).comp (Algebra.TensorProduct.includeLeftRingHom), (Ideal.Quotient.mk m).comp (Algebra.TensorProduct.includeRight (R := Ω) (A := Ω₁) (B := Ω₂)).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Establish `h : (algebraMap Ω Ω₁ x) ⊗ₜ[Ω] (1 : Ω₂) = (1 : Ω₁) ⊗ₜ[Ω] (algebraMap Ω Ω₂ x)`. Rewrite using `[Algebra.algebraMap_eq_smul_one, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Conclude with `congrArg (Ideal.Quotient.mk m) h`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common_field_extension :
     ∀ (Ω Ω₁ Ω₂ : Type) [Field Ω] [Field Ω₁] [Field Ω₂] (i₁ : Ω →+* Ω₁) (i₂ : Ω →+* Ω₂),

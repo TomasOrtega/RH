@@ -11,7 +11,7 @@ namespace Formalism.HermitianLattices.Ext.L3
 namespace C2
 
 /- English proof (translation)
-Proceed by induction on `k, hk using Nat.le_induction with`. Consider the case `base => simp`. Consider the case `succ n hn ih`. Rewrite using `[h n hn, ih, show n + 1 - 1 = (n - 1) + 1 by omega, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem geom_of_step (c : ℕ → ℕ) (a : ℕ) (h : ∀ k, 1 ≤ k → c (k + 1) = a * c k) (k : ℕ)
     (hk : 1 ≤ k) : c k = a ^ (k - 1) * c 1 := by
@@ -22,7 +22,7 @@ theorem geom_of_step (c : ℕ → ℕ) (a : ℕ) (h : ∀ k, 1 ≤ k → c (k + 
     ring
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Rewrite using `[geom_of_step c (q ^ N) h (j + 1) hk]`. Use `push_cast`. Rewrite using `[h1]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cast_geom (c : ℕ → ℕ) (q N : ℕ) (X : ℝ) (h : ∀ k, 1 ≤ k → c (k + 1) = q ^ N * c k)
     (h1 : (c 1 : ℝ) = (q : ℝ) ^ N * X) (k : ℕ) (hk : 1 ≤ k) :
@@ -34,7 +34,7 @@ theorem cast_geom (c : ℕ → ℕ) (q N : ℕ) (X : ℝ) (h : ∀ k, 1 ≤ k �
   ring
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j, M = j + 1` from `⟨M - 1, by omega⟩`. Rewrite using `[show 2 * (j + 1) - 1 = 2 * j + 1 by omega, Nat.add_sub_cancel, zpow_neg]`. Rewrite using `[show ((j + 1 : ℕ) : ℤ) = ((j + 1 : ℕ) : ℤ) from rfl, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inert_alg (q : ℝ) (hq : q ≠ 0) (M : ℕ) (hM : 1 ≤ M) :
     q ^ (M - 1) * (q ^ M - (-1) ^ M) = q ^ (2 * M - 1) * (1 - (-1 : ℝ) ^ M * q ^ (-(M : ℤ))) := by
@@ -45,7 +45,7 @@ theorem inert_alg (q : ℝ) (hq : q ≠ 0) (M : ℕ) (hM : 1 ≤ M) :
   ring
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j, M = j + 1` from `⟨M - 1, by omega⟩`. Rewrite using `[show 2 * (j + 1) - 1 = 2 * j + 1 by omega, Nat.add_sub_cancel, zpow_neg]`. Rewrite using `[show ((j + 1 : ℕ) : ℤ) = ((j + 1 : ℕ) : ℤ) from rfl, zpow_natCast]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem split_alg (q : ℝ) (hq : q ≠ 0) (M : ℕ) (hM : 1 ≤ M) :
     q ^ (2 * M - 1) - q ^ (M - 1) = q ^ (2 * M - 1) * (1 - q ^ (-(M : ℤ))) := by
@@ -58,19 +58,17 @@ theorem split_alg (q : ℝ) (hq : q ≠ 0) (M : ℕ) (hM : 1 ≤ M) :
 end C2
 
 /- English proof (translation)
-Introduce `K _ _ _ hK P hP M k hM hk n hn hnP`. Establish `hPbot : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField K)`. Establish `hN0 : Ideal.absNorm P ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hPbot`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hc`. Take `⟨q, hq⟩` from `exists_sq_absNorm_of_inert hK hP hc`. Establish `hq0 : (q : ℝ) ≠ 0`. Introduce `h0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1 : q = 0` using `by exact_mod_cast h0`. Rewrite `hq` using `[h1]`. Conclude with `hN0 (by simpa using hq)`. Establish `hsq : Real.sqrt (Ideal.absNorm P : ℝ) = q`. Rewrite using `[hq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Conclude with `Real.sqrt_sq (Nat.cast_nonneg q)`. Rewrite using `[hsq]`. Establish `h1 : ((normRepCount K (P ^ 1) M n : ℕ) : ℝ) = (q : ℝ) ^ (2 * M - 1) * (1 - (-1 : ℝ) ^ M * (q : ℝ) ^ (-(M : ℤ)))`. Rewrite using `[pow_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `normRepCount_inert_one hK hP hc M hM n hn hnP q hq`. Establish `h2 : ((normRepCount K P M n : ℕ) : ℝ) = (q : ℝ) ^ (M - 1) * ((q : ℝ) ^ M - (-1) ^ M)`. Conclude with `h3` after adjusting the coercions. Rewrite using `[h2, C2.inert_alg _ hq0 M hM]`. Conclude with `C2.cast_geom (fun j => normRepCount K (P ^ j) M n) q (2 * M - 1) _ (fun j hj => normRepCount_pow_succ_inert hK hP hc M j hM hj n hn hnP q hq) h1 k hk`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `hc`. Establish `hN : ((Ideal.absNorm P : ℕ) : ℝ) ≠ 0` using `by exact_mod_cast hN0`. Establish `h1 : ((normRepCount K ((P * Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P) ^ 1) M n : ℕ) : ℝ) = (Ideal.absNorm P : ℝ) ^ (2 * M - 1) * (1 - (Ideal.absNorm P : ℝ) ^ (-(M : ℤ))) := by`. Rewrite using `[pow_one]`. Establish `h3` using `normRepCount_split_one hK hP hc M hM n hn hnP`.
-
-Establish `h2 : ((normRepCount K (P * Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P) M n : ℕ) : ℝ) = (Ideal.absNorm P : ℝ) ^ (2 * M - 1) - (Ideal.absNorm P : ℝ) ^ (M - 1) := by`. Conclude with `h3` after adjusting the coercions. Rewrite using `[h2, C2.split_alg _ hN M hM]`. Conclude with `C2.cast_geom (fun j => normRepCount K ((P * Formalism.HermitianLatticesTheory.conjIdeal (K := K) P) ^ j) M n) (Ideal.absNorm P) (2 * M - 1) _ (fun j hj => normRepCount_pow_succ_split hK hP hc M j hM hj n hn hnP) h1 k hk`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem localDensity : LocalDensity := by
   intro K _ _ _ hK P hP M k hM hk n hn hnP
@@ -117,7 +115,7 @@ theorem localDensity : LocalDensity := by
 variable {K : Type} [Field K] [NumberField K] [StarRing K]
 
 /- English proof (translation)
-Rewrite using `[(localDensity K hK P hP M k hM hk n hn hnP).1 hc, Formalism.HermitianLatticesTheory.eulerFac, if_pos hc, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem normRepCount_eq_eulerFac_inert (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)}
     (hP : P.IsMaximal) (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P) (M k : ℕ) (hM : 1 ≤ M)
@@ -127,11 +125,11 @@ theorem normRepCount_eq_eulerFac_inert (hK : Formalism.HermitianLatticesTheory.I
   rw [(localDensity K hK P hP M k hM hk n hn hnP).1 hc, Formalism.HermitianLatticesTheory.eulerFac, if_pos hc, inv_inv]
 
 /- English proof (translation)
-Establish `hc' : Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) (Formalism.HermitianLatticesTheory.conjIdeal (K := K) P) ≠ Formalism.HermitianLatticesTheory.conjIdeal (K := K) P := fun h => hc ((conjIdeal_conjIdeal hK P).symm.trans h).symm`. Establish `hPbot : P ≠ ⊥` using `Ring.ne_bot_of_isMaximal_of_not_isField hP (RingOfIntegers.not_isField K)`. Establish `hN0 : Ideal.absNorm P ≠ 0`. Rewrite using `[Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `hPbot`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hN1 : Ideal.absNorm P ≠ 1`. Rewrite using `[Ne, Ideal.absNorm_eq_one_iff]`. Conclude with `hP.ne_top`. Establish `hN2 : (1 : ℝ) < (Ideal.absNorm P : ℝ)`. Establish `: 2 ≤ Ideal.absNorm P` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(by omega : 1 < Ideal.absNorm P)` after adjusting the coercions. Establish `hx : 0 < 1 - (Ideal.absNorm P : ℝ) ^ (-(M : ℤ))`. Rewrite using `[zpow_neg, zpow_natCast, sub_pos]`. Conclude with `inv_lt_one_of_one_lt₀ (one_lt_pow₀ hN2 (by omega))`. Rewrite using `[(localDensity K hK P hP M k hM hk n hn hnP).2 hc, Formalism.HermitianLatticesTheory.eulerFac, Formalism.HermitianLatticesTheory.eulerFac, if_neg hc, if_neg hc', absNorm_conjIdeal hK, ← Real.rpow_add hx, show (-(1 : ℝ) / 2 + -(1 : ℝ) / 2) = -1 by norm_num, Real.rpow_neg_one, inv_ …`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem normRepCount_eq_eulerFac_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) {P : Ideal (𝓞 K)}
     (hP : P.IsMaximal) (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P ≠ P) (M k : ℕ) (hM : 1 ≤ M)

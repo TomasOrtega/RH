@@ -12,9 +12,9 @@ section
 variable {E : Type} [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[DiscreteGroups.sglob.DzType.diag_conj_apply, mul_right_comm, ← Units.val_mul, ← _root_.zpow_sub, ← mul_sub, mul_sub ((ϖ ^ _ : Eˣ) : E)]`. Use `congr 1`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.one_apply_ne h]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem conj_sub (ϖ : Eˣ) (c : ℤ) (g : GL (Fin n) E) (i j : Fin n) :
     ((diagT E (Fin n) (fun i => ϖ ^ (c * (i : ℕ))) * g * (diagT E (Fin n) (fun i => ϖ ^ (c * (i : ℕ))))⁻¹ : GL (Fin n) E) :
@@ -27,7 +27,7 @@ private theorem conj_sub (ϖ : Eˣ) (c : ℤ) (g : GL (Fin n) E) (i j : Fin n) :
   · simp [Matrix.one_apply_ne h]
 
 /- English proof (translation)
-Use `forall_congr' fun i => forall_congr' fun j => ?_` and prove the remaining obligations. Rewrite using `[conj_sub, add_comm a, _root_.zpow_add, Units.val_mul, map_mul, map_mul, Matrix.sub_apply]`. Conclude with `mul_le_mul_iff_right₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (Units.ne_zero _)))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem conj_mem (ϖ : Eˣ) (a c : ℤ) (g : GL (Fin n) E) :
     diagT E (Fin n) (fun i => ϖ ^ (c * (i : ℕ))) * g * (diagT E (Fin n) (fun i => ϖ ^ (c * (i : ℕ))))⁻¹ ∈ howeSet n ϖ a c ↔
@@ -37,9 +37,9 @@ private theorem conj_mem (ϖ : Eˣ) (a c : ℤ) (g : GL (Fin n) E) :
   exact mul_le_mul_iff_right₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (Units.ne_zero _)))
 
 /- English proof (translation)
-Simplify using `only [GlobalTheory.Whittaker.superDiag, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Establish `h` using `(Finset.mem_filter.1 hj).2`. Rewrite using `[DiscreteGroups.sglob.DzType.diag_conj_apply, mul_right_comm, ← Units.val_mul, ← _root_.zpow_sub, h]`. Use `congr 3`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem conj_sd (ϖ : Eˣ) (c : ℤ) (g : GL (Fin n) E) :
     GlobalTheory.Whittaker.superDiag (diagT E (Fin n) (fun i => ϖ ^ (c * (i : ℕ))) * g * (diagT E (Fin n) (fun i => ϖ ^ (c * (i : ℕ))))⁻¹) =
@@ -53,7 +53,7 @@ private theorem conj_sd (ϖ : Eˣ) (c : ℤ) (g : GL (Fin n) E) :
   ring
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((ψ _ : Circle) : ℂ) = _`. Use `congr 2`. Simplify using `only [GlobalTheory.Whittaker.superDiag, Finset.sum_filter]`. Conclude with `Fintype.sum_prod_type _`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem whit_eq (ψ : AddChar E Circle) (u : unipB E (Fin n)) :
     ((GlobalTheory.LocGL.whitChar ψ n u : ℂˣ) : ℂ) = (ψ (GlobalTheory.Whittaker.superDiag (u : GL (Fin n) E)) : ℂ) := by
@@ -65,21 +65,19 @@ private theorem whit_eq (ψ : AddChar E Circle) (u : unipB E (Fin n)) :
 end
 
 /- English proof (translation)
-Introduce `E _ _ _ _ n V _ _ π hs ϖ hϖ a c ha ψ hψ v hv hk`. Take `⟨J, hJ, ho, hc⟩` from `howeGroup E n ϖ hϖ a c ha`. Establish `hmem : ∀ x, x ∈ J ↔ x ∈ howeSet n ϖ a c` using `fun x => by rw [← hJ]; rfl`. Use `eq_zero_of_no_intertwining hs J (unipB E (Fin n)) hc ho DiscreteGroups.sglob.DzType.exists_compact_unip (fun x => (ψ (GlobalTheory.Whittaker.superDiag x) : ℂ)) (howeChar E n ϖ hϖ a c ha ψ hψ).1.continuous (fun x hx y hy => ?_) (fun u hu hn => ?_) v (fun k h => hv k ((hmem k).1 h) …` and prove the remaining obligations. Use `congrArg Units.val (map_mul (GlobalTheory.LocGL.whitChar ψ n) ⟨x, hx⟩ ⟨y, hy⟩)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[Units.val_mul, whit_eq, whit_eq, whit_eq]`. Then use the resulting hypothesis. Take `⟨d, hd⟩ : ∃ d, d = diagT E (Fin n) (fun i => ϖ ^ (c * (i : ℕ)))` from `⟨_, rfl⟩`. Establish `hu' : d⁻¹ * u * d ∈ unipB E (Fin n)`. Establish `e : diagT E (Fin n) (fun i => (ϖ ^ (c * (i : ℕ)))⁻¹) = d⁻¹` using `by rw [hd, ← map_inv]; rfl`. Use `DiscreteGroups.sglob.DzType.diag_conj_mem_unipB (fun i => (ϖ ^ (c * (i : ℕ)))⁻¹) hu` as an intermediate fact.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[e, inv_inv]`. Then use the resulting hypothesis. Establish `hp : valuation E ((ϖ ^ a : Eˣ) : E) < 1`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, hϖ]`. Conclude with `zpow_lt_one₀ (zero_lt_iff.2 uniformizer_ne_zero) uniformizer_lt_one (by omega)`. Take `⟨k, h1, h2, h3⟩` from `not_intertwine (ϖ ^ a) hp (ψ.mulShift ((ϖ ^ (-c) : Eˣ) : E)) (fun x hx => by`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : 0 < valuation E ((ϖ ^ (-c) : Eˣ) : E)` using `zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 (Units.ne_zero _))`. Establish `h4 : ¬ valuation E (((ϖ ^ (-c) : Eˣ) : E) * x) ≤ valuation E ((ϖ ^ (2 * a - c) : Eˣ) : E)`. Rewrite using `[show 2 * a - c = -c + (a + a) by ring, _root_.zpow_add, _root_.zpow_add, Units.val_mul, Units.val_mul, map_mul, map_mul _ ((ϖ ^ (-c) : Eˣ) : E), mul_le_mul_iff_right₀ h0]`. Conclude with `not_le.2 hx`. Rewrite `h4` using `[← hψ]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `push Not at h4`. Take `⟨y, h5, h6⟩` from `h4`. Use `⟨((ϖ ^ (-c) : Eˣ) : E)⁻¹ * y, ?_, by rwa [AddChar.mulShift_apply, mul_inv_cancel_left₀ (Units.ne_zero _)]⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_inv₀, inv_mul_le_iff₀ h0, ← map_mul]) (d⁻¹ * u * d) hu' fun h => hn (by` and apply the resulting hypothesis. Use `(conj_mem ϖ a c _).2 h` as an intermediate fact.
+Rewrite the hypotheses and the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `this` using `[← hd, show d * (d⁻¹ * u * d) * d⁻¹ = u by group]`. Conclude with `(hmem u).2 this)`. Establish `e : u * (d * k * d⁻¹) * u⁻¹ = d * (d⁻¹ * u * d * k * (d⁻¹ * u * d)⁻¹) * d⁻¹` using `by group`. Use `⟨d * k * d⁻¹, (hmem _).2 (hd ▸ (conj_mem ϖ a c k).2 h1), ?_, fun h => h3 (Circle.ext ?_)⟩` and prove the remaining obligations. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules.
 
-Generalize the expression as in `d⁻¹ * u * d * k * (d⁻¹ * u * d)⁻¹ = z at h2`. Conclude with `(hmem _).2 (hd ▸ (conj_mem ϖ a c z).2 h2)`. Rewrite `h` using `[e]`. Generalize the expression as in `d⁻¹ * u * d * k * (d⁻¹ * u * d)⁻¹ = z at h`. Simplify using `only [hd, conj_sd] at h`.
-
-Conclude with `h`. Introduce and unpack `w ⟨u, x, rfl⟩`. Conclude with `⟨u, u.2, x, by rw [whit_eq]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Loc.howeInj :
     ∀ (E : Type) [Field E] [ValuativeRel E] [TopologicalSpace E] [IsNonarchimedeanLocalField E] (n : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin n) E) V), IsSmooth π → ∀ ϖ : Eˣ, valuation E (ϖ : E) = uniformizer E → ∀ a c : ℤ, 1 ≤ a →

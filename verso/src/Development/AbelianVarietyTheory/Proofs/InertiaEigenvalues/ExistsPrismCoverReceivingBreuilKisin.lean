@@ -17,15 +17,13 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `hJ : adI B ^ 1 ≤ 𝔪`. Rewrite using `[pow_one]`. Use `haveI := B.complete`. Conclude with `le_trans (IsAdicComplete.le_jacobson_bot (adI B)) fun x hx => Ideal.mem_sInf.1 hx ⟨bot_le, hm⟩`. Use `haveI : 𝔪.IsPrime := hm.isPrime`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hp : (𝔪.map (Ideal.Quotient.mk (adI B ^ 1))).IsPrime` using `Ideal.map_isPrime_of_surjective Ideal.Quotient.mk_surjective (by rwa [Ideal.mk_ker])`. Establish `hs' : Ideal.Quotient.mk (adI B ^ 1) s ∉ 𝔪.map (Ideal.Quotient.mk (adI B ^ 1))`. Rewrite using `[Ideal.mem_quotient_iff_mem hJ]` and apply the resulting hypothesis. Use `letI := (qmap h 1).toAlgebra`. Use `haveI := hL.away 1`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h1 : ((𝔪.map (Ideal.Quotient.mk (adI B ^ 1))).map (qmap h 1)).IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint (Submonoid.powers (Ideal.Quotient.mk (adI B ^ 1) s)) (L.A ⧸ adI L ^ 1) _ hp ((Ideal.disjoint_powers_iff_notMem_of_isPrime _).2 hs')`. Establish `h2 : ((𝔪.map (Ideal.Quotient.mk (adI B ^ 1))).map (qmap h 1)).map (qmap e 1) ≠ ⊤`. Introduce `htop`. Apply `h1.ne_top` to reduce the goal to its premises. Use `letI := (qmap e 1).toAlgebra`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `haveI : Module.FaithfullyFlat (L.A ⧸ adI L ^ 1) (C.A ⧸ adI C ^ 1) := he`. Rewrite using `[← Ideal.comap_map_eq_self_of_faithfullyFlat (B := C.A ⧸ adI C ^ 1) ((𝔪.map (Ideal.Quotient.mk (adI B ^ 1))).map (qmap h 1))]`. Express the relevant statement in the definitionally equal form `Ideal.comap (qmap e 1) (Ideal.map (qmap e 1) _) = ⊤`. Rewrite using `[htop, Ideal.comap_top]`. Introduce `htop`.
-
-Apply `h2` to reduce the goal to its premises. Rewrite using `[Ideal.map_map, Ideal.map_map]`. Establish `: ((qmap e 1).comp (qmap h 1)).comp (Ideal.Quotient.mk (adI B ^ 1)) = (Ideal.Quotient.mk (adI C ^ 1)).comp (e.comp h).f` using `RingHom.ext fun _ => rfl`. Rewrite using `[this, ← Ideal.map_map, htop, Ideal.map_top]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_ne_top_of_isLoc_ff {l : ℕ} {R : Type} [CommRing R] {B L C : Obj l R} (s : B.A) (h : Hom B L)
     (hL : IsLoc s h) (e : Hom L C) (he : (qmap e 1).FaithfullyFlat) (𝔪 : Ideal B.A) (hm : 𝔪.IsMaximal)
@@ -65,7 +63,7 @@ end GlobalTheory.BSP
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Substitute `hc` using the available equality. Introduce `htop`. Apply `ha` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Ideal.map (π.f.comp c.f) 𝔪 = ⊤`. Rewrite using `[← Ideal.map_map, htop, Ideal.map_top]`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_ne_top_of_comp {l : ℕ} {R : Type} [CommRing R] {B Q C : Obj l R} (c : Hom B Q) (π : Hom Q C)
     (a : Hom B C) (hc : π.comp c = a) (𝔪 : Ideal B.A) (ha : 𝔪.map a.f ≠ ⊤) : 𝔪.map c.f ≠ ⊤ := by
@@ -76,17 +74,15 @@ theorem map_ne_top_of_comp {l : ℕ} {R : Type} [CommRing R] {B Q C : Obj l R} (
   rw [← Ideal.map_map, htop, Ideal.map_top]
 
 /- English proof (translation)
-Introduce `l _ K bk B`. Take `⟨n, s, t, hspan, hst⟩` from `GlobalTheory.T.invertible_ideal_principal_on_zariski_cover B.A B.I B.inv`. Establish `hga : ∀ i, GenAway B (s i) (t i)` using `fun i => ⟨(hst i).1, fun x hx => by`. Take `⟨c, hc⟩` from `(hst i).2 x hx`. Conclude with `⟨1, by rw [pow_one, hc]; exact Ideal.mul_mem_left _ _ (Ideal.mem_span_singleton_self _)⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `choose L h hL hLI using fun i => GlobalTheory.T.exists_isPrismLocalizationAway_of_generated l (↥(OL K)) B (s i) (t i) (hga i)`. Establish `hfr : ∀ i, ∃ p, IsFrame bk (L i) ((h i).f (t i)) p` using `fun i => by`. Take `⟨p, hp⟩` from `Ideal.Quotient.mk_surjective ((L i).str (bk.str.symm (Ideal.Quotient.mk _ X)))`. Conclude with `⟨p, hLI i, hp⟩`. Use `choose p hp using hfr`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `En : ∀ i, Env bk (L i) ((h i).f (t i)) (p i)` using `fun i => (GlobalTheory.T.nonempty_breuilKisinPrismCoproduct l K bk (L i) _ _ (hp i)).some`. Take `⟨Q, π, hbij, -, huniv⟩` from `GlobalTheory.T.exists_finite_product_oriented_boundedPrisms l (↥(OL K)) n (fun i => (En i).Q) fun i => ⟨_, (En i).I_eq⟩`. Take `⟨c, hc⟩` from `huniv B fun i => (En i).inl.comp (h i)`. Take `⟨g, -⟩` from `huniv bk.prism fun i => (En i).inr`. Use `⟨Q, c, ⟨g⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcov : ∀ i, Cover (En i).inl` using `fun i => GlobalTheory.T.isPrismCover_breuilKisinCoproduct_inl l K bk (L i) _ _ (hp i) (En i)`. Establish `hstab : ∀ i, Stable ((π i).comp c)` using `fun i => by`. Rewrite using `[hc i]`. Conclude with `GlobalTheory.T.isStablePrismHom_comp l _ B (L i) (En i).Q (h i) (En i).inl (GlobalTheory.T.isStablePrismHom_of_localizationAway l _ B (L i) (s i) (h i) ⟨t i, (hga i).1, (hga i).2⟩ (hL i)) (hcov i).stable`. Use `GlobalTheory.T.isPrismCover_of_stable_maximal_map_ne_top l _ B Q c (GlobalTheory.T.isStablePrismHom_of_finite_product_components l _ n _ (fun i => ⟨_, (En i).I_eq⟩) Q π hbij B c hstab) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `𝔪 hm`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, s i ∉ 𝔪 := by`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`. Conclude with `hm.ne_top (eq_top_iff.2 (hspan ▸ Ideal.span_le.2 (Set.range_subset_iff.2 hall)))`.
-
-Conclude with `map_ne_top_of_comp c (π i) _ (hc i) 𝔪 (map_ne_top_of_isLoc_ff (s i) (h i) (hL i) (En i).inl ((hcov i).ff 1) 𝔪 hm hi)`.
+A detailed English derivation is pending.
 -/
 theorem exists_cover_receiving_bk : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (B : Obj l ↥(OL K)),
     ∃ (C : Obj l ↥(OL K)) (h : Hom B C), Nonempty (Hom bk.prism C) ∧ Cover h := by

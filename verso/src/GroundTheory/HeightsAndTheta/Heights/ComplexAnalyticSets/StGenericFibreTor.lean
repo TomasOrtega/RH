@@ -8,7 +8,7 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.ker_map _`.
+A detailed English derivation is pending.
 -/
 theorem ker_fibreMap {σ ι : Type*} (t : σ → ℂ) :
     RingHom.ker (MvPolynomial.map (eval t) : MvPolynomial ι (MvPolynomial σ ℂ) →+* MvPolynomial ι ℂ) =

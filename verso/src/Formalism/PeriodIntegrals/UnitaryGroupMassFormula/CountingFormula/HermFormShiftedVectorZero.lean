@@ -23,7 +23,7 @@ def AggOK (Λ : Submodule (𝓞 D.host.E) (VS D).V) (g : Fin D.R.rS → (VS D).V
 variable {F0}
 
 /- English proof (translation)
-Take `⟨o, rfl⟩` from `Submodule.mem_one.1 hc`. Rewrite using `[algebraMap_smul]`. Conclude with `Submodule.smul_mem _ o hv`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem int_smul_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} {c : D.host.E}
     (hc : c ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)) {v : (VS D).V} (hv : v ∈ Λ) : c • v ∈ Λ := by
@@ -32,7 +32,7 @@ theorem int_smul_mem {Λ : Submodule (𝓞 D.host.E) (VS D).V} {c : D.host.E}
   exact Submodule.smul_mem _ o hv
 
 /- English proof (translation)
-Rewrite using `[hT_swap D, hg b a]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hT_g_e {g : Fin D.R.rS → (VS D).V} (hg : IsDual0 F0 g) (a b : Fin D.R.rS) :
     (VS D).hT (g a) (F0.e b) = if b = a then 1 else 0 := by
@@ -40,7 +40,7 @@ theorem hT_g_e {g : Fin D.R.rS → (VS D).V} (hg : IsDual0 F0 g) (a b : Fin D.R.
   split_ifs <;> simp
 
 /- English proof (translation)
-Rewrite using `[xcL_apply, map_sum]`. Simplify using `[hT_g_e hg]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hT_g_xc {g : Fin D.R.rS → (VS D).V} (hg : IsDual0 F0 g) (a : Fin D.R.rS) (v : (VS D).V) :
     (VS D).hT (g a) (xcL F0 g v) = (VS D).hT (g a) v := by
@@ -48,7 +48,7 @@ theorem hT_g_xc {g : Fin D.R.rS → (VS D).V} (hg : IsDual0 F0 g) (a : Fin D.R.r
   simp [hT_g_e hg]
 
 /- English proof (translation)
-Rewrite using `[xcL_apply, ycL_apply, map_sum, map_sum, LinearMap.sum_apply]`. Use `Finset.sum_congr rfl (fun a _ => ?_)` and prove the remaining obligations. Rewrite using `[map_smul, smul_eq_mul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, ← hT_swap D, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_xc_yc (g : Fin D.R.rS → (VS D).V) (l w : (VS D).V) :
     (VS D).hT l (xcL F0 g w) = (VS D).hT (ycL F0 g l) w := by
@@ -58,7 +58,7 @@ theorem hT_xc_yc (g : Fin D.R.rS → (VS D).V) (l w : (VS D).V) :
     mul_comm]
 
 /- English proof (translation)
-Establish `h : Formalism.HermitianLatticesTheory.dual (VS D).hT Λ = Λ` using `hu`. Rewrite using `[← h, mem_dual_iff]`. Introduce `l hl`. Rewrite using `[hT_xc_yc]`. Conclude with `int_of_unimod hu (hok l hl) hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem xc_agg {Λ : Submodule (𝓞 D.host.E) (VS D).V} {g : Fin D.R.rS → (VS D).V}
     (hok : AggOK F0 Λ g) (hu : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ) {w : (VS D).V} (hw : w ∈ Λ) :
@@ -70,9 +70,9 @@ theorem xc_agg {Λ : Submodule (𝓞 D.host.E) (VS D).V} {g : Fin D.R.rS → (VS
   exact int_of_unimod hu (hok l hl) hw
 
 /- English proof (translation)
-Use `⟨hf, hz, ?_⟩` and prove the remaining obligations. Introduce `v hv`. Establish `hy : ycL F0 f v ∈ Λ` using `hok v hv`. Establish `hw : v - ycL F0 f v ∈ Λ` using `Submodule.sub_mem _ hv hy`. Establish `hx : xcL F0 f (v - ycL F0 f v) ∈ Λ` using `xc_agg hok hu hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨xcL F0 f (v - ycL F0 f v), v - ycL F0 f v - xcL F0 f (v - ycL F0 f v), ycL F0 f v, hx, xc_mem_X _, Submodule.sub_mem _ hw hx, ?_, ?_, hy, yc_mem_span _, by abel⟩` and prove the remaining obligations. Introduce `a`. Rewrite using `[map_sub, map_sub, hT_e_yc hf, sub_self, zero_sub, hX_X F0 (e_mem_X F0 a) (xc_mem_X _), neg_zero]`. Introduce `a`. Rewrite using `[map_sub, hT_f_xc hf, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem isSplitF_of {Λ : Submodule (𝓞 D.host.E) (VS D).V} {f : Fin D.R.rS → (VS D).V}
     (hf : IsDualF F0 f) (hz : ∀ a, (VS D).hT (f a) F0.z = 0) (hok : AggOK F0 Λ f)
@@ -113,7 +113,7 @@ def giso (F0 : FlagG (VS D) D.R.rS T) (g : Fin D.R.rS → (VS D).V) (t : D.host.
   fun b => g b - t • xcL F0 g (g b)
 
 /- English proof (translation)
-Introduce `a b`. Rewrite using `[gz, map_sub, map_smul, hl _ (e_mem_X F0 a), smul_zero, sub_zero, hg a b]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem gz_dual {g : Fin D.R.rS → (VS D).V} (hg : IsDual0 F0 g) {l0 : (VS D).V}
     (hl : l0 ∈ perpS (VS D) F0.X) : IsDual0 F0 (gz (F0 := F0) g l0) := by
@@ -121,7 +121,7 @@ theorem gz_dual {g : Fin D.R.rS → (VS D).V} (hg : IsDual0 F0 g) {l0 : (VS D).V
   rw [gz, map_sub, map_smul, hl _ (e_mem_X F0 a), smul_zero, sub_zero, hg a b]
 
 /- English proof (translation)
-Rewrite using `[gz, map_sub, LinearMap.sub_apply, map_smulₛₗ, LinearMap.smul_apply, hl1, starRingEnd_apply, smul_eq_mul, mul_one, ← hT_swap D, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermForm_shifted_vector_zero {g : Fin D.R.rS → (VS D).V} {l0 : (VS D).V} (hl1 : (VS D).hT l0 F0.z = 1) (b : Fin D.R.rS) :
     (VS D).hT (gz (F0 := F0) g l0 b) F0.z = 0 := by
@@ -129,7 +129,7 @@ theorem hermForm_shifted_vector_zero {g : Fin D.R.rS → (VS D).V} {l0 : (VS D).
     mul_one, ← hT_swap D, sub_self]
 
 /- English proof (translation)
-Rewrite using `[ycL_apply, ycL_apply, map_sum, Finset.sum_smul, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[gz, smul_sub, map_smul, smul_eq_mul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem yc_gz (g : Fin D.R.rS → (VS D).V) (l0 v : (VS D).V) :
     ycL F0 (gz (F0 := F0) g l0) v = ycL F0 g v - (VS D).hT F0.z (ycL F0 g v) • l0 := by
@@ -138,7 +138,7 @@ theorem yc_gz (g : Fin D.R.rS → (VS D).V) (l0 v : (VS D).V) :
   rw [gz, smul_sub, map_smul, smul_eq_mul, smul_smul]
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite using `[yc_gz]`. Conclude with `Submodule.sub_mem _ (hok v hv) (int_smul_mem (int_of_unimod hu hzΛ (hok v hv)) hl0)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gz_ok {Λ : Submodule (𝓞 D.host.E) (VS D).V} {g : Fin D.R.rS → (VS D).V} (hok : AggOK F0 Λ g)
     (hu : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ) (hzΛ : F0.z ∈ Λ) {l0 : (VS D).V} (hl0 : l0 ∈ Λ) :
@@ -148,14 +148,14 @@ theorem gz_ok {Λ : Submodule (𝓞 D.host.E) (VS D).V} {g : Fin D.R.rS → (VS 
   exact Submodule.sub_mem _ (hok v hv) (int_smul_mem (int_of_unimod hu hzΛ (hok v hv)) hl0)
 
 /- English proof (translation)
-Introduce `a b`. Rewrite using `[giso, map_sub, map_smul, hX_X F0 (e_mem_X F0 a) (xc_mem_X _), smul_zero, sub_zero, hg a b]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem giso_dual {g : Fin D.R.rS → (VS D).V} (hg : IsDual0 F0 g) (t : D.host.E) : IsDual0 F0 (giso F0 g t) := by
   intro a b
   rw [giso, map_sub, map_smul, hX_X F0 (e_mem_X F0 a) (xc_mem_X _), smul_zero, sub_zero, hg a b]
 
 /- English proof (translation)
-Rewrite using `[giso, map_sub, LinearMap.sub_apply, hz b, map_smulₛₗ, LinearMap.smul_apply, hX_perp F0 (xc_mem_X _) (z_mem_perp D F0), smul_zero, sub_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hT_giso_z_eq_zero_of_hT_z_eq_zero {g : Fin D.R.rS → (VS D).V} (hz : ∀ b, (VS D).hT (g b) F0.z = 0) (t : D.host.E) (b : Fin D.R.rS) :
     (VS D).hT (giso F0 g t b) F0.z = 0 := by
@@ -163,7 +163,7 @@ theorem hT_giso_z_eq_zero_of_hT_z_eq_zero {g : Fin D.R.rS → (VS D).V} (hz : �
     hX_perp F0 (xc_mem_X _) (z_mem_perp D F0), smul_zero, sub_zero]
 
 /- English proof (translation)
-Rewrite using `[ycL_apply, ycL_apply, map_sum, Finset.smul_sum, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl (fun b _ => ?_)` and prove the remaining obligations. Rewrite using `[giso, smul_sub, map_smul, smul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem yc_giso (g : Fin D.R.rS → (VS D).V) (t : D.host.E) (v : (VS D).V) :
     ycL F0 (giso F0 g t) v = ycL F0 g v - t • xcL F0 g (ycL F0 g v) := by
@@ -172,7 +172,7 @@ theorem yc_giso (g : Fin D.R.rS → (VS D).V) (t : D.host.E) (v : (VS D).V) :
   rw [giso, smul_sub, map_smul, smul_comm]
 
 /- English proof (translation)
-Introduce `v hv`. Rewrite using `[yc_giso]`. Use `Submodule.sub_mem _ (hok v hv) ?_` and prove the remaining obligations. Rewrite using `[show ((t : D.host.E)) = algebraMap (𝓞 D.host.E) D.host.E t from rfl, algebraMap_smul]`. Conclude with `Submodule.smul_mem _ t (xc_agg hok hu (hok v hv))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem giso_ok {Λ : Submodule (𝓞 D.host.E) (VS D).V} {g : Fin D.R.rS → (VS D).V} (hok : AggOK F0 Λ g)
     (hu : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ) (t : 𝓞 D.host.E) : AggOK F0 Λ (giso F0 g (t : D.host.E)) := by
@@ -183,9 +183,9 @@ theorem giso_ok {Λ : Submodule (𝓞 D.host.E) (VS D).V} {g : Fin D.R.rS → (V
   exact Submodule.smul_mem _ t (xc_agg hok hu (hok v hv))
 
 /- English proof (translation)
-Introduce `a b`. Establish `h1 : (VS D).hT (g a) (xcL F0 g (g b)) = (VS D).hT (g a) (g b)` using `hT_g_xc hg a (g b)`. Establish `h2 : (VS D).hT (xcL F0 g (g a)) (g b) = (VS D).hT (g a) (g b)`. Rewrite using `[hT_swap D, hT_g_xc hg b (g a), ← hT_swap D]`. Establish `h3 : (VS D).hT (xcL F0 g (g a)) (xcL F0 g (g b)) = 0` using `hX_X F0 (xc_mem_X _) (xc_mem_X _)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [giso, map_sub, LinearMap.sub_apply, map_smul, map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply, h1, h2, h3, mul_zero]`. Take the linear combination `(-(VS D).hT (g a) (g b)) * ht`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem giso_iso {g : Fin D.R.rS → (VS D).V} (hg : IsDual0 F0 g) {t : D.host.E} (ht : t + star t = 1) :
     ∀ a b, (VS D).hT (giso F0 g t a) (giso F0 g t b) = 0 := by
@@ -201,11 +201,11 @@ theorem giso_iso {g : Fin D.R.rS → (VS D).V} (hg : IsDual0 F0 g) {t : D.host.E
 end Assembly
 
 /- English proof (translation)
-Introduce `D u F0 Λ hΛ`. Take `⟨g, hg, hok⟩` from `h1 D u F0 Λ hΛ`. Take `⟨l0, hl0, hlp, hl1⟩` from `h2 D u F0 Λ hΛ`. Take `⟨t, ht⟩` from `h3 D`. Establish `hu : Formalism.HermitianLatticesTheory.IsUnimodular (VS D).hT Λ` using `hΛ.2.1.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzΛ : F0.z ∈ Λ` using `hΛ.2.1.2.2.1.1`. Establish `hg'` using `gz_dual hg hlp`. Establish `hok'` using `gz_ok hok hu hzΛ hl0`. Establish `hz'` using `hermForm_shifted_vector_zero (F0 := F0) (g := g) hl1`. Establish `hd` using `giso_dual hg' (t : D.host.E)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨giso F0 (gz (F0 := F0) g l0) (t : D.host.E), isSplitF_of ⟨hd, giso_iso hg' ht⟩ (hT_giso_z_eq_zero_of_hT_z_eq_zero hz' _) (giso_ok hok' hu t) hu⟩`.
+Supply the required witnesses or components.
 -/
 theorem rowSplitF_of (h1 : RowDualFrame) (h2 : RowZUnit) (h3 : TraceOne) : RowSplitF := by
   intro D u F0 Λ hΛ
@@ -222,7 +222,7 @@ theorem rowSplitF_of (h1 : RowDualFrame) (h2 : RowZUnit) (h3 : TraceOne) : RowSp
     isSplitF_of ⟨hd, giso_iso hg' ht⟩ (hT_giso_z_eq_zero_of_hT_z_eq_zero hz' _) (giso_ok hok' hu t) hu⟩
 
 /- English proof (translation)
-The claim follows from `rowClass_of_split (rowSplitF_of h1 h2 h3)`.
+A detailed English derivation is pending.
 -/
 theorem rowClass_of_three (h1 : RowDualFrame) (h2 : RowZUnit) (h3 : TraceOne) : RowClass :=
   rowClass_of_split (rowSplitF_of h1 h2 h3)

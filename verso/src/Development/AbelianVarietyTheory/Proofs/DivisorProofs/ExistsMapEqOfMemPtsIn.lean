@@ -16,7 +16,7 @@ namespace CxPts
 variable {k : Type} [CommRing k] {X Y : Scheme.{0}} {p : X ⟶ Sp k} {q : Y ⟶ Sp k} {σ : k →+* ℂ}
 
 /- English proof (translation)
-Establish `hle : W ≤ j ⁻¹ᵁ j ''ᵁ W` using `(j.preimage_image_eq W).ge`. Express the relevant statement in the definitionally equal form `valR (w.1 ≫ j) (j ''ᵁ W) _ = valR w.1 W g`. Rewrite using `[← valR_appLE w.1 j hle hw, ← CommRingCat.comp_apply, Scheme.Hom.appIso_inv_appLE]`. Conclude with `valR_res w.1 le_rfl hw g`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_appIso_inv (j : Y ⟶ X) [IsOpenImmersion j] (hj : j ≫ p = q) (W : Y.Opens) (g : Γ(Y, W))
     {w : CxPts q σ} (hw : w ∈ ptsIn q σ W) :
@@ -27,9 +27,9 @@ theorem ev_appIso_inv (j : Y ⟶ X) [IsOpenImmersion j] (hj : j ≫ p = q) (W : 
   exact valR_res w.1 le_rfl hw g
 
 /- English proof (translation)
-Take `⟨W, ι, _, g, Φ, O, h₁, h₂, h₃, h₄, h₅⟩` from `h`. Use `⟨j ''ᵁ W, ι, inferInstance, fun a => (j.appIso W).inv.hom (g a), Φ, O, ?_, h₂, ?_, h₄, ?_⟩` and prove the remaining obligations. Conclude with `mem_ptsIn.2 ⟨_, mem_ptsIn.1 h₁, rfl⟩`. Simplify `h₃` using `only [ev_appIso_inv j hj W _ h₁]`. Establish `he` using `PtsOver.isOpenEmbedding_map j hj (spMap σ)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[EventuallyEq, ← he.map_nhds_eq, eventually_map]`. Use `filter_upwards [h₅, (isOpen_ptsIn W).mem_nhds h₁] with w e hw`. Simplify using `only [ev_appIso_inv j hj W _ hw]`. Conclude with `e`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem VInfAt.of_isOpenImmersion {F : Type} [NormedAddCommGroup F] [NormedSpace ℝ F]
     (j : Y ⟶ X) [IsOpenImmersion j] (hj : j ≫ p = q) {f : CxPts p σ → F} {z : CxPts q σ}
@@ -45,9 +45,9 @@ theorem VInfAt.of_isOpenImmersion {F : Type} [NormedAddCommGroup F] [NormedSpace
     exact e
 
 /- English proof (translation)
-Establish `H : Set.range y.1 ⊆ Set.range U.ι`. Introduce and unpack `_ ⟨x, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `hy (x := x) trivial`. Use `⟨⟨IsOpenImmersion.lift U.ι y.1 H, ?_⟩, Subtype.ext (IsOpenImmersion.lift_fac _ _ _)⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hq, ← Category.assoc, IsOpenImmersion.lift_fac]`. Conclude with `y.2`.
+A detailed English derivation is pending.
 -/
 theorem exists_map_eq_of_mem_ptsIn {U : X.Opens} {q : U.toScheme ⟶ Sp k} (hq : U.ι ≫ p = q)
     {y : CxPts p σ} (hy : y ∈ ptsIn p σ U) : ∃ z : CxPts q σ, PtsOver.map U.ι hq _ z = y := by
@@ -62,13 +62,13 @@ theorem exists_map_eq_of_mem_ptsIn {U : X.Opens} {q : U.toScheme ⟶ Sp k} (hq :
 end CxPts
 
 /- English proof (translation)
-Introduce `σ`. Use `Met.isCInf_of_exists fun y => ?_` and prove the remaining obligations. Take `⟨U, hy, hs⟩` from `hl σ y`. Establish `hj : U.ι ≫ ρ ≫ p = (U.ι ≫ ρ) ≫ p` using `(Category.assoc _ _ _).symm`. Take `⟨z, rfl⟩` from `exists_map_eq_of_mem_ptsIn hj hy`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsm : SmoothOfRelativeDimension 1 ((U.ι ≫ ρ) ≫ p)` using `hj ▸ hs`. Establish `e (w : CxPts ((U.ι ≫ ρ) ≫ p) σ) : PtsOver.map ρ rfl _ (PtsOver.map U.ι hj _ w) = PtsOver.map (U.ι ≫ ρ) rfl _ w` using `Subtype.ext (Category.assoc _ _ _)`. Establish `hc` using `(h.met σ).isVB.mem_pick (PtsOver.map (U.ι ≫ ρ) rfl _ z)`. Generalize the expression as in `(h.met σ).isVB.pick (PtsOver.map (U.ι ≫ ρ) rfl _ z) = c at hc`. Establish `hc' : PtsOver.map ρ rfl _ (PtsOver.map U.ι hj _ z) ∈ ptsIn p σ c.U` using `(e z).symm ▸ hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Use `⟨Chart.pull c (h.met σ).isVB ρ, hc', fun a b => ?_⟩` and prove the remaining obligations. Use `VInfAt.of_isOpenImmersion U.ι hj ?_` and prove the remaining obligations. Use `(H U.toScheme (U.ι ≫ ρ) hsm σ (Chart.pull c (h.met σ).isVB (U.ι ≫ ρ)) z hc a b).congr ?_` and prove the remaining obligations. Use `filter_upwards [(isOpen_ptsIn ((U.ι ≫ ρ) ⁻¹ᵁ c.U)).mem_nhds hc] with w hw`. Establish `hw' : PtsOver.map (U.ι ≫ ρ) rfl _ w ∈ ptsIn p σ c.U` using `hw`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e₁` using `(h.met σ).pull_G ρ rfl c (z := PtsOver.map U.ι hj _ w) ((e w).symm ▸ hw')`. Establish `e₂` using `(h.met σ).pull_G (U.ι ≫ ρ) rfl c hw'`. Rewrite `e₁` using `[e w]`. Conclude with `congrFun (congrFun (e₁.trans e₂.symm) a) b`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem VMetric.IsCInfNorm.pull_isCInf_of_local {k : Type} [CommRing k] {X Y : Scheme.{0}}
     {p : X ⟶ Sp k} {E : X.Modules} {r : ℕ} {h : VMetric p E r} (H : h.IsCInfNorm) (ρ : Y ⟶ X)

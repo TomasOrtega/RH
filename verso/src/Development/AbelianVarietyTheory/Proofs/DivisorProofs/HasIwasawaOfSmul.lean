@@ -14,9 +14,9 @@ noncomputable section
 namespace GlobalTheory.SkewDblIwasawa
 
 /- English proof (translation)
-Establish `hu : IsUnit (inclR (F` using `F) R c) := (IsUnit.mk0 c hc).map _`. Establish `e : JR (F` using `F) R (c • Q) = inclR (F := F) R c • JR R Q := by`. Use extensionality with `i j`. Simplify using `[JR, Matrix.map_apply, Matrix.smul_apply, map_mul]`. Express the relevant statement in the definitionally equal form `Formalism.UG.cT (sigR R σ) (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR (F := F) R (c • Q) * (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) = JR (F := F) R (c • Q) ↔ Formalism.UG.cT (sigR R σ) (g : Matrix (Fin M) (Fin M) (R ⊗[F] E)) * JR (F := F) R Q * (g : Matrix (Fin M) (Fin M) (R ⊗[F …`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[e, Matrix.mul_smul, Matrix.smul_mul, hu.smul_left_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_hR_smul_iff {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {M : ℕ} (c : E) (hc : c ≠ 0) (Q : Matrix (Fin M) (Fin M) E) (g : GL (Fin M) (R ⊗[F] E)) :
@@ -31,9 +31,9 @@ theorem mem_hR_smul_iff {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type
   rw [e, Matrix.mul_smul, Matrix.smul_mul, hu.smul_left_cancel]
 
 /- English proof (translation)
-Introduce `g`. Take `⟨p, k, hk, e⟩` from `h ⟨g.1, (mem_hR_smul_iff R σ c hc Q g.1).2 g.2⟩`. Use `⟨⟨⟨p.1.1, (mem_hR_smul_iff R σ c hc Q _).1 p.1.2⟩, p.2⟩, ⟨k.1, (mem_hR_smul_iff R σ c hc Q _).1 k.2⟩, hk, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `congrArg Subtype.val e` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem hasIwasawa_of_smul {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] [Algebra F R]
     (σ : E →ₐ[F] E) {n : ℕ} (c : E) (hc : c ≠ 0) (Q : Matrix (Fin (n + n)) (Fin (n + n)) E)
@@ -48,7 +48,7 @@ theorem hasIwasawa_of_smul {F E : Type} [Field F] [Field E] [Algebra F E] {R : T
   exact this
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := finSumFinEquiv.surjective i <;> obtain ⟨j | j, rfl⟩ := finSumFinEquiv.surjective j <;>`. Simplify using `only [dblGram, blkMat, Matrix.smul_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.zero_apply, Matrix.neg_apply, smul_zero, smul_neg]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem dblGram_smul {E : Type} [Field E] {n : ℕ} (c : E) (J : Matrix (Fin n) (Fin n) E) :
     dblGram finSumFinEquiv (c • J) = c • dblGram finSumFinEquiv J := by

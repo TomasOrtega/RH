@@ -11,7 +11,7 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 namespace GlobalTheory.CompanionTheory.TateDualRow
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.TateDualFil.main`.
+A detailed English derivation is pending.
 -/
 theorem blochKato_dimFormula_all_finiteExt_coeffField : ∀ D : D7, LocalSituation.adm8 D := GlobalTheory.TateDualFil.main
 

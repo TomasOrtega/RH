@@ -10,17 +10,15 @@ namespace CompanionTheory.RgDs.Hilb
 open ReciprocityTheory.ChartRestriction.DS
 
 /- English proof (translation)
-Introduce `n ε lam T Ψ hP hst`. Establish `hσ` using `rreg_isURepOn ε`. Establish `hcoe : ∀ g ∈ UJset ε, ∀ x : Hlam ε Ψ T.w, ((sigLam ε Ψ T.w g x : Hlam ε Ψ T.w) : L2 ε) = rreg ε g x`. Introduce `g hg x`. Establish `hx : rreg ε g x ∈ Hlam ε Ψ T.w` using `hst g hg x x.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show (((Hlam ε Ψ T.w).orthogonalProjectionOnto (rreg ε g (x : L2 ε)) : Hlam ε Ψ T.w) : L2 ε) = _`. Conclude with `congrArg Subtype.val (Submodule.orthogonalProjectionOnto_mem_subspace_eq_self (⟨_, hx⟩ : Hlam ε Ψ T.w))`. Establish `h1 : (1 : Matrix (Fin n) (Fin n) ℂ) ∈ UJset ε` using `by show inUJ ε 1`. Simplify using `[inUJ]`. Use `⟨hcoe, ⟨⟨?_, ?_⟩, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ContinuousLinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Rewrite using `[hcoe 1 h1 x, hσ.1.1]`. Both sides reduce to the same expression. Introduce `a ha b hb`. Use `ContinuousLinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ContinuousLinearMap.comp_apply, hcoe _ (mul_mem_unitaryJ ha hb) x, hcoe a ha, hcoe b hb, hσ.1.2 a ha b hb, ContinuousLinearMap.comp_apply]`. Introduce `g hg x`. Establish `h` using `hσ.2.1 g hg (x : L2 ε)`. Rewrite `h` using `[← hcoe g hg x]`. Simplify using `using h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `v`. Conclude with `(Hlam ε Ψ T.w).orthogonalProjectionOnto.continuous.comp_continuousOn (hσ.2.2 (v : L2 ε))`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot (datumV_ne_bot hP (HW.KType.w_ne_zero T))`. Use `nontrivial_of_ne (⟨(x : L2 ε), UnitaryGroupOfForm.mem_closGen (E := smE ε (rreg ε)) _ x hx⟩ : Hlam ε Ψ T.w) 0 ?_` and prove the remaining obligations. Introduce `h`.
-
-Apply `hx0` to reduce the goal to its premises. Establish `h2 : (x : L2 ε) = 0` using `congrArg Subtype.val h`. Conclude with `Subtype.ext h2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hilbert_signature_holds : StepSig := by
   intro n ε lam T Ψ hP hst

@@ -12,7 +12,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E]
 
 open scoped Matrix in
 /- English proof (translation)
-Simplify using `only [_root_.GlobalTheory.UnitaryFrames.gram_eq_mul, Matrix.transpose_mul, Matrix.map_mul, Matrix.mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem gram_mul_eq_transpose_mul_gram_mul_conj {F : Type} [Field F] {r : ℕ} (τ : F →+* ℂ)
     (G : Matrix (Fin r) (Fin r) F) (A g : Matrix (Fin r) (Fin r) ℂ) :
@@ -22,11 +22,11 @@ private theorem gram_mul_eq_transpose_mul_gram_mul_conj {F : Type} [Field F] {r 
 
 open scoped Matrix in
 /- English proof (translation)
-Establish `hBd : B = Matrix.diagonal fun a => B a a`. Use extensionality with `i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[Matrix.diagonal_apply_ne _ hij, hdiag i j (Ne.symm hij)]`. Rewrite using `[hBd]`. Simplify using `only [Matrix.diagonal_transpose, Matrix.diagonal_map (map_zero _), Matrix.diagonal_mul_diagonal, Matrix.diagonal_apply_eq]`. Use `congr 1`. Use function extensionality and compare the values at `a`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[← Complex.mul_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem transpose_mul_diagonal_mul_conj_of_offDiag_eq_zero {r : ℕ}
     {B : Matrix (Fin r) (Fin r) ℂ} (d : Fin r → ℂ) (hdiag : ∀ a c, c ≠ a → B a c = 0) :
@@ -48,21 +48,19 @@ private theorem transpose_mul_diagonal_mul_conj_of_offDiag_eq_zero {r : ℕ}
 
 open scoped Matrix in
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hunit : IsUnit B.det` using `isUnit_iff_ne_zero.2 hdet`. Establish `htri : B.BlockTriangular id` using `fun i j hij => hup i j hij`. Use `letI := B.invertibleOfIsUnitDet hunit`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hinv : B⁻¹.BlockTriangular id` using `Matrix.blockTriangular_inv_of_blockTriangular htri`. Establish `h2 : Matrix.diagonal d * B.map (starRingEnd ℂ) = (B⁻¹)ᵀ * Matrix.diagonal d`. Establish `h3 : (B⁻¹)ᵀ * (Bᵀ * Matrix.diagonal d * B.map (starRingEnd ℂ)) = (B⁻¹)ᵀ * Matrix.diagonal d` using `by rw [h]`. Rewrite `h3` using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.transpose_mul, Matrix.mul_nonsing_inv _ hunit, Matrix.transpose_one, Matrix.one_mul]`. Then use the resulting hypothesis. Establish `hoff : ∀ a c, a < c → B a c = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Introduce `a c hac`. Establish `h4` using `congrFun (congrFun h2 a) c`. Rewrite `h4` using `[Matrix.diagonal_mul, Matrix.mul_diagonal, Matrix.transpose_apply, hinv hac, zero_mul, Matrix.map_apply]`. Establish `h5` using `(mul_eq_zero.1 h4).resolve_left (hd a)`. Simplify using `using h5`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hdiag : ∀ a c, c ≠ a → B a c = 0`. Introduce `a c hca`. Break down `lt_or_gt_of_ne hca with hlt | hlt` into its components or cases. Conclude with `hup a c hlt`. Conclude with `hoff a c hlt`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h` using `[transpose_mul_diagonal_mul_conj_of_offDiag_eq_zero d hdiag]`. Introduce `a`. Use `⟨?_, hdiag a⟩` and prove the remaining obligations. Establish `h6` using `congrFun (congrFun h a) a`. Simplify using `only [Matrix.diagonal_apply_eq] at h6`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7 : ((Complex.normSq (B a a) : ℝ) : ℂ) = 1` using `mul_right_cancel₀ (hd a) (h6.trans (one_mul _).symm)`. Establish `h8 : ‖B a a‖ ^ 2 = 1`. Rewrite using `[← Complex.normSq_eq_norm_sq]`. Conclude with `h7` after adjusting the coercions. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h8`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `h`. Rewrite using `[transpose_mul_diagonal_mul_conj_of_offDiag_eq_zero d fun a c hca => (h a).2 c hca]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[Complex.normSq_eq_norm_sq, (h a).1]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem transpose_mul_diagonal_mul_conj_eq_diagonal_iff {r : ℕ} {B : Matrix (Fin r) (Fin r) ℂ}
     {d : Fin r → ℂ} (hd : ∀ a, d a ≠ 0) (hdet : B.det ≠ 0) (hup : ∀ a c, c < a → B a c = 0) :
@@ -114,13 +112,13 @@ open scoped ContDiff ENNReal Matrix in
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Introduce `r X x b hx hb`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth at hx ⊢`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.Bor at hb`. Simplify using `only [Set.mem_setOf_eq] at hb`. Establish `hd : ∀ a : Fin r, ((_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn X.p0 (a : ℕ) : ℝ) : ℂ) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a`. Unfold `_root_.ReciprocityTheory.ChartRestriction.G.FD.sgn`. Apply the tactic sequence `split_ifs <;> norm_num`. Establish `hprod : ∀ τ : X.Ψ, _root_.ReciprocityTheory.ChartRestriction.G.FD.mat (_root_.ReciprocityTheory.ChartRestriction.G.FD.rmul x b) τ = _root_.ReciprocityTheory.ChartRestriction.G.FD.mat x τ * _root_.ReciprocityTheory.ChartRestriction.G.FD.mat b τ` using `fun τ => rfl`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h τ`. Establish `key` using `h τ`. Rewrite `key` using `[hprod, gram_mul_eq_transpose_mul_gram_mul_conj, hx τ]`. Conclude with `(transpose_mul_diagonal_mul_conj_eq_diagonal_iff hd (hb τ).1 (hb τ).2).1 key`. Introduce `h τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hprod, gram_mul_eq_transpose_mul_gram_mul_conj, hx τ]`. Conclude with `(transpose_mul_diagonal_mul_conj_eq_diagonal_iff hd (hb τ).1 (hb τ).2).2 (h τ)`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.isOrth_rmul_iff_unitary_diagonal :
     (∀ (r : ℕ) (X : _root_.ReciprocityTheory.ChartRestriction.G.FD.Data E r) (x b : _root_.ReciprocityTheory.ChartRestriction.G.FD.Frame X.Ψ r), _root_.ReciprocityTheory.ChartRestriction.G.AR.Up.IsOrth X x → b ∈ _root_.ReciprocityTheory.ChartRestriction.G.FD.Bor X.Ψ r →

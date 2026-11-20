@@ -24,7 +24,7 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace DivisorReductionIndependence
 
 /- English proof (translation)
-Substitute `hI` using the available equality. Substitute `hm` using the available equality. Substitute `hE` using the available equality. Rewrite using `[eq_of_heq h]`.
+Substitute using the available equality. Substitute using the available equality. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem toSequenceOfBlowups_eq_of_heq {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I₁ I₂ : X.IdealSheafData} {m₁ m₂ : ℕ}
@@ -37,9 +37,9 @@ private theorem toSequenceOfBlowups_eq_of_heq {k : Type u} [Field k] {X : Scheme
   rw [eq_of_heq h]
 
 /- English proof (translation)
-Establish `: IsClosedImmersion (Limits.pullback.fst e J.subschemeι)` using `inferInstance`. Establish `hker : J.comap e = Scheme.Hom.ker (Limits.pullback.fst e J.subschemeι)` using `rfl`. Establish `hc` using `Limits.pullback.condition (f := e) (g := J.subschemeι)`. Establish `key : Limits.pullback.fst e J.subschemeι ≫ (e ≫ f) = Limits.pullback.fst e J.subschemeι ≫ (e ≫ g)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[hker, ← kerSubschemeIso_hom_comp (Limits.pullback.fst e J.subschemeι), Category.assoc, Category.assoc, key]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem subschemeι_comap_comp_comp_eq {A B C : Scheme.{u}} (e : A ⟶ B) (J : B.IdealSheafData)
     (f g : B ⟶ C) (h : J.subschemeι ≫ f = J.subschemeι ≫ g) :
@@ -61,7 +61,7 @@ theorem subschemeι_comap_comp_comp_eq {A B C : Scheme.{u}} (e : A ⟶ B) (J : B
     Category.assoc, key]
 
 /- English proof (translation)
-The claim follows from `hin.smooth_center_radical T.base (s.schemeAt i) (s.projectionToBase i ≫ T.structMap) (s.center i) (s.center_smooth i hi) J hJ`.
+A detailed English derivation is pending.
 -/
 theorem le_center_of_center_support_subset (hin : OrderReduction.OrderReductionHypotheses.{u}) (T : MarkedIdealWithBoundary.{u}) (s : T.SequenceOfBlowups)
     (i : ℕ) (hi : i < s.length) (J : (s.schemeAt i).IdealSheafData)
@@ -71,17 +71,17 @@ theorem le_center_of_center_support_subset (hin : OrderReduction.OrderReductionH
     (s.center_smooth i hi) J hJ
 
 /- English proof (translation)
-Use `hV.charZero` as an intermediate fact. Establish `hft : AlgebraicGeometry.LocallyOfFiniteType T.structMap` using `hV.locallyOfFiniteType`. Establish `: AlgebraicGeometry.QuasiCompact T.structMap` using `hV.quasiCompact`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hV.smooth`. Establish `: AlgebraicGeometry.Etale ψ` using `hψ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: AlgebraicGeometry.QuasiCompact q` using `hq`. Establish `: AlgebraicGeometry.Smooth ψ` using `inferInstance`. Use `hV.isNoetherian` as an intermediate fact. Establish `: AlgebraicGeometry.IsLocallyNoetherian T.scheme` using `inferInstance`. Establish `hVal : (T.pullbackAlong V q ψ).IsAdmissible` using `hin.valid_pullbackAlong T hV V q ψ hcomp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hftq : AlgebraicGeometry.LocallyOfFiniteType q` using `hVal.locallyOfFiniteType`. Establish `hOT : T.IsOrderBoundedByMult` using `(T.isOrderBoundedByMult_iff).2 hO`. Establish `hP' : P (T.pullbackAlong V q ψ).krullDimSucc`. Use `hPdown _ _ ?_ hP` and prove the remaining obligations. Conclude with `hin.schemeDim_le_of_etale V T.scheme ψ hV.topologicalKrullDim_lt_top`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hO' : (T.pullbackAlong V q ψ).IsOrderBoundedByMult`. Rewrite using `[MarkedIdealWithBoundary.isOrderBoundedByMult_iff]`. Introduce `x`. Conclude with `le_of_eq_of_le (orderAt_comap T.base T.structMap ψ T.ideal x) (hO _)`. Establish `hderivBal : IsDerivBalanced T.base T.structMap T.ideal T.mult` using `hD hft`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hDB' : IsDerivBalanced T.base q (T.ideal.comap ψ) T.mult` using `hin.dBalanced_comap T hV V q ψ hcomp hderivBal`. Establish `hD' : ∀ hft2 : AlgebraicGeometry.LocallyOfFiniteType (T.pullbackAlong V q ψ).structMap, (T.pullbackAlong V q ψ).IsBalanced hft2` using `fun _ => hDB'`. Establish `hj' : 0 < (T.pullbackAlong V q ψ).boundary.length`. Simplify `hlen` using `[MarkedIdealWithBoundary.pullbackAlong_boundary]`. Establish `hpull : IsPullbackBlowupSequence ψ (A (T.pullbackAlong V q ψ)).toSequenceOfBlowups (A T).toSequenceOfBlowups` using `hspec.isPullbackBlowupSequence_of_smooth T hV hP hOT (hD _) hlen V q ψ hcomp hVal hP' hO' (hD' _) hj'`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨hVal, hin.isStrictPullbackSeq V T.scheme ψ _ _ hpull ?_ ?_⟩` and prove the remaining obligations. Introduce `i hi`. Conclude with `hspec.center_nonempty T hV hP hOT (hD _) hlen i hi`. Introduce `i hi x hx`. Conclude with `hcov (hin.center_mem_coSupport T hV (A T) i hi x hx)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isAdmissible_and_isStrictPullbackBlowupSeq_of_etale
     (hin : OrderReduction.OrderReductionHypotheses.{u})
@@ -132,21 +132,19 @@ theorem isAdmissible_and_isStrictPullbackBlowupSeq_of_etale
     exact hcov (hin.center_mem_coSupport T hV (A T) i hi x hx)
 
 /- English proof (translation)
-Use `hV.charZero` as an intermediate fact. Establish `hft : AlgebraicGeometry.LocallyOfFiniteType T.structMap` using `hV.locallyOfFiniteType`. Establish `: AlgebraicGeometry.QuasiCompact T.structMap` using `hV.quasiCompact`. Establish `: AlgebraicGeometry.Smooth T.structMap` using `hV.smooth`. Establish `hsnc₁ : InStrictNormalCrossingPosition T.structMap (H₁ :: N)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hbd]`. Conclude with `hV.snc`. Establish `hsnc₂ : InStrictNormalCrossingPosition T.structMap (H₂ :: N)` using `hV₂.snc`. Take `⟨V, ψ₁, ψ₂, hψ₁, hψ₂, hqc, hftq, hcompeq, hcov₁, hcov₂, hidl, hHH, hNN, hmax⟩` from `hin.etaleEqualization T.base T.scheme T.structMap T.ideal T.mult hV.one_le_mult hMC hO N H₁ H₂ hsnc₁ hsnc₂ hH₁ hH₂`. Establish `: AlgebraicGeometry.Etale ψ₁` using `hψ₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: AlgebraicGeometry.Etale ψ₂` using `hψ₂`. Establish `: AlgebraicGeometry.QuasiCompact (ψ₁ ≫ T.structMap)` using `hqc`. Establish `hcomp₂ : ψ₂ ≫ (T.withBoundary (H₂ :: N)).structMap = ψ₁ ≫ T.structMap` using `hcompeq.symm`. Take `⟨hVal₁, hstr₁⟩` from `isAdmissible_and_isStrictPullbackBlowupSeq_of_etale hin P hPdown A B hspec T hV hP hO hD (by simp [hbd]) V (ψ₁ ≫ T.structMap) ψ₁ hψ₁ hqc rfl hcov₁`. Take `⟨hVal₂, hstr₂⟩` from `isAdmissible_and_isStrictPullbackBlowupSeq_of_etale hin P hPdown A B hspec (T.withBoundary (H₂ :: N)) hV₂ (by rw [MarkedIdealWithBoundary.withBoundary_dim]; exact hP) (fun x => hO x) (fun h2 => hD h2) (by simp [MarkedIdealWithBoundary.withBoundary_boundary]) V (ψ₁ ≫ T.structMap) …`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: AlgebraicGeometry.Smooth (ψ₁ ≫ T.structMap)` using `hVal₁.smooth`. Establish `: AlgebraicGeometry.LocallyOfFiniteType (ψ₁ ≫ T.structMap)` using `hftq`. Establish `hbdy : List.map (fun D : T.scheme.IdealSheafData => D.comap ψ₁) T.boundary = List.map (fun D : T.scheme.IdealSheafData => D.comap ψ₂) (H₂ :: N)`. Rewrite using `[hbd]`. Simplify using `only [List.map_cons]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hHH, hNN]`. Establish `hTT : T.pullbackAlong V (ψ₁ ≫ T.structMap) ψ₁ = (T.withBoundary (H₂ :: N)).pullbackAlong V (ψ₁ ≫ T.structMap) ψ₂` using `by show MarkedIdealWithBoundary.mk T.base V (ψ₁ ≫ T.structMap) (T.ideal.comap ψ₁) T.mult (List.map (fun D : T.scheme.IdealSheafData => D.comap ψ₁) T.boundary) = MarkedIdealWithBoundary.mk T.base V (ψ₁ ≫ T.structMap) (T.ideal.comap ψ₂) T.mult (List.map (fun D : T.scheme.IdealSheaf …`. Rewrite using `[hidl, hbdy]`. Establish `hDeq : (A (T.pullbackAlong V (ψ₁ ≫ T.structMap) ψ₁)).toSequenceOfBlowups = (A ((T.withBoundary (H₂ :: N)).pullbackAlong V (ψ₁ ≫ T.structMap) ψ₂)).toSequenceOfBlowups` using `toSequenceOfBlowups_eq_of_heq _ _ hidl rfl hbdy (congr_arg_heq A hTT)`. Rewrite `hstr₂` using `[← hDeq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc0, hcsucc, hcle⟩` from `hin.maxContactChain T.base V (ψ₁ ≫ T.structMap) (T.ideal.comap ψ₁) T.mult hV.one_le_mult (List.map (fun D : T.scheme.IdealSheafData => D.comap ψ₁) T.boundary) (A (T.pullbackAlong V (ψ₁ ≫ T.structMap) ψ₁)) (fun i hi => hin.isLocallyNoetherian_obj (T.pullbackAlong V (ψ₁ ≫ T.structM …`. Use `SequenceOfBlowups.isomorphic_of_isStrictPullback_same_source (A T).toSequenceOfBlowups (A (T.withBoundary (H₂ :: N))).toSequenceOfBlowups hin.lifting hstr₁ hstr₂ ?_ ?_ ?_ ?_ c ?_ hcsucc hcle` and prove the remaining obligations. Introduce `i hi x hx`. Conclude with `hcov₁ (hin.center_mem_coSupport T hV (A T) i hi x hx)`. Introduce `i hi x hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hcov₂ (hin.center_mem_coSupport (T.withBoundary (H₂ :: N)) hV₂ (A (T.withBoundary (H₂ :: N))) i hi x hx)`. Introduce `i hi J hJ`. Conclude with `le_center_of_center_support_subset hin T (A T) i hi J (SetLike.coe_subset_coe.mpr hJ)`. Introduce `i hi J hJ`. Conclude with `le_center_of_center_support_subset hin (T.withBoundary (H₂ :: N)) (A (T.withBoundary (H₂ :: N))) i hi J (SetLike.coe_subset_coe.mpr hJ)`.
-
-Rewrite using `[hc0]`. Conclude with `subschemeι_comap_comp_comp_eq _ _ ψ₁ ψ₂ hmax`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isomorphic_withBoundary_cons_of_isMaxContactHypersurface
     (hin : OrderReduction.OrderReductionHypotheses.{u})

@@ -6,7 +6,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.SemiFibrationLieLat
 open CategoryTheory AlgebraicGeometry NumberField IsDedekindDomain ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.Semi ReciprocityTheory.ChartRestriction.G.Geo.Tor Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Pj ReciprocityTheory.GeometryOfNumbersTheory GlobalTheory.Toroidal GlobalTheory.Cartier GlobalTheory.ProjVar GlobalTheory.TrueGeo GlobalTheory.CxPts GlobalTheory.Mean4O GlobalTheory.LieHt GlobalTheory.ShFam GlobalTheory.ShFam.Pad GlobalTheory.LieRead
 
 /- English proof (translation)
-Take `⟨τ, i⟩` from `x`. Take `⟨a, rfl⟩` from `(Fintype.equivFin (E →+* ℂ)).symm.surjective τ`. Unfold `letters`. Conclude with `List.mem_flatMap.2 ⟨a, List.mem_finRange _, List.mem_map.2 ⟨i, List.mem_finRange _, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem mem_letters' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) (x : Letter Dw) : x ∈ letters Dw := by
@@ -16,11 +16,9 @@ private theorem mem_letters' {E : Type} [Field E] [NumberField E] [IsCMField E] 
   exact List.mem_flatMap.2 ⟨a, List.mem_finRange _, List.mem_map.2 ⟨i, List.mem_finRange _, rfl⟩⟩
 
 /- English proof (translation)
-Unfold `letters`. Rewrite using `[List.nodup_flatMap]`. Use `⟨fun a _ => (List.nodup_finRange _).map fun i j h => ?_, ?_⟩` and prove the remaining obligations. Conclude with `eq_of_heq (Sigma.mk.inj_iff.1 h).2`. Use `(List.nodup_finRange _).imp ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Simplify using `only [Function.onFun]`. Introduce `x hx hy`. Take `⟨i, -, rfl⟩` from `List.mem_map.1 hx`. Take `⟨j, -, h⟩` from `List.mem_map.1 hy`.
-
-Conclude with `hab ((Fintype.equivFin (E →+* ℂ)).symm.injective (congrArg Sigma.fst h)).symm`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem nodup_letters' {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) : (letters Dw).Nodup := by
@@ -37,13 +35,11 @@ private theorem nodup_letters' {E : Type} [Field E] [NumberField E] [IsCMField E
     exact hab ((Fintype.equivFin (E →+* ℂ)).symm.injective (congrArg Sigma.fst h)).symm
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hv k hk`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, hj, rfl⟩` from `(hT x).1 hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `Pi.single_eq_of_ne (show k ≠ j from fun h => hk (by rw [h]; exact hj)) _`. Consider the case `zero => rfl`. Consider the case `add x y _ _ hx hy => simp [hx, hy]`. Consider the case `smul a x _ hx => simp [hx]`. Introduce `h`.
+Treat this case separately. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[pi_eq_sum_univ' v]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : k ∈ S`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ((hT _).2 ⟨k, hk, rfl⟩))`. Rewrite using `[h k hk, zero_smul]`.
-
-Conclude with `Submodule.zero_mem _`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_span_single' {K : Type} [Field K] {g : ℕ} (S : Set (Fin g)) (T : Set (Fin g → K))
     (hT : ∀ v, v ∈ T ↔ ∃ k ∈ S, v = Pi.single k 1) (v : Fin g → K) :
@@ -66,15 +62,13 @@ private theorem mem_span_single' {K : Type} [Field K] {g : ℕ} (S : Set (Fin g)
     · rw [h k hk, zero_smul]; exact Submodule.zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact ⟨1, one_ne_zero, by simpa using hx⟩`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨d, hd, hx⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he, hy⟩` from `hy`. Use `⟨d * e, mul_ne_zero hd he, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `L.smul_mem _ hx`. Rewrite using `[mul_smul]`. Conclude with `L.smul_mem _ hy`. Consider the case `smul a x _ hx`. Take `⟨d, hd, hx⟩` from `hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨⟨e, he⟩, b, hb⟩` from `IsLocalization.exists_integer_multiple (nonZeroDivisors (𝓞 K)) a`. Use `⟨e * d, mul_ne_zero (nonZeroDivisors.ne_zero he) hd, ?_⟩` and prove the remaining obligations. Establish `: (e * d) • a • x = b • d • x`. Rewrite using `[mul_comm, mul_smul, ← smul_assoc e a x, show e • a = algebraMap _ K b from hb.symm, algebraMap_smul, smul_comm]`. Rewrite using `[this]`.
-
-Conclude with `L.smul_mem _ hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_mul_mem' {K : Type} [Field K] [NumberField K] {V : Type} [AddCommGroup V] [Module K V]
     [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] (L : Submodule (𝓞 K) V) (v : V)
@@ -100,23 +94,23 @@ private theorem exists_mul_mem' {K : Type} [Field K] [NumberField K] {V : Type} 
     exact L.smul_mem _ hx
 
 /- English proof (translation)
-Introduce `D O K _ _ F τ i hi hg`. Take `⟨n, hn, hq⟩` from `List.getElem_of_mem (mem_letters' O.S.Dw ⟨τ, ⟨i, hi⟩⟩)`. Set `q : Fin F.P₀.g` to `⟨n, hg ▸ hn⟩`. Establish `hq' : (letters O.S.Dw)[(q : ℕ)]? = some ⟨τ, ⟨i, hi⟩⟩` using `List.getElem?_eq_some_iff.2 ⟨hn, hq⟩`. Establish `hvec : stepVec O F τ i = Pi.single q 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `p`. Unfold `stepVec`. Distinguish the cases in `hp : p = q`. Substitute `hp` using the available equality. Rewrite using `[if_pos ⟨_, rfl, rfl, hq'⟩, Pi.single_eq_same]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hp, if_neg]`. Introduce and unpack `⟨⟨τ', j, hj⟩, h1, h2, h3⟩`. Simplify using `only at h1 h2`. Substitute `h1 h2` using the available equality. Take `⟨hp', h4⟩` from `List.getElem?_eq_some_iff.1 h3`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Conclude with `hp (Fin.ext ((List.Nodup.getElem_inj_iff (nodup_letters' O.S.Dw)).1 (h4.trans hq.symm)))`. Establish `hcoef : ∀ v, stepCoef O F τ i v = v q`. Introduce `v`. Simplify using `[stepCoef, hvec, Pi.single_apply]`. Establish `hfull` using `(GlobalTheory.T.semi_fibration_lie_lattice_full K F).1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlat : ∀ v, v ∈ stepLat O F τ (i + 1) ↔ v ∈ F.lieLat ∧ ∀ k : Fin F.P₀.g, k ∉ {k : Fin F.P₀.g | ∃ x : Letter O.S.Dw, x.1 = τ ∧ (x.2 : ℕ) < i + 1 ∧ (letters O.S.Dw)[(k : ℕ)]? = some x} → v k = 0`. Introduce `v`. Rewrite using `[stepLat, Submodule.mem_inf, Submodule.restrictScalars_mem]`. Use `and_congr Iff.rfl (mem_span_single' _ _ (fun w => ?_) v)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨k, x, a, b, c, d⟩`. Conclude with `⟨k, ⟨x, a, b, c⟩, d⟩`. Introduce and unpack `⟨k, ⟨x, a, b, c⟩, d⟩`. Conclude with `⟨k, x, a, b, c, d⟩`. Use `⟨q, hq', hvec, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.FG.map _ ?_` and prove the remaining obligations. Conclude with `Submodule.FG.of_le hfull.1 inf_le_left`. Take `⟨d, hd, hv⟩` from `exists_mul_mem' F.lieLat (Pi.single q 1) (by rw [hfull.2]; trivial)`. Use `⟨_, hv, fun k hk => ?_, ?_⟩` and prove the remaining obligations. Establish `: k ≠ q`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Introduce and unpack `rfl`. Conclude with `hk ⟨_, rfl, Nat.lt_succ_self _, hq'⟩`. Simplify using `[Pi.single_eq_of_ne this]`. Simplify using `using hd`. Use extensionality with `b`.
+Simplify to obtain the desired conclusion from the available facts. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, rfl⟩`. Conclude with `⟨v, ((hlat v).1 hv).1, ((hlat v).1 hv).2, hcoef v⟩`. Introduce and unpack `⟨v, h1, h2, rfl⟩`. Conclude with `⟨v, (hlat v).2 ⟨h1, h2⟩, hcoef v⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.lie_lattice_generator :
     ∀ (D : D7) (O : Setup D) (K : Type) [Field K] [NumberField K] (F : SemiFib K) (τ : D.host.E →+* ℂ) (i : ℕ) (hi : i < O.S.Dw.mult τ), F.P₀.g = (letters O.S.Dw).length → ∃ q : Fin F.P₀.g, (letters O.S.Dw)[(q : ℕ)]? = some ⟨τ, ⟨i, hi⟩⟩ ∧ stepVec O F τ i = Pi.single q 1 ∧ (stepIdeal O F τ i).FG ∧ (∃ v ∈ F.lieLat, (∀ k : Fin F.P₀.g, k ∉ {k : Fin F.P₀.g | ∃ x : Letter O.S.Dw, x.1 = τ ∧ (x.2 : ℕ) < i + 1 ∧ (letters O.S.Dw)[(k : ℕ)]? = some x} → v k = 0) ∧ v q ≠ 0) ∧ (stepIdeal O F τ i : Set K) = {b : K | ∃ v ∈ F.lieLat, (∀ k : Fin F.P₀.g, k ∉ {k : Fin F.P₀.g | ∃ x : Letter O.S.Dw, x.1 = τ ∧ (x.2 : ℕ) < i + 1 ∧ (letters O.S.Dw)[(k : ℕ)]? = some x} → v k = 0) ∧ b = v q} := by

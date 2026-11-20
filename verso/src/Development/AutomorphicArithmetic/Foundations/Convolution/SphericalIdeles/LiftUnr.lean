@@ -8,20 +8,18 @@ open NumberField IsDedekindDomain Filter
 open GlobalTheory.CuspRep Formalism.L2.Host Formalism.ConjugateSelfDual UpperTheory.V.Published UpperTheory.CBC
 
 /- English proof (translation)
-Take `⟨v⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Conclude with `(InfinitePlace.not_isReal_iff_isComplex.2 (h'.isComplex v)) (h.isReal v)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem not_both (F : Type) [Field F] [NumberField F] (h : IsTotallyReal F) (h' : IsTotallyComplex F) : False := by
   obtain ⟨v⟩ : Nonempty (InfinitePlace F) := inferInstance
   exact (InfinitePlace.not_isReal_iff_isComplex.2 (h'.isComplex v)) (h.isReal v)
 
 /- English proof (translation)
-Introduce `K M _ _ _ _ _ _ _ _ hp a ha π hη`. Take `⟨L, -, -⟩` from `UpperTheory.ConvolutionTheory.cbcc K M hp inferInstance a ha`. Break down `L (.cx π) with ⟨η, hη', e⟩ | ⟨P, hW, hinf, hS⟩` into its components or cases. Conclude with `(hη η hη' (Quotient.sound e)).elim`. Break down `P with @⟨_, P⟩ | @⟨hR, P⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `swap`. Conclude with `(not_both M hR inferInstance).elim`. Use `⟨P, hW, fun w f B hu hf hB => ?_, fun τ => ?_, hS⟩` and prove the remaining obligations. Establish `hall : ∀ w' : HeightOneSpectrum (𝓞 M), w'.under (𝓞 K) = w.under (𝓞 K) → Algebra.IsUnramifiedAt (𝓞 K) w'.asIdeal`. Introduce `w' hw'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hr`. Take `⟨-, h2, -⟩` from `UpperTheory.ConvolutionTheory.Sph.normRam K M hp w' hr`. Establish `e' : w = w'` using `h2 w hw'.symm`. Conclude with `hr (e' ▸ hu)`. Conclude with `(UpperTheory.ConvolutionTheory.Sph.cbcSph K M hp inferInstance a ha (.cx π) (.cx P) hW (w.under (𝓞 K)) hall).1 B hB w rfl f hf`.
-
-Establish `h` using `hinf τ _ (ParLaws.hasInfChar_infChar (CG.mk π) (τ.comp (algebraMap K M)))`. Conclude with `CG.HasInfChar.infChar_eq (π := CG.mk P) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Sph.liftUnr :
     UpperTheory.ConvolutionTheory.Sph.LiftUnr := by

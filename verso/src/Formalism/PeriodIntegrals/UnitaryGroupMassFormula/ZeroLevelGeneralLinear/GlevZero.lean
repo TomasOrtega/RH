@@ -12,9 +12,9 @@ namespace PI.UnitaryGroupMassFormula.QnFFZero
 attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 /- English proof (translation)
-Simplify using `only [Glev, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h.1`. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨h, fun a ha => absurd ha (by simp)⟩`.
+A detailed English derivation is pending.
 -/
 theorem glev_zero (k r : ℕ) (g : Mx k r) : g ∈ Glev k r 0 ↔ g ∈ UH (Hpk k r) := by
   simp only [Glev, Set.mem_ofPred_eq]
@@ -25,16 +25,16 @@ theorem glev_zero (k r : ℕ) (g : Mx k r) : g ∈ Glev k r 0 ↔ g ∈ UH (Hpk 
     exact ⟨h, fun a ha => absurd ha (by simp)⟩
 
 /- English proof (translation)
-Simplify using `only [Nset, Set.mem_ofPred_eq] at h`. Conclude with `h.1`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nset_uh (k r : ℕ) (n : Mx k r) (h : n ∈ Nset k r) : n ∈ UH (Hpk k r) := by
   simp only [Nset, Set.mem_ofPred_eq] at h
   exact h.1
 
 /- English proof (translation)
-Simplify using `only [Nlev, Set.mem_inter_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h.1`. Introduce `h`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨h, (glev_zero k r n).2 (nset_uh k r n h)⟩`.
+A detailed English derivation is pending.
 -/
 theorem nlev_zero (k r : ℕ) (n : Mx k r) : n ∈ Nlev k r 0 ↔ n ∈ Nset k r := by
   simp only [Nlev, Set.mem_inter_iff]
@@ -45,9 +45,9 @@ theorem nlev_zero (k r : ℕ) (n : Mx k r) : n ∈ Nlev k r 0 ↔ n ∈ Nset k r
     exact ⟨h, (glev_zero k r n).2 (nset_uh k r n h)⟩
 
 /- English proof (translation)
-Unfold `ell`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a _`. Use `split_ifs with h`. Apply `Matrix.one_apply_ne` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `he`. Simplify using `[eI, Fin.ext_iff] at he`. Rewrite using `[Matrix.one_mulVec]`. Conclude with `hz _ (Or.inl (by simp [eI]))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ell_one (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) : ell k r z 1 = 0 := by
   unfold ell
@@ -61,25 +61,23 @@ theorem ell_one (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (hz : inWb k r z) 
     exact hz _ (Or.inl (by simp [eI]))
 
 /- English proof (translation)
-Simplify using `[psi, ell_one k r z hz]`.
+Simplify using the standard rewrite rules.
 -/
 theorem psi_one (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (c : ℂ) (hz : inWb k r z) : psi k r z c 1 = 1 := by
   simp [psi, ell_one k r z hz]
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ k r z z' π π' hz hz'`. Establish `hdet : IsUnit (Hpk k r).det` using `Matrix.isUnit_det_of_left_inverse (hpkFacts k r).2.1`. Establish `hmul : ∀ g ∈ UH (Hpk k r), ∀ h ∈ UH (Hpk k r), g * h ∈ UH (Hpk k r)` using `(uHGroup (2 * r + k + 1) (Hpk k r) hdet).2.1`. Establish `hN1 : (1 : Mx k r) ∈ Nset k r` using `(nSubgroup k r).1`. Use extensionality with `J`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [FFl, EqF, Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hS, hL, hR, hW⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨U, F, hU, hgU, hF, hE⟩` from `hS g₀ (Set.mem_inter ((glev_zero k r g₀).2 hg₀) (Set.mem_univ _))`. Conclude with `⟨U, F, hU, hgU, hF, fun g hg hgH => hE g hg ((glev_zero k r g).2 hgH)⟩`. Introduce `g hg n hn n' hn'`. Establish `hng : n * g ∈ UH (Hpk k r)` using `hmul n (nset_uh k r n hn) g hg`. Rewrite using `[hR (n * g) (Set.mem_inter ((glev_zero k r _).2 hng) (Set.mem_univ _)) n' ((nlev_zero k r n').2 hn'), hL g (Set.mem_inter ((glev_zero k r g).2 hg) (Set.mem_univ _)) n ((nlev_zero k r n).2 hn), smul_smul, mul_comm]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `g hg h hh h' hh'`. Conclude with `hW g (Set.mem_inter ((glev_zero k r g).2 hg) (Set.mem_univ _)) h hh h' hh'`. Introduce and unpack `⟨hS, hNN, hW⟩`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨U, F, hU, hgU, hF, hE⟩` from `hS g₀ ((glev_zero k r g₀).1 hg₀.1)`. Conclude with `⟨U, F, hU, hgU, hF, fun g hg hgG => hE g hg ((glev_zero k r g).1 hgG)⟩`. Introduce `g hg n hn`. Establish `h1` using `hNN g ((glev_zero k r g).1 hg.1) n ((nlev_zero k r n).1 hn) 1 hN1`. Rewrite `h1` using `[mul_one, psi_one k r z' cStd hz', mul_one]`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `h1`. Introduce `g hg n hn`. Establish `h1` using `hNN g ((glev_zero k r g).1 hg.1) 1 hN1 n ((nlev_zero k r n).1 hn)`. Rewrite `h1` using `[one_mul, psi_one k r z cStd hz, one_mul]`. Conclude with `h1`.
-
-Introduce `g hg h hh h' hh'`. Conclude with `hW g ((glev_zero k r g).1 hg.1) h hh h' hh'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem ffZero : FFZero := by
   intro Wp Wq _ _ _ _ k r z z' π π' hz hz'

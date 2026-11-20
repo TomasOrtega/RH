@@ -14,7 +14,7 @@ section
 variable {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y]
 
 /- English proof (translation)
-Take `⟨U, hx, s, rfl⟩` from `h.exists_fnOf`. Establish `hy : y ∈ j ⁻¹ᵁ U` using `hx`. Rewrite using `[fnMap_fnOf j hη _ (gen_mem hy)]`. Conclude with `regAt_fnOf hy _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regAt_fnMap_of (j : Y ⟶ X) (hη : j (genericPoint Y) ⤳ genericPoint X) {y : Y} {t : X.functionField}
     (h : RegAt (j y) t) : RegAt y (fnMap j hη t) := by
@@ -24,7 +24,7 @@ theorem regAt_fnMap_of (j : Y ⟶ X) (hη : j (genericPoint Y) ⤳ genericPoint 
   exact regAt_fnOf hy _ _
 
 /- English proof (translation)
-Rewrite using `[fnMap_fnOf j hη h (e h')]`. Conclude with `fnOf_resG e h' (j.app U a)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fnOf_appLE (j : Y ⟶ X) (hη : j (genericPoint Y) ⤳ genericPoint X) {U : X.Opens} {V : Y.Opens}
     (e : V ≤ j ⁻¹ᵁ U) (h : genericPoint X ∈ U) (h' : genericPoint Y ∈ V) (a : Γ(X, U)) :
@@ -33,7 +33,7 @@ theorem fnOf_appLE (j : Y ⟶ X) (hη : j (genericPoint Y) ⤳ genericPoint X) {
   exact fnOf_resG e h' (j.app U a)
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `(ha.map b.continuous).trans hb`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_genericPoint_specializes {Z : Scheme.{0}} [IsIntegral Z] (a : Z ⟶ Y) (b : Y ⟶ X)
     (ha : a (genericPoint Z) ⤳ genericPoint Y) (hb : b (genericPoint Y) ⤳ genericPoint X) :
@@ -42,7 +42,7 @@ theorem comp_genericPoint_specializes {Z : Scheme.{0}} [IsIntegral Z] (a : Z ⟶
   exact (ha.map b.continuous).trans hb
 
 /- English proof (translation)
-Take `⟨U, hx, s, rfl⟩` from `(regAt_genericPoint t).exists_fnOf`. Establish `h1 : genericPoint Y ∈ b ⁻¹ᵁ U` using `hb.mem_open U.isOpen hx`. Establish `h2 : genericPoint Z ∈ a ⁻¹ᵁ (b ⁻¹ᵁ U)` using `ha.mem_open (b ⁻¹ᵁ U).isOpen h1`. Rewrite using `[fnMap_fnOf b hb _ h1, fnMap_fnOf a ha _ h2, fnMap_fnOf (a ≫ b) hab _ h2, Scheme.Hom.comp_app]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fnMap_comp {Z : Scheme.{0}} [IsIntegral Z] (a : Z ⟶ Y) (b : Y ⟶ X)
     (ha : a (genericPoint Z) ⤳ genericPoint Y) (hb : b (genericPoint Y) ⤳ genericPoint X)
@@ -55,7 +55,7 @@ theorem fnMap_comp {Z : Scheme.{0}} [IsIntegral Z] (a : Z ⟶ Y) (b : Y ⟶ X)
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem fnMap_congr {a b : Y ⟶ X} (e : a = b) (ha : a (genericPoint Y) ⤳ genericPoint X)
     (hb : b (genericPoint Y) ⤳ genericPoint X) (t : X.functionField) : fnMap a ha t = fnMap b hb t := by
@@ -63,7 +63,7 @@ theorem fnMap_congr {a b : Y ⟶ X} (e : a = b) (ha : a (genericPoint Y) ⤳ gen
 end
 
 /- English proof (translation)
-The claim follows from `hU.to_subtype haveI : IsIntegral U.toScheme := isIntegral_of_isOpenImmersion U.ι ∃ (w : Fin (N + 1) → Y.functionField) (i₀ : Fin (N + 1)), w i₀ = 1 ∧ ∀ (u : U.toScheme) (k : Fin (N + 1)) (hk : u ∈ φ ⁻¹ᵁ GlobalTheory.ProjSpace.chart F N k), w k ≠ 0 ∧ ∀ j, GlobalTheory.TrueGeo.Smal …`.
+A detailed English derivation is pending.
 -/
 theorem exists_ratCoords : ∀ (F : Type) [Field F] (Y : Scheme.{0}) [IsIntegral Y] (N : ℕ) (U : Y.Opens) (hU : (U : Set Y).Nonempty)
     (φ : U.toScheme ⟶ PSpace F N),
@@ -100,19 +100,17 @@ theorem exists_ratCoords : ∀ (F : Type) [Field F] (Y : Scheme.{0}) [IsIntegral
   rw [map_div₀, hmul j, mul_div_cancel_left₀ _ hk0]
 
 /- English proof (translation)
-Introduce `F _ N Y _ q w hw`. Establish `hopen : ∀ k, IsOpen {y : Y | w k ≠ 0 ∧ ∀ j, RegAt y (w j / w k)}` using `fun k => by`. Use `isOpen_iff_forall_mem_open.2 fun y ⟨h0, hy⟩ => ?_` and prove the remaining obligations. Take `⟨W, hyW, hW⟩` from `GlobalTheory.InvertIdeal.exists_common_open hy`. Use `⟨W, fun y' hy' => ⟨h0, fun j => ?_⟩, W.isOpen, hyW⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨a, ha⟩` from `hW j`. Conclude with `ha ▸ regAt_fnOf hy' _ a`. Set `U' : Fin (N + 1) → Y.Opens` to `fun k => ⟨_, hopen k⟩`. Establish `hr : ∀ k j, ∃ a : Γ(Y, U' k), ∀ h, fnOf (U' k) h a = w j / w k` using `fun k j => by`. Distinguish the cases in `h : genericPoint Y ∈ U' k`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `exists_fnOf_eq h fun y hy => hy.2 j`. Conclude with `⟨a, fun _ => ha⟩`. Conclude with `⟨0, fun h' => (h h').elim⟩`. Use `choose r hr using hr`. Establish `H : IsCoordFamily U' r` using `{ cover := top_le_iff.1 fun y _ => Opens.mem_iSup.2 (hw y) self := fun k => fn_ext fun h => by rw [hr, map_one, div_self h.1] mul := fun i j k => fn_ext fun h => by`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_mul, fnOf_resG, fnOf_resG, fnOf_resG, hr, hr, hr]`. Establish `hi : w i ≠ 0` using `h.1.1`. Establish `hj : w j ≠ 0` using `h.2.1`. Clear the denominators using the available nonvanishing facts. Use `basicOpen_le := fun i j y hy => by`.
+Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hyi : y ∈ U' i` using `Y.basicOpen_le _ hy`. Establish `hu` using `(unitAt_fnOf_iff hyi (gen_mem hyi) (r i j)).2 hy`. Rewrite `hu` using `[hr]`. Establish `hi0 : w i ≠ 0` using `hyi.1`. Establish `hj0 : w j ≠ 0` using `fun h0 => hu.ne_zero (by rw [h0, zero_div])`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨hj0, fun l => ?_⟩` and prove the remaining obligations. Use `(hyi.2 l).mul hu.inv.regAt` as an intermediate fact. Rewrite using `[show w l / w i * (w j / w i)⁻¹ = w l / w j by field_simp] at this }` and apply the resulting hypothesis. Use `⟨H.toHom q, H.toHom_str q, fun y k hk0 hreg => ⟨U' k, ⟨hk0, hreg⟩, H.le_toHom_preimage q k, fun j => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[H.pullRatio_toHom q k j]`.
-
-Conclude with `hr k j _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_hom_of_ratCoords : ∀ (F : Type) [Field F] (N : ℕ) (Y : Scheme.{0}) [IsIntegral Y] (q : Y ⟶ Sp F)
     (w : Fin (N + 1) → Y.functionField),
@@ -158,21 +156,17 @@ theorem exists_hom_of_ratCoords : ∀ (F : Type) [Field F] (N : ℕ) (Y : Scheme
   exact hr k j _
 
 /- English proof (translation)
-Introduce `F _ Y _ p N U φ hφ hU`. Use `haveI : Nonempty U := hU.to_subtype`. Use `haveI : IsIntegral U.toScheme := isIntegral_of_isOpenImmersion U.ι`. Establish `hηU : U.ι (genericPoint U.toScheme) ⤳ genericPoint Y` using `specializes_of_eq (genericPoint_eq_of_isOpenImmersion U.ι)`. Take `⟨w, i₀, hw₀, hw⟩` from `exists_ratCoords F Y N U hU φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `loc : ∀ (u : U.toScheme) k, u ∈ φ ⁻¹ᵁ chart F N k → w k ≠ 0 ∧ ∀ j, RegAt (U.ι u) (w j / w k)`. Introduce `u k hk`. Use `⟨(hw u k hk).1, fun j => ?_⟩` and prove the remaining obligations. Rewrite using `[← regAt_fnMap_iff U.ι hηU, (hw u k hk).2 j]`. Conclude with `regAt_fnOf hk _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `⟨w, i₀, hw₀, fun y hy => ?_, ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩` from `exists_mem_chart F N (φ ⟨y, hy⟩)`. Conclude with `⟨k, loc ⟨y, hy⟩ k hk⟩`. Introduce `Y' _ s hη hY'`. Take `⟨g, hg, hgW⟩` from `exists_hom_of_ratCoords F N Y' (s ≫ p) (fun j => fnMap s (specializes_of_eq hη) (w j)) hY'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨g, hg, hom_ext ?_ fun z => ?_⟩` and prove the remaining obligations. Rewrite using `[Category.assoc, hg, Category.assoc, hφ, ← Category.assoc (s ∣_ U), morphismRestrict_ι, Category.assoc]`. Use `haveI : Nonempty (s ⁻¹ᵁ U).toScheme := ⟨z⟩`. Use `haveI : IsIntegral (s ⁻¹ᵁ U).toScheme := isIntegral_of_isOpenImmersion (s ⁻¹ᵁ U).ι`. Establish `hu : U.ι ((s ∣_ U) z) = s ((s ⁻¹ᵁ U).ι z)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Scheme.Hom.comp_apply, morphismRestrict_ι, Scheme.Hom.comp_apply]`. Establish `hηι : (s ⁻¹ᵁ U).ι (genericPoint (s ⁻¹ᵁ U).toScheme) ⤳ genericPoint Y'` using `specializes_of_eq (genericPoint_eq_of_isOpenImmersion _)`. Establish `hηr : (s ∣_ U) (genericPoint (s ⁻¹ᵁ U).toScheme) ⤳ genericPoint U.toScheme`. Use `specializes_of_eq (U.ι.isOpenEmbedding.injective ?_)` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, morphismRestrict_ι, Scheme.Hom.comp_apply, genericPoint_eq_of_isOpenImmersion, hη, genericPoint_eq_of_isOpenImmersion]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `exists_mem_chart F N (φ ((s ∣_ U) z))`. Take `⟨hk0, hreg⟩` from `loc _ k hk`. Establish `hreg' : ∀ j, RegAt ((s ⁻¹ᵁ U).ι z) (fnMap s (specializes_of_eq hη) (w j) / fnMap s (specializes_of_eq hη) (w k))` using `fun j => by`. Rewrite using `[← map_div₀]`. Conclude with `regAt_fnMap_of s _ (hu ▸ hreg j)`.
-
-Take `⟨W, hzW, hW, hWj⟩` from `hgW _ k ((map_ne_zero _).2 hk0) hreg'`. Establish `hz : z ∈ (s ⁻¹ᵁ U).ι ⁻¹ᵁ W ⊓ (s ∣_ U) ⁻¹ᵁ (φ ⁻¹ᵁ chart F N k)` using `⟨hzW, hk⟩`. Use `⟨_, hz, k, inf_le_left.trans ((s ⁻¹ᵁ U).ι.preimage_mono hW), inf_le_right, fun j => ?_⟩` and prove the remaining obligations. Use `fnOf_injective _ (gen_mem hz) ?_` and prove the remaining obligations. Rewrite using `[← appLE_pullRatio (φ := g) (hi := hW) (s ⁻¹ᵁ U).ι inf_le_left, ← appLE_pullRatio (φ := φ) (hi := le_rfl) (s ∣_ U) inf_le_right, fnOf_appLE _ hηι _ (gen_mem hzW), fnOf_appLE _ hηr _ (gen_mem hk), hWj, ← (hw _ k hk).2 j, ← map_div₀, ← fnMap_comp _ _ hηι (specializes_of_eq hη) (com …`.
-
-Conclude with `fnMap_congr (morphismRestrict_ι s U).symm _ _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_ratCoords_extend : ∀ (F : Type) [Field F] (Y : Scheme.{0}) [IsIntegral Y] (p : Y ⟶ Sp F) (N : ℕ) (U : Y.Opens)
     (φ : U.toScheme ⟶ PSpace F N), φ ≫ PSpace.str F N = U.ι ≫ p → (U : Set Y).Nonempty →

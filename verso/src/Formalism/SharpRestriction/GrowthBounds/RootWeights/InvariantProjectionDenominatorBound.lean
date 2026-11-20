@@ -16,21 +16,19 @@ def ExtremalProjectorProperties {n : ℕ} {K V : Type*} [Field K] [AddCommGroup 
     ∃ w : Fin n → V, extremalProjector E c L u = u + ∑ i ∈ Finset.Iio c, E c i (w i)
 
 /- English proof (translation)
-Proceed by induction on `c with`. Consider the case `zero`. Use `⟨x0, hx0, fun a b ha _ => absurd ha (Nat.not_lt_zero _), rfl, ?_⟩` and prove the remaining obligations. Simplify using `using hxM`. Consider the case `succ c ih`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Take `⟨y, hy0, hyk, hyI, hyM⟩` from `ih (Nat.le_of_succ_le hc)`. Establish `hcn : c < n` using `hc`. Take `⟨cf, hcf⟩ : ∃ cf : Fin n, cf.val = c` from `⟨⟨c, hcn⟩, rfl⟩`. Take `⟨hA1, hA2, hA3, w, hw⟩` from `hA cf y hy0 (fun a b ha hb => hyk a b (by have := Fin.lt_def.mp ha; omega) (by have := Fin.lt_def.mp hb; omega))`. Use `⟨extremalProjector E cf L y, hA3, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b ha hb`. Apply the tactic sequence `rcases Nat.lt_succ_iff_lt_or_eq.mp ha with ha' | ha' <;>`. Break down `Nat.lt_succ_iff_lt_or_eq.mp hb with hb' | hb'` into its components or cases. Conclude with `hA2 a b (Fin.lt_def.mpr (by omega)) (Fin.lt_def.mpr (by omega))`. Establish `hb2 : b = cf` using `Fin.ext (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality.
 
-Substitute `hb2` using the available equality. Conclude with `hA1 a (Fin.lt_def.mpr (by omega))`. Establish `ha2 : a = cf` using `Fin.ext (by omega)`. Substitute `ha2` using the available equality. Conclude with `weight_zero_lowering_kills_raising hE hA3 b a (by rintro rfl; omega) (hA1 b (Fin.lt_def.mpr (by omega)))`.
+Establish an intermediate fact. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ha2 : a = cf` using `Fin.ext (by omega)`. Establish `hb2 : b = cf` using `Fin.ext (by omega)`. Rewrite using `[ha2, hb2]`. Establish `h0` using `hA3`. Simplify using `only [weightSp, Submodule.mem_iInf, LinearMap.mem_ker] at h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `using h0 cf`. Rewrite using `[hw, map_add, map_sum]`. Simplify using `only [invariant_projection_kills_operator D h2 E hE Inv hInv, Finset.sum_const_zero, add_zero]`. Conclude with `hyI`. Establish `hM2` using `hB cf _ hyM`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `hM2` using `[LinearMap.map_smul_of_tower, smul_smul, ← pow_add]`. Establish `he : (∑ i ∈ range (c + 1), i) * de = cf.val * de + (∑ i ∈ range c, i) * de`. Rewrite using `[Finset.sum_range_succ, hcf]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[he]`.
-
-Conclude with `hM2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem denominator_chain_bound (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (p : ℕ) (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [CharZero (KK O)] (n : ℕ) (V : Type) [AddCommGroup V]
@@ -79,9 +77,9 @@ theorem denominator_chain_bound (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (p
       exact hM2
 
 /- English proof (translation)
-Take `⟨Θ, hΘ1, hΘ2⟩` from `weight_projections_integral_findim E`. Take `⟨y, hy0, hyk, hyI, hyM⟩` from `denominator_chain_bound D h2 p O n V E hE M Inv hInv L de hA hB (Θ 0 x) (weight_projection_mem_weightSpace E hE Θ hΘ2 0 x) (binomial_subring_preserves_lattice hM _ (hΘ1 0) x hx) n le_rfl`. Establish `hInvy : Inv y = y`. Distinguish the cases in `hy : y = 0`. Rewrite using `[hy, map_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Apply `hInv.1` to reduce the goal to its premises. Conclude with `Submodule.subset_span ⟨1, one_mem _, y, ⟨hy, hy0, fun a b _ => hyk a b a.2 b.2⟩, rfl⟩`. Rewrite using `[invariant_projection_through_zero_weight D h2 E hE Inv hInv Θ hΘ2 x, ← hyI, hInvy]`. Rewrite `hyM` using `[Finset.sum_range_id]`. Then use the resulting hypothesis.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem invariant_projection_denominator_bound (D : Formalism.BasicNotions.D7) (h2 : adm2 D) (p : ℕ) (O : Type) [CommRing O] [IsDomain O]
     [IsDiscreteValuationRing O] [CharZero (KK O)] (n : ℕ) (V : Type) [AddCommGroup V]

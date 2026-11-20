@@ -10,7 +10,7 @@ open NumberField Formalism.MainNotions.ShortIntervalPrimes GlobalTheory.RayZeta 
 namespace GlobalTheory.CompanionTheory.Hypotheses₂.Shintani.Abel
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun m : Fin r → ℕ => m + Pi.single i 1)` using `fun a b h => add_right_cancel h`. Conclude with `(hg.comp_injective hinj).sub hg`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem summable_fd {r : ℕ} (i : Fin r) (g : (Fin r → ℕ) → ℂ) (hg : Summable g) :
     Summable (fd i g) := by
@@ -19,9 +19,9 @@ theorem summable_fd {r : ℕ} (i : Fin r) (g : (Fin r → ℕ) → ℂ) (hg : Su
   exact (hg.comp_injective hinj).sub hg
 
 /- English proof (translation)
-Introduce `r cs g hg`. Proceed by induction on `cs with`. Consider the case `nil => simpa [DL] using hg`. Consider the case `cons c cs ih`. Establish `: DL (c :: cs) g = fd c (DL cs g)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `summable_fd c _ ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_DL : ∀ (r : ℕ) (cs : List (Fin r)) (g : (Fin r → ℕ) → ℂ), Summable g →
     Summable (DL cs g) := by

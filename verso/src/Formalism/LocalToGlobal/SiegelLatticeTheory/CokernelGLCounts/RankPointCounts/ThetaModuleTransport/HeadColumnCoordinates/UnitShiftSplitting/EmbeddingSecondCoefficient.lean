@@ -11,7 +11,7 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {g : SplitG M.L} {r : ℕ} (hs : M.split = some g)
 
 /- English proof (translation)
-Rewrite using `[mOf1, e_rOf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem embedding_firstCoefficient (c : Ix r → M.L.O) (a : Fin (r + 1)) :
     g.e ((mOf1 hs c a : M.R) : E) = ((g.e (c (Sum.inr a) : E)).1,
@@ -19,7 +19,7 @@ theorem embedding_firstCoefficient (c : Ix r → M.L.O) (a : Fin (r + 1)) :
   rw [mOf1, e_rOf]; rfl
 
 /- English proof (translation)
-Rewrite using `[mOf2, e_rOf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem embedding_secondCoefficient (c : Ix r → M.L.O) (a : Fin (r + 1)) :
     g.e ((mOf2 hs c a : M.R) : E) = ((g.e (c (Sum.inr a) : E)).2,
@@ -31,7 +31,7 @@ variable {Zh : Matrix (Fin (r + 1)) (Fin (r + 1)) E} {T T' : F} {TT : M.R} {Z Z�
 include hs
 
 /- English proof (translation)
-Rewrite using `[show (Z.Z b a : E) = HermSp.ZZplusOf M Zh T T' b a from congrFun (congrFun hZ b) a, zz_comp hs, ite_ind, ite_ind]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem e_Z (hZ : Z.Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T') (b a : Fin (r + 1)) :
     g.e (Z.Z b a : E) = ((g.e (Zh b a)).1 / (g.q : F) - ind r a b * (-T / (g.q : F)),
@@ -40,7 +40,7 @@ theorem e_Z (hZ : Z.Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T') (b a : Fin (r
     ite_ind, ite_ind]
 
 /- English proof (translation)
-Rewrite using `[show (Zσ.Z b a : E) = HermSp.ZZplusOf M (Zh.map M.L.cj) T T' b a from congrFun (congrFun hZ b) a, zz_comp hs, ite_ind, ite_ind]`. Simplify using `[e_cjA]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem e_Zσ (hZ : Zσ.Z.map M.R.subtype = HermSp.ZZplusOf M (Zh.map M.L.cj) T T') (b a : Fin (r + 1)) :
     g.e (Zσ.Z b a : E) = ((g.e (Zh b a)).2 / (g.q : F) - ind r a b * (-T / (g.q : F)),
@@ -50,17 +50,17 @@ theorem e_Zσ (hZ : Zσ.Z.map M.R.subtype = HermSp.ZZplusOf M (Zh.map M.L.cj) T 
   simp [e_cjA]
 
 /- English proof (translation)
-Establish `hq` using `q_ne g`. Rewrite using `[row_inl, row_inr, e_llMap]`. Simplify using `only [e_Z hs hZ, embedding_firstCoefficient, hTT]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h : ∀ a, ((g.e (Zh b a)).1 / (g.q : F) - ind r a b * (-T / (g.q : F))) * (g.e (c (Sum.inr a) : E)).1 = (g.q : F)⁻¹ * (g.e (Zh b a)).1 * (g.e (c (Sum.inr a) : E)).1 + (g.e (c (Sum.inr a) : E)).1 * (ind r a b * (T / (g.q : F)))`. Introduce `a`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun a _ => h a, Finset.sum_add_distrib, sum_mul_ind]`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Simplify using `only`. Establish `hL : ∑ a, (g.q : F)⁻¹ * (g.e (Zh b a)).1 * (g.e (c (Sum.inr a) : E)).1 + (g.q : F) * ∑ a, ((g.q : F)⁻¹ * (g.e (Zh a b)).2 * (g.e (c (Sum.inl a) : E)).1 + (g.q : F)⁻¹ * (g.q : F)⁻¹ * (-(g.e (Zh b a)).1 - (g.e (Zh a b)).2) * (g.e (c (Sum.inr a) : E)).1) = ∑ a, ((g.e (Zh a b)).2 * ( …`.
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by field_simp; ring`. Establish `hR : ∀ a, (-((g.e (Zh a b)).2 / (g.q : F)) - ind r a b * (T' / (g.q : F))) * ((g.e (c (Sum.inr a) : E)).1 + (g.q : F) * -(g.e (c (Sum.inl a) : E)).1) = ((g.e (Zh a b)).2 * (g.e (c (Sum.inl a) : E)).1 - (g.q : F)⁻¹ * (g.e (Zh a b)).2 * (g.e (c (Sum.inr a) : E)).1) + ((g.e (c (Sum. …`. Introduce `a`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hRs` using `Finset.sum_congr (s₁ := Finset.univ) rfl fun a _ => hR a`. Rewrite `hRs` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, sum_mul_ind, sum_mul_ind]`. Rewrite using `[hRs]`. Use `split_ifs`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Take the linear combination `(norm := skip) hL`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(norm := skip) hL`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gram_rows_firstEmbedding (hTT : g.e (TT : E) = (T, T')) (hZ : Z.Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T')
     (c : Ix r → M.L.O) (b : Fin (r + 1)) :
@@ -107,17 +107,17 @@ theorem gram_rows_firstEmbedding (hTT : g.e (TT : E) = (T, T')) (hZ : Z.Z.map M.
       ring
 
 /- English proof (translation)
-Establish `hq` using `q_ne g`. Rewrite using `[row_inl, row_inr, e_llMap]`. Simplify using `only [e_Zσ hs hZ, embedding_secondCoefficient, hTT]`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Simplify using `only`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `h : ∀ a, ((g.e (Zh b a)).2 / (g.q : F) - ind r a b * (-T / (g.q : F))) * (g.e (c (Sum.inr a) : E)).2 = (g.q : F)⁻¹ * (g.e (Zh b a)).2 * (g.e (c (Sum.inr a) : E)).2 + (g.e (c (Sum.inr a) : E)).2 * (ind r a b * (T / (g.q : F)))`. Introduce `a`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun a _ => h a, Finset.sum_add_distrib, sum_mul_ind]`. Use `split_ifs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Simplify using `only`. Establish `hL : ∑ a, (g.q : F)⁻¹ * (g.e (Zh b a)).2 * (g.e (c (Sum.inr a) : E)).2 + (g.q : F) * ∑ a, ((g.q : F)⁻¹ * (g.e (Zh a b)).1 * (g.e (c (Sum.inl a) : E)).2 + (g.q : F)⁻¹ * (g.q : F)⁻¹ * (-(g.e (Zh b a)).2 - (g.e (Zh a b)).1) * (g.e (c (Sum.inr a) : E)).2) = ∑ a, ((g.e (Zh a b)).1 * ( …`.
+Expand and normalize the polynomial expressions, which then agree. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.mul_sum, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun a _ => by field_simp; ring`. Establish `hR : ∀ a, (-((g.e (Zh a b)).1 / (g.q : F)) - ind r a b * (T' / (g.q : F))) * ((g.e (c (Sum.inr a) : E)).2 + (g.q : F) * -(g.e (c (Sum.inl a) : E)).2) = ((g.e (Zh a b)).1 * (g.e (c (Sum.inl a) : E)).2 - (g.q : F)⁻¹ * (g.e (Zh a b)).1 * (g.e (c (Sum.inr a) : E)).2) + ((g.e (c (Sum. …`. Introduce `a`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hRs` using `Finset.sum_congr (s₁ := Finset.univ) rfl fun a _ => hR a`. Rewrite `hRs` using `[Finset.sum_add_distrib, Finset.sum_add_distrib, sum_mul_ind, sum_mul_ind]`. Rewrite using `[hRs]`. Use `split_ifs`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Take the linear combination `(norm := skip) hL`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Take the linear combination `(norm := skip) hL`. Expand and normalize the polynomial expressions, which then agree.
+Take a linear combination of the given relations to obtain the conclusion. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gram_rows_secondEmbedding (hTT : g.e (TT : E) = (T, T')) (hZ : Zσ.Z.map M.R.subtype = HermSp.ZZplusOf M (Zh.map M.L.cj) T T')
     (c : Ix r → M.L.O) (b : Fin (r + 1)) :
@@ -164,7 +164,7 @@ theorem gram_rows_secondEmbedding (hTT : g.e (TT : E) = (T, T')) (hZ : Zσ.Z.map
       ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[embedding_firstComponent, hY, hY]`. Conclude with `gram_rows_firstEmbedding hs hTT hZ c b`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem firstComponent_gram_rows (hTT : g.e (TT : E) = (T, T')) (hZ : Z.Z.map M.R.subtype = HermSp.ZZplusOf M Zh T T')
     (c Y : Ix r → M.L.O) (hY : ∀ j, (Y j : E) = ∑ i, (c i : E) * GG (g := g) Zh T T' i j) :
@@ -174,7 +174,7 @@ theorem firstComponent_gram_rows (hTT : g.e (TT : E) = (T, T')) (hZ : Z.Z.map M.
   exact gram_rows_firstEmbedding hs hTT hZ c b
 
 /- English proof (translation)
-Use function extensionality and compare the values at `b`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `g.e.injective` to reduce the goal to its premises. Rewrite using `[embedding_secondComponent, hY, hY]`. Conclude with `gram_rows_secondEmbedding hs hTT hZ c b`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secondComponent_gram_rows (hTT : g.e (TT : E) = (T, T'))
     (hZ : Zσ.Z.map M.R.subtype = HermSp.ZZplusOf M (Zh.map M.L.cj) T T')

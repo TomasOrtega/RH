@@ -7,11 +7,11 @@ open scoped Matrix
 set_option linter.overlappingInstances false
 
 /- English proof (translation)
-Establish `h : IsLift (RingEquiv.refl ℚ) ((g.symm : Ω ≃ₐ[ℚ] Ω) : Ω ≃+* Ω)` using `fun q => g.symm.commutes q`. Set `σ : Ω ≃+* Ω` to `((g.symm : Ω ≃ₐ[ℚ] Ω) : Ω ≃+* Ω)`. Establish `hA : ∀ y : Ω, σ y ∈ A ↔ y ∈ A.comap (σ : Ω →+* Ω)` using `fun y => by`. Rewrite using `[ValuationSubring.mem_comap]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `⟨A.comap (σ : Ω →+* Ω), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← val_lt_one hA (l : Ω), map_natCast]`. Conclude with `hl`. Establish `hc` using `conjGal_mem_Ine h hA hx`. Use `hc using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `z`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem fac_conj {Ω : Type} [Field Ω] [CharZero Ω] (l : ℕ) (A : ValuationSubring Ω) (g x : G ℚ Ω)
     (hl : ¬ A.valuation (l : Ω) < 1) (hx : x ∈ Ine (F := ℚ) A) :
@@ -30,53 +30,47 @@ private theorem fac_conj {Ω : Type} [Field Ω] [CharZero Ω] (l : ℕ) (A : Val
     rfl
 
 /- English proof (translation)
-Introduce `Ω _ _ _ l _ O _ _ η Ψ σ g₁ B M L _ _ _ _ Φ k n r hr hine`. Establish `hgal : ∀ s : G L Ω, galEmb ℚ L Ω s ∈ upl Ω L ⊓ η.ker` using `fun s => by`. Establish `h` using `galEmb_mem ℚ L Ω s`. Rewrite `h` using `[k.gal]`. Then use the resulting hypothesis. Establish `hmem : ∀ s : G L Ω, galEmb ℚ L Ω s ∈ upl Ω L` using `fun s => (hgal s).1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hq : ∀ s, (k.p0 s : Φ.Γ) = k.p ⟨galEmb ℚ L Ω s, hmem s⟩` using `fun s => rfl`. Set `q : G L Ω →* Φ.G0` to `{ toFun := k.p0 map_one' := by`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hq]`. Rewrite using `[show (⟨galEmb ℚ L Ω 1, hmem 1⟩ : upl Ω L) = 1 from Subtype.ext (map_one _), map_one]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use the proof step `map_mul' := fun s t => by`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[Subgroup.coe_mul, hq, hq, hq, ← map_mul]`. Conclude with `congrArg k.p (Subtype.ext (map_mul _ _ _)) }`.
+Both sides reduce to the same expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqv : ∀ s, ((q s : Φ.G0) : Φ.Γ) = k.p ⟨galEmb ℚ L Ω s, hmem s⟩` using `fun s => rfl`. Establish `hqs : Function.Surjective q`. Introduce `x`. Take `⟨u, hu⟩` from `k.p_surj x.val`. Establish `hu1 : (u : G ℚ Ω) ∈ galOf ℚ L Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[k.gal]`. Use `⟨u.2, MonoidHom.mem_ker.mpr ?_⟩` and prove the remaining obligations. Rewrite using `[← k.del u, hu]`. Conclude with `MonoidHom.mem_ker.mp x.2`. Rewrite `hu1` using `[← range_galEmb ℚ L Ω]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `hu1`. Use `⟨s, Subtype.ext ?_⟩` and prove the remaining obligations. Rewrite using `[hqv, ← hu]`. Conclude with `congrArg k.p (Subtype.ext hs)`. Establish `hgc : Continuous (galEmb ℚ L Ω)` using `(galEmbTop ℚ L Ω).1.continuous`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hqc : Continuous q`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Conclude with `k.p_cont.comp (hgc.subtype_mk hmem)`. Establish `hinj : Function.Injective (galEmb ℚ L Ω)` using `(galEmbTop ℚ L Ω).1.injective`. Establish `hker : ∀ s, q s = 1 → r s = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `s hs`. Establish `h1 : (⟨galEmb ℚ L Ω s, hmem s⟩ : upl Ω L) ∈ k.p.ker`. Rewrite using `[MonoidHom.mem_ker, ← hqv, hs]`. Both sides reduce to the same expression. Rewrite `h1` using `[k.p_ker]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `H' : Subgroup (upl Ω L)` to `(r.ker.map (galEmb ℚ L Ω)).comap (upl Ω L).subtype`. Establish `hcl : IsClosed (H' : Set (upl Ω L))`. Establish `hk : IsClosed (r.ker : Set (G L Ω))` using `by haveI : T2Space (Qbar l) := inferInstance haveI : T2Space (Matrix (Fin n) (Fin n) (Qbar l)) := (inferInstance : T2Space (Fin n → Fin n → Qbar l)) haveI h2 : T2Space (GL (Fin n) (Qbar l)) := inferInstance haveI : T1Space (GL (Fin n) (Qbar l)) := @T2Space.t1Space _ _ h2`. Conclude with `isClosed_singleton.preimage hr`. Establish `hi : IsClosed ((galEmb ℚ L Ω) '' (r.ker : Set (G L Ω)))` using `(hk.isCompact.image hgc).isClosed`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `hi.preimage continuous_subtype_val`. Establish `hX : Subgroup.normalClosure {s : upl Ω L | ∃ B' : ValuationSubring Ω, ¬ B'.valuation (l : Ω) < 1 ∧ (s : G ℚ Ω) ∈ Ine B' ∧ η s = 1 ∧ barChar O Ψ s = 1} ≤ H'`. Unfold `Subgroup.normalClosure`. Use `(Subgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce `c hc`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hc` using `[Group.mem_conjugatesOfSet_iff]`. Take `⟨x, ⟨B', hB'l, hxI, hxη, hxbar⟩, hconj⟩` from `hc`. Take `⟨u, hu⟩` from `isConj_iff.mp hconj`. Establish `hcv : (c : G ℚ Ω) = u * x * (u : G ℚ Ω)⁻¹`. Rewrite using `[← hu, Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨A', hA'l, hcI⟩` from `fac_conj l B' u x hB'l hxI`. Rewrite `hcI` using `[← hcv]`. Establish `hcη : η c = 1`. Rewrite using `[hcv, map_mul, map_mul, hxη, mul_one, ← map_mul, mul_inv_cancel, map_one]`. Establish `hcbar : barChar O Ψ c = 1`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hcv, map_mul, map_mul, hxbar, mul_one, ← map_mul, mul_inv_cancel, map_one]`. Establish `hcgal : (c : G ℚ Ω) ∈ galOf ℚ L Ω`. Rewrite using `[k.gal]`. Conclude with `⟨c.2, hcη⟩`. Rewrite `hcgal` using `[← range_galEmb ℚ L Ω]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨t, ht⟩` from `hcgal`. Establish `hΨ : Ψ c = 1` using `k.teich A' hA'l c ⟨hcI, c.2⟩ hcbar`. Use `show (c : G ℚ Ω) ∈ r.ker.map (galEmb ℚ L Ω)`. Use `⟨t, ?_, ht⟩` and prove the remaining obligations. Use `show r t = 1`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `hine A' hA'l t ?_ ?_` and prove the remaining obligations. Use `show galEmb ℚ L Ω t ∈ Ine (F := ℚ) A'`. Rewrite using `[ht]`. Conclude with `hcI`. Rewrite using `[ht]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hΨ`. Establish `h2` using `(Subgroup.topologicalClosure_minimal _ hX hcl) h1`. Take `⟨t, ht, hts⟩` from `h2`. Rewrite `ht` using `[hinj hts]`. Conclude with `ht`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hle : q.ker ≤ r.ker` using `fun s hs => hker s hs`. Set `e` to `QuotientGroup.quotientKerEquivOfSurjective q hqs`. Set `r' : Φ.G0 →* GL (Fin n) (Qbar l)` to `(QuotientGroup.lift q.ker r hle).comp e.symm.toMonoidHom`. Establish `hr'q : ∀ s, r' (q s) = r s`. Introduce `s`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `he : e.symm (q s) = (s : G L Ω ⧸ q.ker)`. Rewrite using `[MulEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Use `show QuotientGroup.lift q.ker r hle (e.symm (q s)) = r s`. Rewrite using `[he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hqq : Topology.IsQuotientMap q` using `Topology.IsQuotientMap.of_surjective_continuous hqs hqc`. Establish `hr'c : Continuous r'`. Rewrite using `[hqq.continuous_iff]`. Use `hr using 1` and compare the differences between its conclusion and the goal.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `s`. Conclude with `hr'q s`. Use `⟨r', hr'c, fun s => hr'q s, ?_⟩` and prove the remaining obligations. Introduce `P hP g`. Take `⟨s, rfl⟩` from `hqs g`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hσ, hσc⟩` from `k.c`. Establish `hs'gal : σ * galEmb ℚ L Ω s * σ⁻¹ ∈ galOf ℚ L Ω`. Rewrite using `[k.gal]`. Use `⟨(upl Ω L).mul_mem ((upl Ω L).mul_mem hσ (hmem s)) ((upl Ω L).inv_mem hσ), MonoidHom.mem_ker.mpr ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, MonoidHom.mem_ker.mp (hgal s).2, mul_one, ← map_mul, mul_inv_cancel, map_one]`.
-
-Rewrite `hs'gal` using `[← range_galEmb ℚ L Ω]`. Take `⟨s', hs'⟩` from `hs'gal`. Establish `hconj : Φ.conj (q s) = q s'`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[show ((Φ.conj (q s) : Φ.G0) : Φ.Γ) = Φ.c * (q s : Φ.Γ) * Φ.c⁻¹ from MulAut.conjNormal_apply _ _]`.
-
-Rewrite using `[hqv, hqv, ← hσc, ← map_inv, ← map_mul, ← map_mul]`. Apply `congrArg k.p` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [Subgroup.coe_mul, Subgroup.coe_inv]`. Conclude with `hs'.symm`.
-
-Rewrite using `[hconj, hr'q, hr'q]`. Establish `h` using `hP s s' hs'`. Rewrite `h` using `[MonoidHom.one_apply, Units.val_one, one_smul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_frame_factorization_of_trivial_on_inertia :
     ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] {η : G ℚ Ω →* ℤˣ} {Ψ : G ℚ Ω →* Oˣ} {σ g₁ : G ℚ Ω} {B : ValuationSubring Ω} {M : ℕ} {L : Type} [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] {Φ : Fr.Frame l (ResidueField O)} (k : GalLink η Ψ σ g₁ B M L Φ) {n : ℕ} (r : G L Ω →* GL (Fin n) (Qbar l)), Continuous r → (∀ A : ValuationSubring Ω, ¬ A.valuation (l : Ω) < 1 → ∀ s ∈ Ine (F := L) A, Ψ (galEmb ℚ L Ω s) = 1 → r s = 1) → ∃ r' : Φ.G0 →* GL (Fin n) (Qbar l), Continuous r' ∧ (∀ s, r' (k.p0 s) = r s) ∧ ∀ P : GL (Fin n) (Qbar l), Sd.IsPair σ r 1 P → ∀ g, (r' g).valᵀ * P.val * (r' (Φ.conj g)).val = P.val := by

@@ -11,9 +11,9 @@ open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt.Q Fo
   Formalism.FourierDecayAlt.P5.HerD
 
 /- English proof (translation)
-Unfold `wl`. Use `le_trans (norm_add_le _ _) (add_le_add ?_ ?_)` and prove the remaining obligations. Use `le_trans (norm_smul_le _ _) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `le_trans (norm_smul_le _ _) ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem norm_wl_le (A B : ℂ) : ‖wl A B‖ ≤ ‖A‖ + ‖B‖ := by
   unfold wl
@@ -28,7 +28,7 @@ theorem norm_wl_le (A B : ℂ) : ‖wl A B‖ ≤ ‖A‖ + ‖B‖ := by
       _ = ‖B‖ := mul_one _
 
 /- English proof (translation)
-Unfold `wl`. Rewrite using `[integral_add (hf.smul_const _) (hg.smul_const _), integral_smul_const, integral_smul_const]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem integral_wl {α : Type*} [MeasurableSpace α] {ν : Measure α} {f g : α → ℂ} (hf : Integrable f ν)
     (hg : Integrable g ν) : ∫ x, wl (f x) (g x) ∂ν = wl (∫ x, f x ∂ν) (∫ x, g x ∂ν) := by
@@ -36,7 +36,7 @@ theorem integral_wl {α : Type*} [MeasurableSpace α] {ν : Measure α} {f g : �
   rw [integral_add (hf.smul_const _) (hg.smul_const _), integral_smul_const, integral_smul_const]
 
 /- English proof (translation)
-Unfold `wl`. Conclude with `(hf.smul_const _).add (hg.smul_const _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem aesm_wl {α : Type*} [MeasurableSpace α] {ν : Measure α} {f g : α → ℂ} (hf : AEStronglyMeasurable f ν)
     (hg : AEStronglyMeasurable g ν) : AEStronglyMeasurable (fun x => wl (f x) (g x)) ν := by
@@ -50,11 +50,11 @@ variable {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} {Wp Wq : Type} [Normed
   [FiniteDimensional ℂ Wq] {π : Mx k r → (Wp →L[ℂ] Wp)} {π' : Mx k r → (Wq →L[ℂ] Wq)}
 
 /- English proof (translation)
-Use `choose ε hε F hF hb using fun i => h i t0 ht0`. Establish `hF0 : ∀ i c', 0 ≤ F i c'` using `fun i c' => (norm_nonneg _).trans (hb i t0 (Metric.mem_ball_self (hε i)) c')`. Establish `hS : 0 ≤ ∑ i, 1 / ε i` using `Finset.sum_nonneg fun i _ => (one_div_pos.mpr (hε i)).le`. Establish `hpos : 0 < 1 + ∑ i, 1 / ε i` using `by linarith`. Use `⟨1 / (1 + ∑ i, 1 / ε i), div_pos one_pos hpos, fun c' => ∑ i, F i c', integrable_finsetSum _ fun i _ => hF i, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s hs c' i`. Establish `hle : 1 / (1 + ∑ i, 1 / ε i) ≤ ε i`. Rewrite using `[div_le_iff₀ hpos]`. Establish `h1 : 1 / ε i ≤ ∑ j, 1 / ε j` using `Finset.single_le_sum (f := fun j => 1 / ε j) (fun j _ => (one_div_pos.mpr (hε j)).le) (Finset.mem_univ i)`. Establish `h2 : ε i * (1 / ε i) = 1` using `by field_simp [(hε i).ne']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Use `(hb i s (Metric.ball_subset_ball hle hs) c').trans ?_` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun j => F j c') (fun j _ => hF0 j c') (Finset.mem_univ i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem slDom_fin {ι : Type*} [Fintype ι] (μ : Measure (Mt k r)) (l : Fin r) (c : Fin r → ℂ)
     (Φ : ι → RadSp k r z z' π π') (h : ∀ i, SlDom μ l c (Φ i)) (t0 : ℂ) (ht0 : t0 ≠ 0) :
@@ -79,7 +79,7 @@ theorem slDom_fin {ι : Type*} [Fintype ι] (μ : Measure (Mt k r)) (l : Fin r) 
   exact Finset.single_le_sum (f := fun j => F j c') (fun j _ => hF0 j c') (Finset.mem_univ i)
 
 /- English proof (translation)
-Take `⟨ε, hε, F, hF, hb⟩` from `h t ht`. Conclude with `hF.mono' ((wtI_measurable _).aestronglyMeasurable.mul (pairAt_measI μ _ Φ Φ _).aestronglyMeasurable) (Eventually.of_forall fun c' => hb t (Metric.mem_ball_self hε) c')`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem level_l2_of_slice_domination (μ : Measure (Mt k r)) [SFinite μ] (l : Fin r) (c : Fin r → ℂ) {Φ : RadSp k r z z' π π'}
     (h : SlDom μ l c Φ) {t : ℂ} (ht : t ≠ 0) : LevelSquareIntegrable μ l.succ Φ (Function.update c l t) := by
@@ -88,41 +88,41 @@ theorem level_l2_of_slice_domination (μ : Measure (Mt k r)) [SFinite μ] (l : F
     (Eventually.of_forall fun c' => hb t (Metric.mem_ball_self hε) c')
 
 /- English proof (translation)
-Simplify using `[wOp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wOp_nil (X : ActualOps k r z z' π π') (l : Fin r) (Φ : RadSp k r z z' π π') : wOp X l [] Φ = Φ := by
   simp [wOp]
 
 /- English proof (translation)
-Simplify using `[wOp, dT]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wOp_dT (X : ActualOps k r z z' π π') (l : Fin r) (Φ : RadSp k r z z' π π') :
     wOp X l [2, 0] Φ = dT X l Φ := by
   simp [wOp, dT]
 
 /- English proof (translation)
-Simplify using `[wOp, dTb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wOp_dTb (X : ActualOps k r z z' π π') (l : Fin r) (Φ : RadSp k r z z' π π') :
     wOp X l [5, 3] Φ = dTb X l Φ := by
   simp [wOp, dTb]
 
 /- English proof (translation)
-The claim follows from `op_lc X l 2 _ (op_lc X l 0 _ h)`.
+A detailed English derivation is pending.
 -/
 theorem dT_lc_OuterLeib (X : ActualOps k r z z' π π') (l : Fin r) {Φ : RadSp k r z z' π π'} (h : Φ ∈ lcSub k r z z' π π') :
     dT X l Φ ∈ lcSub k r z z' π π' :=
   op_lc X l 2 _ (op_lc X l 0 _ h)
 
 /- English proof (translation)
-The claim follows from `op_lc X l 5 _ (op_lc X l 3 _ h)`.
+A detailed English derivation is pending.
 -/
 theorem dTb_lc_OuterLeib (X : ActualOps k r z z' π π') (l : Fin r) {Φ : RadSp k r z z' π π'} (h : Φ ∈ lcSub k r z z' π π') :
     dTb X l Φ ∈ lcSub k r z z' π π' :=
   op_lc X l 5 _ (op_lc X l 3 _ h)
 
 /- English proof (translation)
-Rewrite using `[norm_mul, norm_mul, norm_mul, ← mul_add]`. Conclude with `mul_le_mul_of_nonneg_left (norm_pairAt_leI μ hμ hΦ hΨ p) (norm_nonneg _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_wpair_le (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (Fin.last r)) μ) {Φ Ψ : RadSp k r z z' π π'}
     (hΦ : Φ ∈ lcSub k r z z' π π') (hΨ : Ψ ∈ lcSub k r z z' π π') (w : ℂ) (p : Fin r → ℂ) :
@@ -133,55 +133,49 @@ theorem norm_wpair_le (μ : Measure (Mt k r)) (hμ : B.IsHaarOn (Glev k r (Fin.l
 end Fin
 
 /- English proof (translation)
-Introduce `k r z z' Wp Wq _ _ _ _ _ _ π π' X μ hμ l S _ _ u v c hc hu hv t ht`. Establish `: SFinite μ` using `sfinite_of_isHaarOn _ μ hμ`. Set `Φs : Ix S × Fin 6 → RadSp k r z z' π π'` to `fun q => ![u q.1, v q.1, dT X l (u q.1), dTb X l (u q.1), dT X l (v q.1), dTb X l (v q.1)] q.2`. Establish `hΦs : ∀ q, SlDom μ l c (Φs q)`. Introduce and unpack `⟨a, j⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Use `fin_cases j`. Simplify `(hu a).2 []` using `[Φs, wOp_nil]`. Simplify `(hv a).2 []` using `[Φs, wOp_nil]`. Simplify `(hu a).2 [2, 0]` using `[Φs, wOp_dT]`. Simplify `(hu a).2 [5, 3]` using `[Φs, wOp_dTb]`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(hv a).2 [2, 0]` using `[Φs, wOp_dT]`. Simplify `(hv a).2 [5, 3]` using `[Φs, wOp_dTb]`. Take `⟨ε0, hε0, F, hF, hb⟩` from `slDom_fin μ l c Φs hΦs t ht`. Establish `hF0 : ∀ c', 0 ≤ F c'` using `fun c' => (norm_nonneg _).trans (hb t (Metric.mem_ball_self hε0) c' (Classical.arbitrary _))`. Establish `lu : ∀ a, u a ∈ lcSub k r z z' π π'` using `fun a => (hu a).1`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `lv : ∀ a, v a ∈ lcSub k r z z' π π'` using `fun a => (hv a).1`. Establish `Iu : ∀ a (js : List (Fin 6)) s, s ≠ 0 → LevelSquareIntegrable μ l.succ (wOp X l js (u a)) (Function.update c l s)` using `fun a js s hs => level_l2_of_slice_domination μ l c ((hu a).2 js) hs`. Establish `Iv : ∀ a (js : List (Fin 6)) s, s ≠ 0 → LevelSquareIntegrable μ l.succ (wOp X l js (v a)) (Function.update c l s)` using `fun a js s hs => level_l2_of_slice_domination μ l c ((hv a).2 js) hs`. Establish `I0u : ∀ a s, s ≠ 0 → LevelSquareIntegrable μ l.succ (u a) (Function.update c l s)` using `fun a s hs => by`. Simplify `Iu a [] s hs` using `[wOp_nil]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `I0v : ∀ a s, s ≠ 0 → LevelSquareIntegrable μ l.succ (v a) (Function.update c l s)` using `fun a s hs => by`. Simplify `Iv a [] s hs` using `[wOp_nil]`. Establish `ITu : ∀ a s, s ≠ 0 → LevelSquareIntegrable μ l.succ (dT X l (u a)) (Function.update c l s)` using `fun a s hs => by`. Simplify `Iu a [2, 0] s hs` using `[wOp_dT]`. Establish `ITv : ∀ a s, s ≠ 0 → LevelSquareIntegrable μ l.succ (dT X l (v a)) (Function.update c l s)` using `fun a s hs => by`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `Iv a [2, 0] s hs` using `[wOp_dT]`. Establish `IBu : ∀ a s, s ≠ 0 → LevelSquareIntegrable μ l.succ (dTb X l (u a)) (Function.update c l s)` using `fun a s hs => by`. Simplify `Iu a [5, 3] s hs` using `[wOp_dTb]`. Establish `IBv : ∀ a s, s ≠ 0 → LevelSquareIntegrable μ l.succ (dTb X l (v a)) (Function.update c l s)` using `fun a s hs => by`. Simplify `Iv a [5, 3] s hs` using `[wOp_dTb]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Use `set A : Ix S → ℂ → Cf r l.succ → ℂ := fun a s c' => pairAt μ (dT X l (u a)) (v a) (glue l.succ (Function.update c l s) c') + pairAt μ (u a) (dTb X l (v a)) (glue l.succ (Function.update c l s) c') with hA`. Use `set Bf : Ix S → ℂ → Cf r l.succ → ℂ := fun a s c' => pairAt μ (dTb X l (u a)) (v a) (glue l.succ (Function.update c l s) c') + pairAt μ (u a) (dT X l (v a)) (glue l.succ (Function.update c l s) c') with hB`. Use `set F0 : ℂ → Cf r l.succ → ℂ := fun s c' => wtI l.succ c' * ∑ a, pairAt μ (u a) (v a) (glue l.succ (Function.update c l s) c') with hF0def`. Use `set F' : ℂ → Cf r l.succ → (ℂ →L[ℝ] ℂ) := fun s c' => wl (wtI l.succ c' * ∑ a, A a s c') (wtI l.succ c' * ∑ a, Bf a s c') with hF'def`. Establish `hε : 0 < min ε0 ‖t‖` using `lt_min hε0 (norm_pos_iff.mpr ht)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : ∀ s ∈ Metric.ball t (min ε0 ‖t‖), s ≠ 0`. Introduce `s hs h0`. Rewrite `hs` using `[h0, Metric.mem_ball, dist_zero_left]`. Conclude with `(lt_irrefl _ (hs.trans_le (min_le_right _ _)))`. Establish `hball : ∀ s ∈ Metric.ball t (min ε0 ‖t‖), s ∈ Metric.ball t ε0` using `fun s hs => Metric.ball_subset_ball (min_le_left _ _) hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `intF0 : ∀ s, s ≠ 0 → Integrable (F0 s)` using `fun s hs => formIntOuter_of_l2I μ hμ l.succ u v lu lv (Function.update c l s) (fun a => I0u a s hs) (fun a => I0v a s hs)`. Establish `hA1` using `formIntOuter_of_l2I μ hμ l.succ (fun a => dT X l (u a)) v (fun a => dT_lc_OuterLeib X l (lu a)) lv (Function.update c l t) (fun a => ITu a t ht) (fun a => I0v a t ht)`. Establish `hA2` using `formIntOuter_of_l2I μ hμ l.succ u (fun a => dTb X l (v a)) lu (fun a => dTb_lc_OuterLeib X l (lv a)) (Function.update c l t) (fun a => I0u a t ht) (fun a => IBv a t ht)`. Establish `hB1` using `formIntOuter_of_l2I μ hμ l.succ (fun a => dTb X l (u a)) v (fun a => dTb_lc_OuterLeib X l (lu a)) lv (Function.update c l t) (fun a => IBu a t ht) (fun a => I0v a t ht)`. Establish `hB2` using `formIntOuter_of_l2I μ hμ l.succ u (fun a => dT X l (v a)) lu (fun a => dT_lc_OuterLeib X l (lv a)) (Function.update c l t) (fun a => I0u a t ht) (fun a => ITv a t ht)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `intA : Integrable (fun c' => wtI l.succ c' * ∑ a, A a t c')`. Use `(hA1.add hA2).congr (Eventually.of_forall fun c' => ?_)` and prove the remaining obligations. Simplify using `only [hA, Pi.add_apply, Finset.sum_add_distrib, mul_add, wtI]`. Establish `intB : Integrable (fun c' => wtI l.succ c' * ∑ a, Bf a t c')`. Use `(hB1.add hB2).congr (Eventually.of_forall fun c' => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hB, Pi.add_apply, Finset.sum_add_distrib, mul_add, wtI]`. Establish `hIA : ∫ c', wtI l.succ c' * ∑ a, A a t c' = form μ l.succ (fun b => dT X l (u b)) v (Function.update c l t) + form μ l.succ u (fun b => dTb X l (v b)) (Function.update c l t)`. Unfold `form`. Rewrite using `[← integral_add hA1 hA2]`. Use `integral_congr_ae (Eventually.of_forall fun c' => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [hA, Finset.sum_add_distrib, mul_add, wtI]`. Establish `hIB : ∫ c', wtI l.succ c' * ∑ a, Bf a t c' = form μ l.succ (fun b => dTb X l (u b)) v (Function.update c l t) + form μ l.succ u (fun b => dT X l (v b)) (Function.update c l t)`. Unfold `form`. Rewrite using `[← integral_add hB1 hB2]`. Use `integral_congr_ae (Eventually.of_forall fun c' => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [hB, Finset.sum_add_distrib, mul_add, wtI]`. Establish `key : HasFDerivAt (fun s => ∫ c', F0 s c') (∫ c', F' t c') t`. Use `hasFDerivAt_integral_of_dominated_of_fderiv_le (bound := fun c' => 8 * (Fintype.card (Ix S) : ℝ) * F c') (Metric.ball_mem_nhds t hε) ?_ (intF0 t ht) (aesm_wl intA.aestronglyMeasurable intB.aestronglyMeasurable) ?_ (hF.const_mul _) ?_` and prove the remaining obligations. Conclude with `Filter.eventually_of_mem (Metric.ball_mem_nhds t hε) fun s hs => (intF0 s (hne s hs)).aestronglyMeasurable`. Use `Eventually.of_forall fun c' s hs => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs'` using `hball s hs`. Establish `hd : ∀ a j, ‖wtI l.succ c' * pairAt μ (Φs (a, j)) (Φs (a, j)) (glue l.succ (Function.update c l s) c')‖ ≤ F c'` using `fun a j => hb s hs' c' (a, j)`. Establish `hAa : ∀ a, ‖wtI l.succ c' * A a s c'‖ ≤ 4 * F c'`. Introduce `a`. Establish `e0 : ‖wtI l.succ c' * pairAt μ (u a) (u a) (glue l.succ (Function.update c l s) c')‖ ≤ F c'` using `hd a 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e1 : ‖wtI l.succ c' * pairAt μ (v a) (v a) (glue l.succ (Function.update c l s) c')‖ ≤ F c'` using `hd a 1`. Establish `e2 : ‖wtI l.succ c' * pairAt μ (dT X l (u a)) (dT X l (u a)) (glue l.succ (Function.update c l s) c')‖ ≤ F c'` using `hd a 2`. Establish `e5 : ‖wtI l.succ c' * pairAt μ (dTb X l (v a)) (dTb X l (v a)) (glue l.succ (Function.update c l s) c')‖ ≤ F c'` using `hd a 5`. Establish `p1` using `norm_wpair_le μ hμ (dT_lc_OuterLeib X l (lu a)) (lv a) (wtI l.succ c') (glue l.succ (Function.update c l s) c')`. Establish `p2` using `norm_wpair_le μ hμ (lu a) (dTb_lc_OuterLeib X l (lv a)) (wtI l.succ c') (glue l.succ (Function.update c l s) c')`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: ‖wtI l.succ c' * A a s c'‖ ≤ ‖wtI l.succ c' * pairAt μ (dT X l (u a)) (v a) (glue l.succ (Function.update c l s) c')‖ + ‖wtI l.succ c' * pairAt μ (u a) (dTb X l (v a)) (glue l.succ (Function.update c l s) c')‖`. Simplify using `only [hA, mul_add]`. Conclude with `norm_add_le _ _`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hBa : ∀ a, ‖wtI l.succ c' * Bf a s c'‖ ≤ 4 * F c'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `a`. Establish `e0 : ‖wtI l.succ c' * pairAt μ (u a) (u a) (glue l.succ (Function.update c l s) c')‖ ≤ F c'` using `hd a 0`. Establish `e1 : ‖wtI l.succ c' * pairAt μ (v a) (v a) (glue l.succ (Function.update c l s) c')‖ ≤ F c'` using `hd a 1`. Establish `e3 : ‖wtI l.succ c' * pairAt μ (dTb X l (u a)) (dTb X l (u a)) (glue l.succ (Function.update c l s) c')‖ ≤ F c'` using `hd a 3`. Establish `e4 : ‖wtI l.succ c' * pairAt μ (dT X l (v a)) (dT X l (v a)) (glue l.succ (Function.update c l s) c')‖ ≤ F c'` using `hd a 4`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `p1` using `norm_wpair_le μ hμ (dTb_lc_OuterLeib X l (lu a)) (lv a) (wtI l.succ c') (glue l.succ (Function.update c l s) c')`. Establish `p2` using `norm_wpair_le μ hμ (lu a) (dT_lc_OuterLeib X l (lv a)) (wtI l.succ c') (glue l.succ (Function.update c l s) c')`. Establish `: ‖wtI l.succ c' * Bf a s c'‖ ≤ ‖wtI l.succ c' * pairAt μ (dTb X l (u a)) (v a) (glue l.succ (Function.update c l s) c')‖ + ‖wtI l.succ c' * pairAt μ (u a) (dT X l (v a)) (glue l.succ (Function.update c l s) c')‖`. Simplify using `only [hB, mul_add]`. Conclude with `norm_add_le _ _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `sA : ‖wtI l.succ c' * ∑ a, A a s c'‖ ≤ (Fintype.card (Ix S) : ℝ) * (4 * F c')`. Rewrite using `[Finset.mul_sum]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum fun a _ => hAa a).trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sB : ‖wtI l.succ c' * ∑ a, Bf a s c'‖ ≤ (Fintype.card (Ix S) : ℝ) * (4 * F c')`. Rewrite using `[Finset.mul_sum]`. Use `(norm_sum_le _ _).trans ((Finset.sum_le_sum fun a _ => hBa a).trans ?_)` and prove the remaining obligations. Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Eventually.of_forall fun c' s hs => ?_` and prove the remaining obligations. Establish `hd : ∀ a ∈ (Finset.univ : Finset (Ix S)), HasFDerivAt (fun s => pairAt μ (u a) (v a) (glue l.succ (Function.update c l s) c')) (wl (A a s c') (Bf a s c')) s` using `fun a _ => hP k r z z' Wp Wq π π' X μ hμ l (u a) (v a) (lu a) (lv a) c hc c' s (hne s hs)`. Establish `hs2` using `(HasFDerivAt.sum hd).const_mul (wtI l.succ c')`. Establish `e1 : (fun x => F0 x c') = fun y => wtI l.succ c' * (∑ i, fun s => pairAt μ (u i) (v i) (glue l.succ (Function.update c l s) c')) y`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hF0def, Finset.sum_apply]`. Establish `e2 : F' s c' = wtI l.succ c' • ∑ i, wl (A i s c') (Bf i s c')`. Use `ContinuousLinearMap.ext fun h => ?_` and prove the remaining obligations. Simplify using `only [hF'def, wl_apply, ContinuousLinearMap.smul_apply, ContinuousLinearMap.coe_sum', Finset.sum_apply, smul_eq_mul]`. Establish `alg : ∀ (f g : Ix S → ℂ) (w h : ℂ), w * (∑ a, f a) * h + w * (∑ a, g a) * conj h = w * ∑ a, (f a * h + g a * conj h)`.
-
-Introduce `f g w h`. Rewrite using `[Finset.sum_add_distrib, ← Finset.sum_mul, ← Finset.sum_mul]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `alg (fun a => A a s c') (fun a => Bf a s c') _ _`. Rewrite using `[e1, e2]`.
-
-Conclude with `hs2`. Establish `hfin : ∫ c', F' t c' = wl (form μ l.succ (fun b => dT X l (u b)) v (Function.update c l t) + form μ l.succ u (fun b => dTb X l (v b)) (Function.update c l t)) (form μ l.succ (fun b => dTb X l (u b)) v (Function.update c l t) + form μ l.succ u (fun b => dT X l (v b)) (Function.upd …`. Rewrite using `[← hIA, ← hIB]`. Conclude with `integral_wl intA intB`. Rewrite `key` using `[hfin]`.
-
-Conclude with `key`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem outerLeib_of (hP : PairAtDeriv) : OuterLeib := by
   intro k r z z' Wp Wq _ _ _ _ _ _ π π' X μ hμ l S _ _ u v c hc hu hv t ht

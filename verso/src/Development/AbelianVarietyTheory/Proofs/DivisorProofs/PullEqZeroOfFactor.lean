@@ -27,16 +27,16 @@ open GlobalTheory.CechPic
 variable {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A]
 
 /- English proof (translation)
-Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.mul_comp]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lift_mul_lift {T : Over S} (a b a' b' : T ⟶ A) :
     (lift a b : T ⟶ G2 A) * lift a' b' = lift (a * a') (b * b') := by
   apply CartesianMonoidalCategory.hom_ext <;> simp [MonObj.mul_comp]
 
 /- English proof (translation)
-Establish `hA2 : IsAbelianScheme (G2 A)` using `AbelianSchemeGerms.isAbelianScheme_tensor A A hA hA`. Take `⟨t, ht⟩` from `GlobalTheory.CubeTop.cubeTheorem S (G2 A) hA2 L hL T a b c`. Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hL _ _)).2 ⟨t, ht⟩`. Rewrite `e` using `[cls_linComb hL, Fin.sum_univ_eight]`. Simplify using `at e`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← e]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem cube_cls (hA : IsAbelianScheme A) {L : LB (G2 A).left} (hL : L.IsLB) {T : Over S} (a b c : T ⟶ G2 A) :
     pull (a * b * c).left (cls L hL) - pull (a * b).left (cls L hL) - pull (a * c).left (cls L hL)
@@ -53,7 +53,7 @@ theorem cube_cls (hA : IsAbelianScheme A) {L : LB (G2 A).left} (hL : L.IsLB) {T 
 omit [IsCommMonObj A] in
 
 /- English proof (translation)
-Rewrite using `[pull_comp, h, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pull_eq_zero_of_factor {X : Scheme.{0}} {c : Pic X} {Y Z : Scheme.{0}} (f : Y ⟶ X) (g : Z ⟶ Y)
     (h : pull f c = 0) : pull (g ≫ f) c = 0 := by
@@ -62,21 +62,19 @@ theorem pull_eq_zero_of_factor {X : Scheme.{0}} {c : Pic X} {Y Z : Scheme.{0}} (
 variable {P : LB (G2 A).left} (hP : P.IsLB)
 
 /- English proof (translation)
-Set `W` to `T ⊗ G2 A`. Set `x' : W ⟶ A` to `fst T (G2 A) ≫ x`. Set `b₁ : W ⟶ A` to `snd T (G2 A) ≫ fst A A`. Set `b₂ : W ⟶ A` to `snd T (G2 A) ≫ snd A A`. Establish `l₁ : ∀ b : W ⟶ A, DiagPairing.pc hP 1 b = 0` using `fun b => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `e : (lift (1 : W ⟶ A) b) = b ≫ lift (1 : A ⟶ A) (𝟙 A)`. Rewrite using `[comp_lift, MonObj.comp_one, Category.comp_id]`. Unfold `DiagPairing.pc`. Rewrite using `[e, Over.comp_left]`. Conclude with `pull_eq_zero_of_factor _ _ h₁`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `l₂ : ∀ a : W ⟶ A, DiagPairing.pc hP a 1 = 0` using `fun a => by`. Establish `e : (lift a (1 : W ⟶ A)) = a ≫ lift (𝟙 A) (1 : A ⟶ A)`. Rewrite using `[comp_lift, MonObj.comp_one, Category.comp_id]`. Unfold `DiagPairing.pc`. Rewrite using `[e, Over.comp_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pull_eq_zero_of_factor _ _ h₂`. Establish `l₃ : DiagPairing.pc hP x' b₂ = 0`. Establish `e : (lift x' b₂) = lift b₂ (fst T (G2 A)) ≫ lift (snd A T ≫ x) (fst A T)`. Rewrite using `[comp_lift, lift_snd_assoc, lift_fst]`. Unfold `DiagPairing.pc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, Over.comp_left]`. Conclude with `pull_eq_zero_of_factor _ _ hx`. Establish `one : (1 : W ⟶ G2 A) = lift 1 1`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Establish `ea : fst T (G2 A) ≫ (lift x 1 : T ⟶ G2 A) = lift x' 1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[comp_lift, MonObj.comp_one]`. Establish `eb : snd T (G2 A) = lift b₁ b₂`. Rewrite using `[← comp_lift, lift_fst_snd, Category.comp_id]`. Establish `e` using `cube_cls hA hP (lift x' 1) (lift b₁ 1) (lift 1 b₂)`. Simplify using `only [lift_mul_lift, _root_.mul_one, _root_.one_mul, one] at e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `DiagPairing.pc hP (x' * b₁) b₂ - DiagPairing.pc hP (x' * b₁) 1 - DiagPairing.pc hP x' b₂ - DiagPairing.pc hP b₁ b₂ + DiagPairing.pc hP x' 1 + DiagPairing.pc hP b₁ 1 + DiagPairing.pc hP 1 b₂ - DiagPairing.pc hP 1 1 = 0 at e`. Rewrite `e` using `[l₁, l₁, l₂, l₂, l₂, l₃]`. Rewrite using `[lam, ea, eb, one, lift_mul_lift, _root_.one_mul]`. Express the relevant statement in the definitionally equal form `DiagPairing.pc hP (x' * b₁) b₂ - DiagPairing.pc hP x' 1 - DiagPairing.pc hP b₁ b₂ + DiagPairing.pc hP 1 1 = 0`. Rewrite using `[l₁, l₂, ← e]`.
-
-Normalize the expressions using the abelian group laws.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem lam_eq_zero (hA : IsAbelianScheme A)
     (h₁ : pull (lift (1 : A ⟶ A) (𝟙 A)).left (cls P hP) = 0)

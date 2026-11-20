@@ -21,7 +21,7 @@ open Formalism.DivisionValues (vw)
 namespace GlobalTheory.RhoLowProof
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.meanValuation_ge_of_integral_at_prime σ hp hβ hc hl hw h`.
+A detailed English derivation is pending.
 -/
 theorem meanVal_lower {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) {β : ℂ} {p : K[X]}
     (hp : IsMinPol σ β p) (hβ : β ≠ 0) {c : K} (hc : c ≠ 0) {l : ℕ} (hl : l.Prime)
@@ -31,7 +31,7 @@ theorem meanVal_lower {K : Type} [Field K] [NumberField K] (σ : K →+* ℂ) {�
   GlobalTheory.T.meanValuation_ge_of_integral_at_prime σ hp hβ hc hl hw h
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.partialZeta_values_at_neg_int_unique hk h h'`.
+A detailed English derivation is pending.
 -/
 theorem classZetaVals_unique {E : Type} [Field E] [NumberField E] {k : ℕ} (hk : 2 ≤ k) {z z' : ClassGroup (OF E) → ℚ}
     (h : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsClassZetaVals k z) (h' : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsClassZetaVals k z') : z = z' :=
@@ -43,7 +43,7 @@ variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)
 open Classical in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.square_nu_twisted_tuple_isCMValueHeckeCharacter G hL t i j hs`.
+A detailed English derivation is pending.
 -/
 theorem twist_val {μ₀ : T} (hL : L.Is μ₀) (t : T) (i j : Fin D.R.m) {s : ℕ} (hs : s ≤ halfRank D i j) :
     IsValChar (cmPhi D) s (kap D sc.cGap i j s) (condF G.pl)
@@ -53,14 +53,14 @@ theorem twist_val {μ₀ : T} (hL : L.Is μ₀) (t : T) (i j : Fin D.R.m) {s : �
 open Classical in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.isFinSetSplitPlacesCoprimeConductor_twPl_under G hL t`.
+A detailed English derivation is pending.
 -/
 theorem squareTopTwistPlaces_coprime_splitPlaces {μ₀ : T} (hL : L.Is μ₀) (t : T) :
     IsFinSetSplitPlacesCoprimeConductor (condF G.pl) ((GlobalTheory.SqTop.twPl G t).image fun P => P.under (𝓞 D.host.F)) :=
   GlobalTheory.T.isFinSetSplitPlacesCoprimeConductor_twPl_under G hL t
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.square_nu_twisted_tuple_ramified_at_twist_place G hL t i j`.
+A detailed English derivation is pending.
 -/
 theorem twist_ram {μ₀ : T} (hL : L.Is μ₀) (t : T) (i j : Fin D.R.m) :
     ∀ P ∈ GlobalTheory.SqTop.twPl G t, ¬ (nuH G t i j).UnrAt P :=
@@ -69,7 +69,7 @@ theorem twist_ram {μ₀ : T} (hL : L.Is μ₀) (t : T) (i j : Fin D.R.m) :
 open Classical in
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.twist_places_under_prime_not_mem_of_norm_coprime G t hl hlw hQ`.
+A detailed English derivation is pending.
 -/
 theorem twist_prime (t : T) {l : ℕ} (hl : l.Prime) {w : Formalism.PairingDivisionLocalBalance.Pl D.what₂.LL} (hlw : (l : 𝓞 D.what₂.LL) ∈ w.asIdeal)
     (hQ : (GlobalTheory.SqTop.Qn G t : 𝓞 D.what₂.LL) ∉ w.asIdeal) :
@@ -79,7 +79,7 @@ theorem twist_prime (t : T) {l : ℕ} (hl : l.Prime) {w : Formalism.PairingDivis
 end Twist
 
 /- English proof (translation)
-Unfold `vw`. Rewrite using `[← FractionalIdeal.spanSingleton_pow, FractionalIdeal.count_pow]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem vw_pow {K : Type} [Field K] [NumberField K] (w : Formalism.PairingDivisionLocalBalance.Pl K) {z : K} (hz : z ≠ 0) (n : ℕ) :
     vw w (z ^ n) = n * vw w z := by
@@ -96,39 +96,33 @@ set_option maxHeartbeats 1000000 in
 open Classical in
 
 /- English proof (translation)
-Use `haveI := hcm`. Use `haveI := hab`. Take `⟨x, hx, hx0, -, Λl, p, hΛl, hp, hg⟩` from `htv`. Establish `hU : UnramFin D.host.E` using `hfd.2.2.1`. Establish `hφ : IsCMType (cmPhi D)` using `hfd.2.2.2.2.2.2.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e0 : x = Λ₀ s`. Establish `h` using `GlobalTheory.ToricSumValue.toricSum_eq GlobalTheory.Published.HeckeEntire_holds D.host.E D.what₂.Tau (cmPhi D) hφ s (kap D sc.cGap i j s) (condF G.pl) ∅ (nuH G μ₀ i j) (fun _ => G.pl.w G.pl.v0) Λ₀ hU hs1 hbc (fun q hq => absurd hq (Finset.notMem_empty q)) hx.1 (fun q hq => absurd …`. Simplify using `only [condQ, Finset.prod_empty, mul_one, Finset.filter_empty] at h`. Conclude with `hx.2.unique h`. Take `⟨Q, hQdef⟩ : ∃ Q : Finset (HeightOneSpectrum (OF D.host.E)), Q = (GlobalTheory.SqTop.twPl G t).image fun P => P.under (𝓞 D.host.F)` from `⟨_, rfl⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hQval` using `twist_val G hL t i j hs2`. Establish `hQaux` using `squareTopTwistPlaces_coprime_splitPlaces G hL t`. Establish `hQram` using `twist_ram G hL t i j`. Establish `hQpr` using `twist_prime G t hl hlw hQw`. Rewrite `hQval`, `hQaux`, `hQpr` using `[← hQdef]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hex : ∀ q ∈ Q, ∃ P ∈ GlobalTheory.SqTop.twPl G t, P.under (𝓞 D.host.F) = q` using `fun q hq => by`. Rewrite `hq` using `[hQdef]`. Conclude with `Finset.mem_image.1 hq`. Set `Pq : HeightOneSpectrum (OF D.host.E) → HeightOneSpectrum (𝓞 D.host.E)` to `fun q => if h : ∃ P ∈ GlobalTheory.SqTop.twPl G t, P.under (𝓞 D.host.F) = q then h.choose else G.pl.w G.pl.v0`. Establish `hPq : ∀ q ∈ Q, Pq q ∈ GlobalTheory.SqTop.twPl G t ∧ (Pq q).under (𝓞 D.host.F) = q` using `fun q hq => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hex q hq`. Simplify using `only [Pq, dif_pos h]`. Conclude with `h.choose_spec`. Establish `hov : ∀ q ∈ Q, Over (Pq q) q` using `fun q hq => (over_under (Pq q)).trans (congrArg HeightOneSpectrum.asIdeal (hPq q hq).2)`. Establish `htor` using `GlobalTheory.ToricSumValue.toricSum_eq GlobalTheory.Published.HeckeEntire_holds D.host.E D.what₂.Tau (cmPhi D) hφ s (kap D sc.cGap i j s) (condF G.pl) Q (nuH G t i j) Pq Λ hU hs1 hbc hQaux hQval hov hΛ`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `htor` using `[Finset.filter_false_of_mem (fun q hq => hQram _ (hPq q hq).1), Finset.prod_empty, mul_one]`. Establish `hnu : nuH G t i j = nuH G μ₀ i j * Lc.xiH t`. Rewrite using `[nuH, nuH, hL.xi_base, mul_one, div_mul_eq_mul_div]`. Establish `hpic : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.IsPicChar (condQ (condF G.pl) Q) (Lc.xiH t)`. Take `⟨k, hk, hko⟩` from `hL.xi_fin t`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨fun y => GlobalTheory.TypeValues.inf_eq_one _ hk hko y, fun u hu => ?_⟩` and prove the remaining obligations. Establish `a` using `GlobalTheory.CMVal.OrderUnits.finPart_eq_one D.host.E D.what₂.Tau (cmPhi D) hφ s (kap D sc.cGap i j s) (condF G.pl) Q (nuH G t i j) hU hbc hQaux hQval u hu`. Establish `hle : condQ (condF G.pl) Q ≤ condQ (condF G.pl) ∅`. Simplify using `only [condQ, Finset.prod_empty, mul_one]`. Conclude with `Ideal.mul_le_left`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `b` using `GlobalTheory.CMVal.OrderUnits.finPart_eq_one D.host.E D.what₂.Tau (cmPhi D) hφ s (kap D sc.cGap i j s) (condF G.pl) ∅ (nuH G μ₀ i j) hU hbc (fun q hq => absurd hq (Finset.notMem_empty q)) hx.1 u (hatOUnits_mono hle hu)`. Rewrite `a` using `[hnu, finPart_mul, b, one_mul]`. Conclude with `a`. Take `⟨zc, hzc, H⟩` from `hTD D.host.E D.what₂.Tau D.host.d (cmPhi D) s hfd hs1`. Establish `hV` using `((H (kap D sc.cGap i j s) (condF G.pl) Λl (nuH G μ₀ i j) hbc hΛl hx.1) l hl Q hQaux hQpr).2 (Lc.xiH t) (Λ s) hpic (hnu ▸ htor)`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨zc', hzc', hn⟩` from `hden`. Take `rfl : zc = zc'` from `classZetaVals_unique (by omega) hzc hzc'`. Use `set B := GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.betaBound_vp D.host.d s (kap D sc.cGap i j s) (condF G.pl) zc l with hB`. Use `set N := ⌈B / 12⌉₊ with hN`. Establish `hnl : n l = N` using `by rw [hn l hl]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hInt` using `hV (12 * N : ℕ) 1 one_pos (by`. Use `push_cast`. Use `Nat.le_ceil (B / 12)` as an intermediate fact. Use the proof step `linarith)`. Establish `hv0 : G.pl.v0 ∉ Q` using `fun h => by`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Take `⟨P, hP, e⟩` from `hex _ h`. Establish `hP' : P ∈ Lc.Q t`. Simplify using `only [GlobalTheory.SqTop.twPl, Finset.mem_filter, locPl, Finset.mem_union] at hP`. Conclude with `hP.1.resolve_left hP.2`. Conclude with `G.pl.levelPlace_ne_basePlace t P hP' e`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hram0 : ¬ (nuH G t i j).UnrAt (G.pl.w G.pl.v0)`. Establish `h1` using `(hQval.2.2.2 G.pl.v0 (G.pl.w G.pl.v0) ((over_under _).trans (congrArg HeightOneSpectrum.asIdeal (G.pl.w_over _ (Finset.mem_insert_self _ _))))).2 hv0`. Rewrite `h1` using `[GlobalTheory.FunObj.SqNum.Model.expIn_condF, if_pos (G.pl.mem_S0_of_sum_eq.2 (Or.inl rfl)), condExp, if_pos rfl]`. Conclude with `h1.not_unrAt one_ne_zero`. Establish `hΛs : Λ s ≠ 0` using `GlobalTheory.HeckePartial.IsHeckeL.ne_zero_of_one_le hQval.1 (GlobalTheory.HeckeOne.not_isNormPow_of_not_unrAt hram0) hΛ (by simpa using (by exact_mod_cast hs1 : (1 : ℝ) ≤ s))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Conclude with `hΛs (by rw [← hz, map_zero, zero_mul])`. Establish `hbeta : beta D.host.E D.host.d s (kap D sc.cGap i j s) Λl (Λ s) = D.what₂.embLL (z ^ 12) * beta D.host.E D.host.d s (kap D sc.cGap i j s) Λl x`. Rewrite using `[← hz, ← e0, beta, beta, map_pow]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hβ0 : beta D.host.E D.host.d s (kap D sc.cGap i j s) Λl x ≠ 0`. Rewrite using `[beta]`. Use `div_ne_zero (pow_ne_zero _ (mul_ne_zero ?_ hx0)) (pow_ne_zero _ (latDisc_ne_zero Λl))` and prove the remaining obligations. Conclude with `(cmValueConst_pos D.host.E (hfd.1.pos) (by omega) _).ne'` after adjusting the coercions.
-
-Rewrite `hInt` using `[hbeta, pow_one, zpow_natCast]`. Establish `key` using `meanVal_lower D.what₂.embLL hp hβ0 (pow_ne_zero 12 hz0) hl hlw hInt`. Rewrite `key` using `[vw_pow w hz0]`. Establish `h2 : ((-(N * vw w (l : D.what₂.LL)) : ℤ) : ℝ) ≤ (vw w z : ℝ) + meanVal_vw w p / 12`. Move the coercions through the operations in `at key ⊢`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3` using `GlobalTheory.FunObj.SqNum.le_add_truncZero h2`. Rewrite using `[hnl, hg w]`. Establish `h4 : ((-(N * vw w (l : D.what₂.LL)) : ℤ) : ℝ) ≤ ((vw w z + GlobalTheory.LeafRestExamples.truncZero (meanVal_vw w p / 12) : ℤ) : ℝ)`. Conclude with `h3` after adjusting the coercions.
-
-Move the coercions through the operations in `at h4 ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem core (hTD : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator) {D : D7} {T : Type} {Lc : LevCh D T} {sc : Consts} {μ₀ : T}
     (hL : Lc.Is μ₀) (G : GridData Lc sc) (hcm : IsCMField D.host.E) (hab : IsAbelianGalois ℚ D.host.E)
@@ -243,9 +237,9 @@ theorem core (hTD : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBo
   linarith
 
 /- English proof (translation)
-Introduce `hTD hF _`. Take `⟨CF0, hF⟩` from `hF`. Use `⟨CF0, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨C0, x₀, hF⟩` from `hF ε CF hCF`. Use `⟨C0, x₀, fun C hC D large₂ he hx hR T Lc μ₀ hL G => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hcm, hab, hfd, hbc, -⟩` from `hF C hC D large₂ he hx hR T Lc μ₀ hL G`. Introduce `i j s hs1 hs2 t Λ Λ₀ z zd g n hΛ hΛ₀ hz htv hden w l hl hlw hQw`. Conclude with `core hTD hL G hcm hab hfd hbc i j s hs1 hs2 t Λ Λ₀ z zd g n hΛ hΛ₀ hz htv hden w l hl hlw hQw`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rhoLow_holds : GlobalTheory.IndefiniteRowSideFullHecke.ClassZetaValuationBounds.ToricDenominator → GlobalTheory.SqTop.FieldDat → GlobalTheory.SqTop.TorEx → GlobalTheory.SqTop.RhoLow := by
   intro hTD hF _

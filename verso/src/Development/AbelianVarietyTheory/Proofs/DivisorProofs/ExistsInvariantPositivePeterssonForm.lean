@@ -18,11 +18,9 @@ open MeasureTheory
 namespace GlobalTheory.DefU.Petersson
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.t2Space_GA E n`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.locallyCompactSpace_GA E n`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.secondCountableTopology_GA E n`. Use `haveI := GlobalTheory.CuspRep.CuspidalL2GL.discreteTopology_latticeGL (E := E) (a := n)`. Use `⟨inferInstance, (GlobalTheory.DefU.LocAdm.isClosed_UA (E := E) (n := n)).isClosedEmbedding_subtypeVal.locallyCompactSpace, (Topology.IsEmbedding.subtypeVal (p := fun g : GA E n => g ∈ UA E n)).secondCountableTopology, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hm : ∀ x : ratU E n, ((x : UA E n) : GA E n) ∈ latticeGL E n` using `fun x => by`. Take `⟨δ, hδ⟩` from `x.2`. Establish `h` using `GlobalTheory.CuspRep.CuspidalL2GL.ratGL_mem_latticeGL (E := E) δ`. Rewrite `h` using `[hδ]`. Conclude with `h`.
-
-Set `f : ratU E n → latticeGL E n` to `fun x => ⟨_, hm x⟩`. Establish `hf : Continuous f` using `(continuous_subtype_val.comp continuous_subtype_val).subtype_mk _`. Establish `hi : Function.Injective f` using `fun x y h => Subtype.ext (Subtype.ext (congrArg (fun z : latticeGL E n => (z : GA E n)) h))`. Conclude with `DiscreteTopology.of_continuous_injective hf hi`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem topology_facts (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) :
     T2Space (UA E n) ∧ LocallyCompactSpace (UA E n) ∧ SecondCountableTopology (UA E n) ∧ DiscreteTopology (ratU E n) := by
@@ -44,13 +42,13 @@ theorem topology_facts (E : Type) [Field E] [NumberField E] [IsCMField E] (n : �
   exact DiscreteTopology.of_continuous_injective hf hi
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.DefU.LocAdm.t2Space_adelicGL_cmField (E := E) (n := n)`. Take `⟨U0, hU0o, hU0c⟩` from `GlobalTheory.GLIntegral.exists_isOpen_isCompact E n`. Set `p : finU E n →* GL (Fin n) (Af E)` to `(GeneralLinearGroup.map (pFin E)).comp ((UA E n).subtype.comp (finU E n).subtype)`. Establish `hp : Continuous p` using `continuous_map_pFin.comp (continuous_subtype_val.comp continuous_subtype_val)`. Establish `hKo : IsOpen (U0.comap p : Set (finU E n))` using `hU0o.preimage hp`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfin : ∀ x : UA E n, x ∈ finU E n ↔ finGL E n (GeneralLinearGroup.map (pFin E) (x : GA E n)) = (x : GA E n)`. Introduce `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `h1 : GeneralLinearGroup.map (pInf E) (x : GA E n) = 1` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `ga_ext (by rw [pInf_finGL, h1]) (by rw [pFin_finGL])`. Introduce `hx`. Express the relevant statement in the definitionally equal form `GeneralLinearGroup.map (pInf E) (x : GA E n) = 1`. Rewrite using `[← hx, pInf_finGL]`. Establish `hc : IsClosed ((finU E n : Subgroup (UA E n)) : Set (UA E n))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((finU E n : Subgroup (UA E n)) : Set (UA E n)) = {x : UA E n | finGL E n (GeneralLinearGroup.map (pFin E) (x : GA E n)) = (x : GA E n)}` using `Set.ext hfin`. Rewrite using `[e]`. Conclude with `isClosed_eq (GlobalTheory.DefU.LocAdm.continuous_finGL.comp (continuous_map_pFin.comp continuous_subtype_val)) continuous_subtype_val`. Establish `hι : Topology.IsClosedEmbedding (fun x : finU E n => ((x : UA E n) : GA E n))` using `GlobalTheory.DefU.LocAdm.isClosed_UA.isClosedEmbedding_subtypeVal.comp hc.isClosedEmbedding_subtypeVal`. Conclude with `⟨U0.comap p, hKo, IsCompact.of_isClosed_subset (hι.isCompact_preimage (hU0c.image GlobalTheory.DefU.LocAdm.continuous_finGL)) (Subgroup.isClosed_of_isOpen _ hKo) fun x hx => ⟨p x, hx, (hfin x).1 x.2⟩⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isOpen_isCompact_finU (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) :
     ∃ K : Subgroup (finU E n), IsOpen (K : Set (finU E n)) ∧ IsCompact (K : Set (finU E n)) := by
@@ -84,11 +82,11 @@ theorem exists_isOpen_isCompact_finU (E : Type) [Field E] [NumberField E] [IsCMF
     (Subgroup.isClosed_of_isOpen _ hKo) fun x hx => ⟨p x, hx, (hfin x).1 x.2⟩⟩
 
 /- English proof (translation)
-Take `⟨K, hKo, hKc⟩` from `exists_isOpen_isCompact_finU E n`. Take `⟨S, hS⟩` from `GlobalTheory.T.definiteUnitary_classSet_finite E n K hKo`. Use `haveI : CompactSpace (Matrix.unitaryGroup (Fin n) ℂ) := GlobalTheory.compactSpace_unitaryGroup (Fin n) ℂ`. Use `haveI : ∀ v : InfinitePlace E, CompactSpace (embU n v.embedding) := fun v => by`. Take `⟨e, -⟩` from `GlobalTheory.T.archimedeanUnitaryPoints_equiv_unitaryGroup E n v.embedding`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `e.toHomeomorph.symm.compactSpace`. Set `P : (∀ v : InfinitePlace E, embU n v.embedding) → UA E n` to `fun y => (Finset.univ.toList.map fun v => (y v : UA E n)).prod`. Establish `hP : Continuous P` using `continuous_list_prod _ fun v _ => continuous_subtype_val.comp (continuous_apply v)`. Establish `hPc : IsCompact (Set.range P)` using `isCompact_range hP`. Establish `hKc' : IsCompact (Subtype.val '' (K : Set (finU E n)))` using `hKc.image continuous_subtype_val`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨_, (S.finite_toSet.isCompact.mul hPc).mul hKc', fun g => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ, s, hs, x, hx, k, hk, e⟩` from `hS g`. Take `⟨y, hy, -, hyx⟩` from `GlobalTheory.T.definiteUnitaryInfinitePoint_eq_list_prod_placeParts E n x hx`. Use `⟨γ, hγ, s * x * k, Set.mul_mem_mul (Set.mul_mem_mul hs ⟨fun v => ⟨y v, hy v⟩, hyx⟩) ⟨k, hk, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[e, mul_assoc, mul_assoc, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_compact_cover (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ) :
     ∃ C : Set (UA E n), IsCompact C ∧ ∀ g, ∃ γ ∈ ratU E n, ∃ c ∈ C, g = γ * c := by
@@ -118,43 +116,37 @@ namespace GlobalTheory.DefU.Petersson
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `E _ _ _ n`. Take `⟨h1, h2, h3, h4⟩` from `topology_facts E n`. Take `⟨C, hC, hcov⟩` from `exists_compact_cover E n`. Use `letI : MeasurableSpace (UA E n) := borel _`. Use `haveI : BorelSpace (UA E n) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI : SecondCountableTopology (ratU E n) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI : TopologicalSpace.SeparableSpace (ratU E n) := inferInstance`. Use `haveI : Countable (ratU E n) := TopologicalSpace.separableSpace_iff_countable.1 inferInstance`. Take `⟨μ, hμ⟩ : ∃ μ : Measure (UA E n), μ.IsHaarMeasure` from `⟨Measure.haar, inferInstance⟩`. Take `⟨𝓕, -, h𝓕'⟩` from `Formalism.IndefR.Eqv.G5.fdom_exists_all (ratU E n)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h𝓕` using `h𝓕' μ`. Establish `hfin : μ 𝓕 < ⊤`. Use `lt_of_le_of_lt ?_ (hC.measure_lt_top (μ := μ))` and prove the remaining obligations. Rewrite using `[h𝓕.measure_eq_tsum C]`. Use `le_trans (measure_mono ?_) (measure_iUnion_le _)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `g hg`. Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov g`. Conclude with `Set.mem_iUnion.2 ⟨⟨γ, hγ⟩, ⟨c, hc, rfl⟩, hg⟩`. Use `haveI hR : μ.IsMulRightInvariant := GlobalTheory.unimodular_of_isFundamentalDomain_finite _ (ratU E n) μ 𝓕 hμ h𝓕 hfin.ne`. Establish `hl : ∀ u : autU E n, ∀ γ ∈ ratU E n, ∀ g, u.1 (γ * g) = u.1 g` using `fun u γ hγ g => u.2.left γ hγ g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hI : ∀ u v : autU E n, IntegrableOn (fun g => star (u.1 g) * v.1 g) 𝓕 μ`. Introduce `u v`. Establish `hc : Continuous (fun g => star (u.1 g) * v.1 g)` using `u.2.cont.star.mul v.2.cont`. Take `⟨M, hM⟩` from `hC.exists_bound_of_continuousOn hc.continuousOn`. Use `Measure.integrableOn_of_bounded (M := M) hfin.ne hc.aestronglyMeasurable (ae_of_all _ fun g => ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ, hγ, c, hc, rfl⟩` from `hcov g`. Simplify using `only [hl u γ hγ, hl v γ hγ]`. Conclude with `hM c hc`. Establish `hright : ∀ (y : UA E n) (f : UA E n → ℂ), (∀ γ ∈ ratU E n, ∀ h, f (γ * h) = f h) → ∫ h in 𝓕, f (h * y) ∂μ = ∫ h in 𝓕, f h ∂μ`. Introduce `y f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h' : IsFundamentalDomain (ratU E n) ((fun h => h * y) '' 𝓕) μ`. Use `h𝓕.image_of_equiv (Equiv.mulRight y) ?_ (Equiv.refl _) ?_` and prove the remaining obligations. Conclude with `(measurePreserving_mul_right μ y⁻¹).quasiMeasurePreserving`. Introduce `γ h`. Simplify using `[Subgroup.smul_def, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[h𝓕.setIntegral_eq h' (f := f) (fun γ h => hf γ γ.2 h)]`. Conclude with `((measurePreserving_mul_right μ y).setIntegral_image_emb (measurableEmbedding_mulRight y) f 𝓕).symm`. Set `F : autU E n → autU E n → ℂ` to `fun u v => ∫ g in 𝓕, star (u.1 g) * v.1 g ∂μ`. Set `B : autU E n →ₗ⋆[ℂ] autU E n →ₗ[ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (starRingEnd ℂ) (RingHom.id ℂ) F (fun x x' y => by`. Simplify using `only [F]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[← integral_add (hI x y) (hI x' y)]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [Submodule.coe_add, Pi.add_apply, star_add, add_mul])`. Use the proof step `(fun c x y => by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [F, smul_eq_mul]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, star_mul', starRingEnd_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use the proof step `ring)`. Use the proof step `(fun x y y' => by`. Simplify using `only [F]`. Rewrite using `[← integral_add (hI x y) (hI x y')]`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use function extensionality and compare the values at `g`. Simplify using `only [Submodule.coe_add, Pi.add_apply, mul_add])`. Use the proof step `(fun c x y => by`. Simplify using `only [F, smul_eq_mul, RingHom.id_apply]`. Rewrite using `[← integral_const_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Use the proof step `ring)`. Establish `hB : ∀ u v, B u v = ∫ g in 𝓕, star (u.1 g) * v.1 g ∂μ` using `fun _ _ => rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hre : ∀ v, B v v = ((∫ g in 𝓕, ‖v.1 g‖ ^ 2 ∂μ : ℝ) : ℂ)`. Introduce `v`. Rewrite using `[hB, ← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `g`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Use `⟨B, fun u v => ?_, fun v => ?_, fun v h0 => ?_, fun k u v => ?_⟩` and prove the remaining obligations. Rewrite using `[hB, hB, Complex.star_def, ← integral_conj]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [map_mul, Complex.conj_conj]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hre, Complex.ofReal_re]`.
-
-Conclude with `integral_nonneg fun g => by positivity`. Rewrite `h0` using `[hre, Complex.ofReal_eq_zero]`. Establish `hi : IntegrableOn (fun g => ‖v.1 g‖ ^ 2) 𝓕 μ`. Use `(hI v v).norm` as an intermediate fact. Establish `e2 : (fun g => ‖star (v.1 g) * v.1 g‖) = fun g => ‖v.1 g‖ ^ 2`.
-
-Use function extensionality and compare the values at `g`. Rewrite using `[norm_mul, norm_star, sq]`. Rewrite `this` using `[e2]`. Conclude with `this`. Establish `hae` using `(integral_eq_zero_iff_of_nonneg (fun g => by positivity) hi).1 h0`.
-
-Use `GlobalTheory.eq_zero_of_ae_fundamentalDomain_of_leftInvariant (ratU E n) μ 𝓕 h𝓕 v.1 v.2.cont (hl v) (by filter_upwards [hae] with g hg` as an intermediate fact. Simplify using `using hg)`. Conclude with `Subtype.ext (funext this)`. Rewrite using `[hB, hB]`. Conclude with `hright k (fun g => star (u.1 g) * v.1 g) fun γ hγ g => by simp only [hl u γ hγ, hl v γ hγ]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_invariant_pos_form : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (n : ℕ),
     ∃ B : GlobalTheory.DefU.autU E n →ₗ⋆[ℂ] GlobalTheory.DefU.autU E n →ₗ[ℂ] ℂ, (∀ u v, star (B u v) = B v u) ∧ (∀ v, 0 ≤ (B v v).re) ∧

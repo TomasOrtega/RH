@@ -11,7 +11,7 @@ namespace GlobalTheory.CompanionTheory.SW.UnitProdAlg
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Rewrite `this` using `[Filter.eventually_cofinite]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mulSupport_finite {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0} (h : IsUnitProd a c) :
     (Function.mulSupport c).Finite := by
@@ -20,9 +20,9 @@ theorem mulSupport_finite {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ�
   exact this
 
 /- English proof (translation)
-Establish `hfin` using `mulSupport_finite h`. Use `⟨h.1.mono fun v hv => by simp [hv], ?_⟩` and prove the remaining obligations. Establish `hsub : Function.mulSupport (fun v => f (c v)) ⊆ (hfin.toFinset : Set _)`. Introduce `v hv`. Simplify using `only [Function.mem_mulSupport] at hv`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [Set.Finite.coe_toFinset, Function.mem_mulSupport]`. Introduce `h1`. Conclude with `hv (by simp [h1])`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset _ hsub, ← map_prod, ← map_mul, ← finprod_eq_prod_of_mulSupport_subset c (by simp), h.2, map_one]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_hom (f : ℝ≥0 →* ℝ≥0) {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0}
     (h : IsUnitProd a c) : IsUnitProd (f a) (fun v => f (c v)) := by
@@ -43,7 +43,7 @@ def sqrtHom : ℝ≥0 →* ℝ≥0 where
   map_mul' := NNReal.sqrt_mul
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `filter_upwards [h.1, k.1] with v h1 h2`. Simplify using `[h1, h2]`. Rewrite using `[finprod_mul_distrib (mulSupport_finite h) (mulSupport_finite k), mul_mul_mul_comm, h.2, k.2, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul {a b : ℝ≥0} {c e : HeightOneSpectrum (𝓞 F) → ℝ≥0}
     (h : IsUnitProd a c) (k : IsUnitProd b e) : IsUnitProd (a * b) (fun v => c v * e v) := by
@@ -54,14 +54,14 @@ theorem mul {a b : ℝ≥0} {c e : HeightOneSpectrum (𝓞 F) → ℝ≥0}
       h.2, k.2, one_mul]
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Simplify using `using h.2`.
+Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ne_zero {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0} (h : IsUnitProd a c) : a ≠ 0 := by
   rintro rfl
   simpa using h.2
 
 /- English proof (translation)
-Introduce `hv`. Establish `h2` using `h.2`. Rewrite `h2` using `[finprod_eq_zero c v hv (mulSupport_finite h)]`. Simplify using `at h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem family_ne_zero {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0} (h : IsUnitProd a c)
     (v : HeightOneSpectrum (𝓞 F)) : c v ≠ 0 := by
@@ -71,18 +71,16 @@ theorem family_ne_zero {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0
   simp at h2
 
 /- English proof (translation)
-The claim follows from `map_hom (invMonoidWithZeroHom (G₀ := ℝ≥0) : ℝ≥0 →* ℝ≥0) h`.
+A detailed English derivation is pending.
 -/
 theorem inv {a : ℝ≥0} {c : HeightOneSpectrum (𝓞 F) → ℝ≥0} (h : IsUnitProd a c) :
     IsUnitProd a⁻¹ (fun v => (c v)⁻¹) :=
   map_hom (invMonoidWithZeroHom (G₀ := ℝ≥0) : ℝ≥0 →* ℝ≥0) h
 
 /- English proof (translation)
-Introduce `F _ _ a b c e h k`. Use `⟨ne_zero h, family_ne_zero h, mul h k, inv h, ?_, map_hom sqrtHom h, fun n => map_hom (powMonoidHom n) h, (mulSupport_finite h).toFinset, fun S hS => ?_⟩` and prove the remaining obligations. Simplify `mul h (inv k)` using `only [div_eq_mul_inv]`. Establish `hsub : Function.mulSupport c ⊆ (S : Set _)`. Introduce `v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hS ((mulSupport_finite h).mem_toFinset.2 hv)`. Use `⟨fun v hv => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hv (hsub hne)`. Rewrite using `[← finprod_eq_prod_of_mulSupport_subset c hsub]`.
-
-Conclude with `h.2`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (F : Type) [Field F] [NumberField F] (a b : ℝ≥0)
     (c e : HeightOneSpectrum (𝓞 F) → ℝ≥0), IsUnitProd a c → IsUnitProd b e →

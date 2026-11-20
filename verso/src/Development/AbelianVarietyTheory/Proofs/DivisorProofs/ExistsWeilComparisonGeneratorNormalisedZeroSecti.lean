@@ -8,9 +8,9 @@ open GlobalTheory.UT GlobalTheory.Mum GlobalTheory.Mum.Two GlobalTheory.Mum.Two.
 namespace GlobalTheory.Mum.Two.WeilCmp
 variable {S : Scheme.{0}}
 /- English proof (translation)
-Unfold `psum`. Proceed by induction on `((List.finRange n).filter (· ∈ I)) with`. Consider the case `nil`. Simplify using `only [List.foldr_nil, pzero]`. Rewrite using `[← Category.assoc, toUnit_unique (g ≫ toUnit T) (toUnit T')]`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons a l ih`. Simplify using `only [List.foldr_cons]`. Rewrite using `[padd, padd, ← Category.assoc, comp_lift, ih]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_psum_nrm (G : Over S) [GrpObj G] [IsCommMonObj G] {n : ℕ} {T T' : Over S} (g : T' ⟶ T) (x : Fin n → (T ⟶ G))
     (I : Finset (Fin n)) : g ≫ psum G x I = psum G (fun k => g ≫ x k) I := by
@@ -24,9 +24,9 @@ theorem comp_psum_nrm (G : Over S) [GrpObj G] [IsCommMonObj G] {n : ℕ} {T T' :
     rw [padd, padd, ← Category.assoc, comp_lift, ih]
 
 /- English proof (translation)
-Unfold `psum`. Proceed by induction on `((List.finRange n).filter (· ∈ I)) with`. Consider the case `nil => simp only [List.foldr_nil, pzero]`. Both sides reduce to the same expression. Consider the case `cons a l ih`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Simplify using `only [List.foldr_cons]`. Rewrite using `[ih]`. Use `show (1 : T ⟶ G) * 1 = 1`. Conclude with `_root_.mul_one _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psum_one_nrm (G : Over S) [GrpObj G] [IsCommMonObj G] {n : ℕ} {T : Over S} (I : Finset (Fin n)) :
     psum G (fun _ => (1 : T ⟶ G)) I = 1 := by
@@ -40,9 +40,9 @@ theorem psum_one_nrm (G : Over S) [GrpObj G] [IsCommMonObj G] {n : ℕ} {T : Ove
     exact _root_.mul_one _
 
 /- English proof (translation)
-Establish `e : lift η[P₀.A] η[P₀.A] ≫ psum P.A ![fst P₀.A P₀.A ≫ f, snd P₀.A P₀.A ≫ g] I = η[P.A]`. Rewrite using `[comp_psum_nrm]`. Establish `: (fun k => lift η[P₀.A] η[P₀.A] ≫ (![fst P₀.A P₀.A ≫ f, snd P₀.A P₀.A ≫ g] : Fin 2 → _) k) = fun _ => (1 : 𝟙_ (Over S) ⟶ P.A)`. Use function extensionality and compare the values at `k`. Apply the tactic sequence `fin_cases k <;> simp [IsMonHom.one_hom, Hom.one_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[this, psum_one_nrm, Hom.one_def, toUnit_unique (toUnit (𝟙_ (Over S))) (𝟙 _), Category.id_comp]`. Conclude with `congrArg (fun q => q.left) e`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeroPair_comp_partialSum_eq_unit (P₀ P : PolAV S) (f g : P₀.A ⟶ P.A) [IsMonHom f] [IsMonHom g] (I : Finset (Fin 2)) :
     zero2 P₀.A ≫ (psum P.A ![fst P₀.A P₀.A ≫ f, snd P₀.A P₀.A ≫ g] I).left = η[P.A].left := by
@@ -56,7 +56,7 @@ theorem zeroPair_comp_partialSum_eq_unit (P₀ P : PolAV S) (f g : P₀.A ⟶ P.
   exact congrArg (fun q => q.left) e
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, zpow_add]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem prod_zpow_nrm {α U : Type} [CommGroup U] (a : U) (e : α → ℤ) (s : Finset α) :
     ∏ i ∈ s, a ^ e i = a ^ ∑ i ∈ s, e i := by
@@ -66,17 +66,17 @@ theorem prod_zpow_nrm {α U : Type} [CommGroup U] (a : U) (e : α → ℤ) (s : 
   | insert i s hi ih => rw [Finset.prod_insert hi, Finset.sum_insert hi, ih, zpow_add]
 
 /- English proof (translation)
-Set `π` to `(P₀.A ⊗ P₀.A).hom`. Establish `z2 : zero2 P₀.A ≫ π = 𝟙 S` using `Over.w (lift η[P₀.A] η[P₀.A])`. Establish `cst : ∀ k, zero2 P₀.A ≫ cmpφ P₀ P₁ P₂ f₁ g₁ f₂ g₂ k = Sum.elim (fun _ => η[P₂.A].left ≫ coprod.inr) (fun _ => η[P₁.A].left ≫ coprod.inl) k`. Introduce and unpack `(I | I)`. Use `show zero2 P₀.A ≫ (psum P₂.A ![fst P₀.A P₀.A ≫ f₂, snd P₀.A P₀.A ≫ g₂] I.down).left ≫ coprod.inr = _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, zeroPair_comp_partialSum_eq_unit]`. Both sides reduce to the same expression. Use `show zero2 P₀.A ≫ (psum P₁.A ![fst P₀.A P₀.A ≫ f₁, snd P₀.A P₀.A ≫ g₁] I.down).left ≫ coprod.inl = _`. Rewrite using `[← Category.assoc, zeroPair_comp_partialSum_eq_unit]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s₁ : ∑ I : ULift.{0} (Finset (Fin 2)), ((-1 : ℤ) ^ (2 - I.down.card)) = 0` using `by decide`. Establish `s₂ : ∑ I : ULift.{0} (Finset (Fin 2)), (-((-1 : ℤ) ^ (2 - I.down.card))) = 0` using `by decide`. Establish `hF : FormEq (Sum.elim (cmpφ P₀ P₁ P₂ f₁ g₁ f₂ g₂) (fun k => (π ≫ zero2 P₀.A) ≫ cmpφ P₀ P₁ P₂ f₁ g₁ f₂ g₂ k)) (Sum.elim (cmpε) (fun k => -cmpε k)) (cmpφ P₀ P₁ P₂ f₁ g₁ f₂ g₂) cmpε`. Introduce `U _ h`. Establish `one : ∏ k, h ((π ≫ zero2 P₀.A) ≫ cmpφ P₀ P₁ P₂ f₁ g₁ f₂ g₂ k) ^ cmpε k = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Category.assoc, cst]`. Rewrite using `[Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, cmpε]`. Rewrite using `[prod_zpow_nrm, prod_zpow_nrm, s₁, s₂, zpow_zero, zpow_zero, _root_.mul_one]`. Rewrite using `[Fintype.prod_sum_type]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr]`. Rewrite using `[DVR.prod_neg _ _ one, inv_one, _root_.mul_one]`. Take `⟨u', hu', hv⟩` from `exists_gen (join_isLB P₁.isLB P₂.isLB) hF (LB.mulGen _ _ _ _ _ u (LB.invGen _ _ _ (LB.pullGen _ _ _ u (π ≫ zero2 P₀.A)))) (DVR.mulGen_isGen _ _ _ _ _ _ _ hu (DVR.invGen_isGen _ _ _ _ (DVR.pullGen_isGen _ _ _ _ hu _)))`. Use `⟨u', hu', fun Z r z J hJ => ?_⟩` and prove the remaining obligations. Rewrite using `[hv Z _ z J hJ, val_mul hJ, val_inv, val_pull hJ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (r ≫ zero2 P₀.A) ≫ π ≫ zero2 P₀.A = r ≫ zero2 P₀.A`. Rewrite using `[Category.assoc, ← Category.assoc (zero2 P₀.A), z2]`. Conclude with `congrArg (r ≫ ·) (Category.id_comp _)`. Rewrite using `[this, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_gen_nrm (S : Scheme.{0}) (P₀ P₁ P₂ : PolAV S) [Nonempty P₁.A.left] [Nonempty P₂.A.left]
     (f₁ g₁ : P₀.A ⟶ P₁.A) (f₂ g₂ : P₀.A ⟶ P₂.A) [IsMonHom f₁] [IsMonHom g₁] [IsMonHom f₂] [IsMonHom g₂]

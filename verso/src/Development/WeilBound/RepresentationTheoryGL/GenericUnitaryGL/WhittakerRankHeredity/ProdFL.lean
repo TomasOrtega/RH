@@ -11,13 +11,13 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.SplitWe
 namespace GlobalTheory.RgGu
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n V _ _ π hs hi` and use `(GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).1 (Fin n) V π hs hi`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem irreducibleAdmissibleGL : GlobalTheory.Published.IrreducibleAdmissibleGL :=
   fun k _ _ _ _ n V _ _ π hs hi => (GlobalTheory.CompanionTheory.Published.bernsteinZelevinskyFiniteness k).1 (Fin n) V π hs hi
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ x hd` and use `GlobalTheory.T.product_irreducible_finite_length irreducibleAdmissibleGL x hd`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem prodIrrFiniteLength : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k], GlobalTheory.BZSeg.ProdIrrFiniteLength k :=
   fun _ _ _ _ _ _ _ x hd => GlobalTheory.T.product_irreducible_finite_length irreducibleAdmissibleGL x hd

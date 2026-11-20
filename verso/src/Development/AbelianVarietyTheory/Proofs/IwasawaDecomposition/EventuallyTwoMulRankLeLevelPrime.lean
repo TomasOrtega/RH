@@ -12,15 +12,15 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar GlobalTheory.TypeR
 namespace GlobalTheory.Mem.Top.Bl
 
 /- English proof (translation)
-Use `evG_all fun K => lg_all K fun B f T hO _ T' w Z k => ?_` and prove the remaining obligations. Take `⟨sp, hT, hY, hA, hV, hz, hB, -⟩` from `hO`. Establish `hR' : B.toPre.R = K.P.R` using `by rw [hB]; rfl`. Establish `hg : B.toPre.host.g = K.P.H.g` using `by rw [hB]; rfl`. Use `show 2 * B.R.r ≤ B.host.g k`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show B.host.g k = K.P.H.g k from congrFun hg k, show B.R.r = K.P.R.r from by rw [hR']]`. Establish `hgk : ((K.P.R.k : ℝ) * K.s.b) ^ 8 ≤ (K.P.H.g k : ℝ)` using `(K.ok.val.2.2.2.2.1 k).1`. Establish `hb : 1 ≤ K.s.b` using `Real.one_le_exp (Real.rpow_nonneg (by linarith [K.s.one_lt_alt]) _)`. Establish `hk0 : (0 : ℝ) ≤ K.P.R.k` using `Nat.cast_nonneg _`. Establish `hkb : (K.P.R.k : ℝ) ^ 8 ≤ (K.P.H.g k : ℝ)` using `le_trans (pow_le_pow_left₀ hk0 (le_mul_of_one_le_right hk0 hb) 8) hgk`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hk8 : (K.P.R.k) ^ 8 ≤ K.P.H.g k` using `by exact_mod_cast hkb`. Establish `h2k : 2 ≤ K.P.R.k`. Use `K.P.R.f_le_k` as an intermediate fact. Establish `: 0 < K.P.R.ord` using `K.P.R.ord_pos`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hr : 2 * K.P.R.r ≤ 4 * K.P.R.k`. Use `K.P.R.m_add_three_le_k` as an intermediate fact. Simplify using `only [Ranks.r]`. Use linear arithmetic over natural numbers and integers. Establish `h4 : 4 * K.P.R.k ≤ K.P.R.k ^ 8`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Apply `Nat.mul_le_mul_right` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Use `_ = K.P.R.k ^ 8 := by ring`. Use linear arithmetic over natural numbers and integers.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem two_mul_r_le_g_level : EvLgG fun K B f _ => KPx B f → ∀ (T : TwDat B) (w : ColW B f T) (Z : w.Lt), ∀ k,
     2 * (w.D Z).R.r ≤ (w.D Z).host.g k := by

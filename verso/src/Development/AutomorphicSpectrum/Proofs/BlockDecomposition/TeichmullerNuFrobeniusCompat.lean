@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.NuPhi
 
 /- English proof (translation)
-Rewrite using `[pull_pull τ, pull_pull τ]`. Conclude with `cr_pull_eq _ _ (fun T => crHom (T := ma.obj (mb.obj T)) (T' := mc.obj (md.obj T)) (RingHom.id T.B) (fun r => congrArg T.i (hσ r)) (DPMorphism.id T.δ).isDPMorphism fun h => (pt_id _ h _).trans (hpt _ _)) (fun _ _ => rfl) (fun _ _ => rfl) j x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cr_square_semi {O : Type} [CommRing O] {F₁ F₂ F₃ F₄ : B.Fn O} {b₁ b₂ b₃ b₄ : Base} {h₁ : b₁.t = 1} {h₂ : b₂.t = 1} {h₃ : b₃.t = 1}
     {h₄ : b₄.t = 1} {κ₁ : O →+* b₁.R ⧸ b₁.I} {κ₂ : O →+* b₂.R ⧸ b₂.I} {κ₃ : O →+* b₃.R ⧸ b₃.I} {κ₄ : O →+* b₄.R ⧸ b₄.I}
@@ -43,7 +43,7 @@ instance tripleR (N : ℕ) : RingHomCompTriple (Mid.phiA l N) (ACris.phi ℂ_[l]
     rw [e]; rfl⟩
 
 /- English proof (translation)
-Establish `e : Mid.phiP l n (N + 1) = Mid.phiP l n N * (base l).phi n` using `pow_succ _ _`. Rewrite using `[← Mid.phiP_succ, e]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phiP_phi (n N : ℕ) (x : (base l).Acr n) :
     Mid.phiP l n N ((base l).phi n x) = (base l).phi n (Mid.phiP l n N x) := by
@@ -51,7 +51,7 @@ theorem phiP_phi (n N : ℕ) (x : (base l).Acr n) :
   rw [← Mid.phiP_succ, e]; rfl
 
 /- English proof (translation)
-Conclude with `cr_square_semi (Mid.phiA l (N + 1)) (B.crMor (F := B.schFn M.p) (F' := B.schFn M.p) (b := B.bs l true n) (b' := B.bs l true n) (ht := rfl) (ht' := rfl) ((base l).phi n) rfl ((base l).dpP_phi n) (B.phiPt (B.schFn M.p) (okToOC l K) n) fun _ y r => ((congrArg y.1.1 (B.phi_mk (base l …`.
+A detailed English derivation is pending.
 -/
 theorem nu_phi {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)} (r : CrystallineSemistableComparison.Res l K) {N : ℕ} (hT : Mid.TeichmullerCongruence r N) (M : Model l K) (n j : ℕ) (x : B.Hc (B.schFn M.p) (okToOC l K) true n j) :
     Mid.nu r M n j hT (B.phiHc (B.schFn M.p) (okToOC l K) n j x) = phiM r M n j (Mid.nu r M n j hT x) := by

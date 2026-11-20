@@ -9,9 +9,9 @@ set_option autoImplicit false
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `a i hia`. Simplify using `only [symMat, Matrix.of_apply]`. Use `Polynomial.coeff_eq_zero_of_natDegree_lt (lt_of_le_of_lt ?_ hia)` and prove the remaining obligations. Rewrite using `[← C_pow]`. Use `(natDegree_mul_C_le _ _).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : (C (A 0 1) + C (A 1 1) * X).natDegree ≤ 1` using `by compute_degree`. Simplify using `using natDegree_pow_le_of_le (i : ℕ) h1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem symMat_upperTriangular {R : Type} [CommRing R] (m : ℕ) (A : Matrix (Fin 2) (Fin 2) R) :
     (symMat m A).BlockTriangular id := by
@@ -24,9 +24,9 @@ theorem symMat_upperTriangular {R : Type} [CommRing R] (m : ℕ) (A : Matrix (Fi
   simpa using natDegree_pow_le_of_le (i : ℕ) h1
 
 /- English proof (translation)
-Simplify using `only [symMat, Matrix.of_apply]`. Rewrite using `[← C_pow, coeff_mul_C]`. Use `congr 1`. Establish `h1 : (C (A 0 1) + C (A 1 1) * X).natDegree ≤ 1` using `by compute_degree`. Use `coeff_pow_of_natDegree_le (m := (i : ℕ)) h1` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[mul_one]`. Rewrite using `[this]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem symMat_diag {R : Type} [CommRing R] (m : ℕ) (A : Matrix (Fin 2) (Fin 2) R) (i : Fin (m + 1)) :
     symMat m A i i = A 1 1 ^ (i : ℕ) * A 0 0 ^ (m - i) := by
@@ -40,11 +40,11 @@ theorem symMat_diag {R : Type} [CommRing R] (m : ℕ) (A : Matrix (Fin 2) (Fin 2
   simp
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (symMat_upperTriangular m A)]`. Simplify using `only [symMat_diag]`. Rewrite using `[Matrix.det_fin_two, h, mul_zero, sub_zero]`. Rewrite using `[Fin.prod_univ_eq_prod_range (fun i => A 1 1 ^ i * A 0 0 ^ (m - i)) (m + 1), Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Finset.prod_pow_eq_pow_sum, mul_pow, mul_comm]`. Establish `hs : ∑ i ∈ Finset.range (m + 1), i = m * (m + 1) / 2`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_range_id]`. Simplify using `[mul_comm]`. Establish `hr : ∑ i ∈ Finset.range (m + 1), (m - i) = m * (m + 1) / 2`. Rewrite using `[← hs]`. Conclude with `Finset.sum_range_reflect (fun i => i) (m + 1)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hs, hr]`.
+A detailed English derivation is pending.
 -/
 theorem det_symMat_of_upper {R : Type} [CommRing R] (m : ℕ) (A : Matrix (Fin 2) (Fin 2) R) (h : A 1 0 = 0) :
     (symMat m A).det = A.det ^ (m * (m + 1) / 2) := by
@@ -61,16 +61,16 @@ theorem det_symMat_of_upper {R : Type} [CommRing R] (m : ℕ) (A : Matrix (Fin 2
   rw [hs, hr]
 
 /- English proof (translation)
-Simplify using `only [ord, map_pow, WithZero.log_pow, nsmul_eq_mul, mul_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ord_pow' {k F : Type} [Field k] [Field F] [Algebra k F] (v : Place k F) (x : F) (N : ℕ) :
     ord v (x ^ N) = (N : ℤ) * ord v x := by
   simp only [ord, map_pow, WithZero.log_pow, nsmul_eq_mul, mul_neg]
 
 /- English proof (translation)
-Use `⟨fun a i => ?_, ?_⟩` and prove the remaining obligations. Set `A' : Matrix (Fin 2) (Fin 2) v.O` to `fun i j => ⟨A i j, (Valuation.mem_valuationSubring_iff _ _).2 (hu.1 i j)⟩`. Establish `e : A'.map v.O.subtype = A` using `by ext i j; rfl`. Rewrite using `[← e, ← symMat_map]`. Conclude with `(Valuation.mem_valuationSubring_iff _ _).1 (symMat m A' a i).2`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[det_symMat_of_upper m A hA, map_pow, hu.2, one_pow]`.
+A detailed English derivation is pending.
 -/
 theorem unimod_symMat {k F : Type} [Field k] [Field F] [Algebra k F] (v : Place k F) (m : ℕ)
     (A : Matrix (Fin 2) (Fin 2) F) (hA : A 1 0 = 0) (hu : Unimod v A) : Unimod v (symMat m A) := by
@@ -82,9 +82,9 @@ theorem unimod_symMat {k F : Type} [Field k] [Field F] [Algebra k F] (v : Place 
   · rw [det_symMat_of_upper m A hA, map_pow, hu.2, one_pow]
 
 /- English proof (translation)
-Introduce `k F _ _ _ _ m g hg h0`. Use `⟨⟨fun v => ?_, hg.2.subset fun v hv hu => hv (unimod_symMat v m (g v) (h0 v) hu)⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[det_symMat_of_upper m (g v) (h0 v)]`. Conclude with `pow_ne_zero _ (hg.1 v)`. Simplify using `only [deg, det_symMat_of_upper m _ (h0 _), ord_pow']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_finsum]`.
+A detailed English derivation is pending.
 -/
 theorem admissible_degree_symmetricPowerFamily : ∀ (k F : Type) [Field k] [IsAlgClosed k] [Field F] [Algebra k F] (m : ℕ)
     (g : Place k F → Matrix (Fin 2) (Fin 2) F), admitted g → (∀ v, g v 1 0 = 0) →

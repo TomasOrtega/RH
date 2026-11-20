@@ -6,13 +6,11 @@ namespace GlobalTheory.EX.Glue
 open Formalism.BasicNotions NumberField IsDedekindDomain
 
 /- English proof (translation)
-Use `haveI := w₀.isMaximal`. Establish `hI : Ideal.span {c} ≠ ⊥` using `by simpa [Ideal.span_singleton_eq_bot] using hc`. Take `⟨Q, hQ, hfac⟩` from `Ideal.eq_prime_pow_mul_coprime hI w₀.asIdeal`. Establish `hQn : ¬ Q ≤ w₀.asIdeal`. Introduce `h`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hQ` using `[sup_eq_left.2 h]`. Conclude with `w₀.isPrime.ne_top hQ`. Take `⟨t, htQ, ht⟩` from `SetLike.not_le_iff_exists.1 hQn`. Use `⟨t, ht, fun w hw => ?_⟩` and prove the remaining obligations. Generalize the expression as in `Multiset.count w₀.asIdeal _ = k at hfac`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hP : ¬ w₀.asIdeal ^ k ≤ w.asIdeal`. Introduce `h`. Use `haveI := w.isPrime`. Establish `h' : w₀.asIdeal ≤ w.asIdeal` using `Ideal.IsPrime.le_of_pow_le h`. Conclude with `hw (HeightOneSpectrum.ext (w₀.isMaximal.eq_of_le w.isPrime.ne_top h').symm)`.
-
-Take `⟨s, hsP, hs⟩` from `SetLike.not_le_iff_exists.1 hP`. Use `⟨s, hs, ?_⟩` and prove the remaining obligations. Rewrite using `[← Ideal.mem_span_singleton, hfac]`. Conclude with `Ideal.mul_mem_mul hsP htQ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_clear {R : Type} [CommRing R] [IsDedekindDomain R] (c : R) (hc : c ≠ 0)
     (w₀ : HeightOneSpectrum R) :
@@ -55,17 +53,17 @@ def locSub (w : HeightOneSpectrum (𝓞 K)) (M : Submodule (𝓞 K) V) : Submodu
     exact ⟨s, hs, by rw [smul_comm]; exact M.smul_mem _ hx⟩
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_locSub {w : HeightOneSpectrum (𝓞 K)} {M : Submodule (𝓞 K) V} {x : V} :
     x ∈ locSub w M ↔ InLoc w M x := Iff.rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨s, hs, hx⟩`. Conclude with `hsat w₀ s x hs ((Submodule.mem_iInf _).1 hx w₀)`. Introduce `hx`. Take `⟨c, hc, hcx⟩` from `hden x`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨t, ht, h⟩` from `exists_clear c hc w₀`. Use `⟨t, ht, (Submodule.mem_iInf _).2 fun w => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hw : w = w₀`. Substitute `hw` using the available equality. Conclude with `(B w).smul_mem _ hx`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨s, hs, d, hd⟩` from `h w hw`. Use `hsat w s _ hs ?_` and prove the remaining obligations. Rewrite using `[← mul_smul, hd, mul_comm, mul_smul]`. Conclude with `(B w).smul_mem _ (hcx w)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inLoc_iInf (B : HeightOneSpectrum (𝓞 K) → Submodule (𝓞 K) V)
     (hsat : ∀ w (t : 𝓞 K) (x : V), t ∉ w.asIdeal → t • x ∈ B w → x ∈ B w)
@@ -86,21 +84,19 @@ theorem inLoc_iInf (B : HeightOneSpectrum (𝓞 K) → Submodule (𝓞 K) V)
       exact (B w).smul_mem _ (hcx w)
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ M S A hS hM hA`. Set `B : HeightOneSpectrum (𝓞 K) → Submodule (𝓞 K) V` to `fun w => if w ∈ S then A w else locSub w M`. Establish `hB1 : ∀ w ∈ S, B w = A w` using `fun w hw => if_pos hw`. Establish `hB2 : ∀ w ∉ S, B w = locSub w M` using `fun w hw => if_neg hw`. Establish `hsat : ∀ w (t : 𝓞 K) (x : V), t ∉ w.asIdeal → t • x ∈ B w → x ∈ B w`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w t x ht hx`. Distinguish the cases in `hw : w ∈ S`. Rewrite `hx`, the goal using `[hB1 w hw]`. Conclude with `(hA w hw).1 t x ht hx`. Rewrite `hx`, the goal using `[hB2 w hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hx⟩` from `hx`. Conclude with `⟨s * t, fun h => (w.isPrime.mem_or_mem h).elim hs ht, by rwa [mul_smul]⟩`. Establish `hn : ∀ w, ∃ n : ℕ, n ≠ 0 ∧ (w ∈ S → ∀ x ∈ M, n • x ∈ A w)`. Introduce `w`. Distinguish the cases in `hw : w ∈ S`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, h, -⟩` from `(hA w hw).2`. Conclude with `⟨n, hn, fun _ => h⟩`. Conclude with `⟨1, one_ne_zero, fun h => absurd h hw⟩`. Use `choose n hn0 hn using hn`. Establish `hden : ∀ x : V, ∃ c : 𝓞 K, c ≠ 0 ∧ ∀ w, c • x ∈ B w`.
+Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨m, hm, hx⟩` from `hM x`. Use `⟨(((∏ w ∈ hS.toFinset, n w) * m : ℕ) : 𝓞 K), ?_, fun w => ?_⟩` and prove the remaining obligations. Conclude with `Nat.cast_ne_zero.2 (mul_ne_zero (Finset.prod_ne_zero_iff.2 fun w _ => hn0 w) hm)`. Rewrite using `[Nat.cast_smul_eq_nsmul, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hw : w ∈ S`. Rewrite using `[hB1 w hw]`. Take `⟨d, hd⟩` from `Finset.dvd_prod_of_mem n (hS.mem_toFinset.2 hw)`. Rewrite using `[hd, mul_comm, mul_smul]`. Conclude with `nsmul_mem (hn w hw _ hx) d`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hB2 w hw]`. Conclude with `⟨1, (Ideal.ne_top_iff_one _).1 w.isPrime.ne_top, by`. Rewrite using `[one_smul]`. Conclude with `nsmul_mem hx _⟩`. Use `⟨⨅ w, B w, fun w hw x => ?_, fun w hw x => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[inLoc_iInf B hsat hden, hB1 w hw]`. Rewrite using `[inLoc_iInf B hsat hden, hB2 w hw, mem_locSub]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_glue : ∀ (K V : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V]
     [IsScalarTower (𝓞 K) K V] (M : Submodule (𝓞 K) V) (S : Set (IsDedekindDomain.HeightOneSpectrum (𝓞 K)))

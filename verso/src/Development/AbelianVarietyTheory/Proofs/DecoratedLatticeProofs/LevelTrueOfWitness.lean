@@ -11,9 +11,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam.BundleLev
 
 /- English proof (translation)
-Establish `key : ∀ k : Bl.RPk b.R b.S, k = Bl.rpkX y.y → k.B.Q.Rl.toRealDat.Pg = x.R.Pg ∧ ∀ t, k.B.Q.Rl.toRealDat.xiH t = x.R.toLevCh.xiH (x.Y.tupT (k.P.I.tup t))`. Introduce `k hk`. Substitute `hk` using the available equality. Use `⟨rfl, fun t => ?_⟩` and prove the remaining obligations. Conclude with `(congrArg x.R.toLevCh.xiH (x.Y.tupT_tup t)).symm`.
-
-Conclude with `key (Bl.rpkB b) y.eq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem lev_of_btw {D : D7} {O : Obj D} {c : ℝ} (b : GlobalTheory.Fc.Bundle D O c) (x : R3.TwIn O.ex) (y : Bl.BTw b x) :
     (pk (packB b)).Pg = x.R.Pg ∧ ∀ t, (pk (packB b)).xiH t = x.R.toLevCh.xiH (x.Y.tupT ((packB b).P.I.tup t)) := by
@@ -28,7 +26,7 @@ theorem lev_of_btw {D : D7} {O : Obj D} {c : ℝ} (b : GlobalTheory.Fc.Bundle D 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.Mem.R3.twArgs_lev K _ _ _ q.w q.Z _ _ _ _ _ _ _ _ q.O.ex q.x.what₂ a`. Establish `e : a.x = x` using `eq_of_heq ax`. Substitute `e` using the available equality. Conclude with `⟨eq_of_heq h.2.1, fun μ hμ => eq_of_heq (h.2.2.1 μ hμ).2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem lev_of_args {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) (x : R3.TwIn q.O.ex)
     (a : R3.TwArgs q.O.ex q.x.what₂) (ax : HEq a.x x) :
@@ -42,11 +40,11 @@ theorem lev_of_args {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm h
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `hL p K q c b hw`. Establish `h1` using `lev_of_btw b hw.x hw.y`. Establish `h2` using `lev_of_args q hw.x hw.a hw.ax`. Establish `hPg : (pk (packB b)).Pg = (q.B.primes q.w.px).vGs` using `h1.1.trans h2.1`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hPg]`. Conclude with `ColTest.isTypePlaces_vGs q.w.I q.w.l q.Z q.w.ok`. Introduce `PP`. Rewrite using `[hPg]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Conclude with `(h1.2 t).trans (h2.2 _ (GlobalTheory.MiS.Check.used_all (packB b) t))`.
+A detailed English derivation is pending.
 -/
 theorem levTrue_packB : ∀ {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Bl.Prm hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ} (b : Bundle (q.w.D q.Z) q.O c), Bl.BWit q b → LevTrue (packB b) := by
   intro hL p K q c b hw

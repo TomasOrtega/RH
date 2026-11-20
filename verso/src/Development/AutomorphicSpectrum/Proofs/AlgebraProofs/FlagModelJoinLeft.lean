@@ -11,7 +11,7 @@ import Development.AutomorphicSpectrum.Proofs.AlgebraProofs.PairNumberPullbackSt
 namespace GlobalTheory.CompanionTheory.Ar.Num.FlagModelJoinLeft
 
 /- English proof (translation)
-The claim follows from `GroundTheory.Heights₂.Heights.NumbersDVR.FlagModelJoinLeftAlt.proof GroundTheory.Heights₂.Heights.NumbersDVR.JoinVerticalDivisor.proof (GroundTheory.Heights₂.Heights.NumbersDVR.FlagPairJoinLeft.proof GroundTheory.Heights₂.Heights.NumbersDVR.JoinVerticalDivisorLeft.proof) (GroundT …`.
+A detailed English derivation is pending.
 -/
 theorem main : GroundTheory.Heights₂.Heights.NumbersDVR.FlagModelJoinLeftAlt.Statement :=
   GroundTheory.Heights₂.Heights.NumbersDVR.FlagModelJoinLeftAlt.proof

@@ -7,9 +7,9 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL GlobalTheory.BZMir
 namespace GlobalTheory.CompanionTheory.BZMir
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero`. Conclude with `⟨Submodule.quotEquivOfEq _ _ (GlobalTheory.T.mirabolic_twisted_kernel_derivative_zero k ψ n τ.V τ.ρ)⟩`. Consider the case `succ j ih`. Take `⟨e₁⟩` from `ih (MRep.phiM k ψ τ)`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨e₂⟩` from `GlobalTheory.T.twisted_jacquet_phi_minus_equiv k ψ (n + j) n (Nat.le_add_right n j) τ.V τ.ρ`. Conclude with `⟨e₁.trans e₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem iterPhi_twJacquet_equiv (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle) (n j : ℕ) (τ : MRep k (n + j)) :

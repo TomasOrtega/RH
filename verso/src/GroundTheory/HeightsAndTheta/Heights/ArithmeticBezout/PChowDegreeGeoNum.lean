@@ -17,9 +17,9 @@ open MvPolynomial
 open ReciprocityTheory.ChartRestriction.G.Geo (MRing PBlk IsMultiProjPrime geoNum divSupp multAt)
 
 /- English proof (translation)
-Use `Fact.mk hp` as an intermediate fact. Establish `: CharP F p` using `(CharP.charP_iff_prime_eq_zero hp).mpr (by exact_mod_cast h0)`. Establish `hcomp : (ZMod.castHom (dvd_refl p) F).comp (Int.castRingHom (ZMod p)) = Int.castRingHom F` using `RingHom.ext_int _ _`. Establish `hsurj : Function.Surjective (ZMod.castHom (dvd_refl p) F)`. Use `Function.Surjective.of_comp (g := Int.castRingHom (ZMod p)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← RingHom.coe_comp, hcomp]`. Conclude with `hs`. Establish `: Finite F` using `Finite.of_surjective _ hsurj`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem perfectField_of_intCast_surjective (F : Type) [Field F] (p : ℕ) (hp : p.Prime)
     (hs : Function.Surjective (Int.castRingHom F)) (h0 : ((p : ℤ) : F) = 0) : PerfectField F := by
@@ -35,15 +35,15 @@ theorem perfectField_of_intCast_surjective (F : Type) [Field F] (p : ℕ) (hp : 
   infer_instance
 
 /- English proof (translation)
-Simplify using `[linForm, Pi.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linForm_single {F : Type} [Field F] {n : ℕ} (i : Fin n) : linForm (Pi.single i (1 : F)) = X i := by
   simp [linForm, Pi.single_apply]
 
 /- English proof (translation)
-Introduce `m hm k`. Rewrite `hm` using `[support_X, Finset.mem_singleton]`. Substitute `hm` using the available equality. Rewrite using `[Finset.sum_eq_single i]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `j _ hj`. Rewrite using `[Finsupp.single_apply, if_neg]`. Introduce `h`. Conclude with `hj (eq_of_heq (Sigma.mk.inj_iff.mp h).2).symm`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isMultiHomog_X {n : ℕ} (i : Fin n) :
     ReciprocityTheory.ChartRestriction.G.Geo.IsMultiHomog (X ⟨(), i⟩ : MRing (PBlk n)) (fun _ => 1) := by
@@ -59,7 +59,7 @@ theorem isMultiHomog_X {n : ℕ} (i : Fin n) :
   · simp
 
 /- English proof (translation)
-Use `hW.1` as an intermediate fact. Use `⟨⟨hW'.1.1.1, ReciprocityTheory.ChartRestriction.G.Geo.isMultiHomogIdeal_of_mem_minimalPrimes hW.2.1 (isMultiHomog_X i) hW'.1, hW'.2⟩, le_sup_left.trans hW'.1.1.2, ?_⟩` and prove the remaining obligations. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.withBot_eq_of_add_one ((ReciprocityTheory.ChartRestriction.G.Geo.dim_quot_minimal_add_one W W' _ hi hW'.1).trans hdim)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem divSupp_X {n e : ℕ} {W W' : Ideal (MRing (PBlk n))} {i : Fin n} (hW : IsMultiProjPrime W)
     (hdim : ringKrullDim (MRing (PBlk n) ⧸ W) = ((e + 1 + 1 : ℕ) : WithBot ℕ∞))
@@ -72,21 +72,21 @@ theorem divSupp_X {n e : ℕ} {W W' : Ideal (MRing (PBlk n))} {i : Fin n} (hW : 
     ((ReciprocityTheory.ChartRestriction.G.Geo.dim_quot_minimal_add_one W W' _ hi hW'.1).trans hdim)
 
 /- English proof (translation)
-Introduce `n e p W F _ hp hW hpW hdim hsurj h0`. Use `perfectField_of_intCast_surjective F p hp hsurj h0` as an intermediate fact. Proceed by induction on `e generalizing W with`. Consider the case `zero`. Take `⟨hI, hIdim, hX⟩` from `hR n p W F hp hW hpW hsurj h0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `hrel` using `hW.2.2`. Establish `hiW : (X ⟨(), (hrel ()).choose⟩ : MRing (PBlk n)) ∉ W` using `(hrel ()).choose_spec`. Establish `hpt` using `hP F n _ (hrel ()).choose hI (hIdim.trans hdim) (by rwa [hX])`. Rewrite using `[geoNum, dif_pos hrel]`. Establish `hrange : Set.range (fun k : Unit => (X ⟨k, (hrel k).choose⟩ : MRing (PBlk n)) - 1) = {(X ⟨(), (hrel ()).choose⟩ : MRing (PBlk n)) - 1}`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Set.range_unique]`. Rewrite using `[hrange, hL n p W F hp hW hpW hsurj h0 (hrel ()).choose]`. Conclude with `hpt` after adjusting the coercions. Consider the case `succ e ih`. Take `⟨hI, hIdim, hX⟩` from `hR n p W F hp hW hpW hsurj h0`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrel` using `hW.2.2`. Establish `hiW : (X ⟨(), (hrel ()).choose⟩ : MRing (PBlk n)) ∉ W` using `(hrel ()).choose_spec`. Establish `hXi : linForm (Pi.single (hrel ()).choose (1 : F)) ∉ (IndefiniteRowSideFullHecke.ArithBezout.finIdeal W).map (MvPolynomial.map (Int.castRingHom F))`. Rewrite using `[linForm_single, hX]`. Conclude with `hiW`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsec` using `hS F n e _ _ hI (hIdim.trans hdim) hXi`. Rewrite `hsec` using `[hC n p W F hp hW hpW hsurj h0 _ hiW, Finsupp.sum_mapDomain_index (fun _ => zero_mul _) (fun _ _ _ => add_mul _ _ _)]`. Use `show (chowDegree _ (e + 2) : ℤ) = _`. Rewrite using `[hsec, geoNum, dif_pos hrel]`. Simplify using `only [Fintype.sum_unique, one_mul, Finsupp.sum, Nat.cast_sum, Nat.cast_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin` using `ReciprocityTheory.ChartRestriction.G.Geo.divSupp_finite W (X ⟨(), (hrel ()).choose⟩ : MRing (PBlk n))`. Rewrite using `[finsum_mem_eq_finite_toFinset_sum _ hfin]`. Establish `hval : ∀ W', ReciprocityTheory.ChartRestriction.G.Geo.divCycle W (X ⟨(), (hrel ()).choose⟩) W' = if W' ∈ divSupp W (X ⟨(), (hrel ()).choose⟩) then multAt (W ⊔ Ideal.span {(X ⟨(), (hrel ()).choose⟩ : MRing (PBlk n))}) W' else 0`. Introduce `W'`. Simplify using `[ReciprocityTheory.ChartRestriction.G.Geo.divCycle, Finsupp.ofSupportFinite_coe]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Use `Finset.sum_subset (fun W' hW' => ?_) (fun W' _ hW' => ?_) |>.trans (Finset.sum_congr rfl ?_)` and prove the remaining obligations. Rewrite using `[Set.Finite.mem_toFinset]`. Assume the negation of the conclusion as `h`. Conclude with `Finsupp.mem_support_iff.mp hW' (by rw [hval, if_neg h])`. Rewrite using `[Finsupp.notMem_support_iff.mp hW', Nat.cast_zero, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `W' hW'`. Rewrite `hW'` using `[Set.Finite.mem_toFinset]`. Take `⟨hW'p, hle, hW'dim⟩` from `divSupp_X hW hdim hiW hW'`. Rewrite using `[hval, if_pos hW', ih W' hW'p (hle hpW) hW'dim]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ChowDegreeGeoNum.proof (hS : ChowDegreeSection.Statement) (hP : ChowDegreeClosedPoint.Statement)
     (hR : ReductionModP.Statement) (hC : SectionCycleModP.Statement) (hL : PointLengthModP.Statement) :

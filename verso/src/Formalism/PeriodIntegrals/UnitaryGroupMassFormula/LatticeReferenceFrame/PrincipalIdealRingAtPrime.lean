@@ -13,23 +13,23 @@ open PI.ScRefExists.Sk
 abbrev Pz (p : ℕ) : Ideal ℤ := Ideal.span {(p : ℤ)}
 
 /- English proof (translation)
-The claim follows from `(Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp)`.
+A detailed English derivation is pending.
 -/
 theorem pz_prime {p : ℕ} (hp : p.Prime) : (Pz p).IsPrime := (Ideal.span_singleton_prime (by exact_mod_cast hp.ne_zero)).mpr (Nat.prime_iff_prime_int.mp hp)
 
 instance pz_isPrime (p : ℕ) [hp : Fact p.Prime] : (Pz p).IsPrime := pz_prime hp.out
 
 /- English proof (translation)
-Rewrite using `[Ne, Ideal.span_singleton_eq_bot]`. Conclude with `hp.ne_zero` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pz_ne_bot {p : ℕ} (hp : p.Prime) : Pz p ≠ ⊥ := by
   rw [Ne, Ideal.span_singleton_eq_bot]
   exact_mod_cast hp.ne_zero
 
 /- English proof (translation)
-Rewrite using `[Ideal.mem_span_singleton]`. Introduce `h`. Establish `h1 : p ∣ s` using `Int.natCast_dvd_natCast.mp h`. Establish `h2 : p ∣ Nat.gcd s p` using `Nat.dvd_gcd h1 dvd_rfl`. Rewrite `h2` using `[Nat.Coprime.gcd_eq_one hs]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hp.one_lt.ne' (Nat.dvd_one.mp h2)`.
+A detailed English derivation is pending.
 -/
 theorem natCast_not_mem {p : ℕ} (hp : p.Prime) {s : ℕ} (hs : Nat.Coprime s p) : (s : ℤ) ∉ Pz p := by
   rw [Ideal.mem_span_singleton]
@@ -42,14 +42,14 @@ theorem natCast_not_mem {p : ℕ} (hp : p.Prime) {s : ℕ} (hs : Nat.Coprime s p
 variable (I : Formalism.MainNotions.S.AutInst)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 private theorem mem_Ap_lemma (p : ℕ) (x : I.E) :
     x ∈ Ap I p ↔ ∃ s : ℕ, Nat.Coprime s p ∧ ∃ a : 𝓞 I.E, (s : I.E) * x = (a : I.E) :=
   Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[algebraMap_int_eq, eq_intCast]`. Conclude with `map_intCast (algebraMap (𝓞 I.E) I.E) n`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coe_algebraMap_int_ringOfIntegers (n : ℤ) :
     ((algebraMap ℤ (𝓞 I.E) n : 𝓞 I.E) : I.E) = (n : I.E) := by
@@ -57,13 +57,11 @@ private theorem coe_algebraMap_int_ringOfIntegers (n : ℤ) :
   exact map_intCast (algebraMap (𝓞 I.E) I.E) n
 
 /- English proof (translation)
-Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hn (dvd_zero _)`. Establish `hE : (n : I.E) ≠ 0` using `Int.cast_ne_zero.mpr hn0`. Establish `hcop : Nat.Coprime n.natAbs p`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Nat.coprime_comm, Nat.Prime.coprime_iff_not_dvd hp]`. Introduce `h`. Conclude with `hn (Int.natCast_dvd.mpr h)`. Use `(mem_Ap_lemma I p _).mpr ⟨n.natAbs, hcop, ?_⟩` and prove the remaining obligations. Break down `Int.natAbs_eq n with h | h` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h' : (n.natAbs : ℤ) = n` using `by linarith`. Establish `e : (n.natAbs : I.E) = (n : I.E)` using `by rw [← Int.cast_natCast, h']`. Conclude with `⟨1, by rw [e, mul_inv_cancel₀ hE]; simp⟩`. Establish `h' : (n.natAbs : ℤ) = -n` using `by linarith`. Establish `e : (n.natAbs : I.E) = -(n : I.E)` using `by rw [← Int.cast_natCast, h', Int.cast_neg]`.
-
-Conclude with `⟨-1, by rw [e, neg_mul, mul_inv_cancel₀ hE]; simp⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inv_mem {p : ℕ} (hp : p.Prime) {n : ℤ} (hn : ¬ (p : ℤ) ∣ n) : ((n : I.E))⁻¹ ∈ Ap I p := by
   have hn0 : n ≠ 0 := by
@@ -84,17 +82,15 @@ theorem inv_mem {p : ℕ} (hp : p.Prime) {n : ℤ} (hn : ¬ (p : ℤ) ∣ n) : (
     exact ⟨-1, by rw [e, neg_mul, mul_inv_cancel₀ hE]; simp⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy⟩`. Take `⟨n, hn, rfl⟩` from `hy`. Establish `hnd : ¬ (p : ℤ) ∣ n` using `fun h => hn (Ideal.mem_span_singleton.mpr h)`.
+Prove the components needed by the constructor for the conclusion. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hnd (dvd_zero _)`. Use `isUnit_iff_exists_inv.mpr ⟨⟨((n : I.E))⁻¹, inv_mem I hpf.out hnd⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `show ((algebraMap ℤ (𝓞 I.E) n : 𝓞 I.E) : I.E) * (n : I.E)⁻¹ = 1`. Rewrite using `[coe_algebraMap_int_ringOfIntegers]`. Conclude with `mul_inv_cancel₀ (Int.cast_ne_zero.mpr hn0)`. Introduce `z`. Take `⟨s, hs, a, ha⟩` from `(mem_Ap_lemma I p z).mp z.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(a, ⟨_, Algebra.mem_algebraMapSubmonoid_of_mem (⟨(s : ℤ), natCast_not_mem hpf.out hs⟩ : (Pz p).primeCompl)⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (z : I.E) * ((algebraMap ℤ (𝓞 I.E) (s : ℤ) : 𝓞 I.E) : I.E) = (a : I.E)`. Rewrite using `[coe_algebraMap_int_ringOfIntegers]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take the linear combination `ha`. Introduce `x y h`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `h2 : (x : I.E) = y`. Establish `h3` using `congrArg (fun z : Ap I p => (z : I.E)) h`.
-
-Conclude with `h3`. Establish `hxy : x = y` using `NumberField.RingOfIntegers.ext h2`. Substitute `hxy` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem isLoc {p : ℕ} [hpf : Fact p.Prime] :
     IsLocalization (Algebra.algebraMapSubmonoid (𝓞 I.E) (Pz p).primeCompl) (Ap I p) := by
@@ -130,9 +126,9 @@ theorem isLoc {p : ℕ} [hpf : Fact p.Prime] :
     rfl
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨n, hn, rfl⟩`. Apply `mem_nonZeroDivisors_of_ne_zero` to reduce the goal to its premises. Introduce `h`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`.
+Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hn (Pz p).zero_mem`. Apply `hn0` to reduce the goal to its premises. Establish `h2` using `congrArg ((↑) : 𝓞 I.E → I.E) h`. Rewrite `h2` using `[coe_algebraMap_int_ringOfIntegers]`. Simplify using `using h2`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 private theorem algebraMapSubmonoid_primeCompl_le_nonZeroDivisors (p : ℕ) [Fact p.Prime] :
     Algebra.algebraMapSubmonoid (𝓞 I.E) (Pz p).primeCompl ≤ nonZeroDivisors (𝓞 I.E) := by
@@ -148,14 +144,14 @@ private theorem algebraMapSubmonoid_primeCompl_le_nonZeroDivisors (p : ℕ) [Fac
   simpa using h2
 
 /- English proof (translation)
-Use `haveI := isLoc I (p := p)`. Conclude with `IsLocalization.isDedekindDomain (𝓞 I.E) (algebraMapSubmonoid_primeCompl_le_nonZeroDivisors I p) (Ap I p)`.
+A detailed English derivation is pending.
 -/
 theorem isDedekind {p : ℕ} [Fact p.Prime] : IsDedekindDomain (Ap I p) := by
   haveI := isLoc I (p := p)
   exact IsLocalization.isDedekindDomain (𝓞 I.E) (algebraMapSubmonoid_primeCompl_le_nonZeroDivisors I p) (Ap I p)
 
 /- English proof (translation)
-Introduce `I p hp`. Use `haveI : Fact p.Prime := ⟨hp⟩`. Use `haveI := isLoc I (p := p)`. Use `haveI := isDedekind I (p := p)`. Conclude with `IsDedekindDomain.isPrincipalIdealRing_localization_over_prime (𝓞 I.E) (Pz p) (pz_ne_bot hp)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem principal_ideal_ring_at_prime : ApPID := by
   intro I p hp
@@ -165,7 +161,7 @@ theorem principal_ideal_ring_at_prime : ApPID := by
   exact IsDedekindDomain.isPrincipalIdealRing_localization_over_prime (𝓞 I.E) (Pz p) (pz_ne_bot hp)
 
 /- English proof (translation)
-Use `haveI := isLoc I (p := p)`. Conclude with `IsFractionRing.isFractionRing_of_isDomain_of_isLocalization (Algebra.algebraMapSubmonoid (𝓞 I.E) (Pz p).primeCompl) (Ap I p) I.E`.
+A detailed English derivation is pending.
 -/
 theorem isFrac {p : ℕ} [Fact p.Prime] : IsFractionRing (Ap I p) I.E := by
   haveI := isLoc I (p := p)

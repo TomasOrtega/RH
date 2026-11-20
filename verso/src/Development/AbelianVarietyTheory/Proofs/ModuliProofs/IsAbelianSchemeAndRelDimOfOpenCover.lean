@@ -12,7 +12,7 @@ open GlobalTheory.ZM
 namespace GlobalTheory.CoverGlue
 
 /- English proof (translation)
-Use `IsZariskiLocalAtTarget.of_iSup_eq_top U hU fun i => ?_` and prove the remaining obligations. Establish `hr` using `(isPullback_morphismRestrict p (U i)).flip`. Rewrite using `[← IsPullback.isoIsPullback_hom_snd _ _ hr (h i)]`. Conclude with `(MorphismProperty.cancel_left_of_respectsIso Q _ _).2 (hq i)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_isPullback_cover (Q : MorphismProperty Scheme.{0}) [IsZariskiLocalAtTarget Q]
     {S X : Scheme.{0}} {I : Type} {U : I → S.Opens} (hU : iSup U = ⊤) {Z : I → Scheme.{0}} {p : X ⟶ S}
@@ -24,9 +24,9 @@ theorem of_isPullback_cover (Q : MorphismProperty Scheme.{0}) [IsZariskiLocalAtT
   exact (MorphismProperty.cancel_left_of_respectsIso Q _ _).2 (hq i)
 
 /- English proof (translation)
-Use `(isCommMonObj_iff_isMulCommutative A).2 fun T => ⟨⟨fun x y => ?_⟩⟩` and prove the remaining obligations. Use `over_ext hU fun i T' r => ?_` and prove the remaining obligations. Use `hc i` as an intermediate fact. Rewrite using `[MonObj.comp_mul, MonObj.comp_mul]`. Take `⟨a, ha⟩` from `exists_lift (h i).1 (r ≫ x)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `exists_lift (h i).1 (r ≫ y)`. Use `ext1`. Rewrite using `[(h i).2 T' a b _ _ ha hb, (h i).2 T' b a _ _ hb ha, mul_comm a b]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCommMonObj_of_cover {S : Scheme.{0}} {I : Type} {U : I → S.Opens} (hU : iSup U = ⊤) {A : Over S}
     [GrpObj A] {G : ∀ i, Over (U i).toScheme} [∀ i, GrpObj (G i)] {ψ : ∀ i, (G i).left ⟶ A.left}
@@ -41,9 +41,7 @@ theorem isCommMonObj_of_cover {S : Scheme.{0}} {I : Type} {U : I → S.Opens} (h
   rw [(h i).2 T' a b _ _ ha hb, (h i).2 T' b a _ _ hb ha, mul_comm a b]
 
 /- English proof (translation)
-Introduce `S I U A _ G _ ψ hU h`. Use `⟨fun hab => ?_, fun g hg => ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Conclude with `isCommMonObj_of_cover hU h fun i => (hab i).comm`. Conclude with `@of_isPullback_cover @Smooth (HasRingHomProperty.instIsZariskiLocalAtTarget @Smooth) _ _ _ _ hU _ _ _ _ (fun i => (h i).1) fun i => (hab i).smooth`.
-
-Conclude with `of_isPullback_cover @IsProper hU (fun i => (h i).1) fun i => (hab i).proper`. Use `⟨?_⟩` and prove the remaining obligations. Conclude with `of_isPullback_cover (geometrically (ConnectedSpace ·)) hU (fun i => (h i).1) fun i => (hab i).geomConnected.geometrically_connectedSpace`. Conclude with `@of_isPullback_cover (@SmoothOfRelativeDimension g) (HasRingHomProperty.instIsZariskiLocalAtTarget (@SmoothOfRelativeDimension g)) _ _ _ _ hU _ _ _ _ (fun i => (h i).1) hg`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isAbelianScheme_and_relDim_of_cover : ∀ (S : Scheme.{0}) (I : Type) (U : I → S.Opens) (A : Over S) [GrpObj A] (G : ∀ i, Over (U i).toScheme) [∀ i, GrpObj (G i)] (ψ : ∀ i, (G i).left ⟶ A.left), iSup U = ⊤ → (∀ i, IsGrpPullback (G i) A (U i).ι (ψ i)) → ((∀ i, IsAbelianScheme (G i)) → IsAbelianScheme A) ∧ ∀ g : ℕ, (∀ i, SmoothOfRelativeDimension g (G i).hom) → SmoothOfRelativeDimension g A.hom := by
   intro S I U A _ G _ ψ hU h

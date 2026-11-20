@@ -35,11 +35,11 @@ def DualStdFibreRatios.Statement : Prop :=
         (G.x' (⟨Sum.inl (), c⟩ : Σ k, Sum.elim (dualBlocks T) (PBlk i) k))
 
 /- English proof (translation)
-Establish `hX : (RatFunc.X : RatFunc ℚ) ≠ 0` using `RatFunc.X_ne_zero`. Establish `hb : Algebra.adjoin ℚ (Set.range fun _ : (Σ _ : Unit, Unit) => (RatFunc.X : RatFunc ℚ) / RatFunc.X) = ⊥`. Establish `hr : (Set.range fun _ : (Σ _ : Unit, Unit) => (RatFunc.X : RatFunc ℚ) / RatFunc.X) = {1}`. Use extensionality with `y`. Simplify using `[div_self hX]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite using `[hr, Algebra.adjoin_singleton_one]`. Use `⟨fun _ => RatFunc.X, fun _ => (), hX, ?_, ?_⟩` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hb]`. Conclude with `Subalgebra.finite_bot`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `beta_reduce`. Rewrite using `[hb]`. Introduce `H`. Establish `: Algebra.IsAlgebraic ℚ (⊥ : Subalgebra ℚ (RatFunc ℚ))` using `Algebra.IsAlgebraic.of_finite ℚ _`. Conclude with `RatFunc.transcendental_X (K := ℚ) (by convert H.restrictScalars (R := ℚ); exact Subsingleton.elim _ _)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example : ∃ (w : (Σ _ : Unit, Unit) → RatFunc ℚ) (c : ∀ _ : Unit, Unit), w ⟨(), c ()⟩ ≠ 0 ∧
     Module.Finite ℚ (Algebra.adjoin ℚ (Set.range fun p => w p / w ⟨(), c ()⟩)) ∧
@@ -61,7 +61,7 @@ example : ∃ (w : (Σ _ : Unit, Unit) → RatFunc ℚ) (c : ∀ _ : Unit, Unit)
     exact RatFunc.transcendental_X (K := ℚ) (by convert H.restrictScalars (R := ℚ); exact Subsingleton.elim _ _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨dualBasisStandard, le_rfl⟩`.
+Supply the required witnesses or components.
 -/
 example : ∃ _ : Module.Basis Unit ℤ (dualLattice (HermLattice.standard ℚ 1)), 1 ≤ 1 :=
   ⟨dualBasisStandard, le_rfl⟩

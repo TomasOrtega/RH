@@ -8,7 +8,7 @@ noncomputable section
 namespace PositivityTheory.SiegelWeilFormula.Act
 
 /- English proof (translation)
-Introduce `_ _` and use `ctSplit_of_parts indepDom cptDom absConv firstEq (secLaw_of (secUnf_of absConv))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem ctSplit_of : AuxiliaryPrimeFunction → CoefEx → CTSplit := fun _ _ =>
   ctSplit_of_parts indepDom cptDom absConv firstEq (secLaw_of (secUnf_of absConv))

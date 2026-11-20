@@ -16,7 +16,7 @@ section Alg
 variable {S : Type} [CommRing S] {Ω : Type} [Field Ω] [Algebra S Ω]
 
 /- English proof (translation)
-Break down `Int.eq_nat_or_neg n with ⟨m, rfl | rfl⟩` into its components or cases. Rewrite using `[zpow_natCast]`. Conclude with `pow_mem ha m`. Rewrite using `[zpow_neg, zpow_natCast, ← inv_pow]`. Conclude with `pow_mem ha' m`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zpow_mem_of_inv_mem (R : Subalgebra S Ω) {a : Ω} (ha : a ∈ R) (ha' : a⁻¹ ∈ R) (n : ℤ) :
     a ^ n ∈ R := by
@@ -25,13 +25,13 @@ theorem zpow_mem_of_inv_mem (R : Subalgebra S Ω) {a : Ω} (ha : a ∈ R) (ha' :
   · rw [zpow_neg, zpow_natCast, ← inv_pow]; exact pow_mem ha' m
 
 /- English proof (translation)
-Introduce `r hr` and use `⟨0, by simpa using hr⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem le_powMulMem (A : Subalgebra S Ω) {f : Ω} (hf : f ∈ A) : A ≤ powMulMem A f hf :=
   fun r hr => ⟨0, by simpa using hr⟩
 
 /- English proof (translation)
-Introduce and unpack `r ⟨M, hM⟩`. Conclude with `⟨M, hAB hM⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem powMulMem_mono {A B : Subalgebra S Ω} (hAB : A ≤ B) {f : Ω} (hf : f ∈ A) :
     powMulMem A f hf ≤ powMulMem B f (hAB hf) := by
@@ -39,7 +39,7 @@ theorem powMulMem_mono {A B : Subalgebra S Ω} (hAB : A ≤ B) {f : Ω} (hf : f 
   exact ⟨M, hAB hM⟩
 
 /- English proof (translation)
-Rewrite using `[← Nat.sub_add_cancel h, pow_add, mul_assoc]`. Conclude with `A.mul_mem (A.pow_mem hf _) hM`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_mul_mem_of_le (A : Subalgebra S Ω) {f r : Ω} (hf : f ∈ A) {M M' : ℕ} (h : M ≤ M')
     (hM : f ^ M * r ∈ A) : f ^ M' * r ∈ A := by
@@ -69,9 +69,9 @@ def fracSubring (A : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] : Subring �
     exact ⟨b, hb, by rw [mul_neg]; exact neg_mem hbr⟩
 
 /- English proof (translation)
-Use `Subring.closure_le.mpr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, b, hb, rfl⟩`. Use `⟨b, hb, ?_⟩` and prove the remaining obligations. Establish `hb0 : (b : Ω) ≠ 0` using `fun h => hb (by rw [show b = 0 from Subtype.ext h]; exact p.zero_mem)`. Establish `: (b : Ω) * ((a : Ω) / b) = a` using `by field_simp`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[this]`. Conclude with `a.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locIn_le_fracSubring (A : Subalgebra S Ω) (p : Ideal A) [p.IsPrime] :
     IndefiniteRowSideFullHecke.Kleiman2.locIn A p ≤ fracSubring A p := by
@@ -84,7 +84,7 @@ theorem locIn_le_fracSubring (A : Subalgebra S Ω) (p : Ideal A) [p.IsPrime] :
   exact a.2
 
 /- English proof (translation)
-The claim follows from `Subring.subset_closure ⟨⟨r, hr⟩, 1, fun h => hp.ne_top ((Ideal.eq_top_iff_one p).mpr h), by simp⟩`.
+A detailed English derivation is pending.
 -/
 theorem subset_locIn (A : Subalgebra S Ω) (p : Ideal A) [hp : p.IsPrime] {r : Ω} (hr : r ∈ A) :
     r ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn A p :=
@@ -129,7 +129,7 @@ def latOf (β : K → ℤ) (i : Fin (N + 1)) : AddSubgroup Ω where
 variable {y k₀ e}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_latOf (β : K → ℤ) (i : Fin (N + 1)) (t : Ω) :
     t ∈ latOf (S := S) y k₀ e β i ↔
@@ -137,17 +137,17 @@ theorem mem_latOf (β : K → ℤ) (i : Fin (N + 1)) (t : Ω) :
   Iff.rfl
 
 /- English proof (translation)
-The claim follows from `Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hd k)`.
+A detailed English derivation is pending.
 -/
 theorem genInv_ne_zero (β : K → ℤ) {d : ∀ k, ι k} (hd : ∀ k, y ⟨k, d k⟩ ≠ 0) : genInv y β d ≠ 0 :=
   Finset.prod_ne_zero_iff.mpr fun k _ => zpow_ne_zero _ (hd k)
 
 /- English proof (translation)
-Unfold `genInv`. Establish `h : ∀ k, y ⟨k, d k⟩ ^ (-(β + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) k) = y ⟨k, d k⟩ ^ (-β k) * y ⟨k, d k⟩ ^ (-(c * IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀ k))`. Introduce `k`. Rewrite using `[← zpow_add₀ (hd k)]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.prod_congr rfl fun k _ => h k, Finset.prod_mul_distrib]`. Use `congr 1`. Rewrite using `[Finset.prod_eq_single k₀]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[IndefiniteRowSideFullHecke.Kleiman2.baseDeg]`. Introduce `k _ hk`. Simplify using `[IndefiniteRowSideFullHecke.Kleiman2.baseDeg, Pi.single_apply, hk]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem genInv_add_baseDeg (β : K → ℤ) (c : ℤ) {d : ∀ k, ι k} (hd : ∀ k, y ⟨k, d k⟩ ≠ 0) :
     genInv y (β + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) d = genInv y β d * y ⟨k₀, d k₀⟩ ^ (-c) := by
@@ -168,14 +168,14 @@ theorem genInv_add_baseDeg (β : K → ℤ) (c : ℤ) {d : ∀ k, ι k} (hd : �
   · simp
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨⟨k, a⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem div_mem_chartRingOver (d : ∀ k, ι k) (k : K) (a : ι k) :
     y ⟨k, a⟩ / y ⟨k, d k⟩ ∈ chartRingOver S y d :=
   Algebra.subset_adjoin ⟨⟨k, a⟩, rfl⟩
 
 /- English proof (translation)
-Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `only [baseVec_apply, Equiv.symm_apply_apply]`. Conclude with `div_mem_chartRingOver d k₀ _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chartRing_le_chartRingOver (d : ∀ k, ι k) :
     ReciprocityTheory.ChartRestriction.G.Geo.chartRing S (baseVec y k₀ e) (e (d k₀)) ≤ chartRingOver S y d := by
@@ -185,29 +185,29 @@ theorem chartRing_le_chartRingOver (d : ∀ k, ι k) :
   exact div_mem_chartRingOver d k₀ _
 
 /- English proof (translation)
-The claim follows from `le_sup_right`.
+A detailed English derivation is pending.
 -/
 theorem chartRing_le_overRing (d : ∀ k, ι k) (i : Fin (N + 1)) :
     ReciprocityTheory.ChartRestriction.G.Geo.chartRing S (baseVec y k₀ e) i ≤ overRing y k₀ e d i :=
   le_sup_right
 
 /- English proof (translation)
-The claim follows from `le_sup_left`.
+A detailed English derivation is pending.
 -/
 theorem chartRingOver_le_overRing (d : ∀ k, ι k) (i : Fin (N + 1)) :
     chartRingOver S y d ≤ overRing y k₀ e d i :=
   le_sup_left
 
 /- English proof (translation)
-The claim follows from `sup_eq_left.mpr (chartRing_le_chartRingOver d)`.
+A detailed English derivation is pending.
 -/
 theorem overRing_self (d : ∀ k, ι k) : overRing (S := S) y k₀ e d (e (d k₀)) = chartRingOver S y d :=
   sup_eq_left.mpr (chartRing_le_chartRingOver d)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨⟨⟩, a⟩, rfl⟩`. Establish `h` using `ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing (o := S) (baseVec y k₀ e) i (e a)`. Rewrite `h` using `[baseVec_apply, baseVec_apply, Equiv.symm_apply_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Establish `h : IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀) ⟨(), e.symm j⟩ / IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀) ⟨(), e.symm i⟩ ∈ chartRingOver S (IndefiniteRowSideFullHecke.Klei …` using `Algebra.subset_adjoin ⟨⟨(), e.symm j⟩, rfl⟩`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chartRingOver_oneBlock_base (i : Fin (N + 1)) :
     chartRingOver S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀)) (fun _ : Unit => e.symm i) =
@@ -227,7 +227,7 @@ theorem chartRingOver_oneBlock_base (i : Fin (N + 1)) :
     exact h
 
 /- English proof (translation)
-Establish `hc0 : ∀ k : Unit, IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀) ⟨k, e.symm i⟩ ≠ 0` using `fun _ => hi`. Establish `hmem : IndefiniteRowSideFullHecke.Kleiman2.locIn _ p' ∈ IndefiniteRowSideFullHecke.Kleiman2.modelPts S (IndefiniteRowSideFullHecke.Kleiman2.oneBlock (IndefiniteRowSideFullHecke.Kleiman2.blockVec y k₀))` using `⟨fun _ => e.symm i, hc0, p', hp', rfl⟩`. Rewrite `hmem` using `[← hy.2]`. Conclude with `hmem`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem model_pt_of_prime (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase S y k₀) {i : Fin (N + 1)}
     (hi : baseVec y k₀ e i ≠ 0)
@@ -244,11 +244,11 @@ theorem model_pt_of_prime (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithB
   exact hmem
 
 /- English proof (translation)
-Establish `hA` using `chartRingOver_oneBlock_base (S := S) (y := y) (e := e) i`. Set `φ` to `Subalgebra.inclusion hA.le`. Set `p'` to `p.comap φ`. Establish `hp' : p'.IsPrime` using `Ideal.comap_isPrime _ _`. Take `⟨d, hd, q, hq, hz⟩` from `model_pt_of_prime hy hi p' hp'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨d, hd, fun s => ?_⟩` and prove the remaining obligations. Establish `h1 : y s / y ⟨s.1, d s.1⟩ ∈ IndefiniteRowSideFullHecke.Kleiman2.locIn (chartRingOver S y d) q` using `subset_locIn _ q (Algebra.subset_adjoin ⟨s, rfl⟩)`. Rewrite `h1` using `[← hz]`. Take `⟨b, hb, hbr⟩` from `locIn_le_fracSubring _ p' h1`. Establish `hb' : φ b ∉ p` using `fun h => hb (Ideal.mem_comap.mpr h)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨φ b, hb', ?_⟩` and prove the remaining obligations. Establish `hc : ((φ b : ReciprocityTheory.ChartRestriction.G.Geo.chartRing S (baseVec y k₀ e) i) : Ω) = (b : Ω)` using `Subalgebra.coe_inclusion hA.le b`. Rewrite using `[hc]`. Conclude with `hA.le hbr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart_of_prime (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase S y k₀) {i : Fin (N + 1)}
     (hi : baseVec y k₀ e i ≠ 0) (p : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.chartRing S (baseVec y k₀ e) i))
@@ -274,11 +274,11 @@ theorem exists_chart_of_prime (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelW
   exact hA.le hbr
 
 /- English proof (translation)
-Take `⟨d, hd, hgen⟩` from `exists_chart_of_prime hy hi p`. Use `choose b hb hbr using hgen`. Use `⟨∏ s, b s, ?_, d, hd, ?_⟩` and prove the remaining obligations. Introduce `hmem`. Take `⟨s, _, hs⟩` from `(Ideal.IsPrime.prod_mem_iff (hp := hp)).mp hmem`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hb s hs`. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨s, rfl⟩`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `key : ((∏ s', b s' : ReciprocityTheory.ChartRestriction.G.Geo.chartRing S (baseVec y k₀ e) i) : Ω) ^ 1 * (y s / y ⟨s.1, d s.1⟩) = ((∏ s' ∈ Finset.univ.erase s, b s' : ReciprocityTheory.ChartRestriction.G.Geo.chartRing S (baseVec y k₀ e) i) : Ω) * ((b s : Ω) * (y s / y ⟨s.1, d s.1 …`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[← Finset.mul_prod_erase Finset.univ b (Finset.mem_univ s)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[key]`. Conclude with `Subalgebra.mul_mem _ (Subtype.prop _) (hbr s)`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_basic (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase S y k₀) {i : Fin (N + 1)}
     (hi : baseVec y k₀ e i ≠ 0) (p : Ideal (ReciprocityTheory.ChartRestriction.G.Geo.chartRing S (baseVec y k₀ e) i))
@@ -306,7 +306,7 @@ theorem exists_basic (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase S
     exact Subalgebra.mul_mem _ (Subtype.prop _) (hbr s)
 
 /- English proof (translation)
-Introduce `d hd`. Rewrite using `[smul_eq_mul, mul_assoc]`. Conclude with `mul_mem (chartRing_le_overRing d i ha) (ht d hd)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stable_latOf (β : K → ℤ) (i : Fin (N + 1)) (a : Ω)
     (ha : a ∈ ReciprocityTheory.ChartRestriction.G.Geo.chartRing S (baseVec y k₀ e) i) (t : Ω)
@@ -316,15 +316,13 @@ theorem stable_latOf (β : K → ℤ) (i : Fin (N + 1)) (a : Ω)
   exact mul_mem (chartRing_le_overRing d i ha) (ht d hd)
 
 /- English proof (translation)
-Use `set x := baseVec y k₀ e`. Establish `hM : ∀ d : ∀ k, ι k, ∃ M : ℕ, (∀ k, y ⟨k, d k⟩ ≠ 0) → (x i / x j) ^ M * (t * genInv y β d) ∈ overRing (S` using `S) y k₀ e d j := by`. Introduce `d`. Distinguish the cases in `hd : ∀ k, y ⟨k, d k⟩ ≠ 0`. Establish `hr : x i / x j ∈ overRing (S` using `S) y k₀ e d j := chartRing_le_overRing d j (ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing x j i)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : overRing (S` using `S) y k₀ e d i ≤ powMulMem _ (x i / x j) hr := by`. Use `sup_le ((chartRingOver_le_overRing d j).trans (le_powMulMem _ hr)) ?_` and prove the remaining obligations. Use `Algebra.adjoin_le ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, rfl⟩`. Use `⟨1, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: (x i / x j) ^ 1 * (x a / x i) = x a / x j` using `by field_simp`. Rewrite using `[this]`. Conclude with `chartRing_le_overRing d j (ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing x j a)`. Take `⟨M, hM⟩` from `hle (ht d hd)`. Conclude with `⟨M, fun _ => hM⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨0, fun h => absurd h hd⟩`. Use `choose M hM using hM`. Use `⟨∑ d, M d, fun d hd => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, mul_assoc]`. Establish `hr : x i / x j ∈ overRing (S` using `S) y k₀ e d j := chartRing_le_overRing d j (ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing x j i)`.
-
-Conclude with `pow_mul_mem_of_le _ hr (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ d)) (hM d hd)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem overlap_latOf (β : K → ℤ) (i j : Fin (N + 1)) (hi : baseVec y k₀ e i ≠ 0)
     (hj : baseVec y k₀ e j ≠ 0) (t : Ω) (ht : t ∈ latOf (S := S) y k₀ e β i) :
@@ -356,29 +354,25 @@ theorem overlap_latOf (β : K → ℤ) (i j : Fin (N + 1)) (hi : baseVec y k₀ 
     (hM d hd)
 
 /- English proof (translation)
-Use `set A := ReciprocityTheory.ChartRestriction.G.Geo.chartRing S (baseVec y k₀ e) i`. Set `T : Set A` to `{f | ∃ d : ∀ k, ι k, (∀ k, y ⟨k, d k⟩ ≠ 0) ∧ chartRingOver S y d ≤ powMulMem A (f : Ω) f.2}`. Establish `hT : Ideal.span T = ⊤`. Assume the negation of the conclusion as `hne`. Take `⟨m, hm, hle⟩` from `Ideal.exists_le_maximal _ hne`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `haveI := hm.isPrime`. Take `⟨f, hf, d, hd, hdle⟩` from `exists_basic hy hi m`. Conclude with `hf (hle (Ideal.subset_span ⟨d, hd, hdle⟩))`. Establish `h1 : (1 : A) ∈ Ideal.span T` using `by rw [hT]; exact Submodule.mem_top`. Take `⟨n, cf, g, hsum⟩` from `Submodule.mem_span_set'.mp h1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose d hd hdle using fun l => (g l).2`. Use `⟨n, fun l => (((g l).1 : A) : Ω), fun l => (cf l : Ω), fun l => (g l).1.2, fun l => (cf l).2, ?_, fun l => ?_⟩` and prove the remaining obligations. Use `congrArg Subtype.val hsum` as an intermediate fact. Simplify `this` using `[smul_eq_mul]`. Use `set f : A := (g l).1 set w := genInv y β (d l)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Establish `hw : w ≠ 0` using `genInv_ne_zero β (hd l)`. Use `⟨fun _ => w⁻¹, linearIndependent_unique_iff.2 (inv_ne_zero hw), ?_, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[Set.range_const]`. Conclude with `Ideal.span_singleton_eq_top.mpr (isUnit_iff_ne_zero.mpr (inv_ne_zero hw))`. Simplify using `only [Fin.sum_univ_one, smul_eq_mul]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨m, hm⟩`. Establish `h2 : (f : Ω) ^ m * t * w ∈ powMulMem A (f : Ω) f.2` using `sup_le (hdle l) (le_powMulMem A f.2) (hm (d l) (hd l))`. Take `⟨M, hM⟩` from `h2`. Use `⟨fun _ => t * w, fun _ => ⟨M + m, ?_⟩, ?_⟩` and prove the remaining obligations.
+Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hM using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Clear the denominators using the available nonvanishing facts. Introduce and unpack `⟨a, ha, rfl⟩`. Take `⟨n0, hn0⟩` from `ha 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM : ∀ d' : ∀ k, ι k, ∃ M : ℕ, (∀ k, y ⟨k, d' k⟩ ≠ 0) → (f : Ω) ^ M * (a 0 * w⁻¹ * genInv y β d') ∈ overRing (S` using `S) y k₀ e d' i := by`. Introduce `d'`. Distinguish the cases in `hd' : ∀ k, y ⟨k, d' k⟩ ≠ 0`. Establish `hfB : (f : Ω) ∈ overRing (S` using `S) y k₀ e d' i := chartRing_le_overRing d' i f.2 set P := powMulMem _ (f : Ω) hfB`. Establish `hdP : chartRingOver S y (d l) ≤ P` using `(hdle l).trans (powMulMem_mono (chartRing_le_overRing d' i) f.2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hd'P : chartRingOver S y d' ≤ P` using `(chartRingOver_le_overRing d' i).trans (le_powMulMem _ hfB)`. Establish `hratio : genInv y β d' / w = ∏ k, (y ⟨k, d l k⟩ / y ⟨k, d' k⟩) ^ β k`. Simplify using `only [w, genInv]`. Rewrite using `[← Finset.prod_div_distrib]`. Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[zpow_neg, zpow_neg, inv_div_inv, div_zpow]`. Establish `hrP : genInv y β d' / w ∈ P`. Rewrite using `[hratio]`. Use `Subalgebra.prod_mem _ fun k _ => zpow_mem_of_inv_mem _ ?_ ?_ _` and prove the remaining obligations. Conclude with `hd'P (div_mem_chartRingOver d' k _)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inv_div]`. Conclude with `hdP (div_mem_chartRingOver (d l) k _)`. Establish `haP : a 0 ∈ P` using `powMulMem_mono (chartRing_le_overRing d' i) f.2 ⟨n0, hn0⟩`. Establish `heq : a 0 * w⁻¹ * genInv y β d' = a 0 * (genInv y β d' / w)` using `by ring`. Take `⟨M, hM⟩` from `P.mul_mem haP hrP`.
-
-Conclude with `⟨M, fun _ => heq ▸ hM⟩`. Conclude with `⟨0, fun h => absurd h hd'⟩`. Use `choose M hM using hM`. Use `⟨∑ d', M d', fun d' hd' => ?_⟩` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
-
-Conclude with `pow_mul_mem_of_le _ (chartRing_le_overRing d' i f.2) (Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ d')) (hM d' hd')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frame_latOf (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase S y k₀) (β : K → ℤ) (i : Fin (N + 1))
     (hi : baseVec y k₀ e i ≠ 0) :
@@ -460,7 +454,7 @@ def bundleOfDeg (hy : IndefiniteRowSideFullHecke.Kleiman2.IsModelWithBase S y k�
   overlap i j hi hj t ht := overlap_latOf β i j hi hj t ht
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `z ∈ TranslateEq.subOf Q' (Kleiman.singleChart h) ↔ _`. Rewrite using `[TranslateEq.subOf_eq Q' (Finset.mem_singleton_self i), ← TranslateEq.coe_latSub Q' h, Submodule.span_eq]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ofSecond_sub_single {x : Fin (N + 1) → Ω} (Q' : IndefiniteRowSideFullHecke.Kleiman.LineBundle (S := S) x)
     {i : Fin (N + 1)} (h : x i ≠ 0) (z : Ω) :
@@ -472,25 +466,23 @@ theorem ofSecond_sub_single {x : Fin (N + 1) → Ω} (Q' : IndefiniteRowSideFull
 end Model
 
 /- English proof (translation)
-Introduce `S _ K _ _ ι _ Ω _ _ y k₀ N e hy β`. Use `⟨TranslateEq.ofSecond (bundleOfDeg (e := e) hy β), fun c => ?_⟩` and prove the remaining obligations. Use `set x := baseVec y k₀ e with hx`. Use extensionality with `t`. Rewrite using `[mem_secs_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [secOver, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.mulRight_apply, Subalgebra.mem_toSubmodule]`. Establish `key : ∀ i (hi : x i ≠ 0), t ∈ ((TranslateEq.ofSecond (bundleOfDeg (e` using `e) hy β)).twist (Kleiman.twistSys S x c)).sub (Kleiman.singleChart hi) ↔ ∀ d : ∀ k, ι k, (∀ k, y ⟨k, d k⟩ ≠ 0) → x i ^ (-c) * t * genInv y β d ∈ overRing (S := S) y k₀ e d i := by`. Introduce `i hi`. Rewrite using `[TranslateEq.mem_twist_twistSys_iff (TranslateEq.ofSecond (bundleOfDeg (e := e) hy β)).toSubSystem c (Kleiman.singleChart hi) (Finset.mem_singleton_self i)]`. Express the relevant statement in the definitionally equal form `_ ↔ x i ^ (-c) * t ∈ (bundleOfDeg (e := e) hy β).lat i`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ofSecond_sub_single (bundleOfDeg (e := e) hy β) hi]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Establish `: x i ^ (-c) * x i ^ c • u = u`. Rewrite using `[smul_eq_mul, zpow_neg, ← mul_assoc, inv_mul_cancel₀ (zpow_ne_zero c hi), one_mul]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `hu`. Introduce `h`. Use `⟨_, h, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_eq_mul, zpow_neg, ← mul_assoc, mul_inv_cancel₀ (zpow_ne_zero c hi), one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h d hd`. Establish `hxe : x (e (d k₀)) = y ⟨k₀, d k₀⟩` using `by simp [hx, IndefiniteRowSideFullHecke.Kleiman2.blockVec]`. Establish `hi : x (e (d k₀)) ≠ 0` using `by rw [hxe]; exact hd k₀`. Establish `h1` using `(key _ hi).mp (h _ hi) d hd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `h1` using `[overRing_self, hxe]`. Express the relevant statement in the definitionally equal form `t * genInv y (β + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) d ∈ _`. Rewrite using `[genInv_add_baseDeg β c hd]`. Use `h1 using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h i hi`. Rewrite using `[key]`. Introduce `d hd`. Establish `h1` using `h d hd`. Express the relevant statement in the definitionally equal form `t * genInv y (β + c • IndefiniteRowSideFullHecke.Kleiman2.baseDeg k₀) d ∈ _ at h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[genInv_add_baseDeg β c hd]`. Establish `hyd : y ⟨k₀, d k₀⟩ ≠ 0` using `hd k₀`. Establish `hu : (y ⟨k₀, d k₀⟩ / x i) ^ c ∈ overRing (S` using `S) y k₀ e d i := by`. Use `zpow_mem_of_inv_mem _ ?_ ?_ c` and prove the remaining obligations. Establish `: y ⟨k₀, d k₀⟩ / x i = x (e (d k₀)) / x i` using `by simp [hx, IndefiniteRowSideFullHecke.Kleiman2.blockVec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `chartRing_le_overRing d i (ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing x i _)`. Rewrite using `[inv_div]`. Conclude with `chartRingOver_le_overRing d i (div_mem_chartRingOver d k₀ (e.symm i))`. Establish `heq : x i ^ (-c) * t * genInv y β d = (y ⟨k₀, d k₀⟩ / x i) ^ c * (t * (genInv y β d * y ⟨k₀, d k₀⟩ ^ (-c)))`.
-
-Rewrite using `[div_zpow, zpow_neg, zpow_neg]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[heq]`. Conclude with `mul_mem hu (chartRingOver_le_overRing d i h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem BundleOfDeg.full : BundleOfDeg.Statement := by
   intro S _ K _ _ ι _ Ω _ _ y k₀ N e hy β

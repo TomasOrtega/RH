@@ -21,19 +21,17 @@ section SlopeTestRemainingChoices
 variable {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Rewrite `hF` using `[schwartzBruhatPi_eq_cosetSpanPi]`. Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem H hH`. Take `⟨φ, I, b, rfl⟩` from `hH`. Take `⟨Φ, r, hΦ, hr⟩` from `GlobalTheory.CompanionTheory.EisRk1.exists_schwartz_majorant φ`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set g : (ι → 𝔸ᶠ[k]) → ℂ := finiteTensor fun i ↦ cosetIndicator I (b i) with hg`. Establish `hgv : ∀ v, g v = (‖g v‖ : ℂ)`. Introduce `v`. Simplify using `only [hg, finiteTensor]`. Rewrite using `[norm_prod, Complex.ofReal_prod]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl fun i _ ↦ ?_` and prove the remaining obligations. Rewrite using `[cosetIndicator_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `⟨schwartzBruhatTensorPi Φ g, schwartzBruhatTensorPi_mem Φ (finiteTensor_mem fun i ↦ cosetIndicator_mem_finiteSchwartzBruhat I (b i)), fun x ↦ r (infPartPi x) * ‖g (finPartPi x)‖, fun x ↦ ?_, fun x ↦ ?_⟩` and prove the remaining obligations. Simplify using `only [schwartzBruhatTensorPi]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΦ, Complex.ofReal_mul, ← hgv]`. Simplify using `only [schwartzBruhatTensorPi, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_right (hr _) (norm_nonneg _)`. Consider the case `zero => exact ⟨0, zero_mem _, 0, by simp, by simp⟩`. Consider the case `add H₁ H₂ _ _ ih₁ ih₂`.
+Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G₁, m₁, r₁, e₁, b₁⟩` from `ih₁`. Take `⟨G₂, m₂, r₂, e₂, b₂⟩` from `ih₂`. Use `⟨G₁ + G₂, add_mem m₁ m₂, r₁ + r₂, fun x ↦ ?_, fun x ↦ ?_⟩` and prove the remaining obligations. Simplify using `[e₁, e₂]`. Conclude with `(norm_add_le _ _).trans (add_le_add (b₁ x) (b₂ x))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `smul c H _ ih`. Take `⟨G, m, r, e, b⟩` from `ih`. Use `⟨(‖c‖ : ℂ) • G, Submodule.smul_mem _ _ m, ‖c‖ • r, fun x ↦ ?_, fun x ↦ ?_⟩` and prove the remaining obligations. Simplify using `[e]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, norm_mul]`.
-
-Conclude with `mul_le_mul_of_nonneg_left (b x) (norm_nonneg _)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_schwartzBruhatPi_majorant {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι) :
     ∃ G ∈ schwartzBruhatPi k ι, ∃ r : (ι → 𝔸[k]) → ℝ,
@@ -73,17 +71,17 @@ theorem exists_schwartzBruhatPi_majorant {F : (ι → 𝔸[k]) → ℂ} (hF : F 
       exact mul_le_mul_of_nonneg_left (b x) (norm_nonneg _)
 
 /- English proof (translation)
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨φ, g, hg, rfl⟩` from `hG`. Use `set L : mixedSpace k →L[ℝ] (ι → mixedSpace k) := ContinuousLinearMap.single ℝ (fun _ : ι ↦ mixedSpace k) i₀`. Establish `hL : ∀ u, L u = Pi.single i₀ u` using `fun u ↦ rfl`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set φ' : 𝓢(mixedSpace k, ℂ) := SchwartzMap.compCLM ℂ L.hasTemperateGrowth ⟨1, 1, fun u ↦ by rw [hL, Pi.norm_single, one_mul, pow_one]; linarith⟩ φ`. Establish `hφ' : ∀ u, φ' u = φ (Pi.single i₀ u)` using `fun u ↦ rfl`. Establish `hcl : Topology.IsClosedEmbedding (fun v : 𝔸ᶠ[k] ↦ (Pi.single i₀ v : ι → 𝔸ᶠ[k]))` using `Function.LeftInverse.isClosedEmbedding (f := fun x : ι → 𝔸ᶠ[k] ↦ x i₀) (fun v ↦ Pi.single_eq_same _ _) (continuous_apply i₀) ((continuous_const (y := (0 : ι → 𝔸ᶠ[k]))).update i₀ continuous_id)`. Establish `hg' : (fun v : 𝔸ᶠ[k] ↦ g (Pi.single i₀ v)) ∈ finiteSchwartzBruhat k`. Take `⟨hlc, hcs⟩` from `(mem_finiteSchwartzBruhatPi k).mp hg`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `mem_finiteSchwartzBruhat.2 ⟨hlc.comp_continuous hcl.continuous, hcs.comp_isClosedEmbedding hcl⟩`. Use `schwartzBruhatTensor_mem φ' hg' using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `t`. Simplify using `only [schwartzBruhatTensorPi, schwartzBruhatTensor, hφ']`. Use `congr 2`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Simplify using `[infPartPi]`. Simplify using `only [infPartPi, Pi.single_eq_of_ne h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace k)`. Use function extensionality and compare the values at `i`. Distinguish the cases in `h : i = i₀`. Substitute `h` using the available equality. Simplify using `[finPartPi]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Treat this case separately.
 
-Simplify using `only [finPartPi, Pi.single_eq_of_ne h]`. Both sides reduce to the same expression. Consider the case `zero => exact zero_mem _`. Consider the case `add G H _ _ hG hH => exact add_mem hG hH`. Consider the case `smul c G _ hG => exact Submodule.smul_mem _ c hG`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem single_mem_schwartzBruhat {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι) (i₀ : ι) :
     (fun t : 𝔸[k] ↦ F (Pi.single i₀ t)) ∈ schwartzBruhat k := by
@@ -124,13 +122,11 @@ theorem single_mem_schwartzBruhat {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ sch
   | smul c G _ hG => exact Submodule.smul_mem _ c hG
 
 /- English proof (translation)
-Take `⟨i₀, hi₀⟩` from `Function.ne_iff.1 hξ`. Use `set M : Matrix ι ι k := (1 : Matrix ι ι k).updateCol i₀ ξ with hM`. Establish `hdet : M.det ≠ 0`. Establish `: M.det = ξ i₀`. Rewrite using `[hM, ← Matrix.cramer_apply, Matrix.cramer_one]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hi₀`. Use `set A : GL ι 𝔸[k] := Matrix.GeneralLinearGroup.map (algebraMap k 𝔸[k]) (Matrix.GeneralLinearGroup.mkOfDetNeZero M hdet) with hA`. Establish `key : ∀ t : 𝔸[k], (A : Matrix ι ι 𝔸[k]) *ᵥ Pi.single i₀ t = t • ratV ξ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Introduce `t`. Use function extensionality and compare the values at `i`. Establish `hAi : (A : Matrix ι ι 𝔸[k]) i i₀ = algebraMap k 𝔸[k] (ξ i)`. Simplify using `[hA, Matrix.GeneralLinearGroup.mkOfDetNeZero, hM, Matrix.updateCol_self]`. Simplify using `[Matrix.mulVec_single, hAi, ratV, mul_comm]`.
-
-Establish `h` using `single_mem_schwartzBruhat (GlobalTheory.T.linearChange_mem_schwartzBruhatPi hF A) i₀`. Simplify `h` using `only [ltr, key]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem line_mem_schwartzBruhat {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι)
     {ξ : ι → k} (hξ : ξ ≠ 0) : (fun t : 𝔸[k] ↦ F (t • ratV ξ)) ∈ schwartzBruhat k := by
@@ -160,7 +156,7 @@ section Unfold
 variable {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[scalC, Matrix.scalar_apply, Matrix.mulVec_diagonal]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem scalC_mulVec (a : IdeleGroup k) (v : ι → 𝔸[k]) :
     ((scalC a : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ v = (a : 𝔸[k]) • v := by
@@ -168,27 +164,27 @@ theorem scalC_mulVec (a : IdeleGroup k) (v : ι → 𝔸[k]) :
   simp [scalC, Matrix.scalar_apply, Matrix.mulVec_diagonal]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratV_smul (d : k) (ξ : ι → k) : ratV (d • ξ) = algebraMap k 𝔸[k] d • ratV ξ := by
   funext i
   simp [ratV]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[ratV]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem ratV_zero : ratV (0 : ι → k) = 0 := by
   funext i
   simp [ratV]
 
 /- English proof (translation)
-The claim follows from `map_mul (Units.map (Matrix.scalar ι : 𝔸[k] →+* Matrix ι ι 𝔸[k]).toMonoidHom) a b`.
+A detailed English derivation is pending.
 -/
 theorem scalC_mul (a b : IdeleGroup k) : (scalC (a * b) : GL ι 𝔸[k]) = scalC a * scalC b :=
   map_mul (Units.map (Matrix.scalar ι : 𝔸[k] →+* Matrix ι ι 𝔸[k]).toMonoidHom) a b
 
 /- English proof (translation)
-Use `Continuous.units_map _ ?_` and prove the remaining obligations. Use `show Continuous fun a : 𝔸[k] ↦ Matrix.scalar ι a`. Simplify using `only [Matrix.scalar_apply]`. Conclude with `Continuous.matrix_diagonal (X := 𝔸[k]) (n := ι) (A := fun a _ ↦ a) (continuous_pi fun _ ↦ continuous_id)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_scalC : Continuous (scalC : IdeleGroup k → GL ι 𝔸[k]) := by
   refine Continuous.units_map _ ?_
@@ -200,11 +196,11 @@ noncomputable def lineMap (p : kˣ × Projectivization k (ι → k)) : {ξ : ι 
   ⟨(p.1 : k) • p.2.rep, smul_ne_zero p.1.ne_zero p.2.rep_nonzero⟩
 
 /- English proof (translation)
-Introduce and unpack `⟨d, l⟩ ⟨d', l'⟩ h`. Establish `h' : (d : k) • l.rep = (d' : k) • l'.rep` using `congrArg Subtype.val h`. Establish `hl : l = l'`. Rewrite using `[← l.mk_rep, ← l'.mk_rep, Projectivization.mk_eq_mk_iff']`. Use `⟨(d : k)⁻¹ * d', ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_smul, ← h', smul_smul, inv_mul_cancel₀ d.ne_zero, one_smul]`. Substitute `hl` using the available equality. Establish `hd : d = d'`. Take `⟨j, hj⟩` from `Function.ne_iff.1 l.rep_nonzero`. Use `congrFun h' j` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul] at this`. Conclude with `Units.ext (mul_right_cancel₀ hj this)`. Rewrite using `[hd]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineMap_injective : Function.Injective (lineMap (k := k) (ι := ι)) := by
   rintro ⟨d, l⟩ ⟨d', l'⟩ h
@@ -222,7 +218,7 @@ theorem lineMap_injective : Function.Injective (lineMap (k := k) (ι := ι)) := 
   rw [hd]
 
 /- English proof (translation)
-Introduce and unpack `⟨ξ, hξ⟩`. Take `⟨a, ha⟩` from `Projectivization.exists_smul_eq_mk_rep k ξ hξ`. Use `⟨(a⁻¹, Projectivization.mk k ξ hξ), Subtype.ext ?_⟩` and prove the remaining obligations. Use `show ((a⁻¹ : kˣ) : k) • (Projectivization.mk k ξ hξ).rep = ξ`. Rewrite using `[← ha, Units.smul_def, smul_smul, Units.inv_mul, one_smul]`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lineMap_surjective : Function.Surjective (lineMap (k := k) (ι := ι)) := by
   rintro ⟨ξ, hξ⟩
@@ -235,14 +231,14 @@ noncomputable def lineEquiv : kˣ × Projectivization k (ι → k) ≃ {ξ : ι 
   Equiv.ofBijective lineMap ⟨lineMap_injective, lineMap_surjective⟩
 
 /- English proof (translation)
-Use `haveI : Countable k := countable_numberField k`. Conclude with `((lineEquiv (k := k) (ι := ι)).injective.comp (Prod.mk_right_injective (1 : kˣ))).countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_proj : Countable (Projectivization k (ι → k)) := by
   haveI : Countable k := countable_numberField k
   exact ((lineEquiv (k := k) (ι := ι)).injective.comp (Prod.mk_right_injective (1 : kˣ))).countable
 
 /- English proof (translation)
-Take `⟨u, hu, hb⟩` from `GlobalTheory.T.exists_summable_majorant_lattice_sum hF (isCompact_singleton (x := h))`. Conclude with `Summable.of_nonneg_of_le (fun _ ↦ norm_nonneg _) (fun ξ ↦ hb h rfl ξ) hu`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem summable_norm_col {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι)
     (h : GL ι 𝔸[k]) :
@@ -251,7 +247,7 @@ theorem summable_norm_col {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBru
   exact Summable.of_nonneg_of_le (fun _ ↦ norm_nonneg _) (fun ξ ↦ hb h rfl ξ) hu
 
 /- English proof (translation)
-The claim follows from `(lineEquiv (k := k) (ι := ι)).summable_iff.2 ((summable_norm_col hF h).subtype {ξ | ξ ≠ 0})`.
+A detailed English derivation is pending.
 -/
 theorem summable_line {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι) (h : GL ι 𝔸[k]) :
     Summable fun p : kˣ × Projectivization k (ι → k) ↦
@@ -259,9 +255,9 @@ theorem summable_line {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatP
   (lineEquiv (k := k) (ι := ι)).summable_iff.2 ((summable_norm_col hF h).subtype {ξ | ξ ≠ 0})
 
 /- English proof (translation)
-Establish `hf` using `summable_line hF h`. Establish `h1 : ∑' ξ : {ξ : ι → k // ξ ≠ 0}, ‖F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ.1)‖ = ∑' p : kˣ × Projectivization k (ι → k), ‖F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV (lineEquiv p).1)‖` using `((lineEquiv (k := k) (ι := ι)).tsum_eq fun ξ ↦ ‖F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ.1)‖).symm`. Rewrite using `[h1, hf.tsum_prod]`. Use `Summable.tsum_le_tsum (fun d ↦ ?_) ?_ hf.prod` and prove the remaining obligations. Conclude with `(hf.prod_factor d).sum_le_tsum S fun c _ ↦ norm_nonneg _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `summable_sum fun c _ ↦ ?_` and prove the remaining obligations. Conclude with `hf.comp_injective (i := fun d : kˣ ↦ (d, c)) fun a b hab ↦ (Prod.mk.inj hab).1`.
+A detailed English derivation is pending.
 -/
 theorem tsum_finset_le {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι)
     (h : GL ι 𝔸[k]) (S : Finset (Projectivization k (ι → k))) :
@@ -280,9 +276,9 @@ theorem tsum_finset_le {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhat
     exact hf.comp_injective (i := fun d : kˣ ↦ (d, c)) fun a b hab ↦ (Prod.mk.inj hab).1
 
 /- English proof (translation)
-Establish `hs : Summable fun ξ : ι → k ↦ F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ)` using `(summable_norm_col hF h).of_norm`. Establish `h3` using `hs.tsum_eq_add_tsum_ite 0`. Establish `h4 : ∑' ξ : {ξ : ι → k // ξ ≠ 0}, F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ.1) = ∑' ξ : ι → k, if ξ = 0 then 0 else F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ)`. Use `tsum_subtype {ξ : ι → k | ξ ≠ 0} (fun ξ ↦ F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ))` as an intermediate fact. Use `this.trans (tsum_congr fun ξ ↦ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `by_cases hξ : ξ = 0 <;> simp [Set.indicator, hξ]`. Rewrite using `[h4, thetaC, h3, ratV_zero, Matrix.mulVec_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaC_sub_eq {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι) (h : GL ι 𝔸[k]) :
     thetaC F h - F 0 = ∑' ξ : {ξ : ι → k // ξ ≠ 0}, F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ.1) := by
@@ -299,7 +295,7 @@ theorem thetaC_sub_eq {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatP
   ring
 
 /- English proof (translation)
-Establish `hf : Summable fun p : kˣ × Projectivization k (ι → k) ↦ F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV (lineEquiv p).1)` using `(summable_line hF h).of_norm`. Rewrite using `[thetaC_sub_eq hF, ← (lineEquiv (k := k) (ι := ι)).tsum_eq fun ξ ↦ F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ.1)]`. Conclude with `hf.tsum_prod.symm`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tsum_tsum_eq {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι) (h : GL ι 𝔸[k]) :
     ∑' d : kˣ, ∑' l : Projectivization k (ι → k),
@@ -315,7 +311,7 @@ noncomputable def Gc (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) (z :
   F ((x : 𝔸[k]) • ratV l.rep) * (ω.toIdele x : ℂ) * ((ideleModule k x : ℝ) : ℂ) ^ z
 
 /- English proof (translation)
-The claim follows from `integrable_globalZetaIntegrand (line_mem_schwartzBruhat hF l.rep_nonzero) ω hz`.
+A detailed English derivation is pending.
 -/
 theorem integrable_Gc {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι)
     (ω : HeckeCharacter k) {z : ℂ} (hz : 1 < z.re) (l : Projectivization k (ι → k)) :
@@ -323,7 +319,7 @@ theorem integrable_Gc {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatP
   integrable_globalZetaIntegrand (line_mem_schwartzBruhat hF l.rep_nonzero) ω hz
 
 /- English proof (translation)
-The claim follows from `continuous_zetaIntegrand (continuous_of_mem_schwartzBruhat (line_mem_schwartzBruhat hF l.rep_nonzero)) ω z`.
+A detailed English derivation is pending.
 -/
 theorem continuous_Gc {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι)
     (ω : HeckeCharacter k) (z : ℂ) (l : Projectivization k (ι → k)) : Continuous (Gc F ω z l) :=
@@ -331,7 +327,7 @@ theorem continuous_Gc {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatP
     (continuous_of_mem_schwartzBruhat (line_mem_schwartzBruhat hF l.rep_nonzero)) ω z
 
 /- English proof (translation)
-Establish `e : ((diagonal k d * x : IdeleGroup k) : 𝔸[k]) • ratV l.rep = ((scalC x : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ ratV ((d : k) • l.rep)`. Rewrite using `[scalC_mulVec, ratV_smul, Units.val_mul, coe_diagonal, smul_smul, mul_comm]`. Rewrite using `[Gc, e, map_mul, HeckeCharacter.toIdele_diagonal, map_mul, ideleModule_diagonal, one_mul, one_mul, mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem Gc_diagonal_mul (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) (z : ℂ)
     (l : Projectivization k (ι → k)) (d : kˣ) (x : IdeleGroup k) :
@@ -345,7 +341,7 @@ theorem Gc_diagonal_mul (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) (
     one_mul, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[Gc_diagonal_mul, norm_mul, norm_mul, Circle.norm_coe, one_mul, Complex.norm_cpow_eq_rpow_re_of_pos (ideleModule k x).2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem norm_Gc_diagonal_mul (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) (z : ℂ)
     (l : Projectivization k (ι → k)) (d : kˣ) (x : IdeleGroup k) :
@@ -356,25 +352,25 @@ theorem norm_Gc_diagonal_mul (F : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter
     Complex.norm_cpow_eq_rpow_re_of_pos (ideleModule k x).2]
 
 /- English proof (translation)
-Take `⟨G, hG, ρ, hGρ, hFρ⟩` from `exists_schwartzBruhatPi_majorant hF`. Establish `hρ0 : ∀ x, 0 ≤ ρ x` using `fun x ↦ (norm_nonneg _).trans (hFρ x)`. Establish `hnorm : ∀ x, ‖G x‖ = ρ x` using `fun x ↦ by`. Rewrite using `[hGρ, Complex.norm_real, Real.norm_of_nonneg (hρ0 x)]`. Establish `hφ : Continuous fun u : normOneSubgroup k ↦ (scalC (u : IdeleGroup k) : GL ι 𝔸[k])` using `continuous_scalC.comp continuous_subtype_val`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hφ' : Continuous fun u : normOneSubgroup k ↦ (scalC (u : IdeleGroup k)⁻¹ : GL ι 𝔸[k])` using `continuous_scalC.comp (continuous_inv.comp continuous_subtype_val)`. Establish `hE` using `isCompact_closure_normOneFundamentalDomain k`. Take `⟨M₁, h₁⟩` from `GlobalTheory.T.theta_sub_value_zero_rapid_decay w hG (hE.image hφ) r`. Take `⟨M₀, h₀⟩` from `GlobalTheory.T.theta_sub_value_zero_rapid_decay w (adelicFourierPi_mem_schwartzBruhatPi hG) (hE.image hφ') 0`. Use `set N := Fintype.card ι with hN`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsr : ∀ h : GL ι 𝔸[k], Summable fun ξ : ι → k ↦ ρ ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ)`. Introduce `h`. Simplify `summable_norm_col hG h` using `only [hnorm]`. Establish `hsF : ∀ h : GL ι 𝔸[k], ∑' ξ : {ξ : ι → k // ξ ≠ 0}, ‖F ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ.1)‖ ≤ ∑' ξ : {ξ : ι → k // ξ ≠ 0}, ρ ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ.1)` using `fun h ↦ ((summable_norm_col hF h).subtype _).tsum_le_tsum (fun ξ ↦ hFρ _) ((hsr h).subtype _)`. Establish `htail : ∀ h : GL ι 𝔸[k], ∑' ξ : {ξ : ι → k // ξ ≠ 0}, ρ ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ.1) = ‖thetaC G h - G 0‖`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Rewrite using `[thetaC_sub_eq hG]`. Simplify using `only [hGρ]`. Rewrite using `[← Complex.ofReal_tsum, Complex.norm_real, Real.norm_of_nonneg (tsum_nonneg fun _ ↦ hρ0 _)]`. Establish `hall : ∀ h : GL ι 𝔸[k], ∑' ξ : {ξ : ι → k // ξ ≠ 0}, ρ ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ.1) ≤ ‖thetaC G h‖`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1` using `Summable.tsum_subtype_le (fun ξ : ι → k ↦ ρ ((h : Matrix ι ι 𝔸[k]) *ᵥ ratV ξ)) {ξ | ξ ≠ 0} (fun ξ ↦ hρ0 _) (hsr h)`. Use `h1.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[thetaC]`. Simplify using `only [hGρ]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Complex.ofReal_tsum, Complex.norm_real, Real.norm_of_nonneg (tsum_nonneg fun _ ↦ hρ0 _)]`. Use `⟨max (max M₁ (‖adelicFourierPi k G 0‖ + M₀)) 0, le_max_right _ _, fun t u hu ↦ ⟨fun ht ↦ ?_, fun ht ↦ ?_⟩⟩` and prove the remaining obligations. Establish `hm : u ∈ closure (normOneFundamentalDomain k)` using `subset_closure hu`. Establish `h2` using `h₁ _ (Set.mem_image_of_mem _ hm) t ht`. Rewrite `h2` using `[← scalC_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hsF _).trans ?_` and prove the remaining obligations. Rewrite using `[htail]`. Use `h2.trans (mul_le_mul_of_nonneg_left ?_ (by have := t.2; positivity))` and prove the remaining obligations. Conclude with `(le_max_left _ _).trans (le_max_left _ _)`. Establish `hm : u ∈ closure (normOneFundamentalDomain k)` using `subset_closure hu`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : (0 : ℝ) < t` using `t.2`. Establish `hT : (1 : ℝ) ≤ ((t⁻¹ : {x : ℝ // 0 < x}) : ℝ)` using `(one_le_inv₀ t.2).2 ht`. Establish `h2` using `h₀ _ (Set.mem_image_of_mem _ hm) t⁻¹ hT`. Rewrite `h2` using `[pow_zero, inv_one, one_mul, map_inv, ← scalC_mul, ← mul_inv]`. Establish `hθ : ‖thetaC (adelicFourierPi k G) (scalC (moduleSection w t * (u : IdeleGroup k))⁻¹ : GL ι 𝔸[k])‖ ≤ ‖adelicFourierPi k G 0‖ + M₀`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `norm_sub_norm_le (thetaC (adelicFourierPi k G) (scalC (moduleSection w t * (u : IdeleGroup k))⁻¹ : GL ι 𝔸[k])) (adelicFourierPi k G 0)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hmod : (ideleModule k (moduleSection w t * (u : IdeleGroup k)) : ℝ) = t`. Establish `hu1 : ideleModule k (u : IdeleGroup k) = 1` using `u.2`. Rewrite using `[map_mul, ideleModule_moduleSection, hu1, mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((hsF _).trans (hall _)).trans ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.CompanionTheory.EpsteinRankN.Hd.thetaC_scalC_eq hG, hmod, norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Use `mul_le_mul_of_nonneg_left (hθ.trans ?_) (by positivity)` and prove the remaining obligations. Conclude with `(le_max_right _ _).trans (le_max_left _ _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_bound (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) (r : ℕ) :
@@ -452,13 +448,13 @@ theorem exists_bound (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     exact (le_max_right _ _).trans (le_max_left _ _)
 
 /- English proof (translation)
-Establish `hc : Continuous fun t : {x : ℝ // 0 < x} ↦ Real.exp (-(δ * |Real.log t|))`. Establish `: Continuous fun t : {x : ℝ // 0 < x} ↦ Real.log t` using `continuous_subtype_val.log fun r ↦ r.2.ne'`. Use `fun_prop`. Rewrite using `[posRealMeasure_eq_map_expPos, integrable_map_measure hc.aestronglyMeasurable measurable_expPos.aemeasurable]`. Establish `h1 : IntegrableOn (fun s : ℝ ↦ Real.exp (-(δ * |s|))) (Set.Ioi 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(exp_neg_integrableOn_Ioi 0 hδ).congr_fun (fun s hs ↦ ?_) measurableSet_Ioi` and prove the remaining obligations. Establish `: |s| = s` using `abs_of_pos hs`. Simplify using `[this]`. Establish `h2 : IntegrableOn (fun s : ℝ ↦ Real.exp (-(δ * |s|))) (Set.Iic 0)`. Use `(integrableOn_exp_mul_Iic hδ 0).congr_fun (fun s hs ↦ ?_) measurableSet_Iic` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: |s| = -s` using `abs_of_nonpos hs`. Simplify using `[this]`. Establish `h3` using `h2.union h1`. Rewrite `h3` using `[Set.Iic_union_Ioi, integrableOn_univ]`. Use `h3.congr (ae_of_all _ fun x ↦ ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hlog : Real.log ((expPos x : {x : ℝ // 0 < x}) : ℝ) = x` using `Real.log_exp x`. Simplify using `only [Function.comp_apply, hlog]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_exp_neg_abs_log {δ : ℝ} (hδ : 0 < δ) :
     Integrable (fun t : {x : ℝ // 0 < x} ↦ Real.exp (-(δ * |Real.log t|))) posRealMeasure := by
@@ -483,9 +479,9 @@ theorem integrable_exp_neg_abs_log {δ : ℝ} (hδ : 0 < δ) :
   simp only [Function.comp_apply, hlog]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h1`. Establish `hL : 0 ≤ Real.log t` using `Real.log_nonneg h1`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_neg ht.le, ← Real.rpow_add ht, Real.rpow_def_of_pos ht, Real.exp_le_exp, abs_of_nonneg hL]`. Use the polynomial consequences of the given equalities and inequalities.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Introduce `h1`. Establish `hL : Real.log t ≤ 0` using `Real.log_nonpos ht.le h1`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_neg ht.le, ← Real.rpow_add ht, Real.rpow_def_of_pos ht, Real.exp_le_exp, abs_of_nonpos hL]`. Use the polynomial consequences of the given equalities and inequalities.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem pow_bound {σ δ : ℝ} {r n : ℕ} (hδ1 : δ ≤ 1) (hδ2 : δ ≤ σ - n) (hδ : 0 < δ)
     (hr : σ + 1 ≤ r) {t : ℝ} (ht : 0 < t) :
@@ -504,23 +500,21 @@ theorem pow_bound {σ δ : ℝ} {r n : ℕ} (hδ1 : δ ≤ 1) (hδ2 : δ ≤ σ 
     nlinarith
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `exists_nat_ge (z.re + 1)`. Use `set δ : ℝ := min (z.re - Fintype.card ι) 1 with hδdef`. Establish `hδ : 0 < δ` using `lt_min (by linarith) one_pos`. Establish `hδ1 : δ ≤ 1` using `min_le_right _ _`. Establish `hδ2 : δ ≤ z.re - Fintype.card ι` using `min_le_left _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM0, hM⟩` from `exists_bound w hF r`. Use `set E := normOneFundamentalDomain k with hE`. Use `haveI : IsFiniteMeasure ((normOneMeasure k).restrict E) := ⟨by simpa using normOneMeasure_normOneFundamentalDomain_lt_top k⟩`. Use `set V : ℝ := ((normOneMeasure k).restrict E).real Set.univ with hV`. Use `set ρ : {x : ℝ // 0 < x} → ℝ := fun t ↦ M * Real.exp (-(δ * |Real.log t|)) with hρ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hρi : Integrable (fun t ↦ V • ρ t) posRealMeasure` using `((integrable_exp_neg_abs_log hδ).const_mul M).smul V`. Use `⟨∫ t, V • ρ t ∂posRealMeasure, fun S ↦ ?_⟩` and prove the remaining obligations. Use `set ψ : IdeleGroup k → ℝ := fun x ↦ ∑ l ∈ S, ‖Gc F ω z l x‖ with hψdef`. Establish `hψ : Integrable ψ (ideleMeasure k)` using `integrable_finset_sum _ fun c _ ↦ (integrable_Gc hF ω hz1 c).norm`. Establish `h1 : ∑ l ∈ S, ∫ x, ‖Gc F ω z l x‖ ∂ideleMeasure k = ∫ x, ψ x ∂ideleMeasure k` using `(integral_finset_sum _ fun c _ ↦ (integrable_Gc hF ω hz1 c).norm).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hnn : ∀ x, 0 ≤ ψ x` using `fun x ↦ Finset.sum_nonneg fun c _ ↦ norm_nonneg _`. Rewrite using `[h1, integral_ideleMeasure_eq_integral_fundamentalDomain w hψ]`. Use `integral_mono_of_nonneg (ae_of_all _ fun t ↦ ?_) hρi (ae_of_all _ fun t ↦ ?_)` and prove the remaining obligations. Conclude with `integral_nonneg fun u ↦ tsum_nonneg fun d ↦ hnn _`. Establish `hpt : ∀ u ∈ E, ∑' ξ : kˣ, ψ (diagonal k ξ * moduleSection w t * (u : IdeleGroup k)) ≤ ρ t`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `u hu`. Use `set x : IdeleGroup k := moduleSection w t * (u : IdeleGroup k) with hx`. Establish `hmod : (ideleModule k x : ℝ) = t`. Establish `hu1 : ideleModule k (u : IdeleGroup k) = 1` using `u.2`. Rewrite using `[hx, map_mul, ideleModule_moduleSection, hu1, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : ∀ ξ : kˣ, ψ (diagonal k ξ * moduleSection w t * (u : IdeleGroup k)) = (∑ l ∈ S, ‖F (((scalC x : GL ι 𝔸[k]) : Matrix ι ι 𝔸[k]) *ᵥ ratV ((ξ : k) • l.rep))‖) * (t : ℝ) ^ z.re`. Introduce `ξ`. Establish `e : diagonal k ξ * moduleSection w t * (u : IdeleGroup k) = diagonal k ξ * x` using `mul_assoc _ _ _`. Rewrite using `[e]`. Use `show ∑ l ∈ S, ‖Gc F ω z l (diagonal k ξ * x)‖ = _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun c _ ↦ ?_` and prove the remaining obligations. Rewrite using `[norm_Gc_diagonal_mul, hmod]`. Simplify using `only [h2]`. Rewrite using `[tsum_mul_right]`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `ht0 : 0 < (t : ℝ)` using `t.2`. Establish `hp : 0 ≤ (t : ℝ) ^ z.re` using `Real.rpow_nonneg ht0.le _`. Establish `h3` using `tsum_finset_le hF (scalC x) S`. Take `⟨hb1, hb2⟩` from `hM t u hu`. Take `⟨hc1, hc2⟩` from `pow_bound hδ1 hδ2 hδ hr ht0`.
-
-Break down `le_total 1 (t : ℝ) with h | h` into its components or cases. Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation. Establish `h4` using `integral_mono_of_nonneg (μ := (normOneMeasure k).restrict E) (f := fun u : normOneSubgroup k ↦ ∑' ξ : kˣ, ψ (diagonal k ξ * moduleSection w t * (u : IdeleGroup k))) (g := fun _ ↦ ρ t) (ae_of_all _ fun u ↦ tsum_nonneg fun d ↦ hnn _) (integrable_const _) ((ae_restrict_iff' (measura …`. Simplify `h4` using `[hV]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem sum_integral_norm_le (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) (ω : HeckeCharacter k) {z : ℂ} (hz : (Fintype.card ι : ℝ) < z.re)
@@ -591,7 +585,7 @@ theorem sum_integral_norm_le (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ
     simpa [hV] using h4
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `sum_integral_norm_le w hF ω hz hz1`. Conclude with `summable_of_sum_le (fun c ↦ integral_nonneg fun x ↦ norm_nonneg _) hB`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem summable_integral_norm_Gc (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) (ω : HeckeCharacter k) {z : ℂ}
@@ -601,11 +595,9 @@ theorem summable_integral_norm_Gc (w : InfinitePlace k) {F : (ι → 𝔸[k]) �
   exact summable_of_sum_le (fun c ↦ integral_nonneg fun x ↦ norm_nonneg _) hB
 
 /- English proof (translation)
-Use `haveI := countable_proj (k := k) (ι := ι)`. Establish `hs` using `summable_integral_norm_Gc w hF ω hz hz1`. Establish `hint` using `integrable_Gc hF ω hz1`. Establish `hmeas : ∀ c, AEMeasurable (fun x ↦ ‖Gc F ω z c x‖ₑ) (ideleMeasure k)` using `fun c ↦ (hint c).aemeasurable.enorm`. Establish `hlin : ∫⁻ x, ∑' c, ‖Gc F ω z c x‖ₑ ∂ideleMeasure k ≠ ⊤`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_tsum hmeas]`. Establish `: ∀ c, ∫⁻ x, ‖Gc F ω z c x‖ₑ ∂ideleMeasure k = ENNReal.ofReal (∫ x, ‖Gc F ω z c x‖ ∂ideleMeasure k)` using `fun c ↦ (ofReal_integral_norm_eq_lintegral_enorm (hint c)).symm`. Repeatedly rewrite using `[this]`. Rewrite using `[← ENNReal.ofReal_tsum_of_nonneg (fun c ↦ integral_nonneg fun _ ↦ norm_nonneg _) hs]`. Conclude with `ENNReal.ofReal_ne_top`.
-
-Use `⟨(Measurable.tsum fun c ↦ (continuous_Gc hF ω z c).measurable).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Conclude with `lt_of_le_of_lt (lintegral_mono fun x ↦ enorm_tsum_le_tsum_enorm) (lt_top_iff_ne_top.2 hlin)`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem integrable_tsum_Gc (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) (ω : HeckeCharacter k) {z : ℂ}
@@ -629,9 +621,9 @@ theorem integrable_tsum_Gc (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (lt_top_iff_ne_top.2 hlin)
 
 /- English proof (translation)
-Establish `hE` using `isCompact_closure_normOneFundamentalDomain k`. Establish `hφ : Continuous fun u : normOneSubgroup k ↦ (scalC (a * (u : IdeleGroup k)) : GL ι 𝔸[k])` using `continuous_scalC.comp (continuous_const.mul continuous_subtype_val)`. Establish `hθ : ContinuousOn (thetaC F) ((fun u : normOneSubgroup k ↦ (scalC (a * (u : IdeleGroup k)) : GL ι 𝔸[k])) '' closure (normOneFundamentalDomain k))`. Take `⟨v, hv, hb⟩` from `GlobalTheory.T.exists_summable_majorant_lattice_sum hF (hE.image hφ)`. Use `continuousOn_tsum (fun ξ ↦ Continuous.continuousOn ?_) hv fun ξ h hh ↦ hb h hh ξ` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(continuous_of_mem_schwartzBruhatPi hF).comp ?_` and prove the remaining obligations. Conclude with `Units.continuous_val.matrix_mulVec continuous_const`. Establish `h1 : ContinuousOn (fun u : normOneSubgroup k ↦ thetaC F (scalC (a * (u : IdeleGroup k)))) (closure (normOneFundamentalDomain k))` using `hθ.comp hφ.continuousOn (Set.mapsTo_image _ _)`. Establish `h2 : Continuous fun u : normOneSubgroup k ↦ (ω.toIdele (u : IdeleGroup k) : ℂ)` using `continuous_subtype_val.comp (ω.continuous_toIdele.comp continuous_subtype_val)`. Conclude with `((h1.mul h2.continuousOn).integrableOn_compact hE).mono_set subset_closure`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrableOn_thetaC_mul {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwartzBruhatPi k ι)
     (ω : HeckeCharacter k) (a : IdeleGroup k) :
@@ -656,7 +648,7 @@ theorem integrableOn_thetaC_mul {F : (ι → 𝔸[k]) → ℂ} (hF : F ∈ schwa
   exact ((h1.mul h2.continuousOn).integrableOn_compact hE).mono_set subset_closure
 
 /- English proof (translation)
-Establish `hE` using `isCompact_closure_normOneFundamentalDomain k`. Establish `h2 : Continuous fun u : normOneSubgroup k ↦ (ω.toIdele (u : IdeleGroup k) : ℂ)` using `continuous_subtype_val.comp (ω.continuous_toIdele.comp continuous_subtype_val)`. Conclude with `(h2.continuousOn.integrableOn_compact hE).mono_set subset_closure`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrableOn_char (ω : HeckeCharacter k) :
     IntegrableOn (fun u : normOneSubgroup k ↦ (ω.toIdele (u : IdeleGroup k) : ℂ))
@@ -667,13 +659,13 @@ theorem integrableOn_char (ω : HeckeCharacter k) :
   exact (h2.continuousOn.integrableOn_compact hE).mono_set subset_closure
 
 /- English proof (translation)
-Establish `ht : ((t : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 t.2.ne'`. Establish `hpt : ∀ u : normOneSubgroup k, ∑' ξ : kˣ, ∑' l : Projectivization k (ι → k), Gc F ω z l (diagonal k ξ * moduleSection w t * (u : IdeleGroup k)) = (((t : ℝ) : ℂ) ^ (z + (archExponent w ω : ℂ) * Complex.I)) * (thetaC F (scalC (moduleSection w t * (u : IdeleGroup k))) * (ω.toIdele ( …`. Introduce `u`. Use `set x : IdeleGroup k := moduleSection w t * (u : IdeleGroup k) with hx`. Establish `hmod : (ideleModule k x : ℝ) = t`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu1 : ideleModule k (u : IdeleGroup k) = 1` using `u.2`. Rewrite using `[hx, map_mul, ideleModule_moduleSection, hu1, mul_one]`. Establish `e : ∀ ξ : kˣ, diagonal k ξ * moduleSection w t * (u : IdeleGroup k) = diagonal k ξ * x` using `fun ξ ↦ mul_assoc _ _ _`. Simplify using `only [e, Gc_diagonal_mul]`. Simplify using `only [tsum_mul_right]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tsum_tsum_eq hF, hmod, hx, map_mul, Circle.coe_mul, archExponent_spec, Complex.cpow_add _ _ ht]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [hpt]`. Rewrite using `[integral_const_mul, integral_sub (integrableOn_thetaC_mul hF ω _) ((integrableOn_char ω).const_mul _), integral_const_mul, thetaCFun, dif_pos t.2]`. Simplify using `only [thetaCInt, thetaCConst, volChar]`.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem inner_eq (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) (ω : HeckeCharacter k) (z : ℂ) (t : {r : ℝ // 0 < r}) :
@@ -706,11 +698,9 @@ theorem inner_eq (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
   ring
 
 /- English proof (translation)
-Use `set y := z + (archExponent w ω : ℂ) * Complex.I with hy`. Use `set g : ℝ → ℂ := fun x ↦ (thetaCFun w F ω x - thetaCConst F ω) * (x : ℂ) ^ y with hg`. Rewrite using `[integral_ideleMeasure_eq_integral_fundamentalDomain w (integrable_tsum_Gc w hF ω hz hz1)]`. Establish `h : (fun t : {r : ℝ // 0 < r} ↦ ∫ u in normOneFundamentalDomain k, ∑' ξ : kˣ, ∑' l : Projectivization k (ι → k), Gc F ω z l (diagonal k ξ * moduleSection w t * (u : IdeleGroup k)) ∂normOneMeasure k) = fun t : {r : ℝ // 0 < r} ↦ g (t : ℝ)`. Use function extensionality and compare the values at `t`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `inner_eq w hF ω z t`. Rewrite using `[h, integral_posRealMeasure g, mellin]`. Use `setIntegral_congr_fun measurableSet_Ioi fun x hx ↦ ?_` and prove the remaining obligations. Establish `hx0 : (x : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (ne_of_gt hx)`. Simplify using `only [hg, Complex.real_smul, smul_eq_mul]`.
-
-Rewrite using `[Complex.cpow_sub _ _ hx0, Complex.cpow_one, Complex.ofReal_inv, div_eq_mul_inv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem integral_tsum_Gc_eq (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) (ω : HeckeCharacter k) {z : ℂ}
@@ -735,9 +725,9 @@ theorem integral_tsum_Gc_eq (w : InfinitePlace k) {F : (ι → 𝔸[k]) → ℂ}
   ring
 
 /- English proof (translation)
-Use `haveI := countable_proj (k := k) (ι := ι)`. Establish `hsum` using `summable_integral_norm_Gc w hF ω hz hz1`. Establish `hsec : ∀ l : Projectivization k (ι → k), lineZeta F ω z (ratV l.rep) = ∫ x, Gc F ω z l x ∂ideleMeasure k` using `fun l ↦ rfl`. Use `⟨Summable.of_nonneg_of_le (fun _ ↦ norm_nonneg _) (fun c ↦ ?_) hsum, ?_⟩` and prove the remaining obligations. Rewrite using `[hsec]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `norm_integral_le_integral_norm _`. Establish `hHS` using `hasSum_integral_of_summable_integral_norm (fun c ↦ integrable_Gc hF ω hz1 c) hsum`. Simplify using `only [hsec]`. Rewrite using `[hHS.tsum_eq]`. Conclude with `integral_tsum_Gc_eq w hF ω hz hz1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lines_eq_mellin (w : InfinitePlace k) (ω : HeckeCharacter k) {F : (ι → 𝔸[k]) → ℂ}
     (hF : F ∈ schwartzBruhatPi k ι) {z : ℂ} (hz : (Fintype.card ι : ℝ) < z.re) (hz1 : 1 < z.re) :
@@ -759,7 +749,7 @@ theorem lines_eq_mellin (w : InfinitePlace k) (ω : HeckeCharacter k) {F : (ι �
     exact integral_tsum_Gc_eq w hF ω hz hz1
 
 /- English proof (translation)
-Simplify using `only [lineZeta, ltr, Matrix.mulVec_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lineZeta_mulVec (Ψ : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) (z : ℂ) (A : GL ι 𝔸[k])
     (v : ι → 𝔸[k]) :
@@ -767,11 +757,11 @@ theorem lineZeta_mulVec (Ψ : (ι → 𝔸[k]) → ℂ) (ω : HeckeCharacter k) 
   simp only [lineZeta, ltr, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Establish `hθ : ∀ h : GL ι 𝔸[k], thetaC F h = F 0`. Introduce `h`. Rewrite using `[thetaC, tsum_eq_single (0 : ι → k) fun ξ hξ ↦ (hξ (Subsingleton.elim _ _)).elim]`. Use `congr 1`. Conclude with `Subsingleton.elim _ _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mellin]`. Establish `h0 : ∫ t in Set.Ioi (0 : ℝ), ((t : ℂ) ^ (s - 1)) • (thetaCFun w F ω t - thetaCConst F ω) = ∫ t in Set.Ioi (0 : ℝ), (0 : ℂ)`. Use `setIntegral_congr_fun measurableSet_Ioi fun x hx ↦ ?_` and prove the remaining obligations. Establish `hx' : (0 : ℝ) < x` using `hx`. Simplify using `only [thetaCFun, dif_pos hx', thetaCInt, hθ, thetaCConst, volChar]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_const_mul, sub_self, smul_zero]`. Rewrite using `[h0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mellin_eq_zero_of_isEmpty [IsEmpty ι] (w : InfinitePlace k) (F : (ι → 𝔸[k]) → ℂ)
     (ω : HeckeCharacter k) (s : ℂ) :
@@ -794,9 +784,9 @@ theorem mellin_eq_zero_of_isEmpty [IsEmpty ι] (w : InfinitePlace k) (F : (ι �
 end Unfold
 
 /- English proof (translation)
-Break down `isEmpty_or_nonempty ι with hι | hι` into its components or cases. Use `haveI : IsEmpty (Projectivization k (ι → k)) := ⟨fun l ↦ l.rep_nonzero (Subsingleton.elim _ _)⟩`. Rewrite using `[mellin_eq_zero_of_isEmpty, epstein, tsum_empty]`. Conclude with `⟨Summable.of_finite, rfl⟩`. Establish `hz1 : 1 < z.re`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (1 : ℝ) ≤ Fintype.card ι` using `by exact_mod_cast Fintype.card_pos`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h` using `lines_eq_mellin w ω (GlobalTheory.T.linearChange_mem_schwartzBruhatPi hΨ m⁻¹) hz hz1`. Simplify using `only [epstein, lineZeta_mulVec]`. Conclude with `h`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem epstein_eq_mellin {k : Type} [Field k] [NumberField k] {ι : Type} [Fintype ι]
     [DecidableEq ι] (w : InfinitePlace k) (ω : HeckeCharacter k) {Ψ : (ι → 𝔸[k]) → ℂ}

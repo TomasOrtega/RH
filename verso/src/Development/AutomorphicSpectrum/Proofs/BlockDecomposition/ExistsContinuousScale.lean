@@ -23,7 +23,7 @@ def addEquivOf (T Ti : V → V) (hadd : ∀ x y, T (x + y) = T x + T y)
   map_add' := hadd
 
 /- English proof (translation)
-Use `haveI : (μ.map T).IsAddHaarMeasure := (addEquivOf T Ti hadd hl hr).isAddHaarMeasure_map μ hT hTi`. Conclude with `⟨_, Measure.isAddLeftInvariant_eq_smul _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem map_eq_smul (μ : Measure V) [μ.IsAddHaarMeasure] (T Ti : V → V) (hT : Continuous T)
     (hTi : Continuous Ti) (hadd : ∀ x y, T (x + y) = T x + T y)
@@ -34,17 +34,15 @@ theorem map_eq_smul (μ : Measure V) [μ.IsAddHaarMeasure] (T Ti : V → V) (hT 
   exact ⟨_, Measure.isAddLeftInvariant_eq_smul _ _⟩
 
 /- English proof (translation)
-Establish `hTp : ∀ p, Continuous (T p)` using `fun p => hT.comp (Continuous.prodMk_right p)`. Establish `hTip : ∀ p, Continuous (Ti p)` using `fun p => hTi.comp (Continuous.prodMk_right p)`. Use `choose A hform using fun p => map_eq_smul μ (T p) (Ti p) (hTp p) (hTip p) (hadd p) (hl p) (hr p)`. Use `⟨A, ?_, hform⟩` and prove the remaining obligations. Take `⟨f, hf1, -, hfc, hf01⟩` from `exists_continuous_one_zero_of_isCompact (X := V) (s := {0}) (t := ∅) isCompact_singleton isClosed_empty (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hf0 : (0 : V → ℝ) ≤ f` using `fun x => (hf01 x).1`. Establish `hpos : 0 < ∫ x, f x ∂μ`. Use `f.continuous.integral_pos_of_hasCompactSupport_nonneg_nonzero hfc hf0 (x := 0) ?_` and prove the remaining obligations. Rewrite using `[hf1 (Set.mem_singleton 0)]`. Conclude with `one_ne_zero`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hval : ∀ p, (A p : ℝ) = (∫ x, f (T p x) ∂μ) / ∫ x, f x ∂μ`. Introduce `p`. Establish `h1 : ∫ x, f x ∂(μ.map (T p)) = ∫ x, f (T p x) ∂μ` using `integral_map (hTp p).aemeasurable f.continuous.aestronglyMeasurable`. Establish `h2 : ∫ x, f x ∂(μ.map (T p)) = (A p : ℝ) * ∫ x, f x ∂μ` using `by conv_lhs => rw [hform p]`. Rewrite using `[integral_smul_nnreal_measure]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[NNReal.smul_def]`. Rewrite using `[eq_div_iff hpos.ne', ← h2, h1]`. Use `continuous_induced_rng.2 ?_` and prove the remaining obligations. Establish `hI : Continuous fun p => ∫ x, f (T p x) ∂μ`. Use `continuous_iff_continuousAt.2 fun p₀ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨C, hCc, hCn⟩` from `exists_compact_mem_nhds p₀`. Establish `hk : IsCompact (Function.uncurry Ti '' (C ×ˢ tsupport f))` using `(hCc.prod hfc).image hTi`. Establish `hcont : ContinuousOn (fun p x => f (T p x)).uncurry (C ×ˢ Set.univ)` using `(f.continuous.comp hT).continuousOn`. Use `(continuousOn_integral_of_compact_support hk hcont ?_).continuousAt hCn` and prove the remaining obligations. Introduce `p x hp hx`.
-
-Assume the negation of the conclusion as `hne`. Conclude with `hx ⟨(p, T p x), ⟨hp, subset_tsupport _ hne⟩, hl p x⟩`. Conclude with `(hI.div_const _).congr fun p => (hval p).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_continuous_scale (μ : Measure V) [μ.IsAddHaarMeasure] (T Ti : P → V → V)
     (hT : Continuous (Function.uncurry T)) (hTi : Continuous (Function.uncurry Ti))
@@ -94,9 +92,9 @@ section Mat
 variable {K : Type*} [CommRing K] [TopologicalSpace K] [IsTopologicalRing K] {n : ℕ}
 
 /- English proof (translation)
-Establish `hdet : Continuous fun g : {g : Matrix (Fin n) (Fin n) K // IsUnit g.det} => g.1.det` using `Continuous.matrix_det continuous_subtype_val`. Establish `hunit : Continuous fun g : {g : Matrix (Fin n) (Fin n) K // IsUnit g.det} => g.2.unit` using `hu.isEmbedding.continuous_iff.2 (by simpa [Function.comp_def] using hdet)`. Establish `hinv : Continuous fun g : {g : Matrix (Fin n) (Fin n) K // IsUnit g.det} => ((g.2.unit⁻¹ : Kˣ) : K)` using `Units.continuous_val.comp hunit.inv`. Establish `hadj : Continuous fun g : {g : Matrix (Fin n) (Fin n) K // IsUnit g.det} => g.1.adjugate` using `Continuous.matrix_adjugate continuous_subtype_val`. Use `(hinv.smul hadj).congr fun g => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hr : Ring.inverse g.1.det = ((g.2.unit⁻¹ : Kˣ) : K)`. Establish `h` using `Ring.inverse_unit g.2.unit`. Rewrite `h` using `[IsUnit.unit_spec]`. Then use the resulting hypothesis. Rewrite using `[Matrix.inv_def, hr]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem continuous_inv_unitMat (hu : IsOpenEmbedding (Units.val : Kˣ → K)) :
     Continuous fun g : {g : Matrix (Fin n) (Fin n) K // IsUnit g.det} => (g.1)⁻¹ := by
@@ -116,9 +114,9 @@ theorem continuous_inv_unitMat (hu : IsOpenEmbedding (Units.val : Kˣ → K)) :
   rfl
 
 /- English proof (translation)
-Use `haveI : LocallyCompactSpace (Matrix (Fin n) (Fin n) K) := inferInstanceAs (LocallyCompactSpace (Fin n → Fin n → K))`. Establish `hset : {g : Matrix (Fin n) (Fin n) K | IsUnit g.det} = (fun g : Matrix (Fin n) (Fin n) K => g.det) ⁻¹' Set.range (Units.val : Kˣ → K)`. Use extensionality with `g`. Simplify using `[IsUnit]`. Establish `hopen : IsOpen {g : Matrix (Fin n) (Fin n) K | IsUnit g.det}`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hset]`. Conclude with `hu.isOpen_range.preimage (Continuous.matrix_det continuous_id)`. Conclude with `hopen.isOpenEmbedding_subtypeVal.locallyCompactSpace`.
+A detailed English derivation is pending.
 -/
 theorem locallyCompact_unitMat [LocallyCompactSpace K] (hu : IsOpenEmbedding (Units.val : Kˣ → K)) :
     LocallyCompactSpace {g : Matrix (Fin n) (Fin n) K // IsUnit g.det} := by
@@ -133,7 +131,7 @@ theorem locallyCompact_unitMat [LocallyCompactSpace K] (hu : IsOpenEmbedding (Un
   exact hopen.isOpenEmbedding_subtypeVal.locallyCompactSpace
 
 /- English proof (translation)
-Rewrite using `[continuousOn_iff_continuous_restrict]`. Use `hA.congr fun g => ?_` and prove the remaining obligations. Simplify using `[Set.restrict, g.2]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem continuousOn_extend (A : {g : Matrix (Fin n) (Fin n) K // IsUnit g.det} → ℝ≥0)
     (hA : Continuous A) [∀ g : Matrix (Fin n) (Fin n) K, Decidable (IsUnit g.det)] :
@@ -150,7 +148,7 @@ section Tup
 variable {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `only [rmul, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rmul_rmul {M n : ℕ} (X : Fin n → Fin M → R ⊗[F] E) (g h : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     rmul R (rmul R X g) h = rmul R X (g * h) := by
@@ -160,14 +158,14 @@ theorem rmul_rmul {M n : ℕ} (X : Fin n → Fin M → R ⊗[F] E) (g h : Matrix
   exact Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun d _ => by ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `[rmul, Matrix.one_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rmul_one {M n : ℕ} (X : Fin n → Fin M → R ⊗[F] E) : rmul R X 1 = X := by
   funext a i
   simp [rmul, Matrix.one_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a i`. Simplify using `[rmul, add_mul, Finset.sum_add_distrib]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem rmul_add {M n : ℕ} (X Y : Fin n → Fin M → R ⊗[F] E) (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     rmul R (X + Y) g = rmul R X g + rmul R Y g := by
@@ -185,14 +183,14 @@ def conjT (σ : E →ₐ[F] E) {n : ℕ} (g : Matrix (Fin n) (Fin n) (R ⊗[F] E
   (g.map (sigR R σ))ᵀ
 
 /- English proof (translation)
-Simplify using `only [conjT, Matrix.map_mul, Matrix.transpose_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem conjT_mul (σ : E →ₐ[F] E) {n : ℕ} (g h : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     conjT R σ (g * h) = conjT R σ h * conjT R σ g := by
   simp only [conjT, Matrix.map_mul, Matrix.transpose_mul]
 
 /- English proof (translation)
-Use extensionality with `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[conjT]`. Simplify using `[conjT, Matrix.one_apply, h, Ne.symm h]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem conjT_one (σ : E →ₐ[F] E) {n : ℕ} :
     conjT R σ (1 : Matrix (Fin n) (Fin n) (R ⊗[F] E)) = 1 := by
@@ -202,9 +200,7 @@ theorem conjT_one (σ : E →ₐ[F] E) {n : ℕ} :
   · simp [conjT, Matrix.one_apply, h, Ne.symm h]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use extensionality with `a b`. Conclude with `h a b`. Introduce `h a b`.
-
-Conclude with `congrFun (congrFun h a) b`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_hermR_iff (σ : E →ₐ[F] E) {n : ℕ} (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) :
     S ∈ HermR R σ n ↔ conjT R σ S = S := by
@@ -214,7 +210,7 @@ theorem mem_hermR_iff (σ : E →ₐ[F] E) {n : ℕ} (S : Matrix (Fin n) (Fin n)
     exact congrFun (congrFun h a) b
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[conjT, GlobalTheory.CompanionTheory.SW.HermTop.sigR_sigR R hs]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem conjT_conjT {σ : E →ₐ[F] E} (hs : ∀ x, σ (σ x) = x) {n : ℕ}
     (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) : conjT R σ (conjT R σ g) = g := by
@@ -222,7 +218,7 @@ theorem conjT_conjT {σ : E →ₐ[F] E} (hs : ∀ x, σ (σ x) = x) {n : ℕ}
   simp [conjT, GlobalTheory.CompanionTheory.SW.HermTop.sigR_sigR R hs]
 
 /- English proof (translation)
-Rewrite using `[mem_hermR_iff, conjT_mul, conjT_mul, conjT_conjT R hs, (mem_hermR_iff R σ _).1 S.2, Matrix.mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem conj_mem {σ : E →ₐ[F] E} (hs : ∀ x, σ (σ x) = x) {n : ℕ}
     (g : Matrix (Fin n) (Fin n) (R ⊗[F] E)) (S : HermR R σ n) :
@@ -236,15 +232,11 @@ section Main
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨hTR, hLC, hSC, hT2, -, -, -, -⟩` from `id hR`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hu : IsOpenEmbedding (Units.val : (R ⊗[F] E)ˣ → R ⊗[F] E)` using `GlobalTheory.T.units_open_embedding_local_tensor F E σ hσ R hR`. Take `⟨iTR, iLC, iSC, iT2, -, -, -, iB, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`. Use `haveI := iB n M`. Use `haveI := iTR`. Use `haveI := iLC`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := iSC`. Use `haveI := iT2`. Use `haveI := locallyCompact_unitMat (n := n) hu`. Establish `hcont : ∀ {Q : Type} [TopologicalSpace Q] (G : Q → Matrix (Fin n) (Fin n) (R ⊗[F] E)), Continuous G → Continuous (Function.uncurry fun (q : Q) (X : Fin n → Fin M → R ⊗[F] E) => rmul R X (G q))`. Introduce `Q _ G hG`.
-
-Use `continuous_pi fun a => continuous_pi fun i => ?_` and prove the remaining obligations. Simplify using `only [Function.uncurry_def, rmul]`. Use `continuous_finset_sum _ fun c _ => ?_` and prove the remaining obligations. Establish `h1 : Continuous fun p : Q × (Fin n → Fin M → R ⊗[F] E) => p.2 c i` using `(continuous_apply_apply c i).comp continuous_snd`. Establish `h2 : Continuous fun p : Q × (Fin n → Fin M → R ⊗[F] E) => G p.1 c a` using `(hG.comp continuous_fst).matrix_elem c a`.
-
-Conclude with `h1.mul h2`. Take `⟨A, hA, hform⟩` from `exists_continuous_scale μ (P := {g : Matrix (Fin n) (Fin n) (R ⊗[F] E) // IsUnit g.det}) (fun g X => rmul R X g.1) (fun g X => rmul R X (g.1)⁻¹) (hcont _ continuous_subtype_val) (hcont _ (continuous_inv_unitMat hu)) (fun g X Y => rmul_add R X Y g.1) (fun g X => by rw [rmul_rmul, …`. Use `⟨_, continuousOn_extend A hA, fun g hg => ?_⟩` and prove the remaining obligations. Simplify `hform ⟨g, hg⟩` using `[hg]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_scale_tuples (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (hR : IsLocR R) (n M : ℕ)
@@ -287,19 +279,15 @@ theorem exists_scale_tuples (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (R : Typ
   simpa [hg] using hform ⟨g, hg⟩
 
 /- English proof (translation)
-Take `⟨hTR, hLC, hSC, hT2, -, -, -, -⟩` from `id hR`. Use `haveI := hTR`. Use `haveI := hLC`. Use `haveI := hSC`. Use `haveI := hT2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hu : IsOpenEmbedding (Units.val : (R ⊗[F] E)ˣ → R ⊗[F] E)` using `GlobalTheory.T.units_open_embedding_local_tensor F E σ hσ R hR`. Take `⟨iTR, iLC, iSC, iT2, hsig, -, -, -, -, -⟩` from `GlobalTheory.T.tensor_locally_compact_ring F E σ hσ R`. Use `haveI := iTR`. Use `haveI := iLC`. Use `haveI := iSC`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := iT2`. Take `⟨jLC, jSC, jT2, jB, -⟩` from `GlobalTheory.CompanionTheory.SW.HermTop.herm_top F E σ hσ R n`. Use `haveI := jLC`. Use `haveI := jSC`. Use `haveI := jT2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result.
 
-Use `haveI := jB`. Use `haveI := locallyCompact_unitMat (n := n) hu`. Establish `hs : ∀ x, σ (σ x) = x` using `GlobalTheory.CompanionTheory.SW.HermTop.sigma_sigma hσ`. Establish `hcont : ∀ {Q : Type} [TopologicalSpace Q] (G : Q → Matrix (Fin n) (Fin n) (R ⊗[F] E)), Continuous G → Continuous (Function.uncurry fun (q : Q) (S : HermR R σ n) => (⟨conjT R σ (G q) * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * G q, conj_mem R hs _ S⟩ : HermR R σ n))`. Introduce `Q _ G hG`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Establish `h1 : Continuous fun p : Q × HermR R σ n => conjT R σ (G p.1)` using `((hG.comp continuous_fst).matrix_map hsig).matrix_transpose`. Establish `h2 : Continuous fun p : Q × HermR R σ n => (p.2 : Matrix (Fin n) (Fin n) (R ⊗[F] E))` using `continuous_subtype_val.comp continuous_snd`. Conclude with `(h1.matrix_mul h2).matrix_mul (hG.comp continuous_fst)`. Establish `hinvl : ∀ g h : Matrix (Fin n) (Fin n) (R ⊗[F] E), g * h = 1 → ∀ S : Matrix (Fin n) (Fin n) (R ⊗[F] E), conjT R σ h * (conjT R σ g * S * g) * h = S`.
-
-Introduce `g h hgh S`. Establish `h1 : conjT R σ h * conjT R σ g = 1` using `by rw [← conjT_mul, hgh, conjT_one]`. Combine the equalities or inequalities in the displayed calculation. Take `⟨B, hB, hform⟩` from `exists_continuous_scale ν (P := {g : Matrix (Fin n) (Fin n) (R ⊗[F] E) // IsUnit g.det}) (fun g S => ⟨conjT R σ g.1 * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * g.1, conj_mem R hs _ S⟩) (fun g S => ⟨conjT R σ (g.1)⁻¹ * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * (g.1)⁻¹, conj_mem R …`. Use `⟨_, continuousOn_extend B hB, fun g hg τ hτ => ?_⟩` and prove the remaining obligations.
-
-Establish `hτ' : τ = fun S => ⟨conjT R σ g * (S : Matrix (Fin n) (Fin n) (R ⊗[F] E)) * g, conj_mem R hs _ S⟩`. Use function extensionality and compare the values at `fun S => Subtype.ext (hτ S)`. Rewrite using `[hτ']`. Simplify `hform ⟨g, hg⟩` using `[hg]`.
+A detailed English derivation is pending.
 -/
 theorem exists_scale_herm (σ : E →ₐ[F] E) (hσ : IsCMExt F E σ) (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [MeasurableSpace R] [BorelSpace R] (hR : IsLocR R) (n : ℕ)

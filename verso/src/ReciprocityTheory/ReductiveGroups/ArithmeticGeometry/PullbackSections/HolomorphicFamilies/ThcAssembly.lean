@@ -10,15 +10,15 @@ namespace ReciprocityTheory.ChartRestriction.G.PullbackSections.Pf
 open NumberField IsDedekindDomain Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.WeightAlgebra Formalism.L2.Pj
 
 /- English proof (translation)
-Introduce `x hx`. Simplify using `only [Formalism.MainNotions.WeightAlgebra.PJ.Thc, Formalism.MainNotions.WeightAlgebra.PJ.scaled, Submodule.mem_map] at hx`. Take `⟨x', ⟨G, hG, rfl⟩, rfl⟩` from `hx`. Rewrite using `[X.Mlat_eq]`. Introduce `la y`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hne` using `X.vAt_ne_bot la y (X.inc w G)`. Establish `key : ∀ t : 𝓞 B.KO, ((-(((vAdd la (t : B.KO) : ℤ) : ℝ)) : ℝ) : EReal) ≤ X.vAt la y (X.inc w G) → 0 ≤ X.vAt la y (X.inc w (t • G))`. Introduce `t hb'`. Establish `e : algebraMap (𝓞 B.KO) B.KO t = (t : B.KO)` using `rfl`. Rewrite using `[← algebraMap_smul B.KO t G, map_smul, e]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h0 : (t : B.KO) = 0`. Rewrite using `[h0, zero_smul, X.vAt_zero]`. Conclude with `le_top`. Rewrite using `[X.vAt_smul la y _ _ h0]`. Generalize the expression as in `X.vAt la y (X.inc w G) = V at hb' hne ⊢`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Proceed by induction.
 
-Proceed by induction on `V using EReal.rec with`. Consider the case `bot => exact absurd rfl hne`. Consider the case `coe v`. Rewrite using `[← EReal.coe_add]`. Establish `h1` using `EReal.coe_le_coe_iff.mp hb'`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `EReal.coe_nonneg.mpr (by linarith)`. Consider the case `top => simp`. Establish `hb'` using `hb G hG la y`. Simplify using `only [LinearMap.smul_apply, LinearMap.id_apply, smul_smul]`. Conclude with `key _ hb'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Thc_le_Mlat {D : D7} {B : WeightFamilies.Prov D} {P : ModuliIntegralCharts.Prov D} {j : ℕ} (X : WeightAlgebra.PJ D B P j) (s : 𝓞 B.KO)
     (w : WeightFamilies.Wt D j)

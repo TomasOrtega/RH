@@ -14,9 +14,9 @@ namespace GlobalTheory.RealConjFac
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Introduce `u hu`. Establish `h1 : u • (mat g - 1) = 0` using `hg u hu`. Establish `hm : mat g⁻¹ * mat g = 1` using `by simp [mat]`. Establish `: mat g⁻¹ - 1 = -(mat g⁻¹ * (mat g - 1))`. Rewrite using `[Matrix.mul_sub, hm, Matrix.mul_one, neg_sub]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, smul_neg, ← Matrix.mul_smul, h1, Matrix.mul_zero, neg_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mem_UAt {n : ℕ} {X : Spc F E n} {g : UA σ X.J} (hg : g ∈ UAt σ X (evI F)) :
     g⁻¹ ∈ UAt σ X (evI F) := by
@@ -28,7 +28,7 @@ theorem inv_mem_UAt {n : ℕ} {X : Spc F E n} {g : UA σ X.J} (hg : g ∈ UAt σ
   rw [this, smul_neg, ← Matrix.mul_smul, h1, Matrix.mul_zero, neg_zero]
 
 /- English proof (translation)
-Introduce `r hr`. Establish `e₁` using `h₁ r hr`. Establish `hr₁ : Rest (evI F) (⇑f₁) r` using `⟨hr.1, by rw [← e₁]; exact hA _ hr.2⟩`. Rewrite using `[Module.End.mul_apply, e₁]`. Conclude with `h₂ r hr₁`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem acts_comp {κ : Type} [Fintype κ] {A B : Module.End ℂ ((κ → AF F) → ℂ)}
     (hA : ∀ Φ ∈ schA F κ, A Φ ∈ schA F κ) {f f₁ f₂ : SInf F κ}
@@ -41,13 +41,13 @@ theorem acts_comp {κ : Type} [Fintype κ] {A B : Module.End ℂ ((κ → AF F) 
   exact h₂ r hr₁
 
 /- English proof (translation)
-Introduce `_ F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hB _ _ _ hw g hg h hh`. Establish `hW` using `GlobalTheory.WeilM.IsUWeilPair.isUSplitting hw`. Establish `hpres : ∀ x, ∀ Φ ∈ GlobalTheory.WeilM.schA F (Fin n × Fin d), om x Φ ∈ GlobalTheory.WeilM.schA F _` using `fun x Φ hΦ => hW.pres x Φ hΦ`. Take `⟨T₁, hT₁⟩` from `GlobalTheory.ArchLocalAct.exists_op_of_UAt hB.std hw (g, h) hg hh`. Take `⟨T₂, hT₂⟩` from `GlobalTheory.ArchLocalAct.exists_op_of_UAt hB.std hw (g⁻¹, h⁻¹) (inv_mem_UAt hg) (inv_mem_UAt hh)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hid : ∀ f : SInf F (Fin n × Fin d), Acts (evI F) (1 : Module.End ℂ _) (⇑f) (⇑f)` using `fun f r _ => rfl`. Establish `e21 : ∀ f, T₂ (T₁ f) = f`. Introduce `f`. Establish `hc` using `acts_comp (hpres _) (hT₁ f) (hT₂ (T₁ f))`. Rewrite `hc` using `[← map_mul, Prod.mk_mul_mk, inv_mul_cancel, inv_mul_cancel, Prod.mk_one_one, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `((GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) f (T₂ (T₁ f)) f).2.2.2.1 _ hc (hid f))`. Establish `e12 : ∀ f, T₁ (T₂ f) = f`. Introduce `f`. Establish `hc` using `acts_comp (hpres _) (hT₂ f) (hT₁ (T₂ f))`. Rewrite `hc` using `[← map_mul, Prod.mk_mul_mk, mul_inv_cancel, mul_inv_cancel, Prod.mk_one_one, map_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((GlobalTheory.RealLift.actsLaws F (Fin n × Fin d) f (T₁ (T₂ f)) f).2.2.2.1 _ hc (hid f))`. Use `⟨LinearEquiv.ofLinear T₁ T₂ (LinearMap.ext e12) (LinearMap.ext e21), fun f => hT₁ f, fun f => ?_⟩` and prove the remaining obligations. Conclude with `hT₂ f`.
+A detailed English derivation is pending.
 -/
 theorem main : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (n d : ℕ) (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W)

@@ -9,9 +9,9 @@ namespace Formalism.MainNotions.N.Ln34.UniversalFiltration
 open Formalism.WeaklyAdmissibleFiltrations Module TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `d with`. Consider the case `zero => simp`. Consider the case `succ d ih`. Establish `hI : Finset.Ico m (m + ((d + 1 : ℕ) : ℤ)) = insert (m + d) (Finset.Ico m (m + d))`. Use extensionality with `x`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Finset.mem_Ico, Finset.mem_insert]`. Use `push_cast`. Use linear arithmetic over natural numbers and integers. Rewrite using `[hI, Finset.sum_insert (by simp), ih]`. Use `push_cast`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -41,9 +41,9 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
     {V : Type} [AddCommGroup V] [Module LL V] [Module Qp V] [IsScalarTower Qp LL V]
 
 /- English proof (translation)
-Introduce and unpack `x ⟨t, rfl⟩`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem _`. Consider the case `tmul v b`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `LinearMap.mem_range.2 ⟨v ⊗ₜ ⟨b.1, PD.Fil_anti a b.2⟩, by simp⟩`. Consider the case `add s t hs ht`. Rewrite using `[map_add]`. Conclude with `add_mem hs ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fr_filV_succ (a : ℤ) : FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD (LL := LL) (V := V) a := by
   rintro x ⟨t, rfl⟩
@@ -56,14 +56,14 @@ theorem fr_filV_succ (a : ℤ) : FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD
     exact add_mem hs ht
 
 /- English proof (translation)
-The claim follows from `antitone_int_of_succ_le fun a => fr_filV_succ PD a`.
+A detailed English derivation is pending.
 -/
 theorem fr_filV_anti : Antitone (fun a : ℤ => FilV PD (LL := LL) (V := V) a) := antitone_int_of_succ_le fun a => fr_filV_succ PD a
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, zero_mem _⟩`. Consider the case `tmul v b`. Take `⟨a, ha⟩` from `PD.Fil_exh b`. Conclude with `⟨a, LinearMap.mem_range.2 ⟨v ⊗ₜ ⟨b, ha⟩, by simp⟩⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add x y hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨a', ha'⟩` from `hy`. Conclude with `⟨min a a', add_mem (fr_filV_anti PD (min_le_left a a') ha) (fr_filV_anti PD (min_le_right a a') ha')⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem fr_filV_exh (x : V ⊗[Qp] BdR) : ∃ a : ℤ, x ∈ FilV PD (LL := LL) (V := V) a := by
   induction x using TensorProduct.induction_on with
@@ -78,11 +78,11 @@ theorem fr_filV_exh (x : V ⊗[Qp] BdR) : ∃ a : ℤ, x ∈ FilV PD (LL := LL) 
       (fr_filV_anti PD (min_le_right a a') ha')⟩
 
 /- English proof (translation)
-Establish `hfin : ∀ s : Finset (V ⊗[Qp] BdR), ∃ a : ℤ, ∀ x ∈ s, x ∈ FilV PD (LL` using `LL) (V := V) a := by`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨0, by simp⟩`. Consider the case `insert y s hy ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha⟩` from `ih`. Take `⟨b, hb⟩` from `fr_filV_exh PD (LL := LL) y`. Use `⟨min a b, fun x hx => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hx with rfl | hx` into its components or cases. Conclude with `fr_filV_anti PD (min_le_right a b) hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result.
 
-Conclude with `fr_filV_anti PD (min_le_left a b) (ha x hx)`. Take `⟨s, hs⟩` from `(Submodule.fg_iff_finiteDimensional U).2 inferInstance`. Take `⟨a, ha⟩` from `hfin s`. Conclude with `⟨a, hs ▸ Submodule.span_le.2 fun x hx => ha x hx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fr_filV_fd (U : Submodule LL (V ⊗[Qp] BdR)) [FiniteDimensional LL ↥U] :
     ∃ a : ℤ, U ≤ FilV PD (LL := LL) (V := V) a := by
@@ -103,13 +103,11 @@ theorem fr_filV_fd (U : Submodule LL (V ⊗[Qp] BdR)) [FiniteDimensional LL ↥U
   exact ⟨a, hs ▸ Submodule.span_le.2 fun x hx => ha x hx⟩
 
 /- English proof (translation)
-Set `bV` to `Module.Basis.ofVectorSpace Qp V`. Set `e` to `TensorProduct.equivFinsuppOfBasisLeft (N := BdR) bV`. Establish `hmem : ∀ a (y : V ⊗[Qp] BdR), y ∈ FilV PD (LL` using `LL) (V := V) a → ∀ i, e y i ∈ PD.Fil a := by`. Introduce `a y hy i`. Take `⟨t, rfl⟩` from `LinearMap.mem_range.1 hy`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `clear hy`. Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b`. Simplify using `only [AlgebraTensorModule.map_tmul, LinearMap.id_apply, Submodule.coe_subtype, e, TensorProduct.equivFinsuppOfBasisLeft_apply_tmul, Finsupp.mapRange_apply]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `Submodule.smul_of_tower_mem _ _ b.2`. Consider the case `add s t hs ht`. Rewrite using `[map_add, map_add, Finsupp.add_apply]`. Conclude with `add_mem hs ht`. Establish `hz : e x = 0`.
-
-Use extensionality with `i`. Conclude with `PD.Fil_sep _ fun a => hmem a x (hx a) i`. Conclude with `e.injective (hz.trans (map_zero e).symm)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem fr_filV_sep (x : V ⊗[Qp] BdR) (hx : ∀ a, x ∈ FilV PD (LL := LL) (V := V) a) : x = 0 := by
   classical
@@ -136,12 +134,12 @@ theorem fr_filV_sep (x : V ⊗[Qp] BdR) (hx : ∀ a, x ∈ FilV PD (LL := LL) (V
 variable (ρ : Representation LL G V)
 
 /- English proof (translation)
-Introduce `a b hab` and use `inf_le_inf_left _ (fr_filV_anti PD hab)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem fr_fildR_anti (τ : K →ₐ[Qp] LL) : Antitone (FildR PD ρ τ) := fun a b hab => inf_le_inf_left _ (fr_filV_anti PD hab)
 
 /- English proof (translation)
-Take `⟨lo, hlo⟩` from `fr_filV_fd PD (LL := LL) (V := V) (DdRE PD ρ τ)`. Use `⟨lo, fun a ha => ?_⟩` and prove the remaining obligations. Unfold `FildR`. Conclude with `inf_eq_left.2 (hlo.trans (fr_filV_anti PD ha))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fr_fildR_lo (τ : K →ₐ[Qp] LL) [FiniteDimensional LL ↥(DdRE PD ρ τ)] :
     ∃ lo : ℤ, ∀ a ≤ lo, FildR PD ρ τ a = DdRE PD ρ τ := by
@@ -151,13 +149,13 @@ theorem fr_fildR_lo (τ : K →ₐ[Qp] LL) [FiniteDimensional LL ↥(DdRE PD ρ 
   exact inf_eq_left.2 (hlo.trans (fr_filV_anti PD ha))
 
 /- English proof (translation)
-Establish `hfd : ∀ a, FiniteDimensional LL ↥(FildR PD ρ τ a)` using `fun a => Submodule.finiteDimensional_of_le inf_le_left`. Establish `hex : ∃ n : ℕ, ∃ a : ℤ, finrank LL ↥(FildR PD ρ τ a) = n` using `⟨_, 0, rfl⟩`. Take `⟨a0, ha0⟩` from `Nat.find_spec hex`. Establish `hmin : ∀ a, finrank LL ↥(FildR PD ρ τ a0) ≤ finrank LL ↥(FildR PD ρ τ a)`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[ha0]`. Conclude with `Nat.find_min' hex ⟨a, rfl⟩`. Use `haveI := hfd a0`. Establish `hstab : ∀ a, a0 ≤ a → FildR PD ρ τ a = FildR PD ρ τ a0` using `fun a ha => Submodule.eq_of_le_of_finrank_le (fr_fildR_anti PD ρ τ ha) (hmin a)`. Establish `hbot : FildR PD ρ τ a0 = ⊥`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_bot_iff]`. Introduce `x hx`. Rewrite using `[Submodule.mem_bot]`. Apply `fr_filV_sep PD (LL := LL) x` to reduce the goal to its premises. Introduce `b`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `le_total a0 b with h | h` into its components or cases. Rewrite `hx` using `[← hstab b h]`. Conclude with `hx.2`. Conclude with `fr_filV_anti PD h hx.2`. Conclude with `⟨a0, fun a ha => by rw [hstab a ha, hbot]⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fr_fildR_hi (τ : K →ₐ[Qp] LL) [FiniteDimensional LL ↥(DdRE PD ρ τ)] :
     ∃ hi : ℤ, ∀ a, hi ≤ a → FildR PD ρ τ a = ⊥ := by
@@ -186,7 +184,7 @@ theorem fr_fildR_hi (τ : K →ₐ[Qp] LL) [FiniteDimensional LL ↥(DdRE PD ρ 
   exact ⟨a0, fun a ha => by rw [hstab a ha, hbot]⟩
 
 /- English proof (translation)
-Unfold `IsJumpV at h`. Unfold `multV`. Rewrite using `[not_not.1 h, sub_self]`.
+Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem fr_multV_of_not_jump (τ : K →ₐ[Qp] LL) (a : ℤ) (h : ¬ IsJumpV PD ρ τ a) :
     multV PD ρ τ a = 0 := by
@@ -195,7 +193,7 @@ theorem fr_multV_of_not_jump (τ : K →ₐ[Qp] LL) (a : ℤ) (h : ¬ IsJumpV PD
   rw [not_not.1 h, sub_self]
 
 /- English proof (translation)
-Take `⟨d, rfl⟩ : ∃ d : ℕ, k = m + d` from `⟨(k - m).toNat, by omega⟩`. Conclude with `tele (fun a => (finrank LL ↥(FildR PD ρ τ a) : ℤ)) m d`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem fr_sum_multV (τ : K →ₐ[Qp] LL) (m k : ℤ) (hmk : m ≤ k) :
     ∑ a ∈ Finset.Ico m k, multV PD ρ τ a =

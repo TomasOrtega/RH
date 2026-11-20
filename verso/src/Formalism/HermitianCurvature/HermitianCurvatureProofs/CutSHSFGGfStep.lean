@@ -14,9 +14,9 @@ namespace Formalism.FourierDecayAlt.P.CutSH.SFG
 open Formalism.REAL Formalism.QuantumDeterminants Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.P5 Formalism.FourierDecayAlt.P.PBH
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `h1 : ∀ v : Fin (2 * a + k + 1) → ℂ, D.castV rfl v = v` using `fun v => by`. Use function extensionality and compare the values at `i`. Simplify using `[D.castV]`. Establish `h2 : ∀ X : B.Mat k a, D.castM rfl X = X` using `fun X => by`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `i j`. Simplify using `[D.castM]`. Rewrite using `[h1, h1, h2, h2, h2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem gf_castPt {k a b : ℕ} (h : a = b) (z z' : Fin (2 * a + k + 1) → ℂ) (A M C : B.Mat k a) :
     Gf k b (D.castV h z) (D.castV h z') ((D.castM h A)⁻¹ * D.castM h M * D.castM h C) =
@@ -31,7 +31,7 @@ theorem gf_castPt {k a b : ℕ} (h : a = b) (z z' : Fin (2 * a + k + 1) → ℂ)
   rw [h1, h1, h2, h2, h2]
 
 /- English proof (translation)
-Introduce `k ρ m e z z' hz hz' t _ γ xx`. Establish `h1 : 1 + ρ = ρ + 1` using `Nat.add_comm 1 ρ`. Use `show Gf k m (D.castV e (D.castV h1 (liftVec k 1 ρ z))) (D.castV e (D.castV h1 (liftVec k 1 ρ z'))) ((D.castM e (D.castM h1 (U.Rn k 1 ρ xx.1)))⁻¹ * D.castM e (D.castM h1 (U.mMap k 1 ρ (Matrix.of fun _ _ => t) γ)) * D.castM e (D.castM h1 (U.Rn k 1 ρ xx.2))) = _`. Rewrite using `[gf_castPt e, gf_castPt h1, level_function_slice k 1 ρ _ _ (Qx4.lift_inWb hz) (Qx4.lift_inWb hz'), lowV_lift, lowV_lift]`. Simplify using `[Matrix.det_unique, Complex.normSq_eq_norm_sq]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem gram_function_induction : GfStep := by
   intro k ρ m e z z' hz hz' t _ γ xx

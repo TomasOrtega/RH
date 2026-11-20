@@ -19,7 +19,7 @@ open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Simplify using `only [Over.tensorObj_hom]`. Use `infer_instance`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.isProper_tensorObj_over {S : Scheme.{0}} {Z B : Over S} (hZ : IsProper Z.hom)
     (hB : IsProper B.hom) : IsProper (Z ⊗ B).hom := by
@@ -30,7 +30,7 @@ open CategoryTheory CategoryTheory.Limits MonoidalCategory CartesianMonoidalCate
 open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 /- English proof (translation)
-Use `_root_.GlobalTheory.hom_eq_of_thickenings_of_isProper V (IsLocalRing.maximalIdeal V) ?_ X B f g ?_` and prove the remaining obligations. Rewrite using `[IsLocalRing.jacobson_eq_maximalIdeal]`. Conclude with `bot_ne_top`. Introduce `e`. Conclude with `congrArg Over.Hom.left (h e (_root_.ReciprocityTheory.ChartRestriction.G.Out.thickObj V _ e X) (_root_.ReciprocityTheory.ChartRestriction.G.Out.fstG _ e X))`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private lemma hom_ext_of_thickenings (V : Type) [CommRing V] [IsDomain V]
     [IsDiscreteValuationRing V] {X B : Over (Spec (CommRingCat.of V))} [IsProper X.hom]
@@ -49,37 +49,35 @@ open scoped CategoryTheory.Obj in
 attribute [local instance] Over.cartesianMonoidalCategory in
 
 /- English proof (translation)
-Introduce `V _ _ _ Y _ β _ B b _ hpb _ mu io un hY`. Establish `lft : ∀ e (T : Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))) (u : Over.mk (T.hom ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.thick V (IsLocalRing.maximalIdeal V) e) ⟶ B), ∃ x : T ⟶ Y e, u.left = x.left ≫ b e`. Introduce `e T u`. Use `⟨Over.homMk ((hpb e).lift u.left T.hom (by simpa using Over.w u)) ((hpb e).lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hmul : ∀ e (T : Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))) (u v : Over.mk (T.hom ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.thick V (IsLocalRing.maximalIdeal V) e) ⟶ B) (x y : T ⟶ Y e), u.left = x.left ≫ b e → v.left = y.left ≫ b e → (lift u …` using `fun e T u v x y hu hv => (hY e T x y u v hu hv).1`. Establish `hinv : ∀ e (T : Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))) (u : Over.mk (T.hom ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.thick V (IsLocalRing.maximalIdeal V) e) ⟶ B) (x : T ⟶ Y e), u.left = x.left ≫ b e → (u ≫ io).left = x⁻¹.left ≫ b e` using `fun e T u x hu => (hY e T x x u u hu hu).2.1`. Establish `hone : ∀ e (T : Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))), (toUnit (Over.mk (T.hom ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.thick V (IsLocalRing.maximalIdeal V) e)) ≫ un).left = (1 : T ⟶ Y e).left ≫ b e`. Introduce `e T`. Take `⟨u, hu⟩ : ∃ u : Over.mk (T.hom ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.thick V (IsLocalRing.maximalIdeal V) e) ⟶ B, u.left = (1 : T ⟶ Y e).left ≫ b e` from `⟨Over.homMk ((1 : T ⟶ Y e).left ≫ b e) (by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Over.mk_hom, Category.assoc, (hpb e).w]`. Rewrite using `[← Category.assoc, Over.w]), rfl⟩`. Conclude with `(hY e T 1 1 u u hu hu).2.2`. Establish `hB2 : IsProper (B ⊗ B).hom` using `_root_.GlobalTheory.isProper_tensorObj_over inferInstance inferInstance`. Establish `hB3 : IsProper ((B ⊗ B) ⊗ B).hom` using `_root_.GlobalTheory.isProper_tensorObj_over hB2 inferInstance`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB1 : IsProper (B ⊗ 𝟙_ _).hom` using `_root_.GlobalTheory.isProper_tensorObj_over inferInstance (by simp; infer_instance)`. Establish `hB1' : IsProper (𝟙_ _ ⊗ B).hom` using `_root_.GlobalTheory.isProper_tensorObj_over (by simp; infer_instance) inferInstance`. Use `letI : MonObj B := { one := un mul := mu one_mul := by`. Use `hom_ext_of_thickenings V _ _ fun e T t => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `lft e T (t ≫ snd _ _)`.
+Establish an intermediate fact. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht : t = lift (t ≫ fst _ _) (t ≫ snd _ _)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Rewrite using `[ht, toUnit_unique (t ≫ fst _ _) (toUnit _)]`. Simplify using `only [lift_whiskerRight_assoc, lift_leftUnitor_hom]`. Use `ext`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmul e T _ _ 1 x (hone e T) hx, _root_.one_mul, hx]`. Use `mul_one := by`. Use `hom_ext_of_thickenings V _ _ fun e T t => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `lft e T (t ≫ fst _ _)`. Establish `ht : t = lift (t ≫ fst _ _) (t ≫ snd _ _)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Rewrite using `[ht, toUnit_unique (t ≫ snd _ _) (toUnit _)]`. Simplify using `only [lift_whiskerLeft_assoc, lift_rightUnitor_hom]`. Use `ext`. Rewrite using `[hmul e T _ _ x 1 hx (hone e T), _root_.mul_one, hx]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `mul_assoc := by`. Use `hom_ext_of_thickenings V _ _ fun e T t => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `lft e T (t ≫ fst _ _ ≫ fst _ _)`. Take `⟨y, hy⟩` from `lft e T (t ≫ fst _ _ ≫ snd _ _)`. Take `⟨z, hz⟩` from `lft e T (t ≫ snd _ _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : t = lift (lift (t ≫ fst _ _ ≫ fst _ _) (t ≫ fst _ _ ≫ snd _ _)) (t ≫ snd _ _)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> [apply CartesianMonoidalCategory.hom_ext; skip] <;> simp`. Rewrite using `[ht]`. Simplify using `only [lift_whiskerRight_assoc, lift_lift_associator_hom_assoc, lift_whiskerLeft_assoc]`. Use `ext`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hmul e T _ _ (x * y) z (hmul e T _ _ x y hx hy) hz, hmul e T _ _ x (y * z) hx (hmul e T _ _ y z hy hz), _root_.mul_assoc] }`. Use `letI : GrpObj B := { inv := io left_inv := by`. Use `hom_ext_of_thickenings V _ _ fun e T t => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `lft e T t`. Simplify using `only [comp_lift_assoc, Category.comp_id, comp_toUnit_assoc]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Use `(hmul e T _ _ x⁻¹ x (hinv e T t x hx) hx).trans ?_` and prove the remaining obligations. Rewrite using `[inv_mul_cancel, ← hone e T]`. Both sides reduce to the same expression. Use `right_inv := by`.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. By extensionality, compare the relevant components.
 
-Use `hom_ext_of_thickenings V _ _ fun e T t => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `lft e T t`. Simplify using `only [comp_lift_assoc, Category.comp_id, comp_toUnit_assoc]`. Use `ext`. Use `(hmul e T _ _ x x⁻¹ hx (hinv e T t x hx)).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mul_inv_cancel, ← hone e T]`. Use `rfl }`. Use `⟨this, fun e => ⟨hpb e, fun T x y x₀ y₀ hx hy => hmul e T x₀ y₀ x y hx hy⟩, fun hc => ?_⟩` and prove the remaining obligations. Conclude with `{ mul_comm := by`. Use `hom_ext_of_thickenings V _ _ fun e T t => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Take `⟨x, hx⟩` from `lft e T (t ≫ fst _ _)`. Take `⟨y, hy⟩` from `lft e T (t ≫ snd _ _)`. Establish `ht : t = lift (t ≫ fst _ _) (t ≫ snd _ _)`. Apply the tactic sequence `apply CartesianMonoidalCategory.hom_ext <;> simp`. Rewrite using `[ht]`.
+Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [lift_braiding_hom_assoc]`. Use `ext`. Use `hc e` as an intermediate fact. Use `(hmul e T _ _ y x hy hx).trans ?_` and prove the remaining obligations. Rewrite using `[_root_.mul_comm]`.
-
-Conclude with `(hmul e T _ _ x y hx hy).symm }`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.grpObj_of_thickenings : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (Y : ∀ e : ℕ, Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))) [∀ e, GrpObj (Y e)] (β : ∀ e, (Y e).left ⟶ (Y (e + 1)).left), (∀ e, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback (Y e) (Y (e + 1)) (_root_.ReciprocityTheory.ChartRestriction.G.Out.thickTrans V _ e) (β e)) → ∀ (B : Over (Spec (CommRingCat.of V))) (b : ∀ e, (Y e).left ⟶ B.left) [IsProper B.hom], (∀ e, IsPullback (b e) (Y e).hom B.hom (_root_.ReciprocityTheory.ChartRestriction.G.Out.thick V (IsLocalRing.maximalIdeal V) e)) → (∀ e, β e ≫ b (e + 1) = b e) → ∀ (mu : B ⊗ B ⟶ B) (io : B ⟶ B) (un : 𝟙_ _ ⟶ B), (∀ e (T : Over (Spec (CommRingCat.of (V ⧸ (IsLocalRing.maximalIdeal V) ^ (e + 1))))) (x y : T ⟶ Y e) (x₀ y₀ : Over.mk (T.hom ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.thick V (IsLocalRing.maximalIdeal V) e) ⟶ B), x₀.left = x.left ≫ b e → y₀.left = y.left ≫ b e → (lift x₀ y₀ ≫ mu).left = (x * y).left ≫ b e ∧ (x₀ ≫ io).left = (x⁻¹).left ≫ b e ∧ (toUnit (Over.mk (T.hom ≫ _root_.ReciprocityTheory.ChartRestriction.G.Out.thick V (IsLocalRing.maximalIdeal V) e)) ≫ un).left = (1 : T ⟶ Y e).left ≫ b e) → ∃ _ : GrpObj B, (∀ e, _root_.ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsGrpPullback (Y e) B (_root_.ReciprocityTheory.ChartRestriction.G.Out.thick V _ e) (b e)) ∧ ((∀ e, IsCommMonObj (Y e)) → IsCommMonObj B) := by
   intro V _ _ _ Y _ β _ B b _ hpb _ mu io un hY

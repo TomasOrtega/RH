@@ -7,36 +7,36 @@ import Formalism.TameInertiaTowers.CentralOrderTwo.OddEqOneOfSubOneMem
 namespace Formalism.TwoAdicCyclotomicDecomposition
 
 /- English proof (translation)
-The claim follows from `layerConj_of layerGalois`.
+A detailed English derivation is pending.
 -/
 theorem layerConj : LayerConj := layerConj_of layerGalois
 /- English proof (translation)
-The claim follows from `layerReal_of layerGalois layerConj`.
+A detailed English derivation is pending.
 -/
 theorem layerReal : LayerReal := layerReal_of layerGalois layerConj
 /- English proof (translation)
-The claim follows from `layerDecompTwo_of layerGalois`.
+A detailed English derivation is pending.
 -/
 theorem layerDecompTwo : LayerDecompTwo := layerDecompTwo_of layerGalois
 /- English proof (translation)
-The claim follows from `layerInertiaTwo_of layerGalois`.
+A detailed English derivation is pending.
 -/
 theorem layerInertiaTwo : LayerInertiaTwo := layerInertiaTwo_of layerGalois
 /- English proof (translation)
-The claim follows from `layerEFGTwo_of layerGalois layerReal`.
+A detailed English derivation is pending.
 -/
 theorem layerEFGTwo : LayerEFGTwo := layerEFGTwo_of layerGalois layerReal
 /- English proof (translation)
-The claim follows from `layerInertiaTame_of layerGalois`.
+A detailed English derivation is pending.
 -/
 theorem layerInertiaTame : LayerInertiaTame := layerInertiaTame_of layerGalois
 /- English proof (translation)
-The claim follows from `layerFrob_of layerGalois`.
+A detailed English derivation is pending.
 -/
 theorem layerFrob : LayerFrob := layerFrob_of layerGalois
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨layerExists, layerGalois, layerConj, layerReal, layerDecompTwo, layerInertiaTwo, layerEFGTwo, layerInertiaTame, layerFrob⟩`.
+Supply the required witnesses or components.
 -/
 theorem tower_field_foundations :
     LayerExists ∧ LayerGalois ∧ LayerConj ∧ LayerReal ∧ LayerDecompTwo ∧ LayerInertiaTwo ∧
@@ -45,7 +45,7 @@ theorem tower_field_foundations :
     layerInertiaTame, layerFrob⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨unitsTwoPow, quotCyclic, twoAdicOrder, twoAdicVal, decompModel, gmRank, gensModel, gamEModel, ggModel, centralExtAbelian, commGen, rankBound, normalOrderTwoCentral, twistVal, coinvLength, pGroupGen, genusModel, genusAbelian⟩, invLength, tower_field_foundations⟩`.
+Supply the required witnesses or components.
 -/
 theorem towerProperties :
     (UnitsTwoPow ∧ QuotCyclic ∧ TwoAdicOrder ∧ TwoAdicVal ∧ DecompModel ∧ GmRank ∧ GensModel ∧

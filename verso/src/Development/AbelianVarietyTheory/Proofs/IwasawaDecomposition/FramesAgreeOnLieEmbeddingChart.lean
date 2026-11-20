@@ -10,17 +10,17 @@ noncomputable section
 namespace GlobalTheory.FlagEmb
 
 /- English proof (translation)
-Establish `hs : ({j | j < i} : Set (Fin n)) = ↑(Finset.univ.filter (· < i))` using `by ext j; simp`. Repeatedly rewrite using `[hs, Submodule.mem_span_image_finset_iff_exists_fun', Finset.sum_filter]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨cf, h0, rfl⟩`. Use `⟨cf i, cf, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ∀ j, cf j • v j = (if j < i then cf j • v j else 0) + (if j = i then cf i • v i else 0)`. Introduce `j`. Break down `lt_trichotomy j i with h | h | h` into its components or cases. Simplify using `[h, h.ne]`. Substitute `h` using the available equality.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h0 j h, not_lt.2 h.le, h.ne']`. Rewrite using `[eq_sub_iff_add_eq]`. Use `conv_rhs => rw [Finset.sum_congr rfl fun j _ => e j]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_ite_eq']`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Introduce and unpack `⟨d, g, hg⟩`. Use `⟨fun j => if j < i then g j else if j = i then d else 0, fun j hj => ?_, ?_⟩` and prove the remaining obligations. Simplify using `[not_lt.2 hj.le, hj.ne']`. Establish `e : ∀ j, (if j < i then g j else if j = i then d else 0) • v j = (if j < i then g j • v j else 0) + (if j = i then d • v i else 0)`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j`. Break down `lt_trichotomy j i with h | h | h` into its components or cases. Simplify using `[h, h.ne]`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[not_lt.2 h.le, h.ne']`. Rewrite using `[Finset.sum_congr rfl fun j _ => e j, Finset.sum_add_distrib, Finset.sum_ite_eq', hg]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_comb_le_iff_sub_mem_span {R M : Type} [CommRing R] [AddCommGroup M] [Module R M] {n : ℕ}
     (v : Fin n → M) (i : Fin n) (y : M) :
@@ -56,19 +56,19 @@ theorem exists_comb_le_iff_sub_mem_span {R M : Type} [CommRing R] [AddCommGroup 
       simp
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l c X t L aff M crd hL i R _ φ x f f' u u' hx hu hu'`. Substitute `hx` using the available equality. Establish `htan : ∀ τ j, IsTanAtG t (spMap φ ≫ (aff i).fromSpec) (u τ j)` using `fun τ j => (hu.1 τ j).1`. Establish `htan' : ∀ τ j, IsTanAtG t (spMap φ ≫ (aff i).fromSpec) (u' τ j)` using `fun τ j => (hu'.1 τ j).1`. Use `⟨⟨fun hS => ?_, fun ⟨d, hd⟩ => ?_⟩, fun τ => ?_, fun hff => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h : ∀ z : Let Dw.mult, ∃ d : R, crd i R φ (u' z.1 z.2) - d • crd i R φ (u z.1 z.2) ∈ Submodule.span R ((fun j : Fin (Dw.mult z.1) => crd i R φ (u z.1 j)) '' {j | j < z.2})`. Introduce and unpack `⟨τ, j⟩`. Take `⟨cf, hcf0, hcomb⟩` from `hS τ (j + 1) (by simp) j (Nat.lt_succ_self _)`. Establish `e` using `(hL.comb_iff i φ rfl (htan τ) (htan' τ j) cf).1 hcomb`. Conclude with `(exists_comb_le_iff_sub_mem_span (fun k => crd i R φ (u τ k)) j _).1 ⟨cf, fun k hk => hcf0 k (Nat.succ_le_of_lt hk), e⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `choose d hd using h`. Conclude with `⟨d, hd⟩`. Introduce `τ k _ j hjk`. Take `⟨cf, hcf0, e⟩` from `(exists_comb_le_iff_sub_mem_span (fun k => crd i R φ (u τ k)) j _).2 ⟨d ⟨τ, j⟩, hd ⟨τ, j⟩⟩`. Use `⟨cf, fun k' hk' => hcf0 k' (Fin.lt_def.2 (lt_of_lt_of_le hjk hk')), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(hL.comb_iff i φ rfl (htan τ) (htan' τ j) cf).2 e`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg`. Take `⟨w, hwt, hwc⟩` from `exists_comb t (htan τ) g`. Take `⟨w0, hw0t, hw0c⟩` from `exists_comb t (htan τ) 0`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `(hL.comb_iff i φ rfl (htan τ) hwt g).1 hwc`. Establish `e0` using `(hL.comb_iff i φ rfl (htan τ) hw0t 0).1 hw0c`. Establish `hww : w = w0` using `hL.inj i R φ w w0 hwt hw0t (by rw [e1, e0, hg]; simp)`. Substitute `hww` using the available equality. Establish `heig : ∀ a : 𝓞 E, w ≫ (t.act.act a).left = spMap (epsMul (f (embK c τ a))) ≫ w` using `fun a => (GlobalTheory.FlagEmb.eig_comb_and_frame_cell E H Dw l c X t R _).1 _ (u τ) g w a _ (fun j => ⟨htan τ j, (hu.1 τ j).2 a⟩) hwc`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 
-Use `(hu.2 τ w hwt heig).unique hwc hw0c` as an intermediate fact. Introduce `j`. Simplify using `using congrFun this j`. Substitute `hff` using the available equality. Introduce `z`.
+Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, _⟩` from `hu.2 z.1 (u' z.1 z.2) (hu'.1 z.1 z.2).1 (hu'.1 z.1 z.2).2`. Establish `e` using `(hL.comb_iff i φ rfl (htan z.1) (htan' z.1 z.2) a).1 ha`. Rewrite using `[Submodule.mem_span_range_iff_exists_fun]`. Conclude with `⟨a, e.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem sameFlag_iff_tri_crd : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (c : Coeff l) (X : Scheme.{0}) (t : SAB H X) (L : FinLB X) (aff : ∀ i, IsAffineOpen (L.U i)) (M : ℕ) (crd : Crd t L M), IsLieEmb t L aff crd → ∀ (i : Fin L.n) (R : Type) [CommRing R] (φ : Γ(X, L.U i) →+* R) (x : Sp R ⟶ X) (f f' : c.F →+* R) (u u' : Vecs Dw t R), spMap φ ≫ (aff i).fromSpec = x → IsFrame t f x u → IsFrame t f' x u' → (SameFlag (fun τ => Finset.range (Dw.mult τ + 1)) t x u u' ↔ ∃ d, Tri (fun z : Let Dw.mult => crd i R φ (u z.1 z.2)) (fun z => crd i R φ (u' z.1 z.2)) d) ∧ (∀ τ, LinearIndependent R fun j => crd i R φ (u τ j)) ∧ (f = f' → InBlock (fun z : Let Dw.mult => crd i R φ (u z.1 z.2)) (fun z => crd i R φ (u' z.1 z.2))) := by
   intro E _ _ _ H Dw l c X t L aff M crd hL i R _ φ x f f' u u' hx hu hu'

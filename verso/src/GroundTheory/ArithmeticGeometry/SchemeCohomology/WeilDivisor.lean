@@ -23,13 +23,13 @@ namespace PrimeDivisor
 def point (x : PrimeDivisor X) : X := x.1
 
 /- English proof (translation)
-The claim follows from `x.2`.
+A detailed English derivation is pending.
 -/
 lemma ringKrullDim_stalk (x : PrimeDivisor X) :
     ringKrullDim (X.presheaf.stalk x.point) = 1 := x.2
 
 /- English proof (translation)
-Establish `h` using `x.ringKrullDim_stalk`. Rewrite `h` using `[ringKrullDim_stalk_eq_coheight]`. Conclude with `h` after adjusting the coercions.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma coheight_point (x : PrimeDivisor X) : Order.coheight x.point = 1 := by
   have h := x.ringKrullDim_stalk
@@ -37,12 +37,12 @@ lemma coheight_point (x : PrimeDivisor X) : Order.coheight x.point = 1 := by
   exact_mod_cast h
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 lemma point_injective : Function.Injective (point (X := X)) := fun _ _ h => Subtype.ext h
 
 /- English proof (translation)
-Introduce `h`. Establish `hf : IsField (X.presheaf.stalk x.point)` using `(IsLocalRing.isField_iff_maximalIdeal_eq).mpr h`. Use `x.ringKrullDim_stalk` as an intermediate fact. Rewrite `this` using `[ringKrullDim_eq_zero_of_isField hf]`. Conclude with `zero_ne_one this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma maximalIdeal_ne_bot (x : PrimeDivisor X) :
     IsLocalRing.maximalIdeal (X.presheaf.stalk x.point) ≠ ⊥ := by
@@ -56,9 +56,9 @@ lemma maximalIdeal_ne_bot (x : PrimeDivisor X) :
 variable [IsIntegral X]
 
 /- English proof (translation)
-Establish `hle : Ring.KrullDimLE 1 (X.presheaf.stalk x.point)`. Rewrite using `[Ring.krullDimLE_iff, x.ringKrullDim_stalk]`. Evaluate the numerical expressions. Use `⟨fun {p} hp hprime => ?_⟩` and prove the remaining obligations. Break down `Ring.krullDimLE_one_iff.mp hle p hprime with h | h` into its components or cases.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h` using `[IsDomain.minimalPrimes_eq_singleton_bot]`. Conclude with `absurd h hp`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 lemma dimensionLEOne_stalk (x : PrimeDivisor X) :
     Ring.DimensionLEOne (X.presheaf.stalk x.point) := by
@@ -74,7 +74,7 @@ lemma dimensionLEOne_stalk (x : PrimeDivisor X) :
 variable [IsLocallyNoetherian X] [IsNormalScheme X]
 
 /- English proof (translation)
-Use `x.dimensionLEOne_stalk` as an intermediate fact. Use `IsNormalScheme.isIntegrallyClosed_stalk (X := X) x.point` as an intermediate fact. Conclude with `(isDedekindDomain_iff _ (FractionRing (X.presheaf.stalk x.point))).mpr ⟨inferInstance, inferInstance, inferInstance, fun {y} hy => IsIntegrallyClosed.isIntegral_iff.mp hy⟩`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma isDedekindDomain_stalk (x : PrimeDivisor X) :
     IsDedekindDomain (X.presheaf.stalk x.point) := by
@@ -96,7 +96,7 @@ noncomputable def ord (x : PrimeDivisor X) (f : X.functionField) : ℤ :=
   - WithZero.log (x.valuation f)
 
 /- English proof (translation)
-Simplify using `only [ord, map_mul]`. Rewrite using `[WithZero.log_mul ((Valuation.ne_zero_iff _).mpr hf) ((Valuation.ne_zero_iff _).mpr hg)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma ord_mul (x : PrimeDivisor X) {f g : X.functionField} (hf : f ≠ 0) (hg : g ≠ 0) :
     x.ord (f * g) = x.ord f + x.ord g := by
@@ -105,7 +105,7 @@ lemma ord_mul (x : PrimeDivisor X) {f g : X.functionField} (hf : f ≠ 0) (hg : 
   ring
 
 /- English proof (translation)
-Simplify using `[ord]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ord_one (x : PrimeDivisor X) : x.ord 1 = 0 := by
   simp [ord]
@@ -117,9 +117,9 @@ namespace PrimeDivisor
 variable [IsIntegral X] [IsLocallyNoetherian X] [IsNormalScheme X]
 
 /- English proof (translation)
-Use `x.isDedekindDomain_stalk` as an intermediate fact. Establish `h1 : x.valuation (algebraMap _ X.functionField a) = 1`. Simplify using `only [valuation]`. Rewrite using `[HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff]`. Conclude with `fun hm => (IsLocalRing.mem_maximalIdeal a).mp hm ha`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Simplify using `[ord, h1]`.
+Simplify using the standard rewrite rules.
 -/
 lemma ord_algebraMap_of_isUnit (x : PrimeDivisor X) {a : X.presheaf.stalk x.point}
     (ha : IsUnit a) : x.ord (algebraMap _ X.functionField a) = 0 := by
@@ -131,7 +131,7 @@ lemma ord_algebraMap_of_isUnit (x : PrimeDivisor X) {a : X.presheaf.stalk x.poin
   simp [ord, h1]
 
 /- English proof (translation)
-Rewrite using `[← Scheme.algebraMap_germ_eq_germToFunctionField X hx]`. Conclude with `x.ord_algebraMap_of_isUnit (hg.map _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ord_germToFunctionField_of_isUnit (x : PrimeDivisor X) {U : X.Opens} [Nonempty U]
     (hx : x.point ∈ U) {g : Γ(X, U)} (hg : IsUnit g) :
@@ -142,13 +142,13 @@ lemma ord_germToFunctionField_of_isUnit (x : PrimeDivisor X) {U : X.Opens} [None
 end PrimeDivisor
 
 /- English proof (translation)
-Use `set c := hT.genericPoint`. Establish `hc : IsGenericPoint c T`. Use `hT.isGenericPoint_genericPoint_closure` as an intermediate fact. Rewrite `this` using `[hTc.closure_eq]`. Then use the resulting hypothesis. Establish `hcx : c ⤳ x.point` using `hc.specializes hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcT : c ∈ T` using `hc.mem`. Establish `hηc : genericPoint X ⤳ c` using `(genericPoint_spec X).specializes (Set.mem_univ _)`. Establish `hηne : genericPoint X ≠ c` using `fun h => hgen (h ▸ hcT)`. Establish `hlt1 : c < genericPoint X`. Use `⟨hηc, fun h => hηne (h.antisymm hηc).eq.symm⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `hlt2 : x.point < c` using `⟨hcx, fun h => hne (hcx.antisymm h).eq.symm⟩`. Establish `h1` using `Order.coheight_add_one_le hlt1`. Establish `h2` using `Order.coheight_add_one_le hlt2`. Rewrite `h2` using `[x.coheight_point]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : (1 : ℕ∞) ≤ Order.coheight c` using `le_trans le_add_self h1`. Establish `h5 : (1 : ℕ∞) + 1 ≤ 1` using `le_trans (add_le_add_left h4 1) h2`. Evaluate the numerical expressions using `at h5`.
+Establish an intermediate fact. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 lemma PrimeDivisor.eq_genericPoint_of_mem [IsIntegral X] (x : PrimeDivisor X) {T : Set X}
     (hT : IsIrreducible T) (hTc : IsClosed T) (hgen : genericPoint X ∉ T) (hx : x.point ∈ T) :
@@ -177,21 +177,19 @@ section Finite
 variable [IsIntegral X] [IsNoetherian X] [IsNormalScheme X]
 
 /- English proof (translation)
-Take `⟨U, -, g, hne, hgf, hgu⟩` from `exists_isUnit_germ_eq X f hf`. Use `set Z : Set X := (U : Set X)ᶜ with hZ`. Establish `hZc : IsClosed Z` using `U.isOpen.isClosed_compl`. Establish `hgenU : genericPoint X ∈ U`. Take `⟨⟨y, hy⟩⟩` from `hne`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `((genericPoint_spec X).mem_open_set_iff U.isOpen).mpr ⟨y, trivial, hy⟩`. Establish `hsub : {x : PrimeDivisor X | x.ord f ≠ 0} ⊆ {x | x.point ∈ Z}`. Introduce `x hx`. Assume the negation of the conclusion as `hxU`. Simplify using `only [Set.mem_ofPred_eq, hZ, Set.mem_compl_iff, not_not] at hxU`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hx (hgf ▸ x.ord_germToFunctionField_of_isUnit hxU hgu)`. Use `Set.Finite.subset ?_ hsub` and prove the remaining obligations. Establish `key : ∀ (x : PrimeDivisor X) (hx : x.point ∈ Z) (C : Set Z), C ∈ irreducibleComponents Z → (⟨x.point, hx⟩ : Z) ∈ C → ∃ hT : IsIrreducible (closure (Subtype.val '' C)), x.point = hT.genericPoint`. Introduce `x hx C hC hxC`. Establish `hT : IsIrreducible (closure (Subtype.val '' C))` using `(hC.1.image _ continuous_subtype_val.continuousOn).closure`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨hT, x.eq_genericPoint_of_mem hT isClosed_closure ?_ ?_⟩` and prove the remaining obligations. Introduce `hg`. Establish `: closure (Subtype.val '' C) ⊆ Z` using `closure_minimal (Subtype.coe_image_subset _ _) hZc`. Conclude with `this hg hgenU`. Conclude with `subset_closure ⟨_, hxC, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : ∀ x : {x : PrimeDivisor X | x.point ∈ Z}, ∃ C ∈ irreducibleComponents Z, {(⟨x.1.point, x.2⟩ : Z)} ⊆ C` using `fun x => exists_mem_irreducibleComponents_subset_of_isIrreducible _ isIrreducible_singleton`. Set `φ : {x : PrimeDivisor X | x.point ∈ Z} → irreducibleComponents Z` to `fun x => ⟨(hcomp x).choose, (hcomp x).choose_spec.1⟩`. Establish `: Finite (irreducibleComponents Z)` using `(NoetherianSpace.finite_irreducibleComponents (α := Z)).to_subtype`. Establish `hφ : Function.Injective φ`. Introduce `x y hxy`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hx` using `(hcomp x).choose_spec`. Establish `hy` using `(hcomp y).choose_spec`. Establish `hC : (hcomp x).choose = (hcomp y).choose` using `congrArg Subtype.val hxy`. Take `⟨hT, hxT⟩` from `key x.1 x.2 _ hx.1 (hx.2 rfl)`. Take `⟨hT', hyT⟩` from `key y.1 y.2 _ hy.1 (hy.2 rfl)`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `PrimeDivisor.point_injective` to reduce the goal to its premises. Rewrite using `[hxT, hyT]`. Simplify using `only [hC]`. Establish `: Finite {x : PrimeDivisor X | x.point ∈ Z}` using `Finite.of_injective φ hφ`.
-
-Conclude with `Set.toFinite _`.
+A detailed English derivation is pending.
 -/
 theorem PrimeDivisor.finite_ord_ne_zero {f : X.functionField} (hf : f ≠ 0) :
     {x : PrimeDivisor X | x.ord f ≠ 0}.Finite := by

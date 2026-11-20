@@ -21,13 +21,11 @@ section Gen
 variable {R : Type} [CommRing R] {C : Type} [Field C] {RC : Type} [CommRing RC] [Algebra RC C]
 
 /- English proof (translation)
-Proceed by induction on `hg using Submodule.span_induction with`. Consider the case `mem g hg => exact hS g hg`. Consider the case `zero`. Establish `: (fun x => φ ((0 : X → R) (u x))) = 0` using `by ext x; simp`. Rewrite using `[this]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `M.zero_mem`. Consider the case `add a b _ _ ha hb`. Establish `: (fun x => φ ((a + b) (u x))) = (fun x => φ (a (u x))) + fun x => φ (b (u x))` using `by ext x; simp`. Rewrite using `[this]`. Conclude with `M.add_mem ha hb`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `smul r a _ ha`. Take `⟨s, hs⟩` from `hφ r`. Establish `: (fun x => φ ((r • a) (u x))) = s • fun x => φ (a (u x))`. Use extensionality with `x`. Simplify using `[Algebra.smul_def, hs]`.
-
-Rewrite using `[this]`. Conclude with `M.smul_mem s ha`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_push (φ : R →+* C) (hφ : ∀ r, ∃ s : RC, algebraMap RC C s = φ r) {X X' : Type} (u : X' → X)
     (S : Set (X → R)) (M : Submodule RC (X' → C)) (hS : ∀ g ∈ S, (fun x => φ (g (u x))) ∈ M)
@@ -53,16 +51,14 @@ def extSp (RC : Type) [CommRing RC] [Algebra RC C] (φ : R →+* C) (A : Subalge
   Submodule.span RC {f | ∃ g ∈ A, f = fun x => φ (g (Multiplicative.ofAdd x))}
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨g, hg, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_extSp (φ : R →+* C) {A : Subalgebra R (Multiplicative N → R)} {g : Multiplicative N → R} (hg : g ∈ A) :
     (fun x => φ (g (Multiplicative.ofAdd x))) ∈ extSp RC φ A :=
   Submodule.subset_span ⟨g, hg, rfl⟩
 
 /- English proof (translation)
-Introduce `h hh`. Establish `: extSp RC φ A ≤ (extSp RC φ A).comap (LinearMap.funLeft RC C α)`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Conclude with `mem_extSp φ (hα g hg)`.
-
-Conclude with `this hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem extSp_stable (φ : R →+* C) {A : Subalgebra R (Multiplicative N → R)} (α : N → N)
     (hα : ∀ g ∈ A, (fun t => g (Multiplicative.ofAdd (α (Multiplicative.toAdd t)))) ∈ A) :
@@ -75,29 +71,27 @@ theorem extSp_stable (φ : R →+* C) {A : Subalgebra R (Multiplicative N → R)
   exact this hh
 
 /- English proof (translation)
-Use `⟨⟨extSp RC φ A, ?_, ?_, ?_, ?_, ?_, ?_⟩, rfl⟩` and prove the remaining obligations. Use `SecondCohomologyLattice.isLat_of_fg _ ?_ ?_` and prove the remaining obligations. Establish `hfg : (Subalgebra.toSubmodule A).FG` using `Module.Finite.iff_fg.1 hA.finite`. Take `⟨s, hs⟩` from `hfg`. Use `⟨s.image fun g x => φ (g (Multiplicative.ofAdd x)), le_antisymm ?_ ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce `f hf`. Take `⟨g, hg, rfl⟩` from `Finset.mem_image.1 (Finset.mem_coe.1 hf)`. Use `mem_extSp φ ?_` and prove the remaining obligations. Establish `: g ∈ Subalgebra.toSubmodule A` using `hs ▸ Submodule.subset_span hg`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `this`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `span_push φ hφ Multiplicative.ofAdd (s : Set _) _ (fun g hg => Submodule.subset_span ?_) g ?_` and prove the remaining obligations. Conclude with `Finset.mem_coe.2 (Finset.mem_image.2 ⟨g, hg, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hs]`. Conclude with `hg`. Take `⟨d, hd, hdA⟩` from `hA.full`. Establish `hd' : φ d ≠ 0` using `fun h => hd (hinj (by rw [h, map_zero]))`. Rewrite using `[eq_top_iff, ← (Pi.basisFun C N).span_eq, Submodule.span_le]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨x, rfl⟩`. Establish `h1` using `mem_extSp (RC := RC) φ (hdA (Pi.single (Multiplicative.ofAdd x) 1))`. Establish `h2` using `Submodule.smul_mem _ (φ d)⁻¹ (Submodule.subset_span (R := C) h1)`. Establish `e : (Pi.basisFun C N) x = (φ d)⁻¹ • fun z : N => φ ((d • (Pi.single (Multiplicative.ofAdd x) 1 : Multiplicative N → R)) (Multiplicative.ofAdd z))`. Use extensionality with `z`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hz : z = x`. Substitute `hz` using the available equality. Simplify using `[hd']`. Establish `: Multiplicative.ofAdd z ≠ Multiplicative.ofAdd x` using `fun h => hz (Multiplicative.ofAdd.injective h)`. Simplify using `[hz, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite using `[e]`. Conclude with `h2`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩ x`. Conclude with `hφ _`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `mem_extSp (RC := RC) φ A.one_mem` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `x`. Simplify using the standard rewrite rules. Introduce `f g hf hg`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `Submodule.mul_mem_mul hf hg` as an intermediate fact. Unfold `extSp at this`. Rewrite `this` using `[Submodule.span_mul_span]`. Use `Submodule.span_mono ?_ this` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨a, ha, rfl⟩, _, ⟨b, hb, rfl⟩, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨a * b, A.mul_mem ha hb, ?_⟩` and prove the remaining obligations. Use extensionality with `x`. Simplify using the standard rewrite rules. Introduce `f hf`. Establish `: extSp RC φ A ≤ (tensorSpan RC (extSp RC φ A)).comap (addPull RC N)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Use `span_push φ hφ (fun z : N × N => (Multiplicative.ofAdd z.1, Multiplicative.ofAdd z.2)) _ (tensorSpan RC (extSp RC φ A)) ?_ _ (hA.comul g hg)` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, b, hb, rfl⟩`. Use `Submodule.subset_span ⟨_, mem_extSp φ ha, _, mem_extSp φ hb, ?_⟩` and prove the remaining obligations.
-
-Use extensionality with `z`. Simplify using the standard rewrite rules. Conclude with `this hf`. Conclude with `extSp_stable φ (fun x => -x) hA.inv`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_hopf [Fintype N] [DecidableEq N] [IsDomain RC] [ValuationRing RC] [IsFractionRing RC C]
     (φ : R →+* C) (hinj : Function.Injective φ) (hφ : ∀ r, ∃ s : RC, algebraMap RC C s = φ r)
@@ -164,15 +158,13 @@ theorem exists_hopf [Fintype N] [DecidableEq N] [IsDomain RC] [ValuationRing RC]
 end Gen
 
 /- English proof (translation)
-Use `le_antisymm ?_ ?_` and prove the remaining obligations. Introduce `f hf`. Establish `key : ∀ a ∈ RC, a • f ∈ spanOver RC S`. Establish `hf' : f ∈ Submodule.span RC S` using `hf`. Proceed by induction on `hf' using Submodule.span_induction with`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem g hg => exact fun a ha => AddSubgroup.subset_closure ⟨a, ha, g, hg, rfl⟩`. Consider the case `zero => intro a _`. Rewrite using `[smul_zero]`. Conclude with `zero_mem _`. Consider the case `add u v hu hv h1 h2 => intro a ha`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add]`. Conclude with `add_mem (h1 hu a ha) (h2 hv a ha)`. Consider the case `smul r u hu h1`. Introduce `a ha`. Establish `: a • r • u = (a * (r : C)) • u` using `by rw [mul_smul]; rfl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[this]`. Conclude with `h1 hu _ (RC.mul_mem ha r.2)`. Simplify using `using key 1 RC.one_mem`. Use `(AddSubgroup.closure_le _).2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨a, ha, e, he, rfl⟩`.
-
-Conclude with `Submodule.smul_mem _ (⟨a, ha⟩ : RC) (Submodule.subset_span he)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem span_eq_spanOver {o C : Type} [CommRing o] [Field C] [Algebra o C] (RC : Subalgebra o C) {X : Type}
     (S : Set (X → C)) : (Submodule.span RC S).toAddSubgroup = spanOver RC S := by
@@ -195,7 +187,7 @@ theorem span_eq_spanOver {o C : Type} [CommRing o] [Field C] [Algebra o C] (RC :
     exact Submodule.smul_mem _ (⟨a, ha⟩ : RC) (Submodule.subset_span he)
 
 /- English proof (translation)
-Establish `a1` using `FunctionFamilyIdempotent.sec_eq pq sc h1 h2 (u * sc x)`. Establish `a2` using `FunctionFamilyIdempotent.sec_eq pq sc h1 h2 (sc x)`. Rewrite `a1` using `[map_mul, h1]`. Rewrite `a2` using `[h1]`. Take the linear combination `a1 - u * a2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem sec_mul {A F : Type} [CommRing A] [Field F] (pq : A →+* F) (sc : F →+ A)
     (h1 : ∀ a, pq (sc a) = a) (h2 : ∀ u a, pq u = 0 → u * sc a = 0) (u : A) (x : F) :
@@ -215,9 +207,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {c' : ∀ k, J k}
 
 /- English proof (translation)
-Unfold `TestPt.testOrdW TestPt.testOrd`. Rewrite using `[Submodule.map_span, span_eq_spanOver]`. Use `congrArg (spanOver RC) (Set.Subset.antisymm ?_ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨g, hg, rfl⟩, rfl⟩`. Conclude with `⟨fun a => ((g (toN sc a) : CR O y c') : Ω), AddSubgroup.mem_map.2 ⟨g, hg, rfl⟩, rfl⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨g, hg, rfl⟩` from `AddSubgroup.mem_map.1 hf`. Conclude with `⟨fun x => algebraMap Ω C ((g (Multiplicative.ofAdd x) : CR O y c') : Ω), ⟨g, hg, rfl⟩, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem ordW_eq (P : ChartPack G O c') (sc : F →+ (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)})) {C : Type} [Field C]
     [Algebra O C] [Algebra Ω C] (RC : Subalgebra O C) :
@@ -234,9 +226,9 @@ theorem ordW_eq (P : ChartPack G O c') (sc : F →+ (𝓞 E ⧸ Ideal.span {(p :
 
 open PositivityTheory.Xgn.FunctionFamilyIdempotent in
 /- English proof (translation)
-Use `haveI := 𝔐.t.act.hom a`. Use `haveI := frac_epi (CR O y c')`. Use `(GlobalTheory.T.LemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁ 𝔐.t.semi.smooth).2.2.2.1 (𝔐.t.act.act a) (mulT _ p a) ?_` and prove the remaining obligations. Introduce `t`. Take `⟨x, rfl⟩` from `qmk_surj _ p t`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← cancel_epi (spMap (fracToField (CR O y c'))), ← P.pts₁, mulT_qmk, G.t₁.lin, Over.comp_left, P.pts₁]`. Simplify using `only [Category.assoc]`.
+A detailed English derivation is pending.
 -/
 theorem bt_mul [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')] [IsFractionRing (CR O y c') Ω]
     [Finite (TorsT E (D.p + D.q) p)] (P : ChartPack G O c') (a : 𝓞 E) :
@@ -251,7 +243,7 @@ theorem bt_mul [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')] [
   simp only [Category.assoc]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective u`. Conclude with `extSp_stable (RC := RC) ((algebraMap Ω C).comp (algebraMap (CR O y c') Ω)) (fun (x : TestPt.NAdd E (D.p + D.q) p) k => Ideal.Quotient.mk (Ideal.span {(p : 𝓞 E)}) a * x k) (bt_mul P a)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem ord_mul [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')] [IsFractionRing (CR O y c') Ω]
     [Finite (TorsT E (D.p + D.q) p)] (P : ChartPack G O c') {C : Type} [Field C]
@@ -263,7 +255,7 @@ theorem ord_mul [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')] 
     (fun (x : TestPt.NAdd E (D.p + D.q) p) k => Ideal.Quotient.mk (Ideal.span {(p : 𝓞 E)}) a * x k) (bt_mul P a)
 
 /- English proof (translation)
-The claim follows from `exists_hopf (RC := RC) ((algebraMap Ω C).comp (algebraMap (CR O y c') Ω)) ((algebraMap Ω C).injective.comp Subtype.val_injective) (fun r => ⟨⟨_, hR r r.2⟩, rfl⟩) (GlobalTheory.T.LemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁ 𝔐.t.semi.smooth).1`.
+A detailed English derivation is pending.
 -/
 theorem ord_hopf [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')]
     [Fintype (TestPt.NAdd E (D.p + D.q) p)] [DecidableEq (TestPt.NAdd E (D.p + D.q) p)]
@@ -276,7 +268,7 @@ theorem ord_hopf [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')]
     (GlobalTheory.T.LemmaBT_holds (CR O y c') (TorsT E (D.p + D.q) p) P.Γ₁ _ 𝔐.t.G P.x p P.i₁ P.tors₁ 𝔐.t.semi.smooth).1
 
 /- English proof (translation)
-Introduce `h hh`. Establish `e : (fun x => h (TestPt.toNAdd sc (TestPt.fromNAdd pq x))) = fun x : TestPt.NAdd E (D.p + D.q) p => h (fun k => sc 1 * x k)`. Use function extensionality and compare the values at `fun x => congrArg h (funext fun k => FunctionFamilyIdempotent.sec_eq pq sc hsec.1 hsec.2 (x k))`. Rewrite using `[e]`. Conclude with `ord_mul P RC (sc 1) h hh`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ord_ret [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')] [IsFractionRing (CR O y c') Ω]
     [Finite (TorsT E (D.p + D.q) p)] (P : ChartPack G O c') {C : Type} [Field C]
@@ -292,9 +284,9 @@ theorem ord_ret [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')] 
   exact ord_mul P RC (sc 1) h hh
 
 /- English proof (translation)
-Introduce and unpack `a _ ⟨h, hh, rfl⟩`. Use `⟨_, ord_mul P RC (sc a) h hh, ?_⟩` and prove the remaining obligations. Use `funext fun x => congrArg h (funext fun k => ?_)` and prove the remaining obligations. Use `sec_mul pq sc hsec.1 hsec.2 (sc a) (x k)` as an intermediate fact. Rewrite `this` using `[hsec.1]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem ordW_stable [IsNoetherianRing (CR O y c')] [IsIntegrallyClosed (CR O y c')] [IsFractionRing (CR O y c') Ω]
     [Finite (TorsT E (D.p + D.q) p)] (P : ChartPack G O c') {C : Type} [Field C]
@@ -314,13 +306,11 @@ end PositivityTheory.Xgn.TestOrderSections
 
 open PositivityTheory.Xgn.TestOrderSections PositivityTheory.Xgn.FunctionFamilyIdempotent in
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hV _ p _ hpS _ _ _ b _ φ _ A _ _ _ m _ hpm O _ _ _ _ _ _ _ t₀ Sg _ e φ' F _ _ _ pq sc w σ hO hsec G c' hc' P i _ _ C _ _ _ _ RC hT χ _ _ _ _`. Take `⟨hch, hno, hic, hfr, -⟩` from `PositivityTheory.Xgn.torsion_packing_facts E H D l Xo c O₀ β Y S Ω K J y 𝔐 d hV p hpS A m hpm O c' hc'`. Take `⟨halg, ⟨v, hv, hvp⟩, -, hR⟩` from `hT`. Use `haveI : CharZero C := charZero_of_injective_algebraMap (algebraMap Ω C).injective`. Establish `hvI : v.Integers RC` using `⟨Subtype.val_injective, fun x => (hv x).1 x.2, fun r hr => ⟨⟨r, (hv r).2 hr⟩, rfl⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `haveI : ValuationRing RC := ValuationRing.of_integers v hvI`. Use `haveI : IsFractionRing RC C := hvI.isFractionRing`. Use `haveI := finite_tors (E := E) (D.p + D.q) (p_ne_zero pq sc hsec)`. Take `⟨AA, hAA⟩` from `ord_hopf P RC hR`. Establish `hret` using `ord_ret P RC hsec`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hret` using `[← hAA]`. Take `⟨⟨AW, hAW⟩, -⟩` from `GlobalTheory.T.hopf_order_retract_restriction p C v RC hvI hvp _ AA _ (TestPt.toNAdd sc) (TestPt.fromNAdd pq) (fun z => funext fun k => hsec.1 (z k)) hret`. Rewrite `hAW` using `[hAA]`. Establish `hAW' : AW.carrier = TestPt.testOrdW P sc RC` using `hAW`. Use `⟨AA, AW, hAA, hAW', ?_, hret, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[hAW']`. Conclude with `ordW_eq P sc RC`. Rewrite using `[hAW']`. Conclude with `ordW_stable P RC hsec`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.test_order_sections : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O₀ : Type) [CommRing O₀] (β : O₀ →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] [DecidableEq K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (d : ℕ), IsArithVar (mCoordIdeal y) (d + 1) → 0 < D.p + D.q → ∀ (p : ℕ) [Fact p.Prime], p ∈ S → HT.HTFree 𝔐 p → p ≠ 2 → ¬ (p : ℤ) ∣ NumberField.discr E → ∀ (b : ∀ t, Fin (labelRk D t) → 𝔐.Li), (∀ t, LinearIndependent Ω (b t) ∧ Submodule.span Ω (Set.range (b t)) = 𝔐.Vgen t) → ∀ φ : Equiv.Perm (CMType H ⊕ CMType H), IsFrobLabels c p φ → ∀ (A : Type) [CommRing A] [Algebra A Ω] [IsIntegralClosure A ℤ Ω] (m : Ideal A) [m.IsPrime], (p : A) ∈ m → ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Algebra A O] [IsLocalization.AtPrime O m] [Algebra O Ω] [IsScalarTower A O Ω], ∀ (t₀ : CMType H ⊕ CMType H) (Sg : Type) [Fintype Sg] (e : Sg → CMType H ⊕ CMType H) (φ' : Equiv.Perm Sg) (F : Type) [Field F] [Fintype F] [CharP F p] (pq : (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)}) →+* F) (sc : F →+ (𝓞 E ⧸ Ideal.span {(p : 𝓞 E)})) (w : O) (σ : Sg → F →+* IsLocalRing.ResidueField O), IsOrbit O 𝔐 p φ t₀ e φ' pq w σ → IsSec pq sc → ∀ (G : GenTors 𝔐 p) (c' : ∀ k, J k), mseg y c' ≠ 0 → ∀ (P : ChartPack G O c') (i : ∀ τ, (Fin (labelRk D (e τ)) → Ω) →ₗ[Ω] (Fin (D.p + D.q) → Ω)), (∀ τ : Sg, SeqHyp (CR O y c') (algebraMap O Ω w) (coordLat O y (𝔐.HT p (e τ)) (b (e τ)) c') (dotDual (CR O y c') (coordLat O y (𝔐.HT p (e τ).swap) (b (e τ).swap) c')) (i τ) (qMap P (b (e τ).swap)) ∧ ∀ σE : E →+* Ω, (∀ a : 𝓞 E, σE (a : E) = 𝔐.emb (e τ) a) → DualSeq P σE (𝔐.R p - 2) (coordLat O y (𝔐.HT p (e τ)) (b (e τ)) c') (b (e τ)) (i τ)) → (chartD e b pq sc w P i).Base (CR O y c') p (algebraMap O Ω w) → ∀ (C : Type) [Field C] [Algebra O C] [Algebra Ω C] [IsScalarTower O Ω C] (RC : Subalgebra O C), IsTestPt p (CR O y c') RC → ∀ χ : Sg → F →*₀ C, (∀ τ a (o : O), IsLocalRing.residue O o = σ τ a → χ τ a - algebraMap O C o ∈ RC ∧ ∀ u ∈ RC, u * (χ τ a - algebraMap O C o) ≠ 1) → ∀ [DecidableEq F] [Fintype (GlobalTheory.CompanionTheory.Ar.Num.FamEx.TestPt.NAdd E (D.p + D.q) p)] [DecidableEq (GlobalTheory.CompanionTheory.Ar.Num.FamEx.TestPt.NAdd E (D.p + D.q) p)], ∃ (AA : ReciprocityTheory.PGsh.L2.HopfOrder (C := C) RC (GlobalTheory.CompanionTheory.Ar.Num.FamEx.TestPt.NAdd E (D.p + D.q) p)) (AW : ReciprocityTheory.PGsh.L2.HopfOrder (C := C) RC (Fin (D.p + D.q) → F)), AA.carrier = (GlobalTheory.CompanionTheory.Ar.Num.FamEx.TestPt.testOrd P RC) ∧ AW.carrier = (GlobalTheory.CompanionTheory.Ar.Num.FamEx.TestPt.testOrdW P sc RC) ∧ AW.carrier.toAddSubgroup = ((chartD e b pq sc w P i).bc RC).M ∧ (∀ h ∈ AA.carrier, (fun x => h ((GlobalTheory.CompanionTheory.Ar.Num.FamEx.TestPt.toNAdd sc) ((GlobalTheory.CompanionTheory.Ar.Num.FamEx.TestPt.fromNAdd pq) x))) ∈ AA.carrier) ∧ GlobalTheory.CompanionTheory.Ar.GR.FStable F AW.carrier := by
   intro E _ _ _ H D l Xo c O₀ _ β Y S Ω _ K _ _ J _ y 𝔐 d hV _ p _ hpS _ _ _ b _ φ _ A _ _ _ m _ hpm O _ _ _ _ _ _ _

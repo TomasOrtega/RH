@@ -15,19 +15,19 @@ open Formalism.QuantumDeterminants Formalism.FourierDecayAlt.B Formalism.Fourier
 namespace SchurWAux
 
 /- English proof (translation)
-Take `⟨v, hv⟩` from `exists_ne (0 : H)`. Use `set b := stdOrthonormalBasis ℂ H`. Establish `hpt : ∀ g, ∑ i, ⟪b i, ρ g v⟫_ℂ * star ⟪b i, ρ g v⟫_ℂ = ((‖v‖ ^ 2 : ℝ) : ℂ)`. Introduce `g`. Establish `e1 : ∀ i, ⟪b i, ρ g v⟫_ℂ * star ⟪b i, ρ g v⟫_ℂ = ⟪ρ g v, b i⟫_ℂ * ⟪b i, ρ g v⟫_ℂ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Rewrite using `[mul_comm]`. Use `congr 1`. Conclude with `inner_conj_symm _ _`. Repeatedly rewrite using `[e1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[b.sum_inner_mul_inner, inner_self_eq_norm_sq_to_K, hiso]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hbi : ∀ i, ⟪b i, b i⟫_ℂ = 1`. Introduce `i`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]`. Simplify using the standard rewrite rules. Establish `hL : ∫ g, ∑ i, ⟪b i, ρ g v⟫_ℂ * star ⟪b i, ρ g v⟫_ℂ ∂μ = ((‖v‖ ^ 2 : ℝ) : ℂ)`. Repeatedly rewrite using `[hpt]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hL` using `[integral_finset_sum _ (fun i _ => (h v (b i) v (b i)).1)]`. Establish `e2 : ∀ i, ∫ g, ⟪b i, ρ g v⟫_ℂ * star ⟪b i, ρ g v⟫_ℂ ∂μ = ((‖v‖ ^ 2 : ℝ) : ℂ) / (d : ℂ)`. Introduce `i`. Rewrite using `[(h v (b i) v (b i)).2, hbi, mul_one, inner_self_eq_norm_sq_to_K]`. Use `push_cast`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the indicated hypotheses repeatedly using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `hL` using `[e2]`. Rewrite `hL` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]`. Establish `hv2 : ((‖v‖ ^ 2 : ℝ) : ℂ) ≠ 0`. Establish `: 0 < ‖v‖` using `norm_pos_iff.mpr hv`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(pow_pos this 2).ne'` after adjusting the coercions. Establish `hd' : (d : ℂ) ≠ 0` using `by exact_mod_cast hd.ne'`. Rewrite `hL` using `[mul_div_assoc', div_eq_iff hd']`. Conclude with `(mul_right_cancel₀ hv2 (by rw [hL]; ring)).symm`.
+A detailed English derivation is pending.
 -/
 theorem fdeg_eq_finrank {G : Type*} [MeasurableSpace G] (μ : Measure G) [IsProbabilityMeasure μ]
     {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H] [Nontrivial H]
@@ -73,21 +73,21 @@ theorem fdeg_eq_finrank {G : Type*} [MeasurableSpace G] (μ : Measure G) [IsProb
 end SchurWAux
 
 /- English proof (translation)
-Take `⟨hB2, -⟩` from `h`. Take `⟨-, -, -, -, -, -, -, -, -, -, -, -, -, hCpt, -, -, -, hHI, -, -, -, hCW, -⟩` from `hB2`. Introduce `k r Wp _ _ _ D hD v w v' w'`. Break down `subsingleton_or_nontrivial Wp with hW | hW` into its components or cases. Rewrite using `[Subsingleton.elim w 0]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hU : IsClosedSubgroup (UWset k r D.z)` using `hCW k r D.z`. Establish `hμ` using `D.haarW`. Establish `: CompleteSpace Wp` using `FiniteDimensional.complete ℂ Wp`. Set `μ : Measure (MatrixSubsetMeasurability.SG hU)` to `MatrixSubsetMeasurability.nu hU D.μW`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `: μ.IsMulLeftInvariant` using `MatrixSubsetMeasurability.nu_left hμ`. Establish `: μ.IsInvInvariant` using `MatrixSubsetMeasurability.nu_inv hHI hμ`. Establish `hE` using `MatrixSubsetMeasurability.me_val hU`. Establish `hcpt : IsCompact (Set.univ : Set (MatrixSubsetMeasurability.SG hU))`. Establish `hind : Topology.IsInducing (fun g : MatrixSubsetMeasurability.SG hU => g.1)` using `Topology.IsInducing.subtypeVal`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hr : Set.range (fun g : MatrixSubsetMeasurability.SG hU => g.1) = {x : Mt k r | (Matrix.of x : Mat k r) ∈ UWset k r D.z}` using `Subtype.range_coe_subtype`. Rewrite using `[hind.isCompact_iff, Set.image_univ, hr]`. Conclude with `hCpt k r D.z D.z_mem D.T_pos`. Establish `hν1 : μ Set.univ = 1`. Establish `e : ((MatrixSubsetMeasurability.nu hU D.μW).map (fun g : MatrixSubsetMeasurability.SG hU => g.1)) Set.univ = D.μW Set.univ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MatrixSubsetMeasurability.map_nu hμ]`. Rewrite `e` using `[Measure.map_apply hE.measurable MeasurableSet.univ, Set.preimage_univ]`. Conclude with `e.trans hD.mass`. Establish `: IsProbabilityMeasure μ` using `⟨hν1⟩`. Establish `: μ.IsOpenPosMeasure` using `isOpenPosMeasure_of_mulLeftInvariant_of_compact _ hcpt (by rw [hν1]; exact one_ne_zero)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ρ : MatrixSubsetMeasurability.SG hU → (Wp →L[ℂ] Wp)` to `fun g => D.π (MatrixSubsetMeasurability.mat g)`. Establish `h1 : ρ 1 = 1` using `D.π_rep.1`. Establish `hρm : ∀ a b, ρ (a * b) = (ρ a).comp (ρ b)` using `fun a b => D.π_rep.2 _ a.2 _ b.2`. Establish `hiso : ∀ g v, ‖ρ g v‖ = ‖v‖` using `fun g v => D.π_unitary _ g.2 v`. Establish `hcont : ∀ v, Continuous fun g => ρ g v` using `fun v => (D.π_cont.comp_continuous MatrixSubsetMeasurability.continuous_mat MatrixSubsetMeasurability.mat_mem).clm_apply continuous_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsq : ∀ v w : Wp, MemLp (fun g => ⟪w, ρ g v⟫_ℂ) 2 μ`. Introduce `v w`. Use `MemLp.of_bound (continuous_const.inner (hcont v)).aestronglyMeasurable (‖w‖ * ‖v‖) (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Conclude with `(norm_inner_le_norm _ _).trans (le_of_eq (by rw [hiso]))`. Establish `hirr : ∀ S : Submodule ℂ Wp, IsClosed (S : Set Wp) → (∀ g, ∀ v ∈ S, ρ g v ∈ S) → S = ⊥ ∨ S = ⊤` using `fun S hS hst => hD.irr S hS fun g hg v hv => hst (MatrixSubsetMeasurability.mk hU g hg) v hv`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSq : Formalism.MainNotions.BridgeCSchur.SqRep μ ρ` using `⟨h1, hρm, hiso, hcont, hsq⟩`. Take `⟨d, hd, hrel⟩` from `Formalism.MainNotions.BridgeCSchur.schur_orth hSq hirr`. Establish `hdn` using `SchurWAux.fdeg_eq_finrank μ ρ hiso d hd hrel`. Rewrite using `[← MatrixSubsetMeasurability.map_nu (hU := hU) hμ, hE.integral_map, ← hdn]`. Conclude with `(hrel v w v' w').2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem stSchurW (h : UnitaryGroupStructuralFacts) : StSchurW := by
   obtain ⟨hB2, -⟩ := h

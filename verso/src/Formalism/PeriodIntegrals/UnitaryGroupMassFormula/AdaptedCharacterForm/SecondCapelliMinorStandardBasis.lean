@@ -8,7 +8,7 @@ namespace Formalism.FourierDecayAlt.Q.Adapted
 open Formalism.REAL
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `h1` using `congrFun (congrFun h i) k`. Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply]`. Simplify using `only [Matrix.mulVec, dotProduct, h1, Pi.single_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_col {n : ℕ} (P Q : Matrix (Fin n) (Fin n) ℂ) (h : Q * P = 1) (k : Fin n) :
     (Q *ᵥ fun p => P p k) = Pi.single k 1 := by
@@ -18,9 +18,9 @@ theorem mulVec_col {n : ℕ} (P Q : Matrix (Fin n) (Fin n) ℂ) (h : Q * P = 1) 
   simp only [Matrix.mulVec, dotProduct, h1, Pi.single_apply]
 
 /- English proof (translation)
-Unfold `chatA`. Rewrite using `[Finset.sum_eq_single l (fun i _ hi => ?_) (fun h => absurd (Finset.mem_univ l) h)]`. Rewrite using `[Finset.sum_eq_single l (fun j _ hj => ?_) (fun h => absurd (Finset.mem_univ l) h)]`. Use `congr 1`. Rewrite using `[Pi.single_eq_same, mul_one, ← two_mul, pow_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Evaluate the numerical expressions. Simplify using `[Pi.single_apply, hj]`. Conclude with `Finset.sum_eq_zero fun j _ => by simp [hγ i hi]`.
+Evaluate the numerical expressions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem chatA_single {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m → Fin m → A) (u : ℂ)
     (l : Fin m) (γ : Fin m → ℂ) (hγ : ∀ j, j ≠ l → γ j = 0) :
@@ -35,7 +35,7 @@ theorem chatA_single {A : Type*} [Ring A] [Algebra ℂ A] {m : ℕ} (E : Fin m �
   · exact Finset.sum_eq_zero fun j _ => by simp [hγ i hi]
 
 /- English proof (translation)
-Establish `hC : j' ≠ 0`. Introduce and unpack `rfl`. Simplify using `[Fin.lt_def] at h`. Apply the tactic sequence `by_cases hA : j = 0 <;> by_cases hB : j' = 1 <;> simp [Pi.single_apply, hA, hB, hC]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coefA {n : ℕ} (j j' : Fin (n + 2)) (h : j < j') :
     (Pi.single 0 1 : Fin (n + 2) → ℂ) j * (Pi.single 1 1 : Fin (n + 2) → ℂ) j' -
@@ -47,9 +47,9 @@ theorem coefA {n : ℕ} (j j' : Fin (n + 2)) (h : j < j') :
   by_cases hA : j = 0 <;> by_cases hB : j' = 1 <;> simp [Pi.single_apply, hA, hB, hC]
 
 /- English proof (translation)
-Establish `hi' : 2 ≤ i'.val`. Assume the negation of the conclusion as `hlt`. Use `push_neg at hlt`. Apply `hne` to reduce the goal to its premises. Establish `h1 : i.val < i'.val` using `h`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `refine ⟨Fin.ext ?_, Fin.ext ?_⟩ <;> simp only [Fin.val_zero, Fin.val_one] <;> omega`. Rewrite using `[(hγ i' hi').1, (hγ i' hi').2]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem coefB {n : ℕ} (γ γ' : Fin (n + 2) → ℂ) (hγ : ∀ j : Fin (n + 2), 2 ≤ j.val → γ j = 0 ∧ γ' j = 0)
     (i i' : Fin (n + 2)) (h : i < i') (hne : ¬ (i = 0 ∧ i' = 1)) :
@@ -64,13 +64,13 @@ theorem coefB {n : ℕ} (γ γ' : Fin (n + 2) → ℂ) (hγ : ∀ j : Fin (n + 2
   ring
 
 /- English proof (translation)
-Unfold `chat2A`. Establish `key : ∀ i i' j j' : Fin (n + 2), (if i < i' ∧ j < j' then ((-1) ^ ((i : ℕ) + (i' : ℕ) + (j : ℕ) + (j' : ℕ)) * (γ i * γ' i' - γ i' * γ' i) * ((Pi.single 0 1 : Fin (n + 2) → ℂ) j * (Pi.single 1 1 : Fin (n + 2) → ℂ) j' - (Pi.single 0 1 : Fin (n + 2) → ℂ) j' * (Pi.single 1 1 : Fin (n …`. Introduce `i i' j j'`. Distinguish the cases in `h : i < i' ∧ j < j'`. Rewrite using `[if_pos h, coefA j j' h.2]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hii : i = 0 ∧ i' = 1`. Distinguish the cases in `hjj : j = 0 ∧ j' = 1`. Take `⟨rfl, rfl⟩` from `hii`. Take `⟨rfl, rfl⟩` from `hjj`. Evaluate the numerical expressions.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Evaluate the numerical expressions.
 
-Rewrite using `[if_neg hjj, if_neg (show ¬(j' = 1 ∧ j = 0 ∧ i' = 1 ∧ i = 0) from fun h' => hjj ⟨h'.2.1, h'.1⟩), mul_zero, zero_smul]`. Rewrite using `[coefB γ γ' hγ i i' h.1 hii, if_neg (show ¬(j' = 1 ∧ j = 0 ∧ i' = 1 ∧ i = 0) from fun h' => hii ⟨h'.2.2.2, h'.2.2.1⟩), mul_zero, zero_mul, zero_smul]`. Rewrite using `[if_neg h, if_neg]`. Introduce and unpack `⟨rfl, rfl, rfl, rfl⟩`. Conclude with `h ⟨by simp [Fin.lt_def], by simp [Fin.lt_def]⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [key]`. Simplify using `only [ite_and, Finset.sum_ite_eq', Finset.mem_univ, if_true]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem second_capelli_minor_standard_basis {A : Type*} [Ring A] [Algebra ℂ A] {n : ℕ} (E : Fin (n + 2) → Fin (n + 2) → A)
     (u : ℂ) (γ γ' : Fin (n + 2) → ℂ) (hγ : ∀ j : Fin (n + 2), 2 ≤ j.val → γ j = 0 ∧ γ' j = 0) :
@@ -105,7 +105,7 @@ theorem second_capelli_minor_standard_basis {A : Type*} [Ring A] [Algebra ℂ A]
   simp only [ite_and, Finset.sum_ite_eq', Finset.mem_univ, if_true]
 
 /- English proof (translation)
-Introduce `A _ _ n E P Q hE hQP hPQ u β hβ`. Establish `h` using `(hcov A (n + 1) E P Q hE hQP hPQ u (fun p => P p (Fin.last n)) 0 β 0).2.1`. Rewrite using `[← h, mulVec_col P Q hQP (Fin.last n)]`. Conclude with `chatA_single _ u (Fin.last n) (β ᵥ* P) hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chatAdapted_of (hcov : ContractionsCovariant) : ChatAdapted := by
   intro A _ _ n E P Q hE hQP hPQ u β hβ
@@ -114,7 +114,7 @@ theorem chatAdapted_of (hcov : ContractionsCovariant) : ChatAdapted := by
   exact chatA_single _ u (Fin.last n) (β ᵥ* P) hβ
 
 /- English proof (translation)
-Introduce `A _ _ n E P Q hE hQP hPQ u β β' hβ`. Establish `h` using `(hcov A (n + 2) E P Q hE hQP hPQ u (fun p => P p 0) (fun p => P p 1) β β').2.2`. Rewrite using `[← h, mulVec_col P Q hQP 0, mulVec_col P Q hQP 1]`. Conclude with `second_capelli_minor_standard_basis _ u (β ᵥ* P) (β' ᵥ* P) hβ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chat2Adapted_of (hcov : ContractionsCovariant) : Chat2Adapted := by
   intro A _ _ n E P Q hE hQP hPQ u β β' hβ
@@ -123,7 +123,7 @@ theorem chat2Adapted_of (hcov : ContractionsCovariant) : Chat2Adapted := by
   exact second_capelli_minor_standard_basis _ u (β ᵥ* P) (β' ᵥ* P) hβ
 
 /- English proof (translation)
-Introduce `h` and use `⟨chatAdapted_of h, chat2Adapted_of h⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem main : ContractionsCovariant → ChatAdapted ∧ Chat2Adapted := fun h => ⟨chatAdapted_of h, chat2Adapted_of h⟩
 

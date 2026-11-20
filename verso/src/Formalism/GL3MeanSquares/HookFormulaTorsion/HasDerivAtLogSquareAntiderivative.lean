@@ -9,9 +9,9 @@ namespace Formalism.HermitianLattices.GL2a2
 open Formalism.HermitianLattices.GL2PrimeSums
 
 /- English proof (translation)
-Proceed by induction on `Zs using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons ρ Z ih`. Simplify using `only [Multiset.map_cons, Multiset.sum_cons]`. Establish `ih'` using `ih (fun r hr => hre r (Multiset.mem_cons_of_mem hr))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1 : ‖(u : ℂ) ^ ρ / ρ‖ ≤ B * (1 / ‖ρ‖)`. Rewrite using `[norm_div, Complex.norm_cpow_eq_rpow_re_of_pos hu0, div_eq_mul_one_div]`. Conclude with `mul_le_mul_of_nonneg_right (hre ρ (Multiset.mem_cons_self _ _)) (by positivity)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private lemma norm_sum_zeros_le (u B : ℝ) (hu0 : 0 < u) (Zs : Multiset ℂ)
     (hre : ∀ ρ ∈ Zs, u ^ ρ.re ≤ B) :
@@ -28,7 +28,7 @@ private lemma norm_sum_zeros_le (u B : ℝ) (hu0 : 0 < u) (Zs : Multiset ℂ)
       _ ≤ _ := by rw [mul_add]; exact add_le_add h1 ih'
 
 /- English proof (translation)
-Rewrite using `[Real.lt_log_iff_exp_lt (by norm_num)]`. Use `Real.exp_one_lt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 private lemma one_lt_log_three : (1 : ℝ) < Real.log 3 := by
   rw [Real.lt_log_iff_exp_lt (by norm_num)]
@@ -36,31 +36,29 @@ private lemma one_lt_log_three : (1 : ℝ) < Real.log 3 := by
   linarith
 
 /- English proof (translation)
-Introduce `c C₂ hc hC₂`. Use `⟨288 * C₂ / c ^ 2, c / 6, by positivity, by positivity, ?_⟩` and prove the remaining obligations. Introduce `Q u Zs hQ hu hz hsum`. Establish `hQ0 : 0 < Q` using `by linarith`. Establish `hlQ : 1 < Real.log Q` using `lt_of_lt_of_le one_lt_log_three (Real.log_le_log (by norm_num) hQ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu0 : 0 < u` using `lt_of_lt_of_le (Real.exp_pos _) hu`. Establish `hlu : Real.log Q ^ 2 ≤ Real.log u`. Rewrite using `[Real.le_log_iff_exp_le hu0]`. Conclude with `hu`. Use `set s := Real.sqrt (Real.log u) with hs`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlu0 : 0 ≤ Real.log u` using `le_trans (sq_nonneg _) hlu`. Establish `hss : s ^ 2 = Real.log u` using `Real.sq_sqrt hlu0`. Establish `hsQ : Real.log Q ≤ s` using `Real.le_sqrt_of_sq_le hlu`. Establish `hs1 : 1 < s` using `lt_of_lt_of_le hlQ hsQ`. Establish `hs0 : 0 < s` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB : ∀ ρ ∈ Zs, u ^ ρ.re ≤ u * Real.exp (-(c / 3) * s)`. Introduce `ρ hρ`. Take `⟨him, hre⟩` from `hz ρ hρ`. Establish `ha0 : 0 ≤ |ρ.im|` using `abs_nonneg _`. Establish `hx : (2.7 : ℝ) < Real.exp s`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : Real.exp 1 < Real.exp s` using `Real.exp_lt_exp.mpr hs1`. Use `Real.exp_one_gt_d9` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : |ρ.im| + 3 ≤ Real.exp (2 * s)`. Establish `: Real.exp (2 * s) = Real.exp s * Real.exp s` using `by rw [← Real.exp_add]; ring_nf`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Rewrite using `[this]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hlog : Real.log (Q * (|ρ.im| + 3)) ≤ 3 * s`. Rewrite using `[Real.log_mul hQ0.ne' (by positivity)]`. Establish `: Real.log (|ρ.im| + 3) ≤ 2 * s`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[Real.log_le_iff_le_exp (by positivity)]; exact h3`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlog0 : 0 < Real.log (Q * (|ρ.im| + 3))` using `Real.log_pos (by nlinarith)`. Establish `hdiv : c / (3 * s) ≤ c / Real.log (Q * (|ρ.im| + 3))` using `div_le_div_of_nonneg_left hc.le hlog0 hlog`. Establish `hre' : ρ.re ≤ 1 - c / (3 * s)` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu1 : 1 ≤ u`. Rewrite using `[← Real.log_nonneg_iff hu0]`. Conclude with `hlu0`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.rpow_sub hu0, Real.rpow_one, Real.rpow_def_of_pos hu0, ← hss, div_eq_mul_inv, ← Real.exp_neg]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Use `congr 2`. Clear the denominators using the available nonvanishing facts. Establish `h1` using `norm_sum_zeros_le u _ hu0 Zs hB`. Establish `hsum' : (Zs.map (fun ρ => 1 / ‖ρ‖)).sum ≤ C₂ * (4 * s ^ 2)`. Use `hsum.trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.log_mul hQ0.ne' (Real.exp_pos _).ne', Real.log_exp]`. Establish `: (Real.log Q + s) ^ 2 ≤ 4 * s ^ 2` using `by nlinarith`. Conclude with `mul_le_mul_of_nonneg_left this hC₂.le`. Establish `hE : s ^ 2 * Real.exp (-(c / 3) * s) ≤ 72 / c ^ 2 * Real.exp (-(c / 6) * s)`. Establish `e : Real.exp (-(c / 3) * s) = Real.exp (-(c / 6) * s) * Real.exp (-(c / 6) * s)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Real.exp_add]`. Put the polynomial expressions in normal form. Establish `hq : (c / 6 * s) ^ 2 / 2 ≤ Real.exp (c / 6 * s)`. Use `Real.quadratic_le_exp_of_nonneg (x := c / 6 * s) (by positivity)` as an intermediate fact. Use polynomial arithmetic with `[mul_pos hc hs0]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hq' : s ^ 2 * Real.exp (-(c / 6) * s) ≤ 72 / c ^ 2`. Establish `e2 : Real.exp (-(c / 6) * s) = (Real.exp (c / 6 * s))⁻¹` using `by rw [← Real.exp_neg]; ring_nf`. Rewrite using `[e2, ← div_eq_mul_inv, div_le_iff₀ (Real.exp_pos _)]`. Establish `: s ^ 2 = 72 / c ^ 2 * ((c / 6 * s) ^ 2 / 2)` using `by field_simp; ring`. Rewrite using `[this]`.
-
-Conclude with `mul_le_mul_of_nonneg_left hq (by positivity)`. Rewrite using `[e, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right hq' (Real.exp_pos _).le`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem zero_sum_bound_large : Formalism.HermitianLattices.GL2a2.ZeroSumBoundLarge := by
   intro c C₂ hc hC₂

@@ -12,9 +12,9 @@ variable {D : D7} {u : D.what₂.Word}
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Simplify using `only [Formalism.MainNotions.product_first_zeroth_parts.Eop, LinearMap.pi_apply, LinearMap.sum_apply, Finset.sum_apply]`. Rewrite using `[Finset.sum_subtype (Finset.univ.filter (fun x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) => x ≠ 0)) (p := fun x : Module.Dual ((D.mem u).A.Fv v) ((D.fm u).lk 0 v c) => x ≠ 0) (by intro x; simp)]`. Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Take `⟨γ, κ, -, hrel, htr⟩` from `hMv x`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [LinearMap.comp_apply, LinearMap.proj_apply, LinearEquiv.coe_coe]`. Rewrite using `[htr, hψ]`. Conclude with `congrFun (natural_translate_adelic_function T hg _ _ (Mv x) γ κ hrel) s`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eop_eq (T : Forms0 D u) (v : (D.mem u).A.vT) (ψ : Fn D u 0)
     {g : UPts (sigD D) (gramN D 0 (Nat.zero_le _)) (FiniteAdeleRing (𝓞 D.host.F) D.host.F) → Fr D 0 (Nat.zero_le _) → ℂ}
@@ -50,23 +50,21 @@ def EDiaSame0F (T : Forms0 D u) : Prop :=
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Take `⟨G, hG, hGψ⟩` from `S0.forms_from_adelic_function T 0 (Nat.zero_le _) rfl ψ hψ`. Establish `hGA` using `(Submodule.mem_inf.1 hG).1`. Take `⟨k, hk, δ, hδ⟩` from `S0.diamond_elements_exist_all T 0 (Nat.zero_le _) rfl v a`. Establish `hGδ` using `S0.adelic_function_right_translate_diamond T.cls0.lev (embT D) _ _ (S0.level_places_not_bad T.atT v) hδ hGA`. Establish `hdψ : ∀ c1, dia D u 0 v a ψ c1 = fun s => G (T.cls0.y c1 * δ) (T.val0.eY s)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `c1`. Use `show (D.fm u).dilT 0 v a c1 (ψ ((D.fm u).dil 0 v a c1)) = _`. Rewrite using `[hGψ]`. Conclude with `T.val0.dilT v a k hk c1 δ hδ G hGA`. Use function extensionality and compare the values at `c`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨σ, Mv, hMv, hm⟩` from `hE v a k hk δ hδ c`. Rewrite using `[eop_eq T v (dia D u 0 v a ψ) hGδ hdψ c Mv hMv, eop_eq T v ψ hGA hGψ c Mv hMv]`. Use function extensionality and compare the values at `s`. Use `show ∑ x, G (T.cls0.y c * Mv x * δ) (T.val0.eY s) = _`. Rewrite using `[← Equiv.sum_comp σ (fun x => G (T.cls0.y c * Mv x) (T.val0.eY s))]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Use `Finset.sum_congr rfl fun x _ => ?_` and prove the remaining obligations. Set `m : T.cls0.lev.U` to `⟨(Mv (σ x)).1⁻¹ * ((Mv x).1 * δ.1), hm x⟩`. Take `⟨-, -, hs1, -, -⟩` from `hMv x`. Take `⟨-, -, hs2, -, -⟩` from `hMv (σ x)`. Establish `hs2i : ∀ v'', v'' ≠ (T.atT.eV v).1 → bc (prV (E` using `D.host.E) v'') ((Mv (σ x))⁻¹).1 = 1 := by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v'' hv''`. Rewrite using `[InvMemClass.coe_inv, map_inv, hs2 v'' hv'', inv_one]`. Establish `hs1d : ∀ v'', v'' ≠ (T.atT.eV v).1 → bc (prV (E` using `D.host.E) v'') (Mv x * δ).1 = 1 := by`. Introduce `v'' hv''`. Rewrite using `[Subgroup.coe_mul, map_mul, hs1 v'' hv'', hδ.1 v'' hv'', one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hχ : T.cls0.lev.chi m = 1`. Use `rnd_chi T.cls0.lev (T.atT.eV v).1 (S0.level_places_not_bad T.atT v) ((Mv (σ x))⁻¹) (Mv x * δ) hs2i hs1d 1 1 m (by simp only [m, Subgroup.coe_mul, InvMemClass.coe_inv, OneMemClass.coe_one, mul_one])` as an intermediate fact. Rewrite using `[this, map_one, mul_one]`. Establish `heq : (T.cls0.y c * Mv x * δ).1 = bc (inclE (F` using `D.host.F) (FiniteAdeleRing (𝓞 D.host.F) D.host.F)) 1 * (T.cls0.y c * Mv (σ x)).1 * m.1 := by`. Rewrite using `[map_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Subgroup.coe_mul, m]`. Use `group`. Establish `hTr : IsTr (atInf (embT D) ((1 : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E)) (T.val0.eY s) (T.val0.eY s)`. Introduce `τ`. Establish `h1 : atInf (embT D) ((1 : GL (Fin (D.R.N 0)) D.host.E) : Matrix (Fin (D.R.N 0)) (Fin (D.R.N 0)) D.host.E) τ = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `[atInf, Matrix.map_one]`. Rewrite using `[h1, Matrix.one_mul]`. Rewrite using `[hGA 1 (Subgroup.one_mem _) _ _ m heq _ _ hTr]`. Express the relevant statement in the definitionally equal form `((T.cls0.lev.chi m : ℂˣ) : ℂ) * _ = _`. Rewrite using `[hχ]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eop_dia (T : Forms0 D u) (hE : EDiaSame0F T) (v : (D.mem u).A.vT)
     (a : ((D.mem u).A.Fv v)ˣ) (ψ : Fn D u 0) (hψ : ψ ∈ (D.fm u).Fi 0) :
@@ -120,7 +118,7 @@ theorem eop_dia (T : Forms0 D u) (hE : EDiaSame0F T) (v : (D.mem u).A.vT)
   simp
 
 /- English proof (translation)
-Introduce `v a φ hφ`. Simplify using `only [Formalism.MainNotions.product_first_zeroth_parts.trp, LinearMap.smul_apply, LinearMap.comp_apply]`. Rewrite using `[← diaU_same T hU v a φ hφ, eop_dia T hE v a _ (U_op_preserves_forms_zero T v φ hφ)]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem trpDia0_of (T : Forms0 D u) (hU : UpDiaSame0F T) (hE : EDiaSame0F T) : TraceDiamondInvariantLevelZero D u := by
   intro v a φ hφ

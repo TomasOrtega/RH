@@ -17,9 +17,9 @@ section
 variable {k R : Type} [CommRing k] [CommRing R] [Algebra k R] {σ : R ≃ₐ[k] R} {q n : ℕ}
 
 /- English proof (translation)
-Take `⟨r, hr⟩` from `hx.exists_right_inv`. Establish `h1 : algebraMap k R x * σ r = 1`. Rewrite using `[← σ.commutes, ← map_mul, hr, map_one]`. Take `⟨y, hy⟩` from `h.fix r (hx.mul_left_cancel (h1.trans hr.symm))`. Use `IsUnit.of_mul_eq_one y (h.inj ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, hy, hr, map_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem isUnit_of_map (h : IsGal σ q) {x : k} (hx : IsUnit (algebraMap k R x)) : IsUnit x := by
   obtain ⟨r, hr⟩ := hx.exists_right_inv
@@ -30,7 +30,7 @@ private theorem isUnit_of_map (h : IsGal σ q) {x : k} (hx : IsUnit (algebraMap 
   rw [map_mul, hy, hr, map_one]
 
 /- English proof (translation)
-Use `haveI : Nontrivial R := h.inj.nontrivial`. Rewrite `hs`, the goal using `[Polynomial.separable_def]`. Rewrite `hs` using `[← Polynomial.isUnit_resultant_iff_isCoprime (hp.map _), Polynomial.derivative_map, Polynomial.natDegree_map_eq_of_injective h.inj, Polynomial.natDegree_map_eq_of_injective h.inj, Polynomial.resultant_map_map]`. Rewrite using `[← Polynomial.isUnit_resultant_iff_isCoprime hp]`. Conclude with `isUnit_of_map h hs`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem separable_of_map (h : IsGal σ q) {p : k[X]} (hp : p.Monic)
     (hs : (p.map (algebraMap k R)).Separable) [Nontrivial k] : p.Separable := by
@@ -43,9 +43,9 @@ private theorem separable_of_map (h : IsGal σ q) {p : k[X]} (hp : p.Monic)
   exact isUnit_of_map h hs
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Take `⟨b⟩ : Nonempty (Module.Basis (Fin p.natDegree) k (AdjoinRoot p))` from `⟨(AdjoinRoot.powerBasis' hp).basis⟩`. Use `⟨b, ?_⟩` and prove the remaining obligations. Use `Polynomial.eq_of_monic_of_dvd_of_natDegree_le hp (Matrix.charpoly_monic _) ?_ ?_` and prove the remaining obligations. Rewrite using `[← AdjoinRoot.mk_eq_zero, ← AdjoinRoot.aeval_eq]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `Algebra.leftMulMatrix_injective b` to reduce the goal to its premises. Rewrite using `[← Polynomial.aeval_algHom_apply, Matrix.aeval_self_charpoly, map_zero]`. Rewrite using `[Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem exists_model [Nontrivial k] {p : k[X]} (hp : p.Monic) (hn : p.natDegree = n) :
     ∃ (b : Module.Basis (Fin n) k (AdjoinRoot p)),
@@ -61,13 +61,13 @@ private theorem exists_model [Nontrivial k] {p : k[X]} (hp : p.Monic) (hn : p.na
   · rw [Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]
 
 /- English proof (translation)
-Simplify using `only [sgConj, map_mul, _root_.mul_inv_rev, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sgConj_mul (x y d : GL (Fin n) R) : sgConj σ (x * y) d = sgConj σ y (sgConj σ x d) := by
   simp only [sgConj, map_mul, _root_.mul_inv_rev, mul_assoc]
 
 /- English proof (translation)
-Simplify using `[sgConj]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem sgConj_one (d : GL (Fin n) R) : sgConj σ 1 d = d := by
   simp [sgConj]
@@ -75,7 +75,7 @@ private theorem sgConj_one (d : GL (Fin n) R) : sgConj σ 1 d = d := by
 variable {A : Type} [CommRing A] [Algebra k A]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[mat, Algebra.leftMulMatrix_eq_repr_mul, Algebra.TensorProduct.basis_apply, Algebra.TensorProduct.basis_repr_tmul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem mat_tmul (b : Module.Basis (Fin n) k A) (r : R) (s : A) :
     mat b (r ⊗ₜ[k] s) = r • (Algebra.leftMulMatrix b s).map (algebraMap k R) := by
@@ -88,21 +88,21 @@ private def phi (b : Module.Basis (Fin n) k A) : A ⊗[k] R →+* Matrix (Fin n)
     (Algebra.TensorProduct.comm k A R).toRingEquiv.toRingHom
 
 /- English proof (translation)
-The claim follows from `(Algebra.leftMulMatrix_injective (Algebra.TensorProduct.basis R b)).comp (Algebra.TensorProduct.comm k A R).injective`.
+A detailed English derivation is pending.
 -/
 private theorem phi_inj (b : Module.Basis (Fin n) k A) : Function.Injective (phi (R := R) b) :=
   (Algebra.leftMulMatrix_injective (Algebra.TensorProduct.basis R b)).comp
     (Algebra.TensorProduct.comm k A R).injective
 
 /- English proof (translation)
-The claim follows from `mat_tmul b r s`.
+A detailed English derivation is pending.
 -/
 private theorem phi_tmul (b : Module.Basis (Fin n) k A) (r : R) (s : A) :
     phi b (s ⊗ₜ[k] r) = r • (Algebra.leftMulMatrix b s).map (algebraMap k R) :=
   mat_tmul b r s
 
 /- English proof (translation)
-Use `⟨(Algebra.TensorProduct.comm k A R).symm (aeval ((1 : R) ⊗ₜ[k] s) P), ?_⟩` and prove the remaining obligations. Establish `h1` using `mat_tmul b (1 : R) s`. Rewrite `h1` using `[one_smul, mat]`. Rewrite using `[← h1, Polynomial.aeval_algHom_apply]`. Simplify using `[phi]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem phi_aeval (b : Module.Basis (Fin n) k A) (s : A) (P : R[X]) :
     ∃ t, phi b t = aeval ((Algebra.leftMulMatrix b s).map (algebraMap k R)) P := by
@@ -113,9 +113,9 @@ private theorem phi_aeval (b : Module.Basis (Fin n) k A) (s : A) (P : R[X]) :
   simp [phi]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s r`. Rewrite using `[Algebra.TensorProduct.congr_apply, Algebra.TensorProduct.map_tmul, phi_tmul, phi_tmul]`. Use extensionality with `i j`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Consider the case `add a b ha hb => rw [map_add, map_add, ha, hb, map_add, Matrix.map_add _ (map_add σ)]`.
+Simplify using the standard rewrite rules. Treat this case separately.
 -/
 private theorem phi_sg (b : Module.Basis (Fin n) k A) (t : A ⊗[k] R) :
     phi b ((Algebra.TensorProduct.congr AlgEquiv.refl σ : A ⊗[k] R ≃ₐ[A] A ⊗[k] R) t) =
@@ -129,9 +129,9 @@ private theorem phi_sg (b : Module.Basis (Fin n) k A) (t : A ⊗[k] R) :
   | add a b ha hb => rw [map_add, map_add, ha, hb, map_add, Matrix.map_add _ (map_add σ)]
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => ext`. Simplify using the standard rewrite rules. Consider the case `succ j ih`. Rewrite using `[pow_succ', AlgEquiv.mul_apply, phi_sg, ih]`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using `[pow_succ']`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem phi_pow (b : Module.Basis (Fin n) k A) (j : ℕ) (t : A ⊗[k] R) :
     phi b (((Algebra.TensorProduct.congr AlgEquiv.refl σ : A ⊗[k] R ≃ₐ[A] A ⊗[k] R) ^ j) t) =
@@ -144,7 +144,7 @@ private theorem phi_pow (b : Module.Basis (Fin n) k A) (j : ℕ) (t : A ⊗[k] R
     simp [pow_succ']
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp [nm]`. Consider the case `succ m ih`. Rewrite using `[Finset.prod_range_succ, map_mul, ih, phi_pow, ha, nm, nm, List.prod_range_succ, Units.val_mul]`. Both sides reduce to the same expression.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem phi_nm (b : Module.Basis (Fin n) k A) (t : A ⊗[k] R) (a : GL (Fin n) R)
     (ha : phi b t = a) (m : ℕ) :
@@ -161,31 +161,29 @@ private theorem phi_nm (b : Module.Basis (Fin n) k A) (t : A ⊗[k] R) (a : GL (
 end
 
 /- English proof (translation)
-Introduce `k R _ _ _ _ σ q h n δ δ' hs he`. Use `haveI : Nontrivial R := h.inj.nontrivial`. Take `⟨⟨p, hp, hpe⟩, -⟩` from `nmPoly k R σ q h n δ`. Establish `hn : p.natDegree = n`. Rewrite using `[← Polynomial.natDegree_map_eq_of_injective h.inj, ← hpe, cp, Matrix.charpoly_natDegree_eq_dim, Fintype.card_fin]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `exists_model hp hn`. Establish `hu : IsUnit (Algebra.leftMulMatrix b (AdjoinRoot.root p))`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Use `isUnit_of_map h ?_` and prove the remaining obligations. Establish `h1` using `(Matrix.isUnit_iff_isUnit_det _).1 (nm σ q δ).isUnit`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h1`, the goal using `[Matrix.det_eq_sign_charpoly_coeff]`. Rewrite `hpe` using `[cp]`. Rewrite `h1` using `[hpe, Polynomial.coeff_map]`. Simplify `h1` using `[hb]`. Take `⟨γ, hγ⟩` from `hu`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcp : cp γ = p` using `by rw [cp, hγ, hb]`. Establish `hsp : (cp γ).Separable`. Rewrite using `[hcp]`. Conclude with `separable_of_map h hp (hpe ▸ hs)`. Take `⟨x, hx, hxc⟩` from `nmRep k R σ q h n δ γ hsp (by rw [hcp, hpe])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨x', hx', hxc'⟩` from `nmRep k R σ q h n δ' γ hsp (by rw [hcp, he, hpe])`. Take `⟨hfin, -, -, hT⟩` from `galBase k R (AdjoinRoot p) σ q h`. Establish `hG : ((up R γ : GL (Fin n) R) : Matrix (Fin n) (Fin n) R) = (Algebra.leftMulMatrix b (AdjoinRoot.root p)).map (algebraMap k R)`. Rewrite using `[← hγ]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨-, hcent, -⟩` from `conjSep k R n (up R γ : GL (Fin n) R) (by`. Rewrite using `[hG, Matrix.charpoly_map, hb, ← hpe]`. Conclude with `hs)`. Establish `key : ∀ a : GL (Fin n) R, Commute a (up R γ) → ∃ t : (AdjoinRoot p ⊗[k] R)ˣ, Units.map (phi b).toMonoidHom t = a`. Establish `k0 : ∀ a : GL (Fin n) R, Commute a (up R γ) → ∃ t : AdjoinRoot p ⊗[k] R, phi b t = a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Take `⟨P, hP⟩` from `hcent a (by rw [← Units.val_mul, ha.eq, Units.val_mul])`. Rewrite using `[hP, hG]`. Conclude with `phi_aeval b _ P`. Introduce `a ha`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `k0 a ha`. Take `⟨t', ht'⟩` from `k0 a⁻¹ ha.inv_left`. Establish `h1 : t * t' = 1` using `phi_inj b (by`. Rewrite using `[map_mul, ht, ht', map_one, ← Units.val_mul, mul_inv_cancel, Units.val_one])`. Conclude with `⟨Units.mkOfMulEqOne t t' h1, Units.ext ht⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨t, ht⟩` from `key _ hxc`. Take `⟨t', ht'⟩` from `key _ hxc'`. Use `haveI : Module.Finite k (AdjoinRoot p) := Module.Finite.of_basis b`. Use `set τ : AdjoinRoot p ⊗[k] R ≃ₐ[AdjoinRoot p] AdjoinRoot p ⊗[k] R := Algebra.TensorProduct.congr AlgEquiv.refl σ with hτ`. Establish `hN : ∏ j ∈ Finset.range q, (τ ^ j) t = ∏ j ∈ Finset.range q, (τ ^ j) t'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `phi_inj b` to reduce the goal to its premises. Rewrite using `[phi_nm b _ _ (congrArg Units.val ht), phi_nm b _ _ (congrArg Units.val ht'), hx, hx']`. Take `⟨z, hz⟩` from `h90 k R (AdjoinRoot p) _ τ q hT (t * t'⁻¹) (by`. Simplify using `only [Units.val_mul, map_mul]`. Rewrite using `[Finset.prod_mul_distrib, hN, ← Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_eq_one fun j _ => ?_` and prove the remaining obligations. Rewrite using `[← map_mul, Units.mul_inv, map_one])`. Establish `hz' : (t : AdjoinRoot p ⊗[k] R) * τ z = z * t'` using `by conv_rhs => rw [← hz]`. Rewrite using `[Units.val_mul, mul_right_comm, Units.inv_mul_cancel_right]`. Establish `hfinal : sgConj σ (Units.map (phi b).toMonoidHom z) (sgConj σ x δ) = sgConj σ x' δ'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht, ← ht', sgConj, mul_assoc, inv_mul_eq_iff_eq_mul]`. Apply `Units.ext` to reduce the goal to its premises. Establish `h1` using `congrArg (phi b) hz'`. Rewrite `h1` using `[map_mul, map_mul, hτ, phi_sg]`. Conclude with `h1`.
-
-Use `⟨x * Units.map (phi b).toMonoidHom z * x'⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[sgConj_mul, sgConj_mul, hfinal, ← sgConj_mul, mul_inv_cancel, sgConj_one]`.
+A detailed English derivation is pending.
 -/
 theorem nmInj : NmInj := by
   intro k R _ _ _ _ σ q h n δ δ' hs he

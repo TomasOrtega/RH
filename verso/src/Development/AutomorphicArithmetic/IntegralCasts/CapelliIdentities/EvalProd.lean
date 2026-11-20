@@ -5,7 +5,7 @@ namespace UpperTheory.Reformulated.B.Gr23
 open Polynomial
 
 /- English proof (translation)
-Rewrite using `[eval_multiset_prod, Multiset.map_map, Multiset.map_map]`. Use `congr 1`. Use `Multiset.map_congr rfl fun x _ ↦ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem eval_prod (m : Multiset ℂ) (u : ℂ) :
     ((m.map (fun x : ℂ ↦ -x)).map (fun x : ℂ ↦ X - C x)).prod.eval u
@@ -16,9 +16,9 @@ private theorem eval_prod (m : Multiset ℂ) (u : ℂ) :
   simp
 
 /- English proof (translation)
-Establish `hp : ((m.map (fun x : ℂ ↦ -x)).map (fun x : ℂ ↦ X - C x)).prod = ((m'.map (fun x : ℂ ↦ -x)).map (fun x : ℂ ↦ X - C x)).prod`. Use `Polynomial.funext fun u ↦ ?_` and prove the remaining obligations. Rewrite using `[eval_prod, eval_prod, h u]`. Establish `hr` using `congrArg Polynomial.roots hp`. Rewrite `hr` using `[roots_multiset_prod_X_sub_C, roots_multiset_prod_X_sub_C]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Multiset.map_injective neg_injective hr`.
+A detailed English derivation is pending.
 -/
 private theorem eq_of_prod_eq {m m' : Multiset ℂ}
     (h : ∀ u : ℂ, (m.map (fun x : ℂ ↦ u + x)).prod = (m'.map (fun x : ℂ ↦ u + x)).prod) :
@@ -32,7 +32,7 @@ private theorem eq_of_prod_eq {m m' : Multiset ℂ}
   exact Multiset.map_injective neg_injective hr
 
 /- English proof (translation)
-Take `⟨φ, hφ, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hV`. Use `eq_of_prod_eq fun u ↦ ?_` and prove the remaining obligations. Conclude with `smul_left_injective ℂ hφ0 ((h.2 u φ hφ).symm.trans (h'.2 u φ hφ))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem abs {M : Type*} [AddCommGroup M] [Module ℂ M] {V : Submodule ℂ M} (hV : V ≠ ⊥)
     (T : ℂ → Module.End ℂ M) {a : ℕ} {m m' : Multiset ℂ}

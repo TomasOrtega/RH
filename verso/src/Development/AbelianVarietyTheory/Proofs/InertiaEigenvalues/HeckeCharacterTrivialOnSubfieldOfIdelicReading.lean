@@ -24,7 +24,7 @@ theorem infIdele_snd_one {K : Type} [Field K] [NumberField K] (w : InfinitePlace
     (infIdele K w x : AdeleRing (𝓞 K) K).2 = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `map_prod ((Pi.evalMonoidHom (fun v : InfinitePlace K => v.Completion) w).comp (MonoidHom.fst (InfiniteAdeleRing K) (FiniteAdeleRing (𝓞 K) K))) f s`.
+A detailed English derivation is pending.
 -/
 theorem fst_prod_apply {K : Type} [Field K] [NumberField K] {ι : Type} (s : Finset ι) (f : ι → AdeleRing (𝓞 K) K)
     (w : InfinitePlace K) : (∏ i ∈ s, f i).1 w = ∏ i ∈ s, (f i).1 w :=
@@ -32,20 +32,18 @@ theorem fst_prod_apply {K : Type} [Field K] [NumberField K] {ι : Type} (s : Fin
     (MonoidHom.fst (InfiniteAdeleRing K) (FiniteAdeleRing (𝓞 K) K))) f s
 
 /- English proof (translation)
-The claim follows from `map_prod (MonoidHom.snd (InfiniteAdeleRing K) (FiniteAdeleRing (𝓞 K) K)) f s`.
+A detailed English derivation is pending.
 -/
 theorem snd_prod {K : Type} [Field K] [NumberField K] {ι : Type} (s : Finset ι) (f : ι → AdeleRing (𝓞 K) K) :
     (∏ i ∈ s, f i).2 = ∏ i ∈ s, (f i).2 :=
   map_prod (MonoidHom.snd (InfiniteAdeleRing K) (FiniteAdeleRing (𝓞 K) K)) f s
 
 /- English proof (translation)
-Use `Units.ext (Prod.ext (funext fun w' => ?_) ?_)` and prove the remaining obligations. Use `show GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteAdeleMap F E (infIdele F w (atInf w k) : AdeleRing (𝓞 F) F).1 w' = _`. Rewrite using `[CharEx.aFi, Units.coe_prod, fst_prod_apply]`. Express the relevant statement in the definitionally equal form `LiesOver.completionMap (v := w'.comap (algebraMap F E)) (w := w') ((infIdele F w (atInf w k) : AdeleRing (𝓞 F) F).1 (w'.comap (algebraMap F E))) = _`. Distinguish the cases in `hw : w'.comap (algebraMap F E) = w`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hm : w' ∈ aboveInf (L` using `E) F w := by simp [aboveInf, hw]`. Rewrite using `[Finset.prod_eq_single_of_mem w' hm (fun w'' _ h => infIdele_fst_ne E w'' w' (Ne.symm h) _), infIdele_fst_self]`. Substitute `hw` using the available equality. Rewrite using `[infIdele_fst_self]`. Conclude with `LiesOver.completionMap_coe (v := w'.comap (algebraMap F E)) (w := w') (WithAbs.toAbs _ (k : F))`.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[infIdele_fst_ne F w _ hw, map_one]`. Use `(Finset.prod_eq_one fun w'' hw'' => infIdele_fst_ne E w'' w' ?_ _).symm` and prove the remaining obligations. Introduce and unpack `rfl`. Simplify using `[aboveInf] at hw''`. Conclude with `hw hw''`.
-
-Use `show GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap F E (infIdele F w (atInf w k) : AdeleRing (𝓞 F) F).2 = _`. Rewrite using `[CharEx.aFi, Units.coe_prod, snd_prod]`. Rewrite using `[Finset.prod_eq_one fun w'' _ => infIdele_snd_one w'' _]`. Conclude with `map_one (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.finiteAdeleMap F E)`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ideleMap_inf (w : InfinitePlace F) (k : Fˣ) :
     GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap F E (infIdele F w (atInf w k)) = CharEx.aFi (L := E) F w k := by
@@ -78,27 +76,27 @@ open GlobalTheory.CharTransport in
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Take `⟨Θ, hc, hΘ⟩` from `exists_toAdele D.host.F D.host.E`. Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Establish `hinc : ∀ x, Θ (incA D x) = algebraMap D.host.E _ x` using `fun x => by`. Express the relevant statement in the definitionally equal form `Θ ((1 : AF D.host.F) ⊗ₜ[D.host.F] x) = _`. Rewrite using `[hΘ, map_one, one_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hfin : ∀ z, (Θ z).2 = Φ z` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [RingHom.map_zero, RingHom.map_zero]`. Both sides reduce to the same expression. Consider the case `add x y hx hy => rw [RingHom.map_add, RingHom.map_add, ← hx, ← hy]`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Both sides reduce to the same expression. Consider the case `tmul a x`. Establish `e : (a ⊗ₜ[D.host.F] x : AE D) = algebraMap (AF D.host.F) (AE D) a * incA D x`. Express the relevant statement in the definitionally equal form `_ = (a ⊗ₜ[D.host.F] (1 : D.host.E)) * ((1 : AF D.host.F) ⊗ₜ[D.host.F] x)`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, mul_one, one_mul]`.
+Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΘ, e, RingHom.map_mul, hΦ.inc]`. Use `FiniteAdeleRing.ext _ fun Q => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = Φ _ Q * _`. Rewrite using `[hΦ.base, locMap_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hinf : ∀ z, infPart D z = 0 → (Θ z).1 = 0` using `fun z hz => by`. Set `u : AE D` to `algebraMap (AF D.host.F) (AE D) (pairA D.host.F 1 0)`. Establish `h1 : u * z = 0`. Use `GlobalTheory.PlaceIdem.parts_inj D _ _ ?_ ?_` and prove the remaining obligations. Rewrite using `[RingHom.map_mul, hz, mul_zero, RingHom.map_zero]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: finPart D u = 0` using `TensorProduct.zero_tmul _ _`. Rewrite using `[RingHom.map_mul, this, zero_mul, RingHom.map_zero]`. Establish `h2 : (Θ u).1 = 1`. Express the relevant statement in the definitionally equal form `(Θ (pairA D.host.F 1 0 ⊗ₜ[D.host.F] (1 : D.host.E))).1 = 1`. Rewrite using `[hΘ, map_one, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_one (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.infiniteAdeleMap D.host.F D.host.E)`. Establish `h3 : (Θ u).1 * (Θ z).1 = 0`. Express the relevant statement in the definitionally equal form `(Θ u * Θ z).1 = 0`. Rewrite using `[← RingHom.map_mul, h1, RingHom.map_zero]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h3` using `[h2, one_mul]`. Then use the resulting hypothesis. Use `⟨Θ, hc, hΘ, hinc, fun P e he k => ?_⟩` and prove the remaining obligations. Take `⟨d0, d1, d2⟩` from `isDelta_of_isPlIdem hΦ he`. Establish `hl : Θ (locE D e (k : D.host.E)) = 1 + Θ e * (algebraMap D.host.E (AdeleRing (𝓞 D.host.E) D.host.E) (k : D.host.E) - 1)` using `(map_loc Θ e (incA D (k : D.host.E))).trans (by rw [hinc])`. Rewrite using `[hl]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Prod.ext ?_ (FiniteAdeleRing.ext _ fun Q => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `1 + (Θ e).1 * _ = 1`. Rewrite using `[hinf e d0, zero_mul, add_zero]`. Express the relevant statement in the definitionally equal form `1 + (Θ e).2 Q * (algebraMap D.host.E (Q.adicCompletion D.host.E) (k : D.host.E) - 1) = Function.update (fun w : HeightOneSpectrum (𝓞 D.host.E) => (1 : w.adicCompletion D.host.E)) P (algebraMap D.host.E (P.adicCompletion D.host.E) (k : D.host.E)) Q`. Rewrite using `[hfin]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality. Rewrite using `[d1, Function.update_self]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[d2 Q hQ, Function.update_of_ne hQ]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_hom_tmul (D : D7) : ∃ Θ : AE D →+* AdeleRing (𝓞 D.host.E) D.host.E, Continuous Θ ∧
     (∀ a x, Θ (a ⊗ₜ[D.host.F] x) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.adeleMap D.host.F D.host.E a * algebraMap D.host.E _ x) ∧
@@ -162,21 +160,19 @@ theorem exists_hom_tmul (D : D7) : ∃ Θ : AE D →+* AdeleRing (𝓞 D.host.E)
       ring
 
 /- English proof (translation)
-Introduce `D c χ hc ha`. Establish `hχ` using `GlobalTheory.ChrEqUnique.isUnitary_of_chrEq D c χ hc`. Take `⟨Θ, hΘc, hΘt, hinc, hloc⟩` from `exists_hom_tmul D`. Set `u : (AE D)ˣ →* Ideles D.host.E` to `Units.map Θ.toMonoidHom`. Establish `hu : Continuous u` using `Continuous.units_map _ hΘc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `c' : (AE D)ˣ →* Circle` to `{ toFun := fun x => ⟨((χ.1 (u x) : ℂˣ) : ℂ), mem_sphere_zero_iff_norm.2 (hχ _)⟩ map_one' := Circle.ext (by simp) map_mul' := fun x y => Circle.ext (by`. Express the relevant statement in the definitionally equal form `((χ.1 (u (x * y)) : ℂˣ) : ℂ) = ((χ.1 (u x) : ℂˣ) : ℂ) * ((χ.1 (u y) : ℂˣ) : ℂ)`. Rewrite using `[map_mul, map_mul, Units.val_mul]) }`. Establish `hcoe : ∀ x, ((c' x : Circle) : ℂ) = ((χ.1 (u x) : ℂˣ) : ℂ)` using `fun x => rfl`. Establish `hc' : ChrEq c' χ`.
+Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨?_, fun x => Circle.ext ?_⟩, fun P e he k x hx => ?_⟩` and prove the remaining obligations. Conclude with `Continuous.subtype_mk (Units.continuous_val.comp (χ.2.1.comp hu)) _`. Establish `: u (Units.map (incA D).toMonoidHom x) = diagUnits D.host.E x` using `Units.ext (hinc x)`. Rewrite using `[hcoe, this, χ.2.2]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `: u x = localIdele D.host.E P (atFin P k)`. Use `Units.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Θ (x : AE D) = _`. Rewrite using `[hx, hloc P e he]`. Rewrite using `[hcoe, this]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hcc : c = c'` using `GlobalTheory.ChrEqUnique.idc_unique D c c' χ hc hc'`. Establish `key : ∀ a : (AF D.host.F)ˣ, χ.1 (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap D.host.F D.host.E a) = 1` using `fun a => by`. Establish `h1 : u (idF D a) = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryHeckeCharacterIdele.ideleMap D.host.F D.host.E a` using `Units.ext (by`. Express the relevant statement in the definitionally equal form `Θ ((a : AF D.host.F) ⊗ₜ[D.host.F] (1 : D.host.E)) = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hΘt, map_one, mul_one]`. Use the proof step `rfl)`. Establish `h2` using `hcoe (idF D a)`. Rewrite `h2` using `[← hcc, ha, h1]`. Conclude with `Units.ext (by rw [← h2]; rfl)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `⟨fun v k => ?_, fun w k => ?_⟩` and prove the remaining obligations. Rewrite using `[CharEx.resFin_eq]`. Express the relevant statement in the definitionally equal form `χ.1 (GlobalTheory.Mem.Chr.locF D.host.F v k) = 1`. Rewrite using `[← GlobalTheory.ToricDistribution.ideleMap_local]`. Conclude with `key _`.
-
-Rewrite using `[CharEx.resInf_eq, ← ideleMap_inf]`. Conclude with `key _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trivOn_of_chrEq : ∀ (D : D7) (c : (AE D)ˣ →* Circle) (χ : Formalism.L2.Host.HChar D.host.E), ChrEq c χ →
     (∀ a : (AF D.host.F)ˣ, c (idF D a) = 1) → χ.TrivOn D.host.F := by

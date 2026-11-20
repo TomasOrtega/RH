@@ -6,19 +6,17 @@ namespace PI.UnitaryGroupMassFormula.TBNum
 open ComplexConjugate
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.ChartRestriction.G.TB.EBasisSt`. Introduce `E _ _ W _ _ _ _ _ ι _ v hv hcard`. Use `haveI : FiniteDimensional ℚ W := Module.Finite.trans E W`. Establish `hinj : Function.Injective v` using `hv.injective`. Establish `hspanQ : Submodule.span ℚ (Set.range v) = ⊤`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Submodule.eq_top_of_finrank_eq` to reduce the goal to its premises. Rewrite using `[finrank_span_eq_card hv, hcard, Module.finrank_mul_finrank]`. Establish `hspanE : Submodule.span E (Set.range v) = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hx : x ∈ Submodule.span ℚ (Set.range v)` using `by rw [hspanQ]; trivial`. Conclude with `Submodule.span_le_restrictScalars ℚ E (Set.range v) hx`. Take `⟨b, hbsub, hbspan, hbli⟩` from `exists_linearIndependent E (Set.range v)`. Set `s : Finset ι` to `Finset.univ.filter (fun i => v i ∈ b)`. Establish `hrange : Set.range (fun i : s => v i) = b`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(Finset.mem_filter.mp i.2).2`. Introduce `hx`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨i, rfl⟩` from `hbsub hx`. Conclude with `⟨⟨i, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hx⟩⟩, rfl⟩`. Establish `hli : LinearIndependent E (fun i : s => v i)`. Set `f : s → b` to `fun i => ⟨v i, (Finset.mem_filter.mp i.2).2⟩`. Establish `hf : Function.Injective f`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Introduce `i j hij`. Apply `Subtype.ext` to reduce the goal to its premises. Conclude with `hinj (congrArg Subtype.val hij)`. Conclude with `hbli.comp f hf`. Establish `hspan : Submodule.span E (Set.range fun i : s => v i) = ⊤`.
-
-Rewrite using `[hrange, hbspan, hspanE]`. Use `⟨s, ?_, hli, hspan⟩` and prove the remaining obligations. Establish `hfr` using `finrank_span_eq_card hli`. Rewrite `hfr` using `[hspan, finrank_top, Fintype.card_coe]`. Conclude with `hfr.symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eBasis : ReciprocityTheory.ChartRestriction.G.TB.EBasisSt := by
   unfold ReciprocityTheory.ChartRestriction.G.TB.EBasisSt

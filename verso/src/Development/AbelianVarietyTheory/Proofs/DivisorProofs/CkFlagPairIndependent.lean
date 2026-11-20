@@ -15,11 +15,9 @@ open GlobalTheory GlobalTheory.QCoh GlobalTheory.CechPic GlobalTheory.Vert Globa
 namespace GlobalTheory.FlagIndep
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B hB E E' φ r k P P' Q`. Take `⟨B', f, m, g, hB', hf0, hpos, h0, hlast, hadj⟩` from `GlobalTheory.T.flag_pairs_connected_normal_model O p B hB E E' φ r P P'`. Establish `hstep : ∀ j : Fin (m + 1), ck ((g j).toFPair p) k (picSymPull f.f Q) = ck ((g 0).toFPair p) k (picSymPull f.f Q)`. Introduce `j`. Proceed by induction on `j using Fin.induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rfl`. Consider the case `succ j ih`. Rewrite using `[← ih]`. Conclude with `(GlobalTheory.T.chern_class_flag_pair_independent O p B' hB' (GlobalTheory.T.chern_class_flag_pair_rank_two O p B' hB') _ _ _ r _ _ (hadj j) k _).symm`. Establish `h` using `(h0 k Q).symm.trans ((hstep (Fin.last m)).symm.trans (hlast k Q))`.
-
-Conclude with `mul_left_cancel₀ hpos.ne' h`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ck_eq_of_flagPair : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (E E' : B.X.Modules) (φ : B.GenIso E E') (r k : ℕ) (P P' : GlobalTheory.Vert.Model.FlagPair φ r) (Q : PicSym B.X), ck (P.toFPair p) k Q = ck (P'.toFPair p) k Q := by
   intro O _ _ _ p _ _ _ B hB E E' φ r k P P' Q

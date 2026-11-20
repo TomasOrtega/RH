@@ -9,17 +9,17 @@ open PositivityTheory.Rg.BcB.E1
 namespace GlobalTheory.CompanionTheory.ApproxUnit
 
 /- English proof (translation)
-Establish `hbi : Integrable b μ`. Assume the negation of the conclusion as `hn`. Rewrite `hb1` using `[integral_undef hn]`. Conclude with `zero_ne_one hb1`. Establish `hbc : Integrable (fun w => (b w : ℂ)) μ` using `hbi.ofReal`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpt : ∀ w, ‖(u w - c) * (b w : ℂ)‖ ≤ ε * b w`. Introduce `w`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (hb0 w)]`. Distinguish the cases in `hw : b w = 0`. Simplify using `[hw]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_right (h w hw) (hb0 w)`. Establish `hd : Integrable (fun w => (u w - c) * (b w : ℂ)) μ` using `Integrable.mono' (hbi.const_mul ε) ((hum.sub aestronglyMeasurable_const).mul hbc.aestronglyMeasurable) (Filter.Eventually.of_forall hpt)`. Establish `hc : ∫ w, (b w : ℂ) ∂μ = 1`. Rewrite using `[integral_complex_ofReal, hb1]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : Integrable (fun w => u w * (b w : ℂ)) μ`. Use `hd.add (hbc.const_mul c)` as an intermediate fact. Use `this.congr (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ∫ w, u w * (b w : ℂ) ∂μ - c = ∫ w, (u w - c) * (b w : ℂ) ∂μ`. Establish `h1 : (fun w => (u w - c) * (b w : ℂ)) = fun w => u w * (b w : ℂ) - c * (b w : ℂ)`. Use extensionality with `w`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, integral_sub hu (hbc.const_mul c), integral_const_mul, hc, mul_one]`.
+By extensionality, compare the relevant components. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem avg_le {α : Type*} [MeasurableSpace α] (μ : Measure α) (b : α → ℝ) (u : α → ℂ) (c : ℂ)
     (ε : ℝ) (hb0 : ∀ w, 0 ≤ b w) (hb1 : ∫ w, b w ∂μ = 1) (hum : AEStronglyMeasurable u μ)
@@ -59,7 +59,7 @@ theorem avg_le {α : Type*} [MeasurableSpace α] (μ : Measure α) (b : α → �
     _ = ε := by rw [integral_const_mul, hb1, mul_one]
 
 /- English proof (translation)
-Unfold `cv`. Rewrite using `[← integral_mul_left_eq_self _ g]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [mul_inv_rev, inv_mul_cancel_right]`. Rewrite using `[← hψ.2.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cv_eq_avg (X : Ctx) (φ ψ : X.G → ℂ) (hψ : IsBump X ψ) (g : X.G) :
     cv X.μ φ ψ g = ∫ w, φ (g * w) * ((‖ψ w⁻¹‖ : ℝ) : ℂ) ∂X.μ := by
@@ -70,9 +70,9 @@ theorem cv_eq_avg (X : Ctx) (φ ψ : X.G → ℂ) (hψ : IsBump X ψ) (g : X.G) 
   rw [← hψ.2.1]
 
 /- English proof (translation)
-Unfold `cv`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Establish `h : adj ψ z = ((‖ψ z⁻¹‖ : ℝ) : ℂ)`. Unfold `adj`. Rewrite using `[hψ.2.1 z⁻¹]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Simplify using `only [h]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cv_adj_eq_avg (X : Ctx) (f ψ : X.G → ℂ) (hψ : IsBump X ψ) (y : X.G) :
     cv X.μ (adj ψ) f y = ∫ z, f (z⁻¹ * y) * ((‖ψ z⁻¹‖ : ℝ) : ℂ) ∂X.μ := by
@@ -86,15 +86,15 @@ theorem cv_adj_eq_avg (X : Ctx) (f ψ : X.G → ℂ) (hψ : IsBump X ψ) (y : X.
   ring
 
 /- English proof (translation)
-Introduce `hcv htu X φ ε hφ hε`. Take `⟨W₀, hW₀, hW⟩` from `htu X φ ε hφ hε`. Use `⟨W₀ ∩ W₀⁻¹, Filter.inter_mem hW₀ (inv_mem_nhds_one _ hW₀), ?_⟩` and prove the remaining obligations. Introduce `ψ hb hsub y`. Establish `hsupp : ∀ w, ‖ψ w⁻¹‖ ≠ 0 → w ∈ W₀ ∧ w⁻¹ ∈ W₀`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `w hw`. Establish `h1 : w⁻¹ ∈ tsupport ψ` using `subset_tsupport _ (norm_ne_zero_iff.1 hw)`. Establish `h2` using `hsub h1`. Conclude with `⟨by simpa using h2.2, h2.1⟩`. Establish `hb0 : ∀ w, 0 ≤ ‖ψ w⁻¹‖` using `fun w => norm_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `key : ∀ z ∈ W₀, ‖cv X.μ φ ψ (z * y) - φ y‖ ≤ ε`. Introduce `z hz`. Rewrite using `[cv_eq_avg X φ ψ hb]`. Use `avg_le X.μ (fun w => ‖ψ w⁻¹‖) (fun w => φ (z * y * w)) (φ y) ε hb0 hb.2.2 (Continuous.aestronglyMeasurable (hφ.1.comp (by fun_prop))) ?_` and prove the remaining obligations. Introduce `w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hW z hz w (hsupp w hw).1 y`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Simplify using `using key 1 (mem_of_mem_nhds hW₀)`. Rewrite using `[cv_adj_eq_avg X _ ψ hb]`. Establish `hc : Continuous (cv X.μ φ ψ)` using `(hcv X φ ψ hφ hb.1).1.1`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `avg_le X.μ (fun w => ‖ψ w⁻¹‖) (fun z => cv X.μ φ ψ (z⁻¹ * y)) (φ y) ε hb0 hb.2.2 (Continuous.aestronglyMeasurable (hc.comp (by fun_prop))) ?_` and prove the remaining obligations. Introduce `z hz`. Conclude with `key z⁻¹ (hsupp z hz).2`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem approxU : CvTest → TwoUnif → ApproxU := by
   intro hcv htu X φ ε hφ hε

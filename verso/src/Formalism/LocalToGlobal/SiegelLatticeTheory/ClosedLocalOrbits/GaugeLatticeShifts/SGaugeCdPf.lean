@@ -4,7 +4,7 @@ import Formalism.LocalToGlobal.SiegelLatticeTheory.ClosedLocalOrbits.GaugeLattic
 namespace Formalism.MainNotions.S.Gauge
 
 /- English proof (translation)
-The claim follows from `cdGauge_of_lamVol D hcd (fun ε e => lamVol_of_sum_equiv ε e) n ε`.
+A detailed English derivation is pending.
 -/
 theorem complex_gauge_normalization (D : Formalism.BasicNotions.D7) (hcd : Formalism.BasicNotions.cdScaleTie D) (n : ℕ) (ε : Fin n → Bool) : CdGauge D n ε :=
   cdGauge_of_lamVol D hcd (fun ε e => lamVol_of_sum_equiv ε e) n ε

@@ -9,7 +9,7 @@ open GlobalTheory.IndefiniteRowSideFullHecke.FibrePushforwardExistenceTori (IsLi
 namespace GlobalTheory.HeckeEx
 
 /- English proof (translation)
-Introduce `S A _ L Y x x' Ψ k β hΨ hβ`. Conclude with `GlobalTheory.RigIsoDescent.exists_isRigIso_of_gen hΨ β hβ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_isRigIso_of_isGen : ∀ (S : Scheme.{0}) (A : Over S) [GrpObj A] (L : RigLB A) (Y : Scheme.{0})
     (x x' : Y ⟶ S) (Ψ : (Over.mk x ⊗ A).left ⟶ (Over.mk x' ⊗ A).left) (k : ℤ)

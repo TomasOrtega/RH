@@ -39,7 +39,7 @@ def iota (hL : IsLineVec L' ζ') (l : Link B L' ζ') (S : HSp D) : WO S L' →+ 
   (B.o.resS S).symm.toAddMonoidHom.comp ((AddMonoidHom.inr _ _).comp (kapHom hL l S))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Simplify using `only [heisO, Pi.smul_apply, smul_eq_mul, GlobalTheory.OrientedHeis.symplOH_add_right, GlobalTheory.OrientedHeis.symplOH_add_left, AddChar.map_add_eq_mul, add_assoc]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem heisO_heisO (S T : HSp D) (x y : WO S T) (F : WO S T → ℂ) :
     heisO ψ S T x (heisO ψ S T y F) = ψ (symplOH S T x y) • heisO ψ S T (x + y) F := by

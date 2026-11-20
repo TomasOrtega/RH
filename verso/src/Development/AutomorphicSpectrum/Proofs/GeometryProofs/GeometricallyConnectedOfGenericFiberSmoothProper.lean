@@ -13,13 +13,13 @@ open scoped CategoryTheory.Obj CategoryTheory.MonObj
 namespace GlobalTheory.CompanionTheory.Ar.Approx
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (algebraMap R K)` using `IsFractionRing.injective R K`. Set `y : PrimeSpectrum K` to `⟨⊥, Ideal.isPrime_bot⟩`. Establish `hy : ∀ z : PrimeSpectrum R, PrimeSpectrum.comap (algebraMap R K) y ⤳ z`. Introduce `z`. Rewrite using `[← PrimeSpectrum.le_iff_specializes]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Establish `h0 : algebraMap R K a = 0` using `ha`. Establish `: a = 0` using `hinj (by rw [h0, map_zero])`. Rewrite using `[this]`. Conclude with `z.asIdeal.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hyy : (spMap (algebraMap R K)) y = PrimeSpectrum.comap (algebraMap R K) y` using `rfl`. Rewrite using `[Scheme.Pullback.range_fst, dense_iff_inter_open]`. Introduce and unpack `U hU ⟨x, hx⟩`. Establish `hmem : (spMap (algebraMap R K)) y ∈ p '' U`. Rewrite using `[hyy]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `(hy (p x)).mem_open (hp U hU) ⟨x, hx, rfl⟩`. Take `⟨x', hx'U, hx'⟩` from `hmem`. Conclude with `⟨x', hx'U, ⟨y, hx'.symm⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dense_range_fst_generic (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K]
     [IsFractionRing R K] {X : Scheme.{0}} (p : X ⟶ Sp R) (hp : IsOpenMap p) :
@@ -45,21 +45,19 @@ theorem dense_range_fst_generic (R K : Type) [CommRing R] [IsDomain R] [Field K]
   exact ⟨x', hx'U, ⟨y, hx'.symm⟩⟩
 
 /- English proof (translation)
-Introduce `R K _ _ _ _ _ G _ _ hsm hpr hgc`. Use `set f := spMap (algebraMap R K) with hf`. Set `F` to `Over.pullback f`. Set `GK` to `F.obj G`. Establish `hab : IsAbelianScheme GK`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `IsAbelianScheme.mk inferInstance ?_ ?_ hgc` and prove the remaining obligations. Use `show Smooth (pullback.snd G.hom f) infer_instance`. Use `show IsProper (pullback.snd G.hom f) infer_instance`. Use `GlobalTheory.T.geometricallyConnected_of_commGroup_nsmul_surjective (Sp R) G inferInstance inferInstance ?_` and prove the remaining obligations. Introduce `n hn`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK` using `GlobalTheory.T.abelianScheme_nsmul_surjective K GK hab n hn`. Establish `hmap : F.map (𝟙 G ^ n) = 𝟙 GK ^ n`. Rewrite using `[← F.map_id]`. Conclude with `(Functor.homMonoidHom F (X := G) (M := G)).map_pow _ n`. Use `set φ := (𝟙 G ^ n).left with hφ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsq : (𝟙 GK ^ n).left ≫ pullback.fst G.hom f = pullback.fst G.hom f ≫ φ`. Rewrite using `[← hmap]`. Apply the tactic sequence `simp [F, φ] <;> exact pullback.lift_fst _ _ _`. Establish `hw : φ ≫ G.hom = G.hom` using `Over.w (𝟙 G ^ n)`. Establish `hcomp : IsProper (φ ≫ G.hom)` using `by rw [hw]; exact hpr`.
+Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hsep : IsSeparated G.hom` using `inferInstance`. Establish `hprop : UniversallyClosed φ` using `by first`. Consider the case `exact (MorphismProperty.of_postcomp (W := @IsProper) (W' := @IsSeparated) φ G.hom hsep hcomp).toUniversallyClosed`. Consider the case `exact MorphismProperty.of_postcomp (W := @UniversallyClosed) (W' := @IsSeparated) φ G.hom hsep inferInstance`. Consider the case `exact UniversallyClosed.of_comp_of_isSeparated φ G.hom`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `exact (IsProper.of_comp φ G.hom).toUniversallyClosed`. Establish `hcl : IsClosed (Set.range φ)` using `φ.isClosedMap.isClosed_range`. Establish `hop : IsOpenMap G.hom` using `G.hom.isOpenMap`. Establish `hdense` using `dense_range_fst_generic R K G.hom hop`. Establish `hsub : Set.range (pullback.fst G.hom f) ⊆ Set.range φ`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨z, rfl⟩`. Take `⟨w, rfl⟩` from `hK.surj z`. Use `⟨pullback.fst G.hom f w, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, ← hsq, Scheme.Hom.comp_apply]`. Establish `huniv : Set.range φ = Set.univ` using `(hdense.mono hsub).closure_eq ▸ hcl.closure_eq.symm`.
-
-Conclude with `⟨fun x => by`. Establish `: x ∈ Set.range φ` using `huniv ▸ Set.mem_univ x`. Conclude with `this⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem geometricallyConnected_of_generic : ∀ (R K : Type) [CommRing R] [IsDomain R] [Field K] [Algebra R K] [IsFractionRing R K] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], Smooth G.hom → IsProper G.hom → GeometricallyConnected (pullback.snd G.hom (spMap (algebraMap R K))) → GeometricallyConnected G.hom := by
   intro R K _ _ _ _ _ G _ _ hsm hpr hgc

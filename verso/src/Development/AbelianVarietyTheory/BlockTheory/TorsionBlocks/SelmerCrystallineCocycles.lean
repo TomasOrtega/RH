@@ -248,19 +248,19 @@ def TwistKillsSelmer (D : D7) : Prop :=
   ∀ i : D.ntw.Tw, D.ntw.NonzeroIndexPlace i → Hyps D i → TwistExists D i
 
 /- English proof (translation)
-The claim follows from `IsPrimitiveRoot.coe_units_iff.mp (D.ntw.zk_prim i k)`.
+A detailed English derivation is pending.
 -/
 example (D : D7) (i : D.ntw.Tw) (k : ℕ) : IsPrimitiveRoot (D.ntw.zk i k) (D.ntw.l i ^ k) :=
   IsPrimitiveRoot.coe_units_iff.mp (D.ntw.zk_prim i k)
 
 /- English proof (translation)
-Introduce `_ _` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (D : D7) (i : D.ntw.Tw) (ε' : ℝ) (k : ℕ) (ψ : GE D →* (D.ntw.Ok i k)ˣ) :
     InertiaBound D i ε' k ∅ ψ := fun _ _ => by simp
 
 /- English proof (translation)
-Use `haveI : Subsingleton (O ⧸ Ideal.span {(1 : O)}) := Ideal.Quotient.subsingleton_iff.mpr (by simp)`. Simplify using `[val_vp, len_vp, Module.length_eq_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 example {O : Type} [CommRing O] (l : ℕ) : val_vp l (1 : O) = 0 := by
   haveI : Subsingleton (O ⧸ Ideal.span {(1 : O)}) := Ideal.Quotient.subsingleton_iff.mpr (by simp)

@@ -15,9 +15,9 @@ noncomputable section
 namespace GlobalTheory.CatCoh.Desc.VandermondeTwoBasis
 
 /- English proof (translation)
-Introduce `R _ C _ C' _ F G _ _ H _ t Sg _ hcov`. Take `⟨n, b, hb, hc⟩` from `hcov`. Introduce `x hx`. Use `sep_std H hb x fun S u ⟨i, hi⟩ ↦ ?_` and prove the remaining obligations. Take `⟨t', a, ha, ⟨w⟩⟩` from `hc i S u hi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `e : u = G.map a ≫ w` using `Subsingleton.elim _ _`. Establish `h0 : mp F (G.map a) x = 0` using `hx t' a ha`. Rewrite using `[e, mp_comp, h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem sep_of_covBy : ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] {C' : Type} [Category.{0} C'] (F : C ⥤ CommAlgCat.{0} R) (G : C' ⥤ C), [Quiver.IsThin C] → [Quiver.IsThin C'] → Desc.HasLoc F → (∀ (t₁ t₂ : C') (S : C), (G.obj t₁ ⟶ S) → (G.obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → F.obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : C) (u : S ⟶ S'), IsUnit (mp F u (b i)) → ∃ t₃, Nonempty (t₁ ⟶ t₃) ∧ Nonempty (t₂ ⟶ t₃) ∧ Nonempty (G.obj t₃ ⟶ S')) → ∀ (t : C') (Sg : ∀ t', (t ⟶ t') → Prop), (∀ t' t'' (a : t ⟶ t') (b : t' ⟶ t''), Sg t' a → Sg t'' (a ≫ b)) → Desc.VandermondeTwoBasis.CovBy F (fun S ↦ ∃ (t' : C') (a : t ⟶ t'), Sg t' a ∧ Nonempty (G.obj t' ⟶ S)) (G.obj t) → Desc.Sep (G ⋙ F) Sg := by
   intro R _ C _ C' _ F G _ _ H _ t Sg _ hcov

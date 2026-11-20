@@ -12,7 +12,7 @@ noncomputable section
 namespace GlobalTheory.ThetaRatio
 
 /- English proof (translation)
-Use `tsum_congr fun l => ?_` and prove the remaining obligations. Establish `e : ((fun i => (l i : ℂ)) + ofRealVec a) = shiftVec a l` using `rfl`. Rewrite using `[e, thetaTerm, eC]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem thetaChar_ofRealVec {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℝ)
     (z : Fin g → ℂ) : thetaChar τ (ofRealVec a) (ofRealVec b) z = theta a b z τ := by
@@ -23,9 +23,9 @@ theorem thetaChar_ofRealVec {g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ) (a b : F
   ring
 
 /- English proof (translation)
-Establish `: ∀ k, ∃ m : ℤ, c k = (((m : ℝ) / 2 : ℝ) : ℂ)` using `fun k => by`. Break down `h k with h | h` into its components or cases. Conclude with `⟨0, by simp [h]⟩`. Conclude with `⟨1, by simp [h]⟩`. Use `choose n hn using this`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨n, funext hn⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_eq_halfVec {g : ℕ} {c : Fin g → ℂ} (h : ∀ k, c k = 0 ∨ c k = 1 / 2) :
     ∃ n : Fin g → ℤ, c = ofRealVec (halfVec n) := by
@@ -37,13 +37,13 @@ theorem exists_eq_halfVec {g : ℕ} {c : Fin g → ℂ} (h : ∀ k, c k = 0 ∨ 
   exact ⟨n, funext hn⟩
 
 /- English proof (translation)
-Introduce `g γ hγ h8 h0 c₁ c₂ h₁ h₂ τ hτ ρ κ hρ hρ0 hρ1 hκ h`. Take `⟨n, rfl⟩` from `exists_eq_halfVec h₁`. Take `⟨n', rfl⟩` from `exists_eq_halfVec h₂`. Simplify using `only [thetaChar_ofRealVec] at h`. Establish `hfix` using `halfChar_fixed_of_theta_transform_unit g γ hγ h8 1 n n' one_ne_zero h0 τ hτ (fun z => κ / ρ z) (by simpa only [div_eq_mul_inv] using (hρ.fun_inv hρ0).const_mul κ) (fun z => div_ne_zero hκ (hρ0 z)) (fun z => by rw [div_mul_eq_mul_div, ← h z, mul_div_cancel_right₀ _ (hρ0 z)])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hlaw` using `ThetaCharMult.theta_sq_law_of_zero g γ hγ h8 1 n n' h0 hfix τ hτ`. Establish `hE : Differentiable ℂ fun z => eC (expArg γ τ z)`. Simplify using `only [eC, expArg, dotProduct, mulVec]`. Use `fun_prop`. Establish `hθ : (fun z => theta (halfVec n) (halfVec n') z τ ^ 2) ≠ 0` using `fun hz => theta_ne_zero hτ (halfVec n) (halfVec n') (funext fun z => pow_eq_zero_iff (two_ne_zero) |>.1 (congrFun hz z))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `entire_eq_zero_of_mul_continuous_eq_zero (f := fun z => (jAut γ τ).det * eC (expArg γ τ z) * ρ z ^ 2 - κ ^ 2) (((hE.const_mul _).mul (hρ.pow 2)).sub_const _) ((differentiable_theta hτ (halfVec n) (halfVec n')).continuous.pow 2) hθ (fun z => by`. Establish `h1` using `hlaw z`. Establish `h2 : (theta (halfVec n) (halfVec n') (zAct γ τ z) (spAct γ τ) * ρ z) ^ 2 = (κ * theta (halfVec n) (halfVec n') z τ) ^ 2` using `by rw [h z]`. Use `show _ * theta (halfVec n) (halfVec n') z τ ^ 2 = 0`. Take the linear combination `h2 - ρ z ^ 2 * h1) 0`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `e0 : eC (expArg γ τ 0) = 1` using `by simp [expArg, eC]`. Simplify using `only [e0, hρ1] at key`. Take the linear combination `-key`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem ratio_sq_eq_det_jAut : ∀ (g : ℕ) (γ : Matrix (Fin g ⊕ Fin g) (Fin g ⊕ Fin g) ℤ), γ ∈ Matrix.symplecticGroup (Fin g) ℤ → (∀ i j, (8 : ℤ) ∣ γ (Sum.inl i) (Sum.inr j) ∧ (8 : ℤ) ∣ γ (Sum.inr i) (Sum.inl j)) → (∀ τ ∈ SiegelH (Fin g), ∀ z : Fin g → ℂ, theta (halfVec 0) (halfVec 0) (zAct γ τ z) (spAct γ τ) ^ 2 = 1 * (jAut γ τ).det * eC (expArg γ τ z) * theta (halfVec 0) (halfVec 0) z τ ^ 2) → ∀ (c₁ c₂ : Fin g → ℂ), (∀ k, c₁ k = 0 ∨ c₁ k = 1 / 2) → (∀ k, c₂ k = 0 ∨ c₂ k = 1 / 2) → ∀ τ ∈ SiegelH (Fin g), ∀ (ρ : (Fin g → ℂ) → ℂ) (κ : ℂ), Differentiable ℂ ρ → (∀ z, ρ z ≠ 0) → ρ 0 = 1 → κ ≠ 0 → (∀ z, thetaChar (spAct γ τ) c₁ c₂ (zAct γ τ z) * ρ z = κ * thetaChar τ c₁ c₂ z) → κ ^ 2 = (jAut γ τ).det := by
   intro g γ hγ h8 h0 c₁ c₂ h₁ h₂ τ hτ ρ κ hρ hρ0 hρ1 hκ h

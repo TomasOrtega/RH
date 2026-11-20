@@ -35,7 +35,7 @@ def parAt : Par D where
   eO := eOf D hF
 
 /- English proof (translation)
-Use `⟨⟨rfl, rfl, rfl, tauEmb_sqrt D⟩, hl, eOf_spec D hF, fun j hj => ?_⟩` and prove the remaining obligations. Use `show IsDatW D j (datumAtLift D _ (datHolds D) j)`. Unfold `datumAtLift`. Rewrite using `[dif_pos hj]`. Conclude with `isDatW_datumOf D _ j _ _`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem parAt_pins : (parAt D hF hz hN l hl).Pins := by
   refine ⟨⟨rfl, rfl, rfl, tauEmb_sqrt D⟩, hl, eOf_spec D hF, fun j hj => ?_⟩
@@ -45,7 +45,7 @@ theorem parAt_pins : (parAt D hF hz hN l hl).Pins := by
   exact isDatW_datumOf D _ j _ _
 
 /- English proof (translation)
-The claim follows from `datumAtLift_pq_pos D _ (datHolds D) j`.
+A detailed English derivation is pending.
 -/
 theorem parAt_pq (j : ℕ) : 1 ≤ ((parAt D hF hz hN l hl).Dw j).p + ((parAt D hF hz hN l hl).Dw j).q :=
   datumAtLift_pq_pos D _ (datHolds D) j
@@ -55,7 +55,7 @@ def LevelPb (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K)) : Prop :=
     l.Mb = ∏ k, (pb k).asIdeal.map (algebraMap (𝓞 D.host.K) (𝓞 D.host.E))
 
 /- English proof (translation)
-Establish `h` using `lawsJ_coreJOf L (parAt_pins D hF hz hN l hl)`. Conclude with `⟨{ coreJOf L with toCore := { (coreJOf L).toCore with pb := pb } }, { h with toLawsM := { h.toLawsM with half := ⟨hg, hb⟩ } }, rfl, rfl, HEq.rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem coreJExists_at (hN1c : N1c) (pb : Fin 2 → HeightOneSpectrum (𝓞 D.host.K))
     (hg : ∀ k, ((D.host.g k : ℕ) : 𝓞 D.host.K) ∈ (pb k).asIdeal)

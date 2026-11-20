@@ -4,7 +4,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Establish `: i = j` using `Algebra.algebra_ext _ _ h`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem gdet_inst {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) (B : Type) [CommRing B]
     (i j : Algebra A B) (h : ∀ a, @algebraMap A B _ _ i a = @algebraMap A B _ _ j a) (x : MonoidAlgebra B G) :
@@ -14,11 +14,11 @@ private theorem gdet_inst {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDe
   rfl
 
 /- English proof (translation)
-Use `letI : Algebra A B[X] := ((algebraMap B B[X]).comp f).toAlgebra`. Set `φ : A[X] →ₐ[A] B[X]` to `{ Polynomial.mapRingHom f with commutes' := fun a => by`. Express the relevant statement in the definitionally equal form `Polynomial.map f (C a) = C (f a)`. Conclude with `Polynomial.map_C f }`. Establish `h` using `D.nat A[X] B[X] φ (MonoidAlgebra.single 1 X - MonoidAlgebra.mapRingHom G C y)`.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ h` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `D.D B[X] _ = D.D B[X] _`. Use `congr 1`. Establish `hφ : (φ : A[X] →+* B[X]) = Polynomial.mapRingHom f` using `rfl`. Rewrite using `[hφ]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `g : 2`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem gdet_chi {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G)
     {B : Type} [CommRing B] (f : A →+* B) (y : MonoidAlgebra A G) :
@@ -39,11 +39,11 @@ private theorem gdet_chi {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet
   simp
 
 /- English proof (translation)
-Introduce `n A G _ _ D`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `GDet.ext fun B _ j x => gdet_inst D B ((algebraMap A B).comp (RingHom.id A)).toAlgebra j (fun _ => rfl) x`. Introduce `B C _ _ f g`. Conclude with `GDet.ext fun S _ _ x => gdet_inst D S _ _ (fun _ => rfl) x`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `B _ f y`. Use `⟨gdet_chi D f y, fun i => ?_⟩` and prove the remaining obligations. Simplify using `only [GDet.lam, gdet_chi, Polynomial.coeff_map, map_mul, map_pow, map_neg, map_one]`. Introduce `B _ f ρ`. Use `GDet.ext fun S _ _ x => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition.
 
-Use `letI : Algebra A S := ((algebraMap B S).comp f).toAlgebra`. Express the relevant statement in the definitionally equal form `(GDet.repAlg ρ S x).det = (GDet.repAlg (f.mapMatrix.toMonoidHom.comp ρ) S x).det`. Use `congr 2`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.d_gmap :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G), D.map (RingHom.id A) = D ∧ (∀ {B C : Type} [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C), (D.map f).map g = D.map (g.comp f)) ∧ (∀ {B : Type} [CommRing B] (f : A →+* B) (y : MonoidAlgebra A G), (D.map f).chi (MonoidAlgebra.mapRingHom G f y) = (D.chi y).map f ∧ ∀ i, (D.map f).lam i (MonoidAlgebra.mapRingHom G f y) = f (D.lam i y)) ∧ ∀ {B : Type} [CommRing B] (f : A →+* B) (ρ : G →* Matrix (Fin n) (Fin n) A), (GDet.ofRep ρ).map f = GDet.ofRep (f.mapMatrix.toMonoidHom.comp ρ) := by

@@ -25,7 +25,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SymplecticNormalForm
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply, dotProduct_mulVec]`. Simplify using `only [Matrix.transpose_apply, dotProduct, vecMul, Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem key_apply {a b r : ℕ} (A : Matrix (Fin a) (Fin r) ℚ) (Mq : Matrix (Fin r) (Fin r) ℚ)
     (B : Matrix (Fin b) (Fin r) ℚ) (i : Fin a) (j : Fin b) :
@@ -34,56 +34,50 @@ theorem key_apply {a b r : ℕ} (A : Matrix (Fin a) (Fin r) ℚ) (Mq : Matrix (F
   simp only [Matrix.transpose_apply, dotProduct, vecMul, Matrix.mul_apply]
 
 /- English proof (translation)
-Rewrite using `[dotProduct_mulVec, ← Matrix.mulVec_transpose, h, dotProduct_comm, Matrix.neg_mulVec, dotProduct_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem skew_swap {r : ℕ} (Mq : Matrix (Fin r) (Fin r) ℚ) (h : Mqᵀ = -Mq) (x y : Fin r → ℚ) :
     x ⬝ᵥ Mq *ᵥ y = -(y ⬝ᵥ Mq *ᵥ x) := by
   rw [dotProduct_mulVec, ← Matrix.mulVec_transpose, h, dotProduct_comm, Matrix.neg_mulVec, dotProduct_neg]
 
 /- English proof (translation)
-Introduce `g r r₀ M c hr hskew hdet hind hreal`. Use `set Mq : Matrix (Fin r) (Fin r) ℚ := M.map (Int.cast : ℤ → ℚ) with hMq`. Use `set cq : Matrix (Fin r₀) (Fin r) ℚ := c.map (Int.cast : ℤ → ℚ) with hcq`. Establish `hskq : Mqᵀ = -Mq`. Use extensionality with `i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun A => A i j) hskew` as an intermediate fact. Simplify using `only [Matrix.transpose_apply, Matrix.neg_apply] at this`. Simplify using `only [hMq, Matrix.transpose_apply, Matrix.neg_apply, Matrix.map_apply]`. Conclude with `this` after adjusting the coercions. Establish `hdq : Mq.det ≠ 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hMq, ← Int.cast_det]`. Conclude with `hdet` after adjusting the coercions. Use `set V : Submodule ℚ (Fin r → ℚ) := Submodule.span ℚ (Set.range fun i j => (c i j : ℚ)) with hVdef`. Establish `hcqV : ∀ m, cq m ∈ V` using `fun m => Submodule.subset_span ⟨m, rfl⟩`. Establish `hV : ∀ v : Fin r → ℚ, (∀ w ∈ V, v ⬝ᵥ Mq *ᵥ w = 0) → v ∈ V`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `v hv`. Apply `GlobalTheory.T.rat_mem_span_of_real_mem_span_fin r₀ r (fun i j => (c i j : ℚ)) v` to reduce the goal to its premises. Establish `hfun : (fun i j => (((c i j : ℚ)) : ℝ)) = fun i j => (c i j : ℝ)`. Use function extensionality and compare the values at `i j`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfun]`. Apply `hreal` to reduce the goal to its premises. Introduce `i`. Establish `h` using `congrArg (fun q : ℚ => (q : ℝ)) (hv _ (hcqV i))`. Simplify using `only [dotProduct, mulVec, hMq, hcq, Matrix.map_apply] at h ⊢`.
+Move the embeddings inside the algebraic operations. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Move the coercions through the operations in `at h ⊢`. Conclude with `h`. Set `I : Submodule ℚ (Fin r → ℚ)` to `{ carrier := {y | ∀ w ∈ V, y ⬝ᵥ Mq *ᵥ w = 0} add_mem' := by`. Introduce `a b ha hb w hw`. Simplify using `only [Set.mem_setOf_eq] at ha hb`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_dotProduct, ha w hw, hb w hw, add_zero]`. Use the proof step `zero_mem' := by intro w _; simp`. Use the proof step `smul_mem' := by`. Introduce `t a ha w hw`. Simplify using `only [Set.mem_setOf_eq] at ha`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[smul_dotProduct, ha w hw, smul_zero] }`. Establish `hmemI : ∀ y, y ∈ I ↔ ∀ w ∈ V, y ⬝ᵥ Mq *ᵥ w = 0` using `fun y => Iff.rfl`. Establish `hIiso : ∀ x ∈ I, ∀ y ∈ I, x ⬝ᵥ Mq *ᵥ y = 0` using `fun x hx y hy => (hmemI x).mp hx y (hV y ((hmemI y).mp hy))`. Take `⟨L, hIL, hLiso, hLdim⟩` from `GlobalTheory.T.exists_lagrangian_containing_isotropic_rat' g r Mq I hr hskq hdq hIiso`. Establish `hLV : ∀ x ∈ L, x ∈ V` using `fun x hx => GlobalTheory.T.mem_of_orthogonal_orthogonal_of_skew_det_ne_zero r Mq V hskq hdq x (fun y hy => hLiso x hx y (hIL ((hmemI y).mpr hy)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨rk, hrk, ε, hεind, hεL, hεI, hIspan⟩` from `GlobalTheory.T.exists_linearIndependent_rat_basis_adapted_subspace g r I L hIL hLdim`. Establish `hεiso : ∀ i j, ε i ⬝ᵥ Mq *ᵥ ε j = 0` using `fun i j => hLiso _ (hεL i) _ (hεL j)`. Establish `hεV : ∀ i, ε i ∈ V` using `fun i => hLV _ (hεL i)`. Establish `hεperp : ∀ i : Fin g, i.val < rk → ∀ w ∈ V, ε i ⬝ᵥ Mq *ᵥ w = 0` using `fun i hi => (hmemI _).mp (hεI i hi)`. Establish `hψ : ∀ j : Fin g, ∃ x : Fin r → ℚ, (rk ≤ j.val → x ∈ V) ∧ ∀ i, x ⬝ᵥ Mq *ᵥ ε i = if i = j then 1 else 0`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `j`. Distinguish the cases in `hj : rk ≤ j.val`. Take `⟨x, hxV, hx⟩` from `GlobalTheory.T.exists_mem_pairing_eq_single_nonradical r g rk Mq V ε hskq hεind hεperp (fun y hy => hIspan y ((hmemI y).mpr hy)) j hj`. Conclude with `⟨x, fun _ => hxV, hx⟩`. Take `⟨x, hx⟩` from `GlobalTheory.T.exists_dotProduct_mulVec_eq_of_linearIndependent' r g Mq ε hdq hεind (fun i => if i = j then 1 else 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨x, fun h => absurd h hj, hx⟩`. Use `choose ψ hψV hψε using hψ`. Take `⟨φ, hφiso, hφε, hφψ⟩` from `GlobalTheory.T.exists_isotropic_dual_of_skew_matrix' r g Mq ε ψ hskq hεiso (fun i j => hψε j i)`. Establish `hspanV : Submodule.span ℚ (Set.range ε) ≤ V` using `Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact hεV i)`. Establish `hφV : ∀ j : Fin g, rk ≤ j.val → φ j ∈ V` using `fun j hj => by`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `V.add_mem (hspanV (hφψ j)) (hψV j hj)` as an intermediate fact. Simplify using `using this`. Establish `hα : ∀ i, ∃ a : Fin r₀ → ℚ, ∑ m, a m • (fun k => (c m k : ℚ)) = ε i` using `fun i => (Submodule.mem_span_range_iff_exists_fun ℚ).mp (hεV i)`. Use `choose α hα using hα`. Establish `hβ : ∀ j : Fin g, ∃ b : Fin r₀ → ℚ, rk ≤ j.val → ∑ m, b m • (fun k => (c m k : ℚ)) = φ j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `j`. Distinguish the cases in `hj : rk ≤ j.val`. Take `⟨b, hb⟩` from `(Submodule.mem_span_range_iff_exists_fun ℚ).mp (hφV j hj)`. Conclude with `⟨b, fun _ => hb⟩`. Conclude with `⟨0, fun h => absurd h hj⟩`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `choose β hβ using hβ`. Set `αm : Matrix (Fin g) (Fin r₀) ℚ` to `α`. Set `εm : Matrix (Fin g) (Fin r) ℚ` to `ε`. Set `φm : Matrix (Fin g) (Fin r) ℚ` to `φ`. Set `βm : Matrix (Fin g) (Fin r₀) ℚ` to `β`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Establish `hαc : αm * cq = εm`. Use extensionality with `i k`. Establish `h1` using `congrFun (hα i) k`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h1`. Use `show (αm * cq) i k = ε i k`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1, Matrix.mul_apply]`. Both sides reduce to the same expression. Use `⟨rk, αm, φm, βm, Matrix.of fun m i => -(cq m ⬝ᵥ Mq *ᵥ φ i), Matrix.of fun m j => cq m ⬝ᵥ Mq *ᵥ ε j, hrk, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hαc]`. Use extensionality with `i j`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key_apply]`. Conclude with `hεiso i j`. Use extensionality with `i j`. Rewrite using `[key_apply]`. Conclude with `hφiso i j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hαc]`. Use extensionality with `i j`. Rewrite using `[key_apply, Matrix.one_apply]`. Rewrite using `[hφε j i]`. Distinguish the cases in `h : i = j`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Introduce `i hi m`. Rewrite using `[hαc, key_apply]`. Conclude with `hεperp i hi _ (hcqV m)`.
-
-Introduce `j hj m`. Establish `h1` using `congrFun (hβ j hj) m`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h1`. Use `show φ j m = (βm * cq) j m`. Rewrite using `[← h1, Matrix.mul_apply]`.
-
-Both sides reduce to the same expression. Introduce `m j hj`. Simplify using `only [Matrix.of_apply]`. Rewrite using `[skew_swap Mq hskq, hεperp j hj _ (hcqV m), neg_zero]`. Rewrite using `[hαc]`.
-
-Use extensionality with `m k`. Establish `h` using `congrFun (GlobalTheory.T.coords_eq_pairings_rational_symplectic_basis g r Mq ε φ hr hskq hdq hεiso hφiso hφε (cq m)) k`. Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul] at h`. Rewrite using `[Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply]`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adapted_rational_symplectic_basis : ∀ (g r r₀ : ℕ) (M : Matrix (Fin r) (Fin r) ℤ) (c : Matrix (Fin r₀) (Fin r) ℤ), r = 2 * g → Mᵀ = -M → M.det ≠ 0 → LinearIndependent ℚ (fun i j => (c i j : ℚ)) → (∀ v : Fin r → ℝ, (∀ i, v ⬝ᵥ (M.map (Int.cast : ℤ → ℝ)) *ᵥ (fun j => (c i j : ℝ)) = 0) → v ∈ Submodule.span ℝ (Set.range fun i j => (c i j : ℝ))) → ∃ (rk : ℕ) (α : Matrix (Fin g) (Fin r₀) ℚ) (φ : Matrix (Fin g) (Fin r) ℚ) (β : Matrix (Fin g) (Fin r₀) ℚ) (gm dl : Matrix (Fin r₀) (Fin g) ℚ), rk ≤ g ∧ (α * c.map (Int.cast : ℤ → ℚ)) * M.map (Int.cast : ℤ → ℚ) * (α * c.map (Int.cast : ℤ → ℚ))ᵀ = 0 ∧ φ * M.map (Int.cast : ℤ → ℚ) * φᵀ = 0 ∧ φ * M.map (Int.cast : ℤ → ℚ) * (α * c.map (Int.cast : ℤ → ℚ))ᵀ = 1 ∧ (∀ i : Fin g, i.val < rk → ∀ m, ((α * c.map (Int.cast : ℤ → ℚ)) * M.map (Int.cast : ℤ → ℚ) * (c.map (Int.cast : ℤ → ℚ))ᵀ) i m = 0) ∧ (∀ j : Fin g, rk ≤ j.val → ∀ m, φ j m = (β * c.map (Int.cast : ℤ → ℚ)) j m) ∧ (∀ m (j : Fin g), j.val < rk → dl m j = 0) ∧ c.map (Int.cast : ℤ → ℚ) = gm * (α * c.map (Int.cast : ℤ → ℚ)) + dl * φ := by
   intro g r r₀ M c hr hskew hdet hind hreal

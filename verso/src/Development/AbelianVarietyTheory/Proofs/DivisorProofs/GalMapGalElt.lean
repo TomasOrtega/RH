@@ -13,7 +13,7 @@ def galMap (act : G →* (C ≃ₐ[R] C)) (σ : C →ₐ[R] O) : O ⊗[R] C →�
     Algebra.TensorProduct.lift (AlgHom.id O O) (σ.comp (act g).toAlgHom) (fun _ _ => Commute.all _ _)
 
 /- English proof (translation)
-Simplify using `[galMap]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem galMap_tmul (act : G →* (C ≃ₐ[R] C)) (σ : C →ₐ[R] O) (o : O) (c : C) (g : G) :
     galMap act σ (o ⊗ₜ c) g = o * σ (act g c) := by
@@ -23,11 +23,11 @@ def galElt (act : G →* (C ≃ₐ[R] C)) (σ : C →ₐ[R] O) {n : ℕ} (x y : 
   ∑ i, σ (x i) ⊗ₜ act h⁻¹ (y i)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [galElt, map_sum, Finset.sum_apply, galMap_tmul]`. Establish `: ∀ i, σ (x i) * σ (act g (act h⁻¹ (y i))) = σ (x i * act (g * h⁻¹) (y i))`. Introduce `i`. Simplify using `[map_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Repeatedly rewrite using `[this, ← map_sum, hxy]`. Distinguish the cases in `hg : g = h`. Substitute `hg` using the available equality. Simplify using the standard rewrite rules. Establish `: g * h⁻¹ ≠ 1` using `fun e => hg (mul_inv_eq_one.mp e)`.
+Rewrite the conclusion repeatedly using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[this, hg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem galMap_galElt [DecidableEq G] (act : G →* (C ≃ₐ[R] C)) (σ : C →ₐ[R] O) {n : ℕ} (x y : Fin n → C)
     (b : R) (hxy : ∀ g, ∑ i, x i * act g (y i) = if g = 1 then algebraMap R C b else 0) (h : G) :

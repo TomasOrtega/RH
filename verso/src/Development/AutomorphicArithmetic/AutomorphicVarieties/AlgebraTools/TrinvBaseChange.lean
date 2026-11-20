@@ -4,21 +4,21 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.EqLag
 open Polynomial Matrix IsLocalRing TensorProduct UpperTheory.V.AlgebraTools
 
 /- English proof (translation)
-Introduce `B E _ _ _ T B' _ _`. Set `s : B' ⊗[B] E →ₗ[B'] B' ⊗[B] E` to `T.st.baseChange B'`. Set `t : B' ⊗[B] E →ₗ[B'] B'` to `(AlgebraTensorModule.rid B B' B').toLinearMap ∘ₗ T.tr.baseChange B'`. Establish `hs : ∀ (a : B') (y : E), s (a ⊗ₜ y) = a ⊗ₜ T.st y` using `fun a y => by simp [s]`. Establish `ht : ∀ (a : B') (y : E), t (a ⊗ₜ y) = T.tr y • a` using `fun a y => by simp [t]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨s, ?_, ?_, t, ?_, ?_⟩, fun y => hs 1 y, fun y => ?_⟩` and prove the remaining obligations. Introduce `x y`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [add_mul, mul_add, map_add, ha, hb]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a u`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add c d hc hd => simp only [add_mul, mul_add, map_add, hc, hd]`. Consider the case `tmul b v`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, hs, T.st_mul, mul_comm a b]`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a u => simp only [hs, T.st_st]`. Introduce `x y`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [add_mul, mul_add, map_add, ha, hb]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a u`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add c d hc hd => simp only [add_mul, mul_add, map_add, hc, hd]`. Consider the case `tmul b v`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Simplify using `only [Algebra.TensorProduct.tmul_mul_tmul, ht, T.tr_comm u v, mul_comm a b]`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add a b ha hb => simp only [map_add, ha, hb]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul a u => simp only [hs, ht, T.tr_st]`. Use `show t (1 ⊗ₜ y) = _`. Rewrite using `[ht, Algebra.algebraMap_eq_smul_one]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.trinv_baseChange :
     ∀ {B E : Type} [CommRing B] [Ring E] [Algebra B E] (T : TrInv B E) (B' : Type) [CommRing B'] [Algebra B B'], ∃ T' : TrInv B' (B' ⊗[B] E), (∀ y, T'.st (1 ⊗ₜ y) = 1 ⊗ₜ T.st y) ∧ ∀ y, T'.tr (1 ⊗ₜ y) = algebraMap B B' (T.tr y) := by

@@ -40,7 +40,7 @@ def RationalValuesAt (R : RealDat D A Ks) : Prop :=
       ∀ c' : VV K' (lamV D i) →ₛₗ[σ'] (R.cV i).W, IsCoefExt (W := (R.cV i).W) ι (lamV D i) (c0L i) c' → ValuesIn R i t c'
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun k => (H x (y k)).choose, fun k => (H x (y k)).choose_spec⟩`.
+Supply the required witnesses or components.
 -/
 theorem ValuesIn.reps {R : RealDat D A Ks} {i : Fin D.R.m} {t : T} {K' : Type} [Field K'] {σ' : K' →+* ℂ}
     {c' : VV K' (lamV D i) →ₛₗ[σ'] (R.cV i).W} (H : ValuesIn R i t c') {J : Subgroup (Bridge.Gf (Vc D i))} {Cl : Type}

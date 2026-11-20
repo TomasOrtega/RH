@@ -16,13 +16,13 @@ section Generic
 variable {K L : Type*} [Field K] [Field L] [Algebra K L] [FiniteDimensional K L] {m : ℕ} {ζ : L}
 
 /- English proof (translation)
-The claim follows from `(IntermediateField.adjoin_eq_top_iff (F := K) (E := L)).mp htop`.
+A detailed English derivation is pending.
 -/
 theorem algebra_adjoin_eq_top_of_adjoin_eq_top (htop : K⟮ζ⟯ = ⊤) : Algebra.adjoin K {ζ} = ⊤ :=
   (IntermediateField.adjoin_eq_top_iff (F := K) (E := L)).mp htop
 
 /- English proof (translation)
-Establish `h` using `AlgHom.ext_of_adjoin_eq_top (algebra_adjoin_eq_top_of_adjoin_eq_top htop) (φ₁ := σ.toAlgHom) (φ₂ := AlgHom.id K L) (by simpa using hσ)`. Use extensionality with `x`. Conclude with `DFunLike.congr_fun h x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem algEquiv_eq_one_of_apply_eq (htop : K⟮ζ⟯ = ⊤) {σ : L ≃ₐ[K] L} (hσ : σ ζ = ζ) : σ = 1 := by
   have h := AlgHom.ext_of_adjoin_eq_top (algebra_adjoin_eq_top_of_adjoin_eq_top htop)
@@ -31,9 +31,9 @@ theorem algEquiv_eq_one_of_apply_eq (htop : K⟮ζ⟯ = ⊤) {σ : L ≃ₐ[K] L
   exact DFunLike.congr_fun h x
 
 /- English proof (translation)
-Establish `: NeZero m` using `⟨by rintro rfl; simp at hm⟩`. Establish `: IsCyclotomicExtension {m} K L`. Rewrite using `[IsCyclotomicExtension.iff_singleton]`. Use `⟨⟨ζ, hζ⟩, fun x ↦ ?_⟩` and prove the remaining obligations. Establish `hle : Algebra.adjoin K {ζ} ≤ Algebra.adjoin K {b : L | b ^ m = 1}` using `Algebra.adjoin_mono (by simpa using hζ.pow_eq_one)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `hle (by rw [algebra_adjoin_eq_top_of_adjoin_eq_top htop]; trivial)`. Conclude with `IsCyclotomicExtension.isGalois {m} K L`.
+A detailed English derivation is pending.
 -/
 theorem isGalois_of_adjoin_eq_top (hζ : IsPrimitiveRoot ζ m)
     (hm : (m : K) ≠ 0) (htop : K⟮ζ⟯ = ⊤) : IsGalois K L := by
@@ -53,7 +53,7 @@ section PrimitiveResidue
 variable {L : Type*} [Field L] [ValuativeRel L] [TopologicalSpace L] [IsNonarchimedeanLocalField L]
 
 /- English proof (translation)
-Use `⟨by rw [← map_pow, hζ.pow_eq_one, map_one], fun l hl ↦ hζ.dvd_of_pow_eq_one l ?_⟩` and prove the remaining obligations. Use `eq_of_pow_eq_one_of_residue_eq hm ?_ (one_pow m) (by rw [map_pow, hl, map_one])` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isPrimitiveRoot_residue {m : ℕ} (hm : (m : 𝓀[L]) ≠ 0) {ζ : 𝒪[L]}
     (hζ : IsPrimitiveRoot ζ m) : IsPrimitiveRoot (IsLocalRing.residue 𝒪[L] ζ) m := by
@@ -62,7 +62,7 @@ theorem isPrimitiveRoot_residue {m : ℕ} (hm : (m : 𝓀[L]) ≠ 0) {ζ : 𝒪[
   rw [← pow_mul, mul_comm, pow_mul, hζ.pow_eq_one, one_pow]
 
 /- English proof (translation)
-Introduce `h`. Apply `hm` to reduce the goal to its premises. Establish `: (m : 𝒪[L]) = 0` using `Subtype.ext (by simpa using h)`. Rewrite using `[← map_natCast (IsLocalRing.residue 𝒪[L]), this, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem natCast_ne_zero_of_residueField {m : ℕ} (hm : (m : 𝓀[L]) ≠ 0) : (m : L) ≠ 0 := by
   intro h
@@ -81,7 +81,7 @@ section Residue
 variable (L) in
 
 /- English proof (translation)
-Rewrite using `[← map_natCast (algebraMap 𝓀[K] 𝓀[L])]`. Conclude with `(map_ne_zero_iff _ (algebraMap 𝓀[K] 𝓀[L]).injective).mpr hm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_residueField_ne_zero {m : ℕ} (hm : (m : 𝓀[K]) ≠ 0) : (m : 𝓀[L]) ≠ 0 := by
   rw [← map_natCast (algebraMap 𝓀[K] 𝓀[L])]
@@ -99,11 +99,11 @@ private def rootInteger (hm : m ≠ 0) (hζ : ζ ^ m = 1) : 𝒪[L] :=
 variable (K L) in
 
 /- English proof (translation)
-Establish `hmL` using `natCast_residueField_ne_zero L hm`. Establish `hm0 : m ≠ 0` using `by rintro rfl; simp at hm`. Rewrite using `[injective_iff_map_eq_one]`. Introduce `σ hσ`. Apply `algEquiv_eq_one_of_apply_eq htop` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `set z := rootInteger hm0 hζ`. Establish `hz : z ^ m = 1` using `Subtype.ext (by simpa [z, rootInteger] using hζ)`. Establish `key : integerAlgEquiv K L σ z = z`. Use `eq_of_pow_eq_one_of_residue_eq hmL (by rw [← map_pow, hz, map_one]) hz ?_` and prove the remaining obligations. Rewrite using `[← residueAlgEquiv_residue, hσ, AlgEquiv.one_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `congrArg Subtype.val key` using `[z, rootInteger]`.
+A detailed English derivation is pending.
 -/
 theorem residueAlgEquiv_injective_of_adjoin_eq_top (hm : (m : 𝓀[K]) ≠ 0) (hζ : ζ ^ m = 1)
     (htop : K⟮ζ⟯ = ⊤) : Function.Injective (residueAlgEquiv K L) := by
@@ -120,9 +120,9 @@ theorem residueAlgEquiv_injective_of_adjoin_eq_top (hm : (m : 𝓀[K]) ≠ 0) (h
   simpa [z, rootInteger] using congrArg Subtype.val key
 
 /- English proof (translation)
-Use `isGalois_of_adjoin_eq_top hζ (natCast_ne_zero_of_residueField (L := K) hm) htop` as an intermediate fact. Establish `hinj` using `residueAlgEquiv_injective_of_adjoin_eq_top K L hm hζ.pow_eq_one htop`. Establish `hcard : Module.finrank K L ≤ residueDegree K L`. Rewrite using `[← IsGalois.card_aut_eq_finrank, residueDegree_eq_finrank, ← IsGalois.card_aut_eq_finrank]`. Conclude with `Nat.card_le_card_of_injective _ hinj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf` using `residueDegree_pos K L`. Rewrite `hcard` using `[← ramificationIndex_mul_residueDegree K L]`. Establish `he` using `ramificationIndex_pos K L`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ramificationIndex_eq_one_of_adjoin_eq_top (hζ : IsPrimitiveRoot ζ m) (hm : (m : 𝓀[K]) ≠ 0)
     (htop : K⟮ζ⟯ = ⊤) : ramificationIndex K L = 1 := by
@@ -143,22 +143,20 @@ section Unramified
 variable (K L)
 
 /- English proof (translation)
-Rewrite using `[← ramificationIndex_mul_residueDegree K L, h, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem residueDegree_eq_finrank_of_unramified (h : ramificationIndex K L = 1) :
     residueDegree K L = Module.finrank K L := by
   rw [← ramificationIndex_mul_residueDegree K L, h, one_mul]
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `exists_isPrimitiveRoot_card_residueField_sub_one (L := L)`. Use `⟨z, hz.map_of_injective (f := (𝒪[L]).subtype) Subtype.val_injective, ?_⟩` and prove the remaining obligations. Establish `hres` using `isPrimitiveRoot_residue (natCast_card_residueField_sub_one_ne_zero L) hz`. Establish `htop' : 𝓀[K]⟮IsLocalRing.residue 𝒪[L] z⟯ = ⊤`. Rewrite using `[eq_top_iff]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `y _`. Distinguish the cases in `hy : y = 0`. Rewrite using `[hy]`. Conclude with `zero_mem _`. Use `Fintype.ofFinite 𝓀[L]` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: NeZero (Nat.card 𝓀[L] - 1)` using `⟨fun h0 ↦ natCast_card_residueField_sub_one_ne_zero L (by rw [h0, Nat.cast_zero])⟩`. Establish `hy1 : y ^ (Nat.card 𝓀[L] - 1) = 1`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `FiniteField.pow_card_sub_one_eq_one y hy`. Take `⟨i, -, rfl⟩` from `hres.eq_pow_of_pow_eq_one hy1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_mem (mem_adjoin_simple_self _ _) _`. Use `eq_of_le_of_finrank_le le_top ?_` and prove the remaining obligations. Rewrite using `[finrank_top', adjoin.finrank (Algebra.IsIntegral.isIntegral _), ← residueDegree_eq_finrank_of_unramified K L h, residueDegree_eq_finrank]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[htop', finrank_top']`.
-
-Use `_ = (minpoly 𝓀[K] (IsLocalRing.residue 𝒪[L] z)).natDegree := adjoin.finrank (Algebra.IsIntegral.isIntegral _)`. Use `_ ≤ _ := natDegree_minpoly_residue_le z`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isPrimitiveRoot_adjoin_eq_top_of_unramified (h : ramificationIndex K L = 1) :
     ∃ ζ : L, IsPrimitiveRoot ζ (Nat.card 𝓀[L] - 1) ∧ K⟮ζ⟯ = ⊤ := by
@@ -189,7 +187,7 @@ theorem exists_isPrimitiveRoot_adjoin_eq_top_of_unramified (h : ramificationInde
     _ ≤ _ := natDegree_minpoly_residue_le z
 
 /- English proof (translation)
-Take `⟨ζ, hζ, htop⟩` from `exists_isPrimitiveRoot_adjoin_eq_top_of_unramified K L h`. Establish `hm` using `natCast_ne_zero_of_residueField (natCast_card_residueField_sub_one_ne_zero L)`. Use `isGalois_of_adjoin_eq_top hζ (fun h0 ↦ hm ?_) htop` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap K L), h0, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isGalois_of_unramified (h : ramificationIndex K L = 1) : IsGalois K L := by
   obtain ⟨ζ, hζ, htop⟩ := exists_isPrimitiveRoot_adjoin_eq_top_of_unramified K L h
@@ -198,7 +196,7 @@ theorem isGalois_of_unramified (h : ramificationIndex K L = 1) : IsGalois K L :=
   rw [← map_natCast (algebraMap K L), h0, map_zero]
 
 /- English proof (translation)
-Take `⟨ζ, hζ, htop⟩` from `exists_isPrimitiveRoot_adjoin_eq_top_of_unramified K L h`. Establish `hm` using `natCast_card_residueField_sub_one_ne_zero L`. Use `residueAlgEquiv_injective_of_adjoin_eq_top K L (m := Nat.card 𝓀[L] - 1) (fun h0 ↦ hm ?_) hζ.pow_eq_one htop` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap 𝓀[K] 𝓀[L]), h0, map_zero]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem residueAlgEquiv_injective_of_unramified (h : ramificationIndex K L = 1) :
     Function.Injective (residueAlgEquiv K L) := by
@@ -209,7 +207,7 @@ theorem residueAlgEquiv_injective_of_unramified (h : ramificationIndex K L = 1) 
   rw [← map_natCast (algebraMap 𝓀[K] 𝓀[L]), h0, map_zero]
 
 /- English proof (translation)
-Use `isGalois_of_unramified K L h` as an intermediate fact. Conclude with `IsGalois.card_aut_eq_finrank K L`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_algEquiv_of_unramified (h : ramificationIndex K L = 1) :
     Nat.card (L ≃ₐ[K] L) = Module.finrank K L := by
@@ -217,7 +215,7 @@ theorem card_algEquiv_of_unramified (h : ramificationIndex K L = 1) :
   exact IsGalois.card_aut_eq_finrank K L
 
 /- English proof (translation)
-Use `(residueAlgEquiv_injective_of_unramified K L h).bijective_of_nat_card_le ?_` and prove the remaining obligations. Rewrite using `[card_algEquiv_of_unramified K L h, IsGalois.card_aut_eq_finrank, ← residueDegree_eq_finrank, residueDegree_eq_finrank_of_unramified K L h]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem residueAlgEquiv_bijective_of_unramified (h : ramificationIndex K L = 1) :
     Function.Bijective (residueAlgEquiv K L) := by
@@ -238,7 +236,7 @@ theorem galoisEquivResidue_apply (h : ramificationIndex K L = 1) (σ : L ≃ₐ[
   rfl
 
 /- English proof (translation)
-The claim follows from `isCyclic_of_surjective (galoisEquivResidue K L h).symm.toMonoidHom (galoisEquivResidue K L h).symm.surjective`.
+A detailed English derivation is pending.
 -/
 theorem isCyclic_of_unramified (h : ramificationIndex K L = 1) : IsCyclic (L ≃ₐ[K] L) :=
   isCyclic_of_surjective (galoisEquivResidue K L h).symm.toMonoidHom
@@ -249,7 +247,7 @@ def frobenius (h : ramificationIndex K L = 1) : L ≃ₐ[K] L :=
   (galoisEquivResidue K L h).symm (FiniteField.frobeniusAlgEquivOfAlgebraic 𝓀[K] 𝓀[L])
 
 /- English proof (translation)
-Set `` to `Fintype.ofFinite 𝓀[K]`. Establish `: residueAlgEquiv K L (frobenius K L h) = FiniteField.frobeniusAlgEquivOfAlgebraic 𝓀[K] 𝓀[L]` using `(galoisEquivResidue K L h).apply_symm_apply _`. Rewrite using `[this, FiniteField.coe_frobeniusAlgEquivOfAlgebraic, Fintype.card_eq_nat_card]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem residueAlgEquiv_frobenius_apply (h : ramificationIndex K L = 1) (y : 𝓀[L]) :
     residueAlgEquiv K L (frobenius K L h) y = y ^ Nat.card 𝓀[K] := by
@@ -260,7 +258,7 @@ theorem residueAlgEquiv_frobenius_apply (h : ramificationIndex K L = 1) (y : �
   rw [this, FiniteField.coe_frobeniusAlgEquivOfAlgebraic, Fintype.card_eq_nat_card]
 
 /- English proof (translation)
-Rewrite using `[← residueAlgEquiv_residue, residueAlgEquiv_frobenius_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem residue_frobenius_apply (h : ramificationIndex K L = 1) (x : 𝒪[L]) :
     IsLocalRing.residue 𝒪[L] (integerAlgEquiv K L (frobenius K L h) x) =
@@ -268,14 +266,14 @@ theorem residue_frobenius_apply (h : ramificationIndex K L = 1) (x : 𝒪[L]) :
   rw [← residueAlgEquiv_residue, residueAlgEquiv_frobenius_apply]
 
 /- English proof (translation)
-Rewrite using `[← IsLocalRing.residue_eq_zero_iff, map_sub, map_pow, residue_frobenius_apply, sub_self]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frobenius_sub_pow_mem_maximalIdeal (h : ramificationIndex K L = 1) (x : 𝒪[L]) :
     integerAlgEquiv K L (frobenius K L h) x - x ^ Nat.card 𝓀[K] ∈ 𝓂[L] := by
   rw [← IsLocalRing.residue_eq_zero_iff, map_sub, map_pow, residue_frobenius_apply, sub_self]
 
 /- English proof (translation)
-Set `` to `Fintype.ofFinite 𝓀[K]`. Rewrite using `[frobenius, MulEquiv.orderOf_eq, FiniteField.orderOf_frobeniusAlgEquivOfAlgebraic, ← residueDegree_eq_finrank, residueDegree_eq_finrank_of_unramified K L h]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem orderOf_frobenius (h : ramificationIndex K L = 1) :
     orderOf (frobenius K L h) = Module.finrank K L := by
@@ -284,9 +282,9 @@ theorem orderOf_frobenius (h : ramificationIndex K L = 1) :
     ← residueDegree_eq_finrank, residueDegree_eq_finrank_of_unramified K L h]
 
 /- English proof (translation)
-Set `` to `Fintype.ofFinite 𝓀[K]`. Rewrite using `[eq_top_iff]`. Introduce `σ _`. Take `⟨k, hk⟩` from `(FiniteField.bijective_frobeniusAlgEquivOfAlgebraic_pow 𝓀[K] 𝓀[L]).2 (galoisEquivResidue K L h σ)`. Use `⟨(k : ℕ), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `(galoisEquivResidue K L h).injective` to reduce the goal to its premises. Simplify using `only [zpow_natCast, map_pow]`. Rewrite using `[← hk, frobenius, MulEquiv.apply_symm_apply]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem zpowers_frobenius (h : ramificationIndex K L = 1) :
     Subgroup.zpowers (frobenius K L h) = ⊤ := by
@@ -303,9 +301,9 @@ theorem zpowers_frobenius (h : ramificationIndex K L = 1) :
 variable {K L}
 
 /- English proof (translation)
-Establish `hmL` using `natCast_residueField_ne_zero L hm`. Establish `hm0 : m ≠ 0` using `by rintro rfl; simp at hm`. Use `set z : 𝒪[L] := ⟨ξ, mem_integer_of_pow_eq_one hm0 hξ⟩`. Establish `hz : z ^ m = 1` using `Subtype.ext (by simpa [z] using hξ)`. Establish `key : integerAlgEquiv K L (frobenius K L h) z = z ^ Nat.card 𝓀[K]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_of_pow_eq_one_of_residue_eq hmL (by rw [← map_pow, hz, map_one]) ?_ ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, mul_comm, pow_mul, hz, one_pow]`. Rewrite using `[residue_frobenius_apply, map_pow]`. Simplify `congrArg Subtype.val key` using `[z]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem frobenius_apply_of_pow_eq_one (h : ramificationIndex K L = 1) {m : ℕ}
     (hm : (m : 𝓀[K]) ≠ 0) {ξ : L} (hξ : ξ ^ m = 1) :
@@ -321,7 +319,7 @@ theorem frobenius_apply_of_pow_eq_one (h : ramificationIndex K L = 1) {m : ℕ}
   simpa [z] using congrArg Subtype.val key
 
 /- English proof (translation)
-Use `Fintype.ofFinite 𝓀[K]` as an intermediate fact. Rewrite using `[Nat.cast_sub (Nat.one_le_pow _ _ Nat.card_pos), Nat.cast_pow, Nat.card_eq_fintype_card, FiniteField.cast_card_eq_zero, zero_pow hn, Nat.cast_one, zero_sub]`. Conclude with `neg_ne_zero.mpr one_ne_zero`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_card_pow_sub_one_ne_zero {n : ℕ} (hn : n ≠ 0) :
     ((Nat.card 𝓀[K] ^ n - 1 : ℕ) : 𝓀[K]) ≠ 0 := by
@@ -331,23 +329,19 @@ theorem natCast_card_pow_sub_one_ne_zero {n : ℕ} (hn : n ≠ 0) :
   exact neg_ne_zero.mpr one_ne_zero
 
 /- English proof (translation)
-Use `set q := Nat.card 𝓀[K] with hq_def`. Establish `hq : 1 < q` using `one_lt_card_residueField K`. Establish `hm` using `natCast_card_pow_sub_one_ne_zero (K := K) hn`. Establish `h` using `ramificationIndex_eq_one_of_adjoin_eq_top hζ hm htop`. Use `set F := frobenius K L h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : F ζ = ζ ^ q` using `frobenius_apply_of_pow_eq_one h hm hζ.pow_eq_one`. Establish `hFk : ∀ k : ℕ, (F ^ k) ζ = ζ ^ (q ^ k)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `succ k ih => rw [pow_succ', AlgEquiv.mul_apply, ih, map_pow, hF, ← pow_mul, ← pow_succ']`. Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero (by`. Establish `: 1 < q ^ n` using `Nat.one_lt_pow hn hq`. Use the proof step `omega)`. Establish `hpow : ∀ k : ℕ, ζ ^ (q ^ k) = ζ ↔ ζ ^ (q ^ k - 1) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `k`. Establish `h1 : q ^ k = q ^ k - 1 + 1` using `(Nat.sub_add_cancel (Nat.one_le_pow _ _ (by omega))).symm`. Use `conv_lhs => rw [h1, pow_succ]`. Prove the components needed by the constructor for the conclusion. Introduce `h2`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_left_cancel₀ hζ0 (by rw [mul_one, mul_comm]; exact h2)`. Introduce `h2`. Rewrite using `[h2, one_mul]`. Establish `hd` using `orderOf_frobenius K L h`. Establish `hfin` using `Module.finrank_pos (R := K) (M := L)`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Apply `le_antisymm` to reduce the goal to its premises. Establish `hFn : F ^ n = 1`. Apply `algEquiv_eq_one_of_apply_eq htop` to reduce the goal to its premises. Rewrite using `[hFk, hpow]`. Conclude with `hζ.pow_eq_one`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hd]`. Conclude with `Nat.le_of_dvd (Nat.pos_of_ne_zero hn) (orderOf_dvd_of_pow_eq_one hFn)`. Establish `h1 : ζ ^ (q ^ Module.finrank K L - 1) = 1`. Rewrite using `[← hpow, ← hFk, ← hd, pow_orderOf_eq_one, AlgEquiv.one_apply]`. Establish `hdvd` using `hζ.dvd_of_pow_eq_one _ h1`.
-
-Establish `hlt : 1 < q ^ Module.finrank K L` using `Nat.one_lt_pow hfin.ne' hq`. Establish `hle` using `Nat.le_of_dvd (by omega) hdvd`. Establish `: q ^ n ≤ q ^ Module.finrank K L`. Use `Nat.one_le_pow n q (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
-
-Conclude with `(Nat.pow_le_pow_iff_right hq).mp this`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem finrank_eq_of_adjoin_eq_top {n : ℕ} (hn : n ≠ 0) {ζ : L}
     (hζ : IsPrimitiveRoot ζ (Nat.card 𝓀[K] ^ n - 1)) (htop : K⟮ζ⟯ = ⊤) :

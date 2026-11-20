@@ -10,14 +10,14 @@ section
 variable {p : ℕ} [Fact p.Prime] {σ : Type*}
 
 /- English proof (translation)
-Simplify using `only [Dv, map_add, mul_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Dv_add (v : PowerSeries ℂ_[p]) (i : σ) (f g : MvPowerSeries σ ℂ_[p]) :
     Dv v i (f + g) = Dv v i f + Dv v i g := by
   simp only [Dv, map_add, mul_add]
 
 /- English proof (translation)
-Simplify using `only [Dv, map_sub, mul_sub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Dv_sub (v : PowerSeries ℂ_[p]) (i : σ) (f g : MvPowerSeries σ ℂ_[p]) :
     Dv v i (f - g) = Dv v i f - Dv v i g := by
@@ -26,7 +26,7 @@ theorem Dv_sub (v : PowerSeries ℂ_[p]) (i : σ) (f g : MvPowerSeries σ ℂ_[p
 end
 
 /- English proof (translation)
-Use `split_ifs with h`. Substitute `h` using the available equality. Conclude with `hP p σ j l`. Conclude with `hN p σ i j l h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 private theorem pderiv_lX (hP : PdSelf) (hN : PdNe) {p : ℕ} [Fact p.Prime]
     {σ : Type} [DecidableEq σ] (l : PowerSeries ℂ_[p]) (i j : σ) :
@@ -38,7 +38,7 @@ private theorem pderiv_lX (hP : PdSelf) (hN : PdNe) {p : ℕ} [Fact p.Prime]
   · exact hN p σ i j l h
 
 /- English proof (translation)
-Establish `h0` using `h 0`. Rewrite `h0` using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem isIntP_constantCoeff_of_integralMv {p : ℕ} [Fact p.Prime] {σ : Type*} {F : MvPowerSeries σ ℂ_[p]}
     (h : PI.JetsPhW.IntegralMv F) : PI.JetsPhW.IsIntP (MvPowerSeries.constantCoeff F) := by
@@ -46,45 +46,43 @@ private theorem isIntP_constantCoeff_of_integralMv {p : ℕ} [Fact p.Prime] {σ 
   rwa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply] at h0
 
 /- English proof (translation)
-Introduce `p hp l ex ph hpair hD i hi1 hi2`. Establish `hDdef` using `cubeDefectFormula_holds p l ex ph hpair`. Take `⟨hex, hl, v, hvint, hv⟩` from `hpair`. Take `⟨hD0, hDe⟩` from `hD`. Simplify using `only [sub_zero] at hD0 hDe`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hl0 : PowerSeries.constantCoeff l = 0` using `PI.JetsPhW.W.R.cc_l hex hl`. Establish `hX : ∀ j : Fin 3, MvPowerSeries.constantCoeff (MvPowerSeries.X j : MvPowerSeries (Fin 3) ℂ_[p]) = 0`. Introduce `j`. Simplify using the standard rewrite rules. Establish `hLc : ∀ j : Fin 3, MvPowerSeries.constantCoeff (lX l j : MvPowerSeries (Fin 3) ℂ_[p]) = 0` using `fun j => (hE p (Fin 3) _ l (hX j)).trans hl0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hpd : ∀ i j : Fin 3, MvPowerSeries.pderiv ℂ_[p] i (lX l j : MvPowerSeries (Fin 3) ℂ_[p]) = if j = i then PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX l) else 0` using `fun i j => pderiv_lX hP hN l i j`. Establish `hd : ∀ (i : Fin 3) (S : MvPowerSeries (Fin 3) ℂ_[p]) (c : ℂ_[p]) (g : PowerSeries ℂ_[p]), MvPowerSeries.constantCoeff S = 0 → MvPowerSeries.pderiv ℂ_[p] i S = MvPowerSeries.C c * PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX l) → Dv v i (Power …` using `fun i S c g h1 h2 => hC p (Fin 3) i l v g S c hv h1 h2`. Establish `hXne : ∀ (i j : Fin 3) (g : PowerSeries ℂ_[p]), j ≠ i → Dv v i (PowerSeries.subst (MvPowerSeries.X j : MvPowerSeries (Fin 3) ℂ_[p]) g) = 0`. Introduce `i j g h`. Simplify using `only [Dv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hN p (Fin 3) i j g h, mul_zero]`. Establish `hq : ∀ j : Fin 3, (PI.JetsPhW.phAt ph (PI.JetsPhW.Xv j) : MvPowerSeries (Fin 3) ℂ_[p]) = PowerSeries.subst (MvPowerSeries.X j : MvPowerSeries (Fin 3) ℂ_[p]) ph` using `fun j => rfl`. Establish `c012 : MvPowerSeries.constantCoeff (lX l 0 + lX l 1 + lX l 2 : MvPowerSeries (Fin 3) ℂ_[p]) = 0`. Simplify using `only [map_add, hLc, add_zero]`. Establish `c01 : MvPowerSeries.constantCoeff (lX l 0 + lX l 1 : MvPowerSeries (Fin 3) ℂ_[p]) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_add, hLc, add_zero]`. Establish `c12 : MvPowerSeries.constantCoeff (lX l 1 + lX l 2 : MvPowerSeries (Fin 3) ℂ_[p]) = 0`. Simplify using `only [map_add, hLc, add_zero]`. Establish `c20 : MvPowerSeries.constantCoeff (lX l 2 + lX l 0 : MvPowerSeries (Fin 3) ℂ_[p]) = 0`. Simplify using `only [map_add, hLc, add_zero]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `p0_012 : MvPowerSeries.pderiv ℂ_[p] 0 (lX l 0 + lX l 1 + lX l 2 : MvPowerSeries (Fin 3) ℂ_[p]) = MvPowerSeries.C 1 * PowerSeries.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX l)`. Simplify using `only [map_add, hpd]`. Simplify using `(config := { decide := true })`. Establish `p0_01 : MvPowerSeries.pderiv ℂ_[p] 0 (lX l 0 + lX l 1 : MvPowerSeries (Fin 3) ℂ_[p]) = MvPowerSeries.C 1 * PowerSeries.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX l)`. Simplify using `only [map_add, hpd]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `(config := { decide := true })`. Establish `p0_12 : MvPowerSeries.pderiv ℂ_[p] 0 (lX l 1 + lX l 2 : MvPowerSeries (Fin 3) ℂ_[p]) = MvPowerSeries.C 0 * PowerSeries.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX l)`. Simplify using `only [map_add, hpd]`. Simplify using `(config := { decide := true })`. Establish `p0_20 : MvPowerSeries.pderiv ℂ_[p] 0 (lX l 2 + lX l 0 : MvPowerSeries (Fin 3) ℂ_[p]) = MvPowerSeries.C 1 * PowerSeries.subst (MvPowerSeries.X 0 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX l)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_add, hpd]`. Simplify using `(config := { decide := true })`. Establish `p1_012 : MvPowerSeries.pderiv ℂ_[p] 1 (lX l 0 + lX l 1 + lX l 2 : MvPowerSeries (Fin 3) ℂ_[p]) = MvPowerSeries.C 1 * PowerSeries.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX l)`. Simplify using `only [map_add, hpd]`. Simplify using `(config := { decide := true })`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `p1_01 : MvPowerSeries.pderiv ℂ_[p] 1 (lX l 0 + lX l 1 : MvPowerSeries (Fin 3) ℂ_[p]) = MvPowerSeries.C 1 * PowerSeries.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX l)`. Simplify using `only [map_add, hpd]`. Simplify using `(config := { decide := true })`. Establish `p1_20 : MvPowerSeries.pderiv ℂ_[p] 1 (lX l 2 + lX l 0 : MvPowerSeries (Fin 3) ℂ_[p]) = MvPowerSeries.C 0 * PowerSeries.subst (MvPowerSeries.X 1 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX l)`. Simplify using `only [map_add, hpd]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `(config := { decide := true })`. Establish `p2_012 : MvPowerSeries.pderiv ℂ_[p] 2 (lX l 0 + lX l 1 + lX l 2 : MvPowerSeries (Fin 3) ℂ_[p]) = MvPowerSeries.C 1 * PowerSeries.subst (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX l)`. Simplify using `only [map_add, hpd]`. Simplify using `(config := { decide := true })`. Establish `p2_01 : MvPowerSeries.pderiv ℂ_[p] 2 (lX l 0 + lX l 1 : MvPowerSeries (Fin 3) ℂ_[p]) = MvPowerSeries.C 0 * PowerSeries.subst (MvPowerSeries.X 2 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX l)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [map_add, hpd]`. Simplify using `(config := { decide := true })`. Establish `e1 : Dv v 0 (PI.JetsPhW.cubeE l ex ph) = PowerSeries.subst (lX l 0 + lX l 1 + lX l 2 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX (psi ex ph)) - PowerSeries.subst (lX l 0 + lX l 1 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX (psi ex ph)) - PowerSeries.subst (lX l 2 + lX l 0 : M …`. Rewrite using `[hDdef]`. Simplify using `only [Dv_add, Dv_sub, hq]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hd 0 _ 1 _ c012 p0_012, hd 0 _ 1 _ c01 p0_01, hd 0 _ 0 _ c12 p0_12, hd 0 _ 1 _ c20 p0_20, hS p (Fin 3) 0 v ph, hXne 0 1 ph (by decide), hXne 0 2 ph (by decide)]`. Simplify using `only [map_one, map_zero, one_mul, zero_mul, sub_zero, add_zero]`. Establish `e2 : Dv v 1 (PowerSeries.subst (lX l 0 + lX l 1 + lX l 2 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX (psi ex ph)) - PowerSeries.subst (lX l 0 + lX l 1 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX (psi ex ph)) - PowerSeries.subst (lX l 2 + lX l 0 : MvPowerSeries (Fin 3) ℂ_[p]) …`. Simplify using `only [Dv_add, Dv_sub]`. Rewrite using `[hd 1 _ 1 _ c012 p1_012, hd 1 _ 1 _ c01 p1_01, hd 1 _ 0 _ c20 p1_20, hXne 1 0 _ (by decide)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_one, map_zero, one_mul, zero_mul, sub_zero, add_zero]`. Establish `e3 : Dv v 2 (PowerSeries.subst (lX l 0 + lX l 1 + lX l 2 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX (PI.JetsPhW.dX (psi ex ph))) - PowerSeries.subst (lX l 0 + lX l 1 : MvPowerSeries (Fin 3) ℂ_[p]) (PI.JetsPhW.dX (PI.JetsPhW.dX (psi ex ph)))) = PowerSeries.subst (lX l 0 + lX l …`. Rewrite using `[Dv_sub, hd 2 _ 1 _ c012 p2_012, hd 2 _ 0 _ c01 p2_01]`. Simplify using `only [map_one, map_zero, one_mul, zero_mul, sub_zero]`. Establish `h1 : PI.JetsPhW.IntegralMv (Dv v 0 (PI.JetsPhW.cubeE l ex ph))` using `hL p (Fin 3) 0 v _ hvint hD0 hDe`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite `h1` using `[e1]`. Establish `h2` using `hI p (Fin 3) 1 v _ hvint h1`. Rewrite `h2` using `[e2]`. Establish `h3` using `hI p (Fin 3) 2 v _ hvint h2`. Rewrite `h3` using `[e3]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hk : ∀ k : ℕ, PI.JetsPhW.IntegralMv (PowerSeries.subst (lX l 0 + lX l 1 + lX l 2 : MvPowerSeries (Fin 3) ℂ_[p]) ((PI.JetsPhW.dX (A` using `ℂ_[p]))^[k + 3] (psi ex ph))) := by`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => exact h3`. Consider the case `succ k ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Establish `h4` using `hI p (Fin 3) 0 v _ hvint ih`. Rewrite `h4` using `[hd 0 _ 1 _ c012 p0_012, map_one, one_mul]`. Rewrite using `[show k + 1 + 3 = (k + 3) + 1 by omega, Function.iterate_succ_apply']`. Conclude with `h4`. Establish `hψ : PowerSeries.constantCoeff (psi ex ph) = PowerSeries.constantCoeff ph` using `hE p Unit ex ph hex`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `i with _ | _ | _ | k` into its components or cases. Establish `hph : PowerSeries.constantCoeff ph = 0`. Establish `h0` using `hD0`. Rewrite `h0` using `[hDdef]`. Simplify using `only [map_add, map_sub, hq] at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h0` using `[hE p (Fin 3) _ _ c012, hE p (Fin 3) _ _ c01, hE p (Fin 3) _ _ c12, hE p (Fin 3) _ _ c20, hE p (Fin 3) _ _ (hX 0), hE p (Fin 3) _ _ (hX 1), hE p (Fin 3) _ _ (hX 2), hψ]`. Take the linear combination `h0`. Rewrite using `[hJ p ex ph]`. Use `show PI.JetsPhW.IsIntP (PowerSeries.constantCoeff (psi ex ph))`. Rewrite using `[hψ, hph]`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[PI.JetsPhW.IsIntP]`. Conclude with `absurd rfl hi1`. Conclude with `absurd rfl hi2`. Establish `hc` using `isIntP_constantCoeff_of_integralMv (hk k)`. Rewrite `hc` using `[hE p (Fin 3) _ _ c012]`.
-
-Rewrite using `[hJ p ex ph]`. Conclude with `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem highG_of (hC : DChain) (hS : DSelf) (hN : PdNe) (hP : PdSelf) (hE : Ev0) (hJ : JetD)
     (hL : LogDer) (hI : Dint) : HighG := by

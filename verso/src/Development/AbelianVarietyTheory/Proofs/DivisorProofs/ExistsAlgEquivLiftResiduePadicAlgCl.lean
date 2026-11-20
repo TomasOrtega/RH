@@ -6,23 +6,19 @@ open IsLocalRing
 namespace GlobalTheory.ZJ
 
 /- English proof (translation)
-Use `haveI : IsAlgClosure L (PadicAlgCl l) := ⟨inferInstance, Algebra.IsAlgebraic.tower_top (K := ℚ_[l]) L⟩`. Use `haveI : IsGalois L (PadicAlgCl l) := {}`. Establish `hmem : ∀ (g : PadicAlgCl l ≃ₐ[L] PadicAlgCl l) {x : PadicAlgCl l}, x ∈ OO l → g x ∈ OO l` using `fun g _ hx => algEquiv_mem_OO (g.restrictScalars ℚ_[l]) hx`. Use `letI : MulSemiringAction (PadicAlgCl l ≃ₐ[L] PadicAlgCl l) (OO l) := { smul := fun g x => ⟨g x, hmem g x.2⟩ one_smul := fun _ => Subtype.ext rfl mul_smul := fun _ _ _ => Subtype.ext rfl smul_zero := fun g => Subtype.ext (map_zero g) smul_add := fun g _ _ => Subtype.ext (map_add g …`. Establish `hsmul : ∀ (g : PadicAlgCl l ≃ₐ[L] PadicAlgCl l) (x : OO l), ((g • x : OO l) : PadicAlgCl l) = g x` using `fun _ _ => rfl`.
+Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `A : Subring (OO l)` to `L.toSubalgebra.toSubring.comap (OO l).subtype`. Establish `hA : ∀ a : A, (((a : OO l) : PadicAlgCl l)) ∈ L` using `fun a => a.2`. Use `haveI : SMulCommClass (PadicAlgCl l ≃ₐ[L] PadicAlgCl l) A (OO l) := ⟨fun g a b => by`. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `g (((a : OO l) : PadicAlgCl l) * b) = ((a : OO l) : PadicAlgCl l) * g b`.
+Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Equip the data with the indicated structure.
 
-Rewrite using `[map_mul]`. Use `congr 1`. Conclude with `g.commutes (⟨_, hA a⟩ : L)⟩`. Use `letI : TopologicalSpace (OO l) := ⊥`. Use `haveI : DiscreteTopology (OO l) := ⟨rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use `haveI : ContinuousSMul (PadicAlgCl l ≃ₐ[L] PadicAlgCl l) (OO l) := by`. Rewrite using `[continuousSMul_iff_stabilizer_isOpen]`. Introduce `x`. Use `stabilizer_isOpen_of_isIntegral (K := L) (x : PadicAlgCl l)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MulAction.mem_stabilizer_iff]`. Conclude with `Subtype.ext_iff`. Use `haveI : Algebra.IsInvariant A (OO l) (PadicAlgCl l ≃ₐ[L] PadicAlgCl l) := by`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `b hb`. Take `⟨k, hk⟩` from `(InfiniteGalois.mem_range_algebraMap_iff_fixed (k := L) (b : PadicAlgCl l)).2 fun g => congrArg Subtype.val (hb g)`. Establish `hbL : (b : PadicAlgCl l) ∈ L` using `hk ▸ k.2`. Conclude with `⟨⟨b, hbL⟩, rfl⟩`. Use `set Q := maximalIdeal (OO l) with hQ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Set `φ' : ((OO l) ⧸ Q) ≃ₐ[A ⧸ Q.under A] ((OO l) ⧸ Q)` to `AlgEquiv.ofRingEquiv (f := (φ : ((OO l) ⧸ Q) ≃+* ((OO l) ⧸ Q))) (by`. Introduce `x`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `hφ (a : OO l) (hA a))`. Take `⟨⟨σ, hσQ⟩, hσ⟩` from `Ideal.Quotient.stabilizerHom_surjective_of_profinite (G := PadicAlgCl l ≃ₐ[L] PadicAlgCl l) (Q.under A) Q φ'`.
-
-Use `⟨σ, fun x y hxy => ?_⟩` and prove the remaining obligations. Establish `h1 : Ideal.Quotient.mk Q (σ • x) = φ (residue (OO l) x)` using `DFunLike.congr_fun hσ (Ideal.Quotient.mk Q x)`. Establish `h2 : residue (OO l) (σ • x - y) = 0`. Rewrite using `[map_sub, hxy]`. Conclude with `sub_eq_zero.2 h1`.
-
-Establish `h3 : ¬ IsUnit (σ • x - y)`. Rewrite `h2` using `[residue_eq_zero_iff, mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `h2`. Establish `h4` using `(GlobalTheory.ZH.not_isUnit_OO_iff _).1 h3`. Simplify `h4` using `[hsmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_algEquiv_lift_residue (l : ℕ) [Fact l.Prime] (L : IntermediateField ℚ_[l] (PadicAlgCl l))
     (φ : kb l ≃+* kb l)

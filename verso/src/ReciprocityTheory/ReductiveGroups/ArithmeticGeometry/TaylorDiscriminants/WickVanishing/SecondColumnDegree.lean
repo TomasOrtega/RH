@@ -22,20 +22,20 @@ theorem so_def (c : σ → σ → k) (P : MvPolynomial σ k) :
     secondOrder k c P = ∑ l, ∑ l', C (c l l') * pderiv l (pderiv l' P) := rfl
 
 /- English proof (translation)
-Simplify using `[so_def]`.
+Simplify using the standard rewrite rules.
 -/
 theorem so_zero (c : σ → σ → k) : secondOrder k c (0 : MvPolynomial σ k) = 0 := by
   simp [so_def]
 
 /- English proof (translation)
-Simplify using `only [so_def, map_add, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem so_add (c : σ → σ → k) (P Q : MvPolynomial σ k) :
     secondOrder k c (P + Q) = secondOrder k c P + secondOrder k c Q := by
   simp only [so_def, map_add, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp only [so_def, MvPolynomial.smul_eq_C_mul, Finset.mul_sum, Derivation.leibniz, smul_eq_mul, pderiv_C, mul_zero, add_zero]`. Use `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Use the proof step `ring)`. Consider the case `simp [so_def, Finset.smul_sum, mul_smul_comm]`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem so_smul (c : σ → σ → k) (r : k) (P : MvPolynomial σ k) :
     secondOrder k c (r • P) = r • secondOrder k c P := by
@@ -47,9 +47,7 @@ theorem so_smul (c : σ → σ → k) (r : k) (P : MvPolynomial σ k) :
   | simp [so_def, Finset.smul_sum, mul_smul_comm]
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on`. Simplify using the standard rewrite rules. Simplify using `[*]`. Name the introduced variables `p m hp`. Simplify using `only [Derivation.leibniz, smul_eq_mul, map_add, hp, pderiv_X]`.
-
-Apply the tactic sequence `by_cases ha : a = m <;> by_cases hb : b = m <;> simp [Pi.single_apply, ha, hb] <;> ring`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem mvPolynomial_pderiv_comm (a b : σ) (P : MvPolynomial σ k) :
     pderiv a (pderiv b P) = pderiv b (pderiv a P) := by
@@ -62,14 +60,14 @@ private theorem mvPolynomial_pderiv_comm (a b : σ) (P : MvPolynomial σ k) :
     by_cases ha : a = m <;> by_cases hb : b = m <;> simp [Pi.single_apply, ha, hb] <;> ring
 
 /- English proof (translation)
-Rewrite using `[mvPolynomial_pderiv_comm b c, mvPolynomial_pderiv_comm a c, mvPolynomial_pderiv_comm b d, mvPolynomial_pderiv_comm a d]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pd4 (P : MvPolynomial σ k) (a b c d : σ) :
     pderiv a (pderiv b (pderiv c (pderiv d P))) = pderiv c (pderiv d (pderiv a (pderiv b P))) := by
   rw [mvPolynomial_pderiv_comm b c, mvPolynomial_pderiv_comm a c, mvPolynomial_pderiv_comm b d, mvPolynomial_pderiv_comm a d]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private theorem sum4_lemma {M : Type} [AddCommMonoid M] (f : σ → σ → σ → σ → M) :
     ∑ a, ∑ b, ∑ c, ∑ d, f a b c d = ∑ c, ∑ d, ∑ a, ∑ b, f a b c d := by
@@ -81,7 +79,7 @@ private theorem sum4_lemma {M : Type} [AddCommMonoid M] (f : σ → σ → σ �
     _ = ∑ c, ∑ d, ∑ a, ∑ b, f a b c d := Finset.sum_congr rfl fun c _ => Finset.sum_comm
 
 /- English proof (translation)
-Simplify using `only [so_def, map_sum, Finset.mul_sum, Derivation.leibniz, smul_eq_mul, pderiv_C, mul_zero, add_zero]`. Rewrite using `[sum4_lemma]`. Use `Finset.sum_congr rfl fun m _ => Finset.sum_congr rfl fun m' _ => Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[pd4]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem so_comm (c1 c2 : σ → σ → k) (P : MvPolynomial σ k) :
     secondOrder k c1 (secondOrder k c2 P) = secondOrder k c2 (secondOrder k c1 P) := by
@@ -94,11 +92,11 @@ theorem so_comm (c1 c2 : σ → σ → k) (P : MvPolynomial σ k) :
   ring
 
 /- English proof (translation)
-Use `conv_lhs => rw [Q.as_sum]`. Rewrite using `[map_sum]`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun s hs => ?_)` and prove the remaining obligations. Rewrite using `[pderiv_monomial]`. Distinguish the cases in `h0 : s i = 0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Use `(MvPolynomial.totalDegree_monomial_le _ _).trans ?_` and prove the remaining obligations. Establish `h1` using `MvPolynomial.le_totalDegree hs`. Establish `h2 : s = (s - Finsupp.single i 1) + Finsupp.single i 1` using `(tsub_add_cancel_of_le (Finsupp.single_le_iff.2 (Nat.one_le_iff_ne_zero.2 h0))).symm`. Establish `h3 : (s.sum fun _ e => e) = ((s - Finsupp.single i 1).sum fun _ e => e) + 1` using `by conv_lhs => rw [h2]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl), Finsupp.sum_single_index rfl]`. Establish `h4 : ((s - Finsupp.single i 1).sum fun _ => id) = ((s - Finsupp.single i 1).sum fun _ e => e)` using `rfl`. Establish `h5 : (s.sum fun _ => id) = (s.sum fun _ e => e)` using `rfl`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem totalDegree_pderiv_le (i : σ) (Q : MvPolynomial σ k) :
     (pderiv i Q).totalDegree ≤ Q.totalDegree - 1 := by
@@ -121,7 +119,7 @@ theorem totalDegree_pderiv_le (i : σ) (Q : MvPolynomial σ k) :
     omega
 
 /- English proof (translation)
-Use `first`. Consider the case `(rw [MvPolynomial.totalDegree_eq_zero_iff_eq_C] at h; rw [h, pderiv_C])`. Consider the case `(have h' := (MvPolynomial.totalDegree_eq_zero_iff_eq_C).1 h; rw [h', pderiv_C])`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pderiv_eq_zero_of_deg (i : σ) (Q : MvPolynomial σ k) (h : Q.totalDegree = 0) : pderiv i Q = 0 := by
   first
@@ -129,9 +127,9 @@ theorem pderiv_eq_zero_of_deg (i : σ) (Q : MvPolynomial σ k) (h : Q.totalDegre
   | (have h' := (MvPolynomial.totalDegree_eq_zero_iff_eq_C).1 h; rw [h', pderiv_C])
 
 /- English proof (translation)
-Rewrite using `[so_def]`. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun l _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_finset_sum _ _).trans (Finset.sup_le fun l' _ => ?_)` and prove the remaining obligations. Use `(MvPolynomial.totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.totalDegree_C, zero_add]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `totalDegree_pderiv_le l (pderiv l' Q)`. Establish `h2` using `totalDegree_pderiv_le l' Q`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem totalDegree_so_le (c : σ → σ → k) (Q : MvPolynomial σ k) :
     (secondOrder k c Q).totalDegree ≤ Q.totalDegree - 2 := by
@@ -145,7 +143,7 @@ theorem totalDegree_so_le (c : σ → σ → k) (Q : MvPolynomial σ k) :
   omega
 
 /- English proof (translation)
-Rewrite using `[so_def]`. Use `Finset.sum_eq_zero fun l _ => Finset.sum_eq_zero fun l' _ => ?_` and prove the remaining obligations. Establish `h1` using `totalDegree_pderiv_le l' Q`. Rewrite using `[pderiv_eq_zero_of_deg l (pderiv l' Q) (by omega), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem so_eq_zero_of_le_one (c : σ → σ → k) (Q : MvPolynomial σ k) (h : Q.totalDegree ≤ 1) :
     secondOrder k c Q = 0 := by
@@ -155,7 +153,7 @@ theorem so_eq_zero_of_le_one (c : σ → σ → k) (Q : MvPolynomial σ k) (h : 
   rw [pderiv_eq_zero_of_deg l (pderiv l' Q) (by omega), mul_zero]
 
 /- English proof (translation)
-The claim follows from `| 0, _, h => absurd h (Nat.not_lt_zero _) | i + 1, Q, h => by rw [Function.iterate_succ_apply] by_cases h1 : Q.totalDegree ≤ 1 · rw [so_eq_zero_of_le_one c Q h1] exact Function.iterate_fixed (so_zero c) i · apply so_iter_eq_zero c i have := totalDegree_so_le c Q omega`.
+A detailed English derivation is pending.
 -/
 theorem so_iter_eq_zero (c : σ → σ → k) :
     ∀ (i : ℕ) (Q : MvPolynomial σ k), Q.totalDegree < i → (secondOrder k c)^[i] Q = 0
@@ -170,7 +168,7 @@ theorem so_iter_eq_zero (c : σ → σ → k) :
       omega
 
 /- English proof (translation)
-The claim follows from `| 0, _ => le_rfl | i + 1, Q => by rw [Function.iterate_succ_apply] refine (so_iter_deg_le c i _).trans ?_ have := totalDegree_so_le c Q omega`.
+A detailed English derivation is pending.
 -/
 theorem so_iter_deg_le (c : σ → σ → k) :
     ∀ (i : ℕ) (Q : MvPolynomial σ k), ((secondOrder k c)^[i] Q).totalDegree ≤ Q.totalDegree
@@ -193,7 +191,7 @@ def cB (c : ι → ι → k) (b : Fin n) : ι × Fin n → ι × Fin n → k :=
   fun p q => if p.2 = b ∧ q.2 = b then c p.1 q.1 else 0
 
 /- English proof (translation)
-Use `first`. Consider the case `exact pderiv_rename (f := fun l => (l, b)) (fun x y h => by simpa using h) l Q`. Consider the case `simpa using pderiv_rename (f := fun l : ι => (l, b)) (fun x y h => by simpa using h) l Q`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem pderiv_colE (b : Fin n) (l : ι) (Q : MvPolynomial ι k) :
     pderiv (l, b) (colE b Q) = colE b (pderiv l Q) := by
@@ -203,7 +201,7 @@ theorem pderiv_colE (b : Fin n) (l : ι) (Q : MvPolynomial ι k) :
   | simpa using pderiv_rename (f := fun l : ι => (l, b)) (fun x y h => by simpa using h) l Q
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on`. Simplify using the standard rewrite rules. Simplify using `[*]`. Name the introduced variables `p m hp`. Simplify using `[hp, pderiv_X, Pi.single_apply, hab]`.
+Proceed by induction. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem pderiv_colE_eq_zero_of_ne (a b : Fin n) (hab : a ≠ b) (l : ι) (P : MvPolynomial ι k) :
     pderiv (l, b) (colE a P) = 0 := by
@@ -215,7 +213,7 @@ private theorem pderiv_colE_eq_zero_of_ne (a b : Fin n) (hab : a ≠ b) (l : ι)
     simp [hp, pderiv_X, Pi.single_apply, hab]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.prod_insert ha, Derivation.leibniz, ih (fun h => hb (Finset.mem_insert_of_mem h)), pderiv_colE_eq_zero_of_ne a b (by rintro rfl; exact hb (Finset.mem_insert_self _ _)) l (Q a)]`. Simplify using the standard rewrite rules.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pderiv_prod_colE (b : Fin n) (s : Finset (Fin n)) (hb : b ∉ s) (Q : Fin n → MvPolynomial ι k)
     (l : ι) : pderiv (l, b) (∏ b' ∈ s, colE b' (Q b')) = 0 := by
@@ -228,15 +226,15 @@ theorem pderiv_prod_colE (b : Fin n) (s : Finset (Fin n)) (hb : b ∉ s) (Q : Fi
     simp
 
 /- English proof (translation)
-Establish `hd : ∀ l l' : ι, pderiv (l, b) (pderiv (l', b) (colE b Q * R)) = colE b (pderiv l (pderiv l' Q)) * R`. Introduce `l l'`. Rewrite using `[Derivation.leibniz, hR, smul_zero, zero_add, smul_eq_mul, pderiv_colE, Derivation.leibniz, hR, smul_zero, add_zero, smul_eq_mul, pderiv_colE, mul_comm]`. Establish `key : ∀ p q : ι × Fin n, C (cB c b p q) * pderiv p (pderiv q (colE b Q * R)) = if p.2 = b ∧ q.2 = b then C (c p.1 q.1) * (colE b (pderiv p.1 (pderiv q.1 Q)) * R) else 0`. Introduce and unpack `⟨l, y⟩ ⟨l', y'⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [cB]`. Use `split_ifs with h`. Take `⟨rfl, rfl⟩` from `h`. Rewrite using `[hd]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[so_def, so_def]`. Simplify using `only [key, map_sum, Finset.sum_mul, map_mul, MvPolynomial.rename_C]`. Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single b]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun l' _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_eq_single b]`. Simplify using `[mul_assoc]`. Introduce `y _ hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[hy]`. Simplify using the standard rewrite rules. Introduce `y _ hy`. Simplify using `[hy]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem so_colB (c : ι → ι → k) (b : Fin n) (Q : MvPolynomial ι k) (R : MvPolynomial (ι × Fin n) k)
     (hR : ∀ l : ι, pderiv (l, b) R = 0) :
@@ -272,7 +270,7 @@ theorem so_colB (c : ι → ι → k) (b : Fin n) (Q : MvPolynomial ι k) (R : M
   · simp
 
 /- English proof (translation)
-The claim follows from `| 0, _ => rfl | i + 1, Q => by rw [Function.iterate_succ_apply, so_colB c b Q R hR, so_colB_iter c b R hR i, ← Function.iterate_succ_apply]`.
+A detailed English derivation is pending.
 -/
 theorem so_colB_iter (c : ι → ι → k) (b : Fin n) (R : MvPolynomial (ι × Fin n) k)
     (hR : ∀ l : ι, pderiv (l, b) R = 0) :

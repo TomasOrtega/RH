@@ -20,15 +20,15 @@ def SecRankSpecialize.Statement : Prop :=
           (Vertical.SecAlg (Q.map (MvPolynomial.map (algebraMap R κ))) (algebraMap R κ ∘ y))
 
 /- English proof (translation)
-Use `letI : Algebra (PowerSeries ℚ) ℚ := (PowerSeries.constantCoeff (R := ℚ)).toAlgebra`. Use `⟨inferInstance, inferInstance, inferInstance, fun a => ⟨PowerSeries.C a, by simp [RingHom.algebraMap_toAlgebra]⟩, ?_⟩` and prove the remaining obligations. Use `set I := Vertical.secIdeal (⊥ : Ideal (MvPolynomial (Fin 1) (PowerSeries ℚ))) (fun _ : Vertical.Par 0 1 => (1 : PowerSeries ℚ))`. Establish `hX : ∀ j : Fin 1, Ideal.Quotient.mk I (X j) = 1`. Introduce `j`.
+Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Fin.fin_one_eq_zero j, ← sub_eq_zero, ← map_one (Ideal.Quotient.mk I), ← map_sub, Ideal.Quotient.eq_zero_iff_mem]`. Use `Ideal.mem_sup_right (Ideal.subset_span ?_)` and prove the remaining obligations. Simplify using `[Vertical.chartForm, linForm]`. Establish `hrange : ∀ p : MvPolynomial (Fin 1) (PowerSeries ℚ), Ideal.Quotient.mk I p ∈ Set.range (algebraMap (PowerSeries ℚ) (Vertical.SecAlg ⊥ (fun _ : Vertical.Par 0 1 => (1 : PowerSeries ℚ))))`. Introduce `p`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C a => exact ⟨a, rfl⟩`. Consider the case `add p q hp hq`. Take `⟨a, ha⟩` from `hp`. Take `⟨b, hb⟩` from `hq`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a + b, by rw [map_add, map_add, ha, hb]⟩`. Consider the case `mul_X p j hp`. Take `⟨a, ha⟩` from `hp`. Conclude with `⟨a, by rw [map_mul, hX, mul_one, ha]⟩`. Use `Module.Finite.of_surjective (Algebra.linearMap (PowerSeries ℚ) _) ?_` and prove the remaining obligations.
+Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨p, rfl⟩` from `Ideal.Quotient.mk_surjective x`. Conclude with `hrange p`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem SecRankSpecialize.hypotheses_inhabited :
     letI : Algebra (PowerSeries ℚ) ℚ := (PowerSeries.constantCoeff (R := ℚ)).toAlgebra

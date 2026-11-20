@@ -38,15 +38,15 @@ end Action
 variable {P Q : Subgroup G}
 
 /- English proof (translation)
-Set `` to `doubleCosetAction P Q x`. Establish `: SigmaCompactSpace P` using `hP.sigmaCompactSpace`. Establish `: SigmaCompactSpace Q` using `hQ.sigmaCompactSpace`. Establish `: LocallyCompactSpace (doubleCoset x (P : Set G) Q)` using `hC.locallyCompactSpace`. Establish `: ContinuousSMul (P × Q) (doubleCoset x (P : Set G) Q)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨Continuous.subtype_mk ?_ _⟩` and prove the remaining obligations. Conclude with `((continuous_subtype_val.comp (continuous_fst.comp continuous_fst)).mul (continuous_subtype_val.comp continuous_snd)).mul ((continuous_subtype_val.comp (continuous_snd.comp continuous_fst)).inv)`. Establish `: MulAction.IsPretransitive (P × Q) (doubleCoset x (P : Set G) Q)`. Use `⟨fun a b => ?_⟩` and prove the remaining obligations. Take `⟨p₁, hp₁, q₁, hq₁, h₁⟩` from `mem_doubleCoset.1 a.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨p₂, hp₂, q₂, hq₂, h₂⟩` from `mem_doubleCoset.1 b.2`. Use `⟨(⟨p₂ * p₁⁻¹, P.mul_mem hp₂ (P.inv_mem hp₁)⟩, ⟨q₂⁻¹ * q₁, Q.mul_mem (Q.inv_mem hq₂) hq₁⟩), ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Use `show (p₂ * p₁⁻¹) * (a : G) * (q₂⁻¹ * q₁)⁻¹ = b`. Rewrite using `[h₁, h₂]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `group`. Establish `hopen` using `isOpenMap_smul_of_sigmaCompact (G := P × Q) (X := doubleCoset x (P : Set G) Q) ⟨x, mem_doubleCoset_self P Q x⟩`. Set `e : (P × Q) ≃ₜ (P × Q)` to `(Homeomorph.refl P).prodCongr (Homeomorph.inv Q)`. Establish `: (fun pq : P × Q => (⟨(pq.1 : G) * x * pq.2, mem_doubleCoset.2 ⟨pq.1, pq.1.2, pq.2, pq.2.2, rfl⟩⟩ : doubleCoset x (P : Set G) Q)) = (fun γ : P × Q => γ • (⟨x, mem_doubleCoset_self P Q x⟩ : doubleCoset x (P : Set G) Q)) ∘ e`. Use function extensionality and compare the values at `pq`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show (pq.1 : G) * x * pq.2 = (pq.1 : G) * x * ((pq.2⁻¹ : Q) : G)⁻¹`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `hopen.comp e.isOpenMap`.
+A detailed English derivation is pending.
 -/
 theorem isOpenMap_doubleCoset (hP : IsClosed (P : Set G)) (hQ : IsClosed (Q : Set G)) (x : G)
     (hC : IsLocallyClosed (doubleCoset x (P : Set G) Q)) :
@@ -84,13 +84,13 @@ theorem isOpenMap_doubleCoset (hP : IsClosed (P : Set G)) (hQ : IsClosed (Q : Se
   exact hopen.comp e.isOpenMap
 
 /- English proof (translation)
-Establish `hCy : doubleCoset y (P : Set G) Q = doubleCoset x (P : Set G) Q` using `doubleCoset_eq_of_mem hy`. Rewrite `hC`, the goal using `[← hCy]`. Establish `hopen` using `isOpenMap_doubleCoset hP hQ y hC`. Use `set W : Set (P × Q) := {pq | (pq.1 : G) ∈ interior UP ∧ (pq.2 : G) ∈ interior UQ}`. Establish `hW : IsOpen W` using `(isOpen_interior.preimage (continuous_subtype_val.comp continuous_fst)).inter (isOpen_interior.preimage (continuous_subtype_val.comp continuous_snd))`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hVo, hV⟩` from `isOpen_induced_iff.1 (hopen W hW)`. Establish `h1 : (1 : P × Q) ∈ W` using `⟨mem_interior_iff_mem_nhds.2 hUP, mem_interior_iff_mem_nhds.2 hUQ⟩`. Establish `hyV : y ∈ V`. Establish `: (⟨y, mem_doubleCoset_self P Q y⟩ : doubleCoset y (P : Set G) Q) ∈ Subtype.val ⁻¹' V`. Rewrite using `[hV]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨1, h1, Subtype.ext (by simp)⟩`. Conclude with `this`. Use `⟨V, hVo.mem_nhds hyV, fun z hz hzC => ?_⟩` and prove the remaining obligations. Establish `: (⟨z, hzC⟩ : doubleCoset y (P : Set G) Q) ∈ Subtype.val ⁻¹' V` using `hz`. Rewrite `this` using `[hV]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨pq, hpq, hpqz⟩` from `this`. Use `⟨pq.1, pq.1.2, interior_subset hpq.1, pq.2, pq.2.2, interior_subset hpq.2, ?_⟩` and prove the remaining obligations. Conclude with `(congrArg Subtype.val hpqz).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_nhds_inter_doubleCoset_subset (hP : IsClosed (P : Set G))
     (hQ : IsClosed (Q : Set G)) {x : G} (hC : IsLocallyClosed (doubleCoset x (P : Set G) Q))
@@ -121,15 +121,13 @@ theorem exists_nhds_inter_doubleCoset_subset (hP : IsClosed (P : Set G))
   exact (congrArg Subtype.val hpqz).symm
 
 /- English proof (translation)
-Take `⟨K₁, hK₁c, hK₁⟩` from `exists_compact_mem_nhds (1 : G)`. Establish `hloc : ∀ c ∈ Kc, ∃ V ∈ 𝓝 c, ∀ z ∈ V, z ∈ doubleCoset x (P : Set G) Q → ∃ p ∈ P, p ∈ (univ : Set G) ∧ ∃ q ∈ Q, q ∈ K₁ ∧ z = p * c * q` using `fun c hc => exists_nhds_inter_doubleCoset_subset hP hQ hC (hKC hc) Filter.univ_mem hK₁`. Use `choose V hV hVsub using hloc`. Take `⟨t, ht⟩` from `hK.elim_nhds_subcover' V hV`. Establish `hq : ∀ c : Kc, ∃ p ∈ P, ∃ q ∈ Q, (c : G) = p * x * q` using `fun c => mem_doubleCoset.1 (hKC c.2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose pc hpc qc hqc hcq using hq`. Use `⟨⋃ c ∈ t, (fun z => qc c * z) '' ((Q : Set G) ∩ K₁), ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `t.isCompact_biUnion fun c _ => (hK₁c.inter_left hQ).image (continuous_const.mul continuous_id)`. Introduce `l hl`. Simplify using `only [Set.mem_iUnion, Set.mem_image] at hl`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨c, _, z, hz, rfl⟩` from `hl`. Conclude with `Q.mul_mem (hqc c) hz.1`. Introduce `z hz`. Establish `hz'` using `ht hz`. Simplify using `only [Set.mem_iUnion] at hz'`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨c, hct, hzc⟩` from `hz'`. Take `⟨p, hp, -, q, hq, hqK, rfl⟩` from `hVsub c c.2 z hzc (hKC hz)`. Use `⟨p * pc c, P.mul_mem hp (hpc c), qc c * q, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_iUnion, Set.mem_image]`. Conclude with `⟨c, hct, q, ⟨hq, hqK⟩, rfl⟩`.
-
-Rewrite using `[hcq c] group`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_subset_doubleCoset (hP : IsClosed (P : Set G))
     (hQ : IsClosed (Q : Set G)) {x : G} (hC : IsLocallyClosed (doubleCoset x (P : Set G) Q))

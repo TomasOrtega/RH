@@ -10,13 +10,13 @@ namespace GlobalTheory.CompanionTheory.HalfIntZero
 variable {M : ℕ} [NeZero M]
 
 /- English proof (translation)
-Establish `hg` using `hasSum_geometric_of_norm_lt_one hX`. Establish `he : HasSum (fun k : ℕ => ((p ^ ((2 * k) / 2) : ℕ) : ℂ) * X ^ (2 * k)) ((1 - p * X ^ 2)⁻¹)`. Establish `: (fun k : ℕ => ((p ^ ((2 * k) / 2) : ℕ) : ℂ) * X ^ (2 * k)) = fun k : ℕ => ((p : ℂ) * X ^ 2) ^ k`. Use function extensionality and compare the values at `k`. Rewrite using `[Nat.mul_div_cancel_left k (by norm_num : 0 < 2), mul_pow, pow_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression. Rewrite using `[this]`. Conclude with `hg`. Establish `ho : HasSum (fun k : ℕ => ((p ^ ((2 * k + 1) / 2) : ℕ) : ℂ) * X ^ (2 * k + 1)) (X * (1 - p * X ^ 2)⁻¹)`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: (fun k : ℕ => ((p ^ ((2 * k + 1) / 2) : ℕ) : ℂ) * X ^ (2 * k + 1)) = fun k : ℕ => X * ((p : ℂ) * X ^ 2) ^ k`. Use function extensionality and compare the values at `k`. Establish `h : (2 * k + 1) / 2 = k` using `by omega`. Rewrite using `[h, mul_pow, pow_succ, pow_mul]`. Use `push_cast`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `hg.mul_left X`. Conclude with `HasSum.even_add_odd he ho`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSum_floorHalf (p : ℕ) (X : ℂ) (hX : ‖(p : ℂ) * X ^ 2‖ < 1) :
     HasSum (fun j : ℕ => ((p ^ (j / 2) : ℕ) : ℂ) * X ^ j) ((1 - p * X ^ 2)⁻¹ + X * (1 - p * X ^ 2)⁻¹) := by
@@ -43,7 +43,7 @@ theorem hasSum_floorHalf (p : ℕ) (X : ℂ) (hX : ‖(p : ℂ) * X ^ 2‖ < 1) 
 omit [NeZero M] in
 
 /- English proof (translation)
-Establish `hp0 : (p : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hp`. Establish `h1 : (p : ℂ) ^ (-(2 * s - 1)) = p * ((p : ℂ) ^ (-s)) ^ 2`. Rewrite using `[show -(2 * s - 1) = 1 + (-s + -s) by ring, Complex.cpow_add _ _ hp0, Complex.cpow_add _ _ hp0, Complex.cpow_one]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1, MulChar.pow_apply' c (by norm_num : 2 ≠ 0)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -58,27 +58,27 @@ theorem sq_char_cpow (c : DirichletCharacter ℂ M) (p : ℕ) (hp : p ≠ 0) (s 
   ring
 
 /- English proof (translation)
-Establish `hpp : (p : ℕ).Prime` using `p.2`. Rewrite using `[sq_char_cpow c p hpp.ne_zero s]`. Distinguish the cases in `hc : c ((p : ℕ) : ZMod M) = 0`. Rewrite using `[hc]`. Establish `h0 : (∑' j : ℕ, (NN 0 ((p : ℕ) ^ j) : ℂ) * ((0 : ℂ) * ((p : ℕ) : ℂ) ^ (-s)) ^ j) = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[tsum_eq_single 0]`. Simplify using `[(hN 0).1]`. Introduce `j hj`. Simplify using `[hj]`. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hne : (p : ℕ) ≠ 2`. Introduce `h`. Apply `hc` to reduce the goal to its premises. Rewrite using `[h]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `MulChar.map_nonunit` to reduce the goal to its premises. Introduce `hu`. Establish `hu' : IsUnit (((2 : ℕ)) : ZMod M)` using `by exact_mod_cast hu`. Use `(ZMod.isUnit_iff_coprime 2 M).1 hu'` as an intermediate fact. Conclude with `absurd (Nat.Coprime.eq_one_of_dvd this h2) (by norm_num)`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set X : ℂ := c ((p : ℕ) : ZMod M) * ((p : ℕ) : ℂ) ^ (-s) with hXdef`. Establish `hp2 : (2 : ℝ) ≤ ((p : ℕ) : ℝ)` using `by exact_mod_cast hpp.two_le`. Establish `hp0 : (0 : ℝ) < ((p : ℕ) : ℝ)` using `by linarith`. Establish `hXle : ‖X‖ ≤ ((p : ℕ) : ℝ)⁻¹`. Rewrite using `[hXdef, norm_mul, Complex.norm_natCast_cpow_of_pos hpp.pos]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖c ((p : ℕ) : ZMod M)‖ ≤ 1` using `DirichletCharacter.norm_le_one c _`. Establish `h2' : ((p : ℕ) : ℝ) ^ (-s).re ≤ ((p : ℕ) : ℝ)⁻¹`. Rewrite using `[← Real.rpow_neg_one]`. Apply `Real.rpow_le_rpow_of_exponent_le (by linarith)` to reduce the goal to its premises. Simplify using `only [Complex.neg_re]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Establish `hinv : ((p : ℕ) : ℝ)⁻¹ ≤ 1 / 2`. Rewrite using `[inv_eq_one_div]`. Conclude with `one_div_le_one_div_of_le (by norm_num) hp2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnX : ‖(((p : ℕ) : ℂ)) * X ^ 2‖ < 1`. Rewrite using `[norm_mul, norm_pow, Complex.norm_natCast]`. Establish `hsq : ‖X‖ ^ 2 ≤ (((p : ℕ) : ℝ)⁻¹) ^ 2` using `pow_le_pow_left₀ (norm_nonneg _) hXle 2`. Combine the equalities or inequalities in the displayed calculation. Establish `h1X : 1 + X ≠ 0`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Establish `: X = -1` using `by linear_combination h`. Rewrite `hXle` using `[this]`. Simplify using `only [norm_neg, norm_one] at hXle`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1pX : 1 - ((p : ℕ) : ℂ) * X ^ 2 ≠ 0`. Introduce `h`. Establish `: ((p : ℕ) : ℂ) * X ^ 2 = 1` using `by linear_combination -h`. Rewrite `hnX` using `[this]`. Simplify using `at hnX`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hterm : (fun j : ℕ => (NN 0 ((p : ℕ) ^ j) : ℂ) * X ^ j) = fun j : ℕ => (((p : ℕ) ^ (j / 2) : ℕ) : ℂ) * X ^ j`. Use function extensionality and compare the values at `j`. Rewrite using `[(((hN 0).2.2.2 p j hpp hne).2.2 rfl)]`. Rewrite using `[hterm, (hasSum_floorHalf p X hnX).tsum_eq]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem local_factor (hN : N2) (h2 : 2 ∣ M) (c : DirichletCharacter ℂ M) (s : ℂ) (hs : 1 < s.re)
     (p : Nat.Primes) :
@@ -148,9 +148,9 @@ theorem local_factor (hN : N2) (h2 : 2 ∣ M) (c : DirichletCharacter ℂ M) (s 
     field_simp
 
 /- English proof (translation)
-Establish `hr : 1 < (2 * s - 1).re`. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1` using `(hA M c 0 s hs).2`. Establish `e2` using `DirichletCharacter.LSeries_eulerProduct_hasProd (c ^ 2) hr`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (fun p : Nat.Primes => (∑' j : ℕ, (NN 0 ((p : ℕ) ^ j) : ℂ) * (c ((p : ℕ) : ZMod M) * ((p : ℕ) : ℂ) ^ (-s)) ^ j) / (1 + c ((p : ℕ) : ZMod M) * ((p : ℕ) : ℂ) ^ (-s))) = fun p : Nat.Primes => (1 - (c ^ 2) ((p : ℕ) : ZMod M) * ((p : ℕ) : ℂ) ^ (-(2 * s - 1)))⁻¹`. Use function extensionality and compare the values at `p`. Conclude with `local_factor hN h2 c s (by linarith) p`. Rewrite `e1` using `[e3]`. Conclude with `e1.unique e2`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coeff_zero (hN : N2) (hA : A2) (h2 : 2 ∣ M) (c : DirichletCharacter ℂ M) (s : ℂ) (hs : 2 < s.re) :
     DirichletCharacter.LFunction (c ^ 2) (2 * s) * Dn c 0 s =
@@ -169,23 +169,21 @@ theorem coeff_zero (hN : N2) (hA : A2) (h2 : 2 ∣ M) (c : DirichletCharacter �
   exact e1.unique e2
 
 /- English proof (translation)
-Establish `hlin : IsLinearMap ℝ (fun u : ℂ => u.re - u.im)` using `⟨fun x y => by simp only [Complex.add_re, Complex.add_im]; ring, fun a x => by simp only [Complex.real_smul, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, smul_eq_mul]; ring⟩`. Set `U : Set ℂ` to `{u | -1 < u.re} ∩ {u | u.re - u.im < 1}`. Establish `hUo : IsOpen U` using `(isOpen_lt continuous_const Complex.continuous_re).inter (isOpen_lt (Complex.continuous_re.sub Complex.continuous_im) continuous_const)`. Establish `hUc : Convex ℝ U` using `(convex_halfSpace_re_gt (-1)).inter (convex_halfSpace_lt hlin 1)`. Establish `hF : DifferentiableOn ℂ (fun u : ℂ => (u - 1) * DirichletCharacter.LFunction (c ^ 2) u) U`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u hu`. Establish `hu1 : u ≠ 1`. Introduce and unpack `rfl`. Use `hu.2` as an intermediate fact. Simplify using `at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `((differentiableAt_id.sub_const 1).mul (DirichletCharacter.differentiableAt_LFunction _ u (Or.inl hu1))).differentiableWithinAt`. Establish `hGU : DifferentiableOn ℂ G U` using `hG.mono (fun u hu => hu.1)`. Establish `hz : (⟨2, 2⟩ : ℂ) ∈ U`. Prove the components needed by the constructor for the conclusion. Use `show (-1 : ℝ) < 2`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Evaluate the numerical expressions. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Use `show (2 : ℝ) - 2 < 1`. Evaluate the numerical expressions. Establish `hev : G =ᶠ[nhds (⟨2, 2⟩ : ℂ)] fun u : ℂ => (u - 1) * DirichletCharacter.LFunction (c ^ 2) u` using `by filter_upwards [(isOpen_lt continuous_const Complex.continuous_re).mem_nhds (show (1 : ℝ) < (⟨2, 2⟩ : ℂ).re by norm_num)] with z hz`. Rewrite using `[hGs z hz, DirichletCharacter.LFunction_eq_LSeries _ hz]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Establish `key` using `(hGU.analyticOnNhd hUo).eqOn_of_preconnected_of_eventuallyEq (hF.analyticOnNhd hUo) hUc.isPreconnected hz hev`. Establish `h0U : (0 : ℂ) ∈ U`. Prove the components needed by the constructor for the conclusion. Use `show (-1 : ℝ) < (0 : ℂ).re`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use `show (0 : ℂ).re - (0 : ℂ).im < 1`. Simplify using the standard rewrite rules. Establish `hM : 1 < M`. Use `Nat.le_of_dvd (NeZero.pos M) h2` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `haveI : Fact (1 < M) := ⟨hM⟩`. Establish `hev' : Function.Even (c ^ 2 : DirichletCharacter ℂ M)`. Introduce `x`. Establish `hm : c (-1) ^ 2 = 1`. Rewrite using `[← map_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[MulChar.pow_apply' c (by norm_num : 2 ≠ 0), MulChar.pow_apply' c (by norm_num : 2 ≠ 0), neg_eq_neg_one_mul x, map_mul, mul_pow, hm, one_mul]`. Establish `hL : DirichletCharacter.LFunction (c ^ 2) 0 = 0`. Rewrite using `[DirichletCharacter.LFunction, ZMod.LFunction_apply_zero_of_even hev', MulChar.map_nonunit _ not_isUnit_zero]`. Simplify using the standard rewrite rules.
-
-Use `key h0U` as an intermediate fact. Simplify `this` using `[hL]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem cont_zero (h2 : 2 ∣ M) (c : DirichletCharacter ℂ M) (G : ℂ → ℂ)
     (hG : DifferentiableOn ℂ G (HP (-1)))
@@ -244,39 +242,37 @@ theorem cont_zero (h2 : 2 ∣ M) (c : DirichletCharacter ℂ M) (G : ℂ → ℂ
   simpa [hL] using this
 
 /- English proof (translation)
-Introduce and unpack `⟨C₀, hLB⟩ hN hA M _ h2 c`. Take `⟨G, hGd, hGs, hGb⟩` from `hLB M (fun n : ℕ => (c ^ 2) (n : ZMod M)) (NeZero.pos M) (fun n => by simp) (fun n => DirichletCharacter.norm_le_one _ _)`. Establish `hG0` using `cont_zero h2 c G hGd hGs`. Set `g : ℂ → ℂ` to `fun s => G (2 * s - 1) / 2`. Establish `hgd : DifferentiableOn ℂ g (HP (1 / 4))`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hmaps : Set.MapsTo (fun s : ℂ => 2 * s - 1) (HP (1 / 4)) (HP (-1))`. Introduce `s hs`. Establish `hs' : (1 / 4 : ℝ) < s.re` using `hs`. Use `show (-1 : ℝ) < (2 * s - 1).re`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlin : DifferentiableOn ℂ (fun s : ℂ => 2 * s - 1) (HP (1 / 4))` using `by fun_prop`. Conclude with `(hGd.comp hlin hmaps).div_const 2`. Establish `hopen : IsOpen (HP (1 / 4))` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `hhalf : (1 / 2 : ℂ) ∈ HP (1 / 4)` using `by show (1 / 4 : ℝ) < (1 / 2 : ℂ).re`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Establish `hAd : DifferentiableOn ℂ (dslope g (1 / 2)) (HP (1 / 4))` using `(Complex.differentiableOn_dslope (hopen.mem_nhds hhalf)).2 hgd`. Establish `hball : Metric.closedBall (1 / 2 : ℂ) (1 / 5) ⊆ HP (1 / 4)`. Introduce `s hs`. Establish `h1 : ‖s - 1 / 2‖ ≤ 1 / 5` using `by simpa [dist_eq_norm] using hs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2'` using `(abs_le.1 ((Complex.abs_re_le_norm (s - 1 / 2)).trans h1)).1`. Use `show (1 / 4 : ℝ) < s.re`. Simplify using `at h2'`. Evaluate the numerical expressions using `at h2'`. Combine the linear equalities and inequalities to obtain the conclusion.
+Evaluate the numerical expressions. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Evaluate the numerical expressions.
 
-Take `⟨K, hK⟩` from `(isCompact_closedBall (1 / 2 : ℂ) (1 / 5)).exists_bound_of_continuousOn (hAd.continuousOn.mono hball)`. Establish `hg2 : g (1 / 2) = 0` using `by show G (2 * (1 / 2) - 1) / 2 = 0`. Evaluate the numerical expressions using `[hG0]`. Use `⟨max K 0 + 40 * |C₀| * (M : ℝ) ^ 2, dslope g (1 / 2), hAd, ?_, ?_⟩` and prove the remaining obligations. Introduce `s hs`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `sub_smul_dslope g (1 / 2) s`. Rewrite `h` using `[smul_eq_mul, hg2, sub_zero]`. Rewrite using `[h, mul_assoc, coeff_zero hN hA h2 c s hs]`. Use `show G (2 * s - 1) / 2 = _`. Rewrite using `[hGs (2 * s - 1) (by simp; linarith)]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `s hs`. Establish `hone : (1 : ℝ) ≤ (1 + ‖s‖) ^ 4` using `one_le_pow₀ (by linarith [norm_nonneg s])`. Establish `hCnn : 0 ≤ 40 * |C₀| * (M : ℝ) ^ 2` using `by positivity`. Establish `hpos : 0 ≤ (1 + ‖s‖) ^ 4` using `by positivity`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hb : ‖s - 1 / 2‖ ≤ 1 / 5`. Establish `h1 : ‖dslope g (1 / 2) s‖ ≤ K` using `hK s (by simpa [dist_eq_norm] using hb)`. Establish `h2' : K ≤ max K 0` using `le_max_left _ _`. Establish `h3 : 0 ≤ max K 0` using `le_max_right _ _`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Use `push_neg at hb`. Establish `hne : s ≠ 1 / 2`. Introduce and unpack `rfl`. Simplify using `at hb`. Evaluate the numerical expressions using `at hb`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hnn : 0 < ‖s - 1 / 2‖` using `by linarith`. Rewrite using `[dslope_of_ne _ hne, slope_def_field, hg2, sub_zero, norm_div]`. Establish `hre : -1 / 2 ≤ (2 * s - 1).re`. Establish `hs' : (1 / 4 : ℝ) < s.re` using `hs`. Simplify using the standard rewrite rules.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hG` using `hGb (2 * s - 1) hre`. Establish `hnorm : 1 + ‖2 * s - 1‖ ≤ 2 * (1 + ‖s‖)`. Establish `: ‖2 * s - 1‖ ≤ 2 * ‖s‖ + 1`. Use `(norm_sub_le _ _).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hpow : (1 + ‖2 * s - 1‖) ^ 4 ≤ 16 * (1 + ‖s‖) ^ 4`. Use `pow_le_pow_left₀ (by positivity) hnorm 4` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hGn : ‖G (2 * s - 1)‖ ≤ |C₀| * (M : ℝ) ^ 2 * (16 * (1 + ‖s‖) ^ 4)`. Use `hG.trans ?_` and prove the remaining obligations. Establish `hq : 0 ≤ (M : ℝ) ^ 2` using `by positivity`. Establish `hp1 : 0 ≤ (1 + ‖2 * s - 1‖) ^ 4` using `by positivity`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_abs_self _`. Use `_ ≤ _ := by gcongr`. Establish `hgs : ‖g s‖ = ‖G (2 * s - 1)‖ / 2` using `by show ‖G (2 * s - 1) / 2‖ = _`. Simplify using the standard rewrite rules. Rewrite using `[hgs, div_le_iff₀ hnn]`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h3 : 0 ≤ max K 0` using `le_max_right _ _`. Establish `hb' : (1 / 5 : ℝ) ≤ ‖s - 1 / 2‖` using `hb.le`. Establish `hbase : 0 ≤ 40 * |C₀| * (M : ℝ) ^ 2 * (1 + ‖s‖) ^ 4` using `by positivity`. Establish `hX : ‖G (2 * s - 1)‖ / 2 ≤ (40 * |C₀| * (M : ℝ) ^ 2 * (1 + ‖s‖) ^ 4) * (1 / 5)`. Use the polynomial consequences of the given equalities and inequalities.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ max K 0 * (1 + ‖s‖) ^ 4 * ‖s - 1 / 2‖` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem main : LB → N2 → A2 → A0 := by
   rintro ⟨C₀, hLB⟩ hN hA M _ h2 c

@@ -7,9 +7,9 @@ open GroundTheory.Automorphic.AutomorphicForm GroundTheory.Automorphic.CuspidalS
 open scoped TensorProduct InnerProductSpace ComplexConjugate Pointwise
 
 /- English proof (translation)
-Establish `hc : Continuous fun s : {r : ℝ // 0 < r} => β (a * zInf K n s)` using `β.continuous.comp (continuous_const.mul continuous_zInf)`. Use `hc.integrable_of_hasCompactSupport ?_` and prove the remaining obligations. Establish `hD : IsCompact ((fun r : {r : ℝ // 0 < r} => r * (detA K n a)⁻¹) '' (detA K n '' tsupport β))` using `(β.hasCompactSupport.isCompact.image continuous_detA).image (continuous_id.mul continuous_const)`. Use `HasCompactSupport.intro hD fun s hs => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hs ⟨s * detA K n a, mem_of_kernel_ne_zero hn hne, by simp⟩`.
+A detailed English derivation is pending.
 -/
 private theorem integrable_slice {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 0 < n)
     (β : TI K n) (a : archGroup K n) :
@@ -24,7 +24,7 @@ private theorem integrable_slice {K : Type} [Field K] [NumberField K] {n : ℕ} 
   exact hs ⟨s * detA K n a, mem_of_kernel_ne_zero hn hne, by simp⟩
 
 /- English proof (translation)
-Simplify using `only [kbar, CompactlySupportedContinuousMap.add_apply]`. Conclude with `integral_add (integrable_slice hn β a) (integrable_slice hn β' a)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem kbar_add {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 0 < n)
     (β β' : TI K n) (a : archGroup K n) : kbar (β + β' : TI K n) a = kbar β a + kbar β' a := by
@@ -32,7 +32,7 @@ private theorem kbar_add {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 0 
   exact integral_add (integrable_slice hn β a) (integrable_slice hn β' a)
 
 /- English proof (translation)
-Simplify using `only [kbar, CompactlySupportedContinuousMap.smul_apply, smul_eq_mul]`. Conclude with `integral_const_mul c _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem kbar_smul {K : Type} [Field K] [NumberField K] {n : ℕ}
     (c : ℂ) (β : TI K n) (a : archGroup K n) : kbar (c • β : TI K n) a = c * kbar β a := by
@@ -40,7 +40,7 @@ private theorem kbar_smul {K : Type} [Field K] [NumberField K] {n : ℕ}
   exact integral_const_mul c _
 
 /- English proof (translation)
-Take `⟨h1, h2, -⟩` from `UpperTheory.ConvolutionTheory.Tf.tensCont K n hn β e`. Establish `h : Continuous (tensFun β e) ∧ HasCompactSupport (tensFun β e)` using `⟨h1, h2⟩`. Rewrite using `[tens, dif_pos h]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem tens_apply' {K : Type} [Field K] [NumberField K] {n : ℕ} (hn : 0 < n)
     (β : TI K n) (e : TF K n) (x : normOneGL K n) : tens β e x = tensFun β e x := by
@@ -50,15 +50,15 @@ private theorem tens_apply' {K : Type} [Field K] [NumberField K] {n : ℕ} (hn :
   rfl
 
 /- English proof (translation)
-Introduce `K _ _ n hn β e`. Use `⟨tens_apply' hn β e, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hC : IsCompact (archP K n '' tsupport β * MultiplicityOne.finProj K n '' tsupport e)` using `(β.hasCompactSupport.isCompact.image continuous_archP).mul (e.hasCompactSupport.isCompact.image MultiplicityOne.continuous_finProj)`. Use `closure_minimal ?_ hC.isClosed` and prove the remaining obligations. Introduce `x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : tensFun β e x ≠ 0`. Rewrite using `[← tens_apply' hn β e x]`. Conclude with `hx`. Take `⟨a, ha, h, hh, rfl⟩` from `(UpperTheory.ConvolutionTheory.Tf.tensCont K n hn β e).2.2 x hx'`. Conclude with `Set.mul_mem_mul ⟨a, ha, rfl⟩ ⟨h, hh, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Introduce `β'`. Use extensionality with `x`. Simplify using `only [CompactlySupportedContinuousMap.add_apply, tens_apply' hn, tensFun, kbar_add hn, add_mul]`. Introduce `e'`. Use extensionality with `x`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [CompactlySupportedContinuousMap.add_apply, tens_apply' hn, tensFun, mul_add]`. Introduce `c`. Prove the components needed by the constructor for the conclusion. Use extensionality with `x`. Simplify using `only [CompactlySupportedContinuousMap.smul_apply, tens_apply' hn, tensFun, kbar_smul, smul_eq_mul, mul_assoc]`.
+Prove the components needed by the constructor for the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `x`. Simplify using `only [CompactlySupportedContinuousMap.smul_apply, tens_apply' hn, tensFun, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.Tf.tensApply :
     ∀ (K : Type) [Field K] [NumberField K] (n : ℕ), 0 < n → ∀ (β : TI K n) (e : TF K n), (∀ x, tens β e x = tensFun β e x) ∧

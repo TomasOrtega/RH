@@ -8,11 +8,11 @@ import Development.AbelianVarietyTheory.Proofs.InertiaEigenvalues.FixingSubgroup
 open Formalism.BasicNotions Formalism.BasicNotions.Loc UpperTheory.V.Loc Topology
 
 /- English proof (translation)
-Take `⟨g, rfl⟩` from `QuotientGroup.mk_surjective h`. Establish `hg : g ∉ (commutator G).topologicalClosure` using `fun hm => hh ((QuotientGroup.eq_one_iff g).2 hm)`. Establish `hS : IsOpen {x : G | x * g ∉ ((commutator G).topologicalClosure : Set G)}` using `(Subgroup.isClosed_topologicalClosure _).isOpen_compl.preimage (continuous_mul_right g)`. Establish `h1 : (1 : G) ∈ {x : G | x * g ∉ ((commutator G).topologicalClosure : Set G)}` using `by show 1 * g ∉ ((commutator G).topologicalClosure : Set G)`. Rewrite using `[one_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg`. Take `⟨W, hW⟩` from `ProfiniteGrp.exist_openNormalSubgroup_sub_open_nhds_of_one hS h1`. Use `⟨(W : Subgroup G).map (QuotientGroup.mk' _), ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_map]`. Conclude with `QuotientGroup.isOpenMap_coe _ W.isOpen`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `⟨w, hw, he⟩`. Rewrite `he` using `[QuotientGroup.mk'_apply, QuotientGroup.eq]`. Conclude with `hW (inv_mem hw) he`.
+A detailed English derivation is pending.
 -/
 private theorem mn_sep {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G]
     [TotallyDisconnectedSpace G] (h : TopologicalAbelianization G) (hh : h ≠ 1) :
@@ -34,13 +34,13 @@ private theorem mn_sep {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalG
     exact hW (inv_mem hw) he
 
 /- English proof (translation)
-Establish `hP : IsClosed (Set.range fun z : A => z ^ n)` using `(isCompact_range (continuous_pow n)).isClosed`. Take `⟨V, hVo, hV1, hV⟩` from `hopen (q * n) (mul_ne_zero hq hn)`. It suffices to establish `hs : a ∈ closure (Set.range fun z : A => z ^ n) by`. Rewrite `hs` using `[hP.closure_eq]`. Take `⟨z, hz⟩` from `hs`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, hz.symm⟩`. Rewrite using `[mem_closure_iff]`. Introduce `o ho hao`. Establish `hW : IsOpen (o ∩ {y : A | y ^ q ∈ V})` using `ho.inter (hVo.preimage (continuous_pow q))`. Establish `haW : a ∈ o ∩ {y : A | y ^ q ∈ V}` using `⟨hao, by show a ^ q ∈ V; rw [ha]; exact hV1⟩`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx1, hx2⟩` from `hr.exists_mem_open hW ⟨a, haW⟩`. Establish `hx3 : r (x ^ q) ∈ V`. Rewrite using `[map_pow]`. Conclude with `hx2`. Take `⟨z, hz⟩` from `hV (x ^ q) hx3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hxz : x = z ^ n`. Establish `h1 : (x * (z ^ n)⁻¹) ^ q = 1`. Rewrite using `[mul_pow, inv_pow, ← pow_mul, mul_comm n q, ← hz, mul_inv_cancel]`. Conclude with `mul_inv_eq_one.mp (hM _ h1)`. Conclude with `⟨r x, hx1, r z, by rw [hxz, map_pow]⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem mn_core {A M : Type} [CommGroup A] [TopologicalSpace A] [IsTopologicalGroup A]
     [CompactSpace A] [T2Space A] [CommGroup M] (r : M →* A) (hr : DenseRange r) {q : ℕ} (hq : q ≠ 0)
@@ -70,15 +70,11 @@ private theorem mn_core {A M : Type} [CommGroup A] [TopologicalSpace A] [IsTopol
 
 open GroundTheory.LocalField ValuativeRel GroundTheory.LocalField.Abstract in
 /- English proof (translation)
-Use `haveI : IsClosed ((commutator (Ω ≃ₐ[K] Ω)).topologicalClosure : Set (Ω ≃ₐ[K] Ω)) := Subgroup.isClosed_topologicalClosure _`. Establish `hopen : ∀ n : ℕ, n ≠ 0 → ∃ V : Set (TopologicalAbelianization (Ω ≃ₐ[K] Ω)), IsOpen V ∧ 1 ∈ V ∧ ∀ x, localReciprocityLimit K Ω x ∈ V → ∃ z, x = z ^ n`. Introduce `n hn`. Use `haveI : Finite (Kˣ ⧸ (powMonoidHom n : Kˣ →* Kˣ).range) := finite_quotient_range_pow_of_charZero hn`. Set `H : openFiniteIndex Kˣ` to `⟨(powMonoidHom n : Kˣ →* Kˣ).range, isOpen_range_pow (Nat.cast_ne_zero.mpr hn), Subgroup.finiteIndex_of_finite_quotient⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI := openCompletion.discreteTopology_quotient H`. Use `⟨(fun b => artinCoord K Ω H (topologicalAbelianizationEquiv K Ω b)) ⁻¹' {1}, ?_, ?_, ?_⟩` and prove the remaining obligations. Conclude with `(isOpen_discrete _).preimage ((continuous_artinCoord H).comp (topologicalAbelianizationEquiv K Ω).continuous)`. Use `show artinCoord K Ω H (topologicalAbelianizationEquiv K Ω 1) = 1`. Rewrite using `[map_one, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `x hx`. Establish `hx' : artinCoord K Ω H (topologicalAbelianizationEquiv K Ω (localReciprocityLimit K Ω x)) = 1` using `hx`. Rewrite `hx'` using `[← localArtinMap_apply, artinCoord_localArtinMap, QuotientGroup.eq_one_iff]`. Take `⟨z, hz⟩` from `hx'`. Conclude with `⟨z, hz.symm⟩`.
-
-Establish `hall : ∀ n : ℕ, n ≠ 0 → ∃ z, a = z ^ n` using `fun n hn => mn_core (localReciprocityLimit K Ω) denseRange_localReciprocityLimit hq hM hopen a ha n hn`. Assume the negation of the conclusion as `hne`. Take `⟨V, hVo, haV⟩` from `mn_sep a hne`. Use `haveI : Finite (TopologicalAbelianization (Ω ≃ₐ[K] Ω) ⧸ V) := Subgroup.quotient_finite_of_isOpen V hVo`. Use `haveI : V.FiniteIndex := Subgroup.finiteIndex_of_finite_quotient`.
-
-Take `⟨z, hz⟩` from `hall V.index Subgroup.FiniteIndex.index_ne_zero`. Conclude with `haV (hz ▸ Subgroup.pow_index_mem V z)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem mn_field (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSpace K]
     [IsNonarchimedeanLocalField K] [CharZero K] [Field Ω] [Algebra K Ω] [IsSepClosure K Ω]
@@ -113,7 +109,7 @@ private theorem mn_field (K Ω : Type) [Field K] [ValuativeRel K] [TopologicalSp
   exact haV (hz ▸ Subgroup.pow_index_mem V z)
 
 /- English proof (translation)
-Establish `hc : commutator G ≤ (commutator H).comap f`. Rewrite using `[← Subgroup.map_le_iff_le_comap, commutator_def, commutator_def, Subgroup.map_commutator]`. Conclude with `Subgroup.commutator_mono le_top le_top`. Establish `hcl : (commutator G).topologicalClosure ≤ ((commutator H).topologicalClosure).comap f` using `Subgroup.topologicalClosure_minimal _ (hc.trans (Subgroup.comap_mono (Subgroup.le_topologicalClosure _))) ((Subgroup.isClosed_topologicalClosure _).preimage hf)`. Conclude with `hcl hg`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem mn_map {G H : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Group H]
     [TopologicalSpace H] [IsTopologicalGroup H] (f : G →* H) (hf : Continuous f) {g : G}
@@ -127,15 +123,13 @@ private theorem mn_map {G H : Type} [Group G] [TopologicalSpace G] [IsTopologica
   exact hcl hg
 
 /- English proof (translation)
-Establish `hp : l.Prime` using `Fact.out`. Establish `hprim : IsPrimitiveRoot ζ l`. Rewrite using `[IsPrimitiveRoot.iff_orderOf]`. Break down `(Nat.dvd_prime hp).1 (orderOf_dvd_of_pow_eq_one h1) with h | h` into its components or cases. Conclude with `absurd (orderOf_eq_one_iff.1 h) h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `h`. Establish `hs` using `cyclotomicCharacter.spec (L := Om l) l (n := 1) (MulSemiringAction.toRingAut (GQ l) (Om l) σ) ζ (by rw [pow_one]; exact h1)`. Establish `hcyc : (cyc l l σ : ℤ_[l]ˣ) = cyclotomicCharacter (Om l) l (MulSemiringAction.toRingAut (GQ l) (Om l) σ)` using `rfl`. Rewrite `hs` using `[← hcyc]`. Use `set x : ℤ_[l] := ((cyc l l σ : ℤ_[l]ˣ) : ℤ_[l]) with hx`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hσ : (MulSemiringAction.toRingAut (GQ l) (Om l) σ) ζ = ζ` using `h`. Establish `hs' : ζ ^ (PadicInt.toZModPow 1 x).val = ζ ^ 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hlt : (PadicInt.toZModPow 1 x).val < l` using `lt_of_lt_of_eq (ZMod.val_lt (PadicInt.toZModPow (p := l) 1 x)) (pow_one l)`. Establish `hk : (PadicInt.toZModPow 1 x).val = 1` using `hprim.pow_inj hlt hp.one_lt hs'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hk' : PadicInt.toZModPow 1 x = 1`. Rewrite using `[← ZMod.natCast_zmod_val (PadicInt.toZModPow 1 x), hk, Nat.cast_one]`. Establish `hmem : x - 1 ∈ RingHom.ker (PadicInt.toZModPow (p` using `l) 1) := by`. Rewrite using `[RingHom.mem_ker, map_sub, hk', map_one, sub_self]`. Rewrite `hmem` using `[PadicInt.ker_toZModPow, pow_one, ← PadicInt.maximalIdeal_eq_span_p, ← PadicInt.ker_toZMod, RingHom.mem_ker, map_sub, map_one, sub_eq_zero]`.
-
-Conclude with `hmem`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mn_cyc {l : ℕ} [Fact l.Prime] (σ : GQ l) {ζ : Om l} (h1 : ζ ^ l = 1) (h2 : ζ ≠ 1)
     (h : σ ζ = ζ) : PadicInt.toZMod ((cyc l l σ : ℤ_[l]ˣ) : ℤ_[l]) = 1 := by
@@ -168,29 +162,23 @@ private theorem mn_cyc {l : ℕ} [Fact l.Prime] (σ : GQ l) {ζ : Om l} (h1 : ζ
   exact hmem
 
 /- English proof (translation)
-Introduce `l _ G _ _ _ φ hφ hex g hg`. Take `⟨g0, hg0⟩` from `hex`. Establish `hp : l.Prime` using `Fact.out`. Take `⟨K, e, he1, he2, hφe, -⟩` from `openField φ hφ`. Use `haveI : FiniteDimensional ℚ_[l] K.1 := K.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `set L : IntermediateField ℚ_[l] (Om l) := K.1 with hL`. Use `haveI : Algebra.IsAlgebraic L (Om l) := Algebra.IsAlgebraic.tower_top (K := ℚ_[l]) L`. Use `haveI : IsAlgClosure L (Om l) := ⟨inferInstance, inferInstance⟩`. Use `haveI : IsSepClosure L (Om l) := inferInstance`. Take `⟨vr, ts, hloc, -⟩` from `GroundTheory.LocalField.exists_isNonarchimedeanLocalField_valuativeExtension ℚ_[l] L`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `ψ : G →* Gal(Om l/L)` to `L.fixingSubgroupEquiv.toMonoidHom.comp e.toMonoidHom`. Establish `hψ : Continuous ψ` using `(GlobalTheory.fixingSubgroupEquiv_bicontinuous ℚ_[l] (Om l) L).1.comp he1`. Set `ψi : Gal(Om l/L) →* G` to `e.symm.toMonoidHom.comp L.fixingSubgroupEquiv.symm.toMonoidHom`. Establish `hψi : Continuous ψi` using `he2.comp (GlobalTheory.fixingSubgroupEquiv_bicontinuous ℚ_[l] (Om l) L).2`. Establish `hψψ : ψi (ψ g) = g` using `(congrArg e.symm (L.fixingSubgroupEquiv.symm_apply_apply (e g))).trans (e.symm_apply_apply g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨n, hn⟩` from `hg`. Establish `hgn : g ^ (l ^ n) ∈ (commutator G).topologicalClosure`. Rewrite `hn` using `[← map_pow, QuotientGroup.mk'_apply]`. Conclude with `(QuotientGroup.eq_one_iff _).1 hn`. Establish `hM : ∀ x : Lˣ, x ^ (l ^ n) = 1 → x = 1`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `x hx`. Assume the negation of the conclusion as `hx1`. Take `⟨m, hmn, hm⟩` from `(Nat.dvd_prime_pow hp).1 (orderOf_dvd_of_pow_eq_one hx)`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hx1 (orderOf_eq_one_iff.1 (by rw [hm, pow_zero]))`. Use `set y := x ^ (l ^ (m - 1)) with hy`. Establish `hy1 : y ^ l = 1`. Rewrite using `[hy, ← pow_mul, ← pow_succ, Nat.sub_add_cancel (Nat.pos_of_ne_zero hm0), ← hm, pow_orderOf_eq_one]`. Establish `hy2 : y ≠ 1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `h`. Establish `h3` using `orderOf_dvd_of_pow_eq_one h`. Rewrite `h3` using `[hm, Nat.pow_dvd_pow_iff_le_right hp.one_lt]`. Use linear arithmetic over natural numbers and integers. Establish `hz1 : (((y : L) : Om l)) ^ l = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h4` using `congrArg (fun u : Lˣ => ((u : L) : Om l)) hy1`. Simplify using `using h4`. Establish `hz2 : (((y : L) : Om l)) ≠ 1`. Introduce `h`. Apply `hy2` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Apply `Units.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `using h`. Establish `hσ : φ g0 ∈ GK K`. Rewrite using `[← hφe]`.
-
-Conclude with `(e g0).2`. Establish `hfix : (φ g0) ((y : L) : Om l) = ((y : L) : Om l)` using `(IntermediateField.mem_fixingSubgroup_iff _ _).1 hσ _ (y : L).2`. Conclude with `hg0 (mn_cyc (φ g0) hz1 hz2 hfix)`. Establish `hψn : ψ g ^ (l ^ n) ∈ (commutator Gal(Om l/L)).topologicalClosure`. Rewrite using `[← map_pow]`.
-
-Conclude with `mn_map ψ hψ hgn`. Establish `ha : QuotientGroup.mk' (commutator Gal(Om l/L)).topologicalClosure (ψ g) = 1`. Use `mn_field L (Om l) (pow_ne_zero n hp.ne_zero) hM _ ?_` and prove the remaining obligations. Rewrite using `[← map_pow, QuotientGroup.mk'_apply]`. Conclude with `(QuotientGroup.eq_one_iff _).2 hψn`.
-
-Rewrite using `[← hψψ]`. Conclude with `mn_map ψi hψi ((QuotientGroup.eq_one_iff _).1 ha)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.muNone :
     ∀ {l : ℕ} [Fact l.Prime] {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] (φ : G →* GQ l) (hφ : IsOpenEmbedding φ), (∃ g : G, PadicInt.toZMod ((cyc l l (φ g) : ℤ_[l]ˣ) : ℤ_[l]) ≠ 1) → ∀ g : G, (QuotientGroup.mk' _ g : TopologicalAbelianization G) ∈ CommGroup.primaryComponent (TopologicalAbelianization G) l → g ∈ (commutator G).topologicalClosure := by

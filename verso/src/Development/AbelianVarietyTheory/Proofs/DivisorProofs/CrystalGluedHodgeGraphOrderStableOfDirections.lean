@@ -12,9 +12,9 @@ namespace GlobalTheory.HTGlueOStab
 variable {k : Type} [Field k] {V : Type} [AddCommGroup V] [Module k V] [Module kᵐᵒᵖ V] [IsCentralScalar k V]
 
 /- English proof (translation)
-Use `LinearMap.ext fun c' => ?_` and prove the remaining obligations. Take `⟨u, rfl⟩` from `(GlobalTheory.SqZeroCrys.isBC_trivSqZeroExt k V A₀ hA (GlobalTheory.FODef.sqZero k V) (GlobalTheory.FODef.constMorV k V A₀)).2 c'`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero, map_zero]`. Consider the case `add u v hu hv => simp only [map_add, hu, hv]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `tmul r c => rw [liftSemi_tmul, map_smul, map_smul, h]`.
+Treat this case separately.
 -/
 theorem coord_ext (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀)
     {e e' : Crys (divided₂ (GlobalTheory.FODef.sqZero k V)) (spMap (TrivSqZeroExt.fstHom k k V).toRingHom) A₀}
@@ -29,7 +29,7 @@ theorem coord_ext (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀)
   | tmul r c => rw [liftSemi_tmul, map_smul, map_smul, h]
 
 /- English proof (translation)
-Rewrite using `[push_apply]`. Use `congr 1`. Establish `m` using `(homMor (dp0 k) (𝟙 _) f).comp (GlobalTheory.FODef.constMorV k V A₀)`. Conclude with `(GrpMor.pull_pull (GlobalTheory.FODef.constMorV k V A₀) (homMor _ _ f) m (fun _ => rfl) (by simp) c).trans (GrpMor.pull_pull (homMor (dp0 k) (𝟙 _) f) (GlobalTheory.FODef.constMorV k V A₀) m (fun _ => rfl) rfl c).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem push_coord (A₀ : Over (Sp k)) [GrpObj A₀] (f : A₀ ⟶ A₀) [IsMonHom f]
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k V)) (spMap (TrivSqZeroExt.fstHom k k V).toRingHom) A₀)
@@ -44,7 +44,7 @@ theorem push_coord (A₀ : Over (Sp k)) [GrpObj A₀] (f : A₀ ⟶ A₀) [IsMon
     (GrpMor.pull_pull (homMor (dp0 k) (𝟙 _) f) (GlobalTheory.FODef.constMorV k V A₀) m (fun _ => rfl) rfl c).symm
 
 /- English proof (translation)
-Rewrite using `[GrpMor.pull_pull _ _ (homMor (dp0 k) (𝟙 _) (𝟙 A₀)) (fun r => rfl) (by simp)]`. Conclude with `Subtype.ext (IsMor.pullCohomologyOne_id _ c.1)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_pull (A₀ : Over (Sp k)) [GrpObj A₀] (c : prim (dp0 k) (𝟙 _) A₀) :
     (GlobalTheory.Published.GrothendieckMessing.crysRedMor (divided₂ (GlobalTheory.FODef.sqZero k V)) rfl A₀).pull
@@ -53,9 +53,9 @@ theorem red_pull (A₀ : Over (Sp k)) [GrpObj A₀] (c : prim (dp0 k) (𝟙 _) A
   exact Subtype.ext (IsMor.pullCohomologyOne_id _ c.1)
 
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `hP c'`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add u v hu hv => rw [map_add, map_add, map_add, map_add, map_add, hu, hv]`. Consider the case `tmul r c`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Rewrite using `[liftSemi_tmul, LinearMap.map_smulₛₗ, hQ, map_smul, map_smul, smul_eq_mul, smul_eq_mul, map_mul, he]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_of_surj {K C : Type} [Field K] [CommRing C] [Algebra K C] {M M' : Type*} [AddCommGroup M]
     [Module K M] [AddCommGroup M'] [Module C M'] (P : M →ₛₗ[algebraMap K C] M')
@@ -70,7 +70,7 @@ theorem eq_of_surj {K C : Type} [Field K] [CommRing C] [Algebra K C] {M M' : Typ
     rw [liftSemi_tmul, LinearMap.map_smulₛₗ, hQ, map_smul, map_smul, smul_eq_mul, smul_eq_mul, map_mul, he]
 
 /- English proof (translation)
-The claim follows from `eq_of_surj _ (GlobalTheory.SqZeroCrys.isBC_trivSqZeroExt k V A₀ hA (GlobalTheory.FODef.sqZero k V) (GlobalTheory.FODef.constMorV k V A₀)).2 _ _ e y (red_pull A₀) hc`.
+A detailed English derivation is pending.
 -/
 theorem corr_of_fst (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀)
     (e : Crys (divided₂ (GlobalTheory.FODef.sqZero k V)) (spMap (TrivSqZeroExt.fstHom k k V).toRingHom) A₀)
@@ -81,7 +81,7 @@ theorem corr_of_fst (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A�
     (GlobalTheory.FODef.constMorV k V A₀)).2 _ _ e y (red_pull A₀) hc
 
 /- English proof (translation)
-Use `coord_ext A₀ hA fun c => ?_` and prove the remaining obligations. Establish `e1 : ((TrivSqZeroExt.inr 1 : TrivSqZeroExt k k) • w) ((GlobalTheory.FODef.constMorV k k A₀).pull c) = (TrivSqZeroExt.inr 1 : TrivSqZeroExt k k) * (w ((GlobalTheory.FODef.constMorV k k A₀).pull c))` using `rfl`. Rewrite using `[e1, hw c, hy c]`. Apply the tactic sequence `ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eps_smul_eq {k : Type} [Field k] (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀) (y : HdR A₀)
     (w e₃ : Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) A₀)
@@ -95,9 +95,9 @@ theorem eps_smul_eq {k : Type} [Field k] (A₀ : Over (Sp k)) [GrpObj A₀] (hA 
   ext <;> simp [TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-Establish `hw : w ∈ E ⊔ M` using `by rw [hEM.sup_eq_top]; exact Submodule.mem_top`. Take `⟨a, ha, m, hm, rfl⟩` from `Submodule.mem_sup.1 hw`. Establish `h4 : ε • m = e₃ - ε • a` using `by rw [← h1, smul_add]; abel`. Establish `hmE : ε • m ∈ E` using `h4 ▸ E.sub_mem he₃ (E.smul_mem ε ha)`. Establish `h2 : ε • m = 0` using `(Submodule.disjoint_def.1 hEM.disjoint) _ hmE (M.smul_mem ε hm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨a, ha, by rw [← h1, smul_add, h2, add_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_smul_eq_of_isCompl {C X : Type*} [CommRing C] [AddCommGroup X] [Module C X] {E M : Submodule C X}
     (hEM : IsCompl E M) (ε : C) {w e₃ : X} (h1 : ε • w = e₃) (he₃ : e₃ ∈ E) : ∃ a ∈ E, ε • a = e₃ := by
@@ -109,9 +109,9 @@ theorem exists_smul_eq_of_isCompl {C X : Type*} [CommRing C] [AddCommGroup X] [M
   exact ⟨a, ha, by rw [← h1, smul_add, h2, add_zero]⟩
 
 /- English proof (translation)
-Take `⟨w, hw⟩` from `GlobalTheory.HTGlue.exists_coords k A₀ hA (Algebra.linearMap k (TrivSqZeroExt k k) ∘ₗ y)`. Take `⟨a, ha, h1⟩` from `exists_smul_eq_of_isCompl hEM _ (eps_smul_eq A₀ hA y w e₃ hw hy) he₃`. Use `(hred y).2 ⟨a, ha, corr_of_fst A₀ hA a y fun c => ?_⟩` and prove the remaining obligations. Establish `h3` using `congrArg (fun u => (u ((GlobalTheory.FODef.constMorV k k A₀).pull c)).snd) h1`. Establish `e1 : ((TrivSqZeroExt.inr 1 : TrivSqZeroExt k k) • a) ((GlobalTheory.FODef.constMorV k k A₀).pull c) = (TrivSqZeroExt.inr 1 : TrivSqZeroExt k k) * (a ((GlobalTheory.FODef.constMorV k k A₀).pull c))` using `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e1, hy c] at h3`. Simplify using `using h3`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fil_of_eps (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀)
     (E M : Submodule (TrivSqZeroExt k k)
@@ -132,13 +132,13 @@ theorem fil_of_eps (A₀ : Over (Sp k)) [GrpObj A₀] (hA : IsAbelianScheme A₀
   simpa using h3
 
 /- English proof (translation)
-Introduce `p _ D R _ b N k _ _ tk s o₀ _ d f E' hcompl hred hlift hstab c e he`. Take `⟨x, hx, z, hz, hze⟩` from `he`. Use `haveI := o₀.act.hom c`. Establish `key : ∀ j, ∀ x ∈ Fil o₀.A, push (dp0 k) (𝟙 _) (o₀.act.act c) (f j x) - f j (push (dp0 k) (𝟙 _) (o₀.act.act c) x) ∈ Fil o₀.A`. Introduce `j x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `hcompl j`. Take `⟨e1, he1, hc1⟩` from `hlift j x hx`. Take `⟨e2, he2, hc2⟩` from `hlift j _ (push_mem_Fil (o₀.act.act c) hx)`. Use `fil_of_eps o₀.A o₀.ab (E' j) M hM (hred j) (sub_mem (hstab j c e1 he1) he2) _ fun c' => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.sub_apply, push_coord, hc1, hc2]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `ext <;> simp [push_apply]`. Use `⟨_, push_mem_Fil (o₀.act.act c) hx, fun j => push (dp0 k) (𝟙 _) (o₀.act.act c) (f j x) - f j (push (dp0 k) (𝟙 _) (o₀.act.act c) x) + push (dp0 k) (𝟙 _) (o₀.act.act c) (z j), fun j => add_mem (key j x hx) (push_mem_Fil _ (hz j)), fun c' => ?_⟩` and prove the remaining obligations. Rewrite using `[push_coord, hze]`. Use `ext`. Simplify using `[push_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [TrivSqZeroExt.snd_add, TrivSqZeroExt.snd_inl, TrivSqZeroExt.snd_inr, zero_add, Pi.add_apply, LinearMap.add_apply, LinearMap.sub_apply, push_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem glueFil_stable : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : GlobalTheory.UPel.HT.Base D R) (N : ℕ) (k : Type) [Field k] [IsAlgClosed k] (tk : R →+* k) (s : Sp k ⟶ Sp R) (o₀ : GlobalTheory.UPel.HT.Obj b N s), s = spMap tk → ∀ (d : ℕ) (f : Fin d → (HdR o₀.A →ₗ[k] HdR o₀.A)), ∀ (E' : Fin d → Submodule (TrivSqZeroExt k k) (Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A)), (∀ j, ∃ M : Submodule (TrivSqZeroExt k k) (Crys (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) o₀.A), IsCompl (E' j) M) → (∀ j, ∀ y : HdR o₀.A, y ∈ Fil o₀.A ↔ ∃ e ∈ E' j, (GlobalTheory.Published.GrothendieckMessing.crysRedMor (divided₂ (GlobalTheory.FODef.sqZero k k)) rfl o₀.A).Corr e y) → (∀ j, ∀ x ∈ Fil o₀.A, ∃ e ∈ E' j, ∀ c, e ((GlobalTheory.FODef.constMorV k k o₀.A).pull c) = TrivSqZeroExt.inl (x c) + TrivSqZeroExt.inr (f j x c)) → (∀ j (c : D.O), ∀ e ∈ E' j, (haveI := o₀.act.hom (c); push (divided₂ (GlobalTheory.FODef.sqZero k k)) (spMap (TrivSqZeroExt.fstHom k k k).toRingHom) (o₀.act.act (c)) (e)) ∈ E' j) → ∀ (c : D.O), ∀ e ∈ GlobalTheory.HTGlue.glueFil o₀.A f, (haveI := o₀.act.hom (c); push (divided₂ (GlobalTheory.FODef.sqZero k (Fin d → k))) (spMap (TrivSqZeroExt.fstHom k k (Fin d → k)).toRingHom) (o₀.act.act (c)) (e)) ∈ GlobalTheory.HTGlue.glueFil o₀.A f := by
   intro p _ D R _ b N k _ _ tk s o₀ _ d f E' hcompl hred hlift hstab c e he

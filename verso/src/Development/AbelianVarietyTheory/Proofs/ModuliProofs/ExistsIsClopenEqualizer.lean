@@ -5,15 +5,15 @@ open CategoryTheory AlgebraicGeometry Limits
 namespace GlobalTheory.ClopenEqualizer
 
 /- English proof (translation)
-Set `d` to `pullback.diagonal c`. Set `l : P ⟶ pullback c c` to `pullback.lift a b h`. Use `haveI : IsOpenImmersion d := inferInstance`. Use `haveI : IsClosedImmersion d := inferInstance`. Set `j : pullback l d ⟶ P` to `pullback.fst l d`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hj : j ≫ a = j ≫ b`. Establish `h0 : j ≫ l = pullback.snd l d ≫ d` using `pullback.condition`. Establish `h1` using `congrArg (· ≫ pullback.fst c c) h0`. Establish `h2` using `congrArg (· ≫ pullback.snd c c) h0`. Simplify using `[l, d, pullback.lift_fst, pullback.lift_snd] at h1 h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h1, h2]`. Use `⟨Set.range j, ⟨j.isClosedEmbedding.isClosed_range, j.isOpenEmbedding.isOpen_range⟩, ?_⟩` and prove the remaining obligations. Introduce `T y`. Prove the components needed by the constructor for the conclusion. Introduce `hy`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e : y ≫ l = (y ≫ a) ≫ d`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `[l, d, pullback.lift_fst]`. Simplify using `[l, d, hy, pullback.lift_snd]`. Establish `e2 : pullback.lift y (y ≫ a) e ≫ j = y` using `pullback.lift_fst _ _ _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨t, rfl⟩`. Use `⟨pullback.lift y (y ≫ a) e t, ?_⟩` and prove the remaining obligations. Rewrite using `[← Scheme.Hom.comp_apply, e2]`. Introduce `hy`. Rewrite using `[← IsOpenImmersion.lift_fac j y hy, Category.assoc, Category.assoc, hj]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isClopen_equalizer {P C S : Scheme.{0}} (c : C ⟶ S) [IsFinite c] [Etale c] (a b : P ⟶ C)
     (h : a ≫ c = b ≫ c) :

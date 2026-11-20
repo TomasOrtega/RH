@@ -10,33 +10,31 @@ noncomputable section
 namespace GlobalTheory.IdTorus
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y h hJ hW S hS g hg k hk`. Establish `c1 : ∀ {a b : ℕ} (Z : Matrix (Fin a) (Fin b) E), cT (sigR (AF F) σ) (adMat F Z) = adMat F (cT (σ : E →+* E) Z)` using `fun Z => rfl`. Establish `mem : ∀ {h' : GAd σ J}, h' ∈ levi σ J X Y S → ∀ k ∈ S, h' ∈ frameStab σ J (initCols X k) ⊤ ∧ h' ∈ frameStab σ J (initCols Y k) ⊤` using `fun hh k hk => Subgroup.mem_inf.1 (Subgroup.mem_iInf.1 (Subgroup.mem_iInf.1 hh k) hk)`. Establish `fr : ∀ (C : Matrix (Fin n) (Fin r) E) (h' : GAd σ J) (k : Fin r), h' ∈ frameStab σ J (initCols C k) ⊤ → ∃ c : Fin r → AF F ⊗[F] E, (∀ j, k < j → c j = 0) ∧ ∀ i, ((matHom _ σ J h').1 * adMat F C) i k = (adMat F C *ᵥ c) i`. Introduce and unpack `C h' k ⟨B, -, e⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `P : Matrix (Fin r) (Fin (k.val + 1)) (AF F ⊗[F] E)` to `(1 : Matrix (Fin r) (Fin r) (AF F ⊗[F] E)).submatrix id (Fin.castLE k.2)`. Establish `hP : adMat F (initCols C k) = adMat F C * P`. Use extensionality with `i j`. Simplify using `[P, initCols, Matrix.mul_apply, Matrix.one_apply]`. Use `⟨fun j => (P * B.1) j ⟨k, Nat.lt_succ_self _⟩, fun j hj => ?_, fun i => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [P, Matrix.mul_apply, Matrix.submatrix_apply, id]`. Use `Finset.sum_eq_zero fun j' _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply_ne, zero_mul]`. Introduce `hjj`. Rewrite `hj` using `[show j = _ from hjj]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd hj (not_lt.2 (Nat.le_of_lt_succ j'.2))`. Establish `e2 : ((matHom _ σ J h').1 * adMat F C) i k = ((matHom _ σ J h').1 * adMat F (initCols C k)) i ⟨k, Nat.lt_succ_self _⟩`. Simplify using `[Matrix.mul_apply, initCols]`. Rewrite using `[e2, e, hP, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Use `set M := (matHom _ σ J g).1 with hMdef`. Take `⟨hX, -⟩` from `mem hg k hk`. Take `⟨c, hc0, hcM⟩` from `fr X g k hX`. Establish `hYX : adMat F (cT (σ : E →+* E) Y * J) * adMat F X = 1`. Rewrite using `[← Matrix.map_mul, yx h hJ hW, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hG : ∀ j, (adMat F (cT (σ : E →+* E) Y * J) * M * adMat F X) j k = c j`. Introduce `j`. Establish `: (fun i => (M * adMat F X) i k) = adMat F X *ᵥ c` using `funext hcM`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `_ = c j := by rw [this, mulVec_mulVec, hYX, one_mulVec]`. Establish `hone : cT (sigR (AF F) σ) (adMat F Y) * adMat F J * adMat F X = 1`. Rewrite using `[c1, ← Matrix.map_mul, ← Matrix.map_mul, yx h hJ hW, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hlt : ∀ j, j < k → c j = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `j hjk`. Take `⟨-, hY⟩` from `mem (inv_mem hg) j (hS k hk j hjk.le)`. Take `⟨c', hc'0, hc'M⟩` from `fr Y g⁻¹ j hY`. Use `set Mi := (matHom _ σ J g⁻¹).1 with hMidef`. Establish `hMMi : M * Mi = 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMdef, hMidef, ← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Establish `hu : cT (sigR (AF F) σ) M * adMat F J * M = adMat F J` using `g.2`. Establish `hJM : adMat F J * M = cT (sigR (AF F) σ) Mi * adMat F J` using `by conv_rhs => rw [← hu]`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Formalism.UG.cT_mul, hMMi, Formalism.UG.cT_one, Matrix.one_mul]`. Use `set W : Matrix (Fin r) (Fin r) (AF F ⊗[F] E) := Matrix.of fun (m : Fin r) (_ : Fin r) => c' m with hWdef`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hD : ∀ l, (Mi * adMat F Y) l j = (adMat F Y * W) l j`. Introduce `l`. Rewrite using `[hc'M l]`. Both sides reduce to the same expression. Establish `e0 : adMat F (cT (σ : E →+* E) Y * J) = adMat F (cT (σ : E →+* E) Y) * adMat F J` using `Matrix.map_mul`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : adMat F (cT (σ : E →+* E) Y * J) * M = cT (sigR (AF F) σ) (Mi * adMat F Y) * adMat F J`. Rewrite using `[e0, ← c1, Matrix.mul_assoc, hJM, Formalism.UG.cT_mul, Matrix.mul_assoc]`. Establish `key : (adMat F (cT (σ : E →+* E) Y * J) * M * adMat F X) j k = (cT (sigR (AF F) σ) (adMat F Y * W) * adMat F J * adMat F X) j k`. Rewrite using `[e1]`. Simplify using `only [Matrix.mul_apply, Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply, hD]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← hG j, key, Formalism.UG.cT_mul, Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cT _ (adMat F Y)), hone, Matrix.mul_one]`. Use `show sigR (AF F) σ (c' k) = 0`. Rewrite using `[hc'0 k hjk, map_zero]`. Establish `hc : c = Pi.single k (c k)`. Use function extensionality and compare the values at `j`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Break down `lt_trichotomy j k with hj | rfl | hj` into its components or cases. Rewrite using `[hlt j hj]`. Simplify using `[Pi.single_apply, hj.ne]`. Simplify using the standard rewrite rules. Rewrite using `[hc0 j hj]`.
-
-Simplify using `[Pi.single_apply, hj.ne']`. Use function extensionality and compare the values at `i`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc, hG k]`. Simplify using `[Matrix.mulVec, dotProduct, Pi.single_apply, mul_comm]`.
+Apply function extensionality and compare values at an arbitrary argument. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem levi_mulVec_col : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n : ℕ}
     {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E}, IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∀ {S : Finset (Fin r)}, (∀ k ∈ S, ∀ i, i ≤ k → i ∈ S) →

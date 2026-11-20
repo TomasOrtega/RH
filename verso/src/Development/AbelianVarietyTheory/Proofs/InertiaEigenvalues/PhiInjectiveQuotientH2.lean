@@ -8,9 +8,7 @@ open ReciprocityTheory.Gal Formalism.RepresentationBoundsCohomology.LOC Reciproc
 namespace GlobalTheory.NatQuot
 
 /- English proof (translation)
-Use `choose w hw using hd`. Establish `hemb : Topology.IsClosedEmbedding (fun a : O => π * a)` using `(continuous_const.mul continuous_id).isClosedEmbedding (mul_right_injective₀ hπ)`. Use `⟨w, hemb.isEmbedding.continuous_iff.2 ?_, hw⟩` and prove the remaining obligations. Establish `: ((fun a : O => π * a) ∘ w) = u` using `funext fun x => (hw x).symm`. Rewrite using `[this]`.
-
-Conclude with `hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_continuous_div {O : Type} [CommRing O] [IsDomain O] [TopologicalSpace O]
     [IsTopologicalRing O] [CompactSpace O] [T2Space O] {X : Type} [TopologicalSpace X]
@@ -24,27 +22,25 @@ theorem exists_continuous_div {O : Type} [CommRing O] [IsDomain O] [TopologicalS
   rw [this]; exact hu
 
 /- English proof (translation)
-Introduce `p O _ _ _ _ _ G _ _ _ hO ε hε z hz k`. Use `haveI : CompactSpace O := hO.compact`. Use `haveI : T2Space O := hO.t2`. Use `haveI hdisc := (quot_pow_maximalIdeal_discrete_finite hO k).1`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hI : IsLocalRing.maximalIdeal O ^ k = Ideal.span {ϖ ^ k}`. Rewrite using `[hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`. Establish `hπ : ϖ ^ k ≠ 0` using `pow_ne_zero k hϖ.ne_zero`. Generalize the expression as in `IsLocalRing.maximalIdeal O ^ k = I at hI hdisc`. Rewrite using `[injective_iff_map_eq_zero]`.
+Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `m hm`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective m`. Take `⟨z₀, rfl⟩` from `Submodule.Quotient.mk_surjective _ z`. Establish `hm' : cocycles2Map (twist ε O) (twist ε (O ⧸ I)) (LinearMap.toSpanSingleton O (O ⧸ I) (Ideal.Quotient.mk I a)) (cont_span _ _) (span_twist ε _ _) z₀ ∈ (B2 (twist ε (O ⧸ I))).comap (Z2 (twist ε (O ⧸ I))).subtype` using `(Submodule.Quotient.mk_eq_zero _).1 hm`. Take `⟨c, hc, hcf⟩` from `(separated_dvr_second_cohomology_mem _ _).1 hm'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcf' : ∀ g h : G, (ε g : O) • c h - c (g * h) + c g = z₀.1 (g, h) • Ideal.Quotient.mk I a` using `fun g h => congrFun hcf (g, h)`. Use `choose s hs using (Ideal.Quotient.mk_surjective (I := I))`. Establish `hcs : Continuous (fun g => s (c g))` using `continuous_of_discreteTopology.comp hc`. Use `set u : G × G → O := fun q => a * z₀.1 q - ((ε q.1 : O) * s (c q.2) - s (c (q.1 * q.2)) + s (c q.1)) with hu`. Establish `huc : Continuous u` using `(continuous_const.mul z₀.2.1).sub ((((hε.comp continuous_fst).mul (hcs.comp continuous_snd)).sub (hcs.comp (continuous_fst.mul continuous_snd))).add (hcs.comp continuous_fst))`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hud : ∀ q, ϖ ^ k ∣ u q`. Introduce and unpack `⟨g, h⟩`. Rewrite using `[← Ideal.mem_span_singleton, ← hI, ← Ideal.Quotient.eq_zero_iff_mem]`. Establish `e` using `hcf' g h`. Simplify using `only [Algebra.smul_def, Ideal.Quotient.algebraMap_eq] at e`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [hu, map_sub, map_add, map_mul, hs]`. Rewrite using `[e]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨w, hwc, hw⟩` from `exists_continuous_div hπ u huc hud`. Establish `hwZ : w ∈ Z2 (twist ε O)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hwc, fun g h l => ?_⟩` and prove the remaining obligations. Apply `mul_left_cancel₀ hπ` to reduce the goal to its premises. Establish `e : (ε g : O) * z₀.1 (h, l) - z₀.1 (g * h, l) + z₀.1 (g, h * l) - z₀.1 (g, h) = 0` using `z₀.2.2 g h l`. Establish `e1` using `hw (h, l)`. Establish `e2` using `hw (g * h, l)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Establish `e3` using `hw (g, h * l)`. Establish `e4` using `hw (g, h)`. Simplify using `only [hu, map_mul, Units.val_mul, mul_assoc] at e1 e2 e3 e4`. Use `show ϖ ^ k * ((ε g : O) * w (h, l) - w (g * h, l) + w (g, h * l) - w (g, h)) = ϖ ^ k * 0`. Take the linear combination `a * e - (ε g : O) * e1 + e2 - e3 + e4`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨b, hb⟩` from `hz.2 (Submodule.Quotient.mk ⟨w, hwZ⟩)`. Establish `key : a • (Submodule.Quotient.mk z₀ : H2 (twist ε O)) = (ϖ ^ k * b) • (Submodule.Quotient.mk z₀ : H2 (twist ε O))`. Simplify using `only at hb`. Rewrite using `[mul_smul, hb, ← Submodule.Quotient.mk_smul, ← Submodule.Quotient.mk_smul, Submodule.Quotient.eq]`. Use `(separated_dvr_second_cohomology_mem _ _).2 ⟨fun g => s (c g), hcs, funext fun q => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `e` using `hw q`. Use `show (ε q.1 : O) * s (c q.2) - s (c (q.1 * q.2)) + s (c q.1) = a * z₀.1 q - ϖ ^ k * w q`. Rewrite using `[← e, hu]`. Expand and normalize the polynomial expressions, which then agree. Establish `hab : a = ϖ ^ k * b` using `hz.1 key`.
-
-Rewrite using `[Ideal.Quotient.eq_zero_iff_mem, hI, Ideal.mem_span_singleton]`. Conclude with `⟨b, hab⟩`.
+A detailed English derivation is pending.
 -/
 theorem phi_quot_pow_injective :
     ∀ {p : ℕ} {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [TopologicalSpace O]

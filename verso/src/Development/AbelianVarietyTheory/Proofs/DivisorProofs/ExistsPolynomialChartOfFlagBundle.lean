@@ -15,7 +15,7 @@ namespace GlobalTheory
 namespace CellToSpec
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp_assoc]`. Establish `e : CommRingCat.ofHom (MvPolynomial.C : Γ(B, U) →+* MvPolynomial N Γ(B, U)) ≫ CommRingCat.ofHom (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n) = π.appLE U W hW`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[e, Scheme.Opens.toSpecΓ_SpecMap_appLE_assoc, IsAffineOpen.toSpecΓ_fromSpec, Scheme.Hom.resLE_comp_ι]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem part1 (B Y : Scheme.{0}) (π : Y ⟶ B) (U : B.Opens) (hU : IsAffineOpen U) (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ U) (N : Type) (n : N → Γ(Y, W)) :
     W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n)) ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.C : Γ(B, U) →+* MvPolynomial N Γ(B, U))) ≫ hU.fromSpec = W.ι ≫ π := by
@@ -26,21 +26,21 @@ theorem part1 (B Y : Scheme.{0}) (π : Y ⟶ B) (U : B.Opens) (hU : IsAffineOpen
   rw [e, Scheme.Opens.toSpecΓ_SpecMap_appLE_assoc, IsAffineOpen.toSpecΓ_fromSpec, Scheme.Hom.resLE_comp_ι]
 
 /- English proof (translation)
-Rewrite using `[Scheme.Opens.ι_appLE, Scheme.Opens.topIso_inv]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem topIso_inv_eq {Y : Scheme.{0}} (W : Y.Opens) (h' : ⊤ ≤ W.ι ⁻¹ᵁ W) : W.topIso.inv = W.ι.appLE W ⊤ h' := by
   rw [Scheme.Opens.ι_appLE, Scheme.Opens.topIso_inv]
   rfl
 
 /- English proof (translation)
-Rewrite using `[Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem appLE_top_top {X Z : Scheme.{0}} (g : X ⟶ Z) (h : ⊤ ≤ g ⁻¹ᵁ ⊤) : g.appLE ⊤ ⊤ h = g.appTop := by
   rw [Scheme.Hom.appTop, Scheme.Hom.app_eq_appLE]
   rfl
 
 /- English proof (translation)
-Establish `e : (Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial N R))).inv ≫ (W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ρ)).appTop = CommRingCat.ofHom ρ ≫ W.topIso.inv`. Rewrite using `[Scheme.Hom.comp_appTop, ← Scheme.ΓSpecIso_inv_naturality_assoc, Scheme.Opens.toSpecΓ_appTop, Iso.inv_hom_id_assoc]`. Rewrite using `[appLE_top_top, ← topIso_inv_eq W h']`. Conclude with `congrArg (fun q => q.hom (MvPolynomial.X s)) e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem part2 {Y : Scheme.{0}} (W : Y.Opens) (R : CommRingCat.{0}) (N : Type) (ρ : MvPolynomial N R →+* Γ(Y, W))
     (h : ⊤ ≤ (W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom ρ)) ⁻¹ᵁ ⊤) (h' : ⊤ ≤ W.ι ⁻¹ᵁ W) (s : N) :
@@ -56,7 +56,7 @@ theorem part2 {Y : Scheme.{0}} (W : Y.Opens) (R : CommRingCat.{0}) (N : Type) (�
 end CellToSpec
 
 /- English proof (translation)
-Introduce `B Y π U hU W hW N n`. Use `⟨CellToSpec.part1 B Y π U hU W hW N n, fun h h' s => ?_⟩` and prove the remaining obligations. Rewrite using `[CellToSpec.part2 W (CommRingCat.of Γ(B, U)) N _ h h' s, MvPolynomial.eval₂Hom_X']`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cellToSpec : ∀ (B Y : Scheme.{0}) (π : Y ⟶ B) (U : B.Opens) (hU : IsAffineOpen U) (W : Y.Opens) (hW : W ≤ π ⁻¹ᵁ U) (N : Type) (n : N → Γ(Y, W)), W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n)) ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.C : Γ(B, U) →+* MvPolynomial N Γ(B, U))) ≫ hU.fromSpec = W.ι ≫ π ∧ ∀ (h : ⊤ ≤ (W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n))) ⁻¹ᵁ ⊤) (h' : ⊤ ≤ W.ι ⁻¹ᵁ W) (s : N), ((W.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (MvPolynomial.eval₂Hom (π.appLE U W hW).hom n))).appLE ⊤ ⊤ h).hom ((Scheme.ΓSpecIso (CommRingCat.of (MvPolynomial N Γ(B, U)))).inv.hom (MvPolynomial.X s)) = (W.ι.appLE W ⊤ h').hom (n s) := by
   intro B Y π U hU W hW N n

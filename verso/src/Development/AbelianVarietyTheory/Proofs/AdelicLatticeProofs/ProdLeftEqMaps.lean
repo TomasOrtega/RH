@@ -5,9 +5,9 @@ namespace GlobalTheory.ProductLeftMaps
 open TensorProduct
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Both sides reduce to the same expression. Consider the case `tmul x e`. Take `⟨a, b⟩` from `x`.
+Proceed by induction. Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Simplify using `[Algebra.TensorProduct.map_tmul]`. Consider the case `add x y hx hy`. Rewrite using `[map_add, hx, hy, map_add, map_add]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem prodLeft_eq_maps {F A B E : Type} [Field F] [CommRing A] [CommRing B] [CommRing E]
     [Algebra F A] [Algebra F B] [Algebra F E] (z : TensorProduct F (A × B) E) :
@@ -26,7 +26,7 @@ theorem prodLeft_eq_maps {F A B E : Type} [Field F] [CommRing A] [CommRing B] [C
     rfl
 
 /- English proof (translation)
-Introduce `F A B E _ _ _ _ _ _ _ z h1 h2`. Apply `(TensorProduct.prodLeft F F A B E).injective` to reduce the goal to its premises. Rewrite using `[prodLeft_eq_maps, h1, h2, map_zero]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem main : ∀ {F A B E : Type} [inst : Field F] [inst_1 : CommRing A] [inst_2 : CommRing B]
     [inst_3 : CommRing E] [inst_4 : Algebra F A] [inst_5 : Algebra F B] [inst_6 : Algebra F E]

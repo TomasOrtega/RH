@@ -18,7 +18,7 @@ def RealSide.Framed {D : D7} (X : RealSide D) : Prop :=
   ∀ (j : Fin D.R.m) hV, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin X.core X.R.toRealDat j X.core.σ₀ hV
 
 /- English proof (translation)
-The claim follows from `X.geo.fw.laws.spaceW _ ⟨Nat.le_add_left _ _, j.2⟩ _ X.core.toCore.good_σ₀`.
+A detailed English derivation is pending.
 -/
 theorem RealSide.space_eq {D : D7} (X : RealSide D) (j : Fin D.R.m) :
     X.core.V ((j : ℕ) + 1) X.core.σ₀ = Wc D j :=
@@ -38,7 +38,7 @@ def TwAt (_H : NExpRealH R cG S YS) (cf : CharFrame D) : Type 1 :=
 variable {hL D nch xd first R F cG geo S YS}
 
 /- English proof (translation)
-The claim follows from `TwJoin.Sb_eq a`.
+A detailed English derivation is pending.
 -/
 theorem TwAt.Sb_eq {H : NExpRealH R cG S YS} {cf : CharFrame D} (a : TwAt hL D nch xd first R F cG geo S YS H cf) :
     a.X.R.Sb = R.Sb := TwJoin.Sb_eq a
@@ -73,12 +73,12 @@ def NXAnd.snd {E E' : NExt hL} (y : NX hL (extAnd E E') K B f T w Z Wt p0 t nch 
   ⟨y.1, y.2.2⟩
 
 /- English proof (translation)
-The claim follows from `TwAt.Sb_eq a`.
+A detailed English derivation is pending.
 -/
 example {c : NCore hL t n} (a : TwExt hL K B f T w Z Wt p0 t nch n xd c) : a.X.R.Sb = t.r.z.R.Sb := TwAt.Sb_eq a
 
 /- English proof (translation)
-The claim follows from `a.C_eq`.
+A detailed English derivation is pending.
 -/
 example {c : NCore hL t n} (a : TwExt hL K B f T w Z Wt p0 t nch n xd c) : a.X.R.C = TC.cf w.I w.l Z := a.C_eq
 

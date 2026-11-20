@@ -12,7 +12,7 @@ namespace UpperTheory.V.Z.Desc.P
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
   {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} {rc : IrrGL (w.adicCompletion E) → WD h}
 /- English proof (translation)
-The claim follows from `k`.
+A detailed English derivation is pending.
 -/
 theorem toTL'_alt (_N : _root_.GlobalTheory.Mem.LiteralAutomorphy.LiteratureRankNHypothesis) (k : IsRecT h rc) : IsRecT h rc := k
 end UpperTheory.V.Z.Desc.P

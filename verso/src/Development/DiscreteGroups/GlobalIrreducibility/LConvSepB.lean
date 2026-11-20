@@ -15,9 +15,9 @@ def PosInt (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ) : Prop :=
     ∀ f, IsTestFun f → (∀ g, 0 ≤ (f g).re) → 0 ≤ (I f).re ∧ ((I f).re = 0 → ∀ g, (f g).re = 0)
 
 /- English proof (translation)
-Establish `h` using `isTestFun_mul y (fun g => (starRingEnd ℂ) ((x : GL (Fin m) k → ℂ) g)) (fun u hu g => by show (starRingEnd ℂ) ((x : GL (Fin m) k → ℂ) (u * g)) = ((ψ⁻¹ (superDiag u) : Circle) : ℂ) * (starRingEnd ℂ) ((x : GL (Fin m) k → ℂ) g)`. Rewrite using `[WT.left x hu, map_mul, conj_psi]) (x.2.2.1.comp _)`. Establish `e : (fun g => (starRingEnd ℂ) ((x : GL (Fin m) k → ℂ) g) * (y : GL (Fin m) k → ℂ) g) = fun g => (y : GL (Fin m) k → ℂ) g * (starRingEnd ℂ) ((x : GL (Fin m) k → ℂ) g)`. Use function extensionality and compare the values at `fun g => mul_comm _ _`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem isTestFun_pair (x y : WT (m := m) ψ) :
     IsTestFun fun g => (starRingEnd ℂ) ((x : GL (Fin m) k → ℂ) g) * (y : GL (Fin m) k → ℂ) g := by
@@ -33,9 +33,9 @@ theorem isTestFun_pair (x y : WT (m := m) ψ) :
   exact h
 
 /- English proof (translation)
-Use `⟨fun x y => ?_, fun x => ?_, fun g x y => ?_⟩` and prove the remaining obligations. Rewrite using `[formI_apply, formI_apply, ← hI.2.1 _ (isTestFun_pair x y)]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Simplify using `only [map_mul, Complex.conj_conj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Conclude with `(hI.2.2 _ (isTestFun_pair x x) fun g => by rw [conj_mul_self_re]; exact Complex.normSq_nonneg _).1`. Rewrite using `[formI_apply, formI_apply]`. Simplify using `only [rhoW_apply]`. Conclude with `hI.1 _ (isTestFun_pair x y) g`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isInvForm_formI {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I) :
     IsInvForm (rhoW ψ) (formI ψ I) := by
@@ -51,9 +51,9 @@ theorem isInvForm_formI {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosIn
     exact hI.1 _ (isTestFun_pair x y) g
 
 /- English proof (translation)
-Introduce `h0`. Apply `hx` to reduce the goal to its premises. Establish `hn : ∀ g, 0 ≤ ((starRingEnd ℂ) ((x : GL (Fin m) k → ℂ) g) * (x : GL (Fin m) k → ℂ) g).re` using `fun g => by`. Rewrite using `[conj_mul_self_re]`. Conclude with `Complex.normSq_nonneg _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `(hI.2.2 _ (isTestFun_pair x x) hn).2 (by rw [← formI_apply, h0, Complex.zero_re])`. Use `Subtype.ext (funext fun g => ?_)` and prove the remaining obligations. Use `h g` as an intermediate fact. Rewrite `this` using `[conj_mul_self_re]`. Conclude with `Complex.normSq_eq_zero.1 this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formI_self_ne_zero {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I) {x : WT (m := m) ψ} (hx : x ≠ 0) :
     formI ψ I x x ≠ 0 := by
@@ -73,16 +73,16 @@ def cK (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ) (K : Subgroup (GL (Fin m) k)
   formI ψ I (delta ψ K) (delta ψ K)
 
 /- English proof (translation)
-The claim follows from `formI_self_ne_zero hI (delta_ne_zero hK)`.
+A detailed English derivation is pending.
 -/
 theorem cK_ne_zero {I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ} (hI : PosInt I) {K : Subgroup (GL (Fin m) k)}
     (hK : Good ψ K) : cK ψ I K ≠ 0 :=
   formI_self_ne_zero hI (delta_ne_zero hK)
 
 /- English proof (translation)
-Rewrite using `[cK, formI_apply, formI_apply]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Distinguish the cases in `h : (delta ψ K' : GL (Fin m) k → ℂ) g = 0`. Simplify using `[h]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Rewrite using `[delta_eq_of_le hK hK' hle g h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem formI_delta_le (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ) {K K' : Subgroup (GL (Fin m) k)} (hK : Good ψ K)
     (hK' : Good ψ K') (hle : K' ≤ K) : formI ψ I (delta ψ K) (delta ψ K') = cK ψ I K' := by
@@ -94,13 +94,13 @@ theorem formI_delta_le (I : (GL (Fin m) k → ℂ) →ₗ[ℂ] ℂ) {K K' : Subg
   · rw [delta_eq_of_le hK hK' hle g h]
 
 /- English proof (translation)
-Establish `hK'` using `good_conj hK hu`. Establish `hfix : ∀ κ ∈ K, rhoW ψ κ (rhoW ψ u⁻¹ (delta ψ (K.map (MulAut.conj u).toMonoidHom))) = rhoW ψ u⁻¹ (delta ψ (K.map (MulAut.conj u).toMonoidHom))`. Introduce `κ hκ`. Rewrite using `[← Module.End.mul_apply, ← map_mul]`. Establish `e1 : κ * u⁻¹ = u⁻¹ * (u * κ * u⁻¹)` using `by group`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : u⁻¹ * (u * κ * u⁻¹) * u = κ` using `by group`. Rewrite using `[e1, map_mul, Module.End.mul_apply, rhoW_delta (mem_conj.2 (by rw [e2]; exact hκ))]`. Establish `hs : ∀ g, (rhoW ψ u⁻¹ (delta ψ (K.map (MulAut.conj u).toMonoidHom)) : GL (Fin m) k → ℂ) g ≠ 0 → ∃ n ∈ unipB k (Fin m), ∃ κ ∈ K, g = n * κ`. Introduce `g hg`. Rewrite `hg` using `[rhoW_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨n, hn, κ', hκ', he⟩ : ∃ n ∈ unipB k (Fin m), ∃ κ' ∈ K.map (MulAut.conj u).toMonoidHom, g * u⁻¹ = n * κ' := by`. Assume the negation of the conclusion as `h`. Conclude with `hg (delta_eq_zero h)`. Use `⟨n * u, (unipB k (Fin m)).mul_mem hn hu, u⁻¹ * κ' * u, mem_conj.1 hκ', ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_smul_delta hK _ hfix hs, rhoW_apply, one_mul]`. Use `congr 1`. Use `delta_mul hK' ((unipB k (Fin m)).inv_mem hu) (K.map (MulAut.conj u).toMonoidHom).one_mem` as an intermediate fact. Rewrite `this` using `[mul_one]`. Rewrite using `[this, superDiag_inv hu, AddChar.inv_apply]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rhoW_inv_delta_conj {K : Subgroup (GL (Fin m) k)} (hK : Good ψ K) {u : GL (Fin m) k}
     (hu : u ∈ unipB k (Fin m)) :

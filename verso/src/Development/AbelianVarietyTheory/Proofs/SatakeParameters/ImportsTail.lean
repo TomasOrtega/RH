@@ -4,9 +4,9 @@ import Formalism.SatakeDualWeyl.StatementF
 namespace GlobalTheory.MatrixEntryBound
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Conclude with `⟨0, fun m _ => by simp [hx]⟩`. Establish `hv : (Valued.v : L → WithZero (Multiplicative ℤ)) x ≠ 0`. Simplify using `using hx`. Use `⟨(WithZero.log (Valued.v x)).toNat, fun m hm => ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, map_pow, hϖ, ← WithZero.exp_log hv, ← WithZero.exp_nsmul, ← WithZero.exp_add]`. Rewrite using `[← WithZero.exp_zero, WithZero.exp_le_exp]`. Establish `: WithZero.log (Valued.v x) ≤ (m : ℤ)`. Use `Int.self_le_toNat (WithZero.log (Valued.v x))` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
 Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
@@ -25,7 +25,7 @@ theorem entry_bound {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ
     simp; omega
 
 /- English proof (translation)
-Introduce `L _ _ n ϖ hϖ M`. Use `choose f hf using fun p : Fin n × Fin n => entry_bound hϖ (M p.1 p.2)`. Use `⟨Finset.univ.sup f, fun i j => ?_⟩` and prove the remaining obligations. Unfold `Formalism.UG.intL`. Conclude with `hf (i, j) _ (Finset.le_sup (f := f) (Finset.mem_univ (i, j)))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem main : ∀ {L : Type} [inst : Field L] [inst_1 : Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} {ϖ : L}, (Valued.v : L → WithZero (Multiplicative ℤ)) ϖ = WithZero.exp (-1 : ℤ) → ∀ (M : Matrix (Fin n) (Fin n) L), ∃ (N : ℕ), ∀ (i j : Fin n), ϖ ^ N * M i j ∈ Formalism.UG.intL L := by
   intro L _ _ n ϖ hϖ M

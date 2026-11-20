@@ -7,13 +7,13 @@ noncomputable section
 namespace PI.SqfDivDeg.W
 
 /- English proof (translation)
-Establish `hq' : (X - C x) * (q /ₘ (X - C x)) = q` using `mul_divByMonic_eq_iff_isRoot.mpr hx`. Establish `hh' : (X - C y) * (h /ₘ (X - C y)) = h` using `mul_divByMonic_eq_iff_isRoot.mpr hy`. Establish `mq : (q /ₘ (X - C x)).Monic` using `(monic_X_sub_C x).of_mul_monic_left (by rw [hq']; exact hq)`. Establish `mh : (h /ₘ (X - C y)).Monic` using `(monic_X_sub_C y).of_mul_monic_left (by rw [hh']; exact hh)`. Establish `dq : q.natDegree = 1 + (q /ₘ (X - C x)).natDegree` using `by conv_lhs => rw [← hq']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[(monic_X_sub_C x).natDegree_mul mq, natDegree_X_sub_C]`. Establish `dh : h.natDegree = 1 + (h /ₘ (X - C y)).natDegree` using `by conv_lhs => rw [← hh']`. Rewrite using `[(monic_X_sub_C y).natDegree_mul mh, natDegree_X_sub_C]`. Use `⟨(monic_X_sub_C y).mul mq, (monic_X_sub_C x).mul mh, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[(monic_X_sub_C y).natDegree_mul mq, natDegree_X_sub_C, dq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(monic_X_sub_C x).natDegree_mul mh, natDegree_X_sub_C, dh]`. Combine the equalities or inequalities in the displayed calculation. Introduce `heq`. Establish `hqy : (X - C y) ∣ q` using `⟨_, heq.symm⟩`. Establish `hhy : (X - C y) ∣ h` using `dvd_iff_isRoot.mpr hy`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `not_isUnit_X_sub_C y (hs _ (mul_dvd_mul hqy hhy))`.
+A detailed English derivation is pending.
 -/
 theorem second_pair {g : ℕ} [Fact g.Prime] {q h : (ZMod g)[X]} (hq : q.Monic) (hh : h.Monic)
     (hs : Squarefree (q * h)) {x y : ZMod g} (hx : q.IsRoot x) (hy : h.IsRoot y) :
@@ -46,13 +46,13 @@ theorem second_pair {g : ℕ} [Fact g.Prime] {q h : (ZMod g)[X]} (hq : q.Monic) 
     exact not_isUnit_X_sub_C y (hs _ (mul_dvd_mul hqy hhy))
 
 /- English proof (translation)
-Take `⟨⟨hmon, hdeg, -⟩, -, q, hqf, hqa⟩` from `hf`. Establish `hf0 : f ≠ 0` using `hmon.ne_zero`. Establish `hq0 : q ≠ 0` using `by rintro rfl; exact hf0 (zero_dvd_iff.mp hqf)`. Take `⟨k, hk⟩` from `hqf`. Establish `hl : q.leadingCoeff ≠ 0` using `leadingCoeff_ne_zero.mpr hq0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `m1 : (q * C (q.leadingCoeff)⁻¹).Monic` using `monic_mul_leadingCoeff_inv hq0`. Establish `d1 : (q * C (q.leadingCoeff)⁻¹).natDegree = a`. Rewrite using `[natDegree_mul_C (inv_ne_zero hl), hqa]`. Establish `e : (q * C (q.leadingCoeff)⁻¹) * (C q.leadingCoeff * k) = f`. Rewrite using `[hk]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `m2 : (C q.leadingCoeff * k).Monic` using `m1.of_mul_monic_left (by rw [e]; exact hmon)`. Establish `d2 : (C q.leadingCoeff * k).natDegree = r - a`. Use `m1.natDegree_mul m2` as an intermediate fact. Rewrite `this` using `[e, hdeg, d1]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Conclude with `⟨_, _, mem_Mon.mpr ⟨m1, d1⟩, mem_Mon.mpr ⟨m2, d2⟩, e⟩`.
+Use linear arithmetic over natural numbers and integers. Supply the required witnesses or components.
 -/
 theorem fibre_nonempty {g r a : ℕ} [Fact g.Prime] (har : a ≤ r) {f : (ZMod g)[X]}
     (hf : PI.SqfLab.Eiv g r a f) :
@@ -78,35 +78,31 @@ theorem fibre_nonempty {g r a : ℕ} [Fact g.Prime] (har : a ≤ r) {f : (ZMod g
   exact ⟨_, _, mem_Mon.mpr ⟨m1, d1⟩, mem_Mon.mpr ⟨m2, d2⟩, e⟩
 
 /- English proof (translation)
-Introduce `g r _ a har T hT`. Set `P` to `Mon g a ×ˢ Mon g (r - a)`. Set `F : (ZMod g)[X] → Finset ((ZMod g)[X] × (ZMod g)[X])` to `fun f => P.filter (fun p => p.1 * p.2 = f)`. Set `G : (ZMod g)[X] × (ZMod g)[X] → Prop` to `fun p => (∃ x : ZMod g, p.1.IsRoot x) ∧ (∃ y : ZMod g, p.2.IsRoot y)`. Set `b : (ZMod g)[X] × (ZMod g)[X] → ℝ` to `fun p => if G p then 1 / 2 else 1`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Apply the tactic sequence `have bnn : ∀ p, 0 ≤ b p := fun p => by simp only [b]; split_ifs <;> norm_num`. Establish `key : ∀ f ∈ T, (1 : ℝ) ≤ ∑ p ∈ F f, b p`. Introduce `f hf`. Take `⟨q, h, hq, hh, hqh⟩` from `fibre_nonempty har (hT f hf)`. Establish `hpq : (q, h) ∈ F f` using `by simp [F, P, hq, hh, hqh]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Distinguish the cases in `hG : G (q, h)`. Take `⟨⟨x, hx⟩, ⟨y, hy⟩⟩` from `hG`. Establish `hs : Squarefree (q * h)` using `hqh ▸ (hT f hf).2.1`. Take `⟨m1, m2, d1, d2, e, ne⟩` from `second_pair (mem_Mon.mp hq).1 (mem_Mon.mp hh).1 hs hx hy`. Establish `hp' : ((X - C y) * (q /ₘ (X - C x)), (X - C x) * (h /ₘ (X - C y))) ∈ F f`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [F, P, mem_filter, mem_product, mem_Mon]`. Conclude with `⟨⟨⟨m1, d1.trans (mem_Mon.mp hq).2⟩, ⟨m2, d2.trans (mem_Mon.mp hh).2⟩⟩, e.trans hqh⟩`. Establish `hG' : G ((X - C y) * (q /ₘ (X - C x)), (X - C x) * (h /ₘ (X - C y)))` using `⟨⟨y, by simp⟩, ⟨x, by simp⟩⟩`. Establish `hG0 : G (q, h)` using `⟨⟨x, hx⟩, ⟨y, hy⟩⟩`. Establish `hne : ((X - C y) * (q /ₘ (X - C x)), (X - C x) * (h /ₘ (X - C y))) ≠ (q, h)` using `fun h' => ne (congrArg Prod.fst h')`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsub : ∑ p ∈ ({((X - C y) * (q /ₘ (X - C x)), (X - C x) * (h /ₘ (X - C y))), (q, h)} : Finset _), b p ≤ ∑ p ∈ F f, b p`. Apply `sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `p hp`. Rewrite `hp` using `[mem_insert, mem_singleton]`. Break down `hp with rfl | rfl` into its components or cases.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hp'`. Conclude with `hpq`. Introduce `p _ _`. Conclude with `bnn p`. Rewrite `hsub` using `[sum_pair hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [b, if_pos hG', if_pos hG0] at hsub`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: b (q, h) ≤ ∑ p ∈ F f, b p` using `single_le_sum (f := b) (fun p _ => bnn p) hpq`. Simplify using `only [b, if_neg hG] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hdisj : Set.PairwiseDisjoint (↑T) F`. Introduce `f _ f' _ hff'`. Rewrite using `[Function.onFun, Finset.disjoint_left]`. Introduce `p hp hp'`. Simplify using `only [F, mem_filter] at hp hp'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Conclude with `hff' (hp.2.symm.trans hp'.2)`. Establish `h1 : (T.card : ℝ) ≤ ∑ p ∈ T.biUnion F, b p`. Rewrite using `[sum_biUnion hdisj]`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : ∑ p ∈ T.biUnion F, b p ≤ ∑ p ∈ P, b p`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `sum_le_sum_of_subset_of_nonneg` to reduce the goal to its premises. Introduce `p hp`. Take `⟨f, -, hpf⟩` from `mem_biUnion.mp hp`. Conclude with `(mem_filter.mp hpf).1`. Introduce `p _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `bnn p`. Establish `h3 : ∑ p ∈ P, b p = (P.card : ℝ) - ((P.filter G).card : ℝ) / 2`. Simplify using `only [b]`. Rewrite using `[sum_ite]`. Simplify using `only [sum_const, nsmul_eq_mul]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. The claim follows by propositional logic.
 
-Establish `hc` using `card_filter_add_card_filter_not (s := P) (fun p => G p)`. Establish `h' : ((P.filter G).card : ℝ) + ((P.filter (fun p => ¬ G p)).card : ℝ) = P.card`. Conclude with `hc` after adjusting the coercions. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h4 : P.filter G = Rt g a ×ˢ Rt g (r - a)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `⟨q, h⟩`. Simplify using `only [P, G, Rt, mem_filter, mem_product]`. The claim follows by propositional logic. Establish `h5 : (P.card : ℝ) = (g : ℝ) ^ r`. Simplify using `only [P, card_product, card_Mon]`.
-
-Use `push_cast`. Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Rewrite `h3` using `[h4, h5, card_product]`.
-
-Move the coercions through the operations in `at h3`. Combine the linear equalities and inequalities to obtain the conclusion.
+Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem mainCount : MainCount := by
   intro g r _ a har T hT

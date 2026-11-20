@@ -20,17 +20,15 @@ abbrev redMap (ι : K → Type*) (p : ℕ) : MRing ι →+* MRingOver (ZMod p) �
   MvPolynomial.map (Int.castRingHom (ZMod p))
 
 /- English proof (translation)
-Conclude with `MvPolynomial.map_surjective _ ZMod.intCast_surjective`.
+A detailed English derivation is pending.
 -/
 theorem redMap_surjective (p : ℕ) : Function.Surjective (redMap ι p) := by
   exact MvPolynomial.map_surjective _ ZMod.intCast_surjective
 
 /- English proof (translation)
-Establish `hc : charOf W = (Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι))).natAbs` using `rfl`. Rewrite using `[hc]`. Use `set g := Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι)) with hgdef`. Establish `hg : C g ∈ W` using `Ideal.mem_comap.mp (Submodule.IsPrincipal.generator_mem _)`. Establish `h : C (g.natAbs : ℤ) ∈ W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `Int.natAbs_eq g with h | h` into its components or cases. Rewrite using `[← h]`. Conclude with `hg`. Establish `e : (g.natAbs : ℤ) = -g` using `by linarith`. Rewrite using `[e, map_neg]`.
-
-Conclude with `W.neg_mem hg`. Rewrite using `[← map_natCast (C : ℤ →+* MRing ι) g.natAbs]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_charOf_mem (W : Ideal (MRing ι)) : ((charOf W : ℕ) : MRing ι) ∈ W := by
   have hc : charOf W = (Submodule.IsPrincipal.generator (W.comap (C : ℤ →+* MRing ι))).natAbs := rfl
@@ -46,7 +44,7 @@ theorem natCast_charOf_mem (W : Ideal (MRing ι)) : ((charOf W : ℕ) : MRing ι
   exact h
 
 /- English proof (translation)
-Rewrite using `[redMap, MvPolynomial.ker_map, ZMod.ker_intCastRingHom, Ideal.map_span, Set.image_singleton, Ideal.span_le, Set.singleton_subset_iff]`. Simplify using `using hp`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ker_redMap_le {p : ℕ} {W : Ideal (MRing ι)} (hp : ((p : ℕ) : MRing ι) ∈ W) :
     RingHom.ker (redMap ι p) ≤ W := by
@@ -55,7 +53,7 @@ theorem ker_redMap_le {p : ℕ} {W : Ideal (MRing ι)} (hp : ((p : ℕ) : MRing 
   simpa using hp
 
 /- English proof (translation)
-Rewrite using `[Ideal.comap_map_of_surjective _ (redMap_surjective p), ← RingHom.ker_eq_comap_bot, sup_eq_left.mpr (ker_redMap_le hp)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem comap_map_redMap {p : ℕ} {W : Ideal (MRing ι)} (hp : ((p : ℕ) : MRing ι) ∈ W) :
     (W.map (redMap ι p)).comap (redMap ι p) = W := by
@@ -63,9 +61,9 @@ theorem comap_map_redMap {p : ℕ} {W : Ideal (MRing ι)} (hp : ((p : ℕ) : MRi
     sup_eq_left.mpr (ker_redMap_le hp)]
 
 /- English proof (translation)
-Introduce `m hm k`. Use `h m ?_ k` and prove the remaining obligations. Rewrite `hm`, the goal using `[MvPolynomial.mem_support_iff]`. Introduce `h0`. Apply `hm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[redMap, MvPolynomial.coeff_map, h0]`.
+Simplify using the standard rewrite rules.
 -/
 theorem isMultiHomog_redMap {p : ℕ} {s : MRing ι} {a : K → ℕ} (h : IsMultiHomog s a) :
     IsMultiHomog (redMap ι p s) a := by
@@ -77,7 +75,7 @@ theorem isMultiHomog_redMap {p : ℕ} {s : MRing ι} {a : K → ℕ} (h : IsMult
   simp [redMap, MvPolynomial.coeff_map, h0]
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `h`. Use `⟨redMap ι p '' S, ?_, Ideal.map_span _ _⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨f, hf, rfl⟩`. Take `⟨a, ha⟩` from `hS f hf`. Conclude with `⟨a, isMultiHomog_redMap ha⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isMultiHomogIdeal_map_redMap {p : ℕ} {W : Ideal (MRing ι)} (h : IsMultiHomogIdeal W) :
     IsMultiHomogIdeal (W.map (redMap ι p)) := by
@@ -88,7 +86,7 @@ theorem isMultiHomogIdeal_map_redMap {p : ℕ} {W : Ideal (MRing ι)} (h : IsMul
   exact ⟨a, isMultiHomog_redMap ha⟩
 
 /- English proof (translation)
-Introduce `k`. Take `⟨i, hi⟩` from `h k`. Use `⟨i, fun hx => hi ?_⟩` and prove the remaining obligations. Rewrite using `[← comap_map_redMap hp, Ideal.mem_comap]`. Simplify `hx` using `[redMap]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isRelevant_map_redMap {p : ℕ} {W : Ideal (MRing ι)} (hp : ((p : ℕ) : MRing ι) ∈ W)
     (h : IsRelevant W) : IsRelevant (W.map (redMap ι p)) := by
@@ -107,7 +105,7 @@ def quotRedEquiv {p : ℕ} {W : Ideal (MRing ι)} (hp : ((p : ℕ) : MRing ι) �
       (Ideal.Quotient.mk_surjective.comp (redMap_surjective p)))
 
 /- English proof (translation)
-Take `⟨hWp, hWh, hWr⟩` from `hW`. Use `⟨⟨?_, isMultiHomogIdeal_map_redMap hWh, isRelevant_map_redMap hp hWr⟩, ?_⟩` and prove the remaining obligations. Conclude with `Ideal.map_isPrime_of_surjective (redMap_surjective p) (ker_redMap_le hp)`. Rewrite using `[← ringKrullDim_eq_of_ringEquiv (quotRedEquiv hp)]`. Conclude with `hdim`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isProjVarF_map_redMap {p : ℕ} [Fact p.Prime] {W : Ideal (MRing ι)} {n : ℕ}
     (hp : ((p : ℕ) : MRing ι) ∈ W) (hW : IsMultiProjPrime W)
@@ -120,7 +118,7 @@ theorem isProjVarF_map_redMap {p : ℕ} [Fact p.Prime] {W : Ideal (MRing ι)} {n
     exact hdim
 
 /- English proof (translation)
-Introduce `K _ ι _ P n A s W hP hs hW hv`. Take `⟨hmp, hp, hdim⟩` from `(divSuppArith K ι P n A s W hP hs hW).2 hv`. Use `⟨hp, natCast_charOf_mem W, hmp, ?_⟩` and prove the remaining obligations. Use `haveI : Fact (charOf W).Prime := ⟨hp⟩`. Conclude with `isProjVarF_map_redMap (natCast_charOf_mem W) hmp hdim`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem fibreComp : ReciprocityTheory.ChartRestriction.G.AI.I2.FibreCompStatement := by
   intro K _ ι _ P n A s W hP hs hW hv

@@ -21,9 +21,9 @@ def trN (D : D7) (i : ℕ) (hi : i ≤ D.R.m) (γ0 : GL (Fin (D.R.N i)) D.host.E
   map_smul' a h := by funext z; simp only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]; ring
 
 /- English proof (translation)
-Use `LinearMap.ker_eq_bot'.2 fun h hh => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `z`. Establish `h1` using `congrFun hh (foTrR (embT D) γ0⁻¹ z)`. Establish `h2 : foTrR (embT D) γ0 (foTrR (embT D) γ0⁻¹ z) = z`. Rewrite using `[← foTrR_mul, mul_inv_cancel, foTrR_one]`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(detF (cTw D i) _)⁻¹ * h (foTrR (embT D) γ0 (foTrR (embT D) γ0⁻¹ z)) = 0 at h1`. Rewrite `h1` using `[h2]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (inv_ne_zero (detF_ne _ _))`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trN_inj (D : D7) (i : ℕ) (hi : i ≤ D.R.m) (γ0 : GL (Fin (D.R.N i)) D.host.E) :
     LinearMap.ker (trN D i hi γ0) = ⊥ := by
@@ -42,7 +42,7 @@ def phiC (S : StepIn M i hi G) (β : S.Ch) (γ0 : GL (Fin (D.R.N i)) D.host.E) :
     (evC (Hc S β).P (S.loc β).rk S.pos (Formalism.L2.Forms.gramC (gramN D i hi) (embT D)) (crdB (embT D) (S.loc β).B))
 
 /- English proof (translation)
-Use `LinearMap.ker_eq_bot'.2 fun Q hQ => ?_` and prove the remaining obligations. Establish `h1 : evC (Hc S β).P (S.loc β).rk S.pos (Formalism.L2.Forms.gramC (gramN D i hi) (embT D)) (crdB (embT D) (S.loc β).B) Q = 0` using `LinearMap.ker_eq_bot'.1 (trN_inj D i hi γ0) _ hQ`. Conclude with `evInj_pf (J := gramN D i hi) (embT D) (Hc S β) (S.loc β) S.pos Q h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ker_phiC (S : StepIn M i hi G) (β : S.Ch) (γ0 : GL (Fin (D.R.N i)) D.host.E) : LinearMap.ker (phiC S β γ0) = ⊥ := by
   refine LinearMap.ker_eq_bot'.2 fun Q hQ => ?_
@@ -68,9 +68,9 @@ def CmpInvOf (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) : Prop :=
       FoInv (S.K β).lev (embT D) ((S.K β).y c) (phiC S β γ0 (MvPolynomial.map D.what₂.embLL Q))
 
 /- English proof (translation)
-Establish `h1` using `foValC_tr (M.lam i) (Formalism.L2.Forms.atInf (embT D) γ0.1) (foInf_unit (embT D) γ0) (hV Q hQ)`. Establish `h2` using `(mem_ValC_shW (D.R.N_pos i) (Formalism.L2.Forms.gramC (gramN D i hi) (embT D)) (M.lam i) (cTw D i) 1 one_ne_zero (phiC S β γ0 Q)).2`. Use `h2 ?_` and prove the remaining obligations. Use `h1 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `z`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Express the relevant statement in the definitionally equal form `1 * detF (cTw D i) z * ((detF (cTw D i) z)⁻¹ * _) = _`. Rewrite using `[one_mul, ← mul_assoc, mul_inv_cancel₀ (detF_ne _ _), one_mul]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem phiC_mem_ValC (S : StepIn M i hi G) (β : S.Ch) (hV : EvValLe S β) (γ0 : GL (Fin (D.R.N i)) D.host.E)
     {Q : XR (Hc S β).P ℂ} (hQ : Q ∈ VtupR (Hc S β).P ℂ) :
@@ -86,9 +86,9 @@ theorem phiC_mem_ValC (S : StepIn M i hi G) (β : S.Ch) (hV : EvValLe S β) (γ0
   rfl
 
 /- English proof (translation)
-Introduce `hS H X β rep hok c`. Take `⟨g, γ0, κ0, hγ0, hL, hpt⟩` from `hok c`. Set `Y` to `YInv (Hc S β) e (rep c).1 (rep c).2`. Set `Φ : Y →+ (Formalism.L2.Forms.Frames (Formalism.L2.Forms.gramC (gramN D i hi) (embT D)) → ℂ)` to `(phiC S β γ0).toAddMonoidHom.comp ((MvPolynomial.map D.what₂.embLL).toAddMonoidHom.comp Y.subtype.toAddMonoidHom)`. Use `⟨Φ, fun Q => ⟨?_, ?_⟩, fun k Q hQ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `phiC_mem_ValC S β (hV β) γ0 (hD β Q.1 Q.2.1)`. Conclude with `hI hS H X β rep hok c g γ0 κ0 hγ0 hL hpt Q.1 Q.2`. Establish `a : LinearIndependent D.what₂.LL (fun j => (Q j : YR (Hc S β) D.what₂.LL))` using `hQ.map' Y.subtype (Submodule.ker_subtype _)`. Establish `b` using `Formalism.MainNotions.G.SymmetricFormBlocks.li_map D.what₂.embLL _ a`. Conclude with `b.map' (phiC S β γ0) (ker_phiC S β γ0)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cmpLiftOf_of (S : StepIn M i hi G) (e : D.what₂.LL →+* G.Kf) (hD : VtupDesc S e) (hV : ∀ β, EvValLe S β)
     (hI : CmpInvOf S e) : CmpLiftOf S e := by

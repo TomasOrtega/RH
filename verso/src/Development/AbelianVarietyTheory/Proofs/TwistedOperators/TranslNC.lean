@@ -14,17 +14,13 @@ set_option maxHeartbeats 800000
 namespace GlobalTheory.HaarCoords
 
 /- English proof (translation)
-Introduce `D S S₀ ρ d μ lB lC _ _ hC _ _ _ c'`. Use `haveI : BorelSpace (Mx D ρ ρ) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D ρ S₀.rank) := ⟨rfl⟩`. Use `haveI : BorelSpace (UX D ρ) := ⟨rfl⟩`. Take `⟨i1, -, i3, -⟩` from `lattice_Mx D ρ ρ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : SecondCountableTopology (Mx D ρ ρ) := i3`. Use `haveI : BorelSpace (skewA D ρ) := Subtype.borelSpace _`. Use `haveI : SecondCountableTopology (skewA D ρ) := Topology.IsEmbedding.subtypeVal.secondCountableTopology`. Use `haveI : MeasurableAdd₂ (skewA D ρ) := inferInstance`. Use `haveI : MeasurableAdd (skewA D ρ) := inferInstance`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Set `s : UX D ρ → skewA D ρ` to `fun u => skewConj (u⁻¹).1.1 c'`. Establish `hinv : Continuous fun u : UX D ρ => (u⁻¹).1.1` using `Units.continuous_coe_inv.comp continuous_subtype_val`. Establish `hs : Continuous s`. Use `Continuous.subtype_mk ?_ _` and prove the remaining obligations. Conclude with `(hinv.matrix_mul continuous_const).matrix_mul (continuous_adj.comp hinv)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun p => (p.1, (p.2.1, s p.1 + p.2.2)), ?_, ?_⟩` and prove the remaining obligations. Establish `hg : Measurable (Function.uncurry fun (u : UX D ρ) (q : Mx D ρ S₀.rank × skewA D ρ) => (q.1, s u + q.2))` using `measurable_snd.fst.prodMk ((hs.measurable.comp measurable_fst).add measurable_snd.snd)`. Conclude with `(MeasurePreserving.id μ).skew_product hg (Filter.Eventually.of_forall fun u => ((MeasurePreserving.id lB).prod (measurePreserving_add_left lC (s u))).map_eq)`. Introduce and unpack `⟨u, b, c⟩`. Establish `h` using `d.levi_mul_nC c' (u⁻¹).1`.
-
-Establish `hL : d.levi (u⁻¹).1 = (d.levi u.1)⁻¹` using `by rw [Subgroup.coe_inv, map_inv]`. Rewrite `h` using `[hL]`. Establish `h2 : d.nC c' * d.levi u.1 = d.levi u.1 * d.nC (s u)`. Combine the equalities or inequalities in the displayed calculation. Use `show d.levi u.1 * (d.nB b * d.nC (s u + c)) = d.nC c' * (d.levi u.1 * (d.nB b * d.nC c))`.
-
-Rewrite using `[d.nC_add, ← mul_assoc (d.nC c'), h2, mul_assoc, ← mul_assoc (d.nC (s u)), d.nC_mul_nB, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem transl_nC : ∀ (D : D7) (S S₀ : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ) (μ : Measure (UX D ρ)) (lB : Measure (Mx D ρ S₀.rank)) (lC : Measure (skewA D ρ)), μ.IsHaarMeasure → lB.IsAddHaarMeasure → lC.IsAddHaarMeasure → SFinite μ → SFinite lB → SFinite lC → ∀ c' : skewA D ρ, ∃ T : UX D ρ × (Mx D ρ S₀.rank × skewA D ρ) → UX D ρ × (Mx D ρ S₀.rank × skewA D ρ), MeasurePreserving T (μ.prod (lB.prod lC)) (μ.prod (lB.prod lC)) ∧ ∀ p, d.levi (T p).1.1 * (d.nB (T p).2.1 * d.nC (T p).2.2) = d.nC c' * (d.levi p.1.1 * (d.nB p.2.1 * d.nC p.2.2)) := by
   intro D S S₀ ρ d μ lB lC _ _ hC _ _ _ c'

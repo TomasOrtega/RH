@@ -9,19 +9,17 @@ open scoped InnerProductSpace ComplexConjugate
 namespace GlobalTheory.CompanionTheory.RgHeA
 
 /- English proof (translation)
-Introduce `Γ _ _ A B _ _ _ _ _ _ σ ρ d hd hσ hρ w₀ v i hi hcyc T E hTE hE a`. Take `⟨h1, hmul, hnorm, -⟩` from `hρ`. Establish `hρinner : ∀ (g : Γ) (x y : B), ⟪ρ g x, ρ g y⟫_ℂ = ⟪x, y⟫_ℂ` using `fun g x y => (LinearIsometry.mk (ρ g : B →ₗ[ℂ] B) (hnorm g)).inner_map_map x y`. Establish `hadj : ∀ (g : Γ) (x y : B), ⟪ρ g⁻¹ x, y⟫_ℂ = ⟪x, ρ g y⟫_ℂ`. Introduce `g x y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hρinner g (ρ g⁻¹ x) y]`. Use `congr 1`. Rewrite using `[← ContinuousLinearMap.mul_apply, ← hmul, mul_inv_cancel, h1, ContinuousLinearMap.one_apply]`. Establish `hi' : ∀ (g : Γ) (x : A), i (σ g x) = ρ g (i x)` using `hi`. Establish `hTE' : ∀ x y, ⟪σ x w₀, T (σ y w₀)⟫_ℂ = starRingEnd ℂ ⟪ρ x⁻¹ v, E (ρ y⁻¹ v)⟫_ℂ` using `fun x y => (hTE x y).trans (starRingEnd_apply _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hclosed : IsClosed {a : A | ‖⟪v, i a⟫_ℂ‖ ^ 2 / d ≤ (⟪a, T a⟫_ℂ).re}`. Apply `isClosed_le` to reduce the goal to its premises. Conclude with `((continuous_const.inner i.continuous).norm.pow 2).div_const d`. Conclude with `Complex.continuous_re.comp (continuous_id.inner T.continuous)`. Establish `hspan : (Submodule.span ℂ (Set.range fun x => σ x w₀) : Set A) ⊆ {a : A | ‖⟪v, i a⟫_ℂ‖ ^ 2 / d ≤ (⟪a, T a⟫_ℂ).re}`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `a ha`. Rewrite `ha` using `[SetLike.mem_coe, Finsupp.mem_span_range_iff_exists_finsupp]`. Take `⟨c, rfl⟩` from `ha`. Use `set z : B := c.sum fun y t => starRingEnd ℂ t • ρ y⁻¹ v with hz`. Establish `h1' : ⟪v, i (c.sum fun x t => t • σ x w₀)⟫_ℂ = ⟪z, i w₀⟫_ℂ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hz]`. Simplify using `only [Finsupp.sum, map_sum, map_smul, inner_sum, sum_inner, inner_smul_right, inner_smul_left, hi', hadj, Complex.conj_conj, RCLike.conj_conj, starRingEnd_self_apply]`. Establish `h2' : ⟪c.sum fun x t => t • σ x w₀, T (c.sum fun x t => t • σ x w₀)⟫_ℂ = starRingEnd ℂ ⟪z, E z⟫_ℂ`. Rewrite using `[hz]`. Simplify using `only [Finsupp.sum, map_sum, map_smul, inner_sum, sum_inner, inner_smul_right, inner_smul_left, hTE', map_mul, Complex.conj_conj, RCLike.conj_conj, starRingEnd_self_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.mem_setOf_eq, h1', h2', Complex.conj_re]`. Conclude with `hE z`. Establish `ha : a ∈ closure (Submodule.span ℂ (Set.range fun x => σ x w₀) : Set A)`. Rewrite using `[← Submodule.topologicalClosure_coe, hcyc]`. Simplify using the standard rewrite rules.
-
-Conclude with `closure_minimal hspan hclosed ha`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem lower_bound_of_cyclic_coef : ∀ {Γ : Type} [Group Γ] [TopologicalSpace Γ] {A B : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] [CompleteSpace A] [NormedAddCommGroup B]
     [InnerProductSpace ℂ B] [CompleteSpace B] (σ : Γ → (A →L[ℂ] A)) (ρ : Γ → (B →L[ℂ] B)) (d : ℝ), 0 < d → IsU σ → IsU ρ →

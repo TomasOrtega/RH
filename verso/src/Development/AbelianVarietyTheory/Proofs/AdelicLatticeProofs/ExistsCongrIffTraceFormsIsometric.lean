@@ -11,15 +11,15 @@ open Module
 variable {F E : Type*} [Field F] [Field E] [Algebra F E] {c : E →+* E}
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨δ, hδ⟩ : ∃ δ : E, ∀ x : E, ∃ s t : F, x = s • (1 : E) + t • δ := by`. Distinguish the cases in `h : ∀ t, c t = t`. Use `⟨0, fun x => ?_⟩` and prove the remaining obligations. Take `⟨s, hs⟩` from `(hF x).1 (h x)`. Conclude with `⟨s, 0, by simp [Algebra.smul_def, hs]⟩`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `push Not at h`. Take `⟨u, hu⟩` from `h`. Establish `hne : u - c u ≠ 0` using `sub_ne_zero.2 hu.symm`. Establish `hne' : c u - u ≠ 0` using `sub_ne_zero.2 hu`. Use `⟨u - c u, fun x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs⟩` from `(hF ((x + c x) / 2)).1 (by`. Rewrite using `[map_div₀, map_add, hc, map_ofNat, add_comm])`. Take `⟨t, ht⟩` from `(hF ((x - c x) / (2 * (u - c u)))).1 (by`. Rewrite using `[map_div₀, map_sub, hc, map_mul, map_ofNat, map_sub, hc]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `ring)`. Use `⟨s, t, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, Algebra.smul_def, hs, ht]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Module.finite_def.2 ⟨{1, δ}, ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Introduce `x _`. Take `⟨s, t, rfl⟩` from `hδ x`. Conclude with `Submodule.add_mem _ (Submodule.smul_mem _ _ (Submodule.subset_span (by simp))) (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem finiteDimensional_of_involution (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     (hF : ∀ t : E, c t = t ↔ ∃ s : F, algebraMap F E s = t) : FiniteDimensional F E := by
@@ -52,11 +52,11 @@ theorem finiteDimensional_of_involution (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t
     (Submodule.smul_mem _ _ (Submodule.subset_span (by simp)))
 
 /- English proof (translation)
-Establish `h : ∀ x y, ∃ s : F, algebraMap F E s = B x y + B y x` using `fun x y => (hF _).1 (by rw [map_add, hB, hB, add_comm])`. Use `choose b hb using h`. Establish `hi` using `(algebraMap F E).injective`. Establish `hs : ∀ s : F, c (algebraMap F E s) = algebraMap F E s` using `fun s => (hF _).2 ⟨s, rfl⟩`. Use `⟨LinearMap.mk₂ F b (fun x x' y => hi ?_) (fun s x y => hi ?_) (fun x y y' => hi ?_) (fun s x y => hi ?_), hb⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, hb, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[smul_eq_mul, map_mul, hb, hb, ← algebraMap_smul E s x]`. Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, RingHom.id_apply, hs, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, hb, LinearMap.add_apply]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[smul_eq_mul, map_mul, hb, hb, ← algebraMap_smul E s y]`. Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, RingHom.id_apply, hs, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_traceForm (hF : ∀ t : E, c t = t ↔ ∃ s : F, algebraMap F E s = t)
     {V : Type*} [AddCommGroup V] [Module E V] [Module F V] [IsScalarTower F E V]
@@ -81,7 +81,7 @@ theorem exists_traceForm (hF : ∀ t : E, c t = t ↔ ∃ s : F, algebraMap F E 
     ring
 
 /- English proof (translation)
-Establish `h` using `hφ (x + y)`. Rewrite `h` using `[hadd]`. Simplify using `only [map_add, LinearMap.add_apply, hφ] at h`. Take the linear combination `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem trace_eq_of_apply_self_eq {V W : Type*} [AddCommGroup V] [Module E V] [AddCommGroup W]
     [Module E W] {B : V →ₗ[E] V →ₛₗ[c] E} {B' : W →ₗ[E] W →ₛₗ[c] E} {φ : V → W}
@@ -93,13 +93,13 @@ theorem trace_eq_of_apply_self_eq {V W : Type*} [AddCommGroup V] [Module E V] [A
   linear_combination h
 
 /- English proof (translation)
-Use `finiteDimensional_of_involution h2 hc hF` as an intermediate fact. Take `⟨b, hb⟩` from `exists_traceForm hF hB'`. Establish `hi` using `(algebraMap F E).injective`. Establish `h2F : (2 : F) ≠ 0` using `fun h => h2 (by`. Rewrite using `[← map_ofNat (algebraMap F E) 2, h, map_zero])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hp` using `trace_eq_of_apply_self_eq (map_add φ) hφ`. Take `⟨γ, hγ, hγe⟩` from `GlobalTheory.HermWitt.exists_isometry_comp_eq_of_nondegenerate (c := RingHom.id F) h2F (B := b) (fun x y => hi (by rw [RingHom.id_apply, hb, hb, add_comm])) (g := φ ∘ₗ (LinearMap.toSpanSingleton E V e).restrictScalars F) (f := (LinearMap.toSpanSingleton E W (φ e)).restrictScalars …`. Simplify using `only [hb, LinearMap.comp_apply, LinearMap.restrictScalars_apply, LinearMap.toSpanSingleton_apply, hp, LinearMap.map_smulₛₗ, LinearMap.smul_apply, hφ]))`. Use the proof step `(fun s hs => by`. Establish `h` using `congrArg (algebraMap F E) (hs s)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hb, LinearMap.comp_apply, LinearMap.restrictScalars_apply, LinearMap.toSpanSingleton_apply, hφ, LinearMap.map_smulₛₗ, LinearMap.smul_apply, map_zero, smul_eq_mul, RingHom.id_apply] at h`. Assume the negation of the conclusion as `hne`. Conclude with `mul_ne_zero h2 (mul_ne_zero ((map_ne_zero c).2 hne) (mul_ne_zero hne he)) (by linear_combination h))`. Use `⟨γ.toLinearMap ∘ₗ φ, fun x => ?_, fun t => hγe t⟩` and prove the remaining obligations. Establish `h` using `congrArg (algebraMap F E) (hγ (φ x) (φ x))`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `h` using `[hb, hb, hφ]`. Apply `mul_left_cancel₀ h2` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `2 * B' (γ (φ x)) (γ (φ x)) = _`. Take the linear combination `h`.
+Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_map_smul_eq (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     (hF : ∀ t : E, c t = t ↔ ∃ s : F, algebraMap F E s = t)
@@ -140,19 +140,19 @@ theorem exists_map_smul_eq (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
 universe u v in
 
 /- English proof (translation)
-Proceed by induction on `d using Nat.strong_induction_on with`. Consider the case `_ d ih`. Introduce `V W _ _ _ _ _ _ _ _ _ B B' hB hB' hd φ₀ hφ₀`. Take `rfl | hne` from `eq_or_ne B 0`. Conclude with `⟨0, fun x y => by simp⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨e, he⟩` from `GlobalTheory.HermDiag.exists_apply_self_ne_zero h2 hB hne`. Establish `hk` using `GlobalTheory.HermDiag.finrank_ker_flip_add_one he`. Take `⟨φ, hφ, hφe⟩` from `exists_map_smul_eq h2 hc hF hB' φ₀ hφ₀ he`. Establish `hf : B' (φ₀ e) (φ₀ e) = B e e` using `hφ₀ e`. Generalize the expression as in `φ₀ e = f at hφe hf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hp` using `trace_eq_of_apply_self_eq (map_add φ) hφ`. Establish `hker : ∀ x : LinearMap.ker (B.flip e), φ x ∈ LinearMap.ker (B'.flip f)`. Introduce `x`. Establish `hx : B x e = 0` using `x.2`. Establish `hx' : B e x = 0` using `by rw [← hB, hx, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hp x (B' (φ x) f • e)`. Rewrite `h` using `[hφe]`. Simplify using `only [LinearMap.map_smulₛₗ, LinearMap.smul_apply, hx, hx', smul_eq_mul, RingHom.id_apply, ← hB' (φ x) f] at h`. Express the relevant statement in the definitionally equal form `B' (φ x) f = 0`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `mul_ne_zero h2 (mul_ne_zero ((map_ne_zero c).2 hne) hne) (by linear_combination h)`. Take `⟨ψ, hψ⟩` from `ih _ (by omega) (B.domRestrict₁₂ (LinearMap.ker (B.flip e)) (LinearMap.ker (B.flip e))) (B'.domRestrict₁₂ (LinearMap.ker (B'.flip f)) (LinearMap.ker (B'.flip f))) (fun y z => hB y z) (fun y z => hB' y z) rfl { toFun := fun x => ⟨φ x, hker x⟩ map_add' := fun x y => Subtype.ext (by …`. Use `replace hψ : ∀ x y : LinearMap.ker (B.flip e), B' (ψ x) (ψ y) = B x y := hψ`. Set `p : V →ₗ[E] LinearMap.ker (B.flip e)` to `(LinearMap.id - ((B e e)⁻¹ • B.flip e).smulRight e).codRestrict _ (fun x => by`. Establish `h : (B e e)⁻¹ * B x e * B e e = B x e` using `by field_simp`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[h])`. Establish `hpx : ∀ x, (p x : V) = x - ((B e e)⁻¹ * B x e) • e` using `fun x => rfl`. Use `⟨(LinearMap.ker (B'.flip f)).subtype ∘ₗ ψ ∘ₗ p + ((B e e)⁻¹ • B.flip e).smulRight f, fun x y => ?_⟩` and prove the remaining obligations. Establish `h1 : ∀ z, B' (ψ z) f = 0` using `fun z => (ψ z).2`. Establish `h3 : ∀ z, B' f (ψ z) = 0` using `fun z => by rw [← hB', h1, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 
-Simplify using `only [LinearMap.add_apply, LinearMap.comp_apply, Submodule.subtype_apply, LinearMap.smulRight_apply, LinearMap.smul_apply, LinearMap.flip_apply, map_add, LinearMap.map_smulₛₗ, h1, h3, hψ, hpx, hf, map_sub, LinearMap.sub_apply, smul_eq_mul, RingHom.id_apply, map_mul, map_inv₀, hB]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_linearMap_isometry (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
     (hF : ∀ t : E, c t = t ↔ ∃ s : F, algebraMap F E s = t) (d : ℕ) :
@@ -212,13 +212,13 @@ theorem exists_linearMap_isometry (h2 : (2 : E) ≠ 0) (hc : ∀ t, c (c t) = t)
 end GlobalTheory.LocalQuad.TraceIsometry
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨P, hP, rfl⟩`. Use `⟨(Matrix.toLinearEquiv' P (Matrix.invertibleOfIsUnitDet P hP.isUnit)).restrictScalars F, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.HermWitt.dotProduct_congr_mulVec]`. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce and unpack `⟨φ, hφ⟩`. Apply the tactic sequence `obtain ⟨ψ, hψ⟩ := TraceIsometry.exists_linearMap_isometry h2 hc hF _ (Matrix.toLinearMapₛₗ₂' E (RingHom.id E) c G') (Matrix.toLinearMapₛₗ₂' E (RingHom.id E) c G) (fun x y => by`. Simplify using `only [GlobalTheory.HermDiag.toLinearMapₛₗ₂'_eq_dotProduct, GlobalTheory.HermDiag.map_dotProduct_mulVec_comp hc hG'])`. Use the proof step `(fun x y => by`. Simplify using `only [GlobalTheory.HermDiag.toLinearMapₛₗ₂'_eq_dotProduct, GlobalTheory.HermDiag.map_dotProduct_mulVec_comp hc hG])`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `rfl φ.toLinearMap`. Use the proof step `(fun x => by`. Simplify using `only [GlobalTheory.HermDiag.toLinearMapₛₗ₂'_eq_dotProduct]`. Conclude with `(hφ x).symm)`. Establish `h : G' = (LinearMap.toMatrix' ψ)ᵀ * G * (LinearMap.toMatrix' ψ).map c`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Apply `(Matrix.toLinearMapₛₗ₂' E (RingHom.id E) c).injective` to reduce the goal to its premises. Use `LinearMap.ext fun x => LinearMap.ext fun y => ?_` and prove the remaining obligations. Rewrite using `[← hψ, GlobalTheory.HermDiag.toLinearMapₛₗ₂'_eq_dotProduct, GlobalTheory.HermDiag.toLinearMapₛₗ₂'_eq_dotProduct, GlobalTheory.HermWitt.dotProduct_congr_mulVec, LinearMap.toMatrix'_mulVec, LinearMap.toMatrix'_mulVec]`. Use `⟨_, fun h0 => hd' ?_, h⟩` and prove the remaining obligations. Rewrite using `[h, Matrix.det_mul, Matrix.det_mul, Matrix.det_transpose, h0, zero_mul, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.LocalQuad.exists_congr_iff_trace_forms_isometric {F E : Type*} [Field F] [Field E]
     [Algebra F E] (h2 : (2 : E) ≠ 0) (c : E →+* E) (hc : ∀ t, c (c t) = t)

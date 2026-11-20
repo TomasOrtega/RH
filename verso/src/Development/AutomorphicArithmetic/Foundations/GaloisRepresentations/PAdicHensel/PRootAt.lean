@@ -4,13 +4,13 @@ open NumberField IsDedekindDomain Matrix GlobalTheory.UPel.HT GlobalTheory.LKTri
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `E _ _ _ A q _ hs w hw`. Take `⟨_, r, k, hk⟩` from `hs`. Establish `hkE : (r : 𝓞 E) ^ 2 - (A.tr : 𝓞 E) * (r : 𝓞 E) + (A.nm : 𝓞 E) = (q : 𝓞 E) * (k : 𝓞 E)`. Conclude with `congrArg (Int.cast : ℤ → 𝓞 E) hk` after adjusting the coercions. Establish `hprod : (A.ω - (r : 𝓞 E)) * (A.ω - ((A.tr - r : ℤ) : 𝓞 E)) = (q : 𝓞 E) * (-(k : 𝓞 E))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htr` using `A.tr_eq`. Establish `hnm` using `A.nm_eq`. Establish `h0 : A.ω ^ 2 - (A.tr : 𝓞 E) * A.ω + (A.nm : 𝓞 E) = 0`. Rewrite using `[← htr, ← hnm]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Take the linear combination `h0 - hkE`. Establish `hmem : (A.ω - (r : 𝓞 E)) * (A.ω - ((A.tr - r : ℤ) : 𝓞 E)) ∈ w.asIdeal`. Rewrite using `[hprod]`. Conclude with `w.asIdeal.mul_mem_right _ hw`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Break down `w.isPrime.mem_or_mem hmem with h | h` into its components or cases. Conclude with `⟨r, ⟨k, hk⟩, h⟩`. Use `⟨A.tr - r, ⟨k, ?_⟩, h⟩` and prove the remaining obligations. Rewrite using `[← hk]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.G1.pRootAt :
     RootAt := by

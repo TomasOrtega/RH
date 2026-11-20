@@ -63,11 +63,9 @@ structure Of (B : Box F n C) (ρ : NRep F n C) : Prop where
     (((B.g v)⁻¹ : GL (Fin n) C) : Matrix (Fin n) (Fin n) C)) i i = ρ.ψ v i s
 
 /- English proof (translation)
-Use `show ((B.r F.c).mat).map f = 1`. Rewrite using `[h.atc]`. Conclude with `Matrix.map_one _ (map_zero f) (map_one f)`. Use `res s := by show ((B.r s).mat).map f = _`. Rewrite using `[h.res]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `psi v i s := by`. Establish `e : (((B.map f).g v : GL (Fin n) C') : Matrix (Fin n) (Fin n) C') * (ρ.map f).r (F.loc0 v s) * ((((B.map f).g v)⁻¹ : GL (Fin n) C') : Matrix (Fin n) (Fin n) C') = f.mapMatrix ((B.g v : Matrix (Fin n) (Fin n) C) * ρ.r (F.loc0 v s) * (((B.g v)⁻¹ : GL (Fin n) C) : Matrix (Fin n) (Fi …`. Rewrite using `[map_mul, map_mul]`. Both sides reduce to the same expression.
-
-Rewrite using `[e]`. Conclude with `congrArg f (h.psi v i s)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Of.map {B : Box F n C} {ρ : NRep F n C} (h : B.Of ρ) (f : C →+* C') : (B.map f).Of (ρ.map f) where
   atc := by
@@ -140,7 +138,7 @@ def evK {C : Type} [CommRing C] [Algebra O C] (K : Ideal C) (u : K →ₗ[O] Res
   if h : x ∈ K then u ⟨x, h⟩ else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem evK_of_mem {C : Type} [CommRing C] [Algebra O C] {K : Ideal C} (u : K →ₗ[O] ResidueField O) {x : C}
     (h : x ∈ K) : evK K u x = u ⟨x, h⟩ := dif_pos h

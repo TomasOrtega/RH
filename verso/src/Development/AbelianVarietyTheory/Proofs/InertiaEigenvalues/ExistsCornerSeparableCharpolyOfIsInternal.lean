@@ -7,17 +7,15 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Global
 namespace GlobalTheory.SpanRing
 
 /- English proof (translation)
-Establish `hfg : ∀ w : Fin t → K, b.mulVecLin (a.mulVecLin w) = w` using `fun w => by`. Simplify using `[Matrix.mulVec_mulVec, hba]`. Establish `hE : (a * b).mulVecLin = a.mulVecLin ∘ₗ b.mulVecLin` using `Matrix.mulVecLin_mul a b`. Establish `hback : ∀ S : Submodule K (Fin n → K), S.map (a * b).mulVecLin ≤ S → (S.map b.mulVecLin).map a.mulVecLin ≤ S`. Introduce `S hS`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← Submodule.map_comp, ← hE]` and apply the resulting hypothesis. Establish `hVj : ∀ j, (Vs j).map (a * b).mulVecLin ≤ Vs j`. Introduce and unpack `j _ ⟨v, hv, rfl⟩`. Conclude with `he j v hv`. Rewrite `hV`, the goal using `[DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top]`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hind, htop⟩` from `hV`. Prove the components needed by the constructor for the conclusion. Rewrite `hind`, the goal using `[iSupIndep_def]`. Introduce `j`. Rewrite using `[Submodule.disjoint_def]`.
+Prove the components needed by the constructor for the conclusion. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x hx1 hx2`. Establish `hrest : (⨆ k, ⨆ (_ : k ≠ j), Vs k).map (a * b).mulVecLin ≤ ⨆ k, ⨆ (_ : k ≠ j), Vs k`. Repeatedly rewrite using `[Submodule.map_iSup]`. Conclude with `iSup₂_mono fun k _ => hVj k`. Establish `hx2' : x ∈ (⨆ k, ⨆ (_ : k ≠ j), Vs k).map b.mulVecLin`.
+Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact.
 
-Repeatedly rewrite using `[Submodule.map_iSup]`. Conclude with `hx2`. Establish `h1 : a.mulVecLin x ∈ Vs j` using `hback _ (hVj j) (Submodule.mem_map_of_mem hx1)`. Establish `h2 : a.mulVecLin x ∈ ⨆ k, ⨆ (_ : k ≠ j), Vs k` using `hback _ hrest (Submodule.mem_map_of_mem hx2')`. Rewrite using `[← hfg x, Submodule.disjoint_def.1 (hind j) _ h1 h2, map_zero]`.
-
-Rewrite using `[← Submodule.map_iSup, htop, Submodule.map_top, LinearMap.range_eq_top]`. Conclude with `fun w => ⟨a.mulVecLin w, hfg w⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isInternal_map_of_corner {K : Type} [Field K] {n t : ℕ} (ι : Type) [Fintype ι]
     [DecidableEq ι] (Vs : ι → Submodule K (Fin n → K)) (a : Matrix (Fin n) (Fin t) K)
@@ -57,17 +55,17 @@ theorem isInternal_map_of_corner {K : Type} [Field K] {n t : ℕ} (ι : Type) [F
     exact fun w => ⟨a.mulVecLin w, hfg w⟩
 
 /- English proof (translation)
-Set `v : ∀ j, Module.Basis (Fin (Module.finrank K (W j))) K (W j)` to `fun j => Module.finBasis K (W j)`. Set `B` to `hW.collectedBasis v`. Set `μ : (Σ j, Fin (Module.finrank K (W j))) → K` to `fun s => Infinite.natEmbedding K (Fintype.equivFin _ s)`. Establish `hμ : Function.Injective μ` using `(Infinite.natEmbedding K).injective.comp (Fin.val_injective.comp (Fintype.equivFin _).injective)`. Set `φ : (Fin t → K) →ₗ[K] (Fin t → K)` to `B.constr K (fun s => μ s • B s)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hφB : ∀ s, φ (B s) = μ s • B s` using `fun s => B.constr_basis K _ s`. Use `⟨LinearMap.toMatrix' φ, ?_, ?_⟩` and prove the remaining obligations. Introduce `j w hw`. Establish `hD : (LinearMap.toMatrix' φ).mulVec w = φ w`. Rewrite using `[← Matrix.toLin'_apply, Matrix.toLin'_toMatrix']`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw' : w = ((∑ k, (v j).repr ⟨w, hw⟩ k • v j k : W j) : Fin t → K)`. Rewrite using `[(v j).sum_repr]`. Rewrite using `[hD, hw', Submodule.coe_sum, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[Submodule.coe_smul, map_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.smul_mem _ _ ?_` and prove the remaining obligations. Establish `hk : ((v j k : W j) : Fin t → K) = B ⟨j, k⟩` using `by simp [B]`. Rewrite using `[hk, hφB]`. Conclude with `Submodule.smul_mem _ _ (hW.collectedBasis_mem v ⟨j, k⟩)`. Establish `h1 : (LinearMap.toMatrix' φ).charpoly = φ.charpoly`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← LinearMap.toMatrix_eq_toMatrix', LinearMap.charpoly_toMatrix]`. Establish `h2 : LinearMap.toMatrix B B φ = Matrix.diagonal μ`. Use extensionality with `s s'`. Rewrite using `[LinearMap.toMatrix_apply, hφB, map_smul, B.repr_self, Matrix.diagonal_apply]`. Distinguish the cases in `h : s = s'`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`. Rewrite using `[h1, ← LinearMap.charpoly_toMatrix φ B, h2, Matrix.charpoly_diagonal]`. Conclude with `Polynomial.separable_prod_X_sub_C_iff.2 hμ`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_separable_charpoly_of_isInternal {K : Type} [Field K] [Infinite K] {t : ℕ}
     (ι : Type) [Fintype ι] [DecidableEq ι] (W : ι → Submodule K (Fin t → K))
@@ -109,11 +107,11 @@ theorem exists_separable_charpoly_of_isInternal {K : Type} [Field K] [Infinite K
     exact Polynomial.separable_prod_X_sub_C_iff.2 hμ
 
 /- English proof (translation)
-Introduce `K _ _ n t ι _ _ Vs a b hV hba he`. Take `⟨D, hD, hsep⟩` from `exists_separable_charpoly_of_isInternal ι _ (isInternal_map_of_corner ι Vs a b hV hba he)`. Use `⟨a * D * b, ?_, ?_⟩` and prove the remaining obligations. Introduce `j v hv`. Take `⟨u, hu, hu'⟩` from `hD j (b.mulVec v) (Submodule.mem_map_of_mem hv)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hm : (a * D * b).mulVec v = (a * b).mulVec u`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Use `congr 1`. Conclude with `hu'.symm`. Rewrite using `[hm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `he j u hu`. Establish `hc : b * (a * D * b) * a = D`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hc]`. Conclude with `hsep`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_corner_separable_charpoly :
     ∀ {K : Type} [Field K] [Infinite K] {n t : ℕ} (ι : Type) [Fintype ι] [DecidableEq ι] (Vs : ι → Submodule K (Fin n → K)) (a : Matrix (Fin n) (Fin t) K) (b : Matrix (Fin t) (Fin n) K), DirectSum.IsInternal Vs → b * a = 1 → (∀ j, ∀ v ∈ Vs j, (a * b).mulVec v ∈ Vs j) → ∃ m : Matrix (Fin n) (Fin n) K, (∀ j, ∀ v ∈ Vs j, m.mulVec v ∈ Vs j) ∧ (b * m * a).charpoly.Separable := by

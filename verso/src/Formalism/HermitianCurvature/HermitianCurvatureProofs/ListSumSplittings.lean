@@ -18,11 +18,11 @@ def splits {α : Type*} : List α → List (List α × List α)
   | x :: w => (splits w).flatMap fun p => [(x :: p.1, p.2), (p.1, x :: p.2)]
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro p hp`. Simplify using `only [splits, List.mem_singleton] at hp`. Substitute `hp` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Consider the case `cons x w ih`. Introduce `p hp`. Rewrite `hp` using `[splits, List.mem_flatMap]`. Take `⟨q, hq, hp⟩` from `hp`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Break down `List.mem_cons.1 hp with h | h` into its components or cases. Substitute `h` using the available equality. Conclude with `⟨(ih q hq).1.cons_cons x, (ih q hq).2.cons x⟩`. Rewrite using `[List.mem_singleton.1 h]`. Conclude with `⟨(ih q hq).1.cons x, (ih q hq).2.cons_cons x⟩`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma splits_mem {α : Type*} : ∀ (w : List α), ∀ p ∈ splits w, p.1.Sublist w ∧ p.2.Sublist w := by
   intro w
@@ -37,7 +37,7 @@ lemma splits_mem {α : Type*} : ∀ (w : List α), ∀ p ∈ splits w, p.1.Subli
     · rw [List.mem_singleton.1 h]; exact ⟨(ih q hq).1.cons x, (ih q hq).2.cons_cons x⟩
 
 /- English proof (translation)
-Proceed by induction on `L with`. Consider the case `nil => simp`. Consider the case `cons a L ih => simp [List.sum_cons, ih, add_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 lemma list_sum_mul_right {α : Type*} (L : List α) (f : α → ℝ) (c : ℝ) :
     (L.map fun a => f a * c).sum = (L.map f).sum * c := by
@@ -46,7 +46,7 @@ lemma list_sum_mul_right {α : Type*} (L : List α) (f : α → ℝ) (c : ℝ) :
   | cons a L ih => simp [List.sum_cons, ih, add_mul]
 
 /- English proof (translation)
-Introduce `g₀ _`. Conclude with `⟨Set.univ, fun _ => c, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 lemma ckOn_const' {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] {m : ℕ∞} (c : F) :
     CkOn m (GV k r) (fun _ : Mat k r => c) := by
@@ -54,9 +54,9 @@ lemma ckOn_const' {F : Type} [NormedAddCommGroup F] [NormedSpace ℂ F] {m : ℕ
   exact ⟨Set.univ, fun _ => c, isOpen_univ, trivial, contDiffOn_const, fun _ _ _ => rfl⟩
 
 /- English proof (translation)
-Introduce `g₀ hg₀`. Take `⟨U, f', hU, hgU, hc, hff⟩` from `hf g₀ hg₀`. Take `⟨U₂, H', hU₂, hgU₂, hc₂, hff₂⟩` from `hH g₀ hg₀`. Use `⟨U ∩ U₂, fun g => f' g • H' g, hU.inter hU₂, ⟨hgU, hgU₂⟩, (hc.mono Set.inter_subset_left).smul (hc₂.mono Set.inter_subset_right), ?_⟩` and prove the remaining obligations. Introduce `g hg hgG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show f g • H g = f' g • H' g`. Rewrite using `[hff g hg.1 hgG, hff₂ g hg.2 hgG]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma ckOn_mulF {f : Mat k r → ℂ} {H : Mat k r → E} {m : ℕ∞} (hf : CkOn m (GV k r) f)
     (hH : CkOn m (GV k r) H) : CkOn m (GV k r) (fun g => f g • H g) := by
@@ -70,9 +70,9 @@ lemma ckOn_mulF {f : Mat k r → ℂ} {H : Mat k r → E} {m : ℕ∞} (hf : CkO
   rw [hff g hg.1 hgG, hff₂ g hg.2 hgG]
 
 /- English proof (translation)
-Establish `h1` using `(ckOn_diff 0 b hf hX hg).hasDerivAt`. Establish `h2` using `(ckOn_diff 0 b hH hX hg).hasDerivAt`. Establish `h3` using `h1.smul h2`. Simplify using `only [cv_zero] at h3`. Use `show deriv (fun t : ℝ => f (cv b X t g) • H (cv b X t g)) 0 = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show (fun t : ℝ => f (cv b X t g) • H (cv b X t g)) = ((fun t => f (cv b X t g)) • fun t => H (cv b X t g)) from rfl, h3.deriv]`. Conclude with `add_comm _ _`.
+A detailed English derivation is pending.
 -/
 lemma op_smulF {f : Mat k r → ℂ} {H : Mat k r → E} {X g : Mat k r} (b : Bool) (hX : inLie k r X)
     (hf : CkOn ((1 : ℕ) : ℕ∞) (GV k r) f) (hH : CkOn ((1 : ℕ) : ℕ∞) (GV k r) H) (hg : g ∈ GV k r) :
@@ -87,11 +87,11 @@ lemma op_smulF {f : Mat k r → ℂ} {H : Mat k r → E} {X g : Mat k r} (b : Bo
   exact add_comm _ _
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _`. Simplify using `using (ckOn_const' (k := k) (r := r) (m := m) (0 : E))`. Consider the case `cons a L ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `hL`. Establish `e : (fun g => ((a :: L).map fun a => φ a g).sum) = φ a + (fun g => (L.map fun a => φ a g).sum)`. Use function extensionality and compare the values at `g`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ckOn_add (hL a List.mem_cons_self) (ih fun b hb => hL b (List.mem_cons_of_mem _ hb))`.
+A detailed English derivation is pending.
 -/
 lemma ckOn_listSumF {α : Type*} (φ : α → Mat k r → E) {m : ℕ∞} :
     ∀ (L : List α), (∀ a ∈ L, CkOn m (GV k r) (φ a)) →
@@ -107,11 +107,11 @@ lemma ckOn_listSumF {α : Type*} (φ : α → Mat k r → E) {m : ℕ∞} :
     exact ckOn_add (hL a List.mem_cons_self) (ih fun b hb => hL b (List.mem_cons_of_mem _ hb))
 
 /- English proof (translation)
-Introduce `L`. Proceed by induction on `L with`. Consider the case `nil => intro _ g _`. Simplify using `[op]`. Consider the case `cons a L ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hL g hg`. Establish `hL' : ∀ c ∈ L, CkOn ((1 : ℕ) : ℕ∞) (GV k r) (φ c)` using `fun c hc => hL c (List.mem_cons_of_mem _ hc)`. Establish `e : (fun g' => ((a :: L).map fun a => φ a g').sum) = φ a + (fun g' => (L.map fun a => φ a g').sum)`. Use function extensionality and compare the values at `g'`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[e, op_add b hX (hL a List.mem_cons_self) (ckOn_listSumF φ L hL') hg, ih hL' g hg]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 lemma op_listSumF {α : Type*} {b : Bool} {X : Mat k r} (hX : inLie k r X) (φ : α → Mat k r → E) :
     ∀ (L : List α), (∀ a ∈ L, CkOn ((1 : ℕ) : ℕ∞) (GV k r) (φ a)) →
@@ -128,13 +128,13 @@ lemma op_listSumF {α : Type*} {b : Bool} {X : Mat k r} (hX : inLie k r X) (φ :
     simp
 
 /- English proof (translation)
-Introduce `w`. Proceed by induction on `w with`. Consider the case `nil => intro _ f H _ _ g _`. Simplify using `[splits, W_nil]`. Consider the case `cons x w ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `hw f H hf hH g hg`. Establish `hw' : AllLie w` using `fun y hy => hw y (List.mem_cons_of_mem _ hy)`. Establish `hx : inLie k r x.2` using `hw x List.mem_cons_self`. Establish `hf' : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f` using `ckOn_mono (by simp) hf`. Establish `hH' : CkOn ((w.length : ℕ) : ℕ∞) (GV k r) H` using `ckOn_mono (by simp) hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[W_cons, op_congr x.1 hx (ih hw' f H hf' hH') g hg]`. Establish `hCf : ∀ l : List (Bool × Mat k r), l.Sublist w → CkOn ((1 : ℕ) : ℕ∞) (GV k r) (W l f)` using `fun l hl => smooth_on_of_word_derivatives l (fun y hy => hw' y (hl.subset hy)) 1 (ckOn_mono (by have := hl.length_le; simp; omega) hf)`. Establish `hCH : ∀ l : List (Bool × Mat k r), l.Sublist w → CkOn ((1 : ℕ) : ℕ∞) (GV k r) (W l H)` using `fun l hl => smooth_on_of_word_derivatives l (fun y hy => hw' y (hl.subset hy)) 1 (ckOn_mono (by have := hl.length_le; simp; omega) hH)`. Rewrite using `[op_listSumF hx (fun p g' => W p.1 f g' • W p.2 H g') (splits w) (fun p hp => ckOn_mulF (hCf p.1 (splits_mem w p hp).1) (hCH p.2 (splits_mem w p hp).2)) g hg]`. Rewrite using `[splits, list_sum_flatMap]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `List.map_congr_left fun p hp => ?_` and prove the remaining obligations. Rewrite using `[op_smulF x.1 hx (hCf p.1 (splits_mem w p hp).1) (hCH p.2 (splits_mem w p hp).2) hg]`. Simplify using `[W_cons]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem W_smulF : ∀ (w : List (Bool × Mat k r)), AllLie w → ∀ (f : Mat k r → ℂ) (H : Mat k r → E),
     CkOn ((w.length : ℕ) : ℕ∞) (GV k r) f → CkOn ((w.length : ℕ) : ℕ∞) (GV k r) H → ∀ g ∈ GV k r,
@@ -168,7 +168,7 @@ def PolyClass (D : ℕ) (P : Mat k r → ℂ) : Prop :=
     ∃ C : ℝ, 0 ≤ C ∧ ∀ g ∈ GV k r, ‖W a P g‖ ≤ C * gN g ^ D
 
 /- English proof (translation)
-Use `⟨hP.1, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨C, hC0, hC⟩` from `hP.2 a ha`. Conclude with `⟨C, hC0, fun g hg => (hC g hg).trans (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ (one_le_gN hg) h) hC0)⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma polyClass_mono {D D' : ℕ} {P : Mat k r → ℂ} (h : D ≤ D') (hP : PolyClass D P) : PolyClass D' P := by
   refine ⟨hP.1, fun a ha => ?_⟩
@@ -177,9 +177,9 @@ lemma polyClass_mono {D D' : ℕ} {P : Mat k r → ℂ} (h : D ≤ D') (hP : Pol
     (mul_le_mul_of_nonneg_left (pow_le_pow_right₀ (one_le_gN hg) h) hC0)⟩
 
 /- English proof (translation)
-Use `⟨ckOn_op_top b hP.1 hX, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨C, hC0, hC⟩` from `hP.2 (a ++ [(b, X)]) (by`. Introduce `y hy`. Break down `List.mem_append.1 hy with h | h` into its components or cases. Conclude with `ha y h`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[List.mem_singleton.1 h]`. Conclude with `hX)`. Conclude with `⟨C, hC0, fun g hg => by have := hC g hg; rwa [W_append] at this⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma polyClass_op {D : ℕ} {P : Mat k r → ℂ} (hP : PolyClass D P) (b : Bool) {X : Mat k r}
     (hX : inLie k r X) : PolyClass D (op b X P) := by
@@ -191,9 +191,9 @@ lemma polyClass_op {D : ℕ} {P : Mat k r → ℂ} (hP : PolyClass D P) (b : Boo
   exact ⟨C, hC0, fun g hg => by have := hC g hg; rwa [W_append] at this⟩
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `nil => exact ⟨c, le_rfl, rfl⟩`. Consider the case `cons x a ih`. Take `⟨c', -, he⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[W_cons, he]`. Use function extensionality and compare the values at `g`. Simplify using `[op]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 lemma W_const (c : ℂ) : ∀ a : List (Bool × Mat k r), ∃ c' : ℂ, ‖c'‖ ≤ ‖c‖ ∧ W a (fun _ => c) = fun _ => c' := by
   intro a
@@ -206,7 +206,7 @@ lemma W_const (c : ℂ) : ∀ a : List (Bool × Mat k r), ∃ c' : ℂ, ‖c'‖
     funext g; simp [op]
 
 /- English proof (translation)
-Use `⟨ckOn_const' c, fun a _ => ?_⟩` and prove the remaining obligations. Take `⟨c', hc', he⟩` from `W_const c a`. Conclude with `⟨‖c‖, norm_nonneg _, fun g _ => by rw [he]; simpa using hc'⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 lemma polyClass_const (c : ℂ) : PolyClass 0 (fun _ : Mat k r => c) := by
   refine ⟨ckOn_const' c, fun a _ => ?_⟩
@@ -214,9 +214,9 @@ lemma polyClass_const (c : ℂ) : PolyClass 0 (fun _ : Mat k r => c) := by
   exact ⟨‖c‖, norm_nonneg _, fun g _ => by rw [he]; simpa using hc'⟩
 
 /- English proof (translation)
-Use `⟨ckOn_add hP.1 hQ.1, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨C1, h10, h1⟩` from `hP.2 a ha`. Take `⟨C2, h20, h2⟩` from `hQ.2 a ha`. Use `⟨C1 + C2, add_nonneg h10 h20, fun g hg => ?_⟩` and prove the remaining obligations. Establish `e` using `W_add a ha (ckOn_top_nat hP.1 _) (ckOn_top_nat hQ.1 _) g hg`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[show (fun g => P g + Q g) = P + Q from rfl, e]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 lemma polyClass_add {D : ℕ} {P Q : Mat k r → ℂ} (hP : PolyClass D P) (hQ : PolyClass D Q) :
     PolyClass D (fun g => P g + Q g) := by
@@ -231,17 +231,17 @@ lemma polyClass_add {D : ℕ} {P Q : Mat k r → ℂ} (hP : PolyClass D P) (hQ :
     _ = (C1 + C2) * gN g ^ D := by ring
 
 /- English proof (translation)
-Establish `hfun : (fun g => P g * Q g) = (fun g => P g • Q g)` using `by funext g; rw [smul_eq_mul]`. Rewrite using `[hfun]`. Use `⟨ckOn_mulF hP.1 hQ.1, fun a ha => ?_⟩` and prove the remaining obligations. Establish `hexP : ∀ l : List (Bool × Mat k r), ∃ C : ℝ, 0 ≤ C ∧ (AllLie l → ∀ g ∈ GV k r, ‖W l P g‖ ≤ C * gN g ^ D1)`. Introduce `l`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hl : AllLie l`. Take `⟨C, h0, h⟩` from `hP.2 l hl`. Conclude with `⟨C, h0, fun _ => h⟩`. Conclude with `⟨0, le_rfl, fun h => absurd h hl⟩`. Establish `hexQ : ∀ l : List (Bool × Mat k r), ∃ C : ℝ, 0 ≤ C ∧ (AllLie l → ∀ g ∈ GV k r, ‖W l Q g‖ ≤ C * gN g ^ D2)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Introduce `l`. Distinguish the cases in `hl : AllLie l`. Take `⟨C, h0, h⟩` from `hQ.2 l hl`. Conclude with `⟨C, h0, fun _ => h⟩`. Conclude with `⟨0, le_rfl, fun h => absurd h hl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Use `choose CP hCP0 hCP using hexP`. Use `choose CQ hCQ0 hCQ using hexQ`. Use `⟨((splits a).map fun p => CP p.1 * CQ p.2).sum, list_sum_nonneg _ _ fun p _ => mul_nonneg (hCP0 _) (hCQ0 _), fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[W_smulF a ha P Q (ckOn_top_nat hP.1 _) (ckOn_top_nat hQ.1 _) g hg]`. Use `(norm_list_sum_le _ _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← list_sum_mul_right]`. Use `list_sum_le _ _ _ fun p hp => ?_` and prove the remaining obligations. Take `⟨h1, h2⟩` from `splits_mem a p hp`. Establish `hl1 : AllLie p.1` using `fun y hy => ha y (h1.subset hy)`. Establish `hl2 : AllLie p.2` using `fun y hy => ha y (h2.subset hy)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[norm_smul, pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma polyClass_mul {D1 D2 : ℕ} {P Q : Mat k r → ℂ} (hP : PolyClass D1 P) (hQ : PolyClass D2 Q) :
     PolyClass (D1 + D2) (fun g => P g * Q g) := by
@@ -276,7 +276,7 @@ lemma polyClass_mul {D1 D2 : ℕ} {P Q : Mat k r → ℂ} (hP : PolyClass D1 P) 
     _ = CP p.1 * CQ p.2 * (gN g ^ D1 * gN g ^ D2) := by ring
 
 /- English proof (translation)
-Use `polyClass_mul (polyClass_const c) hP` as an intermediate fact. Rewrite `this` using `[zero_add]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 lemma polyClass_cmul {D : ℕ} {P : Mat k r → ℂ} (c : ℂ) (hP : PolyClass D P) :
     PolyClass D (fun g => c * P g) := by
@@ -284,9 +284,9 @@ lemma polyClass_cmul {D : ℕ} {P : Mat k r → ℂ} (c : ℂ) (hP : PolyClass D
   rwa [zero_add] at this
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simpa using polyClass_const (k := k) (r := r) 1`. Consider the case `succ n ih`. Use `polyClass_mul ih hP` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `e : (fun g => P g ^ (n + 1)) = fun g => P g ^ n * P g` using `by funext g; rw [pow_succ]`. Rewrite using `[e, Nat.succ_mul]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma polyClass_pow {D : ℕ} {P : Mat k r → ℂ} (hP : PolyClass D P) :
     ∀ n : ℕ, PolyClass (n * D) (fun g => P g ^ n) := by
@@ -300,9 +300,9 @@ lemma polyClass_pow {D : ℕ} {P : Mat k r → ℂ} (hP : PolyClass D P) :
     exact this
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using polyClass_const (k := k) (r := r) 1`. Consider the case `insert a s ha ih`. Use `polyClass_mul (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Establish `e : (fun g => ∏ i ∈ insert a s, P i g) = fun g => P a g * ∏ i ∈ s, P i g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Finset.prod_insert ha]`. Rewrite using `[Finset.sum_insert ha, e]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma polyClass_prod {ι : Type*} (s : Finset ι) (D : ι → ℕ) (P : ι → Mat k r → ℂ)
     (h : ∀ i ∈ s, PolyClass (D i) (P i)) : PolyClass (∑ i ∈ s, D i) (fun g => ∏ i ∈ s, P i g) := by
@@ -317,9 +317,9 @@ lemma polyClass_prod {ι : Type*} (s : Finset ι) (D : ι → ℕ) (P : ι → M
     exact this
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using polyClass_mono (Nat.zero_le D) (polyClass_const (k := k) (r := r) 0)`. Consider the case `insert a s ha ih`. Use `polyClass_add (h a (Finset.mem_insert_self a s)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))` as an intermediate fact. Establish `e : (fun g => ∑ i ∈ insert a s, P i g) = fun g => P a g + ∑ i ∈ s, P i g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[Finset.sum_insert ha]`. Rewrite using `[e]`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma polyClass_sum {ι : Type*} (s : Finset ι) (D : ℕ) (P : ι → Mat k r → ℂ)
     (h : ∀ i ∈ s, PolyClass D (P i)) : PolyClass D (fun g => ∑ i ∈ s, P i g) := by
@@ -334,9 +334,9 @@ lemma polyClass_sum {ι : Type*} (s : Finset ι) (D : ℕ) (P : ι → Mat k r �
     exact this
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Establish `hd : HasDerivAt (fun t : ℝ => ℓ (cv b X t g)) (ℓ (vf b X g)) 0`. Establish `h` using `(LinearMap.toContinuousLinearMap ℓ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (cv_hasDerivAt b X g)`. Conclude with `h`. Use `show deriv (fun t : ℝ => ℓ (cv b X t g)) 0 = _`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[hd.deriv]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 lemma op_lin (ℓ : Mat k r →ₗ[ℝ] ℂ) (b : Bool) (X : Mat k r) :
     op b X (fun g => ℓ g) = fun g => (ℓ.comp (vf b X).toLinearMap) g := by
@@ -348,9 +348,9 @@ lemma op_lin (ℓ : Mat k r →ₗ[ℝ] ℂ) (b : Bool) (X : Mat k r) :
   rw [hd.deriv]; rfl
 
 /- English proof (translation)
-Introduce `a`. Proceed by induction on `a with`. Consider the case `nil => exact ⟨ℓ, rfl⟩`. Consider the case `cons x a ih`. Take `⟨ℓ', he⟩` from `ih`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨ℓ'.comp (vf x.1 x.2).toLinearMap, by rw [W_cons, he, op_lin]⟩`.
+Supply the required witnesses or components.
 -/
 lemma W_lin (ℓ : Mat k r →ₗ[ℝ] ℂ) :
     ∀ a : List (Bool × Mat k r), ∃ ℓ' : Mat k r →ₗ[ℝ] ℂ, W a (fun g => ℓ g) = fun g => ℓ' g := by
@@ -362,7 +362,7 @@ lemma W_lin (ℓ : Mat k r →ₗ[ℝ] ℂ) :
     exact ⟨ℓ'.comp (vf x.1 x.2).toLinearMap, by rw [W_cons, he, op_lin]⟩
 
 /- English proof (translation)
-Establish `h : ‖g i j‖ ^ 2 ≤ ∑ i, ∑ j, Complex.normSq (g i j)`. Rewrite using `[Complex.sq_norm]`. Conclude with `(Finset.single_le_sum (f := fun j => Complex.normSq (g i j)) (fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ j)).trans (Finset.single_le_sum (f := fun i => ∑ j, Complex.normSq (g i j)) (fun _ _ => Finset.sum_nonneg fun _ _ => Complex.normSq_nonneg _) (Finset.mem_univ i))`. Use `Real.abs_le_sqrt h` as an intermediate fact. Rewrite `this` using `[abs_of_nonneg (norm_nonneg _)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 lemma entry_le_gN (g : Mat k r) (i j : Fin (2 * r + k + 1)) : ‖g i j‖ ≤ gN g := by
   have h : ‖g i j‖ ^ 2 ≤ ∑ i, ∑ j, Complex.normSq (g i j) := by
@@ -375,15 +375,13 @@ lemma entry_le_gN (g : Mat k r) (i j : Fin (2 * r + k + 1)) : ‖g i j‖ ≤ gN
   rwa [abs_of_nonneg (norm_nonneg _)] at this
 
 /- English proof (translation)
-Use `⟨?_, fun a _ => ?_⟩` and prove the remaining obligations. Introduce `g₀ _`. Use `⟨Set.univ, fun g => ℓ g, isOpen_univ, trivial, ?_, fun _ _ _ => rfl⟩` and prove the remaining obligations. Establish `h` using `((LinearMap.toContinuousLinearMap ℓ).contDiff (n := ((⊤ : ℕ∞) : WithTop ℕ∞))).contDiffOn (s := Set.univ)`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ℓ', he⟩` from `W_lin ℓ a`. Use `⟨∑ j : J k r, ‖ℓ' (Eb j)‖, Finset.sum_nonneg fun _ _ => norm_nonneg _, fun g _ => ?_⟩` and prove the remaining obligations. Rewrite using `[he, pow_one]`. Establish `eg : ℓ' g = ∑ j : J k r, co g j • ℓ' (Eb j)` using `by conv_lhs => rw [← Mv_co g, Mv_sum]`. Rewrite using `[map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul]`. Use `show ‖ℓ' g‖ ≤ _`. Rewrite using `[eg, Finset.sum_mul]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_eq_abs, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mul_le_mul_of_nonneg_left ?_ (norm_nonneg _)` and prove the remaining obligations. Establish `hco : |co g j| ≤ ‖g j.1 j.2.1‖`. Unfold `co`. Use `split_ifs`. Conclude with `Complex.abs_im_le_norm _`.
-
-Conclude with `Complex.abs_re_le_norm _`. Conclude with `hco.trans (entry_le_gN g _ _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma polyClass_lin (ℓ : Mat k r →ₗ[ℝ] ℂ) : PolyClass 1 (fun g => ℓ g) := by
   refine ⟨?_, fun a _ => ?_⟩
@@ -423,13 +421,13 @@ def varL : (Fin (2 * r + k + 1) × Fin (2 * r + k + 1)) ⊕ (Fin (2 * r + k + 1)
     (Mat k r →ₗ[ℝ] ℂ) := Sum.elim varIn varCj
 
 /- English proof (translation)
-Take `⟨q, hq, hPq⟩` from `hP`. Establish `e : P = fun g => ∑ d ∈ q.support, q.coeff d * ∏ v, (varL v g) ^ d v`. Use function extensionality and compare the values at `g`. Rewrite using `[hPq g, MvPolynomial.eval_eq']`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases v <;> rfl`. Rewrite using `[e]`. Use `polyClass_sum _ _ _ fun d hd => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdeg : ∑ v, d v * 1 ≤ D`. Establish `h1` using `MvPolynomial.le_totalDegree hd`. Rewrite `h1` using `[Finsupp.sum_fintype _ _ (fun _ => rfl)]`. Simplify using `using h1.trans hq`. Use `polyClass_mono hdeg (polyClass_cmul _ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `polyClass_prod Finset.univ (fun v => d v * 1) (fun v g => (varL v g) ^ d v) fun v _ => polyClass_pow (polyClass_lin (varL v)) (d v)`.
+A detailed English derivation is pending.
 -/
 theorem polyClass_of_isPolyDeg {D : ℕ} {P : Mat k r → ℂ} (hP : C2.IsPolyDeg D P) : PolyClass D P := by
   obtain ⟨q, hq, hPq⟩ := hP

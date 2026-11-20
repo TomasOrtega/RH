@@ -9,11 +9,11 @@ set_option autoImplicit false
 namespace GlobalTheory.CompanionTheory.GE.PSupp
 
 /- English proof (translation)
-Introduce `X O P E hP hE f hf Bb B hB hsec C hC`. Use `haveI : P.IsQuasicoherent := hP`. Use `haveI : E.IsQuasicoherent := hE`. Use `haveI : Epi f := hf`. Use `GlobalTheory.CompanionTheory.GE.Comb.supportedIn_of_secs_eq_univ hE hB fun W hW hd => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hWi : IsAffineOpen (O.ι ''ᵁ W)` using `hW.image_of_isOpenImmersion O.ι`. Establish `hdis : Disjoint ((O.ι ''ᵁ W : X.Opens) : Set X) C`. Use `Set.disjoint_left.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩ hyC`. Conclude with `Set.disjoint_left.1 hd hy hyC`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsec W hW, hC _ hWi hdis, Set.image_univ]`. Use `Function.Surjective.range_eq fun y => ?_` and prove the remaining obligations. Take `⟨z, rfl⟩` from `surjective_app_of_epi f hW y`. Use `⟨(P.restrictAppIso O.ι W).hom z, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cokernel_supportedIn_preimage : ∀ {X : Scheme.{0}} (O : X.Opens) {P : X.Modules} {E : (O : Scheme.{0}).Modules}, P.IsQuasicoherent → E.IsQuasicoherent → ∀ f : P.restrict O.ι ⟶ E, Epi f → ∀ Bb : Subobject P, ∀ B : Subobject E, (B : (O : Scheme.{0}).Modules).IsQuasicoherent → (∀ (W : (O : Scheme.{0}).Opens), IsAffineOpen W → secs B W = (fun x => f.app W ((P.restrictAppIso O.ι W).inv x)) '' secs Bb (O.ι ''ᵁ W)) → ∀ (C : Set X), (∀ U : X.Opens, IsAffineOpen U → Disjoint (U : Set X) C → secs Bb U = Set.univ) → Scheme.Modules.SupportedIn (cokernel B.arrow) (O.ι.base ⁻¹' C) := by
   intro X O P E hP hE f hf Bb B hB hsec C hC

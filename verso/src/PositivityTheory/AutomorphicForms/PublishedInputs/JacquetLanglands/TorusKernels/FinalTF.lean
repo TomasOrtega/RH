@@ -48,187 +48,187 @@ import PositivityTheory.AutomorphicForms.PublishedInputs.JacquetLanglands.TorusK
 namespace UpperTheory.Esk
 
 /- English proof (translation)
-The claim follows from `half_plane_measure_invariant_proof`.
+A detailed English derivation is pending.
 -/
 theorem half_plane_measure_invariant_holds : B1a := half_plane_measure_invariant_proof
 /- English proof (translation)
-The claim follows from `automorphy_factor_kernel_algebra_proof`.
+A detailed English derivation is pending.
 -/
 theorem automorphy_factor_kernel_algebra_holds : B1b := automorphy_factor_kernel_algebra_proof
 /- English proof (translation)
-The claim follows from `kernel_terms_invariant_bounded_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds`.
+A detailed English derivation is pending.
 -/
 theorem kernel_terms_invariant_bounded_holds : KernelTermsInvariantBounded := kernel_terms_invariant_bounded_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds
 /- English proof (translation)
-The claim follows from `heights_on_quotient_proof half_plane_measure_invariant_holds`.
+A detailed English derivation is pending.
 -/
 theorem heights_on_quotient_holds : E0d := heights_on_quotient_proof half_plane_measure_invariant_holds
 /- English proof (translation)
-The claim follows from `hyperbolic_kappa_properties_proof`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_kappa_properties_holds : B1c := hyperbolic_kappa_properties_proof
 /- English proof (translation)
-The claim follows from `actions_preserve_measures_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds`.
+A detailed English derivation is pending.
 -/
 theorem actions_preserve_measures_holds : E0a := actions_preserve_measures_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds
 /- English proof (translation)
-The claim follows from `pf_Pack automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds actions_preserve_measures_holds`.
+A detailed English derivation is pending.
 -/
 theorem s_Pack : Pack := pf_Pack automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds actions_preserve_measures_holds
 /- English proof (translation)
-The claim follows from `pf_Mult automorphy_factor_kernel_algebra_holds heights_on_quotient_holds`.
+A detailed English derivation is pending.
 -/
 theorem s_Mult : Mult := pf_Mult automorphy_factor_kernel_algebra_holds heights_on_quotient_holds
 /- English proof (translation)
-The claim follows from `upper_half_plane_measure_coordinates`.
+A detailed English derivation is pending.
 -/
 theorem upper_half_plane_coordinates_holds : UpperHalfPlaneMeasureCoordinates := upper_half_plane_measure_coordinates
 /- English proof (translation)
-The claim follows from `hyperbolic_ball_volume_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds upper_half_plane_coordinates_holds`.
+A detailed English derivation is pending.
 -/
 theorem hyperbolic_ball_volume_holds : B6 := hyperbolic_ball_volume_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds upper_half_plane_coordinates_holds
 /- English proof (translation)
-The claim follows from `pf_KapInt half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds hyperbolic_ball_volume_holds`.
+A detailed English derivation is pending.
 -/
 theorem s_KapInt : KapInt := pf_KapInt half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds hyperbolic_ball_volume_holds
 /- English proof (translation)
-The claim follows from `pf_KapSum s_Pack s_Mult s_KapInt`.
+A detailed English derivation is pending.
 -/
 theorem s_KapSum : KapSum := pf_KapSum s_Pack s_Mult s_KapInt
 /- English proof (translation)
-The claim follows from `kernel_sum_bounded_proof kernel_terms_invariant_bounded_holds heights_on_quotient_holds s_KapSum`.
+A detailed English derivation is pending.
 -/
 theorem kernel_sum_bounded_holds : E2 := kernel_sum_bounded_proof kernel_terms_invariant_bounded_holds heights_on_quotient_holds s_KapSum
 /- English proof (translation)
-The claim follows from `orbit_cover_proof`.
+A detailed English derivation is pending.
 -/
 theorem orbit_cover_holds : C2 := orbit_cover_proof
 /- English proof (translation)
-The claim follows from `pf_Ecut automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds orbit_cover_holds actions_preserve_measures_holds heights_on_quotient_holds s_KapSum`.
+A detailed English derivation is pending.
 -/
 theorem s_Ecut : Ecut := pf_Ecut automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds orbit_cover_holds actions_preserve_measures_holds heights_on_quotient_holds s_KapSum
 /- English proof (translation)
-The claim follows from `forms_stable_under_operators_proof`.
+A detailed English derivation is pending.
 -/
 theorem forms_stable_under_operators_holds : FormsStableUnderOperators := forms_stable_under_operators_proof
 /- English proof (translation)
-The claim follows from `cusp_region_volume_finite_proof half_plane_measure_invariant_holds upper_half_plane_coordinates_holds orbit_cover_holds actions_preserve_measures_holds heights_on_quotient_holds`.
+A detailed English derivation is pending.
 -/
 theorem cusp_region_volume_finite_holds : E3 := cusp_region_volume_finite_proof half_plane_measure_invariant_holds upper_half_plane_coordinates_holds orbit_cover_holds actions_preserve_measures_holds heights_on_quotient_holds
 /- English proof (translation)
-The claim follows from `kernel_level_transform_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds heights_on_quotient_holds s_KapSum s_KapInt`.
+A detailed English derivation is pending.
 -/
 theorem kernel_level_transform_holds : E4 := kernel_level_transform_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds heights_on_quotient_holds s_KapSum s_KapInt
 /- English proof (translation)
-The claim follows from `kernel_inverse_symmetry half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds actions_preserve_measures_holds heights_on_quotient_holds s_KapSum`.
+A detailed English derivation is pending.
 -/
 theorem kernel_inverse_symmetry_holds : faceMap_zero_comp_eq_one := kernel_inverse_symmetry half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds actions_preserve_measures_holds heights_on_quotient_holds s_KapSum
 /- English proof (translation)
-The claim follows from `inverse_series_summable`.
+A detailed English derivation is pending.
 -/
 theorem inverse_series_summable_holds : C3 := inverse_series_summable
 /- English proof (translation)
-The claim follows from `cayley_transform_proof`.
+A detailed English derivation is pending.
 -/
 theorem cayley_transform_holds : B2 := cayley_transform_proof
 /- English proof (translation)
-The claim follows from `reproducing_formula_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds cayley_transform_holds hyperbolic_ball_volume_holds`.
+A detailed English derivation is pending.
 -/
 theorem reproducing_formula_holds_alt : B3 := reproducing_formula_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds cayley_transform_holds hyperbolic_ball_volume_holds
 /- English proof (translation)
-The claim follows from `multivariable_reproducing_formula_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds reproducing_formula_holds_alt s_KapInt`.
+A detailed English derivation is pending.
 -/
 theorem multivariable_reproducing_formula_holds : MultivariableReproducingFormula := multivariable_reproducing_formula_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds reproducing_formula_holds_alt s_KapInt
 /- English proof (translation)
-The claim follows from `e5_of_reproducing_formula automorphy_factor_kernel_algebra_holds inverse_series_summable_holds actions_preserve_measures_holds kernel_inverse_symmetry_holds multivariable_reproducing_formula_holds`.
+A detailed English derivation is pending.
 -/
 theorem reproducing_kernel_expansion_holds : E5 := e5_of_reproducing_formula automorphy_factor_kernel_algebra_holds inverse_series_summable_holds actions_preserve_measures_holds kernel_inverse_symmetry_holds multivariable_reproducing_formula_holds
 /- English proof (translation)
-The claim follows from `pf_LinTr`.
+A detailed English derivation is pending.
 -/
 theorem s_LinTr : LinTr := pf_LinTr
 /- English proof (translation)
-The claim follows from `e6_of_linear_trace_identity actions_preserve_measures_holds forms_stable_under_operators_holds kernel_terms_invariant_bounded_holds cusp_region_volume_finite_holds kernel_level_transform_holds kernel_inverse_symmetry_holds reproducing_kernel_expansion_holds s_LinTr`.
+A detailed English derivation is pending.
 -/
 theorem linear_trace_identity_holds : E6 := e6_of_linear_trace_identity actions_preserve_measures_holds forms_stable_under_operators_holds kernel_terms_invariant_bounded_holds cusp_region_volume_finite_holds kernel_level_transform_holds kernel_inverse_symmetry_holds reproducing_kernel_expansion_holds s_LinTr
 /- English proof (translation)
-The claim follows from `action_integral_swap_proof`.
+A detailed English derivation is pending.
 -/
 theorem action_integral_swap_holds : C1 := action_integral_swap_proof
 /- English proof (translation)
-The claim follows from `counting_measure_invariance_proof action_integral_swap_holds`.
+A detailed English derivation is pending.
 -/
 theorem counting_measure_invariance_holds : C4 := counting_measure_invariance_proof action_integral_swap_holds
 /- English proof (translation)
-The claim follows from `kernel_series_converges_proof automorphy_factor_kernel_algebra_holds kernel_terms_invariant_bounded_holds heights_on_quotient_holds s_Pack s_Mult s_KapInt`.
+A detailed English derivation is pending.
 -/
 theorem kernel_series_converges_holds : E1 := kernel_series_converges_proof automorphy_factor_kernel_algebra_holds kernel_terms_invariant_bounded_holds heights_on_quotient_holds s_Pack s_Mult s_KapInt
 /- English proof (translation)
-The claim follows from `pf_Fsum actions_preserve_measures_holds`.
+A detailed English derivation is pending.
 -/
 theorem s_Fsum : Fsum := pf_Fsum actions_preserve_measures_holds
 /- English proof (translation)
-The claim follows from `diagonal_integrand_vanishes_proof`.
+A detailed English derivation is pending.
 -/
 theorem diagonal_integrand_vanishes_holds : DiagonalIntegrandVanishes := diagonal_integrand_vanishes_proof
 /- English proof (translation)
-The claim follows from `pf_Fcen`.
+A detailed English derivation is pending.
 -/
 theorem s_Fcen : Fcen := pf_Fcen
 /- English proof (translation)
-The claim follows from `diagonal_terms_contribution_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds upper_half_plane_coordinates_holds diagonal_integrand_vanishes_holds action_integral_swap_holds actions_preserve_measures_holds kernel_terms_invariant_bounded_holds s_Ecut …`.
+A detailed English derivation is pending.
 -/
 theorem diagonal_terms_contribution_holds : F2 := diagonal_terms_contribution_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds upper_half_plane_coordinates_holds diagonal_integrand_vanishes_holds action_integral_swap_holds actions_preserve_measures_holds kernel_terms_invariant_bounded_holds s_Ecut s_Fcen
 /- English proof (translation)
-The claim follows from `radial_integral_formula_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds cayley_transform_holds hyperbolic_ball_volume_holds`.
+A detailed English derivation is pending.
 -/
 theorem radial_integral_formula_holds : B4 := radial_integral_formula_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds cayley_transform_holds hyperbolic_ball_volume_holds
 /- English proof (translation)
-The claim follows from `elliptic_terms_contribution_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds radial_integral_formula_holds action_integral_swap_holds actions_preserve_measures_holds kernel_terms_invariant_bounded_holds heights_on_q …`.
+A detailed English derivation is pending.
 -/
 theorem elliptic_terms_contribution_holds : F3 := elliptic_terms_contribution_proof half_plane_measure_invariant_holds automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds radial_integral_formula_holds action_integral_swap_holds actions_preserve_measures_holds kernel_terms_invariant_bounded_holds heights_on_quotient_holds s_Mult s_Fcen
 /- English proof (translation)
-The claim follows from `imaginary_part_bound_proof automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds heights_on_quotient_holds s_Mult`.
+A detailed English derivation is pending.
 -/
 theorem imaginary_part_bound_holds : F4 := imaginary_part_bound_proof automorphy_factor_kernel_algebra_holds hyperbolic_kappa_properties_holds heights_on_quotient_holds s_Mult
 /- English proof (translation)
-The claim follows from `pf_Fell counting_measure_invariance_holds actions_preserve_measures_holds kernel_terms_invariant_bounded_holds heights_on_quotient_holds kernel_series_converges_holds cusp_region_volume_finite_holds s_Ecut s_Fsum diagonal_terms_contribution_holds elliptic_terms_contribution_holds …`.
+A detailed English derivation is pending.
 -/
 theorem s_Fell : Fell := pf_Fell counting_measure_invariance_holds actions_preserve_measures_holds kernel_terms_invariant_bounded_holds heights_on_quotient_holds kernel_series_converges_holds cusp_region_volume_finite_holds s_Ecut s_Fsum diagonal_terms_contribution_holds elliptic_terms_contribution_holds imaginary_part_bound_holds
 /- English proof (translation)
-The claim follows from `kernel_trace_bound_proof heights_on_quotient_holds kernel_series_converges_holds`.
+A detailed English derivation is pending.
 -/
 theorem kernel_trace_bound_holds : F5 := kernel_trace_bound_proof heights_on_quotient_holds kernel_series_converges_holds
 /- English proof (translation)
-The claim follows from `unipotent_integrand_vanishes_proof half_plane_measure_invariant_holds upper_half_plane_coordinates_holds`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_integrand_vanishes_holds : ConstantTermVanishingAlt := unipotent_integrand_vanishes_proof half_plane_measure_invariant_holds upper_half_plane_coordinates_holds
 /- English proof (translation)
-The claim follows from `diagonal_truncated_integral_zero half_plane_measure_invariant_holds upper_half_plane_coordinates_holds diagonal_integrand_vanishes_holds action_integral_swap_holds actions_preserve_measures_holds kernel_terms_invariant_bounded_holds heights_on_quotient_holds s_Ecut s_Fcen unipote …`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_truncated_integral_holds : DiagonalTruncatedIntegralZero := diagonal_truncated_integral_zero half_plane_measure_invariant_holds upper_half_plane_coordinates_holds diagonal_integrand_vanishes_holds action_integral_swap_holds actions_preserve_measures_holds kernel_terms_invariant_bounded_holds heights_on_quotient_holds s_Ecut s_Fcen unipotent_integrand_vanishes_holds
 /- English proof (translation)
-The claim follows from `unipotent_terms_contribution_proof action_integral_swap_holds actions_preserve_measures_holds kernel_terms_invariant_bounded_holds heights_on_quotient_holds unipotent_truncated_integral_holds`.
+A detailed English derivation is pending.
 -/
 theorem unipotent_terms_contribution_holds : F6 := unipotent_terms_contribution_proof action_integral_swap_holds actions_preserve_measures_holds kernel_terms_invariant_bounded_holds heights_on_quotient_holds unipotent_truncated_integral_holds
 /- English proof (translation)
-The claim follows from `pf_Fhyp counting_measure_invariance_holds actions_preserve_measures_holds kernel_terms_invariant_bounded_holds heights_on_quotient_holds kernel_sum_bounded_holds cusp_region_volume_finite_holds s_Ecut s_Fsum kernel_trace_bound_holds unipotent_terms_contribution_holds`.
+A detailed English derivation is pending.
 -/
 theorem s_Fhyp : Fhyp := pf_Fhyp counting_measure_invariance_holds actions_preserve_measures_holds kernel_terms_invariant_bounded_holds heights_on_quotient_holds kernel_sum_bounded_holds cusp_region_volume_finite_holds s_Ecut s_Fsum kernel_trace_bound_holds unipotent_terms_contribution_holds
 /- English proof (translation)
-The claim follows from `pf_TF kernel_sum_bounded_holds s_Ecut linear_trace_identity_holds s_Fell s_Fhyp`.
+A detailed English derivation is pending.
 -/
 theorem s_TF : TF := pf_TF kernel_sum_bounded_holds s_Ecut linear_trace_identity_holds s_Fell s_Fhyp
 /- English proof (translation)
-The claim follows from `pf_Sys`.
+A detailed English derivation is pending.
 -/
 theorem s_Sys : Sys := pf_Sys
 /- English proof (translation)
-The claim follows from `finite_system_proof s_Sys`.
+A detailed English derivation is pending.
 -/
 theorem finite_system_holds : Fin0 := finite_system_proof s_Sys
 /- English proof (translation)
-The claim follows from `pf_Osg`.
+A detailed English derivation is pending.
 -/
 theorem s_Osg : Osg := pf_Osg
 

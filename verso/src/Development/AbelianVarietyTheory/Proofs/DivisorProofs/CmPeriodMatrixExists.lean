@@ -11,37 +11,33 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.LatModel
 
 /- English proof (translation)
-Introduce `K _ _ d δ io hK hd hδ E _ _ _ _ I _ φ hφ hio c y hc e`. Establish `hEK : Module.finrank K E = Module.finrank ℚ (FR E)`. Establish `h1 : Module.finrank ℚ E = 2 * Module.finrank ℚ (FR E)`. Rewrite using `[← Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E, Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E, mul_comm]`. Establish `h2 : Module.finrank ℚ K * Module.finrank K E = Module.finrank ℚ E` using `Module.finrank_mul_finrank ℚ K E`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[hK, h1]`. Use linear arithmetic over natural numbers and integers. Generalize the expression as in `Module.finrank ℚ (FR E) = f at e hEK ⊢`. Set `b` to `Module.finBasisOfFinrankEq K E hEK`. Take `⟨m, hm0, hm⟩` from `exists_integral_multiples ℤ ℚ (L := E) (Finset.univ.image b)`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Replace the chosen expression with an arbitrary variable. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN0, hNmem, -⟩` from `GlobalTheory.CMVal.LatBound.lattice_between E c hc y`. Establish `hint : ∀ j, IsIntegral ℤ (m • b j)` using `fun j => hm _ (Finset.mem_image_of_mem _ (Finset.mem_univ j))`. Establish `hδint : IsIntegral ℤ (algebraMap K E δ)`. Use `⟨Polynomial.X ^ 2 + Polynomial.C (d : ℤ), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.monic_X_pow_add_C _ two_ne_zero`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_X_pow, Polynomial.eval₂_C]`. Rewrite using `[← map_pow, hδ]`. Simplify using the standard rewrite rules. Set `u : Fin f → 𝓞 E` to `fun j => ⟨m • b j, hint j⟩`. Set `v : Fin f → 𝓞 E` to `fun j => ⟨algebraMap K E δ * (m • b j), hδint.mul (hint j)⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `w : Fin f → E` to `fun j => (N : E) * (m • b j)`. Establish `hw : ∀ j, w j ∈ lattice c y` using `fun j => hNmem (u j)`. Establish `hδw : ∀ j, algebraMap K E δ * w j ∈ lattice c y` using `fun j => by`. Use `hNmem (v j)` as an intermediate fact. Simplify `this` using `[w, v, mul_left_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hs : ∀ _j : Fin f, IsUnit ((N : K) * (m : K))` using `fun _ => by`. Use `IsUnit.mk0 _ (mul_ne_zero (by exact_mod_cast hN0.ne') (by exact_mod_cast hm0))` and prove the remaining obligations. Set `b'` to `b.isUnitSMul hs`. Establish `hb' : ∀ j, b' j = w j` using `fun j => by`. Simplify using `only [b', Module.Basis.isUnitSMul_apply, w, Algebra.smul_def, zsmul_eq_mul, map_mul, map_natCast, map_intCast]`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [algebraMap_int_eq, eq_intCast]`. Expand and normalize the polynomial expressions, which then agree. Set `A : Matrix (Fin f) (Fin f) ℂ` to `fun i j => φ (e i) (w j)`. Use `⟨Matrix.mulVecLin A, ?_, ?_⟩` and prove the remaining obligations. Use `show Function.Surjective A.mulVec`.
+Expand and normalize the polynomial expressions, which then agree. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_surjective_iff_isUnit, ← Matrix.linearIndependent_rows_iff_isUnit]`. Establish `hinj : Function.Injective (fun i : Fin f => ((φ (e i) : E →+* ℂ) : E →* ℂ))`. Introduce `i i' h`. Establish `h' : φ (e i) = φ (e i')` using `RingHom.ext fun x => DFunLike.congr_fun h x`. Take `⟨k, -, hk⟩` from `hφ (φ (e i))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `hk (e i) (Or.inl rfl)`. Establish `a2` using `hk (e i') (Or.inl h')`. Conclude with `e.injective (a1.trans a2.symm)`. Establish `li : LinearIndependent ℂ (fun i : Fin f => ((((φ (e i) : E →+* ℂ) : E →* ℂ)) : E → ℂ))` using `(linearIndependent_monoidHom E ℂ).comp _ hinj`. Rewrite `li`, the goal using `[Fintype.linearIndependent_iff]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `g hg i`. Use `li g ?_ i` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Establish `hrow : ∀ j, ∑ i, g i * φ (e i) (w j) = 0` using `fun j => by`. Use `congrFun hg j` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[Matrix.row, A, Finset.sum_apply]`. Establish `hx : x = ∑ j, b'.repr x j • w j` using `by conv_lhs => rw [← b'.sum_repr x]`. Simplify using `only [hb']`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, MonoidHom.coe_coe, smul_eq_mul, Pi.zero_apply]`. Rewrite using `[hx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_sum, Algebra.smul_def, map_mul]`. Establish `hio' : ∀ i (k : K), φ (e i) (algebraMap K E k) = io k` using `fun i k => by`. Rewrite using `[← hio (e i)]`. Both sides reduce to the same expression. Simplify using `only [hio']`.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum]; rw [Finset.sum_comm]; refine Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Use `_ = 0 := by simp [hrow]`. Introduce `z hz choose a a' ha using hz`. Use `⟨∑ j, ((a j : E) * w j + (a' j : E) * (algebraMap K E δ * w j)), ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← coe_latticeSub]`. Use `AddSubgroup.sum_mem _ fun j _ => AddSubgroup.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[← zsmul_eq_mul]`. Conclude with `AddSubgroup.zsmul_mem _ (hw j) _`. Rewrite using `[← zsmul_eq_mul]`.
-
-Conclude with `AddSubgroup.zsmul_mem _ (hδw j) _`. Use function extensionality and compare the values at `i`. Establish `hio' : φ (e i) (algebraMap K E δ) = io δ` using `by rw [← hio (e i)]; rfl`. Use `show A.mulVec z i = φ (e i) _`. Simplify using `only [Matrix.mulVec, dotProduct, A, map_sum, map_add, map_mul, map_intCast, hio', ha]`.
-
-Use `Finset.sum_congr rfl fun j _ => by ring` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem surj_lattice : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] [Algebra K E] (I : Type) [Fintype I] (φ : I → E →+* ℂ),

@@ -7,7 +7,7 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.H UpperTh
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ D`. Use `⟨D.mkE_mul, fun u t u' t' => (D.mkE_add u t u' t').symm, D.mkE_one, D.co_mkE, D.mkE_co, D.bar_mkE, ?_⟩` and prove the remaining obligations. Introduce `z u t h`. Establish `hc` using `D.co_mkE u t`. Rewrite using `[D.coe_ideleNorm, h, hc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

@@ -4,7 +4,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SquarefreeRootsInjectiv
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.SquarefreeRootsInjective.RpowQuarterPowFour
 
 /- English proof (translation)
-The claim follows from `PI.SqfRootsInj.W.claim_of PI.SqfRootsInj.W.counted_labels_have_witness PI.SqfRootsInj.W.local_orbit_count`.
+A detailed English derivation is pending.
 -/
 theorem squarefree_roots_injective : PI.SqfRootsInj.Claim :=
   PI.SqfRootsInj.W.claim_of PI.SqfRootsInj.W.counted_labels_have_witness PI.SqfRootsInj.W.local_orbit_count

@@ -28,19 +28,17 @@ open Classical
 namespace GlobalTheory.JointSpectral
 
 /- English proof (translation)
-Introduce `E ι _ _ F Z hfd hmap hadd hsmul hcomm b hpos hsymm hadj`. Set `T : ι → Module.End ℂ Z` to `fun i => { toFun := fun x => ⟨F i x, hmap i x x.2⟩ map_add' := fun x y => Subtype.ext (hadd i x x.2 y y.2) map_smul' := fun a x => Subtype.ext (hsmul i a x x.2) }`. Set `core : InnerProductSpace.Core ℂ Z` to `{ inner := fun x y => b x y conj_inner_symm := fun x y => by show star (b (y : E) x) = b x y`. Conclude with `hsymm y y.2 x x.2`. Use `re_inner_nonneg := fun x => by show 0 ≤ (b (x : E) x).re`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hx : (x : E) = 0`. Rewrite using `[hx]`. Simplify using the standard rewrite rules. Conclude with `(hpos x x.2 hx).le`. Use `add_left := fun x y z => by show b ((x : E) + y) z = b x z + b y z`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[map_add, LinearMap.add_apply]`. Use `smul_left := fun x y r => by show b (r • (x : E)) y = starRingEnd ℂ r * b x y`. Rewrite using `[LinearMap.map_smulₛₗ₂, smul_eq_mul]`. Use `definite := fun x hx => by`. Assume the negation of the conclusion as `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Establish `h1` using `hpos x x.2 (fun e => h0 (Subtype.ext e))`. Establish `h2 : b (x : E) x = 0` using `hx`. Rewrite `h1` using `[h2]`. Simplify using `at h1 }`. Use `letI : NormedAddCommGroup Z := InnerProductSpace.Core.toNormedAddCommGroup (𝕜 := ℂ) (cd := core)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `letI : InnerProductSpace ℂ Z := InnerProductSpace.ofCore core.toCore`. Establish `hT : ∀ i, (T i).IsSymmetric` using `fun i x y => (hadj i x x.2 y y.2).symm`. Establish `hC : Pairwise (Function.onFun Commute T)` using `fun i j _ => LinearMap.ext fun x => Subtype.ext (hcomm i j x x.2)`. Establish `key` using `LinearMap.IsSymmetric.iSup_iInf_eq_top_of_commute hT hC`. Establish `htop : IsCompactElement (⊤ : Submodule ℂ Z)` using `(Submodule.fg_iff_compact _).1 (Module.finite_def.1 hfd)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Take `⟨s, hs⟩` from `CompleteLattice.IsCompactElement.exists_finset_of_le_iSup _ htop (fun χ : ι → ℂ => ⨅ i, Module.End.eigenspace (T i) (χ i)) key.ge`. Establish `hle : (⊤ : Submodule ℂ Z) ≤ (⨆ c ∈ s, Submodule.span ℂ {h | h ∈ Z ∧ ∀ i, F i h = c i • h}).comap Z.subtype`. Use `hs.trans (iSup₂_le fun c hc y hy => ?_)` and prove the remaining obligations. Simplify using `only [Submodule.mem_iInf, Module.End.mem_eigenspace_iff] at hy`. Use `Submodule.mem_comap.2 ((le_iSup₂ (f := fun c (_ : c ∈ s) => Submodule.span ℂ {h | h ∈ Z ∧ ∀ i, F i h = c i • h}) c hc) (Submodule.subset_span ⟨y.2, fun i => ?_⟩))` and prove the remaining obligations.
-
-Conclude with `congrArg Subtype.val (hy i)`. Conclude with `⟨s, fun x hx => hle (x := ⟨x, hx⟩) Submodule.mem_top⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_finset_joint_eigen : ∀ {E ι : Type} [AddCommGroup E] [Module ℂ E] (F : ι → E → E) (Z : Submodule ℂ E), FiniteDimensional ℂ Z →
     (∀ i, ∀ x ∈ Z, F i x ∈ Z) → (∀ i, ∀ x ∈ Z, ∀ y ∈ Z, F i (x + y) = F i x + F i y) →

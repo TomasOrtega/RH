@@ -50,7 +50,7 @@ namespace FunctorialResolution.EmbeddedResolution
 namespace DivisorReduction
 
 /- English proof (translation)
-The claim follows from `BlowupSequenceData.toSequenceOfBlowups_projectionToBase d n`.
+A detailed English derivation is pending.
 -/
 private theorem toMarkedSequence_projectionToBase_eq {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -59,9 +59,9 @@ private theorem toMarkedSequence_projectionToBase_eq {k : Type u} [Field k] {X :
   BlowupSequenceData.toSequenceOfBlowups_projectionToBase d n
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Establish `hiso : (ambientBlowupSequence ι d hres hno hcen).isoZero.hom = 𝟙 X` using `congrArg (fun e => Iso.hom e) (ambientBlowupSequence_isoObjZero ι d hres hno hcen)`. Rewrite using `[BlowupSequenceData.projectionToBase_zero, BlowupSequenceData.projectionToBase_zero, embeddingIntoAmbientBlowupSequence_zero, hiso]`. Conclude with `Category.comp_id _`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ m ih`. Rewrite using `[BlowupSequenceData.projectionToBase_succ, BlowupSequenceData.projectionToBase_succ, ← Category.assoc, embeddingIntoAmbientBlowupSequence_succ_comp_map ι d hres hno hcen m, Category.assoc, ih, ← Category.assoc]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem embeddingIntoAmbientBlowupSequence_comp_projectionToBase {S X : Scheme.{u}} (ι : S ⟶ X)
     [AlgebraicGeometry.IsClosedImmersion ι] [AlgebraicGeometry.IsNoetherian X]
@@ -82,7 +82,7 @@ private theorem embeddingIntoAmbientBlowupSequence_comp_projectionToBase {S X : 
       embeddingIntoAmbientBlowupSequence_succ_comp_map ι d hres hno hcen m, Category.assoc, ih, ← Category.assoc]
 
 /- English proof (translation)
-Establish `h` using `embeddingIntoAmbientBlowupSequence_comp_projectionToBase (T.boundary.get ⟨j, hj⟩).subschemeι (MarkedBlowupSequenceData.ofMarkedSequence s).toBlowupSequenceData hres hno hpr t`. Rewrite using `[MarkedBlowupSequenceData.projectionToBase_eq_toBlowupSequenceData_projectionToBase (MarkedBlowupSequenceData.ofMarkedSequence s) t]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem embeddingIntoAmbient_comp_projectionToBase_eq_comp_subschemeι
     (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
@@ -100,11 +100,9 @@ theorem embeddingIntoAmbient_comp_projectionToBase_eq_comp_subschemeι
   exact h
 
 /- English proof (translation)
-Establish `h6` using `embeddingIntoAmbient_comp_projectionToBase_eq_comp_subschemeι hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr t`. Rewrite `h6` using `[MarkedBlowupSequenceData.ofMarkedSequence_projectionToBase]`. Establish `hB : (pushedMarkedSeq hres hno T j hj s hpr hmk).projectionToBase t = (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).projectionToBase t` using `toMarkedSequence_projectionToBase_eq _ hmk t`. Establish `hstruct : MarkedSequenceOfBlowups.projectionToSpec (pushedMarkedSeq hres hno T j hj s hpr hmk) t = (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).projectionToBase t ≫ T.structMap`. Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg (fun f => f ≫ T.structMap) hB`. Establish `e1 : embeddingIntoAmbient hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr t ≫ ((ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).projectionToBase t ≫ T.structMap) = (embeddingIntoAmbient hres hno T …` using `(Category.assoc _ _ _).symm`. Establish `e2 : (embeddingIntoAmbient hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr t ≫ (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).projectionToBase t) ≫ T.structMap = (s.projectionToBase t ≫ (T.bound …` using `congrArg (fun f => f ≫ T.structMap) h6`. Establish `e3 : (s.projectionToBase t ≫ (T.boundary.get ⟨j, hj⟩).subschemeι) ≫ T.structMap = s.projectionToBase t ≫ ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap)` using `Category.assoc _ _ _`. Rewrite using `[hstruct, MarkedSequenceOfBlowups.projectionToSpec_eq]`.
-
-Conclude with `((e1.trans e2).trans e3).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem projectionToSpec_eq_comp_ambientMarkedSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -142,11 +140,11 @@ theorem projectionToSpec_eq_comp_ambientMarkedSeq (hres : FunctorialResolution.B
   exact ((e1.trans e2).trans e3).symm
 
 /- English proof (translation)
-Establish `h6` using `embeddingIntoAmbient_comp_projectionToBase_eq_comp_subschemeι hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr t`. Rewrite `h6` using `[MarkedBlowupSequenceData.ofMarkedSequence_projectionToBase]`. Establish `hA : (prependedPushedMarkedSeq hres hno T j hj hb s hpr hmk).projectionToBase (t + 1) = (BlowupSequenceData.prepend (containedComponentsIdeal T j hj) hb (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr)).projectionToBase (t …` using `toMarkedSequence_projectionToBase_eq _ hmk (t + 1)`. Establish `hB : (prependedPushedMarkedSeq hres hno T j hj hb s hpr hmk).projectionToBase (t + 1) = (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr).projectionToBase t` using `hA.trans (BlowupSequenceData.projectionToBase_prepend_succ (containedComponentsIdeal T j hj) hb (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr) t)`. Establish `hstruct : MarkedSequenceOfBlowups.projectionToSpec (prependedPushedMarkedSeq hres hno T j hj hb s hpr hmk) (t + 1) = (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr).projectionToBase t ≫ T.structMap`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[MarkedSequenceOfBlowups.projectionToSpec_eq]`. Conclude with `congrArg (fun f => f ≫ T.structMap) hB`. Establish `e1 : embeddingIntoAmbient hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr t ≫ ((ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr).projectionToBase t ≫ T.structMap) = (embeddingIntoAmbien …` using `(Category.assoc _ _ _).symm`. Establish `e2 : (embeddingIntoAmbient hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr t ≫ (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr).projectionToBase t) ≫ T.structMap = (s.projectionToBase …` using `congrArg (fun f => f ≫ T.structMap) h6`. Establish `e3 : (s.projectionToBase t ≫ (T.boundary.get ⟨j, hj⟩).subschemeι) ≫ T.structMap = s.projectionToBase t ≫ ((T.boundary.get ⟨j, hj⟩).subschemeι ≫ T.structMap)` using `Category.assoc _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hstruct, MarkedSequenceOfBlowups.projectionToSpec_eq]`. Conclude with `((e1.trans e2).trans e3).symm`.
+A detailed English derivation is pending.
 -/
 theorem projectionToSpec_eq_comp_prependedAmbientSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -198,7 +196,7 @@ private def unionSupportsExcept {Y : Scheme.{u}} (L : List Y.IdealSheafData) (j 
   ⋃ i : Fin L.length, ⋃ (_ : (i : ℕ) ≠ j), ((L.get i).support : Set ↥Y)
 
 /- English proof (translation)
-Introduce `x hx`. Conclude with `Set.mem_iUnion.2 ⟨⟨i, hi⟩, Set.mem_iUnion.2 ⟨hij, hx⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem support_subset_otherLocusOfList {Y : Scheme.{u}} (L : List Y.IdealSheafData) (j i : ℕ)
     (hi : i < L.length) (hij : i ≠ j) :
@@ -207,7 +205,7 @@ private theorem support_subset_otherLocusOfList {Y : Scheme.{u}} (L : List Y.Ide
   exact Set.mem_iUnion.2 ⟨⟨i, hi⟩, Set.mem_iUnion.2 ⟨hij, hx⟩⟩
 
 /- English proof (translation)
-Take `⟨i, hi⟩` from `Set.mem_iUnion.1 hx`. Take `⟨h1, h2⟩` from `Set.mem_iUnion.1 hi`. Conclude with `⟨i.1, i.2, h1, h2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_mem_support_of_mem_otherLocusOfList {Y : Scheme.{u}} (L : List Y.IdealSheafData) (j : ℕ)
     {x : ↥Y} (hx : x ∈ unionSupportsExcept L j) :
@@ -217,14 +215,14 @@ private theorem exists_mem_support_of_mem_otherLocusOfList {Y : Scheme.{u}} (L :
   exact ⟨i.1, i.2, h1, h2⟩
 
 /- English proof (translation)
-The claim follows from `isClosed_iUnion_of_finite fun _ => h`.
+A detailed English derivation is pending.
 -/
 private theorem isClosed_iUnion_prop {α : Type u} [TopologicalSpace α] {p : Prop} {A : Set α}
     (h : IsClosed A) : IsClosed (⋃ _ : p, A) :=
   isClosed_iUnion_of_finite fun _ => h
 
 /- English proof (translation)
-Use `isClosed_iUnion_of_finite ?_` and prove the remaining obligations. Introduce `i`. Conclude with `isClosed_iUnion_prop ((L.get i).support).2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem isClosed_otherLocusOfList {Y : Scheme.{u}} (L : List Y.IdealSheafData) (j : ℕ) :
     IsClosed (unionSupportsExcept L j) := by
@@ -233,16 +231,16 @@ private theorem isClosed_otherLocusOfList {Y : Scheme.{u}} (L : List Y.IdealShea
   exact isClosed_iUnion_prop ((L.get i).support).2
 
 /- English proof (translation)
-The claim follows from `congrArg (fun m : A ⟶ C => ⇑m x) e`.
+A detailed English derivation is pending.
 -/
 private theorem apply_eq_apply_of_comp_eq {A B C D : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     (f' : A ⟶ D) (g' : D ⟶ C) (e : f ≫ g = f' ≫ g') (x : ↥A) : ⇑g (⇑f x) = ⇑g' (⇑f' x) :=
   congrArg (fun m : A ⟶ C => ⇑m x) e
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Unfold `MarkedSequenceOfBlowups.boundaryLocus at hx`. Take `⟨D, hD, hxD⟩` from `Set.mem_iUnion₂.1 hx`. Conclude with `⟨D, hD, hxD⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce and unpack `⟨D, hD, hxD⟩`. Unfold `MarkedSequenceOfBlowups.boundaryLocus`. Conclude with `Set.mem_iUnion₂.2 ⟨D, hD, hxD⟩`.
+Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem mem_boundaryLocus_iff {k : Type u} [Field k] {X : Scheme.{u}}
     {p : X ⟶ Spec (CommRingCat.of k)} {I : X.IdealSheafData} {m : ℕ}
@@ -267,7 +265,7 @@ private theorem otherBoundaryLocus_eq_otherLocusOfList {k : Type u} [Field k] {X
     MarkedSequenceOfBlowups.otherBoundaryLocus S j t = unionSupportsExcept (S.boundary t) j := rfl
 
 /- English proof (translation)
-Establish `h1 : i < (L ++ M).length`. Rewrite using `[List.length_append]`. Use linear arithmetic over natural numbers and integers. Establish `h2` using `support_subset_otherLocusOfList (L ++ M) j i h1 hij`. Rewrite `h2` using `[List.getElem_append_left hi]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem support_subset_otherLocusOfList_append_left {Y : Scheme.{u}} (L M : List Y.IdealSheafData)
     (j i : ℕ) (hi : i < L.length) (hij : i ≠ j) :
@@ -279,9 +277,9 @@ private theorem support_subset_otherLocusOfList_append_left {Y : Scheme.{u}} (L 
   rwa [List.getElem_append_left hi] at h2
 
 /- English proof (translation)
-Establish `h1 : L.length < (L ++ [e]).length`. Rewrite using `[List.length_append]`. Simplify using the standard rewrite rules. Establish `h2` using `support_subset_otherLocusOfList (L ++ [e]) j L.length h1 (by omega)`. Establish `h3 : (L ++ [e])[L.length]'h1 = e` using `by simp`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem support_subset_otherLocusOfList_append_singleton {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (e : Y.IdealSheafData) (j : ℕ) (hj : j < L.length) :
@@ -294,7 +292,7 @@ private theorem support_subset_otherLocusOfList_append_singleton {Y : Scheme.{u}
   rwa [h3] at h2
 
 /- English proof (translation)
-Establish `h` using `embeddingIntoAmbient_comp_projectionToBase_eq_comp_subschemeι hres hno T j hj I₀ E₀ s hpr 0`. Rewrite `h` using `[MarkedBlowupSequenceData.ofMarkedSequence_projectionToBase, MarkedSequenceOfBlowups.projectionToBase_zero, BlowupSequenceData.projectionToBase_zero]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem embeddingIntoAmbient_zero_comp_isoObjZero_hom (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -311,7 +309,7 @@ private theorem embeddingIntoAmbient_zero_comp_isoObjZero_hom (hres : Functorial
   exact h
 
 /- English proof (translation)
-Use `instIsClosedImmersionPushedEmb hres hno T j hj I₀ E₀ s hpr t` as an intermediate fact. Rewrite using `[ambientBlowupSeq_center_eq_imageIdealSheaf]`. Conclude with `Blowup.comap_schemeImageIdeal (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) (s.center t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comap_embeddingIntoAmbient_center_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -326,7 +324,7 @@ private theorem comap_embeddingIntoAmbient_center_ambientBlowupSeq (hres : Funct
   exact Blowup.comap_schemeImageIdeal (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) (s.center t)
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `h : x ∈ (((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t).comap (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t)).support ↔ ⇑(embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr t) x ∈ ((((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center t).support) : Set _)` using `Scheme.IdealSheafData.mem_support_comap ..`. Rewrite `h` using `[comap_embeddingIntoAmbient_center_ambientBlowupSeq]`. Conclude with `h.symm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem preimage_support_center_ambientBlowupSeq (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -347,7 +345,7 @@ private theorem preimage_support_center_ambientBlowupSeq (hres : FunctorialResol
   exact h.symm
 
 /- English proof (translation)
-Establish `: AlgebraicGeometry.LocallyOfFiniteType (T.boundary.get ⟨j, hj⟩).subschemeι` using `inferInstance`. Establish `: AlgebraicGeometry.QuasiCompact (T.boundary.get ⟨j, hj⟩).subschemeι` using `inferInstance`. Conclude with `isNoetherian_of_locallyOfFiniteType (T.boundary.get ⟨j, hj⟩).subschemeι`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isNoetherian_boundary_subscheme (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length) :
@@ -358,7 +356,7 @@ private theorem isNoetherian_boundary_subscheme (T : MarkedIdealWithBoundary.{u}
   exact isNoetherian_of_locallyOfFiniteType (T.boundary.get ⟨j, hj⟩).subschemeι
 
 /- English proof (translation)
-The claim follows from `@isNoetherian_schemeAt _ s.toSequenceOfBlowups (isNoetherian_boundary_subscheme T j hj) i hi`.
+A detailed English derivation is pending.
 -/
 private theorem isNoetherian_schemeAt_restrictToBoundaryDivisor (T : MarkedIdealWithBoundary.{u})
     [AlgebraicGeometry.IsNoetherian T.scheme] (j : ℕ) (hj : j < T.boundary.length)
@@ -368,43 +366,37 @@ private theorem isNoetherian_schemeAt_restrictToBoundaryDivisor (T : MarkedIdeal
   @isNoetherian_schemeAt _ s.toSequenceOfBlowups (isNoetherian_boundary_subscheme T j hj) i hi
 
 /- English proof (translation)
-Introduce `t`. Proceed by induction on `t with`. Consider the case `zero`. Introduce `_ x hx`. Take `⟨D, hD, hxD⟩` from `(mem_boundaryLocus_iff s 0 x).1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hD` using `[MarkedSequenceOfBlowups.boundary_zero]`. Take `⟨D₀, hD₀, rfl⟩` from `List.mem_map.1 hD`. Establish `hD₀' : D₀ ∈ List.map (fun D => D.comap (T.boundary.get ⟨j, hj⟩).subschemeι) (List.take (T.boundary.length - 1) (E₀.eraseIdx j))` using `hD₀`. Take `⟨D₁, hD₁, rfl⟩` from `List.mem_map.1 hD₀'`. Establish `hD₁' : D₁ ∈ E₀.eraseIdx j` using `List.mem_of_mem_take hD₁`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i, hi, hij, hget⟩` from `List.mem_eraseIdx_iff_getElem.1 hD₁'`. Substitute `hget` using the available equality. Establish `hlen0 : i < ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ 0).length`. Rewrite using `[BlowupSequenceData.boundary_length]`. Use linear arithmetic over natural numbers and integers.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Establish `hentry0 : ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ 0)[i]'hlen0 = (E₀[i]'hi).comap (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).isoZero.hom`. Simplify using `[BlowupSequenceData.boundary_zero]`. Establish `hmem0 : x ∈ ((((E₀[i]'hi).comap (T.boundary.get ⟨j, hj⟩).subschemeι).comap s.isoZero.hom).support : Set _)` using `hxD`. Establish `hmem1` using `Scheme.IdealSheafData.mem_support_comap.mp hmem0`. Establish `hmem2` using `Scheme.IdealSheafData.mem_support_comap.mp hmem1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkey` using `apply_eq_apply_of_comp_eq (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr 0) (ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).isoZero.hom s.isoZero.hom (T.boundary.get ⟨j, hj⟩).subschemeι (embeddingIntoAmbient_zero_comp_isoObjZero_hom hres hno T j hj I₀ E₀ s hpr) x`. Establish `hmem3 : ⇑(ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).isoZero.hom (⇑(embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr 0) x) ∈ (E₀[i]'hi).support`. Rewrite using `[hkey]`. Conclude with `hmem2`. Use `show ⇑(embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr 0) x ∈ unionSupportsExcept ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ 0) j`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `support_subset_otherLocusOfList _ j i hlen0 hij ?_` and prove the remaining obligations. Rewrite using `[hentry0]`. Conclude with `Scheme.IdealSheafData.mem_support_comap.mpr hmem3`. Consider the case `succ n ih`. Introduce `ht x hx`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn : n < s.length` using `ht`. Establish `ihn` using `ih (Nat.le_of_lt hn)`. Establish `: AlgebraicGeometry.IsNoetherian (s.schemeAt (n + 1))` using `isNoetherian_schemeAt_restrictToBoundaryDivisor T j hj I₀ E₀ s (n + 1) hn`. Establish `: AlgebraicGeometry.IsNoetherian ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).obj (n + 1))` using `isNoetherian_ambientBlowupSeq_schemeAt hres hno T j hj I₀ E₀ s hpr (n + 1) hn`. Establish `hmapeq : ∀ y : ↥(s.schemeAt (n + 1)), ⇑((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map n) (⇑(embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (n + 1)) y) = ⇑(embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr n) (⇑(s.transitionMapSucc n) y)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `y`. Conclude with `apply_eq_apply_of_comp_eq _ _ _ _ (embeddingIntoAmbient_comp_blowupMorphism hres hno T j hj I₀ E₀ s hpr n) y`. Establish `hcenter` using `preimage_support_center_ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr n`. Take `⟨D, hD, hxD⟩` from `(mem_boundaryLocus_iff s (n + 1) x).1 hx`. Rewrite `hD` using `[MarkedSequenceOfBlowups.boundary_succ s n hn]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Break down `List.mem_append.1 hD with hD' | hD'` into its components or cases. Take `⟨D₀, hD₀, rfl⟩` from `List.mem_map.1 hD'`. Establish `hCclosed : IsClosed (⇑(embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (n + 1)) ⁻¹' unionSupportsExcept ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ (n + 1)) j)` using `(isClosed_otherLocusOfList _ _).preimage (embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (n + 1)).continuous`. Rewrite `hxD` using `[support_strictTransform_eq_closure_sdiff (s.transitionMapSucc n) (s.center n) D₀]`. Use `hCclosed.closure_subset_iff.2 ?_ hxD` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `y hy`. Establish `hy1 : ⇑(s.transitionMapSucc n) y ∈ (D₀.support : Set _)` using `(Scheme.IdealSheafData.mem_support_comap ..).1 hy.1`. Establish `hy2 : ⇑(s.transitionMapSucc n) y ∉ (((s.center n).support) : Set _)` using `fun hcon => hy.2 ((Scheme.IdealSheafData.mem_support_comap ..).2 hcon)`. Establish `hIH0` using `ihn ((mem_boundaryLocus_iff s n _).2 ⟨D₀, hD₀, hy1⟩)`. Establish `hIH : ⇑(embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr n) (⇑(s.transitionMapSucc n) y) ∈ unionSupportsExcept ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ n) j` using `hIH0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Take `⟨i, hi, hij, hmem⟩` from `exists_mem_support_of_mem_otherLocusOfList ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ n) j hIH`. Establish `hnotZ : ⇑(embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr n) (⇑(s.transitionMapSucc n) y) ∉ ((((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center n).support : Set _))`. Introduce `hcon`. Conclude with `hy2 ((Set.ext_iff.1 hcenter (⇑(s.transitionMapSucc n) y)).1 hcon)`. Establish `hstep : ⇑(embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (n + 1)) y ∈ ((Blowup.strictTransform ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map n) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center n) (((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ n)[i] …`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[support_strictTransform_eq_closure_sdiff]`. Use `subset_closure ?_` and prove the remaining obligations. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(Scheme.IdealSheafData.mem_support_comap ..).2 ?_` and prove the remaining obligations. Rewrite using `[hmapeq y]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmem`. Introduce `hcon`. Establish `hcon'` using `(Scheme.IdealSheafData.mem_support_comap ..).1 hcon`. Rewrite `hcon'` using `[hmapeq y]`. Conclude with `hnotZ hcon'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hlen : i < (List.map (Blowup.strictTransform ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map n) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center n)) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ n)).length`. Rewrite using `[List.length_map]`. Conclude with `hi`. Apply the tactic sequence `have hentry : (List.map (Blowup.strictTransform ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map n) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center n)) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ n))[i]'hlen = Blowup.strictTransform ((ambientBlowupSe …`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hfin` using `support_subset_otherLocusOfList_append_left (List.map (Blowup.strictTransform ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map n) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center n)) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ n)) [Blowup.exceptionalI …`. Rewrite `hfin` using `[hentry]`. Use `show ⇑(embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (n + 1)) y ∈ unionSupportsExcept ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ (n + 1)) j`. Rewrite using `[BlowupSequenceData.boundary_succ]`. Conclude with `hfin hstep`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hDe : D = Blowup.exceptionalIdeal (s.transitionMapSucc n) (s.center n)`. Simplify using `using hD'`. Substitute `hDe` using the available equality. Rewrite `hxD` using `[Blowup.exceptionalIdeal_eq_comap]`. Establish `hxD' : ⇑(s.transitionMapSucc n) x ∈ (((s.center n).support) : Set _)` using `(Scheme.IdealSheafData.mem_support_comap ..).1 hxD`.
-
-Establish `hjlen : j < (List.map (Blowup.strictTransform ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map n) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center n)) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ n)).length`. Rewrite using `[List.length_map, BlowupSequenceData.boundary_length]`. Use linear arithmetic over natural numbers and integers. Establish `hmem : ⇑(embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (n + 1)) x ∈ ((Blowup.exceptionalIdeal ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).map n) ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).center n)).support : Set _)`. Rewrite using `[Blowup.exceptionalIdeal_eq_comap]`.
-
-Use `(Scheme.IdealSheafData.mem_support_comap ..).2 ?_` and prove the remaining obligations. Rewrite using `[hmapeq x]`. Conclude with `(Set.ext_iff.1 hcenter (⇑(s.transitionMapSucc n) x)).2 hxD'`. Use `show ⇑(embeddingIntoAmbient hres hno T j hj I₀ E₀ s hpr (n + 1)) x ∈ unionSupportsExcept ((ambientBlowupSeq hres hno T j hj I₀ E₀ s hpr).boundaryFrom E₀ (n + 1)) j`. Rewrite using `[BlowupSequenceData.boundary_succ]`.
-
-Conclude with `support_subset_otherLocusOfList_append_singleton _ _ j hjlen hmem`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem boundaryLocus_subset_preimage_otherLocus (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -558,7 +550,7 @@ private theorem boundaryLocus_subset_preimage_otherLocus (hres : FunctorialResol
         exact support_subset_otherLocusOfList_append_singleton _ _ j hjlen hmem
 
 /- English proof (translation)
-The claim follows from `BlowupSequenceData.toMarkedBlowupSequenceData_boundary _ _ _ _ _ hmk t`.
+A detailed English derivation is pending.
 -/
 private theorem ambientMarkedSeq_boundary (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -572,7 +564,7 @@ private theorem ambientMarkedSeq_boundary (hres : FunctorialResolution.Blowup.St
   BlowupSequenceData.toMarkedBlowupSequenceData_boundary _ _ _ _ _ hmk t
 
 /- English proof (translation)
-The claim follows from `BlowupSequenceData.toMarkedBlowupSequenceData_boundary _ _ _ _ _ hmk t`.
+A detailed English derivation is pending.
 -/
 private theorem prependedAmbientSeq_boundary (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -590,7 +582,7 @@ private theorem prependedAmbientSeq_boundary (hres : FunctorialResolution.Blowup
   BlowupSequenceData.toMarkedBlowupSequenceData_boundary _ _ _ _ _ hmk t
 
 /- English proof (translation)
-Proceed by induction on `t with`. Consider the case `zero`. Rewrite using `[boundary_prepend_ambientBlowupSeq_one, BlowupSequenceData.boundary_zero]`. Consider the case `succ m ih`. Rewrite using `[BlowupSequenceData.boundary_succ, ih, BlowupSequenceData.boundary_succ, BlowupSequenceData.prepend_blowupMorphism_succ, BlowupSequenceData.prepend_center_succ]`.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -614,11 +606,9 @@ private theorem prepend_boundary_succ_eq (hres : FunctorialResolution.Blowup.Str
       rfl
 
 /- English proof (translation)
-Establish `hlowerEq : lowerBoundaryWithoutBlowup T = T.boundary` using `by simp [lowerBoundaryWithoutBlowup_eq]`. Establish `hjE : j < (lowerBoundaryWithoutBlowup T).length`. Rewrite using `[hlowerEq]`. Conclude with `hj`. Establish `hmain` using `boundaryLocus_subset_preimage_otherLocus hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr hjE t (le_of_lt ht)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (pushedMarkedSeq hres hno T j hj s hpr hmk).boundary t = (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).boundaryFrom (lowerBoundaryWithoutBlowup T) t`. Rewrite using `[ambientMarkedSeq_boundary]`. Conclude with `congrArg (fun E => (ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).boundaryFrom E t) hlowerEq.symm`. Establish `hset : MarkedSequenceOfBlowups.otherBoundaryLocus (pushedMarkedSeq hres hno T j hj s hpr hmk) j t = unionSupportsExcept ((ambientBlowupSeq hres hno T j hj (lowerIdealWithoutBlowup T) (lowerBoundaryWithoutBlowup T) s hpr).boundaryFrom (lowerBoundaryWithoutBlowup T) t) j` using `(otherBoundaryLocus_eq_otherLocusOfList _ j t).trans (congrArg (fun L => unionSupportsExcept L j) h1)`. Rewrite using `[hset]`.
-
-Conclude with `hmain`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boundaryLocus_subset_preimage_otherBoundaryLocus (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})
@@ -651,9 +641,9 @@ theorem boundaryLocus_subset_preimage_otherBoundaryLocus (hres : FunctorialResol
   exact hmain
 
 /- English proof (translation)
-Establish `hjE : j < (lowerBoundaryAfterBlowup T j hj).length` using `by show j < (List.map (Blowup.strictTransform (𝟙 T.scheme) (containedComponentsIdeal T j hj)) (List.map (fun D => D.comap (𝟙 T.scheme)) T.boundary) ++ [Blowup.exceptionalIdeal (𝟙 T.scheme) (containedComponentsIdeal T j hj)]).length`. Simplify using `only [List.length_append, List.length_map, List.length_cons, List.length_nil]`. Use linear arithmetic over natural numbers and integers. Establish `hmain` using `boundaryLocus_subset_preimage_otherLocus hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr hjE t (le_of_lt ht)`. Establish `h1 : (prependedPushedMarkedSeq hres hno T j hj hb s hpr hmk).boundary (t + 1) = (ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr).boundaryFrom (lowerBoundaryAfterBlowup T j hj) t`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[prependedAmbientSeq_boundary, prepend_boundary_succ_eq]`. Establish `hset : MarkedSequenceOfBlowups.otherBoundaryLocus (prependedPushedMarkedSeq hres hno T j hj hb s hpr hmk) j (t + 1) = unionSupportsExcept ((ambientBlowupSeq hres hno T j hj (lowerIdealAfterBlowup T j hj) (lowerBoundaryAfterBlowup T j hj) s hpr).boundaryFrom (lowerBoundaryAfterBlo …` using `(otherBoundaryLocus_eq_otherLocusOfList _ j (t + 1)).trans (congrArg (fun L => unionSupportsExcept L j) h1)`. Rewrite using `[hset]`. Conclude with `hmain`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boundaryLocus_subset_preimage_otherBoundaryLocus_succ (hres : FunctorialResolution.Blowup.StrictTransformIsBlowupOfClosedSubscheme.{u})
     (hno : BlowupPreservesNoetherian.{u}) (T : MarkedIdealWithBoundary.{u})

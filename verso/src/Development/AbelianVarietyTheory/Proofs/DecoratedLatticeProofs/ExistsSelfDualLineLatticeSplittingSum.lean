@@ -17,9 +17,7 @@ noncomputable section
 namespace GlobalTheory.LineSplit
 
 /- English proof (translation)
-Establish `hy' : y = (fun i => p.sec (p.pr (y i))) + (fun i => cA D (p.sec (p.pr (cA D (y i)))))`. Use function extensionality and compare the values at `i`. Rewrite using `[Pi.add_apply, p.sec_pr, p.sec_pr, map_mul, GlobalTheory.LatVac.cA_cA, ← add_mul]`. Conclude with `((GlobalTheory.FinPl.FrameLat.idem_iff p (y i)).1 (hy i)).symm`. Use `conv_lhs => rw [hy']`.
-
-Rewrite using `[GlobalTheory.FinPl.FrameLat.decomp hL, GlobalTheory.FinPl.FrameLat.csec_mem_iff hL]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latV_iff_wParts {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : GlobalTheory.FinPl.SplitPt D k) {S : HSp D} {L : GlobalTheory.FinPl.Lat S} (hL : IsSelfDualC S L) (y : Fin S.rank → AE D)
@@ -35,9 +33,9 @@ theorem mem_latV_iff_wParts {D : D7} {k : Type} [Field k] [ValuativeRel k] [Topo
   rw [GlobalTheory.FinPl.FrameLat.decomp hL, GlobalTheory.FinPl.FrameLat.csec_mem_iff hL]
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q S L L' hL hL' h`. Establish `key : ∀ (M M' : GlobalTheory.FinPl.Lat S), IsSelfDualC S M → IsSelfDualC S M' → (∀ x : Fin S.rank → k, (fun i => q.sec (x i)) ∈ GlobalTheory.FinPl.latV S M (· = q.v) ↔ (fun i => q.sec (x i)) ∈ GlobalTheory.FinPl.latV S M' (· = q.v)) → ∀ y, y ∈ GlobalTheory.FinPl.latV S M (· = q.v …`. Introduce `M M' hM hM' hMM' y hy`. Establish `hs : ∀ i, y i ∈ GlobalTheory.FinPl.idAt D (· = q.v)` using `fun i => GlobalTheory.FinPl.FrameLat.latV_supp hy i`. Rewrite `hy` using `[mem_latV_iff_wParts q hM y hs]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_latV_iff_wParts q hM' y hs]`. Conclude with `⟨(hMM' _).1 hy.1, fun x hx => hy.2 x ((hMM' x).2 hx)⟩`. Use extensionality with `y`. Conclude with `⟨key L L' hL hL' h y, key L' L hL' hL (fun x => (h x).symm) y⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem latV_eq_of_wPart : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (S : HSp D) (L L' : GlobalTheory.FinPl.Lat S), IsSelfDualC S L → IsSelfDualC S L' → (∀ x : Fin S.rank → k, (fun i => q.sec (x i)) ∈ GlobalTheory.FinPl.latV S L (· = q.v) ↔ (fun i => q.sec (x i)) ∈ GlobalTheory.FinPl.latV S L' (· = q.v)) → GlobalTheory.FinPl.latV S L (· = q.v) = GlobalTheory.FinPl.latV S L' (· = q.v) := by
   intro D k _ _ _ _ q S L L' hL hL' h
@@ -57,7 +55,7 @@ section
 variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.map_apply]`. Rewrite using `[map_sum q.sec]`. Conclude with `Finset.sum_congr rfl fun j _ => GlobalTheory.SplitInt.mul_sec q _ _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rat_mulVec_sec (q : GlobalTheory.FinPl.SplitPt D k) {m n : ℕ} (M : Matrix (Fin m) (Fin n) D.host.E) (b : Fin n → k) :
     ((rat M : Mx D m n) *ᵥ fun i => q.sec (b i)) = fun i => q.sec ((M.map ((ofSplit q).π.comp (incA D)) *ᵥ b) i) := by
@@ -69,35 +67,31 @@ theorem rat_mulVec_sec (q : GlobalTheory.FinPl.SplitPt D k) {m n : ℕ} (M : Mat
 end
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ q S A B o MS MA Y _ _ FA FS z hMS hMA ⟨LB₀, hLB₀⟩ hβA hβB hIS hIA`. Use `set f : D.host.E →+* k := (ofSplit q).π.comp (incA D) with hf`. Establish `hpr : (ofSplit q).pr = ⇑f` using `rfl`. Rewrite `hβA`, `hβB` using `[hpr]`. Establish `hc : Fintype.card (Y ⊕ Unit) = S.rank` using `FS.card_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcA : Fintype.card Y = A.rank` using `FA.card_eq`. Establish `hB1 : B.rank = 1`. Use `o.rank_add` as an intermediate fact. Rewrite `hc` using `[Fintype.card_sum, hcA, Fintype.card_unit]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `hsub : ∀ i j : Fin B.rank, i = j` using `fun i j => Fin.ext (by omega)`. Use `haveI : Subsingleton (Fin B.rank) := ⟨hsub⟩`. Set `i₀ : Fin B.rank` to `⟨0, by omega⟩`. Establish `hcol : ∀ c : Y ⊕ Unit → k, FS.β *ᵥ c = o.iA.map f *ᵥ (FA.β *ᵥ fun a => c (Sum.inl a)) + c (Sum.inr ()) • (o.iB.map f *ᵥ z)`. Introduce `c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `r`. Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, Fintype.univ_unit, Finset.sum_singleton, hβA, hβB, Pi.add_apply, Pi.smul_apply, smul_eq_mul, Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun s _ => by ring`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `Finset.sum_congr rfl fun s _ => by ring`. Establish `hz : z i₀ ≠ 0`. Introduce `h0`. Establish `hz0 : z = 0` using `funext fun i => by rw [hsub i i₀, h0]; rfl`. Establish `h1` using `congrFun (congrFun FS.γβ (Sum.inr ())) (Sum.inr ())`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Rewrite `h1` using `[Matrix.mul_apply, Matrix.one_apply_eq]`. Simplify using `only [hβB, hz0, Matrix.mulVec_zero, Pi.zero_apply, mul_zero, Finset.sum_const_zero] at h1`. Conclude with `zero_ne_one h1`. Establish `hz' : ∀ i, z i ≠ 0` using `fun i => by rw [hsub i i₀]; exact hz`. Set `FB : Frame k B.rank Unit` to `{ β := Matrix.of fun i _ => z i γ := Matrix.of fun _ i => (z i)⁻¹ βγ := by`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Rewrite using `[hsub j i]`. Simplify using `[Matrix.mul_apply, hz' i]`. Use `γβ := by`. Use extensionality with `u u'`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Subsingleton.elim u' u]`. Simplify using `[Matrix.mul_apply, Fintype.sum_subsingleton _ i₀, hz] }`. Take `⟨LB, hLB, -, hLBw⟩` from `GlobalTheory.T.exists_selfDualLattice_prescribed_splitPlace D k q B Unit FB LB₀ hLB₀`. Take `⟨L', hL', hL'o⟩` from `GlobalTheory.OrthSumLat.exists_selfDual_orthAt D S A B o MA LB hMA hLB`. Establish `hFBv : ∀ y : k, (FB.β *ᵥ fun _ => y) = fun i => z i * y` using `fun y => by`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `[FB, Matrix.mulVec, dotProduct]`. Use `⟨LB, hLB, ?_, fun y => ?_⟩` and prove the remaining obligations. Establish `hqA : o.qA.map f * o.iA.map f = 1`. Rewrite using `[← Matrix.map_mul, o.qA_iA, Matrix.map_one _ (map_zero f) (map_one f)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hqAB : o.qA.map f * o.iB.map f = 0`. Rewrite using `[← Matrix.map_mul, o.qA_iB, Matrix.map_zero _ (map_zero f)]`. Establish `hqB : o.qB.map f * o.iB.map f = 1`. Rewrite using `[← Matrix.map_mul, o.qB_iB, Matrix.map_one _ (map_zero f) (map_one f)]`. Establish `hqBA : o.qB.map f * o.iA.map f = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Matrix.map_mul, o.qB_iA, Matrix.map_zero _ (map_zero f)]`. Establish `hw : ∀ x : Fin S.rank → k, (fun i => q.sec (x i)) ∈ GlobalTheory.FinPl.latV S MS (· = q.v) ↔ (fun i => q.sec (x i)) ∈ GlobalTheory.FinPl.latV S L' (· = q.v)`. Introduce `x`. Use `set c := FS.γ *ᵥ x with hcdef`. Establish `hx : x = FS.β *ᵥ c` using `by rw [hcdef, Matrix.mulVec_mulVec, FS.βγ, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hqx : o.qA.map f *ᵥ x = FA.β *ᵥ fun a => c (Sum.inl a)`. Rewrite using `[hx, hcol, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_mulVec (M := o.qA.map f) (N := o.iA.map f), hqA, Matrix.one_mulVec, Matrix.mulVec_mulVec (M := o.qA.map f) (N := o.iB.map f), hqAB, Matrix.zero_mulVec, smul_zero, add_zero]`. Establish `hqBx : o.qB.map f *ᵥ x = FB.β *ᵥ fun _ => c (Sum.inr ())`. Rewrite using `[hx, hcol, Matrix.mulVec_add, Matrix.mulVec_smul, Matrix.mulVec_mulVec (M := o.qB.map f) (N := o.iA.map f), hqBA, Matrix.zero_mulVec, Matrix.mulVec_mulVec (M := o.qB.map f) (N := o.iB.map f), hqB, Matrix.one_mulVec, zero_add, hFBv]`. Use function extensionality and compare the values at `i`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[mul_comm]`. Establish `eS` using `hIS c`. Rewrite `eS` using `[← hx]`. Establish `eA` using `hIA (fun a => c (Sum.inl a))`. Establish `eB` using `hLBw (fun _ => c (Sum.inr ()))`.
-
-Rewrite using `[← eS, hL'o q.v, show o.pA = rat o.qA from rfl, show o.pB = rat o.qB from rfl, rat_mulVec_sec, rat_mulVec_sec, ← hf, hqx, hqBx, ← eA, ← eB, Sum.forall]`. Introduce `y`. Rewrite using `[latV_eq_of_wPart D k q S MS L' hMS hL' hw]`. Conclude with `hL'o q.v y`. Use `hLBw (fun _ => y)` as an intermediate fact.
-
-Rewrite `this` using `[hFBv]`. Conclude with `⟨fun h => this.1 fun _ => h, fun h => this.2 h ()⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lineLat : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (q : GlobalTheory.FinPl.SplitPt D k) (S A B : HSp D) (o : OrthDec S A B) (MS : GlobalTheory.FinPl.Lat S) (MA : GlobalTheory.FinPl.Lat A) (Y : Type) [Fintype Y] [DecidableEq Y] (FA : Frame k A.rank Y) (FS : Frame k S.rank (Y ⊕ Unit)) (z : Fin B.rank → k), IsSelfDualC S MS → IsSelfDualC A MA → (∃ LB : GlobalTheory.FinPl.Lat B, IsSelfDualC B LB) → (∀ r a, FS.β r (Sum.inl a) = (o.iA.map (ofSplit q).pr * FA.β) r a) → (∀ r, FS.β r (Sum.inr ()) = (o.iB.map (ofSplit q).pr *ᵥ z) r) → IntIn q S FS MS → IntIn q A FA MA → ∃ LB : GlobalTheory.FinPl.Lat B, IsSelfDualC B LB ∧ GlobalTheory.FinPl.OrthAt o MS MA LB q.v ∧ ∀ y : k, (y ∈ 𝒪[k] ↔ (fun i => q.sec (z i * y)) ∈ GlobalTheory.FinPl.latV B LB (· = q.v)) := by
   intro D k _ _ _ _ q S A B o MS MA Y _ _ FA FS z hMS hMA ⟨LB₀, hLB₀⟩ hβA hβB hIS hIA

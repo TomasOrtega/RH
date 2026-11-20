@@ -8,7 +8,7 @@ open GlobalTheory.PRep (fixed)
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `h` and use `by have := congrArg Fin.val h simp only [Fin.val_castAdd, Fin.val_natAdd] at this omega`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem cast_ne_nat {r s : ℕ} (i : Fin r) (j : Fin s) : Fin.castAdd s i ≠ Fin.natAdd r j := fun h => by
   have := congrArg Fin.val h
@@ -16,18 +16,18 @@ private theorem cast_ne_nat {r s : ℕ} (i : Fin r) (j : Fin s) : Fin.castAdd s 
   omega
 
 /- English proof (translation)
-The claim follows from `Equiv.ext fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 private theorem std_eq (r s : ℕ) : GlobalTheory.SmGL.stdSum (rfl : r + s = r + s) = finSumFinEquiv :=
   Equiv.ext fun _ => rfl
 
 open UpperTheory.V.Af.Fin in
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.SmGL.val_emb₂, coe_emb, std_eq]`. Use extensionality with `i j`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j`. Use `matrixExtendByZero_apply (e1 r s) (x.val - 1) i j` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Simplify using `only [orderedCechToCatCochainsOne_apply_valueAtSubset] at this`. Simplify using `[this, Matrix.one_apply]`. Rewrite using `[Matrix.add_apply, matrixExtendByZero_apply_of_outside_col _ _ _ fun k => (cast_ne_nat k j).symm]`. Simplify using `[Matrix.one_apply, cast_ne_nat]`. Rewrite using `[Matrix.add_apply, extendByZero_apply_eq_zero_of_row_not_mem _ _ fun k => (cast_ne_nat k i).symm]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.one_apply, (cast_ne_nat _ _).symm]`. Rewrite using `[Matrix.add_apply, extendByZero_apply_eq_zero_of_row_not_mem _ _ fun k => (cast_ne_nat k i).symm]`. Simplify using `[Matrix.one_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem lev_left {R : Type} [CommRing R] {r s : ℕ} (x : GL (Fin r) R) :
     GlobalTheory.CompanionTheory.CTFin.lev R r s (x, 1) = emb (e1 r s) x := by
@@ -47,11 +47,11 @@ private theorem lev_left {R : Type} [CommRing R] {r s : ℕ} (x : GL (Fin r) R) 
 
 open UpperTheory.V.Af.Fin in
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.SmGL.val_emb₂, coe_emb, std_eq]`. Use extensionality with `i j`. Apply the tactic sequence `refine Fin.addCases (fun i => ?_) (fun i => ?_) i <;> refine Fin.addCases (fun j => ?_) (fun j => ?_) j`. Rewrite using `[Matrix.add_apply, extendByZero_apply_eq_zero_of_row_not_mem _ _ fun k => cast_ne_nat i k]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Matrix.one_apply]`. Rewrite using `[Matrix.add_apply, extendByZero_apply_eq_zero_of_row_not_mem _ _ fun k => cast_ne_nat i k]`. Simplify using `[Matrix.one_apply, cast_ne_nat]`. Rewrite using `[Matrix.add_apply, matrixExtendByZero_apply_of_outside_col _ _ _ fun k => cast_ne_nat j k]`. Simplify using `[Matrix.one_apply, (cast_ne_nat _ _).symm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `matrixExtendByZero_apply (e2 r s) (y.val - 1) i j` as an intermediate fact. Simplify using `only [alternatingToOrderedCechDegreeTwo_apply_valueAtSubset] at this`. Simplify using `[this, Matrix.one_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem lev_right {R : Type} [CommRing R] {r s : ℕ} (y : GL (Fin s) R) :
     GlobalTheory.CompanionTheory.CTFin.lev R r s (1, y) = emb (e2 r s) y := by
@@ -70,16 +70,16 @@ private theorem lev_right {R : Type} [CommRing R] {r s : ℕ} (y : GL (Fin s) R)
     simp [this, Matrix.one_apply]
 
 /- English proof (translation)
-Rewrite using `[blk, ← lev_left, ← lev_right, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem lev_eq_blk {R : Type} [CommRing R] {r s : ℕ} (x : GL (Fin r) R) (y : GL (Fin s) R) :
     GlobalTheory.CompanionTheory.CTFin.lev R r s (x, y) = blk x y := by
   rw [blk, ← lev_left, ← lev_right, ← map_mul, Prod.mk_mul_mk, mul_one, one_mul]
 
 /- English proof (translation)
-Introduce `E _ _ _ r s ψ hψ t u x y`. Establish `h` using `GlobalTheory.CompanionTheory.CTFin.CapFactor.cap_levi E r s t u ψ (fun X g => by`. Establish `e : unip X = unipGL (fun p : UPos (r + s) r => X ⟨p.1, p.2.1, p.2.2⟩)` using `Units.ext rfl`. Rewrite using `[e]`. Conclude with `hψ _ g) (x, y)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[lev_eq_blk]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.S.capBlock :
     UpperTheory.V.Cj.S.CapBlock := by

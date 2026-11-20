@@ -31,7 +31,7 @@ def toSec (G : Over S) [GrpObj G] {T : Scheme.{0}} (p : T ⟶ S) :
   (precomp _ (diagSec p)).comp (Over.pullback p).homMonoidHom
 
 /- English proof (translation)
-Establish `h₁ : ((Over.pullback p).map x).left ≫ pullback.fst G.hom p = pullback.fst p p ≫ x.left` using `pullback.lift_fst _ _ _`. Establish `h₂ : (diagSec p).left ≫ pullback.fst p p = 𝟙 T` using `pullback.lift_fst _ _ _`. Express the relevant statement in the definitionally equal form `((diagSec p).left ≫ ((Over.pullback p).map x).left) ≫ _ = _`. Rewrite using `[Category.assoc, h₁]`. Conclude with `((Category.assoc _ _ _).symm.trans (congrArg (· ≫ x.left) h₂)).trans (Category.id_comp _)`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toSec_left_fst (G : Over S) [GrpObj G] {T : Scheme.{0}} (p : T ⟶ S) (x : Over.mk p ⟶ G) :
     (toSec G p x).left ≫ pullback.fst G.hom p = x.left := by
@@ -43,18 +43,18 @@ theorem toSec_left_fst (G : Over S) [GrpObj G] {T : Scheme.{0}} (p : T ⟶ S) (x
   exact ((Category.assoc _ _ _).symm.trans (congrArg (· ≫ x.left) h₂)).trans (Category.id_comp _)
 
 /- English proof (translation)
-Introduce `x y h` and use `Over.OverMorphism.ext (by rw [← toSec_left_fst, h, toSec_left_fst])`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem toSec_injective (G : Over S) [GrpObj G] {T : Scheme.{0}} (p : T ⟶ S) :
     Function.Injective (toSec G p) := fun x y h =>
   Over.OverMorphism.ext (by rw [← toSec_left_fst, h, toSec_left_fst])
 
 /- English proof (translation)
-Apply `toSec_injective G p` to reduce the goal to its premises. Establish `hn' : IsUnit (n : Γ(Sp R, ⊤))` using `by simpa using hn.map (Scheme.ΓSpecIso (.of R)).inv.hom`. Set `G'` to `(Over.pullback p).obj G`. Establish `: LocallyOfFiniteType G'.hom` using `inferInstanceAs (LocallyOfFiniteType (pullback.snd G.hom p))`. Use `GlobalTheory.GrpTangent.formallyUnramified_mulN G' hn'` as an intermediate fact.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: LocallyOfFiniteType ((mulN G' n).left ≫ G'.hom)` using `by rw [Over.w]; infer_instance`. Use `locallyOfFiniteType_of_comp (mulN G' n).left G'.hom` as an intermediate fact. Use `Over.OverMorphism.ext (GlobalTheory.eq_of_isLocalRing_of_unramified (R := .of R) (mulN G' n).left (a := (toSec G p x).left) (b := (toSec G p 1).left) ?_ (show Z.left ⟶ Sp R from j.left) hj ?_)` and prove the remaining obligations. Establish `e : toSec G p x ≫ mulN G' n = toSec G p 1 ≫ mulN G' n`. Rewrite using `[GlobalTheory.GrpTangent.comp_mulN, GlobalTheory.GrpTangent.comp_mulN, ← map_pow, ← map_pow, hx, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg Over.Hom.left e`. Use `pullback.hom_ext ?_ ?_` and prove the remaining obligations. Establish `e : j ≫ x = j ≫ 1` using `by rw [h, MonObj.comp_one]`. Conclude with `((Category.assoc _ _ _).trans (congrArg (j.left ≫ ·) (toSec_left_fst G p x))).trans ((congrArg Over.Hom.left e).trans ((Category.assoc _ _ _).trans (congrArg (j.left ≫ ·) (toSec_left_fst G p 1))).symm)`. Conclude with `((Category.assoc _ _ _).trans (congrArg (j.left ≫ ·) ((Over.w (toSec G p x)).trans (Over.w (toSec G p 1)).symm))).trans (Category.assoc _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow_of_closedPoint (G : Over S) [GrpObj G] [IsCommMonObj G]
     [LocallyOfFiniteType G.hom] {R : Type} [CommRing R] [IsLocalRing R] (p : Sp R ⟶ S) {n : ℕ}
@@ -82,22 +82,22 @@ theorem eq_one_of_pow_of_closedPoint (G : Over S) [GrpObj G] [IsCommMonObj G]
         ((Over.w (toSec G p x)).trans (Over.w (toSec G p 1)).symm))).trans (Category.assoc _ _ _).symm
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Introduce `W R Ω _ _ _ _ _ _ _ _ _ hj G _ hG`. Take `⟨hc, hsm, hsep, -, -⟩` from `hG`. Set `u : Over.mk (spMap (algebraMap W Ω)) ⟶ Over.mk (spMap (algebraMap W R))` to `Over.homMk (spMap (algebraMap R Ω)) ((spMap_comp _ _).trans (congrArg spMap (IsScalarTower.algebraMap_eq W R Ω).symm))`. Set `v : Over.mk (spMap ((IsLocalRing.residue R).comp (algebraMap W R))) ⟶ Over.mk (spMap (algebraMap W R))` to `Over.homMk (spMap (IsLocalRing.residue R)) (spMap_comp _ _)`. Establish `hdom : IsDominant (spMap (algebraMap R Ω))` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical _).2 (by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `RingHom.ker (algebraMap R Ω) ≤ _`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 hj]`. Conclude with `bot_le)⟩`. Establish `hu : Function.Injective (precomp G u)` using `fun a b h => Over.OverMorphism.ext (ext_of_isDominant_of_isSeparated (X := Sp R) G.hom ((Over.w a).trans (Over.w b).symm) (spMap (algebraMap R Ω)) (congrArg Over.Hom.left h))`. Set `e` to `MonoidHom.ofInjective hu`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(precomp G u).range, ((toSec G _).comp (precomp G v)).comp e.symm.toMonoidHom, fun x => ⟨?_, ?_⟩, fun x s hs hx => ?_, fun n x hn hx hr => ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨s, rfl⟩`. Conclude with `⟨s.left, Over.w s, rfl⟩`. Introduce and unpack `⟨s, hs, hx⟩`. Conclude with `⟨Over.homMk s hs, Over.OverMorphism.ext hx⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `e.surjective x`. Take `rfl : y = Over.homMk s hs` from `hu (Over.OverMorphism.ext hx.symm)`. Express the relevant statement in the definitionally equal form `(toSec G _ (precomp G v (e.symm (e _)))).left ≫ _ = _`. Rewrite using `[e.symm_apply_apply, toSec_left_fst]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨y, rfl⟩` from `e.surjective x`. Express the relevant statement in the definitionally equal form `toSec G _ (precomp G v (e.symm (e _))) = _ at hr`. Rewrite `hr` using `[e.symm_apply_apply, map_eq_one_iff _ (toSec_injective G _)]`. Rewrite `hx` using `[← map_pow, map_eq_one_iff _ e.injective]`. Rewrite using `[eq_one_of_pow_of_closedPoint G _ hn y hx v ⟨IsLocalRing.closedPoint _, IsLocalRing.comap_closedPoint (IsLocalRing.residue R)⟩ hr, map_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_reduction : ∀ (W R Ω : Type) [CommRing W] [CommRing R] [IsDomain R] [IsLocalRing R] [Field Ω] [Algebra W R] [Algebra R Ω] [Algebra W Ω] [IsScalarTower W R Ω], Function.Injective (algebraMap R Ω) → ∀ (G : Over (Sp W)) [GrpObj G], SmConn G → ∃ (H : Subgroup (Over.mk (spMap (algebraMap W Ω)) ⟶ G)) (r : H →* (𝟙_ (Over (Sp (IsLocalRing.ResidueField R))) ⟶ (Over.pullback (spMap ((IsLocalRing.residue R).comp (algebraMap W R)))).obj G)), (∀ x, x ∈ H ↔ ∃ s : Sp R ⟶ G.left, s ≫ G.hom = spMap (algebraMap W R) ∧ spMap (algebraMap R Ω) ≫ s = x.left) ∧ (∀ (x : H) (s : Sp R ⟶ G.left), s ≫ G.hom = spMap (algebraMap W R) → spMap (algebraMap R Ω) ≫ s = x.1.left → (r x).left ≫ pullback.fst G.hom _ = spMap (IsLocalRing.residue R) ≫ s) ∧ ∀ (n : ℕ) (x : H), IsUnit (n : R) → x ^ n = 1 → r x = 1 → x = 1 := by
   intro W R Ω _ _ _ _ _ _ _ _ _ hj G _ hG

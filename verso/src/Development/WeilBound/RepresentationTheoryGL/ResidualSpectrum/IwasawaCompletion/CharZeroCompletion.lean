@@ -18,7 +18,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace PositivityTheory.Rg.Rs.C3
 
 /- English proof (translation)
-Take `⟨W, _, _, τ, hτ⟩` from `hc`. Take `⟨e⟩` from `hτ.equiv_of_surjective hi f hf`. Conclude with `⟨hd, hτ.of_equiv e.symm (.refl _)⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isSpeh_of_quot {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] {N : ℕ}
     {V : Type} [AddCommGroup V] [Module ℂ V] {ρ : Representation ℂ (GL (Fin N) k) V}
@@ -33,16 +33,16 @@ theorem isSpeh_of_quot {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k
   exact ⟨hd, hτ.of_equiv e.symm (.refl _)⟩
 
 /- English proof (translation)
-The claim follows from `charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective`.
+A detailed English derivation is pending.
 -/
 theorem charZero_completion {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) :
     CharZero (w.adicCompletion E) :=
   charZero_of_injective_algebraMap (algebraMap E (w.adicCompletion E)).injective
 
 /- English proof (translation)
-Introduce `E _ _ _ N a d V π hN hV hu hn hasc w σ σ' hσ hσ'`. Take `⟨hd, f, hf⟩` from `hL E N a d V π hN hV hasc w σ σ' hσ hσ'`. Take `⟨hg, hun⟩` from `PositivityTheory.RSHS.LocalComponentGL.generic_unitarisable hu hn hσ`. Establish `hU' : IsUnitarisable σ'.ρ` using `GlobalTheory.DiscreteUnit.isUnitarisable_of_isLocCompGL E N V hV w σ' hσ'`. Use `charZero_completion (E := E) w` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hd', g, hg'⟩` from `hD _ N d _ σ' hun hU' hd f hf`. Conclude with `isSpeh_of_quot σ'.irred _ d hd' (UC.spehCosocle_uc hG hSC _ hg hun d hd') g hg'`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem clause3Asc_of (hL : LocSub) (hD : LocDual) (hG : PositivityTheory.RgUd.Exp.GenUnitCC)
     (hSC : GlobalTheory.Published.StandardCosocleGL) : Clause3Asc := by
@@ -55,7 +55,7 @@ theorem clause3Asc_of (hL : LocSub) (hD : LocDual) (hG : PositivityTheory.RgUd.E
   exact isSpeh_of_quot σ'.irred _ d hd' (UC.spehCosocle_uc hG hSC _ hg hun d hd') g hg'
 
 /- English proof (translation)
-The claim follows from `have hZ := PositivityTheory.RgGu.segmentRepresentation clause3Asc_of hL hD (PositivityTheory.RgUd.Exp.genUnitCCOf (fun k _ _ _ _ => PositivityTheory.RgUd.expBound k) (GlobalTheory.RgGu.genericUnlinkedGL_of_segRep2 hZ)) (PositivityTheory.Exh.standardCosocleGL_of_seg hZ)`.
+A detailed English derivation is pending.
 -/
 theorem clause3Asc_holds (hL : LocSub) (hD : LocDual) : Clause3Asc :=
   have hZ := PositivityTheory.RgGu.segmentRepresentation

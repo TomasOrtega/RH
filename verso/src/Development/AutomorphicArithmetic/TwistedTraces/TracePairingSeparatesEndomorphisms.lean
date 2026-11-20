@@ -3,11 +3,11 @@ open scoped BigOperators
 
 open TensorProduct in
 /- English proof (translation)
-Take `⟨u, rfl⟩` from `(dualTensorHomEquiv ℂ S S).surjective t`. Proceed by induction on `u using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, add_mul, hx, hy]`. Consider the case `tmul f x`.
+Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Establish `hab : (dualTensorHom ℂ S S (f ⊗ₜ x)) = (dualTensorHom ℂ S S (ξ ⊗ₜ x)) * (dualTensorHom ℂ S S (f ⊗ₜ e))`. Use extensionality with `y`. Simplify using `[dualTensorHom_apply, h]`. Establish `hba : (dualTensorHom ℂ S S (f ⊗ₜ e)) * (dualTensorHom ℂ S S (ξ ⊗ₜ x)) = f x • dualTensorHom ℂ S S (ξ ⊗ₜ e)`. Use extensionality with `y`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `[dualTensorHom_apply, smul_smul, mul_comm]`. Establish `hE : dualTensorHomEquiv ℂ S S (f ⊗ₜ x) = dualTensorHom ℂ S S (f ⊗ₜ x)` using `rfl`. Rewrite using `[hE, LinearMap.trace_eq_contract_apply, contractLeft_apply, hab, hτ, hba, map_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private lemma traceForm {S : Type} [AddCommGroup S] [Module ℂ S] [FiniteDimensional ℂ S]
     (τ : Module.End ℂ S →ₗ[ℂ] ℂ) (hτ : ∀ a b, τ (a * b) = τ (b * a))
@@ -31,9 +31,9 @@ private lemma traceForm {S : Type} [AddCommGroup S] [Module ℂ S] [FiniteDimens
       smul_eq_mul]
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_ne (0 : S)`. Establish `: ∃ f : Module.Dual ℂ S, f e ≠ 0`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `he ((Module.forall_dual_apply_eq_zero_iff ℂ e).1 hc)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨f, hf⟩` from `this`. Conclude with `⟨(f e)⁻¹ • f, e, by simp [hf]⟩`.
+A detailed English derivation is pending.
 -/
 private lemma existsDual (S : Type) [AddCommGroup S] [Module ℂ S] [FiniteDimensional ℂ S]
     [Nontrivial S] : ∃ (ξ : Module.Dual ℂ S) (e : S), ξ e = 1 := by
@@ -47,23 +47,21 @@ private lemma existsDual (S : Type) [AddCommGroup S] [Module ℂ S] [FiniteDimen
 
 open TensorProduct in
 /- English proof (translation)
-Introduce `r`. Proceed by induction on `r with`. Consider the case `zero`. Introduce `S _ _ _ _ c hc B hB hcomm`. Use `⟨Module.finrank ℂ (LinearMap.range B), fun t => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(LinearMap.IsIdempotentElem.isProj_range B hB).trace` as an intermediate fact. Simplify using `using this`. Consider the case `succ r ih`. Introduce `S _ _ _ _ c hc B hB hcomm`. Take `⟨ξ, e, h1⟩` from `existsDual (S 0)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `set E : Module.End ℂ (S 0) := dualTensorHom ℂ (S 0) (S 0) (ξ ⊗ₜ e) with hEdef`. Establish `hE : IsIdempotentElem E` using `by show E * E = E`. Use extensionality with `y`. Simplify using `[hEdef, dualTensorHom_apply, h1]`. Establish `hB' : IsIdempotentElem (B * c 0 E)` using `IsIdempotentElem.mul_of_commute (hcomm 0 E) hB (hE.map (c 0))`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm' : ∀ (i : Fin r) (s : Module.End ℂ (S i.succ)), Commute (B * c 0 E) (c i.succ s)` using `fun i s => (hcomm i.succ s).mul_left (hc 0 i.succ (Fin.succ_ne_zero i).symm E s)`. Take `⟨N, hN⟩` from `ih (fun i => S i.succ) (fun i => c i.succ) (fun i j hij s t => hc i.succ j.succ (fun h => hij (Fin.succ_injective _ h)) s t) (B * c 0 E) hB' hcomm'`. Use `⟨N, fun t => ?_⟩` and prove the remaining obligations. Rewrite using `[List.ofFn_succ, List.prod_cons, Fin.prod_univ_succ]`. Use `set A : Module.End ℂ X := (List.ofFn fun i : Fin r => c i.succ (t i.succ)).prod with hA`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hAc : ∀ s, Commute (c 0 s) A` using `fun s => by`. Use `Commute.list_prod_right _ _ ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨i, rfl⟩` from `(List.mem_ofFn' _ _).1 hx`. Conclude with `hc 0 i.succ (Fin.succ_ne_zero i).symm s _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `τ : Module.End ℂ (S 0) →ₗ[ℂ] ℂ` to `(LinearMap.trace ℂ X) ∘ₗ (LinearMap.mulRight ℂ A) ∘ₗ (LinearMap.mulLeft ℂ B) ∘ₗ (c 0).toLinearMap`. Establish `hτv : ∀ s, τ s = LinearMap.trace ℂ X (B * c 0 s * A)` using `fun s => rfl`. Establish `hτ : ∀ a b, τ (a * b) = τ (b * a)`. Introduce `a b`. Rewrite using `[hτv, hτv, map_mul (c 0), map_mul (c 0)]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e1 : B * (c 0 a * c 0 b) * A = c 0 a * (B * c 0 b * A)`. Rewrite using `[← mul_assoc B, (hcomm 0 a).eq]`. Simplify using `only [mul_assoc]`. Establish `e2 : (B * c 0 b * A) * c 0 a = B * (c 0 b * c 0 a) * A`. Rewrite using `[mul_assoc (B * c 0 b) A, ← (hAc a).eq]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [mul_assoc]`. Rewrite using `[e1, LinearMap.trace_mul_comm, e2]`. Establish `key` using `traceForm τ hτ ξ e h1 (t 0)`. Establish `hN'` using `hN (fun i => t i.succ)`. Rewrite using `[← mul_assoc, ← hτv, key, hτv, ← hEdef, hN']`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private lemma commuting_idempotent_trace {X : Type} [AddCommGroup X] [Module ℂ X] [FiniteDimensional ℂ X] :
     ∀ (r : ℕ) (S : Fin r → Type) [∀ i, AddCommGroup (S i)] [∀ i, Module ℂ (S i)]
@@ -125,7 +123,7 @@ private lemma commuting_idempotent_trace {X : Type} [AddCommGroup X] [Module ℂ
     ring
 
 /- English proof (translation)
-Introduce `r X _ _ _ S _ _ _ _ c hc`. Take `⟨N, hN⟩` from `commuting_idempotent_trace r S c hc 1 IsIdempotentElem.one (fun _ _ => Commute.one_left _)`. Conclude with `⟨N, fun t => by simpa using hN t⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.trace_pairing_separates_endomorphisms :
     ∀ (r : ℕ) (X : Type) [AddCommGroup X] [Module ℂ X] [FiniteDimensional ℂ X] (S : Fin r → Type) [∀ i, AddCommGroup (S i)] [∀ i, Module ℂ (S i)] [∀ i, FiniteDimensional ℂ (S i)] [∀ i, Nontrivial (S i)] (c : ∀ i, Module.End ℂ (S i) →ₐ[ℂ] Module.End ℂ X), (∀ i j, i ≠ j → ∀ s t, Commute (c i s) (c j t)) → ∃ N : ℕ, ∀ t : ∀ i, Module.End ℂ (S i), LinearMap.trace ℂ X (List.ofFn fun i => c i (t i)).prod = N * ∏ i, LinearMap.trace ℂ (S i) (t i) := by

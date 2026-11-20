@@ -21,19 +21,19 @@ open Formalism.DworkPowerSeriesWeights (Integral mvExp entLog ZV)
 namespace GlobalTheory.ExpFacOrbits
 
 /- English proof (translation)
-Introduce `D p _ R M N N' eA be hbe`. Use `set a : ZV (nP D p) M N' → MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p] := fun y => X (OrbitPlaces.orbMap D p (eA y.2.1).1 y.1, (eA y.2.1).2, y.2.2) with ha_def`. Establish `ha : HasSubst a` using `hasSubst_of_constantCoeff_zero (fun y => constantCoeff_X _)`. Establish `hlin : ∀ ab : Fin M × Fin N', (fun s : ZMod (nP D p) => Formalism.DworkPowerSeriesWeights.linSub (Formalism.DworkPowerSeriesWeights.idM : ZV (nP D p) M N' → ZV (nP D p) M N' → ℂ_[p]) (s, ab.1, ab.2)) = fun s => (X (s, ab.1, ab.2) : MvPowerSeries (ZV (nP D p) M N') ℂ_[p])` using `fun ab =>`. Use function extensionality and compare the values at `fun s => Formalism.DworkPowerSeriesWeights.OrbMul.linSub_idM (s, ab.1, ab.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hX : ∀ ab : Fin M × Fin N', HasSubst (fun s : ZMod (nP D p) => (X (s, ab.1, ab.2) : MvPowerSeries (ZV (nP D p) M N') ℂ_[p]))` using `fun ab => hasSubst_of_constantCoeff_zero (fun s => constantCoeff_X _)`. Establish `hB : Formalism.DworkPowerSeriesWeights.bSum (Formalism.DworkPowerSeriesWeights.idM : ZV (nP D p) M N' → ZV (nP D p) M N' → ℂ_[p]) be = ∑ ab : Fin M × Fin N', subst (fun s : ZMod (nP D p) => (X (s, ab.1, ab.2) : MvPowerSeries (ZV (nP D p) M N') ℂ_[p])) be`. Unfold `Formalism.DworkPowerSeriesWeights.bSum`. Use `Finset.sum_congr rfl fun ab _ => ?_` and prove the remaining obligations. Rewrite using `[hlin ab]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcc : constantCoeff ((-1 : ℂ_[p]) • Formalism.DworkPowerSeriesWeights.bSum (Formalism.DworkPowerSeriesWeights.idM : ZV (nP D p) M N' → ZV (nP D p) M N' → ℂ_[p]) be) = 0`. Rewrite using `[hB, Finset.smul_sum, map_sum]`. Use `Finset.sum_eq_zero fun ab _ => ?_` and prove the remaining obligations. Rewrite using `[MvPowerSeries.constantCoeff_smul, constantCoeff_subst_eq_zero (hX ab) (fun s => constantCoeff_X _) hbe, smul_zero]`. Rewrite using `[Formalism.InvariantFactorPaths.G7.LogarithmEquivalence.subst_mvExp' ha hcc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `show mvExp _ = mvExp _`. Use `congr 1`. Rewrite using `[hB, ← coe_substAlgHom ha, map_smul, map_sum, coe_substAlgHom ha]`. Establish `hterm : ∀ ab : Fin M × Fin N', subst a (subst (fun s : ZMod (nP D p) => (X (s, ab.1, ab.2) : MvPowerSeries (ZV (nP D p) M N') ℂ_[p])) be) =`. Substitute `(fun s : ZMod (nP D p) => (X (OrbitPlaces.orbMap D p (eA ab.1).1 s, (eA ab.1).2, ab.2) : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])) be := by` using the available equality.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `ab`. Rewrite using `[subst_comp_subst_apply (hX ab) ha]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[subst_X ha]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Replace the relevant objects with their definitions.
 
-Repeatedly rewrite using `[hterm]`. Unfold `OrbitPlaces.beAll`. Simplify using `only [← Finset.smul_sum]`. Use `congr 1`. Rewrite using `[Fintype.sum_prod_type]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Equiv.sum_comp eA (fun x : R × Fin N => ∑ b : Fin N', subst (fun s : ZMod (nP D p) => (X (OrbitPlaces.orbMap D p x.1 s, x.2, b) : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])) be)]`. Rewrite using `[Fintype.sum_prod_type]`. Conclude with `Finset.sum_coe_sort R (fun r => ∑ a : Fin N, ∑ b : Fin N', subst (fun s : ZMod (nP D p) => (X (OrbitPlaces.orbMap D p r s, a, b) : MvPowerSeries (OrbitPlaces.Pl D × Fin N × Fin N') ℂ_[p])) be)`.
+A detailed English derivation is pending.
 -/
 theorem expFactor_allOrbits : ∀ (D : D7) (p : ℕ) [Fact p.Prime] (R : Finset (OrbitPlaces.Pl D)) {M N N' : ℕ} (eA : Fin M ≃ R × Fin N)
     (be : MvPowerSeries (ZMod (nP D p)) ℂ_[p]) (hbe : constantCoeff be = 0), subst (fun y : ZV (nP D p) M N' =>

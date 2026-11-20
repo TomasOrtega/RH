@@ -21,7 +21,7 @@ section
 variable {P : Scheme.{u}}
 
 /- English proof (translation)
-Simplify using `only [Scheme.Hom.appLE_eq_app]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem ker_ideal_eq_ker_appLE {A B : Scheme.{u}} (f : A ⟶ B) [QuasiCompact f]
     (V : B.affineOpens) :
@@ -30,7 +30,7 @@ private theorem ker_ideal_eq_ker_appLE {A B : Scheme.{u}} (f : A ⟶ B) [QuasiCo
   simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem ker_appLE_congr {A B : Scheme.{u}} (f : A ⟶ B) (W : B.Opens)
     {V₁ V₂ : A.Opens} (h : V₁ = V₂) (e₁ : V₁ ≤ f ⁻¹ᵁ W) (e₂ : V₂ ≤ f ⁻¹ᵁ W) :
@@ -39,11 +39,11 @@ private theorem ker_appLE_congr {A B : Scheme.{u}} (f : A ⟶ B) (W : B.Opens)
   rfl
 
 /- English proof (translation)
-Establish `hqcZ : QuasiCompact Z.subschemeι` using `inferInstance`. Establish `hqcf : QuasiCompact (Z.subschemeι ≫ H.subschemeι)` using `inferInstance`. Establish `hopen : (Z.subschemeι ≫ H.subschemeι) ⁻¹ᵁ U = Z.subschemeι ⁻¹ᵁ (H.subschemeι ⁻¹ᵁ U)` using `Scheme.Hom.comp_preimage ..`. Establish `hle : Z.subschemeι ⁻¹ᵁ (H.subschemeι ⁻¹ᵁ U) ≤ (Z.subschemeι ≫ H.subschemeι) ⁻¹ᵁ U` using `le_of_eq hopen.symm`. Establish `h1 : (Z.subschemeι ≫ H.subschemeι).ker.ideal ⟨U, hU⟩ = RingHom.ker ((Z.subschemeι ≫ H.subschemeι).appLE U (Z.subschemeι ⁻¹ᵁ (H.subschemeι ⁻¹ᵁ U)) hle).hom` using `(ker_ideal_eq_ker_appLE (Z.subschemeι ≫ H.subschemeι) ⟨U, hU⟩).trans (ker_appLE_congr (Z.subschemeι ≫ H.subschemeι) U hopen le_rfl hle)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Z.ideal ⟨H.subschemeι ⁻¹ᵁ U, isAffineOpen_preimage_subschemeι H hU⟩ = RingHom.ker (Z.subschemeι.appLE (H.subschemeι ⁻¹ᵁ U) (Z.subschemeι ⁻¹ᵁ (H.subschemeι ⁻¹ᵁ U)) le_rfl).hom` using `(congrArg (fun I : H.subscheme.IdealSheafData => I.ideal ⟨H.subschemeι ⁻¹ᵁ U, isAffineOpen_preimage_subschemeι H hU⟩) (Scheme.IdealSheafData.ker_subschemeι Z)).symm.trans (ker_ideal_eq_ker_appLE Z.subschemeι ⟨H.subschemeι ⁻¹ᵁ U, isAffineOpen_preimage_subschemeι H hU⟩)`. Establish `hcomp : H.subschemeι.appLE U (H.subschemeι ⁻¹ᵁ U) le_rfl ≫ Z.subschemeι.appLE (H.subschemeι ⁻¹ᵁ U) (Z.subschemeι ⁻¹ᵁ (H.subschemeι ⁻¹ᵁ U)) le_rfl = (Z.subschemeι ≫ H.subschemeι).appLE U (Z.subschemeι ⁻¹ᵁ (H.subschemeι ⁻¹ᵁ U)) hle`. Simplify using `only [Scheme.Hom.appLE_comp_appLE]`. Rewrite using `[h1, h2, ← hcomp, CommRingCat.hom_comp]`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `only [RingHom.mem_ker, Ideal.mem_comap, RingHom.comp_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ker_comp_subschemeι_ideal_eq_comap (H : P.IdealSheafData) (Z : H.subscheme.IdealSheafData)
     {U : P.Opens} (hU : IsAffineOpen U) :
@@ -88,7 +88,7 @@ private theorem comp_app_apply {A B C : Scheme.{u}} (f : A ⟶ B) (g : B ⟶ C)
     ((f ≫ g).app U).hom x = (f.app (g ⁻¹ᵁ U)).hom ((g.app U).hom x) := rfl
 
 /- English proof (translation)
-Establish `hpt : (H.subschemeι.app U.1).hom x = (H.subschemeObjIso U).inv.hom (Ideal.Quotient.mk (H.ideal U) x)` using `congrArg (fun g => CommRingCat.Hom.hom g x) (Scheme.IdealSheafData.subschemeι_app H U)`. Rewrite using `[hpt, Ideal.Quotient.eq_zero_iff_mem.mpr hx, map_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem subschemeι_app_apply_eq_zero {P : Scheme.{u}} (H : P.IdealSheafData)
     (U : P.affineOpens) (x : Γ(P, U.1)) (hx : x ∈ H.ideal U) :
@@ -99,9 +99,9 @@ private theorem subschemeι_app_apply_eq_zero {P : Scheme.{u}} (H : P.IdealSheaf
   rw [hpt, Ideal.Quotient.eq_zero_iff_mem.mpr hx, map_zero]
 
 /- English proof (translation)
-Simplify using `only [Scheme.Hom.ker]`. Use `Scheme.IdealSheafData.le_ofIdeals_iff.mpr ?_` and prove the remaining obligations. Introduce `U x hx`. Simplify using `only [RingHom.mem_ker]`. Rewrite using `[comp_app_apply Z.subschemeι H.subschemeι U.1 x, subschemeι_app_apply_eq_zero H U x hx]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero _`.
+A detailed English derivation is pending.
 -/
 theorem le_ker_comp_subschemeι (H : P.IdealSheafData) (Z : H.subscheme.IdealSheafData) :
     H ≤ (Z.subschemeι ≫ H.subschemeι).ker := by
@@ -116,13 +116,11 @@ theorem le_ker_comp_subschemeι (H : P.IdealSheafData) (Z : H.subscheme.IdealShe
 variable {k : Type u} [Field k]
 
 /- English proof (translation)
-Establish `happ : H.subschemeι.appLE U (H.subschemeι ⁻¹ᵁ U) le_rfl = H.subschemeι.app U`. Rewrite using `[Scheme.Hom.appLE_eq_app]`. Establish `hsurj : Function.Surjective (H.subschemeι.appLE U (H.subschemeι ⁻¹ᵁ U) le_rfl).hom`. Rewrite using `[happ]`. Conclude with `Scheme.IdealSheafData.subschemeι_app_surjective H ⟨U, hU⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hcomap : Ideal.comap (H.subschemeι.appLE U (H.subschemeι ⁻¹ᵁ U) le_rfl).hom ⊥ = H.ideal ⟨U, hU⟩`. Rewrite using `[happ, ← RingHom.ker_eq_comap_bot]`. Conclude with `Scheme.IdealSheafData.ker_subschemeι_app H ⟨U, hU⟩`. Establish `hHspan : H.ideal ⟨U, hU⟩ = Ideal.span {c.coord j₀}`. Rewrite using `[c.ideal_eq_span_coord hU H {j₀} hH, Finset.coe_singleton, Set.image_singleton]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key` using `ker_comp_subschemeι_ideal_eq_comap H Z hU`. Rewrite `key` using `[hZ]`. Establish `himg : ((fun j : Fin n => (H.subschemeι.appLE U (H.subschemeι ⁻¹ᵁ U) le_rfl).hom (c.coord j)) '' (S : Set (Fin n))) = (H.subschemeι.appLE U (H.subschemeι ⁻¹ᵁ U) le_rfl).hom '' (c.coord '' (S : Set (Fin n)))` using `(Set.image_image _ _ _).symm`. Establish `hmap : Ideal.map (H.subschemeι.appLE U (H.subschemeι ⁻¹ᵁ U) le_rfl).hom (Ideal.span (c.coord '' (S : Set (Fin n)))) = Ideal.span ((H.subschemeι.appLE U (H.subschemeι ⁻¹ᵁ U) le_rfl).hom '' (c.coord '' (S : Set (Fin n))))` using `Ideal.map_span _ _`. Rewrite using `[key, himg, ← hmap, Ideal.comap_map_of_surjective _ hsurj, hcomap, hHspan, Finset.coe_insert, Set.image_insert_eq, Ideal.span_insert]`.
-
-Conclude with `le_antisymm (sup_le le_sup_right le_sup_left) (sup_le le_sup_right le_sup_left)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_comp_subschemeι_ideal_eq_span_coord (p : P ⟶ Spec (CommRingCat.of k)) (H : P.IdealSheafData)
     (Z : H.subscheme.IdealSheafData) {U : P.Opens} (hU : IsAffineOpen U) {n : ℕ}
@@ -171,11 +169,11 @@ section
 variable {X : Scheme.{u}} {k : Type u} [Field k]
 
 /- English proof (translation)
-Set `instk : Algebra k Γ(X, U)` to `sectionsAlgebra k p U`. Set `instc : Algebra (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U)` to `c.algebra`. Set `instc' : Algebra (MvPolynomial (ULift.{u} (Fin m')) k) Γ(X, U)` to `c'.algebra`. Establish `instt : IsScalarTower k (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U)` using `c.isScalarTower`. Establish `instt' : IsScalarTower k (MvPolynomial (ULift.{u} (Fin m')) k) Γ(X, U)` using `c'.isScalarTower`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `instfe : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin m)) k) Γ(X, U)` using `c.algebra_formallyEtale hU`. Establish `instfe' : Algebra.FormallyEtale (MvPolynomial (ULift.{u} (Fin m')) k) Γ(X, U)` using `c'.algebra_formallyEtale hU`. Establish `instnt : Nontrivial Γ(X, U)` using `RingHom.domain_nontrivial (X.presheaf.germ U x hx).hom`. Establish `h1 : Module.finrank Γ(X, U) (KaehlerDifferential k Γ(X, U)) = Fintype.card (ULift.{u} (Fin m))` using `Module.finrank_eq_card_basis (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin m)) Γ(X, U))`. Establish `h2 : Module.finrank Γ(X, U) (KaehlerDifferential k Γ(X, U)) = Fintype.card (ULift.{u} (Fin m'))` using `Module.finrank_eq_card_basis (EtaleCoordinates.basisKaehler k (ULift.{u} (Fin m')) Γ(X, U))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : Fintype.card (ULift.{u} (Fin m)) = Fintype.card (ULift.{u} (Fin m'))` using `h1.symm.trans h2`. Simplify using `using h3`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem etaleChart_numCoords_eq (p : X ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.LocallyOfFiniteType p] {U : X.Opens} (hU : IsAffineOpen U) (x : X)
@@ -210,9 +208,9 @@ section
 variable {P : Scheme.{u}} {k : Type u} [Field k]
 
 /- English proof (translation)
-Establish `hymem : y ∈ (H.subschemeι ⁻¹ᵁ U) ⊓ V` using `⟨hyU, hyV⟩`. Take `⟨W, hWmem, hyW, hWle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp H.subscheme.isBasis_affineOpens hymem`. Establish `hW : IsAffineOpen W` using `hWmem`. Establish `hle1 : W ≤ H.subschemeι ⁻¹ᵁ U` using `le_trans hWle inf_le_left`. Establish `hle2 : W ≤ V` using `le_trans hWle inf_le_right`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `etaleChart_numCoords_eq (H.subschemeι ≫ p) hW y hyW ((c.restrictToSubscheme hU H {j₁} hH).restrict hle1) (c'.restrict hle2)`. Establish `hcard : ({j₁} : Finset (Fin n)).card = 1` using `Finset.card_singleton j₁`. Establish `hlt : (j₁ : ℕ) < n` using `j₁.isLt`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem etaleChart_numCoords_add_one_of_hypersurface (p : P ⟶ Spec (CommRingCat.of k))
     (H : P.IdealSheafData)
@@ -253,7 +251,7 @@ def HasLocalCoordsOnSmoothHypersurface (p : P ⟶ Spec (CommRingCat.of k)) (H : 
               (S : Set (Fin n)))
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, ← Functor.map_comp, X₁.presheaf_map_eq_of_parallel (g₁ ≫ g₂) g₃]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem comp_presheaf_map_comp_map {X₁ : Scheme.{u}} {R : CommRingCat.{u}}
     {A B C : (X₁.Opens)ᵒᵖ} (h : R ⟶ X₁.presheaf.obj A) (g₁ : A ⟶ B) (g₂ : B ⟶ C) (g₃ : A ⟶ C) :
@@ -261,7 +259,7 @@ private theorem comp_presheaf_map_comp_map {X₁ : Scheme.{u}} {R : CommRingCat.
   rw [Category.assoc, ← Functor.map_comp, X₁.presheaf_map_eq_of_parallel (g₁ ≫ g₂) g₃]
 
 /- English proof (translation)
-Establish `h1 : f.appLE U A e = f.app U ≫ X₁.presheaf.map (homOfLE e).op` using `rfl`. Establish `h2 : f.appLE U B e' = f.app U ≫ X₁.presheaf.map (homOfLE e').op` using `rfl`. Rewrite using `[h1, h2]`. Conclude with `(comp_presheaf_map_comp_map (f.app U) (homOfLE e').op (homOfLE hAB).op (homOfLE e).op).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem appLE_eq_appLE_comp_presheaf_map {X₁ Y₁ : Scheme.{u}} (f : X₁ ⟶ Y₁) (U : Y₁.Opens)
     {A B : X₁.Opens} (e : A ≤ f ⁻¹ᵁ U) (e' : B ≤ f ⁻¹ᵁ U) (hAB : A ≤ B) :
@@ -272,7 +270,7 @@ private theorem appLE_eq_appLE_comp_presheaf_map {X₁ Y₁ : Scheme.{u}} (f : X
   exact (comp_presheaf_map_comp_map (f.app U) (homOfLE e').op (homOfLE hAB).op (homOfLE e).op).symm
 
 /- English proof (translation)
-Simplify using the standard rewrite rules. Conclude with `X₁.presheaf_map_eq_of_parallel _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem ι_appLE_self_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X₁.Opens)
     (e : (⊤ : (V.toScheme).Opens) ≤ V.ι ⁻¹ᵁ V) :
@@ -281,11 +279,11 @@ private theorem ι_appLE_self_top_eq_topIso_inv {X₁ : Scheme.{u}} (V : X₁.Op
   exact X₁.presheaf_map_eq_of_parallel _ _
 
 /- English proof (translation)
-Establish `htop : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V`. Introduce `y _`. Conclude with `y.2`. Establish `ha : V.ι.appLE V W e1 = V.topIso.inv ≫ V.toScheme.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op`. Rewrite using `[appLE_eq_appLE_comp_presheaf_map V.ι V e1 htop le_top, ι_appLE_self_top_eq_topIso_inv V htop]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : g.appLE (⊤ : Y₁.Opens) W e2 = g.appTop ≫ V.toScheme.presheaf.map (homOfLE (le_top : W ≤ ⊤)).op`. Establish `h1 : g.appLE (⊤ : Y₁.Opens) W e2 = g.appTop ≫ V.toScheme.presheaf.map (homOfLE e2).op` using `rfl`. Rewrite using `[h1]`. Conclude with `congrArg (fun z => g.appTop ≫ z) (V.toScheme.presheaf_map_eq_of_parallel _ _)`. Rewrite using `[ha, hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply]`. Rewrite using `[Iso.hom_inv_id_apply]`.
+A detailed English derivation is pending.
 -/
 private theorem ι_appLE_apply_topIso_hom {X₁ Y₁ : Scheme.{u}} (V : X₁.Opens)
     (g : V.toScheme ⟶ Y₁) {W : V.toScheme.Opens} (e1 : W ≤ V.ι ⁻¹ᵁ V)
@@ -316,7 +314,7 @@ private theorem ofIdealTop_ideal_top {Y : Scheme.{u}} [IsAffine Y] (J : Ideal Γ
   simp
 
 /- English proof (translation)
-Rewrite using `[EtaleChart.coord_def]`. Conclude with `ι_appLE_apply_topIso_hom U c.map e1 e2 _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ι_appLE_coord {X₁ : Scheme.{u}} {K : Type u} [Field K]
     {q : X₁ ⟶ Spec (CommRingCat.of K)} {U : X₁.Opens} {m : ℕ} (c : EtaleChart q U m)
@@ -329,13 +327,11 @@ private theorem ι_appLE_coord {X₁ : Scheme.{u}} {K : Type u} [Field K]
   exact ι_appLE_apply_topIso_hom U c.map e1 e2 _
 
 /- English proof (translation)
-Establish `hAaff : IsAffine (affineSpaceFin K m)` using `inferInstance`. Establish `hcoord : (coordSubspaceIdeal K m S).ideal ⟨⊤, isAffineOpen_top (affineSpaceFin K m)⟩ = Ideal.span ((fun i : Fin m => AffineSpace.coord (Spec (CommRingCat.of K)) (ULift.up i)) '' (S : Set (Fin m)))`. Rewrite using `[coordSubspaceIdeal_eq_ofIdealTop_span_coord]`. Conclude with `ofIdealTop_ideal_top _`. Use `Scheme.IdealSheafData.ext (funext ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `W`. Establish `htop : (⊤ : U.toScheme.Opens) ≤ U.ι ⁻¹ᵁ U`. Introduce `y _`. Conclude with `y.2`. Establish `eW : (W.1 : U.toScheme.Opens) ≤ U.ι ⁻¹ᵁ U` using `le_trans le_top htop`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `eW' : (W.1 : U.toScheme.Opens) ≤ c.map ⁻¹ᵁ (⊤ : (affineSpaceFin K m).Opens)`. Introduce `y _`. Discharge the goal by the elementary cases of `trivial`. Use `show (I.comap U.ι).ideal W = ((coordSubspaceIdeal K m S).comap c.map).ideal W`. Rewrite using `[I.comap_ideal_eq_map_appLE U.ι ⟨U, hU⟩ W eW, (coordSubspaceIdeal K m S).comap_ideal_eq_map_appLE c.map ⟨⊤, isAffineOpen_top (affineSpaceFin K m)⟩ W eW', h, hcoord, Ideal.map_span, Ideal.map_span, ← Set.image_comp, ← Set.image_comp]`.
-
-Use `congrArg Ideal.span (Set.image_congr fun j _ => ?_)` and prove the remaining obligations. Conclude with `ι_appLE_coord c eW eW' j`.
+Check the elementary cases of the proposition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem restrictIdeal_eq_coordIdeal_of_isAffineOpen_ideal_eq_span {X₁ : Scheme.{u}} {K : Type u}
     [Field K] {q : X₁ ⟶ Spec (CommRingCat.of K)} {U : X₁.Opens} {m : ℕ}
@@ -366,13 +362,11 @@ private theorem restrictIdeal_eq_coordIdeal_of_isAffineOpen_ideal_eq_span {X₁ 
   exact ι_appLE_coord c eW eW' j
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨y, hy⟩ : ∃ y : I.subscheme, I.subschemeι.base y = x := by`. Establish `hxs : x ∈ (I.support : Set Y)` using `hx`. Establish `hxr : x ∈ Set.range I.subschemeι.base` using `by simpa using hxs`. Conclude with `hxr`. Establish `hyV : y ∈ I.subschemeι ⁻¹ᵁ V` using `by show I.subschemeι.base y ∈ V`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy]`. Conclude with `hxV`. Establish `hnt : Nontrivial Γ(I.subscheme, I.subschemeι ⁻¹ᵁ V)` using `RingHom.domain_nontrivial (I.subscheme.presheaf.germ (I.subschemeι ⁻¹ᵁ V) y hyV).hom`. Introduce `htop`. Establish `hker : RingHom.ker (I.subschemeι.app V).hom = I.ideal ⟨V, hV⟩` using `Scheme.IdealSheafData.ker_subschemeι_app I ⟨V, hV⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem1 : (1 : Γ(Y, V)) ∈ RingHom.ker (I.subschemeι.app V).hom`. Rewrite using `[hker, htop]`. Conclude with `Submodule.mem_top`. Establish `hzero : (1 : Γ(I.subscheme, I.subschemeι ⁻¹ᵁ V)) = 0`. Establish `h'` using `RingHom.mem_ker.mp hmem1`.
-
-Rewrite `h'` using `[map_one]`. Then use the resulting hypothesis. Conclude with `one_ne_zero hzero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem ideal_ne_top_of_mem_support {Y : Scheme.{u}} (I : Y.IdealSheafData) {V : Y.Opens}
     (hV : IsAffineOpen V) {x : Y} (hxV : x ∈ V) (hx : x ∈ I.support) :
@@ -399,13 +393,13 @@ private theorem ideal_ne_top_of_mem_support {Y : Scheme.{u}} (I : Y.IdealSheafDa
   exact one_ne_zero hzero
 
 /- English proof (translation)
-Establish `hVaff : IsAffine V.toScheme` using `hV`. Establish `htop : (⊤ : V.toScheme.Opens) ≤ V.ι ⁻¹ᵁ V`. Introduce `y _`. Conclude with `y.2`. Establish `key` using `I.comap_ideal_eq_map_appLE V.ι ⟨V, hV⟩ ⟨⊤, isAffineOpen_top V.toScheme⟩ htop`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[ι_appLE_self_top_eq_topIso_inv V htop]`. Establish `h' : I.comap V.ι = ⊤` using `h`. Rewrite `key` using `[h']`. Establish `h0 : ((⊤ : V.toScheme.IdealSheafData).ideal ⟨⊤, isAffineOpen_top V.toScheme⟩) = ⊤`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `key` using `[h0]`. Rewrite using `[Ideal.eq_top_iff_one]`. Establish `hone : (1 : Γ(V.toScheme, ⊤)) ∈ Ideal.map V.topIso.inv.hom (I.ideal ⟨V, hV⟩)`. Rewrite using `[← key]`. Conclude with `Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsurj : Function.Surjective V.topIso.inv.hom` using `V.topIso.symm.commRingCatIsoToRingEquiv.surjective`. Establish `hinj : Function.Injective V.topIso.inv.hom` using `V.topIso.symm.commRingCatIsoToRingEquiv.injective`. Take `⟨a, haI, hfa⟩` from `(Ideal.mem_map_iff_of_surjective _ hsurj).mp hone`. Establish `ha1 : a = 1` using `hinj (by rw [hfa, map_one])`. Conclude with `ha1 ▸ haI`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ideal_eq_top_of_restrictIdeal_eq_top {Y : Scheme.{u}} (I : Y.IdealSheafData)
     {V : Y.Opens} (hV : IsAffineOpen V) (h : restrictIdeal I V = ⊤) :
@@ -435,9 +429,9 @@ private theorem ideal_eq_top_of_restrictIdeal_eq_top {Y : Scheme.{u}} (I : Y.Ide
   exact ha1 ▸ haI
 
 /- English proof (translation)
-Establish `e1 : I.comap V.ι = (I.comap U.ι).comap (Y.homOfLE hVU)`. Rewrite using `[← Scheme.IdealSheafData.comap_comp, Scheme.homOfLE_ι]`. Establish `h' : I.comap U.ι = ⊤` using `h`. Use `show I.comap V.ι = ⊤`. Rewrite using `[e1, h']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 private theorem restrictIdeal_eq_top_of_le_of_eq_top {Y : Scheme.{u}} (I : Y.IdealSheafData) {U V : Y.Opens}
     (hVU : V ≤ U) (h : restrictIdeal I U = ⊤) : restrictIdeal I V = ⊤ := by
@@ -449,7 +443,7 @@ private theorem restrictIdeal_eq_top_of_le_of_eq_top {Y : Scheme.{u}} (I : Y.Ide
   simp
 
 /- English proof (translation)
-Establish `h' : I.comap U.ι = (coordSubspaceIdeal K m S).comap c.map`. Rewrite using `[← restrictIdeal_eq_comap_ι, h, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal]`. Rewrite using `[restrictIdeal_eq_comap_ι, EtaleChart.coordIdeal_eq_comap_coordSubspaceIdeal, EtaleChart.restrict_map, Scheme.IdealSheafData.comap_comp, ← h', ← Scheme.IdealSheafData.comap_comp, Scheme.homOfLE_ι]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem restrictIdeal_eq_coordIdeal_restrict {X₁ : Scheme.{u}} {K : Type u} [Field K]
     {q : X₁ ⟶ Spec (CommRingCat.of K)} {U V : X₁.Opens} (hVU : V ≤ U) {m : ℕ}
@@ -463,19 +457,17 @@ private theorem restrictIdeal_eq_coordIdeal_restrict {X₁ : Scheme.{u}} {K : Ty
     Scheme.homOfLE_ι]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨ψ, hψC, hψXj, hψXi⟩ : ∃ ψ : MvPolynomial σ K →+* MvPolynomial σ K, (∀ a : K, ψ (MvPolynomial.C a) = MvPolynomial.C a) ∧ ψ (MvPolynomial.X j) = 0 ∧ ∀ i : σ, i ≠ j → ψ (MvPolynomial.X i) = MvPolynomial.X i := by`. Use `⟨MvPolynomial.eval₂Hom (MvPolynomial.C : K →+* MvPolynomial σ K) (fun i : σ => if i = j then (0 : MvPolynomial σ K) else MvPolynomial.X i), ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `a`. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Introduce `i hi`. Simplify using `[hi]`. Establish `hXjmem : (MvPolynomial.X j : MvPolynomial σ K) ∈ Ideal.span {(MvPolynomial.X j : MvPolynomial σ K)}` using `Ideal.mem_span_singleton_self _`. Establish `key : (Ideal.Quotient.mk (Ideal.span {(MvPolynomial.X j : MvPolynomial σ K)})).comp ψ = Ideal.Quotient.mk (Ideal.span {(MvPolynomial.X j : MvPolynomial σ K)})`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `a`. Rewrite using `[RingHom.comp_apply, hψC]`. Introduce `i`. Rewrite using `[RingHom.comp_apply]`. Distinguish the cases in `h : i = j`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[hψXj, map_zero]`. Conclude with `(Ideal.Quotient.eq_zero_iff_mem.mpr hXjmem).symm`. Rewrite using `[hψXi i h]`. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton.mp hr`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0 : ψ (MvPolynomial.X s * r) = 0`. Rewrite using `[ht, map_mul, hψXj, zero_mul]`. Rewrite `h0` using `[map_mul, hψXi s (Ne.symm hjs)]`. Establish `hXs : (MvPolynomial.X s : MvPolynomial σ K) ≠ 0` using `MvPolynomial.X_ne_zero _`. Establish `hψr : ψ r = 0`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `mul_eq_zero.mp h0 with h | h` into its components or cases. Conclude with `absurd h hXs`. Conclude with `h`. Establish `h3` using `DFunLike.congr_fun key r`. Rewrite `h3` using `[RingHom.comp_apply, hψr, map_zero]`.
-
-Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp h3.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem mem_span_X_of_mul_X_mem {σ : Type u} {K : Type u} [Field K]
     {j s : σ} (hjs : j ≠ s) (r : MvPolynomial σ K)
@@ -521,7 +513,7 @@ private theorem mem_span_X_of_mul_X_mem {σ : Type u} {K : Type u} [Field K]
   exact Ideal.Quotient.eq_zero_iff_mem.mp h3.symm
 
 /- English proof (translation)
-Take `⟨a', rfl⟩` from `Ideal.Quotient.mk_surjective a`. Take `⟨b', rfl⟩` from `Ideal.Quotient.mk_surjective b`. Rewrite `h` using `[← map_mul, ← map_mul, Ideal.Quotient.eq, ← mul_sub]`. Conclude with `Ideal.Quotient.eq.mpr (mem_span_X_of_mul_X_mem hjs (a' - b') h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem quotient_span_X_mul_X_cancel {σ : Type u} {K : Type u} [Field K] {j s : σ} (hjs : j ≠ s)
     (a b : MvPolynomial σ K ⧸ Ideal.span {(MvPolynomial.X j : MvPolynomial σ K)})
@@ -535,11 +527,11 @@ private theorem quotient_span_X_mul_X_cancel {σ : Type u} {K : Type u} [Field K
   exact Ideal.Quotient.eq.mpr (mem_span_X_of_mul_X_mem hjs (a' - b') h)
 
 /- English proof (translation)
-Establish `hg : (Ideal.quotientMap (Ideal.map f I) f Ideal.le_comap_map).Etale` using `etale_quotientMap hf I`. Establish `hy : (Ideal.quotientMap (Ideal.map f I) f Ideal.le_comap_map) ((Ideal.Quotient.mk I) w) * (Ideal.Quotient.mk (Ideal.map f I)) x = 0`. Rewrite using `[Ideal.quotientMap_mk, ← map_mul]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hx`. Set `algInst : Algebra (Pr ⧸ I) (A ⧸ Ideal.map f I)` to `(Ideal.quotientMap (Ideal.map f I) f Ideal.le_comap_map).toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `instEt : Algebra.Etale (Pr ⧸ I) (A ⧸ Ideal.map f I)` using `hg`. Establish `instFlat : Module.Flat (Pr ⧸ I) (A ⧸ Ideal.map f I)` using `inferInstance`. Establish `hreg : IsSMulRegular (Pr ⧸ I) ((Ideal.Quotient.mk I) w)` using `fun a b h => hw a b h`. Establish `hregA : IsSMulRegular (A ⧸ Ideal.map f I) ((Ideal.Quotient.mk I) w)` using `hreg.of_flat`. Establish `hsmul : (Ideal.Quotient.mk I) w • (Ideal.Quotient.mk (Ideal.map f I)) x = (Ideal.Quotient.mk I) w • (0 : A ⧸ Ideal.map f I)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_zero]`. Conclude with `hy`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp (hregA hsmul)`.
+A detailed English derivation is pending.
 -/
 private theorem mem_map_of_mul_mem_of_etale {Pr A : Type u} [CommRing Pr] [CommRing A]
     {f : Pr →+* A} (hf : f.Etale) (I : Ideal Pr) (w : Pr)
@@ -565,11 +557,9 @@ private theorem mem_map_of_mul_mem_of_etale {Pr A : Type u} [CommRing Pr] [CommR
   exact Ideal.Quotient.eq_zero_iff_mem.mp (hregA hsmul)
 
 /- English proof (translation)
-Establish `hmapspan : Ideal.map c.coordRingHom (Ideal.span {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) K)}) = Ideal.span {c.coord j}`. Rewrite using `[Ideal.map_span, Set.image_singleton, c.coordRingHom_X]`. Establish `hju : (ULift.up j : ULift.{u} (Fin m)) ≠ ULift.up s`. Introduce `h`. Conclude with `hjs (congrArg ULift.down h)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hu : ∀ a b : MvPolynomial (ULift.{u} (Fin m)) K ⧸ Ideal.span {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) K)}, (Ideal.Quotient.mk (Ideal.span {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) K)})) (MvPolynomial.X (ULift.up s)) * a = (Ideal.Quot …` using `fun a b h => quotient_span_X_mul_X_cancel hju a b h`. Establish `hx' : c.coordRingHom (MvPolynomial.X (ULift.up s)) * 1 ∈ Ideal.map c.coordRingHom (Ideal.span {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) K)})`. Rewrite using `[hmapspan, c.coordRingHom_X, mul_one]`. Conclude with `hmem`. Establish `hfin` using `mem_map_of_mul_mem_of_etale (c.coordRingHom_etale hV) (Ideal.span {(MvPolynomial.X (ULift.up j) : MvPolynomial (ULift.{u} (Fin m)) K)}) (MvPolynomial.X (ULift.up s)) hu 1 hx'`.
-
-Rewrite `hfin` using `[hmapspan]`. Conclude with `(Ideal.eq_top_iff_one _).mpr hfin`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem span_coord_eq_top_of_mem_span {X₁ : Scheme.{u}} {K : Type u} [Field K]
     {q : X₁ ⟶ Spec (CommRingCat.of K)} {V : X₁.Opens} (hV : IsAffineOpen V) {m : ℕ}
@@ -605,49 +595,43 @@ private theorem span_coord_eq_top_of_mem_span {X₁ : Scheme.{u}} {K : Type u} [
   exact (Ideal.eq_top_iff_one _).mpr hfin
 
 /- English proof (translation)
-Use `hasStrictNormalCrossingsWith_of_forall_exists_etaleChart ?_` and prove the remaining obligations. Introduce `x hx`. Take `⟨U, hU, hxU, n, c, j₀, lab, S, h1, h2, h3, h4, h5⟩` from `hdata x hx`. Take `⟨-, hNpos⟩` from `(inStrictNormalCrossingPosition_iff p (H :: N)).mp hN`. Establish `hclash : ∀ i : ℕ, i < N.length → lab i ≠ some j₀`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `i hi hlabi`. Take `⟨U', hxU', m', c', a', hinj', hnone', hsome'⟩` from `(hNpos x).exists_etaleChart`. Take `⟨V, hVb, hxV, hVle⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp P.isBasis_affineOpens (show x ∈ U ⊓ U' from ⟨hxU, hxU'⟩)`. Establish `hV : IsAffineOpen V` using `hVb`. Establish `hVU : V ≤ U` using `le_trans hVle inf_le_left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVU' : V ≤ U'` using `le_trans hVle inf_le_right`. Establish `hEqU : restrictIdeal (N[i]'hi) U = restrictIdeal H U`. Rewrite using `[h3 i hi j₀ hlabi, h1]`. Establish `hEqV : restrictIdeal (N[i]'hi) V = restrictIdeal H V` using `restrictIdeal_eq_of_le_of_eq hVU hEqU`. Establish `hKne : (Z.subschemeι ≫ H.subschemeι).ker.ideal ⟨V, hV⟩ ≠ ⊤` using `ideal_ne_top_of_mem_support _ hV hxV hx`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hproper : H.ideal ⟨V, hV⟩ ≠ ⊤`. Introduce `htop`. Establish `hle` using `le_ker_comp_subschemeι H Z ⟨V, hV⟩`. Rewrite `hle` using `[htop]`. Conclude with `hKne (top_le_iff.mp hle)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hlen0 : 0 < (H :: N).length` using `by simp`. Establish `hleni : i + 1 < (H :: N).length` using `by simpa using hi`. Consider the cases of `hop : a' 0 with`. Consider the case `none`. Establish `hHtop : restrictIdeal H U' = ⊤` using `by simpa using hnone' 0 hlen0 hop`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Treat this case separately.
 
-Conclude with `hproper (ideal_eq_top_of_restrictIdeal_eq_top H hV (restrictIdeal_eq_top_of_le_of_eq_top H hVU' hHtop))`. Consider the case `some t₀`. Consider the cases of `hop1 : a' (i + 1) with`. Consider the case `none`. Establish `hNtop : restrictIdeal (N[i]'hi) U' = ⊤`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hnone' (i + 1) hleni hop1`. Establish `hVtop : restrictIdeal (N[i]'hi) V = ⊤` using `restrictIdeal_eq_top_of_le_of_eq_top _ hVU' hNtop`. Rewrite `hVtop` using `[hEqV]`. Conclude with `hproper (ideal_eq_top_of_restrictIdeal_eq_top H hV hVtop)`. Consider the case `some t₁`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hne : t₀ ≠ t₁`. Introduce `hteq`. Establish `h00` using `hinj' 0 hlen0 (i + 1) hleni t₀ hop (by rw [hop1, hteq])`. Conclude with `absurd h00 (by omega)`. Establish `hHU' : restrictIdeal H U' = c'.coordIdeal {t₀}`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hsome' 0 hlen0 t₀ hop`. Establish `hNU' : restrictIdeal (N[i]'hi) U' = c'.coordIdeal {t₁}`. Simplify using `using hsome' (i + 1) hleni t₁ hop1`. Establish `hHV1 : restrictIdeal H V = (c'.restrict hVU').coordIdeal {t₀}` using `restrictIdeal_eq_coordIdeal_restrict hVU' c' H {t₀} hHU'`. Establish `hHV2 : restrictIdeal H V = (c'.restrict hVU').coordIdeal {t₁}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[← hEqV]`. Conclude with `restrictIdeal_eq_coordIdeal_restrict hVU' c' (N[i]'hi) {t₁} hNU'`. Establish `hA : H.ideal ⟨V, hV⟩ = Ideal.span {(c'.restrict hVU').coord t₀}`. Simplify using `using (c'.restrict hVU').ideal_eq_span_coord hV H {t₀} hHV1`. Establish `hB : H.ideal ⟨V, hV⟩ = Ideal.span {(c'.restrict hVU').coord t₁}`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using (c'.restrict hVU').ideal_eq_span_coord hV H {t₁} hHV2`. Establish `hmem : (c'.restrict hVU').coord t₁ ∈ Ideal.span {(c'.restrict hVU').coord t₀}`. Rewrite using `[← hA, hB]`. Conclude with `Ideal.mem_span_singleton_self _`. Conclude with `hproper (hA.trans (span_coord_eq_top_of_mem_span hV (c'.restrict hVU') hne hmem))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data.
 
-Take `⟨a, ha0, has⟩ : ∃ a : ℕ → Option (Fin n), a 0 = some j₀ ∧ ∀ i, a (i + 1) = lab i` from `⟨fun i => if i = 0 then some j₀ else lab (i - 1), if_pos rfl, fun i => by show (if i + 1 = 0 then some j₀ else lab (i + 1 - 1)) = lab i`. Rewrite using `[if_neg (by omega : ¬ (i + 1 = 0)), Nat.add_sub_cancel]⟩`. Use `⟨U, hxU, n, c, a, insert j₀ S, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i hi j hj t hti htj`. Consider the cases of `i with`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `zero`. Consider the cases of `j with`. Consider the case `zero => rfl`. Consider the case `succ j'`. Establish `heq : j₀ = t`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Rewrite `hti` using `[ha0]`. Conclude with `Option.some.inj hti`. Rewrite `htj` using `[has j']`. Rewrite `htj` using `[← heq]`. Conclude with `absurd htj (hclash j' (by simpa using hj))`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Consider the case `succ i'`. Consider the cases of `j with`. Consider the case `zero`. Establish `heq : j₀ = t`. Rewrite `htj` using `[ha0]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Conclude with `Option.some.inj htj`. Rewrite `hti` using `[has i']`. Rewrite `hti` using `[← heq]`. Conclude with `absurd hti (hclash i' (by simpa using hi))`. Consider the case `succ j'`.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hti` using `[has i']`. Rewrite `htj` using `[has j']`. Establish `hij` using `h4 i' j' (by simpa using hi) (by simpa using hj) t hti htj`. Use linear arithmetic over natural numbers and integers. Introduce `i hi hn`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Consider the cases of `i with`. Consider the case `zero`. Rewrite `hn` using `[ha0]`. Conclude with `absurd hn (by simp)`. Consider the case `succ i'`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[has i']`. Establish `hi' : i' < N.length` using `by simpa using hi`. Simplify using `using h2 i' hi' hn`. Introduce `i hi t ht`. Consider the cases of `i with`.
-
-Consider the case `zero`. Establish `heq : j₀ = t`. Rewrite `ht` using `[ha0]`. Conclude with `Option.some.inj ht`. Rewrite using `[← heq]`.
-
-Simplify using `using h1`. Consider the case `succ i'`. Rewrite `ht` using `[has i']`. Establish `hi' : i' < N.length` using `by simpa using hi`. Simplify using `using h3 i' hi' t ht`.
-
-Conclude with `restrictIdeal_eq_coordIdeal_of_isAffineOpen_ideal_eq_span c hU _ (insert j₀ S) (ker_comp_subschemeι_ideal_eq_span_coord p H Z hU c j₀ S h1 h5)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hasStrictNormalCrossingsWith_ker_cons_of_hasLocalCoordsOnSmoothHypersurface [CharZero k] (p : P ⟶ Spec (CommRingCat.of k))
     [AlgebraicGeometry.Smooth p] (H : P.IdealSheafData) (N : List P.IdealSheafData)

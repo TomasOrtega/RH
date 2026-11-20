@@ -10,17 +10,17 @@ open scoped ComplexOrder
 variable (K : Type*) [Field K] [NumberField K]
 
 /- English proof (translation)
-Set `Vt : Matrix (Fin m) (Fin n) K` to `Matrix.of fun k j => v j k`. Set `B : Matrix (Fin m) (Fin n) ℂ` to `Vt.map σ`. Establish `hker : LinearMap.ker (Matrix.toLin' Vt) = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`. Introduce `g hg`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h0 : ∑ j, g j • v j = 0`. Use extensionality with `k`. Use `congrFun hg k` as an intermediate fact. Simplify using `only [Matrix.toLin'_apply, Matrix.mulVec, dotProduct, Vt, Matrix.of_apply, Pi.zero_apply] at this`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Pi.zero_apply]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 hv g h0 j`. Take `⟨g, hg⟩` from `LinearMap.exists_leftInverse_of_injective _ hker`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hW : LinearMap.toMatrix' g * Vt = 1`. Rewrite using `[← LinearMap.toMatrix'_toLin' Vt, ← LinearMap.toMatrix'_comp, hg, LinearMap.toMatrix'_id]`. Establish `hB : (LinearMap.toMatrix' g).map σ * B = 1`. Simplify using `only [B]`. Rewrite using `[← Matrix.map_mul, hW, Matrix.map_one σ (map_zero σ) (map_one σ)]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hinj : Function.Injective B.mulVec`. Introduce `x y hxy`. Use `congrArg ((LinearMap.toMatrix' g).map σ).mulVec hxy` as an intermediate fact. Simplify using `only [Matrix.mulVec_mulVec, hB, Matrix.one_mulVec] at this`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `Matrix.PosDef.conjTranspose_mul_self B hinj using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, B, Vt]`.
+A detailed English derivation is pending.
 -/
 theorem standardHermitian_gram_posDef (σ : K →+* ℂ) {m n : ℕ} (v : Fin n → Fin m → K)
     (hv : LinearIndependent K v) :
@@ -71,17 +71,17 @@ def stdLat (m : ℕ) : Submodule (𝓞 K) (Fin m → K) :=
   Submodule.span (𝓞 K) (Set.range fun i : Fin m => (Pi.single i 1 : Fin m → K))
 
 /- English proof (translation)
-Establish `hcoe : ⇑(Pi.basisFun K (Fin m)) = fun i : Fin m => (Pi.single i 1 : Fin m → K)`. Use function extensionality and compare the values at `i`. Simplify using `[Pi.basisFun_apply]`. Establish `hli : LinearIndependent K (fun i : Fin m => (Pi.single i 1 : Fin m → K))`. Rewrite using `[← hcoe]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Pi.basisFun K (Fin m)).linearIndependent`. Establish `hfr : IsFrame K (stdLat K m) (fun i : Fin m => (Pi.single i 1 : Fin m → K))`. Use `⟨fun i => Submodule.subset_span ⟨i, rfl⟩, hli, ?_⟩` and prove the remaining obligations. Introduce `x _`. Establish `hsp : Submodule.span K (Set.range fun i : Fin m => (Pi.single i 1 : Fin m → K)) = ⊤`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hcoe]`. Conclude with `(Pi.basisFun K (Fin m)).span_eq`. Rewrite using `[hsp]`. Conclude with `Submodule.mem_top`. Rewrite using `[arakelovDegree_eq_degreeOfFamily (E := stdLat K m) _ (Submodule.fg_span (Set.finite_range _)) hfr]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hg : ∀ σ : K →+* ℂ, (stdHerm K m).gram σ (fun i : Fin m => (Pi.single i 1 : Fin m → K)) = 1`. Introduce `σ`. Use extensionality with `i j`. Simplify using `only [HermFam.gram, stdHerm, Matrix.of_apply, Matrix.one_apply]`. Rewrite using `[Finset.sum_eq_single i]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h, Pi.single_apply, Ne.symm h]`. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Simplify using `[Pi.single_apply, hb]`. Simplify using the standard rewrite rules. Unfold `degreeOfFamily stdLat`. Simplify using `[hg, AddSubgroup.relIndex_self]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deg_stdLat (m : ℕ) : deg (stdHerm K m) (stdLat K m) = 0 := by
   classical
@@ -117,7 +117,7 @@ theorem deg_stdLat (m : ℕ) : deg (stdHerm K m) (stdLat K m) = 0 := by
   simp [hg, AddSubgroup.relIndex_self]
 
 /- English proof (translation)
-Establish `h` using `congrArg (‖·‖) (Algebra.norm_eq_prod_embeddings ℚ ℂ a)`. Simplify using `only [norm_prod] at h`. Rewrite using `[Fintype.prod_equiv (RingHom.equivRatAlgHom K ℂ) (fun σ : K →+* ℂ => ‖σ a‖) (fun σ : K →ₐ[ℚ] ℂ => ‖σ a‖) (fun σ => rfl), ← h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem prod_norm_embeddings (a : K) :
     ∏ σ : K →+* ℂ, ‖σ a‖ = |(Algebra.norm ℚ a : ℝ)| := by
@@ -128,17 +128,15 @@ theorem prod_norm_embeddings (a : K) :
   simp
 
 /- English proof (translation)
-Use `set x : Fin 1 → K := fun _ => a with hx`. Establish `hx0 : x ≠ 0` using `fun h => ha (congrFun h 0)`. Establish `hli : LinearIndependent K (fun _ : Fin 1 => x)`. Rewrite using `[linearIndependent_unique_iff]`. Conclude with `hx0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hrange : Set.range (fun _ : Fin 1 => x) = {x}` using `Set.range_const`. Establish `hfr : IsFrame K (Submodule.span (𝓞 K) {x}) (fun _ : Fin 1 => x)`. Use `⟨fun _ => Submodule.subset_span rfl, hli, ?_⟩` and prove the remaining obligations. Introduce `y hy`. Establish `hle : Submodule.span (𝓞 K) {x} ≤ (Submodule.span K (Set.range fun _ : Fin 1 => x)).restrictScalars (𝓞 K)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ rfl`. Conclude with `Submodule.subset_span ⟨0, rfl⟩`. Conclude with `hle hy`. Rewrite using `[arakelovDegree_eq_degreeOfFamily _ (Submodule.fg_span_singleton x) hfr]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : ∀ σ : K →+* ℂ, ((stdHerm K 1).gram σ (fun _ : Fin 1 => x)).det.re = ‖σ a‖ ^ 2`. Introduce `σ`. Simplify using `only [Matrix.det_unique, HermFam.gram, stdHerm, Matrix.of_apply, hx, Finset.univ_unique, Finset.sum_singleton]`. Rewrite using `[← Complex.normSq_eq_norm_sq, Complex.normSq_apply]`. Simplify using `[Complex.conj_re, Complex.conj_im]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hpos : ∀ σ : K →+* ℂ, ‖σ a‖ ≠ 0` using `fun σ => by`. Simplify using `using ha`. Establish `hsum : ∑ σ : K →+* ℂ, Real.log ((stdHerm K 1).gram σ (fun _ : Fin 1 => x)).det.re = 2 * Real.log |(Algebra.norm ℚ a : ℝ)|`. Simplify using `only [hg, Real.log_pow, Nat.cast_ofNat]`. Rewrite using `[← Finset.mul_sum, ← Real.log_prod (fun σ _ => hpos σ), prod_norm_embeddings]`.
-
-Unfold `degreeOfFamily`. Rewrite using `[hsum, hrange, AddSubgroup.relIndex_self]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem deg_span_singleton (a : K) (ha : a ≠ 0) :
     deg (stdHerm K 1) (Submodule.span (𝓞 K) {fun _ : Fin 1 => a}) =

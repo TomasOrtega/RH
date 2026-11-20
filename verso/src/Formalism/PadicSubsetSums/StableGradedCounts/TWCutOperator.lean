@@ -4,7 +4,7 @@ import Formalism.PadicSubsetSums.StableGradedCounts.TWCentralIdempotentIntegral
 namespace Formalism.IrreducibleCountingLemmas.TW
 
 /- English proof (translation)
-Rewrite using `[Representation.asAlgebraHom_def, MonoidAlgebra.lift_apply, Finsupp.sum, LinearMap.sum_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem asAlgebraHom_apply_eq_sum {K G V : Type} [Field K] [Group G] [AddCommGroup V] [Module K V]
     (ρ : Representation K G V) (x : MonoidAlgebra K G) (v : V) :
@@ -14,17 +14,17 @@ theorem asAlgebraHom_apply_eq_sum {K G V : Type} [Field K] [Group G] [AddCommGro
   rfl
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ _ G _ _ V _ _ _ _ ρ Msup U ψU e hM he hc v hv hψ`. Establish `hcomm : ∀ (g : G) (x : MonoidAlgebra K G) (w : V), (∀ y, x * y = y * x) → ρ g (ρ.asAlgebraHom x w) = ρ.asAlgebraHom x (ρ g w)`. Introduce `g x w hx`. Rewrite using `[← Representation.asAlgebraHom_single_one ρ g, ← Module.End.mul_apply, ← map_mul, ← Module.End.mul_apply, ← map_mul, hx]`. Establish `hcA : ∀ y : MonoidAlgebra K G, ((Fintype.card G : K) • e) * y = y * ((Fintype.card G : K) • e)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[smul_mul_assoc, mul_smul_comm, hc]`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[asAlgebraHom_apply_eq_sum]`. Use `Submodule.sum_mem _ fun g _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hint : IsIntegral ℤ ((Fintype.card G : K) * e.coeff g)` using `central_idempotent_integral_twist K G e he hc g`. Establish `hintO : IsIntegral O ((Fintype.card G : K) * e.coeff g)` using `hint.tower_top`. Take `⟨o, ho⟩` from `IsIntegrallyClosed.isIntegral_iff.1 hintO`. Establish `: ((Fintype.card G : K) • e).coeff g = algebraMap O K o`. Rewrite using `[ho, MonoidAlgebra.coeff_smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this, algebraMap_smul]`. Conclude with `Msup.smul_mem o (hM g v hv)`. Introduce `u`. Rewrite using `[hcomm _ _ _ hcA, hψ u, map_smul]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, mul_smul_comm, he]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hev`. Rewrite using `[map_smul, LinearMap.smul_apply, hev]`. Introduce `T hT`. Rewrite using `[asAlgebraHom_apply_eq_sum, asAlgebraHom_apply_eq_sum, map_sum]`. Use `Finset.sum_congr rfl fun g _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, hT]`.
+A detailed English derivation is pending.
 -/
 theorem truncation_operator_holds : CutOperator := by
   intro O K _ _ _ _ _ _ _ G _ _ V _ _ _ _ ρ Msup U ψU e hM he hc v hv hψ

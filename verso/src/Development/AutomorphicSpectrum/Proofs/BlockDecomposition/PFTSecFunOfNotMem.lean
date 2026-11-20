@@ -18,7 +18,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.SmallSec
 
 /- English proof (translation)
-Take `⟨hc, h1, h0⟩` from `hψ`. Establish `h` using `localFourier_indicator_valBall (selfDualMeasure ψ) hc h1 (-(m : ℤ)) a`. Rewrite `h` using `[h0, zero_sub, neg_neg]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ball_char_std {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle)
@@ -33,19 +33,19 @@ theorem ball_char_std {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
   exact h
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4⟩` from `hA`. Establish `e : ∀ y : Fin 2 → F, secFun ψ m (GL2LocalData.cat3 A y) * (ψ (-(ξ 0 * y 0 + ξ 1 * y 1)) : ℂ) = ∏ i : Fin 2, (fun (i : Fin 2) (t : F) => (valBall F (-(m : ℤ)) : Set F).indicator (fun _ => (1 : ℂ)) t * (ψ (t * ![-ξ 0, 1 - ξ 1] i) : ℂ)) i (y i)`. Introduce `y`. Rewrite using `[Fin.prod_univ_two]`. Distinguish the cases in `h0 : y 0 ∈ valBall F (-(m : ℤ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `h1 : y 1 ∈ valBall F (-(m : ℤ))`. Establish `hm : GL2LocalData.cat3 A y ∈ secSet F m`. Simplify using `only [secSet, GL2LocalData.cat3, Set.mem_setOf_eq]`. Simplify using `using ⟨a1, a2, a3, a4, h0, h1⟩`. Establish `hy : GL2LocalData.cat3 A y 1 2 = y 1` using `by simp [GL2LocalData.cat3]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [secFun, Set.indicator_of_mem hm, hy, Set.indicator_of_mem (show y 0 ∈ (valBall F (-(m : ℤ)) : Set F) from h0), Set.indicator_of_mem (show y 1 ∈ (valBall F (-(m : ℤ)) : Set F) from h1), one_mul]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[← Circle.coe_mul, ← Circle.coe_mul, ← AddChar.map_add_eq_mul, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hm : GL2LocalData.cat3 A y ∉ secSet F m`. Introduce `h`. Apply `h1` to reduce the goal to its premises. Simplify `h.2.2.2.2.2` using `[GL2LocalData.cat3]`. Simplify using `only [secFun, Set.indicator_of_notMem hm, Set.indicator_of_notMem (show y 1 ∉ (valBall F (-(m : ℤ)) : Set F) from h1)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hm : GL2LocalData.cat3 A y ∉ secSet F m`. Introduce `h`. Apply `h0` to reduce the goal to its premises. Simplify `h.2.2.2.2.1` using `[GL2LocalData.cat3]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `only [secFun, Set.indicator_of_notMem hm, Set.indicator_of_notMem (show y 0 ∉ (valBall F (-(m : ℤ)) : Set F) from h0)]`. Simplify using the standard rewrite rules. Unfold `GL2LocalData.pFT LFS.vol2`. Establish `key` using `integral_fintype_prod_eq_prod (μ := fun _ : Fin 2 => selfDualMeasure ψ) (fun (i : Fin 2) (t : F) => (valBall F (-(m : ℤ)) : Set F).indicator (fun _ => (1 : ℂ)) t * (ψ (t * ![-ξ 0, 1 - ξ 1] i) : ℂ))`. Use `(integral_congr_ae (Filter.Eventually.of_forall e)).trans (key.trans ?_)` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Fin.prod_univ_two]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one]`. Rewrite using `[ball_char_std ψ hψ, ball_char_std ψ hψ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pFT_secFun_of_mem {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle)
@@ -101,9 +101,9 @@ theorem pFT_secFun_of_mem {F : Type} [Field F] [ValuativeRel F] [TopologicalSpac
   rw [ball_char_std ψ hψ, ball_char_std ψ hψ]
 
 /- English proof (translation)
-Establish `e : ∀ y : Fin 2 → F, secFun ψ m (GL2LocalData.cat3 A y) * (ψ (-(ξ 0 * y 0 + ξ 1 * y 1)) : ℂ) = 0`. Introduce `y`. Establish `hm : GL2LocalData.cat3 A y ∉ secSet F m`. Introduce `h`. Apply `hA` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify `(⟨h.1, h.2.1, h.2.2.1, h.2.2.2.1⟩ : GL2LocalData.cat3 A y 0 0 - 1 ∈ valBall F (m : ℤ) ∧ GL2LocalData.cat3 A y 0 1 ∈ valBall F (m : ℤ) ∧ GL2LocalData.cat3 A y 1 0 ∈ valBall F (m : ℤ) ∧ GL2LocalData.cat3 A y 1 1 - 1 ∈ valBall F (m : ℤ))` using `[GL2LocalData.cat3]`. Simplify using `only [secFun, Set.indicator_of_notMem hm, zero_mul]`. Unfold `GL2LocalData.pFT`. Repeatedly rewrite using `[e]`. Simplify using the standard rewrite rules.
+Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pFT_secFun_of_notMem {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F]
     [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle)
@@ -125,13 +125,13 @@ theorem pFT_secFun_of_notMem {F : Type} [Field F] [ValuativeRel F] [TopologicalS
   simp
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ m A ξ`. Establish `hneg : -ξ 0 ∈ valBall F (m : ℤ) ↔ ξ 0 ∈ valBall F (m : ℤ)` using `neg_mem_iff`. Establish `hsub : 1 - ξ 1 ∈ valBall F (m : ℤ) ↔ ξ 1 - 1 ∈ valBall F (m : ℤ)`. Rewrite using `[← neg_sub, neg_mem_iff]`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a1, a2, a3, a4, x0, x1⟩`. Rewrite using `[pFT_secFun_of_mem ψ hψ m A ξ ⟨a1, a2, a3, a4⟩, Set.indicator_of_mem (show -ξ 0 ∈ (valBall F (m : ℤ) : Set F) from hneg.mpr x0), Set.indicator_of_mem (show 1 - ξ 1 ∈ (valBall F (m : ℤ) : Set F) from hsub.mpr x1)]`. Expand and normalize the polynomial expressions, which then agree. Introduce `h`. Distinguish the cases in `hA : A 0 0 - 1 ∈ valBall F (m : ℤ) ∧ A 0 1 ∈ valBall F (m : ℤ) ∧ A 1 0 ∈ valBall F (m : ℤ) ∧ A 1 1 - 1 ∈ valBall F (m : ℤ)`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Take `⟨a1, a2, a3, a4⟩` from `hA`. Rewrite using `[pFT_secFun_of_mem ψ hψ m A ξ ⟨a1, a2, a3, a4⟩]`. Distinguish the cases in `x0 : ξ 0 ∈ valBall F (m : ℤ)`. Establish `x1 : ξ 1 - 1 ∉ valBall F (m : ℤ)` using `fun x1 => h ⟨a1, a2, a3, a4, x0, x1⟩`. Rewrite using `[Set.indicator_of_notMem (show 1 - ξ 1 ∉ (valBall F (m : ℤ) : Set F) from fun hx => x1 (hsub.mp hx))]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[Set.indicator_of_notMem (show -ξ 0 ∉ (valBall F (m : ℤ) : Set F) from fun hx => x0 (hneg.mp hx))]`. Simplify using the standard rewrite rules. Conclude with `pFT_secFun_of_notMem ψ m A ξ hA`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem pFT_secFun : ∀ (F : Type) [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F] [MeasurableSpace F] [BorelSpace F] (ψ : AddChar F Circle), IsStd ψ → ∀ (m : ℕ) (A : Matrix (Fin 2) (Fin 2) F) (ξ : Fin 2 → F),
   ((A 0 0 - 1 ∈ valBall F (m : ℤ) ∧ A 0 1 ∈ valBall F (m : ℤ) ∧ A 1 0 ∈ valBall F (m : ℤ) ∧ A 1 1 - 1 ∈ valBall F (m : ℤ) ∧ ξ 0 ∈ valBall F (m : ℤ) ∧ ξ 1 - 1 ∈ valBall F (m : ℤ)) → GL2LocalData.pFT ψ (secFun ψ m) A ξ = (((selfDualMeasure ψ).real (valBall F (-(m : ℤ)) : Set F) : ℝ) : ℂ) ^ 2) ∧

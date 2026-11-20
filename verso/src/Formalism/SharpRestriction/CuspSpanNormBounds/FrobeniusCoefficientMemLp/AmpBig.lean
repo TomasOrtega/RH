@@ -15,7 +15,7 @@ namespace Formalism.MainNotions.S.Pv.LemmaJ
 open Formalism.BasicNotions Formalism.QuantumDeterminants Formalism.MainNotions.S Formalism.MainNotions.S.Bridge Formalism.MainNotions.S.ThB
 
 /- English proof (translation)
-Simplify using `only [hsNormSq, hsInner]`. Rewrite using `[Complex.re_sum]`. Conclude with `Finset.sum_nonneg (fun i _ => by`. Simplify using `using (inner_self_nonneg (𝕜 := ℂ) (x := A ((stdOrthonormalBasis ℂ Wq) i))))`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem hsNormSq_nonneg' {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [NormedAddCommGroup Wq]
     [InnerProductSpace ℂ Wq] [FiniteDimensional ℂ Wq] (A : Wq →L[ℂ] Wp) : 0 ≤ hsNormSq A := by
@@ -25,11 +25,9 @@ theorem hsNormSq_nonneg' {Wp Wq : Type*} [NormedAddCommGroup Wp] [InnerProductSp
     simpa using (inner_self_nonneg (𝕜 := ℂ) (x := A ((stdOrthonormalBasis ℂ Wq) i))))
 
 /- English proof (translation)
-Simplify using `only [inWb] at hz`. Simplify using `only [ell, eI]`. Apply `Finset.sum_eq_zero` to reduce the goal to its premises. Introduce `a _`. Use `split_ifs with h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Matrix.one_apply_ne` to reduce the goal to its premises. Introduce `heq`. Establish `h'` using `congrArg Fin.val heq`. Simplify using `[eI] at h'`. Rewrite using `[Matrix.one_mulVec]`.
-
-Conclude with `hz _ (Or.inl (by simp [a.isLt]))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ell_one {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) :
     ell k r z (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = 0 := by
@@ -46,7 +44,7 @@ theorem ell_one {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) 
     exact hz _ (Or.inl (by simp [a.isLt]))
 
 /- English proof (translation)
-Simplify using `only [psi]`. Simplify using `[ell_one hz]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem psi_one {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (c : ℂ) :
     psi k r z c (1 : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ) = 1 := by
@@ -54,11 +52,11 @@ theorem psi_one {k r : ℕ} {z : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) 
   simp [ell_one hz]
 
 /- English proof (translation)
-Establish `h1` using `(Formalism.MainNotions.InterlacingSignCuts.bigCell_D k r z z' hz hz' c hc (μsec ζ)).2`. Rewrite `h1` using `[(hsec.2 ζ hζ).2]`. Establish `h2` using `(Formalism.QuantumDeterminants.bigCellMinors k r z z' c (μsec ζ) hz hz').1 (Fin.last r)`. Simplify using `only [Fin.val_last] at h2`. Establish `hne : (∏ a : Fin r with a.val < r, c a) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun a _ => hc a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e : Gf k r z z' (bigCell k r c (μsec ζ)) = Complex.normSq (∏ a : Fin r with a.val < r, c a) * (Complex.normSq ζ - Tz k r z * Tz k r z')`. Unfold `Gf`. Rewrite using `[h1, h2, Complex.normSq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Conclude with `mul_pos (Complex.normSq_pos.2 hne) (by linarith)`.
+A detailed English derivation is pending.
 -/
 theorem Gf_big {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z) (hz' : inWb k r z')
     {μsec : ℂ → Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ} (hsec : IsSection k r z z' μsec)
@@ -78,13 +76,13 @@ theorem Gf_big {k r : ℕ} {z z' : Fin (2 * r + k + 1) → ℂ} (hz : inWb k r z
   exact mul_pos (Complex.normSq_pos.2 hne) (by linarith)
 
 /- English proof (translation)
-Simplify using `only [bcWeight] at h`. Use `split_ifs at h with hle`. Establish `h1` using `left_ne_zero_of_mul h`. Establish `h2` using `right_ne_zero_of_mul h`. Use `⟨fun a => ?_, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ha` using `Finset.prod_ne_zero_iff.mp h1 a (Finset.mem_univ a)`. Establish `hexp : 2 * (Mdim k r a - 2) ≠ 0`. Simplify using `only [Mdim]`. Use linear arithmetic over natural numbers and integers. Introduce `h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `ha` to reduce the goal to its premises. Rewrite using `[h0, norm_zero, zero_pow hexp]`. Establish `hne : Complex.normSq p.2 - T * T' ≠ 0`. Introduce `h0`. Apply `h2` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0]`. Conclude with `zero_pow (by omega)`. Conclude with `lt_of_le_of_ne hle (fun heq => hne (by rw [heq]; ring))`. Conclude with `absurd rfl h`.
+A detailed English derivation is pending.
 -/
 theorem bcWeight_ne {k r : ℕ} (hk : 2 ≤ k) {T T' : ℝ} {p : (Fin r → ℂ) × ℂ} (h : bcWeight k r T T' p ≠ 0) :
     (∀ a, p.1 a ≠ 0) ∧ T * T' < Complex.normSq p.2 := by
@@ -109,51 +107,45 @@ theorem bcWeight_ne {k r : ℕ} (hk : 2 ≤ k) {T T' : ℝ} {p : (Fin r → ℂ)
   · exact absurd rfl h
 
 /- English proof (translation)
-Introduce `D τ w w' θ W hW lam' A hA hT hT' f hfEq μsec hsec`. Establish `hW'` using `hW`. Take `⟨-, -, hz, hz', hTz, hTz', hG, -, -, -, -, -, -, -⟩` from `hW'`. Establish `hk2 : 2 ≤ D.R.k` using `by have := Formalism.MainNotions.BridgeLemma.five_le_k D; omega`. Unfold `jNorm2 MMv jNormSq`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[show (toBessel D τ w w' θ W lam' A hW hA hT hT').z = W.z from rfl, show (toBessel D τ w w' θ W lam' A hW hA hT hT').z' = W.z' from rfl, hTz, hTz']`. Use `lintegral_congr fun q => ?_` and prove the remaining obligations. Distinguish the cases in `hw0 : bcWeight D.R.k D.R.rS (Tr D w) (Tr D w') q = 0`. Rewrite using `[hw0, zero_mul, zero_mul]`. Take `⟨hc, hζ⟩` from `bcWeight_ne hk2 hw0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `congr 2`. Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), Real.sq_sqrt (hsNormSq_nonneg' _)]`. Use `congr 1`. Use `set g := bigCell D.R.k D.R.rS q.1 (μsec q.2) with hgdef`. Establish `hζ' : Tz D.R.k D.R.rS W.z * Tz D.R.k D.R.rS W.z' < Complex.normSq q.2` using `by rw [hTz, hTz']; exact hζ`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hμ` using `(hsec.2 q.2 hζ').1`. Establish `hgU : g ∈ UH (Hpk D.R.k D.R.rS)` using `Formalism.QuantumDeterminants.bigCellMem _ _ _ _ hc hμ`. Establish `hGp` using `Gf_big hz hz' hsec q.1 hc q.2 hζ'`. Establish `hRS` using `Formalism.MainNotions.S.Lem.orbRStabBig _ _ _ _ hc hμ`. Establish `hgi : g⁻¹ * g = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `WeylGroupFacts.isUnit_of_uh hgU`. Conclude with `Matrix.nonsing_inv_mul _ hu`. Use `set one : Mt D.R.k D.R.rS := fun i j => (1 : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ) i j with hone`. Establish `hof : (Matrix.of one : Matrix _ _ ℂ) = 1` using `rfl`. Establish `hRel : IsRelStab (toBessel D τ w w' θ W lam' A hW hA hT hT') g`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Rewrite `ha` using `[hRS]`. Rewrite using `[Set.mem_singleton_iff.1 ha, Matrix.mul_one, hgi]`. Use `show psi _ _ W.z _ 1 = psi _ _ W.z' _ 1`. Rewrite using `[psi_one hz, psi_one hz']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hHaar : IsHaarOn (RStab D.R.k D.R.rS g) (Measure.dirac one)`. Use `⟨inferInstance, Measure.dirac_ne_zero, ?_, ?_⟩` and prove the remaining obligations. Establish `hset : {x : Mt D.R.k D.R.rS | Matrix.of x ∉ ({1} : Set (Matrix _ _ ℂ))} = {one}ᶜ`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_singleton_iff, Set.mem_compl_iff]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `not_congr ⟨fun h => ?_, fun h => by rw [h]; rfl⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i j`. Conclude with `congrFun (congrFun h i) j`. Rewrite using `[hRS, hset, Measure.dirac_apply' _ (measurableSet_singleton _).compl]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `s hs`. Rewrite `hs` using `[hRS]`. Rewrite using `[Set.mem_singleton_iff.1 hs]`. Establish `hl1 : lmulM (k` using `D.R.k) (r := D.R.rS) (1 : Matrix (Fin (2 * D.R.rS + D.R.k + 1)) (Fin (2 * D.R.rS + D.R.k + 1)) ℂ) = id := by`. Use function extensionality and compare the values at `x i j`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[lmulM]`. Rewrite using `[hl1, Measure.map_id]`. Establish `hOQ : IsOrbQuot (toBessel D τ w w' θ W lam' A hW hA hT hT') g (Measure.dirac one) (pairMeas (toBessel D τ w w' θ W lam' A hW hA hT hT'))`. Introduce `F hF`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[lintegral_dirac]`. Use `congr 1`. Unfold `stabAct`. Rewrite using `[hof, Matrix.one_mul, Matrix.mul_one, hgi, Matrix.one_mul]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hpt : (fun i j => (g⁻¹ * Matrix.of one * g) i j : Mt D.R.k D.R.rS) = one`. Use function extensionality and compare the values at `i j`. Rewrite using `[hof, Matrix.mul_one, hgi]`. Establish `hmc : Measurable (fun x : Mt D.R.k D.R.rS => fun i j => (g⁻¹ * Matrix.of x * g) i j)`. Apply `Continuous.measurable` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_pi fun i => continuous_pi fun j => ?_` and prove the remaining obligations. Conclude with `((continuous_const.matrix_mul continuous_id).matrix_mul continuous_const).matrix_elem i j`. Establish `hQM : IsQuotMeas W.μG ((Measure.dirac one).map (fun x => fun i j => (g⁻¹ * Matrix.of x * g) i j)) W.μG`. Establish `hmapd : (Measure.dirac one).map (fun x => fun i j => (g⁻¹ * Matrix.of x * g) i j) = Measure.dirac one`. Use extensionality with `s hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Both sides reduce to the same expression.
 
-Rewrite using `[Measure.map_apply hmc hs, Measure.dirac_apply' _ (hmc hs), Measure.dirac_apply' _ hs]`. Establish `hiff : one ∈ (fun x : Mt D.R.k D.R.rS => fun i j => (g⁻¹ * Matrix.of x * g) i j) ⁻¹' s ↔ one ∈ s`. Rewrite using `[Set.mem_preimage]`. Conclude with `iff_of_eq (congrArg (· ∈ s) hpt)`. Simplify using `only [Set.indicator]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `split_ifs with h1 h2 h2`. Both sides reduce to the same expression. Conclude with `absurd (hiff.1 h1) h2`. Conclude with `absurd (hiff.2 h2) h1`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmapd]`. Introduce `F hF`. Use `lintegral_congr fun x => ?_` and prove the remaining obligations. Rewrite using `[lintegral_dirac]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i j`. Rewrite using `[hof, Matrix.one_mul]`. Both sides reduce to the same expression. Establish `hMo : Formalism.FourierDecayAlt.C2.IsMonomial (Formalism.QuantumDeterminants.Zhat D.R.k D.R.rS W.z W.z' g)`. Rewrite using `[hgdef, Formalism.QuantumDeterminants.bigCellZhat _ _ _ _ _ _ hz hz']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `⟨Equiv.refl _, fun a => if h : a.val < D.R.rS then q.1 ⟨a.val, h⟩ else herm (Hpk D.R.k D.R.rS) (Matrix.mulVec (bigCell D.R.k D.R.rS q.1 (μsec q.2)) W.z') W.z, fun a => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : a.val < D.R.rS`. Simplify using `only [dif_pos h]`. Conclude with `hc _`. Simplify using `only [dif_neg h]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hz0` using `(Formalism.QuantumDeterminants.bigCellMinors _ _ _ _ q.1 (μsec q.2) hz hz').2.2 hc`. Establish `hζ0 : q.2 ≠ 0`. Introduce `e`. Rewrite `hζ'` using `[e, Complex.normSq_zero]`. Establish `: 0 ≤ Tz D.R.k D.R.rS W.z * Tz D.R.k D.R.rS W.z'` using `by rw [hTz, hTz']; positivity`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h1` using `Formalism.MainNotions.InterlacingSignCuts.bigCell_D D.R.k D.R.rS W.z W.z' hz hz' q.1 hc (μsec q.2)`. Rewrite `h1` using `[(hsec.2 q.2 hζ').2]`. Rewrite using `[← hz0]`. Unfold `zeta`.
-
-Rewrite using `[h1.2, mul_div_cancel_left₀ _ h1.1]`. Conclude with `hζ0`. Use extensionality with `i j`. Simplify using `only [Formalism.FourierDecayAlt.C2.monoP, Matrix.diagonal_apply, Matrix.of_apply, Equiv.refl_apply]`. Distinguish the cases in `hij : i = j`.
-
-Substitute `hij` using the available equality. Simplify using the standard rewrite rules. Simplify using `[hij]`. Establish `e1` using `hfEq g hgU hGp hMo hRel (Measure.dirac one) W.μG (pairMeas (toBessel D τ w w' θ W lam' A hW hA hT hT')) hHaar hOQ hQM`. Rewrite using `[e1]`.
-
-Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem big_cell_eq : BigCellEq := by
   intro D τ w w' θ W hW lam' A hA hT hT' f hfEq μsec hsec
@@ -271,7 +263,7 @@ theorem big_cell_eq : BigCellEq := by
   rfl
 
 /- English proof (translation)
-The claim follows from `ampUnif_of hAO big_cell_eq hRC hNZ`.
+A detailed English derivation is pending.
 -/
 theorem ampUnif_of' (hAO : AmpOrbU) (hRC : RootCmp) (hNZ : AmpNZ) : AmpUnif :=
   ampUnif_of hAO big_cell_eq hRC hNZ

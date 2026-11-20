@@ -31,7 +31,7 @@ open MeasureTheory GlobalTheory.WeilM GlobalTheory.ThK
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Unfold `Model.I GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta`. Use `congr 1`. Use function extensionality and compare the values at `g`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem I_om_right {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W)
     (Φ : (Fin n × Fin d → AF F) → ℂ) (h₀ h : UA σ W.J) :
@@ -42,17 +42,15 @@ theorem I_om_right {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W
   rw [← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Establish `hinv : ∀ γ ∈ ratU σ X.J, ∀ x, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om Φ (γ * x) y = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om Φ x y`. Introduce `γ hγ x`. Use `((hB F E σ B n d X W M χX χW om r s r' s' hp).1 Φ hΦ).2.1 γ hγ 1 (one_mem _) x y` as an intermediate fact. Rewrite `this` using `[one_mul]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `haveI : IsTopologicalRing (AE F E) := IsModuleTopology.isTopologicalRing (AF F) _`. Use `haveI : BorelSpace (UA σ X.J) := ⟨rfl⟩`. Use `haveI := hp.good.haar`. Use `haveI : M.μ.IsMulRightInvariant := GlobalTheory.ThetaRightTranslate.isMulRightInvariant σ hp.base.cm X.J hp.herm.herm (GlobalTheory.isUnit_det_of_isHerm F E σ B n X r s hp.herm) M.μ`. Use `haveI := GlobalTheory.ThetaRightTranslate.countable_ratU σ X.J`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : MeasurableConstSMul (ratU σ X.J) (UA σ X.J) := ⟨fun c => measurable_const_mul (c : UA σ X.J)⟩`. Use `haveI : SMulInvariantMeasure (ratU σ X.J) (UA σ X.J) M.μ := ⟨fun c s _ => measure_preimage_mul M.μ (c : UA σ X.J) s⟩`. Establish `hL : M.I om (om (g, 1) Φ) y = ∫ x in M.dom, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om Φ (x * g) y ∂M.μ`. Unfold `Model.I GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta`. Use `congr 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[← Module.End.mul_apply, ← map_mul, Prod.mk_mul_mk, mul_one]`. Establish `hmp` using `measurePreserving_mul_right M.μ g`. Establish `h1` using `hmp.setIntegral_preimage_emb (measurableEmbedding_mulRight g) (fun x => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om Φ x y) ((fun x : UA σ X.J => x * g⁻¹) ⁻¹' M.dom)`. Establish `hpre : (fun x : UA σ X.J => x * g) ⁻¹' ((fun x : UA σ X.J => x * g⁻¹) ⁻¹' M.dom) = M.dom`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite `h1` using `[hpre]`. Establish `hfd' : IsFundamentalDomain (ratU σ X.J) ((fun x : UA σ X.J => x * g⁻¹) ⁻¹' M.dom) M.μ` using `hp.good.dom.preimage_of_equiv (measurePreserving_mul_right M.μ g⁻¹).quasiMeasurePreserving (e := id) Function.bijective_id (fun γ x => by show (γ.1 * x) * g⁻¹ = γ.1 * (x * g⁻¹)`. Conclude with `mul_assoc _ _ _)`.
-
-Establish `h2` using `hfd'.setIntegral_eq hp.good.dom (f := fun x => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om Φ x y) (fun γ x => hinv γ.1 γ.2 x)`. Rewrite using `[hL, h1, h2]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem I_om_left (hB : ThetaBasic) {B : Base F E} {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W}
     {χX χW : Chr F E} {om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W} {r s r' s' : ℕ} (hp : IsPair B M χX χW om r s r' s')
@@ -94,7 +92,7 @@ theorem I_om_left (hB : ThetaBasic) {B : Base F E} {n d : ℕ} {X : Spc F E n} {
   rfl
 
 /- English proof (translation)
-Unfold `Model.So`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨f, φ, h1, h2, -, rfl⟩`. Conclude with `GlobalTheory.ConeMeasV.pure_mem_schA hM f φ h1 h2`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem so_le_schA {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W} {ψ : AddChar (AF F) ℂ}
     (hM : M.IsGood ψ) {v₁ : Pl F} (t : E →ₐ[F] Fv F v₁) : M.So ψ t ≤ schA F (Fin n × Fin d) := by
@@ -104,7 +102,7 @@ theorem so_le_schA {n d : ℕ} {X : Spc F E n} {W : Spc F E d} {M : Model σ X W
   exact GlobalTheory.ConeMeasV.pure_mem_schA hM f φ h1 h2
 
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Unfold `Model.I GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta`. Simplify using `only [map_smul, GlobalTheory.WeilM.thetaSum_smul, Pi.smul_apply, smul_eq_mul]`. Conclude with `integral_const_mul c _`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem I_smul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ X W)
     (c : ℂ) (Φ : (Fin n × Fin d → AF F) → ℂ) : M.I om (c • Φ) = c • M.I om Φ := by
@@ -114,9 +112,9 @@ theorem I_smul {n d : ℕ} {X : Spc F E n} {W : Spc F E d} (M : Model σ X W) (o
   exact integral_const_mul c _
 
 /- English proof (translation)
-Establish `hp` using `GlobalTheory.ThK.Inhab.pairV' hT`. Establish `hB` using `GlobalTheory.T.theta_basic_properties hKP.base`. Introduce `h`. Take `⟨C, k, hC⟩` from `GlobalTheory.T.schwartz_orbit_decay hKP F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hp Φ hΦ 0`. Establish `hcont` using `((hB F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hp).1 Φ (so_le_schA hT.geo.hM' B.τ₁ hΦ)).1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : BorelSpace (UA σ G.V'.J) := ⟨rfl⟩`. Establish `hfin` using `GlobalTheory.UnitaryVol.measure_dom_lt_top F E σ B a a' G X om om' hKP.siegelSetUnitary hT`. Use `Measure.integrableOn_of_bounded (M := C * (ht h : ℝ) ^ k) hfin.ne ?_ ?_` and prove the remaining obligations. Conclude with `(hcont.comp (continuous_id.prodMk continuous_const)).aestronglyMeasurable`. Conclude with `Filter.Eventually.of_forall fun g => by simpa using hC g h`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem conv_so (hKP : GlobalTheory.ThK.KP) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     {om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W} {om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W} (hT : IsTriple B G X om om')
@@ -134,11 +132,11 @@ theorem conv_so (hKP : GlobalTheory.ThK.KP) {B : Base F E} {a a' : ℕ} {G : Geo
   · exact Filter.Eventually.of_forall fun g => by simpa using hC g h
 
 /- English proof (translation)
-Establish `hp` using `GlobalTheory.ThK.Inhab.pairV' hT`. Establish `hs1` using `so_le_schA hT.geo.hM' B.τ₁ h1`. Establish `hs2` using `so_le_schA hT.geo.hM' B.τ₁ h2`. Establish `hpres : ∀ p, ∀ Ψ ∈ schA F (Fin a' × Fin (a + a')), om' p Ψ ∈ schA F (Fin a' × Fin (a + a'))` using `fun p Ψ hΨ => (IsUWeilPair.isUSplitting hp.weil).pres p Ψ hΨ`. Use function extensionality and compare the values at `h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `e : (fun g => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om' (Φ₁ + Φ₂) g h) = fun g => GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om' Φ₁ g h + GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta om' Φ₂ g h`. Use function extensionality and compare the values at `g`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.theta`. Rewrite using `[map_add, GlobalTheory.WeilM.thetaSum_add F (hpres _ _ hs1) (hpres _ _ hs2)]`. Unfold `Model.I`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[e, integral_add (conv_so hKP hT _ h1 h) (conv_so hKP hT _ h2 h)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem I_add (hKP : GlobalTheory.ThK.KP) {B : Base F E} {a a' : ℕ} {G : Geo σ a a'} {X : Chars F E}
     {om : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V G.W} {om' : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Rep σ G.V' G.W} (hT : IsTriple B G X om om')
@@ -175,29 +173,27 @@ end GlobalTheory.ThetaGlobalHalf
 open GlobalTheory.ThetaGlobalHalf in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ B a a' G X om om' hKP hT c hc hcs Φ hΦ`. Establish `hSo : Φ ∈ G.M'.So B.ψ B.τ₁` using `(Submodule.mem_inf.1 hΦ).2`. Establish `hM'` using `hT.geo.hM'`. Establish `hp` using `GlobalTheory.ThK.Inhab.pairV' hT`. Establish `hB` using `GlobalTheory.T.theta_basic_properties hKP.base`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hstab` using `GlobalTheory.T.weil_representation_preserves_space hKP.base F E σ B a a' G X om om' hT`. Set `Λ₀ : G.M'.So B.ψ B.τ₁ →ₗ[ℂ] (UA σ G.W.J → ℂ)` to `{ toFun := fun Ψ => G.M'.I om' Ψ.1 map_add' := fun Ψ₁ Ψ₂ => I_add hKP hT Ψ₁.2 Ψ₂.2 map_smul' := fun c Ψ => I_smul G.M' om' c Ψ.1 }`. Take `⟨Λ, hΛ⟩` from `LinearMap.exists_extend Λ₀`. Establish `hΛI : ∀ Ψ ∈ G.M'.So B.ψ B.τ₁, Λ Ψ = G.M'.I om' Ψ` using `fun Ψ hΨ => LinearMap.congr_fun hΛ ⟨Ψ, hΨ⟩`. Establish `hSo' : Φ ∈ Submodule.span ℂ {Φ | ∃ f φ, (∀ v, φ v ∈ SB _) ∧ (∀ᶠ v in Filter.cofinite, φ v = G.M'.vac v) ∧ φ B.v₁ ∈ G.M'.SoLoc B.ψ B.τ₁ ∧ Φ = pure f φ}` using `hSo`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨m, coef, gen, hsum⟩` from `Submodule.mem_span_set'.1 hSo'`. Use `choose fj φj hSB hev hv hgen using fun j => (gen j).2`. Establish `hstd : ∀ j, ∀ᶠ w in Filter.cofinite, φj j w = Set.indicator {x | ∀ i, x i ∈ w.adicCompletionIntegers F} 1` using `fun j => ((hev j).and hM'.std).mono fun w hw => hw.1.trans hw.2`. Use `choose r hr hrt using fun j => GlobalTheory.PureFactor.exists_rest_factor B.v₁ (fj j) (φj j) (hstd j)`. Establish `hupd : ∀ j, ∀ χ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁), ∀ w, Function.update (φj j) B.v₁ χ w ∈ SB _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Introduce `j χ hχ w`. Distinguish the cases in `hw : w = B.v₁`. Substitute `hw` using the available equality. Rewrite using `[Function.update_self]`. Conclude with `hχ`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Function.update_of_ne hw]`. Conclude with `hSB j w`. Establish `hupdev : ∀ j χ, ∀ᶠ w in Filter.cofinite, Function.update (φj j) B.v₁ χ w = G.M'.vac w` using `fun j χ => by filter_upwards [hev j, Filter.eventually_cofinite_ne B.v₁] with w hw hne`. Rewrite using `[Function.update_of_ne hne]`. Conclude with `hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hmem : ∀ j, ∀ χ ∈ G.M'.SoLoc B.ψ B.τ₁, tensL B.v₁ (r j) χ ∈ G.M'.So B.ψ B.τ₁`. Introduce `j χ hχ`. Rewrite using `[tensL_apply, hrt j χ]`. Conclude with `Submodule.subset_span ⟨fj j, Function.update (φj j) B.v₁ χ, hupd j χ hχ.1, hupdev j χ, by rw [Function.update_self]; exact hχ, rfl⟩`. Establish `hrest : ∀ j, ∀ χ ∈ SB (Fin a' × Fin (a + a') → Fv F B.v₁), Rest (evFin F B.v₁) χ (r j)` using `fun j χ hχ => ⟨hr j, by rw [hrt j χ]; exact GlobalTheory.ConeMeasV.pure_mem_schA hM' _ _ (hupd j χ hχ) (hupdev j χ)⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `T : (UA σ G.W.J → ℂ) →ₗ[ℂ] (GAd σ (c • G.W.J.map σ) → ℂ)` to `LinearMap.funLeft ℂ ℂ (toGAd hσ G.W.J hc).symm`. Use `⟨m, fun j => coef j • (T ∘ₗ Λ ∘ₗ tensL B.v₁ (r j)), fun j => φj j B.v₁, hv, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i g hg φ₀ hφ₀ φ₁ hφ₁ hA`. Establish `e1 : tensL B.v₁ (r i) φ₁ = om' (g, 1) (tensL B.v₁ (r i) φ₀)` using `(hA (r i) (hrest i φ₀ hφ₀.1)).symm`. Establish `hin` using `hmem i φ₀ hφ₀`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hin1 : tensL B.v₁ (r i) φ₁ ∈ G.M'.So B.ψ B.τ₁` using `by rw [e1]; exact hstab _ _ hin`. Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply]`. Rewrite using `[hΛI _ hin1, hΛI _ hin, e1, I_om_left hB hp g _ (so_le_schA hM' B.τ₁ hin)]`. Introduce `i x φ₀ hφ₀ φ₁ hφ₁ hA`. Establish `e1` using `(hA (r i) (hrest i φ₀ hφ₀.1)).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hin` using `hmem i φ₀ hφ₀`. Establish `hin1 : tensL B.v₁ (r i) φ₁ ∈ G.M'.So B.ψ B.τ₁`. Rewrite using `[tensL_apply, e1]`. Conclude with `hstab _ _ hin`. Use function extensionality and compare the values at `y`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [LinearMap.smul_apply, LinearMap.comp_apply, Pi.smul_apply]`. Rewrite using `[hΛI _ hin1, hΛI _ hin, tensL_apply, e1]`. Simplify using `only [T, LinearMap.funLeft_apply, Function.comp_apply]`. Rewrite using `[I_om_right, map_mul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hΦsum : Φ = ∑ j, coef j • tensL B.v₁ (r j) (φj j B.v₁)`. Rewrite using `[← hsum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hgen j, tensL_apply, hrt j, Function.update_eq_self]`. Establish `hT' : (fun y => G.M'.I om' Φ ((toGAd hσ G.W.J hc).symm y)) = T (Λ Φ)`.
-
-Rewrite using `[hΛI Φ hSo]`. Both sides reduce to the same expression. Rewrite using `[hT', hΦsum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [map_smul, LinearMap.smul_apply, LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ThetaGlobalHalf.thetaIntegral_eq_sum_local : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (hσ : ∀ x, σ (σ x) = x) (B : Base F E) (a a' : ℕ) (G : Geo σ a a') (X : Chars F E)

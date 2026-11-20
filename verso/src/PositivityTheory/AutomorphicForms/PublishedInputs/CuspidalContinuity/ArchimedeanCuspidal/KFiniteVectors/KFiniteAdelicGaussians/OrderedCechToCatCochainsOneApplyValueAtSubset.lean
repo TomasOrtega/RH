@@ -33,7 +33,7 @@ def F (w : InfinitePlace K) (M : ℕ) (p : K × K × K) : ℝ :=
     ((1 + w p.1 + w p.2.1) ^ 5 * (1 + w p.2.2) ^ 3)⁻¹ else 0
 
 /- English proof (translation)
-Use `apply_nonneg w p.1` as an intermediate fact. Use `apply_nonneg w p.2.1` as an intermediate fact. Use `apply_nonneg w p.2.2` as an intermediate fact. Apply the tactic sequence `unfold F; split_ifs <;> positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem F_nonneg (w : InfinitePlace K) (M : ℕ) (p : K × K × K) : 0 ≤ F w M p := by
   have := apply_nonneg w p.1
@@ -42,28 +42,26 @@ theorem F_nonneg (w : InfinitePlace K) (M : ℕ) (p : K × K × K) : 0 ≤ F w M
   unfold F; split_ifs <;> positivity
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.summable_lattice_height_series K hK inferInstance w M hM`.
+A detailed English derivation is pending.
 -/
 theorem summable_F (hK : Module.finrank ℚ K = 2) [IsTotallyComplex K] (w : InfinitePlace K) (M : ℕ)
     (hM : 0 < M) : Summable (F w M) :=
   GlobalTheory.T.summable_lattice_height_series K hK inferInstance w M hM
 
 /- English proof (translation)
-Use `set B1 := max 1 B`. Establish `hB1 : 1 ≤ B1` using `le_max_left _ _`. Establish `hBB1 : B ≤ B1` using `le_max_right _ _`. Establish `hD : 1 ≤ (1 + α) * (1 + β)` using `by nlinarith`. Establish `e1 : 1 + ρ ≤ B1 * (1 + β)` using `by nlinarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : 1 + Y ≤ B1 * ((1 + α) * (1 + β) ^ 2)`. Establish `: α * β ^ 2 ≤ (1 + α) * (1 + β) ^ 2 - 1` using `by nlinarith [sq_nonneg β, mul_nonneg hα hβ]`. Establish `h0 : 0 ≤ α * β ^ 2` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `e3 : (1 + ρ) * (1 + Y) ≤ B1 ^ 2 * ((1 + α) * (1 + β)) ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : (1 + α) * (1 + β) ^ 3 ≤ ((1 + α) * (1 + β)) ^ 3`. Establish `: (1 + α) ≤ (1 + α) ^ 3` using `le_self_pow₀ (by linarith) (by norm_num)`. Establish `: (1 + α) * (1 + β) ^ 3 ≤ (1 + α) ^ 3 * (1 + β) ^ 3` using `mul_le_mul_of_nonneg_right this (by positivity)`. Simplify `this` using `[mul_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `e4 : ((1 + ρ) * (1 + Y)) ^ L ≤ B1 ^ (2 * L) * ((1 + α) * (1 + β)) ^ (3 * L)`. Combine the equalities or inequalities in the displayed calculation. Establish `e5 : Ai ^ T ≤ Q ^ T * (1 + ρ) ^ (2 * T)`. Establish `hq : Q * ρ ^ 2 ≤ Q * (1 + ρ) ^ 2` using `mul_le_mul_of_nonneg_left (pow_le_pow_left₀ hρ (by linarith) 2) hQ`. Rewrite using `[pow_mul, ← mul_pow]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `pow_le_pow_left₀ hAi0 (hAi.trans hq) T`. Establish `hDpos : 0 < ((1 + α) * (1 + β)) ^ (3 * L)` using `by positivity`. Establish `e6 : (1 + ρ) ^ (2 * T) * ((1 + ρ) ^ 5 * (1 + Y) ^ 3) ≤ ((1 + ρ) * (1 + Y)) ^ L`. Rewrite using `[mul_pow]`. Establish `h1 : (1 + ρ) ^ (2 * T) * (1 + ρ) ^ 5 ≤ (1 + ρ) ^ L`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← pow_add]; exact pow_le_pow_right₀ (by linarith) hL`. Establish `h2 : (1 + Y) ^ 3 ≤ (1 + Y) ^ L` using `pow_le_pow_right₀ (by linarith) (by omega)`. Combine the equalities or inequalities in the displayed calculation. Establish `hP : 0 < (1 + ρ) ^ 5 * (1 + Y) ^ 3` using `by positivity`. Establish `hCg0 : 0 ≤ max Cg 0` using `le_max_right _ _`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Conclude with `le_max_left _ _`. Use `_ ≤ max Cg 0 * Q ^ T * (max 1 B) ^ (2 * L) * ((1 + ρ) ^ 5 * (1 + Y) ^ 3)⁻¹ := by`. Rewrite using `[div_le_iff₀ hDpos]`. Establish `key : (1 + ρ) ^ (2 * T) ≤ B1 ^ (2 * L) * ((1 + α) * (1 + β)) ^ (3 * L) * ((1 + ρ) ^ 5 * (1 + Y) ^ 3)⁻¹`.
-
-Rewrite using `[le_mul_inv_iff₀ hP]`. Conclude with `e6.trans e4`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem real_bound {T L : ℕ} (hL : 2 * T + 5 ≤ L) {X Cg Ai α β ρ Y B Q : ℝ} (hα : 0 ≤ α) (hβ : 0 ≤ β)
     (hρ : 0 ≤ ρ) (hY : 0 ≤ Y) (hB : 0 ≤ B) (hQ : 0 ≤ Q) (hAi0 : 0 ≤ Ai)
@@ -122,21 +120,19 @@ theorem real_bound {T L : ℕ} (hL : 2 * T + 5 ≤ L) {X Cg Ai α β ρ Y B Q : 
           _ = _ := by ring
 
 /- English proof (translation)
-Establish `hs : Continuous (Prod.snd : 𝔸[K] → 𝔸f)` using `continuous_snd`. Use `set D : Set 𝔸f := ((fun p : 𝔸f × G3K K => p.1 * (Φ0 p.2).2) '' (Ω ×ˢ C)) ∪ ((fun p : 𝔸f × G3K K => p.1 * (Φ1 p.2).2) '' (Ω ×ˢ C)) ∪ ((fun p : 𝔸f × 𝔸f × G3K K => p.1 * p.2.1 ^ 2 * (Ψ p.2.2).2) '' (Ω ×ˢ Ω ×ˢ C)) with hDdef`. Establish `hD : IsCompact D`. Use `(((hΩ.prod hC).image ?_).union ((hΩ.prod hC).image ?_)).union ((hΩ.prod (hΩ.prod hC)).image ?_)` and prove the remaining obligations. Conclude with `continuous_fst.mul (hs.comp (h0.comp continuous_snd))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `continuous_fst.mul (hs.comp (h1.comp continuous_snd))`. Conclude with `(continuous_fst.mul ((continuous_fst.comp continuous_snd).pow 2)).mul (hs.comp (hΨ.comp (continuous_snd.comp continuous_snd)))`. Take `⟨d, hd0, hd⟩` from `GroundTheory.Global.exists_mul_mem_integralFiniteAdeles_of_isCompact hD`. Use `set N : ℕ := Ideal.absNorm (Ideal.span {d}) with hNdef`. Take `⟨d', hd'⟩` from `Ideal.mem_span_singleton'.1 (Ideal.absNorm_mem (Ideal.span {d}))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hN0 : N ≠ 0`. Rewrite using `[hNdef, Ne, Ideal.absNorm_eq_zero_iff, Ideal.span_singleton_eq_bot]`. Conclude with `hd0`. Establish `hNK : (N : K) = (d' : K) * (d : K)`. Use `congrArg (fun r : 𝓞 K => (r : K)) hd'` as an intermediate fact.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hNdef]`. Move the coercions through the operations in `at this`. Conclude with `this.symm`. Establish `key : ∀ x : K, algebraMap K 𝔸f x ∈ D → ∃ a : 𝓞 K, (a : K) = (N : K) * x`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hm` using `hd _ hx`. Rewrite `hm` using `[← map_mul]`. Take `⟨b, hb⟩` from `GlobalTheory.T.integral_of_integral_finite_adele K _ hm`. Establish `hb' : (b : K) = (d : K) * x` using `by rw [hb]`. Use `⟨d' * b, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hNK, show ((d' * b : 𝓞 K) : K) = (d' : K) * (b : K) from map_mul (algebraMap (𝓞 K) K) d' b, hb']`. Expand and normalize the polynomial expressions, which then agree. Use `⟨N, Nat.pos_of_ne_zero hN0, fun u v hu hv m hm x0 x1 y e0 e1 ey => ⟨key _ ?_, key _ ?_, key _ ?_⟩⟩` and prove the remaining obligations. Use `Or.inl (Or.inl ⟨((v : 𝔸[K]).2, m), ⟨hv, hm⟩, ?_⟩)` and prove the remaining obligations. Use `congrArg Prod.snd e0` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this.symm`. Use `Or.inl (Or.inr ⟨((v : 𝔸[K]).2, m), ⟨hv, hm⟩, ?_⟩)` and prove the remaining obligations. Use `congrArg Prod.snd e1` as an intermediate fact. Simplify using `using this.symm`. Use `Or.inr ⟨((u : 𝔸[K]).2, (v : 𝔸[K]).2, m), ⟨hu, hv, hm⟩, ?_⟩` and prove the remaining obligations.
-
-Use `congrArg Prod.snd ey` as an intermediate fact. Establish `h2 : ((v : 𝔸[K]) ^ 2).2 = (v : 𝔸[K]).2 ^ 2` using `by rw [pow_two, pow_two]; rfl`. Simplify `this.symm` using `[h2]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem lattice {Ω : Set 𝔸f} (hΩ : IsCompact Ω) {C : Set (G3K K)} (hC : IsCompact C)
     {Φ0 Φ1 Ψ : G3K K → 𝔸[K]} (h0 : Continuous Φ0) (h1 : Continuous Φ1) (hΨ : Continuous Ψ) :
@@ -188,7 +184,7 @@ theorem lattice {Ω : Set 𝔸f} (hΩ : IsCompact Ω) {C : Set (G3K K)} (hC : Is
     simpa [h2] using this.symm
 
 /- English proof (translation)
-Establish `e : (algebraMap K 𝔸[K] x).1 w = (x : w.Completion)` using `rfl`. Rewrite using `[e]`. Use `InfinitePlace.Completion.norm_coe (v := w) ((WithAbs.equiv w.1).symm x)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem k_inf (w : InfinitePlace K) (x : K) : ‖(algebraMap K 𝔸[K] x).1 w‖ = w x := by
   have e : (algebraMap K 𝔸[K] x).1 w = (x : w.Completion) := rfl
@@ -197,47 +193,43 @@ theorem k_inf (w : InfinitePlace K) (x : K) : ‖(algebraMap K 𝔸[K] x).1 w‖
   simpa using this
 
 /- English proof (translation)
-Rewrite using `[show (a * b).1 w = a.1 w * b.1 w from rfl, norm_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem norm_inf_mul (w : InfinitePlace K) (a b : 𝔸[K]) : ‖(a * b).1 w‖ = ‖a.1 w‖ * ‖b.1 w‖ := by
   rw [show (a * b).1 w = a.1 w * b.1 w from rfl, norm_mul]
 
 /- English proof (translation)
-Take `⟨M, hM, hlat⟩` from `lattice hΩ hC h0 h1 hΨ`. Establish `hcf : ∀ f : G3K K → 𝔸[K], Continuous f → Continuous fun m => ‖(f m).1 w‖` using `fun f hf => ((continuous_apply w).comp (continuous_fst.comp hf)).norm`. Take `⟨B0, hB0⟩` from `hC.exists_bound_of_continuousOn (((hcf _ h0).add (hcf _ h1)).add (hcf _ hΨ)).continuousOn`. Use `set B := max B0 0 with hBdef`. Establish `hB : 0 ≤ B` using `le_max_right _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbd : ∀ m ∈ C, ‖(Φ0 m).1 w‖ ≤ B ∧ ‖(Φ1 m).1 w‖ ≤ B ∧ ‖(Ψ m).1 w‖ ≤ B`. Introduce `m hm`. Establish `h` using `hB0 m hm`. Establish `n0` using `norm_nonneg ((Φ0 m).1 w)`. Establish `n1` using `norm_nonneg ((Φ1 m).1 w)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `n2` using `norm_nonneg ((Ψ m).1 w)`. Simplify using `only [Pi.add_apply] at h`. Rewrite `h` using `[Real.norm_eq_abs, abs_of_nonneg (by positivity)]`. Use `le_max_left B0 0` as an intermediate fact. Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> linarith`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Use `set Q : ℝ := K0 * M ^ 2 * 9 with hQdef`. Establish `hQ : 0 ≤ Q` using `by positivity`. Use `⟨M, hM, max Cg 0 * Q ^ T * (max 1 (2 * B)) ^ (2 * (2 * T + 5)), ?_⟩` and prove the remaining obligations. Introduce `X u v m hm x0 x1 y z e0 e1 ey hz hA hX hsupp`. Establish `hF0` using `F_nonneg w M (x0, x1, y)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKK : 0 ≤ max Cg 0 * Q ^ T * (max 1 (2 * B)) ^ (2 * (2 * T + 5))`. Establish `: 0 ≤ max Cg 0` using `le_max_right _ _`. Check the signs of the components of the expression. Distinguish the cases in `hX0 : X = 0`. Rewrite using `[hX0]`.
+Check the signs of the components of the expression. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_nonneg hKK hF0`. Take `⟨hu, hv⟩` from `hsupp hX0`. Take `⟨d0, d1, dy⟩` from `hlat u v hu hv m hm x0 x1 y e0 e1 ey`. Establish `hFe : F w M (x0, x1, y) = ((1 + w x0 + w x1) ^ 5 * (1 + w y) ^ 3)⁻¹`. Simplify using `only [F]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[if_pos ⟨d0, d1, dy⟩]`. Rewrite using `[hFe]`. Establish `ninf : ∀ (s : K) (a b : 𝔸[K]), algebraMap K 𝔸[K] s = a * b → w s = ‖a.1 w‖ * ‖b.1 w‖`. Introduce `s a b h`. Rewrite using `[← k_inf, h, norm_inf_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set α := ‖(u : 𝔸[K]).1 w‖ with hαdef`. Use `set β := ‖(v : 𝔸[K]).1 w‖ with hβdef`. Establish `hα : 0 ≤ α` using `norm_nonneg _`. Establish `hβ : 0 ≤ β` using `norm_nonneg _`. Take `⟨b0, b1, b2⟩` from `hbd m hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `w0` using `apply_nonneg w x0`. Establish `w1` using `apply_nonneg w x1`. Establish `wy` using `apply_nonneg w y`. Establish `hx0 : w x0 ≤ B * β`. Rewrite using `[ninf _ _ _ e0]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg ((Φ0 m).1 w)]`. Establish `hx1 : w x1 ≤ B * β`. Rewrite using `[ninf _ _ _ e1]`. Use polynomial arithmetic with `[norm_nonneg ((Φ1 m).1 w)]`. Establish `hy : w y ≤ 2 * B * (α * β ^ 2)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Rewrite using `[ninf _ _ _ ey, norm_inf_mul, pow_two, norm_inf_mul]`. Establish `h3 : 0 ≤ α * (β * β)` using `by positivity`. Establish `h4` using `norm_nonneg ((Ψ m).1 w)`. Use the polynomial consequences of the given equalities and inequalities. Establish `hz' : ∀ i, ∃ a : 𝓞 K, (a : K) = (M : K) * z i`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i`. Apply the tactic sequence `rcases hz i with h | h | h <;> rw [h]`. Conclude with `⟨0, by simp⟩`. Conclude with `d0`. Conclude with `d1`.
+Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hH` using `GlobalTheory.T.imaginary_quadratic_adelic_norm_bound K hK inferInstance w M hM z hz'`. Establish `hzi : ∀ i, w (z i) ≤ w x0 + w x1`. Introduce `i`. Apply the tactic sequence `rcases hz i with h | h | h <;> rw [h]`. Simplify using the standard rewrite rules.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum0 : 0 ≤ ∑ i, w (z i)` using `Finset.sum_nonneg fun i _ => apply_nonneg w (z i)`. Establish `hsum : ∑ i, w (z i) ≤ 3 * (w x0 + w x1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Rewrite using `[Fin.sum_univ_three]`. Combine the linear relations using `[hzi 0, hzi 1, hzi 2]`. Use `set Ai := ((IdeleGroup.ideleModule K u : ℝ) * IdeleGroup.ideleModule K v)⁻¹ with hAidef`. Establish `hAi0 : 0 ≤ Ai`. Use `(IdeleGroup.ideleModule K u).2` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(IdeleGroup.ideleModule K v).2` as an intermediate fact. Check the signs of the components of the expression. Establish `hMr : (0 : ℝ) ≤ (M : ℝ) ^ 2` using `by positivity`. Establish `hAi : Ai ≤ Q * (w x0 + w x1) ^ 2`. Use `hA.trans ?_` and prove the remaining obligations.
-
-Combine the equalities or inequalities in the displayed calculation. Establish `hX' : X ≤ Cg * Ai ^ T / ((1 + α) * (1 + β)) ^ (3 * (2 * T + 5))`. Rewrite using `[hAidef, inv_pow, ← div_eq_mul_inv]`. Conclude with `hX`. Establish `hρ : w x0 + w x1 ≤ 2 * B * β` using `by linarith`.
-
-Use `real_bound (T := T) (L := 2 * T + 5) le_rfl hα hβ (by positivity) wy (by positivity : (0 : ℝ) ≤ 2 * B) hQ hAi0 hX' hAi hρ hy` as an intermediate fact. Rewrite `this` using `[← add_assoc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem core (hK : Module.finrank ℚ K = 2) [IsTotallyComplex K] (w : InfinitePlace K)
     {Ω : Set 𝔸f} (hΩ : IsCompact Ω) {C : Set (G3K K)} (hC : IsCompact C)
@@ -343,14 +335,14 @@ theorem core (hK : Module.finrank ℚ K = 2) [IsTotallyComplex K] (w : InfiniteP
   rwa [← add_assoc] at this
 
 /- English proof (translation)
-The claim follows from `AdelicGLn.diagonal_apply K 3 ξ i j`.
+A detailed English derivation is pending.
 -/
 theorem dia_apply (ξ : GL (Fin 3) K) (i j : Fin 3) :
     (diaK ξ : M3A) i j = algebraMap K 𝔸[K] ((ξ : Matrix (Fin 3) (Fin 3) K) i j) :=
   AdelicGLn.diagonal_apply K 3 ξ i j
 
 /- English proof (translation)
-Rewrite using `[RingHom.map_det]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem dia_det (ξ : GL (Fin 3) K) :
     (diaK ξ : M3A).det = algebraMap K 𝔸[K] (ξ : Matrix (Fin 3) (Fin 3) K).det := by
@@ -358,14 +350,14 @@ theorem dia_det (ξ : GL (Fin 3) K) :
   congr 1
 
 /- English proof (translation)
-The claim follows from `(Reduction.mem_adelicBorel.1 hβ) h`.
+A detailed English derivation is pending.
 -/
 theorem upper_zero {β : G3K K} (hβ : β ∈ (Reduction.adelicBorel : Subgroup (G3K K))) {i j : Fin 3} (h : j < i) :
     (β : M3A) i j = 0 :=
   (Reduction.mem_adelicBorel.1 hβ) h
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_upperTriangular (Reduction.mem_adelicBorel.1 hβ), Fin.prod_univ_three]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem upper_det {β : G3K K} (hβ : β ∈ (Reduction.adelicBorel : Subgroup (G3K K))) :
     (β : M3A).det = (β : M3A) 0 0 * (β : M3A) 1 1 * (β : M3A) 2 2 := by
@@ -380,7 +372,7 @@ theorem orderedCechToCatCochainsOne_apply_valueAtSubset (γ : GL (Fin 2) K) :
         (γ : Matrix (Fin 2) (Fin 2) K) 1 0, (γ : Matrix (Fin 2) (Fin 2) K) 1 1, 0; 0, 0, 1] := rfl
 
 /- English proof (translation)
-Rewrite using `[← e, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_three, dia_apply, dia_apply, dia_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem beta_apply {ξ : GL (Fin 3) K} {m β : G3K K} (e : diaK ξ * m = β) (i j : Fin 3) :
     (β : M3A) i j = algebraMap K 𝔸[K] ((ξ : Matrix (Fin 3) (Fin 3) K) i 0) * (m : M3A) 0 j +
@@ -389,32 +381,30 @@ theorem beta_apply {ξ : GL (Fin 3) K} {m β : G3K K} (e : diaK ξ * m = β) (i 
   rw [← e, Units.val_mul, Matrix.mul_apply, Fin.sum_univ_three, dia_apply, dia_apply, dia_apply]
 
 /- English proof (translation)
-Rewrite using `[← e, Units.val_mul, Matrix.det_mul, dia_det]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem beta_det {ξ : GL (Fin 3) K} {m β : G3K K} (e : diaK ξ * m = β) :
     (β : M3A).det = algebraMap K 𝔸[K] (ξ : Matrix (Fin 3) (Fin 3) K).det * (m : M3A).det := by
   rw [← e, Units.val_mul, Matrix.det_mul, dia_det]
 
 /- English proof (translation)
-Use `set A := algebraMap K 𝔸[K]`. Establish `hb : ∀ i j, (β : M3A) i j = _` using `beta_apply e`. Establish `r20 : (m : M3A) 2 0 = 0`. Establish `x` using `hb 2 0; simp [orderedCechToCatCochainsOne_apply_valueAtSubset] at x; rw [← x]; exact upper_zero hβ (by decide)`. Establish `r21 : (m : M3A) 2 1 = 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `x` using `hb 2 1; simp [orderedCechToCatCochainsOne_apply_valueAtSubset] at x; rw [← x]; exact upper_zero hβ (by decide)`. Establish `r22 : (m : M3A) 2 2 = t3`. Establish `x` using `hb 2 2`. Simplify using `[orderedCechToCatCochainsOne_apply_valueAtSubset] at x`. Rewrite using `[← x]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `f10 : A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0) * (m : M3A) 0 0 + A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) * (m : M3A) 1 0 = 0`. Establish `x` using `hb 1 0; simp [orderedCechToCatCochainsOne_apply_valueAtSubset] at x; rw [← x]; exact upper_zero hβ (by decide)`. Establish `f00 : A ((γ : Matrix (Fin 2) (Fin 2) K) 0 0) * (m : M3A) 0 0 + A ((γ : Matrix (Fin 2) (Fin 2) K) 0 1) * (m : M3A) 1 0 = t1`. Establish `x` using `hb 0 0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[orderedCechToCatCochainsOne_apply_valueAtSubset] at x`. Rewrite using `[← x]`. Conclude with `h1`. Establish `hdγ : A (γ : Matrix (Fin 2) (Fin 2) K).det = A ((γ : Matrix (Fin 2) (Fin 2) K) 0 0) * A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) - A ((γ : Matrix (Fin 2) (Fin 2) K) 0 1) * A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0)`. Rewrite using `[Matrix.det_fin_two]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[A, map_sub, map_mul]`. Establish `hdξ : ((e1 K γ : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K).det = (γ : Matrix (Fin 2) (Fin 2) K).det`. Rewrite using `[orderedCechToCatCochainsOne_apply_valueAtSubset, Matrix.det_fin_three, Matrix.det_fin_two]`. Simplify using the standard rewrite rules. Establish `hdet : A (γ : Matrix (Fin 2) (Fin 2) K).det * (m : M3A).det = t1 * t2 * t3`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hdξ, ← beta_det e, upper_det hβ, h1, h2, h3]`. Establish `h00 : A (γ : Matrix (Fin 2) (Fin 2) K).det * (m : M3A) 0 0 = A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) * t1`. Rewrite using `[hdγ]`. Take the linear combination `A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) * f00 - A ((γ : Matrix (Fin 2) (Fin 2) K) 0 1) * f10`. Establish `h10 : A (γ : Matrix (Fin 2) (Fin 2) K).det * (m : M3A) 1 0 = -A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0) * t1`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[hdγ]`. Take the linear combination `A ((γ : Matrix (Fin 2) (Fin 2) K) 0 0) * f10 - A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0) * f00`. Establish `i1 : (t1 : 𝔸[K]) * ((t1⁻¹ : (𝔸[K])ˣ) : 𝔸[K]) = 1` using `Units.mul_inv t1`. Establish `i2 : (t2 : 𝔸[K]) * ((t2⁻¹ : (𝔸[K])ˣ) : 𝔸[K]) = 1` using `Units.mul_inv t2`. Establish `i3 : (t3 : 𝔸[K]) * ((t3⁻¹ : (𝔸[K])ˣ) : 𝔸[K]) = 1` using `Units.mul_inv t3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `iD : (m : M3A).det * (((AdelicGLn.det K 3 m)⁻¹ : (𝔸[K])ˣ) : 𝔸[K]) = 1`. Rewrite using `[← AdelicGLn.coe_det]`. Conclude with `Units.mul_inv _`. Use `set Dinv : 𝔸[K] := (((AdelicGLn.det K 3 m)⁻¹ : (𝔸[K])ˣ) : 𝔸[K])`. Use `set dm := (m : M3A).det`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `set t1i : 𝔸[K] := ((t1⁻¹ : (𝔸[K])ˣ) : 𝔸[K])`. Use `set t2i : 𝔸[K] := ((t2⁻¹ : (𝔸[K])ˣ) : 𝔸[K])`. Use `set t3i : 𝔸[K] := ((t3⁻¹ : (𝔸[K])ˣ) : 𝔸[K])`. Use `⟨?_, ?_, ?_, r20, r21, r22, h00, h10⟩` and prove the remaining obligations. Rewrite using `[r22, Units.val_mul]`.
-
-Take the linear combination `(-(t1i * Dinv * dm)) * h00 + (t1i * Dinv * (m : M3A) 0 0) * hdet + ((t2 : 𝔸[K]) * t3 * (m : M3A) 0 0 * Dinv - A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) * dm * Dinv) * i1 - A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) * iD - ((t2 : 𝔸[K]) * t3 * (m : M3A) 0 0 * Dinv) * i3`. Rewrite using `[r22, Units.val_mul, map_neg]`. Take the linear combination `(-(t1i * Dinv * dm)) * h10 + (t1i * Dinv * (m : M3A) 1 0) * hdet + ((t2 : 𝔸[K]) * t3 * (m : M3A) 1 0 * Dinv + A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0) * dm * Dinv) * i1 + A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0) * iD - ((t2 : 𝔸[K]) * t3 * (m : M3A) 1 0 * Dinv) * i3`. Rewrite using `[r22, Units.val_mul, Units.val_mul]`. Take the linear combination `(-A (γ : Matrix (Fin 2) (Fin 2) K).det) * iD + Dinv * hdet - ((t1 : 𝔸[K]) * t2 * t3 * Dinv * ((t3 : 𝔸[K]) * t3i) ^ 2) * i2 - ((t1 : 𝔸[K]) * t2 * t3 * Dinv * ((t3 : 𝔸[K]) * t3i + 1)) * i3`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem algU (γ : GL (Fin 2) K) {m β : G3K K} (hβ : β ∈ (Reduction.adelicBorel : Subgroup (G3K K)))
     (e : diaK (e1 K γ) * m = β) (t1 t2 t3 : (𝔸[K])ˣ) (h1 : (β : M3A) 0 0 = t1) (h2 : (β : M3A) 1 1 = t2)
@@ -484,19 +474,19 @@ theorem algU (γ : GL (Fin 2) K) {m β : G3K K} (hβ : β ∈ (Reduction.adelicB
       ((t1 : 𝔸[K]) * t2 * t3 * Dinv * ((t3 : 𝔸[K]) * t3i + 1)) * i3
 
 /- English proof (translation)
-The claim follows from `Reduction.continuous_GL_apply i j`.
+A detailed English derivation is pending.
 -/
 theorem contEnt (i j : Fin 3) : Continuous fun m : G3K K => (m : M3A) i j :=
   Reduction.continuous_GL_apply i j
 
 /- English proof (translation)
-The claim follows from `Units.continuous_coe_inv.comp (AdelicGLn.continuous_det K 3)`.
+A detailed English derivation is pending.
 -/
 theorem contDinv : Continuous fun m : G3K K => (((AdelicGLn.det K 3 m)⁻¹ : (𝔸[K])ˣ) : 𝔸[K]) :=
   Units.continuous_coe_inv.comp (AdelicGLn.continuous_det K 3)
 
 /- English proof (translation)
-Use `AdelicGLn.isTopologicalGroup K 3` as an intermediate fact. Conclude with `(hKc.prod Reduction.isCompact_maxCompact).image (continuous_fst.mul continuous_snd.inv)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem compact_C {Kc : Set (G3K K)} (hKc : IsCompact Kc) :
     IsCompact ((fun p : G3K K × G3K K => p.1 * p.2⁻¹) '' (Kc ×ˢ ((Reduction.maxCompact : Subgroup (G3K K)) : Set (G3K K)))) := by
@@ -504,9 +494,9 @@ theorem compact_C {Kc : Set (G3K K)} (hKc : IsCompact Kc) :
   exact (hKc.prod Reduction.isCompact_maxCompact).image (continuous_fst.mul continuous_snd.inv)
 
 /- English proof (translation)
-Establish `e : ((IdeleGroup.ideleModule K (t1 * t2⁻¹) : ℝ) * IdeleGroup.ideleModule K (t2 * t3⁻¹)) = (IdeleGroup.ideleModule K t1 : ℝ) / IdeleGroup.ideleModule K t3`. Establish `hg : t1 * t2⁻¹ * (t2 * t3⁻¹) = t1 * t3⁻¹` using `by group`. Use `congrArg (fun x => ((IdeleGroup.ideleModule K x : ℝ))) hg` as an intermediate fact. Simplify using `only [map_mul, map_inv, Positive.val_mul, Positive.coe_inv] at this ⊢`. Rewrite using `[div_eq_mul_inv]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `this`. Establish `p1` using `(IdeleGroup.ideleModule K t1).2`. Establish `p3` using `(IdeleGroup.ideleModule K t3).2`. Rewrite using `[e, inv_div]`. Conclude with `div_le_div₀ (by linarith) h3 hX1 h1`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem poly_gen (t1 t2 t3 : (𝔸[K])ˣ) {X1 X3 : ℝ} (hX1 : 0 < X1)
     (h1 : X1 ≤ (IdeleGroup.ideleModule K t1 : ℝ)) (h3 : (IdeleGroup.ideleModule K t3 : ℝ) ≤ X3) :
@@ -524,7 +514,7 @@ theorem poly_gen (t1 t2 t3 : (𝔸[K])ˣ) {X1 X3 : ℝ} (hX1 : 0 < X1)
   exact div_le_div₀ (by linarith) h3 hX1 h1
 
 /- English proof (translation)
-Rewrite using `[Reduction.adelicNorm_smul (Reduction.hasFiniteContent_single_one 2), Reduction.adelicNorm_single_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adelicNorm_row (t : (𝔸[K])ˣ) :
     Reduction.adelicNorm ((t : 𝔸[K]) • (Pi.single 2 (1 : 𝔸[K]) : Fin 3 → 𝔸[K])) = IdeleGroup.ideleModule K t := by
@@ -535,7 +525,7 @@ def ιU (q : NQ K) : K × K × K :=
     (q.out : Matrix (Fin 2) (Fin 2) K).det)
 
 /- English proof (translation)
-Introduce `q q' h`. Simplify using `only [ιU, Prod.mk.injEq, neg_inj] at h`. Conclude with `GlobalTheory.T.quotient_eq_of_lower_entries_eq_of_det_eq K q q' h.2.1 h.1 h.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ιU_inj : Function.Injective (ιU (K := K)) := by
   intro q q' h
@@ -543,13 +533,13 @@ theorem ιU_inj : Function.Injective (ιU (K := K)) := by
   exact GlobalTheory.T.quotient_eq_of_lower_entries_eq_of_det_eq K q q' h.2.1 h.1 h.2.2
 
 /- English proof (translation)
-The claim follows from `((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem det_ne_zero' (γ : GL (Fin 2) K) : (γ : Matrix (Fin 2) (Fin 2) K).det ≠ 0 :=
   ((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero
 
 /- English proof (translation)
-Use extensionality with `j`. Apply the tactic sequence `fin_cases j <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_three, Pi.single_apply, r20, r21, r22]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem row_two {m : G3K K} {t : (𝔸[K])ˣ} (r20 : (m : M3A) 2 0 = 0) (r21 : (m : M3A) 2 1 = 0)
     (r22 : (m : M3A) 2 2 = t) :
@@ -558,7 +548,7 @@ theorem row_two {m : G3K K} {t : (𝔸[K])ˣ} (r20 : (m : M3A) 2 0 = 0) (r21 : (
   fin_cases j <;> simp [Matrix.vecMul, dotProduct, Fin.sum_univ_three, Pi.single_apply, r20, r21, r22]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[e2, b2M, sw, Matrix.mul_apply, Fin.sum_univ_three]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem xiV_apply (γ : GL (Fin 2) K) :
     ((e2 K γ * sw K : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K) =
@@ -569,33 +559,31 @@ theorem xiV_apply (γ : GL (Fin 2) K) :
     simp [e2, b2M, sw, Matrix.mul_apply, Fin.sum_univ_three]
 
 /- English proof (translation)
-Use `set A := algebraMap K 𝔸[K]`. Establish `hδ : (γ : Matrix (Fin 2) (Fin 2) K).det ≠ 0` using `((Matrix.isUnit_iff_isUnit_det _).1 γ.isUnit).ne_zero`. Establish `hi : A (γ : Matrix (Fin 2) (Fin 2) K).det * A ((γ : Matrix (Fin 2) (Fin 2) K).det)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hδ, map_one]`. Establish `hb : ∀ i j, (β : M3A) i j = _` using `beta_apply e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f00 : (m : M3A) 1 0 = t1`. Establish `x` using `hb 0 0`. Rewrite `x` using `[xiV_apply]`. Simplify using `at x`. Rewrite using `[← x]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h1`. Establish `f10 : A ((γ : Matrix (Fin 2) (Fin 2) K) 0 0) * (m : M3A) 0 0 + A ((γ : Matrix (Fin 2) (Fin 2) K) 0 1) * (m : M3A) 2 0 = 0`. Establish `x` using `hb 1 0; rw [xiV_apply] at x; simp at x; rw [← x]; exact upper_zero hβ (by decide)`. Establish `f20 : A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0) * (m : M3A) 0 0 + A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) * (m : M3A) 2 0 = 0`. Establish `x` using `hb 2 0; rw [xiV_apply] at x; simp at x; rw [← x]; exact upper_zero hβ (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f11 : A ((γ : Matrix (Fin 2) (Fin 2) K) 0 0) * (m : M3A) 0 1 + A ((γ : Matrix (Fin 2) (Fin 2) K) 0 1) * (m : M3A) 2 1 = t2`. Establish `x` using `hb 1 1`. Rewrite `x` using `[xiV_apply]`. Simplify using `at x`. Rewrite using `[← x]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h2`. Establish `f21 : A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0) * (m : M3A) 0 1 + A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) * (m : M3A) 2 1 = 0`. Establish `x` using `hb 2 1; rw [xiV_apply] at x; simp at x; rw [← x]; exact upper_zero hβ (by decide)`. Establish `f22 : A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0) * (m : M3A) 0 2 + A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) * (m : M3A) 2 2 = t3`. Establish `x` using `hb 2 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite `x` using `[xiV_apply]`. Simplify using `at x`. Rewrite using `[← x]`. Conclude with `h3`. Establish `hdγ : A (γ : Matrix (Fin 2) (Fin 2) K).det = A ((γ : Matrix (Fin 2) (Fin 2) K) 0 0) * A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) - A ((γ : Matrix (Fin 2) (Fin 2) K) 0 1) * A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_fin_two]`. Simplify using `[A, map_sub, map_mul]`. Establish `hdξ : ((e2 K γ * sw K : GL (Fin 3) K) : Matrix (Fin 3) (Fin 3) K).det = -(γ : Matrix (Fin 2) (Fin 2) K).det`. Rewrite using `[xiV_apply, Matrix.det_fin_three, Matrix.det_fin_two]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hdet : -A (γ : Matrix (Fin 2) (Fin 2) K).det * (m : M3A).det = t1 * t2 * t3`. Rewrite using `[← map_neg, ← hdξ, ← beta_det e, upper_det hβ, h1, h2, h3]`. Establish `hm00 : A (γ : Matrix (Fin 2) (Fin 2) K).det * (m : M3A) 0 0 = 0`. Rewrite using `[hdγ]`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) * f10 - A ((γ : Matrix (Fin 2) (Fin 2) K) 0 1) * f20`. Establish `hm20 : A (γ : Matrix (Fin 2) (Fin 2) K).det * (m : M3A) 2 0 = 0`. Rewrite using `[hdγ]`. Take the linear combination `A ((γ : Matrix (Fin 2) (Fin 2) K) 0 0) * f20 - A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0) * f10`. Establish `hm01 : A (γ : Matrix (Fin 2) (Fin 2) K).det * (m : M3A) 0 1 = A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) * t2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdγ]`. Take the linear combination `A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) * f11 - A ((γ : Matrix (Fin 2) (Fin 2) K) 0 1) * f21`. Establish `hm21 : A (γ : Matrix (Fin 2) (Fin 2) K).det * (m : M3A) 2 1 = -A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0) * t2`. Rewrite using `[hdγ]`. Take the linear combination `A ((γ : Matrix (Fin 2) (Fin 2) K) 0 0) * f21 - A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0) * f11`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set Ai := A ((γ : Matrix (Fin 2) (Fin 2) K).det)⁻¹`. Establish `z00 : (m : M3A) 0 0 = 0` using `by linear_combination Ai * hm00 - (m : M3A) 0 0 * hi`. Establish `z20 : (m : M3A) 2 0 = 0` using `by linear_combination Ai * hm20 - (m : M3A) 2 0 * hi`. Establish `p : ((m⁻¹ : G3K K) : M3A) 0 1 * t1 = 1`. Establish `x : ((m⁻¹ * m : G3K K) : M3A) 0 0 = 1` using `by rw [inv_mul_cancel]; simp`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `x` using `[Units.val_mul, Matrix.mul_apply, Fin.sum_univ_three, z00, z20, f00]`. Simplify using `using x`. Establish `i2 : (t2 : 𝔸[K]) * ((t2⁻¹ : (𝔸[K])ˣ) : 𝔸[K]) = 1` using `Units.mul_inv t2`. Establish `i3 : (t3 : 𝔸[K]) * ((t3⁻¹ : (𝔸[K])ˣ) : 𝔸[K]) = 1` using `Units.mul_inv t3`. Use `set mi := ((m⁻¹ : G3K K) : M3A) 0 1`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Use `set t2i : 𝔸[K] := ((t2⁻¹ : (𝔸[K])ˣ) : 𝔸[K])`. Use `set t3i : 𝔸[K] := ((t3⁻¹ : (𝔸[K])ˣ) : 𝔸[K])`. Use `set dm := (m : M3A).det`. Use `⟨?_, ?_, ?_, z00, f00, z20, f21, f22⟩` and prove the remaining obligations. Rewrite using `[div_eq_mul_inv, map_mul, Units.val_mul]`.
-
-Take the linear combination `(-A ((γ : Matrix (Fin 2) (Fin 2) K) 1 0) * Ai) * i2 + (t2i * Ai) * hm21 - ((m : M3A) 2 1 * t2i) * hi + ((m : M3A) 2 1 * t2i) * p`. Rewrite using `[div_eq_mul_inv, map_mul, Units.val_mul]`. Take the linear combination `(-A ((γ : Matrix (Fin 2) (Fin 2) K) 1 1) * Ai) * i2 - (t2i * Ai) * hm01 + ((m : M3A) 0 1 * t2i) * hi - ((m : M3A) 0 1 * t2i) * p`. Rewrite using `[Units.val_mul, Units.val_mul]`. Take the linear combination `(-Ai - (-dm * mi * t2i * t3i) * (mi * t1 + 1) * ((t2 : 𝔸[K]) * t2i)) * p + (-Ai * (mi * t1) - (-dm * mi * t2i * t3i)) * i2 + (-Ai * (mi * t1) * ((t2 : 𝔸[K]) * t2i)) * i3 + (-Ai * mi * t2i * t3i) * hdet + (-dm * mi * t2i * t3i) * hi`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem algV (γ : GL (Fin 2) K) {m β : G3K K} (hβ : β ∈ (Reduction.adelicBorel : Subgroup (G3K K)))
     (e : diaK (e2 K γ * sw K) * m = β) (t1 t2 t3 : (𝔸[K])ˣ) (h1 : (β : M3A) 0 0 = t1) (h2 : (β : M3A) 1 1 = t2)
@@ -676,7 +664,7 @@ theorem algV (γ : GL (Fin 2) K) {m β : G3K K} (hβ : β ∈ (Reduction.adelicB
       (-Ai * mi * t2i * t3i) * hdet + (-dm * mi * t2i * t3i) * hi
 
 /- English proof (translation)
-Rewrite using `[Reduction.adelicNorm_smul (Reduction.hasFiniteContent_single_one i), Reduction.adelicNorm_single_one, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adelicNorm_single_smul (i : Fin 3) (t : (𝔸[K])ˣ) :
     Reduction.adelicNorm ((t : 𝔸[K]) • (Pi.single i (1 : 𝔸[K]) : Fin 3 → 𝔸[K])) = IdeleGroup.ideleModule K t := by
@@ -688,9 +676,9 @@ def ιV (q : NQ K) : K × K × K :=
     ((q.out : Matrix (Fin 2) (Fin 2) K).det)⁻¹)
 
 /- English proof (translation)
-Introduce `q q' h`. Simplify using `only [ιV, Prod.mk.injEq, _root_.inv_inj] at h`. Take `⟨hc, hd, hδ⟩` from `h`. Rewrite `hc`, `hd` using `[hδ]`. Establish `h0` using `det_ne_zero' q'.out`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `GlobalTheory.T.quotient_eq_of_lower_entries_eq_of_det_eq K q q' ?_ ?_ hδ` and prove the remaining obligations. Conclude with `(div_left_inj' h0).1 hc`. Conclude with `(div_left_inj' h0).1 hd`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ιV_inj : Function.Injective (ιV (K := K)) := by
   intro q q' h
@@ -703,14 +691,14 @@ theorem ιV_inj : Function.Injective (ιV (K := K)) := by
   · exact (div_left_inj' h0).1 hd
 
 /- English proof (translation)
-Use `AdelicGLn.isTopologicalGroup K 3` as an intermediate fact. Conclude with `(Reduction.continuous_GL_apply 0 1).comp continuous_inv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contMi : Continuous fun m : G3K K => ((m⁻¹ : G3K K) : M3A) 0 1 := by
   have := AdelicGLn.isTopologicalGroup K 3
   exact (Reduction.continuous_GL_apply 0 1).comp continuous_inv
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_det Units.continuous_val`.
+A detailed English derivation is pending.
 -/
 theorem contDet : Continuous fun m : G3K K => (m : M3A).det :=
   Continuous.matrix_det Units.continuous_val
@@ -719,31 +707,27 @@ end majorantEstimates
 
 open majorantEstimates in
 /- English proof (translation)
-Introduce `V hV W hW Kc hKc`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace K))`. Take `⟨Ω, hΩ, T, hg⟩` from `hV.gauge W hW`. Take `⟨Cg, hCg⟩` from `hg (3 * (2 * T + 5))`. Use `set C := (fun p : G3K K × G3K K => p.1 * p.2⁻¹) '' (Kc ×ˢ ((Reduction.maxCompact : Subgroup (G3K K)) : Set (G3K K))) with hCdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC : IsCompact C` using `compact_C hKc`. Take `⟨P, hP, hPb⟩` from `Reduction.exists_adelicNorm_vecMul_le_mul hC`. Take `⟨ε, hε, hεb⟩` from `GlobalTheory.T.compact_columns_norm_lower_bound K C hC`. Take `⟨M, hM, KK, hKK⟩` from `core hK w hΩ hC ((((contEnt 2 2).pow 2).mul (contEnt 0 0)).mul contDinv) ((((contEnt 2 2).pow 2).mul (contEnt 1 0)).mul contDinv) (((contEnt 2 2).pow 3).mul contDinv) T Cg (P / ε) (div_nonneg hP.le hε.le)`. Use `⟨fun q => KK * F w M (ιU q), ((summable_F hK w M hM).comp_injective ιU_inj).mul_left KK, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q g hg`. Take `⟨β, hβ, k, hk, hh⟩` from `Reduction.exists_adelicBorel_mul_maxCompact (diaK (e1 K q.out) * g)`. Use `set t1 := (Reduction.isUnit_apply_self_of_mem_adelicBorel hβ 0).unit with ht1`. Use `set t2 := (Reduction.isUnit_apply_self_of_mem_adelicBorel hβ 1).unit with ht2`. Use `set t3 := (Reduction.isUnit_apply_self_of_mem_adelicBorel hβ 2).unit with ht3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (β : M3A) 0 0 = t1` using `(IsUnit.unit_spec _).symm`. Establish `h2 : (β : M3A) 1 1 = t2` using `(IsUnit.unit_spec _).symm`. Establish `h3 : (β : M3A) 2 2 = t3` using `(IsUnit.unit_spec _).symm`. Establish `e : diaK (e1 K q.out) * (g * k⁻¹) = β` using `by rw [← mul_assoc, hh, mul_inv_cancel_right]`. Establish `hmC : g * k⁻¹ ∈ C` using `⟨(g, k), ⟨hg, hk⟩, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a0, a1, a2, r20, r21, r22, h00, h10⟩` from `algU q.out hβ e t1 t2 t3 h1 h2 h3`. Rewrite using `[hh, GlobalTheory.T.norm_W_mul_eq_norm_W_dg_of_diag K V hV W hW β hβ t1 t2 t3 h1 h2 h3 k]`. Establish `hgau` using `hCg (t1 * t2⁻¹) (t2 * t3⁻¹) k hk w`. Use `set γ := q.out with hγ`. Use `set m := g * k⁻¹ with hmdef`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set z : Fin 3 → K := ![(γ : Matrix (Fin 2) (Fin 2) K) 1 1, -(γ : Matrix (Fin 2) (Fin 2) K) 1 0, 0] with hzdef`. Establish `hz : ∀ i, z i = 0 ∨ z i = (γ : Matrix (Fin 2) (Fin 2) K) 1 1 ∨ z i = -(γ : Matrix (Fin 2) (Fin 2) K) 1 0`. Apply the tactic sequence `intro i; fin_cases i <;> simp [z]`. Establish `hz0 : z ≠ 0`. Introduce `h0`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `c0 : (γ : Matrix (Fin 2) (Fin 2) K) 1 0 = 0`. Use `congrFun h0 1` as an intermediate fact. Simplify `this` using `[z]`. Establish `d0 : (γ : Matrix (Fin 2) (Fin 2) K) 1 1 = 0`. Use `congrFun h0 0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[z]`. Conclude with `det_ne_zero' γ (by rw [Matrix.det_fin_two, c0, d0]; ring)`. Use `set δ := (γ : Matrix (Fin 2) (Fin 2) K).det with hδdef`. Establish `hδ : δ ≠ 0` using `det_ne_zero' γ`. Establish `hi : algebraMap K 𝔸[K] δ * algebraMap K 𝔸[K] δ⁻¹ = 1`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[← map_mul, mul_inv_cancel₀ hδ, map_one]`. Establish `hcol : (fun i => (m : M3A) i 0) = (t1 : 𝔸[K]) • Reduction.ratVec (δ⁻¹ • z)`. Use extensionality with `i`. Use `fin_cases i`. Simplify using `[Reduction.ratVec, z, map_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `(algebraMap K 𝔸[K] δ⁻¹) * h00 - (m : M3A) 0 0 * hi`. Simplify using `[Reduction.ratVec, z, map_mul, map_neg]`. Take the linear combination `(algebraMap K 𝔸[K] δ⁻¹) * h10 - (m : M3A) 1 0 * hi`. Simplify using `[Reduction.ratVec, z, r20]`. Establish `hz1 : δ⁻¹ • z ≠ 0` using `smul_ne_zero (inv_ne_zero hδ) hz0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set H := Reduction.adelicNorm (Reduction.ratVec z : Fin 3 → 𝔸[K]) with hHdef`. Establish `hH1 : 1 ≤ H` using `Reduction.one_le_adelicNorm_ratVec hz0`. Establish `hnorm : Reduction.adelicNorm (fun i => (m : M3A) i 0) = IdeleGroup.ideleModule K t1 * H`. Rewrite using `[hcol, Reduction.adelicNorm_smul (Reduction.hasFiniteContent_ratVec hz1), Reduction.ratVec_smul, Reduction.adelicNorm_smul_rat (Reduction.hasFiniteContent_ratVec hz0) (inv_ne_zero hδ)]`. Establish `hε1 : ε / H ≤ IdeleGroup.ideleModule K t1`.
-
-Rewrite using `[div_le_iff₀ (by linarith)]; rw [← hnorm]; exact (hεb m hmC 0).2`. Establish `hP3 : (IdeleGroup.ideleModule K t3 : ℝ) ≤ P`. Use `hPb m hmC _ (Reduction.hasFiniteContent_single_one 2)` as an intermediate fact. Rewrite `this` using `[row_two r20 r21 r22, adelicNorm_row, Reduction.adelicNorm_single_one, mul_one]`. Conclude with `this`.
-
-Establish `hpoly` using `poly_gen t1 t2 t3 (div_pos hε (by linarith)) hε1 hP3`. Establish `hpoly' : ((IdeleGroup.ideleModule K (t1 * t2⁻¹) : ℝ) * IdeleGroup.ideleModule K (t2 * t3⁻¹))⁻¹ ≤ P / ε * H`. Use `hpoly.trans (le_of_eq ?_)` and prove the remaining obligations. Clear the denominators using the available nonvanishing facts. Conclude with `hKK _ (t1 * t2⁻¹) (t2 * t3⁻¹) m hmC _ _ _ z a0 a1 a2 hz hpoly' hgau.1 (fun h => hgau.2 (fun h' => h (by rw [h', norm_zero])))`.
+Reduce the conclusion to the remaining proof obligations. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem majorant_first_holds (hK : Module.finrank ℚ K = 2) [IsTotallyComplex K] : MajU K := by
   intro V hV W hW Kc hKc
@@ -820,33 +804,29 @@ theorem majorant_first_holds (hK : Module.finrank ℚ K = 2) [IsTotallyComplex K
 
 open majorantEstimates in
 /- English proof (translation)
-Introduce `V hV W hW Kc hKc`. Take `⟨w⟩` from `(inferInstance : Nonempty (InfinitePlace K))`. Take `⟨Ω, hΩ, T, hg⟩` from `hV.gauge W hW`. Take `⟨Cg, hCg⟩` from `hg (3 * (2 * T + 5))`. Use `set C := (fun p : G3K K × G3K K => p.1 * p.2⁻¹) '' (Kc ×ˢ ((Reduction.maxCompact : Subgroup (G3K K)) : Set (G3K K))) with hCdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hC : IsCompact C` using `compact_C hKc`. Take `⟨P, hP, hPb⟩` from `Reduction.exists_adelicNorm_vecMul_le_mul hC`. Take `⟨ε, hε, hεb⟩` from `GlobalTheory.T.compact_columns_norm_lower_bound K C hC`. Take `⟨M, hM, KK, hKK⟩` from `core hK w hΩ hC (((contEnt 2 1).neg).mul contMi) ((contEnt 0 1).mul contMi) ((contDet.neg).mul (contMi.pow 3)) T Cg (P / ε) (div_nonneg hP.le hε.le)`. Use `⟨fun q => KK * F w M (ιV q), ((summable_F hK w M hM).comp_injective ιV_inj).mul_left KK, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `q g hg`. Take `⟨β, hβ, k, hk, hh⟩` from `Reduction.exists_adelicBorel_mul_maxCompact (diaK (e2 K q.out * sw K) * g)`. Use `set t1 := (Reduction.isUnit_apply_self_of_mem_adelicBorel hβ 0).unit with ht1`. Use `set t2 := (Reduction.isUnit_apply_self_of_mem_adelicBorel hβ 1).unit with ht2`. Use `set t3 := (Reduction.isUnit_apply_self_of_mem_adelicBorel hβ 2).unit with ht3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (β : M3A) 0 0 = t1` using `(IsUnit.unit_spec _).symm`. Establish `h2 : (β : M3A) 1 1 = t2` using `(IsUnit.unit_spec _).symm`. Establish `h3 : (β : M3A) 2 2 = t3` using `(IsUnit.unit_spec _).symm`. Establish `e : diaK (e2 K q.out * sw K) * (g * k⁻¹) = β` using `by rw [← mul_assoc, hh, mul_inv_cancel_right]`. Establish `hmC : g * k⁻¹ ∈ C` using `⟨(g, k), ⟨hg, hk⟩, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨v0, v1, v2, z00, f00, z20, g1, g2⟩` from `algV q.out hβ e t1 t2 t3 h1 h2 h3`. Rewrite using `[hh, GlobalTheory.T.norm_W_mul_eq_norm_W_dg_of_diag K V hV W hW β hβ t1 t2 t3 h1 h2 h3 k]`. Establish `hgau` using `hCg (t1 * t2⁻¹) (t2 * t3⁻¹) k hk w`. Use `set γ := q.out with hγ`. Use `set m := g * k⁻¹ with hmdef`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set δ := (γ : Matrix (Fin 2) (Fin 2) K).det with hδdef`. Establish `hδ : δ ≠ 0` using `det_ne_zero' γ`. Use `set z : Fin 3 → K := ![(γ : Matrix (Fin 2) (Fin 2) K) 1 0 / δ, 0, (γ : Matrix (Fin 2) (Fin 2) K) 1 1 / δ] with hzdef`. Use `set y0 : Fin 3 → K := ![(γ : Matrix (Fin 2) (Fin 2) K) 1 0, 0, (γ : Matrix (Fin 2) (Fin 2) K) 1 1] with hy0def`. Establish `hz : ∀ i, z i = 0 ∨ z i = (γ : Matrix (Fin 2) (Fin 2) K) 1 0 / δ ∨ z i = (γ : Matrix (Fin 2) (Fin 2) K) 1 1 / δ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Apply the tactic sequence `intro i; fin_cases i <;> simp [z]`. Establish `hy0 : y0 ≠ 0`. Introduce `h0`. Establish `c0 : (γ : Matrix (Fin 2) (Fin 2) K) 1 0 = 0`. Use `congrFun h0 0` as an intermediate fact.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `this` using `[y0]`. Establish `d0 : (γ : Matrix (Fin 2) (Fin 2) K) 1 1 = 0`. Use `congrFun h0 2` as an intermediate fact. Simplify `this` using `[y0]`. Conclude with `hδ (by rw [hδdef, Matrix.det_fin_two, c0, d0]; ring)`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `hzy : z = δ⁻¹ • y0`. Apply the tactic sequence `ext i; fin_cases i <;> simp [z, y0, div_eq_inv_mul]`. Use `set H := Reduction.adelicNorm (Reduction.ratVec z : Fin 3 → 𝔸[K]) with hHdef`. Establish `hH : H = Reduction.adelicNorm (Reduction.ratVec y0 : Fin 3 → 𝔸[K])`. Rewrite using `[hHdef, hzy, Reduction.ratVec_smul, Reduction.adelicNorm_smul_rat (Reduction.hasFiniteContent_ratVec hy0) (inv_ne_zero hδ)]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules.
 
-Establish `hcol : (fun i => (m : M3A) i 0) = (t1 : 𝔸[K]) • (Pi.single 1 (1 : 𝔸[K]) : Fin 3 → 𝔸[K])`. Apply the tactic sequence `ext i; fin_cases i <;> simp [z00, f00, z20]`. Establish `hε1 : ε ≤ IdeleGroup.ideleModule K t1`. Use `(hεb m hmC 0).2` as an intermediate fact. Rewrite `this` using `[hcol, adelicNorm_single_smul]`. Then use the resulting hypothesis.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hrow : Reduction.ratVec y0 ᵥ* (m : M3A) = (t3 : 𝔸[K]) • (Pi.single 2 (1 : 𝔸[K]) : Fin 3 → 𝔸[K])`. Use extensionality with `j`. Use `fin_cases j`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_three, Reduction.ratVec, y0, z00, z20]`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_three, Reduction.ratVec, y0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Take the linear combination `g1`. Simplify using `[Matrix.vecMul, dotProduct, Fin.sum_univ_three, Reduction.ratVec, y0]`. Take the linear combination `g2`. Establish `hP3 : (IdeleGroup.ideleModule K t3 : ℝ) ≤ P * H`. Use `hPb m hmC _ (Reduction.hasFiniteContent_ratVec hy0)` as an intermediate fact.
-
-Rewrite `this` using `[hrow, adelicNorm_single_smul, ← hH]`. Conclude with `this`. Establish `hpoly` using `poly_gen t1 t2 t3 hε hε1 hP3`. Establish `hpoly' : ((IdeleGroup.ideleModule K (t2 * t3⁻¹) : ℝ) * IdeleGroup.ideleModule K (t1 * t2⁻¹))⁻¹ ≤ P / ε * H`. Rewrite using `[mul_comm]`.
-
-Use `hpoly.trans (le_of_eq ?_)` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `hg1` using `hgau.1`. Rewrite `hg1` using `[mul_comm ((IdeleGroup.ideleModule K (t1 * t2⁻¹) : ℝ)), mul_comm (1 + ‖((t1 * t2⁻¹ : (𝔸[K])ˣ) : 𝔸[K]).1 w‖)]`. Conclude with `hKK _ (t2 * t3⁻¹) (t1 * t2⁻¹) m hmC _ _ _ z v0 v1 v2 hz hpoly' hg1 (fun h => (hgau.2 (fun h' => h (by rw [h', norm_zero]))).symm)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem majorant_second_holds (hK : Module.finrank ℚ K = 2) [IsTotallyComplex K] : MajV K := by
   intro V hV W hW Kc hKc

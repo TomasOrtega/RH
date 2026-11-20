@@ -23,7 +23,7 @@ def sabMapCast {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {
     {t : SAB H S} {f f' : S' ⟶ S} (m : SABMap t' t f) (h : f = f') : SABMap t' t f' := h ▸ m
 
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem sabMapCast_φ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {S S' : Scheme.{0}}
     {t' : SAB H S'} {t : SAB H S} {f f' : S' ⟶ S} (m : SABMap t' t f) (h : f = f') : (sabMapCast m h).φ = m.φ := by
@@ -36,21 +36,19 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Set `_` to `io.toAlgebra`. Establish `hcond : y.x ≫ Xo.s = spMap io ≫ spMap (IntermediateField.inclusion c.le).toRingHom`. Rewrite using `[y.x_over]`. Use `show Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `z : Sp T.Fr ⟶ Xo.XF c` to `pullback.lift y.x (spMap io) hcond`. Establish `hzs : z ≫ pullback.snd _ _ = spMap io` using `pullback.lift_snd _ _ _`. Establish `hzf : z ≫ pullback.fst _ _ = y.x` using `pullback.lift_fst _ _ _`. Establish `hx : z ≫ Y.j ≫ Y.s = Out.jK T.V ≫ spMap b` using `by show z ≫ (Y.jQ ≫ pullback.fst _ _) ≫ Y.s = _`. Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc Y.jQ, Y.jQ_over, ← Category.assoc, hzs]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show Spec.map _ ≫ Spec.map _ = Spec.map _ ≫ Spec.map _`. Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, hb]`. Take `⟨yt, h1, -⟩` from `extPt Y T b z hx`. Take `⟨PP', cub, sym, adj, prim, mP, -⟩` from `sabPull hC yt Y.t`. Set `tP : SAB H (Sp T.V)` to `⟨(Over.pullback yt).obj Y.t.G, IsSemiAbelian.pullback _ Y.t.G Y.t.semi, OAct.pullback _ Y.t.G Y.t.act, PP', cub, sym, adj, prim⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `mP' : SABMap tP Y.t yt` to `mP`. Take `⟨mF, -⟩` from `sabCancel pullCubCancel E H _ _ _ Xo.univ.t Y.oF.t I.t' (pullback.fst _ _) z Y.m0.toSABMap (sabMapCast I.m1 hzf.symm)`. Take `⟨mJ, -⟩` from `sabComp pullCubComp E H _ _ _ Y.t Y.oF.t I.t' (Y.jQ ≫ pullback.fst _ _) z Y.m mF`. Establish `hj : z ≫ Y.jQ ≫ pullback.fst _ _ = Out.jK T.V ≫ yt` using `h1.symm`. Take `⟨mK, -⟩` from `sabCancel pullCubCancel E H _ _ _ Y.t tP I.t' yt (Out.jK T.V) mP' (sabMapCast mJ hj)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hprop : IsProper I.t'.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) I.m1.cart.1 Xo.univ.proper`. Take `⟨ψ, -⟩` from `hE E H T.V inferInstance I.G tP I.t' hprop I.m2 mK`. Take `⟨n, -⟩` from `sabComp pullCubComp E H _ _ _ Y.t tP I.G yt (𝟙 _) mP' ψ`. Set `n' : SABMap I.G Y.t yt` to `sabMapCast n (Category.id_comp yt)`. Establish `habs : (yt ⁻¹' abLocus Y.t.G).Nonempty`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨pt⟩ : Nonempty (Sp T.Fr)` from `inferInstance`. Use `⟨Out.jK T.V pt, ?_⟩` and prove the remaining obligations. Establish `hz : Y.jQ (z pt) ∈ pullback.fst Y.s (spMap β) ⁻¹' abLocus Y.t.G`. Rewrite using `[Y.ab_gen]`. Conclude with `⟨_, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : yt (Out.jK T.V pt) = (pullback.fst Y.s (spMap β)) (Y.jQ (z pt))`. Rewrite using `[← Scheme.Hom.comp_apply, h1]`. Use `show (z ≫ Y.jQ ≫ pullback.fst _ _) pt = _`. Rewrite using `[Scheme.Hom.comp_apply, Scheme.Hom.comp_apply]`. Rewrite using `[Set.mem_preimage, h2]`.
-
-Conclude with `hz`. Take `⟨P, -, hP⟩` from `h3 T.V inferInstance inferInstance inferInstance yt I.G n' habs hS`. Conclude with `⟨P, hP⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem unifAtInt_of_model (hE : ExtVStatement) (hC : Out.CubePullSt) (Y : Model Xo c β) (h3 : Y.N3) (T : CDVR)
     (io : c.F →+* T.Fr) (b : O →+* T.V) (hb : (algebraMap T.V T.Fr).comp b = io.comp β)

@@ -9,7 +9,7 @@ open Formalism.UG (cT)
 open scoped TensorProduct NNReal ENNReal
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hcm n J hJ r X Y hW`. Take `⟨K₁, h₁, c₁, iw₁, lev⟩` from `GlobalTheory.CompanionTheory.SiegelArch.exists_kInf F E σ hcm n J hJ r X Y hW`. Take `⟨K₂, h₂, c₂, iw₂, good⟩` from `GlobalTheory.T.unitary_adelic_iwasawa_compact F E σ hcm n J hJ r X Y hW`. Take `⟨K, hK, iw, -⟩` from `GlobalTheory.CompanionTheory.SiegelAssemble.exists_compact_iwasawa F E σ hcm n J hJ r X Y hW K₁ K₂ h₁ h₂ c₁ c₂ iw₁ iw₂ lev good`. Conclude with `⟨K, hK, iw⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.CompanionTheory.RedCov.exists_compact_iwasawa_of_frame : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (n : ℕ) (J : Matrix (Fin n) (Fin n) E), IsHermND σ J → ∀ (r : ℕ) (X Y : Matrix (Fin n) (Fin r) E), IsWittFrame σ J X Y → ∃ K : Subgroup (GAd σ J), IsCompact (K : Set (GAd σ J)) ∧ ∀ g, ∃ p ∈ minPar σ J X, ∃ k ∈ K, g = p * k := by
   intro F E _ _ _ _ _ σ hcm n J hJ r X Y hW

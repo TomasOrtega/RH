@@ -26,7 +26,7 @@ def truncInf {r : ℕ} (s : UPos n r → 𝔸[K]) : UPos n r → 𝔸[K] := fun 
 def truncFin {r : ℕ} (s : UPos n r → 𝔸[K]) : UPos n r → 𝔸[K] := fun p => (0, (s p).2)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Express the relevant statement in the definitionally equal form `((s p).1 + 0, 0 + (s p).2) = s p`. Rewrite using `[add_zero, zero_add]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem truncInf_add_truncFin {r : ℕ} (s : UPos n r → 𝔸[K]) : truncInf s + truncFin s = s := by
   funext p
@@ -37,7 +37,7 @@ theorem truncInf_add_truncFin {r : ℕ} (s : UPos n r → 𝔸[K]) : truncInf s 
 variable (μ : Measure (normOneGL K n)) [μ.IsHaarMeasure]
 
 /- English proof (translation)
-Unfold `rconv`. Use `integral_congr_ae (Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f ((y * g)⁻¹ * z) * _ = f (y⁻¹ * z) * _`. Rewrite using `[mul_inv_rev, mul_assoc, hf]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem rconv_mul_right (f : normOneGL K n → ℂ) (φ : Lp ℂ 2 (quotientMeasure Γ₁ μ))
     {g : normOneGL K n} (hf : ∀ w, f (g⁻¹ * w) = f w) (y : normOneGL K n) :
@@ -48,7 +48,7 @@ theorem rconv_mul_right (f : normOneGL K n → ℂ) (φ : Lp ℂ 2 (quotientMeas
   rw [mul_inv_rev, mul_assoc, hf]
 
 /- English proof (translation)
-Use `set Cf : Set (FiniteAdeleRing (𝓞 K) K) := (fun a => (M : FiniteAdeleRing (𝓞 K) K) * a) '' (GroundTheory.Global.integralFiniteAdeles (𝓞 K) K : Set (FiniteAdeleRing (𝓞 K) K))`. Establish `hCf : IsCompact Cf` using `(GroundTheory.Global.isCompact_integralFiniteAdeles K).image (continuous_const_mul _)`. Use `⟨univ.pi fun _ => scaledInfSet K M ×ˢ Cf, isCompact_univ_pi fun _ => (isCompact_scaledInfSet M).prod hCf, fun X hX p _ => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, hXa⟩` from `exists_finite_eq_natCast_mul hM hX p`. Conclude with `⟨infinite_mem_scaledInfSet hM hX p, a, ha, hXa.symm⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isCompact_superset_scaledUnipFD (r : ℕ) {M : ℕ} (hM : 0 < M) :
     ∃ C : Set (UPos n r → 𝔸[K]), IsCompact C ∧ scaledUnipFD K n r M ⊆ C := by
@@ -61,11 +61,11 @@ theorem exists_isCompact_superset_scaledUnipFD (r : ℕ) {M : ℕ} (hM : 0 < M) 
   exact ⟨infinite_mem_scaledInfSet hM hX p, a, ha, hXa.symm⟩
 
 /- English proof (translation)
-Use `set H : (UPos n r → 𝔸[K]) → ℂ := fun s => rconv Γ₁ μ f φ (unipOne K n r s * x)`. Establish `hHc : Continuous H` using `(continuous_rconv Γ₁ μ f φ).comp ((continuous_unipOne r).mul continuous_const)`. Establish `hper : ∀ ξ ∈ unipLattice K n r, ∀ s, H (ξ + s) = H s`. Introduce `ξ hξ s`. Simplify using `only [H]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[unipOne_add, mul_assoc, rconv_mul_left Γ₁ μ f φ (unipOne_mem_rationalGLOne r ⟨ξ, hξ⟩)]`. Establish `hD` using `isAddFundamentalDomain_scaledUnipFD (K := K) (n := n) (r := r) hM`. Take `⟨C, hC, hDC⟩` from `exists_isCompact_superset_scaledUnipFD (K := K) (n := n) r hM`. Establish `hint : ∀ t, IntegrableOn (fun y => H (t + y)) (scaledUnipFD K n r M) (unipMeasure K n r)` using `fun t => ((hHc.comp (continuous_const.add continuous_id)).continuousOn.integrableOn_compact hC).mono_set hDC`. Establish `hmean : ∫ y in scaledUnipFD K n r M, H y ∂unipMeasure K n r = 0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hD.setIntegral_eq isAddFundamentalDomain_unipFundamentalDomain fun ξ s => hper ξ ξ.2 s]`. Conclude with `integral_rconv_unip_eq_zero μ f hφ hr hrn x`. Establish `h0` using `norm_le_of_forall_altSum_le hD (unipMeasure_scaledUnipFD hM) k H hper hint hmean B hB`. Simplify `h0` using `[H, unipOne_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem norm_rconv_le_of_altSum (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
     {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} (hφ : φ ∈ cuspidalL2 μ) {r : ℕ} (hr : 0 < r) (hrn : r < n)
@@ -92,13 +92,11 @@ theorem norm_rconv_le_of_altSum (f : CompactlySupportedContinuousMap (normOneGL 
   simpa [H, unipOne_zero] using h0
 
 /- English proof (translation)
-Use `norm_rconv_le_of_altSum μ f hφ hr hrn hM x k fun y hy => ?_` and prove the remaining obligations. Establish `key : ∀ ε : Fin k → Bool, rconv Γ₁ μ f φ (unipOne K n r (0 + altPoint y ε) * x) = rconv Γ₁ μ f φ (unipOne K n r (truncInf (0 + altPoint y ε)) * x)`. Introduce `ε`. Rewrite using `[zero_add]`. Establish `hfinP` using `hfin (truncFin (altPoint y ε)) (fun p => rfl) fun p => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨a, ha, hPa⟩` from `exists_finite_altPoint_eq_natCast_mul hM y hy ε p`. Conclude with `⟨a, ha, hPa⟩`. Establish `hP : unipOne K n r (altPoint y ε) * x = unipOne K n r (truncInf (altPoint y ε)) * x * (x⁻¹ * unipOne K n r (truncFin (altPoint y ε)) * x)`. Simplify using `only [mul_assoc, mul_inv_cancel_left]`. Rewrite using `[← mul_assoc, ← unipOne_add, truncInf_add_truncFin]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hP]`. Conclude with `rconv_mul_right μ f φ hfinP _`. Establish `heq : altSum k (fun s => rconv Γ₁ μ f φ (unipOne K n r s * x)) y 0 = altSum k (fun s => rconv Γ₁ μ f φ (unipOne K n r (truncInf s) * x)) y 0`. Rewrite using `[altSum_eq_sum, altSum_eq_sum]`. Conclude with `Finset.sum_congr rfl fun ε _ => congrArg (altSign ε • ·) (key ε)`.
-
-Rewrite using `[heq]`. Conclude with `hB y hy`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_rconv_le_of_altSum_inf (f : CompactlySupportedContinuousMap (normOneGL K n) ℂ)
     {φ : Lp ℂ 2 (quotientMeasure Γ₁ μ)} (hφ : φ ∈ cuspidalL2 μ) {r : ℕ} (hr : 0 < r) (hrn : r < n)

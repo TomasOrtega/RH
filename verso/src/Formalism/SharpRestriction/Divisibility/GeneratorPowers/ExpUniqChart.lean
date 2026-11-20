@@ -13,9 +13,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Use `RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Use `first`. Consider the case `simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`. Consider the case `(simp [epsMul]; rfl)`. Use `first`.
+Reduce the conclusion to the remaining proof obligations. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `simp [epsMul, TrivSqZeroExt.algebraMap_eq_inl]`. Consider the case `(simp [epsMul]; rfl)`.
+A detailed English derivation is pending.
 -/
 theorem epsMul_zero {S : Type} [CommRing S] :
     epsMul (0 : S) = (algebraMap S (DualNumber S)).comp (TrivSqZeroExt.fstHom S S S).toRingHom := by
@@ -28,15 +28,15 @@ theorem epsMul_zero {S : Type} [CommRing S] :
     | (simp [epsMul]; rfl)
 
 /- English proof (translation)
-Apply the tactic sequence `refine RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;> simp [epsMul]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem epsMul_one {S : Type} [CommRing S] : epsMul (1 : S) = RingHom.id (DualNumber S) := by
   refine RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_ <;> simp [epsMul]
 
 /- English proof (translation)
-Apply `Ideal.Quotient.algHom_ext` to reduce the goal to its premises. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `i`. Use `first`. Consider the case `(simp only [AlgHom.comp_apply, Formalism.L2.Pj.jetTan, Formalism.L2.Pj.jetAug, Formalism.L2.Pj.liftJet, Ideal.Quotient.liftₐ_apply, Ideal.Quotient.mkₐ_eq_mk, AlgHom.coe_toRingHom] erw [Ideal.Quotient.lift_mk, Ideal.Quotient.lift_mk]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `by_cases h : i = (0, j) <;> simp [h])`. Consider the case `(show TrivSqZeroExt.fst ((MvPolynomial.aeval _) (MvPolynomial.X i)) = (MvPolynomial.aeval _) (MvPolynomial.X i)`. Apply the tactic sequence `by_cases h : i = (0, j) <;> simp [h])`.
+Treat this case separately. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem fst_comp_tan {S : Type} [CommRing S] (d : ℕ) (j : Fin d) :
     (TrivSqZeroExt.fstHom S S S).comp
@@ -53,7 +53,7 @@ theorem fst_comp_tan {S : Type} [CommRing S] (d : ℕ) (j : Fin d) :
      by_cases h : i = (0, j) <;> simp [h])
 
 /- English proof (translation)
-Use `first`. Consider the case `simp`. Consider the case `(rw [MonObj.Hom.one_def, MonObj.Hom.one_def, ← Category.assoc]; congr 1; exact toUnit_unique _ _)`. Consider the case `simp [MonObj.Hom.one_def]`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem comp_one_gen {X : Scheme.{0}} {Y Z M : Over X} [GrpObj M] (f : Y ⟶ Z) : f ≫ (1 : Z ⟶ M) = 1 := by
   first
@@ -65,13 +65,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {S : Type} [CommRing S] [Algebra c.F S]
 
 /- English proof (translation)
-Take `⟨u, hu, hprod⟩` from `hx.tan ((ltIdx Dw).symm j)`. Establish `hj : ltIdx Dw ((ltIdx Dw).symm j) = j` using `Equiv.apply_symm_apply _ _`. Establish `hone : ∀ i, i ≠ j → u i = 1`. Introduce `i hi`. Establish `e : u i = homAt y.x (Algebra.ofId S (DualNumber S)) ≫ (homAt y.x (jetAug : Jet S (Fin 1 × Fin (dL Dw)) (0 + 1) →ₐ[S] S) ≫ x 1)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [hu i, hj, if_neg hi, epsMul_zero, ← fst_comp_tan (dL Dw) i]`. Simplify using `only [Over.comp_left, homAt, Over.homMk_left]`. Simplify using `only [spMap, ← Category.assoc]`. Use `congr 1`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Rewrite using `[e, hx.zero 1, comp_one_gen]`. Establish `huj : (u j).left = (homAt y.x (jetTan ((0 : Fin 1), j) : Jet S (Fin 1 × Fin (dL Dw)) (0 + 1) →ₐ[S] DualNumber S) ≫ x 1).left`. Simplify using `[hu j, hj, epsMul_one, spMap, CommRingCat.ofHom_id, Spec.map_id]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hprod, ← huj]`. Use `congr 1`. Rewrite using `[List.prod_ofFn]`. Conclude with `(Finset.prod_eq_single j (fun i _ hi => hone i hi) (fun h => absurd (Finset.mem_univ j) h)).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tan_eq (y : FrPt Xo c S) (x : ∀ m, jO y (dL Dw) m 1 ⟶ Xo.univ.t.G) (hx : IsExpChart y x)
     (j : Fin (dL Dw)) :
@@ -100,7 +100,7 @@ theorem tan_eq (y : FrPt Xo c S) (x : ∀ m, jO y (dL Dw) m 1 ⟶ Xo.univ.t.G) (
   exact (Finset.prod_eq_single j (fun i _ hi => hone i hi) (fun h => absurd (Finset.mem_univ j) h)).symm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c S _ _ _ y x x' hx hx'`. Use `ExpUniqGlue.expUniq E H Dw l Xo c S y (dL Dw) x x' ⟨hx.trunc, hx.law⟩ ⟨hx'.trunc, hx'.law⟩ ?_` and prove the remaining obligations. Introduce `j`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[tan_eq y x hx j, tan_eq y x' hx' j]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem expUniqTan : ExpUniqTanSt := by
   intro E _ _ _ H Dw l Xo c S _ _ _ y x x' hx hx'

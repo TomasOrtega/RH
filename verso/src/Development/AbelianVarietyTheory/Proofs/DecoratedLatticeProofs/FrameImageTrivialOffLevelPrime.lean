@@ -25,27 +25,23 @@ noncomputable section
 namespace GlobalTheory.AdForm.FrameTriv
 
 /- English proof (translation)
-Introduce `B X I hI _ l Z u a k _ _ _ _ ι p β Q L _ j hj i v hidem g δ hδ w hw r r'`. Establish `hPr : (B.primes X).Ok` using `l.pr`. Establish `hv : (p i).v = v.1.under (𝓞 B.host.F)` using `GlobalTheory.LocMod.LevelPlaces.splitPt_v_eq_under (p i) hidem`. Establish `hvT : v.1 ∈ (B.primes X).vT u` using `v.2`. Establish `hTv : (((B.primes X).T u : ℕ) : 𝓞 B.fields.E) ∈ v.1.asIdeal` using `T_mem_vT hPr u ⟨v.1, hvT⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : w.under (𝓞 B.host.F) ≠ (p i).v`. Introduce `hwv`. Rewrite `hwv` using `[hv]`. Establish `hTw : (((B.primes X).T u : ℕ) : 𝓞 B.fields.E) ∈ w.asIdeal`. Establish `h1 : (((B.primes X).T u : ℕ) : 𝓞 B.host.F) ∈ (w.under (𝓞 B.host.F)).asIdeal`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hwv]`. Use `show algebraMap _ (𝓞 B.fields.E) _ ∈ v.1.asIdeal`. Rewrite using `[map_natCast]`. Conclude with `hTv`. Establish `h2 : algebraMap _ (𝓞 B.fields.E) (((B.primes X).T u : ℕ) : 𝓞 B.host.F) ∈ w.asIdeal` using `h1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `h2` using `[map_natCast]`. Then use the resulting hypothesis. Break down `hw with h | h | ⟨h, hwne⟩` into its components or cases. Conclude with `Formalism.L2.Col.T_notMem_vGs hPr u ⟨w, h⟩ hTw`. Establish `hg` using `(GlobalTheory.Mem.LevTwist.good_of_mem hI h).2`. Establish `e` using `(GlobalTheory.Mem.ReadTwist.plc_under_eq_iff (F := B.host.F) w (hPr.T_prime u)).2 hTw`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Use `hg.2.2 ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `hI.T_mem u`. Break down `GlobalTheory.GridPlaces.eq_or_eq_conjP (D := I.rec7 l Z) hwv with e | e` into its components or cases. Conclude with `hwne e`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hT0 : (B.primes X).piT u ≠ 0` using `fun h0 => by`. Use `hPr.piT_norm u` as an intermediate fact. Rewrite `this` using `[h0, zero_mul]`. Conclude with `(hPr.T_prime u).ne_zero (Nat.cast_eq_zero.1 this.symm)`. Establish `a1 : (B.primes X).piT u ∈ v.1.asIdeal` using `(Formalism.L2.Col.mem_divs hT0 _).1 hvT`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `a2 : (B.primes X).piT u ∈ w.asIdeal` using `(Formalism.L2.Col.mem_divs hT0 _).1 h`. Rewrite `a2` using `[e]`. Establish `a3 : B.fields.conjO ((B.primes X).piT u) ∈ v.1.asIdeal` using `(Formalism.L2.Col.mem_conjP _ _).1 a2`. Take `⟨x, y, hxy⟩` from `hPr.piT_cop u`. Establish `: (1 : 𝓞 B.fields.E) ∈ v.1.asIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hxy]`. Conclude with `Ideal.add_mem _ (Ideal.mul_mem_left _ _ a1) (Ideal.mul_mem_left _ _ a3)`. Conclude with `v.1.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 this)`. Establish `hb : Formalism.UG.bc (Formalism.UG.prV (E` using `B.host.E) (w.under (𝓞 B.host.F))) δ = 1 := GlobalTheory.T.splitFrameGL_finiteMatrix_offPlace_eq_one (I.rec7 l Z) k (p i) ((I.rec7 l Z).sp.X j) _ (β j i) g _ (rankN (I.rec7 l Z) j hj) δ hδ _ hne`. Establish `hb' : Formalism.UG.bc (Formalism.UG.prV (E` using `B.host.E) (w.under (𝓞 B.host.F))) δ⁻¹ = 1 := by`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[map_inv, hb, inv_one]`. Establish `h2 : Formalism.UG.prV (E` using `B.host.E) (w.under (𝓞 B.host.F)) ((δ⁻¹).1 r r') = if r = r' then 1 else 0 := by`. Use `congrArg (fun x : GL (Fin (B.R.N j)) _ => x.1 r r') hb'` as an intermediate fact. Simplify using `only [Units.val_one, Matrix.one_apply] at this`. Conclude with `this`.
-
-Establish `h3 : Formalism.UG.prV (E` using `B.host.E) (w.under (𝓞 B.host.F)) ((δ⁻¹).1 r r' - if r = r' then 1 else 0) = 0 := by`. Rewrite using `[map_sub, h2]`. Apply the tactic sequence `split_ifs <;> simp`. Establish `h4` using `(GlobalTheory.Mem.Col2.AdComp.prV_zero_int_iff B.host.F B.host.E _ _).1.1 h3 w rfl`. Rewrite `h4` using `[map_sub, sub_eq_zero]`.
-
-Rewrite using `[h4]`. Apply the tactic sequence `split_ifs <;> simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem frame_trivial_off : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (a : I.ι) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (ι : Type)
     (p : ι → SplitPt (I.rec7 l Z) k) (β : ∀ j i, Frame (p i) ((I.rec7 l Z).sp.X j) (Fin ((I.rec7 l Z).sp.X j).rank))

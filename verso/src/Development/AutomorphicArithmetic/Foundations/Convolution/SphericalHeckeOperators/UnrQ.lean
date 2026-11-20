@@ -6,15 +6,15 @@ open MeasureTheory GroundTheory.Automorphic GroundTheory.Automorphic.Spherical G
 
 open ValuativeRel in
 /- English proof (translation)
-Introduce `k E _ _ _ _ _ _ _ _ _ _ _ _ _ ⟨π, hπ1, hπ2⟩`. Establish `hlt : ∀ a : k, valuation E (algebraMap k E a) < 1 ↔ valuation k a < 1` using `fun a => Valuation.HasExtension.val_map_lt_one_iff (valuation k) (valuation E) a`. Establish `hπk : valuation k π < 1` using `(hlt π).1 hπ1`. Use `⟨?_, fun ϖ ⟨h1, h2, h3⟩ => ⟨(hlt _).2 h1, (map_ne_zero _).2 h2, fun x hx => (hπ2 x hx).trans ?_⟩⟩` and prove the remaining obligations. Establish `hmem : ∀ {F : Type} [Field F] [ValuativeRel F] (x : 𝒪[F]), x ∈ IsLocalRing.maximalIdeal 𝒪[F] ↔ valuation F (x : F) < 1` using `fun x => Valuation.mem_maximalIdeal_iff _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `p : 𝒪[k]` to `⟨π, hπk.le⟩`. Establish `hle : IsLocalRing.maximalIdeal 𝒪[E] ≤ (IsLocalRing.maximalIdeal 𝒪[k]).map (algebraMap 𝒪[k] 𝒪[E])`. Introduce `x hx`. Establish `hd : algebraMap 𝒪[k] 𝒪[E] p ∣ x` using `(Valuation.integer.integers (valuation E)).le_iff_dvd.1 (hπ2 x ((hmem x).1 hx))`. Take `⟨c, rfl⟩` from `hd`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_map_of_mem _ ((hmem p).2 hπk))`. Rewrite `hle` using `[GroundTheory.LocalField.map_maximalIdeal]`. Establish `he : GroundTheory.LocalField.ramificationIndex k E = 1`. Establish `hpos` using `GroundTheory.LocalField.ramificationIndex_pos k E`. Assume the negation of the conclusion as `hne`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `h2 : 2 ≤ GroundTheory.LocalField.ramificationIndex k E` using `by omega`. Establish `h3` using `hle.trans (Ideal.pow_le_pow_right h2)`. Establish `h4` using `Ideal.pow_succ_lt_pow (GroundTheory.LocalField.maximalIdeal_ne_bot E) 1`. Rewrite `h4` using `[pow_one]`. Conclude with `not_le_of_gt h4 h3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hf` using `(GroundTheory.LocalField.isUnramified_iff_finrank_residueField k E).1 ⟨he⟩`. Rewrite using `[← hf]`. Conclude with `Module.natCard_eq_pow_finrank (K := 𝓀[k]) (V := 𝓀[E])`. Conclude with `(Valuation.HasExtension.val_map_le_iff (valuation k) (valuation E) _ _).2 (h3 π hπk)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.H.unrQ :
     ∀ (k E : Type) [Field k] [CharZero k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]

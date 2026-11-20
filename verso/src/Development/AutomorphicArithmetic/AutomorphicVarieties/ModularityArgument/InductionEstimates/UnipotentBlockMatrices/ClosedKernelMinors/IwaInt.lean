@@ -11,13 +11,13 @@ open scoped ENNReal NumberField.AdeleRing InnerProductSpace ComplexConjugate
 open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial
 
 /- English proof (translation)
-Introduce `K _ _ μ _ μ₂ _ κ _`. Take `⟨S, ν, hS, hν, hmem, hΦ⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.parHaar (K := K) μ₂`. Establish `hK : IsCompact (KG K (2 + 2) : Set (G1 K (2 + 2)))` using `((UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.blkLaws (K := K)).2.2.2.2.2.2.2.2.2.2.2 (2 + 2)).1`. Establish `: CompactSpace (KG K (2 + 2))` using `isCompact_iff_compactSpace.mp hK`. Establish `: μ.IsMulRightInvariant` using `isMulRightInvariant_normOneGL μ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSK : Function.Surjective (HaarSK.mulMap S (KG K (2 + 2)))`. Introduce `g`. Take `⟨X, m₁, m₂, t, k, hk, rfl⟩` from `UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.iwa (K := K) g`. Conclude with `⟨(⟨_, (hmem _).2 ⟨X, m₁, m₂, t, rfl⟩⟩, ⟨k, hk⟩), rfl⟩`. Take `⟨c, hc0, hc⟩` from `HaarSK.exists_lintegral_eq μ hS hK hSK ν κ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨c, by exact_mod_cast pos_iff_ne_zero.mpr hc0, fun Φ hm => ?_⟩` and prove the remaining obligations. Establish `hφ : Measurable fun g : G1 K (2 + 2) => ∫⁻ k : KG K (2 + 2), Φ (g * k) ∂κ` using `(hm.comp (measurable_fst.mul (measurable_subtype_coe.comp measurable_snd))).lintegral_prod_right'`. Rewrite using `[hc Φ hm, hΦ _ hφ, ENNReal.ofReal_coe_nnreal]`. Use `congr 1`. Use `lintegral_congr fun m₁ => lintegral_congr fun m₂ => lintegral_congr fun t => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : Measurable fun X : UPos (2 + 2) 2 → 𝔸[K] => nn X * lv m₁ m₂ t` using `((continuous_unipOne (K := K) (n := 2 + 2) 2).mul continuous_const).measurable`. Rewrite using `[← lintegral_lintegral_swap]`. Use `lintegral_congr fun X => ?_` and prove the remaining obligations. Rewrite using `[lintegral_mul_const' _ _ ENNReal.ofReal_ne_top]`. Conclude with `((hm.comp ((hn.comp measurable_fst).mul (measurable_subtype_coe.comp measurable_snd))).mul_const _).aemeasurable`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.iwaInt :
     ∀ {K : Type} [Field K] [NumberField K] (μ : Measure (G1 K (2 + 2))) [μ.IsHaarMeasure] (μ₂ : Measure (G1 K 2)) [μ₂.IsHaarMeasure] (κ : Measure (KG K (2 + 2))) [κ.IsHaarMeasure], ∃ c : ℝ, 0 < c ∧ ∀ Φ : G1 K (2 + 2) → ℝ≥0∞, Measurable Φ →

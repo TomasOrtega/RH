@@ -3,7 +3,7 @@ open UpperTheory.V.Sd.Eis
 open NumberField Topology Matrix Neutral.B1 GlobalTheory.CuspRep Formalism.L2.Host UpperTheory.V
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨?_, ?_⟩` and prove the remaining obligations. Conclude with `Units.continuous_val.matrix_map hf`. Conclude with `Units.continuous_coe_inv.matrix_map hf`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem cont_map {R S : Type} [CommRing R] [CommRing S] [TopologicalSpace R] [TopologicalSpace S]
     (a : ℕ) (f : R →+* S) (hf : Continuous f) :
@@ -13,7 +13,7 @@ private theorem cont_map {R S : Type} [CommRing R] [CommRing S] [TopologicalSpac
   · exact Units.continuous_coe_inv.matrix_map hf
 
 /- English proof (translation)
-Establish `h : Continuous (TR.infEq F).symm` using `continuous_pi fun w => (InfinitePlace.Completion.isometryEquivRealOfIsReal (IsTotallyReal.isReal w)).continuous.comp (continuous_apply w)`. Conclude with `h.comp continuous_fst`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem cont_pInf (F : Type) [Field F] [NumberField F] [IsTotallyReal F] : Continuous (TR.pInf F) := by
   have h : Continuous (TR.infEq F).symm :=
@@ -23,13 +23,13 @@ private theorem cont_pInf (F : Type) [Field F] [NumberField F] [IsTotallyReal F]
   exact h.comp continuous_fst
 
 /- English proof (translation)
-Introduce `F _ _ _ a φ hU`. Establish `hy` using `cont_map a (TR.pInf F) (cont_pInf F)`. Establish `hk` using `cont_map a (pFin F) continuous_snd`. Use `continuous_iff_continuousAt.2 fun g₀ => ?_` and prove the remaining obligations. Use `set k₀ := GeneralLinearGroup.map (pFin F) g₀ with hk₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hy' : Continuous fun g : GA F a => TR.toL (GeneralLinearGroup.map (TR.pInf F) g).val` using `(Units.continuous_val (M := Matrix (Fin a) (Fin a) (TR.Rinf F))).comp hy`. Establish `hc : ContinuousAt (fun g : GA F a => TR.chart φ.1 (finGL F a k₀) (TR.toL (GeneralLinearGroup.map (TR.pInf F) g).val)) g₀` using `ContinuousAt.comp (f := fun g : GA F a => TR.toL (GeneralLinearGroup.map (TR.pInf F) g).val) (TR.contDiffAt_chart φ.2 _ (TR.val_mem_invSet _)).continuousAt hy'.continuousAt`. Use `hc.congr ?_` and prove the remaining obligations. Establish `hk' : Continuous fun g : GA F a => k₀⁻¹ * GeneralLinearGroup.map (pFin F) g` using `continuous_const.mul hk`. Establish `hn : ∀ᶠ g : GA F a in 𝓝 g₀, TR.finRep F a (k₀⁻¹ * GeneralLinearGroup.map (pFin F) g) φ = φ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hU.preimage hk').mem_nhds ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `TR.finRep F a (k₀⁻¹ * k₀) φ = φ`. Rewrite using `[inv_mul_cancel, map_one]`. Both sides reduce to the same expression. Use `filter_upwards [hn] with g hg`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[TR.chart_val]`. Establish `e` using `congrFun (congrArg Subtype.val hg) (finGL F a k₀ * TR.infGL F a (GeneralLinearGroup.map (TR.pInf F) g))`. Rewrite using `[← e]`. Express the relevant statement in the definitionally equal form `φ.1 (_ * finGL F a _) = _`. Rewrite using `[← TR.infGL_comm, mul_assoc, ← map_mul, mul_inv_cancel_left, TR.infGL_mul_finGL]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.eisenstein_smooth_continuous :
     UpperTheory.V.Sd.Eis.SmCont := by

@@ -14,13 +14,11 @@ set_option synthInstance.maxHeartbeats 400000
 variable {R : Ranks} {H : Host R} {what₂ : Rows.Data R} (B : LocBase0 H what₂)
 
 /- English proof (translation)
-Use `set b := Module.Free.chooseBasis what₂.LL (what₂.MtL μ j)`. Establish `hb` using `(what₂.jMt_basis μ j b).1`. Establish `key : ∀ z, Finsupp.linearCombination ℂ (fun i => what₂.jMt μ j (b i)) ((b.repr z).mapRange what₂.embLL (map_zero _)) = what₂.jMt μ j z`. Introduce `z`. Use `conv_rhs => rw [← b.linearCombination_repr z]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finsupp.linearCombination_apply, Finsupp.linearCombination_apply, Finsupp.sum_mapRange_index (by simp), map_finsuppSum]`. Simplify using `only [LinearMap.map_smulₛₗ]`. Introduce `x y hxy`. Establish `h1 : what₂.jMt μ j (x - y) = 0` using `by rw [map_sub, hxy, sub_self]`. Rewrite `h1` using `[← key]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `(linearIndependent_iff.1 hb) _ h1`. Establish `h3 : b.repr (x - y) = 0` using `Finsupp.ext fun i => what₂.embLL.injective (by`. Use `congrArg (fun f => f i) h2` as an intermediate fact. Simplify using `using this)`. Rewrite using `[← sub_eq_zero]`.
-
-Conclude with `b.repr.injective (h3.trans (map_zero _).symm)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jMt_injective (μ : what₂.Tup) (j : ℕ) : Function.Injective (what₂.jMt μ j) := by
   set b := Module.Free.chooseBasis what₂.LL (what₂.MtL μ j)
@@ -43,7 +41,7 @@ theorem jMt_injective (μ : what₂.Tup) (j : ℕ) : Function.Injective (what₂
   exact b.repr.injective (h3.trans (map_zero _).symm)
 
 /- English proof (translation)
-Use `Set.Finite.subset ((what₂.MtLat (what₂.muTw (wOf B i)) (jOf B i)).gen.finite_toSet.preimage ((jMt_injective (what₂.muTw (wOf B i)) (jOf B i)).injOn)) fun x hx => hx` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem latL_finite (i : LocT B) : (latL B i).Finite := by
   classical
@@ -60,7 +58,7 @@ instance noZero (i : LocT B) : NoZeroSMulDivisors (OOf B i) (B.V (jOf B i) (wOf 
   · exact Or.inr h2
 
 /- English proof (translation)
-Use `⟨((latL_finite B i).toFinset.image fun x => projOf B hC i (B.iV (jOf B i) (wOf B i) x)), ?_⟩` and prove the remaining obligations. Unfold `MtSub`. Use `congr 1`. Use extensionality with `y`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem mtSub_fg (hC : PartCompl B) (i : LocT B) : (MtSub B hC i).FG := by
   classical
@@ -71,15 +69,15 @@ theorem mtSub_fg (hC : PartCompl B) (i : LocT B) : (MtSub B hC i).FG := by
   simp
 
 /- English proof (translation)
-The claim follows from `Module.Finite.iff_fg.2 (mtSub_fg hC i)`.
+A detailed English derivation is pending.
 -/
 theorem mtSub_finite (hC : PartCompl B) (i : LocT B) : Module.Finite (OOf B i) (MtSub B hC i) :=
   Module.Finite.iff_fg.2 (mtSub_fg hC i)
 
 /- English proof (translation)
-Use `haveI := mtSub_finite hC i`. Use `haveI : NoZeroSMulDivisors (OOf B i) (partOf B i) := by`. Use `⟨fun {c x} h => ?_⟩` and prove the remaining obligations. Establish `h1 : c • (x : B.V (jOf B i) (wOf B i)) = 0`. Use `congrArg (fun z : partOf B i => (z : B.V (jOf B i) (wOf B i))) h` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Separate the alternatives or extract the components of the hypothesis.
 
-Simplify using `using this`. Break down `smul_eq_zero.1 h1 with h2 | h2` into its components or cases. Conclude with `Or.inl h2`. Conclude with `Or.inr (Subtype.ext h2)`. Conclude with `Module.free_of_finite_type_torsion_free'`.
+Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem mtSub_free (hC : PartCompl B) (i : LocT B) : Module.Free (OOf B i) (MtSub B hC i) := by
   haveI := mtSub_finite hC i

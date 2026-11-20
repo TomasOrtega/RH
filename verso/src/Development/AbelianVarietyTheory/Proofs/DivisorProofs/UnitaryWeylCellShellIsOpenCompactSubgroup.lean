@@ -13,7 +13,7 @@ namespace GlobalTheory.WeylCell.WeylUnipotentShell.ShellGroup
 section Order
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Establish `h1 : 1 ≤ x` using `le_of_lt (lt_of_le_of_lt (le_max_left _ _) hc)`. Establish `h2 : x ≤ x * x` using `le_mul_of_one_le_right' h1`. Conclude with `absurd (lt_of_lt_of_le (lt_of_le_of_lt (le_max_right _ _) hc) (h2.trans h)) (lt_irrefl _)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem le_max_one_of_mul_self_le {x e : WithZero (Multiplicative ℤ)} (h : x * x ≤ e) : x ≤ max 1 e := by
   by_contra hc
@@ -23,7 +23,7 @@ theorem le_max_one_of_mul_self_le {x e : WithZero (Multiplicative ℤ)} (h : x *
   exact absurd (lt_of_lt_of_le (lt_of_le_of_lt (le_max_right _ _) hc) (h2.trans h)) (lt_irrefl _)
 
 /- English proof (translation)
-Break down `le_total x y with h | h` into its components or cases. Conclude with `(mul_le_mul' h le_rfl).trans hy`. Conclude with `(mul_le_mul' le_rfl h).trans hx`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem mul_le_of_mul_self_le {x y e : WithZero (Multiplicative ℤ)} (hx : x * x ≤ e) (hy : y * y ≤ e) :
     x * y ≤ e := by
@@ -36,7 +36,7 @@ end Order
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Establish `hϖ : Valued.v ϖ = WithZero.exp (-1)` using `h.2.2.2.1`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq, Set.mem_preimage, SetLike.mem_coe, intL, Valuation.mem_integer_iff, map_mul, map_zpow₀, hϖ]`. Rewrite using `[← WithZero.exp_zsmul, smul_neg, smul_eq_mul, mul_one, WithZero.exp_neg, inv_mul_le_iff₀ WithZero.exp_pos, mul_one]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem ball_eq_preimage {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (j : ℤ) :
     {x : L | Valued.v x ≤ WithZero.exp j} = (fun x => ϖ ^ j * x) ⁻¹' (intL L : Set L) := by
@@ -47,7 +47,7 @@ theorem ball_eq_preimage {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ 
   rw [← WithZero.exp_zsmul, smul_neg, smul_eq_mul, mul_one, WithZero.exp_neg, inv_mul_le_iff₀ WithZero.exp_pos, mul_one]
 
 /- English proof (translation)
-Introduce `e`. Establish `hϖ : Valued.v ϖ = WithZero.exp (-1)` using `h.2.2.2.1`. Rewrite `hϖ` using `[e, map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ.symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ne_zero_of_unramInv {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) : ϖ ≠ 0 := by
   intro e
@@ -56,7 +56,7 @@ theorem ne_zero_of_unramInv {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv 
   exact WithZero.exp_ne_zero hϖ.symm
 
 /- English proof (translation)
-Rewrite using `[ball_eq_preimage h]`. Conclude with `(Valued.isOpen_integer L).preimage (continuous_const.mul continuous_id)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_ball {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (j : ℤ) :
     IsOpen {x : L | Valued.v x ≤ WithZero.exp j} := by
@@ -64,7 +64,7 @@ theorem isOpen_ball {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q)
   exact (Valued.isOpen_integer L).preimage (continuous_const.mul continuous_id)
 
 /- English proof (translation)
-Rewrite using `[ball_eq_preimage h]`. Conclude with `(Valued.isClosed_integer L).preimage (continuous_const.mul continuous_id)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_ball {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (j : ℤ) :
     IsClosed {x : L | Valued.v x ≤ WithZero.exp j} := by
@@ -72,7 +72,7 @@ theorem isClosed_ball {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ 
   exact (Valued.isClosed_integer L).preimage (continuous_const.mul continuous_id)
 
 /- English proof (translation)
-Rewrite using `[ball_eq_preimage h]`. Establish `hc` using `GlobalTheory.LFun.IntPtsUnitary.isCompact_intL h`. Establish `e : (fun x => ϖ ^ j * x) ⁻¹' (intL L : Set L) = (Homeomorph.mulLeft₀ (ϖ ^ j) (zpow_ne_zero j (ne_zero_of_unramInv h))) ⁻¹' (intL L : Set L)` using `rfl`. Rewrite using `[e, Homeomorph.isCompact_preimage]`. Conclude with `hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_ball [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (j : ℤ) :
     IsCompact {x : L | Valued.v x ≤ WithZero.exp j} := by
@@ -93,9 +93,9 @@ def InBlock (a a' : Fin n) (X : GL (Fin n) L) : Prop :=
 variable {a m a' : Fin n}
 
 /- English proof (translation)
-Take `⟨hB, hZ⟩` from `hX`. Rewrite `hB` using `[mem_unipB]`. Break down `lt_trichotomy i j with h | rfl | h` into its components or cases. Distinguish the cases in `h1 : i < a ∨ a' < j`. Conclude with `Or.inr (Or.inl (hZ i j h h1))`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Consider separately whether the proposition holds or fails. Prove the second alternative.
 
-Use `push_neg at h1`. Simplify using `only [Fin.lt_iff_val_lt_val, Fin.le_iff_val_le_val, Fin.ext_iff] at h h1 ⊢`. Use linear arithmetic over natural numbers and integers. Conclude with `Or.inl (hB.2 i)`. Conclude with `Or.inr (Or.inl (hB.1 i j h))`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Prove the first alternative. Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem InBlock.entry (ham : m.val = a.val + 1) (hma : a'.val = m.val + 1) {X : GL (Fin n) L}
     (hX : InBlock a a' X) (i j : Fin n) :
@@ -113,17 +113,17 @@ theorem InBlock.entry (ham : m.val = a.val + 1) (hma : a'.val = m.val + 1) {X : 
   · exact Or.inr (Or.inl (hB.1 i j h))
 
 /- English proof (translation)
-Establish `hXB` using `(mem_unipB L).1 hX.1`. Establish `hYB` using `(mem_unipB L).1 hY.1`. Establish `key : ∀ l : Fin n, (X : Matrix (Fin n) (Fin n) L) a l * (Y : Matrix (Fin n) (Fin n) L) l a' = (if l = a then (Y : Matrix (Fin n) (Fin n) L) a a' else 0) + (if l = m then (X : Matrix (Fin n) (Fin n) L) a m * (Y : Matrix (Fin n) (Fin n) L) m a' else 0) + (if l = a' then (X : Matrix …`. Introduce `l`. Distinguish the cases in `h1 : l = a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Substitute `h1` using the available equality. Establish `e1 : l ≠ m` using `fun e => by rw [Fin.ext_iff] at e; omega`. Establish `e2 : l ≠ a'` using `fun e => by rw [Fin.ext_iff] at e; omega`. Rewrite using `[if_pos rfl, if_neg e1, if_neg e2, hXB.2, one_mul, add_zero, add_zero]`. Distinguish the cases in `h2 : l = m`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h2` using the available equality. Establish `e2 : l ≠ a'` using `fun e => by rw [Fin.ext_iff] at e; omega`. Rewrite using `[if_neg h1, if_pos rfl, if_neg e2, zero_add, add_zero]`. Distinguish the cases in `h3 : l = a'`. Substitute `h3` using the available equality.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_neg h1, if_neg h2, if_pos rfl, hYB.2, mul_one, zero_add, zero_add]`. Rewrite using `[if_neg h1, if_neg h2, if_neg h3, add_zero, add_zero]`. Establish `hv1 : l.val ≠ a.val` using `fun e => h1 (Fin.ext e)`. Establish `hv2 : l.val ≠ m.val` using `fun e => h2 (Fin.ext e)`. Establish `hv3 : l.val ≠ a'.val` using `fun e => h3 (Fin.ext e)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Break down `Nat.lt_or_gt_of_ne hv1 with h4 | h4` into its components or cases. Rewrite using `[hXB.1 a l (Fin.lt_iff_val_lt_val.2 h4), zero_mul]`. Establish `h5 : a'.val < l.val` using `by omega`. Rewrite using `[hYB.1 l a' (Fin.lt_iff_val_lt_val.2 h5), mul_zero]`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_congr rfl fun l _ => key l, Finset.sum_add_distrib, Finset.sum_add_distrib, Finset.sum_ite_eq', Finset.sum_ite_eq', Finset.sum_ite_eq']`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem InBlock.mul_corner (ham : m.val = a.val + 1) (hma : a'.val = m.val + 1) {X Y : GL (Fin n) L}
     (hX : InBlock a a' X) (hY : InBlock a a' Y) :
@@ -171,21 +171,21 @@ namespace GlobalTheory.WeylCell.WeylUnipotentShell.ShellGroup
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))] {n : ℕ} {a m a' : Fin n} {σ : L →+* L}
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.LGrp.mem_GU_iff σ n X).1 hX a a', ha'rev, harev]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_corner (harev : a.rev = a') (ha'rev : a'.rev = a) {X : GL (Fin n) L} (hX : X ∈ GU σ n) :
     ((X⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) a a' = σ ((X : Matrix (Fin n) (Fin n) L) a a') := by
   rw [(GlobalTheory.LGrp.mem_GU_iff σ n X).1 hX a a', ha'rev, harev]
 
 /- English proof (translation)
-Rewrite using `[(GlobalTheory.LGrp.mem_GU_iff σ n X).1 hX m a', ha'rev, hmrev]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_mid (ha'rev : a'.rev = a) (hmrev : m.rev = m) {X : GL (Fin n) L} (hX : X ∈ GU σ n) :
     ((X⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) m a' = σ ((X : Matrix (Fin n) (Fin n) L) a m) := by
   rw [(GlobalTheory.LGrp.mem_GU_iff σ n X).1 hX m a', ha'rev, hmrev]
 
 /- English proof (translation)
-Establish `e` using `GlobalTheory.UnipShiftU.unipB_inv_apply_succ hB.1 hma`. Rewrite `e` using `[inv_mid ha'rev hmrev hX]`. Rewrite using `[e, neg_neg]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mid_eq (hma : a'.val = m.val + 1) (ha'rev : a'.rev = a) (hmrev : m.rev = m) {X : GL (Fin n) L}
     (hX : X ∈ GU σ n) (hB : InBlock a a' X) :
@@ -195,7 +195,7 @@ theorem mid_eq (hma : a'.val = m.val + 1) (ha'rev : a'.rev = a) (hmrev : m.rev =
   rw [e, neg_neg]
 
 /- English proof (translation)
-Establish `e` using `InBlock.mul_corner ham hma hB hBi`. Rewrite `e` using `[mul_inv_cancel, inv_mid ha'rev hmrev hX, inv_corner harev ha'rev hX, Units.val_one, Matrix.one_apply_ne (fun h => by rw [Fin.ext_iff] at h; omega)]`. Take the linear combination `-e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem corner_rel (ham : m.val = a.val + 1) (hma : a'.val = m.val + 1) (harev : a.rev = a') (ha'rev : a'.rev = a)
     (hmrev : m.rev = m) {X : GL (Fin n) L} (hX : X ∈ GU σ n) (hB : InBlock a a' X) (hBi : InBlock a a' X⁻¹) :
@@ -207,7 +207,7 @@ theorem corner_rel (ham : m.val = a.val + 1) (hma : a'.val = m.val + 1) (harev :
   linear_combination -e
 
 /- English proof (translation)
-Establish `e1 : Valued.v ((X : Matrix (Fin n) (Fin n) L) a m) * Valued.v ((X : Matrix (Fin n) (Fin n) L) a m) = Valued.v ((X : Matrix (Fin n) (Fin n) L) a m * σ ((X : Matrix (Fin n) (Fin n) L) a m))`. Rewrite using `[map_mul, hσv]`. Rewrite using `[e1, corner_rel ham hma harev ha'rev hmrev hX hB hBi, Valuation.map_neg]`. Conclude with `Valuation.map_add_le _ hc (by rw [hσv]; exact hc)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mid_sq_le (ham : m.val = a.val + 1) (hma : a'.val = m.val + 1) (harev : a.rev = a') (ha'rev : a'.rev = a)
     (hmrev : m.rev = m) (hσv : ∀ x, Valued.v (σ x) = Valued.v x) {X : GL (Fin n) L} (hX : X ∈ GU σ n)
@@ -221,9 +221,9 @@ theorem mid_sq_le (ham : m.val = a.val + 1) (hma : a'.val = m.val + 1) (harev : 
   exact Valuation.map_add_le _ hc (by rw [hσv]; exact hc)
 
 /- English proof (translation)
-Establish `hb` using `le_max_one_of_mul_self_le (mid_sq_le ham hma harev ha'rev hmrev hσv hX hB hBi hc)`. Apply the tactic sequence `rcases InBlock.entry ham hma hB i j with h | h | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩ | ⟨rfl, rfl⟩`. Rewrite using `[h, map_one]`. Conclude with `le_max_left _ _`. Rewrite using `[h, map_zero]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zero_le'`. Conclude with `hb`. Conclude with `hc.trans (le_max_right _ _)`. Rewrite using `[mid_eq hma ha'rev hmrev hX hB, Valuation.map_neg, hσv]`. Conclude with `hb`.
+A detailed English derivation is pending.
 -/
 theorem entry_le (ham : m.val = a.val + 1) (hma : a'.val = m.val + 1) (harev : a.rev = a') (ha'rev : a'.rev = a)
     (hmrev : m.rev = m) (hσv : ∀ x, Valued.v (σ x) = Valued.v x) {X : GL (Fin n) L} (hX : X ∈ GU σ n)
@@ -239,7 +239,7 @@ theorem entry_le (ham : m.val = a.val + 1) (hma : a'.val = m.val + 1) (harev : a
   · rw [mid_eq hma ha'rev hmrev hX hB, Valuation.map_neg, hσv]; exact hb
 
 /- English proof (translation)
-Rewrite using `[InBlock.mul_corner ham hma hB hC, mid_eq hma ha'rev hmrev hY hC]`. Use `Valuation.map_add_le _ (Valuation.map_add_le _ hx ?_) hy` and prove the remaining obligations. Rewrite using `[map_mul, Valuation.map_neg, hσv]`. Conclude with `mul_le_of_mul_self_le (mid_sq_le ham hma harev ha'rev hmrev hσv hX hB hBi hx) (mid_sq_le ham hma harev ha'rev hmrev hσv hY hC hCi hy)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem corner_mul_le (ham : m.val = a.val + 1) (hma : a'.val = m.val + 1) (harev : a.rev = a') (ha'rev : a'.rev = a)
     (hmrev : m.rev = m) (hσv : ∀ x, Valued.v (σ x) = Valued.v x) {X Y : GL (Fin n) L} (hX : X ∈ GU σ n)
@@ -260,11 +260,9 @@ namespace GlobalTheory.WeylCell.WeylUnipotentShell.ShellGroup
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Establish `hB` using `isCompact_ball h N`. Establish `hM : IsCompact {A : Matrix (Fin n) (Fin n) L | ∀ i j, A i j ∈ {x : L | Valued.v x ≤ WithZero.exp N}}`. Use `isCompact_univ_pi fun _ : Fin n => isCompact_univ_pi fun _ : Fin n => hB` as an intermediate fact. Establish `e : {A : Matrix (Fin n) (Fin n) L | ∀ i j, A i j ∈ {x : L | Valued.v x ≤ WithZero.exp N}} = Set.univ.pi fun _ : Fin n => Set.univ.pi fun _ : Fin n => {x : L | Valued.v x ≤ WithZero.exp N}` using `Set.ext fun A => ⟨fun h i _ j _ => h i j, fun h i j => h i trivial j trivial⟩`. Conclude with `e ▸ this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(Units.isClosedEmbedding_embedProduct (α := Matrix (Fin n) (Fin n) L)).isCompact_preimage (hM.prod (hM.image MulOpposite.continuous_op))` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `g`. Conclude with `⟨fun h => ⟨h.1, _, h.2, rfl⟩, fun ⟨h1, A, hA, e⟩ => ⟨h1, fun i j => by`. Establish `: A = ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)` using `MulOpposite.op_injective e`.
-
-Conclude with `this ▸ hA i j⟩⟩`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_bounded [CompleteSpace L] {ϖ : L} {σ : L →+* L} {q : ℕ} (h : IsUnramInv ϖ σ q) (n : ℕ) (N : ℤ) :
     IsCompact {g : GL (Fin n) L | (∀ i j, Valued.v ((g : Matrix (Fin n) (Fin n) L) i j) ≤ WithZero.exp N) ∧
@@ -291,31 +289,29 @@ namespace GlobalTheory.WeylCell.WeylUnipotentShell
 open ShellGroup in
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q h n k hk hn y hyK hy`. Establish `hA` using `val_rev_lo_of_last k hk hn`. Establish `hrv : ((lo k).rev : Fin n).val = n - ((lo k).val + 1)` using `Fin.val_rev _`. Establish `hlt` using `(lo k).isLt`. Set `m : Fin n` to `⟨(lo k).val + 1, by omega⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `ham : m.val = (lo k).val + 1` using `rfl`. Establish `hma : ((lo k).rev : Fin n).val = m.val + 1` using `by rw [ham]; omega`. Establish `harev : (lo k).rev = (lo k).rev` using `rfl`. Establish `ha'rev : ((lo k).rev : Fin n).rev = lo k` using `Fin.rev_rev _`. Establish `hmrev : m.rev = m`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ext`. Rewrite using `[Fin.val_rev, ham]`. Use linear arithmetic over natural numbers and integers. Establish `hσv : ∀ x, Valued.v (σ x) = Valued.v x` using `h.2.1`. Establish `hblk : ∀ u : cellU y, InBlock (lo k) (lo k).rev ((u : GU σ n) : GL (Fin n) L)`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `u`. Use `(mem_cellU_last_iff L ϖ σ q h n k hk hn y hyK hy u).1 u.2` as an intermediate fact. Conclude with `⟨(mem_unipB L).2 ⟨this.1.1, this.1.2⟩, this.2⟩`. Establish `hblki : ∀ u : cellU y, InBlock (lo k) (lo k).rev (((u : GU σ n) : GL (Fin n) L))⁻¹` using `fun u => hblk u⁻¹`. Establish `hG : ∀ u : cellU y, ((u : GU σ n) : GL (Fin n) L) ∈ GU σ n` using `fun u => (u : GU σ n).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcorner : ∀ (u : cellU y) (j : ℤ), u ∈ shellU k y j ↔ Valued.v ((((u : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k) (lo k).rev) ≤ WithZero.exp j` using `fun u j => Iff.rfl`. Establish `hinvS : ∀ (j : ℤ) (u : cellU y), u ∈ shellU k y j → u⁻¹ ∈ shellU k y j`. Introduce `j u hu`. Rewrite `hu`, the goal using `[hcorner]`. Use `show Valued.v ((((((u : GU σ n) : GL (Fin n) L))⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k) (lo k).rev) ≤ _`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[inv_corner harev ha'rev (hG u), hσv]`. Conclude with `hu`. Establish `hent : ∀ (j : ℤ) (u : cellU y), u ∈ shellU k y j → ∀ i l, Valued.v ((((u : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) i l) ≤ max 1 (WithZero.exp j)` using `fun j u hu i l => entry_le ham hma harev ha'rev hmrev hσv (hG u) (hblk u) (hblki u) hu i l`. Establish `hcont : Continuous fun u : cellU y => (((u : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k) (lo k).rev` using `(Units.continuous_val.comp (continuous_subtype_val.comp continuous_subtype_val)).matrix_elem _ _`. Establish `hshell : ∀ j : ℤ, shellU k y j = (fun u : cellU y => (((u : GU σ n) : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k) (lo k).rev) ⁻¹' {x : L | Valued.v x ≤ WithZero.exp j}` using `fun j => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hGc : IsClosed (GU σ n : Set (GL (Fin n) L))` using `isClosed_eq (((Units.continuous_val.matrix_map (GlobalTheory.LGrp.continuous_of_unramInv h)).matrix_transpose.matrix_mul continuous_const).matrix_mul Units.continuous_val) continuous_const`. Establish `hCc : IsClosed (cellU y : Set (GU σ n))` using `(isClosed_cell _).preimage continuous_subtype_val`. Establish `hι : Topology.IsClosedEmbedding fun u : cellU y => ((u : GU σ n) : GL (Fin n) L)` using `hGc.isClosedEmbedding_subtypeVal.comp hCc.isClosedEmbedding_subtypeVal`. Use `⟨fun j => ⟨?_, ?_, ?_, ?_, hinvS j⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hshell]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(isOpen_ball h j).preimage hcont`. Establish `hcl : IsClosed (shellU k y j)`. Rewrite using `[hshell]`. Conclude with `(isClosed_ball h j).preimage hcont`. Rewrite using `[hι.isInducing.isCompact_iff]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `(isCompact_bounded h n (max 0 j)).of_isClosed_subset (hι.isClosedMap _ hcl) ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, rfl⟩`. Establish `hmax : max 1 (WithZero.exp j) ≤ WithZero.exp (max 0 j)` using `max_le (by rw [← WithZero.exp_zero, WithZero.exp_le_exp]; exact le_max_left _ _) (WithZero.exp_le_exp.2 (le_max_right _ _))`. Conclude with `⟨fun i l => (hent j u hu i l).trans hmax, fun i l => (hent j u⁻¹ (hinvS j u hu) i l).trans hmax⟩`. Rewrite using `[hcorner] show Valued.v (((1 : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) (lo k) (lo k).rev) ≤ _`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Rewrite using `[Units.val_one, Matrix.one_apply_ne (fun e => by rw [Fin.ext_iff] at e; omega), map_zero]`. Conclude with `zero_le'`. Introduce `u v hu hv`. Rewrite `hu`, `hv`, the goal using `[hcorner]`. Conclude with `corner_mul_le ham hma harev ha'rev hmrev hσv (hG u) (hG v) (hblk u) (hblki u) (hblk v) (hblki v) hu hv`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `u`. Rewrite using `[SetLike.mem_coe, Subgroup.mem_subgroupOf, ← SetLike.mem_coe, GlobalTheory.LFun.IntPtsUnitary.coe_KU, Set.mem_preimage, GlobalTheory.LFun.IntPtsUnitary.coe_GLint]`. Simplify using `only [Set.mem_inter_iff, Set.mem_setOf_eq, intL, Valuation.mem_integer_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hent 0 u hu`. Establish `h2` using `hent 0 u⁻¹ (hinvS 0 u hu)`. Rewrite `h1`, `h2` using `[WithZero.exp_zero, max_self]`. Conclude with `⟨h1, h2⟩`. Introduce `hu`.
-
-Rewrite using `[hcorner, WithZero.exp_zero]`. Conclude with `hu.1 _ _`.
+A detailed English derivation is pending.
 -/
 theorem shellU_open_compact_subgroup : ∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L)
     (σ : L →+* L) (q : ℕ), IsUnramInv ϖ σ q →

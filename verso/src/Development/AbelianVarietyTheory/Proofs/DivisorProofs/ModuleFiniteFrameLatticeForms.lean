@@ -9,9 +9,9 @@ open GlobalTheory.ExpFrame Formalism.CohomologicalDescent.DepthNonnegative Forma
 namespace GlobalTheory.ExpFrame
 
 /- English proof (translation)
-Take `⟨S, hS⟩` from `h`. Set `ev : AMFK O Γ K ρ →ₗ[O] (S → W)` to `(LinearMap.funLeft O W (Subtype.val : S → G)).comp (AMFK O Γ K ρ).subtype`. Use `Module.Finite.of_injective ev ?_` and prove the remaining obligations. Introduce `f f' hff`. Use extensionality with `g`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Take `⟨γ, hγ, s, hs, κ, hκ, rfl⟩` from `hS g`. Establish `h1` using `f.2 ⟨γ, hγ⟩ s ⟨κ, hκ⟩`. Establish `h2` using `f'.2 ⟨γ, hγ⟩ s ⟨κ, hκ⟩`. Establish `h3 : (f : G → W) s = (f' : G → W) s` using `congrFun hff ⟨s, hs⟩`. Conclude with `h1.trans ((congrArg _ h3).trans h2.symm)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_forms_of_classes {O : Type} [CommRing O] {W : Type} [AddCommGroup W] [Module O W] [IsNoetherian O W]
     {G : Type} [Group G] (Γ K : Subgroup G) (ρ : Representation O K W)
@@ -29,7 +29,7 @@ theorem finite_forms_of_classes {O : Type} [CommRing O] {W : Type} [AddCommGroup
   exact h1.trans ((congrArg _ h3).trans h2.symm)
 
 /- English proof (translation)
-Introduce `l _ ι _ _ N F mu jK hF`. Establish `: ∀ τ : ι, Module.Finite F.O (dualWeyl F.O N N (res N (mu τ)))` using `fun τ => dualWeyl_module_finite F.O N N _`. Establish `: IsNoetherian F.O (NablaT F.O N mu)` using `inferInstance`. Conclude with `finite_forms_of_classes F.Γ F.K _ hF.classes`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Frame.finite_latticeForms : ∀ (l : ℕ) [Fact l.Prime] (ι : Type) [Fintype ι] [DecidableEq ι] (N : ℕ) (F : Frame l ι N) (mu : ι → ℕ → ℕ) (jK : F.K →* alg F.O N mu), F.Ok → Module.Finite F.O (Forms F.O (A := alg F.O N mu) F.Γ jK (NablaT F.O N mu)) := by
   intro l _ ι _ _ N F mu jK hF

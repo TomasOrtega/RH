@@ -22,9 +22,9 @@ private theorem colRep_apply (ρ : Γ →* GL (Fin n) k) (g : Γ) (v : Fin n →
     colRep ρ g v = (ρ g).val.mulVec v := rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨fun a => ?_⟩` and prove the remaining obligations. Take `⟨W', hW', hc⟩` from `h a.toSubmodule fun g v hv => a.apply_mem_toSubmodule g hv`. Conclude with `⟨⟨W', fun g v hv => hW' g v hv⟩, disjoint_iff.2 (Subrepresentation.toSubmodule_injective hc.inf_eq_bot), codisjoint_iff.2 (Subrepresentation.toSubmodule_injective hc.sup_eq_top)⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `h W hW`. Take `⟨b, hb⟩` from `exists_isCompl (⟨W, fun g v hv => hW g v hv⟩ : Subrepresentation (colRep ρ))`. Conclude with `⟨b.toSubmodule, fun g v hv => b.apply_mem_toSubmodule g hv, disjoint_iff.2 (congrArg Subrepresentation.toSubmodule hb.inf_eq_bot), codisjoint_iff.2 (congrArg Subrepresentation.toSubmodule hb.sup_eq_top)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem isSSRep_iff (ρ : Γ →* GL (Fin n) k) : IsSSRep ρ ↔ (colRep ρ).IsSemisimpleRepresentation := by
   constructor
@@ -43,11 +43,9 @@ private theorem isSSRep_iff (ρ : Γ →* GL (Fin n) k) : IsSSRep ρ ↔ (colRep
 end Bridge
 
 /- English proof (translation)
-Introduce `Γ k _ _ a m n e r hr`. Rewrite using `[isSSRep_iff, Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule]`. Use `haveI := (Representation.isSemisimpleRepresentation_iff_isSemisimpleModule_asModule _).1 ((isSSRep_iff r).1 hr)`. Use `set R := blockRep (a := fun _ : Fin m => a) e fun _ => r`. Set `L : (colRep R).asModule ≃ₗ[k] (Fin m → (colRep r).asModule)` to `(colRep R).asModuleEquiv.trans ((vecComp e k).trans (LinearEquiv.piCongrRight fun _ => (colRep r).asModuleEquiv.symm))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hL : ∀ (g : Γ) (x : (colRep R).asModule), L (MonoidAlgebra.single g (1 : k) • x) = MonoidAlgebra.single g (1 : k) • L x`. Introduce `g x`. Use function extensionality and compare the values at `j`. Apply `(colRep r).asModuleEquiv.injective` to reduce the goal to its premises. Simplify using `only [L, LinearEquiv.trans_apply, LinearEquiv.piCongrRight_apply, Pi.smul_apply, Representation.asModuleEquiv_map_smul, Representation.asAlgebraHom_single_one, LinearEquiv.apply_symm_apply, colRep_apply]`.
-
-Conclude with `vecComp_mulVec e (fun _ => r) g _ j`. Conclude with `IsSemisimpleModule.of_injective (MonoidAlgebra.equivariantOfLinearOfComm L.toLinearMap hL) L.injective`.
+Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sSBlock_of : SSBlock := by
   intro Γ k _ _ a m n e r hr

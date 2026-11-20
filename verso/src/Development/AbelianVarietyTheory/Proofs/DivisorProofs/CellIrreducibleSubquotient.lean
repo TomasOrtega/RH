@@ -15,7 +15,7 @@ section General
 variable {G H V Y : Type} [Group G] [Group H] [AddCommGroup V] [Module ℂ V] [AddCommGroup Y] [Module ℂ Y]
 
 /- English proof (translation)
-Introduce `μ μ'`. Conclude with `h ⟨μ.toLinearMap, fun x => μ.isIntertwining' (φ x)⟩ ⟨μ'.toLinearMap, fun x => μ'.isIntertwining' (φ x)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem HomLeOne.of_comp {ρ : Representation ℂ G V} {τ : Representation ℂ G Y} (φ : H →* G)
     (h : HomLeOne (ρ.comp φ) (τ.comp φ)) : HomLeOne ρ τ := by
@@ -23,11 +23,11 @@ theorem HomLeOne.of_comp {ρ : Representation ℂ G V} {τ : Representation ℂ 
   exact h ⟨μ.toLinearMap, fun x => μ.isIntertwining' (φ x)⟩ ⟨μ'.toLinearMap, fun x => μ'.isIntertwining' (φ x)⟩
 
 /- English proof (translation)
-Introduce `μ μ'`. Break down `Representation.IsIrreducible.bijective_or_eq_zero μ with hb | h0` into its components or cases. Use `right`. Set `e` to `μ.ofBijective hb`. Take `⟨c, hc⟩` from `hs (e.symm.toIntertwiningMap.comp μ')`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, LinearMap.ext fun v => ?_⟩` and prove the remaining obligations. Establish `h1 : μ (e.symm (μ' v)) = μ' v` using `e.apply_symm_apply (μ' v)`. Establish `h2 : e.symm (μ' v) = c • v` using `hc v`. Rewrite `h1` using `[h2, map_smul]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `left`. Rewrite using `[h0]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem homLeOne_of_scalar {ρ : Representation ℂ G V} {τ : Representation ℂ G Y} (hρ : ρ.IsIrreducible)
     (hτ : τ.IsIrreducible) (hs : ∀ T : ρ.IntertwiningMap ρ, ∃ c : ℂ, ∀ v, T v = c • v) : HomLeOne ρ τ := by
@@ -59,13 +59,11 @@ open scoped TensorProduct
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Use extensionality with `h y`. Establish `h0 : (midIncl k m h) 0 = 1` using `by show Pi.mulSingle (M := fun i : Fin 3 => GL (Fin (blk3 m i)) k) 1 h 0 = 1`. Conclude with `Pi.mulSingle_eq_of_ne (by decide) _`. Establish `h2 : (midIncl k m h) 2 = 1` using `by show Pi.mulSingle (M := fun i : Fin 3 => GL (Fin (blk3 m i)) k) 1 h 2 = 1`. Conclude with `Pi.mulSingle_eq_of_ne (by decide) _`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (midIncl k m h) 1 = h` using `by show Pi.mulSingle (M := fun i : Fin 3 => GL (Fin (blk3 m i)) k) 1 h 1 = h`. Conclude with `Pi.mulSingle_eq_same _ _`. Establish `hd : deltaHalf k (fun i : Fin 3 => Fin (blk3 m i)) (midIncl k m h) = 1`. Rewrite using `[deltaHalf_apply, Fin.prod_univ_three, h0, h2, h1]`. Establish `hm : modExp (fun i : Fin 3 => Fin (blk3 m i)) 1 = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[modExp, Finset.sum_filter, Fin.sum_univ_three]`. Rewrite using `[hm, map_one, map_one, map_one, map_one, mul_one]`. Simplify using the standard rewrite rules. Use `show (((deltaHalf k _ (midIncl k m h))⁻¹ : ℂˣ) : ℂ) • leviTgt σ₁ ξ₁ ξ₂ (midIncl k m h) y = σ₁ h y`. Rewrite using `[hd, leviTgt_apply, h0, h2, h1, map_one, map_one, map_one, map_one, mul_one]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem tgt_comp_midIncl {m : ℕ} {P₁ : Type} [AddCommGroup P₁] [Module ℂ P₁] (σ₁ : Representation ℂ (GL (Fin m) k) P₁)
     (ξ₁ ξ₂ : kˣ →* ℂˣ) :
@@ -91,7 +89,7 @@ theorem tgt_comp_midIncl {m : ℕ} {P₁ : Type} [AddCommGroup P₁] [Module ℂ
   simp
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[glCast_rfl]`. Conclude with `hσ`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIrreducible_comp_glCast {n m : ℕ} (h : n = m) {P₁ : Type} [AddCommGroup P₁] [Module ℂ P₁]
     (σ₁ : Representation ℂ (GL (Fin m) k) P₁) (hσ : σ₁.IsIrreducible) :
@@ -101,11 +99,11 @@ theorem isIrreducible_comp_glCast {n m : ℕ} (h : n = m) {P₁ : Type} [AddComm
   exact hσ
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ a a' m α₀ β₀ hα hβ P₁ _ _ σ₁ hσ ξ₁ ξ₂ b f g hmid`. Establish `hm : b.1 false 1 + b.1 true 1 = m`. Use `b.2.2 1` as an intermediate fact. Simplify using `only [Fintype.sum_bool, Fintype.card_fin] at this`. Express the relevant statement in the definitionally equal form `b.1 true 1 + b.1 false 1 = m at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Use linear arithmetic over natural numbers and integers. Establish `e1` using `(GlobalTheory.T.cell_functor_determinant_pair_equiv k a a' m α₀ β₀ hα hβ b f g).some`. Establish `e2` using `(GlobalTheory.T.parabolic_induction_column_equiv k a a' m α₀ β₀ b f g hm).some`. Establish `e : Representation.Equiv ((cellFunctor f g (detPair k a a' α₀ β₀)).comp ((midIncl k m).comp (glCast k hm))) (cellMid k α₀ β₀ b.1)` using `(equivComp e1 (glCast k hm)).trans e2`. Use `HomLeOne.of_comp ((midIncl k m).comp (glCast k hm)) (HomLeOne.of_equiv e ?_)` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ht : (twist (leviTgt σ₁ ξ₁ ξ₂) (deltaHalf k fun i : Fin 3 => Fin (blk3 m i))⁻¹).comp ((midIncl k m).comp (glCast k hm)) = σ₁.comp (glCast k hm)`. Rewrite using `[← MonoidHom.comp_assoc, tgt_comp_midIncl]`. Rewrite using `[ht]`. Conclude with `homLeOne_of_scalar hmid (isIrreducible_comp_glCast hm σ₁ hσ) (GlobalTheory.LocGL.schur_GL (isSmooth_prod₂ _ _) hmid)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homLeOne_cellFunctor_leviTgt : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k],
     GlobalTheory.ThK.KP → ∀ (a a' m : ℕ) (α₀ β₀ : kˣ →* ℂˣ), IsSmoothChar α₀ → IsSmoothChar β₀ →

@@ -19,30 +19,30 @@ section RankZero
 variable {D : D7} {S S₀ : HSp D} (d : HypDec S S₀ 0)
 
 /- English proof (translation)
-Rewrite using `[d.gA_eq, Subsingleton.elim d.pX 0, Subsingleton.elim d.pY 0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem rz_gA : gA S = adj d.p0 ⬝ (gA S₀ ⬝ d.p0) := by
   rw [d.gA_eq, Subsingleton.elim d.pX 0, Subsingleton.elim d.pY 0]
   simp
 
 /- English proof (translation)
-Use `d.sum_eq_one` as an intermediate fact. Rewrite `this` using `[Subsingleton.elim d.jX 0, Subsingleton.elim d.jY 0, Matrix.zero_mul, Matrix.zero_mul, zero_add, add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem rz_j0p0 : d.j0 ⬝ d.p0 = 1 := by
   have := d.sum_eq_one
   rwa [Subsingleton.elim d.jX 0, Subsingleton.elim d.jY 0, Matrix.zero_mul, Matrix.zero_mul, zero_add, add_zero] at this
 
 /- English proof (translation)
-Rewrite using `[d.unitaryMatrix_wittCoreEmbedding, Subsingleton.elim d.jX 0, Subsingleton.elim d.jY 0]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem unitaryMatrix_rankZeroWittEmbedding_eq (g : GA D S₀) : mt S (d.emb0 g) = d.j0 ⬝ mt S₀ g ⬝ d.p0 := by
   rw [d.unitaryMatrix_wittCoreEmbedding, Subsingleton.elim d.jX 0, Subsingleton.elim d.jY 0]
   simp
 
 /- English proof (translation)
-Establish `key : ∀ X : Mx D S.rank S₀.rank, adj d.p0 ⬝ (gA S₀ ⬝ (d.p0 ⬝ X)) = gA S ⬝ X` using `fun X => by`. Rewrite using `[rz_gA d, Matrix.mul_assoc, Matrix.mul_assoc]`. Rewrite using `[adj_mul, adj_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[key, ← Matrix.mul_assoc (gA S), ← Matrix.mul_assoc (adj (mt S g)), mt_unitary]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `d.gram_00`.
+A detailed English derivation is pending.
 -/
 theorem rz_unit (g : GA D S) : adj (d.p0 ⬝ mt S g ⬝ d.j0) ⬝ (gA S₀ ⬝ (d.p0 ⬝ mt S g ⬝ d.j0)) = gA S₀ := by
   have key : ∀ X : Mx D S.rank S₀.rank, adj d.p0 ⬝ (gA S₀ ⬝ (d.p0 ⬝ X)) = gA S ⬝ X := fun X => by
@@ -55,7 +55,7 @@ theorem rz_unit (g : GA D S) : adj (d.p0 ⬝ mt S g ⬝ d.j0) ⬝ (gA S₀ ⬝ (
 def rzInv (g : GA D S) : GA D S₀ := ofMat S₀ (d.p0 ⬝ mt S g ⬝ d.j0) (rz_unit d g)
 
 /- English proof (translation)
-The claim follows from `mt_ofMat _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem mt_rzInv (g : GA D S) : mt S₀ (rzInv d g) = d.p0 ⬝ mt S g ⬝ d.j0 := mt_ofMat _ _ _
 
@@ -73,7 +73,7 @@ def rzEquiv : GA D S₀ ≃* GA D S where
   map_mul' := map_mul d.emb0
 
 /- English proof (translation)
-The claim follows from `continuous_of_mt S₀ (by simp only [mt_rzInv] exact (continuous_const.matrix_mul (continuous_mt S)).matrix_mul continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem rzInv_continuous : Continuous (rzInv d) :=
   continuous_of_mt S₀ (by
@@ -81,7 +81,7 @@ theorem rzInv_continuous : Continuous (rzInv d) :=
     exact (continuous_const.matrix_mul (continuous_mt S)).matrix_mul continuous_const)
 
 /- English proof (translation)
-Rewrite using `[mem_GQ_iff, mt_rzInv]`. Conclude with `ratMx_mul (ratMx_mul (rat_mem _) ((mem_GQ_iff S g).1 hg)) (rat_mem _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rzInv_mem_GQ {g : GA D S} (hg : g ∈ GQ S) : rzInv d g ∈ GQ S₀ := by
   rw [mem_GQ_iff, mt_rzInv]
@@ -90,11 +90,11 @@ theorem rzInv_mem_GQ {g : GA D S} (hg : g ∈ GQ S) : rzInv d g ∈ GQ S₀ := b
 end RankZero
 
 /- English proof (translation)
-Introduce `D ψ S S₀ T d χS χT om om₀ hom hom₀ f hf g₀ h`. Take `⟨μ, 𝓕, hμ⟩` from `exists_isCovolOne (D := D) (m := T.rank) (n := 0)`. Establish `hF` using `GlobalTheory.T.mixedModelFormulasWittSource_proof D ψ S S₀ T 0 d χS χT om om₀ hom hom₀ μ 𝓕 hμ`. Establish `H1` using `(hF (om (1, h) f) (hom.om_pres _ _ hf)).core g₀ 0`. Establish `H2` using `(hF f hf).target h 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `H1` using `[mixS_rankZero ψ S S₀ T d μ 𝓕 hμ, mixS_rankZero ψ S S₀ T d μ 𝓕 hμ]`. Rewrite `H2` using `[mixS_rankZero ψ S S₀ T d μ 𝓕 hμ, mixS_rankZero ψ S S₀ T d μ 𝓕 hμ]`. Rewrite `H1` using `[H2]`. Establish `e1 : ((d.emb0 g₀, h) : GA D S × GA D T) = (d.emb0 g₀, 1) * (1, h)` using `by simp`. Establish `e2 : ((g₀, h) : GA D S₀ × GA D T) = (g₀, 1) * (1, h)` using `by simp`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun H1 0` as an intermediate fact. Simplify using `only [map_zero] at this`. Rewrite using `[e1, e2, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply]`. Conclude with `this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weilRep_rankZeroWittEmbedding_valueAtZero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S S₀ T : HSp D) (d : HypDec S S₀ 0) (χS χT : (AE D)ˣ →* Circle) (om : Om S T) (om₀ : Om S₀ T), IsWeilDatumO ψ S T χS χT om → IsWeilDatumO ψ S₀ T χS χT om₀ → ∀ f, IsThetaFunO ψ S T f → ∀ (g₀ : GA D S₀) (h : GA D T), om (d.emb0 g₀, h) f 0 = om₀ (g₀, h) (fun w => f (d.ext0 T w)) 0 := by
   intro D ψ S S₀ T d χS χT om om₀ hom hom₀ f hf g₀ h
@@ -113,17 +113,15 @@ theorem weilRep_rankZeroWittEmbedding_valueAtZero : ∀ (D : D7) (ψ : AddChar (
   exact this
 
 /- English proof (translation)
-Introduce `D ψ B J s Ψ hΨ h₀ g₀`. Establish `hflat : ∀ X, flatBF s X = evalBF s X`. Introduce `X`. Use function extensionality and compare the values at `w`. Take `⟨-, 𝓤, -, h1⟩` from `s.vU.unit`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result.
 
-Use `haveI : Subsingleton (UX D 0) := ⟨fun a b => Subtype.ext (Units.ext (Subsingleton.elim _ _))⟩`. Establish `hU : 𝓤 = Set.univ`. Break down `Set.eq_empty_or_nonempty 𝓤 with he | ⟨x, hx⟩` into its components or cases. Rewrite `h1` using `[he, measure_empty]`. Conclude with `absurd h1 zero_ne_one`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Set.eq_univ_of_forall fun y => Subsingleton.elim x y ▸ hx`. Establish `huniv : s.vU.ν Set.univ = 1` using `hU ▸ h1`. Use `haveI : IsProbabilityMeasure s.vU.ν := ⟨huniv⟩`. Establish `hc : ∀ u : UX D 0, flatFun ψ B.d J.d s.vS.μ s.vS.𝓕 s.vT.μ s.vT.𝓕 (xZero J.d) (yZero B.V₀ 0 (vecB B.o B.ζ)) X w u = evalBF s X w`. Introduce `u`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [flatFun, evalBF, evalZero]`. Rewrite using `[Subsingleton.elim (xZero J.d ⬝ u.1.1) (xZero J.d)]`. Simplify using `[psiUni, upSum, psiE]`. Simplify using `only [flatBF, flat, flatAt, hc, integral_const, probReal_univ, one_smul]`. Establish `hd` using `GlobalTheory.T.weilDatum_descends_to_wittCore D`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `hm : GlobalTheory.IndefiniteRowSideFullHecke.SkewGramHalfModule.MixedModelFormulas D` using `⟨GlobalTheory.T.mixedModelFormulasWittSource_proof D, GlobalTheory.T.mixedModelFormulas_wittTarget D⟩`. Establish `hv` using `GlobalTheory.T.mixedCoordinates_of_thetaFunction_are_thetaFunctions D`. Rewrite using `[hflat, GlobalTheory.Unf.EvalCont.om_evalBF s hd hm hv hΨ h₀ g₀]`. Unfold `evalBF evalZero evalAt`. Rewrite using `[mixT_rankZero ψ _ _ _ J.d s.vT.μ s.vT.𝓕 s.vT.covol, mixS_rankZero ψ _ _ _ B.d s.vS.μ s.vS.𝓕 s.vS.covol]`.
-
-Simplify using `only [map_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem om_flatBF_rankZero : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (B : BesLev D 0) (J : JacLev D 0) (s : StepBF ψ B J) (Ψ : WO B.V J.W → ℂ), IsThetaFunO ψ B.V J.W Ψ → ∀ (h₀ : GA D B.A) (g₀ : GA D J.W₀), s.om (embA B.d B.o h₀, J.d.emb0 g₀) Ψ 0 = s.om₀ (B.o.emb (h₀, 1), g₀) (flatBF s Ψ) 0 := by
   intro D ψ B J s Ψ hΨ h₀ g₀

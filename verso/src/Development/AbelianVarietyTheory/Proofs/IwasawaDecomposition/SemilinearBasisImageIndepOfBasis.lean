@@ -10,15 +10,15 @@ open scoped TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `K _ e V _ _ W _ _ j ι κ b b' ⟨hli, hsp⟩`. Use `letI : Algebra K ℂ := e.toAlgebra`. Use `letI : Module K W := Module.compHom W e`. Use `haveI : IsScalarTower K ℂ W := ⟨fun k c w => by`. Express the relevant statement in the definitionally equal form `(e k * c) • w = e k • c • w`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression.
 
-Conclude with `mul_smul _ _ _⟩`. Set `j' : V →ₗ[K] W` to `{ toFun := j map_add' := j.map_add map_smul' := fun k v => j.map_smulₛₗ k v }`. Set `L : ℂ ⊗[K] V →ₗ[ℂ] W` to `j'.liftBaseChange ℂ`. Establish `hL : ∀ v : V, L (1 ⊗ₜ[K] v) = j v` using `fun v => by`. Simplify using `[L, j']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `c : Module.Basis ι ℂ W` to `Module.Basis.mk hli hsp.ge`. Set `E : ℂ ⊗[K] V ≃ₗ[ℂ] W` to `(b.baseChange ℂ).equiv c (Equiv.refl ι)`. Establish `hE : (E : ℂ ⊗[K] V →ₗ[ℂ] W) = L`. Use `(b.baseChange ℂ).ext fun i => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [E, Module.Basis.equiv_apply, Equiv.refl_apply, c, Module.Basis.mk_apply]`. Rewrite using `[Module.Basis.baseChange_apply, hL]`. Establish `hb : (fun i => j (b' i)) = ⇑((b'.baseChange ℂ).map E)`. Use function extensionality and compare the values at `i`. Rewrite using `[Module.Basis.map_apply, Module.Basis.baseChange_apply, ← hL, ← hE, LinearEquiv.coe_coe]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[hb]`. Conclude with `⟨Module.Basis.linearIndependent _, Module.Basis.span_eq _⟩`.
+A detailed English derivation is pending.
 -/
 theorem semilinear_basis_image_indep_of_basis :
     ∀ (K : Type) [Field K] (e : K →+* ℂ) (V : Type) [AddCommGroup V] [Module K V]

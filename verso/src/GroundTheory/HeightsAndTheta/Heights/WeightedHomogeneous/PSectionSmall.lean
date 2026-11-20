@@ -13,13 +13,13 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {n : ι → ℕ}
 namespace SectionSmall
 
 /- English proof (translation)
-The claim follows from `fun h ↦ s.den_not_mem ((P.mkF_eq_zero_iff _).mp h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mkF_den_ne_zero {P : ArithVariety n} {a : ι → ℤ} (s : IntegralSection P a) :
     P.mkF s.den ≠ 0 := fun h ↦ s.den_not_mem ((P.mkF_eq_zero_iff _).mp h)
 
 /- English proof (translation)
-Establish `hG` using `mkF_den_ne_zero s`. Rewrite using `[← P.mkF_eq_zero_iff, map_sub, map_mul, map_mul, h, IntegralSection.toFun]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem den_mul_sub_mem {P : ArithVariety n} {a : ι → ℤ} (s : IntegralSection P a)
     {p q : MvPolynomial (Coord n) ℤ} (h : P.mkF p = s.toFun * P.mkF q) :
@@ -30,7 +30,7 @@ theorem den_mul_sub_mem {P : ArithVariety n} {a : ι → ℤ} (s : IntegralSecti
   ring
 
 /- English proof (translation)
-Establish `hG` using `mkF_den_ne_zero s`. Establish `h'` using `(P.mkF_eq_zero_iff _).mpr h`. Rewrite `h'` using `[map_sub, map_mul, map_mul]`. Rewrite using `[IntegralSection.toFun, div_mul_eq_mul_div, eq_div_iff hG]`. Take the linear combination `h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem mkF_eq_of_mem {P : ArithVariety n} {a : ι → ℤ} (s : IntegralSection P a)
     {e m : MvPolynomial (Coord n) ℤ} (h : s.den * e - s.num * m ∈ P.ideal) :
@@ -44,7 +44,7 @@ theorem mkF_eq_of_mem {P : ArithVariety n} {a : ι → ℤ} (s : IntegralSection
 omit [Fintype ι] in
 
 /- English proof (translation)
-The claim follows from `fun k hk ↦ hc k (by simpa [evalCone] using hz.2 _ hk)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem live_of_ne {P : ArithVariety n} {F : Type*} [CommRing F] {z : Cone n F} (hz : z ∈ P.points F)
     {c : (k : ι) → Fin (n k + 1)} (hc : ∀ k, z k (c k) ≠ 0) :
@@ -54,7 +54,7 @@ theorem live_of_ne {P : ArithVariety n} {F : Type*} [CommRing F] {z : Cone n F} 
 omit [Fintype ι] in
 
 /- English proof (translation)
-Establish `h : ∀ k, ∃ i, z k i ≠ 0` using `fun k ↦ Function.ne_iff.mp (hz.1 k)`. Use `choose c hc using h`. Conclude with `⟨c, hc⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_chart {P : ArithVariety n} {z : Cone n ℂ} (hz : z ∈ P.points ℂ) :
     ∃ c : (k : ι) → Fin (n k + 1), ∀ k, z k (c k) ≠ 0 := by
@@ -65,7 +65,7 @@ theorem exists_chart {P : ArithVariety n} {z : Cone n ℂ} (hz : z ∈ P.points 
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Simplify using `only [evalCone, chartMonomial, eval₂_prod, eval₂_pow, eval₂_X]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc k)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalCone_chartMonomial_ne_zero {z : Cone n ℂ} {c : (k : ι) → Fin (n k + 1)}
     (hc : ∀ k, z k (c k) ≠ 0) (d : ι → ℕ) : evalCone z (chartMonomial c d) ≠ 0 := by
@@ -73,9 +73,9 @@ theorem evalCone_chartMonomial_ne_zero {z : Cone n ℂ} {c : (k : ι) → Fin (n
   exact Finset.prod_ne_zero_iff.mpr fun k _ ↦ pow_ne_zero _ (hc k)
 
 /- English proof (translation)
-Establish `hmul : s.den * (e * q - p * m) ∈ P.ideal`. Establish `h` using `P.ideal.sub_mem (P.ideal.mul_mem_right q hem) (P.ideal.mul_mem_right m hpq)`. Use `h using 1` and compare the differences between its conclusion and the goal. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : e * q - p * m ∈ P.ideal` using `(P.isPrime.mem_or_mem hmul).resolve_left s.den_not_mem`.
+Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h0` using `hz.2 _ hmem`. Simplify using `only [evalCone, eval₂_sub, eval₂_mul] at h0 ⊢`. Conclude with `sub_eq_zero.mp h0`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eval_cross {P : ArithVariety n} {a : ι → ℤ} (s : IntegralSection P a)
     {p q e m : MvPolynomial (Coord n) ℤ} (hpq : s.den * p - s.num * q ∈ P.ideal)
@@ -92,15 +92,15 @@ theorem eval_cross {P : ArithVariety n} {a : ι → ℤ} (s : IntegralSection P 
   exact sub_eq_zero.mp h0
 
 /- English proof (translation)
-Introduce `ι _ _ n P A s`. Establish `bound : ∀ C : ℝ, s.SupNormLE A C → ∀ p q : MvPolynomial (Coord n) ℤ, P.mkF p = s.toFun * P.mkF q → ∀ z ∈ P.points ℂ, ‖evalCone z p‖ ≤ Real.exp C * (‖evalCone z q‖ * A.metric z)`. Introduce `C hC p q hpq z hz`. Take `⟨c, hc⟩` from `exists_chart hz`. Take `⟨d, e, he⟩` from `s.regular c (live_of_ne hz hc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hcross` using `eval_cross s (den_mul_sub_mem s hpq) he.2 hz`. Establish `hm : 0 < ‖evalCone z (chartMonomial c d)‖` using `norm_pos_iff.mpr (evalCone_chartMonomial_ne_zero hc d)`. Establish `hh : 0 < A.metric z` using `A.metric_pos z hz.1`. Establish `hb` using `hC z hz c d e he hc`. Rewrite `hb` using `[div_le_iff₀ (mul_pos hm hh)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hnorm : ‖evalCone z e‖ * ‖evalCone z q‖ = ‖evalCone z p‖ * ‖evalCone z (chartMonomial c d)‖`. Rewrite using `[← norm_mul, ← norm_mul, hcross]`. Use `le_of_mul_le_mul_right ?_ hm` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `⟨bound, ⟨fun hs p q δp δq _ _ _ hpq z hz ↦ ?_, fun hsm z hz c d e he hc ↦ ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Simplify `bound 0 hs p q hpq z hz` using `[Real.exp_zero]`. Take `⟨⟨δ, hδ, hδd⟩, hmem⟩` from `he`. Establish `hm : 0 < ‖evalCone z (chartMonomial c d)‖` using `norm_pos_iff.mpr (evalCone_chartMonomial_ne_zero hc d)`. Establish `hh : 0 < A.metric z` using `A.metric_pos z hz.1`. Establish `hsmall` using `hsm e (chartMonomial c d) δ d hδ (isWeightedHomogeneous_chartMonomial c d) (fun k ↦ by rw [hδd k]; ring) (mkF_eq_of_mem s hmem) z hz`.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Real.exp_zero, div_le_one (mul_pos hm hh)]`. Conclude with `hsmall`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proof : SectionSmall.Statement := by
   intro ι _ _ n P A s

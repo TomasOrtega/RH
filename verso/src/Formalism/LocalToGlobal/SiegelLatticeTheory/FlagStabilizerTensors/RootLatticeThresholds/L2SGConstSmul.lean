@@ -14,11 +14,11 @@ namespace Formalism.L2.SG.Pf.GoodS
 variable {D : D7} {X : HidaSetting D} {θ : ℝ}
 
 /- English proof (translation)
-Introduce `h0`. Establish `hy : (C.Q τ * C.y τ * C.Qi τ)ᴴ * Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) * (C.Q τ * C.y τ * C.Qi τ) = Formalism.REAL.Jm (X.B.I.ε (vOf X τ))`. Establish `hg` using `(C.isT τ).2.2.1`. Establish `hyU : (C.y τ)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * C.y τ = Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS` using `C.y_mem τ`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm (X.B.I.ε (vOf X τ)) := by rw [hg, hyU, qiHqi _ (C.isT τ).2.1 hg]`. Establish `hn` using `(X.ds (vOf X τ)).2.2.1.2.1 _ hy (X.B.w (vOf X τ))`. Establish `h1` using `(X.low (vOf X τ)).1`. Unfold `v0Of sigB at h0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hn` using `[h0, norm_zero]`. Rewrite `h1` using `[← hn]`. Conclude with `zero_ne_one h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem v0_ne (C : Choice X θ) (τ : D.what₂.Tau) : v0Of C τ ≠ 0 := by
   intro h0
@@ -38,14 +38,14 @@ theorem v0_ne (C : Choice X θ) (τ : D.what₂.Tau) : v0Of C τ ≠ 0 := by
   exact zero_ne_one h1
 
 /- English proof (translation)
-Establish `: Nontrivial (X.Vloc u v)` using `(X.piLoc_type u v).1`. Conclude with `Module.finrank_pos`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_pos (u : D.what₂.Word) (v : InfinitePlace X.B.I.F) : 0 < Module.finrank ℂ (X.Vloc u v) := by
   have : Nontrivial (X.Vloc u v) := (X.piLoc_type u v).1
   exact Module.finrank_pos
 
 /- English proof (translation)
-Unfold `l2SG`. Simplify using `only [nnnorm_smul, ENNReal.coe_mul, mul_pow]`. Use `first`. Consider the case `exact lintegral_const_mul' _ _ (by simp)`. Consider the case `exact lintegral_const_mul' _ _ (ENNReal.pow_ne_top ENNReal.coe_ne_top)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem l2SG_const_smul {k r : ℕ} {Wp : Type*} [NormedAddCommGroup Wp] [NormedSpace ℂ Wp] (ν : Measure (Formalism.QuantumDeterminants.Mt k r))
     (s : ℂ) (f : Matrix (Fin (2 * r + k + 1)) (Fin (2 * r + k + 1)) ℂ → Wp) :
@@ -57,17 +57,15 @@ theorem l2SG_const_smul {k r : ℕ} {Wp : Type*} [NormedAddCommGroup Wp] [Normed
     | exact lintegral_const_mul' _ _ (ENNReal.pow_ne_top ENNReal.coe_ne_top)
 
 /- English proof (translation)
-Use `set v := vOf X τ`. Establish `hd : (0 : ℝ) < Module.finrank ℂ (X.Vloc u v)` using `by exact_mod_cast finrank_pos u v`. Establish `hd' : (0 : ℝ) < Module.finrank ℂ (X.Vloc u' v)` using `by exact_mod_cast finrank_pos u' v`. Establish `hL : 0 < (l2SG (C.nuS u τ) (phiOf hB u τ)).toReal` using `ENNReal.toReal_pos hLu.1 hLu.2.ne`. Establish `hL' : 0 < (l2SG (C.nuS u' τ) (phiOf hB u' τ)).toReal` using `ENNReal.toReal_pos hLu'.1 hLu'.2.ne`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : 0 < cOf hB u τ` using `div_pos hL hd`. Use `⟨Formalism.MainNotions.S.Inh.amp_isHCParam_lamD D τ, Formalism.L2.SG.Pf.dsTr C τ, hsm, v0_ne C τ, hc, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show l2SG (C.nuS u τ) (phiOf hB u τ) = _`. Rewrite using `[cOf, div_mul_cancel₀ _ hd.ne', ENNReal.ofReal_toReal hLu.2.ne]`. Use `show l2SG (C.nuS u' τ) (fun m => sclOf hB u u' τ • phiOf hB u' τ m) = _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[l2SG_const_smul, sclOf]`. Use `set a := cOf hB u τ * (Module.finrank ℂ (X.Vloc u' v) : ℝ) / (l2SG (C.nuS u' τ) (phiOf hB u' τ)).toReal with ha`. Establish `ha0 : 0 ≤ a` using `div_nonneg (mul_nonneg hc.le hd'.le) hL'.le`. Establish `hnorm : (‖((Real.sqrt a : ℝ) : ℂ)‖₊ : ℝ≥0∞) ^ 2 = ENNReal.ofReal a`. Rewrite using `[← enorm_eq_nnnorm, ← ofReal_norm, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), ← ENNReal.ofReal_pow (Real.sqrt_nonneg _), Real.sq_sqrt ha0]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[hnorm, ← ENNReal.ofReal_toReal hLu'.2.ne, ← ENNReal.ofReal_mul ha0, ha, div_mul_cancel₀ _ hL'.ne']`. Take `⟨P, hP⟩` from `Formalism.MainNotions.S.Inh.obj_cayleyU_rows D`. Use `⟨P, hP.1, ?_⟩` and prove the remaining obligations. Establish `hε : ∀ i, epsSH D.R i = X.B.I.ε v (Fin.cast (n_eq' X).symm i)` using `fun i => by`. Rewrite using `[X.eps_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `congrArg (epsS D.R) (Fin.ext rfl)`. Establish `hF` using `fdegHpk_tr (n_eq' X) (X.B.I.ε v) (epsSH D.R) hε (X.B.σ v) (X.ds v).2.2.1 (Formalism.L2.SG.Pf.RowDictPf.fdeg_of_schur X Formalism.L2.SG.Pf.RowDictPf.schur_orthogonality_discrete_series v) (C.Q τ) (C.Qi τ) (C.isT τ).2.1 (C.isT τ).2.2.1 P hP`. Establish `hDS` using `dsHpk_tr (n_eq' X) (X.B.I.ε v) (epsSH D.R) hε (X.B.lam v) (lamSH D.R (D.hc τ)) (fun i => by`. Rewrite using `[X.lam_eq, show X.pl (vOf X τ) = τ from X.pl.apply_symm_apply τ]`. Conclude with `congrArg (lamS D.R (D.hc τ)) (Fin.ext rfl))`.
-
-Use the proof step `(X.B.σ v) (X.ds v) (C.Q τ) (C.Qi τ) (C.isT τ).2.1 (C.isT τ).2.2.1 P hP`. Establish `hF2` using `Formalism.L2.SG.Pf.RowDictPf.isFdeg_smul (D.s.cdScale_pos _ (epsSH D.R)) hF`. Establish `htie` using `hT τ (X.B.H v) _ _ hDS hF2`. Rewrite using `[← htie]`. Conclude with `hF2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodSRest_of {C : Choice X θ} (hB : WuBessel C) (u u' : D.what₂.Word) (τ : D.what₂.Tau)
     (hsm : v0Of C τ ∈ smoothVecs (k := D.R.k) (r := D.R.rS) (sigB X (C.Q τ) (C.Qi τ) τ))

@@ -14,14 +14,14 @@ open Ad3 Ad3.GP
 def bnd (y : FiniteAdeleRing (𝓞 ℚ) ℚ) : ℝ := ∏ᶠ v : Pl, max ‖y v‖ 1
 
 /- English proof (translation)
-The claim follows from `(Valued.toNormedField.norm_le_one_iff).2 ((HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 ℚ) ℚ v).1 h)`.
+A detailed English derivation is pending.
 -/
 theorem norm_le_one_of_mem {v : Pl} {x : Qv v} (h : x ∈ v.adicCompletionIntegers ℚ) : ‖x‖ ≤ 1 :=
   (Valued.toNormedField.norm_le_one_iff).2
     ((HeightOneSpectrum.mem_adicCompletionIntegers (R := 𝓞 ℚ) ℚ v).1 h)
 
 /- English proof (translation)
-Establish `h : ∀ᶠ v : Pl in cofinite, max ‖y v‖ 1 = 1` using `by filter_upwards [y.2] with v hv`. Conclude with `max_eq_right (norm_le_one_of_mem hv)`. Conclude with `Filter.eventually_cofinite.1 h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_mulSupport_bnd (y : FiniteAdeleRing (𝓞 ℚ) ℚ) :
     (Function.mulSupport fun v : Pl => max ‖y v‖ 1).Finite := by
@@ -31,14 +31,14 @@ theorem finite_mulSupport_bnd (y : FiniteAdeleRing (𝓞 ℚ) ℚ) :
   exact Filter.eventually_cofinite.1 h
 
 /- English proof (translation)
-Rewrite using `[bnd, finprod_eq_prod _ (finite_mulSupport_bnd y)]`. Conclude with `Finset.prod_induction _ (fun t : ℝ => 1 ≤ t) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl fun v _ => le_max_right _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_le_bnd (y : FiniteAdeleRing (𝓞 ℚ) ℚ) : 1 ≤ bnd y := by
   rw [bnd, finprod_eq_prod _ (finite_mulSupport_bnd y)]
   exact Finset.prod_induction _ (fun t : ℝ => 1 ≤ t) (fun a b ha hb => one_le_mul_of_one_le_of_one_le ha hb) le_rfl fun v _ => le_max_right _ _
 
 /- English proof (translation)
-Establish `h1 : ‖y - x‖ ≤ 1` using `norm_le_one_of_mem h`. Establish `h2 : ‖y‖ ≤ max ‖x‖ ‖y - x‖`. Use `IsUltrametricDist.norm_add_le_max x (y - x)` as an intermediate fact. Simplify using `using this`. Use `max_le (h2.trans (max_le (le_max_left _ _) (h1.trans (le_max_right _ _)))) (le_max_right _ _)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem local_le {v : Pl} (x y : Qv v) (h : y - x ∈ v.adicCompletionIntegers ℚ) :
     max ‖y‖ 1 ≤ max ‖x‖ 1 := by
@@ -49,7 +49,7 @@ theorem local_le {v : Pl} (x y : Qv v) (h : y - x ∈ v.adicCompletionIntegers �
   refine max_le (h2.trans (max_le (le_max_left _ _) (h1.trans (le_max_right _ _)))) (le_max_right _ _)
 
 /- English proof (translation)
-Use `set S := (finite_mulSupport_bnd x).toFinset ∪ (finite_mulSupport_bnd y).toFinset with hS`. Rewrite using `[bnd, bnd, finprod_eq_prod_of_mulSupport_subset _ (s := S) (by simp [hS]), finprod_eq_prod_of_mulSupport_subset _ (s := S) (by simp [hS])]`. Conclude with `Finset.prod_le_prod (fun v _ => by positivity) fun v _ => local_le _ _ (h v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bnd_le (x y : FiniteAdeleRing (𝓞 ℚ) ℚ) (h : ∀ v : Pl, y v - x v ∈ v.adicCompletionIntegers ℚ) :
     bnd y ≤ bnd x := by
@@ -60,7 +60,7 @@ theorem bnd_le (x y : FiniteAdeleRing (𝓞 ℚ) ℚ) (h : ∀ v : Pl, y v - x v
   exact Finset.prod_le_prod (fun v _ => by positivity) fun v _ => local_le _ _ (h v)
 
 /- English proof (translation)
-Use `set S := (IdeleGroup.finite_mulSupport_norm a).toFinset ∪ (finite_mulSupport_bnd (a : 𝔸[ℚ]).2).toFinset with hS`. Rewrite using `[IdeleGroup.finiteModule, bnd, finprod_eq_prod_of_mulSupport_subset _ (s := S) (by simp [hS]), finprod_eq_prod_of_mulSupport_subset _ (s := S) (by simp [hS])]`. Conclude with `Finset.prod_le_prod (fun v _ => norm_nonneg _) fun v _ => le_max_left _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteModule_le_bnd (a : IdeleGroup ℚ) : IdeleGroup.finiteModule a ≤ bnd (a : 𝔸[ℚ]).2 := by
   classical
@@ -71,9 +71,9 @@ theorem finiteModule_le_bnd (a : IdeleGroup ℚ) : IdeleGroup.finiteModule a ≤
   exact Finset.prod_le_prod (fun v _ => norm_nonneg _) fun v _ => le_max_left _ _
 
 /- English proof (translation)
-Establish `ho : IsOpen {z : FiniteAdeleRing (𝓞 ℚ) ℚ | ∀ v : Pl, z v ∈ v.adicCompletionIntegers ℚ}` using `RestrictedProduct.isOpen_forall_mem (fun v => Valued.isOpen_valuationSubring _)`. Establish `hc : Continuous fun y : FiniteAdeleRing (𝓞 ℚ) ℚ => y - x` using `continuous_id.sub continuous_const`. Use `(ho.preimage hc).mem_nhds ?_` and prove the remaining obligations. Introduce `v`. Simplify using `only [sub_self]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `zero_mem (v.adicCompletionIntegers ℚ)`.
+A detailed English derivation is pending.
 -/
 theorem nhds_mem (x : FiniteAdeleRing (𝓞 ℚ) ℚ) :
     {y : FiniteAdeleRing (𝓞 ℚ) ℚ | ∀ v : Pl, y v - x v ∈ v.adicCompletionIntegers ℚ} ∈ 𝓝 x := by
@@ -86,11 +86,9 @@ theorem nhds_mem (x : FiniteAdeleRing (𝓞 ℚ) ℚ) :
   exact zero_mem (v.adicCompletionIntegers ℚ)
 
 /- English proof (translation)
-Use `hΩ.induction_on (p := fun S => ∃ B : ℝ, 0 < B ∧ ∀ y ∈ S, bnd y ≤ B) ⟨1, one_pos, by simp⟩ ?_ ?_ ?_` and prove the remaining obligations. Introduce and unpack `s t hst ⟨B, hB, h⟩`. Conclude with `⟨B, hB, fun y hy => h y (hst hy)⟩`. Introduce and unpack `s t ⟨B, hB, h⟩ ⟨B', _, h'⟩`. Use `⟨max B B', lt_max_of_lt_left hB, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `y (hy | hy)`. Conclude with `(h y hy).trans (le_max_left _ _)`. Conclude with `(h' y hy).trans (le_max_right _ _)`. Introduce `x _`. Use `⟨_, mem_nhdsWithin_of_mem_nhds (nhds_mem x), bnd x, lt_of_lt_of_le one_pos (one_le_bnd x), ?_⟩` and prove the remaining obligations.
-
-Introduce `y hy`. Conclude with `bnd_le x y hy`.
+Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem bnd_bdd (Ω : Set (FiniteAdeleRing (𝓞 ℚ) ℚ)) (hΩ : IsCompact Ω) :
     ∃ B : ℝ, 0 < B ∧ ∀ y ∈ Ω, bnd y ≤ B := by
@@ -109,11 +107,11 @@ theorem bnd_bdd (Ω : Set (FiniteAdeleRing (𝓞 ℚ) ℚ)) (hΩ : IsCompact Ω)
     exact bnd_le x y hy
 
 /- English proof (translation)
-Take `⟨B, hB, h⟩` from `bnd_bdd Ω hΩ`. Use `⟨B, hB, fun a ha w => ?_⟩` and prove the remaining obligations. Establish `hw : w.IsReal`. Rewrite using `[Subsingleton.elim w Rat.infinitePlace]`. Conclude with `Rat.isReal_infinitePlace`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hinf : IdeleGroup.infiniteModule a = ‖(a : 𝔸[ℚ]).1 w‖`. Rewrite using `[IdeleGroup.infiniteModule, Fintype.prod_subsingleton _ w, InfinitePlace.mult, if_pos hw, pow_one]`. Rewrite using `[IdeleGroup.ideleModule_apply, hinf, mul_comm]`. Establish `h1` using `(finiteModule_le_bnd a).trans (h _ ha)`. Establish `h2 : 0 ≤ ‖(a : 𝔸[ℚ]).1 w‖` using `norm_nonneg _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use polynomial arithmetic with `[IdeleGroup.finiteModule_pos a]`.
+A detailed English derivation is pending.
 -/
 theorem module_le (Ω : Set (FiniteAdeleRing (𝓞 ℚ) ℚ)) (hΩ : IsCompact Ω) :
     ∃ B : ℝ, 0 < B ∧ ∀ a : IdeleGroup ℚ, (a : 𝔸[ℚ]).2 ∈ Ω → ∀ w : InfinitePlace ℚ,
@@ -138,9 +136,9 @@ def GaugeAt (W : G3 → ℂ) (Ω : Set (FiniteAdeleRing (𝓞 ℚ) ℚ)) (T : �
       (W (dg (a * b) b 1 * k) ≠ 0 → (a : 𝔸[ℚ]).2 ∈ Ω ∧ (b : 𝔸[ℚ]).2 ∈ Ω)
 
 /- English proof (translation)
-Establish `h1 : A ^ d ≤ Q ^ d * P ^ d`. Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ hA.le h d`. Rewrite using `[div_div, div_div, div_le_div_iff₀ (by positivity) (by positivity)]`. Establish `h2 : 0 ≤ C * (A ^ T * P ^ N)` using `by positivity`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem real_step (C A P Q : ℝ) (T d N : ℕ) (hA : 0 < A) (hP : 0 < P) (hC : 0 ≤ C) (hQ : 0 ≤ Q)
     (h : A ≤ Q * P) : C / A ^ T / P ^ (N + d) ≤ C * Q ^ d / A ^ (T + d) / P ^ N := by
@@ -154,15 +152,15 @@ theorem real_step (C A P Q : ℝ) (T d N : ℕ) (hA : 0 < A) (hP : 0 < P) (hC : 
     _ = C * Q ^ d * (A ^ T * P ^ (N + d)) := by ring
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hT`. Take `⟨B, hB, hmod⟩` from `module_le Ω hΩ`. Introduce `N`. Take `⟨C, hC⟩` from `h (N + d)`. Use `⟨max C 0 * (B * B) ^ d, fun a b k hk w => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h1, h2⟩` from `hC a b k hk w`. Establish `hA : 0 < (IdeleGroup.ideleModule ℚ a : ℝ) * IdeleGroup.ideleModule ℚ b` using `mul_pos (IdeleGroup.ideleModule ℚ a).2 (IdeleGroup.ideleModule ℚ b).2`. Establish `ha0 : 0 ≤ ‖(a : 𝔸[ℚ]).1 w‖` using `norm_nonneg _`. Establish `hb0 : 0 ≤ ‖(b : 𝔸[ℚ]).1 w‖` using `norm_nonneg _`. Establish `hP : 0 < (1 + ‖(a : 𝔸[ℚ]).1 w‖) * (1 + ‖(b : 𝔸[ℚ]).1 w‖)` using `by positivity`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, fun hne => ⟨hs (h2 hne).1, hs (h2 hne).2⟩⟩` and prove the remaining obligations. Distinguish the cases in `h0 : W (dg (a * b) b 1 * k) = 0`. Rewrite using `[h0, norm_zero]`. Establish `: 0 ≤ max C 0` using `le_max_right _ _`. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Take `⟨ha, hb⟩` from `h2 h0`. Establish `hma` using `hmod a ha w`. Establish `hmb` using `hmod b hb w`. Establish `hle : (IdeleGroup.ideleModule ℚ a : ℝ) * IdeleGroup.ideleModule ℚ b ≤ B * B * ((1 + ‖(a : 𝔸[ℚ]).1 w‖) * (1 + ‖(b : 𝔸[ℚ]).1 w‖))`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `h1.trans (le_trans ?_ (real_step (max C 0) _ _ (B * B) T d N hA hP (le_max_right _ _) (by positivity) hle))` and prove the remaining obligations. Use `gcongr`. Conclude with `le_max_left _ _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem GaugeAt.mono {W : G3 → ℂ} {Ω Ω' : Set (FiniteAdeleRing (𝓞 ℚ) ℚ)} {T T' : ℕ}
     (h : GaugeAt W Ω T) (hΩ : IsCompact Ω) (hs : Ω ⊆ Ω') (hT : T ≤ T') : GaugeAt W Ω' T' := by

@@ -13,11 +13,9 @@ namespace GlobalTheory.LevVol
 variable {D : D7}
 
 /- English proof (translation)
-Use extensionality with `g`. Simplify using `only [Set.mem_setOf_eq, SetLike.mem_coe, Subgroup.mem_comap, Subgroup.mem_subgroupOf]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, κ, hκ, rfl⟩`. Establish `e : GlobalTheory.AutMult.toFin V (k * κ) = ⟨κ, hU hκ⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[map_mul, GlobalTheory.AutMult.toFin_coe_inf (⟨k, hk⟩ : GinfC V), one_mul]`. Conclude with `GlobalTheory.AutMult.toFin_coe (⟨κ, hU hκ⟩ : GfC V)`. Rewrite using `[e]`. Conclude with `hκ`. Introduce `h`.
-
-Conclude with `⟨_, (GlobalTheory.AutMult.toInf V g).2, _, h, (GlobalTheory.AutMult.toInf_mul_toFin g).symm⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mul_set_eq_comap (V : HSp D) (U : Subgroup (GA D V)) (hU : U ≤ GfC V) :
     {g : GA D V | ∃ k ∈ GinfC V, ∃ κ ∈ U, g = k * κ} =
@@ -35,13 +33,11 @@ theorem mul_set_eq_comap (V : HSp D) (U : Subgroup (GA D V)) (hU : U ≤ GfC V) 
     exact ⟨_, (GlobalTheory.AutMult.toInf V g).2, _, h, (GlobalTheory.AutMult.toInf_mul_toFin g).symm⟩
 
 /- English proof (translation)
-Introduce `D V v U U' hle hU' _ hopn`. Take `⟨i1, -, -, -, i5, -⟩` from `GlobalTheory.Ker.CongTop.adelicUnitary_top_cong D V`. Use `haveI := i1`. Use `haveI := i5`. Use `haveI := v.haar`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hU : U ≤ GfC V` using `hle.trans hU'`. Use `set A := (U.subgroupOf (GfC V)).comap (GlobalTheory.AutMult.toFin V) with hA`. Use `set A' := (U'.subgroupOf (GfC V)).comap (GlobalTheory.AutMult.toFin V) with hA'`. Establish `hAA : A ≤ A'` using `Subgroup.comap_mono (fun x hx => Subgroup.mem_subgroupOf.2 (hle (Subgroup.mem_subgroupOf.1 hx)))`. Establish `hAo : IsOpen (A : Set (GA D V))` using `hopn.preimage (GlobalTheory.AutMult.continuous_toFin V)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Establish `key` using `MassDataLevelSSteps.toReal_eq_relIndex_mul_of_open v.μ A A' hAA hAo`. Establish `hsurj : Function.Surjective (GlobalTheory.AutMult.toFin V)` using `fun y => ⟨y, GlobalTheory.AutMult.toFin_coe y⟩`. Establish `hidx : A.relIndex A' = U.relIndex U'`. Rewrite using `[hA, Subgroup.relIndex_comap, hA', Subgroup.map_comap_eq_self_of_surjective hsurj, Subgroup.relIndex_subgroupOf hU']`. Unfold `GlobalTheory.SeeSaw.volLev`.
-
-Rewrite using `[mul_set_eq_comap V U hU, mul_set_eq_comap V U' hU', ← hA, ← hA', key, hidx, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volLev_mul_relIndex : ∀ (D : D7) (V : HSp D) (v : GlobalTheory.Unf.Vol V) (U U' : Subgroup (GA D V)), U ≤ U' → U' ≤ GfC V →
     IsCompact (U' : Set (GA D V)) → IsOpen ((U.subgroupOf (GfC V) : Subgroup (GfC V)) : Set (GfC V)) →

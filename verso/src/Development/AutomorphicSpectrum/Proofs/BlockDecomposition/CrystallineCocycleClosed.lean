@@ -19,9 +19,9 @@ section Ring
 variable {A A' : Type} [CommRing A] [CommRing A'] {J : Ideal A} {J' : Ideal A'}
 
 /- English proof (translation)
-Unfold `dlog`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `e : f v - 1 = f (v - 1)` using `by rw [map_sub, map_one]`. Rewrite using `[e, hf.dpow_comp _ hv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul, map_pow, map_neg, map_one, map_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem dlog_map {δ : DividedPowers J} {δ' : DividedPowers J'} {f : A →+* A'} (hf : IsDPMorphism δ δ' f)
     (N : ℕ) {v : A} (hv : v - 1 ∈ J) : f (dlog δ N v) = dlog δ' N (f v) := by
@@ -33,7 +33,7 @@ theorem dlog_map {δ : DividedPowers J} {δ' : DividedPowers J'} {f : A →+* A'
   simp only [map_mul, map_pow, map_neg, map_one, map_natCast]
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.T.divided_power_log_multiplicative δ N hN a b ha hb, ← GlobalTheory.T.divided_power_log_multiplicative δ N hN c e hc he, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dlog_rel (δ : DividedPowers J) (N : ℕ)
     (hN : ∀ k, N ≤ k → ∀ x ∈ J, (k.factorial : A) * δ.dpow (k + 1) x = 0) {a b c e : A}
@@ -42,7 +42,7 @@ theorem dlog_rel (δ : DividedPowers J) (N : ℕ)
   rw [← GlobalTheory.T.divided_power_log_multiplicative δ N hN a b ha hb, ← GlobalTheory.T.divided_power_log_multiplicative δ N hN c e hc he, h]
 
 /- English proof (translation)
-Establish `hab : a * b - 1 ∈ J`. Establish `: a * b - 1 = (a - 1) * b + (b - 1)` using `by ring`. Rewrite using `[this]`. Conclude with `J.add_mem (J.mul_mem_right _ ha) hb`. Rewrite using `[← GlobalTheory.T.divided_power_log_multiplicative δ N hN a b ha hb, ← GlobalTheory.T.divided_power_log_multiplicative δ N hN _ c hab hc, ← GlobalTheory.T.divided_power_log_multiplicative δ N hN e f he hf, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divided_power_log_three_term_relation (δ : DividedPowers J) (N : ℕ)
     (hN : ∀ k, N ≤ k → ∀ x ∈ J, (k.factorial : A) * δ.dpow (k + 1) x = 0) {a b c e f : A}
@@ -56,9 +56,9 @@ theorem divided_power_log_three_term_relation (δ : DividedPowers J) (N : ℕ)
   rw [← GlobalTheory.T.divided_power_log_multiplicative δ N hN a b ha hb, ← GlobalTheory.T.divided_power_log_multiplicative δ N hN _ c hab hc, ← GlobalTheory.T.divided_power_log_multiplicative δ N hN e f he hf, h]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Ideal.Quotient.mk_surjective (u : A ⧸ J)`. Take `⟨b, hb⟩` from `Ideal.Quotient.mk_surjective ((u⁻¹ : (A ⧸ J)ˣ) : A ⧸ J)`. Establish `hmem : a * b - 1 ∈ J`. Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_mul, ha, hb, Units.mul_inv, map_one, sub_self]`. Establish `hu : IsUnit (a * b)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(hJ _ hmem).isUnit_one_add` as an intermediate fact. Simplify using `using this`. Conclude with `⟨(isUnit_of_mul_isUnit_left hu).unit, Units.ext (by simpa using ha)⟩`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem unit_lift (J : Ideal A) (hJ : ∀ x ∈ J, IsNilpotent x) (u : (A ⧸ J)ˣ) :
     ∃ w : Aˣ, Units.map (Ideal.Quotient.mk J).toMonoidHom w = u := by
@@ -72,7 +72,7 @@ theorem unit_lift (J : Ideal A) (hJ : ∀ x ∈ J, IsNilpotent x) (u : (A ⧸ J)
   exact ⟨(isUnit_of_mul_isUnit_left hu).unit, Units.ext (by simpa using ha)⟩
 
 /- English proof (translation)
-Rewrite using `[← Ideal.Quotient.eq_zero_iff_mem, map_sub, map_one, sub_eq_zero]`. Conclude with `congrArg Units.val h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sub_one_mem {J : Ideal A} {v : Aˣ} (h : Units.map (Ideal.Quotient.mk J).toMonoidHom v = 1) :
     (v : A) - 1 ∈ J := by
@@ -84,11 +84,11 @@ end Ring
 section Nil
 
 /- English proof (translation)
-Introduce `x hx`. Distinguish the cases in `hp : b.p = 0`. Take `⟨n, hn⟩` from `T.adm.2 hp`. Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h : x ^ n ∈ T.J ^ n` using `Ideal.pow_mem_pow hx n`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[hn]`. Conclude with `h`. Take `⟨n, hn⟩ : IsNilpotent ((b.p : ℕ) : T.B)` from `T.adm.1 hp`. Use `⟨b.p * n, ?_⟩` and prove the remaining obligations. Establish `h1 : x ^ b.p = (b.p.factorial : T.B) * T.δ.dpow b.p x` using `(T.δ.factorial_mul_dpow_eq_pow hx).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (b.p.factorial : T.B) = (b.p : T.B) * ((b.p - 1).factorial : T.B)`. Rewrite using `[← Nat.cast_mul, Nat.mul_factorial_pred hp]`. Rewrite using `[pow_mul, h1, h2, mul_assoc, mul_pow, hn, zero_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thick_nil {b : Base} {L : b.Fun} (T : Thick L) : ∀ x ∈ T.J, IsNilpotent x := by
   intro x hx
@@ -117,7 +117,7 @@ def uq {A : Type} [CommRing A] (a b : Spec (CommRingCat.of A) ⟶ D.Y) (h : a �
 variable {A A' : Type} [CommRing A] [CommRing A']
 
 /- English proof (translation)
-Rewrite using `[uq, uq, ← map_mul, D.coc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem uq_mul (a b c : Spec (CommRingCat.of A) ⟶ D.Y) (h : a ≫ D.f = b ≫ D.f) (h' : b ≫ D.f = c ≫ D.f) :
     uq D a b h * uq D b c h' = uq D a c (h.trans h') := by
@@ -125,14 +125,14 @@ theorem uq_mul (a b c : Spec (CommRingCat.of A) ⟶ D.Y) (h : a ≫ D.f = b ≫ 
   rfl
 
 /- English proof (translation)
-Use `uq_mul D a a a rfl rfl` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem uq_self (a : Spec (CommRingCat.of A) ⟶ D.Y) : uq D a a rfl = 1 := by
   have := uq_mul D a a a rfl rfl
   simpa using this
 
 /- English proof (translation)
-Substitute `ea eb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem uq_congr {a a' b b' : Spec (CommRingCat.of A) ⟶ D.Y} (ea : a = a') (eb : b = b')
     (h : a ≫ D.f = b ≫ D.f) (h' : a' ≫ D.f = b' ≫ D.f) : uq D a b h = uq D a' b' h' := by
@@ -140,7 +140,7 @@ theorem uq_congr {a a' b b' : Spec (CommRingCat.of A) ⟶ D.Y} (ea : a = a') (eb
   rfl
 
 /- English proof (translation)
-Establish `e` using `D.nat (Spec.map (CommRingCat.ofHom f)) a b h`. Use `ext`. Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of A')).hom.hom (D.u _ _ h').val = f ((Scheme.ΓSpecIso (CommRingCat.of A)).hom.hom (D.u a b h).val)`. Rewrite using `[e]`. Conclude with `ConcreteCategory.congr_hom (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f)) _`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uq_map (f : A →+* A') (a b : Spec (CommRingCat.of A) ⟶ D.Y) (h : a ≫ D.f = b ≫ D.f)
     (h' : (Spec.map (CommRingCat.ofHom f) ≫ a) ≫ D.f = (Spec.map (CommRingCat.ofHom f) ≫ b) ≫ D.f) :
@@ -161,13 +161,13 @@ variable {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.o
   {κ : O →+* b.R ⧸ b.I} {C : Type 1} [Category.{0} C] {G : C ⥤ Thick ((schFn q).cr b ht κ)} {D : E.LineData X}
 
 /- English proof (translation)
-The claim follows from `congrArg (fun z => z.1.2) φ.pt`.
+A detailed English derivation is pending.
 -/
 theorem thPt_map {T T' : Thick ((schFn q).cr b ht κ)} (φ : T ⟶ T') : thSp φ ≫ thPt T = thPt T' :=
   congrArg (fun z => z.1.2) φ.pt
 
 /- English proof (translation)
-Unfold `thSp`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Conclude with `congrArg (fun r => Spec.map (CommRingCat.ofHom r)) (Thick.qmap_comp f g _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thSp_comp {T T' T'' : Thick ((schFn q).cr b ht κ)} (f : T ⟶ T') (g : T' ⟶ T'') :
     thSp (f ≫ g) = thSp g ≫ thSp f := by
@@ -182,7 +182,7 @@ abbrev um {T T' : C} (φ : T ⟶ T') (G : C ⥤ Thick ((schFn q).cr b ht κ)) : 
   Units.map (G.map φ).φ.toMonoidHom
 
 /- English proof (translation)
-Rewrite using `[um, G.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem um_comp {T T' T'' : C} (f : T ⟶ T') (g : T' ⟶ T'') (x : ((G.obj T).B)ˣ) :
     um (f ≫ g) G x = um g G (um f G x) := by
@@ -190,20 +190,20 @@ theorem um_comp {T T' T'' : C} (f : T ⟶ T') (g : T' ⟶ T'') (x : ((G.obj T).B
   rfl
 
 /- English proof (translation)
-The claim follows from `Units.ext (Ideal.quotientMap_mk).symm`.
+A detailed English derivation is pending.
 -/
 theorem red_um {T T' : C} (φ : T ⟶ T') (x : ((G.obj T).B)ˣ) :
     red T' G (um φ G x) = Units.map (Ideal.quotientMap (G.obj T').J (G.map φ).φ (G.map φ).hle).toMonoidHom (red T G x) :=
   Units.ext (Ideal.quotientMap_mk).symm
 
 /- English proof (translation)
-Rewrite using `[Category.assoc, Λ.hp, Λ.hp, thPt_map]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hh (Λ : CLift G D) {T T' : C} (φ : T ⟶ T') : (thSp (G.map φ) ≫ Λ.p T) ≫ D.f = Λ.p T' ≫ D.f := by
   rw [Category.assoc, Λ.hp, Λ.hp, thPt_map]
 
 /- English proof (translation)
-The claim follows from `Units.ext (Λ.hw φ (hh Λ φ))`.
+A detailed English derivation is pending.
 -/
 theorem red_w (Λ : CLift G D) {T T' : C} (φ : T ⟶ T') :
     red T' G (Λ.w φ) = uq D (thSp (G.map φ) ≫ Λ.p T) (Λ.p T') (hh Λ φ) :=
@@ -219,9 +219,9 @@ theorem r_eq (Λ : CLift G D) (s : ComposableArrows C 2) :
     Λ.r s = Rf Λ (s.map' 0 1) (s.map' 1 2) (s.map' 0 2) := rfl
 
 /- English proof (translation)
-Establish `e1 : red T₂ G (um g G (Λ.w f)) = uq D (thSp (G.map g) ≫ thSp (G.map f) ≫ Λ.p T₀) (thSp (G.map g) ≫ Λ.p T₁) (by rw [Category.assoc, Category.assoc, Category.assoc, Λ.hp, Λ.hp, thPt_map, thPt_map])`. Rewrite using `[red_um, red_w]`. Conclude with `(uq_map D _ _ _ _ _).symm`. Establish `e2 : red T₂ G (Λ.w (f ≫ g)) = uq D (thSp (G.map g) ≫ thSp (G.map f) ≫ Λ.p T₀) (Λ.p T₂) (by rw [Category.assoc, Category.assoc, Λ.hp, Λ.hp, thPt_map, thPt_map])`. Rewrite using `[red_w]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `uq_congr D ?_ rfl _ _` and prove the remaining obligations. Rewrite using `[G.map_comp, thSp_comp, Category.assoc]`. Rewrite using `[Rf, map_mul, map_mul, map_inv, e1, red_w, uq_mul, e2, mul_inv_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_Rf (Λ : CLift G D) {T₀ T₁ T₂ : C} (f : T₀ ⟶ T₁) (g : T₁ ⟶ T₂) :
     red T₂ G (Rf Λ f g (f ≫ g)) = 1 := by
@@ -237,9 +237,9 @@ theorem red_Rf (Λ : CLift G D) {T₀ T₁ T₂ : C} (f : T₀ ⟶ T₁) (g : T�
   rw [Rf, map_mul, map_mul, map_inv, e1, red_w, uq_mul, e2, mul_inv_cancel]
 
 /- English proof (translation)
-Simplify using `only [Rf, map_mul, map_inv, um_comp]`. Generalize the expression as in `um h G (um g G (Λ.w f)) = P`. Generalize the expression as in `um h G (Λ.w g) = A`. Generalize the expression as in `um h G (Λ.w (f ≫ g)) = Q`. Generalize the expression as in `Λ.w h = w`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Λ.w (g ≫ h) = W`. Generalize the expression as in `Λ.w (f ≫ g ≫ h) = V`. Combine the equalities or inequalities in the displayed calculation.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Chain the equalities or inequalities of the calculation.
 -/
 theorem rel_closed (Λ : CLift G D) {T₀ T₁ T₂ T₃ : C} (f : T₀ ⟶ T₁) (g : T₁ ⟶ T₂) (h : T₂ ⟶ T₃) :
     Rf Λ g h (g ≫ h) * Rf Λ f (g ≫ h) (f ≫ g ≫ h) =
@@ -256,7 +256,7 @@ theorem rel_closed (Λ : CLift G D) {T₀ T₁ T₂ T₃ : C} (f : T₀ ⟶ T₁
     _ = _ := by ac_rfl
 
 /- English proof (translation)
-Substitute `hf` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules.
 -/
 theorem map_id_of {R : Type} [CommRing R] (F : C ⥤ ModuleCat.{0} R) {T : C} (f : T ⟶ T) (hf : f = 𝟙 T) (x : F.obj T) :
     (F.map f).hom x = x := by
@@ -264,16 +264,16 @@ theorem map_id_of {R : Type} [CommRing R] (F : C ⥤ ModuleCat.{0} R) {T : C} (f
   simp
 
 /- English proof (translation)
-The claim follows from `dlog_map (G.map φ).dp N (sub_one_mem hv)`.
+A detailed English derivation is pending.
 -/
 theorem dlog_arrow {T T' : C} (φ : T ⟶ T') (N : ℕ) {v : ((G.obj T).B)ˣ} (hv : red T G v = 1) :
     (G.map φ).φ (dlog (G.obj T).δ N v.val) = dlog (G.obj T').δ N (um φ G v).val :=
   dlog_map (G.map φ).dp N (sub_one_mem hv)
 
 /- English proof (translation)
-Establish `e0 : ((0 : Fin 4) : ℕ) = 0` using `rfl`. Establish `e1 : ((1 : Fin 4) : ℕ) = 1` using `rfl`. Establish `e2 : ((2 : Fin 4) : ℕ) = 2` using `rfl`. Establish `e3 : ((3 : Fin 4) : ℕ) = 3` using `rfl`. Rewrite using `[e0, e1, e2, e3]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pow_zero, pow_one, one_smul, neg_smul, even_two, Even.neg_pow, one_pow, Odd.neg_one_pow (by decide : Odd 3)]`. Establish `e4 : a + -b + c + -e = (a + c) - (b + e)` using `by abel`. Rewrite using `[e4, h, sub_self]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem alt4 {M : Type} [AddCommGroup M] {a b c e : M} (h : a + c = b + e) :
     (-1 : ℤ) ^ ((0 : Fin 4) : ℕ) • a + (-1 : ℤ) ^ ((1 : Fin 4) : ℕ) • b + (-1 : ℤ) ^ ((2 : Fin 4) : ℕ) • c +
@@ -288,9 +288,9 @@ theorem alt4 {M : Type} [AddCommGroup M] {a b c e : M} (h : a + c = b + e) :
   rw [e4, h, sub_self]
 
 /- English proof (translation)
-Establish `e0 : ((0 : Fin 3) : ℕ) = 0` using `rfl`. Establish `e1 : ((1 : Fin 3) : ℕ) = 1` using `rfl`. Establish `e2 : ((2 : Fin 3) : ℕ) = 2` using `rfl`. Rewrite using `[e0, e1, e2]`. Simplify using `only [pow_zero, pow_one, one_smul, neg_smul, even_two, Even.neg_pow, one_pow]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e3 : r = a + c + r' - b` using `by rw [h]; abel`. Rewrite using `[e3]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem alt3 {M : Type} [AddCommGroup M] {a b c r r' : M} (h : a + c + r' = b + r) :
     (-1 : ℤ) ^ ((0 : Fin 3) : ℕ) • a + (-1 : ℤ) ^ ((1 : Fin 3) : ℕ) • b + (-1 : ℤ) ^ ((2 : Fin 3) : ℕ) • c = r - r' := by
@@ -304,17 +304,17 @@ theorem alt3 {M : Type} [AddCommGroup M] {a b c r r' : M} (h : a + c + r' = b + 
   abel
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ i : Fin 4, (-1 : ℤ) ^ (i : ℕ) • ((G ⋙ B.OM _ c).map (GlobalTheory.CatH.toLast i s)).hom (Λ.coc c N (GlobalTheory.CatH.face i s)) = 0`. Rewrite using `[Fin.sum_univ_four]`. Establish `h0 : GlobalTheory.CatH.toLast (0 : Fin 4) s = 𝟙 _` using `s.map_id _`. Establish `h1 : GlobalTheory.CatH.toLast (1 : Fin 4) s = 𝟙 _` using `s.map_id _`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : GlobalTheory.CatH.toLast (2 : Fin 4) s = 𝟙 _` using `s.map_id _`. Set `f` to `s.map' 0 1`. Set `g` to `s.map' 1 2`. Set `h` to `s.map' 2 3`. Establish `hgh : s.map' 1 3 = g ≫ h` using `s.map'_comp 1 2 3`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfg : s.map' 0 2 = f ≫ g` using `s.map'_comp 0 1 2`. Establish `hfgh : s.map' 0 3 = f ≫ g ≫ h` using `(s.map'_comp 0 1 3).trans (congrArg _ hgh)`. Establish `r0 : Λ.r (GlobalTheory.CatH.face 0 s) = Rf Λ g h (g ≫ h)` using `by rw [← hgh]; rfl`. Establish `r1 : Λ.r (GlobalTheory.CatH.face 1 s) = Rf Λ (f ≫ g) h (f ≫ g ≫ h)` using `by rw [← hfgh, ← hfg]; rfl`. Establish `r2 : Λ.r (GlobalTheory.CatH.face 2 s) = Rf Λ f (g ≫ h) (f ≫ g ≫ h)` using `by rw [← hfgh, ← hgh]; rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r3 : Λ.r (GlobalTheory.CatH.face 3 s) = Rf Λ f g (f ≫ g)` using `by rw [← hfg]; rfl`. Establish `m0` using `red_Rf Λ g h`. Establish `m1 : red _ G (Rf Λ (f ≫ g) h (f ≫ g ≫ h)) = 1`. Use `red_Rf Λ (f ≫ g) h` as an intermediate fact. Rewrite `this` using `[Category.assoc]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `m2` using `red_Rf Λ f (g ≫ h)`. Establish `m3 : red _ G (um h G (Rf Λ f g (f ≫ g))) = 1` using `by rw [red_um, red_Rf, map_one]`. Establish `key` using `dlog_rel (G.obj (s.obj (Fin.last 3))).δ N (hN _) (sub_one_mem m0) (sub_one_mem m2) (sub_one_mem m1) (sub_one_mem m3) (congrArg Units.val (rel_closed Λ f g h))`. Establish `v0 : ((G ⋙ B.OM _ c).map (GlobalTheory.CatH.toLast 0 s)).hom (Λ.coc c N (GlobalTheory.CatH.face 0 s)) = dlog (G.obj (s.obj (Fin.last 3))).δ N (Rf Λ g h (g ≫ h)).val` using `(map_id_of _ _ h0 _).trans (congrArg (fun u : ((G.obj (s.obj (Fin.last 3))).B)ˣ => dlog (G.obj (s.obj (Fin.last 3))).δ N u.val) r0)`. Establish `v1 : ((G ⋙ B.OM _ c).map (GlobalTheory.CatH.toLast 1 s)).hom (Λ.coc c N (GlobalTheory.CatH.face 1 s)) = dlog (G.obj (s.obj (Fin.last 3))).δ N (Rf Λ (f ≫ g) h (f ≫ g ≫ h)).val` using `(map_id_of _ _ h1 _).trans (congrArg (fun u : ((G.obj (s.obj (Fin.last 3))).B)ˣ => dlog (G.obj (s.obj (Fin.last 3))).δ N u.val) r1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v2 : ((G ⋙ B.OM _ c).map (GlobalTheory.CatH.toLast 2 s)).hom (Λ.coc c N (GlobalTheory.CatH.face 2 s)) = dlog (G.obj (s.obj (Fin.last 3))).δ N (Rf Λ f (g ≫ h) (f ≫ g ≫ h)).val` using `(map_id_of _ _ h2 _).trans (congrArg (fun u : ((G.obj (s.obj (Fin.last 3))).B)ˣ => dlog (G.obj (s.obj (Fin.last 3))).δ N u.val) r2)`. Establish `v3 : ((G ⋙ B.OM _ c).map (GlobalTheory.CatH.toLast 3 s)).hom (Λ.coc c N (GlobalTheory.CatH.face 3 s)) = dlog (G.obj (s.obj (Fin.last 3))).δ N (um h G (Rf Λ f g (f ≫ g))).val` using `Eq.trans (congrArg (fun u : ((G.obj (s.obj ⟨2, by omega⟩)).B)ˣ => (G.map h).φ (dlog (G.obj (s.obj ⟨2, by omega⟩)).δ N u.val)) r3) (dlog_arrow h N (red_Rf Λ f g))`. Use `alt4 ?_` and prove the remaining obligations. Conclude with `(congrArg₂ (· + ·) v0 v2).trans (key.trans (congrArg₂ (· + ·) v1 v3).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem closed (Λ : CLift G D) {R : Type} [CommRing R] (c : R →+* b.R) (N : ℕ)
     (hN : ∀ T k, N ≤ k → ∀ x ∈ (G.obj T).J, (k.factorial : (G.obj T).B) * (G.obj T).δ.dpow (k + 1) x = 0) :
@@ -369,7 +369,7 @@ def Ef {T T' : C} (φ : T ⟶ T') : ((G.obj T').B)ˣ :=
 variable {Λ Λ' v}
 
 /- English proof (translation)
-Establish `e : red T' G (um φ G (v T)) = uq D (thSp (G.map φ) ≫ Λ.p T) (thSp (G.map φ) ≫ Λ'.p T) (by rw [Category.assoc, Category.assoc, Λ.hp, Λ'.hp])`. Rewrite using `[red_um, hv]`. Conclude with `(uq_map D _ _ _ _ _).symm`. Rewrite using `[Ef, map_mul, map_mul, map_mul, map_inv, map_inv, e, red_w, red_w, hv, uq_mul, ← uq_mul D (thSp (G.map φ) ≫ Λ.p T) (thSp (G.map φ) ≫ Λ'.p T) (Λ'.p T') (by rw [Category.assoc, Category.assoc, Λ.hp, Λ'.hp]) (hh Λ' φ), mul_inv_cancel_comm, mul_inv_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem red_Ef (hv : ∀ T, red T G (v T) = uq D (Λ.p T) (Λ'.p T) ((Λ.hp T).trans (Λ'.hp T).symm))
     {T T' : C} (φ : T ⟶ T') : red T' G (Ef Λ Λ' v φ) = 1 := by
@@ -382,11 +382,11 @@ theorem red_Ef (hv : ∀ T, red T G (v T) = uq D (Λ.p T) (Λ'.p T) ((Λ.hp T).t
       (by rw [Category.assoc, Category.assoc, Λ.hp, Λ'.hp]) (hh Λ' φ), mul_inv_cancel_comm, mul_inv_cancel]
 
 /- English proof (translation)
-Simplify using `only [Ef, Rf, map_mul, map_inv, um_comp]`. Generalize the expression as in `um g G (um f G (v T₀)) = a`. Generalize the expression as in `um g G (v T₁) = b`. Generalize the expression as in `um g G (Λ.w f) = e`. Generalize the expression as in `um g G (Λ'.w f) = e'`.
+Simplify using the standard rewrite rules. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `Λ.w g = x`. Generalize the expression as in `Λ'.w g = x'`. Generalize the expression as in `Λ.w (f ≫ g) = k`. Generalize the expression as in `Λ'.w (f ≫ g) = k'`. Generalize the expression as in `v T₂ = t`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem rel_ind {T₀ T₁ T₂ : C} (f : T₀ ⟶ T₁) (g : T₁ ⟶ T₂) :
     Ef Λ Λ' v g * um g G (Ef Λ Λ' v f) * Rf Λ' f g (f ≫ g) = Ef Λ Λ' v (f ≫ g) * Rf Λ f g (f ≫ g) := by
@@ -413,17 +413,17 @@ def yc {R : Type} [CommRing R] (c : R →+* b.R) (N : ℕ) : CH.Cn (G ⋙ B.OM _
 variable {Λ Λ' v}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Express the relevant statement in the definitionally equal form `∑ i : Fin 3, (-1 : ℤ) ^ (i : ℕ) • ((G ⋙ B.OM _ c).map (GlobalTheory.CatH.toLast i s)).hom (yc Λ Λ' v c N (GlobalTheory.CatH.face i s)) = Λ.coc c N s - Λ'.coc c N s`. Rewrite using `[Fin.sum_univ_three]`. Establish `h0 : GlobalTheory.CatH.toLast (0 : Fin 3) s = 𝟙 _` using `s.map_id _`. Establish `h1 : GlobalTheory.CatH.toLast (1 : Fin 3) s = 𝟙 _` using `s.map_id _`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f` to `s.map' 0 1`. Set `g` to `s.map' 1 2`. Establish `hfg : s.map' 0 2 = f ≫ g` using `s.map'_comp 0 1 2`. Establish `r1 : Ef Λ Λ' v ((GlobalTheory.CatH.face 1 s).map' 0 1) = Ef Λ Λ' v (f ≫ g)` using `by rw [← hfg]; rfl`. Establish `mr` using `red_Rf Λ f g`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `mr'` using `red_Rf Λ' f g`. Establish `me0` using `red_Ef hv g`. Establish `me1` using `red_Ef hv (f ≫ g)`. Establish `me2 : red _ G (um g G (Ef Λ Λ' v f)) = 1` using `by rw [red_um, red_Ef hv, map_one]`. Establish `key` using `divided_power_log_three_term_relation (G.obj (s.obj (Fin.last 2))).δ N (hN _) (sub_one_mem me0) (sub_one_mem me2) (sub_one_mem mr') (sub_one_mem me1) (sub_one_mem mr) (congrArg Units.val (rel_ind f g))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `v0 : ((G ⋙ B.OM _ c).map (GlobalTheory.CatH.toLast 0 s)).hom (yc Λ Λ' v c N (GlobalTheory.CatH.face 0 s)) = dlog (G.obj (s.obj (Fin.last 2))).δ N (Ef Λ Λ' v g).val` using `map_id_of _ _ h0 _`. Establish `v1 : ((G ⋙ B.OM _ c).map (GlobalTheory.CatH.toLast 1 s)).hom (yc Λ Λ' v c N (GlobalTheory.CatH.face 1 s)) = dlog (G.obj (s.obj (Fin.last 2))).δ N (Ef Λ Λ' v (f ≫ g)).val` using `(map_id_of _ _ h1 _).trans (congrArg (fun u : ((G.obj (s.obj (Fin.last 2))).B)ˣ => dlog (G.obj (s.obj (Fin.last 2))).δ N u.val) r1)`. Establish `v2 : ((G ⋙ B.OM _ c).map (GlobalTheory.CatH.toLast 2 s)).hom (yc Λ Λ' v c N (GlobalTheory.CatH.face 2 s)) = dlog (G.obj (s.obj (Fin.last 2))).δ N (um g G (Ef Λ Λ' v f)).val` using `dlog_arrow g N (red_Ef hv f)`. Establish `c1 : Λ.coc c N s = dlog (G.obj (s.obj (Fin.last 2))).δ N (Rf Λ f g (f ≫ g)).val`. Express the relevant statement in the definitionally equal form `dlog _ N (Rf Λ f g (s.map' 0 2)).val = _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hfg]`. Establish `c2 : Λ'.coc c N s = dlog (G.obj (s.obj (Fin.last 2))).δ N (Rf Λ' f g (f ≫ g)).val`. Express the relevant statement in the definitionally equal form `dlog _ N (Rf Λ' f g (s.map' 0 2)).val = _`. Rewrite using `[hfg]`. Use `alt3 ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[c2, v0, v2, v1, c1]`. Conclude with `key`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_yc (hv : ∀ T, red T G (v T) = uq D (Λ.p T) (Λ'.p T) ((Λ.hp T).trans (Λ'.hp T).symm))
     {R : Type} [CommRing R] (c : R →+* b.R) (N : ℕ)
@@ -467,7 +467,7 @@ theorem d_yc (hv : ∀ T, red T G (v T) = uq D (Λ.p T) (Λ'.p T) ((Λ.hp T).tra
 end Ind
 
 /- English proof (translation)
-Establish `h : ∀ T : C, ∃ w : ((G.obj T).B)ˣ, red T G w = uq D (Λ.p T) (Λ'.p T) ((Λ.hp T).trans (Λ'.hp T).symm)` using `fun T => unit_lift _ (thick_nil (G.obj T)) _`. Use `choose v hv using h`. Conclude with `⟨v, hv⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_v (Λ Λ' : CLift G D) : ∃ v : ∀ T : C, ((G.obj T).B)ˣ,
     ∀ T, red T G (v T) = uq D (Λ.p T) (Λ'.p T) ((Λ.hp T).trans (Λ'.hp T).symm) := by
@@ -479,7 +479,7 @@ theorem exists_v (Λ Λ' : CLift G D) : ∃ v : ∀ T : C, ((G.obj T).B)ˣ,
 end Cocycle
 
 /- English proof (translation)
-Introduce `O _ X q b ht κ C _ G D R _ c N hN`. Use `⟨fun Λ => closed Λ c N hN, fun Λ Λ' hz hz' => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `exists_v Λ Λ'`. Conclude with `((CrystallineSemistableComparison.P.cls_surj _ 2).2.2.1 _ _ hz hz').2 ⟨yc Λ Λ' v c N, d_yc hv c N hN⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem coc_cls : ∀ {O : Type} [CommRing O] {X : Scheme.{0}} {q : X ⟶ Spec (CommRingCat.of O)} {b : Base} {ht : b.t = 1}
     {κ : O →+* b.R ⧸ b.I} {C : Type 1} [Category.{0} C] (G : C ⥤ Thick ((B.schFn q).cr b ht κ)) (D : E.LineData X)

@@ -17,9 +17,9 @@ open GroundTheory.Global GroundTheory.Automorphic.GJMatrix GroundTheory.Heights�
 open scoped TensorProduct ENNReal Matrix NumberField.AdeleRing
 
 /- English proof (translation)
-Introduce `F _ _ ι _ _`. Take `⟨U, hUc, hU⟩` from `exists_compact_mem_nhds (0 : ι → 𝔸[F])`. Take `⟨r, -, -, hr0, hrU, hrS⟩` from `GlobalTheory.CompanionTheory.Hypotheses₂.SdExist.exists_bump (K := F) 0 U hU`. Use `⟨_, hrS, HasCompactSupport.intro hUc fun x hx => ?_, ?_⟩` and prove the remaining obligations. Establish `: r x = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hx (hrU x h)`. Simplify using `[this]`. Conclude with `hr0.ne'` after adjusting the coercions.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_compactSupport_ne_zero :
     ∀ (F : Type) [Field F] [NumberField F] (ι : Type) [Fintype ι] [DecidableEq ι],

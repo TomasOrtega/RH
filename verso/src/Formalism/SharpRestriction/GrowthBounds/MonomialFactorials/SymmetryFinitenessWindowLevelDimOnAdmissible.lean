@@ -16,7 +16,7 @@ def SymmetryFinitenessWindowLevelDimOnAdmissible (D : Formalism.BasicNotions.D7)
     ∀ X : flipOneThree.Inst, AdmNoK D C0 CYb Cde Ck CD Cb CE1 CE2 Ckap Cc Cs X → SymmetryFinitenessWindowLevelDimConditions C0 CYb Cde Ck CD Cb CE1 CE2 Cc CM X
 
 /- English proof (translation)
-The claim follows from `thr_mono_ge (fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc hCYb hP Ckap Cs CM hCM X hA hH => by obtain ⟨a, b, c, d⟩ := hP Ckap Cs CM hCM X hA hH have hF := hiFacts C0 CYb Cde Ck CD Cb Cc X hCYb hH have hp2 : X.p ≠ 2 := by intro h2 have := p25 hF have h3 : (X.L.p : ℝ) = 2 := by exact_mod_cas …`.
+A detailed English derivation is pending.
 -/
 theorem orthogonal_of_symmetric_finite (D : Formalism.BasicNotions.D7) (hO : OrthLat) (h : SymmetryFinitenessWindowLevelDimOnAdmissible D) : OrthogonalityWindowLevelDimOnAdmissible D :=
   thr_mono_ge (fun C0 CYb Cde Ck CD Cb CE1 CE2 Cc hCYb hP Ckap Cs CM hCM X hA hH => by
@@ -30,7 +30,7 @@ theorem orthogonal_of_symmetric_finite (D : Formalism.BasicNotions.D7) (hO : Ort
     exact ⟨restOrth_of CM hp2 hO a b, c, d⟩) h
 
 /- English proof (translation)
-The claim follows from `integrality_from_metric_of_orthogonality_window D hY (orthogonal_of_symmetric_finite D hO h)`.
+A detailed English derivation is pending.
 -/
 theorem closed_of_symmetric_finite (D : Formalism.BasicNotions.D7) (hY : RestYbc) (hO : OrthLat) (h : SymmetryFinitenessWindowLevelDimOnAdmissible D) : IntegralityFromMetricForLargeConstants D :=
   integrality_from_metric_of_orthogonality_window D hY (orthogonal_of_symmetric_finite D hO h)

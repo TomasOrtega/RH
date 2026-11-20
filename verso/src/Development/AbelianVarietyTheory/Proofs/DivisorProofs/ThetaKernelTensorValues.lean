@@ -13,25 +13,23 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.KernelSpan
 
 /- English proof (translation)
-Set `S : G → Set Γ` to `fun x => {γ | h⁻¹ * (ι γ)⁻¹ * x ∈ J}`. Establish `hS : ∀ x, (S x).Finite`. Introduce `x`. Break down `(S x).eq_empty_or_nonempty with e | ⟨γ₀, h₀⟩` into its components or cases. Rewrite using `[e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Set.finite_empty`. Use `(Set.finite_range fun δ : Bridge.stab ι J h => γ₀ * δ.1).subset fun γ hγ => ⟨⟨γ₀⁻¹ * γ, ?_⟩, by simp⟩` and prove the remaining obligations. Rewrite using `[Bridge.mem_stab]`. Use `J.mul_mem h₀ (J.inv_mem hγ)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_mul, map_inv]`. Use `group`. Set `term : G → Γ → W` to `fun x γ => if hm : h⁻¹ * (ι γ)⁻¹ * x ∈ J then ((χ ⟨_, hm⟩ : ℂˣ) : ℂ) • ρ γ w else 0`. Establish `hsupp : ∀ x, Function.support (term x) ⊆ (hS x).toFinset`. Introduce `x γ hγ`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hn`. Establish `: ¬ h⁻¹ * (ι γ)⁻¹ * x ∈ J` using `fun hm => hn ((hS x).mem_toFinset.2 hm)`. Conclude with `hγ (dif_neg this)`. Establish `hterm : ∀ δ x (k : J) γ, term (ι δ * x * k) (δ * γ) = ((χ k : ℂˣ) : ℂ) • ρ δ (term x γ)`. Introduce `δ x k γ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Establish `e : h⁻¹ * (ι (δ * γ))⁻¹ * (ι δ * x * k) = h⁻¹ * (ι γ)⁻¹ * x * k`. Simplify using `only [map_mul]`. Use `group`. Distinguish the cases in `hm : h⁻¹ * (ι γ)⁻¹ * x ∈ J`. Establish `hm' : h⁻¹ * (ι (δ * γ))⁻¹ * (ι δ * x * k) ∈ J` using `e ▸ J.mul_mem hm k.2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e' : (⟨_, hm'⟩ : J) = ⟨_, hm⟩ * k` using `Subtype.ext e`. Simplify using `only [term, dif_pos hm, dif_pos hm']`. Rewrite using `[e', map_mul χ, map_mul ρ, map_smul, smul_smul, Units.val_mul, mul_comm]`. Both sides reduce to the same expression. Establish `hm' : ¬ h⁻¹ * (ι (δ * γ))⁻¹ * (ι δ * x * k) ∈ J` using `fun hh => hm ((J.mul_mem_cancel_right k.2).1 (e ▸ hh))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [term, dif_neg hm, dif_neg hm', map_zero, smul_zero]`. Use `⟨fun x => ∑ᶠ γ, term x γ, ?_, fun x => (hS x).toFinset.card, fun x => ?_, fun γ k => ?_⟩` and prove the remaining obligations. Introduce `δ x k show ∑ᶠ γ, term (ι δ * x * k) γ = ((χ k : ℂˣ) : ℂ) • ρ δ (∑ᶠ γ, term x γ)`. Rewrite using `[← finsum_comp_equiv (Equiv.mulLeft δ)]`. Establish `hf : (Function.support (term x)).Finite` using `(hS x).toFinset.finite_toSet.subset (hsupp x)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(((χ k : ℂˣ) : ℂ) • ρ δ).toAddMonoidHom.map_finsum hf` as an intermediate fact. Use `Eq.trans ?_ this.symm` and prove the remaining obligations. Conclude with `finsum_congr fun γ => hterm δ x k γ`. Use `show Φ x (∑ᶠ γ, term (p x) γ) = _`. Rewrite using `[finsum_eq_sum_of_support_subset _ (hsupp _), map_sum, Nat.cast_smul_eq_nsmul, ← Finset.sum_const]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `Finset.sum_congr rfl fun γ hγ => ?_` and prove the remaining obligations. Establish `hm : h⁻¹ * (ι γ)⁻¹ * p x ∈ J` using `(hS _).mem_toFinset.1 hγ`. Simplify using `only [term, dif_pos hm]`. Rewrite using `[map_smul, law x γ ⟨_, hm⟩ (by simp only []; group), smul_smul, mul_inv_cancel₀ (Units.ne_zero _), one_smul]`. Use `(Finset.card_pos.2 ⟨γ, (hS _).mem_toFinset.2 ?_⟩).ne' show h⁻¹ * (ι γ)⁻¹ * (ι γ * h * k) ∈ J` and prove the remaining obligations.
-
-Use `k.2 using 1` and compare the differences between its conclusion and the goal. Use `group`.
+A detailed English derivation is pending.
 -/
 theorem exists_form {G Γ W X Y : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W] [AddCommGroup Y]
     [Module ℂ Y] (ι : Γ →* G) (ρ : Γ →* Module.End ℂ W) (J : Subgroup G) (χ : J →* ℂˣ) (h : G)
@@ -90,9 +88,9 @@ theorem exists_form {G Γ W X Y : Type} [Group G] [Group Γ] [NormedAddCommGroup
     group
 
 /- English proof (translation)
-Establish `e4 : x = γ * h * k * a` using `by rw [mul_assoc _ k, ← hu]; group`. Establish `e5 : (x, g) = ((γ, 1) : H × G') * ((h, g) * ((k, 1) * (a, 1)))`. Simplify using `only [Prod.mk_mul_mk, one_mul, mul_one]`. Rewrite using `[e4]`. Simplify using `only [mul_assoc]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `e6 : ρ a * ρ γ = 1`. Establish `: a = k⁻¹ * h⁻¹ * γ⁻¹ * x` using `by rw [e4]; group`. Rewrite using `[this, map_mul, map_mul, map_mul, hx, hk, hh, one_mul, one_mul, mul_one, ← map_mul, inv_mul_cancel, map_one]`. Rewrite using `[e5, map_mul om, Module.End.mul_apply, map_mul om, map_mul om, Module.End.mul_apply, Module.End.mul_apply, hLa, ← Module.End.mul_apply (ρ a), e6, Module.End.one_apply, hLk, map_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem law_abstract {H G' W X : Type} [Group H] [Group G'] [AddCommGroup W] [Module ℂ W]
     (om : H × G' →* Module.End ℂ (X → ℂ)) (ρ : H →* Module.End ℂ W) (L : W →ₗ[ℂ] (X → ℂ))
@@ -110,7 +108,7 @@ theorem law_abstract {H G' W X : Type} [Group H] [Group G'] [AddCommGroup W] [Mo
     ← Module.End.mul_apply (ρ a), e6, Module.End.one_apply, hLk, map_smul]
 
 /- English proof (translation)
-Rewrite using `[map_mul, map_mul, map_inv, map_inv, e]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_quot {H G : Type} [Group H] [Group G] (p : H →* G) (x h γ : H) (k : G) (e : p x = p γ * p h * k) :
     p (h⁻¹ * γ⁻¹ * x) = k := by
@@ -118,11 +116,11 @@ theorem map_quot {H G : Type} [Group H] [Group G] (p : H →* G) (x h γ : H) (k
   group
 
 /- English proof (translation)
-Use `(GlobalTheory.LiftUnfold.exists_fin_mul_real S (h⁻¹ * (γ : GA D S)⁻¹ * x)).elim fun k' hk0 => hk0.2.elim fun a ha0 => ?_` and prove the remaining obligations. Establish `hk` using `hk0.1`. Establish `ha` using `ha0.1`. Establish `e2 : fin S k' = k` using `ha0.2.2.trans (map_quot (finHom S).rangeRestrict x h γ k e)`. Establish `hk' : fin S k' ∈ J` using `by rw [e2]; exact k.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e3 : (⟨fin S k', hk'⟩ : J) = k` using `Subtype.ext e2`. Establish `h1 : ∀ w, om (k', 1) (Λ w) = ((χ k : ℂˣ) : ℂ)⁻¹ • Λ w` using `fun w => (hΛk k' hk hk' w).trans (congrArg (fun z : J => ((χ z : ℂˣ) : ℂ)⁻¹ • Λ w) e3)`. Establish `h2` using `law_abstract om c.ρ Λ x h γ k' a ha0.2.1 _ (hc.1 _ (inv_mem hk)) (hc.1 _ (inv_mem hh)) (hc.1 _ hx) h1 (hΛa a ha) w g`. Use `(congrFun h2 0).trans ?_` and prove the remaining obligations. Establish `h3` using `hom.om_aut γ γ.2 1 (one_mem _) _ (hom.om_pres (h, g) _ (hΛ w))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(congrFun ((om ((γ : GA D S), 1)).map_smul _ _) 0).trans ?_` and prove the remaining obligations. Conclude with `congrArg (fun z : ℂ => ((χ k : ℂˣ) : ℂ)⁻¹ * z) h3`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kernel_law {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : IsWeilDatumO ψ S T χS χT om)
@@ -149,7 +147,7 @@ theorem kernel_law {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS 
   exact congrArg (fun z : ℂ => ((χ k : ℂˣ) : ℂ)⁻¹ * z) h3
 
 /- English proof (translation)
-Use `hN γ⁻¹ u⁻¹` as an intermediate fact. Rewrite `this` using `[e, map_inv, Subgroup.coe_inv, mul_assoc, mul_inv_cancel_right, inv_mul_cancel_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem ne_zero_of_coset {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G) (J : Subgroup G) (N : G → ℕ) (h y : G)
     (hN : ∀ γ (k : J), N (ι γ * h * k) ≠ 0) (γ : Γ) (u : J) (e : h = ι γ * y * u) : N y ≠ 0 := by
@@ -157,7 +155,7 @@ theorem ne_zero_of_coset {G Γ : Type} [Group G] [Group Γ] (ι : Γ →* G) (J 
   rwa [e, map_inv, Subgroup.coe_inv, mul_assoc, mul_inv_cancel_right, inv_mul_cancel_left] at this
 
 /- English proof (translation)
-Establish `h : (0 : ℝ) < ∑ i, (r : ℝ)⁻¹ * (s i : ℝ)⁻¹ * (N i : ℝ)` using `Finset.sum_pos' (fun i _ => by positivity) ⟨i₀, Finset.mem_univ _, by have := hs i₀; positivity⟩`. Establish `h'` using `Complex.ofReal_ne_zero.2 h.ne'`. Move the coercions through the operations in `at h'`. Conclude with `h'`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem coeff_ne_zero {I : Type} [Fintype I] (r : ℕ) (s N : I → ℕ) (hr : r ≠ 0) (hs : ∀ i, s i ≠ 0) (i₀ : I)
     (hN : N i₀ ≠ 0) : ∑ i, (r : ℂ)⁻¹ * (s i : ℂ)⁻¹ * (N i : ℂ) ≠ 0 := by
@@ -168,11 +166,11 @@ theorem coeff_ne_zero {I : Type} [Fintype I] (r : ℕ) (s N : I → ℕ) (hr : r
   exact h'
 
 /- English proof (translation)
-Set `Φ : Cl → c.W →ₗ[ℂ] (GA D T → ℂ)` to `fun k => LinearMap.pi fun g => LinearMap.proj (0 : WO S T) ∘ₗ om (y k, g) ∘ₗ Λ`. Establish `hex` using `exists_form (Bridge.ratF S) c.coef.ρ (levEnv S β L).J (levEnv S β L).χ (fin S h) (GlobalTheory.SplitReps.finite_stab_of_reps _ le_rfl hy hyf _) w (fun k => fin S (y k)) Φ (fun g => thetaKO om h g (Λ w)) (fun x γ k e => funext fun g => kernel_law hom c hc _ _ Λ hΛ hΛa hΛk hf (hh x …`. Use `hex.elim fun f hf0 => hf0.2.elim fun N hN => ?_` and prove the remaining obligations. Establish `hrel : (levEnv S β L).J.relIndex (levEnv S β L).J ≠ 0` using `by simp`. Establish `h0 : ∃ k, N (fin S (y k)) ≠ 0`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(hy (fin S h)).exists.elim fun k hk => hk.elim fun γ hγ => hγ.elim fun u e => ⟨k, ?_⟩` and prove the remaining obligations. Conclude with `ne_zero_of_coset (Bridge.ratF S) _ N _ _ hN.2 γ u e`. Use `h0.elim fun k₀ hk₀ => ⟨f, hf0.1, _, coeff_ne_zero _ (fun k => Nat.card (Bridge.stab (Bridge.ratF S) (levEnv S β L).J (fin S (y k)))) (fun k => N (fin S (y k))) hrel (fun k => (have := hyf k; Nat.card_pos.ne')) k₀ hk₀, fun g => ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.LiftUnfold.integral_theta hom hs hp c hc β L hL hf0.1 Λ hΛ hΛa hΛk hν _ Cl y le_rfl hrel hy hh g).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Establish `h1 : thetaKO om (y k) g (Λ (f (fin S (y k)))) = (N (fin S (y k)) : ℂ) * thetaKO om h g (Λ w)` using `congrFun (hN.1 k) g`. Rewrite using `[h1, ← mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} {χS χT : (AE D)ˣ →* Circle}
     {om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)} (hom : IsWeilDatumO ψ S T χS χT om) (hs : S.SigOK)
@@ -212,7 +210,7 @@ theorem exists_integral {D : D7} {ψ : AddChar (AF D.host.F) ℂ} {S T : HSp D} 
   rw [h1, ← mul_assoc]
 
 /- English proof (translation)
-Establish `h1 : T y ∈ (Submodule.span ℂ (Set.range j)).map T` using `Submodule.mem_map_of_mem (hj ▸ Submodule.mem_top)`. Rewrite `h1` using `[Submodule.map_span, ← Set.range_comp, e]`. Conclude with `(Submodule.smul_mem_iff _ ha).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_linear {H Y I : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup Y] [Module ℂ Y] (j : I → H)
     (hj : Submodule.span ℂ (Set.range j) = ⊤) (T : H →ₗ[ℂ] Y) (y : H) (a : ℂ) (ha : a ≠ 0) (v : Y) (e : T y = a • v) :
@@ -222,7 +220,7 @@ theorem mem_span_of_linear {H Y I : Type} [AddCommGroup H] [Module ℂ H] [AddCo
   exact (Submodule.smul_mem_iff _ ha).1 h1
 
 /- English proof (translation)
-Use `Submodule.map_injective_of_injective he ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_span, ← Set.range_comp, Submodule.map_top, ← hx]`. Conclude with `congrArg (fun z => Submodule.span ℂ (Set.range z)) (funext hj)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_eq_top_of_model {H Y I : Type} [AddCommGroup H] [Module ℂ H] [AddCommGroup Y] [Module ℂ Y] (e : H →ₗ[ℂ] Y)
     (he : Function.Injective e) (j : I → H) (x : I → Y) (hj : ∀ i, e (j i) = x i)

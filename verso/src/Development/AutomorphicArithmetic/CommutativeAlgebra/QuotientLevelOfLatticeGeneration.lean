@@ -14,9 +14,9 @@ namespace UpperTheory.LevelActionGenerator
 variable {X : Scheme.{0}}
 
 /- English proof (translation)
-Set `e : Over.mk (T.hom ≫ 𝟙 X) ≅ T` to `Over.isoMk (Iso.refl _) (by simp)`. Establish `he : e.hom.left = 𝟙 _` using `rfl`. Establish `key` using `h.2 T x y (e.hom ≫ x ≫ f) (e.hom ≫ y ≫ f) (by rw [Over.comp_left, Over.comp_left, he, Category.id_comp, hf]) (by rw [Over.comp_left, Over.comp_left, he, Category.id_comp, hf])`. Rewrite `key` using `[← MonObj.comp_mul, Over.comp_left, he, Category.id_comp]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[key, Over.comp_left, hf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem pb_mul {A B : Over X} [GrpObj A] [GrpObj B] {φ : A.left ⟶ B.left}
     (h : IsGrpPullback A B (𝟙 X) φ) (f : A ⟶ B) (hf : f.left = φ) {T : Over X} (x y : T ⟶ A) :
@@ -31,7 +31,7 @@ private theorem pb_mul {A B : Over X} [GrpObj A] [GrpObj B] {φ : A.left ⟶ B.l
   rw [key, Over.comp_left, hf]
 
 /- English proof (translation)
-Establish `h1` using `pb_mul h f hf (1 : T ⟶ A) 1`. Rewrite `h1` using `[_root_.mul_one]`. Simplify using `using h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem pb_one {A B : Over X} [GrpObj A] [GrpObj B] {φ : A.left ⟶ B.left}
     (h : IsGrpPullback A B (𝟙 X) φ) (f : A ⟶ B) (hf : f.left = φ) {T : Over X} :
@@ -41,9 +41,9 @@ private theorem pb_one {A B : Over X} [GrpObj A] [GrpObj B] {φ : A.left ⟶ B.l
   simpa using h1
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero`. Establish `h0 : act.act (0 : O) = 1`. Use `act.add 0 0` as an intermediate fact. Rewrite `this` using `[add_zero]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Rewrite using `[Nat.cast_zero, h0, pow_zero, MonObj.comp_one]`. Consider the case `succ m ih`. Rewrite using `[Nat.cast_succ, act.add, act.one, MonObj.comp_mul, ih, Category.comp_id, pow_succ]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem act_nat {O : Type} [Ring O] {A : Over X} [GrpObj A] [IsCommMonObj A] (act : OActN O A) {T : Over X}
     (u : T ⟶ A) (m : ℕ) : u ≫ act.act (m : O) = u ^ m := by
@@ -58,7 +58,7 @@ private theorem act_nat {O : Type} [Ring O] {A : Over X} [GrpObj A] [IsCommMonOb
     rw [Nat.cast_succ, act.add, act.one, MonObj.comp_mul, ih, Category.comp_id, pow_succ]
 
 /- English proof (translation)
-Establish `h' : (Ideal.span {a} ⊔ Ideal.span {(N : A)}) * 𝔞 = Ideal.span {(N : A)}` using `h`. Establish `hm : (N : A) ∈ (Ideal.span {a} ⊔ Ideal.span {(N : A)}) * 𝔞`. Rewrite using `[h']`. Conclude with `Ideal.subset_span (Set.mem_singleton _)`. Conclude with `(Ideal.mul_le_right (I := Ideal.span {a} ⊔ Ideal.span {(N : A)}) (J := 𝔞)) hm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gen_mem {A : Type} [CommRing A] {a : A} {N : ℕ} {𝔞 : Ideal A} (h : IsGen a N 𝔞) : (N : A) ∈ 𝔞 := by
   have h' : (Ideal.span {a} ⊔ Ideal.span {(N : A)}) * 𝔞 = Ideal.span {(N : A)} := h
@@ -71,41 +71,39 @@ end UpperTheory.LevelActionGenerator
 
 open UpperTheory.LevelActionGenerator in
 /- English proof (translation)
-Introduce `hLat q _ D R R' _ _ _ b gb N N₀ c a 𝔞 hN hgen X s s₀ o o₀ n`. Establish `hw : n.φ ≫ o₀.A.hom = o.A.hom` using `by simpa using n.cart.1.w`. Use `haveI : IsIso n.φ := n.cart.1.isIso_fst_of_isIso`. Set `f : o.A ⟶ o₀.A` to `Over.homMk n.φ hw`. Set `g : o₀.A ⟶ o.A` to `Over.homMk (inv n.φ) (by rw [IsIso.inv_comp_eq, hw])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hfl : f.left = n.φ` using `rfl`. Establish `hfg : f ≫ g = 𝟙 _`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[f, g]`. Establish `hgf : g ≫ f = 𝟙 _`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `[f, g]`. Establish `hinj : ∀ {T : Over X} (u v : T ⟶ o.A), u ≫ f = v ≫ f → u = v`. Introduce `T u v huv`. Use `congrArg (· ≫ g) huv` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[Category.assoc, hfg]`. Establish `hmul : ∀ {T : Over X} (u v : T ⟶ o.A), (u * v) ≫ f = (u ≫ f) * (v ≫ f)` using `fun u v => pb_mul n.cart f hfl u v`. Establish `hone : ∀ {T : Over X}, (1 : T ⟶ o.A) ≫ f = 1` using `pb_one n.cart f hfl`. Establish `hone' : ∀ {T : Over X}, (1 : T ⟶ o₀.A) ≫ g = 1`. Introduce `T`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[Category.assoc, hgf, Category.comp_id, hone]`. Establish `hact : ∀ c' : D.O, o.act.act c' ≫ f = f ≫ o₀.act.act c'`. Introduce `c'`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.comp_left]`. Conclude with `n.act c'`. Establish `e_add : ∀ u v : D.La, o.eta (u + v) = o.eta u * o.eta v` using `fun u v => o.eta_add u v`. Establish `e_lin : ∀ (c' : D.O) (u : D.La), o.eta (c' • u) = o.eta u ≫ o.act.act c'` using `fun c' u => o.eta_lin c' u`. Establish `e_ker : ∀ u : D.La, o.eta (N • u) = 1` using `fun u => o.eta_ker u`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨hL1, hL2⟩` from `hLat q D a N 𝔞 hN hgen`. Use `⟨fun y => o.eta (algebraMap (𝓞 D.F) D.O a • y) ≫ f, ⟨?_, ?_, ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `y z`. Simplify using `only`. Rewrite using `[smul_add, e_add, hmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `c' y`. Simplify using `only`. Establish `hcomm : algebraMap (𝓞 D.F) D.O a • (c' • y) = c' • (algebraMap (𝓞 D.F) D.O a • y)`. Rewrite using `[smul_smul, smul_smul, Algebra.commutes]`. Rewrite using `[hcomm, e_lin, Category.assoc, hact, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `y hy`. Take `⟨z, hz⟩` from `(hL1 y).2 hy`. Simplify using `only`. Rewrite using `[hz, e_ker, hone]`. Introduce `k _ _ x`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hβ : x ≫ s = spMap (Spec.preimage (x ≫ s)).hom`. Simplify using `only [spMap, CommRingCat.ofHom_hom, Spec.map_preimage]`. Take `⟨I, hI⟩` from `o.geom k x _ hβ`. Establish `hI' : ∀ y : D.La, toUnit (Over.mk x) ≫ o.eta y = I.ev N y` using `fun y => hI y`. Establish `I_add : ∀ u v : D.La, I.ev N (u + v) = I.ev N u * I.ev N v` using `fun u v => I.add N u v`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `I_lin : ∀ (c' : D.O) (u : D.La), I.ev N (c' • u) = I.ev N u ≫ o.act.act c'` using `fun c' u => I.lin N c' u`. Establish `I_ker : ∀ u : D.La, I.ev N u = 1 ↔ ∃ v : D.La, u = N • v` using `fun u => I.ker N hN u`. Establish `I_onto : ∀ r : Over.mk x ⟶ o.A, r ^ N = 1 ↔ ∃ u : D.La, I.ev N u = r` using `fun r => I.onto N hN r`. Prove the components needed by the constructor for the conclusion. Introduce `y hy`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only at hy`. Rewrite `hy` using `[← Category.assoc, ← hone]`. Establish `h1` using `hinj _ _ hy`. Rewrite `h1` using `[hI']`. Take `⟨z, hz⟩` from `(I_ker _).1 h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `(hL1 y).1 ⟨z, hz⟩`. Introduce `g₀ hg₀`. Establish `hg'act : ∀ c' : D.O, (g₀ ≫ g) ≫ o.act.act c' = (g₀ ≫ o₀.act.act c') ≫ g`. Introduce `c'`. Apply `hinj` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Category.assoc, hact, reassoc_of% hgf, hgf, Category.comp_id]`. Establish `hkill : ∀ c' ∈ 𝔞, (g₀ ≫ g) ≫ o.act.act (algebraMap (𝓞 D.F) D.O c') = 1`. Introduce `c' hc'`. Rewrite using `[hg'act, hg₀ c' (by rwa [pow_one]), hone']`. Establish `hpow : (g₀ ≫ g) ^ N = 1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hn` using `act_nat o.act (g₀ ≫ g) N`. Establish `hc : ((N : ℕ) : D.toG.O) = algebraMap (𝓞 D.F) D.O (N : 𝓞 D.F)` using `(map_natCast _ N).symm`. Rewrite `hn` using `[hc]`. Rewrite using `[← hn]`. Conclude with `hkill _ (gen_mem hgen)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Take `⟨x', hx'⟩` from `(I_onto (g₀ ≫ g)).1 hpow`. Establish `hcond : ∀ c' ∈ 𝔞, ∃ z : D.La, algebraMap (𝓞 D.F) D.O c' • x' = N • z`. Introduce `c' hc'`. Apply `(I_ker _).1` to reduce the goal to its premises. Rewrite using `[I_lin, hx']`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hkill c' hc'`. Take `⟨y, z, hyz⟩` from `hL2 x' hcond`. Use `⟨y, ?_⟩` and prove the remaining obligations. Establish `hyI : toUnit (Over.mk x) ≫ o.eta (algebraMap (𝓞 D.F) D.O a • y) = g₀ ≫ g`. Rewrite using `[hI', ← hx', hyz, I_add, (I_ker (N • z)).2 ⟨z, rfl⟩, _root_.mul_one]`.
-
-Simplify using `only`. Rewrite using `[← Category.assoc, hyI, Category.assoc, hgf, Category.comp_id]`. Introduce `y`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.quotient_level_of_lattice_generation :
     LatGen → QLev := by

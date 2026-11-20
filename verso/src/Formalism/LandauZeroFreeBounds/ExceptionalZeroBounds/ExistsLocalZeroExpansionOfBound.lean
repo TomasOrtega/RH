@@ -10,7 +10,7 @@ noncomputable section
 namespace Formalism.ZeroFreeDirichlet
 
 /- English proof (translation)
-Use `Finset.induction_on Z ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a s ha ih`. Simplify using `only [Finset.prod_insert ha]`. Conclude with `((differentiable_id.sub_const a).pow (m a)).mul ih`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem differentiable_prod_sub_pow (Z : Finset ℂ) (m : ℂ → ℕ) :
     Differentiable ℂ (fun w => ∏ ρ ∈ Z, (w - ρ) ^ m ρ) := by
@@ -21,7 +21,7 @@ private theorem differentiable_prod_sub_pow (Z : Finset ℂ) (m : ℂ → ℕ) :
     exact ((differentiable_id.sub_const a).pow (m a)).mul ih
 
 /- English proof (translation)
-Establish `h : HasDerivAt (fun z => (z - ρ) * g z) (1 * g ρ + (ρ - ρ) * deriv g ρ) ρ` using `((hasDerivAt_id ρ).sub_const ρ).mul hg.hasDerivAt`. Rewrite using `[h.deriv]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem deriv_sub_mul_at_self {g : ℂ → ℂ} {ρ : ℂ} (hg : DifferentiableAt ℂ g ρ) :
     deriv (fun z => (z - ρ) * g z) ρ = g ρ := by
@@ -31,13 +31,13 @@ private theorem deriv_sub_mul_at_self {g : ℂ → ℂ} {ρ : ℂ} (hg : Differe
   ring
 
 /- English proof (translation)
-Rewrite using `[hf.deriv_eq]`. Take `⟨j, rfl⟩ : ∃ j, n = j + 1` from `⟨n - 1, by omega⟩`. Establish `hfun : (fun w => (w - ρ) ^ (j + 1) * k w) = fun w => (w - ρ) * ((w - ρ) ^ j * k w)`. Use function extensionality and compare the values at `w`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hg : DifferentiableAt ℂ (fun w => (w - ρ) ^ j * k w) ρ` using `by fun_prop`. Rewrite using `[hfun, deriv_sub_mul_at_self hg]`. Break down `Nat.eq_zero_or_pos j with hj | hj` into its components or cases. Substitute `hj` using the available equality. Simplify using `only [pow_zero, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Conclude with `⟨fun h => absurd h hk0, fun _ => by simp⟩`. Establish `h0 : (ρ - ρ) ^ j = 0`. Rewrite using `[sub_self]`. Conclude with `zero_pow hj.ne'`. Rewrite using `[h0, zero_mul]`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun _ => by omega, fun h => absurd rfl h⟩`.
+A detailed English derivation is pending.
 -/
 private theorem deriv_eq_zero_iff_mult_of_local_factor {f k : ℂ → ℂ} {ρ : ℂ} {n : ℕ} (hn : 1 ≤ n)
     (hk : DifferentiableAt ℂ k ρ) (hk0 : k ρ ≠ 0)
@@ -62,47 +62,41 @@ private theorem deriv_eq_zero_iff_mult_of_local_factor {f k : ℂ → ℂ} {ρ :
     exact ⟨fun _ => by omega, fun h => absurd rfl h⟩
 
 /- English proof (translation)
-Establish `hr3 : 0 < r / 3` using `by linarith`. Take `⟨Z, m, h, hZ, hm, hhd, hh0, hfac⟩` from `Formalism.ZF.zeroFactorization f z₀ r (r / 3) hr3 (by linarith) hf hfz₀`. Establish `hsub : ∀ z ∈ closedBall z₀ (r / 3), z ∈ ball z₀ r` using `fun z hz => by`. Rewrite `hz` using `[mem_closedBall]`. Rewrite using `[mem_ball]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hloc : ∀ z ∈ ball z₀ r, f =ᶠ[𝓝 z] fun w => (∏ ρ ∈ Z, (w - ρ) ^ m ρ) * h w`. Introduce `z hz`. Use `filter_upwards [isOpen_ball.mem_nhds hz] with w hw using hfac w (ball_subset_closedBall hw)`. Establish `hhdiff : ∀ z ∈ ball z₀ r, DifferentiableAt ℂ h z` using `fun z hz => hhd.differentiableAt (Filter.mem_of_superset (isOpen_ball.mem_nhds hz) ball_subset_closedBall)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hZ0 : ∀ ρ ∈ Z, f ρ = 0` using `fun ρ hρ => ((hZ ρ).1 hρ).2`. Establish `hZb : ∀ ρ ∈ Z, ρ ∈ closedBall z₀ (r / 3)` using `fun ρ hρ => ((hZ ρ).1 hρ).1`. Establish `horder : ∀ ρ ∈ Z, (deriv f ρ = 0 → 2 ≤ m ρ) ∧ (deriv f ρ ≠ 0 → m ρ = 1)`. Introduce `ρ hρ`. Establish `hρb` using `hsub ρ (hZb ρ hρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `deriv_eq_zero_iff_mult_of_local_factor (k := fun w => (∏ ρ' ∈ Z.erase ρ, (w - ρ') ^ m ρ') * h w) (hm ρ hρ) ((differentiable_prod_sub_pow (Z.erase ρ) m ρ).mul (hhdiff ρ hρb)) ?_ ?_` and prove the remaining obligations. Conclude with `mul_ne_zero (Finset.prod_ne_zero_iff.mpr fun ρ' hρ' => pow_ne_zero _ (sub_ne_zero.mpr (Finset.ne_of_mem_erase hρ').symm)) (hh0 ρ (hZb ρ hρ))`. Use `filter_upwards [hloc ρ hρb] with w hw`. Rewrite using `[hw, ← mul_assoc, Finset.mul_prod_erase Z (fun ρ' => (w - ρ') ^ m ρ') hρ]`. Establish `hlow : ∀ w ∈ sphere z₀ r, 2 ^ (∑ ρ ∈ Z, m ρ) * (r / 3) ^ (∑ ρ ∈ Z, m ρ) ≤ ‖∏ ρ ∈ Z, (w - ρ) ^ m ρ‖`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Rewrite using `[← mul_pow, norm_prod, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun ρ _ => pow_nonneg (by linarith) _) fun ρ hρ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow]`. Establish `h1` using `hZb ρ hρ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h1` using `[mem_closedBall]`. Rewrite `hw` using `[mem_sphere]`. Establish `h2 : 2 * (r / 3) ≤ ‖w - ρ‖`. Rewrite using `[← dist_eq_norm]`. Combine the linear relations using `[dist_triangle w ρ z₀]`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `pow_le_pow_left₀ (by linarith) h2 _`. Establish `hup : ‖∏ ρ ∈ Z, (z₀ - ρ) ^ m ρ‖ ≤ (r / 3) ^ (∑ ρ ∈ Z, m ρ)`. Rewrite using `[norm_prod, ← Finset.prod_pow_eq_pow_sum]`. Use `Finset.prod_le_prod (fun ρ _ => norm_nonneg _) fun ρ hρ => ?_` and prove the remaining obligations. Rewrite using `[norm_pow]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hZb ρ hρ`. Rewrite `h1` using `[mem_closedBall, dist_eq_norm]`. Establish `h2 : ‖z₀ - ρ‖ ≤ r / 3`. Rewrite using `[norm_sub_rev]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `pow_le_pow_left₀ (norm_nonneg _) h2 _`. Establish `hcl : closure (ball z₀ r) = closedBall z₀ r`. Conclude with `closure_ball z₀ hr.ne'`. Establish `hfr : frontier (ball z₀ r) = sphere z₀ r`. Conclude with `frontier_ball z₀ hr.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2pos : (0 : ℝ) < 2 ^ (∑ ρ ∈ Z, m ρ)` using `by positivity`. Establish `hmax : ∀ z ∈ closedBall z₀ r, ‖h z‖ * 2 ^ (∑ ρ ∈ Z, m ρ) ≤ M * ‖h z₀‖`. Establish `hd : DiffContOnCl ℂ h (ball z₀ r)` using `DifferentiableOn.diffContOnCl (by rw [hcl]; exact hhd)`. Introduce `z hz`. Establish `hc : ‖h z‖ ≤ M * ‖h z₀‖ / 2 ^ (∑ ρ ∈ Z, m ρ)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Complex.norm_le_of_forall_mem_frontier_norm_le isBounded_ball hd ?_ (by rw [hcl]; exact hz)` and prove the remaining obligations. Introduce `w hw`. Rewrite `hw` using `[hfr]`. Establish `hwc : w ∈ closedBall z₀ r` using `sphere_subset_closedBall hw`. Establish `b1` using `hbound w hwc`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `b1` using `[hfac w hwc, hfac z₀ (mem_closedBall_self hr.le), norm_mul, norm_mul]`. Establish `l1` using `hlow w hw`. Establish `hA : (0 : ℝ) < (r / 3) ^ (∑ ρ ∈ Z, m ρ)` using `pow_pos hr3 _`. Establish `key : (r / 3) ^ (∑ ρ ∈ Z, m ρ) * (‖h w‖ * 2 ^ (∑ ρ ∈ Z, m ρ)) ≤ (r / 3) ^ (∑ ρ ∈ Z, m ρ) * (M * ‖h z₀‖)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key2` using `le_of_mul_le_mul_left key hA`. Conclude with `(le_div_iff₀ h2pos).mpr key2`. Conclude with `(le_div_iff₀ h2pos).mp hc`. Establish `hh0z₀ : h z₀ ≠ 0` using `hh0 z₀ (mem_closedBall_self hr3.le)`. Establish `h2M : (2 : ℝ) ^ (∑ ρ ∈ Z, m ρ) ≤ M`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `hmax z₀ (mem_closedBall_self hr.le)`. Establish `hpos : 0 < ‖h z₀‖` using `norm_pos_iff.mpr hh0z₀`. Conclude with `le_of_mul_le_mul_left (by linarith) hpos`. Establish `hsum : ((∑ ρ ∈ Z, m ρ : ℕ) : ℝ) ≤ Real.log M / Real.log 2`. Establish `hl2 : 0 < Real.log 2` using `Real.log_pos (by norm_num)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `h1 : ((∑ ρ ∈ Z, m ρ : ℕ) : ℝ) * Real.log 2 ≤ Real.log M`. Rewrite using `[← Real.log_pow]`. Conclude with `Real.log_le_log (by positivity) h2M`. Conclude with `(le_div_iff₀ hl2).mpr h1`. Establish `hone : (1 : ℝ) ≤ 2 ^ (∑ ρ ∈ Z, m ρ)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_le_pow₀ (by norm_num)`. Establish `hbB : ∀ z ∈ closedBall z₀ (r / 3), ‖h z‖ ≤ M * ‖h z₀‖`. Introduce `z hz`. Establish `hzr : z ∈ closedBall z₀ r` using `closedBall_subset_closedBall (by linarith) hz`. Conclude with `(le_mul_of_one_le_right (norm_nonneg _) hone).trans (hmax z hzr)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB` using `Formalism.ZF.logDerivBoundOnBall h z₀ (r / 3) M hr3 hM (hhd.mono (closedBall_subset_closedBall (by linarith))) hh0 hbB`. Use `⟨Z, m, hZ, hm, fun ρ hρ => (horder ρ hρ).1, fun ρ hρ => (horder ρ hρ).2, hsum, ?_⟩` and prove the remaining obligations. Introduce `z hz hfz`. Establish `hz3 : z ∈ closedBall z₀ (r / 3 / 2)`. Rewrite `hz`, the goal using `[mem_closedBall]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzr : z ∈ closedBall z₀ r` using `closedBall_subset_closedBall (by linarith) hz`. Establish `hzb : z ∈ ball z₀ r`. Rewrite `hz` using `[mem_closedBall]`. Rewrite using `[mem_ball]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hzρ : ∀ ρ ∈ Z, z - ρ ≠ 0` using `fun ρ hρ he => hfz (by rw [sub_eq_zero.mp he]; exact hZ0 ρ hρ)`. Establish `e1` using `hfac z hzr`. Establish `hPz : (∏ ρ ∈ Z, (z - ρ) ^ m ρ) ≠ 0` using `fun h0 => hfz (by rw [e1, h0, zero_mul])`. Establish `hhz : h z ≠ 0` using `fun h0 => hfz (by rw [e1, h0, mul_zero])`.
-
-Establish `hl : logDeriv (fun w => (∏ ρ ∈ Z, (w - ρ) ^ m ρ) * h w) z = logDeriv (fun w => ∏ ρ ∈ Z, (w - ρ) ^ m ρ) z + logDeriv h z`. Conclude with `logDeriv_mul z hPz hhz (differentiable_prod_sub_pow Z m z) (hhdiff z hzb)`. Rewrite `hl` using `[Formalism.ZF.landauLocal_logDeriv_prod Z m z hzρ, logDeriv_apply, logDeriv_apply]`. Establish `hsplit : deriv f z / f z - ∑ ρ ∈ Z, (m ρ : ℂ) / (z - ρ) = deriv h z / h z`. Rewrite using `[(hloc z hzb).deriv_eq, e1, hl]`.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsplit]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[div_div_eq_mul_div]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_localZeroExpansion_of_bound (f : ℂ → ℂ) (z₀ : ℂ) (r M : ℝ) (hr : 0 < r) (hM : 1 ≤ M)
     (hf : DifferentiableOn ℂ f (Metric.closedBall z₀ r)) (hfz₀ : f z₀ ≠ 0)

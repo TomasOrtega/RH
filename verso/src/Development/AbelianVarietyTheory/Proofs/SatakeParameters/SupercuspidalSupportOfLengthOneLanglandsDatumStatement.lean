@@ -15,7 +15,7 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.LocGL.LenOneSupport.hasSupport_first_of_isL_len_one) | (exact GlobalTheory.LocGL.LenOneSupport.hasSupport_first_of_isL_len_one) | (intros; apply GlobalTheory.LocGL.LenOneSupport.hasSupport_first_of_isL_len_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.supercuspidalSupport_of_lengthOne_langlandsDatum : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (c : ℕ) (Δ : Fin c → Segment k) (x : IrrGL k), (∀ i, (Δ i).len = 1) →

@@ -7,7 +7,7 @@ open MvPowerSeries GlobalTheory GlobalTheory.Katz GlobalTheory.QLog GlobalTheory
 namespace GlobalTheory.LawDer
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[MvPowerSeries.coeff_map, MvPowerSeries.coeff_pderiv, MvPowerSeries.coeff_pderiv, MvPowerSeries.coeff_map, map_mul, map_add, map_natCast, map_one]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_pderiv_coeffChange {R S σ : Type} [CommRing R] [CommRing S] (φ : R →+* S)
     (f : MvPowerSeries σ R) (s : σ) :
@@ -17,7 +17,7 @@ theorem map_pderiv_coeffChange {R S σ : Type} [CommRing R] [CommRing S] (φ : R
     map_mul, map_add, map_natCast, map_one]
 
 /- English proof (translation)
-Unfold `atZero`. Apply the tactic sequence `rw [map_subst (hasSubst_of_constantCoeff_zero (fun s => by cases s <;> simp))]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Apply the tactic sequence `cases s <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem map_atZero {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {d : ℕ}
     (H : MvPowerSeries (Fin d ⊕ Fin d) R) : map f (atZero H) = atZero (map f H) := by
@@ -28,7 +28,7 @@ theorem map_atZero {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {d : �
   cases s <;> simp
 
 /- English proof (translation)
-Use extensionality with `m`. Simplify using `[MvPowerSeries.coeff_map, MvPowerSeries.coeff_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smul_coeffChange {R S σ : Type} [CommRing R] [CommRing S] (f : R →+* S) (a : R)
     (H : MvPowerSeries σ R) : map f (a • H) = f a • map f H := by
@@ -36,7 +36,7 @@ theorem map_smul_coeffChange {R S σ : Type} [CommRing R] [CommRing S] (f : R �
   simp [MvPowerSeries.coeff_map, MvPowerSeries.coeff_smul]
 
 /- English proof (translation)
-Unfold `invDer`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul_coeffChange, map_atZero, map_pderiv_coeffChange, map_subst (hasSubst_of_constantCoeff_zero hμ)]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_invDer {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {d : ℕ}
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R) (hμ : ∀ i, constantCoeff (μ i) = 0)
@@ -48,7 +48,7 @@ theorem map_invDer {R S : Type} [CommRing R] [CommRing S] (f : R →+* S) {d : �
   rw [map_smul_coeffChange, map_atZero, map_pderiv_coeffChange, map_subst (hasSubst_of_constantCoeff_zero hμ)]
 
 /- English proof (translation)
-Introduce `R S _ _ f d μ hμ u k F`. Proceed by induction on `k with`. Consider the case `zero => rfl`. Consider the case `succ k ih => rw [Function.iterate_succ_apply', Function.iterate_succ_apply', map_invDer f μ hμ, ih]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem map_invDer_iterate : ∀ (R S : Type) [CommRing R] [CommRing S] (f : R →+* S) (d : ℕ)
     (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R), (∀ i, constantCoeff (μ i) = 0) →

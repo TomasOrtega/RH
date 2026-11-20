@@ -5,23 +5,19 @@ namespace Formalism.MainNotions.FormalGroupSystem.Pf
 open Finset
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro h`. Simplify using `at h`. Consider the case `insert a s ha ih`. Introduce `h`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `hs : ∃ k ∈ s, f k ≠ 0`. Take `⟨k0, hk0, hfk0, hR0⟩` from `ih hs`. Distinguish the cases in `hfa : f a / f k0 ∈ R`. Use `⟨k0, Finset.mem_insert_of_mem hk0, hfk0, ?_⟩` and prove the remaining obligations. Introduce `k hk`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `Finset.mem_insert.1 hk with rfl | hk` into its components or cases. Conclude with `hfa`. Conclude with `hR0 k hk`. Establish `hinv : f k0 / f a ∈ R`. Use `(hR (f a / f k0)).resolve_left hfa` as an intermediate fact.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[inv_div]`. Then use the resulting hypothesis. Establish `hfa0 : f a ≠ 0`. Introduce `h0`. Apply `hfa` to reduce the goal to its premises. Rewrite using `[h0, zero_div]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `R.zero_mem`. Use `⟨a, Finset.mem_insert_self a s, hfa0, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Break down `Finset.mem_insert.1 hk with rfl | hk` into its components or cases. Rewrite using `[div_self hfa0]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `R.one_mem`. Establish `: f k / f a = (f k / f k0) * (f k0 / f a)` using `by field_simp`. Rewrite using `[this]`. Conclude with `R.mul_mem (hR0 k hk) hinv`. Use `push_neg at hs`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hfa0 : f a ≠ 0`. Take `⟨k, hk, hfk⟩` from `h`. Break down `Finset.mem_insert.1 hk with rfl | hk` into its components or cases. Conclude with `hfk`. Conclude with `absurd (hs k hk) hfk`.
-
-Use `⟨a, Finset.mem_insert_self a s, hfa0, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Break down `Finset.mem_insert.1 hk with rfl | hk` into its components or cases. Rewrite using `[div_self hfa0]`. Conclude with `R.one_mem`.
-
-Rewrite using `[hs k hk, zero_div]`. Conclude with `R.zero_mem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pivot {K κ : Type*} [Field K] (R : Subring K) (hR : ∀ x : K, x ∈ R ∨ x⁻¹ ∈ R) (f : κ → K) (s : Finset κ) :
     (∃ k ∈ s, f k ≠ 0) → ∃ k0 ∈ s, f k0 ≠ 0 ∧ ∀ k ∈ s, f k / f k0 ∈ R := by
@@ -62,23 +58,23 @@ theorem pivot {K κ : Type*} [Field K] (R : Subring K) (hR : ∀ x : K, x ∈ R 
       · rw [hs k hk, zero_div]; exact R.zero_mem
 
 /- English proof (translation)
-Set `T : (s → K) →ₗ[K] V` to `{ toFun := fun w => ∑ k : s, w k • z k map_add' := fun w w' => by simp [add_smul, Finset.sum_add_distrib] map_smul' := fun c w => by simp [Finset.smul_sum, smul_smul] }`. Set `φ : M → Module.Dual K (s → K)` to `fun m => (π m).comp T`. Establish `hspan : Submodule.span K (Set.range φ) = ⊤`. Establish `h1 : (Submodule.span K (Set.range φ)).dualCoannihilator = ⊥`. Rewrite using `[eq_bot_iff]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `w hw`. Rewrite `hw` using `[Submodule.mem_dualCoannihilator]`. Establish `hT : T w = 0` using `hsep _ (fun m => hw (φ m) (Submodule.subset_span ⟨m, rfl⟩))`. Simplify using `using hind w hT`. Establish `h2` using `Subspace.dualCoannihilator_dualAnnihilator_eq (W := Submodule.span K (Set.range φ))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h2` using `[h1, Submodule.dualAnnihilator_bot]`. Conclude with `h2.symm`. Establish `hmem : (LinearMap.proj k0 : (s → K) →ₗ[K] K) ∈ Submodule.span K (Set.range φ)`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨l, hl⟩` from `Finsupp.mem_span_range_iff_exists_finsupp.1 hmem`. Establish `hz : ∀ k : s, (∑ m ∈ l.support, l m * π m (z k)) = if k = k0 then 1 else 0`. Introduce `k`. Establish `h3` using `congrArg (fun f : Module.Dual K (s → K) => f (Pi.single k 1)) hl`. Establish `hT : ∀ m, φ m (Pi.single k 1) = π m (z k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `m`. Simplify using `[φ, T, Pi.single_apply, ite_smul]`. Simplify using `only [Finsupp.sum, LinearMap.sum_apply, LinearMap.smul_apply, LinearMap.proj_apply, hT, smul_eq_mul] at h3`. Rewrite using `[h3, Pi.single_apply]`. Simplify using `[eq_comm]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy' : ι y = ∑ k : s, a k • ι (z k)`. Rewrite using `[hy]`. Conclude with `(Finset.sum_coe_sort s (fun k => a k • ι (z k))).symm`. Establish `e1 : ∀ m, algebraMap K Kc (π m y) = ∑ k : s, a k * algebraMap K Kc (π m (z k))`. Introduce `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hπ, hy', map_sum]`. Simplify using `[hπ]`. Use `⟨∑ m ∈ l.support, l m * π m y, ?_⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Simplify using `only [map_mul, e1, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Finset.sum_comm]`. Establish `h4 : ∀ k : s, ∑ m ∈ l.support, algebraMap K Kc (l m) * (a k * algebraMap K Kc (π m (z k))) = a k * algebraMap K Kc (if k = k0 then 1 else 0)`. Introduce `k`. Rewrite using `[← hz k, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl (fun k _ => h4 k)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem coeff_mem_range_algebraMap_of_linearIndependent {K Kc V Vc M : Type*} [Field K] [Field Kc] [Algebra K Kc]
     [AddCommGroup V] [Module K V] [AddCommGroup Vc] [Module Kc Vc]
@@ -134,31 +130,29 @@ private theorem coeff_mem_range_algebraMap_of_linearIndependent {K Kc V Vc M : T
   simp
 
 /- English proof (translation)
-Establish `hιinj : ∀ v : V, ι v = 0 → v = 0` using `fun v hv => hsep v (fun m => by`. Establish `h0` using `hπ m v`. Rewrite `h0` using `[hv, map_zero]`. Conclude with `(algebraMap K Kc).injective (h0.symm.trans (map_zero _).symm))`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `s hs z a _ y hy`. Rewrite `hs` using `[Finset.card_eq_zero]`. Substitute `hs` using the available equality.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨0, by simp, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_empty] at hy ⊢`. Conclude with `hιinj y hy`. Consider the case `succ n ih`. Introduce `s hs z a ha y hy`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hdep : ∃ b : κ → K, ∑ k ∈ s, b k • z k = 0 ∧ ∃ k ∈ s, b k ≠ 0`. Take `⟨b, hb0, hbne⟩` from `hdep`. Take `⟨k0, hk0, hbk0, hbR⟩` from `pivot R hR b s hbne`. Establish `hzk0 : ι (z k0) = - ∑ k ∈ s.erase k0, algebraMap K Kc (b k / b k0) • ι (z k)`. Establish `h1 : ∑ k ∈ s, (b k / b k0) • z k = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Repeatedly rewrite using `[div_eq_mul_inv, mul_comm _ (b k0)⁻¹, mul_smul, ← Finset.smul_sum, hb0, smul_zero]`. Rewrite `h1` using `[← Finset.add_sum_erase s _ hk0, div_self hbk0, one_smul]`. Rewrite using `[eq_neg_of_add_eq_zero_left h1, map_neg, map_sum]`. Simplify using `only [hιs]`. Establish `hy' : ι y = ∑ k ∈ s.erase k0, (a k - algebraMap K Kc (b k / b k0) * a k0) • ι (z k)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hy, ← Finset.add_sum_erase s _ hk0, hzk0, smul_neg, Finset.smul_sum, ← Finset.sum_neg_distrib, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[smul_smul, sub_smul, mul_comm (a k0)]`. Normalize the expressions using the abelian group laws. Establish `hcard : (s.erase k0).card = n`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Finset.card_erase_of_mem hk0, hs]`. Both sides reduce to the same expression. Take `⟨c, hcA, hyc⟩` from `ih (s.erase k0) hcard z (fun k => a k - algebraMap K Kc (b k / b k0) * a k0) (fun k hk => A.sub_mem (ha k (Finset.mem_of_mem_erase hk)) (hA _ (hbR k (Finset.mem_of_mem_erase hk)) _ (ha k0 hk0))) y hy'`. Use `⟨fun k => if k = k0 then 0 else c k, fun k hk => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hkk : k = k0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [hkk, if_true, map_zero]`. Conclude with `A.zero_mem`. Simplify using `only [hkk, if_false]`. Conclude with `hcA k (Finset.mem_erase.2 ⟨hkk, hk⟩)`. Rewrite using `[← Finset.add_sum_erase s _ hk0, hyc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [if_true, zero_smul, zero_add]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[if_neg (Finset.ne_of_mem_erase hk)]`. Use `push_neg at hdep`. Establish `hind : ∀ w : s → K, ∑ k : s, w k • z k = 0 → w = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `w hw`. Establish `h5` using `hdep (fun k => if h : k ∈ s then w ⟨k, h⟩ else 0) (by`. Rewrite using `[← Finset.sum_coe_sort]`. Simplify using `using hw)`. Use function extensionality and compare the values at `k`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `using h5 k k.2`. Establish `hr : ∀ k (hk : k ∈ s), a k ∈ Set.range (algebraMap K Kc)` using `fun k hk => coeff_mem_range_algebraMap_of_linearIndependent ι hιs π πc hπ hsep s z hind a y hy ⟨k, hk⟩`. Set `c : κ → K` to `fun k => if hk : k ∈ s then (hr k hk).choose else 0`. Establish `hc : ∀ k ∈ s, algebraMap K Kc (c k) = a k` using `fun k hk => by`. Simplify using `only [c, dif_pos hk]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hr k hk).choose_spec`. Use `⟨c, fun k hk => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hc k hk]`. Conclude with `ha k hk`. Establish `h6 : ι (y - ∑ k ∈ s, c k • z k) = 0`.
-
-Rewrite using `[map_sub, map_sum, hy, sub_eq_zero]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[hιs, hc k hk]`. Conclude with `sub_eq_zero.1 (hιinj _ h6)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem descent_core {K Kc V Vc M : Type*} [Field K] [Field Kc] [Algebra K Kc]
     [AddCommGroup V] [Module K V] [AddCommGroup Vc] [Module Kc Vc]

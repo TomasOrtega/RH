@@ -33,7 +33,7 @@ section Torus
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[act, cj_apply, hσ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem act_cj (X : PT E) {dim : (E →+* ℂ) → ℕ} (σ : Idx dim ≃ Idx X.dim)
     (hσ : ∀ i, (σ i).1 = ComplexEmbedding.conjugate i.1) (α : 𝓞 E) (y : Vsp X.dim) :
@@ -46,7 +46,7 @@ def conjBasis (X : PT E) {dim : (E →+* ℂ) → ℕ} (σ : Idx dim ≃ Idx X.d
   (X.b.map (cj X σ)).reindex (finCongr (by rw [Fintype.card_congr σ]))
 
 /- English proof (translation)
-Simplify using `only [lat, Module.Basis.mem_span_iff_repr_mem, conjBasis, Module.Basis.repr_reindex_apply, Module.Basis.map_repr, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Conclude with `⟨fun h i => h (finCongr (by rw [Fintype.card_congr σ]) i), fun h i => h _⟩`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem mem_conjBasis (X : PT E) {dim : (E →+* ℂ) → ℕ} (σ : Idx dim ≃ Idx X.dim) (y : Vsp X.dim) :
     cj X σ y ∈ lat (conjBasis X σ) ↔ y ∈ lat X.b := by

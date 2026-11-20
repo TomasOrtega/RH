@@ -13,7 +13,7 @@ def PerfectQZ (X Y : Type) [AddCommGroup X] [AddCommGroup Y] : Prop :=
   Finite X ∧ Finite Y ∧ ∃ P : X →+ Y →+ QZ, Function.Bijective P ∧ Function.Bijective P.flip
 
 /- English proof (translation)
-Take `⟨hX, hY, P, h1, h2⟩` from `h`. Establish `e : P.flip.flip = P` using `by ext; rfl`. Conclude with `⟨hY, hX, P.flip, h2, by rw [e]; exact h1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem perfectQZ_symm {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (h : PerfectQZ X Y) :
     PerfectQZ Y X := by
@@ -22,13 +22,11 @@ theorem perfectQZ_symm {X Y : Type} [AddCommGroup X] [AddCommGroup Y] (h : Perfe
   exact ⟨hY, hX, P.flip, h2, by rw [e]; exact h1⟩
 
 /- English proof (translation)
-Take `⟨hX, hY, P, h1, h2⟩` from `h`. Establish `bY : Function.Bijective (fun φ : Y' →+ QZ => φ.comp eY.toAddMonoidHom)` using `Function.bijective_iff_has_inverse.2 ⟨fun ψ => ψ.comp eY.symm.toAddMonoidHom, fun φ => by ext; simp, fun ψ => by ext; simp⟩`. Establish `bX : Function.Bijective (fun φ : X' →+ QZ => φ.comp eX.toAddMonoidHom)` using `Function.bijective_iff_has_inverse.2 ⟨fun ψ => ψ.comp eX.symm.toAddMonoidHom, fun φ => by ext; simp, fun ψ => by ext; simp⟩`. Use `⟨Finite.of_equiv _ eX.symm.toEquiv, Finite.of_equiv _ eY.symm.toEquiv, (P.compl₂ eY.toAddMonoidHom).comp eX.toAddMonoidHom, ?_, ?_⟩` and prove the remaining obligations. Establish `e : ⇑((P.compl₂ eY.toAddMonoidHom).comp eX.toAddMonoidHom) = (fun φ : Y' →+ QZ => φ.comp eY.toAddMonoidHom) ∘ P ∘ eX`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Use extensionality with `y`. Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `bY.comp (h1.comp eX.bijective)`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : ⇑((P.compl₂ eY.toAddMonoidHom).comp eX.toAddMonoidHom).flip = (fun φ : X' →+ QZ => φ.comp eX.toAddMonoidHom) ∘ P.flip ∘ eY`. Use function extensionality and compare the values at `y`. Use extensionality with `x`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `bX.comp (h2.comp eY.bijective)`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perfectQZ_of_addEquiv {X Y X' Y' : Type} [AddCommGroup X] [AddCommGroup Y]
     [AddCommGroup X'] [AddCommGroup Y'] (eX : X ≃+ X') (eY : Y ≃+ Y') (h : PerfectQZ X' Y') :
@@ -54,17 +52,17 @@ theorem perfectQZ_of_addEquiv {X Y X' Y' : Type} [AddCommGroup X] [AddCommGroup 
     exact bX.comp (h2.comp eY.bijective)
 
 /- English proof (translation)
-Take `⟨hX, hY, P, h1, h2⟩` from `h`. Establish `torX : ∀ x : X, n • x = 0` using `fun x => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod n), ZMod.natCast_self, zero_smul]`. Establish `torY : ∀ y : Y, n • y = 0` using `fun y => by`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ZMod n), ZMod.natCast_self, zero_smul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hP : ∀ x y, n • P x y = 0` using `fun x y => by rw [← map_nsmul, torY, map_zero]`. Set `Q : X →+ (Y →ₗ[ZMod n] ZMod n)` to `{ toFun := fun x => (zmodOfQZ (P x) (hP x)).toZModLinearMap n map_zero' := by`. Use extensionality with `y`. Apply `zmodToQZ_injective (n := n)` to reduce the goal to its premises. Simplify using `[zmodToQZ_zmodOfQZ]`.
+Establish an intermediate fact. Introduce a local definition for the expression. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use the proof step `map_add' := fun x x' => by`. Use extensionality with `y`. Apply `zmodToQZ_injective (n := n)` to reduce the goal to its premises. Simplify using `[zmodToQZ_zmodOfQZ] }`. Establish `hQ : ∀ x y, zmodToQZ n (Q.toZModLinearMap n x y) = P x y` using `fun x y => zmodToQZ_zmodOfQZ (P x) (hP x) y`.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hX, hY, Q.toZModLinearMap n, ⟨fun x x' hxx => h1.1 ?_, fun φ => ?_⟩, ⟨fun y y' hyy => h2.1 ?_, fun φ => ?_⟩⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[← hQ, ← hQ, hxx]`. Take `⟨x, hx⟩` from `h1.2 ((zmodToQZ n).comp φ.toAddMonoidHom)`. Use `⟨x, LinearMap.ext fun y => zmodToQZ_injective (n := n) ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hQ, hx]`. Both sides reduce to the same expression. Use extensionality with `x`. Use `congrArg (fun f => zmodToQZ n (f x)) hyy` as an intermediate fact. Conclude with `(hQ x y).symm.trans (this.trans (hQ x y'))`.
+Both sides reduce to the same expression. By extensionality, compare the relevant components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨y, hy⟩` from `h2.2 ((zmodToQZ n).comp φ.toAddMonoidHom)`. Use `⟨y, LinearMap.ext fun x => zmodToQZ_injective (n := n) ?_⟩` and prove the remaining obligations. Use `show zmodToQZ n (Q.toZModLinearMap n x y) = _`. Rewrite using `[hQ]`. Conclude with `DFunLike.congr_fun hy x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem perfectPair_of_perfectQZ {n : ℕ} [NeZero n] {X Y : Type} [AddCommGroup X]
     [Module (ZMod n) X] [AddCommGroup Y] [Module (ZMod n) Y] (h : PerfectQZ X Y) :
@@ -140,7 +138,7 @@ section FoundSide
 attribute [local instance 2000] Rep.hV2
 
 /- English proof (translation)
-Take `⟨K', S', _, ιs, N, _, hS, hK, A, _, _, hA, ⟨eY⟩, ⟨eX⟩⟩` from `h`. Take `⟨h1, h2, h3, h4⟩` from `poitouTate_sha_gs S' ιs hS hK A hA`. Conclude with `perfectQZ_of_addEquiv eX eY (perfectQZ_symm ⟨h1, h2, _, h3, h4⟩)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem perfectQZ_of_found {X Y : Type} [AddCommGroup X] [AddCommGroup Y]
     (h : ∃ (K' : FiniteSubfield) (S' : Set (HeightOneSpectrum (𝓞 K'.1))) (_ : Fintype S')
@@ -161,7 +159,7 @@ end FoundSide
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `K _ _ l _ r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ`. Establish `: NeZero (l ^ r)` using `⟨pow_ne_zero r (Fact.out : l.Prime).ne_zero⟩`. Establish `hh` using `h K l r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M ρ hρ`. Conclude with `⟨perfectPair_of_perfectQZ (perfectQZ_of_found (X := Sha2 ρ (locFam S Av) (continuous_locFam S Av)) (Y := Sha1 (twDual μ ρ) (locFam S Av) (continuous_locFam S Av)) hh.1), perfectPair_of_perfectQZ (perfectQZ_of_found (X := Sha2 (twDual μ ρ) (locFam S Av) (continuous_locFam S Av)) ( …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem shaCmpFS_of_dict (h : ShaDictFS) : ShaCmpFS := by
   intro K _ _ l _ r hl hr ζ hζ inv hinv S hS Av hAv μ hμ M _ _ _ _ _ ρ hρ

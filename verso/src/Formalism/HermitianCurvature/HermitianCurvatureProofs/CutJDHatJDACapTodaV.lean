@@ -6,7 +6,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutJDHatJDACapTodaV
 namespace Formalism.FourierDecayAlt.P.CutMP
 
 /- English proof (translation)
-The claim follows from `jDACapTodaV_of_parts toda_coefficient_holds TVG.toda_group_action_holds toda_coordinate_holds`.
+A detailed English derivation is pending.
 -/
 theorem jda_capelli_toda_mirror_proof : JDACapTodaV :=
   jDACapTodaV_of_parts toda_coefficient_holds TVG.toda_group_action_holds toda_coordinate_holds

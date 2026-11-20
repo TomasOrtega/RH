@@ -10,9 +10,9 @@ open NumberField GlobalTheory.CuspRep MeasureTheory PositivityTheory.Affgl Globa
 namespace GlobalTheory.CompanionTheory.CTFin
 
 /- English proof (translation)
-Introduce `E _ _ _ a r φ hl _ _ _ μ 𝓕 hμ h𝓕 y g`. Use `haveI := countable_ratN (E := E) (a := a) r`. Establish `hper : ∀ n ∈ ratN E a r, ∀ x, φ.1 (unip (n + x) * g) = φ.1 (unip x * g)`. Introduce and unpack `_ ⟨q, rfl⟩ x`. Rewrite using `[unip_add, mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(congrArg (fun u => φ.1 (u * _)) (unip_algebraMap q)).trans (hl _ _)`. Establish `h` using `Formalism.IndefR.Tow.fd_setIntegral_add h𝓕 (f := fun x => φ.1 (unip x * g)) hper y`. Simplify `h` using `only [unip_add, mul_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem constTerm_unip_left : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ) (φ : Sm E a),
     (∀ (γ : GL (Fin a) E) (g : GA E a), φ.1 (ratGL E a γ * g) = φ.1 g) → IsOpen {k | finRep E a k φ = φ} →

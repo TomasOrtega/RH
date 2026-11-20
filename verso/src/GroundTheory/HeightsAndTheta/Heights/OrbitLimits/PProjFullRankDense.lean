@@ -10,9 +10,9 @@ namespace GroundTheory.Heights₂.Heights.Targets
 open MvPolynomial MeasureTheory ReciprocityTheory.ChartRestriction.G.Geo ReciprocityTheory.AnForm.M
 
 /- English proof (translation)
-Introduce `K _ ι _ P J n R Ψ V BV hH hC hΨ x hx`. Take `⟨y, hyc, hy⟩` from `hMeet K ι P J n R Ψ V BV hH hC hΨ x hx`. Establish `hO : IsOpen (closure (projRegular R Ψ BV))` using `hOpen K ι P J n R Ψ V BV hH`. Establish `hcl : IsClopen (closure (projRegular R Ψ BV))` using `⟨isClosed_closure, hO⟩`. Rewrite using `[hO.interior_eq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsub` using `hcl.connectedComponent_subset (subset_closure hy)`. Rewrite `hsub` using `[← connectedComponent_eq hyc]`. Conclude with `hsub mem_connectedComponent`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ProjFullRankDense.of_found (hOpen : ProjRegularClosureOpen.Statement)
     (hMeet : ProjFullRankMeetsRegular.Statement) : ProjFullRankDense.Statement := by

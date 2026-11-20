@@ -15,7 +15,7 @@ variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {Wp : Type} [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp]
 
 /- English proof (translation)
-Rewrite using `[ae_iff]`. Conclude with `h.2.2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ae_UH_of_haar {μG : Measure (Mt k r)} (h : IsHaarOn (UH (Hpk k r)) μG) :
     ∀ᵐ y ∂μG, Matrix.of y ∈ UH (Hpk k r) := by
@@ -23,7 +23,7 @@ theorem ae_UH_of_haar {μG : Measure (Mt k r)} (h : IsHaarOn (UH (Hpk k r)) μG)
   exact h.2.2.1
 
 /- English proof (translation)
-Establish `hc : Continuous fun g : Matrix n n ℂ => gᴴ * A * g` using `(continuous_id.matrix_conjTranspose.matrix_mul continuous_const).matrix_mul continuous_id`. Conclude with `isClosed_eq hc continuous_const`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem isClosed_UH' {n : Type*} [Fintype n] [DecidableEq n] (A : Matrix n n ℂ) :
     IsClosed (UH A) := by
@@ -32,13 +32,13 @@ private theorem isClosed_UH' {n : Type*} [Fintype n] [DecidableEq n] (A : Matrix
   exact isClosed_eq hc continuous_const
 
 /- English proof (translation)
-Conclude with `((isClosed_UH' (Hpk k r)).preimage (continuous_id : Continuous fun y : Mt k r => y)).measurableSet`.
+A detailed English derivation is pending.
 -/
 theorem measurableSet_UH' : MeasurableSet {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)} := by
   exact ((isClosed_UH' (Hpk k r)).preimage (continuous_id : Continuous fun y : Mt k r => y)).measurableSet
 
 /- English proof (translation)
-Establish `hσ` using `(ds_rep hds).2.2.2 w`. Establish `hof : Continuous fun y : Mt k r => (Matrix.of y : Mx k r)` using `continuous_id`. Conclude with `continuousOn_const.inner (hσ.comp hof.continuousOn fun y hy => hy)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem coef_contOn {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
     (hds : IsDSHpk k r ε lam σ) (w v : H) :
@@ -48,7 +48,7 @@ theorem coef_contOn {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 
   exact continuousOn_const.inner (hσ.comp hof.continuousOn fun y hy => hy)
 
 /- English proof (translation)
-Establish `h1` using `(coef_contOn hds w v).aestronglyMeasurable (measurableSet_UH' (k := k) (r := r)) (μ := μG)`. Rewrite `h1` using `[Measure.restrict_eq_self_of_ae_mem (s := {y : Mt k r | Matrix.of y ∈ UH (Hpk k r)}) (ae_UH_of_haar hG)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem coef_aesm {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
     (hds : IsDSHpk k r ε lam σ) {μG : Measure (Mt k r)} (hG : IsHaarOn (UH (Hpk k r)) μG) (w v : H) :
@@ -61,7 +61,7 @@ def Tset (z : Fin (2 * r + k + 1) → ℂ) : Set (Mt k r × (Mt k r × Mt k r)) 
   {q | Matrix.of q.1 ∈ UH (Hpk k r) ∧ (Matrix.of q.2.1 ∈ UWset k r z ∧ Matrix.of q.2.2 ∈ Nset k r)}
 
 /- English proof (translation)
-Establish `h1 : ∀ u : Fin (2 * r + k + 1) → ℂ, Continuous fun g : Mx k r => g *ᵥ u` using `fun u => continuous_id.matrix_mulVec continuous_const`. Simplify using `only [UWset, Set.ofPred_and, Set.ofPred_forall]`. Conclude with `(isClosed_UH' _).inter ((isClosed_iInter fun a => (isClosed_eq (h1 _) continuous_const).inter (isClosed_eq (h1 _) continuous_const)).inter (isClosed_eq (h1 _) continuous_const))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isClosed_UWset' (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (UWset k r z) := by
   have h1 : ∀ u : Fin (2 * r + k + 1) → ℂ, Continuous fun g : Mx k r => g *ᵥ u :=
@@ -72,7 +72,7 @@ private theorem isClosed_UWset' (z : Fin (2 * r + k + 1) → ℂ) : IsClosed (UW
       (isClosed_eq (h1 _) continuous_const))
 
 /- English proof (translation)
-Simplify using `only [Nset, Set.ofPred_and, Set.ofPred_forall]`. Conclude with `(isClosed_UH' _).inter ((isClosed_iInter fun a => isClosed_iInter fun i => isClosed_iInter fun _ => isClosed_eq (continuous_id.matrix_elem _ _) continuous_const).inter (isClosed_iInter fun i => isClosed_iInter fun j => isClosed_iInter fun _ => isClosed_iInter fun _ => isClosed_iI …`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isClosed_Nset_bessel_line (k r : ℕ) : IsClosed (Nset k r) := by
   simp only [Nset, Set.ofPred_and, Set.ofPred_forall]
@@ -82,7 +82,7 @@ private theorem isClosed_Nset_bessel_line (k r : ℕ) : IsClosed (Nset k r) := b
         isClosed_iInter fun _ => isClosed_eq (continuous_id.matrix_elem _ _) continuous_const))
 
 /- English proof (translation)
-Establish `c1 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.1 : Mx k r)` using `continuous_fst`. Establish `c2 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.1 : Mx k r)` using `continuous_fst.comp continuous_snd`. Establish `c3 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.2 : Mx k r)` using `continuous_snd.comp continuous_snd`. Conclude with `(((isClosed_UH' (Hpk k r)).preimage c1).inter (((isClosed_UWset' (k := k) (r := r) z).preimage c2).inter ((isClosed_Nset_bessel_line k r).preimage c3))).measurableSet`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem measurableSet_Tset (z : Fin (2 * r + k + 1) → ℂ) : MeasurableSet (Tset (k := k) (r := r) z) := by
   have c1 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.1 : Mx k r) := continuous_fst
@@ -94,7 +94,7 @@ theorem measurableSet_Tset (z : Fin (2 * r + k + 1) → ℂ) : MeasurableSet (Ts
     (((isClosed_UWset' (k := k) (r := r) z).preimage c2).inter ((isClosed_Nset_bessel_line k r).preimage c3))).measurableSet
 
 /- English proof (translation)
-Establish `h1 : ∀ᵐ q ∂(μG.prod (μW.prod μN)), Matrix.of q.1 ∈ UH (Hpk k r)` using `Measure.quasiMeasurePreserving_fst.ae (ae_UH_of_haar hG)`. Establish `h2 : ∀ᵐ q ∂(μG.prod (μW.prod μN)), Matrix.of q.2.1 ∈ UWset k r z ∧ Matrix.of q.2.2 ∈ Nset k r` using `Measure.quasiMeasurePreserving_snd.ae hM1`. Use `filter_upwards [h1, h2] with q hq1 hq2`. Conclude with `⟨hq1, hq2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem joint_ae {z : Fin (2 * r + k + 1) → ℂ} {μW μN μG : Measure (Mt k r)} [SFinite μW] [SFinite μN]
     [SFinite μG] (hG : IsHaarOn (UH (Hpk k r)) μG)
@@ -108,11 +108,9 @@ theorem joint_ae {z : Fin (2 * r + k + 1) → ℂ} {μW μN μG : Measure (Mt k 
   exact ⟨hq1, hq2⟩
 
 /- English proof (translation)
-Establish `hσ` using `(ds_rep hds).2.2.2 w`. Establish `a1 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.1 : Mx k r)` using `continuous_fst.comp continuous_snd`. Establish `a2 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.2.2 : Mx k r)` using `continuous_snd.comp continuous_snd`. Establish `a3 : Continuous fun q : Mt k r × (Mt k r × Mt k r) => (Matrix.of q.1 : Mx k r)` using `continuous_fst`. Establish `hc : Continuous fun q : Mt k r × (Mt k r × Mt k r) => sM q.2 * Matrix.of q.1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `sM`. Conclude with `(a1.matrix_mul a2).matrix_mul a3`. Use `continuousOn_const.inner (hσ.comp hc.continuousOn ?_)` and prove the remaining obligations. Introduce `q hq`. Take `⟨h1, h2, h3⟩` from `hq`.
-
-Conclude with `hGr.1 _ (hGr.1 _ h2.1 _ h3.1) _ h1`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem matrix_coefficient_continuousOn {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
     (hds : IsDSHpk k r ε lam σ) {z : Fin (2 * r + k + 1) → ℂ} (hGr : Cv.GrpF k r z) (w v : H) :
@@ -132,7 +130,7 @@ theorem matrix_coefficient_continuousOn {ε : Fin (2 * r + k + 1) → Bool} {lam
   exact hGr.1 _ (hGr.1 _ h2.1 _ h3.1) _ h1
 
 /- English proof (translation)
-Establish `h` using `(matrix_coefficient_continuousOn hds hGr w v).aestronglyMeasurable (measurableSet_Tset z) (μ := μG.prod (μW.prod μN))`. Rewrite `h` using `[Measure.restrict_eq_self_of_ae_mem (joint_ae hG hM1)]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem matrix_coefficient_ae_strongly_measurable {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ} {σ : Mx k r → (H →L[ℂ] H)}
     (hds : IsDSHpk k r ε lam σ) {z : Fin (2 * r + k + 1) → ℂ} (hGr : Cv.GrpF k r z)
@@ -144,7 +142,7 @@ theorem matrix_coefficient_ae_strongly_measurable {ε : Fin (2 * r + k + 1) → 
   rwa [Measure.restrict_eq_self_of_ae_mem (joint_ae hG hM1)] at h
 
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sfinite_haar {μG : Measure (Mt k r)} (h : IsHaarOn (UH (Hpk k r)) μG) : SFinite μG := by
   have := h.1

@@ -31,13 +31,11 @@ private theorem ipL_apply {E : Type} [Field E] [NumberField E] [IsTotallyComplex
     ipL e H ω η = ip e H ω η := rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha Ξ r q`. Take `⟨-, H, hH, hx⟩` from `petInv E a ha r`. Take `⟨n, e, he⟩` from `frameEx E a`. Establish `hT` using `tformPos (Sm E a) Ξ.d H (sqSub E a r) 1 hH Matrix.PosDef.one`. Take `⟨h1, h2⟩` from `ipDef E a n e he _ (tform H 1) _ hT q`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨transRep Ξ q, ipL e (tform H 1), fun _ _ => rfl, fun M hM => ⟨fun ω η => h1 ω η, fun ω hω => ?_, fun ω hω => ?_⟩, fun x => ?_⟩` and prove the remaining obligations. Conclude with `(h2 ω fun X => mem_tens.2 (hM ω hω X)).1`. Conclude with `(h2 ω fun X => mem_tens.2 (hM ω hω X)).2`. Take `⟨c, hc⟩` from `hx x`. Use `⟨c, fun ω η hω hη => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ipL_apply, ipL_apply]`. Simplify using `only [ip, tform_apply, cmp_trans, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun I _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `hc _ (hω (fun k => e (I k)) i) _ (hη (fun k => e (I k)) j)` as an intermediate fact. Rewrite using `[mul_left_comm, ← this]`.
-
-Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Cj.H.coForm :
     UpperTheory.V.Cj.H.CoForm := by

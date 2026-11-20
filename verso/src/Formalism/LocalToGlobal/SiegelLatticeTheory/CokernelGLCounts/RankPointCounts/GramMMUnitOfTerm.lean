@@ -19,19 +19,19 @@ variable {E : Type} [CommRing E] [Algebra F E] [TopologicalSpace E] [MeasurableS
 variable {M : Model F E} {V : Type} [AddCommGroup V] [Module E V] (H : HermSp M V) {r : ℕ}
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (y + z) x, H.h_add_left, map_add, ← H.h_herm y x, ← H.h_herm z x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hR_add (x y z : V) : H.h x (y + z) = H.h x y + H.h x z := by
   rw [H.h_herm (y + z) x, H.h_add_left, map_add, ← H.h_herm y x, ← H.h_herm z x]
 
 /- English proof (translation)
-Rewrite using `[H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm y x]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hR_smul (c : E) (x y : V) : H.h x (c • y) = M.L.cj c * H.h x y := by
   rw [H.h_herm (c • y) x, H.h_smul_left, map_mul, ← H.h_herm y x]
 
 /- English proof (translation)
-Establish `h0 : H.h 0 x = 0`. Establish `h1` using `H.h_smul_left 0 0 x`. Rewrite `h1` using `[zero_smul, zero_mul]`. Then use the resulting hypothesis. Rewrite using `[H.h_herm 0 x, h0, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem hR_zero (x : V) : H.h x 0 = 0 := by
   have h0 : H.h 0 x = 0 := by
@@ -40,19 +40,19 @@ theorem hR_zero (x : V) : H.h x 0 = 0 := by
   rw [H.h_herm 0 x, h0, map_zero]
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← neg_one_smul E z, hR_add, hR_smul, map_neg, map_one]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hR_sub (x y z : V) : H.h x (y - z) = H.h x y - H.h x z := by
   rw [sub_eq_add_neg, ← neg_one_smul E z, hR_add, hR_smul, map_neg, map_one]
   ring
 
 /- English proof (translation)
-Introduce `h` and use `g.q_irr.ne_zero (Subtype.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem q_ne (g : SplitG M.L) : (g.q : F) ≠ 0 := fun h => g.q_irr.ne_zero (Subtype.ext h)
 
 /- English proof (translation)
-Rewrite using `[M.L.O_def]`. Establish `h1 : algebraMap F E (g.q : F) = algebraMap 𝒪[F] E g.q` using `(IsScalarTower.algebraMap_apply 𝒪[F] F E g.q).symm`. Rewrite using `[h1]`. Conclude with `isIntegral_algebraMap`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem q_mem_O (g : SplitG M.L) : algebraMap F E (g.q : F) ∈ M.L.O := by
   rw [M.L.O_def]
@@ -61,27 +61,25 @@ theorem q_mem_O (g : SplitG M.L) : algebraMap F E (g.q : F) ∈ M.L.O := by
   exact isIntegral_algebraMap
 
 /- English proof (translation)
-The claim follows from `M.L.cj.commutes _`.
+A detailed English derivation is pending.
 -/
 theorem cj_q (g : SplitG M.L) : M.L.cj (algebraMap F E (g.q : F)) = algebraMap F E (g.q : F) :=
   M.L.cj.commutes _
 
 /- English proof (translation)
-Establish `hF : Formalism.MainNotions.ThinScalesBound.FrameK H t.f t.T` using `⟨hT.2.1.2.1, hT.2.1.2.2.1⟩`. Establish `hF' : Formalism.MainNotions.ThinScalesBound.FrameK H t.f' t.T'` using `⟨hT.2.2.1.2.1, hT.2.2.1.2.2.1⟩`. Establish `hD : IsUnit (H.Dl t.f t.f' (r + 1))` using `hT.2.2.2.1`. Establish `hG : IsUnit (H.Gdet t.f t.f' t.T t.T')` using `isUnit_Gdet H _ _ _ _ hT.2.2.2.2.1`. Take `⟨s, hs, hdet⟩` from `gram_det H t.f t.f' t.T t.T' hF hF' hD`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hgu : IsUnit (H.gram (Sum.elim t.f t.f')).det`. Establish `hsu : IsUnit s` using `⟨⟨s, s, hs, hs⟩, rfl⟩`. Establish `: (H.gram (Sum.elim t.f t.f')).det = H.Gdet t.f t.f' t.T t.T' * s`. Rewrite using `[← hdet, mul_assoc, hs, mul_one]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hG.mul hsu`. Break down `hsplit : M.split with _ | g` into its components or cases. Establish `hMM : H.MMfam t = Sum.elim t.f t.f'`. Unfold `HermSp.MMfam`. Rewrite using `[hsplit]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hMM]`. Conclude with `hgu`. Use `set qi : E := algebraMap F E ((g.q : F)⁻¹)`. Establish `hqi : IsUnit qi` using `((Units.mk0 (g.q : F) (q_ne g))⁻¹.isUnit).map (algebraMap F E)`. Establish `hMM : H.MMfam t = Sum.elim t.f (fun a => qi • (t.f' a - t.f a))`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Unfold `HermSp.MMfam`. Rewrite using `[hsplit]`. Set `A : Matrix (Fin (r + 1) ⊕ Fin (r + 1)) (Fin (r + 1) ⊕ Fin (r + 1)) E` to `fromBlocks 1 (-(qi • (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E))) 0 (qi • 1)`. Establish `hw : Sum.elim t.f (fun a => qi • (t.f' a - t.f a)) = fun j => ∑ i, A i j • Sum.elim t.f t.f' i`. Use function extensionality and compare the values at `j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Break down `j with a | a` into its components or cases. Simplify using `[A, Fintype.sum_sum_type, Matrix.one_apply]`. Simplify using `[A, Fintype.sum_sum_type, Matrix.one_apply, sub_eq_add_neg, add_comm]`. Rewrite using `[hMM, hw, gram_recomb, det_mul, det_mul, det_transpose]`. Establish `hA : A.det = qi ^ (r + 1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[A, det_fromBlocks_zero₂₁]`. Establish `hAm : (A.map M.L.cj).det = M.L.cj A.det`. Rewrite using `[show A.map M.L.cj = (M.L.cj.toRingEquiv.toRingHom).mapMatrix A from rfl, ← RingHom.map_det]`. Both sides reduce to the same expression. Rewrite using `[hAm, hA]`.
-
-Conclude with `((hqi.pow _).map M.L.cj).mul hgu |>.mul (hqi.pow _)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gramMM_unit_of_term (t : Term V M r) (hT : H.IsTerm t) : IsUnit (H.gram (H.MMfam t)).det := by
   have hF : Formalism.MainNotions.ThinScalesBound.FrameK H t.f t.T := ⟨hT.2.1.2.1, hT.2.1.2.2.1⟩
@@ -123,11 +121,11 @@ theorem gramMM_unit_of_term (t : Term V M r) (hT : H.IsTerm t) : IsUnit (H.gram 
     exact ((hqi.pow _).map M.L.cj).mul hgu |>.mul (hqi.pow _)
 
 /- English proof (translation)
-Establish `hsum : ∀ (s : Finset ι) (c : ι → E) (y : V), H.h (∑ j ∈ s, c j • v j) y = ∑ j ∈ s, c j * H.h (v j) y`. Introduce `s c y`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp [H.h_zero_left]`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, H.h_add_left, H.h_smul_left, ih]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Use `⟨∑ j, ((H.gram v)⁻¹ *ᵥ d) j • v j, Submodule.sum_mem _ fun j _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨j, rfl⟩), fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[hsum]`. Establish `h1 : (H.gram v *ᵥ ((H.gram v)⁻¹ *ᵥ d)) i = d i`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hG, Matrix.one_mulVec]`. Rewrite using `[← h1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mulVec, dotProduct, Formalism.MainNotions.S.Loc.HermSp.gram, Matrix.of_apply]`. Conclude with `Finset.sum_congr rfl fun j _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dual {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι → V) (hG : IsUnit (H.gram v).det)
     (d : ι → E) : ∃ u ∈ Submodule.span E (Set.range v), ∀ i, H.h u (v i) = d i := by
@@ -146,13 +144,11 @@ theorem exists_dual {ι : Type} [Fintype ι] [DecidableEq ι] (v : ι → V) (hG
   exact Finset.sum_congr rfl fun j _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `hcj : ∀ c ∈ M.L.O, M.L.cj c ∈ M.L.O`. Introduce `c hc`. Rewrite `hc`, the goal using `[M.L.O_def]`. Conclude with `hc.map ((M.L.cj : E →ₐ[F] E).restrictScalars 𝒪[F])`. Use `⟨hu, fun m hm => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction.
 
-Proceed by induction on `hm using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Conclude with `hd i`. Consider the case `zero`.
+Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[hR_zero]`. Conclude with `M.L.O.zero_mem`. Consider the case `add a b _ _ ha hb`. Rewrite using `[hR_add]`. Conclude with `M.L.O.add_mem ha hb`.
-
-Consider the case `smul c x _ hx`. Rewrite using `[Subring.smul_def, hR_smul]`. Conclude with `M.L.O.mul_mem (hcj c c.2) hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_MMsharp_of (t : Term V M r) {u : V} (hu : u ∈ Submodule.span E (Set.range (H.MMfam t)))
     (hd : ∀ i, H.h u (H.MMfam t i) ∈ M.L.O) : u ∈ MMsharp H t := by
@@ -176,14 +172,14 @@ theorem mem_MMsharp_of (t : Term V M r) {u : V} (hu : u ∈ Submodule.span E (Se
     exact M.L.O.mul_mem (hcj c c.2) hx
 
 /- English proof (translation)
-Simplify using `only [Formalism.MainNotions.S.Loc.HermSp.MMfam, hs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem MMfam_G (g : SplitG M.L) (hs : M.split = some g) (t : Term V M r) :
     H.MMfam t = Sum.elim t.f (fun a => algebraMap F E ((g.q : F)⁻¹) • (t.f' a - t.f a)) := by
   simp only [Formalism.MainNotions.S.Loc.HermSp.MMfam, hs]
 
 /- English proof (translation)
-Rewrite using `[MMfam_G H g hs t, Sum.elim_inr, smul_smul, ← map_mul, mul_inv_cancel₀ (q_ne g), map_one, one_smul, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem f'_eq_G (g : SplitG M.L) (hs : M.split = some g) (t : Term V M r) (a : Fin (r + 1)) :
     t.f' a = t.f a + algebraMap F E (g.q : F) • H.MMfam t (Sum.inr a) := by
@@ -191,7 +187,7 @@ theorem f'_eq_G (g : SplitG M.L) (hs : M.split = some g) (t : Term V M r) (a : F
     add_sub_cancel]
 
 /- English proof (translation)
-Establish `h1` using `abelian₂.smul_mem (⟨algebraMap F E (g.q : F), q_mem_O g⟩ : M.L.O) hx`. Conclude with `h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smul_mem_lat (g : SplitG M.L) (abelian₂ : Submodule M.L.O V) {x : V} (hx : x ∈ abelian₂) :
     algebraMap F E (g.q : F) • x ∈ abelian₂ := by
@@ -199,17 +195,15 @@ theorem smul_mem_lat (g : SplitG M.L) (abelian₂ : Submodule M.L.O V) {x : V} (
   exact h1
 
 /- English proof (translation)
-Use `set c : E := algebraMap F E (g.q : F)`. Establish `hGu` using `gramMM_unit_of_term H t hg.1`. Set `d : Fin (r + 1) ⊕ Fin (r + 1) → E` to `Sum.elim (fun a => H.h x (H.MMfam t (Sum.inr a))) 0`. Take `⟨u, huS, hud⟩` from `exists_dual H (H.MMfam t) hGu d`. Establish `huM : u ∈ MMsharp H t`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_MMsharp_of H t huS fun i => ?_` and prove the remaining obligations. Rewrite using `[hud]`. Break down `i with a | a` into its components or cases. Conclude with `(hg.1.1.2.2 x).1 hx _ (hg.2.1 (Sum.inr a))`. Conclude with `M.L.O.zero_mem`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw⟩` from `surj_MMsharp M hM H t hg hU ⟨u, huM⟩`. Use `⟨x - c • ((u : V) + w), t.abelian₂.sub_mem hx (smul_mem_lat g t.abelian₂ hw), ?_, ?_⟩` and prove the remaining obligations. Use `mem_perpX_of H fun j => ?_` and prove the remaining obligations. Establish `hxf : H.h x (t.f j.castSucc) = 0` using `hxp _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hyM : H.MMfam t (Sum.inr j.castSucc) ∈ Submodule.span E (Set.range (H.MMfam t))` using `Submodule.subset_span ⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfM : t.f j.castSucc ∈ Submodule.span E (Set.range (H.MMfam t))`. Rewrite using `[MMfam_G H g hs]`. Conclude with `Submodule.subset_span ⟨Sum.inl j.castSucc, rfl⟩`. Establish `hwf : H.h (w : V) (t.f j.castSucc) = 0` using `hermitian_W0_span_zero H t w.2 hfM`. Establish `hwy : H.h (w : V) (H.MMfam t (Sum.inr j.castSucc)) = 0` using `hermitian_W0_span_zero H t w.2 hyM`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hu1 : H.h u (t.f j.castSucc) = H.h x (H.MMfam t (Sum.inr j.castSucc))`. Use `hud (Sum.inl j.castSucc)` as an intermediate fact. Simplify using `only [d, Sum.elim_inl] at this`. Rewrite using `[← this, MMfam_G H g hs, Sum.elim_inl]`. Establish `hu2 : H.h u (H.MMfam t (Sum.inr j.castSucc)) = 0` using `hud (Sum.inr j.castSucc)`.
-
-Rewrite using `[f'_eq_G H g hs t, h_sub_left, H.h_smul_left, hR_add, hR_add, hR_smul, hR_smul, H.h_add_left, H.h_add_left, hxf, hwf, hwy, hu1, hu2, cj_q]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[sub_sub_cancel]`. Conclude with `Submodule.subset_span ⟨_, hw, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_fst_of (hM : M.OK) (g : SplitG M.L) (hs : M.split = some g) (t : Term V M r) (hg : H.IsGeneric t)
     (hU : IsCompl (Submodule.span E (Set.range (Sum.elim t.f t.f'))) (H.W0 t.f t.f')) {x : V} (hx : x ∈ t.abelian₂)
@@ -248,19 +242,17 @@ theorem iota_fst_of (hM : M.OK) (g : SplitG M.L) (hs : M.split = some g) (t : Te
     exact Submodule.subset_span ⟨_, hw, rfl⟩
 
 /- English proof (translation)
-Use `set c : E := algebraMap F E (g.q : F)`. Establish `hGu` using `gramMM_unit_of_term H t hg.1`. Set `d : Fin (r + 1) ⊕ Fin (r + 1) → E` to `Sum.elim (fun a => H.h x' (H.MMfam t (Sum.inr a))) 0`. Take `⟨u, huS, hud⟩` from `exists_dual H (H.MMfam t) hGu d`. Establish `huM : u ∈ MMsharp H t`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mem_MMsharp_of H t huS fun i => ?_` and prove the remaining obligations. Rewrite using `[hud]`. Break down `i with a | a` into its components or cases. Conclude with `(hg.1.1.2.2 x').1 hx _ (hg.2.1 (Sum.inr a))`. Conclude with `M.L.O.zero_mem`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw⟩` from `surj_MMsharp M hM H t hg hU ⟨u, huM⟩`. Use `⟨x' + c • ((u : V) + w), t.abelian₂.add_mem hx (smul_mem_lat g t.abelian₂ hw), ?_, ?_⟩` and prove the remaining obligations. Use `mem_perpX_of H fun j => ?_` and prove the remaining obligations. Establish `hxf : H.h x' (t.f' j.castSucc) = 0` using `hxp _ (Submodule.subset_span ⟨j, rfl⟩)`. Establish `hyM : H.MMfam t (Sum.inr j.castSucc) ∈ Submodule.span E (Set.range (H.MMfam t))` using `Submodule.subset_span ⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfM : t.f j.castSucc ∈ Submodule.span E (Set.range (H.MMfam t))`. Rewrite using `[MMfam_G H g hs]`. Conclude with `Submodule.subset_span ⟨Sum.inl j.castSucc, rfl⟩`. Establish `hwf : H.h (w : V) (t.f j.castSucc) = 0` using `hermitian_W0_span_zero H t w.2 hfM`. Establish `hu1 : H.h u (t.f j.castSucc) = H.h x' (H.MMfam t (Sum.inr j.castSucc))`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `hud (Sum.inl j.castSucc)` as an intermediate fact. Simplify using `only [d, Sum.elim_inl] at this`. Rewrite using `[← this, MMfam_G H g hs, Sum.elim_inl]`. Establish `hxf2 : H.h x' (t.f j.castSucc) = - (c * H.h x' (H.MMfam t (Sum.inr j.castSucc)))`. Establish `e` using `f'_eq_G H g hs t j.castSucc`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Establish `: t.f j.castSucc = t.f' j.castSucc - c • H.MMfam t (Sum.inr j.castSucc)` using `by rw [e]; abel`. Rewrite using `[this, hR_sub, hR_smul, hxf, cj_q]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[H.h_add_left, H.h_smul_left, H.h_add_left, hxf2, hwf, hu1]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[add_sub_cancel_left]`. Conclude with `Submodule.subset_span ⟨_, hw, rfl⟩`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_snd_of (hM : M.OK) (g : SplitG M.L) (hs : M.split = some g) (t : Term V M r) (hg : H.IsGeneric t)
     (hU : IsCompl (Submodule.span E (Set.range (Sum.elim t.f t.f'))) (H.W0 t.f t.f')) {x' : V} (hx : x' ∈ t.abelian₂)
@@ -301,9 +293,9 @@ theorem iota_snd_of (hM : M.OK) (g : SplitG M.L) (hs : M.split = some g) (t : Te
     exact Submodule.subset_span ⟨_, hw, rfl⟩
 
 /- English proof (translation)
-Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Take `⟨x', hx', hx'p, hd⟩` from `iota_fst_of H hM g hs t hg hU hx x.2`. Conclude with `⟨_, ⟨⟨x', hx'p⟩, x, hx', hx, hd, rfl⟩, rfl⟩`. Introduce and unpack `_ ⟨_, ⟨x', x, -, hx, -, rfl⟩, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, hx, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Lset_eq_snd (hM : M.OK) (g : SplitG M.L) (hs : M.split = some g) (t : Term V M r) (hg : H.IsGeneric t)
     (hU : IsCompl (Submodule.span E (Set.range (Sum.elim t.f t.f'))) (H.W0 t.f t.f')) :
@@ -316,9 +308,9 @@ theorem Lset_eq_snd (hM : M.OK) (g : SplitG M.L) (hs : M.split = some g) (t : Te
     exact ⟨x, hx, rfl⟩
 
 /- English proof (translation)
-Apply `Set.Subset.antisymm` to reduce the goal to its premises. Introduce and unpack `_ ⟨x', hx', rfl⟩`. Take `⟨x, hx, hxp, hd⟩` from `iota_snd_of H hM g hs t hg hU hx' x'.2`. Conclude with `⟨_, ⟨x', ⟨x, hxp⟩, hx', hx, hd, rfl⟩, rfl⟩`. Introduce and unpack `_ ⟨_, ⟨x', x, hx', -, -, rfl⟩, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x', hx', rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem Lset_eq_fst (hM : M.OK) (g : SplitG M.L) (hs : M.split = some g) (t : Term V M r) (hg : H.IsGeneric t)
     (hU : IsCompl (Submodule.span E (Set.range (Sum.elim t.f t.f'))) (H.W0 t.f t.f')) :

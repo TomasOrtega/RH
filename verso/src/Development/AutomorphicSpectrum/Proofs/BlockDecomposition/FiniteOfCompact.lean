@@ -9,9 +9,9 @@ open scoped ENNReal Pointwise
 namespace GlobalTheory.CompanionTheory.KernelBasic
 
 /- English proof (translation)
-Establish `hS : IsCompact (U * tsupport φ * V⁻¹)` using `(hU.mul hφ.isCompact).mul hV.inv`. Use `(X.proper _ hS).subset ?_` and prove the remaining obligations. Introduce and unpack `γ ⟨x, hx, y, hy, h⟩`. Use `Set.mem_setOf_eq ▸ ?_` and prove the remaining obligations. Establish `e : (γ : X.G) = x * (x⁻¹ * (γ : X.G) * y) * y⁻¹` using `by group`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Set.mul_mem_mul (Set.mul_mem_mul hx (subset_tsupport _ (Function.mem_support.2 h))) (Set.inv_mem_inv.2 hy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_of_compact (X : Ctx) {φ : X.G → ℂ} (hφ : HasCompactSupport φ) {U V : Set X.G}
     (hU : IsCompact U) (hV : IsCompact V) :
@@ -26,7 +26,7 @@ theorem finite_of_compact (X : Ctx) {φ : X.G → ℂ} (hφ : HasCompactSupport 
     (Set.inv_mem_inv.2 hy)
 
 /- English proof (translation)
-Use `(finite_of_compact X hφ (isCompact_singleton (x := x)) (isCompact_singleton (x := y))).subset ?_` and prove the remaining obligations. Introduce `γ h`. Conclude with `⟨x, rfl, y, rfl, h⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem support_finite (X : Ctx) {φ : X.G → ℂ} (hφ : HasCompactSupport φ) (x y : X.G) :
     (Function.support fun γ : X.Γ => φ (x⁻¹ * (γ : X.G) * y)).Finite := by
@@ -36,11 +36,11 @@ theorem support_finite (X : Ctx) {φ : X.G → ℂ} (hφ : HasCompactSupport φ)
   exact ⟨x, rfl, y, rfl, h⟩
 
 /- English proof (translation)
-Establish `e : Function.uncurry (ker X.Γ φ) = fun p : X.G × X.G => ∑ᶠ γ : X.Γ, φ (p.1⁻¹ * (γ : X.G) * p.2)`. Use function extensionality and compare the values at `p`. Both sides reduce to the same expression. Rewrite using `[e]`. Use `continuous_finsum (fun γ => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hφ.1.comp ((continuous_fst.inv.mul continuous_const).mul continuous_snd)`. Introduce and unpack `⟨x, y⟩`. Take `⟨U, hU, hUx⟩` from `exists_compact_mem_nhds x`. Take `⟨V, hV, hVy⟩` from `exists_compact_mem_nhds y`. Use `⟨U ×ˢ V, prod_mem_nhds hUx hVy, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(finite_of_compact X hφ.2 hU hV).subset ?_` and prove the remaining obligations. Introduce and unpack `γ ⟨⟨a, b⟩, hs, hab⟩`. Conclude with `⟨a, hab.1, b, hab.2, hs⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem continuous_ker (X : Ctx) {φ : X.G → ℂ} (hφ : Tst φ) :
     Continuous (Function.uncurry (ker X.Γ φ)) := by
@@ -60,9 +60,9 @@ theorem continuous_ker (X : Ctx) {φ : X.G → ℂ} (hφ : Tst φ) :
     exact ⟨a, hab.1, b, hab.2, hs⟩
 
 /- English proof (translation)
-Unfold `ker`. Rewrite using `[← finsum_comp_equiv (Equiv.mulLeft (⟨γ, hγ⟩ : X.Γ))]`. Use `finsum_congr fun δ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Equiv.coe_mulLeft, Subgroup.coe_mul]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem ker_mul_left (X : Ctx) (φ : X.G → ℂ) {γ : X.G} (hγ : γ ∈ X.Γ) (x y : X.G) :
     ker X.Γ φ (γ * x) y = ker X.Γ φ x y := by
@@ -74,9 +74,9 @@ theorem ker_mul_left (X : Ctx) (φ : X.G → ℂ) {γ : X.G} (hγ : γ ∈ X.Γ)
   group
 
 /- English proof (translation)
-Unfold `ker`. Rewrite using `[← finsum_comp_equiv (Equiv.mulRight (⟨γ, hγ⟩ : X.Γ)⁻¹)]`. Use `finsum_congr fun δ => ?_` and prove the remaining obligations. Use `congr 1`. Simplify using `only [Equiv.coe_mulRight, Subgroup.coe_mul, Subgroup.coe_inv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem ker_mul_right (X : Ctx) (φ : X.G → ℂ) {γ : X.G} (hγ : γ ∈ X.Γ) (x y : X.G) :
     ker X.Γ φ x (γ * y) = ker X.Γ φ x y := by
@@ -88,7 +88,7 @@ theorem ker_mul_right (X : Ctx) (φ : X.G → ℂ) {γ : X.G} (hγ : γ ∈ X.Γ
   group
 
 /- English proof (translation)
-Use `⟨Complex.continuous_conj.comp (hφ.1.comp continuous_inv), ?_⟩` and prove the remaining obligations. Establish `h : HasCompactSupport (φ ∘ (Homeomorph.inv X.G))` using `hφ.2.comp_homeomorph (Homeomorph.inv X.G)`. Conclude with `h.comp_left (g := starRingEnd ℂ) (map_zero _)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem tst_adj (X : Ctx) {φ : X.G → ℂ} (hφ : Tst φ) : Tst (adj φ) := by
   refine ⟨Complex.continuous_conj.comp (hφ.1.comp continuous_inv), ?_⟩
@@ -97,9 +97,9 @@ theorem tst_adj (X : Ctx) {φ : X.G → ℂ} (hφ : Tst φ) : Tst (adj φ) := by
   exact h.comp_left (g := starRingEnd ℂ) (map_zero _)
 
 /- English proof (translation)
-Unfold `ker`. Rewrite using `[map_finsum _ (support_finite X hφ y x), ← finsum_comp_equiv (Equiv.inv X.Γ)]`. Use `finsum_congr fun δ => ?_` and prove the remaining obligations. Simplify using `only [adj, Equiv.inv_apply, Subgroup.coe_inv]`. Use `congr 2`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Use `group`.
+A detailed English derivation is pending.
 -/
 theorem ker_adj (X : Ctx) {φ : X.G → ℂ} (hφ : HasCompactSupport φ) (x y : X.G) :
     ker X.Γ (adj φ) x y = starRingEnd ℂ (ker X.Γ φ y x) := by
@@ -111,7 +111,7 @@ theorem ker_adj (X : Ctx) {φ : X.G → ℂ} (hφ : HasCompactSupport φ) (x y :
   group
 
 /- English proof (translation)
-Unfold `ker`. Rewrite using `[finsum_eq_sum _ (support_finite X hφ x y)]`. Conclude with `(enorm_sum_le _ _).trans (ENNReal.sum_le_tsum _)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem enorm_ker_le (X : Ctx) {φ : X.G → ℂ} (hφ : HasCompactSupport φ) (x y : X.G) :
     ‖ker X.Γ φ x y‖ₑ ≤ ∑' γ : X.Γ, ‖φ (x⁻¹ * (γ : X.G) * y)‖ₑ := by
@@ -120,7 +120,7 @@ theorem enorm_ker_le (X : Ctx) {φ : X.G → ℂ} (hφ : HasCompactSupport φ) (
   exact (enorm_sum_le _ _).trans (ENNReal.sum_le_tsum _)
 
 /- English proof (translation)
-Introduce `X φ hφ`. Conclude with `⟨support_finite X hφ.2, continuous_ker X hφ, fun γ hγ x y => ⟨ker_mul_left X φ hγ x y, ker_mul_right X φ hγ x y⟩, tst_adj X hφ, ker_adj X hφ.2, enorm_ker_le X hφ.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem kerBasic : KerBasic := by
   intro X φ hφ

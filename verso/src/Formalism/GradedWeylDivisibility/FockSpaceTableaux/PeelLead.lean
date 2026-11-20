@@ -8,7 +8,7 @@ noncomputable section
 namespace Formalism.GradedWeylDivisibility
 
 /- English proof (translation)
-Use `first`. Consider the case `exact Finsupp.lex_lt_iff.2 ⟨i, h1, h2⟩`. Consider the case `exact Finsupp.lex_def.2 ⟨i, h1, h2⟩`. Consider the case `exact ⟨i, h1, h2⟩`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem toLex_lt_of_eq_of_lt_at {N : ℕ} {a b : Fin N →₀ ℕ} (i : Fin N)
     (h1 : ∀ i', i' < i → a i' = b i') (h2 : a i < b i) : toLex a < toLex b := by
@@ -18,7 +18,7 @@ private theorem toLex_lt_of_eq_of_lt_at {N : ℕ} {a b : Fin N →₀ ℕ} (i : 
   | exact ⟨i, h1, h2⟩
 
 /- English proof (translation)
-Use `first`. Consider the case `(simp [Finsupp.domCongr_apply, Finsupp.equivMapDomain_apply]; done)`. Consider the case `(simp [Finsupp.domCongr_apply]; done)`. Consider the case `rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem domCongr_cmIdx_apply_eq {r n : ℕ} (m : Fin r × Fin n →₀ ℕ)
     (x : Fin r × Fin n) :
@@ -29,7 +29,7 @@ private theorem domCongr_cmIdx_apply_eq {r n : ℕ} (m : Fin r × Fin n →₀ �
   | rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `exact M.le_degree hd`. Consider the case `(unfold MonomialOrder.degree; rw [AddEquiv.apply_symm_apply]; exact Finset.le_sup hd)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem toSyn_le_toSyn_degree_of_mem_support {σ R : Type*} [CommSemiring R] (M : MonomialOrder σ)
     {f : MvPolynomial σ R} {d : σ →₀ ℕ} (hd : d ∈ f.support) :
@@ -39,25 +39,25 @@ private theorem toSyn_le_toSyn_degree_of_mem_support {σ R : Type*} [CommSemirin
   | (unfold MonomialOrder.degree; rw [AddEquiv.apply_symm_apply]; exact Finset.le_sup hd)
 
 /- English proof (translation)
-Unfold `PeelLead`. Introduce `B _ _ r n l j hlj a0 ω g K hg hω hK htop`. Establish `hlj' : l ≠ j` using `ne_of_lt hlj`. Establish `hd : (colLex r n).degree (peel l j a0 K g) ∈ (peel l j a0 K g).support` using `(colLex r n).degree_mem_support hK`. Take `⟨m0, hm0, hm0K, hd_eq⟩` from `lcplead_mem_support_peel a0 K hd`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hm0_eq` using `lcplead_recon hlj' a0 hg hm0`. Rewrite `hm0_eq` using `[hm0K, ← hd_eq]`. Rewrite using `[← hm0_eq]`. Establish `hg0 : g ≠ 0`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `at hm0`. Establish `hup : ∀ m ∈ g.support, (colLex r n).toSyn m ≤ (colLex r n).toSyn m0`. Introduce `m hm`. Break down `lt_trichotomy (m (a0, l)) K with hlt | heq | hgt` into its components or cases. Apply `le_of_lt` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `colLex_lt_iff.2` to reduce the goal to its premises. Use `toLex_lt_of_eq_of_lt_at (cmIdx r n (a0, l)) ?_ ?_` and prove the remaining obligations. Introduce `i' hi'`. Take `⟨⟨b, t⟩, rfl⟩` from `(cmIdx r n).surjective i'`. Rewrite using `[domCongr_cmIdx_apply_eq, domCongr_cmIdx_apply_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Break down `lcplead_cmIdx_lt hi' with ht | ⟨ht, hb⟩` into its components or cases. Establish `htl : t ≠ l` using `ne_of_lt ht`. Establish `htj : t ≠ j` using `ne_of_lt (lt_trans ht hlj)`. Rewrite using `[lcplead_hom_off hlj' hg hm b t htl htj, lcplead_hom_off hlj' hg hm0 b t htl htj]`. Rewrite using `[ht]`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `lcplead_hom_row hlj' hg hm b`. Establish `h2` using `lcplead_hom_row hlj' hg hm0 b`. Establish `h3` using `hω b hb`. Use linear arithmetic over natural numbers and integers. Rewrite using `[domCongr_cmIdx_apply_eq, domCongr_cmIdx_apply_eq, hm0K]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hlt`. Establish `hc` using `lcplead_coeff_peel hlj' a0 hg hm`. Rewrite `hc` using `[heq]`. Establish `he : (m.erase (a0, l)).erase (a0, j) ∈ (peel l j a0 K g).support`. Rewrite using `[mem_support_iff, hc]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mem_support_iff.1 hm`. Establish `hle` using `toSyn_le_toSyn_degree_of_mem_support (colLex r n) he`. Establish `hm_eq` using `lcplead_recon hlj' a0 hg hm`. Rewrite `hm_eq` using `[heq]`. Rewrite using `[hm_eq, hm0_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [map_add]`. Use `first`. Consider the case `exact add_le_add le_rfl hle`. Consider the case `exact add_le_add_left hle _`. Consider the case `gcongr`.
+Treat this case separately. Treat this case separately. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-It suffices to derive a contradiction. Establish `hc` using `lcplead_coeff_peel hlj' a0 hg hm`. Rewrite `hc` using `[htop _ hgt, coeff_zero]`. Conclude with `mem_support_iff.1 hm hc.symm`. Conclude with `(colLex r n).toSyn.injective (le_antisymm (hup _ ((colLex r n).degree_mem_support hg0)) (toSyn_le_toSyn_degree_of_mem_support (colLex r n) hm0))`.
+A detailed English derivation is pending.
 -/
 theorem sliceLeading : PeelLead := by
   unfold PeelLead

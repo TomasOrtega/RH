@@ -16,9 +16,9 @@ noncomputable section
 namespace GlobalTheory.UMin.SymRing
 
 /- English proof (translation)
-Introduce `R R₁ _ _ _ hff K _ i`. Use `letI : Algebra R K := i.toAlgebra`. Use `haveI : Nontrivial (K ⊗[R] R₁) := Module.FaithfullyFlat.rTensor_nontrivial R R₁ K`. Take `⟨M, hM⟩` from `Ideal.exists_maximal (K ⊗[R] R₁)`. Use `letI : Field ((K ⊗[R] R₁) ⧸ M) := Ideal.Quotient.field M`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(K ⊗[R] R₁) ⧸ M, inferInstance, (Ideal.Quotient.mk M).comp (Algebra.TensorProduct.includeLeft (R := R) (S := R) (A := K) (B := R₁)).toRingHom, (Ideal.Quotient.mk M).comp (Algebra.TensorProduct.includeRight (R := R) (A := K) (B := R₁)).toRingHom, ?_⟩` and prove the remaining obligations. Use extensionality with `r`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[AlgHom.commutes, show i r = algebraMap R K r from rfl, AlgHom.commutes]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_common_field : ∀ (R R₁ : Type) [CommRing R] [CommRing R₁] [Algebra R R₁], Module.FaithfullyFlat R R₁ → ∀ (K : Type) [Field K] (i : R →+* K), ∃ (K' : Type) (_ : Field K') (φ : K →+* K') (i₁ : R₁ →+* K'), i₁.comp (algebraMap R R₁) = φ.comp i := by
   intro R R₁ _ _ _ hff K _ i
@@ -34,14 +34,14 @@ theorem exists_common_field : ∀ (R R₁ : Type) [CommRing R] [CommRing R₁] [
   rw [AlgHom.commutes, show i r = algebraMap R K r from rfl, AlgHom.commutes]
 
 /- English proof (translation)
-Simplify using `only [symTup, Finset.esymm_map_val, map_pow, map_sum, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem symTup_map' {R R' : Type} [CommRing R] [CommRing R'] (i : R →+* R') {N : ℕ} (c : Fin N → R) (j : Fin N) :
     i (symTup c j) = symTup (fun a => i (c a)) j := by
   simp only [symTup, Finset.esymm_map_val, map_pow, map_sum, map_prod]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Use `show _ = (Finset.univ.val.map c).esymm _ ^ _`. Rewrite using `[symTup, ← Function.comp_def c σ, ← Multiset.map_map, Multiset.map_univ_val_equiv]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem symTup_perm' {R : Type} [CommRing R] {N : ℕ} (c : Fin N → R) (σ : Equiv.Perm (Fin N)) :
     symTup (fun b => c (σ b)) = symTup c := by
@@ -50,13 +50,13 @@ theorem symTup_perm' {R : Type} [CommRing R] {N : ℕ} (c : Fin N → R) (σ : E
   rw [symTup, ← Function.comp_def c σ, ← Multiset.map_map, Multiset.map_univ_val_equiv]
 
 /- English proof (translation)
-Introduce `S G _ _ L ρ hL hρ g m N R _ _ _ _ _ x θ hm hmu hN hP`. Take `⟨R₁, _, _, c, hfin, hff, hc⟩` from `GlobalTheory.T.theta_constants_functions_finite_flat_cover S G L ρ hL hρ g m N R x θ hm hmu hN hP`. Establish `hP' : ∀ j, ∀ (K : Type) [Field K] (i₁ i₂ : R₁ →+* K), i₁.comp (algebraMap R R₁) = i₂.comp (algebraMap R R₁) → i₁ (symTup c j) = i₂ (symTup c j)`. Introduce `j K _ i₁ i₂ h`. Take `⟨pt₁, h₁⟩` from `hc K (i₁.comp (algebraMap R R₁)) i₁ rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨pt₂, h₂⟩` from `hc K (i₁.comp (algebraMap R R₁)) i₂ h.symm`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.thetaConstantList_fieldExtension_eq_up_to_perm S G L ρ hL hρ g m R x θ hm hmu hP K K _ _ (RingHom.id K) (RingHom.id_comp _) N pt₁ _ pt₂ _ h₁ h₂`. Rewrite using `[symTup_map', symTup_map', funext hσ]`. Conclude with `(symTup_perm' (fun b => i₁ (c b)) σ).symm ▸ rfl`. Use `choose e he using fun j => GlobalTheory.T.descend_element_of_field_equalizer_faithfully_flat R R₁ hfin hff (symTup c j) (hP' j)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨e, fun K _ i pt c' hl j => ?_⟩` and prove the remaining obligations. Take `⟨K', _, φ, i₁, hφ⟩` from `exists_common_field R R₁ hff K i`. Take `⟨pt₁, h₁⟩` from `hc K' (φ.comp i) i₁ hφ`. Take `⟨σ, hσ⟩` from `GlobalTheory.T.thetaConstantList_fieldExtension_eq_up_to_perm S G L ρ hL hρ g m R x θ hm hmu hP K K' i (φ.comp i) φ rfl N pt c' pt₁ _ hl h₁`. Apply `φ.injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : φ (i (e j)) = i₁ (algebraMap R R₁ (e j))` using `by rw [← RingHom.comp_apply, ← RingHom.comp_apply, hφ]`. Rewrite using `[h1, ← he j K' i₁, symTup_map', symTup_map', funext hσ]`. Conclude with `congrFun (symTup_perm' (fun a => φ (c' a)) σ) j`.
+A detailed English derivation is pending.
 -/
 theorem sym_ring : ∀ (S : Scheme.{0}) (G : Over S) [GrpObj G] [IsCommMonObj G] (L : LB G.left) (ρ : LB.Gen (L.pull (eSec G))), L.IsLB → ρ.IsGen → ∀ (g m N : ℕ) (R : Type) [CommRing R] [IsDomain R] [IsNoetherianRing R] [IsIntegrallyClosed R] [CharZero R] (x : Sp R ⟶ S) (θ : SecAt G L x), Odd m → IsUnit (m : R) → N = m ^ (4 * g) → PolFib G L g x → ∃ e : Fin N → R, SymAt G L ρ m x θ e := by
   intro S G _ _ L ρ hL hρ g m N R _ _ _ _ _ x θ hm hmu hN hP

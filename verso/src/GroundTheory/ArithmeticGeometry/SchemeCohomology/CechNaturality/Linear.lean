@@ -46,7 +46,7 @@ noncomputable abbrev restrictTop (U : X.Opens) : Γ(X, ⊤) →+* Γ(X, U) :=
   (X.presheaf.map (homOfLE le_top).op).hom
 
 /- English proof (translation)
-Simplify using `only [restrictTop, ← ConcreteCategory.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 lemma restrictTop_restrict {U V : X.Opens} (i : U ⟶ V) (r : Γ(X, ⊤)) :
     X.presheaf.map i.op (restrictTop V r) = restrictTop U r := by
@@ -77,7 +77,7 @@ lemma smulHom_app_apply (F : X.Modules) (r : Γ(X, ⊤)) (U : X.Opens) (x : Γ(F
     (smulHom F r).app U x = restrictTop U r • x := rfl
 
 /- English proof (translation)
-Use extensionality with `U x`. Simplify using `only [Scheme.Modules.Hom.comp_app, ConcreteCategory.comp_apply, smulHom_app_apply, Scheme.Modules.Hom.app_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 lemma smulHom_comp {F G : X.Modules} (φ : F ⟶ G) (r : Γ(X, ⊤)) :
     smulHom F r ≫ φ = φ ≫ smulHom G r := by
@@ -135,20 +135,20 @@ noncomputable abbrev modulesAbMap {F G : X.Modules} (φ : F ⟶ G) : modulesAb F
   (SheafOfModules.toSheaf X.ringCatSheaf).map φ
 
 /- English proof (translation)
-The claim follows from `(SheafOfModules.toSheaf X.ringCatSheaf).map_id F`.
+A detailed English derivation is pending.
 -/
 lemma modulesAbMap_id (F : X.Modules) : modulesAbMap (𝟙 F) = 𝟙 (modulesAb F) :=
   (SheafOfModules.toSheaf X.ringCatSheaf).map_id F
 
 /- English proof (translation)
-The claim follows from `(SheafOfModules.toSheaf X.ringCatSheaf).map_comp φ ψ`.
+A detailed English derivation is pending.
 -/
 lemma modulesAbMap_comp {F G K : X.Modules} (φ : F ⟶ G) (ψ : G ⟶ K) :
     modulesAbMap (φ ≫ ψ) = modulesAbMap φ ≫ modulesAbMap ψ :=
   (SheafOfModules.toSheaf X.ringCatSheaf).map_comp φ ψ
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `modulesAbMap (smulHom F r) ≫ modulesAbMap φ = modulesAbMap φ ≫ modulesAbMap (smulHom G r)`. Rewrite using `[← modulesAbMap_comp, ← modulesAbMap_comp, smulHom_comp]`. Use the proof step `@[instance_reducible]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma smulAbRingHom_comp {F G : X.Modules} (φ : F ⟶ G) (r : Γ(X, ⊤)) :
     smulAbRingHom F r ≫ modulesAbMap φ = modulesAbMap φ ≫ smulAbRingHom G r := by

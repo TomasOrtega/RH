@@ -8,9 +8,7 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Unfold `Formalism.UG.hform`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, map_sum, map_mul, Finset.sum_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun j _ => by ring`.
-
-Use `_ = _ := Finset.sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_sum_left {A : Type} [CommRing A] {n m : ℕ} (σ : A →+* A)
     (J : Matrix (Fin n) (Fin n) A) (α : Fin m → A) (Y : Fin m → Fin n → A) (y : Fin n → A) :
@@ -25,9 +23,7 @@ theorem hform_sum_left {A : Type} [CommRing A] {n m : ℕ} (σ : A →+* A)
     _ = _ := Finset.sum_comm
 
 /- English proof (translation)
-Unfold `Formalism.UG.hform`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun d _ => Finset.sum_congr rfl fun j _ => by ring`.
-
-Use `_ = _ := Finset.sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hform_sum_right {A : Type} [CommRing A] {n m : ℕ} (σ : A →+* A)
     (J : Matrix (Fin n) (Fin n) A) (x : Fin n → A) (β : Fin m → A) (Y : Fin m → Fin n → A) :
@@ -46,7 +42,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E)
 
 /- English proof (translation)
-Take `⟨τ⟩` from `(inferInstance : Nonempty (E →+* ℂ))`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[hCM.2.2.2 τ, hCM.2.2.2 τ, star_star]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_invol (hCM : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ := (inferInstance : Nonempty (E →+* ℂ))
@@ -54,9 +50,9 @@ theorem sigma_invol (hCM : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   rw [hCM.2.2.2 τ, hCM.2.2.2 τ, star_star]
 
 /- English proof (translation)
-Unfold `hE Formalism.UG.hform`. Simplify using `only [map_sum, map_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Use `show σ (x j) * J j i * y i = σ (σ (y i)) * σ (J i j) * σ (x j)`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sigma_invol σ hCM, hJ.1 j i]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hE_symm (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (x y : Fin n → E) :
     hE σ J x y = σ (hE σ J y x) := by
@@ -69,11 +65,11 @@ theorem hE_symm (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) (x y : Fin n → E) 
   ring
 
 /- English proof (translation)
-Proceed by induction on `c using Fin.lastCases with`. Consider the case `last`. Proceed by induction on `d using Fin.lastCases with`. Consider the case `last => exact absurd ⟨rfl, rfl⟩ hcd`. Consider the case `cast j`.
+Proceed by induction. Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Simplify using `only [F0, Fin.snoc_last, Fin.snoc_castSucc]`. Rewrite using `[hE_symm σ J hCM hJ, hP.2.2.2.1 j, map_zero]`. Consider the case `cast i`. Proceed by induction on `d using Fin.lastCases with`. Consider the case `last`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Simplify using `only [F0, Fin.snoc_last, Fin.snoc_castSucc]`. Conclude with `hP.2.2.2.1 i`. Consider the case `cast j`. Simplify using `only [F0, Fin.snoc_castSucc]`. Conclude with `hP.1 i j`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermitian_form_standard_frame_vanishes (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) {r : ℕ} (P : Frame E n r) (T : F)
     (hP : P.IsStd σ J T) (c d : Fin (r + 1)) (hcd : ¬ (c = Fin.last r ∧ d = Fin.last r)) :
@@ -95,14 +91,14 @@ theorem hermitian_form_standard_frame_vanishes (hCM : IsCMExt F E σ) (hJ : IsHe
       exact hP.1 i j
 
 /- English proof (translation)
-Simplify using `[sigR, inclR, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_inclR (v : HeightOneSpectrum (𝓞 F)) (e : E) :
     sigR (Fv F v) σ (inclR (Fv F v) e) = inclR (Fv F v) (σ e) := by
   simp [sigR, inclR, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-Unfold `hR hE Formalism.UG.hform`. Simplify using `only [map_sum, map_mul, ratV, JR, Matrix.map_apply, sigR_inclR]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hR_ratV (v : HeightOneSpectrum (𝓞 F)) (a b : Fin n → E) :
     hR (Fv F v) σ J (ratV (F := F) (Fv F v) a) (ratV (F := F) (Fv F v) b) =
@@ -121,23 +117,21 @@ open Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.L2.SG.S
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J ψ v r P T hStd hP x a b`. Establish `hCM` using `hStd.1`. Establish `hJ` using `hStd.2.1`. Use `set Y : Fin (r + 1) → Fin n → Fv F v ⊗[F] E := fun c => ratV (F := F) (Fv F v) (F0 P c) with hY`. Establish `hG0 : ∀ c d, ¬ (c = Fin.last r ∧ d = Fin.last r) → hR (Fv F v) σ J (Y c) (Y d) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c d hcd`. Rewrite using `[hY]`. Simplify using `only`. Rewrite using `[hR_ratV, hermitian_form_standard_frame_vanishes σ J hCM hJ P T hP c d hcd, map_zero]`. Establish `hlast : ∀ c, uMat v x (Fin.last r) c = if c = Fin.last r then 1 else 0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Distinguish the cases in `hc : c = Fin.last r`. Substitute `hc` using the available equality. Simplify using `[uMat]`. Establish `hlt : c < Fin.last r` using `lt_of_le_of_ne (Fin.le_last c) hc`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [uMat, if_neg hc, if_neg (Ne.symm hc), dif_neg (not_lt_of_gt hlt)]`. Use `show Formalism.UG.hform _ _ (∑ c, uMat v x c a • Y c) (∑ c, uMat v x c b • Y c) = Formalism.UG.hform _ _ (Y a) (Y b)`. Rewrite using `[hform_sum_left]`. Simplify using `only [hform_sum_right]`. Establish `hinner : ∀ c, ∑ d, uMat v x d b * Formalism.UG.hform (sigR (Fv F v) σ) (JR (Fv F v) J) (Y c) (Y d) = uMat v x (Fin.last r) b * hR (Fv F v) σ J (Y c) (Y (Fin.last r))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Both sides reduce to the same expression. Introduce `d _ hd`. Rewrite using `[show Formalism.UG.hform (sigR (Fv F v) σ) (JR (Fv F v) J) (Y c) (Y d) = hR (Fv F v) σ J (Y c) (Y d) from rfl, hG0 c d (fun h => hd h.2), mul_zero]`.
+Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`. Simplify using `only [hinner]`. Rewrite using `[Finset.sum_eq_single (Fin.last r)]`. Rewrite using `[hlast, hlast] show _ = hR (Fv F v) σ J (Y a) (Y b)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Distinguish the cases in `ha : a = Fin.last r`. Distinguish the cases in `hb : b = Fin.last r`. Substitute `ha` using the available equality. Substitute `hb` using the available equality. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hb, hG0 a b (fun h => hb h.2)]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg ha, hG0 a b (fun h => ha h.1)]`. Simplify using the standard rewrite rules. Introduce `c _ hc`.
-
-Rewrite using `[hG0 c (Fin.last r) (fun h => hc h.1), mul_zero, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem gram_matrix_unitary_invariance : GramU := by
   classical
@@ -183,7 +177,7 @@ theorem gram_matrix_unitary_invariance : GramU := by
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-The claim follows from `unipSplitF_of gram_matrix_unitary_invariance hS hLs`.
+A detailed English derivation is pending.
 -/
 theorem unipSplitF (hS : SplitR) (hLs : LatStd) : UnipSplitF :=
   unipSplitF_of gram_matrix_unitary_invariance hS hLs

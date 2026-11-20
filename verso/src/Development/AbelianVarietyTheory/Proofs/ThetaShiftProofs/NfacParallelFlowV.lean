@@ -15,9 +15,9 @@ section FlowNorm
 open ReciprocityTheory.ChartRestriction.G.FD.GramDeterminantReal ReciprocityTheory.ChartRestriction.G.FD.PositiveMinorUnits ReciprocityTheory.ChartRestriction.G.FD.MajorantFamilyNorms ReciprocityTheory.ChartRestriction.G.AR.Up.FactorialDivisibilityBounds
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_range_add_sum_Ico _ hp]`. Establish `h1 : ∑ k ∈ Finset.range p, (if p ≤ k then m else -m) * (L (k + 1) - L k) = -m * (L p - L 0)`. Rewrite using `[← Finset.sum_range_sub L p, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[if_neg (by have := Finset.mem_range.mp hk; omega)]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ∑ k ∈ Finset.Ico p r, (if p ≤ k then m else -m) * (L (k + 1) - L k) = m * (L r - L p)`. Rewrite using `[← Finset.sum_Ico_sub L hp, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Rewrite using `[if_pos (Finset.mem_Ico.mp hk).1]`. Rewrite using `[h1, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -35,21 +35,21 @@ theorem sum_step_telescope (L : ℕ → ℝ) (m : ℝ) {p r : ℕ} (hp : p ≤ r
   rw [h1, h2]; ring
 
 /- English proof (translation)
-Establish `hρ : ∀ τ, 0 < rho X e s x τ X.p0` using `fun τ => rho_pos X e he hx s hT τ _ X.p0_le`. Establish `hr : ∀ τ, rfac X la x (X.flowV e s x) τ = (rho X e s x τ X.p0)⁻¹ ^ m`. Introduce `τ`. Establish `hsg` using `hsg_of X hx τ`. Rewrite using `[rfac_eq X e he hx s hT τ la]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set L : ℕ → ℝ := fun i => Real.log (rho X e s x τ i) with hLdef`. Establish `hL0 : L 0 = 0` using `by simp [L, rho, mN_zero]`. Establish `hLr : L r = 0`. Simplify using `[L, rho, mN_top (hG_of X τ) X.p0 (mat x τ) (hx τ).1 hsg (e τ) (he τ).1]`. Establish `hsum : ∑ i : Fin r, (la τ i : ℝ) / 2 * (Real.log (rho X e s x τ ((i : ℕ) + 1)) - Real.log (rho X e s x τ i)) = ∑ k ∈ Finset.range r, (if X.p0 ≤ k then m / 2 else -(m / 2)) * (L (k + 1) - L k)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← Fin.sum_univ_eq_sum_range (fun k => (if X.p0 ≤ k then m / 2 else -(m / 2)) * (L (k + 1) - L k)) r]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hla]`. Apply the tactic sequence `split_ifs <;> simp only [L] <;> ring`. Rewrite using `[hsum, sum_step_telescope L (m / 2) X.p0_le, hL0, hLr, Real.rpow_def_of_pos (inv_pos.mpr (hρ τ)), Real.log_inv]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Simplify using `only [L]`. Expand and normalize the polynomial expressions, which then agree. Establish `hm : ∀ τ, 0 < mN τ.1 X.Gm (mat x τ) (e τ) X.p0` using `fun τ => mN_pos (hG_of X τ) X.p0 X.p0_le (mat x τ) (hx τ).1 (hsg_of X hx τ) (e τ) (he τ).1 (he τ).2`. Establish `htpos : ∀ τ, 0 ≤ (X.ttV e x τ)⁻¹` using `fun τ => by`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hm τ` as an intermediate fact. Use `c_pos X τ` as an intermediate fact. Rewrite using `[Data.ttV, maj_eq X hx e τ (he τ).1]`. Check the signs of the components of the expression. Establish `ht : ∀ τ, (X.ttV e (X.flowV e s x) τ)⁻¹ = (rho X e s x τ X.p0)⁻¹ * (X.ttV e x τ)⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Establish `h1` using `hρ τ`. Establish `h2` using `hm τ`. Establish `h3` using `c_pos X τ`. Rewrite using `[Data.ttV, Data.ttV, maj_flow X hx e τ (he τ).1 s h1.ne', maj_eq X hx e τ (he τ).1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [rho] at h1 ⊢`. Clear the denominators using the available nonvanishing facts. Establish `hN` using `FlowCoefficientBounds.nfac_pos X hT la`. Establish `hdiv` using `nfac_div X la x (X.flowV e s x)`. Rewrite `hdiv` using `[div_eq_iff hN.ne', Finset.prod_congr rfl fun τ _ => hr τ, Real.finsetProd_rpow _ _ (fun τ _ => (inv_pos.mpr (hρ τ)).le)]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hdiv, Finset.prod_congr rfl fun τ _ => ht τ, Finset.prod_mul_distrib, Real.mul_rpow (Finset.prod_nonneg fun τ _ => (inv_pos.mpr (hρ τ)).le) (Finset.prod_nonneg fun τ _ => htpos τ)]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem nfac_parallel_flowV {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
     (e : X.Ψ → Fin r → ℂ) (he : X.IsIsoV e) (la : Wt X.Ψ r) (m : ℝ)
@@ -105,9 +105,9 @@ theorem nfac_parallel_flowV {E : Type} [Field E] [NumberField E] [IsCMField E] {
 end FlowNorm
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U k n ξ' hn hξ x hx s hT`. Establish `hiso : (U.X k).IsIsoV ((U.X k).embV ξ')` using `fun τ => ⟨by rw [show (U.X k).embV ξ' τ = Data.emb τ.1 ξ' from rfl, hermC_emb, hξ.2.1, map_zero], emb_ne_zero τ.1 hξ.2.2⟩`. Use `nfac_parallel_flowV (U.X k) ((U.X k).embV ξ') hiso (laU U 0 n k) ((n : ℝ) / 2) ?_ hx s hT` and prove the remaining obligations. Introduce `τ j`. Take `⟨m, rfl⟩` from `hn`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h2 : (m + m) / 2 = m` using `by omega`. Simplify using `only [laU, h2]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nfac_parallel_flow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (k : U.Comp) (n : ℕ) (ξ' : Fin r → E), Even n → (U.X k).IsIso ξ' → ∀ x ∈ (U.X k).dom, ∀ s : (U.X k).Ψ → ℂ, (U.X k).flow ξ' s x ∈ (U.X k).dom → (U.X k).nfac (laU U 0 n k) ((U.X k).flow ξ' s x) * (∏ τ, ((U.X k).tt ξ' ((U.X k).flow ξ' s x) τ)⁻¹) ^ ((n : ℝ) / 2) = (U.X k).nfac (laU U 0 n k) x * (∏ τ, ((U.X k).tt ξ' x τ)⁻¹) ^ ((n : ℝ) / 2) := by
   intro E _ _ _ H Dw l Xo c σ r U k n ξ' hn hξ x hx s hT

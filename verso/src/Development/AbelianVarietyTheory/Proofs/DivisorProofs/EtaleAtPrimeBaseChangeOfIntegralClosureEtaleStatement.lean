@@ -7,7 +7,7 @@ open scoped TensorProduct
 open GlobalTheory.LocAcyc GlobalTheory.KeyOriginNoeth GlobalTheory.KeyOriginBC
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.KeyOriginEnlarge.closureEtaleAt_comap_baseChange_atPrime) | (exact GlobalTheory.KeyOriginEnlarge.closureEtaleAt_comap_baseChange_atPrime) | (intros; apply GlobalTheory.KeyOriginEnlarge.closureEtaleAt_comap_baseChange_atPrime <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.etale_atPrime_baseChange_of_integralClosureEtale : ∀ (A R R₁ DA : Type) [CommRing A] [CommRing R] [Algebra A R] [CommRing R₁]
     [CommRing DA] [Algebra (GenFib A R) DA] (κ : R →+* R₁) (P₁ : Ideal R₁) [P₁.IsPrime],

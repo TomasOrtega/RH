@@ -11,35 +11,29 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 namespace GlobalTheory.CompanionTheory.ConeHaar
 
 /- English proof (translation)
-Introduce `Γ K X _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ e he _ ρ _ s hs hρ hinv hfin μ _`. Choose the witnesses or unpack the hypotheses as in `⟨m, hmH, hm1⟩ : ∃ m : Measure K, m.IsHaarMeasure ∧ m Set.univ = 1 := by`. Use `⟨Measure.haarMeasure (⊤ : TopologicalSpace.PositiveCompacts K), inferInstance, ?_⟩` and prove the remaining obligations. Establish `h` using `Measure.haarMeasure_self (G := K) (K₀ := ⊤)`. Rewrite `h` using `[TopologicalSpace.PositiveCompacts.coe_top]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `haveI := hmH`. Use `haveI : IsFiniteMeasure m := ⟨by rw [hm1]; exact ENNReal.one_lt_top⟩`. Use `set φ : X × K → Γ := fun p => s p.1 * e p.2 with hφ_def`. Establish `hφ : Measurable φ` using `(hs.comp measurable_fst).mul (he.measurable.comp measurable_snd)`. Use `set ν : Measure Γ := Measure.map φ (ρ.prod m) with hν_def`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `key : ∀ (B : Set Γ) (y : Γ) (k : K), m ((fun k' => y * e k * e k') ⁻¹' B) = m ((fun k' => y * e k') ⁻¹' B)`. Introduce `B y k`. Establish `h : (fun k' => y * e k * e k') ⁻¹' B = (fun k' => k * k') ⁻¹' ((fun k' => y * e k') ⁻¹' B)`. Use extensionality with `k'`. Simplify using `[map_mul, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h, measure_preimage_mul]`. Establish `hνapp : ∀ B : Set Γ, MeasurableSet B → ν B = ∫⁻ x, m ((fun k => s x * e k) ⁻¹' B) ∂ρ`. Introduce `B hB`. Rewrite using `[hν_def, Measure.map_apply hφ hB, Measure.prod_apply (hφ hB)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmeasψ : ∀ B : Set Γ, MeasurableSet B → Measurable (fun x => m ((fun k => s x * e k) ⁻¹' B))`. Introduce `B hB`. Conclude with `measurable_measure_prodMk_left (hφ hB)`. Use `haveI : ν.IsMulLeftInvariant := by`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `g`. Use extensionality with `B hB`. Rewrite using `[Measure.map_apply (measurable_const_mul g) hB, hνapp _ (measurable_const_mul g hB), hνapp B hB]`. Take `⟨a, ha, hamap, hae⟩` from `hinv g`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `lintegral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [hae] with x hx`. Take `⟨k, hk⟩` from `hx`. Establish `h1 : (fun k' => s x * e k') ⁻¹' ((fun h => g * h) ⁻¹' B) = (fun k' => s (a x) * e k * e k') ⁻¹' B`. Use extensionality with `k'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Set.mem_preimage]`. Rewrite using `[← mul_assoc, hk]`. Rewrite using `[h1, key]`. Use `_ = ∫⁻ y, m ((fun k => s y * e k) ⁻¹' B) ∂(Measure.map a ρ) := by`. Rewrite using `[lintegral_map (hmeasψ B hB) ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `_ = ∫⁻ y, m ((fun k => s y * e k) ⁻¹' B) ∂ρ := by rw [hamap]`. Use `haveI : IsFiniteMeasureOnCompacts ν := by`. Prove the components needed by the constructor for the conclusion. Introduce `A hA`. Establish `hsub : φ ⁻¹' A ⊆ (s ⁻¹' (A * Set.range e)) ×ˢ Set.univ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `p hp`. Use `⟨?_, Set.mem_univ _⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage] at hp ⊢`. Conclude with `Set.mem_mul.mpr ⟨s p.1 * e p.2, hp, e (p.2⁻¹), ⟨p.2⁻¹, rfl⟩, by simp [mul_assoc]⟩`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hνeq` using `Measure.isMulLeftInvariant_eq_smul ν μ`. Use `set c := ν.haarScalarFactor μ with hc_def`. Establish `hc0 : c ≠ 0`. Introduce `h0`. Establish `h : ν Set.univ = 0` using `by rw [hνeq, h0, zero_smul]; rfl`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[hνapp _ MeasurableSet.univ]`. Simplify using `only [Set.preimage_univ, hm1, lintegral_const, one_mul] at h`. Conclude with `hρ (Measure.measure_univ_eq_zero.mp h)`. Establish `hcR : (c : ℝ) ≠ 0` using `NNReal.coe_ne_zero.mpr hc0`. Use `⟨(c : ℝ)⁻¹, inv_pos.mpr (NNReal.coe_pos.mpr (pos_iff_ne_zero.mpr hc0)), ?_⟩` and prove the remaining obligations.
-
-Introduce `F hF _ hFK`. Establish `h1 : ∫ y, F y ∂ν = ∫ x, F (s x) ∂ρ`. Rewrite using `[hν_def, integral_map hφ.aemeasurable hF.aestronglyMeasurable]`. Establish `h : (fun p : X × K => F (φ p)) = fun p => F (s p.1)`. Use function extensionality and compare the values at `p`.
-
-Conclude with `hFK (s p.1) p.2`. Establish `hf` using `integral_fun_fst (μ := ρ) (ν := m) (fun x => F (s x))`. Rewrite using `[h, hf, measureReal_def, hm1]`. Simplify using the standard rewrite rules. Establish `h2 : ∫ y, F y ∂ν = ((c : ℝ) : ℂ) * ∫ y, F y ∂μ` using `by conv_lhs => rw [hνeq]`.
-
-Rewrite using `[integral_smul_nnreal_measure, NNReal.smul_def, Complex.real_smul]`. Rewrite using `[← h1, h2, ← mul_assoc, ← Complex.ofReal_mul, inv_mul_cancel₀ hcR, Complex.ofReal_one, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leftInvariant_of_section : ∀ {Γ K X : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [T2Space Γ] [LocallyCompactSpace Γ] [SecondCountableTopology Γ] [MeasurableSpace Γ] [BorelSpace Γ] [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [T2Space K] [CompactSpace K] [SecondCountableTopology K] [MeasurableSpace K] [BorelSpace K] (e : K →* Γ) (_ : Continuous e) [MeasurableSpace X] (ρ : Measure X) [SFinite ρ] (s : X → Γ) (_ : Measurable s) (_ : ρ ≠ 0) (_ : ∀ g : Γ, ∃ a : X → X, Measurable a ∧ Measure.map a ρ = ρ ∧ ∀ᵐ x ∂ρ, ∃ k, g * s x = s (a x) * e k) (_ : ∀ A : Set Γ, IsCompact A → ρ (s ⁻¹' (A * Set.range e)) < ⊤) (μ : Measure Γ) [μ.IsHaarMeasure], ∃ c : ℝ, 0 < c ∧ ∀ F : Γ → ℂ, Continuous F → HasCompactSupport F → (∀ y k, F (y * e k) = F y) → ∫ y, F y ∂μ = c * ∫ x, F (s x) ∂ρ := by
   intro Γ K X _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ e he _ ρ _ s hs hρ hinv hfin μ _

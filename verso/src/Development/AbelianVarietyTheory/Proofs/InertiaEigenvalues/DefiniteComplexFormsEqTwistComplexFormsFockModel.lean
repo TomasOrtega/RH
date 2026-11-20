@@ -15,11 +15,11 @@ open GlobalTheory.PlaceRead
 open GlobalTheory.HeightCounting.Up (PrN)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx⟩`. Use `⟨fun h => ?_, fun γ h k => ?_⟩` and prove the remaining obligations. Rewrite using `[← hran, ← hx]`. Conclude with `⟨_, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Rewrite using `[← hx, ← hx, (hlaw _).1 ⟨x, rfl⟩ γ h k, map_smul, hact]`. Introduce and unpack `⟨hv, hl⟩`. Substitute `hran` using the available equality. Use `choose f hf using hv`. Take `⟨x, hx⟩` from `(hlaw f).2 fun γ h k => hinj (by rw [map_smul, ← hact, hf, hf, hl])`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Substitute using the available equality. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨x, fun h => by rw [hx, hf]⟩`.
+A detailed English derivation is pending.
 -/
 private theorem eigen_law_absolute {M G Γ A V P : Type*} {J : Type*} [AddCommGroup M] [Module ℂ M] [AddCommGroup V] [Module ℂ V]
     [AddCommGroup P] [Module ℂ P] (io : V →ₗ[ℂ] P) (hinj : Function.Injective io) (val : Submodule ℂ P)
@@ -40,13 +40,13 @@ private theorem eigen_law_absolute {M G Γ A V P : Type*} {J : Type*} [AddCommGr
     exact ⟨x, fun h => by rw [hx, hf]⟩
 
 /- English proof (translation)
-Introduce `D X X0 Y S YS Z c w j H ι hι u hu`. Take `⟨hinj, hran⟩` from `UpperTheory.KN.ioP_tprod_injective_and_range_eq_valSpace D X X0 Y S YS Z c w j H ι hι u hu`. Establish `hact` using `UpperTheory.KN.ioP_tprod_intertwines_action D X X0 Y S YS Z c w j H ι hι u hu`. Establish `hlaw` using `UpperTheory.KN.automorphic_form_iff_rational_level_law D X X0 Y S YS Z c w j H ι hι`. Use `⟨?_, Submodule.ext fun F => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x y hxy`. Establish `h1 : (X.R.HV j (Y.tupT (D.what₂.muTw w))).e (formOf Y (used_of_tw H.tw) j x) = (X.R.HV j (Y.tupT (D.what₂.muTw w))).e (formOf Y (used_of_tw H.tw) j y)`. Use function extensionality and compare the values at `fun h => hinj (congrFun hxy h)`. Establish `h2 : X.R.toRealDat.extV j (Y.tupT (D.what₂.muTw w)) (formOf Y (used_of_tw H.tw) j x) = X.R.toRealDat.extV j (Y.tupT (D.what₂.muTw w)) (formOf Y (used_of_tw H.tw) j y)`. Establish `h3` using `(X.char.models.HV j (Y.tupT (D.what₂.muTw w))).1 h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h3]`. Rewrite `h2` using `[extV_formOf, extV_formOf]`. Conclude with `(Y.IL.jMt _ (used_of_tw H.tw) j).injective (Subtype.ext h2)`. Establish `key` using `eigen_law_absolute (X.R.ioP j (PiTensorProduct.tprod ℂ u)) hinj _ hran (fun g P => (baseOf Z c w j).act g P) (fun g v => (X.R.cV j).ρ g v) hact (fun x => (X.R.HV j (Y.tupT (D.what₂.muTw w))).e (formOf Y (used_of_tw H.tw) j x)) (fun (γ : Formalism.L2.Theta.GQ (Vc D j)) (h : Bridge …`. Use `Iff.trans ?_ (key.trans (Base.mem_formsC _).symm)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Conclude with `⟨fun ⟨x, hx⟩ => ⟨x, fun h => congrFun hx h⟩, fun ⟨x, hx⟩ => ⟨x, funext hx⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.T.definiteComplexForms_eq_twistComplexForms_fockModel : ∀ (D : D7) (X : RealSide D) (X0 : BaseLevelRowSide D) (Y : GlobalTheory.Mem.R3.Read (A3 := X.A3) X.R.toRealDat X.F.lv2 X0) (S : NX.RatDat D.ntw) (YS : NX.NExpRealS X.R X.cG S) (Z : ExportTie YS X.geo.v₀) (c : NChoice D) (w : D.what₂.places.Pl) (j : Fin D.R.m) (H : AtPlace Y Z c w j),
   ∀ ι : KE c w →+* ℂ, (∀ x, ι (c.embW w x) = D.what₂.embLL x) →

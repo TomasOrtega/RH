@@ -7,9 +7,9 @@ open GlobalTheory.Cartier GlobalTheory.ProjVar Formalism.BasicNotions GlobalTheo
 namespace GlobalTheory.ProjVar.Var
 
 /- English proof (translation)
-Introduce `F _ Y V hV`. Establish `hft` using `Y.str.finiteType_appLE (isAffineOpen_top (Sp F)) hV le_top`. Establish `key : (Y.X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op).hom.comp (algebraMap F Γ(Y.X, ⊤)) = (Y.str.appLE ⊤ V le_top).hom.comp (Scheme.ΓSpecIso (.of F)).inv.hom`. Use extensionality with `a`. Simplify using `only [RingHom.comp_apply, Var.algebraMap_Γ, Scheme.Hom.appLE]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `hft.comp (RingHom.FiniteType.of_surjective _ (ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (.of F)).inv).2)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finiteType_restrict_affineOpen : ∀ (F : Type) [Field F] (Y : Var F) (V : Y.X.Opens), IsAffineOpen V →
     ((Y.X.presheaf.map (homOfLE (le_top : V ≤ ⊤)).op).hom.comp (algebraMap F Γ(Y.X, ⊤))).FiniteType := by

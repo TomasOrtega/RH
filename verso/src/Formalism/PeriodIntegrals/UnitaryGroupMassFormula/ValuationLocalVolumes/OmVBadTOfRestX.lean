@@ -11,7 +11,7 @@ open Formalism.L2.SG.Pf.NcVal.OmVSt Formalism.BasicNotions Formalism.L2.SG.HidaS
 variable {D : D7} (X : HidaSetting D) (u' : D.what₂.Word) (ψ : AddChar (AF X.B.I.F) ℂ)
 
 /- English proof (translation)
-The claim follows from `omVBadT_of_last X u' ψ hStd hLat hGram (fun v hv => isoW_holds X u' ψ v hv) hRed hFI hFS`.
+A detailed English derivation is pending.
 -/
 theorem omVBadT_of_rest (hStd : OmVStd X ψ) (hLat : OmVLat X) (hGram : OmVGram X u')
     (hRed : ∀ v : PlX X, ((Tw u' : ℕ) : 𝓞 X.B.I.F) ∈ v.asIdeal →
@@ -20,7 +20,7 @@ theorem omVBadT_of_rest (hStd : OmVStd X ψ) (hLat : OmVLat X) (hGram : OmVGram 
   omVBadT_of_last X u' ψ hStd hLat hGram (fun v hv => isoW_holds X u' ψ v hv) hRed hFI hFS
 
 /- English proof (translation)
-The claim follows from `omVBadT_of_lastX X u' ψ hStd hLat hGram (fun v hv => isoW_holds X u' ψ v hv) hRed hFI hFS`.
+A detailed English derivation is pending.
 -/
 theorem omVBadT_of_restX (hStd : Formalism.L2.SG.Pf.NcX.OmVSt.OmVStd X ψ) (hLat : Formalism.L2.SG.Pf.NcX.OmVSt.OmVLat X)
     (hGram : Formalism.L2.SG.Pf.NcX.OmVSt.OmVGram X u')

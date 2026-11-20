@@ -6,9 +6,9 @@ open GroundTheory.Global.AdeleBaseChange (finiteAdeleMap)
 open UpperTheory.Gal.CertificateRingHomMap UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂
 
 /- English proof (translation)
-Introduce `E _ _ _ a u`. Establish `hp : ∀ (b : Af E) (v : Plc E), b v = pLoc E v b` using `fun _ _ => rfl`. Use `⟨fun h => ?_, ?_, fun m => ?_, ?_, continuous_conjFin _⟩` and prove the remaining obligations. Rewrite using `[hp, pLoc_conjFin, ← hp, h, map_one]`. Rewrite using `[hp, pLoc_conjFin, (conjLoc_spec (conjE E) u).2.2, ← hp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h` using `(conjLoc_spec (conjE E) u).2.2 ((m : ℕ) : (cj u).adicCompletion E)`. Rewrite `h` using `[map_natCast]`. Then use the resulting hypothesis. Use `FiniteAdeleRing.ext (R := 𝓞 E) E fun v => ?_` and prove the remaining obligations. Rewrite using `[hp, hp a, pLoc_conjFin, pLoc_conjFin, GlobalTheory.SplitPts.conjLoc_pLoc, GlobalTheory.SplitPts.conjLoc_psi]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.conjLoc :
     UpperTheory.Gal.CertificateRingHomMap.ZetaNonvanishing₂.ConjLoc := by

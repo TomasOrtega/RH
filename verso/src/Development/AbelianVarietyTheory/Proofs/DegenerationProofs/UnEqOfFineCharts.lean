@@ -35,32 +35,32 @@ Both sides reduce to the same expression.
 theorem sn_val (u : ((Sp (PadicAlgCl p)).presheaf.stalk (z₀ p))ˣ) : sn p u.val = un p u := rfl
 
 /- English proof (translation)
-The claim follows from `norm_pos_iff.2 (u.isUnit.map (ev (z₀ p))).ne_zero`.
+A detailed English derivation is pending.
 -/
 theorem un_pos (u : ((Sp (PadicAlgCl p)).presheaf.stalk (z₀ p))ˣ) : 0 < un p u :=
   norm_pos_iff.2 (u.isUnit.map (ev (z₀ p))).ne_zero
 
 /- English proof (translation)
-The claim follows from `congrArg norm (ev_gs x _ h a)`.
+A detailed English derivation is pending.
 -/
 theorem sn_gs (x : Sp (PadicAlgCl p) ⟶ X) {U : X.Opens} (h : x (z₀ p) ∈ U) (a : Γ(X, U)) :
     sn p (gs x (z₀ p) U a) = ‖valF x U a‖ := congrArg norm (ev_gs x _ h a)
 
 /- English proof (translation)
-The claim follows from `congrArg norm (ev_gm x _ h a)`.
+A detailed English derivation is pending.
 -/
 theorem un_gm (x : Sp (PadicAlgCl p) ⟶ X) {U : X.Opens} (h : x (z₀ p) ∈ U) (a : Γ(X, U)ˣ) :
     un p (gm x (z₀ p) U a) = ‖valF x U a.val‖ := congrArg norm (ev_gm x _ h a)
 
 /- English proof (translation)
-Rewrite using `[← gs_pull r q z U h, gs_stalkMap r z (q ⁻¹ᵁ U) h, gs_pull (𝟙 Y) q (r z) U h, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gs_comp (r : Z ⟶ Y) (q : Y ⟶ X) (z : Z) (U : X.Opens) (h : q (r z) ∈ U) (a : Γ(X, U)) :
     gs (r ≫ q) z U a = (r.stalkMap z).hom (gs q (r z) U a) := by
   rw [← gs_pull r q z U h, gs_stalkMap r z (q ⁻¹ᵁ U) h, gs_pull (𝟙 Y) q (r z) U h, Category.id_comp]
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Rewrite using `[← gs_unit (r ≫ q) z U h, gs_comp r q z U h, gs_unit q (r z) U h]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gm_comp (r : Z ⟶ Y) (q : Y ⟶ X) (z : Z) (U : X.Opens) (h : q (r z) ∈ U) (a : Γ(X, U)ˣ) :
     gm (r ≫ q) z U a = Units.map (r.stalkMap z).hom.toMonoidHom (gm q (r z) U a) := by
@@ -69,23 +69,23 @@ theorem gm_comp (r : Z ⟶ Y) (q : Y ⟶ X) (z : Z) (U : X.Opens) (h : q (r z) �
   rfl
 
 /- English proof (translation)
-Introduce `y _` and use `(IsLocalRing.specializes_closedPoint y).mem_open (b ⁻¹ᵁ U).isOpen h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_of_cPt (b : Sp (OO p) ⟶ X) {U : X.Opens} (h : b (cPt p) ∈ U) : ⊤ ≤ b ⁻¹ᵁ U :=
   fun y _ => (IsLocalRing.specializes_closedPoint y).mem_open (b ⁻¹ᵁ U).isOpen h
 
 /- English proof (translation)
-The claim follows from `mem_of_cPt b h (show gPt p (z₀ p) ∈ (⊤ : (Sp (OO p)).Opens) from trivial)`.
+A detailed English derivation is pending.
 -/
 theorem gen_mem (b : Sp (OO p) ⟶ X) {U : X.Opens} (h : b (cPt p) ∈ U) : (gPt p ≫ b) (z₀ p) ∈ U :=
   mem_of_cPt b h (show gPt p (z₀ p) ∈ (⊤ : (Sp (OO p)).Opens) from trivial)
 
 /- English proof (translation)
-Establish `le : ∀ u : OO p, ‖(u : PadicAlgCl p)‖ ≤ 1` using `fun u => (mem_padicAlgCl_valuationSubring_iff_norm_le_one _).1 u.2`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨u, hu⟩` from `h.exists_right_inv`. Establish `e : ‖(v : PadicAlgCl p)‖ * ‖(u : PadicAlgCl p)‖ = 1`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← norm_mul]`. Conclude with `(congrArg (fun t : OO p => ‖(t : PadicAlgCl p)‖) hu).trans norm_one`. Use `le u` as an intermediate fact. Use `le v` as an intermediate fact. Use `norm_nonneg (v : PadicAlgCl p)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Introduce `h`. Establish `h0 : (v : PadicAlgCl p) ≠ 0` using `norm_pos_iff.1 (by rw [h]; exact one_pos)`. Use `IsUnit.of_mul_eq_one ⟨(v : PadicAlgCl p)⁻¹, (mem_padicAlgCl_valuationSubring_iff_norm_le_one _).2 (by rw [norm_inv, h, inv_one])⟩ ?_` and prove the remaining obligations. Conclude with `Subtype.ext (mul_inv_cancel₀ h0)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isUnit_iff_norm (v : OO p) : IsUnit v ↔ ‖(v : PadicAlgCl p)‖ = 1 := by
   have le : ∀ u : OO p, ‖(u : PadicAlgCl p)‖ ≤ 1 := fun u =>
@@ -107,13 +107,13 @@ theorem isUnit_iff_norm (v : OO p) : IsUnit v ↔ ‖(v : PadicAlgCl p)‖ = 1 :
     exact Subtype.ext (mul_inv_cancel₀ h0)
 
 /- English proof (translation)
-Establish `h'` using `mem_of_cPt b h`. Establish `hg` using `gen_mem b h`. Set `v : OO p` to `(Scheme.ΓSpecIso (CommRingCat.of (OO p))).hom.hom ((b.appLE U ⊤ h').hom a)`. Establish `e : valF (gPt p ≫ b) U a = (v : PadicAlgCl p)`. Rewrite using `[valF, dif_pos ((top_le_iff_mem _ U _).2 hg)]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e₁` using `Scheme.Hom.appLE_comp_appLE (gPt p) b U ⊤ ⊤ h' le_top`. Establish `e₂` using `Scheme.ΓSpecIso_naturality (CommRingCat.ofHom (OO p).subtype)`. Establish `e₃ : (gPt p).appLE ⊤ ⊤ le_top = (gPt p).appTop` using `(Scheme.Hom.app_eq_appLE _).symm`. Rewrite using `[← e₁, e₃]`. Conclude with `congrArg (fun q => q.hom ((b.appLE U ⊤ h').hom a)) e₂`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[sn_gs _ hg, e]`. Use `⟨(mem_padicAlgCl_valuationSubring_iff_norm_le_one _).1 v.2, (isUnit_iff_norm v).symm.trans ?_⟩` and prove the remaining obligations. Establish `e₄ : (Sp (OO p)).basicOpen ((b.appLE U ⊤ h').hom a) = PrimeSpectrum.basicOpen v` using `basicOpen_eq_of_affine' _`. Establish `e₅` using `Scheme.basicOpen_appLE b ⊤ U h' a`. Establish `e₆ : cPt p ∈ (Sp (OO p)).basicOpen ((b.appLE U ⊤ h').hom a) ↔ b (cPt p) ∈ X.basicOpen a` using `by erw [e₅]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨fun h => h.2, fun h => ⟨trivial, h⟩⟩`. Rewrite using `[← e₆, e₄]`. Conclude with `(IsLocalRing.notMem_maximalIdeal).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sn_integral (b : Sp (OO p) ⟶ X) {U : X.Opens} (h : b (cPt p) ∈ U) (a : Γ(X, U)) :
     sn p (gs (gPt p ≫ b) (z₀ p) U a) ≤ 1 ∧
@@ -140,7 +140,7 @@ theorem sn_integral (b : Sp (OO p) ⟶ X) {U : X.Opens} (h : b (cPt p) ∈ U) (a
   exact (IsLocalRing.notMem_maximalIdeal).symm
 
 /- English proof (translation)
-Rewrite using `[← sn_val, ← gs_unit _ _ _ (gen_mem b h)]`. Use `(sn_integral b h a.val).2.2 ?_` and prove the remaining obligations. Rewrite using `[Scheme.basicOpen_of_isUnit _ a.isUnit]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem un_integral (b : Sp (OO p) ⟶ X) {U : X.Opens} (h : b (cPt p) ∈ U) (a : Γ(X, U)ˣ) :
     un p (gm (gPt p ≫ b) (z₀ p) U a) = 1 := by
@@ -150,21 +150,19 @@ theorem un_integral (b : Sp (OO p) ⟶ X) {U : X.Opens} (h : b (cPt p) ∈ U) (a
   exact h
 
 /- English proof (translation)
-Establish `hs` using `IsPullback.of_hasPullback f (Spec.map (CommRingCat.ofHom (IsLocalRing.residue V)))`. Use `DvrModel.isIntegral_of_geometricallyIntegral hK` as an intermediate fact. Use `DvrModel.isIntegral_of_geometricallyIntegral hs` as an intermediate fact. Set `eK : Sp K ⟶ HK` to `hK.lift (spMap (algebraMap V K) ≫ e) (𝟙 _) (by simp [he])`. Establish `h₁ : eK ≫ j = spMap (algebraMap V K) ≫ e` using `hK.lift_fst _ _ _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h₂ : eK ≫ fK = 𝟙 _` using `hK.lift_snd _ _ _`. Take `⟨a₀, ha₀⟩` from `hU (e (IsLocalRing.closedPoint V))`. Establish `hA : ⊤ ≤ e ⁻¹ᵁ U a₀` using `fun y _ => (IsLocalRing.specializes_closedPoint y).mem_open (e ⁻¹ᵁ U a₀).isOpen ha₀`. Establish `hA'' : ⊤ ≤ eK ⁻¹ᵁ (j ⁻¹ᵁ U a₀)` using `fun y _ => by show (eK ≫ j) y ∈ U a₀`. Rewrite using `[h₁]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hA (show spMap (algebraMap V K) y ∈ (⊤ : (Sp V).Opens) from trivial)`. Set `u : Γ(Sp K, ⊤)ˣ` to `res hA'' (pullU eK _ (r a₀))`. Set `r' : ∀ a, Γ(HK, j ⁻¹ᵁ U a)ˣ` to `fun a => r a * res (le_top : j ⁻¹ᵁ U a ≤ fK ⁻¹ᵁ ⊤) (pullU fK ⊤ u⁻¹)`. Establish `v : ∀ (Z : Scheme.{0}) (q : Z ⟶ HK) (z : Z) a, j (q z) ∈ U a → gm q z _ (r' a) = gm q z _ (r a) * (gm (q ≫ fK) z ⊤ u)⁻¹` using `fun Z q z a h => (map_mul _ _ _).trans (congrArg (_ * ·) (((gm_res q z _ h _).trans (gm_pull q fK z ⊤ trivial _)).trans (map_inv _ _)))`. Take `⟨s, ⟨hs₁, -, hs₂⟩, -⟩` from `DvrModel.existsUnique_isUnit_appLE_eq hK hs (U := U) (g := fun a b => (g a b).val) (W := fun a => j ⁻¹ᵁ U a) (fun _ => rfl) hU (fun a b => (g a b).isUnit) (r := fun a => (r' a).val) (fun a b => fn_ext fun x hx => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(gs_res (𝟙 HK) x _ hx _).trans (Eq.trans ?_ ((gs_mul (𝟙 HK) x _ hx _ _).trans (congrArg₂ (· * ·) (gs_appLE j _ _ _ (𝟙 HK) x hx _) (gs_res (𝟙 HK) x _ hx _))).symm)` and prove the remaining obligations. Rewrite using `[Category.id_comp, gs_unit (𝟙 HK) x _ hx.1, gs_unit (𝟙 HK) x _ hx.2, gs_unit j x (U a ⊓ U b) hx, v _ (𝟙 HK) x a hx.1, v _ (𝟙 HK) x b hx.2, hr a b x hx.1 hx.2, _root_.mul_assoc, Units.val_mul])`. Use the proof step `(fun a => (r' a).isUnit) he h₁ (A := ⊤) trivial hA (A' := ⊤) rfl hA'' (u := 1) isUnit_one (by`. Rewrite using `[map_one]`. Use `fn_ext fun y hy => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ (gs_appLE eK _ _ _ (𝟙 _) y hy _).symm` and prove the remaining obligations. Rewrite using `[Category.id_comp, gs_unit eK y _ (hA'' hy), v _ eK y a₀ (hA'' hy), h₂]`. Establish `: gm (𝟙 (Sp K)) y ⊤ u = gm eK y _ (r a₀)`. Use `((gm_res _ y _ hy _).trans (gm_pull (𝟙 _) eK y _ (hA'' hy) _)).trans ?_` and prove the remaining obligations. Rewrite using `[Category.id_comp]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, mul_inv_cancel, gs_eq _ y ⊤ hy, map_one, map_one, Units.val_one])`. Use `⟨u, fun c cK hc a ha => ?_⟩` and prove the remaining obligations. Establish `hm : j (cK (z₀ p)) ∈ U a` using `by show (cK ≫ j) _ ∈ U a`. Rewrite using `[hc]`. Conclude with `gen_mem c ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e₁ : un p (gm cK (z₀ p) _ (r' a)) = 1`. Rewrite using `[← un_integral c ha (hs₁ a).unit, ← hc]`. Use `congrArg (un p) (Units.ext ?_)` and prove the remaining obligations. Rewrite using `[← gs_unit cK _ _ hm, ← gs_unit (cK ≫ j) _ _ hm, ← hs₂ a]`. Conclude with `gs_appLE j _ _ _ cK _ hm _`.
-
-Rewrite `e₁` using `[v _ cK _ a hm, map_mul, map_inv]`. Conclude with `(mul_inv_eq_one₀ (un_pos _).ne').1 e₁`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem un_eq_of_charts {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {K : Type} [Field K]
     [Algebra V K] [IsFractionRing V K] {H HK : Scheme.{0}} {f : H ⟶ Sp V} [Smooth f] [GeometricallyIntegral f]
@@ -223,11 +221,11 @@ theorem un_eq_of_charts {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuatio
   exact (mul_inv_eq_one₀ (un_pos _).ne').1 e₁
 
 /- English proof (translation)
-Establish `le : ∀ a b, W a b ≤ j ⁻¹ᵁ U a` using `fun a b x hx => (hW a x).2 ⟨b, hx⟩`. Use `choose R hR using fun a => glue_unit (j ⁻¹ᵁ U a) (W a) (le a) (fun x hx => TopologicalSpace.Opens.mem_iSup.2 ((hW a x).1 hx)) (r a) (fun b b' x hx => by`. Rewrite using `[hr a b a b' x hx.1 hx.2, mul_eq_right.1 (hr a b a b x hx.1 hx.1).symm, _root_.one_mul])`. Establish `v : ∀ (Z : Scheme.{0}) (q : Z ⟶ HK) (z : Z) a b, q z ∈ W a b → gm q z _ (r a b) = gm q z _ (R a)` using `fun Z q z a b h => by rw [← hR a b, gm_res q z _ h]`. Take `⟨u, hu⟩` from `un_eq_of_charts (p := p) hK e he U g R hU fun a a' x hx hx' => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `(hW a x).1 hx`. Take `⟨b', hb'⟩` from `(hW a' x).1 hx'`. Rewrite using `[← v _ (𝟙 HK) x a b hb, ← v _ (𝟙 HK) x a' b' hb', hr a b a' b' x hb hb']`. Use `DvrModel.isOpenImmersion_generic (IsPullback.of_id_snd (f := spMap (algebraMap V K)))` as an intermediate fact. Rewrite using `[v _ _ _ _ _ hb, v _ _ _ _ _ hb', hu c cK hc a ha, hu c' cK' hc' a' ha']`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `congrArg (fun q => un p (gm q (z₀ p) ⊤ u)) ?_` and prove the remaining obligations. Rewrite using `[← cancel_mono (spMap (algebraMap V K)), Category.assoc, Category.assoc, ← hK.w, ← Category.assoc, hc, ← Category.assoc, hc', Category.assoc, Category.assoc, h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem un_eq_of_fine_charts {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {K : Type} [Field K]
     [Algebra V K] [IsFractionRing V K] {H HK : Scheme.{0}} {f : H ⟶ Sp V} [Smooth f] [GeometricallyIntegral f]
@@ -257,9 +255,9 @@ theorem un_eq_of_fine_charts {V : Type} [CommRing V] [IsDomain V] [IsDiscreteVal
     ← Category.assoc, hc', Category.assoc, Category.assoc, h]
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, t₀, h₀, hi, H⟩ : ∃ i t₀, 0 < t₀ ∧ x (z₀ p) ∈ L.U i ∧ ∀ j t, S j t → un p (gm x (z₀ p) _ (L.g i j)) * t₀ = t := by`. Distinguish the cases in `h : ∃ j t, S j t`. Take `⟨i, t₀, h⟩` from `h`. Conclude with `⟨i, t₀, (hS _ _ h).1, (hS _ _ h).2, fun j t h' => hS' _ _ _ _ h h'⟩`. Take `⟨i, hi⟩` from `exists_chart hL (x (z₀ p))`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨i, 1, one_pos, hi, fun j t h' => absurd ⟨j, t, h'⟩ h⟩`. Use `⟨fun j => un p (gm x (z₀ p) _ (L.g i j)) * t₀, fun j => mul_pos (un_pos _) h₀, fun j j' hj hj' => ?_, H⟩` and prove the remaining obligations. Rewrite using `[← _root_.mul_assoc, ← map_mul, _root_.mul_comm (gm x _ _ _), gm_cocycle hL x _ hi hj hj']`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_norm_ext {L : LB X} (hL : L.IsLB) (x : Sp (PadicAlgCl p) ⟶ X) (S : L.ι → ℝ → Prop)
     (hS : ∀ j t, S j t → 0 < t ∧ x (z₀ p) ∈ L.U j)

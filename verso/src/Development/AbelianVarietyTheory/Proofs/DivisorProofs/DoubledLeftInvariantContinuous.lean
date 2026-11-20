@@ -40,33 +40,23 @@ set_option maxHeartbeats 1600000 in
 open GlobalTheory.OrbitVanish in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d r s W hW hcm W₂ hW₂ i hi Φ hΦc hΦP hΦa w hwc hwm hwr hwdet μ hμ f hfc hfr hcusp γ hγ hnot S hS h D hD hint`. Use `haveI := hμ`. Use `set P := siegelOf finSumFinEquiv (UG (cA σ) (incM F W₂.J)).subtype with hPdef`. Take `⟨j, Y, hj, hinj, hiso, hspan⟩` from `GlobalTheory.T.double_coset_orbit_nonsingular F E σ hcm B d r s W hW W₂ hW₂ i hi γ hγ hnot`. Use `set N := GlobalTheory.ThKLiftCusp.unipSp σ W Y with hNdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcP` using `GlobalTheory.T.double_coset_orbit_integral F E σ hcm B d r s W hW W₂ hW₂ i hi γ hγ j Y hinj hiso hspan`. Establish `hnS` using `GlobalTheory.T.double_coset_orbit_unipotent F E σ hcm B d r s W hW W₂ hW₂ i hi γ hγ j Y hinj hiso hspan`. Establish `hdet` using `GlobalTheory.T.unipotent_det_eq_one F E σ d W j Y`. Establish `hcl` using `GlobalTheory.T.unipotent_subgroup_closed F E σ hcm B d r s W hW j Y hj hinj hiso`. Take `⟨ν, 𝓕N, hν, h𝓕N, hmass⟩` from `GlobalTheory.T.unipotent_fundamental_domain F E σ hcm B d r s W hW j Y hj hinj hiso`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hic, hirat⟩` from `GlobalTheory.T.doubling_embedding_continuous_rational F E σ d W.J W₂.J i hi`. Take `⟨hTG, hLC, hSC, hT2⟩` from `GlobalTheory.UnipMass.topUA σ W.J`. Use `haveI := hTG`. Use `haveI := hLC`. Use `haveI := hSC`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hT2`. Use `haveI : BorelSpace (UA σ W.J) := ⟨rfl⟩`. Use `haveI := hν`. Use `haveI : LocallyCompactSpace N := hcl.isClosedEmbedding_subtypeVal.locallyCompactSpace`. Use `haveI : SecondCountableTopology N := hcl.isClosedEmbedding_subtypeVal.isEmbedding.secondCountableTopology`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := GlobalTheory.UnipMass.countable_ratU' σ W.J N`. Use `haveI := GlobalTheory.UnitaryVol.countable_ratU σ W.J`. Establish `hSle : S ≤ ratU σ W.J` using `fun x hx => ((hS x).1 hx).1`. Use `haveI : Countable S := (Subgroup.inclusion_injective hSle).countable`. Establish `hnorm : ∀ p ∈ S, ∀ n ∈ N, p * n * p⁻¹ ∈ N` using `fun p hp n hn => hnS p ((hS p).1 hp).1 ((hS p).1 hp).2 n hn`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSN : S.subgroupOf N = (ratU σ W.J).subgroupOf N`. Use extensionality with `n`. Simplify using `only [Subgroup.mem_subgroupOf]`. Use `⟨fun hn => hSle hn, fun hn => (hS _).2 ⟨hn, (hcP n.1 n.2).1⟩⟩` and prove the remaining obligations. Establish `hne : ν 𝓕N ≠ 0` using `by rw [hmass]; exact one_ne_zero`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnt : ν 𝓕N ≠ ⊤` using `by rw [hmass]; exact ENNReal.one_ne_top`. Establish `hconj : ∀ (p : UA σ W.J) (hp : p ∈ S), Measure.map (fun n : N => (⟨p * n.1 * p⁻¹, hnorm p hp n.1 n.2⟩ : N)) ν = ν`. Introduce `p hp`. Use `GlobalTheory.LatticeAut.map_haar_eq_of_lattice _ _ ν 𝓕N h𝓕N hne hnt (conjAut N p (hnorm p hp) (hnorm p⁻¹ (inv_mem hp))) ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _`. Introduce `l hl`. Conclude with `mul_mem (mul_mem (hSle hp) (show l.1 ∈ ratU σ W.J from hl)) (inv_mem (hSle hp))`. Introduce `l hl`. Conclude with `mul_mem (mul_mem (inv_mem (hSle hp)) (show l.1 ∈ ratU σ W.J from hl)) (inv_mem (inv_mem (hSle hp)))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hinv` using `GlobalTheory.haar_inv_eq_of_lattice _ _ ν 𝓕N h𝓕N hne hnt`. Use `set g : UA σ W.J → ℂ := fun x => f x * (Φ (γ * i (h, x)) * w x) with hg`. Take `⟨hTG₂, -, -, -⟩` from `GlobalTheory.UnipMass.topUA σ W₂.J`. Use `haveI := hTG₂`. Establish `hgc : Continuous g` using `hfc.mul ((hΦc.comp (continuous_const.mul (hic.comp (continuous_const.prodMk continuous_id)))).mul hwc)`.
-
-Establish `hsplit : ∀ p x : UA σ W.J, γ * i (h, p * x) = (γ * i (1, p) * γ⁻¹) * (γ * i (h, x))`. Introduce `p x`. Establish `e : ((h, p * x) : UA σ W.J × UA σ W.J) = (1, p) * (h, x)` using `by simp`. Rewrite using `[e, map_mul]`. Use `group`.
-
-Establish `hgS : ∀ p ∈ S, ∀ x, g (p * x) = g x`. Introduce `p hp x`. Take `⟨hpr, hpP⟩` from `(hS p).1 hp`. Establish `hq : γ * i (1, p) * γ⁻¹ ∈ P ⊓ ratU σ W₂.J` using `Subgroup.mem_inf.2 ⟨hpP, mul_mem (mul_mem hγ (hirat p hpr)) (inv_mem hγ)⟩`. Simplify using `only [hg]`.
-
-Rewrite using `[hfr p hpr x, hsplit, hΦP _ hq, hwm, hwr p hpr, one_mul]`. Establish `h0 : ∀ x, ∫ n in 𝓕N, g (n.1 * x) ∂ν = 0`. Introduce `x`. Establish `e1 : ∀ n : N, g (n.1 * x) = f (n.1 * x) * (Φ (γ * i (h, x)) * w x)`. Introduce `n`.
-
-Take `⟨hp, ha⟩` from `hcP n.1 n.2`. Simplify using `only [hg]`. Rewrite using `[hsplit, show γ * i (1, n.1) * γ⁻¹ = ((⟨_, hp⟩ : P) : UA σ W₂.J) from rfl, hΦa _ ha, hwm, hwdet n.1 (hdet n.1 n.2), one_mul]`. Simplify using `only [e1]`. Rewrite using `[integral_mul_const, hcusp j Y hj hinj hiso ν 𝓕N hν h𝓕N hmass x, zero_mul]`.
-
-Conclude with `GlobalTheory.UnipotentFibration.setIntegral_eq_zero_of_fibre _ μ S N hcl hnorm ν hconj hinv 𝓕N (hSN ▸ h𝓕N) hmass D hD g hgc hgS hint h0`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.OrbitVanish.integral_eq_zero : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d r s : ℕ) (W : Spc F E d), W.IsSkew σ B r s → IsCMExt F E σ →

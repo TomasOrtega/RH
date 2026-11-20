@@ -31,7 +31,7 @@ noncomputable section
 namespace FunctorialResolution.EmbeddedResolution
 
 /- English proof (translation)
-Rewrite using `[restrictIdeal_eq_comap_ι]`. Establish `h : (↑(K.comap V.ι).support : Set ↥V.toScheme) = ⇑V.ι ⁻¹' (↑K.support : Set ↥Y)` using `support_comap_eq V.ι K`. Conclude with `Set.ext_iff.mp h v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_support_restrictIdeal_iff {Y : Scheme.{u}} (K : Y.IdealSheafData) (V : Y.Opens)
     (v : ↥V.toScheme) :
@@ -42,7 +42,7 @@ theorem mem_support_restrictIdeal_iff {Y : Scheme.{u}} (K : Y.IdealSheafData) (V
   exact Set.ext_iff.mp h v
 
 /- English proof (translation)
-Use `⟨π ⁻¹ᵁ Z.support.compl, hx₁, ?_⟩` and prove the remaining obligations. Rewrite using `[restrictIdeal_strictTransform_eq_comap_of_le_compl π Z D _ le_rfl, restrictIdeal_exceptionalIdeal_eq_top_of_le_compl π Z _ le_rfl, pow_one, Scheme.IdealSheafData.mul_top]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_opens_totalTransform_eq_of_notMem_support {X X₁ : Scheme.{u}}
     [IsLocallyNoetherian X₁] (π : X₁ ⟶ X) (Z D : X.IdealSheafData) (x₁ : ↥X₁)
@@ -56,11 +56,9 @@ theorem exists_opens_totalTransform_eq_of_notMem_support {X X₁ : Scheme.{u}}
     Scheme.IdealSheafData.mul_top]
 
 /- English proof (translation)
-Establish `hle : restrictIdeal D U ≤ restrictIdeal Z U`. Rewrite using `[hD, hZ]`. Conclude with `c.coordIdeal_mono (Finset.singleton_subset_iff.mpr hj)`. Introduce `x hx`. Take `⟨v, hv⟩ : ∃ v : ↥U.toScheme, U.ι v = x` from `⟨⟨x, hx.2⟩, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : v ∈ (restrictIdeal Z U).support`. Rewrite using `[mem_support_restrictIdeal_iff, hv]`. Conclude with `hx.1`. Establish `h2 : v ∈ (restrictIdeal D U).support` using `Scheme.IdealSheafData.support_antitone hle h1`. Rewrite `h2` using `[mem_support_restrictIdeal_iff, hv]`.
-
-Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inter_support_subset_support_of_mem_coordIdeal {X : Scheme.{u}} {k : Type u} [Field k]
     (p : X ⟶ Spec (CommRingCat.of k)) {U : X.Opens} {m : ℕ} (c : EtaleChart p U m)
@@ -81,19 +79,17 @@ theorem inter_support_subset_support_of_mem_coordIdeal {X : Scheme.{u}} {k : Typ
   exact h2
 
 /- English proof (translation)
-Introduce `hsub`. Take `⟨i, hi⟩` from `exists_complOrderEmb_eq m S hj`. Establish `hD' : restrictIdeal D U = c.coordIdeal {complOrderEmb m S i}`. Rewrite using `[hi]`. Conclude with `hD`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hG : restrictIdeal (D.comap Z.subschemeι) (Z.subschemeι ⁻¹ᵁ U) = (c.restrictToSubscheme hU Z S hZ).coordIdeal {i}` using `c.restrictToSubscheme_coordIdeal_singleton hU Z S hZ i D hD'`. Establish `hcart : Blowup.IsLocallyGeneratedByNonZeroDivisor (restrictIdeal (D.comap Z.subschemeι) (Z.subschemeι ⁻¹ᵁ U))`. Use `isLocallyGeneratedByNonZeroDivisor_of_locally_coordIdeal (p := (Z.subschemeι ⁻¹ᵁ U).ι ≫ (Z.subschemeι ≫ p)) _ ?_` and prove the remaining obligations. Introduce `y`. Use `⟨⊤, trivial, m - S.card, (c.restrictToSubscheme hU Z S hZ).restrictOpens ⊤, Or.inr ⟨i, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hG]`. Conclude with `(c.restrictToSubscheme hU Z S hZ).restrictIdeal_coordIdeal ⊤ {i}`. Establish `hall : ∀ y : ↥(Z.subschemeι ⁻¹ᵁ U).toScheme, y ∈ (restrictIdeal (D.comap Z.subschemeι) (Z.subschemeι ⁻¹ᵁ U)).support`. Introduce `y`. Rewrite using `[mem_support_restrictIdeal_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyU : Z.subschemeι ((Z.subschemeι ⁻¹ᵁ U).ι y) ∈ (U : Set ↥X)` using `y.2`. Establish `hyZ : Z.subschemeι ((Z.subschemeι ⁻¹ᵁ U).ι y) ∈ (↑Z.support : Set ↥X)`. Rewrite using `[← Scheme.IdealSheafData.range_subschemeι Z]`. Conclude with `Set.mem_range_self _`. Establish `hmem : Z.subschemeι ((Z.subschemeι ⁻¹ᵁ U).ι y) ∈ (↑D.support : Set ↥X)` using `hsub ⟨hyZ, hyU⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ((Z.subschemeι ⁻¹ᵁ U).ι y) ∈ (↑(D.comap Z.subschemeι).support : Set ↥Z.subscheme)`. Rewrite using `[support_comap_eq Z.subschemeι D]`. Conclude with `hmem`. Conclude with `h2`. Choose the witnesses or unpack the hypotheses as in `⟨z, hz⟩ : ∃ z : ↥Z.subscheme, Z.subschemeι z = x := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hxr : x ∈ Set.range (⇑Z.subschemeι)`. Rewrite using `[Scheme.IdealSheafData.range_subschemeι Z]`. Conclude with `hxZ`. Conclude with `hxr`. Establish `hzU : z ∈ Z.subschemeι ⁻¹ᵁ U` using `by show Z.subschemeι z ∈ U`.
-
-Rewrite using `[hz]`. Conclude with `hxU`. Take `⟨y₀, -⟩ : ∃ y₀ : ↥(Z.subschemeι ⁻¹ᵁ U).toScheme, (Z.subschemeι ⁻¹ᵁ U).ι y₀ = z` from `⟨⟨z, hzU⟩, rfl⟩`. Conclude with `hcart.not_irreducibleComponent_subset_support (irreducibleComponent_mem_irreducibleComponents y₀) (fun w _ => hall w)`.
+A detailed English derivation is pending.
 -/
 theorem not_inter_support_subset_support_of_notMem_coordIdeal {X : Scheme.{u}} {k : Type u}
     [Field k] [NoetherianSpace ↥X] (p : X ⟶ Spec (CommRingCat.of k)) {U : X.Opens}
@@ -148,29 +144,25 @@ theorem not_inter_support_subset_support_of_notMem_coordIdeal {X : Scheme.{u}} {
     (irreducibleComponent_mem_irreducibleComponents y₀) (fun w _ => hall w)
 
 /- English proof (translation)
-Introduce `T hV Z _hZsm hsnc X' π hπ D hD x'`. Establish `: AlgebraicGeometry.IsNoetherian T.scheme` using `hV.isNoetherian`. Establish `: NoetherianSpace ↥T.scheme` using `inferInstance`. Establish `: AlgebraicGeometry.IsNoetherian X'` using `isNoetherian_of_isBlowupAlongIdealSheaf hπ`. Establish `: AlgebraicGeometry.IsLocallyNoetherian X'` using `inferInstance`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `hx : π x' ∈ Z.support`. Take `⟨U, hxU, m, c, a, S, _hinj, hnone, hsome, hZU⟩` from `hsnc.exists_etaleChart hx`. Take `⟨i, hi, hDi⟩` from `List.mem_iff_getElem.mp hD`. Establish `hx'U : x' ∈ π ⁻¹ᵁ U` using `hxU`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs, B, hx'B⟩ : ∃ (s : Fin m) (_ : s ∈ S) (B : BlowupChart π c S s), x' ∈ B.domain := by`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨s, hs, hmem⟩` from `exists_mem_domain_blowupChart_of_isBlowupAlongIdealSheaf π c S hπ hZU x' hx'U`. Conclude with `⟨s, hs, _, hmem⟩`. Consider the cases of `hai : a i with`. Consider the case `none`. Establish `hDtop : restrictIdeal D U = ⊤`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact.
 
-Establish `h1` using `hnone i hi hai`. Rewrite `h1` using `[hDi]`. Then use the resulting hypothesis. Use `⟨B.domain, 0, hx'B, Or.inl rfl, ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun h0 => absurd h0 (by omega), fun hV' => ?_⟩` and prove the remaining obligations. Take `⟨V, hxV, hsubV⟩` from `hV'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `absurd (hsubV ⟨hx, hxV⟩) (notMem_support_of_restrictIdeal_eq_top D U _ hxU hDtop)`. Use `show restrictIdeal (D.comap π) B.domain = restrictIdeal (Blowup.strictTransform π Z D) B.domain * restrictIdeal (Blowup.exceptionalIdeal π Z) B.domain ^ 0`. Rewrite using `[B.restrictIdeal_comap_top D hDtop, B.restrictIdeal_strictTransform_of_eq_top Z D hDtop, pow_zero, mul_one]`. Consider the case `some t`. Establish `hDU : restrictIdeal D U = c.coordIdeal {t}`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h1` using `hsome i hi t hai`. Rewrite `h1` using `[hDi]`. Then use the resulting hypothesis. Distinguish the cases in `htS : t ∈ S`. Establish `hcrit : ∃ V : T.scheme.Opens, π x' ∈ V ∧ ((↑Z.support : Set ↥T.scheme) ∩ (V : Set ↥T.scheme)) ⊆ (↑D.support : Set ↥T.scheme)` using `⟨U, hxU, inter_support_subset_support_of_mem_coordIdeal T.structMap c Z D S t htS hZU hDU⟩`. Use `⟨B.domain, 1, hx'B, Or.inr rfl, ⟨fun _ => hcrit, fun _ => rfl⟩, ?_⟩` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `show restrictIdeal (D.comap π) B.domain = restrictIdeal (Blowup.strictTransform π Z D) B.domain * restrictIdeal (Blowup.exceptionalIdeal π Z) B.domain ^ 1`. Distinguish the cases in `hts : t = s`. Rewrite `hDU` using `[hts]`. Rewrite using `[B.restrictIdeal_comap_coordIdeal_self D hDU, B.restrictIdeal_strictTransform_coordIdeal_self Z D hs hZU hDU, B.restrictIdeal_exceptionalIdeal Z hs hZU, pow_one, Scheme.IdealSheafData.top_mul]`. Rewrite using `[B.restrictIdeal_comap_coordIdeal_of_mem D t htS hts hDU, B.restrictIdeal_strictTransform_of_mem_of_ne Z D hs hZU t htS hts hDU, B.restrictIdeal_exceptionalIdeal Z hs hZU, pow_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction.
 
-Use `⟨B.domain, 0, hx'B, Or.inl rfl, ?_, ?_⟩` and prove the remaining obligations. Use `⟨fun h0 => absurd h0 (by omega), fun hV' => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Take `⟨V, hxV, hsubV⟩` from `hV'`. Choose the witnesses or unpack the hypotheses as in `⟨W, hxW, hWle⟩ : ∃ W : T.scheme.affineOpens, π x' ∈ W.1 ∧ W.1 ≤ U ⊓ V := by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply `Scheme.exists_affineOpens_mem_le` to reduce the goal to its premises. Conclude with `(⟨hxU, hxV⟩ : π x' ∈ U ⊓ V)`. Establish `hWU : W.1 ≤ U` using `hWle.trans inf_le_left`. Establish `hWV : W.1 ≤ V` using `hWle.trans inf_le_right`. Establish `hZW` using `restrictIdeal_eq_restrict_coordIdeal_of_le hWU c Z S hZU`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hDW` using `restrictIdeal_eq_restrict_coordIdeal_of_le hWU c D {t} hDU`. Use `not_inter_support_subset_support_of_notMem_coordIdeal T.structMap W.2 (c.restrict hWU) Z D S t htS hZW hDW (π x') hxW hx ?_` and prove the remaining obligations. Introduce `w hw`. Conclude with `hsubV ⟨hw.1, SetLike.coe_subset_coe.mpr hWV hw.2⟩`. Use `show restrictIdeal (D.comap π) B.domain = restrictIdeal (Blowup.strictTransform π Z D) B.domain * restrictIdeal (Blowup.exceptionalIdeal π Z) B.domain ^ 0`.
-
-Rewrite using `[B.restrictIdeal_comap_coordIdeal_of_not_mem D t htS hDU, B.restrictIdeal_strictTransform_coordIdeal_of_notMem Z D hs hZU t htS hDU, pow_zero, mul_one]`. Take `⟨V, hxV, hVeq⟩` from `exists_opens_totalTransform_eq_of_notMem_support π Z D x' hx`. Use `⟨V, 1, hxV, Or.inr rfl, ?_, hVeq⟩` and prove the remaining obligations. Use `⟨fun _ => ⟨Z.support.compl, hx, ?_⟩, fun _ => rfl⟩` and prove the remaining obligations. Introduce `y hy`.
-
-Conclude with `absurd hy.1 hy.2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem comap_eq_strictTransform_mul_exceptionalIdeal_pow : ∀ (T : MarkedIdealWithBoundary.{u}), T.IsAdmissible →
     ∀ Z : T.scheme.IdealSheafData,

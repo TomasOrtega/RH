@@ -18,18 +18,18 @@ namespace GlobalTheory.MemLoc.ULaws
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RingIface.tower l a`.
+A detailed English derivation is pending.
 -/
 theorem alg_acris (a : Per.Ainf l) : algebraMap (Per.Ainf l) (Per.Acris l) a =
     algebraMap (Per.Acris0 l) (Per.Acris l) (algebraMap (Per.Ainf l) (Per.Acris0 l) a) :=
   GlobalTheory.RingIface.tower l a
 
 /- English proof (translation)
-Establish `hq : f.comp (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l)) = g.comp (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l))` using `IsLocalization.ringHom_ext (nonZeroDivisors ℤ_[l]) (RingHom.ext hz)`. Take `⟨x, hx⟩` from `c`. Unfold `MaximalUnramifiedExtension at hx`. Proceed by induction on `hx using IntermediateField.adjoin_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately.
 
-Take `⟨m, hm, hlm, hxm⟩` from `hx`. Conclude with `hr _ m hm hlm (Subtype.ext hxm)`. Consider the case `algebraMap q => exact RingHom.congr_fun hq q`. Consider the case `add x y hx hy a b`. Conclude with `(map_add f ⟨x, hx⟩ ⟨y, hy⟩).trans ((congrArg₂ (· + ·) a b).trans (map_add g ⟨x, hx⟩ ⟨y, hy⟩).symm)`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `inv x hx a => exact eq_on_inv₀ f g (a := ⟨x, hx⟩) a`. Consider the case `mul x y hx hy a b`. Conclude with `(map_mul f ⟨x, hx⟩ ⟨y, hy⟩).trans ((congrArg₂ (· * ·) a b).trans (map_mul g ⟨x, hx⟩ ⟨y, hy⟩).symm)`.
+A detailed English derivation is pending.
 -/
 theorem ringHom_ext_Kur {R : Type} [CommRing R] (f g : ↥(MaximalUnramifiedExtension l) →+* R)
     (hz : ∀ z : ℤ_[l], f (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (z : ℚ_[l])) =
@@ -55,7 +55,7 @@ set_option allowUnsafeReducibility true in
 attribute [local irreducible] Per.Acris Per.Bcris
 
 /- English proof (translation)
-Take `⟨ι, h1, h2⟩` from `GlobalTheory.T.exists_injective_bcris_to_bdR l C.j C.j_cris`. Establish `e : C.ι = ι` using `GlobalTheory.RingIface.bcris_ext l fun x => (C.ι_j x).trans (h1 x).symm`. Rewrite using `[e]`. Conclude with `h2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_injective (C : Core l) : Function.Injective C.ι := by
   obtain ⟨ι, h1, h2⟩ := GlobalTheory.T.exists_injective_bcris_to_bdR l C.j C.j_cris
@@ -64,7 +64,7 @@ theorem iota_injective (C : Core l) : Function.Injective C.ι := by
   exact h2
 
 /- English proof (translation)
-Establish `e : Per.aB l a = algebraMap (Per.Acris l) (Per.Bcris l) (algebraMap (Per.Ainf l) (Per.Acris l) a)` using `GlobalTheory.RingIface.aB_eq_alg l a`. Rewrite using `[e, C.ι_j, alg_acris, C.j_cris.on0, Subalgebra.coe_algebraMap, aDp, RingHom.comp_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_aB (C : Core l) (a : Per.Ainf l) :
     C.ι (Per.aB l a) = algebraMap (Per.BdRp l) (Per.BdR l) (aDp l a) := by
@@ -73,9 +73,9 @@ theorem iota_aB (C : Core l) (a : Per.Ainf l) :
   rw [e, C.ι_j, alg_acris, C.j_cris.on0, Subalgebra.coe_algebraMap, aDp, RingHom.comp_apply]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, hD, -, hB, -⟩` from `ActLaws.act_laws l`. Establish `e : C.ι.comp (Per.σB g) = (Per.σD g).comp C.ι`. Use `GlobalTheory.RingIface.bcris_ext l fun x => ?_` and prove the remaining obligations. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hB, C.ι_j, C.ι_j, hD, (GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l C.j C.j_cris).2.1]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.congr_fun e b`.
+A detailed English derivation is pending.
 -/
 theorem iota_sigma (C : Core l) (g : GQ l) (b : Per.Bcris l) :
     C.ι (Per.σB g b) = Per.σD g (C.ι b) := by
@@ -87,7 +87,7 @@ theorem iota_sigma (C : Core l) (g : GQ l) (b : Per.Bcris l) :
   exact RingHom.congr_fun e b
 
 /- English proof (translation)
-Take `⟨ι, hι⟩` from `GlobalTheory.CrisIncl.exists_incl l`. Take `⟨j, h1, h2, h3⟩` from `GlobalTheory.CrisIncl.exists_restrict l ι hι`. Establish `e : j = C.j` using `(GlobalTheory.T.canonicalAcrisToBdRPlus_unique_equivariant_approx l C.j C.j_cris).1 j ⟨h2, h3⟩`. Establish `e' : C.ι = ι` using `GlobalTheory.RingIface.bcris_ext l fun x => by rw [C.ι_j, h1, e]`. Rewrite using `[e']` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem iota_isCrisDR (C : Core l) : Per.IsCrisDR l C.ι := by
   obtain ⟨ι, hι⟩ := GlobalTheory.CrisIncl.exists_incl l
@@ -97,7 +97,7 @@ theorem iota_isCrisDR (C : Core l) : Per.IsCrisDR l C.ι := by
   rwa [e']
 
 /- English proof (translation)
-Apply `iota_injective C` to reduce the goal to its premises. Establish `e : Per.zB l z = Per.aB l (Per.zA l z)` using `GlobalTheory.RingIface.zB_eq_aB_zA l z`. Rewrite using `[e, iota_aB, C.ι_u, ← C.o_sec.z]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem u_padicInt (C : Core l) (z : ℤ_[l]) :
     C.u (algebraMap ℚ_[l] ↥(MaximalUnramifiedExtension l) (z : ℚ_[l])) = Per.zB l z := by
@@ -107,7 +107,7 @@ theorem u_padicInt (C : Core l) (z : ℤ_[l]) :
   rfl
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, -, -, -, hD, -⟩` from `ActLaws.act_laws l`. Apply `iota_injective C` to reduce the goal to its premises. Rewrite using `[iota_sigma, C.ι_u, C.ι_u, hD, (GlobalTheory.T.bdRPlus_simple_roots_section_unique_equivariant l C.o C.o_sec).2.2, h]`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_u (C : Core l) (g : GQ l) (c c' : ↥(MaximalUnramifiedExtension l)) (h : g (c : Om l) = (c' : Om l)) :
     Per.σB g (C.u c) = C.u c' := by
@@ -116,11 +116,11 @@ theorem sigma_u (C : Core l) (g : GQ l) (c c' : ↥(MaximalUnramifiedExtension l
   rw [iota_sigma, C.ι_u, C.ι_u, hD, (GlobalTheory.T.bdRPlus_simple_roots_section_unique_equivariant l C.o C.o_sec).2.2, h]
 
 /- English proof (translation)
-Take `⟨-, -, -, -, -, -, hφ, -, hz, -⟩` from `ActLaws.act_laws l`. Use `ringHom_ext_Kur ((Per.φB l).comp C.u) (C.u.comp (C.σ : ↥(MaximalUnramifiedExtension l) →+* ↥(MaximalUnramifiedExtension l))) (fun z => ?_) (fun c m hm hlm hc => ?_) c` and prove the remaining obligations. Establish `e : Per.zB l z = Per.aB l (Per.zA l z)` using `GlobalTheory.RingIface.zB_eq_aB_zA l z`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe, AlgHom.commutes]`. Rewrite using `[u_padicInt, e, hφ, hz]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨⟨xb, hxb⟩, h2⟩` from `GlobalTheory.T.rootOfUnity_prime_to_teichmuller_lift l C.o C.o_sec (c : Om l) m hm hlm (congrArg Subtype.val hc)`. Establish `hu : C.u c = Per.aB l (Per.tm xb)`. Apply `iota_injective C` to reduce the goal to its premises. Rewrite using `[iota_aB, C.ι_u, (h2 xb hxb).2.2]`. Establish `h1 : Per.φA l (Per.tm xb) = Per.tm xb ^ l`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.RingBasics.φA_apply, WittVector.frobenius_eq_map_frobenius, WittVector.map_teichmuller, frobenius_def, map_pow]`. Simplify using `only [RingHom.comp_apply, RingHom.coe_coe]`. Rewrite using `[C.σ_root c m hm hlm hc, map_pow, hu, hφ, h1, map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_u (C : Core l) (c : ↥(MaximalUnramifiedExtension l)) : Per.φB l (C.u c) = C.u (C.σ c) := by
   obtain ⟨-, -, -, -, -, -, hφ, -, hz, -⟩ := ActLaws.act_laws l
@@ -141,7 +141,7 @@ theorem phi_u (C : Core l) (c : ↥(MaximalUnramifiedExtension l)) : Per.φB l (
     rw [C.σ_root c m hm hlm hc, map_pow, hu, hφ, h1, map_pow]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨phi_u C, sigma_u C, u_padicInt C, iota_injective C, iota_sigma C, iota_isCrisDR C⟩`.
+Supply the required witnesses or components.
 -/
 theorem u_laws (l : ℕ) [Fact l.Prime] (C : Core l) :
     (∀ c : ↥(MaximalUnramifiedExtension l), Per.φB l (C.u c) = C.u (C.σ c)) ∧

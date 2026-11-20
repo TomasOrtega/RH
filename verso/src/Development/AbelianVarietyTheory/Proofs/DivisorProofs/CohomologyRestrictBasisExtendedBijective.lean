@@ -32,7 +32,7 @@ variable {R₁ R₂ : Type} [CommRing R₁] [CommRing R₂] {C C' : Type} [Categ
   (F₁ : C ⥤ CommAlgCat.{0} R₁) (F₂ : C ⥤ CommAlgCat.{0} R₂) (G : C' ⥤ C)
 
 /- English proof (translation)
-Introduce `T x hx`. Rewrite using `[← hri T x, hs T (i T x) fun t u ↦ by rw [← hi, hx, map_zero], map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem sep_of_retract (i : ∀ T, F₁.obj T →+ F₂.obj T) (r : ∀ T, F₂.obj T →+ F₁.obj T)
     (hri : ∀ T x, r T (i T x) = x) (hi : ∀ {T S : C} (u : T ⟶ S) x, i S (mp F₁ u x) = mp F₂ u (i T x))
@@ -42,7 +42,7 @@ theorem sep_of_retract (i : ∀ T, F₁.obj T →+ F₂.obj T) (r : ∀ T, F₂.
   rw [← hri T x, hs T (i T x) fun t u ↦ by rw [← hi, hx, map_zero], map_zero]
 
 /- English proof (translation)
-Introduce `T s hs`. Take `⟨x, hx⟩` from `hg T (fun t u ↦ i _ (s t u)) fun t t' u a ↦ by rw [hs, hi]`. Conclude with `⟨r T x, fun t u ↦ by rw [← hr, hx, hri]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem glue_of_retract (i : ∀ T, F₁.obj T →+ F₂.obj T) (r : ∀ T, F₂.obj T →+ F₁.obj T)
     (hri : ∀ T x, r T (i T x) = x) (hi : ∀ {T S : C} (u : T ⟶ S) x, i S (mp F₁ u x) = mp F₂ u (i T x))
@@ -58,7 +58,7 @@ theorem glue_of_retract (i : ∀ T, F₁.obj T →+ F₂.obj T) (r : ∀ T, F₂
   exact ⟨r T x, fun t u ↦ by rw [← hr, hx, hri]⟩
 
 /- English proof (translation)
-Introduce `T y hy`. Take `⟨g, hg⟩` from `hv T (fun t t' u a ↦ i _ (y t t' u a)) fun t t' t'' u a b ↦ by rw [hy, map_add, hi]`. Conclude with `⟨fun t u ↦ r _ (g t u), fun t t' u a ↦ by rw [← hr, ← map_sub, hg, hri]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cocycleOne_vanishing_of_natural_additive_retract (i : ∀ T, F₁.obj T →+ F₂.obj T) (r : ∀ T, F₂.obj T →+ F₁.obj T)
     (hri : ∀ T x, r T (i T x) = x) (hi : ∀ {T S : C} (u : T ⟶ S) x, i S (mp F₁ u x) = mp F₂ u (i T x))
@@ -76,7 +76,7 @@ theorem cocycleOne_vanishing_of_natural_additive_retract (i : ∀ T, F₁.obj T 
   exact ⟨fun t u ↦ r _ (g t u), fun t t' u a ↦ by rw [← hr, ← map_sub, hg, hri]⟩
 
 /- English proof (translation)
-Introduce `T z hz`. Take `⟨y, hy⟩` from `hv T (fun t t' t'' u a b ↦ i _ (z t t' t'' u a b)) fun t t' t'' t''' u a b c ↦ by`. Rewrite using `[← hi, ← map_add, ← map_add, hz]`. Conclude with `⟨fun t t' u a ↦ r _ (y t t' u a), fun t t' t'' u a b ↦ by`. Rewrite using `[← hr, ← map_sub, ← map_add, hy, hri]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 theorem cocycleTwo_vanishing_of_natural_additive_retract (i : ∀ T, F₁.obj T →+ F₂.obj T) (r : ∀ T, F₂.obj T →+ F₁.obj T)
     (hri : ∀ T x, r T (i T x) = x) (hi : ∀ {T S : C} (u : T ⟶ S) x, i S (mp F₁ u x) = mp F₂ u (i T x))
@@ -119,13 +119,13 @@ def proj (T : C) : TrivSqZeroExt (F.obj T) (F.obj T ⊗[R₀] R₁) →+ R₁ �
     (TrivSqZeroExt.sndHom (F.obj T) (F.obj T ⊗[R₀] R₁)).toAddMonoidHom
 
 /- English proof (translation)
-Simplify using `[proj, incl]`.
+Simplify using the standard rewrite rules.
 -/
 theorem proj_incl (T : C) (x : R₁ ⊗[R₀] F.obj T) : proj R₁ F T (incl R₁ F T x) = x := by
   simp [proj, incl]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a b => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem comm_ext {T S : C} (u : T ⟶ S) (x : R₁ ⊗[R₀] F.obj T) :
     TensorProduct.comm R₀ R₁ (F.obj S) (extHom R₁ (mp F u) x) =
@@ -136,9 +136,9 @@ theorem comm_ext {T S : C} (u : T ⟶ S) (x : R₁ ⊗[R₀] F.obj T) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `incl R₁ F S (mp (ext R₁ F) u x) = TenExt.tenMap R₁ F u (incl R₁ F T x)`. Apply `TrivSqZeroExt.ext` to reduce the goal to its premises. Rewrite using `[TenExt.fst_tenMap]`. Simplify using `[incl]`. Rewrite using `[TenExt.snd_tenMap]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [incl, AddMonoidHom.coe_comp, Function.comp_apply, LinearMap.toAddMonoidHom_coe, LinearEquiv.coe_coe, TrivSqZeroExt.inrHom_apply, TrivSqZeroExt.snd_inr]`. Conclude with `comm_ext R₁ F u x`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem incl_mp {T S : C} (u : T ⟶ S) (x : R₁ ⊗[R₀] F.obj T) :
     incl R₁ F S (mp (ext R₁ F) u x) = mp (TenExt.tenExt R₁ F) u (incl R₁ F T x) := by
@@ -151,9 +151,9 @@ theorem incl_mp {T S : C} (u : T ⟶ S) (x : R₁ ⊗[R₀] F.obj T) :
     exact comm_ext R₁ F u x
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `proj R₁ F S (TenExt.tenMap R₁ F u c) = mp (ext R₁ F) u (proj R₁ F T c)`. Simplify using `only [proj, AddMonoidHom.coe_comp, Function.comp_apply, LinearMap.toAddMonoidHom_coe, LinearEquiv.coe_coe, TrivSqZeroExt.sndHom_apply]`. Rewrite using `[TenExt.snd_tenMap]`. Apply `(TensorProduct.comm R₀ R₁ (F.obj S)).injective` to reduce the goal to its premises. Rewrite using `[LinearEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = TensorProduct.comm R₀ R₁ (F.obj S) (extHom R₁ (mp F u) _)`. Rewrite using `[comm_ext, LinearEquiv.apply_symm_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem proj_mp {T S : C} (u : T ⟶ S) (c : TrivSqZeroExt (F.obj T) (F.obj T ⊗[R₀] R₁)) :
     proj R₁ F S (mp (TenExt.tenExt R₁ F) u c) = mp (ext R₁ F) u (proj R₁ F T c) := by
@@ -167,9 +167,9 @@ theorem proj_mp {T S : C} (u : T ⟶ S) (c : TrivSqZeroExt (F.obj T) (F.obj T �
   rw [comm_ext, LinearEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Establish `h : ∀ T, extHom R₁ (coefHom (CoefMap.restrict F G) T) = AlgHom.id R₁ (R₁ ⊗[R₀] F.obj (G.obj T))` using `fun T ↦ by`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises. Introduce `a b`. Both sides reduce to the same expression. Unfold `extMap CoefMap.restrict`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use function extensionality and compare the values at `T`. Conclude with `RingHom.ext fun x ↦ DFunLike.congr_fun (h T) x`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem extMap_restrict {C' : Type} [Category.{0} C'] (G : C' ⥤ C) :
     extMap R₁ (CoefMap.restrict F G) = CoefMap.restrict (ext R₁ F) G := by
@@ -194,15 +194,15 @@ section Cover
 variable {R₀ : Type} [CommRing R₀] {X : Scheme.{0}} (s : X ⟶ Sp R₀)
 
 /- English proof (translation)
-Establish `hT : IsAffineOpen T.unop.1` using `T.unop.2`. Set `Gs : Set Γ(X, T.unop.1)` to `{f | ∃ V : X.Opens, P V ∧ X.basicOpen f ≤ V}`. Establish `hG : Ideal.span Gs = ⊤`. Rewrite using `[← hT.self_le_iSup_basicOpen_iff]`. Introduce `x hx`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨V, hV, hxV⟩` from `hP x hx`. Take `⟨f, hf, hxf⟩` from `hT.exists_basicOpen_le (V := V) ⟨x, hxV⟩ hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨f, V, hV, hf⟩, hxf⟩`. Take `⟨F, hFG, hF⟩` from `(Ideal.span_eq_top_iff_finite Gs).1 hG`. Use `⟨F.card, fun i ↦ (F.equivFin.symm i).1, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hR : Set.range (fun i : Fin F.card ↦ (F.equivFin.symm i).1) = (F : Set Γ(X, T.unop.1))`. Use extensionality with `f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, rfl⟩`. Conclude with `(F.equivFin.symm i).2`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hf; exact ⟨F.equivFin ⟨f, hf⟩, by simp⟩`. Conclude with `hR ▸ hF`. Introduce `i S u hu`. Take `⟨V, hV, hfV⟩` from `hFG (F.equivFin.symm i).2`. Use `⟨V, hV, le_trans ?_ hfV⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `set f : Γ(X, T.unop.1) := (F.equivFin.symm i).1`. Establish `h1 : X.basicOpen (X.presheaf.map (homOfLE (leOfHom u.unop)).op f) = S.unop.1` using `X.basicOpen_of_isUnit hu`. Rewrite `h1` using `[Scheme.basicOpen_res]`. Rewrite using `[← h1]`. Conclude with `inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem cover_of_local (P : X.Opens → Prop) (T : AffOp X)
     (hP : ∀ x ∈ T.unop.1, ∃ V : X.Opens, P V ∧ x ∈ V) :
@@ -235,9 +235,9 @@ theorem cover_of_local (P : X.Opens → Prop) (T : AffOp X)
     rw [← h1]; exact inf_le_right
 
 /- English proof (translation)
-Introduce `T`. Take `⟨n, b, hb, h⟩` from `cover_of_local s (fun V ↦ ∃ t : C', V = (G.obj t).unop.1 ∧ (G.obj t).unop.1 ≤ T.unop.1) T (fun x hx ↦ by`. Take `⟨t, hxt, htT⟩` from `h1 x _ hx`. Conclude with `⟨_, ⟨t, rfl, htT⟩, hxt⟩)`. Use `⟨n, b, hb, fun i S u hu ↦ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨V, ⟨t, rfl, htT⟩, hSV⟩` from `h i S u hu`. Conclude with `⟨t, (homOfLE (show (G.obj t).unop ≤ T.unop from htT)).op, (homOfLE (show S.unop ≤ (G.obj t).unop from hSV)).op, Quiver.Hom.unop_inj (Subsingleton.elim _ _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hcov_of_basis {C' : Type} [Category.{0} C'] (G : C' ⥤ AffOp X)
     (h1 : ∀ (x : X) (U : X.Opens), x ∈ U → ∃ t : C', x ∈ (G.obj t).unop.1 ∧ (G.obj t).unop.1 ≤ U) :
@@ -256,9 +256,9 @@ theorem hcov_of_basis {C' : Type} [Category.{0} C'] (G : C' ⥤ AffOp X)
     (homOfLE (show S.unop ≤ (G.obj t).unop from hSV)).op, Quiver.Hom.unop_inj (Subsingleton.elim _ _)⟩
 
 /- English proof (translation)
-Introduce `t₁ t₂ S a₁ a₂`. Take `⟨n, b, hb, h⟩` from `cover_of_local s (fun V ↦ ∃ t₃ : C', Nonempty (t₁ ⟶ t₃) ∧ Nonempty (t₂ ⟶ t₃) ∧ V = (G.obj t₃).unop.1) S (fun x hx ↦ by`. Take `⟨t₃, e₁, e₂, hx3, -⟩` from `h2 t₁ t₂ x S.unop.1 hx ((leOfHom a₁.unop : S.unop ≤ (G.obj t₁).unop) hx) ((leOfHom a₂.unop : S.unop ≤ (G.obj t₂).unop) hx)`. Conclude with `⟨_, ⟨t₃, e₁, e₂, rfl⟩, hx3⟩)`. Use `⟨n, b, hb, fun i S' u hu ↦ ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨V, ⟨t₃, e₁, e₂, rfl⟩, hSV⟩` from `h i S' u hu`. Conclude with `⟨t₃, e₁, e₂, ⟨(homOfLE (show S'.unop ≤ (G.obj t₃).unop from hSV)).op⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hdir_of_basis {C' : Type} [Category.{0} C'] (G : C' ⥤ AffOp X)
     (h2 : ∀ (t₁ t₂ : C') (x : X) (U : X.Opens), x ∈ U → x ∈ (G.obj t₁).unop.1 → x ∈ (G.obj t₂).unop.1 →
@@ -285,15 +285,15 @@ end GlobalTheory.Obs.BasisExt
 namespace GlobalTheory.Obs.BasisExt
 
 /- English proof (translation)
-Introduce `R₀ R₁ _ _ _ X s C' _ _ G h1 h2`. Establish `H` using `hasLoc_OAff s`. Establish `hcov` using `hcov_of_basis s G h1`. Establish `hdir` using `hdir_of_basis s G h2`. Establish `HE` using `TenExt.hasLoc_tenExt R₁ (OAff s) H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `unitE : ∀ {S S' : AffOp X} (u : S ⟶ S') (b : (OAff s).obj S), IsUnit (mp (TenExt.tenExt R₁ (OAff s)) u (TrivSqZeroExt.inl b)) → IsUnit (mp (OAff s) u b)` using `fun u b h ↦ ((TenExt.isUnit_mp_tenExt_iff R₁ (OAff s) u _).1 h)`. Establish `hcovE : ∀ T : AffOp X, ∃ (n : ℕ) (b : Fin n → (TenExt.tenExt R₁ (OAff s)).obj T), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S : AffOp X) (u : T ⟶ S), IsUnit (mp (TenExt.tenExt R₁ (OAff s)) u (b i)) → ∃ (t : C') (v : T ⟶ G.obj t) (w : G.obj t ⟶ S), v ≫ w = u` using `fun T ↦ by`. Take `⟨n, b, hb, h⟩` from `hcov T`. Conclude with `⟨n, fun i ↦ TrivSqZeroExt.inl (b i), TenExt.span_inl_eq_top R₁ (OAff s) hb, fun i S u hu ↦ h i S u (unitE u _ hu)⟩`. Establish `hdirE : ∀ (t₁ t₂ : C') (S : AffOp X), (G.obj t₁ ⟶ S) → (G.obj t₂ ⟶ S) → ∃ (n : ℕ) (b : Fin n → (TenExt.tenExt R₁ (OAff s)).obj S), Ideal.span (Set.range b) = ⊤ ∧ ∀ (i : Fin n) (S' : AffOp X) (u : S ⟶ S'), IsUnit (mp (TenExt.tenExt R₁ (OAff s)) u (b i)) → ∃ t₃, Nonempty (t₁ ⟶ t₃) …` using `fun t₁ t₂ S a₁ a₂ ↦ by`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨n, b, hb, h⟩` from `hdir t₁ t₂ S a₁ a₂`. Conclude with `⟨n, fun i ↦ TrivSqZeroExt.inl (b i), TenExt.span_inl_eq_top R₁ (OAff s) hb, fun i S' u hu ↦ h i S' u (unitE u _ hu)⟩`. Establish `hsE` using `_root_.GlobalTheory.sep_of_factoring_cover (TenExt.tenExt R₁ (OAff s)) G HE hcovE`. Establish `hgE` using `_root_.GlobalTheory.CatCoh.Desc.glue_comma_of_basis (TenExt.tenExt R₁ (OAff s)) G HE hcovE hdirE`. Establish `hvE` using `_root_.GlobalTheory.CatCoh.Desc.Basis.oneCocycle_vanishing_comma_of_basis (TenExt.tenExt R₁ (OAff s)) G HE hcovE hdirE`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv2E` using `_root_.GlobalTheory.CatCoh.Desc.VandermondeTwoBasis.twoCocycle_coboundary_of_basisFunctor_alt (TenExt.tenExt R₁ (OAff s)) G HE hcovE hdirE`. Establish `hs` using `sep_of_retract (ext R₁ (OAff s)) (TenExt.tenExt R₁ (OAff s)) G (incl R₁ (OAff s)) (proj R₁ (OAff s)) (proj_incl R₁ (OAff s)) (incl_mp R₁ (OAff s)) hsE`. Establish `hg` using `glue_of_retract (ext R₁ (OAff s)) (TenExt.tenExt R₁ (OAff s)) G (incl R₁ (OAff s)) (proj R₁ (OAff s)) (proj_incl R₁ (OAff s)) (incl_mp R₁ (OAff s)) (proj_mp R₁ (OAff s)) hgE`. Establish `hv` using `cocycleOne_vanishing_of_natural_additive_retract (ext R₁ (OAff s)) (TenExt.tenExt R₁ (OAff s)) G (incl R₁ (OAff s)) (proj R₁ (OAff s)) (proj_incl R₁ (OAff s)) (incl_mp R₁ (OAff s)) (proj_mp R₁ (OAff s)) hvE`. Establish `hv2` using `cocycleTwo_vanishing_of_natural_additive_retract (ext R₁ (OAff s)) (TenExt.tenExt R₁ (OAff s)) G (incl R₁ (OAff s)) (proj R₁ (OAff s)) (proj_incl R₁ (OAff s)) (incl_mp R₁ (OAff s)) (proj_mp R₁ (OAff s)) hv2E`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[extMap_restrict]`. Conclude with `⟨⟨_root_.GlobalTheory.CatCoh.CoefMap.restrict_pull1_injective_of_sep_glue _ _ hs hg, _root_.GlobalTheory.CatCoh.pull1_restrict_surjective_of_comma _ _ hs hg hv⟩, ⟨_root_.GlobalTheory.CatCoh.pull2_restrict_injective_of_comma _ _ hs hg hv, _root_.GlobalTheory.CatCoh.Desc.pull2_surj …`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem restrict_ext_bijective : ∀ (R₀ R₁ : Type) [CommRing R₀] [CommRing R₁] [Algebra R₀ R₁] (X : Scheme.{0})
     (s : X ⟶ Sp R₀) (C' : Type) [Category.{0} C'] [Quiver.IsThin C'] (G : C' ⥤ AffOp X),

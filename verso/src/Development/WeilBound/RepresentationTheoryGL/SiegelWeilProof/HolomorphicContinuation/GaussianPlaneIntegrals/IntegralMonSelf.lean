@@ -10,7 +10,7 @@ namespace PositivityTheory.Rg.Sw.FFTSteps.PosProof
 variable {ι A B : Type} [Fintype ι] [DecidableEq ι] [Fintype A] [Fintype B]
 
 /- English proof (translation)
-Simplify using `only [e1]`. Rewrite using `[← Complex.exp_sum]`. Use `congr 1`. Use `push_cast`. Simplify using `[Finset.sum_neg_distrib]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 -/
 theorem gw_prod (z : Sg ι A B → ℂ) : Complex.exp (-(∑ s, ‖z s‖ ^ 2 : ℝ)) = ∏ s, e1 (z s) := by
   simp only [e1]
@@ -22,7 +22,7 @@ theorem gw_prod (z : Sg ι A B → ℂ) : Complex.exp (-(∑ s, ‖z s‖ ^ 2 : 
 def mon (m : Sg ι A B →₀ ℕ) (z : Sg ι A B → ℂ) : ℂ := ∏ s, z s ^ m s
 
 /- English proof (translation)
-Rewrite using `[gw_prod]`. Simplify using `only [mon, hk, Complex.star_def, map_prod, map_pow, Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mon_prod (m m' : Sg ι A B →₀ ℕ) (z : Sg ι A B → ℂ) :
     mon m z * star (mon m' z) * Complex.exp (-(∑ s, ‖z s‖ ^ 2 : ℝ)) = ∏ s, hk (m s) (m' s) (z s) := by
@@ -30,7 +30,7 @@ theorem mon_prod (m m' : Sg ι A B →₀ ℕ) (z : Sg ι A B → ℂ) :
   simp only [mon, hk, Complex.star_def, map_prod, map_pow, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Repeatedly rewrite using `[mon_prod]`. Use `Integrable.fintype_prod (f := fun s => hk (m s) (m' s)) (μ := fun _ => (volume : Measure ℂ)) (fun s => integrable_hk _ _)` as an intermediate fact. Rewrite `this` using `[← volume_pi]`. Then use the resulting hypothesis.
+Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem integrable_mon (m m' : Sg ι A B →₀ ℕ) :
     Integrable (fun z : Sg ι A B → ℂ => mon m z * star (mon m' z) * Complex.exp (-(∑ s, ‖z s‖ ^ 2 : ℝ))) := by
@@ -40,7 +40,7 @@ theorem integrable_mon (m m' : Sg ι A B →₀ ℕ) :
   rwa [← volume_pi] at this
 
 /- English proof (translation)
-Repeatedly rewrite using `[mon_prod]`. Conclude with `integral_fintype_prod_volume_eq_prod (fun s w => hk (m s) (m' s) w)`.
+Rewrite the conclusion repeatedly using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integral_mon (m m' : Sg ι A B →₀ ℕ) :
     ∫ z : Sg ι A B → ℂ, mon m z * star (mon m' z) * Complex.exp (-(∑ s, ‖z s‖ ^ 2 : ℝ)) =
@@ -49,9 +49,7 @@ theorem integral_mon (m m' : Sg ι A B →₀ ℕ) :
   exact integral_fintype_prod_volume_eq_prod (fun s w => hk (m s) (m' s) w)
 
 /- English proof (translation)
-Rewrite using `[integral_mon]`. Choose the witnesses or unpack the hypotheses as in `⟨s, hs⟩ : ∃ s, m s ≠ m' s := by`. Assume the negation of the conclusion as `hc`. Use `push Not at hc`. Conclude with `h (Finsupp.ext hc)`.
-
-Conclude with `Finset.prod_eq_zero (Finset.mem_univ s) (integral_hk_ne _ _ hs)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem integral_mon_ne (m m' : Sg ι A B →₀ ℕ) (h : m ≠ m') :
     ∫ z : Sg ι A B → ℂ, mon m z * star (mon m' z) * Complex.exp (-(∑ s, ‖z s‖ ^ 2 : ℝ)) = 0 := by
@@ -63,7 +61,7 @@ theorem integral_mon_ne (m m' : Sg ι A B →₀ ℕ) (h : m ≠ m') :
   exact Finset.prod_eq_zero (Finset.mem_univ s) (integral_hk_ne _ _ hs)
 
 /- English proof (translation)
-Rewrite using `[integral_mon]`. Use `push_cast`. Conclude with `Finset.prod_congr rfl fun s _ => integral_hk_diag _`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem integral_mon_self (m : Sg ι A B →₀ ℕ) :
     ∫ z : Sg ι A B → ℂ, mon m z * star (mon m z) * Complex.exp (-(∑ s, ‖z s‖ ^ 2 : ℝ)) =
@@ -77,7 +75,7 @@ def kap (d : ι → ℝ) : Sg ι A B → ℝ := Sum.elim (fun _ => 1) (fun y => 
 def lam (d : ι → ℝ) (m : Sg ι A B →₀ ℕ) : ℝ := ∏ s, kap d s ^ m s
 
 /- English proof (translation)
-Use function extensionality and compare the values at `s`. Break down `s with x | ⟨i, b⟩` into its components or cases. Simplify using `[Phi, kap]`. Simplify using `[Phi, kap, Matrix.diagonal_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem Phi_diag (d : ι → ℝ) (z : Sg ι A B → ℂ) :
     Phi (Matrix.diagonal fun i => (d i : ℂ)) z = fun s => (kap d s : ℂ) * z s := by
@@ -87,19 +85,17 @@ theorem Phi_diag (d : ι → ℝ) (z : Sg ι A B → ℂ) :
   · simp [Phi, kap, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Unfold `gip`. Establish `hpt : ∀ z : Sg ι A B → ℂ, eval z (sub 1 (Matrix.diagonal fun i => (d i : ℂ)) g) * star (eval z g) * Complex.exp (-(∑ s, ‖z s‖ ^ 2 : ℝ)) = ∑ m ∈ g.support, ∑ m' ∈ g.support, (g.coeff m * (lam d m : ℂ) * star (g.coeff m')) * (mon m z * star (mon m' z) * Complex.exp (-(∑ s, ‖z s‖ ^ …`. Introduce `z`. Rewrite using `[eval_sub, Phi_diag, MvPolynomial.eval_eq', MvPolynomial.eval_eq']`. Establish `hl : ∀ m : Sg ι A B →₀ ℕ, ∏ s, ((kap d s : ℂ) * z s) ^ m s = (lam d m : ℂ) * mon m z`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `m`. Simplify using `only [mul_pow, Finset.prod_mul_distrib, lam, mon]`. Use `push_cast`. Both sides reduce to the same expression. Repeatedly rewrite using `[hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[star_sum, Finset.sum_mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun m' _ => ?_` and prove the remaining obligations. Establish `hmon : (∏ i, z i ^ m' i) = mon m' z` using `rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Apply the tactic sequence `try simp only [star_mul']`. Apply the tactic sequence `try rw [hmon]`. Expand and normalize the polynomial expressions, which then agree. Repeatedly rewrite using `[hpt]`. Establish `hint : ∀ m m' : Sg ι A B →₀ ℕ, Integrable fun z : Sg ι A B → ℂ => mon m z * star (mon m' z) * Complex.exp (-(∑ s, ‖z s‖ ^ 2 : ℝ))` using `integrable_mon`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion repeatedly using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finset_sum _ fun m _ => integrable_finset_sum _ fun m' _ => (hint m m').const_mul _]`. Rewrite using `[Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[integral_finset_sum _ fun m' _ => (hint m m').const_mul _]`. Repeatedly rewrite using `[integral_const_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single_of_mem m hm fun m' _ hne => by rw [integral_mon_ne m m' hne.symm, mul_zero]]`. Rewrite using `[integral_mon_self]`. Establish `hc : ((Complex.normSq (g.coeff m) : ℝ) : ℂ) = g.coeff m * star (g.coeff m)`. Rewrite using `[Complex.star_def, Complex.mul_conj]`. Rewrite using `[Complex.ofReal_mul, Complex.ofReal_mul, hc]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gip_diag (d : ι → ℝ) (g : PV ι A B) :
     gip (sub 1 (Matrix.diagonal fun i => (d i : ℂ)) g) g =

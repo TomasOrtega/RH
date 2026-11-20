@@ -19,7 +19,7 @@ def tauU : UP p →* UP p where
   map_mul' x y := by ext1; exact (tau p).map_mul x y
 
 /- English proof (translation)
-Use `ext1`. Conclude with `tau_tau p x`.
+A detailed English derivation is pending.
 -/
 theorem tauU_tauU (x : UP p) : tauU p (tauU p x) = x := by
   ext1; exact tau_tau p x
@@ -30,22 +30,22 @@ def piG (πa : UP p →* UP p) (x : GG p) : GG p :=
   if h : x ∈ UP p then ((piU p πa ⟨x, h⟩ : UP p) : GG p) else 1
 
 /- English proof (translation)
-Unfold `piG`. Rewrite using `[dif_pos x.2]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem piG_of (πa : UP p →* UP p) (x : UP p) : piG p πa x = ((piU p πa x : UP p) : GG p) := by
   unfold piG; rw [dif_pos x.2]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => ⟨⟨h.1, h.2.1⟩, h.2.2⟩, fun h => ⟨h.1.1, h.1.2, h.2⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_StP_iff (x : GG p) :
     x ∈ StP M δ u u' w p ↔ x ∈ UP p ∧ x • Y0 M δ u u' w p = Y0 M δ u u' w p :=
   ⟨fun h => ⟨⟨h.1, h.2.1⟩, h.2.2⟩, fun h => ⟨h.1.1, h.1.2, h.2⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← (hB.choose_spec.2 (tauU p x))]`. Prove the components needed by the constructor for the conclusion. Introduce `h show tau p x • _ = _`. Rewrite using `[← phi_smul p δ _ _ w x.2, h]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `phi_inj p δ (D.mem u).A.T (D.mem u').A.T w` to reduce the goal to its premises. Rewrite using `[phi_smul p δ _ _ w x.2]`. Conclude with `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fixes_base_iff (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)) (hB : BaseAt M δ u u' w p a) (x : UP p) :
     (x : GG p) • Y0 M δ u u' w p = Y0 M δ u u' w p ↔ ((tauU p x : UP p) : GG p) • a.mat = a.mat := by
@@ -60,13 +60,13 @@ theorem fixes_base_iff (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)) (hB : BaseAt M �
     exact h
 
 /- English proof (translation)
-Use `⟨fun x hx => ((mem_StP_iff M δ u u' w p x).1 hx).1, fun x hx y hy => ?_, fun x hx => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Establish `ex : piG p πa x = ((piU p πa ⟨x, hx⟩ : UP p) : GG p)` using `piG_of p πa ⟨x, hx⟩`. Establish `ey : piG p πa y = ((piU p πa ⟨y, hy⟩ : UP p) : GG p)` using `piG_of p πa ⟨y, hy⟩`. Establish `exy : piG p πa (x * y) = ((piU p πa (⟨x, hx⟩ * ⟨y, hy⟩) : UP p) : GG p)` using `piG_of p πa (⟨x, hx⟩ * ⟨y, hy⟩)`. Rewrite using `[exy, ex, ey, map_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[show x = ((⟨x, hx⟩ : UP p) : GG p) from rfl, piG_of]`. Use `(mem_StP_iff M δ u u' w p _).2 ⟨(piU p πa ⟨x, hx⟩).2, ?_⟩` and prove the remaining obligations. Rewrite using `[fixes_base_iff M δ u u' w p a hB]`. Establish `h1 : tauU p (piU p πa ⟨x, hx⟩) = πa (tauU p ⟨x, hx⟩)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [piU, MonoidHom.comp_apply, tauU_tauU]`. Rewrite using `[h1]`. Conclude with `hD.mem _`. Take `⟨hsU, hsY⟩` from `(mem_StP_iff M δ u u' w p s).1 hs`. Rewrite using `[show s = ((⟨s, hsU⟩ : UP p) : GG p) from rfl, piG_of]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfix : tauU p ⟨s, hsU⟩ ∈ MulAction.stabilizer (UP p) a.mat` using `(fixes_base_iff M δ u u' w p a hB ⟨s, hsU⟩).1 hsY`. Establish `h2 : piU p πa ⟨s, hsU⟩ = ⟨s, hsU⟩`. Simplify using `only [piU, MonoidHom.comp_apply, hD.id _ hfix, tauU_tauU]`. Rewrite using `[h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem retr_of (a : Loc.Pt (D.s.atP p).Ep (D.R.rS + 1)) (πa : UP p →* UP p)
     (hD : CountAb.Data (a.mat) (MulAction.stabilizer (UP p) a.mat) πa.ker (KU M p) πa)

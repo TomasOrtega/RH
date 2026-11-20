@@ -16,7 +16,7 @@ variable {O K : Type} [CommRing O] [NormedField K] [IsUltrametricDist K] [Comple
 
 omit [CompleteSpace K] in
 /- English proof (translation)
-Rewrite using `[← Nat.cast_pow, Nat.cast_smul_eq_nsmul]`. Conclude with `nsmul_mem hw _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pow_smul_mem (W : Submodule O D.Pol) (n : ℕ) {w : D.Pol} (hw : w ∈ W) : (l : K) ^ n • w ∈ W := by
   rw [← Nat.cast_pow, Nat.cast_smul_eq_nsmul]
@@ -25,7 +25,7 @@ theorem pow_smul_mem (W : Submodule O D.Pol) (n : ℕ) {w : D.Pol} (hw : w ∈ W
 omit [CompleteSpace K] [NeZero e] in
 
 /- English proof (translation)
-Rewrite using `[mem_divE, smul_comm]`. Conclude with `D.M.smul_mem (EIn l e (A O K)) (D.upper p hp)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem E_smul_mem_EM {p : Vec K a ι} (hp : p ∈ D.L) : E K l e • p ∈ D.EM η := by
   rw [mem_divE, smul_comm]
@@ -34,7 +34,7 @@ theorem E_smul_mem_EM {p : Vec K a ι} (hp : p ∈ D.L) : E K l e • p ∈ D.EM
 omit [CompleteSpace K] in
 
 /- English proof (translation)
-Establish `h` using `D.smul_mem_Man (pow_mem (E_mem l e (Rpi O K l e)) (2 * H + 1)) hf`. Establish `h1 : E K l e ^ (2 * H) * Ezpow K l e (-(2 * H : ℤ)) = 1`. Simplify using `using E_pow_mul_Ezpow_neg (K := K) l e (2 * H)`. Rewrite `h` using `[smul_smul, pow_succ', mul_assoc, h1, mul_one]`. Conclude with `D.cls_eq_zero_iff.2 h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cls_E_smul_eq_zero {f : Vec K a ι} (hf : Ezpow K l e (-(2 * H : ℤ)) • f ∈ D.Man) :
     D.cls (E K l e • f) = 0 := by
@@ -49,17 +49,15 @@ end GlobalTheory.BK.MonIntegral
 open GlobalTheory.BK.MonIntegral in
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D hη hH h14 h10 r hr hc hrl hl y hy m hm`. Take `⟨hsplit, hfil, -⟩` from `GlobalTheory.T.breuilKisin_integrality_computation O K l e a ι η H D hH h10`. Establish `hint` using `GlobalTheory.T.breuilKisin_descent_operator_preserves_lattice O K l e a ι η H D hH h10`. Establish `hyY : y ∈ D.Y` using `D.desc.Y'_le_Y η hy`. Use `set W : Submodule O D.Pol := ((D.EM η).restrictScalars O).map (D.cls.restrictScalars O) with hW`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL : ∀ p ∈ D.L, D.cls (E K l e • p) ∈ W` using `fun p hp => ⟨_, E_smul_mem_EM D hp, rfl⟩`. Establish `hMM : ∀ μ ∈ D.MM, D.cls (E K l e • μ) ∈ W` using `fun μ hμ => by`. Take `⟨p, hp, f, hf, rfl⟩` from `hsplit μ hμ`. Rewrite using `[smul_add, map_add, cls_E_smul_eq_zero D (hfil f hf), add_zero]`. Conclude with `hL p hp`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : D.Mon y ∈ W`. Rewrite using `[D.Mon_eq]`. Use `sub_mem (hint _ (D.desc.cls_mem_Z hyY)).1 ?_` and prove the remaining obligations. Take `⟨p, hp, f, hf, h⟩` from `GlobalTheory.T.breuilKisin_zeta_fine_bound_second_basis O K l e a ι η H D hη hH h14 y hy`. Rewrite using `[h, smul_add, map_add, smul_comm (E K l e) _ p, smul_comm (E K l e) _ f, D.cls.map_smul ((l : K) ^ _), D.cls.map_smul (_⁻¹ : K), cls_E_smul_eq_zero D (hfil f hf), smul_zero, add_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_smul_mem D W _ (hL p hp)`. Establish `h2 : (l : K) ^ (η * (r + 1)) • D.Mon (D.phi m) ∈ W`. Rewrite using `[D.Mon_eq, smul_sub, BKDat.Lc_cls, PhiMod.EN_apply]`. Use `sub_mem (pow_smul_mem D W _ (hMM _ (D.conn_mem_MM (D.ext_mono (A_le_S l e) (D.phi_mem_L hm.1))))) ?_` and prove the remaining obligations. Rewrite using `[← map_smul, ← smul_comm (E K l e)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hMM _ (GlobalTheory.T.prime_pow_smul_descent_phi_mem_lattice_of_orbit_bound O K l e a ι η H D r hr hc hrl hl m hm)`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, smul_add]`. Conclude with `add_mem (pow_smul_mem D W _ h1) h2`. Use `D.desc.actPol.invariants.smul_mem _ (D.desc.Mon_mem_invariants (add_mem hyY.2 fun g => ?_))` and prove the remaining obligations.
-
-Rewrite using `[D.desc.act_phi, hm.2 g]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.BK.pow_smul_Mon_add_phi_mem_Z : ∀ (O K : Type) [CommRing O] [NormedField K] [IsUltrametricDist K] [CompleteSpace K] [Algebra O K] [IsUnitBall O K] (l e a : ℕ) (ι : Type) [Fintype ι] [DecidableEq ι] [Fact l.Prime] [NormedAlgebra ℚ_[l] K] [NeZero e] [NeZero a] [TameDescentExponentData K l e a] (η H : ℕ) (D : BKDat O K l e a ι η H), 1 ≤ η → η < H → 14 * H < l → 10 * H + 2 ≤ l → ∀ r : ℕ, 1 ≤ r → (∀ τ, ∀ c ∈ D.desc.chars τ, frobPeriod l c ≤ r) → (r + 2) * η < l + 1 → l ≠ 2 → ∀ y ∈ D.Y', ∀ m ∈ D.Minv, (l : K) ^ (η * (r + 1)) • D.Mon (y + D.phi m) ∈ D.Z := by
   intro O K _ _ _ _ _ _ l e a ι _ _ _ _ _ _ _ η H D hη hH h14 h10 r hr hc hrl hl y hy m hm

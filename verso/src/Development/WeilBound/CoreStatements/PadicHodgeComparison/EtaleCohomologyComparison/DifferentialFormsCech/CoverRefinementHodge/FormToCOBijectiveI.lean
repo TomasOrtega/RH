@@ -54,19 +54,17 @@ def isoI (hG : type_of% (@CrystallineSemistableComparison.Om.Glob.glob_iso _)) (
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Establish `hτ' : ∀ n (i : Fin (n + 1) → U.ι), Pb.capO U.U i ≤ u ⁻¹ᵁ Pb.capO W.U (τ ∘ i)` using `fun n i => capO_pre u U.U W.U τ hτ i`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc, rfl⟩ : ∃ (c : (formCos p W.U a).X j) (h0 : (formCos p W.U a).cx.d j c = 0), (Classical.choose (hG K) p W a j).symm ((formCos p W.U a).cx.cls c h0) = x := by`. Take `⟨⟨c, h0⟩, hx⟩` from `Submodule.Quotient.mk_surjective _ (Classical.choose (hG K) p W a j x)`. Conclude with `⟨c, h0, by rw [LinearEquiv.symm_apply_eq]; exact hx⟩`. Use `set c' : (formCos q U.U a).X j := fun i => formRes q (hτ' j i) a (formPull hu (Pb.capO W.U (τ ∘ i)) a (c (τ ∘ i))) with hc'`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hd : (formCos q U.U a).cx.d j c' = fun i => formRes q (hτ' (j + 1) i) a (formPull hu (Pb.capO W.U (τ ∘ i)) a ((formCos p W.U a).cx.d j c (τ ∘ i)))`. Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `(Cos.d (formCos q U.U a) j c') i = formRes q (hτ' (j + 1) i) a (formPull hu (Pb.capO W.U (τ ∘ i)) a (Cos.d (formCos p W.U a) j c (τ ∘ i)))`. Set `evU : (formCos q U.U a).X (j + 1) →+ OmU q (Pb.capO U.U i) a` to `{ toFun := fun f => f i, map_zero' := rfl, map_add' := fun _ _ => rfl }`. Set `evW : (formCos p W.U a).X (j + 1) →+ OmU p (Pb.capO W.U (τ ∘ i)) a` to `{ toFun := fun f => f (τ ∘ i), map_zero' := rfl, map_add' := fun _ _ => rfl }`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `evU (Cos.d (formCos q U.U a) j c') = formRes q (hτ' (j + 1) i) a (formPull hu (Pb.capO W.U (τ ∘ i)) a (evW (Cos.d (formCos p W.U a) j c)))`. Rewrite using `[Cos.d_apply, Cos.d_apply, map_sum, map_sum, map_sum, map_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, map_zsmul, map_zsmul, map_zsmul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `formRes q (Pb.capO_comp U.U i k.succAbove) a (formRes q (hτ' j (i ∘ k.succAbove)) a (formPull hu (Pb.capO W.U (τ ∘ (i ∘ k.succAbove))) a (c (τ ∘ (i ∘ k.succAbove))))) = formRes q (hτ' (j + 1) i) a (formPull hu (Pb.capO W.U (τ ∘ i)) a (formRes p (Pb.capO_comp W.U (τ ∘ i) k.succAbo …`. Rewrite using `[← formRes_formPull, formRes_formRes, formRes_formRes]`. Both sides reduce to the same expression. Establish `h1 : (formCos q U.U a).cx.d j c' = 0`. Rewrite using `[hd]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Establish `h0 : (formCos p W.U a).cx.d j c (τ ∘ i) = 0` using `congrFun hc (τ ∘ i)`. Use `(congrArg (fun y => formRes q (hτ' (j + 1) i) a (formPull hu (Pb.capO W.U (τ ∘ i)) a y)) h0).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `formRes q (hτ' (j + 1) i) a (formPull hu (Pb.capO W.U (τ ∘ i)) a 0) = 0`. Conclude with `(congrArg (formRes q (hτ' (j + 1) i) a) (map_zero _)).trans (map_zero _)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `Classical.choose_spec (hG K) q p u hu U W τ hτ' a j c hc h1`. Establish `hb : bridgeI hB hS q U a j ((formCos q U.U a).cx.cls c' h1) = cechPull hu W.U U.U τ hτ a j (bridgeI hB hS p W a j ((formCos p W.U a).cx.cls c hc))`. Rewrite using `[bridgeI_apply, bridgeI_apply, formToCO_cls, formToCO_cls]`. Conclude with `(cls_eq (hC hu W.U U.U τ hτ (fun i => hτ' _ i) a j c).symm _ _).trans (cechPullH_cls u.base (GlobalTheory.toAbSheafPush (omegaPull hu a)).hom W.U U.U τ hτ (formCoch p W.U a j c) _).symm`. Simplify using `only [isoI, LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]`.
-
-Rewrite using `[key, LinearEquiv.apply_symm_apply, hb, lerayI_apply, lerayI_apply]`. Conclude with `hP q p u hu W.U W.cover (cov_aff W) U.U U.cover (cov_aff U) τ hτ a j _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoI_nat (hG : type_of% (@CrystallineSemistableComparison.Om.Glob.glob_iso _)) (hB : type_of% (@CrystallineSemistableComparison.Om.Cech.formToCO_bijective _))
     (hS : type_of% (@CrystallineSemistableComparison.Om.Cech.formToCO_smul _)) (hA : type_of% (@CrystallineSemistableComparison.Om.Cech.cechOmAdd_smul _))
@@ -122,13 +120,13 @@ theorem isoI_nat (hG : type_of% (@CrystallineSemistableComparison.Om.Glob.glob_i
   exact hP q p u hu W.U W.cover (cov_aff W) U.U U.cover (cov_aff U) τ hτ a j _
 
 /- English proof (translation)
-Introduce `K _ _`. Use `⟨fun {X} q _ _ a j => isoI hG hB hS hA q (covX q) a j, ?_⟩` and prove the remaining obligations. Introduce `X Y q p _ _ _ _ u hu a j x`. Simplify using `only`. Take `⟨U', hU'⟩` from `hR q (fun k : (covX q).ι × (covX p).ι => (covX q).U k.1 ⊓ u ⁻¹ᵁ (covX p).U k.2) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify by unfolding definitions. Extract witnesses or component facts from the available result.
 
-Use `eq_top_iff.2 fun z _ => ?_` and prove the remaining obligations. Establish `hz : z ∈ (⨆ α, (covX q).U α)` using `by rw [(covX q).cover]; trivial`. Take `⟨α, hα⟩` from `TopologicalSpace.Opens.mem_iSup.1 hz`. Establish `hy : u.base z ∈ (⨆ β, (covX p).U β)` using `by rw [(covX p).cover]; trivial`. Take `⟨β, hβ⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨(α, β), ⟨hα, hβ⟩⟩)`. Use `choose k hk using hU'`. Establish `hid : 𝟙 X ≫ q = q` using `Category.id_comp q`. Establish `e1 : ∀ z : HT.Hdg q a (a + j), isoI hG hB hS hA q U' a j z = isoI hG hB hS hA q (covX q) a j z`. Introduce `z`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `isoI_nat hG hB hS hA hP hC q q (𝟙 X) hid U' (covX q) (fun α => (k α).1) (fun α y hy => ((hk α) hy).1) a j z` as an intermediate fact. Rewrite `this` using `[hH, hCi]`. Then use the resulting hypothesis. Rewrite using `[← e1]`. Conclude with `isoI_nat hG hB hS hA hP hC q p u hu U' (covX p) (fun α => (k α).2) (fun α => (hk α).trans inf_le_right) a j x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hdg_iso_of_ing (hG : type_of% (@CrystallineSemistableComparison.Om.Glob.glob_iso _)) (hB : type_of% (@CrystallineSemistableComparison.Om.Cech.formToCO_bijective _))
     (hS : type_of% (@CrystallineSemistableComparison.Om.Cech.formToCO_smul _)) (hA : type_of% (@CrystallineSemistableComparison.Om.Cech.cechOmAdd_smul _))
@@ -155,19 +153,19 @@ theorem hdg_iso_of_ing (hG : type_of% (@CrystallineSemistableComparison.Om.Glob.
   exact isoI_nat hG hB hS hA hP hC q p u hu U' (covX p) (fun α => (k α).2) (fun α => (hk α).trans inf_le_right) a j x
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.forms_to_cech_bijective`.
+A detailed English derivation is pending.
 -/
 theorem formToCO_bijective_i : type_of% (@CrystallineSemistableComparison.Om.Cech.formToCO_bijective _) := GlobalTheory.T.forms_to_cech_bijective
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.forms_to_cech_smul`.
+A detailed English derivation is pending.
 -/
 theorem formToCO_smul_i : type_of% (@CrystallineSemistableComparison.Om.Cech.formToCO_smul _) := GlobalTheory.T.forms_to_cech_smul
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cech_forms_add_smul`.
+A detailed English derivation is pending.
 -/
 theorem cechOmAdd_smul_i : type_of% (@CrystallineSemistableComparison.Om.Cech.cechOmAdd_smul _) := GlobalTheory.T.cech_forms_add_smul
 /- English proof (translation)
-The claim follows from `CrystallineSemistableComparison.Om.Cech.formCoch_pull_pf`.
+A detailed English derivation is pending.
 -/
 theorem formCoch_pull_i : type_of% (@CrystallineSemistableComparison.Om.Cech.formCoch_pull _) := CrystallineSemistableComparison.Om.Cech.formCoch_pull_pf
 

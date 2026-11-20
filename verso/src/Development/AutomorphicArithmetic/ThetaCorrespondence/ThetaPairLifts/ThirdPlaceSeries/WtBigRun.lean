@@ -11,25 +11,21 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2 Forma
   GlobalTheory.CompHS GlobalTheory.HSApp
 namespace GlobalTheory.HSApp
 /- English proof (translation)
-Take `⟨ε1, hε1, H⟩` from `GlobalTheory.T.runSizes_quotientGaps_large`. Use `⟨ε1, hε1, fun eps he hle => ?_⟩` and prove the remaining obligations. Take `⟨K, hK⟩` from `H eps he hle`. Use `⟨K, fun Fm CH hc hL => ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `hK Fm CH hc hL`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨0, le_rfl, x0, fun x hx hxx ι p _ i hi => ?_⟩` and prove the remaining obligations. Take `⟨hD1, hDT, hG⟩` from `hx0 x hx hxx ι`. Take `⟨hr, hdim, hgap⟩` from `GlobalTheory.T.anchoredWeight_indefiniteLift_gaps p (Fm.params x hx ι) i hi`. Establish `hlen : lenT p i (Fm.parT x hx ι).PP = ⌈(Fm.parT x hx ι).PP ^ 2 * (((Fm.D x ι).R.f * (Fm.D x ι).R.r.choose 2 : ℕ) : ℝ) ^ 2 * ((Fm.D x ι).R.k : ℝ) / ((Fm.D x ι).R.m : ℝ)⌉₊`. Rewrite using `[lenT, GlobalTheory.CompHS.dimFlag_eq, hdim]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨hG1, hG2⟩` from `hG _ _ rfl hlen`. Establish `hc0 : ((cZero (Fm.D x ι) ((i : ℕ) + 1) : ℤ) : ℝ) ≤ 22 * ((Fm.D x ι).R.f : ℝ) ^ 2 * ((Fm.D x ι).R.r : ℝ) ^ 4`. Conclude with `(cZero_spec (Fm.D x ι) ((i : ℕ) + 1)).2.2` after adjusting the coercions. Use `clear H hK hx0 hG`. Use `⟨fun τ k hk => ?_, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[WtPar.gap_u₁ _ τ hk, WtPar.gap_uMinus_sub_kap _ τ hk]`. Simplify using `only [WtPar.T₁]`. Rewrite using `[hdim]`. Establish `hGeq : ((Fm.D x ι).R.f * (Fm.D x ι).R.r.choose 2 + 3) * (((Fm.D x ι).R.f * (Fm.D x ι).R.r.choose 2 + 1).choose 2 + 4 * ((dat p i).p + (dat p i).q) + (Fm.D x ι).R.f * (Fm.D x ι).R.r.choose 2 + 3) = ((Fm.D x ι).R.f * (Fm.D x ι).R.r.choose 2 + 3) * (((Fm.D x ι).R.f * (Fm.D x ι).R.r. …` using `by rw [hr]`. Rewrite using `[hGeq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable.
 
-Establish `hr2 : (((dat p i).p + (dat p i).q : ℕ) : ℤ) = (Fm.D x ι).R.r` using `by exact_mod_cast hr`. Generalize the expression as in `((Fm.D x ι).R.f * (Fm.D x ι).R.r.choose 2 + 3) * (((Fm.D x ι).R.f * (Fm.D x ι).R.r.choose 2 + 1).choose 2 + 4 * (Fm.D x ι).R.r + (Fm.D x ι).R.f * (Fm.D x ι).R.r.choose 2 + 3) = G at hG1 hG2 ⊢`. Generalize the expression as in `lenT p i (Fm.parT x hx ι).PP = T at hG1 hG2 ⊢`. Generalize the expression as in `(Fm.D x ι).R.f * (Fm.D x ι).R.r.choose 2 = Dd at hG1 hG2 ⊢`. Establish `hT : (0 : ℤ) < (T : ℤ) + (Dd : ℤ) + 1` using `by positivity`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `Int.le_ediv_of_mul_le hT ?_` and prove the remaining obligations. Take `⟨g1, g2⟩` from `hgap τ k hk`. Distinguish the cases in `hb : k + 1 = (dat p i).p`. Rewrite using `[if_pos hb, hr2]`. Establish `e` using `g2 hb`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `: (((G : ℤ) * ((T : ℤ) + (Dd : ℤ) + 1) : ℤ) : ℝ) ≤ ((gap (uW p i τ) k + (-(cZero (Fm.D x ι) ((i : ℕ) + 1)) - (2 * ((Fm.D x ι).R.r : ℤ) - 2)) : ℤ) : ℝ)`. Move the coercions through the operations in `at hG2 e ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions. Rewrite using `[if_neg hb]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `e` using `g1 hb`. Establish `: (((G : ℤ) * ((T : ℤ) + (Dd : ℤ) + 1) : ℤ) : ℝ) ≤ ((gap (uW p i τ) k + 2 : ℤ) : ℝ)`. Move the coercions through the operations in `at hG1 e ⊢`. Combine the linear equalities and inequalities to obtain the conclusion. Conclude with `this` after adjusting the coercions.
-
-Use `show GlobalTheory.FlagTan.dimFlag (dat p i) + 1 ≤ lenT p i (Fm.parT x hx ι).PP`. Rewrite using `[hdim, hlen]`. Conclude with `hDT`. Use `show 1 ≤ GlobalTheory.FlagTan.dimFlag (dat p i)`. Rewrite using `[hdim]`.
-
-Conclude with `hD1`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wtBig_run_alt : _root_.GlobalTheory.CovTop.LiftsCondition fun Fm x _ ι p i PP _ => (i : ℕ) + 1 < (Fm.D x ι).R.m →
     WtBig (⟨uW p i, cZero (Fm.D x ι) ((i : ℕ) + 1), (Fm.D x ι).R.k - 2, lenT p i PP⟩ : WtPar (dat p i)) := by

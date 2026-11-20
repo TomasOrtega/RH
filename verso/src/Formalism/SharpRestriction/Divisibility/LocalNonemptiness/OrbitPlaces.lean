@@ -18,9 +18,9 @@ def ydOf (f : ℕ → ℕ) (hf : Antitone f) (N : ℕ) : YoungDiagram where
     exact ⟨b.1, lt_of_le_of_lt h1 hr, b.2, lt_of_le_of_lt h2 (lt_of_lt_of_le hc (hf h1)), rfl⟩
 
 /- English proof (translation)
-Rewrite using `[← YoungDiagram.mem_cells]`. Simplify using `only [ydOf, Finset.mem_biUnion, Finset.mem_range, Finset.mem_image, Prod.mk.injEq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨r', hr', c', hc', rfl, rfl⟩`. Conclude with `⟨hr', hc'⟩`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨r, h1, c, h2, rfl, rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_ydOf (f : ℕ → ℕ) (hf : Antitone f) (N r c : ℕ) : (r, c) ∈ ydOf f hf N ↔ r < N ∧ c < f r := by
   rw [← YoungDiagram.mem_cells]
@@ -32,11 +32,9 @@ theorem mem_ydOf (f : ℕ → ℕ) (hf : Antitone f) (N r c : ℕ) : (r, c) ∈ 
     exact ⟨r, h1, c, h2, rfl, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ c, c < (ydOf f hf N).rowLen r ↔ c < f r`. Introduce `c`. Rewrite using `[← YoungDiagram.mem_iff_lt_rowLen, mem_ydOf]`. Use `⟨fun h => h.2, fun h => ⟨?_, h⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hr`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Rewrite `h` using `[h0 r (not_lt.1 hr)]`. Conclude with `absurd h (Nat.not_lt_zero _)`. Apply `le_antisymm` to reduce the goal to its premises. Assume the negation of the conclusion as `h`. Conclude with `absurd ((key _).1 (not_le.1 h)) (lt_irrefl _)`.
-
-Assume the negation of the conclusion as `h`. Conclude with `absurd ((key _).2 (not_le.1 h)) (lt_irrefl _)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem rowLen_ydOf (f : ℕ → ℕ) (hf : Antitone f) (N : ℕ) (h0 : ∀ r, N ≤ r → f r = 0) (r : ℕ) :
     (ydOf f hf N).rowLen r = f r := by
@@ -54,7 +52,7 @@ theorem rowLen_ydOf (f : ℕ → ℕ) (hf : Antitone f) (N : ℕ) (h0 : ∀ r, N
     exact absurd ((key _).2 (not_le.1 h)) (lt_irrefl _)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Use `(YoungDiagram.mem_iff_lt_colLen (μ := ydOf f hf N) (i := N) (j := 0)).2 (not_le.1 h)` as an intermediate fact. Conclude with `absurd ((mem_ydOf f hf N N 0).1 this).1 (lt_irrefl _)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem colLen_ydOf (f : ℕ → ℕ) (hf : Antitone f) (N : ℕ) : (ydOf f hf N).colLen 0 ≤ N := by
   by_contra h
@@ -66,13 +64,11 @@ def NuIsPart (D : D7) : Prop :=
     ∀ r, ((f r : ℕ) : ℝ) = if r < D.R.N i then DV.nuRow D u (i + 1) τ r else 0
 
 /- English proof (translation)
-Establish `key : ∀ (u : D.what₂.Word) (i : ℕ) (z : OrbitPlaces.Pl D), ∃ ν : YoungDiagram, (i < D.R.m → ∀ r, ((ν.rowLen r : ℕ) : ℝ) = if r < D.R.N i then DV.nuRow D u (i + 1) (tauPl D z) r else 0) ∧ ν.colLen 0 ≤ D.R.N i`. Introduce `u i z`. Distinguish the cases in `hi : i < D.R.m`. Take `⟨f, hf, hr⟩` from `h u i hi (tauPl D z)`. Establish `h0 : ∀ r, D.R.N i ≤ r → f r = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `r hN`. Use `hr r` as an intermediate fact. Rewrite `this` using `[if_neg (not_lt.2 hN)]`. Conclude with `this` after adjusting the coercions. Conclude with `⟨ydOf f hf (D.R.N i), fun _ r => by rw [rowLen_ydOf f hf _ h0]; exact hr r, colLen_ydOf f hf _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⊥, fun h' => absurd h' hi, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hc`. Use `(YoungDiagram.mem_iff_lt_colLen (μ := (⊥ : YoungDiagram)) (i := D.R.N i) (j := 0)).2 (not_le.1 hc)` as an intermediate fact. Conclude with `absurd this (YoungDiagram.notMem_bot _)`. Use `choose ν h1 h2 using key`.
-
-Conclude with `⟨{ nu := ν nu_row := fun u i hi z r => h1 u i z hi r nu_rows := h2 Th := fun _ _ _ _ _ _ => 0 ep := fun _ => 0 be := fun _ _ => 0 sg := fun _ _ => 0 }⟩`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem nonempty_entries_of_partition (D : D7) (h : NuIsPart D) : Nonempty (Ent D) := by
   classical
@@ -108,7 +104,7 @@ variable (D : D7) (u : D.what₂.Word) (τ : D.what₂.Tau)
 def nuE (a : ℕ) : ℚ := if h : a < D.R.m then (D.hc τ).e ⟨a, h⟩ else 0
 
 /- English proof (translation)
-Establish `ha : a < D.R.m` using `by omega`. Establish `h1 : ((D.R.t : ℚ) + 3) / 2 ≤ (D.hc τ).e ⟨a + 1, h⟩ - (D.hc τ).b ⟨a + 1, h⟩` using `(D.hc τ).gap_be ⟨a + 1, h⟩`. Establish `h2 : ((D.R.t : ℚ) + 3) / 2 ≤ (D.hc τ).b ⟨a + 1, h⟩ - (D.hc τ).e ⟨a, ha⟩` using `(D.hc τ).gap_eb ⟨a, ha⟩ h`. Unfold `nuE`. Rewrite using `[dif_pos h, dif_pos ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -121,7 +117,7 @@ theorem nuE_step (a : ℕ) (h : a + 1 < D.R.m) : (D.R.t : ℚ) + 3 ≤ nuE D τ 
   linarith
 
 /- English proof (translation)
-Unfold `nuE`. Distinguish the cases in `h : a < D.R.m`. Rewrite using `[dif_pos h]`. Conclude with `(D.hc τ).e_int ⟨a, h⟩`. Rewrite using `[dif_neg h]; exact ⟨0, by simp⟩`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nuE_int (a : ℕ) : ∃ z : ℤ, nuE D τ a = z := by
   unfold nuE
@@ -133,9 +129,9 @@ def nuQ (i r : ℕ) : ℚ :=
   DV.srcPar D u τ r + nuE D τ i - (((D.R.N i : ℕ) : ℚ) + ((D.R.N (i + 1) : ℕ) : ℚ) - 1 - 2 * (r : ℚ)) / 2
 
 /- English proof (translation)
-Establish `hw : DV.wSz D (i + 1) τ = ((nuE D τ i : ℚ) : ℝ)`. Unfold `DV.wSz nuE`. Rewrite using `[dif_pos ⟨by omega, by omega⟩, dif_pos hi]`. Both sides reduce to the same expression. Unfold `DV.nuRow nuQ`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Replace the relevant objects with their definitions.
 
-Rewrite using `[hw]`. Simplify using `only [Nat.add_sub_cancel]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nuRow_eq (i r : ℕ) (hi : i < D.R.m) : DV.nuRow D u (i + 1) τ r = ((nuQ D u τ i r : ℚ) : ℝ) := by
   have hw : DV.wSz D (i + 1) τ = ((nuE D τ i : ℚ) : ℝ) := by
@@ -149,7 +145,7 @@ theorem nuRow_eq (i r : ℕ) (hi : i < D.R.m) : DV.nuRow D u (i + 1) τ r = ((nu
   ring
 
 /- English proof (translation)
-Unfold `nuQ DV.srcPar Ranks.N`. Rewrite using `[dif_pos hr]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nuQ_lt (i r : ℕ) (hr : r < D.R.k) :
     nuQ D u τ i r = (D.hcW u τ).u ⟨r, hr⟩ + nuE D τ i - (D.R.k : ℚ) - (2 * (i : ℚ) + 1) * ((D.R.t : ℚ) + 1) / 2 + 1 / 2 + r := by
@@ -159,9 +155,9 @@ theorem nuQ_lt (i r : ℕ) (hr : r < D.R.k) :
   ring
 
 /- English proof (translation)
-Distinguish the cases in `hk : r < D.R.k`. Conclude with `Or.inr hk`. Use `left`. Rewrite using `[Nat.div_lt_iff_lt_mul (show 0 < D.R.t + 1 by omega)]`. Unfold `Ranks.N at hrN`.
+Consider separately whether the proposition holds or fails. Prove the second alternative. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem nu_div_lt (i r : ℕ) (hrN : r < D.R.N i) : (r - D.R.k) / (D.R.t + 1) < i ∨ r < D.R.k := by
   by_cases hk : r < D.R.k
@@ -172,13 +168,13 @@ theorem nu_div_lt (i r : ℕ) (hrN : r < D.R.N i) : (r - D.R.k) / (D.R.t + 1) < 
     omega
 
 /- English proof (translation)
-Establish `ha : (r - D.R.k) / (D.R.t + 1) < i` using `(nu_div_lt D i r hrN).resolve_right (not_lt.2 hk)`. Establish `ham : (r - D.R.k) / (D.R.t + 1) < D.R.m` using `lt_trans ha hi`. Establish `hdm : (D.R.t + 1) * ((r - D.R.k) / (D.R.t + 1)) + (r - D.R.k) % (D.R.t + 1) = r - D.R.k` using `Nat.div_add_mod _ _`. Establish `hr : (r : ℚ) = (D.R.k : ℚ) + ((D.R.t : ℚ) + 1) * (((r - D.R.k) / (D.R.t + 1) : ℕ) : ℚ) + (((r - D.R.k) % (D.R.t + 1) : ℕ) : ℚ)`. Establish `: r = D.R.k + ((D.R.t + 1) * ((r - D.R.k) / (D.R.t + 1)) + (r - D.R.k) % (D.R.t + 1))` using `by omega`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (r : ℚ) = ((D.R.k + ((D.R.t + 1) * ((r - D.R.k) / (D.R.t + 1)) + (r - D.R.k) % (D.R.t + 1)) : ℕ) : ℚ)` using `congrArg (Nat.cast : ℕ → ℚ) this`. Rewrite using `[h2]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `he : nuE D τ ((r - D.R.k) / (D.R.t + 1)) = (D.hcW u τ).e ⟨(r - D.R.k) / (D.R.t + 1), ham⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Unfold `nuE`. Rewrite using `[dif_pos ham, D.hcW_e u τ]`. Unfold `nuQ DV.srcPar Ranks.N`. Rewrite using `[dif_neg (not_lt.2 hk), dif_pos ham, he]`. Generalize the expression as in `(D.hcW u τ).e ⟨(r - D.R.k) / (D.R.t + 1), ham⟩ = E at *`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Use `push_cast`. Rewrite using `[hr]`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nuQ_ge (i r : ℕ) (hi : i < D.R.m) (hk : D.R.k ≤ r) (hrN : r < D.R.N i) :
     nuQ D u τ i r = nuE D τ i - nuE D τ ((r - D.R.k) / (D.R.t + 1)) -
@@ -205,9 +201,9 @@ theorem nuQ_ge (i r : ℕ) (hi : i < D.R.m) (hk : D.R.k ≤ r) (hrN : r < D.R.N 
   ring
 
 /- English proof (translation)
-Establish `h1 : (D.hcW u τ).v ⟨r, by omega⟩ < (D.hcW u τ).u ⟨r, by omega⟩` using `(D.hcW u τ).u_gt_v ⟨r, by omega⟩`. Establish `h2 : (D.hcW u τ).u ⟨r + 1, h⟩ < (D.hcW u τ).v ⟨r, by omega⟩` using `(D.hcW u τ).v_gt_u ⟨r, by omega⟩`. Take `⟨z, hz⟩` from `(D.hcW u τ).u_half ⟨r, by omega⟩`. Take `⟨z', hz'⟩` from `(D.hcW u τ).u_half ⟨r + 1, h⟩`. Rewrite `h1` using `[hz]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[hz']`. Rewrite using `[hz, hz']`. Establish `h3 : (z' : ℚ) < z` using `by linarith`. Establish `h4 : z' + 1 ≤ z` using `by exact_mod_cast h3`. Establish `h5 : ((z' : ℚ) + 1) ≤ z` using `by exact_mod_cast h4`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
 Combine the linear equalities and inequalities to obtain the conclusion.
 -/
@@ -226,9 +222,9 @@ theorem nu_u_step (r : ℕ) (h : r + 1 < D.R.k) :
   linarith
 
 /- English proof (translation)
-Establish `hm : 0 < D.R.m` using `lt_of_lt_of_le (by norm_num) D.R.two_le_m`. Establish `h1` using `(D.hcW u τ).u_last_gt hk hm`. Establish `h2` using `(D.hcW u τ).gap_be ⟨0, hm⟩`. Establish `he : nuE D τ 0 = (D.hcW u τ).e ⟨0, hm⟩`. Unfold `nuE`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hm, D.hcW_e u τ]`. Rewrite using `[he]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nu_last (hk : 0 < D.R.k) :
     ((D.R.t : ℚ) + 3) / 2 < (D.hcW u τ).u ⟨D.R.k - 1, by omega⟩ + nuE D τ 0 := by
@@ -242,11 +238,11 @@ theorem nu_last (hk : 0 < D.R.k) :
   linarith
 
 /- English proof (translation)
-Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`. Introduce `a h`. Establish `: a = i` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using the standard rewrite rules. Consider the case `succ d ih`. Introduce `a h`. Establish `h1` using `ih (a + 1) (by omega)`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h2` using `nuE_step D τ a (by omega)`. Move the coercions through the operations in `at h1`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem nu_block_nonneg (i : ℕ) (hi : i < D.R.m) : ∀ d a : ℕ, a + d = i →
     0 ≤ nuE D τ i - nuE D τ a - ((i : ℚ) - (a : ℚ)) * ((D.R.t : ℚ) + 1) := by
@@ -265,17 +261,17 @@ theorem nu_block_nonneg (i : ℕ) (hi : i < D.R.m) : ∀ d a : ℕ, a + d = i �
     nlinarith
 
 /- English proof (translation)
-Break down `lt_trichotomy (r + 1) D.R.k with hk | hk | hk` into its components or cases. Rewrite using `[nuQ_lt D u τ i (r + 1) hk, nuQ_lt D u τ i r (by omega)]`. Use `nu_u_step D u τ r hk` as an intermediate fact. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hr : r < D.R.k` using `by omega`. Rewrite using `[nuQ_lt D u τ i r hr, nuQ_ge D u τ i (r + 1) hi (by omega) h]`. Establish `h0 : (r + 1 - D.R.k) / (D.R.t + 1) = 0` using `by rw [hk]; simp`. Rewrite using `[h0]`. Establish `hl` using `nu_last D u τ (by omega)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hu : (D.hcW u τ).u ⟨D.R.k - 1, by omega⟩ = (D.hcW u τ).u ⟨r, hr⟩`. Use `congr 2`. Use linear arithmetic over natural numbers and integers. Rewrite `hl` using `[hu]`. Establish `hrk : (r : ℚ) + 1 = D.R.k` using `by exact_mod_cast hk`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Establish `hk' : D.R.k ≤ r` using `by omega`. Rewrite using `[nuQ_ge D u τ i (r + 1) hi (by omega) h, nuQ_ge D u τ i r hi hk' (by omega)]`. Establish `hs : r + 1 - D.R.k = (r - D.R.k) + 1` using `by omega`.
+Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `ha' : (r + 1 - D.R.k) / (D.R.t + 1) < i` using `(nu_div_lt D i (r + 1) h).resolve_right (by omega)`. Rewrite `ha'`, the goal using `[hs]`. Rewrite `ha'`, the goal using `[Nat.succ_div]`. Use `split_ifs at ha' ⊢ with hd`. Establish `h2` using `nuE_step D τ ((r - D.R.k) / (D.R.t + 1)) (by omega)`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules.
+Use the polynomial consequences of the given equalities and inequalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nuQ_step (i r : ℕ) (hi : i < D.R.m) (h : r + 1 < D.R.N i) : nuQ D u τ i (r + 1) ≤ nuQ D u τ i r := by
   rcases lt_trichotomy (r + 1) D.R.k with hk | hk | hk
@@ -308,7 +304,7 @@ theorem nuQ_step (i r : ℕ) (hi : i < D.R.m) (h : r + 1 < D.R.N i) : nuQ D u τ
     · simp
 
 /- English proof (translation)
-Proceed by induction on `s, hrs using Nat.le_induction with`. Consider the case `base => exact le_rfl`. Consider the case `succ s _ ih => exact (nuQ_step D u τ i s hi hs).trans (ih (by omega))`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem nuQ_anti (i : ℕ) (hi : i < D.R.m) (r s : ℕ) (hrs : r ≤ s) (hs : s < D.R.N i) :
     nuQ D u τ i s ≤ nuQ D u τ i r := by
@@ -317,11 +313,11 @@ theorem nuQ_anti (i : ℕ) (hi : i < D.R.m) (r s : ℕ) (hrs : r ≤ s) (hs : s 
   | succ s _ ih => exact (nuQ_step D u τ i s hi hs).trans (ih (by omega))
 
 /- English proof (translation)
-Establish `hkpos : 0 < D.R.k` using `by have := D.R.m_add_three_le_k; omega`. Distinguish the cases in `hk : D.R.k ≤ r`. Rewrite using `[nuQ_ge D u τ i r hi hk h]`. Establish `ha` using `(nu_div_lt D i r h).resolve_right (not_lt.2 hk)`. Conclude with `nu_block_nonneg D τ i hi (i - (r - D.R.k) / (D.R.t + 1)) _ (by omega)`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hkN : D.R.k - 1 < D.R.N i` using `by unfold Ranks.N; omega`. Use `le_trans ?_ (nuQ_anti D u τ i hi r (D.R.k - 1) (by omega) hkN)` and prove the remaining obligations. Rewrite using `[nuQ_lt D u τ i (D.R.k - 1) (by omega)]`. Establish `hl` using `nu_last D u τ hkpos`. Establish `hb` using `nu_block_nonneg D τ i hi i 0 (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : ((D.R.k - 1 : ℕ) : ℚ) = (D.R.k : ℚ) - 1`. Rewrite using `[Nat.cast_sub (by omega)]; simp`. Rewrite using `[hc]`. Move the coercions through the operations in `at hb`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem nuQ_nonneg (i r : ℕ) (hi : i < D.R.m) (h : r < D.R.N i) : 0 ≤ nuQ D u τ i r := by
   have hkpos : 0 < D.R.k := by have := D.R.m_add_three_le_k; omega
@@ -341,13 +337,13 @@ theorem nuQ_nonneg (i r : ℕ) (hi : i < D.R.m) (h : r < D.R.N i) : 0 ≤ nuQ D 
     nlinarith
 
 /- English proof (translation)
-Take `⟨zi, hzi⟩` from `nuE_int D τ i`. Distinguish the cases in `hk : D.R.k ≤ r`. Rewrite using `[nuQ_ge D u τ i r hi hk h]`. Generalize the expression as in `(r - D.R.k) / (D.R.t + 1) = a`. Take `⟨za, hza⟩` from `nuE_int D τ a`.
+Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result.
 
-Use `⟨zi - za - ((i : ℤ) - (a : ℤ)) * ((D.R.t : ℤ) + 1), ?_⟩` and prove the remaining obligations. Rewrite using `[hzi, hza]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hr : r < D.R.k` using `not_le.1 hk`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[nuQ_lt D u τ i r hr]`. Take `⟨z, hz⟩` from `(D.hcW u τ).u_half ⟨r, hr⟩`. Take `⟨c, hc⟩` from `D.R.t_odd`. Establish `hcq : (D.R.t : ℚ) = 2 * (c : ℚ) + 1` using `by exact_mod_cast hc`. Use `⟨z + zi - (D.R.k : ℤ) - (2 * (i : ℤ) + 1) * ((c : ℤ) + 1) + 1 + (r : ℤ), ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hz, hzi, hcq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem nuQ_int (i r : ℕ) (hi : i < D.R.m) (h : r < D.R.N i) : ∃ z : ℤ, nuQ D u τ i r = z := by
   obtain ⟨zi, hzi⟩ := nuE_int D τ i
@@ -372,15 +368,13 @@ theorem nuQ_int (i r : ℕ) (hi : i < D.R.m) (h : r < D.R.N i) : ∃ z : ℤ, nu
 end NuPart
 
 /- English proof (translation)
-Introduce `u i hi τ`. Use `⟨fun r => if r < D.R.N i then ⌊nuQ D u τ i r⌋.toNat else 0, antitone_nat_of_succ_le fun r => ?_, fun r => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : r + 1 < D.R.N i`. Simplify using `only [if_pos h, if_pos (show r < D.R.N i by omega)]`. Conclude with `Int.toNat_le_toNat (Int.floor_le_floor (nuQ_step D u τ i r hi h))`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [if_neg h]`. Conclude with `Nat.zero_le _`. Distinguish the cases in `h : r < D.R.N i`. Simplify using `only [if_pos h]`. Take `⟨z, hz⟩` from `nuQ_int D u τ i r hi h`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0` using `nuQ_nonneg D u τ i r hi h`. Rewrite `h0` using `[hz]`. Establish `hz0 : 0 ≤ z` using `by exact_mod_cast h0`. Rewrite using `[nuRow_eq D u τ i r hi, hz, Int.floor_intCast]`. Establish `: ((z.toNat : ℕ) : ℤ) = z` using `Int.toNat_of_nonneg hz0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : ((z.toNat : ℕ) : ℝ) = ((z : ℤ) : ℝ)` using `by exact_mod_cast congrArg (fun n : ℤ => (n : ℝ)) this`. Rewrite using `[h2]`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `only [if_neg h]`.
-
-Simplify using the standard rewrite rules.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nuIsPart (D : D7) : NuIsPart D := by
   intro u i hi τ
@@ -406,12 +400,12 @@ theorem nuIsPart (D : D7) : NuIsPart D := by
       simp
 
 /- English proof (translation)
-The claim follows from `nonempty_entries_of_partition D (nuIsPart D)`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_entries (D : D7) : Nonempty (Ent D) := nonempty_entries_of_partition D (nuIsPart D)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨(E.nu u i z).rowLen, fun a b hab => (E.nu u i z).rowLen_anti a b hab, E.nu_row u i hi z⟩`.
+Supply the required witnesses or components.
 -/
 theorem nuPart_of_Ent {D : D7} (E : Ent D) (u : D.what₂.Word) (i : ℕ) (hi : i < D.R.m) (z : OrbitPlaces.Pl D) :
     ∃ f : ℕ → ℕ, Antitone f ∧

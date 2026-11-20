@@ -6,9 +6,9 @@ section
 variable {O R : Type} [CommRing O] [CommRing R] [Algebra O R] (𝒜 : ℤ → Submodule O R) [GradedAlgebra 𝒜]
 
 /- English proof (translation)
-Introduce `a b`. Simplify using `only [Matrix.mul_apply]`. Use `Submodule.sum_mem _ fun c _ => ?_` and prove the remaining obligations. Establish `h` using `SetLike.GradedMul.mul_mem (hX a c) (hY c b)`. Establish `e : wt a c + wt c b = wt a b` using `by simp only [wt]; ring`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 private theorem gr_mul {X Y : Matrix (Fin 3) (Fin 3) R} (hX : GrMat 𝒜 X) (hY : GrMat 𝒜 Y) :
     GrMat 𝒜 (X * Y) := by
@@ -20,9 +20,9 @@ private theorem gr_mul {X Y : Matrix (Fin 3) (Fin 3) R} (hX : GrMat 𝒜 X) (hY 
   rwa [e] at h
 
 /- English proof (translation)
-Introduce `a b`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Rewrite using `[Matrix.one_apply_eq]`. Establish `e : wt a a = 0` using `by simp [wt]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `SetLike.GradedOne.one_mem`. Rewrite using `[Matrix.one_apply_ne h]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gr_one : GrMat 𝒜 (1 : Matrix (Fin 3) (Fin 3) R) := by
   intro a b
@@ -36,7 +36,7 @@ private theorem gr_one : GrMat 𝒜 (1 : Matrix (Fin 3) (Fin 3) R) := by
     exact zero_mem _
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => rw [pow_zero]`. Conclude with `gr_one 𝒜`. Consider the case `succ n ih => rw [pow_succ, Units.val_mul]`. Conclude with `gr_mul 𝒜 ih hg`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem gr_pow {g : GL (Fin 3) R} (hg : GrMat 𝒜 (g : Matrix (Fin 3) (Fin 3) R)) (n : ℕ) :
     GrMat 𝒜 ((g ^ n : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) := by
@@ -45,9 +45,9 @@ private theorem gr_pow {g : GL (Fin 3) R} (hg : GrMat 𝒜 (g : Matrix (Fin 3) (
   | succ n ih => rw [pow_succ, Units.val_mul]; exact gr_mul 𝒜 ih hg
 
 /- English proof (translation)
-Establish `hn` using `orderOf_pos g`. Establish `e : g⁻¹ = g ^ (orderOf g - 1)`. Use `symm`. Apply `eq_inv_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[← pow_succ, Nat.sub_add_cancel hn, pow_orderOf_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `gr_pow 𝒜 hg _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gr_inv [Finite R] {g : GL (Fin 3) R} (hg : GrMat 𝒜 (g : Matrix (Fin 3) (Fin 3) R)) :
     GrMat 𝒜 ((g⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) := by
@@ -60,9 +60,9 @@ private theorem gr_inv [Finite R] {g : GL (Fin 3) R} (hg : GrMat 𝒜 (g : Matri
   exact gr_pow 𝒜 hg _
 
 /- English proof (translation)
-Rewrite using `[theta_val]`. Establish `hi` using `gr_inv 𝒜 hg`. Establish `key : ∀ (M : Matrix (Fin 3) (Fin 3) R) (a b : Fin 3), (Jmat R 3 * Mᵀ * Jmat R 3) a b = M b.rev a.rev`. Introduce `M a b`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Matrix.mul_apply, Jmat, Fin.sum_univ_three, Fin.rev]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 
-Introduce `a b`. Rewrite using `[key]`. Apply the tactic sequence `have e : wt b.rev a.rev = wt a b := by fin_cases a <;> fin_cases b <;> rfl`. Rewrite using `[← e]`. Conclude with `hi _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gr_theta [Finite R] {g : GL (Fin 3) R} (hg : GrMat 𝒜 (g : Matrix (Fin 3) (Fin 3) R)) :
     GrMat 𝒜 ((theta g : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) := by
@@ -79,7 +79,7 @@ private theorem gr_theta [Finite R] {g : GL (Fin 3) R} (hg : GrMat 𝒜 (g : Mat
   exact hi _ _
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Rewrite using `[sgnAct_one]`. Conclude with `hg`. Rewrite using `[sgnAct_neg_one]`. Conclude with `gr_theta 𝒜 hg`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem gr_act [Finite R] (s : ℤˣ) {g : GL (Fin 3) R} (hg : GrMat 𝒜 (g : Matrix (Fin 3) (Fin 3) R)) :
     GrMat 𝒜 ((sgnAct 3 R s g : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) := by
@@ -90,9 +90,9 @@ private theorem gr_act [Finite R] (s : ℤˣ) {g : GL (Fin 3) R} (hg : GrMat �
 end
 
 /- English proof (translation)
-Introduce `O R _ _ _ _ 𝒜 _ x y hx hy`. Unfold `GG.mat at *`. Prove the components needed by the constructor for the conclusion. Rewrite using `[SemidirectProduct.mul_left, Units.val_mul]`. Conclude with `gr_mul 𝒜 hx (gr_act 𝒜 _ hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[SemidirectProduct.inv_left]`. Conclude with `gr_act 𝒜 _ (gr_inv 𝒜 hx)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.graded_matrix_mul_inv :
     ∀ {O R : Type} [CommRing O] [CommRing R] [Algebra O R] [Finite R] (𝒜 : ℤ → Submodule O R) [GradedAlgebra 𝒜] (x y : GG 3 R), GrMat 𝒜 x.mat → GrMat 𝒜 y.mat → GrMat 𝒜 (x * y).mat ∧ GrMat 𝒜 (x⁻¹).mat := by

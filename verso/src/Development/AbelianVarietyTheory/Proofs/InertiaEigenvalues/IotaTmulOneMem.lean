@@ -21,7 +21,7 @@ variable {G : Type} [Group G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field 
 
 include PD in
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_nontrivial_iff_subsingleton]`. Apply `PD.not_mem_filtration_two` to reduce the goal to its premises. Rewrite using `[Subsingleton.elim PD.t 0, map_zero]`. Conclude with `Submodule.zero_mem _`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nontrivial_cris : Nontrivial B := by
   by_contra h
@@ -32,7 +32,7 @@ theorem nontrivial_cris : Nontrivial B := by
 
 include PD in
 /- English proof (translation)
-Use `nontrivial_cris PD` as an intermediate fact. Take `⟨r, hr⟩` from `LinearMap.exists_leftInverse_of_injective (Algebra.linearMap Qp B) (LinearMap.ker_eq_bot.2 (algebraMap Qp B).injective)`. Establish `h1 : r 1 = 1` using `by simpa using LinearMap.congr_fun hr 1`. Use `congrArg (fun z => TensorProduct.rid Qp V (r.lTensor V z)) h` as an intermediate fact. Simplify `this` using `[h1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tmul_one_inj {v w : V} (h : v ⊗ₜ[Qp] (1 : B) = w ⊗ₜ[Qp] (1 : B)) : v = w := by
   have := nontrivial_cris PD
@@ -43,7 +43,7 @@ theorem tmul_one_inj {v w : V} (h : v ⊗ₜ[Qp] (1 : B) = w ⊗ₜ[Qp] (1 : B))
   simpa [h1] using this
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [φVB, actVB, PD.φ_comm]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem frob_act (g : G) (x : V ⊗[Qp] B) :
     φVB PD (LL := LL) (V := V) (actVB PD ρ g x) = actVB PD ρ g (φVB PD (LL := LL) (V := V) x) := by
@@ -53,7 +53,7 @@ theorem frob_act (g : G) (x : V ⊗[Qp] B) :
   | add y z hy hz => simp only [map_add, hy, hz]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => simp [ιV, actVB, actVdR, PD.ι_comm]`. Consider the case `add y z hy hz => simp only [map_add, hy, hz]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem iota_act (g : G) (x : V ⊗[Qp] B) :
     ιV PD (LL := LL) (V := V) (actVB PD ρ g x) = actVdR PD ρ g (ιV PD (LL := LL) (V := V) x) := by
@@ -63,28 +63,28 @@ theorem iota_act (g : G) (x : V ⊗[Qp] B) :
   | add y z hy hz => simp only [map_add, hy, hz]
 
 /- English proof (translation)
-Simplify using `[φVB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem frob_tmul_one (v : V) :
     φVB PD (LL := LL) (V := V) (v ⊗ₜ[Qp] (1 : B)) = v ⊗ₜ[Qp] (1 : B) := by
   simp [φVB]
 
 /- English proof (translation)
-Simplify using `[actVB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem act_tmul_one (g : G) (v : V) :
     actVB PD ρ g (v ⊗ₜ[Qp] (1 : B)) = ρ g v ⊗ₜ[Qp] (1 : B) := by
   simp [actVB]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨v ⊗ₜ ⟨b, hb⟩, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem tmul_mem_filV (v : V) (a : ℤ) (b : BdR) (hb : b ∈ PD.Fil a) :
     v ⊗ₜ[Qp] b ∈ FilV PD (LL := LL) (V := V) a :=
   ⟨v ⊗ₜ ⟨b, hb⟩, by simp⟩
 
 /- English proof (translation)
-Establish `: ιV PD (LL` using `LL) (V := V) (v ⊗ₜ[Qp] (1 : B)) = v ⊗ₜ[Qp] (1 : BdR) := by simp [ιV]`. Rewrite using `[this]`. Conclude with `tmul_mem_filV PD v 0 1 PD.one_mem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iota_tmul_one_mem (v : V) :
     ιV PD (LL := LL) (V := V) (v ⊗ₜ[Qp] (1 : B)) ∈ FilV PD (LL := LL) (V := V) 0 := by
@@ -93,9 +93,9 @@ theorem iota_tmul_one_mem (v : V) :
   exact tmul_mem_filV PD v 0 1 PD.one_mem
 
 /- English proof (translation)
-Introduce and unpack `x ⟨y, rfl⟩`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul v b => exact ⟨v ⊗ₜ ⟨b.1, PD.Fil_anti a b.2⟩, by simp⟩`. Consider the case `add y z hy hz => rw [map_add]`.
+Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.add_mem _ hy hz`.
+A detailed English derivation is pending.
 -/
 theorem filV_succ_le (a : ℤ) :
     FilV PD (LL := LL) (V := V) (a + 1) ≤ FilV PD (LL := LL) (V := V) a := by
@@ -106,15 +106,15 @@ theorem filV_succ_le (a : ℤ) :
   | add y z hy hz => rw [map_add]; exact Submodule.add_mem _ hy hz
 
 /- English proof (translation)
-The claim follows from `antitone_int_of_succ_le (filV_succ_le PD)`.
+A detailed English derivation is pending.
 -/
 theorem filV_antitone : Antitone (FilV PD (LL := LL) (V := V)) :=
   antitone_int_of_succ_le (filV_succ_le PD)
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, Submodule.zero_mem _⟩`. Consider the case `tmul v b`. Take `⟨a, ha⟩` from `PD.Fil_exh b`. Conclude with `⟨a, tmul_mem_filV PD v a b ha⟩`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `add y z hy hz`. Take `⟨a, ha⟩` from `hy`. Take `⟨b, hb⟩` from `hz`. Conclude with `⟨min a b, Submodule.add_mem _ (filV_antitone PD (min_le_left a b) ha) (filV_antitone PD (min_le_right a b) hb)⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_mem_filV (z : V ⊗[Qp] BdR) : ∃ a, z ∈ FilV PD (LL := LL) (V := V) a := by
   induction z using TensorProduct.induction_on with
@@ -129,19 +129,19 @@ theorem exists_mem_filV (z : V ⊗[Qp] BdR) : ∃ a, z ∈ FilV PD (LL := LL) (V
       (filV_antitone PD (min_le_right a b) hb)⟩
 
 /- English proof (translation)
-Simplify using `[Dcris, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_dcris_iff (x : V ⊗[Qp] B) : x ∈ Dcris PD ρ ↔ ∀ g, actVB PD ρ g x = x := by
   simp [Dcris, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Simplify using `[DdR, Submodule.mem_iInf, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_ddR_iff (x : V ⊗[Qp] BdR) : x ∈ DdR PD ρ ↔ ∀ g, actVdR PD ρ g x = x := by
   simp [DdR, Submodule.mem_iInf, sub_eq_zero]
 
 /- English proof (translation)
-Rewrite using `[mem_ddR_iff]`. Introduce `g`. Rewrite using `[← iota_act, (mem_dcris_iff PD ρ x).1 hx g]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem iota_mem_ddR (x : V ⊗[Qp] B) (hx : x ∈ Dcris PD ρ) :
     ιV PD (LL := LL) (V := V) x ∈ DdR PD ρ := by
@@ -152,25 +152,25 @@ theorem iota_mem_ddR (x : V ⊗[Qp] B) (hx : x ∈ Dcris PD ρ) :
 end
 
 /- English proof (translation)
-Introduce `G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD _ LL _ _ _ O _ _ h5 hfont hO A hdR hFil hH0 c hc`. Take `⟨-, x, hx⟩` from `hc`. Establish `: Module.Finite LL ↥(Dcris PD A.ρ)` using `(hfont LL O hO A).1.1`. Set `ψ : A.V ⊗[Qp] B →ₗ[LL] A.V ⊗[Qp] B` to `LinearMap.id - φVB PD (LL := LL) (V := A.V)`. Establish `hψ : ∀ z, ψ z = z - φVB PD (LL` using `LL) (V := A.V) z := fun z => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hstab : ∀ z ∈ Dcris PD A.ρ, ψ z ∈ Dcris PD A.ρ`. Introduce `z hz`. Rewrite `hz`, the goal using `[mem_dcris_iff]`. Introduce `g`. Rewrite using `[hψ, map_sub, ← frob_act, hz g]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hinj : Function.Injective (ψ.restrict hstab)`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce and unpack `⟨z, hz⟩ h0`. Establish `h1 : ψ z = 0` using `congrArg Subtype.val h0`. Rewrite `h1` using `[hψ, sub_eq_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨v, rfl⟩` from `exists_tmul_one_of_frob_fixed_of_mem_fil_zero PD (LL := LL) z h1.symm (hFil (iota_mem_ddR PD A.ρ z hz))`. Establish `hv : v ∈ H0V A.ρ`. Simplify using `only [H0V, Submodule.mem_iInf, LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Introduce `g`. Apply `tmul_one_inj PD` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← act_tmul_one PD A.ρ, (mem_dcris_iff PD A.ρ _).1 hz g]`. Rewrite `hv` using `[hH0, Submodule.mem_bot]`. Substitute `hv` using the available equality. Conclude with `Subtype.ext (TensorProduct.zero_tmul _ _)`. Establish `hsurj` using `LinearMap.injective_iff_surjective.1 hinj`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy : ψ x ∈ Dcris PD A.ρ`. Rewrite using `[mem_dcris_iff]`. Introduce `g`. Establish `h1` using `frob_tmul_one PD (LL := LL) (c g)`. Rewrite `h1` using `[hx g, map_sub, frob_act]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hψ, map_sub, sub_eq_sub_iff_sub_eq_sub, h1]`. Take `⟨⟨x', hx'⟩, hxx⟩` from `hsurj ⟨ψ x, hy⟩`. Establish `h2 : ψ x' = ψ x` using `congrArg Subtype.val hxx`. Establish `hfix : φVB PD (LL` using `LL) (V := A.V) (x - x') = x - x' := by`. Rewrite `h2` using `[hψ, hψ, sub_eq_sub_iff_sub_eq_sub]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sub, ← neg_sub x' x, h2, neg_sub]`. Take `⟨a, ha⟩` from `exists_mem_filV PD (LL := LL) (ιV PD (LL := LL) (V := A.V) x)`. Take `⟨w, ⟨hw, -⟩, hw'⟩` from `h5 LL O hO A hdR a 0 _ ha (fun g => by`. Rewrite using `[← iota_act, ← map_sub, ← hx g]`. Conclude with `iota_tmul_one_mem PD (c g))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : ιV PD (LL` using `LL) (V := A.V) (x - x') ∈ FilV PD (LL := LL) (V := A.V) 0 := by`. Establish `h3` using `Submodule.sub_mem _ (Submodule.add_mem _ hw' (hFil hw)) (hFil (iota_mem_ddR PD A.ρ x' hx'))`. Rewrite `h3` using `[sub_add_cancel, ← map_sub]`. Then use the resulting hypothesis. Take `⟨v, hv⟩` from `exists_tmul_one_of_frob_fixed_of_mem_fil_zero PD (LL := LL) _ hfix hF`. Use `⟨v, funext fun g => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the claim to the hypotheses of an applicable result.
 
-Express the relevant statement in the definitionally equal form `A.ρ g v - v = c g`. Apply `tmul_one_inj PD` to reduce the goal to its premises. Rewrite using `[hx g, TensorProduct.sub_tmul, ← act_tmul_one PD A.ρ, ← hv, map_sub, (mem_dcris_iff PD A.ρ _).1 hx' g]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem z1f_le_b1 : ∀ {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp] [Field K₀] [Field K] [Algebra Qp K₀] [Algebra Qp K] [Algebra K₀ K] [IsScalarTower Qp K₀ K] {B BdR : Type} [CommRing B] [CommRing BdR] [Algebra Qp B] [Algebra K₀ B] [IsScalarTower Qp K₀ B] [Algebra Qp BdR] [Algebra K₀ BdR] [Algebra K BdR] [IsScalarTower Qp K BdR] [IsScalarTower K₀ K BdR] [IsScalarTower Qp K₀ BdR] (PD : PeriodData G Qp K₀ K B BdR) [TopologicalSpace Qp] {LL : Type} [Field LL] [Algebra Qp LL] [TopologicalSpace LL] {O : Type} [CommRing O] [Algebra O LL], TateFilteredInvariants PD → fontCore PD → GoodO (Qp := Qp) LL O → ∀ A : GRep G Qp LL O, IsDR PD A.ρ → DdR PD A.ρ ≤ FilV PD (LL := LL) (V := A.V) 0 → H0V A.ρ = ⊥ → finiteCocycles PD A.ρ ≤ B1 A.ρ := by
   intro G _ _ Qp K₀ K _ _ _ _ _ _ _ B BdR _ _ _ _ _ _ _ _ _ _ _ PD _ LL _ _ _ O _ _ h5 hfont hO A

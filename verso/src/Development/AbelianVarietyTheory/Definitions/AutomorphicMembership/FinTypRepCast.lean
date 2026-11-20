@@ -29,7 +29,7 @@ def isotLB : type_of% (@principalLevelFrame.isotL b.D) := @fun V n S θ P M J χ
 variable (a) in
 
 /- English proof (translation)
-Use function extensionality and compare the values at `V n S θ P M J χ e π`. Conclude with `(by with_unfolding_all exact ((congrArg₂ (fun (g : type_of% (@goodPart b.D)) (m : type_of% (@Mult.Mult b.D)) => g θ M J χ e ⊓ principalLevelFrame.isotIn (principalLevelFrame.actM P M) (⨆ N : ℕ, m θ M (principalLevelFrame.levN P (N + 1)) fun _ => 1) π) (goodPart_eq a b) (mult_eq a …`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem isotL_eq : @principalLevelFrame.isotL b.D = @isotLB B C a b := by
   funext V n S θ P M J χ e π
@@ -37,7 +37,7 @@ theorem isotL_eq : @principalLevelFrame.isotL b.D = @isotLB B C a b := by
     g θ M J χ e ⊓ principalLevelFrame.isotIn (principalLevelFrame.actM P M) (⨆ N : ℕ, m θ M (principalLevelFrame.levN P (N + 1)) fun _ => 1) π) (goodPart_eq a b) (mult_eq a b)) :))
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem finTypRep_cast {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ} {S S' : Set (Formalism.L2.NG.FinTyp E n)} (e : S = S')
     (σ : Formalism.L2.Col.FinTypCls S) :
@@ -86,7 +86,7 @@ section Chain
 variable {A : FamIn a.D.what₂.LL G Pl0 T a.D.R.m} {R : RealDat a.D A Ks}
 
 /- English proof (translation)
-Use `tr_via (fun m : type_of% (@MultT a.D) => topW (@m) R) (multT_eq b a) h`.
+A detailed English derivation is pending.
 -/
 theorem topMult_tr (h : TopMultH R) : letI := alg b iK; TopMultH (real b R) := by
   tr_via (fun m : type_of% (@MultT a.D) => topW (@m) R) (multT_eq b a) h
@@ -97,7 +97,7 @@ abbrev chainB : ChainReal b.D :=
   @toChainReal b.D G _ _ Pl0 T (famM b A) Ks _ _ (alg b iK) (real b R) (face b F) ((by with_unfolding_all exact (tupT :))) ((by with_unfolding_all exact (hm :))) (topMult_tr b hTop)
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((congrArg (fun (g : type_of% (@goodPart a.D)) (c : Bool) => (g R.θ (R.MY 0) (levS _ (R.βY 0) (R.dat0 (R.levR F c))) (levChi _ (R.βY 0) (R.dat0 (R.levR F c))) R.e0).map (PiTensorProduct.lift : MMap (R.MY 0) ≃ₗ[ℂ] AmbT (R.MY 0)).toLinearMap) (goodPart_ …`.
+A detailed English derivation is pending.
 -/
 theorem chain_EEc : (toChainReal R F tupT hm hTop).EEc = ((chainB b F tupT hm hTop).EEc) :=
   (by with_unfolding_all exact ((congrArg (fun (g : type_of% (@goodPart a.D)) (c : Bool) =>
@@ -105,35 +105,35 @@ theorem chain_EEc : (toChainReal R F tupT hm hTop).EEc = ((chainB b F tupT hm hT
       (PiTensorProduct.lift : MMap (R.MY 0) ≃ₗ[ℂ] AmbT (R.MY 0)).toLinearMap) (goodPart_eq b a)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((congrFun (congrArg (fun (m : type_of% (@MultT a.D)) (Ch : ChainReal a.D) => fun c μ j => m Ch.θ (Ch.MY j) (Ch.J c μ j) (Ch.χ c μ j)) (multT_eq b a) :) (toChainReal R F tupT hm hTop)) :))`.
+A detailed English derivation is pending.
 -/
 theorem chain_CC : (toChainReal R F tupT hm hTop).CC = ((chainB b F tupT hm hTop).CC) :=
   (by with_unfolding_all exact ((congrFun (congrArg (fun (m : type_of% (@MultT a.D)) (Ch : ChainReal a.D) => fun c μ j => m Ch.θ (Ch.MY j) (Ch.J c μ j) (Ch.χ c μ j)) (multT_eq b a) :)
     (toChainReal R F tupT hm hTop)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((congrFun (congrArg (fun (m : type_of% (@MultT a.D)) (Ch : ChainReal a.D) => fun c μ j => m Ch.θ (Ch.MY j) (Ch.JP c μ j) (Ch.χP c μ j)) (multT_eq b a) :) (toChainReal R F tupT hm hTop)) :))`.
+A detailed English derivation is pending.
 -/
 theorem chain_CCP : (toChainReal R F tupT hm hTop).CCP = ((chainB b F tupT hm hTop).CCP) :=
   (by with_unfolding_all exact ((congrFun (congrArg (fun (m : type_of% (@MultT a.D)) (Ch : ChainReal a.D) => fun c μ j => m Ch.θ (Ch.MY j) (Ch.JP c μ j) (Ch.χP c μ j)) (multT_eq b a) :)
     (toChainReal R F tupT hm hTop)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((congrFun (congrArg (fun (m : type_of% (@MultT a.D)) (Ch : ChainReal a.D) => fun c μ => m Ch.θ Ch.MX (Ch.JX c μ) (Ch.χX c μ)) (multT_eq b a) :) (toChainReal R F tupT hm hTop)) :))`.
+A detailed English derivation is pending.
 -/
 theorem chain_CCX : (toChainReal R F tupT hm hTop).CCX = ((chainB b F tupT hm hTop).CCX) :=
   (by with_unfolding_all exact ((congrFun (congrArg (fun (m : type_of% (@MultT a.D)) (Ch : ChainReal a.D) => fun c μ => m Ch.θ Ch.MX (Ch.JX c μ) (Ch.χX c μ)) (multT_eq b a) :)
     (toChainReal R F tupT hm hTop)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((congrFun (congrArg (fun (m : type_of% (@MultT a.D)) (Ch : ChainReal a.D) => fun c μ => m Ch.θ Ch.MX (Ch.JXP c μ) (Ch.χXP c μ)) (multT_eq b a) :) (toChainReal R F tupT hm hTop)) :))`.
+A detailed English derivation is pending.
 -/
 theorem chain_CCXP : (toChainReal R F tupT hm hTop).CCXP = ((chainB b F tupT hm hTop).CCXP) :=
   (by with_unfolding_all exact ((congrFun (congrArg (fun (m : type_of% (@MultT a.D)) (Ch : ChainReal a.D) => fun c μ => m Ch.θ Ch.MX (Ch.JXP c μ) (Ch.χXP c μ)) (multT_eq b a) :)
     (toChainReal R F tupT hm hTop)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((cast (io_congr R (multT_eq b a) (fun m y _ => ∀ hv : v ∈ ccJ (@m) R t (k + 1), (ioCW (@m) R y t k ⟨v, hv⟩).1 = (ioCW (@MultT a.D) R ((R.ioY)) t k ⟨v, hv0⟩).1) ((R.ioY)) ((R.ioX))) (fun _ => rfl) hv) : _))`.
+A detailed English derivation is pending.
 -/
 theorem chain_ioC (t : T) (k : ℕ) (v : AmbT (R.MY (k + 1))) (hv : v ∈ ccJ (@multTB B C b a) R t (k + 1))
     (hv0 : v ∈ ccJ (@MultT a.D) R t (k + 1)) :
@@ -142,7 +142,7 @@ theorem chain_ioC (t : T) (k : ℕ) (v : AmbT (R.MY (k + 1))) (hv : v ∈ ccJ (@
     (ioCW (@m) R y t k ⟨v, hv⟩).1 = (ioCW (@MultT a.D) R ((R.ioY)) t k ⟨v, hv0⟩).1) ((R.ioY)) ((R.ioX))) (fun _ => rfl) hv) : _))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((cast (io_congr R (multT_eq b a) (fun m _ x => ∀ (hT : topW (@m) R) (hv : v ∈ m R.θ R.MX (levS _ R.βX (R.datXt t)) (levChi _ R.βX (R.datXt t))), (ioXW (@m) R x hm hT t ⟨v, hv⟩).1 = (ioXW (@MultT a.D) R ((R.ioX)) hm hTop t ⟨v, hv0⟩).1) ((R.ioY)) ((R.i …`.
+A detailed English derivation is pending.
 -/
 theorem chain_ioX (t : T) (v : AmbT R.MX) (hT : topW (@multTB B C b a) R)
     (hv : v ∈ multTB b a R.θ R.MX (levS _ R.βX (R.datXt t)) (levChi _ R.βX (R.datXt t)))
@@ -154,7 +154,7 @@ theorem chain_ioX (t : T) (v : AmbT R.MX) (hT : topW (@multTB B C b a) R)
     (fun _ _ => rfl) hT hv) : _))
 
 /- English proof (translation)
-Establish `e` using `io_congr R (multT_eq b a) (fun m y x => ∃ hT : topW (@m) R, ioOKW (@m) (toChainReal R F tupT hm hTop) c μ ((by with_unfolding_all exact ((ioCW (@m) R y (tupT μ)) :))) ((by with_unfolding_all exact ((ioXW (@m) R x hm hT (tupT μ)) :)))) ((by with_unfolding_all exact (R.ioY :))) ((b …`. Take `⟨_, h'⟩` from `cast e.symm (Exists.intro ((by with_unfolding_all exact ((topMult_tr b hTop) :))) ((by with_unfolding_all exact (h :))))`. Conclude with `(by with_unfolding_all exact (h' :))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem chain_ioOK {c : Bool} {μ : a.D.what₂.Tup} (h : (chainB b F tupT hm hTop).IoOK c ((μ))) :
     (toChainReal R F tupT hm hTop).IoOK c μ := by
@@ -169,7 +169,7 @@ variable (hinj : ∀ i t, Function.Injective (R.extV i t))
 include hinj in
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact (hinj :))`.
+A detailed English derivation is pending.
 -/
 theorem inj_tr : letI := alg b iK; ∀ i t, Function.Injective ((real b R).extV i t) := (by with_unfolding_all exact (hinj :))
 
@@ -178,7 +178,7 @@ abbrev liftB : LiftReal b.D (chainB b F tupT hm hTop) :=
     (inj_tr b hinj)) : _))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((congrFun (congrArg (fun (g : type_of% (@goodPart a.D)) (L : LiftReal a.D (toChainReal R F tupT hm hTop)) => fun i => (g R.θ (L.MW i) (L.JW i) (L.χW i) (L.eW i)).map (PiTensorProduct.lift : MMap (L.MW i) ≃ₗ[ℂ] L.AmbW i).toLinearMap) (goodPart_eq b a) …`.
+A detailed English derivation is pending.
 -/
 theorem lift_Wc : (toLiftReal R F tupT hm hTop hinj).Wc = ((liftB b F tupT hm hTop hinj).Wc) :=
   (by with_unfolding_all exact ((congrFun (congrArg (fun (g : type_of% (@goodPart a.D)) (L : LiftReal a.D (toChainReal R F tupT hm hTop)) => fun i =>
@@ -186,7 +186,7 @@ theorem lift_Wc : (toLiftReal R F tupT hm hTop hinj).Wc = ((liftB b F tupT hm hT
     (goodPart_eq b a) :) (toLiftReal R F tupT hm hTop hinj)) :))
 
 /- English proof (translation)
-The claim follows from `(by with_unfolding_all exact ((congrFun (congrArg (fun (m : type_of% (@MultT a.D)) (L : LiftReal a.D (toChainReal R F tupT hm hTop)) => fun i => m R.θ (L.MW i) (L.JA i) (L.χA i)) (multT_eq b a) :) (toLiftReal R F tupT hm hTop hinj)) :))`.
+A detailed English derivation is pending.
 -/
 theorem lift_MultW : (toLiftReal R F tupT hm hTop hinj).MultW = ((liftB b F tupT hm hTop hinj).MultW) :=
   (by with_unfolding_all exact ((congrFun (congrArg (fun (m : type_of% (@MultT a.D)) (L : LiftReal a.D (toChainReal R F tupT hm hTop)) => fun i =>

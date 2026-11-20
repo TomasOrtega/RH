@@ -14,11 +14,11 @@ section Rings
 open TensorProduct KaehlerDifferential
 
 /- English proof (translation)
-Set `P` to `Algebra.EssFiniteType.subalgebra R B`. Set `M : Submonoid P` to `Algebra.EssFiniteType.submonoid R B`. Take `⟨n, f₀, hf₀⟩` from `Algebra.FiniteType.iff_quotient_mvPolynomial''.mp (inferInstance : Algebra.FiniteType R P)`. Set `M'` to `M.comap f₀`. Set `P'` to `Localization M'`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `fP : P' →ₐ[R] B` to `IsLocalization.liftAlgHom (M := M') (f := (IsScalarTower.toAlgHom R P B).comp f₀) fun x ↦ IsLocalization.map_units (M := M) B ⟨f₀ x.1, x.2⟩`. Establish `hf₁ : Function.Surjective fP`. Introduce `x`. Take `⟨x, ⟨s, hs⟩, rfl⟩` from `IsLocalization.exists_mk'_eq M x`. Take `⟨x, rfl⟩` from `hf₀ x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s, rfl⟩` from `hf₀ s`. Use `⟨IsLocalization.mk' (M := M') _ x ⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Conclude with `(IsLocalization.lift_mk'_spec (M := M') (S := P') (g := ((IsScalarTower.toAlgHom R P B).comp f₀).toRingHom) (fun x ↦ IsLocalization.map_units (M := M) B ⟨f₀ x.1, x.2⟩) x _ ⟨s, hs⟩).mpr (IsLocalization.mk'_spec' B (f₀ x) (⟨f₀ s, hs⟩ : M)).symm`. Establish `: Module.Flat R P'` using `.trans R (MvPolynomial (Fin n) R) P'`. Conclude with `Algebra.FormallySmooth.flat_of_algHom_of_isNoetherianRing fP hf₁`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem flat_of_formallySmooth_of_essFiniteType (R B : Type*) [CommRing R] [CommRing B] [Algebra R B]
     [IsNoetherianRing R] [Algebra.EssFiniteType R B] [Algebra.FormallySmooth R B] :
@@ -46,7 +46,7 @@ theorem flat_of_formallySmooth_of_essFiniteType (R B : Type*) [CommRing R] [Comm
   exact Algebra.FormallySmooth.flat_of_algHom_of_isNoetherianRing fP hf₁
 
 /- English proof (translation)
-Establish `: Algebra.FormallyEtale (IsLocalRing.ResidueField R) (IsLocalRing.ResidueField R ⊗[R] A)` using `Algebra.FormallyEtale.of_formallyUnramified_of_field _ _`. Establish `: Algebra.FinitePresentation R (Algebra.EssFiniteType.subalgebra R A)` using `Algebra.FinitePresentation.of_finiteType.mp inferInstance`. Conclude with `Algebra.FormallySmooth.of_formallySmooth_residueField_tensor (Algebra.EssFiniteType.submonoid R A)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formallySmooth_of_flat_of_formallyUnramified (R A : Type*) [CommRing R] [CommRing A] [Algebra R A]
     [IsNoetherianRing R] [IsLocalRing R] [IsLocalRing A] [IsLocalHom (algebraMap R A)]
@@ -60,11 +60,11 @@ theorem formallySmooth_of_flat_of_formallyUnramified (R A : Type*) [CommRing R] 
     (Algebra.EssFiniteType.submonoid R A)
 
 /- English proof (translation)
-Establish `h1 : Subsingleton Ω[B⁄P]`. Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `map_surjective R P B x`. Conclude with `(exact_mapBaseChange_map R P B y).mpr (h.2 y)`. Establish `h2 : Subsingleton (Algebra.H1Cotangent P B)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `subsingleton_of_forall_eq 0 fun x => ?_` and prove the remaining obligations. Establish `h3 : Algebra.H1Cotangent.δ R P B x = 0`. Apply `h.1` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `(Algebra.H1Cotangent.exact_δ_mapBaseChange R P B _).mpr ⟨x, rfl⟩`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨y, rfl⟩` from `(Algebra.H1Cotangent.exact_map_δ R P B x).mp h3`. Rewrite using `[Subsingleton.elim y 0, map_zero]`. Conclude with `⟨h1, h2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem formallyEtale_of_bijective_mapBaseChange (R P B : Type*) [CommRing R] [CommRing P] [CommRing B]
     [Algebra R P] [Algebra R B] [Algebra P B] [IsScalarTower R P B] [Algebra.FormallySmooth R B]
@@ -84,29 +84,25 @@ theorem formallyEtale_of_bijective_mapBaseChange (R P B : Type*) [CommRing R] [C
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Establish `: IsNoetherianRing A` using `Algebra.EssFiniteType.isNoetherianRing R A`. Establish `: Algebra.EssFiniteType R B` using `.comp R A B`. Establish `: Module.FinitePresentation A Ω[A⁄R]` using `Module.finitePresentation_of_finite _ _`. Establish `: Module.Flat B (B ⊗[A] Ω[A⁄R])` using `.of_linearEquiv (tensorKaehlerEquivOfFormallyEtale R A B)`. Establish `: Module.Flat A Ω[A⁄R]` using `Module.Flat.of_flat_tensorProduct _ _ B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨κ, a, b, hb⟩` from `Module.exists_basis_of_span_of_flat _ (span_range_derivation R A)`. Establish `: Finite κ` using `Module.Finite.finite_basis b`. Set `P` to `MvPolynomial κ R`. Set `φ : P →ₐ[R] A` to `MvPolynomial.aeval a`. Use `algebraize [φ.toRingHom, (algebraMap A B).comp φ.toRingHom]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: IsScalarTower R P B` using `.to₁₂₄ R P A B`. Establish `hX (i : κ) : algebraMap P A (MvPolynomial.X i) = a i` using `MvPolynomial.aeval_X _ _`. Set `bB : Module.Basis κ B Ω[B⁄R]` to `(b.baseChange B).map (tensorKaehlerEquivOfFormallyEtale R A B)`. Set `bP : Module.Basis κ B (B ⊗[P] Ω[P⁄R])` to `(mvPolynomialBasis R κ).baseChange B`. Establish `hbij : Function.Bijective (mapBaseChange R P B)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: mapBaseChange R P B = (bP.equiv bB (Equiv.refl κ)).toLinearMap`. Use `bP.ext fun i => ?_` and prove the remaining obligations. Rewrite using `[LinearEquiv.coe_coe, Module.Basis.equiv_apply]`. Simplify using `[bP, bB, hb, ← hX, ← IsScalarTower.algebraMap_apply, P]`. Rewrite using `[this]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(bP.equiv bB (Equiv.refl κ)).bijective`. Establish `: Algebra.FormallyEtale P B` using `formallyEtale_of_bijective_mapBaseChange R P B hbij`. Set `p : Ideal P` to `(IsLocalRing.maximalIdeal A).comap (algebraMap P A)`. Set `Q` to `Localization.AtPrime p`. Set `ψ : Q →ₐ[P] A` to `IsLocalization.liftAlgHom (M := p.primeCompl) (f := Algebra.ofId P A) fun x => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `x.2 h`. Use `algebraize [ψ.toRingHom, (algebraMap A B).comp ψ.toRingHom]`. Establish `: IsScalarTower P Q B` using `.to₁₂₄ P Q A B`. Establish `: IsScalarTower R Q A` using `.to₁₃₄ R P Q A`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `: IsScalarTower R Q B` using `.to₁₂₄ R Q A B`. Establish `: IsLocalHom (algebraMap Q A)`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨x, s, rfl⟩` from `IsLocalization.exists_mk'_eq p.primeCompl x`. Rewrite using `[IsLocalization.AtPrime.isUnit_mk'_iff Q p]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `hxp`. Establish `e : algebraMap P A x = algebraMap P A s * algebraMap Q A (IsLocalization.mk' Q x s)`. Rewrite using `[IsScalarTower.algebraMap_apply P Q A s, ← map_mul, IsLocalization.mk'_spec', ← IsScalarTower.algebraMap_apply]`. Establish `hs : IsUnit (algebraMap P A s)`. Assume the negation of the conclusion as `h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `s.2 h`. Conclude with `hxp (e ▸ hs.mul hx)`. Establish `: Algebra.FormallyEtale Q B` using `Algebra.FormallyEtale.localization_base p.primeCompl`. Establish `: Algebra.EssFiniteType Q A` using `.of_comp R Q A`. Establish `: Algebra.EssFiniteType Q B` using `.of_comp R Q B`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Module.Flat Q B` using `flat_of_formallySmooth_of_essFiniteType Q B`. Establish `: Module.Flat Q A`. Rewrite using `[← RingHom.flat_algebraMap_iff]`. Use `ringHom_flat_of_comp_faithfullyFlat (β := algebraMap A B) (RingHom.faithfullyFlat_algebraMap_iff.mpr inferInstance) ?_` and prove the remaining obligations. Rewrite using `[← IsScalarTower.algebraMap_eq, RingHom.flat_algebraMap_iff]`.
-
-Use `infer_instance`. Establish `: Algebra.FormallyUnramified Q A`. Establish `h1 : Subsingleton (B ⊗[A] Ω[A⁄Q])` using `(tensorKaehlerEquivOfFormallyEtale Q A B).subsingleton`. Conclude with `⟨(Module.FaithfullyFlat.subsingleton_tensorProduct_iff_right A B).mp h1⟩`. Establish `: Algebra.FormallySmooth Q A` using `formallySmooth_of_flat_of_formallyUnramified Q A`.
-
-Establish `: Algebra.FormallySmooth P A` using `.comp P Q A`. Conclude with `.comp R P A`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem formallySmooth_of_faithfullyFlat (R A B : Type*) [CommRing R] [CommRing A] [CommRing B]
     [Algebra R A] [Algebra R B] [Algebra A B] [IsScalarTower R A B] [IsNoetherianRing R] [IsLocalRing A]
@@ -181,13 +177,11 @@ open scoped CategoryTheory.Obj TensorProduct
 open GlobalTheory.ZM
 
 /- English proof (translation)
-Establish `: LocallyOfFinitePresentation s` using `LocallyOfFinitePresentation.iff_locallyOfFiniteType.mpr ‹_›`. Establish `: Flat π` using `(Etale.iff_flat_and_formallyUnramified.mp ‹Etale π›).1`. Rewrite using `[← Scheme.Hom.smoothLocus_eq_top_iff, ← top_le_iff]`. Introduce and unpack `y -`. Take `⟨x, rfl⟩` from `π.surjective y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Scheme.Hom.mem_smoothLocus]`. Establish `h : ((π ≫ s).stalkMap x).hom.FormallySmooth` using `Scheme.Hom.mem_smoothLocus.mp ((π ≫ s).smoothLocus_eq_top.ge (Set.mem_univ x))`. Rewrite `h` using `[Scheme.Hom.stalkMap_comp]`. Use `replace h : ((π.stalkMap x).hom.comp (s.stalkMap (π x)).hom).FormallySmooth := h`. Establish `hs : (π.stalkMap x).hom.FormallySmooth` using `Scheme.Hom.mem_smoothLocus.mp (π.smoothLocus_eq_top.ge (Set.mem_univ x))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu` using `FormallyUnramified.stalkMap π x`. Establish `hf` using `faithfullyFlat_stalkMap_of_flat π x`. Establish `e₁` using `LocallyOfFiniteType.stalkMap π x`. Establish `e₂` using `LocallyOfFiniteType.stalkMap s (π x)`. Use `algebraize [(π.stalkMap x).hom, (s.stalkMap (π x)).hom, (π.stalkMap x).hom.comp (s.stalkMap (π x)).hom]`.
-
-Establish `: Algebra.FormallyEtale (Y.presheaf.stalk (π x)) (X.presheaf.stalk x)` using `Algebra.FormallyEtale.iff_formallyUnramified_and_formallySmooth.mpr ⟨hu, hs⟩`. Conclude with `formallySmooth_of_faithfullyFlat (S.presheaf.stalk (s (π x))) (Y.presheaf.stalk (π x)) (X.presheaf.stalk x)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_of_comp_of_etale_of_surjective {X Y S : Scheme.{0}} (π : X ⟶ Y) (s : Y ⟶ S)
     [IsLocallyNoetherian S] [Etale π] [Surjective π] [LocallyOfFiniteType s] [Smooth (π ≫ s)] :
@@ -215,13 +209,11 @@ theorem smooth_of_comp_of_etale_of_surjective {X Y S : Scheme.{0}} (π : X ⟶ Y
     (X.presheaf.stalk x)
 
 /- English proof (translation)
-Introduce `K _ X Y π s d _ _ _ hd`. Establish `: Smooth (π ≫ s)` using `SmoothOfRelativeDimension.smooth d _`. Establish `: Smooth s` using `smooth_of_comp_of_etale_of_surjective π s`. Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension d)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `choose n W hW hn using H1.exists_dim s`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key (y : Y) : n y = d`. Take `⟨x, rfl⟩` from `π.surjective y`. Use `hn (π x)` as an intermediate fact. Establish `h₁ : SmoothOfRelativeDimension (0 + n (π x)) ((π ∣_ W (π x)) ≫ (W (π x)).ι ≫ s)` using `inferInstance`. Rewrite `h₁` using `[← Category.assoc, morphismRestrict_ι, Category.assoc]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂ : SmoothOfRelativeDimension (0 + d) ((π ⁻¹ᵁ W (π x)).ι ≫ π ≫ s)` using `inferInstance`. Simplify using `using H1.dim_unique _ h₁ h₂ ⟨x, hW (π x)⟩`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension d) W ?_ fun y => key y ▸ hn y` and prove the remaining obligations. Rewrite using `[← top_le_iff]`. Introduce and unpack `y -`.
-
-Conclude with `TopologicalSpace.Opens.mem_iSup.mpr ⟨y, hW y⟩`.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_etale_cover :
     ∀ (K : Type) [Field K] (X Y : Scheme.{0}) (π : X ⟶ Y) (s : Y ⟶ Sp K) (d : ℕ), Etale π → Surjective π → LocallyOfFiniteType s → SmoothOfRelativeDimension d (π ≫ s) → SmoothOfRelativeDimension d s := by

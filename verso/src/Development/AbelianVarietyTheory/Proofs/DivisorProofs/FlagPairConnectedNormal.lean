@@ -31,7 +31,7 @@ def ofIso {Z : Model O} {E E' E₁ E₁' : Z.X.Modules} {φ : Z.GenIso E E'} {φ
     rw [Functor.map_comp, Functor.map_comp, reassoc_of% (P.gen_ι i), h, Category.assoc]
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `h`. Conclude with `⟨j, fun i hi => ⟨(hj i hi).1.symm, (hj i hi).2.symm⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem adj_symm {Z : Model O} {E E' : Z.X.Modules} {φ : Z.GenIso E E'} {N : ℕ}
     {P Q : FlagPair φ N} (h : FlagPair.Adj P Q) : FlagPair.Adj Q P := by
@@ -39,7 +39,7 @@ theorem adj_symm {Z : Model O} {E E' : Z.X.Modules} {φ : Z.GenIso E E'} {N : �
   exact ⟨j, fun i hi => ⟨(hj i hi).1.symm, (hj i hi).2.symm⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, fun i _ => h i⟩`.
+Supply the required witnesses or components.
 -/
 theorem adj_of_same {Z : Model O} {E E' : Z.X.Modules} {φ : Z.GenIso E E'} {N : ℕ}
     {P Q : FlagPair φ N} (h : ∀ i, Same (P.fl.ι i) (Q.fl.ι i) ∧ Same (P.fl'.ι i) (Q.fl'.ι i)) :
@@ -47,7 +47,7 @@ theorem adj_of_same {Z : Model O} {E E' : Z.X.Modules} {φ : Z.GenIso E E'} {N :
   ⟨0, fun i _ => h i⟩
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hPQ`. Conclude with `⟨j, fun i hi => ⟨Same.comp (hj i hi).1 e.hom, Same.comp (hj i hi).2 e'.hom⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem adj_ofIso {Z : Model O} {E E' E₁ E₁' : Z.X.Modules} {φ : Z.GenIso E E'}
     {φ₁ : Z.GenIso E₁ E₁'} {N : ℕ} {P Q : FlagPair φ N} (e : E ≅ E₁) (e' : E' ≅ E₁')
@@ -57,7 +57,7 @@ theorem adj_ofIso {Z : Model O} {E E' E₁ E₁' : Z.X.Modules} {φ : Z.GenIso E
   exact ⟨j, fun i hi => ⟨Same.comp (hj i hi).1 e.hom, Same.comp (hj i hi).2 e'.hom⟩⟩
 
 /- English proof (translation)
-Take `⟨j, hj⟩` from `hPQ`. Conclude with `⟨j, fun i hi => ⟨Same.map (hj i hi).1 (Scheme.Modules.pullback f), Same.map (hj i hi).2 (Scheme.Modules.pullback f)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem adj_pairPull {Z Z₁ : Model O} {f : Z₁.X ⟶ Z.X} (hf : f ≫ Z.str = Z₁.str)
     {E E' : Z.X.Modules} {φ : Z.GenIso E E'} {N : ℕ} {P Q : FlagPair φ N}
@@ -76,7 +76,7 @@ abbrev Joined {Z : Model O} {E E' : Z.X.Modules} {φ : Z.GenIso E E'} {N : ℕ}
     (P Q : FlagPair φ N) : Prop := Relation.ReflTransGen FlagPair.Adj P Q
 
 /- English proof (translation)
-The claim follows from `adj_of_same fun i => ⟨same_natIso (Scheme.Modules.pullbackComp g.f f.f) (P.fl.ι i), same_natIso (Scheme.Modules.pullbackComp g.f f.f) (P.fl'.ι i)⟩`.
+A detailed English derivation is pending.
 -/
 theorem adj_pullComp_pairPull {Z Z₁ Z₂ : Model O} (f : Hom Z₁ Z) (g : Hom Z₂ Z₁)
     {E E' : Z.X.Modules} {φ : Z.GenIso E E'} {N : ℕ} (P : FlagPair φ N) :
@@ -86,7 +86,7 @@ theorem adj_pullComp_pairPull {Z Z₁ Z₂ : Model O} (f : Hom Z₁ Z) (g : Hom 
     same_natIso (Scheme.Modules.pullbackComp g.f f.f) (P.fl'.ι i)⟩
 
 /- English proof (translation)
-The claim follows from `h.lift (pullComp f g) fun _ _ hab => adj_ofIso _ _ _ hab`.
+A detailed English derivation is pending.
 -/
 theorem joined_pullComp {Z Z₁ Z₂ : Model O} (f : Hom Z₁ Z) (g : Hom Z₂ Z₁)
     {E E' : Z.X.Modules} {φ : Z.GenIso E E'} {N : ℕ} {P Q : FlagPair ((φ.pull f.comp_str).pull g.comp_str) N}
@@ -94,7 +94,7 @@ theorem joined_pullComp {Z Z₁ Z₂ : Model O} (f : Hom Z₁ Z) (g : Hom Z₂ Z
   h.lift (pullComp f g) fun _ _ hab => adj_ofIso _ _ _ hab
 
 /- English proof (translation)
-Take `⟨e, rfl⟩` from `ha`. Take `⟨e', rfl⟩` from `ha'`. Use `⟨Z.genRes.mapIso e ≪≫ ψ ≪≫ (Z.genRes.mapIso e').symm, ?_⟩` and prove the remaining obligations. Simplify using `only [Iso.trans_hom, Functor.mapIso_hom, Iso.symm_hom, Functor.mapIso_inv, Category.assoc, Functor.map_comp]`. Rewrite using `[← Functor.map_comp_assoc, e'.inv_hom_id, CategoryTheory.Functor.map_id, Category.id_comp, hψ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_gen {Z : Model O} {E E' A A' C C' : Z.X.Modules} (φ : Z.GenIso E E')
     {a : A ⟶ E} {a' : A' ⟶ E'} {b : C ⟶ E} {b' : C' ⟶ E'} (ha : Same a b) (ha' : Same a' b')
@@ -108,9 +108,9 @@ theorem exists_gen {Z : Model O} {E E' A A' C C' : Z.X.Modules} (φ : Z.GenIso E
   rw [← Functor.map_comp_assoc, e'.inv_hom_id, CategoryTheory.Functor.map_id, Category.id_comp, hψ]
 
 /- English proof (translation)
-Take `⟨g, g₁, g₂⟩` from `FlagChain.exists_update P.fl j hs hv hl h₁ h₂`. Take `⟨g', g₁', g₂'⟩` from `FlagChain.exists_update P.fl' j hs' hv' hl h₁' h₂'`. Establish `hgen : ∀ i, ∃ χ : Z.GenIso (g.F i) (g'.F i), χ.hom ≫ Z.genRes.map (g'.ι i) = Z.genRes.map (g.ι i) ≫ φ.hom` using `fun i => by`. Distinguish the cases in `hi : i = j`. Substitute `hi` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Conclude with `exists_gen φ g₁ g₁' ψ hψ`. Conclude with `exists_gen φ (g₂ i hi) (g₂' i hi) (P.gen i) (P.gen_ι i)`. Use `choose χ hχ using hgen`. Conclude with `⟨⟨g, g', χ, hχ⟩, g₁, g₁', fun i hi => ⟨g₂ i hi, g₂' i hi⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_update {Z : Model O} {E E' : Z.X.Modules} {φ : Z.GenIso E E'} {r : ℕ}
     (P : FlagPair φ r) (j : Fin (r + 1)) {H H' : Z.X.Modules} {κ : H ⟶ E} {κ' : H' ⟶ E'}
@@ -145,9 +145,7 @@ def Moves {B : Model O} {E E' : B.X.Modules} {φ : B.GenIso E E'} {r : ℕ} (P :
         Same (Q.fl'.ι i) ((pairPull f.comp_str P).fl'.ι i)
 
 /- English proof (translation)
-Take `⟨B₂, g, hB₂, hg, Q, h₁, h₂, h₂', h₃⟩` from `h`. Use `⟨B₂, g.comp f, hB₂, relDim_comp f g hf hg, pullComp f g Q, ((joined_pullComp f g h₁).head (adj_symm (adj_pullComp_pairPull f g P))), ?_, ?_, fun i hi => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Conclude with `(h₂.comp _).trans (same_natIso (Scheme.Modules.pullbackComp g.f f.f) κ)`. Conclude with `(h₂'.comp _).trans (same_natIso (Scheme.Modules.pullbackComp g.f f.f) κ')`. Conclude with `((h₃ i hi).1.comp _).trans (same_natIso (Scheme.Modules.pullbackComp g.f f.f) (P.fl.ι i))`.
-
-Conclude with `((h₃ i hi).2.comp _).trans (same_natIso (Scheme.Modules.pullbackComp g.f f.f) (P.fl'.ι i))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Moves.of_pull {B B₁ : Model O} {E E' : B.X.Modules} {φ : B.GenIso E E'} {r : ℕ}
     {P : FlagPair φ r} {n : Fin (r + 1)} {H H' : B.X.Modules} {κ : H ⟶ E} {κ' : H' ⟶ E'}
@@ -163,17 +161,15 @@ theorem Moves.of_pull {B B₁ : Model O} {E E' : B.X.Modules} {φ : B.GenIso E E
   · exact ((h₃ i hi).2.comp _).trans (same_natIso (Scheme.Modules.pullbackComp g.f f.f) (P.fl'.ι i))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `B hB E E' φ r P hn H H' κ κ' ψ _ _ _ hv hv' _ _`. Establish `h₀` using `GlobalTheory.VB.isVB_zero_iff.1 ((pairPull (Hom.id B).comp_str P).fl.isVB ⟨0, by omega⟩)`. Establish `h₀'` using `GlobalTheory.VB.isVB_zero_iff.1 ((pairPull (Hom.id B).comp_str P).fl'.isVB ⟨0, by omega⟩)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨B, Hom.id B, hB, Nat.sub_self _, _, .refl, ⟨h₀.iso (GlobalTheory.VB.isVB_zero_iff.1 (hv.pullback _)), h₀.eq_of_src _ _⟩, ⟨h₀'.iso (GlobalTheory.VB.isVB_zero_iff.1 (hv'.pullback _)), h₀'.eq_of_src _ _⟩, fun _ _ => ⟨.refl _, .refl _⟩⟩`. Consider the case `succ n ih`. Introduce `B hB E E' φ r P hn H H' κ κ' ψ hψ hs hs' hv hv' hle hle'`. Take `⟨B₁, f₁, K, K', μ, μ', χ, hB₁, hf₁, hμ, hμ', hK, hK', hχ, m₁, m₁', m₂, m₂'⟩` from `GlobalTheory.T.generic_iso_flag_pair_subbundle_compat O p B hB E E' φ r P n hn H H' κ κ' ψ hs hs' hv hv' hψ hle hle'`. Use `Moves.of_pull f₁ hf₁ ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B₂, f₂, hB₂, hf₂, Q, k₁, k₂, k₂', k₃⟩` from `ih B₁ hB₁ (pairPull f₁.comp_str P) (by omega) μ μ' χ hχ hμ hμ' hK hK' m₁ m₁'`. Establish `hn₁ : n < r + 1` using `by omega`. Establish `hn₃ : n < r` using `by omega`. Establish `hc` using `pull_comm f₂.comp_str _ _ _ _ (pull_comm f₁.comp_str φ ψ κ κ' hψ)`. Take `⟨Q', l₁, l₁', l₂⟩` from `exists_update Q ⟨n + 1, by omega⟩ _ hc (SubPull.isSubbundle_pullback _ _ f₂.f _ _ _ _ (hv.pullback f₁.f) (SubPull.isSubbundle_pullback _ _ f₁.f _ _ κ _ hv hs)) (SubPull.isSubbundle_pullback _ _ f₂.f _ _ _ _ (hv'.pullback f₁.f) (SubPull.isSubbundle_pullback _ _ f₁.f _ _ κ' _ hv' h …`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `rfl : i = ⟨n, hn₃⟩` from `Fin.ext (Nat.succ_injective (congrArg Fin.val hi))`. Conclude with `k₂.le.trans (m₂.map _))`. Use the proof step `(fun i hi => by`. Take `rfl : i = ⟨n, hn₃⟩` from `Fin.ext (Nat.succ_injective (congrArg Fin.val hi))`. Conclude with `k₂'.le.trans (m₂'.map _))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use the proof step `(fun i hi => by`. Take `rfl : i = ⟨n + 1, hn⟩` from `Fin.ext (congrArg Fin.val hi :)`. Conclude with `((hle.map _).map _).trans (k₃ ⟨n + 2, by omega⟩ (Fin.mk_lt_mk.2 (by omega))).1.symm.le)`. Use the proof step `(fun i hi => by`. Take `rfl : i = ⟨n + 1, hn⟩` from `Fin.ext (congrArg Fin.val hi :)`.
-
-Conclude with `((hle'.map _).map _).trans (k₃ ⟨n + 2, by omega⟩ (Fin.mk_lt_mk.2 (by omega))).2.symm.le)`. Conclude with `⟨B₂, f₂, hB₂, hf₂, Q', k₁.tail ⟨⟨n + 1, by omega⟩, fun i hi => ⟨(l₂ i hi).1.symm, (l₂ i hi).2.symm⟩⟩, l₁, l₁', fun i hi => ⟨((l₂ i hi.ne').1).trans (k₃ i (lt_trans (Fin.mk_lt_mk.2 n.lt_succ_self) hi)).1, ((l₂ i hi.ne').2).trans (k₃ i (lt_trans (Fin.mk_lt_mk.2 n.lt_succ_self) hi)) …`.
+A detailed English derivation is pending.
 -/
 theorem moves (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (n : ℕ) : ∀ (B : Model O), IsNormalScheme B.X → ∀ {E E' : B.X.Modules}
     {φ : B.GenIso E E'} {r : ℕ} (P : FlagPair φ r) (hn : n < r) {H H' : B.X.Modules} (κ : H ⟶ E)
@@ -228,13 +224,13 @@ theorem moves (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (
        ((l₂ i hi.ne').2).trans (k₃ i (lt_trans (Fin.mk_lt_mk.2 n.lt_succ_self) hi)).2⟩⟩
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `B hB E E' φ r _ P P' h`. Conclude with `⟨B, Hom.id B, hB, Nat.sub_self _, .single (adj_pairPull _ (adj_of_same fun i => h i (Nat.zero_le _)))⟩`. Consider the case `succ n ih`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Treat this case separately.
 
-Introduce `B hB E E' φ r hn P P' h`. Take `⟨B₁, f₁, hB₁, hf₁, Q, h₁, h₂, h₂', h₃⟩` from `moves p n B hB P hn (P'.fl.ι ⟨n, by omega⟩) (P'.fl'.ι ⟨n, by omega⟩) (P'.gen _) (P'.gen_ι _) (P'.fl.isSubbundle _) (P'.fl'.isSubbundle _) (P'.fl.isVB _) (P'.fl'.isVB _) (Le.trans ⟨P'.fl.step ⟨n, hn⟩, P'.fl.step_ι ⟨n, hn⟩⟩ (h ⟨n + 1, by omega⟩ le_rfl).1.symm.le) (Le.trans ⟨P'.fl'. …`. Establish `hn₁ : n < r + 1` using `by omega`. Take `⟨B₂, f₂, hB₂, hf₂, k₁⟩` from `ih B₁ hB₁ (by omega) Q (pairPull f₁.comp_str P') fun i hi => by`. Break down `hi.eq_or_lt with e | e` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Take `rfl : i = ⟨n, hn₁⟩` from `Fin.ext e.symm`. Conclude with `⟨h₂, h₂'⟩`. Conclude with `⟨(h₃ i e).1.trans ((h i e).1.map _), (h₃ i e).2.trans ((h i e).2.map _)⟩`. Establish `k₂ : Joined (pairPull f₂.comp_str (pairPull f₁.comp_str P)) (pairPull f₂.comp_str (pairPull f₁.comp_str P'))` using `(h₁.lift (pairPull f₂.comp_str) fun _ _ hab => adj_pairPull _ hab).trans k₁`. Use `⟨B₂, f₂.comp f₁, hB₂, relDim_comp f₁ f₂ hf₁ hf₂, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((joined_pullComp f₁ f₂ k₂).tail (adj_pullComp_pairPull f₁ f₂ P')).head (adj_symm (adj_pullComp_pairPull f₁ f₂ P))`.
+A detailed English derivation is pending.
 -/
 theorem joined_of_same (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (n : ℕ) : ∀ (B : Model O), IsNormalScheme B.X → ∀ {E E' : B.X.Modules}
     {φ : B.GenIso E E'} {r : ℕ}, n ≤ r → ∀ P P' : FlagPair φ r,
@@ -269,7 +265,7 @@ theorem joined_of_same (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueFiel
 end GlobalTheory.FlagPairChain
 
 /- English proof (translation)
-Introduce `O _ _ _ p _ _ _ B hB E E' φ r P P'`. Use `GlobalTheory.FlagPairChain.joined_of_same p r B hB le_rfl P P' fun i hi => ?_` and prove the remaining obligations. Take `rfl : i = Fin.last r` from `Fin.last_le_iff.1 hi`. Conclude with `⟨⟨asIso (P.fl.ι _) ≪≫ (asIso (P'.fl.ι _)).symm, by simp⟩, ⟨asIso (P.fl'.ι _) ≪≫ (asIso (P'.fl'.ι _)).symm, by simp⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.FlagPairChain.exists_normal_modification_joined : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (p : ℕ) [Fact p.Prime] [CharZero O] [CharP (ResidueField O) p] (B : GlobalTheory.Vert.Model O), GlobalTheory.IsNormalScheme B.X → ∀ (E E' : B.X.Modules) (φ : B.GenIso E E') (r : ℕ) (P P' : GlobalTheory.Vert.Model.FlagPair φ r), ∃ (B' : GlobalTheory.Vert.Model O) (f : GlobalTheory.Vert.Model.Hom B' B), GlobalTheory.IsNormalScheme B'.X ∧ f.relDim = 0 ∧ Relation.ReflTransGen GlobalTheory.Vert.Model.FlagPair.Adj (GlobalTheory.FlagPairExists.pairPull f.comp_str P) (GlobalTheory.FlagPairExists.pairPull f.comp_str P') := by
   intro O _ _ _ p _ _ _ B hB E E' φ r P P'

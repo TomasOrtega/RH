@@ -29,29 +29,27 @@ end Gal
 section Core
 variable {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {l : ℕ} [Fact l.Prime] {c : Coef l}
 /- English proof (translation)
-Take `⟨⟨B, -⟩, hB⟩` from `_root_.UpperTheory.V.Ws.exists_phi_universal_ordinary_det_ring_of_link hU D T hF hD c' h K X 0`. Take `⟨φ, hφ⟩` from `hB B`. Take `⟨u, hu⟩` from `hconj`. Establish `hcj : ∀ g, K.rhoQ 0 (X.P.map (y : X.A →+* PadicAlgCl l)).r g = u * K.rhoQ 0 (r.comp (resQ T.F)) g * u⁻¹` using `fun g => by`. Apply `Units.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hres, Units.val_mul, Units.val_mul, K.rho_val, K.rho_val, MonoidHom.comp_apply, MonoidHom.comp_apply, hu, Matrix.mul_smul, Matrix.smul_mul]`. Establish `hrep₁ : (Link.pt φ y).IsRep (K.rhoQ 0 _)` using `auRep D T c' h K X B 0 φ hφ y _ fun _ => rfl`. Establish `hrep : (Link.pt φ y).IsRep (K.rhoQ 0 (r.comp (resQ T.F)))`. Use `Eq.trans hrep₁ ((AlgebraTools.Det.repApi _).2.2.2.2.2.2.2 _ u fun g => ?_).symm` and prove the remaining obligations. Conclude with `congrArg Units.val (eq_mul_inv_iff_mul_eq.1 (hcj g)).symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hcρ` using `Pt.rho_cont K 0 (r := r.comp (resQ T.F)) (hc.comp (Af.continuous_restrictScalarsHom ℚ T.F Ω))`. Establish `hirr : Af.IsIrr (K.rhoQ 0 (r.comp (resQ T.F)))` using `(auIrr _ (r.comp (resQ T.L)) hi fun g => ⟨IntermediateField.fixingSubgroupEquiv T.L g, rfl⟩).2 (K.twc 0)`. Establish `hfull : Eb.Full (K.rhoQ 0 (r.comp (resQ T.F)))` using `(AlgebraTools.Det.irrIffSpan (W.mat _)).1 fun N hN => hirr.2.2 N le_top fun g v hv => hN g v hv`. Take `⟨hs, hq, -⟩` from `phiKer K.V`. Take `⟨ρ, hρ, hfull', -⟩` from `factor_abs (Link.pt φ y).D K.V.pr hs _ (by norm_num) hfull hrep`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ρ, hρ, ?_⟩` and prove the remaining obligations. Establish `hanti : StrictAnti fun i => (D.wts4 i : ℤ)`. Use `hG.two_le` as an intermediate fact. Use `Fin.strictAnti_iff_succ_lt.2 fun i => ?_` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [Raw.wts4] <;> omega`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hmm, k, hk, hmk⟩` from `Pt.ptWts K X B 0 φ hφ y _ (fun i => by simp) hw`. Take `⟨π, hreg, hatt⟩` from `(_root_.UpperTheory.GalN.V.automorphy_bridge_of_printed_hida hU.pr T.L Ω l ι 4 _).2.1.1 haut`. Establish `haut' : _root_.UpperTheory.V.Z.Win.IsAutCsdA ι (K.rhoQ 0 (r.comp (resQ T.F)))`. Establish `e : Af.tw ((r.comp (resQ T.F)).comp (resLe T.F_le)).toHomUnits 1 = r.toHomUnits.comp (resQ T.L)`. Use extensionality with `g : 2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Af.tw_val, MonoidHom.one_apply, Units.val_one, one_smul]`. Both sides reduce to the same expression. Apply the tactic sequence `refine _root_.UpperTheory.GalN.V.point_automorphy_w_of_gsp_cusp_sub_rank_four hU.pr K 0 ι _ (fun g => hm _) 1 π 0 1 continuous_const one_pos (by simp) (fun A _ s _ => by simp) hreg ?_ ?_ <;>`. Rewrite using `[e]` and apply the resulting hypothesis. Establish `hunr` using `Pt.ptUnr K 0 (X.P.map (y : X.A →+* PadicAlgCl l)).r fun g hg => by`.
+Both sides reduce to the same expression. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(y : X.A →+* PadicAlgCl l).mapMatrix (X.P.r g) = 1`. Rewrite using `[X.pair.kill g hg, map_one]`. Establish `hfl : ∀ v : W.Vl l T.L, W.HasFlag ((K.rhoQ 0 (r.comp (resQ T.F))).comp (Dec (F` using `T.L) (K.s.A v)).subtype) ((Link.pt φ y).psi v) := fun v => by`. Take `⟨a, ha⟩` from `Pt.ptFlag K X B 0 φ hφ y v`. Use `⟨a * u, fun s => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `ha s`. Rewrite `h1` using `[MonoidHom.comp_apply, hcj]`. Simplify `h1` using `only [mul_inv_rev, mul_assoc, MonoidHom.comp_apply]`. Establish `hapt : _root_.UpperTheory.V.Th.AutomorphicPointGalois ι (Link.pt φ y) ρ`. Use `⟨hq.continuous_iff.2 ?_, hρ ▸ hrep, ?_, hρ ▸ haut', ?_, fun v => ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : (ρ : _ → _) ∘ K.V.pr = K.rhoQ 0 (r.comp (resQ T.F))` using `congrArg DFunLike.coe hρ`. Conclude with `e ▸ hcρ`. Conclude with `auArith hU.pr.toClassicalTheorems.litN.aut.art D T c' h K X B φ hφ y _ (fun _ => rfl) (Pt.psi_cont _) _ hanti hw`. Introduce and unpack `_ ⟨g, hg, rfl⟩`. Establish `h1` using `hunr g hg`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hcj, mul_inv_eq_one, mul_eq_left]`. Conclude with `(DFunLike.congr_fun hρ g).trans h1`. Establish `h1` using `hfl v`. Rewrite `h1` using `[← hρ]`. Conclude with `h1`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hirr₀ : U3.MatIrr ⊤ (W.mat ρ)` using `fun N hN => (AlgebraTools.Det.irrIffSpan (W.mat ρ)).2 hfull' N fun g v hv => hN g trivial v hv`. Establish `hfree : Free K.V.frame fun v => (Link.pt φ y).psi v` using `fun v : W.Vl l T.L => by`. Take `⟨g, hg, hfr⟩` from `free_up T.K T.L r.toHomUnits hf (K.twc 0) (K.s.A v) (by simpa using (K.s.hA v _).2 v.2) _ (hfl v)`. Use `⟨g, ?_, hfr⟩` and prove the remaining obligations. Establish `e : K.V.ε (toGS Ω K.V.S' (W.resP T.L Ω g)) = cycZ (W.Lp T.L) Ω l (W.resP T.L Ω g)` using `DFunLike.congr_fun K.V.hε _`.
-
-Conclude with `e.trans hg`. Conclude with `hAd l T.L Ω K.s K.V K.hV K.noMu c' K.large 4 (by omega) le_rfl K.r K.v0 B ι _ ρ (_root_.UpperTheory.V.Th.nice0four_alt ι _ ρ hapt hirr₀ hfree (P1.condC D T hF hD c' h K) (P1.condD D T hF hD c' h K)) (par' _ m (fun v i j hij => by have h1 := hmm v i j; have h2 := hanti hij; simp o …`.
+A detailed English derivation is pending.
 -/
 theorem adjoint_vanishing_gsp4_rigid_point (hU : _root_.UpperTheory.V.Ws.UnramifiedInputs) (hAd : _root_.UpperTheory.V.Th.AdjointLiftingTheorem) {D : Raw Ω c} (hG : D.Good) {T : Tower D} (hF : T.Fit) (hD : T.Deep) {c' : Coef l}
     {h : c.O ≤ c'.O} (K : Link T c' h) (X : Space (T.fr ∅) (inc h)) (y : X.A →ₐ[c'.O] PadicAlgCl l) (ι : PadicAlgCl l ≃+* ℂ)

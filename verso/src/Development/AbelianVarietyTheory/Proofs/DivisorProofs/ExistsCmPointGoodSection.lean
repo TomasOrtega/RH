@@ -48,15 +48,15 @@ set_option synthInstance.maxHeartbeats 400000
 namespace GlobalTheory.CovDetectDom
 
 /- English proof (translation)
-Introduce `hP D T j Y e o hG hdeg _ _ la _ _ _ hstar F hF hF0`. Establish `hσ : GoodEmb Y.d.c₂ Y.d.c₂.F.val.toRingHom` using `rfl`. Establish `hU` using `hG.unf _ hσ`. Establish `hFm` using `GlobalTheory.AllWt.mem_cuspW.1 hF`. Take `⟨k, x₁, hx₁, hne₁⟩` from `GlobalTheory.exists_rdU_ne_zero_of_mem_secZ _ _ _ _ _ _ _ _ _ hU _ F hFm.1 hF0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨Xx, 𝔄, hX, h𝔄, hΛ⟩` from `GlobalTheory.CovData.exists_dataX_good D T j Y e o hG _ hσ k`. Establish `hbdd` using `(Formalism.L2.Pj.abelian₂.holSub_SS ReciprocityTheory.ChartRestriction.G.FD.siegelSpaceAlgebra_holds _ _ (hFm.2 _ hσ) k).1`. Establish `hr : 0 < D.R.r`. Establish `hn : 0 < D.R.ord` using `D.R.ord_pos`. Establish `hk` using `D.R.f_le_k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `D.R.rank_add_five_le`. Unfold `Ranks.r`. Use linear arithmetic over natural numbers and integers. Take `⟨La, x, lam, hx, hB, hne⟩` from `GlobalTheory.CMDetect.exists_cm_frame Xx _ hX hr _ _ hbdd hx₁ hne₁`. Take `⟨z, σ₁, hz, hzx⟩` from `GlobalTheory.LamT.exists_good_cmPt_at_frame _ _ _ _ _ _ hstar _ _ hU hr k ⟨x, hx⟩ Xx hX 𝔄 h𝔄 hΛ La lam hB`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hev : evR Y.d.Xo₂ Y.d.c₂ F ((Y.U _).un k ⟨x, hx⟩) ≠ 0`. Introduce `h0`. Apply `hne` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(if h : x ∈ ((Y.U _).X k).dom then toC (evR Y.d.Xo₂ Y.d.c₂ F ((Y.U _).un k ⟨x, h⟩)) else 0) = 0`. Rewrite using `[dif_pos hx]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0`. Take `⟨y, hy, hyne⟩` from `GlobalTheory.FrameDenseZ.exists_frame_evR_ne_zero_of_complex _ _ _ _ _ _ z.K z.y _ F hFm.1 _ σ₁ _ hzx hev`. Conclude with `⟨z, La, y, hz, hy.trans hz.2.2.2.1, hyne⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_good_cmPt_frame_ne_zero_of_dominant : GlobalTheory.CovTop.Hypotheses2 → ∀ (D : D7) (T : Core D) (j : ℕ) (Y : Deep T j) (e : ℕ) (o : ℝ), Y.Good e o → 2 < Module.finrank ℚ D.host.E / 2 → 1 ≤ (T.Q.Dw j).p → 1 ≤ (T.Q.Dw j).q → ∀ la : GlobalTheory.AllWt.Weight (T.Q.Dw j), (∀ τ, Antitone (la τ)) → (∀ τ, 1 ≤ gap (la τ) ((T.Q.Dw j).p - 1)) → ∀ [StarRing (𝓞 D.host.E)], (∀ a : 𝓞 D.host.E, star a = T.Q.H.bar a) → ∀ F ∈ Y.V (wtOf _ la 0), F ≠ 0 → ∃ (z : CMPt Y.d.Xo₂ Y.d.c₂) (La : ℝ) (y : FrPt Y.d.Xo₂ Y.d.c₂ z.K), z.Good (Module.finrank ℚ D.host.E / 2) La ∧ y.x = z.x ∧ evR Y.d.Xo₂ Y.d.c₂ F y ≠ 0 := by
   classical

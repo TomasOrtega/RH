@@ -8,7 +8,7 @@ open scoped ContDiff Real Topology
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.WeakHarmonicConv.harmonicOnNhd_convolution | exact GlobalTheory.WeakHarmonicConv.harmonicOnNhd_convolution | (intros; apply GlobalTheory.WeakHarmonicConv.harmonicOnNhd_convolution <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.weyl_lemma_mollified_harmonic : ∀ (u : ℂ → ℝ), Continuous u → (∀ φ : ℂ → ℝ, ContDiff ℝ ∞ φ → HasCompactSupport φ → ∫ w : ℂ, u w * Laplacian.laplacian φ w = 0) → ∀ ψ : ℂ → ℝ, ContDiff ℝ ∞ ψ → HasCompactSupport ψ → InnerProductSpace.HarmonicOnNhd (MeasureTheory.convolution ψ u (ContinuousLinearMap.lsmul ℝ ℝ) volume) univ := by
   first | exact @GlobalTheory.WeakHarmonicConv.harmonicOnNhd_convolution | exact GlobalTheory.WeakHarmonicConv.harmonicOnNhd_convolution | (intros; apply GlobalTheory.WeakHarmonicConv.harmonicOnNhd_convolution <;> assumption)

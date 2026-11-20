@@ -10,15 +10,15 @@ open UpperTheory.ConvolutionTheory.R2
 
 open UpperTheory.ConvolutionTheory.R2.H in
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π h0 Q hQ`. Establish `hs : ∀ᶠ w : HeightOneSpectrum (𝓞 E) in cofinite, ∀ v : HeightOneSpectrum (𝓞 F), Below v w → ∃ B, π.HasSat v B`. Establish `h1` using `UpperTheory.V.Af.Gk.satAE F 2 π`. Rewrite `h1`, the goal using `[Filter.eventually_cofinite]`. Use `(h1.biUnion (t := fun v => {w : HeightOneSpectrum (𝓞 E) | Below v w}) fun v _ => ?_).subset fun w hw => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `v.isMaximal` as an intermediate fact. Use `Set.Finite.of_finite_image (f := fun w => w.asIdeal) ((IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 E)).subset ?_) fun _ _ _ _ e => HeightOneSpectrum.ext e` and prove the remaining obligations. Introduce and unpack `_ ⟨w, hw, rfl⟩`. Conclude with `⟨w.isPrime, ⟨hw⟩⟩`. Simplify using `only [Set.mem_setOf_eq, not_forall] at hw`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 
-Take `⟨v, hv, hn⟩` from `hw`. Conclude with `Set.mem_biUnion (show v ∈ {v | ¬ ∃ B, π.HasSat v B} from hn) hv`. Use `filter_upwards [hs, placeAe F E D, unrInert F E D W M π h0 Q hQ] with w h1 h2 h3 v hv f hf`. Take `⟨B, hB⟩` from `h1 v hv`. Establish `h4 : 1 < normV v`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `GlobalTheory.LFun.one_lt_absNorm v` as an intermediate fact. Simplify `this` using `[normV, Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Use `⟨B, hB, ?_⟩` and prove the remaining obligations. Break down `h2 v hv with hsp | hi` into its components or cases. Establish `: f = 1` using `Nat.pow_right_injective h4 (show normV v ^ f = normV v ^ 1 by rw [← hf, hsp.1, pow_one])`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts.
 
-Substitute `this` using the available equality. Simplify using `using unrSplit F E D W M π h0 Q hQ v w hsp B hB`. Establish `: f = 2` using `Nat.pow_right_injective h4 (show normV v ^ f = normV v ^ 2 by rw [← hf, hi.norm])`. Substitute `this` using the available equality. Conclude with `h3 v hv hi B hB`.
+Establish an intermediate fact. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.unr :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), St.Unr W M π := by

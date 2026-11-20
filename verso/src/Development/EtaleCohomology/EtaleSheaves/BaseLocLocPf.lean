@@ -8,7 +8,7 @@ open scoped TensorProduct
 namespace LateralTheory.E.BaseLocLocPf
 
 /- English proof (translation)
-Use `⟨⟨by simpa [← cancel_mono i] using h.w⟩, ⟨PullbackCone.IsLimit.mk _ (fun s => h.lift s.fst s.snd (by simp [s.condition_assoc])) (fun s => by simp) (fun s => by simp) ?_⟩⟩` and prove the remaining obligations. Introduce `s m h1 h2`. Apply the tactic sequence `apply h.hom_ext <;> simp [h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pb_cancel {C : Type*} [Category C] {P X Y Z T : C} {a : P ⟶ X} {b : P ⟶ Y} {f : X ⟶ Z} {g : Y ⟶ Z}
     {i : Z ⟶ T} [Mono i] (h : IsPullback a b (f ≫ i) (g ≫ i)) : IsPullback a b f g := by
@@ -18,7 +18,7 @@ theorem pb_cancel {C : Type*} [Category C] {P X Y Z T : C} {a : P ⟶ X} {b : P 
   apply h.hom_ext <;> simp [h1, h2]
 
 /- English proof (translation)
-Use `letI := f.toAlgebra`. Use `letI : Algebra A C := ((algebraMap B C).comp f).toAlgebra`. Use `haveI : IsScalarTower A B C := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`. Conclude with `⟨_, IsLocalization.localization_localization_isLocalization M N C⟩`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem loc_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (M : Submonoid A)
     (hf : @IsLocalization _ _ M _ _ f.toAlgebra) [Algebra B C] (N : Submonoid B) [IsLocalization N C] :
@@ -29,7 +29,7 @@ theorem loc_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A �
   exact ⟨_, IsLocalization.localization_localization_isLocalization M N C⟩
 
 /- English proof (translation)
-Use `letI : Algebra A C := ((e : B →+* C).comp (algebraMap A B)).toAlgebra`. Conclude with `IsLocalization.isLocalization_of_algEquiv M (AlgEquiv.ofRingEquiv (f := e) (fun _ => rfl))`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem loc_equiv' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] [Algebra A B] (M : Submonoid A)
     [IsLocalization M B] (e : B ≃+* C) :
@@ -38,21 +38,17 @@ theorem loc_equiv' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] [Algebr
   exact IsLocalization.isLocalization_of_algEquiv M (AlgEquiv.ofRingEquiv (f := e) (fun _ => rfl))
 
 /- English proof (translation)
-Take `⟨U0, hU0a, hxU0, -⟩` from `exists_isAffineOpen_mem_and_subset (show x ∈ (⊤ : S.Opens) from trivial)`. Establish `hg : S.fromSpecStalk x = Spec.map (S.presheaf.germ U0 x hxU0) ≫ hU0a.fromSpec` using `(hU0a.fromSpecStalk_eq_fromSpecStalk hxU0).symm`. Establish `hgU : ∀ z, S.fromSpecStalk x z ∈ U0`. Introduce `z`. Rewrite using `[hg, Scheme.Hom.comp_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hU0a.range_fromSpec.le (Set.mem_range_self _)`. Establish `hcy : c (pullback.fst c (S.fromSpecStalk x) y) ∈ U0`. Rewrite using `[← Scheme.Hom.comp_apply, pullback.condition, Scheme.Hom.comp_apply]`. Conclude with `hgU _`. Take `⟨V, hVa, hyV, hVU⟩` from `exists_isAffineOpen_mem_and_subset (show pullback.fst c (S.fromSpecStalk x) y ∈ c ⁻¹ᵁ U0 from hcy)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hVU' : V ≤ c ⁻¹ᵁ U0` using `hVU`. Use `set p := pullback.fst c (S.fromSpecStalk x)`. Use `set O := p ⁻¹ᵁ V with hOdef`. Establish `H1 : IsPullback (p ∣_ V) O.ι V.ι p` using `isPullback_morphismRestrict p V`. Establish `H2 : IsPullback (p ∣_ V) (O.ι ≫ pullback.snd c (S.fromSpecStalk x)) (V.ι ≫ c) (S.fromSpecStalk x)` using `H1.paste_vert (IsPullback.of_hasPullback c (S.fromSpecStalk x))`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Set `ψ` to `c.appLE U0 V hVU'`. Establish `e1 : V.ι ≫ c = hVa.isoSpec.hom ≫ Spec.map ψ ≫ hU0a.fromSpec`. Rewrite using `[IsAffineOpen.SpecMap_appLE_fromSpec c hU0a hVa hVU', ← IsAffineOpen.isoSpec_inv_ι]`. Simplify using the standard rewrite rules. Establish `H3 : IsPullback ((p ∣_ V) ≫ hVa.isoSpec.hom) (O.ι ≫ pullback.snd c (S.fromSpecStalk x)) (Spec.map ψ ≫ hU0a.fromSpec) (Spec.map (S.presheaf.germ U0 x hxU0) ≫ hU0a.fromSpec)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Rewrite using `[← hg]`. Conclude with `IsPullback.of_iso H2 (Iso.refl _) hVa.isoSpec (Iso.refl _) (Iso.refl _) (by simp) (by simp) (by simp [e1]) (by simp)`. Establish `H4` using `pb_cancel H3`. Use `letI : Algebra Γ(S, U0) Γ(Z, V) := ψ.hom.toAlgebra`. Use `letI := S.presheaf.algebra_section_stalk ⟨x, hxU0⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI hSt : IsLocalization.AtPrime (S.presheaf.stalk x) (hU0a.primeIdealOf ⟨x, hxU0⟩).asIdeal := hU0a.isLocalization_stalk ⟨x, hxU0⟩`. Establish `H5` using `isPullback_SpecMap_of_isPushout _ _ _ _ (CommRingCat.isPushout_tensorProduct Γ(S, U0) Γ(Z, V) (S.presheaf.stalk x))`. Set `e` to `H4.isoIsPullback _ _ H5`. Use `haveI : IsAffine O.toScheme := IsAffine.of_isIso e.hom`. Establish `hOa : IsAffineOpen O` using `this`.
-
-Set `eR : CommRingCat.of (Γ(Z, V) ⊗[Γ(S, U0)] S.presheaf.stalk x) ≅ Γ(pullback c (S.fromSpecStalk x), O)` to `(Scheme.ΓSpecIso _).symm ≪≫ Scheme.Γ.mapIso e.op ≪≫ O.topIso`. Establish `hL` using `loc_equiv' (Algebra.algebraMapSubmonoid Γ(Z, V) (hU0a.primeIdealOf ⟨x, hxU0⟩).asIdeal.primeCompl) eR.commRingCatIsoToRingEquiv`. Establish `hyO : y ∈ O` using `hyV`. Take `⟨h, hhW, hyh⟩` from `hOa.exists_basicOpen_le (V := W) ⟨y, hy⟩ hyO`. Use `haveI := hOa.isLocalization_basicOpen h`.
-
-Take `⟨M, hM⟩` from `loc_comp (C := Γ(pullback c (S.fromSpecStalk x), (pullback c (S.fromSpecStalk x)).basicOpen h)) _ _ hL (Submonoid.powers h)`. Conclude with `⟨_, hyh, hhW, V, hVa, ⟨_, hyV⟩, _, M, hM⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chart {Z S : Scheme.{0}} (c : Z ⟶ S) (x : S) (W : (pullback c (S.fromSpecStalk x) : Scheme.{0}).Opens)
     (y : (pullback c (S.fromSpecStalk x) : Scheme.{0})) (hy : y ∈ W) :
@@ -104,7 +100,7 @@ theorem chart {Z S : Scheme.{0}} (c : Z ⟶ S) (x : S) (W : (pullback c (S.fromS
   exact ⟨_, hyh, hhW, V, hVa, ⟨_, hyV⟩, _, M, hM⟩
 
 /- English proof (translation)
-Introduce `Z S c _ _ _ _ _ x W y hy`. Conclude with `chart c x W y hy`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem BaseLocLoc_of : LateralTheory.E.BaseAICPf.BaseLocLoc := by
   intro Z S c _ _ _ _ _ x W y hy

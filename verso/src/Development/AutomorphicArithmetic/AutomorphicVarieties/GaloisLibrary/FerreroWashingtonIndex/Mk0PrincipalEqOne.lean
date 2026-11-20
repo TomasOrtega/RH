@@ -8,7 +8,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped nonZeroDivisors
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Qh29.norm_eq_mul_cE K y`.
+A detailed English derivation is pending.
 -/
 private theorem norm_eq_mul_cE (K : Type) [Field K] [NumberField K] [IsCMField K] (y : K) :
     algebraMap (maximalRealSubfield K) K (Algebra.norm (maximalRealSubfield K) y) = y * cE K y :=
@@ -18,14 +18,14 @@ private def prI {K : Type} [Field K] [NumberField K] (b : 𝓞 K) (hb : b ≠ 0)
   ⟨Ideal.span {b}, mem_nonZeroDivisors_of_ne_zero (by simpa using hb)⟩
 
 /- English proof (translation)
-The claim follows from `(ClassGroup.mk0_eq_one_iff _).2 ⟨⟨b, rfl⟩⟩`.
+A detailed English derivation is pending.
 -/
 private theorem mk0_principal_eq_one {K : Type} [Field K] [NumberField K] (b : 𝓞 K) (hb : b ≠ 0) :
     ClassGroup.mk0 (prI b hb) = 1 :=
   (ClassGroup.mk0_eq_one_iff _).2 ⟨⟨b, rfl⟩⟩
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Ideal.span {b} * (Ideal.span {b}).map (RingOfIntegers.mapRingEquiv τ) = _`. Rewrite using `[Ideal.map_span, Set.image_singleton, Ideal.span_singleton_mul_span_singleton]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prI_mul {K : Type} [Field K] [NumberField K] (τ : K ≃+* K) (b : 𝓞 K) (hb : b ≠ 0) :
     (prI b hb * idMap τ (prI b hb)).1 = Ideal.span {b * RingOfIntegers.mapRingEquiv τ b} := by
@@ -33,19 +33,19 @@ private theorem prI_mul {K : Type} [Field K] [NumberField K] (τ : K ≃+* K) (b
   rw [Ideal.map_span, Set.image_singleton, Ideal.span_singleton_mul_span_singleton]
 
 /- English proof (translation)
-Introduce `K _ _ _ a I hU ha hpos hI`. Establish `ha0 : a ≠ 0`. Introduce `h`. Use `nonZeroDivisors.ne_zero (I * idMap (cE K) I).2` as an intermediate fact. Rewrite `this` using `[hI, h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at this`. Establish `ha0' : (a : K) ≠ 0` using `by simpa using ha0`. Establish `hmem : (a : K) ∈ maximalRealSubfield K` using `(IsCMField.complexConj_eq_self_iff K _).1 ha`. Establish `hx0 : (⟨a, hmem⟩ : maximalRealSubfield K) ≠ 0` using `fun h => ha0' (congrArg Subtype.val h)`. Establish `hax : (a : K) = algebraMap (maximalRealSubfield K) K (Units.mk0 _ hx0 : (maximalRealSubfield K)ˣ)` using `rfl`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨β, hβ⟩` from `(GroundTheory.Global.mem_range_norm_iff_forall_local_of_finrank_eq_two (L := K) (Algebra.IsQuadraticExtension.finrank_eq_two _ _) (Units.mk0 _ hx0)).2 ⟨locFin K _ a I hU hax hI, locInf K _ fun φ => hax ▸ hpos φ⟩`. Establish `hβ' : (β : K) * cE K β = a`. Rewrite using `[← norm_eq_mul_cE, hax, ← hβ]`. Both sides reduce to the same expression. Take `⟨b, d, hd, hbd⟩` from `IsFractionRing.div_surjective (A := 𝓞 K) (β : K)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Establish `hd0 : d ≠ 0` using `nonZeroDivisors.ne_zero hd`. Establish `hd0' : (d : K) ≠ 0` using `by simpa using hd0`. Establish `hb : (b : K) = d * β`. Rewrite using `[← hbd]`. Conclude with `(mul_div_cancel₀ _ hd0').symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb0 : b ≠ 0`. Introduce `h`. Rewrite `hb` using `[h]`. Conclude with `mul_ne_zero hd0' β.ne_zero (by simpa using hb.symm)`. Establish `key : d * RingOfIntegers.mapRingEquiv (cE K) d * a = b * RingOfIntegers.mapRingEquiv (cE K) b`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `(d : K) * cE K d * a = (b : K) * cE K b`. Rewrite using `[hb, map_mul, ← hβ']`. Expand and normalize the polynomial expressions, which then agree. Use `classGroup_div_mem_of_mul_conj_eq K (cE K) (prI d hd0 * I) (prI b hb0) (IsCMField.complexConj_apply_apply K) (by` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[map_mul, mul_mul_mul_comm, Submonoid.coe_mul, hI, prI_mul, prI_mul, Ideal.span_singleton_mul_span_singleton, key])`. Rewrite `this` using `[map_mul, mk0_principal_eq_one, mk0_principal_eq_one, one_mul, div_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.FW.hasse :
     ∀ (K : Type) [Field K] [NumberField K] [IsCMField K] (a : 𝓞 K) (I : (Ideal (𝓞 K))⁰), UnrFin K → cE K (a : K) = a → (∀ φ : K →+* ℂ, 0 < (φ (a : K)).re) → (I * idMap (cE K) I).1 = Ideal.span {a} → ClassGroup.mk0 I ∈ difR (clMap (cE K)) := by

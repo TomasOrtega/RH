@@ -10,7 +10,7 @@ namespace GlobalTheory.Ord2.SelPerp
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `h1` using `h (red c n x)`. Rewrite `h1` using `[← map_mul, tbA_red, ← RingHom.mem_ker, PadicInt.ker_toZModPow, Ideal.mem_span_singleton]`. Rewrite using `[mul_comm]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tau_mul_dvd (c : Coef l) (n : ℕ) (b' : c.O)
     (h : ∀ a : Qn c n, tbA c n (a * red c n b') = 0) (x : c.O) :
@@ -21,15 +21,13 @@ theorem tau_mul_dvd (c : Coef l) (n : ℕ) (b' : c.O)
   exact h1
 
 /- English proof (translation)
-Take `⟨b', rfl⟩` from `red_surjective c n b`. Establish `hd` using `tau_mul_dvd c n b' h`. Establish `hl : ((l : ℤ_[l]) ^ n) ≠ 0` using `pow_ne_zero _ (Nat.cast_ne_zero.2 (Fact.out : l.Prime).ne_zero)`. Set `q : c.O → ℤ_[l]` to `fun x => Classical.choose (hd x)`. Establish `hq : ∀ x, tau c (b' * x) = (l : ℤ_[l]) ^ n * q x` using `fun x => Classical.choose_spec (hd x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `g : c.O →ₗ[ℤ_[l]] ℤ_[l]` to `{ toFun := q map_add' := fun x y => by`. Apply `mul_left_cancel₀ hl` to reduce the goal to its premises. Rewrite using `[← hq, mul_add, map_add, hq, hq, mul_add]`. Use the proof step `map_smul' := fun r x => by`. Apply `mul_left_cancel₀ hl` to reduce the goal to its premises.
+Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hq, mul_smul_comm, map_smul, hq, RingHom.id_apply, smul_eq_mul, smul_eq_mul]`. Use `ring }`. Take `⟨a0, ha0⟩` from `(tau_spec c g).exists`. Set `f : c.O →ₗ[ℤ_[l]] ℤ_[l]` to `(tau c).comp (LinearMap.mulLeft ℤ_[l] b')`. Establish `e1 : ∀ x, f x = tau c (b' * x)` using `fun x => rfl`.
+Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ∀ x, f x = tau c ((((l : ℤ_[l]) ^ n) • a0) * x)` using `fun x => by`. Rewrite using `[e1, hq, smul_mul_assoc, map_smul, smul_eq_mul]`. Use `congr 1`. Conclude with `ha0 x`. Establish `heq : b' = ((l : ℤ_[l]) ^ n) • a0` using `(tau_spec c f).unique e1 e2`.
-
-Rewrite using `[heq, red_eq_zero_iff_mem]`. Conclude with `smul_mem_Ik c n (Ideal.mem_span_singleton_self _) a0`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_nondeg (l : ℕ) [Fact l.Prime] (c : Coef l) (n : ℕ) (b : Qn c n)
     (h : ∀ a : Qn c n, GlobalTheory.Ord2.SelPerp.tbA c n (a * b) = 0) : b = 0 := by
@@ -61,7 +59,7 @@ theorem pair_nondeg (l : ℕ) [Fact l.Prime] (c : Coef l) (n : ℕ) (b : Qn c n)
 end GlobalTheory.Ord2.SelPerp
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Ord2.SelPerp.pair_nondeg`.
+A detailed English derivation is pending.
 -/
 example : ∀ (l : ℕ) [Fact l.Prime] (c : Coef l) (n : ℕ) (b : Qn c n), (∀ a : Qn c n, GlobalTheory.Ord2.SelPerp.tbA c n (a * b) = 0) → b = 0 :=
   GlobalTheory.Ord2.SelPerp.pair_nondeg

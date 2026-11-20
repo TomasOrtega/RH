@@ -14,15 +14,15 @@ namespace GlobalTheory.SqRoots
 open Polynomial
 
 /- English proof (translation)
-Use `set g : R[X] := X ^ 2 - C b with hg_def`. Establish `hg : g.Monic` using `monic_X_pow_sub_C b two_ne_zero`. Establish `hdeg : g.natDegree = 2` using `natDegree_X_pow_sub_C`. Establish `hinj : Function.Injective (AdjoinRoot.of g)`. Rewrite using `[injective_iff_map_eq_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r hr`. Assume the negation of the conclusion as `hne`. Establish `hdvd : g ∣ C r`. Rewrite `hr` using `[AdjoinRoot.of, RingHom.comp_apply, AdjoinRoot.mk_eq_zero]`. Conclude with `hr`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hg.not_dvd_of_natDegree_lt (C_ne_zero.mpr hne) ?_ hdvd` and prove the remaining obligations. Rewrite using `[natDegree_C, hdeg]`. Evaluate the numerical expressions. Establish `hfin : (AdjoinRoot.of g).Finite`. Use `RingHom.finite_algebraMap.mpr hg.finite_adjoinRoot` as an intermediate fact.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[AdjoinRoot.algebraMap_eq]`. Then use the resulting hypothesis. Take `⟨R', _, _, _, ρ, σ, hC, hi, hf, hl, hσ⟩` from `GlobalTheory.T.exists_complete_normal_local_cover_of_finite_hom R (AdjoinRoot g) (AdjoinRoot.of g) h hinj hfin`. Use `⟨R', inferInstance, inferInstance, inferInstance, ρ, σ (AdjoinRoot.root g), hC, hi, hf, hl, ?_⟩` and prove the remaining obligations. Establish `hroot : AdjoinRoot.root g ^ 2 = AdjoinRoot.of g b`. Establish `h0 : AdjoinRoot.mk g g = 0` using `AdjoinRoot.mk_self`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h0` using `[hg_def, map_sub, map_pow, AdjoinRoot.mk_X, AdjoinRoot.mk_C, sub_eq_zero]`. Conclude with `h0`. Rewrite using `[← map_pow, hroot, ← RingHom.comp_apply, hσ]`.
+A detailed English derivation is pending.
 -/
 theorem exists_sqrt_one (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (b : R)
     (h : IsCN R) : ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R')
@@ -53,13 +53,13 @@ theorem exists_sqrt_one (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (b 
   rw [← map_pow, hroot, ← RingHom.comp_apply, hσ]
 
 /- English proof (translation)
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero`. Introduce `R _ _ _ a h`. Conclude with `⟨R, inferInstance, inferInstance, inferInstance, RingHom.id R, Fin.elim0, h, Function.injective_id, RingHom.Finite.id R, inferInstance, fun i => Fin.elim0 i⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `R _ _ _ a h`. Take `⟨R₁, _, _, _, ρ₁, r₁, hC₁, hi₁, hf₁, hl₁, hr₁⟩` from `ih R (fun i => a i.castSucc) h`. Take `⟨R₂, _, _, _, ρ₂, s, hC₂, hi₂, hf₂, hl₂, hs⟩` from `exists_sqrt_one R₁ (ρ₁ (a (Fin.last n))) hC₁`. Use `⟨R₂, inferInstance, inferInstance, inferInstance, ρ₂.comp ρ₁, Fin.lastCases s (fun i => ρ₂ (r₁ i)), hC₂, hi₂.comp hi₁, hf₂.comp hf₁, ?_, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `haveI := hl₁`. Use `haveI := hl₂`. Use `infer_instance`. Introduce `i`. Proceed by induction on `i using Fin.lastCases with`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `last => beta_reduce`. Rewrite using `[Fin.lastCases_last, hs, RingHom.comp_apply]`. Consider the case `cast i => beta_reduce`. Rewrite using `[Fin.lastCases_castSucc, ← map_pow, hr₁, RingHom.comp_apply]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sqrt_fin : ∀ (n : ℕ) (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R]
     (a : Fin n → R), IsCN R → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R')
@@ -87,7 +87,7 @@ theorem exists_sqrt_fin : ∀ (n : ℕ) (R : Type) [CommRing R] [IsDomain R] [Is
 end GlobalTheory.SqRoots
 
 /- English proof (translation)
-Introduce `R _ _ _ I _ a h`. Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin I`. Take `⟨R', _, _, _, ρ, r, hC, hi, hf, hl, hr⟩` from `GlobalTheory.SqRoots.exists_sqrt_fin n R (a ∘ e.symm) h`. Use `⟨R', inferInstance, inferInstance, inferInstance, ρ, r ∘ e, hC, hi, hf, hl, fun i => ?_⟩` and prove the remaining obligations. Simplify using `using hr (e i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GlobalTheory.sqrt_of_finite_family : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (I : Type) [Finite I] (a : I → R), IsCN R → ∃ (R' : Type) (_ : CommRing R') (_ : IsDomain R') (_ : IsLocalRing R') (ρ : R →+* R') (r : I → R'), IsCN R' ∧ Function.Injective ρ ∧ ρ.Finite ∧ IsLocalHom ρ ∧ ∀ i, r i ^ 2 = ρ (a i) := by
   intro R _ _ _ I _ a h

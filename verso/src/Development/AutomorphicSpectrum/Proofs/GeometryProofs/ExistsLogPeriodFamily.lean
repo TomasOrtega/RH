@@ -38,11 +38,11 @@ section Hol
 variable {V V' : Type} [NormedAddCommGroup V] [NormedSpace ℂ V] [NormedAddCommGroup V'] [NormedSpace ℂ V']
 
 /- English proof (translation)
-Introduce `U f`. Establish `hset : {w ∈ W | ⊤ ≤ y (φ w) ⁻¹ᵁ U} = W ∩ φ ⁻¹' {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U}`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1, hm h1, h2⟩`. Introduce and unpack `⟨h1, -, h2⟩`. Conclude with `⟨h1, h2⟩`. Use `⟨by rw [hset]; exact hφ.continuousOn.isOpen_inter_preimage hW (hy U f).1, ?_⟩` and prove the remaining obligations. Use `DifferentiableOn.comp (g := fun b => valAt' (y b) U f) (t := {b ∈ B | ⊤ ≤ y b ⁻¹ᵁ U}) (hy U f).2 (hφ.mono fun w hw => hw.1) ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `w hw`. Conclude with `⟨hm hw.1, hw.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isHolTo_pull {X : Scheme.{0}} {B : Set V} {y : V → (Sp ℂ ⟶ X)} (hy : IsHolTo B y)
     {W : Set V'} (hW : IsOpen W) {φ : V' → V} (hφ : DifferentiableOn ℂ φ W) (hm : Set.MapsTo φ W B) :
@@ -76,7 +76,7 @@ def restrict (e : FamExp G M B ψ) (hB' : IsOpen B') (h : B' ⊆ B) : FamExp G M
   log b hb := e.log b (h hb)
 
 /- English proof (translation)
-Establish `h` using `e.add b hb 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `(left_eq_mul.mp h)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_zero (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) : e.ex b 0 = 1 := by
   have h := e.add b hb 0 0
@@ -84,7 +84,7 @@ theorem ex_zero (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) : e.ex 
   exact (left_eq_mul.mp h)
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using ex_zero e hb`. Consider the case `succ k ih => rw [Nat.cast_succ, add_smul, _root_.one_smul, e.add b hb, ih, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem ex_nsmul (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) (y : Fin g → ℂ) (k : ℕ) :
     e.ex b ((k : ℂ) • y) = e.ex b y ^ k := by
@@ -110,7 +110,7 @@ def perGrp (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) : AddSubgrou
     exact h.symm
 
 /- English proof (translation)
-Establish `h : AddSubgroup.closure (e.per b) = perGrp e hb`. Establish `h' : e.per b = ((perGrp e hb : AddSubgroup (Fin g → ℂ)) : Set (Fin g → ℂ))` using `rfl`. Rewrite using `[h', AddSubgroup.closure_eq]`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_closure_per (e : FamExp G M B ψ) {b : Fin n → ℂ} (hb : b ∈ B) (p : Fin g → ℂ) :
     p ∈ AddSubgroup.closure (e.per b) ↔ p ∈ e.per b := by
@@ -127,9 +127,9 @@ section Geo
 variable {n a : ℕ}
 
 /- English proof (translation)
-Establish `hρ' : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ.ne'`. Establish `hn : ‖(ρ : ℂ) • z‖ = ρ * ‖z‖`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hρ.le]`. Simplify using `only [punct, Set.mem_setOf_eq, mem_ball_zero_iff, hn, Pi.smul_apply, smul_eq_mul, ne_eq, mul_eq_zero, hρ', false_or]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨by nlinarith, h2⟩`. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨by nlinarith, h2⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem smul_mem_punct {ρ : ℝ} (hρ : 0 < ρ) {z : Fin n → ℂ} :
     (ρ : ℂ) • z ∈ punct n a ρ ↔ z ∈ punct n a 1 := by
@@ -145,7 +145,7 @@ theorem smul_mem_punct {ρ : ℝ} (hρ : 0 < ρ) {z : Fin n → ℂ} :
     exact ⟨by nlinarith, h2⟩
 
 /- English proof (translation)
-Establish `hn : ‖(ρ : ℂ) • z‖ = ρ * ‖z‖`. Rewrite using `[norm_smul, Complex.norm_real, Real.norm_of_nonneg hρ.le]`. Rewrite `hz`, the goal using `[mem_ball_zero_iff]`. Rewrite using `[hn]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem smul_mem_ball {ρ : ℝ} (hρ : 0 < ρ) {z : Fin n → ℂ} (hz : z ∈ Metric.ball (0 : Fin n → ℂ) 1) :
     (ρ : ℂ) • z ∈ Metric.ball (0 : Fin n → ℂ) ρ := by
@@ -156,16 +156,16 @@ theorem smul_mem_ball {ρ : ℝ} (hρ : 0 < ρ) {z : Fin n → ℂ} (hz : z ∈ 
   nlinarith
 
 /- English proof (translation)
-Introduce `_ h` and use `h.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem punct_subset_ball {ρ : ℝ} : punct n a ρ ⊆ Metric.ball (0 : Fin n → ℂ) ρ := fun _ h => h.1
 
 /- English proof (translation)
-Use `⟨?_, fun i hi => ?_⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff one_pos]`. Introduce `k`. Distinguish the cases in `hk : k.val < a`. Establish `hre` using `hw.1 ⟨k.val, hk⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `hcast : Fin.castLE h ⟨k.val, hk⟩ = k` using `Fin.ext rfl`. Rewrite `hre` using `[hcast]`. Simplify using `only [expCover, if_pos hk]`. Rewrite using `[Complex.norm_exp]`. Rewrite using `[← Real.exp_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Real.exp_lt_exp.2 hre`. Simplify using `only [expCover, if_neg hk]`. Conclude with `hw.2 k (not_lt.mp hk)`. Simplify using `only [expCover, if_pos hi]`. Conclude with `Complex.exp_ne_zero _`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem expCover_mem_punct (h : a ≤ n) {w : Fin n → ℂ} (hw : w ∈ logCover h) :
     expCover a w ∈ punct n a 1 := by
@@ -186,15 +186,15 @@ theorem expCover_mem_punct (h : a ≤ n) {w : Fin n → ℂ} (hw : w ∈ logCove
     exact Complex.exp_ne_zero _
 
 /- English proof (translation)
-Set `c : ℕ → ℝ` to `fun k => 1 / ((k : ℝ) + 1) / 2`. Establish `hc0 : ∀ k, 0 < c k` using `fun k => by positivity`. Establish `hc1 : ∀ k, c k < 1` using `fun k => by`. Establish `h1 : 1 / ((k : ℝ) + 1) ≤ 1`. Rewrite using `[div_le_one (by positivity)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: c k = 1 / ((k : ℝ) + 1) / 2` using `rfl`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hct : Tendsto c atTop (𝓝 0)`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h` using `(tendsto_one_div_add_atTop_nhds_zero_nat (𝕜 := ℝ)).div_const 2`. Rewrite `h` using `[zero_div]`. Conclude with `h`. Use `⟨fun k _ => (c k : ℂ), ?_, fun k => ⟨?_, fun i _ => ?_⟩⟩` and prove the remaining obligations. Rewrite using `[tendsto_pi_nhds]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Establish `h` using `(Complex.continuous_ofReal.tendsto 0).comp hct`. Rewrite `h` using `[Complex.ofReal_zero]`. Conclude with `h`. Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff one_pos]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (hc0 k).le]`. Conclude with `hc1 k`. Use `show ((c k : ℝ) : ℂ) ≠ 0`. Conclude with `(hc0 k).ne'` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem exists_seq_punct : ∃ u : ℕ → (Fin n → ℂ), Tendsto u atTop (𝓝 0) ∧ ∀ k, u k ∈ punct n a 1 := by
   let c : ℕ → ℝ := fun k => 1 / ((k : ℝ) + 1) / 2
@@ -226,22 +226,20 @@ theorem exists_seq_punct : ∃ u : ℕ → (Fin n → ℂ), Tendsto u atTop (�
 end Geo
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.Ydd5.main s c hc f hf`.
+A detailed English derivation is pending.
 -/
 theorem exists_radius_le {I : Type} (s : Finset I) (c : ℝ) (hc : 0 < c) (f : I → ℝ) (hf : ∀ i, 0 < f i) :
     ∃ ρ : ℝ, 0 < ρ ∧ ρ ≤ c ∧ ∀ i ∈ s, ρ ≤ f i :=
   _root_.UpperTheory.Reformulated.B.Ydd5.main s c hc f hf
 
 /- English proof (translation)
-Set `bs` to `Module.Free.chooseBasis ℤ Γ₀`. Use `choose εs ss hε hd h0 hq using fun j => hsp (bs j)`. Take `⟨ρ, hρ0, hρc, hρ⟩` from `exists_radius_le Finset.univ c hc εs hε`. Establish `hsub : ∀ j, Metric.ball (0 : Fin n → ℂ) ρ ⊆ Metric.ball 0 (εs j)` using `fun j => Metric.ball_subset_ball (hρ j (Finset.mem_univ j))`. Use `⟨ρ, hρ0, hρc, fun x b => ∑ j, ((bs.repr x j : ℤ) : ℂ) • ss j b, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Conclude with `DifferentiableOn.fun_sum fun j _ => ((hd j).mono (hsub j)).fun_const_smul _`. Introduce `x`. Establish `hx : (x : Fin g → ℂ) = ∑ j, (bs.repr x j) • ((bs j : Γ₀) : Fin g → ℂ)`. Establish `h` using `congrArg Γ₀.subtype (bs.sum_repr x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[map_sum]`. Simplify using `only [map_smul, Submodule.subtype_apply] at h`. Conclude with `h.symm`. Simplify using `only [h0]`. Rewrite using `[hx]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Conclude with `Int.cast_smul_eq_zsmul ℂ _ _`. Introduce `x y b`. Simplify using `only [map_add, Finsupp.add_apply, Int.cast_add, add_smul, Finset.sum_add_distrib]`. Introduce `x b hb`.
-
-Use `sum_mem fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Int.cast_smul_eq_zsmul]`. Conclude with `zsmul_mem (hq j b (hsub j hb)) _`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_additive_sections {n g : ℕ} (Γ₀ : Submodule ℤ (Fin g → ℂ)) [Module.Free ℤ Γ₀] [Module.Finite ℤ Γ₀]
     (Q : (Fin n → ℂ) → AddSubgroup (Fin g → ℂ)) (c : ℝ) (hc : 0 < c)
@@ -281,9 +279,7 @@ section Carry
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Establish `hhol : ∀ u : (Fin n → ℂ) → (Fin g → ℂ), DifferentiableOn ℂ u (Metric.ball 0 ρ) → IsHolTo (Metric.ball 0 ρ) (fun b => (e.ex b ((N : ℂ)⁻¹ • u b)).left)` using `fun u hu => isHolTo_pull (φ := fun b => (b, (N : ℂ)⁻¹ • u b)) e.hol Metric.isOpen_ball (differentiableOn_id.prodMk (hu.fun_const_smul _)) (fun b hb => ⟨hb, trivial⟩)`. Establish `htor : ∀ u : (Fin n → ℂ) → (Fin g → ℂ), (∀ b ∈ Metric.ball (0 : Fin n → ℂ) ρ, u b ∈ e.per b) → ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ρ, e.ex b ((N : ℂ)⁻¹ • u b) ^ N = 1` using `fun u hu b hb => by`. Establish `hNc : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Rewrite using `[← ex_nsmul e hb, smul_smul, mul_inv_cancel₀ hNc, _root_.one_smul]`. Conclude with `hu b hb`.
-
-Conclude with `GlobalTheory.T.torsion_section_eq_of_connected (Sp R) t.G t.PP t.cub n N (Metric.ball 0 ρ) (fun b => spMap (ψ b)) (fun b => e.ex b ((N : ℂ)⁻¹ • s b)) (fun b => e.ex b ((N : ℂ)⁻¹ • s' b)) ζ 0 hN Metric.isOpen_ball (convex_ball _ _).isPreconnected (Metric.mem_ball_self hρ) (hhol s …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubWeil_carry {R : Type} [CommRing R] {t : SAB H (Sp R)} {g n : ℕ} {M : LieModel t.G (𝟙 (Sp R)) (Fin g → R)}
     {ρ : ℝ} {ψ : (Fin n → ℂ) → (R →+* ℂ)} (e : FamExp t.G M (Metric.ball 0 ρ) ψ) (hρ : 0 < ρ) (N : ℕ) (hN : 0 < N)
@@ -310,11 +306,11 @@ theorem cubWeil_carry {R : Type} [CommRing R] {t : SAB H (Sp R)} {g n : ℕ} {M 
 end Carry
 
 /- English proof (translation)
-Establish `hNc : (N : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hN.ne'`. Take `⟨m, hm⟩` from `Complex.exp_eq_one_iff.1 (by simpa using h.symm)`. Establish `hc : (2 * Real.pi * Complex.I : ℂ) ≠ 0` using `Complex.two_pi_I_ne_zero`. Rewrite `hm` using `[div_eq_iff hNc]`. Establish `h4 : (2 * Real.pi * Complex.I : ℂ) * ((r : ℂ) + N * m) = 0` using `by linear_combination -hm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h5 : (r : ℂ) + N * m = 0` using `(mul_eq_zero.1 h4).resolve_left hc`. Use `⟨-m, ?_⟩` and prove the remaining obligations. Establish `h6 : (r : ℂ) = ((N * (-m : ℤ) : ℝ) : ℂ)`. Use `push_cast`. Take the linear combination `h5`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion.
 
-Conclude with `h6` after adjusting the coercions.
+A detailed English derivation is pending.
 -/
 theorem exists_int_of_exp_eq_one {r : ℝ} {N : ℕ} (hN : 0 < N)
     (h : ((1 : ℂˣ) : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (r : ℂ) / N)) :
@@ -332,45 +328,39 @@ theorem exists_int_of_exp_eq_one {r : ℝ} {N : ℕ} (hN : 0 < N)
   exact_mod_cast h6
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ n a C hpq hσ`. Take `⟨g', ty, hty⟩` from `GlobalTheory.AllClasses.exists_isTypeFn H D.p D.q`. Take `⟨FU⟩` from `GlobalTheory.familyUnif_of_laws GlobalTheory.abelianSchemeLaws_all.1 E H D l Xo σ g' ty hpq hσ hty`. Establish `hsemi : IsSemiAbelian C.t.G` using `C.t.semi`. Take `⟨ε, hε, hεB, ⟨e₀⟩⟩` from `GlobalTheory.T.exists_family_exponential_locally C.R C.t.G C.g n C.M (Metric.ball 0 1) C.ψ hsemi.smooth C.hol 0 (Metric.mem_ball_self one_pos)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h0ε : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) ε` using `Metric.mem_ball_self hε`. Take `⟨Γ₀, hΓ₀, -, hfin, hfree⟩` from `GlobalTheory.T.period_lattice_discrete_free C.R C.t.G C.g n C.M _ C.ψ e₀ 0 h0ε`. Set `Q : (Fin n → ℂ) → AddSubgroup (Fin C.g → ℂ)` to `fun b => AddSubgroup.closure (e₀.per b)`. Establish `hQ : ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ε, ∀ p, p ∈ Q b ↔ p ∈ e₀.per b` using `fun b hb p => mem_closure_per e₀ hb p`. Establish `hsp : ∀ x : Γ₀, ∃ (ε' : ℝ) (s : (Fin n → ℂ) → (Fin C.g → ℂ)), 0 < ε' ∧ DifferentiableOn ℂ s (Metric.ball 0 ε') ∧ s 0 = x ∧ ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ε', s b ∈ Q b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x`. Take `⟨ε', s, h0, hsub, hd, hs0, hs⟩` from `GlobalTheory.T.period_holomorphic_continuation C.R C.t.G C.g n C.M _ C.ψ e₀ Metric.isOpen_ball 0 h0ε x (by rw [← hΓ₀]; exact x.2)`. Conclude with `⟨ε', s, h0, hd, hs0, fun b hb => (hQ b (hsub hb) _).2 (hs b hb)⟩`. Take `⟨ρ, hρ0, hρc, S, hSd, hS0, hSa, hSq⟩` from `exists_additive_sections Γ₀ Q (min 1 ε) (lt_min one_pos hε) hsp`. Establish `hρ1 : ρ ≤ 1` using `hρc.trans (min_le_left _ _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hball : Metric.ball (0 : Fin n → ℂ) ρ ⊆ Metric.ball 0 ε` using `Metric.ball_subset_ball (hρc.trans (min_le_right _ _))`. Establish `hball1 : Metric.ball (0 : Fin n → ℂ) ρ ⊆ Metric.ball 0 1` using `Metric.ball_subset_ball hρ1`. Establish `h0ρ : (0 : Fin n → ℂ) ∈ Metric.ball (0 : Fin n → ℂ) ρ` using `Metric.mem_ball_self hρ0`. Set `e : FamExp C.t.G C.M (Metric.ball 0 ρ) C.ψ` to `restrict e₀ Metric.isOpen_ball hball`. Establish `hQ' : ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ρ, ∀ p, p ∈ Q b ↔ p ∈ e.per b` using `fun b hb p => hQ b (hball hb) p`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hΓ₀' : (Γ₀ : Set (Fin C.g → ℂ)) = e.per 0` using `hΓ₀`. Establish `hSp : ∀ x, ∀ b ∈ Metric.ball (0 : Fin n → ℂ) ρ, S x b ∈ e.per b` using `fun x b hb => (hQ' b hb _).1 (hSq x b hb)`. Take `⟨i, Hf, hrank, hopen, hloc⟩` from `GlobalTheory.T.boundary_chart_hodge_matrix E H D l Xo σ n a C g' ty FU ρ e hρ0 hρ1`. Take `⟨hfreeL, hfinL, -⟩` from `GlobalTheory.Coisotropic.lattice_rank E H (FU.Di i)`. Establish `hU : ∀ z ∈ punct n a 1, (ρ : ℂ) • z ∈ punct n a ρ` using `fun z hz => (smul_mem_punct hρ0).2 hz`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hsm : Differentiable ℂ (fun z : Fin n → ℂ => (ρ : ℂ) • z)` using `differentiable_id.fun_const_smul _`. Establish `key : ∃ L : Flat.LogPeriods n a C.g (FU.Di i).La, L.H = (fun z => Hf ((ρ : ℂ) • z)) ∧ ∀ w ∈ logCover L.a_le, (L.P w).range = Q ((ρ : ℂ) • expCover a w)`. Use `GlobalTheory.T.period_lattice_on_punctured_disc n a C.g C.a_le (FU.Di i).La (FU.Di i).EF (fun z => Q ((ρ : ℂ) • z)) (fun z => Hf ((ρ : ℂ) • z)) (punct n a 1) Γ₀ (fun x z => S x ((ρ : ℂ) • z)) rfl hrank (FU.Di i).alt (FU.Di i).unimod ?_ ?_ ?_ ?_ ?_ ?_ ?_` and prove the remaining obligations. Conclude with `fun z hz => ⟨(hopen _ (hU z hz)).1, fun x hx => (hopen _ (hU z hz)).2.1 x hx⟩`. Introduce `z₀ hz₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨N, hNo, hzN, hNp, P, hPd, hP⟩` from `hloc _ (hU z₀ hz₀)`. Use `⟨(fun z => (ρ : ℂ) • z) ⁻¹' N, hNo.preimage hsm.continuous, hzN, fun z hz => (smul_mem_punct hρ0).1 (hNp hz), fun z => P ((ρ : ℂ) • z), fun x => ?_, fun z hz => ?_⟩` and prove the remaining obligations. Conclude with `(hPd x).comp hsm.differentiableOn (fun z hz => hz)`. Take `⟨h1, h2, h3⟩` from `hP _ hz`. Use `⟨h1, ?_, h3⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Use extensionality with `p`. Establish `h4 : p ∈ (P ((ρ : ℂ) • z)).range ↔ p ∈ e.per ((ρ : ℂ) • z)`. Rewrite using `[← SetLike.mem_coe, h2]`. Rewrite using `[h4]`. Conclude with `(hQ' _ (punct_subset_ball (hNp hz)) p).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Use `⟨(hSd x).comp hsm.differentiableOn (fun z hz => smul_mem_ball hρ0 hz), ?_, fun z hz => hSq x _ (smul_mem_ball hρ0 hz.1)⟩` and prove the remaining obligations. Use `show S x ((ρ : ℂ) • 0) = x`. Rewrite using `[smul_zero]`. Conclude with `hS0 x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `fun x y z => hSa x y _`. Introduce `s hs hsU`. Take `⟨u, hu, huU⟩` from `exists_seq_punct (n := n) (a := a)`. Establish `hρc' : (ρ : ℂ) ≠ 0` using `by exact_mod_cast hρ0.ne'`. Establish `htend : Tendsto (fun k => (ρ : ℂ) • u k) atTop (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hu.const_smul (ρ : ℂ)`. Rewrite `h` using `[smul_zero]`. Then use the resulting hypothesis. Establish `hcl` using `GlobalTheory.T.period_set_closed C.R C.t.G C.g n C.M (Metric.ball 0 ρ) C.ψ e hsemi.separated ⟨Metric.isOpen_ball, fun r => (C.hol.2 r).mono hball1⟩ 0 h0ρ (fun b => s ((ρ : ℂ)⁻¹ • b)) (ContinuousAt.comp_of_eq hs (continuous_const_smul _).continuousAt (smul_zero _)) (htend.frequent …`. Use `⟨punct_subset_ball (hU _ (huU k)), ?_⟩` and prove the remaining obligations. Use `show s ((ρ : ℂ)⁻¹ • (ρ : ℂ) • u k) ∈ e.per ((ρ : ℂ) • u k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[smul_smul, inv_mul_cancel₀ hρc', _root_.one_smul]`. Conclude with `(hQ' _ (punct_subset_ball (hU _ (huU k))) _).1 (hsU _ (huU k)))))`. Establish `h0 : s 0 ∈ e.per 0` using `by simpa using hcl`. Rewrite `h0` using `[← hΓ₀']`. Conclude with `h0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hΓ₀']`. Conclude with `GlobalTheory.T.period_lattice_spans C.R C.t.G C.g n C.M _ C.ψ e hsemi 0 h0ρ`. Introduce `N hN`. Take `⟨T, hT, hTw⟩` from `GlobalTheory.T.torsion_periods_finite_quotient E H C.R C.t C.g n C.M (Metric.ball 0 ρ) C.ψ e C.dim 0 h0ρ Γ₀ hΓ₀' N hN`. Use `⟨T, hT, fun x y hx z hz => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb` using `hU z hz`. Establish `hbm` using `punct_subset_ball hb`. Establish `hc` using `cubWeil_carry e hρ0 N hN (S x) (S y) (hSd x) (hSd y) (hSp x) (hSp y) 1 (by`. Rewrite using `[hS0 x, hS0 y]`. Establish `h1 : unitOn (1 : ℂˣ) = 1` using `map_one _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `hTw x y hx) _ hbm`. Establish `hz'` using `(hopen _ hb).2.2.2 N 1 hN _ (hSp x _ hbm) _ (hSp y _ hbm) hc`. Conclude with `exists_int_of_exp_eq_one hN hz'`. Take `⟨L, hLH, hLr⟩` from `key`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨ρ, (FU.Di i).La, inferInstance, L, e, hρ0, hρ1, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hz1` using `expCover_mem_punct L.a_le hw`. Establish `hzρ` using `hU _ hz1`. Establish `hzb` using `punct_subset_ball hzρ`. Establish `hmem : ∀ x, L.P w x ∈ e.per ((ρ : ℂ) • expCover a w)` using `fun x => by`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h : L.P w x ∈ (L.P w).range` using `⟨x, rfl⟩`. Rewrite `h` using `[hLr w hw]`. Conclude with `(hQ' _ hzb _).1 h`. Use `⟨fun p => ⟨fun hp => ?_, ?_⟩, fun N ζ x x' hN hc => ?_⟩` and prove the remaining obligations. Establish `h : p ∈ (L.P w).range`.
-
-Rewrite using `[hLr w hw]`. Conclude with `(hQ' _ hzb _).2 hp`. Conclude with `h`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `hmem x`.
-
-Establish `h1` using `(hopen _ hzρ).2.2.2 N ζ hN _ (hmem x) _ (hmem x') hc`. Establish `h2` using `L.im w hw x x'`. Rewrite `h2` using `[hLH]`. Establish `h3 : ∀ r : ℝ, r = ((L.E x x' : ℤ) : ℝ) → (ζ : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * (r : ℂ) / N) → (ζ : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * ((L.E x x' : ℤ) : ℂ) / N)` using `fun r hr h => by`. Rewrite using `[h, hr]`.
-
-Use `push_cast`. Both sides reduce to the same expression. Conclude with `h3 _ h2 h1`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_logPeriods_famExp : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (n a : ℕ) (C : Flat.BdryChart Xo σ n a), 1 ≤ D.p + D.q → σ (baseKA l).ρ = H.rt0 → ∃ (ρ : ℝ) (Λ : Type) (_ : AddCommGroup Λ) (L : Flat.LogPeriods n a C.g Λ) (e : Flat.FamExp C.t.G C.M (Metric.ball 0 ρ) C.ψ), 0 < ρ ∧ ρ ≤ 1 ∧ (∀ w ∈ GroundTheory.Heights₂.Heights.Regular.logCover L.a_le, (∀ p, p ∈ e.per ((ρ : ℂ) • GroundTheory.Heights₂.Heights.Regular.expCover a w) ↔ ∃ x, L.P w x = p) ∧ ∀ (N : ℕ) (ζ : ℂˣ) (x x' : Λ), 0 < N → GlobalTheory.UU.CubWeil C.t.cub N (e.ex ((ρ : ℂ) • GroundTheory.Heights₂.Heights.Regular.expCover a w) ((N : ℂ)⁻¹ • L.P w x)) (e.ex ((ρ : ℂ) • GroundTheory.Heights₂.Heights.Regular.expCover a w) ((N : ℂ)⁻¹ • L.P w x')) (unitOn ζ) → (ζ : ℂ) = Complex.exp (-(2 * Real.pi * Complex.I) * ((L.E x x' : ℤ) : ℂ) / N)) := by
   intro E _ _ _ H D l Xo σ n a C hpq hσ

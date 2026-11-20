@@ -16,7 +16,7 @@ def evalForm (m : ℕ) : (Fin m → K) →ₗ[K] ProjField K m :=
   Fintype.linearCombination K fun j => algebraMap (MvPolynomial (Fin m) K) (ProjField K m) (X j)
 
 /- English proof (translation)
-The claim follows from `(MvPolynomial.algebraicIndependent_X (Fin m) K).map' (f := IsScalarTower.toAlgHom K (MvPolynomial (Fin m) K) (ProjField K m)) (IsFractionRing.injective _ _)`.
+A detailed English derivation is pending.
 -/
 theorem algebraicIndependent_gen (m : ℕ) :
     AlgebraicIndependent K fun j : Fin m =>
@@ -26,7 +26,7 @@ theorem algebraicIndependent_gen (m : ℕ) :
     (IsFractionRing.injective _ _)
 
 /- English proof (translation)
-Introduce `h0`. Apply `hφ` to reduce the goal to its premises. Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.mp (algebraicIndependent_gen m).linearIndependent φ (by rw [← Fintype.linearCombination_apply]; exact h0) j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem evalForm_ne_zero {m : ℕ} {φ : Fin m → K} (hφ : φ ≠ 0) : evalForm m φ ≠ 0 := by
   intro h0
@@ -36,11 +36,9 @@ theorem evalForm_ne_zero {m : ℕ} {φ : Fin m → K} (hφ : φ ≠ 0) : evalFor
     (by rw [← Fintype.linearCombination_apply]; exact h0) j
 
 /- English proof (translation)
-Establish `hp : ∀ p : MvPolynomial (Fin m) K, algebraMap _ (ProjField K m) p ∈ E`. Introduce `p`. Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c`. Rewrite using `[← MvPolynomial.algebraMap_eq, ← IsScalarTower.algebraMap_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Conclude with `E.algebraMap_mem c`. Consider the case `add p q hp hq => rw [map_add]`. Conclude with `add_mem hp hq`. Consider the case `mul_X p j hp => rw [map_mul]`. Conclude with `mul_mem hp (h j)`.
-
-Take `⟨p, q, -, rfl⟩` from `IsFractionRing.div_surjective (A := MvPolynomial (Fin m) K) z`. Conclude with `div_mem (hp p) (hp q)`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem mem_of_gen_mem {m : ℕ} (E : IntermediateField K (ProjField K m))
     (h : ∀ j, algebraMap (MvPolynomial (Fin m) K) (ProjField K m) (X j) ∈ E) (z : ProjField K m) :
@@ -57,7 +55,7 @@ theorem mem_of_gen_mem {m : ℕ} (E : IntermediateField K (ProjField K m))
   exact div_mem (hp p) (hp q)
 
 /- English proof (translation)
-Rewrite using `[← IntermediateField.isAlgebraic_adjoin_iff_top]`. Conclude with `⟨fun z => isAlgebraic_algebraMap (⟨z, h z⟩ : IntermediateField.adjoin K S)⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem isAlgebraic_of_adjoin {m : ℕ} (S : Set (ProjField K m))
     (h : ∀ z, z ∈ IntermediateField.adjoin K S) :
@@ -66,7 +64,7 @@ theorem isAlgebraic_of_adjoin {m : ℕ} (S : Set (ProjField K m))
   exact ⟨fun z => isAlgebraic_algebraMap (⟨z, h z⟩ : IntermediateField.adjoin K S)⟩
 
 /- English proof (translation)
-The claim follows from `((algebraicIndependent_gen m).isTranscendenceBasis_iff_isAlgebraic.mpr (isAlgebraic_of_adjoin _ (mem_of_gen_mem _ fun j => IntermediateField.subset_adjoin _ _ ⟨j, rfl⟩))).cardinalMk_eq_trdeg`.
+A detailed English derivation is pending.
 -/
 theorem trdeg_eq (m : ℕ) : Cardinal.mk (Fin m) = Algebra.trdeg K (ProjField K m) :=
   ((algebraicIndependent_gen m).isTranscendenceBasis_iff_isAlgebraic.mpr
@@ -76,15 +74,15 @@ theorem trdeg_eq (m : ℕ) : Cardinal.mk (Fin m) = Algebra.trdeg K (ProjField K 
 variable [NumberField K] {i : ℕ}
 
 /- English proof (translation)
-Use `Submodule.eq_top_iff'.mpr fun v => ?_` and prove the remaining obligations. Take `⟨S, hS⟩` from `F.fg`. Take `⟨N, hN, hint⟩` from `exists_integral_multiples ℤ ℚ (S.image fun g => v ⬝ᵥ g)`. Establish `hmem : (N : K) • v ∈ dualLattice F`. Introduce `x hx`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hx` using `[← hS]`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem g hg`. Establish `hg'` using `hint _ (Finset.mem_image_of_mem _ hg)`. Rewrite using `[smul_dotProduct, Int.cast_smul_eq_zsmul]`.
+Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingHom.mem_range.mpr ((IsIntegralClosure.isIntegral_iff (A := 𝓞 K)).mp hg')`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨c, hc⟩` from `hy`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨a + c, by rw [dotProduct_add, map_add, ha, hc]⟩`. Consider the case `smul r x _ hx`. Take `⟨a, ha⟩` from `hx`. Use `⟨r * a, ?_⟩` and prove the remaining obligations. Rewrite using `[dotProduct_smul, map_mul, ha]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hN' : (N : K) ≠ 0` using `Int.cast_ne_zero.mpr hN`. Use `Submodule.smul_mem (Submodule.span K (dualLattice F : Set (Fin i → K))) (N : K)⁻¹ (Submodule.subset_span hmem)` as an intermediate fact. Rewrite `this` using `[inv_smul_smul₀ hN']`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem span_dualLattice (F : HermLattice K i) :
     Submodule.span K (dualLattice F : Set (Fin i → K)) = ⊤ := by
@@ -118,7 +116,7 @@ theorem span_dualLattice (F : HermLattice K i) :
 variable {F : HermLattice K i} {T : Type}
 
 /- English proof (translation)
-Use `eq_top_iff.mpr ((span_dualLattice F).symm.le.trans (Submodule.span_le.mpr fun φ hφ => ?_))` and prove the remaining obligations. Establish `h` using `congrArg Subtype.val (b.sum_repr ⟨φ, hφ⟩)`. Simplify using `only [Submodule.coe_sum, Submodule.coe_smul] at h`. Rewrite using `[← h]`. Conclude with `Submodule.sum_mem _ fun t _ => zsmul_mem (Submodule.subset_span (Set.mem_range_self t)) _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_basis [Fintype T] (b : Module.Basis T ℤ (dualLattice F)) :
     Submodule.span K (Set.range fun t => (b t : Fin i → K)) = ⊤ := by
@@ -129,7 +127,7 @@ theorem span_basis [Fintype T] (b : Module.Basis T ℤ (dualLattice F)) :
   exact Submodule.sum_mem _ fun t _ => zsmul_mem (Submodule.subset_span (Set.mem_range_self t)) _
 
 /- English proof (translation)
-Rewrite using `[dualLatticeCoord, evalForm, Fintype.linearCombination_apply, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, Algebra.smul_def, IsScalarTower.algebraMap_apply K (MvPolynomial (Fin i) K), MvPolynomial.algebraMap_eq]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dualLatticeCoord_eq (b : Module.Basis T ℤ (dualLattice F)) (t : T) :
     dualLatticeCoord b ⟨(), t⟩ = evalForm i (b t : Fin i → K) := by
@@ -143,31 +141,27 @@ end DualArithmeticVariety
 open DualArithmeticVariety in
 
 /- English proof (translation)
-Introduce `K _ _ i F T _ _ b hi`. Take `⟨n, rfl⟩ : ∃ n, i = n + 1` from `⟨i - 1, by omega⟩`. Take `⟨κ, a, -, hsp, hli⟩` from `exists_linearIndependent' K fun t => (b t : Fin (n + 1) → K)`. Rewrite `hsp` using `[span_basis b]`. Set `B : Module.Basis κ K (Fin (n + 1) → K)` to `Module.Basis.mk hli hsp.ge`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : Fin (n + 1) ≃ κ` to `(B.indexEquiv (Pi.basisFun K (Fin (n + 1)))).symm`. Set `u : Fin (n + 1) → T` to `a ∘ e`. Set `w : Fin (n + 1) → ProjField K (n + 1)` to `fun l => evalForm (n + 1) (b (u l) : Fin (n + 1) → K)`. Set `s : Fin n → ProjField K (n + 1)` to `fun l => w l.succ / w 0`. Set `v : Fin (n + 1) → ProjField K (n + 1)` to `Fin.cons (w 0) s`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hy` using `dualLatticeCoord_eq b`. Establish `hw0 : w 0 ≠ 0` using `evalForm_ne_zero (hli.ne_zero (e 0))`. Establish `hspw : ∀ ψ, evalForm (n + 1) ψ ∈ Submodule.span K (Set.range w)`. Introduce `ψ`. Establish `hψ : ψ ∈ Submodule.span K (Set.range (((fun t => (b t : Fin (n + 1) → K)) ∘ a) ∘ e))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[EquivLike.range_comp, hsp]`. Conclude with `Submodule.mem_top`. Use `Submodule.mem_map_of_mem (f := evalForm (n + 1)) hψ` as an intermediate fact. Rewrite `this` using `[Submodule.map_span, ← Set.range_comp]`. Conclude with `this`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hwE : ∀ l, w l ∈ IntermediateField.adjoin K (Set.range v)`. Introduce `l`. Establish `hv : ∀ l, v l ∈ IntermediateField.adjoin K (Set.range v)` using `fun l => IntermediateField.subset_adjoin _ _ ⟨l, rfl⟩`. Proceed by induction on `l using Fin.cases with`. Consider the case `zero => exact hv 0`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `succ m`. Use `mul_mem (hv m.succ) (hv 0)` as an intermediate fact. Simplify `this` using `[v, s, div_mul_cancel₀ _ hw0]`. Establish `hall : ∀ z, z ∈ IntermediateField.adjoin K (Set.range v)`. Use `mem_of_gen_mem _ fun j => ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hX : algebraMap (MvPolynomial (Fin (n + 1)) K) (ProjField K (n + 1)) (X j) = evalForm (n + 1) (Pi.single j 1)`. Rewrite using `[evalForm, Fintype.linearCombination_apply_single, one_smul]`. Rewrite using `[hX]`. Conclude with `(Submodule.span_le (p := (IntermediateField.adjoin K (Set.range v)).toSubalgebra.toSubmodule)).mpr (by rintro _ ⟨l, rfl⟩; exact hwE l) (hspw _)`. Establish `hv : AlgebraicIndependent K v`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `isAlgebraic_of_adjoin _ hall` as an intermediate fact. Conclude with `(Algebra.IsAlgebraic.isTranscendenceBasis_of_le_trdeg_of_finite K v (trdeg_eq (n + 1)).le).1`. Establish `hs : AlgebraicIndependent ℚ s` using `(hv.comp Fin.succ (Fin.succ_injective _)).restrictScalars (algebraMap ℚ K).injective`. Establish `hint : ∀ z ∈ Submodule.span K (Set.range w), IsIntegral (IntermediateField.adjoin ℚ (Set.range s)) (z / w 0)`. Introduce `z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨l, rfl⟩` from `hz`. Proceed by induction on `l using Fin.cases with`. Consider the case `zero => rw [div_self hw0]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `isIntegral_one`. Consider the case `succ m`. Conclude with `isIntegral_algebraMap (x := (⟨s m, IntermediateField.subset_adjoin _ _ ⟨m, rfl⟩⟩ : IntermediateField.adjoin ℚ (Set.range s)))`. Consider the case `zero => rw [zero_div]`. Conclude with `isIntegral_zero`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => rw [add_div]`. Conclude with `hx.add hy`. Consider the case `smul c x _ hx`. Rewrite using `[Algebra.smul_def, mul_div_assoc]`. Conclude with `((Algebra.IsIntegral.isIntegral (R := ℚ) c).map (IsScalarTower.toAlgHom ℚ K (ProjField K (n + 1)))).tower_top.mul hx`.
-
-Use `h Unit (dualBlocks T) (ProjField K (n + 1)) (dualLatticeCoord b) (fun _ => u 0) n s ⟨()⟩ (fun _ => by rw [hy]; exact hw0) hs (fun l => IntermediateField.subset_adjoin _ _ ⟨⟨(), u l.succ⟩, ?_⟩) ?_` and prove the remaining obligations. Use `show dualLatticeCoord b ⟨(), u l.succ⟩ / dualLatticeCoord b ⟨(), u 0⟩ = w l.succ / w 0`. Rewrite using `[hy, hy]`. Introduce and unpack `r ⟨⟨⟨⟩, t⟩, rfl⟩ show IsAlgebraic _ (dualLatticeCoord b ⟨(), t⟩ / dualLatticeCoord b ⟨(), u 0⟩)`. Rewrite using `[hy, hy]`.
-
-Conclude with `(hint _ (hspw _)).isAlgebraic`.
+A detailed English derivation is pending.
 -/
 theorem DualArithVar.proof (h : CoordConeArithVar.Statement) : DualArithVar.Statement := by
   intro K _ _ i F T _ _ b hi

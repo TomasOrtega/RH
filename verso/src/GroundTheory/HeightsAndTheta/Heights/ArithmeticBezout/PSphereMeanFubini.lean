@@ -24,11 +24,11 @@ def consEquiv {n : ℕ} (k : ℕ) : ((Fin n → ℂ) × (Fin k × Fin n → ℂ)
     (MeasurableEquiv.piCongrLeft (fun _ => ℂ) (groupSplit k n))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨i, j⟩`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`. Establish `e : ((0 : Fin (k + 1)), j) = groupSplit k n (Sum.inl j)` using `rfl`. Rewrite using `[e]`.
+Apply function extensionality and compare values at an arbitrary argument. Split into cases according to the possible forms of the given data. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[consEquiv, consGroup, MeasurableEquiv.piCongrLeft, MeasurableEquiv.sumPiEquivProdPi, Equiv.piCongrLeft_apply_apply]`. Both sides reduce to the same expression. Consider the case `succ i`. Establish `e : (i.succ, j) = groupSplit k n (Sum.inr (i, j))` using `rfl`. Rewrite using `[e]`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[consEquiv, consGroup, MeasurableEquiv.piCongrLeft, MeasurableEquiv.sumPiEquivProdPi, Equiv.piCongrLeft_apply_apply]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem consEquiv_apply {n k : ℕ} (p : (Fin n → ℂ) × (Fin k × Fin n → ℂ)) :
     consEquiv k p = consGroup p.1 p.2 := by
@@ -48,7 +48,7 @@ theorem consEquiv_apply {n k : ℕ} (p : (Fin n → ℂ) × (Fin k × Fin n → 
     rfl
 
 /- English proof (translation)
-The claim follows from `(measurePreserving_piCongrLeft (fun _ : Fin (k + 1) × Fin n => (volume : Measure ℂ)) (groupSplit k n)).comp (measurePreserving_sumPiEquivProdPi_symm (fun _ : Fin n ⊕ (Fin k × Fin n) => (volume : Measure ℂ)))`.
+A detailed English derivation is pending.
 -/
 theorem measurePreserving_consEquiv {n : ℕ} (k : ℕ) :
     MeasurePreserving (consEquiv (n := n) k) volume volume :=
@@ -57,7 +57,7 @@ theorem measurePreserving_consEquiv {n : ℕ} (k : ℕ) :
     (measurePreserving_sumPiEquivProdPi_symm (fun _ : Fin n ⊕ (Fin k × Fin n) => (volume : Measure ℂ)))
 
 /- English proof (translation)
-Use extensionality with `p`. Simplify using `only [mem_preimage, consEquiv_apply, ballProd, mem_ofPred_eq, mem_prod, ballH, Fin.forall_fin_succ, consGroup, Fin.cases_zero, Fin.cases_succ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem preimage_ballProd {n : ℕ} (h : HermNorm n) (k : ℕ) :
     consEquiv k ⁻¹' ballProd h (k + 1) = ballH h ×ˢ ballProd h k := by
@@ -66,7 +66,7 @@ theorem preimage_ballProd {n : ℕ} (h : HermNorm n) (k : ℕ) :
     Fin.forall_fin_succ, consGroup, Fin.cases_zero, Fin.cases_succ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `⟨i, j⟩`. Apply the tactic sequence `cases i using Fin.cases <;> simp [nrmGroups, consGroup, nrmv]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem nrmGroups_consGroup {n : ℕ} (h : HermNorm n) (k : ℕ) (v : Fin n → ℂ) (w : Fin k × Fin n → ℂ) :
     nrmGroups h (k + 1) (consGroup v w) = consGroup (nrmv h v) (nrmGroups h k w) := by
@@ -74,19 +74,17 @@ theorem nrmGroups_consGroup {n : ℕ} (h : HermNorm n) (k : ℕ) (v : Fin n → 
   cases i using Fin.cases <;> simp [nrmGroups, consGroup, nrmv]
 
 /- English proof (translation)
-Introduce `n k h G hG`. Establish `hmp` using `measurePreserving_consEquiv (n := n) k`. Establish `hme` using `(consEquiv (n := n) k).measurableEmbedding`. Establish `hpre` using `preimage_ballProd h k`. Use `set H : (Fin n → ℂ) × (Fin k × Fin n → ℂ) → ℝ := fun p => G (nrmGroups h (k + 1) (consEquiv k p)) with hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hHi : IntegrableOn H (ballH h ×ˢ ballProd h k) (volume.prod volume)`. Rewrite using `[← hpre]`. Conclude with `(hmp.integrableOn_comp_preimage hme (f := fun u => G (nrmGroups h (k + 1) u))).2 hG`. Establish `hint : ∫ p in ballH h ×ˢ ballProd h k, H p ∂(volume.prod volume) = ∫ u in ballProd h (k + 1), G (nrmGroups h (k + 1) u)`. Rewrite using `[← hpre]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hmp.setIntegral_preimage_emb hme (fun u => G (nrmGroups h (k + 1) u)) _`. Establish `hvol : volume (ballProd h (k + 1)) = volume (ballH h) * volume (ballProd h k)`. Rewrite using `[← hmp.measure_preimage_equiv, hpre, Measure.volume_eq_prod, Measure.prod_prod]`. Rewrite `hHi` using `[IntegrableOn, ← Measure.prod_restrict]`. Rewrite `hint` using `[← Measure.prod_restrict, integral_prod _ hHi]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hB0 : (volume (ballProd h k)).toReal ≠ 0` using `ENNReal.toReal_ne_zero.2 ⟨(volume_ballProd_pos h k).ne', (volume_ballProd_lt_top h k).ne⟩`. Establish `hinner : ∀ v, sphereMean h k (fun w => G (consGroup (nrmv h v) w)) = (volume (ballProd h k)).toReal⁻¹ * ∫ w in ballProd h k, H (v, w)`. Introduce `v`. Simplify using `only [hH, consEquiv_apply, nrmGroups_consGroup]`. Rewrite using `[sphereMean, setAverage_eq, smul_eq_mul, measureReal_def]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Both sides reduce to the same expression. Establish `hfun : (fun v => sphereMean h k (fun w => G (consGroup (nrmv h v) w))) = fun v => (volume (ballProd h k)).toReal⁻¹ * ∫ w in ballProd h k, H (v, w)`. Use function extensionality and compare the values at `hinner`. Establish `hlhs : sphereMean h (k + 1) G = (volume (ballProd h (k + 1))).toReal⁻¹ * ∫ u in ballProd h (k + 1), G (nrmGroups h (k + 1) u)`. Rewrite using `[sphereMean, setAverage_eq, smul_eq_mul, measureReal_def]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hfun]`. Conclude with `hHi.integral_prod_left.const_mul _`. Rewrite using `[hlhs, ← hint, hvol, setAverage_eq, smul_eq_mul, measureReal_def, hfun, integral_const_mul, ENNReal.toReal_mul, mul_inv]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem proof : SphereMeanFubini.Statement := by
   intro n k h G hG

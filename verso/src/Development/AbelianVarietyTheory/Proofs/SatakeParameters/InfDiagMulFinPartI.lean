@@ -20,13 +20,13 @@ def intFin (L : Type) [Field L] [NumberField L] : Subring (FiniteAdeleRing (𝓞
   neg_mem' := fun ha v => neg_mem (ha v)
 
 /- English proof (translation)
-Set `ι : 𝓞 L →+* intFin L` to `((algebraMap L (FiniteAdeleRing (𝓞 L) L)).comp (algebraMap (𝓞 L) L)).codRestrict _ fun x v => HeightOneSpectrum.coe_mem_adicCompletionIntegers v x`. Establish `: Finite (𝓞 L ⧸ Ideal.span {(N : 𝓞 L)})` using `Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hN.ne')`. Use `Finite.of_surjective (Ideal.quotientMap (I := Ideal.span {(N : 𝓞 L)}) (Ideal.span {(N : intFin L)}) ι ?_) ?_` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Express the relevant statement in the definitionally equal form `ι N ∈ Ideal.span {(N : intFin L)}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`. Introduce `z`. Take `⟨z, rfl⟩` from `Ideal.Quotient.mk_surjective z`. Take `⟨x, w, hw, h⟩` from `(GlobalTheory.AdLat.strong_approximation_mod_nat L N hN).2 z z.2`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Ideal.Quotient.mk _ x, ?_⟩` and prove the remaining obligations. Rewrite using `[Ideal.quotientMap_mk, eq_comm, Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Use `⟨⟨w, hw⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(z : FiniteAdeleRing (𝓞 L) L) - algebraMap L _ (x : L) = ((N : intFin L) : FiniteAdeleRing (𝓞 L) L) * w`. Rewrite using `[h, add_sub_cancel_left, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem finite_quot (N : ℕ) (hN : 0 < N) : Finite (intFin L ⧸ Ideal.span {(N : intFin L)}) := by
   let ι : 𝓞 L →+* intFin L :=
@@ -51,9 +51,9 @@ theorem finite_quot (N : ℕ) (hN : 0 < N) : Finite (intFin L ⧸ Ideal.span {(N
     simp
 
 /- English proof (translation)
-Set `ψ : Ideles L →* Circle` to `{ toFun := fun x => ⟨(χ.1 x : ℂˣ), by simpa [Submonoid.unitSphere] using hχ x⟩ map_one' := by ext; simp map_mul' := fun x y => Subtype.ext (congrArg Units.val (map_mul χ.1 x y)) }`. Establish `hψ : Continuous ψ` using `(Units.continuous_val.comp χ.2.1).subtype_mk _`. Take `⟨-, -, -, m, hm, h⟩` from `GlobalTheory.CharFin.finite_order_of_small (R := AdeleRing (𝓞 L) L) (RingHom.fst (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)) (RingHom.snd _ _) id continuous_id (fun _ => rfl) (intFin L) (fun W hW => GlobalTheory.AdLat.OpenLat.exists_nsmul_adele L W hW) finite_quot ψ hψ`. Use `⟨m, hm, fun u h1 h2 => ?_⟩` and prove the remaining obligations. Use `h u ⟨funext h1, fun v => (h2 v).le, fun v => ((unitIdl L).inv_mem h2 v).le⟩` as an intermediate fact.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `congrArg (fun z : Circle => (z : ℂ)) this`.
+A detailed English derivation is pending.
 -/
 theorem finUnit_pow (χ : HChar L) (hχ : χ.IsUnitary) :
     ∃ m : ℕ, 0 < m ∧ ∀ u : Ideles L, IsFinIdele u → u ∈ unitIdl L → ((χ.1 u : ℂˣ) : ℂ) ^ m = 1 := by
@@ -70,9 +70,9 @@ theorem finUnit_pow (χ : HChar L) (hχ : χ.IsUnitary) :
   exact congrArg (fun z : Circle => (z : ℂ)) this
 
 /- English proof (translation)
-Establish `h : ((infDiag k : Ideles L) : AdeleRing (𝓞 L) L) = (algebraMap L (InfiniteAdeleRing L) k, 1)`. Unfold `infDiag`. Rewrite using `[MonoidHom.finsetProd_apply, Units.coe_prod]`. Set `ι : (∀ w : InfinitePlace L, w.Completion) →* AdeleRing (𝓞 L) L` to `MonoidHom.inl (InfiniteAdeleRing L) (FiniteAdeleRing (𝓞 L) L)`. Express the relevant statement in the definitionally equal form `∏ w : InfinitePlace L, ι (Pi.mulSingle w (algebraMap L w.Completion k)) = ι (fun w => algebraMap L w.Completion k)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← map_prod, Finset.univ_prod_mulSingle]`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, h]`. Conclude with `Prod.ext (mul_one _) (one_mul _)`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infDiag_mul_finPartI (k : Lˣ) : infDiag k * finPartI L (diagUnits L k) = diagUnits L k := by
   classical
@@ -88,9 +88,9 @@ theorem infDiag_mul_finPartI (k : Lˣ) : infDiag k * finPartI L (diagUnits L k) 
   exact Prod.ext (mul_one _) (one_mul _)
 
 /- English proof (translation)
-Use `GlobalTheory.Mem.UnitIndex.finiteIndex_unitIdl_sup L` as an intermediate fact. Use `⟨_, Nat.pos_of_ne_zero this.index_ne_zero, ?_⟩` and prove the remaining obligations. Take `⟨u, hu, _, ⟨k, rfl⟩, e⟩` from `Subgroup.mem_sup.1 ((unitIdl L ⊔ (diagUnits L).range).pow_index_mem x)`. Establish `hf : finPartI L x = x` using `Units.ext (Prod.ext (funext hx).symm rfl)`. Use `⟨finPartI L u, k, fun _ => rfl, hu, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hf, ← map_pow, ← e, map_mul, mul_assoc, mul_comm _ (infDiag k), infDiag_mul_finPartI]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_pow_eq (x : Ideles L) (hx : IsFinIdele x) :
     ∃ h : ℕ, 0 < h ∧ ∃ (u : Ideles L) (k : Lˣ), IsFinIdele u ∧ u ∈ unitIdl L ∧ x ^ h * infDiag k = u * diagUnits L k := by
@@ -102,11 +102,11 @@ theorem exists_pow_eq (x : Ideles L) (hx : IsFinIdele x) :
   rw [← hf, ← map_pow, ← e, map_mul, mul_assoc, mul_comm _ (infDiag k), infDiag_mul_finPartI]
 
 /- English proof (translation)
-Take `⟨m, hm, hu⟩` from `finUnit_pow χ hχ`. Take `⟨h, hh, u, k, u1, u2, e⟩` from `exists_pow_eq x hx`. Establish `e1` using `congrArg χ.1 e`. Rewrite `e1` using `[map_mul, map_mul, map_pow, χ.2.2 k, mul_one, ← eq_mul_inv_iff_mul_eq]`. Establish `hK : ((χ.1 (infDiag k) : ℂˣ) : ℂ) ^ 2 ∈ K`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: ((χ.1 (infDiag k) : ℂˣ) : ℂ) = _` using `hn k`. Rewrite using `[this, ← Finset.prod_pow]`. Use `prod_mem fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← zpow_natCast, ← zpow_mul, mul_comm, zpow_mul, zpow_natCast, div_pow, ← Complex.mul_conj']`. Conclude with `zpow_mem (div_mem (pow_mem (h1 _ _) _) (mul_mem (h1 _ _) (h2 _ _))) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨h * (m * 2), by positivity, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_mul, ← Units.val_pow_eq_pow_val (χ.1 x), e1, Units.val_mul, mul_pow, pow_mul, hu u u1 u2, one_pow, one_mul, Units.val_inv_eq_inv_val, inv_pow, mul_comm, pow_mul]`. Conclude with `inv_mem (pow_mem hK _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_mem {I : Type} [Fintype I] (φ : I → L →+* ℂ) (K : Subfield ℂ) (h1 : ∀ i x, φ i x ∈ K)
     (h2 : ∀ i x, starRingEnd ℂ (φ i x) ∈ K) (χ : HChar L) (hχ : χ.IsUnitary) (n : I → ℤ) (hn : χ.HasInf φ n)
@@ -127,7 +127,7 @@ theorem exists_pow_mem {I : Type} [Fintype I] (φ : I → L →+* ℂ) (K : Subf
   exact inv_mem (pow_mem hK _)
 
 /- English proof (translation)
-Establish `hcm : IsCMField H.E` using `H.isCMField_hostE`. Use `exists_pow_mem (embPsi H) H.φ₀.fieldRange (fun i y => ⟨H.sigmaOf _ y, rfl⟩) (fun i y => ?_) χ hχ n hn x hx` and prove the remaining obligations. Conclude with `⟨IsCMField.complexConj H.E (H.sigmaOf _ y), IsCMField.complexEmbedding_complexConj H.E H.φ₀ _⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 -/
 theorem exists_pow_mem_host {R : Formalism.BasicNotions.Ranks} (H : Formalism.BasicNotions.Host R) (χ : HChar H.E) (hχ : χ.IsUnitary)
     (n : R.Psi → ℤ) (hn : χ.HasInf (embPsi H) n) (x : Ideles H.E) (hx : IsFinIdele x) :

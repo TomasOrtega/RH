@@ -20,13 +20,13 @@ def tangentDerivations (P : Ideal S) : Submodule S (Derivation k S S) where
     simpa [smul_eq_mul] using h
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_tangentDerivations (P : Ideal S) (D : Derivation k S S) :
     D ∈ tangentDerivations k P ↔ ∀ x ∈ P, D x ∈ P := Iff.rfl
 
 /- English proof (translation)
-Rewrite using `[mem_tangentDerivations]`. Introduce `x _`. Establish `h` using `Ideal.mul_mem_right (D x) P hp`. Simplify `h` using `[smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_mem_tangentDerivations (P : Ideal S) {p : S} (hp : p ∈ P)
     (D : Derivation k S S) : p • D ∈ tangentDerivations k P := by
@@ -36,9 +36,9 @@ theorem smul_mem_tangentDerivations (P : Ideal S) {p : S} (hp : p ∈ P)
   simpa [smul_eq_mul] using h
 
 /- English proof (translation)
-Rewrite using `[mem_tangentDerivations]`. Prove the components needed by the constructor for the conclusion. Introduce `hD`. Conclude with `hD x (Ideal.subset_span (Set.mem_singleton x))`. Introduce `hD y hy`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `derivation_apply_mem_of_mem_span D le_rfl ?_ hy` and prove the remaining obligations. Introduce `g hg`. Rewrite `hg` using `[Set.mem_singleton_iff]`. Substitute `hg` using the available equality. Conclude with `hD`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem mem_tangentDerivations_span_singleton (x : S) (D : Derivation k S S) :
     D ∈ tangentDerivations k (Ideal.span ({x} : Set S)) ↔
@@ -65,14 +65,14 @@ private theorem logDerivIdeal_eq_sup_span (P J : Ideal S) :
       J ⊔ Ideal.span {x : S | ∃ D ∈ tangentDerivations k P, ∃ y ∈ J, D y = x} := rfl
 
 /- English proof (translation)
-Rewrite using `[logDerivIdeal_eq_sup_span]`. Conclude with `le_sup_left`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_logDerivIdeal (P J : Ideal S) : J ≤ logDerivIdeal k P J := by
   rw [logDerivIdeal_eq_sup_span]
   exact le_sup_left
 
 /- English proof (translation)
-Rewrite using `[logDerivIdeal_eq_sup_span]`. Conclude with `Submodule.mem_sup_right (Ideal.subset_span ⟨D, hD, x, hx, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivation_apply_mem_logDerivIdeal (P J : Ideal S) (D : Derivation k S S)
     (hD : D ∈ tangentDerivations k P) {x : S} (hx : x ∈ J) :
@@ -81,9 +81,9 @@ theorem derivation_apply_mem_logDerivIdeal (P J : Ideal S) (D : Derivation k S S
   exact Submodule.mem_sup_right (Ideal.subset_span ⟨D, hD, x, hx, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[logDerivIdeal_eq_sup_span, sup_le_iff, Ideal.span_le]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Conclude with `⟨h1, fun D hD x hx => h2 ⟨D, hD, x, hx, rfl⟩⟩`. Introduce and unpack `⟨h1, h2⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨h1, ?_⟩` and prove the remaining obligations. Introduce and unpack `x ⟨D, hD, y, hy, rfl⟩`. Conclude with `h2 D hD y hy`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem logDerivIdeal_le_iff (P J K : Ideal S) :
     logDerivIdeal k P J ≤ K ↔
@@ -98,7 +98,7 @@ theorem logDerivIdeal_le_iff (P J K : Ideal S) :
     exact h2 D hD y hy
 
 /- English proof (translation)
-Introduce `I J h`. Rewrite using `[logDerivIdeal_le_iff]`. Use `⟨h.trans (le_logDerivIdeal k P J), fun D hD x hx => ?_⟩` and prove the remaining obligations. Conclude with `derivation_apply_mem_logDerivIdeal k P J D hD (h hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem logDerivIdeal_mono (P : Ideal S) : Monotone (logDerivIdeal k P : Ideal S → Ideal S) := by
   intro I J h
@@ -107,14 +107,14 @@ theorem logDerivIdeal_mono (P : Ideal S) : Monotone (logDerivIdeal k P : Ideal S
   exact derivation_apply_mem_logDerivIdeal k P J D hD (h hx)
 
 /- English proof (translation)
-The claim follows from `logDerivIdeal_mono k P h`.
+A detailed English derivation is pending.
 -/
 theorem logDerivIdeal_le_logDerivIdeal (P : Ideal S) {I J : Ideal S} (h : I ≤ J) :
     logDerivIdeal k P I ≤ logDerivIdeal k P J :=
   logDerivIdeal_mono k P h
 
 /- English proof (translation)
-Rewrite using `[logDerivIdeal_le_iff]`. Use `⟨le_derivIdeal k J, fun D _ x hx => ?_⟩` and prove the remaining obligations. Conclude with `derivation_apply_mem_derivIdeal k J D hx`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem logDerivIdeal_le_derivIdeal (P J : Ideal S) :
     logDerivIdeal k P J ≤ derivIdeal k J := by
@@ -123,9 +123,9 @@ theorem logDerivIdeal_le_derivIdeal (P J : Ideal S) :
   exact derivation_apply_mem_derivIdeal k J D hx
 
 /- English proof (translation)
-Use `le_antisymm (logDerivIdeal_le_derivIdeal k ⊤ J) ?_` and prove the remaining obligations. Rewrite using `[derivIdeal_le_iff]`. Use `⟨le_logDerivIdeal k ⊤ J, fun D x hx => ?_⟩` and prove the remaining obligations. Use `derivation_apply_mem_logDerivIdeal k ⊤ J D ?_ hx` and prove the remaining obligations. Rewrite using `[mem_tangentDerivations]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `y _`. Conclude with `Submodule.mem_top`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem logDerivIdeal_top_eq_derivIdeal (J : Ideal S) :
     logDerivIdeal k (⊤ : Ideal S) J = derivIdeal k J := by
@@ -138,9 +138,9 @@ theorem logDerivIdeal_top_eq_derivIdeal (J : Ideal S) :
   exact Submodule.mem_top
 
 /- English proof (translation)
-Rewrite using `[logDerivIdeal_le_iff]`. Use `⟨iSup_mono fun i => le_logDerivIdeal k P (J i), ?_⟩` and prove the remaining obligations. Introduce `D hD x hx`. Use `Submodule.iSup_induction (motive := fun z : S => D z ∈ ⨆ i, logDerivIdeal k P (J i)) J hx ?_ ?_ ?_` and prove the remaining obligations. Introduce `i y hy`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_iSup (fun i => logDerivIdeal k P (J i)) i (derivation_apply_mem_logDerivIdeal k P (J i) D hD hy)`. Simplify `Submodule.zero_mem (⨆ i, logDerivIdeal k P (J i))` using `only [map_zero]`. Introduce `a b ha hb`. Simplify `Submodule.add_mem (⨆ i, logDerivIdeal k P (J i)) ha hb` using `only [map_add]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem logDerivIdeal_iSup_le {ι : Sort*} (P : Ideal S) (J : ι → Ideal S) :
     logDerivIdeal k P (⨆ i, J i) ≤ ⨆ i, logDerivIdeal k P (J i) := by
@@ -178,7 +178,7 @@ theorem logDerivIdealIterate_one (P J : Ideal S) :
     logDerivIdealIterate k P 1 J = logDerivIdeal k P J := rfl
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => rw [Nat.zero_add, logDerivIdealIterate_zero]`. Consider the case `succ r ih => rw [Nat.succ_add, logDerivIdealIterate_succ, logDerivIdealIterate_succ, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem logDerivIdealIterate_add (P : Ideal S) (r s : ℕ) (J : Ideal S) :
     logDerivIdealIterate k P (r + s) J =
@@ -188,7 +188,7 @@ theorem logDerivIdealIterate_add (P : Ideal S) (r s : ℕ) (J : Ideal S) :
   | succ r ih => rw [Nat.succ_add, logDerivIdealIterate_succ, logDerivIdealIterate_succ, ih]
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => exact (logDerivIdealIterate_zero k P J).ge`. Consider the case `succ r ih`. Rewrite using `[logDerivIdealIterate_succ]`. Conclude with `ih.trans (le_logDerivIdeal k P _)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_logDerivIdealIterate (P : Ideal S) (r : ℕ) (J : Ideal S) :
     J ≤ logDerivIdealIterate k P r J := by
@@ -199,9 +199,9 @@ theorem le_logDerivIdealIterate (P : Ideal S) (r : ℕ) (J : Ideal S) :
       exact ih.trans (le_logDerivIdeal k P _)
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero`. Introduce `I J h`. Rewrite using `[logDerivIdealIterate_zero, logDerivIdealIterate_zero]`. Conclude with `h`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `succ r ih`. Introduce `I J h`. Rewrite using `[logDerivIdealIterate_succ, logDerivIdealIterate_succ]`. Conclude with `logDerivIdeal_mono k P (ih h)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logDerivIdealIterate_mono (P : Ideal S) (r : ℕ) :
     Monotone (logDerivIdealIterate k P r : Ideal S → Ideal S) := by
@@ -216,7 +216,7 @@ theorem logDerivIdealIterate_mono (P : Ideal S) (r : ℕ) :
       exact logDerivIdeal_mono k P (ih h)
 
 /- English proof (translation)
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le h`. Rewrite using `[Nat.add_comm r d, logDerivIdealIterate_add]`. Conclude with `le_logDerivIdealIterate k P d _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem logDerivIdealIterate_le_of_le (P : Ideal S) {r r' : ℕ} (h : r ≤ r') (J : Ideal S) :
     logDerivIdealIterate k P r J ≤ logDerivIdealIterate k P r' J := by
@@ -225,7 +225,7 @@ theorem logDerivIdealIterate_le_of_le (P : Ideal S) {r r' : ℕ} (h : r ≤ r') 
   exact le_logDerivIdealIterate k P d _
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => rw [logDerivIdealIterate_zero, derivIdealIterate_zero]`. Consider the case `succ r ih`. Rewrite using `[logDerivIdealIterate_succ, derivIdealIterate_succ, ih, logDerivIdeal_top_eq_derivIdeal]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem logDerivIdealIterate_top_eq_derivIdealIterate (r : ℕ) (J : Ideal S) :
     logDerivIdealIterate k (⊤ : Ideal S) r J = derivIdealIterate k r J := by
@@ -235,9 +235,9 @@ theorem logDerivIdealIterate_top_eq_derivIdealIterate (r : ℕ) (J : Ideal S) :
       rw [logDerivIdealIterate_succ, derivIdealIterate_succ, ih, logDerivIdeal_top_eq_derivIdeal]
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => exact le_rfl`. Consider the case `succ r ih`. Rewrite using `[logDerivIdealIterate_succ]`. Use `le_trans (logDerivIdeal_mono k P ih) ?_` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_trans (logDerivIdeal_iSup_le k P fun i => logDerivIdealIterate k P r (J i)) ?_` and prove the remaining obligations. Conclude with `iSup_mono fun i => le_of_eq (logDerivIdealIterate_succ k P r (J i)).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem logDerivIdealIterate_iSup_le {ι : Sort*} (P : Ideal S) (r : ℕ) (J : ι → Ideal S) :
     logDerivIdealIterate k P r (⨆ i, J i) ≤ ⨆ i, logDerivIdealIterate k P r (J i) := by

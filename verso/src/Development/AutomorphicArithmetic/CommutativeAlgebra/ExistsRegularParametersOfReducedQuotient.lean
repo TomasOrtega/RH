@@ -9,47 +9,45 @@ open CategoryTheory AlgebraicGeometry ReciprocityTheory.ChartRestriction.G.Geo.T
 set_option maxHeartbeats 1000000 in
 set_option synthInstance.maxHeartbeats 200000 in
 /- English proof (translation)
-Introduce `F K _ _ _ _ _ _ d x hc hred φ hφ b hb`. Use `set I : Ideal (rB ℂ K x {0}) := Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ K x j⟩ : rB ℂ K x {0})) with hI`. Establish `hφI : ∀ a ∈ I, φ a = 0`. Introduce `a ha`. Rewrite `ha` using `[hI, Ideal.mem_span_range_iff_exists_fun]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `ha`. Rewrite using `[map_sum]`. Conclude with `Finset.sum_eq_zero fun j _ => by rw [map_mul, hφ j, mul_zero]`. Set `ψ : (rB ℂ K x {0} ⧸ I) →ₐ[ℂ] ℂ` to `Ideal.Quotient.liftₐ I φ hφI`. Establish `hψ : ∀ a, ψ (Ideal.Quotient.mk I a) = φ a` using `fun a => rfl`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `ι : ↥(rA ℂ x {0}) →+* ↥(rB ℂ K x {0})` to `(algebraMap (↥(rA ℂ x {0})) K).codRestrict (rB ℂ K x {0}) (fun r => isIntegral_algebraMap)`. Establish `hι : ∀ r, (ι r : K) = algebraMap F K (r : F)` using `fun r => rfl`. Establish `hbot : ∀ y (hy : y ∈ rA ℂ x {0}), ∃ c : ℂ, Ideal.Quotient.mk I (ι ⟨y, hy⟩) = algebraMap ℂ _ c`. Introduce `y hy`. Establish `hy' : y ∈ Algebra.adjoin ℂ {y | ∃ i ∈ ({0} : Finset (Fin (d + 1))), ∃ j, y = x j / x i}` using `hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hy' using Algebra.adjoin_induction with`. Consider the case `mem z hz`. Take `⟨i, hi, j, rfl⟩` from `hz`. Rewrite `hi` using `[Finset.mem_singleton]`. Substitute `hi` using the available equality.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `j using Fin.cases with`. Consider the case `zero`. Distinguish the cases in `h0 : x 0 = 0`. Use `⟨0, ?_⟩` and prove the remaining obligations. Establish `: ι ⟨x 0 / x 0, hy⟩ = 0` using `Subtype.ext (by rw [hι]; simp [h0])`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, map_zero, map_zero]`. Use `⟨1, ?_⟩` and prove the remaining obligations. Establish `: ι ⟨x 0 / x 0, hy⟩ = 1` using `Subtype.ext (by rw [hι]; simp [h0])`. Rewrite using `[this, map_one, map_one]`. Consider the case `succ j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[map_zero, Ideal.Quotient.eq_zero_iff_mem]`. Establish `: ι ⟨x j.succ / x 0, hy⟩ = ⟨_, tco_mem ℂ K x j⟩` using `rfl`. Rewrite using `[this]`. Conclude with `Ideal.subset_span ⟨j, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Consider the case `algebraMap c`. Use `⟨c, ?_⟩` and prove the remaining obligations. Establish `: ι ⟨algebraMap ℂ F c, hy⟩ = algebraMap ℂ _ c`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hι]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `(IsScalarTower.algebraMap_apply ℂ F K c).symm`. Rewrite using `[this]`. Conclude with `(Ideal.Quotient.mkₐ ℂ I).commutes c`. Consider the case `add y z hy1 hz1 ihy ihz`. Take `⟨c1, h1⟩` from `ihy hy1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨c2, h2⟩` from `ihz hz1`. Use `⟨c1 + c2, ?_⟩` and prove the remaining obligations. Establish `: ι ⟨y + z, hy⟩ = ι ⟨y, hy1⟩ + ι ⟨z, hz1⟩`. Rewrite using `[← map_add]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this, map_add, h1, h2, map_add]`. Consider the case `mul y z hy1 hz1 ihy ihz`. Take `⟨c1, h1⟩` from `ihy hy1`. Take `⟨c2, h2⟩` from `ihz hz1`. Use `⟨c1 * c2, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `: ι ⟨y * z, hy⟩ = ι ⟨y, hy1⟩ * ι ⟨z, hz1⟩`. Rewrite using `[← map_mul]`. Both sides reduce to the same expression. Rewrite using `[this, map_mul, h1, h2, map_mul]`. Set `f : ↥(rA ℂ x {0}) →+* (rB ℂ K x {0} ⧸ I)` to `(Ideal.Quotient.mk I).comp ι`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `g : ↥(rA ℂ x {0}) →+* ℂ` to `ψ.toRingHom.comp f`. Establish `hfg : (algebraMap ℂ (rB ℂ K x {0} ⧸ I)).comp g = f`. Use extensionality with `r`. Take `⟨c, hc'⟩` from `hbot r.1 r.2`. Establish `hr : f r = algebraMap ℂ _ c` using `hc'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show algebraMap ℂ _ (ψ (f r)) = f r`. Rewrite using `[hr, ψ.commutes]`. Both sides reduce to the same expression. Establish `hint : Algebra.IsIntegral ℂ (rB ℂ K x {0} ⧸ I)`. Prove the components needed by the constructor for the conclusion.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `q`. Take `⟨a, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Take `⟨p, hpm, hp⟩` from `(a.2 : IsIntegral (↥(rA ℂ x {0})) (a : K))`. Use `⟨p.map g, hpm.map g, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, hfg]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hzero : p.eval₂ ι a = 0`. Apply `Subtype.ext` to reduce the goal to its premises. Use `Polynomial.hom_eval₂ p ι (rB ℂ K x {0}).val.toRingHom a` as an intermediate fact. Simplify using `using this.trans hp`. Use `Polynomial.hom_eval₂ p ι (Ideal.Quotient.mk I) a` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[hzero, map_zero]`. Conclude with `this.symm`. Establish `hft : Algebra.FiniteType ℂ (rB ℂ K x {0} ⧸ I)`. Use `hc.3 0` as an intermediate fact. Conclude with `Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ ℂ I) (Ideal.Quotient.mkₐ_surjective ℂ I)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hfin : Module.Finite ℂ (rB ℂ K x {0} ⧸ I)` using `Algebra.IsIntegral.finite`. Establish `hart : IsArtinianRing (rB ℂ K x {0} ⧸ I)` using `IsArtinianRing.of_finite ℂ _`. Take `⟨n, y, hy⟩` from `IsArtinian.exists_pow_succ_smul_dvd (Ideal.Quotient.mk I b) (1 : rB ℂ K x {0} ⧸ I)`. Take `⟨y0, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Use `⟨1 - b * y0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Establish `hc1 : φ (1 - b * y0) ≠ 0`. Simplify using `[map_sub, map_mul, hb]`. Establish `hkill : Ideal.Quotient.mk I ((1 - b * y0) * b) = 0`. Establish `hy2 : Ideal.Quotient.mk I b ^ (n + 1) * Ideal.Quotient.mk I y0 = Ideal.Quotient.mk I b ^ n`. Simplify `hy` using `[smul_eq_mul]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h0 : Ideal.Quotient.mk I (1 - b * y0) * Ideal.Quotient.mk I b ^ n = 0`. Rewrite using `[map_sub, map_one, map_mul]`. Take the linear combination `(-1 : rB ℂ K x {0} ⧸ I) * hy2`. Apply `IsReduced.eq_zero` to reduce the goal to its premises. Use `⟨n + 1, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul, mul_pow]`. Combine the equalities or inequalities in the displayed calculation. Rewrite `hkill` using `[Ideal.Quotient.eq_zero_iff_mem, hI, Ideal.mem_span_range_iff_exists_fun]`. Take `⟨gg, hgg⟩` from `hkill`. Conclude with `⟨gg, hc1, hgg.symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_regular_parameters_of_reduced_quotient :
     ∀ (F K : Type) [Field F] [Field K] [Algebra ℂ F] [Algebra ℂ K] [Algebra F K] [IsScalarTower ℂ F K] (d : ℕ) (x : Fin (d + 1) → F), IsFinCover ℂ K x → IsReduced ((rB ℂ K x {0}) ⧸ (Ideal.span (Set.range fun j : Fin d => (⟨_, tco_mem ℂ K x j⟩ : rB ℂ K x {0})))) → ∀ φ : rB ℂ K x {0} →ₐ[ℂ] ℂ, (∀ j : Fin d, φ ⟨_, tco_mem ℂ K x j⟩ = 0) → ∀ b : rB ℂ K x {0}, φ b = 0 → ∃ (c : rB ℂ K x {0}) (g : Fin d → rB ℂ K x {0}), φ c ≠ 0 ∧ c * b = ∑ l, g l * ⟨_, tco_mem ℂ K x l⟩ := by

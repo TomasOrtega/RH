@@ -21,7 +21,7 @@ instance haarProb_isProbabilityMeasure : IsProbabilityMeasure (haarProb K) :=
 variable {K}
 
 /- English proof (translation)
-The claim follows from `isHaarMeasure_eq_of_isProbabilityMeasure _ _`.
+A detailed English derivation is pending.
 -/
 theorem eq_haarProb (μ : Measure K) [μ.IsHaarMeasure] [IsProbabilityMeasure μ] :
     μ = haarProb K :=
@@ -41,7 +41,7 @@ instance haarProb_isInvInvariant : (haarProb K).IsInvInvariant := by
   exact eq_haarProb _
 
 /- English proof (translation)
-Establish `h` using `isMulInvariant_eq_smul_of_compactSpace μ (haarProb K)`. Establish `h1 : μ Set.univ = haarScalarFactor μ (haarProb K)` using `by conv_lhs => rw [h]`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_smul_haarProb (μ : Measure K) [μ.IsHaarMeasure] :
     μ = μ Set.univ • haarProb K := by
@@ -53,14 +53,14 @@ theorem eq_smul_haarProb (μ : Measure K) [μ.IsHaarMeasure] :
   exact h
 
 /- English proof (translation)
-Rewrite using `[eq_smul_haarProb μ]`. Use `infer_instance`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMulRightInvariant_of_compactSpace (μ : Measure K) [μ.IsHaarMeasure] :
     μ.IsMulRightInvariant := by
   rw [eq_smul_haarProb μ]; infer_instance
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[eq_smul_haarProb μ, Measure.inv, Measure.map_smul, map_inv_eq_self]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem isInvInvariant_of_compactSpace (μ : Measure K) [μ.IsHaarMeasure] :
     μ.IsInvInvariant := by
@@ -70,7 +70,7 @@ theorem isInvInvariant_of_compactSpace (μ : Measure K) [μ.IsHaarMeasure] :
 end Haar
 
 /- English proof (translation)
-Establish `hK : IsCompact (Set.univ.pi fun _ : n => Set.univ.pi fun _ : n => Metric.closedBall (0 : 𝕜) 1)` using `isCompact_univ_pi fun _ => isCompact_univ_pi fun _ => isCompact_closedBall _ _`. Use `IsCompact.of_isClosed_subset (s := (Set.univ.pi fun _ : n => Set.univ.pi fun _ : n => Metric.closedBall (0 : 𝕜) 1 : Set (Matrix n n 𝕜))) hK (isClosed_unitary (R := Matrix n n 𝕜)) ?_` and prove the remaining obligations. Introduce `U hU i _ j _`. Simplify using `using entry_norm_bound_of_unitary hU i j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isCompact_unitaryGroup (n 𝕜 : Type*) [Fintype n] [DecidableEq n] [RCLike 𝕜] :
     IsCompact (Matrix.unitaryGroup n 𝕜 : Set (Matrix n n 𝕜)) := by
@@ -97,14 +97,14 @@ variable {K : Type*} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [Comp
 omit [Group K] [IsTopologicalGroup K] in
 
 /- English proof (translation)
-The claim follows from `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_continuous_of_compactSpace [IsFiniteMeasure μ] {E : Type*}
     [NormedAddCommGroup E] {f : K → E} (hf : Continuous f) : Integrable f μ :=
   hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)
 
 /- English proof (translation)
-The claim follows from `LinearIsometry.inner_map_map ⟨ρ k, h k⟩ u v`.
+A detailed English derivation is pending.
 -/
 theorem inner_map_map_of_norm_map {G : Type*} [Monoid G] {𝕜 E : Type*} [RCLike 𝕜]
     [NormedAddCommGroup E] [InnerProductSpace 𝕜 E] (ρ : Representation 𝕜 G E)
@@ -140,7 +140,7 @@ noncomputable def rankOneAverage (hρc : ∀ v, Continuous fun k => ρ k v)
 omit [FiniteDimensional ℂ V] in
 
 /- English proof (translation)
-Use `FiniteDimensional.complete ℂ W` as an intermediate fact. Establish `h` using `integral_inner (𝕜 := ℂ) (integrable_of_continuous_of_compactSpace μ (((hρc v).inner (𝕜 := ℂ) (continuous_const (y := u))).smul (hσc w))) u'`. Use `Eq.trans h.symm ?_` and prove the remaining obligations. Simplify using `[inner_smul_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem inner_rankOneAverage (hρc : ∀ v, Continuous fun k => ρ k v)
     (hρu : ∀ k v, ‖ρ k v‖ = ‖v‖) (hσc : ∀ w, Continuous fun k => σ k w) (u v : V) (u' w : W) :
@@ -156,7 +156,7 @@ omit [TopologicalSpace K] [IsTopologicalGroup K] [CompactSpace K] [MeasurableSpa
   [BorelSpace K] in
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_pos_iff]`. Assume the negation of the conclusion as `hV`. Rewrite `hV` using `[not_nontrivial_iff_subsingleton]`. Establish `: (⊥ : Subrepresentation ρ) = ⊤` using `Subrepresentation.toSubmodule_injective (Subsingleton.elim _ _)`. Conclude with `bot_ne_top this`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_pos_of_isIrreducible [h : ρ.IsIrreducible] : 0 < Module.finrank ℂ V := by
   rw [Module.finrank_pos_iff]
@@ -178,13 +178,13 @@ variable {K : Type*} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [Comp
   (ρ : Representation ℂ K V) (σ : Representation ℂ K W)
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `(Representation.IsIrreducible.algebraMap_intertwiningMap_bijective_of_isAlgClosed (ρ := ρ)).2 (rankOneAverage μ ρ ρ hρc hρu hρc v v')`. Establish `hA : ∀ x, rankOneAverage μ ρ ρ hρc hρu hρc v v' x = c • x`. Introduce `x`. Rewrite using `[← hc, Algebra.algebraMap_eq_smul_one]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hd : (Module.finrank ℂ V : ℂ) ≠ 0`. Conclude with `(finrank_pos_of_isIrreducible ρ).ne'` after adjusting the coercions. Use `set b := stdOrthonormalBasis ℂ V`. Establish `htr : (Module.finrank ℂ V : ℂ) * c = ⟪v, v'⟫_ℂ`. Establish `h1 : ∑ i, ⟪b i, rankOneAverage μ ρ ρ hρc hρu hρc v v' (b i)⟫_ℂ = (Module.finrank ℂ V : ℂ) * c`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hA]`. Rewrite using `[← h1]`. Simplify using `only [inner_rankOneAverage]`. Establish `hi : ∀ i, Integrable (fun k => conj ⟪b i, ρ k v⟫_ℂ * ⟪b i, ρ k v'⟫_ℂ) μ` using `fun i => integrable_of_continuous_of_compactSpace μ ((Complex.continuous_conj.comp (continuous_const.inner (hρc v))).mul (continuous_const.inner (hρc v')))`. Rewrite using `[← integral_finsetSum _ (fun i _ => hi i)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[b.sum_inner_mul_inner, inner_map_map_of_norm_map ρ hρu]`. Rewrite using `[← inner_rankOneAverage μ ρ ρ hρc hρu hρc, hA, inner_smul_right, ← htr]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem integral_conj_inner_mul_inner [ρ.IsIrreducible] (hρc : ∀ v, Continuous fun k => ρ k v)
     (hρu : ∀ k v, ‖ρ k v‖ = ‖v‖) (u v u' v' : V) :
@@ -215,7 +215,7 @@ theorem integral_conj_inner_mul_inner [ρ.IsIrreducible] (hρc : ∀ v, Continuo
   field_simp
 
 /- English proof (translation)
-Rewrite using `[integral_conj_inner_mul_inner μ ρ hρc hρu, orthonormal_iff_ite.mp b.orthonormal, orthonormal_iff_ite.mp b.orthonormal]`. Apply the tactic sequence `by_cases h1 : i = i' <;> by_cases h2 : j = j' <;> simp [h1, h2, eq_comm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem integral_conj_entry_mul_entry [ρ.IsIrreducible] (hρc : ∀ v, Continuous fun k => ρ k v)
     (hρu : ∀ k v, ‖ρ k v‖ = ‖v‖) {ι : Type*} [Fintype ι] [DecidableEq ι]
@@ -227,9 +227,9 @@ theorem integral_conj_entry_mul_entry [ρ.IsIrreducible] (hρc : ∀ v, Continuo
   by_cases h1 : i = i' <;> by_cases h2 : j = j' <;> simp [h1, h2, eq_comm]
 
 /- English proof (translation)
-Establish `hd : (Module.finrank ℂ V : ℂ) ≠ 0`. Conclude with `(finrank_pos_of_isIrreducible ρ).ne'` after adjusting the coercions. Use `set b := stdOrthonormalBasis ℂ V`. Establish `hi : ∀ i j, Integrable (fun k => conj ⟪b i, ρ k (b i)⟫_ℂ * ⟪b j, ρ k (b j)⟫_ℂ) μ` using `fun i j => integrable_of_continuous_of_compactSpace μ ((Complex.continuous_conj.comp (continuous_const.inner (hρc _))).mul (continuous_const.inner (hρc _)))`. Simplify using `only [Representation.character, LinearMap.trace_eq_sum_inner _ b, _root_.map_sum, Finset.sum_mul_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[integral_finsetSum _ (fun i _ => integrable_finsetSum _ fun j _ => hi i j)]`. Apply the tactic sequence `simp only [integral_finsetSum _ (fun j _ => hi _ j), integral_conj_entry_mul_entry μ ρ hρc hρu b]`. Simplify using `[hd]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_conj_character_mul_character_self [ρ.IsIrreducible]
     (hρc : ∀ v, Continuous fun k => ρ k v) (hρu : ∀ k v, ‖ρ k v‖ = ‖v‖) :
@@ -266,9 +266,9 @@ def orthogonalSubrepresentation {G V : Type*} [Group G] [NormedAddCommGroup V]
     simpa using h
 
 /- English proof (translation)
-Use `⟨fun U => ⟨orthogonalSubrepresentation hρu U, ?_⟩⟩` and prove the remaining obligations. Establish `h` using `U.toSubmodule.isCompl_orthogonal`. Prove the components needed by the constructor for the conclusion. Rewrite using `[disjoint_iff]`. Conclude with `Subrepresentation.toSubmodule_injective h.inf_eq_bot`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[codisjoint_iff]`. Conclude with `Subrepresentation.toSubmodule_injective h.sup_eq_top`.
+A detailed English derivation is pending.
 -/
 theorem isSemisimpleRepresentation_of_norm_map {G V : Type*} [Group G] [NormedAddCommGroup V]
     [InnerProductSpace 𝕜 V] [FiniteDimensional 𝕜 V] (ρ : Representation 𝕜 G V)
@@ -282,7 +282,7 @@ theorem isSemisimpleRepresentation_of_norm_map {G V : Type*} [Group G] [NormedAd
     exact Subrepresentation.toSubmodule_injective h.sup_eq_top
 
 /- English proof (translation)
-Set `_ : NormedAddCommGroup V` to `c.toNormedAddCommGroup`. Set `_ : InnerProductSpace 𝕜 V` to `InnerProductSpace.ofCore c.toCore`. Use `isSemisimpleRepresentation_of_norm_map ρ fun k v => ?_` and prove the remaining obligations. Rewrite using `[@norm_eq_sqrt_re_inner 𝕜, @norm_eq_sqrt_re_inner 𝕜]`. Conclude with `congrArg (fun z : 𝕜 => √(RCLike.re z)) (hc k v v)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSemisimpleRepresentation_of_invariant_core {G V : Type*} [Group G] [AddCommGroup V]
     [Module 𝕜 V] [FiniteDimensional 𝕜 V] (ρ : Representation 𝕜 G V)
@@ -295,13 +295,11 @@ theorem isSemisimpleRepresentation_of_invariant_core {G V : Type*} [Group G] [Ad
   exact congrArg (fun z : 𝕜 => √(RCLike.re z)) (hc k v v)
 
 /- English proof (translation)
-Establish `hne : U.toSubmodule ≠ ⊥` using `fun h => hU.1 (Subrepresentation.toSubmodule_injective h)`. Establish `hnt : Nontrivial (Subrepresentation U.toRepresentation)`. Use `⟨⊥, ⊤, fun h => hne ?_⟩` and prove the remaining obligations. Establish `h' : (⊥ : Submodule F U.toSubmodule) = ⊤` using `congrArg Subrepresentation.toSubmodule h`. Rewrite using `[← U.toSubmodule.map_subtype_top, ← h', Submodule.map_bot]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun S => ?_⟩` and prove the remaining obligations. Set `T : Subrepresentation ρ` to `⟨S.toSubmodule.map U.toSubmodule.subtype, by`. Introduce and unpack `g _ ⟨x, hx, rfl⟩`. Conclude with `⟨_, S.apply_mem_toSubmodule g hx, rfl⟩⟩`. Establish `hT : T ≤ U` using `U.toSubmodule.map_subtype_le S.toSubmodule`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hinj` using `Submodule.map_injective_of_injective U.toSubmodule.injective_subtype`. Break down `hU.le_iff.mp hT with h | h` into its components or cases. Use `left`. Use `Subrepresentation.toSubmodule_injective (hinj ?_)` and prove the remaining obligations. Conclude with `(congrArg Subrepresentation.toSubmodule h).trans (Submodule.map_bot _).symm`.
-
-Use `right`. Use `Subrepresentation.toSubmodule_injective (hinj ?_)` and prove the remaining obligations. Conclude with `(congrArg Subrepresentation.toSubmodule h).trans U.toSubmodule.map_subtype_top.symm`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isIrreducible_toRepresentation_of_isAtom {F G V : Type*} [Field F] [Monoid G]
     [AddCommGroup V] [Module F V] {ρ : Representation F G V} {U : Subrepresentation ρ}
@@ -354,7 +352,7 @@ variable {K : Type*} [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [Comp
     simpa [map_eq_zero_iff e he] using h
 
 /- English proof (translation)
-Establish `h` using `integral_mul_right_eq_self (μ := haarProb K) (fun k => ⟪e (ρ k u), e (ρ k v)⟫_𝕜) g`. Simplify using `only [map_mul, Module.End.mul_apply] at h`. Conclude with `h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem averageCore_inner_map_map [MeasurableSpace K] [BorelSpace K] {V E : Type*}
     [AddCommGroup V] [Module 𝕜 V] [NormedAddCommGroup E] [InnerProductSpace 𝕜 E]
@@ -366,7 +364,7 @@ theorem averageCore_inner_map_map [MeasurableSpace K] [BorelSpace K] {V E : Type
   exact h
 
 /- English proof (translation)
-Use `borelize K`. Set `b` to `Module.finBasis 𝕜 V`. Set `e : V ≃ₗ[𝕜] EuclideanSpace 𝕜 (Fin (Module.finrank 𝕜 V))` to `b.equivFun.trans (WithLp.linearEquiv 2 𝕜 _).symm`. Establish `hc : ∀ v, Continuous fun k => e.toLinearMap (ρ k v)` using `fun v => (PiLp.continuous_toLp 2 _).comp (continuous_pi fun i => hρc (b.coord i) v)`. Conclude with `⟨averageCore ρ e.toLinearMap e.injective hc, averageCore_inner_map_map ρ _ _ hc⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_invariant_core_of_continuous_coeff {V : Type*} [AddCommGroup V] [Module 𝕜 V]
     [FiniteDimensional 𝕜 V] (ρ : Representation 𝕜 K V)
@@ -381,7 +379,7 @@ theorem exists_invariant_core_of_continuous_coeff {V : Type*} [AddCommGroup V] [
   exact ⟨averageCore ρ e.toLinearMap e.injective hc, averageCore_inner_map_map ρ _ _ hc⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_invariant_core_of_continuous_coeff ρ hρc`. Conclude with `isSemisimpleRepresentation_of_invariant_core ρ c hc`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isSemisimpleRepresentation_of_continuous_coeff {V : Type*} [AddCommGroup V] [Module 𝕜 V]
     [FiniteDimensional 𝕜 V] (ρ : Representation 𝕜 K V)
@@ -394,7 +392,7 @@ variable {V : Type*} [AddCommGroup V] [Module 𝕜 V] [TopologicalSpace V] [IsTo
   [ContinuousSMul 𝕜 V] [T2Space V] [FiniteDimensional 𝕜 V]
 
 /- English proof (translation)
-The claim follows from `exists_invariant_core_of_continuous_coeff ρ fun l v => (LinearMap.continuous_of_finiteDimensional l).comp (hρc v)`.
+A detailed English derivation is pending.
 -/
 theorem exists_invariant_core (ρ : Representation 𝕜 K V) (hρc : ∀ v, Continuous fun k => ρ k v) :
     ∃ c : InnerProductSpace.Core 𝕜 V, ∀ k u v, c.inner (ρ k u) (ρ k v) = c.inner u v :=

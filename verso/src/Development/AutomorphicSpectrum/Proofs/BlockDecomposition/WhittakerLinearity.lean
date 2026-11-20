@@ -9,9 +9,9 @@ namespace GlobalTheory.CompanionTheory.WhitLin
 variable {F : Type} [Field F] [ValuativeRel F] [TopologicalSpace F] [IsNonarchimedeanLocalField F]
 
 /- English proof (translation)
-Establish `hc : Continuous fun x : Fin 2 → F => x ᵥ* (g : Matrix (Fin 2) (Fin 2) F)` using `Continuous.matrix_vecMul continuous_id continuous_const`. Establish `hc' : Continuous fun x : Fin 2 → F => x ᵥ* ((g⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F)` using `Continuous.matrix_vecMul continuous_id continuous_const`. Establish `hemb : Topology.IsClosedEmbedding fun x : Fin 2 → F => x ᵥ* (g : Matrix (Fin 2) (Fin 2) F)` using `Function.LeftInverse.isClosedEmbedding (f := fun x : Fin 2 → F => x ᵥ* ((g⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F)) (fun x => by show (x ᵥ* (g : Matrix (Fin 2) (Fin 2) F)) ᵥ* ((g⁻¹ : GL (Fin 2) F) : Matrix (Fin 2) (Fin 2) F) = x`. Rewrite using `[Matrix.vecMul_vecMul, ← Matrix.GeneralLinearGroup.coe_mul, mul_inv_cancel]`. Use the proof step `simp) hc' hc`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨hφ.1.comp_continuous hc, hφ.2.comp_isClosedEmbedding hemb⟩`.
+A detailed English derivation is pending.
 -/
 theorem rt_mem {φ : (Fin 2 → F) → ℂ} (hφ : φ ∈ schwartzBruhat2 F) (g : GL (Fin 2) F) :
     rt φ g ∈ schwartzBruhat2 F := by
@@ -29,9 +29,9 @@ theorem rt_mem {φ : (Fin 2 → F) → ℂ} (hφ : φ ∈ schwartzBruhat2 F) (g 
   exact ⟨hφ.1.comp_continuous hc, hφ.2.comp_isClosedEmbedding hemb⟩
 
 /- English proof (translation)
-Distinguish the cases in `h0 : x = 0`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Rewrite using `[mem_valBall_iff_le_ord h0]`. Rewrite `hx` using `[mem_valBall_iff_le_ord (mul_ne_zero hh h0), ord_mul hh h0]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem mem_valBall_of_mul_mem {h x : F} (hh : h ≠ 0) {M : ℤ} (hx : h * x ∈ valBall F M) :
     x ∈ valBall F (M - ord h) := by
@@ -42,7 +42,7 @@ theorem mem_valBall_of_mul_mem {h x : F} (hh : h ≠ 0) {M : ℤ} (hx : h * x �
     omega
 
 /- English proof (translation)
-Establish `h1 : Continuous fun p : Fˣ × F => (p.1 : F)` using `Units.continuous_val.comp continuous_fst`. Use `continuous_pi fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Conclude with `h1`. Conclude with `h1.mul continuous_snd`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_line : Continuous fun p : Fˣ × F => (![(p.1 : F), (p.1 : F) * p.2] : Fin 2 → F) := by
   have h1 : Continuous fun p : Fˣ × F => (p.1 : F) := Units.continuous_val.comp continuous_fst
@@ -52,7 +52,7 @@ theorem continuous_line : Continuous fun p : Fˣ × F => (![(p.1 : F), (p.1 : F)
   · exact h1.mul continuous_snd
 
 /- English proof (translation)
-The claim follows from `(by first | exact continuous_subtype_val | exact continuous_induced_dom | fun_prop : Continuous fun z : Circle => (z : ℂ)).comp (hψ.comp continuous_neg)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_circle {ψ : AddChar F Circle} (hψ : Continuous ψ) :
     Continuous fun x : F => ((ψ (-x) : Circle) : ℂ) :=
@@ -61,9 +61,9 @@ theorem continuous_circle {ψ : AddChar F Circle} (hψ : Continuous ψ) :
 variable [MeasurableSpace F] [BorelSpace F]
 
 /- English proof (translation)
-Take `⟨N, M, -, -, hM⟩` from `exists_invariant_of_mem_schwartzBruhat2 hΦ`. Establish `hc : Continuous fun x : F => Φ ![(h : F), (h : F) * x] * (ψ (-x) : ℂ)`. Use `(hΦ.1.continuous.comp ?_).mul (continuous_circle hψ)` and prove the remaining obligations. Conclude with `continuous_line.comp (Continuous.prodMk continuous_const continuous_id)`. Use `hc.integrable_of_hasCompactSupport (HasCompactSupport.intro (isCompact_valBall (M - ord (h : F))) fun x hx => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Establish `h1 : Φ ![(h : F), (h : F) * x] ≠ 0` using `left_ne_zero_of_mul hne`. Use `mem_box.1 (hM _ h1) 1` as an intermediate fact. Conclude with `hx (mem_valBall_of_mul_mem h.ne_zero (by simpa using this))`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrable_inner {Φ : (Fin 2 → F) → ℂ} (hΦ : Φ ∈ schwartzBruhat2 F) {ψ : AddChar F Circle}
     (hψ : Continuous ψ) (ν : Measure F) [ν.IsAddHaarMeasure] (h : Fˣ) :
@@ -80,15 +80,13 @@ theorem integrable_inner {Φ : (Fin 2 → F) → ℂ} (hΦ : Φ ∈ schwartzBruh
   exact hx (mem_valBall_of_mul_mem h.ne_zero (by simpa using this))
 
 /- English proof (translation)
-Establish `ha : ((ψ (-x₀) : Circle) : ℂ) ≠ 1`. Introduce `h1`. Establish `h2 : ψ (-x₀) = 1` using `Circle.coe_eq_one.mp h1`. Rewrite `h2` using `[AddChar.map_neg_eq_inv, inv_eq_one]`. Conclude with `hx₀ h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_zero_of_eq_mul_of_ne_one ha ?_` and prove the remaining obligations. Rewrite using `[← integral_const_mul]`. Use `conv_lhs => rw [← integral_add_right_eq_self _ x₀]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `hd : (![0, (h : F) * x₀] : Fin 2 → F) ∈ box F N`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mem_box.2 fun i => ?_` and prove the remaining obligations. Use `fin_cases i`. Conclude with `zero_mem _`. Conclude with `hh`. Establish `e : (![(h : F), (h : F) * (x + x₀)] : Fin 2 → F) = ![(h : F), (h : F) * x] + ![0, (h : F) * x₀]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `i`. Apply the tactic sequence `fin_cases i <;> simp [mul_add]`. Establish `e2 : ψ (-(x + x₀)) = ψ (-x₀) * ψ (-x)`. Rewrite using `[← AddChar.map_add_eq_mul]`. Use `congr 1`.
-
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only []`. Rewrite using `[e, hN _ _ hd, e2, Circle.coe_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem inner_eq_zero {Φ : (Fin 2 → F) → ℂ} {ψ : AddChar F Circle} (ν : Measure F)
     [ν.IsAddHaarMeasure] {N : ℤ} (hN : ∀ x, ∀ d ∈ box F N, Φ (x + d) = Φ x) {x₀ : F}
@@ -121,9 +119,9 @@ theorem inner_eq_zero {Φ : (Fin 2 → F) → ℂ} {ψ : AddChar F Circle} (ν :
   ring
 
 /- English proof (translation)
-Establish `: ∀ x : F, Φ ![(h : F), (h : F) * x] = 0`. Introduce `x`. Assume the negation of the conclusion as `hne`. Establish `h0` using `mem_box.1 (hM _ hne) 0`. Establish `h1 : (h : F) ∈ valBall F M` using `by simpa using h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `(mem_valBall_iff_le_ord h.ne_zero).1 h1` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using `[this]`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules.
 -/
 theorem inner_eq_zero_of_lt {Φ : (Fin 2 → F) → ℂ} {ψ : AddChar F Circle} (ν : Measure F) {M : ℤ}
     (hM : ∀ x, Φ x ≠ 0 → x ∈ box F M) (h : Fˣ) (hh : ord (h : F) < M) :
@@ -138,11 +136,9 @@ theorem inner_eq_zero_of_lt {Φ : (Fin 2 → F) → ℂ} {ψ : AddChar F Circle}
   simp [this]
 
 /- English proof (translation)
-Establish `hz : ∀ x, x ∉ (valBall F (M - B) : Set F) → Φ ![(h : F), (h : F) * x] * (ψ (-x) : ℂ) = 0`. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Establish `h1 : Φ ![(h : F), (h : F) * x] ≠ 0` using `left_ne_zero_of_mul hne`. Establish `h2` using `mem_box.1 (hM _ h1) 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : x ∈ valBall F (M - ord (h : F))` using `mem_valBall_of_mul_mem h.ne_zero (by simpa using h2)`. Conclude with `hx (valBall_antitone (by omega) h3)`. Rewrite using `[← setIntegral_eq_integral_of_forall_compl_eq_zero hz]`. Use `norm_setIntegral_le_of_norm_le_const (isCompact_valBall _).measure_lt_top fun x _ => ?_` and prove the remaining obligations. Rewrite using `[norm_mul, Circle.norm_coe, mul_one]`.
-
-Conclude with `hC _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_inner_le {Φ : (Fin 2 → F) → ℂ} {ψ : AddChar F Circle} (ν : Measure F)
     [ν.IsAddHaarMeasure] {M B : ℤ} (hM : ∀ x, Φ x ≠ 0 → x ∈ box F M) {C : ℝ}
@@ -163,27 +159,21 @@ theorem norm_inner_le {Φ : (Fin 2 → F) → ℂ} {ψ : AddChar F Circle} (ν :
   exact hC _
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨x₀, hx₀⟩ : ∃ x, ψ x ≠ 1 := by`. Assume the negation of the conclusion as `hall`. Use `push Not at hall`. Conclude with `hψ1 (DFunLike.ext _ _ fun a => (hall a).trans (AddChar.one_apply a).symm)`. Establish `hx₀0 : x₀ ≠ 0`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `rfl`. Conclude with `hx₀ (AddChar.map_zero_eq_one ψ)`. Take `⟨N, M, -, hN, hM⟩` from `exists_invariant_of_mem_schwartzBruhat2 hΦ`. Take `⟨C, hC⟩ : ∃ C, ∀ x, ‖Φ x‖ ≤ C` from `hΦ.2.exists_bound_of_continuous hΦ.1.continuous`. Use `set B : ℤ := N - ord x₀ with hB`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set S : Set Fˣ := ⋃ k ∈ Set.Ico M B, ordShell F k with hS`. Establish `hSm : MeasurableSet S` using `(Set.finite_Ico M B).measurableSet_biUnion fun k _ => measurableSet_ordShell k`. Establish `hSf : multHaar F S ≠ ⊤` using `(measure_biUnion_lt_top (Set.finite_Ico M B) fun k _ => by`. Rewrite using `[multHaar_ordShell]`. Conclude with `ENNReal.one_lt_top).ne`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hmem : ∀ h : Fˣ, h ∈ S ↔ M ≤ ord (h : F) ∧ ord (h : F) < B`. Introduce `h`. Simplify using `[hS, mem_ordShell]`. Establish `hzero : ∀ h : Fˣ, h ∉ S → ∫ x, Φ ![(h : F), (h : F) * x] * (ψ (-x) : ℂ) ∂ν = 0`. Introduce `h hh`.
+Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `hh` using `[hmem, not_and_or, not_le, not_lt]`. Break down `hh with hh | hh` into its components or cases. Conclude with `inner_eq_zero_of_lt ν hM h hh`. Use `inner_eq_zero ν hN hx₀ h ?_` and prove the remaining obligations. Rewrite using `[mem_valBall_iff_le_ord (mul_ne_zero h.ne_zero hx₀0), ord_mul h.ne_zero hx₀0]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use linear arithmetic over natural numbers and integers. Establish `hc1 : Continuous fun h : Fˣ => (((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ)` using `Units.continuous_val.comp (h₁.1.inv.mul h₂.1)`. Establish `hmp : ∀ h : Fˣ, mp h 1 = ((modulus (h : F) : ℝ) : ℂ)` using `fun h => by simp [mp]`. Establish `hc2 : Continuous fun h : Fˣ => mp h 1`. Simplify using `only [hmp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Complex.continuous_ofReal.comp (NNReal.continuous_coe.comp (continuous_modulus.comp Units.continuous_val))`. Establish `hI : StronglyMeasurable fun h : Fˣ => ∫ x, Φ ![(h : F), (h : F) * x] * (ψ (-x) : ℂ) ∂ν`. Use `StronglyMeasurable.integral_prod_right (f := fun (h : Fˣ) (x : F) => Φ ![(h : F), (h : F) * x] * (ψ (-x) : ℂ)) ?_` and prove the remaining obligations. Use `Continuous.stronglyMeasurable ?_` and prove the remaining obligations. Conclude with `(hΦ.1.continuous.comp continuous_line).mul ((continuous_circle hψ).comp continuous_snd)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : AEStronglyMeasurable (fun h : Fˣ => (((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ) * mp h 1 * ∫ x, Φ ![(h : F), (h : F) * x] * (ψ (-x) : ℂ) ∂ν) (multHaar F)` using `((hc1.mul hc2).stronglyMeasurable.mul hI).aestronglyMeasurable`. Establish `hq : (1 : ℝ) ≤ residueCard F` using `by exact_mod_cast one_lt_residueCard.le`. Establish `hbd : ∀ h ∈ S, ‖(((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ) * mp h 1 * ∫ x, Φ ![(h : F), (h : F) * x] * (ψ (-x) : ℂ) ∂ν‖ ≤ (residueCard F : ℝ) ^ (-M) * (C * ν.real (valBall F (M - B)))`. Introduce `h hh`. Take `⟨hl, hu⟩` from `(hmem h).1 hh`.
-
-Establish `n1 : ‖(((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ)‖ = 1`. Rewrite using `[Units.val_mul, norm_mul, h₂.2, mul_one, Units.val_inv_eq_inv_val, norm_inv, h₁.2, inv_one]`. Establish `n2 : ‖mp h 1‖ ≤ (residueCard F : ℝ) ^ (-M)`. Rewrite using `[hmp, Complex.norm_real, Real.norm_of_nonneg (NNReal.coe_nonneg _), modulus_of_ne_zero h.ne_zero, NNReal.coe_zpow, NNReal.coe_natCast]`. Conclude with `zpow_le_zpow_right₀ hq (by omega)`.
-
-Rewrite using `[norm_mul, norm_mul, n1, one_mul]`. Conclude with `mul_le_mul n2 (norm_inner_le ν hM hC h hu) (norm_nonneg _) (by positivity)`. Establish `hon : IntegrableOn (fun h : Fˣ => (((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ) * mp h 1 * ∫ x, Φ ![(h : F), (h : F) * x] * (ψ (-x) : ℂ) ∂ν) S (multHaar F)` using `Measure.integrableOn_of_bounded hSf hm ((ae_restrict_iff' hSm).2 (Filter.Eventually.of_forall hbd))`. Use `(integrableOn_iff_integrable_of_support_subset fun h hh => ?_).1 hon` and prove the remaining obligations. Assume the negation of the conclusion as `hnS`.
-
-Conclude with `hh (by simp [hzero h hnS])`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem integrable_outer {Φ : (Fin 2 → F) → ℂ} (hΦ : Φ ∈ schwartzBruhat2 F) {ψ : AddChar F Circle}
     (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) (ν : Measure F) [ν.IsAddHaarMeasure] {μ₁ μ₂ : Fˣ →* ℂˣ}
@@ -257,17 +247,17 @@ theorem integrable_outer {Φ : (Fin 2 → F) → ℂ} (hΦ : Φ ∈ schwartzBruh
 end GlobalTheory.CompanionTheory.WhitLin
 
 /- English proof (translation)
-Introduce `F _ _ _ _ _ _ ψ hψ μ₁ μ₂ h₁ h₂ φ₁ hφ₁ φ₂ hφ₂`. Take `⟨hc, h1, -⟩` from `hψ`. Use `⟨funext fun g => ?_, fun c => funext fun g => ?_⟩` and prove the remaining obligations. Establish `i1` using `GlobalTheory.CompanionTheory.WhitLin.integrable_outer (GlobalTheory.CompanionTheory.WhitLin.rt_mem hφ₁ g) hc h1 (selfDualMeasure ψ) h₁ h₂`. Establish `i2` using `GlobalTheory.CompanionTheory.WhitLin.integrable_outer (GlobalTheory.CompanionTheory.WhitLin.rt_mem hφ₂ g) hc h1 (selfDualMeasure ψ) h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `inner : ∀ h : Fˣ, ∫ x, (φ₁ + φ₂) (![(h : F), (h : F) * x] ᵥ* (g : Matrix (Fin 2) (Fin 2) F)) * (ψ (-x) : ℂ) ∂selfDualMeasure ψ = (∫ x, rt φ₁ g ![(h : F), (h : F) * x] * (ψ (-x) : ℂ) ∂selfDualMeasure ψ) + ∫ x, rt φ₂ g ![(h : F), (h : F) * x] * (ψ (-x) : ℂ) ∂selfDualMeasure ψ`. Introduce `h`. Rewrite using `[← integral_add (GlobalTheory.CompanionTheory.WhitLin.integrable_inner (GlobalTheory.CompanionTheory.WhitLin.rt_mem hφ₁ g) hc _ h) (GlobalTheory.CompanionTheory.WhitLin.integrable_inner (GlobalTheory.CompanionTheory.WhitLin.rt_mem hφ₂ g) hc _ h)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Simplify using `only [Pi.add_apply, rt, add_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `key : ∫ h : Fˣ, (((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ) * mp h 1 * (∫ x, (φ₁ + φ₂) (![(h : F), (h : F) * x] ᵥ* (g : Matrix (Fin 2) (Fin 2) F)) * (ψ (-x) : ℂ) ∂selfDualMeasure ψ) ∂multHaar F = (∫ h : Fˣ, (((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ) * mp h 1 * ∫ x, rt φ₁ g ![(h : F), (h : F) * x] * (ψ (-x) : …`. Rewrite using `[← integral_add i1 i2]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only []`. Rewrite using `[inner h, mul_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.add_apply]`. Unfold `W2`. Rewrite using `[key, mul_add]`. Both sides reduce to the same expression. Establish `key : ∫ h : Fˣ, (((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ) * mp h 1 * (∫ x, (c • φ₁) (![(h : F), (h : F) * x] ᵥ* (g : Matrix (Fin 2) (Fin 2) F)) * (ψ (-x) : ℂ) ∂selfDualMeasure ψ) ∂multHaar F = c * ∫ h : Fˣ, (((μ₁ h)⁻¹ * μ₂ h : ℂˣ) : ℂ) * mp h 1 * ∫ x, φ₁ (![(h : F), (h : F) * x] ᵥ* (g : Matri …`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[← integral_const_mul]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun h => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Unfold `W2`. Rewrite using `[key]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem GlobalTheory.CompanionTheory.WhitLin.whittaker_linear_in_schwartz_bruhat : Ad3.SchwartzSpaceL2.SLin := by
   intro F _ _ _ _ _ _ ψ hψ μ₁ μ₂ h₁ h₂ φ₁ hφ₁ φ₂ hφ₂

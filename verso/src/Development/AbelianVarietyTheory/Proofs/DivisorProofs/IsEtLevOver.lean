@@ -30,7 +30,7 @@ def levAct {w0 : Ideal (𝓞 D.F)} {r : ℕ} (g : LevGrp D w0 r) (y : D.La) : D.
   Function.surjInv (Submodule.mkQ_surjective (wSub D w0 r)) (g ((wSub D w0 r).mkQ y))
 
 /- English proof (translation)
-The claim follows from `Function.surjInv_eq _ _`.
+A detailed English derivation is pending.
 -/
 theorem mkQ_levAct {w0 : Ideal (𝓞 D.F)} {r : ℕ} (g : LevGrp D w0 r) (y : D.La) :
     (wSub D w0 r).mkQ (levAct g y) = g ((wSub D w0 r).mkQ y) :=

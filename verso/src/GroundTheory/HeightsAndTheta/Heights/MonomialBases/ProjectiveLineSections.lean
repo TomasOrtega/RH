@@ -15,23 +15,23 @@ namespace ProjectiveLineSections
 def expo (n k : ℕ) : Fin 2 →₀ ℕ := Finsupp.single 0 k + Finsupp.single 1 (n - k)
 
 /- English proof (translation)
-Simplify using `[expo]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma expo_zero (n k : ℕ) : expo n k 0 = k := by simp [expo]
 
 /- English proof (translation)
-Simplify using `[expo]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] lemma expo_one (n k : ℕ) : expo n k 1 = n - k := by simp [expo]
 
 /- English proof (translation)
-Rewrite using `[Finsupp.degree_eq_sum, Fin.sum_univ_two]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma degree_fin_two (a : Fin 2 →₀ ℕ) : a.degree = a 0 + a 1 := by
   rw [Finsupp.degree_eq_sum, Fin.sum_univ_two]
 
 /- English proof (translation)
-Rewrite using `[degree_fin_two, expo_zero, expo_one]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 lemma degree_expo {n k : ℕ} (hk : k ≤ n) : (expo n k).degree = n := by
   rw [degree_fin_two, expo_zero, expo_one]; omega
@@ -55,7 +55,7 @@ def monoBasis (hb : MonomialBasis.Statement.{0}) (n : ℕ) :
   (hb (𝓞 ℚ) 1 n).choose.reindex (expoEquiv n).symm
 
 /- English proof (translation)
-Simplify using `only [monoBasis, Module.Basis.reindex_apply, Equiv.symm_symm]`. Conclude with `(hb (𝓞 ℚ) 1 n).choose_spec (expoEquiv n k)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem monoBasis_apply (hb : MonomialBasis.Statement.{0}) (n : ℕ) (k : Fin (n + 1)) :
     monoBasis hb n k = monoSection n k := by
@@ -63,7 +63,7 @@ theorem monoBasis_apply (hb : MonomialBasis.Statement.{0}) (n : ℕ) (k : Fin (n
   exact (hb (𝓞 ℚ) 1 n).choose_spec (expoEquiv n k)
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_eq_card_basis (monoBasis hb n), Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_sections_projectiveLine (hb : MonomialBasis.Statement.{0}) (n : ℕ) :
     Module.finrank (𝓞 ℚ) ((self (𝓞 ℚ) 1).H0 (twistN (𝓞 ℚ) 1 n)) = n + 1 := by
@@ -78,7 +78,7 @@ abbrev bundle (n : ℕ) : HermitianBundle ℚ :=
   fsSectionsHermitian (K := ℚ) (N := 1) hfin hl2 hflat hred hf hc hs hci n
 
 /- English proof (translation)
-Use `(hfin ℚ 1 (self (𝓞 ℚ) 1) (hflat (𝓞 ℚ) 1) (fsBundle hf hc n).L (fsBundle hf hc n).invertible).1` as an intermediate fact. Use `(hfin ℚ 1 (self (𝓞 ℚ) 1) (hflat (𝓞 ℚ) 1) (fsBundle hf hc n).L (fsBundle hf hc n).invertible).2` as an intermediate fact. Rewrite using `[← l2Inner_fubiniStudyBundle hf hc n (CP.fsMeasure 1) σ t u]`. Conclude with `Classical.choose_spec (hl2 ℚ 1 (self (𝓞 ℚ) 1) (hflat (𝓞 ℚ) 1) (hred (𝓞 ℚ) 1) (fsBundle hf hc n) (fsPointMeasures ℚ 1 hs hci)) σ t u`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_eq (n : ℕ) (σ : ℚ →+* ℂ) (t u : Fibre σ ((self (𝓞 ℚ) 1).H0 (twistN (𝓞 ℚ) 1 n))) :
     ((bundle hfin hl2 hflat hred hf hc hs hci n).metric.form σ).inner t u =
@@ -90,7 +90,7 @@ theorem inner_eq (n : ℕ) (σ : ℚ →+* ℂ) (t u : Fibre σ ((self (𝓞 ℚ
     (fsBundle hf hc n) (fsPointMeasures ℚ 1 hs hci)) σ t u
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Conclude with `hm ℚ 1 σ a b hb`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 lemma fubiniStudy_inner_monomial (hm : L2MonomialOrthogonality.Statement) (n : ℕ) (σ : ℚ →+* ℂ) (a b : Fin 2 →₀ ℕ)
     (ha : a.degree = n) (hb : b.degree = n) :
@@ -104,9 +104,9 @@ lemma fubiniStudy_inner_monomial (hm : L2MonomialOrthogonality.Statement) (n : �
   exact hm ℚ 1 σ a b hb
 
 /- English proof (translation)
-Use `((inner_eq hfin hl2 hflat hred hf hc hs hci n σ ((1 : ComplexAt σ) ⊗ₜ[𝓞 ℚ] monoSection n k) ((1 : ComplexAt σ) ⊗ₜ[𝓞 ℚ] monoSection n l)).trans (fubiniStudy_inner_monomial hm n σ (expo n k) (expo n l) (degree_expo (Nat.lt_succ_iff.mp k.2)) (degree_expo (Nat.lt_succ_iff.mp l.2)))). …` and prove the remaining obligations. Establish `hinj : expo n k = expo n l ↔ k = l`. Use `⟨fun h ↦ Fin.ext ?_, fun h ↦ h ▸ rfl⟩` and prove the remaining obligations. Simplify using `using congrArg (fun a ↦ a 0) h`. Distinguish the cases in `hkl : k = l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hkl, Fin.prod_univ_two]`. Simplify using `[hinj, hkl]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem inner_mono (hm : L2MonomialOrthogonality.Statement) (n : ℕ) (σ : ℚ →+* ℂ) (k l : Fin (n + 1)) :
     ((bundle hfin hl2 hflat hred hf hc hs hci n).metric.form σ).inner
@@ -135,15 +135,13 @@ def Degree.Statement : Prop :=
         ∏ k ∈ Finset.range (n + 1), ((k.factorial * (n - k).factorial : ℕ) : ℝ))
 
 /- English proof (translation)
-Introduce `hfin hl2 hflat hred hf hc hs hci n`. Use `set B := bundle hfin hl2 hflat hred hf hc hs hci n`. Set `s : Fin (n + 1) → B.carrier` to `fun k ↦ monoSection n k`. Establish `hs' : s = ⇑(monoBasis hb n)` using `funext fun k ↦ (monoBasis_apply hb n k).symm`. Establish `hli : LinearIndependent (𝓞 ℚ) s` using `hs' ▸ (monoBasis hb n).linearIndependent`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcard : Fintype.card (Fin (n + 1)) = Module.finrank (𝓞 ℚ) B.carrier`. Rewrite using `[Fintype.card_fin]`. Conclude with `(finrank_sections_projectiveLine hb n).symm`. Establish `hspan : Submodule.span (𝓞 ℚ) (Set.range s) = ⊤` using `hs' ▸ (monoBasis hb n).span_eq`. Use `set c : ℕ → ℝ := fun k ↦ ((k.factorial * (n - k).factorial : ℕ) : ℝ)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set F : ℝ := ((n + 1).factorial : ℝ)`. Establish `hgram : ∀ σ : ℚ →+* ℂ, gramDet B.metric σ s = ∏ k : Fin (n + 1), (c k / F)`. Introduce `σ`. Establish `: gram ℂ (fun k ↦ fibreVec B.metric σ (s k)) = diagonal fun k : Fin (n + 1) ↦ (((c k / F : ℝ)) : ℂ)`. Use extensionality with `k l`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[gram_apply, diagonal_apply]`. Conclude with `inner_mono hfin hl2 hflat hred hf hc hs hci hm n σ k l`. Rewrite using `[gramDet, this, det_diagonal, ← Complex.ofReal_prod, Complex.ofReal_re]`. Establish `hP : ∏ k : Fin (n + 1), c k = ∏ k ∈ Finset.range (n + 1), c k` using `Fin.prod_univ_eq_prod_range c (n + 1)`. Establish `hPpos : 0 < ∏ k ∈ Finset.range (n + 1), c k` using `Finset.prod_pos fun k _ ↦ by simp only [c]; positivity`.
-
-Establish `hFpos : 0 < F` using `by simp only [F]; positivity`. Rewrite using `[HermitianBundle.arithDegree, arithDegree_eq B.metric hli hcard, degreeWith, hspan, Nat.card_unique, Nat.cast_one, Real.log_one, Fintype.sum_subsingleton _ (Rat.castHom ℂ), hgram, Finset.prod_div_distrib, hP, Finset.prod_const, Finset.card_univ, Fintype.card_fin, Real.log_div hPp …`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Degree.proof (hb : MonomialBasis.Statement.{0}) (hm : L2MonomialOrthogonality.Statement) :
     Degree.Statement := by
@@ -180,7 +178,7 @@ theorem Degree.proof (hb : MonomialBasis.Statement.{0}) (hm : L2MonomialOrthogon
   ring
 
 /- English proof (translation)
-Rewrite using `[Degree.proof hb hm hfin hl2 hflat hred hf hc hs hci 0]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem degree_zero (hb : MonomialBasis.Statement.{0}) (hm : L2MonomialOrthogonality.Statement) :
     (bundle hfin hl2 hflat hred hf hc hs hci 0).arithDegree = 0 := by
@@ -188,7 +186,7 @@ theorem degree_zero (hb : MonomialBasis.Statement.{0}) (hm : L2MonomialOrthogona
   norm_num
 
 /- English proof (translation)
-Rewrite using `[Degree.proof hb hm hfin hl2 hflat hred hf hc hs hci 1]`. Evaluate the numerical expressions using `[Finset.prod_range_succ, Nat.factorial]`. Rewrite using `[show (4 : ℝ) = 2 ^ 2 by norm_num, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem degree_one (hb : MonomialBasis.Statement.{0}) (hm : L2MonomialOrthogonality.Statement) :
     (bundle hfin hl2 hflat hred hf hc hs hci 1).arithDegree = Real.log 2 := by

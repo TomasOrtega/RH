@@ -10,9 +10,9 @@ open Matrix
 namespace GlobalTheory.TameFrob
 
 /- English proof (translation)
-Introduce `l _ a _`. Set `φ : Om l →ₐ[ℚ_[l]] Om l` to `(frob l a).liftNormal (Om l)`. Use `⟨AlgEquiv.ofBijective φ φ.normal_bijective, fun w => ?_⟩` and prove the remaining obligations. Establish `h` using `AlgHom.liftNormal_commutes (frob l a) (Om l) (iota l a w)`. Rewrite using `[AlgEquiv.ofBijective_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h.trans (frobRing_iota l a w)`.
+A detailed English derivation is pending.
 -/
 theorem exists_algEquiv_iotaO_sigma : ∀ (l : ℕ) [Fact l.Prime] (a : ℕ) [NeZero a], ∃ Φ : Om l ≃ₐ[ℚ_[l]] Om l,
     ∀ w : Wq l a, Φ (GlobalTheory.TameFrob.iotaO l a w) = GlobalTheory.TameFrob.iotaO l a (sigma l a w) := by

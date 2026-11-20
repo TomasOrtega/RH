@@ -11,28 +11,28 @@ namespace GlobalTheory.PlaneSkewSplit
 variable {F E : Type} [Field F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Take `⟨τ⟩ : Nonempty (E →+* ℂ)` from `inferInstance`. Conclude with `τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem sig_sig [NumberField F] [NumberField E] {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (x : E) : σ (σ x) = x := by
   obtain ⟨τ⟩ : Nonempty (E →+* ℂ) := inferInstance
   exact τ.injective (by rw [h.2.2.2, h.2.2.2, star_star])
 
 /- English proof (translation)
-Simplify using `[form, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_add_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x x' y : Fin n → E) :
     form σ J (x + x') y = form σ J x y + form σ J x' y := by
   simp [form, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `[form, smul_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem form_smul_left (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a : E) (x y : Fin n → E) :
     form σ J (a • x) y = a * form σ J x y := by
   simp [form, smul_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [form, Pi.add_apply, map_add]`. Rewrite using `[show (fun i => σ (y i) + σ (y' i)) = (fun i => σ (y i)) + (fun i => σ (y' i)) from rfl, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (x y y' : Fin n → E) :
     form σ J x (y + y') = form σ J x y + form σ J x y' := by
@@ -41,7 +41,7 @@ theorem form_add_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n
     Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [form, Pi.smul_apply, smul_eq_mul, map_mul]`. Rewrite using `[show (fun i => σ a * σ (y i)) = σ a • (fun i => σ (y i)) from rfl, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) (a : E) (x y : Fin n → E) :
     form σ J x (a • y) = σ a * form σ J x y := by
@@ -50,9 +50,9 @@ theorem form_smul_right (σ : E →ₐ[F] E) {n : ℕ} (J : Matrix (Fin n) (Fin 
     Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, sig_sig h, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm, ← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_neg_distrib]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[show σ (J j i) = -J i j from hJ i j]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_skew [NumberField F] [NumberField E] {σ : E →ₐ[F] E} (h : IsCMExt F E σ) {n : ℕ} {J : Matrix (Fin n) (Fin n) E}
     (hJ : ∀ i j, σ (J j i) = -J i j) (x y : Fin n → E) : σ (form σ J x y) = -form σ J y x := by
@@ -65,11 +65,11 @@ theorem form_skew [NumberField F] [NumberField E] {σ : E →ₐ[F] E} (h : IsCM
   ring
 
 /- English proof (translation)
-Introduce `E _ _ n L hL x hx`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `h'`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `push_neg at h'`. Conclude with `hx (funext h')`. Establish `hP : L.map (LinearMap.proj (R` using `𝓞 E) (φ := fun _ : Fin n => E) i) = ⊤ := by`. Rewrite using `[eq_top_iff]`. Introduce and unpack `e -`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `⟨(e / x i) • x, h _, ?_⟩` and prove the remaining obligations. Simplify using `[div_mul_cancel₀ _ hi]`. Establish `hfin : Module.Finite (𝓞 E) E` using `⟨by rw [← hP]; exact hL.map _⟩`. Use `haveI : Algebra.IsIntegral (𝓞 E) E := Algebra.IsIntegral.of_finite _ _`. Conclude with `NumberField.RingOfIntegers.not_isField E (isField_of_isIntegral_of_isField (IsFractionRing.injective (𝓞 E) E) (Field.toIsField E))`.
+A detailed English derivation is pending.
 -/
 theorem fg_no_line : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (L : Submodule (𝓞 E) (Fin n → E)), L.FG →
     ∀ x : Fin n → E, x ≠ 0 → ∃ s : E, s • x ∉ L := by
@@ -91,19 +91,17 @@ theorem fg_no_line : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (L : Sub
     (isField_of_isIntegral_of_isField (IsFractionRing.injective (𝓞 E) E) (Field.toIsField E))
 
 /- English proof (translation)
-Introduce `E _ _ n φ L hL hne`. Set `φO : (Fin n → E) →ₗ[𝓞 E] E` to `φ.restrictScalars (𝓞 E)`. Set `I : Submodule (𝓞 E) E` to `L.map φO`. Set `If : FractionalIdeal (𝓞 E)⁰ E` to `⟨I, FractionalIdeal.isFractional_of_fg (hL.map φO)⟩`. Establish `hIf : ∀ e, e ∈ If ↔ e ∈ I` using `fun e => Iff.rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hI0 : If ≠ 0`. Introduce `h`. Take `⟨z, hz, hφz⟩` from `hne`. Establish `hm : φ z ∈ If` using `(hIf _).2 ⟨z, hz, rfl⟩`. Rewrite `hm` using `[h, FractionalIdeal.mem_zero_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hφz hm`. Set `T : Submodule (𝓞 E) (Fin n → E)` to `{ carrier := {w | ∀ z ∈ L, φ z • w ∈ L} add_mem' := fun {a b} ha hb z hz => by rw [smul_add]; exact L.add_mem (ha z hz) (hb z hz) zero_mem' := fun z _ => by rw [smul_zero]; exact L.zero_mem smul_mem' := fun c w hw z hz => by rw [smul_comm]; exact L.smul_mem c (hw z hz) }`. Establish `hle : ((If⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) * I ≤ T.map φO`. Rewrite using `[Submodule.mul_le]`. Introduce `m hm e he`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z', hz', rfl⟩` from `he`. Use `⟨m • z', ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Establish `h1` using `(FractionalIdeal.mem_inv_iff hI0).1 hm (φ z) ((hIf _).2 ⟨z, hz, rfl⟩)`. Take `⟨a, ha⟩` from `(FractionalIdeal.mem_one_iff _).1 h1`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: φ z • m • z' = a • z'`. Rewrite using `[smul_smul, mul_comm, ← ha, algebraMap_smul]`. Rewrite using `[this]`. Conclude with `L.smul_mem a hz'`. Use `show φ (m • z') = m * φ z'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_smul, smul_eq_mul]`. Establish `h1 : (1 : E) ∈ ((If⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) * I`. Establish `: ((If⁻¹ * If : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) = ((If⁻¹ : FractionalIdeal (𝓞 E)⁰ E) : Submodule (𝓞 E) E) * I` using `FractionalIdeal.coe_mul _ _`. Rewrite using `[← this, inv_mul_cancel₀ hI0]`. Conclude with `(FractionalIdeal.mem_one_iff _).2 ⟨1, map_one _⟩`.
-
-Take `⟨y₀, hy₀T, hy₀⟩` from `hle h1`. Conclude with `⟨y₀, hy₀, hy₀T⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_partner : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (φ : (Fin n → E) →ₗ[E] E)
     (L : Submodule (𝓞 E) (Fin n → E)), L.FG → (∃ z ∈ L, φ z ≠ 0) →
@@ -147,25 +145,25 @@ theorem exists_partner : ∀ (E : Type) [Field E] [NumberField E] (n : ℕ) (φ 
   exact ⟨y₀, hy₀, hy₀T⟩
 
 /- English proof (translation)
-Introduce `F E _ _ _ σ n₁ J x y hxx hyy hxy hyx`. Set `fl : (Fin (n₁ + 2) → E) → (Fin (n₁ + 2) → E) →ₗ[E] E` to `fun w => { toFun := fun z => form σ J z w map_add' := fun a b => form_add_left σ J a b w map_smul' := fun a b => form_smul_left σ J a b w }`. Set `Φ : (Fin (n₁ + 2) → E) →ₗ[E] (Fin 2 → E)` to `LinearMap.pi ![fl x, fl y]`. Establish `hΦ : ∀ z, Φ z = ![form σ J z x, form σ J z y]`. Apply the tactic sequence `intro z; ext k; fin_cases k <;> rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hsurj : LinearMap.range Φ = ⊤`. Rewrite using `[eq_top_iff]`. Introduce and unpack `v -`. Use `⟨v 1 • x + (-v 0) • y, ?_⟩` and prove the remaining obligations. Rewrite using `[hΦ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `k`. Use `fin_cases k`. Simplify using `only [form_add_left, form_smul_left, hxx, hyx]`. Simplify using the standard rewrite rules. Simplify using `only [form_add_left, form_smul_left, hxy, hyy]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `hrk` using `LinearMap.finrank_range_add_finrank_ker Φ`. Rewrite `hrk` using `[hsurj, finrank_top, Module.finrank_fin_fun, Module.finrank_fin_fun]`. Establish `hK : Module.finrank E (LinearMap.ker Φ) = n₁` using `by omega`. Set `b` to `Module.finBasisOfFinrankEq E (LinearMap.ker Φ) hK`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ι : Matrix (Fin (n₁ + 2)) (Fin n₁) E` to `Matrix.of fun i j => (b j : Fin (n₁ + 2) → E) i`. Establish `hι : ∀ u, ι *ᵥ u = ((b.equivFun.symm u : LinearMap.ker Φ) : Fin (n₁ + 2) → E)`. Introduce `u`. Use extensionality with `i`. Simplify using `[ι, Module.Basis.equivFun_symm_apply, Matrix.mulVec, dotProduct, Finset.sum_apply, mul_comm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hker : ∀ k : LinearMap.ker Φ, form σ J (k : Fin (n₁ + 2) → E) x = 0 ∧ form σ J (k : Fin (n₁ + 2) → E) y = 0`. Introduce `k`. Establish `h0` using `LinearMap.mem_ker.mp k.2`. Rewrite `h0` using `[hΦ]`. Conclude with `⟨by simpa using congrFun h0 0, by simpa using congrFun h0 1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨ι, fun u => by rw [hι]; exact hker _, ?_, ?_⟩` and prove the remaining obligations. Introduce `u u' h`. Rewrite `h` using `[hι, hι]`. Conclude with `b.equivFun.symm.injective (Subtype.ext h)`. Introduce `z set w := z + (-form σ J z y) • x + form σ J z x • y with hw`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hwK : w ∈ LinearMap.ker Φ`. Rewrite using `[LinearMap.mem_ker, hΦ]`. Use extensionality with `k`. Use `fin_cases k`. Simplify using `only [hw, form_add_left, form_smul_left, hxx, hyx]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Simplify using `only [hw, form_add_left, form_smul_left, hxy, hyy]`. Simplify using the standard rewrite rules. Use `⟨b.equivFun ⟨w, hwK⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hι, LinearEquiv.symm_apply_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use extensionality with `i`. Simplify using `only [hw, Pi.add_apply, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_complement : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (n₁ : ℕ)
     (J : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) E) (x y : Fin (n₁ + 2) → E),
@@ -220,51 +218,49 @@ theorem exists_complement : ∀ (F E : Type) [Field F] [Field E] [Algebra F E] (
     ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hσ θ hθ n₁ J L hJ hL hSD x hx hxx`. Establish `hsk` using `form_skew hσ hJ`. Establish `hOs : ∀ (a : 𝓞 E) (c : E), c • x ∈ L → ((a : E) * c) • x ∈ L`. Introduce `a c h`. Use `L.smul_mem a h` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use extensionality with `i`. Simplify using `[Algebra.smul_def, mul_assoc]`. Set `φ : (Fin (n₁ + 2) → E) →ₗ[E] E` to `{ toFun := fun z => form σ J z x map_add' := fun a b => form_add_left σ J a b x map_smul' := fun a b => form_smul_left σ J a b x }`. Establish `hφ : ∀ z, φ z = form σ J z x` using `fun _ => rfl`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hnd : ∃ z ∈ L, φ z ≠ 0`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hall : ∀ z, form σ J z x = 0`. Introduce `z`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hz : z ∈ Submodule.span E (L : Set (Fin (n₁ + 2) → E))`. Rewrite using `[hL.span_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem w hw => exact hcon w hw`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => simp [form]`. Consider the case `add a b _ _ ha hb => rw [form_add_left, ha, hb, add_zero]`. Consider the case `smul c a _ ha => rw [form_smul_left, ha, mul_zero]`. Take `⟨s, hs⟩` from `fg_no_line E _ L hL.fg x hx`. Apply `hs` to reduce the goal to its premises.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hSD]`. Introduce `w _ o`. Establish `h0 : form σ J (s • x) w = 0`. Rewrite using `[form_smul_left]`. Establish `h1` using `hsk w x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hall w, map_zero]`. Rewrite using `[neg_eq_zero.mp h1.symm, mul_zero]`. Rewrite using `[h0, mul_zero, map_zero]`. Conclude with `isIntegral_zero`. Take `⟨y₀, hy₀1, hy₀L⟩` from `exists_partner E _ φ L hL.fg hnd`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hφ] at hy₀1 hy₀L`. Establish `hxy₀ : form σ J x y₀ = -1`. Use `hsk y₀ x` as an intermediate fact. Rewrite `this` using `[hy₀1, map_one]`. Take the linear combination `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : ∀ z ∈ L, form σ J z y₀ • x ∈ L`. Introduce `z hz`. Rewrite using `[hSD]`. Introduce `w hw o`. Establish `key` using `(hSD z).1 hz _ (hy₀L w hw) (-o)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[form_smul_right]`. Establish `h1` using `hsk w x`. Rewrite using `[form_smul_left, show form σ J x w = -σ (form σ J w x) by rw [h1, neg_neg]]`. Establish `e : (o : E) * (form σ J z y₀ * -σ (form σ J w x)) = ((-o : 𝓞 E) : E) * (σ (form σ J w x) * form σ J z y₀)` using `by push_cast; ring`. Rewrite using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `key`. Use `set q := form σ J y₀ y₀ with hq`. Establish `hσq : σ q = -q` using `hsk y₀ y₀`. Establish `hσθ : σ (θ : E) = 1 - θ` using `by linear_combination hθ`. Use `set y : Fin (n₁ + 2) → E := (-1 : E) • y₀ + (-((θ : E) * q)) • x with hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxy : form σ J x y = 1`. Rewrite using `[hy, form_add_right, form_smul_right, form_smul_right, hxy₀, hxx]`. Simplify using the standard rewrite rules. Establish `hyx : form σ J y x = -1`. Rewrite using `[hy, form_add_left, form_smul_left, form_smul_left, hy₀1, hxx]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hyy : form σ J y y = 0`. Rewrite using `[hy]`. Simplify using `only [form_add_left, form_add_right, form_smul_left, form_smul_right]`. Rewrite using `[← hq, hy₀1, hxy₀, hxx]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_neg, map_one, map_mul, hσq, hσθ]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨ι, hι1, hιinj, hιdec⟩` from `exists_complement F E σ n₁ J x y hxx hyy hxy hyx`. Use `⟨y, ι, hxy, hyy, hι1, ?_, ?_⟩` and prove the remaining obligations. Introduce `s t u h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : form σ J (s • x + ι *ᵥ u + t • y) x = 0` using `by rw [h]; simp [form]`. Establish `e2 : form σ J (s • x + ι *ᵥ u + t • y) y = 0` using `by rw [h]; simp [form]`. Rewrite `e1` using `[form_add_left, form_add_left, form_smul_left, form_smul_left, hxx, (hι1 u).1, hyx]`. Rewrite `e2` using `[form_add_left, form_add_left, form_smul_left, form_smul_left, hxy, (hι1 u).2, hyy]`. Establish `ht : t = 0` using `by linear_combination -e1`.
+Establish an intermediate fact. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hs : s = 0` using `by linear_combination e2`. Substitute `ht hs` using the available equality. Use `⟨rfl, rfl, hιinj ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_zero]`. Simplify using `using h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `z hz`. Take `⟨u, hu⟩` from `hιdec z`. Establish `hzq : (form σ J z x * q) • x ∈ L`. Use `hb _ (hy₀L z hz)` as an intermediate fact. Rewrite `this` using `[form_smul_left]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Establish `hsx : form σ J z y • x ∈ L`. Establish `hsv : form σ J z y = (-1) * form σ J z y₀ + ((1 - θ : 𝓞 E) : E) * (form σ J z x * q)`. Rewrite using `[hy, form_add_right, form_smul_right, form_smul_right]`. Simplify using `only [map_neg, map_one, map_mul, hσq, hσθ]`. Use `push_cast`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsv, add_smul]`. Use `L.add_mem ?_ (hOs _ _ hzq)` and prove the remaining obligations. Use `hOs (-1) _ (hb z hz)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Establish `hty : (-form σ J z x) • y ∈ L`. Establish `: (-form σ J z x) • y = form σ J z x • y₀ + ((θ : E) * (form σ J z x * q)) • x`. Rewrite using `[hy, smul_add, smul_smul, smul_smul]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`. Conclude with `L.add_mem (hy₀L z hz) (hOs _ _ hzq)`. Use `⟨form σ J z y, -form σ J z x, u, hsx, hty, ?_, hu⟩` and prove the remaining obligations.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities.
 
-Establish `: ι *ᵥ u = z - form σ J z y • x - (-form σ J z x) • y`. Generalize the expression as in `form σ J z y = s at hu ⊢`. Generalize the expression as in `-form σ J z x = t at hu ⊢`. Rewrite using `[hu]`. Normalize the expressions using the abelian group laws.
-
-Rewrite using `[this]`. Conclude with `L.sub_mem (L.sub_mem hz hsx) hty`.
+A detailed English derivation is pending.
 -/
 theorem split_global : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ θ : 𝓞 E, (θ : E) + σ θ = 1 → ∀ (n₁ : ℕ) (J : Matrix (Fin (n₁ + 2)) (Fin (n₁ + 2)) E)

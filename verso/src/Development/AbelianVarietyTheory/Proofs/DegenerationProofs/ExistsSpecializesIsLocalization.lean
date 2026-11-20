@@ -10,11 +10,11 @@ open Classical
 namespace GlobalTheory.ZH
 
 /- English proof (translation)
-Take `⟨S, hS, hcl, hirr, hun⟩` from `TopologicalSpace.NoetherianSpace.exists_finite_set_isClosed_irreducible U.isOpen.isClosed_compl`. Establish `hg : genericPoint X ∈ U` using `(genericPoint_specializes hU.some).mem_open U.isOpen hU.some_mem`. Use `(hS.biUnion (t := fun C => {κ | IsGenericPoint κ C}) fun C _ => Set.Subsingleton.finite fun _ h _ h' => h.eq h').subset ?_` and prove the remaining obligations. Introduce and unpack `ξ ⟨hξ, h1⟩`. Take `⟨C, hC, hξC⟩ : ξ ∈ ⋃₀ S` from `hun ▸ hξ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Take `⟨κ, hκ⟩` from `QuasiSober.sober (hirr C hC) (hcl C hC)`. Establish `hκU : κ ∈ (U : Set X)ᶜ` using `hun ▸ ⟨C, hC, hκ.mem⟩`. Use `Set.mem_biUnion hC ?_` and prove the remaining obligations. Distinguish the cases in `h : ξ ⤳ κ`. Rewrite using `[(h.antisymm (hκ.specializes hξC)).eq]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hlt : ξ < κ` using `lt_of_le_not_ge (hκ.specializes hξC) h`. Establish `hlt' : κ < genericPoint X` using `lt_of_le_not_ge (genericPoint_specializes κ) fun h' => hκU (((genericPoint_specializes κ).antisymm h').eq ▸ hg)`. Establish `h2` using `(add_le_add_left (le_add_self.trans (Order.coheight_add_one_le hlt')) 1).trans ((Order.coheight_add_one_le hlt).trans h1)`. Conclude with `absurd h2 (by decide)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finite_notMem_coheight_le_one {X : Scheme.{0}} [IsIntegral X] [IsNoetherian X] (U : X.Opens)
     (hU : (U : Set X).Nonempty) : {ξ : X | ξ ∉ U ∧ Order.coheight ξ ≤ 1}.Finite := by
@@ -42,7 +42,7 @@ namespace RatModel
 variable {o Ω : Type} [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω)
 
 /- English proof (translation)
-The claim follows from `have := M.lft have := M.qc have : IsLocallyNoetherian M.Z := LocallyOfFiniteType.isLocallyNoetherian M.s have : CompactSpace M.Z := QuasiCompact.compactSpace_of_compactSpace M.s {}`.
+A detailed English derivation is pending.
 -/
 theorem isNoetherian [IsNoetherianRing o] : IsNoetherian M.Z :=
   have := M.lft
@@ -52,14 +52,14 @@ theorem isNoetherian [IsNoetherianRing o] : IsNoetherian M.Z :=
   {}
 
 /- English proof (translation)
-The claim follows from `have := M.isNoetherian isNoetherianRing_of_ringEquiv _ (M.stalkEquiv z)`.
+A detailed English derivation is pending.
 -/
 theorem isNoetherianRing_O [IsNoetherianRing o] (z : M.Z) : IsNoetherianRing (M.O z) :=
   have := M.isNoetherian
   isNoetherianRing_of_ringEquiv _ (M.stalkEquiv z)
 
 /- English proof (translation)
-Use `M.isNoetherianRing_O ξ` as an intermediate fact. Establish `: IsPrincipalIdealRing (M.O ξ)` using `IsPrincipalIdealRing.of_isNoetherianRing_of_isBezout`. Establish `h1 : ringKrullDim (M.O ξ) ≤ 1` using `Ring.krullDimLE_iff.1 inferInstance`. Rewrite `h1` using `[← ringKrullDim_eq_of_ringEquiv (M.stalkEquiv ξ), ringKrullDim_stalk_eq_coheight]`. Conclude with `h1` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coheight_le_one_of_valuationRing [IsNoetherianRing o] {ξ : M.Z} (h : ValuationRing (M.O ξ)) :
     Order.coheight ξ ≤ 1 := by
@@ -70,17 +70,17 @@ theorem coheight_le_one_of_valuationRing [IsNoetherianRing o] {ξ : M.Z} (h : Va
   exact_mod_cast h1
 
 /- English proof (translation)
-Take `⟨V, hV, hz, -⟩` from `exists_isAffineOpen_mem_and_subset (U := ⊤) (x := z) trivial`. Set `ψ : ∀ {x : M.Z} (_ : x ∈ V), Γ(M.Z, V) →+* M.O x` to `fun {x} hx => (M.stalkEquiv x).toRingHom.comp (M.Z.presheaf.germ V x hx).hom`. Establish `hψ : ∀ {x : M.Z} (hx : x ∈ V) (f : Γ(M.Z, V)), ψ hx f = ⟨valF M.pt V f, valF_mem_O hx f⟩` using `fun hx f => stalkEquiv_germ hx f`. Establish `hloc : ∀ (p : PrimeSpectrum Γ(M.Z, V)) (hp : hV.fromSpec p ∈ V), @IsLocalization.AtPrime _ _ (M.O (hV.fromSpec p)) _ (ψ hp).toAlgebra p.asIdeal _` using `fun p hp => by`. Set `: Algebra Γ(M.Z, V) (M.Z.presheaf.stalk (hV.fromSpec p))` to `TopCat.Presheaf.algebra_section_stalk M.Z.presheaf (U := V) ⟨_, hp⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `` to `(ψ hp).toAlgebra`. Establish `: IsLocalization p.asIdeal.primeCompl (M.Z.presheaf.stalk (hV.fromSpec p))` using `hV.isLocalization_stalk' p hp`. Conclude with `IsLocalization.isLocalization_of_algEquiv p.asIdeal.primeCompl ({ M.stalkEquiv _ with commutes' := fun _ => rfl } : M.Z.presheaf.stalk (hV.fromSpec p) ≃ₐ[Γ(M.Z, V)] M.O (hV.fromSpec p))`. Establish `hmem : ∀ p : PrimeSpectrum Γ(M.Z, V), hV.fromSpec p ∈ V` using `fun p => by`. Rewrite using `[← SetLike.mem_coe, ← hV.range_fromSpec]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨_, rfl⟩`. Take `⟨p₀, rfl⟩ : ∃ p₀ : PrimeSpectrum Γ(M.Z, V), hV.fromSpec p₀ = z` from `(hV.range_fromSpec ▸ hz : z ∈ Set.range hV.fromSpec)`. Set `` to `(ψ hz).toAlgebra`. Establish `h₀` using `hloc p₀ hz`. Set `p : PrimeSpectrum Γ(M.Z, V)` to `⟨q.comap (ψ hz), inferInstance⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hle : p.asIdeal ≤ p₀.asIdeal` using `fun a ha => (IsLocalization.AtPrime.to_map_mem_maximal_iff (M.O (hV.fromSpec p₀)) p₀.asIdeal a).1 (IsLocalRing.le_maximalIdeal_of_isPrime q ha)`. Establish `hs : hV.fromSpec p ⤳ hV.fromSpec p₀` using `((PrimeSpectrum.le_iff_specializes p p₀).1 hle).map hV.fromSpec.continuous`. Use `⟨_, hs, ?_⟩` and prove the remaining obligations. Set `` to `(Subalgebra.inclusion (O_le_of_specializes hs)).toRingHom.toAlgebra`. Set `` to `(ψ (hmem p)).toAlgebra`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h₁` using `hloc p (hmem p)`. Establish `: IsScalarTower Γ(M.Z, V) (M.O (hV.fromSpec p₀)) (M.O (hV.fromSpec p))` using `IsScalarTower.of_algebraMap_eq fun a => (hψ (hmem p) a).trans (congrArg (Subalgebra.inclusion (O_le_of_specializes hs)) (hψ hz a)).symm`. Establish `h₂` using `IsLocalization.isLocalization_of_submonoid_le (M.O (hV.fromSpec p₀)) (M.O (hV.fromSpec p)) p₀.asIdeal.primeCompl p.asIdeal.primeCompl (fun a ha h => ha (hle h))`. Use `IsLocalization.of_le_of_exists_dvd (p.asIdeal.primeCompl.map (algebraMap _ (M.O (hV.fromSpec p₀)))) _ (by rintro _ ⟨a, ha, rfl⟩; exact ha) fun n hn => ?_` and prove the remaining obligations. Take `⟨⟨a, s⟩, e⟩` from `IsLocalization.surj p₀.asIdeal.primeCompl n`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, ⟨a, fun ha => ?_, rfl⟩, _, e.symm⟩` and prove the remaining obligations. Establish `ha' : algebraMap _ (M.O (hV.fromSpec p₀)) a ∈ q` using `ha`. Rewrite `ha'` using `[← e]`. Conclude with `hn ((Ideal.mul_unit_mem_iff_mem q (IsLocalization.map_units _ s)).1 ha')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_specializes_isLocalization (z : M.Z) (q : Ideal (M.O z)) [q.IsPrime] :
     ∃ (ξ : M.Z) (h : ξ ⤳ z),
@@ -132,9 +132,9 @@ theorem exists_specializes_isLocalization (z : M.Z) (q : Ideal (M.O z)) [q.IsPri
   exact hn ((Ideal.mul_unit_mem_iff_mem q (IsLocalization.map_units _ s)).1 ha')
 
 /- English proof (translation)
-Use `M.isNoetherianRing_O z` as an intermediate fact. Use `isIntegrallyClosed_O hn z` as an intermediate fact. Choose the witnesses or unpack the hypotheses as in `⟨y, rfl⟩ : φ ∈ (algebraMap (M.O z) Ω).range := by`. Use `(mem_range_algebraMap_iff_forall_height_eq_one φ).mpr fun q _ h1 => ?_` and prove the remaining obligations. Take `⟨ξ, hξ, hloc⟩` from `M.exists_specializes_isLocalization z q`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Set `` to `(Subalgebra.inclusion (O_le_of_specializes hξ)).toRingHom.toAlgebra`. Establish `: IsScalarTower (M.O z) (M.O ξ) Ω` using `IsScalarTower.of_algebraMap_eq fun _ => rfl`. Use `isDiscreteValuationRing_of_height_eq_one q h1 (M.O ξ)` as an intermediate fact. Conclude with `(mem_range_algebraMap_iff_mem_primeLocalSubalgebra q (M.O ξ) φ).mp ⟨⟨φ, h ξ hξ inferInstance⟩, rfl⟩`. Conclude with `y.2`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_O_of_forall_valuationRing [IsNoetherianRing o] (hn : ReciprocityTheory.ChartRestriction.G.Geo.Tor.IsNormalScheme M.Z)
     (z : M.Z) (φ : Ω) (h : ∀ ξ : M.Z, ξ ⤳ z → ValuationRing (M.O ξ) → φ ∈ M.O ξ) : φ ∈ M.O z := by
@@ -153,7 +153,7 @@ theorem mem_O_of_forall_valuationRing [IsNoetherianRing o] (hn : ReciprocityTheo
 end RatModel
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ M _ hn z`. Use `M.isNoetherian` as an intermediate fact. Conclude with `⟨M.mem_O_of_forall_valuationRing hn z, M.isNoetherianRing_O z, fun U hU => (finite_notMem_coheight_le_one U hU).subset fun _ h => ⟨h.1, M.coheight_le_one_of_valuationRing h.2⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem normalModel_height_le_one :
     ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (M : RatModel o Ω) [IsNoetherianRing o],

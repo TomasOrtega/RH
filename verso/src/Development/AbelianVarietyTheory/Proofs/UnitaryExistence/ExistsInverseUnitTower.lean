@@ -16,13 +16,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `h : ∀ n : ℕ, ∃ x : ℤ, 0 < n → (n : ℤ) ∣ x * ν n - 1`. Introduce `n`. Distinguish the cases in `hn : 0 < n`. Take `⟨x, y, hxy⟩` from `h1 n hn`. Conclude with `⟨x, fun _ => ⟨-y, by linear_combination hxy⟩⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨0, fun h => absurd h hn⟩`. Use `choose κ hκ using h`. Use `⟨κ, hκ, fun n hn => ?_, fun n m hn hm => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `hκ n hn`. Conclude with `⟨ν n, -c, by linear_combination hc⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `hκ n hn`. Take `⟨c', hc'⟩` from `hκ (n * m) (Nat.mul_pos hn hm)`. Take `⟨d, hd⟩` from `h2 n m hn hm`. Move the coercions through the operations in `at hc'`. Use `⟨κ n * m * c' - κ (n * m) * c - κ (n * m) * κ n * d, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `κ n * hc' - κ (n * m) * hc - κ (n * m) * κ n * hd`.
+A detailed English derivation is pending.
 -/
 theorem exists_inverse_unit_tower (ν : ℕ → ℤ) (h1 : ∀ n : ℕ, 0 < n → IsCoprime (ν n) (n : ℤ))
     (h2 : ∀ n m : ℕ, 0 < n → 0 < m → (n : ℤ) ∣ ν (n * m) - ν n) :
@@ -46,9 +46,9 @@ theorem exists_inverse_unit_tower (ν : ℕ → ℤ) (h1 : ∀ n : ℕ, 0 < n �
     linear_combination κ n * hc' - κ (n * m) * hc - κ (n * m) * κ n * hd
 
 /- English proof (translation)
-Establish `h : s • a ∈ Ideal.span {(l.M : 𝓞 E)} • (⊤ : Submodule (𝓞 E) V)`. Rewrite using `[← l.prod, mul_smul]`. Conclude with `Submodule.smul_mem_smul hs ha`. Rewrite `h` using `[Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨e, -, he⟩` from `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨e, by rw [← he, Nat.cast_smul_eq_nsmul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem level_smul_mem_half {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (l : Level H)
     {V : Type} [AddCommGroup V] [Module (𝓞 E) V] {s : 𝓞 E} (hs : s ∈ l.Mb) {a : V}
@@ -61,25 +61,25 @@ theorem level_smul_mem_half {E : Type} [Field E] [NumberField E] [IsCMField E] {
   exact ⟨e, by rw [← he, Nat.cast_smul_eq_nsmul]⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo σ g ty U i P hP`. Take `⟨f, ν, h1, h2, h3, h4, h5, h6, -⟩` from `familyUnif_lattice_similar E H D l Xo σ g ty U i P hP`. Take `⟨κ, hκ1, hκ2, hκ3⟩` from `exists_inverse_unit_tower ν h3 h4`. Take `⟨s, hs1, hs2, hs3⟩` from `GlobalTheory.T.exists_compatible_norm_tower_profinite E H l κ hκ2 hκ3`. Establish `hinv : ∀ n : ℕ, 0 < n → ∃ r c : 𝓞 E, r * s n = 1 + n * c`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `n hn`. Take `⟨c, hc⟩` from `hs1 n hn`. Take `⟨d, hd⟩` from `hκ1 n hn`. Establish `hd' : (κ n : 𝓞 E) * (ν n : 𝓞 E) - 1 = (n : 𝓞 E) * (d : 𝓞 E)` using `by exact_mod_cast congrArg (Int.cast : ℤ → 𝓞 E) hd`. Conclude with `⟨(ν n : 𝓞 E) * H.bar (s n), (ν n : 𝓞 E) * c + d, by linear_combination (ν n : 𝓞 E) * hc + hd'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `⟨fun n => s n • f n, fun n m hn hm a => ?_, fun n hn => ⟨fun a => ⟨?_, ?_⟩, fun a' => ?_⟩, fun n hn a a' => ?_, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨e, he⟩` from `h1 n m hn hm a`. Take `⟨c, hc⟩` from `hs2 n m hn hm`. Establish `hc' : s (n * m) = s n + n * c` using `by linear_combination hc`. Use `⟨c • f n a + s (n * m) • e, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [LinearMap.smul_apply]`. Rewrite using `[he, hc', ← Nat.cast_smul_eq_nsmul (𝓞 E), ← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Use `module`. Introduce and unpack `⟨e, he⟩`. Take `⟨r, c, hrc⟩` from `hinv n hn`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← (h2 n hn).1 a]`. Use `⟨r • e - c • f n a, ?_⟩` and prove the remaining obligations. Rewrite `he` using `[LinearMap.smul_apply, ← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Establish `h : (r * s n) • f n a = r • (n : 𝓞 E) • e` using `by rw [mul_smul, he]`. Rewrite `h` using `[hrc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Take the linear combination `(norm := module) h`. Introduce and unpack `⟨e, rfl⟩`. Conclude with `⟨(s n • f n) e, by rw [map_nsmul]⟩`. Take `⟨a, e, he⟩` from `(h2 n hn).2 a'`.
+Take a linear combination of the given relations to obtain the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, c, hrc⟩` from `hinv n hn`. Use `⟨r • a, e - c • f n a, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, smul_smul, mul_comm, hrc, he, ← Nat.cast_smul_eq_nsmul (𝓞 E), ← Nat.cast_smul_eq_nsmul (𝓞 E)]`. Use `module`. Take `⟨c, hc⟩` from `hs1 n hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, hd⟩` from `hκ1 n hn`. Take `⟨k, hk⟩` from `h5 n hn (s n • a) (s n • a')`. Establish `hc' : H.bar (s n) * s n = (κ n : 𝓞 E) + (n : 𝓞 E) * c` using `by linear_combination hc`. Establish `e1 : D.EF (s n • a) (s n • a') = κ n * D.EF a a' + n * D.EF a (c • a')`. Rewrite using `[D.adj, smul_smul, hc', add_smul, mul_smul, Nat.cast_smul_eq_nsmul, Int.cast_smul_eq_zsmul, map_add, map_nsmul, map_zsmul, smul_eq_mul, nsmul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [LinearMap.smul_apply, ← map_smul]`. Rewrite `hk` using `[e1]`. Use `⟨k + d * D.EF a a' + ν n * D.EF a (c • a'), ?_⟩` and prove the remaining obligations. Take the linear combination `hk + D.EF a a' * hd`. Take `⟨e, he⟩` from `h6 a ha`.
+Reduce the conclusion to the remaining proof obligations. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨e', he'⟩` from `level_smul_mem_half l hs3 ha`. Use `⟨e + f l.M e', ?_⟩` and prove the remaining obligations. Establish `h : s l.M • a = a + l.M • e'` using `by rw [← he', sub_smul, one_smul, add_sub_cancel]`. Rewrite using `[LinearMap.smul_apply, ← map_smul, h, map_add, map_nsmul, he, smul_add, add_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem familyUnif_lattice_genus : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (σ : KA l →+* ℂ) (g : ℕ) (ty : Fin g → (E →+* ℂ)) (U : FamilyUnif Xo σ ty) (i : Fin U.n) (P : (U.Di i).La →+ (Fin g → ℂ)), IsPeriod (U.Di i) ty P → ∃ f : ℕ → D.La →ₗ[𝓞 E] (U.Di i).La, (∀ n m : ℕ, 0 < n → 0 < m → ∀ a, ∃ e, f (n * m) a = f n a + n • e) ∧ (∀ n : ℕ, 0 < n → (∀ a, (∃ e, f n a = n • e) ↔ ∃ e, a = n • e) ∧ ∀ a', ∃ a e, a' = f n a + n • e) ∧ (∀ n : ℕ, 0 < n → ∀ a a', (n : ℤ) ∣ (U.Di i).EF (f n a) (f n a') - D.EF a a') ∧ ∀ a ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La), ∃ e, f l.M a = U.t i a + l.M • e := by
   intro E _ _ _ H D l Xo σ g ty U i P hP

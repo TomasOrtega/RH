@@ -18,16 +18,16 @@ Both sides reduce to the same expression.
     ((restrictRepresentation E W h a b x : W) : V) = E a b x := rfl
 
 /- English proof (translation)
-Simplify using `[homRepresentation]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem homRepresentation_apply (E : GLOps n K V) (E' : GLOps n K V') (a b : Fin n) (f : V →ₗ[K] V') (x : V) :
     homRepresentation E E' a b f x = E' a b (f x) - f (E a b x) := by
   simp [homRepresentation]
 
 /- English proof (translation)
-Rewrite using `[mem_weightSp_iff_diagonal_apply, mem_weightSp_iff_diagonal_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hx a`. Establish `e` using `congrArg Subtype.val (hx a)`. Simplify using `using e`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `hx a`. Use `ext`. Simplify using `using hx a`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem restrict_mem_weightSpace_iff (E : GLOps n K V) (W : Submodule K V) (h : IsSubrepresentation E W) (mu : Fin n → ℤ) (x : W) :
     x ∈ weightSp (restrictRepresentation E W h) mu ↔ (x : V) ∈ weightSp E mu := by
@@ -41,13 +41,13 @@ theorem restrict_mem_weightSpace_iff (E : GLOps n K V) (W : Submodule K V) (h : 
     simpa using hx a
 
 /- English proof (translation)
-Use `⟨fun a b c d => ?_, fun x => ⟨⊤, inferInstance, Submodule.mem_top, fun _ _ _ _ => Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Use `LinearMap.ext fun x => Subtype.ext ?_` and prove the remaining obligations. Establish `e` using `congrArg (fun f => f (x : V)) (hE.1 a b c d)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at e`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, restrictRepresentation_coe]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[e]`. Apply the tactic sequence `split_ifs <;> simp`. Take `⟨s, π, -, hinv, -, hmem, hsum⟩` from `weight_projections_exist E hE`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx : x = ∑ mu ∈ s, (⟨π mu x, hinv mu W (fun a y hy => h a a y hy) x x.2⟩ : W)`. Use `ext`. Simplify using `[hsum]`. Rewrite using `[hx]`. Use `Submodule.sum_mem _ fun mu _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.mem_iSup_of_mem mu ?_` and prove the remaining obligations. Rewrite using `[restrict_mem_weightSpace_iff]`. Conclude with `hmem mu x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem restrictRepresentation_isRep [CharZero K] [FiniteDimensional K V] (E : GLOps n K V) (hE : IsGLRep E) (W : Submodule K V)
     (h : IsSubrepresentation E W) : IsGLRep (restrictRepresentation E W h) := by
@@ -72,9 +72,9 @@ theorem restrictRepresentation_isRep [CharZero K] [FiniteDimensional K V] (E : G
     exact hmem mu x
 
 /- English proof (translation)
-Establish `hx : x ∈ (⨆ mu, weightSp E mu)` using `hE.2.2 ▸ Submodule.mem_top`. Use `Submodule.iSup_induction (p := weightSp E) (motive := fun y => π (E a a y) = (nu a : K) • π y) hx (fun mu y hy => ?_) ?_ (fun y w hy hw => ?_)` and prove the remaining obligations. Rewrite using `[(mem_weightSp_iff_diagonal_apply E mu y).1 hy a, map_smul]`. Distinguish the cases in `hmu : mu = nu`. Substitute `hmu` using the available equality.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Both sides reduce to the same expression. Rewrite using `[hπ.2 mu hmu y hy, smul_zero, smul_zero]`. Simplify using the standard rewrite rules. Simplify using `only [map_add, hy, hw, smul_add]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem weightProjection_diagonal_apply_eq_smul [CharZero K] (E : GLOps n K V) (hE : IsGLRep E) (nu : Fin n → ℤ) (π : Module.End K V)
     (hπ : IsWtProj E nu π) (a : Fin n) (x : V) : π (E a a x) = (nu a : K) • π x := by
@@ -90,17 +90,17 @@ theorem weightProjection_diagonal_apply_eq_smul [CharZero K] (E : GLOps n K V) (
   · simp only [map_add, hy, hw, smul_add]
 
 /- English proof (translation)
-Use `⟨fun a b c d => ?_, fun f => ⟨⊤, inferInstance, Submodule.mem_top, fun _ _ _ _ => Submodule.mem_top⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `f x`. Establish `h1` using `congrArg (fun g => g (f x)) (hE'.1 a b c d)`. Establish `h2` using `congrArg (fun g => f (g x)) (hE.1 a b c d)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, map_sub] at h1 h2`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, homRepresentation_apply, map_sub]`. Apply the tactic sequence `split_ifs at h1 h2 ⊢ <;>`. Apply the tactic sequence `simp only [LinearMap.zero_apply, map_zero, sub_zero, zero_sub, homRepresentation_apply, map_sub, map_neg] at h1 h2 ⊢ <;>`. Use the proof step `(rw [eq_add_of_sub_eq h1, eq_add_of_sub_eq h2]; abel)`. Take `⟨s, π, hπ, -, -, -, hsum⟩` from `weight_projections_exist E hE`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨s', π', -, -, -, hmem', hsum'⟩` from `weight_projections_exist E' hE'`. Rewrite using `[eq_top_iff]`. Introduce `f _`. Establish `hf : f = ∑ mu ∈ s, ∑ mu' ∈ s', (π' mu').comp (f.comp (π mu))`. Use extensionality with `x`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sum_apply, LinearMap.comp_apply]`. Rewrite using `[Finset.sum_comm]`. Simplify using `only [← map_sum]`. Rewrite using `[hsum x, hsum' (f x)]`. Rewrite using `[hf]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.sum_mem _ fun mu _ => Submodule.sum_mem _ fun mu' _ => ?_` and prove the remaining obligations. Use `Submodule.mem_iSup_of_mem (mu' - mu) ?_` and prove the remaining obligations. Rewrite using `[mem_weightSp_iff_diagonal_apply]`. Introduce `a`. Use extensionality with `x`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [homRepresentation_apply, LinearMap.comp_apply, LinearMap.smul_apply]`. Rewrite using `[weightProjection_diagonal_apply_eq_smul E hE mu (π mu) (hπ mu) a x, map_smul, map_smul, (mem_weightSp_iff_diagonal_apply E' mu' _).1 (hmem' mu' _) a]`. Simplify using `only [Pi.sub_apply, Int.cast_sub, sub_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem homRepresentation_isRep [CharZero K] [FiniteDimensional K V] [FiniteDimensional K V'] (E : GLOps n K V)
     (E' : GLOps n K V') (hE : IsGLRep E) (hE' : IsGLRep E') : IsGLRep (homRepresentation E E') := by
@@ -137,13 +137,13 @@ theorem homRepresentation_isRep [CharZero K] [FiniteDimensional K V] [FiniteDime
     simp only [Pi.sub_apply, Int.cast_sub, sub_smul]
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `finitely_many_weights_span E hE`. Use `⟨s.sup fun mu => s.sup fun nu => Finset.univ.sup fun a => (mu a - nu a).toNat, ?_⟩` and prove the remaining obligations. Introduce and unpack `k ⟨mu, hmu, nu, hnu, a, b, hab, heq⟩`. Establish `hmu' : mu ∈ s`. Assume the negation of the conclusion as `hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Apply `hmu` to reduce the goal to its premises. Rewrite using `[weightSpace_eq_bot_outside_support E s hs mu hc, bot_inf_eq]`. Establish `hnu' : nu ∈ s`. Assume the negation of the conclusion as `hc`. Apply `hnu` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[weightSpace_eq_bot_outside_support E s hs nu hc, bot_inf_eq]`. Establish `hk : mu a - nu a = (k : ℤ)`. Establish `e` using `congrFun heq a`. Simplify using `only [Pi.sub_apply, Pi.smul_apply, rootW, Pi.single_eq_same, Pi.single_eq_of_ne hab, sub_zero, smul_eq_mul, mul_one] at e`. Conclude with `e`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hk' : k ≤ (mu a - nu a).toNat` using `by omega`. Conclude with `Finset.le_sup_of_le hmu' (Finset.le_sup_of_le hnu' (Finset.le_sup_of_le (Finset.mem_univ a) hk'))`.
+A detailed English derivation is pending.
 -/
 theorem root_differences_bddAbove [CharZero K] [FiniteDimensional K V] (E : GLOps n K V) (hE : IsGLRep E) (W : Submodule K V) :
     BddAbove {k : ℕ | ∃ mu ∈ wtsOf E W, ∃ nu ∈ wtsOf E W, ∃ a b, a ≠ b ∧ mu - nu = (k : ℤ) • rootW a b} := by
@@ -169,35 +169,35 @@ theorem root_differences_bddAbove [CharZero K] [FiniteDimensional K V] (E : GLOp
 end
 
 /- English proof (translation)
-Introduce `n K V _ _ _ _ _ E hE W h`. Conclude with `restrictRepresentation_isRep E hE W h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem restriction_is_representation : RestrictionIsRepresentation := by
   intro n K V _ _ _ _ _ E hE W h
   exact restrictRepresentation_isRep E hE W h
 
 /- English proof (translation)
-Introduce `n K V V' _ _ _ _ _ _ _ _ E E' hE hE'`. Conclude with `homRepresentation_isRep E E' hE hE'`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hom_space_is_representation : HomSpaceIsRepresentation := by
   intro n K V V' _ _ _ _ _ _ _ _ E E' hE hE'
   exact homRepresentation_isRep E E' hE hE'
 
 /- English proof (translation)
-Introduce `n K W _ _ _ _ _ E hE L hL`. Use `csSup_le' ?_` and prove the remaining obligations. Introduce and unpack `k ⟨a, b, hab, hk⟩`. Establish `hres` using `restrictRepresentation_isRep E hE L hL`. Establish `hne : weightSp (homRepresentation (restrictRepresentation E L hL) E) ((k : ℤ) • rootW a b) ≠ ⊥`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h0`. Apply `hk` to reduce the goal to its premises. Rewrite using `[h0, bot_inf_eq]`. Take `⟨g, hg, hg0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Establish `hex : ∃ nu, ∃ x ∈ weightSp (restrictRepresentation E L hL) nu, g x ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `hc`. Apply `hg0` to reduce the goal to its premises. Use `linearMap_ext_on_weightSpaces _ hres g 0 fun nu x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h1`. Conclude with `hc ⟨nu, x, hx, h1⟩`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨nu, x, hx, hgx⟩` from `hex`. Establish `hx' : (x : W) ∈ weightSp E nu` using `(restrict_mem_weightSpace_iff E L hL nu x).1 hx`. Establish `hx0 : (x : W) ≠ 0`. Introduce `h0`. Apply `hgx` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `: x = 0` using `Subtype.ext h0`. Rewrite using `[this, map_zero]`. Establish `hgw : g x ∈ weightSp E ((k : ℤ) • rootW a b + nu)`. Rewrite using `[mem_weightSp_iff_diagonal_apply]`. Introduce `c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (fun f : L →ₗ[K] W => f x) ((mem_weightSp_iff_diagonal_apply _ _ g).1 hg c)`. Simplify using `only [homRepresentation_apply, LinearMap.smul_apply] at h1`. Establish `h2 : restrictRepresentation E L hL c c x = (nu c : K) • x` using `(mem_weightSp_iff_diagonal_apply _ _ x).1 hx c`. Rewrite `h1` using `[h2, map_smul, sub_eq_iff_eq_add]`. Rewrite using `[h1, Pi.add_apply, Int.cast_add, add_smul]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_csSup (root_differences_bddAbove E hE ⊤) ⟨(k : ℤ) • rootW a b + nu, ?_, nu, ?_, a, b, hab, by abel⟩` and prove the remaining obligations. Introduce `h0`. Establish `: g x ∈ weightSp E ((k : ℤ) • rootW a b + nu) ⊓ ⊤` using `⟨hgw, trivial⟩`. Rewrite `this` using `[h0]`. Conclude with `hgx ((Submodule.mem_bot K).1 this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Establish `: (x : W) ∈ weightSp E nu ⊓ ⊤` using `⟨hx', trivial⟩`. Rewrite `this` using `[h0]`. Conclude with `hx0 ((Submodule.mem_bot K).1 this)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem homRep_ell_bounded_by_target : HomRepEllBoundedByTarget := by
   intro n K W _ _ _ _ _ E hE L hL

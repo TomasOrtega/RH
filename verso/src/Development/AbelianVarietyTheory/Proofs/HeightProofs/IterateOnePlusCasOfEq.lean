@@ -15,7 +15,7 @@ def onePlusCas (σ : Mx n → (H →L[ℂ] H)) {d : ℕ} (X : Fin d → Mx n) (v
   v - ∑ i, dRep σ (X i) (dRep σ (X i) v)
 
 /- English proof (translation)
-Establish `h1 : ∀ i, Sm ε σ (dRep σ (X i) (dRep σ (X i) v))` using `fun i => dRep_mem (isUnit_Jm ε) hσ (dRep_mem (isUnit_Jm ε) hσ hv (hX i)) (hX i)`. Conclude with `(smooth (Jm ε) σ).sub_mem hv ((smooth (Jm ε) σ).sum_mem fun i _ => h1 i)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sm_onePlusCas (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : Fin d → Mx n} (hX : ∀ i, X i ∈ lieSet ε)
     {v : H} (hv : Sm ε σ v) : Sm ε σ (onePlusCas σ X v) := by
@@ -24,7 +24,7 @@ theorem sm_onePlusCas (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : Fin d → Mx
   exact (smooth (Jm ε) σ).sub_mem hv ((smooth (Jm ε) σ).sum_mem fun i _ => h1 i)
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simpa using hv`. Consider the case `succ r ih => rw [Function.iterate_succ_apply']`. Conclude with `sm_onePlusCas hσ hX ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem sm_iterate_onePlusCas (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : Fin d → Mx n} (hX : ∀ i, X i ∈ lieSet ε)
     {v : H} (hv : Sm ε σ v) (r : ℕ) : Sm ε σ ((onePlusCas σ X)^[r] v) := by
@@ -33,7 +33,7 @@ theorem sm_iterate_onePlusCas (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : Fin 
   | succ r ih => rw [Function.iterate_succ_apply']; exact sm_onePlusCas hσ hX ih
 
 /- English proof (translation)
-Establish `key : ∀ i, ⟪b, dRep σ (X i) (dRep σ (X i) v)⟫_ℂ = ⟪dRep σ (X i) (dRep σ (X i) b), v⟫_ℂ` using `fun i => by`. Establish `hv1` using `dRep_mem (isUnit_Jm ε) hσ hv (hX i)`. Establish `hb1` using `dRep_mem (isUnit_Jm ε) hσ hb (hX i)`. Rewrite using `[inner_dRep (isUnit_Jm ε) hσ hb hv1 (hX i), inner_dRep (isUnit_Jm ε) hσ hb1 hv (hX i), neg_neg]`. Simplify using `only [onePlusCas, inner_sub_left, inner_sub_right, inner_sum, sum_inner, key]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inner_onePlusCas (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : Fin d → Mx n} (hX : ∀ i, X i ∈ lieSet ε)
     {b v : H} (hb : Sm ε σ b) (hv : Sm ε σ v) : ⟪b, onePlusCas σ X v⟫_ℂ = ⟪onePlusCas σ X b, v⟫_ℂ := by
@@ -44,7 +44,7 @@ theorem inner_onePlusCas (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : Fin d →
   simp only [onePlusCas, inner_sub_left, inner_sub_right, inner_sum, sum_inner, key]
 
 /- English proof (translation)
-Proceed by induction on `r generalizing v with`. Consider the case `zero => rfl`. Consider the case `succ r ih`. Rewrite using `[Function.iterate_succ_apply, ih (sm_onePlusCas hσ hX hv), Function.iterate_succ_apply', inner_onePlusCas hσ hX (sm_iterate_onePlusCas hσ hX hb r) hv]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem inner_iterate_onePlusCas (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : Fin d → Mx n}
     (hX : ∀ i, X i ∈ lieSet ε) {b v : H} (hb : Sm ε σ b) (hv : Sm ε σ v) (r : ℕ) :
@@ -56,7 +56,7 @@ theorem inner_iterate_onePlusCas (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : F
       inner_onePlusCas hσ hX (sm_iterate_onePlusCas hσ hX hb r) hv]
 
 /- English proof (translation)
-Establish `h : ∀ i, dRep σ (X i) (dRep σ (X i) (c • v)) = c • dRep σ (X i) (dRep σ (X i) v)` using `fun i => Dw_smul hσ (l := [X i, X i]) (by simp [hX i]) c hv`. Simplify using `only [onePlusCas, h, smul_sub, Finset.smul_sum]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem onePlusCas_smul (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : Fin d → Mx n} (hX : ∀ i, X i ∈ lieSet ε)
     (c : ℂ) {v : H} (hv : Sm ε σ v) : onePlusCas σ X (c • v) = c • onePlusCas σ X v := by
@@ -65,7 +65,7 @@ theorem onePlusCas_smul (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : Fin d → 
   simp only [onePlusCas, h, smul_sub, Finset.smul_sum]
 
 /- English proof (translation)
-Proceed by induction on `r with`. Consider the case `zero => simp`. Consider the case `succ r ih => rw [Function.iterate_succ_apply', ih, onePlusCas_smul hσ hX _ hv, h, smul_smul, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem iterate_onePlusCas_of_eq (hσ : IsURepOn (UJset ε) σ) {d : ℕ} {X : Fin d → Mx n}
     (hX : ∀ i, X i ∈ lieSet ε) {v : H} (hv : Sm ε σ v) {μ : ℂ} (h : onePlusCas σ X v = μ • v) (r : ℕ) :

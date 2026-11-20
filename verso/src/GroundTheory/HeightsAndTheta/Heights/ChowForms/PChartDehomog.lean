@@ -10,19 +10,17 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Introduce `F _ n W t G d hW hH ht hG hmem`. Use `set a : MvPolynomial (Fin n) F ⧸ W := Ideal.Quotient.mk W (linForm t) with ha_def`. Establish `ha : a ≠ 0` using `fun h => ht (Ideal.Quotient.eq_zero_iff_mem.mp h)`. Set `A` to `Localization.Away a`. Set `v : A` to `IsLocalization.Away.invSelf a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `φ : MvPolynomial (Fin n) F →ₐ[F] A` to `(IsScalarTower.toAlgHom F (MvPolynomial (Fin n) F ⧸ W) A).comp (Ideal.Quotient.mkₐ F W)`. Establish `hφ : ∀ g, aeval (fun m => φ (X m)) g = φ g` using `fun g => by`. Rewrite using `[← comp_aeval_apply]`. Simplify using the standard rewrite rules. Set `ψ : MvPolynomial (Fin n) F →ₐ[F] A` to `aeval fun m => v * φ (X m)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hhom : ∀ {g : MvPolynomial (Fin n) F} {k : ℕ}, g.IsHomogeneous k → ψ g = v ^ k * φ g` using `fun hg => by rw [← hφ]; exact ChartLocDomain.aeval_mul_of_isHomogeneous hg _ _`. Establish `hle : W ⊔ Ideal.span {linForm t - 1} ≤ RingHom.ker ψ`. Use `sup_le (fun g hg => ?_) ?_` and prove the remaining obligations. Rewrite using `[RingHom.mem_ker, ← sum_homogeneousComponent g, map_sum]`. Use `Finset.sum_eq_zero fun k _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hhom (homogeneousComponent_isHomogeneous k g)]`. Establish `: φ (homogeneousComponent k g) = 0`. Simplify using `[φ, Ideal.Quotient.eq_zero_iff_mem.mpr (hH g hg k)]`. Rewrite using `[this, mul_zero]`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, RingHom.mem_ker, map_sub, map_one, hhom (ChartLocDomain.linForm_isHomogeneous t), pow_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: φ (linForm t) = algebraMap _ A a` using `rfl`. Rewrite using `[this, mul_comm, IsLocalization.Away.mul_invSelf, sub_self]`. Establish `h0 : ψ G = 0` using `hle hmem`. Rewrite `h0` using `[hhom hG]`. Establish `h1 : algebraMap _ A (Ideal.Quotient.mk W G) = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[IsLocalization.Away.mul_invSelf, one_pow, one_mul]`. Both sides reduce to the same expression. Use `_ = algebraMap _ A a ^ d * (v ^ d * φ G) := by ring`. Use `_ = 0 := by rw [h0, mul_zero]`.
-
-Establish `hinj : Function.Injective (algebraMap (MvPolynomial (Fin n) F ⧸ W) A)` using `IsLocalization.injective A (powers_le_nonZeroDivisors_of_noZeroDivisors ha)`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mp (hinj (h1.trans (map_zero _).symm))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem ChartDehomog.proof : ChartDehomog.Statement := by
   intro F _ n W t G d hW hH ht hG hmem

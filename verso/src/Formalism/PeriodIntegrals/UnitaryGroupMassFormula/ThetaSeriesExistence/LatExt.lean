@@ -9,7 +9,7 @@ open Complex Classical
 namespace PI.SSE
 
 /- English proof (translation)
-Simplify using `only [qf, map_add]`. Rewrite using `[← Complex.exp_add, ← Complex.exp_add]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma qf_add (A ω v z : ℂ) (hA : A ≠ 0) :
     qf A v (z + ω) * qf A ω z =
@@ -22,7 +22,7 @@ lemma qf_add (A ω v z : ℂ) (hA : A ≠ 0) :
   ring
 
 /- English proof (translation)
-Simplify using `only [qf, map_neg]`. Rewrite using `[← Complex.exp_add, ← Complex.exp_zero]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma qf_neg (A ω z : ℂ) (hA : A ≠ 0) : qf A ω (z + -ω) * qf A (-ω) z = 1 := by
   simp only [qf, map_neg]
@@ -32,13 +32,13 @@ lemma qf_neg (A ω z : ℂ) (hA : A ≠ 0) : qf A ω (z + -ω) * qf A (-ω) z = 
   ring
 
 /- English proof (translation)
-Simplify using `[qf]`.
+Simplify using the standard rewrite rules.
 -/
 lemma qf_zero (A z : ℂ) : qf A 0 z = 1 := by
   simp [qf]
 
 /- English proof (translation)
-Introduce `z`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 -/
 lemma rel_add (G : ℂ → ℂ) (A ω v s t : ℂ) (hA : A ≠ 0)
     (hω : ∀ z, G (z + ω) = s * (qf A ω z * G z)) (hv : ∀ z, G (z + v) = t * (qf A v z * G z)) :
@@ -52,7 +52,7 @@ lemma rel_add (G : ℂ → ℂ) (A ω v s t : ℂ) (hA : A ≠ 0)
     _ = _ := by rw [qf_add A ω v z hA]; ring
 
 /- English proof (translation)
-Introduce `z`. Establish `h` using `hω (z + -ω)`. Rewrite `h` using `[neg_add_cancel_right]`. Rewrite using `[h, show s' * (qf A (-ω) z * (s * (qf A ω (z + -ω) * G (z + -ω)))) = (s * s') * (qf A ω (z + -ω) * qf A (-ω) z) * G (z + -ω) by ring, hss, qf_neg A ω z hA]`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma rel_neg (G : ℂ → ℂ) (A ω s s' : ℂ) (hA : A ≠ 0) (hss : s * s' = 1)
     (hω : ∀ z, G (z + ω) = s * (qf A ω z * G z)) :
@@ -65,13 +65,13 @@ lemma rel_neg (G : ℂ → ℂ) (A ω s s' : ℂ) (hA : A ≠ 0) (hss : s * s' =
   ring
 
 /- English proof (translation)
-Rewrite using `[Complex.exp_int_mul, Complex.exp_pi_mul_I]`.
+Rewrite the conclusion using the stated equalities.
 -/
 lemma exp_int_pi (k : ℤ) : cexp (k * (Real.pi * I)) = (-1 : ℂ) ^ k := by
   rw [Complex.exp_int_mul, Complex.exp_pi_mul_I]
 
 /- English proof (translation)
-Establish `h1 : (-1 : ℂ) ≠ 0` using `by norm_num`. Rewrite using `[← zpow_add₀ h1, ← zpow_add₀ h1, show a + b + k = c + (a + b + k - c) by ring, zpow_add₀ h1, h.neg_one_zpow, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma zsign (a b k c : ℤ) (h : Even (a + b + k - c)) :
     (-1 : ℂ) ^ a * (-1 : ℂ) ^ b * (-1 : ℂ) ^ k = (-1 : ℂ) ^ c := by
@@ -83,11 +83,11 @@ def Rel (G : ℂ → ℂ) (A v₁ v₂ : ℂ) (m n : ℤ) : Prop :=
   ∀ z, G (z + (m * v₁ + n * v₂)) = (-1 : ℂ) ^ (m + n + m * n) * (qf A (m * v₁ + n * v₂) z * G z)
 
 /- English proof (translation)
-Unfold `Rel at h h' ⊢`. Introduce `z`. Establish `key` using `rel_add G A ((m : ℂ) * v₁ + n * v₂) ((c : ℂ) * v₁ + d * v₂) _ _ hA h h' z`. Establish `hsum : (m : ℂ) * v₁ + n * v₂ + ((c : ℂ) * v₁ + d * v₂) = ((m + c : ℤ) : ℂ) * v₁ + ((n + d : ℤ) : ℂ) * v₂` using `by push_cast; ring`. Establish `hdiff : (starRingEnd ℂ) ((c : ℂ) * v₁ + d * v₂) * ((m : ℂ) * v₁ + n * v₂) - (starRingEnd ℂ) ((m : ℂ) * v₁ + n * v₂) * ((c : ℂ) * v₁ + d * v₂) = ((c * n - m * d : ℤ) : ℂ) * ((starRingEnd ℂ) v₁ * v₂ - v₁ * (starRingEnd ℂ) v₂)`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_mul, map_intCast]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hexp : cexp (Real.pi * ((starRingEnd ℂ) ((c : ℂ) * v₁ + d * v₂) * ((m : ℂ) * v₁ + n * v₂) - (starRingEnd ℂ) ((m : ℂ) * v₁ + n * v₂) * ((c : ℂ) * v₁ + d * v₂)) / (2 * A)) = (-1 : ℂ) ^ (c * n - m * d)`. Rewrite using `[← exp_int_pi, hdiff, hI]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Clear the denominators using the available nonvanishing facts. Rewrite using `[← hsum, key, hexp, zsign (m + n + m * n) (c + d + c * d) (c * n - m * d) (m + c + (n + d) + (m + c) * (n + d)) ⟨-(m * d), by ring⟩]`.
+Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 lemma rel_comb (G : ℂ → ℂ) (A v₁ v₂ : ℂ) (hA : A ≠ 0)
     (hI : (starRingEnd ℂ) v₁ * v₂ - v₁ * (starRingEnd ℂ) v₂ = 2 * I * A) (m n c d : ℤ)
@@ -113,13 +113,11 @@ lemma rel_comb (G : ℂ → ℂ) (A v₁ v₂ : ℂ) (hA : A ≠ 0)
     ⟨-(m * d), by ring⟩]
 
 /- English proof (translation)
-Establish `hv₁ : v₁ ≠ 0`. Introduce and unpack `rfl`. Simplify using `at h`. Establish `him : ((starRingEnd ℂ) v₁ * ((p : ℂ) * v₁ + q * v₂)).im = q * ((starRingEnd ℂ) v₁ * v₂).im`. Simplify using `[Complex.mul_im, Complex.mul_re]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite `him` using `[hpq, mul_zero, Complex.zero_im]`. Establish `hq : (q : ℝ) = 0`. Break down `mul_eq_zero.mp him.symm with h' | h'` into its components or cases. Conclude with `h'`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Conclude with `absurd h' h`. Establish `hq' : q = 0` using `by exact_mod_cast hq`. Substitute `hq'` using the available equality. Simplify using `only [Int.cast_zero, zero_mul, add_zero, mul_eq_zero] at hpq`. Break down `hpq with hp | hp` into its components or cases.
-
-Conclude with `⟨by exact_mod_cast hp, rfl⟩`. Conclude with `absurd hp hv₁`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma indep (v₁ v₂ : ℂ) (h : ((starRingEnd ℂ) v₁ * v₂).im ≠ 0) (p q : ℤ)
     (hpq : (p : ℂ) * v₁ + q * v₂ = 0) : p = 0 ∧ q = 0 := by
@@ -142,15 +140,15 @@ lemma indep (v₁ v₂ : ℂ) (h : ((starRingEnd ℂ) v₁ * v₂).im ≠ 0) (p 
   · exact absurd hp hv₁
 
 /- English proof (translation)
-Distinguish the cases in `hmem : ((m : ℂ) * v₁ + n * v₂) / 2 ∈ PI.lat2 v₁ v₂`. Rewrite using `[if_pos hmem]`. Unfold `PI.lat2 at hmem`. Take `⟨p, q, hpq⟩` from `AddSubgroup.mem_closure_pair.mp hmem`. Rewrite `hpq` using `[zsmul_eq_mul, zsmul_eq_mul]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨h1, h2⟩` from `indep v₁ v₂ h (m - 2 * p) (n - 2 * q) (by push_cast; linear_combination (-2 : ℂ) * hpq)`. Take `rfl : m = 2 * p` from `by omega`. Take `rfl : n = 2 * q` from `by omega`. Conclude with `Even.neg_one_zpow ⟨p + q + 2 * p * q, by ring⟩`. Rewrite using `[if_neg hmem]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hodd : Odd (m + n + m * n)`. Apply the tactic sequence `rcases Int.even_or_odd m with ⟨a, ha⟩ | ⟨a, ha⟩ <;> rcases Int.even_or_odd n with ⟨b, hb⟩ | ⟨b, hb⟩`. It suffices to derive a contradiction. Apply `hmem` to reduce the goal to its premises. Unfold `PI.lat2`.
+Apply the first step, then apply the next step to every resulting obligation. It suffices to derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `AddSubgroup.mem_closure_pair.mpr ⟨a, b, ?_⟩` and prove the remaining obligations. Rewrite using `[zsmul_eq_mul, zsmul_eq_mul, ha, hb]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Conclude with `⟨2 * a + b + 2 * a * b, by rw [ha, hb]; ring⟩`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Conclude with `⟨a + 2 * b + 2 * a * b, by rw [ha, hb]; ring⟩`. Conclude with `⟨2 * a + 2 * b + 2 * a * b + 1, by rw [ha, hb]; ring⟩`. Conclude with `hodd.neg_one_zpow`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 lemma psi_eq (v₁ v₂ : ℂ) (h : ((starRingEnd ℂ) v₁ * v₂).im ≠ 0) (m n : ℤ) :
     (-1 : ℂ) ^ (m + n + m * n) =
@@ -180,27 +178,25 @@ lemma psi_eq (v₁ v₂ : ℂ) (h : ((starRingEnd ℂ) v₁ * v₂).im ≠ 0) (m
     exact hodd.neg_one_zpow
 
 /- English proof (translation)
-Introduce `v₁ v₂ hpos G h₁ h₂ ω hω z`. Establish `hne : ((starRingEnd ℂ) v₁ * v₂).im ≠ 0` using `hpos.ne'`. Establish `hA : ((((starRingEnd ℂ) v₁ * v₂).im : ℝ) : ℂ) ≠ 0` using `by exact_mod_cast hne`. Establish `hI : (starRingEnd ℂ) v₁ * v₂ - v₁ * (starRingEnd ℂ) v₂ = 2 * I * ((((starRingEnd ℂ) v₁ * v₂).im : ℝ) : ℂ)`. Apply the tactic sequence `apply Complex.ext <;> simp [Complex.mul_re, Complex.mul_im] <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `set A : ℂ := ((((starRingEnd ℂ) v₁ * v₂).im : ℝ) : ℂ) with hAdef`. Establish `r10 : Rel G A v₁ v₂ 1 0`. Introduce `z`. Establish `e : ((1 : ℤ) : ℂ) * v₁ + ((0 : ℤ) : ℂ) * v₂ = v₁` using `by push_cast; ring`. Rewrite using `[e, h₁ z]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `r01 : Rel G A v₁ v₂ 0 1`. Introduce `z`. Establish `e : ((0 : ℤ) : ℂ) * v₁ + ((1 : ℤ) : ℂ) * v₂ = v₂` using `by push_cast; ring`. Rewrite using `[e, h₂ z]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `r00 : Rel G A v₁ v₂ 0 0`. Introduce `z`. Simplify using `[qf_zero]`. Establish `rm10 : Rel G A v₁ v₂ (-1) 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Establish `hn` using `rel_neg G A v₁ (-1) (-1) hA (by norm_num) (fun z => by rw [h₁ z]; ring) z`. Establish `e : ((-1 : ℤ) : ℂ) * v₁ + ((0 : ℤ) : ℂ) * v₂ = -v₁` using `by push_cast; ring`. Rewrite using `[e, hn]`. Evaluate the numerical expressions.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Establish `r0m1 : Rel G A v₁ v₂ 0 (-1)`. Introduce `z`. Establish `hn` using `rel_neg G A v₂ (-1) (-1) hA (by norm_num) (fun z => by rw [h₂ z]; ring) z`. Establish `e : ((0 : ℤ) : ℂ) * v₁ + ((-1 : ℤ) : ℂ) * v₂ = -v₂` using `by push_cast; ring`. Rewrite using `[e, hn]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Evaluate the numerical expressions. Establish `hcol : ∀ m : ℤ, Rel G A v₁ v₂ m 0`. Introduce `m`. Use `Int.induction_on m r00 (fun i hi => ?_) (fun i hi => ?_)` and prove the remaining obligations. Establish `h` using `rel_comb G A v₁ v₂ hA hI _ _ _ _ hi r10`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `convert h using 2 <;> omega`. Establish `h` using `rel_comb G A v₁ v₂ hA hI _ _ _ _ hi rm10`. Apply the tactic sequence `convert h using 2 <;> omega`. Establish `hall : ∀ m n : ℤ, Rel G A v₁ v₂ m n`. Introduce `m n`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `Int.induction_on n (hcol m) (fun i hi => ?_) (fun i hi => ?_)` and prove the remaining obligations. Establish `h` using `rel_comb G A v₁ v₂ hA hI _ _ _ _ hi r01`. Apply the tactic sequence `convert h using 2 <;> omega`. Establish `h` using `rel_comb G A v₁ v₂ hA hI _ _ _ _ hi r0m1`. Apply the tactic sequence `convert h using 2 <;> omega`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hω'` using `hω`. Unfold `PI.lat2 at hω'`. Take `⟨m, n, rfl⟩` from `AddSubgroup.mem_closure_pair.mp hω'`. Establish `e : m • v₁ + n • v₂ = (m : ℂ) * v₁ + n * v₂` using `by rw [zsmul_eq_mul, zsmul_eq_mul]`. Rewrite using `[e, ← psi_eq v₁ v₂ hne m n]`.
-
-Conclude with `hall m n z`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latExt : LatExt := by
   intro v₁ v₂ hpos G h₁ h₂ ω hω z

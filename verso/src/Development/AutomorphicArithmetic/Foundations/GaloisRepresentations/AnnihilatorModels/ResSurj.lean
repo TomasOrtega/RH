@@ -14,7 +14,7 @@ private noncomputable abbrev resU {V : Type} [CommRing V] [IsDomain V] {S : Sche
   Over.homMk (spMap (algebraMap V (FractionRing V))) rfl
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Establish `e'` using `congrArg CommaMorphism.left e`. Simplify using `only [Over.comp_left, Over.homMk_left] at e'`. Conclude with `(hV S A.left A.hom hA V z).1 g.left g'.left (by simpa using Over.w g) (by simpa using Over.w g') e'`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem res_inj (hV : ValPtsX) {S : Scheme.{0}} {A : Over S} (hA : IsProper A.hom)
     {V : Type} [CommRing V] [IsDomain V] [ValuationRing V] (z : Sp V ⟶ S) {g g' : Over.mk z ⟶ A}
@@ -26,7 +26,7 @@ private theorem res_inj (hV : ValPtsX) {S : Scheme.{0}} {A : Over S} (hA : IsPro
     (by simpa using Over.w g') e'
 
 /- English proof (translation)
-Take `⟨l, h₁, h₂⟩` from `(hV S A.left A.hom hA V z).2 g.left (by simpa using Over.w g)`. Conclude with `⟨Over.homMk l h₁, Over.OverMorphism.ext h₂⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem res_surj (hV : ValPtsX) {S : Scheme.{0}} {A : Over S} (hA : IsProper A.hom)
     {V : Type} [CommRing V] [IsDomain V] [ValuationRing V] (z : Sp V ⟶ S)
@@ -36,23 +36,23 @@ private theorem res_surj (hV : ValPtsX) {S : Scheme.{0}} {A : Over S} (hA : IsPr
   exact ⟨Over.homMk l h₁, Over.OverMorphism.ext h₂⟩
 
 /- English proof (translation)
-Introduce `hV p _ D R _ b N M w V _ _ _ x`. Establish `hU : IsProper M.univ.A.hom` using `@IsAbelianScheme.proper _ M.univ.A M.univ.grp M.univ.ab`. Set `φ : (Over.mk x ⟶ M.univ.A) →* (Over.mk (spMap (algebraMap V (FractionRing V)) ≫ x) ⟶ M.univ.A)` to `{ toFun := fun g => resU x ≫ g map_one' := comp_one _ map_mul' := fun g h => comp_mul _ g h }`. Set `ρ` to `MulEquiv.ofBijective φ ⟨fun g g' e => res_inj hV hU x e, fun g => res_surj hV hU x g⟩`. Establish `hρ : ∀ g, ρ g = resU x ≫ g` using `fun _ => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨ρ, ?_⟩` and prove the remaining obligations. Simplify using `only [hρ]`. Use `⟨fun g => by simp, fun g a => (Category.assoc _ _ _).symm, fun g => ?_, ?_⟩` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `hg a ha`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Category.assoc, hg a ha, comp_one]`. Introduce `hg a ha`. Apply `res_inj hV hU x` to reduce the goal to its premises. Rewrite using `[comp_one, ← Category.assoc]`. Conclude with `hg a ha`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `r j c T z hz g`. Establish `hO : IsProper T.o.A.hom` using `@IsAbelianScheme.proper _ T.o.A T.o.grp T.o.ab`. Establish `hO' : IsProper T.o'.A.hom` using `@IsAbelianScheme.proper _ T.o'.A T.o'.grp T.o'.ab`. Prove the components needed by the constructor for the conclusion. Introduce `hk b' hb'`.
+Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a', ha'⟩` from `res_surj hV hO z b'`. Establish `ha2` using `congrArg CommaMorphism.left ha'`. Simplify using `only [Over.comp_left, Over.homMk_left] at ha2`. Establish `hb2 : b'.left ≫ T.ms.φ = spMap (algebraMap V (FractionRing V)) ≫ g.left`. Simplify using `using hb'`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hw : (a'.left ≫ T.ms.φ) ≫ M.univ.A.hom = (Over.mk x).hom`. Rewrite using `[Category.assoc, T.ms.cart.1.w, ← Category.assoc, Over.w a']`. Conclude with `hz`. Establish `key : (Over.homMk (a'.left ≫ T.ms.φ) hw : Over.mk x ⟶ M.univ.A) = g`. Apply `res_inj hV hU x` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Simplify using `only [Over.comp_left, Over.homMk_left]`. Rewrite using `[← Category.assoc, ha2, hb2]`. Establish `hg : a'.left ≫ T.ms.φ = g.left`. Rewrite using `[← key]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[← ha', Category.assoc, hk a' hg, comp_one]`. Introduce `hk a' ha'`. Apply `res_inj hV hO' z` to reduce the goal to its premises. Rewrite using `[comp_one, ← Category.assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Apply `hk` to reduce the goal to its premises. Simplify using `[ha']`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.wVal_of :
     ValPtsX → WVal := by

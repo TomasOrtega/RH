@@ -11,11 +11,11 @@ open GlobalTheory GlobalTheory.CM
 namespace GlobalTheory.CM
 
 /- English proof (translation)
-Introduce `R K _ _ _ β B _ X' π p g hB hP hg`. Use `hB.smooth` as an intermediate fact. Use `hB.geomConnected` as an intermediate fact. Establish `: ConnectedSpace (Sp R)` using `inferInstance`. Establish `: ConnectedSpace B.left` using `GeometricallyConnected.connectedSpace B.hom B.hom.isOpenMap`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x⟩ : Nonempty B.left` from `inferInstance`. Take `⟨n, hn⟩` from `exists_dim_of_preconnected B.hom x`. Establish `hn' : SmoothOfRelativeDimension n p` using `(smoothOfRelativeDimension_isStableUnderBaseChange n).of_isPullback hP hn`. Establish `hs : Surjective B.hom` using `inferInstance`. Establish `: Surjective p` using `MorphismProperty.of_isPullback (P := @Surjective) hP hs`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨y, -⟩` from `p.surjective (Classical.arbitrary _)`. Rewrite using `[← H1.dim_unique _ hn' hg y]`. Conclude with `hn`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_of_fibre : ∀ (R K : Type) [CommRing R] [IsDomain R] [Field K] (β : R →+* K) (B : Over (Sp R)) [GrpObj B] (X' : Scheme.{0}) (π : X' ⟶ B.left) (p : X' ⟶ Sp K) (g : ℕ), IsAbelianScheme B → IsPullback π p B.hom (spMap β) → SmoothOfRelativeDimension g p → SmoothOfRelativeDimension g B.hom := by
   intro R K _ _ _ β B _ X' π p g hB hP hg

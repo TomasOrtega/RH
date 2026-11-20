@@ -4,6 +4,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MonomialFrameSpan.GenFr
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.MonomialFrameSpan.BasisMonomialsApply
 
 /- English proof (translation)
-The claim follows from `GenFrameSpan.genFrameSB_of_span GenFrameSpan.stepSpan`.
+A detailed English derivation is pending.
 -/
 theorem coeffNormLE_iff_spanNormLE_of_hasCompl : CutKW.KWsb := GenFrameSpan.genFrameSB_of_span GenFrameSpan.stepSpan

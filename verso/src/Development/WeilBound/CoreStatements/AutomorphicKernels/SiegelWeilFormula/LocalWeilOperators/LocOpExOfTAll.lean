@@ -4,7 +4,7 @@ import Development.WeilBound.CoreStatements.AutomorphicKernels.SiegelWeilFormula
 namespace PositivityTheory.SiegelWeilFormula
 
 /- English proof (translation)
-The claim follows from `locOpEx_of hT kfour.auxEx`.
+A detailed English derivation is pending.
 -/
 theorem locOpEx_of_tAll (hT : TAll) : LocOpEx := locOpEx_of hT kfour.auxEx
 

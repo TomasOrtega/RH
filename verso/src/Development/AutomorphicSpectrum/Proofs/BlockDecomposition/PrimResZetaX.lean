@@ -14,21 +14,21 @@ namespace GlobalTheory.CompanionTheory.FRootCls
 variable {l : ℕ} [Fact l.Prime] {K : IntermediateField ℚ_[l] (PadicAlgCl l)}
 
 /- English proof (translation)
-Apply `(clToC l).injective` to reduce the goal to its premises. Rewrite using `[map_pow, r.hρ, r.hρ, rootSeq_succ_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem rho_succ (r : Roots l) (n : ℕ) : (r.ρ n).1 = (r.ρ (n + 1)).1 ^ l := by
   apply (clToC l).injective
   rw [map_pow, r.hρ, r.hρ, rootSeq_succ_pow]
 
 /- English proof (translation)
-Establish `h : 0 < l ^ n` using `pow_pos (Fact.out : l.Prime).pos n`. Rewrite using `[pow_succ, Nat.mul_comm, Nat.mul_div_cancel _ h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_div_succ (n : ℕ) : l ^ (n + 1) / l ^ n = l := by
   have h : 0 < l ^ n := pow_pos (Fact.out : l.Prime).pos n
   rw [pow_succ, Nat.mul_comm, Nat.mul_div_cancel _ h]
 
 /- English proof (translation)
-Rewrite using `[pow_div_succ]`. Express the relevant statement in the definitionally equal form `(pullback.snd _ _ : gb M ⟶ Spec (CommRingCat.of (PadicAlgCl l))).appTop.hom (toΓ _ (r.ρ n).1) = ((pullback.snd _ _ : gb M ⟶ Spec (CommRingCat.of (PadicAlgCl l))).appTop.hom (toΓ _ (r.ρ (n + 1)).1)) ^ l`. Rewrite using `[rho_succ r n, map_pow, map_pow]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem zetaX_succ (r : Roots l) (M : Model l K) (n : ℕ) :
     (r.zetaX M n).1 = (r.zetaX M (n + 1)).1 ^ (l ^ (n + 1) / l ^ n) := by
@@ -38,7 +38,7 @@ theorem zetaX_succ (r : Roots l) (M : Model l K) (n : ℕ) :
   rw [rho_succ r n, map_pow, map_pow]
 
 /- English proof (translation)
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(geomPt M A y).appTop.hom ((pullback.snd _ _ : gb M ⟶ Spec (CommRingCat.of (PadicAlgCl l))).appTop.hom (toΓ _ (r.ρ n).1)) = toΓ A.Ug (kb A (r.ρ n).1)`. Rewrite using `[← toΓ_nat (kb A), ← geomPt_snd M A y, Scheme.Hom.comp_appTop]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem primRes_zetaX (r : Roots l) (M : Model l K) (n : ℕ) (A : PAlg l) (y : M.P.obj A) :
     primRes (geomPt M A y) (r.zetaX M n) = r.zeta A n := by
@@ -56,7 +56,7 @@ def lcRing (hL : LcSpec) (H : RIn l) (A : PAlg l) (hA : A.IsTest) (n : ℕ) : Lo
   map_add' := map_add _
 
 /- English proof (translation)
-The claim follows from `(hM ℤ (Acris l) (Int.castRingHom (Acris l)) (El M.P) (lcF (probe H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) n).S (l ^ n)) (AcrEl M.P n) (lcMor hN H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) n) (fun c => lcRing hL H c.1.obj c.1.property n) (fun _ _ => rfl)).1`.
+A detailed English derivation is pending.
 -/
 theorem lcMor_one (hL : LcSpec) (hM : MorCup) (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) (n : ℕ) :
     (lcMor hN H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) n).pull 0
@@ -71,7 +71,7 @@ def rootSys (hO : InOp) (hR : InRed) (hRR : RedRoot) (r : Roots l) (M : Model l 
     hRR hO hR (l ^ (n + 1)) (l ^ n) (pow_dvd_pow l n.le_succ) i (gb M) (r.zetaX M (n + 1)) (r.zetaX M n) (zetaX_succ r M n)⟩
 
 /- English proof (translation)
-The claim follows from `hEt hg (l ^ n) (El M.P) (probe H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) n) (gb M) (pts H r M (𝟭 _) n) (r.zetaX M n) (fun c => primRes_zetaX r M n _ _) i`.
+A detailed English derivation is pending.
 -/
 theorem etVal (hEt : EtRoot) (hg : InGen) (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) (n : ℕ) (i : ℤ) [NeZero (l ^ n)] :
     (pts H r M (𝟭 _) n).et i 0 (rootClass i (r.zetaX M n)) =
@@ -80,7 +80,7 @@ theorem etVal (hEt : EtRoot) (hg : InGen) (hN : LcNat) (H : RIn l) (r : Roots l)
     (r.zetaX M n) (fun c => primRes_zetaX r M n _ _) i
 
 /- English proof (translation)
-Use `Eq.trans (congrArg ((lcMor hN H r (𝟭 (El M.P) ⋙ CategoryOfElements.π _) n).pull 0) (etVal hEt hg hN H r M n i)) ?_` and prove the remaining obligations. Conclude with `lcMor_one hL hM hN H r M n`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem eM_root (hL : LcSpec) (hM : MorCup) (hEt : EtRoot) (hg : InGen) (hN : LcNat) (H : RIn l) (r : Roots l) (M : Model l K) (n : ℕ) (i : ℤ) [NeZero (l ^ n)] :
     eM hN H r M n i 0 (rootClass i (r.zetaX M n)) = oneH (AcrEl M.P n) := by
@@ -88,7 +88,7 @@ theorem eM_root (hL : LcSpec) (hM : MorCup) (hEt : EtRoot) (hg : InGen) (hN : Lc
   exact lcMor_one hL hM hN H r M n
 
 /- English proof (translation)
-The claim follows from `haveI : NeZero l := ⟨(Fact.out : l.Prime).ne_zero⟩ eM_root hL hM hEt E.gen hN H r M n i`.
+A detailed English derivation is pending.
 -/
 theorem eM_rootSys (hL : LcSpec) (hM : MorCup) (hEt : EtRoot) (hRR : RedRoot) (E : EtIn) (hN : LcNat) (H : RIn l) (r : Roots l)
     (M : Model l K) (i : ℤ) (n : ℕ) : eM hN H r M n i 0 ((rootSys E.op E.red hRR r M i).1 n) = oneH (AcrEl M.P n) :=
@@ -96,7 +96,7 @@ theorem eM_rootSys (hL : LcSpec) (hM : MorCup) (hEt : EtRoot) (hRR : RedRoot) (E
   eM_root hL hM hEt E.gen hN H r M n i
 
 /- English proof (translation)
-Introduce `hEt hRR hM hL E hN _ _ H r _ M i` and use `⟨rootSys E.op E.red hRR r M i, eM_rootSys hL hM hEt hRR E hN H r M i⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem froot : CrystallineSemistableComparison.E.EtRoot → CrystallineSemistableComparison.E.RedRoot → CrystallineSemistableComparison.E.MorCup → CrystallineSemistableComparison.E.LcSpec → CrystallineSemistableComparison.E.FRoot :=
   fun hEt hRR hM hL E hN _ _ H r _ M i => ⟨rootSys E.op E.red hRR r M i, eM_rootSys hL hM hEt hRR E hN H r M i⟩

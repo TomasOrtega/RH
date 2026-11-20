@@ -66,9 +66,9 @@ def SameVec (Y : Model Xo c β) {F : Type} [Field F] (y : Sp F ⟶ Xo.XF c) (v :
     u ≫ Y.m0.toSABMap.φ = v.left ∧ u ≫ Y.m.φ = v'.left
 
 /- English proof (translation)
-Establish `hp : IsPullback Y.m0.toSABMap.φ Y.oF.t.G.hom Xo.univ.t.G.hom (pullback.fst _ _)` using `Y.m0.cart.1`. Establish `hq : IsPullback Y.m.φ Y.oF.t.G.hom Y.t.G.hom Y.j` using `Y.m.cart.1`. Establish `hv : v.left ≫ Xo.univ.t.G.hom = (spMap (algebraMap F (DualNumber F)) ≫ y) ≫ pullback.fst _ _`. Rewrite using `[Category.assoc]`. Conclude with `Over.w v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Over.homMk (hp.lift _ _ hv ≫ Y.m.φ) ?_, hp.lift _ _ hv, hp.lift_snd _ _ _, hp.lift_fst _ _ _, rfl⟩` and prove the remaining obligations. Establish `: (hp.lift _ _ hv ≫ Y.m.φ) ≫ Y.t.G.hom = spMap (algebraMap F (DualNumber F)) ≫ y ≫ Y.j`. Rewrite using `[Category.assoc, hq.w, ← Category.assoc, hp.lift_snd, Category.assoc]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sameVec (Y : Model Xo c β) {F : Type} [Field F] (y : Sp F ⟶ Xo.XF c)
     (v : epsAt (under y) ⟶ Xo.univ.t.G) : ∃ v', SameVec Y y v v' := by
@@ -82,9 +82,9 @@ theorem exists_sameVec (Y : Model Xo c β) {F : Type} [Field F] (y : Sp F ⟶ Xo
   exact this
 
 /- English proof (translation)
-Establish `hp : IsPullback Y.m0.toSABMap.φ Y.oF.t.G.hom Xo.univ.t.G.hom (pullback.fst _ _)` using `Y.m0.cart.1`. Establish `hq : IsPullback Y.m.φ Y.oF.t.G.hom Y.t.G.hom Y.j` using `Y.m.cart.1`. Establish `hv : v'.left ≫ Y.t.G.hom = (spMap (algebraMap F (DualNumber F)) ≫ y) ≫ Y.j`. Rewrite using `[Category.assoc]`. Conclude with `Over.w v'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Over.homMk (hq.lift _ _ hv ≫ Y.m0.toSABMap.φ) ?_, hq.lift _ _ hv, hq.lift_snd _ _ _, rfl, hq.lift_fst _ _ _⟩` and prove the remaining obligations. Establish `: (hq.lift _ _ hv ≫ Y.m0.toSABMap.φ) ≫ Xo.univ.t.G.hom = spMap (algebraMap F (DualNumber F)) ≫ y ≫ pullback.fst _ _`. Rewrite using `[Category.assoc, hp.w, ← Category.assoc, hq.lift_snd, Category.assoc]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sameVec_left (Y : Model Xo c β) {F : Type} [Field F] (y : Sp F ⟶ Xo.XF c)
     (v' : epsAt (y ≫ Y.j) ⟶ Y.t.G) : ∃ v, SameVec Y y v v' := by
@@ -100,9 +100,9 @@ theorem exists_sameVec_left (Y : Model Xo c β) {F : Type} [Field F] (y : Sp F �
   exact this
 
 /- English proof (translation)
-Establish `hp : IsPullback Y.m0.toSABMap.φ Y.oF.t.G.hom Xo.univ.t.G.hom (pullback.fst _ _)` using `Y.m0.cart.1`. Take `⟨u₁, a₁, b₁, c₁⟩` from `h₁`. Take `⟨u₂, a₂, b₂, c₂⟩` from `h₂`. Establish `: u₁ = u₂` using `hp.hom_ext (b₁.trans b₂.symm) (a₁.trans a₂.symm)`. Use `ext1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← c₁, ← c₂, this]`.
+A detailed English derivation is pending.
 -/
 theorem SameVec.unique {Y : Model Xo c β} {F : Type} [Field F] {y : Sp F ⟶ Xo.XF c}
     {v : epsAt (under y) ⟶ Xo.univ.t.G} {v₁ v₂ : epsAt (y ≫ Y.j) ⟶ Y.t.G}
@@ -115,9 +115,9 @@ theorem SameVec.unique {Y : Model Xo c β} {F : Type} [Field F] {y : Sp F ⟶ Xo
   rw [← c₁, ← c₂, this]
 
 /- English proof (translation)
-Establish `hq : IsPullback Y.m.φ Y.oF.t.G.hom Y.t.G.hom Y.j` using `Y.m.cart.1`. Take `⟨u₁, a₁, b₁, c₁⟩` from `h₁`. Take `⟨u₂, a₂, b₂, c₂⟩` from `h₂`. Establish `: u₁ = u₂` using `hq.hom_ext (c₁.trans c₂.symm) (a₁.trans a₂.symm)`. Use `ext1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← b₁, ← b₂, this]`.
+A detailed English derivation is pending.
 -/
 theorem SameVec.unique_left {Y : Model Xo c β} {F : Type} [Field F] {y : Sp F ⟶ Xo.XF c}
     {v₁ v₂ : epsAt (under y) ⟶ Xo.univ.t.G} {v' : epsAt (y ≫ Y.j) ⟶ Y.t.G}
@@ -130,7 +130,7 @@ theorem SameVec.unique_left {Y : Model Xo c β} {F : Type} [Field F] {y : Sp F �
   rw [← b₁, ← b₂, this]
 
 /- English proof (translation)
-Establish `hq : IsPullback Y.m.φ Y.oF.t.G.hom Y.t.G.hom Y.j` using `Y.m.cart.1`. Use `⟨fun ⟨u, _, a, b⟩ => ⟨u, a, b⟩, fun ⟨u, a, b⟩ => ⟨u, ?_, a, b⟩⟩` and prove the remaining obligations. Rewrite using `[← cancel_mono Y.j, Category.assoc, ← hq.w, ← Category.assoc, b, Category.assoc]`. Conclude with `Over.w v'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sameVec_iff_of_mono (Y : Model Xo c β) [Mono Y.j] {F : Type} [Field F] (y : Sp F ⟶ Xo.XF c)
     (v : epsAt (under y) ⟶ Xo.univ.t.G) (v' : epsAt (y ≫ Y.j) ⟶ Y.t.G) :
@@ -189,13 +189,13 @@ def FlatOnModel {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) (τ : 
     IsLineGenOn (Z.eig τ) (Z.eig (ComplexEmbedding.conjugate τ)) D.p D.q a b Z.genFib ∧ Represents Y U τ Z.M a b φ
 
 /- English proof (translation)
-The claim follows from `h.1`.
+A detailed English derivation is pending.
 -/
 theorem FlatOnModel.isLineFn {Y : Model Xo c β} {U : Set (Xo.XF c)} {Z : CptOver Y U} {τ : E →+* ℂ}
     {φ : FrameFn Xo c} (h : FlatOnModel Z τ φ) : IsLineFn U τ φ := h.1
 
 /- English proof (translation)
-The claim follows from `h.2`.
+A detailed English derivation is pending.
 -/
 theorem FlatOnModel.exists_gen {Y : Model Xo c β} {U : Set (Xo.XF c)} {Z : CptOver Y U} {τ : E →+* ℂ}
     {φ : FrameFn Xo c} (h : FlatOnModel Z τ φ) : ∃ (a : ⋀[Z.Ω]^D.p Z.V) (b : ⋀[Z.Ω]^D.q Z.V),
@@ -203,7 +203,7 @@ theorem FlatOnModel.exists_gen {Y : Model Xo c β} {U : Set (Xo.XF c)} {Z : CptO
       Represents Y U τ Z.M a b φ := h.2
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hφ, a, b, hg, hr⟩`.
+Supply the required witnesses or components.
 -/
 theorem FlatOnModel.of_gen {Y : Model Xo c β} {U : Set (Xo.XF c)} {Z : CptOver Y U} {τ : E →+* ℂ}
     {φ : FrameFn Xo c} {a : ⋀[Z.Ω]^D.p Z.V} {b : ⋀[Z.Ω]^D.q Z.V} (hφ : IsLineFn U τ φ)
@@ -211,7 +211,7 @@ theorem FlatOnModel.of_gen {Y : Model Xo c β} {U : Set (Xo.XF c)} {Z : CptOver 
     (hr : Represents Y U τ Z.M a b φ) : FlatOnModel Z τ φ := ⟨hφ, a, b, hg, hr⟩
 
 /- English proof (translation)
-The claim follows from `(Z.closure _).2 specializes_rfl`.
+A detailed English derivation is pending.
 -/
 theorem CptOver.genPt_mem {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) : genPt Z.ξ₀ ∈ U :=
   (Z.closure _).2 specializes_rfl
@@ -220,7 +220,7 @@ def CptOver.IsGeom {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) : P
   ∀ x : Z.Ω, (∃ f : Polynomial c.F, f ≠ 0 ∧ f.eval₂ Z.inc x = 0) → x ∈ Set.range Z.inc
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem isFlatAn_iff_isConstMul (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : FrameFn Xo c) {g : ℕ}
     {ty : Fin g → (E →+* ℂ)} (FU : FamilyUnif Xo (algebraMap (KA l) ℂ) ty) (i : Fin FU.n)
@@ -228,7 +228,7 @@ theorem isFlatAn_iff_isConstMul (U : Set (Xo.XF c)) (τ : E →+* ℂ) (φ : Fra
     IsFlatAn U τ τ (algebraMap c.F ℂ) (φ ℂ) FU i e ρ ↔ IsConstMul U τ φ FU i e ρ := Iff.rfl
 
 /- English proof (translation)
-Introduce `P y v w V W C Fm B h1 h2 h3 h4 h5 h6 h7 h8`. Use `show k * Φ y v w * _ = _`. Rewrite using `[_root_.mul_assoc, h P y v w V W C Fm B h1 h2 h3 h4 h5 h6 h7 h8]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsFlatAn.const_mul {U : Set (Xo.XF c)} {τ τ' : E →+* ℂ} {σ : c.F →+* ℂ} {Φ : CFn Xo c} {σK : KA l →+* ℂ}
     {g : ℕ} {ty : Fin g → (E →+* ℂ)} {FU : FamilyUnif Xo σK ty} {i : Fin FU.n}
@@ -239,7 +239,7 @@ theorem IsFlatAn.const_mul {U : Set (Xo.XF c)} {τ τ' : E →+* ℂ} {σ : c.F 
   rw [_root_.mul_assoc, h P y v w V W C Fm B h1 h2 h3 h4 h5 h6 h7 h8]
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (by rintro rfl; simp at hk) (h.ne y v w hf) chg y v w v' w' A B h1 h2 h3 h4 := by rw [_root_.mul_assoc, _root_.mul_assoc, h.chg y v w v' w' A B h1 h2 h3 h4] norm y v w Γ Δ h1 h2 h3 := by rw [norm_mul, hk, _root_.one_mul]; exact h.norm y v w Γ Δ h1 h2 h3 hol R _ x vR w …`.
+A detailed English derivation is pending.
 -/
 theorem IsUnitAn.const_mul {τ : E →+* ℂ} {σ : c.F →+* ℂ} {Φ : CFn Xo c} (h : IsUnitAn τ σ Φ) {k : ℂ}
     (hk : ‖k‖ = 1) : IsUnitAn τ σ (fun y v w => k * Φ y v w) where
@@ -249,7 +249,7 @@ theorem IsUnitAn.const_mul {τ : E →+* ℂ} {σ : c.F →+* ℂ} {Φ : CFn Xo 
   hol R _ x vR wR m B ψ v w h1 h2 h3 := (h.hol R x vR wR m B ψ v w h1 h2 h3).const_mul k
 
 /- English proof (translation)
-Introduce `m B y h1 h2 h3 b₀ h4 h5`. Take `⟨ε, g, hε, hd, hg, H⟩` from `h m B y h1 h2 h3 b₀ h4 h5`. Use `⟨ε, fun b => k * g b, hε, hd.const_mul k, mul_ne_zero hk hg, fun b hb hW r hr => ?_⟩` and prove the remaining obligations. Use `show k * F (y b) = k * g b * r`. Rewrite using `[H b hb hW r hr, _root_.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ExtendsUnitAt.const_mul {K Ω : Type} [Field K] [Field Ω] {X : Scheme.{0}} {s : X ⟶ Sp K} {σ : K →+* ℂ}
     {ξ : Sp Ω ⟶ X} {W : X.Opens} {F : (Sp ℂ ⟶ X) → ℂ} {t : Ω} {x : Sp ℂ ⟶ X}
@@ -261,7 +261,7 @@ theorem ExtendsUnitAt.const_mul {K Ω : Type} [Field K] [Field Ω] {X : Scheme.{
   rw [H b hb hW r hr, _root_.mul_assoc]
 
 /- English proof (translation)
-Establish `hol : IsHolTo (Set.univ : Set (Fin 0 → ℂ)) (fun _ => x)` using `fun U f => ⟨isOpen_discrete _, differentiableOn_const _⟩`. Take `⟨ε, g, hε, -, hg, H⟩` from `h 0 Set.univ (fun _ => x) isOpen_univ hol (fun _ _ => hx) 0 trivial rfl`. Rewrite using `[H 0 ⟨trivial, Metric.mem_ball_self hε⟩ hW r hr]`. Conclude with `⟨fun h0 => (mul_eq_zero.mp h0).resolve_left hg, fun h0 => by rw [h0, mul_zero]⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem ExtendsUnitAt.eq_zero_iff {K Ω : Type} [Field K] [Field Ω] {X : Scheme.{0}} {s : X ⟶ Sp K} {σ : K →+* ℂ}
     {ξ : Sp Ω ⟶ X} {W : X.Opens} {F : (Sp ℂ ⟶ X) → ℂ} {t : Ω} {x : Sp ℂ ⟶ X} (h : ExtendsUnitAt s σ ξ W F t x)
@@ -273,13 +273,13 @@ theorem ExtendsUnitAt.eq_zero_iff {K Ω : Type} [Field K] [Field Ω] {X : Scheme
   exact ⟨fun h0 => (mul_eq_zero.mp h0).resolve_left hg, fun h0 => by rw [h0, mul_zero]⟩
 
 /- English proof (translation)
-Introduce `x _` and use `h x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem CptOver.isGeom_of_surjective {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U)
     (h : Function.Surjective Z.inc) : Z.IsGeom := fun x _ => h x
 
 /- English proof (translation)
-Introduce `h` and use `h.isLineFn.ne F βF y v w hf rfl`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example {Y : Model Xo c β} {U : Set (Xo.XF c)} (Z : CptOver Y U) (τ : E →+* ℂ) {F : Type} [Field F]
     (βF : c.F →+* F) (y : Sp F ⟶ Xo.XF c) (v : Vecs y D.p) (w : Vecs y D.q) (hf : IsFramed U τ βF y v w) :

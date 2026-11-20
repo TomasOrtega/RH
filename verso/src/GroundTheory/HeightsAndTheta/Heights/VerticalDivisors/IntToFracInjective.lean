@@ -49,7 +49,7 @@ def parToFrac (e n : ℕ) (v : HeightOneSpectrum (𝓞 K)) : ParDVR e n v →+* 
           exact Ideal.zero_mem _)
 
 /- English proof (translation)
-Simplify using `only [RingHom.coe_comp]`. Conclude with `(IsFractionRing.injective _ _).comp (MvPolynomial.C_injective _ _)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem intToFrac_injective (K : Type*) [Field K] [NumberField K] (e n : ℕ) :
     Function.Injective ((algebraMap (MvPolynomial (Par e n) (𝓞 K)) (ParFrac K e n)).comp C) := by

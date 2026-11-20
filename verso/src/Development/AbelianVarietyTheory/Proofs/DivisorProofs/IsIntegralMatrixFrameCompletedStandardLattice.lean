@@ -23,9 +23,9 @@ section Gen
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`. Take `⟨b, hb⟩` from `Submodule.mem_one.1 (hy i (Set.mem_univ i))`.
+Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Subring.subset_closure (Or.inl ⟨⟨y i, b, hb⟩, rfl⟩)`. Consider the case `zero => exact zero_mem _`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `smul a x _ hx => exact mul_mem a.2 hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem int_of_mem_hatL_pi {z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F}
     (hz : z ∈ Formalism.L2.Herm.hatL (F := F) (Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E))) (i : Fin n) :
@@ -41,11 +41,11 @@ theorem int_of_mem_hatL_pi {z : Fin n → E ⊗[F] Formalism.L2.Herm.Af F}
   | smul a x _ hx => exact mul_mem a.2 hx
 
 /- English proof (translation)
-Unfold `Formalism.L2.Herm.hatL Formalism.UG.latS`. Use `Submodule.subset_span ⟨Pi.single j 1, fun i _ => ?_, funext fun i => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.mem_one.2 ⟨1, map_one _⟩`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.single_eq_same, map_one]`. Simplify using `only [Pi.single_eq_of_ne h, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem single_mem_hatL_pi (j : Fin n) :
     (Pi.single j 1 : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) ∈
@@ -64,9 +64,9 @@ theorem single_mem_hatL_pi (j : Fin n) :
     · simp only [Pi.single_eq_of_ne h, map_zero]
 
 /- English proof (translation)
-Use `⟨fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Establish `h1 : Matrix.mulVec β.1 (Pi.single j 1 : Fin n → E ⊗[F] Formalism.L2.Herm.Af F) ∈ Formalism.L2.Herm.hatL (F` using `F) (Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E)) := by`. Use `(hβ _).2 fun l => ?_` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Conclude with `int_of_mem_hatL_pi (single_mem_hatL_pi j) l`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `int_of_mem_hatL_pi h1 i`. Rewrite `h2` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis. Establish `h2` using `(hβ _).1 (single_mem_hatL_pi j) i`. Rewrite `h2` using `[Matrix.mulVec_single_one]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem entries_int_of_isFrame_pi (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.Af F))
     (hβ : Formalism.L2.DIV.IsFrame β (Submodule.pi Set.univ fun _ : Fin n => (1 : Submodule (𝓞 E) E))) :
@@ -85,7 +85,7 @@ theorem entries_int_of_isFrame_pi (β : GL (Fin n) (E ⊗[F] Formalism.L2.Herm.A
 end Gen
 
 /- English proof (translation)
-Introduce `β hβ` and use `entries_int_of_isFrame_pi β hβ`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isIntM_of_isFrame_stdL : ∀ {D : D7} {n : ℕ} (β : GL (Fin n) (EAf D)),
     Formalism.L2.DIV.IsFrame β (stdL D n) → IsIntM β.val ∧ IsIntM (β⁻¹).val :=

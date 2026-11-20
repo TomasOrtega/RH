@@ -5,11 +5,11 @@ open Polynomial
 namespace PI.SqfDivDeg.W
 
 /- English proof (translation)
-Introduce `g r _ hr hg a ha1 ha2 T hT`. Establish `h1` using `hA g a ha1`. Establish `h2` using `hA g (r - a) (by omega)`. Establish `h3` using `hB g r a (by omega) T hT`. Establish `e : (g : ℝ) ^ r = (g : ℝ) ^ a * (g : ℝ) ^ (r - a)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← pow_add]`. Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `h1' : ((g : ℝ) ^ a) ≤ 2 * ((Rt g a).card : ℝ)` using `by exact_mod_cast h1`. Establish `h2' : ((g : ℝ) ^ (r - a)) ≤ 2 * ((Rt g (r - a)).card : ℝ)` using `by exact_mod_cast h2`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `p1 : (0 : ℝ) ≤ (g : ℝ) ^ a` using `by positivity`. Establish `p2 : (0 : ℝ) ≤ (g : ℝ) ^ (r - a)` using `by positivity`. Establish `hm : (g : ℝ) ^ a * (g : ℝ) ^ (r - a) ≤ (2 * ((Rt g a).card : ℝ)) * (2 * ((Rt g (r - a)).card : ℝ))` using `mul_le_mul h1' h2' p2 (by linarith)`. Rewrite `h3`, the goal using `[e]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem sqfDivDeg_of (hA : RootDense) (hB : MainCount) : PI.SqfDivDeg.Claim := by
   intro g r _ hr hg a ha1 ha2 T hT

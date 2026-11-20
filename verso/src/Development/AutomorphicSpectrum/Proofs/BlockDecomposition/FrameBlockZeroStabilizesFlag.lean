@@ -11,7 +11,7 @@ open scoped TensorProduct NNReal ENNReal
 namespace GlobalTheory.CompanionTheory.RapidDecay
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Simplify using `only [frameIdem]`. Rewrite using `[← Matrix.mulVec_mulVec]`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.single_apply, Finset.sum_ite_eq, ite_and]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem frameIdem_inl_mulVec {E : Type} [Field E] {n r : ℕ} (S : E →+* E)
     (J : Matrix (Fin n) (Fin n) E) (X Y : Matrix (Fin n) (Fin r) E) (i : Fin r) (v : Fin n → E) :
@@ -22,21 +22,21 @@ theorem frameIdem_inl_mulVec {E : Type} [Field E] {n r : ℕ} (S : E →+* E)
   simp [Matrix.mulVec, dotProduct, Matrix.mul_apply, Matrix.single_apply, Finset.sum_ite_eq, ite_and]
 
 /- English proof (translation)
-Introduce `E _ S n r J X Y hXY g j hg l hl`. Establish `hcol : (fun a => X a l) = X *ᵥ Pi.single l 1`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Establish `hx : frameIdem S J X Y (some (Sum.inl l)) *ᵥ (fun a => X a l) = fun a => X a l`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[frameIdem_inl_mulVec, hcol, Matrix.mulVec_mulVec, hXY]`. Use function extensionality and compare the values at `a`. Simplify using the standard rewrite rules. Establish `hβ : frameLev j (some (Sum.inl l) : FrameIx r) = 2` using `by simp [frameLev, hl]`. Use `set v : Fin n → E := g *ᵥ (fun a => X a l) with hv`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : ∀ α : FrameIx r, frameLev j α < 2 → frameIdem S J X Y α *ᵥ v = 0`. Introduce `α hα`. Use `hg α _ hα hβ` as an intermediate fact. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hx]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `_ = (frameIdem S J X Y α * g * frameIdem S J X Y (some (Sum.inl l))) *ᵥ (fun a => X a l) := by`. Simplify using `only [Matrix.mulVec_mulVec, Matrix.mul_assoc]`. Use `_ = 0 := by rw [this, Matrix.zero_mulVec]`. Establish `hsum : v = ∑ α, frameIdem S J X Y α *ᵥ v`. Establish `h1 : (∑ α, frameIdem S J X Y α) *ᵥ v = ∑ α, frameIdem S J X Y α *ᵥ v` using `map_sum (Matrix.mulVec.addMonoidHomLeft v) (fun α => frameIdem S J X Y α) Finset.univ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `h1` using `[sum_frameIdem, Matrix.one_mulVec]`. Then use the resulting hypothesis. Use `⟨fun m => if m ≤ j then ((cT S Y * J) *ᵥ v) m else 0, ?_, fun m hm => if_neg (not_le.2 hm)⟩` and prove the remaining obligations. Use `hsum.trans ?_` and prove the remaining obligations. Rewrite using `[Fintype.sum_option, Fintype.sum_sum_type, hz none (by simp [frameLev]), zero_add]`. Establish `hinr : ∑ i, frameIdem S J X Y (some (Sum.inr i)) *ᵥ v = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero fun i _ => hz _ ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases h : i ≤ j <;> simp [frameLev, h]`. Rewrite using `[hinr, add_zero]`. Use function extensionality and compare the values at `a`. Rewrite using `[Finset.sum_apply]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [Matrix.mulVec, dotProduct]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : i ≤ j`. Use `congrFun (frameIdem_inl_mulVec S J X Y i v) a` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify `this` using `[h]`. Establish `h0` using `congrFun (hz (some (Sum.inl i)) (by simp [frameLev, h])) a`. Simplify using `only [Matrix.mulVec, dotProduct] at h0`. Simplify `h0` using `[h]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem stabilises_flag_span : ∀ (E : Type) [Field E] (S : E →+* E) (n r : ℕ) (J : Matrix (Fin n) (Fin n) E) (X Y : Matrix (Fin n) (Fin r) E), cT S Y * J * X = 1 → ∀ (g : Matrix (Fin n) (Fin n) E) (j : Fin r), (∀ α β : FrameIx r, frameLev j α < 2 → frameLev j β = 2 → frameIdem S J X Y α * g * frameIdem S J X Y β = 0) → ∀ l : Fin r, l ≤ j → ∃ b : Fin r → E, g *ᵥ (fun a => X a l) = X *ᵥ b ∧ ∀ m : Fin r, j < m → b m = 0 := by
   intro E _ S n r J X Y hXY g j hg l hl

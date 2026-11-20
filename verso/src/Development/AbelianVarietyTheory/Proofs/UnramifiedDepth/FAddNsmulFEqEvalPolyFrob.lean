@@ -32,7 +32,7 @@ private def btPolySub (p : ℕ) (g : ℕ) (W : Type) [CommRing W] :
       exact hi (by simp)
 
 /- English proof (translation)
-Simplify using `[tEval, map_sum, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 private lemma btPoly_map_tEval {R₀ : Type} [CommRing R₀] {ι : Type} [Fintype ι] [DecidableEq ι]
     (N : ℕ) (f : MvPowerSeries ι R₀) {S S' : Type} [CommRing S] [Algebra R₀ S] [CommRing S']
@@ -41,7 +41,7 @@ private lemma btPoly_map_tEval {R₀ : Type} [CommRing R₀] {ι : Type} [Fintyp
   simp [tEval, map_sum, map_prod]
 
 /- English proof (translation)
-Use `choose n hn using h`. Use `⟨Finset.univ.sup n, fun M' hM i => ?_⟩` and prove the remaining obligations. Conclude with `pow_eq_zero_of_le ((Finset.le_sup (Finset.mem_univ i)).trans hM) (hn i)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private lemma btPoly_unif {ι S : Type} [Fintype ι] [CommRing S] (a : ι → S)
     (h : ∀ i, IsNilpotent (a i)) : ∃ M, ∀ M' ≥ M, ∀ i, a i ^ M' = 0 := by
@@ -50,17 +50,15 @@ private lemma btPoly_unif {ι S : Type} [Fintype ι] [CommRing S] (a : ι → S)
   exact pow_eq_zero_of_le ((Finset.le_sup (Finset.mem_univ i)).trans hM) (hn i)
 
 /- English proof (translation)
-Establish `h0 : ∀ k, algebraMap R₀ S (MvPowerSeries.coeff 0 (ch.F k)) = 0`. Introduce `k`. Establish `h1` using `congrFun (ch.F_unit S 0 (fun _ => IsNilpotent.zero)) k`. Apply the tactic sequence `have h2 := H (ch.F k) S (Sum.elim (0 : Fin g → S) (0 : Fin g → S)) (by rintro (i | i) <;> exact IsNilpotent.zero)`. Establish `h3 : Ideal.span (Set.range (Sum.elim (0 : Fin g → S) (0 : Fin g → S))) = ⊥`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[Ideal.span_eq_bot]`. Apply the tactic sequence `rintro _ ⟨i | i, rfl⟩ <;> rfl`. Rewrite `h2` using `[h3, Ideal.mem_bot]`. Express the relevant statement in the definitionally equal form `nEval _ _ = 0 at h1`. Rewrite `h2` using `[h1]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using h2`. Proceed by induction on `n with`. Consider the case `zero => intro k`. Conclude with `IsNilpotent.zero`. Consider the case `succ n ih`.
+Simplify to obtain the desired conclusion from the available facts. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Establish `hn : ∀ i, IsNilpotent (Sum.elim (nsmulF ch.F a n) a i)`. Introduce and unpack `(i | i)`. Conclude with `ih i`. Conclude with `ha i`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `H (ch.F k) S _ hn`. Rewrite `h2` using `[h0, sub_zero]`. Establish `h3 : Ideal.span (Set.range (Sum.elim (nsmulF ch.F a n) a)) ≤ nilradical S`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
-
-Conclude with `hn i`. Conclude with `h3 h2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private lemma btPoly_nil {R₀ : Type} [CommRing R₀]
     (H : ∀ {ι : Type} [Fintype ι] [DecidableEq ι] (f : MvPowerSeries ι R₀) (S : Type) [CommRing S]
@@ -98,29 +96,25 @@ private lemma btPoly_nil {R₀ : Type} [CommRing R₀]
     exact h3 h2
 
 /- English proof (translation)
-Introduce `H1 H2 R₀ _ p _ g B K ch W _ _ c hc N`. Take `⟨G, hG, hGe⟩` from `H2 p K ch N`. Set `I : Ideal (MvPolynomial (Fin g) R₀)` to `Ideal.span (Set.range fun j => MvPolynomial.X j ^ N)`. Set `x : Fin g → MvPolynomial (Fin g) R₀ ⧸ I` to `fun j => Ideal.Quotient.mk I (MvPolynomial.X j)`. Establish `hx : ∀ j, x j ^ N = 0` using `fun j => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `Ideal.subset_span ⟨j, rfl⟩`. Establish `hae : (MvPolynomial.aeval x : MvPolynomial (Fin g) R₀ →ₐ[R₀] _) = Ideal.Quotient.mkₐ R₀ I`. Use extensionality with `j`. Simplify using `[x]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hnil : ∀ k, IsNilpotent (Ideal.Quotient.mk I (G k))` using `fun k => by`. Use `btPoly_nil (fun f S _ _ a ha => ((H1 f S a).2 ha).2) ch _ x (fun i => ⟨N, hx i⟩) p k` as an intermediate fact. Rewrite `this` using `[hGe _ x hx, hae]`. Conclude with `this`. Take `⟨M₁, hM₁⟩` from `btPoly_unif _ hnil`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨M₂, hM₂⟩` from `btPoly_unif _ hc`. Set `z : Fin g ⊕ Fin g → MvPolynomial (Fin g) W` to `Sum.elim (fun i => MvPolynomial.C (c i)) (fun i => MvPolynomial.map (algebraMap R₀ W) (G i))`. Use `⟨fun k => tEval (max M₁ M₂) (ch.F k) z, fun k => ?_, fun y hy => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `tEval (max M₁ M₂) (ch.F k) z ∈ btPolySub p g W`. Unfold `tEval`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subalgebra.sum_mem _ fun e _ => Subalgebra.mul_mem _ ?_ (Subalgebra.prod_mem _ fun i _ => Subalgebra.pow_mem _ ?_ _)` and prove the remaining obligations. Rewrite using `[IsScalarTower.algebraMap_apply R₀ W]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Break down `i with i | i` into its components or cases. Conclude with `Subalgebra.algebraMap_mem (btPolySub p g W) (c i)`.
+Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm`. Take `⟨r, hr⟩` from `hG i m hm`. Express the relevant statement in the definitionally equal form `MvPolynomial.coeff m (MvPolynomial.map (algebraMap R₀ W) (G i)) ∈ _`. Rewrite using `[MvPolynomial.coeff_map, hr, map_mul, map_natCast]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.subset_span rfl)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `k`. Establish `hI : ∀ q ∈ I, MvPolynomial.aeval y q = (0 : W)`. Introduce `q hq`. Establish `: I ≤ RingHom.ker (MvPolynomial.aeval y : MvPolynomial (Fin g) R₀ →ₐ[R₀] W)`. Rewrite using `[Ideal.span_le]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce and unpack `_ ⟨j, rfl⟩`. Simplify using `[RingHom.mem_ker, hy j]`. Conclude with `this hq`. Establish `e1` using `btPoly_map_tEval (max M₁ M₂) (ch.F k) ((MvPolynomial.aeval y : MvPolynomial (Fin g) W →ₐ[W] W).restrictScalars R₀) z`. Establish `e2 : (fun i => ((MvPolynomial.aeval y : MvPolynomial (Fin g) W →ₐ[W] W).restrictScalars R₀) (z i)) = Sum.elim c (fun k => MvPolynomial.aeval y (G k))`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases. Simplify using `[z]`. Simplify using `only [z, AlgHom.coe_restrictScalars', Sum.elim_inr]`. Conclude with `MvPolynomial.aeval_map_algebraMap W y (G i)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `e1` using `[e2]`. Rewrite using `[hGe W y hy]`. Express the relevant statement in the definitionally equal form `nEval _ _ = _`. Rewrite using `[(H1 (ch.F k) W _).1 (max M₁ M₂), ← e1]`. Simplify using `[MvPolynomial.coe_aeval_eq_eval]`.
-
-Introduce and unpack `(i | i)`. Conclude with `hM₂ _ (le_max_right _ _) i`. Use `hM₁ _ (le_max_left M₁ M₂) i` as an intermediate fact. Rewrite `this` using `[← map_pow, Ideal.Quotient.eq_zero_iff_mem]`. Use `hI _ this` as an intermediate fact.
-
-Rewrite `this` using `[map_pow]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fAdd_nsmulF_eq_eval_poly_frob :
   (∀ {R₀ : Type} [CommRing R₀] {ι : Type} [Fintype ι] [DecidableEq ι] (f : MvPowerSeries ι R₀) (S : Type) [CommRing S] [Algebra R₀ S] (a : ι → S),

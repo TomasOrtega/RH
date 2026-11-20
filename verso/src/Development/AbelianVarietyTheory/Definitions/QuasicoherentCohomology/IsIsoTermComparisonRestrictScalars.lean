@@ -16,20 +16,20 @@ def cubeSign (t : Finset ι) (i : ι) : ℤ := (-1) ^ (t.filter (· < i)).card
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[cubeSign, ← mul_pow]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cubeSign_mul_self (t : Finset ι) (i : ι) : cubeSign t i * cubeSign t i = 1 := by
   rw [cubeSign, ← mul_pow]; simp
 
 /- English proof (translation)
-The claim follows from `neg_one_pow_eq_or ℤ _ @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem cubeSign_eq_or (t : Finset ι) (i : ι) : cubeSign t i = 1 ∨ cubeSign t i = -1 :=
   neg_one_pow_eq_or ℤ _
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[smul_smul, cubeSign_mul_self, one_smul]`. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubeSign_smul_smul {M : Type*} [AddCommGroup M] (t : Finset ι) (i : ι) (x : M) :
     cubeSign t i • cubeSign t i • x = x := by
@@ -37,14 +37,14 @@ theorem cubeSign_smul_smul {M : Type*} [AddCommGroup M] (t : Finset ι) (i : ι)
 
 @[simp]
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => by rw [← cubeSign_smul_smul t i x, h, smul_zero], fun h => by rw [h, smul_zero]⟩`.
+Supply the required witnesses or components.
 -/
 theorem cubeSign_smul_eq_zero {M : Type*} [AddCommGroup M] (t : Finset ι) (i : ι) (x : M) :
     cubeSign t i • x = 0 ↔ x = 0 :=
   ⟨fun h => by rw [← cubeSign_smul_smul t i x, h, smul_zero], fun h => by rw [h, smul_zero]⟩
 
 /- English proof (translation)
-Rewrite using `[cubeSign, Finset.filter_eq_empty_iff.2 (fun j hj => not_lt.2 (h j hj))]`. Simplify using the standard rewrite rules. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cubeSign_eq_one_of_forall_le {t : Finset ι} {i : ι} (h : ∀ j ∈ t, i ≤ j) :
     cubeSign t i = 1 := by
@@ -52,13 +52,13 @@ theorem cubeSign_eq_one_of_forall_le {t : Finset ι} {i : ι} (h : ∀ j ∈ t, 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `cubeSign_eq_one_of_forall_le (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem cubeSign_singleton (i : ι) : cubeSign {i} i = 1 :=
   cubeSign_eq_one_of_forall_le (by simp)
 
 /- English proof (translation)
-Unfold `cubeSign`. Rewrite using `[Finset.filter_erase, Finset.erase_eq_of_notMem]`. Simplify using `[h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cubeSign_erase_of_le (t : Finset ι) {i j : ι} (h : i ≤ j) :
     cubeSign (t.erase j) i = cubeSign t i := by
@@ -67,7 +67,7 @@ theorem cubeSign_erase_of_le (t : Finset ι) {i j : ι} (h : i ≤ j) :
   simp [h]
 
 /- English proof (translation)
-Unfold `cubeSign`. Rewrite using `[Finset.filter_erase, ← Finset.card_erase_add_one (s := t.filter (· < i)) (a := j) (by simp [hj, h]), pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cubeSign_erase_of_lt {t : Finset ι} {i j : ι} (hj : j ∈ t) (h : j < i) :
     cubeSign (t.erase j) i = - cubeSign t i := by
@@ -77,7 +77,7 @@ theorem cubeSign_erase_of_lt {t : Finset ι} {i j : ι} (hj : j ∈ t) (h : j < 
   ring
 
 /- English proof (translation)
-Break down `lt_or_gt_of_ne h with h | h` into its components or cases. Rewrite using `[cubeSign_erase_of_lt hi h, cubeSign_erase_of_le t h.le]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[cubeSign_erase_of_lt hj h, cubeSign_erase_of_le t h.le]`. Expand and normalize the polynomial expressions, which then agree.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cubeSign_mul_erase {t : Finset ι} {i j : ι} (hi : i ∈ t) (hj : j ∈ t) (h : i ≠ j) :
     cubeSign t i * cubeSign (t.erase i) j = - (cubeSign t j * cubeSign (t.erase j) i) := by
@@ -98,7 +98,7 @@ def res (A : Cube.{v} ι R) {s t : Finset ι} (h : s ⊆ t) : A.obj s →ₗ[R] 
 
 @[simp]
 /- English proof (translation)
-Establish `: (homOfLE h : s ⟶ s) = 𝟙 s` using `rfl`. Simplify using `[res, this]`. Use the proof step `@[simp]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem res_self (A : Cube.{v} ι R) {s : Finset ι} (h : s ⊆ s) (x : A.obj s) :
     res A h x = x := by
@@ -107,7 +107,7 @@ theorem res_self (A : Cube.{v} ι R) {s : Finset ι} (h : s ⊆ s) (x : A.obj s)
 
 @[simp]
 /- English proof (translation)
-Establish `: (homOfLE (h.trans h') : s ⟶ w) = homOfLE h ≫ homOfLE h'` using `rfl`. Simplify using `only [res, this, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem res_res (A : Cube.{v} ι R) {s t w : Finset ι} (h : s ⊆ t) (h' : t ⊆ w) (x : A.obj s) :
     res A h' (res A h x) = res A (h.trans h') x := by
@@ -115,14 +115,14 @@ theorem res_res (A : Cube.{v} ι R) {s t w : Finset ι} (h : s ⊆ t) (h' : t �
   simp only [res, this, Functor.map_comp, ModuleCat.hom_comp, LinearMap.comp_apply]
 
 /- English proof (translation)
-Substitute `e` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem res_congr (A : Cube.{v} ι R) (x : ∀ s, A.obj s) {s s' t : Finset ι} (e : s = s')
     (h : s ⊆ t) (h' : s' ⊆ t) : res A h (x s) = res A h' (x s') := by
   subst e; rfl
 
 /- English proof (translation)
-The claim follows from `congr(($(φ.naturality (homOfLE h))).hom x) @[simps obj]`.
+A detailed English derivation is pending.
 -/
 theorem app_res {A B : Cube.{v} ι R} (φ : A ⟶ B) {s t : Finset ι} (h : s ⊆ t) (x : A.obj s) :
     (φ.app t).hom (res A h x) = res B h ((φ.app s).hom x) :=
@@ -140,7 +140,7 @@ def mk (X : Finset ι → ModuleCat.{v} R) (ρ : ∀ {s t : Finset ι}, s ⊆ t 
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simps]`.
+A detailed English derivation is pending.
 -/
 theorem res_mk (X : Finset ι → ModuleCat.{v} R) (ρ : ∀ {s t : Finset ι}, s ⊆ t → X s →ₗ[R] X t)
     (ρ_self ρ_comp) {s t : Finset ι} (h : s ⊆ t) :
@@ -177,13 +177,13 @@ def extend (A : Cube.{v} ι R) (p : ℕ) : Term A p →ₗ[R] ∀ s, A.obj s whe
   map_smul' r x := by ext s; by_cases h : s.card = p <;> simp [h]
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem extend_apply_of_eq (A : Cube.{v} ι R) {p : ℕ} (x : Term A p) {s : Finset ι}
     (h : s.card = p) : extend A p x s = x ⟨s, h⟩ := dif_pos h
 
 /- English proof (translation)
-The claim follows from `dif_neg h`.
+A detailed English derivation is pending.
 -/
 theorem extend_apply_of_ne (A : Cube.{v} ι R) {p : ℕ} (x : Term A p) {s : Finset ι}
     (h : s.card ≠ p) : extend A p x s = 0 := dif_neg h
@@ -213,7 +213,7 @@ def termZeroEquiv (A : Cube.{v} ι R) : Term A 0 ≃ₗ[R] A.obj ∅ where
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem termZeroEquiv_apply (A : Cube.{v} ι R) (x : Term A 0) :
     termZeroEquiv A x = x ⟨∅, rfl⟩ := rfl
@@ -236,21 +236,21 @@ noncomputable def termOneEquiv (A : Cube.{v} ι R) : (∀ i : ι, A.obj {i}) ≃
 
 @[simp]
 /- English proof (translation)
-The claim follows from `rfl @[simp]`.
+A detailed English derivation is pending.
 -/
 theorem termOneEquiv_symm_apply (A : Cube.{v} ι R) (x : Term A 1) (i : ι) :
     (termOneEquiv A).symm x i = x ⟨{i}, Finset.card_singleton i⟩ := rfl
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[← termOneEquiv_symm_apply A (termOneEquiv A y), LinearEquiv.symm_apply_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem termOneEquiv_apply (A : Cube.{v} ι R) (y : ∀ i : ι, A.obj {i}) (i : ι) :
     termOneEquiv A y ⟨{i}, Finset.card_singleton i⟩ = y i := by
   rw [← termOneEquiv_symm_apply A (termOneEquiv A y), LinearEquiv.symm_apply_apply]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ => funext fun s => absurd (s.2 ▸ Finset.card_le_univ s.1) (not_le.2 h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem subsingleton_term [Fintype ι] (A : Cube.{v} ι R) {p : ℕ} (h : Fintype.card ι < p) :
     Subsingleton (Term A p) :=
@@ -267,7 +267,7 @@ theorem aug_apply (A : Cube.{v} ι R) (a : A.obj ∅) (s : {s : Finset ι // s.c
     aug A a s = res A (Finset.empty_subset s.1) a := rfl
 
 /- English proof (translation)
-Use extensionality with `s`. Simplify using `[app_res]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem termMap_aug {A B : Cube.{v} ι R} (φ : A ⟶ B) (a : A.obj ∅) :
     termMap φ 1 (aug A a) = aug B ((φ.app ∅).hom a) := by
@@ -288,7 +288,7 @@ def d (A : Cube.{v} ι R) (p : ℕ) : Term A p →ₗ[R] Term A (p + 1) :=
     (res A (Finset.erase_subset i.1 t.1) ∘ₗ LinearMap.proj (eraseIdx t i))
 
 /- English proof (translation)
-Simplify using `[d, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem d_apply (A : Cube.{v} ι R) (p : ℕ) (x : Term A p) (t : {s : Finset ι // s.card = p + 1}) :
     d A p x t = ∑ i : t.1, cubeSign t.1 i.1 •
@@ -300,14 +300,14 @@ def totalD (A : Cube.{v} ι R) : (∀ s, A.obj s) →ₗ[R] ∀ s, A.obj s :=
     (res A (Finset.erase_subset i t) ∘ₗ LinearMap.proj (t.erase i))
 
 /- English proof (translation)
-Simplify using `[totalD, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem totalD_apply (A : Cube.{v} ι R) (x : ∀ s, A.obj s) (t : Finset ι) :
     totalD A x t = ∑ i ∈ t, cubeSign t i • res A (Finset.erase_subset i t) (x (t.erase i)) := by
   simp [totalD, LinearMap.sum_apply]
 
 /- English proof (translation)
-Rewrite using `[d_apply, totalD_apply, ← Finset.sum_coe_sort t.1]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_apply_eq_totalD (A : Cube.{v} ι R) {p : ℕ} (x : Term A p) (y : ∀ s, A.obj s)
     (h : ∀ s : {s : Finset ι // s.card = p}, x s = y s.1) (t : {s : Finset ι // s.card = p + 1}) :
@@ -316,7 +316,7 @@ theorem d_apply_eq_totalD (A : Cube.{v} ι R) {p : ℕ} (x : Term A p) (y : ∀ 
   exact Finset.sum_congr rfl fun i _ => by rw [h]
 
 /- English proof (translation)
-Rewrite using `[d_apply_eq_totalD A x (extend A p x) (fun s => (extend_apply_of_eq A x s.2).symm), totalD_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem d_apply_extend (A : Cube.{v} ι R) {p : ℕ} (x : Term A p)
     (t : {s : Finset ι // s.card = p + 1}) :
@@ -326,13 +326,13 @@ theorem d_apply_extend (A : Cube.{v} ι R) {p : ℕ} (x : Term A p)
     totalD_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Set `f : ι × ι → A.obj t` to `fun q => (cubeSign t q.1 * cubeSign (t.erase q.1) q.2) • res A ((Finset.erase_subset _ _).trans (Finset.erase_subset _ _)) (x ((t.erase q.1).erase q.2))`. Establish `h1 : totalD A (totalD A x) t = ∑ q ∈ t.offDiag, f q`. Rewrite using `[totalD_apply, Finset.sum_finset_product t.offDiag t (fun i => t.erase i) (fun q => by simp only [Finset.mem_offDiag, Finset.mem_erase]; tauto)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[totalD_apply, map_sum, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [f, map_zsmul, res_res, smul_smul]`. Rewrite using `[h1]`. Use `Finset.sum_involution (fun q _ => q.swap) (fun q hq => ?_) (fun q hq _ h => ?_) (fun q hq => ?_) (fun q _ => rfl)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hq` using `[Finset.mem_offDiag]`. Simplify using `only [f, Prod.fst_swap, Prod.snd_swap]`. Rewrite using `[cubeSign_mul_erase hq.1 hq.2.1 hq.2.2, res_congr A x (Finset.erase_right_comm (a := q.1) (b := q.2)) _ ((Finset.erase_subset _ _).trans (Finset.erase_subset _ _)), neg_smul, neg_add_cancel]`. Rewrite `hq` using `[Finset.mem_offDiag]`. Conclude with `hq.2.2 (congrArg Prod.snd h)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hq`, the goal using `[Finset.mem_offDiag]`. Conclude with `⟨hq.2.1, hq.1, hq.2.2.symm⟩`. Use the proof step `@[simp]`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem totalD_totalD (A : Cube.{v} ι R) (x : ∀ s, A.obj s) : totalD A (totalD A x) = 0 := by
   funext t
@@ -360,7 +360,7 @@ theorem totalD_totalD (A : Cube.{v} ι R) (x : ∀ s, A.obj s) : totalD A (total
 
 @[simp]
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Rewrite using `[d_apply_eq_totalD A (d A p x) (totalD A (extend A p x)) (fun s => d_apply_eq_totalD A x _ (fun s => (extend_apply_of_eq A x s.2).symm) s), totalD_totalD]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem d_d (A : Cube.{v} ι R) (p : ℕ) (x : Term A p) : d A (p + 1) (d A p x) = 0 := by
   funext t
@@ -369,13 +369,13 @@ theorem d_d (A : Cube.{v} ι R) (p : ℕ) (x : Term A p) : d A (p + 1) (d A p x)
   rfl
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext (d_d A p)`.
+A detailed English derivation is pending.
 -/
 theorem d_comp_d (A : Cube.{v} ι R) (p : ℕ) : d A (p + 1) ∘ₗ d A p = 0 :=
   LinearMap.ext (d_d A p)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Simplify using `only [termMap_apply, d_apply, map_sum, map_zsmul, app_res]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem termMap_d {A B : Cube.{v} ι R} (φ : A ⟶ B) (p : ℕ) (x : Term A p) :
     termMap φ (p + 1) (d A p x) = d B p (termMap φ p x) := by
@@ -383,9 +383,9 @@ theorem termMap_d {A B : Cube.{v} ι R} (φ : A ⟶ B) (p : ℕ) (x : Term A p) 
   simp only [termMap_apply, d_apply, map_sum, map_zsmul, app_res]
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `(termZeroEquiv A).symm.surjective x`. Use extensionality with `⟨t, ht⟩`. Take `⟨i, rfl⟩` from `Finset.card_eq_one.1 ht`. Rewrite using `[d_apply_eq_totalD A ((termZeroEquiv A).symm a) (fun s => res A (Finset.empty_subset s) a) (fun _ => rfl), totalD_apply]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use the proof step `@[simp]`.
+A detailed English derivation is pending.
 -/
 theorem d_zero_apply (A : Cube.{v} ι R) (x : Term A 0) :
     d A 0 x = aug A (termZeroEquiv A x) := by
@@ -398,7 +398,7 @@ theorem d_zero_apply (A : Cube.{v} ι R) (x : Term A 0) :
 
 @[simp]
 /- English proof (translation)
-Use `d_zero_apply A ((termZeroEquiv A).symm a)` as an intermediate fact. Rewrite `this` using `[LinearEquiv.apply_symm_apply]`. Rewrite using `[← this]`. Conclude with `d_d A 0 _`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem d_aug (A : Cube.{v} ι R) (a : A.obj ∅) : d A 1 (aug A a) = 0 := by
   have := d_zero_apply A ((termZeroEquiv A).symm a)
@@ -407,13 +407,13 @@ theorem d_aug (A : Cube.{v} ι R) (a : A.obj ∅) : d A 1 (aug A a) = 0 := by
   exact d_d A 0 _
 
 /- English proof (translation)
-Rewrite using `[d_apply_extend, Finset.sum_pair h.ne, ← extend_apply_of_eq A x (Finset.card_singleton j), ← extend_apply_of_eq A x (Finset.card_singleton i)]`. Establish `e1 : ({i, j} : Finset ι).erase i = {j}`. Use extensionality with `k`. Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`. Conclude with `⟨fun hk => hk.2.resolve_left hk.1, fun hk => ⟨hk ▸ h.ne', Or.inr hk⟩⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Establish `e2 : ({i, j} : Finset ι).erase j = {i}`. Use extensionality with `k`. Simplify using `only [Finset.mem_erase, Finset.mem_insert, Finset.mem_singleton]`. Conclude with `⟨fun hk => hk.2.resolve_right hk.1, fun hk => ⟨hk ▸ h.ne, Or.inl hk⟩⟩`. Establish `s1 : cubeSign ({i, j} : Finset ι) i = 1` using `cubeSign_eq_one_of_forall_le (by simp [h.le])`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `s2 : cubeSign ({i, j} : Finset ι) j = -1`. Use `cubeSign_erase_of_lt (t := {i, j}) (by simp) h` as an intermediate fact. Rewrite `this` using `[e1, cubeSign_singleton]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[res_congr A _ e1 _ (by simp), res_congr A _ e2 _ (by simp)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [s1, s2, one_smul, neg_smul, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem d_one_apply_pair (A : Cube.{v} ι R) (x : Term A 1) {i j : ι} (h : i < j) :
     d A 1 x ⟨{i, j}, Finset.card_pair h.ne⟩ =
@@ -438,11 +438,9 @@ theorem d_one_apply_pair (A : Cube.{v} ι R) (x : Term A 1) {i j : ι} (h : i < 
   simp only [s1, s2, one_smul, neg_smul, sub_eq_add_neg]
 
 /- English proof (translation)
-Use extensionality with `s`. Distinguish the cases in `hs : i ∈ s.1`. Conclude with `h0 s hs`. Establish `h` using `congrFun hx ⟨insert i s.1, by rw [Finset.card_insert_of_notMem hs, s.2]⟩`. Rewrite `h` using `[d_apply_extend, Finset.sum_eq_single i, Pi.zero_apply, cubeSign_smul_eq_zero, res_congr A _ (Finset.erase_insert hs) _ (Finset.subset_insert i s.1), extend_apply_of_eq A x s.2]`.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(map_eq_zero_iff _ (hA s.1 hs)).1 h`. Introduce `j _ hji`. Distinguish the cases in `hc : ((insert i s.1).erase j).card = p`. Rewrite using `[extend_apply_of_eq A x hc, h0 _ (by simp [hji.symm]), map_zero, smul_zero]`. Rewrite using `[extend_apply_of_ne A x hc, map_zero, smul_zero]`.
-
-Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_d_eq_zero (A : Cube.{v} ι R) (i : ι) {p : ℕ}
     (hA : ∀ s : Finset ι, i ∉ s → Function.Injective (res A (Finset.subset_insert i s)))
@@ -463,13 +461,13 @@ theorem eq_zero_of_d_eq_zero (A : Cube.{v} ι R) (i : ι) {p : ℕ}
   · simp
 
 /- English proof (translation)
-Introduce `x`. Use `⟨fun hx => ?_, by rintro ⟨y, rfl⟩; exact d_d A p y⟩` and prove the remaining obligations. Establish `hy : ∀ s : Finset ι, ∃ y : A.obj s, (i ∈ s → y = 0) ∧ (i ∉ s → res A (Finset.subset_insert i s) y = cubeSign (insert i s) i • extend A (p + 1) x (insert i s))`. Introduce `s`. Distinguish the cases in `hs : i ∈ s`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨0, fun _ => rfl, fun h => absurd hs h⟩`. Take `⟨y, hy⟩` from `(hA s hs).2 (cubeSign (insert i s) i • extend A (p + 1) x (insert i s))`. Conclude with `⟨y, fun h => absurd h hs, fun _ => hy⟩`. Use `choose y hy0 hy1 using hy`. Use `⟨fun s => y s.1, (sub_eq_zero.1 ?_)⟩` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `eq_zero_of_d_eq_zero A i (fun s hs => (hA s hs).1) _ (by rw [map_sub, d_d, hx, sub_zero]) ?_` and prove the remaining obligations. Introduce and unpack `⟨t, ht⟩ hi`. Take `⟨s, hs, rfl⟩ : ∃ s, i ∉ s ∧ t = insert i s` from `⟨t.erase i, by simp, (Finset.insert_erase hi).symm⟩`. Rewrite using `[Pi.sub_apply, d_apply_eq_totalD A _ y (fun _ => rfl), totalD_apply, Finset.sum_eq_single i, res_congr A _ (Finset.erase_insert hs) _ (Finset.subset_insert i s), hy1 s hs, cubeSign_smul_smul, extend_apply_of_eq A x ht, sub_self]`. Introduce `j _ hji`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy0 _ (by simp [hji.symm]), map_zero, smul_zero]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exact_d_of_bijective (A : Cube.{v} ι R) (i : ι)
     (hA : ∀ s : Finset ι, i ∉ s → Function.Bijective (res A (Finset.subset_insert i s))) (p : ℕ) :
@@ -517,7 +515,7 @@ theorem cubeComplex_X (A : Cube.{v} ι R) (p : ℕ) :
     (cubeComplex A).X p = ModuleCat.of R (Cube.Term A p) := rfl
 
 /- English proof (translation)
-The claim follows from `CochainComplex.of_d (fun p => ModuleCat.of R (Cube.Term A p)) (fun p => ModuleCat.ofHom (Cube.d A p)) p`.
+A detailed English derivation is pending.
 -/
 theorem cubeComplex_d (A : Cube.{v} ι R) (p : ℕ) :
     (cubeComplex A).d p (p + 1) = ModuleCat.ofHom (Cube.d A p) :=
@@ -557,7 +555,7 @@ theorem cechComplex_X (A : Cube.{v} ι R) (p : ℕ) :
     (cechComplex A).X p = ModuleCat.of R (Cube.Term A (p + 1)) := rfl
 
 /- English proof (translation)
-The claim follows from `cubeComplex_d A (p + 1)`.
+A detailed English derivation is pending.
 -/
 theorem cechComplex_d (A : Cube.{v} ι R) (p : ℕ) :
     (cechComplex A).d p (p + 1) = ModuleCat.ofHom (Cube.d A (p + 1)) :=
@@ -597,14 +595,14 @@ noncomputable def cechAug (A : Cube.{v} ι R) :
       exact ModuleCat.hom_ext (LinearMap.ext (Cube.d_aug A))⟩
 
 /- English proof (translation)
-The claim follows from `CochainComplex.fromSingle₀Equiv_symm_apply_f_zero _ _ @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem cechAug_f_zero (A : Cube.{v} ι R) : (cechAug A).f 0 = ModuleCat.ofHom (Cube.aug A) :=
   CochainComplex.fromSingle₀Equiv_symm_apply_f_zero _ _
 
 @[reassoc]
 /- English proof (translation)
-Apply `HomologicalComplex.from_single_hom_ext` to reduce the goal to its premises. Rewrite using `[HomologicalComplex.comp_f, HomologicalComplex.comp_f, cechAug_f_zero, cechAug_f_zero, CochainComplex.single₀_map_f_zero]`. Conclude with `ModuleCat.hom_ext (LinearMap.ext fun a => (Cube.termMap_aug φ a).symm)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechAug_naturality {A B : Cube.{v} ι R} (φ : A ⟶ B) :
     (CochainComplex.single₀ (ModuleCat.{v} R)).map (φ.app ∅) ≫ cechAug B =
@@ -624,7 +622,7 @@ noncomputable def cechAugNatTrans :
   naturality _ _ φ := cechAug_naturality φ
 
 /- English proof (translation)
-Rewrite using `[HomologicalComplex.exactAt_iff' _ p (p + 1) (p + 2) (by simp) (by simp), ShortComplex.ShortExact.moduleCat_exact_iff_function_exact]`. Express the relevant statement in the definitionally equal form `Function.Exact ((cubeComplex A).d p (p + 1)) ((cubeComplex A).d (p + 1) (p + 1 + 1)) ↔ _`. Rewrite using `[cubeComplex_d, cubeComplex_d]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cubeComplex_exactAt_succ_iff (A : Cube.{v} ι R) (p : ℕ) :
     (cubeComplex A).ExactAt (p + 1) ↔ Function.Exact (Cube.d A p) (Cube.d A (p + 1)) := by
@@ -635,7 +633,7 @@ theorem cubeComplex_exactAt_succ_iff (A : Cube.{v} ι R) (p : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[HomologicalComplex.exactAt_iff' _ 0 0 1 (by simp) (by simp), ShortComplex.exact_iff_mono _ (K.shape 0 0 (by simp)), ModuleCat.mono_iff_injective]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cochainComplex_exactAt_zero_iff (K : CochainComplex (ModuleCat.{v} R) ℕ) :
     K.ExactAt 0 ↔ Function.Injective (K.d 0 1).hom := by
@@ -644,7 +642,7 @@ theorem cochainComplex_exactAt_zero_iff (K : CochainComplex (ModuleCat.{v} R) �
   rfl
 
 /- English proof (translation)
-Rewrite using `[cochainComplex_exactAt_zero_iff, cubeComplex_d A 0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cubeComplex_exactAt_zero_iff' (A : Cube.{v} ι R) :
     (cubeComplex A).ExactAt 0 ↔ Function.Injective (Cube.d A 0) := by
@@ -652,7 +650,7 @@ theorem cubeComplex_exactAt_zero_iff' (A : Cube.{v} ι R) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[cubeComplex_exactAt_zero_iff', ← Function.Injective.of_comp_iff' _ (Cube.termZeroEquiv A).bijective]`. Conclude with `Iff.of_eq (congrArg _ (funext (Cube.d_zero_apply A)))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubeComplex_exactAt_zero_iff (A : Cube.{v} ι R) :
     (cubeComplex A).ExactAt 0 ↔ Function.Injective (Cube.aug A) := by
@@ -660,9 +658,9 @@ theorem cubeComplex_exactAt_zero_iff (A : Cube.{v} ι R) :
   exact Iff.of_eq (congrArg _ (funext (Cube.d_zero_apply A)))
 
 /- English proof (translation)
-Rewrite using `[cubeComplex_exactAt_succ_iff A 0]`. Use `forall_congr' fun x => iff_congr Iff.rfl ⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨_, (Cube.d_zero_apply A y).symm⟩`. Introduce and unpack `⟨a, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨(Cube.termZeroEquiv A).symm a, by simp [Cube.d_zero_apply]⟩`.
+Supply the required witnesses or components.
 -/
 theorem cubeComplex_exactAt_one_iff (A : Cube.{v} ι R) :
     (cubeComplex A).ExactAt 1 ↔ Function.Exact (Cube.aug A) (Cube.d A 1) := by
@@ -674,7 +672,7 @@ theorem cubeComplex_exactAt_one_iff (A : Cube.{v} ι R) :
     exact ⟨(Cube.termZeroEquiv A).symm a, by simp [Cube.d_zero_apply]⟩
 
 /- English proof (translation)
-Rewrite using `[HomologicalComplex.exactAt_iff' _ p (p + 1) (p + 2) (by simp) (by simp), ShortComplex.ShortExact.moduleCat_exact_iff_function_exact]`. Express the relevant statement in the definitionally equal form `Function.Exact ((cechComplex A).d p (p + 1)) ((cechComplex A).d (p + 1) (p + 1 + 1)) ↔ _`. Rewrite using `[cechComplex_d, cechComplex_d]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cechComplex_exactAt_succ_iff (A : Cube.{v} ι R) (p : ℕ) :
     (cechComplex A).ExactAt (p + 1) ↔ Function.Exact (Cube.d A (p + 1)) (Cube.d A (p + 2)) := by
@@ -685,7 +683,7 @@ theorem cechComplex_exactAt_succ_iff (A : Cube.{v} ι R) (p : ℕ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[cechComplex_exactAt_succ_iff, cubeComplex_exactAt_succ_iff]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cechComplex_exactAt_succ_iff_cube (A : Cube.{v} ι R) (p : ℕ) :
     (cechComplex A).ExactAt (p + 1) ↔ (cubeComplex A).ExactAt (p + 2) := by
@@ -699,7 +697,7 @@ noncomputable def cochainCyclesIsoKer (K : CochainComplex (ModuleCat.{v} R) ℕ)
     (LinearEquiv.ofEq _ _ (congrArg (fun f => LinearMap.ker f.hom) hf)).toModuleIso
 
 /- English proof (translation)
-The claim follows from `IsLimit.conePointUniqueUpToIso_hom_comp (K.cyclesIsKernel p (p + 1) (by simp)) (ModuleCat.kernelIsLimit _) WalkingParallelPair.zero`.
+A detailed English derivation is pending.
 -/
 theorem cochainCyclesIsoKer_hom_subtype (K : CochainComplex (ModuleCat.{v} R) ℕ) (p : ℕ)
     (f : K.X p →ₗ[R] K.X (p + 1)) (hf : K.d p (p + 1) = ModuleCat.ofHom f) :
@@ -713,7 +711,7 @@ noncomputable def cubeCyclesIso (A : Cube.{v} ι R) (p : ℕ) :
   cochainCyclesIsoKer (cubeComplex A) p (Cube.d A p) (cubeComplex_d A p)
 
 /- English proof (translation)
-The claim follows from `cochainCyclesIsoKer_hom_subtype (cubeComplex A) p (Cube.d A p) (cubeComplex_d A p)`.
+A detailed English derivation is pending.
 -/
 theorem cubeCyclesIso_hom_subtype (A : Cube.{v} ι R) (p : ℕ) :
     (cubeCyclesIso A p).hom ≫ ModuleCat.ofHom (LinearMap.ker (Cube.d A p)).subtype =
@@ -725,7 +723,7 @@ noncomputable def cechCyclesIso (A : Cube.{v} ι R) (p : ℕ) :
   cochainCyclesIsoKer (cechComplex A) p (Cube.d A (p + 1)) (cechComplex_d A p)
 
 /- English proof (translation)
-The claim follows from `cochainCyclesIsoKer_hom_subtype (cechComplex A) p (Cube.d A (p + 1)) (cechComplex_d A p)`.
+A detailed English derivation is pending.
 -/
 theorem cechCyclesIso_hom_subtype (A : Cube.{v} ι R) (p : ℕ) :
     (cechCyclesIso A p).hom ≫ ModuleCat.ofHom (LinearMap.ker (Cube.d A (p + 1))).subtype =
@@ -738,14 +736,14 @@ noncomputable def cechHomologyZeroIso (A : Cube.{v} ι R) :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `(CochainComplex.isoHomologyπ₀ (cechComplex A)).hom_inv_id_assoc _`.
+A detailed English derivation is pending.
 -/
 theorem homologyπ_cechHomologyZeroIso_hom (A : Cube.{v} ι R) :
     (cechComplex A).homologyπ 0 ≫ (cechHomologyZeroIso A).hom = (cechCyclesIso A 0).hom :=
   (CochainComplex.isoHomologyπ₀ (cechComplex A)).hom_inv_id_assoc _
 
 /- English proof (translation)
-The claim follows from `haveI := Cube.subsingleton_term A h ModuleCat.isZero_of_subsingleton (ModuleCat.of R (Cube.Term A p))`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cubeComplex_X [Fintype ι] (A : Cube.{v} ι R) {p : ℕ} (h : Fintype.card ι < p) :
     IsZero ((cubeComplex A).X p) :=
@@ -753,32 +751,32 @@ theorem isZero_cubeComplex_X [Fintype ι] (A : Cube.{v} ι R) {p : ℕ} (h : Fin
   ModuleCat.isZero_of_subsingleton (ModuleCat.of R (Cube.Term A p))
 
 /- English proof (translation)
-The claim follows from `isZero_cubeComplex_X A (Nat.lt_succ_of_le h)`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cechComplex_X [Fintype ι] (A : Cube.{v} ι R) {p : ℕ} (h : Fintype.card ι ≤ p) :
     IsZero ((cechComplex A).X p) :=
   isZero_cubeComplex_X A (Nat.lt_succ_of_le h)
 
 /- English proof (translation)
-The claim follows from `ShortComplex.isZero_homology_of_isZero_X₂ _ (isZero_cubeComplex_X A h)`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cubeComplex_homology [Fintype ι] (A : Cube.{v} ι R) {p : ℕ}
     (h : Fintype.card ι < p) : IsZero ((cubeComplex A).homology p) :=
   ShortComplex.isZero_homology_of_isZero_X₂ _ (isZero_cubeComplex_X A h)
 
 /- English proof (translation)
-The claim follows from `ShortComplex.isZero_homology_of_isZero_X₂ _ (isZero_cechComplex_X A h)`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cechComplex_homology [Fintype ι] (A : Cube.{v} ι R) {p : ℕ}
     (h : Fintype.card ι ≤ p) : IsZero ((cechComplex A).homology p) :=
   ShortComplex.isZero_homology_of_isZero_X₂ _ (isZero_cechComplex_X A h)
 
 /- English proof (translation)
-Use `ModuleCat.shortComplex_shortExact _ ?_ ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `Function.Exact (Cube.termMap S.f p) (Cube.termMap S.g p)`. Establish `h` using `fun s : {s : Finset ι // s.card = p} => (ShortComplex.ShortExact.moduleCat_exact_iff_function_exact _).1 (hS s.1 s.2).exact`. Introduce `y`. Prove the components needed by the constructor for the conclusion.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hy choose x hx using fun s => (h s (y s)).1 (congrFun hy s)`. Conclude with `⟨x, funext hx⟩`. Introduce and unpack `⟨x, rfl⟩`. Conclude with `funext fun s => (h s _).2 ⟨x s, rfl⟩`. Express the relevant statement in the definitionally equal form `Function.Injective (Cube.termMap S.f p)`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun x y hxy => funext fun s => (hS s.1 s.2).moduleCat_injective_f (congrFun hxy s)`. Express the relevant statement in the definitionally equal form `Function.Surjective (Cube.termMap S.g p)`. Introduce `y`. Use `choose x hx using fun s : {s : Finset ι // s.card = p} => (hS s.1 s.2).moduleCat_surjective_g (y s)`. Conclude with `⟨x, funext hx⟩`.
+Express the relevant assertion in an equivalent form by its definition. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem Cube.term_shortExact (S : ShortComplex (Cube.{v} ι R)) (p : ℕ)
     (hS : ∀ s : Finset ι, s.card = p → (S.map ((evaluation _ _).obj s)).ShortExact) :
@@ -803,7 +801,7 @@ theorem Cube.term_shortExact (S : ShortComplex (Cube.{v} ι R)) (p : ℕ)
     exact ⟨x, funext hx⟩
 
 /- English proof (translation)
-The claim follows from `HomologicalComplex.shortExact_of_degreewise_shortExact _ fun p => Cube.term_shortExact S p fun s _ => hS s`.
+A detailed English derivation is pending.
 -/
 theorem cubeFunctor_shortExact (S : ShortComplex (Cube.{v} ι R))
     (hS : ∀ s : Finset ι, (S.map ((evaluation _ _).obj s)).ShortExact) :
@@ -812,7 +810,7 @@ theorem cubeFunctor_shortExact (S : ShortComplex (Cube.{v} ι R))
     Cube.term_shortExact S p fun s _ => hS s
 
 /- English proof (translation)
-The claim follows from `HomologicalComplex.shortExact_of_degreewise_shortExact _ fun p => Cube.term_shortExact S (p + 1) fun s hs => hS s (Finset.card_pos.1 (by omega))`.
+A detailed English derivation is pending.
 -/
 theorem cechFunctor_shortExact (S : ShortComplex (Cube.{v} ι R))
     (hS : ∀ s : Finset ι, s.Nonempty → (S.map ((evaluation _ _).obj s)).ShortExact) :
@@ -821,7 +819,7 @@ theorem cechFunctor_shortExact (S : ShortComplex (Cube.{v} ι R))
     Cube.term_shortExact S (p + 1) fun s hs => hS s (Finset.card_pos.1 (by omega))
 
 /- English proof (translation)
-Establish `: ∀ p, IsIso ((cechComplexMap φ).f p)` using `fun p => by`. Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Establish `h'` using `fun s : {s : Finset ι // s.card = p + 1} => h s.1 (Finset.card_pos.1 (by have := s.2; omega))`. Conclude with `Function.Bijective.piMap h'`. Conclude with `HomologicalComplex.Hom.isIso_of_components _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isIso_cechComplexMap {A B : Cube.{v} ι R} (φ : A ⟶ B)
     (h : ∀ s : Finset ι, s.Nonempty → Function.Bijective (φ.app s).hom) :
@@ -834,9 +832,9 @@ theorem isIso_cechComplexMap {A B : Cube.{v} ι R} (φ : A ⟶ B)
   exact HomologicalComplex.Hom.isIso_of_components _
 
 /- English proof (translation)
-Consider the cases of `p with`. Consider the case `zero`. Rewrite using `[cubeComplex_exactAt_zero_iff', injective_iff_map_eq_zero]`. Introduce `x hx`. Use `Cube.eq_zero_of_d_eq_zero A i (fun s hs => (hA s hs).1) x hx fun s hs => ?_` and prove the remaining obligations.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hs` using `[Finset.card_eq_zero.1 s.2]`. Simplify using `at hs`. Consider the case `succ p => exact (cubeComplex_exactAt_succ_iff A p).2 (Cube.exact_d_of_bijective A i hA p)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem cubeComplex_exactAt_of_bijective (A : Cube.{v} ι R) (i : ι)
     (hA : ∀ s : Finset ι, i ∉ s → Function.Bijective (Cube.res A (Finset.subset_insert i s)))
@@ -851,7 +849,7 @@ theorem cubeComplex_exactAt_of_bijective (A : Cube.{v} ι R) (i : ι)
   | succ p => exact (cubeComplex_exactAt_succ_iff A p).2 (Cube.exact_d_of_bijective A i hA p)
 
 /- English proof (translation)
-The claim follows from `cubeComplex_exactAt_of_bijective (Cube.const ι M) (Classical.arbitrary ι) (fun _ _ => Function.bijective_id) p`.
+A detailed English derivation is pending.
 -/
 theorem cubeComplex_const_exactAt [Nonempty ι] (M : ModuleCat.{v} R) (p : ℕ) :
     (cubeComplex (Cube.const ι M)).ExactAt p :=
@@ -859,7 +857,7 @@ theorem cubeComplex_const_exactAt [Nonempty ι] (M : ModuleCat.{v} R) (p : ℕ) 
     (fun _ _ => Function.bijective_id) p
 
 /- English proof (translation)
-The claim follows from `cubeComplex_const_exactAt M`.
+A detailed English derivation is pending.
 -/
 theorem cubeComplex_const_acyclic [Nonempty ι] (M : ModuleCat.{v} R) :
     (cubeComplex (Cube.const ι M)).Acyclic :=
@@ -936,9 +934,7 @@ instance Cube.isIso_termComparison [Finite ι] [F.Additive] (A : Cube.{v} ι R) 
 
 @[reassoc]
 /- English proof (translation)
-Use `ModuleCat.hom_ext (LinearMap.ext fun x => funext fun s => ?_)` and prove the remaining obligations. Establish `h : ModuleCat.ofHom (Cube.termMap φ p) ≫ Cube.termProj B s = Cube.termProj A s ≫ φ.app s.1` using `rfl`. Establish `h'` using `congrArg F.map h`. Rewrite `h'` using `[F.map_comp, F.map_comp]`. Conclude with `congr(($h').hom x)`.
-
-Use the proof step `@[reassoc]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cube.termComparison_naturality {A B : Cube.{v} ι R} (φ : A ⟶ B) (p : ℕ) :
     F.map (ModuleCat.ofHom (Cube.termMap φ p)) ≫ Cube.termComparison F B p =
@@ -953,7 +949,7 @@ theorem Cube.termComparison_naturality {A B : Cube.{v} ι R} (φ : A ⟶ B) (p :
 
 @[reassoc]
 /- English proof (translation)
-Use `ModuleCat.hom_ext (LinearMap.ext fun x => funext fun s => ?_)` and prove the remaining obligations. Establish `h` using `(F.map_comp (ModuleCat.ofHom (Cube.aug A)) (Cube.termProj A s)).symm`. Conclude with `congr(($h).hom x)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Cube.map_aug_termComparison (A : Cube.{v} ι R) :
     F.map (ModuleCat.ofHom (Cube.aug A)) ≫ Cube.termComparison F A 1 =
@@ -965,7 +961,7 @@ theorem Cube.map_aug_termComparison (A : Cube.{v} ι R) :
 variable [LinearOrder ι] [F.Additive]
 
 /- English proof (translation)
-Use `ModuleCat.hom_ext (LinearMap.ext fun x => ?_)` and prove the remaining obligations. Rewrite using `[ModuleCat.hom_sum, LinearMap.sum_apply]`. Conclude with `Cube.d_apply A p x t`. Use the proof step `@[reassoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cube.d_termProj (A : Cube.{v} ι R) (p : ℕ) (t : {s : Finset ι // s.card = p + 1}) :
     ModuleCat.ofHom (Cube.d A p) ≫ Cube.termProj A t = ∑ i : t.1, cubeSign t.1 i.1 •
@@ -976,9 +972,9 @@ theorem Cube.d_termProj (A : Cube.{v} ι R) (p : ℕ) (t : {s : Finset ι // s.c
 
 @[reassoc]
 /- English proof (translation)
-Use `ModuleCat.hom_ext (LinearMap.ext fun x => funext fun t => ?_)` and prove the remaining obligations. Establish `h` using `congrArg F.map (Cube.d_termProj A p t)`. Rewrite `h` using `[F.map_comp, F.map_sum]`. Use `Eq.trans congr(($h).hom x) (Eq.trans ?_ (Cube.d_apply (A ⋙ F) p _ t).symm)` and prove the remaining obligations. Rewrite using `[ModuleCat.hom_sum, LinearMap.sum_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[F.map_zsmul, F.map_comp]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Cube.map_d_termComparison (A : Cube.{v} ι R) (p : ℕ) :
     F.map (ModuleCat.ofHom (Cube.d A p)) ≫ Cube.termComparison F A (p + 1) =
@@ -1058,7 +1054,7 @@ theorem Cube.termComparison_restrictScalars_apply (A : Cube.{v} ι S) (p : ℕ) 
 omit [LinearOrder ι] in
 
 /- English proof (translation)
-Rewrite using `[ConcreteCategory.isIso_iff_bijective]`. Conclude with `Function.bijective_id`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cube.isIso_termComparison_restrictScalars (A : Cube.{v} ι S) (p : ℕ) :
     IsIso (Cube.termComparison (ModuleCat.restrictScalars f) A p) := by
@@ -1080,7 +1076,7 @@ noncomputable def cechRestrictScalarsIso (A : Cube.{v} ι S) :
   CochainComplex.truncate.mapIso (cubeRestrictScalarsIso f A)
 
 /- English proof (translation)
-The claim follows from `funext fun t => (Cube.d_apply (A ⋙ ModuleCat.restrictScalars f) p x t).trans (Cube.d_apply A p x t).symm`.
+A detailed English derivation is pending.
 -/
 theorem Cube.d_restrictScalars_apply (A : Cube.{v} ι S) (p : ℕ) (x : Cube.Term A p) :
     Cube.d (A ⋙ ModuleCat.restrictScalars f) p x = Cube.d A p x :=
@@ -1159,7 +1155,7 @@ theorem Cube.termBaseChange_tmul (A : Cube.{v} ι R) (p : ℕ) (c : S) (x : Cube
     Cube.termBaseChange S A p (c ⊗ₜ[R] x) s = c ⊗ₜ[R] x s := rfl
 
 /- English proof (translation)
-Use `Fintype.ofFinite {s : Finset ι // s.card = p}` as an intermediate fact. Conclude with `(TensorProduct.piRight R S S fun s : {s : Finset ι // s.card = p} => A.obj s.1).bijective`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Cube.termBaseChange_bijective [Finite ι] (A : Cube.{v} ι R) (p : ℕ) :
     Function.Bijective (Cube.termBaseChange S A p) := by
@@ -1179,9 +1175,9 @@ theorem Cube.termBaseChangeEquiv_apply [Finite ι] (A : Cube.{v} ι R) (p : ℕ)
     Cube.termBaseChangeEquiv S A p x = Cube.termBaseChange S A p x := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c x`. Use function extensionality and compare the values at `t`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[LinearMap.baseChange_tmul, Cube.termBaseChange_tmul, Cube.d_apply, Cube.d_apply, TensorProduct.tmul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Conclude with `(map_zsmul (TensorProduct.mk R S (A.obj t.1) c) _ _).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Cube.d_termBaseChange [LinearOrder ι] (A : Cube.{v} ι R) (p : ℕ)
     (x : S ⊗[R] Cube.Term A p) :
@@ -1198,7 +1194,7 @@ theorem Cube.d_termBaseChange [LinearOrder ι] (A : Cube.{v} ι R) (p : ℕ)
     exact (map_zsmul (TensorProduct.mk R S (A.obj t.1) c) _ _).symm
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact (map_zero _).trans (by simp only [map_zero])`. Consider the case `add x y hx hy => exact (map_add _ _ _).trans (by simp only [map_add, hx, hy])`. Consider the case `tmul c x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem Cube.aug_baseChange (A : Cube.{v} ι R) (x : S ⊗[R] A.obj ∅) :
     Cube.aug (Cube.baseChange S A) x = Cube.termBaseChange S A 1 ((Cube.aug A).baseChange S x) := by
@@ -1208,7 +1204,7 @@ theorem Cube.aug_baseChange (A : Cube.{v} ι R) (x : S ⊗[R] A.obj ∅) :
   | tmul c x => rfl
 
 /- English proof (translation)
-The claim follows from `haveI := fun s : {s : Finset ι // s.card = p} => h s.1 s.2 inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem Cube.finite_term {R : Type u} [Ring R] [Finite ι] (A : Cube.{v} ι R) (p : ℕ)
     (h : ∀ s : Finset ι, s.card = p → Module.Finite R (A.obj s)) :
@@ -1217,7 +1213,7 @@ theorem Cube.finite_term {R : Type u} [Ring R] [Finite ι] (A : Cube.{v} ι R) (
   inferInstance
 
 /- English proof (translation)
-Use `haveI := fun s : {s : Finset ι // s.card = p} => h s.1 s.2`. Use `Fintype.ofFinite {s : Finset ι // s.card = p}` as an intermediate fact. Conclude with `Module.Flat.of_linearEquiv (DirectSum.linearEquivFunOnFintype R _ fun s : {s : Finset ι // s.card = p} => A.obj s.1).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Cube.flat_term [Finite ι] (A : Cube.{v} ι R) (p : ℕ)
     (h : ∀ s : Finset ι, s.card = p → Module.Flat R (A.obj s)) :
@@ -1237,19 +1233,19 @@ open DirectSum
 variable {R : Type u} [Ring R] {κ : Type} [DecidableEq κ]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Establish `key (j : κ) : (HomologicalComplex.homologyMap (π j) p).hom ∘ₗ (DirectSum.toModule R κ (L.homology p) fun k => (HomologicalComplex.homologyMap (i k) p).hom) = DirectSum.component R κ (fun k => (K k).homology p) j`. Use `DirectSum.linearMap_ext _ fun k => LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, DirectSum.toModule_lof]`. Rewrite using `[← LinearMap.comp_apply, ← ModuleCat.hom_comp, ← HomologicalComplex.homologyMap_comp]`.
+Prove the components needed by the constructor for the conclusion. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : k = j`. Substitute `h` using the available equality. Simplify using `[h₁]`. Simplify using `[h₂ k j h, DirectSum.component.of, h]`. Introduce `x y hxy`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `DirectSum.ext_component R fun j => ?_` and prove the remaining obligations. Rewrite using `[← key j, LinearMap.comp_apply, LinearMap.comp_apply, hxy]`. Introduce `x`. Take `⟨c, rfl⟩` from `(ModuleCat.epi_iff_surjective (L.homologyπ p)).1 inferInstance x`. Take `⟨T, hT⟩` from `h₃ ((L.iCycles p).hom c)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hc : (HomologicalComplex.cyclesMap (∑ k ∈ T, π k ≫ i k) p).hom c = c`. Apply `(ModuleCat.mono_iff_injective (L.iCycles p)).1 inferInstance` to reduce the goal to its premises. Establish `h` using `congr(($(HomologicalComplex.cyclesMap_i (∑ k ∈ T, π k ≫ i k) p)).hom c)`. Use `h.trans (Eq.trans ?_ hT)` and prove the remaining obligations. Establish `h'` using `(HomologicalComplex.eval _ _ p).map_sum (fun k => π k ≫ i k) T`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ModuleCat.hom_comp, LinearMap.comp_apply, ← LinearMap.sum_apply, ← ModuleCat.hom_sum]`. Conclude with `congr(($h').hom _)`. Use `⟨∑ k ∈ T, DirectSum.lof R κ (fun k => (K k).homology p) k ((HomologicalComplex.homologyMap (π k) p).hom ((L.homologyπ p).hom c)), ?_⟩` and prove the remaining obligations. Establish `h` using `congr(($(HomologicalComplex.homologyπ_naturality (∑ k ∈ T, π k ≫ i k) p)).hom c)`. Rewrite `h` using `[ModuleCat.hom_comp, ModuleCat.hom_comp, LinearMap.comp_apply, LinearMap.comp_apply, hc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ h` and prove the remaining obligations. Establish `h'` using `(HomologicalComplex.homologyFunctor _ _ p).map_sum (fun k => π k ≫ i k) T`. Use `Eq.trans ?_ congr(($h').hom ((L.homologyπ p).hom c)).symm` and prove the remaining obligations. Rewrite using `[map_sum, ModuleCat.hom_sum]`. Use `Eq.trans (Finset.sum_congr rfl fun k _ => ?_) (LinearMap.sum_apply _ _ _).symm` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[DirectSum.toModule_lof, Functor.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem homology_directSum_bijective {K : κ → CochainComplex (ModuleCat.{v} R) ℕ}
     {L : CochainComplex (ModuleCat.{v} R) ℕ} (i : ∀ k, K k ⟶ L) (π : ∀ k, L ⟶ K k)
@@ -1331,7 +1327,7 @@ noncomputable def Cube.directSumProj (A : κ → Cube.{v} ι R) (k : κ) : Cube.
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Use extensionality with `s x`. Conclude with `DirectSum.component.lof_self (M := fun k => (A k).obj s) R k x`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem Cube.directSumIncl_proj (A : κ → Cube.{v} ι R) (k : κ) :
     Cube.directSumIncl A k ≫ Cube.directSumProj A k = 𝟙 _ := by
@@ -1339,7 +1335,7 @@ theorem Cube.directSumIncl_proj (A : κ → Cube.{v} ι R) (k : κ) :
   exact DirectSum.component.lof_self (M := fun k => (A k).obj s) R k x
 
 /- English proof (translation)
-Use extensionality with `s x`. Conclude with `(DirectSum.component.of (M := fun k => (A k).obj s) R j k x).trans (dif_neg h)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem Cube.directSumIncl_proj_of_ne (A : κ → Cube.{v} ι R) {k j : κ} (h : k ≠ j) :
     Cube.directSumIncl A k ≫ Cube.directSumProj A j = 0 := by
@@ -1347,9 +1343,9 @@ theorem Cube.directSumIncl_proj_of_ne (A : κ → Cube.{v} ι R) {k j : κ} (h :
   exact (DirectSum.component.of (M := fun k => (A k).obj s) R j k x).trans (dif_neg h)
 
 /- English proof (translation)
-Use `Fintype.ofFinite {s : Finset ι // s.card = p}` as an intermediate fact. Set `z' : ∀ s : {s : Finset ι // s.card = p}, ⨁ k, (A k).obj s.1` to `z`. Use `⟨Finset.univ.biUnion fun s => (z' s).support, funext fun s => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_apply]`. Express the relevant statement in the definitionally equal form `∑ k ∈ _, DirectSum.of (fun k => (A k).obj s.1) k (z' s k) = z' s`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Use `Eq.trans (Finset.sum_subset (Finset.subset_biUnion_of_mem _ (Finset.mem_univ s)) fun k _ hk => ?_).symm (DirectSum.sum_support_of (z' s))` and prove the remaining obligations. Rewrite using `[DFinsupp.notMem_support_iff.1 hk, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem Cube.exists_sum_directSum [Finite ι] (A : κ → Cube.{v} ι R) (p : ℕ)
     (z : Cube.Term (Cube.directSum A) p) : ∃ T : Finset κ,
@@ -1369,7 +1365,7 @@ noncomputable def Cube.termDirectSum (A : κ → Cube.{v} ι R) (p : ℕ) :
   DirectSum.toModule R κ _ fun k => Cube.termMap (Cube.directSumIncl A k) p
 
 /- English proof (translation)
-The claim follows from `DirectSum.toModule_lof (M := fun k => Cube.Term (A k) p) R k x`.
+A detailed English derivation is pending.
 -/
 theorem Cube.termDirectSum_lof (A : κ → Cube.{v} ι R) (p : ℕ) (k : κ) (x : Cube.Term (A k) p) :
     Cube.termDirectSum A p (DirectSum.lof R κ (fun k => Cube.Term (A k) p) k x) =
@@ -1377,11 +1373,11 @@ theorem Cube.termDirectSum_lof (A : κ → Cube.{v} ι R) (p : ℕ) (k : κ) (x 
   DirectSum.toModule_lof (M := fun k => Cube.Term (A k) p) R k x
 
 /- English proof (translation)
-Establish `: Cube.termMap (Cube.directSumProj A j) p ∘ₗ Cube.termDirectSum A p = DirectSum.component R κ (fun k => Cube.Term (A k) p) j`. Use `DirectSum.linearMap_ext _ fun k => LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Cube.termDirectSum_lof]`. Express the relevant statement in the definitionally equal form `Cube.termMap (Cube.directSumIncl A k ≫ Cube.directSumProj A j) p x = _`. Distinguish the cases in `h : k = j`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[Cube.directSumIncl_proj, DirectSum.component.lof_self]`. Both sides reduce to the same expression. Rewrite using `[Cube.directSumIncl_proj_of_ne A h, DirectSum.component.of, dif_neg h]`. Both sides reduce to the same expression.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `congr($this x)`.
+A detailed English derivation is pending.
 -/
 theorem Cube.termMap_proj_termDirectSum (A : κ → Cube.{v} ι R) (p : ℕ) (j : κ)
     (x : ⨁ k, Cube.Term (A k) p) :
@@ -1400,9 +1396,9 @@ theorem Cube.termMap_proj_termDirectSum (A : κ → Cube.{v} ι R) (p : ℕ) (j 
   exact congr($this x)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `x y h`. Use `DFinsupp.ext fun j => ?_` and prove the remaining obligations. Rewrite using `[← Cube.termMap_proj_termDirectSum, h, Cube.termMap_proj_termDirectSum]`. Introduce `z`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨T, hT⟩` from `Cube.exists_sum_directSum A p z`. Use `⟨∑ k ∈ T, DirectSum.lof R κ (fun k => Cube.Term (A k) p) k (Cube.termMap (Cube.directSumProj A k) p z), Eq.trans ?_ hT⟩` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun k _ => Cube.termDirectSum_lof A p k _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cube.termDirectSum_bijective [Finite ι] (A : κ → Cube.{v} ι R) (p : ℕ) :
     Function.Bijective (Cube.termDirectSum A p) := by
@@ -1424,7 +1420,7 @@ noncomputable def Cube.termDirectSumEquiv [Finite ι] (A : κ → Cube.{v} ι R)
 variable [LinearOrder ι]
 
 /- English proof (translation)
-Establish `: Cube.d (Cube.directSum A) p ∘ₗ Cube.termDirectSum A p = Cube.termDirectSum A (p + 1) ∘ₗ DirectSum.lmap (fun k => Cube.d (A k) p)`. Use `DirectSum.linearMap_ext _ fun k => LinearMap.ext fun x => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Cube.termDirectSum_lof, DirectSum.lmap_lof, Cube.termMap_d]`. Conclude with `congr($this x)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem Cube.d_termDirectSum (A : κ → Cube.{v} ι R) (p : ℕ) (x : ⨁ k, Cube.Term (A k) p) :
     Cube.d (Cube.directSum A) p (Cube.termDirectSum A p x) =
@@ -1467,7 +1463,7 @@ noncomputable def cubeHomologyDirectSumEquiv (A : κ → Cube.{v} ι R) (p : ℕ
     (Cube.exists_sum_directSum A p))
 
 /- English proof (translation)
-The claim follows from `DirectSum.toModule_lof (M := fun k => (cubeComplex (A k)).homology p) R k x`.
+A detailed English derivation is pending.
 -/
 theorem cubeHomologyDirectSumEquiv_lof (A : κ → Cube.{v} ι R) (p : ℕ) (k : κ)
     (x : (cubeComplex (A k)).homology p) :
@@ -1486,7 +1482,7 @@ noncomputable def cechHomologyDirectSumEquiv (A : κ → Cube.{v} ι R) (p : ℕ
     (Cube.exists_sum_directSum A (p + 1)))
 
 /- English proof (translation)
-The claim follows from `DirectSum.toModule_lof (M := fun k => (cechComplex (A k)).homology p) R k x`.
+A detailed English derivation is pending.
 -/
 theorem cechHomologyDirectSumEquiv_lof (A : κ → Cube.{v} ι R) (p : ℕ) (k : κ)
     (x : (cechComplex (A k)).homology p) :
@@ -1498,7 +1494,7 @@ theorem cechHomologyDirectSumEquiv_lof (A : κ → Cube.{v} ι R) (p : ℕ) (k :
 omit [DecidableEq κ] in
 
 /- English proof (translation)
-Simplify using `only [HomologicalComplex.exactAt_iff_isZero_homology, ModuleCat.isZero_iff_subsingleton]`. Rewrite using `[← (cubeHomologyDirectSumEquiv A p).toEquiv.subsingleton_congr]`. Conclude with `⟨fun _ k => (DirectSum.of_injective (β := fun k => (cubeComplex (A k)).homology p) k).subsingleton, fun _ => ⟨fun _ _ => DFinsupp.ext fun _ => Subsingleton.elim _ _⟩⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cubeComplex_directSum_exactAt_iff (A : κ → Cube.{v} ι R) (p : ℕ) :
     (cubeComplex (Cube.directSum A)).ExactAt p ↔ ∀ k, (cubeComplex (A k)).ExactAt p := by
@@ -1511,7 +1507,7 @@ theorem cubeComplex_directSum_exactAt_iff (A : κ → Cube.{v} ι R) (p : ℕ) :
 omit [DecidableEq κ] in
 
 /- English proof (translation)
-Simplify using `only [HomologicalComplex.exactAt_iff_isZero_homology, ModuleCat.isZero_iff_subsingleton]`. Rewrite using `[← (cechHomologyDirectSumEquiv A p).toEquiv.subsingleton_congr]`. Conclude with `⟨fun _ k => (DirectSum.of_injective (β := fun k => (cechComplex (A k)).homology p) k).subsingleton, fun _ => ⟨fun _ _ => DFinsupp.ext fun _ => Subsingleton.elim _ _⟩⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem cechComplex_directSum_exactAt_iff (A : κ → Cube.{v} ι R) (p : ℕ) :
     (cechComplex (Cube.directSum A)).ExactAt p ↔ ∀ k, (cechComplex (A k)).ExactAt p := by
@@ -1555,7 +1551,7 @@ theorem Cube.termTwoFinTwo_apply (A : Cube.{v} (Fin 2) R) (x : Cube.Term A 2) :
     Cube.termTwoFinTwo A x = x ⟨{0, 1}, rfl⟩ := rfl
 
 /- English proof (translation)
-Rewrite using `[Cube.d_zero_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Cube.d_zero_finTwo (A : Cube.{v} (Fin 2) R) (x : Cube.Term A 0) :
     Cube.termOneFinTwo A (Cube.d A 0 x) =
@@ -1565,7 +1561,7 @@ theorem Cube.d_zero_finTwo (A : Cube.{v} (Fin 2) R) (x : Cube.Term A 0) :
   rfl
 
 /- English proof (translation)
-Establish `h` using `Cube.d_one_apply_pair A x (i := 0) (j := 1) (by decide)`. Rewrite using `[Cube.termOneFinTwo_apply]`. Conclude with `(Cube.termTwoFinTwo_apply A _).trans h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem Cube.d_one_finTwo (A : Cube.{v} (Fin 2) R) (x : Cube.Term A 1) :
     Cube.termTwoFinTwo A (Cube.d A 1 x) =
@@ -1576,7 +1572,7 @@ theorem Cube.d_one_finTwo (A : Cube.{v} (Fin 2) R) (x : Cube.Term A 1) :
   exact (Cube.termTwoFinTwo_apply A _).trans h
 
 /- English proof (translation)
-The claim follows from `isZero_cubeComplex_X A (by rw [Fintype.card_fin]; omega)`.
+A detailed English derivation is pending.
 -/
 theorem isZero_cubeComplex_X_finTwo (A : Cube.{v} (Fin 2) R) {p : ℕ} (h : 3 ≤ p) :
     IsZero ((cubeComplex A).X p) :=
@@ -1593,7 +1589,7 @@ example : cubeSign ({0, 1, 2} : Finset (Fin 3)) 0 = 1 ∧ cubeSign ({0, 1, 2} : 
     cubeSign ({0, 1, 2} : Finset (Fin 3)) 2 = 1 := by decide
 
 /- English proof (translation)
-Rewrite using `[Cube.d_one_finTwo, LinearEquiv.apply_symm_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 example : Cube.termTwoFinTwo (Cube.const (Fin 2) (ModuleCat.of ℤ ℤ))
     (Cube.d _ 1 ((Cube.termOneFinTwo (Cube.const (Fin 2) (ModuleCat.of ℤ ℤ))).symm
@@ -1602,7 +1598,7 @@ example : Cube.termTwoFinTwo (Cube.const (Fin 2) (ModuleCat.of ℤ ℤ))
   rfl
 
 /- English proof (translation)
-Rewrite using `[cubeComplex_exactAt_zero_iff]`. Introduce `h`. Use `haveI := Cube.subsingleton_term (Cube.const (Fin 0) (ModuleCat.of ℤ ℤ)) (p := 1) (by simp)`. Conclude with `(one_ne_zero : (1 : ℤ) ≠ 0) (h (Subsingleton.elim _ _))`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 example : ¬ (cubeComplex (Cube.const (Fin 0) (ModuleCat.of ℤ ℤ))).ExactAt 0 := by
   rw [cubeComplex_exactAt_zero_iff]
@@ -1611,7 +1607,7 @@ example : ¬ (cubeComplex (Cube.const (Fin 0) (ModuleCat.of ℤ ℤ))).ExactAt 0
   exact (one_ne_zero : (1 : ℤ) ≠ 0) (h (Subsingleton.elim _ _))
 
 /- English proof (translation)
-Rewrite using `[cochainComplex_exactAt_zero_iff, cechComplex_d _ 0]`. Introduce `h`. Establish `h0 : Cube.aug (Cube.const (Fin 2) (ModuleCat.of ℤ ℤ)) (1 : ℤ) = 0` using `h ((Cube.d_aug _ _).trans (map_zero _).symm)`. Conclude with `(one_ne_zero : (1 : ℤ) ≠ 0) (congrFun h0 ⟨{0}, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 example : ¬ (cechComplex (Cube.const (Fin 2) (ModuleCat.of ℤ ℤ))).ExactAt 0 := by
   rw [cochainComplex_exactAt_zero_iff, cechComplex_d _ 0]

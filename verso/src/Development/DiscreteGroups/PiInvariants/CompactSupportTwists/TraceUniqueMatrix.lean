@@ -5,15 +5,15 @@ namespace DiscreteGroups.T1.Desc.TraceUniqueU3
 open Matrix
 
 /- English proof (translation)
-Set `Φ : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] Module.Dual ℂ (Matrix (Fin n) (Fin n) ℂ)` to `LinearMap.mk₂ ℂ (fun C A => (A * C).trace) (fun C C' A => by simp only [Matrix.mul_add, Matrix.trace_add]) (fun c C A => by simp only [Matrix.mul_smul, Matrix.trace_smul, smul_eq_mul]) (fun C A A' => by simp only [Matrix.add_mul, Matrix.trace_add]) (fun c C A => by simp only [Mat …`. Establish `hΦ : ∀ C A, Φ C A = (A * C).trace` using `fun _ _ => rfl`. Establish `hinj : Function.Injective Φ`. Introduce `C C' h`. Rewrite using `[Matrix.ext_iff_trace_mul_left]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `X`. Establish `h1` using `LinearMap.congr_fun h X`. Rewrite `h1` using `[hΦ, hΦ]`. Conclude with `h1`. Establish `hsurj : Function.Surjective Φ` using `(LinearMap.injective_iff_surjective_of_finrank_eq_finrank Subspace.dual_finrank_eq.symm).1 hinj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩` from `hsurj g`. Establish `hgC : ∀ A, g A = (A * C).trace` using `fun A => by rw [← hC, hΦ]`. Establish `hcomm : ∀ B, B * C = C * B`. Introduce `B`. Rewrite using `[Matrix.ext_iff_trace_mul_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `A`. Combine the equalities or inequalities in the displayed calculation. Establish `hcen : C ∈ Subalgebra.center ℂ (Matrix (Fin n) (Fin n) ℂ)`. Rewrite using `[Subalgebra.mem_center_iff]`. Conclude with `hcomm`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `Algebra.mem_bot.1 (Algebra.IsCentral.out hcen)`. Use `⟨c, fun A => ?_⟩` and prove the remaining obligations. Rewrite using `[hgC, ← hc, Algebra.algebraMap_eq_smul_one, Matrix.mul_smul, Matrix.mul_one, Matrix.trace_smul, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_unique_matrix {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] ℂ)
     (hg : ∀ A B, g (A * B) = g (B * A)) :

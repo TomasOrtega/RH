@@ -18,41 +18,37 @@ noncomputable section
 namespace GlobalTheory.FieldPair
 
 /- English proof (translation)
-Introduce `K L _ _ cK cL n r R T ι ψ τ x P P0 hE hx hP hP0 hord`. Establish `hιinj : Function.Injective ι` using `fun a b h => by`. Use `congrArg ψ h` as an intermediate fact. Rewrite `this` using `[hE.retr, hE.retr]`. Then use the resulting hypothesis. Use `haveI : IsFractionRing R K := IsFractionRing.of_field R K fun z => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha, b, hb, hb0, e⟩` from `hE.base.frac z`. Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, eq_div_of_mul_eq hb0 e⟩`. Establish `hginj : Function.Injective (T.subtype.comp ι)` using `Subtype.val_injective.comp hιinj`. Set `j : K →+* L` to `IsFractionRing.lift hginj`. Establish `hj : ∀ g : R, j (g : K) = (ι g : L)` using `fun g => IsFractionRing.lift_algebraMap hginj g`.
+Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hordK : ∀ f : K, f ≠ 0 → P.ord (j f) = P0.ord f`. Introduce `f hf`. Take `⟨a, ha, b, hb, hb0, e⟩` from `hE.base.frac f`. Establish `ha0 : a ≠ 0` using `by rw [← e]; exact mul_ne_zero hf hb0`. Establish `ef : f = a * b⁻¹` using `by rw [← e, mul_inv_cancel_right₀ hb0]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjb : j b ≠ 0` using `(map_ne_zero j).2 hb0`. Establish `hja : j a ≠ 0` using `(map_ne_zero j).2 ha0`. Establish `hga : (⟨a, ha⟩ : R) ≠ 0` using `fun h => ha0 (congrArg Subtype.val h)`. Establish `hgb : (⟨b, hb⟩ : R) ≠ 0` using `fun h => hb0 (congrArg Subtype.val h)`. Establish `h1` using `hord _ hga`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hord _ hgb`. Rewrite `h1`, `h2` using `[← hj]`. Rewrite using `[ef, map_mul, map_inv₀, P.ord_mul hja (inv_ne_zero hjb), P.ord_inv, P0.ord_mul ha0 (inv_ne_zero hb0), P0.ord_inv]`. Simplify using `only at h1 h2`. Rewrite using `[h1, h2]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA : ∀ f ∈ P0.ring, j f ∈ P.ring`. Introduce `f hf`. Distinguish the cases in `h0 : f = 0`. Rewrite using `[h0, map_zero]`. Conclude with `P.ring.zero_mem`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hj0 : j f ≠ 0` using `(map_ne_zero j).2 h0`. Rewrite using `[← P.ord_nonneg_iff hj0, hordK f h0, P0.ord_nonneg_iff h0]`. Conclude with `hf`. Establish `hτ : ∀ i, (τ i : L) ∈ P.ring` using `fun i => hP.1 _ (τ i).2`. Set `ρ : P0.ring →+* P.ring` to `j.restrict P0.ring P.ring hA`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Set `τ' : Fin r → P.ring` to `fun i => ⟨τ i, hτ i⟩`. Establish `hc : ρ.comp P0.const = P.const`. Use extensionality with `a`. Express the relevant statement in the definitionally equal form `j (cK a) = cL a`. Use `hj ⟨cK a, hE.base.const_mem a⟩` as an intermediate fact.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Rewrite `this` using `[hE.const a]`. Conclude with `this`. Establish `hFE` using `GlobalTheory.T.formallyEtale_polynomialPlace_to_place cK cL r R T ι ψ τ P P0 j hE hP hP0 hj hA hτ`. Use `letI := P0.const.toAlgebra`. Use `letI := cK.toAlgebra`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : IsScalarTower ℂ P0.ring K := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Algebra.EssFiniteType ℂ P0.ring := P0.essFiniteType`. Use `haveI := formallySmooth_of_isRegularLocalRing_of_perfectField ℂ P0.ring`. Take `⟨t0, ht0⟩` from `IsDiscreteValuationRing.exists_irreducible P0.ring`. Take `⟨m, z, b, -, hb⟩` from `exists_basis_kaehler_uniformiser ℂ ht0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h1` using `trdeg_eq_of_basis_kaehler ℂ K b`. Establish `h2` using `IsTranscendenceBasis.cardinalMk_eq_trdeg (R := ℂ) hx`. Rewrite `h2` using `[h1, Cardinal.mk_fin]`. Take `rfl : n = m + 1` from `by exact_mod_cast h2`. Establish `hω0 : IsFreeGen P0.ring (dForm P0.const z)` using `isFreeGen_dForm z b hb`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hF : IsFreeGen P.ring (dForm P.const (Fin.append τ' (fun i => ρ (z i))))` using `GlobalTheory.T.isFreeGen_wedgeForm_of_formallyEtale_mvPolynomial P0.const P.const ρ hc z b hb τ' hFE`. Use `haveI : Algebra.FormallyEtale P0.ring K := .of_isLocalization (nonZeroDivisors P0.ring)`. Set `bK : Module.Basis (Fin (m + 1)) K (Omega cK)` to `(KaehlerDifferential.isBaseChange_of_formallyEtale ℂ P0.ring K).basis b`. Establish `hbK : ∀ i, bK i = dFun cK (z i : K)`. Introduce `i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 
-Simplify using `only [bK, IsBaseChange.basis_apply, hb]`. Conclude with `KaehlerDifferential.map_D ℂ ℂ P0.ring K (z i)`. Establish `hrat0 : P0.toRat (m + 1) (dForm P0.const z) = dForm cK (fun i => (z i : K))` using `formMap_dForm _ rfl z`. Establish `hratP : P.toRat (r + (m + 1)) (dForm P.const (Fin.append τ' (fun i => ρ (z i)))) = dForm cL (Fin.append (fun i => (τ i : L)) (fun i => j (z i : K)))`. Use `(formMap_dForm _ rfl _).trans (congrArg _ (funext fun k => ?_))` and prove the remaining obligations.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Fin.addCases (fun i => ?_) (fun i => ?_) k` and prove the remaining obligations. Simplify using `only [Fin.append_left]`. Both sides reduce to the same expression. Simplify using `only [Fin.append_right]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨f, hf⟩` from `(P0.isFreeGen_toRat hω0).2 (dForm cK (fun i => (x i : K)))`. Simplify using `only at hf`. Establish `hxK` using `isFreeGen_dForm_of_trBasis cK hx`. Establish `hf0 : f ≠ 0`. Introduce and unpack `rfl`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hf` using `[zero_smul]`. Conclude with `one_ne_zero (hxK.1 (a₁ := 1) (a₂ := 0) (by simp [← hf]))`. Establish `hK : P0.formOrd (dForm cK (fun i => (x i : K))) = P0.ord f`. Rewrite using `[← hf]`. Conclude with `P0.formOrd_smul_toRat hω0 hf0`.
-
-Establish `key` using `GlobalTheory.T.kaehlerWedgeForm_map_eq_smul_of_basis cK cL j (RingHom.ext fun a => by`. Express the relevant statement in the definitionally equal form `j (cK a) = cL a`. Use `hj ⟨cK a, hE.base.const_mem a⟩` as an intermediate fact. Rewrite `this` using `[hE.const a]`. Conclude with `this) (fun i => (x i : K)) (fun i => (z i : K)) bK hbK f`.
-
-Use the proof step `(by rw [← hf, hrat0]) (fun i => (τ i : L))`. Establish `e1 : (fun i => j (x i : K)) = fun i => (ι (x i) : L)` using `funext fun i => hj (x i)`. Rewrite `key` using `[e1, ← hratP]`. Rewrite using `[key, P.formOrd_smul_toRat hF ((map_ne_zero j).2 hf0), hordK f hf0, hK]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formOrd_append_of_ord_eq : ∀ {K L : Type} [Field K] [Field L] (cK : ℂ →+* K) (cL : ℂ →+* L) (n r : ℕ) (R : Subring K) (T : Subring L)
     (ι : R →+* T) (ψ : T →+* R) (τ : Fin r → T) (x : Fin n → R) (P : Place cL) (P0 : Place cK),

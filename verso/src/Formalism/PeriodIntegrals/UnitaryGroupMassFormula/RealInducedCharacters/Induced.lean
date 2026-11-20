@@ -16,9 +16,9 @@ open scoped Classical in
 noncomputable def dot (x : G) : K := if hx : x ∈ H then ((ψ ⟨x, hx⟩ : Kˣ) : K) else 0
 
 /- English proof (translation)
-Unfold `dot`. Distinguish the cases in `ha : a ∈ H`. Rewrite using `[dif_pos ha, dif_pos hb, dif_pos (H.mul_mem ha hb), ← Units.val_mul, ← map_mul]`. Both sides reduce to the same expression. Establish `hab : a * b ∉ H` using `fun h => ha (by`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `H.mul_mem h (H.inv_mem hb)` as an intermediate fact. Rewrite using `[mul_inv_cancel_right] at this)` and apply the resulting hypothesis. Rewrite using `[dif_neg ha, dif_neg hab, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_mul_of_mem {a b : G} (hb : b ∈ H) : dot H ψ a * dot H ψ b = dot H ψ (a * b) := by
   classical
@@ -32,11 +32,11 @@ theorem dot_mul_of_mem {a b : G} (hb : b ∈ H) : dot H ψ a * dot H ψ b = dot 
     rw [dif_neg ha, dif_neg hab, zero_mul]
 
 /- English proof (translation)
-Unfold `dot`. Distinguish the cases in `hy : y ∈ H`. Establish `hm : h⁻¹ * y * h ∈ H` using `H.mul_mem (H.mul_mem (H.inv_mem hh) hy) hh`. Rewrite using `[dif_pos hy, dif_pos hm]`. Establish `e : (⟨h⁻¹ * y * h, hm⟩ : H) = (⟨h, hh⟩ : H)⁻¹ * ⟨y, hy⟩ * ⟨h, hh⟩` using `rfl`.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[e, map_mul, map_mul, map_inv, mul_comm, mul_inv_cancel_left]`. Establish `hm : h⁻¹ * y * h ∉ H` using `fun hm => hy (by`. Establish `e : y = h * (h⁻¹ * y * h) * h⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `H.mul_mem (H.mul_mem hh hm) (H.inv_mem hh))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_neg hy, dif_neg hm]`.
+A detailed English derivation is pending.
 -/
 theorem dot_conj {h : G} (hh : h ∈ H) (y : G) : dot H ψ (h⁻¹ * y * h) = dot H ψ y := by
   classical
@@ -58,11 +58,9 @@ noncomputable def indMat (g : G) : Matrix (Fin m) (Fin m) K :=
   fun i j => dot H ψ ((t i)⁻¹ * g * t j)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [indMat, mul_one]`. Rewrite using `[Matrix.one_apply]`. Unfold `dot`. Use `split_ifs with h1 h2 h2`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Substitute using the available equality.
 
-Substitute `h2` using the available equality. Establish `e : (⟨(t i)⁻¹ * t i, h1⟩ : H) = 1` using `Subtype.ext (inv_mul_cancel _)`. Rewrite using `[e, map_one, Units.val_one]`. Conclude with `absurd ((ht i j).mp h1) h2`. Conclude with `absurd ((ht i j).mpr h2) h1`.
-
-Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem indMat_one (ht : ∀ i j, (t i)⁻¹ * t j ∈ H ↔ i = j) : indMat H ψ t 1 = 1 := by
   classical
@@ -79,15 +77,15 @@ theorem indMat_one (ht : ∀ i j, (t i)⁻¹ * t j ∈ H ↔ i = j) : indMat H �
   · rfl
 
 /- English proof (translation)
-Use extensionality with `i k`. Rewrite using `[Matrix.mul_apply]`. Take `⟨j0, hj0⟩` from `hc (g' * t k)`. Establish `hb : (t j0)⁻¹ * g' * t k ∈ H` using `by rwa [mul_assoc]`. Rewrite using `[Finset.sum_eq_single j0]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [indMat]`. Rewrite using `[dot_mul_of_mem H ψ hb]`. Use `congr 1`. Use `group`. Introduce `j _ hj`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [indMat]`. Establish `hz : dot H ψ ((t j)⁻¹ * g' * t k) = 0` using `by classical`. Unfold `dot`. Rewrite using `[dif_neg]`. Introduce `hm`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hj` to reduce the goal to its premises. Rewrite using `[← ht j j0]`. Establish `e : (t j)⁻¹ * t j0 = ((t j)⁻¹ * g' * t k) * ((t j0)⁻¹ * g' * t k)⁻¹` using `by group`. Rewrite using `[e]`. Conclude with `H.mul_mem hm (H.inv_mem hb)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hz, mul_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+A detailed English derivation is pending.
 -/
 theorem indMat_mul (ht : ∀ i j, (t i)⁻¹ * t j ∈ H ↔ i = j) (hc : ∀ x : G, ∃ i, (t i)⁻¹ * x ∈ H)
     (g g' : G) : indMat H ψ t (g * g') = indMat H ψ t g * indMat H ψ t g' := by
@@ -123,7 +121,7 @@ noncomputable def indRep (ht : ∀ i j, (t i)⁻¹ * t j ∈ H ↔ i = j) (hc : 
   map_mul' g g' := by rw [indMat_mul H ψ t ht hc, Matrix.toLin'_mul]; rfl
 
 /- English proof (translation)
-Use `show LinearMap.trace K (Fin m → K) (Matrix.toLin' (indMat H ψ t g)) = _`. Rewrite using `[Matrix.trace_toLin'_eq]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem indRep_trace (ht : ∀ i j, (t i)⁻¹ * t j ∈ H ↔ i = j) (hc : ∀ x : G, ∃ i, (t i)⁻¹ * x ∈ H)
     (g : G) : LinearMap.trace K (Fin m → K) (indRep H ψ t ht hc g) = ∑ i, dot H ψ ((t i)⁻¹ * g * t i) := by
@@ -132,17 +130,17 @@ theorem indRep_trace (ht : ∀ i j, (t i)⁻¹ * t j ∈ H ↔ i = j) (hc : ∀ 
   rfl
 
 /- English proof (translation)
-Use `show (Nat.card H : K)⁻¹ * ∑ x : G, dot H ψ (x⁻¹ * g * x) = _`. Set `f : Fin m × H → G` to `fun p => t p.1 * p.2`. Establish `hf : Function.Bijective f`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨i, h⟩ ⟨j, h'⟩ hij`.
+Introduce a local definition for the expression. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 
-Simplify using `only [f] at hij`. Establish `hij' : i = j`. Rewrite using `[← ht i j]`. Establish `e : (t i)⁻¹ * t j = (h : G) * (h' : G)⁻¹`. Rewrite using `[eq_mul_inv_iff_mul_eq, mul_assoc, ← hij, inv_mul_cancel_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `H.mul_mem h.2 (H.inv_mem h'.2)`. Substitute `hij'` using the available equality. Establish `: (h : G) = h'` using `mul_left_cancel hij`. Rewrite using `[Subtype.ext this]`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x`. Take `⟨i, hi⟩` from `hc x`. Conclude with `⟨⟨i, ⟨_, hi⟩⟩, by simp [f]⟩`. Rewrite using `[← Fintype.sum_bijective f hf (fun p => dot H ψ ((f p)⁻¹ * g * f p)) _ (fun _ => rfl), Fintype.sum_prod_type]`. Establish `hin : ∀ i, ∑ h : H, dot H ψ ((f (i, h))⁻¹ * g * f (i, h)) = (Fintype.card H : K) * dot H ψ ((t i)⁻¹ * g * t i)`.
+Supply the required witnesses or components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Establish `: ∀ h : H, dot H ψ ((f (i, h))⁻¹ * g * f (i, h)) = dot H ψ ((t i)⁻¹ * g * t i)`. Introduce `h`. Establish `e : (f (i, h))⁻¹ * g * f (i, h) = (h : G)⁻¹ * ((t i)⁻¹ * g * t i) * h`. Simplify using `only [f]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[e, dot_conj H ψ h.2]`. Rewrite using `[Finset.sum_congr rfl fun h _ => this h, Finset.sum_const, Finset.card_univ, nsmul_eq_mul]`. Rewrite using `[Finset.sum_congr rfl fun i _ => hin i, ← Finset.mul_sum, ← mul_assoc, Nat.card_eq_fintype_card, inv_mul_cancel₀ (Nat.cast_ne_zero.mpr Fintype.card_ne_zero), one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem indFun_eq_sum [Fintype G] [CharZero K] (ht : ∀ i j, (t i)⁻¹ * t j ∈ H ↔ i = j)
     (hc : ∀ x : G, ∃ i, (t i)⁻¹ * x ∈ H) (g : G) :

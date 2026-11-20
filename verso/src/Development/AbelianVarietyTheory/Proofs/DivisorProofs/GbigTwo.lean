@@ -26,9 +26,9 @@ namespace GlobalTheory.SqStepBig
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels (Base Geo Chars)
 
 /- English proof (translation)
-Take `⟨a1, h1⟩` from `h1`. Take `⟨a2, h2⟩` from `h2`. Use `⟨max a1 a2, fun ε CF hCF => ?_⟩` and prove the remaining obligations. Take `⟨c1, x1, g1⟩` from `h1 ε CF (le_trans (le_max_left _ _) hCF)`. Take `⟨c2, x2, g2⟩` from `h2 ε CF (le_trans (le_max_right _ _) hCF)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨max c1 c2, max x1 x2, fun C hC D large₂ hε hx hR T Lc μ₀ hμ G => H G μ₀ C _ _ ?_ ?_⟩` and prove the remaining obligations. Conclude with `g1 C (le_trans (le_max_left _ _) hC) D large₂ hε (le_trans (le_max_left _ _) hx) hR T Lc μ₀ hμ G`. Conclude with `g2 C (le_trans (le_max_right _ _) hC) D large₂ hε (le_trans (le_max_right _ _) hx) hR T Lc μ₀ hμ G`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem gbig_two {Q1 Q2 Q : GP} (h1 : GBig Q1) (h2 : GBig Q2)
     (H : ∀ {D : D7} {T : Type} {Lc : LevCh D T} {sc : GlobalTheory.ChiGrid.Consts} (G : GridData Lc sc) (μ₀ : T) (C x b : ℝ),

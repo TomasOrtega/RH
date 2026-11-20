@@ -13,9 +13,9 @@ namespace PI.UnitaryDimensionFormula
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Establish `hk1 : (((1 : Hfin X u) : X.B.I.Gf) * X.xu u)⁻¹ * ((s : X.B.I.Gf) * X.xu u) ∈ X.B.I.Kset`. Simplify `hs` using `[cj, mul_assoc]`. Establish `hk2 : ((s : X.B.I.Gf) * X.xu u)⁻¹ * (((1 : Hfin X u) : X.B.I.Gf) * X.xu u) ∈ X.B.I.Kset`. Establish `hi` using `PI.UnitaryDimensionFormula.kset_inv hs`. Simplify `hi` using `[cj, mul_assoc, mul_inv_rev]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hg` using `NormCutK.colGood X u 1 s hk1 hk2`. Simplify `hg` using `[cj, mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem cj_good {D : D7} {X : HidaSetting D} (u : D.what₂.Word) (s : Hfin X u) (hs : cj X u s ∈ X.B.I.Kset) :
     NormCutK.Good X (cj X u s) := by
@@ -28,9 +28,9 @@ theorem cj_good {D : D7} {X : HidaSetting D} (u : D.what₂.Word) (s : Hfin X u)
   simpa [cj, mul_assoc] using hg
 
 /- English proof (translation)
-Introduce `D X Y u _`. Use `⟨NormCutK.levi_one (TR := Y.TR), fun s t hs ht => ?_, fun s hs hKu v => ?_⟩` and prove the remaining obligations. Establish `hst : cj X u (s * t) = cj X u s * cj X u t`. Simplify using `[cj, mul_assoc]`. Rewrite using `[hst, NormCutK.levi_mul (TR := Y.TR) (cj_good u s hs) (cj_good u t ht)]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `NormCutK.unitriangular_reduction_of_mem_level (TR := Y.TR) (cj_good u s hs) hKu v`.
+A detailed English derivation is pending.
 -/
 theorem idxHom : IdxHom := by
   intro D X Y u _

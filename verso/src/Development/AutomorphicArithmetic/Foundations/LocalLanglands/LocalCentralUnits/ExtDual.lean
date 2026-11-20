@@ -15,11 +15,11 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {r : IrrGL (w.adicCompletion E) → WD h}
 
 /- English proof (translation)
-Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨hl, hD⟩` from `hd`. Establish `hc : (Δ.first.nu ((Δ.len : ℂ) - 1)).IsCusp` using `Δ.isCusp_first.nu _`. Establish `hgn : GoodCusp (Δ.first.nu ((Δ.len : ℂ) - 1))`. Rewrite using `[IrrGL.nu]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `((clBasic _ Δ.first).2.1 _ _).2.2.1.2 hg`. Establish `e1` using `H.dual _ _ hc Δ'.isCusp_first hgn hD`. Establish `e2 : Δ.first.nu ((Δ.len : ℂ) - 1) = Δ.first.nu (((Δ.len : ℝ) - 1 : ℝ) : ℂ)` using `by push_cast; rfl`. Rewrite `e1` using `[e2, H.nu _ Δ.isCusp_first]`. Take `⟨hS, hT, hP⟩` from `GlobalTheory.T.weilDeligneParam_dual_listSum_absTwist_special E Ω A w h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[e1, hl, hP, hT, hT, WD.lpTw_add]`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem summand_dual (H : CuspT a ha r) {Δ Δ' : Segment (w.adicCompletion E)}
     (hg : GoodCusp Δ.first) (hd : SegDual Δ Δ') :
@@ -40,7 +40,7 @@ private theorem summand_dual (H : CuspT a ha r) {Δ Δ' : Segment (w.adicComplet
   ring
 
 /- English proof (translation)
-Proceed by induction on `hF with`. Consider the case `nil => rfl`. Consider the case `@cons Δ Δ' l l' hd _ ih`. Rewrite using `[List.map_cons, List.map_cons, ih (fun x hx => hg x (List.mem_cons_of_mem _ hx)), summand_dual H (hg _ List.mem_cons_self) hd]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 private theorem map_summand_dual (H : CuspT a ha r) {l l' : List (Segment (w.adicCompletion E))}
     (hg : ∀ Δ ∈ l, GoodCusp Δ.first) (hF : List.Forall₂ SegDual l l') :
@@ -55,9 +55,9 @@ private theorem map_summand_dual (H : CuspT a ha r) {l l' : List (Segment (w.adi
 end UpperTheory.Zero.LLC
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a ha r rc H hE n π π' hg hπ`. Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨𝔪, h𝔪⟩` from `UpperTheory.Zero.LLC.Pr.exh _ (cls π)`. Establish `hL : IsL ((𝔪.toList : List _) : Multiset (Segment (w.adicCompletion E))) (cls π).rep`. Rewrite using `[Multiset.coe_toList]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `h𝔪`. Take `⟨l', hF, hL'⟩` from `(UpperTheory.Zero.LLC.Pr.dual (w.adicCompletion E)).2 𝔪.toList (cls π) (cls π') hL ⟨n, π, π', rfl, rfl, hπ⟩`. Establish `hgl` using `((UpperTheory.Zero.LLC.goodSeg (w.adicCompletion E)).1 _ _ hL).1 hg`. Rewrite using `[hE _ _ hL, hE _ _ hL', segSum, segSum, (GlobalTheory.T.weilDeligneParam_dual_listSum_absTwist_special E Ω A w h).1, List.map_map]`. Conclude with `congrArg sumList (UpperTheory.Zero.LLC.map_summand_dual H hgl hF)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Zero.LLC.extDual :
     UpperTheory.Zero.LLC.ExtDual := by

@@ -12,11 +12,11 @@ open scoped TensorProduct
 open Formalism.MainNotions.S PI.ScRefExists
 
 /- English proof (translation)
-Establish `: CharZero (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v)` using `charZero_of_injective_algebraMap (algebraMap I.F (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v)).injective`. Establish `h2K : (2 : Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) ≠ 0` using `two_ne_zero`. Take `⟨p1, h1, h2, h3, h4⟩` from `exists_adapted_first_projection (K := Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Fv I.F v) I.cm.sig (PI.UnitaryGroupMassFormula.AdIndexEq.spl_sig_sig I) (PI.UnitaryGroupMassFormula.AdIndexEq.spl_sig_fix I) I.cm.deg2 h2K (PI.FinKW.psiV I v Rf.ew) hsum (eps_orth Rf v …`. Use `⟨p1, ⟨h1, h2, h3, ?_⟩, h4⟩` and prove the remaining obligations. Introduce and unpack `x ⟨z, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨fp, hm, hf⟩` from `NumberField.RingOfIntegers.isIntegral_coe z`. Establish `hf' : Polynomial.eval₂ (algebraMap ℤ I.E) (algebraMap (𝓞 I.E) I.E z) fp = 0` using `hf`. Use `show (p1.comp (PI.UnitaryGroupMassFormula.AdIndexEq.inclV I v)) (algebraMap (𝓞 I.E) I.E z) ∈ OV I v`. Use `(Valuation.valuationSubring.integers (Valued.v (R := v.adicCompletion I.F))).mem_of_integral ⟨fp.map (Int.castRingHom _), hm.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hc : (algebraMap (Valued.v (R` using `v.adicCompletion I.F)).valuationSubring (v.adicCompletion I.F)).comp (Int.castRingHom (Valued.v (R := v.adicCompletion I.F)).valuationSubring) = (p1.comp (PI.UnitaryGroupMassFormula.AdIndexEq.inclV I v)).comp (algebraMap ℤ I.E) := RingHom.ext_int _ _`. Rewrite using `[hc, ← Polynomial.hom_eval₂, hf', map_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locSplitP_dec (I : AutInst) (g r k : ℕ) (e f : Fin r → Fin I.n → I.E) (Rf : RefData I g r k e f)
     (v : HeightOneSpectrum (𝓞 I.F)) (hsum : SumOne I v (PI.FinKW.psiV I v Rf.ew)) :
@@ -44,7 +44,7 @@ theorem locSplitP_dec (I : AutInst) (g r k : ℕ) (e f : Fin r → Fin I.n → I
   rw [hc, ← Polynomial.hom_eval₂, hf', map_zero]
 
 /- English proof (translation)
-Introduce `I g r k e f Rf v hsum`. Take `⟨p1, hp, -⟩` from `locSplitP_dec I g r k e f Rf v hsum`. Conclude with `⟨p1, hp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem local_splitting_projection : LocSplitP := by
   intro I g r k e f Rf v hsum

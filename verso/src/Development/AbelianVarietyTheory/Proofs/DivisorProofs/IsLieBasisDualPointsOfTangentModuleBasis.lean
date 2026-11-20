@@ -25,47 +25,45 @@ noncomputable section
 namespace GlobalTheory.VertCoeffRing
 
 /- English proof (translation)
-Introduce `R _ G _ _ n v`. Establish `hE : (overAt (𝟙 (Sp R)) (DualNumber R)).hom = (epsR R).hom`. Simplify using `[epsR, overAt]`. Set `e : epsR R ⟶ overAt (𝟙 (Sp R)) (DualNumber R)` to `Over.homMk (𝟙 _) (by simp [hE])`. Set `f : overAt (𝟙 (Sp R)) (DualNumber R) ⟶ epsR R` to `Over.homMk (𝟙 _) (by simp [hE])`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hfe : f ≫ e = 𝟙 _` using `Over.OverMorphism.ext (by simp [e, f])`. Establish `hef : e ≫ f = 𝟙 _` using `Over.OverMorphism.ext (by simp [e, f])`. Establish `htv : ∀ x : TanM (𝟙 (Sp R)) G, tvE x = e ≫ tv x`. Introduce `x`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Use `first`. Consider the case `(simp only [e, Over.comp_left, Over.homMk_left, Category.id_comp]; exact tvE_left x)`. Consider the case `simp [e, tvE_left x]`. Establish `hadd : ∀ x y : TanM (𝟙 (Sp R)) G, tvE (x + y) = tvE x * tvE y`. Introduce `x y`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htv, htv, htv, PullbackSections.tv_add, MonObj.comp_mul]`. Establish `hzero : tvE (0 : TanM (𝟙 (Sp R)) G) = 1`. Rewrite using `[htv, PullbackSections.tv_zero, MonObj.comp_one]`. Establish `hsmul : ∀ (a : R) (x : TanM (𝟙 (Sp R)) G), (tvE (a • x)).left = spMap (epsScaleR a) ≫ (tvE x).left`. Introduce `a x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[tvE_left, tvE_left, PullbackSections.tv_smul]`. Use `first`. Consider the case `rfl`. Consider the case `(simp only [smT.eq_1, Formalism.L2.Pj.homAt.eq_1, Over.comp_left, Over.homMk_left, tm.eq_1, epsScaleR.eq_1]; rfl)`. Establish `hinj : ∀ x y : TanM (𝟙 (Sp R)) G, tvE x = tvE y → x = y`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x y h`. Apply `PullbackSections.tanM_ext` to reduce the goal to its premises. Establish `h'` using `congrArg (fun t => f ≫ t) h`. Simplify `h'` using `[htv, ← Category.assoc, hfe]`. Establish `hsum : ∀ (c : Fin n → R) (s : Finset (Fin n)), tvE (∑ i ∈ s, c i • v i) = ∏ i ∈ s, tvE (c i • v i)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `c s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simpa using hzero`. Consider the case `@insert a s ha ih => rw [Finset.sum_insert ha, Finset.prod_insert ha, hadd, ih]`. Establish `hcomb : ∀ (c : Fin n → R) (w : epsR R ⟶ G), IsLieComb c (fun a => tvE (v a)) w ↔ w = tvE (∑ i, c i • v i)`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `c w`. Rewrite using `[IsLieComb.eq_1, hsum]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, rfl⟩`. Rewrite using `[List.prod_ofFn]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun i _ => Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[hu i, hsmul]`. Introduce and unpack `rfl`. Conclude with `⟨fun i => tvE (c i • v i), fun i => hsmul _ _, by rw [List.prod_ofFn]⟩`. Establish `hfa : (TrivSqZeroExt.fstHom R R R).toRingHom.comp (algebraMap R (DualNumber R)) = RingHom.id R`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `r`. Simplify using the standard rewrite rules. Establish `hdual : spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ spMap (algebraMap R (DualNumber R)) = 𝟙 _`. Simplify using `only [spMap.eq_1, ← Spec.map_comp, ← CommRingCat.ofHom_comp, hfa, CommRingCat.ofHom_id, Spec.map_id]`. Apply the tactic sequence `all_goals rfl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hz : spMap (epsScaleR (0 : R)) = spMap (algebraMap R (DualNumber R)) ≫ spMap (TrivSqZeroExt.fstHom R R R).toRingHom`. Establish `h0 : epsScaleR (0 : R) = (algebraMap R (DualNumber R)).comp (TrivSqZeroExt.fstHom R R R).toRingHom`. Use `RingHom.ext fun x => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Apply the tactic sequence `all_goals first`. Consider the case `(simp [epsScaleR]; done)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]; done)`. Consider the case `(simp [epsScaleR.eq_1, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.fstHom_apply, TrivSqZeroExt.fst_map, TrivSqZeroExt.snd_map]; done)`. Consider the case `rfl`. Consider the case `(simp [epsScaleR]; rfl)`. Rewrite using `[h0]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Simplify using `only [spMap.eq_1, CommRingCat.ofHom_comp, Spec.map_comp]`. Establish `hu : (toUnit (overAt (𝟙 (Sp R)) (DualNumber R))).left = spMap (algebraMap R (DualNumber R))` using `by first`. Consider the case `simp [overAt]`. Consider the case `(have h := Over.w (toUnit (overAt (𝟙 (Sp R)) (DualNumber R))); simpa [overAt] using h)`. Establish `hone : (1 : overAt (𝟙 (Sp R)) (DualNumber R) ⟶ G).left = spMap (algebraMap R (DualNumber R)) ≫ (η : 𝟙_ (Over (Sp R)) ⟶ G).left`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `key : ∀ g : overAt (𝟙 (Sp R)) (DualNumber R) ⟶ G, smT (𝟙 (Sp R)) 0 g = 1 ↔ IsTangent (e ≫ g)`. Introduce `g`. Rewrite using `[IsTangent.eq_1]`. Establish `hl : (smT (𝟙 (Sp R)) 0 g).left = spMap (algebraMap R (DualNumber R)) ≫ spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ g.left`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, ← hz]`. Use `first`. Consider the case `rfl`. Consider the case `(simp only [smT.eq_1, Formalism.L2.Pj.homAt.eq_1, Over.comp_left, Over.homMk_left, tm.eq_1, epsScaleR.eq_1]; rfl)`. Establish `he : ∀ t : overAt (𝟙 (Sp R)) (DualNumber R) ⟶ G, spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ (e ≫ t).left = spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ t.left`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `t`. Simplify using `[e]`. Rewrite using `[he]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `congrArg Over.Hom.left h`. Rewrite `h2` using `[hl, hone]`. Establish `h3` using `congrArg (fun t => spMap (TrivSqZeroExt.fstHom R R R).toRingHom ≫ t) h2`. Simplify `h3` using `only [← Category.assoc, hdual, Category.id_comp]`. Introduce `h`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[hl, hone, h]`. Establish `htan : ∀ x, IsTangent (tvE x)` using `fun x => by`. Rewrite using `[htv]`. Conclude with `(key (tv x)).1 (PullbackSections.tv_mem x)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsurj : ∀ w : epsR R ⟶ G, IsTangent w → ∃ x, tvE x = w`. Introduce `w hw`. Establish `hw' : IsTangent (e ≫ (f ≫ w))` using `by rwa [← Category.assoc, hef, Category.id_comp]`. Use `⟨PullbackSections.mkT (f ≫ w) ((key _).2 hw'), ?_⟩` and prove the remaining obligations. Rewrite using `[htv, PullbackSections.tv_mkT, ← Category.assoc, hef, Category.id_comp]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[IsLieBasis.eq_1]`. Use `⟨fun i => htan (v i), fun w hw => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `hsurj w hw`. Use `⟨⇑(v.repr x), (hcomb _ _).2 ?_, fun c hc => ?_⟩` and prove the remaining obligations. Rewrite using `[v.sum_repr]`.
-
-Establish `h` using `hinj _ _ ((hcomb c _).1 hc)`. Rewrite using `[h, v.repr_sum_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isLieBasis_tvE : ∀ {R : Type} [CommRing R] {G : Over (Sp R)} [GrpObj G] [IsCommMonObj G] {n : ℕ}
     (v : Module.Basis (Fin n) R (TanM (𝟙 (Sp R)) G)), IsLieBasis (fun a => GlobalTheory.VertCoeffRing.tvE (v a)) := by

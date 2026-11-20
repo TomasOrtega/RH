@@ -11,9 +11,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.ChiGrid.StairConj
 
 /- English proof (translation)
-Rewrite using `[← div_eq_mul_inv, ← div_eq_mul_inv, FractionalIdeal.mem_div_iff_of_ne_zero hB, FractionalIdeal.mem_div_iff_of_ne_zero hB']`. Prove the components needed by the constructor for the conclusion. Introduce `h y hy`. Establish `h1` using `(hA _).1 (h (c y) ((hBB _).2 (by rwa [hc])))`. Rewrite `h1` using `[hm, hc]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Introduce `h y hy`. Rewrite using `[hA, hm]`. Conclude with `h _ ((hBB _).1 hy)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_mul_inv_iff {E : Type} [Field E] [NumberField E] (c : E → E) (hc : ∀ x, c (c x) = x)
     (hm : ∀ x y, c (x * y) = c x * c y) {A A' B B' : FractionalIdeal (𝓞 E)⁰ E} (hB : B ≠ 0) (hB' : B' ≠ 0)
@@ -30,9 +30,9 @@ theorem mem_mul_inv_iff {E : Type} [Field E] [NumberField E] (c : E → E) (hc :
     exact h _ ((hBB _).1 hy)
 
 /- English proof (translation)
-Rewrite using `[FractionalIdeal.mem_coeIdeal, FractionalIdeal.mem_coeIdeal]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz, rfl⟩`. Conclude with `⟨D.host.conj • z, Ideal.smul_mem_pointwise_smul _ _ _ hz, rfl⟩`. Introduce and unpack `⟨z, hz, h⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨D.host.conj⁻¹ • z, Ideal.mem_pointwise_smul_iff_inv_smul_mem.1 hz, ?_⟩` and prove the remaining obligations. Rewrite using `[Formalism.L2.Pj.algebraMap_gal_smul, Formalism.L2.Pj.conj_inv_apply, h, Formalism.L2.Pj.conj_conj]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_coe_iff (D : D7) (I : Ideal (𝓞 D.host.E)) (x : D.host.E) :
     x ∈ (I : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ↔
@@ -46,7 +46,7 @@ theorem mem_coe_iff (D : D7) (I : Ideal (𝓞 D.host.E)) (x : D.host.E) :
     rw [Formalism.L2.Pj.algebraMap_gal_smul, Formalism.L2.Pj.conj_inv_apply, h, Formalism.L2.Pj.conj_conj]
 
 /- English proof (translation)
-Use `mul_ne_zero ?_ (inv_ne_zero (Formalism.L2.Pj.bB_ne D).1)` and prove the remaining obligations. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Introduce `h`. Conclude with `D.host.ccK_ne_bot ((Ideal.map_eq_bot_iff_of_injective (RingOfIntegers.algebraMap.injective _ _)).1 h)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   refine mul_ne_zero ?_ (inv_ne_zero (Formalism.L2.Pj.bB_ne D).1)
@@ -55,13 +55,13 @@ theorem AA_ne_zero (D : D7) : D.host.AA ≠ 0 := by
   exact D.host.ccK_ne_bot ((Ideal.map_eq_bot_iff_of_injective (RingOfIntegers.algebraMap.injective _ _)).1 h)
 
 /- English proof (translation)
-Introduce `D`. Establish `hs : ∀ x : D.host.E, star x = D.host.conj x` using `bridge_star_holds D.R D.host`. Establish `hA : ∀ x, x ∈ D.host.AAbar ↔ D.host.conj x ∈ D.host.AA` using `fun x => ⟨Formalism.L2.Pj.conj_mem_AA D, fun ha => by`. Simplify `Formalism.L2.Pj.conj_mem_AAbar D ha⟩` using `only [Formalism.L2.Pj.conj_conj]`. Use `⟨⟨AA_ne_zero D, fun x => by rw [hs]; exact hA x⟩, fun T L P sc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ((P.modul sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Rewrite using `[Ne, FractionalIdeal.coeIdeal_eq_zero]`. Conclude with `P.modul_ne_bot sc`. Establish `h2 : ((P.modulBar sc : Ideal (𝓞 D.host.E)) : FractionalIdeal (𝓞 D.host.E)⁰ D.host.E) ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h1` to reduce the goal to its premises. Rewrite `h`, the goal using `[FractionalIdeal.eq_zero_iff]`. Introduce `x hx`. Use `h _ ((mem_coe_iff D _ x).1 hx)` as an intermediate fact. Conclude with `(map_eq_zero _).1 this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨mul_ne_zero (AA_ne_zero D) (inv_ne_zero h2), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Conclude with `mem_mul_inv_iff D.host.conj (Formalism.L2.Pj.conj_conj D) (map_mul _) h2 h1 hA (mem_coe_iff D _) x`.
+A detailed English derivation is pending.
 -/
 theorem conj_AA_and_stA : ∀ (D : D7), (D.host.AA ≠ 0 ∧ ∀ x, x ∈ D.host.AAbar ↔ star x ∈ D.host.AA) ∧ ∀ (T : Type) (L : LevCh D T) (P : Places L) (sc : Consts), P.stA sc ≠ 0 ∧ ∀ x, x ∈ P.stAbar sc ↔ star x ∈ P.stA sc := by
   intro D

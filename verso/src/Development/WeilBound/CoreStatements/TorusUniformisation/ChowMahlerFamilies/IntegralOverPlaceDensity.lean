@@ -13,7 +13,7 @@ namespace PositivityTheory.Xgn.PlaceIntegralDensity
 variable {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Unfold `sheetDensity`. Use `split_ifs with hγ`. Rewrite using `[h _ hγ.choose_spec.2.self_of_nhds.2.1, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun σ _ => by ring`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sheetDensity_sum {S : Type} [Fintype S] {e : ℕ} (W : Ideal (MRing ι))
     (Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)) (ψ : Fin e → ((Σ k, ι k) → ℂ) → ℝ)
@@ -27,7 +27,7 @@ theorem sheetDensity_sum {S : Type} [Fintype S] {e : ℕ} (W : Ideal (MRing ι))
   · simp
 
 /- English proof (translation)
-Simplify using `only [finsum_mem_eq_finite_toFinset_sum _ hs, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finsum_mem_sum {α S : Type} [Fintype S] {s : Set α} (hs : s.Finite) (t : S → ℝ) (f : S → α → ℝ) :
     ∑ᶠ w ∈ s, ∑ σ, t σ * f σ w = ∑ σ, t σ * ∑ᶠ w ∈ s, f σ w := by
@@ -35,9 +35,9 @@ theorem finsum_mem_sum {α S : Type} [Fintype S] {s : Set α} (hs : s.Finite) (t
   exact Finset.sum_comm
 
 /- English proof (translation)
-Take `⟨σ₀, hσ₀, -⟩` from `existsUnique_ptOver _ _ _ _ y φ hO z hz`. Rewrite using `[hu σ₀ z hσ₀, Finset.sum_eq_single σ₀]`. Rewrite using `[((hχ σ₀).near σ₀ z hσ₀).self_of_nhds]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[((hχ b).near σ₀ z hσ₀).self_of_nhds]`. Simplify using `[Set.indicator, Ne.symm hb]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eq_sum {Ω : Type} [Field Ω] {F : Type} [Field F] [NumberField F] {y : (Σ k, ι k) → Ω} {φ : F →+* Ω}
     {t : (F →+* ℂ) → ℝ} {u : ((Σ k, ι k) → ℂ) → ℝ} {χ : (F →+* ℂ) → ((Σ k, ι k) → ℂ) → ℝ}
@@ -57,15 +57,15 @@ end PositivityTheory.Xgn.PlaceIntegralDensity
 
 open PositivityTheory.Xgn.PlaceIntegralDensity in
 /- English proof (translation)
-Introduce `hPI K _ ι _ Ω _ F _ _ y φ W n L t u χ hO hW hA hL hu hχ`. Establish `hmc : ∀ z ∈ mcPts W, z ∈ mcPts (mCoordIdeal y)` using `fun z hz => ⟨hz.1, fun f hf => hz.2 f (hW hf)⟩`. Establish `hsum : ∀ z ∈ mcPts W, u z = ∑ σ, t σ * χ σ z` using `fun z hz => eq_sum hO hu hχ (hmc z hz)`. Unfold `ptsIntegral`. Use `split_ifs with hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions.
 
-Unfold `ptsIntegralAt`. Establish `hfin` using `fibreFinite K ι W n hΨ.choose hA hΨ.choose_spec`. Establish `hpt : ∀ y', ∑ᶠ (w) (_ : w ∈ fibre W hΨ.choose y'), ∑ σ, t σ * sheetDensity W hΨ.choose (pot L) (χ σ) y' w = ∑ σ, t σ * ∑ᶠ (w) (_ : w ∈ fibre W hΨ.choose y'), sheetDensity W hΨ.choose (pot L) (χ σ) y' w` using `fun y' => finsum_mem_sum (hfin y') t (fun σ w => sheetDensity W hΨ.choose (pot L) (χ σ) y' w)`. Repeatedly rewrite using `[sheetDensity_sum W _ (pot L) t u χ hsum, hpt]`. Rewrite using `[MeasureTheory.integral_finset_sum]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Finset.sum_congr rfl fun σ _ => MeasureTheory.integral_const_mul (t σ) _`. Introduce `σ _`. Use `MeasureTheory.Integrable.const_mul ?_ (t σ)` and prove the remaining obligations. Set `A : HermLine ι` to `{ a := fun _ => 0 h := fun z => Real.exp (-χ σ z) pos := fun z _ => Real.exp_pos _ smul := fun c z hc => by simp [(hχ σ).inv c z hc] }`. Establish `hAs : IsSmoothHerm A` using `Real.contDiff_exp.comp_contDiffOn (hχ σ).smooth.neg`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsec : IsSectionOn W A 1` using `⟨fun _ => 0, fun k => by simp [A], isMultiHomog_one, fun h => hA.2.1.1.ne_top ((Ideal.eq_top_iff_one _).mpr h)⟩`. Establish `hlog : logNorm A 1 = χ σ`. Use function extensionality and compare the values at `z`. Simplify using `[logNorm, A, Real.exp_neg, Real.log_exp]`. Establish `hI` using `hPI K ι W n hΨ.choose L A 1 hA hΨ.choose_spec hL hAs hsec`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hI` using `[hlog]`. Conclude with `hI`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.integral_over_place_density : PtsIntegrableStatement → ∀ (K : Type) [Fintype K] (ι : K → Type) [∀ k, Fintype (ι k)] (Ω : Type) [Field Ω] (F : Type) [Field F] [NumberField F] (y : (Σ k, ι k) → Ω) (φ : F →+* Ω) (W : Ideal (MRing ι)) (n : ℕ) (L : Fin n → HermLine ι) (t : (F →+* ℂ) → ℝ) (u : ((Σ k, ι k) → ℂ) → ℝ) (χ : (F →+* ℂ) → ((Σ k, ι k) → ℂ) → ℝ), OverInt y φ → mCoordIdeal y ≤ W → IsArithVar W (n + 1) → (∀ j, IsSmoothHerm (L j)) → (∀ σ z, PtOver y φ σ z → u z = t σ) → (∀ σ, IsPlaceWeight y φ (Set.indicator {σ} 1) (χ σ)) → ptsIntegral W (pot L) u = ∑ σ : F →+* ℂ, t σ * ptsIntegral W (pot L) (χ σ) := by
   intro hPI K _ ι _ Ω _ F _ _ y φ W n L t u χ hO hW hA hL hu hχ

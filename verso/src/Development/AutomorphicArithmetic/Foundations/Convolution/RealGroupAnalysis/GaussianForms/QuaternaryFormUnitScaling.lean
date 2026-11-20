@@ -12,33 +12,33 @@ open UpperTheory.ConvolutionTheory.R2.C
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Simplify using `[ψ, AddChar.map_add_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem psi_add (x y : A F) : ψ (x + y) = ψ x * ψ y := by
   simp [ψ, AddChar.map_add_eq_mul]
 
 /- English proof (translation)
-Simplify using `only [q4, B4, Pi.add_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem quadraticForm_add_expand (δ : F) (x y : V4 F) : q4 δ (x + y) = q4 δ x + B4 δ x y + q4 δ y := by
   simp only [q4, B4, Pi.add_apply]
   ring
 
 /- English proof (translation)
-Simplify using `only [B4]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 private theorem quaternaryForm_unit_scaling (δ : F) (b : A F) (x y : V4 F) : B4 δ x (fun i => b * y i) = b * B4 δ x y := by
   simp only [B4]
   ring
 
 /- English proof (translation)
-Simplify using `[B4]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem quaternaryForm_zero_right (δ : F) (x : V4 F) : B4 δ x 0 = 0 := by
   simp [B4]
 
 /- English proof (translation)
-Simplify using `only [Pc, ft4]`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Rewrite using `[quaternaryForm_unit_scaling, quadraticForm_add_expand, mul_add, mul_add, psi_add, psi_add]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -52,7 +52,7 @@ private theorem pc_eq (δ : F) (b : A F) (φ : V4 F → ℂ) (y : V4 F) :
   ring
 
 /- English proof (translation)
-Establish `h` using `chirpQ F δ b 0 φ hφ`. Simplify `h` using `only [quaternaryForm_zero_right, add_zero]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem chirp_mem (δ : F) (b : A F) (φ : V4 F → ℂ) (hφ : φ ∈ schwartzBruhatPi F (Fin 4)) :
     (fun v => ψ (b * q4 δ v) * φ v) ∈ schwartzBruhatPi F (Fin 4) := by
@@ -60,7 +60,7 @@ private theorem chirp_mem (δ : F) (b : A F) (φ : V4 F → ℂ) (hφ : φ ∈ s
   simpa only [quaternaryForm_zero_right, add_zero] using h
 
 /- English proof (translation)
-Establish `h` using `UpperTheory.ConvolutionTheory.R2.D.sClos F (Fin 4) (Units.map (Matrix.scalar (Fin 4)).toMonoidHom b) φ hφ`. Use `h using 3 with v` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using `[Matrix.mulVec, dotProduct, Matrix.scalar, Matrix.diagonal_apply]`.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 private theorem scale_mem (b : (A F)ˣ) (φ : V4 F → ℂ) (hφ : φ ∈ schwartzBruhatPi F (Fin 4)) :
     (fun v : V4 F => φ fun i => (b : A F) * v i) ∈ schwartzBruhatPi F (Fin 4) := by
@@ -70,9 +70,9 @@ private theorem scale_mem (b : (A F)ˣ) (φ : V4 F → ℂ) (hφ : φ ∈ schwar
   simp [Matrix.mulVec, dotProduct, Matrix.scalar, Matrix.diagonal_apply]
 
 /- English proof (translation)
-Introduce `F _ _ δ`. Use `⟨pc_eq δ, fun hδ b φ hφ => ?_⟩` and prove the remaining obligations. Establish `e : Pc δ (b : A F) φ = fun y => ψ ((b : A F) * q4 δ y) * ft4 δ (fun x => ψ ((b : A F) * q4 δ x) * φ x) fun i => (b : A F) * y i`. Use function extensionality and compare the values at `(pc_eq δ b φ)`. Rewrite using `[e]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `chirp_mem δ b _ (scale_mem b _ (ftBasic F δ hδ _ (chirp_mem δ b φ hφ)).1)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.pcMem :
     ∀ (F : Type) [Field F] [NumberField F] (δ : F), (∀ b φ y, Pc δ b φ y = ψ (b * q4 δ y) * ft4 δ (fun x => ψ (b * q4 δ x) * φ x) fun i => b * y i) ∧

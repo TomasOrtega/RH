@@ -26,7 +26,7 @@ private def unitOf {M : ℕ} {A : CommRingCat.{0}} {x y : Ob (XC M) A} (f : x �
 private def vec {M : ℕ} {A : CommRingCat.{0}} (x : Ob (XC M) A) : Fin M → A := (show Um M A from x.pt).1
 
 /- English proof (translation)
-The claim follows from `congrFun (congrArg Subtype.val f.2) i`.
+A detailed English derivation is pending.
 -/
 private theorem unitOf_spec {M : ℕ} {A : CommRingCat.{0}} {x y : Ob (XC M) A} (f : x ⟶ y) (i : Fin M) :
     vec x i = (unitOf f : A) * vec y i :=
@@ -52,7 +52,7 @@ private def tau (M : ℕ) : (XC M).cat ⟶ pglCat M where
 private def tauS (M : ℕ) : spc (XC M) ⟶ PGL M := ofCatMap (tau M)
 
 /- English proof (translation)
-Use extensionality with `k T x`. Use `CategoryTheory.Functor.ext (fun _ => rfl) (fun a b h => ?_)` and prove the remaining obligations. Use `erw [eqToHom_refl, Category.id_comp, Category.comp_id]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 private theorem sq (S : Spc) (M : ℕ) :
     Sp.fst S (XC M) ≫ triv S M = (Sp.snd S (XC M) ≫ tauS M) ≫ PGL.pr M := by
@@ -62,7 +62,7 @@ private theorem sq (S : Spc) (M : ℕ) :
   rfl
 
 /- English proof (translation)
-Substitute `hv hw` using the available equality. Rewrite using `[eq_of_heq h]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem um_hom_val {M : ℕ} {A : Type} [CommRing A] {v v' w w' : Um M A} (hv : v = v') (hw : w = w')
     (f : v ⟶ w) (f' : v' ⟶ w') (h : HEq f f') : f.1 = f'.1 := by
@@ -70,9 +70,9 @@ private theorem um_hom_val {M : ℕ} {A : Type} [CommRing A] {v v' w w' : Um M A
   rw [eq_of_heq h]
 
 /- English proof (translation)
-Establish `ho : ∀ i, w.obj i = w'.obj i` using `fun i => by`. Use `congrArg (fun F : Fin (k + 1) ⥤ Um M A => F.obj i) h` as an intermediate fact. Conclude with `congrArg Ob.mk this`. Use `CategoryTheory.Functor.hext ho (fun a b f => Ob.hom_heq (ho a) (ho b) _ _ ?_)` and prove the remaining obligations. Establish `hh : HEq ((w ⋙ tauF M A).map f) ((w' ⋙ tauF M A).map f)` using `by rw [h]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `um_hom_val (congrArg Ob.pt (ho a)) (congrArg Ob.pt (ho b)) _ _ hh` as an intermediate fact. Conclude with `congrArg Prod.snd this`.
+A detailed English derivation is pending.
 -/
 private theorem tau_inj {M k : ℕ} {A : CommRingCat.{0}} (w w' : Fin (k + 1) ⥤ Ob (XC M) A)
     (h : w ⋙ tauF M A = w' ⋙ tauF M A) : w = w' := by
@@ -85,13 +85,13 @@ private theorem tau_inj {M k : ℕ} {A : CommRingCat.{0}} (w w' : Fin (k + 1) �
   exact congrArg Prod.snd this
 
 /- English proof (translation)
-Establish `h1 : ∀ {a b : Fin (k + 1)} (f : a ⟶ b), (y.map f).1.1 = 1` using `fun {a b} f => by`. Use `Functor.congr_hom hy f` as an intermediate fact. Use `erw [eqToHom_refl, Category.id_comp, Category.comp_id] at this`. Conclude with `this`. Use `⟨{ obj := fun i => ⟨y.obj i⟩ map := fun {a b} f => ⟨show (XC M).G.obj A from (y.map f).1.2, ?_⟩ map_id := fun a => ?_ map_comp := fun {a b c} f g => ?_ }, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Subtype.ext (funext fun i => ?_)` and prove the remaining obligations. Use `congrFun (y.map f).2 i` as an intermediate fact. Rewrite `this` using `[h1 f]`. Establish `h2 : (y.obj a).1 i = ((y.map f).1.2 : A) * (y.obj b).1 i` using `by simpa using this`. Conclude with `h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `Subtype.ext ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(y.map (𝟙 a)).1.2 = 1`. Rewrite using `[y.map_id]`. Both sides reduce to the same expression. Use `Subtype.ext ?_` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Express the relevant statement in the definitionally equal form `(y.map (f ≫ g)).1.2 = (y.map f).1.2 * (y.map g).1.2`. Rewrite using `[y.map_comp, mul_comm]`. Both sides reduce to the same expression. Use `CategoryTheory.Functor.hext (fun _ => rfl) (fun a b f => heq_of_eq ?_)` and prove the remaining obligations. Conclude with `Subtype.ext (Prod.ext (h1 f).symm rfl)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem tau_surj {M k : ℕ} {A : CommRingCat.{0}} (y : Fin (k + 1) ⥤ Um M A)
     (hy : y ⋙ Um.toGL M A = (Functor.const _).obj (SingleObj.star _)) :
@@ -130,7 +130,7 @@ private theorem sx_comp {X Y Z : Spc} (f : X ⟶ Y) (g : Y ⟶ Z) {k : ℕ} {T :
     Sx.map g (Sx.map f x) = Sx.map (f ≫ g) x := rfl
 
 /- English proof (translation)
-Rewrite using `[sx_comp, uMap, pullback.lift_fst]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem u_fst (S : Spc) (M : ℕ) {k : ℕ} {T : Scheme.{0}} (c : Sx (Sp S (XC M)) k T) :
     Sx.map (pullback.fst _ _) (Sx.map (uMap S M) c) = c.1 := by
@@ -138,7 +138,7 @@ private theorem u_fst (S : Spc) (M : ℕ) {k : ℕ} {T : Scheme.{0}} (c : Sx (Sp
   rfl
 
 /- English proof (translation)
-Rewrite using `[sx_comp, uMap, pullback.lift_snd]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem u_snd (S : Spc) (M : ℕ) {k : ℕ} {T : Scheme.{0}} (c : Sx (Sp S (XC M)) k T) :
     Sx.map (pullback.snd _ _) (Sx.map (uMap S M) c) = Sx.map (tauS M) c.2 := by
@@ -167,7 +167,7 @@ Both sides reduce to the same expression.
 private theorem tau_line (M : ℕ) : tauS M ≫ PGL.line M = lineOf (chiX M) := rfl
 
 /- English proof (translation)
-Rewrite using `[← Category.assoc, uMap, pullback.lift_snd, Category.assoc, tau_line]`.
+Rewrite the conclusion using the stated equalities.
 -/
 private theorem u_line (S : Spc) (M : ℕ) :
     uMap S M ≫ pullback.snd _ _ ≫ PGL.line M = Sp.line S (chiX M) := by
@@ -177,13 +177,13 @@ end UpperTheory.PullPf
 
 open UpperTheory.PullPf in
 /- English proof (translation)
-Introduce `q _ S M hS`. Establish `hP : Inv q (pullback (triv S M) (PGL.pr M))` using `fun U ⟨x⟩ => hS U ⟨Sx.map (pullback.fst _ _) x⟩`. Establish `hX : Inv q (Sp S (XC M))` using `fun U ⟨x⟩ => hS U ⟨x.1⟩`. Establish `hf : uMap S M ≫ pullback.fst _ _ = Sp.fst S (XC M)` using `pullback.lift_fst _ _ _`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Establish `h1` using `UpperTheory.lerayHirsch_of_iso_square q (pullback.fst _ _) (Sp.fst S (XC M)) (uMap S M) (𝟙 S) (by rw [hf, Category.comp_id]) _ _ _ h`. Establish `e : ∀ j : ℕ, pull _ (uMap S M) (tw q (j : ℤ)) (2 * (j : ℤ)) (cpow q (c1 q (pullback.snd (triv S M) (PGL.pr M) ≫ PGL.line M)) j) = cpow q (c1 q (Sp.line S (chiX M))) j` using `fun j => by`. Rewrite using `[UpperTheory.pull_cupPow_eq_cupPow_pull q _ _ j hP, (GlobalTheory.T.firstChernClassTateTwist_cocycle_unique_natural_additive q).2.1 _ _ hP, u_line]`. Unfold `Pbf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify `h1` using `only [e]`. Introduce `h`. Establish `h1` using `UpperTheory.lerayHirsch_of_iso_square q (Sp.fst S (XC M)) (pullback.fst _ _) (inv (uMap S M)) (𝟙 S) (by rw [Category.comp_id, IsIso.inv_comp_eq, hf]) _ _ _ h`. Establish `e : ∀ j : ℕ, pull _ (inv (uMap S M)) (tw q (j : ℤ)) (2 * (j : ℤ)) (cpow q (c1 q (Sp.line S (chiX M))) j) = cpow q (c1 q (pullback.snd (triv S M) (PGL.pr M) ≫ PGL.line M)) j` using `fun j => by`. Rewrite using `[UpperTheory.pull_cupPow_eq_cupPow_pull q _ _ j hX, (GlobalTheory.T.firstChernClassTateTwist_cocycle_unique_natural_additive q).2.1 _ _ hX, ← u_line, IsIso.inv_hom_id_assoc]`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `PBF`. Simplify `h1` using `only [e]`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem UpperTheory.projBundleFormula_iff_pglForm :
     ∀ (q : ℕ) [NeZero q] (S : Spc) (M : ℕ), Inv q S → (PBF q S M ↔ Pbf q S M) := by

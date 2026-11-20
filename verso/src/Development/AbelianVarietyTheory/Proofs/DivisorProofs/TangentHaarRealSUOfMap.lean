@@ -16,28 +16,28 @@ open scoped ENNReal NNReal
 variable {E : Type} [Field E] {r : ℕ}
 
 /- English proof (translation)
-Simplify using `[hermC, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermC_eq (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (u w : Fin r → ℂ) :
     hermC τ G u w = u ⬝ᵥ (G.map τ *ᵥ star w) := by
   simp [hermC, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[← mulVec_mulVec, dotProduct_mulVec u, vecMul_transpose]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dot_mulVec_star (A P : Matrix (Fin r) (Fin r) ℂ) (u v : Fin r → ℂ) :
     (P *ᵥ u) ⬝ᵥ (A *ᵥ star v) = u ⬝ᵥ ((Pᵀ * A) *ᵥ star v) := by
   rw [← mulVec_mulVec, dotProduct_mulVec u, vecMul_transpose]
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using `[mulVec, dotProduct]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem star_mulVec' (P : Matrix (Fin r) (Fin r) ℂ) (v : Fin r → ℂ) :
     star (P *ᵥ v) = P.map (starRingEnd ℂ) *ᵥ star v := by
   ext a; simp [mulVec, dotProduct]
 
 /- English proof (translation)
-Use extensionality with `a b`. Use `h (Pi.single a 1) (Pi.single b 1)` as an intermediate fact. Establish `e : star (Pi.single b (1 : ℂ) : Fin r → ℂ) = Pi.single b 1`. Apply the tactic sequence `ext c; by_cases hc : c = b <;> simp [hc]`. Simplify `this` using `[e]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eq_of_forall_dot (B C : Matrix (Fin r) (Fin r) ℂ)
     (h : ∀ u v : Fin r → ℂ, u ⬝ᵥ (B *ᵥ star v) = u ⬝ᵥ (C *ᵥ star v)) : B = C := by
@@ -48,11 +48,11 @@ theorem eq_of_forall_dot (B C : Matrix (Fin r) (Fin r) ℂ)
   simpa [e] using this
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ τ : Ψ, _ ∧ _) ↔ _`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Rewrite using `[and_comm]`. Use `and_congr_left fun _ => ?_` and prove the remaining obligations. Establish `key : ∀ u v : Fin r → ℂ, hermC τ.1 G ((g τ : Matrix (Fin r) (Fin r) ℂ) *ᵥ u) ((g τ : Matrix (Fin r) (Fin r) ℂ) *ᵥ v) = u ⬝ᵥ (((g τ : Matrix (Fin r) (Fin r) ℂ)ᵀ * G.map τ.1 * (g τ : Matrix (Fin r) (Fin r) ℂ).map (starRingEnd ℂ)) *ᵥ star v)`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `u v`. Rewrite using `[hermC_eq, star_mulVec', mulVec_mulVec, dot_mulVec_star, Matrix.mul_assoc]`. Simplify using `only [key, hermC_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `eq_of_forall_dot _ _ h`. Introduce `h u v`. Rewrite using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_realSU_iff (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E) (g : Ψ → GL (Fin r) ℂ) :
     g ∈ realSU Ψ G ↔ ∀ τ : Ψ, (g τ : Matrix (Fin r) (Fin r) ℂ)ᵀ * G.map τ.1 *
@@ -75,11 +75,11 @@ theorem mem_realSU_iff (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E
     rw [h]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(∀ τ : Ψ, _ ∧ _) ↔ _`. Use `forall_congr' fun τ => ?_` and prove the remaining obligations. Rewrite using `[and_comm]`. Use `and_congr_left fun _ => ?_` and prove the remaining obligations. Simplify using `only [hermC_eq, dot_mulVec_star, star_mulVec', mulVec_mulVec, ← dotProduct_add, ← add_mulVec]`.
+Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `eq_of_forall_dot _ 0 fun u v => by simpa using h u v`. Introduce `h u v`. Rewrite using `[h]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem mem_realLie_iff (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E)
     (X : Ψ → Fin r → Fin r → ℂ) :
@@ -101,15 +101,15 @@ section Chart
 variable (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E)
 
 /- English proof (translation)
-Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero τ).2 hG`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_map_ne (hG : G.det ≠ 0) (τ : E →+* ℂ) : (G.map τ).det ≠ 0 := by
   rw [← RingHom.mapMatrix_apply, ← RingHom.map_det]; exact (map_ne_zero τ).2 hG
 
 /- English proof (translation)
-Rewrite using `[mem_realSU_iff]`. Introduce `τ`. Establish `hX` using `(mem_realLie_iff Ψ G X.1).1 X.2 τ`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `exp_twist (det_map_ne G hG τ.1) (Matrix.of (X.1 τ))` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[(twist_eq_iff (det_map_ne G hG τ.1) _).2 hX.1]`. Then use the resulting hypothesis. Express the relevant statement in the definitionally equal form `(NormedSpace.exp (Matrix.of (X.1 τ))).det = 1`. Rewrite using `[det_exp, hX.2, Complex.exp_zero]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem exp_mem_realSU (hG : G.det ≠ 0) (X : realLie Ψ G) :
     (fun τ : Ψ => (⟨NormedSpace.exp (Matrix.of (X.1 τ)), NormedSpace.exp (-Matrix.of (X.1 τ)),
@@ -128,13 +128,13 @@ def chartExp (hG : G.det ≠ 0) (X : realLie Ψ G) : realSU Ψ G := ⟨_, exp_me
 def matR (g : realSU Ψ G) : Ψ → Matrix (Fin r) (Fin r) ℂ := fun τ => (g.1 τ : GL (Fin r) ℂ)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext (funext fun i => Units.ext (congrFun h i))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem matR_injective : Function.Injective (matR Ψ G) :=
   fun _ _ h => Subtype.ext (funext fun i => Units.ext (congrFun h i))
 
 /- English proof (translation)
-The claim follows from `continuous_pi fun i => Units.continuous_val.comp ((continuous_apply i).comp continuous_subtype_val)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_matR : Continuous (matR Ψ G) :=
   continuous_pi fun i => Units.continuous_val.comp ((continuous_apply i).comp continuous_subtype_val)
@@ -145,7 +145,7 @@ Both sides reduce to the same expression.
 theorem matR_one : matR Ψ G 1 = 1 := rfl
 
 /- English proof (translation)
-Use `Continuous.subtype_mk (continuous_pi fun i => Units.continuous_iff.2 ⟨?_, ?_⟩) _` and prove the remaining obligations. Conclude with `GlobalTheory.UpqExpChart.continuous_matExp.comp ((continuous_apply i).comp continuous_subtype_val)`. Conclude with `GlobalTheory.UpqExpChart.continuous_matExp.comp ((continuous_apply i).comp continuous_subtype_val).neg`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_chartExp (hG : G.det ≠ 0) : Continuous (chartExp Ψ G hG) := by
   refine Continuous.subtype_mk (continuous_pi fun i => Units.continuous_iff.2 ⟨?_, ?_⟩) _
@@ -153,23 +153,23 @@ theorem continuous_chartExp (hG : G.det ≠ 0) : Continuous (chartExp Ψ G hG) :
   · exact GlobalTheory.UpqExpChart.continuous_matExp.comp ((continuous_apply i).comp continuous_subtype_val).neg
 
 /- English proof (translation)
-The claim follows from `matR_injective Ψ G (funext fun i => NormedSpace.exp_zero (𝔸 := Matrix (Fin r) (Fin r) ℂ))`.
+A detailed English derivation is pending.
 -/
 theorem chartExp_zero (hG : G.det ≠ 0) : chartExp Ψ G hG 0 = 1 :=
   matR_injective Ψ G (funext fun i => NormedSpace.exp_zero (𝔸 := Matrix (Fin r) (Fin r) ℂ))
 
 /- English proof (translation)
-Establish `hH : ∀ τ : Ψ, (G.map τ.1).det ≠ 0` using `fun τ => det_map_ne G hG τ.1`. Take `⟨e, he, h0⟩` from `GlobalTheory.UpqExpChart.exists_chart (n := Fin r)`. Establish `hinj : Set.InjOn NormedSpace.exp e.source` using `he ▸ e.injOn`. Establish `he0 : e 0 = 1` using `by rw [he]; exact NormedSpace.exp_zero`. Establish `h1 : (1 : Matrix (Fin r) (Fin r) ℂ) ∈ e.target` using `he0 ▸ e.map_source h0`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs1 : e.symm 1 = 0` using `he0 ▸ e.left_inv h0`. Establish `hm : ∀ i, Tendsto (fun g : realSU Ψ G => matR Ψ G g i) (Filter.comap (matR Ψ G) (𝓝 1)) (𝓝 1)` using `fun i => ((continuous_apply i).tendsto (1 : Ψ → Matrix (Fin r) (Fin r) ℂ)).comp tendsto_comap`. Establish `hZ : ∀ i, Tendsto (fun g : realSU Ψ G => e.symm (matR Ψ G g i)) (Filter.comap (matR Ψ G) (𝓝 1)) (𝓝 0)` using `fun i => hs1 ▸ (e.continuousAt_symm h1).tendsto.comp (hm i)`. Take `⟨V, hV, hVU⟩` from `(mem_nhds_subtype _ _ _).1 hU`. Establish `a1 : ∀ᶠ g in Filter.comap (matR Ψ G) (𝓝 1), ∀ i, matR Ψ G g i ∈ e.target` using `eventually_all.2 fun i => hm i (e.open_target.mem_nhds h1)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `a2 : ∀ᶠ g in Filter.comap (matR Ψ G) (𝓝 1), ∀ i, twist (G.map i.1) (e.symm (matR Ψ G g i)) ∈ e.source` using `eventually_all.2 fun i => (((continuous_twist (G.map i.1)).tendsto 0).comp (hZ i)) (e.open_source.mem_nhds (by simpa [twist] using h0))`. Establish `a3 : ∀ᶠ g in Filter.comap (matR Ψ G) (𝓝 1), ∀ i, (e.symm (matR Ψ G g i)).trace ∈ ball (0 : ℂ) 1` using `eventually_all.2 fun i => ((continuous_id.matrix_trace.tendsto 0).comp (hZ i)) (isOpen_ball.mem_nhds (by simp))`. Establish `a4 : ∀ᶠ g in Filter.comap (matR Ψ G) (𝓝 1), ((fun i => e.symm (matR Ψ G g i)) : Ψ → Fin r → Fin r → ℂ) ∈ V` using `(tendsto_pi_nhds.2 hZ) hV`. Use `filter_upwards [a1, a2, a3, a4] with g b1 b2 b3 b4`. Establish `hexp : ∀ i, NormedSpace.exp (e.symm (matR Ψ G g i)) = matR Ψ G g i` using `fun i => he ▸ e.right_inv (b1 i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ((fun i => e.symm (matR Ψ G g i)) : Ψ → Fin r → Fin r → ℂ) ∈ realLie Ψ G`. Use `(mem_realLie_iff Ψ G _).2 fun i => ?_` and prove the remaining obligations. Establish `hg` using `((mem_realSU_iff Ψ G g.1).1 g.2 i)`. Use `⟨(twist_eq_iff (hH i) _).1 (hinj (b2 i) (e.map_target (b1 i)) (exp_twist_eq (hH i) ?_)), ?_⟩` and prove the remaining obligations. Rewrite using `[hexp]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hg.1`. Express the relevant statement in the definitionally equal form `(e.symm (matR Ψ G g i)).trace = 0`. Establish `c1 : Complex.exp (e.symm (matR Ψ G g i)).trace = Complex.exp 0`. Rewrite using `[← det_exp, hexp, Complex.exp_zero]`. Conclude with `hg.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `c2` using `(abs_lt.1 ((Complex.abs_im_le_norm _).trans_lt (mem_ball_zero_iff.1 (b3 i))))`. Use `Real.pi_gt_three` as an intermediate fact. Conclude with `Complex.exp_inj_of_neg_pi_lt_of_le_pi (by linarith [c2.1]) (by linarith [c2.2]) (by simp [Real.pi_pos]) (by simp [Real.pi_pos.le]) c1`. Conclude with `⟨⟨_, hmem⟩, hVU b4, matR_injective Ψ G (funext fun i => hexp i)⟩`.
+A detailed English derivation is pending.
 -/
 theorem eventually_mem_image (hG : G.det ≠ 0) {U : Set (realLie Ψ G)} (hU : U ∈ 𝓝 0) :
     ∀ᶠ g in Filter.comap (matR Ψ G) (𝓝 1), g ∈ chartExp Ψ G hG '' U := by
@@ -229,14 +229,12 @@ Both sides reduce to the same expression.
 theorem norm_incl (X : realLie Ψ G) : ‖incl Ψ G X‖ = ‖X‖ := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `Subtype.ext h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem incl_injective : Function.Injective (incl Ψ G) := fun _ _ h => Subtype.ext h
 
 /- English proof (translation)
-Use `hasStrictFDerivAt_pi'' fun i => ?_` and prove the remaining obligations. Establish `h1` using `((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Ψ => Matrix (Fin r) (Fin r) ℂ) i).comp (incl Ψ G)).hasStrictFDerivAt (x := 0)`. Establish `h2 : HasStrictFDerivAt (𝕜` using `ℝ) (NormedSpace.exp : Matrix (Fin r) (Fin r) ℂ → _) (ContinuousLinearMap.id ℝ _) (((ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Ψ => Matrix (Fin r) (Fin r) ℂ) i).comp (incl Ψ G)) 0) := by`. Rewrite using `[map_zero]`. Conclude with `GlobalTheory.CompactDualExists.exp_strict`.
-
-Conclude with `h2.comp 0 h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasStrictFDerivAt_chart (hG : G.det ≠ 0) :
     HasStrictFDerivAt (fun X => matR Ψ G (chartExp Ψ G hG X)) (incl Ψ G) 0 := by
@@ -250,9 +248,9 @@ theorem hasStrictFDerivAt_chart (hG : G.det ≠ 0) :
   exact h2.comp 0 h1
 
 /- English proof (translation)
-Establish `h` using `(hasFDerivAt_iff_isLittleO_nhds_zero.1 (hasStrictFDerivAt_chart Ψ G hG).hasFDerivAt).def hκ`. Take `⟨δ, hδ, hh⟩` from `Metric.eventually_nhds_iff.1 h`. Use `⟨δ, hδ, fun X hX => ?_⟩` and prove the remaining obligations. Use `hh (y := X) (by rwa [dist_zero_right])` as an intermediate fact. Simplify using `only [zero_add, chartExp_zero, matR_one] at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_approx (hG : G.det ≠ 0) {κ : ℝ} (hκ : 0 < κ) : ∃ δ > 0, ∀ X : realLie Ψ G, ‖X‖ < δ →
     ‖matR Ψ G (chartExp Ψ G hG X) - 1 - incl Ψ G X‖ ≤ κ * ‖X‖ := by
@@ -265,7 +263,7 @@ theorem exists_approx (hG : G.det ≠ 0) {κ : ℝ} (hκ : 0 < κ) : ∃ δ > 0,
     _ = κ * ‖X‖ := rfl
 
 /- English proof (translation)
-Rewrite using `[pi_norm_lt_iff hε]`. Simplify using `only [Matrix.norm_lt_iff hε]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_grpBall_iff {ε : ℝ} (hε : 0 < ε) (g : realSU Ψ G) :
     g ∈ grpBall (realSU Ψ G) ε ↔ ‖matR Ψ G g - 1‖ < ε := by
@@ -274,7 +272,7 @@ theorem mem_grpBall_iff {ε : ℝ} (hε : 0 < ε) (g : realSU Ψ G) :
   rfl
 
 /- English proof (translation)
-Use extensionality with `X`. Rewrite using `[mem_ball_zero_iff, Set.mem_preimage, Submodule.coe_norm, pi_norm_lt_iff hε]`. Simplify using `only [pi_norm_lt_iff hε]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem preimage_tanBall {ε : ℝ} (hε : 0 < ε) :
     (Subtype.val : realLie Ψ G → _) ⁻¹' tanBall Ψ r ε = ball 0 ε := by
@@ -284,21 +282,21 @@ theorem preimage_tanBall {ε : ℝ} (hε : 0 < ε) :
   rfl
 
 /- English proof (translation)
-Establish `ht0 : 0 < t` using `by linarith`. Establish `hti : t⁻¹ < 1` using `inv_lt_one_of_one_lt₀ ht`. Establish `hti0 : 0 < t⁻¹` using `inv_pos.2 ht0`. Take `⟨δ1, hδ1, H1⟩` from `exists_approx Ψ G hG (κ := t - 1) (by linarith)`. Take `⟨δ2, hδ2, H2⟩` from `exists_approx Ψ G hG (κ := 1 - t⁻¹) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hev` using `eventually_mem_image Ψ G hG (ball_mem_nhds (0 : realLie Ψ G) hδ2)`. Rewrite `hev` using `[Filter.eventually_comap]`. Take `⟨ρ, hρ, hh⟩` from `Metric.eventually_nhds_iff.1 hev`. Use `filter_upwards [Ioo_mem_nhdsGT (lt_min (mul_pos ht0 hδ1) hρ)] with ε hε`. Take `⟨hε0, hε1⟩` from `hε`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hε1` using `[lt_min_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `_ ⟨X, hX, rfl⟩`. Rewrite `hX` using `[mem_ball_zero_iff]`. Rewrite using `[mem_grpBall_iff Ψ G hε0]`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hXδ : ‖X‖ < δ1`. Combine the equalities or inequalities in the displayed calculation. Establish `h` using `H1 X hXδ`. Establish `h2 : ‖matR Ψ G (chartExp Ψ G hG X) - 1‖ ≤ ‖incl Ψ G X‖ + ‖matR Ψ G (chartExp Ψ G hG X) - 1 - incl Ψ G X‖`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[norm_incl]`. Establish `h3 : t * ‖X‖ < ε`. Combine the equalities or inequalities in the displayed calculation. Use the polynomial consequences of the given equalities and inequalities. Introduce `g hg`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg` using `[mem_grpBall_iff Ψ G hε0]`. Take `⟨X, hX, rfl⟩` from `hh (y := matR Ψ G g) (by rw [dist_eq_norm]; linarith) g rfl`. Rewrite `hX` using `[mem_ball_zero_iff]`. Use `⟨X, ?_, rfl⟩` and prove the remaining obligations. Rewrite using `[mem_ball_zero_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `H2 X hX`. Establish `h2 : ‖incl Ψ G X‖ ≤ ‖matR Ψ G (chartExp Ψ G hG X) - 1‖ + ‖matR Ψ G (chartExp Ψ G hG X) - 1 - incl Ψ G X‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite `h2` using `[norm_incl]`. Establish `h3 : t⁻¹ * ‖X‖ < ε` using `by linarith`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem chart_squeeze (hG : G.det ≠ 0) {t : ℝ} (ht : 1 < t) : ∀ᶠ ε in 𝓝[>] (0 : ℝ),
     chartExp Ψ G hG '' ball 0 (t⁻¹ * ε) ⊆ grpBall (realSU Ψ G) ε ∧
@@ -350,17 +348,17 @@ theorem chart_squeeze (hG : G.det ≠ 0) {t : ℝ} (ht : 1 < t) : ∀ᶠ ε in �
       _ < t * ε := by gcongr
 
 /- English proof (translation)
-Set `L₀ : (Ψ → Matrix (Fin r) (Fin r) ℂ) →ₗ[ℝ] ((Ψ → Matrix (Fin r) (Fin r) ℂ) →L[ℝ] (Ψ → Matrix (Fin r) (Fin r) ℂ))` to `LinearMap.toContinuousLinearMap.toLinearMap ∘ₗ LinearMap.mul ℝ _`. Establish `hL₀ : Continuous L₀` using `L₀.continuous_of_finiteDimensional`. Take `⟨c, hc0, hct, hc⟩` from `exists_density_of_immersion (realLie Ψ G) (Ψ → Matrix (Fin r) (Fin r) ℂ) (realSU Ψ G) lam Measure.haar (chartExp Ψ G hG) (matR Ψ G) (incl Ψ G) (incl_injective Ψ G) (fun g => L₀ (matR Ψ G g)) (continuous_chartExp Ψ G hG) (chartExp_zero Ψ G hG) (hasStrictFDerivAt_chart Ψ G hG) (hL₀ …`. Establish `hsq` using `GlobalTheory.CompactDualQuot.tendsto_div_of_squeeze (F := fun ε => (Measure.haar : Measure (realSU Ψ G)) (chartExp Ψ G hG '' ball 0 ε)) (V := fun ε => lam (ball 0 ε)) (A := fun ε => (Measure.haar : Measure (realSU Ψ G)) (grpBall (realSU Ψ G) ε)) (n := Module.finrank ℝ (realLie Ψ …`. Establish `hν : ∀ ε : ℝ, 0 < ε → (lam.map Subtype.val) (tanBall Ψ r ε) = lam (ball 0 ε)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `ε hε`. Rewrite using `[Measure.map_apply measurable_subtype_coe, preimage_tanBall Ψ G hε]`. Rewrite using `[show tanBall Ψ r ε = ball (0 : Ψ → Fin r → Fin r → ℂ) ε by`. Use extensionality with `X`. Rewrite using `[mem_ball_zero_iff, pi_norm_lt_iff hε]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [pi_norm_lt_iff hε]`. Use the proof step `rfl]`. Conclude with `measurableSet_ball`. Establish `hA : Tendsto (fun ε => (Measure.haar : Measure (realSU Ψ G)) (grpBall (realSU Ψ G) ε) / (lam.map Subtype.val) (tanBall Ψ r ε)) (𝓝[>] 0) (𝓝 c)`. Use `hsq.congr' ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `filter_upwards [self_mem_nhdsWithin] with ε hε`. Rewrite using `[hν ε hε]`. Establish `hlim : limsup (fun ε : ℝ => (lam.map Subtype.val) (tanBall Ψ r ε) / (Measure.haar : Measure (realSU Ψ G)) (grpBall (realSU Ψ G) ε)) (𝓝[>] 0) = c⁻¹`. Use `Tendsto.limsup_eq ((ENNReal.tendsto_inv_iff.2 hA).congr' ?_)` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with ε hε`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hε : (0 : ℝ) < ε` using `hε`. Rewrite using `[hν ε hε]`. Conclude with `ENNReal.inv_div (Or.inl (measure_ball_lt_top).ne) (Or.inl (measure_ball_pos lam 0 hε).ne')`. Unfold `tangentHaar`. Rewrite using `[hlim]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨Measure.IsHaarMeasure.smul _ (ENNReal.inv_ne_zero.2 hct) (ENNReal.inv_ne_top.2 hc0), ?_⟩` and prove the remaining obligations. Use `ENNReal.Tendsto.const_mul hA (Or.inr (ENNReal.inv_ne_top.2 hc0)) (a := c⁻¹)` as an intermediate fact. Rewrite `this` using `[ENNReal.inv_mul_cancel hc0 hct]`. Use `this.congr fun ε => ?_` and prove the remaining obligations. Rewrite using `[Measure.smul_apply, smul_eq_mul, mul_div_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem tangentHaar_realSU_of_det [NumberField E] [NumberField.IsCMField E] (hG : G.det ≠ 0) [MeasurableSpace (realSU Ψ G)] [BorelSpace (realSU Ψ G)]
     (lam : Measure (realLie Ψ G)) [lam.IsAddHaarMeasure] :
@@ -416,11 +414,11 @@ section Corollaries
 variable (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E)
 
 /- English proof (translation)
-Set `Φ' : V →ₗ[ℝ] realLie Ψ G` to `Φ.codRestrict (realLie Ψ G) fun v => (hrange _).2 ⟨v, rfl⟩`. Establish `hb : Function.Bijective Φ'`. Use `⟨fun v w h => hinj (congrArg Subtype.val h), fun X => ?_⟩` and prove the remaining obligations. Take `⟨v, hv⟩` from `(hrange X.1).1 X.2`. Conclude with `⟨v, Subtype.ext hv⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Set `φ : V ≃L[ℝ] realLie Ψ G` to `(LinearEquiv.ofBijective Φ' hb).toContinuousLinearEquiv`. Establish `: (μ.map φ).IsAddHaarMeasure` using `φ.isAddHaarMeasure_map μ`. Establish `e : μ.map Φ = (μ.map φ).map Subtype.val`. Rewrite using `[Measure.map_map measurable_subtype_coe φ.continuous.measurable]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Conclude with `tangentHaar_realSU_of_det Ψ G hG (μ.map φ)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tangentHaar_realSU_of_map [NumberField E] [NumberField.IsCMField E] (hG : G.det ≠ 0)
     [MeasurableSpace (realSU Ψ G)] [BorelSpace (realSU Ψ G)]
@@ -443,17 +441,17 @@ theorem tangentHaar_realSU_of_map [NumberField E] [NumberField.IsCMField E] (hG 
   exact tangentHaar_realSU_of_det Ψ G hG (μ.map φ)
 
 /- English proof (translation)
-Establish `key1 : ∀ τ (A : Matrix (Fin r) (Fin r) ℂ), (mat x τ)⁻¹ * (mat x τ * A * (mat x τ)⁻¹) * mat x τ = A` using `fun τ A => by`. Rewrite using `[Matrix.mul_assoc, Matrix.nonsing_inv_mul_cancel_right _ _ (hx τ).isUnit, Matrix.nonsing_inv_mul_cancel_left _ _ (hx τ).isUnit]`. Establish `key2 : ∀ τ (A : Matrix (Fin r) (Fin r) ℂ), mat x τ * ((mat x τ)⁻¹ * A * mat x τ) * (mat x τ)⁻¹ = A` using `fun τ A => by`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_nonsing_inv_cancel_right _ _ (hx τ).isUnit, Matrix.mul_nonsing_inv_cancel_left _ _ (hx τ).isUnit]`. Establish `hinj : Function.Injective (fromFrame x)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Y Z h`. Establish `hτ : ∀ τ, Matrix.of (fun a b => Y (τ, a, b)) = Matrix.of (fun a b => Z (τ, a, b))`. Introduce `τ`. Establish `h1 : mat x τ * Matrix.of (fun a b => Y (τ, a, b)) * (mat x τ)⁻¹ = mat x τ * Matrix.of (fun a b => Z (τ, a, b)) * (mat x τ)⁻¹` using `congrFun h τ`. Rewrite using `[← key1 τ (Matrix.of (fun a b => Y (τ, a, b))), h1, key1]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `PiLp.ext fun p => ?_` and prove the remaining obligations. Take `⟨τ, a, b⟩` from `p`. Conclude with `congrFun (congrFun (hτ τ) a) b`. Establish `hsurj : ∀ X, ∃ Y, fromFrame x Y = X`. Introduce `X`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨WithLp.toLp 2 (fun p : Ψ × Fin r × Fin r => ((mat x p.1)⁻¹ * Matrix.of (X p.1) * mat x p.1) p.2.1 p.2.2), funext fun τ => ?_⟩` and prove the remaining obligations. Establish `e : Matrix.of (fun a b => (WithLp.toLp 2 (fun p : Ψ × Fin r × Fin r => ((mat x p.1)⁻¹ * Matrix.of (X p.1) * mat x p.1) p.2.1 p.2.2) : EuclideanSpace ℂ (Ψ × Fin r × Fin r)) (τ, a, b)) = (mat x τ)⁻¹ * Matrix.of (X τ) * mat x τ`. Use extensionality with `a b`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(mat x τ * Matrix.of _ * (mat x τ)⁻¹ : Matrix (Fin r) (Fin r) ℂ) = X τ`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, key2]`. Both sides reduce to the same expression. Unfold `riemLie`. Use `tangentHaar_realSU_of_map Ψ G hG (stdOrthonormalBasis ℝ ((realLie Ψ G).comap (fromFrame x))).toBasis.addHaar ((fromFrame x).comp ((realLie Ψ G).comap (fromFrame x)).subtype) (hinj.comp Subtype.val_injective) fun X => ⟨fun hX => ?_, fun ⟨v, hv⟩ => hv ▸ v.2⟩` and prove the remaining obligations. Take `⟨Y, hY⟩` from `hsurj X`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨Y, show fromFrame x Y ∈ realLie Ψ G by rw [hY]; exact hX⟩, hY⟩`.
+A detailed English derivation is pending.
 -/
 theorem tangentHaar_riemLie [NumberField E] [NumberField.IsCMField E] (hG : G.det ≠ 0) (x : Frame Ψ r)
     (hx : ∀ τ, (mat x τ).det ≠ 0) [MeasurableSpace (realSU Ψ G)] [BorelSpace (realSU Ψ G)] :
@@ -504,18 +502,18 @@ section FormLie
 variable (Ψ : Finset (E →+* ℂ)) (G : Matrix (Fin r) (Fin r) E)
 
 /- English proof (translation)
-Simplify using `[herm, dotProduct, mulVec, Finset.mul_sum, mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem herm_eq [NumberField E] [NumberField.IsCMField E] (x y : Fin r → E) :
     herm G x y = x ⬝ᵥ (G *ᵥ fun b => cc (y b)) := by
   simp [herm, dotProduct, mulVec, Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Establish `hc : ∀ (P : Matrix (Fin r) (Fin r) E) (y : Fin r → E), (fun b => cc ((P *ᵥ y) b)) = P.map cc *ᵥ fun b => cc (y b)`. Introduce `P y`. Use extensionality with `a`. Simplify using `[mulVec, dotProduct, cc, map_sum, map_mul]`. Establish `key : ∀ u w : Fin r → E, herm G (X *ᵥ u) w + herm G u (X *ᵥ w) = u ⬝ᵥ ((Xᵀ * G + G * X.map cc) *ᵥ fun b => cc (w b))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `u w`. Rewrite using `[herm_eq, herm_eq, hc, add_mulVec, dotProduct_add, ← mulVec_mulVec, ← mulVec_mulVec, dotProduct_mulVec u Xᵀ, vecMul_transpose]`. Use extensionality with `a b`. Establish `h1` using `h (Pi.single a 1) (Pi.single b 1)`. Rewrite `h1` using `[key]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (fun c => cc ((Pi.single b (1 : E) : Fin r → E) c)) = Pi.single b 1`. Apply the tactic sequence `ext c; by_cases hcb : c = b <;> simp [hcb, cc]`. Rewrite `h1` using `[e]`. Simplify `h1` using `[mulVec_single_one, Matrix.mul_assoc]`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem skew_matrix [NumberField E] [NumberField.IsCMField E] {X : Matrix (Fin r) (Fin r) E}
     (h : ∀ x y, herm G (X *ᵥ x) y + herm G x (X *ᵥ y) = 0) : Xᵀ * G + G * X.map cc = 0 := by
@@ -536,7 +534,7 @@ theorem skew_matrix [NumberField E] [NumberField.IsCMField E] {X : Matrix (Fin r
   simpa [mulVec_single_one, Matrix.mul_assoc] using h1
 
 /- English proof (translation)
-Establish `e : (X.map τ).map (starRingEnd ℂ) = (X.map cc).map τ`. Use extensionality with `a b`. Simplify using `[cc, NumberField.IsCMField.complexEmbedding_complexConj]`. Rewrite using `[e, ← Matrix.transpose_map, ← Matrix.map_mul, ← Matrix.map_mul, ← Matrix.map_add τ (map_add τ), h, Matrix.map_zero _ (map_zero τ)]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_skew [NumberField E] [NumberField.IsCMField E] {X : Matrix (Fin r) (Fin r) E}
     (h : Xᵀ * G + G * X.map cc = 0) (τ : E →+* ℂ) :
@@ -552,26 +550,24 @@ def coordMap {n : ℕ} (e : Fin n → Matrix (Fin r) (Fin r) E) :
   map_smul' s c := by ext τ a b; simp [Finset.mul_sum, mul_assoc]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[coordMap, Matrix.sum_apply, Complex.real_smul]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem coordMap_apply {n : ℕ} (e : Fin n → Matrix (Fin r) (Fin r) E) (c : Ψ → Fin n → ℝ) (τ : Ψ) :
     Matrix.of (coordMap Ψ e c τ) = ∑ i, c τ i • (e i).map τ.1 := by
   ext a b; simp [coordMap, Matrix.sum_apply, Complex.real_smul]
 
 /- English proof (translation)
-Establish `hsk : ∀ i, (e i)ᵀ * G + G * (e i).map cc = 0` using `fun i => skew_matrix G (he i).2`. Establish `hE : LinearIndependent E e` using `GlobalTheory.T.real_independent_skew_matrices G hG e hsk hli`. Establish `hR : ∀ τ : Ψ, LinearIndependent ℝ (fun i => (e i).map τ.1)` using `fun τ => GlobalTheory.T.linear_independent_complex_map τ.1 e hE`. Establish `hmem : ∀ (τ : Ψ) i, ((e i).map τ.1)ᵀ * G.map τ.1 + G.map τ.1 * ((e i).map τ.1).map (starRingEnd ℂ) = 0 ∧ ((e i).map τ.1).trace = 0`. Introduce `τ i`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨map_skew G (hsk i) τ.1, ?_⟩` and prove the remaining obligations. Establish `h1 : ((e i).map τ.1).trace = τ.1 (e i).trace` using `by simp [Matrix.trace, map_sum]`. Rewrite using `[h1, (he i).1, map_zero]`. Unfold `formLie`. Use `tangentHaar_realSU_of_map Ψ G hG volume (coordMap Ψ e) ?_ fun X => ⟨fun hX => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `(injective_iff_map_eq_zero (coordMap Ψ e)).2 fun c hc => funext fun τ => funext fun i => ?_` and prove the remaining obligations. Establish `h1` using `coordMap_apply Ψ e c τ`. Rewrite `h1` using `[hc]`. Conclude with `Fintype.linearIndependent_iff.1 (hR τ) (c τ) h1.symm i`. Establish `hX'` using `(mem_realLie_iff Ψ G X).1 hX`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan : ∀ τ : Ψ, Matrix.of (X τ) ∈ Submodule.span ℝ (Set.range fun i => (e i).map τ.1)` using `fun τ => GlobalTheory.T.unitary_lie_algebra_spanned (G.map τ.1) (det_map_ne G hG τ.1) _ (hR τ) (hmem τ) _ (hX' τ).1 (hX' τ).2`. Use `choose c hc using fun τ => (Submodule.mem_span_range_iff_exists_fun ℝ).1 (hspan τ)`. Use `⟨c, funext fun τ => ?_⟩` and prove the remaining obligations. Establish `h1` using `coordMap_apply Ψ e c τ`. Rewrite `h1` using `[hc τ]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1`. Introduce and unpack `⟨c, rfl⟩`. Use `(mem_realLie_iff Ψ G _).2 fun τ => ?_` and prove the remaining obligations. Rewrite using `[coordMap_apply]`. Establish `h1 : (fun _ : Unit => ∑ i, c τ i • (e i).map τ.1) = ∑ i, c τ i • (fun _ : Unit => (e i).map τ.1)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `u`. Simplify using `[Finset.sum_apply]`. Establish `hS : (fun _ : Unit => ∑ i, c τ i • (e i).map τ.1) ∈ suLie (fun _ : Unit => G.map τ.1)`. Rewrite using `[h1]`. Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ fun _ => hmem τ i`.
-
-Conclude with `hS ()`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tangentHaar_formLie [NumberField E] [NumberField.IsCMField E] (hG : G.det ≠ 0)
     (e : Fin (r ^ 2 - 1) → Matrix (Fin r) (Fin r) E)

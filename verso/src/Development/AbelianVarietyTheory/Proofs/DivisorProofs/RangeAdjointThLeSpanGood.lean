@@ -22,13 +22,11 @@ namespace GlobalTheory.AdjGood
 open GlobalTheory.AdjBlock
 
 /- English proof (translation)
-Take `⟨U, hU⟩` from `exists_cx hli hsp e`. Establish `h1 : Θ ∘ₗ U = Θ` using `ext_of_span hsp fun v => by rw [LinearMap.comp_apply, hU, hΘ]`. Establish `h2 : ∀ v y, inner ℂ (j (e v)) y = inner ℂ (j v) (U y)` using `fun v y => by`. Establish `: innerₛₗ ℂ (j (e v)) = innerₛₗ ℂ (j v) ∘ₗ U` using `ext_of_span hsp fun w => by`. Simplify using `only [LinearMap.comp_apply, innerₛₗ_apply_apply, hU, he]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `LinearMap.congr_fun this y`. Establish `h3 : LinearMap.adjoint U = U` using `ext_of_span hsp fun v => by`. Use `ext_inner_right ℂ fun y => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.adjoint_inner_left, hU, h2]`. Establish `h4 : LinearMap.range U ≤ Submodule.span ℂ (j '' (LinearMap.range e : Set V))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.range_eq_map, ← hsp, Submodule.map_span, Submodule.span_le]`. Introduce and unpack `_ ⟨_, ⟨v, rfl⟩, rfl⟩`. Rewrite using `[hU]`. Conclude with `Submodule.subset_span ⟨e v, ⟨v, rfl⟩, rfl⟩`. Use `le_trans ?_ h4` and prove the remaining obligations.
-
-Rewrite using `[← h1, LinearMap.adjoint_comp, h3]`. Conclude with `LinearMap.range_comp_le_range _ _`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem range_adjoint_le_span {K V H E : Type} [Field K] [AddCommGroup V] [Module K V]
     [NormedAddCommGroup H] [InnerProductSpace ℂ H] [NormedAddCommGroup E] [InnerProductSpace ℂ E]
@@ -57,9 +55,9 @@ theorem range_adjoint_le_span {K V H E : Type} [Field K] [AddCommGroup V] [Modul
   exact LinearMap.range_comp_le_range _ _
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `model_form P M hM hj`. Rewrite using `[goodAt, level_idempotent_bot, mul_one]`. Use `range_adjoint_le_span h1 h2 (sum_selfAdj r _ (fun g => ?_) fun g v w => ?_) fun v => ?_` and prove the remaining obligations. Simplify using `only [coeff_idemOf, map_sum, map_mul, map_div₀, map_natCast, inv_inv]`. Use `Finset.sum_congr rfl fun c hc => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← (hX c hc).map_inv σ, ← (hX c hc).map_inv σ, inv_one, inv_inv]`. Rewrite using `[h3, h3, hr.unitary]`. Rewrite using `[← he (j v)]`. Simplify using `only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smulₛₗ, hΘ, RingHom.id_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem model_good_span {G Γ W K : Type} [Group G] [Group Γ] [NormedAddCommGroup W] [InnerProductSpace ℂ W]
     [Field K] [NumberField K] [StarRing K] {ι : Γ →* G} {S : CSD K} {σ : K →+* ℂ} {ρ : Γ →* Module.End ℂ W}
@@ -84,9 +82,9 @@ theorem model_good_span {G Γ W K : Type} [Group G] [Group Γ] [NormedAddCommGro
     simp only [LinearMap.sum_apply, LinearMap.smul_apply, map_sum, map_smulₛₗ, hΘ, RingHom.id_apply]
 
 /- English proof (translation)
-Use `hC.models.HE.1 ?_` and prove the remaining obligations. Establish `h1 : R.HE.e y ∈ R.EEat R.triv`. Rewrite using `[← hC.models.HE.2.1]`. Conclude with `LinearMap.mem_range_self _ y`. Establish `h2 : postOn (R.MY 0) R.e0 (R.HE.e y) - R.HE.e y = 0` using `h1.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ ((postOn_gaL (R.MY 0) (R.βY 0) (R.dat0 R.triv) R.eG _ _).symm.trans (sub_eq_zero.1 h2))` and prove the remaining obligations. Rewrite using `[map_sum]`. Conclude with `Finset.sum_congr rfl fun g _ => by rw [map_smul, hC.models.gE]; rfl`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem proj_rows_core {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks} {F : Face D A}
@@ -101,7 +99,7 @@ theorem proj_rows_core {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} 
   exact Finset.sum_congr rfl fun g _ => by rw [map_smul, hC.models.gE]; rfl
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T A Ks _ _ _ R F s hOk hC hG t`. Conclude with `model_good_span (W := R.cX.W) (ι := Bridge.ratF D.sp.X') (ρ := R.cX.coef.ρ) (J := (levEnv _ R.βX (R.datXt t)).J) (χ := (levEnv _ R.βX (R.datXt t)).χ) (R.B.R t).pres (R.HX t) (hC.models.HX t) (hC.models.jX t) (hOk.what₂ t).act hOk.irr R.gE (hG t) fun y => proj_rows_core hC _`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem range_adjoint_Th_le_span_good : ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A) {s : ℕ}, A.fam.Ok s → Core R F → (∀ t g (v : (A.MtildeCSD t).Forms), R.Th t (R.jX t (A.leftGroupActionRight t g v)) = R.gE g (R.Th t (R.jX t v))) → ∀ t, LinearMap.range (LinearMap.adjoint (R.Th t)) ≤ Submodule.span ℂ (R.jX t '' ((A.fam.R t).goodF A.X : Set (A.fam.R t).S.Forms)) := by
   intro D G _ _ Pl0 T A Ks _ _ _ R F s hOk hC hG t

@@ -9,7 +9,7 @@ namespace PositivityTheory.CW
 namespace PMaxPr
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem hilbert_schmidt_nonneg_alt {n : ℕ} (g : Matrix (Fin n) (Fin n) ℂ) : 0 ≤ hs2 g :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
@@ -25,7 +25,7 @@ Both sides reduce to the same expression.
     (F : V →ₗ[ℂ] (Matrix (Fin n) (Fin n) ℂ → ℂ)) (v : V) : evalAt g F v = F v g := rfl
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem sq_bound (x C w : ℝ) (N : ℕ) (h : x ≤ C * w ^ N) (hx : 0 ≤ x) : x ^ 2 ≤ C ^ 2 * w ^ (2 * N) := by
   calc x ^ 2 ≤ (C * w ^ N) ^ 2 := pow_le_pow_left₀ hx h 2
@@ -35,21 +35,21 @@ end PMaxPr
 
 open PMaxPr in
 /- English proof (translation)
-Introduce `hA3c hA11a hA13 _ hB4a hB4b hB5 n ε V _ _ E hM N`. Take `⟨κ, hκ⟩` from `hA3c n ε V E hM`. Take `⟨ι, b, μ, hb⟩` from `hA11a n ε V E hM`. Take `⟨c, hc0, hc⟩` from `hB4a n ε (2 * N)`. Take `⟨s, x₀, C₁, hs, hC₁, h13⟩` from `hA13 n ε V E hM ι b μ hb κ hκ (c / 2) (div_nonneg hc0 (by norm_num))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hTfin : {i | μ i < x₀}.Finite` using `(hb.fin x₀).subset fun i (hi : μ i < x₀) => show μ i ≤ x₀ from le_of_lt hi`. Establish `hT : ∀ i, i ∈ hTfin.toFinset ↔ μ i < x₀` using `fun i => by simp`. Establish `hW1 : 0 ≤ (1 + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)) ^ (2 * N)` using `pow_nonneg (by linarith [hilbert_schmidt_nonneg_alt (1 : Matrix (Fin n) (Fin n) ℂ)]) _`. Establish `hKK : 0 ≤ 2 * C₁ * (hTfin.toFinset.card : ℝ) * (1 + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)) ^ (2 * N)` using `mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hC₁) (Nat.cast_nonneg _)) hW1`. Use `⟨s, Real.sqrt (2 * C₁ * hTfin.toFinset.card * (1 + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)) ^ (2 * N)), hTfin.toFinset.image b, Real.sqrt_nonneg _, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `F hcont hder hgrow B hB hI v`. Establish `hA0 : 0 ≤ 2 * C₁ * (hTfin.toFinset.card : ℝ) * B ^ 2` using `mul_nonneg (mul_nonneg (mul_nonneg (by norm_num) hC₁) (Nat.cast_nonneg _)) (sq_nonneg B)`. Use `choose Cf hCf using hgrow`. Establish `key : ∀ (R : ℝ) (S : Finset ι), (∀ i, i ∈ S ↔ μ i < R) → ∑ i ∈ S, phiR s R (μ i) * ‖F (b i) 1‖ ^ 2 ≤ (Real.sqrt (2 * C₁ * hTfin.toFinset.card * (1 + hs2 (1 : Matrix (Fin n) (Fin n) ℂ)) ^ (2 * N)) * B) ^ 2`. Introduce `R S hS`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hcu : ContinuousOn (fun g => ∑ i ∈ S, phiR s R (μ i) * ‖F (b i) g‖ ^ 2) (UJset ε)` using `continuousOn_finsetSum _ fun i _ => continuousOn_const.mul ((hcont (b i)).norm.pow 2)`. Establish `hgu : ∃ C : ℝ, ∀ g ∈ UJset ε, (∑ i ∈ S, phiR s R (μ i) * ‖F (b i) g‖ ^ 2) ≤ C * (1 + hs2 g) ^ (2 * N)`. Use `⟨∑ i ∈ S, phiR s R (μ i) * Cf (b i) ^ 2, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (sq_bound _ _ _ _ (hCf (b i) g hg) (norm_nonneg _)) (le_max_right _ _)`. Establish `hdu : ∀ g ∈ UJset ε, ∃ d : Fin n × Fin n → ℝ, (∀ p ∈ nc ε, ∃ u' : ℝ → ℝ, (∀ t, HasDerivAt (fun t : ℝ => ∑ i ∈ S, phiR s R (μ i) * ‖F (b i) (g * NormedSpace.exp (t • Xp p.1 p.2))‖ ^ 2) (u' t) t) ∧ HasDerivAt u' (d p) 0) ∧ c * (∑ i ∈ S, phiR s R (μ i) * ‖F (b i) g‖ ^ 2) - 2 * C₁ * …`. Introduce `g hg`. Take `⟨d, hd, hsum⟩` from `hB4b n ε V E hM ι b μ hb κ hκ F hder S (fun i => phiR s R (μ i)) g hg`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨d, hd, ?_⟩` and prove the remaining obligations. Rewrite using `[hsum]`. Establish `h13g` using `h13 R (evalAt g F) S hTfin.toFinset hS hT`. Simplify using `only [evalAt_apply] at h13g`. Establish `hTb : ∑ i ∈ hTfin.toFinset, ‖F (b i) g‖ ^ 2 ≤ hTfin.toFinset.card • (B ^ 2 * (1 + hs2 g) ^ (2 * N))` using `Finset.sum_le_card_nsmul _ _ _ fun i hi => sq_bound _ _ _ _ (hI (b i) (Finset.mem_image_of_mem b hi) g hg) (norm_nonneg _)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hTb` using `[nsmul_eq_mul]`. Establish `h2` using `mul_le_mul_of_nonneg_left hTb hC₁`. Use polynomial arithmetic with `[h2, h13g]`. Establish `h1` using `hc (fun g => ∑ i ∈ S, phiR s R (μ i) * ‖F (b i) g‖ ^ 2) _ hA0 hcu hgu hdu`. Combine the equalities or inequalities in the displayed calculation.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h5` using `hB5 n ε V E hM ι b μ hb (evalAt 1 F) s _ (mul_nonneg (Real.sqrt_nonneg _) hB) (fun R S hS => by simpa only [evalAt_apply] using key R S hS) hs v`. Simplify `h5` using `only [evalAt_apply]`.
+A detailed English derivation is pending.
 -/
 theorem maxPr_of : CasimirIsRealScalar → EigenbasisExists → A13 → UnitaryGroupFacts → MaximumPrincipleVar → SumSquaresSecondDerivative → B5 → MaxPr := by
   intro hA3c hA11a hA13 _ hB4a hB4b hB5 n ε V _ _ E hM N

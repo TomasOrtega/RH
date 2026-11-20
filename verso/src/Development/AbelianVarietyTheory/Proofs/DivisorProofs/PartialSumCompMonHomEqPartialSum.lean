@@ -9,9 +9,9 @@ open GlobalTheory.MumFam GlobalTheory.MumProd
 namespace GlobalTheory.MumProd.PsumMap
 
 /- English proof (translation)
-Introduce `S B B₁ T _ _ _ _ n p x x₁ hp hx I`. Unfold `psum`. Proceed by induction on `((List.finRange n).filter (· ∈ I)) with`. Consider the case `nil => show (toUnit T ≫ η[B]) ≫ p = toUnit T ≫ η[B₁]`. Rewrite using `[Category.assoc, IsMonHom.one_hom]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `cons a l ih`. Rewrite using `[List.foldr_cons, List.foldr_cons, ← ih]`. Use `show (lift (x a) _ ≫ μ[B]) ≫ p = lift (x₁ a) _ ≫ μ[B₁]`. Rewrite using `[Category.assoc, IsMonHom.mul_hom, ← Category.assoc, lift_map, hx a]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psum_comp_hom : ∀ (S : Scheme.{0}) (B B₁ T : Over S) [GrpObj B] [IsCommMonObj B] [GrpObj B₁] [IsCommMonObj B₁] (n : ℕ) (p : B ⟶ B₁) (x : Fin n → (T ⟶ B)) (x₁ : Fin n → (T ⟶ B₁)), IsMonHom p → (∀ i, x i ≫ p = x₁ i) → ∀ I : Finset (Fin n), psum B x I ≫ p = psum B₁ x₁ I := by
   intro S B B₁ T _ _ _ _ n p x x₁ hp hx I

@@ -19,7 +19,7 @@ end frob
 section hpk
 
 /- English proof (translation)
-Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | omega | norm_num`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_out' (k r : ℕ) {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k < i.val) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = 2 * r + k - i.val then 1 else 0 := by
@@ -27,7 +27,7 @@ theorem Hpk_out' (k r : ℕ) {i : Fin (2 * r + k + 1)} (h : i.val < r ∨ r + k 
   split_ifs <;> first | rfl | (exfalso; omega) | omega | norm_num
 
 /- English proof (translation)
-Simplify using `only [Hpk, Fin.ext_iff]`. Apply the tactic sequence `split_ifs <;> first | rfl | (exfalso; omega) | omega | norm_num`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_mid' (k r : ℕ) {i : Fin (2 * r + k + 1)} (h : ¬(i.val < r ∨ r + k < i.val)) (j : Fin (2 * r + k + 1)) :
     Hpk k r i j = if j.val = i.val then (if i.val = r + k then -1 else 1) else 0 := by
@@ -35,11 +35,11 @@ theorem Hpk_mid' (k r : ℕ) {i : Fin (2 * r + k + 1)} (h : ¬(i.val < r ∨ r +
   split_ifs <;> first | rfl | (exfalso; omega) | omega | norm_num
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec, dotProduct]`. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h]`. Simplify using `only [Hpk_out' k r h]`. Rewrite using `[Finset.sum_eq_single ⟨2 * r + k - i.val, by omega⟩]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `j _ hj`. Rewrite using `[if_neg (fun h' => hj (Fin.ext h')), zero_mul]`. Simplify using the standard rewrite rules. Rewrite using `[if_neg h]`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Hpk_mid' k r h]`. Rewrite using `[Finset.sum_eq_single i]`. Apply the tactic sequence `split_ifs <;> simp_all`. Introduce `j _ hj`. Rewrite using `[if_neg (fun h' => hj (Fin.ext h')), zero_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -64,9 +64,9 @@ theorem Hpk_mulVec' (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * 
     · simp
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Rewrite using `[Hpk_mulVec']`. Distinguish the cases in `h : i.val < r ∨ r + k < i.val`. Rewrite using `[if_pos h, Hpk_mulVec', if_pos (by simp only; omega)]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Apply the tactic sequence `rw [if_neg h, Hpk_mulVec', if_neg h] split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Hpk_mulVec_mulVec' (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) : Hpk k r *ᵥ (Hpk k r *ᵥ v) = v := by
   funext i
@@ -81,7 +81,7 @@ theorem Hpk_mulVec_mulVec' (k r : ℕ) (v : Fin (2 * r + k + 1) → ℂ) : Hpk k
     split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h` using `congrFun (Hpk_mulVec_mulVec' k r (Pi.single j 1)) i`. Rewrite `h` using `[Matrix.mulVec_mulVec]`. Simplify `h` using `[Matrix.mulVec, dotProduct, Pi.single_apply, Matrix.one_apply]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Hpk_sq' (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   ext i j
@@ -90,15 +90,15 @@ theorem Hpk_sq' (k r : ℕ) : Hpk k r * Hpk k r = 1 := by
   simpa [Matrix.mulVec, dotProduct, Pi.single_apply, Matrix.one_apply] using h
 
 /- English proof (translation)
-Conclude with `IsUnit.of_mul_eq_one _ (by rw [← Matrix.det_mul, Hpk_sq', Matrix.det_one])`.
+A detailed English derivation is pending.
 -/
 theorem Hpk_det_unit (k r : ℕ) : IsUnit (Hpk k r).det := by
   exact IsUnit.of_mul_eq_one _ (by rw [← Matrix.det_mul, Hpk_sq', Matrix.det_one])
 
 /- English proof (translation)
-Establish `h` using `congrArg Matrix.det (show aᴴ * Hpk k r * a = Hpk k r from ha)`. Rewrite `h` using `[Matrix.det_mul, Matrix.det_mul]`. Establish `hH` using `Hpk_det_unit k r`. Use `isUnit_iff_ne_zero.mpr fun h0 => ?_` and prove the remaining obligations. Rewrite `h` using `[h0, mul_zero]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hH.ne_zero h.symm`.
+A detailed English derivation is pending.
 -/
 theorem uh_det {k r : ℕ} {a : Mat k r} (ha : a ∈ UH (Hpk k r)) : IsUnit a.det := by
   have h := congrArg Matrix.det (show aᴴ * Hpk k r * a = Hpk k r from ha)
@@ -109,9 +109,9 @@ theorem uh_det {k r : ℕ} {a : Mat k r} (ha : a ∈ UH (Hpk k r)) : IsUnit a.de
   exact hH.ne_zero h.symm
 
 /- English proof (translation)
-Establish `hu` using `uh_det ha`. Use `show (a⁻¹)ᴴ * Hpk k r * a⁻¹ = Hpk k r`. Establish `ha' : aᴴ * Hpk k r * a = Hpk k r` using `ha`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.conjTranspose_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_assoc]`. Use `_ = Hpk k r := by`. Rewrite using `[Matrix.mul_nonsing_inv _ hu, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uh_inv {k r : ℕ} {a : Mat k r} (ha : a ∈ UH (Hpk k r)) : a⁻¹ ∈ UH (Hpk k r) := by
   have hu := uh_det ha
@@ -127,9 +127,9 @@ theorem uh_inv {k r : ℕ} {a : Mat k r} (ha : a ∈ UH (Hpk k r)) : a⁻¹ ∈ 
 end hpk
 
 /- English proof (translation)
-Establish `h1 : ReciprocityTheory.ChartRestriction.DS.Mult1.S0.bG k r = bG k r`. Unfold `ReciprocityTheory.ChartRestriction.DS.Mult1.S0.bG bG ReciprocityTheory.ChartRestriction.DS.Mult1.nR nS q0S ReciprocityTheory.ChartRestriction.DS.Mult1.S0.q0`. Both sides reduce to the same expression. Establish `h2 : ReciprocityTheory.ChartRestriction.DS.Mult1.S0.bS k r ≤ bS k r`. Unfold `ReciprocityTheory.ChartRestriction.DS.Mult1.S0.bS bS nS ReciprocityTheory.ChartRestriction.DS.Mult1.S0.dimN`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Both sides reduce to the same expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `push_cast`. Establish `h5 : 0 ≤ (r : ℝ) * (4 * r ^ 2 + 2 * r * k + 6 * r + 3 * k + 2)` using `by positivity`. Use polynomial arithmetic with `[h5]`. Establish `h3 : max (ReciprocityTheory.ChartRestriction.DS.Mult1.S0.bG k r) (ReciprocityTheory.ChartRestriction.DS.Mult1.S0.bS k r) ≤ max (bG k r) (bS k r)` using `max_le_max h1.le h2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem thr (k r : ℕ) (a : ℝ) (ha : 4 * max (bG k r) (bS k r) < a - 1) :
     4 * max (ReciprocityTheory.ChartRestriction.DS.Mult1.S0.bG k r) (ReciprocityTheory.ChartRestriction.DS.Mult1.S0.bS k r) < a := by

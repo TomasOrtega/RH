@@ -12,7 +12,7 @@ variable {m n : ℕ}
 def sR (ε : Fin m → Bool) (a : Fin m) : ℝ := if ε a then 1 else -1
 
 /- English proof (translation)
-Simplify using `only [gramX, Qp, Qb, evX, sR, map_sub, map_sum, Finset.sum_filter, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Apply the tactic sequence `cases ε a <;> simp`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gramX_eq (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) (j i : Fin n) :
     gramX ε x j i = ∑ a, (sR ε a : ℂ) * (star (x a j) * x a i) := by
@@ -21,9 +21,9 @@ theorem gramX_eq (ε : Fin m → Bool) (x : Fin m → Fin n → ℂ) (j i : Fin 
   cases ε a <;> simp
 
 /- English proof (translation)
-Establish `h1 : (b * gramX ε x).trace = ∑ i, ∑ j, ∑ a, (sR ε a : ℂ) * (b i j * star (x a j) * x a i)`. Simplify using `only [Matrix.trace, Matrix.diag, Matrix.mul_apply, gramX_eq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h1]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Finset.mul_sum]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules.
 -/
 theorem trace_eq (ε : Fin m → Bool) (b : Matrix (Fin n) (Fin n) ℂ) (x : Fin m → Fin n → ℂ) :
     (b * gramX ε x).trace = ∑ a, (sR ε a : ℂ) * ∑ i, ∑ j, b i j * star (x a j) * x a i := by
@@ -40,13 +40,13 @@ theorem trace_eq (ε : Fin m → Bool) (b : Matrix (Fin n) (Fin n) ℂ) (x : Fin
         simp only [Finset.mul_sum]
 
 /- English proof (translation)
-Establish `hpt : ∀ x : Fin m → Fin n → ℂ, evX (1 : PX m n) x * gs c x * Complex.exp (Complex.I * t * (b * gramX ε x).trace) = ∏ a, rowF c (t * sR ε a) b (x a)`. Introduce `x`. Simplify using `only [evX, map_one, one_mul, gs, rowF, trace_eq, Finset.prod_mul_distrib, ← Complex.exp_sum]`. Use `congr 1`. Use `congr 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Rewrite using `[Finset.mul_sum, Finset.sum_neg_distrib]`. Use `congr 1`. Rewrite using `[Finset.mul_sum]`. Use `push_cast`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Unfold `secN`. Repeatedly rewrite using `[hpt]`. Rewrite using `[integral_fintype_prod_volume_eq_prod (fun a v => rowF c (t * sR ε a) b v)]`.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `Finset.prod_congr rfl fun a _ => row_int c _ hc b hb`.
+A detailed English derivation is pending.
 -/
 theorem secN_one (ε : Fin m → Bool) (c t : ℝ) (hc : 0 < c) (b : Matrix (Fin n) (Fin n) ℂ) (hb : b.IsHermitian) :
     secN ε c t (1 : PX m n) b =
@@ -71,14 +71,14 @@ theorem secN_one (ε : Fin m → Bool) (c t : ℝ) (hc : 0 < c) (b : Matrix (Fin
   exact Finset.prod_congr rfl fun a _ => row_int c _ hc b hb
 
 /- English proof (translation)
-Rewrite using `[smul_sub, smul_smul]`. Use `push_cast`. Use `congr 2`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem detpm (c s : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) :
     (c : ℂ) • 1 - (Complex.I * ((c * s : ℝ) : ℂ)) • b = (c : ℂ) • (1 - (Complex.I * (s : ℂ)) • b) := by
   rw [smul_sub, smul_smul]; push_cast; congr 2; ring
 
 /- English proof (translation)
-Rewrite using `[detpm, det_smul, Fintype.card_fin, div_mul_eq_div_div, div_eq_mul_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem fac_eq (c s : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) :
     (Real.pi : ℂ) ^ n / ((c : ℂ) • 1 - (Complex.I * ((c * s : ℝ) : ℂ)) • b).det =
@@ -86,19 +86,19 @@ theorem fac_eq (c s : ℝ) (b : Matrix (Fin n) (Fin n) ℂ) :
   rw [detpm, det_smul, Fintype.card_fin, div_mul_eq_div_div, div_eq_mul_inv]
 
 /- English proof (translation)
-Use `push_cast`. Rewrite using `[mul_neg_one, neg_smul, sub_neg_eq_add]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_sub_neg (b : Matrix (Fin n) (Fin n) ℂ) : (1 - (Complex.I * ((-1 : ℝ) : ℂ)) • b) = 1 + Complex.I • b := by
   push_cast; rw [mul_neg_one, neg_smul, sub_neg_eq_add]
 
 /- English proof (translation)
-Use `push_cast`. Rewrite using `[mul_one]`.
+Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 -/
 theorem one_sub_pos (b : Matrix (Fin n) (Fin n) ℂ) : (1 - (Complex.I * ((1 : ℝ) : ℂ)) • b) = 1 - Complex.I • b := by
   push_cast; rw [mul_one]
 
 /- English proof (translation)
-Establish `h : ∀ a, F (ε a) = if ε a = true then F true else F false`. Introduce `a`. Apply the tactic sequence `cases ε a <;> simp`. Rewrite using `[Finset.prod_congr rfl fun a _ => h a, Finset.prod_ite, Finset.prod_const, Finset.prod_const]`. Simplify using `[cnt]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem prod_bool_fun_eq_pow_cnt_mul_pow_cnt (ε : Fin m → Bool) (F : Bool → ℂ) :
     ∏ a, F (ε a) = F true ^ cnt ε true * F false ^ cnt ε false := by
@@ -109,15 +109,15 @@ private theorem prod_bool_fun_eq_pow_cnt_mul_pow_cnt (ε : Fin m → Bool) (F : 
   simp [cnt]
 
 /- English proof (translation)
-Rewrite using `[secN_one ε c t hc b hb]`. Break down `hsign with ⟨ht, hp, hq⟩ | ⟨ht, hp, hq⟩` into its components or cases. Substitute `hp hq` using the available equality. Set `F : Bool → ℂ` to `fun β => ((Real.pi : ℂ) ^ n / (c : ℂ) ^ n) * ((1 - (Complex.I * ((if β = true then 1 else -1 : ℝ) : ℂ)) • b).det)⁻¹`. Establish `hf : ∀ a, (Real.pi : ℂ) ^ n / ((c : ℂ) • 1 - (Complex.I * ((t * sR ε a : ℝ) : ℂ)) • b).det = F (ε a)`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a`. Rewrite using `[ht, fac_eq]`. Both sides reduce to the same expression. Rewrite using `[Finset.prod_congr rfl fun a _ => hf a, prod_bool_fun_eq_pow_cnt_mul_pow_cnt ε F]`. Simplify using `only [F, ↓reduceIte, Bool.false_eq_true, one_sub_pos, one_sub_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[_root_.zpow_neg, _root_.zpow_neg, zpow_natCast, zpow_natCast, _root_.mul_pow, _root_.mul_pow, _root_.inv_pow, _root_.inv_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree. Substitute `hp hq` using the available equality. Set `F : Bool → ℂ` to `fun β => ((Real.pi : ℂ) ^ n / (c : ℂ) ^ n) * ((1 - (Complex.I * ((if β = true then -1 else 1 : ℝ) : ℂ)) • b).det)⁻¹`. Establish `hf : ∀ a, (Real.pi : ℂ) ^ n / ((c : ℂ) • 1 - (Complex.I * ((t * sR ε a : ℝ) : ℂ)) • b).det = F (ε a)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `a`. Establish `hs : t * sR ε a = c * (if ε a = true then -1 else 1)`. Rewrite using `[ht]`. Unfold `sR`. Apply the tactic sequence `split_ifs <;> ring`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hs, fac_eq]`. Rewrite using `[Finset.prod_congr rfl fun a _ => hf a, prod_bool_fun_eq_pow_cnt_mul_pow_cnt ε F]`. Simplify using `only [F, ↓reduceIte, Bool.false_eq_true, one_sub_pos, one_sub_neg]`. Rewrite using `[_root_.zpow_neg, _root_.zpow_neg, zpow_natCast, zpow_natCast, _root_.mul_pow, _root_.mul_pow, _root_.inv_pow, _root_.inv_pow, pow_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem secN_eval (ε : Fin m → Bool) (c t : ℝ) (p q : ℕ) (hc : 0 < c)
     (hsign : (t = c ∧ p = cnt ε true ∧ q = cnt ε false) ∨ (t = -c ∧ p = cnt ε false ∧ q = cnt ε true))

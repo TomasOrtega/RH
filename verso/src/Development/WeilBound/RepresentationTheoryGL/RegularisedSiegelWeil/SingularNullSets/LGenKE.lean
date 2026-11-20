@@ -22,7 +22,7 @@ section GlobalTheory
 variable {R : Type} [CommRing R] {n : ℕ}
 
 /- English proof (translation)
-Unfold `blk4`. Rewrite using `[Matrix.submatrix_mul_equiv _ _ _ finSumFinEquiv.symm _, fromBlocks_multiply]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem submatrix_fromBlocks_mul (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R) :
     blk4 a b c d * blk4 a' b' c' d' =
@@ -31,27 +31,27 @@ theorem submatrix_fromBlocks_mul (a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R
   rw [Matrix.submatrix_mul_equiv _ _ _ finSumFinEquiv.symm _, fromBlocks_multiply]
 
 /- English proof (translation)
-Unfold `blk4`. Rewrite using `[fromBlocks_one, Matrix.submatrix_one_equiv]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem block_matrix_one : blk4 (1 : Matrix (Fin n) (Fin n) R) 0 0 1 = 1 := by
   unfold blk4; rw [fromBlocks_one, Matrix.submatrix_one_equiv]
 
 /- English proof (translation)
-Unfold `blk4`. Rewrite using `[← cj_fromBlocks]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem conj_block_matrix (s : R →+* R) (a b c d : Matrix (Fin n) (Fin n) R) :
     cj s (blk4 a b c d) = blk4 (cj s a) (cj s c) (cj s b) (cj s d) := by
   unfold blk4; rw [← cj_fromBlocks]; rfl
 
 /- English proof (translation)
-Unfold `blk4`. Rewrite using `[← fromBlocks_map]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem block_matrix_map {S : Type} [CommRing S] (f : R →+* S) (a b c d : Matrix (Fin n) (Fin n) R) :
     (blk4 a b c d).map f = blk4 (a.map f) (b.map f) (c.map f) (d.map f) := by
   unfold blk4; rw [← fromBlocks_map]; rfl
 
 /- English proof (translation)
-Establish `: fromBlocks a b c d = fromBlocks a' b' c' d'`. Use `congrArg (fun M => M.submatrix finSumFinEquiv finSumFinEquiv) h` as an intermediate fact. Simplify `this` using `[blk4, Matrix.submatrix_submatrix]`. Conclude with `Matrix.fromBlocks_inj.1 this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem blockMatrixTwoByTwoFin_injective {a b c d a' b' c' d' : Matrix (Fin n) (Fin n) R} (h : blk4 a b c d = blk4 a' b' c' d') :
     a = a' ∧ b = b' ∧ c = c' ∧ d = d' := by
@@ -70,7 +70,7 @@ def bD (M : Matrix (Fin (n + n)) (Fin (n + n)) R) : Matrix (Fin n) (Fin n) R :=
   (M.submatrix finSumFinEquiv finSumFinEquiv).toBlocks₂₂
 
 /- English proof (translation)
-Unfold `blk4 bA bB bC bD`. Rewrite using `[fromBlocks_toBlocks, Matrix.submatrix_submatrix]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem block_matrix_of_blocks (M : Matrix (Fin (n + n)) (Fin (n + n)) R) : blk4 (bA M) (bB M) (bC M) (bD M) = M := by
   unfold blk4 bA bB bC bD
@@ -78,7 +78,7 @@ theorem block_matrix_of_blocks (M : Matrix (Fin (n + n)) (Fin (n + n)) R) : blk4
   simp
 
 /- English proof (translation)
-Rewrite `h` using `[conj_block_matrix, submatrix_fromBlocks_mul, submatrix_fromBlocks_mul]`. Take `⟨h1, h2, h3, h4⟩` from `blockMatrixTwoByTwoFin_injective h`. Rewrite using `[cj_fromBlocks, fromBlocks_multiply, fromBlocks_multiply, h1, h2, h3, h4]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem unit_fromBlocks (s : R →+* R) (a b c d : Matrix (Fin n) (Fin n) R)
     (h : cj s (blk4 a b c d) * blk4 0 1 (-1) 0 * blk4 a b c d = blk4 0 1 (-1) 0) :
@@ -88,9 +88,9 @@ theorem unit_fromBlocks (s : R →+* R) (a b c d : Matrix (Fin n) (Fin n) R)
   rw [cj_fromBlocks, fromBlocks_multiply, fromBlocks_multiply, h1, h2, h3, h4]
 
 /- English proof (translation)
-Rewrite `h` using `[cj_fromBlocks, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [Matrix.zero_mul, Matrix.mul_zero, Matrix.one_mul, Matrix.mul_one, Matrix.neg_mul, Matrix.mul_neg, zero_add, add_zero] at h`. Take `⟨h1, h2, h3, h4⟩` from `Matrix.fromBlocks_inj.1 h`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero, ← h1]`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `noncomm_ring`. Rewrite using `[← h2]`. Use `noncomm_ring`. Rewrite using `[← sub_eq_zero, ← h4]`. Use `noncomm_ring`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unit_col (s : R →+* R) (a b c d : Matrix (Fin n) (Fin n) R)
     (h : cj s (fromBlocks a b c d) * fromBlocks 0 1 (-1) 0 * fromBlocks a b c d = fromBlocks 0 1 (-1) 0) :
@@ -113,7 +113,7 @@ variable {D : D7} {n : ℕ}
 abbrev Jm (D : D7) (n : ℕ) : Mx D (n + n) (n + n) := blk4 0 1 (-1) 0
 
 /- English proof (translation)
-Rewrite using `[Jst, block_matrix_map]`. Establish `e : ((-1 : Matrix (Fin n) (Fin n) D.host.E)).map (inclR (F` using `D.host.F) (AF D.host.F)) = -1 := by`. Apply the tactic sequence `ext i j; by_cases h : i = j <;> simp [Matrix.one_apply, h]`. Simplify using `[e]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem Jst_map : (Jst D n).map (inclR (AF D.host.F)) = Jm D n := by
   rw [Jst, block_matrix_map]
@@ -122,51 +122,51 @@ theorem Jst_map : (Jst D n).map (inclR (AF D.host.F)) = Jm D n := by
   simp [e]
 
 /- English proof (translation)
-Rewrite using `[← Jst_map]`. Conclude with `g.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mat_unit (g : G D n) : cj (cA D) (mat g) * Jm D n * mat g = Jm D n := by
   rw [← Jst_map]; exact g.2
 
 /- English proof (translation)
-Simplify using `[mat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mat_mul (g h : G D n) : mat (g * h) = mat g * mat h := by
   simp [mat]
 
 /- English proof (translation)
-Simplify using `[mat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mat_one : mat (1 : G D n) = 1 := by
   simp [mat]
 
 /- English proof (translation)
-Rewrite using `[← mat_mul, inv_mul_cancel, mat_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mat_inv_mul (g : G D n) : mat g⁻¹ * mat g = 1 := by rw [← mat_mul, inv_mul_cancel, mat_one]
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Conclude with `e`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 theorem mat_inj {g h : G D n} (e : mat g = mat h) : g = h := by
   apply Subtype.ext; apply Units.ext; exact e
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem mat_inv_eq {g : G D n} {N : Mx D (n + n) (n + n)} (h : mat g * N = 1) : mat g⁻¹ = N := by
   calc mat g⁻¹ = mat g⁻¹ * (mat g * N) := by rw [h, Matrix.mul_one]
     _ = N := by rw [← Matrix.mul_assoc, mat_inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[submatrix_fromBlocks_mul]`. Simplify using `[block_matrix_one]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Jm_inv : blk4 (0 : Mx D n n) (-1) 1 0 * Jm D n = 1 := by
   rw [submatrix_fromBlocks_mul]; simp [block_matrix_one]
 
 /- English proof (translation)
-Establish `h1 : (blk4 (0 : Mx D n n) (-1) 1 0 * cj (cA D) M * Jm D n) * M = 1`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_assoc (cj (cA D) M), hM, Jm_inv]`. Establish `h2` using `mul_eq_one_comm.1 h1`. Set `u : GL (Fin (n + n)) (AE D)` to `⟨M, _, h2, h1⟩`. Establish `hu : u ∈ HR (AF D.host.F) D.sp.cm.sig (Jst D n)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `cj (cA D) M * (Jst D n).map (inclR (AF D.host.F)) * M = (Jst D n).map (inclR (AF D.host.F))`. Rewrite using `[Jst_map]`. Conclude with `hM`. Conclude with `⟨⟨u, hu⟩, rfl⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_G (M : Mx D (n + n) (n + n)) (hM : cj (cA D) M * Jm D n * M = Jm D n) : ∃ g : G D n, mat g = M := by
   have h1 : (blk4 (0 : Mx D n n) (-1) 1 0 * cj (cA D) M * Jm D n) * M = 1 := by

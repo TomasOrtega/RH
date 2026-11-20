@@ -16,13 +16,13 @@ open CategoryTheory AlgebraicGeometry NumberField MvPolynomial GlobalTheory.Comp
 namespace GlobalTheory.CompanionTheory.Ar.HT.ModelSandwich
 
 /- English proof (translation)
-Introduce `X Ω _ _ ξ q p r hp hr hpq hrq`. Establish `key : ∀ n : ℕ, n.Prime → InFibre ξ n q → (n : X.presheaf.stalk q.1) ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk q.1)`. Introduce `n hn hf`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce and unpack `⟨u, hu⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Apply `hf` to reduce the goal to its premises. Establish `hn0 : (n : Ω) ≠ 0` using `Nat.cast_ne_zero.2 hn.ne_zero`. Establish `h1 : genMap ξ q (↑u⁻¹ : X.presheaf.stalk q.1) * (n : Ω) = 1`. Rewrite using `[← map_natCast (genMap ξ q) n, ← map_mul, ← hu, Units.inv_mul, map_one]`. Conclude with `⟨hn0, ⟨(n : X.presheaf.stalk q.1), map_natCast _ n⟩, ⟨(↑u⁻¹ : X.presheaf.stalk q.1), eq_inv_of_mul_eq_one_left h1⟩⟩`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Assume the negation of the conclusion as `hne`. Establish `hcop : Nat.Coprime p r` using `(Nat.coprime_primes hp hr).2 (Ne.symm hne)`. Take `⟨a, b, hab⟩` from `Nat.isCoprime_iff_coprime.2 hcop`. Establish `h1 : (1 : X.presheaf.stalk q.1) ∈ IsLocalRing.maximalIdeal (X.presheaf.stalk q.1)`. Establish `: ((a * p + b * r : ℤ) : X.presheaf.stalk q.1) = 1` using `by rw [hab]; simp`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← this]`. Use `push_cast`. Conclude with `add_mem (Ideal.mul_mem_left _ _ (key p hp hpq)) (Ideal.mul_mem_left _ _ (key r hr hrq))`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal _).ne_top ((Ideal.eq_top_iff_one _).2 h1)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem inFibre_unique : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (q : Cpt ξ) (p r : ℕ), p.Prime → r.Prime → InFibre ξ p q → InFibre ξ r q → r = p := by
   intro X Ω _ _ ξ q p r hp hr hpq hrq
@@ -48,13 +48,11 @@ theorem inFibre_unique : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero �
   exact (IsLocalRing.maximalIdeal.isMaximal _).ne_top ((Ideal.eq_top_iff_one _).2 h1)
 
 /- English proof (translation)
-Introduce `X Ω _ _ ξ q p hp hover a b hb`. Establish `hinv : ∀ b : ℕ, ¬ p ∣ b → ((b : Ω))⁻¹ ∈ regAt ξ q`. Use `Nat.recOnMul (motive := fun b => ¬ p ∣ b → ((b : Ω))⁻¹ ∈ regAt ξ q) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `h`. Conclude with `absurd (dvd_zero p) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `_`. Simplify using the standard rewrite rules. Introduce `r hr h`. Establish `hne : r ≠ p` using `fun e => h (e ▸ dvd_rfl)`. Establish `hnf : ¬ InFibre ξ r q` using `fun hf => hne (hover r hr hf)`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(not_not.1 hnf).2.2`. Introduce `m n hm hn h`. Rewrite using `[Nat.cast_mul, mul_inv]`. Conclude with `mul_mem (hm fun h' => h (dvd_mul_of_dvd_left h' _)) (hn fun h' => h (dvd_mul_of_dvd_right h' _))`. Rewrite using `[div_eq_mul_inv]`.
-
-Conclude with `mul_mem (intCast_mem _ a) (hinv b hb)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem div_mem_regAt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (q : Cpt ξ) (p : ℕ), p.Prime → (∀ r : ℕ, r.Prime → InFibre ξ r q → r = p) → ∀ (a : ℤ) (b : ℕ), ¬ p ∣ b → (a : Ω) / (b : Ω) ∈ regAt ξ q := by
   intro X Ω _ _ ξ q p hp hover a b hb
@@ -75,13 +73,13 @@ theorem div_mem_regAt : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] [CharZero Ω
   exact mul_mem (intCast_mem _ a) (hinv b hb)
 
 /- English proof (translation)
-Introduce `Ω _ A p hp κ hκA hκ`. Unfold `IsCp at hκ`. Use `split_ifs at hκ with h2`. Conclude with `⟨1, A.one_mem, by rw [hκ, h2]; norm_num⟩`. Take `⟨ζ, hζ, rfl⟩` from `hκ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hζA : ζ ∈ A` using `by simpa using A.add_mem hκA A.one_mem`. Establish `hsum : ∑ i ∈ Finset.range p, ζ ^ i = 0` using `hζ.geom_sum_eq_zero hp.out.one_lt`. Establish `hp' : (p : Ω) = ∑ i ∈ Finset.range p, (1 - ζ ^ i)`. Rewrite using `[Finset.sum_sub_distrib, hsum]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hterm : ∀ i, (1 : Ω) - ζ ^ i = (1 - ζ) * ∑ j ∈ Finset.range i, ζ ^ j` using `fun i => by`. Rewrite using `[mul_comm, geom_sum_mul_neg]`. Establish `hv : (∑ i ∈ Finset.range p, ∑ j ∈ Finset.range i, ζ ^ j) ∈ A` using `A.sum_mem fun i _ => A.sum_mem fun j _ => A.pow_mem hζA j`. Establish `hpv : (p : Ω) = -(ζ - 1) * ∑ i ∈ Finset.range p, ∑ j ∈ Finset.range i, ζ ^ j`. Rewrite using `[hp', Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hterm]`. Expand and normalize the polynomial expressions, which then agree. Use `⟨-(p : Ω) * ∑ i ∈ Finset.range p, ∑ j ∈ Finset.range i, ζ ^ j, A.mul_mem (A.neg_mem (natCast_mem A p)) hv, ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem isCp_dvd : ∀ (Ω : Type) [Field Ω] (A : Subring Ω) (p : ℕ) [Fact p.Prime] (κ : Ω), κ ∈ A → IsCp p κ → ∃ u ∈ A, (p : Ω) ^ 2 = κ * u := by
   intro Ω _ A p hp κ hκA hκ
@@ -110,9 +108,9 @@ theorem isCp_dvd : ∀ (Ω : Type) [Field Ω] (A : Subring Ω) (p : ℕ) [Fact p
       _ = _ := by ring
 
 /- English proof (translation)
-Introduce `X Ω _ ξ G _ _ Li _ _ M L n O _ ρ σ g hgen hsm q κ hκ e he`. Take `⟨hvb, -⟩` from `GlobalTheory.CompanionTheory.Ar.lieLat_isVB X G g Ω ξ Li M hgen hsm`. Establish `hbi` using `(Lat.isVBOn_dual_and_bidual X Ω ξ Li M.lat Set.univ _ hvb).2 q trivial`. Rewrite `he` using `[M.mem_htDual_iff L n ρ σ q e]`. Use `⟨(hbi (κ • e)).2 fun w hw => ?_, Submodule.smul_mem _ κ he.1⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `he.2 (κ • w) (hκ w hw)` as an intermediate fact. Simplify `this` using `[map_smul, smul_eq_mul, LinearMap.smul_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem smul_htDual_mem : ∀ (X : Scheme.{0}) (Ω : Type) [Field Ω] (ξ : Spec (CommRingCat.of Ω) ⟶ X) (G : Over X) [GrpObj G] [IsCommMonObj G] (Li : Type) [AddCommGroup Li] [Module Ω Li] (M : LieModel G ξ Li) (L : ReciprocityTheory.ChartRestriction.G.Semi.LB G.left) (n : ℕ) (O : Type) [CommRing O] (ρ : O →+* Module.End Ω Li) (σ : O →+* Ω) (g : ℕ), IsCptGen ξ → SmoothOfRelativeDimension g G.hom → ∀ (q : Cpt ξ) (κ : Ω), (∀ w ∈ M.omLat q, κ • w ∈ M.htOm L n q) → ∀ e ∈ M.htDual L n ρ σ q, κ • e ∈ M.eigLat ρ σ q := by
   intro X Ω _ ξ G _ _ Li _ _ M L n O _ ρ σ g hgen hsm q κ hκ e he
@@ -128,13 +126,13 @@ end GlobalTheory.CompanionTheory.Ar.HT.ModelSandwich
 namespace GlobalTheory.CompanionTheory.Ar.HT.ModelSandwich
 
 /- English proof (translation)
-Use `⟨{ carrier := {x | ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω)} mul_mem' := ?_, add_mem' := ?_, algebraMap_mem' := ?_ }, fun x => Iff.rfl⟩` and prove the remaining obligations. Introduce and unpack `_ _ ⟨a, b, hb, rfl⟩ ⟨a', b', hb', rfl⟩`. Use `⟨a * a', b * b', fun h => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases (Nat.Prime.dvd_mul hp.out).1 h with h | h <;> contradiction`. Use `push_cast`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[div_mul_div_comm]`. Introduce and unpack `_ _ ⟨a, b, hb, rfl⟩ ⟨a', b', hb', rfl⟩`. Distinguish the cases in `h0 : (b : Ω) = 0`. Conclude with `⟨a', b', hb', by simp [h0]⟩`. Distinguish the cases in `h0' : (b' : Ω) = 0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Consider separately whether the proposition holds or fails.
 
-Conclude with `⟨a, b, hb, by simp [h0']⟩`. Use `⟨a * b' + a' * b, b * b', fun h => ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rcases (Nat.Prime.dvd_mul hp.out).1 h with h | h <;> contradiction`. Use `push_cast`. Rewrite using `[div_add_div _ _ h0 h0']`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `n`. Conclude with `⟨n, 1, hp.out.not_dvd_one, by simp⟩`.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_zp (Ω : Type) [Field Ω] (p : ℕ) [hp : Fact p.Prime] :
     ∃ o : Subalgebra ℤ Ω, ∀ x : Ω, x ∈ o ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω) := by
@@ -156,33 +154,31 @@ theorem exists_zp (Ω : Type) [Field Ω] (p : ℕ) [hp : Fact p.Prime] :
     exact ⟨n, 1, hp.out.not_dvd_one, by simp⟩
 
 /- English proof (translation)
-Introduce `hF E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p _ hpS hpq hfree`. Take `⟨o, ho⟩` from `exists_zp Ω p`. Establish `ho' : ∀ x : Ω, x ∈ (algebraMap o Ω).range ↔ ∃ (a : ℤ) (b : ℕ), ¬ p ∣ b ∧ x = (a : Ω) / (b : Ω)`. Introduce `x`. Rewrite using `[← ho x]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨fun ⟨z, hz⟩ => hz ▸ z.2, fun h => ⟨⟨x, h⟩, rfl⟩⟩`. Take `⟨hchar, -, -, -, -, -, hch⟩` from `GlobalTheory.T.hodge_tate_free_integral_models E H D l Xo c O β Y S Ω K J y 𝔐 p hpS o ho'`. Use `letI := hchar`. Establish `hPT : PointHT` using `GlobalTheory.T.pointHT_of_fargues_hodge_tate hF`. Take `⟨Dc, hfam, htest⟩` from `GlobalTheory.T.hodge_tate_free_flag_lattice_lower E H D l Xo c O β Y S Ω K J y 𝔐 p hpS hpq o ho'`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hproj, -, κ, hκ, hκA⟩` from `GlobalTheory.T.hodge_tate_free_flag_lattice_upper E H D l Xo c O β Y S Ω K J y 𝔐 p hpS hpq o ho' Dc hfam hfree`. Use `⟨κ, hκ, fun q hq => ?_⟩` and prove the remaining obligations. Establish `hover : OverZp 𝔐 p q` using `fun r hr hrq => inFibre_unique _ Ω 𝔐.ξ q p r Fact.out hr hq hrq`. Take `⟨c', hc'⟩` from `𝔐.tie.cover q`. Set `s : {s : ∀ k, J k // mseg y s ≠ 0}` to `⟨c', hc'.1⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hin : InChart 𝔐.ξ (mseg y) s.1 q` using `hc'`. Establish `hreg : ∀ x ∈ chartRing o (mseg y) s.1, x ∈ regAt 𝔐.ξ q`. Introduce `x hx`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Take `⟨j, rfl⟩` from `hx`. Conclude with `hin.2 j`. Consider the case `algebraMap r`. Take `⟨a, b, hb, h⟩` from `(ho r).1 r.2`. Rewrite using `[show algebraMap o Ω r = (r : Ω) from rfl, h]`.
+Extract witnesses or component facts from the available result. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `div_mem_regAt _ Ω 𝔐.ξ q p Fact.out hover a b hb`. Consider the case `add x y _ _ hx hy => exact add_mem hx hy`. Consider the case `mul x y _ _ hx hy => exact mul_mem hx hy`. Establish `hκq : κ ∈ regAt 𝔐.ξ q` using `hreg κ (hκA s)`. Take `⟨hN, hIC, hFR, -⟩` from `hch s.1 s.2`.
+Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `κA : chartRing o (mseg y) s.1` to `⟨κ, hκA s⟩`. Take `⟨u, hu, hpu⟩` from `isCp_dvd Ω (chartRing o (mseg y) s.1).toSubring p κ (hκA s) hκ`. Establish `hdiv : κA * (p : chartRing o (mseg y) s.1) ^ (𝔐.R p - 2) ∣ (p : chartRing o (mseg y) s.1) ^ (𝔐.R p)`. Use `⟨⟨u, hu⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Take `⟨k, hk⟩ : ∃ k, 𝔐.R p = k + 2` from `⟨𝔐.R p - 2, by have := 𝔐.R_ge p hpS; omega⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hk, Nat.add_sub_cancel]`. Use `push_cast`. Rewrite using `[pow_add, hpu]`. Use `show _ = κ * _ * u`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hinv : ∀ x : E, cmConj E (cmConj E x) = x` using `fun x => by simp [cmConj]`. Take `⟨⟨-, hsm⟩, -⟩` from `GlobalTheory.T.chart_sequence_holds (chartRing o (mseg y) s.1) Ω E (cmConj E) hinv p (𝔐.R p) (D.p + D.q) (Module.Dual Ω 𝔐.Li) (Dc s) κA (𝔐.R p - 2) hdiv (htest s κA hPT hκ) (hproj s).1`. Establish `hκω : ∀ w ∈ 𝔐.M.omLat q, κ • w ∈ omP 𝔐 p q`. Introduce `w hw`. Rewrite `hw` using `[hfam.om_loc s q hin hover]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Rewrite using `[hfam.om'_loc s q hin hq]`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Use `Submodule.subset_span ?_` and prove the remaining obligations. Use `hsm x hx` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Treat this case separately. Treat this case separately.
 
-Rewrite `this` using `[← algebraMap_smul Ω κA x]`. Then use the resulting hypothesis. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [smul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul r x _ hx`.
+Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: κ • (r • x) = r • (κ • x)`. Rewrite using `[Subring.smul_def, Subring.smul_def, smul_smul, smul_smul, mul_comm]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ r hx`. Use `⟨hκq, 𝔐.M.htOm_le 𝔐.t.PP.L _ q, hκω, fun s' => ⟨𝔐.M.eigLat_le_htDual 𝔐.t.PP.L _ 𝔐.ρ (𝔐.emb s') q, fun e he => ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hirr : IrreducibleSpace 𝔐.X`. Rewrite using `[irreducibleSpace_def]`. Establish `hcl : closure ({genPt 𝔐.ξ} : Set 𝔐.X) = (⊤ : Set 𝔐.X)` using `Set.eq_univ_of_forall fun x => specializes_iff_mem_closure.1 (𝔐.all x)`. Rewrite using `[← hcl]`. Conclude with `isIrreducible_singleton.closure`.
-
-Take `⟨d, hd⟩` from `GlobalTheory.Models.InhabZOn.exists_dim_triple 𝔐.t`. Conclude with `smul_htDual_mem 𝔐.X Ω 𝔐.ξ 𝔐.t.G 𝔐.Li 𝔐.M 𝔐.t.PP.L (p ^ 𝔐.R p) (𝓞 E) 𝔐.ρ (𝔐.emb s') d 𝔐.tie.gen hd q κ hκω e he`.
+A detailed English derivation is pending.
 -/
 theorem sandwich_of_htFree : FarguesHodgeTate → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (S : Finset ℕ) (Ω : Type) [Field Ω] (K : Type) [Fintype K] (J : K → Type) [∀ k, Fintype (J k)] (y : (Σ k, J k) → Ω) (𝔐 : HodgeCpt Y S y) (p : ℕ) [Fact p.Prime] (hpS : p ∈ S) (hpq : 0 < D.p + D.q), HTFree 𝔐 p → ∃ κ : Ω, IsCp p κ ∧ Sandwich 𝔐 p κ := by
   intro hF E _ _ _ H D l Xo c O _ β Y S Ω _ K _ J _ y 𝔐 p _ hpS hpq hfree

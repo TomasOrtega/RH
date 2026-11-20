@@ -10,27 +10,25 @@ open scoped Classical MatrixGroups nonZeroDivisors
 namespace GlobalTheory.HilbFam
 
 /- English proof (translation)
-Introduce `F _ _ _ k 𝔞 𝔟 a₀ a x N g m π μ n hN hco hg0 hlev hζ hemb`. Take `⟨h0, hint, hsupp, -⟩` from `hco`. Establish `hmap : ∀ {ι : Sort _} (f : ι → ℂ), g (∑ᶠ i, f i) = ∑ᶠ i, g (f i)` using `fun f ↦ AddEquiv.map_finsum g.toAddEquiv f`. Establish `hmapP : ∀ {p : Prop} (f : p → ℂ), g (∑ᶠ i, f i) = ∑ᶠ i, g (f i)` using `fun f ↦ AddEquiv.map_finsum g.toAddEquiv f`. Establish `hNq : (N : ℚ) ≠ 0` using `by exact_mod_cast hN.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprod : ∀ ξ : F, g (∏ i : Emb F, ((i ξ : ℝ) : ℂ) ^ μ i) = ∏ j : Emb F, ((j ξ : ℝ) : ℂ) ^ μ (π.symm j)`. Introduce `ξ`. Rewrite using `[map_prod]`. Simplify using `only [map_pow, hemb]`. Conclude with `Equiv.prod_comp π (fun j ↦ ((j ξ : ℝ) : ℂ) ^ μ (π.symm j)) |>.symm ▸ by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Equiv.symm_apply_apply]`. Establish `hchar : ∀ ξ : F, ξ ∈ ((𝔞 * 𝔟 : Frac F) : FractionalIdeal (𝓞 F)⁰ F) → g (eTr (ξ * x)) = eTr (ξ * ((m : F) * x))`. Introduce `ξ hξ`. Take `⟨r, hr⟩` from `(GlobalTheory.T.splitLattice_level_trace_denominator F N 𝔞 𝔟 x ξ hlev hξ).2`. Establish `ht : Algebra.trace ℚ F (ξ * x) = (r : ℚ) / N`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_div_iff hNq, mul_comm]`. Conclude with `hr`. Establish `hsm : ξ * ((m : F) * x) = (m : ℚ) • (ξ * x)`. Rewrite using `[Algebra.smul_def, map_intCast]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `ht' : Algebra.trace ℚ F (ξ * ((m : F) * x)) = (m : ℚ) * ((r : ℚ) / N)`. Rewrite using `[hsm, LinearMap.map_smul, smul_eq_mul, ht]`. Establish `e1 : eTr (ξ * x) = Complex.exp ((2 * Real.pi * Complex.I) / N) ^ r`. Rewrite using `[eTr, ht, ← Complex.exp_int_mul]`. Use `congr 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1, map_zpow₀, hζ, ← Complex.exp_int_mul, eTr, ht']`. Use `congr 1`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ ξ : F, g (a ξ * eTr (ξ * x) * ∏ i : Emb F, ((i ξ : ℝ) : ℂ) ^ μ i) = a ξ * eTr (ξ * ((m : F) * x)) * ∏ j : Emb F, ((j ξ : ℝ) : ℂ) ^ μ (π.symm j)`. Introduce `ξ`. Distinguish the cases in `ha : a ξ = 0`. Simplify using `[ha]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hga : g (a ξ) = a ξ`. Distinguish the cases in `hξ0 : ξ = 0`. Substitute `hξ0` using the available equality. Rewrite using `[h0]`. Conclude with `hg0`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨z, hz⟩` from `hint ξ hξ0`. Rewrite using `[hz, map_intCast]`. Establish `hmem : ξ ∈ ((𝔞 * 𝔟 : Frac F) : FractionalIdeal (𝓞 F)⁰ F)`. Distinguish the cases in `hξ0 : ξ = 0`. Substitute `hξ0` using the available equality.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Conclude with `(hsupp ξ hξ0 ha).1`. Rewrite using `[map_mul, map_mul, hga, hchar ξ hmem, hprod]`. Unfold `ecoef`. Rewrite using `[hmap]`.
-
-Use `finsum_congr fun ξ ↦ ?_` and prove the remaining obligations. Rewrite using `[hmapP]`. Use `finsum_congr fun _ ↦ ?_` and prove the remaining obligations. Conclude with `key ξ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ecoef_ringEquiv : ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (k : ℕ) (𝔞 𝔟 : Frac F) (a₀ : ℂ) (a : F → ℂ) (x : F) (N : ℕ) (g : ℂ ≃+* ℂ) (m : ℤ) (π : Equiv.Perm (Emb F)) (μ : Emb F → ℕ) (n : ℕ), 0 < N → IsCoef k 𝔞 𝔟 a₀ a → g a₀ = a₀ → HasLevel N (split 𝔞 𝔟 x) → g (Complex.exp ((2 * Real.pi * Complex.I) / N)) = Complex.exp ((2 * Real.pi * Complex.I) * m / N) → (∀ (i : Emb F) (y : F), g ((i y : ℝ) : ℂ) = ((π i y : ℝ) : ℂ)) → g (ecoef N a x μ n) = ecoef N a (m * x) (fun j ↦ μ (π.symm j)) n := by
   intro F _ _ _ k 𝔞 𝔟 a₀ a x N g m π μ n hN hco hg0 hlev hζ hemb

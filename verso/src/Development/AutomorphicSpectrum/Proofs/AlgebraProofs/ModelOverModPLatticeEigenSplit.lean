@@ -17,9 +17,9 @@ open GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundl
 namespace GlobalTheory.CompanionTheory.Ar.Num.GoodModel
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `h3` using `h.2.2.1`. Establish `hmem : a ∈ (mcIdeal O x).comap (C : O →+* _)`. Rewrite using `[Ideal.mem_comap]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [mcIdeal, RingHom.mem_ker, GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.mcMap]`. Use `erw [MvPolynomial.aeval_C]`. Rewrite using `[MvPolynomial.algebraMap_apply, ha, map_zero]`. Rewrite `hmem` using `[h3]`. Simplify using `using hmem`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem algebraMap_injective_of_model {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O]
     {Ω : Type} [Field Ω] [Algebra O Ω] {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)]
@@ -38,11 +38,9 @@ theorem algebraMap_injective_of_model {O : Type} [CommRing O] [IsDomain O] [IsDi
   simpa using hmem
 
 /- English proof (translation)
-Take `⟨Γ, Δ, ⟨h1, h2⟩, ⟨h3, h4⟩, h5⟩` from `h`. Use `⟨Γ, Δ, ⟨h1, fun s hs => ?_⟩, ⟨h3, fun s hs => ?_⟩, fun s hs => ?_⟩` and prove the remaining obligations. Use `h2 s hs` as an intermediate fact. Rewrite `this` using `[hA s hs, hA' s hs, hB s hs, hB' s hs]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `h4 s hs` as an intermediate fact. Rewrite `this` using `[hB s hs, hB' s hs, hC s hs, hC' s hs]`. Conclude with `this`. Use `h5 s hs` as an intermediate fact. Rewrite `this` using `[hA' s hs, hC s hs]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotExact_congr {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω]
     {K : Type} [Fintype K] {ι : K → Type} [∀ k, Fintype (ι k)] {x : (Σ k, ι k) → Ω}
@@ -67,11 +65,11 @@ theorem quotExact_congr {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra 
     exact this
 
 /- English proof (translation)
-Establish `hP1 : (P : ℝ) - 1 ≠ 0`. Establish `: (2 : ℝ) ≤ (P : ℝ)` using `by exact_mod_cast hP`. Introduce `h0`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `bdR : ((P : ℝ) - 1) * (rw : ℝ) = (rp : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Establish `h1` using `congrArg (Int.cast : ℤ → ℝ) bd`. Establish `h2 : (((P - 1 : ℕ) : ℤ) : ℝ) = (P : ℝ) - 1`. Rewrite using `[Int.cast_natCast, Nat.cast_sub (by omega), Nat.cast_one]`. Rewrite `h1` using `[Int.cast_mul, h2, Int.cast_mul]`. Simplify using `using h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `eR : (a : ℝ) + (b : ℝ) = (c : ℝ) - (k : ℝ) * (rw : ℝ)` using `by exact_mod_cast e`. Rewrite using `[eR, ← bdR]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem arith_first (a b c rw rp : ℤ) (P k : ℕ) (hP : 2 ≤ P) (e : a + b = c - (k : ℤ) * rw)
     (bd : ((P - 1 : ℕ) : ℤ) * rw = ((1 : ℕ) : ℤ) * rp) :
@@ -91,7 +89,7 @@ theorem arith_first (a b c rw rp : ℤ) (P k : ℕ) (hP : 2 ≤ P) (e : a + b = 
   field_simp
 
 /- English proof (translation)
-Take `⟨j, rfl⟩ : ∃ j, k = j + 1` from `⟨k - 1, by omega⟩`. Establish `hz : (P : ℤ) ^ (j + 1) * ((-1) ^ (j + 1) * ∑ i, B i) = (-1) ^ (j + 1) * ∑ i, A i + ((j + 1 : ℕ) : ℤ) * Λ`. Rewrite using `[e, Finset.sum_sub_distrib, ← Finset.mul_sum, Nat.add_sub_cancel]`. Expand and normalize the polynomial expressions, which then agree. Conclude with `hz` after adjusting the coercions.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem arith_second {m : ℕ} (A B : Fin m → ℤ) (Λ : ℤ) (P k : ℕ) (hk : 1 ≤ k)
     (e : (k : ℤ) * Λ = (-1) ^ (k - 1) * ∑ i, (A i - (P : ℤ) ^ k * B i)) :
@@ -105,47 +103,41 @@ theorem arith_second {m : ℕ} (A B : Fin m → ℤ) (Λ : ℤ) (P k : ℕ) (hk 
   exact_mod_cast hz
 
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x d hM F _ _ _ n Sg _ r s p hp w χ φ D hD hG1 hG2 hF hX Lie W Om OmHT hB`. Establish `inj : Function.Injective (algebraMap O Ω)` using `algebraMap_injective_of_model hM`. Take `⟨hp0, ⟨u, hu, hwu⟩, -, h01, hχ⟩` from `hD.char`. Establish `hp2 : 2 ≤ p` using `hp.two_le`. Establish `hw0 : w ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `rfl`. Rewrite `hwu` using `[zero_pow (by omega)]`. Conclude with `hp0 (by simpa [hu.ne_zero] using hwu.symm)`. Establish `hwΩ : algebraMap O Ω w ≠ 0` using `(map_ne_zero_iff _ inj).2 hw0`. Establish `hCD : ∀ c, CharData (chartRing O (mseg x) c) p (algebraMap O Ω w) (fun τ a => algebraMap O Ω (χ τ a))`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `c`. Use `⟨?_, Subalgebra.algebraMap_mem _ _, ?_, h01, fun τ => ⟨?_, ?_, fun a => Subalgebra.algebraMap_mem _ _⟩⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap O Ω)]`. Conclude with `(map_ne_zero_iff _ inj).2 hp0`. Take `⟨v, hv⟩` from `hu.exists_left_inv`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨algebraMap O Ω (v * w ^ (p - 2)), Subalgebra.algebraMap_mem _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← map_natCast (algebraMap O Ω), ← map_mul]`. Use `congr 1`. Establish `: w ^ (p - 1) = w ^ (p - 2) * w`. Rewrite using `[← pow_succ]`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Combine the equalities or inequalities in the displayed calculation. Simplify using `[(hχ τ).1]`. Simplify using `[(hχ τ).2]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hfc` using `GlobalTheory.T.lattice_family_injective_model_facts O Ω K ι x inj p hp w χ φ D hD`. Establish `hgb` using `fun c (hc : mseg x c ≠ 0) => GlobalTheory.T.lattice_good_base_change (D c) (chartRing O (mseg x) c) p _ _ (hCD c) (hD.base c hc) (hG1 c hc)`. Establish `hbf` using `GlobalTheory.T.lattice_families_glue_to_bundle O Ω K ι x`. Establish `hbo` using `GlobalTheory.T.chart_bundle_product O Ω K ι x`. Establish `hXb : ∀ τ i, ∃ E : ChartBundle O (mseg x) 1 Ω, ∀ c, mseg x c ≠ 0 → E.lat c = (D c).xId (fun a => algebraMap O Ω (χ τ a)) i` using `fun τ i => (hbf 1 Ω).1 _ ((hfc.2 τ).2.1 i).1 (fun c hc => ((hgb c hc).1 τ).2.2.2 i)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `choose Xb hXb using hXb`. Take `⟨T, hT⟩` from `hbo.2.2.1 1 0 one_ne_zero`. Take `⟨Tn, hTn⟩` from `hbo.2.2.2.1 n (Fin n → Ω) (Pi.basisFun Ω (Fin n))`. Establish `hTn' : ∀ c, mseg x c ≠ 0 → Tn.lat c = stdLat (chartRing O (mseg x) c) (Fin n)`. Introduce `c hc`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use extensionality with `v`. Rewrite using `[hTn c hc v]`. Simplify using `[stdLat, AddSubgroup.mem_pi]`. Establish `hH : ∀ τ, ∃ E : ChartBundle O (mseg x) n (Fin n → Ω), ∀ c, mseg x c ≠ 0 → E.lat c = (D c).hh (chartRing O (mseg x) c) p (fun a => algebraMap O Ω (χ τ a))` using `fun τ => (hbf n _).1 _ ((hfc.2 τ).2.2.2.2 hG1).1 (fun c hc => ((hgb c hc).1 τ).2.1)`. Use `choose H hH using hH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLa : ∀ τ, ∃ E : ChartBundle O (mseg x) (r τ) (Fin (r τ) → Ω), IsScaled x (algebraMap O Ω w)⁻¹ (Lie τ).lat E.lat` using `fun τ => hbo.2.1 _ _ (Lie τ) _ (inv_ne_zero hwΩ)`. Use `choose La hLa using hLa`. Establish `hdiv : ∀ {m : ℕ} (L : AddSubgroup (Fin m → Ω)) (v : Fin m → Ω), v ∈ divLat (algebraMap O Ω w) L ↔ algebraMap O Ω w • v ∈ L` using `fun _ _ => Iff.rfl`. Establish `hLa' : ∀ τ c, mseg x c ≠ 0 → (La τ).lat c = divLat (algebraMap O Ω w) ((Lie τ).lat c)`. Introduce `τ c hc`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `v`. Rewrite using `[hLa τ c hc v]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨e, he, rfl⟩`. Rewrite using `[hdiv, smul_inv_smul₀ hwΩ]`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `he`. Introduce `hv`. Conclude with `⟨algebraMap O Ω w • v, (hdiv _ _).1 hv, (inv_smul_smul₀ hwΩ v).symm⟩`. Establish `hSc : ∀ τ, IsScaled x (algebraMap O Ω w) (La τ).lat (Lie τ).lat`. Introduce `τ c hc v`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Rewrite using `[hLa' τ c hc]`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `⟨(algebraMap O Ω w)⁻¹ • v, ?_, (smul_inv_smul₀ hwΩ v).symm⟩` and prove the remaining obligations. Rewrite using `[hdiv, smul_inv_smul₀ hwΩ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hv`. Introduce and unpack `⟨e, he, rfl⟩`. Conclude with `(hdiv _ _).1 he`. Establish `hLW : ∀ τ, LatLE O x (Lie τ) (W τ)`. Introduce `τ c hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hB τ c hc).1, (hB τ c hc).2.1]`. Conclude with `((hD.base c hc).incl τ).1`. Establish `hWLa : ∀ τ, LatLE O x (W τ) (La τ)`. Introduce `τ c hc`. Rewrite using `[hLa' τ c hc, (hB τ c hc).1, (hB τ c hc).2.1]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `((hD.base c hc).incl τ).2.1`. Establish `hOm : ∀ τ, SameGeneric O x (Om τ) (OmHT τ)`. Introduce `τ c hc`. Rewrite using `[(hB τ c hc).2.2.1, (hB τ c hc).2.2.2]`. Establish `hi` using `(hD.base c hc).incl τ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun v hv => ⟨w, hw0, hi.2.2.2 hv⟩, fun v hv => ⟨1, one_ne_zero, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[map_one, one_smul]`. Conclude with `hi.2.2.1 hv`. Establish `hRH` using `fun τ => GlobalTheory.T.model_over_mod_p_lattice_character O Ω K ι x d hM p hp w χ φ D hD hG1 hG2 hF hX Xb T (fun τ i c hc => hXb τ i c hc) hT τ (H τ) Tn (fun c hc => ⟨hH τ c hc, hTn' c hc⟩)`. Establish `hSeq : ∀ τ, QuotExact O x (La τ).lat (W τ).lat (H τ).lat Tn.lat (Om τ).lat (OmHT τ).lat`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Use `quotExact_congr ?_ ?_ ?_ ?_ ?_ ?_ (GlobalTheory.T.injective_mod_p_lattice_character_bound O Ω K ι x inj p hp w χ φ D hD hG1 hF τ)` and prove the remaining obligations. Introduce `c hc`. Rewrite using `[hLa' τ c hc, (hB τ c hc).1]`. Introduce `c hc`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[(hB τ c hc).2.1]`. Introduce `c hc`. Rewrite using `[hH τ c hc]`. Introduce `c hc`. Rewrite using `[hTn' c hc]`.
-
-Introduce `c hc`. Rewrite using `[(hB τ c hc).2.2.1]`. Introduce `c hc`. Rewrite using `[(hB τ c hc).2.2.2]`. Introduce `k hk1 hk2 q L Q hQ`.
-
-Use `⟨fun τ => (((-1) ^ k * ∑ i, ck O x d 1 (Xb τ i) T k L Q : ℤ) : ℝ), fun τ => ?_, fun τ => ?_⟩` and prove the remaining obligations. Take `⟨Ew, hEw⟩` from `hbo.2.1 _ _ (Lie τ) _ hwΩ`. Establish `bd` using `((GlobalTheory.T.dvr_bundle_statement_d O Ω K ι) x d (r τ) _ (Lie τ) Ew w hw0 hM hEw k hk1 hk2 q L Q hQ).2 (p - 1) 1 (p : O) u hu (by omega) (by rw [pow_one]; exact hwu)`. Establish `l61` using `GlobalTheory.T.hodge_lie_bundle_intersection O Ω K ι x d (r τ) (s τ) n _ _ _ (Lie τ) (W τ) (La τ) (Om τ) (OmHT τ) Tn (H τ) w hw0 hM (hLW τ) (hWLa τ) (hSc τ) (hOm τ) (hRH τ).1 (hSeq τ) k hk1 hk2 q L Q hQ`. Rewrite `l61` using `[(hRH τ).2 k hk1 hk2 q L Q hQ]`.
-
-Conclude with `arith_first _ _ _ _ _ p k hp2 l61 bd`. Conclude with `arith_second _ _ _ p k hk1 (GlobalTheory.T.model_over_mod_p_lattice_permuted O Ω K ι x d hM p hp w χ φ D hD hG1 hG2 hF hX Xb T (fun τ i c hc => hXb τ i c hc) hT Lie W Om OmHT hB τ k hk1 hk2 q L Q hQ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relations : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω) (d : ℕ), GroundTheory.Heights₂.Heights.IndefiniteRowSideFullHecke.NumbersDVR.Bundles.IsModelOver O (mcIdeal O x) d → ∀ {F : Type} [Zero F] [One F] [Fintype F] {n : ℕ} {Sg : Type} [Fintype Sg] {r s : Sg → ℕ} (p : ℕ), p.Prime → ∀ (w : O) (χ : Sg → F → O) (φ : Equiv.Perm Sg) (D : (∀ k, ι k) → LieLatticeData Ω F n Sg r s), IsLatticeFamily O x p w χ φ D → (∀ c, mseg x c ≠ 0 → (D c).Good₁ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a))) → (∀ c, mseg x c ≠ 0 → (D c).Good₂ (chartRing O (mseg x) c) p (fun τ a => algebraMap O Ω (χ τ a))) → (∀ c, mseg x c ≠ 0 → (D c).Facts (chartRing O (mseg x) c) p (algebraMap O Ω w) (fun τ a => algebraMap O Ω (χ τ a)) φ) → (∀ τ i, ∃ (u : Ω) (a : _ → ℤ), u ≠ 0 ∧ IsLine O x u a fun c => (D c).xId (fun a => algebraMap O Ω (χ τ a)) i) → ∀ (Lie W : ∀ τ, ChartBundle O (mseg x) (r τ) (Fin (r τ) → Ω)) (Om OmHT : ∀ τ, ChartBundle O (mseg x) (s τ) (Fin (s τ) → Ω)), HasBundles O x D Lie W Om OmHT → CkRelations O x d p φ Lie W Om OmHT := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x d hM F _ _ _ n Sg _ r s p hp w χ φ D hD hG1 hG2 hF hX Lie W Om OmHT hB

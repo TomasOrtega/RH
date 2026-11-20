@@ -10,11 +10,11 @@ open NumberField Complex ReciprocityTheory.ChartRestriction.G ReciprocityTheory.
 namespace GlobalTheory.CuspStep
 
 /- English proof (translation)
-Use `PhragmenLindelof.right_half_plane_of_bounded_on_real (f := g) ?_ ⟨0, by norm_num, 0, ?_⟩ ?_ hC (by simp)` and prove the remaining obligations. Use `DifferentiableOn.diffContOnCl ?_` and prove the remaining obligations. Rewrite using `[Complex.closure_setOf_lt_re]`. Conclude with `hd`. Use `Asymptotics.IsBigO.of_bound M ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Filter.Eventually.filter_mono inf_le_right ?_` and prove the remaining obligations. Rewrite using `[Filter.eventually_principal]`. Introduce `z hz`. Simplify using `using hM z (le_of_lt hz)`. Use `⟨M, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Filter.eventually_map]`. Use `filter_upwards [Filter.eventually_ge_atTop (0 : ℝ)] with y hy`. Conclude with `hM y (by simpa using hy)`.
+A detailed English derivation is pending.
 -/
 theorem half_plane_bound {g : ℂ → ℂ} {M C : ℝ} (hd : DifferentiableOn ℂ g {z | 0 ≤ z.re})
     (hM : ∀ z : ℂ, 0 ≤ z.re → ‖g z‖ ≤ M) (hC : ∀ y : ℝ, ‖g (y * I)‖ ≤ C) : ‖g 1‖ ≤ C := by
@@ -35,7 +35,7 @@ theorem half_plane_bound {g : ℂ → ℂ} {M C : ℝ} (hd : DifferentiableOn �
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Use `differentiable_pi.mpr fun τ => differentiable_pi.mpr fun i => differentiable_pi.mpr fun j => ?_` and prove the remaining obligations. Simplify using `only [Data.flow, Data.flowMat, Matrix.mul_apply, Matrix.of_apply]`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem differentiable_flow (ξ : Fin r → E) (a : X.Ψ → ℂ) (x : Frame X.Ψ r) :
     Differentiable ℂ (fun z : ℂ => X.flow ξ (fun τ => z * a τ) x) := by
@@ -44,9 +44,9 @@ theorem differentiable_flow (ξ : Fin r → E) (a : X.Ψ → ℂ) (x : Frame X.�
   fun_prop
 
 /- English proof (translation)
-Establish `hd : X.flow ξ s x ∈ X.dom` using `FjCauchy.flow_mem_dom X hξ hx s fun τ => by rw [hs, add_zero]; exact FjCauchy.tt_pos X hξ hx τ`. Establish `h` using `m3bNorm_holds r X _ (FjCauchy.isIsoV_embV X hξ) la x hx s hd`. Simplify using `only [hs, zero_div, add_zero, inv_one, min_self, max_self, Real.one_rpow, Finset.prod_const_one] at h`. Establish `h1 : X.nfac la x / X.nfac la (X.flow ξ s x) = 1` using `le_antisymm h.2 h.1`. Establish `hn` using `FlowCoefficientBounds.nfac_pos X hd la`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[div_eq_one_iff_eq hn.ne']`. Conclude with `h1.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nfac_flow_real (la : Wt X.Ψ r) {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom)
     (s : X.Ψ → ℂ) (hs : ∀ τ, (s τ).im = 0) : X.nfac la (X.flow ξ s x) = X.nfac la x := by
@@ -60,13 +60,13 @@ theorem nfac_flow_real (la : Wt X.Ψ r) {ξ : Fin r → E} (hξ : X.IsIso ξ) {x
   exact h1.symm
 
 /- English proof (translation)
-Establish `hd : X.flow ξ s x ∈ X.dom` using `FjCauchy.flow_mem_dom X hξ hx s fun τ => add_pos_of_pos_of_nonneg (FjCauchy.tt_pos X hξ hx τ) (hs τ)`. Establish `h0` using `m3bExp_holds r X la P hP ξ hξ x hx 0 (by rw [EmbeddingHermitianPairs.flow_zero]; exact hx)`. Simplify using `only [Pi.zero_apply, mul_zero, Finset.sum_const_zero, Complex.exp_zero, mul_one] at h0`. Establish `hsum : Summable fun ν : X.Ψ → ℝ => ‖X.fj la ξ ν P x‖` using `summable_norm_iff.mpr h0.summable`. Establish `h1` using `m3bExp_holds r X la P hP ξ hξ x hx s hd`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `h1.norm_le_of_bounded hsum.hasSum fun ν => ?_` and prove the remaining obligations. Distinguish the cases in `hz : X.fj la ξ ν P x = 0`. Simplify using `[hz]`. Establish `hν` using `hF ξ hξ ν x hx hz`. Rewrite using `[norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `mul_le_of_le_one_right (norm_nonneg _) ?_` and prove the remaining obligations. Rewrite using `[Complex.norm_exp, Real.exp_le_one_iff]`. Establish `hsn : 0 ≤ ∑ τ, ν τ * (s τ).im` using `Finset.sum_nonneg fun τ _ => mul_nonneg (hν τ) (hs τ)`. Establish `: (4 * Real.pi * I * ∑ τ, (ν τ : ℂ) * s τ).re = -(4 * Real.pi * ∑ τ, ν τ * (s τ).im)`. Simplify using `[Complex.mul_re, Complex.mul_im, Complex.im_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[this]`. Use `Real.pi_pos` as an intermediate fact. Establish `: 0 ≤ 4 * Real.pi * ∑ τ, ν τ * (s τ).im` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_flow_le {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec la P) (hF : FreqNonneg X la P)
     {ξ : Fin r → E} (hξ : X.IsIso ξ) {x : Frame X.Ψ r} (hx : x ∈ X.dom) (s : X.Ψ → ℂ) (hs : ∀ τ, 0 ≤ (s τ).im) :
@@ -93,29 +93,25 @@ theorem norm_flow_le {la : Wt X.Ψ r} {P : Frame X.Ψ r → ℂ} (hP : X.IsSec l
     linarith
 
 /- English proof (translation)
-Introduce `ξ hξ x hx q hq B hB`. Establish `ht` using `FjCauchy.tt_pos X hξ hx`. Use `set b : X.Ψ → ℂ := fun τ => I * (((q τ - 1) * X.tt ξ x τ : ℝ) : ℂ) with hb`. Establish `hbim : ∀ τ, (b τ).im = (q τ - 1) * X.tt ξ x τ` using `fun τ => by`. Simplify using `only [hb, Complex.mul_im, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hbre : ∀ τ, (b τ).re = 0` using `fun τ => by`. Simplify using `only [hb, Complex.mul_re, Complex.I_re, Complex.I_im, Complex.ofReal_re, Complex.ofReal_im]`. Expand and normalize the polynomial expressions, which then agree. Establish `hbn : ∀ τ, (b τ).im ≤ 0` using `fun τ => by`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hbim]; exact mul_nonpos_of_nonpos_of_nonneg (by linarith [(hq τ).2]) (ht τ).le`. Establish `hx' : X.flow ξ b x ∈ X.dom` using `FjCauchy.flow_mem_dom X hξ hx b fun τ => by`. Rewrite using `[hbim]`. Use polynomial arithmetic with `[mul_pos (hq τ).1 (ht τ)]`. Use `set x' := X.flow ξ b x with hx'def`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hn'` using `FlowCoefficientBounds.nfac_pos X hx' la`. Establish `hn` using `FlowCoefficientBounds.nfac_pos X hx la`. Establish `him : ∀ z : ℂ, 0 ≤ z.re → ∀ τ, 0 ≤ (z * -b τ).im` using `fun z hz τ => by`. Simplify using `only [Complex.mul_im, Complex.neg_im, Complex.neg_re, hbre, neg_zero, mul_zero, add_zero]`. Conclude with `mul_nonneg hz (by linarith [hbn τ])`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hreal : ∀ y : ℝ, ‖P (X.flow ξ (fun τ => (y * I) * -b τ) x')‖ ≤ B / X.nfac la x'` using `fun y => by`. Establish `hs : ∀ τ, ((y * I : ℂ) * -b τ).im = 0` using `fun τ => by simp [hbre]`. Rewrite using `[le_div_iff₀ hn', ← nfac_flow_real X la hξ hx' _ hs]`. Establish `h` using `hB fun τ => ((y * I : ℂ) * -b τ).re`. Establish `he : X.flow ξ (fun τ => (y * I) * -b τ) x' = X.flow ξ (fun τ => (((y * I : ℂ) * -b τ).re : ℂ) + b τ) x`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[hx'def, EmbeddingHermitianPairs.flow_flow X hξ.2.1]`. Use `congr 1`. Use function extensionality and compare the values at `τ`. Simplify using `only [Pi.add_apply]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Complex.ext (by simp) (by rw [hs]; simp)`. Rewrite using `[he]`. Conclude with `h`. Establish `key` using `half_plane_bound (g := fun z => P (X.flow ξ (fun τ => z * -b τ) x')) (hP.1.comp (differentiable_flow X ξ (fun τ => -b τ) x').differentiableOn fun z hz => FjCauchy.flow_mem_dom X hξ hx' _ fun τ => add_pos_of_pos_of_nonneg (FjCauchy.tt_pos X hξ hx' τ) (him z hz τ)) (fun z hz => nor …`. Establish `he : X.flow ξ (fun τ => 1 * -b τ) x' = x`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hx'def, EmbeddingHermitianPairs.flow_flow X hξ.2.1]`. Establish `: ((fun τ => 1 * -b τ) + b) = 0` using `by funext τ; simp`. Rewrite using `[this, EmbeddingHermitianPairs.flow_zero]`. Simplify using `only [he] at key`. Establish `hB0 : 0 ≤ B`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(norm_nonneg _).trans key` as an intermediate fact. Conclude with `(div_nonneg_iff.mp this).elim (fun h => h.1) (fun h => absurd h.2 (not_le.mpr hn'))`. Establish `hr` using `(m3bNorm_holds r X _ (FjCauchy.isIsoV_embV X hξ) la x hx b hx').2`. Establish `hr2 : X.nfac la x / X.nfac la x' ≤ ∏ τ, q τ ^ (-w)`. Use `le_trans hr (Finset.prod_le_prod (fun τ _ => ?_) fun τ _ => ?_)` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `all_goals`. Establish `hqq : 1 + (b τ).im / X.ttV (X.embV ξ) x τ = q τ`. Express the relevant statement in the definitionally equal form `1 + (b τ).im / X.tt ξ x τ = q τ`. Rewrite using `[hbim, mul_div_assoc, div_self (ht τ).ne']`. Expand and normalize the polynomial expressions, which then agree.
-
-Establish `h1 : 1 ≤ (q τ)⁻¹` using `(one_le_inv₀ (hq τ).1).mpr (hq τ).2`. Simplify using `only [hqq, max_eq_right ((hq τ).2.trans h1)]`. Check the signs of the components of the expression. Rewrite using `[Real.rpow_neg (hq τ).1.le, ← Real.inv_rpow (hq τ).1.le]`. Conclude with `Real.rpow_le_rpow_of_exponent_le h1 (hw τ)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem stepBound (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (la : Wt X.Ψ r)
     (P : Frame X.Ψ r → ℂ) (w : ℝ) (hP : X.IsSec la P) (hF : FreqNonneg X la P)

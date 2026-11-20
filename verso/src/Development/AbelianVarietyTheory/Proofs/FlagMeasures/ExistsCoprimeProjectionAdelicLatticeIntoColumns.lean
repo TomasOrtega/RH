@@ -28,14 +28,14 @@ def pc : VA X.B.I →ₗ[X.B.I.E ⊗[X.B.I.F] Af X.B.I.F] VA X.B.I :=
   prA X + (hAlin X (incl X.B.I (X.zR u))).smulRight (tInv X u • incl X.B.I (X.zR u))
 
 /- English proof (translation)
-Simplify using `[pc, hAlin_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pc_apply (y : VA X.B.I) : pc X u y =
     prA X y + hA X.B.I (incl X.B.I (X.zR u)) y • (tInv X u • incl X.B.I (X.zR u)) := by
   simp [pc, hAlin_apply]
 
 /- English proof (translation)
-Establish `h0 : (((D.mem u).A.T : ℕ) : X.B.I.E) ≠ 0` using `Nat.cast_ne_zero.2 (D.mem u).A.T_prime.ne_zero`. Establish `h1 : (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) = Formalism.UG.inclE (F` using `X.B.I.F) (Af X.B.I.F) (((D.mem u).A.T : ℕ) : X.B.I.E) := (map_natCast _ _).symm`. Rewrite using `[h1, tInv, ← map_mul, mul_inv_cancel₀ h0, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem T_mul_tInv : (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) * tInv X u = 1 := by
   have h0 : (((D.mem u).A.T : ℕ) : X.B.I.E) ≠ 0 :=
@@ -45,7 +45,7 @@ theorem T_mul_tInv : (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) *
   rw [h1, tInv, ← map_mul, mul_inv_cancel₀ h0, map_one]
 
 /- English proof (translation)
-Rewrite using `[pc_apply, smul_add, smul_smul, smul_smul, mul_right_comm, T_mul_tInv, one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem T_smul_pc (y : VA X.B.I) :
     (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • pc X u y =
@@ -54,7 +54,7 @@ theorem T_smul_pc (y : VA X.B.I) :
   rw [pc_apply, smul_add, smul_smul, smul_smul, mul_right_comm, T_mul_tInv, one_mul]
 
 /- English proof (translation)
-Rewrite using `[HidaSetting.zR, hA_crd, X.zu_norm]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adelicHermitian_anisotropic_self_eq_neg_norm : hA X.B.I (incl X.B.I (X.zR u)) (incl X.B.I (X.zR u)) =
     -(((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) := by
@@ -62,7 +62,7 @@ theorem adelicHermitian_anisotropic_self_eq_neg_norm : hA X.B.I (incl X.B.I (X.z
   simp
 
 /- English proof (translation)
-Establish `h` using `(VS D).herm.eq (X.eX a) (X.zu u)`. Rewrite `h` using `[(X.zu_orth u a).1, map_zero]`. Rewrite using `[HidaSetting.zR, HidaSetting.eR, hA_crd, ← h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hA_z_e (a : Fin D.R.rS) : hA X.B.I (incl X.B.I (X.zR u)) (incl X.B.I (X.eR a)) = 0 := by
   have h := (VS D).herm.eq (X.eX a) (X.zu u)
@@ -71,7 +71,7 @@ theorem hA_z_e (a : Fin D.R.rS) : hA X.B.I (incl X.B.I (X.zR u)) (incl X.B.I (X.
   simp
 
 /- English proof (translation)
-Establish `h` using `(VS D).herm.eq (X.fY a) (X.zu u)`. Rewrite `h` using `[(X.zu_orth u a).2, map_zero]`. Rewrite using `[HidaSetting.zR, HidaSetting.fR, hA_crd, ← h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hA_z_f (a : Fin D.R.rS) : hA X.B.I (incl X.B.I (X.zR u)) (incl X.B.I (X.fR a)) = 0 := by
   have h := (VS D).herm.eq (X.fY a) (X.zu u)
@@ -80,40 +80,40 @@ theorem hA_z_f (a : Fin D.R.rS) : hA X.B.I (incl X.B.I (X.zR u)) (incl X.B.I (X.
   simp
 
 /- English proof (translation)
-Rewrite using `[HidaSetting.zR, HidaSetting.eR, hA_crd, (X.zu_orth u a).1]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adelicHermitian_hyperbolicE_anisotropic_eq_zero (a : Fin D.R.rS) : hA X.B.I (incl X.B.I (X.eR a)) (incl X.B.I (X.zR u)) = 0 := by
   rw [HidaSetting.zR, HidaSetting.eR, hA_crd, (X.zu_orth u a).1]
   simp
 
 /- English proof (translation)
-Rewrite using `[HidaSetting.zR, HidaSetting.fR, hA_crd, (X.zu_orth u a).2]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adelicHermitian_hyperbolicF_anisotropic_eq_zero (a : Fin D.R.rS) : hA X.B.I (incl X.B.I (X.fR a)) (incl X.B.I (X.zR u)) = 0 := by
   rw [HidaSetting.zR, HidaSetting.fR, hA_crd, (X.zu_orth u a).2]
   simp
 
 /- English proof (translation)
-Rewrite using `[pc_apply, prA_e, hA_z_e]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pc_e (a : Fin D.R.rS) : pc X u (incl X.B.I (X.eR a)) = 0 := by
   rw [pc_apply, prA_e, hA_z_e]; simp
 
 /- English proof (translation)
-Rewrite using `[pc_apply, prA_f, hA_z_f]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem pc_f (a : Fin D.R.rS) : pc X u (incl X.B.I (X.fR a)) = 0 := by
   rw [pc_apply, prA_f, hA_z_f]; simp
 
 /- English proof (translation)
-Rewrite using `[pc_apply, prA_fix X _ (adelicHermitian_hyperbolicE_anisotropic_eq_zero X u) (adelicHermitian_hyperbolicF_anisotropic_eq_zero X u), adelicHermitian_anisotropic_self_eq_neg_norm, smul_smul, neg_mul, T_mul_tInv]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem orthogonalProjection_anisotropic_eq_zero : pc X u (incl X.B.I (X.zR u)) = 0 := by
   rw [pc_apply, prA_fix X _ (adelicHermitian_hyperbolicE_anisotropic_eq_zero X u) (adelicHermitian_hyperbolicF_anisotropic_eq_zero X u), adelicHermitian_anisotropic_self_eq_neg_norm, smul_smul, neg_mul, T_mul_tInv]
   simp
 
 /- English proof (translation)
-Use `(X.L_eq _).2 ?_` and prove the remaining obligations. Use `show toV X (X.crd (X.zu u)) ∈ (VS D).L0`. Rewrite using `[toV_crd]`. Conclude with `Lb_le X (X.zu_Lb u)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zR_mem : X.zR u ∈ X.B.I.L := by
   refine (X.L_eq _).2 ?_
@@ -122,11 +122,11 @@ theorem zR_mem : X.zR u ∈ X.B.I.L := by
   exact Lb_le X (X.zu_Lb u)
 
 /- English proof (translation)
-Establish `hv : toV X x ∈ (VS D).L0` using `(X.L_eq x).1 hx`. Establish `hz : X.zu u ∈ (VS D).L0` using `Lb_le X (X.zu_Lb u)`. Establish `hd : toV X x ∈ Formalism.HermitianLatticesTheory.dual (VS D).hT (VS D).L0`. Rewrite using `[(VS D).baseLattice_isUnimodular]`. Conclude with `hv`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (VS D).hT (X.zu u) (toV X x) ∈ (1 : Submodule (𝓞 D.host.E) D.host.E)` using `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hd (X.zu u)) hz`. Take `⟨b, hb⟩` from `Submodule.mem_one.1 h2`. Establish `e : hE X (X.zR u) x = X.ιE.symm ((VS D).hT (X.zu u) (toV X x))`. Rewrite using `[← toV_crd X (X.zu u), ← iota_hE, RingEquiv.symm_apply_apply]`. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← hb]`. Conclude with `⟨⟨_, (NumberField.RingOfIntegers.isIntegral_coe b).map (X.ιE.symm : D.host.E →+* X.B.I.E).toIntAlgHom⟩, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem hE_z_int {x : Fin X.B.I.n → X.B.I.E} (hx : x ∈ X.B.I.L) :
     hE X (X.zR u) x ∈ (algebraMap (𝓞 X.B.I.E) X.B.I.E).range := by
@@ -145,13 +145,11 @@ theorem hE_z_int {x : Fin X.B.I.n → X.B.I.E} (hx : x ∈ X.B.I.L) :
       (X.ιE.symm : D.host.E →+* X.B.I.E).toIntAlgHom⟩, rfl⟩
 
 /- English proof (translation)
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, rfl⟩` from `hy`. Use `show (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • pc X u (incl X.B.I x) ∈ X.B.I.Lf`. Rewrite using `[T_smul_pc]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `add_mem (natsmul_mem X _ (prA_Lf X _ (incl_mem_Lf X _ x.2))) ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `hE_z_int X u x.2`. Rewrite using `[hA_incl, show Formalism.UG.hform (starRingEnd X.B.I.E) X.B.I.J (X.zR u) (x : Fin X.B.I.n → X.B.I.E) = hE X (X.zR u) x from rfl, ← ha, ← incl_smul]`. Use `incl_mem_Lf X _ ?_` and prove the remaining obligations. Use `X.B.I.L.smul_mem a (zR_mem X u)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[← IsScalarTower.algebraMap_smul X.B.I.E a]`. Then use the resulting hypothesis. Consider the case `zero => simp`. Consider the case `add y z _ _ hy hz => rw [map_add, smul_add]`. Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`.
-
-Rewrite using `[Subring.smul_def, map_smul, smul_comm]`. Conclude with `X.B.I.Lf.smul_mem c hy`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem T_pc_Lf (y : VA X.B.I) (hy : y ∈ X.B.I.Lf) :
     (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • pc X u y ∈ X.B.I.Lf := by
@@ -174,9 +172,9 @@ theorem T_pc_Lf (y : VA X.B.I) (hy : y ∈ X.B.I.Lf) :
     exact X.B.I.Lf.smul_mem c hy
 
 /- English proof (translation)
-Take `⟨c, hc, hcx⟩` from `hx`. Take `⟨d, hd, hdy⟩` from `hy`. Use `⟨c * d, Nat.coprime_mul_iff_left.2 ⟨hc, hd⟩, ?_⟩` and prove the remaining obligations. Establish `e : (((c * d : ℕ)) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • (x + y) = (d : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • x) + (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ((d : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • y)`. Rewrite using `[smul_add, smul_smul, smul_smul, Nat.cast_mul, mul_comm (d : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `add_mem (natsmul_mem X _ hcx) (natsmul_mem X _ hdy)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inAt_add {x y : VA X.B.I} (hx : InAt X.B.I X.B.g X.B.g x) (hy : InAt X.B.I X.B.g X.B.g y) :
     InAt X.B.I X.B.g X.B.g (x + y) := by
@@ -191,14 +189,14 @@ theorem inAt_add {x y : VA X.B.I} (hx : InAt X.B.I X.B.g X.B.g x) (hy : InAt X.B
   exact add_mem (natsmul_mem X _ hcx) (natsmul_mem X _ hdy)
 
 /- English proof (translation)
-Take `⟨c, hc, hcx⟩` from `hx`. Conclude with `⟨c, hc, by rw [smul_neg]; exact neg_mem hcx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inAt_neg {x : VA X.B.I} (hx : InAt X.B.I X.B.g X.B.g x) : InAt X.B.I X.B.g X.B.g (-x) := by
   obtain ⟨c, hc, hcx⟩ := hx
   exact ⟨c, hc, by rw [smul_neg]; exact neg_mem hcx⟩
 
 /- English proof (translation)
-Take `⟨c, hc, hcx⟩` from `hx`. Conclude with `⟨c, hc, by rw [smul_comm]; exact natsmul_mem X _ hcx⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem inAt_natsmul (t : ℕ) {x : VA X.B.I} (hx : InAt X.B.I X.B.g X.B.g x) :
     InAt X.B.I X.B.g X.B.g ((t : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • x) := by
@@ -206,13 +204,13 @@ theorem inAt_natsmul (t : ℕ) {x : VA X.B.I} (hx : InAt X.B.I X.B.g X.B.g x) :
   exact ⟨c, hc, by rw [smul_comm]; exact natsmul_mem X _ hcx⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, Nat.coprime_one_left _, by simpa using hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem inAt_of_mem {x : VA X.B.I} (hx : x ∈ mL X.B.I X.B.g) : InAt X.B.I X.B.g X.B.g x :=
   ⟨1, Nat.coprime_one_left _, by simpa using hx⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact inAt_of_mem X (by simp)`. Consider the case `insert a s ha ih`. Rewrite using `[Finset.sum_insert ha]`. Conclude with `inAt_add X (h a (Finset.mem_insert_self _ _)) (ih fun i hi => h i (Finset.mem_insert_of_mem hi))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inAt_sum {ι : Type} (s : Finset ι) (x : ι → VA X.B.I)
     (h : ∀ i ∈ s, InAt X.B.I X.B.g X.B.g (x i)) : InAt X.B.I X.B.g X.B.g (∑ i ∈ s, x i) := by
@@ -225,9 +223,9 @@ theorem inAt_sum {ι : Type} (s : Finset ι) (x : ι → VA X.B.I)
       (ih fun i hi => h i (Finset.mem_insert_of_mem hi))
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `(Nat.modEq_iff_dvd.1 hT.symm)`. Establish `hg : (X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • y ∈ mL X.B.I X.B.g` using `unitaryCongruence.smul_mem_mL X.B.I hy`. Establish `e : (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • y - y = k • ((X.B.g : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • y)`. Rewrite using `[natsmul_eq, natsmul_eq, ← natCast_zsmul, ← natCast_zsmul y X.B.g, smul_smul, mul_comm k, ← hk, sub_smul, Nat.cast_one, one_smul]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `zsmul_mem hg k`.
+A detailed English derivation is pending.
 -/
 theorem T_sub_mem (hT : (D.mem u).A.T ≡ 1 [MOD X.B.g]) {y : VA X.B.I} (hy : y ∈ X.B.I.Lf) :
     (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • y - y ∈ mL X.B.I X.B.g := by
@@ -240,9 +238,9 @@ theorem T_sub_mem (hT : (D.mem u).A.T ≡ 1 [MOD X.B.g]) {y : VA X.B.I} (hy : y 
   exact zsmul_mem hg k
 
 /- English proof (translation)
-Establish `hW : (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • pc X u y - y ∈ X.B.I.Lf` using `sub_mem (T_pc_Lf X u y hy) hy`. Establish `e : (((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • pc X u y - y = ((((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • y - y) + (-((((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • ∑ a, hA X.B.I (incl X.B.I (X.fR a)) y • incl X.B.I (X.eR a)) + (-((((D.mem u).A. …`. Rewrite using `[T_smul_pc, prA_apply, smul_sub, smul_sub]`. Normalize the expressions using the abelian group laws. Establish `hin : InAt X.B.I X.B.g X.B.g ((((D.mem u).A.T : ℕ) : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • pc X u y - y)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `inAt_add X (inAt_of_mem X (T_sub_mem X u hT hy)) (inAt_add X (inAt_neg X (inAt_natsmul X _ (inAt_sum X _ _ fun a _ => (hef a).2))) (inAt_add X (inAt_neg X (inAt_natsmul X _ (inAt_sum X _ _ fun a _ => (hef a).1))) hz))`. Take `⟨m, hm, hmW⟩` from `hin`. Conclude with `bez_vec X (mL X.B.I X.B.g) le_rfl hW hm hmW`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem T_pc_sub_mem (hT : (D.mem u).A.T ≡ 1 [MOD X.B.g]) {y : VA X.B.I} (hy : y ∈ X.B.I.Lf)
     (hef : ∀ a, InAt X.B.I X.B.g X.B.g (hA X.B.I (incl X.B.I (X.eR a)) y • incl X.B.I (X.fR a)) ∧
@@ -270,9 +268,9 @@ theorem T_pc_sub_mem (hT : (D.mem u).A.T ≡ 1 [MOD X.B.g]) {y : VA X.B.I} (hy :
   exact bez_vec X (mL X.B.I X.B.g) le_rfl hW hm hmW
 
 /- English proof (translation)
-Set `f : X.B.I.E →+* X.B.I.E ⊗[X.B.I.F] Af X.B.I.F` to `Formalism.UG.inclE (F := X.B.I.F) (Af X.B.I.F)`. Use `set v := (Qi.map f) *ᵥ y with hv`. Establish `h1 : (Q.map f) *ᵥ v = y`. Rewrite using `[hv, mulVec_mulVec, ← Matrix.map_mul, hQ, Matrix.map_one _ (map_zero f) (map_one f), one_mulVec]`. Use `⟨fun j => v (Sum.inl j), fun a => v (Sum.inr (Sum.inl a)), fun a => v (Sum.inr (Sum.inr (Sum.inl a))), v (Sum.inr (Sum.inr (Sum.inr ()))), ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `conv_lhs => rw [← h1]`. Use function extensionality and compare the values at `i`. Simplify using `only [mulVec, dotProduct, Fintype.sum_sum_type, Matrix.map_apply, Pi.add_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, hq, he, hf, hz, qA, incl, Fintype.sum_unique]`. Simplify using `only [mul_comm]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem frame_expand (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V)
     (Q : Matrix (Fin X.B.I.n) (Fin (D.R.N 0) ⊕ (Fin D.R.rS ⊕ Fin D.R.rS ⊕ Unit)) X.B.I.E)
@@ -303,15 +301,15 @@ end Helpers
 end GlobalTheory.St.G.Proj
 
 /- English proof (translation)
-Introduce `D X u wt ιA hW hI`. Take `⟨Q, Qi, G', hQ, -, hq, he, hf, hz, -, -⟩` from `GlobalTheory.T.columnWittFrame_basis_blockGram D X u wt hW`. Take `⟨-, -, -, hef, hzq, -⟩` from `GlobalTheory.T.adelicColumnLattice_eq_spanPart_transportedFrame D X u wt ιA hW hI`. Establish `hfix : ∀ x, Proj.pc X u (embA X wt ιA x) = embA X wt ιA x` using `fun x => by`. Rewrite using `[Proj.pc_apply, Formalism.L2.SG.Pf.Level.prA_fix X _ (fun a => (hef x a).1) (fun a => (hef x a).2), hzq]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hT : (D.mem u).A.T ≡ 1 [MOD X.B.g]`. Rewrite using `[X.g_eq]`. Conclude with `D.T_modEq_of_dvd u (dvd_trans (dvd_pow_self _ two_ne_zero) D.gg_dvd_modT)`. Use `⟨(D.mem u).A.T, Proj.pc X u, hT, ?_, hfix, Proj.T_pc_Lf X u, fun a => ⟨Proj.pc_e X u a, Proj.pc_f X u a⟩, Proj.orthogonalProjection_anisotropic_eq_zero X u, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y`. Take `⟨w, s, t, r, rfl⟩` from `Proj.frame_expand X u wt Q Qi hQ hq he hf hz y`. Use `⟨fun j => ιA (w j), ?_⟩` and prove the remaining obligations. Establish `hqj : ∀ j, Proj.pc X u (qA X wt j) = qA X wt j` using `fun j => by`. Establish `h` using `hfix (Pi.single j 1)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : embA X wt ιA (Pi.single j 1) = qA X wt j`. Simplify using `[embA, Pi.single_apply]`. Rewrite `h` using `[e]`. Then use the resulting hypothesis. Simplify using `only [map_add, map_sum, map_smul, Proj.pc_e, Proj.pc_f, Proj.orthogonalProjection_anisotropic_eq_zero, hqj, smul_zero, Finset.sum_const_zero, add_zero]`. Simplify using `[embA]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y hy h1 h2`. Conclude with `Proj.T_pc_sub_mem X u hT hy h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.St.G.g_proj : ∀ (D : D7) (X : HidaSetting D) (u : D.what₂.Word) (wt : (VS D).V ≃ₗ[D.host.E] (VS D).V) (ιA : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F ≃+* D.host.E ⊗[D.host.F] Ad D.host.F), WittX X u wt → IsAdeleIso X ιA → ∃ (c : ℕ) (p : VA X.B.I →ₗ[X.B.I.E ⊗[X.B.I.F] Af X.B.I.F] VA X.B.I), c ≡ 1 [MOD X.B.g] ∧ (∀ y, ∃ x, p y = embA X wt ιA x) ∧ (∀ x, p (embA X wt ιA x) = embA X wt ιA x) ∧ (∀ y ∈ X.B.I.Lf, (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • p y ∈ X.B.I.Lf) ∧ (∀ a, p (incl X.B.I (X.eR a)) = 0 ∧ p (incl X.B.I (X.fR a)) = 0) ∧ p (incl X.B.I (X.zR u)) = 0 ∧ ∀ y ∈ X.B.I.Lf, (∀ a, InAt X.B.I X.B.g X.B.g (hA X.B.I (incl X.B.I (X.eR a)) y • incl X.B.I (X.fR a)) ∧ InAt X.B.I X.B.g X.B.g (hA X.B.I (incl X.B.I (X.fR a)) y • incl X.B.I (X.eR a))) → InAt X.B.I X.B.g X.B.g (hA X.B.I (incl X.B.I (X.zR u)) y • incl X.B.I (X.zR u)) → (c : X.B.I.E ⊗[X.B.I.F] Af X.B.I.F) • p y - y ∈ mL X.B.I X.B.g := by
   intro D X u wt ιA hW hI

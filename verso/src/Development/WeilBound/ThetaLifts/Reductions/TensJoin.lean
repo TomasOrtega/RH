@@ -12,9 +12,9 @@ open PositivityTheory.ThKF.Unit
 variable {ι : Type} [Fintype ι] [DecidableEq ι] {V : ι → Type} [∀ i, AddCommGroup (V i)] [∀ i, Module ℂ (V i)]
 
 /- English proof (translation)
-Rewrite using `[← map_comp]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[Function.update_of_ne h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem upd_comp (u : ∀ j, V j →ₗ[ℂ] V j) (i : ι) (a : V i →ₗ[ℂ] V i) :
     map (Function.update (fun j => (LinearMap.id : V j →ₗ[ℂ] V j)) i a) ∘ₗ map u = map (Function.update u i (a ∘ₗ u i)) := by
@@ -26,13 +26,11 @@ theorem upd_comp (u : ∀ j, V j →ₗ[ℂ] V j) (i : ι) (a : V i →ₗ[ℂ] 
   · simp [Function.update_of_ne h]
 
 /- English proof (translation)
-Proceed by induction on `hu using Algebra.adjoin_induction with`. Consider the case `mem u hu => obtain ⟨a, rfl⟩ := hu`. Conclude with `hP i a`. Consider the case `algebraMap c`. Introduce `x hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Algebra.algebraMap_eq_smul_one, PiTensorProduct.map_update_smul, show (1 : Module.End ℂ (V i)) = LinearMap.id from rfl, Function.update_eq_self, map_id]`. Conclude with `P.smul_mem c hx`. Consider the case `add a b _ _ ha hb`. Introduce `x hx`. Rewrite using `[PiTensorProduct.map_update_add]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `P.add_mem (ha x hx) (hb x hx)`. Consider the case `mul a b _ _ ha hb`. Introduce `x hx`. Use `LinearMap.congr_fun (upd_comp (Function.update (fun j => (LinearMap.id : V j →ₗ[ℂ] V j)) i b) i a) x` as an intermediate fact. Rewrite `this` using `[Function.update_idem, Function.update_self]`.
-
-Conclude with `(show _ = map (Function.update _ i (a * b)) x from this) ▸ ha _ (hb x hx)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem position_st {A : ι → Type} (act : ∀ i, A i → Module.End ℂ (V i)) (P : Submodule ℂ (⨂[ℂ] i, V i))
     (hP : ∀ i a, ∀ x ∈ P, map (Function.update (fun j => (LinearMap.id : V j →ₗ[ℂ] V j)) i (act i a)) x ∈ P) (i : ι)
@@ -56,13 +54,13 @@ theorem position_st {A : ι → Type} (act : ∀ i, A i → Module.End ℂ (V i)
     exact (show _ = map (Function.update _ i (a * b)) x from this) ▸ ha _ (hb x hx)
 
 /- English proof (translation)
-Establish `h : ∀ S : Finset ι, ∀ x ∈ P, map (fun i => if i ∈ S then u i else (LinearMap.id : V i →ₗ[ℂ] V i)) x ∈ P` using `fun S => by`. Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty => intro x hx`. Simplify using `using hx`. Consider the case `insert j S hj ih`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Introduce `x hx`. Establish `h1` using `position_st act P hP j (u j) (hu j) _ (ih x hx)`. Rewrite `h1` using `[← LinearMap.comp_apply, upd_comp]`. Establish `e : (fun i => if i ∈ insert j S then u i else (LinearMap.id : V i →ₗ[ℂ] V i)) = Function.update (fun i => if i ∈ S then u i else (LinearMap.id : V i →ₗ[ℂ] V i)) j (u j ∘ₗ if j ∈ S then u j else LinearMap.id)`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[hj]`. Simplify using `[h]`. Rewrite using `[e]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h1`. Simplify using `using h Finset.univ`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem map_st {A : ι → Type} (act : ∀ i, A i → Module.End ℂ (V i)) (P : Submodule ℂ (⨂[ℂ] i, V i))
     (hP : ∀ i a, ∀ x ∈ P, map (Function.update (fun j => (LinearMap.id : V j →ₗ[ℂ] V j)) i (act i a)) x ∈ P)
@@ -86,29 +84,27 @@ theorem map_st {A : ι → Type} (act : ∀ i, A i → Module.End ℂ (V i)) (P 
   simpa using h Finset.univ
 
 /- English proof (translation)
-Set `R : Submodule ℂ (⨂[ℂ] i, V i)` to `Submodule.span ℂ {x | ∃ (f : ∀ i, V i) (i : ι), f i ∈ K i ∧ x = tprod ℂ f}`. Establish `hR : ∀ (f : ∀ i, V i) i, f i ∈ K i → tprod ℂ f ∈ R` using `fun f i h => Submodule.subset_span ⟨f, i, h, rfl⟩`. Establish `Rst : ∀ i a, R ≤ R.comap (map (Function.update (fun j => (LinearMap.id : V j →ₗ[ℂ] V j)) i (act i a)))` using `fun i a => Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨f, j, hj, rfl⟩`. Use `show map _ (tprod ℂ f) ∈ R`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_tprod]`. Use `hR _ j ?_` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `using h2 j a _ hj`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hj)` using `[Function.update_of_ne h]`. Establish `nak : ∀ Q : Submodule ℂ (⨂[ℂ] i, V i), (∀ (f : ∀ i, V i) i, f i ∈ Z i → tprod ℂ f ∈ Q) → (∀ i a, ∀ x ∈ Q, map (Function.update (fun j => (LinearMap.id : V j →ₗ[ℂ] V j)) i (act i a)) x ∈ Q) → Q ⊔ R = ⊤ → Q = ⊤` using `fun Q q1 q2 q3 => by`. Establish `fin : ∀ x ∈ R, ∃ t : ∀ i, List (V i), (∀ i, ∀ y ∈ t i, y ∈ K i) ∧ ∀ u : ∀ i, Module.End ℂ (V i), (∀ i, ∀ y ∈ t i, u i y ∈ Z i) → map u x ∈ Q` using `fun x hx => by`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Establish an intermediate fact. Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨f, i, hi, rfl⟩` from `hx`. Use `⟨Function.update (fun _ => []) i [f i], fun j y hy => ?_, fun u hu => ?_⟩` and prove the remaining obligations. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Rewrite `hy` using `[Function.update_self, List.mem_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `hy ▸ hi`. Simplify using `[Function.update_of_ne h] at hy`. Rewrite using `[map_tprod]`. Conclude with `q1 _ i (hu i _ (by simp))`. Consider the case `zero => exact ⟨fun _ => [], by simp, fun u _ => by simp⟩`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Consider the case `add a b _ _ ha hb`. Take `⟨s, s1, s2⟩` from `ha`. Take `⟨t, t1, t2⟩` from `hb`. Use `⟨fun i => s i ++ t i, fun i y hy => (List.mem_append.1 hy).elim (s1 i y) (t1 i y), fun u hu => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `Q.add_mem (s2 u fun i y hy => hu i y (List.mem_append_left _ hy)) (t2 u fun i y hy => hu i y (List.mem_append_right _ hy))`. Consider the case `smul c a _ ha`. Take `⟨s, s1, s2⟩` from `ha`. Conclude with `⟨s, s1, fun u hu => by rw [map_smul]; exact Q.smul_mem c (s2 u hu)⟩`. Take `⟨p, hp, x, hx, e⟩` from `Submodule.mem_sup.1 (q3 ▸ Submodule.mem_top : tprod ℂ v ∈ Q ⊔ R)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately.
 
-Take `⟨t, t1, t2⟩` from `fin x hx`. Use `eq_top_iff.2 fun y _ => ?_` and prove the remaining obligations. Proceed by induction on `y using PiTensorProduct.induction_on with`. Consider the case `smul_tprod c f => choose u u1 u2 u3 using fun i => h4 i (t i) (t1 i) (f i)`. Establish `a1 : map u (tprod ℂ v) ∈ Q`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← e, map_add]`. Conclude with `Q.add_mem (map_st act Q q2 u u1 p hp) (t2 u u3)`. Establish `a2 : map u (tprod ℂ v) - tprod ℂ f ∈ Q` using `ker_le Z Q q1 (by`. Rewrite using `[LinearMap.mem_ker, map_sub, map_tprod, map_tprod, map_tprod, sub_eq_zero]`. Use `congr 1`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Conclude with `(Submodule.Quotient.eq _).2 (u2 i))`. Conclude with `Q.smul_mem c (by simpa using Q.sub_mem a1 a2)`. Consider the case `add x y hx hy => exact Q.add_mem (hx trivial) (hy trivial)`. Establish `le : ∀ Q : Submodule ℂ (⨂[ℂ] i, V i), (∀ (f : ∀ i, V i) i, f i ∈ Z i → tprod ℂ f ∈ Q) → (∀ i a, ∀ x ∈ Q, map (Function.update (fun j => (LinearMap.id : V j →ₗ[ℂ] V j)) i (act i a)) x ∈ Q) → Q ≤ R ∨ Q = ⊤` using `fun Q q1 q2 => (tens_max act K hr h1 h2 h3 R hR (Q ⊔ R) le_sup_right (fun i a x hx => by`.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative. Prove the first alternative.
 
-Take `⟨p, hp, y, hy, rfl⟩` from `Submodule.mem_sup.1 hx`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem_sup (q2 i a p hp) (Rst i a hy))).imp (le_sup_left.trans ·) (nak Q q1 q2)`. Break down `le P hZ hP with a | a` into its components or cases. Break down `le P' hZ' hP' with b | b` into its components or cases.
-
-Conclude with `Or.inl (nak P hZ hP (top_le_iff.1 (e ▸ sup_le le_sup_left (b.trans le_sup_right))))`. Conclude with `Or.inr b`. Conclude with `Or.inl a`.
+A detailed English derivation is pending.
 -/
 theorem tens_join {A : ι → Type} (act : ∀ i, A i → Module.End ℂ (V i)) (K Z : ∀ i, Submodule ℂ (V i))
     (hr : ∀ i, Module.rank ℂ (V i) ≤ Cardinal.aleph0) (h1 : ∀ i, K i ≠ ⊤) (h2 : ∀ i a, ∀ x ∈ K i, act i a x ∈ K i)

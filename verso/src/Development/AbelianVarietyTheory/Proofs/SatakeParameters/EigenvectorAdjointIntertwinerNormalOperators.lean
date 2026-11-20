@@ -12,11 +12,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.HkUp
 
 /- English proof (translation)
-Use `set S : Module.End ℂ V := T - μ • LinearMap.id with hS`. Establish `hSadj : LinearMap.adjoint S = LinearMap.adjoint T - (starRingEnd ℂ) μ • LinearMap.id`. Rewrite using `[hS, map_sub, LinearMap.adjoint.map_smulₛₗ, LinearMap.adjoint_id]`. Establish `hcomm : Commute S (LinearMap.adjoint S)`. Rewrite using `[hSadj, hS]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(((hT.sub_right (Commute.smul_right (Commute.one_right _) _)).sub_left ((Commute.one_left _).smul_left _ |>.sub_right (Commute.smul_right (Commute.one_right _) _))))`. Establish `hSv : S v = 0` using `by simp [hS, hv]`. Establish `h0 : LinearMap.adjoint S v = 0`. Establish `: ⟪LinearMap.adjoint S v, LinearMap.adjoint S v⟫_ℂ = 0`. Rewrite using `[LinearMap.adjoint_inner_left, ← Module.End.mul_apply, hcomm.eq, Module.End.mul_apply, hSv, map_zero, inner_zero_right]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `inner_self_eq_zero.mp this`. Rewrite `h0` using `[hSadj]`. Simplify `h0` using `[sub_eq_zero]`.
+A detailed English derivation is pending.
 -/
 theorem adjoint_apply_of_normal_eigen {V : Type} [NormedAddCommGroup V] [InnerProductSpace ℂ V]
     [FiniteDimensional ℂ V] (T : Module.End ℂ V) (hT : Commute T (LinearMap.adjoint T))
@@ -39,11 +39,11 @@ theorem adjoint_apply_of_normal_eigen {V : Type} [NormedAddCommGroup V] [InnerPr
   simpa [sub_eq_zero] using h0
 
 /- English proof (translation)
-Introduce `X E I _ _ _ _ _ _ Θ op h hint hop hh i l w hw`. Establish `hstar : LinearMap.adjoint (h i) w = (starRingEnd ℂ) l • w` using `adjoint_apply_of_normal_eigen (h i) (hh i) l w hw`. Establish `hcomp : Θ ∘ₗ op i = h i ∘ₗ Θ` using `LinearMap.ext (hint i)`. Establish `hadj : LinearMap.adjoint (op i) ∘ₗ LinearMap.adjoint Θ = LinearMap.adjoint Θ ∘ₗ LinearMap.adjoint (h i)`. Rewrite using `[← LinearMap.adjoint_comp, ← LinearMap.adjoint_comp, hcomp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : LinearMap.adjoint (op i) (LinearMap.adjoint Θ w) = (starRingEnd ℂ) l • LinearMap.adjoint Θ w`. Use `LinearMap.congr_fun hadj w` as an intermediate fact. Simplify using `only [LinearMap.comp_apply] at this`. Rewrite using `[this, hstar, map_smulₛₗ, RingHom.id_apply]`. Establish `h2` using `adjoint_apply_of_normal_eigen (LinearMap.adjoint (op i)) ?_ _ _ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `h2` using `[LinearMap.adjoint_adjoint]`. Rewrite using `[LinearMap.adjoint_adjoint]`. Conclude with `(hop i).symm`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigen_up_along_adjoint : ∀ {X E I : Type} [NormedAddCommGroup X] [InnerProductSpace ℂ X] [FiniteDimensional ℂ X] [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E] (Θ : X →ₗ[ℂ] E) (op : I → Module.End ℂ X) (h : I → Module.End ℂ E), (∀ i u, Θ (op i u) = h i (Θ u)) → (∀ i, Commute (op i) (LinearMap.adjoint (op i))) → (∀ i, Commute (h i) (LinearMap.adjoint (h i))) → ∀ i (l : ℂ) w, h i w = l • w → op i (LinearMap.adjoint Θ w) = l • LinearMap.adjoint Θ w := by
   intro X E I _ _ _ _ _ _ Θ op h hint hop hh i l w hw

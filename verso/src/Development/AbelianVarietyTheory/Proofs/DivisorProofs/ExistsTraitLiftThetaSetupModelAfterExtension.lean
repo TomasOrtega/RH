@@ -16,14 +16,14 @@ open GlobalTheory.Poinc
 namespace GlobalTheory.Poinc.TraitLift
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem spMap_comp' {R R' R'' : Type} [CommRing R] [CommRing R'] [CommRing R''] (f : R' →+* R'') (g : R →+* R') :
     spMap f ≫ spMap g = spMap (f.comp g) := by
   rw [← Spec.map_comp]; rfl
 
 /- English proof (translation)
-Establish `hs : x ⤳ closedPoint V` using `IsLocalRing.specializes_closedPoint x`. Conclude with `(hs.map ξ.continuous).mem_open hU h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_of_closedPoint {Y : Scheme.{0}} (U : Set Y) (hU : IsOpen U) (V : Type) [CommRing V] [IsLocalRing V]
     (ξ : Sp V ⟶ Y) (h : ξ (closedPoint V) ∈ U) (x : Sp V) : ξ x ∈ U := by
@@ -31,13 +31,11 @@ theorem mem_of_closedPoint {Y : Scheme.{0}} (U : Set Y) (hU : IsOpen U) (V : Typ
   exact (hs.map ξ.continuous).mem_open hU h
 
 /- English proof (translation)
-Take `⟨p, hp⟩` from `hx`. Use `haveI : IsAffine (pullback π x) := isAffine_of_isAffineHom (pullback.snd π x)`. Take `⟨S, e, -⟩ : ∃ (S : CommRingCat.{0}) (_ : Spec S ≅ pullback π x), True` from `⟨_, (pullback π x).isoSpec.symm, trivial⟩`. Take `⟨f, hf⟩` from `Spec.map_surjective (R := CommRingCat.of K) (S := S) (e.hom ≫ pullback.snd π x)`. Use `letI : Algebra K S := f.hom.toAlgebra`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Establish `hsp : spMap (algebraMap K S) = e.hom ≫ pullback.snd π x` using `hf`. Establish `hfin : Module.Finite K S`. Establish `h1 : IsFinite (Spec.map f)` using `by rw [hf]; infer_instance`. Conclude with `(IsFinite.SpecMap_iff f).1 h1`. Take `⟨z, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := π) (g := x) p (closedPoint K) hp`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure.
 
-Use `haveI : Nontrivial S := (e.inv z).nontrivial`. Take `⟨m, hm⟩` from `Ideal.exists_maximal S`. Use `letI : Field (S ⧸ m) := Ideal.Quotient.field m`. Use `haveI : FiniteDimensional K (S ⧸ m) := Module.Finite.of_surjective (Ideal.Quotient.mkₐ K m).toLinearMap Ideal.Quotient.mk_surjective`. Use `⟨S ⧸ m, inferInstance, inferInstance, inferInstance, spMap (Ideal.Quotient.mk m) ≫ e.hom ≫ pullback.fst π x, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[Category.assoc, Category.assoc, pullback.condition, ← Category.assoc e.hom, ← hsp, ← Category.assoc, spMap_comp']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_finite_point {X Y : Scheme.{0}} (π : X ⟶ Y) [IsFinite π] (K : Type) [Field K] (x : Sp K ⟶ Y)
     (hx : x (closedPoint K) ∈ Set.range π) :
@@ -63,9 +61,9 @@ theorem exists_finite_point {X Y : Scheme.{0}} (π : X ⟶ Y) [IsFinite π] (K :
   rw [Category.assoc, Category.assoc, pullback.condition, ← Category.assoc e.hom, ← hsp, ← Category.assoc, spMap_comp']
 
 /- English proof (translation)
-Establish `hUC : UniversallyClosed π` using `inferInstance`. Establish `h2 : (ValuativeCriterion.Existence ⊓ @QuasiCompact) π`. Rewrite using `[← UniversallyClosed.eq_valuativeCriterion]`. Conclude with `hUC`. Set `S : ValuativeCommSq π` to `{ R := R, K := FractionRing R, i₁ := η, i₂ := ξ, commSq := ⟨h⟩ }`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨l⟩` from `(h2.1 S).exists_lift`. Conclude with `⟨l.l, l.fac_right, l.fac_left⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_lift_of_isFinite {X Y : Scheme.{0}} (π : X ⟶ Y) [IsFinite π] (R : Type) [CommRing R] [IsDomain R]
     [ValuationRing R] (η : Sp (FractionRing R) ⟶ X) (ξ : Sp R ⟶ Y) (h : η ≫ π = jK R ≫ ξ) :
@@ -83,11 +81,9 @@ end GlobalTheory.Poinc.TraitLift
 namespace GlobalTheory.Poinc.TraitLift
 
 /- English proof (translation)
-Use `letI : Algebra V L := ((algebraMap (FractionRing V) L).comp (algebraMap V (FractionRing V))).toAlgebra`. Use `haveI : IsScalarTower V (FractionRing V) L := IsScalarTower.of_algebraMap_eq' rfl`. Use `haveI : Module.Finite V (integralClosure V L) := GlobalTheory.FormalIsogeny.finite_integralClosure V (FractionRing V) L`. Use `haveI := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_faithful V (FractionRing V) L`. Use `haveI hloc : IsLocalRing (integralClosure V L) := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_isLocalRing V L`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hdvr : IsDiscreteValuationRing (integralClosure V L) := ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_dvr V (FractionRing V) L`. Use `haveI : IsFractionRing (integralClosure V L) L := integralClosure.isFractionRing_of_finite_extension (FractionRing V) L`. Establish `hj` using `ReciprocityTheory.ChartRestriction.G.T0.FiniteAlgebraLocalCompletion.cl_inj V L`. Use `haveI : CharZero (integralClosure V L) := charZero_of_injective_algebraMap hj`. Use `⟨integralClosure V L, inferInstance, inferInstance, hloc, algebraMap V (integralClosure V L), (FractionRing.algEquiv (integralClosure V L) L).symm.toRingEquiv.toRingHom, ⟨⟨inferInstance, inferInstance, inferInstance, GlobalTheory.CompleteFiniteExtension.isAdicComplete_of_finite_l …` and prove the remaining obligations.
-
-Establish `h1 : algebraMap (FractionRing V) L (algebraMap V (FractionRing V) a) = algebraMap (integralClosure V L) L (algebraMap V (integralClosure V L) a)` using `rfl`. Rewrite using `[h1]`. Conclude with `(FractionRing.algEquiv (integralClosure V L) L).symm.commutes _`.
+A detailed English derivation is pending.
 -/
 theorem exists_closure (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V]
     [IsAdicComplete (maximalIdeal V) V] (L : Type) [Field L] [Algebra (FractionRing V) L]
@@ -122,17 +118,15 @@ namespace GlobalTheory.Poinc
 open GlobalTheory.Poinc.TraitLift in
 
 /- English proof (translation)
-Introduce `g n F Z i W8 X₁ hcl T ξ hξ hc`. Use `haveI : IsFinite X₁.π := X₁.fin`. Establish `hgen : (jK T.V ≫ ξ) (closedPoint (FractionRing T.V)) ∈ Set.range X₁.π`. Conclude with `mem_of_closedPoint _ hcl.isOpen T.V ξ hc _`. Take `⟨L, _, _, _, η, hη⟩` from `exists_finite_point X₁.π (FractionRing T.V) (jK T.V ≫ ξ) hgen`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := T.complete`. Take `⟨V₂, _, _, _, j, e, hB, hD, hj, hjl, he⟩` from `exists_closure T.V L`. Establish `hring : (algebraMap V₂ (FractionRing V₂)).comp j = (e.comp (algebraMap (FractionRing T.V) L)).comp (algebraMap T.V (FractionRing T.V))` using `RingHom.ext fun a => (he a).symm`. Use `haveI : ValuationRing V₂ := inferInstance`. Establish `hsq : (spMap e ≫ η) ≫ X₁.π = jK V₂ ≫ (spMap j ≫ ξ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, hη, ← Category.assoc, spMap_comp', ← Category.assoc, ← Category.assoc, spMap_comp', show jK V₂ = spMap (algebraMap V₂ (FractionRing V₂)) from rfl, spMap_comp', hring]`. Take `⟨l, hl1, -⟩` from `exists_lift_of_isFinite X₁.π V₂ (spMap e ≫ η) (spMap j ≫ ξ) hsq`. Take `⟨T', f'', fK'', hinj'', hloc'', -, hc'', hy''⟩` from `hExt g n _ (zetaAway n) F V₂ hB hD (spMap (e.comp (algebraMap (FractionRing T.V) L)) ≫ T.y)`. Establish `hring2 : (algebraMap T'.V (FractionRing T'.V)).comp (f''.comp j) = (fK''.comp (e.comp (algebraMap (FractionRing T.V) L))).comp (algebraMap T.V (FractionRing T.V))`. Use extensionality with `a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← hc'', ← he]`. Establish `key : jK T'.V ≫ spMap (f''.comp j) = spMap (fK''.comp (e.comp (algebraMap (FractionRing T.V) L))) ≫ jK T.V`. Rewrite using `[show jK T'.V = spMap (algebraMap T'.V (FractionRing T'.V)) from rfl, show jK T.V = spMap (algebraMap T.V (FractionRing T.V)) from rfl, spMap_comp', spMap_comp', hring2]`. Use `haveI := hloc''`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `⟨T', f''.comp j, fK''.comp (e.comp (algebraMap (FractionRing T.V) L)), spMap f'' ≫ l, hinj''.comp hj, inferInstance, fun a => (RingHom.congr_fun hring2 a).symm, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hy'', ← Category.assoc, spMap_comp']`. Rewrite using `[Category.assoc, hl1, ← Category.assoc, spMap_comp']`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Category.assoc, hl1, ← spMap_comp', Category.assoc]`.
-
-Use `_ = spMap (fK''.comp (e.comp (algebraMap (FractionRing T.V) L))) ≫ jK T.V ≫ ξ := by`. Rewrite using `[← Category.assoc, key, Category.assoc]`. Use `_ = T'.y ≫ i := by`. Rewrite using `[hξ, hy'', ← spMap_comp']`. Simplify using `only [Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_trait_lift_setup (hExt : TraitExtSt) : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (i : F.X ⟶ Z) (W8 : Matrix (Fin 8) (Fin 8) ℤ) (X₁ : Setup F W8 i), IsClopen (Set.range X₁.π) → ∀ (T : Trait F) (ξ : Sp T.V ⟶ Z), jK T.V ≫ ξ = T.y ≫ i → ξ (closedPoint T.V) ∈ Set.range X₁.π → ∃ (T' : Trait F) (f : T.V →+* T'.V) (fK : FractionRing T.V →+* FractionRing T'.V) (ξ₁ : Sp T'.V ⟶ X₁.M.Z), Function.Injective f ∧ IsLocalHom f ∧ (∀ a, fK (algebraMap T.V (FractionRing T.V) a) = algebraMap T'.V (FractionRing T'.V) (f a)) ∧ T'.y = spMap fK ≫ T.y ∧ spMap f ≫ ξ = ξ₁ ≫ X₁.π ∧ jK T'.V ≫ ξ₁ ≫ X₁.π = T'.y ≫ i := by
   intro g n F Z i W8 X₁ hcl T ξ hξ hc
@@ -178,7 +172,7 @@ end GlobalTheory.Poinc
 namespace GlobalTheory.Poinc
 
 /- English proof (translation)
-The claim follows from `exists_trait_lift_setup GlobalTheory.T.traitExistsAfterFiniteExtension_of_completeDVR`.
+A detailed English derivation is pending.
 -/
 theorem traitLift_setup : ∀ (g n : ℕ) (F : SFam g n (zetaAway n)) (Z : Scheme.{0}) (i : F.X ⟶ Z) (W8 : Matrix (Fin 8) (Fin 8) ℤ) (X₁ : Setup F W8 i), IsClopen (Set.range X₁.π) → ∀ (T : Trait F) (ξ : Sp T.V ⟶ Z), jK T.V ≫ ξ = T.y ≫ i → ξ (closedPoint T.V) ∈ Set.range X₁.π → ∃ (T' : Trait F) (f : T.V →+* T'.V) (fK : FractionRing T.V →+* FractionRing T'.V) (ξ₁ : Sp T'.V ⟶ X₁.M.Z), Function.Injective f ∧ IsLocalHom f ∧ (∀ a, fK (algebraMap T.V (FractionRing T.V) a) = algebraMap T'.V (FractionRing T'.V) (f a)) ∧ T'.y = spMap fK ≫ T.y ∧ spMap f ≫ ξ = ξ₁ ≫ X₁.π ∧ jK T'.V ≫ ξ₁ ≫ X₁.π = T'.y ≫ i :=
   exists_trait_lift_setup GlobalTheory.T.traitExistsAfterFiniteExtension_of_completeDVR

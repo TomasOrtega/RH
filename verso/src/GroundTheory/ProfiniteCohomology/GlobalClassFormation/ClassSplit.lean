@@ -51,7 +51,7 @@ instance isDiscreteRep_res_classLimitRep (S : Subgroup K.1.fixingSubgroup) :
 omit [Fact (K ≤ E)] [IsGalois K.1 E.1] in
 
 /- English proof (translation)
-Introduce `h` and use `congrArg Additive.ofMul (IdeleClassLimit.smul_of_eq_of_mem_fixingSubgroup (Subgroup.mem_subgroupOf.1 h.2) c)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_invariants_of (c : IdeleClassGroup E.1) :
     Additive.ofMul (IdeleClassLimit.of E c) ∈
@@ -82,11 +82,11 @@ theorem classInvMor_hom_apply (c : Additive (IdeleClassGroup E.1)) :
   rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `c d h`. Establish `h' : IdeleClassLimit.of E (Additive.toMul c) = IdeleClassLimit.of E (Additive.toMul d)`. Establish `h2 : Additive.ofMul (IdeleClassLimit.of E (Additive.toMul (α` using `IdeleClassGroup E.1) c)) = Additive.ofMul (IdeleClassLimit.of E (Additive.toMul (α := IdeleClassGroup E.1) d)) := congrArg Subtype.val h`. Conclude with `congrArg Additive.toMul h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `congrArg Additive.ofMul (IdeleClassLimit.of_injective E h')`. Introduce and unpack `⟨z, hz⟩`. Express the relevant statement in the definitionally equal form `Additive IdeleClassLimit at z`. Establish `hz' : Additive.toMul z ∈ GroundTheory.LocalField.Abstract.fixedModule IdeleClassLimit E.1.fixingSubgroup`. Introduce `g hg`.
+Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `congrArg Additive.toMul (hz ⟨⟨g, IntermediateField.fixingSubgroup_le (Fact.out : K ≤ E) hg⟩, Subgroup.mem_subgroupOf.2 hg⟩)`. Rewrite `hz'` using `[IdeleClassLimit.fixedModule_fixingSubgroup]`. Take `⟨c, hc⟩` from `hz'`. Conclude with `⟨Additive.ofMul c, Subtype.ext (congrArg Additive.ofMul hc)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem classInvMor_bijective : Function.Bijective (classInvMor K E).hom := by
   constructor
@@ -112,7 +112,7 @@ section Count
 variable (K E)
 
 /- English proof (translation)
-Establish `hopen : IsOpen ((E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup : Subgroup K.1.fixingSubgroup) : Set K.1.fixingSubgroup)` using `E.1.fixingSubgroup_isOpen.preimage continuous_subtype_val`. Establish `: DiscreteTopology (K.1.fixingSubgroup ⧸ E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup)` using `QuotientGroup.discreteTopology hopen`. Establish `hiso` using `isIso_cohomologyMapAlong_of_mulEquiv (quotGalEquiv K E) continuous_of_discreteTopology continuous_of_discreteTopology (classInvMor K E) (classInvMor_bijective) 2`. Rewrite using `[← Nat.card_congr (cohomologyIsoGroupCohomology (ideleClassRep K.1 E.1) 2).toLinearEquiv.toEquiv]`. Conclude with `(Nat.card_congr (asIso (cohomologyMapAlong (quotGalEquiv K E).toMonoidHom continuous_of_discreteTopology (classInvMor K E) 2)).toLinearEquiv.toEquiv).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_cohomology_quotientToInvariants :
     Nat.card (cohomology ((classLimitRep K).quotientToInvariants
@@ -129,13 +129,11 @@ theorem natCard_cohomology_quotientToInvariants :
     continuous_of_discreteTopology (classInvMor K E) 2)).toLinearEquiv.toEquiv).symm
 
 /- English proof (translation)
-Use `set N := E.1.fixingSubgroup.subgroupOf K.1.fixingSubgroup with hN`. Establish `hle : E.1.fixingSubgroup ≤ K.1.fixingSubgroup` using `IntermediateField.fixingSubgroup_le (Fact.out : K ≤ E)`. Establish `hopen : IsOpen (N : Set K.1.fixingSubgroup)` using `E.1.fixingSubgroup_isOpen.preimage continuous_subtype_val`. Establish `hNc : IsClosed (N : Set K.1.fixingSubgroup)` using `Subgroup.isClosed_of_isOpen N hopen`. Establish `h1 : Limits.IsZero (cohomology (Rep.res N.subtype (classLimitRep K)) 1)` using `(isZero_cohomology_one_classLimitRep E).of_iso (asIso (cohomologyMapAlong (Subgroup.subgroupOfEquivOfLe hle).symm.toMonoidHom (continuous_subgroupOfEquivOfLe_symm hle) (resSubgroupOfHom hle classRep) 1))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ i, 0 < i → i < 2 → Limits.IsZero (cohomology (Rep.res N.subtype (classLimitRep K)) i)` using `fun i hi hi2 => by`. Take `rfl : i = 1` from `by omega`. Conclude with `h1`. Establish `hr` using `range_cohomologyInfl_eq_ker_cohomologyRes (A := classLimitRep K) hNc two_ne_zero hA`. Establish `hinj` using `cohomologyInfl_injective (A := classLimitRep K) hNc two_ne_zero hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : ∀ x : cohomology (classLimitRep K) 2, x ∈ LinearMap.ker (classResField K E 2).hom ↔ x ∈ LinearMap.range (cohomologyInfl (classLimitRep K) N 2).hom`. Introduce `x`. Rewrite using `[hr, LinearMap.mem_ker, LinearMap.mem_ker]`. Conclude with `cohomologyResLE_apply_eq_zero_iff hle classRep 2 x`. Rewrite using `[← natCard_cohomology_quotientToInvariants K E]`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem natCard_ker_classResField :
     Nat.card (LinearMap.ker (classResField K E 2).hom) =
@@ -169,7 +167,7 @@ theorem natCard_ker_classResField :
     _ = _ := (Nat.card_congr (Equiv.ofInjective _ hinj)).symm
 
 /- English proof (translation)
-Rewrite using `[natCard_ker_classResField]`. Conclude with `natCard_groupCohomology_two_ideleClassRep_dvd`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_ker_classResField_dvd :
     Nat.card (LinearMap.ker (classResField K E 2).hom) ∣ Module.finrank K.1 E.1 := by
@@ -177,7 +175,7 @@ theorem natCard_ker_classResField_dvd :
   exact natCard_groupCohomology_two_ideleClassRep_dvd
 
 /- English proof (translation)
-Rewrite using `[natCard_ker_classResField]`. Conclude with `natCard_groupCohomology_two_ideleClassRep_of_isCyclic`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_ker_classResField_of_isCyclic [IsCyclic Gal(E.1/K.1)] :
     Nat.card (LinearMap.ker (classResField K E 2).hom) = Module.finrank K.1 E.1 := by

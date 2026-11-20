@@ -6,9 +6,9 @@ open IsLocalRing GlobalTheory.FormalOrigin GlobalTheory.FormalOrigin.Extend
 namespace GlobalTheory.FormalOrigin.Extend
 
 /- English proof (translation)
-Use `Ideal.mul_le.2 fun F hF G hG => ?_` and prove the remaining obligations. Rewrite `hF`, `hG`, the goal using `[mem_filt]`. Introduce `α`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `Ideal.sum_mem _ fun p hp => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hα : p.1 + p.2 = α` using `Finset.HasAntidiagonal.mem_antidiagonal.1 hp`. Establish `hd : α.degree = p.1.degree + p.2.degree` using `by rw [← hα, map_add]`. Establish `h` using `Ideal.mul_mem_mul (hF p.1) (hG p.2)`. Rewrite `h` using `[← pow_add]`. Conclude with `Ideal.pow_le_pow_right (by omega) h`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem filt_mul_filt_le (σ R : Type) [CommRing R] (I : Ideal R) (j k : ℕ) :
     filt (σ := σ) I j * filt I k ≤ filt I (j + k) := by

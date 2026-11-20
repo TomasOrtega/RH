@@ -6,15 +6,13 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.SplitWeil GlobalTheory.RootE
 namespace GlobalTheory.RootEx
 
 /- English proof (translation)
-Use `haveI : T2Space k := by`. Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Use `infer_instance`. Establish `ho : IsOpen (𝒪[k] : Set k)` using `Valuation.isOpen_integer`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc : IsCompact (𝒪[k] : Set k)` using `IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Set `B : Set (n → k)` to `Set.univ.pi fun _ => (𝒪[k] : Set k)`. Establish `hBo : IsOpen B` using `isOpen_set_pi Set.finite_univ fun _ _ => ho`. Establish `hBc : IsCompact B` using `isCompact_univ_pi fun _ => hc`. Set `U : (n → k) → Set (n → k)` to `fun x => (Homeomorph.addLeft x) '' B`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hUo : ∀ x, IsOpen (U x)` using `fun x => (Homeomorph.addLeft x).isOpenMap _ hBo`. Establish `hUc : ∀ x, IsCompact (U x)` using `fun x => hBc.image (Homeomorph.addLeft x).continuous`. Take `⟨t, ht⟩` from `hC.elim_finite_subcover U hUo fun x _ => Set.mem_iUnion.mpr ⟨x, 0, fun _ _ => zero_mem _, by simp⟩`. Use `set K : Set (n → k) := ⋃ x ∈ t, U x with hK`. Establish `hKo : IsOpen K` using `isOpen_biUnion fun x _ => hUo x`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hKc : IsCompact K` using `t.isCompact_biUnion fun x _ => hUc x`. Establish `hcl : IsClopen K` using `⟨hKc.isClosed, hKo⟩`. Use `⟨K.indicator fun _ => (1 : ℂ), ⟨?_, ?_⟩, fun u hu => Set.indicator_of_mem (ht hu) _⟩` and prove the remaining obligations. Use `(IsLocallyConstant.iff_eventually_eq _).mpr fun x => ?_` and prove the remaining obligations. Distinguish the cases in `hx : x ∈ K`.
-
-Use `filter_upwards [hKo.mem_nhds hx] with y hy`. Simplify using `[hx, hy]`. Use `filter_upwards [hcl.compl.isOpen.mem_nhds hx] with y hy`. Simplify using `[hx, Set.notMem_of_mem_compl hy]`. Conclude with `HasCompactSupport.intro hKc fun x hx => Set.indicator_of_notMem hx _`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_mem_SB_eq_one_on_compact (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (n : Type) [Fintype n] (C : Set (n → k)) (hC : IsCompact C) :

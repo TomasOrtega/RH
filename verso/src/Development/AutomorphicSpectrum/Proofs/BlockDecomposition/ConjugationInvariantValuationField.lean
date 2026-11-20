@@ -13,9 +13,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Use `(injective_iff_map_eq_zero f).2 fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Take `⟨z, hz⟩` from `hK.mul_inv_cancel hne`. Establish `: f (y * z) = 1` using `by rw [hz, map_one]`. Rewrite `this` using `[map_mul, hy, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`.
+A detailed English derivation is pending.
 -/
 theorem injective_of_isField {K L : Type} [CommRing K] [Ring L] [Nontrivial L] (hK : IsField K)
     (f : K →+* L) : Function.Injective f := by
@@ -27,9 +27,9 @@ theorem injective_of_isField {K L : Type} [CommRing K] [Ring L] [Nontrivial L] (
   exact zero_ne_one this
 
 /- English proof (translation)
-Establish `h1` using `minpoly.algHom_eq (finEmb F v τ) (injective_of_isField hK (finEmb F v τ).toRingHom) y`. Establish `h2` using `minpoly.algHom_eq (finEmb F v τ') (injective_of_isField hK (finEmb F v τ').toRingHom) y`. Apply `NNReal.eq` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `spectralNorm (Fv F v) (FvBar F v) _ = spectralNorm (Fv F v) (FvBar F v) _`. Unfold `spectralNorm`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions.
 
-Rewrite using `[h1, h2]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absBar_finEmb_eq (hK : IsField (Fv F v ⊗[F] E)) (τ τ' : E →ₐ[F] FvBar F v) (y : Fv F v ⊗[F] E) :
     absBar F v (finEmb F v τ y) = absBar F v (finEmb F v τ' y) := by
@@ -41,14 +41,14 @@ theorem absBar_finEmb_eq (hK : IsField (Fv F v ⊗[F] E)) (τ τ' : E →ₐ[F] 
   rw [h1, h2]
 
 /- English proof (translation)
-Use `le_antisymm ((absFin_le_iff F v).2 fun τ' => (absBar_finEmb_eq v hK τ' τ y).le) (le_absFin F v τ y)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem absFin_eq (hK : IsField (Fv F v ⊗[F] E)) (τ : E →ₐ[F] FvBar F v) (y : Fv F v ⊗[F] E) :
     absFin F v y = absBar F v (finEmb F v τ y) := by
   refine le_antisymm ((absFin_le_iff F v).2 fun τ' => (absBar_finEmb_eq v hK τ' τ y).le) (le_absFin F v τ y)
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a x => rfl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem finEmb_sigR (σ : E →ₐ[F] E) (τ : E →ₐ[F] FvBar F v) (y : Fv F v ⊗[F] E) :
     finEmb F v τ (sigR (Fv F v) σ y) = finEmb F v (τ.comp σ) y := by
@@ -58,9 +58,9 @@ theorem finEmb_sigR (σ : E →ₐ[F] E) (τ : E →ₐ[F] FvBar F v) (y : Fv F 
   | tmul a x => rfl
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ v hK`. Set `τ₀ : E →ₐ[F] FvBar F v` to `IsAlgClosed.lift`. Use `⟨(valBar F v).comap (finEmb F v τ₀).toRingHom, fun a => ?_, fun a => ?_⟩` and prove the remaining obligations. Conclude with `(absFin_eq v hK τ₀ a).symm`. Express the relevant statement in the definitionally equal form `absBar F v (finEmb F v τ₀ (sigR (Fv F v) σ a)) = absBar F v (finEmb F v τ₀ a)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finEmb_sigR]`. Conclude with `absBar_finEmb_eq v hK _ _ a`.
+A detailed English derivation is pending.
 -/
 theorem exists_valuation : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E}, IsCMExt F E σ → ∀ (v : HeightOneSpectrum (𝓞 F)), IsField (Fv F v ⊗[F] E) →

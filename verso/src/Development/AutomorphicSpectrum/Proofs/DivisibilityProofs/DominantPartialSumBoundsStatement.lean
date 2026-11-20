@@ -4,7 +4,7 @@ import Development.AutomorphicSpectrum.Definitions.DivisibilityTowers.CompactGap
 open MvPolynomial Filter Topology GlobalTheory.CompanionTheory.Ar.Top
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompanionTheory.Ar.Top.partialSum_sub_mean_bounds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAutomorphicSpectrum%2FProofs%2FDivisibilityProofs%2FDominantPartialSumBounds.lean&line=9#L9)
 -/

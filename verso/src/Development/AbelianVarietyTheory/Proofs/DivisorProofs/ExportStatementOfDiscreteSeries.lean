@@ -29,7 +29,7 @@ open GlobalTheory.BigTop GlobalTheory.BigOn GlobalTheory.BigOn.Exp
 namespace GlobalTheory.BigOn.Exp
 
 /- English proof (translation)
-The claim follows from `have tA := GlobalTheory.T.twAdm' have tC := GlobalTheory.T.twist_character_of_artin hA tA have row := GlobalTheory.T.row_statement_of_low_weight hC hA hR hS GlobalTheory.T.low_weight_statement tA Steps.exportSt ⟨GlobalTheory.T.canonical_existence, GlobalTheory.T.canonical_project …`.
+A detailed English derivation is pending.
 -/
 theorem exportSt_of_hypotheses (hC : GlobalTheory.Published.CuspRapidDecay) (hA : GlobalTheory.Published.GlobalArtinReciprocity)
     (hR : GlobalTheory.Published.RayClassFieldSt) (hD : GlobalTheory.Published.DiscreteSeriesCover) (hW : GlobalTheory.Published.CasselmanWallach)

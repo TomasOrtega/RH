@@ -35,9 +35,9 @@ def IsBiStable (B : Subalgebra ℂ (G → ℂ)) (K : Subgroup G) (V : Submodule 
 variable {B : Subalgebra ℂ (G → ℂ)} {K : Subgroup G}
 
 /- English proof (translation)
-Use `⟨FiniteDimensional.span_of_finite ℂ (Set.finite_range f), fun w hw => ?_⟩` and prove the remaining obligations. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨i, rfl⟩ := hx`. Conclude with `⟨hB i, h i⟩`. Consider the case `zero => exact ⟨zero_mem _, fun _ _ => ⟨zero_mem _, zero_mem _⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Conclude with `⟨add_mem hx.1 hy.1, fun k hk => ⟨add_mem (hx.2 k hk).1 (hy.2 k hk).1, add_mem (hx.2 k hk).2 (hy.2 k hk).2⟩⟩`. Consider the case `smul c x _ hx`. Conclude with `⟨B.smul_mem hx.1 c, fun k hk => ⟨Submodule.smul_mem _ c (hx.2 k hk).1, Submodule.smul_mem _ c (hx.2 k hk).2⟩⟩`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately. Supply the required witnesses or components.
 -/
 theorem isBiStable_span {ι : Type} [Finite ι] {f : ι → G → ℂ} (hB : ∀ i, f i ∈ B)
     (h : ∀ i, ∀ k ∈ K, (fun g => f i (k * g)) ∈ Submodule.span ℂ (Set.range f) ∧
@@ -52,9 +52,9 @@ theorem isBiStable_span {ι : Type} [Finite ι] {f : ι → G → ℂ} (hB : ∀
     exact ⟨B.smul_mem hx.1 c, fun k hk => ⟨Submodule.smul_mem _ c (hx.2 k hk).1, Submodule.smul_mem _ c (hx.2 k hk).2⟩⟩
 
 /- English proof (translation)
-Use `haveI := fun i => (h i).1`. Use `⟨inferInstance, fun w hw => ?_⟩` and prove the remaining obligations. Proceed by induction on `hw using Submodule.iSup_induction' with`. Consider the case `mem i x hx`. Conclude with `⟨((h i).2 x hx).1, fun k hk => ⟨Submodule.mem_iSup_of_mem i (((h i).2 x hx).2 k hk).1, Submodule.mem_iSup_of_mem i (((h i).2 x hx).2 k hk).2⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `zero => exact ⟨zero_mem _, fun _ _ => ⟨zero_mem _, zero_mem _⟩⟩`. Consider the case `add x y _ _ hx hy`. Conclude with `⟨add_mem hx.1 hy.1, fun k hk => ⟨add_mem (hx.2 k hk).1 (hy.2 k hk).1, add_mem (hx.2 k hk).2 (hy.2 k hk).2⟩⟩`.
+Treat this case separately. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isBiStable_iSup {ι : Type} [Finite ι] {V : ι → Submodule ℂ (G → ℂ)} (h : ∀ i, IsBiStable B K (V i)) :
     IsBiStable B K (⨆ i, V i) := by
@@ -69,7 +69,7 @@ theorem isBiStable_iSup {ι : Type} [Finite ι] {V : ι → Submodule ℂ (G →
     exact ⟨add_mem hx.1 hy.1, fun k hk => ⟨add_mem (hx.2 k hk).1 (hy.2 k hk).1, add_mem (hx.2 k hk).2 (hy.2 k hk).2⟩⟩
 
 /- English proof (translation)
-Use `⟨Module.Finite.iff_fg.2 ((Module.Finite.iff_fg.1 h.1).mul (Module.Finite.iff_fg.1 h'.1)), fun w hw => ?_⟩` and prove the remaining obligations. Use `Submodule.mul_induction_on hw (fun x hx y hy => ?_) fun x y hx hy => ?_` and prove the remaining obligations. Conclude with `⟨mul_mem (h.2 x hx).1 (h'.2 y hy).1, fun k hk => ⟨Submodule.mul_mem_mul ((h.2 x hx).2 k hk).1 ((h'.2 y hy).2 k hk).1, Submodule.mul_mem_mul ((h.2 x hx).2 k hk).2 ((h'.2 y hy).2 k hk).2⟩⟩`. Conclude with `⟨add_mem hx.1 hy.1, fun k hk => ⟨add_mem (hx.2 k hk).1 (hy.2 k hk).1, add_mem (hx.2 k hk).2 (hy.2 k hk).2⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem IsBiStable.mul {V V' : Submodule ℂ (G → ℂ)} (h : IsBiStable B K V) (h' : IsBiStable B K V') :
     IsBiStable B K (V * V') := by
@@ -81,7 +81,7 @@ theorem IsBiStable.mul {V V' : Submodule ℂ (G → ℂ)} (h : IsBiStable B K V)
   · exact ⟨add_mem hx.1 hy.1, fun k hk => ⟨add_mem (hx.2 k hk).1 (hy.2 k hk).1, add_mem (hx.2 k hk).2 (hy.2 k hk).2⟩⟩
 
 /- English proof (translation)
-Use `⟨Module.Finite.iff_fg.2 ((Module.Finite.iff_fg.1 h.1).map _), ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `⟨hB x (h.2 x hx).1, fun k hk => ⟨⟨_, ((h.2 x hx).2 k hk).1, rfl⟩, ⟨_, ((h.2 x hx).2 k hk).2, rfl⟩⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem IsBiStable.star {V : Submodule ℂ (G → ℂ)} (h : IsBiStable B K V) (hB : ∀ f ∈ B, star f ∈ B) :
     IsBiStable B K (V.map (starLinearEquiv ℂ (A := G → ℂ)).toLinearMap) := by
@@ -102,7 +102,7 @@ def biFin : Subalgebra ℂ (G → ℂ) where
       ⟨Submodule.subset_span ⟨(), rfl⟩, Submodule.subset_span ⟨(), rfl⟩⟩, Submodule.subset_span ⟨(), rfl⟩⟩
 
 /- English proof (translation)
-Use `choose V hV ha using h`. Conclude with `⟨⨆ i, V i, isBiStable_iSup hV, fun i => Submodule.mem_iSup_of_mem i (ha i)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_common {ι : Type} [Finite ι] {a : ι → G → ℂ} (h : ∀ i, a i ∈ biFin B K) :
     ∃ V, IsBiStable B K V ∧ ∀ i, a i ∈ V := by
@@ -110,13 +110,13 @@ theorem exists_common {ι : Type} [Finite ι] {a : ι → G → ℂ} (h : ∀ i,
   exact ⟨⨆ i, V i, isBiStable_iSup hV, fun i => Submodule.mem_iSup_of_mem i (ha i)⟩
 
 /- English proof (translation)
-Set `b` to `Module.Basis.span hv`. Use `haveI : FiniteDimensional ℂ (Submodule.span ℂ (Set.range v)) := FiniteDimensional.span_of_finite ℂ (Set.finite_range v)`. Set `ρ : Q → Matrix (Fin d) (Fin d) ℂ` to `fun q => Matrix.of fun i j => χ q * b.coord i ⟨_, hs q j⟩`. Establish `h1 : ∀ q j z, ∑ i, b.coord i ⟨_, hs q j⟩ * v i z = v j (z * η q)` using `fun q j z => by`. Use `congrFun (congrArg Subtype.val (b.sum_repr ⟨_, hs q j⟩)) z` as an intermediate fact.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[b, Module.Basis.span_apply]`. Establish `law : ∀ q (x : Fin d → ℂ) z, ∑ i, v i z * (ρ q *ᵥ x) i = χ q * ∑ j, v j (z * η q) * x j` using `fun q x z => by`. Simplify using `only [← h1 q _ z, ρ, Matrix.mulVec, dotProduct, Matrix.of_apply, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `inj : ∀ x y : Fin d → ℂ, (∀ z, ∑ i, v i z * x i = ∑ i, v i z * y i) → x = y` using `fun x y h =>`. Use function extensionality and compare the values at `(Fintype.linearIndependent_iffₛ.1 hv x y (funext fun z => by simpa [mul_comm] using h z))`. Use `⟨{ toFun := ρ map_one' := Matrix.ext_of_mulVec_single fun j => inj _ _ fun z => by` and prove the remaining obligations. Rewrite using `[law]`. Simplify using `only [map_one, one_mul, mul_one, Matrix.one_mulVec]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `map_mul' := fun q q' => Matrix.ext_of_mulVec_single fun j => inj _ _ fun z => by`. Rewrite using `[← Matrix.mulVec_mulVec, law, law, law, map_mul, map_mul, mul_assoc, mul_assoc] }, ?_, law⟩`. Use `continuous_matrix fun i j => hχ.mul ((b.coord i).continuous_of_finiteDimensional.comp (Continuous.subtype_mk ?_ _))` and prove the remaining obligations. Conclude with `continuous_pi fun z => (hc j).comp (continuous_const.mul hη)`.
+A detailed English derivation is pending.
 -/
 theorem exists_matrix_rep {Q : Type} [Group Q] [TopologicalSpace Q] [TopologicalSpace G] [IsTopologicalGroup G]
     (η : Q →* G) (hη : Continuous η) (χ : Q →* ℂ) (hχ : Continuous χ) {d : ℕ} {v : Fin d → G → ℂ}
@@ -163,7 +163,7 @@ def goodAlg : Subalgebra ℂ (GAd σ J → ℂ) where
 variable {σ J}
 
 /- English proof (translation)
-Take `⟨h1, h2, U, hU, h3⟩` from `hf`. Conclude with `⟨h1.star, fun k γ hγ g => Complex.conjCLE.contDiff.comp (h2 k γ hγ g), U, hU, fun u hu hf g => by`. Simplify using `only [Pi.star_apply, h3 u hu hf]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Simplify using the standard rewrite rules.
 -/
 theorem star_mem_goodAlg (f : GAd σ J → ℂ) (hf : f ∈ goodAlg σ J) : star f ∈ goodAlg σ J := by
   obtain ⟨h1, h2, U, hU, h3⟩ := hf
@@ -173,17 +173,15 @@ theorem star_mem_goodAlg (f : GAd σ J → ℂ) (hf : f ∈ goodAlg σ J) : star
 open GlobalTheory.Orb (archMat) in
 
 /- English proof (translation)
-Distinguish the cases in `hf : projFin σ J x = projFin σ J y`. Choose the witnesses or unpack the hypotheses as in `⟨w, hw⟩ : ∃ w, projArch σ J w x ≠ projArch σ J w y := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hxy (ext_inf_fin σ J (GInf_ext σ J fun w => by simp [h w]) hf)`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Establish `inj : Function.Injective (archMat σ J τ)` using `fun a b e => by`. Rewrite `e` using `[GlobalTheory.Orb.archMat_eq_archEquiv J hCM, GlobalTheory.Orb.archMat_eq_archEquiv J hCM]`. Conclude with `(archEquiv J hCM τ).injective (Subtype.ext (Units.ext e))`. Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij⟩ : ∃ i j, archMat σ J τ (projArch σ J w x) i j ≠ archMat σ J τ (projArch σ J w y) i j := by`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hw (inj (Matrix.ext h))`. Set `e : Fin n × Fin n → GAd σ J → ℂ` to `fun p g => archMat σ J τ (projArch σ J w g) p.1 p.2`. Establish `hc : Continuous fun g => archMat σ J τ (projArch σ J w g)` using `(Units.continuous_val.comp ((isEmbedding_matHom _ σ J).continuous.comp (continuous_projArch σ J w))).matrix_map (GlobalTheory.Orb.continuous_infEmb τ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `refine ⟨e (i, j), ⟨_, isBiStable_span (f := e) (fun p => ⟨hc.matrix_elem p.1 p.2, GlobalTheory.UAut.Model.isSm_entry hCM τ p.1 p.2, ⊤, isOpen_univ, fun u _ hu g => ?_⟩) fun p k _ => ⟨?_, ?_⟩, Submodule.subset_span ⟨(i, j), rfl⟩⟩, hij⟩`. Simplify using `only [e, map_mul, mem_finPts_iff_forall.1 hu w, mul_one]`. Establish `: (fun g => e p (k * g)) = ∑ l, e (p.1, l) k • e (l, p.2)` using `funext fun g => by`. Simplify using `only [e, map_mul, Matrix.mul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `sum_mem fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`. Establish `: (fun g => e p (g * k)) = ∑ l, e (l, p.2) k • e (p.1, l)` using `funext fun g => by`. Simplify using `only [e, map_mul, Matrix.mul_apply, Finset.sum_apply, Pi.smul_apply, smul_eq_mul, mul_comm]`. Rewrite using `[this]`. Conclude with `sum_mem fun l _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨_, rfl⟩)`.
-
-Take `⟨V, hV, h, f, hfV, hne⟩` from `GlobalTheory.T.separate_points_smooth_finite_span F E σ hCM n J hJ K hK x hx y hy hf`. Conclude with `⟨f, ⟨V, ⟨hV, fun w hw => ⟨⟨(h w hw).1, (h w hw).2.1, (h w hw).2.2.1⟩, (h w hw).2.2.2⟩⟩, hfV⟩, hne⟩`.
+A detailed English derivation is pending.
 -/
 theorem separates (hCM : IsCMExt F E σ) (hJ : IsHermND σ J) {K : Subgroup (GAd σ J)} (hK : IsCompact (K : Set (GAd σ J)))
     {x y : GAd σ J} (hx : x ∈ K) (hy : y ∈ K) (hxy : x ≠ y) : ∃ f ∈ biFin (goodAlg σ J) K, f x ≠ f y := by
@@ -223,31 +221,29 @@ end Good
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy hι hιJ c₀ hc₀ hH1 hH M hMc hML hMr r Xf Yf hWf X' Y' hW' hX0 hY0 hXs S' χ _ hχ K₁ hK₁ ψ hψ K' hK' _ hPK Kf hKf hKff U _ _`. Take `⟨hmul, hinv⟩` from `GlobalTheory.T.isParDec_mul_and_inv F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy hι hιJ c₀ hc₀ hH1 hH M hMc hML hMr r Xf Yf hWf X' Y' hW' hX0 hY0 hXs`. Take `⟨hone, hPc, τ, η, hτ, hη, hu⟩` from `GlobalTheory.T.hyperbolic_plane_orbit_measure F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy hι hιJ c₀ hc₀ hH1 hH M hMc hML hMr r Xf Yf hWf X' Y' hW' hX0 hY0 hXs`. Establish `hre` using `GlobalTheory.T.hyperbolic_plane_parabolic_decomposition F E σ hCM hσ n n₁ W W₁ H hsk hn hxx hyy hxy hι hιJ c₀ hc₀ hH1 hH M hMc hML hMr r Xf Yf hWf X' Y' hW' hX0 hY0 hXs`. Establish `hK'i : K' ≤ infPts σ _` using `hK'.1.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcomm : ∀ k ∈ K', ∀ k₂ ∈ Kf, Commute k k₂` using `fun k hk k₂ hk₂ => GlobalTheory.StdPar.RealConj.commute_real_fin (hK'i hk) (hKff hk₂)`. Set `P : Subgroup (GAd σ (c₀ • W.J.map σ))` to `{ carrier := {g | ∃ t y, GlobalTheory.ThK.InducedCons.IsParDec hσ W W₁ H hc₀ X' M t y g} one_mem' := ⟨1, 1, hone⟩ mul_mem' := fun ⟨t, y, h⟩ ⟨t', y', h'⟩ => ⟨_, _, hmul _ _ _ _ _ _ h h'⟩ inv_mem' := fun ⟨t, y, h⟩ => ⟨_, _, hinv _ _ _ h⟩ }`. Set `Kc : Subgroup (GAd σ (c₀ • W.J.map σ))` to `{ carrier := {g | ∃ k ∈ K', ∃ k₂ ∈ Kf, g = k * k₂} one_mem' := ⟨1, one_mem _, 1, one_mem _, (mul_one _).symm⟩ mul_mem' := by`. Introduce and unpack `_ _ ⟨k, hk, k₂, hk₂, rfl⟩ ⟨l, hl, l₂, hl₂, rfl⟩`. Conclude with `⟨_, mul_mem hk hl, _, mul_mem hk₂ hl₂, (hcomm l hl k₂ hk₂).symm.mul_mul_mul_comm k l₂⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `inv_mem' := by`. Introduce and unpack `_ ⟨k, hk, k₂, hk₂, rfl⟩`. Conclude with `⟨_, inv_mem hk, _, inv_mem hk₂, by rw [(hcomm k hk k₂ hk₂).eq, mul_inv_rev]⟩ }`. Establish `hKc : IsCompact (Kc : Set (GAd σ (c₀ • W.J.map σ)))`. Use `(hK'.1.2.prod hKf).image continuous_mul using 1` and compare the differences between its conclusion and the goal.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components.
 
-Use extensionality with `g`. Conclude with `⟨fun ⟨k, hk, k₂, hk₂, e⟩ => ⟨(k, k₂), ⟨hk, hk₂⟩, e.symm⟩, fun ⟨p, hp, e⟩ => ⟨p.1, hp.1, p.2, hp.2, e.symm⟩⟩`. Establish `hQ : IsCompact ((P ⊓ Kc : Subgroup _) : Set (GAd σ (c₀ • W.J.map σ)))` using `hKc.inter_left hPc`. Use `haveI := isCompact_iff_compactSpace.1 hQ`. Establish `hdec : ∀ q : (P ⊓ Kc : Subgroup _), GlobalTheory.ThK.InducedCons.IsParDec hσ W W₁ H hc₀ X' M (τ q) (η q) q` using `fun q => by`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, y, h⟩` from `q.2.1`. Rewrite using `[(hu _ _ _ h).1, (hu _ _ _ h).2]`. Conclude with `h`. Set `ηh : (P ⊓ Kc : Subgroup _) →* GAd σ (c₀ • W₁.J.map σ)` to `MonoidHom.mk' (fun q => η q) fun a b => (hu _ _ _ (hmul _ _ _ _ _ _ (hdec a) (hdec b))).2`. Set `τh : (P ⊓ Kc : Subgroup _) →* (AE F E)ˣ` to `MonoidHom.mk' (fun q => τ q) fun a b => (hu _ _ _ (hmul _ _ _ _ _ _ (hdec a) (hdec b))).1`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hηc : Continuous ηh` using `hη.comp_continuous continuous_subtype_val fun q => q.2.1`. Establish `hτc : Continuous τh` using `hτ.comp_continuous continuous_subtype_val fun q => q.2.1`. Take `⟨hcusp, hfd⟩` from `GlobalTheory.T.cusp_form_constant_term_vanishes_alt F E σ hCM n₁ _ hH1 r Xf Yf hWf S' K₁ hK₁.1.1 ψ hψ ηh.range (isCompact_range hηc) (by`. Introduce and unpack `_ ⟨q, rfl⟩`. Take `⟨t₁, h⟩` from `hre _ _ _ (hdec q)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `hPK _ _ _ h ?_` and prove the remaining obligations. Take `⟨k, hk, k₂, hk₂, e⟩` from `q.2.2`. Establish `: ofInf σ _ (projInf σ _ (q : GAd σ (c₀ • W.J.map σ))) = k` using `ext_inf_fin σ _ (by simp [e, mem_finPts.1 (hKff hk₂)]) (by simp [mem_infPts.1 (hK'i hk)])`. Rewrite using `[this]`. Conclude with `hk)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d, v, hvS, hvs, hvi⟩ : ∃ (d : ℕ) (v : Fin d → GAd σ (c₀ • W₁.J.map σ) → ℂ), (∀ i, v i ∈ {f : GAd σ (c₀ • W₁.J.map σ) → ℂ | ∃ y ∈ ηh.range, f = fun g => ψ (g * y)}) ∧ Submodule.span ℂ (Set.range v) = Submodule.span ℂ {f : GAd σ (c₀ • W₁.J.map σ) → ℂ | ∃ y ∈ ηh.range, f = fun g => …` from `⟨_, Submodule.exists_fun_fin_finrank_span_eq ℂ _⟩`. Establish `hvc : ∀ i, GlobalTheory.StdPar.IsCuspOn σ (c₀ • W₁.J.map σ) Xf Yf S' K₁ (v i)` using `fun i => by`. Take `⟨y, hy, e⟩` from `hvS i`. Conclude with `e ▸ hcusp y hy`. Take `⟨ρ, hρ, law⟩` from `exists_matrix_rep ηh hηc ((Circle.coeHom.comp χ).comp τh) (hχ.comp hτc) hvi (fun i => (hvc i).1.cont) fun q i => by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨y, hy, e⟩` from `hvS i`. Rewrite using `[hvs, e]`. Conclude with `Submodule.subset_span ⟨ηh q * y, mul_mem ⟨q, rfl⟩ hy, funext fun z => congrArg ψ (mul_assoc _ _ _)⟩`. Take `⟨c, hc⟩ : ∃ c : Fin d → ℂ, ∑ i, c i • v i = ψ` from `(Submodule.mem_span_range_iff_exists_fun ℂ).1 (hvs ▸ Submodule.subset_span ⟨1, one_mem _, funext fun z => by rw [mul_one]⟩)`. Take `⟨f, hfA, hf1, hfq⟩` from `GlobalTheory.T.stone_weierstrass_finite_rep _ (P ⊓ Kc) hQ d ρ hρ (biFin (goodAlg σ (c₀ • W.J.map σ)) Kc) (fun f ⟨V, hV, hf⟩ => (hV.2 f hf).1.1) (fun f ⟨V, hV, hf⟩ => ⟨_, hV.star star_mem_goodAlg, f, hf, rfl⟩) (fun x hx y hy hxy => separates hCM hH hKc hx.2 hy.2 hxy) (fun f ⟨V, hV …`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Set `a : Fin (d + 1) → GAd σ (c₀ • W.J.map σ) → ℂ` to `Fin.cons 1 fun i => f i - algebraMap ℂ _ (c i)`. Establish `haA : ∀ i, a i ∈ biFin (goodAlg σ (c₀ • W.J.map σ)) Kc` using `fun i => Fin.cases (one_mem _) (fun i => sub_mem (hfA i) (Subalgebra.algebraMap_mem _ _)) i`. Establish `hsum : ∀ z g, ∑ i, (Fin.cons ψ v : Fin (d + 1) → _ → ℂ) i z * a i g = ∑ i, v i z * f i g` using `fun z g => by`. Rewrite using `[Fin.sum_univ_succ, ← hc]`. Simplify using `[a, mul_sub, mul_comm]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨V, hV, haV⟩` from `exists_common haA`. Use `haveI := hV.1`. Use `choose Ua hUa hUa' using fun i => (hV.2 _ (haV i)).1.2.2`. Set `b` to `Module.finBasis ℂ V`. Establish `hb : ∀ w ∈ V, ∃ c : Fin (Module.finrank ℂ V) → ℂ, ∀ g, w g = ∑ j, c j * (b j).1 g` using `fun w hw => ⟨b.repr ⟨w, hw⟩, fun g => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(congrFun (congrArg Subtype.val (b.sum_repr ⟨w, hw⟩)) g).symm` as an intermediate fact. Simplify `this⟩` using `only [AddSubmonoidClass.coe_finset_sum, Finset.sum_apply, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul]`. Use `⟨d, Fin.cons ψ v, a, fun i => Fin.cases hψ hvc i, rfl, fun i => Fin.cases (by simp [a]) (fun i => by simp [a, hf1]) i, fun t y p hp k hk k₂ hk₂ k' hk' k₂' hk₂' e z => ?_, ⟨⨅ i, Ua i, by rw [Subgroup.coe_iInf]; exact isOpen_iInter_of_finite hUa, fun u hu huf k _ k₂ _ i => hUa' i u …` and prove the remaining obligations. Establish `hpK : p ∈ Kc`. Rewrite using `[eq_mul_inv_of_mul_eq e]`.
-
-Conclude with `mul_mem ⟨_, hk', _, hk₂', rfl⟩ (inv_mem (show k * k₂ ∈ Kc from ⟨_, hk, _, hk₂, rfl⟩))`. Establish `h1` using `law ⟨p, ⟨t, y, hp⟩, hpK⟩ (fun i => f i (k * k₂)) z`. Rewrite `h1` using `[← hfq]`. Rewrite using `[hsum, hsum, ← e, ← (hu _ _ _ hp).1, ← (hu _ _ _ hp).2]`. Conclude with `h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_coeff : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ →
     ∀ (hσ : ∀ x, σ (σ x) = x) (n n₁ : ℕ) (W : Spc F E n) (W₁ : Spc F E n₁) (H : Plane E n n₁), (∀ i j, σ (W.J j i) = -W.J i j) → n = n₁ + 2 →

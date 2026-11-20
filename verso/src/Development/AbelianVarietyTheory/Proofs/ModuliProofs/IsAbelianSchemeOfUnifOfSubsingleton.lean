@@ -25,9 +25,9 @@ noncomputable section
 namespace GlobalTheory.NoTorus
 
 /- English proof (translation)
-Introduce `Z r z p q hp hq`. Substitute `hF` using the available equality. Establish `hp' : ∀ k, φ k (r z) ∈ L.U (p k)` using `hp`. Rewrite using `[Category.comp_id]`. Use `(gen_trans ht r z (Set.mem_iInter.2 hp') (Set.mem_iInter.2 hq)).trans (congrArg (· * _) (Finset.prod_congr rfl fun k _ => ?_))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[gw_isoPullId (Geo.Tor.idIso L) rfl (r ≫ φ k) z (p k) (q k) (hp' k) (hq k)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem pmaps_id {X Y : Scheme.{0}} {L : LB X} {F : X ⟶ X} (hF : F = 𝟙 X) {K : Type} [Fintype K]
     (φ : K → (Y ⟶ X)) (ε : K → ℤ) {t : LB.Gen (LB.LinComb L φ ε)} (ht : t.IsGen) :
@@ -42,9 +42,9 @@ theorem pmaps_id {X Y : Scheme.{0}} {L : LB X} {F : X ⟶ X} (hF : F = 𝟙 X) {
   rfl
 
 /- English proof (translation)
-Establish `: IsMonHom (Iso.refl D.toPre.P.A).hom` using `inferInstanceAs (IsMonHom (𝟙 D.toPre.P.A))`. Establish `gp : IsGrpPullback D.toPre.P.A D.toPre.P.A (specOf (RingHom.id R)) (Iso.refl D.toPre.P.A).hom.left` using `(isGrpPullback_of_iso (Iso.refl D.toPre.P.A)).congr (specOf_id R).symm rfl`. Take `⟨e, me, hF⟩` from `grpPullback_iso gp (isGrpPullback_pullback D.toPre.P.A (specOf (RingHom.id R)))`. Establish `hF' : e.hom.left ≫ pullback.fst D.toPre.P.A.hom (specOf (RingHom.id R)) = 𝟙 _` using `hF`. Take `⟨W, hW, ⟨ψW⟩⟩` from `psiOnExists R I hR D`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hD, -⟩` from `UnifUniq.exists_isPullDeg_id D.toPre D.toPre W hW ψW e me (isoPullId (Geo.Tor.idIso D.toPre.P.L) hF') ((isGen_iff _).2 (isoPullId_pgen (idIso_isGen D.toPre.P.isLB) hF')) ((congrArg (_ ≫ ·) hF').trans (Category.comp_id _)) (pmaps_id hF' (K := PUnit) (fun _ => eSec D.toPre.P.A) (fu …`. Conclude with `⟨hD⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_isPullDeg_self {R : Type} [CommRing R] [IsDomain R] {I : Ideal R} (hR : AdmBase R I)
     (D : DegData R I) : Nonempty (IsPullDeg (RingHom.id R) D.toPre D.toPre) := by
@@ -67,9 +67,9 @@ end GlobalTheory.NoTorus
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `hL hL₂ V _ _ _ _ hc D A G _ hG hsa U hX`. Establish `hR : AdmBase V (IsLocalRing.maximalIdeal V)` using `⟨inferInstance, inferInstance, inferInstance, hc⟩`. Take `⟨A', eA, hA, hw⟩` from `GoodReductionUnif.exists_baseChange hL.polBaseChange (jK V) D.toPre.P`. Take `⟨hD⟩` from `NoTorus.nonempty_isPullDeg_self hR D`. Take `⟨ψ, -⟩` from `GlobalTheory.T.exists_iso_uniformisations_of_iso_degeneration_data hL hL₂ V _ hR rfl D D A A' G D.toPre.P.A hsa (isSemiAbelian_of_isAbelianScheme _ D.toPre.P.isAb) U ⟨SelfUnif.selfPre D A' eA hA hw, fun k _ => SelfUnif.expBij D A' eA hA hw hL.globalFns (IsAdicComplete.le_jacobson …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `e : G.hom = ψ.inv.left ≫ D.toPre.P.A.hom` using `(Over.w ψ.inv).symm`. Use `D.toPre.P.isAb.proper` as an intermediate fact. Establish `: IsIso ψ.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map ψ.inv))`. Conclude with `⟨hG, hsa.smooth, by rw [e]; infer_instance, hsa.geomConnected⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem isAbelianScheme_of_unif_of_subsingleton : Laws → Laws2 → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [CharZero V], IsAdicComplete (IsLocalRing.maximalIdeal V) V → ∀ (D : DegData V (IsLocalRing.maximalIdeal V)) (A : PolAV (Sp (FractionRing V))) (G : Over (Sp V)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → Unif (IsLocalRing.maximalIdeal V) D A G → Subsingleton D.toPre.X → IsAbelianScheme G := by
   intro hL hL₂ V _ _ _ _ hc D A G _ hG hsa U hX

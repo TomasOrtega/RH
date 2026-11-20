@@ -15,9 +15,9 @@ section Minors
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[show (∑ k' : Fin l, g (Fin.castLE hl k')) = ∑ k ∈ Finset.univ.map (Fin.castLEEmb hl), g k by`. Rewrite using `[Finset.sum_map]`. Use the proof step `rfl]`. Apply `Finset.sum_subset (Finset.subset_univ _)` to reduce the goal to its premises.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k _ hk`. Apply `hg` to reduce the goal to its premises. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `hk (Finset.mem_map.2 ⟨⟨k.val, h⟩, Finset.mem_univ _, Fin.ext rfl⟩)`.
+Reduce the claim to the hypotheses of an applicable result. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem sum_castLE {n l : ℕ} (hl : l ≤ n) (g : Fin n → K) (hg : ∀ k : Fin n, l ≤ k.val → g k = 0) :
     ∑ k, g k = ∑ k' : Fin l, g (Fin.castLE hl k') := by
@@ -32,9 +32,9 @@ theorem sum_castLE {n l : ℕ} (hl : l ≤ n) (g : Fin n → K) (hg : ∀ k : Fi
   exact hk (Finset.mem_map.2 ⟨⟨k.val, h⟩, Finset.mem_univ _, Fin.ext rfl⟩)
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Rewrite using `[sum_castLE hl]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Use `congr 1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[sum_castLE hl]`. Introduce `k hk`. Rewrite using `[hA _ _ (Fin.lt_def.2 (by simp only [Fin.val_castLE]; omega)), zero_mul]`. Introduce `m hm`. Rewrite using `[hB _ _ (Fin.lt_def.2 (by simp only [Fin.val_castLE]; omega)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem submatrix_triple_mul_of_triangular {n l : ℕ} (hl : l ≤ n) (A Z B : Matrix (Fin n) (Fin n) K)
     (hA : ∀ a b : Fin n, a < b → A a b = 0) (hB : ∀ a b : Fin n, b < a → B a b = 0) :
@@ -53,13 +53,13 @@ theorem submatrix_triple_mul_of_triangular {n l : ℕ} (hl : l ≤ n) (A Z B : M
     rw [hB _ _ (Fin.lt_def.2 (by simp only [Fin.val_castLE]; omega)), mul_zero]
 
 /- English proof (translation)
-Take `⟨A, B, hA0, hA1, hB0, hB1, rfl⟩` from `h`. Unfold `leadMinorE`. Use `split_ifs with hl`. Rewrite using `[submatrix_triple_mul_of_triangular hl _ _ _ (fun a b hab => by simp [hA0 a b hab]) (fun a b hab => by simp [hB0 a b hab]), Matrix.det_mul, Matrix.det_mul]`. Establish `h1 : ((A.map (fun x : 𝓞 E => (x : E))).submatrix (Fin.castLE hl) (Fin.castLE hl)).det = 1`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.det_of_isLowerTriangular]`. Simplify using `[hA1]`. Introduce `i j hij`. Establish `hij' : i < j` using `hij`. Establish `h0 : A (Fin.castLE hl i) (Fin.castLE hl j) = 0` using `hA0 _ _ (Fin.lt_def.2 (by simp only [Fin.val_castLE]; exact Fin.lt_def.1 hij'))`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `[h0]`. Establish `h2 : ((B.map (fun x : 𝓞 E => (x : E))).submatrix (Fin.castLE hl) (Fin.castLE hl)).det = 1`. Rewrite using `[Matrix.det_of_isUpperTriangular]`. Simplify using `[hB1]`. Introduce `i j hij`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hij' : j < i` using `hij`. Establish `h0 : B (Fin.castLE hl i) (Fin.castLE hl j) = 0` using `hB0 _ _ (Fin.lt_def.2 (by simp only [Fin.val_castLE]; exact Fin.lt_def.1 hij'))`. Simplify using `[h0]`. Rewrite using `[h1, h2, one_mul, mul_one]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lead_ZEquiv {E : Type} [Field E] [NumberField E] {n : ℕ} {Z Z₂ : Matrix (Fin n) (Fin n) E}
     (h : ZEquiv Z Z₂) (l : ℕ) : leadMinorE Z₂ l = leadMinorE Z l := by
@@ -94,7 +94,7 @@ section Class
 variable (D : D7) (u u' : D.what₂.Word)
 
 /- English proof (translation)
-Unfold `Cnt.absDl`. Rewrite using `[lead_ZEquiv h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem absDl_ZEquiv {Z Z₂ : GramM D} (h : ZEquiv Z Z₂) (l : ℕ) (τ : D.what₂.Tau) :
     Cnt.absDl D Z₂ l τ = Cnt.absDl D Z l τ := by
@@ -102,7 +102,7 @@ theorem absDl_ZEquiv {Z Z₂ : GramM D} (h : ZEquiv Z Z₂) (l : ℕ) (τ : D.wh
   rw [lead_ZEquiv h]
 
 /- English proof (translation)
-Unfold `Cnt.Gz`. Rewrite using `[absDl_ZEquiv D h, absDl_ZEquiv D h]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem Gz_ZEquiv {Z Z₂ : GramM D} (h : ZEquiv Z Z₂) (T T' : ℝ) (τ : D.what₂.Tau) :
     Cnt.Gz D T T' Z₂ τ = Cnt.Gz D T T' Z τ := by
@@ -110,7 +110,7 @@ theorem Gz_ZEquiv {Z Z₂ : GramM D} (h : ZEquiv Z Z₂) (T T' : ℝ) (τ : D.wh
   rw [absDl_ZEquiv D h, absDl_ZEquiv D h]
 
 /- English proof (translation)
-Unfold `localGramProduct`. Simplify using `only [Gz_ZEquiv D h]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem gram_product_equiv_invariant {Z Z₂ : GramM D} (h : ZEquiv Z Z₂) : localGramProduct D u u' Z₂ = localGramProduct D u u' Z := by
   unfold localGramProduct

@@ -8,7 +8,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.Mum GlobalTheory.Mum.Conj
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.Mum.Conj.secTw_isTwist | exact GlobalTheory.Mum.Conj.secTw_isTwist | (intros; apply GlobalTheory.Mum.Conj.secTw_isTwist <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.pullbackThetaSectionsGaloisTwist_isConjugate : ∀ (R : Type) [CommRing R] [IsDomain R] (A : PolAV (Sp (FractionRing R))) (N : ℕ) (σ : Kb R →ₐ[FractionRing R] Kb R) (t : SecK A.L (snd (TFK (R := R) (Kb R)) A.A).left N), SecTw σ t (secTw A N σ t) := by
   first | exact @GlobalTheory.Mum.Conj.secTw_isTwist | exact GlobalTheory.Mum.Conj.secTw_isTwist | (intros; apply GlobalTheory.Mum.Conj.secTw_isTwist <;> assumption)

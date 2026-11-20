@@ -16,7 +16,7 @@ namespace GmPoints
 variable {O : Type} [CommRing O] {R : Type} [CommRing R] [Algebra O R]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom (((Spec (CommRingCat.of R)).presheaf.map (𝟙 (Opposite.op ⊤))).hom (w.left.appTop.hom (charUnit (Spec (CommRingCat.of O)) (ULift ℤ) (ULift.up 1)).val)) = _`. Rewrite using `[CategoryTheory.Functor.map_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitOf_val (w : specO O R ⟶ Gm (Spec (CommRingCat.of O))) :
     (unitOf w : R) = (Scheme.ΓSpecIso (CommRingCat.of R)).hom.hom
@@ -28,11 +28,11 @@ theorem unitOf_val (w : specO O R ⟶ Gm (Spec (CommRingCat.of O))) :
   rfl
 
 /- English proof (translation)
-Establish `h : ∀ n : ℤ, (Multiplicative.ofAdd (ULift.up n) : Multiplicative (ULift.{0} ℤ)) = (Multiplicative.ofAdd (ULift.up 1)) ^ n`. Introduce `n`. Rewrite using `[← ofAdd_zsmul]`. Use `congr 1`. Use `ext`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Introduce `f g hfg`. Use extensionality with `⟨n⟩`. Use `h n` as an intermediate fact.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `f (Multiplicative.ofAdd (ULift.up n)) = g (Multiplicative.ofAdd (ULift.up n))`. Rewrite using `[this, map_zpow, map_zpow]`. Conclude with `congrArg (· ^ n) hfg`. Introduce `m`. Conclude with `⟨{ toFun := fun x => m ^ x.toAdd.down map_one' := zpow_zero m map_mul' := fun x y => zpow_add m _ _ }, zpow_one m⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem evalOne_bijective {M : Type} [Group M] :
     Function.Bijective (fun f : Multiplicative (ULift.{0} ℤ) →* M =>
@@ -57,7 +57,7 @@ theorem evalOne_bijective {M : Type} [Group M] :
              map_mul' := fun x y => zpow_add m _ _ }, zpow_one m⟩
 
 /- English proof (translation)
-Use `ext`. Rewrite using `[unitOf_val, ← splitTorusPointsEquiv_val]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitOf_eq (w : specO O R ⟶ Gm (Spec (CommRingCat.of O))) :
     unitOf w = Units.mapEquiv
@@ -69,7 +69,7 @@ theorem unitOf_eq (w : specO O R ⟶ Gm (Spec (CommRingCat.of O))) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[funext (unitOf_eq (O := O) (R := R))]`. Conclude with `(Units.mapEquiv (Scheme.ΓSpecIso (CommRingCat.of R)).commRingCatIsoToRingEquiv.toMulEquiv).bijective.comp (evalOne_bijective.comp (splitTorusPointsEquiv (Spec (CommRingCat.of O)) (ULift ℤ) (specO O R)).bijective)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitOf_bijective :
     Function.Bijective (unitOf : (specO O R ⟶ Gm (Spec (CommRingCat.of O))) → Rˣ) := by
@@ -80,7 +80,7 @@ theorem unitOf_bijective :
       (splitTorusPointsEquiv (Spec (CommRingCat.of O)) (ULift ℤ) (specO O R)).bijective)
 
 /- English proof (translation)
-Rewrite using `[unitOf_eq, unitOf_eq, unitOf_eq]`. Use `Eq.trans ?_ (map_mul _ _ _)` and prove the remaining obligations. Use `congr 1`. Conclude with `DFunLike.congr_fun (map_mul (splitTorusPointsEquiv (Spec (CommRingCat.of O)) (ULift ℤ) (specO O R)) w w') _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem unitOf_mul (w w' : specO O R ⟶ Gm (Spec (CommRingCat.of O))) :
     unitOf (w * w') = unitOf w * unitOf w' := by
@@ -91,7 +91,7 @@ theorem unitOf_mul (w w' : specO O R ⟶ Gm (Spec (CommRingCat.of O))) :
     (splitTorusPointsEquiv (Spec (CommRingCat.of O)) (ULift ℤ) (specO O R)) w w') _
 
 /- English proof (translation)
-Rewrite using `[unitOf_val, unitOf_val, Over.comp_left, Scheme.Hom.comp_appTop]`. Conclude with `congrArg (fun g : Γ(Spec (CommRingCat.of R), ⊤) ⟶ CommRingCat.of R' => g.hom _) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom φ.toRingHom))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unitOf_ptMap {R' : Type} [CommRing R'] [Algebra O R'] (φ : R →ₐ[O] R')
     (w : specO O R ⟶ Gm (Spec (CommRingCat.of O))) :
@@ -103,7 +103,7 @@ theorem unitOf_ptMap {R' : Type} [CommRing R'] [Algebra O R'] (φ : R →ₐ[O] 
 end GmPoints
 
 /- English proof (translation)
-Introduce `_ _` and use `⟨fun _ _ _ => ⟨GmPoints.unitOf_bijective, GmPoints.unitOf_mul⟩, fun _ _ _ _ _ _ φ w => GmPoints.unitOf_ptMap φ w⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem unitOf_bijective_mul_natural :
     ∀ (O : Type) [CommRing O], (∀ (R : Type) [CommRing R] [Algebra O R], Function.Bijective (unitOf : (specO O R ⟶ Gm (Spec (CommRingCat.of O))) → Rˣ) ∧ ∀ w w' : specO O R ⟶ Gm (Spec (CommRingCat.of O)), unitOf (w * w') = unitOf w * unitOf w') ∧ ∀ (R R' : Type) [CommRing R] [Algebra O R] [CommRing R'] [Algebra O R'] (φ : R →ₐ[O] R') (w : specO O R ⟶ Gm (Spec (CommRingCat.of O))), (unitOf (ptMap φ ≫ w) : R') = φ (unitOf w : R) :=

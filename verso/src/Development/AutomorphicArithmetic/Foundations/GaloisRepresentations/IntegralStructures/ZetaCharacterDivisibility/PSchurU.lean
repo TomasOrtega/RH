@@ -13,35 +13,29 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 open UpperTheory.Gal.Int.Div
 
 /- English proof (translation)
-Introduce `E _ _ _ a U hU z hz`. Take `⟨φ, hφU, hφ0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hU.ne_bot`. Establish `hcomm : ∀ (x : UA E a) (ψ : UA E a → ℂ), RU E a z (RU E a x ψ) = RU E a x (RU E a z ψ)` using `fun x ψ => by`. Rewrite using `[GlobalTheory.DefU.RU_RU, GlobalTheory.DefU.RU_RU, hz]`. Set `S : Submodule ℂ (UA E a → ℂ)` to `Submodule.span ℂ (Set.range fun k : infU E a => RU E a k φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `haveI hSfd : FiniteDimensional ℂ S := (hU.aut φ hφU).kfin`. Establish `hSU : S ≤ U` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `hU.stable _ _ hφU)`. Establish `hφS : φ ∈ S` using `Submodule.subset_span ⟨1, by simp⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hSst : ∀ x : infU E a, ∀ v ∈ S, RU E a x v ∈ S`. Introduce `x v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨k, rfl⟩` from `hv`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Conclude with `Submodule.subset_span ⟨x * k, by simp only [Subgroup.coe_mul, GlobalTheory.DefU.RU_RU]⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `S.zero_mem`. Consider the case `add p q _ _ hp hq => rw [map_add]`. Conclude with `S.add_mem hp hq`.
+Treat this case separately. Introduce a local definition for the expression. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Consider the case `smul c p _ hp => rw [map_smul]`. Conclude with `S.smul_mem c hp`. Set `ρ : infU E a → Module.End ℂ S` to `fun x => (RU E a x).restrict (hSst x)`. Set `K : Subgroup (finU E a)` to `{ carrier := {k | RU E a k φ = φ} one_mem' := by`. Express the relevant statement in the definitionally equal form `RU E a ((1 : finU E a) : UA E a) φ = φ`.
+Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Use the proof step `mul_mem' := fun {p q} hp hq => by`. Establish `hp' : RU E a p φ = φ` using `hp`. Establish `hq' : RU E a q φ = φ` using `hq`. Express the relevant statement in the definitionally equal form `RU E a ((p * q : finU E a) : UA E a) φ = φ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Subgroup.coe_mul, ← GlobalTheory.DefU.RU_RU, hq', hp']`. Use the proof step `inv_mem' := fun {p} hp => by`. Establish `hp' : RU E a p φ = φ` using `hp`. Express the relevant statement in the definitionally equal form `RU E a ((p⁻¹ : finU E a) : UA E a) φ = φ`. Use `conv_lhs => rw [← hp']`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[GlobalTheory.DefU.RU_RU, Subgroup.coe_inv, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hKo : IsOpen (K : Set (finU E a))` using `(hU.aut φ hφU).level`. Establish `hKS : ∀ k ∈ K, ∀ v ∈ S, RU E a (k : finU E a) v = v`. Introduce `k hk v hv`. Establish `hk' : RU E a k φ = φ` using `hk`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Introduce a local definition for the expression.
 
-Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨x, rfl⟩` from `hv`. Express the relevant statement in the definitionally equal form `RU E a k (RU E a x φ) = RU E a x φ`. Rewrite using `[GlobalTheory.DefU.RU_RU, GlobalTheory.DefU.fin_mul_inf k.2 x.2, ← GlobalTheory.DefU.RU_RU, hk']`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `zero => rw [map_zero]`. Consider the case `add p q _ _ hp hq => rw [map_add, hp, hq]`. Consider the case `smul c p _ hp => rw [map_smul, hp]`. Set `M : Submodule ℂ (S →ₗ[ℂ] (UA E a → ℂ))` to `{ carrier := {f | (∀ v, f v ∈ U) ∧ (∀ (x : infU E a) v, f (ρ x v) = RU E a x (f v)) ∧ ∀ k ∈ K, ∀ v, RU E a (k : finU E a) (f v) = f v} add_mem' := fun {f g} hf hg => ⟨fun v => U.add_mem (hf.1 v) (hg.1 v), fun x v => by rw [LinearMap.add_apply, LinearMap.add_apply, hf.2.1, hg.2.1, …`. Use `haveI hMfd : FiniteDimensional ℂ M := UpperTheory.finiteDimensional_automorphicForms_unitary_of_type_level E a S ρ K hKo M fun f hf => ⟨fun v γ hγ g => (hU.aut _ (hf.1 v)).left γ hγ g, hf.2.1, hf.2.2⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `hsub : S.subtype ∈ M` using `⟨fun v => hSU v.2, fun _ _ => rfl, fun k hk v => hKS k hk v.1 v.2⟩`. Use `haveI : Nontrivial M := ⟨⟨⟨S.subtype, hsub⟩, 0, fun h => hφ0 (by`. Establish `h1` using `LinearMap.congr_fun (congrArg Subtype.val h) (⟨φ, hφS⟩ : S)`. Conclude with `h1)⟩⟩`. Set `T : Module.End ℂ M` to `{ toFun := fun f => ⟨(RU E a z).comp f.1, fun v => hU.stable z _ (f.2.1 v), fun x v => by`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.comp_apply, LinearMap.comp_apply, f.2.2.1, hcomm],`. Use `fun k hk v => by`. Rewrite using `[LinearMap.comp_apply, ← hcomm, f.2.2.2 k hk]⟩`. Use the proof step `map_add' := fun f g => Subtype.ext (LinearMap.ext fun v => map_add (RU E a z) _ _)`. Use the proof step `map_smul' := fun c f => Subtype.ext (LinearMap.ext fun v => map_smul (RU E a z) c _) }`.
-
-Take `⟨c, hc⟩` from `Module.End.exists_eigenvalue T`. Take `⟨f, hf⟩` from `hc.exists_hasEigenvector`. Establish `hTf : ∀ v, RU E a z (f.1 v) = c • f.1 v` using `fun v => LinearMap.congr_fun (congrArg Subtype.val hf.apply_eq_smul) v`. Establish `hfne : ∃ v, f.1 v ≠ 0`. Assume the negation of the conclusion as `h`.
-
-Use `push_neg at h`. Conclude with `hf.2 (Subtype.ext (LinearMap.ext h))`. Take `⟨v, hv⟩` from `hfne`. Set `W : Submodule ℂ (UA E a → ℂ)` to `{ carrier := {ψ | ψ ∈ U ∧ RU E a z ψ = c • ψ} add_mem' := fun {p q} hp hq => ⟨U.add_mem hp.1 hq.1, by rw [map_add, hp.2, hq.2, smul_add]⟩ zero_mem' := ⟨U.zero_mem, by rw [map_zero, smul_zero]⟩ smul_mem' := fun b p hp => ⟨U.smul_mem b hp.1, by rw [map_smul, hp.2, smul_comm]⟩ }`. Establish `hWU : W ≤ U` using `fun _ h => h.1`.
-
-Establish `hWst : ∀ x, ∀ ψ ∈ W, RU E a x ψ ∈ W` using `fun x ψ hψ => ⟨hU.stable x ψ hψ.1, by rw [hcomm, hψ.2, map_smul]⟩`. Establish `hvW : f.1 v ∈ W` using `⟨f.2.1 v, hTf v⟩`. Break down `hU.irred W hWU hWst with h | h` into its components or cases. Conclude with `absurd ((Submodule.mem_bot ℂ).1 (h ▸ hvW)) hv`. Conclude with `⟨c, fun ψ hψ => (h ▸ hψ : ψ ∈ W).2⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.Int.Div.schurU_of :
     SchurU := by

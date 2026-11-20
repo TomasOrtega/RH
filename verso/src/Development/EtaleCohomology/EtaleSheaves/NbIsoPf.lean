@@ -21,7 +21,7 @@ def SysFM : Prop := ∀ {P : Scheme.{0}} [CompactSpace P] [QuasiSeparatedSpace P
         Mono m ∧ Flat m ∧ QuasiCompact m ∧ Set.range m = ⋂ j, Set.range (ι j)
 
 /- English proof (translation)
-Introduce `P _ _ W _ w hW y`. Take `⟨q, J, _, _, D, ι, h1, h2, m, hm, hf, hq, hr⟩` from `hS W w hW y`. Use `⟨q, J, inferInstance, inferInstance, D, ι, h1, h2, fun c hc => ?_⟩` and prove the remaining obligations. Conclude with `hL D ι (fun j => ⟨(h1 j).1, (h1 j).2.1⟩) (fun f => (h2 f).1) m hm hf hq hr c hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem NbIso_of (hS : SysFM) (hL : FlatMonoLim) : LateralTheory.E.SysPf.NbIso := by
   intro P _ _ W _ w hW y

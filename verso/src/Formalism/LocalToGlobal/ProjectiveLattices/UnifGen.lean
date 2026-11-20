@@ -12,22 +12,22 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheo
   {l : Level H} {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Simplify using `[scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_mul {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (a b : S) (i : (PPx x).ι) :
     scal x (a * b) i = scal x a i * scal x b i := by
   simp [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_mul]
 
 /- English proof (translation)
-Simplify using `[scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem scal_one {S : Type} [CommRing S] (x : Sp S ⟶ Xo.X) (i : (PPx x).ι) : scal x 1 i = 1 := by
   simp [scal, ReciprocityTheory.ChartRestriction.G.Out.liftFun, map_one]
 
 /- English proof (translation)
-Take `⟨a, ha, -⟩` from `hs s'`. Take `⟨b, hb, -⟩` from `hs' s`. Take `⟨c1, -, hc1⟩` from `hs s`. Establish `h1 : b * a = 1`. Establish `e1 : ∀ i, s.f i = scal x (b * a) i * s.f i` using `fun i => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[scal_mul, mul_assoc, ← ha i, ← hb i]`. Establish `e2 : ∀ i, s.f i = scal x 1 i * s.f i` using `fun i => by rw [scal_one, one_mul]`. Conclude with `(hc1 _ e1).trans (hc1 _ e2).symm`. Conclude with `⟨⟨a, b, by rw [mul_comm]; exact h1, h1⟩, ha⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem gen_unit {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} (s s' : LB.Sec (PPx x))
     (hs : ∀ s'' : LB.Sec (PPx x), ∃! a : S, ∀ i, s''.f i = scal x a i * s.f i)
@@ -44,13 +44,13 @@ theorem gen_unit {S : Type} [CommRing S] {x : Sp S ⟶ Xo.X} (s s' : LB.Sec (PPx
   exact ⟨⟨a, b, by rw [mul_comm]; exact h1, h1⟩, ha⟩
 
 /- English proof (translation)
-Take `⟨x', hover', u', tan', eig', basis', s', gen'⟩` from `y'`. Simplify using `only at hx hu`. Substitute `hx` using the available equality. Take `⟨u0, hu0⟩` from `gen_unit (x := y.x) y.s s' y.gen gen'`. Use `⟨fun o => match o with` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `none => u0`. Consider the case `some p => (hu p.1 p.2).choose_spec.1.unit, rfl, fun τ i => ?_, 𝟙 _, ?_, ?_, ?_⟩`. Conclude with `⟨(hu τ i).choose, (hu τ i).choose_spec.1.unit_spec.symm, (hu τ i).choose_spec.2.1, (hu τ i).choose_spec.2.2⟩`. Conclude with `Category.id_comp _`. Conclude with `Category.id_comp _`.
+Treat this case separately. Treat this case separately. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `i h`. Simplify using `only`. Rewrite using `[← hu0 i]`. Simplify using `only [Scheme.Hom.appLE]`. Establish `e : (homOfLE h).op = 𝟙 _` using `Subsingleton.elim _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[e]`. Use `erw [CategoryTheory.Functor.map_id, Category.comp_id]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem frBor_of_tri {S : Type} [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S) (hx : y'.x = y.x)
     (hu : ∀ τ (i : Fin (Dw.mult τ)), ∃ cf : Fin (Dw.mult τ) → S, IsUnit (cf i) ∧ (∀ j, i < j → cf j = 0) ∧
@@ -78,15 +78,15 @@ theorem frBor_of_tri {S : Type} [CommRing S] [Algebra c.F S] (y y' : FrPt Xo c S
     rfl
 
 /- English proof (translation)
-Take `⟨hx1, hu1, -⟩` from `h1`. Take `⟨hx2, hu2, -⟩` from `h2`. Use `frBor_of_tri y y'' (hx2.trans hx1) fun τ i => ?_` and prove the remaining obligations. Use `choose cf1 h1a h1b h1c using hu1 τ`. Take `⟨cf2, h2a, h2b, h2c⟩` from `hu2 τ i`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `A : Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) S` to `Matrix.of fun k j => cf1 j k`. Establish `h2c' : IsCombAt y.x (y'.u τ) cf2 (y''.u τ i)` using `by rw [← hx1]; exact h2c`. Establish `hc` using `hT S y.x (y.u τ) (y.tan τ) (y'.u τ) A cf2 (y''.u τ i) (fun j => h1c j) h2c'`. Use `⟨A.mulVec cf2, ?_, fun k hk => ?_, hc⟩` and prove the remaining obligations. Establish `e : A.mulVec cf2 i = cf1 i i * cf2 i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mulVec, dotProduct, A, Matrix.of_apply]`. Use `Finset.sum_eq_single i (fun j _ hji => ?_) (fun h => absurd (Finset.mem_univ i) h)` and prove the remaining obligations. Break down `lt_or_gt_of_ne hji with hlt | hgt` into its components or cases. Rewrite using `[h1b j i hlt, zero_mul]`. Rewrite using `[h2b j hgt, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, h1a i, h2a]`. Conclude with `(Units.isUnit _).mul (Units.isUnit _)`. Simplify using `only [Matrix.mulVec, dotProduct, A, Matrix.of_apply]`. Use `Finset.sum_eq_zero fun j _ => ?_` and prove the remaining obligations. Break down `le_or_gt j i with hji | hij` into its components or cases.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1b j k (lt_of_le_of_lt hji hk), zero_mul]`. Rewrite using `[h2b j hij, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem frBor_trans (hT : TanLin Xo) {S : Type} [CommRing S] [Algebra c.F S] {y y' y'' : FrPt Xo c S}
     {t1 t2 : Ix Dw → Sˣ} (h1 : FrBor t1 y y') (h2 : FrBor t2 y' y'') : ∃ t : Ix Dw → Sˣ, FrBor t y y'' := by

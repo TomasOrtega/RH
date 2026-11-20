@@ -15,17 +15,15 @@ open CategoryTheory AlgebraicGeometry Limits ReciprocityTheory.ChartRestriction.
 namespace GlobalTheory.ConjSeq
 
 /- English proof (translation)
-Introduce `hC _ p _ T _ A _ g hA hg H e _ F hF Ψ hΨ`. Set `h0` to `GlobalTheory.VB.natCast_eq_zero T p (ZMod p)`. Set `adj` to `Scheme.Modules.pullbackPushforwardAdjunction (GlobalTheory.VB.frob T p h0)`. Apply `(adj.homEquiv _ _).injective` to reduce the goal to its premises. Rewrite using `[Adjunction.homEquiv_naturality_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `hz : adj.homEquiv F.toMod H 0 = 0` using `by simp`. Rewrite using `[hz]`. Establish `key : ∀ (U : T.Opens) (hU : IsAffineOpen U) (t : Γ(H, U)), t ∈ F.sec U → (adj.homEquiv _ _ Ψ).app U t = 0`. Introduce `U hU t ht`. Establish `h1 : (adj.homEquiv _ _ Ψ).app U t = Ψ.app U (GlobalTheory.QCoh.pullbackSections (GlobalTheory.VB.frob T p h0) H (le_refl U) t)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Adjunction.homEquiv_unit]`. Conclude with `congrArg (Ψ.app U) (GlobalTheory.QCoh.res_self _ (le_refl U) _).symm`. Rewrite using `[h1]`. Apply `(e U hU).injective` to reduce the goal to its premises. Rewrite using `[hΨ U hU t]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (LinearEquiv.map_zero (e U hU)).symm` and prove the remaining obligations. Conclude with `(hC p Γ(T, U) (GlobalTheory.SS.FrobField.cast_zero h0 U) (onAff A hU) g (VB.isAbelianScheme_onAff A hA hU) (VB.smooth_onAff A hg hU) _ (frobMor p Γ(T, U) (GlobalTheory.SS.FrobField.cast_zero h0 U) (onAff A hU) _)).1 _ ((hF U hU t).1 ht)`. Establish `key2 : ∀ (W : T.Opens) (t : Γ(H, W)), t ∈ F.sec W → (adj.homEquiv _ _ Ψ).app W t = 0`. Introduce `W t ht`. Use `GlobalTheory.QCoh.section_eq_of_cover _ (fun U : {U : T.Opens // IsAffineOpen U ∧ U ≤ W} ↦ U.1) (fun U ↦ U.2.2) ?_ _ _ fun U ↦ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `x hx`. Take `⟨U, hU, hxU, hle⟩` from `GlobalTheory.QCoh.exists_affine_mem_le x hx`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨U, hU, hle⟩, hxU⟩`. Rewrite using `[map_zero, ← GlobalTheory.QCoh.hom_app_res]`. Conclude with `key _ U.2.1 _ (F.res_mem U.2.2 ht)`.
-
-Use `Scheme.Modules.hom_ext _ _ fun W ↦ ?_` and prove the remaining obligations. Use extensionality with `s`. Conclude with `(key2 W _ (F.incl_app_mem s)).trans rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem frobPull_incl_comp_linFrob_eq_zero : GlobalTheory.Published.ConjugateFiltration → GlobalTheory.CovTop.Hypotheses2 → ∀ (p : ℕ) [Fact p.Prime] {T : Scheme.{0}} [Algebra (ZMod p) Γ(T, ⊤)] (A : Over T) [GrpObj A]
     (g : ℕ), IsAbelianScheme A → SmoothOfRelativeDimension g A.hom → ∀ (H : T.Modules)

@@ -4,19 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.FrobeniusSmoothVec
 open IsLocalRing Matrix UpperTheory.V.Alg UpperTheory.V.U3 UpperTheory.V.Fr
 
 /- English proof (translation)
-Introduce `l _ O _ _ _ _ F C₀ n hF hn S I hI`. Establish `hB : ∀ b : S.B, (b : S.R) ∈ maximalIdeal S.R → S.inc b ∈ I` using `fun b hb => hI (Ideal.mem_map_of_mem _ (show b ∈ S.mB from hb))`. Establish `hm : ∀ a ∈ maximalIdeal O, algebraMap O S.A a ∈ I` using `fun a ha => hB (algebraMap O S.B a) (map_nonunit (algebraMap O S.R) a ha)`. Set `f : ResidueField O →+* S.A ⧸ I` to `Ideal.Quotient.lift (maximalIdeal O) ((Ideal.Quotient.mk I).comp (algebraMap O S.A)) fun a ha => Ideal.Quotient.eq_zero_iff_mem.2 (hm a ha)`. Establish `hf : ∀ a : O, f (residue O a) = Ideal.Quotient.mk I (algebraMap O S.A a)` using `fun a => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `key : ∀ b : S.B, Ideal.Quotient.mk I (S.inc b) = f (res O S.R b)` using `fun b => by`. Take `⟨a, ha⟩` from `residue_surjective (res O S.R b)`. Rewrite using `[← ha, hf, Ideal.Quotient.eq]`. Establish `h1 : ((b - algebraMap O S.B a : S.B) : S.R) ∈ maximalIdeal S.R`. Rewrite using `[← res_eq_zero_iff O]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show res O S.R ((b : S.R) - algebraMap O S.R a) = 0`. Rewrite using `[map_sub, AlgHom.commutes, ← ha]`. Conclude with `sub_self _`. Establish `h2` using `hB _ h1`. Rewrite `h2` using `[map_sub, AlgHom.commutes]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨f, ⟨fun g i => ?_, fun v i g => ?_⟩, fun i j => ?_, ?_⟩` and prove the remaining obligations. Conclude with `(key (S.aB g i)).trans (congrArg f (S.lift.2.1.1 g i))`. Conclude with `(key (S.ψB v i g)).trans (congrArg f (S.lift.2.1.2 v i g))`. Establish `hle : S.x0 ^ 1 ≤ I` using `by rwa [pow_one]`. Conclude with `((cont_u hF hn S).1.1 i j 1).comp (Ideal.Quotient.factor hle)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Rewrite using `[eq_top_iff]`. Introduce and unpack `y -`. Take `⟨⟨x, hx⟩, rfl⟩` from `Ideal.Quotient.mk_surjective y`. Proceed by induction on `hx using Algebra.adjoin_induction with`. Consider the case `mem x hx`.
-
-Break down `hx with hx | ⟨g, i, j, rfl⟩` into its components or cases. Conclude with `Subring.subset_closure (Or.inl ⟨_, (key ⟨x, hx⟩).symm⟩)`. Conclude with `Subring.subset_closure (Or.inr ⟨g, i, j, rfl⟩)`. Consider the case `algebraMap a => exact Subring.subset_closure (Or.inl ⟨_, hf a⟩)`. Consider the case `add x y hx hy h1 h2 => exact add_mem h1 h2`.
-
-Consider the case `mul x y hx hy h1 h2 => exact mul_mem h1 h2`.
+Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Fr.frame_fiber_eq :
     ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] {F : Frame l (ResidueField O)} {C₀ : ℕ} {n : ℕ}, F.Ok C₀ → (n = 2 ∨ n = 3) → ∀ (S : Space O F n) (I : Ideal S.A), S.x0 ≤ I → ∃ f : ResidueField O →+* S.A ⧸ I, (S.u.map (Ideal.Quotient.mk I)).IsBar f ∧ (∀ i j, IsLocallyConstant fun g => (S.u.map (Ideal.Quotient.mk I)).r g i j) ∧ Subring.closure (Set.range f ∪ {x | ∃ g i j, x = (S.u.map (Ideal.Quotient.mk I)).r g i j}) = ⊤ := by

@@ -8,26 +8,26 @@ open scoped Classical ENNReal NNReal
 open UpperTheory.ConvolutionTheory.R2.G (FS2 Rw nE row)
 
 /- English proof (translation)
-The claim follows from `(InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal (IsTotallyReal.isReal Rat.infinitePlace)).norm_map_of_map_zero (map_zero _) (x.1 Rat.infinitePlace)`.
+A detailed English derivation is pending.
 -/
 private theorem abs_re (x : A ℚ) : |re x| = ‖x.1 Rat.infinitePlace‖ :=
   (InfinitePlace.Completion.isometry_extensionEmbeddingOfIsReal
     (IsTotallyReal.isReal Rat.infinitePlace)).norm_map_of_map_zero (map_zero _) (x.1 Rat.infinitePlace)
 
 /- English proof (translation)
-Simplify using `[re]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem re_mul (x y : A ℚ) : re (x * y) = re x * re y := by
   simp [re]
 
 /- English proof (translation)
-Simplify using `[re]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem re_add (x y : A ℚ) : re (x + y) = re x + re y := by
   simp [re]
 
 /- English proof (translation)
-Unfold `re`. Establish `: TR.pInf ℚ x = TR.pInf ℚ y`. Express the relevant statement in the definitionally equal form `(TR.infEq ℚ).symm x.1 = (TR.infEq ℚ).symm y.1`. Rewrite using `[h]`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem re_congr {x y : A ℚ} (h : x.1 = y.1) : re x = re y := by
   unfold re
@@ -37,13 +37,13 @@ private theorem re_congr {x y : A ℚ} (h : x.1 = y.1) : re x = re y := by
   rw [this]
 
 /- English proof (translation)
-Simplify using `[re]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem re_one : re (1 : A ℚ) = 1 := by
   simp [re]
 
 /- English proof (translation)
-Establish `h` using `re_congr (hk 1 1)`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, Matrix.transpose_apply, Matrix.one_apply_eq] at h`. Rewrite `h` using `[re_add, re_mul, re_mul, re_one]`. Use polynomial arithmetic with `[h]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private theorem row_sq {k : G1 ℚ} (hk : InfOrth k) :
     re (k 1 0) ^ 2 + re (k 1 1) ^ 2 = 1 := by
@@ -53,7 +53,7 @@ private theorem row_sq {k : G1 ℚ} (hk : InfOrth k) :
   nlinarith [h]
 
 /- English proof (translation)
-Rewrite using `[abs_re]`. Conclude with `(GroundTheory.Automorphic.GJGlobal.norm_apply_le_norm_homeomorphMixedSpace _ _).trans (norm_le_pi_norm (infPartPi x) j)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem abs_re_le_infPart (x : Fin 2 → A ℚ) (j : Fin 2) : |re (x j)| ≤ ‖infPartPi x‖ := by
   rw [abs_re]
@@ -61,7 +61,7 @@ private theorem abs_re_le_infPart (x : Fin 2 → A ℚ) (j : Fin 2) : |re (x j)|
     (norm_le_pi_norm (infPartPi x) j)
 
 /- English proof (translation)
-The claim follows from `|re z| ≤ 2 * ‖infPartPi fun j => z * row k j‖ := by set N := ‖infPartPi fun j => z * row k j‖ with hN have h0 : |re z| * |re (k 1 0)| ≤ N := by have h : |re (z * k 1 0)| ≤ N := abs_re_le_infPart (fun j => z * row k j) 0 rwa [re_mul, abs_mul] at h have h1 : |re z| * |re (k 1 1)| ≤ …`.
+A detailed English derivation is pending.
 -/
 private theorem abs_re_le {k : G1 ℚ} (hk : InfOrth k) (z : A ℚ) :
     |re z| ≤ 2 * ‖infPartPi fun j => z * row k j‖ := by
@@ -83,7 +83,7 @@ private theorem abs_re_le {k : G1 ℚ} (hk : InfOrth k) (z : A ℚ) :
   nlinarith
 
 /- English proof (translation)
-Establish `hd` using `congrArg Prod.snd k.det_coe`. Rewrite `hd` using `[Matrix.det_fin_two]`. Establish `hd' : (k 0 0).2 * (k 1 1).2 - (k 0 1).2 * (k 1 0).2 = 1` using `hd`. Express the relevant statement in the definitionally equal form `z.2 = (z.2 * (k 1 0).2) * (-(k 0 1).2) + (z.2 * (k 1 1).2) * (k 0 0).2`. Take the linear combination `(-z.2) * hd'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 -/
 private theorem fin_eq {k : G1 ℚ} (z : A ℚ) :
     z.2 = (z * row k 0).2 * (-(k 0 1).2) + (z * row k 1).2 * (k 0 0).2 := by
@@ -94,21 +94,19 @@ private theorem fin_eq {k : G1 ℚ} (z : A ℚ) :
   linear_combination (-z.2) * hd'
 
 /- English proof (translation)
-Introduce `Φ hΦ e he`. Take `⟨M, hM⟩` from `exists_nat_gt e`. Take `⟨C₀, hC₀, L, hL, hmaj⟩` from `GroundTheory.Automorphic.GJGlobal.exists_majorant_pi hΦ M`. Use `set O : Set (FiniteAdeleRing (𝓞 ℚ) ℚ) := ↑(integralFiniteAdeles (𝓞 ℚ) ℚ) with hO`. Establish `hOc : IsCompact O` using `isCompact_integralFiniteAdeles ℚ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set K' : Set (FiniteAdeleRing (𝓞 ℚ) ℚ) := (fun p : (Fin 2 → FiniteAdeleRing (𝓞 ℚ) ℚ) × FiniteAdeleRing (𝓞 ℚ) ℚ × FiniteAdeleRing (𝓞 ℚ) ℚ => p.1 0 * p.2.1 + p.1 1 * p.2.2) '' (L ×ˢ (O ×ˢ O)) with hK'`. Establish `hK'c : IsCompact K'` using `(hL.prod (hOc.prod hOc)).image (by fun_prop)`. Establish `hI` using `UpperTheory.lintegral_idele_rat_polyDecay_mul_norm_rpow_lt_top K' hK'c e he M hM`. Use `set I : ℝ≥0∞ := ∫⁻ y : IdeleGroup ℚ, (if (y : A ℚ).2 ∈ K' then ENNReal.ofReal (((1 + |re (y : A ℚ)|) ^ M)⁻¹ * ab y ^ e) else 0) ∂(ideleMeasure ℚ) with hIdef`. Use `⟨(ENNReal.ofReal (C₀ * 2 ^ M) * I).toNNReal, fun k hk => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[ENNReal.coe_toNNReal (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hI.ne), hIdef, ← lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]`. Use `lintegral_mono fun z => ?_` and prove the remaining obligations. Establish `hab : 0 ≤ ab z ^ e`. Establish `: 0 < ab z` using `(IdeleGroup.ideleModule ℚ z).2`. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set x : Fin 2 → A ℚ := fun j => ((z : (A ℚ)ˣ) : A ℚ) * row k j with hx`. Establish `hm` using `hmaj x`. Distinguish the cases in `hxL : finPartPi x ∈ L`. Rewrite `hm` using `[Set.indicator_of_mem hxL, mul_one]`. Establish `hmem : ((z : (A ℚ)ˣ) : A ℚ).2 ∈ K'`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(finPartPi x, -(k 0 1).2, (k 0 0).2), ⟨hxL, ?_, ?_⟩, (fin_eq _).symm⟩` and prove the remaining obligations. Conclude with `Subring.neg_mem _ (mem_integralFiniteAdeles.2 fun v => hk.2 v 0 1)`. Conclude with `mem_integralFiniteAdeles.2 fun v => hk.2 v 0 0`. Rewrite using `[if_pos hmem, ← ENNReal.ofReal_mul (by positivity)]`. Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_mul (norm_nonneg _)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `ENNReal.ofReal_le_ofReal ?_` and prove the remaining obligations. Establish `hle` using `abs_re_le hk.1 ((z : (A ℚ)ˣ) : A ℚ)`. Use `set N := ‖infPartPi x‖ with hN`. Establish `hN0 : 0 ≤ N` using `norm_nonneg _`. Establish `hpow : (1 + |re ((z : (A ℚ)ˣ) : A ℚ)|) ^ M ≤ 2 ^ M * (1 + N) ^ M`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← mul_pow]`. Conclude with `pow_le_pow_left₀ (by positivity) (by linarith) M`. Establish `hinv : ((1 + N) ^ M)⁻¹ ≤ 2 ^ M * ((1 + |re ((z : (A ℚ)ˣ) : A ℚ)|) ^ M)⁻¹`. Rewrite using `[inv_le_comm₀ (by positivity) (by positivity), mul_inv, inv_inv, inv_mul_le_iff₀ (by positivity)]`. Conclude with `hpow`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite `hm` using `[Set.indicator_of_notMem hxL, mul_zero]`. Establish `h0 : Φ x = 0` using `norm_le_zero_iff.1 hm`. Simplify using `[h0]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.schwartzBruhat_row_lintegral_abs_pow_bounded :
     ∀ Φ ∈ schwartzBruhatPi ℚ (Fin 2), ∀ e : ℝ, 1 < e → ∃ C : ℝ≥0, ∀ k ∈ KK ℚ,

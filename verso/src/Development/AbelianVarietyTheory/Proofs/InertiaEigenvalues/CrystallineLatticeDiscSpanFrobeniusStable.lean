@@ -13,9 +13,9 @@ open Matrix
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Establish `e1 : (fun a => j (((c⁻¹ : Rˣ) : R) * (B *ᵥ fun b => Ψ (x b)) a)) = j ((c⁻¹ : Rˣ) : R) • (B.map j *ᵥ fun b => Φ (j (x b)))`. Use function extensionality and compare the values at `a`. Simplify using `[Matrix.mulVec, dotProduct, map_sum, h]`. Establish `e2 : (fun a => Φ ((W *ᵥ fun b => j (x b)) a)) = W.map Φ *ᵥ fun b => Φ (j (x b))`. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Matrix.mulVec, dotProduct, map_sum]`. Rewrite using `[e1, e2, Matrix.mulVec_smul, Matrix.mulVec_mulVec, ← hW, Matrix.smul_mulVec, smul_smul, ← map_mul, Units.inv_mul, map_one, one_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_frob_of_unit {R D : Type} [CommRing R] [CommRing D] {d : ℕ} (j : R →+* D) (Φ : D →+* D)
     (Ψ : R →+* R) (h : ∀ r, j (Ψ r) = Φ (j r)) (c : Rˣ) (W : Matrix (Fin d) (Fin d) D)
@@ -33,15 +33,13 @@ theorem mulVec_frob_of_unit {R D : Type} [CommRing R] [CommRing D] {d : ℕ} (j 
     Units.inv_mul, map_one, one_smul]
 
 /- English proof (translation)
-Introduce `l hl K bk τ hτ d ρ hρ s y ⟨x, hx⟩`. Take `⟨-, -, ⟨h0, h1, -⟩, -⟩` from `GlobalTheory.T.breuilKisin_flat_radius_ideal_facts l K bk`. Establish `hpow : bk.ρ₀ ^ l ≤ bk.ρ₀` using `pow_le_of_le_one h0.le h1.le hl.out.ne_zero`. Take `⟨Ψ, hΨ⟩` from `exists_discMap_of_pow_dvd l bk.S bk.S (frobS l bk.a) X X bk.ρ₀ bk.ρ₀ l h0 (by rw [frobS_X]) hpow`. Take `⟨Φ, hΦ⟩` from `exists_discMap_of_pow_dvd l (Ainf l) (Ainf l) WittVector.frobenius (bk.ev X) (bk.ev X) bk.ρ₀ bk.ρ₀ l h0 (by rw [← bk.ev_frob, frobS_X, map_pow]) hpow`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hu : IsUnit (((l : ℕ) : bk.DS bk.ρ₀) ^ (s.c₁ + s.c₂) * toDisc l (X : bk.S) bk.ρ₀ (frobS l bk.a bk.E) ^ s.N)` using `((isUnit_l_disc l (X : bk.S) bk.ρ₀).pow _).mul ((isUnit_toDisc_frobS_E l K bk).pow _)`. Take `⟨c, hc⟩` from `hu`. Use `⟨fun a => ((c⁻¹ : (bk.DS bk.ρ₀)ˣ) : bk.DS bk.ρ₀) * ((s.X' * s.F.map (C : Wq l bk.a →+* bk.S) * s.X.map (frobS l bk.a)).map (toDisc l (X : bk.S) bk.ρ₀) *ᵥ fun b => Ψ (x b)) a, fun j hj => ?_⟩` and prove the remaining obligations. Establish `hcomm : j.comp Ψ = Φ.comp j`. Use `IsDiscMap.unique (DiscBasic.isDiscMap_comp l _ _ hΨ hj) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : bk.ev.comp (frobS l bk.a) = (WittVector.frobenius : Ainf l →+* Ainf l).comp bk.ev` using `RingHom.ext bk.ev_frob`. Rewrite using `[e]`. Conclude with `DiscBasic.isDiscMap_comp l _ _ hj hΦ`. Establish `hW` using `GlobalTheory.T.discPeriods_map_frobenius_eq_mul l K bk τ hτ d ρ hρ s Φ hΦ`. Rewrite using `[mulVec_frob_of_unit j Φ Ψ (RingHom.congr_fun hcomm) c s.W _ ?_ x, hx j hj]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `a`. Conclude with `hΦ.ext _`. Rewrite using `[hc, map_mul, map_pow, map_pow, map_natCast, hj.ext, Matrix.map_map]`. Use `hW.trans ?_` and prove the remaining obligations. Use `congr 2`.
-
-Use function extensionality and compare the values at `a`. Conclude with `(hj.ext a).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem seed_span_frobenius_stable : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l) (hτ : bk.IsPer τ) (d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) ℤ_[l]) (hρ : ∀ g, IsUnit (ρ g)) (s : Seed bk d ρ τ), ∀ y, (fun y : Fin d → Ainf l => ∃ x : Fin d → bk.DS bk.ρ₀, ∀ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j → s.W *ᵥ (fun a => j (x a)) = fun a => bk.iA (y a)) y → (fun y : Fin d → Ainf l => ∃ x : Fin d → bk.DS bk.ρ₀, ∀ j : bk.DS bk.ρ₀ →+* bk.DA bk.ρ₀, IsDiscMap bk.ev j → s.W *ᵥ (fun a => j (x a)) = fun a => bk.iA (y a)) (fun a => WittVector.frobenius (y a)) := by
   intro l hl K bk τ hτ d ρ hρ s y ⟨x, hx⟩

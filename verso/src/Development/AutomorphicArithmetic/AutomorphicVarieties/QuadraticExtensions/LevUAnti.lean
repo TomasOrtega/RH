@@ -7,17 +7,17 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open scoped Pointwise
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ l _ N r U hN hU h`. Establish `anti : ∀ {m n : ℕ}, m ≤ n → levU l U n ≤ levU l U m` using `fun hmn => inf_le_inf_left _ (Subgroup.comap_mono (KStar.TotallyRealRoots.princ_anti hmn))`. Establish `down : ∀ {m n : ℕ} (hmn : m ≤ n) (ψ : ↥(levU l U m) → ZMod l), ψ ∈ XDual N (levU l U m) (ZMod l) (ZMod l) → restr (ZMod l) (ZMod l) (anti hmn) ψ ∈ XDual N (levU l U n) (ZMod l) (ZMod l)`. Introduce `m n hmn ψ hψ`. Conclude with `(restrMem F Ω N _ _ (anti hmn) (ZMod l) (ZMod l) 1).1 (Submodule.mem_map_of_mem hψ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `comp : ∀ {m n : ℕ} (hmn : m ≤ n) (ψ : ↥(levU l U m) → ZMod l), restr (ZMod l) (ZMod l) (cycU_le_levU l U n) (restr (ZMod l) (ZMod l) (anti hmn) ψ) = restr (ZMod l) (ZMod l) (cycU_le_levU l U m) ψ` using `fun _ _ => rfl`. Unfold `XRk`. Set `X` to `XDual N (cycU l U) (ZMod l) (ZMod l)`. Set `S : ℕ → Set X` to `fun n => {φ | ∃ ψ ∈ XDual N (levU l U (n + 2)) (ZMod l) (ZMod l), restr (ZMod l) (ZMod l) (cycU_le_levU l U (n + 2)) ψ = (φ : ↥(cycU l U) → ZMod l)}`. Apply `cardUnion X S` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m n hmn φ hφ`. Take `⟨ψ, hψ, e⟩` from `hφ`. Establish `hmn' : m + 2 ≤ n + 2` using `by omega`. Conclude with `⟨_, down hmn' ψ hψ, (comp hmn' ψ).trans e⟩`. Introduce `φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, ψ, hψ, e⟩` from `xdualExt F Ω l N U (ZMod l) (ZMod l) hN hU φ.1 φ.2`. Establish `hn : n ≤ n + 2` using `by omega`. Conclude with `⟨n, _, down hn ψ hψ, (comp hn ψ).trans e⟩`. Introduce `n`. Take `⟨hfin, hcard⟩` from `h (n + 2) (by omega)`.
+Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `f : ↥(XDual N (levU l U (n + 2)) (ZMod l) (ZMod l)) → X` to `fun ψ => ⟨restr (ZMod l) (ZMod l) (cycU_le_levU l U (n + 2)) ψ.1, (restrMem F Ω N _ _ (cycU_le_levU l U (n + 2)) (ZMod l) (ZMod l) 1).1 (Submodule.mem_map_of_mem ψ.2)⟩`. Establish `hsub : S n ⊆ Set.range f`. Introduce and unpack `φ ⟨ψ, hψ, e⟩`. Conclude with `⟨⟨ψ, hψ⟩, Subtype.ext e⟩`. Use `⟨((Set.finite_range f).subset hsub).to_subtype, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Two.infRk :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω] (l : ℕ) [Fact l.Prime] (N r : ℕ) (U : Subgroup (G F Ω)), N ≠ 0 → IsClosed (U : Set (G F Ω)) → (∀ n, 2 ≤ n → XRk l N (levU l U n) r) → XRk l N (cycU l U) r := by

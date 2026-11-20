@@ -9,11 +9,11 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Formal
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Introduce `hP hDZ hL D P hchi S hS i k v hw`. Take `⟨u, hu0, hunit, hrep⟩` from `GlobalTheory.T.exists_globalInteger_congr_tameGenerator_character D k v`. Establish `hrep' : NX.TameRep (D.naut.plGw k v) 1 (D.ntypes.tg k v) u`. Take `⟨ϖ, π, h1, h2, h3, h4⟩` from `hrep`. Conclude with `⟨D.nd.plOm.1 (D.naut.plGw k v), D.nd.plOm.2 (D.naut.plGw k v), D.ntypes.tg_mem k v, ϖ, π, h1, h2, h3, by rw [zpow_one]; exact h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hj` using `D.nd.j_range i`. Set `j : Fin D.R.m` to `⟨D.nd.j i - 1, by omega⟩`. Take `⟨c, hc, hcv⟩` from `hchi k v j u hu0 hrep'`. Establish `htame` using `GlobalTheory.T.split_character_tame hL D P S hS i k v hw`. Use `⟨htame, (S i _ hw).mu_ok.1, c, hc, GlobalTheory.T.tame_uniformizer_power hDZ hL D P.ty.grp k v _ _ htame u hu0 hrep c ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.T.split_character_unit_value hL D P S hS i k v hw j (by simp only [j]; omega) u hu0 hunit]`. Conclude with `hcv.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.PendOf.tame_lab_mu : GlobalTheory.NRows.Hypotheses₂ → GlobalTheory.Published.DepthZeroInertia → ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D), ChiTOk D P.cf → ∀ S : Reading P.T, IsTrue P S → ∀ (i : D.nd.Loc) (k : Fin 2) (v : D.nd.PlG k) (hw : IsSplitPl D.host (D.naut.plGw k v)), GlobalTheory.SplitWeil.IsTame (S i _ hw).mu ∧ ∃ (hχ : GlobalTheory.SmGL.IsSmoothChar (S i _ hw).mu) (u : (ZMod (D.host.g k))ˣ), (u = PairedCharacterCondition.chiJ D i k v ∨ u = (PairedCharacterCondition.chiJ D i k v)⁻¹) ∧ labAt hL D k v (Irr.ofDet 1 (S i _ hw).mu hχ) = X - C (u : ZMod (D.host.g k)) := by
   intro hP hDZ hL D P hchi S hS i k v hw

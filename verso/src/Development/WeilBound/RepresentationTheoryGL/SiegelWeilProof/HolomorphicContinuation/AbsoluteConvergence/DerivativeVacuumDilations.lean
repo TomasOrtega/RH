@@ -12,9 +12,9 @@ open PositivityTheory.Rg.Sw
 variable {m n : ℕ}
 
 /- English proof (translation)
-Unfold `cnt`. Establish `h` using `Finset.card_filter_add_card_filter_not (s := (Finset.univ : Finset (Fin m))) (fun a => ε a = true)`. Simplify using `only [Finset.card_univ, Fintype.card_fin] at h`. Establish `h2 : (Finset.univ.filter fun a => ε a = false) = Finset.univ.filter fun a => ¬ ε a = true`. Use extensionality with `a`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[h2]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cnt_add (ε : Fin m → Bool) : cnt ε true + cnt ε false = m := by
   unfold cnt
@@ -26,9 +26,9 @@ theorem cnt_add (ε : Fin m → Bool) : cnt ε true + cnt ε false = m := by
   exact h
 
 /- English proof (translation)
-Establish `hD : (diagonal (fun j => (Real.exp (-(h * X j)) : ℂ)))ᴴ = diagonal (fun j => (Real.exp (-(h * X j)) : ℂ))`. Rewrite using `[Matrix.diagonal_conjTranspose]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.star_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Conclude with `Complex.conj_ofReal _`. Unfold `bS Matrix.IsHermitian`. Rewrite using `[Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hD, hb.eq, Matrix.mul_assoc]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bS_herm (X : Fin n → ℝ) (h : ℝ) {b : Matrix (Fin n) (Fin n) ℂ} (hb : b.IsHermitian) : (bS X h b).IsHermitian := by
   have hD : (diagonal (fun j => (Real.exp (-(h * X j)) : ℂ)))ᴴ = diagonal (fun j => (Real.exp (-(h * X j)) : ℂ)) := by
@@ -41,39 +41,35 @@ theorem bS_herm (X : Fin n → ℝ) (h : ℝ) {b : Matrix (Fin n) (Fin n) ℂ} (
   rw [Matrix.conjTranspose_mul, Matrix.conjTranspose_mul, hD, hb.eq, Matrix.mul_assoc]
 
 /- English proof (translation)
-Introduce `m n ε c t p q e sL ρ hL X a hA y r`. Take `⟨hadd, ha0, hup, hcont, hupmul, hdec, hconj, hcellinv, hdense, hF0⟩` from `hH n X a hA`. Take `⟨C, hC0, hcell⟩` from `hL.cell`. Establish `hpq : p + q = m`. Break down `hL.sign with ⟨-, rfl, rfl⟩ | ⟨-, rfl, rfl⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `cnt_add ε`. Rewrite using `[add_comm]`. Conclude with `cnt_add ε`. Establish `hneg : ∀ h : ℝ, a (-h) * a h = 1`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hadd, neg_add_cancel, ha0]`. Establish `L1 : ∀ (Q : PX m n) (y : GR n), (mR y).toBlocks₂₁.det ≠ 0 → HasDerivAt (fun h => sL Q (y * a h)) (sL (dil c X Q) y) 0`. Introduce `Q y hy`. Take `⟨y₁, g, b, hy₁, hb, hg, rfl⟩` from `hdec y hy`. Establish `hfun : (fun h => sL Q (y₁ * g * a h)) = fun h => (F0 p q e y₁ * C) * (Complex.exp (-((h * ((m : ℝ) * ∑ j, X j) : ℝ) : ℂ)) * secN ε c t Q (bS X h b))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h`. Establish `e1 : y₁ * g * a h = (y₁ * a (-h)) * (a h * g * a h)`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : F0 p q e (y₁ * a (-h)) = F0 p q e y₁ * F0 p q e (a (-h))`. Rewrite using `[← hL.vac, hL.law 1 _ _ hy₁, hL.vac]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e3 : F0 p q e (a (-h)) = Complex.exp (-((h * ((m : ℝ) * ∑ j, X j) : ℝ) : ℂ))`. Rewrite using `[hF0, hpq]`. Rewrite using `[e1, hL.law Q _ _ (hupmul y₁ hy₁ (-h)), e2, e3, hcell Q _ _ (bS_herm X h hb) (hconj g b hg h)]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hv : sL (dil c X Q) (y₁ * g) = (F0 p q e y₁ * C) * secN ε c t (dil c X Q) b`. Rewrite using `[hL.law _ _ _ hy₁, hcell _ _ _ hb hg]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hv]`. Conclude with `(hG m n ε c t hL.cpos X b hb Q).const_mul _`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `L2 : ∀ (Q : PX m n) (y : GR n), (mR y).toBlocks₂₁.det ≠ 0 → ∀ s, HasDerivAt (fun h => sL Q (y * a h)) (sL (dil c X Q) (y * a s)) s`. Introduce `Q y hy s`. Establish `h0` using `L1 Q (y * a s) (hcellinv y hy s)`. Establish `h0' : HasDerivAt (fun h => sL Q (y * a s * a h)) (sL (dil c X Q) (y * a s)) (s - s)`. Rewrite using `[sub_self]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `h0`. Establish `h1` using `HasDerivAt.comp_sub_const s s h0'`. Establish `hf : (fun x => sL Q (y * a x)) = fun x => sL Q (y * a s * a (x - s))`. Use function extensionality and compare the values at `x`. Rewrite using `[mul_assoc, ← hadd, add_sub_cancel]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hf]`. Conclude with `h1`. Establish `hjc : ∀ (Q : PX m n), Continuous (fun z : GR n × ℝ => sL Q (z.1 * a z.2))` using `fun Q => (hL.cont Q).comp (continuous_fst.mul (hcont.comp continuous_snd))`. Establish `L3 : ∀ (Q : PX m n) (s : ℝ) (y : GR n), sL Q (y * a s) - sL Q y = ∫ u in (0 : ℝ)..s, sL (dil c X Q) (y * a u)`. Introduce `Q s`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc1 : Continuous fun y : GR n => sL Q (y * a s) - sL Q y` using `((hL.cont Q).comp (continuous_id.mul continuous_const)).sub (hL.cont Q)`. Establish `hc2 : Continuous fun y : GR n => ∫ u in (0 : ℝ)..s, sL (dil c X Q) (y * a u)` using `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous (hjc (dil c X Q)) continuous_const`. Introduce `y0`. Use `congrFun (Continuous.ext_on hdense hc1 hc2 ?_) y0` and prove the remaining obligations. Introduce `y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `show sL Q (y * a s) - sL Q y = ∫ u in (0 : ℝ)..s, sL (dil c X Q) (y * a u)`. Establish `hd : ∀ x ∈ Set.uIcc (0 : ℝ) s, HasDerivAt (fun h => sL Q (y * a h)) (sL (dil c X Q) (y * a x)) x` using `fun x _ => L2 Q y hy x`. Establish `hint : IntervalIntegrable (fun u => sL (dil c X Q) (y * a u)) volume 0 s` using `((hL.cont (dil c X Q)).comp (continuous_const.mul hcont)).intervalIntegrable 0 s`. Rewrite using `[intervalIntegral.integral_eq_sub_of_hasDerivAt hd hint, ha0, mul_one]`. Establish `L4 : ∀ (Q : PX m n) (y : GR n) (s : ℝ), HasDerivAt (fun h => sL Q (y * a h)) (sL (dil c X Q) (y * a s)) s`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `Q y s`. Establish `hgc : Continuous fun u => sL (dil c X Q) (y * a u)` using `(hL.cont _).comp (continuous_const.mul hcont)`. Establish `h1` using `(hgc.integral_hasStrictDerivAt 0 s).hasDerivAt`. Establish `h2` using `h1.const_add (sL Q y)`. Establish `hf : (fun h => sL Q (y * a h)) = fun x => sL Q y + ∫ u in (0 : ℝ)..x, sL (dil c X Q) (y * a u)`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[← L3 Q x y]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hf]`. Conclude with `h2`.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Establish `L5 : ∀ k : ℕ, iteratedDeriv k (fun s => F0 p q e (y * a s)) = fun s => sL ((dil c X ^ k) 1) (y * a s)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => funext s`. Simplify using `[hL.vac]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Consider the case `succ k ih`. Rewrite using `[iteratedDeriv_succ, ih]`. Use function extensionality and compare the values at `s`. Rewrite using `[(L4 _ y s).deriv, pow_succ', Module.End.mul_apply]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[L5 r]`. Use `L4 ((dil c X ^ r) 1) y 0` as an intermediate fact. Rewrite `this` using `[ha0, mul_one, ← Module.End.mul_apply, ← pow_succ']`. Conclude with `this`. Rewrite using `[L5 r] show sL ((dil c X ^ r) 1) (y * a 0) = _`.
-
-Rewrite using `[ha0, mul_one]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem derivative_vacuum_of_parts (hG : GaussPart) (hH : GroupPart) : DerivativeVacuumDilations := by
   intro m n ε c t p q e sL ρ hL X a hA y r

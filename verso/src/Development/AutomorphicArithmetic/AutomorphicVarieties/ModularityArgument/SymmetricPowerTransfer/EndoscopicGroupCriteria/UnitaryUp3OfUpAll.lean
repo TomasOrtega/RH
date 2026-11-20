@@ -16,7 +16,7 @@ def Up3 : Prop :=
     IsAutR ι r → IsAutQ ι r
 
 /- English proof (translation)
-Introduce `l _ Ω _ _ _ ι c hc N w φ θ h1 h2 h3` and use `(h l Ω ι c hc N w φ θ h1 h2 h3).imp fun _ H k hk hp => (H k hk hp).imp fun _ hρ => hρ.1`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PropEGad.eg (h : PropEGad) : PropEG := fun l _ Ω _ _ _ ι c hc N w φ θ h1 h2 h3 =>
   (h l Ω ι c hc N w φ θ h1 h2 h3).imp fun _ H k hk hp => (H k hk hp).imp fun _ hρ => hρ.1

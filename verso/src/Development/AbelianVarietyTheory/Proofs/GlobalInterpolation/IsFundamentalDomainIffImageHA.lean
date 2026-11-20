@@ -11,13 +11,13 @@ open NumberField MeasureTheory Formalism.BasicNotions Formalism.MainNotions.Glob
 open scoped TensorProduct
 
 /- English proof (translation)
-Set `e : Γ₁ ≃ Γ₂` to `{ toFun := fun g => ⟨φ g, (hΓ g).1 g.2⟩ invFun := fun g => ⟨φ.symm g, (hΓ _).2 (by simp)⟩ left_inv := fun g => Subtype.ext (by simp) right_inv := fun g => Subtype.ext (by simp) }`. Establish `hq : Measure.QuasiMeasurePreserving φ μ (μ.map φ)` using `⟨hφ, Measure.AbsolutelyContinuous.rfl⟩`. Establish `hq' : Measure.QuasiMeasurePreserving φ.symm (μ.map φ) μ`. Use `⟨hφ', ?_⟩` and prove the remaining obligations. Rewrite using `[Measure.map_map hφ' hφ]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: (φ.symm : G₂ → G₁) ∘ φ = id` using `by ext x; simp`. Rewrite using `[this, Measure.map_id]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `h.image_of_equiv φ.toEquiv hq' e.symm (fun g x => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `φ (φ.symm g * x) = (g : G₂) * φ x`. Use the proof step `simp)`. Introduce `h`. Establish `h2` using `h.image_of_equiv φ.symm.toEquiv (ν := μ) hq e (fun g x => by`. Express the relevant statement in the definitionally equal form `φ.symm (φ g * x) = (g : G₁) * φ.symm x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `simp)`. Establish `h3 : φ.symm.toEquiv '' (φ '' 𝓕) = 𝓕`. Rewrite using `[Set.image_image]`. Simplify using the standard rewrite rules. Rewrite `h2` using `[h3]`. Then use the resulting hypothesis.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_iff_image {G₁ G₂ : Type} [Group G₁] [Group G₂] [MeasurableSpace G₁]
     [MeasurableSpace G₂] (φ : G₁ ≃* G₂) (hφ : Measurable φ) (hφ' : Measurable φ.symm)
@@ -48,7 +48,7 @@ theorem isFundamentalDomain_iff_image {G₁ G₂ : Type} [Group G₁] [Group G�
     rwa [h3] at h2
 
 /- English proof (translation)
-Establish `: BorelSpace (HA R σ J₁)` using `⟨rfl⟩`. Establish `: BorelSpace (HA R σ J₂)` using `⟨rfl⟩`. Conclude with `isFundamentalDomain_iff_image (G₁ := HA R σ J₁) (G₂ := HA R σ J₂) φ.toMulEquiv φ.continuous.measurable φ.symm.continuous.measurable (HFinIn R σ J₁) (HFinIn R σ J₂) hΓ μ 𝓕`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isFundamentalDomain_iff_image_HA {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R]
     [Algebra F R] [TopologicalSpace R] (σ : E →ₐ[F] E) {M₁ M₂ : ℕ} (J₁ : Matrix (Fin M₁) (Fin M₁) E)
@@ -61,7 +61,7 @@ theorem isFundamentalDomain_iff_image_HA {F E : Type} [Field F] [Field E] [Algeb
     φ.continuous.measurable φ.symm.continuous.measurable (HFinIn R σ J₁) (HFinIn R σ J₂) hΓ μ 𝓕
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem conj_iff {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M₁ M₂ : ℕ}
     (J₁ : Matrix (Fin M₁) (Fin M₁) E) (J₂ : Matrix (Fin M₂) (Fin M₂) E) (C : Matrix (Fin M₂) (Fin M₁) E)
@@ -69,7 +69,7 @@ theorem conj_iff {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] 
     GlobalTheory.IndefiniteRowSideFullHecke.SignatureLatticeIndependence.IsConjugationBy (AF F) σ J₁ J₂ C φ ↔ GlobalTheory.IndefiniteRowSideFullHecke.IsometryTransportFrames.IsConjBy σ J₁ J₂ C φ := Iff.rfl
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨Φ, a, b, c, -⟩`. Conclude with `⟨Φ, (conj_iff σ J₁ J₂ C Φ).1 a, b, c, isFundamentalDomain_iff_image_HA (AF F) σ J₁ J₂ Φ b⟩`. Introduce and unpack `⟨Φ, a, b, c, d⟩`. Conclude with `⟨Φ, (conj_iff σ J₁ J₂ C Φ).2 a, b, c, fun μ _ => d μ⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem conclusion_iff {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) {M₁ M₂ : ℕ}
     (J₁ : Matrix (Fin M₁) (Fin M₁) E) (J₂ : Matrix (Fin M₂) (Fin M₂) E) (C : Matrix (Fin M₂) (Fin M₁) E)
@@ -96,7 +96,7 @@ theorem conclusion_iff {F E : Type} [Field F] [NumberField F] [Field E] [Algebra
     exact ⟨Φ, (conj_iff σ J₁ J₂ C Φ).2 a, b, c, fun μ _ => d μ⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h W P Q hs L hL hU μ`. Conclude with `h W P Q hs _ L _ _ hL hU μ`. Introduce `h W P Q hs L L' hL hU hL' hU' μ`. Conclude with `(h W P Q hs L hL hU μ).symm.trans (h W P Q hs L' hL' hU' μ)`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem lattice_iff (D : D7) : GlobalTheory.IndefiniteRowSideFullHecke.SignatureLatticeIndependence.LatticeIndependence D ↔ GlobalTheory.IndefiniteRowSideFullHecke.IsometryTransportFrames.LatticeIndep D := by
   constructor
@@ -106,9 +106,7 @@ theorem lattice_iff (D : D7) : GlobalTheory.IndefiniteRowSideFullHecke.Signature
     exact (h W P Q hs L hL hU μ).symm.trans (h W P Q hs L' hL' hU' μ)
 
 /- English proof (translation)
-Set `_` to `D.host.cmStar`. Prove the components needed by the constructor for the conclusion. Introduce `h W₁ W₂ P Q h₁ h₂ e he hc`. Conclude with `(conclusion_iff D.sp.cm.sig W₁.gram W₂.gram _ (IsVolMeas D W₁ P Q) (IsVolMeas D W₂ P Q)).1 (h W₁ W₂ P Q h₁ h₂ e he hc)`. Introduce `h W₁ W₂ P Q h₁ h₂ e he hc`.
-
-Conclude with `(conclusion_iff D.sp.cm.sig W₁.gram W₂.gram _ (IsVolMeas D W₁ P Q) (IsVolMeas D W₂ P Q)).2 (h W₁ W₂ P Q h₁ h₂ e he hc)`.
+Introduce a local definition for the expression. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem transport_iff (D : D7) : GlobalTheory.IndefiniteRowSideFullHecke.SignatureLatticeIndependence.IsometryTransport D ↔ GlobalTheory.IndefiniteRowSideFullHecke.IsometryTransportFrames.IsometryTransport D := by
   let _ := D.host.cmStar
@@ -121,7 +119,7 @@ theorem transport_iff (D : D7) : GlobalTheory.IndefiniteRowSideFullHecke.Signatu
       (h W₁ W₂ P Q h₁ h₂ e he hc)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h hV W₁ W₂ P Q h₁ h₂ e he`. Conclude with `h hV W₁ W₂ P Q h₁ h₂ ⟨e, he⟩`. Introduce and unpack `h hV W₁ W₂ P Q h₁ h₂ ⟨e, he⟩`. Conclude with `h hV W₁ W₂ P Q h₁ h₂ e he`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem volume_iff (D : D7) : GlobalTheory.IndefiniteRowSideFullHecke.SignatureLatticeIndependence.VolumeInvariance D ↔ GlobalTheory.IndefiniteRowSideFullHecke.IsometryTransportFrames.VolEqOfIsometric D := by
   constructor
@@ -131,7 +129,7 @@ theorem volume_iff (D : D7) : GlobalTheory.IndefiniteRowSideFullHecke.SignatureL
     exact h hV W₁ W₂ P Q h₁ h₂ e he
 
 /- English proof (translation)
-The claim follows from `and_congr (lattice_iff D) (and_congr (transport_iff D) (volume_iff D))`.
+A detailed English derivation is pending.
 -/
 theorem volumeIndependence_iff (D : D7) :
     GlobalTheory.IndefiniteRowSideFullHecke.SignatureLatticeIndependence.VolumeIndependence D ↔ GlobalTheory.IndefiniteRowSideFullHecke.IsometryTransportFrames.VolIndep D :=

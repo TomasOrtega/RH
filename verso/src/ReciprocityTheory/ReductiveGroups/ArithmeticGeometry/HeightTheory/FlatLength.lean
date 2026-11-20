@@ -5,9 +5,9 @@ namespace ReciprocityTheory.ChartRestriction.G.T0
 open scoped TensorProduct
 
 /- English proof (translation)
-Take `⟨I, hI, ⟨e⟩⟩` from `isSimpleModule_iff_quot_maximal.mp hX`. Establish `hIm : I.map (algebraMap R S) = IsLocalRing.maximalIdeal S`. Rewrite using `[IsLocalRing.eq_maximalIdeal hI, hm]`. Establish `e2 : (S ⊗[R] X) ≃ₗ[S] (S ⧸ IsLocalRing.maximalIdeal S)` using `(TensorProduct.AlgebraTensorModule.congr (LinearEquiv.refl S S) e).trans ((Algebra.TensorProduct.quotIdealMapEquivTensorQuot S I).symm.toLinearEquiv.trans (Submodule.quotEquivOfEq _ _ hIm))`. Establish `: IsSimpleModule S (S ⧸ IsLocalRing.maximalIdeal S)` using `isSimpleModule_iff_isCoatom.mpr (Ideal.isMaximal_def.mp (IsLocalRing.maximalIdeal.isMaximal S))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSimpleModule S (S ⊗[R] X)` using `IsSimpleModule.congr e2`. Rewrite using `[Module.length_eq_one, Module.length_eq_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 private theorem length_baseChange_of_isSimpleModule {R S : Type*} [CommRing R] [IsLocalRing R]
     [CommRing S] [IsLocalRing S] [Algebra R S]
@@ -27,9 +27,9 @@ private theorem length_baseChange_of_isSimpleModule {R S : Type*} [CommRing R] [
   rw [Module.length_eq_one, Module.length_eq_one]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (N.subtype.baseChange S)`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`. Conclude with `Module.Flat.lTensor_preserves_injective_linearMap _ N.injective_subtype`. Establish `hsurj : Function.Surjective (N.mkQ.baseChange S)`. Rewrite using `[LinearMap.baseChange_eq_ltensor]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `LinearMap.lTensor_surjective S N.mkQ_surjective`. Establish `hex : Function.Exact (N.subtype.baseChange S) (N.mkQ.baseChange S)`. Rewrite using `[LinearMap.baseChange_eq_ltensor, LinearMap.baseChange_eq_ltensor]`. Conclude with `lTensor_exact S (LinearMap.exact_subtype_mkQ N) N.mkQ_surjective`. Rewrite using `[Module.length_eq_add_of_exact _ _ hinj hsurj hex, Module.length_eq_add_of_exact _ _ N.injective_subtype N.mkQ_surjective (LinearMap.exact_subtype_mkQ N), ih, length_baseChange_of_isSimpleModule hm (M ⧸ N)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem length_baseChange_of_submodule_simple_quotient {R S : Type*} [CommRing R] [IsLocalRing R]
     [CommRing S] [IsLocalRing S] [Algebra R S] [Module.Flat R S]
@@ -52,11 +52,11 @@ private theorem length_baseChange_of_submodule_simple_quotient {R S : Type*} [Co
     ih, length_baseChange_of_isSimpleModule hm (M ⧸ N)]
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `@of_subsingleton M' _ _ _`. Establish `: Subsingleton (S ⊗[R] M')`. Establish `h0 : ∀ z : S ⊗[R] M', z = 0` using `fun z => by`. Proceed by induction on `z using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `zero => rfl`. Consider the case `tmul s m => rw [Subsingleton.elim m 0, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [hx, hy, add_zero]`. Conclude with `⟨fun a b => by rw [h0 a, h0 b]⟩`. Rewrite using `[Module.length_eq_zero, Module.length_eq_zero]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Consider the case `of_simple_quotient _ ih`. Conclude with `length_baseChange_of_submodule_simple_quotient hm _ ih`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 private theorem length_baseChange_of_isFiniteLength {R S : Type*} [CommRing R] [IsLocalRing R]
     [CommRing S] [IsLocalRing S] [Algebra R S] [Module.Flat R S]
@@ -77,19 +77,17 @@ private theorem length_baseChange_of_isFiniteLength {R S : Type*} [CommRing R] [
     exact length_baseChange_of_submodule_simple_quotient hm _ ih
 
 /- English proof (translation)
-Establish `hmono : ∀ N N' : Submodule R Q, N ≤ N' → LinearMap.range (N.subtype.baseChange S) ≤ LinearMap.range (N'.subtype.baseChange S)`. Introduce `N N' h x hx`. Take `⟨z, rfl⟩` from `LinearMap.mem_range.mp hx`. Use `LinearMap.mem_range.mpr ⟨(Submodule.inclusion h).baseChange S z, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.subtype_comp_inclusion _ _ h, LinearMap.baseChange_comp, LinearMap.comp_apply]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hrefl : ∀ N N' : Submodule R Q, LinearMap.range (N'.subtype.baseChange S) ≤ LinearMap.range (N.subtype.baseChange S) → N' ≤ N`. Introduce `N N' h`. Establish `hz : ∀ w : S ⊗[R] N, (N.mkQ.baseChange S) ((N.subtype.baseChange S) w) = 0`. Introduce `w`. Proceed by induction on `w using TensorProduct.induction_on with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => rw [map_zero, map_zero]`. Consider the case `tmul s n`. Establish `hn : N.mkQ (N.subtype n) = 0` using `(Submodule.Quotient.mk_eq_zero N).mpr n.2`. Rewrite using `[LinearMap.baseChange_tmul, LinearMap.baseChange_tmul, hn, TensorProduct.tmul_zero]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, add_zero]`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Establish `h0 : (N.mkQ ∘ₗ N'.subtype).lTensor S = 0`. Use `LinearMap.ext fun z => ?_` and prove the remaining obligations. Take `⟨w, hw⟩` from `LinearMap.mem_range.mp (h (LinearMap.mem_range_self (N'.subtype.baseChange S) z))`. Establish `hb : ((N.mkQ ∘ₗ N'.subtype).baseChange S) z = 0`. Rewrite using `[LinearMap.baseChange_comp, LinearMap.comp_apply, ← hw, hz]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.zero_apply]`. Rewrite `hb` using `[LinearMap.baseChange_eq_ltensor]`. Then use the resulting hypothesis. Establish `hf : N.mkQ ∘ₗ N'.subtype = 0` using `(Module.FaithfullyFlat.zero_iff_lTensor_zero R S _).mpr h0`. Introduce `x hx`. Establish `hx0` using `LinearMap.congr_fun hf ⟨x, hx⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `using hx0`. Establish `hsm : StrictMono (fun N : Submodule R Q => LinearMap.range (N.subtype.baseChange S))` using `fun N N' hlt => lt_of_le_of_ne (hmono N N' hlt.le) (fun heq => hlt.ne (le_antisymm hlt.le (hrefl N N' heq.ge)))`. Establish `h1 : (Module.length R Q : WithBot ℕ∞) ≤ (Module.length S (S ⊗[R] Q) : WithBot ℕ∞)`. Rewrite using `[Module.coe_length, Module.coe_length]`. Conclude with `Order.krullDim_le_of_strictMono _ hsm`.
-
-Conclude with `WithBot.coe_le_coe.mp h1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem length_le_length_baseChange_of_faithfullyFlat {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
     [Module.FaithfullyFlat R S] (Q : Type*) [AddCommGroup Q] [Module R Q] :
@@ -134,9 +132,7 @@ private theorem length_le_length_baseChange_of_faithfullyFlat {R S : Type*} [Com
   exact WithBot.coe_le_coe.mp h1
 
 /- English proof (translation)
-Establish `: Module.FaithfullyFlat R S` using `Module.FaithfullyFlat.of_flat_of_isLocalHom`. Establish `hge` using `length_le_length_baseChange_of_faithfullyFlat (R := R) (S := S) Q`. Distinguish the cases in `hQ : Module.length R Q = ⊤`. Rewrite `hge`, the goal using `[hQ]`. Conclude with `top_le_iff.mp hge`.
-
-Conclude with `length_baseChange_of_isFiniteLength hm (Module.length_ne_top_iff.mp hQ)`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem length_baseChange_eq {R S : Type*} [CommRing R] [IsLocalRing R] [CommRing S]
     [IsLocalRing S] [Algebra R S] [Module.Flat R S] [IsLocalHom (algebraMap R S)]

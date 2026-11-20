@@ -18,12 +18,12 @@ def sg (σ : E ≃+* E) : GL (Fin n) E →* GL (Fin n) E := GeneralLinearGroup.m
 def nrm (σ : E ≃+* E) (q : ℕ) (δ : GL (Fin n) E) : GL (Fin n) E := ((List.range q).map fun i => (sg σ)^[i] δ).prod
 
 /- English proof (translation)
-Simplify using `[nrm]`.
+Simplify using the standard rewrite rules.
 -/
 example (δ : GL (Fin n) E) (σ : E ≃+* E) : nrm σ 1 δ = δ := by simp [nrm]
 
 /- English proof (translation)
-Simplify using `[nrm, List.range_succ]`.
+Simplify using the standard rewrite rules.
 -/
 example (δ : GL (Fin n) E) (σ : E ≃+* E) : nrm σ 2 δ = δ * sg σ δ := by simp [nrm, List.range_succ]
 
@@ -42,7 +42,7 @@ structure Unram (σ : E ≃+* E) (q : ℕ) : Prop extends Cyc σ q where
   res : ∀ j, 0 < j → j < q → ∃ x, valuation E x ≤ 1 ∧ valuation E (σ^[j] x - x) = 1
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun _ => rfl, one_pos, fun _ => rfl⟩, fun _ h h' => by omega⟩`.
+Supply the required witnesses or components.
 -/
 example : Unram (RingEquiv.refl E) 1 := ⟨⟨fun _ => rfl, one_pos, fun _ => rfl⟩, fun _ h h' => by omega⟩
 
@@ -50,7 +50,7 @@ def ball (n : ℕ) (r : ValueGroupWithZero E) : Set (GL (Fin n) E) :=
   {g | ∀ i j, valuation E ((g : Matrix (Fin n) (Fin n) E) i j - (1 : Matrix (Fin n) (Fin n) E) i j) ≤ r}
 
 /- English proof (translation)
-Introduce `i j` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (r : ValueGroupWithZero E) : 1 ∈ ball n r := fun i j => by simp
 
@@ -61,7 +61,7 @@ def howeSet (n : ℕ) (ϖ : Eˣ) (a c : ℤ) : Set (GL (Fin n) E) :=
     valuation E ((ϖ ^ (a + c * (((i : ℕ) : ℤ) - ((j : ℕ) : ℤ))) : Eˣ) : E)}
 
 /- English proof (translation)
-Introduce `i j` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (ϖ : Eˣ) (a c : ℤ) : 1 ∈ howeSet n ϖ a c := fun i j => by simp
 

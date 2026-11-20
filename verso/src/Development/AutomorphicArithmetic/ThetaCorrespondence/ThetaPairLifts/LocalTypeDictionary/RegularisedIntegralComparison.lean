@@ -21,23 +21,21 @@ variable (ω ν 𝓕)
 variable {ω ν 𝓕}
 end Lin
 /- English proof (translation)
-Introduce `hP hK D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hm c₀ H ΦB hΦB`. Use `set S := algF ψ θ false A₁ B with hSdef`. Establish `hstab : ∀ g ∈ GfC W₁, ∀ Φ ∈ S, ωB (g, 1) Φ ∈ S` using `hm.mapB.stabM.1`. Establish `hL : ∀ Φ ∈ S, ∀ γ ∈ GQ W₁, ∀ g h, thetaKO ωB (γ * g) h Φ = thetaKO ωB g h Φ` using `GlobalTheory.T.thetaKernel_leftInvariant_rational_unitary D ψ θ hθ W₁ X A₁ B α (α / β) ωB hm.weilB`. Take `⟨Φ₀, h0S, hrel, hmod0, hI⟩` from `H ΦB hΦB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : p' ΦB = p' Φ₀`. Establish `h1 : finRel ωB S ≤ LinearMap.ker p'`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, hu, Ψ, hΨ, rfl⟩`. Use `show p' _ = 0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, hm.mapB.invf u hu Ψ hΨ, sub_self]`. Use `h1 hrel` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Rewrite `hrel` using `[finRel, Submodule.mem_span_set']`. Take `⟨n, c, g, hsum⟩` from `hrel`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `choose u hu Ψ hΨ hg using fun i => (g i).2`. Take `⟨z, hzG, hz0, hz⟩` from `_root_.GlobalTheory.T.twist_regulariser_isGood hP hK D ψ θ hθ W W₁ X A₁ B α β hT ν₁ 𝓕₁ hν₁ ωB hm.weilB (n + 1) (Fin.cons ΦB Ψ) (Fin.cons 1 u) (Fin.cases hΦB hΨ) (Fin.cases (one_mem _) hu)`. Establish `hB : ModInt θ ωB ν₁ 𝓕₁ (wop ωB z ΦB)` using `(hz 0).1`. Establish `hX : ∀ i, ModInt θ ωB ν₁ 𝓕₁ (wop ωB z (Ψ i)) ∧ ∃ u' ∈ GfC W₁, wop ωB z (ωB (u i, 1) (Ψ i)) = ωB (u', 1) (wop ωB z (Ψ i))` using `fun i => hz i.succ`. Use `choose u' hu' hcomm using fun i => (hX i).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hXS : ∀ i, wop ωB z (Ψ i) ∈ S` using `fun i => wop_mem hstab hzG (hΨ i)`. Establish `hXr` using `fun i => modInt_right hν₁ (hL _ (hXS i)) (hX i).1 (u' i)`. Establish `h0` using `thetaInt_wop hν₁ (hL _ h0S) hmod0 z`. Establish `eB : ΦB = Φ₀ + ∑ i, c i • (ωB (u i, 1) (Ψ i) - Ψ i)`. Establish `e : ∑ i, c i • (g i : WO W₁ X → ℂ) = ∑ i, c i • (ωB (u i, 1) (Ψ i) - Ψ i)` using `by simp only [hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, hsum]`. Normalize the expressions using the abelian group laws. Establish `eW : wop ωB z ΦB = wop ωB z Φ₀ + ∑ i, c i • (ωB (u' i, 1) (wop ωB z (Ψ i)) - wop ωB z (Ψ i))`. Rewrite using `[eB, map_add, map_sum]`. Simplify using `only [map_smul, map_sub, hcomm]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hJ : thetaInt ωB ν₁ 𝓕₁ (wop ωB z ΦB) = GlobalTheory.FunObj.zdeg z • thetaInt ωB ν₁ 𝓕₁ Φ₀`. Establish `hi : ∀ i ∈ (Finset.univ : Finset (Fin n)), Intg ωB ν₁ 𝓕₁ (c i • (ωB (u' i, 1) (wop ωB z (Ψ i)) - wop ωB z (Ψ i)))` using `fun i _ => ((intg_of_modInt (hXr i).1).sub (intg_of_modInt (hX i).1)).smul _`. Rewrite using `[eW, thetaInt_add h0.1 (Intg.sum _ hi), thetaInt_sum _ hi, h0.2]`. Simplify using `only [thetaInt_smul, thetaInt_sub (intg_of_modInt (hXr _).1) (intg_of_modInt (hX _).1), (hXr _).2, sub_self, smul_zero, Finset.sum_const_zero, add_zero]`. Use `⟨z, hzG, hz0, wop_mem hstab hzG hΦB, hB, fun Φ hΦ hpΦ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hΦ₁ : (GlobalTheory.FunObj.zdeg z)⁻¹ • Φ ∈ algF ψ θ true A B` using `Submodule.smul_mem _ _ hΦ`. Establish `hp₁ : p ((GlobalTheory.FunObj.zdeg z)⁻¹ • Φ) = p' Φ₀`. Rewrite using `[map_smul, hpΦ, smul_smul, inv_mul_cancel₀ hz0, one_smul, hp]`. Establish `e1` using `hI _ hΦ₁ hp₁`. Establish `e2 : Φ = GlobalTheory.FunObj.zdeg z • ((GlobalTheory.FunObj.zdeg z)⁻¹ • Φ)` using `by rw [smul_smul, mul_inv_cancel₀ hz0, one_smul]`.
-
-Rewrite using `[e2, thetaInt_smul, e1, hJ, smul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regularisedIntegral_of_const : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →
@@ -98,7 +96,7 @@ theorem regularisedIntegral_of_const : _root_.GlobalTheory.FunPr.ThetaLocalInput
   have e2 : Φ = GlobalTheory.FunObj.zdeg z • ((GlobalTheory.FunObj.zdeg z)⁻¹ • Φ) := by rw [smul_smul, mul_inv_cancel₀ hz0, one_smul]
   rw [e2, thetaInt_smul, e1, hJ, smul_comm]
 /- English proof (translation)
-Introduce `hP hK hS D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hm`. Take `⟨c, hc, H⟩` from `hS D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hm`. Conclude with `⟨c, hc, _root_.GlobalTheory.RegCompare.regularisedIntegral_of_const hP hK D ψ θ hθ W W₁ X A A₁ B α β hT ν 𝓕 ν₁ 𝓕₁ hν hν₁ ωA ωB Pi rf rl p p' hm c H⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem regularised_integral_comparison : _root_.GlobalTheory.FunPr.ThetaLocalInputs → GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.ThetaIntegralsAgree → GlobalTheory.SquareSt.ThetaIntegralsAgree →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ →

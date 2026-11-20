@@ -9,7 +9,7 @@ open MvPolynomial
 def blockIndexWeight {B n : ℕ} (b : Fin B) : Fin B × Fin n → ℕ := fun p => if p.1 = b then 1 else 0
 
 /- English proof (translation)
-Rewrite using `[Finsupp.weight_apply, Finsupp.sum_fintype _ _ (by simp)]`. Simplify using `only [blockIndexWeight, smul_eq_mul, mul_ite, mul_one, mul_zero]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_eq_single b (fun x _ hx => by simp [hx]) (by simp)]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem weight_lh0BlockWt_apply {B n : ℕ} (b : Fin B) (s : Fin B × Fin n →₀ ℕ) :
     Finsupp.weight (blockIndexWeight (n := n) b) s = ∑ j : Fin n, s (b, j) := by
@@ -20,9 +20,7 @@ theorem weight_lh0BlockWt_apply {B n : ℕ} (b : Fin B) (s : Fin B × Fin n →�
   simp
 
 /- English proof (translation)
-Simplify using `only [IsMultiHomogeneous, IsWeightedHomogeneous, weight_lh0BlockWt_apply, mem_support_iff]`. Prove the components needed by the constructor for the conclusion. Introduce `h b d hd`. Conclude with `h d hd b`. Introduce `h s hs b`.
-
-Conclude with `h b hs`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isMultiHomogeneous_iff_forall_weighted_lh0BlockWt {R : Type*} [CommSemiring R] {B n : ℕ} (a : Fin B → ℕ)
     (f : MvPolynomial (Fin B × Fin n) R) :
@@ -35,9 +33,9 @@ theorem isMultiHomogeneous_iff_forall_weighted_lh0BlockWt {R : Type*} [CommSemir
     exact h b hs
 
 /- English proof (translation)
-Rewrite using `[eval_eq', eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun s hs => ?_` and prove the remaining obligations. Establish `hdeg : ∑ p, s p = ∑ b, a b`. Rewrite using `[Fintype.sum_prod_type]`. Conclude with `Finset.sum_congr rfl fun b _ => hg s hs b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, hdeg]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval_mul_of_isMultiHomogeneous {B n : ℕ} {a : Fin B → ℕ} {g : MvPolynomial (Fin B × Fin n) ℂ}
     (hg : IsMultiHomogeneous a g) (c : ℂ) (z : Fin B × Fin n → ℂ) :
@@ -52,13 +50,13 @@ theorem eval_mul_of_isMultiHomogeneous {B n : ℕ} {a : Fin B → ℕ} {g : MvPo
   ring
 
 /- English proof (translation)
-Establish `hN : 0 < N` using `lt_of_le_of_lt (Nat.zero_le a) ha`. Establish `hz : ζ ≠ 0` using `hζ.ne_zero hN.ne'`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => (ζ ^ a * ζ⁻¹ ^ b) ^ j) N]`. Use `split_ifs with hab`. Substitute `hab` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_pow, mul_inv_cancel₀ hz, one_pow]`. Simplify using the standard rewrite rules. Establish `hω1 : ζ ^ a * ζ⁻¹ ^ b ≠ 1`. Introduce `h`. Apply `hab` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hζ.pow_inj ha hb` to reduce the goal to its premises. Rewrite `h` using `[inv_pow, mul_inv_eq_one₀ (pow_ne_zero _ hz)]`. Then use the resulting hypothesis. Establish `hωN : (ζ ^ a * ζ⁻¹ ^ b) ^ N = 1`. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, Nat.mul_comm a, Nat.mul_comm b, pow_mul, pow_mul, inv_pow, hζ.pow_eq_one]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[geom_sum_eq hω1, hωN]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma sum_primitiveRoot_pow_mul_inv_pow_eq_ite {N : ℕ} {ζ : ℂ} (hζ : IsPrimitiveRoot ζ N) {a b : ℕ}
     (ha : a < N) (hb : b < N) :
@@ -83,29 +81,25 @@ private lemma sum_primitiveRoot_pow_mul_inv_pow_eq_ite {N : ℕ} {ζ : ℂ} (hζ
     simp
 
 /- English proof (translation)
-Distinguish the cases in `hs : s ∈ g.support`. Use `swap`. Use `⟨fun _ => 1, fun _ => by simp, ?_⟩` and prove the remaining obligations. Rewrite using `[show coeff s g = 0 by simpa using hs, norm_zero]`. Conclude with `norm_nonneg _`.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, hN⟩ : ∃ N, N = g.totalDegree + 1` from `⟨_, rfl⟩`. Establish `hN0 : N ≠ 0` using `by omega`. Use `haveI : NeZero N := ⟨hN0⟩`. Take `⟨ζ, hζ⟩ : ∃ ζ : ℂ, IsPrimitiveRoot ζ N` from `⟨_, Complex.isPrimitiveRoot_exp N hN0⟩`. Establish `hζn : ‖ζ‖ = 1` using `hζ.norm'_eq_one hN0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hlt : ∀ d ∈ g.support, ∀ i, d i < N`. Introduce `d hd i`. Establish `h1 : d i ≤ d.sum fun _ e => e`. Rewrite using `[Finsupp.sum_fintype _ _ (by simp)]`. Conclude with `Finset.single_le_sum (fun j _ => Nat.zero_le (d j)) (Finset.mem_univ i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `h2` using `le_totalDegree hd`. Use linear arithmetic over natural numbers and integers. Set `z : (ι → Fin N) → ι → ℂ` to `fun k i => ζ ^ (k i : ℕ)`. Set `c : (ι → Fin N) → ℂ` to `fun k => ∏ i, ζ⁻¹ ^ ((k i : ℕ) * s i)`. Establish `key : ∑ k, eval (z k) g * c k = (N : ℂ) ^ Fintype.card ι * coeff s g`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [eval_eq', Finset.sum_mul, z, c]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun d _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_univ_sum, Fintype.piFinset_univ, Finset.mul_sum]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc, ← Finset.prod_mul_distrib]`. Use `congr 1`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[mul_pow, ← pow_mul, ← pow_mul, ← pow_mul, Nat.mul_comm (d i), Nat.mul_comm (s i)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion repeatedly using the stated equalities. Substitute using the available equality.
 
-Use `_ = ∑ d ∈ g.support, coeff d g * (if d = s then (N : ℂ) ^ Fintype.card ι else 0) := by`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Use `congr 1`. Repeatedly rewrite using `[sum_primitiveRoot_pow_mul_inv_pow_eq_ite hζ (hlt d hd _) (hlt s hs _)]`. Use `split_ifs with hds`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Substitute `hds` using the available equality. Simplify using the standard rewrite rules. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, d i ≠ s i := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hds (Finsupp.ext h)`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (if_neg hi)`. Use `_ = (N : ℂ) ^ Fintype.card ι * coeff s g := by`. Rewrite using `[Finset.sum_eq_single s (fun d _ hd => by simp [hd]) (fun h => absurd hs h)]`. Simplify using `[mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hlt2 : ∀ k, ‖eval (z k) g * c k‖ < ‖coeff s g‖`. Introduce `k`. Establish `hc : ‖c k‖ = 1` using `by simp [c, norm_prod, norm_pow, norm_inv, hζn]`.
-
-Rewrite using `[norm_mul, hc, mul_one]`. Conclude with `hcon (z k) (fun i => by simp [z, norm_pow, hζn])`. Establish `hsum` using `norm_sum_le (Finset.univ : Finset (ι → Fin N)) (fun k => eval (z k) g * c k)`. Establish `hsum2 : ∑ k, ‖eval (z k) g * c k‖ < ∑ _k : ι → Fin N, ‖coeff s g‖` using `Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty (fun k _ => hlt2 k)`. Rewrite `hsum` using `[key, norm_mul, norm_pow, Complex.norm_natCast]`.
-
-Rewrite `hsum2` using `[Finset.sum_const, Finset.card_univ, Fintype.card_fun, Fintype.card_fin, nsmul_eq_mul]`. Move the coercions through the operations in `at hsum2`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_torus_coeff_le {ι : Type*} [Fintype ι] (g : MvPolynomial ι ℂ) (s : ι →₀ ℕ) :
     ∃ z : ι → ℂ, (∀ i, ‖z i‖ = 1) ∧ ‖coeff s g‖ ≤ ‖eval z g‖ := by

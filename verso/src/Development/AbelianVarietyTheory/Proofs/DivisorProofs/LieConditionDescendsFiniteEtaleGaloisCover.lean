@@ -23,51 +23,51 @@ section Help
 variable {S : Scheme.{0}} {R₁ : Type} [CommRing R₁]
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp' {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap g ≫ spMap f = spMap (g.comp f) := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_id, Spec.map_id]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_id' (A : Type) [CommRing A] : spMap (RingHom.id A) = 𝟙 _ := by
   simp only [spMap, CommRingCat.ofHom_id, Spec.map_id]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => by simp [TrivSqZeroExt.algebraMap_eq_inl]`.
+A detailed English derivation is pending.
 -/
 theorem fst_comp_alg : (TrivSqZeroExt.fstHom R₁ R₁ R₁).toRingHom.comp (algebraMap R₁ (DualNumber R₁)) = RingHom.id R₁ :=
   RingHom.ext fun a => by simp [TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => by ext <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`.
+A detailed English derivation is pending.
 -/
 theorem es_comp_alg (r : R₁) : (epsScaleR r).comp (algebraMap R₁ (DualNumber R₁)) = algebraMap R₁ (DualNumber R₁) :=
   RingHom.ext fun a => by ext <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => by simp [epsScaleR]`.
+A detailed English derivation is pending.
 -/
 theorem fst_comp_es (r : R₁) : (TrivSqZeroExt.fstHom R₁ R₁ R₁).toRingHom.comp (epsScaleR r) =
     (TrivSqZeroExt.fstHom R₁ R₁ R₁).toRingHom :=
   RingHom.ext fun a => by simp [epsScaleR]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => by ext <;> simp [epsScaleR] <;> ring`.
+A detailed English derivation is pending.
 -/
 theorem es_comp_es (r s : R₁) : (epsScaleR r).comp (epsScaleR s) = epsScaleR (r * s) :=
   RingHom.ext fun a => by ext <;> simp [epsScaleR] <;> ring
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => by ext <;> simp [epsScaleR]`.
+A detailed English derivation is pending.
 -/
 theorem es_one : epsScaleR (1 : R₁) = RingHom.id _ :=
   RingHom.ext fun a => by ext <;> simp [epsScaleR]
 
 /- English proof (translation)
-The claim follows from `RingHom.ext fun a => by ext <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]`.
+A detailed English derivation is pending.
 -/
 theorem es_zero : epsScaleR (0 : R₁) = (algebraMap R₁ (DualNumber R₁)).comp (TrivSqZeroExt.fstHom R₁ R₁ R₁).toRingHom :=
   RingHom.ext fun a => by ext <;> simp [epsScaleR, TrivSqZeroExt.algebraMap_eq_inl]
@@ -86,7 +86,7 @@ def scaleAt (y : Sp R₁ ⟶ S) (r : R₁) : epsPtR y ⟶ epsPtR y :=
     rw [← Category.assoc, spMap_comp', es_comp_alg])
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show spMap _ ≫ spMap _ = spMap _ rw [spMap_comp', fst_comp_es])`.
+A detailed English derivation is pending.
 -/
 theorem zeroAt_scaleAt (y : Sp R₁ ⟶ S) (r : R₁) : zeroAt y ≫ scaleAt y r = zeroAt y :=
   Over.OverMorphism.ext (by
@@ -94,7 +94,7 @@ theorem zeroAt_scaleAt (y : Sp R₁ ⟶ S) (r : R₁) : zeroAt y ≫ scaleAt y r
     rw [spMap_comp', fst_comp_es])
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show spMap _ ≫ spMap _ = spMap _ rw [spMap_comp', es_comp_es])`.
+A detailed English derivation is pending.
 -/
 theorem scaleAt_mul (y : Sp R₁ ⟶ S) (r s : R₁) : scaleAt y r ≫ scaleAt y s = scaleAt y (r * s) :=
   Over.OverMorphism.ext (by
@@ -102,7 +102,7 @@ theorem scaleAt_mul (y : Sp R₁ ⟶ S) (r s : R₁) : scaleAt y r ≫ scaleAt y
     rw [spMap_comp', es_comp_es])
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show spMap _ = 𝟙 _ rw [es_one, spMap_id'])`.
+A detailed English derivation is pending.
 -/
 theorem scaleAt_one (y : Sp R₁ ⟶ S) : scaleAt y 1 = 𝟙 _ :=
   Over.OverMorphism.ext (by
@@ -110,7 +110,7 @@ theorem scaleAt_one (y : Sp R₁ ⟶ S) : scaleAt y 1 = 𝟙 _ :=
     rw [es_one, spMap_id'])
 
 /- English proof (translation)
-The claim follows from `Over.OverMorphism.ext (by show spMap _ = spMap _ ≫ spMap _ rw [spMap_comp', es_zero])`.
+A detailed English derivation is pending.
 -/
 theorem scaleAt_zero (y : Sp R₁ ⟶ S) : scaleAt y 0 = baseAt y ≫ zeroAt y :=
   Over.OverMorphism.ext (by
@@ -151,7 +151,7 @@ section Theta
 variable {S : Scheme.{0}} {R₁ : Type} [CommRing R₁] (G : Over S) [GrpObj G] [IsCommMonObj G]
 
 /- English proof (translation)
-The claim follows from `and_congr ⟨fun h => Over.OverMorphism.ext h, fun h => congrArg Over.Hom.left h⟩ ⟨fun h => Over.OverMorphism.ext h, fun h => congrArg Over.Hom.left h⟩`.
+A detailed English derivation is pending.
 -/
 theorem isTanScal_iff' {O : Type} [Ring O] (act : OActN O G) (y : Sp R₁ ⟶ S) (c : O) (r : R₁)
     (u : epsPtR y ⟶ G) : IsTanScal act y c r u ↔ zeroAt y ≫ u = 1 ∧ u ≫ act.act c = scaleAt y r ≫ u :=
@@ -159,7 +159,7 @@ theorem isTanScal_iff' {O : Type} [Ring O] (act : OActN O G) (y : Sp R₁ ⟶ S)
     ⟨fun h => Over.OverMorphism.ext h, fun h => congrArg Over.Hom.left h⟩
 
 /- English proof (translation)
-The claim follows from `congrArg Over.Hom.left u.2`.
+A detailed English derivation is pending.
 -/
 theorem tan_left (y : Sp R₁ ⟶ S) (u : tan G y) :
     spMap (TrivSqZeroExt.fstHom R₁ R₁ R₁).toRingHom ≫ u.1.left = (1 : Over.mk y ⟶ G).left :=
@@ -208,7 +208,7 @@ def theta {O : Type} [Ring O] (F : Type) [CommRing F] [Algebra F O] (act : OActN
       exact (Category.assoc _ _ _).symm))).toRingHom
 
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.lift_tmul _ _ _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem theta_tmul {O : Type} [Ring O] (F : Type) [CommRing F] [Algebra F O] (act : OActN O G) {R : Type}
     [CommRing R] (β₁ : R →+* R₁) (y : Sp R₁ ⟶ S) (r : R) (c : F) :
@@ -224,11 +224,9 @@ def pullM {R₂ : Type} [CommRing R₂] (y : Sp R₁ ⟶ S) (y' : Sp R₂ ⟶ S)
   map_add' u u' := Subtype.ext (comp_mul _ _ _)
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => rw [map_zero, map_zero]`. Conclude with `map_zero _`. Consider the case `tmul r c`. Rewrite using `[theta_tmul, theta_tmul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show j ≫ scaleAt y (β₁ r) ≫ (_ ≫ _) = scaleAt y' (g₁ (β₁ r)) ≫ (j ≫ _) ≫ _`. Rewrite using `[← Category.assoc, hs, Category.assoc, Category.assoc]`. Consider the case `add z z' hz hz'`. Rewrite using `[map_add, map_add]`.
-
-Use `show pullM G y y' j g₀ hj (theta G F act β₁ y z u + theta G F act β₁ y z' u) = theta G F act (g₁.comp β₁) y' z (pullM G y y' j g₀ hj u) + theta G F act (g₁.comp β₁) y' z' (pullM G y y' j g₀ hj u)`. Rewrite using `[map_add, hz, hz']`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullM_theta {O : Type} [Ring O] (F : Type) [CommRing F] [Algebra F O] (act : OActN O G) {R : Type}
     [CommRing R] (β₁ : R →+* R₁) {R₂ : Type} [CommRing R₂] (g₁ : R₁ →+* R₂) (y : Sp R₁ ⟶ S) (y' : Sp R₂ ⟶ S)
@@ -251,29 +249,27 @@ theorem pullM_theta {O : Type} [Ring O] (F : Type) [CommRing F] [Algebra F O] (a
 end Theta
 
 /- English proof (translation)
-Introduce `p _ D R _ b X Y π sY Ga _ ρ A _ _ A₀ _ _ φ act act₀ hG _ _ hpb hact H R' _ β x hx v hv`. Take `⟨e, he⟩` from `GlobalTheory.T.exists_eigen_projections_tensor_of_comaximal R (𝓞 D.F) D.a b.t b.comax`. Take `⟨R'', _, g₁, x'', d₁, hsq, hdalg, hdfst, hdes, hepi⟩` from `GlobalTheory.T.exists_affine_galois_cover_dual_number_epi X Y π Ga ρ hG R' x`. Set `j : epsPtR (x'' ≫ π) ⟶ epsPtR x` to `Over.homMk (spMap d₁) (by show spMap d₁ ≫ spMap _ ≫ x = spMap _ ≫ x'' ≫ π`. Rewrite using `[hsq, ← Category.assoc, ← Category.assoc, spMap_comp', spMap_comp', hdalg])`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `g₀ : Over.mk (x'' ≫ π) ⟶ Over.mk x` to `Over.homMk (spMap g₁) hsq.symm`. Establish `hj : zeroAt (x'' ≫ π) ≫ j = g₀ ≫ zeroAt x` using `Over.OverMorphism.ext (by show spMap _ ≫ spMap d₁ = spMap g₁ ≫ spMap _`. Rewrite using `[spMap_comp', spMap_comp', hdfst])`. Establish `hs : ∀ r, j ≫ scaleAt x r = scaleAt (x'' ≫ π) (g₁ r) ≫ j` using `fun r => Over.OverMorphism.ext (by show spMap d₁ ≫ spMap _ = spMap _ ≫ spMap d₁`. Rewrite using `[spMap_comp', spMap_comp', hdes])`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `jinj : ∀ u u' : epsPtR x ⟶ A₀, j ≫ u = j ≫ u' → u = u'` using `fun u u' h => Over.OverMorphism.ext ((cancel_epi (spMap d₁)).1 (congrArg Over.Hom.left h))`. Set `pj : (epsPtR x ⟶ A₀) →* (epsPtR (x'' ≫ π) ⟶ A₀)` to `{ toFun := fun u => j ≫ u, map_one' := comp_one _, map_mul' := fun u u' => comp_mul _ _ _ }`. Establish `hv'` using `(isTanScal_iff' A₀ act₀ x _ _ v).1 hv`. Set `m : TM A₀ x` to `Additive.ofMul ⟨v, hv'.1⟩`. Set `Θ` to `theta A₀ (𝓞 D.F) act₀ β x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `Θ'` to `theta A₀ (𝓞 D.F) act₀ (g₁.comp β) (x'' ≫ π)`. Set `P` to `pullM A₀ x (x'' ≫ π) j g₀ hj`. Establish `hP : ∀ z u, P (Θ z u) = Θ' z (P u)` using `pullM_theta A₀ (𝓞 D.F) act₀ β g₁ x (x'' ≫ π) j g₀ hj hs`. Set `w : Fin D.a → (epsPtR x ⟶ A₀)` to `fun i => (Additive.toMul (Θ (e i) m)).1`. Establish `hx'' : x'' ≫ (π ≫ sY) = spMap (g₁.comp β)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[← Category.assoc, hsq, Category.assoc, hx, spMap_comp']`. Take `⟨E, hE⟩` from `GlobalTheory.LiePull.exists_pushEquiv hpb (epsPtR x'') (spMap (algebraMap R'' (DualNumber R'')) ≫ (x'' ≫ π)) (Category.assoc _ _ _).symm`. Establish `key : ∀ (u : epsPtR x'' ⟶ A) (c : D.O) (r : R''), IsTanScal act x'' c r u ↔ IsTanScal act₀ (x'' ≫ π) c r (E u)` using `fun u c r => GlobalTheory.HTPullTan.isTanScal_iff_of_left_eq π φ act₀ act hpb hact x'' c r u (E u) (hE u)`. Establish `hvj : IsTanScal act₀ (x'' ≫ π) (algebraMap (𝓞 D.F) D.O D.ω) ((g₁.comp β) b.ρ) (j ≫ v)`. Use `(isTanScal_iff' A₀ act₀ _ _ _ _).2 ⟨(Additive.toMul (P m)).2, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Category.assoc, hv'.2, ← Category.assoc, hs, Category.assoc]`. Both sides reduce to the same expression. Take `⟨w₃, hw₃, hprod⟩` from `H R'' (g₁.comp β) x'' hx'' (E.symm (j ≫ v)) ((key _ _ _).2 (by rw [MulEquiv.apply_symm_apply]; exact hvj))`. Establish `eig : ∀ l c, E (w₃ l) ≫ act₀.act (algebraMap (𝓞 D.F) D.O c) = scaleAt (x'' ≫ π) (g₁ (β (b.t l c))) ≫ E (w₃ l)` using `fun l c => ((isTanScal_iff' A₀ act₀ _ _ _ _).1 ((key _ _ _).1 (hw₃ l c))).2`. Set `m₃ : Fin D.a → TM A₀ (x'' ≫ π)` to `fun l => Additive.ofMul ⟨E (w₃ l), ((isTanScal_iff' A₀ act₀ _ _ _ _).1 ((key _ _ _).1 (hw₃ l 1))).1⟩`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hjv : j ≫ v = ∏ l, E (w₃ l)`. Rewrite using `[← List.prod_ofFn]`. Establish `h2` using `congrArg E hprod`. Rewrite `h2` using `[MulEquiv.apply_symm_apply, map_list_prod, List.map_ofFn]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hPm : P m = ∑ l, m₃ l`. Apply `Additive.toMul.injective` to reduce the goal to its premises. Rewrite using `[toMul_sum]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[SubmonoidClass.coe_finset_prod]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hjv`. Establish `eig₃ : ∀ l (c : 𝓞 D.F), Θ' (1 ⊗ₜ c) (m₃ l) = Θ' (b.t l c ⊗ₜ 1) (m₃ l)` using `fun l c => by`. Rewrite using `[theta_tmul, theta_tmul]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show scaleAt (x'' ≫ π) ((g₁.comp β) 1) ≫ (E (w₃ l) ≫ act₀.act (algebraMap (𝓞 D.F) D.O c)) = scaleAt (x'' ≫ π) ((g₁.comp β) (b.t l c)) ≫ (E (w₃ l) ≫ act₀.act (algebraMap (𝓞 D.F) D.O 1))`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[map_one, scaleAt_one, Category.id_comp, map_one, act₀.one, Category.comp_id, eig]`. Both sides reduce to the same expression. Establish `hw : ∀ i, j ≫ w i = E (w₃ i)` using `fun i => by`. Establish `h1 : P (Θ (e i) m) = m₃ i`. Rewrite using `[hP, hPm, map_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [he _ _ i _ _ (eig₃ _), Finset.sum_ite_eq, Finset.mem_univ, if_true]`. Conclude with `congrArg (fun z : TM A₀ (x'' ≫ π) => (Additive.toMul z).1) h1`. Use `⟨w, fun i c => ?_, ?_⟩` and prove the remaining obligations. Use `(isTanScal_iff' A₀ act₀ _ _ _ _).2 ⟨(Additive.toMul (Θ (e i) m)).2, jinj _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[← Category.assoc j (w i), hw, eig, ← Category.assoc j (scaleAt x _) (w i), hs, Category.assoc, hw]`.
-
-Use `jinj _ _ ?_ show pj v = pj (List.ofFn w).prod` and prove the remaining obligations. Rewrite using `[map_list_prod, List.map_ofFn, List.prod_ofFn]`. Conclude with `hjv.trans (Finset.prod_congr rfl fun i _ => (hw i).symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lie_descends : ∀ (p : ℕ) [Fact p.Prime] (D : GlobalTheory.UPel.HT.Datum p) (R : Type) [CommRing R] (b : Base D R) (X Y : Scheme.{0}) (π : X ⟶ Y) (sY : Y ⟶ Sp R) (Ga : Type) [Group Ga] (ρ : Ga → (X ⟶ X)) (A : Over X) [GrpObj A] [IsCommMonObj A] (A₀ : Over Y) [GrpObj A₀] [IsCommMonObj A₀] (φ : A.left ⟶ A₀.left) (act : OActN D.O A) (act₀ : OActN D.O A₀), GlobalTheory.ZM.IsGaloisCover Ga ρ π → IsAbelianScheme A → IsAbelianScheme A₀ → IsGrpPullback A A₀ π φ → (∀ c, (act.act c).left ≫ φ = φ ≫ (act₀.act c).left) → (∀ (R' : Type) [CommRing R'] (β : R →+* R') (x : Sp R' ⟶ X), x ≫ (π ≫ sY) = spMap β → ∀ v : epsPtR x ⟶ A, IsTanScal act x (algebraMap (𝓞 D.F) D.O D.ω) (β b.ρ) v → ∃ w : Fin D.a → (epsPtR x ⟶ A), (∀ i, ∀ c : 𝓞 D.F, IsTanScal act x (algebraMap (𝓞 D.F) D.O c) (β (b.t i c)) (w i)) ∧ v = (List.ofFn w).prod) → (∀ (R' : Type) [CommRing R'] (β : R →+* R') (x : Sp R' ⟶ Y), x ≫ sY = spMap β → ∀ v : epsPtR x ⟶ A₀, IsTanScal act₀ x (algebraMap (𝓞 D.F) D.O D.ω) (β b.ρ) v → ∃ w : Fin D.a → (epsPtR x ⟶ A₀), (∀ i, ∀ c : 𝓞 D.F, IsTanScal act₀ x (algebraMap (𝓞 D.F) D.O c) (β (b.t i c)) (w i)) ∧ v = (List.ofFn w).prod) := by
   intro p _ D R _ b X Y π sY Ga _ ρ A _ _ A₀ _ _ φ act act₀ hG _ _ hpb hact H R' _ β x hx v hv

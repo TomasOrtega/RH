@@ -21,51 +21,43 @@ namespace GlobalTheory
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `L _ c Q hQ`. Use `letI := hQ.isLocalRing`. Introduce `r z wt hN hm hz hw0 hw`. Use `haveI := hN`. Establish `hz0 : (z 0 : L) ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Establish `h1 : z 0 = 0` using `Subtype.ext h`. Use `GlobalTheory.T.coeff_mem_span_of_weightedHomogeneous_relation_quasiRegular z wt hw hz (wt 0) (X 0) (isWeightedHomogeneous_X Q wt 0) (by simp [h1]) (Finsupp.single 0 1)` as an intermediate fact. Rewrite `this` using `[coeff_X, if_pos rfl, hm]`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal Q).ne_top ((Ideal.eq_top_iff_one _).mpr this)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set u : Fin r → L := fun i => (z i.succ : L) / (z 0 : L) ^ wt i.succ with hu`. Establish `key0 : ∀ P : MvPolynomial (Fin r) Q, eval₂ Q.subtype u P = 0 → ∀ α, P.coeff α ∈ IsLocalRing.maximalIdeal Q`. Introduce `P hP α`. Take `⟨N, F, hF, hFe, hc⟩` from `GlobalTheory.T.exists_weightedHomogeneous_homogenisation Q r z wt hw0 hz0 P`. Take `⟨β, hβ⟩` from `hc α`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← hβ, ← hm]`. Use `GlobalTheory.T.coeff_mem_span_of_weightedHomogeneous_relation_quasiRegular z wt hw hz N F hF ?_ β` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hFe, hP, mul_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e : MvPolynomial (Fin r) Q →+* L := eval₂Hom Q.subtype u with he`. Use `set A : Subring L := e.range with hA`. Use `set eA : MvPolynomial (Fin r) Q →+* A := e.rangeRestrict with heA`. Establish `heA_surj : Function.Surjective eA` using `e.rangeRestrict_surjective`. Establish `heA_val : ∀ P, ((eA P : A) : L) = e P` using `fun P => rfl`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hQA : ∀ q ∈ Q, q ∈ A` using `fun q hq => ⟨C ⟨q, hq⟩, by simp [he]⟩`. Establish `huA : ∀ i, u i ∈ A` using `fun i => ⟨X i, by simp [he]⟩`. Set `t : A` to `⟨z 0, hQA _ (z 0).2⟩`. Establish `hzA : ∀ j, ∃ a : A, ((z j : Q) : L) = (z 0 : L) * a`. Introduce `j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Use `Fin.cases ⟨1, by simp⟩ (fun i => ?_) j` and prove the remaining obligations. Use `⟨⟨(z 0 : L) ^ (wt i.succ - 1) * u i, A.mul_mem (A.pow_mem (hQA _ (z 0).2) _) (huA i)⟩, ?_⟩` and prove the remaining obligations. Use `show ((z i.succ : Q) : L) = (z 0 : L) * ((z 0 : L) ^ (wt i.succ - 1) * ((z i.succ : L) / (z 0 : L) ^ wt i.succ))`. Rewrite using `[← mul_assoc, ← pow_succ', Nat.sub_add_cancel (hw i.succ), mul_div_cancel₀ _ (pow_ne_zero _ hz0)]`. Establish `hmA : Ideal.map (eA.comp C) (IsLocalRing.maximalIdeal Q) ≤ Ideal.span {t}`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.map_le_iff_le_comap, ← hm, Ideal.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Take `⟨a, ha⟩` from `hzA j`. Use `show eA (C (z j)) ∈ Ideal.span {t}`. Rewrite using `[Ideal.mem_span_singleton']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `⟨a, Subtype.ext (by rw [heA_val]; simp [he, ha, mul_comm, t])⟩`. Establish `hspan : Ideal.span {t} = Ideal.map eA (Ideal.map C (IsLocalRing.maximalIdeal Q))`. Rewrite using `[Ideal.map_map]`. Use `le_antisymm ?_ hmA` and prove the remaining obligations. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: t = (eA.comp C) (z 0)` using `Subtype.ext (by rw [RingHom.comp_apply, heA_val]; simp [he, t])`. Rewrite using `[SetLike.mem_coe, this]`. Conclude with `Ideal.mem_map_of_mem _ (by rw [← hm]; exact Ideal.subset_span ⟨0, rfl⟩)`. Establish `hker : RingHom.ker eA ≤ Ideal.map C (IsLocalRing.maximalIdeal Q)`. Introduce `P hP`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.mem_map_C_iff]`. Use `key0 P ?_` and prove the remaining obligations. Use `congrArg Subtype.val ((RingHom.mem_ker).mp hP)` as an intermediate fact. Simplify `this` using `[heA_val, he]`. Establish `hprimeC : (Ideal.map (C : Q →+* MvPolynomial (Fin r) Q) (IsLocalRing.maximalIdeal Q)).IsPrime`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `MvPolynomial.ker_map (σ := Fin r) (IsLocalRing.residue Q)` as an intermediate fact. Rewrite `this` using `[IsLocalRing.ker_residue]`. Rewrite using `[← this]`. Conclude with `RingHom.ker_isPrime _`. Establish `hprime : (Ideal.span {t}).IsPrime`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hspan]`. Conclude with `Ideal.map_isPrime_of_surjective heA_surj hker`. Establish `key1 : ∀ P : MvPolynomial (Fin r) Q, eA P ∈ Ideal.span {t} → P ∈ Ideal.map C (IsLocalRing.maximalIdeal Q)`. Introduce `P hP`. Rewrite `hP` using `[hspan]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx, hxP⟩` from `(Ideal.mem_map_iff_of_surjective eA heA_surj).mp hP`. Establish `: P - x ∈ RingHom.ker eA` using `by rw [RingHom.mem_ker, map_sub, hxP, sub_self]`. Simplify using `using Ideal.add_mem _ (hker this) hx`. Establish `hNA : IsNoetherianRing A` using `isNoetherianRing_of_surjective _ _ eA heA_surj`. Establish `hfracA : ∀ f : L, ∃ a ∈ A, ∃ b ∈ A, b ≠ 0 ∧ f * b = a`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `f`. Take `⟨a, ha, b, hb, hb0, hab⟩` from `hQ.frac f`. Conclude with `⟨a, hQA a ha, b, hQA b hb, hb0, hab⟩`. Take `⟨V, hAV, hdvr, hirr, hunit, hfrV, hess⟩` from `GlobalTheory.T.isDVR_of_principal_prime_localization A t hNA hz0 hprime hfracA`. Establish `hQAf : (Q.subtype.codRestrict A fun q => hQA _ q.2).FiniteType`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1 : (Q.subtype.codRestrict A fun q => hQA _ q.2) = eA.comp C`. Use extensionality with `q`. Simplify using `[heA_val, he]`. Rewrite using `[h1]`. Conclude with `RingHom.FiniteType.comp_surjective (RingHom.finiteType_algebraMap.mpr inferInstance) heA_surj`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hconst : ∀ a, c a ∈ V` using `fun a => hAV _ (hQA _ (hQ.const_mem a))`. Establish `hessV : (c.codRestrict V hconst).EssFiniteType`. Establish `h` using `(hQ.essFiniteType.comp hQAf.essFiniteType).comp hess`. Conclude with `h`. Set `P0 : Place c` to `⟨V, hconst, hdvr, hessV⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hC : P0.Contains Q` using `fun f hf => hAV _ (hQA _ hf)`. Set `uV : Fin r → P0.ring` to `fun i => ⟨u i, hAV _ (huA i)⟩`. Establish `hev : ∀ P : MvPolynomial (Fin r) Q, ((MvPolynomial.eval₂ (Q.subtype.codRestrict P0.ring fun q => hC _ q.2) uV P : P0.ring) : L) = e P`. Introduce `P`. Conclude with `MvPolynomial.eval₂_comp_left (P0.ring.subtype) (Q.subtype.codRestrict P0.ring fun q => hC _ q.2) uV P`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `⟨P0, hC, uV, fun i => ?_, ?_, fun q hq => ?_, fun P hP => ?_, fun f => ?_⟩` and prove the remaining obligations. Conclude with `div_mul_cancel₀ _ (pow_ne_zero _ hz0)`. Conclude with `hirr`. Take `⟨a, ha⟩` from `(Ideal.mem_span_singleton').mp (hmA (Ideal.mem_map_of_mem _ hq))`. Establish `hmt : (⟨(t : L), hAV _ t.2⟩ : V) ∈ IsLocalRing.maximalIdeal V` using `(IsLocalRing.mem_maximalIdeal _).mpr hirr.not_isUnit`.
-
-Establish `: (⟨(q : L), hC _ q.2⟩ : P0.ring) = ⟨(a : L), hAV _ a.2⟩ * ⟨(t : L), hAV _ t.2⟩` using `Subtype.ext (by have := congrArg Subtype.val ha; simpa [heA_val, he] using this.symm)`. Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ hmt`. Establish `hs : eA P ∉ Ideal.span {t}` using `fun h => by`. Take `⟨α, hα⟩` from `hP`.
-
-Conclude with `hα ((MvPolynomial.mem_map_C_iff.mp (key1 P h)) α)`. Use `hunit _ hs` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext (hev P)`. Take `⟨a, s, hs, hfs⟩` from `hfrV f`.
-
-Take `⟨P, rfl⟩` from `heA_surj a`. Take `⟨R, rfl⟩` from `heA_surj s`. Use `⟨P, R, ?_, Subtype.ext ?_⟩` and prove the remaining obligations. Use `hunit _ hs using 1` and compare the differences between its conclusion and the goal. Conclude with `Subtype.ext (hev R)`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_weightedMonomialPlace : ∀ {L : Type} [Field L] (c : ℂ →+* L) (Q : Subring L) (hQ : IsLocModel c Q),
     letI := hQ.isLocalRing; ∀ (r : ℕ) (z : Fin (r + 1) → Q) (wt : Fin (r + 1) → ℕ),

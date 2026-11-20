@@ -21,15 +21,15 @@ open ReciprocityTheory.ChartRestriction.G.DVR GlobalTheory.WeierstrassCurve Glob
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 
 /- English proof (translation)
-The claim follows from `isUnit_one_sub_self_of_mem_nonunits _ (Ideal.mul_mem_left (maximalIdeal V) 64 ha)`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_one_sub {a : V} (ha : a ∈ maximalIdeal V) : IsUnit (1 - 64 * a) :=
   isUnit_one_sub_self_of_mem_nonunits _ (Ideal.mul_mem_left (maximalIdeal V) 64 ha)
 
 /- English proof (translation)
-Use `⟨?_⟩` and prove the remaining obligations. Rewrite using `[WeierstrassCurve.map_Δ, isUnit_iff_ne_zero, map_ne_zero_iff _ (IsFractionRing.injective _ _)]`. Establish `: (⟨1, 0, 0, a, 0⟩ : WeierstrassCurve V).Δ = a ^ 2 * (1 - 64 * a)`. Simplify using `only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[this]`. Conclude with `mul_ne_zero (pow_ne_zero _ ha0) (isUnit_one_sub ha).ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isElliptic_generic {a : V} (ha : a ∈ maximalIdeal V) (ha0 : a ≠ 0) :
     ((⟨1, 0, 0, a, 0⟩ : WeierstrassCurve V).map (algebraMap _ (FractionRing V))).IsElliptic := by
@@ -42,19 +42,17 @@ theorem isElliptic_generic {a : V} (ha : a ∈ maximalIdeal V) (ha0 : a ≠ 0) :
   exact mul_ne_zero (pow_ne_zero _ ha0) (isUnit_one_sub ha).ne_zero
 
 /- English proof (translation)
-Introduce `W hW U hU hsm hgi hqc _ _ hmul`. Establish `hgc : GeometricallyConnected (U.ι ≫ toSpec W)`. Use `⟨fun K _ y Z fst snd h ↦ ?_⟩` and prove the remaining obligations. Establish `: IsIntegral Z` using `GeometricallyIntegral.geometrically_isIntegral y fst snd h`. Conclude with `inferInstanceAs (ConnectedSpace Z)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htor : ∀ (K : Type) [Field K] (f : V →+* K), f a = 0 → ∃ i : splitTorus (Spec (CommRingCat.of K)) ℤ ≅ (Over.pullback (Spec.map (CommRingCat.ofHom f))).obj (Over.mk (U.ι ≫ toSpec W)), IsMonHom i.hom`. Introduce `K _ f hf`. Take `⟨U', _, e, he, -, hU', hmul'⟩` from `GlobalTheory.SmoothLocusBaseChange.main _ K f W U hU hsm hgi hmul`. Establish `hl : U'.ι ≫ toSpec (W.map f) = e.hom.left ≫ pullback.snd (U.ι ≫ toSpec W) (Spec.map (CommRingCat.ofHom f))` using `(Over.w e.hom).symm`. Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.hom))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `obtain ⟨i, hi⟩ := GlobalTheory.NodalCubic.exists_splitTorus_iso K (W.map f) (by subst hW; ext <;> simp [hf]) U' hU' (by rw [hl]; infer_instance) (by`. Rewrite using `[hl]`. Conclude with `MorphismProperty.of_isPullback (P := @GeometricallyIntegral) (IsPullback.of_horiz_isIso (fst := e.hom.left) (g := 𝟙 _) ⟨(Category.comp_id _).symm⟩) (inferInstanceAs (GeometricallyIntegral (pullback.snd (U.ι ≫ toSpec W) (Spec.map (CommRingCat.ofHom f)))))) hmul'`. Conclude with `⟨i ≪≫ e, by rw [Iso.trans_hom]; infer_instance⟩`. Use `⟨⟨inferInstance, hsm, inferInstanceAs (IsSeparated (U.ι ≫ toSpec W)), hqc, hgc, fun Ω _ _ p => ?_⟩, htor _ _ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨g, rfl⟩` from `Spec.map_surjective p`. Take `⟨f, rfl⟩ : ∃ f : V →+* Ω, g = CommRingCat.ofHom f` from `⟨g.hom, rfl⟩`. Distinguish the cases in `hf : f a = 0`. Take `⟨i, hi⟩` from `htor Ω f hf`. Take `⟨T⟩` from `nonempty_torusExtension_splitTorus Ω`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨Geo.Tor.torusExtOfIso i T⟩`. Establish `hΔ : W.Δ = a ^ 2 * (1 - 64 * a)`. Substitute `hW` using the available equality. Simplify using `only [WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Expand and normalize the polynomial expressions, which then agree.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hu : IsUnit (1 - 64 * a : V)` using `isUnit_one_sub ha`. Establish `hΔ' : f W.Δ ≠ 0`. Rewrite using `[hΔ, map_mul, map_pow]`. Conclude with `mul_ne_zero (pow_ne_zero _ hf) (hu.map f).ne_zero`. Use `⟨GlobalTheory.torusExtensionOfAbelian _ ⟨inferInstance, ?_, ?_, ?_⟩⟩` and prove the remaining obligations.
-
-Conclude with `inferInstanceAs (Smooth (pullback.snd (U.ι ≫ toSpec W) _))`. Conclude with `isProper_pullback_snd W U hU f hΔ'`. Conclude with `inferInstanceAs (GeometricallyConnected (pullback.snd (U.ι ≫ toSpec W) _))`. Conclude with `(IsLocalRing.residue_eq_zero_iff a).2 ha`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem isSemiAbelian_and_specialFibre {a : V} (ha : a ∈ maximalIdeal V) : ∀ (W : WeierstrassCurve V), W = ⟨1, 0, 0, a, 0⟩ → ∀ (U : (GlobalTheory.WeierstrassCurve.scheme W).Opens), (∀ (k : Type) [Field k] (ρ : V →+* k) (P : Fin 3 → k) (h : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) P), ⊤ ≤ GlobalTheory.WeierstrassCurve.ptHom W ρ P h ⁻¹ᵁ U ↔ (W.map ρ).toProjective.Nonsingular P) → Smooth (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W) → GeometricallyIntegral (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W) → QuasiCompact (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W) → ∀ [GrpObj (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))] [IsCommMonObj (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))], (∀ (k : Type) [Field k] (ρ : V →+* k) (x y : Over.mk (Spec.map (CommRingCat.ofHom ρ)) ⟶ (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))) (P Q : Fin 3 → k) (hP : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) P) (hQ : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) Q), x.left ≫ U.ι = GlobalTheory.WeierstrassCurve.ptHom W ρ P hP → y.left ≫ U.ι = GlobalTheory.WeierstrassCurve.ptHom W ρ Q hQ → ∃ h : GlobalTheory.WeierstrassCurve.IsUnimodularSol (W.map ρ) ((W.map ρ).toProjective.add P Q), (lift x y ≫ μ[(Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W))]).left ≫ U.ι = GlobalTheory.WeierstrassCurve.ptHom W ρ _ h) → IsSemiAbelian (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W)) ∧ ∃ i : splitTorus (Spec (CommRingCat.of (IsLocalRing.ResidueField V))) ℤ ≅ (Over.pullback (Spec.map (CommRingCat.ofHom (IsLocalRing.residue V)))).obj (Over.mk (U.ι ≫ GlobalTheory.WeierstrassCurve.toSpec W)), IsMonHom i.hom := by
   intro W hW U hU hsm hgi hqc _ _ hmul
@@ -107,33 +105,31 @@ theorem isSemiAbelian_and_specialFibre {a : V} (ha : a ∈ maximalIdeal V) : ∀
   · exact (IsLocalRing.residue_eq_zero_iff a).2 ha
 
 /- English proof (translation)
-Establish `hL` using `GlobalTheory.allSixLaws.1`. Take `⟨W, hW⟩ : ∃ W : WeierstrassCurve V, W = ⟨1, 0, 0, a, 0⟩` from `⟨_, rfl⟩`. Take `⟨U, hU, hsm, hqc, hgi⟩` from `exists_smoothLocus _ W`. Establish `hs : Smooth (U.ι ≫ toSpec W)` using `SmoothOfRelativeDimension.smooth 1 _`. Take `⟨_, _, hη, hmul⟩` from `GlobalTheory.exists_grpObj_smoothLocus _ W U hU hs hgi`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hG, i, hi⟩` from `isSemiAbelian_and_specialFibre ha W hW U hU hs hgi hqc hmul`. Set `f` to `algebraMap V (FractionRing V)`. Establish `: (W.map f).IsElliptic` using `hW ▸ isElliptic_generic ha ha0`. Take `⟨φ, hφ⟩` from `exists_iso_schemeOver f W U hU`. Set `G` to `Over.mk (U.ι ≫ toSpec W)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `j` to `pullback.fst G.hom (jK V)`. Establish `hη' : (η[(Over.pullback (jK V)).obj G]).left ≫ j ≫ U.ι = jK _ ≫ zero W`. Rewrite using `[← hη, ← Category.assoc, ← Category.assoc]`. Conclude with `congrArg (· ≫ U.ι) (one_pullback_fst _ G)`. Establish `hP : IsUnimodularSol (W.map f) ![0, 0, 1]` using `hW ▸ isUnimodularSol_twoPt _ _`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : f a ≠ 0` using `(map_ne_zero_iff _ (IsFractionRing.injective _ _)).2 ha0`. Establish `hPU` using `(hU _ f _ hP).2 (hW ▸ (nonsingular_twoPt _ f).2 hX)`. Establish `hr : Set.range (ptHom W f _ hP) ⊆ Set.range U.ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `hPU (Set.mem_univ y)`. Establish `hb` using `IsOpenImmersion.lift_fac U.ι (ptHom W f _ hP) hr`. Establish `hb' : IsOpenImmersion.lift U.ι (ptHom W f _ hP) hr ≫ U.ι ≫ toSpec W = jK _`. Rewrite using `[← Category.assoc, hb, ptHom_toSpec]`. Set `b : Over.mk (jK V) ⟶ G` to `Over.homMk _ hb'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `x : 𝟙_ _ ⟶ (Over.pullback (jK V)).obj G` to `Over.homMk (pullback.lift b.left (𝟙 _) (hb'.trans (Category.id_comp _).symm)) (pullback.lift_snd _ _ _)`. Establish `hxa : x.left ≫ j = b.left` using `pullback.lift_fst _ _ _`. Establish `hx : x * x = 1`. Establish `h₁ : (1 : 𝟙_ _ ⟶ (Over.pullback (jK V)).obj G) = η[_]` using `by rw [Hom.one_def]; simp`. Rewrite using `[h₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Over.OverMorphism.ext (pullback.hom_ext ?_ ((Over.w _).trans (Over.w _).symm))` and prove the remaining obligations. Establish `h₂` using `SmoothLocusBaseChange.lift_mul_pullback_fst (jK V) G x x (𝟙 _) b b (hxa.symm.trans (Category.id_comp _).symm) (hxa.symm.trans (Category.id_comp _).symm)`. Take `⟨h, h₃⟩` from `hmul _ f b b _ _ hP hP hb hb`. Use `(cancel_mono U.ι).1 ?_` and prove the remaining obligations. Use `Eq.trans ?_ (hη'.symm.trans (Category.assoc _ _ _).symm)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(congrArg (· ≫ U.ι) (h₂.trans (Category.id_comp _))).symm.trans (h₃.trans ?_)` and prove the remaining obligations. Rewrite using `[SpecMap_zero, ptHom_eq_ptHom_iff_minors]`. Take `⟨h₄, h₅⟩` from `add_twoPt a f`. Rewrite `h₄`, `h₅` using `[← hW]`. Introduce `m l`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Apply the tactic sequence `fin_cases m <;> fin_cases l <;> simp [h₄, h₅]`. Establish `hz : (η[(Over.pullback (jK V)).obj G]).left ≫ φ.hom.left = zero (W.map f)`. Apply `(isPullback_mapHom W f rfl).hom_ext` to reduce the goal to its premises. Conclude with `(Category.assoc _ _ _).trans ((congrArg (_ ≫ ·) hφ).trans (hη'.trans (zero_mapHom W f rfl).symm))`. Conclude with `(Over.w (η[(Over.pullback (jK V)).obj G] ≫ φ.hom)).trans (zero_toSpec _).symm`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨A, eA, θ, heA, hg, hθ⟩` from `exists_pol_twoTorsion hL (W.map f) _ φ hz x hx`. Take `⟨LG, c, s, hs₁, hs₂, w, hw⟩` from `PolExtension.exists_cubical_symmetric_extension hL _ G hG A eA heA`. Use `⟨G, inferInstance, inferInstance, A, eA, i, hG, heA, hi, hg, LG, c, s, hs₁, hs₂, ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Take `⟨t, ht⟩` from `exists_sec_of_iso A.isLB (pull_isLB LG.isLB j) eA.hom.left ⟨w, hw⟩ θ`. Establish `ht' : ∀ z, z ∈ nonzeroLocus t ↔ z ∉ Set.range x.left` using `fun z => (ht z).trans (hθ z)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `exists_sec_generates_specialFibre _ G hG LG.L LG.isLB t ⟨(η[(Over.pullback (jK V)).obj G]).left (IsLocalRing.closedPoint _), (ht' _).2 ?_⟩ ?_` and prove the remaining obligations. Introduce and unpack `⟨p, hp⟩`. Establish `h₁ : ptHom W f _ hP p ∈ coordOpen W 2` using `(ptHom_preimage_coordOpen W f _ hP 2).ge (PrimeSpectrum.basicOpen_one.ge (Set.mem_univ p))`. Establish `h₂ : ptHom W f _ hP p = zero W (jK _ (IsLocalRing.closedPoint _))` using `(congrArg (fun q => q p) ((congrArg (· ≫ U.ι) hxa).trans hb)).symm.trans ((congrArg (j ≫ U.ι) hp).trans (congrArg (fun q => q (IsLocalRing.closedPoint _)) hη'))`. Rewrite `h₁` using `[h₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Conclude with `(zero_preimage_coordOpen_two W).le h₁`. Establish `e : j '' {z | z ∉ nonzeroLocus t} = Set.range b.left`. Rewrite using `[← hxa]`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨z, hz, rfl⟩`. Take `⟨p, rfl⟩` from `not_not.1 (mt (ht' z).2 hz)`. Conclude with `⟨p, rfl⟩`. Introduce and unpack `⟨p, rfl⟩`. Conclude with `⟨x.left p, fun h => (ht' _).1 h ⟨p, rfl⟩, rfl⟩`.
-
-Conclude with `e ▸ isClosed_twoPt ha W hW U hU b.left hP hb`.
+A detailed English derivation is pending.
 -/
 theorem exists_semiAbelian_polarised {a : V} (ha : a ∈ maximalIdeal V) (ha0 : a ≠ 0) : ∃ (G : Over (Spec (CommRingCat.of V))) (_ : GrpObj G) (_ : IsCommMonObj G) (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (eA : (Over.pullback (jK V)).obj G ≅ A.A) (i : splitTorus (Spec (CommRingCat.of (IsLocalRing.ResidueField V))) ℤ ≅ (Over.pullback (Spec.map (CommRingCat.ofHom (IsLocalRing.residue V)))).obj G), IsSemiAbelian G ∧ IsMonHom eA.hom ∧ IsMonHom i.hom ∧ A.g = 1 ∧ ∃ (LG : RigLB G) (_c : CubicalStr G LG) (s : LB.Gen (LB.LinComb LG.L (K := Fin 2) ![(ι[G]).left, 𝟙 G.left] ![1, -1])), s.IsGen ∧ LB.Gen.Corr LG.L _ _ _ _ (LB.pullGen LG.L _ _ s (eSec G)) (LB.oneGen LG.L) ∧ (∃ w : LB.Iso (A.L.pull eA.hom.left) (LG.L.pull (pullback.fst G.hom (jK V))), w.IsGen) ∧ ∃ θ : H0 LG.L 1, ∀ x : G.left, G.hom x = IsLocalRing.closedPoint V → x ∈ nonzeroLocus θ := by
   have hL := GlobalTheory.allSixLaws.1
@@ -214,7 +210,7 @@ end Curve
 open GlobalTheory.UU GlobalTheory.MultiplicativeTorusSetting GlobalTheory.TateUnif
 
 /- English proof (translation)
-Introduce `h` and use `by let e : k ≃+* Γ(Spec (CommRingCat.of k), ⊤) := (Scheme.ΓSpecIso (CommRingCat.of k)).symm.commRingCatIsoToRingEquiv obtain ⟨p, hp, h0⟩ := isIntegral_appTop_of_universallyClosed (splitTorus (Spec (CommRingCat.of k)) ℤ).hom (charUnit (Spec (CommRingCat.of k)) ℤ 1).val have root : …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isProper_torus_of_infinite (k : Type) [Field k] [Infinite k] :
     ¬ IsProper (splitTorus (Spec (CommRingCat.of k)) ℤ).hom := fun h => by
@@ -241,7 +237,7 @@ theorem not_isProper_torus_of_infinite (k : Type) [Field k] [Infinite k] :
   exact (hp.map _).ne_zero (Polynomial.eq_zero_of_infinite_isRoot _ inf)
 
 /- English proof (translation)
-Introduce `h` and use `not_isProper_torus_of_infinite (AlgebraicClosure k) (MorphismProperty.of_isPullback (P := @IsProper) (SplitTorus.isGrpPullback_bcMap (spMap (algebraMap k (AlgebraicClosure k))) ℤ).1 h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isProper_torus (k : Type) [Field k] :
     ¬ IsProper (splitTorus (Spec (CommRingCat.of k)) ℤ).hom := fun h =>
@@ -251,15 +247,15 @@ theorem not_isProper_torus (k : Type) [Field k] :
 variable {V : Type} [CommRing V] [IsDomain V] [IsLocalRing V]
 
 /- English proof (translation)
-Take `⟨laws, laws₂, -⟩` from `GlobalTheory.allSixLaws`. Use `hV.1` as an intermediate fact. Take `⟨a, ha'⟩` from `IsDiscreteValuationRing.exists_irreducible V`. Take `⟨G, _, _, A, eA, i, hG, hA, hi, hg, L, -, -, -, -, hw, θ, hθ⟩` from `exists_semiAbelian_polarised (a := a) ha'.not_isUnit ha'.ne_zero`. Take `⟨P, rfl⟩` from `CubicalPackage.exists_package laws _ hV A G hG eA hA L hw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `hG.smooth` as an intermediate fact. Establish `: IsMonHom eA.symm.hom` using `inferInstanceAs (IsMonHom eA.inv)`. Establish `gp : IsGrpPullback A.A G (jK _) (eA.inv.left ≫ pullback.fst G.hom (jK _))` using `((isGrpPullback_of_iso eA.symm).comp (isGrpPullback_pullback G (jK _))).congr (Category.id_comp _) rfl`. Establish `hinv : eA.inv.left ≫ eA.hom.left = 𝟙 _` using `by rw [← Over.comp_left, eA.inv_hom_id, Over.id_left]`. Take `⟨s, hs⟩` from `exists_even_sec laws₂.secTwist A gp P (LBIso.chartPull (chartPullSec A.L _ eA.inv.left hinv) (chartPullSame P.L.L _ _ _ eA.inv.left fun _ => rfl) hw) θ (hθ _ (congrArg (fun q => q (IsLocalRing.closedPoint V)) (Over.w η[G])))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨r, hr⟩` from `thick_zero_factor V`. Take `⟨i₀, hi₀, -⟩` from `grpPullback_iso (((SplitTorus.isGrpPullback_bcMap r ℤ).comp ((isGrpPullback_of_iso i).comp (isGrpPullback_pullback G _))).congr ((congrArg (r ≫ ·) (Category.id_comp _)).trans hr.symm) rfl) (isGrpPullback_pullback G (thick _ (IsLocalRing.maximalIdeal V) 0))`. Take `⟨P₀, w₀, h₀⟩` from `exists_isLevelCP (IsLocalRing.maximalIdeal V) 0 P`. Establish `hm : (IsLocalRing.maximalIdeal V ^ (0 + 1)).IsMaximal`. Rewrite using `[zero_add, pow_one]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`. Set `_ : Field (V ⧸ IsLocalRing.maximalIdeal V ^ (0 + 1))` to `Ideal.Quotient.field _`. Take `⟨wA, hwA⟩` from `hw`. Use `⟨A, G, inferInstance, inferInstance, ⟨hV, hG, eA, hA, P, wA, hwA, ℤ, tqOfIso i₀, P₀, ⟨w₀, h₀⟩, exists_even_cubTriv i₀ h₀ s (fun y J hJ => (hs _ _ y J hJ).1 (hθ _ ?_)) fun Z r z J hJ => (hs Z r z J hJ).2⟩, hg, Module.finrank_self ℤ, fun h => not_isProper_torus (V ⧸ IsLocalRing.max …` and prove the remaining obligations. Conclude with `(congrArg (fun q => q y) (pullback.condition.trans (congrArg (_ ≫ ·) hr))).trans (IsLocalRing.PrimeSpectrum.comap_residue _ (r (pullback.snd G.hom _ y)))`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: IsIso i₀.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map i₀.hom))`. Rewrite using `[← Over.w i₀.hom]`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem exists_setting (hV : CDVR V) : ∃ (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) (_ : GrpObj G) (_ : IsCommMonObj G) (s : HidaSetting V A G), A.g = 1 ∧ Module.finrank ℤ s.X = 1 ∧ ¬ IsProper (thickObj V (IsLocalRing.maximalIdeal V) 0 G).hom := by
   obtain ⟨laws, laws₂, -⟩ := GlobalTheory.allSixLaws
@@ -297,9 +293,9 @@ theorem exists_setting (hV : CDVR V) : ∃ (A : PolAV (Spec (CommRingCat.of (Fra
     infer_instance
 
 /- English proof (translation)
-Take `⟨A, G, _, _, s, hA, -, hnp⟩` from `exists_setting hV`. Take `⟨D, U, -⟩` from `GlobalTheory.UU.exists_degData_unif_unconditional V A G s`. Establish `hR : AdmBase V (IsLocalRing.maximalIdeal V)`. Use `hV.1` as an intermediate fact. Use the proof step `⟨inferInstance, inferInstance, inferInstance, hV.2.1⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `rank_add_dim hR s.semi U`. Establish `h0 : Module.finrank ℤ D.toPre.X ≠ 0` using `fun h0 => by`. Establish `: Subsingleton D.toPre.X` using `Module.finrank_zero_iff.1 h0`. Conclude with `hnp (isProper_of_subsingleton (U.gt 0))`. Conclude with `⟨A, G, inferInstance, inferInstance, D, U, s.semi, hA, by omega, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_unif_rank_one (hV : CDVR V) : ∃ (A : PolAV (Spec (CommRingCat.of (FractionRing V)))) (G : Over (Spec (CommRingCat.of V))) (_ : GrpObj G) (_ : IsCommMonObj G) (D : DegData V (IsLocalRing.maximalIdeal V)) (_ : Unif (IsLocalRing.maximalIdeal V) D A G), IsSemiAbelian G ∧ A.g = 1 ∧ Module.finrank ℤ D.toPre.X = 1 ∧ D.toPre.P.g = 0 := by
   obtain ⟨A, G, _, _, s, hA, -, hnp⟩ := exists_setting hV

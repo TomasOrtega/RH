@@ -16,35 +16,35 @@ variable {F : Type} [Field F] {X Y : ℕ → Type} [∀ n, AddCommGroup (X n)] [
   [∀ n, AddCommGroup (Y n)] [∀ n, Module F (Y n)]
 
 /- English proof (translation)
-Simplify using `[cyc, Submodule.mem_inf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_cyc {CX : ∀ n, Submodule F (X n)} {dX : ∀ n, X n →ₗ[F] X (n + 1)} {n : ℕ} {x : X n} :
     x ∈ cyc CX dX n ↔ x ∈ CX n ∧ dX n x = 0 := by
   simp [cyc, Submodule.mem_inf, LinearMap.mem_ker]
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_bot F`.
+A detailed English derivation is pending.
 -/
 theorem mem_bnd_zero {CX : ∀ n, Submodule F (X n)} {dX : ∀ n, X n →ₗ[F] X (n + 1)} {x : X 0} :
     x ∈ bnd CX dX 0 ↔ x = 0 :=
   Submodule.mem_bot F
 
 /- English proof (translation)
-The claim follows from `Submodule.mem_map`.
+A detailed English derivation is pending.
 -/
 theorem mem_bnd_succ {CX : ∀ n, Submodule F (X n)} {dX : ∀ n, X n →ₗ[F] X (n + 1)} {n : ℕ} {x : X (n + 1)} :
     x ∈ bnd CX dX (n + 1) ↔ ∃ w ∈ CX n, dX n w = x :=
   Submodule.mem_map
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.mk_eq_zero _`.
+A detailed English derivation is pending.
 -/
 theorem coh_mk_eq_zero {CX : ∀ n, Submodule F (X n)} {dX : ∀ n, X n →ₗ[F] X (n + 1)} {n : ℕ}
     (x : cyc CX dX n) : (Submodule.Quotient.mk x : coh CX dX n) = 0 ↔ (x : X n) ∈ bnd CX dX n :=
   Submodule.Quotient.mk_eq_zero _
 
 /- English proof (translation)
-The claim follows from `Submodule.Quotient.eq _`.
+A detailed English derivation is pending.
 -/
 theorem coh_mk_eq {CX : ∀ n, Submodule F (X n)} {dX : ∀ n, X n →ₗ[F] X (n + 1)} {n : ℕ}
     (x y : cyc CX dX n) :
@@ -52,7 +52,7 @@ theorem coh_mk_eq {CX : ∀ n, Submodule F (X n)} {dX : ∀ n, X n →ₗ[F] X (
   Submodule.Quotient.eq _
 
 /- English proof (translation)
-Break down `n with _ | n` into its components or cases. Rewrite using `[mem_bnd_zero.1 hx, map_zero]`. Take `⟨w, hw, rfl⟩` from `mem_bnd_succ.1 hx`. Conclude with `hdd n w hw`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem d_of_mem_bnd {CX : ∀ n, Submodule F (X n)} {dX : ∀ n, X n →ₗ[F] X (n + 1)}
     (hdd : ∀ n, ∀ x ∈ CX n, dX (n + 1) (dX n x) = 0) {n : ℕ} {x : X n} (hx : x ∈ bnd CX dX n) :
@@ -66,7 +66,7 @@ variable (CX : ∀ n, Submodule F (X n)) (dX : ∀ n, X n →ₗ[F] X (n + 1))
   (CY : ∀ n, Submodule F (Y n)) (dY : ∀ n, Y n →ₗ[F] Y (n + 1)) (h : ∀ n, X n →ₗ[F] Y n)
 
 /- English proof (translation)
-Introduce `x hx`. Rewrite `hx`, the goal using `[mem_cyc]`. Conclude with `⟨hC n x hx.1, by rw [hd n x hx.1, hx.2, map_zero]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem map_mem_cyc (hC : ∀ n, ∀ x ∈ CX n, h n x ∈ CY n)
     (hd : ∀ n, ∀ x ∈ CX n, dY n (h n x) = h (n + 1) (dX n x)) (n : ℕ) :
@@ -76,9 +76,9 @@ theorem map_mem_cyc (hC : ∀ n, ∀ x ∈ CX n, h n x ∈ CY n)
   exact ⟨hC n x hx.1, by rw [hd n x hx.1, hx.2, map_zero]⟩
 
 /- English proof (translation)
-Introduce `x hx`. Break down `n with _ | n` into its components or cases. Rewrite `hx`, the goal using `[mem_bnd_zero]`. Rewrite using `[hx, map_zero]`. Take `⟨w, hw, rfl⟩` from `mem_bnd_succ.1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_bnd_succ.2 ⟨h n w, hC n w hw, hd n w hw⟩`.
+A detailed English derivation is pending.
 -/
 theorem map_mem_bnd (hC : ∀ n, ∀ x ∈ CX n, h n x ∈ CY n)
     (hd : ∀ n, ∀ x ∈ CX n, dY n (h n x) = h (n + 1) (dX n x)) (n : ℕ) :
@@ -135,7 +135,7 @@ def liftSp (CB : ∀ n, Submodule F (B n)) (dC : ∀ n, C n →ₗ[F] C (n + 1))
   CB n ⊓ LinearMap.ker ((dC n).comp (g n))
 
 /- English proof (translation)
-Simplify using `[liftSp, Submodule.mem_inf, LinearMap.mem_ker]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_liftSp {CB : ∀ n, Submodule F (B n)} {dC : ∀ n, C n →ₗ[F] C (n + 1)} {g : ∀ n, B n →ₗ[F] C n}
     {n : ℕ} {y : B n} : y ∈ liftSp CB dC g n ↔ y ∈ CB n ∧ dC n (g n y) = 0 := by
@@ -155,7 +155,7 @@ def iA (n : ℕ) : coh CA dA n →ₗ[F] coh CB dB n := cohMap CA dA CB dB f H.f
 def pB (n : ℕ) : coh CB dB n →ₗ[F] coh CC dC n := cohMap CB dB CC dC g H.g_mem H.g_d n
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy` using `[mem_liftSp]`. Conclude with `mem_cyc.2 ⟨H.g_mem n y hy.1, hy.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem g_mem_cyc (n : ℕ) : ∀ y ∈ liftSp CB dC g n, g n y ∈ cyc CC dC n := by
   intro y hy
@@ -173,7 +173,7 @@ theorem toCohC_apply (n : ℕ) (y : liftSp CB dC g n) :
   rfl
 
 /- English proof (translation)
-The claim follows from `(injective_iff_map_eq_zero ((f n).domRestrict (CA n))).2 fun x hx => Subtype.ext (H.f_inj n x x.2 hx)`.
+A detailed English derivation is pending.
 -/
 theorem fInj (n : ℕ) : Function.Injective ((f n).domRestrict (CA n)) :=
   (injective_iff_map_eq_zero ((f n).domRestrict (CA n))).2 fun x hx => Subtype.ext (H.f_inj n x x.2 hx)
@@ -182,7 +182,7 @@ def fEquiv (n : ℕ) : CA n ≃ₗ[F] LinearMap.range ((f n).domRestrict (CA n))
   LinearEquiv.ofInjective _ (H.fInj n)
 
 /- English proof (translation)
-Establish `hy` using `mem_liftSp.1 y.2`. Take `⟨x, hx, hfx⟩` from `H.ker_g (n + 1) (dB n y) (H.dB_mem n y hy.1) (by rw [← H.g_d n y hy.1]; exact hy.2)`. Conclude with `LinearMap.mem_range.2 ⟨⟨x, hx⟩, hfx⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem dB_mem_range (n : ℕ) (y : liftSp CB dC g n) :
     dB n y ∈ LinearMap.range ((f (n + 1)).domRestrict (CA (n + 1))) := by
@@ -196,13 +196,13 @@ def liftB (n : ℕ) : liftSp CB dC g n →ₗ[F] CA (n + 1) :=
     LinearMap.codRestrict _ ((dB n).domRestrict (liftSp CB dC g n)) (H.dB_mem_range n)
 
 /- English proof (translation)
-The claim follows from `LinearEquiv.ofInjective_symm_apply (f := (f (n + 1)).domRestrict (CA (n + 1))) (h := H.fInj (n + 1)) _`.
+A detailed English derivation is pending.
 -/
 theorem f_liftB (n : ℕ) (y : liftSp CB dC g n) : f (n + 1) (H.liftB n y : A (n + 1)) = dB n y :=
   LinearEquiv.ofInjective_symm_apply (f := (f (n + 1)).domRestrict (CA (n + 1))) (h := H.fInj (n + 1)) _
 
 /- English proof (translation)
-Establish `hy` using `mem_liftSp.1 y.2`. Establish `hx` using `(H.liftB n y).2`. Use `mem_cyc.2 ⟨hx, H.f_inj (n + 1 + 1) _ (H.dA_mem (n + 1) _ hx) ?_⟩` and prove the remaining obligations. Rewrite using `[← H.f_d (n + 1) _ hx, H.f_liftB n y, H.dB_dB n y hy.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem liftB_mem_cyc (n : ℕ) (y : liftSp CB dC g n) : (H.liftB n y : A (n + 1)) ∈ cyc CA dA (n + 1) := by
   have hy := mem_liftSp.1 y.2
@@ -222,9 +222,9 @@ theorem toCohA_apply (n : ℕ) (y : liftSp CB dC g n) :
   rfl
 
 /- English proof (translation)
-Introduce `q`. Take `⟨z, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hz` using `mem_cyc.1 z.2`. Take `⟨y, hy, hgy⟩` from `H.g_onto n z hz.1`. Use `⟨⟨y, mem_liftSp.2 ⟨hy, by rw [hgy]; exact hz.2⟩⟩, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[toCohC_apply]`. Use `congr 1`. Conclude with `Subtype.ext hgy`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem toCohC_surj (n : ℕ) : Function.Surjective (H.toCohC n) := by
   intro q
@@ -237,9 +237,9 @@ theorem toCohC_surj (n : ℕ) : Function.Surjective (H.toCohC n) := by
   exact Subtype.ext hgy
 
 /- English proof (translation)
-Break down `n with _ | n` into its components or cases. Take `⟨x, hx, hfx⟩` from `H.ker_g 0 y hy (mem_bnd_zero.1 hgy)`. Conclude with `⟨x, hx, by rw [hfx, sub_self]; exact zero_mem _⟩`. Take `⟨z, hz, hdz⟩` from `mem_bnd_succ.1 hgy`. Take `⟨y', hy', rfl⟩` from `H.g_onto n z hz`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hmem : y - dB n y' ∈ CB (n + 1)` using `sub_mem hy (H.dB_mem n y' hy')`. Take `⟨x, hx, hfx⟩` from `H.ker_g (n + 1) _ hmem (by rw [map_sub, ← H.g_d n y' hy', hdz, sub_self])`. Use `⟨x, hx, mem_bnd_succ.2 ⟨y', hy', ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hfx, sub_sub_cancel]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lift_bnd (n : ℕ) (y : B n) (hy : y ∈ CB n) (hgy : g n y ∈ bnd CC dC n) :
     ∃ x ∈ CA n, y - f n x ∈ bnd CB dB n := by
@@ -254,11 +254,9 @@ theorem lift_bnd (n : ℕ) (y : B n) (hy : y ∈ CB n) (hgy : g n y ∈ bnd CC d
     rw [hfx, sub_sub_cancel]
 
 /- English proof (translation)
-Introduce `y hy`. Rewrite `hy` using `[LinearMap.mem_ker, toCohC_apply, coh_mk_eq_zero]`. Rewrite using `[LinearMap.mem_ker, toCohA_apply, coh_mk_eq_zero]`. Establish `hyl` using `mem_liftSp.1 y.2`. Take `⟨x, hx, hb⟩` from `H.lift_bnd n y hyl.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hxb : (H.liftB n y : A (n + 1)) = dA n x`. Establish `h1` using `d_of_mem_bnd H.dB_dB hb`. Rewrite `h1` using `[map_sub, sub_eq_zero, H.f_d n x hx]`. Conclude with `congrArg Subtype.val (H.fInj (n + 1) (a₁ := H.liftB n y) (a₂ := ⟨dA n x, H.dA_mem n x hx⟩) (by show f (n + 1) (H.liftB n y : A (n + 1)) = f (n + 1) (dA n x); rw [H.f_liftB]; exact h1))`. Use `show (H.liftB n y : A (n + 1)) ∈ bnd CA dA (n + 1)`.
-
-Rewrite using `[hxb]`. Conclude with `mem_bnd_succ.2 ⟨x, hx, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_toCohC_le (n : ℕ) : LinearMap.ker (H.toCohC n) ≤ LinearMap.ker (H.toCohA n) := by
   intro y hy
@@ -280,14 +278,14 @@ def delta (n : ℕ) : coh CC dC n →ₗ[F] coh CA dA (n + 1) :=
     ((H.toCohC n).quotKerEquivOfSurjective (H.toCohC_surj n)).symm.toLinearMap
 
 /- English proof (translation)
-Simplify using `only [delta, LinearMap.comp_apply, LinearEquiv.coe_coe, LinearMap.quotKerEquivOfSurjective_symm_apply, Submodule.liftQ_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem delta_toCohC (n : ℕ) (y : liftSp CB dC g n) : H.delta n (H.toCohC n y) = H.toCohA n y := by
   simp only [delta, LinearMap.comp_apply, LinearEquiv.coe_coe,
     LinearMap.quotKerEquivOfSurjective_symm_apply, Submodule.liftQ_apply]
 
 /- English proof (translation)
-Use `LinearMap.ker_eq_bot'.2 fun q hq => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite `hq` using `[iA, cohMap_mk, coh_mk_eq_zero, mem_bnd_zero]`. Rewrite using `[coh_mk_eq_zero, mem_bnd_zero]`. Conclude with `H.f_inj 0 x (mem_cyc.1 x.2).1 hq`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_iA_zero : LinearMap.ker (H.iA 0) = ⊥ := by
   refine LinearMap.ker_eq_bot'.2 fun q hq => ?_
@@ -297,15 +295,13 @@ theorem ker_iA_zero : LinearMap.ker (H.iA 0) = ⊥ := by
   exact H.f_inj 0 x (mem_cyc.1 x.2).1 hq
 
 /- English proof (translation)
-Use extensionality with `q`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hq`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hq` using `[pB, cohMap_mk, coh_mk_eq_zero]`. Establish `hy` using `mem_cyc.1 y.2`. Take `⟨x, hx, hb⟩` from `H.lift_bnd n y hy.1 hq`. Establish `hdx : dA n x = 0`. Use `H.f_inj (n + 1) _ (H.dA_mem n x hx) ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `d_of_mem_bnd H.dB_dB hb`. Rewrite `h1` using `[map_sub, hy.2, zero_sub, neg_eq_zero, H.f_d n x hx]`. Conclude with `h1`. Use `⟨Submodule.Quotient.mk ⟨x, mem_cyc.2 ⟨hx, hdx⟩⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[iA, cohMap_mk, coh_mk_eq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← neg_sub]`. Conclude with `neg_mem hb`. Introduce and unpack `⟨q, rfl⟩`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[iA, pB, cohMap_mk, cohMap_mk, coh_mk_eq_zero]`.
-
-Use `show g n (f n x) ∈ _`. Rewrite using `[H.g_f n x (mem_cyc.1 x.2).1]`. Conclude with `zero_mem _`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_pB (n : ℕ) : LinearMap.ker (H.pB n) = LinearMap.range (H.iA n) := by
   ext q
@@ -333,17 +329,15 @@ theorem ker_pB (n : ℕ) : LinearMap.ker (H.pB n) = LinearMap.range (H.iA n) := 
     exact zero_mem _
 
 /- English proof (translation)
-Use extensionality with `q`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_range]`. Take `⟨y, rfl⟩` from `H.toCohC_surj n q`. Establish `hyl` using `mem_liftSp.1 y.2`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Introduce `hq`. Rewrite `hq` using `[delta_toCohC, toCohA_apply, coh_mk_eq_zero]`. Take `⟨x, hx, hdx⟩` from `mem_bnd_succ.1 hq`. Establish `hmem : (y : B n) - f n x ∈ cyc CB dB n`. Use `mem_cyc.2 ⟨sub_mem hyl.1 (H.f_mem n x hx), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, H.f_d n x hx, hdx, H.f_liftB, sub_self]`. Use `⟨Submodule.Quotient.mk ⟨_, hmem⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[pB, cohMap_mk, toCohC_apply]`. Use `congr 1`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result.
 
-Use `show g n ((y : B n) - f n x) = g n y`. Rewrite using `[map_sub, H.g_f n x hx, sub_zero]`. Introduce and unpack `⟨q, hq⟩`. Take `⟨y', rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Establish `hy'` using `mem_cyc.1 y'.2`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hyl' : (y' : B n) ∈ liftSp CB dC g n` using `mem_liftSp.2 ⟨hy'.1, by rw [H.g_d n _ hy'.1, hy'.2, map_zero]⟩`. Establish `he : H.pB n (Submodule.Quotient.mk y') = H.toCohC n ⟨y', hyl'⟩` using `rfl`. Rewrite using `[← hq, he, delta_toCohC, toCohA_apply, coh_mk_eq_zero]`. Establish `h0 : (H.liftB n ⟨y', hyl'⟩ : A (n + 1)) = 0` using `H.f_inj (n + 1) _ (H.liftB n ⟨y', hyl'⟩).2 (by rw [H.f_liftB]; exact hy'.2)`. Use `show (H.liftB n ⟨y', hyl'⟩ : A (n + 1)) ∈ _`.
-
-Rewrite using `[h0]`. Conclude with `zero_mem _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_delta (n : ℕ) : LinearMap.ker (H.delta n) = LinearMap.range (H.pB n) := by
   ext q
@@ -377,15 +371,13 @@ theorem ker_delta (n : ℕ) : LinearMap.ker (H.delta n) = LinearMap.range (H.pB 
     exact zero_mem _
 
 /- English proof (translation)
-Use extensionality with `q`. Rewrite using `[LinearMap.mem_ker, LinearMap.mem_range]`. Prove the components needed by the constructor for the conclusion. Introduce `hq`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite `hq` using `[iA, cohMap_mk, coh_mk_eq_zero]`. Take `⟨y, hy, hfy⟩` from `mem_bnd_succ.1 hq`. Establish `hx` using `mem_cyc.1 x.2`. Establish `hyl : y ∈ liftSp CB dC g n`. Use `mem_liftSp.2 ⟨hy, ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[H.g_d n y hy, hfy]`. Conclude with `H.g_f (n + 1) x hx.1`. Establish `hlx : (H.liftB n ⟨y, hyl⟩ : A (n + 1)) = x` using `congrArg Subtype.val (H.fInj (n + 1) (a₁ := H.liftB n ⟨y, hyl⟩) (a₂ := ⟨x, hx.1⟩) (by show f (n + 1) (H.liftB n ⟨y, hyl⟩ : A (n + 1)) = f (n + 1) x; rw [H.f_liftB]; exact hfy))`. Use `⟨H.toCohC n ⟨y, hyl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[delta_toCohC, toCohA_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Conclude with `Subtype.ext hlx`. Introduce and unpack `⟨q, rfl⟩`. Take `⟨y, rfl⟩` from `H.toCohC_surj n q`. Rewrite using `[delta_toCohC, toCohA_apply, iA, cohMap_mk, coh_mk_eq_zero]`.
-
-Use `show f (n + 1) (H.liftB n y : A (n + 1)) ∈ _`. Rewrite using `[H.f_liftB]`. Conclude with `mem_bnd_succ.2 ⟨y, (mem_liftSp.1 y.2).1, rfl⟩`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_iA_succ (n : ℕ) : LinearMap.ker (H.iA (n + 1)) = LinearMap.range (H.delta n) := by
   ext q
@@ -419,7 +411,7 @@ variable (hfa : ∀ n, FiniteDimensional F (coh CA dA n)) (hfb : ∀ n, FiniteDi
 
 include hfa in
 /- English proof (translation)
-Use `hfa 0` as an intermediate fact. Rewrite using `[← LinearMap.finrank_range_add_finrank_ker (H.iA 0), H.ker_iA_zero, finrank_bot, add_zero]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dimA_zero : finrank F (coh CA dA 0) = finrank F (LinearMap.range (H.iA 0)) := by
   have := hfa 0
@@ -427,7 +419,7 @@ theorem dimA_zero : finrank F (coh CA dA 0) = finrank F (LinearMap.range (H.iA 0
 
 include hfa in
 /- English proof (translation)
-Use `hfa (n + 1)` as an intermediate fact. Rewrite using `[← LinearMap.finrank_range_add_finrank_ker (H.iA (n + 1)), H.ker_iA_succ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dimA_succ (n : ℕ) :
     finrank F (coh CA dA (n + 1)) =
@@ -437,7 +429,7 @@ theorem dimA_succ (n : ℕ) :
 
 include hfb in
 /- English proof (translation)
-Use `hfb n` as an intermediate fact. Rewrite using `[← LinearMap.finrank_range_add_finrank_ker (H.pB n), H.ker_pB]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dimB (n : ℕ) :
     finrank F (coh CB dB n) = finrank F (LinearMap.range (H.pB n)) + finrank F (LinearMap.range (H.iA n)) := by
@@ -446,7 +438,7 @@ theorem dimB (n : ℕ) :
 
 include hfc in
 /- English proof (translation)
-Use `hfc n` as an intermediate fact. Rewrite using `[← LinearMap.finrank_range_add_finrank_ker (H.delta n), H.ker_delta]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dimC (n : ℕ) :
     finrank F (coh CC dC n) =
@@ -457,7 +449,7 @@ theorem dimC (n : ℕ) :
 end IsSES
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, -⟩` from `EulerSES.hyps`. Conclude with `⟨h1, h2, h2, h3, h4, h4, h5, h6, h7, h8, h9, h10, h11, h12⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsSES.ofDegZero :
     IsSES (F := ℚ) (A := fun _ => ℚ) (B := fun _ => ℚ) (C := fun _ => ℚ) (fun _ => ⊥) degZero degZero
@@ -468,9 +460,9 @@ theorem IsSES.ofDegZero :
 end SES
 
 /- English proof (translation)
-Proceed by induction on `N with`. Consider the case `zero`. Simplify using `only [zero_add, Finset.sum_range_one, pow_zero, one_mul, pow_one]`. Rewrite using `[hb, hc, h0]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `succ N ih`. Simplify using `only [Finset.sum_range_succ _ (N + 1)]`. Rewrite using `[ih, hs N, hb (N + 1), hc (N + 1)]`. Expand and normalize the polynomial expressions, which then agree.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem alt_sum (a b c i p r : ℕ → ℤ) (h0 : a 0 = i 0) (hs : ∀ n, a (n + 1) = i (n + 1) + r n)
     (hb : ∀ n, b n = p n + i n) (hc : ∀ n, c n = r n + p n) (N : ℕ) :
@@ -492,9 +484,9 @@ end EulerSES
 open EulerSES
 
 /- English proof (translation)
-Introduce `F _ A B C _ _ _ _ _ _ CA CB CC dA dB dC f g N h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 hfa hfb hfc hsub`. Establish `H : IsSES CA CB CC dA dB dC f g` using `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14⟩`. Establish `key` using `alt_sum (fun n => (Module.finrank F (coh CA dA n) : ℤ)) (fun n => (Module.finrank F (coh CB dB n) : ℤ)) (fun n => (Module.finrank F (coh CC dC n) : ℤ)) (fun n => (Module.finrank F (LinearMap.range (H.iA n)) : ℤ)) (fun n => (Module.finrank F (LinearMap.range (H.pB n)) : ℤ)) (fun n …`. Establish `hr : Module.finrank F (LinearMap.range (H.delta N)) = 0`. Use `hfa (N + 1)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : Module.finrank F (coh CA dA (N + 1)) = 0` using `Module.finrank_zero_of_subsingleton`. Conclude with `Nat.eq_zero_of_le_zero (h0 ▸ Submodule.finrank_le _)`. Simplify using `only [hr, Nat.cast_zero, mul_zero, add_zero] at key`. Conclude with `key`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem EulerSES.full : EulerSES.Statement := by
   intro F _ A B C _ _ _ _ _ _ CA CB CC dA dB dC f g N h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14

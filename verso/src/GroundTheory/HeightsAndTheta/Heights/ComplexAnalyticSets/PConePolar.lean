@@ -21,15 +21,15 @@ theorem anForm_maDens_eq_geo_maDensity {D : ℕ} (φ : Fin D → (Fin D → ℂ)
   rfl
 
 /- English proof (translation)
-Take `⟨U, hU, hyU, hdiff, hsx, -, -⟩` from `hs`. Take `⟨hxZ, rfl⟩` from `hx`. Establish `hx0 : x ≠ 0`. Introduce and unpack `rfl`. Establish `h1 : eval (0 : Fin n → ℂ) (linForm ℓ - 1) = 0` using `hxZ _ (Ideal.mem_sup_right (Ideal.subset_span rfl))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite `h1` using `[map_sub, map_one, linForm, map_sum]`. Simplify using `at h1`. Establish `hdual : ∀ z, h.dualNorm z = ‖WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ z)‖` using `fun z => by`. Simplify using `[HermNorm.dualNorm, EuclideanSpace.norm_eq]`. Establish `hv : ∀ᶠ y' in 𝓝 (A *ᵥ x), DifferentiableAt ℂ (fun y' => (h.matᵀ)⁻¹ *ᵥ s y') y'` using `by filter_upwards [hU.mem_nhds hyU] with y' hy'`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hs'` using `(hdiff y' hy').differentiableAt (hU.mem_nhds hy')`. Conclude with `(LinearMap.toContinuousLinearMap (Matrix.mulVecLin (h.matᵀ)⁻¹)).differentiableAt.comp y' hs'`. Establish `hne : (fun y' => (h.matᵀ)⁻¹ *ᵥ s y') (A *ᵥ x) ≠ 0`. Introduce `h0`. Establish `hpos` using `HermNorm.dualNorm_pos h hx0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hpos` using `[hdual, ← hsx, show (h.matᵀ)⁻¹ *ᵥ s (A *ᵥ x) = 0 from h0]`. Simplify using `at hpos`. Establish `key` using `ChartGramMA.proof e n _ _ hv hne`. Establish `hF : (fun k : Fin e => (fun (_ : Fin e) x => Real.log (h.dualNorm x)) k ∘ s) = fun _ y' => Real.log ‖WithLp.toLp 2 ((h.matᵀ)⁻¹ *ᵥ s y')‖`. Use function extensionality and compare the values at `k y'`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Function.comp_apply, hdual]`. Rewrite using `[hF, anForm_maDens_eq_geo_maDensity, key, hsx, ← hdual]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maDens_log_dualNorm_sheet {n e : ℕ} (h : HermNorm n) (J : Ideal (MvPolynomial (Fin n) ℂ))
     (ℓ : Fin n → ℂ) (A : Matrix (Fin e) (Fin n) ℂ) (y : Fin e → ℂ) (x : Fin n → ℂ)
@@ -65,9 +65,9 @@ theorem maDens_log_dualNorm_sheet {n e : ℕ} (h : HermNorm n) (J : Ideal (MvPol
   rw [hF, anForm_maDens_eq_geo_maDensity, key, hsx, ← hdual]
 
 /- English proof (translation)
-Introduce `e`. Use `⟨1, fun n h J ℓ g hJ hdim hℓ hg hgc => ?_⟩` and prove the remaining obligations. Establish `hex : ∃ A : Matrix (Fin e) (Fin n) ℂ, IsFiniteProjection (J ⊔ Ideal.span {linForm ℓ - 1}) A` using `h₂ n e _ (h₁ n e J ℓ hJ hdim hℓ)`. Rewrite using `[one_mul, varInt, dif_pos hex, h₃ n e h J ℓ g hex.choose hJ hdim hℓ hg hgc hex.choose_spec, chartInt]`. Use `integral_congr_ae (Eventually.of_forall fun y => ?_)` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [chartDens, sheetSum]`. Use `finsum_congr fun x => finsum_congr fun hx => ?_` and prove the remaining obligations. Use `split_ifs with hs`. Rewrite using `[maDens_log_dualNorm_sheet h J ℓ _ y x _ hx hs.choose_spec]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem ConePolar.proof (h₁ : SliceDim.Statement) (h₂ : LinearNoetherNormalization.Statement)
     (h₃ : ConeChartGram.Statement) : ConePolar.Statement := by

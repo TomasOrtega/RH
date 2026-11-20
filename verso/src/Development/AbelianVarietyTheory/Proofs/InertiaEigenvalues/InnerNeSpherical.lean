@@ -26,19 +26,17 @@ noncomputable section
 namespace GlobalTheory.RawLift.Eu
 
 /- English proof (translation)
-Distinguish the cases in `h : ∃ x0 ∈ P, x0 ≠ 0`. Take `⟨x0, hx0, hne⟩` from `h`. Take `⟨l, hl⟩` from `heig x0 hx0`. Use `⟨l, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Apply `hne` to reduce the goal to its premises. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hl, zero_smul, map_zero]`. Introduce `x hx`. Take `⟨lx, hlx⟩` from `heig x hx`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `heig (x + x0) (P.add_mem hx hx0)`. Rewrite `hm` using `[map_add, hlx, hl, smul_add]`. Distinguish the cases in `hmx : m = lx`. Substitute `hmx` using the available equality. Establish `: (l - m) • x0 = 0`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Rewrite using `[sub_smul]`. Conclude with `sub_eq_zero.2 (add_left_cancel hm)`. Break down `smul_eq_zero.1 this with h1 | h1` into its components or cases. Rewrite using `[hlx, sub_eq_zero.1 h1]`. Conclude with `absurd h1 hne`.
+Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx' : x = ((l - m) / (m - lx)) • x0`. Establish `e1 : (m - lx) • x = (l - m) • x0`. Rewrite using `[sub_smul, sub_smul, sub_eq_sub_iff_add_eq_add]`. Rewrite using `[← hm]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hne' : m - lx ≠ 0` using `sub_ne_zero.2 hmx`. Rewrite using `[div_eq_mul_inv, mul_comm, mul_smul, ← e1, smul_smul, inv_mul_cancel₀ hne', one_smul]`. Rewrite using `[hx', map_smul, hl, smul_comm]`. Use `push_neg at h`. Use `⟨1, one_ne_zero, fun x hx => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[h x hx, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scalar_of_eigen {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H] (P : Submodule ℂ H)
     (Wop : H →L[ℂ] H) (hinj : Function.Injective Wop) (heig : ∀ y ∈ P, ∃ z : ℂ, Wop y = z • y) :
@@ -75,21 +73,21 @@ theorem scalar_of_eigen {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ
 
 set_option maxHeartbeats 4000000 in
 /- English proof (translation)
-Introduce `th hth c`. Establish `hcov` using `@GlobalTheory.T.exists_covolumeOne_measure_homSpace_of_laws D G _ _ Pl0 T A Ks _ _ _ R F hL i`. Take `⟨μ, 𝓕, hμ⟩` from `hcov`. Establish `hleft` using `@GlobalTheory.T.fixedVectorCoefficient_left_invariant_levelGroup D G _ _ Pl0 T A Ks _ _ _ R F hL i t hLF μ 𝓕 hμ`. Establish `hfa` using `@GlobalTheory.T.hasSum_innerProduct_finsupp_localCosetFamilies D G _ _ Pl0 T A Ks _ _ _ R i t hLP hTL hFM hLF hVN hFS th hth μ 𝓕 hμ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsm` using `@GlobalTheory.T.localCoefficient_nontrivialCosets_summable_bound D G _ _ Pl0 T A Ks _ _ _ R i t hLS μ 𝓕 hμ`. Take `⟨a, ha, hfam⟩` from `hfa`. Take `⟨s, hs, hs1, hsC⟩` from `hsm`. Establish `hconv` using `@GlobalTheory.T.rightTranslateOperator_mul_localOperator_hasSum D G _ _ Pl0 T A Ks _ _ _ R i t hLS hTL hLF μ 𝓕 hμ hleft`. Establish `hupd` using `@GlobalTheory.T.rightTranslateOperator_familyProd_update D G _ _ Pl0 T A Ks _ _ _ R i hTL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `heig` using `@GlobalTheory.T.localOperator_scalar_on_sphericalEigenspace D G _ _ Pl0 T A Ks _ _ _ R F hL i t hBS hLF hLS hLP hTL μ 𝓕 hμ hleft c`. Establish `hUpd : ∀ v (f : ∀ v, Eu.LX R i v), {w | f w ≠ Eu.lx0 R i w}.Finite → f v = Eu.lx0 R i v → HasSum (fun x => Eu.acoef R i t μ 𝓕 v x • Eu.Bfam R i (Function.update f v x)) (Eu.Bfam R i f * Eu.Zop R i t μ 𝓕 v)`. Introduce `v f hf hv`. Take `⟨hG, hB⟩` from `hupd f hf v hv`. Use `hconv v _ hG` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Unfold `Eu.Bfam`. Simplify using `only [hB]`. Conclude with `this`. Establish `hEu` using `GlobalTheory.T.eulerOperator_injective_eigenvector (HeightOneSpectrum (𝓞 D.host.F)) (Eu.LX R i) (Eu.lx0 R i) (R.HW i (sg0 D A)).H (Eu.acoef R i t μ 𝓕) s (Eu.Bfam R i) (Eu.Zop R i t μ 𝓕) (local_coefficient_trivial_level_coset hLF hVN hμ) hs hs1 hsC (fun f => bop_norm R i _) (by un …`. Take `⟨Wop, hW, hinj, hWe⟩` from `hEu`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hip : ∀ x y, ⟪LinearMap.adjoint th x, LinearMap.adjoint th y⟫_ℂ = (a : ℂ) * ⟪x, Wop y⟫_ℂ`. Introduce `x y`. Set `φ : ((R.HW i (sg0 D A)).H →L[ℂ] (R.HW i (sg0 D A)).H) →L[ℂ] ℂ` to `(innerSL ℂ x).comp (ContinuousLinearMap.apply ℂ _ y)`. Establish `h1` using `(hW.mapL φ).mul_left (a : ℂ)`. Establish `h2` using `hfam x y`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `h2.unique ?_` and prove the remaining obligations. Simplify `h1` using `[φ, inner_smul_right]`. Establish `hE : ∀ y ∈ part R i ∅ c, ∃ z : ℂ, Wop y = z • y`. Introduce `y hy`. Establish `hz` using `fun v => heig y hy v`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components.
 
-Use `choose z hz using hz`. Conclude with `⟨_, hWe y z hz⟩`. Establish `hsc` using `scalar_of_eigen (part R i ∅ c) Wop hinj hE`. Take `⟨l, hl, hlx⟩` from `hsc`. Use `⟨(a : ℂ) * (starRingEnd ℂ) l, mul_ne_zero (by exact_mod_cast ha.ne') (by simpa using hl), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `x hx y`. Rewrite using `[← inner_conj_symm, hip y x, hlx x hx, inner_smul_right, map_mul, map_mul, Complex.conj_ofReal, inner_conj_symm]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem innerNe_main {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL G Pl0 T D.R.m}
     {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A)
@@ -147,7 +145,7 @@ end GlobalTheory.RawLift.Eu
 namespace GlobalTheory.RawLift
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ _ _ _ _ R F hL _ i t hFS hFM hLF hVN hLS hBS hLP hTL` and use `Eu.innerNe_main R F hL i t hFS hFM hLF hVN hLS hBS hLP hTL`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem innerNe_spherical : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T : Type) (A : FamIn D.what₂.LL G Pl0 T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), Laws R F → R.FullP → ∀ i t, FinSum R i t → FinMult R i t → LevFix R i t → VecNe R i t → LocSmall R i t → BadSupp R i t → LevProd R i → TransLaws R i → InnerNe R i t ∅ :=
   fun _ _ _ _ _ _ _ _ _ _ _ R F hL _ i t hFS hFM hLF hVN hLS hBS hLP hTL =>

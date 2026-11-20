@@ -12,29 +12,25 @@ noncomputable section
 namespace GlobalTheory.VacLinW
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {n d : ℕ}
 /- English proof (translation)
-Introduce `hP F E _ _ _ _ _ σ B n d X W M χX χW om r s r' s' hPair v t b c hb hc`. Take `⟨ι, hι⟩` from `_root_.GlobalTheory.T.splitPlace_linearFunctional_exists hP F E σ B n d X W M χX χW om r s r' s' hPair v t b c`. Establish `hcm : IsCMExt F E σ` using `hPair.base.cm`. Take `⟨hSB, hne, θ, -, hfix⟩` from `hPair.good.vac v`. Establish `hat` using `(GlobalTheory.LatVac.latAtV_at_stable X W v).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `htt : (t.comp σ).comp σ = t` using `GlobalTheory.AdelicU.comp_conj_conj hcm t`. Establish `hfix' : ∀ γ ∈ latAtV X W v, (γ.map (piW (t.comp σ)) = 0 ∨ γ.map (piW t) = 0) → Acts (evFin F v) (M.co.rho B.ψ γ) (M.vac v) (M.vac v)`. Introduce `γ hγ h`. Establish `h0 : symp (cA σ) (inclR (F` using `F) (AF F) (θ : E)) (incM F X.J) (incM F W.J) γ γ = 0 := by`. Break down `h with h | h` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `symp_eq_zero_of_comp hcm t (hat γ hγ) h h _ _ _`. Rewrite `h` using `[← htt]`. Conclude with `symp_eq_zero_of_comp hcm (t.comp σ) (hat γ hγ) h h _ _ _`. Use `hfix γ hγ` as an intermediate fact. Rewrite `this` using `[h0, mul_zero, AddChar.map_zero_eq_one, one_smul]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set f := ι (M.vac v) with hf`. Use `set S : Set (Matrix (Fin n) (Fin d) (Fv F v)) := {Y | ∀ i j, Y i j ∈ v.adicCompletionIntegers F} with hS`. Establish `htr : ∀ A ∈ S, ∀ Y, f (Y + A) = f Y`. Introduce `A hA Y`. Take `⟨γ, hγ, h0, hco⟩` from `GlobalTheory.T.exists_tensorLattice_point_of_integral_splitPlace_coordinate hcm X W v t b c hb hc A hA`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hι.trans γ (hat γ hγ) h0 _ hSB _ hSB (hfix' γ hγ (Or.inl h0)) Y` as an intermediate fact. Rewrite `this` using `[hco]`. Conclude with `this.symm`. Establish `hsupp : ∀ Y, f Y ≠ 0 → Y ∈ S`. Introduce `Y hY`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨x, hx, hx0, rfl⟩` from `GlobalTheory.T.exists_supportedAdele_splitPlace_matrix_coordinate_eq hcm v t b c Y`. Establish `hψ : ∀ u ∈ latAtV X W v, u.map (piW t) = 0 → B.ψ (symp (cA σ) (-1) (incM F X.J) (incM F W.J) x u) = 1`. Introduce `u hu hu0`. Establish `hm` using `hι.mult u (hat u hu) hu0 _ hSB _ hSB (hfix' u hu (Or.inr hu0)) x hx hx0`. Conclude with `(mul_eq_right₀ hY).mp hm.symm`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hmem : x ∈ latAtV X W v`. Use `(GlobalTheory.LatSelfDualAll.latAtV_selfDual F E σ B n d X W r s r' s' hPair.base hPair.herm hPair.skew v x hx).2 fun γ hγ => ?_` and prove the remaining obligations. Take `⟨γ₁, hγ₁, γ₂, hγ₂, rfl, h₁, h₂⟩` from `GlobalTheory.T.tensorLatticeAtFinitePlace_eq_sum_splitPlace_parts hcm X W v t γ hγ`. Rewrite using `[symp_add_right, symp_eq_zero_of_comp hcm t hx hx0 h₁, zero_add]`. Conclude with `hψ γ₂ hγ₂ h₂`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `GlobalTheory.T.splitPlace_tensorLattice_component_integral X W v t b c hb hc x hmem`. Establish `hf0 : f ≠ 0`. Introduce `h`. Apply `hne` to reduce the goal to its premises. Use `hι.bij.injOn hSB (zero_mem _) ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Rewrite using `[map_zero]`. Conclude with `h`. Establish `hfe : f = f 0 • S.indicator 1`. Use function extensionality and compare the values at `Y`. Distinguish the cases in `hY : Y ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.smul_apply, Set.indicator_of_mem hY, Pi.one_apply, smul_eq_mul, mul_one, ← htr Y hY 0, zero_add]`. Rewrite using `[Pi.smul_apply, Set.indicator_of_notMem hY, smul_zero]`. Assume the negation of the conclusion as `h`. Conclude with `hY (hsupp Y h)`. Establish `hz : f 0 ≠ 0`.
-
-Introduce `h`. Apply `hf0` to reduce the goal to its premises. Rewrite using `[hfe, h, zero_smul]`. Use `⟨(f 0)⁻¹ • ι, isLin_smul M B.ψ hι (inv_ne_zero hz), ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, ← hf]`.
-
-Conclude with `(congrArg ((f 0)⁻¹ • ·) hfe).trans (by rw [smul_smul, inv_mul_cancel₀ hz, one_smul])`.
+A detailed English derivation is pending.
 -/
 theorem linearFunctional_sphericalVector : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →
@@ -107,7 +103,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @_root_.GlobalTheory.VacLinW.linearFunctional_sphericalVector | exact _root_.GlobalTheory.VacLinW.linearFunctional_sphericalVector | (intros; apply _root_.GlobalTheory.VacLinW.linearFunctional_sphericalVector <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.linearFunctional_sphericalVector_ne_zero : _root_.GlobalTheory.FunPr.ThetaLocalInputs → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d : ℕ)
     (X : Spc F E n) (W : Spc F E d) (M : Model σ X W) (χX χW : Chr F E) (om : Rep σ X W) (r s r' s' : ℕ), IsPair B M χX χW om r s r' s' →

@@ -7,12 +7,12 @@ import Development.WeilBound.RepresentationTheoryGL.ResidualSpectrum.IwasawaComp
 namespace PositivityTheory.Rg.Rs
 
 /- English proof (translation)
-The claim follows from `LsTop.locSub_of C3.Rap.restrictAtPoint_holds existsProj2 frobRecip_holds`.
+A detailed English derivation is pending.
 -/
 theorem locSub_holds2 : LocSub := LsTop.locSub_of C3.Rap.restrictAtPoint_holds existsProj2 frobRecip_holds
 
 /- English proof (translation)
-The claim follows from `ascSeed_of_locSub locSub_holds2`.
+A detailed English derivation is pending.
 -/
 theorem ascSeed_holds2 : AscSeed := ascSeed_of_locSub locSub_holds2
 

@@ -48,14 +48,14 @@ theorem compFin_algebraMap (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTens
     compFin F E v (algebraMap (AF F) (AE F E) u) = algebraMap (Fv F v) (Fv F v ⊗[F] E) (evFin F v u) := rfl
 
 /- English proof (translation)
-Introduce `u hu`. Rewrite using `[Algebra.smul_def, mul_comm, tensAt_mul_right, compFin_algebraMap, hu, map_zero, mul_zero, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem at_tensAt (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (y : Fv F v ⊗[F] E) : At (evFin F v) (tensAt E v y) := by
   intro u hu
   rw [Algebra.smul_def, mul_comm, tensAt_mul_right, compFin_algebraMap, hu, map_zero, mul_zero, map_zero]
 
 /- English proof (translation)
-Establish `h1 : (1 - atPlace v 1) • z = 0` using `hz _ (by rw [map_sub, map_one, evFin_atPlace, sub_self])`. Rewrite `h1` using `[sub_smul, one_smul, sub_eq_zero]`. Use `conv_lhs => rw [h1]`. Rewrite using `[Algebra.smul_def, show algebraMap (AF F) (AE F E) (atPlace v 1) = tensAt E v 1 from rfl, tensAt_mul_right, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_tensAt_of_at (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {z : AE F E} (hz : At (evFin F v) z) :
     z = tensAt E v (compFin F E v z) := by
@@ -65,7 +65,7 @@ theorem eq_tensAt_of_at (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorM
   rw [Algebra.smul_def, show algebraMap (AF F) (AE F E) (atPlace v 1) = tensAt E v 1 from rfl, tensAt_mul_right, one_mul]
 
 /- English proof (translation)
-Use `show splitProj t (compFin F E v (tensAt E v y)) = _`. Rewrite using `[compFin_tensAt]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem piW_tensAt (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (t : E →ₐ[F] Fv F v) (y : Fv F v ⊗[F] E) : piW t (tensAt E v y) = splitProj t y := by
   show splitProj t (compFin F E v (tensAt E v y)) = _
@@ -80,9 +80,9 @@ open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.EmbCh
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h i j u hu`. Use `congrFun (congrFun (h u hu) i) j` as an intermediate fact. Simplify using `using this`. Introduce `h u hu`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses.
 
-Use extensionality with `i j`. Simplify using `using h i j u hu`.
+By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem at_matrix {m n : Type} (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) {x : Matrix m n (AE F E)} :
     At (evFin F v) x ↔ ∀ i j, At (evFin F v) (x i j) := by
@@ -100,14 +100,14 @@ def liftM (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {m n : Type} (v : GlobalTh
     (fun p q => by ext i j; simp only [Prod.fst_add, Prod.snd_add, Matrix.add_apply, Matrix.of_apply, ← Prod.mk_add_mk, map_add])
 
 /- English proof (translation)
-The claim follows from `(at_matrix v).2 fun _ _ => at_tensAt v _`.
+A detailed English derivation is pending.
 -/
 theorem liftM_at (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {m n : Type} (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (t : E →ₐ[F] Fv F v)
     (p : Matrix m n (Fv F v) × Matrix m n (Fv F v)) : At (evFin F v) (liftM σ hcm v t p) :=
   (at_matrix v).2 fun _ _ => at_tensAt v _
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[liftM, piW_tensAt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem liftM_fst (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {m n : Type} (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (t : E →ₐ[F] Fv F v)
     (p : Matrix m n (Fv F v) × Matrix m n (Fv F v)) : (liftM σ hcm v t p).map (piW t) = p.1 := by
@@ -115,7 +115,7 @@ theorem liftM_fst (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {m n : Type} (v : 
   simp [liftM, piW_tensAt]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[liftM, piW_tensAt]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem liftM_snd (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {m n : Type} (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (t : E →ₐ[F] Fv F v)
     (p : Matrix m n (Fv F v) × Matrix m n (Fv F v)) : (liftM σ hcm v t p).map (piW (t.comp σ)) = p.2 := by
@@ -123,7 +123,7 @@ theorem liftM_snd (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {m n : Type} (v : 
   simp [liftM, piW_tensAt]
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[eq_tensAt_of_at v ((at_matrix v).1 hx i j)]`. Establish `e : compFin F E v (x i j) = 0` using `split_ext hcm t (by rw [map_zero]; exact (by simpa using congrFun (congrFun h1 i) j : piW t (x i j) = 0)) (by rw [map_zero]; exact (by simpa using congrFun (congrFun h2 i) j : piW (t.comp σ) (x i j) = 0))`. Rewrite using `[e, map_zero]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem eq_zero_of_at (σ : E →ₐ[F] E) (hcm : IsCMExt F E σ) {m n : Type} (v : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Pl F) (t : E →ₐ[F] Fv F v)
     {x : Matrix m n (AE F E)} (hx : At (evFin F v) x) (h1 : x.map (piW t) = 0) (h2 : x.map (piW (t.comp σ)) = 0) :
@@ -140,9 +140,9 @@ namespace GlobalTheory.LinBarCoords
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 /- English proof (translation)
-Take `⟨hn, A, hA⟩` from `h`. Set `e : Fin r ⊕ Fin s ≃ Fin n` to `finSumFinEquiv.trans (finCongr hn)`. Use `set A' : Matrix (Fin n) (Fin n) ℂ := A.submatrix id e.symm with hA'`. Establish `key : A'ᵀ * M * A'.map star = (Matrix.fromBlocks 1 0 0 (-1) : Matrix (Fin r ⊕ Fin s) (Fin r ⊕ Fin s) ℂ).submatrix e.symm e.symm`. Rewrite using `[← hA, hA', Matrix.transpose_submatrix, Matrix.submatrix_mul (Aᵀ * M) (A.map star) e.symm id e.symm Function.bijective_id, Matrix.submatrix_mul Aᵀ M e.symm id id Function.bijective_id, Matrix.submatrix_id_id, Matrix.submatrix_map]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd` using `congrArg Matrix.det key`. Rewrite `hd` using `[Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, one_mul, Matrix.det_neg, Matrix.det_one, mul_one, Matrix.det_mul, Matrix.det_mul]`. Introduce `h0`. Rewrite `hd` using `[h0, mul_zero, zero_mul]`. Conclude with `(pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) hd.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_hasSig {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} {r s : ℕ} (h : HasSig M r s) : M.det ≠ 0 := by
   obtain ⟨hn, A, hA⟩ := h
@@ -160,9 +160,9 @@ theorem det_ne_zero_of_hasSig {n : ℕ} {M : Matrix (Fin n) (Fin n) ℂ} {r s : 
   exact (pow_ne_zero _ (neg_ne_zero.2 one_ne_zero)) hd.symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ B n J c r s hc hs v t`. Take `⟨φ⟩ : Nonempty (F →+* ℂ)` from `inferInstance`. Establish `h1` using `det_ne_zero_of_hasSig (hs (NumberField.InfinitePlace.mk φ))`. Establish `e1 : (J.map (B.emb (NumberField.InfinitePlace.mk φ)).1).det = (B.emb (NumberField.InfinitePlace.mk φ)).1 J.det` using `(RingHom.map_det _ J).symm`. Rewrite `h1` using `[Matrix.det_smul, e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hJ : J.det ≠ 0` using `fun h0 => h1 (by rw [h0, map_zero, mul_zero])`. Establish `e2 : (J.map t).det = t J.det` using `(RingHom.map_det (t : E →+* Fv F v) J).symm`. Rewrite using `[isUnit_iff_ne_zero, e2]`. Conclude with `(map_ne_zero_iff _ (t : E →+* Fv F v).injective).2 hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_map_isUnit : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (B : GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.Base F E) {n : ℕ}
     (J : Matrix (Fin n) (Fin n) E) (c : ℂ) (r s : ℕ), c ≠ 0 → (∀ w, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.HasSig (c • J.map (B.emb w).1) r s) →
@@ -184,19 +184,19 @@ namespace GlobalTheory.LinBarCoords
 open GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.EmbChart
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' hTr v t`. Establish `hcm` using `hTr.base.cm`. Establish `hP : IsUnit (G.V'.J.map t).det` using `det_map_isUnit B G.V'.J 1 _ _ one_ne_zero (fun w => by rw [one_smul]; exact hTr.geo.hV'.sig w) v t`. Establish `hQ : IsUnit ((G.W.J.map t)ᵀ).det`. Rewrite using `[Matrix.det_transpose]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `det_map_isUnit B G.W.J Complex.I _ _ Complex.I_ne_zero hTr.geo.hW.sig v t`. Use `set P := G.V'.J.map t with hPdef`. Use `set Q := (G.W.J.map t)ᵀ with hQdef`. Set `L` to `liftM σ hcm (m := Fin a') (n := Fin (a + a')) v t`. Set `uT : Matrix (Fin a') (Fin (a + a')) (Fv F v) →+ Matrix (Fin a') (Fin (a + a')) (AE F E)` to `AddMonoidHom.mk' (fun Y => L (0, -(P⁻¹ * Y * Q⁻¹))) (fun Y Y' => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mul_add, Matrix.add_mul, neg_add, ← map_add, Prod.mk_add_mk, add_zero])`. Set `uM : Matrix (Fin a') (Fin (a + a')) (Fv F v) →+ Matrix (Fin a') (Fin (a + a')) (AE F E)` to `AddMonoidHom.mk' (fun z => L (-z, 0)) (fun z z' => by rw [neg_add, ← map_add, Prod.mk_add_mk, add_zero])`. Establish `hco : ∀ u, GlobalTheory.LinBarAt.coAt G t u = -(P * u.map (piW (t.comp σ)) * Q)` using `fun u => by`. Simplify using `[GlobalTheory.LinBarAt.coAt, hPdef, hQdef]`. Establish `hTc : ∀ Y, (uT Y).map (piW (t.comp σ)) = -(P⁻¹ * Y * Q⁻¹)` using `fun Y => liftM_snd σ hcm v t _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTt : ∀ Y, (uT Y).map (piW t) = 0` using `fun Y => liftM_fst σ hcm v t _`. Establish `hMc : ∀ z, (uM z).map (piW (t.comp σ)) = 0` using `fun z => liftM_snd σ hcm v t _`. Establish `hMt : ∀ z, (uM z).map (piW t) = -z` using `fun z => liftM_fst σ hcm v t _`. Establish `hTa : ∀ Y, At (evFin F v) (uT Y)` using `fun Y => liftM_at σ hcm v t _`. Establish `hMa : ∀ z, At (evFin F v) (uM z)` using `fun z => liftM_at σ hcm v t _`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨uT, uM, fun Y => ⟨hTa Y, hTt Y, ?_⟩, fun z => ⟨hMa z, hMc z, hMt z⟩, fun u hu => ?_, fun x u hx hu => ?_⟩` and prove the remaining obligations. Establish `e1 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv _ hP`. Establish `e2 : Q⁻¹ * Q = 1` using `Matrix.nonsing_inv_mul _ hQ`. Rewrite using `[hco, hTc, Matrix.mul_neg, Matrix.neg_mul, neg_neg]`. Simplify using `only [← Matrix.mul_assoc, e1, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc, e2, Matrix.mul_one]`. Use `⟨GlobalTheory.LinBarAt.coAt G t u, -(u.map (piW t)), ?_⟩` and prove the remaining obligations. Establish `hd : At (evFin F v) (u - (uT (GlobalTheory.LinBarAt.coAt G t u) + uM (-(u.map (piW t)))))`. Introduce `c hc`. Rewrite using `[smul_sub, smul_add, hu c hc, hTa _ c hc, hMa _ c hc, add_zero, sub_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `(sub_eq_zero.1 (eq_zero_of_at σ hcm v t hd ?_ ?_))` and prove the remaining obligations. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_add _ (map_add _), hTt, hMt, neg_neg, zero_add, sub_self]`. Rewrite using `[Matrix.map_sub _ (map_sub _), Matrix.map_add _ (map_add _), hTc, hMc, add_zero, hco, Matrix.mul_neg, Matrix.neg_mul, neg_neg, Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hQ, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hP, Matrix.one_mul, sub_sel …`. Rewrite using `[GlobalTheory.T.local_lattice_hermitian_skew hcm v t G.V'.J G.W.J hTr.geo.hV'.herm hTr.geo.hW.skew x u hx, hco, hco]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split_coords : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W), IsTriple B G X om om' →

@@ -12,13 +12,13 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.Weakl
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `D HW F`. Unfold `Formalism.MainNotions.InvariantsGenerators.LitFont`. Introduce `l _ K LL hA`. Unfold `Formalism.MainNotions.InvariantsGenerators.FontCore`. Establish `hff` using `GlobalTheory.T.wachFunctor_fullyFaithful D HW F l K 1 LL hA.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hex` using `GlobalTheory.T.etaleFunctor_exact_on_lattices D HW F l K 1 LL hA.2.2`. Establish `hpd` using `GlobalTheory.T.exists_psi_operator_etale_phiGamma_module D HW F l K 1 LL hA.2.2`. Establish `hpe` using `GlobalTheory.T.wachFunctorRing_psiOperator_exists_of_good D HW F l K 1 LL hA.2.2`. Establish `hfr` using `GlobalTheory.T.etaleRing_free_over_frobenius_image D HW F l K 1 LL hA.2.2`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨hff, hex, ?_, hpd⟩` and prove the remaining obligations. Take `⟨ψ, h1, h2, h3⟩` from `hpe`. Use `⟨ψ, h1, h2, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hp]`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `x`. Take `⟨c, hc, -⟩` from `hfr x`. Rewrite using `[hp]`. Conclude with `⟨c, hc⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem fontaine_litFont_assembled :
     ∀ (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW), Formalism.MainNotions.InvariantsGenerators.LitFont D HW F := by

@@ -52,7 +52,7 @@ def EtArchAlphaSt : Prop :=
             (ReciprocityTheory.ChartRestriction.G.I2.th (E := D.host.E) T.Q.l.M R0) x - tableLineDegreeTwo))
 
 /- English proof (translation)
-The claim follows from `H D T h j hj i η DF m r1 Nc nt R0 tableLineDegreeTwo hr hn hp he`.
+A detailed English derivation is pending.
 -/
 example (H : EtArchAlphaSt) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (i : ℕ)
     (η : (recB h.toLawsCore).Cusp j (wEt D j i)) (DF m r1 Nc nt : ℕ) (R0 tableLineDegreeTwo : ℝ) (hr : 2 ≤ r1)
@@ -62,9 +62,9 @@ example (H : EtArchAlphaSt) (T : Top D) (h : LawsP T) (j : ℕ) (hj : InR D j) (
   H D T h j hj i η DF m r1 Nc nt R0 tableLineDegreeTwo hr hn hp he
 
 /- English proof (translation)
-Take `⟨c, a, hc, ha, hle⟩` from `he σ hσ k x hu W Wu A L hL`. Take `⟨P, hq, hR, hm⟩` from `hp σ hσ k x.1 x.2 A`. Establish `hTr : A.T.r = D.R.r` using `torusAt_r A`. Establish `hph : P.ph = ReciprocityTheory.ChartRestriction.G.I2.phiFD ((T.U j σ).X k) (ReciprocityTheory.ChartRestriction.G.I2.th (E` using `D.host.E) T.Q.l.M R0) x.1 := by`. Rewrite using `[ReciprocityTheory.ChartRestriction.G.I2.Par.ph, hq, hR]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(ReciprocityTheory.ChartRestriction.G.I2.TorusAtPf.torusAtLa1_holds _ _ _ x.1 x.2 A.T (ReciprocityTheory.ChartRestriction.G.I2.TorusAtDataPf.torusAtIs_holds _ _ _ x.1 A)).2 _`. Use `hle.trans ?_` and prove the remaining obligations. Establish `hb` using `etProd_bound A.T P r1 hr A.s A.s_mem A.s_ne c a hc ha (by rw [hTr, hq, hm]; exact hn)`. Rewrite `hb` using `[hph]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 example (T : Top D) (h : LawsP T) (j i : ℕ)
     (η : (recB h.toLawsCore).Cusp j (wEt D j i)) (DF m r1 Nc nt : ℕ) (R0 tableLineDegreeTwo : ℝ) (hr : 2 ≤ r1)

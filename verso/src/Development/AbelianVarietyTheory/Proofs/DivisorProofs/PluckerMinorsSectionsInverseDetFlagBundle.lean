@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.FlagPlucker
 
 /- English proof (translation)
-Establish `e : (A * B).submatrix r (Fin.castLE h) = A.submatrix r (Fin.castLE h) * B.submatrix (Fin.castLE h) (Fin.castLE h)`. Use extensionality with `i l`. Simplify using `only [Matrix.submatrix_apply, Matrix.mul_apply]`. Use `symm`. Use `Fintype.sum_of_injective (Fin.castLE h) (Fin.castLE_injective h) _ _ (fun b hb => ?_) (fun _ => rfl)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ¬ (b : ℕ) < m + 1` using `fun hb' => hb ⟨⟨b, hb'⟩, rfl⟩`. Establish `h0 : B b (Fin.castLE h l) = 0` using `hB (Fin.lt_iff_val_lt_val.2 (lt_of_lt_of_le l.2 (not_lt.1 this)))`. Rewrite using `[h0, mul_zero]`. Rewrite using `[e, Matrix.det_mul, Matrix.det_of_upperTriangular (M := B.submatrix (Fin.castLE h) (Fin.castLE h))]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `i l hil`. Conclude with `hB (show Fin.castLE h l < Fin.castLE h i from hil)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem det_submatrix_mul_tri {R : Type} [CommRing R] {n p m : ℕ} (A : Matrix (Fin n) (Fin p) R)
     (B : Matrix (Fin p) (Fin p) R) (hB : B.BlockTriangular id) (h : m + 1 ≤ p) (r : Fin (m + 1) → Fin n) :
@@ -44,9 +44,9 @@ open ReciprocityTheory.ChartRestriction.G.PullbackSections (TanM tv mkT tanM_ext
 attribute [local instance] Over.cartesianMonoidalCategory
 
 /- English proof (translation)
-Unfold `plkU`. Rewrite using `[Matrix.map_mul, Matrix.map_map, Matrix.map_map, ← chg_map Mc (F.M k).toMChart (w ≫ π) hx hx' (le_preimage_inf hx hx')]`. Use `congr 1`. Use extensionality with `i j`. Conclude with `ev_appLE w π _ h _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Conclude with `ev_res w _ h hk _`.
+A detailed English derivation is pending.
 -/
 theorem plkU_map_ev (F : Frames Y π) (Mc : MChart Y) (k : F.J) (σ : E →+* ℂ) {S : Type} [CommRing S]
     (w : Sp S ⟶ Z) (h : ⊤ ≤ w ⁻¹ᵁ (F.U k ⊓ π ⁻¹ᵁ Mc.U)) (hk : ⊤ ≤ w ⁻¹ᵁ F.U k) (hx : ⊤ ≤ (w ≫ π) ⁻¹ᵁ Mc.U)
@@ -61,9 +61,9 @@ theorem plkU_map_ev (F : Frames Y π) (Mc : MChart Y) (k : F.J) (σ : E →+* �
   · ext i j; exact ev_res w _ h hk _
 
 /- English proof (translation)
-Establish `hk` using `le_preimage_mono inf_le_left hh`. Establish `hk'` using `le_preimage_mono inf_le_right hh`. Establish `hx : ⊤ ≤ (w ≫ π) ⁻¹ᵁ Mc.U` using `fun p hp => (h hp).2`. Establish `a` using `F.inM hk rfl`. Establish `b` using `F.inM hk' rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[plkU_map_ev F Mc k' σ w h' hk' hx b, plkU_map_ev F Mc k σ w h hk hx a, ← Module.Basis.toMatrix_mul_toMatrix (lieBasis Mc (w ≫ π) hx) (lieBasis (F.M k).toMChart (w ≫ π) a), ← chg_map (F.M k).toMChart (F.M k').toMChart (w ≫ π) a b (le_preimage_inf a b), Matrix.mul_assoc, F.chg_uAt …`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem plkU_map_ev_chg (F : Frames Y π) (Mc : MChart Y) (k k' : F.J) (σ : E →+* ℂ) {S : Type} [CommRing S]
     (w : Sp S ⟶ Z) (h : ⊤ ≤ w ⁻¹ᵁ (F.U k ⊓ π ⁻¹ᵁ Mc.U)) (h' : ⊤ ≤ w ⁻¹ᵁ (F.U k' ⊓ π ⁻¹ᵁ Mc.U))
@@ -81,13 +81,11 @@ theorem plkU_map_ev_chg (F : Frames Y π) (Mc : MChart Y) (k k' : F.J) (σ : E �
 
 open Classical in
 /- English proof (translation)
-Simplify using `only [zpow_neg, Finset.prod_inv_distrib]`. Use `congr 1`. Use `symm`. Use `Fintype.prod_of_injective (fun i : Fin ((m : ℕ) + 1) => (some ⟨σ, Fin.castLE m.2 i⟩ : Ix Dw)) ?_ _ (fun ix => t ix ^ ind σ m ix) (fun b hb => ?_) (fun i => ?_)` and prove the remaining obligations. Introduce `i i' e`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Option.some.injEq, Sigma.mk.inj_iff, heq_eq_eq, true_and] at e`. Conclude with `Fin.castLE_injective _ e`. Break down `b with _ | ⟨τ, j⟩` into its components or cases. Simplify using `[ind]`. Establish `: ind σ m (some ⟨τ, j⟩) = 0`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [ind, Option.elim]`. Rewrite using `[if_neg]`. Introduce and unpack `⟨rfl, hj⟩`. Conclude with `hb ⟨⟨j, Nat.lt_succ_of_le hj⟩, rfl⟩`. Rewrite using `[this, zpow_zero]`.
-
-Simplify using `[ind, not_lt.2 (Nat.lt_succ_iff.1 i.2)]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem prod_zpow_neg_ind {G : Type} [CommGroup G] (σ : E →+* ℂ) (m : Fin (Dw.mult σ)) (t : Ix Dw → G) :
     ∏ ix, t ix ^ (-ind σ m ix) = (∏ i : Fin ((m : ℕ) + 1), t (some ⟨σ, Fin.castLE m.2 i⟩))⁻¹ := by
@@ -110,13 +108,13 @@ theorem prod_zpow_neg_ind {G : Type} [CommGroup G] (σ : E →+* ℂ) (m : Fin (
   · simp [ind, not_lt.2 (Nat.lt_succ_iff.1 i.2)]
 
 /- English proof (translation)
-Use `⟨⟨plkLoc F Mc g hg σ m q, fun j j' => ?_⟩, rfl⟩` and prove the remaining obligations. Unfold `plkLoc`. Break down `plkIdx Mc m q with _ | r` into its components or cases. Simplify using the standard rewrite rules. Use `ext_ev fun S _ z hz => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha` using `le_preimage_mono inf_le_left hz`. Establish `hb` using `le_preimage_mono inf_le_right hz`. Establish `h1` using `le_preimage_map g (plk_le F Mc g hg (ind σ m) j) ha`. Establish `h2` using `le_preimage_map g (plk_le F Mc g hg (ind σ m) j') hb`. Establish `hh : ⊤ ≤ (z ≫ g) ⁻¹ᵁ (F.U (j PUnit.unit) ⊓ F.U (j' PUnit.unit))` using `le_preimage_inf (le_preimage_mono inf_le_left h1) (le_preimage_mono inf_le_left h2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul, ev_res z _ hz ha, ev_res z _ hz hb, ev_appLE z g _ ha h1, ev_appLE z g _ hb h2, ev_pull_g (F.LL (ind σ m)) g j j' z hz hh]`. Use `erw [F.ev_LL_g _ _ _ (z ≫ g) hh]`. Unfold `plkMinor`. Rewrite using `[RingHom.map_det, RingHom.map_det, RingHom.mapMatrix_apply, RingHom.mapMatrix_apply, ← Matrix.submatrix_map, ← Matrix.submatrix_map, plkU_map_ev_chg F Mc _ _ σ (z ≫ g) h1 h2 hh, det_submatrix_mul_tri (m := (m : ℕ)) _ _ (F.B_map_tri (j PUnit.unit) (j' PUnit.unit) σ (ev (z ≫ g) _ h …`. Establish `e : ∏ i : Fin ((m : ℕ) + 1), (F.B (j PUnit.unit) (j' PUnit.unit) σ).map (ev (z ≫ g) _ hh) (Fin.castLE m.2 i) (Fin.castLE m.2 i) = ((∏ i : Fin ((m : ℕ) + 1), F.TAt (j PUnit.unit) (j' PUnit.unit) (z ≫ g) hh (some ⟨σ, Fin.castLE m.2 i⟩) : (S)ˣ) : S)`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Units.coe_prod]`. Both sides reduce to the same expression. Rewrite using `[e, _root_.mul_left_comm, Units.inv_mul, _root_.mul_one]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem plkLoc_sec (F : Frames Y π) (Mc : MChart Y) {T : Scheme.{0}} (g : T ⟶ Z) (hg : ⊤ ≤ (g ≫ π) ⁻¹ᵁ Mc.U)
     (σ : E →+* ℂ) (m : Fin (Dw.mult σ)) (q : Fin (plkNum Mc m + 1)) :

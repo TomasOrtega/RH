@@ -6,13 +6,13 @@ namespace UpperTheory.Gal.Int.Div
 open GlobalTheory.BlockSum (blockRep)
 
 /- English proof (translation)
-Introduce `Γ k _ _ a d r ρ ⟨m, B, hB, hg⟩`. Set `n` to `Fintype.card (Σ _ : Fin m, Fin a)`. Set `e : (Σ _ : Fin m, Fin a) ≃ Fin n` to `Fintype.equivFin _`. Set `σ : Fin n ≃ Fin a × Fin m` to `e.symm.trans ((Equiv.sigmaEquivProd _ _).trans (Equiv.prodComm _ _))`. Use `⟨m, n, e, B.submatrix σ id, ?_, fun g => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `Matrix.rank_submatrix B σ (Equiv.refl _)`. Simplify `h` using `[hB]`. Establish `key : ((blockRep (a` using `fun _ : Fin m => a) e fun _ => r) g : Matrix (Fin n) (Fin n) k) = (Matrix.kronecker (r g : Matrix (Fin a) (Fin a) k) (1 : Matrix (Fin m) (Fin m) k)).submatrix σ σ := by`. Rewrite using `[GlobalTheory.BlockSum.blockRep_val]`. Use extensionality with `i j`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Take `⟨⟨x, u⟩, rfl⟩` from `e.surjective i`. Take `⟨⟨y, v⟩, rfl⟩` from `e.surjective j`. Simplify using `[σ, Matrix.blockDiagonal'_apply, Matrix.one_apply, Matrix.kroneckerMap_apply]`. Rewrite using `[key]`. Establish `h1 : B.submatrix σ id = B.submatrix σ (Equiv.refl _)` using `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (ρ g : Matrix (Fin d) (Fin d) k) = (ρ g : Matrix (Fin d) (Fin d) k).submatrix (Equiv.refl _) (Equiv.refl _)` using `by simp`. Rewrite using `[h1, Matrix.submatrix_mul_equiv, hg g, h2, Matrix.submatrix_mul_equiv]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem coverIn_of : CoverIn := by
   intro Γ k _ _ a d r ρ ⟨m, B, hB, hg⟩

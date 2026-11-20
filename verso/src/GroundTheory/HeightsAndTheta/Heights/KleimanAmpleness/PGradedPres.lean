@@ -13,13 +13,11 @@ universe u v w
 namespace GradedPres
 
 /- English proof (translation)
-Rewrite using `[iSupIndep_def]`. Introduce `c`. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`. Apply `hπ` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `i`. Establish `h1 : π i x ∈ q (σ i c)` using `hp i c hx`. Establish `hle : Submodule.map (π i) (⨆ (c' : ℤ) (_ : c' ≠ c), p c') ≤ ⨆ (e : ℤ) (_ : e ≠ σ i c), q e`. Rewrite using `[Submodule.map_iSup]`. Use `iSup_le fun c' => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Submodule.map_iSup]`. Use `iSup_le fun hc' => ?_` and prove the remaining obligations. Rewrite using `[Submodule.map_le_iff_le_comap]`. Conclude with `(hp i c').trans (Submodule.comap_mono (le_iSup₂_of_le (f := fun (e : ℤ) (_ : e ≠ σ i c) => q e) (σ i c') (fun h => hc' (hσ i h)) le_rfl))`. Establish `h2 : π i x ∈ ⨆ (e : ℤ) (_ : e ≠ σ i c), q e` using `hle (Submodule.mem_map_of_mem hx')`.
-
-Conclude with `Submodule.disjoint_def.mp ((iSupIndep_def.mp hq) (σ i c)) _ h1 h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem iSupIndep_of_coords {R X Y ι : Type*} [Ring R] [AddCommGroup X] [Module R X]
     [AddCommGroup Y] [Module R Y] {p : ℤ → Submodule R X} {q : ℤ → Submodule R Y}
@@ -51,13 +49,13 @@ section Free
 variable {S : Type u} [CommRing S] {N : ℕ}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `p ∈ weightedHomogeneousSubmodule S (fun _ => (1 : ℤ)) a at hp`. Rewrite `hp` using `[mem_weightedHomogeneousSubmodule]`. Break down `le_or_gt 0 a with ha | ha` into its components or cases. Take `⟨n, rfl⟩` from `Int.eq_ofNat_of_zero_le ha`. Use `𝓜.smul_mem n c p m ?_ hm` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `μ hμ`. Establish `h` using `hp hμ`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum, Pi.one_apply, smul_eq_mul, mul_one, nsmul_eq_mul] at h ⊢`. Conclude with `h` after adjusting the coercions. Establish `hp0 : p = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hne`. Take `⟨μ, hμ⟩` from `MvPolynomial.ne_zero_iff.mp hne`. Establish `h` using `hp hμ`. Simplify using `only [Finsupp.weight_apply, Finsupp.sum, nsmul_eq_mul, mul_one] at h`. Establish `: (0 : ℤ) ≤ ∑ i ∈ μ.support, (μ i : ℤ)` using `Finset.sum_nonneg fun i _ => Int.natCast_nonneg _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[hp0, zero_smul]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_mem_piece {M : Type w} [AddCommGroup M] [Module (Poly S N) M] [Module S M]
     [IsScalarTower S (Poly S N) M] (𝓜 : GradedPMod S N M) {a c : ℤ} {p : Poly S N} {m : M}
@@ -101,9 +99,9 @@ theorem coordIncl_down (j : Fin r) (p : Poly S N) :
     (coordIncl.{u, v} j p).down = Pi.single j p := rfl
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[coordIncl_down]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, add_sub_cancel_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coordIncl_mem {d : Fin r → ℤ} (j : Fin r) {e : ℤ} {p : Poly S N}
     (hp : p ∈ (polyGraded S N).piece e) : coordIncl.{u, v} j p ∈ freePiece d (e + d j) := by
@@ -158,16 +156,16 @@ def freeBasis (r : ℕ) : Module.Basis (Fin r) (Poly S N) (ULift.{v} (Fin r → 
   (Pi.basisFun (Poly S N) (Fin r)).map (ULift.moduleEquiv (R := Poly S N)).symm
 
 /- English proof (translation)
-Rewrite using `[freeBasis, Module.Basis.map_apply, Pi.basisFun_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem freeBasis_down (j : Fin r) : (freeBasis.{u, v} S N r j).down = Pi.single j 1 := by
   rw [freeBasis, Module.Basis.map_apply, Pi.basisFun_apply]
   rfl
 
 /- English proof (translation)
-Introduce `i`. Rewrite using `[freeBasis_down]`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Rewrite using `[Pi.single_eq_same, sub_self]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `show (1 : Poly S N) ∈ weightedHomogeneousSubmodule S (fun _ => (1 : ℤ)) 0`. Rewrite using `[mem_weightedHomogeneousSubmodule]`. Conclude with `isWeightedHomogeneous_one S _`. Rewrite using `[Pi.single_eq_of_ne h]`. Conclude with `zero_mem _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem freeBasis_mem (d : Fin r → ℤ) (j : Fin r) :
     freeBasis.{u, v} S N r j ∈ (freeGraded.{u, v} N d).piece (d j) := by
@@ -196,7 +194,7 @@ def genMap (𝓜 : GradedPMod S N M) (d : Fin r → ℤ) (m : Fin r → M) (hm :
     rwa [add_sub_cancel] at h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `Fintype.linearCombination (Poly S N) m (freeBasis.{u, v} S N r j).down = m j`. Rewrite using `[freeBasis_down, Fintype.linearCombination_apply_single, one_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem genMap_basis (𝓜 : GradedPMod S N M) (d : Fin r → ℤ) (m : Fin r → M)
     (hm : ∀ j, m j ∈ 𝓜.piece (d j)) (j : Fin r) :
@@ -219,11 +217,11 @@ variable {𝓕 : GradedPMod S N F} {𝓜 : GradedPMod S N M}
 omit [IsScalarTower S (Poly S N) F] [IsScalarTower S (Poly S N) M] in
 
 /- English proof (translation)
-Proceed by induction on `y using DirectSum.induction_on with`. Consider the case `zero => simp`. Consider the case `of i x`. Rewrite using `[DirectSum.coeLinearMap_of]`. Distinguish the cases in `h : i = c`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Rewrite using `[𝓜.isInternal.ofBijective_coeLinearMap_of_mem (g.map_piece i x x.2), DirectSum.of_eq_same]`. Rewrite using `[𝓜.isInternal.ofBijective_coeLinearMap_of_mem_ne h (g.map_piece i x x.2)]`. Simplify using `[DirectSum.of_apply, h]`. Consider the case `add a b ha hb`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `only [map_add, DirectSum.add_apply, Submodule.coe_add, ha, hb]`.
+Simplify using the standard rewrite rules.
 -/
 theorem component_map (g : GradedHom 𝓕 𝓜) (y : DirectSum ℤ fun c => 𝓕.piece c) (c : ℤ) :
     (((LinearEquiv.ofBijective (DirectSum.coeLinearMap 𝓜.piece) 𝓜.isInternal).symm
@@ -277,13 +275,13 @@ def kerIncl (g : GradedHom 𝓕 𝓜) : GradedHom (kerGraded g) 𝓕 where
 end Ker
 
 /- English proof (translation)
-Set `H : Set M` to `⋃ c, (𝓜.piece c : Set M)`. Establish `hH : Submodule.span (Poly S N) H = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`. Establish `hx : x ∈ ⨆ c, 𝓜.piece c`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[𝓜.isInternal.submodule_iSup_eq_top]`. Discharge the goal by the elementary cases of `trivial`. Use `Submodule.iSup_induction _ (motive := fun y => y ∈ Submodule.span (Poly S N) H) hx (fun c y hy => Submodule.subset_span (Set.mem_iUnion.mpr ⟨c, hy⟩)) (zero_mem _) (fun a b ha hb => add_mem ha hb)` and prove the remaining obligations. Establish `hcomp` using `(Submodule.fg_iff_compact (⊤ : Submodule (Poly S N) M)).mp hfin.fg_top`. Establish `hle : (⊤ : Submodule (Poly S N) M) ≤ ⨆ h : H, Submodule.span (Poly S N) {(h : M)}`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hH, Submodule.span_le]`. Introduce `y hy`. Conclude with `Submodule.mem_iSup_of_mem (⟨y, hy⟩ : H) (Submodule.mem_span_singleton_self y)`. Take `⟨t, ht⟩` from `CompleteLattice.IsCompactElement.exists_finset_of_le_iSup _ hcomp _ hle`. Set `e` to `t.equivFin`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨t.card, fun j => ((e.symm j : H) : M), fun j => Classical.choose (Set.mem_iUnion.mp (e.symm j : H).2), fun j => Classical.choose_spec (Set.mem_iUnion.mp (e.symm j : H).2), ?_⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff]`. Use `ht.trans (iSup₂_le fun h hh => ?_)` and prove the remaining obligations. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `Submodule.subset_span ⟨e ⟨h, hh⟩, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_homogeneous_generators {S : Type u} [CommRing S] {N : ℕ} {M : Type w}
     [AddCommGroup M] [Module (Poly S N) M] [Module S M] [IsScalarTower S (Poly S N) M]
@@ -319,9 +317,9 @@ theorem exists_homogeneous_generators {S : Type u} [CommRing S] {N : ℕ} {M : T
 end GradedPres
 
 /- English proof (translation)
-Introduce `S _ _ N M _ _ _ _ 𝓜 hfin`. Take `⟨r, m, d, hm, hspan⟩` from `GradedPres.exists_homogeneous_generators 𝓜 hfin`. Set `g` to `GradedPres.genMap.{u, max u v} 𝓜 d m hm`. Establish `: Module.Finite (Poly S N) (ULift.{max u v} (Fin r → Poly S N))` using `Module.Finite.equiv (ULift.moduleEquiv (R := Poly S N)).symm`. Use `⟨ULift.{max u v} (Fin r → Poly S N), inferInstance, inferInstance, inferInstance, inferInstance, LinearMap.ker g.toLin, inferInstance, inferInstance, inferInstance, inferInstance, GradedPres.freeGraded N d, GradedPres.kerGraded g, r, GradedPres.freeBasis S N r, d, GradedPres.kerI …` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Subtype.val_injective`. Rewrite using `[← LinearMap.range_eq_top, eq_top_iff, ← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨_, GradedPres.genMap_basis 𝓜 d m hm j⟩`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GradedPres.proof : GradedPres.Statement.{u, v} := by
   intro S _ _ N M _ _ _ _ 𝓜 hfin

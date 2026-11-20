@@ -10,11 +10,11 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.CechOne
 
 /- English proof (translation)
-Establish `hx : (Sheaf.H.equiv₀ G isTerminalTop).symm s = GlobalTheory.SiteCoh.terminalEquiv G 0 isTerminalTop ((GlobalTheory.SheafLES.equivZero.{0} G ⊤).symm s)`. Rewrite using `[AddEquiv.symm_apply_eq]`. Use `Eq.symm ((GlobalTheory.SiteCoh.equiv₀_terminalEquiv G isTerminalTop _).trans ?_)` and prove the remaining obligations. Conclude with `(GlobalTheory.SheafLES.equivZero.{0} G ⊤).apply_symm_apply s`. Rewrite using `[hx, AddEquiv.eq_symm_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : hPull f φ 0 (GlobalTheory.SiteCoh.terminalEquiv G 0 isTerminalTop ((GlobalTheory.SheafLES.equivZero.{0} G ⊤).symm s)) = GlobalTheory.SiteCoh.terminalEquiv G' 0 isTerminalTop (pull.{0, 0} f φ 0 (homOfLE le_top : (⊤ : Opens X) ⟶ (Opens.map f).obj ⊤) ((GlobalTheory.SheafLES.equ …`. Simplify using `only [hPull, AddMonoidHom.comp_apply, AddEquiv.coe_toAddMonoidHom, AddEquiv.symm_apply_apply]`. Rewrite using `[h1]`. Use `(GlobalTheory.SiteCoh.equiv₀_terminalEquiv G' isTerminalTop _).trans ?_` and prove the remaining obligations. Use `(SheafPull.equivZero_pull f φ (homOfLE le_top : (⊤ : Opens X) ⟶ (Opens.map f).obj ⊤) _).trans ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AddEquiv.apply_symm_apply]`.
+A detailed English derivation is pending.
 -/
 theorem hPull_zero {X Y : TopCat.{0}} (f : X ⟶ Y) {G : AbSheaf Y} {G' : AbSheaf X}
     (φ : G ⟶ (push f).obj G') (s : G.obj.obj (op ⊤)) :
@@ -38,7 +38,7 @@ theorem hPull_zero {X Y : TopCat.{0}} (f : X ⟶ Y) {G : AbSheaf Y} {G' : AbShea
   rw [AddEquiv.apply_symm_apply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `t`. Express the relevant statement in the definitionally equal form `res Q (inter_le_map f V U τ hτ t) (φ.app (op (inter V (τ ∘ t))) (res P _ s)) = res Q _ (Q.map (homOfLE le_top : (⊤ : Opens X) ⟶ (Opens.map f).obj ⊤).op (φ.app (op ⊤) s))`. Rewrite using `[app_res_map, res_res]`. Express the relevant statement in the definitionally equal form `_ = res Q _ (res Q _ (φ.app (op ⊤) s))`. Rewrite using `[res_res]`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem pullCoch_globalCocycle {X Y : TopCat.{0}} (f : X ⟶ Y) {P : (Opens Y)ᵒᵖ ⥤ AddCommGrpCat.{0}}
     {Q : (Opens X)ᵒᵖ ⥤ AddCommGrpCat.{0}} (φ : P ⟶ (Opens.map f).op ⋙ Q)
@@ -55,11 +55,9 @@ theorem pullCoch_globalCocycle {X Y : TopCat.{0}} (f : X ⟶ Y) {P : (Opens Y)�
   rw [res_res]
 
 /- English proof (translation)
-Take `⟨s, rfl⟩` from `cechOneProj_surjective V hV hC hI x`. Establish `h₁₂ : ∀ W y, α.τ₂.hom.app W (S.f.hom.app W y) = S'.f.hom.app _ (α.τ₁.hom.app W y)` using `fun W y => ConcreteCategory.congr_hom (NatTrans.congr_app (congrArg (fun g => g.hom) α.comm₁₂.symm) W) y`. Establish `h₂₃ : ∀ W y, α.τ₃.hom.app W (S.g.hom.app W y) = S'.g.hom.app _ (α.τ₂.hom.app W y)` using `fun W y => ConcreteCategory.congr_hom (NatTrans.congr_app (congrArg (fun g => g.hom) α.comm₂₃.symm) W) y`. Establish `hmap : cechPullH f α.τ₁.hom V U τ hτ 1 (cechOneProj V hC s) = cechOneProj U hC' (S'.X₃.obj.map (homOfLE le_top : (⊤ : Opens X) ⟶ (Opens.map f).obj ⊤).op (α.τ₃.hom.app (op ⊤) s))`. Express the relevant statement in the definitionally equal form `cechPullH f α.τ₁.hom V U τ hτ (0 + 1) (hC.delta 0 (globalCocycle S.X₃.obj V s)) = hC'.delta 0 (globalCocycle S'.X₃.obj U _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `(GlobalTheory.T.cech_short_exact_pull_compat f V U τ hτ hC hC' α.τ₁.hom α.τ₂.hom α.τ₃.hom h₁₂ h₂₃ 0 _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (hC'.delta 0) (Subtype.ext (pullCoch_globalCocycle f α.τ₃.hom V U τ hτ s))`. Rewrite using `[hmap, cechHOneEquiv_cechOneProj, cechHOneEquiv_cechOneProj]`. Express the relevant statement in the definitionally equal form `H.δ hS' 0 1 rfl ((Sheaf.H.equiv₀ S'.X₃ isTerminalTop).symm _) = hPull f α.τ₁ 1 (H.δ hS 0 1 rfl ((Sheaf.H.equiv₀ S.X₃ isTerminalTop).symm s))`. Rewrite using `[GlobalTheory.T.sheaf_pull_connecting_compat f hS hS' α 0 _]`.
-
-Conclude with `congrArg (H.δ hS' 0 1 rfl) (hPull_zero f α.τ₃ s).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cechHOneEquiv_pull {X Y : TopCat.{0}} (f : X ⟶ Y) {κ ι : Type} (V : κ → Opens Y) (hV : iSup V = ⊤)
     (U : ι → Opens X) (hU : iSup U = ⊤) (τ : ι → κ) (hτ : ∀ i, U i ≤ (Opens.map f).obj (V (τ i)))

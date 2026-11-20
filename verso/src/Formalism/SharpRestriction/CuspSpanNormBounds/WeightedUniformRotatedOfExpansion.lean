@@ -47,7 +47,7 @@ def OnePlaceR (Ch Cg dist : ℝ) (P : ∀ (T T' : ℕ) (b : ℝ), BData D Ch Cg 
 variable {D}
 
 /- English proof (translation)
-Conclude with `Formalism.MainNotions.BesselShellMomentBounds.theorem_B_weighted_bound_one_place (D := D) hCg hO`.
+A detailed English derivation is pending.
 -/
 theorem weighted_bound_rotated_of_one_place {Aw Ch Cg CK : ℝ} {A : ℕ} (hCg : 2 ≤ Cg)
     (hO : OnePlaceR D Ch Cg 0 (fun _ _ _ X => ∀ v, AllGaps (X.L v).lam (Cg * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 4)) A CK 5
@@ -88,18 +88,18 @@ def QExpAtR (Ch Cg dist : ℝ) (P : ∀ (T T' : ℕ) (b : ℝ), BData D Ch Cg T 
 variable {D}
 
 /- English proof (translation)
-Rewrite using `[← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem sqrt_sq_enn (x : ENNReal) : (x ^ ((1 : ℝ) / 2)) ^ 2 = x := by
   rw [← ENNReal.rpow_natCast, ← ENNReal.rpow_mul]
   norm_num
 
 /- English proof (translation)
-Take `⟨hk, -, -, -, -, hS, -⟩` from `X.hL v`. Take `⟨-, -, -, -, -, -, -, -, -, -, hlam, -, -, hgap, -⟩` from `hS`. Establish `hn : 1 < 2 * D.R.rS + D.R.k + 1` using `by omega`. Establish `h01 : (⟨0, by omega⟩ : Fin (2 * D.R.rS + D.R.k + 1)) ≠ ⟨1, hn⟩` using `by simp [Fin.ext_iff]`. Establish `hg` using `hgap _ _ h01`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hlam ⟨0, by omega⟩`. Establish `h2` using `hlam ⟨1, hn⟩`. Establish `h3` using `norm_sub_le (lamSH D.R (D.hc v) ⟨0, by omega⟩) (lamSH D.R (D.hc v) ⟨1, hn⟩)`. Simplify using `only [Real.norm_eq_abs] at h3`. Establish `hpos : 0 < Cg * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < ((2 * D.R.rS + 2 : ℕ) : ℝ)` using `by positivity`. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem b_pos_of_dataR {Ch Cg dist : ℝ} {T T' : ℕ} {b : ℝ} (hCg : 2 ≤ Cg) (X : BData D Ch Cg T T' b dist)
     (v : D.what₂.Tau) : 0 < b := by
@@ -118,17 +118,15 @@ theorem b_pos_of_dataR {Ch Cg dist : ℝ} {T T' : ℕ} {b : ℝ} (hCg : 2 ≤ Cg
   linarith
 
 /- English proof (translation)
-Introduce `T T' b X hP γ hγ v`. Take `⟨n, a, L', f', μ', ha0, hasum, hok, hjn, hle⟩` from `hQ T T' b X hP γ hγ v`. Establish `hb : 0 < b` using `b_pos_of_dataR hCg X v`. Use `set s : ℝ := ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ e with hs`. Use `set Mx : ℝ := max 1 (1 / absV D v (Gglob D T T' γ)) ^ A with hMx`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set K : ENNReal := ENNReal.ofReal (b ^ (C2 * s) * Mx) * jNorm2 (X.L v) (X.f v) (X.μsec v) with hK`. Establish `hi : ∀ i, ENNReal.ofReal (nLoc D T T' v γ) * orbSq (L' i) (f' i) (turnPt (ptLoc D v γ)) ≤ K`. Introduce `i`. Use `(hB T T' b v (L' i) (f' i) (μ' i) (hok i) γ hγ).trans ?_` and prove the remaining obligations. Rewrite using `[hK]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `gcongr`. Conclude with `hjn i`. Establish `hsa : 0 ≤ ∑ i, a i` using `Finset.sum_nonneg fun i _ => ha0 i`. Establish `hsum : (∑ i, ENNReal.ofReal (a i) * (ENNReal.ofReal (nLoc D T T' v γ) * orbSq (L' i) (f' i) (turnPt (ptLoc D v γ))) ^ ((1 : ℝ) / 2)) ≤ ENNReal.ofReal (∑ i, a i) * K ^ ((1 : ℝ) / 2)`. Rewrite using `[ENNReal.ofReal_sum_of_nonneg (fun i _ => ha0 i), Finset.sum_mul]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `hi i`. Use `hle.trans ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ENNReal.ofReal_pow hsa]`. Conclude with `ENNReal.ofReal_le_ofReal (pow_le_pow_left₀ hsa hasum 2)`. Use `_ = ENNReal.ofReal (b ^ ((2 * C1 + C2) * s) * Mx) * jNorm2 (X.L v) (X.f v) (X.μsec v) := by`. Establish `e1 : (b ^ (C1 * s)) ^ 2 * (b ^ (C2 * s) * Mx) = b ^ ((2 * C1 + C2) * s) * Mx`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul hb.le, ← mul_assoc, ← Real.rpow_add hb]`.
-
-Use `congr 2`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hK, ← mul_assoc, ← ENNReal.ofReal_mul (by positivity), e1]`.
+A detailed English derivation is pending.
 -/
 theorem onePlaceR_of_exp {Ch Cg dist dist' C1 C2 p : ℝ} {A e : ℕ} {P : ∀ (T T' : ℕ) (b : ℝ), BData D Ch Cg T T' b dist → Prop}
     (hCg : 2 ≤ Cg) (hQ : QExpAtR D Ch Cg dist P dist' A C1 e p) (hB : BpRealR D Ch Cg dist' A C2 e) :
@@ -171,7 +169,7 @@ theorem onePlaceR_of_exp {Ch Cg dist dist' C1 C2 p : ℝ} {A e : ℕ} {P : ∀ (
         rw [hK, ← mul_assoc, ← ENNReal.ofReal_mul (by positivity), e1]
 
 /- English proof (translation)
-Conclude with `weighted_bound_rotated_of_one_place hCg (onePlaceR_of_exp hCg hQ hB)`.
+A detailed English derivation is pending.
 -/
 theorem weighted_bound_rotated_of_expansion {Aw Ch Cg dist' C1 C2 : ℝ} {A : ℕ} (hCg : 2 ≤ Cg) (_hAw : 0 ≤ Aw)
     (hQ : QExpAtR D Ch Cg 0 (fun _ _ _ X => ∀ v, AllGaps (X.L v).lam (Cg * ((2 * D.R.rS + 2 : ℕ) : ℝ) ^ 4)) dist' A C1 5
@@ -192,7 +190,7 @@ def WeightedExpansionRotated : Prop :=
       BpRealR D Ch Cg dist' A C2 5
 
 /- English proof (translation)
-Introduce `Aw Ch hAw`. Take `⟨C1, C2, dist', A, Cg₀, hCg₀, hall⟩` from `h Aw Ch hAw`. Use `⟨2 * C1 + C2 + 6, Cg₀, fun Cg hCg D => ?_⟩` and prove the remaining obligations. Take `⟨hQ, hB⟩` from `hall Cg hCg D`. Conclude with `weighted_bound_rotated_of_expansion (le_trans hCg₀ hCg) hAw hQ hB`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem weighted_uniform_rotated_of_expansion (h : WeightedExpansionRotated) : WeightedBoundRotatedUniform := by
   intro Aw Ch hAw

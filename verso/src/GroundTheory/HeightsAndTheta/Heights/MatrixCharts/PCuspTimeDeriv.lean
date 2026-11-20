@@ -8,7 +8,7 @@ namespace GroundTheory.Heights₂.Heights
 namespace MCCuspTimeDeriv
 
 /- English proof (translation)
-Establish `h` using `(lipschitzWith_one_norm (E := ℂ)).comp (LipschitzWith.eval (α := fun _ : Fin n => ℂ) c)`. Rewrite `h` using `[mul_one]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lipschitz_norm_coord {n : ℕ} (c : Fin n) :
     LipschitzWith 1 (fun w : Fin n → ℂ => ‖w c‖) := by
@@ -17,7 +17,7 @@ theorem lipschitz_norm_coord {n : ℕ} (c : Fin n) :
   exact h
 
 /- English proof (translation)
-Establish `h : Real.log (x ^ 2)⁻¹ / 2 = Real.log x⁻¹`. Rewrite using `[Real.log_inv, Real.log_inv, Real.log_pow]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h, Real.exp_log (inv_pos.mpr hx)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_le_exp_half_log {x : ℝ} (hx : 0 < x) :
     x⁻¹ ≤ Real.exp (Real.log (x ^ 2)⁻¹ / 2) := by
@@ -30,19 +30,17 @@ end MCCuspTimeDeriv
 open MCCuspTimeDeriv in
 
 /- English proof (translation)
-Introduce `D z hz i`. Use `set c : Fin D.n := Fin.castLE D.a_le i with hc`. Establish `hz0 : z c ≠ 0` using `hz.2 i`. Establish `hlt : ‖z c‖ < 1` using `MCBounds.cusp_norm_lt D hz.1 i`. Establish `hpos : 0 < ‖z c‖` using `norm_pos_iff.mpr hz0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `N : (Fin D.n → ℂ) → ℝ` to `fun w => ‖w c‖`. Set `φ : ℝ → ℝ` to `fun y => (2 * Real.pi)⁻¹ * -Real.log y`. Establish `hfun : (fun w => cuspTime D.a_le w i) = φ ∘ N`. Use function extensionality and compare the values at `w`. Simplify using `only [cuspTime, cuspCoord, φ, N, Function.comp, Real.log_inv, hc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hNd : DifferentiableAt ℝ N z` using `DifferentiableAt.norm ℂ (differentiableAt_apply (𝕜 := ℝ) c z) hz0`. Establish `hφ : HasDerivAt φ ((2 * Real.pi)⁻¹ * -(‖z c‖)⁻¹) (N z)` using `((Real.hasDerivAt_log hpos.ne').neg).const_mul _`. Establish `hcomp : HasFDerivAt (φ ∘ N) (((2 * Real.pi)⁻¹ * -(‖z c‖)⁻¹) • fderiv ℝ N z) z` using `hφ.comp_hasFDerivAt z hNd.hasFDerivAt`. Rewrite using `[hfun]`. Use `⟨hcomp.differentiableAt, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hcomp.fderiv, norm_smul]`. Establish `hNle : ‖fderiv ℝ N z‖ ≤ 1`. Use `norm_fderiv_le_of_lipschitz ℝ (x₀ := z) (lipschitz_norm_coord c)` as an intermediate fact. Simplify using `using this`. Establish `hpi : (2 * Real.pi)⁻¹ ≤ 1` using `inv_le_one_of_one_le₀ (by linarith [Real.pi_gt_three])`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpi0 : 0 ≤ (2 * Real.pi)⁻¹` using `by positivity`. Establish `hcoef : ‖(2 * Real.pi)⁻¹ * -(‖z c‖)⁻¹‖ ≤ (‖z c‖)⁻¹`. Rewrite using `[Real.norm_eq_abs, abs_mul, abs_neg, abs_of_nonneg hpi0, abs_of_pos (inv_pos.mpr hpos)]`. Conclude with `mul_le_of_le_one_left (inv_pos.mpr hpos).le hpi`. Establish `hterm : Real.log (‖z c‖ ^ 2)⁻¹ ≤ D.radius z`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsum : Real.log (‖cuspCoord D.a_le z i‖ ^ 2)⁻¹ ≤ ∑ j, Real.log (‖cuspCoord D.a_le z j‖ ^ 2)⁻¹` using `Finset.single_le_sum (f := fun j => Real.log (‖cuspCoord D.a_le z j‖ ^ 2)⁻¹) (fun j _ => MCBounds.log_inv_sq_nonneg (MCBounds.cusp_norm_lt D hz.1 j)) (Finset.mem_univ i)`. Establish `he` using `Real.exp_pos 1`. Use `show Real.log (‖cuspCoord D.a_le z i‖ ^ 2)⁻¹ ≤ _`. Simplify using `only [PeriodChartData.radius, chartRadius]`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Establish `hexp : (‖z c‖)⁻¹ ≤ Real.exp (D.radius z / 2)` using `(inv_le_exp_half_log hpos).trans (Real.exp_le_exp.mpr (by linarith))`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem CuspTimeDeriv.proof : CuspTimeDeriv.Statement := by
   intro D z hz i

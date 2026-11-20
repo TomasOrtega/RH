@@ -14,9 +14,9 @@ namespace GlobalTheory.RelevantSpaceNonzero
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use extensionality with `φ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, ι, hι, h2⟩`. Conclude with `⟨h1, ι, ⟨hι.bij, hι.trans, hι.mult⟩, h2⟩`. Introduce and unpack `⟨h1, ι, hι, h2⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨h1, ι, ⟨hι.bij, hι.trans, hι.mult⟩, h2⟩`.
+Supply the required witnesses or components.
 -/
 theorem soLoc_reS {n d : ℕ} {X Y : Spc F E n} {W Z : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) {v : Pl F}
     (t : E →ₐ[F] Fv F v) :
@@ -29,7 +29,7 @@ theorem soLoc_reS {n d : ℕ} {X Y : Spc F E n} {W Z : Spc F E d} (M : Model σ 
     exact ⟨h1, ι, ⟨hι.bij, hι.trans, hι.mult⟩, h2⟩
 
 /- English proof (translation)
-Unfold `Model.So`. Rewrite using `[soLoc_reS]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem so_reS {n d : ℕ} {X Y : Spc F E n} {W Z : Spc F E d} (M : Model σ X W) (ψ : AddChar (AF F) ℂ) {v : Pl F}
     (t : E →ₐ[F] Fv F v) :
@@ -44,7 +44,7 @@ theorem pure_eq_pureA {κ : Type} [Fintype κ] (f : SInf F κ) (φ : ∀ v : Pl 
     GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure f φ = pureA F f (fun z => ∏ᶠ v, φ v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (z i)) := rfl
 
 /- English proof (translation)
-The claim follows from `so_reS G.M' ψ t`.
+A detailed English derivation is pending.
 -/
 theorem so_reG {a a' : ℕ} (G : Geo σ a a') (V : Spc F E a) (V' : Spc F E a') (W : Spc F E (a + a'))
     (ψ : AddChar (AF F) ℂ) {v : Pl F} (t : E →ₐ[F] Fv F v) : (reG G V V' W).M'.So ψ t = G.M'.So ψ t :=
@@ -57,19 +57,19 @@ namespace GlobalTheory.RelevantSpaceNonzero
 open GlobalTheory.ThKSoCont
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' V V' W hT _ ⟨Φ₀, hΦ₀, hI₀⟩`. Establish `hSo : Φ₀ ∈ G.M'.So B.ψ B.τ₁`. Use `hΦ₀.2` as an intermediate fact. Rewrite `this` using `[so_reG]`. Then use the resulting hypothesis. Establish `hI : G.M'.I om' Φ₀ ≠ 0` using `hI₀`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨h, hh⟩ : ∃ h, G.M'.I om' Φ₀ h ≠ 0 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Conclude with `hI (funext hc)`. Establish `hPair` using `GlobalTheory.ThK.Inhab.pairV' hT`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hstd` using `hT.geo.hM'.std`. Take `⟨m, c, g, hg⟩` from `Submodule.mem_span_set'.1 hSo`. Establish `hgen : ∀ j, ∃ (f : SInf F (Fin a' × Fin (a + a'))) (φ : ∀ v : Pl F, (Fin a' × Fin (a + a') → Fv F v) → ℂ), (∀ v, φ v ∈ SB _) ∧ (∀ᶠ v in cofinite, φ v = G.M'.vac v) ∧ φ B.v₁ ∈ G.M'.SoLoc B.ψ B.τ₁ ∧ (g j : (Fin a' × Fin (a + a') → AF F) → ℂ) = GlobalTheory.IndefiniteRowSideFullHeck …` using `fun j => (g j).2`. Use `choose f φ hφSB hφvac hφSo hφeq using hgen`. Set `A : Fin m → (Fin a' × Fin (a + a') → Af F) → ℂ` to `fun j z => ∏ᶠ v, φ j v fun i => Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.evalV F v (z i)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ j, A j ∈ SB (Fin a' × Fin (a + a') → Af F)` using `fun j => GlobalTheory.AdelicCoordSB.finprod_mem_SB F _ (φ j) (hφSB j) (((hφvac j).and hstd).mono fun v hv => hv.1.trans hv.2)`. Establish `hpure : ∀ j (u : SInf F (Fin a' × Fin (a + a'))), pureA F u (A j) ∈ G.M'.So B.ψ B.τ₁` using `fun j u => Submodule.subset_span ⟨u, φ j, hφSB j, hφvac j, hφSo j, (pure_eq_pureA u (φ j)).symm⟩`. Establish `hpol : ∀ j (u : SInf F (Fin a' × Fin (a + a'))), u ∈ G.M'.Pol B.ψ B.emb → pureA F u (A j) ∈ PolData B G.M'` using `fun j u hu => Submodule.subset_span ⟨u, hu, φ j, hφSB j, hφvac j, (pure_eq_pureA u (φ j)).symm⟩`. Establish `hΦ₀ : Φ₀ = ∑ j, pureA F ((c j • f j : SInf F _) : _ → ℂ) (A j)`. Rewrite using `[← hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hφeq j, pure_eq_pureA]`. Use function extensionality and compare the values at `x`. Simplify using `only [pureA, Pi.smul_apply, smul_eq_mul, SchwartzMap.smul_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hdense` using `GlobalTheory.T.polynomialFock_dense_archimedeanSchwartz F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hPair`. Establish `happrox : ∀ j, ∃ u : ℕ → SInf F (Fin a' × Fin (a + a')), (∀ k, u k ∈ G.M'.Pol B.ψ B.emb) ∧ Tendsto u atTop (𝓝 (c j • f j))` using `fun j => mem_closure_iff_seq_limit.1 (hdense (c j • f j))`. Use `choose u hu hlim using happrox`. Set `w : ℕ → Fin m → SInf F (Fin a' × Fin (a + a'))` to `fun k j => u j k`. Establish `hcont` using `soCont hP F E σ B a' (a + a') G.V' G.W G.M' X.α (X.α / X.β) om' _ _ _ _ hPair m A (fun j => c j • f j) w (fun j => ⟨hA j, hlim j⟩) (fun k => Submodule.sum_mem _ fun j _ => hpure j (w k j)) (Submodule.sum_mem _ fun j _ => hpure j _) h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hcont` using `[← hΦ₀]`. Take `⟨k, hk⟩` from `(hcont.eventually_ne hh).exists`. Use `⟨∑ j, pureA F (w k j : _ → ℂ) (A j), ⟨Submodule.sum_mem _ fun j _ => hpol j _ (hu j k), Submodule.sum_mem _ fun j _ => hpure j _⟩, fun h0 => hk ?_⟩` and prove the remaining obligations. Rewrite using `[h0]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem nonZero_reG (hP : KP) : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (a a' : ℕ) (G : Geo σ a a') (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (V : Spc F E a) (V' : Spc F E a')

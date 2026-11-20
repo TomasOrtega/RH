@@ -3,6 +3,6 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.HasseJacobsonPowers.Sfr
 import Formalism.PeriodIntegrals.OrbitalBoundsConclusion.HassePresH
 
 /- English proof (translation)
-The claim follows from `PI.HJP.hasseJidPow_of hasse_presentation`.
+A detailed English derivation is pending.
 -/
 theorem hasse_jid_power : PI.HasseJidPow := PI.HJP.hasseJidPow_of hasse_presentation

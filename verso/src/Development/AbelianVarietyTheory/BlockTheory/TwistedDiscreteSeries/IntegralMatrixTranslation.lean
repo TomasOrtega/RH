@@ -45,7 +45,7 @@ def phi0 (r n : ℕ) (u : Matrix (Fin r) (Fin n) F) : R :=
 variable {O F}
 
 /- English proof (translation)
-Take `⟨k₀, rfl⟩` from `hk`. Introduce `a b`. Conclude with `⟨(k₀ : Matrix (Fin n) (Fin n) O) a b, rfl⟩`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem isIntMat_of_mem {n : ℕ} {k : GL (Fin n) F} (hk : k ∈ intGL O F n) :
     IsIntMat O F (k : Matrix (Fin n) (Fin n) F) := by
@@ -54,7 +54,7 @@ theorem isIntMat_of_mem {n : ℕ} {k : GL (Fin n) F} (hk : k ∈ intGL O F n) :
   exact ⟨(k₀ : Matrix (Fin n) (Fin n) O) a b, rfl⟩
 
 /- English proof (translation)
-Introduce `a b`. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun c _ => Subring.mul_mem _ (hu a c) (hv c b)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem IsIntMat.mul {l m n : ℕ} {u : Matrix (Fin l) (Fin m) F} {v : Matrix (Fin m) (Fin n) F}
     (hu : IsIntMat O F u) (hv : IsIntMat O F v) : IsIntMat O F (u * v) := by
@@ -63,9 +63,9 @@ theorem IsIntMat.mul {l m n : ℕ} {u : Matrix (Fin l) (Fin m) F} {v : Matrix (F
   exact Subring.sum_mem _ fun c _ => Subring.mul_mem _ (hu a c) (hv c b)
 
 /- English proof (translation)
-Establish `h : IsIntMat O F ((k : Matrix (Fin r) (Fin r) F) * u) ↔ IsIntMat O F u`. Use `⟨fun h => ?_, fun h => (isIntMat_of_mem hk).mul h⟩` and prove the remaining obligations. Establish `h2` using `(isIntMat_of_mem ((intGL O F r).inv_mem hk)).mul h`. Rewrite `h2` using `[← Matrix.mul_assoc, ← Units.val_mul, inv_mul_cancel, Units.val_one, Matrix.one_mul]`. Then use the resulting hypothesis. Unfold `phi0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiZero_left_invariant {r n : ℕ} {k : GL (Fin r) F} (hk : k ∈ intGL O F r) (u : Matrix (Fin r) (Fin n) F) :
     phi0 O F R r n ((k : Matrix (Fin r) (Fin r) F) * u) = phi0 O F R r n u := by
@@ -77,9 +77,9 @@ theorem phiZero_left_invariant {r n : ℕ} {k : GL (Fin r) F} (hk : k ∈ intGL 
   rw [h]
 
 /- English proof (translation)
-Establish `h : IsIntMat O F (u * (k : Matrix (Fin n) (Fin n) F)) ↔ IsIntMat O F u`. Use `⟨fun h => ?_, fun h => h.mul (isIntMat_of_mem hk)⟩` and prove the remaining obligations. Establish `h2` using `h.mul (isIntMat_of_mem ((intGL O F n).inv_mem hk))`. Rewrite `h2` using `[Matrix.mul_assoc, ← Units.val_mul, mul_inv_cancel, Units.val_one, Matrix.mul_one]`. Then use the resulting hypothesis. Unfold `phi0`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions.
 
-Rewrite using `[h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phiZero_right_invariant {r n : ℕ} {k : GL (Fin n) F} (hk : k ∈ intGL O F n) (u : Matrix (Fin r) (Fin n) F) :
     phi0 O F R r n (u * (k : Matrix (Fin n) (Fin n) F)) = phi0 O F R r n u := by
@@ -163,21 +163,21 @@ def LocalTransfer : Prop :=
             ((Nat.card (IsLocalRing.ResidueField O) : (Matrix (Fin r) (Fin n) F → R)[X]) ^ (n - r) * X) ^ k)
 
 /- English proof (translation)
-Simplify `Matrix.rank_le_height (u₀.map (IsLocalRing.residue O))` using `[redRank]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem redRank_le (O : Type) [CommRing O] [IsLocalRing O] {r n : ℕ} (u₀ : Matrix (Fin r) (Fin n) O) :
     redRank O u₀ ≤ r := by
   simpa [redRank] using Matrix.rank_le_height (u₀.map (IsLocalRing.residue O))
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[tDiag]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 example {F : Type} [Field F] (p : Fˣ) (n : ℕ) : tDiag p n 0 = 1 := by
   ext a b
   simp [tDiag]
 
 /- English proof (translation)
-Unfold `gaussCount`. Rewrite using `[Nat.card_eq_one_iff_exists]`. Conclude with `⟨⟨⊥, finrank_bot _ _⟩, fun W => Subtype.ext (Submodule.finrank_eq_zero.mp W.2)⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 example (k : Type) [Field k] (m : ℕ) : gaussCount k m 0 = 1 := by
   unfold gaussCount

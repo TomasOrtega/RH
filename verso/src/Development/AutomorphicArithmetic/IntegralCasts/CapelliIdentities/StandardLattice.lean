@@ -7,7 +7,7 @@ noncomputable def UpperTheory.Reformulated.B.StandardLattice.pZ :
         (@Singleton.singleton Int (Set Int) (@Set.instSingletonSet Int) (@Nat.cast Int instNatCastInt l))
 
 /- English proof (translation)
-Introduce `l hl`. Establish `hp : Prime (l : ℤ)` using `Nat.prime_iff_prime_int.mp hl.out`. Conclude with `(Ideal.span_singleton_prime hp.ne_zero).mpr hp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.StandardLattice.aux2 :
     ∀ (l : Nat) [hl : Fact (Nat.Prime l)], @Ideal.IsPrime Int Int.instSemiring (UpperTheory.Reformulated.B.StandardLattice.pZ l) := by
@@ -42,7 +42,7 @@ theorem UpperTheory.Reformulated.B.StandardLattice.aux2 :
         (@UpperTheory.Reformulated.B.StandardLattice.Ml l hl K inst)
 
 /- English proof (translation)
-Introduce `l hl K inst`. Conclude with `Localization.isLocalization`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.StandardLattice.aux5 :
     ∀ (l : Nat) [hl : Fact (Nat.Prime l)] (K : Type) [inst : Field K],
@@ -81,9 +81,9 @@ theorem UpperTheory.Reformulated.B.StandardLattice.aux5 :
   exact Localization.isLocalization
 
 /- English proof (translation)
-Introduce `l hl K inst _ y`. Take `⟨y, n, hn, rfl⟩` from `y`. Establish `hn0 : n ≠ 0`. Introduce and unpack `rfl`. Conclude with `hn (Ideal.zero_mem _)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `isUnit_iff_ne_zero.mpr ?_` and prove the remaining obligations. Simplify using `using hn0`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.StandardLattice.aux6 :
     ∀ (l : Nat) [hl : Fact (Nat.Prime l)] (K : Type) [inst : Field K] [@NumberField K inst]
@@ -346,13 +346,13 @@ noncomputable def UpperTheory.Reformulated.B.StandardLattice.atL :
           L)
 
 /- English proof (translation)
-Introduce `l hl K inst inst_1 V inst_2 inst_3 inst_4 tower L x`. Use `letI := UpperTheory.Reformulated.B.StandardLattice.rlModule l K V`. Establish `hact : ∀ (r : NumberField.RingOfIntegers K) (v : V), (algebraMap (NumberField.RingOfIntegers K) (UpperTheory.Reformulated.B.StandardLattice.Rl l K) r) • v = r • v`. Introduce `r v`. Express the relevant statement in the definitionally equal form `UpperTheory.Reformulated.B.StandardLattice.rlToK l K (algebraMap _ _ r) • v = r • v`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Unfold `UpperTheory.Reformulated.B.StandardLattice.rlToK`. Rewrite using `[IsLocalization.lift_eq, algebraMap_smul]`. Use `haveI : IsScalarTower (NumberField.RingOfIntegers K) (UpperTheory.Reformulated.B.StandardLattice.Rl l K) V := IsScalarTower.of_algebraMap_smul hact`. Unfold `UpperTheory.Reformulated.B.StandardLattice.atL`. Rewrite using `[IsLocalization.mem_span_iff (UpperTheory.Reformulated.B.StandardLattice.Ml l K), Submodule.span_eq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, z, rfl⟩`. Use `⟨z, z.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← hact, smul_smul, IsLocalization.mk'_spec', map_one, one_smul]`. Conclude with `hy`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `⟨s, hs, hx⟩`. Use `⟨s • x, hx, ⟨s, hs⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[← hact, smul_smul]`. Use `IsLocalization.mk'_spec (UpperTheory.Reformulated.B.StandardLattice.Rl l K) (1 : NumberField.RingOfIntegers K) (⟨s, hs⟩ : UpperTheory.Reformulated.B.StandardLattice.Ml l K)` as an intermediate fact. Rewrite using `[this, map_one, one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.StandardLattice.mem_atL_iff :
     ∀ (l : Nat) [hl : Fact (Nat.Prime l)] (K : Type) [inst : Field K] [inst_1 : @NumberField K inst] {V : Type}

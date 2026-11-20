@@ -17,22 +17,22 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-The claim follows from `Frames.allTest_of_secBaseChange (Out.Laws.secBaseChange GlobalTheory.abelianSchemeLaws_all.1) E H Dw l Xo c`.
+A detailed English derivation is pending.
 -/
 theorem allTest : AllTest Xo c :=
   Frames.allTest_of_secBaseChange (Out.Laws.secBaseChange GlobalTheory.abelianSchemeLaws_all.1) E H Dw l Xo c
 
 /- English proof (translation)
-The claim follows from `evalWD_fr (frChartF_of (Frames.chartCoverF_of_secBaseChange (Out.Laws.secBaseChange GlobalTheory.abelianSchemeLaws_all.1) E H Dw l Xo c))`.
+A detailed English derivation is pending.
 -/
 theorem valueWD : ValueWD Xo c :=
   evalWD_fr (frChartF_of
     (Frames.chartCoverF_of_secBaseChange (Out.Laws.secBaseChange GlobalTheory.abelianSchemeLaws_all.1) E H Dw l Xo c))
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p y`. Take `⟨q, φ, y₀, -, hq⟩` from `evR_spec (GlobalTheory.GalTw.Rule.fromT_tw_test h allTest p y)`. Use `show (evR Xo c 1 (twPt h y)).val = (1 : Rul Xo c) p y`. Rewrite using `[hq]`. Simplify using `only [Pi.one_apply, map_one]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem galRul_one {ta : c.F ≃+* c.F} (h : Fixes c ta) : galRul (Xo := Xo) h 1 = 1 := by
   funext p y
@@ -43,7 +43,7 @@ theorem galRul_one {ta : c.F ≃+* c.F} (h : Fixes c ta) : galRul (Xo := Xo) h 1
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p y`. Take `⟨q, φ, y₀, -, hq⟩` from `evR_spec (GlobalTheory.GalTw.Rule.fromT_tw_test h allTest p y)`. Use `show (evR Xo c (f * g) (twPt h y)).val = (evR Xo c f (twPt h y)).val * (evR Xo c g (twPt h y)).val`. Rewrite using `[hq, hq, hq, Pi.mul_apply, Pi.mul_apply, map_mul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem galRul_mul {ta : c.F ≃+* c.F} (h : Fixes c ta) (f g : Rul Xo c) :
     galRul h (f * g) = galRul h f * galRul h g := by
@@ -54,23 +54,23 @@ theorem galRul_mul {ta : c.F ≃+* c.F} (h : Fixes c ta) (f g : Rul Xo c) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[galRul_smul h a 1, galRul_one h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem galRul_const {ta : c.F ≃+* c.F} (h : Fixes c ta) (a : c.F) :
     galRul h (a • (1 : Rul Xo c)) = ta a • (1 : Rul Xo c) := by
   rw [galRul_smul h a 1, galRul_one h]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun τ a => by rw [RingEquiv.trans_apply, hs.emb τ a, ht.emb τ a], fun a => by rw [RingEquiv.trans_apply, hs.base a, ht.base a]⟩`.
+Supply the required witnesses or components.
 -/
 theorem fixes_trans {s t : c.F ≃+* c.F} (hs : Fixes c s) (ht : Fixes c t) : Fixes c (s.trans t) :=
   ⟨fun τ a => by rw [RingEquiv.trans_apply, hs.emb τ a, ht.emb τ a],
     fun a => by rw [RingEquiv.trans_apply, hs.base a, ht.base a]⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p y`. Establish `hWD : ValueWD Xo c` using `valueWD`. Establish `hA : AllTest Xo c` using `allTest`. Use `show (evR Xo c (galRul hs f) (twPt ht y)).val = (evR Xo c f (twPt (fixes_trans hs ht) y)).val`. Rewrite using `[GlobalTheory.GalTw.Rule.evR_galRul hs hWD hA hf (twPt ht y)]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨q, φ, y₀, hm, -⟩` from `evR_spec (GlobalTheory.GalTw.Rule.fromT_tw_test (fixes_trans hs ht) hA p y)`. Set `φ' : q.R →ₐ[c.F] Tw s (Tw t p.R)` to `{ φ.toRingHom with commutes' := fun a => φ.commutes a }`. Establish `hm' : FrMap φ' y₀ (twPt hs (twPt ht y))` using `hm`. Rewrite using `[GlobalTheory.CoefChangeCompare.evR_of_map hWD hf hm', GlobalTheory.CoefChangeCompare.evR_of_map hWD hf hm]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem galRul_galRul {s t : c.F ≃+* c.F} (hs : Fixes c s) (ht : Fixes c t) {f : Rul Xo c} (hf : Natural c f) :
     galRul ht (galRul hs f) = galRul (fixes_trans hs ht) f := by
@@ -86,9 +86,9 @@ theorem galRul_galRul {s t : c.F ≃+* c.F} (hs : Fixes c s) (ht : Fixes c t) {f
   rfl
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨a, ha⟩ : ∃ a, ta a ≠ a := by`. Assume the negation of the conclusion as `hc`. Conclude with `hta (RingEquiv.ext fun x => not_not.mp fun hx => hc ⟨x, hx⟩)`. Use `⟨a • (1 : Rul Xo c), fun heq => ha ?_⟩` and prove the remaining obligations. Rewrite `heq` using `[galRul_const h a]`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hv` using `congrFun (congrFun heq p) y`. Simplify using `only [Pi.smul_apply, Pi.one_apply, Algebra.smul_def, mul_one] at hv`. Conclude with `(algebraMap c.F p.R).injective hv`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_moved {ta : c.F ≃+* c.F} (h : Fixes c ta) (hta : ta ≠ RingEquiv.refl _) (p : TRing c.F)
     [Nontrivial p.R] (y : FrPt Xo c p.R) : ∃ f : Rul Xo c, galRul h f ≠ f := by
@@ -102,9 +102,9 @@ theorem exists_moved {ta : c.F ≃+* c.F} (h : Fixes c ta) (hta : ta ≠ RingEqu
   exact (algebraMap c.F p.R).injective hv
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p y`. Take `⟨q, φ, y₀, hm, -⟩` from `evR_spec (GlobalTheory.GalTw.Rule.fromT_tw_test fixes_refl allTest p y)`. Use `show (evR Xo c f (twPt fixes_refl y)).val = f p y`. Rewrite using `[GlobalTheory.CoefChangeCompare.evR_of_map valueWD hf hm]`. Set `φ' : q.R →ₐ[c.F] p.R` to `{ φ.toRingHom with commutes' := fun a => φ.commutes a }`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hm' : FrMap φ' y₀ y` using `hm`. Establish `h1` using `GlobalTheory.CoefChangeCompare.evR_of_map valueWD hf hm'`. Rewrite `h1` using `[GlobalTheory.CoefChangeCompare.evR_test hf p y]`. Conclude with `h1.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem galRul_refl {f : Rul Xo c} (hf : Natural c f) : galRul fixes_refl f = f := by
   funext p y

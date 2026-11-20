@@ -16,33 +16,31 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 namespace PositivityTheory.SiegelWeilFormula.Ald
 variable {F : Type} [Field F] [NumberField F]
 /- English proof (translation)
-Introduce `hT F E _ _ _ _ _ σ d n h Y b j ε hn hs hb e1 e2 hj dd0 dd' had0 had' S1 S1' C hC0 hop hTf`. Establish `hψ : IsStd d.B.ψ` using `d.ok.good.std`. Establish `hcm : IsCMExt F E σ` using `d.ok.good.cm`. Establish `hJ : d.A.J.det ≠ 0`. Break down `d.ok.sign with ⟨hA, -⟩ | ⟨hA, -⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `(GlobalTheory.T.isUnit_det_gram_of_hermitianSelfDualLatticeSpace F E σ d.B d.m d.A d.r d.s hA).ne_zero`. Conclude with `(GlobalTheory.T.isUnit_det_gram_skewHermitian_signature F E σ d.B d.m d.A d.r d.s hA).ne_zero`. Take `⟨hc1, -, -, -, hc5⟩` from `hC F E σ d n h Y b j ε hn hs hb e1 e2 hj dd0 dd' had0 had'`. Establish `hlin` using `d.ok.dbl.lin`. Establish `pres1 : ∀ u : UA σ d.A.J, ∀ φ ∈ schA F (K1 d.m n), (S1 ∘ₗ d.S u ∘ₗ S1') φ ∈ schA F (K1 d.m n)` using `fun u φ hφ => hop.pres _ (hlin.pres u _ (hop.pres' φ hφ))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `one1 : ∀ φ ∈ schA F (K1 d.m n), (S1 ∘ₗ d.S 1 ∘ₗ S1') φ = φ` using `fun φ hφ => by`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, map_one, Module.End.one_apply]`. Conclude with `hop.right φ hφ`. Establish `mul1 : ∀ u v : UA σ d.A.J, ∀ φ ∈ schA F (K1 d.m n), (S1 ∘ₗ d.S (u * v) ∘ₗ S1') φ = (S1 ∘ₗ d.S u ∘ₗ S1') ((S1 ∘ₗ d.S v ∘ₗ S1') φ)` using `fun u v φ hφ => by`. Simplify using `only [LinearMap.coe_comp, Function.comp_apply, map_mul, Module.End.mul_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hop.left _ (hlin.pres v _ (hop.pres' φ hφ))]`. Take `⟨SA1, hSA1⟩` from `projHom (fun u => S1 ∘ₗ d.S u ∘ₗ S1') pres1 one1 mul1`. Establish `hsplit : IsUSplitting (adeleClass F) d.B.ψ (GlobalTheory.TowU.reindexD dd0 (eK d.m h).symm) (fun (g : UA σ d.A.J) (x : Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) => mat g * x) SA1` using `GlobalTheory.TowU.isUSplitting_of_isOp hψ (fun w => by simp) hop hSA1 hlin`. Establish `hexp : ∀ u : UA σ d.A.J, ∀ Ψ ∈ schA F (K1 d.m n), ∀ x : K1 d.m n → AF F, SA1 u Ψ x = Ψ (Sum.elim (Lk d.bs (mat u⁻¹) (x ∘ Sum.inl)) (Lc d.bs (mat u⁻¹) (x ∘ Sum.inr)))`. Introduce `u Ψ hΨ x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `set X : Mx F E d.m d.n := cmbB d.bs (x ∘ (eK d.m h).symm) with hX`. Establish `hx : crdB d.bs X ∘ eK d.m h = x`. Rewrite using `[hX, crdB_cmbB]`. Use function extensionality and compare the values at `k`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hΦ : S1' Ψ ∈ d.sch` using `hop.pres' Ψ hΨ`. Establish `hTP` using `(hT.2.1 F E σ d (S1' Ψ) hΦ).2.2 u X`. Rewrite `hTP` using `[hTf _ (hlin.pres u _ hΦ), hTf _ hΦ, hop.right Ψ hΨ]`. Establish `key` using `mul_left_cancel₀ hC0 hTP`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Establish `hbox : ∀ u : UA σ d.A.J, ∀ φ' ∈ schA F (Fin d.m × Fin n × Fin 2), ∀ φ'' ∈ schA F (Fin d.m × Fin 2), SA1 u (boxFun φ' φ'') = boxFun (φ' ∘ Lk d.bs (mat u⁻¹)) (φ'' ∘ Lc d.bs (mat u⁻¹))`. Introduce `u φ' h' φ'' h''`. Use function extensionality and compare the values at `x`. Rewrite using `[hexp u _ (GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ' h' φ'' h'')]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨φ₀, hφ₀, hφ₀1, hφ₀n⟩` from `(hF F (Fin d.m × Fin n × Fin 2) (Fin d.m × Fin 2)).2.2.1`. Take `⟨φa, hφa, hφa1, -⟩` from `(hF F (Fin d.m × Fin 2) (Fin d.m × Fin n × Fin 2)).2.2.1`. Set `c : UA σ d.A.J → ((Fin d.m × Fin n × Fin 2 → AF F) → ℂ) →ₗ[ℂ] ((Fin d.m × Fin n × Fin 2 → AF F) → ℂ)` to `fun u => LinearMap.funLeft ℂ ℂ (Lk d.bs (mat u⁻¹))`. Establish `hc : ∀ u φ, c u φ = φ ∘ Lk d.bs (mat u⁻¹)` using `fun _ _ => rfl`. Establish `presS : ∀ u, ∀ φ ∈ schA F (Fin d.m × Fin n × Fin 2), c u φ ∈ schA F (Fin d.m × Fin n × Fin 2)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `u φ hφ`. Use `(hF F (Fin d.m × Fin n × Fin 2) (Fin d.m × Fin 2)).1 _ (hsplit.pres u _ (GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φ hφ φ₀ hφ₀))` as an intermediate fact. Rewrite `this` using `[hbox u φ hφ φ₀ hφ₀, slice0_box, Function.comp_apply, Lc_zero, hφ₀1, one_smul]`. Conclude with `this`. Establish `oneS : ∀ φ ∈ schA F (Fin d.m × Fin n × Fin 2), c 1 φ = φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Introduce `φ _`. Establish `hm : mat (1 : UA σ d.A.J)⁻¹ = 1` using `by rw [inv_one]; rfl`. Rewrite using `[hc, hm]`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Lk_one]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `mulS : ∀ u v, ∀ φ ∈ schA F (Fin d.m × Fin n × Fin 2), c (u * v) φ = c u (c v φ)`. Introduce `u v φ _`. Rewrite using `[hc, hc, hc, mul_inv_rev, show mat (v⁻¹ * u⁻¹) = mat v⁻¹ * mat u⁻¹ from rfl]`. Use function extensionality and compare the values at `x`. Simplify using `only [Function.comp_apply, Lk_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨S', hS'⟩` from `projHom c presS oneS mulS`. Establish `hφ₁ : ∀ g : UA σ d.A.J, φ₀ ∘ Lc d.bs (mat g⁻¹) ∈ schA F (Fin d.m × Fin 2)`. Introduce `g`. Use `sliceL_mem hF (hsplit.pres g _ (GlobalTheory.SchwartzBox.boxFun_mem_schA F _ _ φa hφa φ₀ hφ₀))` as an intermediate fact. Rewrite `this` using `[hbox g φa hφa φ₀ hφ₀]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `this using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x''`. Simplify using `only [boxFun, Function.comp_apply, Sum.elim_comp_inl, Sum.elim_comp_inr, Lk_zero, hφa1, one_mul]`. Establish `hsplitS : IsUSplitting (adeleClass F) d.B.ψ dd' (fun (g : UA σ d.A.J) x => mat g * x) S'` using `hU F d.B.ψ hψ (Fin d.m × Fin n × Fin 2) (Fin d.m × Fin 2) (Matrix (Fin d.m) (Fin d.n ⊕ Fin d.n) (AE F E)) (Matrix (Fin d.m) (Fin n ⊕ Fin n) (AE F E)) _ _ (GlobalTheory.TowU.reindexD dd0 (eK d.m h).symm) dd' (emb h b d.b) hc1 (UA σ d.A.J) (UA σ d.A.J) (fun g x => mat g * x) (fun g …`. Rewrite using `[hbox g φ' hφ' φ₀ hφ₀, hS' g φ' hφ', hc]⟩)`.
-
-Use `⟨S', hsplitS, fun g Φ hΦ => ?_⟩` and prove the remaining obligations. Use `show S' g Φ 0 = Φ 0`. Rewrite using `[hS' g Φ hΦ, hc, Function.comp_apply, Lk_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smallS_of_k (hC : _root_.PositivityTheory.SiegelWeilFormula.Ald.ChartFacts_k) (hF : SliceFacts) (hU : SubSplit) (hH : HaarLc) : _root_.PositivityTheory.SiegelWeilFormula.Ald.SmallS_k := by
   intro hT F E _ _ _ _ _ σ d n h Y b j ε hn hs hb e1 e2 hj dd0 dd' had0 had' S1 S1' C hC0 hop hTf

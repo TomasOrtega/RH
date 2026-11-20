@@ -3,26 +3,26 @@ import ReciprocityTheory.AnalyticForms.PlurisubharmonicFunctions.PartsIbp
 namespace ReciprocityTheory.AnForm.A
 
 /- English proof (translation)
-The claim follows from `mulVec_one_sub_idempotent_of_split_sum_identity`.
+A detailed English derivation is pending.
 -/
 theorem parts_thm : PartsStatement := mulVec_one_sub_idempotent_of_split_sum_identity
 
 /- English proof (translation)
-Establish `hsum : ∀ S : Finset (Fin (n + 1)), ∑ k ∈ S.erase 0, A k = ∑ k ∈ S, A k` using `fun S => Finset.sum_erase S hA`. Establish `hle : ∀ S : Finset (Fin (n + 1)), S.card ≤ n + 1` using `fun S => by`. Simplify using `using Finset.card_le_univ S`. Establish `key : ∀ S : Finset (Fin (n + 1)), 0 ∈ S → (-1 : ℂ) ^ (n + 1 - S.card) * (∑ k ∈ S, A k).det + (-1 : ℂ) ^ (n + 1 - (S.erase 0).card) * (∑ k ∈ S.erase 0, A k).det = 0`. Introduce `S h0`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `Finset.card_erase_add_one h0`. Establish `h2` using `hle S`. Establish `he : n + 1 - (S.erase 0).card = (n + 1 - S.card) + 1` using `by omega`. Rewrite using `[hsum, he, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Unfold `mdisc`. It suffices to establish `h : ∑ S : Finset (Fin (n + 1)), (-1 : ℂ) ^ (n + 1 - S.card) * (∑ k ∈ S, A k).det = 0 by`. Rewrite using `[h, mul_zero]`. Use `Finset.sum_involution (fun S _ => if (0 : Fin (n + 1)) ∈ S then S.erase 0 else insert 0 S) ?_ ?_ (fun _ _ => Finset.mem_univ _) ?_` and prove the remaining obligations. Introduce `S _`.
+Replace the relevant objects with their definitions. Reduce the argument to an intermediate assertion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : (0 : Fin (n + 1)) ∈ S`. Simplify using `only [h0, ↓reduceIte]`. Conclude with `key S h0`. Simplify using `only [h0, ↓reduceIte]`. Establish `h3 : (insert 0 S).erase 0 = S` using `Finset.erase_insert h0`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4` using `key (insert 0 S) (Finset.mem_insert_self _ _)`. Rewrite `h4` using `[h3]`. Rewrite using `[add_comm]`. Conclude with `h4`. Introduce `S _ _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h0 : (0 : Fin (n + 1)) ∈ S`. Simplify using `only [h0, ↓reduceIte]`. Introduce `h`. Establish `h5` using `congrArg (fun T => (0 : Fin (n + 1)) ∈ T) h`. Simplify using `[h0] at h5`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [h0, ↓reduceIte]`. Introduce `h`. Establish `h5` using `congrArg (fun T => (0 : Fin (n + 1)) ∈ T) h`. Simplify using `[h0] at h5`. Introduce `S _`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `h0 : (0 : Fin (n + 1)) ∈ S`. Simplify using `[h0, Finset.insert_erase h0]`. Simplify using `[h0, Finset.erase_insert h0]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma mdisc_eq_zero_of_zeroth_eq_zero {n : ℕ} (A : Fin (n + 1) → Matrix (Fin (n + 1)) (Fin (n + 1)) ℂ)
     (hA : A 0 = 0) : mdisc A = 0 := by
@@ -71,11 +71,11 @@ private lemma mdisc_eq_zero_of_zeroth_eq_zero {n : ℕ} (A : Fin (n + 1) → Mat
     · simp [h0, Finset.erase_insert h0]
 
 /- English proof (translation)
-Introduce `n φ v U h`. Establish `h5` using `(parts_thm n φ v (fun _ => 1) U h).2.2.2.2`. Establish `hz : ∀ z, maDens (Fin.cons (fun _ => (1 : ℝ)) φ : Fin (n + 1) → (Fin (n + 1) → ℂ) → ℝ) z = 0`. Introduce `z`. Establish `hH : hessC (fun _ : Fin (n + 1) → ℂ => (1 : ℝ)) z = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Simplify using `[hessC]`. Unfold `maDens`. Rewrite using `[mdisc_eq_zero_of_zeroth_eq_zero _ ?_]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `using hH`. Unfold `maInt at h5`. Simplify `h5` using `[hz]`.
+Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem massZero_thm : MassZeroStatement := by
   intro n φ v U h
@@ -94,21 +94,21 @@ theorem massZero_thm : MassZeroStatement := by
   simpa [hz] using h5
 
 /- English proof (translation)
-Introduce `n φ U j hU hφ y hy`. Take `⟨Lc, hLc⟩ : ∃ Lc : (Fin n → ℂ) →L[ℝ] (Fin (n + 1) → ℂ), ∀ y, Lc y = Fin.insertNth (α` from `fun _ => ℂ) j 0 y := by`. Use `⟨ContinuousLinearMap.pi fun i => Fin.insertNth (α := fun _ => (Fin n → ℂ) →L[ℝ] ℂ) j 0 (fun k => ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin n => ℂ) k) i, ?_⟩` and prove the remaining obligations. Introduce `y`. Use function extensionality and compare the values at `m`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Distinguish the cases in `hm : m = j`. Rewrite using `[hm]`. Simplify using the standard rewrite rules. Take `⟨k, rfl⟩` from `Fin.exists_succAbove_eq hm`. Simplify using the standard rewrite rules.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hs : ∀ (c : ℂ) (i : Fin n), Lc (c • Pi.single i 1) = c • Pi.single (j.succAbove i) 1`. Introduce `c i`. Rewrite using `[hLc]`. Use function extensionality and compare the values at `m`. Distinguish the cases in `hm : m = j`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hm]`. Simplify using `[Pi.single_apply, (Fin.succAbove_ne j i).symm]`. Take `⟨k, rfl⟩` from `Fin.exists_succAbove_eq hm`. Simplify using `[Pi.single_apply]`. Establish `hs1 : ∀ i : Fin n, Lc (Pi.single i 1) = Pi.single (j.succAbove i) 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `i`. Simplify using `using hs 1 i`. Establish `hfun : (fun y' => φ (Fin.insertNth (α` using `fun _ => ℂ) j 0 y')) = φ ∘ Lc := by`. Use function extensionality and compare the values at `y'`. Simplify using `only [Function.comp_apply, hLc]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[hfun, ← hLc y]`. Rewrite `hy` using `[← hLc y]`. Establish `hφa : ∀ x ∈ U, ContDiffAt ℝ 2 φ x` using `fun x hx => hφ.contDiffAt (hU.mem_nhds hx)`. Establish `hev : fderiv ℝ (φ ∘ Lc) =ᶠ[nhds y] fun y' => (fderiv ℝ φ (Lc y')).comp Lc`. Establish `hU' : ∀ᶠ y' in nhds y, Lc y' ∈ U` using `Lc.continuous.continuousAt.preimage_mem_nhds (hU.mem_nhds hy)`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `filter_upwards [hU'] with y' hy'`. Apply the tactic sequence `rw [fderiv_comp y' ((hφa _ hy').differentiableAt (by first | exact one_le_two | exact two_ne_zero | norm_num)) Lc.differentiableAt, Lc.fderiv]`. Apply the tactic sequence `have hd1 : DifferentiableAt ℝ (fderiv ℝ φ) (Lc y) := ((hφa _ hy).fderiv_right (m := 1) (by first | exact le_rfl | exact one_add_one_eq_two.le | norm_num)).differentiableAt (by first | exact le_rfl | exact one_ne_zero)`. Establish `hc : DifferentiableAt ℝ (fun y' => fderiv ℝ φ (Lc y')) y` using `hd1.comp y Lc.differentiableAt`. Establish `hH : ∀ v w, fderiv ℝ (fderiv ℝ (φ ∘ Lc)) y v w = fderiv ℝ (fderiv ℝ φ) (Lc y) (Lc v) (Lc w)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v w`. Rewrite using `[hev.fderiv_eq, fderiv_clm_comp (c := fun y' => fderiv ℝ φ (Lc y')) (d := fun _ => Lc) hc (differentiableAt_const Lc), fderiv_comp' y hd1 Lc.differentiableAt, Lc.fderiv]`. Simplify using the standard rewrite rules. Use `Matrix.ext fun a b => ?_` and prove the remaining obligations. Simplify using `only [hessC, Matrix.submatrix_apply, hH, hs, hs1]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hessCRestrict_thm : HessCRestrictStatement := by
   intro n φ U j hU hφ y hy

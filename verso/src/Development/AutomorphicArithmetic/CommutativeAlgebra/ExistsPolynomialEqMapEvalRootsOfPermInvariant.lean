@@ -5,13 +5,11 @@ noncomputable section
 open Polynomial
 
 /- English proof (translation)
-Introduce `A _ N g Φ hΦ`. Establish `hsym : ∀ n, (Φ.coeff n).IsSymmetric`. Introduce `n σ`. Use `congrArg (fun q => q.coeff n) (hΦ σ)` as an intermediate fact. Simplify `this` using `[Polynomial.coeff_map]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `choose a ha using fun n => UpperTheory.exists_eval_roots_symmetric_eq_algebraMap A N g (Φ.coeff n) (hsym n)`. Use `⟨∑ n ∈ Finset.range (Φ.natDegree + 1), monomial n (a n), ?_, ?_⟩` and prove the remaining obligations. Use `Polynomial.natDegree_sum_le_of_forall_le _ _ (fun n hn => ?_)` and prove the remaining obligations. Conclude with `(natDegree_monomial_le _).trans (Nat.lt_succ_iff.1 (Finset.mem_range.1 hn))`. Introduce `S _ _ x hx`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `n`. Rewrite using `[Polynomial.coeff_map, Polynomial.coeff_map, Polynomial.finset_sum_coeff]`. Simplify using `only [Polynomial.coeff_monomial, Finset.sum_ite_eq, Finset.sum_ite_eq', Finset.mem_range]`. Use `split_ifs with hn`. Rewrite using `[AlgHom.toRingHom_eq_coe, RingHom.coe_coe, ha n S x hx]`.
-
-Rewrite using `[Polynomial.coeff_eq_zero_of_natDegree_lt (by omega)]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_polynomial_eq_map_eval_roots_of_perm_invariant :
     ∀ (A : Type) [CommRing A] (N : ℕ) (g : A[X]) (Φ : (MvPolynomial (Fin N) A)[X]), (∀ σ : Equiv.Perm (Fin N), Φ.map (MvPolynomial.rename σ : MvPolynomial (Fin N) A →ₐ[A] _).toRingHom = Φ) →

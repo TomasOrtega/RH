@@ -16,13 +16,13 @@ def Cond (Ψ : G →* Oˣ) (I : Subgroup G) {C : Type} [CommRing C] [Algebra O C
         ((r (s 2)).mat - Matrix.scalar _ (algebraMap O C (UpperTheory.V.UnitaryThreeInertia.psi Ψ 2 (s 2)))) = 0
 
 /- English proof (translation)
-Use `⟨fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.charpoly_of_upperTriangular]`. Simplify using `only [hd s hs]`. Introduce `a b hab`. Apply `ht` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `: (b : ℕ) < a` using `hab`. Simplify using `only [wt, wt1]`. Use linear arithmetic over natural numbers and integers. Establish `h10` using `fun g => ht g 1 0 (by decide)`. Establish `h20` using `fun g => ht g 2 0 (by decide)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h21` using `fun g => ht g 2 1 (by decide)`. Establish `e0` using `hd _ (hs 0) 0`. Establish `e1` using `hd _ (hs 1) 1`. Establish `e2` using `hd _ (hs 2) 2`. Use extensionality with `i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Apply the tactic sequence `fin_cases i <;> fin_cases j <;>`. Simplify using `[Matrix.mul_apply, Fin.sum_univ_three, h10, h20, h21, e0, e1, e2]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem cond_tri (Ψ : G →* Oˣ) (I : Subgroup G) {C : Type} [CommRing C] [Algebra O C] (u : G →* GG 3 C)
     (ht : ∀ g a b, wt a b < 0 → (u g).mat a b = 0)
@@ -46,13 +46,13 @@ theorem cond_tri (Ψ : G →* Oˣ) (I : Subgroup G) {C : Type} [CommRing C] [Alg
       simp [Matrix.mul_apply, Fin.sum_univ_three, h10, h20, h21, e0, e1, e2]
 
 /- English proof (translation)
-Establish `hm : ∀ s ∈ I, (conjBy n u s).mat = (n : Matrix (Fin 3) (Fin 3) C) * (u s).mat * ((n⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C)`. Introduce `s hs`. Establish `: (conjBy n u s).left = n * (u s).left * n⁻¹`. Simplify using `[conjBy, hu s hs]`. Simplify using `only [GG.mat, this, Units.val_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `hc : ∀ (A : Matrix (Fin 3) (Fin 3) C) (c : C), (n : Matrix (Fin 3) (Fin 3) C) * A * ((n⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C) - Matrix.scalar _ c = (n : Matrix (Fin 3) (Fin 3) C) * (A - Matrix.scalar _ c) * ((n⁻¹ : GL (Fin 3) C) : Matrix (Fin 3) (Fin 3) C)`. Introduce `A c`. Rewrite using `[mul_sub, sub_mul, ← (Matrix.scalar_commute c (fun _ => Commute.all _ _) _).eq, mul_assoc (Matrix.scalar _ c), Units.mul_inv, mul_one]`. Use `⟨fun s hs => ?_, fun s hs => ?_⟩` and prove the remaining obligations. Rewrite using `[hm s hs, ← h.1 s hs, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hm _ (hs 0), hm _ (hs 1), hm _ (hs 2), hc, hc, hc]`. Use `h.2 s hs` as an intermediate fact. Generalize the expression as in `(u (s 0)).mat - _ = A at *`. Generalize the expression as in `(u (s 1)).mat - _ = B at *`. Generalize the expression as in `(u (s 2)).mat - _ = D at *`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable.
 
-Simplify using `only [mul_assoc, Units.inv_mul_cancel_left]`. Rewrite using `[← mul_assoc B, ← mul_assoc A, ← mul_assoc A, this, zero_mul, mul_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem cond_conj (Ψ : G →* Oˣ) (I : Subgroup G) {C : Type} [CommRing C] [Algebra O C] (u : G →* GG 3 C)
     (hu : ∀ s ∈ I, (u s).right = 1) (n : GL (Fin 3) C) (h : Cond Ψ I u) : Cond Ψ I (conjBy n u) := by
@@ -80,9 +80,9 @@ theorem cond_conj (Ψ : G →* Oˣ) (I : Subgroup G) {C : Type} [CommRing C] [Al
     rw [← mul_assoc B, ← mul_assoc A, ← mul_assoc A, this, zero_mul, mul_zero]
 
 /- English proof (translation)
-Rewrite using `[eq_bot_iff, GlobalTheory.OrdLoc.ordIdeal, Ideal.span_le]`. Introduce and unpack `x (⟨s, hs, i, rfl⟩ | ⟨s, hs, i, j, rfl⟩)`. Rewrite using `[h.1 s hs.2, sub_self, Polynomial.coeff_zero]`. Conclude with `Submodule.zero_mem _`. Use `h.2 s fun a => (hs a).2` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.OrdLoc.sh, this]`. Conclude with `Submodule.zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem ordIdeal_eq_bot {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsLocalRing O] [Algebra ℤ_[l] O]
     (D : Dat3 l O) {C : Type} [CommRing C] [Algebra O C] (r : GQ l →* GG 3 C) (h : Cond D.Ψ (Iq l) r) :
@@ -100,7 +100,7 @@ end GlobalTheory.OrdLoc.DcrOrd
 open GlobalTheory.OrdLoc.DcrOrd in
 
 /- English proof (translation)
-Introduce `hL l _ O _ _ _ _ _ _ _ D E _ _ _ _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ r hr`. Take `⟨u, m, hu, -, -, rfl⟩` from `(ordEq hL D E B π hπ r).1 hr`. Conclude with `ordIdeal_eq_bot D _ (cond_conj _ _ u (fun s hs => (hu.mult s).trans (D.η_unr s hs)) m (cond_tri _ _ u hu.tri (triDiag D E B π hπ u hu)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.OrdLoc.ordIdeal_eq_bot_of_inDcr : LocalPublishedTheorems → ∀ {l : ℕ} [Fact l.Prime] {O : Type} [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [CharZero O] [Algebra ℤ_[l] O] [Module.Finite ℤ_[l] O] [IsAdicComplete (maximalIdeal O) O] (D : Dat3 l O) (E : Type) [Field E] [Algebra ℚ_[l] E] [Module.Finite ℚ_[l] E] [Algebra O E] [Algebra ℤ_[l] E] [IsScalarTower ℤ_[l] O E] [IsScalarTower ℤ_[l] ℚ_[l] E] [IsFractionRing O E] (B : Type) [CommRing B] [Algebra ℚ_[l] B] [Module.Finite ℚ_[l] B] [Algebra O B] [Algebra ℤ_[l] B] [IsScalarTower ℤ_[l] O B] [IsScalarTower ℤ_[l] ℚ_[l] B] [Algebra E B] [IsScalarTower O E B] [IsScalarTower ℚ_[l] E B] (π : B →ₐ[E] E) (hπ : ∀ a, π a = 0 → IsNilpotent a) (r : GQ l →* GG 3 B), D.InDcr (π : B →+* E) r → GlobalTheory.OrdLoc.ordIdeal D r = ⊥ := by
   intro hL l _ O _ _ _ _ _ _ _ D E _ _ _ _ _ _ _ _ B _ _ _ _ _ _ _ _ _ _ π hπ r hr

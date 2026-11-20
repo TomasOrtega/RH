@@ -12,9 +12,9 @@ namespace GlobalTheory.PsChar
 open MvPolynomial
 
 /- English proof (translation)
-Use `norm_le_zero_iff.1 (le_of_forall_pos_le_add fun ε hε => ?_)` and prove the remaining obligations. Take `⟨s, c, hs, hb⟩` from `h ε hε`. Establish `hz : ∑ η ∈ s, c η * aeval η P = 0` using `Finset.sum_eq_zero fun η hη => by rw [hP η (hs hη), mul_zero]`. Use `hb P` as an intermediate fact. Rewrite `this` using `[hz, sub_zero]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem aeval_eq_zero_of_polyApprox {k : Type} [NormedField k] [IsUltrametricDist k] {J : Type} {θ : J → k}
     {S : Set (J → k)} (h : PolyApprox θ S) (P : MvPolynomial J ℤ) (hP : ∀ η ∈ S, aeval η P = 0) :
@@ -28,17 +28,17 @@ theorem aeval_eq_zero_of_polyApprox {k : Type} [NormedField k] [IsUltrametricDis
   simpa using this
 
 /- English proof (translation)
-The claim follows from `isPsChar_trace Γ A a ((Units.coeHom (Matrix (Fin a) (Fin a) A)).comp ρ)`.
+A detailed English derivation is pending.
 -/
 theorem isPsChar_trc {Γ A : Type} [Group Γ] [CommRing A] (a : ℕ) (ρ : Γ →* GL (Fin a) A) : IsPsChar a (trc ρ) :=
   isPsChar_trace Γ A a ((Units.coeHom (Matrix (Fin a) (Fin a) A)).comp ρ)
 
 /- English proof (translation)
-Introduce `l _ Γ _ a T C h`. Establish `key : ∀ P : MvPolynomial Γ ℤ, (∀ ρ ∈ C, aeval (trc ρ) P = 0) → aeval T P = 0` using `fun P hP => aeval_eq_zero_of_polyApprox h P (by rintro η ⟨ρ, hρ, rfl⟩; exact hP ρ hρ)`. Establish `hm : ∀ (η : Γ → PadicAlgCl l) (x : Fin (a + 1) → Γ), aeval η (alt (fun g => (X g : MvPolynomial Γ ℤ)) (a + 1) x) = alt η (a + 1) x` using `fun η x => by`. Use `map_alt (aeval η).toRingHom (fun g => (X g : MvPolynomial Γ ℤ)) (a + 1) x` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `key (X 1 - (a : MvPolynomial Γ ℤ)) fun ρ _ => by simp [(isPsChar_trc a ρ).one]` as an intermediate fact. Simplify `this` using `[sub_eq_zero]`. Introduce `x y`. Use `key (X (x * y) - X (y * x)) fun ρ _ => by simp [(isPsChar_trc a ρ).comm x y]` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[sub_eq_zero]`. Introduce `x`. Use `key _ fun ρ _ => by rw [hm]; exact (isPsChar_trc a ρ).alt_eq_zero x` as an intermediate fact. Rewrite `this` using `[hm]`. Then use the resulting hypothesis.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isPsChar_of_polyApprox_trc : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] (a : ℕ) (T : Γ → PadicAlgCl l)
     (C : Set (Γ →* GL (Fin a) (PadicAlgCl l))), PolyApprox T (trc '' C) → IsPsChar a T := by
@@ -60,7 +60,7 @@ theorem isPsChar_of_polyApprox_trc : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [G
     rwa [hm] at this
 
 /- English proof (translation)
-The claim follows from `isPsChar_of_polyApprox_trc`.
+A detailed English derivation is pending.
 -/
 example : ∀ (l : ℕ) [Fact l.Prime] (Γ : Type) [Group Γ] (a : ℕ) (T : Γ → PadicAlgCl l)
     (C : Set (Γ →* GL (Fin a) (PadicAlgCl l))), PolyApprox T (trc '' C) → IsPsChar a T :=

@@ -16,7 +16,7 @@ variable {K V : Type} [Field K] [NumberField K] [AddCommGroup V] [Module K V] [M
   [FiniteDimensional K V]
 
 /- English proof (translation)
-Establish `h1 : Module.rank (𝓞 K) M ≤ Module.rank (𝓞 K) V` using `Submodule.rank_le M`. Establish `h2 : Module.rank (𝓞 K) V = Module.rank K V` using `(IsFractionRing.rank_right_eq (𝓞 K) K V).symm`. Rewrite `h1` using `[h2, ← Module.finrank_eq_rank K V]`. Conclude with `Module.finrank_le_of_rank_le h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_le_dim (M : Submodule (𝓞 K) V) : Module.finrank (𝓞 K) M ≤ Module.finrank K V := by
   have h1 : Module.rank (𝓞 K) M ≤ Module.rank (𝓞 K) V := Submodule.rank_le M
@@ -25,13 +25,11 @@ theorem finrank_le_dim (M : Submodule (𝓞 K) V) : Module.finrank (𝓞 K) M �
   exact Module.finrank_le_of_rank_le h1
 
 /- English proof (translation)
-Use `haveI : Finite (𝓞 K ⧸ I) := Ideal.finiteQuotientOfFreeOfNeBot I hI`. Use `haveI : Module.Flat (𝓞 K) M := by`. Rewrite using `[IsDedekindDomain.flat_iff_torsion_eq_bot, eq_bot_iff]`. Introduce and unpack `x ⟨⟨a, ha⟩, hx⟩`. Establish `h1 : (a : K) • (x : V) = 0`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h0 : a • (x : V) = 0` using `congrArg Subtype.val hx`. Rewrite `h0` using `[← algebraMap_smul K a]`. Then use the resulting hypothesis. Establish `h2 : (a : K) ≠ 0`. Use `nonZeroDivisors.ne_zero ha` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Subtype.ext ((smul_eq_zero.1 h1).resolve_left h2)`. Establish `e` using `GlobalTheory.DVRQuotCount.card_quot_smul_top_of_flat' (N := M) I`. Establish `hN : Nat.card (𝓞 K ⧸ I) = Ideal.absNorm I` using `by rw [Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Establish `hpos : 0 < Ideal.absNorm I` using `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 hI)`. Rewrite `e` using `[hN]`.
-
-Use `⟨Nat.finite_of_card_ne_zero (by rw [e]; exact (pow_pos hpos _).ne'), ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `Nat.pow_le_pow_right hpos (finrank_le_dim M)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_quot_le_of_fg (M : Submodule (𝓞 K) V) [Module.Finite (𝓞 K) M] {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) :
     Finite (M ⧸ (I • ⊤ : Submodule (𝓞 K) M)) ∧
@@ -56,11 +54,9 @@ theorem card_quot_le_of_fg (M : Submodule (𝓞 K) V) [Module.Finite (𝓞 K) M]
   exact Nat.pow_le_pow_right hpos (finrank_le_dim M)
 
 /- English proof (translation)
-Distinguish the cases in `hf : Finite (M ⧸ (I • ⊤ : Submodule (𝓞 K) M))`. Use `swap`. Use `haveI := not_finite_iff_infinite.1 hf`. Rewrite using `[Nat.card_eq_zero_of_infinite]`. Conclude with `Nat.zero_le _`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose s hs using Submodule.Quotient.mk_surjective (I • ⊤ : Submodule (𝓞 K) M)`. Set `M' : Submodule (𝓞 K) V` to `Submodule.span (𝓞 K) (Set.range fun q => (s q : V))`. Establish `hle : M' ≤ M` using `Submodule.span_le.2 (by rintro _ ⟨q, rfl⟩; exact (s q).2)`. Use `haveI : Module.Finite (𝓞 K) M' := Module.Finite.span_of_finite _ (Set.finite_range _)`. Take `⟨hfin, hc⟩` from `card_quot_le_of_fg M' hI`.
-
-Set `φ : (M' ⧸ (I • ⊤ : Submodule (𝓞 K) M')) →ₗ[𝓞 K] (M ⧸ (I • ⊤ : Submodule (𝓞 K) M))` to `Submodule.mapQ _ _ (Submodule.inclusion hle) (by`. Rewrite using `[← Submodule.map_le_iff_le_comap, Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top)`. Establish `hφ : Function.Surjective φ` using `fun q => ⟨Submodule.Quotient.mk ⟨s q, Submodule.subset_span ⟨q, rfl⟩⟩, hs q⟩`. Conclude with `(Nat.card_le_card_of_surjective φ hφ).trans hc`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem card_quot_le (M : Submodule (𝓞 K) V) {I : Ideal (𝓞 K)} (hI : I ≠ ⊥) :
     Nat.card (M ⧸ (I • ⊤ : Submodule (𝓞 K) M)) ≤ Ideal.absNorm I ^ Module.finrank K V := by
@@ -85,9 +81,9 @@ theorem card_quot_le (M : Submodule (𝓞 K) V) {I : Ideal (𝓞 K)} (hI : I ≠
 end General
 
 /- English proof (translation)
-Establish `hr : Module.finrank (𝓞 F) (𝓞 E) = 2`. Rewrite using `[← h2]`. Conclude with `(IsFractionRing.finrank_eq (𝓞 F) F (𝓞 E) E).symm`. Establish `h1` using `Ideal.absNorm_algebraMap (𝓞 F) (𝓞 E) (w.under (𝓞 F)).asIdeal`. Rewrite `h1` using `[hr]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Use `Nat.le_of_dvd ?_ (Ideal.absNorm_dvd_absNorm_of_le Ideal.map_comap_le)` and prove the remaining obligations. Rewrite using `[h1]`. Conclude with `pow_pos (Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 (w.under (𝓞 F)).ne_bot)) _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absNorm_le_sq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     (h2 : Module.finrank F E = 2) (w : HeightOneSpectrum (𝓞 E)) :
@@ -107,17 +103,17 @@ open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.L2.Theta Formali
 variable {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} (G : GridData L sc)
 
 /- English proof (translation)
-The claim follows from `Finset.sum_nonneg fun _ _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)`.
+A detailed English derivation is pending.
 -/
 theorem sig_nonneg : 0 ≤ sig G :=
   Finset.sum_nonneg fun _ _ => mul_nonneg (Nat.cast_nonneg _) (Real.log_natCast_nonneg _)
 
 /- English proof (translation)
-Unfold `sig`. Rewrite using `[Finset.mul_sum, Real.exp_sum]`. Use `show ((Ideal.absNorm (∏ v ∈ G.pl.S0, (G.pl.w v).asIdeal ^ G.pl.depth sc v) : ℕ) : ℝ) ≤ _`. Rewrite using `[map_prod, Nat.cast_prod]`. Use `Finset.prod_le_prod (fun _ _ => Nat.cast_nonneg _) fun v hv => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1` using `absNorm_le_sq D.sp.cm.deg2 (G.pl.w v)`. Rewrite `h1` using `[G.pl.under_w hv]`. Establish `hpos : (0 : ℝ) < Ideal.absNorm v.asIdeal`. Conclude with `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 v.ne_bot)` after adjusting the coercions. Establish `e : Real.exp (2 * ((G.pl.depth sc v : ℝ) * Real.log (Ideal.absNorm v.asIdeal))) = ((Ideal.absNorm v.asIdeal : ℝ) ^ 2) ^ G.pl.depth sc v`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_mul, ← mul_assoc, ← Nat.cast_ofNat, ← Nat.cast_mul, Real.exp_nat_mul, Real.exp_log hpos]`. Rewrite using `[e, map_pow, Nat.cast_pow]`. Conclude with `pow_le_pow_left₀ (Nat.cast_nonneg _) (by exact_mod_cast h1) _`.
+A detailed English derivation is pending.
 -/
 theorem absNorm_modul_le : (Ideal.absNorm G.modul : ℝ) ≤ Real.exp (2 * sig G) := by
   unfold sig
@@ -136,11 +132,11 @@ theorem absNorm_modul_le : (Ideal.absNorm G.modul : ℝ) ≤ Real.exp (2 * sig G
   exact pow_le_pow_left₀ (Nat.cast_nonneg _) (by exact_mod_cast h1) _
 
 /- English proof (translation)
-Establish `hr : (G.V (.grid i 0)).rank = rankV D i 0`. Consider the cases of `i with`. Consider the case `zero`. Use `(D.sp.Y_rank _ (min_le_right _ _)).trans ?_` and prove the remaining obligations. Rewrite using `[min_eq_left (Nat.zero_le _)]`.
+Establish an intermediate fact. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[rankV, Ranks.rankY]`. Consider the case `succ i => exact (G.sp.V_is (i + 1) 0 (by omega) hi (by omega)).rank`. Establish `h1 : i * sLen D ≤ D.R.m * sLen D` using `Nat.mul_le_mul_right _ hi`. Establish `hk : D.R.r = D.R.k + D.R.m - 1` using `rfl`. Rewrite using `[hr]`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [rankV, bigN]`. Establish `e : D.R.m * (D.R.t + sLen D + 1) = D.R.m * D.R.t + D.R.m * sLen D + D.R.m` using `by ring`. Rewrite using `[e]`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem rank_row_le {i : ℕ} (hi : i ≤ D.R.m) : (G.V (.grid i 0)).rank ≤ bigN D := by
   have hr : (G.V (.grid i 0)).rank = rankV D i 0 := by
@@ -159,9 +155,9 @@ theorem rank_row_le {i : ℕ} (hi : i ≤ D.R.m) : (G.V (.grid i 0)).rank ≤ bi
   omega
 
 /- English proof (translation)
-Establish `h1` using `card_quot_le (homLat (G.Λ (.grid (i + 1) 0)) (G.Λ (.grid i 0))) (G.pl.modul_ne_bot sc)`. Rewrite `h1` using `[Module.finrank_matrix, Module.finrank_self, mul_one, Fintype.card_fin, Fintype.card_fin]`. Establish `hpos : 0 < Ideal.absNorm G.modul` using `Nat.pos_of_ne_zero (Ideal.absNorm_eq_zero_iff.not.2 (G.pl.modul_ne_bot sc))`. Establish `h2 : (G.V (.grid i 0)).rank * (G.V (.grid (i + 1) 0)).rank ≤ bigN D ^ 2`. Rewrite using `[sq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.mul_le_mul (rank_row_le G hi.le) (rank_row_le G hi)`. Establish `h3 : Nat.card (G.CosAt i) ≤ Ideal.absNorm G.modul ^ (bigN D ^ 2)` using `h1.trans (Nat.pow_le_pow_right hpos h2)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem card_cosAt_le {i : ℕ} (hi : i < D.R.m) :
     (Nat.card (G.CosAt i) : ℝ) ≤ Real.exp ((bigN D : ℝ) ^ 2 * (2 * sig G)) := by
@@ -176,7 +172,7 @@ theorem card_cosAt_le {i : ℕ} (hi : i < D.R.m) :
     _ = _ := by rw [← Real.exp_nat_mul]; push_cast; rfl
 
 /- English proof (translation)
-Rewrite using `[Nat.card_pi, Nat.cast_prod, Real.exp_nat_mul]`. Use `(Finset.prod_le_prod (fun _ _ => Nat.cast_nonneg _) fun i _ => card_cosAt_le G i.2).trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[Finset.prod_const, Finset.card_univ, Fintype.card_fin]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem card_datum_le : (Nat.card G.Datum : ℝ) ≤ Real.exp (D.R.m * ((bigN D : ℝ) ^ 2 * (2 * sig G))) := by
   rw [Nat.card_pi, Nat.cast_prod, Real.exp_nat_mul]
@@ -184,11 +180,11 @@ theorem card_datum_le : (Nat.card G.Datum : ℝ) ≤ Real.exp (D.R.m * ((bigN D 
   rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
 /- English proof (translation)
-Use `(card_datum_le G).trans (Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)))` and prove the remaining obligations. Establish `hm : (1 : ℝ) ≤ D.R.m` using `by exact_mod_cast (by have := D.R.two_le_m; omega : 1 ≤ D.R.m)`. Establish `hl` using `Real.log_nonneg hb`. Establish `hs : 0 ≤ (bigN D : ℝ) ^ 2 * sig G` using `mul_nonneg (by positivity) (sig_nonneg G)`. Establish `h1 : 0 ≤ C * D.R.f * bigN D * b * Real.log b`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: 0 ≤ C` using `by linarith`. Establish `: 0 ≤ b` using `by linarith`. Check the signs of the components of the expression. Establish `h2 : 2 ≤ C * D.R.m` using `by nlinarith`. Establish `h3` using `mul_le_mul_of_nonneg_right h2 hs`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `aOne`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem card_datum_le_aOne {C b : ℝ} (hC : 2 ≤ C) (hb : 1 ≤ b) : (Nat.card G.Datum : ℝ) ≤ Real.exp (D.R.m * aOne G C b) := by
   refine (card_datum_le G).trans (Real.exp_le_exp.2 (mul_le_mul_of_nonneg_left ?_ (Nat.cast_nonneg _)))
@@ -205,7 +201,7 @@ theorem card_datum_le_aOne {C b : ℝ} (hC : 2 ≤ C) (hb : 1 ≤ b) : (Nat.card
   nlinarith
 
 /- English proof (translation)
-Use `⟨0, fun CF _ => ⟨2, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ _ => ?_⟩⟩⟩` and prove the remaining obligations. Establish `hL : (1 : ℝ) ≤ large₂.sc.L` using `Real.one_le_rpow large₂.sc.one_lt_alt.le large₂.sc.eps_pos.le`. Conclude with `card_datum_le_aOne ch.G hC (Real.one_le_exp (by linarith))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dataK : GlobalTheory.SumCount.DataK := by
   refine ⟨0, fun CF _ => ⟨2, fun ε C hC => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F _ ch _ _ _ => ?_⟩⟩⟩

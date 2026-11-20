@@ -11,15 +11,15 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `(HasRingHomProperty.iff_exists_appLE (P := @Etale) (RingHom.Etale.stableUnderComposition.stableUnderCompositionWithLocalizationAway fun R S _ _ _ r _ => RingHom.etale_algebraMap.mpr (.of_isLocalizationAway r)).left).mpr fun x => ?_` and prove the remaining obligations. Take `⟨U, hU, V, hV, hxV, e, H⟩` from `hp.exists_isStandardSmoothOfRelativeDimension (f x)`. Take `⟨W, hW, hxW, e'⟩` from `TopologicalSpace.Opens.isBasis_iff_nbhd.mp X.isBasis_affineOpens (show x ∈ f ⁻¹ᵁ V from hxV)`. Establish `e'' : W ≤ (f ≫ p) ⁻¹ᵁ U` using `e'.trans (f.preimage_mono e)`. Establish `h1` using `HasRingHomProperty.appLE (@SmoothOfRelativeDimension g) (f ≫ p) hq ⟨U, hU⟩ ⟨W, hW⟩ e''`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[RingHom.locally_iff_isLocalization RingHom.isStandardSmoothOfRelativeDimension_respectsIso]`. Take `⟨s, hs, hfs⟩` from `h1`. Establish `hs'` using `iSup_basicOpen_of_span_eq_top _ _ hs`. Establish `hx : x ∈ (⨆ i ∈ (s : Set Γ(X, W)), X.basicOpen i)` using `by rw [hs']; exact hxW`. Establish `hx' : ∃ r ∈ s, x ∈ X.basicOpen r` using `by simpa using hx`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨r, hr, hxr⟩` from `hx'`. Establish `hloc : IsLocalization.Away r Γ(X, X.basicOpen r)` using `hW.isLocalization_basicOpen r`. Establish `er : X.basicOpen r ≤ f ⁻¹ᵁ V` using `(X.basicOpen_le r).trans e'`. Establish `h2 : ((f ≫ p).appLE U (X.basicOpen r) ((X.basicOpen_le r).trans e'')).hom.IsStandardSmoothOfRelativeDimension g`. Rewrite using `[← (f ≫ p).appLE_map e'' (homOfLE (X.basicOpen_le r)).op]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hfs r hr _`. Establish `h3 : (f.appLE V (X.basicOpen r) er).hom.FormallyUnramified` using `HasRingHomProperty.appLE @FormallyUnramified f inferInstance ⟨V, hV⟩ ⟨X.basicOpen r, hW.basicOpen r⟩ er`. Use `⟨⟨V, hV⟩, ⟨X.basicOpen r, hW.basicOpen r⟩, hxr, er, ?_⟩` and prove the remaining obligations. Rewrite `h2` using `[← Scheme.Hom.appLE_comp_appLE f p U V _ e er, CommRingCat.hom_comp]`. Use `letI := (p.appLE U V e).hom.toAlgebra`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := (f.appLE V (X.basicOpen r) er).hom.toAlgebra`. Use `letI := ((f.appLE V (X.basicOpen r) er).hom.comp (p.appLE U V e).hom).toAlgebra`. Use `haveI : IsScalarTower Γ(Z, U) Γ(Y, V) Γ(X, X.basicOpen r) := IsScalarTower.of_algebraMap_eq' rfl`. Conclude with `GlobalTheory.T.etale_of_formallyUnramified_standardSmooth_same_relDim Γ(Z, U) Γ(Y, V) Γ(X, X.basicOpen r) g H h2 h3`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem etale_of_formallyUnramified_of_smoothOfRelativeDimension {X Y Z : Scheme.{0}} (f : X ⟶ Y)
     (p : Y ⟶ Z) (g : ℕ) (hp : SmoothOfRelativeDimension g p)
@@ -58,7 +58,7 @@ theorem etale_of_formallyUnramified_of_smoothOfRelativeDimension {X Y Z : Scheme
   exact GlobalTheory.T.etale_of_formallyUnramified_standardSmooth_same_relDim Γ(Z, U) Γ(Y, V) Γ(X, X.basicOpen r) g H h2 h3
 
 /- English proof (translation)
-Introduce `X Y Z f p g hp hq hf`. Establish `: Etale f` using `etale_of_formallyUnramified_of_smoothOfRelativeDimension f p g hp hq`. Conclude with `IsOpenImmersion.of_flat_of_mono f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_of_mono_of_smoothOfRelativeDimension :
     ∀ (X Y Z : Scheme.{0}) (f : X ⟶ Y) (p : Y ⟶ Z) (g : ℕ), SmoothOfRelativeDimension g p →

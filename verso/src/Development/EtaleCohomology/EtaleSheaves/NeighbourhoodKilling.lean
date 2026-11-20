@@ -59,7 +59,7 @@ def Bridge : Prop := Hyps → ∀ (q : ℕ) [NeZero q] (k : Type) [Field k], IsU
       ∃ (U' : B.Etale) (a : U' ⟶ U), u ∈ Set.range a.left ∧ rY q i p ι a m z = 0
 
 /- English proof (translation)
-Introduce `hH q _ k _ hq i B W Y toK ι _ p hp U m z hz u`. Take `⟨J, _, _, T, j0, x0, A, _, t, hSH, hlim, hst⟩` from `hB hH q k hq i toK ι p hp U m z u`. Take `⟨j, f, hf⟩` from `hF J T j0 x0 (hlim (hz A t hSH))`. Conclude with `hst j f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem goal_of (hF : PairFive) (_hO : ObsExact) (_hN : ObsNat) (hB : Bridge) : LeafKillNbhd := by
   intro hH q _ k _ hq i B W Y toK ι _ p hp U m z hz u

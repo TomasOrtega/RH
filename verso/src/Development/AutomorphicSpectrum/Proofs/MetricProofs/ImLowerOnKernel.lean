@@ -6,7 +6,7 @@ open scoped BigOperators ComplexOrder
 namespace GlobalTheory.CompanionTheory.ChartBlockLower
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Finset.sum_apply, Finset.mul_sum]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem dotProduct_sum' {g a : ℕ} (v : Fin g → ℝ) (w : Fin a → Fin g → ℝ) :
     v ⬝ᵥ (∑ j, w j) = ∑ j, v ⬝ᵥ w j := by
@@ -14,9 +14,9 @@ private theorem dotProduct_sum' {g a : ℕ} (v : Fin g → ℝ) (w : Fin a → F
   exact Finset.sum_comm
 
 /- English proof (translation)
-Establish `h : ((τ + ∑ j, s j • (B j).map (fun x : ℤ => (x : ℂ))).map Complex.im) = τ.map Complex.im + ∑ j, (s j).im • (B j).map (fun x : ℤ => (x : ℝ))`. Use extensionality with `i k`. Simplify using `[Matrix.sum_apply, Complex.im_sum]`. Rewrite using `[h, Matrix.add_mulVec, dotProduct_add, Matrix.sum_mulVec, dotProduct_sum']`. Use `congr 1`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `Finset.sum_congr rfl ?_` and prove the remaining obligations. Introduce `j _`. Rewrite using `[Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem quad_im_add_sum {a g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ)
     (B : Fin a → Matrix (Fin g) (Fin g) ℤ) (s : Fin a → ℂ) (v : Fin g → ℝ) :
@@ -34,23 +34,23 @@ theorem quad_im_add_sum {a g : ℕ} (τ : Matrix (Fin g) (Fin g) ℂ)
   rw [Matrix.smul_mulVec, dotProduct_smul, smul_eq_mul]
 
 /- English proof (translation)
-Introduce `n a g ha U τ0 B c hU hτ _ _ H z hz l hl _ v hv`. Set `l' : ℝ → Fin a → ℂ` to `fun t j => if z (Fin.castLE ha j) = 0 then -(t : ℂ) else l j`. Set `z' : ℝ → Fin n → ℂ` to `fun t i => if z i = 0 then Complex.exp (-(t : ℂ)) else z i`. Establish `hT : Filter.Tendsto z' Filter.atTop (𝓝 z)`. Rewrite using `[tendsto_pi_nhds]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Distinguish the cases in `hzi : z i = 0`. Establish `h1 : Filter.Tendsto (fun t : ℝ => ((Real.exp (-t) : ℝ) : ℂ)) Filter.atTop (𝓝 ((0 : ℝ) : ℂ))` using `(Complex.continuous_ofReal.tendsto 0).comp Real.tendsto_exp_neg_atTop_nhds_zero`. Establish `h2 : (fun t : ℝ => z' t i) = fun t : ℝ => ((Real.exp (-t) : ℝ) : ℂ)`. Use function extensionality and compare the values at `t`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[z', hzi, Complex.ofReal_exp]`. Rewrite using `[h2, hzi]`. Simplify using `using h1`. Establish `h2 : (fun t : ℝ => z' t i) = fun _ : ℝ => z i`. Use function extensionality and compare the values at `t`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[z', hzi]`. Rewrite using `[h2]`. Conclude with `tendsto_const_nhds`. Establish `hτc : ContinuousAt τ0 z` using `hτ.continuousAt (hU.mem_nhds hz)`. Set `φ : Matrix (Fin g) (Fin g) ℂ → ℝ` to `fun M => v ⬝ᵥ ((M.map Complex.im) *ᵥ v)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hφ : Continuous φ` using `continuous_const.dotProduct ((continuous_id.matrix_map Complex.continuous_im).matrix_mulVec continuous_const)`. Establish `hsplit : ∀ (w : Fin n → ℂ) (m : Fin a → ℂ), v ⬝ᵥ (((τ0 w + ∑ j, (m j / (2 * Real.pi * Complex.I)) • (B j).map (fun x : ℤ => (x : ℂ))).map Complex.im) *ᵥ v) = φ (τ0 w) + ∑ j, (m j / (2 * Real.pi * Complex.I)).im * (v ⬝ᵥ ((B j).map (fun x : ℤ => (x : ℝ)) *ᵥ v))` using `fun w m => quad_im_add_sum (τ0 w) B (fun j => m j / (2 * Real.pi * Complex.I)) v`. Establish `hsum : ∀ t : ℝ, ∑ j, (l' t j / (2 * Real.pi * Complex.I)).im * (v ⬝ᵥ ((B j).map (fun x : ℤ => (x : ℝ)) *ᵥ v)) = ∑ j, (l j / (2 * Real.pi * Complex.I)).im * (v ⬝ᵥ ((B j).map (fun x : ℤ => (x : ℝ)) *ᵥ v))`. Introduce `t`. Use `Finset.sum_congr rfl ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j _`. Distinguish the cases in `hzj : z (Fin.castLE ha j) = 0`. Rewrite using `[hv j hzj]`. Simplify using the standard rewrite rules. Simplify using `[l', hzj]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hev : ∀ᶠ t in Filter.atTop, c * (v ⬝ᵥ v) ≤ φ (τ0 (z' t)) + ∑ j, (l j / (2 * Real.pi * Complex.I)).im * (v ⬝ᵥ ((B j).map (fun x : ℤ => (x : ℝ)) *ᵥ v))` using `by filter_upwards [hT.eventually_mem (hU.mem_nhds hz)] with t ht`. Establish `hexp : ∀ j, Complex.exp (l' t j) = z' t (Fin.castLE ha j)`. Introduce `j`. Distinguish the cases in `hzj : z (Fin.castLE ha j) = 0`. Simplify using `[l', z', hzj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[l', z', hzj, hl j hzj]`. Establish `h0` using `(H (z' t) ht (l' t) hexp).dotProduct_mulVec_nonneg v`. Establish `hstar : star v = v`. Use function extensionality and compare the values at `i`. Conclude with `TrivialStar.star_trivial _`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `h0` using `[hstar, Matrix.sub_mulVec, dotProduct_sub, Matrix.smul_mulVec, Matrix.one_mulVec, dotProduct_smul, smul_eq_mul, hsplit, hsum]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hlim : Filter.Tendsto (fun t => φ (τ0 (z' t)) + ∑ j, (l j / (2 * Real.pi * Complex.I)).im * (v ⬝ᵥ ((B j).map (fun x : ℤ => (x : ℝ)) *ᵥ v))) Filter.atTop (𝓝 (φ (τ0 z) + ∑ j, (l j / (2 * Real.pi * Complex.I)).im * (v ⬝ᵥ ((B j).map (fun x : ℤ => (x : ℝ)) *ᵥ v))))` using `((hφ.tendsto _).comp (hτc.tendsto.comp hT)).add tendsto_const_nhds`. Rewrite using `[hsplit]`. Conclude with `ge_of_tendsto hlim hev`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem im_lower_on_kernel : ∀ (n a g : ℕ) (ha : a ≤ n) (U : Set (Fin n → ℂ)) (τ0 : (Fin n → ℂ) → Matrix (Fin g) (Fin g) ℂ) (B : Fin a → Matrix (Fin g) (Fin g) ℤ) (c : ℝ), IsOpen U → ContinuousOn τ0 U → (∀ j, ((B j).map (fun x : ℤ => (x : ℝ))).PosSemidef) → 0 < c → (∀ z ∈ U, ∀ l : Fin a → ℂ, (∀ j, Complex.exp (l j) = z (Fin.castLE ha j)) → ((τ0 z + ∑ j, (l j / (2 * Real.pi * Complex.I)) • (B j).map (fun x : ℤ => (x : ℂ))).map Complex.im - c • (1 : Matrix (Fin g) (Fin g) ℝ)).PosSemidef) → ∀ z ∈ U, ∀ l : Fin a → ℂ, (∀ j, z (Fin.castLE ha j) ≠ 0 → Complex.exp (l j) = z (Fin.castLE ha j)) → (∀ j, z (Fin.castLE ha j) = 0 → l j = 0) → ∀ v : Fin g → ℝ, (∀ j, z (Fin.castLE ha j) = 0 → (B j).map (fun x : ℤ => (x : ℝ)) *ᵥ v = 0) → c * (v ⬝ᵥ v) ≤ v ⬝ᵥ (((τ0 z + ∑ j, (l j / (2 * Real.pi * Complex.I)) • (B j).map (fun x : ℤ => (x : ℂ))).map Complex.im) *ᵥ v) := by
   intro n a g ha U τ0 B c hU hτ _ _ H z hz l hl _ v hv

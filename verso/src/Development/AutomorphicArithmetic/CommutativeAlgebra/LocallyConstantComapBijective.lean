@@ -2,9 +2,9 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.DivisorSupportCondi
 open CategoryTheory Limits AlgebraicGeometry Opposite GlobalTheory.EtC
 
 /- English proof (translation)
-Take `⟨e, he, rfl⟩` from `PrimeSpectrum.isClopen_iff.1 hC`. Take `⟨d, hd, rfl⟩` from `PrimeSpectrum.isClopen_iff.1 hD`. Establish `h1 : φ e = φ d`. Apply `PrimeSpectrum.basicOpen_injOn_isIdempotentElem (he.map φ) (hd.map φ)` to reduce the goal to its premises. Apply `SetLike.coe_injective` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← PrimeSpectrum.comap_basicOpen, ← PrimeSpectrum.comap_basicOpen]`. Conclude with `hCD`. Rewrite using `[(h (φ e) (he.map φ)).unique ⟨he, rfl⟩ ⟨hd, h1.symm⟩]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem clopen_pre_inj {B B' : Type} [CommRing B] [CommRing B'] (φ : B →+* B')
     (h : ∀ e' : B', IsIdempotentElem e' → ∃! e : B, IsIdempotentElem e ∧ φ e = e')
@@ -20,7 +20,7 @@ private theorem clopen_pre_inj {B B' : Type} [CommRing B] [CommRing B'] (φ : B 
   rw [(h (φ e) (he.map φ)).unique ⟨he, rfl⟩ ⟨hd, h1.symm⟩]
 
 /- English proof (translation)
-Take `⟨e', he', rfl⟩` from `PrimeSpectrum.isClopen_iff.1 hC'`. Take `⟨e, ⟨he, rfl⟩, -⟩` from `h e' he'`. Conclude with `⟨_, PrimeSpectrum.isClopen_iff.2 ⟨e, he, rfl⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem clopen_pre_surj {B B' : Type} [CommRing B] [CommRing B'] (φ : B →+* B')
     (h : ∀ e' : B', IsIdempotentElem e' → ∃! e : B, IsIdempotentElem e ∧ φ e = e')
@@ -31,29 +31,27 @@ private theorem clopen_pre_surj {B B' : Type} [CommRing B] [CommRing B'] (φ : B
   exact ⟨_, PrimeSpectrum.isClopen_iff.2 ⟨e, he, rfl⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `B B' _ _ φ Y h`. Prove the components needed by the constructor for the conclusion. Introduce `a b hab`. Establish `hfib : ∀ y, (a : PrimeSpectrum B → Y) ⁻¹' {y} = (b : PrimeSpectrum B → Y) ⁻¹' {y}`. Introduce `y`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `clopen_pre_inj φ h (a.isLocallyConstant.isClopen_fiber y) (b.isLocallyConstant.isClopen_fiber y)` to reduce the goal to its premises. Use extensionality with `q`. Establish `hq : a (PrimeSpectrum.comap φ q) = b (PrimeSpectrum.comap φ q)` using `DFunLike.congr_fun hab q`. Express the relevant statement in the definitionally equal form `a (PrimeSpectrum.comap φ q) = y ↔ b (PrimeSpectrum.comap φ q) = y`. Rewrite using `[hq]`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `p`. Establish `hp : p ∈ (b : PrimeSpectrum B → Y) ⁻¹' {a p}`. Rewrite using `[← hfib]`. Both sides reduce to the same expression. Conclude with `hp.symm`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a' choose C hCc hC using fun y => clopen_pre_surj φ h (a'.isLocallyConstant.isClopen_fiber y)`. Establish `hdisj : ∀ y z, y ≠ z → C y ∩ C z = ∅`. Introduce `y z hyz`. Apply `clopen_pre_inj φ h ((hCc y).inter (hCc z)) isClopen_empty` to reduce the goal to its premises. Rewrite using `[Set.preimage_inter, hC, hC, Set.preimage_empty]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Use extensionality with `q`. Simplify using `only [Set.mem_inter_iff, Set.mem_preimage, Set.mem_singleton_iff, Set.mem_empty_iff_false, iff_false, not_and]`. Conclude with `fun h1 h2 => hyz (h1.symm.trans h2)`. Establish `hcov : (⋃ y ∈ Set.range a', C y) = Set.univ`. Apply `clopen_pre_inj φ h (a'.range_finite.isClopen_biUnion fun y _ => hCc y) isClopen_univ` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Set.preimage_iUnion₂, Set.preimage_univ]`. Use extensionality with `q`. Simplify using `only [Set.mem_iUnion, Set.mem_univ, iff_true]`. Conclude with `⟨a' q, ⟨q, rfl⟩, by rw [hC]; rfl⟩`. Establish `hex : ∀ p, ∃ y, p ∈ C y`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `p`. Establish `hp : p ∈ ⋃ y ∈ Set.range a', C y` using `hcov ▸ Set.mem_univ p`. Take `⟨y, -, hy⟩` from `Set.mem_iUnion₂.1 hp`. Conclude with `⟨y, hy⟩`. Use `choose a ha using hex`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiff : ∀ p y, a p = y ↔ p ∈ C y`. Introduce `p y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `ha p`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Introduce `hy`. Assume the negation of the conclusion as `hne`. Establish `: p ∈ C (a p) ∩ C y` using `⟨ha p, hy⟩`. Rewrite `this` using `[hdisj _ _ hne]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hlc : IsLocallyConstant a`. Use `(IsLocallyConstant.iff_isOpen_fiber).2 fun y => ?_` and prove the remaining obligations. Establish `: a ⁻¹' {y} = C y`. Use extensionality with `p`. Conclude with `hiff p y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `(hCc y).isOpen`. Use `⟨⟨a, hlc⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `q`. Establish `hq : q ∈ PrimeSpectrum.comap φ ⁻¹' C (a' q)`.
-
-Rewrite using `[hC]`. Both sides reduce to the same expression. Conclude with `(hiff _ _).2 hq`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.locallyConstant_comap_bijective :
     ∀ (B B' : Type) [CommRing B] [CommRing B'] (φ : B →+* B') (Y : Type), (∀ e' : B', IsIdempotentElem e' → ∃! e : B, IsIdempotentElem e ∧ φ e = e') → Function.Bijective (fun a : LocallyConstant (PrimeSpectrum B) Y => a.comap ⟨PrimeSpectrum.comap φ, PrimeSpectrum.continuous_comap φ⟩) := by

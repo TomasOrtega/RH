@@ -9,7 +9,7 @@ namespace PositivityTheory.ThKF0.LatSum
 open mixedEmbedding
 
 /- English proof (translation)
-Unfold `evI`. Simplify using `[InfiniteAdeleRing.ringEquiv_mixedSpace]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem evI_algebraMap (F : Type) [Field F] [NumberField F] (x : F) :
     evI F (algebraMap F (AF F) x) = mixedEmbedding F x := by
@@ -22,9 +22,9 @@ noncomputable abbrev latPi (F : Type) [Field F] [NumberField F] (κ : Type) [Fin
   Submodule.span ℤ (Set.range (Pi.basis (fun _ : κ => latticeBasis F)))
 
 /- English proof (translation)
-Rewrite using `[Module.Basis.mem_span_iff_repr_mem]`. Introduce `ji`. Rewrite using `[Pi.basis_repr]`. Establish `h1 : mixedEmbedding F (y ji.1) ∈ mixedEmbedding.integerLattice F`. Conclude with `⟨⟨y ji.1, hy ji.1⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components.
 
-Establish `h2` using `(mem_span_latticeBasis F).mpr h1`. Conclude with `(Module.Basis.mem_span_iff_repr_mem ℤ _ _).mp h2 ji.2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_latPi (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (y : κ → F)
     (hy : ∀ i, IsIntegral ℤ (y i)) : (fun i => mixedEmbedding F (y i)) ∈ latPi F κ := by
@@ -37,13 +37,13 @@ theorem mem_latPi (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] 
   exact (Module.Basis.mem_span_iff_repr_mem ℤ _ _).mp h2 ji.2
 
 /- English proof (translation)
-Use `set N : ℕ := Module.finrank ℤ (latPi F κ) + 1 with hN`. Establish `h0` using `ZLattice.summable_norm_rpow (latPi F κ) (-(N : ℝ)) (by rw [hN]; push_cast; linarith)`. Establish `h1 : Summable fun z : latPi F κ => (if z = 0 then (1 : ℝ) else 0)`. Apply `summable_of_ne_finset_zero (s := {0})` to reduce the goal to its premises. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: z ≠ 0` using `by simpa using hz`. Simplify using `[this]`. Use `Summable.of_nonneg_of_le (fun z => by positivity) (fun z => ?_) (h0.add h1)` and prove the remaining obligations. Establish `hr : 0 ≤ ‖z‖ ^ (-(N : ℝ))` using `Real.rpow_nonneg (norm_nonneg _) _`. Distinguish the cases in `hz : z = 0`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Substitute `hz` using the available equality. Simplify using the standard rewrite rules. Simplify using `only [hz, if_false, add_zero]`. Establish `hpos : 0 < ‖z‖` using `norm_pos_iff.mpr hz`. Rewrite using `[Real.rpow_neg hpos.le, Real.rpow_natCast]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: ‖z‖ = ‖(z : κ → mixedSpace F)‖` using `rfl`. Rewrite using `[← this]`. Use `gcongr`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem summable_inv_one_add_pow (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] :
     Summable fun z : latPi F κ =>
@@ -75,31 +75,25 @@ namespace PositivityTheory.ThKF0.LatSum
 open mixedEmbedding
 
 /- English proof (translation)
-Introduce `F _ _ κ _`. Use `set L := latPi F κ with hL`. Use `set N₀ : ℕ := Module.finrank ℤ L + 1 with hN`. Use `set H : (κ → mixedSpace F) → ℝ := fun v => ((1 + ‖v‖) ^ N₀)⁻¹ with hH`. Establish `hHs : Summable fun z : L => H z` using `summable_inv_one_add_pow F κ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `⟨N₀, N₀, ∑' z : L, H z, ?_⟩` and prove the remaining obligations. Introduce `A m Ψ hm hb hint`. Use `set f : (κ → F) → ℂ := fun ξ => Ψ (fun i => algebraMap F (AF F) (ξ i)) with hf`. Use `set ψ : (κ → F) → (κ → mixedSpace F) := fun ξ i => mixedEmbedding F (ξ i) with hψdef`. Establish `hψ : ∀ ξ : κ → F, (fun i => evI F (algebraMap F (AF F) (ξ i))) = ψ ξ` using `fun ξ => funext fun i => evI_algebraMap F (ξ i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use `set g : (κ → F) → (κ → mixedSpace F) := fun ξ => ψ (fun i => (m : F) * ξ i) with hgdef`. Establish `hm0 : (m : F) ≠ 0` using `by exact_mod_cast (Nat.one_le_iff_ne_zero.mp hm)`. Establish `hginj : Function.Injective g`. Introduce `ξ η h`. Use function extensionality and compare the values at `i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `congrFun h i` as an intermediate fact. Simplify using `only [hgdef, hψdef] at this`. Conclude with `mul_left_cancel₀ hm0 (mixedEmbedding_injective F this)`. Establish `hgsmul : ∀ ξ, g ξ = m • ψ ξ`. Introduce `ξ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Simplify using `only [hgdef, hψdef, Pi.smul_apply]`. Rewrite using `[← nsmul_eq_mul, map_nsmul]`. Use `set Lind : (κ → mixedSpace F) → ℝ := (L : Set (κ → mixedSpace F)).indicator H with hLind`. Establish `hLs : Summable Lind` using `summable_subtype_iff_indicator.mp hHs`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hLnn : ∀ v, 0 ≤ Lind v` using `fun v => Set.indicator_nonneg (fun v _ => by positivity) v`. Establish `hA : 0 ≤ A` using `le_trans (by positivity) (hb 0)`. Establish `hmR : (1 : ℝ) ≤ m` using `by exact_mod_cast hm`. Establish `key : ∀ ξ, ‖f ξ‖ ≤ A * (m : ℝ) ^ N₀ * Lind (g ξ)`. Introduce `ξ`.
+Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `h : f ξ = 0`. Rewrite using `[h, norm_zero]`. Use `hLnn (g ξ)` as an intermediate fact. Check the signs of the components of the expression. Establish `hi` using `hint ξ h`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : g ξ ∈ L` using `mem_latPi F κ _ hi`. Rewrite using `[hLind, Set.indicator_of_mem hmem]`. Establish `hb'` using `hb ξ`. Rewrite `hb'` using `[hψ ξ]`. Establish `hpos : 0 < (1 + ‖ψ ξ‖) ^ N₀` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ‖f ξ‖ ≤ A * ((1 + ‖ψ ξ‖) ^ N₀)⁻¹`. Rewrite using `[← div_eq_mul_inv, le_div_iff₀ hpos]`. Conclude with `hb'`. Establish `hgn : ‖g ξ‖ ≤ m * ‖ψ ξ‖` using `by rw [hgsmul]; exact norm_nsmul_le`. Establish `hmpos : (0 : ℝ) < m` using `by linarith`.
+Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ((1 + ‖ψ ξ‖) ^ N₀)⁻¹ ≤ (m : ℝ) ^ N₀ * H (g ξ)`. Simplify using `only [hH]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_pow, mul_inv, ← mul_assoc, mul_inv_cancel₀ (pow_ne_zero _ hmpos.ne'), one_mul]`. Use `_ ≤ (m : ℝ) ^ N₀ * ((1 + ‖g ξ‖) ^ N₀)⁻¹ := by gcongr`.
-
-Use polynomial arithmetic with `[norm_nonneg (ψ ξ)]`. Combine the equalities or inequalities in the displayed calculation. Establish `hu : Summable fun ξ => A * (m : ℝ) ^ N₀ * Lind (g ξ)` using `(hLs.comp_injective hginj).mul_left _`. Establish `hfs : Summable fun ξ => ‖f ξ‖` using `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) key hu`. Establish `hcomp : ∑' ξ, Lind (g ξ) ≤ ∑' v, Lind v` using `tsum_comp_le_tsum_of_inj hLs hLnn hginj`.
-
-Establish `hsub : ∑' v, Lind v = ∑' z : L, H z` using `(tsum_subtype (L : Set (κ → mixedSpace F)) H).symm`. Establish `hmk : 0 ≤ A * (m : ℝ) ^ N₀` using `by positivity`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← hsub]`. Conclude with `mul_le_mul_of_nonneg_left hcomp hmk`.
-
-Use `_ = (∑' z : L, H z) * A * (m : ℝ) ^ N₀ := by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaSum_norm_le_pow :
     ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∃ (N₀ k : ℕ) (C : ℝ), ∀ (A : ℝ) (m : ℕ) (Ψ : (κ → AF F) → ℂ), 1 ≤ m →
@@ -180,7 +174,7 @@ end PositivityTheory.ThKF0.LatSum
 namespace PositivityTheory.ThKF0
 
 /- English proof (translation)
-The claim follows from `LatSum.thetaSum_norm_le_pow`.
+A detailed English derivation is pending.
 -/
 theorem theta_sum_norm_bound_denominator : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ], ∃ (N₀ k : ℕ) (C : ℝ), ∀ (A : ℝ) (m : ℕ) (Ψ : (κ → AF F) → ℂ), 1 ≤ m →
     (∀ ξ : κ → F, ‖Ψ (fun i => algebraMap F (AF F) (ξ i))‖ * (1 + ‖fun i => evI F (algebraMap F (AF F) (ξ i))‖) ^ N₀ ≤ A) →

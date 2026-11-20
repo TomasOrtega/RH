@@ -24,7 +24,7 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.AinfInvLim
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Conclude with `Finset.dvd_sum fun k _ => dvd_mul_of_dvd_right (h k j) _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_mul_entry {R : Type} [CommRing R] {d : ℕ} (c : R) (A B : Matrix (Fin d) (Fin d) R)
     (h : ∀ i j, c ∣ B i j) (i j : Fin d) : c ∣ (A * B) i j := by
@@ -32,17 +32,17 @@ theorem dvd_mul_entry {R : Type} [CommRing R] {d : ℕ} (c : R) (A B : Matrix (F
   exact Finset.dvd_sum fun k _ => dvd_mul_of_dvd_right (h k j) _
 
 /- English proof (translation)
-Introduce `l _ d M τ Y hY hQ`. Establish `hinj : Function.Injective (inclW l)` using `WittVector.map_injective _ (IsFractionRing.injective (OCb l) (Cb l))`. Use `set A := Y.map (inclW l) with hA`. Use `set c := inclW l τ ^ M with hc`. Establish `hAinv : A * A⁻¹ = 1` using `Matrix.mul_nonsing_inv A ((Matrix.isUnit_iff_isUnit_det A).1 hY)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hinvA : A⁻¹ * A = 1` using `Matrix.nonsing_inv_mul A ((Matrix.isUnit_iff_isUnit_det A).1 hY)`. Use `set Z := c • A⁻¹ with hZ`. Establish `hZent : ∀ i j, ∃ a : Ainf l, Z i j = inclW l (1 * a)`. Introduce `i j`. Use `GlobalTheory.AinfSat.mem_ideal_of_saturated l 1 (by rw [map_one]; exact isUnit_one) 0 (Z i j) fun n => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Q, hQn⟩` from `hQ n`. Apply the tactic sequence `have h1 := dvd_mul_entry _ A⁻¹ _ hQn i j`. Establish `h2 : A⁻¹ * (A * Q.map (inclW l) - c • (1 : Matrix (Fin d) (Fin d) (WCb l))) = Q.map (inclW l) - Z`. Rewrite using `[Matrix.mul_sub, ← Matrix.mul_assoc, hinvA, Matrix.one_mul, Matrix.mul_smul, Matrix.mul_one]`. Rewrite `h1` using `[h2]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨Q i j, ?_⟩` and prove the remaining obligations. Rewrite using `[pow_zero, one_mul, one_mul, dvd_sub_comm]`. Simplify `h1` using `[Matrix.sub_apply]`. Use `choose Y' hY' using hZent`. Use `⟨Matrix.of fun i j => Y' i j, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hmap : (Matrix.of fun i j => Y' i j).map (inclW l) = Z`. Use extensionality with `i j`. Simplify using `[hY' i j]`. Establish `key : (Y * Matrix.of fun i j => Y' i j).map (inclW l) = (τ ^ M • (1 : Matrix (Fin d) (Fin d) (Ainf l))).map (inclW l)`. Rewrite using `[Matrix.map_mul, hmap, hZ, Matrix.mul_smul, ← hA, hAinv]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `i j`. Simplify using `[Matrix.one_apply, hc, Matrix.smul_apply]`. Apply the tactic sequence `split_ifs <;> simp`. Use `Matrix.ext fun i j => hinj ?_` and prove the remaining obligations. Conclude with `congrFun (congrFun (congrArg Matrix.of.symm key) i) j`.
+A detailed English derivation is pending.
 -/
 theorem exists_mul_eq_smul_one : ∀ (l : ℕ) [Fact l.Prime] (d M : ℕ) (τ : Ainf l)
     (Y : Matrix (Fin d) (Fin d) (Ainf l)), IsUnit (Y.map (inclW l)) →

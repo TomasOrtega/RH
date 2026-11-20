@@ -4,15 +4,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open UpperTheory.V.Z.Tf.GlobalTraceComparison UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi UpperTheory.Zero.ConvolutionTheory.EB PositivityTheory.Rg.BcB.Desc
 
 /- English proof (translation)
-Introduce `hP hO E _ _ _ n S Z N hS hZ hG π y i hi f hf x hx`. Take `⟨w, b⟩` from `i`. Set `F : ∀ w', Bool → _` to `fun w' b' => if h : w' = w ∧ b' = b then h.1 ▸ f else ((N w' : Set _).indicator 1)`. Establish `hFi : F w b = f` using `by simp [F]`. Establish `hFam : Fam S N {(w, b)} F`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `j hj`. Take `rfl` from `Finset.mem_singleton.mp hj`. Conclude with `⟨hi, by simpa [hFi] using hf⟩`. Introduce and unpack `⟨w', b'⟩ _ hj`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `hne : ¬ (w' = w ∧ b' = b)`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `hj (Finset.mem_singleton_self _)`. Simplify using `[F, hne]`. Establish `h1` using `hO E n S Z N hS hZ hG {(w, b)} F hFam x (y.fix hx)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `y.act _ (hP E n S Z N hS hZ hG {(w, b)} F hFam) ⟨x, hx⟩`. Establish `h3 : Lw N w b f x = ((y.r (pf S F) ⟨x, hx⟩ : y.Y) : _)`. Rewrite using `[h2]`. Use `show _ = Lv _ _ _ x`. Rewrite using `[h1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hFi]`. Use `show Lw N w b f x ∈ y.Y`. Rewrite using `[h3]`. Conclude with `(y.r (pf S F) ⟨x, hx⟩).2`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.Tf.GlobalTraceComparison.Pi.yLoc_pf :
     PfHecke → ProdOp → YLoc := by

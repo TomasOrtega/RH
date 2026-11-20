@@ -23,14 +23,14 @@ def selfIso (L : LB X) : LB.Iso L (L.pull (𝟙 X)) :=
     fun _ hx => ⟨mem_pull (F := 𝟙 X).1 hx.1, hx.2⟩) (L.g (p.1 PUnit.unit) p.2)⟩
 
 /- English proof (translation)
-The claim follows from `gm_res f y _ (show f y ∈ (L.pull (𝟙 X)).U (fun _ => j) ⊓ L.U k from ⟨mem_pull (F := 𝟙 X).2 hj, hk⟩) _`.
+A detailed English derivation is pending.
 -/
 theorem gw_selfIso (L : LB X) {Y : Scheme.{0}} (f : Y ⟶ X) (y : Y) (j k : L.ι) (hj : f y ∈ L.U j)
     (hk : f y ∈ L.U k) : gw (selfIso L) f y j k = gm f y _ (L.g j k) :=
   gm_res f y _ (show f y ∈ (L.pull (𝟙 X)).U (fun _ => j) ⊓ L.U k from ⟨mem_pull (F := 𝟙 X).2 hj, hk⟩) _
 
 /- English proof (translation)
-Introduce `Y f y j j' k k' hj hj' hk hk'`. Rewrite using `[gw_selfIso L f y j k hj hk, gw_selfIso L f y j' k' hj' hk', Category.comp_id, mul_right_comm, gm_cocycle hL f y hj hj' hk', ← gm_cocycle hL f y hj hk hk', mul_inv_cancel_right]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem pgen_selfIso {L : LB X} (hL : L.IsLB) : PGen (selfIso L) := by
   intro Y f y j j' k k' hj hj' hk hk'
@@ -38,9 +38,9 @@ theorem pgen_selfIso {L : LB X} (hL : L.IsLB) : PGen (selfIso L) := by
     gm_cocycle hL f y hj hj' hk', ← gm_cocycle hL f y hj hk hk', mul_inv_cancel_right]
 
 /- English proof (translation)
-Introduce `Z r z p q hp hq`. Establish `hm : r z ∈ LB.wchart L φ p ⊓ LB.wchart L φ q` using `⟨Set.mem_iInter.2 hp, Set.mem_iInter.2 hq⟩`. Establish `h` using `congrArg (gm r z (LB.wchart L φ p ⊓ LB.wchart L φ q)) (ht p q)`. Rewrite using `[Category.comp_id]`. Use `(gm_res r z _ hm _).symm.trans (h.trans ((map_mul _ _ _).trans (congrArg₂ (· * ·) ?_ (gm_res r z _ hm _))))` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(map_prod _ _ _).trans (Finset.prod_congr rfl fun k _ => (map_zpow _ _ _).trans (congrArg (· ^ ε k) ?_))` and prove the remaining obligations. Conclude with `((gm_res r z _ hm _).trans (gm_pull r (φ k) z (L.U (p k) ⊓ L.U (q k)) ⟨hp k, hq k⟩ _)).trans (gw_selfIso L (r ≫ φ k) z (p k) (q k) (hp k) (hq k)).symm`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pmaps_selfIso {L : LB X} {K : Type} [Fintype K] {Y : Scheme.{0}} (φ : K → (Y ⟶ X)) (ε : K → ℤ)
     (t : LB.Gen (LB.LinComb L φ ε)) (ht : t.IsGen) : PMaps (selfIso L) φ φ ε t t (𝟙 Y) := by
@@ -65,7 +65,7 @@ def cubeMapId (G : Over S) [GrpObj G] [IsCommMonObj G] : CubeMap G G where
   psum_comm := fun I => by rw [Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-The claim follows from `(isPullCubical_iff _ c c).2 ⟨selfIso L.L, pgen_selfIso L.isLB, pmaps_selfIso _ _ L.rig L.rigGen, pmaps_selfIso _ _ c.t c.isGen⟩`.
+A detailed English derivation is pending.
 -/
 theorem isPullCubical_id {G : Over S} [GrpObj G] [IsCommMonObj G] {L : RigLB G} (c : CubicalStr G L) :
     (cubeMapId G).IsPullCubical c c :=
@@ -94,7 +94,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {k : Type} [Field k] {Q : Type} [Group Q] {act : 𝓞 E → Q → Q} {e : ℕ → Q → Q → kˣ → Prop}
 
 /- English proof (translation)
-Establish `: a = (a - a') + a'` using `(sub_add_cancel a a').symm`. Rewrite using `[this, I.add, (I.ker n hn _).2 h, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ev_congr (I : TateIso D k Q act e) {n : ℕ} (hn : 0 < n) {a a' : D.La} (h : D.ModN n (a - a')) :
     I.ev n a = I.ev n a' := by
@@ -102,7 +102,7 @@ theorem ev_congr (I : TateIso D k Q act e) {n : ℕ} (hn : 0 < n) {a a' : D.La} 
   rw [this, I.add, (I.ker n hn _).2 h, _root_.one_mul]
 
 /- English proof (translation)
-Establish `: i = (i - j) + j` using `(sub_add_cancel i j).symm`. Rewrite using `[this, zpow_add, ((I.ζ_prim n hn).zpow_eq_one_iff_dvd _).2 h, _root_.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem zeta_zpow_congr (I : TateIso D k Q act e) {n : ℕ} (hn : 0 < n) {i j : ℤ} (h : (n : ℤ) ∣ i - j) :
     I.ζ n ^ i = I.ζ n ^ j := by
@@ -160,7 +160,7 @@ Both sides reduce to the same expression.
     (a : D.La) : (twist I g hν).ev n a = I.ev n (g.f n a) := rfl
 
 /- English proof (translation)
-Establish `h` using `Submodule.mem_map_of_mem (f := f) ha`. Rewrite `h` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_smul_top (f : D.La →ₗ[𝓞 E] D.La) (J : Ideal (𝓞 E)) {a : D.La}
     (ha : a ∈ J • (⊤ : Submodule (𝓞 E) D.La)) : f a ∈ J • (⊤ : Submodule (𝓞 E) D.La) := by
@@ -195,7 +195,7 @@ end GlobalTheory.LevelTwist
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `h E _ _ _ H D l B _ b S s o g hpq hA`. Conclude with `⟨LevelTwist.objTwist o g ((h E H D hpq).1 g) hA, LevelTwist.sabMapId o.t, fun _ => Category.comp_id _, fun _ => Category.comp_id _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem exists_obj_twist_by_similitude :
     (∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q → (∀ (g : Sim D) (n m : ℕ), 0 < n → 0 < m → (n : ℤ) ∣ g.ν (n * m) - g.ν n ∧ IsCoprime (g.ν n) (n : ℤ)) ∧ (∃ g : Sim D, ∀ n, g.f n = LinearMap.id ∧ g.ν n = 1) ∧ (∀ g g' : Sim D, ∃ g'' : Sim D, ∀ n, g''.f n = g.f n ∘ₗ g'.f n ∧ g''.ν n = g.ν n * g'.ν n) ∧ (∀ g : Sim D, ∃ g' : Sim D, ∀ n, 0 < n → (∀ a, D.ModN n (g'.f n (g.f n a) - a) ∧ D.ModN n (g.f n (g'.f n a) - a)) ∧ (n : ℤ) ∣ g.ν n * g'.ν n - 1)) → ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (B : Type) [CommRing B] (b : Base l B) (S : Scheme.{0}) (s : S ⟶ Sp B) (o : Obj D l b s) (g : Sim D), 1 ≤ D.p + D.q → (l.A : ℤ) ∣ g.ν l.A - 1 → ∃ (o' : Obj D l b s) (m : SABMap o'.t o.t (𝟙 S)), (∀ a, (o'.eta a).left ≫ m.φ = (o.eta (g.f l.M a)).left) ∧ ∀ a, (o'.etaA a).left ≫ m.φ = (o.etaA (g.f l.A a)).left := by

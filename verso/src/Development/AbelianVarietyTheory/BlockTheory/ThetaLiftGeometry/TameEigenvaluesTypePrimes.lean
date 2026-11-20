@@ -45,13 +45,13 @@ def TameAtTypePrimeStrong : Prop :=
     ∀ φ : G D.host.E D.nd.Om, IsFrobAtType D k v φ → FrobConj D σ i k v φ
 
 /- English proof (translation)
-The claim follows from `exists_isFrob (D.nd.plOm.2 _)`.
+A detailed English derivation is pending.
 -/
 theorem exists_isFrobAtType (k : Fin 2) (v : D.nd.PlG k) : ∃ φ, IsFrobAtType D k v φ :=
   exists_isFrob (D.nd.plOm.2 _)
 
 /- English proof (translation)
-Introduce `σ i k hg v`. Take `⟨φ, hφ⟩` from `exists_isFrobAtType D k v`. Conclude with `⟨(h σ i k hg v).2.1, φ, hφ, (h σ i k hg v).2.2 φ hφ⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tameGenerator_of_strong (h : TameAtTypePrimeStrong D) : TameGeneratorAtTypePrime D := by
   intro σ i k hg v
@@ -59,7 +59,7 @@ theorem tameGenerator_of_strong (h : TameAtTypePrimeStrong D) : TameGeneratorAtT
   exact ⟨(h σ i k hg v).2.1, φ, hφ, (h σ i k hg v).2.2 φ hφ⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.host.g_prime k⟩ ∀ x ∈ Formalism.CyclotomicNorms.rootsBar (D.nd.lab k σ v), x ≠ 0 := by haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩ rintro x hx rfl have h0 := ((hσ k).1.1 v).2.2 have hr := (Polynomial.mem_roots'.mp hx).2 rw [Polynomial.IsRoot.def, ← Polynomial.coeff_z …`.
+Supply the required witnesses or components.
 -/
 theorem root_ne_zero (σ : D.what₂.FT) (hσ : D.nd.goodRow σ) (k : Fin 2) (v : D.nd.PlG k) :
     haveI : Fact (D.host.g k).Prime := ⟨D.host.g_prime k⟩
@@ -72,7 +72,7 @@ theorem root_ne_zero (σ : D.what₂.FT) (hσ : D.nd.goodRow σ) (k : Fin 2) (v 
   exact h0 ((map_eq_zero_iff _ (algebraMap (ZMod (D.host.g k)) _).injective).mp hr)
 
 /- English proof (translation)
-The claim follows from `D.nd.w_l i`.
+A detailed English derivation is pending.
 -/
 example (i : D.nd.Loc) : D.what₂.places.resChar (D.nd.w i) = D.nd.l i := D.nd.w_l i
 

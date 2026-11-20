@@ -8,9 +8,9 @@ open CrystallineSemistableComparison.Pb.Kap
 namespace GlobalTheory.CompanionTheory.KapRho
 
 /- English proof (translation)
-Establish `hφ : φ = ∑ s, φ (bs s) • bs.coord s`. Use `bs.ext fun t => ?_` and prove the remaining obligations. Simplify using `[LinearMap.sum_apply, Finsupp.single_apply]`. Use `conv_lhs => rw [hφ]`. Rewrite using `[map_sum]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[hf, mul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem semilinear_eq_sum_coord {K B : Type*} {V : Type*} [Field K] [CommRing B] [AddCommGroup V]
     [Module K V] (o : K →+* B) (f : Module.Dual K V →+ B)
@@ -25,29 +25,27 @@ theorem semilinear_eq_sum_coord {K B : Type*} {V : Type*} [Field K] [CommRing B]
   rw [hf, mul_comm]
 
 /- English proof (translation)
-Introduce `Λ A B K _ _ _ _ C hC P hP i j x y f g h hf hg hh m m' bs bs' φ`. Take `⟨-, e, z, hzr, hzb⟩` from `hf`. Take `⟨-, e', w, hwr, hwb⟩` from `hg`. Take `⟨hh1, e'', u, hur, hub⟩` from `hh`. Use `haveI := hC.fin (i + j)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `b` to `Module.finBasis K (C.V (i + j))`. Establish `hv : ∀ n, C.red n (i + j) (P.cZ i j z w) = ((C.ℓ : A) ^ (e + e')) • C.r n (i + j) (P.cS n i j (x n) (y n))`. Introduce `n`. Rewrite using `[hP.red, hzr, hwr, hP.r, map_smul, LinearMap.map_smul₂, smul_smul, pow_add, mul_comm]`. Establish `hd : C.b (i + j) (((C.ℓ : A) ^ (e + e')) • u - ((C.ℓ : A) ^ e'') • P.cZ i j z w) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hC.sep _ _ fun n => ?_` and prove the remaining obligations. Establish `hu` using `hur n`. Simplify using `only at hu`. Rewrite using `[map_sub, map_smul, map_smul, hu, hv n, smul_smul, smul_smul, mul_comm, sub_self]`. Establish `key : ((C.ℓ : B) ^ (e + e')) • C.b (i + j) u = ((C.ℓ : B) ^ e'') • C.b (i + j) (P.cZ i j z w)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hd` using `[map_sub, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, sub_eq_zero]`. Simplify `hd` using `only [map_pow, map_natCast]`. Set `c : Fin (Module.finrank K (C.V (i + j))) → B` to `fun t => ∑ s, ∑ s', f (bs.coord s) * g (bs'.coord s') * C.o (b.coord t (P.cV i j (bs s) (bs' s')))`. Establish `hμ : ∀ s s', P.cW i j (C.μ i (bs s)) (C.μ j (bs' s')) = ∑ t, C.o (b.coord t (P.cV i j (bs s) (bs' s'))) • C.μ (i + j) (b t)`. Introduce `s s'`.
+Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hP.μ]`. Use `conv_lhs => rw [← b.sum_repr (P.cV i j (bs s) (bs' s'))]`. Rewrite using `[map_sum]`. Use `Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, Module.Basis.coord_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hcup : P.cW i j (∑ s, f (bs.coord s) • C.μ i (bs s)) (∑ s', g (bs'.coord s') • C.μ j (bs' s')) = ∑ t, c t • C.μ (i + j) (b t)`. Simplify using `only [map_sum, LinearMap.sum_apply, map_smul, LinearMap.smul_apply, hμ, c, Finset.sum_smul, Finset.smul_sum, smul_smul]`. Rewrite using `[Finset.sum_comm]`. Use `symm`. Rewrite using `[Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s' _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcoef : ∑ t, h (b.coord t) • C.μ (i + j) (b t) = ∑ t, c t • C.μ (i + j) (b t)`. Establish `hu : IsUnit ((C.ℓ : B) ^ (e + e') * (C.ℓ : B) ^ e'')` using `(hC.unit.pow _).mul (hC.unit.pow _)`. Use `(hu.smul_left_cancel).1 ?_` and prove the remaining obligations. Rewrite `key` using `[hP.b, ← hub b, ← hzb bs, ← hwb bs', map_smul, LinearMap.map_smul₂, hcup, smul_smul, smul_smul, smul_smul]`. Establish `hl : (C.ℓ : B) ^ e'' * (C.ℓ : B) ^ e' * (C.ℓ : B) ^ e = (C.ℓ : B) ^ (e + e') * (C.ℓ : B) ^ e''` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `key` using `[hl]`. Then use the resulting hypothesis. Establish `hc : ∀ t, h (b.coord t) = c t`. Take `⟨g₀, -, hg₀⟩` from `hC.basis (i + j) b (∑ t, c t • C.μ (i + j) (b t))`. Establish `h1` using `hg₀ c rfl`. Establish `h2` using `hg₀ (fun t => h (b.coord t)) hcoef.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Conclude with `fun t => congrFun (h2.trans h1.symm) t`. Establish `hφ : ∀ s s', C.o (φ (P.cV i j (bs s) (bs' s'))) = ∑ t, C.o (b.coord t (P.cV i j (bs s) (bs' s'))) * C.o (φ (b t))`. Introduce `s s'`. Use `conv_lhs => rw [← b.sum_repr (P.cV i j (bs s) (bs' s'))]`. Simplify using `only [map_sum, map_smul, smul_eq_mul, map_mul, Module.Basis.coord_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(semilinear_eq_sum_coord C.o h hh1 b φ).trans ?_` and prove the remaining obligations. Simplify using `only [hc, c, hφ, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
-
-Use `Finset.sum_congr rfl fun s' _ => Finset.sum_congr rfl fun t _ => ?_` and prove the remaining obligations. Rewrite using `[mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rho_cup :
     ∀ {Λ A B K : Type} [CommRing Λ] [CommRing A] [CommRing B] [Field K] (C : Chain.{1} Λ A B K)

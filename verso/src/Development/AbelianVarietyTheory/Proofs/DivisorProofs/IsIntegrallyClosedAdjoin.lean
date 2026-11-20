@@ -8,7 +8,7 @@ noncomputable def adjoinEquiv (k F : Type) [Field k] [Field F] [Algebra k F] (s 
   hs.aevalEquiv.trans (Subalgebra.equivOfEq _ _ (by rw [Subtype.range_coe]))
 
 /- English proof (translation)
-Use `haveI : UniqueFactorizationMonoid (Algebra.adjoin k (s : Set F)) := (adjoinEquiv k F s hs).toMulEquiv.uniqueFactorizationMonoid inferInstance`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isIntegrallyClosed_adjoin (k F : Type) [Field k] [Field F] [Algebra k F] (s : Finset F)
     (hs : AlgebraicIndependent k ((↑) : s → F)) :
@@ -18,7 +18,7 @@ theorem isIntegrallyClosed_adjoin (k F : Type) [Field k] [Field F] [Algebra k F]
   infer_instance
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Rewrite `h` using `[not_infinite_iff_finite]`. Use `haveI : IsAlgClosed Ω := IsSepClosed.isAlgClosed_of_perfectField Ω`. Conclude with `h.false.elim`.
+Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem infinite_of_isSepClosed (Ω : Type) [Field Ω] [IsSepClosed Ω] : Infinite Ω := by
   by_contra h
@@ -27,9 +27,9 @@ theorem infinite_of_isSepClosed (Ω : Type) [Field Ω] [IsSepClosed Ω] : Infini
   exact h.false.elim
 
 /- English proof (translation)
-Use `haveI := infinite_of_isSepClosed (SeparableClosure k)`. Set `e` to `adjoinEquiv k F s hs`. Establish `hP : e.symm H ≠ 0` using `by simpa using hH`. Take `⟨a, ha⟩ : ∃ a : s → SeparableClosure k, MvPolynomial.eval a ((e.symm H).map (algebraMap k (SeparableClosure k))) ≠ 0` from `by by_contra! h`. Apply `hP` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Use `MvPolynomial.funext (p := (e.symm H).map (algebraMap k (SeparableClosure k))) (q := 0) (fun x => by simp [h x])` as an intermediate fact. Conclude with `MvPolynomial.map_injective _ (algebraMap k (SeparableClosure k)).injective (by simpa using this)`. Use `⟨(MvPolynomial.aeval a).comp e.symm.toAlgHom, ?_⟩` and prove the remaining obligations. Simplify `ha` using `[MvPolynomial.aeval_eq_eval₂Hom, MvPolynomial.eval_map]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_ev (k F : Type) [Field k] [Field F] [Algebra k F] (s : Finset F)
     (hs : AlgebraicIndependent k ((↑) : s → F)) (H : Algebra.adjoin k (s : Set F)) (hH : H ≠ 0) :

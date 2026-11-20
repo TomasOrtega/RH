@@ -7,7 +7,7 @@ open scoped ENNReal
 namespace GlobalTheory.CompanionTheory.Ar.Short.Crofton
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih`. Rewrite using `[pow_succ', mul_assoc, mahlerMul n e h _ _ hq (mul_ne_zero (pow_ne_zero _ hq) hg), ih]`. Use `push_cast`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -22,9 +22,9 @@ theorem mahler_pow_mul {n e : ℕ} (h : HermNorm n) {q g : MvPolynomial (Fin e �
     ring
 
 /- English proof (translation)
-Introduce `n e h ι s q d a c hc hq`. Use `revert hq`. Use `Finset.induction_on s ?_ ?_` and prove the remaining obligations. Introduce `_`. Simplify using `[mahler_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i s hi ih hq`. Establish `hrest : ∀ j ∈ s, q j ≠ 0 ∧ IsMultiHomog (d j) (q j)` using `fun j hj => hq j (Finset.mem_insert_of_mem hj)`. Establish `hne : C c * ∏ j ∈ s, q j ^ a j ≠ 0` using `mul_ne_zero (by simpa using hc) (Finset.prod_ne_zero_iff.2 fun j hj => pow_ne_zero _ (hrest j hj).1)`. Rewrite using `[Finset.prod_insert hi, Finset.sum_insert hi, mul_left_comm (C c) (q i ^ a i), mahler_pow_mul h (hq i (Finset.mem_insert_self i s)).1 hne (a i), ih hrest]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mahler_C_mul_prod_pow : ∀ (n e : ℕ) (h : HermNorm n) {ι : Type} (s : Finset ι) (q : ι → MvPolynomial (Fin e × Fin n) ℂ) (d : ι → ℕ) (a : ι → ℕ) (c : ℂ), c ≠ 0 → (∀ i ∈ s, q i ≠ 0 ∧ IsMultiHomog (d i) (q i)) → mahler h e (C c * ∏ i ∈ s, q i ^ a i) = Real.log ‖c‖ + ∑ i ∈ s, (a i : ℝ) * mahler h e (q i) := by
   classical

@@ -11,11 +11,11 @@ namespace Formalism.HermitianLattices.Ext.L3.ThirdPropositionSlot
 variable {K F : Type} [Field K] [NumberField K] [StarRing K] [Field F] [NumberField F] [Algebra F K]
 
 /- English proof (translation)
-Proceed by induction on `𝔭 using UniqueFactorizationMonoid.induction_on_prime with`. Consider the case `h₁ => simp [extP]`. Consider the case `h₂ x hx`. Rewrite using `[Ideal.isUnit_iff.mp hx]`. Simplify using `only [extP]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Ideal.map_top, Ideal.absNorm_top, one_pow]`. Consider the case `h₃ a p ha hp ih`. Establish `hpm : p.IsMaximal` using `(Ideal.isPrime_of_prime hp).isMaximal hp.ne_zero`. Establish `hq` using `idealPowerSpanBounds.absNorm_extP_eq_sq hK hF hpm`. Simplify using `only [extP] at ih hq ⊢`.
+Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[Ideal.map_mul, map_mul, map_mul, ih, hq, mul_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem absNorm_extP (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) (𝔭 : Ideal (𝓞 F)) :
     Ideal.absNorm (extP K 𝔭) = Ideal.absNorm 𝔭 ^ 2 := by
@@ -32,7 +32,7 @@ theorem absNorm_extP (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : 
     rw [Ideal.map_mul, map_mul, map_mul, ih, hq, mul_pow]
 
 /- English proof (translation)
-Take `⟨θ, hθ⟩` from `exists_sub_conjO_notMem hK hP`. Rewrite `hc` using `[conjIdeal_eq_comap]`. Conclude with `SplitPrimeIdeals.map_comap_of_inert conjO_conjO (conjO_eq_iff_mem_range hF) hP hc hθ`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_comap_eq_of_inert (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {P : Ideal (𝓞 K)}
     (hP : P.IsMaximal) (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P) :
@@ -42,15 +42,13 @@ theorem map_comap_eq_of_inert (hK : Formalism.HermitianLatticesTheory.IsCMUnram 
   exact SplitPrimeIdeals.map_comap_of_inert conjO_conjO (conjO_eq_iff_mem_range hF) hP hc hθ
 
 /- English proof (translation)
-Establish `hP'` using `conjIdeal_isMaximal hK hP`. Establish `h1 : extP K (P.comap (algebraMap (𝓞 F) (𝓞 K))) ≤ P` using `Ideal.map_comap_le`. Establish `h2 : extP K (P.comap (algebraMap (𝓞 F) (𝓞 K))) ≤ Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P := by`. Establish `: (Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P).comap (algebraMap (𝓞 F) (𝓞 K)) = P.comap (algebraMap (𝓞 F) (𝓞 K)) := by`. Rewrite using `[conjIdeal_eq_comap]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `SplitPrimeIdeals.comap_ι_comap (conjO_eq_iff_mem_range hF) P`. Rewrite using `[← this]`. Conclude with `Ideal.map_comap_le`. Establish `hcop : IsCoprime P (Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P) := (Ideal.isCoprime_iff_sup_eq).2 (hP.coprime_of_ne hP' (Ne.symm hc))`. Establish `h3 : extP K (P.comap (algebraMap (𝓞 F) (𝓞 K))) ≤ P * Formalism.HermitianLatticesTheory.conjIdeal (K` using `K) P := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Ideal.mul_eq_inf_of_isCoprime hcop]`. Conclude with `le_inf h1 h2`. Take `⟨C, hC⟩` from `Ideal.dvd_iff_le.2 h3`. Establish `hN` using `absNorm_extP hK hF (P.comap (algebraMap (𝓞 F) (𝓞 K)))`. Rewrite `hN` using `[hC, map_mul, map_mul, absNorm_conjIdeal hK, absNorm_comap_split hK hF hP hc, sq]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpos : 0 < Ideal.absNorm P * Ideal.absNorm P`. Establish `: 0 < Ideal.absNorm P`. Use `IdealNormInequalities.one_lt_absNorm hP` as an intermediate fact. Conclude with `zero_lt_one.trans this` after adjusting the coercions. Check the signs of the components of the expression.
-
-Establish `hC1 : Ideal.absNorm C = 1` using `Nat.eq_of_mul_eq_mul_left hpos (by rw [hN, mul_one])`. Rewrite using `[hC, Ideal.absNorm_eq_one_iff.1 hC1, Ideal.mul_top]`.
+Check the signs of the components of the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem extP_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : IsFixF K F) {P : Ideal (𝓞 K)}
     (hP : P.IsMaximal) (hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P ≠ P) :
@@ -81,16 +79,16 @@ theorem extP_split (hK : Formalism.HermitianLatticesTheory.IsCMUnram K) (hF : Is
   rw [hC, Ideal.absNorm_eq_one_iff.1 hC1, Ideal.mul_top]
 
 /- English proof (translation)
-Simplify using `[alphaStd]`.
+Simplify using the standard rewrite rules.
 -/
 theorem alphaStd_one (𝔭 : Ideal (𝓞 F)) :
     alphaStd K 𝔭 1 = 1 - etaF K F 𝔭 * (Ideal.absNorm 𝔭 : ℝ)⁻¹ := by
   simp [alphaStd]
 
 /- English proof (translation)
-Take `⟨P, hP, rfl⟩` from `exists_maximal_over hK hF h𝔭`. Establish `h1 : (1 : 𝓞 K) ∉ P` using `fun h => hP.ne_top ((Ideal.eq_top_iff_one P).2 h)`. Establish `hd` using `localDensity K hK P hP 1 j le_rfl hj 1 (map_one _) h1`. Rewrite using `[alphaStd_one, etaF_comap hK hF hP]`. Distinguish the cases in `hc : Formalism.HermitianLatticesTheory.conjIdeal (K := K) P = P`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[map_comap_eq_of_inert hK hF hP hc, hd.1 hc, if_pos hc, ← absNorm_comap_inert hK hF hP hc]`. Use `push_cast`. Rewrite using `[Real.sqrt_sq (Nat.cast_nonneg _)]`. Simplify using the standard rewrite rules. Rewrite using `[extP_split hK hF hP hc, hd.2 hc, if_neg hc, absNorm_comap_split hK hF hP hc]`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/

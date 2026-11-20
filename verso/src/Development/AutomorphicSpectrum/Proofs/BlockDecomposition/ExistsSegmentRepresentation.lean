@@ -15,7 +15,7 @@ open GlobalTheory.PRep GlobalTheory.SplitWeil GlobalTheory.SmGL GlobalTheory.Loc
 namespace GlobalTheory.CompanionTheory.SegExists
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.BZInd.inductionFiniteLength k _ _ _ _ _ _ (isSmooth_piTensor fun a => (x a).2.rep.smooth) (hasFiniteLength_of_isIrreducible (GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor hA x))`.
+A detailed English derivation is pending.
 -/
 theorem hasFiniteLength_prodIrr {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) {h N : ℕ} (x : Fin h → IrrGL k)
@@ -24,9 +24,9 @@ theorem hasFiniteLength_prodIrr {k : Type} [Field k] [ValuativeRel k] [Topologic
     (hasFiniteLength_of_isIrreducible (GlobalTheory.CompanionTheory.SocleJm.isIrreducible_piTensor hA x))
 
 /- English proof (translation)
-Introduce `k _ _ _ _ hA Δ`. Establish `hd : ∑ a, (Δ.term a).1 = Δ.deg` using `Δ.sum_term_fst`. Take `⟨hd', ⟨φ⟩⟩` from `GlobalTheory.T.contragredient_segment_product_equiv hA Δ hd`. Take `⟨τ', hτ'⟩` from `GlobalTheory.T.exists_socle_segment_product hA (segDual Δ) hd'`. Take `⟨τ, hτ⟩` from `GlobalTheory.CompanionTheory.CosocleContra.isCosocle_of_isSocle_contra hA (prodIrr Δ.term hd) (isSmooth_prodIrr _ _) (hasFiniteLength_prodIrr hA _ _) τ' (hτ'.of_equiv (.refl _) φ.symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨τ, hd, hτ⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isLSeg : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (Δ : Segment k), ∃ π : IrrRep (GL (Fin Δ.deg) k), IsLSeg Δ π.ρ := by
   intro k _ _ _ _ hA Δ

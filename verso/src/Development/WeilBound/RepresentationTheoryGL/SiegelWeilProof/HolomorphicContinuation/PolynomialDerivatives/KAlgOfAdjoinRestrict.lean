@@ -11,13 +11,13 @@ open PositivityTheory.Rg.Sw PositivityTheory.Rg.Sw.LC
 variable {m n : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨ij, rfl⟩` from `hx`. Conclude with `⟨KopL ε ij.1 ij.2, Algebra.subset_adjoin ⟨ij, rfl⟩, fun v => rfl⟩`. Consider the case `algebraMap r`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Conclude with `⟨algebraMap ℂ _ r, Subalgebra.algebraMap_mem _ r, fun v => by simp [Algebra.algebraMap_eq_smul_one]⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨w₁, h₁, e₁⟩` from `hx`. Take `⟨w₂, h₂, e₂⟩` from `hy`. Conclude with `⟨w₁ + w₂, Subalgebra.add_mem _ h₁ h₂, fun v => by simp [e₁, e₂]⟩`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `mul x y _ _ hx hy`. Take `⟨w₁, h₁, e₁⟩` from `hx`. Take `⟨w₂, h₂, e₂⟩` from `hy`. Use `⟨w₁ * w₂, Subalgebra.mul_mem _ h₁ h₂, fun v => ?_⟩` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[e₂, ← e₁ (y v)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem kAlg_of_adjoin_restrict (ε : Fin m → Bool) (V : Submodule ℂ (PX m n))
     (hK : ∀ ij : Fin n × Fin n, ∀ f ∈ V, KopL ε ij.1 ij.2 f ∈ V) (y : Module.End ℂ V)
@@ -41,31 +41,27 @@ theorem kAlg_of_adjoin_restrict (ε : Fin m → Bool) (V : Submodule ℂ (PX m n
     rw [e₂, ← e₁ (y v)]
 
 /- English proof (translation)
-Introduce `m n ε c hc Λ hΛ p`. Take `⟨B, hBbox, hBrep, hBcomm⟩` from `hRep m n ε c hc Λ hΛ`. Take `⟨hherm, hpos, hadj, hKbox, -⟩` from `hFF m n ε c hc`. Use `set R : Finset (Fin m → ℕ) := p.support.image (rdeg ε) with hR`. Use `set V := box (n := n) ε (R : Set (Fin m → ℕ)) with hV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : FiniteDimensional ℂ V := box_finiteDimensional ε R`. Establish `hKV : ∀ ij : Fin n × Fin n, ∀ f ∈ V, KopL ε ij.1 ij.2 f ∈ V` using `fun ij f hf => hKbox ij.1 ij.2 _ f hf`. Establish `hBV : ∀ f ∈ V, B f ∈ V` using `fun f hf => hBbox _ f hf`. Establish `hBF : ∀ f ∈ F1 ε, B f ∈ F1 ε` using `fun f hf => by`. Use `hBbox Set.univ f (first_family_le_box ε hf)` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `box_le_first_family ε _ this`. Set `T : Fin n × Fin n → Module.End ℂ V` to `fun ij => (KopL ε ij.1 ij.2).restrict (hKV ij)`. Set `x : Module.End ℂ V` to `B.restrict hBV`. Establish `key : x ∈ Algebra.adjoin ℂ (Set.range T)`. Use `hBi V (fun v w => fform c (v : PX m n) w) (fun v w₁ w₂ => by simp [fform_add_right]) (fun v w r => by simp [fform_smul_right]) (fun v w => hherm _ _) (fun v hv => hpos _ (by simpa using hv)) (Fin n × Fin n) T (fun ij => ⟨(ij.2, ij.1), fun v w => hadj ij.1 ij.2 v w⟩) x ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `t ht`. Take `⟨q, hq⟩` from `V.exists_isCompl`. Set `t' : Module.End ℂ (PX m n)` to `V.subtype ∘ₗ t ∘ₗ V.linearProjOfIsCompl q hq`. Establish `ht' : ∀ f (hf : f ∈ V), t' f = (t ⟨f, hf⟩ : PX m n)` using `fun f hf => by`. Establish `e0` using `Submodule.linearProjOfIsCompl_apply_left hq ⟨f, hf⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [t', LinearMap.comp_apply, Submodule.coe_subtype]`. Conclude with `congrArg (fun v => ((t v : V) : PX m n)) e0`. Establish `h1 : ∀ f ∈ box ε (R : Set (Fin m → ℕ)), t' f ∈ box ε (R : Set (Fin m → ℕ))` using `fun f hf => by`. Rewrite using `[ht' f hf]`. Conclude with `(t ⟨f, hf⟩).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ∀ i j, ∀ f ∈ box ε (R : Set (Fin m → ℕ)), t' (KopL ε i j f) = KopL ε i j (t' f)`. Introduce `i j f hf`. Establish `e` using `congrArg Subtype.val (LinearMap.congr_fun (ht (i, j)) ⟨f, hf⟩)`. Simplify using `only [Module.End.mul_apply, LinearMap.restrict_apply, LinearMap.restrict_coe_apply, T] at e`. Rewrite using `[ht' _ (hKV (i, j) f hf), ht' f hf]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `e`. Take `⟨w, hw, hwt⟩` from `hEL m n ε c hc R t' h1 h2`. Take `⟨-, hBw⟩` from `adjoin_first_operators_preserves_family ε c B hBF hBcomm w hw`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply, x, LinearMap.restrict_coe_apply]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv1 : (t v : PX m n) = w v` using `by rw [← hwt v v.2, ht' v v.2]`. Establish `hv2 : (t (B.restrict hBV v) : PX m n) = w (B v)`. Rewrite using `[← hwt (B v) (hBV v v.2), ht' (B v) (hBV v v.2)]`. Both sides reduce to the same expression. Rewrite using `[hv1, hv2, hBw v (box_le_first_family ε _ v.2)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, hwB⟩` from `kAlg_of_adjoin_restrict ε V hKV x key`. Use `⟨w, hw, ?_⟩` and prove the remaining obligations. Establish `hterm : ∀ s ∈ p.support, Λ (monomial s (p.coeff s)) = contr c (w (monomial s (p.coeff s)))`. Introduce `s hs`. Take `⟨e, h1, h2⟩` from `monomial_split ε s (p.coeff s)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hsub : ({rdeg ε s} : Set (Fin m → ℕ)) ⊆ (R : Set (Fin m → ℕ))`. Introduce `r hr`. Rewrite `hr` using `[Set.mem_singleton_iff]`. Rewrite using `[hr, hR, Finset.coe_image]`. Conclude with `Set.mem_image_of_mem _ hs`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1V : (monomial (s.filter (inF1 ε)) 1 : PX m n) ∈ V` using `box_mono ε hsub h1`. Rewrite using `[e, hBrep _ (box_le_first_family ε _ h1) _ h2, compact_algebra_mul_second_family ε w hw _ _ h2]`. Use `congr 2`. Conclude with `(hwB ⟨_, h1V⟩).symm`. Establish `eL : Λ p = ∑ s ∈ p.support, Λ (monomial s (p.coeff s))`.
-
-Rewrite using `[← map_sum]`. Use `congr 1`. Conclude with `p.as_sum`. Establish `eR : contr c (w p) = ∑ s ∈ p.support, contr c (w (monomial s (p.coeff s)))` using `by show contrL c (w p) = ∑ s ∈ p.support, contrL c (w (monomial s (p.coeff s)))`. Rewrite using `[← map_sum (contrL c), ← map_sum w]`.
-
-Use `congr 2`. Conclude with `p.as_sum`. Rewrite using `[eL, eR]`. Conclude with `Finset.sum_congr rfl hterm`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coreLC_of' (hBi : Bicomm) (hEL : EquivLift) (hRep : RepB) (hFF : FormFacts) : CoreLC := by
   intro m n ε c hc Λ hΛ p

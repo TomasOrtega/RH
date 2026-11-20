@@ -17,16 +17,16 @@ def lOp (E : Fin n → Fin n → Module.End ℂ M) : (Fin n × Fin n →₀ ℂ)
   Finsupp.linearCombination ℂ (fun q => E q.1 q.2)
 
 /- English proof (translation)
-Simplify using `[wordE]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wordE_cons_mul (E : Fin n → Fin n → Module.End ℂ M) (p : Fin n × Fin n) (w : List (Fin n × Fin n)) :
     wordE E (p :: w) = E p.1 p.2 * wordE E w := by
   simp [wordE]
 
 /- English proof (translation)
-Proceed by induction on `L using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [Finsupp.mapDomain_add, map_add, map_add, hx, hy, mul_add]`. Consider the case `single w r`. Rewrite using `[Finsupp.mapDomain_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[wOp, Finsupp.linearCombination_single, wordE_cons_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wOp_mapDomain_cons (E : Fin n → Fin n → Module.End ℂ M) (p : Fin n × Fin n)
     (L : List (Fin n × Fin n) →₀ ℂ) :
@@ -39,9 +39,9 @@ theorem wOp_mapDomain_cons (E : Fin n → Fin n → Module.End ℂ M) (p : Fin n
     simp [wOp, Finsupp.linearCombination_single, wordE_cons_mul]
 
 /- English proof (translation)
-Proceed by induction on `l using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [Finsupp.mapDomain_add, map_add, map_add, hx, hy, add_mul]`. Consider the case `single q r`. Rewrite using `[Finsupp.mapDomain_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[wOp, lOp, Finsupp.linearCombination_single, wordE_cons_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem wOp_mapDomain_letter (E : Fin n → Fin n → Module.End ℂ M) (w : List (Fin n × Fin n))
     (l : Fin n × Fin n →₀ ℂ) :
@@ -54,7 +54,7 @@ theorem wOp_mapDomain_letter (E : Fin n → Fin n → Module.End ℂ M) (w : Lis
     simp [wOp, lOp, Finsupp.linearCombination_single, wordE_cons_mul]
 
 /- English proof (translation)
-Rewrite using `[hE a b p.1 p.2]`. Unfold `adL`. Apply the tactic sequence `split_ifs <;> simp [lOp, Finsupp.linearCombination_single]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lOp_adL (E : Fin n → Fin n → Module.End ℂ M) (hE : IsGlRep E) (a b : Fin n) (p : Fin n × Fin n) :
     lOp E (adL a b p) = E a b * E p.1 p.2 - E p.1 p.2 * E a b := by
@@ -63,7 +63,7 @@ theorem lOp_adL (E : Fin n → Fin n → Module.End ℂ M) (hE : IsGlRep E) (a b
   split_ifs <;> simp [lOp, Finsupp.linearCombination_single]
 
 /- English proof (translation)
-The claim follows from `| [] => by simp [adLW, wordE] | p :: w => by rw [adLW, map_add, wOp_mapDomain_letter, wOp_mapDomain_cons, wOp_adLW E hE a b w, lOp_adL E hE, wordE_cons_mul] noncomm_ring`.
+A detailed English derivation is pending.
 -/
 theorem wOp_adLW (E : Fin n → Fin n → Module.End ℂ M) (hE : IsGlRep E) (a b : Fin n) :
     ∀ w, wOp E (adLW a b w) = E a b * wordE E w - wordE E w * E a b
@@ -81,14 +81,14 @@ def Bc (c : Fin n) (v : V) : (List (Fin n × Fin n) →₀ ℂ) →ₗ[ℂ] KS (
   Finsupp.linearCombination ℂ (fun w' => Finsupp.single (w', c) v)
 
 /- English proof (translation)
-Simplify using `[Bc, Finsupp.linearCombination_single, Finsupp.smul_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Bc_single (c : Fin n) (v : V) (w : List (Fin n × Fin n)) (r : ℂ) :
     Bc V c v (Finsupp.single w r) = Finsupp.single (w, c) (r • v) := by
   simp [Bc, Finsupp.linearCombination_single, Finsupp.smul_single]
 
 /- English proof (translation)
-Simplify using `[Bc, Finsupp.linearCombination_apply, Finsupp.sum, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sum_eq_Bc (c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
     (∑ w' ∈ L.support, L w' • Finsupp.lsingle (R := ℂ) (M := V) (w', c)) v = Bc V c v L := by
@@ -97,7 +97,7 @@ theorem sum_eq_Bc (c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
 variable (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (hV : IsKStableSub ε E V)
 
 /- English proof (translation)
-Simplify using `only [sA, Finsupp.lsum_single, LinearMap.add_apply, sum_eq_Bc]`. Use `congr 1`. Apply the tactic sequence `congr 1 split_ifs <;> simp`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sA_single (a b : Fin n) (w : List (Fin n × Fin n)) (c : Fin n) (v : V) :
     sA ε E V hV a b (Finsupp.single (w, c) v) =
@@ -111,9 +111,9 @@ theorem sA_single (a b : Fin n) (w : List (Fin n × Fin n)) (c : Fin n) (v : V) 
   · split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `L using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, LinearMap.add_apply, Pi.single_add]`. Consider the case `single w r`. Rewrite using `[Bc_single, sT_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[wOp, Finsupp.linearCombination_single, Pi.single_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sT_Bc (c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
     sT E V (Bc V c v L) = Pi.single c (wOp E L v) := by
@@ -125,9 +125,9 @@ theorem sT_Bc (c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
     simp [wOp, Finsupp.linearCombination_single, Pi.single_smul]
 
 /- English proof (translation)
-Proceed by induction on `L using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, LinearMap.add_apply, smul_add, Pi.single_add]`. Consider the case `single w r`. Rewrite using `[Bc_single, sθ_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[wOp, Finsupp.linearCombination_single, Pi.single_smul, smul_smul, mul_comm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sθ_Bc (EM : Fin n → Fin n → Module.End ℂ MM) (φ : MM) (ℓ : V →ₗ[ℂ] ℂ) (c : Fin n) (v : V)
     (L : List (Fin n × Fin n) →₀ ℂ) :
@@ -140,7 +140,7 @@ theorem sθ_Bc (EM : Fin n → Fin n → Module.End ℂ MM) (φ : MM) (ℓ : V �
     simp [wOp, Finsupp.linearCombination_single, Pi.single_smul, smul_smul, mul_comm]
 
 /- English proof (translation)
-Simplify using `only [tensV, prj, LinearMap.pi_apply, LinearMap.add_apply, LinearMap.coe_comp, Function.comp_apply, LinearMap.coe_proj, Function.eval]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tensV_apply' (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (f : Fin n → M) (d : Fin n) :
     tensV E a b f d = E a b (f d) + if d = a then f b else 0 := by
@@ -149,11 +149,11 @@ theorem tensV_apply' (E : Fin n → Fin n → Module.End ℂ M) (a b : Fin n) (f
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `single p v`. Take `⟨w, c⟩` from `p`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[sA_single, dif_pos hab, map_add, map_add, sT_Bc, wOp_adLW E hE, sT_single, sT_single]`. Use `clear hE`. Distinguish the cases in `hcb : c = b`. Use `on_goal 1 => subst hcb`. Rewrite using `[if_pos rfl, sT_single]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use `on_goal 2 => rw [if_neg hcb, map_zero, add_zero]`. Use `all_goals`. Use function extensionality and compare the values at `d`. Simplify using `only [Pi.add_apply, tensV_apply', LinearMap.sub_apply, Module.End.mul_apply, LinearMap.coe_restrict_apply, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> subst_vars <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sT_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (hE : IsGlRep E) (a b : Fin n) (hab : ε a = ε b) (x : KS (n := n) V) :
@@ -175,13 +175,11 @@ theorem sT_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (
       split_ifs <;> subst_vars <;> simp_all
 
 /- English proof (translation)
-Proceed by induction on `x using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, smul_add]`. Normalize the expressions using the abelian group laws. Consider the case `single p v`.
+Proceed by induction. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Take `⟨w, c⟩` from `p`. Rewrite using `[sA_single, dif_pos rfl, map_add, map_add, sθ_Bc, wOp_adLW EM hEM, sθ_single, sθ_single]`. Establish `hl : ℓ ((E a a).restrict (fun v hv => hV a a rfl v hv) v) = ((Λ a : ℝ) : ℂ) * ℓ v` using `hℓ a v _ rfl`. Rewrite using `[hl]`. Use `clear hl hℓ hEM`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hca : c = a`. Use `on_goal 1 => subst hca`. Rewrite using `[if_pos rfl, sθ_single]`. Use `on_goal 2 => rw [if_neg hca, map_zero, add_zero]`. Use `all_goals`.
-
-Use function extensionality and compare the values at `d`. Simplify using `only [Pi.add_apply, Pi.smul_apply, tensV_apply', LinearMap.sub_apply, Module.End.mul_apply, hφ, map_smul, Pi.single_apply]`. Apply the tactic sequence `split_ifs <;> subst_vars <;> simp_all <;> module`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem sθ_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (EM : Fin n → Fin n → Module.End ℂ MM) (hEM : IsGlRep EM) (φ : MM)
@@ -210,14 +208,14 @@ theorem sθ_sA (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) 
       split_ifs <;> subst_vars <;> simp_all <;> module
 
 /- English proof (translation)
-Simplify using `[sES, Finsupp.lsum_single, LinearMap.sum_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sES_single (w : List (Fin n × Fin n)) (c : Fin n) (v : V) :
     sES V (Finsupp.single (w, c) v) = ∑ d : Fin n, Finsupp.single ((c, d) :: w, d) v := by
   simp [sES, Finsupp.lsum_single, LinearMap.sum_apply]
 
 /- English proof (translation)
-Proceed by induction on `L using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, Finsupp.mapDomain_add, Finset.sum_add_distrib]`. Consider the case `single w r => simp only [Bc_single, sES_single, Finsupp.mapDomain_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sES_Bc (c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
     sES V (Bc V c v L) = ∑ d : Fin n, Bc V d v (Finsupp.mapDomain ((c, d) :: ·) L) := by
@@ -227,21 +225,21 @@ theorem sES_Bc (c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
   | single w r => simp only [Bc_single, sES_single, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Rewrite using `[adLW]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adLW_cons (a b : Fin n) (p : Fin n × Fin n) (w : List (Fin n × Fin n)) :
     adLW a b (p :: w) = Finsupp.mapDomain (· :: w) (adL a b p) + Finsupp.mapDomain (p :: ·) (adLW a b w) := by
   rw [adLW]
 
 /- English proof (translation)
-Simplify `(Finsupp.lmapDomain ℂ ℂ f).map_neg x` using `[Finsupp.lmapDomain_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mapDomain_neg' {α β : Type*} (f : α → β) (x : α →₀ ℂ) :
     Finsupp.mapDomain f (-x) = -Finsupp.mapDomain f x := by
   simpa [Finsupp.lmapDomain_apply] using (Finsupp.lmapDomain ℂ ℂ f).map_neg x
 
 /- English proof (translation)
-Simplify using `only [adL]`. Apply the tactic sequence `split_ifs <;> simp [Finsupp.mapDomain_sub, mapDomain_neg', Finsupp.mapDomain_single, Bc_single, map_neg]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Bc_adL (a b c d : Fin n) (v : V) (w : List (Fin n × Fin n)) :
     Bc V d v (Finsupp.mapDomain (· :: w) (adL a b (c, d))) =
@@ -251,11 +249,11 @@ theorem Bc_adL (a b c d : Fin n) (v : V) (w : List (Fin n × Fin n)) :
   split_ifs <;> simp [Finsupp.mapDomain_sub, mapDomain_neg', Finsupp.mapDomain_single, Bc_single, map_neg]
 
 /- English proof (translation)
-Use `show sA ε E V hV a b * sES V = sES V * sA ε E V hV a b`. Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce and unpack `⟨w, c⟩ v`. Simplify using `only [Module.End.mul_apply]`. Rewrite using `[sES_single, map_sum, sA_single, dif_pos hab, map_add, map_add, sES_Bc, sES_single]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [sA_single, dif_pos hab, adLW_cons, map_add, Bc_adL, Finset.sum_add_distrib]`. Distinguish the cases in `hcb : c = b`. Substitute `hcb` using the available equality. Simplify using `[sES_single, Finset.sum_sub_distrib, Finset.sum_ite_eq']`. Normalize the expressions using the abelian group laws.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Simplify using the standard rewrite rules.
 
-Simplify using `[hcb, Ne.symm hcb, Finset.sum_ite_eq']`. Normalize the expressions using the abelian group laws.
+Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem sA_comm_sES (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (a b : Fin n) (hab : ε a = ε b) : Commute (sA ε E V hV a b) (sES V) := by
@@ -282,28 +280,28 @@ def kap : (Fin n × Fin n →₀ ℂ) →ₗ[ℂ] (List (Fin n × Fin n) →₀ 
   Finsupp.linearCombination ℂ (fun p => Finsupp.lmapDomain ℂ ℂ (p :: ·))
 
 /- English proof (translation)
-Simplify using `[tL, Finsupp.linearCombination_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tL_single (a b : Fin n) (p : Fin n × Fin n) (r : ℂ) :
     tL a b (Finsupp.single p r) = r • adL a b p := by
   simp [tL, Finsupp.linearCombination_single]
 
 /- English proof (translation)
-Simplify using `[TW, Finsupp.linearCombination_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem TW_single (a b : Fin n) (w : List (Fin n × Fin n)) (r : ℂ) :
     TW a b (Finsupp.single w r) = r • adLW a b w := by
   simp [TW, Finsupp.linearCombination_single]
 
 /- English proof (translation)
-Simplify using `[kap, Finsupp.linearCombination_single, Finsupp.lmapDomain_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kap_single_left (p : Fin n × Fin n) (r : ℂ) (L : List (Fin n × Fin n) →₀ ℂ) :
     kap (Finsupp.single p r) L = r • Finsupp.mapDomain (p :: ·) L := by
   simp [kap, Finsupp.linearCombination_single, Finsupp.lmapDomain_apply]
 
 /- English proof (translation)
-Proceed by induction on `l using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, LinearMap.add_apply, hx, hy, Finsupp.mapDomain_add]`. Consider the case `single q r => simp [kap_single_left, Finsupp.mapDomain_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem kap_single_right (l : Fin n × Fin n →₀ ℂ) (w : List (Fin n × Fin n)) :
     kap l (Finsupp.single w 1) = Finsupp.mapDomain (· :: w) l := by
@@ -313,25 +311,25 @@ theorem kap_single_right (l : Fin n × Fin n →₀ ℂ) (w : List (Fin n × Fin
   | single q r => simp [kap_single_left, Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Simplify using `[kap_single_left, Finsupp.mapDomain_single, Finsupp.smul_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem kap_single_single (p : Fin n × Fin n) (w : List (Fin n × Fin n)) (r s : ℂ) :
     kap (Finsupp.single p r) (Finsupp.single w s) = Finsupp.single (p :: w) (r * s) := by
   simp [kap_single_left, Finsupp.mapDomain_single, Finsupp.smul_single]
 
 /- English proof (translation)
-Rewrite using `[adLW_cons, kap_single_right, kap_single_left, one_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem adLW_cons' (a b : Fin n) (p : Fin n × Fin n) (w : List (Fin n × Fin n)) :
     adLW a b (p :: w) = kap (adL a b p) (Finsupp.single w 1) + kap (Finsupp.single p 1) (adLW a b w) := by
   rw [adLW_cons, kap_single_right, kap_single_left, one_smul]
 
 /- English proof (translation)
-Proceed by induction on `l using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, LinearMap.add_apply, hx, hy]`. Normalize the expressions using the abelian group laws. Consider the case `single p r`.
+Proceed by induction. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Proceed by induction on `L using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Normalize the expressions using the abelian group laws. Consider the case `single w s`.
+Proceed by induction. Treat this case separately. Treat this case separately. Normalize the expressions using the abelian group laws. Treat this case separately.
 
-Rewrite using `[kap_single_single, TW_single, tL_single, TW_single, adLW_cons', map_smul, LinearMap.smul_apply, map_smul]`. Rewrite using `[← Finsupp.smul_single_one p r, ← Finsupp.smul_single_one w s]`. Simplify using `only [map_smul, LinearMap.smul_apply, smul_add, smul_smul]`. Rewrite using `[mul_comm s r]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem TW_kap (a b : Fin n) (l : Fin n × Fin n →₀ ℂ) (L : List (Fin n × Fin n) →₀ ℂ) :
     TW a b (kap l L) = kap (tL a b l) L + kap l (TW a b L) := by
@@ -350,7 +348,7 @@ theorem TW_kap (a b : Fin n) (l : Fin n × Fin n →₀ ℂ) (L : List (Fin n ×
       rw [mul_comm s r]
 
 /- English proof (translation)
-Take `⟨p1, p2⟩` from `p`. Simplify using `only [adL, map_sub, apply_ite (tL a b), apply_ite (tL c d), map_zero, tL_single, one_smul]`. Apply the tactic sequence `split_ifs <;> subst_vars <;> simp_all <;> abel`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tL_rel_one (a b c d : Fin n) (p : Fin n × Fin n) :
     tL a b (adL c d p) - tL c d (adL a b p) =
@@ -360,11 +358,11 @@ theorem tL_rel_one (a b c d : Fin n) (p : Fin n × Fin n) :
   split_ifs <;> subst_vars <;> simp_all <;> abel
 
 /- English proof (translation)
-Proceed by induction on `l using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [map_add]`. Establish `e : ∀ x1 x2 y1 y2 : Fin n × Fin n →₀ ℂ, x1 + y1 - (x2 + y2) = (x1 - x2) + (y1 - y2)` using `by intros; abel`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e, hx, hy]`. Apply the tactic sequence `split_ifs <;> abel`. Consider the case `single p r`. Simplify using `only [tL_single, map_smul]`. Rewrite using `[← smul_sub, tL_rel_one]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> simp [smul_sub]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem tL_rel (a b c d : Fin n) (l : Fin n × Fin n →₀ ℂ) :
     tL a b (tL c d l) - tL c d (tL a b l) =
@@ -383,7 +381,7 @@ theorem tL_rel (a b c d : Fin n) (l : Fin n × Fin n →₀ ℂ) :
     split_ifs <;> simp [smul_sub]
 
 /- English proof (translation)
-The claim follows from `| [] => by simp [TW_single, adLW] | p :: w => by have hw : Finsupp.single (p :: w) (1 : ℂ) = kap (Finsupp.single p 1) (Finsupp.single w 1) := by rw [kap_single_single, mul_one] have ih := TW_rel_word a b c d w have hl := tL_rel a b c d (Finsupp.single p 1) rw [hw] simp only [TW_k …`.
+A detailed English derivation is pending.
 -/
 theorem TW_rel_word (a b c d : Fin n) : ∀ w : List (Fin n × Fin n),
     TW a b (TW c d (Finsupp.single w 1)) - TW c d (TW a b (Finsupp.single w 1)) =
@@ -409,11 +407,11 @@ theorem TW_rel_word (a b c d : Fin n) : ∀ w : List (Fin n × Fin n),
     split_ifs <;> simp <;> abel
 
 /- English proof (translation)
-Proceed by induction on `L using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy`. Simplify using `only [map_add]`. Establish `e : ∀ x1 x2 y1 y2 : List (Fin n × Fin n) →₀ ℂ, x1 + y1 - (x2 + y2) = (x1 - x2) + (y1 - y2)` using `by intros; abel`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[e, hx, hy]`. Apply the tactic sequence `split_ifs <;> abel`. Consider the case `single w r`. Rewrite using `[← Finsupp.smul_single_one w r]`. Simplify using `only [map_smul]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← smul_sub, TW_rel_word]`. Apply the tactic sequence `split_ifs <;> simp [smul_sub]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem TW_rel (a b c d : Fin n) (L : List (Fin n × Fin n) →₀ ℂ) :
     TW a b (TW c d L) - TW c d (TW a b L) =
@@ -446,21 +444,21 @@ def Gm (a b : Fin n) : Module.End ℂ (KS (n := n) V) :=
   Finsupp.lsum ℂ fun p => if p.2 = b then Finsupp.lsingle (R := ℂ) (M := V) (p.1, a) else 0
 
 /- English proof (translation)
-Simplify using `only [Dm, Finsupp.lsum_single, sum_eq_Bc, TW_single, one_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Dm_single (a b : Fin n) (w : List (Fin n × Fin n)) (c : Fin n) (v : V) :
     Dm V a b (Finsupp.single (w, c) v) = Bc V c v (TW a b (Finsupp.single w 1)) := by
   simp only [Dm, Finsupp.lsum_single, sum_eq_Bc, TW_single, one_smul]
 
 /- English proof (translation)
-Simplify using `[Fm, Finsupp.lsum_single]`.
+Simplify using the standard rewrite rules.
 -/
 theorem Fm_single (a b : Fin n) (p : List (Fin n × Fin n) × Fin n) (v : V) :
     Fm V ε E hV a b (Finsupp.single p v) = Finsupp.single p (eV V ε E hV a b v) := by
   simp [Fm, Finsupp.lsum_single]
 
 /- English proof (translation)
-Simplify using `only [Gm, Finsupp.lsum_single]`. Apply the tactic sequence `split_ifs <;> simp`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Gm_single (a b : Fin n) (w : List (Fin n × Fin n)) (c : Fin n) (v : V) :
     Gm V a b (Finsupp.single (w, c) v) = if c = b then Finsupp.single (w, a) v else 0 := by
@@ -468,7 +466,7 @@ theorem Gm_single (a b : Fin n) (w : List (Fin n × Fin n)) (c : Fin n) (v : V) 
   split_ifs <;> simp
 
 /- English proof (translation)
-Proceed by induction on `L using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, smul_add]`. Consider the case `single w s => simp [Bc_single, Finsupp.smul_single, smul_smul, mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem Bc_smul_v (c : Fin n) (v : V) (r : ℂ) (L : List (Fin n × Fin n) →₀ ℂ) :
     Bc V c (r • v) L = r • Bc V c v L := by
@@ -478,7 +476,7 @@ theorem Bc_smul_v (c : Fin n) (v : V) (r : ℂ) (L : List (Fin n × Fin n) →�
   | single w s => simp [Bc_single, Finsupp.smul_single, smul_smul, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `L using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add, map_add]`. Consider the case `single w r`. Rewrite using `[Bc_single, ← Finsupp.smul_single, map_smul, Dm_single, ← Finsupp.smul_single_one w r, map_smul, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem Dm_Bc (a b c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
     Dm V a b (Bc V c v L) = Bc V c v (TW a b L) := by
@@ -490,7 +488,7 @@ theorem Dm_Bc (a b c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
       map_smul]
 
 /- English proof (translation)
-Proceed by induction on `L using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy, map_add]`. Consider the case `single w r => simp [Bc_single, Fm_single, map_smul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem Fm_Bc (a b c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
     Fm V ε E hV a b (Bc V c v L) = Bc V c (eV V ε E hV a b v) L := by
@@ -500,7 +498,7 @@ theorem Fm_Bc (a b c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
   | single w r => simp [Bc_single, Fm_single, map_smul]
 
 /- English proof (translation)
-Proceed by induction on `L using Finsupp.induction_linear with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]; split_ifs <;> simp`. Consider the case `single w r => rw [Bc_single, Gm_single, Bc_single]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem Gm_Bc (a b c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
     Gm V a b (Bc V c v L) = if c = b then Bc V a v L else 0 := by
@@ -510,9 +508,9 @@ theorem Gm_Bc (a b c : Fin n) (v : V) (L : List (Fin n × Fin n) →₀ ℂ) :
   | single w r => rw [Bc_single, Gm_single, Bc_single]
 
 /- English proof (translation)
-Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce and unpack `⟨w, c⟩ v`. Rewrite using `[sA_single, LinearMap.add_apply, LinearMap.add_apply, Dm_single, TW_single, one_smul, Fm_single, Gm_single]`. Use `congr 2`. Simplify using `only [eV]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sA_eq (a b : Fin n) : sA ε E V hV a b = Dm V a b + Fm V ε E hV a b + Gm V a b := by
   apply Finsupp.lhom_ext
@@ -524,7 +522,7 @@ theorem sA_eq (a b : Fin n) : sA ε E V hV a b = Dm V a b + Fm V ε E hV a b + G
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `eV`. Apply the tactic sequence `split_ifs <;> simp [LinearMap.coe_restrict_apply]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eV_coe (a b : Fin n) (v : V) :
     (eV V ε E hV a b v : M) = if ε a = ε b then E a b v else 0 := by
@@ -532,11 +530,11 @@ theorem eV_coe (a b : Fin n) (v : V) :
   split_ifs <;> simp [LinearMap.coe_restrict_apply]
 
 /- English proof (translation)
-Establish `had : b = c → ε a = ε d` using `fun h => by rw [hab, h]; exact hcd`. Establish `hcb : d = a → ε c = ε b` using `fun h => by rw [hcd, h]; exact hab`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Establish `kv` using `LinearMap.congr_fun (hE a b c d) (v : M)`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at kv`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Submodule.coe_sub, eV_coe, if_pos hab, if_pos hcd]`. Rewrite using `[kv]`. Apply the tactic sequence `rcases em (b = c) with h1 | h1 <;> rcases em (d = a) with h2 | h2`. Simplify using `[h1, h2, eV_coe, had h1, hcb h2]`. Simplify using `[h1, h2, eV_coe, had h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[h1, h2, eV_coe, hcb h2]`. Simplify using `[h1, h2]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem eV_rel (hE : IsGlRep E) (a b c d : Fin n) (hab : ε a = ε b) (hcd : ε c = ε d) :
     eV V ε E hV a b * eV V ε E hV c d - eV V ε E hV c d * eV V ε E hV a b =
@@ -555,7 +553,7 @@ theorem eV_rel (hE : IsGlRep E) (a b c d : Fin n) (hab : ε a = ε b) (hcd : ε 
   · simp [h1, h2]
 
 /- English proof (translation)
-Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce and unpack `⟨w, c0⟩ v`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Dm_single, Dm_Bc, ← map_sub, TW_rel_word]`. Apply the tactic sequence `split_ifs <;> simp [Dm_single]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Dm_rel (a b c d : Fin n) :
     Dm V a b * Dm V c d - Dm V c d * Dm V a b =
@@ -566,9 +564,9 @@ theorem Dm_rel (a b c d : Fin n) :
   split_ifs <;> simp [Dm_single]
 
 /- English proof (translation)
-Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce `p v`. Establish `key` using `LinearMap.congr_fun (eV_rel V ε E hV hE a b c d hab hcd) v`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply] at key`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Fm_single, ← Finsupp.single_sub, key]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp [Fm_single]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Fm_rel (hE : IsGlRep E) (a b c d : Fin n) (hab : ε a = ε b) (hcd : ε c = ε d) :
     Fm V ε E hV a b * Fm V ε E hV c d - Fm V ε E hV c d * Fm V ε E hV a b =
@@ -581,9 +579,9 @@ theorem Fm_rel (hE : IsGlRep E) (a b c d : Fin n) (hab : ε a = ε b) (hcd : ε 
   split_ifs <;> simp [Fm_single]
 
 /- English proof (translation)
-Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce and unpack `⟨w, c0⟩ v`. Simplify using `only [LinearMap.sub_apply, Module.End.mul_apply, Gm_single]`. Apply the tactic sequence `by_cases h1 : c0 = d <;> by_cases h2 : c0 = b <;>`. Apply the tactic sequence `simp only [h1, h2, if_true, if_false, map_zero, Gm_single] <;> (try split_ifs) <;> subst_vars <;>`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `(try simp only [Gm_single, map_zero, sub_zero, zero_sub]) <;> (try split_ifs) <;> subst_vars <;> simp_all`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Gm_rel (a b c d : Fin n) :
     Gm V a b * Gm V c d - Gm V c d * Gm V a b =
@@ -596,7 +594,7 @@ theorem Gm_rel (a b c d : Fin n) :
     (try simp only [Gm_single, map_zero, sub_zero, zero_sub]) <;> (try split_ifs) <;> subst_vars <;> simp_all
 
 /- English proof (translation)
-Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce and unpack `⟨w, c0⟩ v`. Simplify using `only [Module.End.mul_apply, Fm_single, Dm_single, Fm_Bc]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem Dm_Fm (a b c d : Fin n) : Dm V a b * Fm V ε E hV c d = Fm V ε E hV c d * Dm V a b := by
   apply Finsupp.lhom_ext
@@ -604,7 +602,7 @@ theorem Dm_Fm (a b c d : Fin n) : Dm V a b * Fm V ε E hV c d = Fm V ε E hV c d
   simp only [Module.End.mul_apply, Fm_single, Dm_single, Fm_Bc]
 
 /- English proof (translation)
-Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce and unpack `⟨w, c0⟩ v`. Simplify using `only [Module.End.mul_apply, Gm_single, Dm_single, Gm_Bc]`. Apply the tactic sequence `split_ifs <;> simp [Dm_single]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Dm_Gm (a b c d : Fin n) : Dm V a b * Gm V c d = Gm V c d * Dm V a b := by
   apply Finsupp.lhom_ext
@@ -613,7 +611,7 @@ theorem Dm_Gm (a b c d : Fin n) : Dm V a b * Gm V c d = Gm V c d * Dm V a b := b
   split_ifs <;> simp [Dm_single]
 
 /- English proof (translation)
-Apply `Finsupp.lhom_ext` to reduce the goal to its premises. Introduce and unpack `⟨w, c0⟩ v`. Simplify using `only [Module.End.mul_apply, Gm_single, Fm_single]`. Apply the tactic sequence `split_ifs <;> simp [Fm_single]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Fm_Gm (a b c d : Fin n) : Fm V ε E hV a b * Gm V c d = Gm V c d * Fm V ε E hV a b := by
   apply Finsupp.lhom_ext
@@ -622,7 +620,7 @@ theorem Fm_Gm (a b c d : Fin n) : Fm V ε E hV a b * Gm V c d = Gm V c d * Fm V 
   split_ifs <;> simp [Fm_single]
 
 /- English proof (translation)
-Introduce `a b c d hab hcd`. Simplify using `only [sA_eq]`. Establish `e : ∀ D1 F1 G1 D2 F2 G2 : Module.End ℂ (KS (n` using `n) V), (D1 + F1 + G1) * (D2 + F2 + G2) - (D2 + F2 + G2) * (D1 + F1 + G1) = (D1 * D2 - D2 * D1) + (F1 * F2 - F2 * F1) + (G1 * G2 - G2 * G1) + (D1 * F2 - F2 * D1) + (D1 * G2 - G2 * D1) + (F1 * G2 - G2 * F1) - (D2 * F1 - F1 * D2) - (D2 * G1 - G1 * D2) - (F2 * G1 - G1 * F2) := by int …`. Rewrite using `[e, Dm_rel, Fm_rel V ε E hV hE a b c d hab hcd, Gm_rel, Dm_Fm, Dm_Gm, Fm_Gm, Dm_Fm, Dm_Gm, Fm_Gm]`. Apply the tactic sequence `split_ifs <;> abel`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem sA_isKRel (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (V : Submodule ℂ M)
     (hV : IsKStableSub ε E V) (hE : IsGlRep E) : IsKRel ε (sA ε E V hV) := by

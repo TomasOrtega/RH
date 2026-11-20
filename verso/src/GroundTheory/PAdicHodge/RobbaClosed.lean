@@ -22,14 +22,14 @@ variable {a b : ℤ → K} {ρ : ℝ}
 def trunc (a : ℤ → K) (s : Set ℤ) : ℤ → K := s.indicator a
 
 /- English proof (translation)
-Unfold `trunc`. Apply the tactic sequence `by_cases hn : n ∈ s <;> simp [hn]`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem norm_trunc_le (s : Set ℤ) (n : ℤ) : ‖trunc a s n‖ ≤ ‖a n‖ := by
   unfold trunc
   by_cases hn : n ∈ s <;> simp [hn]
 
 /- English proof (translation)
-The claim follows from `squeeze_zero (fun n => by positivity) (fun n => mul_le_mul_of_nonneg_right (norm_trunc_le s n) (by positivity)) h`.
+A detailed English derivation is pending.
 -/
 theorem ConvergesAt.trunc (hρ : 0 < ρ) (h : ConvergesAt a ρ) (s : Set ℤ) :
     ConvergesAt (Laurent.trunc a s) ρ :=
@@ -37,7 +37,7 @@ theorem ConvergesAt.trunc (hρ : 0 < ρ) (h : ConvergesAt a ρ) (s : Set ℤ) :
     (fun n => mul_le_mul_of_nonneg_right (norm_trunc_le s n) (by positivity)) h
 
 /- English proof (translation)
-The claim follows from `gaussNorm_le fun n => (mul_le_mul_of_nonneg_right (norm_trunc_le s n) (by positivity)).trans (h.le_gaussNorm n)`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_trunc_le (hρ : 0 < ρ) (h : ConvergesAt a ρ) (s : Set ℤ) :
     gaussNorm (trunc a s) ρ ≤ gaussNorm a ρ :=
@@ -45,9 +45,9 @@ theorem gaussNorm_trunc_le (hρ : 0 < ρ) (h : ConvergesAt a ρ) (s : Set ℤ) :
     (h.le_gaussNorm n)
 
 /- English proof (translation)
-Break down `le_or_gt n N with hn | hn` into its components or cases. Establish `hρ' : 0 < ρ'` using `hρ.trans_le hle`. Establish `h1 : 1 ≤ ρ' / ρ` using `by rw [le_div_iff₀ hρ]; linarith`. Establish `h2 : (ρ' / ρ) ^ n ≤ (ρ' / ρ) ^ N` using `zpow_le_zpow_right₀ h1 hn`. Establish `e : ρ' ^ n = ρ ^ n * (ρ' / ρ) ^ n`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[div_zpow, mul_div_cancel₀ _ (zpow_ne_zero _ hρ.ne')]`. Rewrite using `[e, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left h2 (by positivity)`. Simplify using `[hsupp n hn]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weight_le_of_support_le {N : ℤ} (hsupp : ∀ n, N < n → a n = 0) {ρ' : ℝ} (hρ : 0 < ρ)
     (hle : ρ ≤ ρ') (n : ℤ) : ‖a n‖ * ρ' ^ n ≤ (‖a n‖ * ρ ^ n) * (ρ' / ρ) ^ N := by
@@ -62,7 +62,7 @@ theorem weight_le_of_support_le {N : ℤ} (hsupp : ∀ n, N < n → a n = 0) {ρ
   · simp [hsupp n hn]
 
 /- English proof (translation)
-Establish `hρ' : 0 < ρ'` using `hρ.trans_le hle`. Use `squeeze_zero (fun n => by positivity) (weight_le_of_support_le hsupp hρ hle) ?_` and prove the remaining obligations. Simplify using `using h.mul_const ((ρ' / ρ) ^ N)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ConvergesAt.of_support_le {N : ℤ} (hsupp : ∀ n, N < n → a n = 0) (h : ConvergesAt a ρ)
     (hρ : 0 < ρ) {ρ' : ℝ} (hle : ρ ≤ ρ') : ConvergesAt a ρ' := by
@@ -71,7 +71,7 @@ theorem ConvergesAt.of_support_le {N : ℤ} (hsupp : ∀ n, N < n → a n = 0) (
   simpa using h.mul_const ((ρ' / ρ) ^ N)
 
 /- English proof (translation)
-The claim follows from `gaussNorm_le fun n => (weight_le_of_support_le hsupp hρ hle n).trans (mul_le_mul_of_nonneg_right (h.le_gaussNorm n) (by have := hρ.trans_le hle; positivity))`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_le_of_support_le {N : ℤ} (hsupp : ∀ n, N < n → a n = 0)
     (h : ConvergesAt a ρ) (hρ : 0 < ρ) {ρ' : ℝ} (hle : ρ ≤ ρ') :
@@ -80,9 +80,9 @@ theorem gaussNorm_le_of_support_le {N : ℤ} (hsupp : ∀ n, N < n → a n = 0)
     (mul_le_mul_of_nonneg_right (h.le_gaussNorm n) (by have := hρ.trans_le hle; positivity))
 
 /- English proof (translation)
-Break down `le_or_gt N n with hn | hn` into its components or cases. Establish `hρ : 0 < ρ` using `hρ'.trans_le hle`. Establish `h0 : 0 < ρ' / ρ` using `div_pos hρ' hρ`. Establish `h1 : ρ' / ρ ≤ 1` using `by rw [div_le_one hρ]; exact hle`. Establish `h2 : (ρ' / ρ) ^ n ≤ (ρ' / ρ) ^ N` using `zpow_le_zpow_right_of_le_one₀ h0 h1 hn`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : ρ' ^ n = ρ ^ n * (ρ' / ρ) ^ n`. Rewrite using `[div_zpow, mul_div_cancel₀ _ (zpow_ne_zero _ hρ.ne')]`. Rewrite using `[e, ← mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left h2 (by positivity)`. Simplify using `[hsupp n hn]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem weight_le_of_support_ge {N : ℤ} (hsupp : ∀ n, n < N → a n = 0) {ρ' : ℝ} (hρ' : 0 < ρ')
     (hle : ρ' ≤ ρ) (n : ℤ) : ‖a n‖ * ρ' ^ n ≤ (‖a n‖ * ρ ^ n) * (ρ' / ρ) ^ N := by
@@ -98,7 +98,7 @@ theorem weight_le_of_support_ge {N : ℤ} (hsupp : ∀ n, n < N → a n = 0) {ρ
   · simp [hsupp n hn]
 
 /- English proof (translation)
-Use `squeeze_zero (fun n => by positivity) (weight_le_of_support_ge hsupp hρ' hle) ?_` and prove the remaining obligations. Simplify using `using h.mul_const ((ρ' / ρ) ^ N)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem ConvergesAt.of_support_ge {N : ℤ} (hsupp : ∀ n, n < N → a n = 0) (h : ConvergesAt a ρ)
     {ρ' : ℝ} (hρ' : 0 < ρ') (hle : ρ' ≤ ρ) : ConvergesAt a ρ' := by
@@ -106,7 +106,7 @@ theorem ConvergesAt.of_support_ge {N : ℤ} (hsupp : ∀ n, n < N → a n = 0) (
   simpa using h.mul_const ((ρ' / ρ) ^ N)
 
 /- English proof (translation)
-The claim follows from `gaussNorm_le fun n => (weight_le_of_support_ge hsupp hρ' hle n).trans (mul_le_mul_of_nonneg_right (h.le_gaussNorm n) (by have := hρ'.trans_le hle; positivity))`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_le_of_support_ge {N : ℤ} (hsupp : ∀ n, n < N → a n = 0)
     (h : ConvergesAt a ρ) {ρ' : ℝ} (hρ' : 0 < ρ') (hle : ρ' ≤ ρ) :
@@ -115,14 +115,12 @@ theorem gaussNorm_le_of_support_ge {N : ℤ} (hsupp : ∀ n, n < N → a n = 0)
     (mul_le_mul_of_nonneg_right (h.le_gaussNorm n) (by have := hρ'.trans_le hle; positivity))
 
 /- English proof (translation)
-Simplify using `[gaussNorm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gaussNorm_zero (ρ : ℝ) : gaussNorm (0 : ℤ → K) ρ = 0 := by simp [gaussNorm]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h0`. Assume the negation of the conclusion as `ha`. Conclude with `(gaussNorm_pos hρ h ha).ne' h0`. Introduce and unpack `rfl`.
-
-Conclude with `gaussNorm_zero ρ`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem gaussNorm_eq_zero_iff (hρ : 0 < ρ) (h : ConvergesAt a ρ) : gaussNorm a ρ = 0 ↔ a = 0 := by
   constructor
@@ -130,19 +128,19 @@ theorem gaussNorm_eq_zero_iff (hρ : 0 < ρ) (h : ConvergesAt a ρ) : gaussNorm 
   · rintro rfl; exact gaussNorm_zero ρ
 
 /- English proof (translation)
-Simplify using `[gaussNorm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem gaussNorm_neg (a : ℤ → K) (ρ : ℝ) : gaussNorm (-a) ρ = gaussNorm a ρ := by
   simp [gaussNorm]
 
 /- English proof (translation)
-Rewrite using `[← neg_sub, gaussNorm_neg]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gaussNorm_sub_comm (a b : ℤ → K) (ρ : ℝ) : gaussNorm (a - b) ρ = gaussNorm (b - a) ρ := by
   rw [← neg_sub, gaussNorm_neg]
 
 /- English proof (translation)
-The claim follows from `gaussNorm_le fun n => by simp only [Pi.add_apply] calc ‖a n + b n‖ * ρ ^ n ≤ max ‖a n‖ ‖b n‖ * ρ ^ n := mul_le_mul_of_nonneg_right (IsUltrametricDist.norm_add_le_max _ _) (by positivity) _ = max (‖a n‖ * ρ ^ n) (‖b n‖ * ρ ^ n) := max_mul_of_nonneg _ _ (by positivity) _ ≤ _ := max …`.
+A detailed English derivation is pending.
 -/
 theorem gaussNorm_add_le (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ) :
     gaussNorm (a + b) ρ ≤ max (gaussNorm a ρ) (gaussNorm b ρ) :=
@@ -154,7 +152,7 @@ theorem gaussNorm_add_le (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesA
       _ ≤ _ := max_le_max (ha.le_gaussNorm n) (hb.le_gaussNorm n)
 
 /- English proof (translation)
-Rewrite using `[sub_eq_add_neg, ← gaussNorm_neg b]`. Conclude with `gaussNorm_add_le hρ ha hb.neg`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaussNorm_sub_le (hρ : 0 < ρ) (ha : ConvergesAt a ρ) (hb : ConvergesAt b ρ) :
     gaussNorm (a - b) ρ ≤ max (gaussNorm a ρ) (gaussNorm b ρ) := by
@@ -177,11 +175,9 @@ def UCauchy (x : ℕ → ℤ → K) (ρ : ℝ) : Prop :=
 variable {x : ℕ → ℤ → K}
 
 /- English proof (translation)
-Establish `hc : CauchySeq fun k => x k n`. Use `NonarchimedeanAddGroup.cauchySeq_of_tendsto_sub_nhds_zero ?_` and prove the remaining obligations. Rewrite using `[tendsto_zero_iff_norm_tendsto_zero]`. Use `tendsto_order.2 ⟨fun e he => Eventually.of_forall fun k => lt_of_lt_of_le he (norm_nonneg _), fun ε hε => ?_⟩` and prove the remaining obligations. Establish `hρn : 0 < ρ ^ n` using `zpow_pos hρ n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨K₀, hK⟩` from `h (ε / 2 * ρ ^ n) (by positivity)`. Use `filter_upwards [eventually_ge_atTop K₀] with j hj`. Use `hK j hj n` as an intermediate fact. Establish `: ‖x (j + 1) n - x j n‖ ≤ ε / 2` using `le_of_mul_le_mul_right (by linarith) hρn`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Conclude with `hc.tendsto_limUnder`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem UCauchy.tendsto (hρ : 0 < ρ) (h : UCauchy x ρ) (n : ℤ) :
     Tendsto (fun k => x k n) atTop (𝓝 (limSeq x n)) := by
@@ -199,11 +195,11 @@ theorem UCauchy.tendsto (hρ : 0 < ρ) (h : UCauchy x ρ) (n : ℤ) :
   exact hc.tendsto_limUnder
 
 /- English proof (translation)
-Take `⟨K₀, hK⟩` from `h ε hε`. Use `⟨K₀, fun k hk n => ?_⟩` and prove the remaining obligations. Establish `hj : ∀ j, k ≤ j → ‖x j n - x k n‖ * ρ ^ n ≤ ε`. Introduce `j hj`. Proceed by induction on `j, hj using Nat.le_induction with`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `base => simp [hε.le]`. Consider the case `succ j hkj ih`. Establish `e : x (j + 1) n - x k n = (x (j + 1) n - x j n) + (x j n - x k n)` using `by ring`. Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hlim : Tendsto (fun j => ‖x j n - x k n‖ * ρ ^ n) atTop (𝓝 (‖limSeq x n - x k n‖ * ρ ^ n))` using `(((h.tendsto hρ n).sub_const (x k n)).norm).mul_const _`. Conclude with `le_of_tendsto hlim (eventually_ge_atTop k |>.mono hj)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UCauchy.weight_sub_le (hρ : 0 < ρ) (h : UCauchy x ρ) {ε : ℝ} (hε : 0 < ε) :
     ∃ K₀, ∀ k ≥ K₀, ∀ n, ‖limSeq x n - x k n‖ * ρ ^ n ≤ ε := by
@@ -228,7 +224,7 @@ theorem UCauchy.weight_sub_le (hρ : 0 < ρ) (h : UCauchy x ρ) {ε : ℝ} (hε 
   exact le_of_tendsto hlim (eventually_ge_atTop k |>.mono hj)
 
 /- English proof (translation)
-Take `⟨K₀, hK⟩` from `h.weight_sub_le hρ hε`. Conclude with `⟨K₀, fun k hk => gaussNorm_le fun n => hK k hk n⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UCauchy.gaussNorm_sub_le (hρ : 0 < ρ) (h : UCauchy x ρ) {ε : ℝ} (hε : 0 < ε) :
     ∃ K₀, ∀ k ≥ K₀, gaussNorm (limSeq x - x k) ρ ≤ ε := by
@@ -236,9 +232,9 @@ theorem UCauchy.gaussNorm_sub_le (hρ : 0 < ρ) (h : UCauchy x ρ) {ε : ℝ} (h
   exact ⟨K₀, fun k hk => gaussNorm_le fun n => hK k hk n⟩
 
 /- English proof (translation)
-Use `tendsto_order.2 ⟨fun e he => Eventually.of_forall fun n => lt_of_lt_of_le he (by positivity), fun ε hε => ?_⟩` and prove the remaining obligations. Take `⟨K₀, hK⟩` from `h.weight_sub_le hρ (half_pos hε)`. Establish `hev` using `(hx K₀).eventually (gt_mem_nhds (half_pos hε))`. Use `filter_upwards [hev] with n hn`. Establish `e : limSeq x n = (limSeq x n - x K₀ n) + x K₀ n` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem UCauchy.convergesAt (hρ : 0 < ρ) (h : UCauchy x ρ) (hx : ∀ k, ConvergesAt (x k) ρ) :
     ConvergesAt (limSeq x) ρ := by
@@ -257,7 +253,7 @@ theorem UCauchy.convergesAt (hρ : 0 < ρ) (h : UCauchy x ρ) (hx : ∀ k, Conve
     _ < ε := max_lt ((hK K₀ le_rfl n).trans_lt (half_lt_self hε)) (hn.trans (half_lt_self hε))
 
 /- English proof (translation)
-Introduce `ε hε`. Take `⟨K₀, hK⟩` from `eventually_atTop.1 (hδ.eventually (gt_mem_nhds hε))`. Conclude with `⟨K₀, fun j hj n => ((hconv j).le_gaussNorm n).trans (hK j hj).le⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UCauchy.of_gaussNorm (hρ : 0 < ρ) (hconv : ∀ j, ConvergesAt (x (j + 1) - x j) ρ)
     (hδ : Tendsto (fun j => gaussNorm (x (j + 1) - x j) ρ) atTop (𝓝 0)) : UCauchy x ρ := by
@@ -275,9 +271,9 @@ def invDom (a : ℤ → K) (N : ℤ) : ℤ → K :=
   cmul (Pi.single (-N) (a N)⁻¹) (geomInv (domTail a N))
 
 /- English proof (translation)
-Rewrite using `[cmul_single_left]`. Use function extensionality and compare the values at `n`. Simplify using `only [Pi.add_apply, domTail, Pi.single_apply]`. Distinguish the cases in `hn : n - N = 0`. Establish `: n = N` using `by omega`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Substitute `this` using the available equality. Simplify using the standard rewrite rules. Simplify using `only [if_neg hn, zero_add, sub_add_cancel]`. Clear the denominators using the available nonvanishing facts.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 theorem eq_single_cmul_domTail {N : ℤ} (hN : a N ≠ 0) :
     a = cmul (Pi.single N (a N)) (Pi.single 0 1 + domTail a N) := by
@@ -291,19 +287,17 @@ theorem eq_single_cmul_domTail {N : ℤ} (hN : a N ≠ 0) :
     field_simp
 
 /- English proof (translation)
-Establish `haN : a N ≠ 0`. Introduce `h0`. Take `⟨m, hm⟩` from `Function.ne_iff.1 ha`. Use `hN m (fun e => hm (e ▸ h0))` as an intermediate fact. Rewrite `this` using `[h0, norm_zero, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd this (not_lt.2 (by positivity))`. Establish `hW : 0 < ‖a N‖ * ρ ^ N` using `by have := norm_pos_iff.2 haN; positivity`. Establish `hweight : ∀ n, n ≠ 0 → ‖domTail a N n‖ * ρ ^ n = ‖a (n + N)‖ * ρ ^ (n + N) / (‖a N‖ * ρ ^ N)`. Introduce `n hn`. Simplify using `only [domTail, if_neg hn, norm_div]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zpow_add₀ hρ.ne']`. Clear the denominators using the available nonvanishing facts. Establish `hshift : Tendsto (fun n : ℤ => ‖a (n + N)‖ * ρ ^ (n + N) / (‖a N‖ * ρ ^ N)) cofinite (𝓝 0)`. Use `(h.comp (add_left_injective N).tendsto_cofinite).div_const (‖a N‖ * ρ ^ N)` as an intermediate fact. Simplify `this` using `[Function.comp]`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hconv : ConvergesAt (domTail a N) ρ`. Use `squeeze_zero (fun n => by positivity) (fun n => ?_) hshift` and prove the remaining obligations. Distinguish the cases in `hn : n = 0`. Simplify using `only [domTail, if_pos hn, norm_zero, zero_mul]`. Check the signs of the components of the expression.
+Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hweight n hn).le`. Use `⟨hconv, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hu0 : domTail a N = 0`. Rewrite using `[hu0, gaussNorm_zero]`. Conclude with `one_pos`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Take `⟨n, hn⟩` from `hconv.exists_eq_gaussNorm hρ hu0`. Rewrite using `[← hn]`. Distinguish the cases in `hn0 : n = 0`. Simplify using `only [domTail, if_pos hn0, norm_zero, zero_mul]`. Conclude with `one_pos`.
-
-Rewrite using `[hweight n hn0, div_lt_one hW]`. Conclude with `hN (n + N) (by omega)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem domTail_spec (hρ : 0 < ρ) (h : ConvergesAt a ρ) (ha : a ≠ 0) {N : ℤ}
     (hN : ∀ m, m ≠ N → ‖a m‖ * ρ ^ m < ‖a N‖ * ρ ^ N) :
@@ -340,7 +334,7 @@ theorem domTail_spec (hρ : 0 < ρ) (h : ConvergesAt a ρ) (ha : a ≠ 0) {N : �
     exact hN (n + N) (by omega)
 
 /- English proof (translation)
-Rewrite using `[cmul_assoc hρ hA hB (hC.cmul hρ hW), ← cmul_assoc hρ hB hC hW, cmul_comm B C, cmul_assoc hρ hC hB hW, ← cmul_assoc hρ hA hC (hB.cmul hρ hW)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cmul_rearrange (hρ : 0 < ρ) {A B C W : ℤ → K} (hA : ConvergesAt A ρ)
     (hB : ConvergesAt B ρ) (hC : ConvergesAt C ρ) (hW : ConvergesAt W ρ) :
@@ -349,15 +343,15 @@ theorem cmul_rearrange (hρ : 0 < ρ) {A B C W : ℤ → K} (hA : ConvergesAt A 
     cmul_assoc hρ hC hB hW, ← cmul_assoc hρ hA hC (hB.cmul hρ hW)]
 
 /- English proof (translation)
-Establish `haN : a N ≠ 0`. Introduce `h0`. Take `⟨m, hm⟩` from `Function.ne_iff.1 ha`. Use `hN m (fun e => hm (e ▸ h0))` as an intermediate fact. Rewrite `this` using `[h0, norm_zero, zero_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd this (not_lt.2 (by positivity))`. Take `⟨hu, hq⟩` from `domTail_spec hρ h ha hN`. Establish `hw` using `hu.geomInv hρ hq`. Establish `hs1` using `convergesAt_single N (a N) ρ`. Establish `hs2` using `convergesAt_single (-N) (a N)⁻¹ ρ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hs2.cmul hρ hw, ?_⟩` and prove the remaining obligations. Establish `e` using `eq_single_cmul_domTail haN`. Rewrite using `[show cmul a (invDom a N) = cmul (cmul (Pi.single N (a N)) (Pi.single 0 1 + domTail a N)) (invDom a N) from congrArg (fun x => cmul x (invDom a N)) e]`. Unfold `invDom`. Rewrite using `[cmul_rearrange hρ hs1 ((convergesAt_single 0 1 ρ).add hρ hu) hs2 hw, cmul_one_add_geomInv hρ hu hq, cmul_single_zero_one, cmul_single_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `n`. Simplify using `only [Pi.single_apply, sub_neg_eq_add]`. Distinguish the cases in `hn : n = 0`. Substitute `hn` using the available equality. Simplify using `[haN]`.
+Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hn, show n + N ≠ N by omega]`.
+A detailed English derivation is pending.
 -/
 theorem invDom_spec (hρ : 0 < ρ) (h : ConvergesAt a ρ) (ha : a ≠ 0) {N : ℤ}
     (hN : ∀ m, m ≠ N → ‖a m‖ * ρ ^ m < ‖a N‖ * ρ ^ N) :
@@ -386,7 +380,7 @@ theorem invDom_spec (hρ : 0 < ρ) (h : ConvergesAt a ρ) (ha : a ≠ 0) {N : �
   · simp [hn, show n + N ≠ N by omega]
 
 /- English proof (translation)
-Rewrite using `[show ‖a (lowIndex a ρ)‖ * ρ ^ (lowIndex a ρ) = gaussNorm a ρ from lowIndex_mem hρ h ha]`. Break down `lt_or_gt_of_ne hm with hm | hm` into its components or cases. Conclude with `weight_lt_of_lt_lowIndex hρ h ha hm`. Conclude with `weight_lt_of_highIndex_lt hρ h ha (he ▸ hm)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem weight_lt_of_lowIndex_eq_highIndex (hρ : 0 < ρ) (h : ConvergesAt a ρ) (ha : a ≠ 0)
     (he : lowIndex a ρ = highIndex a ρ) (m : ℤ) (hm : m ≠ lowIndex a ρ) :
@@ -418,15 +412,15 @@ instance : NoZeroDivisors (AnnulusRing K I) where
 instance : IsDomain (AnnulusRing K I) := NoZeroDivisors.to_isDomain _
 
 /- English proof (translation)
-Establish `hf0 : f.coeff ≠ 0` using `fun e => hf (AnnulusRing.ext e)`. Take `⟨ρ₀, hρ₀, -⟩` from `(Fact.out : ∃ ρ ∈ Set.Icc α β, 0 < ρ)`. Establish `hαβ : α ≤ β` using `hρ₀.1.trans hρ₀.2`. Establish `hcα` using `f.convergesAt ⟨le_rfl, hαβ⟩ hα`. Establish `hcβ` using `f.convergesAt ⟨hαβ, le_rfl⟩ (hα.trans_le hαβ)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set N := lowIndex f.coeff α`. Establish `key : ∀ ρ ∈ Set.Icc α β, lowIndex f.coeff ρ = N ∧ highIndex f.coeff ρ = N`. Introduce `ρ hρ`. Establish `hc` using `f.convergesAt hρ (hα.trans_le hρ.1)`. Establish `h1` using `lowIndex_mono hα hρ.1 hcα hc hf0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `highIndex_mono (hα.trans_le hρ.1) hρ.2 hc hcβ hf0`. Establish `h3` using `lowIndex_le_highIndex (hα.trans_le hρ.1) hc hf0`. Use linear arithmetic over natural numbers and integers. Establish `hinv : ∀ ρ ∈ Set.Icc α β, ConvergesAt (invDom f.coeff N) ρ ∧ cmul f.coeff (invDom f.coeff N) = Pi.single 0 1`. Introduce `ρ hρ`.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hρ0` using `hα.trans_le hρ.1`. Establish `hc` using `f.convergesAt hρ hρ0`. Take `⟨k1, k2⟩` from `key ρ hρ`. Use `weight_lt_of_lowIndex_eq_highIndex hρ0 hc hf0 (k1.trans k2.symm)` as an intermediate fact. Rewrite `this` using `[k1]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `invDom_spec hρ0 hc hf0 this`. Set `g : AnnulusRing K (Set.Icc α β)` to `⟨invDom f.coeff N, fun ρ hρ _ => (hinv ρ hρ).1⟩`. Establish `hfg : f * g = 1` using `AnnulusRing.ext (hinv α ⟨le_rfl, hαβ⟩).2`. Conclude with `⟨⟨f, g, hfg, by rw [mul_comm]; exact hfg⟩, rfl⟩`.
+Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isUnit_of_lowIndex_eq_highIndex {α β : ℝ} [Fact (∃ ρ ∈ Set.Icc α β, 0 < ρ)] (hα : 0 < α)
     (f : AnnulusRing K (Set.Icc α β)) (hf : f ≠ 0)

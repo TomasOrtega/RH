@@ -26,27 +26,27 @@ section Gram
 variable {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module K V] (h : HermFam K V) (σ : K →+* ℂ)
 
 /- English proof (translation)
-Rewrite using `[← h.conj_symm σ z (x + y), h.add_right, map_add, h.conj_symm, h.conj_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermFam_add_left (x y z : V) : h.form σ (x + y) z = h.form σ x z + h.form σ y z := by
   rw [← h.conj_symm σ z (x + y), h.add_right, map_add, h.conj_symm, h.conj_symm]
 
 /- English proof (translation)
-Rewrite using `[← h.conj_symm σ y (a • x), h.smul_right, map_mul, h.conj_symm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hermFam_smul_left (a : K) (x y : V) : h.form σ (a • x) y = starRingEnd ℂ (σ a) * h.form σ x y := by
   rw [← h.conj_symm σ y (a • x), h.smul_right, map_mul, h.conj_symm]
 
 /- English proof (translation)
-Establish `hl : ∀ (s : Finset α) (z : V), h.form σ (∑ i ∈ s, c i • x i) z = ∑ i ∈ s, h.form σ (c i • x i) z`. Introduce `s z`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `hermFam_add_left h σ 0 0 z` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact.
 
-Simplify using `only [add_zero] at this`. Simplify using `only [Finset.sum_empty]`. Take the linear combination `-this`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, hermFam_add_left, ih, Finset.sum_insert ha]`. Establish `hr : ∀ (s : Finset β) (z : V), h.form σ z (∑ j ∈ s, d j • y j) = ∑ j ∈ s, h.form σ z (d j • y j)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Establish an intermediate fact.
 
-Introduce `s z`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Use `h.add_right σ z 0 0` as an intermediate fact. Simplify using `only [add_zero] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Finset.sum_empty]`. Take the linear combination `-this`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, h.add_right, ih, Finset.sum_insert ha]`. Rewrite using `[hl]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hr]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[hermFam_smul_left, h.smul_right]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem hermFam_sum_sum {α β : Type} [Fintype α] [Fintype β] (c : α → K) (x : α → V) (d : β → K) (y : β → V) :
     h.form σ (∑ i, c i • x i) (∑ j, d j • y j) =
@@ -78,15 +78,13 @@ theorem hermFam_sum_sum {α β : Type} [Fintype α] [Fintype β] (c : α → K) 
   ring
 
 /- English proof (translation)
-Set `W` to `Submodule.span K (Set.range v)`. Use `haveI : FiniteDimensional K W := FiniteDimensional.span_of_finite K (Set.finite_range v)`. Set `b` to `Module.finBasis K W`. Establish `hb : LinearIndependent K (fun i => (b i : V))` using `b.linearIndependent.map' W.subtype W.ker_subtype`. Set `g : Matrix (Fin n) (Fin (Module.finrank K W)) K` to `Matrix.of fun i j => b.repr ⟨v i, Submodule.subset_span ⟨i, rfl⟩⟩ j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hf : ∀ i, v i = ∑ j, g i j • (b j : V)` using `fun i => by`. Use `congrArg W.subtype (b.sum_repr ⟨v i, Submodule.subset_span ⟨i, rfl⟩⟩).symm` as an intermediate fact. Rewrite `this` using `[map_sum]`. Simplify `this` using `[g]`. Establish `hG` using `(h.posDef σ _ _ hb).posSemidef`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `B : Matrix (Fin n) (Fin (Module.finrank K W)) ℂ` to `Matrix.of fun i j => starRingEnd ℂ (σ (g i j))`. Set `G : Matrix (Fin (Module.finrank K W)) (Fin (Module.finrank K W)) ℂ` to `Matrix.of fun i j => h.form σ (b i : V) (b j)`. Establish `e : h.gram σ v = B * G * B.conjTranspose`. Use extensionality with `i j`. Simplify using `only [HermFam.gram, G, Matrix.of_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, B, RCLike.star_def, Complex.conj_conj]`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hf i, hf j, hermFam_sum_sum, Finset.sum_comm]`. Simplify using `only [Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`.
-
-Conclude with `hG.mul_mul_conjTranspose_same B`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermFam_gram_posSemidef {n : ℕ} (v : Fin n → V) : (h.gram σ v).PosSemidef := by
   classical
@@ -123,11 +121,9 @@ variable {K : Type} [Field K] [NumberField K] {m r m' : ℕ} {h : HermFam K (Fin
   {h' : HermFam K (Fin m' → K)} {L' : Submodule (𝓞 K) (Fin m' → K)}
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6, a7, hm⟩` from `hT`. Establish `hd : (0 : ℂ) ≤ ((C' - C : ℝ) : ℂ)` using `Complex.zero_le_real.2 (sub_nonneg.2 hC)`. Use `⟨a1, a2, a3, a4, a5, a6, a7, fun σ => ⟨?_, fun n v => ?_⟩⟩` and prove the remaining obligations. Use `(hm σ).1.add ((hermFam_gram_posSemidef h σ ε).smul hd)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use `push_cast`. Use `module`. Use `((hm σ).2 n v).add ((hermFam_gram_posSemidef h σ v).smul hd)` as an intermediate fact. Use `this using 1` and compare the differences between its conclusion and the goal. Use `push_cast`.
-
-Use `module`.
+Move the embeddings inside the algebraic operations. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem torusExt_mono {C C' : ℝ} (hT : TorusExt h L ε q h' L' C) (hC : C ≤ C') : TorusExt h L ε q h' L' C' := by
   obtain ⟨a1, a2, a3, a4, a5, a6, a7, hm⟩ := hT
@@ -164,7 +160,7 @@ def IsLieAtWith (x : ToroidalCompactificationData O.s) (P : PolOf x O.Φ) (y : P
 variable {O} in
 
 /- English proof (translation)
-Take `⟨fK, yK, xO, hx, hio, e, b, h₁, h₂, h₃, h₄, h₅⟩` from `hw`. Conclude with `⟨x, P, io, fK, yK, xO, hx, hio, e, b, h₁, h₂, h₃, h₄, h₅⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem IsLieAtWith.isLieAt {x : ToroidalCompactificationData O.s} {P : PolOf x O.Φ} {y : Pt O.s} {K : Type} [Field K] [NumberField K]
     {io : K →+* Qb} {L : Submodule (𝓞 K) (Fin (D.R.f * O.N) → K)} {h : HermFam K (Fin (D.R.f * O.N) → K)}

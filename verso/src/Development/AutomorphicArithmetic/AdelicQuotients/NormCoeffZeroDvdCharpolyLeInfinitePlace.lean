@@ -7,7 +7,7 @@ open PositivityTheory.Rg.Tf.Core PositivityTheory.Rg.Tf.Loc PositivityTheory.Rg.
 open scoped NumberField.AdeleRing
 
 /- English proof (translation)
-Proceed by induction on `s using Multiset.induction_on with`. Consider the case `empty => simp`. Consider the case `cons a s ih`. Rewrite using `[Multiset.prod_cons, Multiset.card_cons, norm_mul, pow_succ']`. Conclude with `mul_le_mul (hs a (Multiset.mem_cons_self ..)) (ih fun z hz => hs z (Multiset.mem_cons_of_mem hz)) (norm_nonneg _) (by linarith)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma norm_multiset_prod_le_pow (B : ℝ) (hB : 1 ≤ B) (s : Multiset ℂ)
     (hs : ∀ z ∈ s, ‖z‖ ≤ B) : ‖s.prod‖ ≤ B ^ s.card := by
@@ -19,15 +19,13 @@ private lemma norm_multiset_prod_le_pow (B : ℝ) (hB : 1 ≤ B) (s : Multiset �
       (ih fun z hz => hs z (Multiset.mem_cons_of_mem hz)) (norm_nonneg _) (by linarith)
 
 /- English proof (translation)
-Establish `hdet : ((Matrix.scalar (Fin n)) z - M).det = 0`. Rewrite using `[← Matrix.eval_charpoly]`. Conclude with `hz`. Take `⟨v, hv, hMv⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr hdet`. Choose the witnesses or unpack the hypotheses as in `⟨i0, hi0⟩ : ∃ i, v i ≠ 0 := by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Use `push_neg at h`. Conclude with `hv (funext h)`. Take `⟨i, -, hi⟩` from `Finset.exists_max_image Finset.univ (fun j => ‖v j‖) ⟨i0, Finset.mem_univ _⟩`. Establish `hvi : 0 < ‖v i‖` using `lt_of_lt_of_le (norm_pos_iff.mpr hi0) (hi i0 (Finset.mem_univ _))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hrow : z * v i = ∑ j, M i j * v j`. Establish `h1` using `congrFun hMv i`. Simplify using `only [Matrix.sub_mulVec, Pi.sub_apply, Pi.zero_apply, sub_eq_zero] at h1`. Establish `h2 : ((Matrix.scalar (Fin n)) z).mulVec v i = z * v i`. Simplify using `[Matrix.scalar_apply, Matrix.mulVec_diagonal]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite `h1` using `[h2]`. Simplify `h1` using `[Matrix.mulVec, dotProduct]`. Establish `hle : ‖z‖ * ‖v i‖ ≤ n * R * ‖v i‖`. Rewrite using `[← norm_mul, hrow]`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hM i j) (hi j (Finset.mem_univ _)) (norm_nonneg _) (by linarith))`. Use `_ = n * R * ‖v i‖ := by simp [Finset.sum_const, mul_assoc]`. Establish `h3 : ‖z‖ ≤ n * R` using `le_of_mul_le_mul_right hle hvi`. Conclude with `h3.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) (by linarith))`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private lemma norm_root_charpoly_le {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (R : ℝ) (hR : 1 ≤ R)
     (hM : ∀ i j, ‖M i j‖ ≤ R) (z : ℂ) (hz : M.charpoly.IsRoot z) :
@@ -59,9 +57,9 @@ private lemma norm_root_charpoly_le {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (
   exact h3.trans (mul_le_mul_of_nonneg_right (le_max_right _ _) (by linarith))
 
 /- English proof (translation)
-Establish `hB : 1 ≤ max 1 (n : ℝ) * R` using `one_le_mul_of_one_le_of_one_le (le_max_left _ _) hR`. Establish `hs : p.Splits` using `IsAlgClosed.splits p`. Establish `hc : M.charpoly ≠ 0` using `(Matrix.charpoly_monic M).ne_zero`. Rewrite using `[hs.coeff_zero_eq_prod_roots_of_monic hp, norm_mul, norm_pow, norm_neg, norm_one, one_pow, one_mul]`. Establish `hroots : ∀ z ∈ p.roots, ‖z‖ ≤ max 1 (n : ℝ) * R` using `fun z hz => norm_root_charpoly_le M R hR hM z ((Polynomial.isRoot_of_mem_roots hz).dvd hd)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `(norm_multiset_prod_le_pow _ hB _ hroots).trans ?_` and prove the remaining obligations. Rewrite using `[← hs.natDegree_eq_card_roots]`. Use `pow_le_pow_right₀ hB ?_` and prove the remaining obligations. Establish `h` using `natDegree_le_of_dvd hd hc`. Simplify `h` using `[Matrix.charpoly_natDegree_eq_dim]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private lemma norm_coeff_zero_le_complex {n : ℕ} (M : Matrix (Fin n) (Fin n) ℂ) (R : ℝ) (hR : 1 ≤ R)
     (hM : ∀ i j, ‖M i j‖ ≤ R) (p : ℂ[X]) (hp : p.Monic) (hd : p ∣ M.charpoly) :
@@ -80,7 +78,7 @@ private lemma norm_coeff_zero_le_complex {n : ℕ} (M : Matrix (Fin n) (Fin n) �
   simpa [Matrix.charpoly_natDegree_eq_dim] using h
 
 /- English proof (translation)
-Introduce `E _ _ w n M R hR hM p hp hd`. Establish `hn : ∀ x, ‖InfinitePlace.Completion.extensionEmbedding w x‖ = ‖x‖` using `(InfinitePlace.Completion.isometry_extensionEmbedding w).norm_map_of_map_zero (map_zero _)`. Establish `h` using `norm_coeff_zero_le_complex (M.map (InfinitePlace.Completion.extensionEmbedding w)) R hR (fun i j => by simpa [hn] using hM i j) (p.map (InfinitePlace.Completion.extensionEmbedding w)) (hp.map _) (by rw [Matrix.charpoly_map]; exact Polynomial.map_dvd _ hd)`. Rewrite `h` using `[coeff_map, hn]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem UpperTheory.norm_coeff_zero_dvd_charpoly_le_infinitePlace :
     ∀ (E : Type) [Field E] [NumberField E] (w : InfinitePlace E) (n : ℕ) (M : Matrix (Fin n) (Fin n) w.Completion) (R : ℝ), 1 ≤ R →

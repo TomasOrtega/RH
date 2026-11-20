@@ -4,7 +4,7 @@ import Development.WeilBound.RepresentationTheoryGL.ArchimedeanBaseChange.Archim
 namespace PositivityTheory.Rg.BcB.F.F0
 
 /- English proof (translation)
-The claim follows from `archEx_of_compat PositivityTheory.Rg.BcB.CG.compatEx`.
+A detailed English derivation is pending.
 -/
 theorem archEx_holds : PositivityTheory.Rg.BcB.F.ArchEx := archEx_of_compat PositivityTheory.Rg.BcB.CG.compatEx
 

@@ -21,11 +21,11 @@ noncomputable section
 namespace GlobalTheory.SpecLocalExt
 
 /- English proof (translation)
-Introduce `A _ X a b h`. Use `GlobalTheory.hom_ext_of_isLocalRing fun B _ _ φ => ?_` and prove the remaining obligations. Set `P : Ideal A` to `(IsLocalRing.maximalIdeal B).comap φ`. Use `haveI : P.IsPrime := Ideal.comap_isPrime φ (IsLocalRing.maximalIdeal B)`. Establish `hu : ∀ y : P.primeCompl, IsUnit (φ y)` using `fun y => by`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hy`. Conclude with `y.2 ((IsLocalRing.mem_maximalIdeal _).2 hy)`. Set `ψ : Localization.AtPrime P →+* B` to `IsLocalization.lift hu`. Establish `e : φ = ψ.comp (algebraMap A (Localization.AtPrime P))` using `(IsLocalization.lift_comp hu).symm`. Establish `h'` using `h P`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [spMap] at h'`. Rewrite using `[e, CommRingCat.ofHom_comp, Spec.map_comp, Category.assoc, Category.assoc, h']`.
+A detailed English derivation is pending.
 -/
 theorem hom_ext_of_localizationAtPrime : ∀ (A : Type) [CommRing A] (X : Scheme.{0}) (a b : Sp A ⟶ X), (∀ (P : Ideal A) [P.IsPrime], spMap (algebraMap A (Localization.AtPrime P)) ≫ a = spMap (algebraMap A (Localization.AtPrime P)) ≫ b) → a = b := by
   intro A _ X a b h

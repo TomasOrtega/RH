@@ -17,7 +17,7 @@ variable {K : Type*} [DecidableEq K] {ι : K → Type*} {R : Type*} [CommRing R]
 open Classical in
 
 /- English proof (translation)
-Set `_` to `MvPolynomial.weightedGradedAlgebra R (blockWeight ι)`. Rewrite using `[← weightedDecomposition.decompose'_apply, ← weightedDecomposition.decompose'_apply]`. Conclude with `DirectSum.coe_decompose_mul_of_right_mem (𝒜 := weightedHomogeneousSubmodule R (blockWeight ι)) n hy`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem weightedHomogeneousComponent_mul_form {x y : MRing ι R} {j : K → ℕ}
     (hy : IsMultiHomog y j) (n : K → ℕ) :
@@ -29,7 +29,7 @@ theorem weightedHomogeneousComponent_mul_form {x y : MRing ι R} {j : K → ℕ}
     (𝒜 := weightedHomogeneousSubmodule R (blockWeight ι)) n hy
 
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Simplify using `only [not_exists, not_not] at h`. Apply `hx` to reduce the goal to its premises. Rewrite using `[← sum_weightedHomogeneousComponent (blockWeight ι) (φ := x), finsum_eq_sum _ (weightedHomogeneousComponent_finsupp x)]`. Conclude with `H.sum_mem fun e _ => h e`.
+Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_component_not_mem {H : Ideal (MRing ι R)} {x : MRing ι R} (hx : x ∉ H) :
     ∃ e : K → ℕ, weightedHomogeneousComponent (blockWeight ι) e x ∉ H := by
@@ -41,13 +41,13 @@ theorem exists_component_not_mem {H : Ideal (MRing ι R)} {x : MRing ι R} (hx :
   exact H.sum_mem fun e _ => h e
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `exists_component_not_mem hu`. Use `set u' := weightedHomogeneousComponent (blockWeight ι) e u with hu'`. Establish `hc` using `hPm _ h (e + bf)`. Rewrite `hc` using `[map_sub, weightedHomogeneousComponent_mul_form hf, weightedHomogeneousComponent_mul_form hg, if_pos le_add_self, add_tsub_cancel_right, ← hu']`. Distinguish the cases in `hle : bg ≤ e + bf`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[if_pos hle] at hc set v' := weightedHomogeneousComponent (blockWeight ι) (e + bf - bg) v`. Use `⟨u', v', e, e + bf - bg, weightedHomogeneousComponent_isWeightedHomogeneous _ _, weightedHomogeneousComponent_isWeightedHomogeneous _ _, tsub_add_cancel_of_le hle, he, ?_, hc⟩` and prove the remaining obligations. Introduce `hv'`. Establish `h2 : g * (u * v' - u' * v) ∈ P`. Establish `e2 : g * (u * v' - u' * v) = u' * (u * f - v * g) - u * (u' * f - v' * g)` using `by ring`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `P.sub_mem (P.mul_mem_left _ h) (P.mul_mem_left _ hc)`. Establish `h3 : u * v' - u' * v ∈ H` using `hPH ((hP.mem_or_mem h2).resolve_left hgP)`. Establish `h4 : u' * v ∈ H`. Establish `h5` using `H.sub_mem (H.mul_mem_left u hv') h3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h5` using `[sub_sub_cancel]`. Then use the resulting hypothesis. Conclude with `(hH.mem_or_mem h4).elim he hv`. Rewrite `hc` using `[if_neg hle, sub_zero]`. Conclude with `((hP.mem_or_mem hc).elim (fun h' => he (hPH h')) hfP).elim`.
+A detailed English derivation is pending.
 -/
 theorem exists_form_pair {P H : Ideal (MRing ι R)} [hP : P.IsPrime] [hH : H.IsPrime]
     (hPm : IsMultiHomogIdeal P) (hPH : P ≤ H) {f g u v : MRing ι R} {bf bg : K → ℕ}
@@ -80,7 +80,7 @@ theorem exists_form_pair {P H : Ideal (MRing ι R)} [hP : P.IsPrime] [hH : H.IsP
     exact ((hP.mem_or_mem hc).elim (fun h' => he (hPH h')) hfP).elim
 
 /- English proof (translation)
-Take `⟨y, hy, hyH⟩` from `Set.not_subset.mp h`. Take `⟨e, he⟩` from `exists_component_not_mem hyH`. Conclude with `⟨_, e, weightedHomogeneousComponent_isWeightedHomogeneous _ _, hH' y hy e, he⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_form_mem_not_mem {H H' : Ideal (MRing ι R)} (hH' : IsMultiHomogIdeal H')
     (h : ¬ H' ≤ H) : ∃ (x : MRing ι R) (e : K → ℕ), IsMultiHomog x e ∧ x ∈ H' ∧ x ∉ H := by
@@ -89,11 +89,11 @@ theorem exists_form_mem_not_mem {H H' : Ideal (MRing ι R)} (hH' : IsMultiHomogI
   exact ⟨_, e, weightedHomogeneousComponent_isWeightedHomogeneous _ _, hH' y hy e, he⟩
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Conclude with `⟨1, 0, isWeightedHomogeneous_one _ _, (Ideal.ne_top_iff_one H).mp hH.ne_top, by simp⟩`. Consider the case `@insert H₀ S _ ih`. Take `⟨a, A, ha, haH, haS⟩` from `ih fun H' h => hS H' (Finset.mem_insert_of_mem h)`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Establish `h₀` using `hS H₀ (Finset.mem_insert_self _ _)`. Take `⟨x, e, hx, hxH₀, hxH⟩` from `exists_form_mem_not_mem h₀.1 h₀.2`. Use `⟨x * a, e + A, hx.mul ha, fun hm => (hH.mem_or_mem hm).elim hxH haH, ?_⟩` and prove the remaining obligations. Introduce `H' hH'`. Break down `Finset.mem_insert.mp hH' with rfl | h` into its components or cases.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `Ideal.mul_mem_right _ _ hxH₀`. Conclude with `Ideal.mul_mem_left _ _ (haS H' h)`.
+A detailed English derivation is pending.
 -/
 theorem exists_form_separator {H : Ideal (MRing ι R)} [hH : H.IsPrime]
     (S : Finset (Ideal (MRing ι R))) (hS : ∀ H' ∈ S, IsMultiHomogIdeal H' ∧ ¬ H' ≤ H) :
@@ -113,11 +113,9 @@ theorem exists_form_separator {H : Ideal (MRing ι R)} [hH : H.IsPrime]
     · exact Ideal.mul_mem_left _ _ (haS H' h)
 
 /- English proof (translation)
-Use `choose i hi using hrel`. Use `⟨∏ k, X ⟨k, i k⟩ ^ c k, ?_, ?_⟩` and prove the remaining obligations. Establish `hprod` using `IsWeightedHomogeneous.prod (w := blockWeight ι) Finset.univ (fun k => (X ⟨k, i k⟩ : MRing ι R) ^ c k) (fun k => c k • blockWeight ι ⟨k, i k⟩) (fun k _ => (isWeightedHomogeneous_X R _ _).pow _)`. Establish `hc : (∑ k, c k • blockWeight ι ⟨k, i k⟩) = c`. Use function extensionality and compare the values at `k'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `[blockWeight, Finset.sum_apply, Pi.single_apply]`. Rewrite `hprod` using `[hc]`. Conclude with `hprod`. Introduce `hm`. Take `⟨k, -, hk⟩` from `Ideal.IsPrime.prod_mem_iff.mp hm`.
-
-Conclude with `hi k (hH.mem_of_pow_mem _ hk)`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_form_not_mem_of_isRelevant [Fintype K] {H : Ideal (MRing ι R)} [hH : H.IsPrime]
     (hrel : IsRelevant H) (c : K → ℕ) : ∃ m : MRing ι R, IsMultiHomog m c ∧ m ∉ H := by
@@ -138,13 +136,13 @@ theorem exists_form_not_mem_of_isRelevant [Fintype K] {H : Ideal (MRing ι R)} [
 omit [DecidableEq K] in
 
 /- English proof (translation)
-Establish `hI : P ⊔ Ideal.span {x} = P ⊔ Ideal.span {y}`. Establish `key : ∀ {x' y' : MRing ι R}, x' - y' ∈ P → P ⊔ Ideal.span {x'} ≤ P ⊔ Ideal.span {y'}`. Introduce `x' y' h'`. Use `sup_le le_sup_left ((Ideal.span_singleton_le_iff_mem _).mpr ?_)` and prove the remaining obligations. Establish `e : x' = (x' - y') + y'` using `by ring`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `Submodule.add_mem_sup h' (Ideal.subset_span rfl)`. Use `le_antisymm (key h) (key ?_)` and prove the remaining obligations. Rewrite using `[← neg_sub]`. Conclude with `P.neg_mem h`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `W`. Unfold `divCycle`. Distinguish the cases in `hW : W ∈ (P ⊔ Ideal.span {x}).minimalPrimes ∧ IsRelevant W`. Establish `hW' : W ∈ (P ⊔ Ideal.span {y}).minimalPrimes ∧ IsRelevant W` using `hI ▸ hW`. Rewrite using `[dif_pos hW, dif_pos hW']`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hI]`. Establish `hW' : ¬ (W ∈ (P ⊔ Ideal.span {y}).minimalPrimes ∧ IsRelevant W)` using `hI ▸ hW`. Rewrite using `[dif_neg hW, dif_neg hW']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem divCycle_eq_of_sub_mem {P : Ideal (MRing ι R)} {x y : MRing ι R} (h : x - y ∈ P) :
     divCycle P x = divCycle P y := by
@@ -172,55 +170,49 @@ end Helpers
 section Main
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ _ K _ _ ι _ P b f g hP hV T hT`. Use `haveI := hP.isPrime`. Take `⟨bf, bg, hbf, hbg, hb⟩` from `hV.degrees`. Establish `claim : ∃ f₁ g₁ : MRing ι O, (∃ F E : K → ℕ, IsMultiHomog f₁ F ∧ IsMultiHomog g₁ E ∧ (fun k => (F k : ℤ) - E k) = b) ∧ f₁ ∉ P ∧ g₁ ∉ P ∧ f₁ * g - g₁ * f ∈ P ∧ ∀ H ∈ T, f₁ ∉ H ∧ g₁ ∉ H`. Break down `T.eq_empty_or_nonempty with hTe | ⟨H₀, hH₀⟩` into its components or cases.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨f, g, ⟨bf, bg, hbf, hbg, hb⟩, hV.num_not_mem, hV.den_not_mem, ?_, by simp [hTe]⟩` and prove the remaining obligations. Rewrite using `[mul_comm, sub_self]`. Conclude with `P.zero_mem`. Use `set T' := T.filter (fun H => ∀ H' ∈ T, H ≤ H' → H' = H) with hT'`. Establish `hmax : ∀ H ∈ T, ∃ H' ∈ T', H ≤ H'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `H hH`. Take `⟨H', hle, hm⟩` from `T.exists_le_maximal hH`. Conclude with `⟨H', Finset.mem_filter.mpr ⟨hm.1, fun H'' hH'' hle' => le_antisymm (hm.2 hH'' hle') hle'⟩, hle⟩`. Take `⟨H₁, hH₁, -⟩` from `hmax H₀ hH₀`. Establish `hdata : ∀ H, ∃ (a u v : MRing ι O) (A e d : K → ℕ), H ∈ T' → (IsMultiHomog a A ∧ a ∉ H ∧ (∀ H' ∈ T', H' ≠ H → a ∈ H') ∧ IsMultiHomog u e ∧ IsMultiHomog v d ∧ d + bg = e + bf ∧ u ∉ H ∧ v ∉ H ∧ u * f - v * g ∈ P)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Introduce `H`. Distinguish the cases in `hH : H ∈ T'`. Establish `hHT` using `(Finset.mem_filter.mp hH).1`. Take `⟨hH1, hPH, hϖH, -⟩` from `hT H hHT`. Use `haveI := hH1.isPrime`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨u0, v0, hu0, hv0, h0⟩` from `hV.unit_off_special H hH1.isPrime hPH hH1.relevant hϖH`. Take `⟨u, v, e, d, hu, hv, hde, huH, hvH, huv⟩` from `exists_form_pair hP.multiHomog hPH hbf hbg hV.num_not_mem hV.den_not_mem hu0 hv0 h0`. Take `⟨a, A, ha, haH, haS⟩` from `exists_form_separator (H := H) (T'.erase H) (fun H' hH' => ⟨(hT H' (Finset.mem_filter.mp (Finset.mem_of_mem_erase hH')).1).1.multiHomog, fun hle => Finset.ne_of_mem_erase hH' ((Finset.mem_filter.mp (Finset.mem_of_mem_erase hH')).2 H hHT hle).symm⟩)`. Conclude with `⟨a, u, v, A, e, d, fun _ => ⟨ha, haH, fun H' hH' hne => haS H' (Finset.mem_erase.mpr ⟨hne, hH'⟩), hu, hv, hde, huH, hvH, huv⟩⟩`. Conclude with `⟨0, 0, 0, 0, 0, 0, fun h => absurd h hH⟩`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `choose a u v A e d hprop using hdata`. Use `set E : K → ℕ := ∑ H ∈ T', (A H + e H) with hE`. Establish `hmono : ∀ H, ∃ m : MRing ι O, H ∈ T' → IsMultiHomog m (E - (A H + e H)) ∧ m ∉ H`. Introduce `H`. Distinguish the cases in `hH : H ∈ T'`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hH1, -⟩` from `hT H (Finset.mem_filter.mp hH).1 haveI := hH1.isPrime`. Take `⟨m, hm⟩` from `exists_form_not_mem_of_isRelevant hH1.relevant (E - (A H + e H))`. Conclude with `⟨m, fun _ => hm⟩`. Conclude with `⟨0, fun h => absurd h hH⟩`. Use `choose m hm using hmono`.
+Extract witnesses or component facts from the available result. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hle : ∀ H ∈ T', A H + e H ≤ E` using `fun H hH => Finset.single_le_sum (f := fun H => A H + e H) (fun _ _ _ => Nat.zero_le _) hH`. Use `set F : K → ℕ := A H₁ + (E - (A H₁ + e H₁)) + d H₁ with hF`. Establish `hFeq : F + bg = E + bf`. Take `⟨-, -, -, -, -, hde, -⟩` from `hprop H₁ hH₁`. Use function extensionality and compare the values at `k`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `h1k` using `hle H₁ hH₁ k`. Establish `h2k` using `congrFun hde k`. Simplify using `only [Pi.add_apply, Pi.sub_apply] at h1k h2k ⊢`. Simplify using `only [hF, Pi.add_apply, Pi.sub_apply]`. Use linear arithmetic over natural numbers and integers.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hdegv : ∀ H ∈ T', A H + (E - (A H + e H)) + d H = F`. Introduce `H hH`. Take `⟨-, -, -, -, -, hde, -⟩` from `hprop H hH`. Use function extensionality and compare the values at `k`. Establish `h1k` using `hle H hH k`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `h2k` using `congrFun hde k`. Establish `h3k` using `congrFun hFeq k`. Simplify using `only [Pi.add_apply, Pi.sub_apply] at h1k h2k h3k ⊢`. Use linear arithmetic over natural numbers and integers. Establish `hdegu : ∀ H ∈ T', A H + (E - (A H + e H)) + e H = E`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `H hH`. Use function extensionality and compare the values at `k`. Establish `h1k` using `hle H hH k`. Simplify using `only [Pi.add_apply, Pi.sub_apply] at h1k ⊢`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hnot : ∀ H ∈ T', (∑ H' ∈ T', a H' * m H' * v H') ∉ H ∧ (∑ H' ∈ T', a H' * m H' * u H') ∉ H`. Introduce `H hH`. Take `⟨hH1, -⟩` from `hT H (Finset.mem_filter.mp hH).1`. Establish `hp` using `hH1.isPrime`. Take `⟨-, haH, -, -, -, -, huH, hvH, -⟩` from `hprop H hH`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Establish `hrest : ∀ w : Ideal (MRing ι O) → MRing ι O, (∑ H' ∈ T'.erase H, a H' * m H' * w H') ∈ H` using `fun w => H.sum_mem fun H' hH' => H.mul_mem_right _ (H.mul_mem_right _ ((hprop H' (Finset.mem_of_mem_erase hH')).2.2.1 H hH (Finset.ne_of_mem_erase hH').symm))`. Establish `hone : ∀ w : Ideal (MRing ι O) → MRing ι O, w H ∉ H → (∑ H' ∈ T', a H' * m H' * w H') ∉ H`. Introduce `w hw hmem`. Rewrite `hmem` using `[← Finset.add_sum_erase T' _ hH]`. Establish `h'` using `(Submodule.add_mem_iff_left _ (hrest w)).mp hmem`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Break down `hp.mem_or_mem h' with h'' | h''` into its components or cases. Break down `hp.mem_or_mem h'' with h''' | h'''` into its components or cases. Conclude with `haH h'''`. Conclude with `(hm H hH).2 h'''`. Conclude with `hw h''`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨hone v hvH, hone u huH⟩`. Use `⟨∑ H ∈ T', a H * m H * v H, ∑ H ∈ T', a H * m H * u H, ⟨F, E, ?_, ?_, ?_⟩, fun h' => (hnot H₁ hH₁).1 (((hT H₁ (Finset.mem_filter.mp hH₁).1).2.1) h'), fun h' => (hnot H₁ hH₁).2 (((hT H₁ (Finset.mem_filter.mp hH₁).1).2.1) h'), ?_, ?_⟩` and prove the remaining obligations. Use `IsWeightedHomogeneous.sum _ _ _ fun H hH => ?_` and prove the remaining obligations. Take `⟨ha, -, -, -, hv, -⟩` from `hprop H hH`. Establish `h'` using `(ha.mul (hm H hH).1).mul hv`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h'` using `[hdegv H hH]`. Then use the resulting hypothesis. Use `IsWeightedHomogeneous.sum _ _ _ fun H hH => ?_` and prove the remaining obligations. Take `⟨ha, -, -, hu, -⟩` from `hprop H hH`. Establish `h'` using `(ha.mul (hm H hH).1).mul hu`. Rewrite `h'` using `[hdegu H hH]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hb]`. Use function extensionality and compare the values at `k`. Establish `hk` using `congrFun hFeq k`. Simplify using `only [Pi.add_apply] at hk`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_mul, Finset.sum_mul, ← Finset.sum_sub_distrib]`. Use `P.sum_mem fun H hH => ?_` and prove the remaining obligations. Take `⟨-, -, -, -, -, -, -, -, huv⟩` from `hprop H hH`. Establish `e2 : a H * m H * v H * g - a H * m H * u H * f = -(a H * m H) * (u H * f - v H * g)`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e2]`. Conclude with `P.mul_mem_left _ huv`. Introduce `H hH`. Take `⟨H', hH', hle'⟩` from `hmax H hH`. Conclude with `⟨fun h' => (hnot H' hH').1 (hle' h'), fun h' => (hnot H' hH').2 (hle' h')⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨f₁, g₁, hdeg, hf₁, hg₁, hmem, hT₁⟩` from `claim`. Establish `hunitP : ∀ W : Ideal (MRing ι O), W.IsPrime → P ≤ W → IsRelevant W → (C ϖ : MRing ι O) ∉ W → ∃ u v : MRing ι O, u ∉ W ∧ v ∉ W ∧ u * f₁ - v * g₁ ∈ P`. Introduce `W hW hPW hrel hϖW`. Take `⟨u, v, hu, hv, h⟩` from `hV.unit_off_special W hW hPW hrel hϖW`. Use `⟨u, v, hu, hv, ?_⟩` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `e2 : g * (u * f₁ - v * g₁) = u * (f₁ * g - g₁ * f) + g₁ * (u * f - v * g)` using `by ring`. Establish `h' : g * (u * f₁ - v * g₁) ∈ P`. Rewrite using `[e2]`. Conclude with `P.add_mem (P.mul_mem_left _ hmem) (P.mul_mem_left _ h)`. Conclude with `(hP.isPrime.mem_or_mem h').resolve_left hV.den_not_mem`.
-
-Use `⟨f₁, g₁, IsVerticalDivisor.of_unit_off_special hdeg hf₁ hg₁ hunitP, ?_, fun H hH => ?_⟩` and prove the remaining obligations. Establish `hx` using `h1 O K ι P f₁ g hP.isPrime hf₁ hV.den_not_mem`. Establish `hy` using `h1 O K ι P g₁ f hP.isPrime hg₁ hV.num_not_mem`. Establish `hxy : divCycle P (f₁ * g) = divCycle P (g₁ * f)` using `divCycle_eq_of_sub_mem hmem`. Use function extensionality and compare the values at `W`.
-
-Establish `h'` using `congrFun (hx.symm.trans (hxy.trans hy)) W`. Simplify using `only [Pi.add_apply] at h'`. Unfold `ratDiv`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hH1, hPH, -, -⟩` from `hT H hH`.
-
-Conclude with `IsVerticalDivisor.of_unit_off_special hdeg (hT₁ H hH).1 (hT₁ H hH).2 fun W hW hHW hrel hϖW =>`. Set `⟨u, v, hu, hv, h⟩` to `hunitP W hW (hPH.trans hHW) hrel hϖW`. Use the proof step `⟨u, v, hu, hv, hPH h⟩`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem Representative.proof (h1 : DivCycleMul.Statement.{u}) : Representative.Statement.{u} := by
   intro O _ _ _ ϖ _ K _ _ ι _ P b f g hP hV T hT

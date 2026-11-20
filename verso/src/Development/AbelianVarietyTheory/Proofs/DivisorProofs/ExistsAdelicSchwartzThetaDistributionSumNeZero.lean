@@ -10,21 +10,19 @@ noncomputable section
 namespace GlobalTheory.ThetaSumNe
 
 /- English proof (translation)
-Introduce `F _ _ κ _`. Set `V` to `κ → mixedEmbedding.mixedSpace F`. Set `b : ContDiffBump (0 : V)` to `⟨1, 2, one_pos, one_lt_two⟩`. Establish `h1 : HasCompactSupport (fun x => ((b x : ℝ) : ℂ))` using `b.hasCompactSupport.comp_left (g := fun r : ℝ => (r : ℂ)) (by simp)`. Set `f : SchwartzMap V ℂ` to `h1.toSchwartzMap (Complex.ofRealCLM.contDiff.comp b.contDiff)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hf : ∀ x, f x = ((b x : ℝ) : ℂ)` using `fun x => rfl`. Set `g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ` to `(GlobalTheory.SchANonzero.intPts F κ).indicator 1`. Establish `hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)` using `GlobalTheory.SchANonzero.indicator_intPts_mem_SB F κ`. Establish `hmem : pureA F f g ∈ schA F κ` using `Submodule.subset_span ⟨f, g, hg, rfl⟩`. Use `⟨pureA F f g, hmem, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set t : (κ → F) → ℂ := fun ξ => pureA F f g (fun i => algebraMap F (AdeleRing (𝓞 F) F) (ξ i)) with ht`. Establish `hsum : Summable t` using `summable_pureA F f hg`. Establish `hre : ∀ ξ, (t ξ).re = b (fun i => mixedEmbedding F (ξ i)) * (g (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ i))).re` using `fun ξ => by`. Simplify using `only [ht, pureA_algebraMap, hf, Complex.re_ofReal_mul]`. Establish `hg0 : ∀ y, 0 ≤ (g y).re` using `fun y => by`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hy : y ∈ GlobalTheory.SchANonzero.intPts F κ`. Simplify using `[g, Set.indicator_of_mem hy]`. Simplify using `[g, Set.indicator_of_notMem hy]`. Establish `hnn : ∀ ξ, 0 ≤ (t ξ).re` using `fun ξ => by`. Rewrite using `[hre]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `mul_nonneg (b.nonneg) (hg0 _)`. Establish `hz : (t 0).re = 1`. Rewrite using `[hre]`. Establish `h0 : (fun i : κ => algebraMap F (FiniteAdeleRing (𝓞 F) F) ((0 : κ → F) i)) ∈ GlobalTheory.SchANonzero.intPts F κ` using `fun i _ v => by show (algebraMap F (FiniteAdeleRing (𝓞 F) F) 0) v ∈ v.adicCompletionIntegers F`. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `zero_mem (v.adicCompletionIntegers F)`. Establish `hx : (fun i : κ => mixedEmbedding F ((0 : κ → F) i)) = 0`. Use function extensionality and compare the values at `i`. Conclude with `map_zero _`. Rewrite using `[hx, b.one_of_mem_closedBall (Metric.mem_closedBall_self zero_le_one)]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [g, Set.indicator_of_mem h0, Pi.one_apply, Complex.one_re, one_mul]`. Establish `hpos : 0 < ∑' ξ, (t ξ).re` using `(Complex.reCLM.summable hsum).tsum_pos hnn 0 (by show 0 < (t 0).re; rw [hz]; exact one_pos)`. Introduce `h`. Establish `: (thetaSum F (pureA F f g)).re = ∑' ξ, (t ξ).re` using `Complex.re_tsum hsum`. Rewrite `this` using `[h, Complex.zero_re]`.
-
-Conclude with `hpos.ne' this.symm`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mem_schA_thetaSum_ne_zero : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ],
     ∃ φ ∈ schA F κ, thetaSum F φ ≠ 0 := by

@@ -8,9 +8,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.CompanionTheory.SkewSpec
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on generalizing v with`. Consider the case `C a => simp [Polynomial.aeval_C, Module.algebraMap_end_apply]`. Consider the case `add p q hp hq => simp [hp, hq]`. Consider the case `monomial n a ih`. Establish `hp : Polynomial.C a * Polynomial.X ^ (n + 1) = (Polynomial.C a * Polynomial.X ^ n) * (Polynomial.X : Polynomial ℂ)` using `by ring`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[hp, map_mul (Polynomial.aeval SA), map_mul (Polynomial.aeval SB), Polynomial.aeval_X, Polynomial.aeval_X, Module.End.mul_apply, Module.End.mul_apply, ih, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem aeval_intertwine {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGroup B] [Module ℂ B]
     (f : A →ₗ[ℂ] B) (SA : Module.End ℂ A) (SB : Module.End ℂ B)
@@ -26,9 +26,9 @@ theorem aeval_intertwine {A B : Type} [AddCommGroup A] [Module ℂ A] [AddCommGr
       Module.End.mul_apply, Module.End.mul_apply, ih, h]
 
 /- English proof (translation)
-Proceed by induction on `p using Polynomial.induction_on generalizing v with`. Consider the case `C a => simp [Polynomial.aeval_C, Module.algebraMap_end_apply, hsmul]`. Consider the case `add p q hp hq => simp [hp, hq, hadd, add_mul]`. Consider the case `monomial n a ih`. Rewrite using `[pow_succ, ← mul_assoc, map_mul, Polynomial.aeval_X, Module.End.mul_apply, ih, h]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Polynomial.eval_mul, Polynomial.eval_X]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem functional_aeval {A : Type} [AddCommGroup A] [Module ℂ A]
     (φ : A → ℂ) (hadd : ∀ a b, φ (a + b) = φ a + φ b) (hsmul : ∀ (c : ℂ) a, φ (c • a) = c * φ a)
@@ -44,19 +44,19 @@ theorem functional_aeval {A : Type} [AddCommGroup A] [Module ℂ A]
     ring
 
 /- English proof (translation)
-Establish `hA : (Complex.I • S : E →ₗ[ℂ] E).IsSymmetric`. Introduce `x y`. Simplify using `[inner_smul_left, inner_smul_right, hS]`. Set `b` to `hA.eigenvectorBasis (n := Module.finrank ℂ E) rfl`. Set `μ` to `hA.eigenvalues (n := Module.finrank ℂ E) rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Establish `hb : ∀ i, S (b i) = (-Complex.I * (μ i : ℂ)) • b i`. Introduce `i`. Establish `h1` using `hA.apply_eigenvectorBasis (n := Module.finrank ℂ E) rfl i`. Establish `h2 : Complex.I • S (b i) = ((μ i : ℝ) : ℂ) • b i` using `by simpa using h1`. Establish `h3` using `congrArg (fun w => (-Complex.I) • w) h2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [smul_smul] at h3`. Simplify using `using h3`. Establish `hφ : ∀ i v, ⟪b i, S v⟫_ℂ = (-Complex.I * (μ i : ℂ)) * ⟪b i, v⟫_ℂ`. Introduce `i v`. Establish `h1` using `hS (b i) v`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `h1` using `[hb, inner_smul_left]`. Simplify using `at h1`. Take the linear combination `h1`. Establish `hc : ∀ i, ⟪b i, u⟫_ℂ = 0 ∨ ‖(μ i : ℂ)‖ ≤ κ`. Introduce `i`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `functional_aeval (fun v => ⟪b i, v⟫_ℂ) (fun a c => inner_add_right _ _ _) (fun c a => inner_smul_right _ _ _) S _ (hφ i) m u`. Simplify using `only [hu, inner_zero_right] at h1`. Break down `mul_eq_zero.mp h1.symm with h2 | h2` into its components or cases. Use `right`. Establish `h3` using `hr _ ((Polynomial.mem_roots hm).mpr h2)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using h3`. Conclude with `Or.inl h2`. Establish `hsq : ‖S u‖ ^ 2 ≤ (κ * ‖u‖) ^ 2`. Rewrite using `[mul_pow, ← b.sum_sq_norm_inner_right (S u), ← b.sum_sq_norm_inner_right u, Finset.mul_sum]`. Use `Finset.sum_le_sum fun i _ => ?_` and prove the remaining obligations.
+Prove the first alternative. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hφ, norm_mul, mul_pow]`. Break down `hc i with h | h` into its components or cases. Simplify using `[h]`. Establish `h4 : ‖-Complex.I * (μ i : ℂ)‖ ≤ κ` using `by simpa using h gcongr`. Conclude with `(pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).mp hsq`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fd_bound {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [FiniteDimensional ℂ E]
     (S : Module.End ℂ E) (hS : ∀ x y, ⟪S x, y⟫_ℂ = -⟪x, S y⟫_ℂ) (m : Polynomial ℂ) (hm : m ≠ 0)
@@ -101,25 +101,23 @@ theorem fd_bound {E : Type} [NormedAddCommGroup E] [InnerProductSpace ℂ E] [Fi
   exact (pow_le_pow_iff_left₀ (norm_nonneg _) (by positivity) two_ne_zero).mp hsq
 
 /- English proof (translation)
-Set `L : Polynomial ℂ →ₗ[ℂ] M` to `{ toFun := fun p => Polynomial.aeval T p x map_add' := fun p q => by simp map_smul' := fun c p => by simp }`. Establish `hL : ∀ p, L p = Polynomial.aeval T p x` using `fun _ => rfl`. Set `N : Submodule ℂ M` to `LinearMap.range L`. Establish `hNeq : N = (Polynomial.degreeLT ℂ m.natDegree).map L`. Apply `le_antisymm` to reduce the goal to its premises.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce and unpack `_ ⟨p, rfl⟩`. Use `⟨p % m, ?_, ?_⟩` and prove the remaining obligations. Establish `h1` using `Polynomial.degree_mod_lt p hm`. Rewrite `h1` using `[Polynomial.degree_eq_natDegree hm]`. Conclude with `Polynomial.mem_degreeLT.mpr h1`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : L (m * (p / m)) = 0`. Rewrite using `[hL, mul_comm, map_mul, Module.End.mul_apply, hx, map_zero]`. Establish `h3` using `congrArg L (EuclideanDomain.div_add_mod p m)`. Rewrite `h3` using `[map_add, h2, zero_add]`. Conclude with `h3`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `LinearMap.map_le_range`. Use `haveI : Module.Finite ℂ (Polynomial.degreeLT ℂ m.natDegree) := Module.Finite.equiv (Polynomial.degreeLTEquiv ℂ m.natDegree).symm`. Use `haveI hfin : Module.Finite ℂ N := by`. Rewrite using `[hNeq]`. Conclude with `Module.Finite.map _ _`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hN : ∀ v ∈ N, T v ∈ N`. Introduce and unpack `_ ⟨p, rfl⟩`. Use `⟨Polynomial.X * p, ?_⟩` and prove the remaining obligations. Rewrite using `[hL, hL, map_mul, Polynomial.aeval_X, Module.End.mul_apply]`. Establish `hxN : x ∈ N` using `⟨1, by simp [hL]⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `R : Module.End ℂ N` to `T.restrict hN`. Set `e` to `Submodule.equivMapOfInjective ι hι N`. Set `S : Module.End ℂ (N.map ι)` to `e.toLinearMap ∘ₗ R ∘ₗ e.symm.toLinearMap`. Establish `hSe : ∀ v, S (e v) = e (R v)` using `fun v => by simp [S]`. Establish `heι : ∀ v : N, ((e v : N.map ι) : H) = ι v` using `fun v => rfl`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `hRc : ∀ v : N, ((R v : N) : M) = T v` using `fun v => rfl`. Establish `hS : ∀ a b, ⟪S a, b⟫_ℂ = -⟪a, S b⟫_ℂ`. Introduce `a b`. Take `⟨a', rfl⟩` from `e.surjective a`. Take `⟨b', rfl⟩` from `e.surjective b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Rewrite using `[hSe, hSe, Submodule.coe_inner, Submodule.coe_inner, heι, heι, heι, heι, hRc, hRc]`. Conclude with `hT _ _`. Set `x' : N` to `⟨x, hxN⟩`. Establish `h1 : ((Polynomial.aeval R m x' : N) : M) = 0`. Use `aeval_intertwine N.subtype R T (fun v => rfl) m x'` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[x', hx]`. Establish `h2 : Polynomial.aeval R m x' = 0` using `Subtype.ext h1`. Establish `h3 : Polynomial.aeval S m (e x') = 0`. Use `aeval_intertwine e.toLinearMap R S (fun v => (hSe v).symm) m x'` as an intermediate fact. Rewrite `this` using `[h2]`.
-
-Simplify using `using this.symm`. Establish `h4` using `fd_bound S hS m hm κ hκ hr (e x') h3`. Rewrite `h4` using `[hSe, Submodule.coe_norm, Submodule.coe_norm, heι, heι, hRc]`. Conclude with `h4`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_le_of_aeval_eq_zero (M H : Type) [AddCommGroup M] [Module ℂ M] [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] (ι : M →ₗ[ℂ] H) (hι : Function.Injective ι) (T : Module.End ℂ M)

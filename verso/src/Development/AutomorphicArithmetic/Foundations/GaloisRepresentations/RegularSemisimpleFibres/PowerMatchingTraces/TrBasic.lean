@@ -11,7 +11,7 @@ open UpperTheory.Gal.InertialTypesAlt.G
 namespace UpperTheory.Gal.InertialTypesAlt.G.FiniteTraces
 
 /- English proof (translation)
-Establish `key : ∀ (R : Submodule ℂ V) (h : ∀ v ∈ R, (0 : V →ₗ[ℂ] V) v ∈ R), LinearMap.trace ℂ R ((0 : V →ₗ[ℂ] V).restrict h) = 0`. Introduce `R h`. Establish `e : (0 : V →ₗ[ℂ] V).restrict h = 0` using `rfl`. Rewrite using `[e, map_zero]`. Conclude with `⟨by rw [LinearMap.range_zero]; infer_instance, key _ _⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 private theorem finTrace_zero {V : Type} [AddCommGroup V] [Module ℂ V] :
     HasFinTrace (0 : V →ₗ[ℂ] V) 0 := by
@@ -23,11 +23,11 @@ private theorem finTrace_zero {V : Type} [AddCommGroup V] [Module ℂ V] :
   exact ⟨by rw [LinearMap.range_zero]; infer_instance, key _ _⟩
 
 /- English proof (translation)
-Distinguish the cases in `hb : b = 0`. Substitute `hb` using the available equality. Rewrite using `[zero_smul, zero_mul]`. Conclude with `finTrace_zero`. Take `⟨hf, rfl⟩` from `h`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `key : ∀ (R : Submodule ℂ V) (_ : R = LinearMap.range A) (h1 : ∀ v ∈ R, (b • A) v ∈ R) (h2 : ∀ v ∈ LinearMap.range A, A v ∈ LinearMap.range A), LinearMap.trace ℂ R ((b • A).restrict h1) = b * LinearMap.trace ℂ (LinearMap.range A) (A.restrict h2)`. Introduce `R hR h1 h2`. Substitute `hR` using the available equality. Establish `e : (b • A).restrict h1 = b • A.restrict h2` using `rfl`. Rewrite using `[e, map_smul, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hr : LinearMap.range (b • A) = LinearMap.range A` using `LinearMap.range_smul _ _ hb`. Conclude with `⟨by rw [hr]; exact hf, key _ hr _ _⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem finTrace_smul {V : Type} [AddCommGroup V] [Module ℂ V] (A : V →ₗ[ℂ] V) {c : ℂ} (b : ℂ)
     (h : HasFinTrace A c) : HasFinTrace (b • A) (b * c) := by
@@ -47,7 +47,7 @@ private theorem finTrace_smul {V : Type} [AddCommGroup V] [Module ℂ V] (A : V 
   exact ⟨by rw [hr]; exact hf, key _ hr _ _⟩
 
 /- English proof (translation)
-Introduce `v l` and use `⟨(hA v l).1.smul_measure hdt, by rw [integral_smul_measure, LinearMap.smul_apply, map_smul, (hA v l).2, Complex.real_smul, smul_eq_mul]⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem isInt_smul {G V : Type} [Group G] [MeasurableSpace G] [AddCommGroup V] [Module ℂ V]
     {m : Measure G} {ρ : Representation ℂ G V} {f : G → ℂ} {A : V →ₗ[ℂ] V} (d : ENNReal) (hdt : d ≠ ⊤)
@@ -56,7 +56,7 @@ private theorem isInt_smul {G V : Type} [Group G] [MeasurableSpace G] [AddCommGr
     rw [integral_smul_measure, LinearMap.smul_apply, map_smul, (hA v l).2, Complex.real_smul, smul_eq_mul]⟩
 
 /- English proof (translation)
-Establish `e : LinearMap.range (A ∘ₗ (I : V →ₗ[ℂ] V)) = LinearMap.range A` using `LinearMap.range_comp_of_range_eq_top A (LinearEquiv.range I)`. Rewrite using `[e]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem finite_comp {V : Type} [AddCommGroup V] [Module ℂ V] (A : V →ₗ[ℂ] V) (I : V ≃ₗ[ℂ] V)
     (h : FiniteDimensional ℂ (LinearMap.range A)) :
@@ -70,13 +70,13 @@ end UpperTheory.Gal.InertialTypesAlt.G.FiniteTraces
 
 open UpperTheory.Gal.InertialTypesAlt.G.FiniteTraces in
 /- English proof (translation)
-Introduce `G _ _ _ m τ I f`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨A, hA, hF⟩`. Conclude with `⟨_, A, hA, finite_comp A I hF.1, rfl⟩`. Introduce and unpack `t t' ⟨A, hA, -, rfl⟩ ⟨B, hB, -, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Take `rfl` from `hA.unique hB`. Both sides reduce to the same expression. Introduce `d hd`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨A, hA, hF⟩`.
+Extract witnesses or component facts from the available result. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨_, isInt_smul d hd hA, finTrace_smul A _ hF⟩`. Introduce and unpack `t ⟨B, hB, hF⟩`. Use `⟨_, isInt_smul d hd hB, ?_⟩` and prove the remaining obligations. Establish `e : ((d.toReal : ℂ) • B) ∘ₗ (I : τ.V →ₗ[ℂ] τ.V) = (d.toReal : ℂ) • (B ∘ₗ (I : τ.V →ₗ[ℂ] τ.V))` using `rfl`. Rewrite using `[e]`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `finTrace_smul _ _ hF`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.G.trBasic :
     UpperTheory.Gal.InertialTypesAlt.G.TrBasic := by

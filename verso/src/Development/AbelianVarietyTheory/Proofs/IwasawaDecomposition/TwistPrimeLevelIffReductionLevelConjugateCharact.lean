@@ -9,37 +9,33 @@ noncomputable section
 namespace GlobalTheory.SeeSaw.TwLev
 
 /- English proof (translation)
-Introduce `F E K _ _ _ _ _ _ _ hc n n' e _ J' J hJ' hJ T f bad S hL r t s h h' ht hn SG Q P χ emb ξ hR P' cg hH hchi hcg g y hgy`. Substitute `e hJ' hJ` using the available equality. Take `rfl : g = y` from `Units.ext (Matrix.ext hgy)`. Establish `hred : ∀ (hz : g ∈ St (1 : GL (Fin n') (E ⊗[F] Formalism.L2.Herm.Af F))) (w : Pl E), redFn 1 w g = redAt 1 w ⟨g, hz⟩` using `fun hz w => extendOne_of_mem _ hz`. Establish `hU : g ∈ S.U → g ∈ UAd hc n' ∧ g ∈ St (1 : GL (Fin n') (E ⊗[F] Formalism.L2.Herm.Af F))` using `fun hy => by`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `(S.U_eq g).1 hy`. Use `⟨h1, rll_St_of_loc n' g fun v => ⟨_, rll_put_mem_St n' v ?_, rll_put_self n' v _⟩⟩` and prove the remaining obligations. Use `(S.Uloc_lev v (h2 v)).2` as an intermediate fact. Rewrite `this` using `[hL]`. Conclude with `this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e0 : g ∈ lev hc 1 1 ⟨r, h', t, s, SG, Q, P', cg, fun PP => (ξ PP)⁻¹⟩ ↔ g ∈ lev hc 1 1 (parDat h t s P χ) ∧ ∀ PP ∈ Q, redFn 1 PP g ∈ blockTri (blk2 r)`. Rewrite using `[mem_lev, mem_lev, mem_parLev, mem_parLev]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨⟨a1, a2, a3, a4⟩, a5⟩`. Conclude with `⟨⟨⟨a1, a2, a3, fun PP hP => absurd hP (Finset.notMem_empty PP)⟩, fun w _ => (hH _).1 a5 w⟩, a4⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨⟨a1, a2, a3, -⟩, a5⟩, a4⟩`. Conclude with `⟨⟨a1, a2, a3, a4⟩, (hH _).2 fun w => a5 w (Set.mem_univ w)⟩`. Establish `e1 : g ∈ levU hc n' ∅ SG (parFam h t s P χ).grp ∧ (∀ PP ∈ Q, redFn 1 PP g ∈ blockTri (blk2 r)) ↔ g ∈ S.U`. Rewrite using `[mem_levU_iff]`. Prove the components needed by the constructor for the conclusion.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨⟨h1, h2, -, h4⟩, hq⟩`. Conclude with `(hR g (Set.mem_univ g) h2 h1).1.2 ⟨fun w => hred h2 w.1 ▸ h4 w (Set.mem_univ w), fun PP => hred h2 PP.1 ▸ hq PP.1 PP.2⟩`. Introduce `hy`. Take `⟨h1, h2⟩` from `hU hy`. Take `⟨a, b⟩` from `(hR g (Set.mem_univ g) h2 h1).1.1 hy`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨⟨h1, h2, fun P hP => absurd hP (Finset.notMem_empty P), fun w _ => ?_⟩, fun PP hP => ?_⟩` and prove the remaining obligations. Use `a w` as an intermediate fact. Rewrite `this` using `[← hred h2]`. Then use the resulting hypothesis. Use `b ⟨PP, hP⟩` as an intermediate fact. Rewrite `this` using `[← hred h2]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨by rw [e0, ← levU_parFam_eq_lev hc h ht hn, e1], fun hy => ?_⟩` and prove the remaining obligations. Take `⟨h1, h2⟩` from `hU hy`. Take `⟨h3, hq⟩` from `e1.2 hy`. Establish `h4 : g ∈ lev hc 1 1 (parDat h t s P χ)` using `levU_parFam_eq_lev hc h ht hn P χ ▸ h3`. Establish `h5` using `e0.2 ⟨h4, hq⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨r1, r2⟩` from `hR g (Set.mem_univ g) h2 h1`. Establish `hq' : ∀ PP : Q, redAt 1 PP.1 ⟨g, h2⟩ ∈ blockTri (blk2 r)` using `fun PP => hred h2 PP.1 ▸ hq PP.1 PP.2`. Establish `hw' : ∀ w : SG, redAt 1 w.1 ⟨g, h2⟩ ∈ (parFam h t s P χ w).H` using `(r1.1 hy).1`. Establish `a1 : ((levFn 1 ⟨r, h', t, s, SG, Q, P', cg, fun PP => (ξ PP)⁻¹⟩ g : ℂˣ) : ℂ) = emb ((levFn 1 (parDat h t s P χ) g : Kˣ) : K) * ∏ PP ∈ Q, ((((ξ PP)⁻¹ (dBlk (blk2 r) 1 (redFn 1 PP g))) : ℂˣ) : ℂ)`. Establish `eQ : (parDat h t s P χ).Q = ∅` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `levFn`. Rewrite using `[extendOne_of_mem _ h5.2, extendOne_of_mem _ h4.2, eQ, Finset.prod_empty, mul_one]`. Simplify using `only [Units.val_mul, Units.coe_prod, map_mul, map_prod]`. Use `congr 1`. Use `congr 1`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hchi _ fun w => h4.2 w (Set.mem_univ w)]`. Use `rld_ofLocal_chi (fun w => (P w).H) (fun w => (P w).lam) ⟨_, h4.2⟩` as an intermediate fact. Use `Eq.trans ?_ (congrArg (fun x : Kˣ => emb (x : K)) this).symm` and prove the remaining obligations. Simplify using `only [Units.coe_prod, map_prod]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ∏ PP ∈ SG, _ = ∏ PP ∈ SG, _`. Use `Finset.prod_congr rfl fun w hw => ?_` and prove the remaining obligations. Use `show ∏ c ∈ Finset.range s, _ = ∏ c ∈ Finset.range s, _`. Use `Finset.prod_congr rfl fun c _ => ?_` and prove the remaining obligations. Rewrite using `[rld_parDat_cg h P χ c ⟨w, hw⟩]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `hcg c ⟨w, hw⟩ _`. Establish `a2` using `levChr_parFam_eq_levChar hc h ht hn P χ g h3 h4`. Rewrite `a2` using `[levChar_apply]`. Rewrite using `[a1, ← a2, r2 hy hw' hq', star_mul']`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show emb ((piChar (fun w => (parFam h t s P χ w).H) (fun w => (parFam h t s P χ w).lam) (levRed hc n' ∅ SG _ ⟨g, h3⟩) : Kˣ) : K) = _`. Rewrite using `[piChar_apply, Units.coe_prod, map_prod, star_prod]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `: Finite (𝓞 E ⧸ w.1.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ w.1.ne_bot`. Establish `b1` using `((emb.toMonoidHom.comp ((Units.coeHom K).comp (parFam h t s P χ w).lam)).isOfFinOrder (isOfFinOrder_of_finite ⟨_, hw' w⟩)).norm_eq_one`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `Eq.trans ?_ ((congrArg star (Complex.inv_eq_conj b1)).trans (Complex.conj_conj _)).symm` and prove the remaining obligations. Conclude with `congrArg (fun x => emb (((parFam h t s P χ w).lam x : Kˣ) : K)) (Subtype.ext ((levRed_apply hc n' ∅ SG _ ⟨g, h3⟩ w).trans (hred h2 w.1)))`. Rewrite using `[star_prod, ← Finset.prod_coe_sort Q]`. Use `Finset.prod_congr rfl fun PP _ => ?_` and prove the remaining obligations. Establish `: Finite (𝓞 E ⧸ PP.1.asIdeal)` using `Ideal.finiteQuotientOfFreeOfNeBot _ PP.1.ne_bot`.
-
-Establish `ed : dBlk (blk2 r) 1 (redFn 1 PP.1 g) = blkDet (blk2 r) 1 ⟨_, hq' PP⟩`. Unfold `dBlk`. Rewrite using `[extendOne_of_mem _ (hq PP.1 PP.2)]`. Conclude with `congrArg _ (Subtype.ext (hred h2 PP.1))`. Rewrite using `[ed, MonoidHom.inv_apply, Units.val_inv_eq_inv_val]`.
-
-Establish `b1` using `(((Units.coeHom ℂ).comp (ξ PP.1)).isOfFinOrder (isOfFinOrder_of_finite (blkDet (blk2 r) 1 ⟨_, hq' PP⟩))).norm_eq_one`. Conclude with `Complex.inv_eq_conj b1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem lev_iffQ : ∀ {F E K : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] [Field K]
     (hc : CMData F E) {n n' : ℕ} (e : n' = n) [NeZero n] {J' : Matrix (Fin n') (Fin n') E} {J : Matrix (Fin n) (Fin n) E},

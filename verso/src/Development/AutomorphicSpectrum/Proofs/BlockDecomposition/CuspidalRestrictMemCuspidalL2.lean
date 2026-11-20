@@ -14,7 +14,7 @@ open GroundTheory.Automorphic.AutomorphicForm
 omit [IsTotallyComplex E] in
 
 /- English proof (translation)
-The claim follows from `Units.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem unipGL_eq_unip {r : ℕ} (X : UPos a r → Ad E) :
     (unipGL X : GL (Fin a) (Ad E)) = unip X :=
@@ -22,13 +22,13 @@ theorem unipGL_eq_unip {r : ℕ} (X : UPos a r → Ad E) :
 
 omit [IsTotallyComplex E] in
 /- English proof (translation)
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isAddHaarMeasure_unipMeasure (r : ℕ) : (unipMeasure E a r).IsAddHaarMeasure := by
   infer_instance
 
 /- English proof (translation)
-Take `⟨-, hl, -, hc⟩` from `mem_cuspCont.1 hφ`. Establish `h` using `hc r h0 h1 (unipMeasure E a r) (unipFundamentalDomain E a r) (isAddHaarMeasure_unipMeasure r) isAddFundamentalDomain_unipFundamentalDomain (y : GA E a)`. Unfold `ctFun`. Use `Eq.trans (integral_congr_ae (Filter.Eventually.of_forall fun X => ?_)) h` and prove the remaining obligations. Conclude with `(resQ_mk hl _).trans (congrArg φ (congrArg (· * (y : GA E a)) (unipGL_eq_unip X)))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem ctFun_resQ_eq_zero {φ : GA E a → ℂ} (hφ : φ ∈ cuspCont E a) {r : ℕ} (h0 : 0 < r) (h1 : r < a)
     (y : normOneGL E a) : ctFun E a r (resQ φ) y = 0 := by
@@ -40,7 +40,7 @@ theorem ctFun_resQ_eq_zero {φ : GA E a → ℂ} (hφ : φ ∈ cuspCont E a) {r 
   exact (resQ_mk hl _).trans (congrArg φ (congrArg (· * (y : GA E a)) (unipGL_eq_unip X)))
 
 /- English proof (translation)
-Introduce `r h0 h1`. Use `filter_upwards [ae_ctFun_congr ν r h.coeFn_toLp] with y hy`. Conclude with `hy.trans (ctFun_resQ_eq_zero hφ h0 h1 y)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem toLp_restrict_mem_cuspidalL2 (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (ν : Measure (normOneGL E a)) [ν.IsHaarMeasure] (φ : GA E a → ℂ) (hφ : φ ∈ cuspCont E a)

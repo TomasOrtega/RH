@@ -7,12 +7,12 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.ArchimedeanOrbitMeasure
 namespace PI.AprimeInfW
 
 /- English proof (translation)
-Introduce `X` and use `isOpen_units_tens X`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem unitsOpenTens : UnitsOpenTens := fun X => isOpen_units_tens X
 
 /- English proof (translation)
-The claim follows from `fibOrbAt_of unitsOpenTens fibAllT_holds hC`.
+A detailed English derivation is pending.
 -/
 theorem fibOrbAt_of_compact (hC : MassDataMassesW.HinfCompact) : FibOrbAt :=
   fibOrbAt_of unitsOpenTens fibAllT_holds hC

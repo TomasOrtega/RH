@@ -12,7 +12,7 @@ abbrev GL2C : Subgroup (GL (Fin 2) ℂ) := ⊤
 noncomputable abbrev gl2C : Submodule ℝ (Matrix (Fin 2) (Fin 2) ℂ) := ⊤
 
 /- English proof (translation)
-The claim follows from `isExpLieAlgebra_top`.
+A detailed English derivation is pending.
 -/
 theorem hGL2C : IsExpLieAlgebra GL2C gl2C := isExpLieAlgebra_top
 
@@ -26,7 +26,7 @@ Both sides reduce to the same expression.
     (((toGLC A hA : GL2C) : GL (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ) = A := rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem GL2C_ext {g g' : GL2C}
     (h : ((g : GL (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ) = ((g' : GL (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ)) :
@@ -71,7 +71,7 @@ Both sides reduce to the same expression.
 abbrev U2 : Type := unitaryGroup (Fin 2) ℂ
 
 /- English proof (translation)
-Introduce `h`. Establish `h1 : (star (k : Matrix (Fin 2) (Fin 2) ℂ) * k).det = 1`. Rewrite using `[Matrix.UnitaryGroup.star_mul_self, Matrix.det_one]`. Rewrite `h1` using `[Matrix.det_mul, h, mul_zero]`. Conclude with `zero_ne_one h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_ne_zero_of_U2 (k : U2) : ((k : Matrix (Fin 2) (Fin 2) ℂ)).det ≠ 0 := by
   intro h
@@ -93,7 +93,7 @@ Both sides reduce to the same expression.
   rfl
 
 /- English proof (translation)
-The claim follows from `Units.inv_eq_of_mul_eq_one_right (Matrix.mem_unitaryGroup_iff.1 k.2)`.
+A detailed English derivation is pending.
 -/
 theorem coe_kC_inv (k : U2) :
     ((((kC k : GL2C) : GL (Fin 2) ℂ)⁻¹ : GL (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ) =
@@ -101,9 +101,9 @@ theorem coe_kC_inv (k : U2) :
   Units.inv_eq_of_mul_eq_one_right (Matrix.mem_unitaryGroup_iff.1 k.2)
 
 /- English proof (translation)
-Establish `hval : Continuous fun k : U2 => ((kC k : GL (Fin 2) ℂ))`. Use `Units.continuous_iff.2 ⟨continuous_subtype_val, ?_⟩` and prove the remaining obligations. Establish `e : (fun k : U2 => ((((kC k : GL2C) : GL (Fin 2) ℂ)⁻¹ : GL (Fin 2) ℂ) : Matrix (Fin 2) (Fin 2) ℂ)) = fun k : U2 => star (k : Matrix (Fin 2) (Fin 2) ℂ)`. Use function extensionality and compare the values at `k`. Conclude with `coe_kC_inv k`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `continuous_star.comp continuous_subtype_val`. Conclude with `continuous_induced_rng.2 hval`.
+A detailed English derivation is pending.
 -/
 theorem continuous_kC : Continuous kC := by
   have hval : Continuous fun k : U2 => ((kC k : GL (Fin 2) ℂ)) := by

@@ -19,11 +19,9 @@ section Generic
 variable {P X : Type} [Group P] [Group X]
 
 /- English proof (translation)
-Distinguish the cases in `hc : c = 0`. Substitute `hc` using the available equality. Simplify using `only [zero_mul]`. Conclude with `GlobalTheory.CompanionTheory.FamClP.hint_zero K`. Establish `hst : rStab (fun m => c * v m) = rStab v`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `r`. Use `show (∀ x, c * v (x * r) = c * v x) ↔ ∀ x, v (x * r) = v x`. Conclude with `forall_congr' fun x => mul_right_inj' hc`. Unfold `hint`. Rewrite using `[hst, show (∑ᶠ q : P ⧸ (rStab v ⊓ K), c * v q.out) = c * ∑ᶠ q : P ⧸ (rStab v ⊓ K), v q.out from (smul_finsum c _).symm]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hint_smul (K : Subgroup P) (c : ℂ) (v : P → ℂ) : hint K (fun m => c * v m) = c * hint K v := by
   by_cases hc : c = 0
@@ -40,7 +38,7 @@ theorem hint_smul (K : Subgroup P) (c : ℂ) (v : P → ℂ) : hint K (fun m => 
     ring
 
 /- English proof (translation)
-Rewrite using `[← GlobalTheory.CompanionTheory.FamClP.hint_left K (fun m => (L : Set P).indicator (fun _ => c) m * G (z * φ m)) l]`. Use `congr 1`. Use function extensionality and compare the values at `m`. Establish `hmem : l * m ∈ L ↔ m ∈ L` using `⟨fun h => by simpa using L.mul_mem (L.inv_mem hl) h, fun h => L.mul_mem hl h⟩`. Simplify using `only [Set.indicator_apply, SetLike.mem_coe, hmem, map_mul, mul_assoc]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem act_left (K L : Subgroup P) (c : ℂ) (φ : P →* X) (G : X → ℂ) (z : X) (l : P) (hl : l ∈ L) :
     hint K (fun m => (L : Set P).indicator (fun _ => c) m * G (z * φ l * φ m)) =
@@ -53,19 +51,19 @@ theorem act_left (K L : Subgroup P) (c : ℂ) (φ : P →* X) (G : X → ℂ) (z
   simp only [Set.indicator_apply, SetLike.mem_coe, hmem, map_mul, mul_assoc]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h l hl z`. Establish `h1` using `congrFun h (z * φ l)`. Establish `h2` using `congrFun h z`. Rewrite using `[← h1, ← h2]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `act_left K L _ φ G z l hl`. Introduce `h`. Use function extensionality and compare the values at `z`. Establish `hu : (fun m => (L : Set P).indicator (fun _ => ((L.relIndex K : ℕ) : ℂ)) m * G (z * φ m)) = fun m => (L : Set P).indicator (fun _ => ((L.relIndex K : ℕ) : ℂ) * G z) m`. Use function extensionality and compare the values at `m`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hm : m ∈ L`. Simplify using `[hm, h m hm z]`. Simplify using `[hm]`. Rewrite using `[hu]`. Establish `hst : L ≤ rStab (fun m => (L : Set P).indicator (fun _ => ((L.relIndex K : ℕ) : ℂ) * G z) m)`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `l hl x`. Establish `: x * l ∈ L ↔ x ∈ L` using `⟨fun h' => by simpa using L.mul_mem h' (L.inv_mem hl), fun h' => L.mul_mem h' hl⟩`. Simplify using `only [Set.indicator_apply, SetLike.mem_coe, this]`. Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level P K L _ hLK hst hfin]`. Establish `hone : ((((1 : P) : P ⧸ L)).out) ∈ L`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `QuotientGroup.eq.1 (QuotientGroup.out_eq' ((1 : P) : P ⧸ L))` as an intermediate fact. Simplify using `using this`. Rewrite using `[finsum_eq_single _ ((1 : P) : P ⧸ L)]`. Simplify using `only [Set.indicator_apply, SetLike.mem_coe, hone, if_true]`. Establish `hc : ((L.relIndex K : ℕ) : ℂ) ≠ 0` using `Nat.cast_ne_zero.2 hfin`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← mul_assoc, inv_mul_cancel₀ hc, one_mul]`. Introduce `q hq`. Establish `: q.out ∉ L`. Introduce `hin`. Apply `hq` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← QuotientGroup.out_eq' q]`. Conclude with `QuotientGroup.eq.2 (by simpa using hin)`. Simplify using `[this]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem idem_fix_iff (K L : Subgroup P) (hLK : L ≤ K) (hfin : L.relIndex K ≠ 0) (φ : P →* X) (G : X → ℂ) :
     (fun z => hint K (fun m => (L : Set P).indicator (fun _ => ((L.relIndex K : ℕ) : ℂ)) m * G (z * φ m))) = G ↔
@@ -113,9 +111,9 @@ section Generic2
 variable {P X : Type} [Group P] [Group X]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Establish `hst : K ≤ rStab (fun m => f m * G (z * φ m))`. Introduce `k hk x`. Use `show f (x * k) * G (z * φ (x * k)) = f x * G (z * φ x)`. Rewrite using `[hfK k hk, map_mul, ← mul_assoc, hG k hk]`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompanionTheory.HintLevel.hint_eq_level P K K _ le_rfl hst (by simp), Subgroup.relIndex_self, Nat.cast_one, inv_one, one_mul]`. Establish `hfin : (Function.support fun c : P ⧸ K => f c.out • ((rightReg ℂ X ℂ).comp φ) c.out G).Finite` using `(GlobalTheory.TwTrLin.finite_out_support hK hf).subset (Function.support_smul_subset_left (fun c : P ⧸ K => f c.out) (fun c : P ⧸ K => ((rightReg ℂ X ℂ).comp φ) c.out G))`. Unfold `heckeVec`. Rewrite using `[finsum_apply hfin]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem hecke_eq [TopologicalSpace P] [IsTopologicalGroup P] (K : Subgroup P) (hK : IsOpen (K : Set P)) (φ : P →* X)
     (f : P → ℂ) (G : X → ℂ) (hf : HasCompactSupport f) (hfK : ∀ k ∈ K, ∀ g, f (g * k) = f g)
@@ -143,9 +141,9 @@ namespace PositivityTheory.Rg.BcB.F.FA
 
 open Psmall in
 /- English proof (translation)
-Introduce `E _ _ _ a b w L G hL hLK _`. Establish `hK : IsCompact ((K2 a b w : Subgroup (GLw a w × GLw b w)) : Set (GLw a w × GLw b w))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).2.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).2`. Establish `hfin : L.relIndex (K2 a b w) ≠ 0` using `GlobalTheory.relIndex_ne_zero_of_isOpen_le_isCompact _ _ hK hL hLK`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Rewrite using `[GlobalTheory.TwTrLin.mem_fixed_iff]`. Conclude with `(idem_fix_iff (K2 a b w) L hLK hfin ((embW a w).prodMap (embW b w)) G).trans ⟨fun h l hl => funext (h l hl), fun h l hl z => congrFun (h l hl) z⟩`. Rewrite using `[GlobalTheory.TwTrLin.mem_fixed_iff]`. Conclude with `(idem_fix_iff (K2 a b w) L hLK hfin ((embT a w).prodMap (embT b w)) G).trans ⟨fun h l hl => funext (h l hl), fun h l hl z => congrFun (h l hl) z⟩`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actIdem_holds : ActIdem := by
   intro E _ _ _ a b w L G hL hLK _
@@ -167,11 +165,9 @@ namespace PositivityTheory.Rg.BcB.F.Tail
 
 open PositivityTheory.Rg.BcB.F.FA.Psmall in
 /- English proof (translation)
-Introduce `E _ _ _ a b w f G hf hfK`. Establish `hK : IsOpen ((K2 a b w : Subgroup (GLw a w × GLw b w)) : Set (GLw a w × GLw b w))`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `(GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a).1.prod (GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b).1`. Prove the components needed by the constructor for the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hG`. Rewrite `hG` using `[GlobalTheory.TwTrLin.mem_fixed_iff]`. Conclude with `hecke_eq (K2 a b w) hK ((embW a w).prodMap (embW b w)) f G hf hfK fun k hk z => congrFun (hG k hk) z`. Introduce `hG`. Rewrite `hG` using `[GlobalTheory.TwTrLin.mem_fixed_iff]`.
-
-Conclude with `hecke_eq (K2 a b w) hK ((embT a w).prodMap (embT b w)) f G hf hfK fun k hk z => congrFun (hG k hk) z`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actHecke_holds : ActHecke := by
   intro E _ _ _ a b w f G hf hfK
@@ -191,9 +187,9 @@ namespace Psmall
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Use `show hint _ (fun m => (c • u) m * _) = c * hint _ _`. Rewrite using `[← PositivityTheory.Rg.BcB.F.FA.Psmall.hint_smul]`. Use `congr 1`. Use function extensionality and compare the values at `m`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem actP_smul_fun (w : Pl E) (c : ℂ) (u : GLw a w × GLw b w → ℂ) (G : H E a b → ℂ) :
     actP w (c • u) G = c • actP w u G := by
@@ -205,9 +201,9 @@ theorem actP_smul_fun (w : Pl E) (c : ℂ) (u : GLw a w × GLw b w → ℂ) (G :
   simp only [Pi.smul_apply, smul_eq_mul, mul_assoc]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Use `show hint _ (fun m => u m * pairRt a b w m (c • G) z) = c * hint _ _`. Rewrite using `[← PositivityTheory.Rg.BcB.F.FA.Psmall.hint_smul]`. Use `congr 1`. Use function extensionality and compare the values at `m`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul, Pi.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem actP_smul_vec (w : Pl E) (c : ℂ) (u : GLw a w × GLw b w → ℂ) (G : H E a b → ℂ) :
     actP w u (c • G) = c • actP w u G := by
@@ -220,7 +216,7 @@ theorem actP_smul_vec (w : Pl E) (c : ℂ) (u : GLw a w × GLw b w → ℂ) (G :
   ring
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Use `show hint _ (fun m => (0 : GLw a w × GLw b w → ℂ) m * _) = 0`. Simplify using `only [Pi.zero_apply, zero_mul]`. Conclude with `GlobalTheory.CompanionTheory.FamClP.hint_zero _`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem actP_zero (w : Pl E) (G : H E a b → ℂ) : actP w (0 : GLw a w × GLw b w → ℂ) G = 0 := by
   funext z
@@ -229,11 +225,11 @@ theorem actP_zero (w : Pl E) (G : H E a b → ℂ) : actP w (0 : GLw a w × GLw 
   exact GlobalTheory.CompanionTheory.FamClP.hint_zero _
 
 /- English proof (translation)
-Establish `h1 : ∀ Y : k → H E a b → ℂ, (locM w fun x y => c • M x y) Y = c • locM w M Y`. Introduce `Y`. Use function extensionality and compare the values at `x`. Simplify using `only [locM, actP_smul_fun, Pi.smul_apply, Finset.smul_sum]`. Establish `h2 : ∀ (d : ℂ) (Y : k → H E a b → ℂ), locM w M (d • Y) = d • locM w M Y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `d Y`. Use function extensionality and compare the values at `x`. Simplify using `only [locM, Pi.smul_apply, actP_smul_vec, Finset.smul_sum]`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Proceed by induction. Treat this case separately.
 
-Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', ih, h1, h2, smul_smul, pow_succ']`.
+Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem locM_iter_smul (w : Pl E) {k : Type} [Fintype k] (c : ℂ) (M : k → k → GLw a w × GLw b w → ℂ)
     (G : k → H E a b → ℂ) (m : ℕ) :
@@ -252,11 +248,11 @@ theorem locM_iter_smul (w : Pl E) {k : Type} [Fintype k] (c : ℂ) (M : k → k 
     rw [Function.iterate_succ_apply', Function.iterate_succ_apply', ih, h1, h2, smul_smul, pow_succ']
 
 /- English proof (translation)
-Establish `h1 : ∀ (Y : k → H E a b → ℂ) (x : k), (locM w fun x y => if x = y then q x else 0) Y x = actP w (q x) (Y x)`. Introduce `Y x`. Use `show ∑ y, actP w (if x = y then q x else 0) (Y y) = _`. Rewrite using `[Finset.sum_eq_single x]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `y _ hy`. Rewrite using `[if_neg (Ne.symm hy), actP_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ x) h`. Proceed by induction on `m with`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rfl`. Consider the case `succ m ih`. Rewrite using `[Function.iterate_succ_apply', Function.iterate_succ_apply', h1, ih]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locM_iter_diag (w : Pl E) {k : Type} [Fintype k] (q : k → GLw a w × GLw b w → ℂ)
     (G : k → H E a b → ℂ) (m : ℕ) (x : k) :
@@ -279,11 +275,11 @@ end Psmall
 
 open Psmall in
 /- English proof (translation)
-Introduce `E _ _ _ a b w k _ U G m _ _`. Prove the components needed by the constructor for the conclusion. Introduce `c M hne h0`. Apply `hne` to reduce the goal to its premises. Rewrite using `[locM_iter_smul, h0, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `q hne`. Assume the negation of the conclusion as `hall`. Simplify using `only [not_exists, not_not] at hall`. Apply `hne` to reduce the goal to its premises. Use function extensionality and compare the values at `x`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[locM_iter_diag]`. Conclude with `hall x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locPow_holds : LocPow := by
   intro E _ _ _ a b w k _ U G m _ _

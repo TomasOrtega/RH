@@ -15,7 +15,7 @@ variable {𝒪 : Type*} [CommRing 𝒪] [IsDomain 𝒪] [IsDiscreteValuationRing
   [DecidableEq (ResidueField (gaussRing (gaussCurve W W)))]
 
 /- English proof (translation)
-Simplify using `only [redU, AddMonoidHom.coe_comp, Function.comp_apply, AddEquiv.coe_toAddMonoidHom, reductionHom_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem redU_apply (V : WeierstrassCurve 𝒪) [V.IsElliptic]
     (P : ((V.baseChange K).baseChange (liftField K W)).toAffine.Point) :
@@ -26,7 +26,7 @@ theorem redU_apply (V : WeierstrassCurve 𝒪) [V.IsElliptic]
     reductionHom_apply]
 
 /- English proof (translation)
-Simplify using `only [pushPt, AddMonoidHom.coe_comp, Function.comp_apply, AddEquiv.coe_toAddMonoidHom]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pushPt_apply (V : WeierstrassCurve 𝒪)
     (P : ((V.map (liftJ W)).map (residue (gaussRing (gaussCurve W W)))).toAffine.Point) :
@@ -36,7 +36,7 @@ theorem pushPt_apply (V : WeierstrassCurve 𝒪)
 variable [W.IsElliptic]
 
 /- English proof (translation)
-Break down `point_cases K₀ V P with h0 | ⟨X₀, Y₀, h, rfl, hX⟩ | ⟨x, y, h, rfl⟩` into its components or cases. Conclude with `absurd (by rw [h0, reducePoint_zero]) hP`. Conclude with `absurd (reducePoint_some_notMem K₀ V h hX) hP`. Conclude with `⟨x, y, h, rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_integral_of_reducePoint_ne_zero {𝒪₀ : Type*} [CommRing 𝒪₀] [IsDomain 𝒪₀]
     [IsDiscreteValuationRing 𝒪₀] (K₀ : Type*) [Field K₀] [Algebra 𝒪₀ K₀] [IsFractionRing 𝒪₀ K₀]
@@ -49,9 +49,9 @@ theorem exists_integral_of_reducePoint_ne_zero {𝒪₀ : Type*} [CommRing 𝒪�
   · exact ⟨x, y, h, rfl⟩
 
 /- English proof (translation)
-Establish `hsum : pushPt W W (redU K W W (liftPt₁ K W + liftPt₂ K W)) = univPt₁ (W.map (residue 𝒪)) + univPt₂ (W.map (residue 𝒪))`. Rewrite using `[map_add, map_add, pushPt_redU_liftPt₁, pushPt_redU_liftPt₂]`. Establish `hne : redU K W W (liftPt₁ K W + liftPt₂ K W) ≠ 0` using `fun h0 => isGenPt_ne_zero _ (isGenPt_univPt₁₂ (W.map (residue 𝒪))) (by rw [← hsum, h0, map_zero])`. Rewrite `hne` using `[redU_apply]`. Take `⟨x, y, h, hP⟩` from `exists_integral_of_reducePoint_ne_zero _ _ hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hP' : liftPt₁ K W + liftPt₂ K W = pointCongr (map_baseChange_eq_map_of K W (liftJ W) (liftField K W) (liftJ_algebraMap K W)).symm (Point.some _ _ h)`. Rewrite using `[← hP, pointCongr_pointCongr]`. Both sides reduce to the same expression. Rewrite using `[hP', pointCongr_some]`. Conclude with `⟨x, y, _, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem liftPt₁₂_eq : ∃ (x y : gaussRing (gaussCurve W W)) (h : _),
     liftPt₁ K W + liftPt₂ K W = Point.some (algebraMap _ (liftField K W) x)
@@ -71,7 +71,7 @@ theorem liftPt₁₂_eq : ∃ (x y : gaussRing (gaussCurve W W)) (h : _),
 
 omit [DecidableEq (ResidueField (gaussRing (gaussCurve W W)))] [W.IsElliptic] in
 /- English proof (translation)
-Substitute `h₁` using the available equality. Substitute `h₂` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem pointCongr_pointCongr_eq {F : Type*} [Field F] [DecidableEq F]
     {V₁ V₂ V₃ : WeierstrassCurve F} (h₁ : V₁ = V₂) (h₂ : V₂ = V₃) (h₃ : V₁ = V₃)
@@ -81,9 +81,9 @@ theorem pointCongr_pointCongr_eq {F : Type*} [Field F] [DecidableEq F]
 variable (W' : WeierstrassCurve 𝒪) [W'.IsElliptic]
 
 /- English proof (translation)
-Apply `ringHom_ext_functionField` to reduce the goal to its premises. Introduce `c`. Rewrite using `[RingHom.comp_apply, fieldEvalRed_algebraMap, ← RingHom.comp_apply, pushField_comp_residueField_map]`. Conclude with `((genEval _ R hR).commutes c).symm`. Rewrite using `[RingHom.comp_apply, fieldEvalRed_genX, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, genEval_genX, hRx]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply, fieldEvalRed_genY, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, genEval_genY, hRy]`.
+A detailed English derivation is pending.
 -/
 theorem pushField_comp_fieldEvalRed {x y : gaussRing (gaussCurve W W)}
     (hxy : (W.map (liftJ W)).toAffine.Equation x y)
@@ -106,15 +106,13 @@ theorem pushField_comp_fieldEvalRed {x y : gaussRing (gaussCurve W W)}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨h', e'⟩` from `pushPt_redU_some K W W h`. Rewrite `hpush` using `[e']`. Substitute `hpush` using the available equality. Establish `hxy : (W.map (liftJ W)).toAffine.Equation x y`. Establish `h₁ : ((W.map (liftJ W)).map (algebraMap _ (liftField K W))).toAffine.Equation (algebraMap _ (liftField K W) x) (algebraMap _ (liftField K W) y)`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← map_baseChange_eq_map_of K W (liftJ W) (liftField K W) (liftJ_algebraMap K W)]`. Conclude with `h.1`. Conclude with `(WeierstrassCurve.Affine.map_equation (W.map (liftJ W)).toAffine (IsFractionRing.injective _ (liftField K W)) x y).mp h₁`. Establish `hx : Function.Injective (eval₂RingHom (ResidueField.map (liftJ W)) (residue _ x))`. Rewrite using `[injective_iff_map_eq_zero]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction.
 
-Introduce `p hp`. Assume the negation of the conclusion as `hp0`. Establish `hT : Transcendental (ResidueField 𝒪) (pushField W (residue _ x))` using `hR`. Apply `hT` to reduce the goal to its premises. Use `⟨p, hp0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `key : aeval (pushField W (residue _ x)) p = pushField W (eval₂RingHom (ResidueField.map (liftJ W)) (residue _ x) p)`. Rewrite using `[aeval_def, coe_eval₂RingHom, Polynomial.hom_eval₂, pushField_comp_residueField_map]`. Rewrite using `[key, hp, map_zero]`. Establish `main` using `reducePoint_genEval (K := K) (W := W) (W' := W') (j := liftJ W) (M := liftField K W) (hxy := hxy) (hx := hx) (liftJ_algebraMap K W) h hg Q`. Establish `hring` using `pushField_comp_fieldEvalRed W hxy hx hR rfl rfl`.
-
-Rewrite using `[redU_apply, main, pushPt_apply, pointMapRing_pointCongr, pointCongr_pointCongr, pointMapRing_pointMapRing, pointMapRing_congr hring, map_eq_pointCongr_pointMapRing]`. Conclude with `pointCongr_pointCongr_eq _ _ _ _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pushPt_redU_genEval {x y : gaussRing (gaussCurve W W)}
     (h : ((W.baseChange K).baseChange (liftField K W)).toAffine.Nonsingular
@@ -157,17 +155,15 @@ theorem pushPt_redU_genEval {x y : gaussRing (gaussCurve W W)}
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `haveI : DecidableEq (ResidueField (gaussRing (gaussCurve W W))) := Classical.decEq _`. Take `⟨h₁, e₁⟩` from `liftPt₁_eq K W`. Take `⟨h₂, e₂⟩` from `liftPt₂_eq K W`. Take `⟨x₃, y₃, h₃, e₃⟩` from `liftPt₁₂_eq K W`. Establish `g₁ : IsGenPt (W.baseChange K) (Point.some _ _ h₁)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e₁]`. Conclude with `isGenPt_liftPt₁ K W`. Establish `g₂ : IsGenPt (W.baseChange K) (Point.some _ _ h₂)`. Rewrite using `[← e₂]`. Conclude with `isGenPt_liftPt₂ K W`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `g₃ : IsGenPt (W.baseChange K) (Point.some _ _ h₃)`. Rewrite using `[← e₃]`. Conclude with `isGenPt_liftPt₁₂ K W`. Establish `hsum : pushPt W W (redU K W W (liftPt₁ K W + liftPt₂ K W)) = univPt₁ (W.map (residue 𝒪)) + univPt₂ (W.map (residue 𝒪))`. Rewrite using `[map_add, map_add, pushPt_redU_liftPt₁, pushPt_redU_liftPt₂]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k₁` using `pushPt_redU_genEval K W W' h₁ g₁ (isGenPt_univPt₁ _) (by rw [← e₁]; exact pushPt_redU_liftPt₁ K W) Q`. Establish `k₂` using `pushPt_redU_genEval K W W' h₂ g₂ (isGenPt_univPt₂ _) (by rw [← e₂]; exact pushPt_redU_liftPt₂ K W) Q`. Establish `k₃` using `pushPt_redU_genEval K W W' h₃ g₃ (isGenPt_univPt₁₂ _) (by rw [← e₃]; exact hsum) Q`. Establish `hs : Point.some _ _ h₁ + Point.some _ _ h₂ = Point.some _ _ h₃`. Rewrite using `[← e₁, ← e₂, e₃]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hadd` using `(respectsAdd_iff Q).mp hQ (liftField K W) _ _ g₁ g₂ (hs ▸ g₃)`. Rewrite `hadd` using `[genEval_congr _ hs _ g₃]`. Use `congrArg (fun P => pushPt W W' (redU K W W' P)) hadd` as an intermediate fact. Simplify using `only [map_add] at this`. Rewrite `this` using `[k₁, k₂, k₃]`.
-
-Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem univAdd_reduceFF
     (Q : ((W'.baseChange K).baseChange (W.baseChange K).toAffine.FunctionField).toAffine.Point)
@@ -201,7 +197,7 @@ theorem univAdd_reduceFF
   exact this
 
 /- English proof (translation)
-The claim follows from `respectsAdd_of_univAdd _ (univAdd_reduceFF K W W' Q hQ)`.
+A detailed English derivation is pending.
 -/
 theorem respectsAdd_reduceFF
     (Q : ((W'.baseChange K).baseChange (W.baseChange K).toAffine.FunctionField).toAffine.Point)

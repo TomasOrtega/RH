@@ -8,7 +8,7 @@ noncomputable section
 namespace GlobalTheory.PSer
 
 /- English proof (translation)
-Establish `h0 : (0 : ℤ) < h` using `by exact_mod_cast hh`. Use `Int.emod_lt_of_pos k h0` as an intermediate fact. Use `Int.emod_nonneg k h0.ne'` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem emod_toNat_lt (h : ℕ) (hh : 1 ≤ h) (k : ℤ) : (k % (h : ℤ)).toNat < h := by
   have h0 : (0 : ℤ) < h := by exact_mod_cast hh
@@ -20,9 +20,9 @@ def reCoef (l : ℕ) [Fact l.Prime] (h : ℕ) (hh : 1 ≤ h) (μ : Fin h → ℂ
   (l : ℂ_[l]) ^ (-(k / (h : ℤ))) * μ ⟨(k % (h : ℤ)).toNat, emod_toNat_lt h hh k⟩
 
 /- English proof (translation)
-Establish `hl : (l : ℂ_[l]) ≠ 0` using `by exact_mod_cast (Fact.out : l.Prime).ne_zero`. Establish `h0 : (h : ℤ) ≠ 0` using `by exact_mod_cast (by omega : h ≠ 0)`. Establish `e1 : (k + h) / (h : ℤ) = k / h + 1`. Use `Int.add_mul_ediv_right k 1 h0` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e2 : (k + h) % (h : ℤ) = k % h` using `by simp`. Unfold `reCoef`. Simplify using `only [e1, e2]`. Rewrite using `[neg_add, zpow_add₀ hl, zpow_neg_one]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 theorem reCoef_add (l : ℕ) [Fact l.Prime] (h : ℕ) (hh : 1 ≤ h) (μ : Fin h → ℂ_[l]) (k : ℤ) :
     reCoef l h hh μ k = (l : ℂ_[l]) * reCoef l h hh μ (k + h) := by
@@ -37,11 +37,11 @@ theorem reCoef_add (l : ℕ) [Fact l.Prime] (h : ℕ) (hh : 1 ≤ h) (μ : Fin h
   field_simp
 
 /- English proof (translation)
-Establish `h0 : (h : ℤ) ≠ 0` using `by exact_mod_cast (by omega : h ≠ 0)`. Establish `hi0 : (0 : ℤ) ≤ (i : ℤ)` using `by positivity`. Establish `hih : (i : ℤ) < h` using `by exact_mod_cast i.isLt`. Establish `e1 : (n * h + i) / (h : ℤ) = n`. Rewrite using `[add_comm, Int.add_mul_ediv_right _ _ h0, Int.ediv_eq_zero_of_lt hi0 hih, zero_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e2 : (n * h + i) % (h : ℤ) = i`. Rewrite using `[add_comm, Int.add_mul_emod_self_right, Int.emod_eq_of_lt hi0 hih]`. Unfold `reCoef`. Use `congr 2`. Rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Use `ext`. Simplify using `[e2]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reCoef_at (l : ℕ) [Fact l.Prime] (h : ℕ) (hh : 1 ≤ h) (μ : Fin h → ℂ_[l]) (n : ℤ) (i : Fin h) :
     reCoef l h hh μ (n * h + i) = (l : ℂ_[l]) ^ (-n) * μ i := by
@@ -58,7 +58,7 @@ theorem reCoef_at (l : ℕ) [Fact l.Prime] (h : ℕ) (hh : 1 ≤ h) (μ : Fin h 
   · ext; simp [e2]
 
 /- English proof (translation)
-Establish `hi0 : (0 : ℤ) ≤ ((i : ℕ) : ℤ)` using `by positivity`. Establish `hih : ((i : ℕ) : ℤ) < h` using `by exact_mod_cast i.isLt`. Rewrite using `[add_comm, Int.add_mul_emod_self_right, Int.emod_eq_of_lt hi0 hih]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem emod_at (h : ℕ) (hh : 1 ≤ h) (n : ℤ) (i : Fin h) :
     (n * h + ((i : ℕ) : ℤ)) % (h : ℤ) = ((i : ℕ) : ℤ) := by
@@ -67,29 +67,27 @@ theorem emod_at (h : ℕ) (hh : 1 ≤ h) (n : ℤ) (i : Fin h) :
   rw [add_comm, Int.add_mul_emod_self_right, Int.emod_eq_of_lt hi0 hih]
 
 /- English proof (translation)
-Introduce `l _ h μ hh hμ`. Establish `h0 : (h : ℤ) ≠ 0` using `by exact_mod_cast (by omega : h ≠ 0)`. Use `⟨reCoef l h hh μ, reCoef_add l h hh μ, ?_, ?_⟩` and prove the remaining obligations. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, μ i ≠ 0 := by`. Assume the negation of the conclusion as `H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push_neg at H`. Conclude with `hμ (funext H)`. Use `⟨((i : ℕ) : ℤ), ?_⟩` and prove the remaining obligations. Use `reCoef_at l h hh μ 0 i` as an intermediate fact. Simplify using `only [zero_mul, zero_add, neg_zero, zpow_zero, one_mul] at this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[this]`. Conclude with `hi`. Introduce `x hx`. Set `f : ℤ → ℂ_[l]` to `fun k => reCoef l h hh μ k * sh (pw k x)`. Set `F : Fin h → ℤ → ℂ_[l]` to `fun i k => if k % (h : ℤ) = ((i : ℕ) : ℤ) then f k else 0`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hF : ∀ k, f k = ∑ i, F i k`. Introduce `k`. Establish `hn : 0 ≤ k % (h : ℤ)` using `Int.emod_nonneg k h0`. Rewrite using `[Finset.sum_eq_single ⟨(k % (h : ℤ)).toNat, emod_toNat_lt h hh k⟩]`. Simplify using `only [F]; rw [if_pos (by simp [Int.toNat_of_nonneg hn])]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `b _ hb`. Simplify using `only [F]`. Rewrite using `[if_neg]`. Introduce `hbk`. Apply `hb` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `ext`. Simplify using `only`. Use linear arithmetic over natural numbers and integers. Introduce `hc`. Conclude with `absurd (Finset.mem_univ _) hc`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hFi : ∀ i : Fin h, HasSum (F i) (μ i * lam h i x)`. Introduce `i`. Establish `hg : Function.Injective (fun n : ℤ => n * h + ((i : ℕ) : ℤ))`. Introduce `a b e`. Establish `e' : a * (h : ℤ) = b * h` using `by simpa using e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `mul_right_cancel₀ h0 e'`. Rewrite using `[← hg.hasSum_iff]`. Use `((GlobalTheory.T.untiltFrobeniusLaurentSeries_hasSum_bound_frobenius l h i ‖sh x‖ x hh hx le_rfl).1).mul_left (μ i)` as an intermediate fact. Establish `heq : (F i ∘ fun n : ℤ => n * h + ((i : ℕ) : ℤ)) = fun n : ℤ => μ i * ((l : ℂ_[l]) ^ (-n) * sh (pw (n * h + ((i : ℕ) : ℤ)) x))`. Use function extensionality and compare the values at `n`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Function.comp, F, f]`. Rewrite using `[if_pos (emod_at h hh n i), reCoef_at]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[heq]`. Conclude with `this`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k hk`. Simplify using `only [F]`. Rewrite using `[if_neg]`. Introduce `hki`. Apply `hk` to reduce the goal to its premises.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Use `⟨k / h, ?_⟩` and prove the remaining obligations. Use `Int.ediv_mul_add_emod k (h : ℤ)` as an intermediate fact. Simplify using `only`. Rewrite using `[← hki]`. Combine the linear relations using `[mul_comm (k / (h : ℤ)) (h : ℤ)]`.
-
-Use `hasSum_sum (s := Finset.univ) (fun i _ => hFi i)` as an intermediate fact. Establish `hf : f = fun k => ∑ i, F i k` using `funext hF`. Use `show HasSum f _`. Rewrite using `[hf]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_coef_hasSum_lam : ∀ (l : ℕ) [Fact l.Prime] (h : ℕ) (μ : Fin h → ℂ_[l]), 1 ≤ h → μ ≠ 0 →
     ∃ m : ℤ → ℂ_[l], (∀ k, m k = (l : ℂ_[l]) * m (k + h)) ∧ (∃ k, m k ≠ 0) ∧

@@ -35,14 +35,14 @@ def sqMap {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} (f : S' ⟶ S) (φ : G
     rw [Category.assoc, Category.assoc, w, ← Category.assoc, ← Category.assoc, Over.w (fst G' G'), Over.w (snd G' G')])
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSquare_sqMap {S S' : Scheme.{0}} {G' : Over S'} {G : Over S} (f : S' ⟶ S) (φ : G'.left ⟶ G.left)
     (w : φ ≫ G.hom = G'.hom ≫ f) : IsSquare φ (sqMap f φ w) :=
   ⟨pullback.lift_fst _ _ _, pullback.lift_snd _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [Category.assoc, h.1, ← Category.assoc, h'.1, Category.assoc], by rw [Category.assoc, h.2, ← Category.assoc, h'.2, Category.assoc]⟩`.
+Supply the required witnesses or components.
 -/
 theorem isSquare_comp {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' : Over S''} {φ : G'.left ⟶ G.left}
     {φ₂ : (G' ⊗ G').left ⟶ (G ⊗ G).left} {φ' : G''.left ⟶ G'.left} {φ₂' : (G'' ⊗ G'').left ⟶ (G' ⊗ G').left}
@@ -51,7 +51,7 @@ theorem isSquare_comp {S S' S'' : Scheme.{0}} {G : Over S} {G' : Over S'} {G'' :
    by rw [Category.assoc, h.2, ← Category.assoc, h'.2, Category.assoc]⟩
 
 /- English proof (translation)
-The claim follows from `Finset.prod_induction _ (fun x => IsMonHom x) (fun a b ha hb => by haveI := ha; haveI := hb; exact GlobalTheory.Serre.isMonHom_mul a b) GlobalTheory.Serre.isMonHom_one fun k _ => by haveI := hf k; exact GlobalTheory.Serre.isMonHom_zpow _ _`.
+A detailed English derivation is pending.
 -/
 theorem isMonHom_prodPow {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj A] {r : ℕ} (f : Fin r → (A ⟶ A))
     (hf : ∀ k, IsMonHom (f k)) (c : Fin r → ℤ) : IsMonHom (∏ k, f k ^ c k) :=
@@ -60,7 +60,7 @@ theorem isMonHom_prodPow {S : Scheme.{0}} {A : Over S} [GrpObj A] [IsCommMonObj 
     haveI := hf k; exact GlobalTheory.Serre.isMonHom_zpow _ _
 
 /- English proof (translation)
-Use `(Out.powIsLimit A r).hom_ext (W := Over.mk (b ≫ (Out.powObj A r).hom)) (f := Over.homMk a h0) (f' := Over.homMk b rfl) (fun ⟨k⟩ => Over.OverMorphism.ext (by simpa using h k))` as an intermediate fact. Conclude with `congrArg (fun m => m.left) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem powext {S : Scheme.{0}} (A : Over S) (r : ℕ) {X : Scheme.{0}} (a b : X ⟶ (Out.powObj A r).left)
     (h0 : a ≫ (Out.powObj A r).hom = b ≫ (Out.powObj A r).hom)

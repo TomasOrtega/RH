@@ -13,7 +13,7 @@ noncomputable section
 namespace GlobalTheory.GeoTie.ReadExist
 
 /- English proof (translation)
-Establish `h1 : IsIntegral (PadicAlgCl p) z` using `(hz.tower_top (PadicAlgCl p)).isIntegral`. Establish `h2 : (minpoly (PadicAlgCl p) z).degree = 1` using `IsAlgClosed.degree_eq_one_of_irreducible _ (minpoly.irreducible h1)`. Conclude with `minpoly.mem_range_of_degree_eq_one _ _ h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_algCl {p : ℕ} [Fact p.Prime] {z : ℂ_[p]} (hz : IsAlgebraic ℚ_[p] z) :
     ∃ y : PadicAlgCl p, algebraMap (PadicAlgCl p) ℂ_[p] y = z := by
@@ -23,15 +23,13 @@ theorem exists_algCl {p : ℕ} [Fact p.Prime] {z : ℂ_[p]} (hz : IsAlgebraic �
   exact minpoly.mem_range_of_degree_eq_one _ _ h2
 
 /- English proof (translation)
-Establish `hex : ∀ x : F, ∃ y : PadicAlgCl p, algebraMap (PadicAlgCl p) ℂ_[p] y = φ x` using `fun x => by`. Apply `exists_algCl` to reduce the goal to its premises. Establish `h1 : IsAlgebraic ℚ (φ x)`. Use `(Algebra.IsAlgebraic.isAlgebraic (R := ℚ) x).algHom φ.toRatAlgHom` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `h1.tower_top ℚ_[p]`. Use `choose f hf using hex`. Establish `hinj : Function.Injective (algebraMap (PadicAlgCl p) ℂ_[p])` using `(algebraMap (PadicAlgCl p) ℂ_[p]).injective`. Use `⟨{ toFun := f, map_one' := ?_, map_mul' := ?_, map_zero' := ?_, map_add' := ?_ }, hf⟩` and prove the remaining obligations. Apply `hinj` to reduce the goal to its premises.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hf]`. Simplify using the standard rewrite rules. Introduce `x y`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_mul, hf, hf, hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_mul φ x y`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[hf]`. Simplify using the standard rewrite rules. Introduce `x y`.
-
-Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_add, hf, hf, hf]`. Conclude with `map_add φ x y`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_factor_algCl {p : ℕ} [Fact p.Prime] {F : Type} [Field F] [NumberField F] (φ : F →+* ℂ_[p]) :
     ∃ b : F →+* PadicAlgCl p, ∀ x, algebraMap (PadicAlgCl p) ℂ_[p] (b x) = φ x := by
@@ -56,7 +54,7 @@ variable {V K : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [Fie
   [IsFractionRing V K]
 
 /- English proof (translation)
-Establish `h` using `vV_mul (V := V) hx (inv_ne_zero hx)`. Establish `h1 : vV V (1 : K) = 0` using `by simp [vV]`. Rewrite `h` using `[mul_inv_cancel₀ hx, h1]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem vV_inv {x : K} (hx : x ≠ 0) : vV V x⁻¹ = - vV V x := by
   have h := vV_mul (V := V) hx (inv_ne_zero hx)
@@ -65,11 +63,11 @@ theorem vV_inv {x : K} (hx : x ≠ 0) : vV V x⁻¹ = - vV V x := by
   omega
 
 /- English proof (translation)
-Establish `key : ∀ x, ‖c x‖ ≤ 1 ↔ 0 ≤ vV V x` using `fun x => (hn x).trans (Set.mem_range.trans (GlobalTheory.CompleteValExt.exists_algebraMap_eq_iff (V := V) x))`. Establish `h0 : 0 < ‖c y‖` using `norm_pos_iff.2 ((map_ne_zero c).2 hy)`. Establish `hi` using `key y⁻¹`. Rewrite `hi` using `[map_inv₀, norm_inv, vV_inv hy, inv_le_one₀ h0]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Assume the negation of the conclusion as `h'`. Use `hi.2 (by omega)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Assume the negation of the conclusion as `h'`. Use `hi.1 (not_lt.1 h')` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem norm_lt_one_iff_vV_pos {C : Type} [NormedField C] (c : K →+* C)
     (hn : ∀ x, ‖c x‖ ≤ 1 ↔ x ∈ Set.range (algebraMap V K)) {y : K} (hy : y ≠ 0) :
@@ -92,9 +90,9 @@ theorem norm_lt_one_iff_vV_pos {C : Type} [NormedField C] (c : K →+* C)
 end Val
 
 /- English proof (translation)
-Rewrite using `[← HeightOneSpectrum.valuation_lt_one_iff_mem (K := F)]`. Establish `h0 : la.valuation F (x : F) ≠ 0` using `(la.valuation F).ne_zero_iff.2 hx`. Establish `e` using `WithZero.log_lt_log h0 one_ne_zero`. Rewrite `e` using `[WithZero.log_one]`. Express the relevant statement in the definitionally equal form `_ ↔ 0 < -WithZero.log (la.valuation F (x : F))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← e]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem mem_iff_vLa_pos {F : Type} [Field F] [NumberField F] (la : HeightOneSpectrum (𝓞 F)) (x : 𝓞 F)
     (hx : (x : F) ≠ 0) : x ∈ la.asIdeal ↔ 0 < vLa la (x : F) := by
@@ -107,19 +105,19 @@ theorem mem_iff_vLa_pos {F : Type} [Field F] [NumberField F] (la : HeightOneSpec
   omega
 
 /- English proof (translation)
-Introduce `p _ F _ _ φ T io e ho hT`. Take `⟨q, hq, c, hn⟩` from `GlobalTheory.DegenerateTest.exists_padic_embedding T.V hT`. Establish `ha : ∀ x : 𝓞 F, ‖c (io (x : F))‖ < 1 ↔ x ∈ (placeAt φ).asIdeal`. Introduce `x`. Distinguish the cases in `hx : (x : F) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hx' : x = 0` using `by exact_mod_cast hx`. Substitute `hx'` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[norm_lt_one_iff_vV_pos c hn ((map_ne_zero io).2 hx), ho.2, mem_iff_vLa_pos _ x hx]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `pos_of_mul_pos_right h (by positivity)`. Introduce `h`. Conclude with `mul_pos (by exact_mod_cast ho.1) h`. Establish `hqp : q = p`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(ha (p : 𝓞 F)).2 (natCast_mem_placeAt φ)`. Establish `e1 : c (io (((p : ℕ) : 𝓞 F) : F)) = algebraMap ℚ_[q] (PadicAlgCl q) (p : ℚ_[q])` using `by simp`. Rewrite `h1` using `[e1, PadicAlgCl.norm_extends, Padic.norm_natCast_lt_one_iff]`. Conclude with `(Nat.prime_dvd_prime_iff_eq hq.out (Fact.out : p.Prime)).1 h1`. Substitute `hqp` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, hb⟩` from `exists_factor_algCl φ`. Establish `hbn : ∀ x, ‖b x‖ = ‖φ x‖` using `fun x => by`. Rewrite using `[← hb, ← PadicComplex.coe_eq, PadicComplex.norm_extends]`. Take `⟨g, hg⟩` from `GlobalTheory.EmbThroughCompletion.exists_conj (c.comp io) b (GlobalTheory.EmbThroughCompletion.norm_lt_one_iff (placeAt φ) _ _ ha (fun x => by rw [hbn]; exact (mem_placeAt φ x).symm))`. Use `⟨(algebraMap (PadicAlgCl q) ℂ_[q]).comp ((g : PadicAlgCl q →+* PadicAlgCl q).comp c), ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `a`. Simplify using `only [RingHom.comp_apply]`. Use `hg a` as an intermediate fact. Simplify using `only [RingHom.comp_apply] at this`. Rewrite using `[RingHom.coe_coe, this, hb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Simplify using `only [RingHom.comp_apply]`. Rewrite using `[← PadicComplex.coe_eq, PadicComplex.norm_extends, RingHom.coe_coe, ← PadicAlgCl.spectralNorm_eq, ← spectralNorm_eq_of_equiv g, PadicAlgCl.spectralNorm_eq, hn]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_isReading : ∀ (p : ℕ) [Fact p.Prime] (F : Type) [Field F] [NumberField F] (φ : F →+* ℂ_[p])
     (T : CDVR) (io : F →+* T.Fr) (e : ℕ), OverLa (placeAt φ) T.V io e → T.FinRes →

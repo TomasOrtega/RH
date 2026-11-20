@@ -7,23 +7,21 @@ namespace GlobalTheory.CompletionIsom
 open WithZero in
 
 /- English proof (translation)
-Establish `hπ0 : π ≠ 0` using `by rintro rfl; rw [map_zero] at hπ; exact exp_ne_zero hπ.symm`. Establish `hy0 : y₀ ≠ 0` using `by rintro rfl; rw [map_zero] at hy₀; exact exp_ne_zero hy₀.symm`. Establish `hexp : ∀ (w : Valuation K (WithZero (Multiplicative ℤ))) (x : K), x ≠ 0 → ∃ a : ℤ, w x = exp a` using `fun w x hx => ⟨_, (exp_log ((Valuation.ne_zero_iff w).2 hx)).symm⟩`. Establish `hker : ∀ z, v z = 1 → v' z = 1`. Introduce `z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hz0 : z ≠ 0` using `by rintro rfl; rw [map_zero] at hz; exact zero_ne_one hz`. Take `⟨a, ha⟩` from `hexp v' z hz0`. Break down `lt_trichotomy a 0 with h1 | h1 | h1` into its components or cases. Use `(h z).2 (by rw [ha, ← exp_zero, exp_lt_exp]; exact h1)` as an intermediate fact. Rewrite `this` using `[hz]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `absurd this (lt_irrefl _)`. Rewrite using `[ha, h1, exp_zero]`. Use `(h z⁻¹).2 (by rw [map_inv₀, ha, ← exp_neg, ← exp_zero, exp_lt_exp]; omega)` as an intermediate fact. Rewrite `this` using `[map_inv₀, hz, inv_one]`. Conclude with `absurd this (lt_irrefl _)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨e, he⟩` from `hexp v' π hπ0`. Take `⟨b, hb⟩` from `hexp v y₀ hy0`. Establish `he1 : e < 0`. Use `(h π).1 (by rw [hπ, ← exp_zero, exp_lt_exp]; omega)` as an intermediate fact. Rewrite `this` using `[he, ← exp_zero, exp_lt_exp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb1 : b < 0`. Use `(h y₀).2 (by rw [hy₀, ← exp_zero, exp_lt_exp]; omega)` as an intermediate fact. Rewrite `this` using `[hb, ← exp_zero, exp_lt_exp]`. Then use the resulting hypothesis. Establish `he2 : -1 ≤ e`. Assume the negation of the conclusion as `hc`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(h (π * y₀⁻¹)).2 (by` as an intermediate fact. Rewrite using `[map_mul, map_inv₀, he, hy₀, ← exp_neg, ← exp_add, ← exp_zero, exp_lt_exp]`. Use the proof step `omega)`. Rewrite `this` using `[map_mul, map_inv₀, hπ, hb, ← exp_neg, ← exp_add, ← exp_zero, exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hπ' : v' π = exp (-1)` using `by rw [he]; congr 1; omega`. Introduce `y`. Distinguish the cases in `hy : y = 0`. Rewrite using `[hy, map_zero, map_zero]`. Take `⟨a, ha⟩` from `hexp v y hy`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `hz` using `hker (y * π ^ a) (by`. Rewrite using `[map_mul, map_zpow₀, ha, hπ, ← exp_zsmul, ← exp_add, ← exp_zero]`. Use `congr 1`. Use the proof step `simp)`. Rewrite `hz` using `[map_mul, map_zpow₀, hπ', ← exp_zsmul]`.
-
-Rewrite using `[ha, eq_inv_of_mul_eq_one_left hz, ← exp_neg]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem valuation_eq_of_lt_one_iff {K : Type} [Field K] (v v' : Valuation K (WithZero (Multiplicative ℤ)))
     (h : ∀ y, v y < 1 ↔ v' y < 1) (π : K) (hπ : v π = exp (-1)) (y₀ : K) (hy₀ : v' y₀ = exp (-1)) :
@@ -68,9 +66,9 @@ theorem valuation_eq_of_lt_one_iff {K : Type} [Field K] (v v' : Valuation K (Wit
   congr 1; simp
 
 /- English proof (translation)
-Introduce `E E' _ _ _ _ _ w w' i hi _ y`. Use `GlobalTheory.AdelicUnitaryTop.properSpace_adicCompletion E w` as an intermediate fact. Establish `ho : IsOpenMap i` using `AddMonoidHom.isOpenMap_of_sigmaCompact i.toAddEquiv.toAddMonoidHom i.surjective hi`. Establish `hi' : Continuous i.symm` using `i.toEquiv.continuous_symm_iff.2 ho`. Take `⟨π, hπ⟩` from `w.valuedAdicCompletion_surjective E (WithZero.exp (-1))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨ϖ, hϖ⟩` from `w'.valuedAdicCompletion_surjective E' (WithZero.exp (-1))`. Use `valuation_eq_of_lt_one_iff (Valued.v : Valuation (w.adicCompletion E) (WithZero (Multiplicative ℤ))) ((Valued.v : Valuation (w'.adicCompletion E') (WithZero (Multiplicative ℤ))).comap i.toRingHom) (fun x => ⟨fun hx => GlobalTheory.ConjParahoric.val_lt_one_map i.toRingHom hi hx, f …` and prove the remaining obligations. Use `GlobalTheory.ConjParahoric.val_lt_one_map i.symm.toRingHom hi' hx` as an intermediate fact. Simplify using `using this`. Simplify using `using hϖ`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem valued_v_map : ∀ (E E' : Type) [Field E] [NumberField E] [Field E'] [NumberField E'] [Algebra E E']
     (w : IsDedekindDomain.HeightOneSpectrum (NumberField.RingOfIntegers E))

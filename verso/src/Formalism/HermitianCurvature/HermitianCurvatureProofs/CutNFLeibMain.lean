@@ -7,7 +7,7 @@ import Formalism.HermitianCurvature.HermitianCurvatureProofs.CutNFLeibExp
 namespace Formalism.FourierDecayAlt.P.CutBP
 
 /- English proof (translation)
-The claim follows from `nfLeibV_of (nfLeibOps_of leibniz_expansion_holds) leibniz_bound_holds vector_linearity_holds`.
+A detailed English derivation is pending.
 -/
 theorem leibniz_vector_estimate_holds : NFLeibV :=
   nfLeibV_of (nfLeibOps_of leibniz_expansion_holds) leibniz_bound_holds vector_linearity_holds

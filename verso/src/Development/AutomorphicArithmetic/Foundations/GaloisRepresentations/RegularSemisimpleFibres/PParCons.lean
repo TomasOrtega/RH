@@ -11,7 +11,7 @@ section ParConsAux
 variable {F : Type} [Field F]
 
 /- English proof (translation)
-Unfold `GlobalTheory.Shin.tl GlobalTheory.Shin.ent`. Rewrite using `[dif_pos ⟨by rw [← hI]; exact I.isLt, by rw [← hJ]; exact J.isLt⟩]`. Apply the tactic sequence `congr 1 <;> ext <;> simp [hI, hJ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem tl_entry {a n : ℕ} (M : Matrix (Fin n) (Fin n) F) (i j : Fin a) (I J : Fin n)
     (hI : (I : ℕ) = i) (hJ : (J : ℕ) = j) : GlobalTheory.Shin.tl a M i j = M I J := by
@@ -20,7 +20,7 @@ private theorem tl_entry {a n : ℕ} (M : Matrix (Fin n) (Fin n) F) (i j : Fin a
   congr 1 <;> ext <;> simp [hI, hJ]
 
 /- English proof (translation)
-Unfold `GlobalTheory.Shin.br GlobalTheory.Shin.ent`. Rewrite using `[dif_pos ⟨by rw [← hI]; exact I.isLt, by rw [← hJ]; exact J.isLt⟩]`. Apply the tactic sequence `congr 1 <;> ext <;> simp [hI, hJ]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem br_entry {a b n : ℕ} (M : Matrix (Fin n) (Fin n) F) (i j : Fin b) (I J : Fin n)
     (hI : (I : ℕ) = a + i) (hJ : (J : ℕ) = a + j) : GlobalTheory.Shin.br a b M i j = M I J := by
@@ -29,11 +29,11 @@ private theorem br_entry {a b n : ℕ} (M : Matrix (Fin n) (Fin n) F) (i j : Fin
   congr 1 <;> ext <;> simp [hI, hJ]
 
 /- English proof (translation)
-Substitute `hn` using the available equality. Establish `hM : (p : Matrix (Fin (a + b)) (Fin (a + b)) F).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks (GlobalTheory.Shin.tl a (p : Matrix (Fin (a + b)) (Fin (a + b)) F)) (Matrix.of fun i j => (p : Matrix (Fin (a + b)) (Fin (a + b)) F) (Fin.castAdd b i) (Fin.natAdd a j)) 0 ( …`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `rcases i with i | i <;> rcases j with j | j`. Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₁₁, finSumFinEquiv_apply_left]`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `exact (tl_entry _ i j _ _ (by simp) (by simp)).symm`. Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₁₂, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.of_apply]`. Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₂₁, finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, Matrix.zero_apply]`. Conclude with `h _ _ (by simp) (by simp)`. Simplify using `only [Matrix.submatrix_apply, Matrix.fromBlocks_apply₂₂, finSumFinEquiv_apply_right]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `exact (br_entry _ i j _ _ (by simp) (by simp)).symm`. Establish `hu : IsUnit (p : Matrix (Fin (a + b)) (Fin (a + b)) F).det` using `(Matrix.isUnit_iff_isUnit_det _).1 p.isUnit`. Rewrite `hu` using `[← Matrix.det_submatrix_equiv_self finSumFinEquiv, hM, Matrix.det_fromBlocks_zero₂₁, IsUnit.mul_iff]`. Conclude with `⟨(Matrix.isUnit_iff_isUnit_det _).2 hu.1, (Matrix.isUnit_iff_isUnit_det _).2 hu.2⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 private theorem units_of {a b n : ℕ} (hn : n = a + b) (p : GL (Fin n) F) (h : GlobalTheory.Shin.InPar a p) :
     IsUnit (GlobalTheory.Shin.tl a (p : Matrix (Fin n) (Fin n) F)) ∧
@@ -61,7 +61,7 @@ private theorem units_of {a b n : ℕ} (hn : n = a + b) (p : GL (Fin n) F) (h : 
   exact ⟨(Matrix.isUnit_iff_isUnit_det _).2 hu.1, (Matrix.isUnit_iff_isUnit_det _).2 hu.2⟩
 
 /- English proof (translation)
-Unfold `GlobalTheory.Shin.toG`. Rewrite using `[dif_pos h]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem toG_coe {n : ℕ} {M : Matrix (Fin n) (Fin n) F} (h : IsUnit M) :
     ((GlobalTheory.Shin.toG M : GL (Fin n) F) : Matrix (Fin n) (Fin n) F) = M := by
@@ -70,7 +70,7 @@ private theorem toG_coe {n : ℕ} {M : Matrix (Fin n) (Fin n) F} (h : IsUnit M) 
   rfl
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SmGL.stdBlocks_val]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem sv0 {s n : ℕ} (d : Fin (s + 1) → ℕ) (hd : ∑ i, d i = n) (i : Fin (d 0)) :
     ((GlobalTheory.SmGL.stdBlocks d hd ⟨0, i⟩ : Fin n) : ℕ) = i := by
@@ -78,7 +78,7 @@ private theorem sv0 {s n : ℕ} (d : Fin (s + 1) → ℕ) (hd : ∑ i, d i = n) 
   simp
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.SmGL.stdBlocks_val, GlobalTheory.SmGL.stdBlocks_val]`. Use `erw [Fin.sum_univ_succ]`. Rewrite using `[add_assoc]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem svS {s n b : ℕ} (d : Fin (s + 1) → ℕ) (hd : ∑ i, d i = n)
     (hb : ∑ i : Fin s, d i.succ = b) (c : Fin s) (i : Fin (d c.succ)) :
@@ -90,11 +90,11 @@ private theorem svS {s n b : ℕ} (d : Fin (s + 1) → ℕ) (hd : ∑ i, d i = n
   congr 2
 
 /- English proof (translation)
-Introduce `i j hj hi`. Take `⟨⟨α, i'⟩, rfl⟩` from `(GlobalTheory.SmGL.stdBlocks d hd).surjective i`. Take `⟨⟨β, j'⟩, rfl⟩` from `(GlobalTheory.SmGL.stdBlocks d hd).surjective j`. Rewrite `hp` using `[GlobalTheory.SmGL.mem_parab_iff]`. Consider the cases of `β using Fin.cases with`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Split into cases according to the possible forms of the given data.
 
-Consider the case `zero`. Consider the cases of `α using Fin.cases with`. Consider the case `zero`. Rewrite `hi` using `[sv0]`. Conclude with `absurd i'.isLt (by omega)`.
+Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Treat this case separately.
 
-Consider the case `succ c => exact hp _ _ _ _ (Fin.succ_pos c)`. Consider the case `succ c`. Rewrite `hj` using `[svS d hd hb]`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem inPar_of {s n b : ℕ} (d : Fin (s + 1) → ℕ) (hd : ∑ i, d i = n)
     (hb : ∑ i : Fin s, d i.succ = b) (p : GL (Fin n) F)
@@ -115,7 +115,7 @@ private theorem inPar_of {s n b : ℕ} (d : Fin (s + 1) → ℕ) (hd : ∑ i, d 
     omega
 
 /- English proof (translation)
-Unfold `GlobalTheory.Shin.brG`. Rewrite using `[toG_coe (units_of hn p h).2]`. Apply the tactic sequence `exact br_entry _ _ _ _ _ (svS d hd hb c i) (svS d hd hb c' j)`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem brG_entry {s n b : ℕ} (d : Fin (s + 1) → ℕ) (hd : ∑ i, d i = n)
     (hb : ∑ i : Fin s, d i.succ = b) (hn : n = d 0 + b) (p : GL (Fin n) F)
@@ -132,19 +132,17 @@ private theorem brG_entry {s n b : ℕ} (d : Fin (s + 1) → ℕ) (hd : ∑ i, d
 end ParConsAux
 
 /- English proof (translation)
-Introduce `F _ s n d hd b hb p`. Establish `hn : n = d 0 + b` using `by rw [← hd, ← hb, Fin.sum_univ_succ]`. Use `⟨⟨fun hp => ⟨inPar_of d hd hb p hp, ?_⟩, fun ⟨h1, h2⟩ => ?_⟩, fun hp hp' => ⟨?_, fun c => ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `inPar_of d hd hb p hp`. Rewrite `hp`, the goal using `[GlobalTheory.SmGL.mem_parab_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Introduce `c c' i j hc`. Apply the tactic sequence `rw [brG_entry d hd hb hn p h1]`. Conclude with `hp _ _ _ _ (Fin.succ_lt_succ_iff.2 hc)`. Rewrite `h2`, the goal using `[GlobalTheory.SmGL.mem_parab_iff]`. Introduce `α β i j hαβ`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `α using Fin.cases with`. Consider the case `zero => exact absurd hαβ (Fin.not_lt_zero _)`. Consider the case `succ c`. Consider the cases of `β using Fin.cases with`. Consider the case `zero`.
+Treat this case separately. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h1` to reduce the goal to its premises. Rewrite using `[sv0]`. Conclude with `j.isLt`. Rewrite using `[svS d hd hb]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `succ c'`. Apply the tactic sequence `rw [← brG_entry d hd hb hn p h1]`. Conclude with `h2 _ _ _ _ (Fin.succ_lt_succ_iff.1 hαβ)`. Establish `h1` using `inPar_of d hd hb p hp`. Use extensionality with `i j`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(p : Matrix (Fin n) (Fin n) F) (GlobalTheory.SmGL.stdBlocks d hd ⟨0, i⟩) (GlobalTheory.SmGL.stdBlocks d hd ⟨0, j⟩) = _`. Unfold `GlobalTheory.Shin.tlG`. Rewrite using `[toG_coe (units_of hn p h1).1]`. Apply the tactic sequence `exact (tl_entry _ _ _ _ _ (sv0 d hd i) (sv0 d hd j)).symm`. Establish `h1` using `inPar_of d hd hb p hp`.
-
-Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `(p : Matrix (Fin n) (Fin n) F) (GlobalTheory.SmGL.stdBlocks d hd ⟨c.succ, i⟩) (GlobalTheory.SmGL.stdBlocks d hd ⟨c.succ, j⟩) = ((GlobalTheory.Shin.brG (d 0) b p : GL (Fin b) F) : Matrix (Fin b) (Fin b) F) (GlobalTheory.SmGL.stdBlocks (fun i : Fin s => d i.succ) hb ⟨c, i⟩) (Global …`. Apply the tactic sequence `rw [brG_entry d hd hb hn p h1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.InertialTypesAlt.parCons :
     ParCons := by

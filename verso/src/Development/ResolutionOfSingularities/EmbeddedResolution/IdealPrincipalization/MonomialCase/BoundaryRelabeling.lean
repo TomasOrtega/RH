@@ -51,7 +51,7 @@ def transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData} (h : OrderedMatchi
   Finset.image h.toSecond (h.preimage J)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `ha`. Conclude with `(Finset.mem_filter.1 ha).2`. Introduce `ha`. Conclude with `Finset.mem_filter.2 ⟨Finset.mem_univ a, ha⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_preimage {Y : Scheme.{u}} {L L' : List Y.IdealSheafData} (h : OrderedMatchingOfNonTop L L')
     (J : Finset (Fin L.length)) (a : Fin h.size) :
@@ -63,9 +63,9 @@ theorem mem_preimage {Y : Scheme.{u}} {L L' : List Y.IdealSheafData} (h : Ordere
     exact Finset.mem_filter.2 ⟨Finset.mem_univ a, ha⟩
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hi`. Break down `Finset.mem_image.1 hi with ⟨a, ha, hai⟩` into its components or cases. Conclude with `⟨a, hai, (h.mem_preimage J a).1 ha⟩`. Introduce and unpack `⟨a, hai, haJ⟩`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `Finset.mem_image.2 ⟨a, (h.mem_preimage J a).2 haJ, hai⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData} (h : OrderedMatchingOfNonTop L L')
     (J : Finset (Fin L.length)) (i : Fin L'.length) :
@@ -172,31 +172,31 @@ private def orderedMatchingOfNonTopCons {Y : Scheme.{u}} {L L' : List Y.IdealShe
       rw [ha]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `L L' hlen _`. Consider the cases of `L with`. Consider the case `cons _ _`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Simplify using `only [List.length_cons] at hlen`. Use linear arithmetic over natural numbers and integers. Consider the case `nil`. Consider the cases of `L' with`. Consider the case `cons _ _`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Simplify using `only [List.length_cons, List.length_nil] at hlen`. Use linear arithmetic over natural numbers and integers. Consider the case `nil => exact ⟨orderedMatchingOfNonTopRefl []⟩`. Consider the case `succ n ih`. Introduce `L L' hlen hfil`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the cases of `L with`. Consider the case `nil`. Consider the cases of `L' with`. Consider the case `nil => exact ⟨orderedMatchingOfNonTopRefl []⟩`. Consider the case `cons D' t'`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 
-Distinguish the cases in `hD' : D' = ⊤`. Substitute `hD'` using the available equality. Establish `hlen' : ([] : List Y.IdealSheafData).length + t'.length ≤ n`. Simplify using `only [List.length_nil, List.length_cons] at hlen ⊢`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Establish `hfil' : MarkedIdealWithBoundary.nontrivialPart ([] : List Y.IdealSheafData) = MarkedIdealWithBoundary.nontrivialPart t'`. Simplify `hfil` using `[MarkedIdealWithBoundary.nontrivialPart]`. Take `⟨r⟩` from `ih [] t' hlen' hfil'`. Conclude with `⟨orderedMatchingOfNonTopConsTopRight r⟩`. It suffices to derive a contradiction.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. It suffices to derive a contradiction.
 
-Simplify using `[MarkedIdealWithBoundary.nontrivialPart, hD'] at hfil`. Consider the case `cons D t`. Distinguish the cases in `hD : D = ⊤`. Substitute `hD` using the available equality. Establish `hlen' : t.length + L'.length ≤ n`.
+Simplify using the standard rewrite rules. Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Simplify using `only [List.length_cons] at hlen`. Use linear arithmetic over natural numbers and integers. Establish `hfil' : MarkedIdealWithBoundary.nontrivialPart t = MarkedIdealWithBoundary.nontrivialPart L'`. Simplify `hfil` using `[MarkedIdealWithBoundary.nontrivialPart]`. Take `⟨r⟩` from `ih t L' hlen' hfil'`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨orderedMatchingOfNonTopConsTopLeft r⟩`. Consider the cases of `L' with`. Consider the case `nil`. It suffices to derive a contradiction. Simplify using `[MarkedIdealWithBoundary.nontrivialPart, hD] at hfil`.
+Supply the required witnesses or components. Split into cases according to the possible forms of the given data. Treat this case separately. It suffices to derive a contradiction. Simplify using the standard rewrite rules.
 
-Consider the case `cons D' t'`. Distinguish the cases in `hD' : D' = ⊤`. Substitute `hD'` using the available equality. Establish `hlen' : (D :: t).length + t'.length ≤ n`. Simplify using `only [List.length_cons] at hlen ⊢`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hfil' : MarkedIdealWithBoundary.nontrivialPart (D :: t) = MarkedIdealWithBoundary.nontrivialPart t'`. Simplify `hfil` using `[MarkedIdealWithBoundary.nontrivialPart, hD]`. Take `⟨r⟩` from `ih (D :: t) t' hlen' hfil'`. Conclude with `⟨orderedMatchingOfNonTopConsTopRight r⟩`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `hcons : D = D' ∧ MarkedIdealWithBoundary.nontrivialPart t = MarkedIdealWithBoundary.nontrivialPart t'`. Simplify `hfil` using `[MarkedIdealWithBoundary.nontrivialPart, hD, hD']`. Take `⟨rfl, hfil'⟩` from `hcons`. Establish `hlen' : t.length + t'.length ≤ n`. Simplify using `only [List.length_cons] at hlen`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨r⟩` from `ih t t' hlen' hfil'`. Conclude with `⟨orderedMatchingOfNonTopCons _ r⟩`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem nonempty_orderedMatchingOfNonTop_of_length_add_le {Y : Scheme.{u}} (n : ℕ) :
     ∀ L L' : List Y.IdealSheafData, L.length + L'.length ≤ n →
@@ -270,7 +270,7 @@ private theorem nonempty_orderedMatchingOfNonTop_of_length_add_le {Y : Scheme.{u
                   exact ⟨orderedMatchingOfNonTopCons _ r⟩
 
 /- English proof (translation)
-Rewrite `h` using `[MarkedIdealWithBoundary.sameNontrivialBoundary_iff]`. Conclude with `nonempty_orderedMatchingOfNonTop_of_length_add_le (L.length + L'.length) L L' le_rfl h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nonempty_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (h : MarkedIdealWithBoundary.SameNontrivialBoundary L L') : Nonempty (OrderedMatchingOfNonTop L L') := by
@@ -278,14 +278,14 @@ theorem nonempty_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSh
   exact nonempty_orderedMatchingOfNonTop_of_length_add_le (L.length + L'.length) L L' le_rfl h
 
 /- English proof (translation)
-The claim follows from `MarkedIdealWithBoundary.SameNontrivialBoundary.refl L`.
+A detailed English derivation is pending.
 -/
 theorem sameNontrivialBoundary_refl {Y : Scheme.{u}} (L : List Y.IdealSheafData) :
     MarkedIdealWithBoundary.SameNontrivialBoundary L L :=
   MarkedIdealWithBoundary.SameNontrivialBoundary.refl L
 
 /- English proof (translation)
-The claim follows from `h₁.append h₂`.
+A detailed English derivation is pending.
 -/
 theorem sameNontrivialBoundary_append {Y : Scheme.{u}} {L₁ L₁' L₂ L₂' : List Y.IdealSheafData}
     (h₁ : MarkedIdealWithBoundary.SameNontrivialBoundary L₁ L₁') (h₂ : MarkedIdealWithBoundary.SameNontrivialBoundary L₂ L₂') :
@@ -293,7 +293,7 @@ theorem sameNontrivialBoundary_append {Y : Scheme.{u}} {L₁ L₁' L₂ L₂' : 
   h₁.append h₂
 
 /- English proof (translation)
-The claim follows from `(AlgebraicGeometry.Scheme.IdealSheafData.eq_top_iff_support_eq_empty (⊤ : Y.IdealSheafData)).1 rfl`.
+A detailed English derivation is pending.
 -/
 private theorem support_top_eq_empty {Y : Scheme.{u}} :
     (↑(⊤ : Y.IdealSheafData).support : Set ↥Y) = ∅ :=
@@ -301,7 +301,7 @@ private theorem support_top_eq_empty {Y : Scheme.{u}} :
     (⊤ : Y.IdealSheafData)).1 rfl
 
 /- English proof (translation)
-Rewrite using `[intersectionIdeal_eq_iSup]`. Use `top_le_iff.mp ?_` and prove the remaining obligations. Establish `h2 : L.get j ≤ ⨆ j' ∈ J, L.get j'` using `le_iSup₂ (f := fun (j' : Fin L.length) (_ : j' ∈ J) => L.get j') j hj`. Rewrite `h2` using `[hg]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intersectionIdeal_eq_top {Y : Scheme.{u}} (L : List Y.IdealSheafData)
     (J : Finset (Fin L.length)) {j : Fin L.length} (hj : j ∈ J) (hg : L.get j = ⊤) :
@@ -314,9 +314,9 @@ private theorem intersectionIdeal_eq_top {Y : Scheme.{u}} (L : List Y.IdealSheaf
   exact h2
 
 /- English proof (translation)
-Introduce `j hj hg`. Establish `h1 : intersectionIdeal L J = ⊤` using `intersectionIdeal_eq_top L J hj hg`. Establish `h2 : C ⊆ (↑(intersectionIdeal L J).support : Set ↥Y)`. Simplify using `only [intersectionComponents, Set.mem_ofPred_eq] at hC`. Conclude with `hC.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1, support_top_eq_empty]`. Conclude with `(isIrreducible_of_mem_intersectionComponents hC).1.ne_empty (Set.subset_empty_iff.1 h2)`.
+A detailed English derivation is pending.
 -/
 private theorem get_ne_top_of_mem_intersectionComponents {Y : Scheme.{u}} {L : List Y.IdealSheafData}
     {J : Finset (Fin L.length)} {C : Set ↥Y} (hC : C ∈ intersectionComponents L J) :
@@ -330,7 +330,7 @@ private theorem get_ne_top_of_mem_intersectionComponents {Y : Scheme.{u}} {L : L
   exact (isIrreducible_of_mem_intersectionComponents hC).1.ne_empty (Set.subset_empty_iff.1 h2)
 
 /- English proof (translation)
-Unfold `intersectionComponents`. Rewrite using `[hEq]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 private theorem intersectionComponents_congr {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (J : Finset (Fin L.length)) (J' : Finset (Fin L'.length))
@@ -339,13 +339,11 @@ private theorem intersectionComponents_congr {Y : Scheme.{u}} {L L' : List Y.Ide
   rw [hEq]
 
 /- English proof (translation)
-Rewrite using `[intersectionIdeal_eq_iSup, intersectionIdeal_eq_iSup]`. Apply `le_antisymm` to reduce the goal to its premises. Use `iSup₂_le fun j hj => ?_` and prove the remaining obligations. Take `⟨a, ha⟩` from `rel.exists_toFirst j (hgood j hj)`. Establish `hmem : rel.toSecond a ∈ rel.transport J` using `(rel.mem_transport J _).2 ⟨a, rfl, by rw [ha]; exact hj⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : L.get j = L'.get (rel.toSecond a)`. Rewrite using `[← ha]`. Conclude with `rel.get_eq a`. Rewrite using `[h1]`. Conclude with `le_iSup₂ (f := fun (i : Fin L'.length) (_ : i ∈ rel.transport J) => L'.get i) (rel.toSecond a) hmem`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `iSup₂_le fun i hi => ?_` and prove the remaining obligations. Take `⟨a, hai, haJ⟩` from `(rel.mem_transport J i).1 hi`. Establish `h1 : L'.get i = L.get (rel.toFirst a)`. Rewrite using `[← hai]`. Conclude with `(rel.get_eq a).symm`.
-
-Rewrite using `[h1]`. Conclude with `le_iSup₂ (f := fun (j : Fin L.length) (_ : j ∈ J) => L.get j) (rel.toFirst a) haJ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem intersectionIdeal_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (J : Finset (Fin L.length)) (hgood : ∀ j ∈ J, L.get j ≠ ⊤) :
@@ -369,9 +367,9 @@ private theorem intersectionIdeal_transport {Y : Scheme.{u}} {L L' : List Y.Idea
     exact le_iSup₂ (f := fun (j : Fin L.length) (_ : j ∈ J) => L.get j) (rel.toFirst a) haJ
 
 /- English proof (translation)
-Use extensionality with `j`. Prove the components needed by the constructor for the conclusion. Introduce `hj`. Take `⟨a, ha, rfl⟩` from `Finset.mem_image.1 hj`. Conclude with `(rel.mem_preimage J a).1 ha`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hj`. Take `⟨a, ha⟩` from `rel.exists_toFirst j (hgood j hj)`. Use `Finset.mem_image.2 ⟨a, ?_, ha⟩` and prove the remaining obligations. Conclude with `(rel.mem_preimage J a).2 (by rw [ha]; exact hj)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem image_toFirst_preimage {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (J : Finset (Fin L.length)) (hgood : ∀ j ∈ J, L.get j ≠ ⊤) :
@@ -387,7 +385,7 @@ private theorem image_toFirst_preimage {Y : Scheme.{u}} {L L' : List Y.IdealShea
     exact (rel.mem_preimage J a).2 (by rw [ha]; exact hj)
 
 /- English proof (translation)
-Establish `h1 : (rel.transport J).card = (rel.preimage J).card` using `Finset.card_image_of_injective _ rel.strictMono_toSecond.injective`. Establish `h2 : (Finset.image rel.toFirst (rel.preimage J)).card = (rel.preimage J).card` using `Finset.card_image_of_injective _ rel.strictMono_toFirst.injective`. Rewrite `h2` using `[image_toFirst_preimage rel J hgood]`. Rewrite using `[h1, ← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem card_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (J : Finset (Fin L.length)) (hgood : ∀ j ∈ J, L.get j ≠ ⊤) :
@@ -400,9 +398,9 @@ private theorem card_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
   rw [h1, ← h2]
 
 /- English proof (translation)
-Unfold `IsCandidateComponent at hc ⊢`. Take `⟨hcard, hC, horder⟩` from `hc`. Establish `hgood : ∀ j ∈ J, L.get j ≠ ⊤` using `get_ne_top_of_mem_intersectionComponents hC`. Use `⟨?_, ?_, horder⟩` and prove the remaining obligations. Rewrite using `[card_transport rel J hgood]`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hcard`. Rewrite using `[← intersectionComponents_congr J (rel.transport J) (intersectionIdeal_transport rel J hgood)]`. Conclude with `hC`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem isCandidateComponent_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') {I : Y.IdealSheafData} {m r : ℕ} {J : Finset (Fin L.length)}
@@ -417,9 +415,9 @@ private theorem isCandidateComponent_transport {Y : Scheme.{u}} {L L' : List Y.I
     exact hC
 
 /- English proof (translation)
-Establish `hsets : {r : ℕ | 1 ≤ r ∧ ∃ (J : Finset (Fin L.length)) (C : Set ↥Y), IsCandidateComponent I m L r J C} = {r : ℕ | 1 ≤ r ∧ ∃ (J : Finset (Fin L'.length)) (C : Set ↥Y), IsCandidateComponent I m L' r J C}`. Use extensionality with `r`. Simplify using `only [Set.mem_ofPred_eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hr, J, C, hc⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨hr, rel.transport J, C, isCandidateComponent_transport rel hc⟩`. Introduce and unpack `⟨hr, J, C, hc⟩`. Conclude with `⟨hr, rel.symm.transport J, C, isCandidateComponent_transport rel.symm hc⟩`. Unfold `minIndexCard`. Conclude with `congrArg sInf hsets`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem minIndexCard_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m : ℕ) :
@@ -439,7 +437,7 @@ private theorem minIndexCard_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L
   exact congrArg sInf hsets
 
 /- English proof (translation)
-Use `iSup_le fun J => iSup_le fun C => iSup_le fun hc => ?_` and prove the remaining obligations. Conclude with `le_iSup_of_le (rel.transport J) (le_iSup_of_le C (le_iSup_of_le (isCandidateComponent_transport rel hc) le_rfl))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 private theorem iSup_orderAlong_le_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m r : ℕ) :
@@ -451,7 +449,7 @@ private theorem iSup_orderAlong_le_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {
     (le_iSup_of_le C (le_iSup_of_le (isCandidateComponent_transport rel hc) le_rfl))
 
 /- English proof (translation)
-Establish `hmin : minIndexCard I m L = minIndexCard I m L'` using `minIndexCard_eq_of_orderedMatchingOfNonTop rel I m`. Unfold `maxCandidateOrder`. Rewrite using `[hmin]`. Conclude with `le_antisymm (iSup_orderAlong_le_of_orderedMatchingOfNonTop rel I m _) (iSup_orderAlong_le_of_orderedMatchingOfNonTop rel.symm I m _)`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem maxCandidateOrder_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m : ℕ) :
@@ -462,7 +460,7 @@ private theorem maxCandidateOrder_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}}
   exact le_antisymm (iSup_orderAlong_le_of_orderedMatchingOfNonTop rel I m _) (iSup_orderAlong_le_of_orderedMatchingOfNonTop rel.symm I m _)
 
 /- English proof (translation)
-Unfold `IsMaxOrderIndexSet at hJ`. Take `⟨C, hc, -⟩` from `hJ`. Unfold `IsCandidateComponent at hc`. Conclude with `get_ne_top_of_mem_intersectionComponents hc.2.1`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem get_ne_top_of_isMaxOrderIndexSet {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) {J : Finset (Fin L.length)} (hJ : IsMaxOrderIndexSet I m L J) :
@@ -473,7 +471,7 @@ private theorem get_ne_top_of_isMaxOrderIndexSet {Y : Scheme.{u}} (I : Y.IdealSh
   exact get_ne_top_of_mem_intersectionComponents hc.2.1
 
 /- English proof (translation)
-Unfold `IsMaxOrderIndexSet at hJ`. Take `⟨C, hc, -⟩` from `hJ`. Unfold `IsCandidateComponent at hc`. Conclude with `hc.1`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem card_eq_minIndexCard_of_isMaxOrderIndexSet {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) {J : Finset (Fin L.length)} (hJ : IsMaxOrderIndexSet I m L J) :
@@ -484,9 +482,9 @@ private theorem card_eq_minIndexCard_of_isMaxOrderIndexSet {Y : Scheme.{u}} (I :
   exact hc.1
 
 /- English proof (translation)
-Unfold `IsMaxOrderIndexSet at hJ ⊢`. Take `⟨C, hc, hord⟩` from `hJ`. Use `⟨C, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← minIndexCard_eq_of_orderedMatchingOfNonTop rel I m]`. Conclude with `isCandidateComponent_transport rel hc`.
+Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hord]`. Conclude with `maxCandidateOrder_eq_of_orderedMatchingOfNonTop rel I m`.
+A detailed English derivation is pending.
 -/
 private theorem isMaxOrderIndexSet_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m : ℕ) {J : Finset (Fin L.length)}
@@ -500,15 +498,13 @@ private theorem isMaxOrderIndexSet_transport {Y : Scheme.{u}} {L L' : List Y.Ide
     exact maxCandidateOrder_eq_of_orderedMatchingOfNonTop rel I m
 
 /- English proof (translation)
-Establish `hne : ({c : ℕ | ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J ∧ binaryEncode J = c}).Nonempty`. Take `⟨J, hJ⟩` from `hex`. Conclude with `⟨binaryEncode J, J, hJ, rfl⟩`. Establish `hbdd : BddAbove {c : ℕ | ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J ∧ binaryEncode J = c}`. Use `⟨∑ j : Fin L.length, 2 ^ (L.length - 1 - (j : ℕ)), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `c ⟨J, -, rfl⟩`. Unfold `binaryEncode`. Conclude with `Finset.sum_le_sum_of_subset (Finset.subset_univ J)`. Establish `hmem : maxBinaryCode I m L ∈ {c : ℕ | ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J ∧ binaryEncode J = c}`. Unfold `maxBinaryCode`.
+Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `Nat.sSup_mem hne hbdd`. Take `⟨J₀, hJ₀, hcode⟩` from `hmem`. Establish `hdite : ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J ∧ binaryEncode J = maxBinaryCode I m L` using `⟨J₀, hJ₀, hcode⟩`. Establish `hch : lexMaxIndices I m L = hdite.choose`. Unfold `lexMaxIndices`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `dif_pos hdite`. Establish `hspec` using `hdite.choose_spec`. Rewrite `hspec` using `[← hch]`. Use `⟨hspec.1, fun K hK => ?_⟩` and prove the remaining obligations. Rewrite using `[hspec.2]`.
-
-Unfold `maxBinaryCode`. Conclude with `le_csSup hbdd ⟨K, hK, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem isMaxOrderIndexSet_lexMaxIndices {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (hex : ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J) :
@@ -543,7 +539,7 @@ private theorem isMaxOrderIndexSet_lexMaxIndices {Y : Scheme.{u}} (I : Y.IdealSh
   exact le_csSup hbdd ⟨K, hK, rfl⟩
 
 /- English proof (translation)
-Establish `hno : ¬ ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J ∧ binaryEncode J = maxBinaryCode I m L`. Introduce and unpack `⟨J, hJ, -⟩`. Conclude with `hex ⟨J, hJ⟩`. Unfold `lexMaxIndices`. Conclude with `dif_neg hno`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem lexMaxIndices_eq_empty {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) (hex : ¬ ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J) :
@@ -555,7 +551,7 @@ private theorem lexMaxIndices_eq_empty {Y : Scheme.{u}} (I : Y.IdealSheafData) (
   exact dif_neg hno
 
 /- English proof (translation)
-Take `⟨hb, hub⟩` from `isMaxOrderIndexSet_lexMaxIndices I m L ⟨J, hJ⟩`. Establish `h1 : binaryEncode (lexMaxIndices I m L) = binaryEncode J` using `le_antisymm (hmax _ hb) (hub J hJ)`. Conclude with `binaryEncode_injective h1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem lexMaxIndices_eq_of_binaryEncode_le {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) {J : Finset (Fin L.length)} (hJ : IsMaxOrderIndexSet I m L J)
@@ -567,7 +563,7 @@ private theorem lexMaxIndices_eq_of_binaryEncode_le {Y : Scheme.{u}} (I : Y.Idea
   exact binaryEncode_injective h1
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J`. Conclude with `get_ne_top_of_isMaxOrderIndexSet I m L (isMaxOrderIndexSet_lexMaxIndices I m L hex).1`. Rewrite using `[lexMaxIndices_eq_empty I m L hex]`. Introduce `j hj`. Conclude with `absurd hj (by simp)`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem get_ne_top_of_mem_lexMaxIndices {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     (L : List Y.IdealSheafData) : ∀ j ∈ lexMaxIndices I m L, L.get j ≠ ⊤ := by
@@ -578,11 +574,11 @@ private theorem get_ne_top_of_mem_lexMaxIndices {Y : Scheme.{u}} (I : Y.IdealShe
     exact absurd hj (by simp)
 
 /- English proof (translation)
-Establish `hcardT : (rel.transport J).card = (rel.transport K).card`. Rewrite using `[card_transport rel J hJ, card_transport rel K hK]`. Conclude with `hcard`. Establish `e1` using `binaryEncode_lt_iff_lex_of_card_eq (rel.transport J) (rel.transport K) hcardT`. Establish `e2` using `binaryEncode_lt_iff_lex_of_card_eq J K hcard`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `htJ : rel.transport J = Finset.image rel.toSecond (rel.preimage J)` using `rfl`. Establish `htK : rel.transport K = Finset.image rel.toSecond (rel.preimage K)` using `rfl`. Establish `hA` using `lex_sortedIndices_image_iff rel.toSecond rel.strictMono_toSecond (rel.preimage J) (rel.preimage K)`. Establish `hB` using `lex_sortedIndices_image_iff rel.toFirst rel.strictMono_toFirst (rel.preimage J) (rel.preimage K)`. Rewrite `hB` using `[image_toFirst_preimage rel J hJ, image_toFirst_preimage rel K hK]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1, e2, htJ, htK, hA, hB]`.
+A detailed English derivation is pending.
 -/
 private theorem binaryEncode_transport_lt_iff {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (J K : Finset (Fin L.length))
@@ -604,13 +600,11 @@ private theorem binaryEncode_transport_lt_iff {Y : Scheme.{u}} {L L' : List Y.Id
   rw [e1, e2, htJ, htK, hA, hB]
 
 /- English proof (translation)
-Use extensionality with `i`. Prove the components needed by the constructor for the conclusion. Introduce `hi`. Take `⟨a, hai, haK⟩` from `(rel.mem_transport _ i).1 hi`. Take `⟨b, hb1, hb2⟩` from `(OrderedMatchingOfNonTop.mem_transport rel.symm K (rel.toFirst a)).1 haK`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hba : b = a` using `rel.strictMono_toFirst.injective hb1`. Substitute `hba` using the available equality. Rewrite using `[← hai]`. Conclude with `hb2`. Introduce `hi`.
+Establish an intermediate fact. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `rel.exists_toSecond i (hK i hi)`. Use `(rel.mem_transport _ i).2 ⟨a, ha, ?_⟩` and prove the remaining obligations. Use `(OrderedMatchingOfNonTop.mem_transport rel.symm K (rel.toFirst a)).2 ⟨a, rfl, ?_⟩` and prove the remaining obligations. Use `show rel.toSecond a ∈ K`. Rewrite using `[ha]`.
-
-Conclude with `hi`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem transport_symm_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (K : Finset (Fin L'.length)) (hK : ∀ i ∈ K, L'.get i ≠ ⊤) :
@@ -633,15 +627,15 @@ private theorem transport_symm_transport {Y : Scheme.{u}} {L L' : List Y.IdealSh
     exact hi
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ J : Finset (Fin L.length), IsMaxOrderIndexSet I m L J`. Take `⟨hbest, hub⟩` from `isMaxOrderIndexSet_lexMaxIndices I m L hex`. Use `lexMaxIndices_eq_of_binaryEncode_le I m L' (isMaxOrderIndexSet_transport rel I m hbest) ?_` and prove the remaining obligations. Introduce `K hK`. Establish `hK0 : IsMaxOrderIndexSet I m L (rel.symm.transport K)` using `isMaxOrderIndexSet_transport rel.symm I m hK`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hKeq : rel.transport (rel.symm.transport K) = K` using `transport_symm_transport rel K (get_ne_top_of_isMaxOrderIndexSet I m L' hK)`. Establish `hcard : (rel.symm.transport K).card = (lexMaxIndices I m L).card`. Rewrite using `[card_eq_minIndexCard_of_isMaxOrderIndexSet I m L hK0, card_eq_minIndexCard_of_isMaxOrderIndexSet I m L hbest]`. Establish `hlt` using `binaryEncode_transport_lt_iff rel (rel.symm.transport K) (lexMaxIndices I m L) (get_ne_top_of_isMaxOrderIndexSet I m L hK0) (get_ne_top_of_isMaxOrderIndexSet I m L hbest) hcard`. Establish `hnot : ¬ (binaryEncode (lexMaxIndices I m L) < binaryEncode (rel.symm.transport K))` using `not_lt.2 (hub _ hK0)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hnot2 : ¬ (binaryEncode (rel.transport (lexMaxIndices I m L)) < binaryEncode (rel.transport (rel.symm.transport K)))` using `fun hc => hnot (hlt.1 hc)`. Rewrite `hnot2` using `[hKeq]`. Conclude with `not_lt.1 hnot2`. Establish `hex' : ¬ ∃ J : Finset (Fin L'.length), IsMaxOrderIndexSet I m L' J`. Introduce and unpack `⟨J, hJ⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hex ⟨rel.symm.transport J, isMaxOrderIndexSet_transport rel.symm I m hJ⟩`. Rewrite using `[lexMaxIndices_eq_empty I m L' hex', lexMaxIndices_eq_empty I m L hex]`. Use `symm`. Use extensionality with `i`. Prove the components needed by the constructor for the conclusion.
+Use symmetry to reverse the relation. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `hi`. Take `⟨a, -, ha⟩` from `(rel.mem_transport _ i).1 hi`. Conclude with `absurd ha (by simp)`. Introduce `hi`. Conclude with `absurd hi (by simp)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 private theorem lexMaxIndices_transport {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m : ℕ) :
@@ -677,13 +671,13 @@ private theorem lexMaxIndices_transport {Y : Scheme.{u}} {L L' : List Y.IdealShe
       exact absurd hi (by simp)
 
 /- English proof (translation)
-Establish `hmin` using `minIndexCard_eq_of_orderedMatchingOfNonTop rel I m`. Establish `hmax` using `maxCandidateOrder_eq_of_orderedMatchingOfNonTop rel I m`. Establish `hch` using `lexMaxIndices_transport rel I m`. Establish `hgood` using `get_ne_top_of_mem_lexMaxIndices I m L`. Establish `hback : rel.symm.transport (rel.transport (lexMaxIndices I m L)) = lexMaxIndices I m L` using `transport_symm_transport rel.symm (lexMaxIndices I m L) hgood`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsets : {C : Set ↥Y | IsCandidateComponent I m L (minIndexCard I m L) (lexMaxIndices I m L) C ∧ orderAlong I C = maxCandidateOrder I m L} = {C : Set ↥Y | IsCandidateComponent I m L' (minIndexCard I m L') (lexMaxIndices I m L') C ∧ orderAlong I C = maxCandidateOrder I m L'}`. Use extensionality with `C`. Simplify using `only [Set.mem_ofPred_eq]`. Rewrite using `[hch, ← hmin, ← hmax]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨hc, hord⟩`. Conclude with `⟨isCandidateComponent_transport rel hc, hord⟩`. Introduce and unpack `⟨hc, hord⟩`. Use `⟨?_, hord⟩` and prove the remaining obligations. Establish `h2` using `isCandidateComponent_transport rel.symm hc`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h2` using `[hback]`. Then use the resulting hypothesis. Unfold `monomialCenterSet`. Conclude with `congrArg Set.sUnion hsets`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem monomialCenterSet_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m : ℕ) :
@@ -712,7 +706,7 @@ private theorem monomialCenterSet_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}}
   exact congrArg Set.sUnion hsets
 
 /- English proof (translation)
-Substitute `hM` using the available equality. Substitute `hS` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 private theorem openSublocusIdeal_congr {Y : Scheme.{u}} {M M' : Y.IdealSheafData} {S S' : Set ↥Y}
     (hM : M = M') (hS : S = S')
@@ -724,11 +718,11 @@ private theorem openSublocusIdeal_congr {Y : Scheme.{u}} {M M' : Y.IdealSheafDat
   rfl
 
 /- English proof (translation)
-Establish `hmin` using `minIndexCard_eq_of_orderedMatchingOfNonTop rel I m`. Establish `hcen` using `monomialCenterSet_eq_of_orderedMatchingOfNonTop rel I m`. Establish `hint : intersectionIdeal L (lexMaxIndices I m L) = intersectionIdeal L' (lexMaxIndices I m L')`. Rewrite using `[lexMaxIndices_transport rel I m]`. Conclude with `intersectionIdeal_transport rel (lexMaxIndices I m L) (get_ne_top_of_mem_lexMaxIndices I m L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hiff : (minIndexCard I m L ≠ 0 ∧ IsOpen (⇑(intersectionIdeal L (lexMaxIndices I m L)).subschemeι ⁻¹' monomialCenterSet I m L)) ↔ (minIndexCard I m L' ≠ 0 ∧ IsOpen (⇑(intersectionIdeal L' (lexMaxIndices I m L')).subschemeι ⁻¹' monomialCenterSet I m L'))`. Rewrite using `[hmin, hint, hcen]`. Unfold `monomialCenter`. Distinguish the cases in `hc : minIndexCard I m L ≠ 0 ∧ IsOpen (⇑(intersectionIdeal L (lexMaxIndices I m L)).subschemeι ⁻¹' monomialCenterSet I m L)`. Rewrite using `[dif_pos hc, dif_pos (hiff.1 hc)]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `openSublocusIdeal_congr hint hcen _ _`. Rewrite using `[dif_neg hc, dif_neg (fun hx => hc (hiff.2 hx))]`.
+A detailed English derivation is pending.
 -/
 private theorem monomialCenter_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L L' : List Y.IdealSheafData}
     (rel : OrderedMatchingOfNonTop L L') (I : Y.IdealSheafData) (m : ℕ) :
@@ -751,7 +745,7 @@ private theorem monomialCenter_eq_of_orderedMatchingOfNonTop {Y : Scheme.{u}} {L
   · rw [dif_neg hc, dif_neg (fun hx => hc (hiff.2 hx))]
 
 /- English proof (translation)
-Take `⟨rel⟩` from `nonempty_orderedMatchingOfNonTop h`. Conclude with `minIndexCard_eq_of_orderedMatchingOfNonTop rel I m`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem minIndexCard_eq_of_sameNontrivialBoundary {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     {L L' : List Y.IdealSheafData} (h : MarkedIdealWithBoundary.SameNontrivialBoundary L L') :
@@ -760,7 +754,7 @@ theorem minIndexCard_eq_of_sameNontrivialBoundary {Y : Scheme.{u}} (I : Y.IdealS
   exact minIndexCard_eq_of_orderedMatchingOfNonTop rel I m
 
 /- English proof (translation)
-Take `⟨rel⟩` from `nonempty_orderedMatchingOfNonTop h`. Conclude with `monomialCenter_eq_of_orderedMatchingOfNonTop rel I m`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem monomialCenter_eq_of_sameNontrivialBoundary {Y : Scheme.{u}} (I : Y.IdealSheafData) (m : ℕ)
     {L L' : List Y.IdealSheafData} (h : MarkedIdealWithBoundary.SameNontrivialBoundary L L') :

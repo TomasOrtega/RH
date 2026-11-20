@@ -24,7 +24,7 @@ open MeasureTheory
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `haveI : Measure.IsMulRightInvariant (muK ε) := ⟨(compact_haar_holds n ε).2.2.1⟩`. Establish `h1` using `integral_mul_right_eq_self (μ := muK ε) (fun k => f (a * k)) a⁻¹`. Establish `h2` using `integral_mul_left_eq_self (μ := muK ε) f a`. Simplify using `only [mul_assoc] at h1 ⊢`. Conclude with `h1.trans h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integral_conjK (ε : Fin n → Bool) (f : KG ε → ℂ) (a : KG ε) :
     ∫ k, f (a * k * a⁻¹) ∂(muK ε) = ∫ k, f k ∂(muK ε) := by
@@ -35,7 +35,7 @@ theorem integral_conjK (ε : Fin n → Bool) (f : KG ε → ℂ) (a : KG ε) :
   exact h1.trans h2
 
 /- English proof (translation)
-Use `haveI : IsFiniteMeasure (muK ε) := ⟨isCompact_univ.measure_lt_top⟩`. Conclude with `hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_continuousK {ε : Fin n → Bool} {f : KG ε → ℂ} (hf : Continuous f) :
     Integrable f (muK ε) := by
@@ -43,7 +43,7 @@ theorem integrable_of_continuousK {ε : Fin n → Bool} {f : KG ε → ℂ} (hf 
   exact hf.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace f)
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero => exact bot_le`. Consider the case `succ j => exact polyV_mono ε (Nat.le_succ j)`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem lowV_le (ε : Fin n → Bool) (i : ℕ) : lowV ε i ≤ polyV ε i := by
   cases i with
@@ -51,7 +51,7 @@ theorem lowV_le (ε : Fin n → Bool) (i : ℕ) : lowV ε i ≤ polyV ε i := by
   | succ j => exact polyV_mono ε (Nat.le_succ j)
 
 /- English proof (translation)
-Rewrite using `[← integral_sub (integrable_of_continuousK (f := fun k => f k * h k) (hf.mul hh)) (integrable_of_continuousK (f := fun k => g k * h k) (hg.mul hh))]`. Use `congr 1`. Use function extensionality and compare the values at `k`. Simplify using `[sub_mul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem integral_sub_mulK {ε : Fin n → Bool} {f g h : KG ε → ℂ} (hf : Continuous f) (hg : Continuous g)
     (hh : Continuous h) :
@@ -61,21 +61,19 @@ theorem integral_sub_mulK {ε : Fin n → Bool} {f g h : KG ε → ℂ} (hf : Co
   congr 1; funext k; simp [sub_mul]
 
 /- English proof (translation)
-Establish `hdmem : (e - e') ∈ polyV ε i` using `sub_mem he.1 he'.1`. Establish `hc : Continuous (e - e')` using `continuous_of_mem hdmem`. Establish `hce : Continuous e` using `continuous_of_mem he.1`. Establish `hce' : Continuous e'` using `continuous_of_mem he'.1`. Establish `hp : (fun k => star ((e - e') k)) ∈ polyV ε i` using `star_mem hdmem`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `horth : ∀ q ∈ lowV ε i, ∫ k, star (q k) * star ((e - e') k) ∂(muK ε) = 0`. Introduce `q hq`. Establish `hqc : Continuous q` using `continuous_of_mem (lowV_le ε i hq)`. Establish `h1` using `he.2.1 q hq`. Establish `h2` using `he'.2.1 q hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : ∫ k, (e - e') k * q k ∂(muK ε) = 0`. Rewrite using `[integral_sub_mulK hce hce' hqc, h1, h2, sub_self]`. Combine the equalities or inequalities in the displayed calculation. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_mul, mul_comm]`. Both sides reduce to the same expression. Use `_ = (starRingEnd ℂ) (∫ k, (e - e') k * q k ∂(muK ε)) := integral_conj`. Use `_ = 0 := by rw [h3, map_zero]`. Establish `h0 : ∫ k, (e - e') k * star ((e - e') k) ∂(muK ε) = 0`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1` using `he.2.2 _ hp horth`. Establish `a2` using `he'.2.2 _ hp horth`. Establish `hs : Continuous (fun k => star ((e - e') k))` using `continuous_star.comp hc`. Rewrite using `[integral_sub_mulK hce hce' hs, a1, a2, sub_self]`. Establish `hns : Continuous (fun k => Complex.normSq ((e - e') k))` using `Complex.continuous_normSq.comp hc`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∫ k, Complex.normSq ((e - e') k) ∂(muK ε) = 0`. Establish `: (fun k => (e - e') k * star ((e - e') k)) = fun k => ((Complex.normSq ((e - e') k) : ℝ) : ℂ)`. Use function extensionality and compare the values at `fun k => Complex.mul_conj _`. Rewrite `h0` using `[this, integral_complex_ofReal]`. Conclude with `h0` after adjusting the coercions.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `h2 : (fun k => Complex.normSq ((e - e') k)) =ᵐ[muK ε] 0` using `(integral_eq_zero_iff_of_nonneg (fun k => Complex.normSq_nonneg _) ((integrable_of_continuousK (Complex.continuous_ofReal.comp hns)).re)).1 h1`. Establish `h3 : (fun k => Complex.normSq ((e - e') k)) = 0` using `(Continuous.ae_eq_iff_eq (muK ε) hns continuous_const).1 h2`. Use function extensionality and compare the values at `k`. Use `congrFun h3 k` as an intermediate fact. Simplify using `only [Pi.zero_apply, map_eq_zero, Pi.sub_apply] at this`.
-
-Conclude with `sub_eq_zero.1 this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isKer_unique {ε : Fin n → Bool} {i : ℕ} {e e' : KG ε → ℂ} (he : IsKer ε i e) (he' : IsKer ε i e') :
     e = e' := by
@@ -118,7 +116,7 @@ theorem isKer_unique {ε : Fin n → Bool} {i : ℕ} {e e' : KG ε → ℂ} (he 
   exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Use `mul_right_mem a⁻¹ (mul_left_mem a h)` as an intermediate fact. Simplify `this` using `only [mul_assoc]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem conj_mem {ε : Fin n → Bool} (a : KG ε) {d : ℕ} {φ : KG ε → ℂ} (h : φ ∈ polyV ε d) :
     (fun k => φ (a * k * a⁻¹)) ∈ polyV ε d := by
@@ -126,9 +124,9 @@ theorem conj_mem {ε : Fin n → Bool} (a : KG ε) {d : ℕ} {φ : KG ε → ℂ
   simpa only [mul_assoc] using this
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero`. Rewrite `h`, the goal using `[lowV, Submodule.mem_bot]`. Substitute `h` using the available equality. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Treat this case separately. Rewrite the hypotheses and the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 
-Consider the case `succ j => exact conj_mem a h`.
+Treat this case separately.
 -/
 theorem conj_mem_low {ε : Fin n → Bool} (a : KG ε) {i : ℕ} {φ : KG ε → ℂ} (h : φ ∈ lowV ε i) :
     (fun k => φ (a * k * a⁻¹)) ∈ lowV ε i := by
@@ -140,13 +138,13 @@ theorem conj_mem_low {ε : Fin n → Bool} (a : KG ε) {i : ℕ} {φ : KG ε →
   | succ j => exact conj_mem a h
 
 /- English proof (translation)
-Establish `key : ∀ f g : KG ε → ℂ, ∫ k, f (a * k * a⁻¹) * g k ∂(muK ε) = ∫ k, f k * g (a⁻¹ * k * a) ∂(muK ε)`. Introduce `f g`. Rewrite using `[← integral_conjK ε (fun k => f k * g (a⁻¹ * k * a)) a]`. Use `congr 1`. Use function extensionality and compare the values at `k`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [mul_assoc, inv_mul_cancel_left, inv_mul_cancel, mul_one]`. Use `⟨conj_mem a he.1, ?_, ?_⟩` and prove the remaining obligations. Introduce `q hq`. Rewrite using `[key]`. Use `conj_mem_low a⁻¹ hq` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify `he.2.1 _ this` using `only [inv_inv]`. Introduce `p hp horth`. Rewrite using `[key]`. Establish `hp' : (fun k => p (a⁻¹ * k * a)) ∈ polyV ε i` using `by simpa only [inv_inv] using conj_mem a⁻¹ hp`. Establish `horth' : ∀ q ∈ lowV ε i, ∫ k, star (q k) * p (a⁻¹ * k * a) ∂(muK ε) = 0`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `q hq`. Rewrite using `[← integral_conjK ε (fun k => star (q k) * p (a⁻¹ * k * a)) a]`. Use `horth _ (conj_mem_low a hq)` as an intermediate fact. Simplify `this` using `only [mul_assoc, inv_mul_cancel_left, inv_mul_cancel, mul_one]`. Rewrite using `[he.2.2 _ hp' horth']`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -174,7 +172,7 @@ theorem isKer_conj {ε : Fin n → Bool} {i : ℕ} {e : KG ε → ℂ} (he : IsK
     simp
 
 /- English proof (translation)
-Introduce `n ε i e he a k`. Use `isKer_unique (isKer_conj he a) he` as an intermediate fact. Conclude with `congrFun this k`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isKer_class : ∀ {n : ℕ} (ε : Fin n → Bool) (i : ℕ) (e : KG ε → ℂ), IsKer ε i e →
     ∀ a k : KG ε, e (a * k * a⁻¹) = e k := by

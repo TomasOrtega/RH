@@ -3,27 +3,25 @@ import Mathlib
 open Polynomial Matrix IsLocalRing TensorProduct
 
 /- English proof (translation)
-Set `N` to `I • (⊤ : Submodule A H)`. Set `φ : H →ₗ[A] (Fin r → A ⧸ I)` to `LinearMap.pi fun i => I.mkQ ∘ₗ (LinearMap.proj i ∘ₗ π)`. Establish `hφ : ∀ h i, φ h i = Submodule.Quotient.mk (π h i)` using `fun h i => rfl`. Establish `hNφ : N ≤ LinearMap.ker φ`. Rewrite using `[Submodule.smul_le]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha h _`. Rewrite using `[LinearMap.mem_ker]`. Use function extensionality and compare the values at `i`. Rewrite using `[hφ, map_smul, Pi.smul_apply, smul_eq_mul, Pi.zero_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `I.mul_mem_right _ ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `φ'` to `N.liftQ φ hNφ`. Establish `hφ' : ∀ h, φ' (N.mkQ h) = φ h` using `fun h => rfl`. Establish `hsurj : Function.Surjective φ'`. Introduce `y`. Use `choose z hz using fun i => Submodule.Quotient.mk_surjective I (y i)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨h, rfl⟩` from `hπ z`. Use `⟨N.mkQ h, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Rewrite using `[hφ', hφ, hz]`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π LinearMap.id hπ`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hs' : ∀ v, π (s v) = v` using `fun v => LinearMap.congr_fun hs v`. Set `ρ : LinearMap.ker π →ₗ[A] LinearMap.ker φ'` to `(N.mkQ ∘ₗ (LinearMap.ker π).subtype).codRestrict (LinearMap.ker φ') (by`. Introduce `k`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, hφ']`. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hφ, Submodule.subtype_apply, LinearMap.mem_ker.1 k.2]`. Use the proof step `simp)`. Establish `hρ : Function.Surjective ρ`. Introduce and unpack `⟨x, hx⟩`. Take `⟨h, rfl⟩` from `N.mkQ_surjective x`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hx` using `[LinearMap.mem_ker, hφ']`. Establish `hI : ∀ i, π h i ∈ I` using `fun i => by`. Use `congrFun hx i` as an intermediate fact. Rewrite `this` using `[hφ, Pi.zero_apply, Submodule.Quotient.mk_eq_zero]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hsN : s (π h) ∈ N`. Rewrite using `[pi_eq_sum_univ (π h), map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul]`. Conclude with `Submodule.smul_mem_smul (hI i) trivial`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `hk : h - s (π h) ∈ LinearMap.ker π`. Rewrite using `[LinearMap.mem_ker, map_sub, hs', sub_self]`. Use `⟨⟨_, hk⟩, ?_⟩` and prove the remaining obligations. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `N.mkQ (h - s (π h)) = N.mkQ h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h0 : N.mkQ (s (π h)) = 0` using `(Submodule.Quotient.mk_eq_zero N).2 hsN`. Rewrite using `[map_sub, h0, sub_zero]`. Establish `hex` using `Module.length_eq_add_of_exact (LinearMap.ker φ').subtype φ' (Submodule.subtype_injective _) hsurj (LinearMap.exact_subtype_ker_map φ')`. Use `⟨Module.length_le_of_surjective φ' hsurj, ?_⟩` and prove the remaining obligations. Rewrite using `[hex, add_comm]`.
-
-Conclude with `add_le_add le_rfl (Module.length_le_of_surjective ρ hρ)`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.length_quotient_fg_bounds {A : Type} [CommRing A] (H : Type) [AddCommGroup H] [Module A H]
     (r : ℕ) (π : H →ₗ[A] (Fin r → A)) (hπ : Function.Surjective π) (I : Ideal A) :
@@ -86,21 +84,21 @@ private theorem UpperTheory.V.AlgebraTools.length_quotient_fg_bounds {A : Type} 
   exact add_le_add le_rfl (Module.length_le_of_surjective ρ hρ)
 
 /- English proof (translation)
-Take `⟨x, hxann, hx⟩` from `Submodule.annihilator_top_inter_nonZeroDivisors hT`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible A`. Establish `hx0 : x ≠ 0` using `nonZeroDivisors.ne_zero hx`. Establish `hspan : Ideal.span {x} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot]` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Take `⟨n, hn⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hspan hϖ`. Establish `hJ : Ideal.span {x} = maximalIdeal A ^ n`. Rewrite using `[hn, hϖ.maximalIdeal_eq, Ideal.span_singleton_pow]`. Take `⟨k, f, hf⟩` from `Module.Finite.exists_fin' A T`. Set `I : Ideal A` to `maximalIdeal A ^ n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Establish `hIf : I • (⊤ : Submodule A (Fin k → A)) ≤ LinearMap.ker f`. Rewrite using `[Submodule.smul_le]`. Introduce `a ha v _`. Rewrite using `[LinearMap.mem_ker, map_smul]`. Establish `ha' : a ∈ Ideal.span {x}` using `by rw [hJ]; exact ha`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `ha'` using `[Ideal.mem_span_singleton']`. Take `⟨c, rfl⟩` from `ha'`. Rewrite using `[mul_smul, (Submodule.mem_annihilator.1 hxann) _ trivial, smul_zero]`. Establish `hsurj : Function.Surjective ((I • (⊤ : Submodule A (Fin k → A))).liftQ f hIf)`. Introduce `t`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨v, rfl⟩` from `hf t`. Conclude with `⟨Submodule.Quotient.mk v, rfl⟩`. Establish `h1` using `(UpperTheory.V.AlgebraTools.length_quotient_fg_bounds (Fin k → A) k LinearMap.id Function.surjective_id I).2`. Establish `hker : Module.length A (LinearMap.ker (LinearMap.id : (Fin k → A) →ₗ[A] (Fin k → A))) = 0`. Rewrite using `[Module.length_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩ ⟨b, hb⟩`. Rewrite `ha`, `hb` using `[LinearMap.mem_ker, LinearMap.id_apply]`. Substitute `ha hb` using the available equality. Both sides reduce to the same expression.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 
-Establish `h2 : Module.length A (Fin k → A ⧸ I) = (k * n : ℕ)`. Rewrite using `[Module.length_pi, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal]`. Simplify using the standard rewrite rules. Establish `h3` using `Module.length_le_of_surjective _ hsurj`. Rewrite `h1` using `[hker, add_zero, h2]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `ne_top_of_le_ne_top (ENat.coe_ne_top _) (h3.trans h1)`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.len_fg_quot_tors {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A]
     (T : Type) [AddCommGroup T] [Module A T] [Module.Finite A T] (hT : Module.IsTorsion A T) :
@@ -145,13 +143,13 @@ private theorem UpperTheory.V.AlgebraTools.len_fg_quot_tors {A : Type} [CommRing
   exact ne_top_of_le_ne_top (ENat.coe_ne_top _) (h3.trans h1)
 
 /- English proof (translation)
-Introduce `A _ _ _ H _ _ _`. Set `Tor` to `Submodule.torsion A H`. Use `haveI : Module.Free A (H ⧸ Tor) := Module.free_of_finite_type_torsion_free'`. Set `b` to `Module.finBasis A (H ⧸ Tor)`. Establish `hm : Module.finrank A (H ⧸ Tor) = Module.finrank A H` using `finrank_quotient_eq_of_le_torsion le_rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `π : H →ₗ[A] (Fin (Module.finrank A (H ⧸ Tor)) → A)` to `b.equivFun.toLinearMap ∘ₗ Tor.mkQ`. Establish `hπ : Function.Surjective π` using `b.equivFun.surjective.comp (Submodule.mkQ_surjective _)`. Establish `hker : LinearMap.ker π = Tor`. Simplify using `only [π, LinearEquiv.ker_comp, Submodule.ker_mkQ]`. Establish `hTf : Module.length A Tor ≠ ⊤` using `UpperTheory.V.AlgebraTools.len_fg_quot_tors Tor (Submodule.torsion_isTorsion)`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hc⟩` from `ENat.ne_top_iff_exists.1 hTf`. Use `⟨c, hc.symm, fun j => ?_⟩` and prove the remaining obligations. Establish `h` using `UpperTheory.V.AlgebraTools.length_quotient_fg_bounds H _ π hπ (maximalIdeal A ^ j)`. Establish `hlen : Module.length A (Fin (Module.finrank A (H ⧸ Tor)) → A ⧸ maximalIdeal A ^ j) = ((Module.finrank A H * j : ℕ) : ℕ∞)`. Rewrite using `[Module.length_pi, IsDiscreteValuationRing.length_quotient_pow_maximalIdeal, hm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite `h` using `[hlen, hker, ← hc]`. Use `⟨h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_add]`. Conclude with `h.2`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.len_fg_quot :
     ∀ {A : Type} [CommRing A] [IsDomain A] [IsDiscreteValuationRing A] (H : Type) [AddCommGroup H] [Module A H] [Module.Finite A H], ∃ c : ℕ, Module.length A (Submodule.torsion A H) = c ∧ ∀ j : ℕ, ((Module.finrank A H * j : ℕ) : ℕ∞) ≤ Module.length A (H ⧸ maximalIdeal A ^ j • (⊤ : Submodule A H)) ∧ Module.length A (H ⧸ maximalIdeal A ^ j • (⊤ : Submodule A H)) ≤ ((Module.finrank A H * j + c : ℕ) : ℕ∞) := by

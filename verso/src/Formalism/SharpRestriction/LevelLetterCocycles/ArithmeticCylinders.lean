@@ -373,9 +373,9 @@ variable {D}
 def PlaceLawIdempotents (A : AllRows D) (CL : ℝ) : Prop := lawL D A.eVec CL
 
 /- English proof (translation)
-Introduce `k v`. Take `⟨ψ₀, hψ, h | h⟩` from `hV k v`. Establish `h1` using `(hL k ψ₀ hψ (hg k)).1`. Rewrite using `[h]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(hL k ψ₀ hψ (hg k)).2`. Rewrite using `[h]`. Conclude with `h2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem place_law_of_statement (A : AllRows D) (hL : ConclusionL D) (hg : ∀ k, 2 * D.R.r ≤ D.host.g k)
     (hV : ∀ k v, ∃ ψ₀ : AddChar (ZMod (D.host.g k)) ℂ, ψ₀ ≠ 1 ∧

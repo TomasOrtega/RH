@@ -6,19 +6,17 @@ open GlobalTheory GlobalTheory.PELU GlobalTheory.UPel.HT GlobalTheory.LKTrip Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `p _ D X`. Use `haveI := D.freeLa`. Use `haveI := D.finLa`. Set `b` to `Module.Free.chooseBasis ℤ D.La`. Establish `key : ∀ n : ℕ, 0 < n → n.Coprime p → ∀ a : D.La, ∃ u ∈ X.lat, ∃ e ∈ LaHat D, X.r u = inAf D a + n • e` using `fun n hn hc a => UpperTheory.exists_lattice_approx_mod_n_completedLattice p D X n hn hc a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `g : ℕ → Module.Free.ChooseBasisIndex ℤ D.La → X.lat` to `fun n i => if h : 0 < n ∧ n.Coprime p then ⟨(key n h.1 h.2 (b i)).choose, (key n h.1 h.2 (b i)).choose_spec.1⟩ else 0`. Use `⟨fun n => (b.constr ℤ (g n)).toAddMonoidHom, ?_⟩` and prove the remaining obligations. Introduce `n hn hc a`. Set `φ : D.La →+ AfP p ⊗[ℚ] VQ D` to `((X.r.toAddMonoidHom.comp X.lat.subtype).comp (b.constr ℤ (g n)).toAddMonoidHom) - AdelicSim.inAfHom D`. Set `H : AddSubgroup (AfP p ⊗[ℚ] VQ D)` to `(LaHat D).map (nsmulAddMonoidHom n)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb : ∀ i, b i ∈ H.comap φ`. Introduce `i`. Take `⟨e, he, heq⟩` from `(key n hn hc (b i)).choose_spec.2`. Use `AddSubgroup.mem_comap.mpr (AddSubgroup.mem_map.mpr ⟨e, he, ?_⟩)` and prove the remaining obligations. Establish `hg : g n i = ⟨(key n hn hc (b i)).choose, (key n hn hc (b i)).choose_spec.1⟩` using `dif_pos ⟨hn, hc⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [φ, AddMonoidHom.sub_apply, AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, Module.Basis.constr_basis, hg, AddSubgroup.coe_subtype, nsmulAddMonoidHom_apply]`. Rewrite using `[heq, ← AdelicSim.inAf_eq]`. Normalize the expressions using the abelian group laws. Establish `htop : H.comap φ = ⊤`. Rewrite using `[eq_top_iff]`.
+Normalize the expressions using the abelian group laws. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x _`. Establish `hx : x ∈ (Submodule.span ℤ (Set.range b)).toAddSubgroup`. Rewrite using `[b.span_eq]`. Discharge the goal by the elementary cases of `trivial`. Rewrite `hx` using `[Submodule.span_int_eq_addSubgroupClosure]`.
+Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(AddSubgroup.closure_le _).mpr (by rintro _ ⟨i, rfl⟩; exact hb i) hx`. Establish `ha : a ∈ H.comap φ` using `htop ▸ AddSubgroup.mem_top a`. Take `⟨e, he, heq⟩` from `AddSubgroup.mem_map.mp (AddSubgroup.mem_comap.mp ha)`. Use `⟨e, he, ?_⟩` and prove the remaining obligations. Simplify using `only [φ, nsmulAddMonoidHom_apply, AddMonoidHom.sub_apply, AddMonoidHom.comp_apply, LinearMap.toAddMonoidHom_coe, AddSubgroup.coe_subtype] at heq`.
-
-Rewrite using `[AdelicSim.inAf_eq, heq]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_lattice_lift_congr_mod_coprime :
     ∀ (p : ℕ) [Fact p.Prime] (D : Datum p) (X : UpperTheory.Gal.W2.Wit.Sys D), ∃ f : ℕ → D.La →+ X.lat, ∀ n : ℕ, 0 < n → n.Coprime p → ∀ a : D.La, ∃ e ∈ LaHat D, X.r (f n a : VQ D) = inAf D a + n • e := by

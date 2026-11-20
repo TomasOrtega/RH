@@ -11,7 +11,7 @@ namespace GlobalTheory.LagrFormLine
 open MeasureTheory ValuativeRel
 
 /- English proof (translation)
-Establish `hle : Λ ≤ (GlobalTheory.LagrInvForm.symp k κ).orthogonal Λ` using `fun b hb a ha => sub_eq_zero.2 (h a ha b hb)`. Establish `hr` using `LinearMap.BilinForm.finrank_orthogonal (GlobalTheory.LagrInvForm.symp_nondeg k κ) Λ`. Establish `h3` using `Submodule.finrank_mono hle`. Rewrite `hr` using `[Module.finrank_prod, Module.finrank_fintype_fun_eq_card]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_le {k : Type} [Field k] {κ : Type} [Fintype κ] (Λ : Submodule k ((κ → k) × (κ → k)))
     (h : ∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) : Module.finrank k Λ ≤ Fintype.card κ := by
@@ -22,7 +22,7 @@ theorem finrank_le {k : Type} [Field k] {κ : Type} [Fintype κ] (Λ : Submodule
   omega
 
 /- English proof (translation)
-Establish `h1` using `finrank_le Λ h`. Establish `h2` using `finrank_le Λ' h'`. Establish `h3` using `Submodule.finrank_sup_add_finrank_inf_eq Λ Λ'`. Rewrite `h3` using `[hs, finrank_top, Module.finrank_prod, Module.finrank_fintype_fun_eq_card]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem finrank_eq {k : Type} [Field k] {κ : Type} [Fintype κ] (Λ Λ' : Submodule k ((κ → k) × (κ → k)))
     (h : ∀ a ∈ Λ, ∀ b ∈ Λ, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2) (h' : ∀ a ∈ Λ', ∀ b ∈ Λ', a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2)
@@ -34,9 +34,9 @@ theorem finrank_eq {k : Type} [Field k] {κ : Type} [Fintype κ] (Λ Λ' : Submo
   omega
 
 /- English proof (translation)
-Set `χ : AddChar k Circle` to `{ toFun := fun x => ⟨ψ x, mem_sphere_zero_iff_norm.2 (GlobalTheory.norm_addChar_nonarch ψ hψ x)⟩ map_zero_eq_one' := Circle.ext (by simp) map_add_eq_mul' := fun a b => Circle.ext (AddChar.map_add_eq_mul ψ a b) }`. Establish `hχ : ∀ x, (χ x : ℂ) = ψ x` using `fun _ => rfl`. Establish `hχc : Continuous χ` using `continuous_induced_rng.2 hψ`. Establish `hχ1 : χ ≠ 1` using `fun h => hψ1 (by`. Use extensionality with `x`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Rewrite using `[← hχ, h]`. Use the proof step `simp)`. Take `⟨c0, hc0⟩` from `GlobalTheory.SplitWeil.exists_hasConductor_of_continuous χ hχc hχ1`. Conclude with `hc0.isLocallyConstant.comp (fun z : Circle => (z : ℂ))`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isLocallyConstant_char (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k ℂ) (hψ : Continuous ψ) (hψ1 : ψ ≠ 1) : IsLocallyConstant (ψ : k → ℂ) := by
@@ -54,9 +54,7 @@ theorem isLocallyConstant_char (k : Type) [Field k] [ValuativeRel k] [Topologica
   exact hc0.isLocallyConstant.comp (fun z : Circle => (z : ℂ))
 
 /- English proof (translation)
-Establish `h1 : IsCompact (𝒪[k] : Set k)` using `isCompact_iff_compactSpace.2 (inferInstanceAs (CompactSpace 𝒪[k]))`. Establish `h2 : IsOpen (𝒪[k] : Set k)`. Use `letI := IsTopologicalAddGroup.rightUniformSpace k`. Use `haveI := isUniformAddGroup_of_addCommGroup (G := k)`. Conclude with `Valued.isOpen_integer k`.
-
-Conclude with `⟨Set.pi Set.univ fun _ => (𝒪[k] : Set k), isOpen_set_pi Set.finite_univ fun _ _ => h2, isCompact_univ_pi fun _ => h1, fun _ _ => zero_mem _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_compact_open (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (κ : Type) [Fintype κ] : ∃ U : Set (κ → k), IsOpen U ∧ IsCompact U ∧ 0 ∈ U := by
@@ -69,33 +67,31 @@ theorem exists_compact_open (k : Type) [Field k] [ValuativeRel k] [TopologicalSp
     isCompact_univ_pi fun _ => h1, fun _ _ => zero_mem _⟩
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.SplitWeil.t2Space k`. Establish `hlc` using `isLocallyConstant_char k ψ hψ hψ1`. Take `⟨n, m, e, s, hs, hb⟩` from `GlobalTheory.LagrInvForm.exists_coord Λ hiso hdim`. Use `letI : MeasurableSpace (Fin m → k) := borel _`. Use `haveI : BorelSpace (Fin m → k) := ⟨rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ν : Measure (Fin m → k)` to `Measure.addHaar`. Set `j : (Fin m → k) →ₗ[k] (κ → k)` to `e.toLinearMap ∘ₗ LinearMap.inr k _ _`. Establish `hj : ∀ a, j a = e (0, a)` using `fun _ => rfl`. Set `p : (κ → k) →ₗ[k] (Fin m → k)` to `LinearMap.snd k _ _ ∘ₗ e.symm.toLinearMap`. Establish `hpj : ∀ a, p (j a) = a` using `fun a => by simp [p, hj]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjc : Continuous j` using `LinearMap.continuous_on_pi j`. Establish `hpc : Continuous p` using `LinearMap.continuous_on_pi p`. Establish `hsc : Continuous s` using `LinearMap.continuous_on_pi s`. Set `q : (Fin m → k) → k` to `fun a => ⅟(2 : k) * (j a ⬝ᵥ s a)`. Establish `hqc : Continuous q` using `continuous_const.mul (hjc.dotProduct hsc)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : ∀ w ∈ Λ, j (p w.1) = w.1` using `fun w hw => by`. Establish `h0 : (e.symm w.1).1 = 0`. Use function extensionality and compare the values at `i`. Take `⟨b', h1, h2⟩` from `hb (Pi.single i 1)`. Establish `h3` using `hiso w hw _ h1`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [zero_dotProduct] at h3`. Rewrite `h3` using `[h2]`. Simplify using `using h3`. Rewrite using `[hj, ← h0]`. Conclude with `e.apply_symm_apply w.1`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcs : ∀ φ ∈ SB (κ → k), HasCompactSupport (φ ∘ j)` using `fun φ hφ => by`. Use `IsCompact.of_isClosed_subset (hφ.2.image hpc) isClosed_closure ?_` and prove the remaining obligations. Use `closure_minimal ?_ (hφ.2.image hpc).isClosed` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨j x, subset_tsupport _ hx, hpj x⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Establish an intermediate fact. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Establish `hint : ∀ φ ∈ SB (κ → k), Integrable (fun a => ψ (q a) * φ (j a)) ν` using `fun φ hφ => ((hψ.comp hqc).mul (hφ.1.continuous.comp hjc)).integrable_of_hasCompactSupport (hcs φ hφ).mul_left`. Set `f : SB (κ → k) →ₗ[ℂ] ℂ` to `{ toFun := fun φ => ∫ a, ψ (q a) * φ.1 (j a) ∂ν map_add' := fun φ φ' => by`. Simplify using `only [Submodule.coe_add, Pi.add_apply, mul_add]`. Conclude with `integral_add (hint _ φ.2) (hint _ φ'.2)`. Use the proof step `map_smul' := fun c φ => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply, mul_left_comm _ c]`. Conclude with `integral_const_mul c _ }`. Take `⟨l, hl⟩` from `LinearMap.exists_extend f`. Establish `hl' : ∀ φ ∈ SB (κ → k), l φ = ∫ a, ψ (q a) * φ (j a) ∂ν` using `fun φ hφ => LinearMap.congr_fun hl ⟨φ, hφ⟩`. Use `⟨l, fun w hwΛ φ hφ => ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm : schr ψ w φ ∈ SB (κ → k)` using `⟨(hlc.comp_continuous ((continuous_id.dotProduct continuous_const).add continuous_const)).mul (hφ.1.comp_continuous (continuous_id.add continuous_const)), (hφ.2.comp_homeomorph (Homeomorph.addRight w.1)).mul_left⟩`. Rewrite using `[hl' _ hm, hl' _ hφ, ← integral_add_right_eq_self (μ := ν) (fun a => ψ (q a) * φ (j a)) (p w.1)]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Establish `h1` using `hw w hwΛ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2` using `hiso _ (hs a) _ hwΛ`. Establish `h3` using `hiso _ (hs (p w.1)) _ hwΛ`. Establish `h4` using `hiso _ (hs a) _ (hs (p w.1))`. Establish `h5 : (2 : k) * ⅟(2 : k) = 1` using `mul_invOf_self _`. Simplify using `only [← hj, h1] at h2 h3 h4`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [schr, q, map_add j, map_add s, h1, add_dotProduct, dotProduct_add]`. Rewrite using `[← mul_assoc, ← AddChar.map_add_eq_mul]`. Use `congr 2`. Take the linear combination `h2 + ⅟(2 : k) * h3 - ⅟(2 : k) * h4 - (w.1 ⬝ᵥ s a) * h5`. Take `⟨U, hUo, hUc, hU0⟩` from `exists_compact_open k κ`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUl : IsLocallyConstant (U.indicator fun _ => (1 : ℂ))` using `(LocallyConstant.charFn ℂ (⟨hUc.isClosed, hUo⟩ : IsClopen U)).isLocallyConstant`. Establish `hm : (fun x => ψ (-q (p x)) * U.indicator (fun _ => (1 : ℂ)) x) ∈ SB (κ → k)` using `⟨(hlc.comp_continuous (hqc.comp hpc).neg).mul hUl, (HasCompactSupport.intro hUc fun x hx => Set.indicator_of_notMem hx _).mul_left⟩`. Use `⟨_, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[hl' _ hm]`. Establish `hSo : IsOpen (j ⁻¹' U)` using `hUo.preimage hjc`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hfin : ν (j ⁻¹' U) < ⊤` using `lt_of_le_of_lt (measure_mono (show j ⁻¹' U ⊆ p '' U from fun y hy => ⟨j y, hy, hpj y⟩)) ((hUc.image hpc).measure_lt_top)`. Establish `hpos : 0 < ν (j ⁻¹' U)` using `hSo.measure_pos ν ⟨0, by simpa using hU0⟩`. Establish `heq : (fun a => ψ (q a) * (ψ (-q (p (j a))) * U.indicator (fun _ => (1 : ℂ)) (j a))) = (j ⁻¹' U).indicator (fun _ => (1 : ℂ))`. Use function extensionality and compare the values at `a`. Rewrite using `[hpj, ← mul_assoc, ← AddChar.map_add_eq_mul, add_neg_cancel, AddChar.map_zero_eq_one, one_mul]`.
-
-Both sides reduce to the same expression. Rewrite using `[heq, integral_indicator_const _ hSo.measurableSet]`. Conclude with `smul_ne_zero (ENNReal.toReal_ne_zero.mpr ⟨hpos.ne', hfin.ne⟩) one_ne_zero`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     [Invertible (2 : k)] (ψ : AddChar k ℂ) (hψ : Continuous ψ) (hψ1 : ψ ≠ 1)
@@ -189,11 +185,11 @@ variable {k : Type} [Field k] [Invertible (2 : k)] {E : Type} [Field E] [Algebra
   {α β ν κ : Type} [Fintype α] [Fintype β] [Fintype ν] [Fintype κ] {ξ : E} {JA : Matrix α α E} {JB : Matrix β β E}
 
 /- English proof (translation)
-Establish `h1 : ∀ x y : Matrix α β E, hTens c JA JB x y = ∑ i, ∑ i', JA i i' * (x * JB * (y.map c)ᵀ) i i'` using `fun x y => by`. Unfold `hTens`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i' _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm]`. Simplify using `only [Matrix.mul_apply, Finset.sum_mul, Finset.mul_sum, Matrix.transpose_apply, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `h2 : (z' * Cᵀ).map c = z'.map c * (C.map c)ᵀ` using `Matrix.map_mul (f := c.toRingHom)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `h3 : z * Cᵀ * JB * (z'.map c * (C.map c)ᵀ)ᵀ = z * (Cᵀ * JB * C.map c) * (z'.map c)ᵀ`. Simplify using `only [Matrix.transpose_mul, Matrix.transpose_transpose, Matrix.mul_assoc]`. Rewrite using `[h1, h2, h3, h]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem hTens_eq_zero {C : Matrix β ν E} (h : Cᵀ * JB * C.map c = 0) (z z' : Matrix α ν E) :
     hTens c JA JB (z * Cᵀ) (z' * Cᵀ) = 0 := by
@@ -223,7 +219,7 @@ def lagCo (co : Darboux (symp c ξ JA JB) κ) (C : Matrix β ν E) : Submodule k
     exact ⟨a • z, by simp only [Matrix.smul_mul, map_smul]⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨z, rfl⟩ _ ⟨z', rfl⟩`. Rewrite using `[← sub_eq_zero, ← co.form, symp, hTens_eq_zero h, mul_zero, map_zero]`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem lagCo_isotropic (co : Darboux (symp c ξ JA JB) κ) {C : Matrix β ν E} (h : Cᵀ * JB * C.map c = 0) :
     ∀ a ∈ lagCo co C, ∀ b ∈ lagCo co C, a.1 ⬝ᵥ b.2 = b.1 ⬝ᵥ a.2 := by
@@ -231,9 +227,9 @@ theorem lagCo_isotropic (co : Darboux (symp c ξ JA JB) κ) {C : Matrix β ν E}
   rw [← sub_eq_zero, ← co.form, symp, hTens_eq_zero h, mul_zero, map_zero]
 
 /- English proof (translation)
-Take `⟨h0, Cx, M, hx, h1, -⟩` from `h`. Use `finrank_eq _ (lagCo co Cx) (lagCo_isotropic co h0) (lagCo_isotropic co hx) ?_` and prove the remaining obligations. Rewrite `h1` using `[← Matrix.fromRows_toRows M, Matrix.fromCols_mul_fromRows]`. Rewrite using `[eq_top_iff]`. Introduce `w _`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨u, rfl⟩` from `co.e.surjective w`. Establish `hu : u = u * M.toRows₁ᵀ * Cᵀ + u * M.toRows₂ᵀ * Cxᵀ`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, ← Matrix.mul_add, ← Matrix.transpose_mul, ← Matrix.transpose_mul, ← Matrix.transpose_add, h1, Matrix.transpose_one, Matrix.mul_one]`. Rewrite using `[hu, map_add]`. Conclude with `Submodule.add_mem_sup ⟨_, rfl⟩ ⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_lagCo [DecidableEq β] [DecidableEq ν] (co : Darboux (symp c ξ JA JB) κ) {C : Matrix β ν E}
     (h : IsLagr c JB C) : Module.finrank k (lagCo co C) = Fintype.card κ := by
@@ -252,9 +248,9 @@ theorem finrank_lagCo [DecidableEq β] [DecidableEq ν] (co : Darboux (symp c ξ
 end Pair
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ E _ _ _ _ c δ _ ψ hψ _ hψ1 α β ν κ _ _ _ _ _ _ _ ξ JA JB co Cy hC`. Establish `hiso` using `lagCo_isotropic co hC.1`. Establish `hdim` using `finrank_lagCo co hC`. Establish `hinv : ∀ l, IsYInv c ψ co Cy l → ∀ w ∈ lagCo co Cy, ∀ φ ∈ SB (κ → k), l (schr ψ w φ) = l φ`. Introduce and unpack `l hl _ ⟨z, rfl⟩ φ hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hl z φ hφ`. Use `⟨?_, fun l₁ l₂ h₁ h₂ => GlobalTheory.LagrInvForm.proportional k ψ hψ hψ1 κ _ hiso hdim l₁ l₂ (hinv _ h₁) (hinv _ h₂.1) h₂.2⟩` and prove the remaining obligations. Take `⟨l, h1, h2⟩` from `exists_form k ψ hψ hψ1 κ _ hiso hdim`. Conclude with `⟨l, fun z φ hφ => h1 _ ⟨z, rfl⟩ φ hφ, h2⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem yform_line : ∀ (k : Type) [Field k] [CharZero k] [Invertible (2 : k)] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (E : Type) [Field E] [Algebra k E] [TopologicalSpace E] [IsModuleTopology k E] (c : E →ₐ[k] E) (δ : E), IsQuad c δ →

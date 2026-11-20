@@ -19,11 +19,11 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.AlgTau
 
 /- English proof (translation)
-Introduce `K _ _ d δ ι 𝔞 Λ c Ω τ hd hδ hlat htau hΩ`. Take `⟨-, hmul, him, -⟩` from `GlobalTheory.T.fractionalIdealLattice_has_nonreal_multiplier K d δ ι 𝔞 Λ hd hδ hlat`. Establish `hval` using `GlobalTheory.T.eisensteinWeierstrass_values_lattice_tau Λ c Ω τ htau`. Establish `halg` using `GlobalTheory.T.algebraic_normalized_weierstrass_values_cm Λ (ι δ) Ω hmul him hΩ`. Use `⟨(GlobalTheory.QFam.jT_eq_and_pow_twelve_eq_DD Λ c τ htau).2 Ω hΩ, ?_, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj : IsIntegral ℤ (jT τ)` using `GlobalTheory.T.isIntegral_jInvariant_of_complexMultiplication Λ c τ (ι δ) htau hmul him`. Conclude with `(hj.tower_top (A := ℚ)).isAlgebraic`. Rewrite using `[hval.1]`. Conclude with `halg.1`. Introduce `N _ x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[(hval.2 N x).1]`. Establish `hN : (N : ℂ) * (c * tors N τ x) ∈ Λ.lattice`. Establish `h1` using `((GlobalTheory.T.weierstrassP_homogeneity_of_isTauOf Λ c τ htau).1 ((N : ℂ) * tors N τ x)).2 ((GlobalTheory.T.torsionPointOfLatticeTau_lattice_membership N τ).2.2.2.1 x)`. Simplify `h1` using `[mul_left_comm]`. Conclude with `(halg.2 N (c * tors N τ x) (Nat.pos_of_ne_zero (NeZero.ne N)) hN).1`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (ι : K →+* ℂ) (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) (Λ : PeriodPair) (c Ω : ℂ) (τ : ℍ), 0 < d → δ ^ 2 = -(d : K) → GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.IsLatOf ι 𝔞 Λ → IsTauOf Λ c τ → Ω ^ 12 = latDisc Λ → (Ω * c / (2 * Real.pi * Complex.I)) ^ 12 = DD τ ∧ IsAlgebraic ℚ (jT τ) ∧ IsAlgebraic ℚ (G2s τ / (2 * (Real.pi : ℂ) * Complex.I) ^ 2 / (Ω * c / (2 * Real.pi * Complex.I)) ^ 2) ∧ ∀ (N : ℕ) [NeZero N] (x : Fin 2 → ZMod N), IsAlgebraic ℚ (wp N x τ / (Ω * c / (2 * Real.pi * Complex.I)) ^ 2) := by
   intro K _ _ d δ ι 𝔞 Λ c Ω τ hd hδ hlat htau hΩ

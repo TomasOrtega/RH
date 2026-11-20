@@ -31,7 +31,7 @@ noncomputable def glOf (p : Place D k) (S : HSp D) {Y : Type} [Fintype Y] [Decid
     exact ((Classical.choose_spec (h.1 (a * b))).2 _ (h.2.2 _ _ _ _ ha hb)).symm
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (((GlobalTheory.LocGrp.local_groups D k p).1 S Y F).1 g)).1`.
+A detailed English derivation is pending.
 -/
 theorem glOf_loc (p : Place D k) (S : HSp D) {Y : Type} [Fintype Y] [DecidableEq Y] (F : Frame k S.rank Y) (g : GL Y k) :
     p.IsLoc F (glOf p S F g) g :=
@@ -42,9 +42,9 @@ end GlobalTheory.QGeoAt
 open GlobalTheory.QGeoAt in
 
 /- English proof (translation)
-Introduce `D L hT Gi Gl Kc Yd cX ex W u hW a y m b v hv hτ hNT PP hPP l hY hFX hFT`. Take `⟨⟨ψk, hchar, hcond⟩, ⟨ν, hν⟩, hϖ⟩` from `GlobalTheory.T.local_character_conductor_one_exists W u hW a PP (Or.inr hPP) l`. Take `⟨ϖ, hunif, hcompl⟩` from `hϖ hPP`. Use `⟨{ k := l.k ν := ν unitVol := hν q := l.q idem := l.idem unit := l.unit ψk := ψk char := hchar cond := hcond ϖ := ϖ unif := hunif compl := hcompl s := l.s hs := l.hs FX := l.FX FT := l.FT FM := l.FM FY := hY.FY sc := hY.sc sc_ne := fun j h => by simpa [h] using hY.sc_unit j sc_st …` and prove the remaining obligations. Take `⟨e, he, hm⟩` from `hY.frame j d hd`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨e, he, ?_⟩` and prove the remaining obligations. Simplify using `using hm`. Use `frameTop := l.frameTop }, hFX, hFT, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.QGeoAt.geo_of_frames : ∀ {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotions.G.Inst D L} {Gl : Formalism.MainNotions.G.LatInst D} {Kc : Formalism.MainNotions.G.Consts} {Yd : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Yd cX} (W : RealPack ex) (u : D.what₂.Word), PkHyp W → ∀ (a : XGeo D) (y : YRat a) (m : YMeas y) (b : ∀ j, GA D (Yc D j)) (v : VCom (commOf (pk W) u (mkGeo m b))), (commOf (pk W) u (mkGeo m b)).Is → v.τ = y.τ → v.NT = a.LT → ∀ (PP : Pl D.host.E), QAll W PP → ∀ (l : LocX a (pk W).βX PP), LocY l y v.N (pk W).βY b (fun _ _ _ => 1) → (∀ j hj, IsStdFr GlobalTheory.SymBridge.xPos (l.FX j hj)) → IsStdFr GlobalTheory.SymBridge.zPos l.FT → ∃ G : GlobalTheory.QTw.QGeo v (baseOf (pk W) (lvP W) u (mkGeo m b)) PP, (∀ j hj, IsStdFr GlobalTheory.SymBridge.xPos (G.FX j hj)) ∧ IsStdFr GlobalTheory.SymBridge.zPos G.FT ∧ G.z₀ = fun r => (ofSplit G.q).pr (a.ζ₀ r) := by
   intro D L hT Gi Gl Kc Yd cX ex W u hW a y m b v hv hτ hNT PP hPP l hY hFX hFT

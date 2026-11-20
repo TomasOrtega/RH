@@ -7,13 +7,11 @@ open Pointwise
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ Z _ w v hwv hp B hB σ hσ`. Establish `hn : Ideal.absNorm v.asIdeal = Ideal.absNorm w.asIdeal`. Establish `h` using `Ideal.absNorm_pow_inertiaDeg v.asIdeal w.asIdeal`. Establish `h1` using `Nat.Prime.eq_one_of_pow (h ▸ hp)`. Rewrite `h` using `[h1, pow_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `h`. Use `⟨hn, fun x => ?_, ?_, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h` using `hB (algebraMap (𝓞 F) (𝓞 Z) x)`. Rewrite `h` using `[← Ideal.mem_of_liesOver w.asIdeal v.asIdeal x]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `h : σ • B = B` using `hσ.1 show (σ.restrictScalars F) • B = B`. Use extensionality with `x`. Use `conv_rhs => rw [← h]`. Rewrite using `[ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem, ValuationSubring.mem_pointwise_smul_iff_inv_smul_mem]`. Both sides reduce to the same expression.
-
-Establish `e : normV v = normV w` using `hn`. Rewrite using `[e]`. Conclude with `hσ.2 x hx`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isFrob_restrictScalars_of_prime_absNorm :
     ∀ (F Ω : Type) [Field F] [NumberField F] [Field Ω] [Algebra F Ω] [IsAlgClosure F Ω]

@@ -10,13 +10,13 @@ namespace PositivityTheory.KB.JoinReconstruction
 open PositivityTheory.KB
 
 /- English proof (translation)
-Take `⟨P⟩` from `hPUa`. Take `⟨_, hHtinv, ⟨c0, hc0, hc0le⟩, hHtK⟩` from `hHt L hC N h1N`. Establish `hht0 : ∀ x, 0 ≤ ht x` using `fun x => hc0.le.trans (hc0le x)`. Take `⟨ω, hωG, hωγ, hωs, hωz, C1, hC1⟩` from `hWhit L N k (fun x => ht x ^ a) P (fun γ x => by simp only [hHtinv]) (fun x => pow_nonneg (hht0 x) _) c hcI hcd`. Take `⟨p, hp⟩ : ∃ p, p = a * (k + 1)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfrB : ∀ x, ‖fr ω x‖ ≤ |C1| * ht x ^ p` using `fun x => by`. Combine the equalities or inequalities in the displayed calculation. Establish `hB : ∀ K : Set (Gp L N), IsCompact K → ∃ C, ∀ g ∈ K, ∀ x, |C1| * ht (x * g) ^ p ≤ C * (|C1| * ht x ^ p)`. Introduce `K hK`. Take `⟨C, hC⟩` from `hHtK K hK`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨|C| ^ p, fun g hg x => ?_⟩` and prove the remaining obligations. Establish `h1 : ht (x * g) ≤ |C| * ht x` using `(hC g hg x).trans (mul_le_mul_of_nonneg_right (le_abs_self _) (hht0 x))`. Combine the equalities or inequalities in the displayed calculation. Take `⟨ω', hω'G, hω'γ, hω's, hω'z, C2, hC2⟩` from `hCen L N k ω hωG hωγ hωs (fun x => |C1| * ht x ^ p) hB hfrB`. Use `⟨ω', hω'G, hω'γ, hω's, fun z hz => (hω'z z hz).trans (hωz z hz), |C2| * |C1|, fun x => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hp]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem lem_form (hHt : SHt) (hPU : SPU) (hWhit : SWhit) (hCen : SCen) (L : Type) [Field L] [NumberField L]
     (hC : IsTotallyComplex L) (k a N : ℕ) (h1N : 1 ≤ N) (hPUa : Nonempty (PU L N fun x => ht x ^ a))
@@ -56,27 +56,25 @@ theorem lem_form (hHt : SHt) (hPU : SPU) (hWhit : SWhit) (hCen : SCen) (L : Type
     _ = |C2| * |C1| * ht x ^ p := by ring
 
 /- English proof (translation)
-Introduce `L _ _ hC k hkr n₀`. Take `⟨π, hπ, hπ25⟩` from `hPrime L`. Take `⟨a, hPUa⟩` from `hPU L hC`. Take `⟨N₀, hN₀⟩` from `hHecke L hC k hkr π hπ`. Take `⟨N₁, hN₁⟩` from `hMom L hC (2 * (a * (k + 1)))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨N, hN⟩ : ∃ N, N = max (max N₀ N₁) (max n₀ 3)` from `⟨_, rfl⟩`. Establish `hN0 : N₀ ≤ N` using `by rw [hN]; exact (le_max_left N₀ N₁).trans (le_max_left _ _)`. Establish `hN1 : N₁ ≤ N` using `by rw [hN]; exact (le_max_right N₀ N₁).trans (le_max_left _ _)`. Establish `hn₀ : n₀ ≤ N` using `by rw [hN]; exact (le_max_left n₀ 3).trans (le_max_right _ _)`. Establish `h3N : 3 ≤ N` using `by rw [hN]; exact (le_max_right n₀ 3).trans (le_max_right _ _)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1N : 1 ≤ N` using `by omega`. Use `⟨N, hn₀, fun c hcI hcd => ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `hN₁ N hN1`. Take `⟨ω', hω'G, hω'γ, hω's, hω'z, K, hK⟩` from `lem_form hHt hPU hWhit hCen L hC k a N h1N (hPUa N h1N) c hcI hcd`. Take `⟨_, _, ⟨c0, hc0, hc0le⟩, _⟩` from `hHt L hC N h1N`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hht0 : ∀ x, 0 ≤ ht x` using `fun x => hc0.le.trans (hc0le x)`. Use `haveI : IsFiniteMeasure (d.μ.restrict d.D) := isFiniteMeasure_restrict.2 d.fin.ne`. Establish `hsq' : IntegrableOn (fun x => ‖fr ω' (ofS L N x)‖ ^ 2) d.D d.μ`. Use `Integrable.mono' (hd.const_mul (K ^ 2)) ((lem_meas d hω'G.1).norm.pow 2) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show ‖‖fr ω' (ofS L N x)‖ ^ 2‖ ≤ K ^ 2 * ht (ofS L N x) ^ (2 * (a * (k + 1)))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Real.norm_eq_abs, abs_of_nonneg (sq_nonneg _), mul_comm 2 (a * (k + 1)), pow_mul, ← mul_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hK _) 2`. Establish `hint' : IntegrableOn (fun x => fr ω' (ofS L N x)) d.D d.μ`. Use `Integrable.mono' (hsq'.add (integrable_const (1 : ℝ))) (lem_meas d hω'G.1) (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Use `show ‖fr ω' (ofS L N x)‖ ≤ ‖fr ω' (ofS L N x)‖ ^ 2 + 1`.
+Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[sq_nonneg (‖fr ω' (ofS L N x)‖ - 1)]`. Take `⟨ωb, hωbI, hωbfr⟩` from `hMean L N (k + 1) h1N d ω' hω'G.1 hω'γ hω's hint'`. Establish `hωbG : Good ωb` using `(hInv L N k ωb hωbI).1`. Establish `hγ0 : ∀ γ, FInv (ω' - ωb) (emb L N γ)` using `fun γ => finv_sub (hω'γ γ) (hωbI _)`. Establish `hs0 : ∀ s, FInv (ω' - ωb) (scal L N s)` using `fun s => finv_sub (hω's s) (hωbI _)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hLz0` using `lem_Lz d hω'G.1 hωbG.1 hγ0 hs0 hωbfr hint' hsq'`. Establish `e2 : intP (ω' - ωb) = fun y => intP ω' y - intP ωb y` using `funext (intP_sub hω'G.1 hωbG.1)`. Establish `hG0 : Good (ω' - ωb)`. Use `⟨hω'G.1.sub hωbG.1, ?_⟩` and prove the remaining obligations. Rewrite using `[e2, dC_sub, hω'G.2, hωbG.2]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `y`. Simplify using the standard rewrite rules. Establish `hFI : Inv (toK L N) (fun y : Fin (k + 2) → GK L N => intP (ω' - ωb) fun j => toP L N (y j) • one L N)` using `fun γ y => by show (intP (ω' - ωb) fun j => toP L N (toK L N γ • y j) • one L N) = intP (ω' - ωb) fun j => toP L N (y j) • one L N`. Simplify using `only [smul_eq_mul, map_mul, mul_smul]`. Conclude with `intP_inv (hγ0 γ) _`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hFd : dC (fun y : Fin (k + 2) → GK L N => intP (ω' - ωb) fun j => toP L N (y j) • one L N) = 0`. Use function extensionality and compare the values at `y`. Establish `h4` using `congrFun hG0.2 (fun j => toP L N (y j) • one L N)`. Simplify using `only [dC, Pi.zero_apply] at h4 ⊢`. Conclude with `h4`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `hF0` using `hN₀ N hN0 _ hFI hFd fun z hz => lem_bound hGap hLoc L hC π hπ hπ25 N k h3N d (ω' - ωb) hG0 hγ0 hs0 hLz0 z hz`. Use `⟨ωb, hωbI, fun z hz => ?_⟩` and prove the remaining obligations. Establish `h5` using `hF0 z hz`. Rewrite `h5` using `[ev_toK _ (intP (ω' - ωb)) (fun y => rfl) z, e2, ev_sub]`. Rewrite using `[← hω'z z hz]`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem key (hPrime : SPrime) (hHecke : SHecke) (hHt : SHt) (hPU : SPU) (hMom : SMom) (hWhit : SWhit)
     (hCen : SCen) (hGap : SGap) (hLoc : SLoc) (hMean : SMean) (hInv : SInv) : SSurj := by

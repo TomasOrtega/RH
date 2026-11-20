@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.LiftSys
 
 /- English proof (translation)
-Use `Ideal.mem_map_of_mem (e : A →+* B) hx` as an intermediate fact. Rewrite `this` using `[Ideal.map_map, AlgHom.comp_algebraMap]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_map_algebraMap_of_algHom {R : Type} [CommRing R] {I : Ideal R} {A B : Type} [CommRing A] [CommRing B]
     [Algebra R A] [Algebra R B] (e : A →ₐ[R] B) {x : A} (hx : x ∈ I.map (algebraMap R A)) :
@@ -25,21 +25,19 @@ theorem mem_map_algebraMap_of_algHom {R : Type} [CommRing R] {I : Ideal R} {A B 
   rwa [Ideal.map_map, AlgHom.comp_algebraMap] at this
 
 /- English proof (translation)
-Introduce `R R₀ _ _ I hI π hπ hk X₀ s₀ hc`. Establish `key : ∀ S S' : Sys I π s₀, S.K hI ⊓ I • (⊤ : Submodule R (Cr hI π s₀)) ≤ S'.K hI ⊓ I • (⊤ : Submodule R (Cr hI π s₀))`. Introduce `S S' c hc'`. Take `⟨hcK, hcI⟩` from `hc'`. Take `⟨Φ⟩` from `GlobalTheory.T.nonempty_locIso_squareZeroSmoothLiftSystems R R₀ I hI π hπ hk X₀ s₀ S S'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨-, h2, h3⟩` from `GlobalTheory.T.locIso_transport_cochains_in_ideal R R₀ I hI π hπ hk X₀ s₀ S S' Φ`. Take `⟨z, z', hz, hmk, hmk', hzz⟩` from `h3 c hcI`. Establish `h0 : H1.mk _ z = 0` using `hmk.trans (LinearMap.mem_ker.1 hcK)`. Take `⟨g, hg, hdg⟩` from `GlobalTheory.T.exists_ideal_cochain_of_coboundary_constants R R₀ I hI π hπ hk X₀ s₀ hc S z hz h0`. Use `⟨LinearMap.mem_ker.2 ?_, hcI⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hmk']`. Use `H1.mk_eq_zero.2 ⟨fun W ↦ Φ.φ W (g W), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `U V a`. Rewrite using `[h2 g hg U V a, hdg, hzz]`. Use `fun S S' ↦ ⟨le_antisymm (key S S') (key S' S), fun hF z₁' hz₁' ↦ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Ψ⟩` from `GlobalTheory.T.nonempty_locIso_squareZeroSmoothLiftSystems R R₀ I hI π hπ hk X₀ s₀ S' S`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.T.locIso_transport_cochains_in_ideal R R₀ I hI π hπ hk X₀ s₀ S' S Ψ`. Take `⟨z₁, hz₁, hz₁e⟩` from `h1 z₁' hz₁'`. Take `⟨c, hcI, hc₁⟩` from `hF z₁ hz₁`. Take `⟨y', y, hy'I, hy', hy, hyy⟩` from `h3 c hcI`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hyI : S.IsIdealValuedLiftSystemCocycle y` using `fun U V a ↦ by`. Rewrite using `[hyy]`. Conclude with `mem_map_algebraMap_of_algHom (Ψ.φ V : S'.F.obj V →ₐ[R] S.F.obj V) (hy'I U V a)`. Establish `hd : H1.mk _ (y - z₁) = 0` using `by rw [map_sub, hy, hc₁, sub_self]`. Take `⟨g, hg, hdg⟩` from `GlobalTheory.T.exists_ideal_cochain_of_coboundary_constants R R₀ I hI π hπ hk X₀ s₀ hc S (y - z₁) (fun U V a ↦ Ideal.sub_mem _ (hyI U V a) (hz₁ U V a)) hd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `g' : C0 S'.F` to `fun W ↦ (Ψ.φ W).symm (g W)`. Establish `hg' : S'.IsIdealValuedLiftSystemCochain g'` using `fun W ↦ mem_map_algebraMap_of_algHom ((Ψ.φ W).symm : S.F.obj W →ₐ[R] S'.F.obj W) (hg W)`. Establish `hgg : (fun W ↦ Ψ.φ W (g' W)) = g` using `funext fun W ↦ AlgEquiv.apply_symm_apply _ _`. Use `⟨c, hcI, hy'.symm.trans (H1.mk_eq_mk.2 ⟨g', ?_⟩)⟩` and prove the remaining obligations. Use function extensionality and compare the values at `U V a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(Ψ.φ V).injective` to reduce the goal to its premises. Establish `e` using `h2 g' hg' U V a`. Rewrite `e` using `[hgg, hdg]`. Rewrite using `[← e]`. Use `show y.1 U V a - z₁.1 U V a = Ψ.φ V (y'.1 U V a - z₁'.1 U V a)`.
-
-Rewrite using `[map_sub, hyy, hz₁e]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem K_inf_eq_and_full : ∀ (R R₀ : Type) [CommRing R] [CommRing R₀] (I : Ideal R) (hI : I ^ 2 = 0) (π : R →+* R₀)
     (hπ : Function.Surjective π) (hk : RingHom.ker π = I) (X₀ : Scheme.{0}) (s₀ : X₀ ⟶ Sp R₀), Const s₀ →

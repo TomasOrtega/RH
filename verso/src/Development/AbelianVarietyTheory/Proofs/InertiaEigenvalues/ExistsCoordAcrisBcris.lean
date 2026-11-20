@@ -26,14 +26,14 @@ def inner (t : ↥T.L.T) : O ⊗[ℤ_[l]] R →+ R :=
       rw [Algebra.smul_def z o, mul_smul, hφ, Algebra.smul_def z r, map_mul]; ring)
 
 /- English proof (translation)
-Simplify using `[inner]`.
+Simplify using the standard rewrite rules.
 -/
 theorem inner_tmul (t : ↥T.L.T) (o : O) (r : R) :
     inner T φ hφ R t (o ⊗ₜ[ℤ_[l]] r) = algebraMap ℤ_[l] R (φ (o • t)) * r := by
   simp [inner]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o r => simp only [inner_tmul, smul_add, map_add, add_mul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Expand and normalize the polynomial expressions, which then agree.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem inner_add (t t' : ↥T.L.T) (w : O ⊗[ℤ_[l]] R) :
     inner T φ hφ R (t + t') w = inner T φ hφ R t w + inner T φ hφ R t' w := by
@@ -43,7 +43,7 @@ theorem inner_add (t t' : ↥T.L.T) (w : O ⊗[ℤ_[l]] R) :
   | add x y hx hy => simp only [map_add, hx, hy]; ring
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o r => simp [inner_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, add_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem inner_zero (w : O ⊗[ℤ_[l]] R) : inner T φ hφ R 0 w = 0 := by
   induction w using TensorProduct.induction_on with
@@ -52,7 +52,7 @@ theorem inner_zero (w : O ⊗[ℤ_[l]] R) : inner T φ hφ R 0 w = 0 := by
   | add x y hx hy => simp only [map_add, hx, hy, add_zero]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul o' r`. Rewrite using `[TensorProduct.smul_tmul', inner_tmul, inner_tmul, smul_eq_mul, mul_smul, smul_comm o o' t]`. Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 -/
 theorem inner_smul (o : O) (t : ↥T.L.T) (w : O ⊗[ℤ_[l]] R) :
     inner T φ hφ R t (o • w) = inner T φ hφ R (o • t) w := by
@@ -73,18 +73,18 @@ def coord : TW (O ⊗[ℤ_[l]] R) T →+ R :=
     (fun o w t => by simp only [AddMonoidHom.coe_mk, ZeroHom.coe_mk]; exact inner_smul T φ hφ R o t w)
 
 /- English proof (translation)
-Simplify using `[coord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coord_tmul (w : O ⊗[ℤ_[l]] R) (t : ↥T.L.T) :
     coord T φ hφ R (w ⊗ₜ[O] t) = inner T φ hφ R t w := by
   simp [coord]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x t`. Rewrite using `[TensorProduct.smul_tmul', coord_tmul, coord_tmul, smul_eq_mul]`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul o r`. Rewrite using `[Algebra.TensorProduct.tmul_mul_tmul, one_mul, inner_tmul, inner_tmul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => simp only [mul_add, map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy, mul_add]`.
+Treat this case separately.
 -/
 theorem coord_mul (a : R) (w : TW (O ⊗[ℤ_[l]] R) T) :
     coord T φ hφ R (((1 : O) ⊗ₜ[ℤ_[l]] a : O ⊗[ℤ_[l]] R) • w) = a * coord T φ hφ R w := by
@@ -100,18 +100,18 @@ theorem coord_mul (a : R) (w : TW (O ⊗[ℤ_[l]] R) T) :
   | add x y hx hy => simp only [smul_add, map_add, hx, hy, mul_add]
 
 /- English proof (translation)
-Rewrite using `[coord_tmul, Algebra.TensorProduct.one_def, inner_tmul, one_smul, mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coord_one_tmul (t : ↥T.L.T) :
     coord T φ hφ R ((1 : O ⊗[ℤ_[l]] R) ⊗ₜ[O] t) = algebraMap ℤ_[l] R (φ t) := by
   rw [coord_tmul, Algebra.TensorProduct.one_def, inner_tmul, one_smul, mul_one]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x t`. Rewrite using `[TensorProduct.smul_tmul', coord_tmul, coord_tmul, inner_smul]`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul o r`. Rewrite using `[inner_tmul, inner_tmul, smul_comm o (algebraMap ℤ_[l] O z) t, hφ, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Consider the case `add x y hx hy => simp only [mul_add, map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [smul_add, map_add, hx, hy, mul_add]`.
+Treat this case separately.
 -/
 theorem coord_algebraMap_smul (z : ℤ_[l]) (w : TW (O ⊗[ℤ_[l]] R) T) :
     coord T φ hφ R ((algebraMap ℤ_[l] O z) • w) = algebraMap ℤ_[l] R z * coord T φ hφ R w := by
@@ -127,9 +127,9 @@ theorem coord_algebraMap_smul (z : ℤ_[l]) (w : TW (O ⊗[ℤ_[l]] R) T) :
   | add x y hx hy => simp only [smul_add, map_add, hx, hy, mul_add]
 
 /- English proof (translation)
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x t`. Simplify using `only [TWincl, TensorProduct.map_tmul, AlgHom.toLinearMap_apply, LinearMap.id_coe, id_eq, coord_tmul]`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `tmul o r`. Simplify using `only [toOB, Algebra.TensorProduct.map_tmul, AlgHom.id_apply, inner_tmul, map_mul, AlgHom.commutes]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately.
 -/
 theorem coord_toOB (w : TW (OCr l O) T) :
     coord T φ hφ (Per.Bcris l) (TWincl (toOB l O) T w) = acrisToBcris l (coord T φ hφ (Per.Acris l) w) := by
@@ -153,7 +153,7 @@ namespace GlobalTheory
 open GlobalTheory.CoordTW in
 
 /- English proof (translation)
-Introduce `l _ O K _ _ _ _ _ _ G _ _ T φ hφ`. Use `⟨coord T φ hφ (Per.Acris l), coord T φ hφ (Per.Bcris l), coord_mul T φ hφ _, coord_mul T φ hφ _, coord_one_tmul T φ hφ _, fun N w => ?_, coord_toOB T φ hφ⟩` and prove the remaining obligations. Establish `h : ((l : O) ^ N) = algebraMap ℤ_[l] O ((l : ℤ_[l]) ^ N)` using `by simp`. Rewrite using `[h, coord_algebraMap_smul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_coord_acris_bcris : ∀ {l : ℕ} [Fact l.Prime] {O K : Type} [CommRing O] [Algebra ℤ_[l] O] [Field K] [Algebra ℚ_[l] K] [Algebra O K] [TopologicalSpace K] {G : Type} [Group G] [TopologicalSpace G] (T : LocLat G ℚ_[l] K O) (φ : ↥T.L.T →+ ℤ_[l]), (∀ (z : ℤ_[l]) (t : ↥T.L.T), φ (algebraMap ℤ_[l] O z • t) = z * φ t) → ∃ (ΦA : TW (OCr l O) T →+ Per.Acris l) (ΦB : TW (OB l O) T →+ Per.Bcris l), (∀ (a : Per.Acris l) (w : TW (OCr l O) T), ΦA (((1 : O) ⊗ₜ[ℤ_[l]] a : OCr l O) • w) = a * ΦA w) ∧ (∀ (y : Per.Bcris l) (w : TW (OB l O) T), ΦB (((1 : O) ⊗ₜ[ℤ_[l]] y : OB l O) • w) = y * ΦB w) ∧ (∀ x : ↥T.L.T, ΦB ((1 : OB l O) ⊗ₜ[O] x) = algebraMap ℤ_[l] (Per.Bcris l) (φ x)) ∧ (∀ (N : ℕ) (w : TW (OCr l O) T), ΦA (((l : O) ^ N) • w) = (l : Per.Acris l) ^ N * ΦA w) ∧ (∀ w : TW (OCr l O) T, ΦB (TWincl (toOB l O) T w) = acrisToBcris l (ΦA w)) := by
   intro l _ O K _ _ _ _ _ _ G _ _ T φ hφ

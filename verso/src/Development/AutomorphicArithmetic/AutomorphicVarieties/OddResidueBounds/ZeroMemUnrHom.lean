@@ -23,7 +23,7 @@ def fixMu (N : ℕ) : Subgroup (G E Ω) where
   inv_mem' {a} ha x hx := a.symm_apply_eq.2 (ha x hx).symm
 
 /- English proof (translation)
-Take `⟨k, rfl⟩` from `h`. Introduce `g hg x hx`. Conclude with `hg x (by rw [pow_mul, hx, one_pow])`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem fixMu_le {M N : ℕ} (h : N ∣ M) : fixMu E Ω M ≤ fixMu E Ω N := by
   obtain ⟨k, rfl⟩ := h
@@ -40,7 +40,7 @@ abbrev Gq {N : ℕ} (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)) : Type := (ZMod N)�
 def piQ {N : ℕ} (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)) : (ZMod N)ˣ →* Gq ρ := QuotientGroup.mk' _
 
 /- English proof (translation)
-The claim follows from `QuotientGroup.mk'_surjective _`.
+A detailed English derivation is pending.
 -/
 theorem piQ_surjective {N : ℕ} (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)) : Function.Surjective (piQ ρ) :=
   QuotientGroup.mk'_surjective _
@@ -65,7 +65,7 @@ theorem actRep_piQ (D : LData E Ω l) (e : ℤ) {N : ℕ} (ρ : (ZMod N)ˣ →* 
 end Act
 
 /- English proof (translation)
-Introduce `_ σ _ x` and use `by simp`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (Ω : Type) [Field Ω] [Algebra ℚ Ω] (N : ℕ) : IsCycAct (E := ℚ) Ω N 1 := fun _ σ _ x => by simp
 
@@ -85,7 +85,7 @@ def chiOf {N : ℕ} (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)) {O : Subalgebra ℤ
   MulChar.ofUnitHom ((Units.map O.val.toRingHom.toMonoidHom).comp (ψ.comp ρ))
 
 /- English proof (translation)
-Simplify using `[chiOf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chiOf_unit {N : ℕ} (ρ : (ZMod N)ˣ →* (E ≃ₐ[ℚ] E)) {O : Subalgebra ℤ_[l] (PadicAlgCl l)}
     (ψ : (E ≃ₐ[ℚ] E) →* Oˣ) (b : (ZMod N)ˣ) : chiOf ρ ψ (b : ZMod N) = (((ψ (ρ b) : Oˣ) : O) : PadicAlgCl l) := by

@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.WeilSiegel.Deg
 
 /- English proof (translation)
-Establish `hm : (x * a).map (D.sp.cm.sig : D.host.E → D.host.E) = x.map (D.sp.cm.sig : D.host.E → D.host.E) * a.map (D.sp.cm.sig : D.host.E → D.host.E)` using `Matrix.map_mul (f := (D.sp.cm.sig : D.host.E →+* D.host.E))`. Unfold `gramQ`. Rewrite using `[hm, Matrix.transpose_mul]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gramQ_mul_right (D : D7) (V : HSp D) {r : ℕ} (x : Matrix (Fin V.rank) (Fin r) D.host.E)
     (a : Matrix (Fin r) (Fin r) D.host.E) :
@@ -62,9 +62,9 @@ def congrEquiv (D : D7) (V : HSp D) {r : ℕ} (β : HermE D r) (a : Matrix (Fin 
       rw [Matrix.mul_assoc, hi', Matrix.mul_one]) }
 
 /- English proof (translation)
-Introduce `D V ν r φ β a ha`. Establish `key : (fun h : GA D V => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = (congrH a β).1}, φ (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) (x.1.map (incA D)))) = (fun h : GA D V => ∑' x : {x : Matrix (Fin V.rank) (Fin r) D.host.E // x.rank = r ∧ gramQ V x = …`. Use function extensionality and compare the values at `h`. Rewrite using `[← (congrEquiv D V β a ha).tsum_eq]`. Use `tsum_congr fun x => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : (x.1 * a).map (incA D) = HMul.hMul (x.1.map (incA D)) (a.map (incA D))` using `Matrix.map_mul (f := incA D)`. Express the relevant statement in the definitionally equal form `φ (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) ((x.1 * a).map (incA D))) = φ (HMul.hMul (HMul.hMul (Formalism.L2.Theta.mt V h⁻¹) (x.1.map (incA D))) (a.map (incA D)))`. Rewrite using `[hm, Matrix.mul_assoc]`. Unfold `IfrB`. Rewrite using `[key]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ifrB_congrH : ∀ (D : D7) (V : HSp D) (ν : Measure (GA D V)) (r : ℕ) (φ : Mx D V.rank r → ℂ) (β : HermE D r)
     (a : Matrix (Fin r) (Fin r) D.host.E), a.det ≠ 0 →

@@ -17,13 +17,11 @@ set_option autoImplicit false
 namespace GlobalTheory.ConjHerm
 
 /- English proof (translation)
-Introduce `hPC hADR hADC K _ _ d δ io hK hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ hT E _ _ _ _ I _ φ hφ hres c y hc 𝔠 T X' p hp u' hΛ hdiff hex`. Take `⟨u₀, Hm, χ, hex₀, hAH⟩` from `GlobalTheory.RealMult.Obj.exists_isAH_diag (FR E) 𝔠 X' T.U.c T.U.pos u'`. Take `⟨β, hβ⟩` from `GlobalTheory.T.cm_point_hodge_period_formula E I φ hφ c y hc 𝔠 T`. Establish `hE` using `GlobalTheory.T.torsion_transport_cm_period hPC hADR hADC K d δ io hK hd hδ g t Λ₀ Λ₁ Ω₀ Ω₁ hΩ hT E I φ hφ hres c y hc 𝔠 T X' p hp u' hΛ hdiff hex u₀ Hm χ hex₀ hAH`. Establish `hmem : ∀ w, w ∈ u₀.Λ ↔ ∃ x ∈ lattice c (y * (upIdele K E t)⁻¹), w = fun j ↦ g (φ (T.U.e j) x)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `w`. Rewrite using `[← u₀.ker, hex₀, u'.ker, hΛ]`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.DefiningCoordinates.defCoord]`. Establish `hN : 0 < modF t`. Unfold `modF`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `finprod_induction (fun x => 0 < x) one_pos (fun _ _ => mul_pos) (fun v => ?_)` and prove the remaining obligations. Establish `: (0:ℝ) < (Ideal.absNorm v.asIdeal : ℕ)`. Conclude with `Nat.pos_of_ne_zero (by rw [Ne, Ideal.absNorm_eq_zero_iff]; exact v.ne_bot)` after adjusting the coercions. Conclude with `zpow_pos this _`. Take `⟨h', hHm, hid⟩` from `GlobalTheory.T.cm_lattice_spans_real_space K d δ io hd hδ g hT.2.2.1 E I φ hφ hres _ T.U.e u₀.Λ _ u₀.full hmem T.U.h β hβ (modF t) hN Hm hAH.1 hE`.
-
-Conclude with `⟨u₀, h', hex₀, ⟨χ, hHm ▸ hAH⟩, hid⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_conj_herm : GlobalTheory.Published.PeriodComparison → GlobalTheory.Published.AbelianDeRham → GlobalTheory.Published.AbelianDualCrystal → ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (io : K →+* ℂ), Module.finrank ℚ K = 2 → 0 < d → δ ^ 2 = -(d : K) →
     ∀ (g : ℂ ≃+* ℂ) (t : (Af K)ˣ) (Λ₀ Λ₁ : PeriodPair) (Ω₀ Ω₁ : ℂ), Ω₀ ^ 12 = latDisc Λ₀ → TorsTransport io g t Λ₀ Λ₁ Ω₀ Ω₁ →

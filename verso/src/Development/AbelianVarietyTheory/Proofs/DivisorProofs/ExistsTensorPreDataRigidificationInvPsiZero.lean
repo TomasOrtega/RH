@@ -22,7 +22,7 @@ def cpt {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {r : ℕ} {P' : PolA
   lim.lift (Fan.mk _ fun i => D.c (y i))
 
 /- English proof (translation)
-The claim follows from `lim.fac (Fan.mk _ fun i => D.c (y i)) ⟨i⟩`.
+A detailed English derivation is pending.
 -/
 theorem cpt_pr {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {r : ℕ} {P' : PolAV (Spec (CommRingCat.of R))}
     {pr : Fin r → (P'.A ⟶ D.P.A)} (lim : IsLimit (Fan.mk P'.A pr)) (y : Fin r → D.X) (i : Fin r) :
@@ -30,7 +30,7 @@ theorem cpt_pr {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {r : ℕ} {P'
   lim.fac (Fan.mk _ fun i => D.c (y i)) ⟨i⟩
 
 /- English proof (translation)
-Use `lim.hom_ext fun ⟨i⟩ => ?_` and prove the remaining obligations. Use `show cpt lim (a + b) ≫ pr i = padd P'.A (cpt lim a) (cpt lim b) ≫ pr i`. Use `hpr i` as an intermediate fact. Rewrite using `[cpt_pr, padd, Category.assoc, IsMonHom.mul_hom, lift_map_assoc, cpt_pr, cpt_pr]`. Conclude with `D.c_add _ _`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cpt_add {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {r : ℕ} {P' : PolAV (Spec (CommRingCat.of R))}
     {pr : Fin r → (P'.A ⟶ D.P.A)} (hpr : ∀ i, IsMonHom (pr i)) (lim : IsLimit (Fan.mk P'.A pr)) (a b : Fin r → D.X) :
@@ -42,9 +42,9 @@ theorem cpt_add {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {r : ℕ} {P
   exact D.c_add _ _
 
 /- English proof (translation)
-Use `lim.hom_ext fun ⟨i⟩ => ?_` and prove the remaining obligations. Use `show cpt lim 0 ≫ pr i = η[P'.A] ≫ pr i`. Use `hpr i` as an intermediate fact. Rewrite using `[cpt_pr, IsMonHom.one_hom]`. Establish `h` using `D.c_add 0 0`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+A detailed English derivation is pending.
 -/
 theorem cpt_zero {R : Type} [CommRing R] [IsDomain R] {D : DegPre R} {r : ℕ} {P' : PolAV (Spec (CommRingCat.of R))}
     {pr : Fin r → (P'.A ⟶ D.P.A)} (hpr : ∀ i, IsMonHom (pr i)) (lim : IsLimit (Fan.mk P'.A pr)) :
@@ -63,19 +63,17 @@ end
 open GlobalTheory.Mum.TensData in
 
 /- English proof (translation)
-Introduce `R _ _ _ hA D r W hW hdet`. Use `haveI : IsNoetherianRing R := hA.1`. Take `⟨P', pr, hpr, ⟨lim⟩, -, ⟨w, hw⟩⟩` from `GlobalTheory.Mum.PowPol.exists_pow_polAV R D.toPre.P W hW hdet`. Take `⟨sym, hsym, hsr⟩` from `GlobalTheory.SelfUnif.exists_sym P'`. Take `⟨rig, hrig, hrv⟩` from `GlobalTheory.T.exists_tensorBundleRigidification R D.toPre W P'.A P'.L P'.isLB pr hpr w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hL : Laws` using `GlobalTheory.lawsAndExpansions.1.1`. Establish `cub` using `(hL.cube _ P' ⟨P'.L, rig, P'.isLB, hrig⟩ rfl).1.some`. Use `choose psi hpsi hpv using fun y : Fin r → D.toPre.X => GlobalTheory.T.exists_tensorTrivialisation_powerLattice_points R D.toPre W P'.A P'.L P'.isLB pr w hw (cpt lim y) y (cpt_pr lim y)`. Set `D' : DegPre R` to `{ P := P' rig := rig rig_gen := hrig cub := cub sym := sym sym_gen := hsym sym_rig := hsr X := Fin r → D.toPre.X c := cpt lim c_add := cpt_add hpr lim psi := psi psi_gen := hpsi }`. Use `⟨D', ⟨pr, hpr, lim, AddEquiv.refl _, fun y i => cpt_pr lim y i, w, hw, fun y z J J' hJ hJ' => hpv y z J J' hJ hJ'⟩, fun z J' hJ' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨J, hJ, -⟩` from `exists_good D.toPre.P.L D.toPre.P.isLB z (K := PEmpty) PEmpty.elim PEmpty.elim (fun a => a.elim) (fun a => a.elim)`. Establish `hτ : ∀ a b : D.toPre.X, a = 0 → b = 0 → val (D.toPre.tau a b) (𝟙 _) z J = 1`. Introduce and unpack `a b rfl rfl`. Establish `vρ : val D.toPre.rigK (𝟙 _) z J = val D.toPre.rig (jK R) z J`. Use `(val_pull hJ _ _ _).trans ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Category.id_comp]`. Both sides reduce to the same expression. Establish `hp : ∀ b : D.toPre.X, b = 0 → val (D.toPre.psi b) (𝟙 _) z J = val (D.toPre.psi 0) (𝟙 _) z J`. Introduce and unpack `b rfl`. Both sides reduce to the same expression.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : val (D.toPre.tau 0 0) (𝟙 _) z J = val (D.toPre.psi (0 + 0)) (𝟙 _) z J * (val (D.toPre.psi 0) (𝟙 _) z J)⁻¹ * (val (D.toPre.psi 0) (𝟙 _) z J)⁻¹ * (val D.toPre.rigK (𝟙 _) z J)⁻¹` using `(val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) ((val_mul hJ _ _ _).trans (congrArg₂ (· * ·) rfl (val_inv _ _))) (val_inv _ _))) (val_inv _ _))`. Rewrite using `[e, hp (0 + 0) (by simp), vρ, GlobalTheory.PsiZero.val_psi_zero D.tau_bimult hJ]`. Use `group`. Establish `h1` using `hpv 0 z J J' hJ hJ'`. Establish `h2` using `hrv z J J' hJ hJ'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hprod : (∏ i, ∏ j, val (D.toPre.tau ((0 : Fin r → D.toPre.X) i) ((0 : Fin r → D.toPre.X) j)) (𝟙 _) z J ^ W i j) = 1` using `Finset.prod_eq_one fun i _ => Finset.prod_eq_one fun j _ => by rw [hτ ((0 : Fin r → D.toPre.X) i) ((0 : Fin r → D.toPre.X) j) rfl rfl, one_zpow]`. Rewrite `h1` using `[hprod, _root_.mul_one]`. Use `show val (psi 0) (𝟙 _) z J' * val (LB.pullGen P'.L _ _ rig (toUnit (TK R)).left) (𝟙 _) z J' = 1`. Rewrite using `[h1, _root_.mul_comm]`. Establish `hz` using `cpt_zero hpr lim (D := D.toPre)`.
-
-Use `revert h2`. Generalize the expression as in `cpt lim 0 = x at hz ⊢`. Substitute `hz` using the available equality. Conclude with `id`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mum.TensData.main : ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R], AdmBase R (maximalIdeal R) → ∀ (D : DegData R (maximalIdeal R)) {r : ℕ} (W : Matrix (Fin r) (Fin r) ℤ), ((W + W.transpose).map (Int.cast : ℤ → ℝ)).PosDef → IsUnit (W + W.transpose).det → ∃ (D' : DegPre R) (_ : Tens D.toPre D' W), ∀ (z : (TK R).left) (J : ((TK R).left ⟶ D'.P.A.left) → D'.P.L.ι), Good D'.P.L z J → val (D'.psi 0) (𝟙 _) z J * val D'.rigK (𝟙 _) z J = 1 := by
   intro R _ _ _ hA D r W hW hdet

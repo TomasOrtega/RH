@@ -15,11 +15,11 @@ variable {E : Type} [Field E] [NumberField E] {M N : Type} [AddCommGroup M] [Mod
   [Module (𝓞 E) N]
 
 /- English proof (translation)
-Use `haveI : Module.Free ℤ M := Module.Free.trans (S := 𝓞 E)`. Use `haveI : Module.Finite ℤ M := Module.Finite.trans (𝓞 E) M`. Use `set g : M →ₗ[ℤ] M := f.restrictScalars ℤ with hg`. Establish `hdet : LinearMap.det g = Algebra.norm ℤ (LinearMap.det f)` using `LinearMap.det_restrictScalars`. Establish `hgi : Function.Injective g` using `hf`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `N : Submodule ℤ M` to `LinearMap.range g`. Set `e : M ≃ₗ[ℤ] N` to `LinearEquiv.ofInjective g hgi`. Establish `key` using `Submodule.natAbs_det_equiv N e.toAddEquiv`. Establish `hcomp : N.subtype ∘ₗ AddMonoidHom.toIntLinearMap (e.toAddEquiv : M →+ N) = g`. Use extensionality with `x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite `key` using `[hcomp, hdet]`. Rewrite using `[key]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem index_range [Module.Free (𝓞 E) M] [Module.Finite (𝓞 E) M] (f : M →ₗ[𝓞 E] M) (hf : Function.Injective f) :
     (LinearMap.range f).toAddSubgroup.index = (Algebra.norm ℤ (LinearMap.det f)).natAbs := by
@@ -40,9 +40,9 @@ theorem index_range [Module.Free (𝓞 E) M] [Module.Finite (𝓞 E) M] (f : M �
   rfl
 
 /- English proof (translation)
-Establish `e : ∀ S : Submodule R A, (S.map φ).toAddSubgroup = S.toAddSubgroup.map φ.toAddMonoidHom`. Introduce `S`. Use extensionality with `y`. Simplify using the standard rewrite rules. Rewrite using `[e, e]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `AddSubgroup.relIndex_map_map_of_injective (f := φ.toAddMonoidHom) J.toAddSubgroup K.toAddSubgroup hφ`.
+A detailed English derivation is pending.
 -/
 theorem relIndex_map {R A B : Type} [Ring R] [AddCommGroup A] [Module R A] [AddCommGroup B] [Module R B]
     (φ : A →ₗ[R] B) (hφ : Function.Injective φ) (J K : Submodule R A) :
@@ -55,7 +55,7 @@ theorem relIndex_map {R A B : Type} [Ring R] [AddCommGroup A] [Module R A] [AddC
   exact AddSubgroup.relIndex_map_map_of_injective (f := φ.toAddMonoidHom) J.toAddSubgroup K.toAddSubgroup hφ
 
 /- English proof (translation)
-Establish `hne : (Ideal.span {a}).comap (algebraMap ℤ (𝓞 E)) ≠ ⊥` using `Ideal.comap_ne_bot_of_integral_mem ha (Ideal.mem_span_singleton_self a) (Algebra.IsIntegral.isIntegral a)`. Take `⟨n, hn, hn0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hne`. Rewrite `hn` using `[Ideal.mem_comap, Ideal.mem_span_singleton']`. Take `⟨b, hb⟩` from `hn`. Conclude with `⟨n, hn0, b, by simpa using hb.symm⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 private theorem exists_int_eq_mul_of_ne_zero' {E : Type} [Field E] [NumberField E] {a : 𝓞 E} (ha : a ≠ 0) :
     ∃ n : ℤ, n ≠ 0 ∧ ∃ b : 𝓞 E, (n : 𝓞 E) = b * a := by
@@ -68,11 +68,9 @@ private theorem exists_int_eq_mul_of_ne_zero' {E : Type} [Field E] [NumberField 
   exact ⟨n, hn0, b, by simpa using hb.symm⟩
 
 /- English proof (translation)
-Use `haveI : Module.Finite ℤ M := Module.Finite.trans (𝓞 E) M`. Apply `Module.finite_of_fg_torsion` to reduce the goal to its premises. Introduce `x`. Take `⟨⟨a, ha⟩, hax⟩` from `@h x`. Establish `ha0 : a ≠ 0` using `nonZeroDivisors.ne_zero ha`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn, b, hb⟩` from `exists_int_eq_mul_of_ne_zero' ha0`. Use `⟨⟨n, mem_nonZeroDivisors_of_ne_zero hn⟩, ?_⟩` and prove the remaining obligations. Use `show n • x = 0`. Rewrite using `[← Int.cast_smul_eq_zsmul (𝓞 E), hb, mul_smul]`. Rewrite `hax` using `[Submonoid.smul_def]`.
-
-Simplify using `[hax]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finite_of_torsion [Module.Finite (𝓞 E) M] (h : Module.IsTorsion (𝓞 E) M) : Finite M := by
   haveI : Module.Finite ℤ M := Module.Finite.trans (𝓞 E) M
@@ -88,7 +86,7 @@ theorem finite_of_torsion [Module.Finite (𝓞 E) M] (h : Module.IsTorsion (𝓞
   simp [hax]
 
 /- English proof (translation)
-Establish `h1` using `J.finrank_quotient_add_finrank`. Establish `h2 : Module.finrank (𝓞 E) (M ⧸ J) = 0` using `by omega`. Establish `h3 : Finite (M ⧸ J)` using `finite_of_torsion (Module.finrank_eq_zero_iff_isTorsion.1 h2)`. Establish `: Finite (M ⧸ J.toAddSubgroup)` using `h3`. Conclude with `AddSubgroup.index_ne_zero_of_finite`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem index_ne_zero [Module.Finite (𝓞 E) M] (J : Submodule (𝓞 E) M)
     (h : Module.finrank (𝓞 E) J = Module.finrank (𝓞 E) M) : J.toAddSubgroup.index ≠ 0 := by
@@ -99,9 +97,7 @@ theorem index_ne_zero [Module.Finite (𝓞 E) M] (J : Submodule (𝓞 E) M)
   exact AddSubgroup.index_ne_zero_of_finite
 
 /- English proof (translation)
-Take `⟨n, hn, b, hb⟩` from `exists_int_eq_mul_of_ne_zero' ha`. Establish `h1 : n • x = 0`. Rewrite using `[← Int.cast_smul_eq_zsmul (𝓞 E), hb, mul_smul, hx, smul_zero]`. Break down `smul_eq_zero.1 h1 with h | h` into its components or cases. Conclude with `absurd h hn`.
-
-Conclude with `h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_smul [Module.Free ℤ M] {a : 𝓞 E} (ha : a ≠ 0) {x : M} (hx : a • x = 0) : x = 0 := by
   obtain ⟨n, hn, b, hb⟩ := exists_int_eq_mul_of_ne_zero' ha
@@ -112,9 +108,9 @@ theorem eq_zero_of_smul [Module.Free ℤ M] {a : 𝓞 E} (ha : a ≠ 0) {x : M} 
   · exact h
 
 /- English proof (translation)
-Establish `hmap : (Submodule.span R (Set.range v)).map I.subtype = Submodule.span R (Set.range fun a => (v a : N))`. Rewrite using `[Submodule.map_span, ← Set.range_comp]`. Both sides reduce to the same expression. Rewrite using `[← hmap, Submodule.mem_map]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce `h`. Conclude with `⟨z, h, rfl⟩`. Introduce and unpack `⟨y, hy, hyz⟩`. Rewrite using `[← Subtype.ext hyz]` and apply the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 private theorem mem_span_range_subtype_iff {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {I : Submodule R N}
     {r : ℕ} (v : Fin r → I) (z : I) :
@@ -131,7 +127,7 @@ private theorem mem_span_range_subtype_iff {R N : Type} [CommRing R] [AddCommGro
     rwa [← Subtype.ext hyz]
 
 /- English proof (translation)
-Rewrite using `[AddSubgroup.relIndex]`. Use `congr 1`. Use extensionality with `z`. Simplify using `only [AddSubgroup.mem_addSubgroupOf, Submodule.mem_toAddSubgroup]`. Conclude with `(mem_span_range_subtype_iff v z).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem relIndex_span_coe_eq_index_span {R N : Type} [CommRing R] [AddCommGroup N] [Module R N] {I : Submodule R N}
     {r : ℕ} (v : Fin r → I) :
@@ -144,13 +140,13 @@ private theorem relIndex_span_coe_eq_index_span {R N : Type} [CommRing R] [AddCo
   exact (mem_span_range_subtype_iff v z).symm
 
 /- English proof (translation)
-Use `haveI : Module.Finite (𝓞 E) M := Module.Finite.of_restrictScalars_finite ℤ (𝓞 E) M`. Use `haveI : IsNoetherian (𝓞 E) M := isNoetherian_of_isNoetherianRing_of_finite (𝓞 E) M`. Take `⟨u, hu⟩` from `exists_linearIndependent_of_le_finrank (R := 𝓞 E) (M := I) (le_refl (Module.finrank (𝓞 E) I))`. Take `⟨x, hxI, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hI`. Use `⟨Module.finrank (𝓞 E) I, fun a => (u a : M), ?_, fun a => (u a).2, hu.map' I.subtype I.ker_subtype, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : LinearIndependent (𝓞 E) (fun _ : Fin 1 => (⟨x, hxI⟩ : I))`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `c hc i`. Establish `hc0 : c 0 • x = 0` using `by simpa using congrArg Subtype.val hc`. Establish `hi : i = 0` using `Subsingleton.elim _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Assume the negation of the conclusion and derive a contradiction.
 
-Substitute `hi` using the available equality. Assume the negation of the conclusion as `hne`. Conclude with `hx0 (eq_zero_of_smul hne hc0)`. Simplify using `using hl.fintype_card_le_finrank`. Rewrite using `[relIndex_span_coe_eq_index_span u]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `index_ne_zero (E := E) (M := I)` to reduce the goal to its premises. Rewrite using `[finrank_span_eq_card hu]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem exists_family [Module.Free ℤ M] [Module.Finite ℤ M] {I : Submodule (𝓞 E) M} (hI : I ≠ ⊥) :
     ∃ r v, IsNzFamily I r v := by
@@ -177,7 +173,7 @@ theorem exists_family [Module.Free ℤ M] [Module.Finite ℤ M] {I : Submodule (
 
 omit [NumberField E] in
 /- English proof (translation)
-Rewrite using `[Nat.cast_smul_eq_nsmul]`. Conclude with `AddSubgroup.nsmul_relIndex_mem (Submodule.span (𝓞 E) (Set.range v)).toAddSubgroup (K := I.toAddSubgroup) hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem family_nsmul {I : Submodule (𝓞 E) M} {r : ℕ} {v : Fin r → M} {x : M} (hx : x ∈ I) :
     (((Submodule.span (𝓞 E) (Set.range v)).toAddSubgroup.relIndex I.toAddSubgroup : ℕ) : 𝓞 E) • x ∈
@@ -186,11 +182,11 @@ theorem family_nsmul {I : Submodule (𝓞 E) M} {r : ℕ} {v : Fin r → M} {x :
   exact AddSubgroup.nsmul_relIndex_mem (Submodule.span (𝓞 E) (Set.range v)).toAddSubgroup (K := I.toAddSubgroup) hx
 
 /- English proof (translation)
-Take `⟨h1, hmem, hli, hidx⟩` from `hv`. Set `v' : Fin r → I` to `fun a => ⟨v a, hmem a⟩`. Establish `hli' : LinearIndependent (𝓞 E) v'` using `LinearIndependent.of_comp I.subtype hli`. Use `set N := (Submodule.span (𝓞 E) (Set.range v)).toAddSubgroup.relIndex I.toAddSubgroup with hN`. Establish `htor : Module.rank (𝓞 E) (I ⧸ Submodule.span (𝓞 E) (Set.range v')) = 0`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rank_eq_zero_iff]`. Introduce `q`. Take `⟨y, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Use `⟨((N : ℕ) : 𝓞 E), by exact_mod_cast hidx, ?_⟩` and prove the remaining obligations. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, mem_span_range_subtype_iff v']`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `family_nsmul y.2`. Establish `hsum` using `rank_quotient_add_rank_of_isDomain (Submodule.span (𝓞 E) (Set.range v'))`. Rewrite `hsum` using `[htor, zero_add, rank_span hli']`. Rewrite using `[Module.finrank, ← hsum, Cardinal.mk_range_eq v' hli'.injective]`. Simplify using the standard rewrite rules.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem family_rank [Module.Free ℤ M] [Module.Finite ℤ M] {I : Submodule (𝓞 E) M} {r : ℕ} {v : Fin r → M}
     (hv : IsNzFamily I r v) : r = Module.finrank (𝓞 E) I := by
@@ -211,23 +207,21 @@ theorem family_rank [Module.Free ℤ M] [Module.Finite ℤ M] {I : Submodule (�
   simp
 
 /- English proof (translation)
-Use `set V := Submodule.span (𝓞 E) (Set.range v) with hV`. Set `bV : Module.Basis (Fin r) (𝓞 E) V` to `Module.Basis.span hv`. Use `haveI : Module.Free (𝓞 E) V := Module.Free.of_basis bV`. Use `haveI : Module.Finite (𝓞 E) V := Module.Finite.of_basis bV`. Set `f : V →ₗ[𝓞 E] V` to `Matrix.toLin bV bV A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hfb : ∀ b, ((f (bV b) : V) : M) = w b`. Introduce `b`. Simplify using `only [f, Matrix.toLin_self, Submodule.coe_sum, Submodule.coe_smul, hA b]`. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.span_apply]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `hw' : LinearIndependent (𝓞 E) (fun b => f (bV b))`. Apply `LinearIndependent.of_comp V.subtype` to reduce the goal to its premises. Use `hw using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `b`. Conclude with `hfb b`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hfeq : f = (Finsupp.linearCombination (𝓞 E) (fun b => f (bV b))) ∘ₗ bV.repr.toLinearMap`. Apply `bV.ext` to reduce the goal to its premises. Introduce `b`. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective f`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfeq]`. Rewrite using `[LinearMap.coe_comp]`. Conclude with `Function.Injective.comp hw' bV.repr.injective`. Establish `hdet : LinearMap.det f = A.det` using `LinearMap.det_toLin bV A`. Establish `hrange : (LinearMap.range f).map V.subtype = Submodule.span (𝓞 E) (Set.range w)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hfw : (fun b => ((f (bV b) : V) : M)) = w` using `funext hfb`. Rewrite using `[LinearMap.range_eq_map, ← bV.span_eq, Submodule.map_span, Submodule.map_span, ← Set.range_comp, ← Set.range_comp, ← hfw]`. Both sides reduce to the same expression. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `h0`.
+Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨c, hc0, hc⟩` from `Matrix.exists_mulVec_eq_zero_iff.mpr h0`. Apply `hc0` to reduce the goal to its premises. Establish `hr : ⇑(bV.repr (bV.equivFun.symm c)) = c`. Rewrite using `[← Module.Basis.equivFun_apply, LinearEquiv.apply_symm_apply]`. Establish `h1 : f (bV.equivFun.symm c) = 0`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Simplify using `only [f]`. Rewrite using `[Matrix.toLin_apply, hr, hc]`. Simplify using the standard rewrite rules. Establish `h2` using `congrArg bV.equivFun (hinj (h1.trans (map_zero f).symm))`. Rewrite `h2` using `[LinearEquiv.apply_symm_apply, map_zero]`. Then use the resulting hypothesis.
-
-Establish `hm` using `relIndex_map V.subtype V.injective_subtype (LinearMap.range f) ⊤`. Rewrite `hm` using `[hrange, Submodule.map_subtype_top]`. Rewrite using `[hm, Submodule.top_toAddSubgroup, AddSubgroup.relIndex_top_right, index_range f hinj, hdet]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relIndex_matrix {r : ℕ} {v w : Fin r → M} (hv : LinearIndependent (𝓞 E) v)
     (hw : LinearIndependent (𝓞 E) w) (A : Matrix (Fin r) (Fin r) (𝓞 E)) (hA : ∀ b, w b = ∑ a, A a b • v a) :
@@ -280,11 +274,11 @@ theorem relIndex_matrix {r : ℕ} {v w : Fin r → M} (hv : LinearIndependent (�
     rw [hm, Submodule.top_toAddSubgroup, AddSubgroup.relIndex_top_right, index_range f hinj, hdet]
 
 /- English proof (translation)
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `a ha`. Establish `hker : RingHom.ker s = ⊥`. Apply `Ideal.eq_bot_of_comap_eq_bot (R := ℤ)` to reduce the goal to its premises. Rewrite using `[eq_bot_iff]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `n hn`. Rewrite `hn` using `[Ideal.mem_comap, RingHom.mem_ker, algebraMap_int_eq, eq_intCast, map_intCast]`. Rewrite using `[Ideal.mem_bot]`. Conclude with `hn` after adjusting the coercions. Establish `: a ∈ RingHom.ker s` using `ha`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[hker]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 private theorem ringOfIntegers_ringHom_complex_injective {E : Type} [Field E] [NumberField E] (s : 𝓞 E →+* ℂ) :
     Function.Injective s := by
@@ -302,9 +296,9 @@ private theorem ringOfIntegers_ringHom_complex_injective {E : Type} [Field E] [N
   exact this
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `σ₁ σ₂ h`. Apply `AlgHom.coe_ringHom_injective` to reduce the goal to its premises. Conclude with `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) h`. Introduce `s`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(IsFractionRing.lift (ringOfIntegers_ringHom_complex_injective s)).toRatAlgHom, ?_⟩` and prove the remaining obligations. Apply `RingHom.ext` to reduce the goal to its premises. Introduce `a`. Rewrite using `[RingHom.comp_apply]`. Conclude with `IsFractionRing.lift_algebraMap (ringOfIntegers_ringHom_complex_injective s) a`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem bijective_algHom_comp_algebraMap {E : Type} [Field E] [NumberField E] :
     Function.Bijective fun σ : E →ₐ[ℚ] ℂ => (σ : E →+* ℂ).comp (algebraMap (𝓞 E) E) := by
@@ -320,7 +314,7 @@ private theorem bijective_algHom_comp_algebraMap {E : Type} [Field E] [NumberFie
     exact IsFractionRing.lift_algebraMap (ringOfIntegers_ringHom_complex_injective s) a
 
 /- English proof (translation)
-Establish `h1 : ((Algebra.norm ℤ d : ℤ) : ℂ) = algebraMap ℚ ℂ (Algebra.norm ℚ (d : E))`. Rewrite using `[← Algebra.coe_norm_int]`. Simplify using the standard rewrite rules. Rewrite using `[h1, Algebra.norm_eq_prod_embeddings ℚ ℂ]`. Conclude with `Fintype.prod_bijective _ bijective_algHom_comp_algebraMap _ _ (fun σ => rfl)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_eq_prod (d : 𝓞 E) : ((Algebra.norm ℤ d : ℤ) : ℂ) = ∏ s : 𝓞 E →+* ℂ, s d := by
   have h1 : ((Algebra.norm ℤ d : ℤ) : ℂ) = algebraMap ℚ ℂ (Algebra.norm ℚ (d : E)) := by
@@ -337,7 +331,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {g : ℕ} {Λ : Type
   {Ψ : Type} [Fintype Ψ] (R : RiemLat E g Λ)
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem starRingEnd_comp_starRingEnd_comp {A : Type} [Ring A] (f : A →+* ℂ) :
     (starRingEnd ℂ).comp ((starRingEnd ℂ).comp f) = f := by
@@ -346,15 +340,15 @@ private theorem starRingEnd_comp_starRingEnd_comp {A : Type} [Ring A] (f : A →
 
 omit [Fintype Ψ] in
 /- English proof (translation)
-Take `⟨hinj, hiff⟩` from `hσ`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `(a | a) (b | b) h`. Simplify using `only [Sum.elim_inl] at h`. Rewrite using `[hinj h]`.
+Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr] at h`. Conclude with `absurd ⟨a, h⟩ ((hiff (σ b)).1 ⟨b, rfl⟩)`. Simplify using `only [Sum.elim_inl, Sum.elim_inr] at h`. Conclude with `absurd ⟨b, h.symm⟩ ((hiff (σ a)).1 ⟨a, rfl⟩)`. Simplify using `only [Sum.elim_inr] at h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h'` using `congrArg (fun f => (starRingEnd ℂ).comp f) h`. Simplify using `only [starRingEnd_comp_starRingEnd_comp] at h'`. Rewrite using `[hinj h']`. Introduce `s`. Distinguish the cases in `hs : ∃ τ, σ τ = s`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Take `⟨τ, hτ⟩` from `hs`. Conclude with `⟨Sum.inl τ, hτ⟩`. Establish `h2 : ∃ τ, σ τ = (starRingEnd ℂ).comp s`. Assume the negation of the conclusion as `hn`. Conclude with `hs ((hiff s).2 hn)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take `⟨τ, hτ⟩` from `h2`. Use `⟨Sum.inr τ, ?_⟩` and prove the remaining obligations. Simplify using `only [Sum.elim_inr, hτ, starRingEnd_comp_starRingEnd_comp]`.
+A detailed English derivation is pending.
 -/
 theorem cm_bij {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) :
     Function.Bijective (Sum.elim σ fun τ => (starRingEnd ℂ).comp (σ τ)) := by
@@ -383,9 +377,9 @@ theorem cm_bij {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) :
       simp only [Sum.elim_inr, hτ, starRingEnd_comp_starRingEnd_comp]
 
 /- English proof (translation)
-Establish `h` using `norm_eq_prod d`. Rewrite `h` using `[← Fintype.prod_bijective _ (cm_bij hσ) (fun x => Sum.elim σ (fun τ => (starRingEnd ℂ).comp (σ τ)) x d) _ (fun _ => rfl), Fintype.prod_sum_type]`. Simplify using `only [Sum.elim_inl, Sum.elim_inr, RingHom.comp_apply] at h`. Rewrite `h` using `[← Finset.prod_mul_distrib]`. Simplify using `only [Complex.mul_conj] at h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `h` using `[← Complex.ofReal_prod, ← Complex.ofReal_intCast]`. Establish `hR : ((Algebra.norm ℤ d : ℤ) : ℝ) = ∏ τ, Complex.normSq (σ τ d)` using `Complex.ofReal_injective h`. Establish `hnn : (0 : ℝ) ≤ ∏ τ, Complex.normSq (σ τ d)` using `Finset.prod_nonneg fun τ _ => Complex.normSq_nonneg _`. Rewrite using `[Nat.cast_natAbs, Int.cast_abs, hR, abs_of_nonneg hnn]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_normSq {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) (d : 𝓞 E) :
     ∏ τ, Complex.normSq (σ τ d) = ((Algebra.norm ℤ d).natAbs : ℝ) := by
@@ -402,7 +396,7 @@ theorem prod_normSq {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) (d : �
   rw [Nat.cast_natAbs, Int.cast_abs, hR, abs_of_nonneg hnn]
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[RiemLat.gram, RiemLat.ip, Matrix.mul_apply, dotProduct, mulVec, Finset.mul_sum, Finset.sum_mul, mul_assoc]`. Rewrite using `[Finset.sum_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem gram_eq_transpose_of_mul_Hm {r : ℕ} (u : Fin r → Fin g → ℂ) :
     R.gram u = (Matrix.of u * R.Hm * (Matrix.of u)ᴴ)ᵀ := by
@@ -411,9 +405,9 @@ private theorem gram_eq_transpose_of_mul_Hm {r : ℕ} (u : Fin r → Fin g → �
   rw [Finset.sum_comm]
 
 /- English proof (translation)
-Establish `hU : Matrix.of u' = Aᵀ * Matrix.of u`. Use extensionality with `b i`. Simplify using `[h, Matrix.mul_apply, Finset.sum_apply]`. Rewrite using `[gram_eq_transpose_of_mul_Hm, gram_eq_transpose_of_mul_Hm, hU, Matrix.det_transpose, Matrix.det_transpose, Matrix.conjTranspose_mul, show Aᵀ * Matrix.of u * R.Hm * ((Matrix.of u)ᴴ * Aᵀᴴ) = Aᵀ * (Matrix.of u * R.Hm * (Matrix.of u)ᴴ) * Aᵀᴴ by simp only [Matrix.mul_assoc], Matrix.de …`. Establish `hc : A.det * (Matrix.of u * R.Hm * (Matrix.of u)ᴴ).det * star A.det = (Complex.normSq A.det : ℂ) * (Matrix.of u * R.Hm * (Matrix.of u)ᴴ).det`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.normSq_eq_conj_mul_self, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hc, Complex.re_ofReal_mul]`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_matrix {r : ℕ} (u u' : Fin r → Fin g → ℂ) (A : Matrix (Fin r) (Fin r) ℂ)
     (h : ∀ b, u' b = ∑ a, A a b • u a) : (R.gram u').det.re = Complex.normSq A.det * (R.gram u).det.re := by
@@ -431,13 +425,13 @@ theorem gram_matrix {r : ℕ} (u u' : Fin r → Fin g → ℂ) (A : Matrix (Fin 
   rw [hc, Complex.re_ofReal_mul]
 
 /- English proof (translation)
-Establish `hHm : R.Hm.PosDef`. Use `Matrix.posDef_iff_dotProduct_mulVec.2 ⟨R.herm, fun x hx => ?_⟩` and prove the remaining obligations. Establish `h1` using `R.pos (star x) (by simpa using hx)`. Rewrite `h1` using `[star_star]`. Establish `h2` using `R.herm.im_star_dotProduct_mulVec_self x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Complex.pos_iff.2 ⟨h1, by rw [eq_comm]; simpa using h2⟩`. Establish `hB : Function.Injective ((Matrix.of u)ᴴ).mulVec`. Introduce `y z hyz`. Establish `hk : (Matrix.of u)ᴴ *ᵥ (y - z) = 0` using `by rw [Matrix.mulVec_sub, hyz, sub_self]`. Establish `hsum : ∑ a, star ((y - z) a) • u a = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Establish `hi` using `congrArg star (congrFun hk i)`. Simplify `hi` using `[Matrix.mulVec, dotProduct, Matrix.conjTranspose_apply, star_sum, mul_comm]`. Establish `h0` using `Fintype.linearIndependent_iff.1 hu _ hsum`. Establish `ht : y - z = 0` using `funext fun a => star_eq_zero.1 (h0 a)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `sub_eq_zero.1 ht`. Establish `hM` using `hHm.conjTranspose_mul_mul_same hB`. Rewrite `hM` using `[Matrix.conjTranspose_conjTranspose]`. Rewrite using `[gram_eq_transpose_of_mul_Hm, Matrix.det_transpose]`. Conclude with `(Complex.pos_iff.1 hM.det_pos).1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_det_pos {r : ℕ} {u : Fin r → Fin g → ℂ} (hu : LinearIndependent ℂ u) : 0 < (R.gram u).det.re := by
   have hHm : R.Hm.PosDef := by
@@ -462,15 +456,13 @@ theorem gram_det_pos {r : ℕ} {u : Fin r → Fin g → ℂ} (hu : LinearIndepen
   exact (Complex.pos_iff.1 hM.det_pos).1
 
 /- English proof (translation)
-Take `⟨_, hvI, hvli, _⟩` from `hv`. Establish `hex : ∀ b, ∃ c : Fin r → 𝓞 E, ∑ a, c a • v a = w b` using `fun b => (Submodule.mem_span_range_iff_exists_fun (𝓞 E)).1 (hle b)`. Use `choose c hc using hex`. Set `A : Matrix (Fin r) (Fin r) (𝓞 E)` to `Matrix.of fun a b => c b a`. Establish `hAw : ∀ b, w b = ∑ a, A a b • v a` using `fun b => (hc b).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hdet, hidx⟩` from `relIndex_matrix hvli hw A hAw`. Establish `hwv : Submodule.span (𝓞 E) (Set.range w) ≤ Submodule.span (𝓞 E) (Set.range v)` using `Submodule.span_le.2 (by rintro _ ⟨b, rfl⟩; exact hle b)`. Establish `hvle : Submodule.span (𝓞 E) (Set.range v) ≤ I` using `Submodule.span_le.2 (by rintro _ ⟨a, rfl⟩; exact hvI a)`. Establish `hmul` using `AddSubgroup.relIndex_mul_relIndex (Submodule.span (𝓞 E) (Set.range w)).toAddSubgroup (Submodule.span (𝓞 E) (Set.range v)).toAddSubgroup I.toAddSubgroup hwv hvle`. Establish `hnum : ∀ τ, (R.gram fun b => eigComp R.B (σ τ) (R.P (w b))).det.re = Complex.normSq (σ τ A.det) * (R.gram fun a => eigComp R.B (σ τ) (R.P (v a))).det.re`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `τ`. Rewrite using `[RingHom.map_det, RingHom.mapMatrix_apply]`. Apply `gram_matrix` to reduce the goal to its premises. Introduce `b`. Simplify using `only [eigComp_eq, hAw b, map_sum, R.act, proj_act, Matrix.map_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hN : ((Algebra.norm ℤ A.det).natAbs : ℝ) ≠ 0`. Conclude with `Int.natAbs_ne_zero.2 (Algebra.norm_ne_zero_iff.2 hdet)` after adjusting the coercions. Unfold `RiemLat.nzOf`. Rewrite using `[Finset.prod_congr rfl (fun τ _ => hnum τ), Finset.prod_mul_distrib, prod_normSq hσ, ← hmul, hidx]`. Use `push_cast`.
-
-Rewrite using `[mul_div_mul_left _ _ hN]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzOf_of_le {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) {I : Submodule (𝓞 E) Λ} {r : ℕ} {v w : Fin r → Λ}
     (hv : IsNzFamily I r v) (hw : LinearIndependent (𝓞 E) w)
@@ -505,13 +497,11 @@ theorem nzOf_of_le {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) {I : Subm
   rw [mul_div_mul_left _ _ hN]
 
 /- English proof (translation)
-Use `haveI := R.free`. Use `haveI := R.fin`. Establish `hr` using `family_rank hv`. Establish `hr'` using `family_rank hw`. Take `rfl : r' = r` from `hr'.trans hr.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `set n : ℕ := (Submodule.span (𝓞 E) (Set.range v)).toAddSubgroup.relIndex I.toAddSubgroup with hn`. Establish `hn0 : (n : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 hv.2.2.2`. Set `f : Λ →ₗ[𝓞 E] Λ` to `(n : 𝓞 E) • LinearMap.id`. Establish `hf : LinearMap.ker f = ⊥`. Rewrite using `[LinearMap.ker_eq_bot']`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `m hm`. Conclude with `eq_zero_of_smul hn0 (by simpa [f] using hm)`. Establish `hli : LinearIndependent (𝓞 E) (f ∘ w)` using `hw.2.2.1.map' f hf`. Establish `h1 : R.nzOf σ I (f ∘ w) = R.nzOf σ I v` using `nzOf_of_le R hσ hv hli (fun b => by simpa [f] using family_nsmul (v := v) (hw.2.1 b))`. Establish `h2 : R.nzOf σ I (f ∘ w) = R.nzOf σ I w` using `nzOf_of_le R hσ hw hli (fun b => by`.
-
-Simplify `Submodule.smul_mem (Submodule.span (𝓞 E) (Set.range w)) (n : 𝓞 E) (Submodule.subset_span (Set.mem_range_self b)))` using `[f]`. Rewrite using `[← h2, h1]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nzOf_eq {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) {I : Submodule (𝓞 E) Λ} {r r' : ℕ} {v : Fin r → Λ}
     {w : Fin r' → Λ} (hv : IsNzFamily I r v) (hw : IsNzFamily I r' w) : R.nzOf σ I w = R.nzOf σ I v := by
@@ -537,7 +527,7 @@ theorem nzOf_eq {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) {I : Submodu
   rw [← h2, h1]
 
 /- English proof (translation)
-Establish `h : ∃ r v, IsNzFamily I r v` using `⟨r, v, hv⟩`. Unfold `RiemLat.nz`. Rewrite using `[dif_pos h]`. Conclude with `nzOf_eq R hσ hv h.choose_spec.choose_spec`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nz_eq {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) {I : Submodule (𝓞 E) Λ} {r : ℕ} {v : Fin r → Λ}
     (hv : IsNzFamily I r v) : R.nz σ I = R.nzOf σ I v := by
@@ -547,9 +537,9 @@ theorem nz_eq {σ : Ψ → (𝓞 E →+* ℂ)} (hσ : IsCMFam σ) {I : Submodule
   exact nzOf_eq R hσ hv h.choose_spec.choose_spec
 
 /- English proof (translation)
-Take `⟨_, hvI, hvli, hidx⟩` from `hv`. Unfold `RiemLat.nzOf`. Apply `div_pos` to reduce the goal to its premises. Apply `Finset.prod_pos` to reduce the goal to its premises. Introduce `τ _`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hli` using `proj_indep R hI (σ τ) hvI hvli`. Simplify using `only [eigComp_eq]`. Conclude with `gram_det_pos R hli`. Conclude with `Nat.pos_of_ne_zero hidx` after adjusting the coercions.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nzOf_pos (σ : Ψ → (𝓞 E →+* ℂ)) {I : Submodule (𝓞 E) Λ} (hI : IsIsoSub R.form I) {r : ℕ} {v : Fin r → Λ}
     (hv : IsNzFamily I r v) : 0 < R.nzOf σ I v := by

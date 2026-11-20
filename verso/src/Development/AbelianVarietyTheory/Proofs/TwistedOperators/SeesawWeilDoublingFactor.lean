@@ -37,9 +37,9 @@ def transposeMulEquiv {A : Type} [CommRing A] {α β γ : Type} [Fintype β] [De
     rfl
 
 /- English proof (translation)
-Use `Submodule.subset_span ⟨f, 1, hf, ?_⟩` and prove the remaining obligations. Use `show f = pureTensorL _ f 1`. Establish `h1 : (1 : MvPolynomial (FVar D X.rank M.rank) ℂ) = MvPolynomial.basisMonomials _ ℂ 0`. Simplify using `[MvPolynomial.coe_basisMonomials]`. Simplify using `only [pureTensorL]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, Module.Basis.constr_basis]`. Simplify using `[opPow]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_algF_of_isFinF {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (ε : Bool) {M X : HSp D} (A : Fr M)
     (B : Fr X) (f : WO M X → ℂ) (hf : IsFinF ψ θ ε A B f) : f ∈ algF ψ θ ε A B := by
@@ -52,15 +52,15 @@ theorem mem_algF_of_isFinF {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFa
   simp [opPow]
 
 /- English proof (translation)
-Establish `hsg : (sgn ε S).gram = (if ε then -1 else 1 : D.host.E) • S.gram`. Apply the tactic sequence `cases ε <;> ext i j <;> simp [sgn, HSpace.gram]`. Establish `hdet : IsUnit ((if ε then -1 else 1 : D.host.E) • S.gram).det`. Rewrite using `[Matrix.det_smul]`. Apply the tactic sequence `refine IsUnit.mul (IsUnit.pow _ (by cases ε <;> simp)) ?_`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `LatVac.gram_det_isUnit S`. Establish `hHG : GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if ε then -1 else 1 : D.host.E) • S.gram)⁻¹ * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if ε then -1 else 1 : D.host.E) • S.gram) = 1`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM, GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]`. Rewrite using `[← Matrix.map_mul, Matrix.nonsing_inv_mul _ hdet]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Take `⟨f, hf, hD⟩` from `GlobalTheory.T.thetaTransform_gaussianVacuum_isFiniteDatum D ψ θ hθ ε S X A B e.symm Bs hBs hψ Vs Ws r s r' s' hJ (by rw [hJW]; rfl) hV hW (fun w => by`. Take `⟨τ, h1, h2, h3⟩` from `hemb w`. Conclude with `⟨τ, h1, h2, by rw [h3]; rfl⟩) M hM`. Use the proof step `(transposeMulEquiv e (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if ε then -1 else 1 : D.host.E) • S.gram)) (GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if ε then -1 else 1 : D.host.E) • S.gram)⁻¹) hHG)`. Use the proof step `(fun u => rfl) g φ hg hφ hvac`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `hf using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Use `show GlobalTheory.WeilM.thetaSum D.host.F (M.co.rho ψ (GlobalTheory.TripleRead.ptO (sgn ε S).gram e x) (GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure g φ)) = f x`. Rewrite using `[hD.2, hsg]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `show (((x * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if ε then -1 else 1 : D.host.E) • S.gram)⁻¹)ᵀ.submatrix id e)ᵀ.submatrix e.symm id) * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if ε then -1 else 1 : D.host.E) • S.gram) = x`. Establish `hx : ((x * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if ε then -1 else 1 : D.host.E) • S.gram)⁻¹)ᵀ.submatrix id e)ᵀ.submatrix e.symm id = x * GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.incM ((if ε then -1 else 1 : D.host.E) • S.gram)⁻¹`. Use extensionality with `i j`. Simplify using the standard rewrite rules. Rewrite using `[hx, Matrix.mul_assoc, hHG, Matrix.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem isFinF_thO (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (hθ : IsInfFam θ)
     (ε : Bool) (S X : HSp D) (A : Fr S) (B : Fr X) {d : ℕ} (e : Fin d ≃ Fin X.rank)
@@ -109,7 +109,7 @@ theorem isFinF_thO (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D) (h�
   rw [hx, Matrix.mul_assoc, hHG, Matrix.mul_one]
 
 /- English proof (translation)
-Introduce `_ _ D ψ θ _ hθ W W₁ X A A₁ B α β _ ωA ωB _ _ e Bs Γ Xc om om' h _ _ R Rf hm f₀ φ hg hφ hvac`. Apply `mem_algF_of_isFinF` to reduce the goal to its premises. Use `isFinF_thO D ψ θ hθ true W X A B e Bs hm.triple.base h.ψ Γ.V Γ.W _ _ _ _ (by rw [h.JW]; rfl) h.JX hm.triple.geo.hV hm.triple.geo.hW (fun w => ?_) Γ.M hm.triple.geo.hM f₀ φ hg hφ hvac` and prove the remaining obligations. Take `⟨τ, h1, h2, _, h4⟩` from `h.cart w`. Conclude with `⟨τ, h1, by rw [h2]; simp, h4⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem thO_gauss_mem_algF : GlobalTheory.Published.HoweDualityReal → GlobalTheory.FunPr.Hypotheses₂ →
     ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsStdChar D ψ (-1) → IsInfFam θ →

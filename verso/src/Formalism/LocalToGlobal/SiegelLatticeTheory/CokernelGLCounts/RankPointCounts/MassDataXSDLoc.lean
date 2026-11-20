@@ -23,19 +23,19 @@ theorem swp_tmul (a : E) (c : Fv F v) : swp v (a ⊗ₜ[F] c) = c ⊗ₜ[F] a :=
 def swVv (w : Fin n → E ⊗[F] Fv F v) : Fin n → Fv F v ⊗[F] E := fun i => swp v (w i)
 
 /- English proof (translation)
-Introduce `_ _ h` and use `funext fun i => (swp v).injective (congrFun h i)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem swVv_injective : Function.Injective (swVv (E := E) v (n := n)) := fun _ _ h =>
   funext fun i => (swp v).injective (congrFun h i)
 
 /- English proof (translation)
-Introduce `w` and use `⟨fun i => (swp v).symm (w i), funext fun i => (swp v).apply_symm_apply (w i)⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem swVv_surjective : Function.Surjective (swVv (E := E) v (n := n)) := fun w =>
   ⟨fun i => (swp v).symm (w i), funext fun i => (swp v).apply_symm_apply (w i)⟩
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[swVv, swp, PI.SelfDualLoc.inclE, ratV, inclR, Algebra.TensorProduct.comm_tmul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem swVv_incl (x : Fin n → E) :
     swVv v (fun i => PI.SelfDualLoc.inclE (F := F) (Fv F v) (x i)) = ratV (F := F) (Fv F v) x := by
@@ -43,7 +43,7 @@ theorem swVv_incl (x : Fin n → E) :
   simp [swVv, swp, PI.SelfDualLoc.inclE, ratV, inclR, Algebra.TensorProduct.comm_tmul]
 
 /- English proof (translation)
-Proceed by induction on `t using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul x a => simp [sigR, PI.SelfDualLoc.sigR, swp, Algebra.TensorProduct.comm_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem sig_swap (σ : E →ₐ[F] E) (t : E ⊗[F] Fv F v) :
     sigR (Fv F v) σ (swp v t) = swp v (PI.SelfDualLoc.sigR σ (Fv F v) t) := by
@@ -53,13 +53,13 @@ theorem sig_swap (σ : E →ₐ[F] E) (t : E ⊗[F] Fv F v) :
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-Simplify using `[swp, PI.SelfDualLoc.inclE, inclR, Algebra.TensorProduct.comm_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem incl_swap (e : E) : swp v (PI.SelfDualLoc.inclE (F := F) (Fv F v) e) = inclR (F := F) (Fv F v) e := by
   simp [swp, PI.SelfDualLoc.inclE, inclR, Algebra.TensorProduct.comm_tmul]
 
 /- English proof (translation)
-Simplify using `only [hR, Formalism.UG.hform, PI.SelfDualLoc.hform, map_sum, map_mul, JR, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Simplify using `only [swVv, sig_swap, incl_swap]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem hR_swap (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (z y : Fin n → E ⊗[F] Fv F v) :
     hR (Fv F v) σ J (swVv v z) (swVv v y) =
@@ -77,20 +77,20 @@ abbrev Sv : Subring (E ⊗[F] Fv F v) :=
   PI.SelfDualLoc.tensInt (F := F) (Fv F v) (PI.SelfDualLoc.intOE E) (v.adicCompletionIntegers F).toSubring
 
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨a, trivial, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem oev_gen (a : 𝓞 E) : inclR (F := F) (Fv F v) (a : E) ∈ OEv (E := E) v :=
   Submodule.subset_span ⟨a, trivial, rfl⟩
 
 /- English proof (translation)
-Apply the tactic sequence `first | exact UpperTheory.Reformulated.B.Qh24.oev_mul .. | (apply UpperTheory.Reformulated.B.Qh24.oev_mul <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qh24.oev_mul <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh24.oev_mul <;> assumption) | (intros; apply @U …`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem oev_mul {s t : Fv F v ⊗[F] E} (hs : s ∈ OEv (E := E) v) (ht : t ∈ OEv (E := E) v) :
     s * t ∈ OEv (E := E) v := by
   first | exact UpperTheory.Reformulated.B.Qh24.oev_mul .. | (apply UpperTheory.Reformulated.B.Qh24.oev_mul <;> assumption) | (intros; apply UpperTheory.Reformulated.B.Qh24.oev_mul <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh24.oev_mul <;> assumption) | (intros; apply @UpperTheory.Reformulated.B.Qh24.oev_mul <;> assumption) | (apply @UpperTheory.Reformulated.B.Qh24.oev_mul <;> first | assumption | infer_instance) | exact @UpperTheory.Reformulated.B.Qh24.oev_mul F E ‹_› ‹_› ‹_› ‹_› ‹_› v s t hs ht | exact @UpperTheory.Reformulated.B.Qh24.oev_mul F E ‹_› ‹_› ‹_› ‹_› ‹_› v s t hs | exact @UpperTheory.Reformulated.B.Qh24.oev_mul F E ‹_› ‹_› ‹_› ‹_› ‹_› v s t | exact @UpperTheory.Reformulated.B.Qh24.oev_mul F E ‹_› ‹_› ‹_› ‹_› ‹_› v s | exact @UpperTheory.Reformulated.B.Qh24.oev_mul F E ‹_› ‹_› ‹_› ‹_› ‹_› v | exact @UpperTheory.Reformulated.B.Qh24.oev_mul F E ‹_› ‹_› ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qh24.oev_mul F E ‹_› ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qh24.oev_mul F E ‹_› ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qh24.oev_mul F E ‹_› ‹_› | exact @UpperTheory.Reformulated.B.Qh24.oev_mul F E ‹_› | exact @UpperTheory.Reformulated.B.Qh24.oev_mul F E | exact @UpperTheory.Reformulated.B.Qh24.oev_mul F
 
 /- English proof (translation)
-Establish `h : ((c : Fv F v) ⊗ₜ[F] (1 : E)) = c • inclR (F` using `F) (Fv F v) ((1 : 𝓞 E) : E) := by`. Simplify using `[inclR, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`. Rewrite using `[h]`. Conclude with `Submodule.smul_mem _ c (oev_gen v 1)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oev_alg (c : v.adicCompletionIntegers F) : ((c : Fv F v) ⊗ₜ[F] (1 : E)) ∈ OEv (E := E) v := by
   have h : ((c : Fv F v) ⊗ₜ[F] (1 : E)) = c • inclR (F := F) (Fv F v) ((1 : 𝓞 E) : E) := by
@@ -99,11 +99,9 @@ theorem oev_alg (c : v.adicCompletionIntegers F) : ((c : Fv F v) ⊗ₜ[F] (1 : 
   exact Submodule.smul_mem _ c (oev_gen v 1)
 
 /- English proof (translation)
-Proceed by induction on `hs using Subring.closure_induction with`. Consider the case `mem x hx`. Break down `hx with ⟨⟨a, ⟨b, rfl⟩⟩, rfl⟩ | ⟨⟨c, hc⟩, rfl⟩` into its components or cases. Conclude with `oev_gen v b`. Conclude with `oev_alg v ⟨c, hc⟩`.
+Proceed by induction. Treat this case separately. Separate the alternatives or extract the components of the hypothesis. Treat this case separately. Treat this case separately.
 
-Consider the case `zero => rw [map_zero]`. Conclude with `zero_mem (Submodule.span _ _)`. Consider the case `one => rw [map_one]`. Simplify using `using oev_gen v (E := E) 1`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
-
-Conclude with `add_mem (S := Submodule _ _) hx hy`. Consider the case `neg x _ hx => rw [map_neg]`. Conclude with `neg_mem (S := Submodule _ _) hx`. Consider the case `mul x y _ _ hx hy => rw [map_mul]`. Conclude with `oev_mul v hx hy`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem swp_mem_oev {s : E ⊗[F] Fv F v} (hs : s ∈ Sv (E := E) v) : swp v s ∈ OEv (E := E) v := by
   induction hs using Subring.closure_induction with
@@ -118,13 +116,13 @@ theorem swp_mem_oev {s : E ⊗[F] Fv F v} (hs : s ∈ Sv (E := E) v) : swp v s �
   | mul x y _ _ hx hy => rw [map_mul]; exact oev_mul v hx hy
 
 /- English proof (translation)
-Unfold `OEv at ht`. Rewrite `ht` using `[SetLike.mem_coe]`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, -, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `⟨(a : E) ⊗ₜ[F] (1 : Fv F v), Subring.subset_closure (Or.inl ⟨⟨(a : E), ⟨a, rfl⟩⟩, rfl⟩), ?_⟩` and prove the remaining obligations. Both sides reduce to the same expression. Consider the case `zero => exact ⟨0, zero_mem _, map_zero _⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨s, hs, rfl⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨s', hs', rfl⟩` from `hy`. Conclude with `⟨s + s', add_mem hs hs', map_add _ _ _⟩`. Consider the case `smul c x _ hx`. Take `⟨s, hs, rfl⟩` from `hx`. Use `⟨((1 : E) ⊗ₜ[F] (c : Fv F v)) * s, mul_mem (Subring.subset_closure (Or.inr ⟨c, rfl⟩)) hs, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_mul, swp_tmul, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem oev_swp {t : Fv F v ⊗[F] E} (ht : t ∈ OEv (E := E) v) : ∃ s ∈ Sv (E := E) v, swp v s = t := by
   unfold OEv at ht
@@ -154,21 +152,21 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (Lb : Submodule (𝓞 E) (Fin n → E))
 
 /- English proof (translation)
-Unfold `OEv at ht`. Rewrite `ht` using `[SetLike.mem_coe]`. Proceed by induction on `ht using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨a, -, rfl⟩` from `hx`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Use `Submodule.subset_span ⟨a • x, Lb.smul_mem a hx, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[ratV, map_mul, Pi.smul_apply, Algebra.smul_def]`. Consider the case `zero`. Use `zero_mem (latLoc v (Lb : Set (Fin n → E))) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Consider the case `add y z _ _ hy hz`. Establish `e : (fun i => inclR (F` using `F) (Fv F v) (a : E) * (y + z) i) = (fun i => inclR (F := F) (Fv F v) (a : E) * y i) + (fun i => inclR (F := F) (Fv F v) (a : E) * z i) := by`. Use function extensionality and compare the values at `i`. Simplify using `[mul_add]`. Rewrite using `[e]`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `add_mem hy hz`. Consider the case `smul c y _ hy`. Establish `e : (fun i => inclR (F` using `F) (Fv F v) (a : E) * (c • y) i) = c • (fun i => inclR (F := F) (Fv F v) (a : E) * y i) := by`. Use function extensionality and compare the values at `i`. Simplify using `[mul_smul_comm]`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c hy`. Consider the case `zero`. Use `zero_mem (latLoc v (Lb : Set (Fin n → E))) using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `i`.
+Treat this case separately. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`. Establish `e : (fun i => (x + y) * w i) = (fun i => x * w i) + (fun i => y * w i)` using `by funext i; simp [add_mul]`. Rewrite using `[e]`. Conclude with `add_mem hx hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Consider the case `smul c x _ hx`. Establish `e : (fun i => (c • x) * w i) = c • (fun i => x * w i)` using `by funext i; simp [smul_mul_assoc]`. Rewrite using `[e]`. Conclude with `Submodule.smul_mem _ c hx`.
+A detailed English derivation is pending.
 -/
 theorem oev_smul_lat {t : Fv F v ⊗[F] E} (ht : t ∈ OEv (E := E) v) {w : Fin n → Fv F v ⊗[F] E}
     (hw : w ∈ latLoc v (Lb : Set (Fin n → E))) : (fun i => t * w i) ∈ latLoc v (Lb : Set (Fin n → E)) := by
@@ -207,13 +205,13 @@ theorem oev_smul_lat {t : Fv F v ⊗[F] E} (ht : t ∈ OEv (E := E) v) {w : Fin 
     rw [e]; exact Submodule.smul_mem _ c hx
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Rewrite using `[swVv_incl]`. Conclude with `Submodule.subset_span ⟨x, hx, rfl⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero`. Establish `: swVv v (0 : Fin n → E ⊗[F] Fv F v) = 0` using `by funext i; simp [swVv]`. Rewrite using `[this]`. Conclude with `zero_mem _`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: swVv v (x + y) = swVv v x + swVv v y` using `by funext i; simp [swVv]`. Rewrite using `[this]`. Conclude with `add_mem hx hy`. Consider the case `smul s x _ hx`. Establish `: swVv v (s • x) = fun i => swp v (s : E ⊗[F] Fv F v) * swVv v x i`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Simplify using `[swVv, Submodule.coe_smul_of_tower, Subring.smul_def, smul_eq_mul, map_mul]`. Rewrite using `[this]`. Conclude with `oev_smul_lat v Lb (swp_mem_oev v s.2) hx`.
+A detailed English derivation is pending.
 -/
 theorem swVv_mem_latLoc {z : Fin n → E ⊗[F] Fv F v}
     (hz : z ∈ PI.SelfDualLoc.latS (F := F) (Fv F v) (Sv (E := E) v) Lb) :
@@ -236,13 +234,13 @@ theorem swVv_mem_latLoc {z : Fin n → E ⊗[F] Fv F v}
     exact oev_smul_lat v Lb (swp_mem_oev v s.2) hx
 
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem y hy`. Take `⟨x, hx, rfl⟩` from `hy`. Conclude with `⟨_, Submodule.subset_span ⟨x, hx, rfl⟩, swVv_incl v x⟩`. Consider the case `zero => exact ⟨0, zero_mem _, by funext i; simp [swVv]⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨z, hz, rfl⟩` from `hx`. Take `⟨z', hz', rfl⟩` from `hy`. Conclude with `⟨z + z', add_mem hz hz', by funext i; simp [swVv]⟩`. Consider the case `smul c x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨z, hz, rfl⟩` from `hx`. Establish `hc : ((1 : E) ⊗ₜ[F] (c : Fv F v)) ∈ Sv (E` using `E) v := Subring.subset_closure (Or.inr ⟨c, rfl⟩)`. Use `⟨(⟨_, hc⟩ : Sv (E := E) v) • z, Submodule.smul_mem _ _ hz, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using `only [swVv, Pi.smul_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Rewrite using `[Subring.smul_def, smul_eq_mul, map_mul, swp_tmul, Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem latLoc_swVv {w : Fin n → Fv F v ⊗[F] E} (hw : w ∈ latLoc v (Lb : Set (Fin n → E))) :
     ∃ z ∈ PI.SelfDualLoc.latS (F := F) (Fv F v) (Sv (E := E) v) Lb, swVv v z = w := by
@@ -265,15 +263,15 @@ theorem latLoc_swVv {w : Fin n → Fv F v ⊗[F] E} (hw : w ∈ latLoc v (Lb : S
     rfl
 
 /- English proof (translation)
-Establish `hT : ((1 : ℕ) : 𝓞 F) ∉ v.asIdeal`. Rewrite using `[Nat.cast_one]`. Conclude with `fun h => v.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Establish `key` using `self_dual_local F E n σ J v Lb 1 (Module.Finite.iff_fg.2 hfg) hint (fun y hy => by simpa using hdual y hy) hT`. Introduce `y'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨y, rfl⟩` from `swVv_surjective (E := E) v y'`. Establish `hlat : swVv v y ∈ latLoc v (Lb : Set (Fin n → E)) ↔ y ∈ PI.SelfDualLoc.latS (F` using `F) (Fv F v) (Sv (E := E) v) Lb := by`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Take `⟨z, hz, e⟩` from `latLoc_swVv v Lb h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← swVv_injective v e]` and apply the resulting hypothesis. Conclude with `swVv_mem_latLoc v Lb`. Rewrite using `[hlat, key]`. Prove the components needed by the constructor for the conclusion. Introduce `h x' hx'`.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨z, hz, rfl⟩` from `latLoc_swVv v Lb hx'`. Rewrite using `[hR_swap]`. Conclude with `swp_mem_oev v (h z hz)`. Introduce `h z hz`. Establish `h1` using `h (swVv v z) (swVv_mem_latLoc v Lb hz)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h1` using `[hR_swap]`. Take `⟨s, hs, e⟩` from `oev_swp v h1`. Rewrite using `[← (swp v).injective e]` and apply the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem isSDLoc_of (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (hfg : Lb.FG)
     (hint : ∀ x ∈ Lb, ∀ y ∈ Lb, PI.SelfDualLoc.hform (σ : E →+* E) J x y ∈ PI.SelfDualLoc.intOE E)
@@ -307,7 +305,7 @@ theorem isSDLoc_of (σ : E →ₐ[F] E) (J : Matrix (Fin n) (Fin n) E) (hfg : Lb
 end Lat
 
 /- English proof (translation)
-The claim follows from `isSDLoc_of v X.B.I.L X.B.I.cm.sig X.B.I.J X.B.I.L_fg (fun x hx y hy => (X.B.I.L_dual y).1 hy x hx) (fun y h => (X.B.I.L_dual y).2 h)`.
+A detailed English derivation is pending.
 -/
 theorem sdLocX_holds {D : Formalism.BasicNotions.D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (v : PlX X) :
     IsSDLoc X.B.I.cm.sig X.B.I.J v (X.B.I.L : Set (Fin X.B.I.n → X.B.I.E)) :=

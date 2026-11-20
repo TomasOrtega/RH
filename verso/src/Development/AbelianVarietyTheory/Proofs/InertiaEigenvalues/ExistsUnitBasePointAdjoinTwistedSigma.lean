@@ -8,17 +8,17 @@ namespace GlobalTheory.UnitLemma.UnitBase
 open GlobalTheory.UnitLemma Polynomial
 
 /- English proof (translation)
-Take `⟨p, hp, hpt⟩` from `ht`. Establish `e : aeval t p = 0` using `hpt`. Rewrite `e` using `[aeval_eq_sum_range, Finset.sum_range_succ, hp.coeff_natDegree, one_smul]`. Break down `Nat.eq_zero_or_pos p.natDegree with h0 | hpos` into its components or cases. Rewrite `e` using `[h0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `at e`. Establish `: t = 0` using `by simpa using congrArg (t * ·) e`. Rewrite using `[this]`. Conclude with `Subalgebra.zero_mem _`. Take `⟨k, hk⟩ : ∃ k, p.natDegree = k + 1` from `⟨_, (Nat.succ_pred_eq_of_pos hpos).symm⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e` using `[hk]`. Establish `hts : t * s = 1` using `by rw [mul_comm]; exact h`. Establish `h1 : t ^ (k + 1) * s ^ k = t`. Rewrite using `[pow_succ', mul_assoc, ← mul_pow, hts, one_pow, mul_one]`. Establish `h2 : ∀ i ∈ Finset.range (k + 1), p.coeff i • t ^ i * s ^ k = p.coeff i • s ^ (k - i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i hi`. Establish `hik : i ≤ k` using `Nat.lt_succ_iff.1 (Finset.mem_range.1 hi)`. Rewrite using `[smul_mul_assoc]`. Use `congr 1`. Rewrite using `[show s ^ k = s ^ i * s ^ (k - i) by rw [← pow_add, Nat.add_sub_cancel' hik], ← mul_assoc, ← mul_pow, hts, one_pow, one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (· * s ^ k) e`. Simplify using `only [add_mul, zero_mul, Finset.sum_mul] at e2`. Rewrite `e2` using `[Finset.sum_congr rfl h2, h1]`. Establish `key : t = -∑ i ∈ Finset.range (k + 1), p.coeff i • s ^ (k - i)`. Take the linear combination `e2`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[key]`. Conclude with `Subalgebra.neg_mem _ (Subalgebra.sum_mem _ fun i _ => Subalgebra.smul_mem _ (Subalgebra.pow_mem _ (Algebra.self_mem_adjoin_singleton O s) _) _)`.
+A detailed English derivation is pending.
 -/
 theorem mem_adjoin_of_mul_eq_one' {O A : Type} [CommRing O] [CommRing A] [Algebra O A] {s t : A}
     (h : s * t = 1) (ht : IsIntegral O t) : t ∈ Algebra.adjoin O {s} := by
@@ -52,35 +52,31 @@ theorem mem_adjoin_of_mul_eq_one' {O A : Type} [CommRing O] [CommRing A] [Algebr
     Subalgebra.smul_mem _ (Subalgebra.pow_mem _ (Algebra.self_mem_adjoin_singleton O s) _) _)
 
 /- English proof (translation)
-Use `haveI : Finite {M : Ideal R // M.IsMaximal} := hfin.to_subtype`. Take `⟨n, ⟨e⟩⟩` from `Finite.exists_equiv_fin {M : Ideal R // M.IsMaximal}`. Set `pt : {M : Ideal R // M.IsMaximal} → {M : Ideal R // M.IsMaximal}` to `fun M => ⟨M.1.comap (τ : R →+* R), by haveI := M.2; exact Ideal.comap_isMaximal_of_surjective _ τ.surjective⟩`. Establish `mem_pt : ∀ M z, z ∈ (pt M).1 ↔ τ z ∈ M.1` using `fun M z => Iff.rfl`. Establish `pt_pt : ∀ M, pt (pt M) = M`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `M`. Apply `Subtype.ext` to reduce the goal to its premises. Use extensionality with `z`. Rewrite using `[mem_pt, mem_pt, hτ]`. Set `t : {M : Ideal R // M.IsMaximal} → R` to `fun M => if pt M = M then (if 1 + a ∈ M.1 then x else 1) else if e M < e (pt M) then 1 else 0`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcop : Pairwise (Function.onFun IsCoprime fun M : {M : Ideal R // M.IsMaximal} => M.1)`. Introduce `M N hne`. Use `haveI := M.2`. Use `haveI := N.2`. Conclude with `Ideal.isCoprime_of_isMaximal (fun h => hne (Subtype.ext h))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨q, hq⟩` from `Ideal.quotientInfToPiQuotient_surj hcop (fun M => Ideal.Quotient.mk M.1 (t M))`. Take `⟨y, rfl⟩` from `Ideal.Quotient.mk_surjective q`. Establish `hy : ∀ M : {M : Ideal R // M.IsMaximal}, y - t M ∈ M.1`. Introduce `M`. Use `congrFun hq M` as an intermediate fact.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Rewrite `this` using `[Ideal.quotientInfToPiQuotient_mk']`. Conclude with `Ideal.Quotient.eq.1 this`. Use `⟨y, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnu`. Take `⟨M0, hM0, hyM⟩` from `exists_max_ideal_of_mem_nonunits hnu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Use `set M : {M : Ideal R // M.IsMaximal} := ⟨M0, hM0⟩ with hMdef`. Establish `hyM' : y + a * τ y ∈ M.1` using `hyM`. Establish `hne1 : (1 : R) ∉ M.1` using `fun h => hM0.ne_top ((Ideal.eq_top_iff_one _).2 h)`. Establish `hunit : ∀ {u : R}, IsUnit u → u ∉ M.1` using `fun hu h => hM0.ne_top (Ideal.eq_top_of_isUnit_mem _ h hu)`. Distinguish the cases in `hfix : pt M = M`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτM : ∀ z, z ∈ M.1 → τ z ∈ M.1`. Introduce `z hz`. Rewrite using `[← mem_pt, hfix]`. Conclude with `hz`. Establish `hd` using `hy M`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Establish `ht : t M + a * τ (t M) ∈ M.1`. Establish `: t M + a * τ (t M) = (y + a * τ y) - (y - t M) - a * τ (y - t M)`. Rewrite using `[map_sub]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `M.1.sub_mem (M.1.sub_mem hyM' hd) (M.1.mul_mem_left _ (hτM _ hd))`. Distinguish the cases in `h1a : 1 + a ∈ M.1`. Establish `htx : t M = x` using `by simp only [t, if_pos hfix, if_pos h1a]`. Rewrite `ht` using `[htx]`. Establish `: a * (τ x - x) ∈ M.1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: a * (τ x - x) = (x + a * τ x) - x * (1 + a)` using `by ring`. Rewrite using `[this]`. Conclude with `M.1.sub_mem ht (M.1.mul_mem_left _ h1a)`. Conclude with `hunit (ha.mul hx) this`. Establish `ht1 : t M = 1` using `by simp only [t, if_pos hfix, if_neg h1a]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht` using `[ht1, map_one, mul_one, add_comm]`. Conclude with `h1a (by rwa [add_comm])`. Establish `hfix' : pt (pt M) ≠ pt M` using `by rw [pt_pt]; exact Ne.symm hfix`. Distinguish the cases in `hlt : e M < e (pt M)`. Establish `ht1 : t M = 1` using `by simp only [t, if_neg hfix, if_pos hlt]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hlt' : ¬ e (pt M) < e (pt (pt M))` using `by rw [pt_pt]; exact not_lt.2 hlt.le`. Establish `ht0 : t (pt M) = 0` using `by simp only [t, if_neg hfix', if_neg hlt']`. Establish `h1` using `hy M`. Establish `h2` using `hy (pt M)`. Rewrite `h1` using `[ht1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[ht0, sub_zero, mem_pt]`. Establish `: (1 : R) = (y + a * τ y) - (y - 1) - a * τ y` using `by ring`. Conclude with `hne1 (this ▸ M.1.sub_mem (M.1.sub_mem hyM' h1) (M.1.mul_mem_left _ h2))`. Establish `ht0 : t M = 0` using `by simp only [t, if_neg hfix, if_neg hlt]`. Establish `hne : e (pt M) ≠ e M` using `fun h => hfix (e.injective h)`.
-
-Establish `hlt' : e (pt M) < e (pt (pt M))`. Rewrite using `[pt_pt]`. Conclude with `lt_of_le_of_ne (not_lt.1 hlt) hne`. Establish `ht1 : t (pt M) = 1` using `by simp only [t, if_neg hfix', if_pos hlt']`. Establish `h1` using `hy M`.
-
-Establish `h2` using `hy (pt M)`. Rewrite `h1` using `[ht0, sub_zero]`. Rewrite `h2` using `[ht1, mem_pt, map_sub, map_one]`. Establish `: a = (y + a * τ y) - y - a * (τ y - 1)` using `by ring`. Conclude with `hunit ha (this ▸ M.1.sub_mem (M.1.sub_mem hyM' h1) (M.1.mul_mem_left _ h2))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_isUnit_add_mul_twist {R : Type} [CommRing R] (τ : R ≃+* R) (hτ : ∀ y, τ (τ y) = y)
     (a : R) (ha : IsUnit a) (hfin : {M : Ideal R | M.IsMaximal}.Finite)
@@ -173,13 +169,13 @@ def cO (K : UQ) : K.O →+* K.O where
       ← Classical.choose_spec (K.c_int x), ← Classical.choose_spec (K.c_int y)]
 
 /- English proof (translation)
-The claim follows from `(Classical.choose_spec (K.c_int x)).symm`.
+A detailed English derivation is pending.
 -/
 theorem algebraMap_cO (K : UQ) (x : K.O) : algebraMap K.O K.E (cO K x) = K.c (algebraMap K.O K.E x) :=
   (Classical.choose_spec (K.c_int x)).symm
 
 /- English proof (translation)
-Rewrite using `[IsScalarTower.algebraMap_apply K.O K.E B.A, B.σ_alg, ← algebraMap_cO, ← IsScalarTower.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem σ_algebraMap_O {K : UQ} (B : InvAlg K) (x : K.O) :
     B.σ (algebraMap K.O B.A x) = algebraMap K.O B.A (cO K x) := by
@@ -187,9 +183,9 @@ theorem σ_algebraMap_O {K : UQ} (B : InvAlg K) (x : K.O) :
     ← IsScalarTower.algebraMap_apply]
 
 /- English proof (translation)
-Take `⟨p, hp, hpy⟩` from `hy`. Use `⟨p.map (cO K), hp.map _, ?_⟩` and prove the remaining obligations. Establish `hc : (B.σ : B.A →+* B.A).comp (algebraMap K.O B.A) = (algebraMap K.O B.A).comp (cO K)`. Use extensionality with `x`. Conclude with `σ_algebraMap_O B x`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `congrArg (B.σ : B.A →+* B.A) hpy` as an intermediate fact. Rewrite `this` using `[map_zero, Polynomial.hom_eval₂, hc]`. Rewrite using `[Polynomial.eval₂_map]`. Conclude with `this`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegral_σ {K : UQ} (B : InvAlg K) {y : B.A} (hy : IsIntegral K.O y) : IsIntegral K.O (B.σ y) := by
   obtain ⟨p, hp, hpy⟩ := hy
@@ -201,11 +197,9 @@ theorem isIntegral_σ {K : UQ} (B : InvAlg K) {y : B.A} (hy : IsIntegral K.O y) 
   rw [Polynomial.eval₂_map]; exact this
 
 /- English proof (translation)
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality. Conclude with `mem_adjoin_of_mul_eq_one' hg (isIntegral_σ B hint)`.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Treat this case separately.
 
-Consider the case `algebraMap r => rw [σ_algebraMap_O]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add x z _ _ hx hz => rw [map_add]`. Conclude with `Subalgebra.add_mem _ hx hz`. Consider the case `mul x z _ _ hx hz => rw [map_mul]`.
-
-Conclude with `Subalgebra.mul_mem _ hx hz`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem σ_mem_adjoin {K : UQ} (B : InvAlg K) (hg : B.g * B.σ B.g = 1) (hint : IsIntegral K.O B.g)
     {y : B.A} (hy : y ∈ Algebra.adjoin K.O {B.g}) : B.σ y ∈ Algebra.adjoin K.O {B.g} := by
@@ -218,9 +212,9 @@ theorem σ_mem_adjoin {K : UQ} (B : InvAlg K) (hg : B.g * B.σ B.g = 1) (hint : 
   | mul x z _ _ hx hz => rw [map_mul]; exact Subalgebra.mul_mem _ hx hz
 
 /- English proof (translation)
-Use `haveI : Module.Finite K.O (Algebra.adjoin K.O {B.g}) := Module.Finite.iff_fg.mpr hint.fg_adjoin_singleton`. Use `(Algebra.QuasiFinite.finite_primesOver (IsLocalRing.maximalIdeal K.O)).subset ?_` and prove the remaining obligations. Introduce `M hM`. Establish `hM' : M.IsMaximal` using `hM`. Establish `hc : (M.comap (algebraMap K.O (Algebra.adjoin K.O {B.g}))).IsMaximal` using `Ideal.isMaximal_comap_of_isIntegral_of_isMaximal M`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨hM'.isPrime, ⟨(IsLocalRing.eq_maximalIdeal hc).symm⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem maximal_finite {K : UQ} (B : InvAlg K) (hint : IsIntegral K.O B.g) :
     {M : Ideal (Algebra.adjoin K.O {B.g}) | M.IsMaximal}.Finite := by
@@ -233,21 +227,19 @@ theorem maximal_finite {K : UQ} (B : InvAlg K) (hint : IsIntegral K.O B.g) :
   exact ⟨hM'.isPrime, ⟨(IsLocalRing.eq_maximalIdeal hc).symm⟩⟩
 
 /- English proof (translation)
-Introduce `K B hg _ hint ε hε`. Use `set R := Algebra.adjoin K.O {B.g} with hR`. Establish `hσR : ∀ y : R, B.σ (y : B.A) ∈ R` using `fun y => σ_mem_adjoin B hg hint y.2`. Set `τ : R ≃+* R` to `{ toFun := fun y => ⟨B.σ (y : B.A), hσR y⟩ invFun := fun y => ⟨B.σ (y : B.A), hσR y⟩ left_inv := fun y => Subtype.ext (B.σ_σ (y : B.A)) right_inv := fun y => Subtype.ext (B.σ_σ (y : B.A)) map_mul' := fun x y => Subtype.ext (map_mul B.σ (x : B.A) (y : B.A)) map_add' := fun x y => …`. Establish `hτc : ∀ y : R, ((τ y : R) : B.A) = B.σ y` using `fun y => rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ : ∀ y, τ (τ y) = y` using `fun y => Subtype.ext (B.σ_σ (y : B.A))`. Choose the witnesses or unpack the hypotheses as in `⟨ε', hε'c, hε'u, hεε, hσε⟩ : ∃ ε' : R, (ε' : B.A) = ε ∧ IsUnit ε' ∧ ε * ε = 1 ∧ B.σ ε = ε := by`. Break down `hε with rfl | rfl` into its components or cases. Conclude with `⟨1, by simp, isUnit_one, by simp, by simp⟩`. Conclude with `⟨-1, by simp, isUnit_one.neg, by simp, by simp⟩`.
+Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Set `g' : R` to `⟨B.g, Algebra.self_mem_adjoin_singleton K.O B.g⟩`. Set `h' : R` to `τ g'`. Establish `hgh : g' * h' = 1` using `Subtype.ext hg`. Establish `hh'u : IsUnit h'` using `⟨⟨h', g', by rw [mul_comm]; exact hgh, hgh⟩, rfl⟩`. Take `⟨x0, y0, hxy, hxy0⟩` from `K.c_res`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hcx : cO K x0 = y0` using `IsFractionRing.injective K.O K.E (by rw [algebraMap_cO, hxy])`. Establish `hx : IsUnit (τ (algebraMap K.O R x0) - algebraMap K.O R x0)`. Establish `hu : IsUnit (y0 - x0)`. Establish `: IsUnit (x0 - y0)`. Assume the negation of the conclusion as `hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `hxy0 ((IsLocalRing.mem_maximalIdeal _).2 hn)`. Simplify `this.neg` using `[neg_sub]`. Establish `: τ (algebraMap K.O R x0) - algebraMap K.O R x0 = algebraMap K.O R (y0 - x0)`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [hτc, Subalgebra.coe_sub, Subalgebra.coe_algebraMap, σ_algebraMap_O, hcx, map_sub]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `hu.map _`. Take `⟨y, hy⟩` from `exists_isUnit_add_mul_twist τ hτ (ε' * h') (hε'u.mul hh'u) (maximal_finite B hint) _ hx`. Use `⟨Units.map (R.val : R →* B.A) hy.unit, ?_, ?_, ?_⟩` and prove the remaining obligations. Establish `hc : ((Units.map (R.val : R →* B.A) hy.unit : B.Aˣ) : B.A) = (y : B.A) + ε * B.σ B.g * B.σ y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify using `[Units.coe_map, IsUnit.unit_spec, hε'c, hτc, h', g', mul_assoc]`. Rewrite using `[hc, map_add, map_mul, map_mul, hσε, B.σ_σ, B.σ_σ]`. Take the linear combination `(-(B.σ (y : B.A)) * ε * ε) * hg - B.σ (y : B.A) * hεε`. Simplify using `only [Units.coe_map]`. Conclude with `(hy.unit : R).2`.
-
-Rewrite using `[← map_inv]`. Simplify using `only [Units.coe_map]`. Conclude with `((hy.unit⁻¹ : Rˣ) : R).2`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_unit_base : ∀ (K : UQ) (B : InvAlg K), B.g * B.σ B.g = 1 → B.P.Separable → IsIntegral K.O B.g →
     ∀ (ε : B.A), (ε = 1 ∨ ε = -1) → ∃ β₀ : B.Aˣ, B.σ (β₀ : B.A) = β₀ * (ε * B.g) ∧

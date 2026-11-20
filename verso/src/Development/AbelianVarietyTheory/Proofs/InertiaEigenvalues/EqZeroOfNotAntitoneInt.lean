@@ -17,41 +17,35 @@ noncomputable section
 namespace GlobalTheory.WhitTorus
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij, hlt⟩ : ∃ i j : Fin n, (j : ℕ) = i + 1 ∧ l i < l j := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`. Apply `hl` to reduce the goal to its premises. Consider the cases of `n with`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Split into cases according to the possible forms of the given data. Treat this case separately.
 
-Consider the case `zero => exact fun a => a.elim0`. Consider the case `succ m`. Rewrite using `[Fin.antitone_iff_succ_le]`. Introduce `k`. Conclude with `h k.castSucc k.succ (by simp)`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hne : i ≠ j` using `fun h => by rw [h] at hij; omega`. Establish `hlt' : i < j` using `Fin.lt_def.2 (by omega)`. Establish `hnot : ((ϖ : w.adicCompletion E))⁻¹ ∉ Ov E w`. Introduce `h`. Express the relevant statement in the definitionally equal form `Valued.v (((ϖ : w.adicCompletion E))⁻¹) ≤ 1 at h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h` using `[map_inv₀, hϖ, ← WithZero.coe_inv, ← WithZero.coe_one, WithZero.coe_le_coe]`. Conclude with `absurd (Multiplicative.ofAdd_le.1 (h.trans_eq (ofAdd_zero).symm)) (by norm_num)`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy, hψy⟩ : ∃ y ∈ Ov E w, ψ (((ϖ : w.adicCompletion E))⁻¹ * y) ≠ 1 := by`. Assume the negation of the conclusion as `h`. Use `push_neg at h`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hnot ((hψ _).1 h)`. Use `set x : w.adicCompletion E := ((ϖ : w.adicCompletion E))⁻¹ * y with hx`. Establish `hϖ0 : (ϖ : w.adicCompletion E) ≠ 0` using `ϖ.ne_zero`. Use `set m : ℕ := (l j - l i).toNat with hm`. Establish `hlj : l j = l i + (m : ℤ)` using `by omega`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm1 : 1 ≤ m` using `by omega`. Establish `hdj : ((ϖ ^ l j : (w.adicCompletion E)ˣ) : w.adicCompletion E) = ((ϖ ^ l i : (w.adicCompletion E)ˣ) : w.adicCompletion E) * (ϖ : w.adicCompletion E) ^ m`. Rewrite using `[hlj, _root_.zpow_add, zpow_natCast, Units.val_mul, Units.val_pow_eq_pow_val]`. Use `set c : w.adicCompletion E := (ϖ : w.adicCompletion E) ^ m * x with hc`. Establish `hcO : c ∈ Ov E w`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hϖO : (ϖ : w.adicCompletion E) ∈ Ov E w` using `mem_Ov_of_isUnifV hϖ`. Establish `: c = (ϖ : w.adicCompletion E) ^ (m - 1) * y`. Rewrite using `[hc, hx, ← mul_assoc, show m = (m - 1) + 1 by omega, pow_succ, mul_assoc _ (ϖ : w.adicCompletion E), mul_inv_cancel₀ hϖ0, mul_one, Nat.add_sub_cancel]`. Rewrite using `[this]`. Conclude with `Subring.mul_mem _ (Subring.pow_mem _ hϖO _) hy`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components.
 
-Set `T : w.adicCompletion E → GL (Fin n) (w.adicCompletion E)` to `fun a => ⟨Matrix.transvection i j a, Matrix.transvection i j (-a), by rw [Matrix.transvection_mul_transvection_same i j hne, add_neg_cancel, Matrix.transvection_zero], by rw [Matrix.transvection_mul_transvection_same i j hne, neg_add_cancel, Matrix.transvection_zero]⟩`. Establish `hT : ∀ a, ((T a : GL (Fin n) (w.adicCompletion E)) : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.transvection i j a` using `fun a => rfl`. Apply the tactic sequence `have hentry : ∀ {R : Type} [CommRing R] (a : R) (p q : Fin n), Matrix.transvection i j a p q = (if p = q then 1 else 0) + (if i = p ∧ j = q then a else 0) := by`. Introduce `R _ a p q`. Simplify using `[Matrix.transvection, Matrix.one_apply, Matrix.single_apply]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : T x ∈ unipB (w.adicCompletion E) (Fin n)`. Use `(GlobalTheory.SmGL.mem_unipB _).2 ⟨fun p q hqp => ?_, fun p => ?_⟩` and prove the remaining obligations. Rewrite using `[hT, hentry, if_neg (fun h => by rw [h] at hqp; exact lt_irrefl _ hqp), if_neg, add_zero]`. Introduce and unpack `⟨rfl, rfl⟩`. Conclude with `lt_asymm hqp hlt'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hT, hentry, if_pos rfl, if_neg, add_zero]`. Introduce and unpack `⟨rfl, h⟩`. Conclude with `hne h.symm`. Establish `hsd : superDiag (T x) = x`. Unfold `GlobalTheory.Whittaker.superDiag`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Finset.sum_eq_single i]`. Rewrite using `[Finset.sum_eq_single j]`. Rewrite using `[hT, hentry, if_neg hne, if_pos ⟨rfl, rfl⟩, zero_add]`. Introduce `b hb hbj`. Establish `hb'` using `(Finset.mem_filter.1 hb).2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Rewrite using `[hT, hentry, if_neg (fun h => by rw [← h] at hb'; omega), if_neg (fun h => hbj h.2.symm), add_zero]`. Introduce `hj`. Conclude with `absurd (Finset.mem_filter.2 ⟨Finset.mem_univ j, hij⟩) hj`. Introduce `a _ hai`. Use `Finset.sum_eq_zero fun b hb => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hb'` using `(Finset.mem_filter.1 hb).2`. Rewrite using `[hT, hentry, if_neg (fun h => by rw [← h] at hb'; omega), if_neg (fun h => hai h.1.symm), add_zero]`. Introduce `h`. Conclude with `absurd (Finset.mem_univ i) h`. Establish `hk : T c ∈ KGL w n`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `⟨⟨Matrix.transvection i j ⟨c, hcO⟩, Matrix.transvection i j (-⟨c, hcO⟩), by rw [Matrix.transvection_mul_transvection_same i j hne, add_neg_cancel, Matrix.transvection_zero], by rw [Matrix.transvection_mul_transvection_same i j hne, neg_add_cancel, Matrix.transvection_zero]⟩, ?_⟩` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Use extensionality with `p q`. Simplify using `only [Formalism.UG.bc, Units.coe_map, MonoidHom.coe_coe, RingHom.toMonoidHom_eq_coe, RingHom.mapMatrix_apply, Matrix.map_apply, hT]`. Rewrite using `[hentry, hentry]`.
+Rewrite the conclusion using the stated equalities. Put the polynomial expressions in normal form. Simplify using the standard rewrite rules. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Establish `hkey : D * T c = T x * D`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[Units.val_mul, Units.val_mul, hDv, hT, hT]`. Use extensionality with `p q`.
-
-Rewrite using `[Matrix.diagonal_mul, Matrix.mul_diagonal, hentry, hentry]`. Distinguish the cases in `hpq : i = p ∧ j = q`. Take `⟨rfl, rfl⟩` from `hpq`. Rewrite using `[if_neg hne, if_pos ⟨rfl, rfl⟩, if_pos ⟨rfl, rfl⟩, zero_add, zero_add, hc, hdj]`. Put the polynomial expressions in normal form.
-
-Simplify using `only [if_neg hpq, add_zero] split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish `h1` using `hWK D (T c) hk`.
-
-Rewrite `h1` using `[hkey, hWN (T x) hu D, hsd]`. Establish `h2 : (ψ x - 1) * W D = 0` using `by rw [sub_mul, h1, one_mul, sub_self]`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hψy)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_not_antitone_int (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ)
     (ψ : AddChar (w.adicCompletion E) ℂ)
@@ -165,9 +159,9 @@ theorem eq_zero_of_not_antitone_int (E : Type) [Field E] [NumberField E] (w : He
   exact (mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hψy)
 
 /- English proof (translation)
-Rewrite using `[val_emb₂]`. Use extensionality with `p q`. Take `⟨p, rfl⟩` from `(stdSum hn).surjective p`. Take `⟨q, rfl⟩` from `(stdSum hn).surjective q`. Apply the tactic sequence `rcases p with p | p <;> rcases q with q | q <;>`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[GlobalTheory.IwaCell.val_tD, Matrix.diagonal_apply, Matrix.one_apply]`. Rewrite using `[show ((GlobalTheory.IwaCell.tD ϖ a : GL (Fin m) K) : Matrix (Fin m) (Fin m) K) = _ from GlobalTheory.SmGL.val_diagT K _]`. Simplify using `[Matrix.diagonal_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem val_emb₂_tD_one (K : Type) [Field K] {m j n : ℕ} (hn : m + (j + 1) = n) (ϖ : Kˣ) (a : Fin m → ℤ) :
     ((emb₂ K (stdSum hn) (GlobalTheory.IwaCell.tD ϖ a, 1) : GL (Fin n) K) : Matrix (Fin n) (Fin n) K) =
@@ -182,17 +176,15 @@ theorem val_emb₂_tD_one (K : Type) [Field K] {m j n : ℕ} (hn : m + (j + 1) =
   simp [Matrix.diagonal_apply]
 
 /- English proof (translation)
-Introduce `E _ _ w m j n hn ψ hψ W α hN hK hH ϖ hϖ a`. Establish `hv` using `val_emb₂_tD_one (w.adicCompletion E) hn ϖ a`. Use `split_ifs with ha`. Establish `hpow : ∀ i, ((ϖ ^ a i : (w.adicCompletion E)ˣ) : w.adicCompletion E) = (ϖ : w.adicCompletion E) ^ (a i).toNat`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `conv_lhs => rw [← Int.toNat_of_nonneg (ha.2 i)]`. Rewrite using `[zpow_natCast, Units.val_pow_eq_pow_val]`. Establish `heq : emb₂ (w.adicCompletion E) (stdSum hn) (GlobalTheory.IwaCell.tD ϖ a, 1) = Units.map (Matrix.diagonalRingHom (Fin n) (w.adicCompletion E)).toMonoidHom (MulEquiv.piUnits.symm fun i => ϖ ^ (GlobalTheory.JSW.padTo (Nat.le.intro hn) fun i => (a i).toNat) i)`. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[hv]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails.
 
-Use extensionality with `p q`. Distinguish the cases in `hpq : p = q`. Substitute `hpq` using the available equality. Distinguish the cases in `hp : (p : ℕ) < m`. Simplify using `[Matrix.diagonal_apply, GlobalTheory.JSW.padTo, hp, hpow]`.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Matrix.diagonal_apply, GlobalTheory.JSW.padTo, hp]`. Simplify using `[Matrix.diagonal_apply, hpq]`. Rewrite using `[heq]`. Conclude with `GlobalTheory.JSW.shintani_formula E w n ψ hψ W α hN hK hH ϖ hϖ _`. Use `eq_zero_of_not_antitone_int E w n ψ hψ W hN hK ϖ hϖ _ ?_ _ hv` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hanti`. Apply `ha` to reduce the goal to its premises. Use `⟨fun p q hpq => ?_, fun i => ?_⟩` and prove the remaining obligations. Use `hanti (show (⟨p, by omega⟩ : Fin n) ≤ ⟨q, by omega⟩ from Fin.le_def.2 (Fin.le_def.1 hpq))` as an intermediate fact. Simplify `this` using `[p.2, q.2]`.
-
-Use `hanti (show (⟨i, by omega⟩ : Fin n) ≤ ⟨m, by omega⟩ from Fin.le_def.2 (show (i : ℕ) ≤ m by omega))` as an intermediate fact. Simplify `this` using `[i.2]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem whittaker_value_emb₂_tD : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (m j n : ℕ)
     (hn : m + (j + 1) = n) (ψ : AddChar (w.adicCompletion E) ℂ),

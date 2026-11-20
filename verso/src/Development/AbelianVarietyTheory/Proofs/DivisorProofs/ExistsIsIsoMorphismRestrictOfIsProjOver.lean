@@ -12,13 +12,13 @@ namespace GlobalTheory.ZH.RatModel
 open GlobalTheory.Points
 
 /- English proof (translation)
-Introduce `o Ω _ _ _ Y M hY q hq`. Use `M.sep` as an intermediate fact. Establish `: IsSeparated (q ≫ M.s)` using `hq.inducedModelMorphism_comp_structureMap.symm ▸ Y.sep`. Establish `: IsSeparated q` using `IsSeparated.of_comp q M.s`. Take `⟨m, d, hd⟩` from `exists_isCl_of_isProjOver hY`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨i, hi⟩` from `hd.1 (genericPoint Y.Z)`. Take `⟨U, hU, hD, hR⟩` from `hd.2 i hi.1`. Take `⟨V, hV, hzV, hle⟩` from `exists_isAffineOpen_mem_and_subset (U := ⟨_, M.isOpen_setOf_div d i⟩) (x := genericPoint M.Z) (div_genericPoint hi.1)`. Use `⟨V, ⟨_, hzV⟩, isIso_morphismRestrict_of_local_dominant_sections q V fun z hz => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `exists_hom_of_map_ringOn (φ := AlgHom.id o Ω) hU ⟨genericPoint Y.Z, hD ▸ hi⟩ (V := V) ⟨z, hz⟩ fun x hx => mem_ringOn.2 fun w hw => Div.map_mem_O_of_mem_adjoin (M' := M) (φ := AlgHom.id o Ω) (t := d) (i := i) (z := w) (hle hw) (hR ▸ hx)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hp` using `specMap_valMap_fromSpec hV M.pt (M.top_le_preimage_pt ⟨z, hz⟩)`. Establish `hid : ∀ {X : Scheme.{0}} (a : Spec (CommRingCat.of Ω) ⟶ X), Spec.map (CommRingCat.ofHom (AlgHom.id o Ω).toRingHom) ≫ a = a` using `fun a => (congrArg (· ≫ a) (Spec.map_id _)).trans (Category.id_comp _)`. Establish `hdom : IsDominant (Spec.map (valMap M.pt V (M.top_le_preimage_pt ⟨z, hz⟩)) ≫ g)`. Rewrite using `[hg, hid]`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨_, hV.fromSpec, inferInstance, g, hV.range_fromSpec ▸ hz, hV.range_fromSpec ▸ fun w hw => hw, IsDominant.of_comp (Spec.map (valMap M.pt V (M.top_le_preimage_pt ⟨z, hz⟩))) g, ?_⟩` and prove the remaining obligations. Use `hom_ext_of_isOpenImmersion (φ := AlgHom.id o Ω) hV.fromSpec hp ?_ (hp.trans (hid _).symm)` and prove the remaining obligations. Rewrite using `[← Category.assoc, hg, hid]`. Conclude with `hq`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isIso_morphismRestrict_of_isProjOver : ∀ (o Ω : Type) [CommRing o] [Field Ω] [Algebra o Ω] (Y M : RatModel o Ω), IsProjOver Y.s → ∀ q : Y.Z ⟶ M.Z, M.IsHom Y (AlgHom.id o Ω) q → ∃ U : M.Z.Opens, (U : Set M.Z).Nonempty ∧ IsIso (q ∣_ U) := by
   intro o Ω _ _ _ Y M hY q hq

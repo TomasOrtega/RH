@@ -24,15 +24,13 @@ noncomputable section
 namespace GlobalTheory.FlagCovDeg
 
 /- English proof (translation)
-Take `⟨⟨y, ψ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField Ω Y).symm.surjective p`. Take `rfl : y = f x` from `(Scheme.fromSpecResidueField_apply y _).symm.trans hp`. Use `letI : Algebra (Y.residueField (f x)) (X.residueField x) := (f.residueFieldMap x).hom.toAlgebra`. Use `letI : Algebra (Y.residueField (f x)) Ω := ψ.hom.toAlgebra`. Use `haveI : Module.Finite (Y.residueField (f x)) (X.residueField x) := Module.finite_of_finrank_pos (Nat.pos_of_ne_zero hx)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `haveI : CharZero (Y.residueField (f x)) := ψ.hom.charZero`. Establish `hc : Nat.card (X.residueField x →ₐ[Y.residueField (f x)] Ω) = f.residueDegree x`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `AlgHom.card _ _ _`. Rewrite using `[← hc]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Establish `key (σ : X.residueField x ⟶ CommRingCat.of Ω) : (Spec.map σ ≫ X.fromSpecResidueField x) ≫ f = Spec.map (f.residueFieldMap x ≫ σ) ≫ Y.fromSpecResidueField (f x)`. Rewrite using `[Spec.map_comp, Category.assoc, Category.assoc, Scheme.Hom.SpecMap_residueFieldMap_fromSpecResidueField]`. Use `symm`. Use `Nat.card_eq_of_bijective (fun σ => ⟨Spec.map (CommRingCat.ofHom σ.toRingHom) ≫ X.fromSpecResidueField x, ?_, Scheme.fromSpecResidueField_apply x _⟩) ⟨fun σ σ' h => ?_, fun ⟨z, h1, h2⟩ => ?_⟩` and prove the remaining obligations. Use `(key _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `: f.residueFieldMap x ≫ CommRingCat.ofHom σ.toRingHom = ψ`. Use extensionality with `a`. Conclude with `σ.commutes a`. Conclude with `congrArg (fun s => Spec.map s ≫ Y.fromSpecResidueField (f x)) this`. Use `Spec.map_injective ((cancel_mono _).1 (congrArg Subtype.val h))` as an intermediate fact.
-
-Conclude with `AlgHom.ext fun a => congr($this a)`. Take `⟨⟨w, σ⟩, rfl⟩` from `(Scheme.SpecToEquivOfField Ω X).symm.surjective z`. Take `rfl : w = x` from `(Scheme.fromSpecResidueField_apply w _).symm.trans h2`. Use `Spec.map_injective ((cancel_mono _).1 ((key σ).symm.trans h1))` as an intermediate fact. Conclude with `⟨⟨σ.hom, fun a => congr($this a)⟩, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem card_points {X Y : Scheme.{0}} (f : X ⟶ Y) (x : X) (hx : f.residueDegree x ≠ 0) (Ω : Type) [Field Ω]
     [IsAlgClosed Ω] [CharZero Ω] (p : Sp Ω ⟶ Y) (hp : p (IsLocalRing.closedPoint Ω) = f x) :
@@ -65,11 +63,11 @@ theorem card_points {X Y : Scheme.{0}} (f : X ⟶ Y) (x : X) (hx : f.residueDegr
     exact ⟨⟨σ.hom, fun a => congr($this a)⟩, rfl⟩
 
 /- English proof (translation)
-Establish `hS : (p ≫ πC) (IsLocalRing.closedPoint Ω) = πB (jG η)`. Rewrite using `[← Scheme.Hom.comp_apply, w, Scheme.Hom.comp_apply, ← hp]`. Both sides reduce to the same expression. Rewrite using `[← card_points f η hf Ω p hp, ← card_points πB (jG η) hB Ω (p ≫ πC) hS]`. Set `T` to `{xb : Sp Ω ⟶ Bg // xb ≫ πB = p ≫ πC ∧ xb (IsLocalRing.closedPoint Ω) = jG η}`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `m : {z : Sp Ω ⟶ G // z ≫ f = p ∧ z (IsLocalRing.closedPoint Ω) = η} → T` to `fun z => ⟨z.1 ≫ jG, by rw [Category.assoc, w, ← Category.assoc, z.2.1], congrArg jG z.2.2⟩`. Establish `hT : Finite T` using `Nat.finite_of_card_ne_zero ((card_points πB (jG η) hB Ω (p ≫ πC) hS).trans_ne hB)`. Establish `hm (t : T) : Nat.card {z // m z = t} = r.residueDegree η`. Take `⟨y, hy, hz⟩` from `h t.1 t.2.1`. Rewrite using `[← card_points r η hr Ω y hy]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Nat.card_congr ⟨fun z => ⟨z.1.1, (hz _).1 ⟨z.1.2.1, congrArg Subtype.val z.2⟩, z.1.2.2⟩, fun z => ⟨⟨z.1, ((hz _).2 z.2.1).1, z.2.2⟩, Subtype.ext ((hz _).2 z.2.1).2⟩, fun _ => rfl, fun _ => rfl⟩`. Establish `hm' (t : T) : Finite {z // m z = t}` using `Nat.finite_of_card_ne_zero ((hm t).trans_ne hr)`. Use `Fintype.ofFinite T` as an intermediate fact. Rewrite using `[← Nat.card_congr (Equiv.sigmaFiberEquiv m), Nat.card_sigma, Finset.sum_congr rfl fun t _ => hm t]`. Simplify using `[mul_comm, T]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem residueDegree_eq_mul {G C Y Bg S : Scheme.{0}} (f : G ⟶ C) (r : G ⟶ Y) (jG : G ⟶ Bg) (πB : Bg ⟶ S) (πC : C ⟶ S)
     (w : jG ≫ πB = f ≫ πC) (η : G) (hf : f.residueDegree η ≠ 0) (hr : r.residueDegree η ≠ 0)
@@ -97,7 +95,7 @@ theorem residueDegree_eq_mul {G C Y Bg S : Scheme.{0}} (f : G ⟶ C) (r : G ⟶ 
   simp [mul_comm, T]
 
 /- English proof (translation)
-Set `` to `(f.residueFieldMap x).hom.toAlgebra`. Establish `: Module.Finite (Y.residueField (f x)) (X.residueField x)` using `residueFieldMap_finite_of_locallyQuasiFinite f _`. Conclude with `Module.finrank_pos.ne'`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem residueDegree_ne_zero {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] (x : X) : f.residueDegree x ≠ 0 := by
   let := (f.residueFieldMap x).hom.toAlgebra
@@ -105,7 +103,7 @@ theorem residueDegree_ne_zero {X Y : Scheme.{0}} (f : X ⟶ Y) [IsFinite f] (x :
   exact Module.finrank_pos.ne'
 
 /- English proof (translation)
-Establish `hd` using `f.isDiscrete_preimage_singleton (f (genericPoint X))`. Take `⟨U, hU, e⟩` from `(isDiscrete_iff_forall_mem_exists_isOpen.1 hd) x h`. Establish `: genericPoint X ∈ U ∩ f ⁻¹' {f (genericPoint X)}` using `⟨(genericPoint_specializes x).mem_open hU (e.ge rfl).1, rfl⟩`. Conclude with `(e.le this).symm`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_genericPoint_of_finite {X Y : Scheme.{0}} [IsIntegral X] (f : X ⟶ Y) [IsFinite f] (x : X)
     (h : f x = f (genericPoint X)) : x = genericPoint X := by
@@ -120,43 +118,39 @@ variable {D : D7} (O : Setup D) (c : O.s.Comp)
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨γ, hγ'⟩ : ∃ γ : V.G ⟶ gen O.s.T.Z, γ = jG ≫ πB` from `⟨_, rfl⟩`. Establish `hπ : V.π ≫ (O.Φ.C c).π = γ` using `hγ.symm.trans hγ'.symm`. Take `rfl : x = GlobalTheory.FlagCov.genPt V.G ≫ γ ≫ genι O.s.T.Z` from `by rw [hb.2.1]; simp only [hγ', Category.assoc]`. Set `Br : ∀ (K : Type) [CommRing K], (Sp K ⟶ V.G) → ∀ (χ : O.κ.c.F →+* K) (x : Sp K ⟶ O.s.T.Z.X), EigFrame O.s.T.Z χ x → Prop` to `fun K _ z χ x g => Bears O.s.T.Z id (fun _ => false) (fun _ => rfl) hE jB πB t π fl (z ≫ V.j ≫ ρ) (z ≫ jG) g`. Establish `P0 : ∀ (K : Type) [CommRing K] (z : Sp K ⟶ V.G) (χ : O.κ.c.F →+* K) (x : Sp K ⟶ O.s.T.Z.X) (g : EigFrame O.s.T.Z χ x), Br K z χ x g → x = z ≫ γ ≫ genι O.s.T.Z ∧ z ≫ γ ≫ genStr O.s.T.Z = spMap χ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `K _ z χ x g hb`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hb.2.1]`. Simplify using `only [hγ', Category.assoc]`. Rewrite using `[← hb.2.2.1]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hγ', Category.assoc]`. Establish `P1 : ∀ (K : Type) [CommRing K] [IsLocalRing K] (z : Sp K ⟶ V.G) (χ : O.κ.c.F →+* K), z ≫ γ ≫ genStr O.s.T.Z = spMap χ → ∃ g : EigFrame O.s.T.Z χ (z ≫ γ ≫ genι O.s.T.Z), Br K z χ _ g`. Introduce `K _ _ z χ hz`. Conclude with `GlobalTheory.T.toroidal_flag_bundle_family _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e _ _ id (fun _ => false) (fun _ => rfl) _ _ _ _ hE jB πB t π fl hLF Function.bijective_id K (z ≫ V.j ≫ ρ) (z ≫ jG) χ (by simp only [Category.assoc, hjG]) (by simpa only [hγ', Category.assoc] using hz) _ (by …`. Establish `bmap` using `GlobalTheory.T.toroidal_flag_bundle_family_dual _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e _ _ id (fun _ => false) (fun _ => rfl) _ _ _ _ hE jB πB t π fl hLF`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `P2 : ∀ (K : Type) [CommRing K] [IsLocalRing K] (z : Sp K ⟶ V.G) (χ : O.κ.c.F →+* K) (x : Sp K ⟶ O.s.T.Z.X) (g : EigFrame O.s.T.Z χ x) (K' : Type) [CommRing K'] (ψ : K →+* K') (χ' : O.κ.c.F →+* K') (x' : Sp K' ⟶ O.s.T.Z.X) (g' : EigFrame O.s.T.Z χ' x') (t : ∀ τ : D.host.E →+* ℂ, F …`. Introduce `K _ _ z χ x g K' _ ψ χ' x' g' t hb ht`. Simplify `bmap K _ _ χ x g K' ψ χ' x' g' t hb ht` using `only [Br, Category.assoc]`. Establish `P3 : ∀ (K : Type) [CommRing K] [IsLocalRing K] (z : Sp K ⟶ V.G) (χ : O.κ.c.F →+* K) (x : Sp K ⟶ O.s.T.Z.X) (g g' : EigFrame O.s.T.Z χ x), Br K z χ x g → Br K z χ x g' → ∃ t : ∀ τ : D.host.E →+* ℂ, Fin (O.S.Dw.mult τ) → Kˣ, g.Tri (RingHom.id K) g' t`. Introduce `K _ _ z χ x g g' hb hb'`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `GlobalTheory.T.toroidal_flag_family_chern_limit _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e _ _ id (fun _ => false) (fun _ => rfl) _ _ _ _ hE jB πB t π fl hLF Function.surjective_id K _ _ χ x g g' hb hb'`. Establish `hcar` using `GlobalTheory.T.flag_compactification_generic_lift _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e (O.Φ.C c) V.G γ Br P0 P1 P2 P3 V.π χ g hb hπ hc`. Establish `huniq (K : Type) [Field K] (χ : O.κ.c.F →+* K) (x : Sp K ⟶ O.s.T.Z.X) (g : EigFrame O.s.T.Z χ x) (p p' : Sp K ⟶ (O.Φ.C c).Y.X) (h1 : x = p ≫ (O.Φ.C c).π ≫ genι O.s.T.Z) (h2 : p ≫ (O.Φ.C c).π ≫ genStr O.s.T.Z = spMap χ) (h3 : p' ≫ (O.Φ.C c).π = p ≫ (O.Φ.C c).π) (c1 : (O.Φ.C c).Car …`. Rewrite `h1`, `h2` using `[← Category.assoc]`. Substitute `h1` using the available equality.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(GlobalTheory.T.uniformization_unfolding_free _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e _ _ _ O.Φ c K χ _ h2 (by rintro _ ⟨w, rfl⟩; exact ⟨p w, rfl⟩) g).unique ⟨h3, c2⟩ ⟨rfl, c1⟩`. Establish `hstr : jG ≫ πB ≫ genStr O.s.T.Z ≫ spMap O.κ.e.toRingHom = V.π ≫ (O.var c).str`. Rewrite using `[← Category.assoc, hγ, Category.assoc]`. Conclude with `congrArg _ (O.Φ.C c).π_str`. Establish `hbase (K : Type) [Field K] (z : Sp K ⟶ V.G) (xb : Sp K ⟶ Bg) (h1 : (z ≫ V.j ≫ ρ) ≫ π = xb ≫ jB) : z ≫ jG = xb` using `by haveI : IsPreimmersion (spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL)) := IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 D.what₂.LL)) (S := D.what₂.LL) haveI : IsPreimmersion jB := MorphismProperty.of_isPullback (P := @IsPreimmersion) pb.flip inferInstance`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Rewrite using `[← cancel_mono jB, ← h1, Category.assoc, hjG]`. Simplify using `only [Category.assoc]`. Set `Ω` to `AlgebraicClosure V.G.functionField`. Set `ι : V.G.functionField →+* Ω` to `algebraMap _ _`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom (ι.comp χ).injective`.
+Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Set `z₀ : Sp Ω ⟶ V.G` to `spMap ι ≫ GlobalTheory.FlagCov.genPt V.G`. Establish `hz₀ : z₀ (IsLocalRing.closedPoint Ω) = genericPoint V.G`. Express the relevant statement in the definitionally equal form `V.G.fromSpecStalk _ (spMap ι _) = _`. Rewrite using `[show spMap ι (IsLocalRing.closedPoint Ω) = IsLocalRing.closedPoint _ from Subsingleton.elim (α := PrimeSpectrum V.G.functionField) _ _]`. Conclude with `Scheme.fromSpecStalk_closedPoint`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨g₀, hg₀⟩` from `g.exists_isMap ι (φ' := ι.comp χ) (x' := z₀ ≫ γ ≫ genι O.s.T.Z) rfl (Category.assoc _ _ _)`. Establish `hb₀ : Br Ω z₀ _ _ g₀` using `P2 _ _ _ _ g _ ι _ _ g₀ 1 hb (hg₀.tri rfl (Category.assoc _ _ _))`. Establish `hc₀` using `hcar _ _ _ _ _ hb₀`. Establish `hχ₀` using `(P0 _ _ _ _ _ hb₀).2`. Establish `hdeg : (V.j ≫ ρ).residueDegree (genericPoint V.G) = ρ.residueDegree (genericPoint V.X)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[CurveDegreesCompare.residueDegree_comp, CoverDeg.j_residueDegree, mul_one, CoverDeg.j_genericPoint]`. Rewrite using `[← hdeg]`. Use `residueDegree_eq_mul V.π (V.j ≫ ρ) jG πB (O.Φ.C c).π hγ _ (residueDegree_ne_zero _ _) (hdeg.trans_ne hρ.2.2) (residueDegree_ne_zero _ _) Ω (z₀ ≫ V.π) (congrArg V.π hz₀) fun xb hxb => ?_` and prove the remaining obligations. Establish `hxb' : xb ≫ πB = z₀ ≫ γ` using `by rw [hxb, Category.assoc, hπ]`. Take `⟨y, hy, hyu⟩` from `GlobalTheory.T.toroidal_flag_family_height _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e _ _ id (fun _ => false) (fun _ => rfl) _ _ _ _ hE jB πB t π fl hLF hfb Ω xb _ _ g₀ (by rw [← Category.assoc xb, hxb']; exact (Category.assoc _ _ _).symm) (by rw [← Category.assoc xb, hxb', Category.assoc, …`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hover (K : Type) [Field K] (ψ : Ω →+* K) (z : Sp K ⟶ V.G) (hz : z ≫ V.j ≫ ρ = spMap ψ ≫ y) : z ≫ V.π = spMap ψ ≫ z₀ ≫ V.π ∧ z ≫ jG = spMap ψ ≫ xb`. Establish `e1 : z ≫ jG = spMap ψ ≫ xb` using `hbase K z _ (by rw [hz, Category.assoc, hy.1, Category.assoc])`. Take `⟨g₁, hg₁⟩` from `g₀.exists_isMap ψ (φ' := ψ.comp (ι.comp χ)) (x' := spMap ψ ≫ z₀ ≫ γ ≫ genι O.s.T.Z) rfl rfl`. Establish `ht` using `hg₁.tri rfl rfl`. Establish `b1 : Br K z _ _ g₁`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Br, hz, e1]`. Conclude with `bmap _ _ _ _ _ g₀ K ψ _ _ g₁ 1 hy ht`. Establish `b2` using `P2 _ _ _ _ g₀ _ ψ _ _ g₁ 1 hb₀ ht`. Use `⟨(huniq K _ _ g₁ ((spMap ψ ≫ z₀) ≫ V.π) _ ?_ ?_ ?_ (hcar _ _ _ _ _ b2) (hcar _ _ _ _ _ b1)).trans (Category.assoc _ _ _), e1⟩` and prove the remaining obligations. Simplify using `only [← hπ, Category.assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← (P0 _ _ _ _ _ b2).2]`. Simplify using `only [← hπ, Category.assoc]`. Rewrite using `[Category.assoc, Category.assoc, hπ, Category.assoc, ← hxb', hγ', ← Category.assoc, e1, Category.assoc]`. Use `⟨y, ?_, fun z => ⟨fun ⟨h1, h2⟩ => ?_, fun hz => ?_⟩⟩` and prove the remaining obligations. Use `haveI : IsProper (π ≫ q) := GlobalTheory.CommonModel.isProper_of_isProjOver arY.isProjOver haveI : IsProper (ρ ≫ π ≫ q) := GlobalTheory.CommonModel.isProper_of_isProjOver hρ.1.isProjOver haveI : IsProper ρ := IsProper.of_comp ρ (π ≫ q)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : y (IsLocalRing.closedPoint Ω) ∈ Set.range ρ` using `(genericPoint_specializes _).mem_closed ρ.isClosedMap.isClosed_range ⟨_, hρ.2.1⟩`. Take `⟨v, hv⟩` from `hs`. Take `⟨u, -, -⟩` from `Scheme.Pullback.exists_preimage_pullback (f := ρ) (g := y) v _ hv`. Set `K` to `(Limits.pullback ρ y).residueField u`. Set `a : Sp K ⟶ Limits.pullback ρ y` to `(Limits.pullback ρ y).fromSpecResidueField u`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ψ, hψ⟩ : ∃ ψ : Ω →+* K, a ≫ Limits.pullback.snd ρ y = spMap ψ` from `⟨_, (Spec.map_preimage _).symm⟩`. Establish `e0 : (a ≫ Limits.pullback.fst ρ y) ≫ ρ = spMap ψ ≫ y`. Rewrite using `[Category.assoc, Limits.pullback.condition, ← Category.assoc, hψ]`. Establish `e1 : (a ≫ Limits.pullback.fst ρ y) ≫ V.p = (spMap ψ ≫ xb ≫ πB ≫ genStr O.s.T.Z ≫ spMap O.κ.e.toRingHom) ≫ spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL)`. Rewrite using `[← w, ← Category.assoc, e0, Category.assoc, ← Category.assoc y, hy.1, Category.assoc, pb.w]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Category.assoc]`. Establish `e2 : V.pb.lift _ _ e1 ≫ V.j ≫ ρ = spMap ψ ≫ y` using `by rw [← Category.assoc, V.pb.lift_fst, e0]`. Establish `e3` using `congrArg (fun s => s (IsLocalRing.closedPoint K)) (hover K ψ _ e2).1`. Establish `e4 : spMap ψ (IsLocalRing.closedPoint K) = IsLocalRing.closedPoint Ω` using `Subsingleton.elim (α := PrimeSpectrum Ω) _ _`. Establish `e5` using `eq_genericPoint_of_finite V.π (V.pb.lift _ _ e1 (IsLocalRing.closedPoint K)) (e3.trans (congrArg V.π ((congrArg z₀ e4).trans hz₀)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[← e5, ← e4]`. Conclude with `(congrArg (fun s => s (IsLocalRing.closedPoint K)) e2).symm`. Use `hyu _ ?_` and prove the remaining obligations. Take `⟨g', hg'⟩` from `GlobalTheory.T.toroidal_flag_bundle_family _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e _ _ id (fun _ => false) (fun _ => rfl) _ _ _ _ hE jB πB t π fl hLF Function.bijective_id Ω (z ≫ V.j ≫ ρ) (z ≫ jG) (ι.comp χ) (by simp only [Category.assoc, hjG]) (by rw [h2, ← Category.assoc xb, hxb', Cate …`. Establish `c2` using `hcar Ω z _ _ g' hg'`.
-
-Rewrite `c2` using `[h1]`. Take `⟨s, hs⟩` from `GlobalTheory.T.flag_compactification_valuative _ _ _ _ _ _ _ _ O.s.T.Z _ O.κ.e (O.Φ.C c) Ω _ _ g' g₀ _ c2 hc₀`. Use `bmap Ω _ _ _ _ g' Ω (RingHom.id Ω) _ _ g₀ s hg' hs` as an intermediate fact. Rewrite `this` using `[show spMap (RingHom.id Ω) = 𝟙 _ from Spec.map_id _, Category.id_comp, Category.id_comp, h2]`. Then use the resulting hypothesis. Use `hover Ω (RingHom.id Ω) z (by rw [hz, show spMap (RingHom.id Ω) = 𝟙 _ from Spec.map_id _, Category.id_comp])` as an intermediate fact.
-
-Rewrite `this` using `[show spMap (RingHom.id Ω) = 𝟙 _ from Spec.map_id _, Category.id_comp, Category.id_comp]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem deg_eq_mul {B Bg Y : Scheme.{0}} [IsIntegral Y] {q : B ⟶ Sp (𝓞 D.what₂.LL)}
     {E : (D.host.E →+* ℂ) → B.Modules} (hE : ∀ σ, IsVB (E σ) (O.S.Dw.mult σ)) {jB : Bg ⟶ B} {πB : Bg ⟶ gen O.s.T.Z}
@@ -301,9 +295,7 @@ theorem deg_eq_mul {B Bg Y : Scheme.{0}} [IsIntegral Y] {q : B ⟶ Sp (𝓞 D.wh
 variable {O c} in
 
 /- English proof (translation)
-Use `haveI : IsPreimmersion (spMap (algebraMap (𝓞 D.what₂.LL) D.what₂.LL)) := IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 D.what₂.LL)) (S := D.what₂.LL)`. Use `haveI : IsPreimmersion jB := MorphismProperty.of_isPullback (P := @IsPreimmersion) pb.flip inferInstance`. Use `haveI : IsPreimmersion (spMap (algebraMap (𝓞 O.κ.c.F) O.κ.c.F)) := IsPreimmersion.of_isLocalization (nonZeroDivisors (𝓞 O.κ.c.F)) (S := O.κ.c.F)`. Use `haveI : IsPreimmersion (genι O.s.T.Z) := MorphismProperty.of_isPullback (P := @IsPreimmersion) (IsPullback.of_hasPullback _ _).flip this`. Establish `e` using `congrArg (fun f => Scheme.Hom.residueDegree f x) h`.
-
-Simplify `e.symm` using `only [CurveDegreesCompare.residueDegree_comp, CoverDeg.residueDegree_eq_one_of_surjectiveOnStalks jB, CoverDeg.residueDegree_eq_one_of_surjectiveOnStalks M.b, CoverDeg.residueDegree_eq_one_of_surjectiveOnStalks (genι O.s.T.Z), mul_one, one_mul]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem residueDegree_base (M : DRBase O c) {B Bg : Scheme.{0}} {q : B ⟶ Sp (𝓞 D.what₂.LL)} {jB : Bg ⟶ B}
     {πB : Bg ⟶ gen O.s.T.Z} {s : Bg ⟶ Sp D.what₂.LL}
@@ -324,9 +316,9 @@ theorem residueDegree_base (M : DRBase O c) {B Bg : Scheme.{0}} {q : B ⟶ Sp (�
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Rewrite using `[deg_eq_mul O c hE pb hLF hfb arY V ρ w hρ jG hjG hγ g hb hc, residueDegree_base M pb β h]`. Use `congr 2`. Take `⟨y, hy⟩` from `GlobalTheory.FlagSurj.isFlagBundle_surjective B Y π _ E _ fl hE hfb (genericPoint B)`. Establish `h1 : π (genericPoint Y) ⤳ genericPoint B` using `hy ▸ (genericPoint_specializes y).map π.continuous`. Rewrite using `[← Scheme.Hom.comp_apply, hjG, Scheme.Hom.comp_apply, Scheme.Hom.comp_apply, CoverDeg.j_genericPoint, hρ.2.1]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h1.antisymm (genericPoint_specializes _)).eq`.
+A detailed English derivation is pending.
 -/
 theorem deg_eq_mul_base (M : DRBase O c) {B Bg Y : Scheme.{0}} [IsIntegral B] [IsIntegral Y] {q : B ⟶ Sp (𝓞 D.what₂.LL)}
     {E : (D.host.E →+* ℂ) → B.Modules} (hE : ∀ σ, IsVB (E σ) (O.S.Dw.mult σ)) {jB : Bg ⟶ B} {πB : Bg ⟶ gen O.s.T.Z}

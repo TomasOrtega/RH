@@ -15,7 +15,7 @@ def embE : Matrix Ω Ω ℂ ≃ₗ[ℂ] EuclideanSpace ℂ (Ω × Ω) :=
     (WithLp.linearEquiv 2 ℂ (Ω × Ω → ℂ)).symm
 
 /- English proof (translation)
-Rewrite using `[EuclideanSpace.inner_eq_star_dotProduct]`. Simplify using `only [embE, LinearEquiv.trans_apply, dotProduct, trace, diag, mul_apply, conjTranspose_apply]`. Rewrite using `[Fintype.sum_prod_type, Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => mul_comm _ _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inner_embE (x y : Matrix Ω Ω ℂ) :
     inner ℂ (embE x) (embE y) = trace (xᴴ * y) := by
@@ -25,17 +25,17 @@ theorem inner_embE (x y : Matrix Ω Ω ℂ) :
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `key : ∀ (a : Matrix Ω Ω ℂ) (c j : Ω), a * single c j 1 = ∑ b, a b c • single b j 1`. Introduce `a c j`. Use extensionality with `x z`. Simplify using `only [mul_apply, Matrix.sum_apply, Matrix.smul_apply, single, of_apply, smul_eq_mul]`. Apply the tactic sequence `by_cases h : j = z <;> simp [h, mul_ite, Finset.sum_ite_eq, Finset.sum_ite_eq']`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Set `Z : Ω → Ω → Matrix Ω Ω ℂ` to `fun j k => Matrix.of fun x c => S (single c j 1) x k`. Establish `hZr : ∀ (a : Matrix Ω Ω ℂ) (j k x c : Ω), (Z j k * a) x c = S (a * single c j 1) x k`. Introduce `a j k x c`. Rewrite using `[key, map_sum, Matrix.sum_apply]`. Simplify using `only [Z, mul_apply, of_apply, map_smul, Matrix.smul_apply, smul_eq_mul]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.sum_congr rfl fun b _ => mul_comm _ _`. Establish `hZl : ∀ (a : Matrix Ω Ω ℂ) (j k x c : Ω), (a * Z j k) x c = (a * S (single c j 1)) x k`. Introduce `a j k x c`. Simplify using `only [Z, mul_apply, of_apply]`. Establish `hZ : ∀ j k, T * Z j k = Z j k * T` using `fun j k => hT _ fun a ha => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `x c`. Rewrite using `[hZr, hZl, hS a ha]`. Establish `hsingle : ∀ c j, S (T * single c j 1) = T * S (single c j 1)`. Introduce `c j`. Use extensionality with `x k`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hZr, ← hZl, hZ]`. Rewrite using `[matrix_eq_sum_single y]`. Simplify using `only [Finset.mul_sum, map_sum]`. Use `Finset.sum_congr rfl fun c _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Establish `: single c j (y c j) = y c j • single c j (1 : ℂ)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_single, smul_eq_mul, mul_one]`. Rewrite using `[this, mul_smul_comm, map_smul, hsingle, map_smul, mul_smul_comm]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comm_left (A : Submodule ℂ (Matrix Ω Ω ℂ)) (T : Matrix Ω Ω ℂ)
     (hT : ∀ Z : Matrix Ω Ω ℂ, (∀ a ∈ A, Z * a = a * Z) → T * Z = Z * T)
@@ -69,19 +69,17 @@ theorem comm_left (A : Submodule ℂ (Matrix Ω Ω ℂ)) (T : Matrix Ω Ω ℂ)
   rw [this, mul_smul_comm, map_smul, hsingle, map_smul, mul_smul_comm]
 
 /- English proof (translation)
-Set `K : Submodule ℂ (EuclideanSpace ℂ (Ω × Ω))` to `A.map (embE : Matrix Ω Ω ℂ ≃ₗ[ℂ] _).toLinearMap`. Set `P : Matrix Ω Ω ℂ →ₗ[ℂ] Matrix Ω Ω ℂ` to `(embE : Matrix Ω Ω ℂ ≃ₗ[ℂ] _).symm.toLinearMap ∘ₗ K.starProjection.toLinearMap ∘ₗ (embE : Matrix Ω Ω ℂ ≃ₗ[ℂ] _).toLinearMap`. Establish `hPe : ∀ y, embE (P y) = K.starProjection (embE y)` using `fun y => by`. Simplify using `[P]`. Establish `P1 : ∀ y, P y ∈ A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `y`. Take `⟨a, ha, e⟩` from `Submodule.mem_map.1 (K.starProjection_apply_mem (embE y))`. Establish `: P y = a`. Apply `(embE : Matrix Ω Ω ℂ ≃ₗ[ℂ] _).injective` to reduce the goal to its premises. Rewrite using `[hPe]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.symm`. Rewrite using `[this]`. Conclude with `ha`. Establish `P2 : ∀ a ∈ A, P a = a`. Introduce `a ha`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(embE : Matrix Ω Ω ℂ ≃ₗ[ℂ] _).injective` to reduce the goal to its premises. Rewrite using `[hPe]`. Conclude with `Submodule.starProjection_eq_self_iff.2 (Submodule.mem_map_of_mem ha)`. Establish `P3 : ∀ a ∈ A, ∀ y, P (a * y) = a * P y`. Introduce `a ha y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `(embE : Matrix Ω Ω ℂ ≃ₗ[ℂ] _).injective` to reduce the goal to its premises. Rewrite using `[hPe]`. Apply `Submodule.eq_starProjection_of_mem_of_inner_eq_zero` to reduce the goal to its premises. Conclude with `Submodule.mem_map_of_mem (hmul a ha _ (P1 y))`. Introduce `w hw`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Take `⟨b, hb, rfl⟩` from `Submodule.mem_map.1 hw`. Establish `h0` using `Submodule.starProjection_inner_eq_zero (K := K) (embE y) (embE (aᴴ * b)) (Submodule.mem_map_of_mem (hmul _ (hstar a ha) b hb))`. Rewrite `h0` using `[← hPe, ← map_sub, inner_embE]`. Express the relevant statement in the definitionally equal form `inner ℂ (embE (a * y) - embE (a * P y)) (embE b) = 0`. Rewrite using `[← map_sub, inner_embE, ← mul_sub, conjTranspose_mul, Matrix.mul_assoc]`.
-
-Conclude with `h0`. Use `comm_left A T hT P P3 1` as an intermediate fact. Rewrite `this` using `[P2 1 h1, Matrix.mul_one]`. Rewrite using `[← this]`. Conclude with `P1 T`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bic (A : Submodule ℂ (Matrix Ω Ω ℂ)) (h1 : (1 : Matrix Ω Ω ℂ) ∈ A)
     (hmul : ∀ a ∈ A, ∀ b ∈ A, a * b ∈ A) (hstar : ∀ a ∈ A, aᴴ ∈ A) (T : Matrix Ω Ω ℂ)
@@ -130,13 +128,13 @@ open WeightOneEmbedding
 variable {W : Type} [Fintype W] [DecidableEq W] {m q : ℕ}
 
 /- English proof (translation)
-Use extensionality with `I K`. Rewrite using `[mul_apply, Finset.sum_eq_single (I ∘ σ)]`. Simplify using `only [perm', of_apply, Equiv.Perm.coe_mul]`. Distinguish the cases in `hv : v = w ∘ σ`. Substitute `hv` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_pos rfl, of_apply]`. Distinguish the cases in `hI : ∀ i, (I i).1 = w i`. Simplify using `[hI, Function.comp_assoc]`. Simplify using `[hI]`. Rewrite using `[if_neg hv, Matrix.zero_apply]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hI : ∀ i, (I i).1 = w i`. Establish `: ¬ ∀ i, ((I ∘ σ) i).1 = v i` using `fun h => hv (funext fun i => by`. Rewrite using `[← h i]`. Conclude with `hI (σ i))`. Simplify using `only [this, false_and, if_false, mul_zero]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[hI]`. Introduce `J _ hJ`. Simplify using `only [perm', of_apply]`. Rewrite using `[if_neg (fun h => hJ h.2), zero_mul]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem perm'_mul (σ τ : Equiv.Perm (Fin q)) (w v : Fin q → W) :
     (perm' (m := m) σ w) * perm' τ v = if v = w ∘ σ then perm' (σ * τ) w else 0 := by
@@ -161,13 +159,13 @@ theorem perm'_mul (σ τ : Equiv.Perm (Fin q)) (w v : Fin q → W) :
   · simp
 
 /- English proof (translation)
-Use extensionality with `I J`. Simplify using `only [perm', conjTranspose_apply, of_apply]`. Establish `e : (∀ i, (J i).1 = w i) ∧ I = J ∘ σ ↔ (∀ i, (I i).1 = (w ∘ σ) i) ∧ J = I ∘ ⇑(σ⁻¹)`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, rfl⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨fun i => h1 (σ i), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Introduce and unpack `⟨h1, rfl⟩`. Use `⟨fun i => ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `h1 (σ⁻¹ i)` as an intermediate fact. Simplify using `using this`. Use function extensionality and compare the values at `i`. Simplify using the standard rewrite rules. Distinguish the cases in `h : (∀ i, (J i).1 = w i) ∧ I = J ∘ σ`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[if_pos h, if_pos (e.1 h), star_one]`. Rewrite using `[if_neg h, if_neg (fun h' => h (e.2 h')), star_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem perm'_star (σ : Equiv.Perm (Fin q)) (w : Fin q → W) :
     (perm' (m := m) σ w)ᴴ = perm' σ⁻¹ (w ∘ σ) := by
@@ -187,11 +185,11 @@ theorem perm'_star (σ : Equiv.Perm (Fin q)) (w : Fin q → W) :
   · rw [if_neg h, if_neg (fun h' => h (e.2 h')), star_zero]
 
 /- English proof (translation)
-Use extensionality with `I J`. Rewrite using `[Matrix.sum_apply, Finset.sum_eq_single (fun i => (I i).1)]`. Simplify using `only [perm', of_apply, Equiv.Perm.coe_one, Function.comp_id, one_apply]`. Distinguish the cases in `h : I = J`. Substitute `h` using the available equality.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Simplify using `[h, Ne.symm h]`. Introduce `w _ hw`. Simplify using `only [perm', of_apply]`. Rewrite using `[if_neg]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨h, -⟩`. Conclude with `hw (funext fun i => (h i).symm)`. Simplify using the standard rewrite rules.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem one_eq_sum_perm' : (1 : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ) = ∑ w, perm' 1 w := by
   ext I J
@@ -208,19 +206,15 @@ theorem one_eq_sum_perm' : (1 : Matrix (Fin q → Ix W m) (Fin q → Ix W m) ℂ
   · simp
 
 /- English proof (translation)
-Introduce `W _ _ m q T hT`. Use `set S := Set.range fun p : Equiv.Perm (Fin q) × (Fin q → W) => (perm' (m := m) p.1 p.2)`. Establish `hgen : ∀ x ∈ S, ∀ y ∈ S, x * y ∈ Submodule.span ℂ S`. Introduce and unpack `_ ⟨⟨σ, w⟩, rfl⟩ _ ⟨⟨τ, v⟩, rfl⟩`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[perm'_mul]`. Use `split_ifs`. Conclude with `Submodule.subset_span ⟨(σ * τ, w), rfl⟩`. Conclude with `Submodule.zero_mem _`. Use `bic (Submodule.span ℂ S) ?_ ?_ ?_ T ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[one_eq_sum_perm']`. Conclude with `Submodule.sum_mem _ fun w _ => Submodule.subset_span ⟨(1, w), rfl⟩`. Introduce `a ha b hb`. Use `Submodule.mul_mem_mul ha hb` as an intermediate fact. Rewrite `this` using `[Submodule.span_mul_span]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `(Submodule.span_le.2 ?_) this` and prove the remaining obligations. Introduce and unpack `_ ⟨x, hx, y, hy, rfl⟩`. Conclude with `hgen x hx y hy`. Introduce `a ha`. Proceed by induction on `ha using Submodule.span_induction with`.
+Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨⟨σ, w⟩, rfl⟩` from `hx`. Simplify using `only`. Rewrite using `[perm'_star]`. Conclude with `Submodule.subset_span ⟨(σ⁻¹, w ∘ σ), rfl⟩`.
-
-Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [conjTranspose_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul c x _ hx => rw [conjTranspose_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
-
-Introduce `Z hZ`. Conclude with `hT Z fun σ w => hZ _ (Submodule.subset_span ⟨(σ, w), rfl⟩)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sw1 : PlacePermOperatorBicommutantSpan := by
   intro W _ _ m q T hT

@@ -12,9 +12,9 @@ variable {R K : Type*} [CommRing R] [IsDedekindDomain R] [Field K] [Algebra R K]
   [IsFractionRing R K]
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.AdicValuationCountFactors.valuation_eq_exp_neg_count`. Consider the case `exact _root_.GlobalTheory.AdicValuationCountFactors.valuation_eq_exp_neg_count`. Consider the case `(apply _root_.GlobalTheory.AdicValuationCountFactors.valuation_eq_exp_neg_count <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.AdicValuationCountFactors.valuation_eq_exp_neg_count <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.AdicValuationCountFactors.valuation_eq_exp_neg_count <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.AdicValuationCountFactors.valuation_eq_exp_neg_count ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem valuation_eq_exp_neg_count (v : HeightOneSpectrum R) {x : K} (hx : x ≠ 0) :
     v.valuation K x = exp (-FractionalIdeal.count K v (FractionalIdeal.spanSingleton R⁰ x)) := by
@@ -27,11 +27,11 @@ theorem valuation_eq_exp_neg_count (v : HeightOneSpectrum R) {x : K} (hx : x ≠
   | (intros; exact _root_.GlobalTheory.AdicValuationCountFactors.valuation_eq_exp_neg_count ..)
 
 /- English proof (translation)
-Establish `hIJ : I * J⁻¹ ≠ 0` using `mul_ne_zero hI (inv_ne_zero hJ)`. Establish `h1 : I * J⁻¹ ≤ 1`. Rewrite using `[← FractionalIdeal.finprod_heightOneSpectrum_factorization' K hIJ]`. Use `finprod_induction (fun L : FractionalIdeal R⁰ K => L ≤ 1) le_rfl ?_ ?_` and prove the remaining obligations. Introduce `a b ha hb`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `v`. Establish `h0 : 0 ≤ FractionalIdeal.count K v (I * J⁻¹)`. Rewrite using `[FractionalIdeal.count_mul K v hI (inv_ne_zero hJ), FractionalIdeal.count_inv]`. Combine the linear relations using `[h v]`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Take `⟨n, hn⟩` from `Int.eq_ofNat_of_zero_le h0`. Rewrite using `[hn, zpow_natCast, ← FractionalIdeal.coeIdeal_pow]`. Conclude with `FractionalIdeal.coeIdeal_le_one`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem le_of_count_le {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0) (hJ : J ≠ 0)
     (h : ∀ v : HeightOneSpectrum R, FractionalIdeal.count K v J ≤ FractionalIdeal.count K v I) :
@@ -55,7 +55,7 @@ theorem le_of_count_le {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0) (hJ : J ≠
     _ = J := one_mul J
 
 /- English proof (translation)
-The claim follows from `le_antisymm (le_of_count_le hI hJ fun v => (h v).ge) (le_of_count_le hJ hI fun v => (h v).le)`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_count_eq {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0) (hJ : J ≠ 0)
     (h : ∀ v : HeightOneSpectrum R, FractionalIdeal.count K v I = FractionalIdeal.count K v J) :
@@ -63,9 +63,9 @@ theorem eq_of_count_eq {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0) (hJ : J ≠
   le_antisymm (le_of_count_le hI hJ fun v => (h v).ge) (le_of_count_le hJ hI fun v => (h v).le)
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Simplify using `[FractionalIdeal.zero_mem]`. Establish `hx' : FractionalIdeal.spanSingleton R⁰ x ≠ 0` using `FractionalIdeal.spanSingleton_ne_zero_iff.2 hx`. Rewrite using `[← FractionalIdeal.spanSingleton_le_iff_mem]`. Repeatedly rewrite using `[fun v : HeightOneSpectrum R => valuation_eq_exp_neg_count v hx, exp_le_exp, neg_le_neg_iff]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Conclude with `⟨fun h v => FractionalIdeal.count_mono K v hx' h, le_of_count_le hx' hI⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_iff_valuation_le {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) (x : K) :
     x ∈ I ↔ ∀ v : HeightOneSpectrum R,
@@ -78,13 +78,13 @@ theorem mem_iff_valuation_le {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) (x : K)
   exact ⟨fun h v => FractionalIdeal.count_mono K v hx' h, le_of_count_le hx' hI⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Establish `hv : (v.asIdeal : FractionalIdeal R⁰ K) ≠ 0` using `by simpa using v.ne_bot`. Establish `hle : I ≤ (v.asIdeal : FractionalIdeal R⁰ K) * I`. Introduce `y hy`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hy'` using `(mem_iff_valuation_le hI y).1 hy`. Use `(mem_iff_valuation_le (mul_ne_zero hv hI) y).2 fun w => ?_` and prove the remaining obligations. Rewrite using `[FractionalIdeal.count_mul K w hv hI, FractionalIdeal.count_maximal]`. Use `split_ifs with hw`. Substitute `hw` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Use `lt_of_le_of_ne (hy' v) (hne y hy)` as an intermediate fact. Break down `eq_or_ne (v.valuation K y) 0 with h0 | h0` into its components or cases. Simplify using `[h0]`. Rewrite `this` using `[← exp_log h0, exp_lt_exp]`. Rewrite using `[← exp_log h0, exp_le_exp]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Simplify to obtain the desired conclusion from the available facts.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `using hy' w`. Use `FractionalIdeal.count_mono K v hI hle` as an intermediate fact. Rewrite `this` using `[FractionalIdeal.count_mul K v hv hI, FractionalIdeal.count_self]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_mem_valuation_eq {I : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (v : HeightOneSpectrum R) :
@@ -116,24 +116,24 @@ def localIdeal (v : HeightOneSpectrum R) (I : FractionalIdeal R⁰ K) :
   Submodule.span _ (algebraMap K (v.adicCompletion K) '' (I : Set K))
 
 /- English proof (translation)
-The claim follows from `valuedAdicCompletion_eq_valuation' v x`.
+A detailed English derivation is pending.
 -/
 theorem valued_algebraMap (v : HeightOneSpectrum R) (x : K) :
     Valued.v (algebraMap K (v.adicCompletion K) x) = v.valuation K x :=
   valuedAdicCompletion_eq_valuation' v x
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨y, hy, rfl⟩` from `hx`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Rewrite using `[valued_algebraMap]`. Conclude with `(mem_iff_valuation_le hI y).1 hy v`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => exact (Valuation.map_add _ x y).trans (max_le hx hy)`. Consider the case `smul a x _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `ha : Valued.v (a : v.adicCompletion K) ≤ 1` using `a.2`. Express the relevant statement in the definitionally equal form `Valued.v ((a : v.adicCompletion K) * x) ≤ _`. Rewrite using `[map_mul]`. Conclude with `(mul_le_of_le_one_left' ha).trans hx`. Introduce `hx`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨y, hy, hvy⟩` from `exists_mem_valuation_eq hI v`. Rewrite `hvy` using `[← valued_algebraMap]`. Establish `hy0 : Valued.v (algebraMap K (v.adicCompletion K) y) ≠ 0` using `by rw [hvy]; exact exp_ne_zero`. Establish `hy1 : algebraMap K (v.adicCompletion K) y ≠ 0`. Introduce `h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `hy0` using `[h]`. Simplify using `at hy0`. Establish `hm : x / algebraMap K (v.adicCompletion K) y ∈ v.adicCompletionIntegers K`. Rewrite using `[mem_adicCompletionIntegers, map_div₀, div_le_one₀ (zero_lt_iff.2 hy0), hvy]`. Conclude with `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `: x = (⟨_, hm⟩ : v.adicCompletionIntegers K) • algebraMap K (v.adicCompletion K) y`. Express the relevant statement in the definitionally equal form `x = x / _ * _`. Rewrite using `[div_mul_cancel₀ _ hy1]`. Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, hy, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_localIdeal_iff {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) (v : HeightOneSpectrum R)
     (x : v.adicCompletion K) :
@@ -168,7 +168,7 @@ theorem mem_localIdeal_iff {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) (v : Heig
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨y, hy, rfl⟩)
 
 /- English proof (translation)
-Rewrite using `[localIdeal, Submodule.span_eq_bot]`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Rewrite using `[(FractionalIdeal.mem_zero_iff R⁰).1 hy, map_zero]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 -/
 theorem localIdeal_zero (v : HeightOneSpectrum R) :
     localIdeal v (0 : FractionalIdeal R⁰ K) = ⊥ := by
@@ -177,7 +177,7 @@ theorem localIdeal_zero (v : HeightOneSpectrum R) :
   rw [(FractionalIdeal.mem_zero_iff R⁰).1 hy, map_zero]
 
 /- English proof (translation)
-Rewrite using `[mem_localIdeal_iff (one_ne_zero (α := FractionalIdeal R⁰ K)), FractionalIdeal.count_one, mem_adicCompletionIntegers]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mem_localIdeal_one_iff (v : HeightOneSpectrum R) (x : v.adicCompletion K) :
     x ∈ localIdeal v (1 : FractionalIdeal R⁰ K) ↔ x ∈ v.adicCompletionIntegers K := by
@@ -219,7 +219,7 @@ theorem adele_algebraMap_apply (x : K) (v : HeightOneSpectrum R) :
     algebraMap K 𝔸ᶠ[R, K] x v = algebraMap K (v.adicCompletion K) x := rfl
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem adele_smul_apply (r : R) (a : 𝔸ᶠ[R, K]) (v : HeightOneSpectrum R) :
     (r • a) v = algebraMap K (v.adicCompletion K) (algebraMap R K r) * a v := by
@@ -234,20 +234,20 @@ def adelicIdeal (I : FractionalIdeal R⁰ K) : Submodule R 𝔸ᶠ[R, K] where
     exact (localIdeal v I).smul_mem (algebraMap R (v.adicCompletionIntegers K) r) (ha v)
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_adelicIdeal {I : FractionalIdeal R⁰ K} {a : 𝔸ᶠ[R, K]} :
     a ∈ adelicIdeal I ↔ ∀ v, a v ∈ localIdeal v I := Iff.rfl
 
 /- English proof (translation)
-Repeatedly rewrite using `[mem_adelicIdeal, mem_localIdeal_iff hI]`.
+Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem mem_adelicIdeal_iff {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) {a : 𝔸ᶠ[R, K]} :
     a ∈ adelicIdeal I ↔ ∀ v, Valued.v (a v) ≤ exp (-FractionalIdeal.count K v I) := by
   simp_rw [mem_adelicIdeal, mem_localIdeal_iff hI]
 
 /- English proof (translation)
-Repeatedly rewrite using `[mem_adelicIdeal_iff hI, mem_iff_valuation_le hI, adele_algebraMap_apply, valued_algebraMap]`.
+Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem algebraMap_mem_adelicIdeal {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) (x : K) :
     algebraMap K 𝔸ᶠ[R, K] x ∈ adelicIdeal I ↔ x ∈ I := by
@@ -255,14 +255,14 @@ theorem algebraMap_mem_adelicIdeal {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) (
     valued_algebraMap]
 
 /- English proof (translation)
-Rewrite using `[← adele_mul_apply, Units.mul_inv, adele_one_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem idele_apply_mul_inv (t : 𝔸ᶠ[R, K]ˣ) (v : HeightOneSpectrum R) :
     (t : 𝔸ᶠ[R, K]) v * ((t⁻¹ : 𝔸ᶠ[R, K]ˣ) : 𝔸ᶠ[R, K]) v = 1 := by
   rw [← adele_mul_apply, Units.mul_inv, adele_one_apply]
 
 /- English proof (translation)
-The claim follows from `left_ne_zero_of_mul_eq_one (idele_apply_mul_inv t v)`.
+A detailed English derivation is pending.
 -/
 theorem idele_apply_ne_zero (t : 𝔸ᶠ[R, K]ˣ) (v : HeightOneSpectrum R) :
     (t : 𝔸ᶠ[R, K]) v ≠ 0 := left_ne_zero_of_mul_eq_one (idele_apply_mul_inv t v)
@@ -270,7 +270,7 @@ theorem idele_apply_ne_zero (t : 𝔸ᶠ[R, K]ˣ) (v : HeightOneSpectrum R) :
 def ord_vw (t : 𝔸ᶠ[R, K]ˣ) (v : HeightOneSpectrum R) : ℤ := -log (Valued.v ((t : 𝔸ᶠ[R, K]) v))
 
 /- English proof (translation)
-Rewrite using `[ord_vw, neg_neg, exp_log]`. Simplify using `using idele_apply_ne_zero t v`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem valued_idele (t : 𝔸ᶠ[R, K]ˣ) (v : HeightOneSpectrum R) :
     Valued.v ((t : 𝔸ᶠ[R, K]) v) = exp (-ord_vw t v) := by
@@ -278,7 +278,7 @@ theorem valued_idele (t : 𝔸ᶠ[R, K]ˣ) (v : HeightOneSpectrum R) :
   simpa using idele_apply_ne_zero t v
 
 /- English proof (translation)
-Use `valued_idele (t * s) v` as an intermediate fact. Rewrite `this` using `[Units.val_mul, adele_mul_apply, map_mul, valued_idele, valued_idele, ← exp_add, exp_inj]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_vw_mul (t s : 𝔸ᶠ[R, K]ˣ) (v : HeightOneSpectrum R) :
     ord_vw (t * s) v = ord_vw t v + ord_vw s v := by
@@ -288,7 +288,7 @@ theorem ord_vw_mul (t s : 𝔸ᶠ[R, K]ˣ) (v : HeightOneSpectrum R) :
   omega
 
 /- English proof (translation)
-Use `ord_vw_mul (1 : 𝔸ᶠ[R, K]ˣ) 1 v` as an intermediate fact. Rewrite `this` using `[one_mul]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_vw_one (v : HeightOneSpectrum R) : ord_vw (1 : 𝔸ᶠ[R, K]ˣ) v = 0 := by
   have := ord_vw_mul (1 : 𝔸ᶠ[R, K]ˣ) 1 v
@@ -296,7 +296,7 @@ theorem ord_vw_one (v : HeightOneSpectrum R) : ord_vw (1 : 𝔸ᶠ[R, K]ˣ) v = 
   omega
 
 /- English proof (translation)
-Use `ord_vw_mul t t⁻¹ v` as an intermediate fact. Rewrite `this` using `[mul_inv_cancel, ord_vw_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem ord_vw_inv (t : 𝔸ᶠ[R, K]ˣ) (v : HeightOneSpectrum R) : ord_vw t⁻¹ v = -ord_vw t v := by
   have := ord_vw_mul t t⁻¹ v
@@ -304,7 +304,7 @@ theorem ord_vw_inv (t : 𝔸ᶠ[R, K]ˣ) (v : HeightOneSpectrum R) : ord_vw t⁻
   omega
 
 /- English proof (translation)
-Use `filter_upwards [(FiniteAdeleRing.isUnit_iff.1 t.isUnit).2] with v hv`. Simplify using `[ord_vw, hv]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ord_vw_eventually_zero (t : 𝔸ᶠ[R, K]ˣ) : ∀ᶠ v in Filter.cofinite, ord_vw t v = 0 := by
   filter_upwards [(FiniteAdeleRing.isUnit_iff.1 t.isUnit).2] with v hv
@@ -314,7 +314,7 @@ def idealOf (t : 𝔸ᶠ[R, K]ˣ) : FractionalIdeal R⁰ K :=
   ∏ᶠ v : HeightOneSpectrum R, (v.asIdeal : FractionalIdeal R⁰ K) ^ ord_vw t v
 
 /- English proof (translation)
-Use `finprod_induction (fun L : FractionalIdeal R⁰ K => L ≠ 0) one_ne_zero (fun _ _ => mul_ne_zero) fun v => zpow_ne_zero _ ?_` and prove the remaining obligations. Simplify using `using v.ne_bot`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem idealOf_ne_zero (t : 𝔸ᶠ[R, K]ˣ) : idealOf t ≠ 0 := by
   refine finprod_induction (fun L : FractionalIdeal R⁰ K => L ≠ 0) one_ne_zero
@@ -322,21 +322,21 @@ theorem idealOf_ne_zero (t : 𝔸ᶠ[R, K]ˣ) : idealOf t ≠ 0 := by
   simpa using v.ne_bot
 
 /- English proof (translation)
-The claim follows from `FractionalIdeal.count_finprod K v _ (ord_vw_eventually_zero t)`.
+A detailed English derivation is pending.
 -/
 theorem count_idealOf (t : 𝔸ᶠ[R, K]ˣ) (v : HeightOneSpectrum R) :
     FractionalIdeal.count K v (idealOf t) = ord_vw t v :=
   FractionalIdeal.count_finprod K v _ (ord_vw_eventually_zero t)
 
 /- English proof (translation)
-The claim follows from `eq_of_count_eq (idealOf_ne_zero _) one_ne_zero fun v => by rw [count_idealOf, ord_vw_one, FractionalIdeal.count_one]`.
+A detailed English derivation is pending.
 -/
 theorem idealOf_one : idealOf (1 : 𝔸ᶠ[R, K]ˣ) = 1 :=
   eq_of_count_eq (idealOf_ne_zero _) one_ne_zero fun v => by
     rw [count_idealOf, ord_vw_one, FractionalIdeal.count_one]
 
 /- English proof (translation)
-The claim follows from `eq_of_count_eq (idealOf_ne_zero _) (mul_ne_zero (idealOf_ne_zero _) (idealOf_ne_zero _)) fun v => by rw [FractionalIdeal.count_mul K v (idealOf_ne_zero _) (idealOf_ne_zero _), count_idealOf, count_idealOf, count_idealOf, ord_vw_mul]`.
+A detailed English derivation is pending.
 -/
 theorem idealOf_mul (t s : 𝔸ᶠ[R, K]ˣ) : idealOf (t * s) = idealOf t * idealOf s :=
   eq_of_count_eq (idealOf_ne_zero _) (mul_ne_zero (idealOf_ne_zero _) (idealOf_ne_zero _))
@@ -345,7 +345,7 @@ theorem idealOf_mul (t s : 𝔸ᶠ[R, K]ˣ) : idealOf (t * s) = idealOf t * idea
         count_idealOf, count_idealOf, ord_vw_mul]
 
 /- English proof (translation)
-The claim follows from `eq_inv_of_mul_eq_one_left (by rw [← idealOf_mul, inv_mul_cancel, idealOf_one])`.
+A detailed English derivation is pending.
 -/
 theorem idealOf_inv (t : 𝔸ᶠ[R, K]ˣ) : idealOf t⁻¹ = (idealOf t)⁻¹ :=
   eq_inv_of_mul_eq_one_left (by rw [← idealOf_mul, inv_mul_cancel, idealOf_one])
@@ -362,31 +362,31 @@ Both sides reduce to the same expression.
 theorem smul_def (t : 𝔸ᶠ[R, K]ˣ) (I : FractionalIdeal R⁰ K) : t • I = idealOf t * I := rfl
 
 /- English proof (translation)
-The claim follows from `mul_one _`.
+A detailed English derivation is pending.
 -/
 theorem smul_one_eq (t : 𝔸ᶠ[R, K]ˣ) : t • (1 : FractionalIdeal R⁰ K) = idealOf t := mul_one _
 
 /- English proof (translation)
-The claim follows from `(mul_assoc _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem smul_mul (t : 𝔸ᶠ[R, K]ˣ) (I J : FractionalIdeal R⁰ K) : t • (I * J) = (t • I) * J :=
   (mul_assoc _ _ _).symm
 
 /- English proof (translation)
-The claim follows from `mul_ne_zero (idealOf_ne_zero t) hI`.
+A detailed English derivation is pending.
 -/
 theorem smul_ne_zero (t : 𝔸ᶠ[R, K]ˣ) {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) : t • I ≠ 0 :=
   mul_ne_zero (idealOf_ne_zero t) hI
 
 /- English proof (translation)
-Rewrite using `[smul_def, smul_def]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem smul_le_smul (t : 𝔸ᶠ[R, K]ˣ) {I J : FractionalIdeal R⁰ K} (h : I ≤ J) :
     t • I ≤ t • J := by
   rw [smul_def, smul_def]; gcongr
 
 /- English proof (translation)
-Rewrite using `[smul_def, FractionalIdeal.count_mul K v (idealOf_ne_zero _) hI, count_idealOf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem count_smul (t : 𝔸ᶠ[R, K]ˣ) {I : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (v : HeightOneSpectrum R) :
@@ -394,7 +394,7 @@ theorem count_smul (t : 𝔸ᶠ[R, K]ˣ) {I : FractionalIdeal R⁰ K} (hI : I �
   rw [smul_def, FractionalIdeal.count_mul K v (idealOf_ne_zero _) hI, count_idealOf]
 
 /- English proof (translation)
-Break down `eq_or_ne I 0 with rfl | hI` into its components or cases. Simplify using `[smul_def, localIdeal_zero, idele_apply_ne_zero]`. Rewrite using `[mem_localIdeal_iff hI, mem_localIdeal_iff (smul_ne_zero t hI), count_smul t hI, map_mul, valued_idele, neg_add, exp_add, mul_le_mul_iff_right₀ (zero_lt_iff.2 exp_ne_zero)]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_mem_localIdeal_smul (t : 𝔸ᶠ[R, K]ˣ) (I : FractionalIdeal R⁰ K)
     (v : HeightOneSpectrum R) (x : v.adicCompletion K) :
@@ -405,16 +405,16 @@ theorem mul_mem_localIdeal_smul (t : 𝔸ᶠ[R, K]ˣ) (I : FractionalIdeal R⁰ 
     valued_idele, neg_add, exp_add, mul_le_mul_iff_right₀ (zero_lt_iff.2 exp_ne_zero)]
 
 /- English proof (translation)
-Repeatedly rewrite using `[mem_adelicIdeal, adele_mul_apply, mul_mem_localIdeal_smul]`.
+Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem mul_mem_adelicIdeal_smul (t : 𝔸ᶠ[R, K]ˣ) (I : FractionalIdeal R⁰ K) (a : 𝔸ᶠ[R, K]) :
     (t : 𝔸ᶠ[R, K]) * a ∈ adelicIdeal (t • I) ↔ a ∈ adelicIdeal I := by
   simp_rw [mem_adelicIdeal, adele_mul_apply, mul_mem_localIdeal_smul]
 
 /- English proof (translation)
-Rewrite using `[← algebraMap_mem_adelicIdeal (smul_ne_zero t hI)]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Use `⟨(t⁻¹ : 𝔸ᶠ[R, K]ˣ) * algebraMap K 𝔸ᶠ[R, K] x, ?_, by simp⟩` and prove the remaining obligations. Rewrite using `[← mul_mem_adelicIdeal_smul t]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `using h`. Introduce and unpack `⟨a, ha, h⟩`. Rewrite using `[← h, mul_mem_adelicIdeal_smul]`. Conclude with `ha`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_smul_iff (t : 𝔸ᶠ[R, K]ˣ) {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) (x : K) :
     x ∈ t • I ↔ ∃ a ∈ adelicIdeal I, (t : 𝔸ᶠ[R, K]) * a = algebraMap K 𝔸ᶠ[R, K] x := by
@@ -429,7 +429,7 @@ theorem mem_smul_iff (t : 𝔸ᶠ[R, K]ˣ) {I : FractionalIdeal R⁰ K} (hI : I 
     exact ha
 
 /- English proof (translation)
-The claim follows from `eq_of_count_eq (idealOf_ne_zero _) (FractionalIdeal.spanSingleton_ne_zero_iff.2 x.ne_zero) fun v => by have := valued_idele (FiniteAdeleRing.unitEmbedding R K x) v rw [FiniteAdeleRing.unitEmbedding_apply, adele_algebraMap_apply, valued_algebraMap, valuation_eq_exp_neg_count v x.n …`.
+A detailed English derivation is pending.
 -/
 theorem idealOf_unitEmbedding (x : Kˣ) :
     idealOf (FiniteAdeleRing.unitEmbedding R K x) = FractionalIdeal.spanSingleton R⁰ (x : K) :=
@@ -442,9 +442,9 @@ theorem idealOf_unitEmbedding (x : Kˣ) :
       omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h v`. Use `count_smul t hI v` as an intermediate fact. Rewrite `this` using `[h]`. Rewrite using `[valued_idele, show ord_vw t v = 0 by omega]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Introduce `h`. Use `eq_of_count_eq (smul_ne_zero t hI) hI fun v => ?_` and prove the remaining obligations. Rewrite using `[count_smul t hI, ord_vw, h v]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem smul_eq_self_iff (t : 𝔸ᶠ[R, K]ˣ) {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) :
     t • I = I ↔ ∀ v, Valued.v ((t : 𝔸ᶠ[R, K]) v) = 1 := by
@@ -460,13 +460,13 @@ theorem smul_eq_self_iff (t : 𝔸ᶠ[R, K]ˣ) {I : FractionalIdeal R⁰ K} (hI 
     simp
 
 /- English proof (translation)
-Use `choose f hf using fun v : HeightOneSpectrum R => valuedAdicCompletion_surjective K v (exp (-FractionalIdeal.count K v I))`. Establish `h1 : ∀ᶠ v in Filter.cofinite, Valued.v (f v) = 1` using `by filter_upwards [FractionalIdeal.finite_factors I] with v hv`. Rewrite using `[hf, hv]`. Simplify using the standard rewrite rules. Set `a : 𝔸ᶠ[R, K]` to `⟨f, h1.mono fun v hv => hv.le⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `ha : IsUnit a`. Use `FiniteAdeleRing.isUnit_iff.2 ⟨fun v h => ?_, h1⟩` and prove the remaining obligations. Use `hf v` as an intermediate fact. Express the relevant statement in the definitionally equal form `f v = 0 at h`. Rewrite `this` using `[h, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `exp_ne_zero this.symm`. Use `⟨ha.unit, eq_of_count_eq (idealOf_ne_zero _) hI fun v => ?_⟩` and prove the remaining obligations. Use `valued_idele ha.unit v` as an intermediate fact. Rewrite using `[count_idealOf]`. Express the relevant statement in the definitionally equal form `Valued.v (f v) = _ at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite `this` using `[hf, exp_inj]`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_idealOf_eq {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) :
     ∃ t : 𝔸ᶠ[R, K]ˣ, idealOf t = I := by
@@ -490,7 +490,7 @@ theorem exists_idealOf_eq {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) :
   omega
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_idealOf_eq (mul_ne_zero hJ (inv_ne_zero hI))`. Conclude with `⟨t, by rw [smul_def, ht, mul_assoc, inv_mul_cancel₀ hI, mul_one]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_smul_eq {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0) (hJ : J ≠ 0) :
     ∃ t : 𝔸ᶠ[R, K]ˣ, J = t • I := by
@@ -498,9 +498,9 @@ theorem exists_smul_eq {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0) (hJ : J ≠
   exact ⟨t, by rw [smul_def, ht, mul_assoc, inv_mul_cancel₀ hI, mul_one]⟩
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `valuedAdicCompletion_surjective K v (exp n)`. Establish `hc0 : c ≠ 0`. Introduce and unpack `rfl`. Rewrite `hc` using `[map_zero]`. Conclude with `exp_ne_zero hc.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨c, by simp [hc0], ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Valuation.restrict_le_iff, hc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem setOf_valued_le_eq (v : HeightOneSpectrum R) (n : ℤ) :
     ∃ c : v.adicCompletion K, Valued.v.restrict c ≠ 0 ∧
@@ -516,7 +516,7 @@ theorem setOf_valued_le_eq (v : HeightOneSpectrum R) (n : ℤ) :
   simp only [Set.mem_setOf_eq, Valuation.restrict_le_iff, hc]
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `setOf_valued_le_eq (K := K) v n`. Rewrite using `[h]`. Conclude with `Valued.isOpen_closedBall _ hc`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_valued_le (v : HeightOneSpectrum R) (n : ℤ) :
     IsOpen {y : v.adicCompletion K | Valued.v y ≤ exp n} := by
@@ -524,7 +524,7 @@ theorem isOpen_valued_le (v : HeightOneSpectrum R) (n : ℤ) :
   rw [h]; exact Valued.isOpen_closedBall _ hc
 
 /- English proof (translation)
-Take `⟨c, hc, h⟩` from `setOf_valued_le_eq (K := K) v n`. Rewrite using `[h]`. Conclude with `Valued.isClosed_closedBall _ _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_valued_le (v : HeightOneSpectrum R) (n : ℤ) :
     IsClosed {y : v.adicCompletion K | Valued.v y ≤ exp n} := by
@@ -532,7 +532,7 @@ theorem isClosed_valued_le (v : HeightOneSpectrum R) (n : ℤ) :
   rw [h]; exact Valued.isClosed_closedBall _ _
 
 /- English proof (translation)
-Use `⟨(log γ).natAbs + 1, ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← exp_log hγ]`. Rewrite using `[exp_lt_exp]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem exists_exp_neg_lt {γ : ℤᵐ⁰} (hγ : γ ≠ 0) : ∃ n : ℕ, exp (-(n : ℤ)) < γ := by
   refine ⟨(log γ).natAbs + 1, ?_⟩
@@ -541,11 +541,11 @@ theorem exists_exp_neg_lt {γ : ℤᵐ⁰} (hγ : γ ≠ 0) : ∃ n : ℕ, exp (
   omega
 
 /- English proof (translation)
-Establish `hc : CauchySeq u`. Rewrite using `[(Valued.hasBasis_uniformity (v.adicCompletion K) ℤᵐ⁰).cauchySeq_iff']`. Introduce `γ _`. Take `⟨n, hn⟩` from `exists_exp_neg_lt (γ := MonoidWithZeroHom.ValueGroup₀.embedding γ.1) (by simp)`. Use `⟨n, fun m hm => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_setOf_eq, Valuation.restrict_lt_iff_lt_embedding]`. Rewrite using `[Valuation.map_sub_swap]`. Conclude with `(hu m n hm).trans_lt hn`. Take `⟨t, ht⟩` from `cauchySeq_tendsto_of_complete hc`. Use `⟨t, fun n => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(isClosed_valued_le (K := K) v (-(n : ℤ))).mem_of_tendsto (ht.sub_const (u n)) ?_` and prove the remaining obligations. Use `filter_upwards [Filter.eventually_ge_atTop n] with m hm using hu m n hm`.
+A detailed English derivation is pending.
 -/
 theorem exists_limit (v : HeightOneSpectrum R) (u : ℕ → v.adicCompletion K)
     (hu : ∀ m n : ℕ, n ≤ m → Valued.v (u m - u n) ≤ exp (-(n : ℤ))) :
@@ -565,11 +565,11 @@ theorem exists_limit (v : HeightOneSpectrum R) (u : ℕ → v.adicCompletion K)
   filter_upwards [Filter.eventually_ge_atTop n] with m hm using hu m n hm
 
 /- English proof (translation)
-Establish `ho : IsOpen {y : v.adicCompletion K | Valued.v (a - y) ≤ exp (-(n : ℤ))}` using `(isOpen_valued_le (K := K) v (-(n : ℤ))).preimage (continuous_const.sub continuous_id)`. Take `⟨x, hx⟩` from `(denseRange_algebraMap K v).exists_mem_open ho ⟨a, by simp⟩`. Establish `hx : Valued.v (a - algebraMap K (v.adicCompletion K) x) ≤ exp (-(n : ℤ))` using `hx`. Establish `h1 : exp (-(n : ℤ)) ≤ (1 : ℤᵐ⁰)` using `by rw [← exp_zero, exp_le_exp]; omega`. Establish `hx1 : v.valuation K x ≤ 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← valued_algebraMap, ← sub_sub_cancel a (algebraMap K (v.adicCompletion K) x)]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le ha (hx.trans h1))`. Take `⟨r, hr⟩` from `v.exists_valuation_sub_lt_of_integer hx1 (Units.mk0 _ (exp_ne_zero (a := -(n : ℤ))))`. Use `⟨r, ?_⟩` and prove the remaining obligations. Rewrite `hr` using `[← valued_algebraMap, map_sub, Valuation.map_sub_swap]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_add_sub_cancel a (algebraMap K (v.adicCompletion K) x)]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le hx hr.le)`.
+A detailed English derivation is pending.
 -/
 theorem exists_valued_sub_le (v : HeightOneSpectrum R) {a : v.adicCompletion K}
     (ha : Valued.v a ≤ 1) (n : ℕ) :
@@ -590,15 +590,13 @@ theorem exists_valued_sub_le (v : HeightOneSpectrum R) {a : v.adicCompletion K}
   exact (Valuation.map_add _ _ _).trans (max_le hx hr.le)
 
 /- English proof (translation)
-Establish `hfin` using `Filter.eventually_cofinite.1 (FractionalIdeal.finite_factors I)`. Set `e : HeightOneSpectrum R → ℕ` to `fun v => (FractionalIdeal.count K v I).toNat`. Use `choose x hx using fun v => exists_valued_sub_le v (ha v) (e v)`. Take `⟨r, hr⟩` from `IsDedekindDomain.exists_forall_sub_mem_ideal (s := hfin.toFinset) (fun v => v.asIdeal) e (fun v _ => v.prime) (fun v _ w _ h h' => h (HeightOneSpectrum.ext h')) (fun v => x v)`. Use `⟨r, (mem_adelicIdeal_iff hI).2 fun v => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[adele_sub_apply, adele_algebraMap_apply]`. Establish `hr1 : Valued.v (algebraMap K (v.adicCompletion K) (algebraMap R K r)) ≤ 1`. Rewrite using `[valued_algebraMap]`. Conclude with `v.valuation_le_one r`. Distinguish the cases in `hv : v ∈ hfin.toFinset`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `(v.intValuation_le_pow_iff_mem _ _).2 (hr v hv)`. Rewrite `h2` using `[← v.valuation_of_algebraMap (K := K)]`. Express the relevant statement in the definitionally equal form `v.valuation K (algebraMap R K (r - x v)) ≤ _ at h2`. Rewrite `h2` using `[← valued_algebraMap, map_sub, map_sub, Valuation.map_sub_swap]`. Rewrite using `[← sub_add_sub_cancel (a v) (algebraMap K (v.adicCompletion K) (algebraMap R K (x v)))]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `((Valuation.map_add _ _ _).trans (max_le (hx v) h2)).trans ?_` and prove the remaining obligations. Rewrite using `[exp_le_exp]`. Simplify using `only [e]`. Use linear arithmetic over natural numbers and integers. Establish `: FractionalIdeal.count K v I = 0` using `by simpa using hv`.
-
-Rewrite using `[this]`. Conclude with `(Valuation.map_sub _ _ _).trans (max_le (ha v) hr1)`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_sub_mem_adelicIdeal_of_integral {I : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     {a : 𝔸ᶠ[R, K]} (ha : ∀ v, Valued.v (a v) ≤ 1) :
@@ -629,11 +627,11 @@ theorem exists_sub_mem_adelicIdeal_of_integral {I : FractionalIdeal R⁰ K} (hI 
     exact (Valuation.map_sub _ _ _).trans (max_le (ha v) hr1)
 
 /- English proof (translation)
-Establish `hfin` using `Filter.eventually_cofinite.1 a.2`. Use `choose b hb0 hb using fun v : HeightOneSpectrum R => adicCompletion.mul_nonZeroDivisor_mem_adicCompletionIntegers v (a v)`. Establish `hle : ∀ (v : HeightOneSpectrum R) (r : R), Valued.v (algebraMap K (v.adicCompletion K) (algebraMap R K r)) ≤ 1` using `fun v r => by`. Rewrite using `[valued_algebraMap]`. Conclude with `v.valuation_le_one r`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∏ v ∈ hfin.toFinset, b v, Finset.prod_ne_zero_iff.2 fun v _ => nonZeroDivisors.ne_zero (hb0 v), fun v => ?_⟩` and prove the remaining obligations. Rewrite using `[adele_mul_apply, adele_algebraMap_apply]`. Distinguish the cases in `hv : v ∈ hfin.toFinset`. Rewrite using `[← Finset.prod_erase_mul _ _ hv, map_mul (algebraMap R K), map_mul (algebraMap K (v.adicCompletion K)), mul_assoc, map_mul]`. Use `mul_le_one' (hle v _) ?_` and prove the remaining obligations.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mul_comm]`. Conclude with `hb v`. Establish `: a.1 v ∈ v.adicCompletionIntegers K` using `by simpa using hv`. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (hle v _) (show Valued.v (a v) ≤ 1 from this)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mul_integral (a : 𝔸ᶠ[R, K]) :
     ∃ b : R, b ≠ 0 ∧ ∀ v, Valued.v ((algebraMap K 𝔸ᶠ[R, K] (algebraMap R K b) * a) v) ≤ 1 := by
@@ -658,9 +656,9 @@ theorem exists_mul_integral (a : 𝔸ᶠ[R, K]) :
     exact mul_le_one' (hle v _) (show Valued.v (a v) ≤ 1 from this)
 
 /- English proof (translation)
-Take `⟨b, hb0, hb⟩` from `exists_mul_integral a`. Establish `hb1 : algebraMap R K b ≠ 0` using `by simpa using hb0`. Set `t` to `FiniteAdeleRing.unitEmbedding R K (Units.mk0 _ hb1)`. Take `⟨r, hr⟩` from `exists_sub_mem_adelicIdeal_of_integral (smul_ne_zero t hI) hb`. Use `⟨algebraMap R K r / algebraMap R K b, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← mul_mem_adelicIdeal_smul t]`. Use `hr using 1` and compare the differences between its conclusion and the goal. Simplify using `only [t, FiniteAdeleRing.unitEmbedding_apply, Units.val_mk0]`. Rewrite using `[mul_sub, ← map_mul, mul_div_cancel₀ _ hb1]`.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_sub_mem_adelicIdeal {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) (a : 𝔸ᶠ[R, K]) :
     ∃ x : K, a - algebraMap K 𝔸ᶠ[R, K] x ∈ adelicIdeal I := by
@@ -727,7 +725,7 @@ def mulEquiv (t : 𝔸ᶠ[R, K]ˣ) {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (quotEquivAdelic (h ▸ smul_ne_zero t hI)).symm
 
 /- English proof (translation)
-Simplify using `[mulEquiv]`.
+Simplify using the standard rewrite rules.
 -/
 theorem quotEquivAdelic_mulEquiv (t : 𝔸ᶠ[R, K]ˣ) {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (hJ : J ≠ 0) (h : J = t • I) (q : K ⧸ (I : Submodule R K)) :
@@ -735,7 +733,7 @@ theorem quotEquivAdelic_mulEquiv (t : 𝔸ᶠ[R, K]ˣ) {I J : FractionalIdeal R�
   simp [mulEquiv]
 
 /- English proof (translation)
-Establish `hJ : J ≠ 0` using `h ▸ smul_ne_zero t hI`. Rewrite using `[← (quotEquivAdelic hJ).injective.eq_iff, quotEquivAdelic_mulEquiv, quotEquivAdelic_mk, quotEquivAdelic_mk, adelicMulEquiv_mk, Submodule.Quotient.eq]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulEquiv_mk_eq_mk_iff_adelic (t : 𝔸ᶠ[R, K]ˣ) {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (h : J = t • I) (x y : K) :
@@ -746,7 +744,7 @@ theorem mulEquiv_mk_eq_mk_iff_adelic (t : 𝔸ᶠ[R, K]ˣ) {I J : FractionalIdea
     quotEquivAdelic_mk, adelicMulEquiv_mk, Submodule.Quotient.eq]
 
 /- English proof (translation)
-The claim follows from `mulEquiv_mk_eq_mk_iff_adelic t hI h x y`.
+A detailed English derivation is pending.
 -/
 theorem mulEquiv_mk_eq_mk_iff (t : 𝔸ᶠ[R, K]ˣ) {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (h : J = t • I) (x y : K) :
@@ -756,7 +754,7 @@ theorem mulEquiv_mk_eq_mk_iff (t : 𝔸ᶠ[R, K]ˣ) {I J : FractionalIdeal R⁰ 
   mulEquiv_mk_eq_mk_iff_adelic t hI h x y
 
 /- English proof (translation)
-Use `LinearEquiv.ext fun q => ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[LinearEquiv.refl_apply, mulEquiv_mk_eq_mk_iff_adelic]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulEquiv_one {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) (h : I = (1 : 𝔸ᶠ[R, K]ˣ) • I) :
     mulEquiv 1 hI h = LinearEquiv.refl R _ := by
@@ -766,7 +764,7 @@ theorem mulEquiv_one {I : FractionalIdeal R⁰ K} (hI : I ≠ 0) (h : I = (1 : �
   simp
 
 /- English proof (translation)
-Establish `hL : L ≠ 0` using `h' ▸ smul_ne_zero t hJ`. Use `LinearEquiv.ext fun q => (quotEquivAdelic hL).injective ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[LinearEquiv.trans_apply, quotEquivAdelic_mulEquiv, quotEquivAdelic_mulEquiv, quotEquivAdelic_mulEquiv]`. Simplify using `[mul_assoc]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulEquiv_mul (t s : 𝔸ᶠ[R, K]ˣ) {I J L : FractionalIdeal R⁰ K} (hI : I ≠ 0) (hJ : J ≠ 0)
     (h : J = s • I) (h' : L = t • J) (h'' : L = (t * s) • I) :
@@ -779,7 +777,7 @@ theorem mulEquiv_mul (t s : 𝔸ᶠ[R, K]ˣ) {I J L : FractionalIdeal R⁰ K} (h
   simp [mul_assoc]
 
 /- English proof (translation)
-Rewrite using `[mulEquiv_mk_eq_mk_iff_adelic]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mulEquiv_unitEmbedding_mk (c : Kˣ) {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (h : J = FiniteAdeleRing.unitEmbedding R K c • I) (x : K) :
@@ -789,13 +787,13 @@ theorem mulEquiv_unitEmbedding_mk (c : Kˣ) {I J : FractionalIdeal R⁰ K} (hI :
   simp
 
 /- English proof (translation)
-Rewrite `hxy`, the goal using `[mulEquiv_mk_eq_mk_iff]`. Introduce `v`. Substitute `h h'` using the available equality. Establish `key : ∀ z ∈ localIdeal v I, algebraMap K (v.adicCompletion K) c * z ∈ localIdeal v I'`. Introduce `z hz`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨z, hz, rfl⟩` from `hz`. Conclude with `Submodule.subset_span ⟨c * z, hc z hz, map_mul _ _ _⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add a b _ _ ha hb => rw [mul_add]`. Conclude with `add_mem ha hb`. Consider the case `smul a b _ hb => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hb`. Establish `ht` using `idele_apply_ne_zero t v`.
+Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Establish `h1` using `hxy v`. Rewrite `h1`, the goal using `[← mul_div_cancel₀ (_ - _) ht, mul_mem_localIdeal_smul]`. Use `key _ h1 using 1` and compare the differences between its conclusion and the goal. Rewrite using `[map_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem mulEquiv_mk_mul (t : 𝔸ᶠ[R, K]ˣ) {I J I' J' : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (hI' : I' ≠ 0) (h : J = t • I) (h' : J' = t • I') {c : K} (hc : ∀ z ∈ I, c * z ∈ I') {x y : K}
@@ -821,7 +819,7 @@ theorem mulEquiv_mk_mul (t : 𝔸ᶠ[R, K]ˣ) {I J I' J' : FractionalIdeal R⁰ 
   ring
 
 /- English proof (translation)
-Establish `hI' : I' ≠ 0` using `fun h0 => hI (le_antisymm (h0 ▸ hle) (FractionalIdeal.zero_le I))`. Use `mulEquiv_mk_mul t hI hI' h rfl (c := 1) (fun z hz => by simpa using hle hz) hxy` as an intermediate fact. Rewrite `this` using `[one_mul, one_mul]`. Rewrite using `[← FractionalIdeal.mem_coe, ← FractionalIdeal.mem_coe, ← Submodule.Quotient.mk_eq_zero, ← Submodule.Quotient.mk_eq_zero, ← this, LinearEquiv.map_eq_zero_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem mulEquiv_mem_iff (t : 𝔸ᶠ[R, K]ˣ) {I J I' : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (h : J = t • I) (hle : I ≤ I') {x y : K}
@@ -834,48 +832,44 @@ theorem mulEquiv_mem_iff (t : 𝔸ᶠ[R, K]ˣ) {I J I' : FractionalIdeal R⁰ K}
     ← Submodule.Quotient.mk_eq_zero, ← this, LinearEquiv.map_eq_zero_iff]
 
 /- English proof (translation)
-Repeatedly rewrite using `[mem_adelicIdeal, mem_localIdeal_one_iff, mem_adicCompletionIntegers]`.
+Rewrite the conclusion repeatedly using the stated equalities.
 -/
 theorem mem_adelicIdeal_one_iff {a : 𝔸ᶠ[R, K]} :
     a ∈ adelicIdeal (1 : FractionalIdeal R⁰ K) ↔ ∀ v, Valued.v (a v) ≤ 1 := by
   simp_rw [mem_adelicIdeal, mem_localIdeal_one_iff, mem_adicCompletionIntegers]
 
 /- English proof (translation)
-Use `choose y hy using fun b : R => Submodule.Quotient.mk_surjective _ (ψ (Submodule.Quotient.mk (algebraMap K 𝔸ᶠ[R, K] (algebraMap R K b)⁻¹)))`. Set `ι : ∀ v : HeightOneSpectrum R, R → v.adicCompletion K` to `fun v b => algebraMap K (v.adicCompletion K) (algebraMap R K b)`. Establish `hsm : ∀ (r : R) (x : K), r • algebraMap K 𝔸ᶠ[R, K] x = algebraMap K 𝔸ᶠ[R, K] (algebraMap R K r * x)` using `fun r x => by`. Rewrite using `[Algebra.smul_def, map_mul]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hint : ∀ b v, Valued.v (ι v b * y b v) ≤ 1`. Introduce `b v`. Establish `: b • y b ∈ adelicIdeal (1 : FractionalIdeal R⁰ K)`. Rewrite using `[← Submodule.Quotient.mk_eq_zero, Submodule.Quotient.mk_smul, hy, ← map_smul, ← Submodule.Quotient.mk_smul, hsm, (Submodule.Quotient.mk_eq_zero _).2, map_zero]`. Rewrite using `[algebraMap_mem_adelicIdeal (one_ne_zero (α := FractionalIdeal R⁰ K))]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `eq_or_ne (algebraMap R K b) 0 with h | h` into its components or cases. Simplify using `[h, FractionalIdeal.zero_mem]`. Rewrite using `[mul_inv_cancel₀ h]`. Conclude with `FractionalIdeal.one_mem_one _`. Use `mem_adelicIdeal_one_iff.1 this v` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite `this` using `[adele_smul_apply]`. Then use the resulting hypothesis. Establish `hcomp : ∀ b c, c ≠ 0 → ∀ v, Valued.v (ι v (b * c) * y (b * c) v - ι v b * y b v) ≤ Valued.v (ι v b)`. Introduce `b c hc v`. Establish `hc1 : algebraMap R K c ≠ 0` using `by simpa using hc`. Establish `: c • y (b * c) - y b ∈ adelicIdeal (1 : FractionalIdeal R⁰ K)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Submodule.Quotient.eq, Submodule.Quotient.mk_smul, hy, hy, ← map_smul, ← Submodule.Quotient.mk_smul, hsm, map_mul (algebraMap R K), mul_inv, mul_comm, mul_assoc, inv_mul_cancel₀ hc1, mul_one]`. Use `mem_adelicIdeal_one_iff.1 this v` as an intermediate fact. Rewrite `this` using `[adele_sub_apply, adele_smul_apply]`. Establish `h2 : ι v (b * c) * y (b * c) v - ι v b * y b v = ι v b * (ι v c * y (b * c) v - y b v)`. Simplify using `only [ι, map_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2, map_mul]`. Conclude with `mul_le_of_le_one_right' this`. Use `choose π hπ using fun v : HeightOneSpectrum R => v.valuation_exists_uniformizer' K`. Establish `hπn : ∀ v (n : ℕ), Valued.v (ι v (π v ^ n)) = exp (-(n : ℤ))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `v n`. Establish `: v.valuation K (algebraMap R K (π v)) = exp (-1)` using `hπ v`. Simplify using `only [ι]`. Rewrite using `[valued_algebraMap, map_pow, map_pow, this, ← exp_nsmul]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hπ0 : ∀ v (n : ℕ), π v ^ n ≠ 0`. Introduce `v n h`. Use `hπn v n` as an intermediate fact. Rewrite `this` using `[h]`. Simplify using `only [ι, map_zero] at this`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `exp_ne_zero this.symm`. Establish `hlim : ∀ v, ∃ t : v.adicCompletion K, ∀ n : ℕ, Valued.v (t - ι v (π v ^ n) * y (π v ^ n) v) ≤ exp (-(n : ℤ))`. Introduce `v`. Use `exists_limit v _ fun m n hnm => ?_` and prove the remaining obligations. Take `⟨k, rfl⟩` from `Nat.exists_eq_add_of_le hnm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pow_add, ← hπn v n]`. Conclude with `hcomp _ _ (hπ0 v k) v`. Use `choose t ht using hlim`. Establish `htb : ∀ b, b ≠ 0 → ∀ v, Valued.v (t v - ι v b * y b v) ≤ Valued.v (ι v b)`. Introduce `b hb v`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hb0 : Valued.v (ι v b) ≠ 0` using `by simpa [ι] using hb`. Take `⟨n, hn⟩` from `exists_exp_neg_lt hb0`. Establish `h1` using `(ht v n).trans hn.le`. Establish `h2` using `hcomp b (π v ^ n) (hπ0 v n) v`. Establish `h3` using `hcomp (π v ^ n) b hb v`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `h3` using `[hπn, mul_comm (π v ^ n) b, Valuation.map_sub_swap]`. Rewrite using `[← sub_add_sub_cancel (t v) (ι v (π v ^ n) * y (π v ^ n) v), ← sub_add_sub_cancel (ι v (π v ^ n) * y (π v ^ n) v) (ι v (b * π v ^ n) * y (b * π v ^ n) v)]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le h1 ((Valuation.map_add _ _ _).trans (max_le (h3.trans hn.le) h2)))`. Establish `ht1 : ∀ v, Valued.v (t v) ≤ 1`. Introduce `v`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1` using `ht v 0`. Rewrite using `[← sub_add_cancel (t v) (ι v (π v ^ 0) * y (π v ^ 0) v)]`. Conclude with `(Valuation.map_add _ _ _).trans (max_le (by simpa using h1) (hint _ v))`. Set `T : 𝔸ᶠ[R, K]` to `⟨t, Filter.Eventually.of_forall fun v => ht1 v⟩`. Establish `hT : ∀ v, T v = t v` using `fun _ => rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨T, fun a => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `exists_sub_mem_adelicIdeal (one_ne_zero (α := FractionalIdeal R⁰ K)) a`. Take `⟨r, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R) x`. Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Rewrite using `[(Submodule.Quotient.eq _).2 hx, div_eq_mul_inv, ← hsm, Submodule.Quotient.mk_smul, map_smul, ← hy, ← Submodule.Quotient.mk_smul, eq_comm, Submodule.Quotient.eq, mem_adelicIdeal_one_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Clear the denominators using the available nonvanishing facts.
 
-Introduce `v`. Establish `hx'` using `mem_adelicIdeal_one_iff.1 hx v`. Rewrite `hx'` using `[adele_sub_apply, adele_algebraMap_apply, map_div₀]`. Establish `hb1 : ι v b ≠ 0` using `by simpa [ι] using hb0`. Establish `hb2 : Valued.v (ι v b) ≠ 0` using `by simpa using hb1`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h2 : (T * a - r • y b) v = t v * (a v - ι v r / ι v b) + ι v r * ((t v - ι v b * y b v) / ι v b)`. Rewrite using `[adele_sub_apply, adele_mul_apply, adele_smul_apply, hT]`. Express the relevant statement in the definitionally equal form `t v * a v - ι v r * y b v = _`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[h2]`. Use `(Valuation.map_add _ _ _).trans (max_le ?_ ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`. Conclude with `mul_le_one' (ht1 v) hx'`. Rewrite using `[map_mul, map_div₀]`.
-
-Use `mul_le_one' ?_ ((div_le_one₀ (zero_lt_iff.2 hb2)).2 (htb b hb0 v))` and prove the remaining obligations. Simplify using `only [ι]`. Rewrite using `[valued_algebraMap]`. Conclude with `v.valuation_le_one r`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_adele_of_end_one
     (ψ : (𝔸ᶠ[R, K] ⧸ adelicIdeal (1 : FractionalIdeal R⁰ K)) →ₗ[R]
@@ -982,9 +976,9 @@ theorem exists_adele_of_end_one
     rw [valued_algebraMap]; exact v.valuation_le_one r
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `exists_smul_eq (one_ne_zero (α := FractionalIdeal R⁰ K)) hI`. Take `⟨u, hu⟩` from `exists_smul_eq (one_ne_zero (α := FractionalIdeal R⁰ K)) hJ`. Take `⟨t, ht⟩` from `exists_adele_of_end_one ((adelicMulEquiv u hu).symm.toLinearMap ∘ₗ ψ ∘ₗ (adelicMulEquiv s hs).toLinearMap)`. Use `⟨u * t * (s⁻¹ : 𝔸ᶠ[R, K]ˣ), fun a => ?_⟩` and prove the remaining obligations. Use `ht ((s⁻¹ : 𝔸ᶠ[R, K]ˣ) * a)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, adelicMulEquiv_mk, LinearEquiv.symm_apply_eq, Units.mul_inv_cancel_left] at this`. Rewrite using `[this, mul_assoc, mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_adele_of_linearMap {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0) (hJ : J ≠ 0)
     (ψ : (𝔸ᶠ[R, K] ⧸ adelicIdeal I) →ₗ[R] (𝔸ᶠ[R, K] ⧸ adelicIdeal J)) :
@@ -1000,9 +994,9 @@ theorem exists_adele_of_linearMap {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0) 
   rw [this, mul_assoc, mul_assoc]
 
 /- English proof (translation)
-Use `ext1 v`. Assume the negation of the conclusion as `hv`. Establish `hv' : Valued.v (t v) ≠ 0` using `by simpa using hv`. Take `⟨x, hx⟩` from `v.valuation_surjective K (exp (1 - FractionalIdeal.count K v J - log (Valued.v (t v))))`. Use `(mem_adelicIdeal_iff hJ).1 (h x) v` as an intermediate fact.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[adele_mul_apply, adele_algebraMap_apply, map_mul, valued_algebraMap, hx, ← exp_log hv', ← exp_add, exp_le_exp, log_exp]`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_mul_mem {J : FractionalIdeal R⁰ K} (hJ : J ≠ 0) {t : 𝔸ᶠ[R, K]}
     (h : ∀ x : K, t * algebraMap K 𝔸ᶠ[R, K] x ∈ adelicIdeal J) : t = 0 := by
@@ -1017,9 +1011,9 @@ theorem eq_zero_of_forall_mul_mem {J : FractionalIdeal R⁰ K} (hJ : J ≠ 0) {t
   omega
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `exists_adele_of_linearMap hI hJ ((quotEquivAdelic hJ).toLinearMap ∘ₗ φ ∘ₗ (quotEquivAdelic hI).symm.toLinearMap)`. Establish `ht' : ∀ x : K, quotEquivAdelic hJ (φ (Submodule.Quotient.mk x)) = Submodule.Quotient.mk (t * algebraMap K 𝔸ᶠ[R, K] x)` using `fun x => by`. Rewrite using `[← ht, ← quotEquivAdelic_mk hI]`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, LinearEquiv.symm_apply_apply]`. Use `⟨t, ht', fun s hs => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_forall_mul_mem hJ fun x => ?_` and prove the remaining obligations. Rewrite using `[sub_mul, ← Submodule.Quotient.eq, ← hs, ← ht']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_adele_of_linearMap {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0) (hJ : J ≠ 0)
     (φ : (K ⧸ (I : Submodule R K)) →ₗ[R] (K ⧸ (J : Submodule R K))) :
@@ -1037,7 +1031,7 @@ theorem existsUnique_adele_of_linearMap {I J : FractionalIdeal R⁰ K} (hI : I �
   rw [sub_mul, ← Submodule.Quotient.eq, ← hs, ← ht']
 
 /- English proof (translation)
-Establish `hJ : J ≠ 0` using `h ▸ smul_ne_zero t hI`. Use `Units.ext ((existsUnique_adele_of_linearMap hI hJ (mulEquiv t hI h).toLinearMap).unique (fun x => ?_) fun x => ?_)` and prove the remaining obligations. Simplify using `[quotEquivAdelic_mulEquiv]`. Simplify using `[e, quotEquivAdelic_mulEquiv]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem mulEquiv_injective {t s : 𝔸ᶠ[R, K]ˣ} {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (h : J = t • I) (h' : J = s • I) (e : mulEquiv t hI h = mulEquiv s hI h') : t = s := by
@@ -1048,11 +1042,11 @@ theorem mulEquiv_injective {t s : 𝔸ᶠ[R, K]ˣ} {I J : FractionalIdeal R⁰ K
   · simp [e, quotEquivAdelic_mulEquiv]
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Take `⟨q, hq⟩` from `φ.surjective (Submodule.Quotient.mk 1)`. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨c, hc0, hc⟩` from `FractionalIdeal.exists_ne_zero_mem_isInteger hI`. Take `⟨r, b, hb, rfl⟩` from `IsFractionRing.div_surjective (A := R) x`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hb0 : b ≠ 0` using `nonZeroDivisors.ne_zero hb`. Establish `hb1 : algebraMap R K b ≠ 0` using `by simpa using hb0`. Establish `h0 : (b * c) • (Submodule.Quotient.mk (algebraMap R K r / algebraMap R K b) : K ⧸ (I : Submodule R K)) = 0`. Rewrite using `[← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero]`. Use `(I : Submodule R K).smul_mem r hc using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Simplify using `only [Algebra.smul_def, map_mul]`. Clear the denominators using the available nonvanishing facts. Establish `h1` using `congrArg φ h0`. Rewrite `h1` using `[map_smul, hq, map_zero, ← Submodule.Quotient.mk_smul, Submodule.Quotient.mk_eq_zero, FractionalIdeal.mem_coe, FractionalIdeal.mem_zero_iff]`. Simplify using `[Algebra.smul_def, hb0, hc0] at h1`.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem ne_zero_of_linearEquiv {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (φ : (K ⧸ (I : Submodule R K)) ≃ₗ[R] (K ⧸ (J : Submodule R K))) : J ≠ 0 := by
@@ -1075,15 +1069,15 @@ theorem ne_zero_of_linearEquiv {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0)
   simp [Algebra.smul_def, hb0, hc0] at h1
 
 /- English proof (translation)
-Establish `hJ : J ≠ 0` using `ne_zero_of_linearEquiv hI φ`. Set `ψ` to `(quotEquivAdelic hI).symm.trans (φ.trans (quotEquivAdelic hJ))`. Take `⟨t, ht⟩` from `exists_adele_of_linearMap hI hJ ψ.toLinearMap`. Take `⟨s, hs⟩` from `exists_adele_of_linearMap hJ hI ψ.symm.toLinearMap`. Simplify using `only [LinearEquiv.coe_coe] at ht hs`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hst : s * t = 1`. Rewrite using `[← sub_eq_zero]`. Use `eq_zero_of_forall_mul_mem hI fun x => ?_` and prove the remaining obligations. Rewrite using `[sub_mul, ← Submodule.Quotient.eq, mul_assoc, ← hs, ← ht, LinearEquiv.symm_apply_apply, one_mul]`. Set `u : 𝔸ᶠ[R, K]ˣ` to `⟨t, s, by rw [mul_comm, hst], hst⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hu : J = u • I`. Use extensionality with `x`. Rewrite using `[← algebraMap_mem_adelicIdeal hJ, ← algebraMap_mem_adelicIdeal (smul_ne_zero u hI), ← Units.mul_inv_cancel_left u (algebraMap K 𝔸ᶠ[R, K] x), mul_mem_adelicIdeal_smul, ← Submodule.Quotient.mk_eq_zero, ← Submodule.Quotient.mk_eq_zero]`. Conclude with `(ht _) ▸ ψ.map_eq_zero_iff`. Establish `hφ : φ = mulEquiv u hI hu`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `LinearEquiv.ext fun q => (quotEquivAdelic hJ).injective ?_` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Rewrite using `[quotEquivAdelic_mulEquiv, quotEquivAdelic_mk, adelicMulEquiv_mk]`. Use `Eq.trans ?_ (ht _)` and prove the remaining obligations. Rewrite using `[← quotEquivAdelic_mk hI]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ψ, LinearEquiv.trans_apply, LinearEquiv.symm_apply_apply]`. Use `⟨u, ⟨hu, hφ⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `u' ⟨hu', hφ'⟩`. Conclude with `mulEquiv_injective hI hu' hu (hφ'.symm.trans hφ)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem existsUnique_mulEquiv {I J : FractionalIdeal R⁰ K} (hI : I ≠ 0)
     (φ : (K ⧸ (I : Submodule R K)) ≃ₗ[R] (K ⧸ (J : Submodule R K))) :
@@ -1123,9 +1117,9 @@ namespace GlobalTheory
 open NumberField GlobalTheory.Idele
 
 /- English proof (translation)
-Take `⟨t, ⟨h, ht⟩, huniq⟩` from `existsUnique_mulEquiv (one_ne_zero (α := FractionalIdeal (𝓞 K)⁰ K)) (LinearEquiv.ofBijective φ hφ)`. Use `⟨t⁻¹, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [inv_inv]`. Conclude with `⟨h, fun q => LinearEquiv.congr_fun ht q⟩`. Introduce and unpack `s ⟨h', hs⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Rewrite using `[← huniq s⁻¹ ⟨h', LinearEquiv.ext hs⟩, inv_inv]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_idele_of_linearEquiv_quotient {K : Type*} [Field K] [NumberField K]
     (𝔞 : FractionalIdeal (𝓞 K)⁰ K)
@@ -1142,13 +1136,13 @@ theorem existsUnique_idele_of_linearEquiv_quotient {K : Type*} [Field K] [Number
     rw [← huniq s⁻¹ ⟨h', LinearEquiv.ext hs⟩, inv_inv]
 
 /- English proof (translation)
-Establish `h1 : (1 : FractionalIdeal (𝓞 K)⁰ K) ≠ 0` using `one_ne_zero`. Establish `key : ∀ (t : (FiniteAdeleRing (𝓞 K) K)ˣ) (x : K), x ∈ t⁻¹ • (1 : FractionalIdeal (𝓞 K)⁰ K) ↔ ∀ v, (t : FiniteAdeleRing (𝓞 K) K) v * algebraMap K (v.adicCompletion K) x ∈ v.adicCompletionIntegers K`. Introduce `t x`. Rewrite using `[← algebraMap_mem_adelicIdeal (Idele.smul_ne_zero _ h1), ← mul_mem_adelicIdeal_smul t, smul_inv_smul, mem_adelicIdeal]`. Repeatedly rewrite using `[mem_localIdeal_one_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Both sides reduce to the same expression. Take `⟨t, ⟨h, ht⟩, huniq⟩` from `existsUnique_idele_of_linearEquiv_quotient 𝔞 φ hφ`. Use `⟨t, ⟨fun x => by rw [← key, ← h], fun x y => by rw [ht, mulEquiv_mk_eq_mk_iff]⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `s ⟨hs, hs'⟩`. Establish `h' : 𝔞 = s⁻¹ • (1 : FractionalIdeal (𝓞 K)⁰ K)`.
+Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Use extensionality with `x`. Rewrite using `[hs, key]`. Use `huniq s ⟨h', fun q => ?_⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `Submodule.Quotient.mk_surjective _ q`. Take `⟨y, hy⟩` from `Submodule.Quotient.mk_surjective _ (φ (Submodule.Quotient.mk x))`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← hy, eq_comm, mulEquiv_mk_eq_mk_iff]`. Conclude with `(hs' x y).1 hy.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem existsUnique_idele_of_linearEquiv_quotient_local {K : Type*} [Field K] [NumberField K]
     (𝔞 : FractionalIdeal (𝓞 K)⁰ K)

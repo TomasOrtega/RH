@@ -8,11 +8,11 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.St.G
 
 /- English proof (translation)
-Establish `hcomb : ∀ x : Fin _ → D.host.E, Fintype.linearCombination D.host.E X.bas x = X.bas.equivFun.symm x`. Introduce `x`. Rewrite using `[Fintype.linearCombination_apply, Module.Basis.equivFun_symm_apply]`. Establish `heq : (VS D).L0.comap ((Fintype.linearCombination D.host.E X.bas).restrictScalars (𝓞 D.host.E)) = (VS D).L0.map (X.bas.equivFun.restrictScalars (𝓞 D.host.E)).toLinearMap`. Use extensionality with `x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using `only [Submodule.mem_comap, LinearMap.restrictScalars_apply, hcomb, Submodule.mem_map, LinearEquiv.coe_coe, LinearEquiv.restrictScalars_apply]`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Conclude with `⟨_, hx, X.bas.equivFun.apply_symm_apply x⟩`. Introduce and unpack `⟨y, hy, rfl⟩`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Simplify using `using hy`. Rewrite using `[heq]`. Use `⟨Module.Finite.iff_fg.2 ((VS D).standardTuple_isLattice.fg.map _), ?_⟩` and prove the remaining obligations. Establish `: ((VS D).L0.map (X.bas.equivFun.restrictScalars (𝓞 D.host.E)).toLinearMap : Set (Fin _ → D.host.E)) = X.bas.equivFun.toLinearMap '' ((VS D).L0 : Set (VS D).V)` using `rfl`. Rewrite using `[this, ← Submodule.map_span, (VS D).standardTuple_isLattice.span_eq_top, Submodule.map_top, LinearEquiv.range]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem coordLat_isLat (D : D7) (X : HidaSetting D) :
     IsLat ((VS D).L0.comap ((Fintype.linearCombination D.host.E X.bas).restrictScalars (𝓞 D.host.E))) := by

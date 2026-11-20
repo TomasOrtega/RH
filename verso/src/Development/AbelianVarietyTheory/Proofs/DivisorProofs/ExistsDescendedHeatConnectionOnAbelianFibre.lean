@@ -19,15 +19,11 @@ noncomputable section
 namespace GlobalTheory.HeatConn
 
 /- English proof (translation)
-Introduce `R _ _ Q O _ _ _ oa Y n dd D h ν hfield hconst hwt hB`. Use `choose V hV using fun i => (hB i).1`. Establish `hlift : ∀ i, IsLift Y.H D (Y.q.left ⁻¹ᵁ V i) (dE h ν i)` using `fun i => by`. Rewrite using `[← hV i]`. Use `⟨isField_dE h ν hfield i, fun O hO r => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `show h.d i O _ + constFn Y.H.hom O ν * ∑ a, constFn Y.H.hom O (h.u a) * dd a O (constFn Y.H.hom O r) = _`. Simplify using `only [hconst, mul_zero, Finset.sum_const_zero, add_zero]`. Conclude with `(h.lift i).2 O hO r`. Establish `hwt0 : ∀ i (V' : Q.P.A.left.Opens), V' ≤ V i → ∀ f, IsWt Y 0 (Y.q.left ⁻¹ᵁ V') f → IsWt Y 0 (Y.q.left ⁻¹ᵁ V') (dE h ν i _ f)`. Introduce `i V' hV' f hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `WtAlg.isWt_add ((hB i).2.2.2 0 V' ((GlobalTheory.KS.GlueDer.pre_mono _ hV').trans (hV i).ge) f hf) (WtAlg.isRaynaudTorusWeightFunction_weightZero_mul (WtAlg.isWt_constFn _ ν) (WtAlg.isWt_sum _ _ fun a _ => WtAlg.isRaynaudTorusWeightFunction_weightZero_mul (WtAlg.isWt_constFn _ _) …`. Use `choose E hE hq using fun i => AbConst.exists_desc Y (V i) (dE h ν i) D (hlift i) (hwt0 i)`. Establish `hP : ∀ i, ∃ a, (Y.q.left.app (V i)).hom a = rsT (pE h ν i) (Y.q.left ⁻¹ᵁ V i)` using `fun i => by`. Use `AbConst.exists_app_eq Y ?_` and prove the remaining obligations. Establish `hw : IsWt Y 0 (h.W i) (pE h ν i)` using `WtAlg.isWt_add (hB i).2.1 (WtAlg.isRaynaudTorusWeightFunction_weightZero_mul (WtAlg.isWt_constFn _ ν) (hB i).2.2.1)`.
-
-Establish `tr : ∀ (W : Y.H.left.Opens) (s : Γ(Y.H.left, W)), W = Y.q.left ⁻¹ᵁ V i → IsWt Y 0 W s → IsWt Y 0 _ (rsT s (Y.q.left ⁻¹ᵁ V i))`. Introduce and unpack `W s rfl hs`. Rewrite using `[WtAlg.rsT_self]` and apply the resulting hypothesis. Conclude with `tr _ _ (hV i) hw`. Use `choose P hP using hP`.
-
-Conclude with `⟨V, E, P, hV, hE, hq, hP⟩`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_descData : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) {n : ℕ} {dd : Fin n → Fld Y.H.left} {D : R → R} (h : Heat Y.H Y.q.left Q.P.L dd D) (ν : R), (∀ a, IsField ⊤ (dd a)) → (∀ a V r, dd a V (constFn Y.H.hom V r) = 0) → (∀ a α V f, IsWt Y α V f → IsWt Y α V (dd a V f)) → IsBasic Y h → ∃ (V : h.J → Q.P.A.left.Opens) (E : h.J → Fld Q.P.A.left) (P : ∀ i, Γ(Q.P.A.left, V i)), (∀ i, h.W i = Y.q.left ⁻¹ᵁ V i) ∧ (∀ i, IsLift Q.P.A D (V i) (E i)) ∧ (∀ i V', V' ≤ V i → ∀ f, (Y.q.left.app V').hom (E i V' f) = GlobalTheory.HeatConn.dE h ν i _ ((Y.q.left.app V').hom f)) ∧ ∀ i, (Y.q.left.app (V i)).hom (P i) = rsT (GlobalTheory.HeatConn.pE h ν i) (Y.q.left ⁻¹ᵁ V i) := by
   intro R _ _ Q O _ _ _ oa Y n dd D h ν hfield hconst hwt hB
@@ -58,13 +54,13 @@ theorem exists_descData : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R
   exact ⟨V, E, P, hV, hE, hq, hP⟩
 
 /- English proof (translation)
-Introduce `R K _ _ G A₀ m₀ φ hm D I V hV E hE hc`. Establish `hW : ∀ y, ∃ i, m₀ y ∈ V i` using `fun y => by`. Establish `hy : m₀ y ∈ ⨆ i, V i` using `by rw [hV]; trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 hy`. Establish `he : ∀ i, GlobalTheory.KS.LocDerK A₀.hom G.hom m₀ (fun r => φ (D r)) (V i) (fun W f => (m₀.app W).hom (E i W f))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `i`. Use `⟨fun W hW f f' => ?_, fun W hW f f' => ?_, fun W W' h' hW f => ?_, fun W hW r => ?_⟩` and prove the remaining obligations. Rewrite using `[(hE i).1.1 W hW, map_add]`. Rewrite using `[(hE i).1.2.1 W hW, map_add, map_mul, map_mul]`. Rewrite using `[(hE i).1.2.2 W W' h' hW, GlobalTheory.KS.GlueDer.rsT_eq (GlobalTheory.KS.GlueDer.pre_mono m₀ h'), GlobalTheory.KS.GlueDer.res_app m₀ h']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(hE i).2 W hW, GlobalTheory.KS.GlueDer.app_const φ _ _ m₀ hm]`. Take `⟨ed, hed, hchar⟩` from `GlobalTheory.InteriorKS.glue_along A₀.hom G.hom m₀ (fun r => φ (D r)) V hW (fun i W f => (m₀.app W).hom (E i W f)) he fun i i' O hO f => hc i i' O hO f`. Use `⟨ed, hed, fun i U hU f => hchar U f _ fun i' => ?_⟩` and prove the remaining obligations. Establish `h1` using `(he i).res U (U ⊓ V i') inf_le_left hU f`. Rewrite `h1` using `[GlobalTheory.KS.GlueDer.rsT_eq (GlobalTheory.KS.GlueDer.pre_mono m₀ inf_le_left)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h1]`. Conclude with `hc i i' _ (le_inf (inf_le_left.trans hU) inf_le_right) _`.
+A detailed English derivation is pending.
 -/
 theorem exists_glue_desc : ∀ {R K : Type} [CommRing R] [Field K] (G : Over (Sp R)) (A₀ : Over (Sp K)) (m₀ : A₀.left ⟶ G.left) (φ : R →+* K), m₀ ≫ G.hom = A₀.hom ≫ spMap φ → ∀ (D : R → R) {I : Type} (V : I → G.left.Opens), ⨆ i, V i = ⊤ → ∀ (E : I → Fld G.left), (∀ i, IsLift G D (V i) (E i)) → (∀ i i' O, O ≤ V i ⊓ V i' → ∀ f, (m₀.app O).hom (E i O f) = (m₀.app O).hom (E i' O f)) → ∃ ed : ∀ W : G.left.Opens, Γ(G.left, W) → Γ(A₀.left, m₀ ⁻¹ᵁ W), GlobalTheory.KS.LocDerK A₀.hom G.hom m₀ (fun r => φ (D r)) ⊤ ed ∧ ∀ i U, U ≤ V i → ∀ f, ed U f = (m₀.app U).hom (E i U f) := by
   intro R K _ _ G A₀ m₀ φ hm D I V hV E hE hc
@@ -87,25 +83,23 @@ theorem exists_glue_desc : ∀ {R K : Type} [CommRing R] [Field K] (G : Over (Sp
   exact hc i i' _ (le_inf (inf_le_left.trans hU) inf_le_right) _
 
 /- English proof (translation)
-Introduce `R _ _ Q O _ _ _ oa Y n dd D h K _ _ φ e ν A₀ _ m₀ hF V ed pb hD hV i i'`. Establish `he0 : e ≠ 0`. Introduce and unpack `rfl`. Use `hF.inv` as an intermediate fact. Rewrite `this` using `[Nat.cast_zero, mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `zero_ne_one this`. Take `⟨k, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero he0`. Establish `hUL : V i ⊓ V i' ≤ Q.P.L.U (h.j i) ⊓ Q.P.L.U (h.j i')` using `inf_le_inf (hV i) (hV i')`. Use `ext_lift Y m₀ fun Z a b w z hz => ?_` and prove the remaining obligations. Establish `hz' : (a ≫ Y.q.left) z ∈ V i ⊓ V i'` using `by rw [w]; exact hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `haΩ : a z ∈ Y.q.left ⁻¹ᵁ (V i ⊓ V i')` using `hz'`. Establish `hΩW : Y.q.left ⁻¹ᵁ (V i ⊓ V i') ≤ h.W i ⊓ h.W i'`. Rewrite using `[hD.1 i, hD.1 i']`. Conclude with `le_inf (pre_mono _ inf_le_left) (pre_mono _ inf_le_right)`. Establish `hΩL : Y.q.left ⁻¹ᵁ (V i ⊓ V i') ≤ Y.q.left ⁻¹ᵁ (Q.P.L.U (h.j i) ⊓ Q.P.L.U (h.j i'))` using `pre_mono _ hUL`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hG : (Y.q.left.app (V i ⊓ V i')).hom (rsT (Q.P.L.g (h.j i) (h.j i')).val (V i ⊓ V i')) = pbT Y.q.left (Q.P.L.g (h.j i) (h.j i')).val (Y.q.left ⁻¹ᵁ (V i ⊓ V i'))`. Rewrite using `[rsT_eq hUL, ← res_app Y.q.left hUL (pre_mono _ hUL), pbT, dif_pos hΩL]`. Both sides reduce to the same expression. Establish `hz1 : (b ≫ m₀) z ∈ V i` using `hz.1`. Establish `hz2 : (b ≫ m₀) z ∈ V i'` using `hz.2`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hD.2.1 Z a b w z i _ inf_le_left hz, hG, gs_mul b z _ hz, gs_sub b z _ hz, gs_pbT b m₀ z (pre_mono _ hUL) hz, gs_rsT b z (pre_mono m₀ inf_le_right) hz, gs_rsT b z (pre_mono m₀ inf_le_left) hz, hD.2.2 Z a b w z i' hz2, hD.2.2 Z a b w z i hz1, ← w, ← gs_pbT a Y.q.left z hΩL haΩ, ← …`. Simplify using `only [gs_eq_gsH a z _ haΩ]`. Use `set π := gsH a z _ haΩ`. Use `set G := pbT Y.q.left (Q.P.L.g (h.j i) (h.j i')).val (Y.q.left ⁻¹ᵁ (V i ⊓ V i'))`. Establish `hΘ : ∀ a' b', π (constFn Y.H.hom _ (h.Θ a' b')) = 0` using `fun a' b' => by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Rewrite using `[← gs_eq_gsH, hF.gs_const w z _ haΩ, hF.symb, cst_eq_cstH, map_zero]`. Establish `hpow : ∀ (m : ℕ) (f : Γ(Y.H.left, Y.q.left ⁻¹ᵁ (V i ⊓ V i'))), dE h ν i _ (f ^ (m + 1)) = ((m + 1 : ℕ) : Γ(Y.H.left, Y.q.left ⁻¹ᵁ (V i ⊓ V i'))) * f ^ m * dE h ν i _ f`. Introduce `m f`. Proceed by induction on `m with`. Consider the case `zero => simp`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Consider the case `succ m ih`. Rewrite using `[pow_succ, (isField_dE h ν hF.field i).2.1 _ (hΩW.trans inf_le_left), ih]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `congrArg π (h.glue (k + 1) i i' _ hΩW 1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `e1` using `[_root_.mul_one, map_op h ν (k + 1) hF.inv i _ (hΩW.trans inf_le_left) π hΘ, map_mul, map_op h ν (k + 1) hF.inv i' _ (hΩW.trans inf_le_right) π hΘ, hpow, AbConst.isField_one (isField_dE h ν hF.field i') (hΩW.trans inf_le_right)]`. Simplify using `only [map_mul, map_pow, map_natCast, map_one, map_zero, zero_add, _root_.mul_one] at e1`. Establish `h2 : IsUnit (2 : Z.presheaf.stalk z)`. Simplify `(two_ne_zero (α := K)).isUnit.map (cstH (b ≫ A₀.hom) z)` using `only [map_ofNat]`. Establish `hk : IsUnit (((k + 1 : ℕ)) : Z.presheaf.stalk z)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify `(Nat.cast_ne_zero.2 (Nat.succ_ne_zero k) : ((k + 1 : ℕ) : K) ≠ 0).isUnit.map (cstH (b ≫ A₀.hom) z)` using `only [map_natCast]`. Establish `hGu : IsUnit G`. Simplify using `only [G, pbT, dif_pos hΩL]`. Conclude with `(Units.isUnit _).map _`. Establish `hc : IsUnit (2 * ((k + 1 : ℕ) : Z.presheaf.stalk z) ^ 2 * π G ^ k)` using `(h2.mul (hk.pow 2)).mul ((hGu.map π).pow k)`.
-
-Use `hc.mul_left_cancel ?_` and prove the remaining obligations. Move the coercions through the operations in `at e1 ⊢`. Take the linear combination `e1`.
+Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem connK_transition : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) {n : ℕ} {dd : Fin n → Fld Y.H.left} {D : R → R} (h : Heat Y.H Y.q.left Q.P.L dd D) {K : Type} [Field K] [CharZero K] {φ : R →+* K} {e : ℕ} {ν : R} {A₀ : Over (Sp K)} [GrpObj A₀] {m₀ : A₀.left ⟶ Q.P.A.left}, GlobalTheory.HeatConn.IsFibre Y h φ e ν A₀ m₀ → ∀ {V : h.J → Q.P.A.left.Opens} {ed : ∀ W : Q.P.A.left.Opens, Γ(Q.P.A.left, W) → Γ(A₀.left, m₀ ⁻¹ᵁ W)} {pb : ∀ i, Γ(A₀.left, m₀ ⁻¹ᵁ V i)}, GlobalTheory.HeatConn.IsDesc Y h ν m₀ V ed pb → (∀ i, V i ≤ Q.P.L.U (h.j i)) → ∀ (i i' : h.J), ed (V i ⊓ V i') (rsT (Q.P.L.g (h.j i) (h.j i')).val (V i ⊓ V i')) = pbT m₀ (Q.P.L.g (h.j i) (h.j i')).val (m₀ ⁻¹ᵁ (V i ⊓ V i')) * (rsT (pb i') (m₀ ⁻¹ᵁ (V i ⊓ V i')) - rsT (pb i) (m₀ ⁻¹ᵁ (V i ⊓ V i'))) := by
   intro R _ _ Q O _ _ _ oa Y n dd D h K _ _ φ e ν A₀ _ m₀ hF V ed pb hD hV i i'
@@ -162,19 +156,17 @@ theorem connK_transition : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre 
   linear_combination e1
 
 /- English proof (translation)
-Introduce `R _ _ Q O _ _ _ oa Y n dd D h K _ _ φ e ν A₀ _ m₀ hF`. Use `(AbConst.surjective_q Y).1` as an intermediate fact. Take `⟨V, E, P, hW, hE, hq, hP⟩` from `exists_descData Y h ν hF.field hF.const hF.wt hF.basic`. Establish `hm : m₀ ≫ Q.P.A.hom = A₀.hom ≫ spMap φ` using `hF.pull.1.w`. Establish `hcov : ⨆ i, V i = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eq_top_iff.2 fun x _ => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩` from `Y.q.left.surjective x`. Establish `hy : y ∈ ⨆ i, h.W i` using `by rw [h.cover]; trivial`. Take `⟨i, hi⟩` from `TopologicalSpace.Opens.mem_iSup.1 hy`. Rewrite `hi` using `[hW]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨i, hi⟩`. Establish `hVL : ∀ i, V i ≤ Q.P.L.U (h.j i)` using `fun i x hx => by`. Take `⟨y, rfl⟩` from `Y.q.left.surjective x`. Establish `hy : y ∈ h.W i` using `by rw [hW]; exact hx`. Conclude with `h.le i hy`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∀ i i' O, O ≤ V i ⊓ V i' → ∀ f, (m₀.app O).hom (E i O f) = (m₀.app O).hom (E i' O f)`. Introduce `i i' O hO f`. Use `ext_lift Y m₀ fun Z a b w z hz => ?_` and prove the remaining obligations. Establish `hz' : (a ≫ Y.q.left) z ∈ O` using `by rw [w]; exact hz`. Rewrite using `[gs_pull b m₀ z O hz, gs_pull b m₀ z O hz, ← w, ← gs_pull a Y.q.left z O hz', ← gs_pull a Y.q.left z O hz', hq i O (hO.trans inf_le_left), hq i' O (hO.trans inf_le_right)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `hF.dE_agree w z i i' _ ?_ hz' _` and prove the remaining obligations. Rewrite using `[hW i, hW i']`. Conclude with `le_inf (GlobalTheory.KS.GlueDer.pre_mono _ (hO.trans inf_le_left)) (GlobalTheory.KS.GlueDer.pre_mono _ (hO.trans inf_le_right))`. Take `⟨ed, hed, hedE⟩` from `exists_glue_desc Q.P.A A₀ m₀ φ hm D V hcov E hE hc`. Set `pb : ∀ i, Γ(A₀.left, m₀ ⁻¹ᵁ V i)` to `fun i => (m₀.app (V i)).hom (P i)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hD : IsDesc Y h ν m₀ V ed pb`. Use `⟨hW, fun Z a b w z i U hU hz f => ?_, fun Z a b w z i hz => ?_⟩` and prove the remaining obligations. Establish `hz' : (a ≫ Y.q.left) z ∈ U` using `by rw [w]; exact hz`. Rewrite using `[hedE i U hU f, gs_pull b m₀ z U hz, ← w, ← gs_pull a Y.q.left z U hz', hq i U hU f]`. Establish `hz' : (a ≫ Y.q.left) z ∈ V i` using `by rw [w]; exact hz show gs b z _ ((m₀.app (V i)).hom (P i)) = _`.
-
-Rewrite using `[gs_pull b m₀ z (V i) hz, ← w, ← gs_pull a Y.q.left z (V i) hz', hP i]`. Conclude with `GlobalTheory.KS.DlogPol.gs_rsT a z (hW i).ge hz' _`. Conclude with `⟨V, ed, pb, ⟨hed, hcov, hVL, fun i i' => connK_transition Y h hF hD hVL i i'⟩, hD⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_connK_desc : ∀ {R : Type} [CommRing R] [IsDomain R] {Q : DegPre R} {O : Type} [CommRing O] [StarRing O] [Module O Q.X] {oa : Q.OAct O} (Y : Ray oa) {n : ℕ} {dd : Fin n → Fld Y.H.left} {D : R → R} (h : Heat Y.H Y.q.left Q.P.L dd D) {K : Type} [Field K] [CharZero K] (φ : R →+* K) (e : ℕ) (ν : R) (A₀ : Over (Sp K)) [GrpObj A₀] (m₀ : A₀.left ⟶ Q.P.A.left), IsFibre Y h φ e ν A₀ m₀ → ∃ (V : h.J → Q.P.A.left.Opens) (ed : ∀ W : Q.P.A.left.Opens, Γ(Q.P.A.left, W) → Γ(A₀.left, m₀ ⁻¹ᵁ W)) (pb : ∀ i, Γ(A₀.left, m₀ ⁻¹ᵁ V i)), IsConnK Q.P.A Q.P.L A₀ m₀ (fun r => φ (D r)) V h.j ed pb ∧ IsDesc Y h ν m₀ V ed pb := by
   intro R _ _ Q O _ _ _ oa Y n dd D h K _ _ φ e ν A₀ _ m₀ hF

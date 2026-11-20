@@ -3,7 +3,7 @@ import Development.AbelianVarietyTheory.Proofs.SatakeParameters.PhEquivShortWeie
 import Formalism.LocalToGlobal.InertKernelTheory.DefsBeCob
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.ShortModelTie.phTie` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FPhEquivShortWeierstrassModel.lean&line=100#L100)
 -/

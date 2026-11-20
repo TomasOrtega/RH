@@ -8,11 +8,11 @@ open CategoryTheory AlgebraicGeometry TensorProduct Opposite MonoidalCategory Ca
 namespace GlobalTheory.CompanionTheory.HopfC
 
 /- English proof (translation)
-Introduce `R _ C _ F m x hx e h01`. Establish `key : ∀ i : Fin (1 + 1 + 1), GlobalTheory.CompanionTheory.HopfC.pr F ((GlobalTheory.CompanionTheory.HopfC.cst (1 + 1) (e 0)).comp (GlobalTheory.CompanionTheory.HopfC.dl i)) x = GlobalTheory.CompanionTheory.HopfC.pr F e x`. Introduce `i`. Use `GlobalTheory.CompanionTheory.HopfC.pr_congr (fun j => ?_) x` and prove the remaining obligations. Use `show e 0 = e j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Both sides reduce to the same expression.
 
-Use `fin_cases j`. Both sides reduce to the same expression. Conclude with `h01`. Establish `h` using `congrArg (GlobalTheory.CompanionTheory.HopfC.pr F (GlobalTheory.CompanionTheory.HopfC.cst (1 + 1) (e 0))) hx`. Rewrite `h` using `[map_zero (GlobalTheory.CompanionTheory.HopfC.pr F (GlobalTheory.CompanionTheory.HopfC.cst (1 + 1) (e 0))), GlobalTheory.CompanionTheory.HopfC.dn_eq, map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Evaluate the numerical expressions.
 
-Simplify using `only [map_smul, map_zsmul, GlobalTheory.CompanionTheory.HopfC.pr_pr] at h`. Simplify using `only [Fin.sum_univ_succ, Fin.sum_univ_zero, add_zero, key] at h`. Evaluate the numerical expressions using `at h`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem pr_eq_zero_of_degenerate :
     ∀ {R : Type} [CommRing R] {C : Type} [Category.{0} C] (F : C ⥤ CommAlgCat.{0} R) {m : ℕ} (x : Cn F 1)

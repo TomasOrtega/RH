@@ -7,9 +7,7 @@ namespace GroundTheory.Heights₂.Heights.RestTerms
 open MvPolynomial
 
 /- English proof (translation)
-Introduce `f N τ R k hR`. Establish `h` using `hR.aeval (fun p : Fin f × Fin N => if p.1 = τ then X p.2 else 0) (n := 1) (by`. Introduce `p`. Use `split_ifs`. Conclude with `isHomogeneous_X ℚ _`.
-
-Conclude with `isHomogeneous_zero _ _ _)`. Rewrite `h` using `[one_mul]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FlagRestrictHomogeneous.proof : FlagRestrictHomogeneous.Statement := by
   intro f N τ R k hR

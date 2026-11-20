@@ -5,21 +5,19 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Use `Finset.induction_on s ⟨c, rfl, by simp, fun i => le_rfl, hF⟩ ?_` and prove the remaining obligations. Introduce `j s _ ih`. Take `⟨c', h1, h2, h3, h4⟩` from `ih`. Distinguish the cases in `hji : j = i₀`. Substitute `hji` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨c', h1, ?_, h3, h4⟩` and prove the remaining obligations. Introduce `i hi hne`. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Conclude with `absurd rfl hne`. Conclude with `h2 i hi hne`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨b, hb⟩` from `hneg j hji`. Use `⟨fun i => c' i * (1 + e i b) / 2, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show c' i₀ * (1 + e i₀ b) / 2 = c i₀`. Rewrite using `[h0 b, h1]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Introduce `i hi hne show c' i * (1 + e i b) / 2 = 0`. Break down `Finset.mem_insert.1 hi with rfl | hi` into its components or cases. Rewrite using `[hb]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[h2 i hi hne]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `i show ‖c' i * (1 + e i b) / 2‖ ≤ ‖c i‖`. Establish `h2b : ‖(1 : ℂ) + e i b‖ ≤ 2` using `(norm_add_le _ _).trans (by rw [norm_one]; linarith [hle i b])`. Rewrite using `[norm_div, norm_mul, show ‖(2 : ℂ)‖ = 2 by simp]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `a show ∑' i, c' i * (1 + e i b) / 2 * e i a = 0`. Establish `hsum : ∀ x, Summable (fun i => c' i * e i x)` using `fun x => Summable.of_norm_bounded hs (fun i => by`. Rewrite using `[norm_mul]`. Conclude with `(mul_le_of_le_one_right (norm_nonneg _) (hle i x)).trans (h3 i))`. Establish `key : ∀ i, c' i * (1 + e i b) / 2 * e i a = (c' i * e i a + c' i * e i (b + a)) / 2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Introduce `i`. Rewrite using `[hmul i b a]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [key]`. Rewrite using `[tsum_div_const, (hsum a).tsum_add (hsum (b + a)), h4 a, h4 (b + a)]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem charSeries_kill_finset {A I : Type} [AddCommGroup A] (e : I → A → ℂ) (c : I → ℂ) (i₀ : I)
     (hmul : ∀ i a b, e i (a + b) = e i a * e i b) (hle : ∀ i a, ‖e i a‖ ≤ 1)
@@ -68,17 +66,17 @@ theorem charSeries_kill_finset {A I : Type} [AddCommGroup A] (e : I → A → �
       simp
 
 /- English proof (translation)
-Introduce `A I _ e c i₀ hmul hle h0 hneg hs hc`. Assume the negation of the conclusion as `hcon`. Use `push Not at hcon`. Establish `he0 : ∀ i, e i 0 = 1`. Introduce `i`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Conclude with `h0 0`. Take `⟨a, ha⟩` from `hneg i hi`. Establish `h` using `hmul i a 0`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite `h` using `[add_zero, ha]`. Take the linear combination `h`. Establish `hpos : 0 < ‖c i₀‖` using `norm_pos_iff.2 hc`. Take `⟨s, hs1, hs2⟩` from `(((tendsto_order.1 (tendsto_tsum_compl_atTop_zero (fun i => ‖c i‖))).2 _ hpos).and (Filter.eventually_ge_atTop {i₀})).exists`. Establish `htail : ∑' x : {x // x ∉ s}, ‖c x‖ < ‖c i₀‖` using `hs1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hi0 : i₀ ∈ s` using `hs2 (Finset.mem_singleton_self i₀)`. Take `⟨c', hc'0, hc's, hc'le, hc'F⟩` from `charSeries_kill_finset e c i₀ hmul hle h0 hneg hs hcon s`. Establish `hsum' : Summable c'` using `Summable.of_norm_bounded hs hc'le`. Establish `key` using `hc'F 0`. Simplify using `only [he0, mul_one] at key`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `key` using `[← hsum'.sum_add_tsum_subtype_compl s]`. Establish `hfin : ∑ x ∈ s, c' x = c i₀`. Rewrite using `[Finset.sum_eq_single i₀ (fun b hb hne => hc's b hb hne) (fun h => absurd hi0 h)]`. Conclude with `hc'0`. Rewrite `key` using `[hfin]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hbound : ‖∑' x : {x // x ∉ s}, c' x‖ ≤ ∑' x : {x // x ∉ s}, ‖c x‖` using `tsum_of_norm_bounded ((hs.subtype _).hasSum) (fun x => hc'le x)`. Establish `hnorm : ‖c i₀‖ = ‖∑' x : {x // x ∉ s}, c' x‖`. Rewrite using `[eq_neg_of_add_eq_zero_left key, norm_neg]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem charSeries_exists_ne_zero : ∀ (A I : Type) [AddCommGroup A] (e : I → A → ℂ) (c : I → ℂ) (i₀ : I), (∀ i a b, e i (a + b) = e i a * e i b) → (∀ i a, ‖e i a‖ ≤ 1) → (∀ a, e i₀ a = 1) → (∀ i, i ≠ i₀ → ∃ a, e i a = -1) → Summable (fun i => ‖c i‖) → c i₀ ≠ 0 → ∃ a, ∑' i, c i * e i a ≠ 0 := by
   intro A I _ e c i₀ hmul hle h0 hneg hs hc

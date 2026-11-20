@@ -9,7 +9,7 @@ open MeasureTheory Module
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.normDet_sq L]`. Use `push_cast`. Conclude with `Real.sqrt_sq (LinearMap.normDet_nonneg L)`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem AreaLinear.sqrt_det_adjoint_comp_eq_normDet {k m : ℕ}
     (L : EuclideanSpace ℝ (Fin k) →ₗ[ℝ] EuclideanSpace ℝ (Fin m)) :
@@ -19,7 +19,7 @@ theorem AreaLinear.sqrt_det_adjoint_comp_eq_normDet {k m : ℕ}
   exact Real.sqrt_sq (LinearMap.normDet_nonneg L)
 
 /- English proof (translation)
-Introduce `k m L _ A`. Establish `h` using `LinearMap.hausdorffMeasure_image L A`. Rewrite `h` using `[finrank_euclideanSpace_fin]`. Rewrite using `[h, AreaLinear.sqrt_det_adjoint_comp_eq_normDet]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem AreaLinear.proof : AreaLinear.Statement := by
   intro k m L _ A

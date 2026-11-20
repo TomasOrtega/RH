@@ -106,9 +106,9 @@ def FlatDegreeStatement : Prop :=
         |c₁ + ((D.p : ℝ) - D.q) * logOmega H / 2| ≤ D.q * Real.log (rootDiscr E)
 
 /- English proof (translation)
-Establish `h2 : ringChar (ZMod H.d) ≠ 2`. Rewrite using `[ZMod.ringChar_zmod_n]`. Use `H.d_mod` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `quadraticChar_ne_one h2` to reduce the goal to its premises. Use `MulChar.injective_ringHomComp (f := Int.castRingHom ℂ) Int.cast_injective ?_` and prove the remaining obligations. Simplify `h` using `[quadChar, MulChar.ringHomComp_one]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem quadChar_ne_one (H : Host E) : quadChar H ≠ 1 := by
   have h2 : ringChar (ZMod H.d) ≠ 2 := by
@@ -119,19 +119,19 @@ theorem quadChar_ne_one (H : Host E) : quadChar H ≠ 1 := by
   simpa [quadChar, MulChar.ringHomComp_one] using h
 
 /- English proof (translation)
-The claim follows from `DirichletCharacter.LFunction_apply_one_ne_zero (quadChar_ne_one H)`.
+A detailed English derivation is pending.
 -/
 theorem LFunction_one_ne_zero (H : Host E) : (quadChar H).LFunction 1 ≠ 0 :=
   DirichletCharacter.LFunction_apply_one_ne_zero (quadChar_ne_one H)
 
 /- English proof (translation)
-Simplify using `[adelicDeg]`.
+Simplify using the standard rewrite rules.
 -/
 example (k : Type) [Field k] [NumberField k] : adelicDeg k (fun _ => 1) (fun _ => 1) = 0 := by
   simp [adelicDeg]
 
 /- English proof (translation)
-Establish `h : (Module.finrank ℚ k : ℝ) ≠ 0` using `Nat.cast_ne_zero.mpr Module.finrank_pos.ne'`. Simplify using `[adelicDeg, Embeddings.card]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts.
 -/
 example (k : Type) [Field k] [NumberField k] (s : ℝ) : adelicDeg k (fun _ => 1) (fun _ => s ^ 2) = -Real.log s := by
   have h : (Module.finrank ℚ k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr Module.finrank_pos.ne'

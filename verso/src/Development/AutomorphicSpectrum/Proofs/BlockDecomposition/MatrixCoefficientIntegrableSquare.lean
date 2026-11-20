@@ -14,25 +14,21 @@ variable {Γ : Type} [Group Γ] [TopologicalSpace Γ] [IsTopologicalGroup Γ] [L
   [ν.IsMulRightInvariant] {B : Type} [NormedAddCommGroup B] [InnerProductSpace ℂ B] [CompleteSpace B]
 
 /- English proof (translation)
-Establish `hcont : Continuous fun g => ⟪b, ρ g v⟫_ℂ` using `continuous_const.inner (hρ.cont v)`. Establish `hbd : ∀ g, ‖⟪b, ρ g v⟫_ℂ‖ ≤ ‖b‖ * ‖v‖` using `fun g => (norm_inner_le_norm _ _).trans (by rw [hρ.norm])`. Establish `hc2 : IntegrableOn (fun g => ‖⟪b, ρ g v⟫_ℂ‖ ^ 2) s ν`. Use `Measure.integrableOn_of_bounded (M := (‖b‖ * ‖v‖) ^ 2) hs' (hcont.norm.pow 2).aestronglyMeasurable (ae_of_all _ fun g => ?_)` and prove the remaining obligations. Rewrite using `[norm_pow, norm_norm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hbd g) 2`. Use `set f : Γ → ℂ := s.indicator (fun g => starRingEnd ℂ ⟪b, ρ g v⟫_ℂ) with hfdef`. Establish `hfm : Measurable f` using `((Complex.continuous_conj.comp hcont).measurable).indicator hs`. Establish `hfi : Integrable f ν`. Use `(integrable_indicator_iff hs).mpr (Measure.integrableOn_of_bounded (M := ‖b‖ * ‖v‖) hs' (Complex.continuous_conj.comp hcont).aestronglyMeasurable (ae_of_all _ fun g => ?_))` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Complex.norm_conj]`. Conclude with `hbd g`. Establish `hfeq : (fun g => ‖f g‖ ^ 2) = s.indicator (fun g => ‖⟪b, ρ g v⟫_ℂ‖ ^ 2)`. Use function extensionality and compare the values at `g`. Apply the tactic sequence `by_cases hg : g ∈ s <;> simp [hfdef, hg, norm_inner_symm]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf2 : Integrable (fun g => ‖f g‖ ^ 2) ν`. Rewrite using `[hfeq]`. Conclude with `(integrable_indicator_iff hs).mpr hc2`. Establish `hG` using `GlobalTheory.CompanionTheory.Godement.norm_sq_integral_smul_le ν ρ hρ v hm f hfm hfi hf2`. Rewrite `hG` using `[hfeq, integral_indicator hs]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hint : Integrable (fun g => f g • ρ g v) ν` using `hfi.smul_of_top_left (memLp_top_of_bound (hρ.cont v).aestronglyMeasurable ‖v‖ (ae_of_all _ fun g => (hρ.norm g v).le))`. Use `set I := ∫ g in s, ‖⟪b, ρ g v⟫_ℂ‖ ^ 2 ∂ν with hIdef`. Use `set w := ∫ g, f g • ρ g v ∂ν with hwdef`. Establish `hinner : ⟪b, w⟫_ℂ = (I : ℂ)`. Establish `h` using `(innerSL ℂ b).integral_comp_comm hint`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [innerSL_apply_apply] at h`. Rewrite using `[hwdef, ← h, hIdef, ← integral_indicator hs, ← integral_complex_ofReal]`. Use `congr 1`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g ∈ s`.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hfdef, Set.indicator_of_mem hg, Set.indicator_of_mem hg, inner_smul_right, Complex.conj_mul']`. Use `push_cast`. Both sides reduce to the same expression. Simplify using `[hfdef, hg]`. Establish `hI0 : 0 ≤ I` using `setIntegral_nonneg hs fun _ _ => by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `hM0 : 0 ≤ ∫ g, ‖⟪v, ρ g v⟫_ℂ‖ ∂ν` using `integral_nonneg fun _ => norm_nonneg _`. Establish `h1 : I ≤ ‖b‖ * ‖w‖`. Establish `h` using `norm_inner_le_norm (𝕜 := ℂ) b w`. Rewrite `h` using `[hinner, Complex.norm_real, Real.norm_of_nonneg hI0]`. Then use the resulting hypothesis. Use `⟨hc2, ?_⟩` and prove the remaining obligations.
-
-Break down `hI0.eq_or_lt with h0 | hpos` into its components or cases. Rewrite using `[← h0]`. Check the signs of the components of the expression. Establish `h2 : I * I ≤ I * ((∫ g, ‖⟪v, ρ g v⟫_ℂ‖ ∂ν) * ‖b‖ ^ 2)`. Combine the equalities or inequalities in the displayed calculation.
-
-Conclude with `le_of_mul_le_mul_left h2 hpos`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 private theorem integrableOn_and_setIntegral_sq_le_of_isU (ρ : Γ → (B →L[ℂ] B)) (hρ : IsU ρ) (v : B)
     (hm : Integrable (fun g => ⟪v, ρ g v⟫_ℂ) ν) (b : B) {s : Set Γ} (hs : MeasurableSet s)
@@ -96,11 +92,11 @@ private theorem integrableOn_and_setIntegral_sq_le_of_isU (ρ : Γ → (B →L[�
     exact le_of_mul_le_mul_left h2 hpos
 
 /- English proof (translation)
-Establish `hK : 0 ≤ (∫ g, ‖⟪v, ρ g v⟫_ℂ‖ ∂ν) * ‖b‖ ^ 2` using `mul_nonneg (integral_nonneg fun _ => norm_nonneg _) (sq_nonneg _)`. Establish `hcont : Continuous fun g => ‖⟪b, ρ g v⟫_ℂ‖ ^ 2` using `(continuous_const.inner (hρ.cont v)).norm.pow 2`. Establish `key : ∀ s, MeasurableSet s → ν s ≠ ⊤ → ∫⁻ g in s, ‖‖⟪b, ρ g v⟫_ℂ‖ ^ 2‖ₑ ∂ν ≤ ENNReal.ofReal ((∫ g, ‖⟪v, ρ g v⟫_ℂ‖ ∂ν) * ‖b‖ ^ 2)`. Introduce `s hs hs'`. Take `⟨hi, hle⟩` from `integrableOn_and_setIntegral_sq_le_of_isU ν ρ hρ v hm b hs hs'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← ofReal_integral_norm_eq_lintegral_enorm hi]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises. Simplify `hle` using `only [norm_pow, norm_norm]`. Establish `hInt : Integrable (fun g => ‖⟪b, ρ g v⟫_ℂ‖ ^ 2) ν` using `integrable_of_forall_fin_meas_le _ ENNReal.ofReal_lt_top hcont.aestronglyMeasurable key`. Use `⟨hInt, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hle` using `lintegral_le_of_forall_fin_meas_le _ key`. Rewrite `hle` using `[← ofReal_integral_norm_eq_lintegral_enorm hInt, ENNReal.ofReal_le_ofReal_iff hK]`. Simplify `hle` using `only [norm_pow, norm_norm]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem sq_integrable_and_bound (ρ : Γ → (B →L[ℂ] B)) (hρ : IsU ρ) (v : B)
     (hm : Integrable (fun g => ⟪v, ρ g v⟫_ℂ) ν) (b : B) :

@@ -5,7 +5,7 @@ namespace GlobalTheory.CompanionTheory.Ggeo.FrameDet
 open scoped BigOperators
 
 /- English proof (translation)
-Establish `h : P = R.subtype.mapMatrix (Matrix.of fun i j => (⟨P i j, hP i j⟩ : R))`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[h, ← RingHom.map_det]`. Conclude with `(Matrix.det (Matrix.of fun i j => (⟨P i j, hP i j⟩ : R))).2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem det_mem_of_forall_mem' {Ω : Type} [CommRing Ω] (R : Subring Ω) {n : ℕ}
     (P : Matrix (Fin n) (Fin n) Ω) (hP : ∀ i j, P i j ∈ R) : P.det ∈ R := by
@@ -16,7 +16,7 @@ private theorem det_mem_of_forall_mem' {Ω : Type} [CommRing Ω] (R : Subring Ω
   exact (Matrix.det (Matrix.of fun i j => (⟨P i j, hP i j⟩ : R))).2
 
 /- English proof (translation)
-Use extensionality with `i j`. Establish `h' : ∑ k, (C i k - D i k) • w k = 0`. Simplify using `only [sub_smul, Finset.sum_sub_distrib, h i, sub_self]`. Conclude with `sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hw (fun k => C i k - D i k) h' j)`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem matrix_eq_of_linearIndependent {Ω M : Type} [Field Ω] [AddCommGroup M] [Module Ω M]
     {n : ℕ} {w : Fin n → M} (hw : LinearIndependent Ω w)
@@ -28,7 +28,7 @@ theorem matrix_eq_of_linearIndependent {Ω M : Type} [Field Ω] [AddCommGroup M]
   exact sub_eq_zero.mp (Fintype.linearIndependent_iff.mp hw (fun k => C i k - D i k) h' j)
 
 /- English proof (translation)
-Simplify using `only [Finset.smul_sum, smul_smul, Matrix.mul_apply, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_smul_sum_smul {Ω M : Type} [Field Ω] [AddCommGroup M] [Module Ω M]
     {n : ℕ} (w : Fin n → M) (C D : Matrix (Fin n) (Fin n) Ω) (i : Fin n) :
@@ -37,15 +37,15 @@ theorem sum_smul_sum_smul {Ω M : Type} [Field Ω] [AddCommGroup M] [Module Ω M
   exact Finset.sum_comm
 
 /- English proof (translation)
-Introduce `Ω M _ _ _ R n u A B hu ha _ hspan`. Establish `key : ∀ a b : Fin n → M, Submodule.span R (Set.range b) ≤ Submodule.span R (Set.range a) → ∃ P : Matrix (Fin n) (Fin n) Ω, (∀ i j, P i j ∈ R) ∧ ∀ i, b i = ∑ j, P i j • a j`. Introduce `a b hle`. Establish `hex : ∀ i, ∃ c : Fin n → R, ∑ j, c j • a j = b i` using `fun i => (Submodule.mem_span_range_iff_exists_fun R).mp (hle (Submodule.subset_span ⟨i, rfl⟩))`. Use `choose c hc using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨Matrix.of fun i j => (c i j : Ω), fun i j => (c i j).2, fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[← hc i]`. Conclude with `Finset.sum_congr rfl fun j _ => Subring.smul_def _ _`. Take `⟨P, hPR, hP⟩` from `key (fun i => ∑ j, A i j • u j) (fun i => ∑ j, B i j • u j) hspan.ge`. Take `⟨Q, hQR, hQ⟩` from `key (fun i => ∑ j, B i j • u j) (fun i => ∑ j, A i j • u j) hspan.le`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP' : ∀ i, ∑ j, B i j • u j = ∑ j, P i j • ∑ k, A j k • u k` using `hP`. Establish `hQ' : ∀ i, ∑ j, A i j • u j = ∑ j, Q i j • ∑ k, B j k • u k` using `hQ`. Establish `hBPA : B = P * A` using `GlobalTheory.CompanionTheory.Ggeo.FrameDet.matrix_eq_of_linearIndependent hu fun i => (hP' i).trans (GlobalTheory.CompanionTheory.Ggeo.FrameDet.sum_smul_sum_smul u P A i)`. Establish `hQP : Q * P = 1`. Apply `GlobalTheory.CompanionTheory.Ggeo.FrameDet.matrix_eq_of_linearIndependent ha` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Chain the equalities or inequalities of the calculation.
 
-Introduce `i`. Combine the equalities or inequalities in the displayed calculation. Simplify using `[Matrix.one_apply]`. Establish `hdet : P.det * Q.det = 1`. Rewrite using `[mul_comm, ← Matrix.det_mul, hQP, Matrix.det_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨P.det, det_mem_of_forall_mem' R P hPR, ?_, left_ne_zero_of_mul_eq_one hdet, ?_⟩` and prove the remaining obligations. Rewrite using `[inv_eq_of_mul_eq_one_right hdet]`. Conclude with `det_mem_of_forall_mem' R Q hQR`. Rewrite using `[hBPA, Matrix.det_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_eq_unit_mul : ∀ (Ω M : Type) [Field Ω] [AddCommGroup M] [Module Ω M] (R : Subring Ω) (n : ℕ) (u : Fin n → M) (A B : Matrix (Fin n) (Fin n) Ω), LinearIndependent Ω u → LinearIndependent Ω (fun i => ∑ j, A i j • u j) → LinearIndependent Ω (fun i => ∑ j, B i j • u j) → Submodule.span R (Set.range fun i => ∑ j, A i j • u j) = Submodule.span R (Set.range fun i => ∑ j, B i j • u j) → ∃ c : Ω, c ∈ R ∧ c⁻¹ ∈ R ∧ c ≠ 0 ∧ B.det = c * A.det := by
   intro Ω M _ _ _ R n u A B hu ha _ hspan

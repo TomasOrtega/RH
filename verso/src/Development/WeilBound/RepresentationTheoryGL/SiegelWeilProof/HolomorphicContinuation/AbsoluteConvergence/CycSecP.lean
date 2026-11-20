@@ -18,15 +18,15 @@ def Mon (ε : Fin m → Bool) (d : ℕ) : Submodule ℂ (PX m n) :=
   Submodule.span ℂ {M | ∃ l : List (Bool × Fin n × Fin n), l.length ≤ d ∧ M = (l.map (gen ε)).prod}
 
 /- English proof (translation)
-The claim follows from `Submodule.span_mono fun _ ⟨l, hl, e⟩ => ⟨l, hl.trans h, e⟩`.
+A detailed English derivation is pending.
 -/
 theorem mon_mono (ε : Fin m → Bool) {d d' : ℕ} (h : d ≤ d') : Mon (n := n) ε d ≤ Mon ε d' :=
   Submodule.span_mono fun _ ⟨l, hl, e⟩ => ⟨l, hl.trans h, e⟩
 
 /- English proof (translation)
-Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨k :: l, by simp; omega, by simp⟩`. Consider the case `zero => simp`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => rw [mul_add]`. Conclude with `add_mem hx hy`. Consider the case `smul a x _ hx => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem gen_mul_mon (ε : Fin m → Bool) (d : ℕ) (k : Bool × Fin n × Fin n) {M : PX m n} (hM : M ∈ Mon ε d) :
     gen ε k * M ∈ Mon ε (d + 1) := by
@@ -39,13 +39,11 @@ theorem gen_mul_mon (ε : Fin m → Bool) (d : ℕ) (k : Bool × Fin n × Fin n)
   | smul a x _ hx => rw [mul_smul_comm]; exact Submodule.smul_mem _ _ hx
 
 /- English proof (translation)
-Proceed by induction on `ha using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem y hy`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Take `⟨l', hl', rfl⟩` from `hy`. Conclude with `Submodule.subset_span ⟨l ++ l', by simp; omega, by simp⟩`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [mul_add]`. Conclude with `add_mem hu hv`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `smul c u _ hu => rw [mul_smul_comm]`. Conclude with `Submodule.smul_mem _ _ hu`. Consider the case `zero => simp`. Consider the case `add u v _ _ hu hv => rw [add_mul]`. Conclude with `add_mem hu hv`.
-
-Consider the case `smul c u _ hu => rw [smul_mul_assoc]`. Conclude with `Submodule.smul_mem _ _ hu`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mon_mul (ε : Fin m → Bool) {d d' : ℕ} {a b : PX m n} (ha : a ∈ Mon ε d) (hb : b ∈ Mon ε d') :
     a * b ∈ Mon ε (d + d') := by
@@ -64,13 +62,13 @@ theorem mon_mul (ε : Fin m → Bool) {d d' : ℕ} {a b : PX m n} (ha : a ∈ Mo
   | smul c u _ hu => rw [smul_mul_assoc]; exact Submodule.smul_mem _ _ hu
 
 /- English proof (translation)
-Proceed by induction on `hR using Algebra.adjoin_induction with`. Consider the case `mem x hx`. Take `⟨k, rfl⟩` from `hx`. Conclude with `⟨1, Submodule.subset_span ⟨[k], by simp, by simp [gen]⟩⟩`. Consider the case `algebraMap r`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Use `⟨0, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.algebraMap_eq_smul_one]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨[], by simp, by simp⟩)`. Consider the case `add x y _ _ hx hy`. Take `⟨d, hd⟩` from `hx`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨d', hd'⟩` from `hy`. Conclude with `⟨max d d', add_mem (mon_mono ε (le_max_left _ _) hd) (mon_mono ε (le_max_right _ _) hd')⟩`. Consider the case `mul x y _ _ hx hy`. Take `⟨d, hd⟩` from `hx`. Take `⟨d', hd'⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨d + d', mon_mul ε hd hd'⟩`.
+A detailed English derivation is pending.
 -/
 theorem adjoin_le (ε : Fin m → Bool) {R : PX m n}
     (hR : R ∈ Algebra.adjoin ℂ (Set.range fun k : Bool × Fin n × Fin n => (Qb ε k.1 k.2.1 k.2.2 : PX m n))) :
@@ -93,7 +91,7 @@ theorem adjoin_le (ε : Fin m → Bool) {R : PX m n}
     exact ⟨d + d', mon_mul ε hd hd'⟩
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp`. Consider the case `insert a s ha ih => rw [Finset.sum_insert ha, Finset.sum_insert ha, Derivation.add_apply, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem dsum_apply {ι : Type*} (s : Finset ι) (D : ι → Derivation ℂ (PX m n) (PX m n)) (x : PX m n) :
     (∑ i ∈ s, D i) x = ∑ i ∈ s, D i x := by
@@ -107,33 +105,31 @@ def eulD (H : Matrix (Fin n) (Fin n) ℂ) : Derivation ℂ (PX m n) (PX m n) :=
     (∑ i, X (a, i, true) * C (star (H i j))) • pderiv (a, j, true))
 
 /- English proof (translation)
-Simplify using `[eulH, eulD, dsum_apply, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eulH_eq (H : Matrix (Fin n) (Fin n) ℂ) (R : PX m n) : eulH H R = eulD H R := by
   simp [eulH, eulD, dsum_apply, smul_eq_mul]
 
 /- English proof (translation)
-Simplify using `[eulD, dsum_apply, pderiv_X, Pi.single_apply, ite_and, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eulD_X_false (H : Matrix (Fin n) (Fin n) ℂ) (a : Fin m) (j : Fin n) :
     eulD H (X (a, j, false) : PX m n) = ∑ i, X (a, i, false) * C (H i j) := by
   simp [eulD, dsum_apply, pderiv_X, Pi.single_apply, ite_and, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Simplify using `[eulD, dsum_apply, pderiv_X, Pi.single_apply, ite_and, Finset.sum_ite_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem eulD_X_true (H : Matrix (Fin n) (Fin n) ℂ) (a : Fin m) (j : Fin n) :
     eulD H (X (a, j, true) : PX m n) = ∑ i, X (a, i, true) * C (star (H i j)) := by
   simp [eulD, dsum_apply, pderiv_X, Pi.single_apply, ite_and, Finset.sum_ite_eq]
 
 /- English proof (translation)
-Establish `: eulH H (gen ε k) = ∑ l, C (H l k.2.2) * gen ε (k.1, k.2.1, l) + ∑ l, C (star (H l k.2.1)) * gen ε (k.1, l, k.2.2)`. Take `⟨b, i, j⟩` from `k`. Rewrite using `[eulH_eq]`. Simplify using `only [gen, Qb, map_sum, Derivation.leibniz, smul_eq_mul, eulD_X_false, eulD_X_true, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_add_distrib]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ => by ring`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun a _ => by ring`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Use `add_mem (Submodule.sum_mem _ fun l _ => ?_) (Submodule.sum_mem _ fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[← smul_eq_C_mul]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨[(k.1, k.2.1, l)], by simp, by simp⟩)`. Rewrite using `[← smul_eq_C_mul]`.
-
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨[(k.1, l, k.2.2)], by simp, by simp⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eulH_gen (ε : Fin m → Bool) (H : Matrix (Fin n) (Fin n) ℂ) (k : Bool × Fin n × Fin n) :
     eulH H (gen ε k) ∈ Mon ε 1 := by
@@ -156,15 +152,13 @@ theorem eulH_gen (ε : Fin m → Bool) (H : Matrix (Fin n) (Fin n) ℂ) (k : Boo
     exact Submodule.smul_mem _ _ (Submodule.subset_span ⟨[(k.1, l, k.2.2)], by simp, by simp⟩)
 
 /- English proof (translation)
-Rewrite using `[eulH_eq]`. Proceed by induction on `hM using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨l, hl, rfl⟩` from `hx`. Proceed by induction on `l generalizing d with`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Consider the case `nil => simp`. Consider the case `cons k l ih`. Simplify using `only [List.map_cons, List.prod_cons, Derivation.leibniz, smul_eq_mul]`. Simplify using `only [List.length_cons] at hl`. Establish `hd : l.length + 1 ≤ d` using `hl`.
+Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `add_mem ?_ ?_` and prove the remaining obligations. Conclude with `mon_mono ε hd (gen_mul_mon ε l.length k (ih l.length le_rfl))`. Establish `h1` using `eulH_gen ε H k`. Rewrite `h1` using `[eulH_eq]`. Establish `h2 : (l.map (gen ε)).prod ∈ Mon ε l.length` using `Submodule.subset_span ⟨l, le_rfl, rfl⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm ((l.map (gen ε)).prod)]`. Conclude with `mon_mono ε (by omega) (mon_mul ε h1 h2)`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy => rw [map_add]`. Conclude with `add_mem hx hy`.
-
-Consider the case `smul a x _ hx => rw [(eulD H).map_smul]`. Conclude with `Submodule.smul_mem _ _ hx`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eulH_mon (ε : Fin m → Bool) (H : Matrix (Fin n) (Fin n) ℂ) (d : ℕ) {M : PX m n} (hM : M ∈ Mon ε d) :
     eulH H M ∈ Mon ε d := by

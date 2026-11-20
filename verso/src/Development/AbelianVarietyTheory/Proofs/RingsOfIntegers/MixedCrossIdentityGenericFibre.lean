@@ -19,7 +19,7 @@ namespace GlobalTheory.GenericCross
 open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 
 /- English proof (translation)
-Unfold `scal cst`. Conclude with `gs_pull r p z ⊤ (by simp) _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem gs_scal {V : Type} [CommRing V] {Y Z : Scheme.{0}} (r : Z ⟶ Y) (p : Y ⟶ Spec (CommRingCat.of V)) (z : Z)
     (c : V) : gs r z ⊤ (scal p c) = cst (r ≫ p) z c := by
@@ -27,9 +27,9 @@ theorem gs_scal {V : Type} [CommRing V] {Y Z : Scheme.{0}} (r : Z ⟶ Y) (p : Y 
   exact gs_pull r p z ⊤ (by simp) _
 
 /- English proof (translation)
-Establish `hne : algebraMap V (FractionRing V) c ≠ 0` using `fun h => hc (IsFractionRing.injective V (FractionRing V) (by rw [h, map_zero]))`. Take `⟨u, hu⟩` from `(IsUnit.mk0 _ hne).map (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv.hom`. Establish `nat : ((jK V).appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom c) = (Scheme.ΓSpecIso (CommRingCat.of (FractionRing V))).inv.hom (algebraMap V (FractionRing V) c)` using `(congrArg (fun g => g.hom c) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap V (FractionRing V))))).symm`. Establish `h1 : cst (q ≫ jK V) z c = gs q z ⊤ (((jK V).appTop).hom ((Scheme.ΓSpecIso (CommRingCat.of V)).inv.hom c))` using `(gs_pull q (jK V) z ⊤ (by simp) _).symm`. Rewrite using `[h1, nat, ← hu, gs_unit q z ⊤ (by simp) u]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Units.isUnit _`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_cst {V : Type} [CommRing V] [IsDomain V] {Z : Scheme.{0}}
     (q : Z ⟶ Spec (CommRingCat.of (FractionRing V))) (z : Z) {c : V} (hc : c ≠ 0) :
@@ -47,7 +47,7 @@ theorem isUnit_cst {V : Type} [CommRing V] [IsDomain V] {Z : Scheme.{0}}
   exact Units.isUnit _
 
 /- English proof (translation)
-Unfold `endK`. Conclude with `pullback.lift_fst _ _ _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem endK_fst {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {G : Over (Spec (CommRingCat.of V))} (f : G ⟶ G) :
@@ -56,7 +56,7 @@ theorem endK_fst {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V
   exact pullback.lift_fst _ _ _
 
 /- English proof (translation)
-Unfold `endK`. Conclude with `(pullback.lift_snd _ _ _).trans (Category.comp_id _)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem endK_snd {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
     {G : Over (Spec (CommRingCat.of V))} (f : G ⟶ G) :
@@ -65,13 +65,13 @@ theorem endK_snd {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V
   exact (pullback.lift_snd _ _ _).trans (Category.comp_id _)
 
 /- English proof (translation)
-Introduce `hL V _ _ _ E _ _ _ H t P a N hN hN0 k₁ s₁ F₁ u₁ F₁' he₁ he₁' hp₁ k₂ s₂ F₂ u₂ F₂' he₂ he₂' hp₂ m₁ m₂ hm y J hJ`. Set `_ : StarRing (NumberField.RingOfIntegers E)` to `H.starRing`. Take `⟨uΨ, huΨ, -⟩` from `P.w0`. Take `⟨X, hX, hXc⟩` from `exists_XB (D := P.D) (hL := P.D.toPre.P.isLB) (oa := P.oD) (w0 := H.w0) (uΨ := uΨ) (huΨ := huΨ) (a := a) (N := N) (hN := hN) (hN1 := by omega) (k := 1)`. Take `⟨c₁, σ₁, τ₁, hc₁, hτ₁, hσ₁, ht₁⟩` from `GlobalTheory.PullExpInt.main hL.globalFns V E H t P a N hN hN0 X hX hXc k₁ s₁ F₁ u₁ F₁' he₁ he₁' hp₁`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨c₂, σ₂, τ₂, hc₂, hτ₂, hσ₂, ht₂⟩` from `GlobalTheory.PullExpInt.main hL.globalFns V E H t P a N hN hN0 X hX hXc k₂ s₂ F₂ u₂ F₂' he₂ he₂' hp₂`. Establish `hx` using `GlobalTheory.MixedCross.main hL.lemmaB V E H t P a N hN hN0 X k₁ k₂ m₁ m₂ hm σ₁ τ₁ σ₂ τ₂ ht₁ ht₂ _ (pullback.fst t.G.hom (jK V)) y J hJ`. Establish `e₁` using `GlobalTheory.PullIntegral.sval_of_secScal hσ₁ (𝟙 _) y hJ`. Establish `e₂` using `GlobalTheory.PullIntegral.sval_of_secScal hσ₂ (𝟙 _) y hJ`. Establish `f₁` using `GlobalTheory.PullIntegral.sval_of_secScal hτ₁ (endK (t.act.act a)) y hJ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `f₂` using `GlobalTheory.PullIntegral.sval_of_secScal hτ₂ (endK (t.act.act a)) y hJ`. Rewrite `e₁`, `e₂` using `[gs_scal, Category.id_comp, Category.id_comp]`. Rewrite `f₁`, `f₂` using `[gs_scal, endK_fst, ← Category.assoc, endK_snd]`. Rewrite `hx` using `[e₁, e₂, f₁, f₂]`. Establish `hu : IsUnit (cst (pullback.snd t.G.hom (jK V) ≫ jK V) y c₁ ^ m₁ * cst (pullback.snd t.G.hom (jK V) ≫ jK V) y c₂ ^ m₂)` using `((isUnit_cst _ y hc₁).pow m₁).mul ((isUnit_cst _ y hc₂).pow m₂)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Apply `hu.mul_left_cancel` to reduce the goal to its premises. Take the linear combination `hx`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem main : Laws → ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (E : Type) [Field E] [NumberField E] [NumberField.IsCMField E] (H : Geo.Tor.Host E) (t : Geo.Tor.SAB H (Spec (CommRingCat.of V))) (P : Geo.Tor.PELUnif (maximalIdeal V) t) (a : NumberField.RingOfIntegers E) (N : ℕ), (letI := H.starRing; a * star a = (N : NumberField.RingOfIntegers E)) → 0 < N → letI := H.starRing;  ∀ (k₁ : ℕ) (s₁ : P.U.SecK k₁) (F₁ : Fam P.D.toPre (FractionRing V) k₁) (u₁ : P.U.SecK (k₁ * N)) (F₁' : Fam P.D.toPre (FractionRing V) (k₁ * N)), P.U.Expands k₁ s₁ F₁ → P.U.Expands (k₁ * N) u₁ F₁' → PullAl P.D (FractionRing V) P.oD a k₁ N F₁ F₁' → ∀ (k₂ : ℕ) (s₂ : P.U.SecK k₂) (F₂ : Fam P.D.toPre (FractionRing V) k₂) (u₂ : P.U.SecK (k₂ * N)) (F₂' : Fam P.D.toPre (FractionRing V) (k₂ * N)), P.U.Expands k₂ s₂ F₂ → P.U.Expands (k₂ * N) u₂ F₂' → PullAl P.D (FractionRing V) P.oD a k₂ N F₂ F₂' → ∀ m₁ m₂ : ℕ, m₁ * k₁ = m₂ * k₂ → ∀ (y : (pullback t.G.hom (jK V) : Scheme.{0})) (J), Geo.Tor.Good P.U.LG.L y J → Geo.Tor.sval u₁ (𝟙 _) y J ^ m₁ * Geo.Tor.sval s₂ (endK (t.act.act a)) y J ^ m₂ = Geo.Tor.sval u₂ (𝟙 _) y J ^ m₂ * Geo.Tor.sval s₁ (endK (t.act.act a)) y J ^ m₁ := by
   intro hL V _ _ _ E _ _ _ H t P a N hN hN0 k₁ s₁ F₁ u₁ F₁' he₁ he₁' hp₁ k₂ s₂ F₂ u₂ F₂' he₂ he₂' hp₂

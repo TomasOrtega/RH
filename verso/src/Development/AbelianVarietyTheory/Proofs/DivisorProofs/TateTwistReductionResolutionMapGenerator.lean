@@ -21,7 +21,7 @@ def constCx {R : Type} [CommRing R] (F : Shv R) : Cx R where
   d_comp_d' _ _ _ _ _ := by simp
 
 /- English proof (translation)
-Set `ρ : SemiMap (constCx F) (constCx G)` to `{ app := fun U _ => f U nat := fun g _ a => hf _ _ g a comm := fun U s t a => by show Sec.map (0 : G ⟶ G) (f U a) = f U (Sec.map (0 : F ⟶ F) a)`. Simplify using `[Sec.map]`. Conclude with `((f U).map_zero).symm }`. Conclude with `⟨FactorExt.term _ (FactorExt.intCast_surj Q) ρ 0, fun U a => FactorExt.term_sec _ (FactorExt.intCast_surj Q) ρ 0 U a⟩`.
+Introduce a local definition for the expression. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem ext_map (Q q : ℕ) (hq : q ∣ Q) (F : Shv (ZMod Q)) (G : Shv (ZMod q))
     (f : ∀ U : Scheme.{0}, Sec F U →+ Sec G U)
@@ -66,16 +66,16 @@ def powPrim {Q q : ℕ} [NeZero Q] (hq : q ∣ Q) {A : Type} [CommRing A] (ζ : 
     exact ξ.2⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (map_pow φ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem powPrim_map {Q q : ℕ} [NeZero Q] (hq : q ∣ Q) {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B)
     (ζ : Prim Q A) : (powPrim hq ζ).map φ = powPrim hq (ζ.map φ) :=
   Subtype.ext (map_pow φ _ _)
 
 /- English proof (translation)
-Establish `hq : q • x = 0`. Rewrite using `[← Nat.cast_smul_eq_nsmul (ULift.{1} (ZMod q))]`. Establish `: ((q : ℕ) : ULift.{1} (ZMod q)) = 0` using `ULift.ext _ _ (by simp)`. Rewrite using `[this, zero_smul]`. Use `conv_lhs => rw [← Nat.mod_add_div n q]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_nsmul, mul_comm q, mul_smul, hq, smul_zero, add_zero]`.
+A detailed English derivation is pending.
 -/
 theorem nsmul_mod_of {q : ℕ} {M : Type*} [AddCommGroup M] [Module (ULift.{1} (ZMod q)) M] (x : M) (n : ℕ) :
     n • x = (n % q) • x := by
@@ -87,19 +87,17 @@ theorem nsmul_mod_of {q : ℕ} {M : Type*} [AddCommGroup M] [Module (ULift.{1} (
   rw [add_nsmul, mul_comm q, mul_smul, hq, smul_zero, add_zero]
 
 /- English proof (translation)
-Introduce `Q q _ _ hq i`. Set `M : Shv (ZMod Q)` to `(restr (ZMod.castHom hq (ZMod q))).obj (tw q i)`. Set `e : ∀ U : Scheme.{0}, Prim Q Γ(U, ⊤) → Sec M U` to `fun U ζ => (twGen i (powPrim hq ζ) : Sec (tw q i) U)`. Establish `ts` using `GlobalTheory.T.tateTwist_sections_locally_generated q i`. Establish `he1 : ∀ (V U : Scheme.{0}) (g : V ⟶ U) (ζ : Prim Q Γ(U, ⊤)), Sec.res g (e U ζ) = e V (ζ.map g.appTop.hom)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `V U g ζ`. Use `ts.2.2.2.1 V U g (powPrim hq ζ)` as an intermediate fact. Rewrite `this` using `[powPrim_map]`. Conclude with `this`. Establish `hcast : ∀ u : (ZMod Q)ˣ, ((ZMod.unitsMap hq u : (ZMod q)ˣ) : ZMod q).val = (u : ZMod Q).val % q`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `u`. Use `show (ZMod.castHom hq (ZMod q) (u : ZMod Q)).val = _`. Rewrite using `[ZMod.castHom_apply, ZMod.cast_eq_val, ZMod.val_natCast]`. Establish `he2 : ∀ (U : Scheme.{0}) (ζ ξ : Prim Q Γ(U, ⊤)) (a : (ZMod Q)ˣ), ξ.1 = ζ.1 ^ (a : ZMod Q).val → e U ξ = ((a ^ i : (ZMod Q)ˣ) : ZMod Q).val • e U ζ`. Introduce `U ζ ξ a h`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq1 : (ζ.1 ^ (Q / q)) ^ q = 1` using `(GlobalTheory.EtC.PrimBasic.prim_basic q _).1 (powPrim hq ζ)`. Establish `hpw : (powPrim hq ξ).1 = (powPrim hq ζ).1 ^ ((ZMod.unitsMap hq a : (ZMod q)ˣ) : ZMod q).val`. Rewrite using `[hcast]`. Use `show ξ.1 ^ (Q / q) = (ζ.1 ^ (Q / q)) ^ ((a : ZMod Q).val % q)`. Rewrite using `[h, ← pow_mul, mul_comm, pow_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `conv_lhs => rw [← Nat.mod_add_div (a : ZMod Q).val q]`. Rewrite using `[pow_add, pow_mul, hq1, one_pow, mul_one]`. Establish `h5` using `ts.2.2.2.2.1 U (powPrim hq ζ) (powPrim hq ξ) (ZMod.unitsMap hq a) hpw`. Use `show (twGen i (powPrim hq ξ) : Sec (tw q i) U) = ((a ^ i : (ZMod Q)ˣ) : ZMod Q).val • (twGen i (powPrim hq ζ) : Sec (tw q i) U)`. Establish `hm : (((ZMod.unitsMap hq a) ^ i : (ZMod q)ˣ) : ZMod q).val % q = ((a ^ i : (ZMod Q)ˣ) : ZMod Q).val % q`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[show (ZMod.unitsMap hq a) ^ i = ZMod.unitsMap hq (a ^ i) from (map_zpow _ _ _).symm, hcast, Nat.mod_mod]`. Rewrite using `[h5, nsmul_mod_of (q := q) (twGen i (powPrim hq ζ)), hm, ← nsmul_mod_of (q := q)]`. Take `⟨β, hβ, -⟩` from `(GlobalTheory.T.tateTwist_sections_locally_generated Q i).2.2.2.2.2 M e he1 he2`. Use `⟨fun U => ⟨⟨fun a => ((β.hom.app (op U)).hom a : Sec (tw q i) U), (β.hom.app (op U)).hom.map_zero⟩, fun a b => (β.hom.app (op U)).hom.map_add a b⟩, ?_, ?_⟩` and prove the remaining obligations. Introduce `V U g a`.
-
-Conclude with `(LinearMap.congr_fun (congrArg ModuleCat.Hom.hom (β.hom.naturality g.op)) a).symm`. Introduce `U ζ ξ h`. Establish `h1` using `hβ U ζ`. Establish `h2 : powPrim hq ζ = ξ` using `Subtype.ext h.symm`. Conclude with `h1.trans (congrArg (twGen i) h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem twRed_sec : ∀ (Q q : ℕ) [NeZero Q] [NeZero q], q ∣ Q → ∀ (i : ℤ), ∃ f : ∀ U : Scheme.{0}, Sec (tw Q i) U →+ Sec (tw q i) U,
     (∀ (V U : Scheme.{0}) (g : V ⟶ U) (a : Sec (tw Q i) U), Sec.res g (f U a) = f V (Sec.res g a)) ∧
@@ -144,17 +142,15 @@ theorem twRed_sec : ∀ (Q q : ℕ) [NeZero Q] [NeZero q], q ∣ Q → ∀ (i : 
     exact h1.trans (congrArg (twGen i) h2)
 
 /- English proof (translation)
-Take `⟨f, hf, hfg⟩` from `twRed_sec Q q hq i`. Take `⟨α, hα⟩` from `ext_map Q q hq (tw Q i) (tw q i) f hf`. Take `⟨hKI, -, hGE, -, hι, -⟩` from `GlobalTheory.T.chosenInjectiveResolution_etaleSheaf_properties (ZMod q) (tw q i)`. Establish `hQ` using `GlobalTheory.T.quasiIso_extendScalars_tateTwist_augmentation Q q hq i`. Take `⟨m, hm⟩` from `(GlobalTheory.T.extend_chainMap_along_quasiIso_kInjective (ZMod q) ((extSh (ZMod.castHom hq (ZMod q))).obj (tw Q i)) (extCx (ZMod.castHom hq (ZMod q)) (res _ (tw Q i))) (res _ (tw q i)) (extAug (ZMod.castHom hq (ZMod q)) (tw Q i))).1 ((CochainComplex.singleFunctor (Shv (ZMod q)) …`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨semiOfExt hq m, fun U ζ ξ h => ?_⟩` and prove the remaining obligations. Establish `hv : (extAug (ZMod.castHom hq (ZMod q)) (tw Q i) ≫ m).f 0 = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 ((extSh (ZMod.castHom hq (ZMod q))).obj (tw Q i))).hom ≫ (extSh (ZMod.castHom hq (ZMod q))).map (resι _ (tw Q i)) ≫ m.f 0`. Establish `hs` using `HomologicalComplex.singleMapHomologicalComplex_inv_app_self (extSh (ZMod.castHom hq (ZMod q))) (ComplexShape.up ℤ) 0 (tw Q i)`. Express the relevant statement in the definitionally equal form `(((HomologicalComplex.singleMapHomologicalComplex (extSh (ZMod.castHom hq (ZMod q))) (ComplexShape.up ℤ) 0).inv.app (tw Q i)).f 0 ≫ (extSh (ZMod.castHom hq (ZMod q))).map ((resAug (tw Q i)).f 0)) ≫ m.f 0 = _`. Establish `hs' : ((HomologicalComplex.singleMapHomologicalComplex (extSh (ZMod.castHom hq (ZMod q))) (ComplexShape.up ℤ) 0).inv.app (tw Q i)).f 0 ≫ (extSh (ZMod.castHom hq (ZMod q))).map ((resAug (tw Q i)).f 0) = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 ((extSh (ZMod.castHom …`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Rewrite using `[hs]`. Conclude with `(Category.assoc _ _ _).trans (congrArg _ (Functor.map_comp _ _ _).symm)`. Conclude with `(congrArg (· ≫ m.f 0) hs').trans (Category.assoc _ _ _)`. Establish `hw : ((CochainComplex.singleFunctor (Shv (ZMod q)) 0).map α ≫ resAug (tw q i)).f 0 = (HomologicalComplex.singleObjXSelf (ComplexShape.up ℤ) 0 ((extSh (ZMod.castHom hq (ZMod q))).obj (tw Q i))).hom ≫ α ≫ resι _ (tw q i)`. Rewrite using `[HomologicalComplex.comp_f, ← hι]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `((HomologicalComplex.single (Shv (ZMod q)) (ComplexShape.up ℤ) 0).map α).f 0 ≫ _ = _`. Rewrite using `[HomologicalComplex.single_map_f_self]`. Use `(Category.assoc _ _ _).trans ?_` and prove the remaining obligations. Use `congrArg (_ ≫ ·) ?_` and prove the remaining obligations. Conclude with `Category.assoc _ _ _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `key : (extSh (ZMod.castHom hq (ZMod q))).map (resι _ (tw Q i)) ≫ m.f 0 = α ≫ resι _ (tw q i)`. Establish `e : (extAug (ZMod.castHom hq (ZMod q)) (tw Q i) ≫ m).f 0 = ((CochainComplex.singleFunctor (Shv (ZMod q)) 0).map α ≫ resAug (tw q i)).f 0` using `by rw [hm]`. Rewrite `e` using `[hv, hw]`. Conclude with `(cancel_epi _).1 e`. Rewrite using `[semiOfExt_app]`.
-
-Express the relevant statement in the definitionally equal form `Sec.map (m.f 0) (extSh.sec _ _ U (Sec.map (resι _ (tw Q i)) (twGen i ζ))) = Sec.map (resι _ (tw q i)) (twGen i ξ)`. Rewrite using `[← extSh.sec_map, ← hfg U ζ ξ h, ← hα]`. Establish `e2` using `congrArg (fun k => Sec.map k (extSh.sec (ZMod.castHom hq (ZMod q)) (tw Q i) U (twGen i ζ))) key`. Conclude with `e2`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem redMap_exists (Q q : ℕ) [NeZero Q] [NeZero q] (hq : q ∣ Q) (i : ℤ) :
     ∃ ρ : SemiMap (res _ (tw Q i)) (res _ (tw q i)), ∀ (U : Scheme.{0}) (ζ : Prim Q Γ(U, ⊤)) (ξ : Prim q Γ(U, ⊤)),
@@ -204,7 +200,7 @@ theorem redMap_exists (Q q : ℕ) [NeZero Q] [NeZero q] (hq : q ∣ Q) (i : ℤ)
   exact e2
 
 /- English proof (translation)
-Introduce `Q q _ _ hq i U ζ ξ h`. Conclude with `pick_spec (redMap_exists Q q hq i) U ζ ξ h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem red_exists : ∀ (Q q : ℕ) [NeZero Q] [NeZero q], q ∣ Q → ∀ (i : ℤ) (U : Scheme.{0}) (ζ : Prim Q Γ(U, ⊤))
     (ξ : Prim q Γ(U, ⊤)), ξ.1 = ζ.1 ^ (Q / q) → (redMap Q q i).app U 0 (resGen i ζ) = resGen i ξ := by

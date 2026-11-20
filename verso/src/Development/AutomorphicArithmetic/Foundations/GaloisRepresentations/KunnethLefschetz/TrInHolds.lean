@@ -29,7 +29,7 @@ namespace UpperTheory.Gal.KunnethLefschetz
 open GlobalTheory.EtC
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨TranscendenceTraces.wtNormal_holds, TranscendenceTraces.nmlLoc_holds, TranscendenceTraces.nwtDeg_holds, TranscendenceTraces.trDegQ_holds GlobalTheory.T.etaleCohomology_coefficientRing_invariance⟩`.
+Supply the required witnesses or components.
 -/
 theorem trIn_holds : TrIn :=
   ⟨TranscendenceTraces.wtNormal_holds, TranscendenceTraces.nmlLoc_holds, TranscendenceTraces.nwtDeg_holds, TranscendenceTraces.trDegQ_holds GlobalTheory.T.etaleCohomology_coefficientRing_invariance⟩

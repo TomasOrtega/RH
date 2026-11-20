@@ -8,7 +8,7 @@ namespace GlobalTheory.Mem.Col2.HAt
 open scoped TensorProduct
 
 /- English proof (translation)
-Use extensionality with `a b`. Simplify using `[Formalism.L2.Forms.reGL]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem reGL_rfl (n : ℕ) (R : Type) [CommRing R] (g : GL (Fin n) R) : Formalism.L2.Forms.reGL (rfl : n = n) R g = g := by
   ext a b
@@ -18,9 +18,9 @@ section
 variable {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
 
 /- English proof (translation)
-Substitute `h hJ hU hz hz' hδ` using the available equality. Establish `hm : U.map (Formalism.L2.Forms.reGL (rfl : a = a) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)).toMonoidHom = U`. Use extensionality with `g`. Simplify using `[reGL_rfl]`. Rewrite `H` using `[hm, reGL_rfl, reGL_rfl, reGL_rfl]`.
+Substitute using the available equality. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using H`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem adStep_re {a b : ℕ} (h : a = b) (σ : E →ₐ[F] E) (J : Matrix (Fin a) (Fin a) E)
     (U : Subgroup (GL (Fin a) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))) (y y' : GL (Fin a) (E ⊗[F] FiniteAdeleRing (𝓞 F) F))
@@ -39,7 +39,7 @@ theorem adStep_re {a b : ℕ} (h : a = b) (σ : E →ₐ[F] E) (J : Matrix (Fin 
 end
 
 /- English proof (translation)
-Substitute `h` using the available equality. Rewrite using `[reGL_rfl]`. Use extensionality with `a c`. Simplify using `[Formalism.L2.Herm.toGLb]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem toGLb_reindex {E V : Type} [Field E] [AddCommGroup V] [Module E V] {n k : ℕ} (b : Module.Basis (Fin n) E V)
     (h : n = k) (f : V ≃ₗ[E] V) :
@@ -50,7 +50,7 @@ theorem toGLb_reindex {E V : Type} [Field E] [AddCommGroup V] [Module E V] {n k 
   simp [Formalism.L2.Herm.toGLb]
 
 /- English proof (translation)
-Substitute `h1 h2` using the available equality. Rewrite using `[reGL_rfl, reGL_rfl]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 theorem reGL_trans {a b c : ℕ} (h1 : a = b) (h2 : b = c) (R : Type) [CommRing R] (g : GL (Fin a) R) :
     Formalism.L2.Forms.reGL h2 R (Formalism.L2.Forms.reGL h1 R g) = Formalism.L2.Forms.reGL (h1.trans h2) R g := by
@@ -63,9 +63,9 @@ section Gen
 variable {D : D7}
 
 /- English proof (translation)
-Establish `h0` using `hA.1 (Or.inl rfl)`. Establish `hc` using `hcar.car0 u`. Rewrite `h0` using `[hcar.eV u]`. Use `show Formalism.L2.Herm.Ad0S D H u c c' (gx 0 hi γ) v`. Unfold `Formalism.L2.Herm.Ad0S`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `adStep_re (rank_eq_first_level D.R) _ _ _ _ _ _ _ _ _ _ _ _ ?_ hc.U_eq (hc.y_eq c) (hc.y_eq c') ?_ h0` and prove the remaining obligations. Use extensionality with `a b`. Simplify using `[gramN, Formalism.BasicNotions.Spaces.gram0]`. Rewrite using `[toGLb_reindex, reGL_trans]`. Conclude with `(reGL_lin (D.sp.X 0) (rankN D 0 hi) γ.1).symm`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ad0 (H : Formalism.L2.Herm.HermColsCh D) (F : ∀ u, FormsTiedSym D u (H.Ch u) (H.chOf u)) (hcar : CarH H F) (u : D.what₂.Word)
     (hi : 0 ≤ D.R.m) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls 0)
@@ -83,9 +83,9 @@ theorem ad0 (H : Formalism.L2.Herm.HermColsCh D) (F : ∀ u, FormsTiedSym D u (H
     exact (reGL_lin (D.sp.X 0) (rankN D 0 hi) γ.1).symm
 
 /- English proof (translation)
-Take `⟨hβ, h0⟩` from `hA.2 h1 h2`. Establish `hc` using `hcar.carC u i h1 h2 (H.chOf u i c)`. Rewrite `h0` using `[hcar.eV u]`. Use `⟨hβ, ?_⟩` and prove the remaining obligations. Use `adStep_re (rankN D i hi) _ _ _ _ _ _ _ _ _ _ _ _ rfl hc.U_eq (hc.y_eq _) (hc.y_eq _) ?_ h0` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(reGL_lin (D.sp.X i) (rankN D i hi) γ.1).symm`.
+A detailed English derivation is pending.
 -/
 theorem adC (H : Formalism.L2.Herm.HermColsCh D) (F : ∀ u, FormsTiedSym D u (H.Ch u) (H.chOf u)) (hcar : CarH H F) (u : D.what₂.Word)
     (i : ℕ) (h1 : 1 ≤ i) (h2 : i + 1 ≤ D.R.m) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls i)
@@ -99,11 +99,11 @@ theorem adC (H : Formalism.L2.Herm.HermColsCh D) (F : ∀ u, FormsTiedSym D u (H
   exact (reGL_lin (D.sp.X i) (rankN D i hi) γ.1).symm
 
 /- English proof (translation)
-Substitute `hm` using the available equality. Establish `h0` using `hA.1 (Or.inr rfl)`. Establish `hc` using `hcar.carM u`. Rewrite `h0` using `[hcar.eV u]`. Establish `hβ : H.chOf u D.R.m c' = H.chOf u D.R.m c` using `(chOf_m H u c').trans (chOf_m H u c).symm`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `⟨hβ, ?_⟩` and prove the remaining obligations. Establish `key : ∀ (β : H.Ch u D.R.m) (e : β = chM H u) (hb : H.chOf u D.R.m c = β) (hb' : H.chOf u D.R.m c' = β), Formalism.L2.Herm.AdStep D.sp.cm.sig (D.sp.X D.R.m).gram (H.lev u D.R.m h1 hi β).U ((H.cls u D.R.m h1 hi β).y ⟨c, hb⟩) ((H.cls u D.R.m h1 hi β).y ⟨c', hb'⟩) (Formalism.L2.Herm. …`. Introduce `β e hb hb'`. Substitute `e` using the available equality. Use `adStep_re (rankN D D.R.m hi) _ _ _ _ _ _ _ _ _ _ _ _ rfl hc.U_eq (hc.y_eq c) (hc.y_eq c') ?_ h0` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(reGL_lin (D.sp.X D.R.m) (rankN D D.R.m hi) γ.1).symm`. Conclude with `key _ (chOf_m H u c) rfl hβ`.
+A detailed English derivation is pending.
 -/
 theorem adM (H : Formalism.L2.Herm.HermColsCh D) (F : ∀ u, FormsTiedSym D u (H.Ch u) (H.chOf u)) (hcar : CarH H F) (u : D.what₂.Word)
     (i : ℕ) (h1 : 1 ≤ i) (hm : i = D.R.m) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls i)
@@ -126,9 +126,9 @@ theorem adM (H : Formalism.L2.Herm.HermColsCh D) (F : ∀ u, FormsTiedSym D u (H
   exact key _ (chOf_m H u c) rfl hβ
 
 /- English proof (translation)
-Consider the cases of `i with`. Consider the case `zero => exact ad0 H F hcar u hi v c c' γ hA`. Consider the case `succ i`. Introduce `hm`. Break down `Nat.lt_or_eq_of_le hi with h | h` into its components or cases.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `adC H F hcar u (i + 1) (Nat.succ_pos i) h hi v c c' γ hA`. Conclude with `adM H F hcar u (i + 1) (Nat.succ_pos i) h hi v c c' γ hA`.
+A detailed English derivation is pending.
 -/
 theorem adOf_of_adC_gen (H : Formalism.L2.Herm.HermColsCh D) (F : ∀ u, FormsTiedSym D u (H.Ch u) (H.chOf u)) (hcar : CarH H F)
     (u : D.what₂.Word) (i : ℕ) (hi : i ≤ D.R.m) (v : (D.mem u).A.vT) (c c' : (D.mem u).C.cls i)
@@ -145,7 +145,7 @@ theorem adOf_of_adC_gen (H : Formalism.L2.Herm.HermColsCh D) (F : ∀ u, FormsTi
 end Gen
 
 /- English proof (translation)
-Introduce `B X I _ _ l Z H F _ hcar u i hi v c c' γ hA`. Conclude with `adOf_of_adC_gen H F hcar u i hi v c c' γ hA`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem adOf_of_adC : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (H : Formalism.L2.Herm.HermColsCh (I.rec7 l Z)) (F : ∀ u, FormsTiedSym (I.rec7 l Z) u (H.Ch u) (H.chOf u)), (∀ u, I.StdF l Z u (F u) ∧ I.StdLvC l Z u (F u)) → CarH H F → ∀ u i (hi : i ≤ (I.rec7 l Z).R.m) v (c c' : ((I.rec7 l Z).mem u).C.cls i) (γ : UJ (sigD (I.rec7 l Z) : (I.rec7 l Z).host.E →+* (I.rec7 l Z).host.E) (gramN (I.rec7 l Z) i hi)), AdC (F u) i hi c c' γ.1 ((F u).atT.eV v).1 → AdOf H u i c c' (gx i hi γ) v := by
   intro B X I _ _ l Z H F _ hcar u i hi v c c' γ hA

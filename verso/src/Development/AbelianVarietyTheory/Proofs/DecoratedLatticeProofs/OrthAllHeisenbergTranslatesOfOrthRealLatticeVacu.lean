@@ -20,13 +20,13 @@ namespace GlobalTheory.FinOrth
 variable {D : D7} {S T : HSp D}
 
 /- English proof (translation)
-Establish `i6 : BorelSpace (WO S T)` using `⟨rfl⟩`. Establish `: Countable D.host.E` using `(Module.finBasis ℚ D.host.E).equivFun.injective.countable`. Establish `: Countable (Matrix (Fin T.rank) (Fin S.rank) D.host.E)` using `inferInstanceAs (Countable (Fin T.rank → Fin S.rank → D.host.E))`. Establish `: Countable (ratL T S)` using `(Set.countable_range _).to_subtype`. Establish `: MeasurableConstVAdd (ratL T S) (WO S T)` using `⟨fun c => (continuous_const.add continuous_id).measurable⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: VAddInvariantMeasure (ratL T S) (WO S T) μ` using `⟨fun c s _ => measure_preimage_add μ (c : WO S T) s⟩`. Establish `hmp : MeasurePreserving (fun w : WO S T => u + w) μ μ` using `measurePreserving_add_left μ u`. Establish `hemb : MeasurableEmbedding (fun w : WO S T => u + w)` using `(MeasurableEquiv.addLeft u).measurableEmbedding`. Establish `hpre : 𝓕 = (fun w : WO S T => u + w) ⁻¹' ((fun w : WO S T => -u + w) ⁻¹' 𝓕)`. Use extensionality with `w`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Establish `h𝓕' : IsAddFundamentalDomain (ratL T S) ((fun w : WO S T => -u + w) ⁻¹' 𝓕) μ`. Use `h𝓕.preimage_of_equiv (measurePreserving_add_left μ (-u)).quasiMeasurePreserving (e := id) Function.bijective_id fun γ w => ?_` and prove the remaining obligations. Simplify using `only [id, AddSubgroup.vadd_def, vadd_eq_add]`. Normalize the expressions using the abelian group laws.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws.
 
-Establish `e1 : ∫ w in 𝓕, g (w + u) ∂μ = ∫ w in (fun w : WO S T => u + w) ⁻¹' ((fun w : WO S T => -u + w) ⁻¹' 𝓕), g (u + w) ∂μ`. Rewrite using `[← hpre]`. Repeatedly rewrite using `[add_comm _ u]`. Rewrite using `[e1, hmp.setIntegral_preimage_emb hemb]`. Conclude with `h𝓕'.setIntegral_eq h𝓕 fun γ w => by rw [AddSubgroup.vadd_def, vadd_eq_add]; exact hg γ γ.2 w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem setIntegral_add_right {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (μ : Measure (WO S T))
     [μ.IsAddHaarMeasure] {𝓕 : Set (WO S T)} (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) {g : WO S T → E}
@@ -55,18 +55,18 @@ theorem setIntegral_add_right {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ
   exact h𝓕'.setIntegral_eq h𝓕 fun γ w => by rw [AddSubgroup.vadd_def, vadd_eq_add]; exact hg γ γ.2 w
 
 /- English proof (translation)
-Rewrite using `[Complex.star_def, Complex.conj_mul', hn]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem star_mul_self_psi {ψ : AddChar (AF D.host.F) ℂ} (hn : ∀ x, ‖ψ x‖ = 1) (a : AF D.host.F) :
     star (ψ a) * ψ a = 1 := by
   rw [Complex.star_def, Complex.conj_mul', hn]; simp
 
 /- English proof (translation)
-Establish `hs` using `star_mul_self_psi hn`. Unfold `thPair`. Establish `e : ∀ w, heisO ψ S T u f w * star (heisO ψ S T u g w) = f (w + u) * star (g (w + u))`. Introduce `w`. Simplify using `only [heisO, star_mul']`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Take the linear combination `(f (w + u) * star (g (w + u))) * hs (symplOH S T w u)`. Repeatedly rewrite using `[e]`. Use `setIntegral_add_right μ h𝓕 (g := fun w => f w * star (g w)) ?_ u` and prove the remaining obligations. Introduce and unpack `_ ⟨γ, rfl⟩ w`. Express the relevant statement in the definitionally equal form `f (ratW T S γ + w) * star (g (ratW T S γ + w)) = f w * star (g w)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hf.quasi, hg.quasi, star_mul']`. Take the linear combination `(f w * star (g w)) * hs (-(symplOH S T (ratW T S γ) w))`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem thPair_heisO {ψ : AddChar (AF D.host.F) ℂ} (hn : ∀ x, ‖ψ x‖ = 1) (μ : Measure (WO S T))
     [μ.IsAddHaarMeasure] {𝓕 : Set (WO S T)} (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) {f g : WO S T → ℂ}
@@ -86,9 +86,9 @@ theorem thPair_heisO {ψ : AddChar (AF D.host.F) ℂ} (hn : ∀ x, ‖ψ x‖ = 
   linear_combination (f w * star (g w)) * hs (-(symplOH S T (ratW T S γ) w))
 
 /- English proof (translation)
-Unfold `nrm2`. Establish `e : ∀ w, ‖heisO ψ S T u f w‖ ^ 2 = ‖f (w + u)‖ ^ 2` using `fun w => by`. Simplify using `only [heisO, norm_mul, hn, one_mul]`. Repeatedly rewrite using `[e]`. Use `setIntegral_add_right μ h𝓕 (g := fun w => ‖f w‖ ^ 2) ?_ u` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨γ, rfl⟩ w`. Express the relevant statement in the definitionally equal form `‖f (ratW T S γ + w)‖ ^ 2 = ‖f w‖ ^ 2`. Rewrite using `[hf.quasi, norm_mul, hn, one_mul]`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaNormSq_heisenbergOp_invariant {ψ : AddChar (AF D.host.F) ℂ} (hn : ∀ x, ‖ψ x‖ = 1) (μ : Measure (WO S T))
     [μ.IsAddHaarMeasure] {𝓕 : Set (WO S T)} (h𝓕 : IsAddFundamentalDomain (ratL T S) 𝓕 μ) {f : WO S T → ℂ}
@@ -103,7 +103,7 @@ theorem thetaNormSq_heisenbergOp_invariant {ψ : AddChar (AF D.host.F) ℂ} (hn 
   rw [hf.quasi, norm_mul, hn, one_mul]
 
 /- English proof (translation)
-Unfold `thPair`. Rewrite using `[← integral_const_mul]`. Use `congr 1`. Use function extensionality and compare the values at `w`. Simplify using `only [Pi.smul_apply, smul_eq_mul, star_mul']`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -116,29 +116,25 @@ theorem thPair_smul_right (μ : Measure (WO S T)) (𝓕 : Set (WO S T)) (f g : W
   ring
 
 /- English proof (translation)
-Introduce `D ψ θ hθ S T x y hx hy vac hvac v f hf hlat hreal u`. Establish `hψ` using `hvac.1`. Establish `hn : ∀ a, ‖ψ a‖ = 1` using `hψ.1.2.1`. Use `haveI : v.μ.IsAddHaarMeasure := v.covol.1`. Establish `hF : IsAddFundamentalDomain (ratL T S) v.𝓕 v.μ` using `v.covol.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hvt : IsThetaFunO ψ S T vac` using `hvac.2.theta`. Establish `hvl` using `hvac.2.lat`. Establish `key : ∀ g : WO S T, heisO ψ S T g f = f → heisO ψ S T g vac = vac → ψ (symplO S T g u) ≠ 1 → thPair v.μ v.𝓕 f (heisO ψ S T u vac) = 0`. Introduce `g hgf hgv hne`. Establish `hc : heisO ψ S T g (heisO ψ S T u vac) = ψ (symplO S T g u) • heisO ψ S T u vac`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.SplitScalar.heisO_comm, hgv]`. Establish `e` using `thPair_heisO hn v.μ hF hf (GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hvt u) g`. Rewrite `e` using `[hgf, hc, thPair_smul_right]`. Establish `hne' : star (ψ (symplO S T g u)) ≠ 1`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hne` to reduce the goal to its premises. Rewrite using `[← star_star (ψ _), h, star_one]`. Establish `h2 : (1 - star (ψ (symplO S T g u))) * thPair v.μ v.𝓕 f (heisO ψ S T u vac) = 0`. Take the linear combination `e.symm`. Conclude with `(mul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 (Ne.symm hne'))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hA1 : ∀ g ∈ latO S T x.L y.L (fun _ => True), ψ (symplO S T (2 • g) u) = 1`. Use `swap`. Use `push_neg at hA1`. Take `⟨g, hg, hne⟩` from `hA1`. Conclude with `key (2 • g) (hlat.1 g hg) (hvl.1 g hg) hne`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Distinguish the cases in `hA2 : ∀ e, IsSplitIdem D e → ∀ g ∈ latO S T x.L y.L (fun _ => True), IsHalf e g → ψ (symplO S T g u) = 1`. Use `swap`. Use `push_neg at hA2`. Take `⟨e, he, g, hg, hh, hne⟩` from `hA2`. Conclude with `key g (hlat.2 e he g hg hh) (hvl.2 e he g hg hh) hne`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Choose the witnesses or unpack the hypotheses as in `⟨ur, uf, hr, hfi, rfl⟩ : ∃ ur uf : WO S T, ur.map (finPart D) = 0 ∧ uf.map (infPart D) = 0 ∧ u = ur + uf := by`. Use `⟨GlobalTheory.FinTranslate.eInf D • u, (1 - GlobalTheory.FinTranslate.eInf D) • u, ?_, ?_, ?_⟩` and prove the remaining obligations. Use extensionality with `i j`. Conclude with `GlobalTheory.ThetaClosed.finPart_eInf_smul (u i j)`. Use extensionality with `i j`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `GlobalTheory.ThetaClosed.infPart_one_sub_eInf_smul (u i j)`. Rewrite using `[← add_smul, add_sub_cancel, one_smul]`. Establish `hlf : ∀ g ∈ latO S T x.L y.L (fun _ => True), g.map (infPart D) = 0` using `fun g hg => GlobalTheory.SplitScalar.latO_fin hg`. Establish `hsf : ∀ g : WO S T, g.map (infPart D) = 0 → symplO S T g (ur + uf) = symplO S T g uf`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.LatVac.symplO_add_right, GlobalTheory.SplitScalar.symplO_skew S T ur g, GlobalTheory.SplitScalar.symplO_real_fin S T hr hg, neg_zero, zero_add]`. Establish `hv' : IsVacO ψ θ S T x.s y.s x.L y.L (heisO ψ S T uf vac)`. Establish `hv2` using `hvac`. Take `⟨-, hinf, hth, hl, hfock, hnorm⟩` from `hv2`. Use `⟨hψ, hinf, GlobalTheory.ThetaClosed.isThetaFunO_heisO_all hψ hth uf, ⟨fun g hg => ?_, fun e he g hg hh => ?_⟩, fun τ z => ?_, hnorm.1, fun p hp => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.SplitScalar.heisO_comm, hl.1 g hg, ← hsf _ (hlf _ (AddSubgroup.nsmul_mem _ hg 2)), hA1 g hg, one_smul]`. Rewrite using `[GlobalTheory.SplitScalar.heisO_comm, hl.2 e he g hg hh, ← hsf _ (hlf g hg), hA2 e he g hg hh, one_smul]`. Establish `h0` using `hfock τ z`. Unfold `annih at h0 ⊢`. Rewrite using `[GlobalTheory.FinTranslate.dRho_heisO hinf hfi, GlobalTheory.FinTranslate.dRho_heisO hinf hfi]`.
-
-Establish `h1` using `congrArg (GlobalTheory.FinTranslate.heisL S T ψ uf) h0`. Rewrite `h1` using `[map_add, map_smul, map_zero]`. Conclude with `h1`. Use `show nrm2 p.1 p.2 (heisO ψ S T uf vac) = 1 haveI := hp.1`. Rewrite using `[thetaNormSq_heisenbergOp_invariant hn p.1 hp.2.1 hth uf]`.
-
-Conclude with `hnorm.2 p hp`. Take `⟨c, -, hc⟩` from `GlobalTheory.VacUnique.vacUniqueO D ψ θ hψ hθ S T x.s y.s hx.sig hy.sig hx.cart hy.cart x.L y.L hx.sd hy.sd vac _ hvac hv'`. Establish `e : heisO ψ S T (ur + uf) vac = c • heisO ψ S T ur vac`. Rewrite using `[GlobalTheory.SplitScalar.heisO_add_of_orth ψ S T (GlobalTheory.SplitScalar.symplO_real_fin S T hr hfi), hc, GlobalTheory.SplitScalar.heisO_smul]`. Rewrite using `[e, thPair_smul_right, hreal ur hr, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem orth_all : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (θ : InfFam D), IsInfFam θ → ∀ (S T : HSp D) (x : DefSp S) (y : DefSp T), x.Is → y.Is → ∀ vac, IsVacO ψ θ S T x.s y.s x.L y.L vac → ∀ (v : VolM D T.rank S.rank) f, IsThetaFunO ψ S T f → IsLatVac (heisO ψ S T) (latO S T x.L y.L fun _ => True) f → (∀ u : WO S T, u.map (finPart D) = 0 → thPair v.μ v.𝓕 f (heisO ψ S T u vac) = 0) → ∀ u : WO S T, thPair v.μ v.𝓕 f (heisO ψ S T u vac) = 0 := by
   intro D ψ θ hθ S T x y hx hy vac hvac v f hf hlat hreal u

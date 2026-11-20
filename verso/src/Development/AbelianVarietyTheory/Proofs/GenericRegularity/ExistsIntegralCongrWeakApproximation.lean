@@ -4,21 +4,19 @@ import ReciprocityTheory.ReductiveGroups.ArithmeticGeometry.ValuationLifting.RAp
 namespace GlobalTheory.WeakApprox
 
 /- English proof (translation)
-Use `haveI := Fintype.ofFinite ι`. Establish `hn : ∀ i, ∃ n : ℤ, 1 ≤ n ∧ v i a ≤ ((Multiplicative.ofAdd n : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Introduce `i`. Break down `eq_or_ne (v i a) 0 with h | h` into its components or cases. Conclude with `⟨1, le_rfl, by simp [h]⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Take `⟨m, hm⟩` from `WithZero.ne_zero_iff_exists.mp h`. Use `⟨max 1 (Multiplicative.toAdd m), le_max_left _ _, ?_⟩` and prove the remaining obligations. Rewrite using `[← hm, WithZero.coe_le_coe]`. Conclude with `le_max_right (1 : ℤ) (Multiplicative.toAdd m)`. Use `choose n hn1 hn2 using hn`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `ReciprocityTheory.ChartRestriction.G.Lift.exists_val_eq v hgen hind (fun i => if i = i₀ then -1 else n i)`. Establish `ht0 : v i₀ t < 1`. Rewrite using `[ht i₀, if_pos rfl, ← WithZero.coe_one, WithZero.coe_lt_coe, ← ofAdd_zero, Multiplicative.ofAdd_lt]`. Evaluate the numerical expressions. Establish `h1t : v i₀ (1 + t) = 1`.
+Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(v i₀).map_add_eq_of_lt_left (by rwa [(v i₀).map_one]), (v i₀).map_one]`. Establish `hne : 1 + t ≠ 0`. Introduce `h0`. Rewrite `h1t` using `[h0, (v i₀).map_zero]`. Conclude with `zero_ne_one h1t`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Use `⟨a / (1 + t), fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀]`. Distinguish the cases in `hi : i = i₀`. Substitute `hi` using the available equality. Rewrite using `[h1t, div_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ha`. Establish `hti : v i t = ((Multiplicative.ofAdd (n i) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Rewrite using `[ht i, if_neg hi]`. Establish `hlt : v i 1 < v i t`. Rewrite using `[hti, (v i).map_one, ← WithZero.coe_one, WithZero.coe_lt_coe, ← ofAdd_zero, Multiplicative.ofAdd_lt]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Combine the linear relations using `[hn1 i]`. Rewrite using `[(v i).map_add_eq_of_lt_right hlt, hti]`. Conclude with `div_le_one_of_le₀ (hn2 i) zero_le'`. Establish `hsub : a - a / (1 + t) = a * t / (1 + t)`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsub, map_div₀, h1t, div_one, map_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_integral_congr (Ω : Type) [Field Ω] (ι : Type) [Finite ι]
     (v : ι → Valuation Ω (WithZero (Multiplicative ℤ)))

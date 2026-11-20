@@ -16,9 +16,9 @@ open GlobalTheory GlobalTheory.ArInt GlobalTheory.CxPts GlobalTheory.Cartier Glo
 namespace GlobalTheory.HSNef
 
 /- English proof (translation)
-Introduce `hA k _ X _ p D hX L M e`. Establish `hS : L.SemiPos D → M.SemiPos D` using `HermLB.Isometric.semiPos L M D e`. Use `⟨hS, fun hL => ?_, fun hL => ⟨hS hL.1, fun h H x => hL.2 h (e.symm.isArithHeight hX H) x⟩, fun a ha => e.isSelfInter hX ha, fun hL => ?_⟩` and prove the remaining obligations. Take `⟨h, H⟩` from `(hA.arExists k X p D hX).1 L`. Establish `HM` using `e.isArithHeight hX H`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h₁, h₂⟩` from `(H.isNef_iff hX).1 hL`. Conclude with `(HM.isNef_iff hX).2 ⟨hS h₁, h₂⟩`. Take `⟨w, hw, -⟩` from `e.symm`. Conclude with `IsAmpleLB.of_lbIso hL M.isLB ⟨w, hw⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isometric_keeps : GlobalTheory.Published.ArCalc → ∀ (k : Type) [CommRing k] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp k)
     (D : ℕ), IsArithVar p D → ∀ L M : HermLB p, L.Isometric M → (L.SemiPos D → M.SemiPos D) ∧

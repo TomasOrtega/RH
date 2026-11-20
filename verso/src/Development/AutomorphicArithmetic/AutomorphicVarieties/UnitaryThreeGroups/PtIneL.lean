@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 open UpperTheory.V UpperTheory.V.Base UpperTheory.V.HV UpperTheory.V.Alg UpperTheory.V.U3
 
 /- English proof (translation)
-Use `forall_congr' fun a => forall_congr' fun b => imp_congr_left ?_` and prove the remaining obligations. Use `show _ ↔ (b : ℕ) < a`. Simplify using `only [wt, wt1]`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 private theorem up_iff {R : Type} [CommRing R] (X : Matrix (Fin 3) (Fin 3) R) :
     (∀ a b, wt a b < 0 → X a b = 0) ↔ X.BlockTriangular id := by
@@ -17,7 +17,7 @@ private theorem up_iff {R : Type} [CommRing R] (X : Matrix (Fin 3) (Fin 3) R) :
   omega
 
 /- English proof (translation)
-Rewrite using `[theta_val]`. Generalize the expression as in `((u⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) = v`. Apply the tactic sequence `fin_cases a <;> fin_cases b <;> simp [Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]`.
+Rewrite the conclusion using the stated equalities. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 -/
 private theorem theta_entry {R : Type} [CommRing R] (u : GL (Fin 3) R) (a b : Fin 3) :
     (theta u : Matrix (Fin 3) (Fin 3) R) a b = ((u⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) b.rev a.rev := by
@@ -26,19 +26,17 @@ private theorem theta_entry {R : Type} [CommRing R] (u : GL (Fin 3) R) (a b : Fi
   fin_cases a <;> fin_cases b <;> simp [Matrix.mul_apply, Fin.sum_univ_three, Jmat, Fin.rev]
 
 /- English proof (translation)
-Break down `Int.units_eq_one_or s with rfl | rfl` into its components or cases. Rewrite using `[sgnAct_one]`. Conclude with `⟨hu, fun _ h => h⟩`. Rewrite using `[sgnAct_neg_one]`. Establish `hv : ∀ a b, wt a b < 0 → ((u⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) a b = 0`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hu`, the goal using `[up_iff]`. Use `letI := u.invertible`. Rewrite using `[Matrix.coe_units_inv]`. Conclude with `Matrix.blockTriangular_inv_of_blockTriangular hu`. Use `⟨fun a b hab => ?_, fun t ht a => ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[theta_entry]`. Use `hv _ _ ?_` and prove the remaining obligations. Apply the tactic sequence `have : wt b.rev a.rev = wt a b := by fin_cases a <;> fin_cases b <;> rfl`. Rewrite using `[this]` and apply the resulting hypothesis. Rewrite using `[theta_entry]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ∀ i, ((u⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) i i * (u : Matrix (Fin 3) (Fin 3) R) i i = 1`. Introduce `i`. Establish `e` using `congrFun (congrFun (Units.inv_mul u) i) i`. Establish `u10` using `hu 1 0 (by decide)`. Establish `u20` using `hu 2 0 (by decide)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `u21` using `hu 2 1 (by decide)`. Establish `v10` using `hv 1 0 (by decide)`. Establish `v20` using `hv 2 0 (by decide)`. Establish `v21` using `hv 2 1 (by decide)`. Generalize the expression as in `((u⁻¹ : GL (Fin 3) R) : Matrix (Fin 3) (Fin 3) R) = v at *`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `fin_cases i <;> simpa [Matrix.mul_apply, Fin.sum_univ_three, u10, u20, u21, v10, v20, v21] using e`. Establish `e` using `hd a.rev`. Rewrite `e` using `[ht]`. Apply the tactic sequence `have w : wt1 a.rev = -wt1 a := by fin_cases a <;> rfl`. Rewrite `e` using `[w, _root_.zpow_neg]`.
-
-Conclude with `Units.mul_inv_eq_one.1 e`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem sgn_up {R : Type} [Field R] (s : ℤˣ) (u : GL (Fin 3) R)
     (hu : ∀ a b, wt a b < 0 → (u : Matrix (Fin 3) (Fin 3) R) a b = 0) :
@@ -79,9 +77,9 @@ private theorem sgn_up {R : Type} [Field R] (s : ℤˣ) (u : GL (Fin 3) R)
       exact Units.mul_inv_eq_one.1 e
 
 /- English proof (translation)
-Set `w : GG 3 R` to `SemidirectProduct.inr (r g).right`. Establish `hM : GG.ofGL (w * GG.ofGL h * (r g)⁻¹).left = w * GG.ofGL h * (r g)⁻¹` using `SemidirectProduct.ext rfl (by simp [w])`. Use `⟨(w * GG.ofGL h * (r g)⁻¹).left, fun s hs => ?_⟩` and prove the remaining obligations. Establish `e : conjBy (w * GG.ofGL h * (r g)⁻¹).left r s = w * conjBy h r (g⁻¹ * s * g) * w⁻¹` using `by show GG.ofGL _ * r s * (GG.ofGL _)⁻¹ = w * (GG.ofGL h * r (g⁻¹ * s * g) * (GG.ofGL h)⁻¹) * w⁻¹`. Rewrite using `[hM, map_mul, map_mul, map_inv]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `group`. Rewrite using `[e]`. Simplify using `[w]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem move {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (h : GL (Fin 3) R) (g : G) :
     ∃ M : GL (Fin 3) R, ∀ s, (r (g⁻¹ * s * g)).right = 1 →
@@ -98,7 +96,7 @@ private theorem move {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (h 
   simp [w]
 
 /- English proof (translation)
-Establish `: (conjBy M r s).left = M * (r s).left * M⁻¹` using `by simp [conjBy, hs]`. Simplify using `only [GG.mat, this, Units.val_mul]`. Rewrite using `[Matrix.coe_units_inv, Matrix.charpoly_units_conj]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem charpoly_conj {G R : Type} [Group G] [CommRing R] (r : G →* GG 3 R) (M : GL (Fin 3) R) (s : G)
     (hs : (r s).right = 1) : (conjBy M r s).mat.charpoly = (r s).mat.charpoly := by
@@ -107,21 +105,21 @@ private theorem charpoly_conj {G R : Type} [Group G] [CommRing R] (r : G →* GG
   rw [Matrix.coe_units_inv, Matrix.charpoly_units_conj]
 
 /- English proof (translation)
-Introduce `hI Ω _ _ _ K _ _ _ l _ c N _ e ψ D U g₁ _ r h A hA`. Take `⟨A₀, -, hD, hIn, -, -, -, hc⟩` from `dat_loc D`. Take `⟨x, hxD, hxI⟩` from `hc A hA`. Take `⟨f, -, hf1, hf2⟩` from `h.loc`. Take `⟨⟨b, hb⟩, -⟩` from `@Loc.lemma2b hI.loc l _ c.O _ _ c.dvr _ _ c.fin (UpperTheory.V.Base.dvrFacts l c.O).2.2.2.1 D.loc U (PadicAlgCl l) _ _ _ (r.comp D.ι) ⟨f, hf2, hf1⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨M, hM⟩` from `move r b⁻¹ x`. Establish `hη : ∀ s, D.η (x⁻¹ * s * x) = D.η s` using `fun s => by`. Simplify using `only [map_mul, map_inv, inv_mul_cancel_comm]`. Establish `hΨ : ∀ s, D.ΨQ (x⁻¹ * s * x) = D.ΨQ s` using `fun s => by`. Simplify using `only [map_mul, map_inv, inv_mul_cancel_comm]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ s σ, D.ι σ = x⁻¹ * s * x → D.η s = 1 → (∀ a a', wt a a' < 0 → (conjBy M r s).mat a a' = 0) ∧ (σ ∈ Loc.Iq l → ∀ a, (conjBy M r s).mat a a = (r0 D.η D.ΨQ s).mat a a)`. Introduce `s σ hσ hs`. Establish `h1 : D.η (D.ι σ) = 1` using `by rw [hσ, hη, hs]`. Establish `e1` using `hM s (by rw [h.mult, hη, hs])`. Rewrite `e1` using `[← hσ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨k1, k2⟩` from `sgn_up (r x).right (conjBy b⁻¹ r (D.ι σ)).left (hb.tri σ h1)`. Rewrite `k1`, `k2` using `[← e1]`. Use `⟨k1, fun hσI a => ?_⟩` and prove the remaining obligations. Rewrite using `[show (r0 D.η D.ΨQ s).mat a a = ((D.ΨQ s ^ wt1 a : (PadicAlgCl l)ˣ) : PadicAlgCl l) by`. Simplify using `only [GG.mat, unitaryThreeReflection_left, tor_val, Matrix.diagonal_apply_eq]]`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `k2 (D.ΨQ s) (fun a => (hb.ine σ hσI h1 a).trans ?_) a` and prove the remaining obligations. Rewrite using `[← hΨ, ← hσ]`. Conclude with `congrArg Units.val (map_zpow (Units.map (algebraMap c.O (PadicAlgCl l)).toMonoidHom) (D.Ψ (D.ι σ)) (wt1 a))`. Establish `kI : ∀ s ∈ Ine (F` using `ℚ) A, D.η s = 1 ∧ (∀ a a', wt a a' < 0 → (conjBy M r s).mat a a' = 0) ∧ ∀ a, (conjBy M r s).mat a a = (r0 D.η D.ΨQ s).mat a a := by`. Introduce `s hs`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(hxI s).1 hs` as an intermediate fact. Rewrite `this` using `[← hIn]`. Take `⟨σ, hσI, hσ⟩` from `this`. Establish `h1 : D.η s = 1` using `by rw [← hη, ← hσ]; exact D.η_unr σ hσI`. Conclude with `⟨h1, (key s σ hσ h1).1, (key s σ hσ h1).2 hσI⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun s hs => ?_, M, fun s hs h1 => ?_, fun s hs => (kI s hs).2.2⟩` and prove the remaining obligations. Take `⟨h1, h2, h3⟩` from `kI s hs`. Rewrite using `[← charpoly_conj r M s ((h.mult s).trans h1), Matrix.charpoly_of_upperTriangular _ ((up_iff _).1 h2), Matrix.charpoly_of_upperTriangular (r0 D.η D.ΨQ s).mat (Matrix.blockTriangular_diagonal _)]`. Simplify using `only [h3]`. Use `(hxD s).1 hs` as an intermediate fact.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[← hD]`. Take `⟨σ, hσ⟩` from `this`. Conclude with `(key s σ hσ h1).1`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.U3.pt_inertia_above :
     CohInp → ∀ {Ω : Type} [Field Ω] [CharZero Ω] [IsAlgClosure ℚ Ω] {K : Type} [Field K] [NumberField K] [Algebra K Ω]

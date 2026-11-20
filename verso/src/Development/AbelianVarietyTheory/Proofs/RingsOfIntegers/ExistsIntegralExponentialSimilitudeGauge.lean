@@ -19,7 +19,7 @@ section Basic
 variable {V : Type} [CommRing V] {d : ℕ} (K : Type) [Field K] [Algebra ℚ K] [Algebra V K]
 
 /- English proof (translation)
-Unfold `FB.expS`. Rewrite using `[PowerSeries.subst_zero_eq_C_constantCoeff]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem expS_zero' {n : ℕ} : FB.expS K (0 : PS K n d) = 1 := by
   unfold FB.expS
@@ -27,7 +27,7 @@ theorem expS_zero' {n : ℕ} : FB.expS K (0 : PS K n d) = 1 := by
   simp
 
 /- English proof (translation)
-Establish `h0 : ∀ j : Fin n, GP ((fun _ => 0 : Fin n → Pt K n d) j)` using `fun _ => gp_zero₂`. Rewrite using `[← gt_const_ev_eq _ h0, gt_ev_expS _ h0 g hg]`. Establish `: ev (fun _ => 0 : Fin n → Pt K n d) g = 0` using `MvPowerSeries.subst_zero_of_constantCoeff_zero hg`. Rewrite using `[this, expS_zero', map_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_expS {n : ℕ} (g : PS K n d) (hg : MvPowerSeries.constantCoeff g = 0) :
     MvPowerSeries.constantCoeff (FB.expS K g) = 1 := by
@@ -37,7 +37,7 @@ theorem cc_expS {n : ℕ} (g : PS K n d) (hg : MvPowerSeries.constantCoeff g = 0
   rw [this, expS_zero', map_one]
 
 /- English proof (translation)
-Apply `hi` to reduce the goal to its premises. Use `congrArg MvPowerSeries.constantCoeff hu` as an intermediate fact. Rewrite `this` using `[cc_expS K g hg, MvPowerSeries.constantCoeff_map]`. Rewrite using `[this, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_eq_one (hi : Function.Injective (algebraMap V K)) {n : ℕ} (g : PS K n d)
     (hg : MvPowerSeries.constantCoeff g = 0) (u : PS V n d) (hu : FB.toK K u = FB.expS K g) :
@@ -73,13 +73,13 @@ def intLog (hi : Function.Injective (algebraMap V K)) (n d : ℕ) : AddSubgroup 
 def mp {n : ℕ} (x : Pt V n d) : Pt K n d := fun i => FB.toK K (x i)
 
 /- English proof (translation)
-Introduce `i` and use `by simp [mp, MvPowerSeries.constantCoeff_map, hx i]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem constantCoeff_baseChange_eq_zero {n : ℕ} {x : Pt V n d} (hx : GP x) : GP (mp K x) := fun i => by
   simp [mp, MvPowerSeries.constantCoeff_map, hx i]
 
 /- English proof (translation)
-Unfold `ev`. Rewrite using `[FB.toK, MvPowerSeries.map_subst (gt_hasSubst a ha)]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toK_ev {m n : ℕ} (a : Fin m → Pt V n d) (ha : ∀ j, GP (a j)) (f : PS V m d) :
     FB.toK K (ev a f) = ev (fun j => mp K (a j)) (FB.toK K f) := by
@@ -88,21 +88,21 @@ theorem toK_ev {m n : ℕ} (a : Fin m → Pt V n d) (ha : ∀ j, GP (a j)) (f : 
   rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[mp, pt]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mp_pt {n : ℕ} (j : Fin n) : mp K (pt V d j) = pt K d j := by
   funext i; simp [mp, pt]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Simplify using `[mp]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem mp_zero {n : ℕ} : mp K (0 : Pt V n d) = 0 := by
   funext i; simp [mp]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `FB.toK K (ev ![x] (φ i)) = ev ![mp K x] (FB.toK K (φ i))`. Rewrite using `[toK_ev K _ (single_point_zero_constant hx)]`. Use `congr 1`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `fin_cases j`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem mp_comp1 {n : ℕ} (φ : Pt V 1 d) {x : Pt V n d} (hx : GP x) :
     mp K (comp1 φ x) = comp1 (mp K φ) (mp K x) := by
@@ -113,7 +113,7 @@ theorem mp_comp1 {n : ℕ} (φ : Pt V 1 d) {x : Pt V n d} (hx : GP x) :
   funext j; fin_cases j; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Express the relevant statement in the definitionally equal form `FB.toK K (ev ![x, y] (F i)) = ev ![mp K x, mp K y] (FB.toK K (F i))`. Rewrite using `[toK_ev K _ (pair_points_zero_constant hx hy)]`. Use `congr 1`. Apply the tactic sequence `funext j; fin_cases j <;> rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mp_addOf {n : ℕ} (F : Fin d → PS V 2 d) {x y : Pt V n d} (hx : GP x) (hy : GP y) :
     mp K (addOf F x y) = addOf (fun i => FB.toK K (F i)) (mp K x) (mp K y) := by
@@ -124,7 +124,7 @@ theorem mp_addOf {n : ℕ} (F : Fin d → PS V 2 d) {x y : Pt V n d} (hx : GP x)
   funext j; fin_cases j <;> rfl
 
 /- English proof (translation)
-Establish `ha' : ∀ j, GP (mp K (a j))` using `fun j => constantCoeff_baseChange_eq_zero K (ha j)`. Conclude with `⟨gt_const_ev _ ha' g hg, ev a u, by rw [toK_ev K a ha, hu, gt_ev_expS _ ha' g hg]⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem ev_mem (hi : Function.Injective (algebraMap V K)) {m n : ℕ} (a : Fin m → Pt V n d) (ha : ∀ j, GP (a j))
     (g : PS K m d) (hg : MvPowerSeries.constantCoeff g = 0) (u : PS V m d) (hu : FB.toK K u = FB.expS K g) :
@@ -133,7 +133,7 @@ theorem ev_mem (hi : Function.Injective (algebraMap V K)) {m n : ℕ} (a : Fin m
   exact ⟨gt_const_ev _ ha' g hg, ev a u, by rw [toK_ev K a ha, hu, gt_ev_expS _ ha' g hg]⟩
 
 /- English proof (translation)
-Rewrite using `[gt_ev_ev' A _ hA (pair_points_zero_constant hp hq), eval_pair_points]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem germEv_germEv_two_points {m n : ℕ} (A : Fin m → Pt K n d) (hA : ∀ j, GP (A j)) {p q : Pt K m d} (hp : GP p) (hq : GP q)
     (f : PS K 2 d) : ev A (ev ![p, q] f) = ev ![evP A p, evP A q] f := by
@@ -149,34 +149,32 @@ def hq {n : ℕ} (x z : Pt V n d) : PS K n d ⧸ intLog K hi n d :=
   QuotientAddGroup.mk' _ (ev ![mp K x, mp K z] h)
 
 /- English proof (translation)
-Introduce `i` and use `by simp [FB.FK, FGLaw.mapF, MvPowerSeries.constantCoeff_map, B.G.const i]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GP_FK : ∀ i, MvPowerSeries.constantCoeff (B.FK K i) = 0 := fun i => by
   simp [FB.FK, FGLaw.mapF, MvPowerSeries.constantCoeff_map, B.G.const i]
 
 /- English proof (translation)
-The claim follows from `B.A.const a`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_act_eq_zero (a : O) : GP (B.A.act a) := B.A.const a
 
 /- English proof (translation)
-The claim follows from `constantCoeff_baseChange_eq_zero K (constantCoeff_act_eq_zero B a)`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_actK_eq_zero (a : O) : GP (B.actK K a) := constantCoeff_baseChange_eq_zero K (constantCoeff_act_eq_zero B a)
 
 variable {B K h}
 
 /- English proof (translation)
-Use `congrArg MvPowerSeries.constantCoeff hh.ax0` as an intermediate fact. Rewrite `this` using `[gt_const_ev_eq _ (pair_points_zero_constant gp_zero₂ (gp_pt 0)), map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cc_h (hh : B.IsCanonGauge K h) : MvPowerSeries.constantCoeff h = 0 := by
   have := congrArg MvPowerSeries.constantCoeff hh.ax0
   rwa [gt_const_ev_eq _ (pair_points_zero_constant gp_zero₂ (gp_pt 0)), map_zero] at this
 
 /- English proof (translation)
-Establish `hz'` using `single_point_zero_constant (constantCoeff_baseChange_eq_zero K hz)`. Use `congrArg (ev ![mp K z]) hh.ax0` as an intermediate fact. Rewrite `this` using `[germEv_germEv_two_points K _ hz' gp_zero₂ (gp_pt 0), evP_zero _ hz', evP_pt _ hz', gt_ev_zero _ hz']`. Rewrite using `[hq, mp_zero]`. Use `erw [this]`.
-
-Conclude with `map_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hq_zero_left (hh : B.IsCanonGauge K h) {n : ℕ} {z : Pt V n d} (hz : GP z) : hq K hi h 0 z = 0 := by
   have hz' := single_point_zero_constant (constantCoeff_baseChange_eq_zero K hz)
@@ -187,9 +185,7 @@ theorem hq_zero_left (hh : B.IsCanonGauge K h) {n : ℕ} {z : Pt V n d} (hz : GP
   exact map_zero _
 
 /- English proof (translation)
-Establish `hz'` using `single_point_zero_constant (constantCoeff_baseChange_eq_zero K hz)`. Use `congrArg (ev ![mp K z]) hh.ax1` as an intermediate fact. Rewrite `this` using `[germEv_germEv_two_points K _ hz' (gp_pt 0) gp_zero₂, evP_zero _ hz', evP_pt _ hz', gt_ev_zero _ hz']`. Rewrite using `[hq, mp_zero]`. Use `erw [this]`.
-
-Conclude with `map_zero _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hq_zero_right (hh : B.IsCanonGauge K h) {n : ℕ} {z : Pt V n d} (hz : GP z) : hq K hi h z 0 = 0 := by
   have hz' := single_point_zero_constant (constantCoeff_baseChange_eq_zero K hz)
@@ -200,11 +196,11 @@ theorem hq_zero_right (hh : B.IsCanonGauge K h) {n : ℕ} {z : Pt V n d} (hz : G
   exact map_zero _
 
 /- English proof (translation)
-Establish `h0` using `cc_h hh`. Establish `p0 : GP (pt K (n` using `3) d 0) := gp_pt 0`. Establish `p1 : GP (pt K (n` using `3) d 1) := gp_pt 1`. Establish `p2 : GP (pt K (n` using `3) d 2) := gp_pt 2`. Establish `pa` using `gp_addOf _ (GP_FK B K) _ _ p0 p1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ j, GP ((fun j => mp K (![x, y, z] j)) j)` using `fun j => constantCoeff_baseChange_eq_zero K (triple_points_zero_constant hx hy hz j)`. Establish `m` using `ev_mem K hi ![x, y, z] (triple_points_zero_constant hx hy hz) _ (by`. Rewrite using `[map_sub, map_add, gt_const_ev _ (pair_points_zero_constant p0 p2) _ h0, gt_const_ev _ (pair_points_zero_constant p1 p2) _ h0, gt_const_ev _ (pair_points_zero_constant pa p2) _ h0]`. Use the proof step `simp) _ hh.ph1`. Rewrite `m` using `[gt_ev_sub _ hA, gt_ev_add _ hA, germEv_germEv_two_points K _ hA p0 p2, germEv_germEv_two_points K _ hA p1 p2, germEv_germEv_two_points K _ hA pa p2, evP_addOf _ hA _ _ _ p0 p1, evP_pt _ hA, evP_pt _ hA, evP_pt _ hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `hq`. Rewrite using `[← map_add, mp_addOf K _ hx hy, eq_comm, ← sub_eq_zero, ← map_sub, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]`. Conclude with `m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hq_add_left (hh : B.IsCanonGauge K h) {n : ℕ} {x y z : Pt V n d} (hx : GP x) (hy : GP y) (hz : GP z) :
     hq K hi h (addOf B.G.F x y) z = hq K hi h x z + hq K hi h y z := by
@@ -225,11 +221,11 @@ theorem hq_add_left (hh : B.IsCanonGauge K h) {n : ℕ} {x y z : Pt V n d} (hx :
   exact m
 
 /- English proof (translation)
-Establish `h0` using `cc_h hh`. Establish `p0 : GP (pt K (n` using `3) d 0) := gp_pt 0`. Establish `p1 : GP (pt K (n` using `3) d 1) := gp_pt 1`. Establish `p2 : GP (pt K (n` using `3) d 2) := gp_pt 2`. Establish `pa` using `gp_addOf _ (GP_FK B K) _ _ p1 p2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ j, GP ((fun j => mp K (![x, y, z] j)) j)` using `fun j => constantCoeff_baseChange_eq_zero K (triple_points_zero_constant hx hy hz j)`. Establish `m` using `ev_mem K hi ![x, y, z] (triple_points_zero_constant hx hy hz) _ (by`. Rewrite using `[map_sub, map_add, gt_const_ev _ (pair_points_zero_constant p0 p1) _ h0, gt_const_ev _ (pair_points_zero_constant p0 p2) _ h0, gt_const_ev _ (pair_points_zero_constant p0 pa) _ h0]`. Use the proof step `simp) _ hh.ph2`. Rewrite `m` using `[gt_ev_sub _ hA, gt_ev_add _ hA, germEv_germEv_two_points K _ hA p0 p1, germEv_germEv_two_points K _ hA p0 p2, germEv_germEv_two_points K _ hA p0 pa, evP_addOf _ hA _ _ _ p1 p2, evP_pt _ hA, evP_pt _ hA, evP_pt _ hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `hq`. Rewrite using `[← map_add, mp_addOf K _ hy hz, eq_comm, ← sub_eq_zero, ← map_sub, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]`. Conclude with `m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hq_add_right (hh : B.IsCanonGauge K h) {n : ℕ} {x y z : Pt V n d} (hx : GP x) (hy : GP y) (hz : GP z) :
     hq K hi h x (addOf B.G.F y z) = hq K hi h x y + hq K hi h x z := by
@@ -250,11 +246,11 @@ theorem hq_add_right (hh : B.IsCanonGauge K h) {n : ℕ} {x y z : Pt V n d} (hx 
   exact m
 
 /- English proof (translation)
-Establish `h0` using `cc_h hh`. Establish `p0 : GP (pt K (n` using `2) d 0) := gp_pt 0`. Establish `p1 : GP (pt K (n` using `2) d 1) := gp_pt 1`. Establish `pa` using `gp_comp1 _ _ (constantCoeff_actK_eq_zero B K a) p0`. Establish `pb` using `gp_comp1 _ _ (constantCoeff_actK_eq_zero B K (star a)) p1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA : ∀ j, GP ((fun j => mp K (![x, z] j)) j)` using `fun j => constantCoeff_baseChange_eq_zero K (pair_points_zero_constant hx hz j)`. Establish `m` using `ev_mem K hi ![x, z] (pair_points_zero_constant hx hz) _ (by`. Rewrite using `[map_sub, gt_const_ev _ (pair_points_zero_constant pa p1) _ h0, gt_const_ev _ (pair_points_zero_constant p0 pb) _ h0]`. Use the proof step `simp) _ (hh.ad a)`. Rewrite `m` using `[gt_ev_sub _ hA, germEv_germEv_two_points K _ hA pa p1, germEv_germEv_two_points K _ hA p0 pb, evP_comp1 _ hA _ _ p0, evP_comp1 _ hA _ _ p1, evP_pt _ hA, evP_pt _ hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `hq`. Rewrite using `[mp_comp1 K _ hx, mp_comp1 K _ hz, ← sub_eq_zero, ← map_sub, QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]`. Conclude with `m`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hq_act (hh : B.IsCanonGauge K h) (a : O) {n : ℕ} {x z : Pt V n d} (hx : GP x) (hz : GP z) :
     hq K hi h (comp1 (B.A.act a) x) z = hq K hi h x (comp1 (B.A.act (star a)) z) := by
@@ -276,9 +272,9 @@ theorem hq_act (hh : B.IsCanonGauge K h) (a : O) {n : ℕ} {x z : Pt V n d} (hx 
 variable (B)
 
 /- English proof (translation)
-Establish `p0 : GP (pt V (n` using `2) d 0) := gp_pt 0`. Establish `p1 : GP (pt V (n` using `2) d 1) := gp_pt 1`. Establish `hA` using `pair_points_zero_constant hx hy`. Use `congrArg (evP ![x, y]) (B.A.hom a)` as an intermediate fact. Rewrite `this` using `[evP_comp1 _ hA _ _ (gp_addOf _ B.G.const _ _ p0 p1), evP_addOf _ hA _ _ _ p0 p1, evP_addOf _ hA _ _ _ (gp_comp1 _ _ (constantCoeff_act_eq_zero B a) p0) (gp_comp1 _ _ (constantCoeff_act_eq_zero B a) p1), evP_comp1 _ hA _ _ p0, evP_comp1 _ hA _ _ p1, evP_pt _ hA, evP_pt _ hA]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem act_addOf (a : O) {n : ℕ} {x y : Pt V n d} (hx : GP x) (hy : GP y) :
     comp1 (B.A.act a) (addOf B.G.F x y) = addOf B.G.F (comp1 (B.A.act a) x) (comp1 (B.A.act a) y) := by
@@ -292,7 +288,7 @@ theorem act_addOf (a : O) {n : ℕ} {x y : Pt V n d} (hx : GP x) (hy : GP y) :
   exact this
 
 /- English proof (translation)
-Rewrite using `[B.A.add_act]`. Conclude with `evP_addOf ![x] (single_point_zero_constant hx) _ _ _ (constantCoeff_act_eq_zero B a) (constantCoeff_act_eq_zero B b)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem add_act (a b : O) {n : ℕ} {x : Pt V n d} (hx : GP x) :
     comp1 (B.A.act (a + b)) x = addOf B.G.F (comp1 (B.A.act a) x) (comp1 (B.A.act b) x) := by
@@ -300,14 +296,14 @@ theorem add_act (a b : O) {n : ℕ} {x : Pt V n d} (hx : GP x) :
   exact evP_addOf ![x] (single_point_zero_constant hx) _ _ _ (constantCoeff_act_eq_zero B a) (constantCoeff_act_eq_zero B b)
 
 /- English proof (translation)
-Rewrite using `[B.A.mul_act, gt_comp1_comp1 _ _ (constantCoeff_act_eq_zero B b) x hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mul_act (a b : O) {n : ℕ} {x : Pt V n d} (hx : GP x) :
     comp1 (B.A.act (a * b)) x = comp1 (B.A.act a) (comp1 (B.A.act b) x) := by
   rw [B.A.mul_act, gt_comp1_comp1 _ _ (constantCoeff_act_eq_zero B b) x hx]
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact gp_zero₂`. Consider the case `cons a l ih`. Conclude with `gp_addOf _ B.G.const _ _ (hl a (by simp)) (ih fun x hx => hl x (by simp [hx]))`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem constantCoeff_foldr_eq_zero {n : ℕ} (l : List (Pt V n d)) (hl : ∀ x ∈ l, GP x) : GP (l.foldr (addOf B.G.F) 0) := by
   induction l with
@@ -316,7 +312,7 @@ theorem constantCoeff_foldr_eq_zero {n : ℕ} (l : List (Pt V n d)) (hl : ∀ x 
     exact gp_addOf _ B.G.const _ _ (hl a (by simp)) (ih fun x hx => hl x (by simp [hx]))
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact f0`. Consider the case `cons a l ih`. Establish `hl' : ∀ x ∈ l, GP x` using `fun x hx => hl x (by simp [hx])`. Rewrite using `[List.foldr_cons, fadd _ _ (hl a (by simp)) (constantCoeff_foldr_eq_zero B l hl'), ih hl', List.map_cons, List.sum_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_foldr {n : ℕ} {Q : Type} [AddCommGroup Q] (f : Pt V n d → Q) (f0 : f 0 = 0)
     (fadd : ∀ x y, GP x → GP y → f (addOf B.G.F x y) = f x + f y) (l : List (Pt V n d)) (hl : ∀ x ∈ l, GP x) :
@@ -330,7 +326,7 @@ theorem map_foldr {n : ℕ} {Q : Type} [AddCommGroup Q] (f : Pt V n d → Q) (f0
 def sumP {n m : ℕ} (y : Fin m → Pt V n d) : Pt V n d := (List.ofFn y).foldr (addOf B.G.F) 0
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨j, rfl⟩` from `List.mem_ofFn.1 hx`. Conclude with `hy j`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem constantCoeff_ofFn_eq_zero {n m : ℕ} {y : Fin m → Pt V n d} (hy : ∀ j, GP (y j)) : ∀ x ∈ List.ofFn y, GP x := by
   intro x hx
@@ -338,13 +334,13 @@ theorem constantCoeff_ofFn_eq_zero {n m : ℕ} {y : Fin m → Pt V n d} (hy : �
   exact hy j
 
 /- English proof (translation)
-The claim follows from `constantCoeff_foldr_eq_zero B _ (constantCoeff_ofFn_eq_zero hy)`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_sumP_eq_zero {n m : ℕ} {y : Fin m → Pt V n d} (hy : ∀ j, GP (y j)) : GP (sumP B y) :=
   constantCoeff_foldr_eq_zero B _ (constantCoeff_ofFn_eq_zero hy)
 
 /- English proof (translation)
-Rewrite using `[sumP, map_foldr B f f0 fadd _ (constantCoeff_ofFn_eq_zero hy), List.map_ofFn, List.sum_ofFn]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_sumP {n m : ℕ} {Q : Type} [AddCommGroup Q] (f : Pt V n d → Q) (f0 : f 0 = 0)
     (fadd : ∀ x y, GP x → GP y → f (addOf B.G.F x y) = f x + f y) {y : Fin m → Pt V n d} (hy : ∀ j, GP (y j)) :
@@ -355,17 +351,17 @@ theorem map_sumP {n m : ℕ} {Q : Type} [AddCommGroup Q] (f : Pt V n d → Q) (f
 variable {B}
 
 /- English proof (translation)
-Establish `ha : ∀ (a : O) {y : Pt V m d}, GP y → GP (comp1 (B.A.act a) y)` using `fun a y hy => gp_comp1 _ _ (constantCoeff_act_eq_zero B a) hy`. Set `φ : Fin n → Fin n → (O →+ (PS K m d ⧸ intLog K hi m d))` to `fun j k => AddMonoidHom.mk' (fun a => hq K hi h (x j) (comp1 (B.A.act a) (x k))) fun a b => by`. Rewrite using `[add_act B a b (hx k), hq_add_right hi hh (hx j) (ha a (hx k)) (ha b (hx k))]`. Establish `e1 : ∀ i, hq K hi h (sumP B fun j => comp1 (B.A.act (mu i j)) (x j)) (comp1 (B.A.act w0) (sumP B fun j => comp1 (B.A.act (mu i j)) (x j))) = ∑ j, ∑ k, φ j k (star (mu i j) * mu i k * w0)`. Introduce `i`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hy : ∀ j, GP (comp1 (B.A.act (mu i j)) (x j))` using `fun j => ha _ (hx j)`. Establish `hs` using `ha w0 (constantCoeff_sumP_eq_zero B hy)`. Rewrite using `[map_sumP B (fun y => hq K hi h y _) (hq_zero_left hi hh hs) (fun a b h1 h2 => hq_add_left hi hh h1 h2 hs) hy]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_sumP B (fun y => hq K hi h _ (comp1 (B.A.act w0) y)) (by rw [gt_comp1_zero _ (constantCoeff_act_eq_zero B w0)]; exact hq_zero_right hi hh (hy j)) (fun a b h1 h2 => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[act_addOf B w0 h1 h2]`. Conclude with `hq_add_right hi hh (hy j) (ha _ h1) (ha _ h2)) hy]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[hq_act hi hh _ (hx j) (ha _ (hy k)), ← mul_act B _ _ (hx k), ← mul_act B _ _ (hx k)]`. Express the relevant statement in the definitionally equal form `_ = hq K hi h (x j) (comp1 (B.A.act (star (mu i j) * mu i k * w0)) (x k))`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 3`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Finset.sum_congr rfl fun i _ => e1 i, Finset.sum_comm, Finset.smul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_comm]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e2 : ∀ k, ∑ i, φ j k (star (mu i j) * mu i k * w0) = if j = k then N • φ j k w0 else 0`. Introduce `k`. Rewrite using `[← map_sum, ← Finset.sum_mul, hmu j k]`. Use `split_ifs`. Rewrite using `[← nsmul_eq_mul, map_nsmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[zero_mul, map_zero]`. Rewrite using `[Finset.sum_congr rfl fun k _ => e2 k, Finset.sum_ite_eq]`. Simplify using `[φ]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hq_sum (hh : B.IsCanonGauge K h) (w0 : O) {n m : ℕ} (mu : Matrix (Fin n) (Fin n) O) (N : ℕ)
     (hmu : ∀ j k, ∑ i, star (mu i j) * mu i k = if j = k then (N : O) else 0)
@@ -409,7 +405,7 @@ theorem hq_sum (hh : B.IsCanonGauge K h) (w0 : O) {n m : ℕ} (mu : Matrix (Fin 
   simp [φ]
 
 /- English proof (translation)
-Establish `hA` using `single_point_zero_constant (constantCoeff_baseChange_eq_zero K hy)`. Establish `p0 : GP (pt K (n` using `1) d 0) := gp_pt 0`. Rewrite using `[FB.hL, germEv_germEv_two_points K _ hA p0 (gp_comp1 _ _ (constantCoeff_actK_eq_zero B K w0) p0), evP_comp1 _ hA _ _ p0, evP_pt _ hA, mp_comp1 K _ hy]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ev_hL (w0 : O) {n : ℕ} {y : Pt V n d} (hy : GP y) :
     ev ![mp K y] (B.hL K h w0) = ev ![mp K y, mp K (comp1 (B.A.act w0) y)] h := by
@@ -426,16 +422,16 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdi
   [CharZero V] {d : ℕ} {O : Type} [CommRing O] [StarRing O] (B : FB V d O)
 
 /- English proof (translation)
-The claim follows from `(evC_spec V (Fin m × Fin d) (Fin n × Fin d) Unit (fun p => a p.1 p.2) (fun p => by rw [ha p.1 p.2]; exact Ideal.zero_mem _)).2.2.1 (fun p => ha p.1 p.2) f`.
+A detailed English derivation is pending.
 -/
 theorem evV_eq_ev {m n : ℕ} (a : Fin m → Pt V n d) (ha : ∀ j, GP (a j)) (f : PS V m d) : evV a f = ev a f :=
   (evC_spec V (Fin m × Fin d) (Fin n × Fin d) Unit (fun p => a p.1 p.2)
     (fun p => by rw [ha p.1 p.2]; exact Ideal.zero_mem _)).2.2.1 (fun p => ha p.1 p.2) f
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons a l ih`. Establish `hl' : ∀ x ∈ l, GP x` using `fun x hx => hl x (by simp [hx])`. Rewrite using `[List.foldr_cons, List.foldr_cons, ih hl']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Conclude with `evV_eq_ev _ (pair_points_zero_constant (hl a (by simp)) (constantCoeff_foldr_eq_zero B l hl')) _`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem foldr_addV {n : ℕ} (l : List (Pt V n d)) (hl : ∀ x ∈ l, GP x) :
     l.foldr (addV B.G.F) 0 = l.foldr (addOf B.G.F) 0 := by
@@ -448,7 +444,7 @@ theorem foldr_addV {n : ℕ} (l : List (Pt V n d)) (hl : ∀ x ∈ l, GP x) :
     exact evV_eq_ev _ (pair_points_zero_constant (hl a (by simp)) (constantCoeff_foldr_eq_zero B l hl')) _
 
 /- English proof (translation)
-Establish `e : (fun j => compV (B.A.act (mu i j)) (x j)) = fun j => comp1 (B.A.act (mu i j)) (x j)`. Use function extensionality and compare the values at `j c`. Conclude with `evV_eq_ev _ (single_point_zero_constant (hx j)) _`. Rewrite using `[matV, e, sumP]`. Conclude with `foldr_addV B _ (constantCoeff_ofFn_eq_zero fun j => gp_comp1 _ _ (constantCoeff_act_eq_zero B _) (hx j))`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem matV_eq_sumP {n m : ℕ} (mu : Matrix (Fin n) (Fin n) O) (x : Fin n → Pt V m d) (hx : ∀ j, GP (x j))
     (i : Fin n) : matV B mu x i = sumP B fun j => comp1 (B.A.act (mu i j)) (x j) := by
@@ -464,11 +460,11 @@ end GlobalTheory.PlaceInt.Kappa
 
 open GlobalTheory.PlaceInt.Kappa in
 /- English proof (translation)
-Introduce `V _ _ _ _ _ d O _ _ B K _ _ _ _ h w0 hh n mu N hmu`. Establish `hi : Function.Injective (algebraMap V K)` using `IsFractionRing.injective V K`. Establish `hx : ∀ j : Fin n, GP (pt V (n` using `n) d j) := fun j => gp_pt j`. Establish `key` using `hq_sum hi hh w0 mu N hmu (fun j => pt V (n := n) d j) hx`. Establish `hmem : (∑ b : Fin n, ev (n` using `n) ![fun i => FB.toK K (matV B mu (fun j => pt V (n := n) d j) b i)] (B.hL K h w0) - (N : K) • ∑ b : Fin n, ev (n := n) ![pt K d b] (B.hL K h w0)) ∈ intLog K hi n d := by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← QuotientAddGroup.eq_zero_iff, ← QuotientAddGroup.mk'_apply, map_sub, sub_eq_zero, Nat.cast_smul_eq_nsmul, map_nsmul, map_sum, map_sum]`. Use `key using 2 with b _` and compare the differences between its conclusion and the goal. Rewrite using `[matV_eq_sumP B mu _ hx b, hq, ← ev_hL w0 (constantCoeff_sumP_eq_zero B fun j => gp_comp1 _ _ (constantCoeff_act_eq_zero B _) (hx j))]`. Both sides reduce to the same expression. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hq, ← ev_hL w0 (hx b), mp_pt]`. Take `⟨h0, κ, hκ⟩` from `hmem`. Conclude with `⟨κ, hκ, cc_eq_one K hi _ h0 κ hκ⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem GlobalTheory.PlaceInt.exists_isKappa : ∀ (V : Type) [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] [IsAdicComplete (maximalIdeal V) V] [CharZero V] (d : ℕ) (O : Type) [CommRing O] [StarRing O] (B : FB V d O) (K : Type) [Field K] [Algebra ℚ K] [Algebra V K] [IsFractionRing V K] (h : PS K 2 d) (w0 : O), B.IsCanonGauge K h → ∀ (n : ℕ) (mu : Matrix (Fin n) (Fin n) O) (N : ℕ), (∀ j k, ∑ i, star (mu i j) * mu i k = if j = k then (N : O) else 0) → ∃ κ : PS V n d, IsKappa B K h w0 mu N κ ∧ MvPowerSeries.constantCoeff κ = 1 := by
   intro V _ _ _ _ _ d O _ _ B K _ _ _ _ h w0 hh n mu N hmu

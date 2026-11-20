@@ -10,7 +10,7 @@ open Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainNotions.N.P
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Establish `hint : IsIntegral F y` using `(Algebra.IsIntegral.isIntegral (R := ℚ_[l]) y).tower_top`. Rewrite using `[← IntermediateField.restrictScalars_adjoin_eq_sup, ← IntermediateField.adjoin.finrank hint]`. Conclude with `(Module.finrank_mul_finrank ℚ_[l] ↥F ↥(IntermediateField.adjoin F {y})).symm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finrank_sup_adjoin (F : IntermediateField ℚ_[l] (Om l)) (y : Om l) :
     finrank ℚ_[l] ↥(F ⊔ IntermediateField.adjoin ℚ_[l] {y}) = finrank ℚ_[l] ↥F * (minpoly F y).natDegree := by
@@ -19,9 +19,9 @@ theorem finrank_sup_adjoin (F : IntermediateField ℚ_[l] (Om l)) (y : Om l) :
   exact (Module.finrank_mul_finrank ℚ_[l] ↥F ↥(IntermediateField.adjoin F {y})).symm
 
 /- English proof (translation)
-Establish `: NeZero (l ^ s)` using `⟨(pow_pos (Fact.out : l.Prime).pos _).ne'⟩`. Unfold `Ks`. Use `congr 1`. Apply `le_antisymm` to reduce the goal to its premises. Use `IntermediateField.adjoin_le_iff.2 fun x hx => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i, -, rfl⟩` from `hz.eq_pow_of_pow_eq_one (show x ^ (l ^ s) = 1 from hx)`. Conclude with `pow_mem (IntermediateField.mem_adjoin_simple_self _ _) _`. Conclude with `IntermediateField.adjoin.mono _ _ _ (by rintro x rfl; exact hz.pow_eq_one)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Ks_eq (K : FinExt l) (s : ℕ) {z : Om l} (hz : IsPrimitiveRoot z (l ^ s)) :
     Ks K s = K0 K ⊔ IntermediateField.adjoin ℚ_[l] {z} := by
@@ -35,7 +35,7 @@ theorem Ks_eq (K : FinExt l) (s : ℕ) {z : Om l} (hz : IsPrimitiveRoot z (l ^ s
   · exact IntermediateField.adjoin.mono _ _ _ (by rintro x rfl; exact hz.pow_eq_one)
 
 /- English proof (translation)
-Establish `hz` using `ζQ_primitive l s`. Rewrite using `[Ks_eq K s hz, finrank_sup_adjoin, natDegree_minpoly_eq (F := K0 K) inf_le_right hs hz, Nat.totient_prime_pow Fact.out hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_Ks (K : FinExt l) {s : ℕ} (hs : 0 < s) :
     finrank ℚ_[l] ↥(Ks K s) = finrank ℚ_[l] ↥(K0 K) * (l ^ (s - 1) * (l - 1)) := by
@@ -44,7 +44,7 @@ theorem finrank_Ks (K : FinExt l) {s : ℕ} (hs : 0 < s) :
     Nat.totient_prime_pow Fact.out hs]
 
 /- English proof (translation)
-Use `K.2` as an intermediate fact. Establish `: FiniteDimensional ℚ_[l] ↥(K0 K)` using `FiniteDimensional.of_injective (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).toLinearMap (IntermediateField.inclusion (inf_le_left : K0 K ≤ K.1)).injective`. Conclude with `finrank_pos`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem finrank_maxUnramifiedSubfield_padicFinExt_pos (K : FinExt l) : 0 < finrank ℚ_[l] ↥(K0 K) := by
   have := K.2
@@ -54,13 +54,13 @@ theorem finrank_maxUnramifiedSubfield_padicFinExt_pos (K : FinExt l) : 0 < finra
   exact finrank_pos
 
 /- English proof (translation)
-Introduce `h`. Establish `hl1 : (1 : ℝ) < l` using `by exact_mod_cast (Fact.out : l.Prime).one_lt`. Establish `hl0 : (0 : ℝ) < l` using `by linarith`. Establish `hn : ‖(l : Om l)‖ = (l : ℝ)⁻¹`. Establish `e : (l : Om l) = algebraMap ℚ_[l] (Om l) (l : ℚ_[l])` using `(map_natCast _ _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e]`. Conclude with `(PadicAlgCl.norm_extends l _).trans Padic.norm_p`. Establish `h0 : y ≠ 0`. Introduce and unpack `rfl`. Establish `: (l : Om l) = 0` using `by simpa using hy.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `(Fact.out : l.Prime).ne_zero (by exact_mod_cast this)`. Take `⟨k, hk⟩` from `norm_Kur_zpow h h0`. Establish `h2 : ‖y‖ ^ 2 = (l : ℝ)⁻¹` using `by rw [← norm_pow, hy, norm_neg, hn]`. Establish `h3 : (l : ℝ) ^ (k * 2) = (l : ℝ) ^ (-1 : ℤ)`. Rewrite using `[zpow_mul, ← hk, zpow_neg_one, ← h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact.
 
-Use `norm_cast`. Use `zpow_right_injective₀ hl0 hl1.ne' h3` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem sqrt_notMem (y : Om l) (hy : y ^ 2 = -(l : Om l)) : y ∉ MaximalUnramifiedExtension l := by
   intro h
@@ -82,13 +82,13 @@ theorem sqrt_notMem (y : Om l) (hy : y ^ 2 = -(l : Om l)) : y ∉ MaximalUnramif
   omega
 
 /- English proof (translation)
-Establish `hint : IsIntegral (K0 K) y` using `(Algebra.IsIntegral.isIntegral (R := ℚ_[l]) y).tower_top`. Establish `h1 : finrank ℚ_[l] ↥K.1 = finrank ℚ_[l] ↥(K0 K ⊔ IntermediateField.adjoin ℚ_[l] {y})` using `congrArg (fun F : IntermediateField ℚ_[l] (Om l) => finrank ℚ_[l] ↥F) hK`. Rewrite using `[h1, finrank_sup_adjoin]`. Use `congr 1`. Establish `hle : (minpoly (K0 K) y).natDegree ≤ 2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hm : (Polynomial.X ^ 2 + Polynomial.C (l : ↥(K0 K))).Monic` using `Polynomial.monic_X_pow_add_C _ (by norm_num)`. Establish `hd : (Polynomial.X ^ 2 + Polynomial.C (l : ↥(K0 K))).natDegree = 2` using `Polynomial.natDegree_X_pow_add_C`. Rewrite using `[← hd]`. Use `Polynomial.natDegree_le_of_dvd (minpoly.dvd _ _ ?_) hm.ne_zero` and prove the remaining obligations. Simplify using `[hy]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hne : (minpoly (K0 K) y).natDegree ≠ 1`. Rewrite using `[Ne, minpoly.natDegree_eq_one_iff]`. Introduce and unpack `⟨c, hc⟩`. Conclude with `sqrt_notMem y hy (hc ▸ c.2.2)`. Use `minpoly.natDegree_pos hint` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem deg_two (K : FinExt l) (y : Om l) (hy : y ^ 2 = -(l : Om l))
     (hK : K.1 = K0 K ⊔ IntermediateField.adjoin ℚ_[l] {y}) :
@@ -112,11 +112,11 @@ theorem deg_two (K : FinExt l) (y : Om l) (hy : y ^ 2 = -(l : Om l))
   omega
 
 /- English proof (translation)
-Introduce `i hl w hw`. Take `⟨⟨y, hy, hK⟩, -⟩` from `Formalism.MainNotions.EmbeddingTypeJumps.preamble_first_clauses D i hl w hw`. Establish `h2` using `deg_two _ y hy hK`. Establish `hp` using `finrank_maxUnramifiedSubfield_padicFinExt_pos (D.nbr i w hw).Kw`. Establish `ht` using `Module.finrank_mul_finrank ℚ_[D.nd.l i] ↥(K0 (D.nbr i w hw).Kw) ↥(D.nbr i w hw).Kw.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hodd : D.nd.l i % 2 = 1`. Take `⟨-, -, h3, h7, -⟩` from `D.host.hyp`. Apply the tactic sequence `rcases hl with h | h <;> rw [h] <;> omega`. Use `⟨Nat.eq_of_mul_eq_mul_left hp (ht.trans h2), ?_⟩` and prove the remaining obligations. Rewrite using `[finrank_Ks _ one_pos, h2]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨k, hk⟩ : ∃ k, D.nd.l i - 1 = 2 * k` from `⟨(D.nd.l i - 1) / 2, by omega⟩`. Rewrite using `[hk, Nat.mul_div_cancel_left _ two_pos]`. Simplify using `only [Nat.sub_self, pow_zero]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem preamble_degree_clauses (D : D7) : Formalism.MainNotions.EmbeddingTypeJumps.DegreeClauses D := by
   intro i hl w hw
@@ -135,16 +135,16 @@ theorem preamble_degree_clauses (D : D7) : Formalism.MainNotions.EmbeddingTypeJu
   ring
 
 /- English proof (translation)
-The claim follows from `Formalism.MainNotions.EmbeddingTypeJumps.preamble_of_degree_clauses D (preamble_degree_clauses D)`.
+A detailed English derivation is pending.
 -/
 theorem scaled_lattice_nonzero_holds (D : D7) : Formalism.MainNotions.EmbeddingTypeJumps.Conclusion0 D := Formalism.MainNotions.EmbeddingTypeJumps.preamble_of_degree_clauses D (preamble_degree_clauses D)
 
 /- English proof (translation)
-Establish `hp` using `finrank_maxUnramifiedSubfield_padicFinExt_pos K`. Establish `h1 : 0 < l - 1` using `by have := (Fact.out : l.Prime).one_lt; omega`. Establish `e : finrank ℚ_[l] ↥(Ks K m) = l ^ (m - 1) * finrank ℚ_[l] ↥(Ks K 1)`. Rewrite using `[finrank_Ks K hm, finrank_Ks K one_pos]`. Simplify using `only [Nat.sub_self, pow_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `h0 : finrank ℚ_[l] ↥(Ks K 1) ≠ 0`. Rewrite using `[finrank_Ks K one_pos]`. Conclude with `Nat.mul_ne_zero hp.ne' (Nat.mul_ne_zero (pow_pos (Fact.out : l.Prime).pos _).ne' h1.ne')`. Rewrite using `[e, padicValNat.mul (pow_pos (Fact.out : l.Prime).pos _).ne' h0, padicValNat.prime_pow]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem vdeg (K : FinExt l) {m : ℕ} (hm : 0 < m) :
     padicValNat l (finrank ℚ_[l] ↥(Ks K m)) - padicValNat l (finrank ℚ_[l] ↥(Ks K 1)) = m - 1 := by
@@ -159,9 +159,9 @@ theorem vdeg (K : FinExt l) {m : ℕ} (hm : 0 < m) :
   omega
 
 /- English proof (translation)
-Establish `hp` using `finrank_maxUnramifiedSubfield_padicFinExt_pos K`. Establish `hl` using `(Fact.out : l.Prime).one_lt`. Establish `h1 : padicValNat l (l - 1) = 0` using `padicValNat.eq_zero_of_not_dvd (Nat.not_dvd_of_pos_of_lt (by omega) (by omega))`. Rewrite using `[finrank_Ks K one_pos, h2]`. Simplify using `only [Nat.sub_self, pow_zero, one_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[padicValNat.mul hp.ne' (by omega), padicValNat.mul hp.ne' (by omega), h1]`. Use linear arithmetic over natural numbers and integers.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 -/
 theorem gK_zero (K : FinExt l) (h2 : finrank ℚ_[l] ↥K.1 = finrank ℚ_[l] ↥(K0 K) * 2) :
     padicValNat l (finrank ℚ_[l] ↥(Ks K 1)) - padicValNat l (finrank ℚ_[l] ↥K.1) = 0 := by

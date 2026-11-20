@@ -9,9 +9,9 @@ section Gen
 variable {C : Type*} [Category C] [Abelian C]
 
 /- English proof (translation)
-Use `⟨⟨cokernel.desc r (h.desc (cokernel.π f) 0 (by simp)) (by simp), ?_, ?_⟩⟩` and prove the remaining obligations. Use `ext`. Simplify using the standard rewrite rules. Use `ext`. Simplify using `only [cokernel.π_desc_assoc, Category.comp_id]`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `h.hom_ext ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cokPO_iso {A B Q : C} (f : A ⟶ B) (l r : B ⟶ Q) (h : IsPushout f f l r) :
     IsIso (cokernel.map f r f l h.w) := by
@@ -24,7 +24,7 @@ theorem cokPO_iso {A B Q : C} (f : A ⟶ B) (l r : B ⟶ Q) (h : IsPushout f f l
     · simp
 
 /- English proof (translation)
-Use `ext`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem cokMap_comp {A B A' B' A'' B'' : C} (f : A ⟶ B) (f' : A' ⟶ B') (f'' : A'' ⟶ B'')
     (a : A ⟶ A') (b : B ⟶ B') (w : f ≫ b = a ≫ f') (a' : A' ⟶ A'') (b' : B' ⟶ B'') (w' : f' ≫ b' = a' ≫ f'') :
@@ -33,9 +33,9 @@ theorem cokMap_comp {A B A' B' A'' B'' : C} (f : A ⟶ B) (f' : A' ⟶ B') (f'' 
   ext; simp
 
 /- English proof (translation)
-Use `cokPO_iso f' l' r' h'` as an intermediate fact. Use `cokPO_iso f l r h` as an intermediate fact. Establish `e : cokernel.map f' r' f' l' h'.w ≫ cokernel.map r' r b m wr = cokernel.map f' f a b w ≫ cokernel.map f r f l h.w`. Rewrite using `[cokMap_comp, cokMap_comp]`. Use `ext`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[wl]`. Establish `: cokernel.map r' r b m wr = inv (cokernel.map f' r' f' l' h'.w) ≫ (cokernel.map f' f a b w ≫ cokernel.map f r f l h.w)` using `by rw [← e]; simp`. Rewrite using `[this]`. Use `infer_instance`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cokPO_transfer {A' B' Q' A B Q : C} (f' : A' ⟶ B') (l' r' : B' ⟶ Q') (h' : IsPushout f' f' l' r')
     (f : A ⟶ B) (l r : B ⟶ Q) (h : IsPushout f f l r) (a : A' ⟶ A) (b : B' ⟶ B) (m : Q' ⟶ Q)
@@ -51,7 +51,7 @@ theorem cokPO_transfer {A' B' Q' A B Q : C} (f' : A' ⟶ B') (l' r' : B' ⟶ Q')
   rw [this]; infer_instance
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨cokernel.map f' f (inv a) (inv b) (by rw [IsIso.eq_inv_comp, ← Category.assoc, ← w]; simp), by ext; simp, by ext; simp⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem cokIso_comp {A B A' B' : C} (f : A ⟶ B) (f' : A' ⟶ B') (a : A ⟶ A') (b : B ⟶ B') (w : f ≫ b = a ≫ f')
     [IsIso a] [IsIso b] : IsIso (cokernel.map f f' a b w) :=
@@ -69,7 +69,7 @@ Both sides reduce to the same expression.
 theorem emb_f (p : ℕ) : ComplexShape.embeddingDownNat.f p = -(p : ℤ) := rfl
 
 /- English proof (translation)
-The claim follows from `HomologicalComplex.extendMap_f φ _ (emb_f p)`.
+A detailed English derivation is pending.
 -/
 theorem extKey (p : ℕ) {K L : ChainComplex (Shv R) ℕ} (φ : K ⟶ L) :
     (HomologicalComplex.eval _ _ (-(p:ℤ))).map ((ComplexShape.embeddingDownNat.extendFunctor (Shv R)).map φ) =
@@ -100,9 +100,9 @@ end Spec
 section Gen2
 
 /- English proof (translation)
-Establish `e : F.map (cokernel.map f f' a b w) = inv (cokernelComparison f F) ≫ (cokernel.map (F.map f) (F.map f') (F.map a) (F.map b) (by rw [← F.map_comp, w, F.map_comp]) ≫ cokernelComparison f' F)`. Rewrite using `[IsIso.eq_inv_comp]`. Use `ext`. Simplify using `[← Functor.map_comp]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem cokF {C D : Type*} [Category C] [Abelian C] [Category D] [Abelian D] (F : C ⥤ D)
     [F.PreservesZeroMorphisms] [PreservesColimitsOfShape WalkingParallelPair F] {A B A' B' : C}
@@ -116,9 +116,9 @@ theorem cokF {C D : Type*} [Category C] [Abelian C] [Category D] [Abelian D] (F 
   rw [e]; infer_instance
 
 /- English proof (translation)
-Establish `h1` using `cokIso_comp (Φ.map g') (Ψ.map g') (α.hom.app X') (α.hom.app Y') (α.hom.naturality g')`. Establish `h2` using `cokIso_comp (Φ.map g) (Ψ.map g) (α.hom.app X) (α.hom.app Y) (α.hom.naturality g)`. Establish `e : cokernel.map (Φ.map g') (Φ.map g) (Φ.map a) (Φ.map b) (by simp only [← Functor.map_comp, w]) = (cokernel.map (Φ.map g') (Ψ.map g') (α.hom.app X') (α.hom.app Y') (α.hom.naturality g') ≫ cokernel.map (Ψ.map g') (Ψ.map g) (Ψ.map a) (Ψ.map b) (by simp only [← Functor.map_comp, w] …`. Rewrite using `[IsIso.eq_comp_inv, cokMap_comp, cokMap_comp]`. Use `ext`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using the standard rewrite rules. Rewrite using `[e]`. Use `infer_instance`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cokNat {C E : Type*} [Category C] [Abelian C] [Category E] (Φ Ψ : E ⥤ C) (α : Φ ≅ Ψ)
     {X' Y' X Y : E} (g' : X' ⟶ Y') (g : X ⟶ Y) (a : X' ⟶ X) (b : Y' ⟶ Y) (w : g' ≫ b = a ≫ g)
@@ -139,13 +139,13 @@ section Main
 variable (R : Type) [CommRing R]
 
 /- English proof (translation)
-The claim follows from `pushout.inl_desc _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem dbl.inl_map' {P' P : Arrow Spc} (φ : P' ⟶ P) : dbl.inl P' ≫ dbl.map φ = φ.right ≫ dbl.inl P :=
   pushout.inl_desc _ _ _
 
 /- English proof (translation)
-The claim follows from `((evaluation _ _).obj p ⋙ free R).map_isPushout (IsPushout.of_hasPushout P.hom P.hom)`.
+A detailed English derivation is pending.
 -/
 theorem hPO (P : Arrow Spc) (p : SimplexCategoryᵒᵖ) :
     IsPushout ((free R).map (P.hom.app p)) ((free R).map (P.hom.app p)) ((free R).map ((dbl.inl P).app p))
@@ -153,13 +153,13 @@ theorem hPO (P : Arrow Spc) (p : SimplexCategoryᵒᵖ) :
   ((evaluation _ _).obj p ⋙ free R).map_isPushout (IsPushout.of_hasPushout P.hom P.hom)
 
 /- English proof (translation)
-The claim follows from `((chainsN R).obj X).isZero_extend_X ComplexShape.embeddingDownNat j (fun i hi => hj ⟨i, hi.symm⟩)`.
+A detailed English derivation is pending.
 -/
 theorem chains_zero {j : ℤ} (hj : ¬ ∃ p : ℕ, j = -(p : ℤ)) (X : Spc) : IsZero (((chains R).obj X).X j) :=
   ((chainsN R).obj X).isZero_extend_X ComplexShape.embeddingDownNat j (fun i hi => hj ⟨i, hi.symm⟩)
 
 /- English proof (translation)
-The claim follows from `(IsZero.of_epi (cokernel.π (g.f j)) hB).of_iso (PreservesCokernel.iso (HomologicalComplex.eval _ _ j) g)`.
+A detailed English derivation is pending.
 -/
 theorem cok_zero {A B : Cx R} (g : A ⟶ B) (j : ℤ) (hB : IsZero (B.X j)) : IsZero ((cokernel g).X j) :=
   (IsZero.of_epi (cokernel.π (g.f j)) hB).of_iso (PreservesCokernel.iso (HomologicalComplex.eval _ _ j) g)
@@ -167,11 +167,9 @@ theorem cok_zero {A B : Cx R} (g : A ⟶ B) (j : ℤ) (hB : IsZero (B.X j)) : Is
 end Main
 
 /- English proof (translation)
-Introduce `q P' P φ h`. Establish `key : ∀ j, IsIso ((cokC q φ).f j)`. Introduce `j`. Distinguish the cases in `hj : ∃ p : ℕ, j = -(p : ℤ)`. Take `⟨p, rfl⟩` from `hj show IsIso ((HomologicalComplex.eval _ _ _).map (cokC q φ))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Use `cokF (HomologicalComplex.eval _ _ (-(p : ℤ))) _ _ _ _ _ ?_` and prove the remaining obligations. Use `cokNat (chains (ZMod q) ⋙ HomologicalComplex.eval _ _ (-(p : ℤ))) _ (chIso (ZMod q) p) (dbl.inr P') (dbl.inr P) φ.right (dbl.map φ) (dbl.inr_map φ) ?_` and prove the remaining obligations. Conclude with `cokPO_transfer _ _ _ (hPO (ZMod q) P' _) _ _ _ (hPO (ZMod q) P _) _ _ _ (freeSq _ φ _) (by show (free (ZMod q)).map (NatTrans.app (dbl.inl P') (op (SimplexCategory.mk p))) ≫ (free (ZMod q)).map (NatTrans.app (dbl.map φ) (op (SimplexCategory.mk p))) = _`. Rewrite using `[← Functor.map_comp, ← NatTrans.comp_app, dbl.inl_map', NatTrans.comp_app, Functor.map_comp])`. Use the proof step `(by show (free (ZMod q)).map (NatTrans.app (dbl.inr P') (op (SimplexCategory.mk p))) ≫ (free (ZMod q)).map (NatTrans.app (dbl.map φ) (op (SimplexCategory.mk p))) = _`.
-
-Rewrite using `[← Functor.map_comp, ← NatTrans.comp_app, dbl.inr_map, NatTrans.comp_app, Functor.map_comp]) (h _)`. Conclude with `isIso_of_source_target_iso_zero _ (cok_zero _ _ j (chains_zero _ hj _)).isoZero (cok_zero _ _ j (chains_zero _ hj _)).isoZero`. Conclude with `HomologicalComplex.Hom.isIso_of_components _`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LeafExcDeg_of : LeafExcDeg := by
   intro q P' P φ h

@@ -22,9 +22,9 @@ section Abstract
 variable {R P A : Type} [CommRing R] [AddCommGroup P] [Module R P] [AddCommGroup A] [Module R A]
 
 /- English proof (translation)
-Set `f : P →ₗ[ℤ] ℤ` to `{ toFun := fun y => B x y / m map_add' := fun a b => by rw [map_add, Int.add_ediv_of_dvd_left (h a)] map_smul' := fun k a => by`. Rewrite using `[map_zsmul]`. Simplify using `only [smul_eq_mul, RingHom.id_apply]`. Conclude with `Int.mul_ediv_assoc _ (h a) }`. Take `⟨z, hz⟩` from `hB.2 f`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, hB.1 ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[map_nsmul, hz]`. Simplify using `only [LinearMap.smul_apply, nsmul_eq_mul, f, LinearMap.coe_mk, AddHom.coe_mk]`. Conclude with `(Int.mul_ediv_cancel' (h y)).symm`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_nsmul {B : LinearMap.BilinForm ℤ P} (hB : Function.Bijective B) {m : ℕ} (hm : m ≠ 0) {x : P}
     (h : ∀ y, (m : ℤ) ∣ B x y) : ∃ z, x = m • z := by
@@ -41,7 +41,7 @@ theorem exists_nsmul {B : LinearMap.BilinForm ℤ P} (hB : Function.Bijective B)
   exact (Int.mul_ediv_cancel' (h y)).symm
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hx (fun b hb y _ => ?_) ?_` and prove the remaining obligations. Take `⟨t, ht⟩` from `Ideal.mem_span_singleton'.1 (h (Ideal.mul_mem_mul ha hb))`. Conclude with `⟨t • y, by rw [← mul_smul, ← ht, mul_comm, mul_smul, Nat.cast_smul_eq_nsmul]⟩`. Introduce and unpack `u v ⟨z, hz⟩ ⟨w, hw⟩`. Conclude with `⟨z + w, by rw [smul_add, smul_add, hz, hw]⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem smul_eq_nsmul {I J : Ideal R} {m : ℕ} (h : J * I ≤ Ideal.span {(m : R)}) {a : R} (ha : a ∈ J) {x : P}
     (hx : x ∈ I • (⊤ : Submodule R P)) : ∃ z, a • x = m • z := by
@@ -52,14 +52,14 @@ theorem smul_eq_nsmul {I J : Ideal R} {m : ℕ} (h : J * I ≤ Ideal.span {(m : 
     exact ⟨z + w, by rw [smul_add, smul_add, hz, hw]⟩
 
 /- English proof (translation)
-Rewrite using `[← Nat.cast_smul_eq_nsmul R]`. Conclude with `Submodule.smul_mem_smul hm trivial`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsmul_mem {I : Ideal R} {m : ℕ} (hm : (m : R) ∈ I) (z : P) : m • z ∈ I • (⊤ : Submodule R P) := by
   rw [← Nat.cast_smul_eq_nsmul R]
   exact Submodule.smul_mem_smul hm trivial
 
 /- English proof (translation)
-Use `Submodule.mem_map_of_mem (f := f) ha` as an intermediate fact. Rewrite `this` using `[Submodule.map_smul'']`. Conclude with `Submodule.smul_mono le_rfl le_top this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem {I : Ideal R} (f : A →ₗ[R] P) {a : A} (ha : a ∈ I • (⊤ : Submodule R A)) :
     f a ∈ I • (⊤ : Submodule R P) := by
@@ -68,7 +68,7 @@ theorem map_mem {I : Ideal R} (f : A →ₗ[R] P) {a : A} (ha : a ∈ I • (⊤
   exact Submodule.smul_mono le_rfl le_top this
 
 /- English proof (translation)
-Use `choose g hg using fun x => hB.2 ((C x).comp f.toAddMonoidHom.toIntLinearMap)`. Establish `hg' : ∀ x v, B (g x) v = C x (f v)` using `fun x v => by rw [hg]; rfl`. Use `⟨⟨⟨g, fun x y => hB.1 (LinearMap.ext fun v => ?_)⟩, fun a x => hB.1 (LinearMap.ext fun v => ?_)⟩, hg'⟩` and prove the remaining obligations. Simplify using `only [map_add, LinearMap.add_apply, hg']`. Simplify using `only [RingHom.id_apply, aB, hg', aC, map_smul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_adj {s : R → R} {B : LinearMap.BilinForm ℤ P} {C : LinearMap.BilinForm ℤ A}
     (hB : Function.Bijective B) (aB : ∀ (a : R) x y, B (a • x) y = B x (s a • y))
@@ -83,9 +83,7 @@ theorem exists_adj {s : R → R} {B : LinearMap.BilinForm ℤ P} {C : LinearMap.
 variable {s : R →+* R} {I J : Ideal R} {m : ℕ} {c : R} {B : LinearMap.BilinForm ℤ P} {C : LinearMap.BilinForm ℤ A}
 
 /- English proof (translation)
-Use `Submodule.smul_induction_on hx (fun b hb u _ => ?_) (fun u v hu hv => ?_)` and prove the remaining obligations. Take `⟨z, hz⟩` from `smul_eq_nsmul hIJ (hs b hb) hy`. Rewrite using `[aB, hz, map_nsmul, nsmul_eq_mul]`. Conclude with `Dvd.intro _ rfl`. Rewrite using `[map_add, LinearMap.add_apply]`.
-
-Conclude with `dvd_add hu hv`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_of_mem (hIJ : J * I ≤ Ideal.span {(m : R)}) (hs : ∀ a ∈ I, s a ∈ J)
     (aB : ∀ (a : R) x y, B (a • x) y = B x (s a • y)) {x y : P} (hx : x ∈ I • (⊤ : Submodule R P))
@@ -97,9 +95,7 @@ theorem dvd_of_mem (hIJ : J * I ≤ Ideal.span {(m : R)}) (hs : ∀ a ∈ I, s a
   · rw [map_add, LinearMap.add_apply]; exact dvd_add hu hv
 
 /- English proof (translation)
-Take `⟨z, hz⟩` from `exists_nsmul hB hm (x := s c • x) fun y => by`. Rewrite using `[aB, hss]`. Conclude with `h _ (Submodule.smul_mem_smul hc trivial)`. Establish `: x = m • z - s (c - 1) • x` using `by rw [map_sub, map_one, sub_smul, one_smul, hz]; simp`. Rewrite using `[this]`.
-
-Conclude with `sub_mem (nsmul_mem hmI z) (Submodule.smul_mem_smul (hs' _ hc1) trivial)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_dvd (hm : m ≠ 0) (hmI : (m : R) ∈ I) (hss : ∀ a, s (s a) = a) (hs' : ∀ a ∈ J, s a ∈ I)
     (hc : c ∈ I) (hc1 : c - 1 ∈ J) (hB : Function.Bijective B)
@@ -112,17 +108,15 @@ theorem mem_of_dvd (hm : m ≠ 0) (hmI : (m : R) ∈ I) (hss : ∀ a, s (s a) = 
   exact sub_mem (nsmul_mem hmI z) (Submodule.smul_mem_smul (hs' _ hc1) trivial)
 
 /- English proof (translation)
-Establish `hIJ' : I * J ≤ Ideal.span {(m : R)}` using `mul_comm I J ▸ hIJ`. Set `q` to `Submodule.mapQ (J • (⊤ : Submodule R A)) (J • (⊤ : Submodule R P)) mk fun a ha => map_mem mk ha`. Establish `hi : ∀ a, mk a ∈ J • (⊤ : Submodule R P) → a ∈ J • (⊤ : Submodule R A)` using `fun a ha => by`. Take `⟨b, hb⟩` from `inj (c • a) (Submodule.smul_mem_smul hc trivial) (by`. Rewrite using `[map_smul]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `smul_eq_nsmul hIJ' hc ha)`. Establish `: a = m • b - (c - 1) • a` using `by rw [sub_smul, one_smul, hb]; simp`. Rewrite using `[this]`. Conclude with `sub_mem (nsmul_mem hmJ b) (Submodule.smul_mem_smul hc1 trivial)`. Establish `hq : Function.Surjective (q ∘ₗ (J • (⊤ : Submodule R A)).mkQ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `v`. Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ v`. Take `⟨a, -, u, hu⟩` from `surj (c • v) (Submodule.smul_mem_smul hc trivial)`. Use `⟨a, (Submodule.Quotient.eq _).2 ?_⟩` and prove the remaining obligations. Establish `: mk a - v = (c - 1) • v - m • u` using `by rw [sub_smul, one_smul, hu]; abel`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this]`. Conclude with `sub_mem (Submodule.smul_mem_smul hc1 trivial) (nsmul_mem hmJ u)`. Take `⟨f, hf⟩` from `Module.projective_lifting_property _ (J • (⊤ : Submodule R P)).mkQ hq`. Use `⟨f, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1 : f (mk a) - a ∈ J • (⊤ : Submodule R A)` using `hi _ (by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[map_sub]`. Conclude with `(Submodule.Quotient.eq _).1 (LinearMap.congr_fun hf (mk a)))`. Take `⟨b, hb⟩` from `smul_eq_nsmul hIJ' hc h1`. Take `⟨b', hb'⟩` from `smul_eq_nsmul hIJ hc1 (sub_mem (map_mem f (map_mem mk ha)) ha)`. Use `⟨b - b', ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[smul_sub, ← hb, ← hb', sub_smul, one_smul]`. Normalize the expressions using the abelian group laws.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem exists_inv [Module.Projective R P] (hIJ : J * I ≤ Ideal.span {(m : R)}) (hmJ : (m : R) ∈ J)
     (hc : c ∈ I) (hc1 : c - 1 ∈ J) (mk : A →ₗ[R] P)
@@ -156,9 +150,9 @@ theorem exists_inv [Module.Projective R P] (hIJ : J * I ≤ Ideal.span {(m : R)}
   abel
 
 /- English proof (translation)
-Use `haveI : IsArtinian R (R ⧸ K) := isArtinian_of_finite`. Set `f : ℕ →o (Submodule R (R ⧸ K))ᵒᵈ` to `⟨fun j => OrderDual.toDual (J ^ j • ⊤), fun i j h => Submodule.smul_mono_left (Ideal.pow_le_pow_right h)⟩`. Take `⟨j, hj⟩` from `IsArtinian.monotone_stabilizes f`. Establish `h1 : (J ^ j • ⊤ : Submodule R (R ⧸ K)) = J ^ (j + 1) • ⊤` using `hj (j + 1) (Nat.le_succ j)`. Take `⟨t, ht, h⟩` from `Submodule.exists_sub_one_mem_and_smul_eq_zero_of_fg_of_le_smul J (J ^ j • ⊤ : Submodule R (R ⧸ K)) (IsNoetherian.noetherian _) (by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Submodule.mul_smul, ← pow_succ', ← h1])`. Use `⟨t, j, ht, fun a ha => ?_⟩` and prove the remaining obligations. Use `h (a • 1) (Submodule.smul_mem_smul ha trivial)` as an intermediate fact. Rewrite `this` using `[← mul_smul, Algebra.smul_def, _root_.mul_one, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_pow_le (J K : Ideal R) [IsNoetherianRing R] [Finite (R ⧸ K)] :
     ∃ (t : R) (j : ℕ), t - 1 ∈ J ∧ ∀ a ∈ J ^ j, t * a ∈ K := by
@@ -176,9 +170,9 @@ theorem exists_pow_le (J K : Ideal R) [IsNoetherianRing R] [Finite (R ⧸ K)] :
   rwa [← mul_smul, Algebra.smul_def, _root_.mul_one, Ideal.Quotient.algebraMap_eq, Ideal.Quotient.eq_zero_iff_mem] at this
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_inv hIJ hmJ hc hc1 mk inj surj`. Take `⟨g, hg⟩` from `exists_adj hB aB aC f`. Use `⟨(-k) • g, fun x a ha => ?_⟩` and prove the remaining obligations. Take `⟨b, hb⟩` from `hf a ha`. Rewrite using `[LinearMap.smul_apply, map_zsmul, LinearMap.smul_apply, hg, hb, map_add, map_nsmul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨-k * C x b, by simp only [smul_eq_mul, nsmul_eq_mul]; ring⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_dual [Module.Projective R P] (hIJ : J * I ≤ Ideal.span {(m : R)}) (hmJ : (m : R) ∈ J)
     (hc : c ∈ I) (hc1 : c - 1 ∈ J) (hB : Function.Bijective B)
@@ -194,7 +188,7 @@ theorem exists_dual [Module.Projective R P] (hIJ : J * I ≤ Ideal.span {(m : R)
   exact ⟨-k * C x b, by simp only [smul_eq_mul, nsmul_eq_mul]; ring⟩
 
 /- English proof (translation)
-The claim follows from `mem_of_dvd hm hmI hss hs' hc hc1 hC aC fun a ha => hk.dvd_of_dvd_mul_left ((dvd_add_left (dvd_of_mem hIJ hs aB hx (map_mem mk ha))).1 (h x a ha))`.
+A detailed English derivation is pending.
 -/
 theorem mem_of_dual_mem (hIJ : J * I ≤ Ideal.span {(m : R)}) (hm : m ≠ 0) (hmI : (m : R) ∈ I)
     (hss : ∀ a, s (s a) = a) (hs : ∀ a ∈ I, s a ∈ J) (hs' : ∀ a ∈ J, s a ∈ I) (hc : c ∈ I) (hc1 : c - 1 ∈ J)
@@ -206,9 +200,9 @@ theorem mem_of_dual_mem (hIJ : J * I ≤ Ideal.span {(m : R)}) (hm : m ≠ 0) (h
     ((dvd_add_left (dvd_of_mem hIJ hs aB hx (map_mem mk ha))).1 (h x a ha))
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_adj hC aC aB mk`. Take `⟨p, q, hpq⟩` from `hk`. Use `⟨(-q) • g v, mem_of_dvd hm hmI hss hs' hc hc1 hB aB fun y hy => ?_⟩` and prove the remaining obligations. Take `⟨a, ha, u, rfl⟩` from `surj y hy`. Take `⟨t, ht⟩` from `h ((-q) • g v) a ha`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite `ht` using `[map_zsmul, LinearMap.smul_apply, hg, smul_eq_mul]`. Rewrite using `[map_add, map_nsmul, nsmul_eq_mul]`. Use `dvd_add ⟨p * B v (mk a) - t, ?_⟩ (Dvd.intro _ rfl)` and prove the remaining obligations. Rewrite using `[map_sub, LinearMap.sub_apply]`. Take the linear combination `(-1 : ℤ) * ht - B v (mk a) * hpq`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem exists_dual_sub_mem (hm : m ≠ 0) (hmI : (m : R) ∈ I)
     (hss : ∀ a, s (s a) = a) (hs' : ∀ a ∈ J, s a ∈ I) (hc : c ∈ I) (hc1 : c - 1 ∈ J)
@@ -229,9 +223,9 @@ theorem exists_dual_sub_mem (hm : m ≠ 0) (hmI : (m : R) ∈ I)
   linear_combination (-1 : ℤ) * ht - B v (mk a) * hpq
 
 /- English proof (translation)
-Use `exists_nsmul hB hm fun y => ?_` and prove the remaining obligations. Take `⟨x, hx⟩` from `hs y`. Establish `h1` using `dvd_of_mem hIJ ‹_› aB hx (sub_mem (map_mem mk ha) (map_mem mk' ha))`. Establish `h2` using `dvd_of_mem hIJ ‹_› aB (hd x) (map_mem mk' ha)`. Establish `h3` using `dvd_sub (dvd_add h1 (dvd_sub (h x a ha) (h' x a ha))) h2`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sB, dvd_neg]`. Use `h3 using 1` and compare the differences between its conclusion and the goal. Simplify using `only [map_sub, LinearMap.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mark_eq_of_dual (hIJ : J * I ≤ Ideal.span {(m : R)}) (hm : m ≠ 0) (hs : ∀ a ∈ I, s a ∈ J)
     (hB : Function.Bijective B) (aB : ∀ (a : R) x y, B (a • x) y = B x (s a • y))
@@ -253,9 +247,9 @@ theorem mark_eq_of_dual (hIJ : J * I ≤ Ideal.span {(m : R)}) (hm : m ≠ 0) (h
 end Abstract
 
 /- English proof (translation)
-Establish `hp` using `Complex.isPrimitiveRoot_exp m hm`. Establish `hm' : (m : ℂ) ≠ 0` using `by exact_mod_cast hm`. Rewrite using `[← hp.zpow_eq_one_iff_dvd, ← Complex.exp_int_mul, ← Complex.exp_int_mul, Complex.exp_neg, ← mul_eq_one_iff_eq_inv₀ (Complex.exp_ne_zero _), ← Complex.exp_add]`. Use `congr! 2`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts.
 
-Clear the denominators using the available nonvanishing facts.
+A detailed English derivation is pending.
 -/
 theorem zpow_eq_iff {m k : ℕ} (hm : m ≠ 0) (a b : ℤ) :
     cexp (2 * Real.pi * I * (k / m)) ^ a = cexp (-(2 * Real.pi * I * (((m : ℚ)⁻¹ * b : ℚ) : ℂ))) ↔
@@ -272,11 +266,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} {H : Host 
   {l : Geo.Tor.Level H} {X : Data E r} {L : Lt E r}
 
 /- English proof (translation)
-Establish `h0 : X.κ0 / 2 ≠ 0`. Use `X.ξ0_ne` as an intermediate fact. Apply the tactic sequence `rcases X.κ0_xi with k | k <;> simp [k, this]`. Establish `hlat : ReciprocityTheory.MultiplicativeHeights.IsLattice L` using `⟨hL.1, TensLat.span_of_selfD X hL⟩`. Establish `hp` using `(perfect_iff_traceFormDual_eq h0 X.Gm_det hlat).2 (by ext x; exact (hL.2 x).symm)`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ∀ x y : L, EF X x y = latticeEF _ _ L hp.1 x y` using `fun x y => (latticeEF_apply hp.1 x y).symm`. Use `⟨latticeEF _ _ L hp.1, (latticeEF_bijective_iff hp.1 hlat h0).2 ⟨X.Gm_det, hp.2⟩, fun a x y => ?_, fun x y => ?_, hB⟩` and prove the remaining obligations. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[← hB, ← hB, Submodule.coe_smul, Submodule.coe_smul, ← algebraMap_smul E a, ← algebraMap_smul E (H.bar a), TensLat.EF_smul]`. Use `congr 2`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Conclude with `(H.bar_eq a).symm`. Apply `Int.cast_injective (α := ℚ)` to reduce the goal to its premises. Rewrite using `[Int.cast_neg, ← hB, ← hB, TensLat.EF_swap]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form (H : Host E) (hL : SelfD X L) : ∃ B : LinearMap.BilinForm ℤ L, Function.Bijective B ∧
     (∀ (a : 𝓞 E) x y, B (a • x) y = B x (H.bar a • y)) ∧ (∀ x y, B y x = -B x y) ∧
@@ -298,26 +292,26 @@ theorem exists_form (H : Host E) (hL : SelfD X L) : ∃ B : LinearMap.BilinForm 
     rw [Int.cast_neg, ← hB, ← hB, TensLat.EF_swap]
 
 /- English proof (translation)
-Establish `: (m : E)⁻¹ • v = (m : ℚ)⁻¹ • v` using `by rw [← Rat.cast_smul_eq_qsmul E]; simp`. Rewrite using `[this, TensLat.EF_eq_bilin, TensLat.EF_eq_bilin, map_smul, smul_eq_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem ef_inv_smul (m : ℕ) (u v : Fin r → E) : EF X u ((m : E)⁻¹ • v) = (m : ℚ)⁻¹ * EF X u v := by
   have : (m : E)⁻¹ • v = (m : ℚ)⁻¹ • v := by rw [← Rat.cast_smul_eq_qsmul E]; simp
   rw [this, TensLat.EF_eq_bilin, TensLat.EF_eq_bilin, map_smul, smul_eq_mul]
 
 /- English proof (translation)
-The claim follows from `l.prod.le`.
+A detailed English derivation is pending.
 -/
 theorem prod_le (l : Geo.Tor.Level H) : l.Mb * Mfr l ≤ Ideal.span {(l.M : 𝓞 E)} := l.prod.le
 
 /- English proof (translation)
-Use `l.three_le` as an intermediate fact. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 theorem level_ne (l : Geo.Tor.Level H) : l.M ≠ 0 := by have := l.three_le; omega
 
 /- English proof (translation)
-Establish `key : ∀ x, ∀ a ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La), (cexp (2 * Real.pi * I * (k / l.M)) ^ Dw.EF x (cSep l • a) = cexp (-(2 * Real.pi * I * ((EF X (δ x) (((l.M : E)⁻¹) • (mk a : Fin r → E)) : ℚ) : ℂ))) ↔ (l.M : ℤ) ∣ (k : ℤ) * Dw.EF x a + B (δ x) (mk a))`. Introduce `x a ha`. Take `⟨z, hz⟩` from `smul_eq_nsmul (prod_le l) (LevelPairing.cSep_spec l).2 ha`. Rewrite `hz` using `[sub_smul, one_smul, sub_eq_iff_eq_add]`. Rewrite using `[ef_inv_smul, hB, zpow_eq_iff (level_ne l), hz, map_add, map_nsmul, nsmul_eq_mul, mul_add, add_assoc]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `dvd_add_right (Dvd.dvd.mul_left (Dvd.intro _ rfl) _)`. Conclude with `⟨fun h x a ha => (key x a ha).1 (h.pair x a ha), fun h => ⟨fun a => (δ a).2, fun x a ha => (key x a ha).2 (h x a ha)⟩⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isDual_iff {B : LinearMap.BilinForm ℤ L} (hB : ∀ x y : L, EF X x y = B x y) (k : ℕ)
     (mk δ : Dw.La →ₗ[𝓞 E] L) :
@@ -336,9 +330,7 @@ theorem isDual_iff {B : LinearMap.BilinForm ℤ L} (hB : ∀ x y : L, EF X x y =
     fun h => ⟨fun a => (δ a).2, fun x a ha => (key x a ha).2 (h x a ha)⟩⟩
 
 /- English proof (translation)
-Use `le_antisymm (Ideal.span_le.2 ?_) fun a ha => Ideal.subset_span ⟨H.bar a, Ideal.mem_map_of_mem (H.bar : 𝓞 E →+* 𝓞 E) ha, ?_⟩` and prove the remaining obligations. Introduce and unpack `a ⟨b, hb, h⟩`. Establish `: a = H.bar b` using `Subtype.ext (h.trans (H.bar_eq b).symm)`. Rewrite using `[this]`. Conclude with `LevelPairing.bar_mem_Mb hb`.
-
-Use `conv_lhs => rw [← LevelPairing.bar_bar H a]`. Conclude with `H.bar_eq _`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_half (l : Geo.Tor.Level H) : conjI (Mfr l) = l.Mb := by
   refine le_antisymm (Ideal.span_le.2 ?_) fun a ha => Ideal.subset_span
@@ -351,17 +343,17 @@ theorem conj_half (l : Geo.Tor.Level H) : conjI (Mfr l) = l.Mb := by
     exact H.bar_eq _
 
 /- English proof (translation)
-Establish `hK : Ideal.span {((2 * N : ℕ) : 𝓞 E)} ≠ ⊥`. Rewrite using `[Ne, Ideal.span_singleton_eq_bot, Nat.cast_eq_zero]`. Use linear arithmetic over natural numbers and integers. Use `haveI := Ideal.finiteQuotientOfFreeOfNeBot _ hK`. Take `⟨t, j, ht, hj⟩` from `exists_pow_le l.Mb (Ideal.span {((2 * N : ℕ) : 𝓞 E)})`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hM : (l.M : E) ≠ 0` using `by exact_mod_cast level_ne l`. Establish `hc` using `LevelPairing.cSep_spec l`. Establish `hmem : ∀ q : LevQ Dw l, cSep l • levRep q ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La)` using `fun q => Submodule.smul_mem_smul hc.1 trivial`. Establish `key : ∀ a ∈ l.Mb, ∀ q : LevQ Dw l, ∃ z : L, a • ((l.M : E)⁻¹ • (mk (cSep l • levRep q) : Fin r → E)) = z` using `fun a ha q => by`. Take `⟨z, hz⟩` from `smul_eq_nsmul (prod_le l) ha (map_mem mk (hmem q))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_comm, ← Submodule.coe_smul, hz, AddSubmonoidClass.coe_nsmul, ← Nat.cast_smul_eq_nsmul E, inv_smul_smul₀ hM]`. Use `⟨fun q => Matrix.of fun b => t • ((l.M : E)⁻¹ • (mk (cSep l • levRep (q b)) : Fin r → E)), fun q b => ⟨⟨_, hmem (q b), ?_, ?_⟩, j + 1, fun a ha => ?_⟩⟩` and prove the remaining obligations. Establish `h : (Submodule.Quotient.mk (levRep (q b)) : LevQ Dw l) = q b` using `Classical.choose_spec (Submodule.Quotient.mk_surjective _ (q b))`. Use `Eq.trans ((Submodule.Quotient.eq _).2 ?_) h` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Submodule.smul_mem_smul hc.2 (Submodule.mem_top (x := levRep (q b)))` as an intermediate fact. Rewrite `this` using `[sub_smul, one_smul]`. Then use the resulting hypothesis. Take `⟨z, hz⟩` from `key _ ht (q b)`. Rewrite `hz` using `[sub_smul, one_smul]`. Conclude with `hz ▸ z.2`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `∃ u ∈ L, a • t • ((l.M : E)⁻¹ • (mk (cSep l • levRep (q b)) : Fin r → E)) = _`. Rewrite `ha` using `[pow_succ]`. Use `Submodule.mul_induction_on ha (fun x hx y hy => ?_) ?_` and prove the remaining obligations. Take `⟨z, hz⟩` from `key y hy (q b)`. Take `⟨w, hw⟩` from `Ideal.mem_span_singleton'.1 (hj x hx)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨w • z, L.smul_mem w z.2, ?_⟩` and prove the remaining obligations. Rewrite using `[← mul_smul, mul_right_comm, mul_smul, hz, mul_comm x t, ← hw, mul_comm w, mul_smul, Nat.cast_smul_eq_nsmul]`. Introduce and unpack `x y ⟨u, hu, h⟩ ⟨v, hv, h'⟩`. Conclude with `⟨u + v, add_mem hu hv, by rw [add_smul, h, h', smul_add]⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_roots (l : Geo.Tor.Level H) (mk : Dw.La →ₗ[𝓞 E] L) (n N : ℕ) (hN : 0 < N) :
     ∃ Y : (Fin n → LevQ Dw l) → Matrix (Fin n) (Fin r) E, IsRoots l L (L.subtype ∘ₗ mk) N Y := by
@@ -401,9 +393,9 @@ theorem exists_roots (l : Geo.Tor.Level H) (mk : Dw.La →ₗ[𝓞 E] L) (n N : 
       exact ⟨u + v, add_mem hu hv, by rw [add_smul, h, h', smul_add]⟩
 
 /- English proof (translation)
-Set `T` to `(Matrix.toLin' (ga : Matrix (Fin r) (Fin r) E)).restrictScalars (𝓞 E)`. Establish `hT : Function.Injective T` using `Matrix.mulVec_injective_iff_isUnit.2 ga.isUnit`. Use `⟨fun a => Submodule.mem_map_of_mem (h.mem a), fun a ha hu => h.inj a ha ?_, fun v hv => ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨u, hu, rfl⟩, h1⟩` from `hu`. Conclude with `⟨u, hu, hT (by rw [map_nsmul]; exact h1)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hv` using `[mapL, ← Submodule.map_smul'']`. Take `⟨v, hv, rfl⟩` from `hv`. Take `⟨a, ha, u, hu, rfl⟩` from `h.surj v hv`. Conclude with `⟨a, ha, T u, Submodule.mem_map_of_mem hu, by rw [map_add, map_nsmul]; rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isMark_map {mk : Dw.La →ₗ[𝓞 E] (Fin r → E)} (h : IsMark l L mk) (ga : GL (Fin r) E) :
     IsMark l (mapL ga L) (mvMap ga mk) := by
@@ -418,7 +410,7 @@ theorem isMark_map {mk : Dw.La →ₗ[𝓞 E] (Fin r → E)} (h : IsMark l L mk)
     exact ⟨a, ha, T u, Submodule.mem_map_of_mem hu, by rw [map_add, map_nsmul]; rfl⟩
 
 /- English proof (translation)
-Use `⟨fun a => Submodule.mem_map_of_mem (h.mem a), fun x a ha => ?_⟩` and prove the remaining obligations. Rewrite using `[h.pair x a ha, EF_def, EF_def, ← hg, Matrix.mulVec_smul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isDual_map {ζ : ℂ} {mk δ : Dw.La →ₗ[𝓞 E] (Fin r → E)} (h : IsDual X l ζ L mk δ) {ga : GL (Fin r) E}
     (hg : IsUn X ga) : IsDual X l ζ (mapL ga L) (mvMap ga mk) (mvMap ga δ) := by
@@ -427,29 +419,27 @@ theorem isDual_map {ζ : ℂ} {mk δ : Dw.La →ₗ[𝓞 E] (Fin r → E)} (h : 
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨f.codRestrict L h, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_eq_comp {f : Dw.La →ₗ[𝓞 E] (Fin r → E)} (h : ∀ a, f a ∈ L) :
     ∃ g : Dw.La →ₗ[𝓞 E] L, f = L.subtype ∘ₗ g := ⟨f.codRestrict L h, rfl⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l r X L mk ζ hL hmk hζ`. Establish `hm` using `level_ne l`. Take `⟨k, -, hk, rfl⟩` from `(Complex.isPrimitiveRoot_iff ζ l.M hm).1 hζ`. Establish `hk' : IsCoprime (l.M : ℤ) (k : ℤ)` using `Nat.isCoprime_iff_coprime.2 hk.symm`. Take `⟨B, hB, aB, sB, hE⟩` from `exists_form H hL`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨mk, rfl⟩` from `exists_eq_comp hmk.mem`. Take `⟨hc, hc1⟩` from `LevelPairing.cSep_spec l`. Establish `hIJ` using `prod_le l`. Establish `hMM : (l.M : 𝓞 E) ∈ l.Mb * Mfr l` using `l.prod.ge (Ideal.subset_span rfl)`. Establish `hmI : (l.M : 𝓞 E) ∈ Mfr l` using `Ideal.mul_le_right hMM`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmJ : (l.M : 𝓞 E) ∈ l.Mb` using `Ideal.mul_le_left hMM`. Set `s : 𝓞 E →+* 𝓞 E` to `H.bar`. Establish `hss : ∀ a, s (s a) = a` using `LevelPairing.bar_bar H`. Establish `hs : ∀ a ∈ Mfr l, s a ∈ l.Mb` using `fun a => LevelPairing.bar_mem_Mb`. Establish `hs' : ∀ a ∈ l.Mb, s a ∈ Mfr l` using `fun a => Ideal.mem_map_of_mem s`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `aB' : ∀ (a : 𝓞 E) x y, B (a • x) y = B x (s a • y)` using `aB`. Establish `aC : ∀ (a : 𝓞 E) x y, Dw.EF (a • x) y = Dw.EF x (s a • y)` using `Dw.adj`. Establish `inj : ∀ a ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La), (∃ u, mk a = l.M • u) → ∃ b, a = l.M • b`. Introduce and unpack `a ha ⟨u, hu⟩`. Conclude with `hmk.inj a ha ⟨u, u.2, congrArg Subtype.val hu⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `surj : ∀ v ∈ Mfr l • (⊤ : Submodule (𝓞 E) L), ∃ a ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La), ∃ u, v = mk a + l.M • u`. Introduce `v hv`. Take `⟨a, ha, u, hu, h⟩` from `hmk.surj v ((Submodule.mem_smul_top_iff _ _ _).1 hv)`. Conclude with `⟨a, ha, ⟨u, hu⟩, Subtype.ext h⟩`. Use `haveI : Module.Finite (𝓞 E) L := Module.Finite.iff_fg.2 hL.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `haveI : Module.FinitePresentation (𝓞 E) L := Module.finitePresentation_of_finite _ _`. Use `haveI : Module.Projective (𝓞 E) L := Module.Flat.projective_of_finitePresentation`. Use `⟨?_, fun δ hδ => ?_, conj_half l, by rw [mul_comm]; exact l.prod, exists_roots l mk⟩` and prove the remaining obligations. Take `⟨δ, hδ⟩` from `exists_dual hIJ hmJ hc hc1 hB aB' aC mk inj surj k`. Conclude with `⟨_, (isDual_iff hE k mk δ).2 hδ⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨δ, rfl⟩` from `exists_eq_comp hδ.mem`. Establish `h` using `(isDual_iff hE k mk δ).1 hδ`. Establish `hsu` using `exists_dual_sub_mem hm hmI hss hs' hc hc1 hB Dw.unimod aB' aC hk' surj h`. Use `⟨fun v hv => ?_, fun a => ?_, fun ga hg => ⟨isMark_map hmk ga, isDual_map hδ hg⟩, fun mk' δ' hmk' hδ' hd a ha => ?_⟩` and prove the remaining obligations. Take `⟨x, hx⟩` from `hsu ⟨v, hv⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Submodule.mem_sup.2 ⟨_, ⟨x, rfl⟩, _, (Submodule.mem_smul_top_iff _ _ _).1 hx, add_sub_cancel _ _⟩`. Use `(Submodule.mem_smul_top_iff (Mfr l) L (δ a)).symm.trans ⟨fun hx => ?_, map_mem δ⟩` and prove the remaining obligations. Conclude with `mem_of_dual_mem hIJ hm hmI hss hs hs' hc hc1 Dw.unimod aB' aC hk' h hx`. Take `⟨mk', rfl⟩` from `exists_eq_comp hmk'.mem`. Take `⟨δ', rfl⟩` from `exists_eq_comp hδ'.mem`.
-
-Take `⟨u, hu⟩` from `mark_eq_of_dual hIJ hm hs hB aB' sB h ((isDual_iff hE k mk' δ').1 hδ') hsu (fun x => (Submodule.mem_smul_top_iff _ _ _).2 (hd x)) ha`. Conclude with `⟨u, u.2, congrArg Subtype.val (sub_eq_iff_eq_add'.1 hu)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem dual_marking : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Geo.Tor.Level H) (r : ℕ) (X : Data E r) (L : Lt E r) (mk : Dw.La →ₗ[𝓞 E] (Fin r → E)) (ζ : ℂ), SelfD X L → IsMark l L mk → IsPrimitiveRoot ζ l.M → (∃ δ : Dw.La →ₗ[𝓞 E] (Fin r → E), IsDual X l ζ L mk δ) ∧ (∀ δ : Dw.La →ₗ[𝓞 E] (Fin r → E), IsDual X l ζ L mk δ → L ≤ LinearMap.range δ ⊔ Mfr l • L ∧ (∀ a, δ a ∈ Mfr l • L ↔ a ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La)) ∧ (∀ ga : GL (Fin r) E, IsUn X ga → IsMark l (mapL ga L) (mvMap ga mk) ∧ IsDual X l ζ (mapL ga L) (mvMap ga mk) (mvMap ga δ)) ∧ ∀ mk' δ' : Dw.La →ₗ[𝓞 E] (Fin r → E), IsMark l L mk' → IsDual X l ζ L mk' δ' → (∀ a, δ a - δ' a ∈ Mfr l • L) → ∀ a ∈ Mfr l • (⊤ : Submodule (𝓞 E) Dw.La), ∃ u ∈ L, mk a = mk' a + l.M • u) ∧ conjI (Mfr l) = l.Mb ∧ Mfr l * l.Mb = Ideal.span {(l.M : 𝓞 E)} ∧ ∀ n N : ℕ, 0 < N → ∃ Y : (Fin n → LevQ Dw l) → Matrix (Fin n) (Fin r) E, IsRoots l L mk N Y := by
   intro E _ _ _ H Dw l r X L mk ζ hL hmk hζ

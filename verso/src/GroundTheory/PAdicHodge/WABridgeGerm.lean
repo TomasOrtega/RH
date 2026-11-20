@@ -20,14 +20,14 @@ variable (p) in
 def allRad : Subring (𝓣).RobbaTilde := ⨅ ρ : Set.Ioo (0 : ℝ) 1, ((𝓣).ofRad ρ).range
 
 /- English proof (translation)
-Rewrite using `[allRad, Subring.mem_iInf]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mem_allRad {x : (𝓣).RobbaTilde} :
     x ∈ allRad p ↔ ∀ ρ : Set.Ioo (0 : ℝ) 1, x ∈ ((𝓣).ofRad ρ).range := by
   rw [allRad, Subring.mem_iInf]
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨(𝓣).res h y, (𝓣).ofRad_res h y⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem mem_range_ofRad_of_le {ρ ρ' : Set.Ioo (0 : ℝ) 1} (h : (ρ' : ℝ) ≤ ρ) {x : (𝓣).RobbaTilde}
     (hx : x ∈ ((𝓣).ofRad ρ).range) : x ∈ ((𝓣).ofRad ρ').range := by
@@ -35,7 +35,7 @@ theorem mem_range_ofRad_of_le {ρ ρ' : Set.Ioo (0 : ℝ) 1} (h : (ρ' : ℝ) �
   exact ⟨(𝓣).res h y, (𝓣).ofRad_res h y⟩
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hx`. Conclude with `⟨_, ((frob ℂ_[p] p).tildeFrobSymm_ofRad τ y).symm⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem tildeFrobSymm_mem_range {τ : Set.Ioo (0 : ℝ) 1} {x : (𝓣).RobbaTilde}
     (hx : x ∈ ((𝓣).ofRad τ).range) :
@@ -44,7 +44,7 @@ theorem tildeFrobSymm_mem_range {τ : Set.Ioo (0 : ℝ) 1} {x : (𝓣).RobbaTild
   exact ⟨_, ((frob ℂ_[p] p).tildeFrobSymm_ofRad τ y).symm⟩
 
 /- English proof (translation)
-The claim follows from `mem_allRad.2 fun ρ => mem_range_ofRad_of_le (le_rootRadius ρ) (tildeFrobSymm_mem_range (mem_allRad.1 hx ρ))`.
+A detailed English derivation is pending.
 -/
 theorem tildeFrobSymm_mem_allRad {x : (𝓣).RobbaTilde} (hx : x ∈ allRad p) :
     (frob ℂ_[p] p).tildeFrobSymm x ∈ allRad p :=
@@ -52,7 +52,7 @@ theorem tildeFrobSymm_mem_allRad {x : (𝓣).RobbaTilde} (hx : x ∈ allRad p) :
     (tildeFrobSymm_mem_range (mem_allRad.1 hx ρ))
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply', rootRadius_coe, ih, ← Real.rpow_mul τ.2.1.le, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem coe_iterate_rootRadius (τ : Set.Ioo (0 : ℝ) 1) (n : ℕ) :
     (((frob ℂ_[p] p).rootRadius^[n] τ : Set.Ioo (0 : ℝ) 1) : ℝ) = (τ : ℝ) ^ ((p : ℝ)⁻¹ ^ n) := by
@@ -62,9 +62,9 @@ theorem coe_iterate_rootRadius (τ : Set.Ioo (0 : ℝ) 1) (n : ℕ) :
     rw [Function.iterate_succ_apply', rootRadius_coe, ih, ← Real.rpow_mul τ.2.1.le, pow_succ]
 
 /- English proof (translation)
-Establish `hL : 0 < -Real.log τ` using `neg_pos.2 (Real.log_neg τ.2.1 τ.2.2)`. Establish `hR : 0 < -Real.log ρ` using `neg_pos.2 (Real.log_neg ρ.2.1 ρ.2.2)`. Take `⟨N, hN⟩` from `exists_pow_lt_of_lt_one (div_pos hR hL) (inv_p_lt_one (p := p))`. Use `⟨N, ?_⟩` and prove the remaining obligations. Rewrite using `[coe_iterate_rootRadius, Real.rpow_def_of_pos τ.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hN` using `[lt_div_iff₀ hL]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem exists_le_iterate_rootRadius (τ ρ : Set.Ioo (0 : ℝ) 1) :
     ∃ n : ℕ, (ρ : ℝ) ≤ (((frob ℂ_[p] p).rootRadius^[n] τ : Set.Ioo (0 : ℝ) 1) : ℝ) := by
@@ -78,7 +78,7 @@ theorem exists_le_iterate_rootRadius (τ ρ : Set.Ioo (0 : ℝ) 1) :
     _ ≤ Real.exp (Real.log τ * (p : ℝ)⁻¹ ^ N) := Real.exp_le_exp.2 (by nlinarith)
 
 /- English proof (translation)
-Set `ρ3 : Set.Ioo (0 : ℝ) 1` to `⟨min ρ ρ', lt_min ρ.2.1 ρ'.2.1, min_lt_of_left_lt ρ.2.2⟩`. Rewrite using `[← (𝓣).ofRad_res (ρ1 := ρ3) (min_le_left _ _), res_awayToExt, ← (𝓣).ofRad_res (ρ1 := ρ3) (min_le_right _ _) (awayToExt p ρ' a), res_awayToExt]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 -/
 theorem ofRad_awayToExt (ρ ρ' : Set.Ioo (0 : ℝ) 1) (a : 𝔸) :
     (𝓣).ofRad ρ (awayToExt p ρ a) = (𝓣).ofRad ρ' (awayToExt p ρ' a) := by
@@ -92,30 +92,30 @@ def ainfTilde : AInf ℂ_[p] p →+* (𝓣).RobbaTilde :=
   ((𝓣).ofRad (rhoMid p)).comp ((awayToExt p (rhoMid p)).comp (algebraMap (AInf ℂ_[p] p) 𝔸))
 
 /- English proof (translation)
-The claim follows from `ofRad_awayToExt _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem ainfTilde_eq (ρ : Set.Ioo (0 : ℝ) 1) (a : AInf ℂ_[p] p) :
     ainfTilde p a = (𝓣).ofRad ρ (awayToExt p ρ (algebraMap _ 𝔸 a)) :=
   ofRad_awayToExt _ _ _
 
 /- English proof (translation)
-The claim follows from `mem_allRad.2 fun ρ => ⟨_, (ainfTilde_eq ρ a).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem ainfTilde_mem_allRad (a : AInf ℂ_[p] p) : ainfTilde p a ∈ allRad p :=
   mem_allRad.2 fun ρ => ⟨_, (ainfTilde_eq ρ a).symm⟩
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨ρ₀, h₀⟩ : ∃ ρ₀ : Set.Ioo (0 : ℝ) 1, ∀ j, y j ∈ ((𝓣).ofRad ρ₀).range := by`. Establish `key : ∀ s : Finset (Fin m), ∃ ρ₀ : Set.Ioo (0 : ℝ) 1, ∀ j ∈ s, y j ∈ ((𝓣).ofRad ρ₀).range`. Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => exact ⟨rhoMid p, by simp⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `insert j s hj ih`. Take `⟨ρ₁, h₁⟩` from `ih`. Take `⟨ρ₂, z, hz⟩` from `(𝓣).exists_ofRad (y j)`. Use `⟨⟨min ρ₁ ρ₂, lt_min ρ₁.2.1 ρ₂.2.1, min_lt_of_left_lt ρ₁.2.2⟩, fun k hk => ?_⟩` and prove the remaining obligations. Break down `Finset.mem_insert.1 hk with rfl | hk` into its components or cases.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `mem_range_ofRad_of_le (min_le_right _ _) ⟨z, hz⟩`. Conclude with `mem_range_ofRad_of_le (min_le_left _ _) (h₁ k hk)`. Take `⟨ρ₀, h⟩` from `key Finset.univ`. Conclude with `⟨ρ₀, fun j => h j (Finset.mem_univ j)⟩`. Establish `hstep : ∀ n : ℕ, ∀ j, y j ∈ ((𝓣).ofRad ((frob ℂ_[p] p).rootRadius^[n] ρ₀)).range`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => exact h₀`. Consider the case `succ n ih`. Introduce `j`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Function.iterate_succ_apply']`. Establish `e : y j = ∑ k, (frob ℂ_[p] p).tildeFrobSymm (C j k) * (frob ℂ_[p] p).tildeFrobSymm (y k)` using `by conv_lhs => rw [← (frob ℂ_[p] p).tildeFrobSymm_tildeFrob (y j), hy j, map_sum]`. Simplify using `only [map_mul]`. Rewrite using `[e]`. Use `Subring.sum_mem _ fun k _ => Subring.mul_mem _ ?_ (tildeFrobSymm_mem_range (ih k))` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `mem_allRad.1 (tildeFrobSymm_mem_allRad (hC j k)) _`. Use `mem_allRad.2 fun ρ => ?_` and prove the remaining obligations. Take `⟨n, hn⟩` from `exists_le_iterate_rootRadius (p := p) ρ₀ ρ`. Conclude with `mem_range_ofRad_of_le hn (hstep n i)`.
+A detailed English derivation is pending.
 -/
 theorem mem_allRad_of_tildeFrob_eq {m : ℕ} (C : Matrix (Fin m) (Fin m) (𝓣).RobbaTilde)
     (hC : ∀ i j, C i j ∈ allRad p) (y : Fin m → (𝓣).RobbaTilde)
@@ -158,21 +158,21 @@ def rep {x : (𝓣).RobbaTilde} (hx : x ∈ allRad p) (ρ : Set.Ioo (0 : ℝ) 1)
   (mem_allRad.1 hx ρ).choose
 
 /- English proof (translation)
-The claim follows from `(mem_allRad.1 hx ρ).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem ofRad_rep {x : (𝓣).RobbaTilde} (hx : x ∈ allRad p) (ρ : Set.Ioo (0 : ℝ) 1) :
     (𝓣).ofRad ρ (rep hx ρ) = x :=
   (mem_allRad.1 hx ρ).choose_spec
 
 /- English proof (translation)
-The claim follows from `(𝓣).ofRad_injective ρ (by rw [ofRad_rep, h])`.
+A detailed English derivation is pending.
 -/
 theorem rep_eq {x : (𝓣).RobbaTilde} (hx : x ∈ allRad p) {ρ : Set.Ioo (0 : ℝ) 1}
     {y : (𝓣).RobbaExt ρ} (h : (𝓣).ofRad ρ y = x) : rep hx ρ = y :=
   (𝓣).ofRad_injective ρ (by rw [ofRad_rep, h])
 
 /- English proof (translation)
-The claim follows from `(rep_eq hx (by rw [(𝓣).ofRad_res, ofRad_rep])).symm`.
+A detailed English derivation is pending.
 -/
 theorem res_rep {x : (𝓣).RobbaTilde} (hx : x ∈ allRad p) {ρ0 ρ1 : Set.Ioo (0 : ℝ) 1}
     (h : (ρ1 : ℝ) ≤ ρ0) : (𝓣).res h (rep hx ρ0) = rep hx ρ1 :=
@@ -182,14 +182,14 @@ def tn {x : (𝓣).RobbaTilde} (hx : x ∈ allRad p) (r : Set.Ioo (0 : ℝ) 1) :
   (𝓣).extNorm r (topRad r) (rep hx r)
 
 /- English proof (translation)
-The claim follows from `(𝓣).extNorm_nonneg _ _`.
+A detailed English derivation is pending.
 -/
 theorem tn_nonneg {x : (𝓣).RobbaTilde} (hx : x ∈ allRad p) (r : Set.Ioo (0 : ℝ) 1) :
     0 ≤ tn hx r :=
   (𝓣).extNorm_nonneg _ _
 
 /- English proof (translation)
-Rewrite using `[tn, ← res_rep hx (ρ0 := σ) (ρ1 := ⟨r, r.2.1, lt_of_le_of_lt r.2.2 σ.2.2⟩) r.2.2, (𝓣).extNorm_res]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extNorm_rep {x : (𝓣).RobbaTilde} (hx : x ∈ allRad p) (σ : Set.Ioo (0 : ℝ) 1)
     (r : Set.Ioc (0 : ℝ) σ) :
@@ -199,7 +199,7 @@ theorem extNorm_rep {x : (𝓣).RobbaTilde} (hx : x ∈ allRad p) (σ : Set.Ioo 
   rfl
 
 /- English proof (translation)
-Use `show (σ : ℝ) ^ p ^ (frob ℂ_[p] p).a = _`. Rewrite using `[frob_a, pow_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coe_powRadius (σ : Set.Ioo (0 : ℝ) 1) :
     (((frob ℂ_[p] p).powRadius σ : Set.Ioo (0 : ℝ) 1) : ℝ) = (σ : ℝ) ^ p := by
@@ -207,7 +207,7 @@ theorem coe_powRadius (σ : Set.Ioo (0 : ℝ) 1) :
   rw [frob_a, pow_one]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [Function.iterate_succ_apply', coe_powRadius, ih, ← pow_mul, pow_succ]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem coe_iterate_powRadius (σ : Set.Ioo (0 : ℝ) 1) (k : ℕ) :
     (((frob ℂ_[p] p).powRadius^[k] σ : Set.Ioo (0 : ℝ) 1) : ℝ) = (σ : ℝ) ^ (p ^ k) := by
@@ -216,7 +216,7 @@ theorem coe_iterate_powRadius (σ : Set.Ioo (0 : ℝ) 1) (k : ℕ) :
   | succ k ih => rw [Function.iterate_succ_apply', coe_powRadius, ih, ← pow_mul, pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `k generalizing c with`. Consider the case `zero => rfl`. Consider the case `succ k ih`. Rewrite using `[Function.iterate_succ_apply, Function.iterate_succ_apply', (frob ℂ_[p] p).powRadius_rootRadius, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem iterate_powRadius_rootRadius (c : Set.Ioo (0 : ℝ) 1) (k : ℕ) :
     (frob ℂ_[p] p).powRadius^[k] ((frob ℂ_[p] p).rootRadius^[k] c) = c := by
@@ -227,7 +227,7 @@ theorem iterate_powRadius_rootRadius (c : Set.Ioo (0 : ℝ) 1) (k : ℕ) :
       (frob ℂ_[p] p).powRadius_rootRadius, ih]
 
 /- English proof (translation)
-Rewrite using `[awayToExt_apply, extNorm_coe]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem extNorm_awayToExt (ρ : Set.Ioo (0 : ℝ) 1) (r : Set.Ioc (0 : ℝ) ρ) (a : 𝔸) :
     (𝓣).extNorm ρ r (awayToExt p ρ a) = gn ℂ_[p] p r a := by
@@ -235,9 +235,9 @@ theorem extNorm_awayToExt (ρ : Set.Ioo (0 : ℝ) 1) (r : Set.Ioc (0 : ℝ) ρ) 
   rfl
 
 /- English proof (translation)
-Proceed by induction on `hs using Finset.Nonempty.cons_induction with`. Consider the case `singleton a => exact ⟨a, Finset.mem_singleton_self a, by rw [Finset.sum_singleton]⟩`. Consider the case `cons a s ha hs ih`. Take `⟨j, hj, hjle⟩` from `ih`. Rewrite using `[Finset.sum_cons]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Break down `le_total ((𝓣).extNorm σ r (f a)) ((𝓣).extNorm σ r (f j)) with h | h` into its components or cases. Conclude with `⟨j, Finset.mem_cons_of_mem hj, ((𝓣).extNorm_add_le _ _ _).trans (max_le h hjle)⟩`. Conclude with `⟨a, Finset.mem_cons_self a s, ((𝓣).extNorm_add_le _ _ _).trans (max_le le_rfl (hjle.trans h))⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_extNorm_sum_le {σ : Set.Ioo (0 : ℝ) 1} (r : Set.Ioc (0 : ℝ) σ) {ι : Type*}
     {s : Finset ι} (hs : s.Nonempty) (f : ι → (𝓣).RobbaExt σ) :
@@ -263,7 +263,7 @@ variable {m : ℕ} (C : Matrix (Fin m) (Fin m) (AInf ℂ_[p] p))
 include hy in
 
 /- English proof (translation)
-Apply `(𝓣).ofRad_injective` to reduce the goal to its premises. Rewrite using `[← (frob ℂ_[p] p).tildeFrob_ofRad, ofRad_rep, hy i, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, map_natCast, ofRad_rep, ← ainfTilde_eq]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem extFrob_rep (i : Fin m) (σ : Set.Ioo (0 : ℝ) 1) :
     (frob ℂ_[p] p).extFrob σ (rep (ha i) σ) = ∑ j, (p : (𝓣).RobbaExt ((frob ℂ_[p] p).powRadius σ)) *
@@ -277,15 +277,13 @@ theorem extFrob_rep (i : Fin m) (σ : Set.Ioo (0 : ℝ) 1) :
 include hy in
 
 /- English proof (translation)
-Use `set r' := (frob ℂ_[p] p).powRadius r`. Establish `h1 : tn (ha i) r ^ p = (𝓣).extNorm r' (topRad r') ((frob ℂ_[p] p).extFrob r (rep (ha i) r))`. Use `(frob ℂ_[p] p).extNorm_extFrob r (topRad r) (rep (ha i) r)` as an intermediate fact. Rewrite `this` using `[frob_a, pow_one]`. Rewrite using `[tn, ← this]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Take `⟨j, -, hj⟩` from `exists_extNorm_sum_le (topRad r') (s := Finset.univ) ⟨i, Finset.mem_univ i⟩ (fun j => (p : (𝓣).RobbaExt r') * awayToExt p r' (algebraMap _ 𝔸 (C i j)) * rep (ha j) r')`. Use `⟨j, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, extFrob_rep C hy ha i r]`. Use `hj.trans ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[(𝓣).extNorm_mul, (𝓣).extNorm_mul, ← awayToExt_natCast, extNorm_awayToExt, extNorm_awayToExt, map_natCast, gn_natCast_p (K := ℂ_[p]) (topRad r').2.1]`. Establish `hr' : ((topRad r' : Set.Ioc (0 : ℝ) r') : ℝ) = (r : ℝ) ^ p` using `coe_powRadius r`. Establish `hC1` using `gn_algebraMap_le_one (K := ℂ_[p]) (p := p) (topRad r').2.1 (rad_lt_one r' (topRad r')).le (C i j)`. Establish `hg0` using `gn_nonneg (K := ℂ_[p]) (p := p) (topRad r').2.1 (algebraMap _ 𝔸 (C i j))`. Rewrite `hC1`, `hg0`, the goal using `[hr']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hnn` using `tn_nonneg (ha j) r'`. Combine the equalities or inequalities in the displayed calculation. Establish `hr0 : (0 : ℝ) ≤ (r : ℝ) ^ p` using `pow_nonneg r.2.1.le _`. Use `gcongr`. Conclude with `le_rfl`.
-
-Use `_ = (r : ℝ) ^ p * tn (ha j) r' := by ring`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_tn_pow_le (i : Fin m) (r : Set.Ioo (0 : ℝ) 1) :
     ∃ j, tn (ha i) r ^ p ≤ (r : ℝ) ^ p * tn (ha j) ((frob ℂ_[p] p).powRadius r) := by
@@ -318,13 +316,11 @@ theorem exists_tn_pow_le (i : Fin m) (r : Set.Ioo (0 : ℝ) 1) :
 include hy in
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => intro i r; exact ⟨i, by simp⟩`. Consider the case `succ k ih`. Introduce `i r`. Take `⟨j₁, h₁⟩` from `exists_tn_pow_le C hy ha i r`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨j₂, h₂⟩` from `ih j₁ ((frob ℂ_[p] p).powRadius r)`. Use `⟨j₂, ?_⟩` and prove the remaining obligations. Rewrite using `[Function.iterate_succ_apply]`. Establish `hr0 : (0 : ℝ) ≤ r` using `r.2.1.le`. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[mul_pow, ← pow_mul]`. Use `_ ≤ (r : ℝ) ^ (p * p ^ k) * ((((frob ℂ_[p] p).powRadius r : Set.Ioo (0 : ℝ) 1) : ℝ) ^ (k * p ^ k) * tn (ha j₂) ((frob ℂ_[p] p).powRadius^[k] ((frob ℂ_[p] p).powRadius r))) := mul_le_mul_of_nonneg_left h₂ (pow_nonneg hr0 _)`. Use `_ = (r : ℝ) ^ ((k + 1) * p ^ (k + 1)) * tn (ha j₂) ((frob ℂ_[p] p).powRadius^[k] ((frob ℂ_[p] p).powRadius r)) := by`. Rewrite using `[coe_powRadius, ← pow_mul, ← mul_assoc, ← pow_add]`. Use `congr 2`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem exists_tn_pow_pow_le (k : ℕ) : ∀ (i : Fin m) (r : Set.Ioo (0 : ℝ) 1),
     ∃ j, tn (ha i) r ^ (p ^ k) ≤

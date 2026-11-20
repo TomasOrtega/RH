@@ -28,11 +28,9 @@ namespace GlobalTheory.Div.ConjugateOrderConductor
 open GlobalTheory.IndefiniteRowSideFullHecke.DifferentConductorValuations
 
 /- English proof (translation)
-Establish `hle : orderC (⊥ : Ideal (OF E)) ≤ RingHom.eqLocus ((IsCMField.complexConj E : E ≃ₐ[maximalRealSubfield E] E) : E →+* E) (RingHom.id E)`. Unfold `orderC`. Rewrite using `[Subring.closure_le]`. Introduce and unpack `x (⟨b, rfl⟩ | ⟨b, hb, rfl⟩)`. Use `show IsCMField.complexConj E (algebraMap (OF E) E b) = algebraMap (OF E) E b`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply (OF E) (maximalRealSubfield E) E]`. Conclude with `IsCMField.complexConj_apply_eq_self E _`. Rewrite `hb` using `[Ideal.map_bot, Ideal.mem_bot]`. Substitute `hb` using the available equality. Use `show IsCMField.complexConj E (algebraMap (𝓞 E) E 0) = algebraMap (𝓞 E) E 0`.
-
-Simplify using the standard rewrite rules. Conclude with `hle a.2`.
+Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_orderC_bot {E : Type} [Field E] [NumberField E] [IsCMField E] (a : orderC (⊥ : Ideal (OF E))) :
     IsCMField.complexConj E (a : E) = (a : E) := by
@@ -50,15 +48,13 @@ theorem conj_orderC_bot {E : Type} [Field E] [NumberField E] [IsCMField E] (a : 
   exact hle a.2
 
 /- English proof (translation)
-Introduce `E _ _ _ c R _ _ _ K _ _ _ H _ _ I φ ρ Fil B e f N i hL hG hN hc`. Substitute `hc` using the available equality. Take `⟨hfree, -, -, hline, -⟩` from `hL`. Establish `heq : eigK ρ (φ i) = eigK ρ (bar (φ i))`. Unfold `eigK`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Use `congr 1`. Use `show φ i (a : E) = φ i (IsCMField.complexConj E (a : E))`. Rewrite using `[conj_orderC_bot]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `he : inK (O` using `R) K H (e i) ∈ eigK ρ (bar (φ i)) := by`. Rewrite using `[← heq]`. Use `show e i ∈ eigLat ρ (φ i)`. Rewrite using `[(hG i).1]`. Conclude with `Submodule.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h0 : inK (O` using `R) K H (f i) = 0 := by`. Rewrite using `[← hN.1]`. Conclude with `hN.2 _ (GlobalTheory.LowerOps.bar_ne_self _) _ he`. Establish `hf : f i = 0`. Assume the negation of the conclusion as `hf`.
-
-Conclude with `GlobalTheory.Div.eigen_line_bilinear.inK_ne_zero hfree hf h0`. Take `⟨g, hg0, hg⟩` from `GlobalTheory.EigenLattice.exists_ne_mem ρ (bar (φ i)) (hline _)`. Rewrite `hg` using `[(hG i).2, hf, Submodule.span_singleton_eq_bot.2 rfl, Submodule.mem_bot]`. Conclude with `hg0 hg`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (c : Ideal (OF E)) (R : Type) [CommRing R] [IsDomain R]
     [IsDiscreteValuationRing R] (K : Type) [Field K] [Algebra R K] [IsFractionRing R K] (H : Type) [AddCommGroup H]

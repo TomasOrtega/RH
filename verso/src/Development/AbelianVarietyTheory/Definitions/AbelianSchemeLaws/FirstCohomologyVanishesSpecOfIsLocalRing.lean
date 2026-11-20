@@ -42,7 +42,7 @@ def FirstCohomologyVanishes (M : LB X) : Prop :=
         rs X (inf_le_inf (hV a) (hV b) : V a ⊓ V b ≤ M.U (c a) ⊓ M.U (c b)) (M.g (c a) (c b)).val * rs X inf_le_right (ψ b)
 
 /- English proof (translation)
-Introduce `_ hy` and use `Set.mem_iInter.2 fun _ => h hy`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem le_pull (M : LB X) (π : X' ⟶ X) {W : X.Opens} {i : M.ι} (h : W ≤ M.U i) :
     π ⁻¹ᵁ W ≤ (M.pull π).U (fun _ => i) := fun _ hy => Set.mem_iInter.2 fun _ => h hy
@@ -86,7 +86,7 @@ structure Perf (f : X ⟶ Spec (CommRingCat.of R)) (M : LB X) where
 def Triv (M : LB X) : Prop := ∃ t : LB.Gen M, t.IsGen
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `((X.presheaf.map (homOfLE h₁).op ≫ X.presheaf.map (homOfLE h₂).op).hom) x = _`. Rewrite using `[← Functor.map_comp]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rs_rs {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (x : Γ(X, U)) :
     rs X h₂ (rs X h₁ x) = rs X (h₂.trans h₁) x := by
@@ -95,7 +95,7 @@ theorem rs_rs {U V W : X.Opens} (h₁ : V ≤ U) (h₂ : W ≤ V) (x : Γ(X, U))
   rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(X.presheaf.map (𝟙 (Opposite.op U))).hom x = x`. Rewrite using `[X.presheaf.map_id]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem rs_self {U : X.Opens} (h : U ≤ U) (x : Γ(X, U)) : rs X h x = x := by
   change (X.presheaf.map (𝟙 (Opposite.op U))).hom x = x
@@ -103,14 +103,14 @@ theorem rs_self {U : X.Opens} (h : U ≤ U) (x : Γ(X, U)) : rs X h x = x := by
   rfl
 
 /- English proof (translation)
-The claim follows from `rs_rs le_top h _`.
+A detailed English derivation is pending.
 -/
 theorem rs_cst (f : X ⟶ Spec (CommRingCat.of R)) {U V : X.Opens} (h : V ≤ U) (r : R) :
     rs X h (cst f U r) = cst f V r :=
   rs_rs le_top h _
 
 /- English proof (translation)
-The claim follows from `hH.cover g_self := fun i => by have h := congrArg (· ^ t) (hH.g_self i) simp only [one_zpow, ← map_zpow] at h exact h cocycle := fun i j k => by have h := congrArg (· ^ t) (hH.cocycle i j k) simp only [mul_zpow, ← map_zpow] at h exact h`.
+A detailed English derivation is pending.
 -/
 theorem isLB_pw {H : LB X} (hH : H.IsLB) (t : ℤ) : (pw H t).IsLB where
   cover := hH.cover
@@ -124,19 +124,19 @@ theorem isLB_pw {H : LB X} (hH : H.IsLB) (t : ℤ) : (pw H t).IsLB where
     exact h
 
 /- English proof (translation)
-The claim follows from `LB.isLB_div hM (isLB_pw hH (-t))`.
+A detailed English derivation is pending.
 -/
 theorem isLB_tw {M H : LB X} (hM : M.IsLB) (hH : H.IsLB) (t : ℤ) : (tw M H t).IsLB :=
   LB.isLB_div hM (isLB_pw hH (-t))
 
 /- English proof (translation)
-Simplify using `only [pw, zpow_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pw_one (H : LB X) : pw H 1 = H := by
   simp only [pw, zpow_one]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ * (res _ (H.g p.2 q.2 ^ (-t)))⁻¹ = _`. Rewrite using `[map_zpow, zpow_neg, inv_inv]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tw_g (M H : LB X) (t : ℤ) (p q : M.ι × H.ι) :
     (tw M H t).g p q =
@@ -149,9 +149,9 @@ theorem tw_g (M H : LB X) (t : ℤ) (p q : M.ι × H.ι) :
   rfl
 
 /- English proof (translation)
-Introduce `I V c hV hc φ hφ`. Take `⟨d, hd⟩` from `hX I V hc`. Establish `hle : ∀ U : X.Opens, U ≤ V d` using `fun U => hd ▸ le_top`. Use `⟨fun a => rs X (le_inf le_rfl (hle _) : V a ≤ V a ⊓ V d) (φ a d), fun a b => ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg (rs X (le_inf le_rfl (hle _) : V a ⊓ V b ≤ V a ⊓ V b ⊓ V d)) (hφ a b d)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using `only [map_add, map_mul, rs_rs, rs_self] at h`. Simplify using `only [rs_rs]`. Conclude with `eq_sub_of_add_eq h`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem firstCohomologyVanishes_of_every_cover_trivial (M : LB X)
     (hX : ∀ (I : Type) (V : I → X.Opens), ⨆ a, V a = ⊤ → ∃ a, V a = ⊤) : FirstCohomologyVanishes M := by
@@ -165,7 +165,7 @@ theorem firstCohomologyVanishes_of_every_cover_trivial (M : LB X)
   exact eq_sub_of_add_eq h
 
 /- English proof (translation)
-Use `firstCohomologyVanishes_of_every_cover_trivial M fun I V hc => ?_` and prove the remaining obligations. Establish `hx : IsLocalRing.closedPoint R ∈ (⨆ a, V a)` using `by rw [hc]; trivial`. Take `⟨a, ha⟩` from `TopologicalSpace.Opens.mem_iSup.1 hx`. Conclude with `⟨a, (IsLocalRing.closedPoint_mem_iff (V a)).1 ha⟩`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem firstCohomologyVanishes_spec_of_isLocalRing [IsLocalRing R] (M : LB (Spec (CommRingCat.of R))) : FirstCohomologyVanishes M := by
   refine firstCohomologyVanishes_of_every_cover_trivial M fun I V hc => ?_
@@ -174,9 +174,9 @@ theorem firstCohomologyVanishes_spec_of_isLocalRing [IsLocalRing R] (M : LB (Spe
   exact ⟨a, (IsLocalRing.closedPoint_mem_iff (V a)).1 ha⟩
 
 /- English proof (translation)
-Substitute `hW` using the available equality. Establish `h₁ : Function.Bijective (rs X (le_top : (⊤ : X.Opens) ≤ ⊤))`. Establish `: ⇑(rs X (le_top : (⊤ : X.Opens) ≤ ⊤)) = id` using `funext fun x => rs_self _ x`. Rewrite using `[this]`. Conclude with `Function.bijective_id`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h₂ : Function.Bijective f.appTop.hom` using `ConcreteCategory.bijective_of_isIso (f.app ⊤)`. Establish `h₃ : Function.Bijective (Scheme.ΓSpecIso (CommRingCat.of R)).inv.hom` using `ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of R)).inv`. Conclude with `h₁.comp (h₂.comp h₃)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cst_bijective (f : X ⟶ Spec (CommRingCat.of R)) [IsIso f] {W : X.Opens} (hW : W = ⊤) :
     Function.Bijective (cst f W) := by
@@ -191,7 +191,7 @@ theorem cst_bijective (f : X ⟶ Spec (CommRingCat.of R)) [IsIso f] {W : X.Opens
   exact h₁.comp (h₂.comp h₃)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨fun _ => 1⟩, fun _ _ => by change res _ 1 = 1 * res _ 1 rw [map_one, map_one] exact (_root_.mul_one _).symm⟩`.
+Supply the required witnesses or components.
 -/
 theorem triv_trivLB (X : Scheme.{0}) : Triv (Inh.trivLB X) :=
   ⟨⟨fun _ => 1⟩, fun _ _ => by
@@ -206,7 +206,7 @@ def oneSec (X : Scheme.{0}) : LB.Sec (Inh.trivLB X) where
     rfl
 
 /- English proof (translation)
-Apply `top_unique` to reduce the goal to its premises. Introduce `x _`. Simplify using `only [nonzeroLocus, oneSec, Scheme.basicOpen_one]`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨PUnit.unit, trivial⟩`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nonzeroLocus_oneSec (X : Scheme.{0}) : nonzeroLocus (oneSec X) = ⊤ := by
   apply top_unique
@@ -215,9 +215,9 @@ theorem nonzeroLocus_oneSec (X : Scheme.{0}) : nonzeroLocus (oneSec X) = ⊤ := 
   exact TopologicalSpace.Opens.mem_iSup.2 ⟨PUnit.unit, trivial⟩
 
 /- English proof (translation)
-Use `⟨by simp only [iSup_const]; exact nonzeroLocus_oneSec X, fun _ => ⟨?_, fun _ => 1, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[nonzeroLocus_oneSec]`. Establish `: IsAffine X` using `isAffine_of_isAffineHom f`. Conclude with `isAffineOpen_top X`. Introduce `j k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one, _root_.one_mul]`. Introduce `p`. Take `⟨a, rfl⟩` from `(cst_bijective f (nonzeroLocus_oneSec X)).2 p`. Conclude with `⟨MvPolynomial.C a, MvPolynomial.eval₂Hom_C _ _ _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem veryAmpleBy_oneSec (f : X ⟶ Spec (CommRingCat.of R)) [IsIso f] :
     VeryAmpleBy f (Inh.trivLB X) (m := 0) (fun _ => oneSec X) := by
@@ -232,19 +232,19 @@ theorem veryAmpleBy_oneSec (f : X ⟶ Spec (CommRingCat.of R)) [IsIso f] :
     exact ⟨MvPolynomial.C a, MvPolynomial.eval₂Hom_C _ _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Inh.trivLB X, Inh.trivLB_isLB X, 0, fun _ => oneSec X, veryAmpleBy_oneSec f⟩`.
+Supply the required witnesses or components.
 -/
 theorem isProjBy_of_isIso (f : X ⟶ Spec (CommRingCat.of R)) [IsIso f] : IsProjBy f :=
   ⟨Inh.trivLB X, Inh.trivLB_isLB X, 0, fun _ => oneSec X, veryAmpleBy_oneSec f⟩
 
 /- English proof (translation)
-The claim follows from `isProjBy_of_isIso _`.
+A detailed English derivation is pending.
 -/
 theorem isProjBy_id (R : Type) [CommRing R] : IsProjBy (𝟙 (Spec (CommRingCat.of R))) :=
   isProjBy_of_isIso _
 
 /- English proof (translation)
-The claim follows from `top_unique fun _ _ => Set.mem_iInter.2 fun _ => trivial`.
+A detailed English derivation is pending.
 -/
 theorem pull_trivLB_U (π : X' ⟶ X) (j : ((Inh.trivLB X).pull π).ι) :
     ((Inh.trivLB X).pull π).U j = ⊤ :=
@@ -258,9 +258,9 @@ def cstSec (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of R)) (r : R) :
     exact (rs_cst f' _ r).trans (rs_cst f' _ r).symm
 
 /- English proof (translation)
-Set `j₀ : ((Inh.trivLB X).pull π).ι` to `fun _ => PUnit.unit`. Establish `hb` using `cst_bijective f' (pull_trivLB_U π j₀)`. Use `⟨fun r r' h => hb.1 (congrArg (fun s => s.f j₀) h), fun s => ?_⟩` and prove the remaining obligations. Take `⟨r, hr⟩` from `hb.2 (s.f j₀)`. Use `⟨r, ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨sf, hs⟩` from `s`. Establish `: (fun j => cst f' (((Inh.trivLB X).pull π).U j) r) = sf` using `funext fun _ => hr`. Substitute `this` using the available equality. Both sides reduce to the same expression.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem cstSec_bijective (π : X' ⟶ X) (f' : X' ⟶ Spec (CommRingCat.of R)) [IsIso f'] :
     Function.Bijective (cstSec π f') := by
@@ -297,7 +297,7 @@ def perfTriv (f : X ⟶ Spec (CommRingCat.of R)) [IsIso f] : Perf f (Inh.trivLB 
   exact := fun R' _ g X' π f' _ _ w _ => ⟨0, Subsingleton.elim _ _⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨perfTriv _⟩`.
+Supply the required witnesses or components.
 -/
 example (R : Type) [CommRing R] :
     Nonempty (Perf (𝟙 (Spec (CommRingCat.of R))) (Inh.trivLB _)) := ⟨perfTriv _⟩
@@ -308,12 +308,12 @@ Both sides reduce to the same expression.
 example (R : Type) [CommRing R] : (perfTriv (𝟙 (Spec (CommRingCat.of R)))).a = 1 := rfl
 
 /- English proof (translation)
-The claim follows from `isProjBy_id ℤ`.
+A detailed English derivation is pending.
 -/
 example : IsProjBy (𝟙 (Spec (CommRingCat.of ℤ))) := isProjBy_id ℤ
 
 /- English proof (translation)
-The claim follows from `firstCohomologyVanishes_spec_of_isLocalRing _`.
+A detailed English derivation is pending.
 -/
 example : FirstCohomologyVanishes (Inh.trivLB (Spec (CommRingCat.of ℚ))) := firstCohomologyVanishes_spec_of_isLocalRing _
 

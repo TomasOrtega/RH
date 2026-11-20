@@ -12,9 +12,9 @@ namespace PositivityTheory.ThKG.CayleyTransformDarboux
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Use `⟨((fun w => (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm (s w)), 0), fun u hu => ?_, fun w => ?_⟩` and prove the remaining obligations. Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`. Rewrite using `[h1, zero_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`. Rewrite using `[mul_zero]`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w)]`. Use `congr 1`. Conclude with `(InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).apply_symm_apply (s w)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem exists_re (hF : IsTotallyReal F) (s : InfinitePlace F → ℝ) : ∃ a : AF F, (∀ u : AF F, evI F u = 0 → u * a = 0) ∧
     ∀ w, InfinitePlace.Completion.extensionEmbedding w (a.1 w) = s w := by
@@ -31,11 +31,11 @@ theorem exists_re (hF : IsTotallyReal F) (s : InfinitePlace F → ℝ) : ∃ a :
     exact (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).apply_symm_apply (s w)
 
 /- English proof (translation)
-Take `⟨β, hβ⟩` from `exists_moved h`. Take `⟨t, ht, ht'⟩` from `exists_re h.1 fun w => (c w).im / ((τ w).1 β).im`. Take `⟨s, hs, hs'⟩` from `exists_re h.1 fun w => (c w).re - (c w).im / ((τ w).1 β).im * ((τ w).1 β).re`. Use `⟨s ⊗ₜ[F] 1 + t ⊗ₜ[F] β, fun u hu => ?_, fun w => ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, hs u hu, ht u hu, TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `im_ne_zero h hβ (τ w).1` as an intermediate fact. Rewrite using `[map_add, piInf_tmul, piInf_tmul, hs', ht', map_one, mul_one]`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Simplify using `only [Complex.add_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (c : InfinitePlace F → ℂ) :
     ∃ a : AE F E, At (evI F) a ∧ ∀ w, piInf (τ w) a = c w := by
@@ -52,9 +52,9 @@ theorem exists_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E
     · simp only [Complex.add_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im]; field_simp; ring
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero, star_zero]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy, star_add]`. Consider the case `tmul a x`. Express the relevant statement in the definitionally equal form `piInf τ (a ⊗ₜ[F] σ x) = _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[piInf_tmul, piInf_tmul, h.2.2.2, star_mul', show star (InfinitePlace.Completion.extensionEmbedding w (a.1 w)) = _ from Complex.conj_eq_iff_im.2 (im_extension h.1 w _)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem piInf_cA (h : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (z : AE F E) :
     piInf τ (cA σ z) = star (piInf τ z) := by
@@ -73,32 +73,32 @@ def atI (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebr
   smul_mem' := fun c a ha u hu => by rw [smul_eq_mul, ← mul_smul_comm, ha u hu, mul_zero]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_atI {a : AE F E} : a ∈ atI F E ↔ At (evI F) a := Iff.rfl
 
 /- English proof (translation)
-Introduce `u hu` and use `congrFun (congrFun (h u hu) i) j`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_entry {m n : Type} {M : Matrix m n (AE F E)} (h : At (evI F) M) (i j) : M i j ∈ atI F E :=
   fun u hu => congrFun (congrFun (h u hu) i) j
 
 /- English proof (translation)
-Introduce `u hu` and use `by rw [← map_smul, h u hu, map_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_cA {a : AE F E} (h : a ∈ atI F E) : cA σ a ∈ atI F E := fun u hu => by rw [← map_smul, h u hu, map_zero]
 
 /- English proof (translation)
-The claim follows from `sub_eq_zero.1 (eq_zero_of_piInf σ h τ _ hab fun w => by rw [map_sub, e, sub_self])`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {a b : AE F E} (hab : a - b ∈ atI F E)
     (e : ∀ w, piInf (τ w) a = piInf (τ w) b) : a = b :=
   sub_eq_zero.1 (eq_zero_of_piInf σ h τ _ hab fun w => by rw [map_sub, e, sub_self])
 
 /- English proof (translation)
-Take `⟨a, ha, ha'⟩` from `exists_inf h τ fun w => c w - 1`. Take `⟨b, hb, hb'⟩` from `exists_inf h τ fun w => (c w)⁻¹ - 1`. Use `⟨Units.mkOfMulEqOne (1 + a) (1 + b) (eq_of_inf h τ ?_ fun w => ?_), by simpa [mem_atI] using ha, fun w => by simp [ha']⟩` and prove the remaining obligations. Rewrite using `[show (1 + a) * (1 + b) - 1 = a * (1 + b) + b by ring]`. Conclude with `add_mem (Ideal.mul_mem_right _ _ ha) hb`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `[ha', hb', hc w]`.
+A detailed English derivation is pending.
 -/
 theorem exists_unit (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (c : InfinitePlace F → ℂ) (hc : ∀ w, c w ≠ 0) :
     ∃ t : (AE F E)ˣ, (t : AE F E) - 1 ∈ atI F E ∧ ∀ w, piInf (τ w) t = c w := by
@@ -110,18 +110,18 @@ theorem exists_unit (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver 
   · simp [ha', hb', hc w]
 
 /- English proof (translation)
-Use `neg_mem (Ideal.mul_mem_left _ ((t⁻¹ : (AE F E)ˣ) : AE F E) h)` as an intermediate fact. Rewrite `this` using `[mul_sub, Units.inv_mul, mul_one, neg_sub]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem inv_at {t : (AE F E)ˣ} (h : (t : AE F E) - 1 ∈ atI F E) : ((t⁻¹ : (AE F E)ˣ) : AE F E) - 1 ∈ atI F E := by
   have := neg_mem (Ideal.mul_mem_left _ ((t⁻¹ : (AE F E)ˣ) : AE F E) h)
   rwa [mul_sub, Units.inv_mul, mul_one, neg_sub] at this
 
 /- English proof (translation)
-Establish `e : ∀ v, GlobalTheory.Doubling.unitFin F E v t = 1` using `fun v => by`. Take `⟨u, hu, hu'⟩ : ∃ u : AF F, evI F u = 0 ∧ evFin F v u = 1` from `⟨(0, 1), map_zero (InfiniteAdeleRing.ringEquiv_mixedSpace F), map_one (evalV F v)⟩`. Establish `h0 : algebraMap (AF F) (AE F E) u * ((t : AE F E) - 1) = 0` using `(Algebra.smul_def _ _).symm.trans (ht u hu)`. Establish `h1` using `congrArg (compFin F E v) h0`. Establish `h2 : compFin F E v (algebraMap (AF F) (AE F E) u) = 1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `evFin F v u ⊗ₜ[F] (1 : E) = 1`. Rewrite using `[hu']`. Both sides reduce to the same expression. Rewrite `h1` using `[map_mul, map_zero, h2, one_mul, map_sub, map_one, sub_eq_zero]`. Conclude with `Units.ext h1`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.Doubling.absE_apply]`. Simplify using `only [e, map_one, finprod_one, mul_one, GlobalTheory.Doubling.absEw_eq_sq h (τ _)]`. Use `push_cast`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem absE_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) {t : (AE F E)ˣ} (ht : (t : AE F E) - 1 ∈ atI F E) :
     (absE F E t : ℝ) = ∏ w, ‖piInf (τ w) t‖ ^ 2 := by
@@ -141,11 +141,11 @@ theorem absE_inf (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w
   rfl
 
 /- English proof (translation)
-Use `choose t ht ht' using fun s : ℝ => exists_unit h τ (fun w => Complex.exp (s * l w)) fun w => Complex.exp_ne_zero _`. Establish `e : (fun s => (χ (t s) : ℂ) * (((absE F E (t s) : ℝ) ^ r : ℝ) : ℂ)) = fun s : ℝ => Complex.exp (s * ∑ w, ((l w - (l w).re) * m w + 2 * (l w).re * r))`. Use function extensionality and compare the values at `s`. Rewrite using `[hχ _ (ht s), absE_inf h τ (ht s), Finset.mul_sum, Complex.exp_sum, ← Real.finset_prod_rpow _ _ fun _ _ => by positivity, Complex.ofReal_prod, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[ht', Complex.norm_exp, ← Real.exp_nat_mul, ← Real.exp_mul, Complex.ofReal_exp, Complex.ofReal_exp, ← Complex.exp_sub, ← Complex.exp_int_mul, ← Complex.exp_add]`. Use `congr 1`. Simplify using `only [Complex.re_ofReal_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 
-Conclude with `⟨t, _, fun s => ⟨ht s, ht' s⟩, e ▸ ((Complex.ofRealCLM.hasDerivAt (x := 0)).mul_const _).cexp⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_torus (h : IsCMExt F E σ) (τ : ∀ w : InfinitePlace F, EmbOver E w) (l : InfinitePlace F → ℂ) (χ : Chr F E)
     {m : InfinitePlace F → ℤ} (hχ : HasExp τ χ m) (r : ℝ) :

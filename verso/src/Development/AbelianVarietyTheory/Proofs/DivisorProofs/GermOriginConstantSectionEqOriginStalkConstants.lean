@@ -12,9 +12,9 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.GermConst
 
 /- English proof (translation)
-Introduce `R _ _ G _ O hO r`. Establish `e` using `Scheme.Hom.appLE_map G.hom (U := ⊤) (V := ⊤) (fun _ _ => trivial) (homOfLE (le_top : O ≤ ⊤)).op`. Establish `h : constFn G.hom O r = (G.left.presheaf.map (homOfLE (le_top : O ≤ ⊤)).op).hom (constFn G.hom ⊤ r)`. Unfold `constFn`. Rewrite using `[← e]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h, TopCat.Presheaf.germ_res_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem germ_constFn_origin : ∀ (R : Type) [CommRing R] [IsLocalRing R] (G : Over (Sp R)) [GrpObj G] (O : G.left.Opens) (hO : origin G ∈ O) (r : R), (G.left.presheaf.germ O (origin G) hO).hom (constFn G.hom O r) = constO G r := by
   intro R _ _ G _ O hO r

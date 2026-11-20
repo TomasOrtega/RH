@@ -8,11 +8,11 @@ namespace GlobalTheory.DetEqv
 open Set Filter Topology
 
 /- English proof (translation)
-Establish `hK : IsCompact (Prod.fst '' tsupport Φ)` using `hc.isCompact.image continuous_fst`. Establish `h1 : ∀ᶠ z in 𝓝 z₀, ∀ u ∈ Prod.fst '' tsupport Φ, Φ (u, z) = Φ (u, z₀)`. Use `hK.eventually_forall_of_forall_eventually (P := fun z u => Φ (u, z) = Φ (u, z₀)) ?_` and prove the remaining obligations. Introduce `u _`. Establish `e` using `hl.eventually_eq (u, z₀)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `c1 : Tendsto (fun q : Z × X => (q.2, q.1)) (𝓝 (z₀, u)) (𝓝 (u, z₀))` using `(continuous_snd.prodMk continuous_fst).tendsto (z₀, u)`. Establish `c2 : Tendsto (fun q : Z × X => (q.2, z₀)) (𝓝 (z₀, u)) (𝓝 (u, z₀))` using `(continuous_snd.prodMk continuous_const).tendsto (z₀, u)`. Use `filter_upwards [c1.eventually e, c2.eventually e] with q a b`. Conclude with `a.trans b.symm`. Use `filter_upwards [h1] with z hz u`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hu : u ∈ Prod.fst '' tsupport Φ`. Conclude with `hz u hu`. Establish `h0 : ∀ w, Φ (u, w) = 0` using `fun w => image_eq_zero_of_notMem_tsupport fun h => hu ⟨(u, w), h, rfl⟩`. Rewrite using `[h0, h0]`.
+A detailed English derivation is pending.
 -/
 theorem fibreSB_eventually_slice_eq {X Z : Type} [TopologicalSpace X] [TopologicalSpace Z]
     (Φ : X × Z → ℂ) (hl : IsLocallyConstant Φ) (hc : HasCompactSupport Φ) (z₀ : Z) :
@@ -36,7 +36,7 @@ theorem fibreSB_eventually_slice_eq {X Z : Type} [TopologicalSpace X] [Topologic
     rw [h0, h0]
 
 /- English proof (translation)
-Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `z₀`. Use `filter_upwards [fibreSB_eventually_slice_eq Φ hl hc z₀] with z hz`. Simplify using `only [hz]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem fibreSB_isLocallyConstant {X Z : Type} [TopologicalSpace X] [TopologicalSpace Z]
     [MeasurableSpace X] (m : MeasureTheory.Measure X)
@@ -48,9 +48,9 @@ theorem fibreSB_isLocallyConstant {X Z : Type} [TopologicalSpace X] [Topological
   simp only [hz]
 
 /- English proof (translation)
-Establish `hK : IsCompact (Prod.snd '' tsupport Φ)` using `hc.isCompact.image continuous_snd`. Establish `hL` using `fibreSB_isLocallyConstant m Φ hl hc`. Establish `hcl : IsClosed (Function.support (fun z : Z => ∫ u, Φ (u, z) ∂m))` using `(hL.isClopen_fiber 0).compl.isClosed`. Use `hK.of_isClosed_subset (isClosed_tsupport _) ?_` and prove the remaining obligations. Rewrite using `[tsupport, hcl.closure_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Assume the negation of the conclusion as `hn`. Apply `hz` to reduce the goal to its premises. Establish `h0 : ∀ u, Φ (u, z) = 0` using `fun u => image_eq_zero_of_notMem_tsupport fun h => hn ⟨(u, z), h, rfl⟩`. Simplify using `[h0]`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem fibreSB_hasCompactSupport {X Z : Type} [TopologicalSpace X] [TopologicalSpace Z]
     [MeasurableSpace X] (m : MeasureTheory.Measure X)
@@ -70,7 +70,7 @@ theorem fibreSB_hasCompactSupport {X Z : Type} [TopologicalSpace X] [Topological
   simp [h0]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ _ _ ν _ Z _ p Φ h`. Conclude with `⟨fibreSB_isLocallyConstant _ Φ h.1 h.2, fibreSB_hasCompactSupport _ Φ h.1 h.2⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem fibre_integral_mem_SB : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [MeasurableSpace k] [BorelSpace k] (ν : MeasureTheory.Measure k) [ν.IsAddHaarMeasure]
     (Z : Type) [TopologicalSpace Z] (p : ℕ) (Φ : (Fin p → k) × Z → ℂ), Φ ∈ GlobalTheory.SplitWeil.SB ((Fin p → k) × Z) →

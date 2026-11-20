@@ -19,23 +19,19 @@ variable {n : ℕ}
 open PositivityTheory.Rg.Sw.Glob.GaussH in
 
 /- English proof (translation)
-Take `⟨hG, hU⟩` from `hk`. Establish `hmul : mR (y * k) = mR y * mR k` using `rfl`. Use `set K := mR k with hKdef`. Use `set Y := mR y with hYdef`. Establish `hU' : K * Kᴴ = 1` using `mul_eq_one_comm.mp hU`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hcomm : JJ n * K = K * JJ n`. Combine the equalities or inequalities in the displayed calculation. Establish `hKb : K = Matrix.fromBlocks K.toBlocks₁₁ K.toBlocks₁₂ K.toBlocks₂₁ K.toBlocks₂₂` using `(Matrix.fromBlocks_toBlocks K).symm`. Establish `hYb : Y = Matrix.fromBlocks Y.toBlocks₁₁ Y.toBlocks₁₂ Y.toBlocks₂₁ Y.toBlocks₂₂` using `(Matrix.fromBlocks_toBlocks Y).symm`. Use `set A := K.toBlocks₁₁`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Use `set B := K.toBlocks₁₂`. Use `set C := K.toBlocks₂₁`. Use `set D := K.toBlocks₂₂`. Use `set P := Y.toBlocks₁₁`. Use `set Q := Y.toBlocks₁₂`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set R := Y.toBlocks₂₁`. Use `set S := Y.toBlocks₂₂`. Rewrite `hcomm`, `hU` using `[hKb]`. Simplify using `only [JJ, Matrix.fromBlocks_multiply, Matrix.zero_mul, Matrix.one_mul, Matrix.mul_zero, Matrix.mul_one, Matrix.neg_mul, Matrix.mul_neg, zero_add, add_zero, Matrix.fromBlocks_inj] at hcomm`. Take `⟨hC, hD, -, -⟩` from `hcomm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hU` using `[hC, hD]`. Rewrite `hU` using `[Matrix.fromBlocks_conjTranspose, Matrix.fromBlocks_multiply, ← Matrix.fromBlocks_one, Matrix.fromBlocks_inj]`. Take `⟨h11, h12, -, -⟩` from `hU`. Establish `hK2 : K = Matrix.fromBlocks A B (-B) A` using `hKb.trans (by rw [hC, hD])`. Use `set M := A - Complex.I • B with hMdef`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hM : Mᴴ * M = 1`. Establish `key : Mᴴ * M = (Aᴴ * A + (-B)ᴴ * (-B)) - Complex.I • (Aᴴ * B + (-B)ᴴ * A)`. Simplify using `only [hMdef, Matrix.conjTranspose_sub, Matrix.conjTranspose_smul, Complex.star_def, Complex.conj_I, Matrix.conjTranspose_neg, Matrix.sub_mul, Matrix.mul_sub, Matrix.smul_mul, Matrix.mul_smul, Matrix.neg_mul, Matrix.mul_neg, smul_smul]`. Apply the tactic sequence `match_scalars <;> simp [Complex.I_sq] <;> ring`. Rewrite using `[key, h11, h12, smul_zero, sub_zero]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `hMdet : IsUnit M.det` using `Matrix.isUnit_det_of_left_inverse hM`. Establish `hMM : M * M⁻¹ = 1` using `Matrix.mul_nonsing_inv M hMdet`. Unfold `actZ`. Rewrite using `[hmul, hK2, hYb, Matrix.fromBlocks_multiply]`. Simplify using `only [Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂]`.
-
-Establish `hN : (P * A + Q * -B) * (Complex.I • 1) + (P * B + Q * A) = (P * (Complex.I • 1) + Q) * M`. Simplify using `only [hMdef, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_sub, Matrix.mul_neg, smul_smul, Complex.I_mul_I]`. Apply the tactic sequence `match_scalars <;> simp [Complex.I_sq] <;> ring`. Establish `hDn : (R * A + S * -B) * (Complex.I • 1) + (R * B + S * A) = (R * (Complex.I • 1) + S) * M`. Simplify using `only [hMdef, Matrix.mul_smul, Matrix.smul_mul, Matrix.mul_one, Matrix.one_mul, Matrix.add_mul, Matrix.mul_add, Matrix.mul_sub, Matrix.mul_neg, smul_smul, Complex.I_mul_I]`.
-
-Apply the tactic sequence `match_scalars <;> simp [Complex.I_sq] <;> ring`. Rewrite using `[hN, hDn, Matrix.mul_inv_rev, Matrix.mul_assoc, ← Matrix.mul_assoc M, hMM, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem actZ_mul_K (y k : GR n) (hk : InK (mR k)) : actZ (y * k) (Complex.I • 1) = actZ y (Complex.I • 1) := by
   classical
@@ -95,7 +91,7 @@ theorem actZ_mul_K (y k : GR n) (hk : InK (mR k)) : actZ (y * k) (Complex.I • 
 
 open PositivityTheory.Rg.Sw.Glob.GaussH in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[PositivityTheory.Rg.Sw.Glob.gramB, PositivityTheory.Rg.Sw.Qb, PositivityTheory.Rg.Sw.evX, Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gram_true_all {m : ℕ} (u : Fin m → Fin n → ℂ) :
     PositivityTheory.Rg.Sw.Glob.gramB (fun _ : Fin m => true) true u = (Matrix.of u)ᴴ * Matrix.of u := by
@@ -104,7 +100,7 @@ theorem gram_true_all {m : ℕ} (u : Fin m → Fin n → ℂ) :
 
 open PositivityTheory.Rg.Sw.Glob.GaussH in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[PositivityTheory.Rg.Sw.Glob.gramB, PositivityTheory.Rg.Sw.Qb, PositivityTheory.Rg.Sw.evX]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gram_false_all {m : ℕ} (u : Fin m → Fin n → ℂ) :
     PositivityTheory.Rg.Sw.Glob.gramB (fun _ : Fin m => true) false u = 0 := by
@@ -113,7 +109,7 @@ theorem gram_false_all {m : ℕ} (u : Fin m → Fin n → ℂ) :
 
 open PositivityTheory.Rg.Sw.Glob.GaussH in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[PositivityTheory.Rg.Sw.Glob.gramB, PositivityTheory.Rg.Sw.Qb, PositivityTheory.Rg.Sw.evX]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramF_true {m : ℕ} (u : Fin m → Fin n → ℂ) :
     PositivityTheory.Rg.Sw.Glob.gramB (fun _ : Fin m => false) true u = 0 := by
@@ -122,7 +118,7 @@ theorem gramF_true {m : ℕ} (u : Fin m → Fin n → ℂ) :
 
 open PositivityTheory.Rg.Sw.Glob.GaussH in
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[PositivityTheory.Rg.Sw.Glob.gramB, PositivityTheory.Rg.Sw.Qb, PositivityTheory.Rg.Sw.evX, Matrix.mul_apply, Matrix.conjTranspose_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem gramF_false {m : ℕ} (u : Fin m → Fin n → ℂ) :
     PositivityTheory.Rg.Sw.Glob.gramB (fun _ : Fin m => false) false u = (Matrix.of u)ᴴ * Matrix.of u := by
@@ -130,11 +126,11 @@ theorem gramF_false {m : ℕ} (u : Fin m → Fin n → ℂ) :
   simp [PositivityTheory.Rg.Sw.Glob.gramB, PositivityTheory.Rg.Sw.Qb, PositivityTheory.Rg.Sw.evX, Matrix.mul_apply, Matrix.conjTranspose_apply]
 
 /- English proof (translation)
-Establish `h : ((a * aᴴ) * ((Matrix.of u)ᴴ * Matrix.of u)).trace = ((Matrix.of u * a) * (Matrix.of u * a)ᴴ).trace`. Rewrite using `[Matrix.conjTranspose_mul]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.trace_mul_comm (Matrix.of u)]`. Simplify using `only [Matrix.mul_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[h, Matrix.trace]`. Use `push_cast`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Matrix.diag_apply, Matrix.mul_apply]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.conjTranspose_apply, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem trace_aa {m : ℕ} (u : Fin m → Fin n → ℂ) (a : Matrix (Fin n) (Fin n) ℂ) :
     ((a * aᴴ) * ((Matrix.of u)ᴴ * Matrix.of u)).trace = ((∑ i, ∑ j, ‖(Matrix.of u * a) i j‖ ^ 2 : ℝ) : ℂ) := by
@@ -156,17 +152,17 @@ theorem trace_aa {m : ℕ} (u : Fin m → Fin n → ℂ) (a : Matrix (Fin n) (Fi
 open PositivityTheory.Rg.Sw.Glob.GaussH in
 
 /- English proof (translation)
-Establish `hG` using `trace_aa u a`. Establish `hfP : fP 1 (Matrix.of u * a) = Complex.exp (-(((2 * Real.pi * ∑ i, ∑ j, ‖(Matrix.of u * a) i j‖ ^ 2 : ℝ)) : ℂ))`. Simplify using `[fP, PositivityTheory.Rg.Sw.gs, PositivityTheory.Rg.Sw.evX]`. Rewrite using `[hfP, ← Complex.exp_add]`. Break down `Int.units_eq_one_or s with hs | hs` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Substitute `hs` using the available equality. Establish `he : PositivityTheory.Rg.Sw.Glob.epsT (2 * Real.pi * (((1 : ℤˣ) : ℤ) : ℝ)) (fun _ : Fin m => true) = fun _ => true`. Use function extensionality and compare the values at `x`. Simplify using `[PositivityTheory.Rg.Sw.Glob.epsT, Real.pi_pos]`. Unfold `gZf`.
+Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions.
 
-Rewrite using `[he, gram_true_all, gram_false_all, Matrix.mul_zero, Matrix.trace_zero, Matrix.add_mul, Matrix.trace_add, Matrix.smul_mul, Matrix.trace_smul, hG]`. Use `congr 1`. Use `push_cast`. Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Substitute `hs` using the available equality. Establish `he : PositivityTheory.Rg.Sw.Glob.epsT (2 * Real.pi * (((-1 : ℤˣ) : ℤ) : ℝ)) (fun _ : Fin m => true) = fun _ => false`. Use function extensionality and compare the values at `x`. Simplify using `[PositivityTheory.Rg.Sw.Glob.epsT, Real.pi_pos.le]`.
+Expand and normalize the polynomial expressions, which then agree. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Unfold `gZf`. Rewrite using `[he, gramF_true, gramF_false, Matrix.mul_zero, Matrix.trace_zero, Matrix.conjTranspose_add, hb, Matrix.conjTranspose_smul, Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, Matrix.add_mul, Matrix.trace_add, Matrix.smul_mul, Matrix.trace_smul, hG]`. Use `congr 1`. Simplify using `only [Complex.star_def, Complex.conj_I, smul_eq_mul]`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Put the polynomial expressions in normal form. Rewrite using `[Complex.I_sq]`. Expand and normalize the polynomial expressions, which then agree.
+Put the polynomial expressions in normal form. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem gzf_eval {m : ℕ} (s : ℤˣ) (b a : Matrix (Fin n) (Fin n) ℂ) (hb : bᴴ = b) (u : Fin m → Fin n → ℂ) :
     gZf (fun _ : Fin m => true) (2 * Real.pi * ((s : ℤ) : ℝ)) (2 * Real.pi) (b + Complex.I • (a * aᴴ)) u =
@@ -208,7 +204,7 @@ theorem gzf_eval {m : ℕ} (s : ℤˣ) (b a : Matrix (Fin n) (Fin n) ℂ) (hb : 
     ring
 
 /- English proof (translation)
-Introduce `r`. Use function extensionality and compare the values at `z`. Conclude with `iteratedDeriv_const_mul_field c f`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem iteratedDeriv_const_mul' (f : ℂ → ℂ) (c : ℂ) :
     ∀ r : ℕ, iteratedDeriv r (fun z => c * f z) = fun z => c * iteratedDeriv r f z := by
@@ -217,9 +213,9 @@ theorem iteratedDeriv_const_mul' (f : ℂ → ℂ) (c : ℂ) :
   exact iteratedDeriv_const_mul_field c f
 
 /- English proof (translation)
-Use `⟨Real.pi / 4 / (∑ j, |X j| + 1), by positivity, ?_⟩` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [strip, Set.mem_setOf_eq]`. Introduce `j`. Rewrite `hz` using `[Metric.mem_ball, dist_zero_right]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hS : |X j| ≤ ∑ k, |X k|` using `Finset.single_le_sum (f := fun k => |X k|) (fun k _ => abs_nonneg (X k)) (Finset.mem_univ j)`. Establish `hz' : |z.im| < Real.pi / 4 / (∑ k, |X k| + 1)` using `lt_of_le_of_lt (Complex.abs_im_le_norm z) hz`. Establish `hpos : 0 < ∑ k, |X k| + 1` using `by positivity`. Rewrite using `[abs_mul]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem strip_ball (X : Fin n → ℝ) : ∃ ρ : ℝ, 0 < ρ ∧ Metric.ball (0 : ℂ) ρ ⊆ strip X := by
   refine ⟨Real.pi / 4 / (∑ j, |X j| + 1), by positivity, ?_⟩

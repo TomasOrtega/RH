@@ -26,7 +26,7 @@ open GlobalTheory.RouteSeesaw
 open scoped GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels
 
 /- English proof (translation)
-Establish `e : (fun x => Θ.sum fun d c => c * f d x) = ∑ d ∈ Θ.support, Θ d • f d`. Use function extensionality and compare the values at `x`. Simplify using `only [Finsupp.sum, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[e]`. Simplify using `only [Finsupp.sum, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem end_finsupp_sum_apply {α β : Type} (A : Module.End ℂ (β → ℂ)) (Θ : α →₀ ℂ) (f : α → β → ℂ) (w : β) :
     A (fun x => Θ.sum fun d c => c * f d x) w = Θ.sum fun d c => c * A (f d) w := by
@@ -37,7 +37,7 @@ theorem end_finsupp_sum_apply {α β : Type} (A : Module.End ℂ (β → ℂ)) (
   simp only [Finsupp.sum, map_sum, map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
 
 /- English proof (translation)
-Use `⟨h.1.div' h'.1, fun x => ?_⟩` and prove the remaining obligations. Simplify using `only [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isHecke_div {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E]
     {χ χ' : (AF F ⊗[F] E)ˣ →* Circle} (h : GlobalTheory.LFun.IsHecke F E χ) (h' : GlobalTheory.LFun.IsHecke F E χ') :
@@ -46,9 +46,9 @@ theorem isHecke_div {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F 
   simp only [MonoidHom.div_apply, h.2 x, h'.2 x, div_one]
 
 /- English proof (translation)
-Introduce `a`. Establish `e1` using `h a`. Establish `e2` using `h' a`. Simplify using `only [MonoidHom.div_apply, Circle.coe_div] at *`. Rewrite using `[e1, e2]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `split_ifs`. Simplify using the standard rewrite rules. Establish `hm : ((-1 : ℂ) ^ m) * ((-1 : ℂ) ^ m) = 1` using `by rw [← pow_add, ← two_mul, pow_mul]; simp`. Rewrite using `[div_eq_iff (by simp), add_comm, pow_add, mul_assoc, hm, mul_one]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resEtaPow_div {R E : Type} [CommRing R] [CommRing E] [Algebra R E] {K : Subgroup Rˣ}
     {χ χ' : Eˣ →* Circle} {n m : ℕ} (h : GlobalTheory.WeilM.ResEtaPow K χ n) (h' : GlobalTheory.WeilM.ResEtaPow K χ' m) :
@@ -64,13 +64,13 @@ theorem resEtaPow_div {R E : Type} [CommRing R] [CommRing E] [Algebra R E] {K : 
     rw [div_eq_iff (by simp), add_comm, pow_add, mul_assoc, hm, mul_one]
 
 /- English proof (translation)
-Take `⟨a, b, τ, τ', n, Φ, -, -, ⟨e, -, ⟨φ₁, φ₂, hloc, -⟩, -⟩, -, rfl⟩` from `hΘ`. Introduce `d hd`. Establish `hsupp` using `Finsupp.support_sum hd`. Simplify using `only [Finset.mem_biUnion] at hsupp`. Take `⟨P, -, hP⟩` from `hsupp`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Establish `hsupp2` using `Finsupp.support_sum hP`. Simplify using `only [Finset.mem_biUnion] at hsupp2`. Take `⟨d', hd', hd'2⟩` from `hsupp2`. Establish `hdd` using `Finset.mem_singleton.1 (Finsupp.support_single_subset hd'2)`. Substitute `hdd` using the available equality.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Substitute using the available equality.
 
-Take `⟨h1, h2⟩` from `hloc d' hd'`. Establish `v1` using `(ρ.vT_is t (i : ℕ) (j : ℕ) i.2.le j.2).2.theta`. Establish `v2` using `(ρ.vX_is (i : ℕ) (j : ℕ) i.2 j.2.le).2.theta`. Establish `t1` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is h1.2 v1`. Establish `t2` using `GlobalTheory.JointHarm.isThetaFunO_of_isThetaAt W.ψ_std W.θ_is h2.2 v2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨GlobalTheory.Chain.InnerSteps.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ t1 _, GlobalTheory.Chain.InnerSteps.theta_pureTensorO W.ψ_std W.θ_is _ _ _ _ t2 _⟩`.
+Supply the required witnesses or components.
 -/
 theorem data_theta_small {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) {Θ : TotT G (routeBig t i j)} {Θ' : TotT G (routeSmall t i j)}
@@ -99,7 +99,7 @@ theorem data_theta_small {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : 
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Establish `r₁ : T'.rank = (spW₁ G i j).rank` using `by simpa using Fintype.card_congr e₁`. Establish `r₂ : S'.rank = (GlobalTheory.Doubling.hsum (spV G i j) (spV₁ G i j)).rank` using `by simpa using Fintype.card_congr e₂`. Take `⟨ωA, hA⟩` from `GlobalTheory.WeilExist.exists_isWeilDatumO D W.ψ W.ψ_std (spW₁ G i j) (GlobalTheory.Doubling.hsum (spV G i j) (spV₁ G i j)) (alpha G t i j) (alpha G t i j / beta G i j) (GlobalTheory.WeilParts.exists_isEtaTilde_unramified D) hω.hecT hω.hecS (r₁ ▸ hω.resT) (r₂ ▸ hω.resS)`. Take `⟨hbox, hker⟩` from `GlobalTheory.SeesawSmall.seesaw_small hL W t i.2 j.2 ωA hA f₁ f₂ hf₁ hf₂`. Rewrite using `[hker g u g₁, GlobalTheory.BigSeesaw.swap_eq _ _ S' T' e₁ e₂ hT' hS' hA hω hbox u _ g' h' hh hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -132,29 +132,27 @@ theorem seesaw_swapped {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : Gr
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL W B ρ t i j M hM Θ Θ' hΘ g₁ e Bs Γ X om om' h hTr hv Φ hΦ`. Use `⟨fun x => xiV G i j x.1 * xiV₁ G t i j x.2, fun x => ?_, fun g u => ?_⟩` and prove the remaining obligations. Simplify using `only [xiV, xiV₁, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.flatDet, norm_mul, Circle.norm_coe, mul_one]`. Take `⟨h1, h2, h3⟩` from `GlobalTheory.WeilSchrodingerHerm.main D Bs hTr.base _ Γ.V' _ _ hTr.geo.hV'`. Take `⟨hJ, LS, hLS, h4, h5, h6⟩` from `GlobalTheory.WeilSchrodingerSkew.main D Bs hTr.base _ Γ.W _ _ hTr.geo.hW`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hξ0 : D.host.xi0 ≠ 0` using `GlobalTheory.DualPairCompare.embedding_xi_zero_ne_zero D`. Establish `eA : Γ.V'.J = (GlobalTheory.WeilSchrodinger.hspOf D Γ.V'.Jᵀ h1 h2 Γ.V'.L hTr.geo.hV'.lat h3 (fun _ => (0, 0))).gramᵀ`. Rewrite using `[GlobalTheory.WeilSchrodinger.gram_hspOf]`. Conclude with `(Matrix.transpose_transpose _).symm`. Establish `e1 : (-D.host.xi0 • Γ.W.J⁻¹)⁻¹ = (-D.host.xi0)⁻¹ • Γ.W.J` using `Matrix.inv_eq_left_inv (by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.smul_mul, Matrix.mul_smul, smul_smul, Matrix.mul_nonsing_inv _ hJ, inv_mul_cancel₀ (neg_ne_zero.2 hξ0), one_smul])`. Establish `eB : (-1 : AF D.host.F ⊗[D.host.F] D.host.E) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • (GlobalTheory.WeilSchrodinger.hspOf D (-D.host.xi0 • Γ.W.J⁻¹) h4 h5 L …`. Rewrite using `[GlobalTheory.WeilSchrodinger.gram_hspOf]`. Establish `e2 : D.host.xi0 • (-D.host.xi0)⁻¹ • Γ.W.J = -Γ.W.J`. Rewrite using `[smul_smul, inv_neg, mul_neg, mul_inv_cancel₀ hξ0, neg_one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show (-1 : AF D.host.F ⊗[D.host.F] D.host.E) • GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F Γ.W.J = GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM D.host.F (D.host.xi0 • (-D.host.xi0 • Γ.W.J⁻¹)⁻¹)`. Rewrite using `[e1, e2]`. Use function extensionality and compare the values at `a b`. Simplify using `[GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.incM]`. Take `⟨ω, hω, -, hth⟩` from `GlobalTheory.WeilBridge.exists_theta_eq D Bs hTr.base (GlobalTheory.WeilSchrodinger.hspOf D (-D.host.xi0 • Γ.W.J⁻¹) h4 h5 LS hLS h6 (fun _ => (0, 0))) (GlobalTheory.WeilSchrodinger.hspOf D Γ.V'.Jᵀ h1 h2 Γ.V'.L hTr.geo.hV'.lat h3 (fun _ => (0, 0))) Γ.V' Γ.W _ _ _ _ hTr.geo.hV' hTr …`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hω` using `[h.ψ, h.α, h.β]`. Take `⟨g', h', hh', hg'⟩` from `GlobalTheory.WeilSchrodinger.match_pair D (GlobalTheory.WeilSchrodinger.hspOf D (-D.host.xi0 • Γ.W.J⁻¹) h4 h5 LS hLS h6 (fun _ => (0, 0))) (GlobalTheory.WeilSchrodinger.hspOf D Γ.V'.Jᵀ h1 h2 Γ.V'.L hTr.geo.hV'.lat h3 (fun _ => (0, 0))) Γ.V'.J Γ.W.J (-1) eA eB (conjU (spW₁ G i j) …`. Establish `key` using `hth _ _ g' h' hh' hg' Φ hΦ.1`. Use `Eq.trans ?_ (congrArg (fun z => xiV G i j g * xiV₁ G t i j g₁ * z) key.symm)` and prove the remaining obligations. Establish `htr : GlobalTheory.WeilSchrodinger.thetaTr D.host.F Γ.M'.co Bs.ψ Φ = fun w => Θ'.sum fun d c => c * boxB e d w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `w`. Use `show GlobalTheory.WeilM.thetaSum D.host.F (Γ.M'.co.rho Bs.ψ w Φ) = _`. Rewrite using `[h.ψ, hΦ.2 w]`. Both sides reduce to the same expression. Use `Eq.trans ?_ (congrArg (fun f => xiV G i j g * xiV₁ G t i j g₁ * ω (g', h') f 0) htr.symm)` and prove the remaining obligations.
+Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (congrArg (fun z => xiV G i j g * xiV₁ G t i j g₁ * z) (end_finsupp_sum_apply (ω (g', h')) Θ' (boxB e) 0).symm)` and prove the remaining obligations. Rewrite using `[kerSmall, Finsupp.sum, Finsupp.sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Take `⟨t1, t2⟩` from `data_theta_small W B ρ t i j hΘ d hd`. Set `e₂ : Fin ((spW G i j).rank + (spW₁ G i j).rank) ≃ Fin ((spV G i j).rank + (spV₁ G i j).rank)` to `e.symm.trans finSumFinEquiv`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Establish `hb : ∀ {R : Type} [CommRing R] (A : Matrix (Fin (spV G i j).rank) (Fin (spV G i j).rank) R) (B : Matrix (Fin (spV₁ G i j).rank) (Fin (spV₁ G i j).rank) R), (GlobalTheory.Doubling.blkMat finSumFinEquiv A B).submatrix e₂ e₂ = GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugati …` using `fun A B => by`. Use extensionality with `a b`. Simplify using `[GlobalTheory.Doubling.blkMat, GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk, e₂]`. Establish `hJ' : Γ.W.J = D.host.xi0 • ((GlobalTheory.Doubling.hsum (spV G i j) (spV₁ G i j)).gramᵀ).submatrix e₂ e₂`. Use `h.JWW.trans (congrArg (D.host.xi0 • ·) ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.Doubling.gram_hsum, ← GlobalTheory.IndefiniteRowSideFullHecke.UnitaryConjugation.blk_transpose, ← hb]`. Both sides reduce to the same expression. Establish `hT' : (GlobalTheory.WeilSchrodinger.hspOf D Γ.V'.Jᵀ h1 h2 Γ.V'.L hTr.geo.hV'.lat h3 (fun _ => (0, 0))).gramᵀ = -((spW₁ G i j).gram.submatrix (Equiv.refl _) (Equiv.refl _))`. Rewrite using `[← eA]`. Use `show Γ.V'.J = -(spW₁ G i j).gram`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h.JW₁, neg_one_smul]`. Establish `hS' : (GlobalTheory.WeilSchrodinger.hspOf D (-D.host.xi0 • Γ.W.J⁻¹) h4 h5 LS hLS h6 (fun _ => (0, 0))).gram⁻¹ = -(((GlobalTheory.Doubling.hsum (spV G i j) (spV₁ G i j)).gramᵀ).submatrix e₂ e₂)`. Rewrite using `[GlobalTheory.WeilSchrodinger.gram_hspOf]`. Use `e1.trans ?_` and prove the remaining obligations. Rewrite using `[hJ', smul_smul, inv_neg, neg_mul, inv_mul_cancel₀ hξ0, neg_one_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `k` using `seesaw_swapped hL W t i j (GlobalTheory.WeilSchrodinger.hspOf D (-D.host.xi0 • Γ.W.J⁻¹) h4 h5 LS hLS h6 (fun _ => (0, 0))) (GlobalTheory.WeilSchrodinger.hspOf D Γ.V'.Jᵀ h1 h2 Γ.V'.L hTr.geo.hV'.lat h3 (fun _ => (0, 0))) (Equiv.refl (Fin (spW₁ G i j).rank)) e₂ hT' hS' ω hω d.1.2 d …`. Rewrite using `[hg', ← map_inv, Prod.inv_mk, GlobalTheory.SquareComm.mt_blk]`. Conclude with `congrArg transpose (hb (Formalism.L2.Theta.mt _ g⁻¹) (Formalism.L2.Theta.mt _ g₁⁻¹)).symm)`. Use `(congrArg (fun z => Θ' d * z) k).trans ?_` and prove the remaining obligations. Rewrite using `[mul_left_comm]`.
-
-Use `congrArg (fun f => xiV G i j g * xiV₁ G t i j g₁ * (Θ' d * ω (g', h') f 0)) ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Conclude with `(GlobalTheory.SeesawSmall.thetaSquareProductRouteB_eq_externalProduct e d x).symm`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem kerSmall_eq_theta : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T} (hL : L.Is μ₀) (W : G.Weil) (B : Frames G)
     (ρ : RealMatch W) (t : T) (i j : Fin D.R.m) (M : Vol G) (hM : M.Is t) (Θ : TotT G (routeBig t i j))

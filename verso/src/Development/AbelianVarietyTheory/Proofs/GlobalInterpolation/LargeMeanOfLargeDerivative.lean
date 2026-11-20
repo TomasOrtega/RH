@@ -14,15 +14,15 @@ namespace GlobalTheory.Lin.LargeMean
 def pw (k : ℕ) (u : ℝ) : ℝ := u ^ k / (k.factorial : ℝ) * Real.exp (-u)
 
 /- English proof (translation)
-Unfold `pw`. Check the signs of the components of the expression.
+Replace the relevant objects with their definitions. Check the signs of the components of the expression.
 -/
 lemma pw_nonneg (k : ℕ) {u : ℝ} (hu : 0 ≤ u) : 0 ≤ pw k u := by
   unfold pw; positivity
 
 /- English proof (translation)
-Establish `h` using `Real.pow_div_factorial_le_exp (u / θ) (by positivity) k`. Establish `e : pw k u = θ ^ k * ((u / θ) ^ k / (k.factorial : ℝ) * Real.exp (-u))`. Unfold `pw`. Rewrite using `[div_pow]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[e, sub_eq_add_neg, Real.exp_add]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma pw_le (k : ℕ) {u θ : ℝ} (hu : 0 ≤ u) (hθ : 0 < θ) :
     pw k u ≤ θ ^ k * Real.exp (u / θ - u) := by
@@ -33,17 +33,17 @@ lemma pw_le (k : ℕ) {u θ : ℝ} (hu : 0 ≤ u) (hθ : 0 < θ) :
   gcongr
 
 /- English proof (translation)
-Simplify using `using pw_le k hu one_pos`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 lemma pw_le_one (k : ℕ) {u : ℝ} (hu : 0 ≤ u) : pw k u ≤ 1 := by
   simpa using pw_le k hu one_pos
 
 /- English proof (translation)
-Establish `h1` using `pw_le k hu (θ := δ / 3) (by positivity)`. Establish `h2 : u / (δ / 3) ≤ k`. Rewrite using `[div_le_iff₀ (by positivity)]`. Establish `: (K : ℝ) ≤ k` using `by exact_mod_cast hK`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `h3 : Real.exp (u / (δ / 3) - u) ≤ 3 ^ k * Real.exp (-(u / 2))`. Establish `h4 : Real.exp k ≤ 3 ^ k`. Rewrite using `[← mul_one (k : ℝ), Real.exp_nat_mul]`. Use `gcongr`. Conclude with `(Real.exp_one_lt_d9.trans (by norm_num)).le`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma pw_small (K k : ℕ) {u δ : ℝ} (hδ : 0 < δ) (hu : 0 ≤ u) (h : u ≤ δ / 3 * K) (hK : K ≤ k) :
     pw k u ≤ δ ^ k * Real.exp (-(u / 2)) := by
@@ -63,11 +63,11 @@ lemma pw_small (K k : ℕ) {u δ : ℝ} (hδ : 0 < δ) (hu : 0 ≤ u) (h : u ≤
     _ = _ := by rw [div_pow]; field_simp
 
 /- English proof (translation)
-Establish `hu : 0 ≤ u` using `le_trans (by positivity) h`. Establish `h1` using `pw_le k hu (θ := 4) (by positivity)`. Establish `hK' : (k : ℝ) ≤ 2 * K` using `by exact_mod_cast hK`. Establish `h2 : (4 / δ) ^ k ≤ Real.exp (u / 4)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `: k * (4 / δ) ≤ 2 * K * (4 / δ)` using `by gcongr`. Establish `e : 32 / δ * K = 4 * (2 * K * (4 / δ))` using `by ring`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `e : Real.exp (-(u / 2)) = Real.exp (u / 4) * Real.exp (u / 4 - u)`. Rewrite using `[← Real.exp_add]`.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Combine the equalities or inequalities in the displayed calculation.
+Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree. Chain the equalities or inequalities of the calculation.
 -/
 lemma pw_large (K k : ℕ) {u δ : ℝ} (hδ : 0 < δ) (h : 32 / δ * K ≤ u) (hK : k ≤ 2 * K) :
     pw k u ≤ δ ^ k * Real.exp (-(u / 2)) := by
@@ -90,9 +90,9 @@ lemma pw_large (K k : ℕ) {u δ : ℝ} (hδ : 0 < δ) (h : 32 / δ * K ≤ u) (
     _ ≤ _ := by rw [e]; gcongr
 
 /- English proof (translation)
-Establish `h1` using `pw_le k (u := r * v) (by positivity) (θ := 4 * r) (by positivity)`. Use `h1.trans ?_` and prove the remaining obligations. Establish `: r * v / (4 * r) = v / 4` using `by field_simp`. Rewrite using `[this]`. Use `gcongr`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: 0 ≤ r * v` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 lemma pw_pp (k : ℕ) {v r : ℝ} (hr : 0 < r) (hv : 0 ≤ v) :
     pw k (r * v) ≤ (4 * r) ^ k * Real.exp (v / 4) := by
@@ -105,9 +105,9 @@ lemma pw_pp (k : ℕ) {v r : ℝ} (hr : 0 < r) (hv : 0 ≤ v) :
   linarith
 
 /- English proof (translation)
-Establish `h1` using `((hasDerivAt_pow (m + 1) u).div_const ((m + 1).factorial : ℝ)).mul (hasDerivAt_neg u).exp`. Use `HasDerivAt.congr_deriv (f := pw (m + 1)) h1 ?_` and prove the remaining obligations. Unfold `pw`. Rewrite using `[Nat.factorial_succ]`. Simplify using `only [Nat.add_sub_cancel]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma hasDerivAt_pw (m : ℕ) (u : ℝ) : HasDerivAt (pw (m + 1)) (pw m u - pw (m + 1) u) u := by
   have h1 := ((hasDerivAt_pow (m + 1) u).div_const ((m + 1).factorial : ℝ)).mul
@@ -121,17 +121,17 @@ lemma hasDerivAt_pw (m : ℕ) (u : ℝ) : HasDerivAt (pw (m + 1)) (pw m u - pw (
   ring
 
 /- English proof (translation)
-Unfold `pw`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 lemma continuous_pw (k : ℕ) : Continuous (pw k) := by
   unfold pw; fun_prop
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using the standard rewrite rules. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `e : (n : ℂ) ^ (-((1 + r : ℝ) : ℂ)) = ((Real.exp (-(r * Real.log n)) / n : ℝ) : ℂ)`. Rewrite using `[← ofReal_natCast, ← ofReal_neg, ← ofReal_cpow hn'.le]`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Rewrite using `[Real.rpow_def_of_pos hn', eq_div_iff hn'.ne']`. Use `nth_rewrite 2 [← Real.exp_log hn']`. Rewrite using `[← Real.exp_add]`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Unfold `pw`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma term_eq (c : ℕ → ℂ) (k n : ℕ) (r : ℝ) :
     (r : ℂ) ^ k * (((Λ n : ℝ) : ℂ) * c n * ((Real.log n : ℂ) ^ k / (k.factorial : ℂ)) *
@@ -151,7 +151,7 @@ lemma term_eq (c : ℕ → ℂ) (k n : ℕ) (r : ℝ) :
   ring
 
 /- English proof (translation)
-Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Rewrite using `[Real.rpow_add hn', Real.rpow_one, Real.rpow_def_of_pos hn', Real.exp_neg, mul_comm s]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 lemma rpow_form (n : ℕ) (hn : 0 < n) (s x : ℝ) :
     x / (n : ℝ) ^ (1 + s) = x / n * Real.exp (-(s * Real.log n)) := by
@@ -160,27 +160,27 @@ lemma rpow_form (n : ℕ) (hn : 0 < n) (s x : ℝ) :
   field_simp
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Simplify using `[primesIoc]`. Establish `hn' : (0 : ℝ) < n` using `by exact_mod_cast hn`. Establish `hl : 0 ≤ Real.log n` using `Real.log_natCast_nonneg n`. Establish `hΛ : 0 ≤ Λ n` using `vonMangoldt_nonneg`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ w : ℝ, 0 ≤ w → ‖((Λ n / n * w : ℝ) : ℂ) * c n‖ ≤ Λ n / n * w`. Introduce `w hw`. Rewrite using `[norm_mul, Complex.norm_real, Real.norm_of_nonneg (by positivity)]`. Conclude with `mul_le_of_le_one_right (by positivity) (hc n)`. Establish `hpw : 0 ≤ pw k (r * Real.log n)` using `pw_nonneg k (by positivity)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `fin : ∀ w : ℝ, 0 ≤ w → w ≤ δ ^ k * Real.exp (-(r * Real.log n / 2)) → ‖((Λ n / n * w : ℝ) : ℂ) * c n‖ ≤ δ ^ k * (Λ n / (n : ℝ) ^ (1 + r / 2))`. Introduce `w hw h`. Use `(key w hw).trans ?_` and prove the remaining obligations. Rewrite using `[rpow_form n hn]`. Combine the equalities or inequalities in the displayed calculation.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hp : n.Prime`. Simplify using `only [hp, if_true, zero_div, mul_zero, add_zero] split_ifs with hm`. Rewrite `hm` using `[primesIoc, Finset.mem_filter, Finset.mem_Ioc, Nat.le_floor_iff (Real.exp_pos _).le]`. Rewrite using `[Real.log_exp]`. Establish `e0 : r * (32 / δ * K / r) = 32 / δ * K` using `by field_simp`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e0]`. Establish `e : ((Λ n / n * pw k (r * Real.log n) : ℝ) : ℂ) * c n - (Real.log n : ℂ) * c n / n * ((pw k (r * Real.log n) - pw k (32 / δ * K) : ℝ) : ℂ) = ((Λ n / n * pw k (32 / δ * K) : ℝ) : ℂ) * c n`. Rewrite using `[vonMangoldt_apply_prime hp]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Use `fin _ (pw_nonneg k (by positivity)) ((pw_large K k hδ le_rfl h2).trans ?_)` and prove the remaining obligations. Establish `h3 : Real.log n ≤ 32 / δ * K / r`. Rewrite using `[Real.log_le_iff_le_exp hn']`. Conclude with `hm.1.2`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[le_div_iff₀ hr]`. Conclude with `mul_le_mul_of_nonneg_left (Real.exp_le_exp.mpr (by linarith)) (by positivity)`. Rewrite using `[sub_zero]`. Use `fin _ hpw ?_` and prove the remaining obligations. Rewrite `hm` using `[primesIoc, Finset.mem_filter, Finset.mem_Ioc, Nat.le_floor_iff (Real.exp_pos _).le, Nat.floor_lt (Real.exp_pos _).le]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Distinguish the cases in `h4 : Real.exp (δ / 3 * K / r) < n`. Establish `h5 : Real.exp (32 / δ * K / r) < n`. Assume the negation of the conclusion as `h6`. Conclude with `hm ⟨⟨h4, not_lt.mp h6⟩, hp⟩`. Use `pw_large K k hδ ?_ h2` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `(Real.lt_log_iff_exp_lt hn').mpr h5`. Rewrite `h3` using `[div_lt_iff₀ hr]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `pw_small K k hδ (by positivity) ?_ h1` and prove the remaining obligations. Establish `h3` using `(Real.log_le_iff_le_exp hn').mpr (not_lt.mp h4)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[le_div_iff₀ hr]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hm : n ∉ primesIoc (Real.exp (δ / 3 * K / r)) (Real.exp (32 / δ * K / r))`. Rewrite using `[primesIoc, Finset.mem_filter]`. Conclude with `fun h => hp h.2`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hp, hm, if_false, sub_zero]`. Use `(key _ hpw).trans (le_add_of_nonneg_of_le (by positivity) ?_)` and prove the remaining obligations. Establish `e : (3 / 4 : ℝ) = 1 + (-1 / 4)` using `by norm_num`. Rewrite using `[e, rpow_form n hn]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 lemma pointwise (c : ℕ → ℂ) (hc : ∀ n, ‖c n‖ ≤ 1) {r δ : ℝ} (hr : 0 < r) (hδ : 0 < δ) (K k : ℕ)
     (h1 : K ≤ k) (h2 : k ≤ 2 * K) (n : ℕ) :
@@ -252,9 +252,9 @@ lemma pointwise (c : ℕ → ℂ) (hc : ∀ n, ‖c n‖ ≤ 1) {r δ : ℝ} (hr
       _ = _ := by ring_nf
 
 /- English proof (translation)
-Establish `h1 : Summable fun n => T n - P n` using `Summable.of_norm_bounded hG h`. Establish `h2 : ∑' n, T n = ∑' n, P n + ∑' n, (T n - P n)`. Rewrite using `[← hP.tsum_add h1]`. Simplify using the standard rewrite rules. Rewrite using `[h2]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `(norm_add_le _ _).trans ?_` and prove the remaining obligations. Use `gcongr`. Conclude with `tsum_of_norm_bounded hG.hasSum h`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 lemma norm_tsum_le_of_close {T P : ℕ → ℂ} {G : ℕ → ℝ} (hP : Summable P)
     (hG : Summable G) (h : ∀ n, ‖T n - P n‖ ≤ G n) :
@@ -268,9 +268,9 @@ lemma norm_tsum_le_of_close {T P : ℕ → ℂ} {G : ℕ → ℝ} (hP : Summable
   exact tsum_of_norm_bounded hG.hasSum h
 
 /- English proof (translation)
-Establish `hq` using `GlobalTheory.Lin.NonPrimeVonMangoldt.summable_nonPrime_vonMangoldt_div_rpow`. Establish `hP` using `hasSum_sum_of_ne_finset_zero (s := primesIoc (Real.exp (δ / 3 * K / r)) (Real.exp (32 / δ * K / r))) (L := SummationFilter.unconditional ℕ) (f := fun n : ℕ => if n ∈ primesIoc (Real.exp (δ / 3 * K / r)) (Real.exp (32 / δ * K / r)) then (Real.log n : ℂ) * c n / n * ((pw k (r * Rea …`. Establish `h` using `norm_tsum_le_of_close hP.summable ((hs.mul_left (δ ^ k)).add (hq.mul_left ((4 * r) ^ k))) (pointwise c hc hr hδ K k h1 h2)`. Rewrite `h` using `[hP.tsum_eq, (hs.mul_left _).tsum_add (hq.mul_left _), tsum_mul_left, tsum_mul_left, Finset.sum_congr rfl (fun n hn => if_pos hn)]`. Use `le_of_eq_of_le ?_ h` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Repeatedly rewrite using `[← term_eq]`. Rewrite using `[tsum_mul_left, norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg hr.le, derSeries]`.
+Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 lemma series_le (c : ℕ → ℂ) (hc : ∀ n, ‖c n‖ ≤ 1) {r δ : ℝ} (hr : 0 < r) (hδ : 0 < δ) (K k : ℕ)
     (h1 : K ≤ k) (h2 : k ≤ 2 * K) (hs : Summable fun n : ℕ => Λ n / (n : ℝ) ^ (1 + r / 2)) :
@@ -297,15 +297,13 @@ lemma series_le (c : ℕ → ℂ) (hc : ∀ n, ‖c n‖ ≤ 1) {r δ : ℝ} (hr
   rw [tsum_mul_left, norm_mul, norm_pow, Complex.norm_real, Real.norm_of_nonneg hr.le, derSeries]
 
 /- English proof (translation)
-Use `GlobalTheory.Lin.abel_primesIoc_weight a (fun t => pw (m + 1) (r * Real.log t)) (fun t => (pw m (r * Real.log t) - pw (m + 1) (r * Real.log t)) * (r * t⁻¹)) x y r hx hxy ?_ ?_ ?_` and prove the remaining obligations. Introduce `t ht`. Establish `ht0 : t ≠ 0` using `by linarith [ht.1]`. Conclude with `(hasDerivAt_pw m _).comp t ((Real.hasDerivAt_log ht0).const_mul r)`. Establish `hl : ContinuousOn (fun t => r * Real.log t) (Set.Icc x y)` using `continuousOn_const.mul (continuousOn_id.log fun t ht => by`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `ht.1` as an intermediate fact. Simplify using `only [id]`. Use the proof step `linarith)`. Use `(((continuous_pw m).comp_continuousOn hl).sub ((continuous_pw (m + 1)).comp_continuousOn hl)).mul (continuousOn_const.mul (continuousOn_id.inv₀ fun t ht => ?_))` and prove the remaining obligations. Use `ht.1` as an intermediate fact.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Simplify using `only [id]`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `t ht`. Establish `ht1 : 1 ≤ t` using `hx.trans ht.1`. Establish `hu : 0 ≤ r * Real.log t` using `mul_nonneg hr.le (Real.log_nonneg ht1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : |pw m (r * Real.log t) - pw (m + 1) (r * Real.log t)| ≤ 1`. Rewrite using `[abs_le]`. Apply the tactic sequence `constructor <;> linarith [pw_nonneg m hu, pw_nonneg (m + 1) hu, pw_le_one m hu, pw_le_one (m + 1) hu]`. Establish `h2 : 0 ≤ r * t⁻¹` using `by have : 0 < t := by linarith`. Check the signs of the components of the expression.
-
-Rewrite using `[abs_mul, abs_of_nonneg h2, div_eq_mul_inv]`. Conclude with `mul_le_of_le_one_left h2 h1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma abel_pw (a : ℕ → ℂ) {r x y : ℝ} (hr : 0 < r) (hx : 1 ≤ x) (hxy : x ≤ y) (m : ℕ) :
     ‖∑ n ∈ primesIoc x y, a n *
@@ -337,41 +335,39 @@ lemma abel_pw (a : ℕ → ℂ) {r x y : ℝ} (hr : 0 < r) (hx : 1 ≤ x) (hxy :
     exact mul_le_of_le_one_left h2 h1
 
 /- English proof (translation)
-Introduce `A hA`. Take `⟨C, hC, hCs⟩` from `GlobalTheory.Lin.exists_tsum_vonMangoldt_div_rpow_le_div`. Use `set B : ℝ := ∑' n : ℕ, (if n.Prime then 0 else Λ n) / (n : ℝ) ^ (3 / 4 : ℝ) with hB`. Establish `hB0 : 0 ≤ B` using `tsum_nonneg fun n => by`. Establish `: 0 ≤ Λ n` using `vonMangoldt_nonneg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Establish `hA0 : 0 < A` using `by linarith`. Establish `hC0 : 0 < C` using `by linarith`. Use `set η : ℝ := 1 / (16 * C * A) with hη`. Establish `hη0 : 0 < η` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hη1 : η ≤ 1`. Rewrite using `[hη, div_le_one (by positivity)]; nlinarith`. Use `set δ : ℝ := A⁻¹ * η with hδ`. Establish `hδ0 : 0 < δ` using `by positivity`. Establish `hδ1 : δ ≤ 1` using `mul_le_one₀ (inv_le_one_of_one_le₀ hA) hη0.le hη1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hab : δ / 3 < 32 / δ`. Rewrite using `[div_lt_div_iff₀ (by norm_num) hδ0]; nlinarith`. Establish `hlA : 0 ≤ Real.log A` using `Real.log_nonneg hA`. Use `⟨δ / 3, 32 / δ, 6 * Real.log A + 4 * (32 / δ), 1 / (8 * A * (B + 1)), 1, by positivity, hab, by positivity, by positivity, ?_⟩` and prove the remaining obligations. Introduce `c r K k hc hr hr0 hK h1 h2 hD`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hK1 : 1 ≤ K` using `by exact_mod_cast hK`. Take `⟨m, rfl⟩ : ∃ m, k = m + 1` from `⟨k - 1, by omega⟩`. Rewrite `hr0` using `[le_div_iff₀ (by positivity)]`. Establish `hrA : 8 * (r * A) ≤ 1`. Establish `: 0 ≤ r * A * B` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hrB : 8 * (r * A * B) ≤ 1`. Establish `: 0 ≤ r * A` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Establish `hr1 : r / 2 ≤ 1` using `by nlinarith`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨hs, hsum⟩` from `hCs (r / 2) (by positivity) hr1`. Establish `hser` using `series_le c hc hr hδ0 K (m + 1) h1 h2 hs`. Establish `hxy' : δ / 3 * K / r ≤ 32 / δ * K / r` using `by gcongr`. Establish `hx : 1 ≤ Real.exp (δ / 3 * K / r)` using `Real.one_le_exp (by positivity)`. Establish `hxy : Real.exp (δ / 3 * K / r) ≤ Real.exp (32 / δ * K / r)` using `Real.exp_le_exp.mpr hxy'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hab2` using `abel_pw (fun p => (Real.log p : ℂ) * c p / p) hr hx hxy m`. Establish `hcs` using `GlobalTheory.Lin.sq_integral_primeSum_div_le (fun p => (Real.log p : ℂ) * c p / p) _ _ hx hxy`. Establish `hI2 : 0 ≤ ∫ y in (Real.exp (δ / 3 * K / r))..(Real.exp (32 / δ * K / r)), ‖∑ p ∈ primesIoc (Real.exp (δ / 3 * K / r)) y, (Real.log p : ℂ) * c p / p‖ ^ 2 / y` using `intervalIntegral.integral_nonneg hxy fun t ht => by`. Establish `: 0 < t` using `by linarith [ht.1]`. Check the signs of the components of the expression.
+Establish an intermediate fact. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Rewrite `hcs` using `[← Real.exp_sub, Real.log_exp]`. Rewrite `hser` using `[← hB]`. Generalize the expression as in `(∫ y in (Real.exp (δ / 3 * K / r))..(Real.exp (32 / δ * K / r)), ‖∑ p ∈ primesIoc (Real.exp (δ / 3 * K / r)) y, (Real.log p : ℂ) * c p / p‖ ^ 2 / y) = I₂ at *`. Generalize the expression as in `(∫ y in (Real.exp (δ / 3 * K / r))..(Real.exp (32 / δ * K / r)), ‖∑ p ∈ primesIoc (Real.exp (δ / 3 * K / r)) y, (Real.log p : ℂ) * c p / p‖ / y) = I₁ at *`. Use `set M : ℝ := A⁻¹ ^ (m + 1) * (A * r)⁻¹ with hM`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `hM0 : 0 < M` using `by positivity`. Establish `e1 : M ≤ r ^ (m + 1) * ‖derSeries c (m + 1) ((1 + r : ℝ) : ℂ)‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hM, inv_pow, mul_pow]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by gcongr`. Establish `e2 : δ ^ (m + 1) * ∑' n : ℕ, Λ n / (n : ℝ) ^ (1 + r / 2) ≤ M / 8`. Establish `h3 : η ^ (m + 1) ≤ η` using `pow_le_of_le_one hη0.le hη1 (by omega)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `e3 : (4 * r) ^ (m + 1) * B ≤ M / 8`. Establish `h3 : 4 * r ≤ A⁻¹`. Rewrite using `[inv_eq_one_div, le_div_iff₀ hA0]`. Establish `: 0 ≤ r * A` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h4 : B ≤ (A * r)⁻¹ / 8`. Rewrite using `[inv_eq_one_div, div_div, le_div_iff₀ (by positivity)]`. Use the polynomial consequences of the given equalities and inequalities. Combine the equalities or inequalities in the displayed calculation. Establish `e4 : M / (2 * r) ≤ I₁`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[div_le_iff₀ (by positivity)]; linarith`. Establish `e5 : (M / (2 * r)) ^ 2 ≤ (32 / δ * K / r) * I₂`. Combine the equalities or inequalities in the displayed calculation. Establish `: 0 ≤ δ / 3 * K / r` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hK0 : (0 : ℝ) < K` using `by linarith`. Establish `e6 : A ^ (2 * (m + 2)) * (4 * (32 / δ * K)) ≤ Real.exp ((6 * Real.log A + 4 * (32 / δ)) * K)`. Establish `h3 : A ^ (2 * (m + 2)) ≤ A ^ (6 * K)` using `pow_le_pow_right₀ hA (by omega)`. Establish `h4 : A ^ (6 * K) = Real.exp (6 * Real.log A * K)` using `by nth_rewrite 1 [← Real.exp_log hA0]`. Rewrite using `[← Real.exp_nat_mul]`.
+Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[add_mul, Real.exp_add, ← h4]`. Use `gcongr`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Combine the linear relations using `[Real.add_one_le_exp (4 * (32 / δ) * K)]`. Rewrite `e5` using `[← div_le_iff₀' (by positivity)]`. Use `le_trans ?_ e5` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.exp_neg]`.
-
-Use `gcongr`. Use `_ = _ := by`. Rewrite using `[hM, inv_pow]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem large_mean_of_large_derivative : ∀ A : ℝ, 1 ≤ A → ∃ a b C r₀ K₀ : ℝ, 0 < a ∧ a < b ∧ 0 < C ∧ 0 < r₀ ∧ ∀ (c : ℕ → ℂ) (r : ℝ) (K k : ℕ), (∀ n, ‖c n‖ ≤ 1) → 0 < r → r ≤ r₀ → K₀ ≤ K → K ≤ k → k ≤ 2 * K → 1 / (A * r) ^ (k + 1) ≤ ‖derSeries c k ((1 + r : ℝ) : ℂ)‖ → Real.exp (-(C * K)) / r ^ 3 ≤ ∫ y in (Real.exp (a * K / r))..(Real.exp (b * K / r)), ‖∑ p ∈ primesIoc (Real.exp (a * K / r)) y, (Real.log p : ℂ) * c p / p‖ ^ 2 / y := by
   intro A hA

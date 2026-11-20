@@ -9,7 +9,7 @@ open scoped ENNReal InnerProductSpace ComplexConjugate ContDiff
 noncomputable section
 
 /- English proof (translation)
-Establish `h2 : MemLp F 2 ν`. Use `⟨hF, ?_⟩` and prove the remaining obligations. Rewrite using `[eLpNorm_lt_top_iff_lintegral_rpow_enorm_lt_top two_ne_zero ENNReal.ofNat_ne_top]`. Simplify using `using h`. Conclude with `h2.integrable one_le_two`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem multA_integrable_of_sq {α : Type*} [MeasurableSpace α] (ν : Measure α) [IsFiniteMeasure ν]
     (F : α → ℂ) (hF : AEStronglyMeasurable F ν) (h : ∫⁻ x, ‖F x‖ₑ ^ 2 ∂ν < ⊤) :
@@ -21,7 +21,7 @@ theorem multA_integrable_of_sq {α : Type*} [MeasurableSpace α] (ν : Measure �
   exact h2.integrable one_le_two
 
 /- English proof (translation)
-Apply the tactic sequence `unfold LocalL2Isometry at hu`. Establish `: IsFiniteMeasure (μ.restrict K)` using `⟨by rw [Measure.restrict_apply_univ]; exact hK.measure_lt_top⟩`. Conclude with `multA_integrable_of_sq (μ.restrict K) u hu.1.restrict (hu.2 K hK)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integrableOn_compact_of_locL2 {M : Type*} [TopologicalSpace M] [MeasurableSpace M]
     (μ : Measure M) [IsFiniteMeasureOnCompacts μ] (u : M → ℂ) (hu : LocalL2Isometry μ u)
@@ -31,9 +31,7 @@ theorem integrableOn_compact_of_locL2 {M : Type*} [TopologicalSpace M] [Measurab
   exact multA_integrable_of_sq (μ.restrict K) u hu.1.restrict (hu.2 K hK)
 
 /- English proof (translation)
-Apply the tactic sequence `unfold LocalL2Isometry at hf ⊢`. Use `⟨hg.comp_aestronglyMeasurable hf.1, fun C hC => lt_of_le_of_lt ?_ (hf.2 C hC)⟩` and prove the remaining obligations. Use `lintegral_mono fun x => ?_` and prove the remaining obligations. Use `gcongr`. Rewrite using `[← ofReal_norm_eq_enorm, ← ofReal_norm_eq_enorm]`.
-
-Conclude with `ENNReal.ofReal_le_ofReal (hb _)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private lemma localL2Isometry_comp_of_norm_le {M E F : Type*} [TopologicalSpace M] [MeasurableSpace M]
     [NormedAddCommGroup E] [NormedAddCommGroup F] (μ : Measure M) (f : M → E) (g : E → F)
@@ -47,7 +45,7 @@ private lemma localL2Isometry_comp_of_norm_le {M E F : Type*} [TopologicalSpace 
   exact ENNReal.ofReal_le_ofReal (hb _)
 
 /- English proof (translation)
-Use `localL2Isometry_comp_of_norm_le μ f (fun v : V n => v j) (EuclideanSpace.proj (𝕜 := ℂ) j).continuous ?_ hf` and prove the remaining obligations. Introduce `v`. Rewrite using `[EuclideanSpace.norm_eq]`. Conclude with `le_trans (le_abs_self _) (Real.abs_le_sqrt (Finset.single_le_sum (f := fun i => ‖v i‖ ^ 2) (fun i _ => by positivity) (Finset.mem_univ j)))`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locL2_form_component {n : ℕ} {M : Type*} [TopologicalSpace M] [MeasurableSpace M]
     (μ : Measure M) (f : M → V n) (hf : LocalL2Isometry μ f) (j : Fin n) :
@@ -59,7 +57,7 @@ theorem locL2_form_component {n : ℕ} {M : Type*} [TopologicalSpace M] [Measura
     (f := fun i => ‖v i‖ ^ 2) (fun i _ => by positivity) (Finset.mem_univ j)))
 
 /- English proof (translation)
-Use `localL2Isometry_comp_of_norm_le μ σ (fun s : Fin n → Fin n → ℂ => s j k) ((continuous_apply k).comp (continuous_apply j)) ?_ hσ` and prove the remaining obligations. Introduce `s`. Conclude with `(norm_le_pi_norm (s j) k).trans (norm_le_pi_norm s j)`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locL2_two_form_component {n : ℕ} {M : Type*} [TopologicalSpace M] [MeasurableSpace M]
     (μ : Measure M) (σ : M → Fin n → Fin n → ℂ) (hσ : LocalL2Isometry μ σ) (j k : Fin n) :
@@ -70,11 +68,11 @@ theorem locL2_two_form_component {n : ℕ} {M : Type*} [TopologicalSpace M] [Mea
   exact (norm_le_pi_norm (s j) k).trans (norm_le_pi_norm s j)
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `hK.exists_bound_of_continuousOn hph.continuousOn`. Establish `: IsFiniteMeasure (μ.restrict K)` using `⟨by rw [Measure.restrict_apply_univ]; exact hK.measure_lt_top⟩`. Use `multA_integrable_of_sq (μ.restrict K) u hu.restrict ?_` and prove the remaining obligations. Establish `hpt : ∀ x ∈ K, ‖u x‖ₑ ^ 2 ≤ ENNReal.ofReal (Real.exp C) * ENNReal.ofReal (‖u x‖ ^ 2 * Real.exp (-ph x))`. Introduce `x hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hx' : ph x ≤ C` using `le_trans (le_abs_self _) (by simpa [Real.norm_eq_abs] using hC x hx)`. Establish `h1 : 1 ≤ Real.exp C * Real.exp (-ph x)`. Rewrite using `[← Real.exp_add]; exact Real.one_le_exp (by linarith)`. Rewrite using `[← ofReal_norm_eq_enorm, ← ENNReal.ofReal_pow (norm_nonneg _), ← ENNReal.ofReal_mul (Real.exp_pos C).le]`. Apply `ENNReal.ofReal_le_ofReal` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Combine the equalities or inequalities in the displayed calculation. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Chain the equalities or inequalities of the calculation.
 -/
 theorem multA_intOn_w {M : Type*} [TopologicalSpace M] [T2Space M] [MeasurableSpace M]
     [OpensMeasurableSpace M] (μ : Measure M) [IsFiniteMeasureOnCompacts μ]
@@ -109,7 +107,7 @@ theorem multA_intOn_w {M : Type*} [TopologicalSpace M] [T2Space M] [MeasurableSp
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top h
 
 /- English proof (translation)
-Establish `h1 : IntegrableOn (fun x => u x * c x) (tsupport c) μ` using `(hu _ hcs).mul_continuousOn hc.continuousOn hcs`. Conclude with `(integrableOn_iff_integrable_of_support_subset ((Function.support_mul_subset_right _ _).trans (subset_tsupport c))).mp h1`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem multA_int_mul {M : Type*} [TopologicalSpace M] [T2Space M] [MeasurableSpace M]
     [OpensMeasurableSpace M] (μ : Measure M) (u c : M → ℂ)
@@ -121,9 +119,9 @@ theorem multA_int_mul {M : Type*} [TopologicalSpace M] [T2Space M] [MeasurableSp
     ((Function.support_mul_subset_right _ _).trans (subset_tsupport c))).mp h1
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `x`. Take `⟨e, hx, hze⟩` from `hz x`. Establish `hc : IsChart n z e` using `fun y _ => by rw [hze]`. Establish `hg` using `(hph e hc).continuousOn`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ContinuousAt (((fun y => (ph y : ℂ)) ∘ e.symm) ∘ e) x` using `(hg.continuousAt (e.open_target.mem_nhds (e.map_source hx))).comp (e.continuousAt hx)`. Establish `h2 : ((fun y => (ph y : ℂ)) ∘ e.symm) ∘ e =ᶠ[𝓝 x] fun y => (ph y : ℂ)` using `by filter_upwards [e.open_source.mem_nhds hx] with y hy`. Simplify using `[e.left_inv hy]`. Establish `h3` using `Complex.continuous_re.continuousAt.comp (h1.congr h2)`. Simplify `h3` using `[Function.comp_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem multA_contR {n : ℕ} {M : Type*} [TopologicalSpace M] (z : M → V n)
     (hz : IsLocalHomeomorph z) (ph : M → ℝ) (hph : SmoothR n z ph) : Continuous ph := by

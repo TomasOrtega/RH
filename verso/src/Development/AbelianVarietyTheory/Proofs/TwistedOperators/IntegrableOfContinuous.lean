@@ -19,20 +19,20 @@ variable {n : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 attribute [local instance] Matrix.linftyOpNormedRing Matrix.linftyOpNormedAlgebra
 
 /- English proof (translation)
-The claim follows from `expProd_mem_UH hG hX t`.
+A detailed English derivation is pending.
 -/
 theorem pr_mem' (hG : IsUnit G) {k : ℕ} {Xs : Fin k → Matrix (Fin n) (Fin n) ℂ} (hX : ∀ i, Xs i ∈ lieG G)
     (t : Fin k → ℝ) : pr Xs t ∈ UH G := expProd_mem_UH hG hX t
 
 /- English proof (translation)
-The claim follows from `(hπ.2.2 u).comp_continuous (GlobalTheory.GardingVec.contDiff_expProd Xs).continuous (pr_mem' hG hX)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_pr (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {k : ℕ} {Xs : Fin k → Matrix (Fin n) (Fin n) ℂ}
     (hX : ∀ i, Xs i ∈ lieG G) (u : H) : Continuous fun t => π (pr Xs t) u :=
   (hπ.2.2 u).comp_continuous (GlobalTheory.GardingVec.contDiff_expProd Xs).continuous (pr_mem' hG hX)
 
 /- English proof (translation)
-The claim follows from `| 0, Xs, _ => ⟨fun _ => Xs, fun i => i.elim0, fun _ i => i.elim0, fun t h => by simp [pr_zero]⟩ | k + 1, Xs, hX => by obtain ⟨Y, h1, h2, h3⟩ := pr_add hG (Fin.init Xs) fun i => hX _ set X := Xs (Fin.last k) with hXd have hexp : ContDiff ℝ ∞ (NormedSpace.exp : Matrix (Fin n) (Fin …`.
+A detailed English derivation is pending.
 -/
 theorem pr_add (hG : IsUnit G) : ∀ {k : ℕ} (Xs : Fin k → Matrix (Fin n) (Fin n) ℂ), (∀ i, Xs i ∈ lieG G) →
     ∃ Y : (Fin k → ℝ) → Fin k → Matrix (Fin n) (Fin n) ℂ, (∀ i, ContDiff ℝ ∞ fun t => Y t i) ∧
@@ -67,7 +67,7 @@ theorem pr_add (hG : IsUnit G) : ∀ {k : ℕ} (Xs : Fin k → Matrix (Fin n) (F
       rw [Matrix.mul_assoc _ (pr _ _), pr_conj hd, ← Matrix.mul_assoc]
 
 /- English proof (translation)
-The claim follows from `| 0, Ys, _, d, _ => by simpa [pr_zero] using hasFDerivAt_const _ _ | k + 1, Ys, hY, d, hd => by have ih := hasFDerivAt_pr_zero hG hπ (Fin.init Ys) (fun i => hY _) (Fin.init d) fun i => hd _ let I : (Fin (k + 1) → ℝ) →L[ℝ] (Fin k → ℝ) := ContinuousLinearMap.pi fun j => ContinuousL …`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_pr_zero (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {v : H} :
     ∀ {k : ℕ} (Ys : Fin k → Matrix (Fin n) (Fin n) ℂ), (∀ i, Ys i ∈ lieG G) → ∀ d : Fin k → H,
@@ -118,17 +118,17 @@ theorem hasFDerivAt_pr_zero (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {v : H} :
     simp [Fin.sum_univ_castSucc, I, L, Fin.init, d₀]
 
 /- English proof (translation)
-Set `b` to `Module.finBasis ℝ (lieSub G)`. Use `choose c hc using fun j => LinearMap.exists_extend (b.coord j)`. Introduce `v hv k Xs hX`. Take `⟨Y, h1, h2, h3⟩` from `pr_add hG Xs hX`. Establish `ind : ∀ m : ℕ, ∀ v ∈ N, ContDiff ℝ m fun t => π (pr Xs t) v`.
+Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Proceed by induction on `m with`. Consider the case `zero => intro v _`. Conclude with `contDiff_zero.2 (continuous_pr hG hπ hX v)`. Consider the case `succ m ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `v hv`. Take `⟨D, hD⟩` from `hN v hv`. Establish `hF : ∀ t, HasFDerivAt (fun t => π (pr Xs t) v) (((π (pr Xs t)).restrictScalars ℝ).comp (∑ i, (ContinuousLinearMap.proj (R` using `ℝ) (φ := fun _ : Fin k => ℝ) i).smulRight (D ⟨Y t i, h2 t i⟩))) t := by`. Introduce `t`. Establish `a1` using `hasFDerivAt_pr_zero hG hπ (Y t) (h2 t) _ fun i => (hD ⟨Y t i, h2 t i⟩).2`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `a1` using `[← sub_self t]`. Establish `a2` using `((π (pr Xs t)).restrictScalars ℝ).hasFDerivAt.comp t (HasFDerivAt.comp (f := fun s => s - t) t a1 ((hasFDerivAt_id t).sub_const t))`. Use `(a2.congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)).congr_fderiv (by ext; simp)` and prove the remaining obligations. Use `show _ = π _ (π _ v)`. Rewrite using `[← rep_mul hπ (pr_mem' hG hX _) (pr_mem' hG (h2 t) _), ← h3, add_sub_cancel]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Nat.cast_succ, contDiff_succ_iff_fderiv_apply]`. Use `⟨fun t => (hF t).differentiableAt, by simp, fun z => ?_⟩` and prove the remaining obligations. Establish `e : ∀ t i, D ⟨Y t i, h2 t i⟩ = ∑ j, c j (Y t i) • D (b j)` using `fun t i => by conv_lhs => rw [← b.sum_repr ⟨Y t i, h2 t i⟩, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, ← b.coord_apply, ← hc j]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Simplify using `only [(hF _).fderiv, e, ContinuousLinearMap.comp_apply, _root_.sum_apply, ContinuousLinearMap.smulRight_apply, map_sum, ContinuousLinearMap.coe_restrictScalars', ContinuousLinearMap.map_smul_of_tower]`. Use `ContDiff.sum fun i _ => ContDiff.const_smul _ (ContDiff.sum fun j _ => ContDiff.smul (f := fun t => c j (Y t i)) ?_ (ih _ (hD _).1))` and prove the remaining obligations. Conclude with `contDiff_infty.1 (((c j).toContinuousLinearMap.contDiff).comp (h1 i)) m`. Conclude with `contDiff_infty.2 fun m => ind m v hv`.
+A detailed English derivation is pending.
 -/
 theorem mem_smSub_of_closed (hG : IsUnit G) (hπ : IsURepOn (UH G) π) (N : Set H)
     (hN : ∀ v ∈ N, ∃ D : lieSub G →ₗ[ℝ] H, ∀ X : lieSub G, D X ∈ N ∧
@@ -170,7 +170,7 @@ theorem mem_smSub_of_closed (hG : IsUnit G) (hπ : IsURepOn (UH G) π) (N : Set 
   exact contDiff_infty.2 fun m => ind m v hv
 
 /- English proof (translation)
-Establish `a1` using `((π (NormedSpace.exp (t • X))).restrictScalars ℝ).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (hasDerivAt_dRep hu hX)`. Rewrite `a1` using `[← sub_self t]`. Use `(a1.comp_sub_const t t).congr_of_eventuallyEq (Eventually.of_forall fun s => ?_)` and prove the remaining obligations. Use `show _ = π _ (π _ u)`. Rewrite using `[← rep_mul hπ (exp_mem_UH hG hX _) (exp_mem_UH hG hX _), ← Matrix.exp_add_of_commute _ _ (((Commute.refl X).smul_left _).smul_right _), ← add_smul, add_sub_cancel]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_orbit (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {u : H} (hu : u ∈ smSub G π)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieG G) (t : ℝ) :
@@ -192,14 +192,14 @@ def SmoothFamily (G : Matrix (Fin n) (Fin n) ℂ) (π : Matrix (Fin n) (Fin n) �
   (∀ k, F k ∈ smSub G π) ∧ ∀ l, (∀ X ∈ l, X ∈ lieG G) → Continuous fun k => word π l (F k)
 
 /- English proof (translation)
-The claim follows from `hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace F)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_of_continuous {E : Type} [NormedAddCommGroup E] {F : K → E} (hF : Continuous F) :
     Integrable F μ := hF.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace F)
 
 omit [CompleteSpace H] [CompactSpace K] [MeasurableSpace K] [OpensMeasurableSpace K] in
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun k => word_mem hG hπ hl (hF.1 k), fun l' hl' => by simp only [← word_append] exact hF.2 _ fun X hX => (List.mem_append.1 hX).elim (hl' X) (hl X)⟩`.
+Supply the required witnesses or components.
 -/
 theorem SmoothFamily.word (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {F : K → H} (hF : SmoothFamily G π F)
     {l : List (Matrix (Fin n) (Fin n) ℂ)} (hl : ∀ X ∈ l, X ∈ lieG G) :
@@ -209,9 +209,9 @@ theorem SmoothFamily.word (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {F : K → 
     exact hF.2 _ fun X hX => (List.mem_append.1 hX).elim (hl' X) (hl X)⟩
 
 /- English proof (translation)
-Establish `c0 : Continuous F` using `hF.2 [] (by simp)`. Establish `c1 : Continuous fun k => dRep π X (F k)` using `hF.2 [X] (by simpa using hX)`. Establish `i0` using `integrable_of_continuous μ c0`. Establish `i1` using `integrable_of_continuous μ c1`. Use `(hasDerivAt_integral_of_dominated_loc_of_deriv_le (μ := μ) (x₀ := (0 : ℝ)) (s := Set.univ) (F := fun (t : ℝ) k => π (NormedSpace.exp (t • X)) (F k)) (F' := fun (t : ℝ) k => π (NormedSpace.exp (t • X)) (dRep π X (F k))) (bound := fun k => ‖dRep π X (F k)‖) univ_mem (Eventually.of_ …` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify `this` using `only [ContinuousLinearMap.integral_comp_comm _ i0, zero_smul, NormedSpace.exp_zero, rep_one hπ]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem SmoothFamily.hasDerivAt (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {F : K → H} (hF : SmoothFamily G π F)
     {X : Matrix (Fin n) (Fin n) ℂ} (hX : X ∈ lieG G) :
@@ -230,9 +230,9 @@ theorem SmoothFamily.hasDerivAt (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {F : 
   simpa only [ContinuousLinearMap.integral_comp_comm _ i0, zero_smul, NormedSpace.exp_zero, rep_one hπ] using this
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => rfl`. Consider the case `cons X l ih`. Establish `hl' : ∀ Y ∈ l, Y ∈ lieG G` using `fun Y hY => hl Y (by simp [hY])`. Rewrite using `[word_cons, ih hl']`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((hF.word hG hπ hl').hasDerivAt μ hG hπ (hl X (by simp))).deriv`.
+A detailed English derivation is pending.
 -/
 theorem SmoothFamily.word_integral (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {F : K → H} (hF : SmoothFamily G π F)
     {l : List (Matrix (Fin n) (Fin n) ℂ)} (hl : ∀ X ∈ l, X ∈ lieG G) :
@@ -247,11 +247,11 @@ theorem SmoothFamily.word_integral (hG : IsUnit G) (hπ : IsURepOn (UH G) π) {F
 variable {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} {P : Matrix (Fin n) (Fin n) ℂ}
 
 /- English proof (translation)
-Establish `hG` using `gram_unit hP h`. Establish `hπ` using `isURepOn_trRep hP h hσ`. Use `mem_smSub_of_closed hG hπ {v | ∃ F : K → H, SmoothFamily G (trRep σ P) F ∧ ∫ k, F k ∂μ = v} ?_ _ ⟨F, hF, rfl⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨F, hF, rfl⟩`. Establish `hw : ∀ X : lieSub G, SmoothFamily G (trRep σ P) fun k => dRep (trRep σ P) X (F k)` using `fun X => hF.word hG hπ (l := [X.1]) fun Y hY => by rw [List.mem_singleton.1 hY]; exact X.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hi : ∀ X : lieSub G, Integrable (fun k => dRep (trRep σ P) X (F k)) μ` using `fun X => integrable_of_continuous μ ((hw X).2 [] (by simp))`. Establish `hlin` using `fun k => GlobalTheory.SmVecLinear.dRep_linear n ε H σ P G hP h hσ _ (hF.1 k)`. Use `⟨{ toFun := fun X => ∫ k, dRep (trRep σ P) X (F k) ∂μ map_add' := fun X Y => ?_ map_smul' := fun a X => ?_ }, fun X => ⟨⟨_, hw X, rfl⟩, hF.hasDerivAt μ hG hπ X.2⟩⟩` and prove the remaining obligations. Rewrite using `[← integral_add (hi X) (hi Y)]`. Simplify using `only [Submodule.coe_add, fun k => (hlin k).1 _ X.2 _ Y.2]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[RingHom.id_apply, ← integral_smul]`. Simplify using `only [Submodule.coe_smul, fun k => (hlin k).2 a _ X.2, Complex.coe_smul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem SmoothFamily.integral_mem (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) (hσ : IsURepOn (UJset ε) σ)
     {F : K → H} (hF : SmoothFamily G (trRep σ P) F) : ∫ k, F k ∂μ ∈ smSub G (trRep σ P) := by
@@ -274,9 +274,9 @@ theorem SmoothFamily.integral_mem (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm 
     simp only [Submodule.coe_smul, fun k => (hlin k).2 a _ X.2, Complex.coe_smul]
 
 /- English proof (translation)
-Establish `hG` using `gram_unit hP h`. Establish `hπ` using `isURepOn_trRep hP h hσ`. Take `⟨m, ls, a, hls, hrep⟩` from `sobCont_repr n ε H σ P G hP h hσ ℓ hℓ`. Establish `hc : ∀ i, Continuous fun k => ⟪a i, GlobalTheory.SmVec.word (trRep σ P) (ls i) (F k)⟫_ℂ` using `fun i => continuous_const.inner (hF.2 _ (hls i))`. Simplify using `only [fun k => hrep _ (hF.1 k)]`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨continuous_finsetSum _ fun i _ => hc i, ?_⟩` and prove the remaining obligations. Rewrite using `[hrep _ (hF.integral_mem μ hP h hσ), integral_finsetSum _ fun i _ => integrable_of_continuous μ (hc i)]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[hF.word_integral μ hG hπ (hls i), integral_inner (integrable_of_continuous μ (hF.2 _ (hls i)))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem SmoothFamily.form (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) (hσ : IsURepOn (UJset ε) σ)
     {F : K → H} (hF : SmoothFamily G (trRep σ P) F) {ℓ : H →ₗ[ℂ] ℂ} (hℓ : Sobolev₂ (lieG G) (trRep σ P) ℓ) :
@@ -295,7 +295,7 @@ theorem SmoothFamily.form (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P =
 end Integral
 
 /- English proof (translation)
-Establish `hm : ∀ k : Formalism.REAL.KG ε, σ (Formalism.REAL.toMK k) w ∈ smSub G (trRep σ P)` using `fun k => sigma_mem hP h hσ hw (k : Formalism.REAL.UJ ε).2`. Use `⟨fun k => Submodule.smul_mem _ _ (hm k), fun l hl => ?_⟩` and prove the remaining obligations. Simplify using `only [fun k => word_smul (gram_unit hP h) (isURepOn_trRep hP h hσ) hl (e k) (hm k)]`. Conclude with `he.smul ((continuous_word_translate n ε H σ P G hP h hσ l hl w hw).comp continuous_subtype_val)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothFamily_orbit [CompleteSpace H] {ε : Fin n → Bool} {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)}
     {P : Matrix (Fin n) (Fin n) ℂ} (hP : IsUnit P) (h : Pᴴ * Formalism.REAL.Jm ε * P = G) (hσ : IsURepOn (UJset ε) σ)
@@ -312,11 +312,11 @@ end GlobalTheory.SmoothAverage
 open Formalism.BasicNotions Formalism.BasicNotions.TH Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes Formalism.IndefR Formalism.IndefR.Mult GlobalTheory.Chain.IoLift in
 
 /- English proof (translation)
-Introduce `D V S M τ e he w hw`. Establish `: CompleteSpace (M.H τ)` using `(M.ds τ).1`. Establish `hσ` using `(M.ds τ).2.2.1`. Establish `hP` using `M.fr_unit τ`. Establish `h` using `M.fr_gram τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hw`, the goal using `[sm_eq]`. Establish `hF` using `GlobalTheory.SmoothAverage.smoothFamily_orbit hP h hσ he hw`. Use `⟨hF.integral_mem _ hP h hσ, fun ℓ hℓ => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `h1` using `GlobalTheory.SmoothAverage.smoothFamily_orbit hP h hσ (e := fun _ => 1) continuous_const hw`. Simplify `(h1.form (Formalism.REAL.muK (M.ε τ)) hP h hσ hℓ).1` using `only [one_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `(hF.form (Formalism.REAL.muK (M.ε τ)) hP h hσ hℓ).2` using `only [kMean, map_smul, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem GlobalTheory.SmoothAverage.kMean_smooth : ∀ (D : D7) (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (τ : D.what₂.Tau) (e : Formalism.REAL.KG (M.ε τ) → ℂ), Continuous e → ∀ w ∈ M.sm τ, kMean M τ e w ∈ M.sm τ ∧ ∀ ℓ : M.H τ →ₗ[ℂ] ℂ, Sobolev₂ (lieAt V τ) (M.rep τ) ℓ → (Continuous fun k : Formalism.REAL.KG (M.ε τ) => ℓ (M.σ τ (Formalism.REAL.toMK k) w)) ∧ ℓ (kMean M τ e w) = ∫ k, e k * ℓ (M.σ τ (Formalism.REAL.toMK k) w) ∂(Formalism.REAL.muK (M.ε τ)) := by
   intro D V S M τ e he w hw

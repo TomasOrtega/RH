@@ -8,7 +8,7 @@ open Formalism.L2.Col NumberField IsDedekindDomain
 namespace GlobalTheory
 
 /- English proof (translation)
-Unfold `divs at h`. Use `split_ifs at h with hfin`. Conclude with `(Set.Finite.mem_toFinset hfin).mp h`. Conclude with `absurd h (Finset.notMem_empty P)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem colRoots_mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a : A}
     {P : HeightOneSpectrum A} (h : P ∈ divs a) : a ∈ P.asIdeal := by
@@ -18,13 +18,11 @@ theorem colRoots_mem_of_mem_divs {A : Type} [CommRing A] [IsDedekindDomain A] {a
   · exact absurd h (Finset.notMem_empty P)
 
 /- English proof (translation)
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Establish `hcard : 0 < (Pr.vG i).card` using `by rw [hP.vG_card i]; exact hf`. Take `⟨w, hw⟩` from `Finset.card_pos.mp hcard`. Establish `hwG : w ∈ Pr.vGs` using `by classical`. Rewrite using `[Primes.vGs, Finset.mem_union]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `fin_cases i`. Conclude with `Or.inl hw`. Conclude with `Or.inr hw`. Establish `hconj : X.conjO (Pr.piG i) ∈ w.asIdeal` using `colRoots_mem_of_mem_divs hw`. Establish `hg : ((Pr.g i : ℕ) : 𝓞 X.E) ∈ w.asIdeal`.
+Prove the first alternative. Prove the second alternative. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hP.piG_norm i]`. Conclude with `w.asIdeal.mul_mem_left _ hconj`. Establish `hzero : ((Pr.g i : ℕ) : 𝓞 X.E ⧸ w.asIdeal) = 0`. Rewrite using `[← map_natCast (Ideal.Quotient.mk w.asIdeal)]`. Conclude with `Ideal.Quotient.eq_zero_iff_mem.mpr hg`.
-
-Conclude with `exists_isPrimitiveRoot_of_addChar_ne_one (𝓞 X.E ⧸ w.asIdeal) X.K (Pr.g i) (hP.g_prime i) hzero (Ch.psi0 ⟨w, hwG⟩) (hC.psi_zero_nontrivial_character _)`. Take `⟨om, hom, -⟩` from `hC.chi_om i`. Conclude with `exists_isPrimitiveRoot_of_injective_character X.K (Pr.g i) (hP.g_prime i) om hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem colRoots_exists_primitiveRoots (X : Fields) (Pr : Primes X) (m : ℕ) (Ch : Chars X Pr m)
     (hf : 0 < X.f) (hP : Pr.Ok) (hC : Ch.Ok) (i : Fin 2) :

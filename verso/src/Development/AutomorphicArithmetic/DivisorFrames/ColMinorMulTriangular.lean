@@ -8,15 +8,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open GlobalTheory.RootFrame
 
 /- English proof (translation)
-Introduce `K _ n r X T hT k hk σ`. Establish `h1 : (Matrix.of fun a l : Fin k => (X * T) (σ a) (Fin.castLE hk l)) = (Matrix.of fun a l : Fin k => X (σ a) (Fin.castLE hk l)) * (Matrix.of fun a l : Fin k => T (Fin.castLE hk a) (Fin.castLE hk l))`. Use extensionality with `a l`. Simplify using `only [Matrix.mul_apply, Matrix.of_apply]`. Use `symm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Use symmetry to reverse the relation.
 
-Use `Fintype.sum_of_injective (Fin.castLE hk) (Fin.castLE_injective hk) _ _ ?_ (fun _ => rfl)` and prove the remaining obligations. Introduce `j hj`. Establish `hlt : (Fin.castLE hk l) < j`. Assume the negation of the conclusion as `hc`. Apply `hj` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `h2 : (j : ℕ) ≤ l`. Use `not_lt.1 hc` as an intermediate fact. Conclude with `this`. Conclude with `⟨⟨j, lt_of_le_of_lt h2 l.2⟩, Fin.ext rfl⟩`. Rewrite using `[hT (show id (Fin.castLE hk l) < id j from hlt), mul_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : (Matrix.of fun a l : Fin k => T (Fin.castLE hk a) (Fin.castLE hk l)).BlockTriangular id`. Introduce `a l h`. Conclude with `hT (show id (Fin.castLE hk l) < id (Fin.castLE hk a) from h)`. Unfold `colMinor`. Rewrite using `[h1, Matrix.det_mul, Matrix.det_of_upperTriangular h3]`.
-
-Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.colMinor_mul_triangular :
     ∀ (K : Type) [CommRing K] (n r : ℕ) (X : Matrix (Fin n) (Fin r) K) (T : Matrix (Fin r) (Fin r) K), T.BlockTriangular id → ∀ (k : ℕ) (hk : k ≤ r) (σ : Fin k → Fin n), colMinor (X * T) k hk σ = colMinor X k hk σ * ∏ i : Fin k, T (Fin.castLE hk i) (Fin.castLE hk i) := by

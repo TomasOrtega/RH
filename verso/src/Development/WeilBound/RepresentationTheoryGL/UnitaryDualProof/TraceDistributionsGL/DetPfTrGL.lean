@@ -15,7 +15,7 @@ def pfTrGL {n : ℕ} (h : GL (Fin (n + 1)) k) : GL (Fin (n + 1)) k :=
 
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 /- English proof (translation)
-Apply `Units.ext` to reduce the goal to its premises. Simplify using `[pfTrGL, GeneralLinearGroup.val_det_apply, det_transpose]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem det_pfTrGL {n : ℕ} (h : GL (Fin (n + 1)) k) :
     GeneralLinearGroup.det (pfTrGL h) = GeneralLinearGroup.det h := by
@@ -25,7 +25,7 @@ theorem det_pfTrGL {n : ℕ} (h : GL (Fin (n + 1)) k) :
 omit [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] in
 
 /- English proof (translation)
-Rewrite using `[mulVec_transpose, dotProduct_mulVec, vecMul_vecMul, ← Units.val_mul, mul_inv_cancel, Units.val_one, vecMul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem transpose_mulVec_dotProduct_inv_mulVec {n : ℕ} (h : GL (Fin (n + 1)) k) (x z : Vc k n) :
     ((h : Matrix (Fin (n + 1)) (Fin (n + 1)) k)ᵀ *ᵥ x) ⬝ᵥ
@@ -35,9 +35,9 @@ theorem transpose_mulVec_dotProduct_inv_mulVec {n : ℕ} (h : GL (Fin (n + 1)) k
 
 variable (k) in
 /- English proof (translation)
-Introduce `mk bs ν hν ψ c hc n F hF h`. Use function extensionality and compare the values at `z`. Establish `key` using `integral_comp_mulVec_eq_smul ν (pfTrGL h) (fun u => F (cj h⁻¹ z.1, u) * ((ψ (u ⬝ᵥ (((h⁻¹ : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) *ᵥ z.2)) : Circle) : ℂ))`. Establish `hv : ((pfTrGL h : GL (Fin (n + 1)) k) : Matrix (Fin (n + 1)) (Fin (n + 1)) k) = (h : Matrix (Fin (n + 1)) (Fin (n + 1)) k)ᵀ` using `rfl`. Simplify using `only [hv, transpose_mulVec_dotProduct_inv_mulVec, det_pfTrGL] at key`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [GlobalTheory.SplitDict.pf]`. Rewrite using `[key, Complex.real_smul, Complex.ofReal_inv]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pfAct : PfAct k := by
   intro mk bs ν hν ψ c hc n F hF h

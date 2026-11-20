@@ -38,7 +38,7 @@ def StepC : Prop :=
         relIdx (imgLat (δ : (m → ℂ) →ₗ[ℂ] (m → ℂ)) Λa) (stdLat (cmL a b d ha hd lam hlam) m) ≠ 0
 
 /- English proof (translation)
-Introduce `a b c d ha hd lam hlam hok m _ _ Λa hsd hθ h1 h2 l hl`. Take `⟨g, hg, g1, g2, g3⟩` from `hB a b c d ha hd lam hlam hok m Λa hsd hθ h1 h2 l hl`. Conclude with `hC a b c d ha hd lam hlam hok m Λa g hθ l hl hg g1 g2 g3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem target_of (hB : StepB) (hC : StepC) : PI.UnimodLocStd := by
   intro a b c d ha hd lam hlam hok m _ _ Λa hsd hθ h1 h2 l hl

@@ -10,13 +10,13 @@ namespace GlobalTheory.FrameCont
 open Matrix
 
 /- English proof (translation)
-Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit]`. Establish `key : ∀ v : Fin S.rank → E, S.gram *ᵥ v = 0 → v = 0`. Introduce `v hv`. Establish `h0 : ∑ j, v j • S.frame j = 0`. Apply `S.nondeg.2` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `x`. Rewrite using `[← S.frame.sum_repr x]`. Simplify using `only [map_sum, LinearMap.map_smulₛₗ, LinearMap.sum_apply, LinearMap.smul_apply, smul_eq_mul, RingHom.id_apply, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_eq_zero fun i _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hi` using `congrFun hv i`. Simplify using `only [Matrix.mulVec, dotProduct, HSpace.gram, Pi.zero_apply] at hi`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.mul_sum]; exact Finset.sum_congr rfl fun j _ => by ring`. Use `_ = 0 := by rw [hi, mul_zero]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Conclude with `Fintype.linearIndependent_iff.1 S.frame.linearIndependent v h0 j`. Introduce `a b hab`. Use `key (a - b) (by rw [Matrix.mulVec_sub, hab, sub_self])` as an intermediate fact. Conclude with `sub_eq_zero.1 this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem gram_det_isUnit {E : Type} [Field E] [NumberField E] [StarRing E] (S : HSpace E) :
     IsUnit S.gram.det := by
@@ -43,13 +43,13 @@ theorem gram_det_isUnit {E : Type} [Field E] [NumberField E] [StarRing E] (S : H
   exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Establish `hc : ∀ t, σ e • M t = J⁻¹ * Formalism.UG.cT σ (e • N t) * J`. Introduce `t`. Establish `h1 : J * M t = Formalism.UG.cT σ (N t) * J`. Combine the equalities or inequalities in the displayed calculation. Establish `h2 : Formalism.UG.cT σ (e • N t) = σ e • Formalism.UG.cT σ (N t)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use extensionality with `a b`. Simplify using `[Formalism.UG.cT]`. Rewrite using `[h2, Matrix.mul_assoc, Matrix.smul_mul, ← h1, Matrix.mul_smul, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hJ, Matrix.one_mul]`. Establish `hC : Continuous fun t => σ e • M t`. Simplify using `only [hc]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `(continuous_const.matrix_mul (hN.matrix_map hσ).matrix_transpose).matrix_mul continuous_const`. Establish `hsum : M = fun t => (1 - (e + σ e) • (1 : Matrix m m A)) + (e • M t + σ e • M t)`. Use function extensionality and compare the values at `t`. Use extensionality with `i j`. Establish `h` using `hs t i j`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.sub_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul] at h ⊢`. Take the linear combination `-h`. Rewrite using `[hsum]`. Conclude with `continuous_const.add (hM.add hC)`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_parts {A T m : Type} [CommRing A] [TopologicalSpace A] [IsTopologicalRing A]
     [TopologicalSpace T] [Fintype m] [DecidableEq m] (σ : A →+* A) (hσ : Continuous σ) (e : A)
@@ -79,9 +79,9 @@ theorem continuous_of_parts {A T m : Type} [CommRing A] [TopologicalSpace A] [Is
   exact continuous_const.add (hM.add hC)
 
 /- English proof (translation)
-Establish `h` using `IsModuleTopology.continuous_of_linearMap (R := R) (LinearMap.baseChange R σ.toLinearMap)`. Use `h.congr fun x => ?_` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a y => simp [LinearMap.baseChange_tmul, sigR]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Treat this case separately.
 -/
 theorem continuous_sigR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type) [CommRing R] [Algebra F R]
     [TopologicalSpace R] [IsTopologicalRing R] (σ : E →ₐ[F] E) : Continuous (sigR R σ) := by
@@ -93,20 +93,20 @@ theorem continuous_sigR {F E : Type} [Field F] [Field E] [Algebra F E] (R : Type
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-The claim follows from `(PI.FT.toHR x).2`.
+A detailed English derivation is pending.
 -/
 theorem unitary_mt {D : D7} {S : HSp D} (x : GA D S) :
     Formalism.UG.cT (cA D) (mt S x) * S.gram.map (incA D) * mt S x = S.gram.map (incA D) := (PI.FT.toHR x).2
 
 /- English proof (translation)
-Use `show (matHom S x⁻¹).val * (matHom S x).val = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mt_inv_mul {D : D7} {S : HSp D} (x : GA D S) : mt S x⁻¹ * mt S x = 1 := by
   show (matHom S x⁻¹).val * (matHom S x).val = 1
   rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]
 
 /- English proof (translation)
-Establish `h0` using `(gram_det_isUnit S).map (incA D)`. Rewrite `h0` using `[RingHom.map_det]`. Conclude with `h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gram_map_det_isUnit {D : D7} (S : HSp D) : IsUnit (S.gram.map (incA D)).det := by
   have h0 := (gram_det_isUnit S).map (incA D)
@@ -117,14 +117,14 @@ variable {D : D7} {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [Is
   {p : SplitPt D k} {S : HSp D} {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Rewrite using `[← p.sec_pr, ← β.gl_mat g]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem e_mul_entry (β : Frame p S n) (g : GL n k) (i j : Fin S.rank) :
     p.e * mt S (β.gl g) i j = p.sec ((β.b * g.val * β.b') i j) := by
   rw [← p.sec_pr, ← β.gl_mat g]; rfl
 
 /- English proof (translation)
-Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Apply the tactic sequence `refine (p.cont_sec.comp (((continuous_const.matrix_mul (Units.continuous_val (M := Matrix n n k))).matrix_mul continuous_const).matrix_elem i j)).congr fun g => (e_mul_entry β g i j).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem continuous_e_smul (β : Frame p S n) : Continuous fun g : GL n k => p.e • mt S (β.gl g) := by
   refine continuous_matrix fun i j => ?_
@@ -133,7 +133,7 @@ theorem continuous_e_smul (β : Frame p S n) : Continuous fun g : GL n k => p.e 
       fun g => (e_mul_entry β g i j).symm
 
 /- English proof (translation)
-Establish `: IsTopologicalRing (AE D)` using `IsModuleTopology.isTopologicalRing (AF D.host.F) _`. Use `continuous_of_parts (cA D) (continuous_sigR _ _) p.e (S.gram.map (incA D)) (gram_map_det_isUnit S) (fun g => mt S (β.gl g)) (fun g => mt S (β.gl g⁻¹)) (fun g => unitary_mt _) (fun g => ?_) (fun g => β.gl_supp g) (continuous_e_smul β) ((continuous_e_smul β).comp continuous_inv)` and prove the remaining obligations. Use `show mt S (β.gl g⁻¹) * mt S (β.gl g) = 1`. Rewrite using `[map_inv]`. Conclude with `mt_inv_mul _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_mt (β : Frame p S n) : Continuous fun g : GL n k => mt S (β.gl g) := by
   have : IsTopologicalRing (AE D) := IsModuleTopology.isTopologicalRing (AF D.host.F) _
@@ -145,9 +145,9 @@ theorem continuous_mt (β : Frame p S n) : Continuous fun g : GL n k => mt S (β
   exact mt_inv_mul _
 
 /- English proof (translation)
-Introduce `D k _ _ _ _ p S n _ _ β`. Use `(PI.FT.cont_HA_iff (AF D.host.F) (fun g : GL n k => β.gl g)).2 ⟨continuous_mt β, ?_⟩` and prove the remaining obligations. Establish `h` using `(continuous_mt β).comp (continuous_inv (G := GL n k))`. Use `h.congr fun g => ?_` and prove the remaining obligations. Use `show mt S (β.gl g⁻¹) = PI.FT.mtI (β.gl g)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_inv]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem continuous_gl : ∀ (D : D7) (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (p : SplitPt D k) (S : HSp D) (n : Type) [Fintype n] [DecidableEq n] (β : Frame p S n), Continuous β.gl := by

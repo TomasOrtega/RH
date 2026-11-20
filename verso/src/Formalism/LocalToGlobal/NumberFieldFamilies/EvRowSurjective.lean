@@ -22,9 +22,9 @@ def evRow0 : (Fin (V0C W Ch sel mu h Xg P).d → X.K) →ₗ[X.K] (mtildeKGSD W 
   ((mtildeKGSD W Ch sel mu).coordOf h (mtildeKGSD W Ch sel mu).outSec).symm.toLinearMap ∘ₗ (V0C W Ch sel mu h Xg P).E.mulVecLin
 
 /- English proof (translation)
-Establish `hx : (V0C W Ch sel mu h Xg P).E.mulVecLin x ∈ (V0X W Ch sel mu Xg P).map ((mtildeKGSD W Ch sel mu).coordOf h (mtildeKGSD W Ch sel mu).outSec).toLinearMap`. Rewrite using `[invariantSubspace_coords_X]`. Conclude with `⟨x, rfl⟩`. Take `⟨φ, hφ, e⟩` from `hx`. Establish `: evRow0 W Ch sel mu h Xg P x = φ` using `by show ((mtildeKGSD W Ch sel mu).coordOf h (mtildeKGSD W Ch sel mu).outSec).symm ((V0C W Ch sel mu h Xg P).E.mulVecLin x) = φ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← e]`. Conclude with `LinearEquiv.symm_apply_apply _ φ`. Rewrite using `[this]`. Conclude with `hφ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evRow0_mem (x : Fin (V0C W Ch sel mu h Xg P).d → X.K) : evRow0 W Ch sel mu h Xg P x ∈ V0X W Ch sel mu Xg P := by
   have hx : (V0C W Ch sel mu h Xg P).E.mulVecLin x ∈
@@ -43,14 +43,14 @@ def evRow : (Fin (V0C W Ch sel mu h Xg P).d → X.K) →ₗ[X.K] V0X W Ch sel mu
   LinearMap.codRestrict _ (evRow0 W Ch sel mu h Xg P) (evRow0_mem W Ch sel mu h Xg P)
 
 /- English proof (translation)
-The claim follows from `((mtildeKGSD W Ch sel mu).coordOf h (mtildeKGSD W Ch sel mu).outSec).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem evRow_coord (x : Fin (V0C W Ch sel mu h Xg P).d → X.K) :
     (mtildeKGSD W Ch sel mu).coordOf h (mtildeKGSD W Ch sel mu).outSec (evRow W Ch sel mu h Xg P x).1 =
       (V0C W Ch sel mu h Xg P).E.mulVec x := ((mtildeKGSD W Ch sel mu).coordOf h (mtildeKGSD W Ch sel mu).outSec).apply_symm_apply _
 
 /- English proof (translation)
-Introduce `x y e`. Establish `e1 : (V0C W Ch sel mu h Xg P).E.mulVec x = (V0C W Ch sel mu h Xg P).E.mulVec y`. Rewrite using `[← evRow_coord, ← evRow_coord, e]`. Conclude with `(image_idempotent_spec X.K _ _).1 e1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evRow_injective : Function.Injective (evRow W Ch sel mu h Xg P) := by
   intro x y e
@@ -59,9 +59,9 @@ theorem evRow_injective : Function.Injective (evRow W Ch sel mu h Xg P) := by
   exact (image_idempotent_spec X.K _ _).1 e1
 
 /- English proof (translation)
-Introduce `φ`. Establish `hx : (mtildeKGSD W Ch sel mu).coordOf h (mtildeKGSD W Ch sel mu).outSec φ.1 ∈ LinearMap.range (V0C W Ch sel mu h Xg P).E.mulVecLin`. Rewrite using `[← invariantSubspace_coords_X]`. Conclude with `⟨φ.1, φ.2, rfl⟩`. Take `⟨x, e⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `⟨x, Subtype.ext ?_⟩` and prove the remaining obligations. Apply `((mtildeKGSD W Ch sel mu).coordOf h (mtildeKGSD W Ch sel mu).outSec).injective` to reduce the goal to its premises. Rewrite using `[evRow_coord]`. Conclude with `e`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evRow_surjective : Function.Surjective (evRow W Ch sel mu h Xg P) := by
   intro φ
@@ -79,7 +79,7 @@ def evRowE : (Fin (V0C W Ch sel mu h Xg P).d → X.K) ≃ₗ[X.K] V0X W Ch sel m
   LinearEquiv.ofBijective (evRow W Ch sel mu h Xg P) ⟨evRow_injective W Ch sel mu h Xg P, evRow_surjective W Ch sel mu h Xg P⟩
 
 /- English proof (translation)
-Conclude with `((mtildeKGSD W Ch sel mu).res h).apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem evRow_res (x : Fin (V0C W Ch sel mu h Xg P).d → X.K) :
     (mtildeKGSD W Ch sel mu).res h (evRow W Ch sel mu h Xg P x).1 =
@@ -87,7 +87,7 @@ theorem evRow_res (x : Fin (V0C W Ch sel mu h Xg P).d → X.K) :
   exact ((mtildeKGSD W Ch sel mu).res h).apply_symm_apply _
 
 /- English proof (translation)
-Rewrite using `[lvlE_lvlPr_V0E (MtildeKCSD W Ch sel mu h) (g0Act W Ch sel mu h) Xg P.grp P.chr h0 hpos (unipotentActionForms_good W Ch sel mu hX h) hXg x]`. Conclude with `evRow_res W Ch sel mu h Xg P x`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem evRow_res_lvl (hX : X.Ok) {v0 : InfinitePlace X.K} (h0 : IsConjAt v0)
     (hpos : ((MtildeKCSD W Ch sel mu h).H.map v0.embedding).PosDef) (hXg : ∀ χ ∈ Xg, IsAbsIrrChar χ)
@@ -117,7 +117,7 @@ def evC (Zs : DefSub (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).fam3.amb3) (t :
   evRow W Ch sel t.1 (mtildeKOk W Ch sel t.1 hX) Xg P
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨evRow_injective W Ch sel t.1 (mtildeKOk W Ch sel t.1 hX) Xg P, evRow_surjective W Ch sel t.1 (mtildeKOk W Ch sel t.1 hX) Xg P⟩`.
+Supply the required witnesses or components.
 -/
 theorem evC_bijective (Zs : DefSub (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).fam3.amb3)
     (t : (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).fam3.base3.Tup) :
@@ -125,7 +125,7 @@ theorem evC_bijective (Zs : DefSub (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).f
     evRow_surjective W Ch sel t.1 (mtildeKOk W Ch sel t.1 hX) Xg P⟩
 
 /- English proof (translation)
-The claim follows from `evRow_res_lvl W Ch sel t.1 _ Xg P hX hOk.conj ((hOk.what₂ t).hpos _) hOk.irr F`.
+A detailed English derivation is pending.
 -/
 theorem evC_res_lvl {s : ℕ} (hOk : (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).A.fam.Ok s)
     (Zs : DefSub (colIn3 W Ch sel hX v0 TU Xg S0 xiVal trIv).fam3.amb3)

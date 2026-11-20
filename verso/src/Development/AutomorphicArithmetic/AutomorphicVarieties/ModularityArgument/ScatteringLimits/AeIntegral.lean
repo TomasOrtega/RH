@@ -4,17 +4,15 @@ open MeasureTheory PositivityTheory.Rg.Tf.IntegralApplyAeEq Set Filter Topology
 open scoped InnerProductSpace ENNReal
 
 /- English proof (translation)
-Establish `hint : ∀ s : Set ℝ, MeasurableSet s → volume s < ∞ → Integrable g (μ.prod (volume.restrict s))`. Introduce `s hs hf`. Establish `hm : AEStronglyMeasurable g (μ.prod (volume.restrict s))` using `hg.mono_ac (Measure.AbsolutelyContinuous.rfl.prod Measure.absolutelyContinuous_restrict)`. Use `⟨hm, ?_⟩` and prove the remaining obligations. Rewrite using `[hasFiniteIntegral_iff_enorm, lintegral_prod _ hm.enorm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hb : ∀ᵐ t ∂μ, ∫⁻ x in s, ‖g (t, x)‖ₑ ≤ ‖G t‖ₑ * volume s ^ (1 / (1 : ℝ≥0∞).toReal - 1 / (2 : ℝ≥0∞).toReal)` using `by filter_upwards [h] with t ht`. Establish `e : ∫⁻ x in s, ‖g (t, x)‖ₑ = eLpNorm (G t) 1 (volume.restrict s)`. Rewrite using `[eLpNorm_one_eq_lintegral_enorm]`. Conclude with `lintegral_congr_ae (ae_restrict_of_ae (ht.mono fun x hx => by simp only [hx]))`. Rewrite using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(eLpNorm_le_eLpNorm_mul_rpow_measure_univ (p := 1) (q := 2) (by norm_num) (Lp.aestronglyMeasurable (G t)).restrict).trans ?_` and prove the remaining obligations. Rewrite using `[Measure.restrict_apply_univ, Lp.enorm_def]`. Use `gcongr`. Conclude with `Measure.restrict_le_self`. Use `(lintegral_mono_ae hb).trans_lt ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[lintegral_mul_const'' _ hG.1.enorm]`. Conclude with `ENNReal.mul_lt_top hG.2 (ENNReal.rpow_lt_top_of_nonneg (by norm_num) hf.ne)`. Use `ae_eq_of_forall_setIntegral_eq_of_sigmaFinite (fun s _ hf => integrableOn_Lp_of_measure_ne_top _ (by norm_num) hf.ne) (fun s hs hf => (hint s hs hf).integral_prod_right) fun s hs hf => ?_` and prove the remaining obligations. Rewrite using `[← integral_integral_swap (f := fun t x => g (t, x)) (hint s hs hf)]`. Use `ext_inner_left ℂ fun w => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← L2.inner_indicatorConstLp_eq_inner_setIntegral ℂ hs hf.ne, ← integral_inner hG, ← integral_inner (hint s hs hf).integral_prod_left]`. Use `integral_congr_ae ?_` and prove the remaining obligations. Use `filter_upwards [h] with t ht`. Rewrite using `[L2.inner_indicatorConstLp_eq_inner_setIntegral ℂ hs hf.ne]`. Use `congr 1`.
-
-Conclude with `integral_congr_ae (ae_restrict_of_ae ht)`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Z.IntegralApplyAeEq.ae_integral {W : Type} [NormedAddCommGroup W] [InnerProductSpace ℂ W] [CompleteSpace W]
     (μ : Measure ℝ) [SFinite μ] (G : ℝ → L W) (hG : Integrable G μ) (g : ℝ × ℝ → W)

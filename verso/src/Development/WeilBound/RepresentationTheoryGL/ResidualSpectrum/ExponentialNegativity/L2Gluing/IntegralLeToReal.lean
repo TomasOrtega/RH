@@ -14,14 +14,14 @@ open GroundTheory.Global GroundTheory.Automorphic GroundTheory.Automorphic.Reduc
 namespace PositivityTheory.Rg.Rs.l2glue
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Dblock.enorm_mean_sq_mul_le ν s f`.
+A detailed English derivation is pending.
 -/
 theorem cs_mean {α : Type} [MeasurableSpace α] (ν : Measure α) (s : Set α) (f : α → ℂ) :
     ‖((ν.real s : ℝ) : ℂ)⁻¹ * ∫ x in s, f x ∂ν‖ₑ ^ 2 * ν s ≤ ∫⁻ x in s, ‖f x‖ₑ ^ 2 ∂ν :=
   GlobalTheory.CompanionTheory.Dblock.enorm_mean_sq_mul_le ν s f
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.MeasureTails.tendsto_setLIntegral_diff_compactCovering μ F h hF`.
+A detailed English derivation is pending.
 -/
 theorem tail {α : Type} [TopologicalSpace α] [MeasurableSpace α] [BorelSpace α] [T2Space α]
     [SigmaCompactSpace α] (μ : Measure α) (F : Set α) (h : α → ℝ≥0∞) (hF : ∫⁻ x in F, h x ∂μ < ⊤) :
@@ -29,14 +29,14 @@ theorem tail {α : Type} [TopologicalSpace α] [MeasurableSpace α] [BorelSpace 
   GlobalTheory.CompanionTheory.MeasureTails.tendsto_setLIntegral_diff_compactCovering μ F h hF
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Dblock.integral_norm_sq_le_toReal_lintegral_enorm_sq μ f`.
+A detailed English derivation is pending.
 -/
 theorem integral_le_toReal {α : Type} [MeasurableSpace α] (μ : Measure α) (f : α → ℂ) :
     ∫ x, ‖f x‖ ^ 2 ∂μ ≤ (∫⁻ x, ‖f x‖ₑ ^ 2 ∂μ).toReal :=
   GlobalTheory.CompanionTheory.Dblock.integral_norm_sq_le_toReal_lintegral_enorm_sq μ f
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.CompanionTheory.Unfolding.setLIntegral_le_mul_fundamentalDomain_diff Γ μ F S T hF hS hT h hh hinv N hN hST`.
+A detailed English derivation is pending.
 -/
 theorem unfold {G : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] (Γ : Subgroup G)
     [Countable Γ] (μ : Measure G) [μ.IsMulLeftInvariant] (F S T : Set G)
@@ -55,22 +55,20 @@ def sset (K : Type) [Field K] [NumberField K] (n r : ℕ) (t : ℝ) (D : Set (UP
   (fun p : (UPos n r → AdeleRing (𝓞 K) K) × AdelicGLn.AdelicGL K n => unipGL p.1 * An.aR K n r t * p.2) '' (D ×ˢ Q)
 
 /- English proof (translation)
-The claim follows from `(hD.prod hQ).image ((continuous_unipGL.comp continuous_fst).mul continuous_const |>.mul continuous_snd)`.
+A detailed English derivation is pending.
 -/
 theorem isCompact_sset (r : ℕ) (t : ℝ) {D : Set (UPos n r → AdeleRing (𝓞 K) K)}
     {Q : Set (AdelicGLn.AdelicGL K n)} (hD : IsCompact D) (hQ : IsCompact Q) : IsCompact (sset K n r t D Q) :=
   (hD.prod hQ).image ((continuous_unipGL.comp continuous_fst).mul continuous_const |>.mul continuous_snd)
 
 /- English proof (translation)
-Establish `hS : MeasurableSet (sset K n r t D Q)` using `(isCompact_sset r t hD hQ).isClosed.measurableSet`. Distinguish the cases in `hc : (unipMeasure K n r).real (unipFundamentalDomain K n r) = 0`. Establish `h0 : ∀ g, An.ctn r φ g = 0` using `fun g => by simp [An.ctn, hc]`. Simplify using `[h0]`. Establish `hν0 : unipMeasure K n r (unipFundamentalDomain K n r) ≠ 0` using `fun h => hc (by simp [Measure.real, h])`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hνt : unipMeasure K n r (unipFundamentalDomain K n r) ≠ ⊤` using `fun h => hc (by simp [Measure.real, h])`. Establish `hpt : ∀ g, ‖An.ctn r φ g‖ₑ ^ 2 * unipMeasure K n r (unipFundamentalDomain K n r) ≤ ∫⁻ X in unipFundamentalDomain K n r, ‖φ (unipGL X * g)‖ₑ ^ 2 ∂unipMeasure K n r` using `fun g => cs_mean (unipMeasure K n r) (unipFundamentalDomain K n r) (fun X => φ (unipGL X * g))`. Establish `hcont : Measurable fun p : AdelicGLn.AdelicGL K n × (UPos n r → AdeleRing (𝓞 K) K) => ‖φ (unipGL p.2 * (An.aR K n r t * p.1))‖ₑ ^ 2` using `(hφ.comp ((continuous_unipGL.comp continuous_snd).mul (continuous_const.mul continuous_fst))).measurable.enorm.pow_const 2`. Establish `key : (∫⁻ g in Q, ‖An.ctn r φ (An.aR K n r t * g)‖ₑ ^ 2 ∂μ) * unipMeasure K n r (unipFundamentalDomain K n r) ≤ (∫⁻ x in sset K n r t D Q, ‖φ x‖ₑ ^ 2 ∂μ) * unipMeasure K n r (unipFundamentalDomain K n r)`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `setLIntegral_mono' measurableSet_unipFundamentalDomain fun X hX => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← lintegral_indicator hQ.isClosed.measurableSet]`. Use `lintegral_mono fun g => ?_` and prove the remaining obligations. Distinguish the cases in `hg : g ∈ Q`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[Set.indicator_of_mem hg, Set.indicator_of_mem (show unipGL X * An.aR K n r t * g ∈ sset K n r t D Q from ⟨(X, g), ⟨hD0 hX, hg⟩, rfl⟩), mul_assoc]`. Rewrite using `[Set.indicator_of_notMem hg]`. Conclude with `bot_le`. Use `_ = ∫⁻ x, (sset K n r t D Q).indicator (fun x => ‖φ x‖ₑ ^ 2) x ∂μ := lintegral_mul_left_eq_self _ (unipGL X * An.aR K n r t)`. Use `_ = ∫⁻ x in sset K n r t D Q, ‖φ x‖ₑ ^ 2 ∂μ := lintegral_indicator hS _`.
-
-Use `_ = (∫⁻ x in sset K n r t D Q, ‖φ x‖ₑ ^ 2 ∂μ) * unipMeasure K n r (unipFundamentalDomain K n r) := by`. Rewrite using `[setLIntegral_const]`. Conclude with `(ENNReal.mul_le_mul_iff_left hν0 hνt).1 key`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem swap (μ : Measure (AdelicGLn.AdelicGL K n)) [μ.IsHaarMeasure] (φ : AdelicGLn.AdelicGL K n → ℂ)
     (hφ : Continuous φ) (r : ℕ) (t : ℝ) {D : Set (UPos n r → AdeleRing (𝓞 K) K)}
@@ -115,13 +113,13 @@ theorem swap (μ : Measure (AdelicGLn.AdelicGL K n)) [μ.IsHaarMeasure] (φ : Ad
   exact (ENNReal.mul_le_mul_iff_left hν0 hνt).1 key
 
 /- English proof (translation)
-Establish `hQ' : IsCompact ((fun p : AdelicGLn.AdelicGL K n × AdelicGLn.AdelicGL K n => p.1 * p.2⁻¹) '' (Q ×ˢ Q))` using `(hQ.prod hQ).image (continuous_fst.mul continuous_snd.inv)`. Take `⟨C, hC'⟩` from `hC K n r hr hrn D _ hD hQ'`. Use `⟨C, fun t ht x => ?_⟩` and prove the remaining obligations. Break down `Set.eq_empty_or_nonempty {γ : An.lat K n | (γ : AdelicGLn.AdelicGL K n) * x ∈ sset K n r t D Q} with hA | ⟨γ₀, hγ₀⟩` into its components or cases. Rewrite using `[hA, Set.encard_empty]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Conclude with `bot_le`. Use `le_trans ?_ (hC' t ht)` and prove the remaining obligations. Establish `hinj : Set.InjOn (fun γ : An.lat K n => γ * γ₀⁻¹) {γ : An.lat K n | (γ : AdelicGLn.AdelicGL K n) * x ∈ sset K n r t D Q}` using `fun a _ b _ h => mul_right_cancel h`. Rewrite using `[← hinj.encard_image]`. Use `Set.encard_le_encard ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨γ, hγ, rfl⟩`. Take `⟨⟨X, q₁⟩, ⟨hX, hq₁⟩, e1⟩` from `hγ`. Take `⟨⟨Y, q₂⟩, ⟨hY, hq₂⟩, e2⟩` from `hγ₀`. Use `⟨X, hX, Y, hY, q₁ * q₂⁻¹, ⟨(q₁, q₂), ⟨hq₁, hq₂⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Simplify using `only at e1 e2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e3 : ((γ * γ₀⁻¹ : An.lat K n) : AdelicGLn.AdelicGL K n) = ((γ : AdelicGLn.AdelicGL K n) * x) * ((γ₀ : AdelicGLn.AdelicGL K n) * x)⁻¹` using `by push_cast; group`. Rewrite using `[e3, ← e1, ← e2]`. Use `group`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem count_le (hC : An.Count) {r : ℕ} (hr : 0 < r) (hrn : r < n) {D : Set (UPos n r → AdeleRing (𝓞 K) K)}
     {Q : Set (AdelicGLn.AdelicGL K n)} (hD : IsCompact D) (hQ : IsCompact Q) :
@@ -155,25 +153,23 @@ end PositivityTheory.Rg.Rs.l2glue
 namespace PositivityTheory.Rg.Rs
 
 /- English proof (translation)
-Introduce `hCount hEsc K _ _ n r hr hrn μ _ φ F hφ hinv hF hfin Q hQ`. Take `⟨D, hD, hD0⟩` from `exists_isCompact_superset_unipFundamentalDomain (K := K) (n := n) (r := r)`. Take `⟨C, hC⟩` from `l2glue.count_le hCount hr hrn hD hQ`. Establish `hhm : Measurable fun x : AdelicGLn.AdelicGL K n => ‖φ x‖ₑ ^ 2` using `hφ.measurable.enorm.pow_const 2`. Establish `hρ : 0 ≤ An.rho K n r`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `An.rho`. Establish `: (r : ℝ) ≤ n` using `by exact_mod_cast hrn.le`. Conclude with `mul_nonneg (Nat.cast_nonneg _) (div_nonneg (mul_nonneg (Nat.cast_nonneg _) (sub_nonneg.2 this)) two_pos.le)`. Establish `hC₁ : 0 < max C 0 + 1` using `by positivity`. Establish `key : ∀ T : Set (AdelicGLn.AdelicGL K n), IsCompact T → ∀ᶠ t in atTop, Real.exp (-(2 * An.rho K n r * t)) * ∫ g in Q, ‖An.ctn r φ (An.aR K n r t * g)‖ ^ 2 ∂μ ≤ (max C 0 + 1) * (∫⁻ x in F \ T, ‖φ x‖ₑ ^ 2 ∂μ).toReal`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `T hT`. Use `filter_upwards [hEsc K n r hr hrn D Q T hD hQ hT, eventually_ge_atTop 0] with t ht ht0`. Establish `hS` using `l2glue.isCompact_sset r t hD hQ`. Establish `h1` using `l2glue.integral_le_toReal (μ.restrict Q) (fun g => An.ctn r φ (An.aR K n r t * g))`. Establish `h2` using `l2glue.swap μ φ hφ r t hD hD0 hQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3` using `l2glue.unfold (An.lat K n) μ F (l2glue.sset K n r t D Q) T hF hS.isClosed.measurableSet hT.isClosed.measurableSet (fun x => ‖φ x‖ₑ ^ 2) hhm (fun γ hγ x => by show ‖φ (γ * x)‖ₑ ^ 2 = ‖φ x‖ₑ ^ 2; rw [hinv γ hγ x]) _ (hC t ht0) (by`. Introduce `γ hγ x hx hxT`. Take `⟨⟨X, q⟩, ⟨hX, hq⟩, e⟩` from `hx`. Simplify using `only at e`. Conclude with `ht γ⁻¹ (inv_mem hγ) X hX q hq (by rw [e, ← mul_assoc, inv_mul_cancel, one_mul]; exact hxT))`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hfinT : ∫⁻ x in F \ T, ‖φ x‖ₑ ^ 2 ∂μ ≠ ⊤` using `(lt_of_le_of_lt (lintegral_mono_set Set.sdiff_subset) hfin).ne`. Establish `h4 : (∫ g in Q, ‖An.ctn r φ (An.aR K n r t * g)‖ ^ 2 ∂μ) ≤ (⌈C * Real.exp (2 * An.rho K n r * t)⌉₊ : ℝ) * (∫⁻ x in F \ T, ‖φ x‖ₑ ^ 2 ∂μ).toReal`. Combine the equalities or inequalities in the displayed calculation. Establish `hE` using `Real.exp_pos (2 * An.rho K n r * t)`. Establish `hx : 0 ≤ 2 * An.rho K n r * t` using `mul_nonneg (mul_nonneg zero_le_two hρ) ht0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hN : (⌈C * Real.exp (2 * An.rho K n r * t)⌉₊ : ℝ) ≤ max C 0 * Real.exp (2 * An.rho K n r * t) + 1`. Establish `h6 : (⌈C * Real.exp (2 * An.rho K n r * t)⌉₊ : ℝ) ≤ ⌈max C 0 * Real.exp (2 * An.rho K n r * t)⌉₊`. Conclude with `Nat.ceil_mono (mul_le_mul_of_nonneg_right (le_max_left C 0) hE.le)` after adjusting the coercions. Conclude with `h6.trans (Nat.ceil_lt_add_one (by positivity)).le`. Establish `he1 : Real.exp (-(2 * An.rho K n r * t)) ≤ 1` using `Real.exp_le_one_iff.2 (by linarith)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hee : Real.exp (-(2 * An.rho K n r * t)) * Real.exp (2 * An.rho K n r * t) = 1`. Rewrite using `[← Real.exp_add]`. Simplify using the standard rewrite rules. Establish `h5 : Real.exp (-(2 * An.rho K n r * t)) * (⌈C * Real.exp (2 * An.rho K n r * t)⌉₊ : ℝ) ≤ max C 0 + 1`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `htail` using `l2glue.tail μ F (fun x => ‖φ x‖ₑ ^ 2) hfin`. Rewrite using `[tendsto_order]`. Use `⟨fun a ha => Eventually.of_forall fun t => lt_of_lt_of_le ha (mul_nonneg (Real.exp_pos _).le (integral_nonneg fun _ => by positivity)), fun ε hε => ?_⟩` and prove the remaining obligations. Establish `hε' : (0 : ℝ≥0∞) < ENNReal.ofReal (ε / (2 * (max C 0 + 1)))`.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ENNReal.ofReal_pos]`. Check the signs of the components of the expression. Take `⟨k, hk⟩` from `(htail.eventually (gt_mem_nhds hε')).exists`. Use `filter_upwards [key _ (isCompact_compactCovering _ k)] with t ht`. Establish `hk' : (∫⁻ x in F \ compactCovering _ k, ‖φ x‖ₑ ^ 2 ∂μ).toReal < ε / (2 * (max C 0 + 1))`.
-
-Use `ENNReal.toReal_strict_mono ENNReal.ofReal_ne_top hk` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_ofReal (by positivity)]`. Then use the resulting hypothesis. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem l2glue_holds : An.L2DecayOfCountEscape := by
   intro hCount hEsc K _ _ n r hr hrn μ _ φ F hφ hinv hF hfin Q hQ

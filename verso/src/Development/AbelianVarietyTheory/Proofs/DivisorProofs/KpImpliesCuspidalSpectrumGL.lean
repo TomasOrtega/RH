@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.PublishedTheorems.AutomorphicForms₂.Cu
 namespace GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `h` and use `h.cuspidalSpectrumGL`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem cuspidalSpectrumGL_of_KP : GlobalTheory.ThK.KP → GlobalTheory.Published.CuspidalSpectrumGL :=
   fun h => h.cuspidalSpectrumGL

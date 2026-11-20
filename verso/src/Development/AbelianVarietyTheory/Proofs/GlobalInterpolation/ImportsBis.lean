@@ -2,11 +2,11 @@ import Mathlib
 namespace GlobalTheory.LocalRingFurtherFacts
 
 /- English proof (translation)
-Establish `h1 : Ideal.map (MvPowerSeries.C : O →+* MvPowerSeries (Fin a) O) (IsLocalRing.maximalIdeal O) ≤ IsLocalRing.maximalIdeal (MvPowerSeries (Fin a) O)`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`. Rewrite using `[Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Introduce `hu`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `(IsLocalRing.mem_maximalIdeal x).mp hx` to reduce the goal to its premises. Use `hu.map (MvPowerSeries.constantCoeff : MvPowerSeries (Fin a) O →+* O)` as an intermediate fact. Simplify using `using this`. Establish `h2` using `Ideal.mem_map_of_mem (MvPowerSeries.C : O →+* MvPowerSeries (Fin a) O) hc`. Rewrite `h2` using `[Ideal.map_pow]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `Ideal.pow_right_mono h1 k h2`.
+A detailed English derivation is pending.
 -/
 theorem main {O : Type} [CommRing O] [IsLocalRing O] {a k : ℕ} {c : O}
     (hc : c ∈ IsLocalRing.maximalIdeal O ^ k) :

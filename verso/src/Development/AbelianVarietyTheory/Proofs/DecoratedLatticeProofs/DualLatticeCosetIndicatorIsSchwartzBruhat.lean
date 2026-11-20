@@ -9,13 +9,11 @@ open GlobalTheory.FinPl.Comm (fpair)
 namespace GlobalTheory.FinPl.CosetSB
 
 /- English proof (translation)
-Introduce `k _ _ _ _ n _ _ q L _ f`. Use `haveI : T2Space k := GlobalTheory.SplitWeil.t2Space k`. Distinguish the cases in `hex : ∃ F : n → k, Lifts L F f`. Take `⟨F, hF⟩` from `hex`. Establish `e : cosetInd q L f = fun η => dualInd L (η - q.inv • F)`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `η`. Rewrite using `[← GlobalTheory.FinPl.CosetPairing.cosetInd_add q hF (η - q.inv • F), sub_add_cancel]`. Rewrite using `[e]`. Conclude with `GlobalTheory.FinPl.Comm.comp_mem_SB (GlobalTheory.FinPl.Comm.dualInd_mem L) (s := fun η => η + q.inv • F) (by fun_prop) (by fun_prop) fun η => sub_add_cancel η _`. Establish `e : cosetInd q L f = 0` using `by classical`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use function extensionality and compare the values at `η`. Unfold `cosetInd`. Rewrite using `[if_neg fun ⟨F, hF, _⟩ => hex ⟨F, hF⟩]`. Both sides reduce to the same expression. Rewrite using `[e]`.
-
-Conclude with `(SB (n → k)).zero_mem`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cosetInd_mem_SB : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (n : Type) [Fintype n] [DecidableEq n] (q : Unif k) (L : Submodule 𝒪[k] (n → k)) [L.IsLattice k]

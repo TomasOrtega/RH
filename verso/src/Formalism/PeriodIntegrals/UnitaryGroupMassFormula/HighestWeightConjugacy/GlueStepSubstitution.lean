@@ -18,7 +18,7 @@ def subT (τ : L →+* ℂ) : Vars L n → MvPolynomial (Bool × Fin n × Fin n)
   else MvPolynomial.C (if p.2.1 = p.2.2 then 1 else 0)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Take `⟨σ, i, j⟩` from `p`. Unfold `subT evPt`. Apply the tactic sequence `split_ifs <;> simp_all [gPt]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eval_subT (τ : L →+* ℂ) (g : GL (Fin n) ℂ) :
     (fun p => MvPolynomial.eval (gPt g) (subT τ p)) = evPt τ g := by
@@ -30,33 +30,31 @@ theorem eval_subT (τ : L →+* ℂ) (g : GL (Fin n) ℂ) :
 end
 
 /- English proof (translation)
-Introduce `hd hg L _ _ _ n a τ lam mu h1 h2`. Take `⟨ι, hι, hdι, b, P, hP, v, hv0, hv⟩` from `h1`. Take `⟨ι', hι', hdι', b', P', hP', u, hu0, hu⟩` from `h2`. Establish `ratM : ∀ (γ₀ : GL (Fin n) L) (hγ : γ₀ ∈ GQ0 L n), evM P (ratPt (γ₀ : Matrix (Fin n) (Fin n) L)) = LinearMap.toMatrix b b (a.ρ (toGQ γ₀ hγ))` using `fun γ₀ hγ => by rw [hP _ γ₀ (toGQ_val γ₀ hγ)]; rfl`. Establish `ratM' : ∀ (γ₀ : GL (Fin n) L) (hγ : γ₀ ∈ GQ0 L n), evM P' (ratPt (γ₀ : Matrix (Fin n) (Fin n) L)) = LinearMap.toMatrix b' b' (a.ρ (toGQ γ₀ hγ))` using `fun γ₀ hγ => by rw [hP' _ γ₀ (toGQ_val γ₀ hγ)]; rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `multP : ∀ y z, InV y → InV z → evM P (vmul y z) = evM P y * evM P z` using `mult_of_dens hd P (fun γ₀ hγ δ₀ hδ => by`. Rewrite using `[ratM _ (Subgroup.mul_mem _ hγ hδ), ratM γ₀ hγ, ratM δ₀ hδ, toGQ_mul, map_mul, LinearMap.toMatrix_mul])`. Establish `changeP : ∀ y, InV y → evM P y = b.toMatrix b' * evM P' y * b'.toMatrix b` using `change_of_dens hd P P' _ _ (fun γ₀ hγ => by`. Rewrite using `[ratM γ₀ hγ, ratM' γ₀ hγ]`. Conclude with `(basis_toMatrix_mul_linearMap_toMatrix_mul_basis_toMatrix b b' b b' _).symm)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `R : GL (Fin n) ℂ → Matrix ι ι ℂ` to `fun g => evM P (evPt τ g)`. Set `Q : ι → ι → MvPolynomial (Bool × Fin n × Fin n) ℂ` to `fun i j => MvPolynomial.aeval (subT τ) (P i j)`. Establish `hRQ : ∀ g i j, R g i j = MvPolynomial.eval (gPt g) (Q i j)`. Introduce `g i j`. Simplify using `only [R, Q, evM, Matrix.of_apply, eval_aeval_eq, eval_subT]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hRmul : ∀ g h, R (g * h) = R g * R h`. Introduce `g h`. Simplify using `only [R]`. Rewrite using `[evPt_mul]`. Conclude with `multP _ _ (inV_evPt τ g) (inV_evPt τ h)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `S : Set (Matrix ι ι ℂ)` to `{s | ∃ y, InV y ∧ (∀ i j, y (τ, i, j) = (if i = j then 1 else 0) ∧ y (ComplexEmbedding.conjugate τ, i, j) = (if i = j then 1 else 0)) ∧ s = evM P y}`. Establish `hS : ∀ s ∈ S, ∀ g, s * R g = R g * s`. Introduce and unpack `s ⟨y, hy, hy1, rfl⟩ g`. Simplify using `only [R]`. Rewrite using `[← multP _ _ hy (inV_evPt τ g), ← multP _ _ (inV_evPt τ g) hy, vmul_comm_evPt τ y hy1 g]`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hspan : ∀ x : a.W, x ≠ 0 → Submodule.span ℂ {w | ∃ s ∈ S, ∃ g, w = Matrix.mulVec s (Matrix.mulVec (R g) (b.equivFun x))} = ⊤`. Introduce `x hx`. Rewrite using `[eq_top_iff, ← span_orbit a b x hx]`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨γ, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨γ₀, hγ, rfl⟩` from `toGQ_surj γ`. Use `⟨evM P (trivAt τ (ratPt (γ₀ : Matrix (Fin n) (Fin n) L))), ⟨_, inV_trivAt τ _ (inV_ratPt γ₀ hγ), fun i j => ⟨trivAt_tau τ _ i j, trivAt_conj τ _ i j⟩, rfl⟩, Matrix.GeneralLinearGroup.map τ γ₀, ?_⟩` and prove the remaining obligations. Rewrite using `[Matrix.mulVec_mulVec, ← ratM γ₀ hγ]`. Simplify using `only [R]`. Rewrite using `[← multP _ _ (inV_trivAt τ _ (inV_ratPt γ₀ hγ)) (inV_evPt τ _), ← ratPt_split τ γ₀ hγ]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `x' : a.W` to `b'.equivFun.symm u`. Establish `hx' : x' ≠ 0`. Introduce `h`. Apply `hu0` to reduce the goal to its premises. Rewrite using `[← b'.equivFun.apply_symm_apply u]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `b'.equivFun x' = 0`. Rewrite using `[h, map_zero]`. Establish `hxu : b.equivFun x' = Matrix.mulVec (b.toMatrix b') u`. Establish `h3` using `LinearMap.toMatrix_mulVec_repr b' b LinearMap.id x'`. Rewrite `h3` using `[LinearMap.toMatrix_id_eq_basis_toMatrix, LinearMap.id_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Module.Basis.equivFun_apply, ← h3]`. Use `congr 1`. Conclude with `b'.equivFun.apply_symm_apply u`. Establish `hv' : b.equivFun (b.equivFun.symm v) = v` using `b.equivFun.apply_symm_apply v`. Establish `hvx : b.equivFun.symm v ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Apply `hv0` to reduce the goal to its premises. Rewrite using `[← hv', h, map_zero]`. Establish `hũ0 : Matrix.mulVec (b.toMatrix b') u ≠ 0`. Rewrite using `[← hxu]; intro h; exact hx' (b.equivFun.injective (by rw [h, map_zero]))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `huB : ∀ B : GL (Fin n) ℂ, B.val.BlockTriangular id → Matrix.mulVec (R B) (Matrix.mulVec (b.toMatrix b') u) = (∏ i, B.val i i ^ mu i) • Matrix.mulVec (b.toMatrix b') u`. Introduce `B hB`. Establish `hc` using `changeP _ (inV_evPt τ B)`. Simplify using `only [R]`. Rewrite using `[hc, Matrix.mulVec_mulVec, Matrix.mul_assoc, Module.Basis.toMatrix_mul_toMatrix_flip, Matrix.mul_one, ← Matrix.mulVec_mulVec]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hu'` using `hu B hB`. Express the relevant statement in the definitionally equal form `Matrix.mulVec (evM P' (evPt τ B)) u = _ at hu'`. Rewrite using `[hu', Matrix.mulVec_smul]`. Establish `spv` using `hspan _ hvx`. Rewrite `spv` using `[hv']`.
-
-Establish `spu` using `hspan _ hx'`. Rewrite `spu` using `[hxu]`. Conclude with `hg n ι R Q hRQ hRmul S hS v _ lam mu (fun B hB => hv B hB) huB spv spu hv0 hũ0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem glue_holds_var : GlueStep := by
   intro hd hg L _ _ _ n a τ lam mu h1 h2

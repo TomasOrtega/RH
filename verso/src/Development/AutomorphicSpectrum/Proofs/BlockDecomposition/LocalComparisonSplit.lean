@@ -19,9 +19,9 @@ open PositivityTheory.Rg.BcB.G8 PositivityTheory.Rg.BcB.G8.Fin GlobalTheory.Comp
 namespace GlobalTheory.CompanionTheory.LcSplit
 
 /- English proof (translation)
-Establish `hAo : IsOpen ((A₁ ⊓ A₂ : Subgroup H) : Set H)`. Rewrite using `[Subgroup.coe_inf]`. Conclude with `ho₁.inter ho₂`. Use `⟨(A₁ ⊓ A₂) ⊓ (A₁ ⊓ A₂).comap σ, ?_, fun x hx => hK hx.1.1, fun k hk => ⟨hk.2, ?_⟩, ⟨h₁.1, fun k hk => h₁.2 k hk.1.1⟩, ⟨h₂.1, fun k hk => h₂.2 k hk.1.2⟩⟩` and prove the remaining obligations. Rewrite using `[Subgroup.coe_inf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hAo.inter (hAo.preimage hc)`. Use `show σ (σ k) ∈ A₁ ⊓ A₂`. Rewrite using `[hi]`. Conclude with `hk.1`.
+A detailed English derivation is pending.
 -/
 theorem level_pick {H : Type} [Group H] [TopologicalSpace H] (σ : H →* H) (hc : Continuous σ) (hi : ∀ g, σ (σ g) = g)
     (K A₁ A₂ : Subgroup H) (f₁ f₂ : H → ℂ) (ho₁ : IsOpen (A₁ : Set H)) (ho₂ : IsOpen (A₂ : Set H)) (hK : A₁ ≤ K)
@@ -39,9 +39,9 @@ theorem level_pick {H : Type} [Group H] [TopologicalSpace H] (σ : H →* H) (hc
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-Take `⟨hc, hi, hk⟩` from `sgP_facts E a b w`. Take `⟨K₁, K₂, hl₁, hl₂, ht⟩` from `hφ₁`. Take `⟨K₁', K₂', hl₁', hl₂', ht'⟩` from `hφ₂`. Use `level_pick (sgP a b w) hc hi (K2 a b w) ((K₁ w).prod (K₂ w)) ((K₁' w).prod (K₂' w)) _ _ ?_ ?_ ?_ (ht.1 w) (ht'.1 w)` and prove the remaining obligations. Rewrite using `[Subgroup.coe_prod]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hl₁.1 w).1.prod (hl₂.1 w).1`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `(hl₁'.1 w).1.prod (hl₂'.1 w).1`. Conclude with `Subgroup.prod_mono (hl₁.1 w).2.1 (hl₂.1 w).2.1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_level (φ₁ φ₂ : ∀ w : Pl E, GLw a w × GLw b w → ℂ) (hφ₁ : IsTestP φ₁) (hφ₂ : IsTestP φ₂) (w : Pl E) :
     ∃ L : Subgroup (GLw a w × GLw b w), IsOpen (L : Set (GLw a w × GLw b w)) ∧ L ≤ K2 a b w ∧ (∀ k ∈ L, sgP a b w k ∈ L) ∧
@@ -55,9 +55,9 @@ theorem exists_level (φ₁ φ₂ : ∀ w : Pl E, GLw a w × GLw b w → ℂ) (h
   · exact Subgroup.prod_mono (hl₁.1 w).2.1 (hl₂.1 w).2.1
 
 /- English proof (translation)
-Unfold `fv`. Establish `key : ∀ u : Above (w.under (𝓞 (maximalRealSubfield E))), u.1 ∈ S → u = ⟨w, rfl⟩`. Introduce `u hu`. Conclude with `Subtype.ext ((hS w).unique ⟨hu, u.2⟩ ⟨hw, rfl⟩)`. Rewrite using `[finprod_eq_single _ (⟨w, rfl⟩ : Above (w.under (𝓞 (maximalRealSubfield E))))]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[finprod_eq_if, if_pos hw, if_pos hs]`. Introduce `u hu`. Rewrite using `[finprod_eq_if, if_neg (fun h => hu (key u h))]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fv_split (S : Set (Pl E)) (hS : IsSection S) (w : Pl E) (hw : w ∈ S) (hs : IsSplitAt w)
     (φ₁ φ₂ : ∀ w : Pl E, GLw a w × GLw b w → ℂ) (y : Yv a b (w.under (𝓞 (maximalRealSubfield E)))) :
@@ -72,7 +72,7 @@ theorem fv_split (S : Set (Pl E)) (hS : IsSection S) (w : Pl E) (hw : w ∈ S) (
     rw [finprod_eq_if, if_neg (fun h => hu (key u h))]
 
 /- English proof (translation)
-Unfold `thL`. Rewrite using `[if_pos hs, if_pos hs]`. Apply the tactic sequence `ext x <;> rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem th_split (a b : ℕ) (w : Pl E) (hs : IsSplitAt w) :
     (thL a w).prodMap (thL b w) = MonoidHom.id (GLw a w × GLw b w) := by
@@ -81,7 +81,7 @@ theorem th_split (a b : ℕ) (w : Pl E) (hs : IsSplitAt w) :
   ext x <;> rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Unfold `seen`. Rewrite using `[if_pos hs]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem seen_split (φ₁ φ₂ : ∀ w : Pl E, GLw a w × GLw b w → ℂ) (w : Pl E) (hs : IsSplitAt w) :
     seen φ₁ φ₂ w = fun y => hint (K2 a b w) fun z => φ₁ w z * φ₂ w (z⁻¹ * y) := by
@@ -90,9 +90,7 @@ theorem seen_split (φ₁ φ₂ : ∀ w : Pl E, GLw a w × GLw b w → ℂ) (w :
   rw [if_pos hs]
 
 /- English proof (translation)
-Establish `: (nrmL n w (locEl n w δ)).val.charpoly = (polE δ).map (algebraMap E (w.adicCompletion E))`. Unfold `nrmL locEl polE`. Rewrite using `[if_pos hs, if_pos hs]`. Conclude with `Matrix.charpoly_map _ _`. Rewrite using `[this]`.
-
-Conclude with `h.2.2.1.map`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locEl_sep {n : ℕ} (w : Pl E) (hs : IsSplitAt w) (δ : GL (Fin n) E) (h : polE δ ∈ Ell E n) :
     (nrmL n w (locEl n w δ)).val.charpoly.Separable := by
@@ -104,7 +102,7 @@ theorem locEl_sep {n : ℕ} (w : Pl E) (hs : IsSplitAt w) (δ : GL (Fin n) E) (h
   exact h.2.2.1.map
 
 /- English proof (translation)
-Establish `h1` using `GlobalTheory.CompanionTheory.LocGoodProof.locGood E hU a b w (locEl a w δ₁, locEl b w δ₂) (locEl_sep w hs δ₁ hδ₁) (locEl_sep w hs δ₂ hδ₂)`. Establish `h2` using `(GlobalTheory.CompanionTheory.TwistOrbit.locSupp E hU a b w (locEl a w δ₁, locEl b w δ₂) (locEl_sep w hs δ₁ hδ₁) (locEl_sep w hs δ₂ hδ₂)).1`. Rewrite `h1`, `h2` using `[th_split a b w hs]`. Conclude with `⟨h1, h2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem target_side (hU : GlobalTheory.BCT.Unr E) (w : Pl E) (hs : IsSplitAt w)
     (δ₁ : GL (Fin a) E) (δ₂ : GL (Fin b) E) (hδ₁ : polE δ₁ ∈ Ell E a) (hδ₂ : polE δ₂ ∈ Ell E b) :
@@ -118,7 +116,7 @@ theorem target_side (hU : GlobalTheory.BCT.Unr E) (w : Pl E) (hs : IsSplitAt w)
   exact ⟨h1, h2⟩
 
 /- English proof (translation)
-Take `⟨hKo₁, hKc₁⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w a`. Take `⟨hKo₂, hKc₂⟩` from `GlobalTheory.LFun.SatCompare.isOpen_isCompact_KGL w b`. Rewrite using `[Subgroup.coe_prod]`. Conclude with `⟨hKo₁.prod hKo₂, hKc₁.prod hKc₂⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem pair_integral_points_open_compact (a b : ℕ) (w : Pl E) :
     IsOpen ((K2 a b w : Subgroup _) : Set (GLw a w × GLw b w)) ∧ IsCompact ((K2 a b w : Subgroup _) : Set (GLw a w × GLw b w)) := by
@@ -128,13 +126,13 @@ theorem pair_integral_points_open_compact (a b : ℕ) (w : Pl E) :
   exact ⟨hKo₁.prod hKo₂, hKc₁.prod hKc₂⟩
 
 /- English proof (translation)
-Introduce `hCj E _ _ _ hU a b S hS φ₁ φ₂ hφ₁ hφ₂ δ₁ δ₂ hδ₁ hδ₂ w hw hs`. Take `⟨e, he1, he3, he4, heδ⟩` from `GlobalTheory.CompanionTheory.SplitIso.split_iso hCj E a b _ ⟨w, rfl⟩ hs`. Take `⟨hc, hi, hk⟩` from `sgP_facts E a b w`. Take `⟨L, hLo, hLK, hLs, hH₁, hH₂⟩` from `exists_level φ₁ φ₂ hφ₁ hφ₂ w`. Take `⟨hKo, hKc⟩` from `pair_integral_points_open_compact (E := E) a b w`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hG, hF⟩` from `target_side hU w hs δ₁ δ₂ hδ₁ hδ₂`. Use `set y := pv a b (w.under (𝓞 (maximalRealSubfield E))) (ratF E a δ₁, ratF E b δ₂) with hy`. Establish `hN : (e y).1 * sgP a b w (e y).2 = (locEl a w δ₁, locEl b w δ₂)`. Rewrite using `[hy, heδ]`. Conclude with `Prod.ext (GlobalTheory.CompanionTheory.NormSplit.ratW_mul_thetaGL E a w δ₁ hs) (GlobalTheory.CompanionTheory.NormSplit.ratW_mul_thetaGL E b w δ₂ hs)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `GlobalTheory.EulerTw.Transport.twOrb_transport _ _ e (thv a b _) (swTw (sgP a b w)) (Kv a b _) ((K2 a b w).prod (K2 a b w)) y (fv S φ₁ φ₂ _) (fun z => φ₁ w z.1 * φ₂ w (sgP a b w z.2)) he3 he4 (fun g => by`. Establish `h2 : evw ⟨w, rfl⟩ (thv a b _ g) = sgP a b w (e g).2`. Rewrite using `[← he1, he3]`. Both sides reduce to the same expression. Use `show φ₁ w (e g).1 * φ₂ w (sgP a b w (e g).2) = _`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[he1, ← h2, fv_split S hS w hw hs])`. Rewrite using `[ht, seen_split φ₁ φ₂ w hs, th_split a b w hs]`. Establish `hsc` using `GlobalTheory.T.twisted_orbital_pair_convolution _ (sgP a b w) (K2 a b w) hc hi hk hKo hKc (e y).1 (e y).2 (φ₁ w) (φ₂ w) L hLo hLK hLs hH₁ hH₂ (by rw [hN]; exact hG) (by rw [hN]; exact hF)`. Rewrite `hsc` using `[hN]`. Conclude with `hsc`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locCompareSplit : LocCompareSplit := by
   intro hCj E _ _ _ hU a b S hS φ₁ φ₂ hφ₁ hφ₂ δ₁ δ₂ hδ₁ hδ₂ w hw hs

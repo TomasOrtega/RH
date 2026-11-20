@@ -13,7 +13,7 @@ namespace EigenvectorOrthogonality
 variable {k r : ℕ}
 
 /- English proof (translation)
-Unfold `herm`. Rewrite using `[Matrix.star_mulVec, ← Matrix.dotProduct_mulVec]`. Simplify using `only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hg]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem herm_mulVec_of_conjTranspose_mul_H_mul_eq {n : ℕ} {H g : Matrix (Fin n) (Fin n) ℂ} (hg : gᴴ * H * g = H)
     (v w : Fin n → ℂ) : herm H (g *ᵥ v) (g *ᵥ w) = herm H v w := by
@@ -22,11 +22,9 @@ private theorem herm_mulVec_of_conjTranspose_mul_H_mul_eq {n : ℕ} {H g : Matri
   simp only [Matrix.mulVec_mulVec, ← Matrix.mul_assoc, hg]
 
 /- English proof (translation)
-Establish `hG : h ∈ Glev k r (Fin.last r)` using `⟨hh.1, fun a _ => hh.2.1 a⟩`. Establish `hU : hᴴ * Hpk k r * h = Hpk k r` using `hh.1`. Use `⟨fun a => (Formalism.FourierDecayAlt.Q.LieAlgebraWeightVectors.glev_inWb hG (hF.1 a)).1, fun a b => ?_, fun a v hv => ?_⟩` and prove the remaining obligations. Rewrite using `[herm_mulVec_of_conjTranspose_mul_H_mul_eq hU]`. Conclude with `hF.2.1 a b`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv' : h *ᵥ v = v`. Break down `List.mem_cons.1 hv with rfl | hv2` into its components or cases. Conclude with `hh.2.2`. Break down `List.mem_cons.1 hv2 with rfl | hv3` into its components or cases. Conclude with `he`.
-
-Simplify using `at hv3`. Combine the equalities or inequalities in the displayed calculation.
+Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem frame_move {z e : Fin (2 * r + k + 1) → ℂ} {h : Mx k r} (hh : h ∈ UWset k r z) (he : h *ᵥ e = e) {m : ℕ}
     {F : Fin m → Fin (2 * r + k + 1) → ℂ} (hF : IsFrameOf k r [z, e] F) :
@@ -46,18 +44,18 @@ theorem frame_move {z e : Fin (2 * r + k + 1) → ℂ} {h : Mx k r} (hh : h ∈ 
       _ = 0 := by rw [herm_mulVec_of_conjTranspose_mul_H_mul_eq hU]; exact hF.2.2 a v hv
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hF.1, hF.2.1, fun a v hv => hF.2.2 a v (by simp only [List.mem_cons] at hv ⊢; tauto)⟩`.
+Supply the required witnesses or components.
 -/
 theorem frame_swap {z e : Fin (2 * r + k + 1) → ℂ} {m : ℕ} {F : Fin m → Fin (2 * r + k + 1) → ℂ}
     (hF : IsFrameOf k r [z, e] F) : IsFrameOf k r [e, z] F :=
   ⟨hF.1, hF.2.1, fun a v hv => hF.2.2 a v (by simp only [List.mem_cons] at hv ⊢; tauto)⟩
 
 /- English proof (translation)
-Establish `hU : hᴴ * Hpk k r * h = Hpk k r` using `hh.1`. Establish `hH : (Hpk k r).det ≠ 0`. Establish `h1` using `congrArg Matrix.det (Formalism.QuantumDeterminants.hpkFacts k r).2.1`. Rewrite `h1` using `[Matrix.det_mul, Matrix.det_one]`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `h1` using `[h0, zero_mul]`. Conclude with `zero_ne_one h1`. Establish `h2` using `congrArg Matrix.det hU`. Rewrite `h2` using `[Matrix.det_mul, Matrix.det_mul]`. Use `isUnit_iff_ne_zero.2 fun h0 => hH ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h0, mul_zero]`. Conclude with `h2.symm`.
+A detailed English derivation is pending.
 -/
 private theorem isUnit_det_of_mem_UWset {h : Mx k r} {z : Fin (2 * r + k + 1) → ℂ} (hh : h ∈ UWset k r z) :
     IsUnit h.det := by
@@ -75,14 +73,14 @@ private theorem isUnit_det_of_mem_UWset {h : Mx k r} {z : Fin (2 * r + k + 1) �
   exact h2.symm
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_det_of_mem_UWset hh), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem mulVec_inv_cancel {h : Mx k r} {z : Fin (2 * r + k + 1) → ℂ} (hh : h ∈ UWset k r z) (v : Fin (2 * r + k + 1) → ℂ) :
     h *ᵥ (h⁻¹ *ᵥ v) = v := by
   rw [Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ (isUnit_det_of_mem_UWset hh), Matrix.one_mulVec]
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem inv_fix {h : Mx k r} {z e : Fin (2 * r + k + 1) → ℂ} (hh : h ∈ UWset k r z) (he : h *ᵥ e = e) :
     h⁻¹ *ᵥ e = e := by
@@ -93,31 +91,29 @@ end EigenvectorOrthogonality
 
 open EigenvectorOrthogonality in
 /- English proof (translation)
-Introduce `Wp _ _ _ k r z e π hz hT hrep hunit hex f g x y hx hy hfg`. Take `⟨Fr₀, hFr₀⟩` from `hex`. Take `⟨w₀, hw₀⟩` from `hfg`. Establish `hlin : ∀ Fr : Fin (k - 1) → Fin (2 * r + k + 1) → ℂ, IsFrameOf k r [z, e] Fr → ∀ w, P.Qx8.IsLin (capRep k r π Fr w)` using `fun Fr hFr w => P.Qx8.capRep_lin hFr (by simp) hrep.1 hrep.2 w`. Use `set S := K k r z e π g with hS`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : ∀ v ∈ S, v ∈ Kset k r z e π g`. Introduce `v hv`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem u hu => exact hu`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Fr hFr w`. Rewrite using `[(hlin Fr hFr w).map_zero, smul_zero]`. Consider the case `add a b _ _ ha hb`. Introduce `Fr hFr w`. Rewrite using `[(hlin Fr hFr w).map_add, ha Fr hFr w, hb Fr hFr w, smul_add]`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul c a _ ha`. Introduce `Fr hFr w`. Rewrite using `[(hlin Fr hFr w).map_smul, ha Fr hFr w, smul_comm]`. Establish `hmul : ∀ a ∈ UWset k r z, ∀ b ∈ UWset k r z, ∀ v, π (a * b) v = π a (π b v)`. Introduce `a ha b hb v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hrep.1.2 a ha b hb]`. Both sides reduce to the same expression. Establish `hinv : ∀ h ∈ UWset k r z, ∀ v, π h (π h⁻¹ v) = v`. Introduce `h hh v`. Rewrite using `[← hmul h hh _ (WeylGroupFacts.uw_inv hh), Matrix.mul_nonsing_inv _ (WeylGroupFacts.isUnit_of_uh hh.1), hrep.1.1]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Establish `hstab : ∀ h ∈ UWset k r z, h *ᵥ e = e → ∀ v ∈ Kset k r z e π g, π h v ∈ Kset k r z e π g`. Introduce `h hh he v hv Fr hFr w`. Establish `hFr' : IsFrameOf k r [z, e] (fun p => h⁻¹ *ᵥ Fr p)` using `frame_move (WeylGroupFacts.uw_inv hh) (inv_fix hh he) hFr`. Establish `key` using `P.Qx8.capRep_intertwine (frame_swap hFr') hrep.1 hrep.2 hh.1 (π h) (fun h' hh' _ v => by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[← hmul h hh h' hh', ← hmul _ (WeylGroupFacts.uw_mul (WeylGroupFacts.uw_mul hh hh') (WeylGroupFacts.uw_inv hh)) h hh, Matrix.mul_assoc (h * h'), Matrix.nonsing_inv_mul _ (WeylGroupFacts.isUnit_of_uh hh.1), Matrix.mul_one]) w v`. Simplify using `only [mulVec_inv_cancel hh] at key`. Rewrite using `[← key, hv _ hFr' w, map_smul]`. Establish `hstabS : ∀ h ∈ UWset k r z, h *ᵥ e = e → ∀ v ∈ S, π h v ∈ S` using `fun h hh he v hv => Submodule.subset_span (hstab h hh he v (hmem v hv))`. Establish `hstabO : ∀ h ∈ UWset k r z, h *ᵥ e = e → ∀ u ∈ Sᗮ, π h u ∈ Sᗮ`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h hh he u hu s hs`. Set `L : Wp →ₗᵢ[ℂ] Wp` to `⟨(π h : Wp →ₗ[ℂ] Wp), hunit h hh⟩`. Establish `hs' : π h⁻¹ s ∈ S` using `hstabS _ (WeylGroupFacts.uw_inv hh) (inv_fix hh he) s hs`. Establish `e2 : inner ℂ (π h (π h⁻¹ s)) (π h u) = inner ℂ (π h⁻¹ s) u` using `L.inner_map_map _ _`. Rewrite `e2` using `[hinv h hh s]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2]`. Conclude with `Submodule.inner_right_of_mem_orthogonal hs' hu`. Establish `hcomm : ∀ h ∈ UWset k r z, h *ᵥ e = e → ∀ v, S.starProjection (π h v) = π h (S.starProjection v)`. Introduce `h hh he v`. Use `Submodule.eq_starProjection_of_mem_of_inner_eq_zero (hstabS h hh he _ (S.starProjection_apply_mem v)) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s hs`. Establish `: π h v - π h (S.starProjection v) = π h (v - S.starProjection v)` using `by rw [map_sub]`. Rewrite using `[this]`. Conclude with `Submodule.inner_left_of_mem_orthogonal hs (hstabO h hh he _ (Submodule.sub_starProjection_mem_orthogonal v))`. Establish `hcap : ∀ v, S.starProjection (capRep k r π Fr₀ w₀ v) = capRep k r π Fr₀ w₀ (S.starProjection v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v`. Establish `key` using `P.Qx8.capRep_intertwine (frame_swap hFr₀) hrep.1 hrep.2 WeylGroupFacts.uh_one (S.starProjection : Wp →L[ℂ] Wp) (fun h' hh' he' v => by`. Rewrite using `[inv_one, Matrix.one_mul, Matrix.mul_one]`. Conclude with `hcomm h' hh' he' v) w₀ v`. Simplify `key` using `only [Matrix.one_mulVec]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hAx : S.starProjection x = 0`. Establish `h1` using `hmem _ (S.starProjection_apply_mem x) Fr₀ hFr₀ w₀`. Rewrite `h1` using `[← hcap, hx Fr₀ hFr₀ w₀, map_smul]`. Establish `h2 : (f w₀ - g w₀) • S.starProjection x = 0` using `by rw [sub_smul, h1, sub_self]`. Conclude with `(smul_eq_zero.1 h2).resolve_left (sub_ne_zero.2 hw₀)`.
-
-Establish `hyS : y ∈ S` using `Submodule.subset_span hy`. Rewrite using `[← (Submodule.starProjection_eq_self_iff).2 hyS, ← Submodule.inner_starProjection_left_eq_right, hAx, inner_zero_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eigenvector_orthogonality_holds : EigOrth := by
   intro Wp _ _ _ k r z e π hz hT hrep hunit hex f g x y hx hy hfg

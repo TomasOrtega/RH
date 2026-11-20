@@ -26,9 +26,9 @@ namespace GlobalTheory.StabAtPlace
 variable {D : D7} {θ : InfFam D} {T T₀ : HSp D} {r : ℕ}
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Use extensionality with `i j`. Use `sub_eq_zero.1 (hσ.ext _ ?_ fun τ => ?_)` and prove the remaining obligations. Rewrite using `[RingHom.map_sub]`. Conclude with `sub_eq_zero.2 (congrFun (congrFun hf i) j)`.
+Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.map_sub, RingHom.map_sub]`. Conclude with `sub_eq_zero.2 (congrFun (congrFun (hi τ) i) j)`.
+A detailed English derivation is pending.
 -/
 theorem mx_ext (hθ : IsInfFam θ) {m n : ℕ} {A B : Mx D m n} (hf : A.map (finPart D) = B.map (finPart D))
     (hi : ∀ τ, compAt θ τ A = compAt θ τ B) : A = B := by
@@ -41,18 +41,18 @@ theorem mx_ext (hθ : IsInfFam θ) {m n : ℕ} {A B : Mx D m n} (hf : A.map (fin
     exact sub_eq_zero.2 (congrFun (congrFun (hi τ) i) j)
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul (f := (θ τ).comp (infPart D))`.
+A detailed English derivation is pending.
 -/
 theorem comp_mul (τ : D.what₂.Tau) {m n k : ℕ} (A : Mx D m n) (B : Mx D n k) :
     compAt θ τ (A ⬝ B) = compAt θ τ A * compAt θ τ B :=
   Matrix.map_mul (f := (θ τ).comp (infPart D))
 
 /- English proof (translation)
-Establish `hcm` using `(GlobalTheory.Mem.Vol.cmData_isCMExt_and_gram_isHermND _ _ D.sp.cm).1`. Use `haveI := hcm.1`. Establish `e1 : (∏ᶠ v, absEv D.host.F D.host.E v (unitFin D.host.F D.host.E v x)) = 1` using `finprod_eq_one_of_forall_eq_one fun v => by rw [GlobalTheory.HalfModTorus.unitFin_eq_one v _ hf, map_one]`. Establish `hw : ∀ τ : D.what₂.Tau, absEw D.host.F D.host.E (InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E))) (unitInf D.host.F D.host.E _ x) = ‖θ τ (infPart D (x : AE D))‖₊ ^ 2`. Introduce `τ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `t' : GlobalTheory.AdelicU.EmbOver D.host.E (InfinitePlace.mk ((tauE D τ).comp (algebraMap D.host.F D.host.E)))` to `⟨tauE D τ, (InfinitePlace.embedding_mk_eq_of_isReal (InfinitePlace.isReal_mk_iff.1 (IsTotallyReal.isReal _))).symm⟩`. Rewrite using `[absEw_eq_sq hcm t', GlobalTheory.AutFunCompare.isInfEmb_unique _ _ _ (hθ τ) (GlobalTheory.AdelicU.isInfEmb_infProj t')]`. Conclude with `congrArg (fun z : ℂ => ‖z‖₊ ^ 2) (GlobalTheory.HalfModTorus.compInf_eq _ t' _)`. Establish `e2 : (∏ w, absEw D.host.F D.host.E w (unitInf D.host.F D.host.E w x)) = ‖θ τ (infPart D (x : AE D))‖₊ ^ 2`. Rewrite using `[← (GlobalTheory.CMTypePlaces.places_bijective D).prod_comp (fun w => absEw D.host.F D.host.E w (unitInf D.host.F D.host.E w x))]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hw]`. Use `Finset.prod_eq_single τ (fun τ' _ c => ?_) fun c => absurd (Finset.mem_univ _) c` and prove the remaining obligations. Rewrite using `[hi τ' c, nnnorm_one, one_pow]`. Rewrite using `[absE_apply, e1, e2, mul_one]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absE_single (hθ : IsInfFam θ) (x : (AE D)ˣ) (τ : D.what₂.Tau) (hf : finPart D (x : AE D) = 1)
     (hi : ∀ τ', τ' ≠ τ → θ τ' (infPart D (x : AE D)) = 1) :

@@ -23,11 +23,11 @@ namespace GlobalTheory.RowSphSmall
 open GlobalTheory.CuspRep.ParLaws GlobalTheory.LocLanglands
 
 /- English proof (translation)
-Establish `H` using `isRec_locRec hL h`. Establish `hunr : (locRec hL h (cls σ)).unr` using `(unr_iff H σ).2 hs`. Use `⟨hunr, ?_⟩` and prove the remaining obligations. Take `⟨α, hα⟩` from `exists_hasSatake_of_unr H hunr`. Rewrite using `[rec_eq_diag H hα, GlobalTheory.WeilDeligne.WD.frobEig_diag]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `GlobalTheory.SatHecke.isUnitarySatakeAt_of_hasSatake E w n (GlobalTheory.SplitRead.Irr.ofIrrRep σ) α hα hu`. Establish `h2 : GlobalTheory.RowSatakeBound.IsUnitarySatakeAt w n ((Finset.univ.val.map fun i => (α i : ℂ)).map (·⁻¹))`. Use `GlobalTheory.RowSatakeBound.finite_residue w` as an intermediate fact. Conclude with `GlobalTheory.SatakeInv.isUnitarySatake_map_inv _ _ _ _ h1`. Introduce `b hb`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `h2.norm_le` to reduce the goal to its premises. Simplify `hb` using `[Multiset.map_map, Function.comp_def]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem locRec_unr_frobEig_le (hL : GlobalTheory.Published.LocalLanglandsGL) {E Ω : Type} [Field E] [NumberField E] [Field Ω]
     [Algebra E Ω] [IsAlgClosure E Ω] {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} (h : Formalism.ConjugateSelfDual.IsPlaceOver A w)
@@ -60,15 +60,15 @@ namespace GlobalTheory.RowSphSmall
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Take `⟨b, hb⟩` from `principalLevelFrame.rowRepR_occ R.θ (Y.eFT σ)`. Use `set π := principalLevelFrame.rowRepR R.θ (Y.eFT σ) with hπ`. Establish `hne : isotIn (D` using `D) (actM Y.PY (R.MY 0)) (Minf R.θ Y.PY (R.MY 0)) (FinTyp.conjT π) ≠ ⊥ := by`. Introduce `h`. Apply `hb` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Unfold `isotE isotL`. Rewrite using `[h, inf_bot_eq]`. Establish `hM` using `hP.char.base.models`. Establish `hθ : IsInfFam R.θ` using `hM.inf`. Establish `hSig : (Yc D 0).SigOK` using `D.sp.Y_sig 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcc` using `GlobalTheory.T.unitary_congruence_conj_contains_congruence D.host.E D.R.r`. Establish `hfd : ∀ j, j < D.R.m → (R.νY A3.A.μ0 j).IsHaarMeasure ∧ IsFundamentalDomain (GQ (Yc D j)) (R.fdY A3.A.μ0 j) (R.νY A3.A.μ0 j)`. Introduce `j hj`. Distinguish the cases in `h : j + 1 < D.R.m`. Use `hM.νY A3.A.μ0 j h` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Supply the required witnesses or components.
 
-Conclude with `⟨this.1.1, this.2⟩`. Take `rfl : j = D.R.m - 1` from `by omega`. Use `hM.νY' A3.A.μ0` as an intermediate fact. Conclude with `⟨this.1.1, this.2⟩`. Take `⟨hHaar, hFD⟩` from `hfd 0 Y.hm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hSA : SchurAll D` using `fun V _ S θ M J χ μ 𝓕 => (GlobalTheory.MultFinite.hcFinite_and_schurMult hH hC D θ V S M J χ μ 𝓕).2`. Take `⟨hlin, hherm, hpos⟩` from `GlobalTheory.FinTypesRows.minf_sesq (M := R.MY 0) (θ := R.θ) (R.νY A3.A.μ0 0) (R.fdY A3.A.μ0 0) Y.PY hSA hSig hθ hHaar hFD`. Take `⟨B', h1, h2, h3, h4⟩` from `GlobalTheory.finTyp_invariant_form_of_isotIn D D.R.r _ (actM Y.PY (R.MY 0)) (Minf R.θ Y.PY (R.MY 0)) (ipM (R.MY 0) (R.νY A3.A.μ0 0) (R.fdY A3.A.μ0 0)) hlin hherm hpos (fun h x hx => GlobalTheory.FinTypesRows.minf_stable Y.PY hcc h hx) (fun h x hx y hy => GlobalTheory.T.schur_pair …`. Conclude with `GlobalTheory.RowLocalRows.form_of_conjT π B' h1 h2 h3 h4`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem exists_form_rowRepR (hH : GlobalTheory.Published.HarishChandraFinite) (hC : GlobalTheory.Published.CuspRapidDecay) (D : D7) (G : Type) [Group G]
     [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks]
@@ -117,27 +117,27 @@ end FormSec
 namespace GlobalTheory.RowSphSmall
 
 /- English proof (translation)
-Take `⟨i, T, -, -, hTi, hTm, hTe⟩` from `hτ`. Take `⟨e, he1, he2⟩` from `GlobalTheory.SplitEmb.exists_hom_trivOutside_loc L n s`. Set `t : τ.V → π.S` to `fun v => ⟨T v, hTm v⟩`. Establish `tadd : ∀ v w, t (v + w) = t v + t w` using `fun v w => Subtype.ext (map_add T v w)`. Establish `tsmul : ∀ (c : ℂ) v, t (c • v) = c • t v` using `fun c v => Subtype.ext (map_smul T c v)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlin2 : ∀ y z : π.S, ∀ c : ℂ, B (y + c • z) = fun x => B y x + starRingEnd ℂ c * B z x`. Introduce `y z c`. Use function extensionality and compare the values at `x`. Rewrite using `[hherm, hlin, map_add, map_mul, ← hherm, ← hherm]`. Establish `hadd1 : ∀ y z x : π.S, B (y + z) x = B y x + B z x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `y z x`. Use `congrFun (hlin2 y z 1) x` as an intermediate fact. Simplify using `using this`. Establish `hsm1 : ∀ (c : ℂ) (z x : π.S), B (c • z) x = starRingEnd ℂ c * B z x`. Introduce `c z x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrFun (hlin2 0 z c) x`. Establish `h0 : B 0 x = 0`. Use `hadd1 0 0 x` as an intermediate fact. Simplify using `only [add_zero] at this`. Take the linear combination `-this`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 
-Simplify `h1` using `[h0]`. Establish `hadd2 : ∀ x y z : π.S, B x (y + z) = B x y + B x z`. Introduce `x y z`. Simplify using `using hlin x y z 1`. Establish `hsm2 : ∀ (c : ℂ) (x z : π.S), B x (c • z) = c * B x z`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Introduce `c x z`. Establish `h1` using `hlin x 0 z c`. Establish `h0 : B x 0 = 0`. Use `hadd2 x 0 0` as an intermediate fact. Simplify using `only [add_zero] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `-this`. Simplify `h1` using `[h0]`. Set `Bf : τ.V →ₗ[ℂ] τ.V →ₛₗ[starRingEnd ℂ] ℂ` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun v w => B (t w) (t v)) (fun v v' w => by rw [tadd, hadd2]) (fun c v w => by rw [tsmul, hsm2]; rfl) (fun v w w' => by rw [tadd, hadd1]) (fun c v w => by rw [tsmul, hsm1]; rfl)`. Use `⟨Bf, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `v w show B (t v) (t w) = starRingEnd ℂ (B (t w) (t v))`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hherm _ _`. Introduce `v hv show 0 < (B (t v) (t v)).re`. Apply `hpos` to reduce the goal to its premises. Introduce `h0`. Apply `hv` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hTi` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `congrArg Subtype.val h0`. Introduce `g v w show B (t (τ.ρ g w)) (t (τ.ρ g v)) = B (t w) (t v)`. Set `g'` to `Matrix.GeneralLinearGroup.map i.symm.toRingHom g`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hg : Matrix.GeneralLinearGroup.map i.toRingHom (s.loc n (e g')) = g`. Rewrite using `[he2]`. Use extensionality with `a b`. Simplify using `[g']`. Establish `hx : ∀ a, T (τ.ρ g a) = NG.rt L n (e g') (T a)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a`. Rewrite using `[← hg]`. Conclude with `hTe (e g') (he1 g') a`. Conclude with `hinv (e g') (t w) (t v) (t (τ.ρ g w)) (t (τ.ρ g v)) (hx w) (hx v)`.
+A detailed English derivation is pending.
 -/
 theorem isUnitarisable_of_isLocS {L : Type} [Field L] [NumberField L] [IsCMField L] {n : ℕ} (π : NG.FinTyp L n)
     (B : π.S → π.S → ℂ) (hlin : ∀ x y z (c : ℂ), B x (y + c • z) = B x y + c * B x z)

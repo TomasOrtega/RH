@@ -10,39 +10,35 @@ open IsLocalRing GlobalTheory.Toroidal
 namespace GlobalTheory.MonoVal
 
 /- English proof (translation)
-Use `set q : ChartRing k m e := ∏ i, bdParam k m e i ^ a i with hqdef`. Use `haveI : CharZero (ChartRing k m e) := (MvPowerSeries.constantCoeff : ChartRing k m e →+* k).charZero`. Take `⟨hN, hIC, -, -⟩` from `GlobalTheory.ChartCone.isCN_chartRing k m e`. Use `haveI := hN`. Use `haveI := hIC`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hX : ∀ j : Fin m ⊕ Fin e, (MvPowerSeries.X j : ChartRing k m e) ≠ 0`. Introduce `j hj`. Use `congrArg (MvPowerSeries.coeff (Finsupp.single j 1)) hj` as an intermediate fact. Simplify using `[MvPowerSeries.coeff_X] at this`. Establish `hq0 : q ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => pow_ne_zero _ (hX _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `loc_of : ∀ {V : Type} [CommRing V] [IsLocalRing V] (φ : ChartRing k m e →+* V), (maximalIdeal V).comap φ = maximalIdeal (ChartRing k m e) → IsLocalHom φ`. Introduce `V _ _ φ hφ`. Use `⟨fun x hx => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hnu`. Establish `hx' : x ∈ maximalIdeal (ChartRing k m e)` using `hnu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hx'` using `[← hφ, Ideal.mem_comap]`. Conclude with `hx' hx`. Establish `hle : I ≤ Ideal.span {q}`. Introduce `f hf`. Rewrite using `[Ideal.mem_span_singleton]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `GlobalTheory.ValCrit.dvd_of_forall_cdvr _ f q hq0 fun V _ _ _ φ hV hinj hφ => ?_` and prove the remaining obligations. Establish `hm` using `h V hV φ hinj (loc_of φ hφ)`. Rewrite using `[← Ideal.mem_span_singleton, ← hm]`. Conclude with `Ideal.mem_map_of_mem φ hf`. Use `le_antisymm hle ?_` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff]`. Assume the negation of the conclusion as `hqI`. Set `I' : Ideal (ChartRing k m e)` to `Submodule.comap (LinearMap.mulLeft (ChartRing k m e) q) I`. Establish `hmemI' : ∀ g, g ∈ I' ↔ q * g ∈ I` using `fun g => Iff.rfl`. Establish `key : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V] (ψ : ChartRing k m e →+* V), GlobalTheory.LN.CDvr V → Function.Injective ψ → IsLocalHom ψ → False`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `V _ _ _ ψ hV hinj hψ`. Establish `hmap` using `h V hV ψ hinj hψ`. Establish `hI : I = Ideal.span {q} * I'`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `f hf`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨g, rfl⟩` from `Ideal.mem_span_singleton'.1 (hle hf)`. Conclude with `Ideal.mem_span_singleton_mul.2 ⟨g, (hmemI' g).2 (by rwa [mul_comm]), mul_comm _ _⟩`. Rewrite using `[Ideal.span_singleton_mul_le_iff]`. Introduce `z hz`. Conclude with `(hmemI' z).1 hz`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hψq : ψ q ≠ 0` using `(map_ne_zero_iff ψ hinj).2 hq0`. Establish `htop : Ideal.map ψ I' = ⊤`. Establish `h2 : Ideal.span {ψ q} * Ideal.map ψ I' = Ideal.span {ψ q} * ⊤`. Establish `h3 : Ideal.map ψ (Ideal.span {q} * I') = Ideal.span {ψ q} * Ideal.map ψ I'`. Rewrite using `[Ideal.map_mul, Ideal.map_span, Set.image_singleton]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.mul_top, ← h3, ← hI, hmap]`. Conclude with `(Ideal.span_singleton_mul_right_inj hψq).1 h2`. Establish `hI'ne : I' ≠ ⊤`. Introduce `ht`. Apply `hqI` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Establish `h1 : (1 : ChartRing k m e) ∈ I'` using `ht ▸ Submodule.mem_top`. Simplify using `using (hmemI' 1).1 h1`. Establish `hle' : Ideal.map ψ I' ≤ maximalIdeal V`. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `x hx`.
+Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Establish `hx'` using `IsLocalRing.le_maximalIdeal hI'ne hx`. Rewrite `hx'` using `[mem_maximalIdeal, mem_nonunits_iff]`. Rewrite using `[Ideal.mem_comap, mem_maximalIdeal, mem_nonunits_iff]`. Conclude with `fun hu => hx' (isUnit_of_map_unit ψ x hu)`. Conclude with `(IsLocalRing.maximalIdeal.isMaximal V).ne_top (top_le_iff.1 (htop ▸ hle'))`.
+Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Break down `isEmpty_or_nonempty (Fin m ⊕ Fin e) with hσ | hne` into its components or cases. Set `ψ0 : ChartRing k m e →+* PowerSeries k` to `(PowerSeries.C : k →+* PowerSeries k).comp (MvPowerSeries.constantCoeff : ChartRing k m e →+* k)`. Establish `hc : ∀ f : ChartRing k m e, f = MvPowerSeries.C (MvPowerSeries.constantCoeff f)`. Introduce `f`. Use extensionality with `n`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hn : n = 0` using `Subsingleton.elim _ _`. Substitute `hn` using the available equality. Simplify using the standard rewrite rules. Establish `hinj : Function.Injective ψ0`. Introduce `f g hfg`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : MvPowerSeries.constantCoeff f = MvPowerSeries.constantCoeff g`. Simplify `congrArg PowerSeries.constantCoeff hfg` using `[ψ0]`. Rewrite using `[hc f, hc g, h1]`. Establish `hloc : IsLocalHom ψ0`. Use `⟨fun f hf => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[MvPowerSeries.isUnit_iff_constantCoeff]`. Establish `h1 : IsUnit (PowerSeries.constantCoeff (ψ0 f))` using `hf.map _`. Simplify `h1` using `[ψ0]`. Conclude with `key (PowerSeries k) ψ0 (GlobalTheory.FrameGen.cDvr_powerSeries k) hinj hloc`. Take `⟨j⟩` from `hne`.
-
-Establish `hdvd : (MvPowerSeries.X j : ChartRing k m e) ∣ 1` using `GlobalTheory.ValCrit.dvd_of_forall_cdvr _ 1 _ (hX j) fun V _ _ _ φ hV hinj hφ => (key V φ hV hinj (loc_of φ hφ)).elim`. Establish `hu` using `isUnit_of_dvd_one hdvd`. Rewrite `hu` using `[MvPowerSeries.isUnit_iff_constantCoeff]`. Simplify using `at hu`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem eq_span_monomial_of_forall_cdvr (k : Type) [Field k] [CharZero k] (m e : ℕ) (I : Ideal (ChartRing k m e))
     (a : Fin m → ℕ)

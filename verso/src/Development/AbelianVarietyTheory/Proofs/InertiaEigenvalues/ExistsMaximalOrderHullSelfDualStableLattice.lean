@@ -5,7 +5,7 @@ open GlobalTheory.UnitLemma Polynomial
 namespace GlobalTheory.HullLat
 
 /- English proof (translation)
-Use `haveI : IsNoetherian R L := isNoetherian_of_fg_of_noetherian L hL`. Establish `h1 : (X.comap L.subtype).FG` using `IsNoetherian.noetherian _`. Establish `h2` using `h1.map L.subtype`. Rewrite `h2` using `[Submodule.map_comap_subtype, inf_eq_right.mpr hX]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem fg_of_le {R M : Type} [CommRing R] [IsNoetherianRing R] [AddCommGroup M] [Module R M]
     {L X : Submodule R M} (hL : L.FG) (hX : X ≤ L) : X.FG := by
@@ -15,25 +15,21 @@ theorem fg_of_le {R M : Type} [CommRing R] [IsNoetherianRing R] [AddCommGroup M]
   rwa [Submodule.map_comap_subtype, inf_eq_right.mpr hX] at h2
 
 /- English proof (translation)
-Introduce `K B x c hc L hL hcL`. Take `⟨⟨hfg, hspan⟩, -, hdual⟩` from `hL`. Use `set Λ := Subalgebra.toSubmodule (integralClosure K.O B.A) with hΛ`. Use `set J : Submodule K.O B.A := Λ * L with hJ`. Use `set γ := algebraMap K.O B.A c with hγ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hγu : IsUnit γ`. Establish `h0 : algebraMap K.O K.E c ≠ 0`. Introduce `h; exact hc (IsFractionRing.injective K.O K.E (by simpa using h))`. Rewrite using `[hγ, IsScalarTower.algebraMap_apply K.O K.E B.A]`. Conclude with `(isUnit_iff_ne_zero.mpr h0).map (algebraMap K.E B.A)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLJ : L ≤ J` using `fun y hy => by`. Simplify using `using Submodule.mul_mem_mul (M := Λ) (N := L) (show (1 : B.A) ∈ Λ from (integralClosure K.O B.A).one_mem) hy`. Establish `hcJ : ∀ y ∈ J, γ * y ∈ L`. Introduce `y hy`. Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `u hu l hl`. Rewrite using `[← mul_assoc]`. Conclude with `hcL u ((mem_integralClosure_iff _ _).mp hu) l hl`. Introduce `a b ha hb`. Rewrite using `[mul_add]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `add_mem ha hb`. Establish `hmulJ : mulLat K.O γ J ≤ L`. Introduce and unpack `_ ⟨y, hy, rfl⟩`. Conclude with `hcJ y hy`. Establish `hJfg : J.FG`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨u, hu⟩` from `hγu`. Establish `hM : (L.map (LinearMap.mulLeft K.O ((u⁻¹ : B.Aˣ) : B.A))).FG` using `hfg.map _`. Use `fg_of_le hM ?_` and prove the remaining obligations. Introduce `y hy`. Use `⟨γ * y, hcJ y hy, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [LinearMap.mulLeft_apply]`. Rewrite using `[← hu, ← mul_assoc, Units.inv_mul, one_mul]`. Use `⟨J, ⟨hJfg, ?_⟩, ?_, ?_, ?_, hmulJ, hLJ⟩` and prove the remaining obligations. Rewrite using `[eq_top_iff, ← hspan]`. Conclude with `Submodule.span_mono hLJ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a ha y hy`. Use `Submodule.mul_induction_on hy ?_ ?_` and prove the remaining obligations. Introduce `u hu l hl`. Rewrite using `[← mul_assoc]`. Establish `hu' : u ∈ integralClosure K.O B.A` using `hu`.
-
-Conclude with `Submodule.mul_mem_mul (show a * u ∈ Λ from (integralClosure K.O B.A).mul_mem ha hu') hl`. Introduce `p q hp hq`. Rewrite using `[mul_add]`. Conclude with `add_mem hp hq`. Introduce `y hy`.
-
-Conclude with `hLJ ((hdual y).mpr fun z hz => hy z (hLJ hz))`. Introduce `y hy z hz`. Conclude with `(hdual (γ * y)).mp (hcJ y hy) (γ * z) (hcJ z hz)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_hull : ∀ (K : UQ) (B : InvAlg K) (x : B.A) (c : K.O), c ≠ 0 → ∀ L ∈ B.X x,
     (∀ u : B.A, IsIntegral K.O u → ∀ y ∈ L, algebraMap K.O B.A c * u * y ∈ L) →

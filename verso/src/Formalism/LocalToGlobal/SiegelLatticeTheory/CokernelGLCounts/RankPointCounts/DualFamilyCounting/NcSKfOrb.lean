@@ -19,15 +19,15 @@ section SlopeTestRemainingChoices
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
 
 /- English proof (translation)
-The claim follows from `(algebraMap F (Af F) x).2`.
+A detailed English derivation is pending.
 -/
 theorem ev_int (x : F) : ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, (algebraMap F (Fv F v) x) ∈ v.adicCompletionIntegers F :=
   (algebraMap F (Af F) x).2
 
 /- English proof (translation)
-Establish `h1 : algebraMap F (Fv F v) ((M : F)⁻¹) * algebraMap F (Fv F v) (M : F) = 1`. Rewrite using `[← map_mul, inv_mul_cancel₀ (Int.cast_ne_zero.2 hM), map_one]`. Establish `e : y = (⟨algebraMap F (Fv F v) ((M : F)⁻¹), hMv⟩ : v.adicCompletionIntegers F) • (M • y)` using `by show y = algebraMap F (Fv F v) ((M : F)⁻¹) • (M • y)`. Rewrite using `[← Int.cast_smul_eq_zsmul (Fv F v) M y, smul_smul, ← map_intCast (algebraMap F (Fv F v)) M, h1, one_smul]`. Rewrite using `[e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `S.smul_mem _ hy`.
+A detailed English derivation is pending.
 -/
 theorem int_smul_mem {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (M : ℤ) (hM : M ≠ 0)
     (hMv : algebraMap F (Fv F v) ((M : F)⁻¹) ∈ v.adicCompletionIntegers F)
@@ -42,9 +42,9 @@ theorem int_smul_mem {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (M : ℤ) (hM : 
   exact S.smul_mem _ hy
 
 /- English proof (translation)
-Take `⟨N, hN0, hN⟩` from `MassDataMassesW.KCptW.std_mult L hL.span_eq_top`. Take `⟨N', hN'0, hN'⟩` from `MassDataMassesW.KCptW.lat_mult L hL.fg`. Use `filter_upwards [ev_int ((N : F)⁻¹), ev_int ((N' : F)⁻¹)] with v hv hv'`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `int_smul_mem v N' hN'0 hv' _ y (MassDataMassesW.KCptW.zsmul_mem_latLoc_of _ _ N' hN' v hy)`. Introduce `y hy`. Conclude with `int_smul_mem v N hN0 hv _ y (MassDataMassesW.KCptW.zsmul_mem_latLoc_of _ _ N hN v hy)`.
+A detailed English derivation is pending.
 -/
 theorem ev_latLoc_std {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hL : Submodule.IsLattice E L) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, latLoc (E := E) v (L : Set (Fin n → E)) =
@@ -59,11 +59,9 @@ theorem ev_latLoc_std {n : ℕ} (L : Submodule (𝓞 E) (Fin n → E)) (hL : Sub
     exact int_smul_mem v N hN0 hv _ y (MassDataMassesW.KCptW.zsmul_mem_latLoc_of _ _ N hN v hy)
 
 /- English proof (translation)
-Use `show y i ∈ Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ)`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem z hz`. Take `⟨μ, hμ, rfl⟩` from `hz`. Take `⟨o, ho⟩` from `LinearMap.mem_range.1 ((Submodule.mem_pi.1 hμ) i (Set.mem_univ _))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `show inclR (Fv F v) (μ i) ∈ _`. Rewrite using `[← ho]`. Conclude with `Submodule.subset_span ⟨o, trivial, rfl⟩`. Consider the case `zero => exact Submodule.zero_mem _`. Consider the case `add a b _ _ ha hb => exact Submodule.add_mem _ ha hb`.
-
-Consider the case `smul c a _ ha => exact Submodule.smul_mem _ c ha`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem mem_oev_of_std {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (y : Fin n → Fv F v ⊗[F] E)
     (hy : y ∈ latLoc (E := E) v
@@ -83,11 +81,11 @@ theorem mem_oev_of_std {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (y : Fin n →
   | smul c a _ ha => exact Submodule.smul_mem _ c ha
 
 /- English proof (translation)
-Establish `he : ratV (F` using `F) (Fv F v) (Pi.single j (1 : E)) ∈ latLoc (E := E) v ((MassDataMassesW.KCptW.stdSub : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)) := Submodule.subset_span ⟨_, MassDataMassesW.KCptW.single_mem_std j, rfl⟩`. Establish `h2` using `(hg _).1 he`. Establish `e1 : ratV (F` using `F) (Fv F v) (Pi.single j (1 : E)) = Pi.single j 1 := by`. Use function extensionality and compare the values at `k`. Distinguish the cases in `h : k = j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using `[ratV, inclR, Algebra.TensorProduct.one_def]`. Simplify using `[ratV, inclR, Pi.single_apply, h]`. Rewrite `h2` using `[e1]`. Establish `h3` using `mem_oev_of_std v _ h2 i`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify `h3` using `[Matrix.mulVec, dotProduct, Pi.single_apply]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem entries_oev {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (g : GL (Fin n) (Fv F v ⊗[F] E))
     (hg : g ∈ Kloc (E := E) v ((MassDataMassesW.KCptW.stdSub : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)))
@@ -109,19 +107,17 @@ theorem entries_oev {n : ℕ} (v : HeightOneSpectrum (𝓞 F)) (g : GL (Fin n) (
 variable [FiniteDimensional F E]
 
 /- English proof (translation)
-Set `B` to `NumberField.RingOfIntegers.basis E`. Use `filter_upwards [eventually_all.2 fun t => eventually_all.2 fun l => ev_int (F := F) (b.repr ((B t : 𝓞 E) : E) l)] with v hv`. Establish `hgen : ∀ (o : 𝓞 E) (l : Fin d), PI.VolStabS.PositiveNearLattice.crd b (Fv F v) (inclR (F` using `F) (Fv F v) (o : E)) l ∈ v.adicCompletionIntegers F := by`. Introduce `o l`. Establish `hcrd : ∀ e : E, PI.VolStabS.PositiveNearLattice.crd b (Fv F v) (inclR (F` using `F) (Fv F v) e) l = algebraMap F (Fv F v) (b.repr e l) := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `e`. Simplify using `[PI.VolStabS.PositiveNearLattice.crd, inclR, Algebra.TensorProduct.basis_repr_tmul]`. Rewrite using `[hcrd]`. Establish `ho : (o : E) = ∑ t, (B.repr o t) • ((B t : 𝓞 E) : E)`. Use `congrArg (algebraMap (𝓞 E) E) (B.sum_repr o)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_sum]`. Simplify `this.symm` using `[map_zsmul]`. Rewrite using `[ho, map_sum, Finsupp.finset_sum_apply, map_sum]`. Use `Subring.sum_mem _ fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul, Finsupp.smul_apply, map_zsmul]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `Subring.zsmul_mem _ (hv t l) _`. Introduce `z hz l`. Express the relevant statement in the definitionally equal form `z ∈ Submodule.span (v.adicCompletionIntegers F) ((fun x : 𝓞 E => inclR (F := F) (Fv F v) (x : E)) '' Set.univ) at hz`. Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem y hy`.
+Express the relevant assertion in an equivalent form by its definition. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨o, -, rfl⟩` from `hy`. Conclude with `hgen o l`. Consider the case `zero => simp [PI.VolStabS.PositiveNearLattice.crd]`. Consider the case `add a c _ _ ha hc`. Simplify using `only [PI.VolStabS.PositiveNearLattice.crd, map_add, Finsupp.add_apply] at *`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.add_mem _ ha hc`. Consider the case `smul c a _ ha`. Establish `e : PI.VolStabS.PositiveNearLattice.crd b (Fv F v) (c • a) l = (c : Fv F v) * PI.VolStabS.PositiveNearLattice.crd b (Fv F v) a l` using `by show (Algebra.TensorProduct.basis (Fv F v) b).repr ((c : Fv F v) • a) l = _`. Rewrite using `[map_smul, Finsupp.smul_apply, smul_eq_mul]`. Both sides reduce to the same expression.
-
-Rewrite using `[e]`. Conclude with `Subring.mul_mem _ c.2 ha`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ev_crd_oev {d : ℕ} (b : Module.Basis (Fin d) F E) :
     ∀ᶠ v : HeightOneSpectrum (𝓞 F) in cofinite, ∀ z ∈ OEv (E := E) v, ∀ l,
@@ -176,41 +172,35 @@ theorem projV_eq_map (v : HeightOneSpectrum (𝓞 F)) {n : ℕ} (X : Matrix (Fin
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J a X0 Λ hCM hJ hLat`. Establish `: FiniteDimensional F E` using `Module.Finite.of_restrictScalars_finite ℚ F E`. Take `⟨L, hL, rfl⟩` from `hLat`. Set `b` to `Module.finBasis F E`. Use `set Y := ratTup (F := F) (Af F) X0 with hYdef`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨hKc, -⟩` from `Formalism.L2.SG.Pf.NcS.AdTupPf.kf_compact_open σ J L hL`. Establish `hmat : Continuous (fun g : HA (Af F) σ J => ((HA.mat (Af F) σ J g : GL (Fin n) (Af F ⊗[F] E)) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)))` using `Units.continuous_val.comp continuous_subtype_val`. Establish `hact : Continuous (fun g : HA (Af F) σ J => g • Y)`. Use `continuous_pi fun c => ?_` and prove the remaining obligations. Use `show Continuous (fun g : HA (Af F) σ J => ((HA.mat (Af F) σ J g : GL (Fin n) (Af F ⊗[F] E)) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)).mulVec (Y c))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hmat.matrix_mulVec continuous_const`. Establish `hcomp : ∀ (v : HeightOneSpectrum (𝓞 F)) (g : HA (Af F) σ J), projV v (g • Y) = (((HA.mat (Af F) σ J g : GL (Fin n) (Af F ⊗[F] E)) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)).map (tensMap (E` using `E) (evalV F v))).mulVec ∘ (fun c => ratTup (F := F) (Fv F v) X0 c) := by`. Introduce `v g`. Use function extensionality and compare the values at `c i`. Express the relevant statement in the definitionally equal form `tensMap (E := E) (evalV F v) (((HA.mat (Af F) σ J g : GL (Fin n) (Af F ⊗[F] E)) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)).mulVec (Y c) i) = _`.
+Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[RingHom.map_mulVec]`. Use `congr 1`. Use `⟨?_, fun x => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `: T2Space (Af F ⊗[F] E)` using `PI.VolStabS.RestrProdG.t2_tensor_product (Af F)`. Establish `e : {x : Fin a → Fin n → Af F ⊗[F] E | ∃ k ∈ Kf σ J (L : Set (Fin n → E)), x = k • ratTup (Af F) X0} = (fun g : HA (Af F) σ J => g • Y) '' (Kf σ J (L : Set (Fin n → E)) : Set (HA (Af F) σ J))`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨k, hk, rfl⟩`. Conclude with `⟨k, hk, rfl⟩`. Introduce and unpack `⟨k, hk, rfl⟩`.
+Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨k, hk, rfl⟩`. Rewrite using `[e]`. Conclude with `(hKc.image hact).isClosed.measurableSet`. Introduce and unpack `⟨k, hk, rfl⟩ v`. Use `⟨haMap σ J (evalV F v) k, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1 : k ∈ (Kloc (E` using `E) v (L : Set (Fin n → E))).comap ((compV v).comp (incAf σ J)) := (Subgroup.mem_iInf.1 hk) v`. Conclude with `h1`. Rewrite using `[hcomp v k]`. Both sides reduce to the same expression. Introduce `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `choose kv hkv hxv using hx`. Establish `hgoodV : ∀ᶠ v in cofinite, ∀ g : GL (Fin n) (Fv F v ⊗[F] E), g ∈ Kloc (E` using `E) v (L : Set (Fin n → E)) → (g : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) ∈ latV (M := n) (n := n) b v := by filter_upwards [ev_latLoc_std L hL, ev_crd_oev b] with v hv hc`. Introduce `g hg i j l`. Establish `hg' : g ∈ Kloc (E` using `E) v ((MassDataMassesW.KCptW.stdSub : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)) := by`. Introduce `y`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hv]`. Conclude with `hg y`. Conclude with `hc _ (entries_oev v g hg' i j) l`. Set `mat : ∀ v : HeightOneSpectrum (𝓞 F), Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)` to `fun v => ((HA.mat (Fv F v) σ J (kv v) : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))`. Set `imat : ∀ v : HeightOneSpectrum (𝓞 F), Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)` to `fun v => (((HA.mat (Fv F v) σ J (kv v))⁻¹ : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hK1 : ∀ v, HA.mat (Fv F v) σ J (kv v) ∈ Kloc (E` using `E) v (L : Set (Fin n → E)) := hkv`. Establish `hg1 : ∀ᶠ v in cofinite, mat v ∈ latV b v` using `hgoodV.mono fun v h => h _ (hK1 v)`. Establish `hg2 : ∀ᶠ v in cofinite, imat v ∈ latV b v` using `hgoodV.mono fun v h => h _ ((Kloc (E := E) v (L : Set (Fin n → E))).inv_mem (hK1 v))`. Take `⟨Γ, -, hΓ⟩` from `PI.VolStabS.rpGlue_holds F E n n _ b`. Set `A : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)` to `projFin (Γ (0, mat))`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `A' : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)` to `projFin (Γ (0, imat))`. Establish `hA : ∀ v, A.map (tensMap (E` using `E) (evalV F v)) = mat v := (hΓ (0, mat) hg1).2`. Establish `hA' : ∀ v, A'.map (tensMap (E` using `E) (evalV F v)) = imat v := (hΓ (0, imat) hg2).2`. Establish `hAA' : A * A' = 1`. Use `Formalism.L2.SG.Pf.NcS.OmDecompPf.projV_ext b fun v => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Rewrite using `[projV_eq_map, projV_eq_map, Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), hA, hA']`. Conclude with `Units.mul_inv (HA.mat (Fv F v) σ J (kv v))`. Establish `hA'A : A' * A = 1`. Use `Formalism.L2.SG.Pf.NcS.OmDecompPf.projV_ext b fun v => ?_` and prove the remaining obligations. Rewrite using `[projV_eq_map, projV_eq_map, Matrix.map_mul, Matrix.map_one _ (map_zero _) (map_one _), hA, hA']`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Conclude with `Units.inv_mul (HA.mat (Fv F v) σ J (kv v))`. Set `gGL : GL (Fin n) (Af F ⊗[F] E)` to `⟨A, A', hAA', hA'A⟩`. Establish `hcT : ∀ v (X : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)), (Formalism.UG.cT (sigR (Af F) σ) X).map (tensMap (E` using `E) (evalV F v)) = Formalism.UG.cT (sigR (Fv F v) σ) (X.map (tensMap (E := E) (evalV F v))) := by`. Introduce `v X`. Use extensionality with `i j`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply]`. Conclude with `PI.VolStabS.RestrProdG.map_sigR (evalV F v) σ (X j i)`. Establish `hJR : ∀ v, (JR (Af F) J).map (tensMap (E` using `E) (evalV F v)) = JR (Fv F v) J := by`. Introduce `v`. Use extensionality with `i j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `PI.VolStabS.RestrProdG.map_inclR (evalV F v) (J i j)`. Establish `hmem : gGL ∈ HR (Af F) σ J` using `by show Formalism.UG.cT (sigR (Af F) σ) A * JR (Af F) J * A = JR (Af F) J`. Use `Formalism.L2.SG.Pf.NcS.OmDecompPf.projV_ext b fun v => ?_` and prove the remaining obligations. Rewrite using `[projV_eq_map, projV_eq_map, Matrix.map_mul, Matrix.map_mul, hcT, hJR, hA]`. Conclude with `(kv v).2`.
-
-Set `k : HA (Af F) σ J` to `(⟨gGL, hmem⟩ : HR (Af F) σ J)`. Use `⟨k, ?_, ?_⟩` and prove the remaining obligations. Use `Subgroup.mem_iInf.2 fun v => ?_ show ∀ y, y ∈ latLoc (E := E) v (L : Set (Fin n → E)) ↔ Matrix.mulVec (((compV v (incAf σ J k)) : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) y ∈ latLoc (E := E) v (L : Set (Fin n → E))` and prove the remaining obligations. Establish `e : (((compV v (incAf σ J k)) : GL (Fin n) (Fv F v ⊗[F] E)) : Matrix (Fin n) (Fin n) (Fv F v ⊗[F] E)) = mat v` using `hA v`. Rewrite using `[e]`.
-
-Conclude with `hK1 v`. Use `Formalism.L2.SG.Pf.NcS.OmDecompPf.projV_ext b fun v => ?_` and prove the remaining obligations. Rewrite using `[hxv v, hcomp v k]`. Establish `e : (((HA.mat (Af F) σ J k : GL (Fin n) (Af F ⊗[F] E)) : Matrix (Fin n) (Fin n) (Af F ⊗[F] E)).map (tensMap (E` using `E) (evalV F v))) = mat v := hA v`. Rewrite using `[e]`.
-
-Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finite_orbit_holds : KfOrb := by
   intro F E _ _ _ _ _ σ n J a X0 Λ hCM hJ hLat

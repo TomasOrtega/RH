@@ -16,7 +16,7 @@ noncomputable section
 namespace GlobalTheory.EtC.AicAcyc
 
 /- English proof (translation)
-Introduce `p hp hdeg`. Take `⟨a, ha⟩` from `IsAlgClosed.exists_root p (by`. Rewrite using `[Polynomial.degree_eq_natDegree hp.ne_zero]`. Conclude with `hdeg.ne')` after adjusting the coercions. Conclude with `⟨a, ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem aic_of_isAlgClosed (K : Type) [Field K] [IsAlgClosed K] : AIC K := by
   intro p hp hdeg
@@ -25,14 +25,14 @@ theorem aic_of_isAlgClosed (K : Type) [Field K] [IsAlgClosed K] : AIC K := by
   exact ⟨a, ha⟩
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem spMap_comp {A B C : Type} [CommRing A] [CommRing B] [CommRing C] (f : A →+* B) (g : B →+* C) :
     spMap (g.comp f) = spMap g ≫ spMap f := by
   simp only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, Functor.map_comp]
 
 /- English proof (translation)
-Use `haveI : IsIso (CommRingCat.ofHom (e : A →+* B)) := (RingEquiv.toCommRingCatIso e).isIso_hom`. Unfold `spMap`. Use `infer_instance`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isIso_spMap {A B : Type} [CommRing A] [CommRing B] (e : A ≃+* B) : IsIso (spMap (e : A →+* B)) := by
   haveI : IsIso (CommRingCat.ofHom (e : A →+* B)) := (RingEquiv.toCommRingCatIso e).isIso_hom
@@ -46,17 +46,15 @@ namespace GlobalTheory.EtC
 open GlobalTheory.EtC.AicAcyc in
 
 /- English proof (translation)
-Introduce `q A _ _ hA hq n i hn`. Use `haveI := GlobalTheory.T.isAlgClosed_fractionRing_of_monic_polynomials_have_roots A hA`. Establish `hK : SH (FractionRing A)` using `GlobalTheory.T.isStrictlyHenselian_of_isField_monicRoots (FractionRing A) (Field.toIsField _) (aic_of_isAlgClosed _)`. Establish `hE` using `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties (ZMod q) (tw q i)`. Establish `heqv : Eqv (ZMod q) (spMap (algebraMap A (FractionRing A))) (tw q i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.T.etaleCohomology_local_to_global_ringMap_indEtale (ZMod q) (tw q i) (GlobalTheory.T.tateTwist_finitary q i) A A (FractionRing A) (Algebra.ofId A (FractionRing A)) ?_` and prove the remaining obligations. Introduce `O _ _ hO hOind`. Take `⟨hfield, haic⟩` from `GlobalTheory.T.isField_monicRoots_tensor_fractionRing_strictlyHenselian A O hA hO hOind`. Establish `hSH : SH (O ⊗[A] FractionRing A)` using `GlobalTheory.T.isStrictlyHenselian_of_isField_monicRoots _ hfield haic`. Establish `hqO : IsUnit (q : O)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hq.map (algebraMap A O)`. Set `e` to `Algebra.TensorProduct.rid A A O`. Set `j : O →ₐ[A] O ⊗[A] FractionRing A` to `Algebra.TensorProduct.includeLeft`. Establish `hψ : (Algebra.TensorProduct.map (AlgHom.id A O) (Algebra.ofId A (FractionRing A))) = j.comp e.toAlgHom`. Apply `Algebra.TensorProduct.ext'` to reduce the goal to its premises.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `o a`. Simplify using `[j, e, Algebra.ofId_apply, Algebra.algebraMap_eq_smul_one, TensorProduct.smul_tmul]`. Rewrite using `[hψ]`. Establish `h1 : Eqv (ZMod q) (spMap (j : O →+* O ⊗[A] FractionRing A)) (tw q i)` using `GlobalTheory.T.eqv_spMap_tw_of_isUnit q i O _ (j : O →+* O ⊗[A] FractionRing A) hO hSH hqO`. Establish `h2 : Eqv (ZMod q) (spMap ((e : O ⊗[A] A ≃+* O) : O ⊗[A] A →+* O)) (tw q i)` using `by haveI := isIso_spMap (e : O ⊗[A] A ≃+* O)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hE.1 _ _ _ inferInstance`. Establish `h3` using `(hE.2.1 _ _ _ _ _).1 h1 h2`. Rewrite `h3` using `[← spMap_comp]`. Conclude with `h3`. Establish `hacK : AcycF (ZMod q) (sp (FractionRing A)) (tw q i)` using `fun m hm => GlobalTheory.T.strictlyHenselianLocalRing_acyclic_every_sheaf (ZMod q) (FractionRing A) hK (tw q i) m hm`.
-
-Conclude with `(hE.2.2.2 _ _ _ heqv).1 hacK n hn`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem b5 : B5 := by
   intro q A _ _ hA hq n i hn

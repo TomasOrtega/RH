@@ -11,9 +11,9 @@ namespace GlobalTheory.Desc.RegPull
 variable {X Y : Scheme.{0}} [IsIntegral X] [IsIntegral Y]
 
 /- English proof (translation)
-Establish `hC : ∀ G : Spec (Y.presheaf.stalk (genericPoint Y)) ⟶ Y, G = Spec.map (𝟙 _) ≫ Y.fromSpecStalk (genericPoint Y) → ∀ h, Y.presheaf.germ V (G (closedPoint _)) h ≫ Scheme.stalkClosedPointTo G = Y.presheaf.germ V (genericPoint Y) hY ≫ 𝟙 _`. Introduce and unpack `G rfl h`. Conclude with `Scheme.germ_stalkClosedPointTo_Spec_fromSpecStalk (𝟙 _) V h`. Establish `e : gp Y = Spec.map (𝟙 _) ≫ Y.fromSpecStalk (genericPoint Y)`. Rewrite using `[Spec.map_id, Category.id_comp]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Conclude with `(hC (gp Y) e h).trans (Category.comp_id _)`.
+A detailed English derivation is pending.
 -/
 theorem germ_gp (V : Y.Opens) (hY : genericPoint Y ∈ V) (h : gp Y (closedPoint _) ∈ V) :
     Y.presheaf.germ V (gp Y (closedPoint _)) h ≫ Scheme.stalkClosedPointTo (gp Y) =
@@ -29,11 +29,9 @@ theorem germ_gp (V : Y.Opens) (hY : genericPoint Y ∈ V) (h : gp Y (closedPoint
   exact (hC (gp Y) e h).trans (Category.comp_id _)
 
 /- English proof (translation)
-Establish `hA : ∀ F : Sp Y.functionField ⟶ X, F = spMap θ ≫ gp X → ∀ hU, X.presheaf.germ U (F (closedPoint _)) hU ≫ Scheme.stalkClosedPointTo F = X.presheaf.germ U (genericPoint X) hX ≫ CommRingCat.ofHom θ`. Introduce and unpack `F rfl hU`. Conclude with `Scheme.germ_stalkClosedPointTo_Spec_fromSpecStalk (CommRingCat.ofHom θ) U hU`. Establish `hg : gp Y (closedPoint _) = genericPoint Y` using `Scheme.fromSpecStalk_closedPoint`. Establish `hV : gp Y (closedPoint _) ∈ π ⁻¹ᵁ U` using `by rw [hg]; exact hY`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : ∀ F : Sp Y.functionField ⟶ X, F = gp Y ≫ π → ∀ hU, X.presheaf.germ U (F (closedPoint _)) hU ≫ Scheme.stalkClosedPointTo F = π.app U ≫ Y.presheaf.germ (π ⁻¹ᵁ U) (genericPoint Y) hY`. Introduce and unpack `F rfl hU`. Rewrite using `[Scheme.stalkClosedPointTo_comp]`. Use `(Scheme.Hom.germ_stalkMap_assoc π U (gp Y (closedPoint _)) hV _).trans ?_` and prove the remaining obligations. Conclude with `congrArg (π.app U ≫ ·) (germ_gp (π ⁻¹ᵁ U) hY hV)`.
-
-Use `(hA _ e hV).symm.trans (hB _ rfl hV)` as an intermediate fact. Conclude with `congrArg (fun g => g.hom s) this`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem fnOf_map (π : Y ⟶ X) (θ : X.functionField →+* Y.functionField)
     (e : gp Y ≫ π = spMap θ ≫ gp X) (U : X.Opens) (hX : genericPoint X ∈ U)
@@ -57,9 +55,9 @@ theorem fnOf_map (π : Y ⟶ X) (θ : X.functionField →+* Y.functionField)
   exact congrArg (fun g => g.hom s) this
 
 /- English proof (translation)
-Take `⟨l, hl, e⟩` from `hθ`. Rewrite `hl` using `[Category.comp_id]`. Substitute `hl` using the available equality. Take `⟨U, hx, s, rfl⟩` from `hu.exists_fnOf`. Establish `hy : y ∈ π ⁻¹ᵁ U` using `hx`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[fnOf_map π θ e U _ (gen_mem hy) s]`. Conclude with `regAt_fnOf hy _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem regAt_map (X Y : Scheme.{0}) [IsIntegral X] [IsIntegral Y] (π : Y ⟶ X)
     (θ : X.functionField →+* Y.functionField) (hθ : PFF (𝟙 _) π θ) (y : Y) (u : X.functionField)

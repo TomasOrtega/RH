@@ -16,13 +16,13 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-Introduce `g hg`. Establish `hex : ∃ (k : S7.KG ε) (X : Matrix (Fin n) (Fin n) ℂ), inP ε X ∧ g = S7.toMK k * NormedSpace.exp X` using `S7.polar_exists hg`. Establish `key : ∀ (kc : S7.KG ε) (Xc : Matrix (Fin n) (Fin n) ℂ), inP ε Xc → g = S7.toMK kc * NormedSpace.exp Xc → Ψ g = T.op kc * S7.psM T μ (NormedSpace.exp Xc)`. Introduce `kc Xc hXc hgc`. Establish `hu : inUJ ε (NormedSpace.exp Xc)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `S7.inUJ_kexp (1 : S7.KG ε) hXc` as an intermediate fact. Rewrite `this` using `[pdA_toMK_one, Matrix.one_mul]`. Then use the resulting hypothesis. Establish `h1` using `hK kc 1 (NormedSpace.exp Xc) hu`. Rewrite `h1` using `[pdA_toMK_one, Matrix.mul_one, pdA_op_one, mul_one]`. Establish `hps : Ψ (NormedSpace.exp Xc) = S7.psM T μ (NormedSpace.exp Xc)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hF Xc hXc]`. Simplify using `only [szt_phiM_inv_conj μ hXc]`. Both sides reduce to the same expression. Rewrite using `[hgc, h1, hps]`. Unfold `S7.PsiM`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[dif_pos hex]`. Conclude with `key _ _ hex.choose_spec.choose_spec.1 hex.choose_spec.choose_spec.2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem psi_eq_PsiM {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε (lowK ε lam)}
     {Ψ : Matrix (Fin n) (Fin n) ℂ → (T.V →L[ℂ] T.V)}
@@ -56,43 +56,43 @@ theorem psi_eq_PsiM {ε : Fin n → Bool} {lam : Fin n → ℝ} {T : S7.KType ε
   exact key _ _ hex.choose_spec.choose_spec.1 hex.choose_spec.choose_spec.2
 
 /- English proof (translation)
-Introduce `k r z c u v b h hS`. Take `⟨hk, -, -, -, -, -, hlamR, -, -, -, hGL⟩` from `hS`. Establish `hqOf : qOf (Formalism.MainNotions.CayleySignature.eps48 k r) = r + 1` using `Lap.noncompactCount_parabolicSign k r hk`. Establish `hpOf : pOf (Formalism.MainNotions.CayleySignature.eps48 k r) = k + r`. Rewrite using `[Lap.compactCount_parabolicSign k r hk]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Take `⟨P, hPc⟩` from `exists_cayley_unitary k r hk`. Generalize the expression as in `Formalism.MainNotions.CayleySignature.lam48 k r v b = lam at hlamR hGL ⊢`. Generalize the expression as in `Formalism.MainNotions.CayleySignature.eps48 k r = ε at hqOf hpOf hPc hGL ⊢`. Establish `hlam : S7.IsHCParam lam` using `(mir_isHCParam_iff lam).1 hlamR`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact.
 
-Take `⟨hanti, hgapAt, hN⟩` from `hGL`. Establish `hq0 : S7.q0 ε = min (k + r) (r + 1)` using `by unfold S7.q0; rw [hpOf, hqOf]`. Establish `hq1 : 1 ≤ S7.q0 ε` using `by rw [hq0]; exact le_min (by omega) (by omega)`. Establish `hQ1 : (1 : ℝ) ≤ (S7.q0 ε : ℝ)` using `by exact_mod_cast hq1`. Establish `hp' : (pOf ε : ℝ) = (k : ℝ) + r` using `by rw [hpOf, Nat.cast_add]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hq' : (qOf ε : ℝ) = (r : ℝ) + 1` using `by rw [hqOf, Nat.cast_add, Nat.cast_one]`. Establish `hmin : min (pOf ε : ℝ) (qOf ε : ℝ) = (S7.q0 ε : ℝ)` using `by unfold S7.q0; rw [Nat.cast_min]`. Unfold `Lap.hNeed at hN`. Apply the tactic sequence `try simp only [Nat.cast_min] at hN`. Rewrite `hN` using `[hmin, hp', hq']`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨hN1, hN2⟩` from `max_lt_iff.1 hN`. Take `⟨hN2a, hN2b⟩` from `max_lt_iff.1 hN2`. Establish `hN1'` using `lt_of_le_of_lt (le_add_of_nonneg_left (by norm_num : (0 : ℝ) ≤ 2)) hN1`. Take `⟨-, hNpq⟩` from `max_lt_iff.1 hN1'`. Establish `hNn : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ)` using `Nat.cast_nonneg _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hgap : StdGap ε lam` using `⟨hanti, h, hgapAt, by rw [hp', hq']; linarith⟩`. Establish `hNQ : (0 : ℝ) ≤ ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ)` using `mul_nonneg hNn (by linarith)`. Establish `hsq0 : (0 : ℝ) ≤ Real.sqrt (2 * (S7.q0 ε : ℝ))` using `Real.sqrt_nonneg _`. Establish `h8 : 8 * ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ) < h` using `by linarith`. Establish `hthr : 4 * max (Lap.S0.bG k r) (Lap.S0.bS k r) < h / (8 * Real.sqrt (2 * (S7.q0 ε : ℝ))) - 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbG : Lap.S0.bG k r = 2 * ((2 * r + k + 1 : ℕ) : ℝ) * (S7.q0 ε : ℝ)`. Unfold `Lap.S0.bG Lap.S0.nS Lap.S0.q0S`. Rewrite using `[← hq0]`. Establish `hbS : Lap.S0.bS k r = 2 * ((r : ℝ) + 1 - 1) * ((2 * r + k + 1 : ℕ) : ℝ) ^ 2`. Unfold `Lap.S0.bS Lap.S0.nS`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hbG, hbS]`. Establish `hs : 0 < Real.sqrt (2 * (S7.q0 ε : ℝ))` using `Real.sqrt_pos.2 (by linarith)`. Rewrite using `[lt_sub_iff_add_lt, lt_div_iff₀ (by positivity)]`. Use polynomial arithmetic with `[hN2b]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact.
 
-Establish `hint` using `hlam.2`. Use `choose mm hmm using hint`. Set `μ : Fin (2 * r + k + 1) → ℤ` to `fun a => mm a + ((2 * r + k + 1 : ℕ) : ℤ) - 1 - ((a : ℕ) : ℤ)`. Establish `hμ : S7.IsMu lam μ`. Unfold `S7.IsMu`.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `a`. Establish `ha` using `hmm a`. Simplify using `only [μ]`. Unfold `rho`. Move the coercions through the operations in `at ha ⊢`.
+Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨T⟩` from `HW.kType_exists ε lam hlam`. Take `⟨Ψ, ha, hb, hc, hd, hdec, he, -, hF⟩` from `hAll (2 * r + k + 1) ε lam h T hlam hgapAt hq1`. Establish `hP : IsPsiFor ε lam T Ψ` using `⟨ha, hb, hc, hd, fun μ' hμ' => (he μ' hμ').2.1 h8⟩`. Establish `hv₀ : T.w ≠ 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `h0`. Establish `h1` using `T.w_norm`. Rewrite `h1` using `[h0, norm_zero]`. Conclude with `zero_ne_one h1`. Establish `hPsi` using `psi_eq_PsiM ha hμ (hF μ hμ)`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hDS` using `isDS_sigLam hgap hP hv₀`. Use `⟨↥(Hlam ε Ψ T.w), inferInstance, inferInstance, inferInstance, fun g => sigLam ε Ψ T.w (P * g * P⁻¹), isDSHpk_of_isDS hPc hDS, isURepOn_UH_of hPc hDS.2.2.1, ?_⟩` and prove the remaining obligations. Introduce `w₀ hw₀`. Establish `hlow` using `isLowUnit_of_isLowUnitH hPc hDS hw₀`. Establish `hlowK : Formalism.MainNotions.S.lowKSub ε lam (sigLam ε Ψ T.w) = lowKSubLam ε Ψ T.w`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `sigLam_lowK hgap hP hv₀`. Unfold `Formalism.MainNotions.S.lowKSub`. Establish `hset : {S | Formalism.MainNotions.S.IsKTypeOf ε (sigLam ε Ψ T.w) (Formalism.QuantumDeterminants.lowK ε lam) S} = {lowKSubLam ε Ψ T.w}` using `Set.ext fun S => ⟨fun hS => h2 S hS, fun hS => by rw [Set.mem_singleton_iff.1 hS]; exact h1⟩`. Rewrite using `[hset, sSup_singleton]`. Establish `hmem : w₀ ∈ lowKSubLam ε Ψ T.w` using `hlowK ▸ hlow.2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Unfold `lowKSubLam at hmem`. Rewrite `hmem` using `[Submodule.mem_comap, Submodule.mem_map]`. Take `⟨x, hx, hxw⟩` from `hmem`. Take `⟨v₁, hv₁⟩` from `(mem_datumV_iff hP T.w x).1 hx`. Establish `hxw' : (x : L2 ε) = (w₀ : L2 ε)` using `hxw`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw0L : (w₀ : L2 ε) = uniformisationL2 ε Ψ T.w v₁` using `by rw [← hv₁, hxw']`. Establish `hw0 : w₀ = ⟨uniformisationL2 ε Ψ T.w v₁, datumEmbedding_mem_Hlam hP v₁⟩` using `Subtype.ext hw0L`. Establish `hv1 : v₁ ≠ 0`. Introduce `h0`. Establish `hj0 : uniformisationL2 ε Ψ T.w 0 = 0` using `by simpa using datumEmbedding_smul hP T.w 0 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hz : w₀ = 0` using `Subtype.ext (by rw [hw0L, h0, hj0]; rfl)`. Establish `h1` using `hlow.1`. Rewrite `h1` using `[hz, norm_zero]`. Conclude with `zero_ne_one h1`. Establish `hc1 : ((‖uniformisationL2 ε Ψ T.w T.w‖ ^ 2 : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (pow_ne_zero 2 (norm_ne_zero_iff.2 (datumEmbedding_highest_ne_zero hgap hP hv₀)))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨C, hC⟩` from `dec_gN_sigLam hgap hP hv₀ hq1 hdec v₁ v₁`. Use `⟨fun μG hμG => fdegB_of_isDS hPc hDS μG hμG, ⟨h / (8 * Real.sqrt (2 * (S7.q0 ε : ℝ))), C, hthr, fun g hg => ?_⟩, T, μ, P, v₁, _, hv1, hc1, hμ, hPc.1, fun g hg => ?_⟩` and prove the remaining obligations. Establish `hgJ` using `szt_conj_mem hPc hg show ‖inner ℂ w₀ (sigLam ε Ψ T.w (P * g * P⁻¹) w₀)‖ ≤ _`. Rewrite using `[Submodule.coe_inner, sigLam_coe hgap hP hv₀ hgJ, hw0L]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hgJ` using `szt_conj_mem hPc hg show inner ℂ w₀ (sigLam ε Ψ T.w (P * g * P⁻¹) w₀) = _`. Rewrite using `[hw0, formulaF_sigLam hgap hP hv₀ hgJ v₁ v₁]`. Unfold `Lap.psiCoef`. Rewrite using `[hPsi _ hgJ]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem sigZero (hAll : ∀ m : ℕ, S7.PsiAllStatement m) : Lap.SigZeroStatement := by
   intro k r z c u v b h hS

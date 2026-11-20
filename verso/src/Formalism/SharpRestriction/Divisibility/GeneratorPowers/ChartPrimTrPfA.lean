@@ -16,9 +16,9 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
 
 /- English proof (translation)
-Break down `k with k | I` into its components or cases. Simplify using `[primφ]`. Use `show (psum t'.G ![𝟙 t'.G, t'.act.act H.w0] I.down).left ≫ m.cm.F = m.cm.F ≫ (psum t.G ![𝟙 t.G, t.act.act H.w0] I.down).left`. Use `(psum_push m.cart ![𝟙 t'.G, t'.act.act H.w0] ![𝟙 t.G, t.act.act H.w0] (pushPt m.cart.1.w (𝟙 t'.G)) (fun i => ?_) I.down).trans ?_` and prove the remaining obligations. Use `fin_cases i`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Conclude with `Over.OverMorphism.ext (by simp [pushPt, m.act H.w0])`. Simplify using `[pushPt]`.
+A detailed English derivation is pending.
 -/
 theorem primφ_comm {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' ⟶ S} (m : SABMap t' t f)
     (k : Fin 1 ⊕ ULift.{0} (Finset (Fin 2))) : primφ t' k ≫ m.φ = m.φ ≫ primφ t k := by
@@ -36,7 +36,7 @@ theorem primφ_comm {S S' : Scheme.{0}} {t' : SAB H S'} {t : SAB H S} {f : S' �
 variable {X Y : Scheme.{0}} {K : Type} [Fintype K]
 
 /- English proof (translation)
-Introduce `j j' _ _ h`. Take `rfl : j = j'` from `funext fun k => h k k rfl`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 -/
 theorem corr_self (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (c : LB.Gen (LB.LinComb L φ ε)) :
     LB.Gen.Corr L φ ε φ ε c c := by
@@ -45,7 +45,7 @@ theorem corr_self (L : LB X) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (c : LB.Gen
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `⟨c, hc, corr_self L _ ε c⟩`.
+Substitute using the available equality. Supply the required witnesses or components.
 -/
 theorem exists_reindex (L : LB X) {φ φ' : K → (Y ⟶ X)} (h : φ' = φ) (ε : K → ℤ)
     (c : LB.Gen (LB.LinComb L φ ε)) (hc : c.IsGen) :
@@ -54,11 +54,11 @@ theorem exists_reindex (L : LB X) {φ φ' : K → (Y ⟶ X)} (h : φ' = φ) (ε 
   exact ⟨c, hc, corr_self L _ ε c⟩
 
 /- English proof (translation)
-Use `(maps_iff w φ' (fun k => φ' k ≫ F) ε a t (𝟙 Y) (flatGen L F φ' ε t) (fun j x hx => wchart_pull_le L F φ' j hx) (fun j => ?_)).2 ?_` and prove the remaining obligations. Use `unit_ext fun y hy => ?_` and prove the remaining obligations. Establish `hyV : (𝟙 Y : Y ⟶ Y) y ∈ ((L.pull F).LinComb φ' ε).U j` using `hy`. Establish `hyU : (𝟙 Y : Y ⟶ Y) ((𝟙 Y : Y ⟶ Y) y) ∈ LB.wchart L (fun k => φ' k ≫ F) (fun k => j k ⟨⟩)` using `wchart_pull_le L F φ' j hy`. Use `(gm_res (𝟙 Y) y _ hyV _).trans ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ (gm_res (𝟙 Y) y _ hyV _).symm` and prove the remaining obligations. Establish `e` using `gm_pull (𝟙 Y) (𝟙 Y) y _ hyU (t.s fun k => j k ⟨⟩)`. Rewrite `e` using `[Category.comp_id]`. Conclude with `e.symm`. Introduce `Z r z p q hp hq`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.comp_id]`. Conclude with `R Z r z p q (Set.mem_iInter.2 hp) (Set.mem_iInter.2 hq)`.
+A detailed English derivation is pending.
 -/
 theorem maps_flat {X' : Scheme.{0}} {L : LB X} {L' : LB X'} {F : X' ⟶ X} (w : LB.Iso L' (L.pull F))
     (φ' : K → (Y ⟶ X')) (ε : K → ℤ) (a : LB.Gen (LB.LinComb L' φ' ε))

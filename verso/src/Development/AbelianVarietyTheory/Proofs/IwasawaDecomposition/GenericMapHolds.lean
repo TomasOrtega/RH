@@ -15,14 +15,14 @@ open GlobalTheory.Toroidal GlobalTheory.Models GlobalTheory.LN GlobalTheory.ShFa
 namespace GlobalTheory.GenMap
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.generic_point_of_flat_local`.
+A detailed English derivation is pending.
 -/
 theorem gen_factor : ∀ (X U : Scheme.{0}) [IsLocallyNoetherian X] (j : U ⟶ X) [IsOpenImmersion j], Dense (Set.range j) →
     (∀ x : X, IsDomain (X.presheaf.stalk x)) → ∀ (R : Type) [CommRing R] [IsDomain R] [IsLocalRing R] (ξ : Sp R ⟶ X),
     (Scheme.stalkClosedPointTo ξ).hom.Flat → ∃ y : Sp (FractionRing R) ⟶ U, y ≫ j = jK R ≫ ξ := GlobalTheory.T.generic_point_of_flat_local
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.polarization_of_refined_fan`.
+A detailed English derivation is pending.
 -/
 theorem chart_extends : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l)
     (c : Coeff l) (X : GMod Xo c) (Y : Model Xo c (RingHom.id c.F)) (g : ℕ) (φs : InvFun ℤ) (𝒩 : Finset ℕ)
@@ -36,14 +36,14 @@ theorem chart_extends : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (
       ∀ y : Sp (FractionRing R) ⟶ Xo.XF c, y ≫ Y.j = jK R ≫ ξ → ∃ χ : Sp R ⟶ X.X, jK R ≫ χ = y ≫ X.j := GlobalTheory.T.polarization_of_refined_fan
 
 /- English proof (translation)
-Simplify using `only [spMap, CommRingCat.ofHom_id]`. Use `infer_instance`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isIso_spMap_id (F : Type) [Field F] : IsIso (spMap (RingHom.id F)) := by
   simp only [spMap, CommRingCat.ofHom_id]
   infer_instance
 
 /- English proof (translation)
-Use `isIso_spMap_id c.F` as an intermediate fact. Use `Y.jQ_open` as an intermediate fact. Unfold `Model.j`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem isOpenImmersion_j {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Datum H} {l : Level H}
     {Xo : Moduli D l} {c : Coeff l} (Y : Model Xo c (RingHom.id c.F)) : IsOpenImmersion Y.j := by
@@ -53,7 +53,7 @@ theorem isOpenImmersion_j {E : Type} [Field E] [NumberField E] [IsCMField E] {H 
   infer_instance
 
 /- English proof (translation)
-Establish `: IsDominant (jK R)` using `⟨(PrimeSpectrum.denseRange_comap_iff_ker_le_nilRadical (algebraMap R (FractionRing R))).2 (by`. Rewrite using `[(RingHom.injective_iff_ker_eq_bot _).1 (IsFractionRing.injective R (FractionRing R))]`. Conclude with `bot_le)⟩`. Conclude with `ext_of_isDominant (jK R) h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hom_ext_jK {R : Type} [CommRing R] [IsDomain R] {Z : Scheme.{0}} [Z.IsSeparated] {f g : Sp R ⟶ Z}
     (h : jK R ≫ f = jK R ≫ g) : f = g := by
@@ -63,21 +63,19 @@ theorem hom_ext_jK {R : Type} [CommRing R] [IsDomain R] {Z : Scheme.{0}} [Z.IsSe
   exact ext_of_isDominant (jK R) h
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c X Y g φs 𝒩 φ d k DX hg hfan href hpol hcone`. Establish `hidY : IsDedFrac (RingHom.id c.F)` using `⟨⟨inferInstance, inferInstance⟩, inferInstance, inferInstance⟩`. Take `⟨hYn, hYr, hYs, -, -, hYd, -⟩` from `GlobalTheory.ModelRelCompare.densePart Y hidY`. Take `⟨-, -, hXs, -, -, -, -⟩` from `GlobalTheory.ModelRelCompare.densePart X (GlobalTheory.ModelRelCompare.isDedFrac_in_use c).1`. Establish `hYj` using `isOpenImmersion_j Y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hXp` using `isProper_toroidalModel_structureMap X`. Establish `hw : X.j ≫ X.s = Y.j ≫ Y.s ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Simplify using `only [Model.j, Category.assoc, pullback.condition, pullback.condition_assoc]`. Rewrite using `[← Category.assoc X.jQ, X.jQ_over, ← Category.assoc Y.jQ, Y.jQ_over]`. Simplify using `[spMap, CommRingCat.ofHom_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hext : ∀ z : Y.X, ExtAt Y.j X.j (𝟙 Y.X) z`. Introduce `z`. Take `⟨R, _, _, _, ξ, t, mξ, P, m, γ, hR, hz, hE, hU, hT, hC, hI⟩` from `hcone z`. Take `⟨y, hy⟩` from `gen_factor Y.X (Xo.XF c) Y.j hYd.denseRange (fun x => (Y.normal x).1) R ξ hE.1`. Take `⟨χ, hχ⟩` from `chart_extends E H D l Xo c X Y g φs 𝒩 φ d k DX hg hfan href hpol R ξ t mξ P m γ hR hE hU hT hC hI y hy`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hχs : χ ≫ X.s = ξ ≫ 𝟙 Y.X ≫ Y.s ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Use `hom_ext_jK ?_` and prove the remaining obligations. Rewrite using `[reassoc_of% hχ, hw, Category.id_comp, ← reassoc_of% hy]`. Rewrite using `[← hz]`. Conclude with `GlobalTheory.ExtAtProof.extAtSt Y.X Y.X (Xo.XF c) X.X (Sp (𝓞 c.F)) (𝟙 Y.X) Y.j X.j (Y.s ≫ spMap (algebraMap (𝓞 c.F) c.F)) X.s R ξ y χ inferInstance inferInstance inferInstance hw hE.1 (by rw [Category.comp_id, hy]) hχ hχs`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `GlobalTheory.TorRef.glueSt Y.X Y.X (Xo.XF c) X.X (𝟙 Y.X) Y.j X.j hYr hYj (by have hD : Dense (Set.range Y.j) := hYd.denseRange; simpa using hD) hXs hext`. Establish `hj : Y.j ≫ h = X.j` using `by simpa using hh (Xo.XF c) Y.j (𝟙 _) (by simp)`. Use `isIso_spMap_id c.F` as an intermediate fact. Establish `hgr : IsReduced (gen Y)` using `isReduced_of_isOpenImmersion (genι Y)`. Establish `hdom : IsDominant Y.jQ` using `⟨Y.jQ_dense⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hid : spMap (RingHom.id c.F) = 𝟙 _` using `by simp [spMap, CommRingCat.ofHom_id]`. Establish `hw2 : (genι Y ≫ h) ≫ X.s = genStr Y ≫ spMap (algebraMap (𝓞 c.F) c.F)`. Use `ext_of_isDominant Y.jQ ?_` and prove the remaining obligations. Establish `e1 : Y.jQ ≫ genι Y ≫ h = X.j` using `hj`. Rewrite using `[Category.assoc, reassoc_of% e1, hw]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Model.j, genStr, Category.assoc, pullback.condition_assoc, hid, Category.id_comp]`. Use `⟨pullback.lift (genι Y ≫ h) (genStr Y) hw2, ?_⟩` and prove the remaining obligations. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [Category.assoc, pullback.lift_fst]`. Conclude with `hj`.
-
-Simplify using `only [Category.assoc, pullback.lift_snd]`. Conclude with `Y.jQ_over.trans X.jQ_over.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem genMapSt : GenMapSt := by
   intro E _ _ _ H D l Xo c X Y g φs 𝒩 φ d k DX hg hfan href hpol hcone

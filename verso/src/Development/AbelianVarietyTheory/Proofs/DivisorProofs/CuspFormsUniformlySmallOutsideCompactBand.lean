@@ -15,7 +15,7 @@ noncomputable section
 namespace GlobalTheory.HCF.Tail
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_isCompact_detBand_siegelSet`.
+A detailed English derivation is pending.
 -/
 theorem compactPart : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (ω : Set (GA E a)), IsCompact ω →
     ∀ t R : ℝ, 0 < t → ∃ C : Set (GA E a), IsCompact C ∧ C ⊆ band E a ∧
@@ -26,7 +26,7 @@ theorem compactPart : ∀ (E : Type) [Field E] [NumberField E] (a : ℕ) (ω : S
           b * GroundTheory.Automorphic.Reduction.diagUnits a (fun i => GroundTheory.Automorphic.Reduction.posIdele (K := E) (ρ i) (hρ i)) * k ∈ C := GlobalTheory.T.exists_isCompact_detBand_siegelSet
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.exists_conj_finiteUnipotent_mem_openSubgroup`.
+A detailed English derivation is pending.
 -/
 theorem finConj : ∀ (E : Type) [Field E] [NumberField E] (a r : ℕ) (L : Subgroup (GL (Fin a) (Af E))),
     IsOpen (L : Set (GL (Fin a) (Af E))) → ∀ ω : Set (GA E a), IsCompact ω →
@@ -37,7 +37,7 @@ theorem finConj : ∀ (E : Type) [Field E] [NumberField E] (a r : ℕ) (L : Subg
         (b * GroundTheory.Automorphic.Reduction.diagUnits a (fun i => GroundTheory.Automorphic.Reduction.posIdele (K := E) (ρ i) (hρ i)) * k) = finGL E a l := GlobalTheory.T.exists_conj_finiteUnipotent_mem_openSubgroup
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.conj_archUnipotent_mem_nhds_one`.
+A detailed English derivation is pending.
 -/
 theorem infConj : ∀ (E : Type) [Field E] [NumberField E] (a r : ℕ) (U : Set (GA E a)), U ∈ 𝓝 (1 : GA E a) →
     ∃ δ : ℝ, 0 < δ ∧ ∀ (x : GA E a) (P : BlockIx a r → Ad E), (∀ p, (P p).2 = 0) →
@@ -46,7 +46,7 @@ theorem infConj : ∀ (E : Type) [Field E] [NumberField E] (a r : ℕ) (U : Set 
       x⁻¹ * unip P * x ∈ U := GlobalTheory.T.conj_archUnipotent_mem_nhds_one
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.cuspidal_norm_le_of_oscillation_scaledUnipFD`.
+A detailed English derivation is pending.
 -/
 theorem meanZero : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a r : ℕ), 0 < r → r < a →
     ∀ φ : GA E a → ℂ, (∀ γ g, φ (ratGL E a γ * g) = φ g) → IsCuspidal φ → Continuous φ →
@@ -57,7 +57,7 @@ section Band
 variable {E : Type} [Field E] [NumberField E] {a : ℕ}
 
 /- English proof (translation)
-Unfold `absDetA`. Rewrite using `[GroundTheory.Automorphic.Reduction.adeleAbs_units (K := E), GroundTheory.Automorphic.Reduction.adeleAbs_units (K := E), GroundTheory.Automorphic.Reduction.adeleAbs_units (K := E), map_mul, map_mul]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absDetA_mul (g h : GA E a) : absDetA (g * h) = absDetA g * absDetA h := by
   unfold absDetA
@@ -66,7 +66,7 @@ theorem absDetA_mul (g h : GA E a) : absDetA (g * h) = absDetA g * absDetA h := 
   rfl
 
 /- English proof (translation)
-Establish `h : Matrix.GeneralLinearGroup.det (ratGL E a γ) = GroundTheory.Global.IdeleGroup.diagonal E (Matrix.GeneralLinearGroup.det γ)` using `Units.ext (det_map _ γ)`. Unfold `absDetA`. Rewrite using `[GroundTheory.Automorphic.Reduction.adeleAbs_units (K := E), h, GroundTheory.Global.IdeleGroup.ideleModule_diagonal]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absDetA_ratGL (γ : GL (Fin a) E) : absDetA (ratGL E a γ) = 1 := by
   have h : Matrix.GeneralLinearGroup.det (ratGL E a γ) = GroundTheory.Global.IdeleGroup.diagonal E (Matrix.GeneralLinearGroup.det γ) :=
@@ -76,7 +76,7 @@ theorem absDetA_ratGL (γ : GL (Fin a) E) : absDetA (ratGL E a γ) = 1 := by
   rfl
 
 /- English proof (translation)
-Unfold `absDetA`. Rewrite using `[det_unip]`. Simplify `(absDetA_one (E := E) (a := a))` using `[absDetA]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem absDetA_unip {r : ℕ} (P : BlockIx a r → Ad E) : absDetA (unip P) = 1 := by
   unfold absDetA
@@ -84,14 +84,14 @@ theorem absDetA_unip {r : ℕ} (P : BlockIx a r → Ad E) : absDetA (unip P) = 1
   simpa [absDetA] using (absDetA_one (E := E) (a := a))
 
 /- English proof (translation)
-Establish `h1 : absDetA x⁻¹ * absDetA x = 1` using `by rw [← absDetA_mul, inv_mul_cancel, absDetA_one]`. Rewrite using `[absDetA_mul, absDetA_mul, absDetA_mul, hu, mul_one, h1, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem absDetA_conj (x u : GA E a) (hu : absDetA u = 1) : absDetA (x * (x⁻¹ * u * x)) = absDetA x := by
   have h1 : absDetA x⁻¹ * absDetA x = 1 := by rw [← absDetA_mul, inv_mul_cancel, absDetA_one]
   rw [absDetA_mul, absDetA_mul, absDetA_mul, hu, mul_one, h1, mul_one]
 
 /- English proof (translation)
-Simplify using `only [band, Set.mem_setOf_eq, absDetA_mul, absDetA_ratGL, one_mul] at hg ⊢`. Conclude with `hg`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mem_band_ratGL_mul {γ : GL (Fin a) E} {g : GA E a} (hg : g ∈ band E a) : ratGL E a γ * g ∈ band E a := by
   simp only [band, Set.mem_setOf_eq, absDetA_mul, absDetA_ratGL, one_mul] at hg ⊢
@@ -104,9 +104,9 @@ variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {L 
   {W : Submodule ℂ (Kinf E a → ℂ)} {X : Set (Module.End ℂ (Sm E a) → ℂ)} {N : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.1.left`. Consider the case `zero => intro γ g`. Both sides reduce to the same expression. Consider the case `add x y _ _ hx hy => intro γ g`.
+Proceed by induction. Treat this case separately. Treat this case separately. Both sides reduce to the same expression. Treat this case separately.
 
-Simplify using `[hx γ g, hy γ g]`. Consider the case `smul c x _ hx => intro γ g`. Simplify using `[hx γ g]`.
+Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 -/
 theorem span_left {φ : Sm E a} (hφ : φ ∈ Submodule.span ℂ (formsGL E a L W X N)) :
     ∀ γ g, φ.1 (ratGL E a γ * g) = φ.1 g := by
@@ -117,9 +117,9 @@ theorem span_left {φ : Sm E a} (hφ : φ ∈ Submodule.span ℂ (formsGL E a L 
   | smul c x _ hx => intro γ g; simp [hx γ g]
 
 /- English proof (translation)
-Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem x hx => exact hx.2.1`. Consider the case `zero => intro l _`. Conclude with `map_zero _`. Consider the case `add x y _ _ hx hy => intro l hl`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add, hx l hl, hy l hl]`. Consider the case `smul c x _ hx => intro l hl`. Rewrite using `[map_smul, hx l hl]`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_fin {φ : Sm E a} (hφ : φ ∈ Submodule.span ℂ (formsGL E a L W X N)) :
     ∀ l ∈ L, finRep E a l φ = φ := by
@@ -130,16 +130,16 @@ theorem span_fin {φ : Sm E a} (hφ : φ ∈ Submodule.span ℂ (formsGL E a L W
   | smul c x _ hx => intro l hl; rw [map_smul, hx l hl]
 
 /- English proof (translation)
-The claim follows from `congrFun (congrArg Subtype.val (span_fin hφ l hl)) g`.
+A detailed English derivation is pending.
 -/
 theorem span_right {φ : Sm E a} (hφ : φ ∈ Submodule.span ℂ (formsGL E a L W X N)) {l : GL (Fin a) (Af E)} (hl : l ∈ L)
     (g : GA E a) : φ.1 (g * finGL E a l) = φ.1 g :=
   congrFun (congrArg Subtype.val (span_fin hφ l hl)) g
 
 /- English proof (translation)
-Use `GlobalTheory.CuspRep.ContAut.continuous_of_isOpen_stab E a φ ?_` and prove the remaining obligations. Use `isOpen_iff_forall_mem_open.2 fun k hk => ⟨(fun l => k * l) '' (L : Set (GL (Fin a) (Af E))), ?_, ?_, ⟨1, L.one_mem, mul_one k⟩⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨l, hl, rfl⟩`. Express the relevant statement in the definitionally equal form `finRep E a (k * l) φ = φ`. Rewrite using `[map_mul, Module.End.mul_apply, span_fin hφ l hl]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hk`. Conclude with `(Homeomorph.mulLeft k).isOpenMap _ hL`.
+A detailed English derivation is pending.
 -/
 theorem span_cont (hL : IsOpen (L : Set (GL (Fin a) (Af E)))) {φ : Sm E a}
     (hφ : φ ∈ Submodule.span ℂ (formsGL E a L W X N)) : Continuous φ.1 := by
@@ -155,17 +155,17 @@ end Span
 
 open GroundTheory.Automorphic.Reduction in
 /- English proof (translation)
-Take `⟨U, hU, hequi⟩` from `GlobalTheory.T.harishChandraForms_equicontinuous_on_band E a L hL W hW X hX N ε hε`. Take `⟨M₀, hM₀, hfin⟩` from `finConj E a r L hL ω hω`. Take `⟨C₁, hC₁⟩` from `GroundTheory.Automorphic.CuspidalSpectrum.exists_norm_archMat_conj_le hω hωB ht hr hra (GroundTheory.Automorphic.isCompact_scaledInfSet (K := E) M₀)`. Take `⟨δ, hδ, hinf⟩` from `infConj E a r U hU`. Use `⟨max C₁ 0 / δ + 1, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `φ hφ hcusp M hM b hb ρ hρ hs k hk hband hR`. Use `set x := b * diagUnits a (fun i => posIdele (K := E) (ρ i) (hρ i)) * k with hx`. Establish `hq0 : 0 < ρ ⟨r, hra⟩ / ρ ⟨r - 1, by omega⟩` using `div_pos (hρ _) (hρ _)`. Establish `hgain : C₁ * (ρ ⟨r, hra⟩ / ρ ⟨r - 1, by omega⟩) ≤ δ` using `by set q := ρ ⟨r, hra⟩ / ρ ⟨r - 1, by omega⟩ set c := max C₁ 0`. Establish `hc0 : 0 ≤ c` using `le_max_right _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hRq : (c / δ + 1) * q ≤ 1`. Rewrite using `[show q = ρ ⟨r, hra⟩ / ρ ⟨r - 1, by omega⟩ from rfl, mul_div_assoc', div_le_one (hρ _)]`. Conclude with `hR`. Establish `h1 : C₁ * q ≤ c * q` using `mul_le_mul_of_nonneg_right (le_max_left _ _) hq0.le`. Establish `h2 : c * q ≤ δ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `e : c = δ * (c / δ)` using `by field_simp`. Use polynomial arithmetic with `[mul_nonneg (div_nonneg hc0 hδ.le) hq0.le]`. Combine the linear equalities and inequalities to obtain the conclusion. Use `meanZero E a r hr hra φ.1 (span_left hφ) hcusp (span_cont hL hφ) M₀ hM₀ x (ε * M) ?_` and prove the remaining obligations. Introduce `Y hY`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hsplit : unip Y * x = x * (x⁻¹ * unip (GroundTheory.Automorphic.CuspidalSpectrum.truncInf Y) * x) * (x⁻¹ * unip (GroundTheory.Automorphic.CuspidalSpectrum.truncFin Y) * x)` using `by conv_lhs => rw [← GroundTheory.Automorphic.CuspidalSpectrum.truncInf_add_truncFin Y, unip_add] group`. Take `⟨l, hl, hle⟩` from `hfin b hb ρ hρ k hk (GroundTheory.Automorphic.CuspidalSpectrum.truncFin Y) (fun p => rfl) (fun p => GroundTheory.Automorphic.exists_finite_eq_natCast_mul hM₀ hY p)`. Establish `hv : x⁻¹ * unip (GroundTheory.Automorphic.CuspidalSpectrum.truncInf Y) * x ∈ U` using `hinf x _ (fun p => rfl) ((hC₁ b hb ρ hρ hs k hk (GroundTheory.Automorphic.CuspidalSpectrum.truncInf Y) (fun p => rfl) (fun p => GroundTheory.Automorphic.infinite_mem_scaledInfSet hM₀ hY p)).trans hgain)`. Rewrite using `[hsplit, hle, span_right hφ hl]`. Use `hequi φ hφ M hM x hband _ hv ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `absDetA_conj x (unip (GroundTheory.Automorphic.CuspidalSpectrum.truncInf Y)) (absDetA_unip _)`. Simplify using `only [band, Set.mem_setOf_eq] at hband ⊢`. Rewrite using `[h]`. Conclude with `hband`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oneRoot (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (L : Subgroup (GL (Fin a) (Af E)))
     (hL : IsOpen (L : Set (GL (Fin a) (Af E)))) (W : Submodule ℂ (Kinf E a → ℂ)) (hW : FiniteDimensional ℂ W)
@@ -220,17 +220,17 @@ theorem oneRoot (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : �
 open GroundTheory.Automorphic.Reduction in
 
 /- English proof (translation)
-Introduce `E _ _ _ a L hL W hW X hX N ε hε`. Take `⟨ω, hω, hωB, t, ht, hsieg⟩` from `exists_siegelSet (K := E) a`. Establish `hex : ∀ r : ℕ, ∀ (hr : 0 < r) (hra : r < a), ∃ R : ℝ, _` using `fun r hr hra => oneRoot E a L hL W hW X hX N hω hωB ht hε hr hra`. Use `choose Rf hRf using hex`. Use `set R : ℝ := 1 + ∑ r : Fin a, if h : 0 < (r : ℕ) then max (Rf r h r.2) 0 else 0 with hRdef`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hRle : ∀ (r : ℕ) (hr : 0 < r) (hra : r < a), Rf r hr hra ≤ R`. Introduce `r hr hra`. Apply the tactic sequence `have h1 := Finset.single_le_sum (f := fun r : Fin a => if h : 0 < (r : ℕ) then max (Rf r h r.2) 0 else 0) (fun r _ => by split_ifs <;> simp) (Finset.mem_univ ⟨r, hra⟩)`. Simplify using `only [hr, dif_pos] at h1`. Combine the linear relations using `[le_max_left (Rf r hr hra) 0]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C, hC, hCb, hCmem⟩` from `compactPart E a ω hω t R ht`. Use `⟨C, hC, hCb, fun g hg => ?_⟩` and prove the remaining obligations. Take `⟨γ, hγ⟩` from `hsieg g`. Take `⟨b, hb, _, ⟨ρ, hρ, hs, rfl⟩, k, hk, he⟩` from `hγ`. Establish `he' : ratGL E a γ * g = b * diagUnits a (fun i => posIdele (K` using `E) (ρ i) (hρ i)) * k := he`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `hgb : ratGL E a γ * g ∈ band E a` using `mem_band_ratGL_mul hg`. Distinguish the cases in `hall : ∀ (r : ℕ) (hr : 0 < r) (hra : r < a), ρ ⟨r - 1, by omega⟩ ≤ R * ρ ⟨r, hra⟩`. Use `Or.inl ⟨γ, ?_⟩` and prove the remaining obligations. Rewrite `hgb`, the goal using `[he']`. Use `hCmem b hb ρ hρ hs (fun i j hij => ?_) k hk hgb` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hall j (by omega) j.2`. Establish `e : (⟨(j : ℕ) - 1, by omega⟩ : Fin a) = i` using `Fin.ext (by simp; omega)`. Rewrite `h1` using `[e]`. Then use the resulting hypothesis. Use `push_neg at hall`. Take `⟨r, hr, hra, hlt⟩` from `hall`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Or.inr fun φ hφ hc M hM => ?_` and prove the remaining obligations. Rewrite using `[← span_left hφ γ g, he']`. Rewrite `hgb` using `[he']`. Use `hRf r hr hra φ hφ hc M hM b hb ρ hρ hs k hk hgb ?_` and prove the remaining obligations. Conclude with `(mul_le_mul_of_nonneg_right (hRle r hr hra) (hρ _).le).trans hlt.le`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem tails : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ) (L : Subgroup (GL (Fin a) (Af E))),
     IsOpen (L : Set (GL (Fin a) (Af E))) → ∀ W : Submodule ℂ (Kinf E a → ℂ), FiniteDimensional ℂ W →

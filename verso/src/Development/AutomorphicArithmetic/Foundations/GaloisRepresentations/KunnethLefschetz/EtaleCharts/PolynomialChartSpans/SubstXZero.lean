@@ -6,7 +6,7 @@ open CategoryTheory AlgebraicGeometry
 namespace UpperTheory.Gal.KunnethLefschetz.G
 
 /- English proof (translation)
-Use `algebraize [φ]`. Set `` to `MvPolynomial.algebraMvPolynomial (σ := σ) (R := A) (S := B)`. Establish `h : Algebra.IsPushout A (MvPolynomial σ A) B (MvPolynomial σ B)` using `inferInstance`. Use `haveI := h.symm`. Conclude with `RingHom.Etale.isStableUnderBaseChange A B (MvPolynomial σ A) (MvPolynomial σ B) hφ`.
+Introduce a local definition for the expression. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem etale_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B) (hφ : φ.Etale)
     (σ : Type) : (MvPolynomial.map (σ := σ) φ).Etale := by
@@ -17,7 +17,7 @@ private theorem etale_map {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B
   exact RingHom.Etale.isStableUnderBaseChange A B (MvPolynomial σ A) (MvPolynomial σ B) hφ
 
 /- English proof (translation)
-Establish `h0 : (Scheme.Hom.appLE (𝟙 (Spec (CommRingCat.of R))) ⊤ U le_top).hom.Etale` using `HasRingHomProperty.appLE @Etale (𝟙 _) inferInstance ⟨⊤, isAffineOpen_top _⟩ ⟨U, hU⟩ _`. Conclude with `RingHom.Etale.respectsIso.right _ (Scheme.ΓSpecIso (CommRingCat.of R)).symm.commRingCatIsoToRingEquiv h0`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem etale_open {R : Type} [CommRing R] (U : (Spec (CommRingCat.of R)).Opens)
     (hU : IsAffineOpen U) :
@@ -34,30 +34,30 @@ private def subst (O : Type) [CommRing O] (ϖ : O) (D : ℕ) :
     Fin (D + 1) → MvPolynomial (Fin D) O)).toRingHom
 
 /- English proof (translation)
-Simplify using `[subst]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem subst_C (O : Type) [CommRing O] (ϖ : O) (D : ℕ) (r : O) :
     subst O ϖ D (MvPolynomial.C r) = MvPolynomial.C r := by
   simp [subst]
 
 /- English proof (translation)
-Simplify using `[subst]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem subst_X_zero (O : Type) [CommRing O] (ϖ : O) (D : ℕ) :
     subst O ϖ D (MvPolynomial.X 0) = MvPolynomial.C ϖ := by
   simp [subst]
 
 /- English proof (translation)
-Simplify using `[subst]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem subst_X_succ (O : Type) [CommRing O] (ϖ : O) (D : ℕ) (i : Fin D) :
     subst O ϖ D (MvPolynomial.X i.succ) = MvPolynomial.X i := by
   simp [subst]
 
 /- English proof (translation)
-Establish `h : Finset.univ.filter (fun i : Fin (D + 1) => (i : ℕ) < 1) = {0}`. Use extensionality with `i`. Rewrite using `[Finset.mem_filter, Finset.mem_singleton]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨-, h⟩`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Conclude with `Fin.ext (by simp only [Fin.val_zero]; omega)`. Introduce and unpack `rfl`. Conclude with `⟨Finset.mem_univ _, by simp only [Fin.val_zero]; omega⟩`. Rewrite using `[h, Finset.prod_singleton]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem prod_first (O : Type) [CommRing O] (D : ℕ) :
     (∏ i ∈ Finset.univ.filter (fun i : Fin (D + 1) => (i : ℕ) < 1), MvPolynomial.X i) =
@@ -97,11 +97,11 @@ private def modelEquiv (O : Type) [CommRing O] (ϖ : O) (D : ℕ) :
         · simp [subst_X_succ])
 
 /- English proof (translation)
-Introduce `O _ ϖ X p _ x`. Take `⟨U, hU, V, hV, hx, e, hs⟩` from `Smooth.exists_isStandardSmooth p x`. Take `⟨n, g, hgC, hg⟩` from `hs.exists_etale_mvPolynomial`. Establish `hf` using `etale_open (R := O) U hU`. Use `⟨V, hV, hx, n + 1, 1, le_rfl, by omega, (g.comp (MvPolynomial.map ((Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ Scheme.Hom.appLE (𝟙 (Spec (CommRingCat.of O))) ⊤ U le_top).hom)).comp (modelEquiv O ϖ n).toRingHom, ?_, ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `RingHom.Etale.stableUnderComposition _ _ (RingHom.Etale.of_bijective (modelEquiv O ϖ n).bijective) (RingHom.Etale.stableUnderComposition _ _ (etale_map _ hf _) hg)`. Use `RingHom.ext fun r => ?_` and prove the remaining obligations. Establish `e1 : Scheme.Hom.appLE (𝟙 (Spec (CommRingCat.of O))) ⊤ U le_top ≫ Scheme.Hom.appLE p U V e = Scheme.Hom.appLE p ⊤ V le_top`. Use `(Scheme.Hom.appLE_comp_appLE p (𝟙 _) ⊤ U V le_top e).trans ?_` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e2` using `congrArg (fun m => m.hom ((Scheme.ΓSpecIso (CommRingCat.of O)).inv.hom r)) e1`. Establish `e3` using `RingHom.congr_fun hgC (((Scheme.ΓSpecIso (CommRingCat.of O)).inv ≫ Scheme.Hom.appLE (𝟙 (Spec (CommRingCat.of O))) ⊤ U le_top).hom r)`. Establish `e4 : (modelEquiv O ϖ n) (algebraMap O _ r) = MvPolynomial.C r` using `subst_C O ϖ n r`. Simplify using `only [RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, e4, MvPolynomial.map_C]`. Conclude with `e3.trans e2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smSst : SmSst := by
   intro O _ ϖ X p _ x

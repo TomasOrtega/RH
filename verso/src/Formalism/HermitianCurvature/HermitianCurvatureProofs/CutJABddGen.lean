@@ -32,7 +32,7 @@ variable {S : C.HidaSetting E Wp Wq} {v : Fin S.f} {c ca : Coef S v}
   {hadj : ∀ x A B', B.hsInner (c x A) B' = B.hsInner A (ca x B')}
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Simplify using `only [B.opApply, orderZeroDifferentialOperator, List.map_cons, List.map_nil, List.sum_cons, List.sum_nil, add_zero]`. Use `first`. Consider the case `rfl`. Consider the case `simp [B.Rw]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem order_zero_operator_apply (J : B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) :
     B.opApply (orderZeroDifferentialOperator S v c ca hadj) J = fun g => c g (J g) := by
@@ -43,7 +43,7 @@ theorem order_zero_operator_apply (J : B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[�
     | simp [B.Rw]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `g`. Use `first`. Consider the case `(simp [B.opAdj, orderZeroDifferentialOperator]; done)`. Consider the case `(simp [B.opAdj, orderZeroDifferentialOperator]; rfl)`. Consider the case `rfl`.
+Apply function extensionality and compare values at an arbitrary argument. Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem order_zero_operator_adjoint (J : B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))) :
     B.opAdj (orderZeroDifferentialOperator S v c ca hadj) J = fun g => ca g (J g) := by
@@ -54,7 +54,7 @@ theorem order_zero_operator_adjoint (J : B.Mat S.G.k S.G.r → (Wq (S.pl v) →L
     | rfl
 
 /- English proof (translation)
-Use `first`. Consider the case `rfl`. Consider the case `simp [B.opOrder, orderZeroDifferentialOperator]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem order_zero_operator_order : B.opOrder (orderZeroDifferentialOperator S v c ca hadj) = 0 := by
   first
@@ -71,7 +71,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   {S : C.HidaSetting E Wp Wq} {T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v))} {v : Fin S.f}
 
 /- English proof (translation)
-Establish `hp : (T v).base.inSS ((Matrix.of.symm 1, Matrix.of.symm n⁻¹), (Matrix.of.symm 1, Matrix.of.symm 1))` using `⟨by simpa using P.BigCellZetaMinors.one_uw (T v).base.z, by simpa using WeylGroupFacts.mem_n_inv hn, by simpa using P.BigCellZetaMinors.one_uw (T v).base.z', by simpa using WeylGroupFacts.mem_n_one⟩`. Establish `h` using `he _ hp g hg X`. Establish `hu : IsUnit n.det` using `WeylGroupFacts.isUnit_of_uh hn.1`. Simplify using `only [Equiv.apply_symm_apply, inv_one, (T v).base.π_rep.1, (T v).base.π'_rep.1, B.sgs, Matrix.nonsing_inv_nonsing_inv n hu, Matrix.one_mul, Matrix.mul_one] at h`. Simplify `h.symm` using `[ContinuousLinearMap.one_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eqv_left {c : Coef S v} (he : EqvC S T v c) {g : B.Mat S.G.k S.G.r} (hg : g ∈ B.GV S.G.k S.G.r)
     {n : B.Mat S.G.k S.G.r} (hn : n ∈ Nset S.G.k S.G.r) (X : Wq (S.pl v) →L[ℂ] Wp (S.pl v)) :
@@ -86,7 +86,7 @@ theorem eqv_left {c : Coef S v} (he : EqvC S T v c) {g : B.Mat S.G.k S.G.r} (hg 
   simpa [ContinuousLinearMap.one_def] using h.symm
 
 /- English proof (translation)
-Establish `hp : (T v).base.inSS ((Matrix.of.symm 1, Matrix.of.symm 1), (Matrix.of.symm 1, Matrix.of.symm n))` using `⟨by simpa using P.BigCellZetaMinors.one_uw (T v).base.z, by simpa using WeylGroupFacts.mem_n_one, by simpa using P.BigCellZetaMinors.one_uw (T v).base.z', by simpa using hn⟩`. Establish `h` using `he _ hp g hg X`. Simplify using `only [Equiv.apply_symm_apply, inv_one, (T v).base.π_rep.1, (T v).base.π'_rep.1, B.sgs, Matrix.one_mul, Matrix.mul_one] at h`. Simplify `h.symm` using `[ContinuousLinearMap.one_def]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eqv_right {c : Coef S v} (he : EqvC S T v c) {g : B.Mat S.G.k S.G.r} (hg : g ∈ B.GV S.G.k S.G.r)
     {n : B.Mat S.G.k S.G.r} (hn : n ∈ Nset S.G.k S.G.r) (X : Wq (S.pl v) →L[ℂ] Wp (S.pl v)) :
@@ -100,9 +100,9 @@ theorem eqv_right {c : Coef S v} (he : EqvC S T v c) {g : B.Mat S.G.k S.G.r} (hg
   simpa [ContinuousLinearMap.one_def] using h.symm
 
 /- English proof (translation)
-Establish `hp : (T v).base.inSS ((Matrix.of.symm h, Matrix.of.symm 1), (Matrix.of.symm h'⁻¹, Matrix.of.symm 1))` using `⟨by simpa using hh, by simpa using WeylGroupFacts.mem_n_one, by simpa using P.BigCellInversePair.uw_inv hh', by simpa using WeylGroupFacts.mem_n_one⟩`. Establish `hg' : h * g * h' ∈ B.GV S.G.k S.G.r` using `WeylGroupFacts.uh_mul (WeylGroupFacts.uh_mul hh.1 hg) hh'.1`. Establish `e` using `he _ hp (h * g * h') hg' X`. Establish `hu' : IsUnit h'.det` using `WeylGroupFacts.isUnit_of_uh hh'.1`. Establish `hs : B.sgs ((Matrix.of.symm h, Matrix.of.symm 1), (Matrix.of.symm h'⁻¹, Matrix.of.symm 1)) (h * g * h') = g`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [B.sgs, Equiv.apply_symm_apply, inv_one, Matrix.mul_one]`. Rewrite using `[Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv _ hu', Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ (WeylGroupFacts.isUnit_of_uh hh.1), Matrix.one_mul]`. Rewrite `e` using `[hs]`. Simplify `e` using `only [Equiv.apply_symm_apply, Matrix.nonsing_inv_nonsing_inv h' hu']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem eqv_uw {c : Coef S v} (he : EqvC S T v c) {g : B.Mat S.G.k S.G.r} (hg : g ∈ B.GV S.G.k S.G.r)
     {h h' : B.Mat S.G.k S.G.r} (hh : h ∈ UWset S.G.k S.G.r (T v).base.z) (hh' : h' ∈ UWset S.G.k S.G.r (T v).base.z')
@@ -123,13 +123,13 @@ theorem eqv_uw {c : Coef S v} (he : EqvC S T v c) {g : B.Mat S.G.k S.G.r} (hg : 
   simpa only [Equiv.apply_symm_apply, Matrix.nonsing_inv_nonsing_inv h' hu'] using e
 
 /- English proof (translation)
-Take `⟨hS, hL, hR, hU⟩` from `hJ`. Use `⟨?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `g₀ hg₀`. Take `⟨U1, J', hU1, hg1, hJ', hJeq⟩` from `hS g₀ hg₀`. Take `⟨U2, c', hU2, hg2, hc', hceq⟩` from `hc g₀ ⟨hg₀.1.1, hg₀.2.1⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h2 : ContDiffOn ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) (fun g => ContinuousLinearMap.restrictScalarsL ℂ (Wq (S.pl v) →L[ℂ] Wp (S.pl v)) (Wq (S.pl v) →L[ℂ] Wp (S.pl v)) ℝ ℝ (c' g)) (U1 ∩ U2)` using `(ContinuousLinearMap.restrictScalarsL ℂ (Wq (S.pl v) →L[ℂ] Wp (S.pl v)) (Wq (S.pl v) →L[ℂ] Wp (S.pl v)) ℝ ℝ).contDiff.comp_contDiffOn (hc'.mono Set.inter_subset_right)`. Use `⟨U1 ∩ U2, fun g => c' g (J' g), hU1.inter hU2, ⟨hg1, hg2⟩, h2.clm_apply (hJ'.mono Set.inter_subset_left), ?_⟩` and prove the remaining obligations. Introduce `g hg hgl`. Simplify using `only`. Rewrite using `[hJeq g hg.1 hgl, hceq g hg.2 hgl.1]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `g hg n hn`. Simplify using `only`. Rewrite using `[hL g hg n hn, ContinuousLinearMap.map_smul, eqv_left he hg.1.1 hn.1]`. Introduce `g hg n hn`. Simplify using `only`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hR g hg n hn, ContinuousLinearMap.map_smul, eqv_right he hg.1.1 hn.1]`. Introduce `g hg h hh h' hh'`. Simplify using `only`. Rewrite using `[hU g hg h hh h' hh', eqv_uw he hg.1.1 hh hh']`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem equivariant_coefficient_preserves_forms {c : Coef S v} (hc : B.CkOn ⊤ (B.GPos (T v).base) c) (he : EqvC S T v c)
     {J : B.Mat S.G.k S.G.r → (Wq (S.pl v) →L[ℂ] Wp (S.pl v))} (hJ : J ∈ smoothFormsPositiveCone S T v) :
@@ -169,15 +169,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {Wp Wq : InfinitePla
   [∀ x, FiniteDimensional ℂ (Wp x)] [∀ x, FiniteDimensional ℂ (Wq x)]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `ρ`. Use `set X := actA (D.parOf S v) b (trJ S T v e J) ρ with hXdef`. Establish `hsm : ∀ π (q : Qp (D.parOf S v).r (D.parOf S v).TT), evQ (D.parOf S v) (trJ S T v e J π) q = ((Real.sqrt (MA.wq S.G.k q.1 (D.parOf S v).TT) : ℝ) : ℂ) * inner ℂ (B.hsVec (e π q.1.2)) (B.hsVec (J (B.gq (T v).base q.1)))` using `fun π q => congrFun (En.toSm_val_of_mem (D.parOf S v) (En.trace_smoothness E Wp Wq S T v hPl e hFr J hJ π)) q`. Establish `hw : (fun q : Qp (D.parOf S v).r (D.parOf S v).TT => ((Real.sqrt (MA.wq S.G.k q.1 (D.parOf S v).TT) : ℝ) : ℂ) * inner ℂ (B.hsVec (e ρ q.1.2)) (B.hsVec (c (B.gq (T v).base q.1) (J (B.gq (T v).base q.1))))) = (X : Qp (D.parOf S v).r (D.parOf S v).TT → ℂ)`. Use function extensionality and compare the values at `q`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hX` using `actA_fm_apply (D.parOf S v) hβ (trJ S T v e J) ρ q`. Express the relevant statement in the definitionally equal form `_ = evQ (D.parOf S v) X q`. Rewrite using `[hX]`. Simplify using `only [hsm, hβV]`. Establish `hfib` using `En.fibre_membership_holds E Wp Wq S T v hPl J hJ q.1 q.2`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hspan` using `(hFr.2 q.1.2 q.2.2).2.2 _ hfib`. Establish `hcJ : c (B.gq (T v).base q.1) (J (B.gq (T v).base q.1)) = ∑ π, inner ℂ (B.hsVec (e π q.1.2)) (B.hsVec (J (B.gq (T v).base q.1))) • c (B.gq (T v).base q.1) (e π q.1.2)` using `by conv_lhs => rw [hspan]`. Rewrite using `[map_sum]`. Simplify using `only [ContinuousLinearMap.map_smul]`. Rewrite using `[hcJ, En.hsVec_sum_smul, inner_sum, Finset.mul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun π _ => ?_` and prove the remaining obligations. Rewrite using `[inner_smul_right, hV q.1 q.2 ρ π]`. Expand and normalize the polynomial expressions, which then agree. Unfold `trJ`. Use `beta_reduce`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[hw]`. Unfold `MA.toSm`. Rewrite using `[dif_pos X.2]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trJ_of_fibMat (S : C.HidaSetting E Wp Wq) (T : ∀ v : Fin S.f, D.LevTower S.G.k S.G.r (Wp (S.pl v)) (Wq (S.pl v)))
     (v : Fin S.f) (hPl : Q.IsPlace (D.parOf S v) (T v).base.z (T v).base.z' (T v).base.π (T v).base.π')
@@ -223,17 +223,15 @@ theorem trJ_of_fibMat (S : C.HidaSetting E Wp Wq) (T : ∀ v : Fin S.f, D.LevTow
   rw [dif_pos X.2]
 
 /- English proof (translation)
-Introduce `E _ _ _ Wp Wq _ _ _ _ _ _ S T v hPl e Cb c ca V b hFr hR hb`. Take `⟨hadj, hc, hca, he, hea, hbc, hbca, hV⟩` from `hR`. Use `choose β hβ hβV using hb`. Use `⟨orderZeroDifferentialOperator S v c ca hadj, order_zero_operator_order, ⟨?_, ?_⟩, ?_, fun J hJ => ⟨?_, ?_, ?_⟩⟩` and prove the remaining obligations. Introduce `Tm hTm`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [orderZeroDifferentialOperator, List.mem_singleton] at hTm`. Substitute `hTm` using the available equality. Conclude with `⟨hc, hca⟩`. Introduce `p hp f _ g hg`. Rewrite using `[order_zero_operator_apply, order_zero_operator_apply]`.
+Substitute using the available equality. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `he p hp g hg.1 _`. Introduce `Tm hTm ε hε m`. Simplify using `only [orderZeroDifferentialOperator, List.mem_singleton] at hTm`. Substitute `hTm` using the available equality. Take `⟨C1, h1⟩` from `hbc ε hε m`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨C2, h2⟩` from `hbca ε hε m`. Use `⟨max C1 C2, fun u w hu hw hl g hg hG => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Establish `hpow : 0 ≤ B.gN g ^ (Cb * ((S.G.r : ℝ) + 1) * m)` using `Real.rpow_nonneg (Real.sqrt_nonneg _) _`. Rewrite using `[zero_add]`. Conclude with `(h1 u w hu hw hl g hg hG).trans (mul_le_mul_of_nonneg_right (le_max_left _ _) hpow)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hpow : 0 ≤ B.gN g ^ (Cb * ((S.G.r : ℝ) + 1) * m)` using `Real.rpow_nonneg (Real.sqrt_nonneg _) _`. Rewrite using `[zero_add]`. Conclude with `(h2 u w hu hw hl g hg hG).trans (mul_le_mul_of_nonneg_right (le_max_right _ _) hpow)`. Rewrite using `[order_zero_operator_apply]`. Conclude with `equivariant_coefficient_preserves_forms hc he hJ`.
-
-Rewrite using `[order_zero_operator_adjoint]`. Conclude with `equivariant_coefficient_preserves_forms hca hea hJ`. Rewrite using `[order_zero_operator_apply]`. Conclude with `trJ_of_fibMat S T v hPl e hFr c V hV b β hβ hβV J hJ`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem real_to_bounded_holds : RealToBdd := by
   intro E _ _ _ Wp Wq _ _ _ _ _ _ S T v hPl e Cb c ca V b hFr hR hb

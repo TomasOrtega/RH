@@ -76,7 +76,7 @@ def fullFrame {R : Type} [CommRing R] (U : Matrix (Fin (g + g)) (Fin g) R) (J : 
   Matrix.of fun r c => Fin.addCases (fun k => U r k) (fun k => (J⁻¹ * Lft.transpose * antiDiag R g) r k) c
 
 /- English proof (translation)
-Simplify using `[fullFrame]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem fullFrame_left {R : Type} [CommRing R] (U : Matrix (Fin (g + g)) (Fin g) R)
     (J : Matrix (Fin (g + g)) (Fin (g + g)) R) (Lft : Matrix (Fin g) (Fin (g + g)) R) (r : Fin (g + g)) (k : Fin g) :
@@ -84,7 +84,7 @@ Simplify using `[fullFrame]`.
   simp [fullFrame]
 
 /- English proof (translation)
-Unfold `fullFrame`. Rewrite using `[Matrix.of_apply, Fin.addCases_right]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 @[simp] theorem fullFrame_right {R : Type} [CommRing R] (U : Matrix (Fin (g + g)) (Fin g) R)
     (J : Matrix (Fin (g + g)) (Fin (g + g)) R) (Lft : Matrix (Fin g) (Fin (g + g)) R) (r : Fin (g + g)) (k : Fin g) :

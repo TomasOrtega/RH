@@ -7,9 +7,9 @@ open IsLocalRing Matrix Filter UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.A
 open scoped TensorProduct
 
 /- English proof (translation)
-Apply `GDet.ext` to reduce the goal to its premises. Introduce `B _ _ x`. Take `⟨y, hy⟩` from `Finsupp.mapDomain_surjective hφ x.coeff`. Establish `hx : MonoidAlgebra.mapDomainRingHom B φ (MonoidAlgebra.ofCoeff y) = x`. Apply `MonoidAlgebra.coeff_injective` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `[MonoidAlgebra.mapDomainRingHom, MonoidAlgebra.mapDomain, hy]`. Rewrite using `[← hx]`. Conclude with `congrArg (fun E : GDet n A H => E.D B (MonoidAlgebra.ofCoeff y)) h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem comap_inj {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group H] (φ : H →* G)
     (hφ : Function.Surjective φ) {D D' : GDet n A G} (h : D.comap φ = D'.comap φ) : D = D' := by
@@ -23,7 +23,7 @@ private theorem comap_inj {n : ℕ} {A G H : Type} [CommRing A] [Group G] [Group
   exact congrArg (fun E : GDet n A H => E.D B (MonoidAlgebra.ofCoeff y)) h
 
 /- English proof (translation)
-Apply `GDet.ext` to reduce the goal to its premises. Introduce `B _ _ x`. Simplify using `[GDet.comap, MonoidAlgebra.mapDomainRingHom_apply, Finsupp.mapDomain_comp]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 private theorem comap_comp' {n : ℕ} {A G H K : Type} [CommRing A] [Group G] [Group H] [Group K] (φ : H →* G)
     (ψ : K →* H) (D : GDet n A G) : (D.comap φ).comap ψ = D.comap (φ.comp ψ) := by
@@ -39,9 +39,9 @@ private theorem map_comap' {n : ℕ} {A A' G H : Type} [CommRing A] [CommRing A'
   rfl
 
 /- English proof (translation)
-Introduce `l _ L G0 T Λ n O _ _ _ _ _ r B _ _ _ u J D A W m _ o πb hπ`. Establish `hc : πb.toRingHom.comp (Ideal.Quotient.mk (ii W)) = m.π.toRingHom` using `RingHom.ext hπ`. Use `⟨?_, fun v i => ?_⟩` and prove the remaining obligations. Use `comap_inj (πo0 Λ) Λ.πo0_surj ?_` and prove the remaining obligations. Rewrite using `[map_comap', map_comap', o.D_eq, (UpperTheory.V.CA.d_gmap W.t.D).2.1, hc, comap_comp']`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `m.π_maps.1`. Establish `h2` using `m.π_maps.2.1 v i`. Use `Eq.trans ?_ h2` and prove the remaining obligations. Rewrite using `[o.ψ_eq, ← hc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.Core.ooMaps :
     ∀ (l : ℕ) [Fact l.Prime] (L : Loc) (G0 : Glob l L) (T : TWGrp G0) (Λ : Lim T) (n : ℕ) (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [IsCoef l O] [Algebra ℤ_[l] O] (r : Resid G0.frame O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B) (J : Ideal B) (D : ℕ) (A : TWAut u J Unit D T) (W : RRObj Λ A) (m : RMaps W) [IsCO O (W.R ⧸ ii W)] (o : OoPair W) (πb : (W.R ⧸ ii W) →ₐ[O] Spo A), (∀ a, πb (Ideal.Quotient.mk (ii W) a) = m.π a) → o.p.Maps πb.toRingHom ((u.D.comap Λ.h.p₀).map (algebraMap B (Spo A))) fun v i => pushCh (algebraMap B (Spo A)) (u.ψ v i) := by

@@ -11,21 +11,21 @@ set_option autoImplicit false
 namespace GlobalTheory.LatGlue
 
 /- English proof (translation)
-Establish `key : ∀ w ∈ Submodule.span B (piMap (algebraMap A B) (Fin h) '' (T : Set (Fin h → A))), ∃ (n : ℕ) (t : Fin h → A), t ∈ T ∧ algebraMap A B (r ^ n) • w = piMap (algebraMap A B) (Fin h) t`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, ht, rfl⟩` from `hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨0, t, ht, by simp⟩`. Consider the case `zero => exact ⟨0, 0, T.zero_mem, by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨n, t, ht, e⟩` from `hx`. Take `⟨m, s, hs, e'⟩` from `hy`.
+Supply the required witnesses or components. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨n + m, r ^ m • t + r ^ n • s, add_mem (T.smul_mem _ ht) (T.smul_mem _ hs), ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.map_smulₛₗ, LinearMap.map_smulₛₗ, ← e, ← e', smul_smul, smul_smul, smul_add, ← map_mul, ← map_mul, pow_add, mul_comm (r ^ m)]`. Consider the case `smul b x _ hx`. Take `⟨n, t, ht, e⟩` from `hx`. Take `⟨⟨a, ⟨_, m, rfl⟩⟩, hb⟩` from `IsLocalization.surj (Submonoid.powers r) b`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `only at hb`. Use `⟨n + m, a • t, T.smul_mem _ ht, ?_⟩` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ, ← e, ← hb, smul_smul, smul_smul, pow_add, map_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 
-Take `⟨n, t, ht, e⟩` from `key _ hv`. Establish `hc : ∀ l : Fin h, ∃ m : ℕ, r ^ m * (r ^ n * v l) = r ^ m * t l`. Introduce `l`. Establish `el : algebraMap A B (r ^ n * v l) = algebraMap A B (t l)`. Use `congrFun e l` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using this`. Take `⟨⟨_, m, rfl⟩, hm⟩` from `(IsLocalization.eq_iff_exists (Submonoid.powers r) B).1 el`. Conclude with `⟨m, hm⟩`. Use `choose m hm using hc`. Use `⟨∑ l, m l + n, ?_⟩` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `: r ^ (∑ l, m l + n) • v = r ^ (∑ l, m l) • t`. Use function extensionality and compare the values at `l`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le (Finset.single_le_sum (f := m) (fun i _ => Nat.zero_le (m i)) (Finset.mem_univ l))`. Simplify using `only [Pi.smul_apply, smul_eq_mul]`. Rewrite using `[hk, pow_add, pow_add]`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `r ^ k * hm l`. Rewrite using `[this]`. Conclude with `T.smul_mem _ ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_smul_mem_of_mem_span_away {A B : Type} [CommRing A] [CommRing B] [Algebra A B] (r : A)
     [IsLocalization.Away r B] {h : ℕ} (T : Submodule A (Fin h → A)) (v : Fin h → A)
@@ -76,19 +76,17 @@ theorem exists_pow_smul_mem_of_mem_span_away {A B : Type} [CommRing A] [CommRing
   exact T.smul_mem _ ht
 
 /- English proof (translation)
-Introduce `Y h W hW T v H`. Establish `H' : ∀ y ∈ W, ∃ r : Γ(Y, W), y ∈ Y.basicOpen r ∧ ∃ n : ℕ, r ^ n • v ∈ T`. Introduce `y hy`. Take `⟨W', hle, hy', hm⟩` from `H y hy`. Take `⟨r, hr, hyr⟩` from `hW.exists_basicOpen_le (V := W') ⟨y, hy'⟩ hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨r, hyr, ?_⟩` and prove the remaining obligations. Use `haveI := hW.isLocalization_basicOpen r`. Establish `halg : algebraMap Γ(Y, W) Γ(Y, Y.basicOpen r) = resG Y (Y.basicOpen_le r)` using `rfl`. Apply `exists_pow_smul_mem_of_mem_span_away (B := Γ(Y, Y.basicOpen r)) r T v` to reduce the goal to its premises. Rewrite using `[halg]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `comp : ∀ u : Fin h → Γ(Y, W), piMap (resG Y hr) (Fin h) (piMap (resG Y hle) (Fin h) u) = piMap (resG Y (Y.basicOpen_le r)) (Fin h) u` using `fun u => funext fun l => by`. Simplify using `only [piMap_apply]`. Conclude with `GlobalTheory.LB.resG_resG hle hr (u l)`. Establish `gen : ∀ w ∈ Submodule.span Γ(Y, W') (piMap (resG Y hle) (Fin h) '' (T : Set (Fin h → Γ(Y, W)))), piMap (resG Y hr) (Fin h) w ∈ Submodule.span Γ(Y, Y.basicOpen r) (piMap (resG Y (Y.basicOpen_le r)) (Fin h) '' (T : Set (Fin h → Γ(Y, W))))`. Introduce `w hw`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨t, ht, rfl⟩` from `hx`. Conclude with `Submodule.subset_span ⟨t, ht, (comp t).symm⟩`. Consider the case `zero => simp`.
+Extract witnesses or component facts from the available result. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y _ _ hx hy => simpa using add_mem hx hy`. Consider the case `smul a x _ hx`. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[← comp]`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `gen _ hm`. Set `s : Set Γ(Y, W)` to `{r | ∃ n : ℕ, r ^ n • v ∈ T}`. Establish `hs : Ideal.span s = ⊤`. Rewrite using `[← hW.self_le_iSup_basicOpen_iff]`. Introduce `y hy`.
-
-Take `⟨r, hyr, hr⟩` from `H' y hy`. Simplify using `only [TopologicalSpace.Opens.mem_iSup, SetLike.mem_coe]`. Conclude with `⟨⟨r, hr⟩, hyr⟩`. Conclude with `Submodule.mem_of_span_eq_top_of_smul_pow_mem T s hs v fun r => r.2`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_of_locally_mem_span_res :
     ∀ (Y : Scheme.{0}) (h : ℕ) (W : Y.Opens), IsAffineOpen W → ∀ (T : Submodule Γ(Y, W) (Fin h → Γ(Y, W))) (v : Fin h → Γ(Y, W)), (∀ y ∈ W, ∃ (W' : Y.Opens) (hle : W' ≤ W), y ∈ W' ∧ piMap (resG Y hle) (Fin h) v ∈ Submodule.span Γ(Y, W') (piMap (resG Y hle) (Fin h) '' (T : Set (Fin h → Γ(Y, W))))) → v ∈ T := by

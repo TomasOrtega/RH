@@ -18,7 +18,7 @@ open scoped Classical nonZeroDivisors
 variable {F : Type} [Field F] [NumberField F] {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Establish `h` using `integral_prod_mul (μ := mixedMeasurePi F) (ν := finiteMeasurePi F) (fun u ↦ 𝐞 (-mixedPairingPi F u (infPartPi y)) • f u) (fun v ↦ g v * (finiteAdelicChar F (∑ i, v i * finPartPi y i) : ℂ))`. Establish `e` using `measurePreserving_splitEquivPi.integral_comp' (μ := adeleMeasurePi F) (f := splitEquivPi F κ) (fun p : (κ → mixedSpace F) × (κ → FiniteAdeleRing (𝓞 F) F) ↦ (𝐞 (-mixedPairingPi F p.1 (infPartPi y)) • f p.1) * (g p.2 * (finiteAdelicChar F (∑ i, p.2 i * finPartPi y i) : ℂ)))`. Rewrite using `[mixedFourierPi, finiteFourierPi, ← h, ← e, adelicFourierPi]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x ↦ ?_)` and prove the remaining obligations. Simplify using `only [splitEquivPi_apply, adelicChar_sum_mul_eq_pi, Circle.smul_def, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -39,17 +39,15 @@ theorem adelicFourierPi_mul (f : (κ → mixedSpace F) → ℂ) (g : (κ → Fin
   ring
 
 /- English proof (translation)
-Take `⟨k₀, M, hM, hb⟩` from `GlobalTheory.SchwartzMajorant.exists_majorant_pureA F (g := g) hg 0`. Use `⟨k₀, fun k hk => ?_⟩` and prove the remaining obligations. Use `set c : ℝ := ‖(L.symm : E →L[ℝ] (κ → mixedSpace F))‖ with hc`. Establish `hn : ∀ v, ‖((((1 + ‖L v‖) ^ k)⁻¹ : ℝ) : ℂ)‖ = ((1 + ‖L v‖) ^ k)⁻¹` using `fun v => by`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (by positivity)]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hb'` using `hb 1 (c ^ k₀) (fun v => ((((1 + ‖L v‖) ^ k)⁻¹ : ℝ) : ℂ)) (fun v => by`. Rewrite using `[hn]`. Conclude with `inv_le_one_of_one_le₀ (one_le_pow₀ (by linarith [norm_nonneg (L v)])))`. Use the proof step `(fun v => by`. Rewrite using `[hn, ← div_eq_mul_inv, div_le_iff₀ (by positivity)]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h1 : ‖v‖ ≤ c * ‖L v‖`. Simplify using `using (L.symm : E →L[ℝ] (κ → mixedSpace F)).le_opNorm (L v)`. Establish `hc0 : 0 ≤ c` using `norm_nonneg _`. Combine the equalities or inequalities in the displayed calculation. Use `Summable.of_nonneg_of_le (fun ξ => by positivity) (fun ξ => ?_) (hM.mul_left (1 + c ^ k₀))` and prove the remaining obligations.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h` using `hb' ξ`. Rewrite `h` using `[GlobalTheory.SchwartzMajorant.pureA_add_algebraMap, norm_mul, hn]`. Establish `e1 : ((fun j => mixedEmbedding F (ξ j)) + fun j => InfiniteAdeleRing.ringEquiv_mixedSpace F ((0 : κ → AdeleRing (𝓞 F) F) j).1) = embPi F ξ`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply, Pi.zero_apply, embPi]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[show (0 : AdeleRing (𝓞 F) F).1 = 0 from rfl, map_zero, add_zero]`. Establish `e2 : ((fun j => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ j)) + fun j => ((0 : κ → AdeleRing (𝓞 F) F) j).2) = fun j => algebraMap F (FiniteAdeleRing (𝓞 F) F) (ξ j)`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply, Pi.zero_apply]`. Rewrite using `[show (0 : AdeleRing (𝓞 F) F).2 = 0 from rfl, add_zero]`.
-
-Rewrite `h` using `[e1, e2]`. Conclude with `h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_summable {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (L : (κ → mixedSpace F) ≃L[ℝ] E)
     {g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ} (hg : g ∈ finiteSchwartzBruhatPi F) :
@@ -117,7 +115,7 @@ def shear : ((κ → mixedSpace F) × EuclidPi F κ) ≃L[ℝ] (κ ⊕ κ → mi
         · simp only [ContinuousLinearEquiv.symm_apply_apply, Sum.elim_inr] }
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `GlobalTheory.T.schwartz_fourier_secondVariable_rapid_decay (κ → mixedSpace F) (EuclidPi F κ) (SchwartzMap.compCLMOfContinuousLinearEquiv ℂ (shear (F := F) (κ := κ)) f) k`. Use `⟨C, fun u v => ?_⟩` and prove the remaining obligations. Establish `h` using `hC u (toEuclidPiConj F v)`. Rewrite using `[mixedFourierPi_eq, ← mul_inv, ← div_eq_mul_inv, le_div_iff₀ (by positivity), mul_comm]`. Conclude with `h`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arch_bound (f : SchwartzMap (κ ⊕ κ → mixedSpace F) ℂ) (k : ℕ) :
     ∃ C : ℝ, ∀ u v : κ → mixedSpace F, ‖mixedFourierPi F (fun t => f (Sum.elim (t + u) t)) v‖ ≤
@@ -130,9 +128,9 @@ theorem arch_bound (f : SchwartzMap (κ ⊕ κ → mixedSpace F) ℂ) (k : ℕ) 
   exact h
 
 /- English proof (translation)
-Simplify using `only [finiteTensor, Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, Pi.add_apply, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [cosetIndicator_apply]`. Distinguish the cases in `h : t i - b (Sum.inr i) ∈ idealFiniteAdeles J`. Establish `: t i + u i - b (Sum.inl i) ∈ idealFiniteAdeles J ↔ u i - (b (Sum.inl i) - b (Sum.inr i)) ∈ idealFiniteAdeles J`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[show t i + u i - b (Sum.inl i) = (t i - b (Sum.inr i)) + (u i - (b (Sum.inl i) - b (Sum.inr i))) by ring]`. Conclude with `AddSubgroup.add_mem_cancel_left _ h`. Simplify using `only [this]`. Simplify using `only [if_neg h, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem finiteTensor_shift (J : (FractionalIdeal (𝓞 F)⁰ F)ˣ) (b : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F)
     (u t : κ → FiniteAdeleRing (𝓞 F) F) :
@@ -152,17 +150,17 @@ theorem finiteTensor_shift (J : (FractionalIdeal (𝓞 F)⁰ F)ˣ) (b : κ ⊕ �
   · simp only [if_neg h, mul_zero]
 
 /- English proof (translation)
-Use `set g₁ := finiteTensor (fun i => cosetIndicator J (b (Sum.inl i) - b (Sum.inr i))) with hg₁`. Use `set g₂ := finiteTensor (fun i => cosetIndicator J (b (Sum.inr i))) with hg₂`. Establish `m₁ : g₁ ∈ finiteSchwartzBruhatPi F` using `finiteTensor_mem fun i => cosetIndicator_mem_finiteSchwartzBruhat J _`. Establish `m₂ : finiteFourierPi F g₂ ∈ finiteSchwartzBruhatPi F` using `finiteFourierPi_mem (finiteTensor_mem fun i => cosetIndicator_mem_finiteSchwartzBruhat J _)`. Take `⟨k₁, h₁⟩` from `exists_summable (ContinuousLinearEquiv.refl ℝ (κ → mixedSpace F)) m₁`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨k₂, h₂⟩` from `exists_summable (toEuclidPiConj F) m₂`. Take `⟨C, hC⟩` from `arch_bound f (max k₁ k₂)`. Establish `hs` using `((h₁ _ (le_max_left k₁ k₂)).mul_of_nonneg (h₂ _ (le_max_right k₁ k₂)) (fun _ => by positivity) (fun _ => by positivity)).mul_left C`. Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun uv => ?_) hs` and prove the remaining obligations. Establish `key : (fun t : κ → AF F => schwartzBruhatTensorPi f (finiteTensor fun i => cosetIndicator J (b i)) (Sum.elim (t + fun i => algebraMap F (AF F) (uv.1 i)) t)) = fun t => (fun s => f (Sum.elim (s + embPi F uv.1) s)) (infPartPi t) * (g₁ (fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F …`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `t`. Establish `e1 : infPartPi (Sum.elim (t + fun i => algebraMap F (AF F) (uv.1 i)) t) = Sum.elim (infPartPi t + embPi F uv.1) (infPartPi t)`. Rewrite using `[← infPartPi_algebraMap]`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Simplify using `only [infPartPi, Sum.elim_inl, Pi.add_apply, homeomorphMixedSpace_apply]`. Conclude with `map_add (InfiniteAdeleRing.ringEquiv_mixedSpace F) _ _`. Both sides reduce to the same expression. Establish `e2 : finPartPi (Sum.elim (t + fun i => algebraMap F (AF F) (uv.1 i)) t) = Sum.elim (finPartPi t + fun i => algebraMap F (FiniteAdeleRing (𝓞 F) F) (uv.1 i)) (finPartPi t)`. Rewrite using `[← finPartPi_algebraMap]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `rcases i with i | i <;> rfl`. Rewrite using `[schwartzBruhatTensorPi, e1, e2, finiteTensor_shift]`. Both sides reduce to the same expression. Rewrite using `[key, adelicFourierPi_mul (fun s => f (Sum.elim (s + embPi F uv.1) s)), finiteFourierPi_smul, infPartPi_algebraMap, finPartPi_algebraMap, norm_mul, Pi.smul_apply, smul_eq_mul, norm_mul]`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Use `(mul_le_mul_of_nonneg_right (hC _ _) (by positivity)).trans (le_of_eq ?_)` and prove the remaining obligations. Simplify using `only [ContinuousLinearEquiv.refl_apply]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem summable_gen (f : SchwartzMap (κ ⊕ κ → mixedSpace F) ℂ) (J : (FractionalIdeal (𝓞 F)⁰ F)ˣ)
     (b : κ ⊕ κ → FiniteAdeleRing (𝓞 F) F) :
@@ -208,15 +206,13 @@ theorem summable_gen (f : SchwartzMap (κ ⊕ κ → mixedSpace F) ℂ) (J : (Fr
   ring
 
 /- English proof (translation)
-Introduce `F _ _ κ _ φ hφ`. Establish `hS : schA F (κ ⊕ κ) = cosetSpanPi F (κ ⊕ κ)`. Rewrite using `[← schwartzBruhatPi_eq_cosetSpanPi]`. Use `congrArg (Submodule.span ℂ) (Set.ext fun Φ => ?_)` and prove the remaining obligations. Conclude with `⟨fun ⟨f, g, hg, h⟩ => ⟨f, g, hg, h⟩, fun ⟨f, g, hg, h⟩ => ⟨f, g, hg, h⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components.
 
-Establish `hI : ∀ ψ ∈ cosetSpanPi F (κ ⊕ κ), ∀ u : κ → AF F, Integrable (fun t : κ → AF F => ψ (Sum.elim (t + u) t)) (adeleMeasurePi F)` using `fun ψ hψ u => integrable_of_mem_schwartzBruhatPi (GlobalTheory.DiagShift.shift_mem_schwartzBruhatPi F κ ψ (hS ▸ hψ) u)`. Rewrite `hφ` using `[hS]`. Proceed by induction on `hφ using Submodule.span_induction with`. Consider the case `mem G hG`. Take `⟨f, J, b, rfl⟩` from `hG`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `summable_gen f J b`. Consider the case `zero`. Simplify using `only [Pi.zero_apply, adelicFourierPi, zero_mul, integral_zero, norm_zero]`. Conclude with `summable_zero`. Consider the case `add G H hG hH ihG ihH`.
+Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun uv => ?_) (ihG.add ihH)` and prove the remaining obligations. Establish `h` using `congrFun (adelicFourierPi_add (hI G hG fun i => algebraMap F (AF F) (uv.1 i)) (hI H hH fun i => algebraMap F (AF F) (uv.1 i))) (fun i => algebraMap F (AF F) (uv.2 i))`. Conclude with `(congrArg norm h).le.trans (norm_add_le _ _)`. Consider the case `smul c G _ ih`. Use `(ih.mul_left ‖c‖).congr fun uv => ?_` and prove the remaining obligations.
-
-Establish `h` using `congrFun (adelicFourierPi_smul c (fun t : κ → AF F => G (Sum.elim (t + fun i => algebraMap F (AF F) (uv.1 i)) t))) (fun i => algebraMap F (AF F) (uv.2 i))`. Rewrite using `[← _root_.norm_smul]`. Conclude with `(congrArg norm h).symm`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem summable_partial_fourier : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (φ : (κ ⊕ κ → AF F) → ℂ), φ ∈ schA F (κ ⊕ κ) → Summable fun uv : (κ → F) × (κ → F) => ‖adelicFourierPi F (fun t : κ → AF F => φ (Sum.elim (t + fun i => algebraMap F (AF F) (uv.1 i)) t)) (fun i => algebraMap F (AF F) (uv.2 i))‖ := by
   intro F _ _ κ _ φ hφ

@@ -24,11 +24,11 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l}
 
 /- English proof (translation)
-Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.firstFiveLaws.1.secBaseChange`. Establish `hW` using `(GlobalTheory.Frames.algebraic_laws hS E H Dw l Xo c).2.2.1`. Use function extensionality and compare the values at `p y`. Establish `: IsReduced p.R` using `(Ideal.isRadical_iff_quotient_reduced p.I).mp p.rad`. Use `letI : Algebra c.F ℂ := σ.toAlgebra`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `GlobalTheory.FiniteOrderRule.eq_zero_of_forall_algHom (K := c.F) (Ω := ℂ) (g p y) ?_` and prove the remaining obligations. Introduce `φ`. Set `φ' : p.R →ₐ[c.F] CAt σ` to `φ`. Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw l Xo c p.R (CAt σ) φ' y`. Establish `hT : FromTest (K` using `c.F) (fun S _ _ => FrPt Xo c S) (fun φ y z => FrMap φ y z) z := ⟨p, φ', y, hz⟩`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h0` using `h z`. Unfold `evR evalAt at h0`. Rewrite `h0` using `[dif_pos hT, ← hW g hg.1 (CAt σ) p _ φ' _ y _ z hz hT.choose_spec.choose_spec.choose_spec]`. Conclude with `h0`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sec_eq_zero_of_complex (σ : c.F →+* ℂ) {a : (E →+* ℂ) × ℕ → ℕ} {n : ℕ} {g : Rul Xo c}
     (hg : g ∈ sec Xo c a n) (h : ∀ y : FrPt Xo c (CAt σ), evR Xo c g y = 0) : g = 0 := by
@@ -48,7 +48,7 @@ theorem sec_eq_zero_of_complex (σ : c.F →+* ℂ) {a : (E →+* ℂ) × ℕ �
   exact h0
 
 /- English proof (translation)
-Substitute `hσ` using the available equality. Conclude with `GlobalTheory.T.weightZeroSection_value_conj_point E H Dw l Xo c σ τ f hf y y' h`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem conj_value (σ σ' : c.F →+* ℂ) (τ : ℂ ≃+* ℂ) (hσ : σ' = (τ : ℂ →+* ℂ).comp σ) {f : Rul Xo c}
     (hf : f ∈ sec Xo c 0 0) (y : FrPt Xo c (CAt σ)) (y' : FrPt Xo c (CAt σ'))
@@ -57,13 +57,13 @@ theorem conj_value (σ σ' : c.F →+* ℂ) (τ : ℂ ≃+* ℂ) (hσ : σ' = (�
   exact GlobalTheory.T.weightZeroSection_value_conj_point E H Dw l Xo c σ τ f hf y y' h
 
 /- English proof (translation)
-Establish `hS : Out.SecBaseChangeSt` using `GlobalTheory.firstFiveLaws.1.secBaseChange`. Set `φ : CAt (σ.comp ta.toRingHom) →ₐ[c.F] CAt σ` to `{ toRingHom := (τ.symm : ℂ →+* ℂ) commutes' := fun a => by show τ.symm (σ (ta a)) = σ a`. Rewrite using `[← hτ, RingEquiv.symm_apply_apply] }`. Set `y' : FrPt Xo c (CAt (σ.comp ta.toRingHom))` to `twPt hta y`. Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap hS E H Dw l Xo c _ _ φ y'`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Establish `hx : y.x = spMap (τ : ℂ →+* ℂ) ≫ z.x`. Establish `h1 : z.x = spMap (τ.symm : ℂ →+* ℂ) ≫ y.x` using `hz.1`. Establish `h2 : spMap (τ : ℂ →+* ℂ) ≫ spMap (τ.symm : ℂ →+* ℂ) = 𝟙 _`. Unfold `spMap`. Rewrite using `[← Spec.map_comp, ← Spec.map_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use extensionality with `a`. Simplify using the standard rewrite rules. Rewrite using `[h1]`. Conclude with `((Category.assoc _ _ _).symm.trans ((congrArg (· ≫ y.x) h2).trans (Category.id_comp _))).symm`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨z, hx, fun f hf => ?_⟩` and prove the remaining obligations. Establish `e1` using `(((GlobalTheory.T.conjugateSection_values_semilinear E H Dw l Xo c ta hta).1 0 0 f hf).2 (CAt σ) y)`. Establish `e2` using `conj_value σ (σ.comp ta.toRingHom) τ (RingHom.ext fun a => (hτ a).symm) hf z y' hx`. Rewrite using `[e1]`. Conclude with `e2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conj_point (σ : c.F →+* ℂ) {ta : c.F ≃+* c.F} (hta : Fixes c ta) (τ : ℂ ≃+* ℂ)
     (hτ : ∀ a, τ (σ a) = σ (ta a)) (y : FrPt Xo c (CAt σ)) :

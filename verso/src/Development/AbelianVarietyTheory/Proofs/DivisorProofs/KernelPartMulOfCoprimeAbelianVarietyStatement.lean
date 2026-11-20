@@ -8,7 +8,7 @@ open scoped CategoryTheory.MonObj
 attribute [local instance] CategoryTheory.Over.cartesianMonoidalCategory
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.AV.KerPart.kerPow_mul_of_coprime` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FKernelPartMulOfCoprimeAbelianVariety.lean&line=47#L47)
 -/

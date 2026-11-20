@@ -30,7 +30,7 @@ def exInd {G : GlobalTheory.SplitFlip.Grid k} (φ : ∀ b : GlobalTheory.SplitFl
   | .theta i j => φ (.theta i j)
 
 /- English proof (translation)
-Introduce `b hb`. Consider the cases of `b with`. Consider the case `ex i j => exact GlobalTheory.SplitFlip.hasDepth_indicator hϖ e _`. Consider the case `theta i j => exact hφ _ hb`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately.
 -/
 theorem isNatDatum_exInd {G : GlobalTheory.SplitFlip.Grid k} {ϖ : kˣ} (hϖ : GlobalTheory.SplitFlip.IsUnif ϖ) {e : ℕ} {γ : List GlobalTheory.SplitFlip.Edge}
     (φ : ∀ b : GlobalTheory.SplitFlip.Edge, Matrix (Fin (G.rank b.tgt)) (Fin (G.rank b.src)) k → ℂ)
@@ -43,13 +43,13 @@ theorem isNatDatum_exInd {G : GlobalTheory.SplitFlip.Grid k} {ϖ : kˣ} (hϖ : G
 variable [MeasurableSpace k] [BorelSpace k]
 
 /- English proof (translation)
-Unfold `flatTensor`. Use `congr 1`. Use function extensionality and compare the values at `v`. Unfold `flatIntegrand moved GlobalTheory.SplitFlip.Grid.pathAct GlobalTheory.SplitFlip.Grid.lines₂`. Establish `key : (γ.map fun b => exOne φ b (G.moveArgs .one g (fill hs x 0 v) b)).prod = (γ.map fun b => exInd φ b (G.moveArgs .one g (fill hs x 0 v) b)).prod`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `congrArg List.prod (List.map_congr_left fun b _ => ?_)` and prove the remaining obligations. Consider the cases of `b with`. Consider the case `theta i j => rfl`. Consider the case `ex i j`. Establish `h0 : G.moveArgs .one g (fill hs x 0 v) (.ex i j) = 0`.
+Reduce the conclusion to the remaining proof obligations. Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `: fill hs x 0 v (.ex i j) = 0`. Unfold `fill`. Simplify using `only`. Apply the tactic sequence `split_ifs <;> ext <;> simp`. Simplify using `[GlobalTheory.SplitFlip.Grid.moveArgs, this]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Simplify by unfolding definitions. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[h0]`. Simplify using `[exOne, exInd, Set.indicator_of_mem (Submodule.zero_mem _)]`. Rewrite using `[key]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem flatTensor_exOne_eq_exInd {G : GlobalTheory.SplitFlip.Grid k} (hs : 1 ≤ G.s) (ψ : AddChar k Circle) (ν : Measure k)
     (keep : Bool) (g : G.VertexGroup) (γ : List GlobalTheory.SplitFlip.Edge)
@@ -85,21 +85,19 @@ variable {ι : Type} [Fintype ι] [DecidableEq ι] {A : ι → Type} [∀ j, Add
 open Classical in
 
 /- English proof (translation)
-Distinguish the cases in `hex : ∃ q : (∀ j, R j), ∀ j, SA j (x j - (q j).1)`. Take `⟨q₀, hx⟩` from `hex`. Rewrite using `[Finset.sum_eq_single q₀]`. Rewrite using `[Finset.prod_eq_one fun j _ => if_pos (hx j), mul_one]`. Establish `h` using `hper (fun j => (q₀ j).1) (x - fun j => (q₀ j).1) hx`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[add_sub_cancel]`. Conclude with `h.symm`. Introduce `q _ hne`. Assume the negation of the conclusion as `hz`. Apply `hne` to reduce the goal to its premises.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `h1 : ∀ j, SA j (x j - (q j).1)` using `fun j => by`. Assume the negation of the conclusion as `h0`. Apply `hz` to reduce the goal to its premises. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ j) (if_neg h0)]`. Expand and normalize the polynomial expressions, which then agree.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations.
 
-Use `funext fun j => Subtype.ext ?_` and prove the remaining obligations. Use `hSA j _ _ (hx j) (h1 j)` as an intermediate fact. Rewrite `this` using `[sub_sub_sub_cancel_left]`. Conclude with `hR3 j _ (q j).2 _ (q₀ j).2 this`. Introduce `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation.
 
-Conclude with `absurd (Finset.mem_univ _) h`. Rewrite using `[Finset.sum_eq_zero]`. Use `symm`. Assume the negation of the conclusion as `hne`. Apply `hex` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `sx` using `hsupp hne`. Use `choose r hr hrs using fun j => hR2 j (x j) (sx j)`. Conclude with `⟨fun j => ⟨r j, hr j⟩, hrs⟩`. Introduce `q _`. Assume the negation of the conclusion as `hz`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hex` to reduce the goal to its premises. Use `⟨q, fun j => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `h0`. Apply `hz` to reduce the goal to its premises. Rewrite using `[Finset.prod_eq_zero (Finset.mem_univ j) (if_neg h0)]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem sum_reps_mul_indicator_eq_self (SA BA : ∀ j, A j → Prop) (hSA : ∀ j a b, SA j a → SA j b → SA j (a - b)) (R : ∀ j, Finset (A j))
     (hR2 : ∀ j x, BA j x → ∃ r ∈ R j, SA j (x - r)) (hR3 : ∀ j, ∀ r ∈ R j, ∀ r' ∈ R j, SA j (r - r') → r = r')
@@ -145,27 +143,23 @@ end Abstract
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Use `⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩` and prove the remaining obligations. Introduce `t β w eL heL φ hφ`. Establish `hL` using `s.core.lev`. Establish `hde : Nat.Coprime D.host.pde (D.host.QS * D.host.q) ∧ Nat.Coprime D.host.pde' (D.host.QS * D.host.q)`. Take `⟨⟨P, -, -⟩, -⟩` from `s.size`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `key : ∀ p ∈ D.host.levelPrimes, p.Prime → Nat.Coprime p (D.host.QS * D.host.q)` using `fun p hp hpp => UpperTheory.Ram.Fun.coprime_QSq_of_splitK D.host hpp (P.level_split p hp)`. Conclude with `⟨key _ D.host.pde_level.1 D.host.pde_prime, key _ D.host.pde_level.2 D.host.pde'_prime⟩`. Establish `hm : 2 ≤ D.R.m` using `D.R.two_le_m`. Establish `hg` using `(Good.locGrid_isGood hL ch.G ch.W t hde (hch.guard t)).1 w.1 w.2`. Establish `h00` using `hg.square 0 (by change 0 < D.R.m; omega) 0 (by change 0 < D.R.m; omega)`.
+Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := (isUnitVol_unitVol w.1).1`. Establish `hT` using `(locGrid ch.G t w.1).isTensor_pureTensor (unifAt w.1) (depthAt ch.G w.1) (GlobalTheory.SplitFlip.oppositePath D.R.m) (exInd φ) (isNatDatum_exInd (isUnif_unifAt w.1) φ hφ)`. Take `⟨N, hF⟩` from `exists_isSBArgs_flat (locGrid ch.G t w.1) one_le_sLen (psiAt ch.W w.1) (unitVol w.1) (unifAt w.1) (depthAt ch.G w.1) _ (keepAt ch.G w.1) ((repsAt ch.G t w.1).elt (β w)) hm h00.unif h00.cond hT`. Use `set Fl := flatTensor one_le_sLen (psiAt ch.W w.1) (unitVol w.1) (moved (locGrid ch.G t w.1) (keepAt ch.G w.1) ((repsAt ch.G t w.1).elt (β w)) ((locGrid ch.G t w.1).lines₂ (GlobalTheory.SplitFlip.oppositePath D.R.m) (exInd φ))) with hFl`. Use `choose Rp hR1 hR2 hR3 using fun j : Fin D.R.m => GlobalTheory.T.exists_finset_cosetReps_bounded_half_points (ch.S.βp (j + 1)) (ch.S.βp j) {w.1} eL N heL`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `sdT : ∀ j, j ≤ D.R.m → IsSelfDualC (ch.G.V (.top j)) (ch.G.Λ (.top j))` using `fun j hj => (ch.G.isV (X := .top j) hj fun _ h => by cases h).sd`. Set `d : (∀ j : Fin D.R.m, Rp j) → ∀ j : Fin D.R.m, FinDatum ch.G t (.top t j)` to `fun κ j => { FinDatum.ind ch.G t (.top t j) {w.1} (fun w' hw' => by`. Rewrite `hw'` using `[Finset.mem_singleton]`. Substitute `hw'` using the available equality. Conclude with `(Good.locPl_cases w.2).elim (fun h => .inl h.1) fun h => .inr ⟨_, h.2.2, rfl⟩) eL heL with`.
+Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions.
 
-Use `fn := cosLoc {w.1} eL (ch.S.βp (j + 1)) (ch.S.βp j) (N : ℤ) (κ j).1`. Use `sb := GlobalTheory.T.indicator_smallCoset_half_isSchwartzBruhat (ch.G.V (.top j)) (ch.G.V (.top (j + 1))) (ch.G.Λ (.top j)) (ch.G.Λ (.top (j + 1))) (ch.S.βp j) (ch.S.βp (j + 1)) {w.1} eL N (κ j).1 (isLattice_top ch.G j.2.le) (isLattice_top ch.G j.2) (ch.S.βp_is j j.2.le) (ch.S.βp …`. Use `choose c₁ hc₁ using fun (κ : ∀ j : Fin D.R.m, Rp j) (j : Fin D.R.m) => GlobalTheory.CombsExist.exists_isCombOf ch.W (p := .top t j) (sdT j j.2.le) (sdT (j + 1) j.2) (d κ j)`. Use `⟨∀ j : Fin D.R.m, Rp j, Finset.univ, fun κ => Fl (ch.S.colAt t w.1 fun j => (κ j).1) 0, d, fun κ => (fun j => if h : j < D.R.m then c₁ κ ⟨j, h⟩ else 0, fun _ => 0), ?_, ?_⟩` and prove the remaining obligations. Introduce `κ _ j`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨rfl, ?_⟩` and prove the remaining obligations. Simplify using `only`. Rewrite using `[dif_pos j.2]`. Conclude with `hc₁ κ j`. Introduce `y hy`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans ?_ (flatTensor_exOne_eq_exInd (G := locGrid ch.G t w.1) one_le_sLen _ _ _ _ _ φ _).symm` and prove the remaining obligations. Establish `hper : ∀ (x a : ∀ j : Fin D.R.m, WO (ch.G.V (.top j)) (ch.G.V (.top (j + 1)))), (∀ j : Fin D.R.m, IsSmall {w.1} (ch.S.βp ((j : ℕ) + 1)) (ch.S.βp j) (N : ℤ) (a j)) → Fl (ch.S.colAt t w.1 (x + a)) 0 = Fl (ch.S.colAt t w.1 x) 0` using `fun x a ha => by`. Rewrite using `[colAt_add]`. Use `hF.per (ch.S.colAt t w.1 x) 0 (ch.S.colAt t w.1 a) 0 (fun j hj r s => ?_) (fun i _ r s => by simp)` as an intermediate fact. Rewrite `this` using `[add_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite using `[colAt_eq _ t w.1 _ hj]`. Use `ha ⟨j, hj⟩ w.1 (Finset.mem_singleton_self _) (Fin.cast (topRank_eq ch.G t w.1 hj) r) (Fin.cast (topRank_eq ch.G t w.1 hj.le) s)` as an intermediate fact. Rewrite `this` using `[zpow_natCast]`. Conclude with `this`. Establish `hsupp : Fl (ch.S.colAt t w.1 y) 0 ≠ 0 → ∀ j : Fin D.R.m, IsHalf eL (y j) ∧ IsSmall {w.1} (ch.S.βp ((j : ℕ) + 1)) (ch.S.βp j) (-(N : ℤ)) (y j)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `hne j`. Use `⟨hy j, fun w' hw' r s => ?_⟩` and prove the remaining obligations. Rewrite `hw'` using `[Finset.mem_singleton]`. Substitute `hw'` using the available equality. Use `(hF.supp _ _ hne).1 j j.2 (Fin.cast (topRank_eq ch.G t w.1 j.2).symm r) (Fin.cast (topRank_eq ch.G t w.1 j.2.le).symm s)` as an intermediate fact.
-
-Rewrite `this` using `[colAt_eq _ t w.1 y j.2]`. Rewrite using `[_root_.zpow_neg, zpow_natCast]`. Conclude with `this`. Establish `key` using `sum_reps_mul_indicator_eq_self (ι := Fin D.R.m) (A := fun j : Fin D.R.m => WO (ch.G.V (.top j)) (ch.G.V (.top (j + 1)))) (fun j a => IsSmall {w.1} (ch.S.βp ((j : ℕ) + 1)) (ch.S.βp j) (N : ℤ) a) (fun j a => IsHalf eL a ∧ IsSmall {w.1} (ch.S.βp ((j : ℕ) + 1)) (ch.S.βp j) (-(N : ℤ)) …`. Use `(Finset.sum_congr rfl fun κ _ => ?_).trans key` and prove the remaining obligations.
-
-Conclude with `congrArg₂ (· * ·) rfl (Finset.prod_congr rfl fun j _ => cosLoc_eq_ite (hy j))`.
+A detailed English derivation is pending.
 -/
 theorem colFlat_expansion : Big fun {D} _ _ _ _ {T} _ _ _ _ _ _ ch => ∀ (t : T) (β : CosFam ch.G t) (w : locPl ch.G t) (eL : AE D), IsIdemSum eL {w.1} → ∀ (φ : ∀ b : GlobalTheory.SplitFlip.Edge, Matrix (Fin ((locGrid ch.G t w.1).rank b.tgt)) (Fin ((locGrid ch.G t w.1).rank b.src)) (Kw w.1) → ℂ), (∀ b ∈ GlobalTheory.SplitFlip.oppositePath D.R.m, GlobalTheory.SplitFlip.IsNatDatum (unifAt w.1) (depthAt ch.G w.1) (φ b)) → ∃ (I : Type) (S : Finset I) (x : I → ℂ) (d : I → ∀ j : Fin D.R.m, FinDatum ch.G t (.top t j)) (c : I → Combs ch.G), (∀ i ∈ S, ∀ j : Fin D.R.m, (d i j).e = eL ∧ IsCombOf ch.W (d i j) ((c i).1 j)) ∧ ∀ y : ∀ j : Fin D.R.m, WO (ch.G.V (.top j)) (ch.G.V (.top (j + 1))), (∀ j, IsHalf eL (y j)) → ∑ i ∈ S, x i * ∏ j, (d i j).fn (y j) = flatTensor one_le_sLen (psiAt ch.W w.1) (unitVol w.1) (moved (locGrid ch.G t w.1) (keepAt ch.G w.1) ((repsAt ch.G t w.1).elt (β w)) ((locGrid ch.G t w.1).lines₂ (GlobalTheory.SplitFlip.oppositePath D.R.m) (GlobalTheory.LocAsm.exOne φ))) (ch.S.colAt t w.1 y) 0 := by
   refine ⟨0, fun ε CF _ => ⟨0, fun D large₂ _ _ Γ _ _ Pl0 T A Ks _ _ _ R F s ch hch _ => ?_⟩⟩

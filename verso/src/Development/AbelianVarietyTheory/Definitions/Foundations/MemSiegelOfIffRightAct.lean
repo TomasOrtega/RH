@@ -19,44 +19,44 @@ def blkMat (x : Matrix m m A) (y : Matrix n n A) : Matrix ι ι A := (fromBlocks
 def pairVec {X : Type} (x : m → X) (y : n → X) : ι → X := Sum.elim x y ∘ e.symm
 
 /- English proof (translation)
-Simplify using `[pairVec]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem pairVec_inl {X : Type} (x : m → X) (y : n → X) (i : m) : pairVec e x y (e (.inl i)) = x i := by
   simp [pairVec]
 
 /- English proof (translation)
-Simplify using `[pairVec]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem pairVec_inr {X : Type} (x : m → X) (y : n → X) (i : n) : pairVec e x y (e (.inr i)) = y i := by
   simp [pairVec]
 
 /- English proof (translation)
-Apply the tactic sequence `funext j; obtain ⟨i | i, rfl⟩ := e.surjective j <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem pairVec_eta {X : Type} (w : ι → X) : pairVec e (fun i => w (e (.inl i))) (fun i => w (e (.inr i))) = w := by
   funext j; obtain ⟨i | i, rfl⟩ := e.surjective j <;> simp
 
 /- English proof (translation)
-Simplify using `[blkMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem submatrix_blkMat (x : Matrix m m A) (y : Matrix n n A) : (blkMat e x y).submatrix e e = fromBlocks x 0 0 y := by
   simp [blkMat]
 
 /- English proof (translation)
-Simplify using `using congrArg (fun X => X.submatrix e.symm e.symm) h`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem submatrix_inj {M N : Matrix ι ι A} (h : M.submatrix e e = N.submatrix e e) : M = N := by
   simpa using congrArg (fun X => X.submatrix e.symm e.symm) h
 
 /- English proof (translation)
-Simplify using `[blkMat, ← submatrix_map, fromBlocks_map, Matrix.map_zero _ hf]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkMat_map (f : A → B) (hf : f 0 = 0) (x : Matrix m m A) (y : Matrix n n A) :
     (blkMat e x y).map f = blkMat e (x.map f) (y.map f) := by
   simp [blkMat, ← submatrix_map, fromBlocks_map, Matrix.map_zero _ hf]
 
 /- English proof (translation)
-Rewrite using `[cT, blkMat_map e _ (map_zero σ)]`. Simplify using `[blkMat, cT, fromBlocks_transpose]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cT_blkMat (σ : A →+* A) (x : Matrix m m A) (y : Matrix n n A) :
     cT σ (blkMat e x y) = blkMat e (cT σ x) (cT σ y) := by
@@ -64,7 +64,7 @@ theorem cT_blkMat (σ : A →+* A) (x : Matrix m m A) (y : Matrix n n A) :
   simp [blkMat, cT, fromBlocks_transpose]
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => by rw [h.1, h.2]⟩` and prove the remaining obligations. Use `congrArg (fun X => X.submatrix e e) h` as an intermediate fact. Simplify `this` using `[submatrix_blkMat]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem blkMat_inj {x x' : Matrix m m A} {y y' : Matrix n n A} : blkMat e x y = blkMat e x' y' ↔ x = x' ∧ y = y' := by
   refine ⟨fun h => ?_, fun h => by rw [h.1, h.2]⟩
@@ -74,14 +74,14 @@ theorem blkMat_inj {x x' : Matrix m m A} {y y' : Matrix n n A} : blkMat e x y = 
 variable [Fintype m] [Fintype n] [Fintype ι]
 
 /- English proof (translation)
-Simplify using `[blkMat, submatrix_mul_equiv, fromBlocks_multiply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkMat_mul (x x' : Matrix m m A) (y y' : Matrix n n A) :
     blkMat e x y * blkMat e x' y' = blkMat e (x * x') (y * y') := by
   simp [blkMat, submatrix_mul_equiv, fromBlocks_multiply]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := e.surjective j <;>`. Simplify using `[mulVec, dotProduct, ← e.sum_comp, toBlocks₁₁, toBlocks₁₂, toBlocks₂₁, toBlocks₂₂]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem mulVec_pairVec (M : Matrix ι ι A) (x : m → A) (y : n → A) : M *ᵥ pairVec e x y =
     pairVec e ((M.submatrix e e).toBlocks₁₁ *ᵥ x + (M.submatrix e e).toBlocks₁₂ *ᵥ y)
@@ -91,7 +91,7 @@ theorem mulVec_pairVec (M : Matrix ι ι A) (x : m → A) (y : n → A) : M *ᵥ
     simp [mulVec, dotProduct, ← e.sum_comp, toBlocks₁₁, toBlocks₁₂, toBlocks₂₁, toBlocks₂₂]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Apply the tactic sequence `obtain ⟨i | i, rfl⟩ := e.surjective j <;>`. Simplify using `[vecMul, dotProduct, ← e.sum_comp, toBlocks₁₁, toBlocks₁₂, toBlocks₂₁, toBlocks₂₂]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 -/
 theorem pairVec_vecMul (M : Matrix ι ι A) (x : m → A) (y : n → A) : pairVec e x y ᵥ* M =
     pairVec e (x ᵥ* (M.submatrix e e).toBlocks₁₁ + y ᵥ* (M.submatrix e e).toBlocks₂₁)
@@ -101,7 +101,7 @@ theorem pairVec_vecMul (M : Matrix ι ι A) (x : m → A) (y : n → A) : pairVe
     simp [vecMul, dotProduct, ← e.sum_comp, toBlocks₁₁, toBlocks₁₂, toBlocks₂₁, toBlocks₂₂]
 
 /- English proof (translation)
-Simplify using `[mulVec_pairVec, submatrix_blkMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkMat_mulVec (x : Matrix m m A) (y : Matrix n n A) (u : m → A) (v : n → A) :
     blkMat e x y *ᵥ pairVec e u v = pairVec e (x *ᵥ u) (y *ᵥ v) := by
@@ -111,12 +111,12 @@ variable [DecidableEq m] [DecidableEq n] [DecidableEq ι]
 
 omit [Fintype m] [Fintype n] [Fintype ι] in
 /- English proof (translation)
-Simplify using `[blkMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem blkMat_one : blkMat e (1 : Matrix m m A) (1 : Matrix n n A) = 1 := by simp [blkMat]
 
 /- English proof (translation)
-Simplify using `[blkMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem det_blkMat (x : Matrix m m A) (y : Matrix n n A) : (blkMat e x y).det = x.det * y.det := by
   simp [blkMat]
@@ -133,20 +133,20 @@ Both sides reduce to the same expression.
 @[simp] theorem val_blkGL (g : GL m A × GL n A) : (blkGL e g).1 = blkMat e g.1.1 g.2.1 := rfl
 
 /- English proof (translation)
-Introduce `_ _ h` and use `have := (blkMat_inj e).1 (congrArg Units.val h) Prod.ext (Units.ext this.1) (Units.ext this.2)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem blkGL_injective : Function.Injective (blkGL (A := A) e) := fun _ _ h =>
   have := (blkMat_inj e).1 (congrArg Units.val h)
   Prod.ext (Units.ext this.1) (Units.ext this.2)
 
 /- English proof (translation)
-The claim follows from `Units.ext (blkMat_map e f (map_zero f) _ _)`.
+A detailed English derivation is pending.
 -/
 theorem bc_blkGL (f : A →+* B) (x : GL m A) (y : GL n A) : bc f (blkGL e (x, y)) = blkGL e (bc f x, bc f y) :=
   Units.ext (blkMat_map e f (map_zero f) _ _)
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `cT σ (blkMat e x.1 y.1) * _ * blkMat e x.1 y.1 = _ ↔ _`. Rewrite using `[cT_blkMat, blkMat_mul, blkMat_mul, blkMat_inj]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem blkGL_mem_UJ {σ : A →+* A} {J : Matrix m m A} {J' : Matrix n n A} {x : GL m A} {y : GL n A} :
     blkGL e (x, y) ∈ UJ σ (blkMat e J J') ↔ x ∈ UJ σ J ∧ y ∈ UJ σ J' := by
@@ -155,7 +155,7 @@ theorem blkGL_mem_UJ {σ : A →+* A} {J : Matrix m m A} {J' : Matrix n n A} {x 
   rfl
 
 /- English proof (translation)
-Use extensionality with `g`. Express the relevant statement in the definitionally equal form `cT σ g.1 * (-J) * g.1 = -J ↔ cT σ g.1 * J * g.1 = J`. Rewrite using `[Matrix.mul_neg, Matrix.neg_mul, neg_inj]`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem UJ_neg (σ : A →+* A) (J : Matrix n n A) : UJ σ (-J) = UJ σ J := by
   ext g
@@ -163,7 +163,7 @@ theorem UJ_neg (σ : A →+* A) (J : Matrix n n A) : UJ σ (-J) = UJ σ J := by
   rw [Matrix.mul_neg, Matrix.neg_mul, neg_inj]
 
 /- English proof (translation)
-Establish `h : Continuous fun p : Matrix m m A × Matrix n n A => blkMat e p.1 p.2` using `(continuous_fst.matrix_fromBlocks continuous_const continuous_const continuous_snd).matrix_submatrix _ _`. Conclude with `Units.continuous_iff.2 ⟨h.comp ((Units.continuous_val.comp continuous_fst).prodMk (Units.continuous_val.comp continuous_snd)), h.comp ((Units.continuous_coe_inv.comp continuous_fst).prodMk (Units.continuous_coe_inv.comp continuous_snd))⟩`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_blkGL [TopologicalSpace A] : Continuous (blkGL (A := A) e) := by
   have h : Continuous fun p : Matrix m m A × Matrix n n A => blkMat e p.1 p.2 :=
@@ -179,21 +179,21 @@ def sumLat {O X : Type} [CommRing O] [AddCommGroup X] [Module O X] (L : Submodul
   L.comap (LinearMap.funLeft O X (e ∘ .inl)) ⊓ L'.comap (LinearMap.funLeft O X (e ∘ .inr))
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_sumLat {O X : Type} [CommRing O] [AddCommGroup X] [Module O X] {L : Submodule O (m → X)}
     {L' : Submodule O (n → X)} {w : ι → X} :
     w ∈ sumLat e L L' ↔ (fun i => w (e (.inl i))) ∈ L ∧ (fun i => w (e (.inr i))) ∈ L' := Iff.rfl
 
 /- English proof (translation)
-Simplify using `[mem_sumLat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairVec_mem_sumLat {O X : Type} [CommRing O] [AddCommGroup X] [Module O X] {L : Submodule O (m → X)}
     {L' : Submodule O (n → X)} {x : m → X} {y : n → X} : pairVec e x y ∈ sumLat e L L' ↔ x ∈ L ∧ y ∈ L' := by
   simp [mem_sumLat]
 
 /- English proof (translation)
-Use `⟨fun h => ⟨fun u => ?_, fun v => ?_⟩, fun h w => ?_⟩` and prove the remaining obligations. Simplify `h (pairVec e u 0)` using `[blkMat_mulVec, pairVec_mem_sumLat]`. Simplify `h (pairVec e 0 v)` using `[blkMat_mulVec, pairVec_mem_sumLat]`. Rewrite using `[← pairVec_eta e w, val_blkGL, blkMat_mulVec, pairVec_mem_sumLat, pairVec_mem_sumLat]`. Conclude with `and_congr (h.1 _) (h.2 _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem blkGL_mem_stabGL [Fintype m] [Fintype n] [Fintype ι] [DecidableEq m] [DecidableEq n] [DecidableEq ι]
     {O : Type} [CommRing O] [Algebra O A] {L : Submodule O (m → A)} {L' : Submodule O (n → A)} {x : GL m A} {y : GL n A} :
@@ -223,19 +223,19 @@ def antiSub : Submodule A (ι → A) :=
   LinearMap.eqLocus (LinearMap.funLeft A A (e ∘ .inl)) (-LinearMap.funLeft A A (e ∘ .inr))
 
 /- English proof (translation)
-Simplify using `[diagSub, funext_iff, LinearMap.funLeft_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairVec_mem_diagSub {x y : n → A} : pairVec e x y ∈ diagSub A e ↔ x = y := by
   simp [diagSub, funext_iff, LinearMap.funLeft_apply]
 
 /- English proof (translation)
-Simplify using `[antiSub, funext_iff, LinearMap.funLeft_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pairVec_mem_antiSub {x y : n → A} : pairVec e x y ∈ antiSub A e ↔ x = -y := by
   simp [antiSub, funext_iff, LinearMap.funLeft_apply]
 
 /- English proof (translation)
-Use `⟨fun h => ⟨fun i => w (e (.inl i)), ?_⟩, by rintro ⟨x, rfl⟩; exact (pairVec_mem_diagSub e).2 rfl⟩` and prove the remaining obligations. Rewrite `h` using `[← pairVec_eta e w, pairVec_mem_diagSub]`. Use `nth_rewrite 2 [h]`. Conclude with `(pairVec_eta e w).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_diagSub {w : ι → A} : w ∈ diagSub A e ↔ ∃ x, w = pairVec e x x := by
   refine ⟨fun h => ⟨fun i => w (e (.inl i)), ?_⟩, by rintro ⟨x, rfl⟩; exact (pairVec_mem_diagSub e).2 rfl⟩
@@ -244,7 +244,7 @@ theorem mem_diagSub {w : ι → A} : w ∈ diagSub A e ↔ ∃ x, w = pairVec e 
   exact (pairVec_eta e w).symm
 
 /- English proof (translation)
-Use `⟨fun h => ⟨fun i => w (e (.inl i)), ?_⟩, by rintro ⟨x, rfl⟩; exact (pairVec_mem_antiSub e).2 (neg_neg _).symm⟩` and prove the remaining obligations. Rewrite `h` using `[← pairVec_eta e w, pairVec_mem_antiSub]`. Use `nth_rewrite 2 [h]`. Rewrite using `[neg_neg]`. Conclude with `(pairVec_eta e w).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_antiSub {w : ι → A} : w ∈ antiSub A e ↔ ∃ x, w = pairVec e x (-x) := by
   refine ⟨fun h => ⟨fun i => w (e (.inl i)), ?_⟩, by rintro ⟨x, rfl⟩; exact (pairVec_mem_antiSub e).2 (neg_neg _).symm⟩
@@ -254,11 +254,11 @@ theorem mem_antiSub {w : ι → A} : w ∈ antiSub A e ↔ ∃ x, w = pairVec e 
   exact (pairVec_eta e w).symm
 
 /- English proof (translation)
-Establish `h2 : ⅟(2 : A) * 2 = 1` using `invOf_mul_self _`. Use `⟨Submodule.disjoint_def.2 fun w h h' => ?_, codisjoint_iff.2 (eq_top_iff.2 fun w _ => ?_)⟩` and prove the remaining obligations. Take `⟨x, rfl⟩` from `(mem_diagSub e).1 h`. Establish `h3` using `(pairVec_mem_antiSub e).1 h'`. Establish `: x = 0` using `funext fun i => by`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun h3 i` as an intermediate fact. Simplify using `only [Pi.neg_apply, Pi.zero_apply] at this ⊢`. Take the linear combination `⅟(2 : A) * this - x i * h2`. Apply the tactic sequence `rw [this]; funext j; obtain ⟨i | i, rfl⟩ := e.surjective j <;> simp`. Use `Submodule.mem_sup.2 ⟨_, (mem_diagSub e).2 ⟨fun i => ⅟(2 : A) * (w (e (.inl i)) + w (e (.inr i))), rfl⟩, _, (mem_antiSub e).2 ⟨fun i => ⅟(2 : A) * (w (e (.inl i)) - w (e (.inr i))), rfl⟩, funext fun j => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Apply the first step, then apply the next step to every resulting obligation. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨i | i, rfl⟩` from `e.surjective j`. Simplify using `only [Pi.add_apply, pairVec_inl]`. Take the linear combination `w (e (.inl i)) * h2`. Simplify using `only [Pi.add_apply, pairVec_inr, Pi.neg_apply]`. Take the linear combination `w (e (.inr i)) * h2`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem isCompl_diagSub_antiSub [Invertible (2 : A)] : IsCompl (diagSub A e) (antiSub A e) := by
   have h2 : ⅟(2 : A) * 2 = 1 := invOf_mul_self _
@@ -284,23 +284,23 @@ def KeepsDiag (M : Matrix ι ι A) : Prop :=
   (M.submatrix e e).toBlocks₂₁ + (M.submatrix e e).toBlocks₂₂ = leviMat e M
 
 /- English proof (translation)
-Simplify using `[leviMat, submatrix_blkMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem leviMat_blkMat (x y : Matrix n n A) : leviMat e (blkMat e x y) = x := by simp [leviMat, submatrix_blkMat]
 /- English proof (translation)
-Simplify using `[KeepsDiag, leviMat, submatrix_blkMat]`.
+Simplify using the standard rewrite rules.
 -/
 theorem keepsDiag_blkMat {x y : Matrix n n A} : KeepsDiag e (blkMat e x y) ↔ y = x := by
   simp [KeepsDiag, leviMat, submatrix_blkMat]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[leviMat, toBlocks₁₁, toBlocks₁₂]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem leviMat_map (f : A →+* B) (M : Matrix ι ι A) : leviMat e (M.map f) = (leviMat e M).map f := by
   ext i j; simp [leviMat, toBlocks₁₁, toBlocks₁₂]
 
 /- English proof (translation)
-Conclude with `Matrix.ext_iff.symm`.
+A detailed English derivation is pending.
 -/
 theorem keepsDiag_iff {M : Matrix ι ι A} : KeepsDiag e M ↔ ∀ i j,
     M (e (.inr i)) (e (.inl j)) + M (e (.inr i)) (e (.inr j)) =
@@ -308,7 +308,7 @@ theorem keepsDiag_iff {M : Matrix ι ι A} : KeepsDiag e M ↔ ∀ i j,
   exact Matrix.ext_iff.symm
 
 /- English proof (translation)
-The claim follows from `(keepsDiag_iff e).2 fun i j => by simpa using congrArg f ((keepsDiag_iff e).1 h i j)`.
+A detailed English derivation is pending.
 -/
 theorem KeepsDiag.map {M : Matrix ι ι A} (h : KeepsDiag e M) (f : A →+* B) : KeepsDiag e (M.map f) :=
   (keepsDiag_iff e).2 fun i j => by simpa using congrArg f ((keepsDiag_iff e).1 h i j)
@@ -316,7 +316,7 @@ theorem KeepsDiag.map {M : Matrix ι ι A} (h : KeepsDiag e M) (f : A →+* B) :
 variable [Fintype n] [Fintype ι]
 
 /- English proof (translation)
-Simplify using `[hform, ← e.sum_comp, dblGram, blkMat, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hform_dblGram (σ : A →+* A) (J : Matrix n n A) (x y x' y' : n → A) :
     hform σ (dblGram e J) (pairVec e x y) (pairVec e x' y') = hform σ J x x' - hform σ J y y' := by
@@ -325,21 +325,21 @@ theorem hform_dblGram (σ : A →+* A) (J : Matrix n n A) (x y x' y' : n → A) 
 variable {e}
 
 /- English proof (translation)
-Rewrite using `[mulVec_pairVec, ← add_mulVec, ← add_mulVec, h, leviMat]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem KeepsDiag.mulVec_diag {M : Matrix ι ι A} (h : KeepsDiag e M) (x : n → A) :
     M *ᵥ pairVec e x x = pairVec e (leviMat e M *ᵥ x) (leviMat e M *ᵥ x) := by
   rw [mulVec_pairVec, ← add_mulVec, ← add_mulVec, h, leviMat]
 
 /- English proof (translation)
-Rewrite using `[quotMat, sub_eq_sub_iff_add_eq_add, ← leviMat, ← h, add_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem KeepsDiag.quotMat_eq {M : Matrix ι ι A} (h : KeepsDiag e M) :
     quotMat e M = (M.submatrix e e).toBlocks₂₂ - (M.submatrix e e).toBlocks₁₂ := by
   rw [quotMat, sub_eq_sub_iff_add_eq_add, ← leviMat, ← h, add_comm]
 
 /- English proof (translation)
-Rewrite using `[mulVec_sub]`. Use `nth_rewrite 2 [h.quotMat_eq]`. Simplify using `only [mulVec_pairVec, pairVec_inl, pairVec_inr, quotMat, sub_mulVec, Pi.add_apply, Pi.sub_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem KeepsDiag.mulVec_quot {M : Matrix ι ι A} (h : KeepsDiag e M) (x y : n → A) (i : n) :
     (M *ᵥ pairVec e x y) (e (.inl i)) - (M *ᵥ pairVec e x y) (e (.inr i)) = (quotMat e M *ᵥ (x - y)) i := by
@@ -351,9 +351,9 @@ theorem KeepsDiag.mulVec_quot {M : Matrix ι ι A} (h : KeepsDiag e M) (x y : n 
 variable [DecidableEq n] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h1 : fromBlocks (1 : Matrix n n A) 0 (-1) 1 * M.submatrix e e * fromBlocks (1 : Matrix n n A) 0 1 1 = fromBlocks (leviMat e M) (M.submatrix e e).toBlocks₁₂ 0 (quotMat e M)`. Rewrite using `[h.quotMat_eq]`. Use `conv_lhs => rw [← fromBlocks_toBlocks (M.submatrix e e)]`. Simplify using `only [fromBlocks_multiply, Matrix.one_mul, Matrix.zero_mul, Matrix.mul_one, Matrix.mul_zero, add_zero, zero_add, Matrix.neg_mul, fromBlocks_inj]`. Use `⟨rfl, trivial, ?_, by abel⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[add_add_add_comm, ← neg_add, ← leviMat, ← h, neg_add_cancel]`. Simplify using `using congrArg det h1`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem KeepsDiag.det_eq {M : Matrix ι ι A} (h : KeepsDiag e M) : M.det = (leviMat e M).det * (quotMat e M).det := by
   have h1 : fromBlocks (1 : Matrix n n A) 0 (-1) 1 * M.submatrix e e * fromBlocks (1 : Matrix n n A) 0 1 1 =
@@ -367,7 +367,7 @@ theorem KeepsDiag.det_eq {M : Matrix ι ι A} (h : KeepsDiag e M) : M.det = (lev
   simpa using congrArg det h1
 
 /- English proof (translation)
-Use `Matrix.ext_of_mulVec_single fun j => ?_` and prove the remaining obligations. Use `h _ ((pairVec_mem_diagSub e).2 (rfl : (Pi.single j 1 : n → A) = _))` as an intermediate fact. Rewrite `this` using `[mulVec_pairVec, pairVec_mem_diagSub]`. Rewrite using `[leviMat, add_mulVec, add_mulVec, this]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem keepsDiag_of_mulVec {M : Matrix ι ι A} (h : ∀ w ∈ diagSub A e, M *ᵥ w ∈ diagSub A e) : KeepsDiag e M := by
   refine Matrix.ext_of_mulVec_single fun j => ?_
@@ -376,9 +376,9 @@ theorem keepsDiag_of_mulVec {M : Matrix ι ι A} (h : ∀ w ∈ diagSub A e, M *
   rw [leviMat, add_mulVec, add_mulVec, this]
 
 /- English proof (translation)
-Use `⟨fun h => keepsDiag_of_mulVec fun w hw => (h w).1 hw, fun h w => ?_⟩` and prove the remaining obligations. Establish `hu : IsUnit (quotMat e p.1).det`. Use `(isUnit_iff_isUnit_det _).1 p.isUnit` as an intermediate fact. Rewrite `this` using `[h.det_eq]`. Conclude with `isUnit_of_mul_isUnit_right this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨x, y, rfl⟩ : ∃ x y, w = pairVec e x y` from `⟨_, _, (pairVec_eta e w).symm⟩`. Rewrite using `[pairVec_mem_diagSub, ← pairVec_eta e (p.1 *ᵥ _), pairVec_mem_diagSub, ← sub_eq_zero, ← sub_eq_zero (a := fun i => (p.1 *ᵥ pairVec e x y) (e (.inl i))), show ((fun i => (p.1 *ᵥ pairVec e x y) (e (.inl i))) - fun i => (p.1 *ᵥ pairVec e x y) (e (.inr i))) = quotMat e p.1 *ᵥ (x - y) …`. Use `⟨fun h0 => by rw [h0, mulVec_zero], fun h0 => ?_⟩` and prove the remaining obligations. Use `congrArg (fun v => (quotMat e p.1)⁻¹ *ᵥ v) h0` as an intermediate fact. Simplify `this` using `[mulVec_mulVec, nonsing_inv_mul _ hu]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem mem_stabGL_diagSub {p : GL ι A} : p ∈ stabGL (diagSub A e) ↔ KeepsDiag e p.1 := by
   refine ⟨fun h => keepsDiag_of_mulVec fun w hw => (h w).1 hw, fun h w => ?_⟩
@@ -396,7 +396,7 @@ theorem mem_stabGL_diagSub {p : GL ι A} : p ∈ stabGL (diagSub A e) ↔ KeepsD
   simpa [mulVec_mulVec, nonsing_inv_mul _ hu] using this
 
 /- English proof (translation)
-Use `Matrix.ext_of_mulVec_single fun j => funext fun i => ?_` and prove the remaining obligations. Establish `h1` using `congrFun (mulVec_pairVec e (M * N) (Pi.single j 1) (Pi.single j 1)) (e (.inl i))`. Rewrite `h1` using `[← mulVec_mulVec, hN.mulVec_diag, hM.mulVec_diag, pairVec_inl, pairVec_inl, ← add_mulVec, mulVec_mulVec]`. Conclude with `h1.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviMat_mul {M N : Matrix ι ι A} (hM : KeepsDiag e M) (hN : KeepsDiag e N) :
     leviMat e (M * N) = leviMat e M * leviMat e N := by
@@ -419,9 +419,9 @@ Both sides reduce to the same expression.
 @[simp] theorem val_leviGL (p : stabGL (diagSub A e)) : (leviGL e p).1 = leviMat e p.1.1 := rfl
 
 /- English proof (translation)
-Establish `h1 : cT σ (M.submatrix e e) * fromBlocks J 0 0 (-J) * M.submatrix e e = fromBlocks J 0 0 (-J)`. Rewrite using `[← submatrix_blkMat e, show cT σ (M.submatrix e e) = (cT σ M).submatrix e e from rfl, submatrix_mul_equiv, submatrix_mul_equiv]`. Conclude with `congrArg (fun X => X.submatrix e e) hM`. Rewrite `h1` using `[← fromBlocks_toBlocks (M.submatrix e e)]`. Simplify using `only [cT, fromBlocks_map, fromBlocks_transpose, fromBlocks_multiply, Matrix.mul_zero, add_zero, zero_add, Matrix.mul_neg, Matrix.neg_mul, fromBlocks_inj] at h1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[quotMat, cT, Matrix.map_sub _ (map_sub σ), transpose_sub, Matrix.sub_mul, Matrix.sub_mul]`. Use `nth_rewrite 2 [← h]`. Rewrite using `[leviMat, Matrix.mul_add, Matrix.mul_add]`. Use `Eq.trans ?_ ((congrArg₂ (· + ·) h1.1 h1.2.1).trans (add_zero J))` and prove the remaining obligations. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem quot_levi {σ : A →+* A} {J : Matrix n n A} {M : Matrix ι ι A} (hM : cT σ M * dblGram e J * M = dblGram e J)
     (h : KeepsDiag e M) : cT σ (quotMat e M) * J * leviMat e M = J := by
@@ -443,7 +443,7 @@ def rightAct (l : ι → A) (M : Matrix ι ι A) : ι → A := l ᵥ* (blkMat e 
 def rowEval (l w : ι → A) : A := l ⬝ᵥ (blkMat e (1 : Matrix n n A) (-1) *ᵥ w)
 
 /- English proof (translation)
-Simplify using `[blkMat_mul, blkMat_one]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sgn_mul_sgn : blkMat e (1 : Matrix n n A) (-1) * blkMat e (1 : Matrix n n A) (-1) = 1 := by
   simp [blkMat_mul, blkMat_one]
@@ -455,7 +455,7 @@ section Levi
 variable (e : n ⊕ n ≃ ι) [Fintype n] [Fintype ι] [DecidableEq n] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `h1` using `congrArg det (quot_levi e hM h)`. Rewrite `h1` using `[det_mul, det_mul, cT, det_transpose, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hJ.mul_left_cancel (by linear_combination h1)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_quot_mul_det_levi {σ : A →+* A} {J : Matrix n n A} (hJ : IsUnit J.det) {M : Matrix ι ι A}
     (hM : cT σ M * dblGram e J * M = dblGram e J) (h : KeepsDiag e M) :
@@ -476,7 +476,7 @@ def cayley : GL ι A :=
     simp [fromBlocks_smul, ← two_smul A, smul_smul]⟩
 
 /- English proof (translation)
-Simplify using `[mulVec_pairVec, cayley, neg_mulVec, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cayley_mulVec (x y : n → A) : (cayley e).1 *ᵥ pairVec e x y = pairVec e (x + y) (x - y) := by
   simp [mulVec_pairVec, cayley, neg_mulVec, sub_eq_add_neg]
@@ -484,7 +484,7 @@ theorem cayley_mulVec (x y : n → A) : (cayley e).1 *ᵥ pairVec e x y = pairVe
 def leviElt : GL n A × GL n A →* GL ι A := (MulAut.conj (cayley e)).toMonoidHom.comp (blkGL e)
 
 /- English proof (translation)
-Rewrite using `[← cayley_mulVec, ← cayley_mulVec, ← blkMat_mulVec, mulVec_mulVec, mulVec_mulVec, ← val_blkGL, ← Units.val_mul, ← Units.val_mul]`. Simplify using `[leviElt]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem leviElt_mulVec (g : GL n A × GL n A) (x y : n → A) : (leviElt e g).1 *ᵥ pairVec e (x + y) (x - y) =
     pairVec e (g.1.1 *ᵥ x + g.2.1 *ᵥ y) (g.1.1 *ᵥ x - g.2.1 *ᵥ y) := by
@@ -493,21 +493,21 @@ theorem leviElt_mulVec (g : GL n A × GL n A) (x y : n → A) : (leviElt e g).1 
   simp [leviElt]
 
 /- English proof (translation)
-Simplify using `using leviElt_mulVec e g x 0`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem leviElt_diag (g : GL n A × GL n A) (x : n → A) :
     (leviElt e g).1 *ᵥ pairVec e x x = pairVec e (g.1.1 *ᵥ x) (g.1.1 *ᵥ x) := by
   simpa using leviElt_mulVec e g x 0
 
 /- English proof (translation)
-Simplify using `using leviElt_mulVec e g 0 y`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem leviElt_anti (g : GL n A × GL n A) (y : n → A) :
     (leviElt e g).1 *ᵥ pairVec e y (-y) = pairVec e (g.2.1 *ᵥ y) (-(g.2.1 *ᵥ y)) := by
   simpa using leviElt_mulVec e g 0 y
 
 /- English proof (translation)
-The claim follows from `mem_stabGL_diagSub.2 (keepsDiag_of_mulVec fun w hw => by obtain ⟨x, rfl⟩ := (mem_diagSub e).1 hw rw [leviElt_diag, pairVec_mem_diagSub])`.
+A detailed English derivation is pending.
 -/
 theorem leviElt_mem_diag (g : GL n A × GL n A) : leviElt e g ∈ stabGL (diagSub A e) :=
   mem_stabGL_diagSub.2 (keepsDiag_of_mulVec fun w hw => by
@@ -515,9 +515,9 @@ theorem leviElt_mem_diag (g : GL n A × GL n A) : leviElt e g ∈ stabGL (diagSu
     rw [leviElt_diag, pairVec_mem_diagSub])
 
 /- English proof (translation)
-Establish `h : ∀ g : GL n A × GL n A, ∀ w ∈ antiSub A e, (leviElt e g).1 *ᵥ w ∈ antiSub A e` using `fun g w hw => by`. Take `⟨x, rfl⟩` from `(mem_antiSub e).1 hw`. Rewrite using `[leviElt_anti, pairVec_mem_antiSub, neg_neg]`. Use `fun w => ⟨h g w, fun hw => ?_⟩` and prove the remaining obligations. Use `h g⁻¹ _ hw` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `this` using `[mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_mulVec]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem leviElt_mem_anti (g : GL n A × GL n A) : leviElt e g ∈ stabGL (antiSub A e) := by
   have h : ∀ g : GL n A × GL n A, ∀ w ∈ antiSub A e, (leviElt e g).1 *ᵥ w ∈ antiSub A e := fun g w hw => by
@@ -528,7 +528,7 @@ theorem leviElt_mem_anti (g : GL n A × GL n A) : leviElt e g ∈ stabGL (antiSu
   rwa [mulVec_mulVec, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, one_mulVec] at this
 
 /- English proof (translation)
-Use `Matrix.ext_of_mulVec_single fun j => funext fun i => ?_` and prove the remaining obligations. Use `congrFun ((mem_stabGL_diagSub.1 (leviElt_mem_diag e g)).mulVec_diag (Pi.single j 1)) (e (.inl i))` as an intermediate fact. Rewrite `this` using `[leviElt_diag, pairVec_inl, pairVec_inl]`. Conclude with `this.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leviMat_leviElt (g : GL n A × GL n A) : leviMat e (leviElt e g).1 = g.1.1 := by
   refine Matrix.ext_of_mulVec_single fun j => funext fun i => ?_
@@ -537,13 +537,11 @@ theorem leviMat_leviElt (g : GL n A × GL n A) : leviMat e (leviElt e g).1 = g.1
   exact this.symm
 
 /- English proof (translation)
-Establish `hT : cT σ (cayley (A` using `A) e).1 = (cayley e).1 := by`. Express the relevant statement in the definitionally equal form `((fromBlocks 1 1 1 (-1) : Matrix (n ⊕ n) (n ⊕ n) A).map σ)ᵀ.submatrix e.symm e.symm = _`. Simplify using `[cayley, fromBlocks_map, fromBlocks_transpose, Matrix.map_neg _ (map_neg σ), Matrix.map_one _ (map_zero σ) (map_one σ)]`. Establish `hQ : cT σ (cayley (A` using `A) e).1 * dblGram e J * (cayley e).1 = (fromBlocks 0 (J + J) (J + J) 0).submatrix e.symm e.symm := by`. Rewrite using `[hT]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[cayley, dblGram, blkMat, submatrix_mul_equiv, fromBlocks_multiply]`. Establish `hB : cT σ (blkMat e α.1 β.1) * (cT σ (cayley (A` using `A) e).1 * dblGram e J * (cayley e).1) * blkMat e α.1 β.1 = cT σ (cayley (A := A) e).1 * dblGram e J * (cayley e).1 := by`. Rewrite using `[hQ, cT_blkMat]`. Simplify using `[blkMat, submatrix_mul_equiv, fromBlocks_multiply, Matrix.mul_add, Matrix.add_mul, h1, h2]`. Express the relevant statement in the definitionally equal form `cT σ ((cayley e).1 * blkMat e α.1 β.1 * (cayley e)⁻¹.1) * _ * ((cayley e).1 * blkMat e α.1 β.1 * (cayley e)⁻¹.1) = _`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [cT_mul, Matrix.mul_assoc]`. Use `_ = cT σ ((cayley (A := A) e).1 * (cayley (A := A) e)⁻¹.1) * dblGram e J * ((cayley e).1 * (cayley e)⁻¹.1) := by`. Rewrite using `[hB]`. Simplify using `only [cT_mul, Matrix.mul_assoc]`.
-
-Use `_ = _ := by rw [Units.mul_inv, cT_one, Matrix.one_mul, Matrix.mul_one]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem leviElt_mem_UJ {σ : A →+* A} {J : Matrix n n A} {α β : GL n A} (h1 : cT σ β.1 * J * α.1 = J)
     (h2 : cT σ α.1 * J * β.1 = J) : leviElt e (α, β) ∈ UJ σ (dblGram e J) := by
@@ -567,9 +565,9 @@ theorem leviElt_mem_UJ {σ : A →+* A} {J : Matrix n n A} {α β : GL n A} (h1 
     _ = _ := by rw [Units.mul_inv, cT_one, Matrix.one_mul, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `hc : ∀ X : Matrix n n A, cT σ (cT σ X) = X` using `fun X => by ext i j; exact hσ _`. Take `⟨U, rfl⟩` from `(isUnit_iff_isUnit_det J).2 hu`. Set `γ : GL n A` to `U * α⁻¹ * U⁻¹`. Set `β : GL n A` to `⟨cT σ γ.1, cT σ γ⁻¹.1, by rw [← cT_mul, Units.inv_mul, cT_one], by rw [← cT_mul, Units.mul_inv, cT_one]⟩`. Establish `h1 : cT σ β.1 * U.1 * α.1 = U.1`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[show cT σ β.1 = γ.1 from hc _, ← Units.val_mul, ← Units.val_mul]`. Simplify using `[γ]`. Use `⟨β, leviElt_mem_UJ e h1 ?_⟩` and prove the remaining obligations. Use `congrArg (cT σ) h1` as an intermediate fact. Rewrite `this` using `[cT_mul, cT_mul, hc, hJ, ← Matrix.mul_assoc]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_leviElt_mem_UJ {σ : A →+* A} (hσ : ∀ x, σ (σ x) = x) {J : Matrix n n A} (hJ : cT σ J = J)
     (hu : IsUnit J.det) (α : GL n A) : ∃ β : GL n A, leviElt e (α, β) ∈ UJ σ (dblGram e J) := by
@@ -604,7 +602,7 @@ def leviSubOf : Subgroup G := siegelOf e mat ⊓ (stabGL (antiSub A e)).comap ma
 variable {e mat}
 
 /- English proof (translation)
-The claim follows from `mem_stabGL_diagSub`.
+A detailed English derivation is pending.
 -/
 theorem mem_siegelOf {g : G} : g ∈ siegelOf e mat ↔ KeepsDiag e (mat g).1 := mem_stabGL_diagSub
 
@@ -618,7 +616,7 @@ Both sides reduce to the same expression.
 @[simp] theorem val_aOf (p : siegelOf e mat) : (aOf e mat p).1 = (leviMat e (mat p).1).det := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rintro ⟨p, hp, rfl⟩; exact ⟨p.2, congrArg Units.val hp⟩, fun h => ⟨⟨g, h.1⟩, Units.ext h.2, rfl⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_unipOf {g : G} : g ∈ unipOf e mat ↔ g ∈ siegelOf e mat ∧ leviMat e (mat g).1 = 1 :=
   ⟨by rintro ⟨p, hp, rfl⟩; exact ⟨p.2, congrArg Units.val hp⟩, fun h => ⟨⟨g, h.1⟩, Units.ext h.2, rfl⟩⟩
@@ -626,9 +624,9 @@ theorem mem_unipOf {g : G} : g ∈ unipOf e mat ↔ g ∈ siegelOf e mat ∧ lev
 variable [TopologicalSpace A] [IsTopologicalRing A] [TopologicalSpace G]
 
 /- English proof (translation)
-Establish `h1 : ∀ i j, Continuous fun g => (mat g).1 i j` using `fun i j => (Units.continuous_val.comp h).matrix_elem i j`. Establish `: (siegelOf e mat : Set G) = ⋂ i, ⋂ j, {g | (mat g).1 (e (.inr i)) (e (.inl j)) + (mat g).1 (e (.inr i)) (e (.inr j)) = (mat g).1 (e (.inl i)) (e (.inl j)) + (mat g).1 (e (.inl i)) (e (.inr j))}`. Use extensionality with `g`. Simplify using `[mem_siegelOf, keepsDiag_iff]`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `isClosed_iInter fun i => isClosed_iInter fun j => isClosed_eq ((h1 _ _).add (h1 _ _)) ((h1 _ _).add (h1 _ _))`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_siegelOf [T2Space A] (h : Continuous mat) : IsClosed (siegelOf e mat : Set G) := by
   have h1 : ∀ i j, Continuous fun g => (mat g).1 i j := fun i j => (Units.continuous_val.comp h).matrix_elem i j
@@ -639,7 +637,7 @@ theorem isClosed_siegelOf [T2Space A] (h : Continuous mat) : IsClosed (siegelOf 
   exact isClosed_iInter fun i => isClosed_iInter fun j => isClosed_eq ((h1 _ _).add (h1 _ _)) ((h1 _ _).add (h1 _ _))
 
 /- English proof (translation)
-Establish `h1 : Continuous fun M : Matrix ι ι A => leviMat e M` using `continuous_matrix fun i j => (continuous_id.matrix_elem _ _).add (continuous_id.matrix_elem _ _)`. Conclude with `Units.continuous_iff.2 ⟨h1.comp (Units.continuous_val.comp (h.comp continuous_subtype_val)), (h1.comp (Units.continuous_coe_inv.comp (h.comp continuous_subtype_val))).congr fun p => by`. Rewrite using `[← map_inv, val_leviOf, Subgroup.coe_inv, map_inv]`. Use the proof step `rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_leviOf (h : Continuous mat) : Continuous (leviOf e mat) := by
   have h1 : Continuous fun M : Matrix ι ι A => leviMat e M :=
@@ -649,7 +647,7 @@ theorem continuous_leviOf (h : Continuous mat) : Continuous (leviOf e mat) := by
       rw [← map_inv, val_leviOf, Subgroup.coe_inv, map_inv]; rfl⟩
 
 /- English proof (translation)
-The claim follows from `Units.continuous_iff.2 ⟨(Units.continuous_val.comp (continuous_leviOf h)).matrix_det, (Units.continuous_coe_inv.comp (continuous_leviOf (e := e) h)).matrix_det.congr fun p => by rw [← map_inv, aOf, MonoidHom.comp_apply, map_inv]; rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem continuous_aOf (h : Continuous mat) : Continuous (aOf e mat) :=
   Units.continuous_iff.2 ⟨(Units.continuous_val.comp (continuous_leviOf h)).matrix_det,
@@ -680,7 +678,7 @@ def flatOf (Φ : G → ℂ) (s₀ s : ℂ) : G → ℂ := flatSec (absAOf e mat 
 variable {e mat ν K}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_degPSOf [TopologicalSpace G] {μ : Aˣ →* Circle} {s : ℂ} {Φ : G → ℂ} : Φ ∈ degPSOf e mat ν K μ s ↔
     (∀ (p : siegelOf e mat) (g : G),
@@ -694,12 +692,12 @@ theorem flatOf_apply (Φ : G → ℂ) (s₀ s : ℂ) (g : G) :
     flatOf e mat ν K Φ s₀ s g = Φ g * npow (hgtOf e mat ν K g) (s - s₀) := rfl
 
 /- English proof (translation)
-The claim follows from `iwAbs_pos _ _ g`.
+A detailed English derivation is pending.
 -/
 theorem hgtOf_pos (g : G) : 0 < hgtOf e mat ν K g := iwAbs_pos _ _ g
 
 /- English proof (translation)
-The claim follows from `IsIwasawa.iwAbs_mul h p hk`.
+A detailed English derivation is pending.
 -/
 theorem IwasawaOf.hgtOf_mul (h : IwasawaOf e mat ν K) (p : siegelOf e mat) {k : G} (hk : k ∈ K) :
     hgtOf e mat ν K (p * k) = ν (aOf e mat p) := IsIwasawa.iwAbs_mul h p hk
@@ -709,21 +707,21 @@ variable [TopologicalSpace A] [IsTopologicalRing A] [T2Space A] [TopologicalSpac
 omit [IsTopologicalGroup G] in
 
 /- English proof (translation)
-The claim follows from `isIwasawa_of_isCompact (isClosed_siegelOf hm) (hν.comp (continuous_aOf hm)) hK h`.
+A detailed English derivation is pending.
 -/
 theorem iwasawaOf_of_isCompact (hm : Continuous mat) (hν : Continuous ν) (hK : IsCompact (K : Set G))
     (h : ∀ g : G, ∃ p : siegelOf e mat, ∃ k ∈ K, g = p * k) : IwasawaOf e mat ν K :=
   isIwasawa_of_isCompact (isClosed_siegelOf hm) (hν.comp (continuous_aOf hm)) hK h
 
 /- English proof (translation)
-The claim follows from `IsIwasawa.continuous_iwAbs h (isClosed_siegelOf hm) (hν.comp (continuous_aOf hm)) hK`.
+A detailed English derivation is pending.
 -/
 theorem IwasawaOf.continuous_hgtOf (h : IwasawaOf e mat ν K) (hm : Continuous mat) (hν : Continuous ν)
     (hK : IsCompact (K : Set G)) : Continuous (hgtOf e mat ν K) :=
   IsIwasawa.continuous_iwAbs h (isClosed_siegelOf hm) (hν.comp (continuous_aOf hm)) hK
 
 /- English proof (translation)
-The claim follows from `IsIwasawa.flatSec_mem h (isClosed_siegelOf hm) (hν.comp (continuous_aOf hm)) hK hΦ s`.
+A detailed English derivation is pending.
 -/
 theorem IwasawaOf.flatOf_mem (h : IwasawaOf e mat ν K) (hm : Continuous mat) (hν : Continuous ν)
     (hK : IsCompact (K : Set G)) {μ : Aˣ →* Circle} {s₀ : ℂ} {Φ : G → ℂ} (hΦ : Φ ∈ degPSOf e mat ν K μ s₀) (s : ℂ) :
@@ -731,7 +729,7 @@ theorem IwasawaOf.flatOf_mem (h : IwasawaOf e mat ν K) (hm : Continuous mat) (h
   IsIwasawa.flatSec_mem h (isClosed_siegelOf hm) (hν.comp (continuous_aOf hm)) hK hΦ s
 
 /- English proof (translation)
-The claim follows from `IsIwasawa.npow_iwAbs_mem h (isClosed_siegelOf hm) (hν.comp (continuous_aOf hm)) hK _`.
+A detailed English derivation is pending.
 -/
 theorem IwasawaOf.spherical_mem (h : IwasawaOf e mat ν K) (hm : Continuous mat) (hν : Continuous ν)
     (hK : IsCompact (K : Set G)) (s : ℂ) :
@@ -762,7 +760,7 @@ theorem coe_ioU (e : n ⊕ n ≃ ι) {J : Matrix n n A} {Q : Matrix ι ι A} (h 
 end Io
 
 /- English proof (translation)
-Simplify using `[leviMat, quotMat, blkMat]`.
+Simplify using the standard rewrite rules.
 -/
 example (g : ℤ) : leviMat (Equiv.refl (Unit ⊕ Unit)) (blkMat (Equiv.refl _) (of fun _ _ => g) (of fun _ _ => g)) () () = g ∧
     leviMat (Equiv.refl (Unit ⊕ Unit)) (fromBlocks (0 : Matrix Unit Unit ℤ) 1 1 0) = 1 ∧

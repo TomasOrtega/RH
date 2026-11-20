@@ -15,9 +15,9 @@ open GlobalTheory.BigDat
 namespace GlobalTheory.IdemAtPl
 
 /- English proof (translation)
-Use `ae_ext ?_ fun Q => ?_` and prove the remaining obligations. Rewrite using `[GlobalTheory.SplitScalar.infPart_splitIdem h.1, (atPl_spec P 1).1]`. Rewrite using `[(atPl_spec P 1).2]`. Distinguish the cases in `hQ : Q = P`. Substitute `hQ` using the available equality.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[(cpt_of_isIdemAt h).1, Pi.single_eq_same]`. Rewrite using `[(cpt_of_isIdemAt h).2 Q hQ, Pi.single_eq_of_ne hQ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem eq_atPl_of_isIdemAt {D : D7} {e : AE D} {P : Pl D.host.E} (h : Formalism.L2.NTheta.IsIdemAt e P) : e = atPl P 1 := by
   classical
@@ -30,9 +30,9 @@ theorem eq_atPl_of_isIdemAt {D : D7} {e : AE D} {P : Pl D.host.E} (h : Formalism
     · rw [(cpt_of_isIdemAt h).2 Q hQ, Pi.single_eq_of_ne hQ]
 
 /- English proof (translation)
-Take `⟨α, rfl, h1, h0⟩` from `h`. Establish `hα : α = GlobalTheory.AdelicU.singleFin v 1` using `GlobalTheory.AdelicU.af_ext fun u => by`. Distinguish the cases in `hu : u = v`. Substitute `hu` using the available equality. Rewrite using `[h1, GlobalTheory.AdelicU.evalV_singleFin_self]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0 u hu, GlobalTheory.AdelicU.evalV_singleFin_ne hu]`. Substitute `hα` using the available equality. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem eq_liftV_of_isPlaceIdem {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)} {ε : AF D.host.F}
     (h : IsPlaceIdem D v ε) : ε = GlobalTheory.LatVac.liftV v 1 := by
@@ -46,15 +46,15 @@ theorem eq_liftV_of_isPlaceIdem {D : D7} {v : HeightOneSpectrum (𝓞 D.host.F)}
   rfl
 
 /- English proof (translation)
-Introduce `D T L sc G μ₀ hL t`. Take `⟨_, ⟨es, hes, -⟩, -⟩` from `GlobalTheory.FunObj.LocTensor.exists_idemSum_locPl hL G t`. Use `⟨fun w hw => ?_, fun ε hε => ?_⟩` and prove the remaining obligations. Establish `h` using `hes w hw`. Rewrite using `[← eq_atPl_of_isIdemAt h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, ε, hε, he⟩` from `h.1.2.2`. Use `⟨h.1, ?_⟩` and prove the remaining obligations. Rewrite using `[he, eq_liftV_of_isPlaceIdem hε, GlobalTheory.IdemUnder.under_eq_of_isIdemAt D _ w v ε h hε he]`. Take `⟨⟨fs, hfs, rfl⟩, -⟩` from `hε`. Establish `hf : ∀ PP ∈ locPl G t, fs PP = atPl PP 1` using `fun PP hPP => eq_atPl_of_isIdemAt (hfs PP hPP)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨Finset.sum_congr rfl hf, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.sum_congr rfl hf]`. Use `ae_ext ?_ fun Q => ?_` and prove the remaining obligations. Rewrite using `[map_mul, (atPl_spec w 1).1, mul_zero]`. Rewrite using `[map_mul, map_mul, (atPl_spec w 1).2, map_sum, map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hQ : Q = w`. Substitute `hQ` using the available equality. Rewrite using `[Pi.single_eq_same, mul_one, Finset.sum_eq_single Q (fun b _ hb => by`. Rewrite using `[(atPl_spec b 1).2, Pi.single_eq_of_ne (Ne.symm hb)]) (fun h => absurd hw h),`. Use the proof step `(atPl_spec Q 1).2, Pi.single_eq_same]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.single_eq_of_ne hQ, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem main : ∀ {D : D7} {T : Type} {L : LevCh D T} {sc : Consts} {G : GridData L sc} {μ₀ : T}, L.Is μ₀ → ∀ t : T,
     (∀ w ∈ locPl G t, IsSplitIdem D (atPl w 1) ∧ atPl w 1 + cA D (atPl w 1) =

@@ -63,7 +63,7 @@ instance (a : Act) (A : CommRingCat.{0}) : SmallCategory (Ob a A) where
   assoc f g h := Subtype.ext (mul_assoc _ _ _)
 
 /- English proof (translation)
-Substitute `hx hy` using the available equality. Conclude with `heq_of_eq (Subtype.ext h)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem Ob.hom_heq {a : Act} {A : CommRingCat.{0}} {x x' y y' : Ob a A} (hx : x = x') (hy : y = y') (f : x ⟶ y) (f' : x' ⟶ y')
     (h : f.1 = f'.1) : HEq f f' := by
@@ -253,20 +253,20 @@ def Um.scale {M : ℕ} {A : Type} [CommRing A] (c : Fin M → Aˣ) (v : Um M A) 
     exact Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, rfl⟩)⟩
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by funext i; simp [Um.scale])`.
+A detailed English derivation is pending.
 -/
 theorem Um.scale_one {M : ℕ} {A : Type} [CommRing A] (v : Um M A) : Um.scale (fun _ => 1) v = v :=
   Subtype.ext (by funext i; simp [Um.scale])
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by funext i; simp [Um.scale, mul_assoc])`.
+A detailed English derivation is pending.
 -/
 theorem Um.scale_mul {M : ℕ} {A : Type} [CommRing A] (c d : Fin M → Aˣ) (v : Um M A) :
     Um.scale (fun i => c i * d i) v = Um.scale c (Um.scale d v) :=
   Subtype.ext (by funext i; simp [Um.scale, mul_assoc])
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (by funext i; simp [Um.scale, Um.map])`.
+A detailed English derivation is pending.
 -/
 theorem Um.map_scale {M : ℕ} {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (c : Fin M → Aˣ) (v : Um M A) :
     (Um.map M f).obj (Um.scale c v) = Um.scale (fun i => Units.map (f : A →* B) (c i)) ((Um.map M f).obj v) :=
@@ -294,16 +294,16 @@ def bAct {N : ℕ} {A : Type} [CommRing A] (g : Aˣ × Aˣ) (x : Um N A × Um 2 
   (Um.scale (fun _ => g.1) x.1, Um.scale ![g.2 * g.1⁻¹, g.2] x.2)
 
 /- English proof (translation)
-Use `Prod.ext (Um.scale_one x.1) (Subtype.ext (funext fun i => ?_))` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [bAct, Um.scale]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bAct_one {N : ℕ} {A : Type} [CommRing A] (x : Um N A × Um 2 A) : bAct 1 x = x := by
   refine Prod.ext (Um.scale_one x.1) (Subtype.ext (funext fun i => ?_))
   fin_cases i <;> simp [bAct, Um.scale]
 
 /- English proof (translation)
-Establish `e : (g * h).2 * (g * h).1⁻¹ = (g.2 * g.1⁻¹) * (h.2 * h.1⁻¹)`. Simplify using `only [Prod.snd_mul, Prod.fst_mul, mul_inv]`. The two sides agree by associativity and commutativity. Use `Prod.ext (Subtype.ext (funext fun i => ?_)) (Subtype.ext (funext fun i => ?_))` and prove the remaining obligations. Simplify using `[bAct, Um.scale, mul_assoc]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. The two sides agree by associativity and commutativity. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `fin_cases i`. Simplify using `only [bAct, Um.scale]`. Simplify using `only [Fin.zero_eta, Fin.isValue, Matrix.cons_val_zero]`. Rewrite using `[e, Units.val_mul, mul_assoc]`. Simplify using `[bAct, Um.scale, mul_assoc]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem bAct_mul {N : ℕ} {A : Type} [CommRing A] (g h : Aˣ × Aˣ) (x : Um N A × Um 2 A) : bAct (g * h) x = bAct g (bAct h x) := by
   have e : (g * h).2 * (g * h).1⁻¹ = (g.2 * g.1⁻¹) * (h.2 * h.1⁻¹) := by
@@ -318,7 +318,7 @@ theorem bAct_mul {N : ℕ} {A : Type} [CommRing A] (g h : Aˣ × Aˣ) (x : Um N 
     · simp [bAct, Um.scale, mul_assoc]
 
 /- English proof (translation)
-Use `Prod.ext (Um.map_scale f _ x.1) (Subtype.ext (funext fun i => ?_))` and prove the remaining obligations. Apply the tactic sequence `fin_cases i <;> simp [bAct, Um.scale, Um.map]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem bAct_map {N : ℕ} {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (g : Aˣ × Aˣ) (x : Um N A × Um 2 A) :
     ((Um.map N f).obj (bAct g x).1, (Um.map 2 f).obj (bAct g x).2) =
@@ -372,7 +372,7 @@ def Um.join {N : ℕ} {A : Type} [CommRing A] (x : Um N A × Um 2 A) : Um (N + 1
     · exact h1⟩
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun i => ?_)` and prove the remaining obligations. Apply the tactic sequence `refine Fin.lastCases ?_ (fun j => ?_) i <;> simp [Um.join, Um.map]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Um.join_map {N : ℕ} {A B : Type} [CommRing A] [CommRing B] (f : A →+* B) (x : Um N A × Um 2 A) :
     Um.join ((Um.map N f).obj x.1, (Um.map 2 f).obj x.2) = (Um.map (N + 1) f).obj (Um.join x) := by
@@ -380,9 +380,9 @@ theorem Um.join_map {N : ℕ} {A B : Type} [CommRing A] [CommRing B] (f : A →+
   refine Fin.lastCases ?_ (fun j => ?_) i <;> simp [Um.join, Um.map]
 
 /- English proof (translation)
-Use `Subtype.ext (funext fun j => ?_)` and prove the remaining obligations. Use `Fin.lastCases ?_ (fun i => ?_) j` and prove the remaining obligations. Simplify using `[Um.join, bAct, Um.scale]`. Establish `hu : ((u.1⁻¹ : Aˣ) : A) * (u.1 : A) = 1` using `Units.inv_mul u.1`. Simplify using `only [Um.join, bAct, Um.scale, Fin.snoc_castSucc, Matrix.cons_val_zero]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Units.val_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = (u.2 : A) * (x.2.1 0 * x.1.1 i) := by rw [hu, mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem Um.join_bAct {N : ℕ} {A : Type} [CommRing A] (u : Aˣ × Aˣ) (x : Um N A × Um 2 A) :
     Um.join (bAct u x) = Um.scale (fun _ => u.2) (Um.join x) := by
@@ -425,9 +425,9 @@ def unitAt {M : ℕ} (i : Fin M) : Pred (XC M) where
     exact Units.isUnit_units_mul _ _
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, hi, rfl⟩`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, hi, rfl⟩)`. Rewrite using `[Ideal.span_le]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨i, hi, rfl⟩`. Establish `e : w i = ((u⁻¹ : Aˣ) : A) * ((u : A) * w i)` using `by simp`. Rewrite using `[e]`. Conclude with `Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨i, hi, rfl⟩)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_scale {M : ℕ} {A : Type} [CommRing A] (u : Aˣ) (w : Fin M → A) (S : Set (Fin M)) :
     Ideal.span ((fun i => (u : A) * w i) '' S) = Ideal.span (w '' S) := by

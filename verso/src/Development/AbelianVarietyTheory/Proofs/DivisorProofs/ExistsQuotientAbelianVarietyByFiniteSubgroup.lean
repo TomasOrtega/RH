@@ -11,13 +11,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AV.AbVar
 
 /- English proof (translation)
-Introduce `K _ A H _ i hi hmono hfin`. Establish `hflat : Flat H.hom` using `inferInstance`. Take `⟨B', inst, q, -, hB, hq, hqfin, -, hqsurj, -, hsq⟩` from `AbQuotientAny.exists_quotient_abelianScheme K A.X H i A.ab hi hmono hfin hflat`. Take `⟨g, hg⟩` from `GlobalTheory.T.abelianScheme_field_smoothOfRelativeDimension_exists K B' hB`. Set `B : AbVar K` to `⟨B', hB, g, hg⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Use `⟨B, Hom.mk (B := B) q, ⟨hqfin, hqsurj⟩, fun T x => ⟨fun hx => ?_, ?_⟩⟩` and prove the remaining obligations. Establish `e : x ≫ q = (1 : T ⟶ A.X) ≫ q`. Rewrite using `[MonObj.one_comp]`. Conclude with `hx`. Establish `h1` using `hsq.lift_fst x 1 e`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hsq.lift_snd x 1 e`. Rewrite `h1` using `[MonObj.comp_mul, h2, _root_.mul_one, ← Category.assoc]`. Conclude with `⟨_, h1⟩`. Introduce and unpack `⟨y, rfl⟩`. Establish `hw` using `congrArg (fun f => lift y (1 : T ⟶ A.X) ≫ f) hsq.w`.
+Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hw` using `[← Category.assoc, ← Category.assoc, MonObj.comp_mul, lift_snd, ← Category.assoc, lift_fst, _root_.mul_one]`. Rewrite `hw` using `[MonObj.one_comp]`. Conclude with `hw`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_quotient_finite :
     ∀ (K : Type) [Field K] (A : AbVar K) (H : Over (Sp K)) [GrpObj H] (i : H ⟶ A.X), IsMonHom i → Mono i →

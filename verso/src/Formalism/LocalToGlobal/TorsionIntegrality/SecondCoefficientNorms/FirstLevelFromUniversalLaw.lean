@@ -7,46 +7,46 @@ import Formalism.LocalToGlobal.TorsionIntegrality.SecondCoefficientNorms.Binomia
 namespace Formalism.L2.Th1.C
 
 /- English proof (translation)
-The claim follows from `simeq_iff_congruence`.
+A detailed English derivation is pending.
 -/
 theorem simeqIffCong : SimeqIffCong := simeq_iff_congruence
 /- English proof (translation)
-The claim follows from `unit_ball_closed`.
+A detailed English derivation is pending.
 -/
 theorem unitBallClosed : UnitBallClosed := unit_ball_closed
 /- English proof (translation)
-The claim follows from `odd_phi_is_phi`.
+A detailed English derivation is pending.
 -/
 theorem phOIsPh : PhOIsPh := odd_phi_is_phi
 /- English proof (translation)
-The claim follows from `first_level_from_universal_holds`.
+A detailed English derivation is pending.
 -/
 theorem first_level_from_universal_law : FirstLevelFromUniversal := first_level_from_universal_holds
 
 /- English proof (translation)
-The claim follows from `all_jets_integral`.
+A detailed English derivation is pending.
 -/
 theorem jetsAll : JetsAll := all_jets_integral
 
 /- English proof (translation)
-The claim follows from `gram_formula`.
+A detailed English derivation is pending.
 -/
 theorem gramFormula : GramFormula := gram_formula
 
 /- English proof (translation)
-The claim follows from `log_derivative_integral'`.
+A detailed English derivation is pending.
 -/
 theorem logDerivInt : LogDerivInt := log_derivative_integral'
 /- English proof (translation)
-The claim follows from `third_jet_integral`.
+A detailed English derivation is pending.
 -/
 theorem derivation_cube_integral_jet : ThirdJetIntegral := third_jet_integral
 /- English proof (translation)
-The claim follows from `jets_unramified`.
+A detailed English derivation is pending.
 -/
 theorem jetsUnramified : JetsUnramified := jets_unramified
 /- English proof (translation)
-The claim follows from `jets_shape`.
+A detailed English derivation is pending.
 -/
 theorem jetsShape : JetsShape := jets_shape
 

@@ -3,17 +3,17 @@ import Development.EtaleCohomology.TateTwists.EtaleChainsMayerVietorisShortExact
 
 namespace LateralTheory.Fin.EtaleMayerVietorisChainsShortExact
 /- English proof (translation)
-Apply `LateralTheory.EtaleFoundations.etale_free_presheaf_mayer_vietoris_short_exact_holds` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result.
 -/
 theorem etale_mayer_vietoris_short_exact_sequence_free_of_components : LateralTheory.EtaleFoundations.EtaleFreePresheafMayerVietorisShortExact := by
   apply LateralTheory.EtaleFoundations.etale_free_presheaf_mayer_vietoris_short_exact_holds
 /- English proof (translation)
-Apply the tactic sequence `apply LateralTheory.EtaleFoundations.etale_chains_mayer_vietoris_short_exact_of_free <;> first | exact etale_mayer_vietoris_short_exact_sequence_free_of_components`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem etale_mayer_vietoris_short_exact_sequence_of_components : LateralTheory.EtaleFoundations.EtaleMayerVietorisChainsShortExact := by
   apply LateralTheory.EtaleFoundations.etale_chains_mayer_vietoris_short_exact_of_free <;> first | exact etale_mayer_vietoris_short_exact_sequence_free_of_components
 /- English proof (translation)
-The claim follows from `etale_mayer_vietoris_short_exact_sequence_of_components`.
+A detailed English derivation is pending.
 -/
 theorem intersectionNumber_baseChange : LateralTheory.EtaleFoundations.EtaleMayerVietorisChainsShortExact := etale_mayer_vietoris_short_exact_sequence_of_components
 end LateralTheory.Fin.EtaleMayerVietorisChainsShortExact

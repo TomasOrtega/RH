@@ -19,9 +19,9 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC Recip
 attribute [-instance] UpperTheory.V.Pr.IsCD.toIsDomain UpperTheory.V.Pr.IsCD.toIsDiscreteValuationRing
 
 /- English proof (translation)
-Establish `a : adj (g.map f) = (adj g).map f`. Use extensionality with `i j`. Simplify using `only [adj_apply, Matrix.map_apply, map_zsmul]`. Unfold `IsGSp at h ⊢`. Rewrite using `[a, ← Matrix.map_mul, h]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use extensionality with `i j`. Simplify using `[Matrix.one_apply, apply_ite f]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem gsp_map {R R' : Type} [CommRing R] [CommRing R'] (f : R →+* R') {ν : R} {g : M4 R} (h : IsGSp ν g) :
     IsGSp (f ν) (g.map f) := by

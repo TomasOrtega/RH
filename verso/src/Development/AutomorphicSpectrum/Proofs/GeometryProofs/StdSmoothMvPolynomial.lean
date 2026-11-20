@@ -10,11 +10,9 @@ namespace GlobalTheory.CompanionTheory.Ar.LieInh
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj GlobalTheory.CompanionTheory.Ar
 
 /- English proof (translation)
-Establish `hker : (Algebra.Generators.mvPolynomial R (Fin n)).ker = ⊥`. Rewrite using `[Algebra.Generators.ker_eq_ker_aeval_val, Algebra.Generators.mvPolynomial_val]`. Conclude with `(RingHom.injective_iff_ker_eq_bot _).1 fun a b h => by`. Simplify `h` using `only [MvPolynomial.aeval_X_left_apply]`. Set `P : Algebra.Presentation R (MvPolynomial (Fin n) R) (Fin n) Empty` to `⟨Algebra.Generators.mvPolynomial R (Fin n), Empty.elim, by rw [hker]; simp⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `P' : Algebra.PreSubmersivePresentation R (MvPolynomial (Fin n) R) (Fin n) Empty` to `⟨P, Empty.elim, fun a => a.elim⟩`. Set `P'' : Algebra.SubmersivePresentation R (MvPolynomial (Fin n) R) (Fin n) Empty` to `⟨P', by`. Rewrite using `[Algebra.PreSubmersivePresentation.jacobian_eq_jacobiMatrix_det, Matrix.det_isEmpty, map_one]`. Conclude with `isUnit_one⟩`. Use `Algebra.IsStandardSmoothOfRelativeDimension.mk ⟨Fin n, Empty, inferInstance, inferInstance, P'', ?_⟩` and prove the remaining obligations.
-
-Simplify using `[Algebra.Presentation.dimension]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem stdSmooth_mvPolynomial (R : Type) [CommRing R] (n : ℕ) :
     Algebra.IsStandardSmoothOfRelativeDimension n R (MvPolynomial (Fin n) R) := by
@@ -34,9 +32,9 @@ theorem stdSmooth_mvPolynomial (R : Type) [CommRing R] (n : ℕ) :
   simp [Algebra.Presentation.dimension]
 
 /- English proof (translation)
-Establish `hZ : SmoothOfRelativeDimension n (𝔸(Fin n; Spec (CommRingCat.of ℤ)) ↘ Spec (CommRingCat.of ℤ))`. Establish `e : (𝔸(Fin n; Spec (CommRingCat.of ℤ)) ↘ Spec (CommRingCat.of ℤ)) = (AffineSpace.SpecIso (Fin n) (CommRingCat.of ℤ)).hom ≫ Spec.map (CommRingCat.ofHom MvPolynomial.C)`. Rewrite using `[← AffineSpace.SpecIso_inv_over, Iso.hom_inv_id_assoc]`. Rewrite using `[e, MorphismProperty.cancel_left_of_respectsIso (@SmoothOfRelativeDimension n), HasRingHomProperty.Spec_iff (P := @SmoothOfRelativeDimension n)]`. Conclude with `RingHom.locally_of RingHom.isStandardSmoothOfRelativeDimension_respectsIso _ ((RingHom.isStandardSmoothOfRelativeDimension_algebraMap n).2 (stdSmooth_mvPolynomial ℤ n))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `smoothOfRelativeDimension_isStableUnderBaseChange n` as an intermediate fact. Conclude with `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension n) (AffineSpace.isPullback_map (n := Fin n) (S.toSpecΓ ≫ Spec.map (CommRingCat.ofHom (Int.castRingHom (S.presheaf.obj (Opposite.op ⊤)))))) hZ`.
+A detailed English derivation is pending.
 -/
 theorem smooth_affineSpace (S : Scheme.{0}) (n : ℕ) :
     SmoothOfRelativeDimension n (𝔸(Fin n; S) ↘ S) := by
@@ -80,7 +78,7 @@ def gaRep (X : Scheme.{0}) : (gaFunctor X ⋙ forget _).RepresentableBy (gaObj X
 instance (X : Scheme.{0}) : GrpObj (gaObj X) := GrpObj.ofRepresentableBy _ _ (gaRep X)
 
 /- English proof (translation)
-Establish `hcomp : ∀ {T' : Over X} (f : T ⟶ T') (g : T' ⟶ gaObj X), gaEquiv T (f ≫ g) = ((gaFunctor X).map f.op).hom (gaEquiv T' g)` using `fun _ _ => rfl`. Establish `hμ : gaEquiv (gaObj X ⊗ gaObj X) MonObj.mul = gaEquiv _ (fst (gaObj X) (gaObj X)) * gaEquiv _ (snd (gaObj X) (gaObj X))` using `by erw [MonObj.ofRepresentableBy_mul]`. Conclude with `Equiv.apply_symm_apply _ _`. Rewrite using `[Hom.mul_def, hcomp, hμ, map_mul, ← hcomp, ← hcomp, lift_fst, lift_snd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaEquiv_mul {X : Scheme.{0}} {T : Over X} (x y : T ⟶ gaObj X) :
     gaEquiv T (x * y) = gaEquiv T x * gaEquiv T y := by
@@ -93,7 +91,7 @@ theorem gaEquiv_mul {X : Scheme.{0}} {T : Over X} (x y : T ⟶ gaObj X) :
   rw [Hom.mul_def, hcomp, hμ, map_mul, ← hcomp, ← hcomp, lift_fst, lift_snd]
 
 /- English proof (translation)
-Establish `hcomp : ∀ {T' : Over X} (f : T ⟶ T') (g : T' ⟶ gaObj X), gaEquiv T (f ≫ g) = ((gaFunctor X).map f.op).hom (gaEquiv T' g)` using `fun _ _ => rfl`. Establish `h1 : gaEquiv (𝟙_ (Over X)) MonObj.one = 1` using `by erw [MonObj.ofRepresentableBy_one]`. Conclude with `Equiv.apply_symm_apply _ _`. Rewrite using `[Hom.one_def, hcomp, h1, map_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gaEquiv_one {X : Scheme.{0}} {T : Over X} :
     gaEquiv T (1 : T ⟶ gaObj X) = 1 := by
@@ -119,7 +117,7 @@ def gaPt {A : Type} [CommRing A] (y : Spec (CommRingCat.of A) ⟶ X) (a : A) : O
   (gaEquiv (Over.mk y)).symm (Multiplicative.ofAdd ((Scheme.ΓSpecIso (CommRingCat.of A)).inv a))
 
 /- English proof (translation)
-Establish `e : ∀ c : A, gaEquiv (Over.mk y) (gaPt y c) = Multiplicative.ofAdd ((Scheme.ΓSpecIso (CommRingCat.of A)).inv c)` using `fun c => (gaEquiv _).apply_symm_apply _`. Apply `(gaEquiv (Over.mk y)).injective` to reduce the goal to its premises. Rewrite using `[gaEquiv_mul, e, e, e, map_add, ofAdd_add]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gaPt_add {A : Type} [CommRing A] (y : Spec (CommRingCat.of A) ⟶ X) (a b : A) :
     gaPt y (a + b) = gaPt y a * gaPt y b := by
@@ -130,7 +128,7 @@ theorem gaPt_add {A : Type} [CommRing A] (y : Spec (CommRingCat.of A) ⟶ X) (a 
   rw [gaEquiv_mul, e, e, e, map_add, ofAdd_add]
 
 /- English proof (translation)
-Establish `e : ∀ c : A, gaEquiv (Over.mk y) (gaPt y c) = Multiplicative.ofAdd ((Scheme.ΓSpecIso (CommRingCat.of A)).inv c)` using `fun c => (gaEquiv _).apply_symm_apply _`. Apply `(gaEquiv (Over.mk y)).injective` to reduce the goal to its premises. Rewrite using `[gaEquiv_one, e, map_zero, ofAdd_zero]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem gaPt_zero {A : Type} [CommRing A] (y : Spec (CommRingCat.of A) ⟶ X) : gaPt y 0 = 1 := by
   have e : ∀ c : A, gaEquiv (Over.mk y) (gaPt y c) =
@@ -140,9 +138,9 @@ theorem gaPt_zero {A : Type} [CommRing A] (y : Spec (CommRingCat.of A) ⟶ X) : 
   rw [gaEquiv_one, e, map_zero, ofAdd_zero]
 
 /- English proof (translation)
-Establish `e : ∀ c : A, gaEquiv (Over.mk y) (gaPt y c) = Multiplicative.ofAdd ((Scheme.ΓSpecIso (CommRingCat.of A)).inv c)` using `fun c => (gaEquiv _).apply_symm_apply _`. Use `Function.bijective_iff_has_inverse.2 ⟨fun v => (Scheme.ΓSpecIso (CommRingCat.of A)).hom (gaEquiv (Over.mk y) v).toAdd, fun c => ?_, fun v => ?_⟩` and prove the remaining obligations. Use `show (Scheme.ΓSpecIso (CommRingCat.of A)).hom (gaEquiv (Over.mk y) (gaPt y c)).toAdd = c`. Rewrite using `[e]`. Conclude with `Iso.inv_hom_id_apply _ _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(gaEquiv (Over.mk y)).injective show gaEquiv (Over.mk y) (gaPt y ((Scheme.ΓSpecIso (CommRingCat.of A)).hom (gaEquiv (Over.mk y) v).toAdd)) = _` to reduce the goal to its premises. Rewrite using `[e, Iso.hom_inv_id_apply]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem gaPt_bijective {A : Type} [CommRing A] (y : Spec (CommRingCat.of A) ⟶ X) :
     Function.Bijective (gaPt y) := by
@@ -160,9 +158,9 @@ theorem gaPt_bijective {A : Type} [CommRing A] (y : Spec (CommRingCat.of A) ⟶ 
     rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `e2 : ∀ {A' : Type} [CommRing A'] (y' : Spec (CommRingCat.of A') ⟶ X) (c : A'), (gaPt y' c).left.appTop (AffineSpace.coord X 0) = (Scheme.ΓSpecIso (CommRingCat.of A')).inv c` using `fun y' c => congrArg Multiplicative.toAdd ((gaEquiv (Over.mk y')).apply_symm_apply _)`. Establish `w1 : ∀ {A' : Type} [CommRing A'] (y' : Spec (CommRingCat.of A') ⟶ X) (c : A'), (gaPt y' c).left ≫ (𝔸(Fin 1; X) ↘ X) = y'` using `fun y' c => Over.w (gaPt y' c)`. Use `AffineSpace.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, w1, w1]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `i`. Take `rfl : i = 0` from `Subsingleton.elim _ _`. Rewrite using `[Scheme.Hom.comp_appTop, CategoryTheory.comp_apply]`. Conclude with `(congrArg (Scheme.Hom.appTop (Spec.map (CommRingCat.ofHom φ))).hom (e2 y a)).trans (((congrArg (fun g => g.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom φ))).symm).trans (e2 _ (φ a)).symm)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_gaPt {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B)
     (y : Spec (CommRingCat.of A) ⟶ X) (z : Spec (CommRingCat.of B) ⟶ X)
@@ -186,7 +184,7 @@ theorem map_gaPt {A B : Type} [CommRing A] [CommRing B] (φ : A →+* B)
 variable {R : Type} [CommRing R] (x : Spec (CommRingCat.of R) ⟶ X)
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp, h, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_base (φ : DualNumber R →+* R) (h : φ.comp (algebraMap R (DualNumber R)) = RingHom.id R) :
     Spec.map (CommRingCat.ofHom φ) ≫
@@ -194,9 +192,9 @@ theorem map_base (φ : DualNumber R →+* R) (h : φ.comp (algebraMap R (DualNum
   rw [← Spec.map_comp_assoc, ← CommRingCat.ofHom_comp, h, CommRingCat.ofHom_id, Spec.map_id, Category.id_comp]
 
 /- English proof (translation)
-Use `show (Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ (gaPt _ a).left = (1 : Over.mk x ⟶ gaObj X).left) ↔ a.fst = 0`. Establish `hb : Spec.map (CommRingCat.ofHom (TrivSqZeroExt.fstHom R R R).toRingHom) ≫ (Spec.map (CommRingCat.ofHom (algebraMap R (DualNumber R))) ≫ x) = x` using `map_base x _ (RingHom.ext fun _ => rfl)`. Rewrite using `[map_gaPt _ _ x hb a, ← gaPt_zero x]`. Prove the components needed by the constructor for the conclusion. Introduce `h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(gaPt_bijective x).1 (Over.OverMorphism.ext h)`. Introduce `h`. Rewrite using `[show (TrivSqZeroExt.fstHom R R R).toRingHom a = 0 from h]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTanAt_gaPt (a : DualNumber R) :
     IsTanAt (gaObj X) x (gaPt _ a) ↔ a.fst = 0 := by
@@ -237,7 +235,7 @@ namespace GlobalTheory.CompanionTheory.Ar
 open AlgebraicGeometry CategoryTheory Limits MonoidalCategory CartesianMonoidalCategory MonObj
 
 /- English proof (translation)
-Conclude with `⟨LieInh.gaObj _, inferInstance, inferInstance, LieInh.smooth_affineSpace _ 1, fun R _ x => ⟨LieInh.gaLie x⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_lieModel_line :
     ∃ (G : Over (Spec (CommRingCat.of ℤ))) (_ : GrpObj G) (_ : IsCommMonObj G),

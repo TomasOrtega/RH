@@ -11,9 +11,9 @@ open PositivityTheory.RgBcC PositivityTheory.RgBcC.Real PositivityTheory.RgBcC.R
 open Formalism.REAL (GlRel IsWeight KHighest Cas)
 
 /- English proof (translation)
-Unfold `trOn`. Use `split_ifs with h`. Establish `: Subsingleton (⊥ : Submodule ℂ V)` using `inferInstance`. Establish `h0 : L.restrict h = 0` using `Subsingleton.elim _ _`. Rewrite using `[h0, map_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 private theorem trOn_bot' {V : Type} [AddCommGroup V] [Module ℂ V] (L : V →ₗ[ℂ] V) :
     trOn (⊥ : Submodule ℂ V) L = 0 := by
@@ -25,7 +25,7 @@ private theorem trOn_bot' {V : Type} [AddCommGroup V] [Module ℂ V] (L : V →�
   · rfl
 
 /- English proof (translation)
-Simplify using `[cf, ex, AddMonoidAlgebra.coeff, Finsupp.finset_sum_apply, Finsupp.single_apply]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cf_sum {n : ℕ} (s : Finset (Wt n)) (g : Wt n → ℂ) (μ : Wt n) :
     cf (∑ x ∈ s, g x • ex x) μ = if μ ∈ s then g μ else 0 := by
@@ -33,9 +33,9 @@ private theorem cf_sum {n : ℕ} (s : Finset (Wt n)) (g : Wt n → ℂ) (μ : Wt
   simp [cf, ex, AddMonoidAlgebra.coeff, Finsupp.finset_sum_apply, Finsupp.single_apply]
 
 /- English proof (translation)
-Introduce `n V _ _ F hF S hS hSt B`. Take `⟨s, hs, -, -⟩` from `wtDec n V F hF S hS hSt`. Use `⟨∑ μ ∈ s, trOn (wsp F μ ⊓ S) B • ex μ, fun μ => ?_⟩` and prove the remaining obligations. Rewrite using `[cf_sum]`. Use `split_ifs with h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hs μ h, trOn_bot']`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.RealTr.chEx :
     ∀ (n : ℕ) (V : Type) [NormedAddCommGroup V] [InnerProductSpace ℂ V] (F : Fin n → Fin n → Module.End ℂ V), UF F → ∀ S : Submodule ℂ V, FiniteDimensional ℂ S → Stb F S → ∀ B, ∃ c, IsCh F S B c := by

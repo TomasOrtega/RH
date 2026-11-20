@@ -8,13 +8,13 @@ namespace GlobalTheory
 namespace WeightedInverseBound
 
 /- English proof (translation)
-Set `e : Fin (Fintype.card ι) ≃ ι` to `(Fintype.equivFin ι).symm`. Establish `hr : (L.submatrix e (Equiv.refl (Fin g))).rank = g`. Rewrite using `[Matrix.rank_submatrix]`. Conclude with `hL`. Take `⟨K, hK⟩` from `GlobalTheory.T.exists_norm_weighted_least_squares_le _ g _ hr`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨K, fun D b hD => ?_⟩` and prove the remaining obligations. Establish `h` using `hK (D ∘ e) (b ∘ e) (fun k => hD _)`. Establish `h1 : (L.submatrix e (Equiv.refl (Fin g))).transpose * Matrix.diagonal (D ∘ e) * (L.submatrix e (Equiv.refl (Fin g))) = L.transpose * Matrix.diagonal D * L`. Use extensionality with `i j`. Simplify using `only [Matrix.mul_apply (M := _ * Matrix.diagonal _), Matrix.mul_diagonal, Matrix.transpose_apply, Matrix.submatrix_apply, Equiv.refl_apply, Function.comp]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `e.sum_comp (fun k => L k i * D k * L k j)`. Establish `h2 : ((L.submatrix e (Equiv.refl (Fin g))).transpose * Matrix.diagonal (D ∘ e)).mulVec (b ∘ e) = (L.transpose * Matrix.diagonal D).mulVec b`. Use extensionality with `i`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_diagonal, Matrix.transpose_apply, Matrix.submatrix_apply, Equiv.refl_apply, Function.comp]`. Conclude with `e.sum_comp (fun k => L k i * D k * b k)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ‖b ∘ e‖ = ‖b‖` using `e.surjective.pi_norm_comp b`. Rewrite `h` using `[h1, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, h2, h3]`. Rewrite using `[Matrix.mul_assoc, ← Matrix.mulVec_mulVec]`. Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem wls_fintype {ι : Type} [Fintype ι] [DecidableEq ι] {g : ℕ} (L : Matrix ι (Fin g) ℝ)
     (hL : L.rank = g) : ∃ K : ℝ, ∀ (D : ι → ℝ) (b : ι → ℝ), (∀ k, 0 < D k) →
@@ -45,9 +45,7 @@ theorem wls_fintype {ι : Type} [Fintype ι] [DecidableEq ι] {g : ℕ} (L : Mat
   exact h
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Use `(le_abs_self _).trans ?_` and prove the remaining obligations. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul (norm_le_pi_norm x k) (norm_le_pi_norm y k) (abs_nonneg _) (norm_nonneg _)`.
-
-Use `_ = g * (‖x‖ * ‖y‖) := by simp`.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dot_le_card_mul_norm_mul_norm {g : ℕ} (x y : Fin g → ℝ) : x ⬝ᵥ y ≤ g * (‖x‖ * ‖y‖) := by
   calc x ⬝ᵥ y = ∑ k, x k * y k := rfl
@@ -60,9 +58,9 @@ theorem dot_le_card_mul_norm_mul_norm {g : ℕ} (x y : Fin g → ℝ) : x ⬝ᵥ
     _ = g * (‖x‖ * ‖y‖) := by simp
 
 /- English proof (translation)
-Establish `h0 : 0 ≤ x ⬝ᵥ x` using `Finset.sum_nonneg fun k _ => mul_self_nonneg _`. Establish `: ‖x‖ ≤ Real.sqrt (x ⬝ᵥ x)`. Use `(pi_norm_le_iff_of_nonneg (Real.sqrt_nonneg _)).2 fun k => ?_` and prove the remaining obligations. Rewrite using `[Real.norm_eq_abs]`. Apply `Real.abs_le_sqrt` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[sq]`. Conclude with `Finset.single_le_sum (f := fun k => x k * x k) (fun k _ => mul_self_nonneg _) (Finset.mem_univ k)`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem norm_sq_le_dot {g : ℕ} (x : Fin g → ℝ) : ‖x‖ * ‖x‖ ≤ x ⬝ᵥ x := by
   have h0 : 0 ≤ x ⬝ᵥ x := Finset.sum_nonneg fun k _ => mul_self_nonneg _
@@ -78,9 +76,9 @@ theorem norm_sq_le_dot {g : ℕ} (x : Fin g → ℝ) : ‖x‖ * ‖x‖ ≤ x �
     _ = x ⬝ᵥ x := Real.mul_self_sqrt h0
 
 /- English proof (translation)
-Break down `(norm_nonneg z).eq_or_lt with h | h` into its components or cases. Rewrite using `[← h]`. Check the signs of the components of the expression. Establish `h1` using `hY z`. Establish `h2` using `dot_le_card_mul_norm_mul_norm z (Y.mulVec z)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3` using `norm_sq_le_dot z`. Establish `h4 : ‖z‖ * (c * ‖z‖) ≤ ‖z‖ * (g * ‖Y.mulVec z‖)` using `by nlinarith`. Establish `h5` using `le_of_mul_le_mul_left h4 h`. Rewrite using `[div_mul_eq_mul_div, le_div_iff₀ hc]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem norm_le_of_coercive {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} {c : ℝ} (hc : 0 < c)
     (hY : ∀ x, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ Y.mulVec x) (z : Fin g → ℝ) :
@@ -96,7 +94,7 @@ theorem norm_le_of_coercive {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} {c : ℝ}
   linarith
 
 /- English proof (translation)
-Rewrite using `[← Matrix.isUnit_iff_isUnit_det, ← Matrix.mulVec_injective_iff_isUnit]`. Introduce `x y hxy`. Establish `h` using `norm_le_of_coercive hc hY (x - y)`. Rewrite `h` using `[Matrix.mulVec_sub, hxy, sub_self, norm_zero, mul_zero]`. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 h)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_det_of_coercive {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} {c : ℝ} (hc : 0 < c)
     (hY : ∀ x, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ Y.mulVec x) : IsUnit Y.det := by
@@ -107,9 +105,7 @@ theorem isUnit_det_of_coercive {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} {c : �
   exact sub_eq_zero.1 (norm_le_zero_iff.1 h)
 
 /- English proof (translation)
-Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 fun j => ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_le_sum fun k _ => ?_` and prove the remaining obligations. Rewrite using `[abs_mul]`. Conclude with `mul_le_mul (h j k) (norm_le_pi_norm z k) (abs_nonneg _) hC`.
-
-Use `_ = g * C * ‖z‖ := by simp [mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_mulVec_le {m : Type} [Fintype m] {g : ℕ} {Y : Matrix m (Fin g) ℝ} {C : ℝ}
     (hC : 0 ≤ C) (h : ∀ j k, |Y j k| ≤ C) (z : Fin g → ℝ) :
@@ -124,7 +120,7 @@ theorem norm_mulVec_le {m : Type} [Fintype m] {g : ℕ} {Y : Matrix m (Fin g) �
     _ = g * C * ‖z‖ := by simp [mul_assoc]
 
 /- English proof (translation)
-The claim follows from `|Y j k| ≤ |C| := by have a := h1 (Pi.single j 1) have b := h1 (Pi.single k 1) have p := h0 (Pi.single j 1 + Pi.single k 1) have q := h0 (Pi.single j 1 - Pi.single k 1) have s : Y k j = Y j k := hs.apply j k simp only [Matrix.mulVec_add, Matrix.mulVec_sub, add_dotProduct, sub_dotP …`.
+A detailed English derivation is pending.
 -/
 theorem abs_entry_le {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} {C : ℝ} (hs : Y.IsSymm)
     (h0 : ∀ x, 0 ≤ x ⬝ᵥ Y.mulVec x) (h1 : ∀ x, x ⬝ᵥ Y.mulVec x ≤ C * (x ⬝ᵥ x)) (j k : Fin g) :
@@ -142,27 +138,23 @@ theorem abs_entry_le {g : ℕ} {Y : Matrix (Fin g) (Fin g) ℝ} {C : ℝ} (hs : 
   constructor <;> linarith
 
 /- English proof (translation)
-Establish `hR : ∀ i, ∃ R : Matrix (Fin g) (Fin g) ℝ, B i = R.transpose * R`. Introduce `i`. Use `open scoped MatrixOrder in`. Take `⟨R, hR⟩` from `CStarAlgebra.nonneg_iff_eq_star_mul_self.1 (hB i).nonneg`. Conclude with `⟨R, by rw [hR]; rfl⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `choose R hR using hR`. Set `L : Matrix (Fin g ⊕ (Fin a × Fin g)) (Fin g) ℝ` to `Matrix.fromRows 1 (Matrix.of fun p j => R p.1 p.2 j)`. Establish `hL : L.rank = g`. Use `le_antisymm (by simpa using L.rank_le_card_width) ?_` and prove the remaining obligations. Establish `h1 : (Matrix.fromCols (1 : Matrix (Fin g) (Fin g) ℝ) (0 : Matrix (Fin g) (Fin a × Fin g) ℝ)) * L = 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[L, Matrix.fromCols_mul_fromRows]`. Establish `h2` using `Matrix.rank_mul_le_right (Matrix.fromCols (1 : Matrix (Fin g) (Fin g) ℝ) (0 : Matrix (Fin g) (Fin a × Fin g) ℝ)) L`. Rewrite `h2` using `[h1, Matrix.rank_one, Fintype.card_fin]`. Conclude with `h2`. Take `⟨K, hK⟩` from `wls_fintype L hL`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Take `⟨A, hA0, hA⟩ : ∃ A : ℝ, 0 ≤ A ∧ ∀ i j k, |R i j k| ≤ A` from `⟨‖fun i j k => R i j k‖, norm_nonneg _, fun i j k => ((norm_le_pi_norm _ k).trans (norm_le_pi_norm (fun j k => R i j k) j)).trans (norm_le_pi_norm (fun i j k => R i j k) i)⟩`. Use `⟨|K| * (g * A), fun t ht i x => ?_⟩` and prove the remaining obligations. Set `D : Fin g ⊕ (Fin a × Fin g) → ℝ` to `Sum.elim (fun _ => 1) (fun p => t p.1)`. Set `b : Fin g ⊕ (Fin a × Fin g) → ℝ` to `Sum.elim (fun _ => 0) (fun p => if p.1 = i then (R i).mulVec x p.2 else 0)`. Establish `hD : ∀ k, 0 < D k`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce and unpack `(k | p)`. Conclude with `one_pos`. Conclude with `ht _`. Establish `h` using `hK D b hD`. Establish `h1 : L.transpose * Matrix.diagonal D * L = 1 + ∑ l, t l • B l`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `j k`. Simplify using `only [Matrix.mul_apply (M := _ * Matrix.diagonal _), Matrix.mul_diagonal, Matrix.transpose_apply, Fintype.sum_sum_type, Fintype.sum_prod_type, L, D, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Sum.elim_inl, Sum.elim_inr, Matrix.of_apply, Matrix.add_apply, Matrix.sum_app …`. Use `congr 1`. Simplify using `[Matrix.one_apply, eq_comm]`. Conclude with `Finset.sum_congr rfl fun l _ => Finset.sum_congr rfl fun m _ => by ring`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h2 : (L.transpose * Matrix.diagonal D).mulVec b = (t i • B i).mulVec x`. Rewrite using `[hR i, Matrix.smul_mulVec, ← Matrix.mulVec_mulVec x]`. Use extensionality with `j`. Simplify using `only [Matrix.mulVec, dotProduct, Matrix.mul_diagonal, Matrix.transpose_apply, Fintype.sum_sum_type, Fintype.sum_prod_type, L, D, b, Matrix.fromRows_apply_inl, Matrix.fromRows_apply_inr, Sum.elim_inl, Sum.elim_inr, Matrix.of_apply, Pi.smul_apply, smul_eq_mul, mul_zero, Finset.sum_ …`. Rewrite using `[Finset.sum_eq_single i]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [if_true]`. Rewrite using `[Finset.mul_sum Finset.univ _ (t i)]`. Conclude with `Finset.sum_congr rfl fun m _ => by ring`. Introduce `l _ hl`. Simplify using `[hl]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Check the signs of the components of the expression. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Establish `h3 : ‖b‖ ≤ g * A * ‖x‖`. Use `(pi_norm_le_iff_of_nonneg (by positivity)).2 ?_` and prove the remaining obligations. Introduce and unpack `(k | p)`. Simplify using `only [b, Sum.elim_inl, norm_zero]`.
-
-Check the signs of the components of the expression. Simplify using `only [b, Sum.elim_inr] split_ifs`. Conclude with `(norm_le_pi_norm _ _).trans (norm_mulVec_le hA0 (hA i) x)`. Simplify using `only [norm_zero]`. Check the signs of the components of the expression.
-
-Rewrite `h` using `[h1, Matrix.mul_assoc, ← Matrix.mulVec_mulVec, h2]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Check the signs of the components of the expression. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem bound_one_add {g a : ℕ} (B : Fin a → Matrix (Fin g) (Fin g) ℝ)
     (hB : ∀ i, (B i).PosSemidef) : ∃ K : ℝ, ∀ t : Fin a → ℝ, (∀ i, 0 < t i) → ∀ i x,
@@ -242,23 +234,23 @@ end WeightedInverseBound
 open WeightedInverseBound in
 
 /- English proof (translation)
-Introduce `g a B c C hc hB`. Take `⟨K, hK⟩` from `bound_one_add B hB`. Use `⟨(1 + g / c * (1 + g * |C|)) * K, fun Y' t hs hlo hhi ht i x => ?_⟩` and prove the remaining obligations. Establish `hw` using `hK t ht i x`. Use `set P := ∑ l, t l • B l with hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : ∀ z, 0 ≤ z ⬝ᵥ P.mulVec z`. Introduce `z`. Establish `: P.PosSemidef` using `Matrix.posSemidef_sum _ fun l _ => (hB l).smul (ht l).le`. Simplify using `using this.dotProduct_mulVec_nonneg z`. Establish `hY : ∀ z, c * (z ⬝ᵥ z) ≤ z ⬝ᵥ (Y' + P).mulVec z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z`. Rewrite using `[Matrix.add_mulVec, dotProduct_add]`. Combine the linear relations using `[hlo z, hP0 z]`. Establish `hZ : ∀ z, 1 * (z ⬝ᵥ z) ≤ z ⬝ᵥ (1 + P).mulVec z`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Matrix.add_mulVec, dotProduct_add, Matrix.one_mulVec]`. Combine the linear relations using `[hP0 z]`. Establish `hYu` using `isUnit_det_of_coercive hc hY`. Establish `hZu` using `isUnit_det_of_coercive one_pos hZ`. Use `set v := (t i • B i).mulVec x with hv`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set w := (1 + P)⁻¹.mulVec v with hwdef`. Establish `hu : (t i • ((Y' + P)⁻¹ * B i)).mulVec x = (Y' + P)⁻¹.mulVec v`. Rewrite using `[hv, Matrix.mulVec_mulVec, Matrix.mul_smul]`. Rewrite using `[hu]`. Use `set u := (Y' + P)⁻¹.mulVec v with hudef`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (Y' + P).mulVec u = v`. Rewrite using `[hudef, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hYu, Matrix.one_mulVec]`. Establish `e2 : (1 + P).mulVec w = v`. Rewrite using `[hwdef, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hZu, Matrix.one_mulVec]`. Establish `e3 : (Y' + P).mulVec (u - w) = w - Y'.mulVec w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.mulVec_sub, e1, ← e2, Matrix.add_mulVec, Matrix.add_mulVec, Matrix.one_mulVec]`. Normalize the expressions using the abelian group laws. Establish `h0 : ∀ z, 0 ≤ z ⬝ᵥ Y'.mulVec z` using `fun z => le_trans (mul_nonneg hc.le (le_trans (mul_self_nonneg _) (norm_sq_le_dot z))) (hlo z)`. Establish `b1` using `norm_mulVec_le (abs_nonneg C) (abs_entry_le hs h0 hhi) w`. Establish `b2` using `norm_le_of_coercive hc hY (u - w)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite `b2` using `[e3]`. Establish `b3 : ‖w - Y'.mulVec w‖ ≤ (1 + g * |C|) * ‖w‖`. Use `norm_sub_le w (Y'.mulVec w)` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `b4 : ‖u‖ ≤ ‖w‖ + ‖u - w‖`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `norm_add_le w (u - w)` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis. Establish `hgc : (0 : ℝ) ≤ g / c` using `by positivity`. Establish `b5` using `mul_le_mul_of_nonneg_left b3 hgc`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem smul_inv_mul_posSemidef_uniform_bound : ∀ (g a : ℕ) (B : Fin a → Matrix (Fin g) (Fin g) ℝ) (c C : ℝ), 0 < c → (∀ i, (B i).PosSemidef) → ∃ W : ℝ, ∀ (Y' : Matrix (Fin g) (Fin g) ℝ) (t : Fin a → ℝ), Y'.IsSymm → (∀ x, c * (x ⬝ᵥ x) ≤ x ⬝ᵥ Y'.mulVec x) → (∀ x, x ⬝ᵥ Y'.mulVec x ≤ C * (x ⬝ᵥ x)) → (∀ i, 0 < t i) → ∀ i x, ‖(t i • ((Y' + ∑ l, t l • B l)⁻¹ * B i)).mulVec x‖ ≤ W * ‖x‖ := by
   intro g a B c C hc hB

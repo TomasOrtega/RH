@@ -44,9 +44,9 @@ def SDiagG (c : ℝ) : Prop :=
     ∀ (D : D7) (L : ℝ), GamRange D L → TrueS D → HD D L C' Cl Cg cb Cu cT CT → ∀ u, SDiagAt D u (gamL D L CD) c
 
 /- English proof (translation)
-Establish `hf : 0 < D.R.f`. Establish `: 1 ≤ D.R.n` using `Formalism.HC.Frame.ord_pos _`. Unfold `Ranks.f`. Use linear arithmetic over natural numbers and integers. Establish `hm : 2 ≤ D.R.m` using `D.R.two_le_m`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Establish `: (0 : ℝ) < D.R.m` using `by exact_mod_cast (by omega : 0 < D.R.m)`. Establish `: (0 : ℝ) < D.R.f` using `by exact_mod_cast hf`. Check the signs of the components of the expression.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression.
 -/
 theorem pow_five_mul_f_pos (D : D7) : (0 : ℝ) < (D.R.m : ℝ) ^ 5 * D.R.f := by
   have hf : 0 < D.R.f := by
@@ -58,9 +58,9 @@ theorem pow_five_mul_f_pos (D : D7) : (0 : ℝ) < (D.R.m : ℝ) ^ 5 * D.R.f := b
   positivity
 
 /- English proof (translation)
-Establish `hL : 1 < large₂.sc.L` using `Real.one_lt_rpow large₂.sc.one_lt_alt large₂.sc.eps_pos`. Establish `hp : (0 : ℝ) < (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L` using `mul_pos (pow_five_mul_f_pos D) (by linarith)`. Establish `hG : Real.log (AdmissibleBoundsFromSource.Gam D) = large₂.CGam * ((D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L)`. Unfold `AdmissibleBoundsFromSource.Gam`. Rewrite using `[large₂.Gam_eq D.u₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Unfold `GamRange`. Rewrite using `[hG, le_mul_iff_one_le_left hp, mul_assoc 8]`.
+Expand and normalize the polynomial expressions, which then agree. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem gamRange_iff {D : D7} (large₂ : SizeData₂ D) :
     GamRange D large₂.sc.L ↔ 1 ≤ large₂.CGam ∧ 8 * large₂.CGam * ((D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L) ≤ D.R.k := by
@@ -72,9 +72,9 @@ theorem gamRange_iff {D : D7} (large₂ : SizeData₂ D) :
   rw [hG, le_mul_iff_one_le_left hp, mul_assoc 8]
 
 /- English proof (translation)
-Establish `hL : 1 < large₂.sc.L` using `Real.one_lt_rpow large₂.sc.one_lt_alt large₂.sc.eps_pos`. Establish `hp : (0 : ℝ) < (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L` using `mul_pos (pow_five_mul_f_pos D) (by linarith)`. Establish `h8 : 8 * large₂.CGam ≤ C'` using `h.1`. Establish `hk : C' * (D.R.m : ℝ) ^ 5 * D.R.f * large₂.sc.L ≤ D.R.k` using `h.2.1`. Use `(gamRange_iff large₂).2 ⟨h1, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `mul_le_mul_of_nonneg_right h8 hp.le` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem gammaRange_of_sizeHypotheses {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT : ℝ} (h1 : 1 ≤ large₂.CGam)
     (h : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) : GamRange D large₂.sc.L := by
@@ -87,9 +87,9 @@ theorem gammaRange_of_sizeHypotheses {D : D7} {large₂ : SizeData₂ D} {C' Cl 
   linarith
 
 /- English proof (translation)
-Take `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, w, r⟩` from `hd`. Use `⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, fun u => ?_, r⟩` and prove the remaining obligations. Establish `hG : (0 : ℝ) < (D.mem u).A.GamP` using `lt_trans one_pos (D.mem u).A.one_lt_gammaP`. Establish `hD : 0 < D.what₂.Dstar` using `D.Dstar_eq u ▸ (D.mem u).A.Dstar_pos`. Establish `h0 : (0 : ℝ) < (D.mem u).A.GamP ^ (-2 : ℤ) * D.what₂.Dstar / C0` using `div_pos (mul_pos (zpow_pos hG _) hD) (by linarith)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `lt_of_lt_of_le h0 (w u).1` as an intermediate fact. Conclude with `this` after adjusting the coercions.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dataNW_of_window {D : D7} {C0 : ℝ} (h3 : 1 ≤ C0) (hd : StandingNumericalData D C0) : GlobalTheory.Core.Deg.DataNW D := by
   obtain ⟨a1, a2, a3, a4, a5, a6, a7, a8, a9, w, r⟩ := hd
@@ -102,14 +102,14 @@ theorem dataNW_of_window {D : D7} {C0 : ℝ} (h3 : 1 ≤ C0) (hd : StandingNumer
   exact_mod_cast this
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨GlobalTheory.Core.Deg.hypL_of h.1, dataNW_of_window h.2.2 h.2.1, tf⟩`.
+Supply the required witnesses or components.
 -/
 theorem hd_of_window {D : D7} {large₂ : SizeData₂ D} {C' Cl Cg cb Cu cT CT C0 : ℝ}
     (h : Cnt.Hyp0 D large₂ C' Cl Cg cb Cu cT CT C0) (tf : TFrameAt D) : HD D large₂.sc.L C' Cl Cg cb Cu cT CT :=
   ⟨GlobalTheory.Core.Deg.hypL_of h.1, dataNW_of_window h.2.2 h.2.1, tf⟩
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2`. Take `⟨CD, hC, a, b, H⟩` from `h Cg cb Cu cT CT h1 h2`. Conclude with `⟨CD, hC, max a b, fun C' Cl p q D L _ t hd => H C' Cl (le_trans (le_max_left _ _) p) (le_trans (le_max_right _ _) q) D L t hd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sDiagG_of_sDiag {c : ℝ} (h : SDiag c) : SDiagG c := by
   intro Cg cb Cu cT CT h1 h2
@@ -118,7 +118,7 @@ theorem sDiagG_of_sDiag {c : ℝ} (h : SDiag c) : SDiagG c := by
     H C' Cl (le_trans (le_max_left _ _) p) (le_trans (le_max_right _ _) q) D L t hd⟩
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2`. Take `⟨CD, hC, thr, H⟩` from `h Cg cb Cu cT CT h1 h2`. Conclude with `⟨CD, hC, thr, fun C' Cl p q D L _ g t hd => H C' Cl p q D L g t hd⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sDiagAtLed_of_sDiagG {c : ℝ} (h : SDiagG c) : SDiagAtLed c := by
   intro Cg cb Cu cT CT h1 h2
@@ -126,7 +126,7 @@ theorem sDiagAtLed_of_sDiagG {c : ℝ} (h : SDiagG c) : SDiagAtLed c := by
   exact ⟨CD, hC, thr, fun C' Cl p q D L _ g t hd => H C' Cl p q D L g t hd⟩
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2`. Take `⟨CD, hC, thr, H⟩` from `h Cg cb Cu cT CT h1 h2`. Conclude with `⟨CD, hC, thr, fun C0 _ C' Cl p q D large₂ g t h0 tf => H C' Cl p q D large₂.sc.L ⟨large₂, rfl⟩ (gammaRange_of_sizeHypotheses g h0.1) t (hd_of_window h0 tf)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem sDiagOn_of_sDiagAtLed {c : ℝ} (h : SDiagAtLed c) (S : Set ℝ) : SDiagOn S c := by
   intro Cg cb Cu cT CT h1 h2
@@ -135,13 +135,13 @@ theorem sDiagOn_of_sDiagAtLed {c : ℝ} (h : SDiagAtLed c) (S : Set ℝ) : SDiag
     H C' Cl p q D large₂.sc.L ⟨large₂, rfl⟩ (gammaRange_of_sizeHypotheses g h0.1) t (hd_of_window h0 tf)⟩
 
 /- English proof (translation)
-The claim follows from `sDiagOn_of_sDiagAtLed (sDiagAtLed_of_sDiagG (sDiagG_of_sDiag h)) S`.
+A detailed English derivation is pending.
 -/
 theorem sDiagOn_of_sDiag {c : ℝ} (h : SDiag c) (S : Set ℝ) : SDiagOn S c :=
   sDiagOn_of_sDiagAtLed (sDiagAtLed_of_sDiagG (sDiagG_of_sDiag h)) S
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2`. Take `⟨CD, hC, thr, H⟩` from `h Cg cb Cu cT CT h1 h2`. Conclude with `⟨CD, hC, thr, fun C0 h0 => H C0 (hS h0)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem SDiagOn.mono {S S' : Set ℝ} {c : ℝ} (hS : S ⊆ S') (h : SDiagOn S' c) : SDiagOn S c := by
   intro Cg cb Cu cT CT h1 h2
@@ -149,7 +149,7 @@ theorem SDiagOn.mono {S S' : Set ℝ} {c : ℝ} (hS : S ⊆ S') (h : SDiagOn S' 
   exact ⟨CD, hC, thr, fun C0 h0 => H C0 (hS h0)⟩
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2`. Take `⟨C, hC, thr, H⟩` from `h Cg cb Cu cT CT h1 h2`. Conclude with `⟨C, hC, thr, fun C0 h0 => H C0 (hS h0)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem OneOn.mono {S S' : Set ℝ} {gen : Bool} (hS : S ⊆ S') (h : OneOn S' gen) : OneOn S gen := by
   intro Cg cb Cu cT CT h1 h2
@@ -157,7 +157,7 @@ theorem OneOn.mono {S S' : Set ℝ} {gen : Bool} (hS : S ⊆ S') (h : OneOn S' g
   exact ⟨C, hC, thr, fun C0 h0 => H C0 (hS h0)⟩
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2`. Take `⟨C, hC, thr, H⟩` from `h Cg cb Cu cT CT h1 h2`. Conclude with `⟨C, hC, thr, fun C0 h0 => H C0 (hS h0)⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem OneAllOn.mono {S S' : Set ℝ} (hS : S ⊆ S') (h : OneAllOn S') : OneAllOn S := by
   intro Cg cb Cu cT CT h1 h2
@@ -165,7 +165,7 @@ theorem OneAllOn.mono {S S' : Set ℝ} (hS : S ⊆ S') (h : OneAllOn S') : OneAl
   exact ⟨C, hC, thr, fun C0 h0 => H C0 (hS h0)⟩
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2`. Take `⟨C, hC, thr, H⟩` from `h Cg cb Cu cT CT h1 h2`. Conclude with `⟨C, hC, thr, fun C0 _ C' Cl p q D large₂ X Y u t h0 ct ac => H C' Cl p q D large₂.sc.L X Y u t (hd_of_window h0 ct.2.2.2.2.2.2.2) ct ac⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem oneAllOn_of_oneAll (h : OneAll) (S : Set ℝ) : OneAllOn S := by
   intro Cg cb Cu cT CT h1 h2
@@ -174,7 +174,7 @@ theorem oneAllOn_of_oneAll (h : OneAll) (S : Set ℝ) : OneAllOn S := by
     H C' Cl p q D large₂.sc.L X Y u t (hd_of_window h0 ct.2.2.2.2.2.2.2) ct ac⟩
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2`. Take `⟨C, hC, a, b, H⟩` from `h Cg cb Cu cT CT h1 h2`. Conclude with `⟨C, hC, max a b, fun C0 _ C' Cl p q D large₂ X Y u t h0 ct ac => H C' Cl (le_trans (le_max_left _ _) p) (le_trans (le_max_right _ _) q) D large₂ X Y u t h0.1 (dataNW_of_window h0.2.2 h0.2.1) ct ac⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem oneOn_of_oneLed {gen : Bool} (h : OneLed gen) (S : Set ℝ) : OneOn S gen := by
   intro Cg cb Cu cT CT h1 h2
@@ -184,13 +184,13 @@ theorem oneOn_of_oneLed {gen : Bool} (h : OneLed gen) (S : Set ℝ) : OneOn S ge
       (dataNW_of_window h0.2.2 h0.2.1) ct ac⟩
 
 /- English proof (translation)
-Use `h.1` as an intermediate fact. Use `h.2` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 example (D : D7) (L : ℝ) (h : GamRange D L) : 8 * ((D.R.m : ℝ) ^ 5 * D.R.f * L) ≤ D.R.k := by
   have := h.1; have := h.2; linarith
 
 /- English proof (translation)
-Use `⟨Real.log (AdmissibleBoundsFromSource.Gam D) / ((D.R.m : ℝ) ^ 5 * D.R.f), fun L hL h => ?_⟩` and prove the remaining obligations. Rewrite `hL` using `[div_lt_iff₀ (pow_five_mul_f_pos D)]`. Use `h.1` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 example (D : D7) : ∃ L₀ : ℝ, ∀ L, L₀ < L → ¬ GamRange D L := by
   refine ⟨Real.log (AdmissibleBoundsFromSource.Gam D) / ((D.R.m : ℝ) ^ 5 * D.R.f), fun L hL h => ?_⟩
@@ -199,14 +199,14 @@ example (D : D7) : ∃ L₀ : ℝ, ∀ L, L₀ < L → ¬ GamRange D L := by
   linarith
 
 /- English proof (translation)
-Use `⟨Real.log (AdmissibleBoundsFromSource.Gam D) / ((D.R.m : ℝ) ^ 5 * D.R.f), div_pos (Real.log_pos (D.mem D.u₀).A.one_lt_gammaP) (pow_five_mul_f_pos D), ?_, h⟩` and prove the remaining obligations. Rewrite using `[mul_div_cancel₀ _ (pow_five_mul_f_pos D).ne']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 example (D : D7) (h : 8 * Real.log (AdmissibleBoundsFromSource.Gam D) ≤ D.R.k) : ∃ L : ℝ, 0 < L ∧ GamRange D L := by
   refine ⟨Real.log (AdmissibleBoundsFromSource.Gam D) / ((D.R.m : ℝ) ^ 5 * D.R.f), div_pos (Real.log_pos (D.mem D.u₀).A.one_lt_gammaP) (pow_five_mul_f_pos D), ?_, h⟩
   rw [mul_div_cancel₀ _ (pow_five_mul_f_pos D).ne']
 
 /- English proof (translation)
-Introduce `Cg cb Cu cT CT h1 h2`. Take `⟨CD, hC, thr, H⟩` from `h Cg cb Cu cT CT h1 h2`. Conclude with `⟨CD, hC, thr, fun C0 h0 C' Cl p q D large₂ g t hh => H C0 ⟨h0, hh.2.2⟩ C' Cl p q D large₂ g t hh⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (S : Set ℝ) (c : ℝ) (h : SDiagOn (S ∩ Set.Ici 1) c) : SDiagOn S c := by
   intro Cg cb Cu cT CT h1 h2

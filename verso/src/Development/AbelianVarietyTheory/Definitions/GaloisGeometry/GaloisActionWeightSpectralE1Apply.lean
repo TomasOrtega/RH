@@ -23,13 +23,13 @@ Both sides reduce to the same expression.
 @[simp] theorem castHQ_refl {E : Spc} {n i : ℤ} (x : HQ l E n i) : castHQ l (E := E) (rfl : n = n) (rfl : i = i) x = x := rfl
 
 /- English proof (translation)
-Unfold `pullHQ`. Rewrite using `[pullHl_id]`. Conclude with `LinearMap.baseChange_id`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullHQ_map_id (E : Spc) (n i : ℤ) : pullHQ l (𝟙 E) n i = LinearMap.id := by
   unfold pullHQ; rw [pullHl_id]; exact LinearMap.baseChange_id
 
 /- English proof (translation)
-Unfold `pullHQ`. Rewrite using `[pullHl_comp]`. Conclude with `LinearMap.baseChange_comp _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pullHQ_map_comp {E E' E'' : Spc} (f : E ⟶ E') (g : E' ⟶ E'') (n i : ℤ) :
     pullHQ l (f ≫ g) n i = pullHQ l f n i ∘ₗ pullHQ l g n i := by
@@ -46,7 +46,7 @@ variable (l : ℕ) [Fact l.Prime]
 def idx (m : ℕ) (a : ℤ) : Finset ℕ := (Finset.range m).filter fun s => -a ≤ (s : ℤ) ∧ a + 2 * (s : ℤ) < m
 
 /- English proof (translation)
-Unfold `idx`. Rewrite using `[Finset.mem_filter, Finset.mem_range]`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h => h.2`. Introduce `h; exact ⟨by omega, h⟩`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 -/
 theorem mem_idx {m : ℕ} {a : ℤ} {s : ℕ} : s ∈ idx m a ↔ -a ≤ (s : ℤ) ∧ a + 2 * (s : ℤ) < m := by
   unfold idx
@@ -90,21 +90,21 @@ open GlobalTheory.EtC GlobalTheory.Strata
 variable (l : ℕ) [Fact l.Prime] {ι : Type} [Fintype ι] [LinearOrder ι] {Z : Scheme.{0}} (J : ι → Z.IdealSheafData)
 
 /- English proof (translation)
-Use `(mem_idx.1 h).1` as an intermediate fact. Unfold `str`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 -/
 theorem str_succ_of_mem {m : ℕ} {a : ℤ} {s : ℕ} (h : s ∈ idx m a) : str a s + 1 = str (a + 1) s := by
   have := (mem_idx.1 h).1
   unfold str; omega
 
 /- English proof (translation)
-Use `(mem_idx.1 h).1` as an intermediate fact. Unfold `str`. Use `push_cast`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Move the embeddings inside the algebraic operations. Use linear arithmetic over natural numbers and integers.
 -/
 theorem str_succ_of_mem' {m : ℕ} {a : ℤ} {s : ℕ} (h : s ∈ idx m (a + 1)) : str a (s + 1) = str (a + 1) s + 1 := by
   have := (mem_idx.1 h).1
   unfold str; push_cast; omega
 
 /- English proof (translation)
-Unfold `str`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem str_N (a : ℤ) (s : ℕ) : str a (s + 1) = str (a + 2) s := by
   unfold str; congr 1; push_cast; ring
@@ -117,11 +117,11 @@ def spectralDifferentialRestriction {m : ℕ} (a b w : ℤ) (s : ℕ) (h : s ∈
     res l J (str a s) (b - 2 * s) (w - s)
 
 /- English proof (translation)
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem d1gys_deg (b : ℤ) (s : ℕ) : b - 2 * ((s + 1 : ℕ) : ℤ) + 2 = b - 2 * (s : ℤ) := by push_cast; ring
 /- English proof (translation)
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem d1gys_tw (w : ℤ) (s : ℕ) : w - ((s + 1 : ℕ) : ℤ) + 1 = w - (s : ℤ) := by push_cast; ring
 
@@ -152,13 +152,13 @@ open GlobalTheory.EtC GlobalTheory.Strata
 variable (l : ℕ) [Fact l.Prime] {ι : Type} [Fintype ι] [LinearOrder ι] {Z : Scheme.{0}} (J : ι → Z.IdealSheafData)
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> decide`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : idx 2 (-1) = {1} ∧ idx 2 0 = {0} ∧ idx 2 1 = {0} ∧ idx 2 2 = ∅ ∧ idx 2 (-2) = ∅ := by
   refine ⟨?_, ?_, ?_, ?_, ?_⟩ <;> decide
 
 /- English proof (translation)
-Simplify using `[res, Fin.sum_univ_two, sub_eq_add_neg]`.
+Simplify using the standard rewrite rules.
 -/
 example (n i : ℤ) : res l J 0 n i = pullHQ l (sch.map (δ J 0 0)) n i - pullHQ l (sch.map (δ J 0 1)) n i := by
   simp [res, Fin.sum_univ_two, sub_eq_add_neg]
@@ -188,7 +188,7 @@ def galS (σ : Ω ≃ₐ[k] Ω) (S : Finset ι) : GlobalTheory.Strata.Y (geomFam
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-Use `show _ ≫ Yι (GlobalTheory.Strata.pull I (geomπ Ω p)) S = Yι (GlobalTheory.Strata.pull I (geomπ Ω p)) S ≫ _`. Rewrite using `[← pullIso_hom_fst I (geomπ Ω p) S]`. Simplify using `only [galS, Category.assoc, Iso.inv_hom_id_assoc, pullback.map, pullback.lift_fst]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem galS_Yι (σ : Ω ≃ₐ[k] Ω) (S : Finset ι) :
     galS Ω p I σ S ≫ Yι (geomFam Ω p I) S = Yι (geomFam Ω p I) S ≫ GlobalTheory.Et.galMap Ω p σ := by
@@ -197,13 +197,13 @@ theorem galS_Yι (σ : Ω ≃ₐ[k] Ω) (S : Finset ι) :
   simp only [galS, Category.assoc, Iso.inv_hom_id_assoc, pullback.map, pullback.lift_fst]
 
 /- English proof (translation)
-The claim follows from `(cancel_mono (Yι (geomFam Ω p I) S)).1 (by rw [galS_Yι, galMap_one, Category.comp_id, Category.id_comp])`.
+A detailed English derivation is pending.
 -/
 theorem galS_one (S : Finset ι) : galS Ω p I 1 S = 𝟙 _ :=
   (cancel_mono (Yι (geomFam Ω p I) S)).1 (by rw [galS_Yι, galMap_one, Category.comp_id, Category.id_comp])
 
 /- English proof (translation)
-The claim follows from `(cancel_mono (Yι (geomFam Ω p I) S)).1 (by simp [galMap_mul])`.
+A detailed English derivation is pending.
 -/
 theorem galS_mul (σ τ : Ω ≃ₐ[k] Ω) (S : Finset ι) : galS Ω p I (σ * τ) S = galS Ω p I σ S ≫ galS Ω p I τ S :=
   (cancel_mono (Yι (geomFam Ω p I) S)).1 (by simp [galMap_mul])
@@ -213,26 +213,26 @@ def galStr (σ : Ω ≃ₐ[k] Ω) (t : ℕ) : Ystr (geomFam Ω p I) t ⟶ Ystr (
 
 @[reassoc (attr := simp)]
 /- English proof (translation)
-The claim follows from `Sigma.ι_desc _ _`.
+A detailed English derivation is pending.
 -/
 theorem inj_galStr (σ : Ω ≃ₐ[k] Ω) {t : ℕ} (S : Idx ι t) :
     inj _ S ≫ galStr Ω p I σ t = galS Ω p I σ S.1 ≫ inj _ S := Sigma.ι_desc _ _
 
 /- English proof (translation)
-The claim follows from `Ystr_hom_ext _ fun S => by rw [inj_galStr, galS_one, Category.id_comp, Category.comp_id]`.
+A detailed English derivation is pending.
 -/
 theorem galStr_one (t : ℕ) : galStr Ω p I 1 t = 𝟙 _ :=
   Ystr_hom_ext _ fun S => by rw [inj_galStr, galS_one, Category.id_comp, Category.comp_id]
 
 /- English proof (translation)
-The claim follows from `Ystr_hom_ext _ fun S => by simp [galS_mul] @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem galStr_mul (σ τ : Ω ≃ₐ[k] Ω) (t : ℕ) : galStr Ω p I (σ * τ) t = galStr Ω p I σ t ≫ galStr Ω p I τ t :=
   Ystr_hom_ext _ fun S => by simp [galS_mul]
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `Ystr_hom_ext _ fun S => by simp @[reassoc]`.
+A detailed English derivation is pending.
 -/
 theorem galStr_Ystrπ (σ : Ω ≃ₐ[k] Ω) (t : ℕ) :
     galStr Ω p I σ t ≫ Ystrπ _ t = Ystrπ _ t ≫ GlobalTheory.Et.galMap Ω p σ :=
@@ -240,7 +240,7 @@ theorem galStr_Ystrπ (σ : Ω ≃ₐ[k] Ω) (t : ℕ) :
 
 @[reassoc]
 /- English proof (translation)
-The claim follows from `Ystr_hom_ext _ fun S => by simp only [inj_δ_assoc, inj_galStr, inj_galStr_assoc, Category.assoc, inj_δ] rw [← Category.assoc, ← Category.assoc] congr 1 exact (cancel_mono (Yι _ _)).1 (by simp)`.
+A detailed English derivation is pending.
 -/
 theorem δ_galStr (σ : Ω ≃ₐ[k] Ω) (t : ℕ) (j : Fin (t + 2)) :
     δ _ t j ≫ galStr Ω p I σ t = galStr Ω p I σ (t + 1) ≫ δ _ t j :=

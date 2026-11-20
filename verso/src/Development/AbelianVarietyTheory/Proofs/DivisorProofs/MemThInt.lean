@@ -25,7 +25,7 @@ def towerSpan (B : Base F E) (χX χW : Chr F E) {m : ℕ} (Y : Spc F E m) (a p 
   Submodule.span ℂ {T | ∃ r ≤ j, T ∈ ThInt σ B χX χW Y (a - 2 * r) (a - p - r) (p - r)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨X, Y, M, om, r', s', h, Φ, hΦ, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_thInt {B : Base F E} {χX χW : Chr F E} {n m r s r' s' : ℕ} {X : Spc F E n} {Y : Spc F E m} {M : Model σ X Y}
     {om : Rep σ X Y} (h : IsPair B M χX χW om r s r' s') {Φ} (hΦ : Φ ∈ schA F (Fin n × Fin m)) :

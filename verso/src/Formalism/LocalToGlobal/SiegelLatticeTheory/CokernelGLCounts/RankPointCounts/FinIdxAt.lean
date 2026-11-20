@@ -16,37 +16,25 @@ variable {D : D7} (M : ∀ p : PlF D, Loc.Model (D.s.atP p).Fp (D.s.atP p).Ep)
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Take `⟨c0, hc00, hc0O, hcong⟩` from `cong_at M δ u u' w hA L U hL hU`. Use `set Lp := lOf δ M p L U with hLpd`. Use `set Lpi := lOf δ M p L⁻¹ U⁻¹ with hLpid`. Use `set Up := ρOf δ M p L U with hUpd`. Use `set Upi := ρOf δ M p L⁻¹ U⁻¹ with hUpid`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hLi` using `ZsVolGrp.isLoUni_inv hL`. Establish `hUi` using `ZsVolGrp.isUpUni_inv hU`. Establish `hLL : Lp * Lpi = 1` using `by rw [hLpd, hLpid, ← lOf_mul δ M hA, hLi.2.2, hUi.2.1, lOf_one δ M hA]`. Establish `hLL' : Lpi * Lp = 1` using `ProdE.lp_inv M δ hA L U hL hU`. Establish `hUU : Up * Upi = 1` using `ProdE.up_inv M δ hA L U hL hU`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hUU' : Upi * Up = 1` using `by rw [hUpd, hUpid, ← ρOf_mul δ M hA, hLi.2.2, hUi.2.1, ρOf_one δ M hA]`. Take `⟨s1, hs10, hs1O, hs1⟩` from `bounded_mat (L := D.s.atP p) Lp`. Take `⟨s2, hs20, hs2O, hs2⟩` from `bounded_mat (L := D.s.atP p) Lpi`. Take `⟨s3, hs30, hs3O, hs3⟩` from `bounded_mat (L := D.s.atP p) Up`. Take `⟨s4, hs40, hs4O, hs4⟩` from `bounded_mat (L := D.s.atP p) Upi`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hRO : ∀ {x : (D.s.atP p).Ep}, x ∈ (M p).R → x ∈ (D.s.atP p).O` using `fun hx => R_sub_O M δ hA hx`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `haveI := finite_quot M δ hA c0 hc00 hc0O`. Use `relIndex_ne_zero_of_code _ _ (fun k : ProdE.AP M δ u u' w p => ((fun i j => (QuotientAddGroup.mk (⟨((k : ProdE.StP M δ u u' w p).1.1 : ProdE.MP p) i j, hRO (k.2.1.2.2 i j)⟩ : (D.s.atP p).O) : (D.s.atP p).O ⧸ (Ideal.span {dO c0 hc0O}).toAddSubgroup)), (fun i j => (QuotientAddGroup …` and prove the remaining obligations. Establish `e1 : ∀ i j, (((k' : ProdE.StP M δ u u' w p).1.1 : ProdE.MP p) - ((k : ProdE.StP M δ u u' w p).1.1 : ProdE.MP p)) i j ∈ latS (D.s.atP p) c0` using `fun i j => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.sub_apply]`. Conclude with `quot_eq (congrFun (congrFun (congrArg Prod.fst heq) i) j)`. Establish `e2 : ∀ i j, (((k' : ProdE.StP M δ u u' w p).1.2.unop : ProdE.MP p) - ((k : ProdE.StP M δ u u' w p).1.2.unop : ProdE.MP p)) i j ∈ latS (D.s.atP p) c0` using `fun i j => by`. Rewrite using `[Matrix.sub_apply]`. Conclude with `quot_eq (congrFun (congrFun (congrArg Prod.snd heq) i) j)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Establish `hki` using `(k⁻¹).2`. Use `clear heq`. Use `set a := ((k : ProdE.StP M δ u u' w p).1.1 : ProdE.GLp p)`. Use `set a' := ((k' : ProdE.StP M δ u u' w p).1.1 : ProdE.GLp p)`. Use `set b := ((k : ProdE.StP M δ u u' w p).1.2.unop : ProdE.GLp p)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set b' := ((k' : ProdE.StP M δ u u' w p).1.2.unop : ProdE.GLp p)`. Establish `ha : ((a⁻¹ : ProdE.GLp p) : ProdE.MP p) * (a : ProdE.MP p) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hb : (b : ProdE.MP p) * ((b⁻¹ : ProdE.GLp p) : ProdE.MP p) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `m` using `hcong ((k⁻¹ * k' : ProdE.AP M δ u u' w p) : ProdE.StP M δ u u' w p) ?_ ?_`. Conclude with `m.2`. Use `show EntIn _ (((a⁻¹ * a' : ProdE.GLp p) : ProdE.MP p) - 1)`. Rewrite using `[Units.val_mul, show ((a⁻¹ : ProdE.GLp p) : ProdE.MP p) * (a' : ProdE.MP p) - 1 = ((a⁻¹ : ProdE.GLp p) : ProdE.MP p) * ((a' : ProdE.MP p) - (a : ProdE.MP p)) by rw [Matrix.mul_sub, ha]]`. Conclude with `entIn_int_mul (fun i j => hRO (hki.1.2.2 i j)) e1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show EntIn _ (((b' * b⁻¹ : ProdE.GLp p) : ProdE.MP p) - 1)`. Rewrite using `[Units.val_mul, show (b' : ProdE.MP p) * ((b⁻¹ : ProdE.GLp p) : ProdE.MP p) - 1 = ((b' : ProdE.MP p) - (b : ProdE.MP p)) * ((b⁻¹ : ProdE.GLp p) : ProdE.MP p) by rw [Matrix.sub_mul, hb]]`. Conclude with `entIn_mul_int (fun i j => hRO (hki.2.2.2 i j)) e2`. Use `set c1 := s2 * (s1 * c0) * (s3 * s4) with hc1d`. Establish `hc1O : c1 ∈ 𝒪[(D.s.atP p).Fp]` using `Subring.mul_mem _ (Subring.mul_mem _ hs2O (Subring.mul_mem _ hs1O hc0O)) (Subring.mul_mem _ hs3O hs4O)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hc10 : c1 ≠ 0` using `mul_ne_zero (mul_ne_zero hs20 (mul_ne_zero hs10 hc00)) (mul_ne_zero hs30 hs40)`. Use `haveI := finite_quot M δ hA c1 hc10 hc1O`. Use `relIndex_ne_zero_of_code _ _ (fun k : ProdE.CPL M δ u u' w hA L U hL hU => ((fun i j => (QuotientAddGroup.mk (⟨(Lp * ((k : ProdE.StP M δ u u' w p).1.1 : ProdE.MP p) * Lpi) i j, hRO (k.2.1.2.2 i j)⟩ : (D.s.atP p).O) : (D.s.atP p).O ⧸ (Ideal.span {dO c1 hc1O}).toAddSubgroup)), (fun …` and prove the remaining obligations. Establish `e1 : EntIn (latS (D.s.atP p) c1) (Lp * (((k' : ProdE.StP M δ u u' w p).1.1 : ProdE.MP p) - ((k : ProdE.StP M δ u u' w p).1.1 : ProdE.MP p)) * Lpi)` using `fun i j => by`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.sub_apply]`.
-
-Conclude with `quot_eq (congrFun (congrFun (congrArg Prod.fst heq) i) j)`. Establish `e2 : EntIn (latS (D.s.atP p) c1) (Upi * (((k' : ProdE.StP M δ u u' w p).1.2.unop : ProdE.MP p) - ((k : ProdE.StP M δ u u' w p).1.2.unop : ProdE.MP p)) * Up)` using `fun i j => by`. Rewrite using `[Matrix.mul_sub, Matrix.sub_mul, Matrix.sub_apply]`. Conclude with `quot_eq (congrFun (congrFun (congrArg Prod.snd heq) i) j)`. Use `clear heq`.
-
-Use `set a := ((k : ProdE.StP M δ u u' w p).1.1 : ProdE.GLp p)`. Use `set a' := ((k' : ProdE.StP M δ u u' w p).1.1 : ProdE.GLp p)`. Use `set b := ((k : ProdE.StP M δ u u' w p).1.2.unop : ProdE.GLp p)`. Use `set b' := ((k' : ProdE.StP M δ u u' w p).1.2.unop : ProdE.GLp p)`. Establish `hki` using `(k⁻¹).2`.
-
-Establish `ha : ((a⁻¹ : ProdE.GLp p) : ProdE.MP p) * (a : ProdE.MP p) = 1`. Rewrite using `[← Units.val_mul, inv_mul_cancel, Units.val_one]`. Establish `hb : (b : ProdE.MP p) * ((b⁻¹ : ProdE.GLp p) : ProdE.MP p) = 1`. Rewrite using `[← Units.val_mul, mul_inv_cancel, Units.val_one]`. Establish `m` using `hcong ((k⁻¹ * k' : ProdE.CPL M δ u u' w hA L U hL hU) : ProdE.StP M δ u u' w p) ?_ ?_`.
-
-Conclude with `m.1`. Use `show EntIn _ (((a⁻¹ * a' : ProdE.GLp p) : ProdE.MP p) - 1)`. Establish `eq1 : ((a⁻¹ * a' : ProdE.GLp p) : ProdE.MP p) - 1 = Lpi * ((Lp * ((a⁻¹ : ProdE.GLp p) : ProdE.MP p) * Lpi) * (Lp * ((a' : ProdE.MP p) - (a : ProdE.MP p)) * Lpi)) * Lp`. Rewrite using `[show Lpi * ((Lp * ((a⁻¹ : ProdE.GLp p) : ProdE.MP p) * Lpi) * (Lp * ((a' : ProdE.MP p) - (a : ProdE.MP p)) * Lpi)) * Lp = (Lpi * Lp) * ((a⁻¹ : ProdE.GLp p) : ProdE.MP p) * (Lpi * Lp) * ((a' : ProdE.MP p) - (a : ProdE.MP p)) * (Lpi * Lp) by simp only [Matrix.mul_assoc], hLL', Mat …`. Rewrite using `[eq1]`.
-
-Conclude with `entIn_sandwich hs2 hs1 (entIn_latS_of_eq (t := s3 * s4) rfl (Subring.mul_mem _ hs3O hs4O) (entIn_int_mul (fun i j => hRO (hki.1.2.2 i j)) e1))`. Use `show EntIn _ (((b' * b⁻¹ : ProdE.GLp p) : ProdE.MP p) - 1)`. Establish `eq2 : ((b' * b⁻¹ : ProdE.GLp p) : ProdE.MP p) - 1 = Up * ((Upi * ((b' : ProdE.MP p) - (b : ProdE.MP p)) * Up) * (Upi * ((b⁻¹ : ProdE.GLp p) : ProdE.MP p) * Up)) * Upi`. Rewrite using `[show Up * ((Upi * ((b' : ProdE.MP p) - (b : ProdE.MP p)) * Up) * (Upi * ((b⁻¹ : ProdE.GLp p) : ProdE.MP p) * Up)) * Upi = (Up * Upi) * ((b' : ProdE.MP p) - (b : ProdE.MP p)) * (Up * Upi) * ((b⁻¹ : ProdE.GLp p) : ProdE.MP p) * (Up * Upi) by simp only [Matrix.mul_assoc], hUU, Matr …`. Rewrite using `[eq2]`.
-
-Conclude with `entIn_sandwich hs3 hs4 (entIn_latS_of_eq (t := s2 * s1) (by rw [hc1d]; ring) (Subring.mul_mem _ hs2O hs1O) (entIn_mul_int (fun i j => hRO (hki.2.2.2 i j)) e2))`.
+A detailed English derivation is pending.
 -/
 theorem finIdx_at {p : PlF D} (hA : Agree δ M p) (L U : Formalism.L2.SG.PairVal.MatR D) (hL : IsLoUni L) (hU : IsUpUni U) :
     (ProdE.CPL M δ u u' w hA L U hL hU).relIndex (ProdE.AP M δ u u' w p) ≠ 0 ∧

@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.GoodStableGiven
 
 /- English proof (translation)
-Introduce `hGC D G _ _ Pl0 T A Ks _ _ _ R F h`. Take `⟨om, hT⟩` from `GlobalTheory.T.exists_tameCharacters_seriesIdempotentsTameLabelled R F h`. Conclude with `GlobalTheory.GoodStableDual.goodStable_of_irr R F h.irr h.core.grp om (GlobalTheory.GoodIdemTie.idemTie_of_tameTie hGC D om hT)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem goodStable_of_given : GlobalTheory.Published.GreenCuspidal → ∀ {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 T : Type}
     {A : FamIn D.what₂.LL G Pl0 T D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks)

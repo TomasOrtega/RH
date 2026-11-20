@@ -12,19 +12,15 @@ open MeasureTheory Filter Topology
 open ReciprocityTheory.ChartRestriction.G.Geo (MRing IsArithVar IsGoodProj mcPts segre fibre IsSheet segre_differentiableAt)
 
 /- English proof (translation)
-Establish `hF : (fibre P Ψ y).Finite` using `Set.finite_of_encard_eq_coe hy`. Use `choose! γ hγ using hsh`. Take `⟨U, hU, hdisj⟩` from `hF.t2_separation`. Establish `hev : ∀ᶠ y' in 𝓝 y, ∀ a ∈ fibre P Ψ y, (γ a y' ∈ mcPts P ∧ Ψ (segre (γ a y')) = Fin.cons 1 y') ∧ segre (γ a y') ∈ U a`. Use `(hF.eventually_all).2 fun a ha => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hc` using `(segre_differentiableAt (hγ a ha).2.self_of_nhds.1).continuousAt`. Establish `hmem : U a ∈ 𝓝 (segre (γ a y))`. Rewrite using `[(hγ a ha).1]`. Conclude with `(hU a).2.mem_nhds (hU a).1`. Use `filter_upwards [(hγ a ha).2, hc.preimage_mem_nhds hmem] with y' h1 h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `⟨⟨h1.2.1, h1.2.2⟩, h2⟩`. Establish `hfib : ∀ y', (∀ a ∈ fibre P Ψ y, (γ a y' ∈ mcPts P ∧ Ψ (segre (γ a y')) = Fin.cons 1 y') ∧ segre (γ a y') ∈ U a) → fibre P Ψ y' = (fun a => segre (γ a y')) '' fibre P Ψ y`. Introduce `y' h`. Establish `hinj : Set.InjOn (fun a => segre (γ a y')) (fibre P Ψ y)`. Introduce `a ha b hb hab`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Assume the negation of the conclusion as `hne`. Conclude with `Set.disjoint_left.mp (hdisj ha hb hne) (h a ha).2 (by simp only at hab; rw [hab]; exact (h b hb).2)`. Establish `hsub : (fun a => segre (γ a y')) '' fibre P Ψ y ⊆ fibre P Ψ y'`. Introduce and unpack `_ ⟨a, ha, rfl⟩`. Conclude with `⟨γ a y', (h a ha).1.1, rfl, (h a ha).1.2⟩`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `((hF.image _).eq_of_subset_of_encard_le hsub ?_).symm` and prove the remaining obligations. Rewrite using `[hinj.encard_image, hy]`. Conclude with `hbd y'`. Use `⟨y, γ w, hγ w hw, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hev.prodMk_nhds ((hU w).2.mem_nhds (hU w).1)] with q hq hq2`.
-
-Rewrite `hq2` using `[hfib q.1 hq.1]`. Take `⟨a, ha, hqa⟩` from `hq2`. Establish `haw : a = w`. Assume the negation of the conclusion as `hne`. Conclude with `Set.disjoint_left.mp (hdisj ha hw hne) (by rw [← hqa]; exact (hq.1 a ha).2) hq.2`.
-
-Rewrite using `[← hqa, haw]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PtsSheetSimpleNull.simple_of_count {K : Type*} [Fintype K] {ι : K → Type*} [∀ k, Fintype (ι k)] {e : ℕ}
     {P : Ideal (MRing ι)} {Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)} {d : ℕ} {y : Fin e → ℂ}
@@ -68,7 +64,7 @@ theorem PtsSheetSimpleNull.simple_of_count {K : Type*} [Fintype K] {ι : K → T
   rw [← hqa, haw]
 
 /- English proof (translation)
-Introduce `K _ ι _ P e Ψ hP hΨ`. Take `⟨d, hbd, hnull⟩` from `hG K ι P e Ψ hP hΨ`. Use `measure_mono_null (fun y hy => ?_) hnull` and prove the remaining obligations. Take `⟨w, hw, -, hns⟩` from `hy`. Conclude with `fun hgood => hns (PtsSheetSimpleNull.simple_of_count hbd hgood.1 hgood.2 hw)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem PtsSheetSimpleNull.proof (hG : PtsGenericCount.Statement) : PtsSheetSimpleNull.Statement := by
   intro K _ ι _ P e Ψ hP hΨ

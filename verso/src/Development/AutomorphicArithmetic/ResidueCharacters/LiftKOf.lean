@@ -10,15 +10,15 @@ open Formalism Formalism.BasicNotions Formalism.BasicNotions.Loc Formalism.MainN
 namespace UpperTheory.N
 
 /- English proof (translation)
-Introduce `N h K LL hC T₁ T₂ f hc1 hc2 hon hj`. Take `⟨K', hKK, hg, hKs, hnor, hidx⟩` from `LocNum.exists_up hC`. Establish `hle : GK K' ≤ GK K` using `GK_le hKK`. Establish `hrn : (Subgroup.inclusion hle).range.Normal`. Rewrite using `[Subgroup.inclusion_range]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hnor.subgroupOf _`. Establish `hB` using `LocRes.caseB (D.loc l) (HW l) hg hKs`. Take `⟨r1, j1⟩` from `LocRes.res_crys D.loc hres hF hKK hle T₁ hc1`. Take `⟨r2, -⟩` from `LocRes.res_crys D.loc hres hF hKK hle T₂ hc2`. Establish `hJ : LiftingTheory.JumpsLet ((HW l).W K' _ LL hg) (LocRes.res hle T₁) (fun _ => h) (fun _ => h)` using `fun _ τ _ a ha => hj _ a ((j1 τ a).1 ha)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `((h54.2.2.2.2 l K' K hKK hle (hnor.subgroupOf _) _ LL hg).1 hrn T₁ T₂ f (fun _ => h) (fun _ => h) ⟨r1, r2, hon⟩ hJ).2 hB`. Establish `h2` using `(h54.2.2.2.1 l K' _ LL hg (LocRes.res hle T₁) (fun _ => h) (fun _ => h) r1 hJ).2.1 hB`. Use `LiftF_mono _ f ?_ h1` and prove the remaining obligations. Establish `hH` using `Hmax_const_le (Module.finrank ℚ_[l] ↥(K0 K')) h h`. Rewrite `h2`, the goal using `[(HW l).W_s]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `h2`, the goal using `[(D.loc l).PD_p]`. Establish `h3 : LiftingTheory.ePB l (sN l N) (LiftingTheory.Mmax (Module.finrank ℚ_[l] ↥(K0 K')) fun _ => h) (LiftingTheory.Hmax (Module.finrank ℚ_[l] ↥(K0 K')) (fun _ => h) fun _ => h) (LiftingTheory.jumpSet ((HW l).W K' (sN l N) LL hg) (LocRes.res hle T₁) (LiftingTheory.Mmax (Module.finra …`. Conclude with `h2` after adjusting the coercions. Establish `h4 : LiftingTheory.Hmax (Module.finrank ℚ_[l] ↥(K0 K')) (fun _ => h) (fun _ => h) * sN l N ≤ 2 * h * sN l N` using `Nat.mul_le_mul_right _ (by omega)`. Use `(Nat.add_le_add h3 hidx).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Use linear arithmetic over natural numbers and integers.
 
-Unfold `eL lamN`. Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem liftK_of (D : D7) (HW : HWOf D.loc) (F : FonOf D.loc D.locA HW) (l : ℕ) [Fact l.Prime]
     (h54 : LiftingTheory.LiftTheoremAllCases D HW F 23 32 32) (hres : ElementDenominator.CrystallineRestrictionToExtension D.loc)

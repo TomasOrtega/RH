@@ -30,9 +30,9 @@ Both sides reduce to the same expression.
 theorem evalV_eq (v : Pl F) (a : FiniteAdeleRing (𝓞 F) F) : evalV F v a = a v := rfl
 
 /- English proof (translation)
-Use extensionality with `a`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `⟨fun v => ⟨a v, h v⟩, rfl⟩`. Introduce and unpack `⟨x, rfl⟩ v`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `(x v).2`.
+A detailed English derivation is pending.
 -/
 theorem intA_eq_range : ((intA F : AddSubgroup _) : Set (FiniteAdeleRing (𝓞 F) F)) =
     Set.range (RestrictedProduct.structureMap (fun v : Pl F => v.adicCompletion F)
@@ -45,14 +45,14 @@ theorem intA_eq_range : ((intA F : AddSubgroup _) : Set (FiniteAdeleRing (𝓞 F
     exact (x v).2
 
 /- English proof (translation)
-Rewrite using `[intA_eq_range]`. Conclude with `(RestrictedProduct.isOpenEmbedding_structureMap (fun v => Valued.isOpen_integer _)).isOpen_range`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_intA : IsOpen ((intA F : AddSubgroup _) : Set (FiniteAdeleRing (𝓞 F) F)) := by
   rw [intA_eq_range]
   exact (RestrictedProduct.isOpenEmbedding_structureMap (fun v => Valued.isOpen_integer _)).isOpen_range
 
 /- English proof (translation)
-Use `haveI : CompactSpace (∀ v : Pl F, ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))) := @Pi.compactSpace _ _ _ (fun v => GlobalTheory.AdelicUnitaryTop.compactSpace_adicCompletionIntegers F v)`. Rewrite using `[intA_eq_range]`. Establish `hc` using `(RestrictedProduct.isOpenEmbedding_structureMap (R := fun v : Pl F => v.adicCompletion F) (A := fun v => (v.adicCompletionIntegers F : Set (v.adicCompletion F))) (fun v => Valued.isOpen_integer _)).continuous`. Conclude with `isCompact_range hc`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isCompact_intA : IsCompact ((intA F : AddSubgroup _) : Set (FiniteAdeleRing (𝓞 F) F)) := by
   haveI : CompactSpace (∀ v : Pl F, ((v.adicCompletionIntegers F : Set (v.adicCompletion F)))) :=
@@ -68,35 +68,33 @@ variable (F) in
 def intP (κ : Type) : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F) := AddSubgroup.pi Set.univ fun _ => intA F
 
 /- English proof (translation)
-Rewrite using `[intP, AddSubgroup.coe_pi]`. Conclude with `isOpen_set_pi Set.finite_univ fun _ _ => isOpen_intA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isOpen_intP (κ : Type) [Fintype κ] : IsOpen ((intP F κ : AddSubgroup _) : Set (κ → FiniteAdeleRing (𝓞 F) F)) := by
   rw [intP, AddSubgroup.coe_pi]
   exact isOpen_set_pi Set.finite_univ fun _ _ => isOpen_intA
 
 /- English proof (translation)
-Rewrite using `[intP, AddSubgroup.coe_pi]`. Conclude with `isCompact_univ_pi fun _ => isCompact_intA`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isCompact_intP (κ : Type) : IsCompact ((intP F κ : AddSubgroup _) : Set (κ → FiniteAdeleRing (𝓞 F) F)) := by
   rw [intP, AddSubgroup.coe_pi]
   exact isCompact_univ_pi fun _ => isCompact_intA
 
 /- English proof (translation)
-Establish `hloc : ∀ y : X, ∃ V : OpenAddSubgroup X, ∀ u ∈ V, g (y + u) = g y`. Introduce `y`. Establish `h0 : {u | g (y + u) = g y} ∈ 𝓝 (0 : X)`. Establish `hc : Continuous fun u : X => y + u` using `continuous_const.add continuous_id`. Conclude with `hc.continuousAt.preimage_mem_nhds (x := 0) ((hg.1.isOpen_fiber (g y)).mem_nhds (show g (y + 0) = g y by rw [add_zero]))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨V, hV⟩` from `NonarchimedeanAddGroup.is_nonarchimedean _ h0`. Conclude with `⟨V, fun u hu => hV hu⟩`. Use `choose V hV using hloc`. Take `⟨t, -, htK⟩` from `(hg.2 : IsCompact (tsupport g)).elim_nhds_subcover (fun y => {z | z - y ∈ (V y : Set X)}) (fun y _ => by`. Use `(continuous_sub_right y).continuousAt.preimage_mem_nhds ?_` and prove the remaining obligations.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[sub_self]`. Conclude with `(V y).isOpen.mem_nhds (V y).zero_mem)`. Set `M0 : AddSubgroup X` to `⨅ y ∈ t, (V y : AddSubgroup X)`. Establish `hM0 : ∀ u ∈ M0, ∀ y ∈ t, u ∈ V y` using `fun u hu => by`. Simplify using `only [M0, AddSubgroup.mem_iInf] at hu`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hu`. Establish `hM0open : IsOpen (M0 : Set X)`. Use `M0.isOpen_of_mem_nhds (g := 0) ?_` and prove the remaining obligations. Use `Filter.mem_of_superset ((Filter.biInter_finset_mem t).2 fun y _ => (V y).isOpen.mem_nhds (V y).zero_mem) ?_` and prove the remaining obligations. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Set.mem_iInter] at hu`. Simplify using `only [M0, SetLike.mem_coe, AddSubgroup.mem_iInf]`. Conclude with `hu`. Establish `hcov : ∀ y ∈ tsupport g, ∀ u ∈ M0, g (y + u) = g y`. Introduce `y hy u hu`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hz, hyz⟩ : ∃ z ∈ t, y - z ∈ V z` from `by simpa using htK hy`. Establish `h1` using `hV z (y - z + u) ((V z).add_mem hyz ((hM0 u hu) z hz))`. Establish `h2` using `hV z (y - z) hyz`. Rewrite `h1` using `[show z + (y - z + u) = y + u by abel]`. Rewrite `h2` using `[show z + (y - z) = y by abel]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Rewrite using `[h1, h2]`. Use `⟨M0, hM0open, fun u hu y => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hy : y ∈ tsupport g`. Conclude with `hcov y hy u hu`. Distinguish the cases in `hy' : y + u ∈ tsupport g`.
-
-Use `hcov (y + u) hy' (-u) (M0.neg_mem hu)` as an intermediate fact. Rewrite `this` using `[add_neg_cancel_right]`. Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hy']`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_open_invariant {X : Type} [AddCommGroup X] [TopologicalSpace X] [IsTopologicalAddGroup X]
     [NonarchimedeanAddGroup X] (g : X → ℂ) (hg : g ∈ SB X) :
@@ -143,9 +141,9 @@ theorem exists_open_invariant {X : Type} [AddCommGroup X] [TopologicalSpace X] [
   · rw [image_eq_zero_of_notMem_tsupport hy, image_eq_zero_of_notMem_tsupport hy']
 
 /- English proof (translation)
-Use `haveI : CompactSpace (intP F κ) := isCompact_iff_compactSpace.1 (isCompact_intP κ)`. Establish `ho : IsOpen ((M.addSubgroupOf (intP F κ)) : Set (intP F κ))` using `hM.preimage continuous_subtype_val`. Use `haveI : Finite (intP F κ ⧸ M.addSubgroupOf (intP F κ)) := AddSubgroup.quotient_finite_of_isOpen _ ho`. Use `⟨(M.addSubgroupOf (intP F κ)).index, AddSubgroup.index_ne_zero_of_finite, fun a ha => ?_⟩` and prove the remaining obligations. Use `AddSubgroup.nsmul_index_mem (M.addSubgroupOf (intP F κ)) (⟨a, ha⟩ : intP F κ)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite `this` using `[AddSubgroup.mem_addSubgroupOf]`. Simplify using `using this`.
+A detailed English derivation is pending.
 -/
 theorem exists_nsmul_mem (κ : Type) [Fintype κ] (M : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F))
     (hM : IsOpen (M : Set (κ → FiniteAdeleRing (𝓞 F) F))) :
@@ -171,7 +169,7 @@ def locInd {κ : Type} (c : FiniteAdeleRing (𝓞 F) F) (r : κ → FiniteAdeleR
   Set.indicator {x | ∀ i, c v * (x i - r i v) ∈ v.adicCompletionIntegers F} 1
 
 /- English proof (translation)
-Use `congrArg (evalV F v) hNc` as an intermediate fact. Rewrite `this` using `[map_mul, map_natCast, map_one]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCast_mul_apply {N : ℕ} {c : FiniteAdeleRing (𝓞 F) F} (hNc : (N : FiniteAdeleRing (𝓞 F) F) * c = 1)
     (v : Pl F) : (N : Fv F v) * c v = 1 := by
@@ -180,13 +178,11 @@ theorem natCast_mul_apply {N : ℕ} {c : FiniteAdeleRing (𝓞 F) F} (hNc : (N :
   exact this
 
 /- English proof (translation)
-Establish `hc : ∀ᶠ v in Filter.cofinite, c v ∈ v.adicCompletionIntegers F` using `c.2`. Establish `hr : ∀ᶠ v in Filter.cofinite, ∀ i, r i v ∈ v.adicCompletionIntegers F` using `Filter.eventually_all.2 fun i => (r i).2`. Use `filter_upwards [hc, hr] with v hcv hrv`. Establish `hNv` using `natCast_mul_apply hNc v`. Unfold `locInd`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `x`. Simplify using `only [Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h i`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e : x i = (N : Fv F v) * (c v * (x i - r i v)) + r i v`. Take the linear combination `(-(x i - r i v)) * hNv`. Rewrite using `[e]`. Conclude with `add_mem (mul_mem (natCast_mem _ N) (h i)) (hrv i)`. Introduce `h i`.
-
-Conclude with `mul_mem hcv (sub_mem (h i) (hrv i))`.
+Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem locInd_std {κ : Type} [Fintype κ] {N : ℕ} {c : FiniteAdeleRing (𝓞 F) F}
     (hNc : (N : FiniteAdeleRing (𝓞 F) F) * c = 1) (r : κ → FiniteAdeleRing (𝓞 F) F) :
@@ -210,9 +206,9 @@ theorem locInd_std {κ : Type} [Fintype κ] {N : ℕ} {c : FiniteAdeleRing (𝓞
     exact mul_mem hcv (sub_mem (h i) (hrv i))
 
 /- English proof (translation)
-Establish `hc0 : c v ≠ 0` using `right_ne_zero_of_mul_eq_one (natCast_mul_apply hNc v)`. Set `h : (κ → Fv F v) ≃ₜ (κ → Fv F v)` to `(Homeomorph.subRight (fun i => r i v)).trans (Homeomorph.smulOfNeZero (c v) hc0)`. Establish `e : locInd c r v = Set.indicator {x : κ → Fv F v | ∀ j, x j ∈ v.adicCompletionIntegers F} 1 ∘ h`. Use function extensionality and compare the values at `x`. Simplify using `only [locInd, Function.comp_apply, Set.indicator_apply, Set.mem_setOf_eq, h, Homeomorph.trans_apply, Homeomorph.subRight_apply, Homeomorph.smulOfNeZero_apply, Pi.smul_apply, Pi.sub_apply, smul_eq_mul, Pi.one_apply]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Establish `hs` using `GlobalTheory.StdVacuum.indicator_mem_SB (κ := κ) v`. Rewrite using `[e]`. Conclude with `⟨hs.1.comp_continuous h.continuous, hs.2.comp_homeomorph h⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem locInd_mem_SB {κ : Type} [Fintype κ] {N : ℕ} {c : FiniteAdeleRing (𝓞 F) F}
     (hNc : (N : FiniteAdeleRing (𝓞 F) F) * c = 1) (r : κ → FiniteAdeleRing (𝓞 F) F) (v : Pl F) :
@@ -229,15 +225,15 @@ theorem locInd_mem_SB {κ : Type} [Fintype κ] {N : ℕ} {c : FiniteAdeleRing (�
   exact ⟨hs.1.comp_continuous h.continuous, hs.2.comp_homeomorph h⟩
 
 /- English proof (translation)
-Distinguish the cases in `hy : (fun i => (x i).2) ∈ {y | c • (y - r) ∈ intP F κ}`. Rewrite using `[Set.indicator_of_mem hy]`. Use `symm`. Use `finprod_eq_one_of_forall_eq_one fun v => ?_` and prove the remaining obligations. Establish `hy' : c • ((fun i => (x i).2) - r) ∈ intP F κ` using `hy`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hm : (fun i => evFin F v (x i)) ∈ {x' : κ → Fv F v | ∀ i, c v * (x' i - r i v) ∈ v.adicCompletionIntegers F}`. Introduce `i`. Conclude with `(AddSubgroup.mem_pi _).1 hy' i (Set.mem_univ i) v`. Unfold `locInd`. Rewrite using `[Set.indicator_of_mem hm]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[Set.indicator_of_notMem hy]`. Establish `hex : ∃ v, (fun i => evFin F v (x i)) ∉ {x' : κ → Fv F v | ∀ i, c v * (x' i - r i v) ∈ v.adicCompletionIntegers F}`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hy ((AddSubgroup.mem_pi _).2 fun i _ => ?_)` and prove the remaining obligations. Introduce `v`. Conclude with `hcon v i`. Take `⟨v, hv⟩` from `hex`. Use `symm`.
+Extract witnesses or component facts from the available result. Use symmetry to reverse the relation. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `finprod_eq_zero _ v ?_ (GlobalTheory.PureFactor.mulSupport_finite _ (locInd_std hNc r) x)` and prove the remaining obligations. Unfold `locInd`. Rewrite using `[Set.indicator_of_notMem hv]`.
+A detailed English derivation is pending.
 -/
 theorem ind_eq_finprod {κ : Type} [Fintype κ] {N : ℕ} {c : FiniteAdeleRing (𝓞 F) F}
     (hNc : (N : FiniteAdeleRing (𝓞 F) F) * c = 1) (r : κ → FiniteAdeleRing (𝓞 F) F) (x : κ → AF F) :
@@ -270,25 +266,23 @@ theorem ind_eq_finprod {κ : Type} [Fintype κ] {N : ℕ} {c : FiniteAdeleRing (
     rw [Set.indicator_of_notMem hv]
 
 /- English proof (translation)
-Use `haveI := GlobalTheory.HeisSchA.nonarch_finiteAdeleRing (F := F)`. Use `haveI : NonarchimedeanAddGroup (κ → FiniteAdeleRing (𝓞 F) F) := GlobalTheory.HeisSchA.nonarch_pi`. Take `⟨M, hMo, hMinv⟩` from `exists_open_invariant g hg`. Take `⟨N, hN, hNM⟩` from `exists_nsmul_mem κ M hMo`. Take `⟨c, hcdef⟩ : ∃ c : FiniteAdeleRing (𝓞 F) F, c = algebraMap F _ ((N : F)⁻¹)` from `⟨_, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hNc : (N : FiniteAdeleRing (𝓞 F) F) * c = 1`. Rewrite using `[hcdef, ← map_natCast (algebraMap F (FiniteAdeleRing (𝓞 F) F)) N, ← map_mul, mul_inv_cancel₀ (Nat.cast_ne_zero.2 hN), map_one]`. Set `U : AddSubgroup (κ → FiniteAdeleRing (𝓞 F) F)` to `(intP F κ).comap (DistribMulAction.toAddMonoidHom (κ → FiniteAdeleRing (𝓞 F) F) c)`. Establish `hmemU : ∀ y, y ∈ U ↔ c • y ∈ intP F κ` using `fun y => Iff.rfl`. Set `h : (κ → FiniteAdeleRing (𝓞 F) F) ≃ₜ (κ → FiniteAdeleRing (𝓞 F) F)` to `{ toFun := fun y => c • y invFun := fun y => (N : FiniteAdeleRing (𝓞 F) F) • y left_inv := fun y => by simp only [smul_smul, hNc, one_smul] right_inv := fun y => by simp only [smul_smul, mul_comm c, hNc, one_smul] continuous_toFun := continuous_const_smul c continuous_invFun := c …`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hUset : (U : Set (κ → FiniteAdeleRing (𝓞 F) F)) = (fun y => c • y) ⁻¹' (intP F κ : Set _)` using `Set.ext fun y => Iff.rfl`. Establish `hh : (⇑h : (κ → FiniteAdeleRing (𝓞 F) F) → (κ → FiniteAdeleRing (𝓞 F) F)) = fun y => c • y` using `rfl`. Establish `hUo : IsOpen (U : Set (κ → FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[hUset]`. Conclude with `(isOpen_intP κ).preimage (continuous_const_smul c)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hUc : IsCompact (U : Set (κ → FiniteAdeleRing (𝓞 F) F))`. Rewrite using `[hUset, ← hh]`. Conclude with `h.isCompact_preimage.2 (isCompact_intP κ)`. Establish `hUM : ∀ u ∈ U, u ∈ M`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `hNM _ ((hmemU u).1 hu)` as an intermediate fact. Rewrite `this` using `[← Nat.cast_smul_eq_nsmul (FiniteAdeleRing (𝓞 F) F), smul_smul, hNc, one_smul]`. Then use the resulting hypothesis. Establish `hinv : ∀ x, ∀ u ∈ U, pureA F f g (x + GlobalTheory.WeilAdm.finE F u) = pureA F f g x`. Introduce `x u hu`. Establish `h1 : (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((x + GlobalTheory.WeilAdm.finE F u) i).1) = fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[show ((x + GlobalTheory.WeilAdm.finE F u) i).1 = (x i).1 from add_zero (x i).1]`. Establish `h2 : (fun i => ((x + GlobalTheory.WeilAdm.finE F u) i).2) = (fun i => (x i).2) + u`. Use function extensionality and compare the values at `i`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [pureA]`. Rewrite using `[h1, h2, hMinv u (hUM u hu)]`. Establish `hsupp : ∀ x, (fun i => (x i).2) ∉ tsupport g → pureA F f g x = 0`. Introduce `x hx`. Simplify using `only [pureA]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[image_eq_zero_of_notMem_tsupport hx, mul_zero]`. Take `⟨R, -, hdec⟩` from `GlobalTheory.WeilAdm.eq_sum_pureA_coset_indicator F κ U (tsupport g) hUo hUc hg.2`. Use `⟨N, c, R, hNc, ?_⟩` and prove the remaining obligations. Rewrite using `[hdec (pureA F f g) hinv hsupp]`. Use `Finset.sum_congr rfl fun r _ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Establish `e1 : GlobalTheory.WeilAdm.slice F (pureA F f g) r (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) = g r * f (fun i => evI F (x i))`. Simplify using `only [GlobalTheory.WeilAdm.slice, pureA, RingEquiv.apply_symm_apply]`. Rewrite using `[mul_comm]`. Both sides reduce to the same expression.
-
-Establish `e2` using `ind_eq_finprod hNc r x`. Use `show GlobalTheory.WeilAdm.slice F (pureA F f g) r (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F (x i).1) * Set.indicator {y | c • (y - r) ∈ intP F κ} (fun _ => (1 : ℂ)) (fun i => (x i).2) = (g r • f) (fun i => evI F (x i)) * ∏ᶠ v, locInd c r v (fun i => evFin F v (x i))`. Rewrite using `[e1, e2, SchwartzMap.smul_apply, smul_eq_mul]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pureA_eq_sum (κ : Type) [Fintype κ] (f : SInf F κ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ)
     (hg : g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F)) :
@@ -360,21 +354,19 @@ theorem pureA_eq_sum (κ : Type) [Fintype κ] (f : SInf F κ) (g : (κ → Finit
 end GlobalTheory.SchADecomp
 
 /- English proof (translation)
-Introduce `F _ _ κ _ Ψ hΨ`. Proceed by induction on `hΨ using Submodule.span_induction with`. Consider the case `mem Φ hΦ`. Take `⟨f, g, hg, rfl⟩` from `hΦ`. Take `⟨N, c, R, hNc, hsum⟩` from `GlobalTheory.SchADecomp.pureA_eq_sum κ f g hg`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hfin : ∀ r : κ → FiniteAdeleRing (𝓞 F) F, {v : Pl F | ¬ GlobalTheory.SchADecomp.locInd c r v = Set.indicator {x | ∀ j, x j ∈ v.adicCompletionIntegers F} 1}.Finite` using `fun r => Filter.eventually_cofinite.1 (GlobalTheory.SchADecomp.locInd_std hNc r)`. Set `e` to `R.equivFin`. Use `⟨R.biUnion fun r => (hfin r).toFinset, R.card, fun i => g (e.symm i) • f, fun i v => GlobalTheory.SchADecomp.locInd c (e.symm i).1 v, fun i v => GlobalTheory.SchADecomp.locInd_mem_SB hNc _ v, fun i v hv => ?_, ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Conclude with `hv (Finset.mem_biUnion.2 ⟨(e.symm i).1, (e.symm i).2, (hfin _).mem_toFinset.2 hne⟩)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hsum, ← Finset.sum_coe_sort R]`. Conclude with `Fintype.sum_equiv e _ _ (fun r => by simp)`. Consider the case `zero => exact ⟨∅, 0, Fin.elim0, Fin.elim0, fun i => i.elim0, fun i => i.elim0, by simp⟩`. Consider the case `add Φ₁ Φ₂ _ _ h1 h2`. Take `⟨T1, m1, f1, φ1, hs1, ht1, he1⟩` from `h1`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T2, m2, f2, φ2, hs2, ht2, he2⟩` from `h2`. Use `⟨T1 ∪ T2, m1 + m2, Fin.append f1 f2, Fin.append φ1 φ2, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `i v`. Proceed by induction on `i using Fin.addCases with`. Consider the case `left j => rw [Fin.append_left]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hs1 j v`. Consider the case `right j => rw [Fin.append_right]`. Conclude with `hs2 j v`. Introduce `i v hv`. Proceed by induction on `i using Fin.addCases with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Consider the case `left j => rw [Fin.append_left]`. Conclude with `ht1 j v (fun h => hv (Finset.mem_union_left _ h))`. Consider the case `right j => rw [Fin.append_right]`. Conclude with `ht2 j v (fun h => hv (Finset.mem_union_right _ h))`. Rewrite using `[Fin.sum_univ_add, he1, he2]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Fin.append_left, Fin.append_right]`. Consider the case `smul a Φ _ h`. Take `⟨T, m, f, φ, hs, ht, he⟩` from `h`. Use `⟨T, m, fun i => a • f i, φ, hs, ht, ?_⟩` and prove the remaining obligations. Rewrite using `[he, Finset.smul_sum]`.
-
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels.pure, Pi.smul_apply, SchwartzMap.smul_apply, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.SchADecomp.exists_sum_pure : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] (Ψ : (κ → AF F) → ℂ), Ψ ∈ schA F κ →
     ∃ (T : Finset (Pl F)) (m : ℕ) (f : Fin m → SInf F κ) (φ : Fin m → ∀ v : Pl F, (κ → Fv F v) → ℂ),

@@ -16,17 +16,15 @@ universe u
 variable {k G : Type u} [CommRing k] [Group G] [Fintype G]
 
 /- English proof (translation)
-Set `e : tateCohomology A (n : ℤ) ≅ groupCohomology A n` to `(TateCohomology.isoGroupCohomology n).app A`. Take `⟨y, hy⟩` from `e.toLinearEquiv.surjective x`. Substitute `hy` using the available equality. It suffices to establish `hy : y = 0 by subst hy; exact map_zero _`. Establish `hidx : ∀ p ∈ (Nat.card G).primeFactors, ∃ P : Sylow p G, (P : Subgroup G).index • y = 0`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the argument to an intermediate assertion. Establish an intermediate fact.
 
-Introduce `p hp`. Take `⟨P, hP⟩` from `h p hp`. Use `⟨P, ?_⟩` and prove the remaining obligations. Establish `hc` using `congrArg (fun f => f.hom y) (GroundTheory.GroupCoh.tateRes_comp_isoGroupCohomology (P : Subgroup G) n A)`. Simplify using `only [ModuleCat.hom_comp, LinearMap.comp_apply] at hc`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hres : ((GroundTheory.GroupCoh.tateRes (P : Subgroup G) n).app A).hom y = 0`. Establish `hinj : Function.Injective ((TateCohomology.isoGroupCohomology n).app (Rep.res (P : Subgroup G).subtype A)).toLinearEquiv` using `LinearEquiv.injective _`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `hc.trans hP`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← GroundTheory.GroupCoh.tateCores_app_tateRes_app_apply (P : Subgroup G) A n y, hres, map_zero]`. Establish `hG : Nat.card G • y = 0`. Rewrite using `[Nat.card_eq_fintype_card]`. Conclude with `GroundTheory.GroupCoh.card_smul_tateCohomology A n y`. Assume the negation of the conclusion as `hne`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm1 : addOrderOf y ≠ 1` using `fun h1 => hne (AddMonoid.addOrderOf_eq_one_iff.1 h1)`. Use `set q := (addOrderOf y).minFac`. Establish `hq : q.Prime` using `Nat.minFac_prime hm1`. Establish `hqG : q ∣ Nat.card G` using `(Nat.minFac_dvd _).trans (addOrderOf_dvd_of_nsmul_eq_zero hG)`. Establish `hqmem : q ∈ (Nat.card G).primeFactors` using `Nat.mem_primeFactors.2 ⟨hq, hqG, Nat.card_pos.ne'⟩`.
-
-Take `⟨P, hP⟩` from `hidx q hqmem`. Establish `: Fact q.Prime` using `⟨hq⟩`. Conclude with `P.not_dvd_index ((Nat.minFac_dvd _).trans (addOrderOf_dvd_of_nsmul_eq_zero hP))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_forall_sylow_map_eq_zero (A : Rep.{u} k G) (n : ℕ) [NeZero n]
     (x : groupCohomology A n)
@@ -87,16 +85,16 @@ variable [IsGalois K L]
 omit [IsGalois K L] in
 
 /- English proof (translation)
-The claim follows from `P.isPGroup'.of_equiv (subgroupEquivGalFixedField _)`.
+A detailed English derivation is pending.
 -/
 theorem isPGroup_gal_fixedField_sylow {p : ℕ} (P : Sylow p Gal(L/K)) :
     IsPGroup p Gal(L/fixedField (P : Subgroup Gal(L/K))) :=
   P.isPGroup'.of_equiv (subgroupEquivGalFixedField _)
 
 /- English proof (translation)
-Rewrite using `[ModuleCat.isZero_iff_subsingleton]`. Establish `hz : ∀ x : groupCohomology (ideleClassRep K L) 1, x = 0` using `fun x => eq_zero_of_forall_sylow_map_eq_zero _ 1 x fun p hp => by`. Establish `: Fact p.Prime` using `⟨Nat.prime_of_mem_primeFactors hp⟩`. Set `P : Sylow p Gal(L/K)` to `Classical.arbitrary _`. Use `⟨P, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h0` using `(isZero_groupCohomology_one_ideleClassRep_of_isPGroup (isPGroup_gal_fixedField_sylow P)).of_iso (groupCohomologyResIdeleClassIso (P : Subgroup Gal(L/K)) 1)`. Rewrite `h0` using `[ModuleCat.isZero_iff_subsingleton]`. Conclude with `Subsingleton.elim _ _`. Conclude with `⟨fun x y => by rw [hz x, hz y]⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isZero_groupCohomology_one_ideleClassRep :
     IsZero (groupCohomology (ideleClassRep K L) 1) := by
@@ -114,15 +112,13 @@ theorem isZero_groupCohomology_one_ideleClassRep :
   exact ⟨fun x y => by rw [hz x, hz y]⟩
 
 /- English proof (translation)
-Use `set n := Nat.card Gal(L/K) with hn`. Establish `hn0 : n ≠ 0` using `Nat.card_pos.ne'`. Establish `hS : ∀ p : n.primeFactors, ∃ _ : Sylow (p : ℕ) Gal(L/K), True` using `fun p => by`. Establish `: Fact (p : ℕ).Prime` using `⟨Nat.prime_of_mem_primeFactors p.2⟩`. Conclude with `⟨Classical.arbitrary _, trivial⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Use `choose P _ using hS`. Set `Φ : groupCohomology (ideleClassRep K L) 2 →+ ∀ p : n.primeFactors, groupCohomology (ideleClassRep (fixedField (P p : Subgroup Gal(L/K))) L) 2` to `AddMonoidHom.pi fun p => ((groupCohomologyResIdeleClassIso (P p : Subgroup Gal(L/K)) 2).hom.hom.comp (groupCohomology.map (P p : Subgroup Gal(L/K)).subtype (𝟙 _) 2).hom).toAddMonoidHom`. Establish `hΦ : Function.Injective Φ`. Use `(injective_iff_map_eq_zero Φ).2 fun x hx => ?_` and prove the remaining obligations. Use `eq_zero_of_forall_sylow_map_eq_zero _ 2 x fun p hp => ⟨P ⟨p, hp⟩, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxp` using `congrFun hx ⟨p, hp⟩`. Establish `hinj : Function.Injective (groupCohomologyResIdeleClassIso (P ⟨p, hp⟩ : Subgroup Gal(L/K)) 2).toLinearEquiv` using `LinearEquiv.injective _`. Apply `hinj` to reduce the goal to its premises. Rewrite using `[map_zero]`. Conclude with `hxp`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hdvd : ∀ p : n.primeFactors, Nat.card (groupCohomology (ideleClassRep (fixedField (P p : Subgroup Gal(L/K))) L) 2) ∣ (p : ℕ) ^ n.factorization p`. Introduce `p`. Establish `: Fact (p : ℕ).Prime` using `⟨Nat.prime_of_mem_primeFactors p.2⟩`. Establish `h` using `natCard_groupCohomology_two_ideleClassRep_dvd_of_isPGroup (isPGroup_gal_fixedField_sylow (P p))`. Rewrite `h` using `[finrank_fixedField_eq_card, Sylow.card_eq_multiplicity]`. Then use the resulting hypothesis.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Finset.prod_coe_sort n.primeFactors (fun p => p ^ n.factorization p)]`. Conclude with `(Nat.prod_primeFactors_pow_factorization hn0).symm`. Use `_ = finrank K L := IsGalois.card_aut_eq_finrank K L`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem natCard_groupCohomology_two_ideleClassRep_dvd :
     Nat.card (groupCohomology (ideleClassRep K L) 2) ∣ finrank K L := by
@@ -176,7 +172,7 @@ theorem natCard_groupCohomology_two_ideleClassRep_dvd :
     _ = finrank K L := IsGalois.card_aut_eq_finrank K L
 
 /- English proof (translation)
-The claim follows from `Nat.finite_of_card_ne_zero fun h => Module.finrank_pos.ne' (Nat.eq_zero_of_zero_dvd (h ▸ natCard_groupCohomology_two_ideleClassRep_dvd))`.
+A detailed English derivation is pending.
 -/
 theorem finite_groupCohomology_two_ideleClassRep :
     Finite (groupCohomology (ideleClassRep K L) 2) :=

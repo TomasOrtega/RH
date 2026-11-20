@@ -31,9 +31,9 @@ variable {fw : FWTie J R κ v₀} {hc : LawsCore J.toCore} {run : HeightOneSpect
   {ph : Fin D.R.m → ℂ} {c : OnConst}
 
 /- English proof (translation)
-Use `Nat.card_congr (Equiv.ofBijective (fun u : F.P0.comap (mirIncl R) => (⟨mirIncl R u, u.2⟩ : F.P0)) ⟨?_, ?_⟩)` and prove the remaining obligations. Introduce `a b hab`. Conclude with `Subtype.ext (mirIncl_injective R (congrArg Subtype.val hab))`. Introduce and unpack `⟨g, hg⟩`. Take `⟨u, -, rfl⟩` from `(mem_base_iff h1 g).1 hg`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨⟨u, hg⟩, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem card_comap_base (h1 : R.grp_levels F) : Nat.card (F.P0.comap (mirIncl R)) = Nat.card F.P0 := by
   refine Nat.card_congr (Equiv.ofBijective (fun u : F.P0.comap (mirIncl R) => (⟨mirIncl R u, u.2⟩ : F.P0)) ⟨?_, ?_⟩)
@@ -46,11 +46,9 @@ theorem card_comap_base (h1 : R.grp_levels F) : Nat.card (F.P0.comap (mirIncl R)
 variable {P : Type} [Group P] [Finite P]
 
 /- English proof (translation)
-Establish `e1 : x ∈ Formalism.EigenvalueLevelCeiling.eig (O.ρ j) O.U O.ψ ↔ ∀ u : O.U, O.ρ j u x = ((O.ψ u : 𝓞 D.what₂.LL) : D.what₂.LL) • x`. Unfold `Formalism.EigenvalueLevelCeiling.eig`. Rewrite using `[Submodule.mem_iInf]`. Conclude with `forall_congr' fun u => sub_eq_zero`. Establish `e2 : ∀ (g : P) (hg : inc g ∈ F.P0), O.ρ j g x = ((O.ψ g : 𝓞 D.what₂.LL) : D.what₂.LL) • x ↔ (R.FW j).ρ (inc g) (w x) = (((R.FW j).chi (inc g) * F.ψ0⁻¹ ⟨inc g, hg⟩ : D.what₂.LLˣ) : D.what₂.LL) • w x` using `fun g hg => by`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[chi_eq_one h1 h2 j hg, one_mul, ← hψ g hg, ← hρ, ← LinearEquiv.map_smul, w.injective.eq_iff]`. Use `show _ ↔ ∀ q : F.P0, (R.FW j).ρ q (w x) = (((R.FW j).chi q * F.ψ0⁻¹ q : D.what₂.LLˣ) : D.what₂.LL) • w x`. Use `e1.trans ⟨?_, fun h u => ?_⟩` and prove the remaining obligations. Introduce and unpack `h ⟨g, hg⟩`. Take `⟨q, rfl⟩` from `hinc hg`.
-
-Conclude with `(e2 q hg).1 (h ⟨q, hU ▸ hg⟩)`. Establish `hg : inc u ∈ F.P0` using `(hU ▸ u.2 : (u : P) ∈ F.P0.comap inc)`. Conclude with `(e2 u hg).2 (h ⟨inc u, hg⟩)`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_eig_iff {O : OnObj ((R.toCx F).data F.cr false) P c} {inc : P →* G} (h1 : R.grp_levels F) (h2 : R.grp_chiW)
     (hinc : F.P0 ≤ inc.range) (j : Fin D.R.m) (w : (Fin (O.nZ j) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (R.nW j) → D.what₂.LL))
@@ -74,15 +72,15 @@ theorem mem_eig_iff {O : OnObj ((R.toCx F).data F.cr false) P c} {inc : P →* G
     exact (e2 u hg).2 (h ⟨inc u, hg⟩)
 
 /- English proof (translation)
-Take `⟨z, act, y, ht⟩` from `ht`. Take `⟨v, -⟩` from `exists_place3 D.what₂.LL`. Establish `t` using `(ht v j).1`. Set `w : (Fin (O.nZ j) → D.what₂.LL) ≃ₗ[D.what₂.LL] (Fin (R.nW j) → D.what₂.LL)` to `LinearEquiv.ofBijective (toForms (T := (run v).full) (R := R) (h v) fw j (z j)) (toForms_bijective (T := (run v).full) (R := R) (h v) fw j (z j))`. Establish `hinc : F.P0 ≤ (mirIncl R).range` using `fun g hg => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨u, -, rfl⟩` from `(mem_base_iff h1 g).1 hg`. Conclude with `⟨u, rfl⟩`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Use `w.finrank_eq` as an intermediate fact. Simplify `this` using `only [Module.finrank_fin_fun]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[t.U_eq]`. Conclude with `card_comap_base h1`. Establish `hm : (Formalism.EigenvalueLevelCeiling.eig (O.ρ j) O.U O.ψ).map (w : (Fin (O.nZ j) → D.what₂.LL) →ₗ[D.what₂.LL] (Fin (R.nW j) → D.what₂.LL)) = GlobalTheory.CovTop.spType R F j`. Use extensionality with `u`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨x, hx, rfl⟩`. Conclude with `(mem_eig_iff h1 h2 hinc j w (t.rho_eq_of_actionPin (ht v j).2) t.U_eq t.ψ_eq x).1 hx`. Introduce `hu`. Use `⟨w.symm u, ?_, w.apply_symm_apply u⟩` and prove the remaining obligations. Use `(mem_eig_iff h1 h2 hinc j w (t.rho_eq_of_actionPin (ht v j).2) t.U_eq t.ψ_eq _).2 ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Rewrite using `[w.apply_symm_apply]`. Conclude with `hu`. Unfold `OnObj.d0`. Rewrite using `[← hm, LinearEquiv.finrank_map_eq]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tied_dims {O : OnObj ((R.toCx F).data F.cr false) (Mir R) c}
     (ht : OnObjLevelCompatibility F fw hc run h hinj EX p wL wF nT ℓ ph (mirIncl R) O) (h1 : R.grp_levels F) (h2 : R.grp_chiW)
@@ -124,11 +122,11 @@ variable {D : D7} {L : SizeData₂ D} {hT : GatTies D} {Gi : Formalism.MainNotio
   {Y : DivX D} {cX : ExtraC} {ex : Extra D L hT Gi Gl Kc Y cX} {Csz : ℝ}
 
 /- English proof (translation)
-Establish `hfk : O.f = (D.R.f : ℝ) ∧ O.k = (D.R.k : ℝ)`. Use `letI := hostAlg D`. Take `⟨st, rt⟩` from `hR.1.depth`. Conclude with `⟨rt.f_eq, rt.k_eq⟩`. Take `⟨hc, hinj, ht⟩` from `hR.1.tied`.
+Establish an intermediate fact. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Introduce `j`. Take `⟨hn, hU, hd⟩` from `tied_dims ht p.charW.base.grp.levels p.charW.base.grp.chiW j`. Use `⟨O.y, le_rfl, ?_⟩` and prove the remaining obligations. Establish `hy : O.y = 1 / (4 * ((D.R.f : ℝ) * D.R.k) ^ 3)`. Unfold `OnObj.y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hfk.1, hfk.2]`. Establish `hw` using `hW j`. Unfold `ShareW at hw`. Rewrite using `[hy, hn, hd, hU]`. Conclude with `hw`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem leafShareI_of_shareW (p : PtAt ex Csz) {Pm : ParameterChoice' D L} {Tp : ParamsT D L Pm} {r : TwoRuns p.T p.P.Gp}
     {c : OnConst} {O : Obj p c} (hR : RecAt p Tp r O) (hW : ∀ i, ShareW p i (1 / (4 * ((D.R.f : ℝ) * D.R.k) ^ 3))) :
@@ -156,9 +154,9 @@ end GlobalTheory.ShareOn.Comparison₂
 namespace GlobalTheory.ShareOn
 
 /- English proof (translation)
-Introduce `h`. Unfold `ShareWSt AtRuns AtPts at h`. Unfold `ShareSt AtRec`. Use `Closed.imp h fun Fm CH _ H => ⟨0, fun c _ _ => ?_⟩` and prove the remaining obligations. Take `⟨x0, hx0⟩` from `H`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨x0, fun x hx hle i p hp hm r O hR => Comparison₂.leafShareI_of_shareW p hR (hx0 x hx hle i p hp hm r hR.1.ok hR.2)⟩`.
+Supply the required witnesses or components.
 -/
 theorem shareSt_of_shareWSt : ShareWSt → ShareSt := by
   intro h

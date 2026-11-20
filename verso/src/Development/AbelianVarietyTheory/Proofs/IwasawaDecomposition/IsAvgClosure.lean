@@ -10,14 +10,14 @@ variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [Inne
   {σ : Mx n → (H →L[ℂ] H)}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨{g}, 1, isCompact_singleton, Set.singleton_subset_iff.2 hg, zero_le_one, fun ι _ x w M _ h => by rw [one_mul]; exact h g rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAvg_sigma {g : Mx n} (hg : g ∈ UJset ε) : IsAvg ε σ (σ g) :=
   ⟨{g}, 1, isCompact_singleton, Set.singleton_subset_iff.2 hg, zero_le_one, fun ι _ x w M _ h => by
     rw [one_mul]; exact h g rfl⟩
 
 /- English proof (translation)
-Take `⟨Z, C, h1, h2, h3, h4⟩` from `h`. Take `⟨Z', C', k1, k2, k3, k4⟩` from `h'`. Use `⟨Z ∪ Z', C + C', h1.union k1, Set.union_subset h2 k2, add_nonneg h3 k3, fun ι _ x w M hM hb => ?_⟩` and prove the remaining obligations. Simplify using `only [inner_add_right, Finset.sum_add_distrib, add_mul]`. Conclude with `(norm_add_le _ _).trans (add_le_add (h4 ι x w M hM fun y hy => hb y (Or.inl hy)) (k4 ι x w M hM fun y hy => hb y (Or.inr hy)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsAvg.add {T T' : H → H} (h : IsAvg ε σ T) (h' : IsAvg ε σ T') : IsAvg ε σ (fun w => T w + T' w) := by
   obtain ⟨Z, C, h1, h2, h3, h4⟩ := h
@@ -28,11 +28,11 @@ theorem IsAvg.add {T T' : H → H} (h : IsAvg ε σ T) (h' : IsAvg ε σ T') : I
     (k4 ι x w M hM fun y hy => hb y (Or.inr hy)))
 
 /- English proof (translation)
-Take `⟨Z, C, h1, h2, h3, h4⟩` from `h`. Take `⟨Z', C', k1, k2, k3, k4⟩` from `h'`. Use `⟨(fun p : Mx n × Mx n => p.1 * p.2) '' (Z ×ˢ Z'), C * C', (h1.prod k1).image (continuous_fst.matrix_mul continuous_snd), ?_, mul_nonneg h3 k3, fun ι _ x w M hM hb => ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨p, hp, rfl⟩`. Conclude with `mul_mem_UJ (h2 hp.1) (k2 hp.2)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_assoc]`. Use `h4 ι x (fun j => T' (w j)) (C' * M) (mul_nonneg k3 hM) fun y hy => ?_` and prove the remaining obligations. Simplify using `only [inner_sigma hσ (h2 hy)]`. Use `k4 ι (fun j => σ y⁻¹ (x j)) w M hM fun y' hy' => ?_` and prove the remaining obligations. Use `hb (y * y') ⟨(y, y'), ⟨hy, hy'⟩, rfl⟩` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `only [sigma_mul hσ (h2 hy) (k2 hy'), inner_sigma hσ (h2 hy)]`.
+A detailed English derivation is pending.
 -/
 theorem IsAvg.comp (hσ : IsURepOn (UJset ε) σ) {T T' : H → H} (h : IsAvg ε σ T) (h' : IsAvg ε σ T') :
     IsAvg ε σ (fun w => T (T' w)) := by
@@ -50,7 +50,7 @@ theorem IsAvg.comp (hσ : IsURepOn (UJset ε) σ) {T T' : H → H} (h : IsAvg ε
   simpa only [sigma_mul hσ (h2 hy) (k2 hy'), inner_sigma hσ (h2 hy)] using this
 
 /- English proof (translation)
-Take `⟨Z, C, h1, h2, h3, h4⟩` from `h`. Use `⟨Z, ‖c‖ * C, h1, h2, mul_nonneg (norm_nonneg _) h3, fun ι _ x w M hM hb => ?_⟩` and prove the remaining obligations. Simplify using `only [inner_smul_right, ← Finset.mul_sum, norm_mul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (h4 ι x w M hM hb) (norm_nonneg _)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem IsAvg.smul (c : ℂ) {T : H → H} (h : IsAvg ε σ T) : IsAvg ε σ (fun w => c • T w) := by
   obtain ⟨Z, C, h1, h2, h3, h4⟩ := h
@@ -59,15 +59,15 @@ theorem IsAvg.smul (c : ℂ) {T : H → H} (h : IsAvg ε σ T) : IsAvg ε σ (fu
   exact mul_le_mul_of_nonneg_left (h4 ι x w M hM hb) (norm_nonneg _)
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨∅, 0, isCompact_empty, Set.empty_subset _, le_rfl, fun ι _ x w M _ _ => by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem isAvg_zero : IsAvg ε σ (fun _ => 0) :=
   ⟨∅, 0, isCompact_empty, Set.empty_subset _, le_rfl, fun ι _ x w M _ _ => by simp⟩
 
 /- English proof (translation)
-Use `⟨Kset ε, ∫ k, ‖e k‖ ∂(muK ε), (maximal_compact_facts n ε).2.1, fun k hk => K_le_UJ hk, integral_nonneg fun _ => norm_nonneg _, fun ι _ x w M hM hb => ?_⟩` and prove the remaining obligations. Establish `hi : ∀ v : H, Integrable (fun k : KG ε => e k • σ (toMK k) v) (muK ε)` using `fun v => (he.smul ((hσ.2.2 v).comp_continuous (continuous_toMK ε) fun k => K_le_UJ (toMK_mem_K k))).integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)`. Simplify using `only [kAvg]`. Simplify using `only [fun j => (integral_inner (𝕜 := ℂ) (hi (w j)) (x j)).symm]`. Rewrite using `[← integral_finset_sum _ fun j _ => (hi (w j)).const_inner (x j), ← integral_mul_const]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `norm_integral_le_of_norm_le ((he.norm.integrable_of_hasCompactSupport (HasCompactSupport.of_compactSpace _)).mul_const M) (Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Simplify using `only [inner_smul_right, ← Finset.mul_sum, norm_mul]`. Conclude with `mul_le_mul_of_nonneg_left (hb _ (toMK_mem_K k)) (norm_nonneg _)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isAvg_kAvg [CompleteSpace H] (hσ : IsURepOn (UJset ε) σ) {e : KG ε → ℂ} (he : Continuous e) :
     IsAvg ε σ (kAvg ε σ e) := by
@@ -85,7 +85,7 @@ theorem isAvg_kAvg [CompleteSpace H] (hσ : IsURepOn (UJset ε) σ) {e : KG ε �
   exact mul_le_mul_of_nonneg_left (hb _ (toMK_mem_K k)) (norm_nonneg _)
 
 /- English proof (translation)
-Introduce `_ _ _ _ _ _ _ hσ` and use `⟨fun _ hg => isAvg_sigma hg, fun _ _ h h' => ⟨h.add h', h.comp hσ h'⟩, fun c _ h => h.smul c, fun _ he => isAvg_kAvg hσ he, isAvg_zero⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem isAvg_closure : ∀ (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] (σ : Mx n → (H →L[ℂ] H)), IsURepOn (UJset ε) σ → (∀ g ∈ UJset ε, IsAvg ε σ (σ g)) ∧ (∀ T T' : H → H, IsAvg ε σ T → IsAvg ε σ T' → IsAvg ε σ (fun w => T w + T' w) ∧ IsAvg ε σ (fun w => T (T' w))) ∧ (∀ (c : ℂ) (T : H → H), IsAvg ε σ T → IsAvg ε σ (fun w => c • T w)) ∧ (∀ e : KG ε → ℂ, Continuous e → IsAvg ε σ (kAvg ε σ e)) ∧ IsAvg ε σ (fun _ => 0) :=
   fun _ _ _ _ _ _ _ hσ => ⟨fun _ hg => isAvg_sigma hg, fun _ _ h h' => ⟨h.add h', h.comp hσ h'⟩,

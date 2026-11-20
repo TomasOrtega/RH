@@ -16,7 +16,7 @@ namespace Formalism.L2.G.Pend
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-The claim follows from `(G.P.setting v).prime five_le := (G.P.setting v).five_le two_le := (G.P.setting v).two_le even := (G.P.setting v).even r_pos := hr1 two_r := hr2 m_pos := hm base := Fl.base v dom := G.P.dom v w_low := fun s => ⟨le_trans (le_max_left _ _) (Fl.w_ge v s), le_trans (le_max_right _ _) …`.
+A detailed English derivation is pending.
 -/
 theorem std_of {p : ℕ} (G : GAtP p) (Fl : Fills G) (hr1 : 1 ≤ G.P.r) (hr2 : 2 * G.P.r ≤ G.P.m + 1) (hm : 1 ≤ Fl.mm)
     (v : Fin G.P.nV) :
@@ -56,7 +56,7 @@ instance fracOL : IsFractionRing (OL p n L) L := IntCl.frac (OO p n) (KO p n) L
 instance charZeroL : CharZero L := charZero_of_injective_algebraMap (algebraMap (KO p n) L).injective
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `congrArg (algebraMap (OL p n L) L) h0`. Rewrite `h1` using `[map_natCast, map_zero]`. Conclude with `(Nat.cast_ne_zero.2 hp.out.ne_zero : (p : L) ≠ 0) h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem p_ne_zero_OL : (p : OL p n L) ≠ 0 := by
   intro h0
@@ -81,7 +81,7 @@ abbrev gatL : GAtP p := gatRecP D u h (settingOL p (orderOf (zPsi D.R.toFrame h)
 def cembL : CEmb (gatL D u h L h5 h2 he r Lc I ψ e) := ⟨embLC (k0ToC p) L, embLC_int' L⟩
 
 /- English proof (translation)
-Introduce `_ s x` and use `compat_conc L s x`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem compat_L : Compat (gatL D u h L h5 h2 he r Lc I ψ e) (cembL D u h L h5 h2 he r Lc I ψ e)
     (fun _ => rdW p (orderOf (zPsi D.R.toFrame h))) :=
@@ -104,7 +104,7 @@ abbrev fillsL : Fills (gatL D u h L h5 h2 he r Lc I ψ e) :=
   fillsRec D u h (settingOL p (orderOf (zPsi D.R.toFrame h)) L h5 h2 he) r Lc I ψ (repP Lc p) e c hc
 
 /- English proof (translation)
-The claim follows from `std_of _ _ hr1 (by show 2 * r ≤ D.R.k - 1 + 1 rw [k_pred] exact hr2) (by show 1 ≤ D.R.m exact le_trans (by norm_num) D.R.two_le_m) v`.
+A detailed English derivation is pending.
 -/
 theorem std_L (hr1 : 1 ≤ r) (hr2 : 2 * r ≤ D.R.k) (v : Fin (gatL D u h L h5 h2 he r Lc I ψ e).P.nV) :
     Std p ((gatL D u h L h5 h2 he r Lc I ψ e).P.n' v) (gatL D u h L h5 h2 he r Lc I ψ e).P.m

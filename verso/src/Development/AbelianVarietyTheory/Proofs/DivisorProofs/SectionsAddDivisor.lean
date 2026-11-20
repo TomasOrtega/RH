@@ -10,7 +10,7 @@ namespace GlobalTheory.Cartier.SecAdd
 variable {X : Scheme.{0}} [IsIntegral X]
 
 /- English proof (translation)
-The claim follows from `Submodule.mul_le.2 fun _ hm _ hn => mem_sections.2 fun x => (mem_sections.1 hm x).mul (mem_sections.1 hn x)`.
+A detailed English derivation is pending.
 -/
 theorem mul_le_sections_add (D E : CartierDiv X) :
     D.sections * E.sections ≤ (D + E).sections :=
@@ -18,19 +18,17 @@ theorem mul_le_sections_add (D E : CartierDiv X) :
     (mem_sections.1 hm x).mul (mem_sections.1 hn x)
 
 /- English proof (translation)
-Use `le_antisymm (fun h hh => ?_) (mul_le_sections_add D E)` and prove the remaining obligations. Set `𝔞 : Ideal Γ(X, ⊤)` to `(D.sections * E.sections).comap (LinearMap.toSpanSingleton _ _ h)`. Establish `mem𝔞 (a : Γ(X, ⊤)) : a ∈ 𝔞 ↔ a • h ∈ D.sections * E.sections` using `Iff.rfl`. Establish `cover : ∀ x : X, ∃ a ∈ 𝔞, x ∈ X.basicOpen a`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨g, hg⟩` from `D.exists_isEqn x`. Take `⟨g', hg'⟩` from `E.exists_isEqn x`. Establish `hreg : RegAt x (h * ((g * g' : X.functionFieldˣ) : X.functionField))` using `(hg.add hg').regularAt_iff.1 (mem_sections.1 hh x)`. Take `⟨s, hs, hsD⟩` from `hloc D x g hg ((g : X.functionField)⁻¹) (by`. Rewrite using `[inv_mul_cancel₀ g.ne_zero]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(unitAt_one x).regAt)`. Take `⟨s', hs', hsE⟩` from `hloc E x g' hg' (h * g) (by`. Rewrite `hreg` using `[Units.val_mul, ← mul_assoc]`. Conclude with `hreg)`. Use `⟨s * s', ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[mem𝔞]`. Establish `e : (s * s') • h = (s • (g : X.functionField)⁻¹) * (s' • (h * g))`. Rewrite using `[smul_mul_smul_comm]`. Use `congr 1`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `Submodule.mul_mem_mul hsD hsE`. Rewrite using `[Scheme.basicOpen_mul]`. Conclude with `⟨hs, hs'⟩`. Establish `htop : 𝔞 = ⊤`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Ideal.span_eq 𝔞, ← (isAffineOpen_top X).iSup_basicOpen_eq_self_iff, eq_top_iff]`. Introduce `x _`. Take `⟨a, ha, hx⟩` from `cover x`. Conclude with `TopologicalSpace.Opens.mem_iSup.2 ⟨⟨a, ha⟩, hx⟩`. Establish `h1 : (1 : Γ(X, ⊤)) ∈ 𝔞` using `htop ▸ Submodule.mem_top`.
-
-Rewrite `h1` using `[mem𝔞, one_smul]`. Conclude with `h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sections_add_of_loc [IsAffine X]
     (hloc : ∀ (D : CartierDiv X) (x : X) (g : X.functionFieldˣ), D.IsEqn x g →
@@ -74,7 +72,7 @@ end GlobalTheory.Cartier.SecAdd
 namespace GlobalTheory.Cartier.SecAdd
 
 /- English proof (translation)
-Introduce `X _ _ D E`. Conclude with `sections_add_of_loc (fun D x g hg f hf => GlobalTheory.T.sections_locally_generated_affine X D x g hg f hf) D E`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem sections_add : ∀ (X : Scheme.{0}) [IsIntegral X] [IsAffine X] (D E : CartierDiv X),
     (D + E).sections = D.sections * E.sections := by

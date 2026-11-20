@@ -16,43 +16,37 @@ namespace GlobalTheory.IntOverCdvr
 open IsLocalRing
 
 /- English proof (translation)
-Introduce `V _ _ _ hV ϖ hϖ F _ _ _ v hv z hz`. Take `⟨hdvr, hcomp, hchar⟩` from `hV`. Set `K` to `FractionRing V`. Use `letI : Algebra V F := ((algebraMap K F).comp (algebraMap V K)).toAlgebra`. Use `haveI : IsScalarTower V K F := IsScalarTower.of_algebraMap_eq (fun _ => rfl)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Use `haveI : FaithfulSMul V F := (faithfulSMul_iff_algebraMap_injective V F).mpr ((algebraMap K F).injective.comp (IsFractionRing.injective V K))`. Use `haveI : Algebra.IsAlgebraic V F := (IsFractionRing.comap_isAlgebraic_iff (A := V) (K := K) (C := F)).mpr inferInstance`. Take `⟨W, hW, -, -, hfin, -, hloc, hs, -⟩` from `GlobalTheory.exists_complete_dvr_finite_subalgebra V F {z}`. Use `haveI := hfin`. Establish `hVnn : ∀ r : V, 0 ≤ v (algebraMap V F r)` using `fun r => GlobalTheory.FiniteDVRValuation.val_nonneg hϖ hv r`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Set `S : ValuationSubring F` to `GlobalTheory.FiniteDVRValuation.nonnegSubring v (RingHom.id F)`. Establish `hWnn : ∀ w ∈ W, 0 ≤ v w`. Introduce `w hw`. Establish `hint : IsIntegral V w` using `(Algebra.IsIntegral.isIntegral (R := V) (⟨w, hw⟩ : W)).map W.val`. Set `φ : V →+* S` to `(algebraMap V F).codRestrict S (fun r => hVnn r)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hS : (algebraMap S F).IsIntegralElem w` using `RingHom.IsIntegralElem.of_comp (f := φ) hint`. Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (R := S) (K := F)).1 hS`. Rewrite using `[← hy]`. Conclude with `y.2`. Establish `hϖpos : 0 < v (algebraMap V F ϖ)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨n, hn, hu⟩` from `GlobalTheory.FiniteDVRValuation.exists_nat_val hϖ hv hϖ.ne_zero`. Establish `hn0 : n ≠ 0` using `fun h => hϖ.not_isUnit (hu h)`. Express the relevant statement in the definitionally equal form `0 < v (algebraMap K F (algebraMap V K ϖ))`. Rewrite using `[hn]`. Conclude with `Nat.pos_of_ne_zero hn0` after adjusting the coercions.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hunit : ∀ c : W, v (c : F) = 0 → IsUnit c`. Introduce `c hc`. Assume the negation of the conclusion as `hnu`. Establish `hinj : Function.Injective (algebraMap V W)`. Introduce `a b hab`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis.
 
-Apply `FaithfulSMul.algebraMap_injective V F` to reduce the goal to its premises. Use `congrArg Subtype.val hab` as an intermediate fact. Simplify using `using this`. Use `set ϖW : W := algebraMap V W ϖ`. Establish `hϖW0 : ϖW ≠ 0` using `(map_ne_zero_iff _ hinj).2 hϖ.ne_zero`.
+Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Establish an intermediate fact.
 
-Choose the witnesses or unpack the hypotheses as in `⟨N, hN⟩ : ∃ N : ℕ, IsDiscreteValuationRing.addVal W ϖW = N := by`. Break down `h : IsDiscreteValuationRing.addVal W ϖW with _ | N` into its components or cases. Conclude with `absurd (IsDiscreteValuationRing.addVal_eq_top_iff.1 h) hϖW0`. Conclude with `⟨N, rfl⟩`. Establish `hc1 : 1 ≤ IsDiscreteValuationRing.addVal W c`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[ENat.one_le_iff_ne_zero]`. Conclude with `fun h => hnu (IsDiscreteValuationRing.addVal_eq_zero_iff.1 h)`. Establish `hdvd : ϖW ∣ c ^ N`. Rewrite using `[← IsDiscreteValuationRing.addVal_le_iff_dvd, AddValuation.map_pow, hN]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Take `⟨d, hd⟩` from `hdvd`. Establish `h1 : v ((c : F) ^ N) = 0` using `by rw [AddValuation.map_pow, hc, nsmul_zero]`. Establish `h2 : v ((c : F) ^ N) = v (algebraMap V F ϖ) + v (d : F)`. Rewrite using `[← AddValuation.map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `h` using `congrArg Subtype.val hd`. Simplify using `only [SubmonoidClass.coe_pow, MulMemClass.coe_mul] at h`. Conclude with `h`. Establish `h3 : 0 < v ((c : F) ^ N)`. Rewrite using `[h2]`.
+Introduce a local definition for the expression. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `lt_of_lt_of_le hϖpos (le_add_of_nonneg_right (hWnn d d.2))`. Rewrite `h3` using `[h1]`. Conclude with `lt_irrefl _ h3`. Take `⟨a, ha, b, hb, hb0, hab⟩` from `hs z (Finset.mem_singleton_self z)`. Establish `hzW : z ∈ W`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `a' : W` to `⟨a, ha⟩`. Set `b' : W` to `⟨b, hb⟩`. Break down `le_total (IsDiscreteValuationRing.addVal W b') (IsDiscreteValuationRing.addVal W a') with h | h` into its components or cases. Take `⟨c, hc⟩` from `IsDiscreteValuationRing.addVal_le_iff_dvd.1 h`. Establish `hc' : a = b * c` using `congrArg Subtype.val hc`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Establish `: z = c`. Apply `mul_left_cancel₀ hb0` to reduce the goal to its premises. Rewrite using `[mul_comm, hab, hc']`. Rewrite using `[this]`. Conclude with `c.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `IsDiscreteValuationRing.addVal_le_iff_dvd.1 h`. Establish `hc' : b = a * c` using `congrArg Subtype.val hc`. Establish `ha0 : a ≠ 0`. Introduce and unpack `rfl`. Conclude with `hb0 (by simpa using hc')`.
+Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hzc : z * c = 1`. Apply `mul_left_cancel₀ ha0` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation. Establish `hz0 : z ≠ 0` using `left_ne_zero_of_mul_eq_one hzc`. Establish `hvc : v (c : F) = 0`.
-
-Establish `hsum : v z + v (c : F) = 0` using `by rw [← AddValuation.map_mul, hzc, AddValuation.map_one]`. Establish `hc0` using `hWnn c c.2`. Use `le_antisymm ?_ hc0` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Take `⟨u, hu⟩` from `hunit c hvc`.
-
-Establish `: z = ((u⁻¹ : Wˣ) : W)`. Establish `h1 : ((u : W) : F) * (((u⁻¹ : Wˣ) : W) : F) = 1`. Rewrite using `[← Subalgebra.coe_mul, Units.mul_inv]`. Both sides reduce to the same expression. Rewrite `h1` using `[hu]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[this]`. Conclude with `Subtype.property _`. Conclude with `(Algebra.IsIntegral.isIntegral (R := V) (⟨z, hzW⟩ : W)).map W.val`.
+Both sides reduce to the same expression. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIntegralElem_of_val_nonneg : ∀ (V : Type) [CommRing V] [IsDomain V] [IsLocalRing V], GlobalTheory.LN.CDvr V → ∀ (ϖ : V), Irreducible ϖ → ∀ (F : Type) [Field F] [Algebra (FractionRing V) F] [Algebra.IsAlgebraic (FractionRing V) F] (v : AddValuation F (WithTop ℚ)), ReciprocityTheory.ChartRestriction.G.DVR.ValOver ϖ F v → ∀ z : F, 0 ≤ v z → ((algebraMap (FractionRing V) F).comp (algebraMap V (FractionRing V))).IsIntegralElem z := by
   intro V _ _ _ hV ϖ hϖ F _ _ _ v hv z hz

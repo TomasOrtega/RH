@@ -16,7 +16,7 @@ def SecondVeronese.Statement : Prop :=
       genDeg (ι := GlobalTheory κ) (coordIdeal ℤ d.x) D 1 = 2 ^ D
 
 /- English proof (translation)
-The claim follows from `le_rfl`.
+A detailed English derivation is pending.
 -/
 example : (1 : ℕ) ≤ 1 := le_rfl
 

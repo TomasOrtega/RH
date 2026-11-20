@@ -17,7 +17,7 @@ open Formalism.DworkPowerSeriesWeights (Integral mvExp torus BHyp Unram entLog o
 open Formalism.InvariantFactorPaths.G7 (lgF at1 Simeq DivAB d1 swap2 UnrOK IsLawOfLog BetaHyp OmOK lamF thetaLog sSub zLin)
 
 /- English proof (translation)
-Introduce `K _ l σ hU a _ ha`. Take `⟨k, hk⟩` from `hU.2.2.2.1 a ha`. Use `⟨-k, ?_⟩` and prove the remaining obligations. Rewrite using `[hk, hU.2.2.1, inv_zpow', neg_neg]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem unramified_top : UnramTop := by
   intro K _ l σ hU a _ ha
@@ -28,7 +28,7 @@ theorem unramified_top : UnramTop := by
 namespace CohomologyFunctoriality₂
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using hc`. Consider the case `succ n ih`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `(frobSq K0 l σ hU).2 _ ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_iter {K0 : Type} [NormedField K0] [IsUltrametricDist K0] [CharZero K0] {l : ℕ}
     {σ : K0 →+* K0} (hU : UnrOK K0 l σ) {c : K0} (hc : ‖c‖ ≤ 1) (n : ℕ) : ‖σ^[n] c‖ ≤ 1 := by
@@ -39,7 +39,7 @@ theorem norm_iter {K0 : Type} [NormedField K0] [IsUltrametricDist K0] [CharZero 
     exact (frobSq K0 l σ hU).2 _ ih
 
 /- English proof (translation)
-Establish `h` using `TranslateJetMomentLawAnyIdempotentLevel.iter_sub_one σ hfix (s + 1)`. Rewrite `h` using `[add_sub_cancel_right]`. Rewrite using `[← h, ← map_pow, ← map_sub, hj]`. Conclude with `hU.2.2.2.2 _ (norm_iter hU hc _)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frob_step {K0 K : Type} [NormedField K0] [IsUltrametricDist K0] [CharZero K0]
     [NormedField K] {l d : ℕ} [NeZero d] {σ : K0 →+* K0} (j : K0 →+* K) (hU : UnrOK K0 l σ)
@@ -53,19 +53,19 @@ theorem frob_step {K0 K : Type} [NormedField K0] [IsUltrametricDist K0] [CharZer
 end CohomologyFunctoriality₂
 
 /- English proof (translation)
-Introduce `K0 K _ _ _ _ l ν _ σ j hU hj om oms hO hT`. Use `⟨fun r s => ?_, fun r s => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Unfold `conjJ`. Rewrite using `[hj, hj]`. Conclude with `⟨CohomologyFunctoriality₂.norm_iter hU (hO.1 r).1 _, CohomologyFunctoriality₂.norm_iter hU (hO.1 r).2 _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Unfold `conjJ`. Conclude with `⟨CohomologyFunctoriality₂.frob_step j hU hj (hO.1 r).1 (hO.2 r).1 s, CohomologyFunctoriality₂.frob_step j hU hj (hO.1 r).2 (hO.2 r).2 s⟩`. Unfold `conjJ`. Establish `hE : Even (2 * ν)` using `even_two_mul ν`. Establish `key : ∑ r, σ^[a.val] (oms r) * σ^[b.val] (om r) = if a = b then 1 else 0`.
+Replace the relevant objects with their definitions. Supply the required witnesses or components. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `ha : a.val % 2 = 0`. Establish `hb : b.val % 2 = 0` using `by omega`. Establish `h` using `TranslateJetMomentLawAnyIdempotentLevel.dual2 hE σ hO.2 hT b a`. Rewrite `h` using `[Fintype.sum_prod_type, Fintype.sum_bool]`. Simplify using `only [mXY, TranslateJetMomentLawAnyIdempotentLevel.pXY, ha, hb, if_true] at h`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Bool.true_eq_false, if_false, mul_zero, Finset.sum_const_zero, zero_add] at h`. Establish `e : (if a = b then (1 : K0) else 0) = if b = a then 1 else 0`. Distinguish the cases in `hab' : a = b`. Rewrite using `[if_pos hab', if_pos hab'.symm]`. Rewrite using `[if_neg hab', if_neg (fun h => hab' h.symm)]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, ← h]`. Conclude with `Finset.sum_congr rfl fun r _ => mul_comm _ _`. Establish `hb : ¬ b.val % 2 = 0` using `by omega`. Establish `h` using `TranslateJetMomentLawAnyIdempotentLevel.dual2 hE σ hO.2 hT a b`. Rewrite `h` using `[Fintype.sum_prod_type, Fintype.sum_bool]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mXY, TranslateJetMomentLawAnyIdempotentLevel.pXY, ha, hb, if_false] at h`. Simplify using `only [Bool.false_eq_true, if_false, mul_zero, Finset.sum_const_zero, add_zero, if_true] at h`. Conclude with `h`. Establish `h2` using `congrArg j key`. Rewrite `h2` using `[map_sum]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [map_mul] at h2`. Rewrite using `[h2]`. Apply the tactic sequence `split_ifs <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem omega_integral_criterion : OmOKOf := by
   intro K0 K _ _ _ _ l ν _ σ j hU hj om oms hO hT
@@ -105,11 +105,11 @@ theorem omega_integral_criterion : OmOKOf := by
     split_ifs <;> simp
 
 /- English proof (translation)
-Introduce `K0 K _ _ l ν r0 r1 _ σ j om oms Tht`. Unfold `thetaInZ`. Use `congr 1`. Use function extensionality and compare the values at `x`. Unfold `xOfZ Formalism.InvariantFactorPaths.G7.sSub Formalism.InvariantFactorPaths.G7.zLin conjJ`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use `congr 1`. Distinguish the cases in `h : x.1 = false`. Simplify using `only [h, if_true]`. Simplify using `only [h]`. Use `Finset.sum_congr rfl fun s _ => ?_` and prove the remaining obligations.
+Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `rcases Nat.mod_two_eq_zero_or_one s.val with h2 | h2 <;> simp [h2]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem theta_integer_is_s_substitution : ThetaInZIsSSub := by
   intro K0 K _ _ l ν r0 r1 _ σ j om oms Tht
@@ -129,11 +129,11 @@ namespace CohomologyFunctoriality₂
 open Formalism.InvariantFactorPaths.G7 Formalism.InvariantFactorPaths.G7.ScaledSeriesSubstitution
 
 /- English proof (translation)
-Establish `e1` using `LogarithmEquivalence.subst_lgF_scale p ϖ`. Establish `hμ : PowerSeries.HasSubst μ` using `PowerSeries.HasSubst.of_constantCoeff_zero' h0`. Establish `hX : PowerSeries.HasSubst (PowerSeries.C ϖ * PowerSeries.X : PowerSeries K)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by simp)`. Establish `e2` using `congrArg (fun f => (PowerSeries.subst μ f : PowerSeries K)) e1`. Rewrite `e2` using `[PowerSeries.subst_comp_subst_apply hX hμ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[← PowerSeries.coe_substAlgHom hμ, map_mul, map_mul, PowerSeries.coe_substAlgHom hμ, h1, PowerSeries.subst_X hμ]`. Establish `e3 : (PowerSeries.substAlgHom hμ) (PowerSeries.C ϖ : PowerSeries K) = PowerSeries.C ϖ`. Establish `: (PowerSeries.C ϖ : PowerSeries K) = algebraMap K _ ϖ` using `rfl`. Rewrite using `[this, AlgHom.commutes]`. Rewrite `e3` using `[PowerSeries.coe_substAlgHom hμ]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `e2` using `[e3]`. Conclude with `e2`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_scale {K : Type} [Field K] (p : ℕ) (ϖ : K) (μ : PowerSeries K)
     (h0 : PowerSeries.constantCoeff μ = 0)
@@ -156,11 +156,11 @@ theorem log_scale {K : Type} [Field K] (p : ℕ) (ϖ : K) (μ : PowerSeries K)
   exact e2
 
 /- English proof (translation)
-Establish `hb` using `hasSubst_scale (K := K) (ι := ZV ν r0 r1) ϖ⁻¹`. Establish `hz : PowerSeries.HasSubst (zLin om oms x : MvPowerSeries (ZV ν r0 r1) K)` using `PowerSeries.HasSubst.of_constantCoeff_zero (constantCoeff_zLin om oms x)`. Establish `hw : PowerSeries.HasSubst (MvPowerSeries.C ϖ⁻¹ * zLin om oms x : MvPowerSeries (ZV ν r0 r1) K)` using `PowerSeries.HasSubst.of_constantCoeff_zero (by rw [map_mul, constantCoeff_zLin, mul_zero])`. Establish `hm : PowerSeries.HasSubst (PowerSeries.C ϖ * μ : PowerSeries K)` using `PowerSeries.HasSubst.of_constantCoeff_zero' (by rw [map_mul, hμ0, mul_zero])`. Establish `e1 : MvPowerSeries.subst (fun y => MvPowerSeries.C ϖ⁻¹ * (MvPowerSeries.X y : MvPowerSeries (ZV ν r0 r1) K)) (MvPowerSeries.C ϖ * sSub om oms μ x) = PowerSeries.subst (MvPowerSeries.C ϖ⁻¹ * zLin om oms x) (PowerSeries.C ϖ * μ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[subst_C_mul hb, ps_subst_C_mul hw]`. Unfold `sSub`. Rewrite using `[FormalGroupLaws.subst_subst hb hz, subst_scale_zLin]`. Establish `e2` using `congrArg (fun f => (PowerSeries.subst (MvPowerSeries.C ϖ⁻¹ * zLin om oms x) f : MvPowerSeries (ZV ν r0 r1) K)) (log_scale p ϖ μ hμ0 hμ)`. Rewrite `e2` using `[PowerSeries.subst_comp_subst_apply hm hw, ps_subst_C_mul hw ϖ PowerSeries.X, PowerSeries.subst_X hw, ← mul_assoc, ← map_mul, mul_inv_cancel₀ hϖ, map_one, one_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[e1]`. Conclude with `e2`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem log_coord {K : Type} [Field K] (p ν r0 r1 : ℕ) [NeZero ν]
     (om oms : Fin ν → ZMod (2 * ν) → K) (ϖ : K) (μ : PowerSeries K) (x : Bool × EV ν r0 r1)
@@ -195,11 +195,11 @@ theorem log_coord {K : Type} [Field K] (p ν r0 r1 : ℕ) [NeZero ν]
 end CohomologyFunctoriality₂
 
 /- English proof (translation)
-Introduce `K0 K _ _ l ν r0 r1 _ σ j om oms ϖ μ hl hϖ hμ0 hμ Tht`. Rewrite using `[theta_integer_is_s_substitution, Formalism.InvariantFactorPaths.G7.Top.thetaLogIsSubst K ν r0 r1 _ _ ϖ μ Tht hμ0]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Establish `hb` using `Formalism.InvariantFactorPaths.G7.ScaledSeriesSubstitution.hasSubst_scale (K := K) (ι := Formalism.InvariantFactorPaths.G7.ZV ν r0 r1) ϖ⁻¹`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Establish `hcc : MvPowerSeries.constantCoeff (MvPowerSeries.subst (fun y => MvPowerSeries.C ϖ⁻¹ * (MvPowerSeries.X y : MvPowerSeries (Formalism.InvariantFactorPaths.G7.ZV ν r0 r1) K)) (MvPowerSeries.C ϖ * sSub (conjJ j σ om) (conjJ j σ oms) μ x)) = 0`. Use `MvPowerSeries.constantCoeff_subst_eq_zero hb (fun i => by simp) ?_` and prove the remaining obligations. Establish `h : MvPowerSeries.constantCoeff (sSub (conjJ j σ om) (conjJ j σ oms) μ x) = 0` using `PowerSeries.constantCoeff_subst_eq_zero (Formalism.InvariantFactorPaths.G7.ScaledSeriesSubstitution.constantCoeff_zLin _ _ x) μ hμ0`. Rewrite using `[map_mul, h, mul_zero]`. Establish `h` using `Pair.exp_log expSpec hl hcc`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h` using `[CohomologyFunctoriality₂.log_coord l ν r0 r1 _ _ ϖ μ x hϖ hμ0 hμ]`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_integer_is_theta_log : ThetaInZIsThetaLog := by
   intro K0 K _ _ l ν r0 r1 _ σ j om oms ϖ μ hl hϖ hμ0 hμ Tht
@@ -223,9 +223,9 @@ theorem theta_integer_is_theta_log : ThetaInZIsThetaLog := by
 namespace CohomologyFunctoriality₂
 
 /- English proof (translation)
-Take `⟨ζ, hζ⟩` from `hζ`. Take `⟨U, hUi, hUeq⟩` from `b0 K0 ℂ_[l] l d N0 N1 σ j hU hj hd2 hde F hF be0 hF1 hF2 ι om oms hO hT ζ hζ U0 Φ hU0 hΦ0 hΦ`. Take `⟨g, hg0, hg, -⟩` from `Formalism.DworkPowerSeriesWeights.generalized_log_inverse.{0, 0} ℂ_[l] l hU.1 (Formalism.DworkPowerSeriesWeights.ZV d N0 N1) (fun y => (y.1 - 2, y.2.1, y.2.2))`. Establish `hg' : ∀ y, MvPowerSeries.subst g (entLog (K` using `ℂ_[l]) l y) = MvPowerSeries.X y := by`. Introduce `y`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(Formalism.DworkPowerSeriesWeights.logarithm_weight_comparison.{0} ℂ_[l] l d N0 N1).2.1 y]`. Conclude with `hg y`. Take `⟨hT1, hT2, -, -⟩` from `Formalism.DworkPowerSeriesWeights.admissibleTransfer K0 ℂ_[l] j hj l d N0 N1 ⊤ ζ (beMean l σ be0 om oms ζ)`. Conclude with `⟨_, j ζ, _, g, U, hT1 (unramified_top K0 l σ hU), hζ.map_of_injective j.injective, hT2 (biextension_hypotheses_of_level_one K0 l d σ hU hd2 hde F hF be0 hF1 ι om oms hO ζ hζ), hg0, hg', hUi, hUeq g hg0 hg'⟩`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem thetaForm (l : ℕ) [Fact l.Prime] (K0 : Type) [NormedField K0] [IsUltrametricDist K0]
     [CharZero K0] (σ : K0 →+* K0) (hU : UnrOK K0 l σ) (j : K0 →+* ℂ_[l]) (hj : ∀ a, ‖j a‖ = ‖a‖)
@@ -260,7 +260,7 @@ theorem thetaForm (l : ℕ) [Fact l.Prime] (K0 : Type) [NormedField K0] [IsUltra
 end CohomologyFunctoriality₂
 
 /- English proof (translation)
-Introduce `l _ K0 _ _ _ σ hU j hj F hF be0 hF1 hF2 d N0 N1 _ hd2 hde ι _ _ om oms hO hT hζ U0 Φ hU0 hΦ0 hΦ TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 a ha hsa hthr δ hδ`. Take `⟨K1, ζ, be, g, U, hK1, hζ', hbe, hg0, hg, hUi, heq⟩` from `CohomologyFunctoriality₂.thetaForm l K0 σ hU j hj F hF be0 hF1 hF2 d N0 N1 hd2 hde ι om oms hO hT hζ U0 Φ hU0 hΦ0 hΦ`. Rewrite using `[heq]`. Conclude with `Formalism.DworkPowerSeriesWeights.thmAEntryFull l d N0 N1 hU.2.1 hd2 hde K1 hK1 ζ hζ' be hbe g hg0 hg U hUi (-1) (Or.inr rfl) TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 a ha hsa hthr δ hδ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theorem_a_entry_of_f : ThmAEntryOfF := by
   intro l _ K0 _ _ _ σ hU j hj F hF be0 hF1 hF2 d N0 N1 _ hd2 hde ι _ _ om oms hO hT hζ U0 Φ hU0
@@ -272,7 +272,7 @@ theorem theorem_a_entry_of_f : ThmAEntryOfF := by
     (Or.inr rfl) TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 a ha hsa hthr δ hδ
 
 /- English proof (translation)
-Introduce `l _ K0 _ _ _ σ hU j hj F hF be0 hF1 hF2 d N0 N1 _ hd2 hde ι _ _ om oms hO hT hζ U0 Φ hU0 hΦ0 hΦ TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 a ha hsa hthr n`. Take `⟨K1, ζ, be, g, U, hK1, hζ', hbe, hg0, hg, hUi, heq⟩` from `CohomologyFunctoriality₂.thetaForm l K0 σ hU j hj F hF be0 hF1 hF2 d N0 N1 hd2 hde ι om oms hO hT hζ U0 Φ hU0 hΦ0 hΦ`. Rewrite using `[heq]`. Conclude with `Formalism.DworkPowerSeriesWeights.thmAGauss l d N0 N1 hU.2.1 hd2 hde K1 hK1 ζ hζ' be hbe g hg0 hg U hUi (-1) (Or.inr rfl) TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 a ha hsa hthr n`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theorem_a_gauss_of_f : ThmAGaussOfF := by
   intro l _ K0 _ _ _ σ hU j hj F hF be0 hF1 hF2 d N0 N1 _ hd2 hde ι _ _ om oms hO hT hζ U0 Φ hU0
@@ -284,11 +284,9 @@ theorem theorem_a_gauss_of_f : ThmAGaussOfF := by
     (Or.inr rfl) TT colN p hp hp1 I nu1 nu2 size h1 h2 h3 a ha hsa hthr n
 
 /- English proof (translation)
-Introduce `l _ K0 _ _ _ σ hU j hj F hF be0 hF1 hF2 hζ ph hph N0 N1 C U0 Φ hU0 hΦ0 hΦ p hp I a ha hsa n`. Take `⟨ζ, hζ⟩` from `hζ`. Take `⟨U, hUi, hUeq⟩` from `single_letter_theta_factorization K0 ℂ_[l] l N0 N1 σ j hU hj F hF be0 hF1 hF2 ζ hζ ph hph U0 Φ hU0 hΦ0 hΦ`. Take `⟨g, hg0, hg, -⟩` from `Formalism.DworkPowerSeriesWeights.generalized_log_inverse.{0, 0} ℂ_[l] l hU.1 (Fin N0 × Fin N1) id`. Establish `hg' : ∀ y, MvPowerSeries.subst g (oneLog (K` using `ℂ_[l]) l y) = MvPowerSeries.X y := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[(Formalism.DworkPowerSeriesWeights.logarithm_weight_comparison.{0} ℂ_[l] l 2 N0 N1).2.2 y]`. Conclude with `hg y`. Take `⟨hT1, hT2, -, -⟩` from `Formalism.DworkPowerSeriesWeights.admissibleTransfer K0 ℂ_[l] j hj l 2 N0 N1 ⊤ ζ (beMean (d := 2) l σ be0 (fun _ : Unit => (1 : K0)) (fun _ => 1) ζ)`. Rewrite using `[hUeq g hg0 hg']`.
-
-Conclude with `Formalism.DworkPowerSeriesWeights.oneLetterGauss l N0 N1 C hU.2.1 _ (hT1 (unramified_top K0 l σ hU)) (j ζ) (hζ.map_of_injective j.injective) _ (hT2 (biextension_hypotheses_of_level_one K0 l 2 σ hU le_rfl (by decide) F hF be0 hF1 Unit _ _ (SingleLetterLog.owOK_two σ) ζ hζ)) 1 (by …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem one_letter_gauss_of_f : OneLetterGaussOfF := by
   intro l _ K0 _ _ _ σ hU j hj F hF be0 hF1 hF2 hζ ph hph N0 N1 C U0 Φ hU0 hΦ0 hΦ p hp I a ha hsa n
@@ -310,7 +308,7 @@ theorem one_letter_gauss_of_f : OneLetterGaussOfF := by
     1 (by simp) g hg0 hg' U hUi (-1) (Or.inr rfl) p hp I a ha hsa n
 
 /- English proof (translation)
-Introduce `K0 K _ _ _ _ _ _ _ j p ν r0 r1 _ σ hj hU hζ F hF be hF1 hF2`. Take `⟨c, hc, hcc, h⟩` from `Formalism.InvariantFactorPaths.G7.Top.thmSFull K0 K j p ν r0 r1 σ hj hU hζ F hF be (betaHypOfF K0 p σ hU F be hF1 hF2)`. Use `⟨c, hc, hcc, ?_⟩` and prove the remaining obligations. Introduce `om oms ϖ μ U0 Φ hϖ hO hT hμ0 hμ hU0 hΦ0 hΦ`. Conclude with `h _ _ ϖ μ U0 Φ hϖ (omega_integral_criterion K0 K p ν σ j hU hj om oms hO hT) hμ0 hμ hU0 hΦ0 hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem theorem_s_of_f : ThmSOfF := by
   intro K0 K _ _ _ _ _ _ _ j p ν r0 r1 _ σ hj hU hζ F hF be hF1 hF2
@@ -321,11 +319,11 @@ theorem theorem_s_of_f : ThmSOfF := by
   exact h _ _ ϖ μ U0 Φ hϖ (omega_integral_criterion K0 K p ν σ j hU hj om oms hO hT) hμ0 hμ hU0 hΦ0 hΦ
 
 /- English proof (translation)
-Introduce `p _ K0 _ _ _ _ σ hU hζ F hF be hF1 hF2 K _ _ _ j ν r0 r1 _ hj hϖ om oms hO hT U0 Φ hU0 hΦ0 hΦ TT colN hts hp I n`. Take `⟨ϖ, hϖ⟩` from `hϖ`. Establish `hnp : ‖(p : K)‖ = (p : ℝ)⁻¹`. Rewrite using `[← map_natCast j, hj]`. Conclude with `hU.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hpK : (p : K) ≠ 0` using `by exact_mod_cast hU.1.ne_zero`. Establish `hϖ0 : ϖ ≠ 0`. Introduce and unpack `rfl`. Apply `hpK` to reduce the goal to its premises. Rewrite using `[← hϖ, zero_pow]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: 2 ^ 2 ≤ p ^ 2` using `Nat.pow_le_pow_left hU.2.1.le 2`. Use linear arithmetic over natural numbers and integers. Take `⟨-, -, μ, hμ0, -, hμ, -, -⟩` from `Formalism.InvariantFactorPaths.G7.Top.logRescale K p ϖ hU.1 hnp hϖ`. Rewrite using `[theta_integer_is_theta_log K0 K p ν r0 r1 σ j om oms ϖ μ hU.1.two_le hϖ0 hμ0 hμ]`. Conclude with `Formalism.InvariantFactorPaths.G7.Top.kernel_from_k_one_k p K0 σ hU hζ F hF be (betaHypOfF K0 p σ hU F be hF1 hF2) K j ν r0 r1 hj _ _ ϖ μ U0 Φ hϖ (omega_integral_criterion K0 K p ν σ j hU hj om oms hO hT) hμ0 hμ hU0 hΦ0 hΦ TT colN hts hp I n`.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kernel_of_f : KernelOfF := by
   intro p _ K0 _ _ _ _ σ hU hζ F hF be hF1 hF2 K _ _ _ j ν r0 r1 _ hj hϖ om oms hO hT U0 Φ hU0 hΦ0

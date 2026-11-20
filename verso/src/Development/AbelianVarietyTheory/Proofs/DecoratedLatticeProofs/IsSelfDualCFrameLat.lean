@@ -21,7 +21,7 @@ namespace GlobalTheory.Core.Rk.AbsConv
 open Filter Set GlobalTheory.Eis
 
 /- English proof (translation)
-Establish `h : frameLat V = GlobalTheory.PlaceModel.latFrame V` using `Submodule.ext fun y => (mem_frameLat V y).trans (GlobalTheory.PlaceModel.mem_latFrame V y).symm`. Rewrite using `[h]`. Conclude with `GlobalTheory.PlaceModel.isSelfDualC_latFrame V`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSelfDualC_frameLat {D : D7} (V : HSp D) : IsSelfDualC V (frameLat V) := by
   have h : frameLat V = GlobalTheory.PlaceModel.latFrame V :=
@@ -30,7 +30,7 @@ theorem isSelfDualC_frameLat {D : D7} (V : HSp D) : IsSelfDualC V (frameLat V) :
   exact GlobalTheory.PlaceModel.isSelfDualC_latFrame V
 
 /- English proof (translation)
-Simplify using `only [dblIntegrand]`. Repeatedly rewrite using `[← ofReal_norm_eq_enorm]`. Rewrite using `[norm_mul, norm_mul, norm_mul, norm_inv, Circle.norm_coe, inv_one, mul_one, Complex.norm_conj, ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity), mul_assoc]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem enorm_dblIntegrand {D : D7} {V : HSp D} (μ : (AE D)ˣ →* Circle) (E : GA D (dblSp V) → ℂ)
     (f₁ f₂ : GA D V → ℂ) (x : GA D V × GA D V) :
@@ -41,19 +41,19 @@ theorem enorm_dblIntegrand {D : D7} {V : HSp D} (μ : (AE D)ˣ →* Circle) (E :
     ENNReal.ofReal_mul (by positivity), ENNReal.ofReal_mul (by positivity), mul_assoc]
 
 /- English proof (translation)
-Establish `hli : LeftInv ((GQ V).prod (GQ V)) (dblIntegrand V μ E f₁ f₂)` using `leftInv_dblIntegrand hμ hE h₁.1 h₂.1`. Establish `hmeas : AEStronglyMeasurable (dblIntegrandQ V μ E f₁ f₂) ((autMeasure V m).prod (autMeasure V m))`. Establish `e' : dblIntegrandQ V μ E f₁ f₂ = dblIntegrand V μ E f₁ f₂ ∘ Prod.map (sec (GQ V)) (sec (GQ V))`. Use function extensionality and compare the values at `fun q => (congrArg _ (Prod.ext (mk_sec q.1) (mk_sec q.2)).symm).trans (dblIntegrandQ_mk hli _ _)`. Rewrite using `[e']`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((continuous_dblIntegrand hμ hc h₁.continuous h₂.continuous).measurable.comp (measurableEmbedding_sec.measurable.prodMap measurableEmbedding_sec.measurable)).aestronglyMeasurable`. Establish `i₁` using `GlobalTheory.T.integrable_unitaryQuotientHeight_pow_mul_rapidlyDecreasing D V m hm f₁ h₁ N`. Establish `i₂` using `GlobalTheory.T.integrable_unitaryQuotientHeight_pow_mul_rapidlyDecreasing D V m hm f₂ h₂ N`. Use `set K : ℝ := max C 0 * 4 ^ N with hK`. Establish `hK0 : 0 ≤ K` using `mul_nonneg (le_max_right _ _) (by positivity)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨hli, ((i₁.mul_prod i₂).const_mul K).mono' hmeas (Eventually.of_forall fun q => ?_)⟩` and prove the remaining obligations. Take `⟨γ₁, hγ₁, e₁⟩` from `GlobalTheory.Grow.exists_height_le_two_mul_quotHeight V q.1.out`. Take `⟨γ₂, hγ₂, e₂⟩` from `GlobalTheory.Grow.exists_height_le_two_mul_quotHeight V q.2.out`. Establish `hinv : E (io V (q.1.out, q.2.out)) = E (io V (γ₁ * q.1.out, γ₂ * q.2.out))`. Establish `e : io V (γ₁ * q.1.out, γ₂ * q.2.out) = io V (γ₁, γ₂) * io V (q.1.out, q.2.out)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[← map_mul]`. Both sides reduce to the same expression. Rewrite using `[e, hE _ (io_mem_GQ V hγ₁ hγ₂)]`. Establish `hq₁` using `GlobalTheory.Grow.one_le_quotHeight V q.1.out`. Establish `hq₂` using `GlobalTheory.Grow.one_le_quotHeight V q.2.out`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx₁` using `GlobalTheory.Grow.one_le_height V (γ₁ * q.1.out)`. Establish `hx₂` using `GlobalTheory.Grow.one_le_height V (γ₂ * q.2.out)`. Establish `h3 : GlobalTheory.Grow.height (dblSp V) (io V (γ₁ * q.1.out, γ₂ * q.2.out)) ≤ 4 * (GlobalTheory.Grow.quotHeight V q.1.out * GlobalTheory.Grow.quotHeight V q.2.out)`. Use `(GlobalTheory.Cont.HeightIo.height_io_le_mul V _ _).trans ?_` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h0 : 1 ≤ GlobalTheory.Grow.height (dblSp V) (io V (γ₁ * q.1.out, γ₂ * q.2.out))` using `GlobalTheory.Grow.one_le_height _ _`. Establish `hEq : ‖E (io V (q.1.out, q.2.out))‖ ≤ K * (GlobalTheory.Grow.quotHeight V q.1.out ^ N * GlobalTheory.Grow.quotHeight V q.2.out ^ N)`. Rewrite using `[hinv]`. Combine the equalities or inequalities in the displayed calculation. Establish `hμ1 : ‖((μ (detA V q.2.out) : ℂ))⁻¹‖ = 1`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[norm_inv, Circle.norm_coe, inv_one]`. Simplify using `only [dblIntegrandQ, dblIntegrand, norm_mul, hμ1, mul_one, Complex.norm_conj]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem dblConv_of_growth {D : D7} {V : HSp D} {μ : (AE D)ˣ →* Circle} (hμ : IsHeckeChar D μ)
     {m : Measure (GA D V)} (hm : m.IsHaarMeasure) {f₁ f₂ : GA D V → ℂ} (h₁ : GlobalTheory.Grow.RapidDec V f₁)
@@ -104,27 +104,23 @@ theorem dblConv_of_growth {D : D7} {V : HSp D} {μ : (AE D)ˣ →* Circle} (hμ 
     _ = _ := by ring
 
 /- English proof (translation)
-Introduce `D V a ha μ hμ s hs φ hφ hgrow m hm f₁ f₂ h₁ h₂`. Establish `hI : HasIwasawa D.sp.cm.sig (dblSp V).gram (Khat V a)` using `GlobalTheory.T.adelicIwasawa_doubledGroup_selfDualLattice D V (frameLat V) a (isSelfDualC_frameLat V) ha`. Establish `hS : SphConv V a` using `GlobalTheory.Eis.sphConv D V a hI`. Establish `hσ : (V.rank : ℝ) / 2 < ((s.re : ℂ)).re` using `by simpa using hs`. Establish `hconvS : ∀ g, EisConv V (sph V a (s.re : ℂ)) g` using `fun g => (((sphConv_iff hI).1 hS).1 _ hσ).2 g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ g, sph V a (s.re : ℂ) g = (((hgt V a g : ℝ) ^ (s.re + (V.rank : ℝ) / 2) : ℝ) : ℂ)` using `fun g => by`. Rewrite using `[Complex.ofReal_cpow (NNReal.coe_nonneg _)]`. Use `push_cast`. Both sides reduce to the same expression. Establish `hr0 : ∀ g, 0 ≤ (hgt V a g : ℝ) ^ (s.re + (V.rank : ℝ) / 2)` using `fun g => Real.rpow_nonneg (NNReal.coe_nonneg _) _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hn : ∀ g, ‖sph V a (s.re : ℂ) g‖ = (hgt V a g : ℝ) ^ (s.re + (V.rank : ℝ) / 2)` using `fun g => by`. Rewrite using `[h2, Complex.norm_real, Real.norm_of_nonneg (hr0 g)]`. Establish `hsS : ∀ g, Summable fun q : SiegelCosets V => ‖sph V a (s.re : ℂ) (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * g)‖` using `fun g => hconvS g`. Establish `heS : ∀ g, ‖eis V (sph V a (s.re : ℂ)) g‖ = ∑' q : SiegelCosets V, ‖sph V a (s.re : ℂ) (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * g)‖`. Introduce `g`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : eis V (sph V a (s.re : ℂ)) g = ((∑' q : SiegelCosets V, ‖sph V a (s.re : ℂ) (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * g)‖ : ℝ) : ℂ)`. Rewrite using `[Complex.ofReal_tsum]`. Conclude with `tsum_congr fun q => by rw [hn]; exact h2 _`. Rewrite using `[e, Complex.norm_real, Real.norm_of_nonneg (tsum_nonneg fun _ => norm_nonneg _)]`. Take `⟨C, hC⟩ : ∃ C : ℝ, ∀ g, ‖φ g‖ ≤ C * (hgt V a g : ℝ) ^ (s.re + (V.rank : ℝ) / 2)` from `by haveI := t2Space_adeleRing' (F := D.host.F)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `hI.exists_norm_le continuous_absE (isCompact_Khat V a) hφ`. Establish `hφS : ∀ g, ‖φ g‖ ≤ max C 0 * ‖sph V a (s.re : ℂ) g‖` using `fun g => (hC g).trans (by rw [hn]; exact mul_le_mul_of_nonneg_right (le_max_left _ _) (hr0 g))`. Establish `hsφ : ∀ y, Summable fun q : SiegelCosets V => ‖φ (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * y)‖` using `fun y => Summable.of_nonneg_of_le (fun _ => norm_nonneg _) (fun q => hφS _) ((hsS y).mul_left _)`. Establish `hle : ∀ y, ∑' q : SiegelCosets V, ‖φ (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * y)‖ ≤ max C 0 * ‖eis V (sph V a (s.re : ℂ)) y‖` using `fun y => by`. Rewrite using `[heS, ← tsum_mul_left]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `Summable.tsum_le_tsum (fun q => hφS _) (hsφ y) ((hsS y).mul_left _)`. Take `⟨B, A, hB⟩` from `hgrow`. Establish `h1 : IsHeckeChar D 1` using `⟨continuous_const, fun _ => rfl⟩`. Establish `hSi : LeftInv (GQ (dblSp V)) (eis V (sph V a (s.re : ℂ)))` using `leftInv_eis (leftInv_of_mem h1 (sph_mem hI _))`. Establish `hSc : Continuous (eis V (sph V a (s.re : ℂ)))` using `SphConv.continuous_eis hI (sph_mem hI _) hS hσ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hconv0 : DblConv V μ m (fun y => (((max C 0 * ‖eis V (sph V a (s.re : ℂ)) y‖ : ℝ)) : ℂ)) f₁ f₂`. Use `dblConv_of_growth hμ hm h₁ h₂ (C := max C 0 * B) (N := A) (fun γ hγ g => ?_) (Complex.continuous_ofReal.comp (continuous_const.mul hSc.norm)) (fun g => ?_)` and prove the remaining obligations. Use `beta_reduce`. Rewrite using `[hSi γ hγ g]`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (mul_nonneg (le_max_right _ _) (norm_nonneg _)), mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `mul_le_mul_of_nonneg_left (hB g) (le_max_right _ _)`. Use `⟨fun 𝓕 h𝓕 => ?_, ?_⟩` and prove the remaining obligations. Establish `hint` using `(hconv0.dblInt_eq h𝓕).1`. Establish `hφc : Continuous φ` using `hφ.2.1`. Establish `hmeas : ∀ q : SiegelCosets V, AEMeasurable (fun x => ‖dblIntegrand V μ (fun x => φ (((q.out : GQ (dblSp V)) : GA D (dblSp V)) * x)) f₁ f₂ x‖ₑ) ((m.prod m).restrict (𝓕 ×ˢ 𝓕))` using `fun q => (continuous_dblIntegrand hμ (hφc.comp (continuous_const.mul continuous_id)) h₁.continuous h₂.continuous).measurable.enorm.aemeasurable`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion repeatedly using the stated equalities.
 
-Rewrite using `[← lintegral_tsum hmeas]`. Use `ne_top_of_le_ne_top hint.2.ne (lintegral_mono fun x => ?_)` and prove the remaining obligations. Simplify using `only [enorm_dblIntegrand]`. Rewrite using `[ENNReal.tsum_mul_right]`. Use `gcongr ?_ * _`.
-
-Repeatedly rewrite using `[← ofReal_norm_eq_enorm]`. Rewrite using `[Complex.norm_real, Real.norm_of_nonneg (mul_nonneg (le_max_right _ _) (norm_nonneg _)), ← ENNReal.ofReal_tsum_of_nonneg (fun _ => norm_nonneg _) (hsφ _)]`. Conclude with `ENNReal.ofReal_le_ofReal (hle _)`. Use `dblConv_of_growth hμ hm h₁ h₂ (leftInv_eis (leftInv_of_mem hμ hφ)) (SphConv.continuous_eis hI hφ hS hs) (C := max C 0 * B) (N := A) fun g => ?_` and prove the remaining obligations. Use `(norm_tsum_le_tsum_norm (hsφ g)).trans ((hle g).trans ?_)` and prove the remaining obligations.
-
-Rewrite using `[mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hB g) (le_max_right _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absConv_unfolded : ∀ (D : D7) (V : HSp D) (a : GL (Fin V.rank) (AE D)), IsMaj V a → ∀ (μ : (AE D)ˣ →* Circle),
     IsHeckeChar D μ → ∀ s : ℂ, (V.rank : ℝ) / 2 < s.re → ∀ φ ∈ degPS V a μ s,

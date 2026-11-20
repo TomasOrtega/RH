@@ -9,9 +9,9 @@ namespace KStar.IdealValuations
 variable {K : Type*} [Field K] [NumberField K] [IsCMField K]
 
 /- English proof (translation)
-Establish `hc : complexConj K (α : K) ≠ 0`. Simplify using the standard rewrite rules. Establish `key` using `(exists_unit_locAt_iff v (α / Units.mk0 _ hc)).mpr ?_`. Simplify using `using key`. Take `⟨h1, h2⟩` from `hA`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Substitute `h` using the available equality. Establish `hb'` using `count_fromBase v hb`. Establish `hα` using `count_spanSingleton_conj v (α : K)`. Rewrite `h1`, `h2` using `[Units.val_mul, FractionalIdeal.count_mul K _ (Units.ne_zero _) (Units.ne_zero _), coe_toPrincipalIdeal]`. Rewrite using `[div_eq_mul_inv, map_mul, map_inv, Units.val_mul, FractionalIdeal.count_mul K _ (Units.ne_zero _) (Units.ne_zero _), Units.val_inv_eq_inv_val, FractionalIdeal.count_inv, coe_toPrincipalIdeal, coe_toPrincipalIdeal, Units.val_mk0, hα]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
 Use linear arithmetic over natural numbers and integers.
 -/

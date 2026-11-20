@@ -7,24 +7,22 @@ open scoped Formalism.Per
 namespace GlobalTheory.CrysPrism
 
 /- English proof (translation)
-Rewrite using `[← nsmul_eq_mul, map_nsmul, map_nsmul, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem coeff_coeff_natCast_mul {K : Type} [CommRing K] (m i n : ℕ) (G : K⟦X⟧⟦X⟧) :
     coeff n (coeff i ((m : K⟦X⟧⟦X⟧) * G)) = (m : K) * coeff n (coeff i G) := by
   rw [← nsmul_eq_mul, map_nsmul, map_nsmul, nsmul_eq_mul]
 
 /- English proof (translation)
-Introduce and unpack `z ⟨w, rfl⟩`. Establish `key : ∀ p : ℕ × ℕ, ∃ v b : Wq l a, ∀ τ : ZMod a, coeff p.2 (coeff p.1 (frob2 φ₂ (ofW t K e w) τ)) = algebraMap O K (emb t τ v) / (dpDen e p.1 p.2 : K) ∧ coeff p.2 (coeff p.1 (frob2 φ₂ (ofW t K e w) τ)) = coeff p.2 (coeff p.1 ((ofW t K e w τ) ^ l)) + (l : K) * (algebraMap O K (emb …`. Introduce and unpack `⟨i, n⟩`. Use `set s : Finset (ℕ × ℕ) := Finset.range (i + 1) ×ˢ Finset.range (n + 1) with hs`. Take `⟨-, ⟨v, hv⟩, B, ⟨b, rfl⟩, hB⟩` from `hfin w s`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hagree : ∀ τ : ZMod a, ∀ i' ≤ i, ∀ n' ≤ n, coeff n' (coeff i' (ofW t K e w τ)) = coeff n' (coeff i' (ofW t K e (fun p => if p ∈ s then w p else 0) τ))`. Introduce `τ i' hi n' hn`. Establish `hm : (i', n') ∈ s`. Simplify using `only [hs, Finset.mem_product, Finset.mem_range]`. Use linear arithmetic over natural numbers and integers.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[coeff_ofW, coeff_ofW, if_pos hm]`. Use `⟨v (i, n), b (i, n), fun τ => ?_⟩` and prove the remaining obligations. Establish `h1 : coeff n (coeff i (frob2 φ₂ (ofW t K e w) τ)) = coeff n (coeff i (frob2 φ₂ (ofW t K e (fun p => if p ∈ s then w p else 0)) τ))` using `hφ i n _ _ (hagree (τ - 1))`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[h1, ← hv, coeff_ofW]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, hB, hpow i n _ _ (hagree τ), Pi.add_apply, Pi.mul_apply, Pi.pow_apply, Pi.natCast_apply, map_add, map_add, coeff_coeff_natCast_mul, coeff_ofW]`. Use `choose v b hvb using key`. Use `⟨⟨w, rfl⟩, ⟨v, ?_⟩, ofW t K e b, ⟨b, rfl⟩, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `τ`. Use extensionality with `i n`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[coeff_ofW]`. Conclude with `((hvb (i, n) τ).1).symm`. Use function extensionality and compare the values at `τ`. Use extensionality with `i n`. Rewrite using `[Pi.add_apply, Pi.mul_apply, Pi.pow_apply, Pi.natCast_apply, map_add, map_add, coeff_coeff_natCast_mul, coeff_ofW]`.
-
-Conclude with `(hvb (i, n) τ).2`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem goodSet_of_finite_of_local (l : ℕ) [Fact l.Prime] (a e : ℕ) [NeZero a] [NeZero e] (O K : Type)
     [CommRing O] [Algebra ℤ_[l] O] [NormedField K] [IsUltrametricDist K] [Algebra O K] [IsUnitBall O K]

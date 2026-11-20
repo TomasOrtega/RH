@@ -28,11 +28,11 @@ def IsDelta (i : A ⟶ B) (l r : B ⟶ D) (I : Cx R) (n : ℤ) (d : CohomologyCl
     (d (CohomologyClass.mk a)).1 = CohomologyClass.mk b
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `h.surj n a.1`. Take `⟨b, hl, hr⟩` from `h.glue (n + 1) (δ n (n + 1) c) 0 (by`. Rewrite using `[pb, ← δ_ofHom_comp]`. Express the relevant statement in the definitionally equal form `δ n (n + 1) (pb i c) = _`. Rewrite using `[hc]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[pb])`. Use `⟨c, Cocycle.mk b (n + 1 + 1) rfl (h.ext _ _ _ ?_ ?_), hc, hl, hr⟩` and prove the remaining obligations. Rewrite using `[pb, ← δ_ofHom_comp]`. Express the relevant statement in the definitionally equal form `δ _ _ (pb l b) = _`. Rewrite using `[hl, δ_δ]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[pb]`. Rewrite using `[pb, ← δ_ofHom_comp]`. Express the relevant statement in the definitionally equal form `δ _ _ (pb r b) = _`. Rewrite using `[hr]`. Simplify using `[pb]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem Good.tri {i : A ⟶ B} {l r : B ⟶ D} {I : Cx R} (h : Good i l r I) {n : ℤ} (a : Cocycle A I n) :
     ∃ c b, Tri i l r a c b := by
@@ -50,7 +50,7 @@ theorem Good.tri {i : A ⟶ B} {l r : B ⟶ D} {I : Cx R} (h : Good i l r I) {n 
     rw [hr]; simp [pb]
 
 /- English proof (translation)
-Simplify using `[pb, Cochain.ofHom_comp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pb_pb (f : A ⟶ B) (g : B ⟶ D) {I : Cx R} {n : ℤ} (c : Cochain D I n) : pb f (pb g c) = pb (f ≫ g) c := by
   simp [pb, Cochain.ofHom_comp]
@@ -101,7 +101,7 @@ def LeafImg : Prop := ∀ (S R : Type) [CommRing S] [CommRing R] (I : Cx S) (J :
       T E n (pb ((chains S).map f) α) = pb ((chains R).map f) (T E' n α)
 
 /- English proof (translation)
-The claim follows from `h3 R _ _ _ _ (h1 R _ hP) (h2 R _ _ _ _ (IsPushout.of_hasPushout P.hom P.hom)) fun p => by unfold res; infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem good (h1 : LeafMono) (h2 : LeafPush) (h3 : LeafGood) (R : Type) [CommRing R] (F : Shv R) (P : Arrow Spc)
     (hP : Mono P.hom) : Good ((chains R).map P.hom) ((chains R).map (dbl.inl P)) ((chains R).map (dbl.inr P)) (res R F) :=
@@ -109,33 +109,33 @@ theorem good (h1 : LeafMono) (h2 : LeafPush) (h3 : LeafGood) (R : Type) [CommRin
     unfold res; infer_instance
 
 /- English proof (translation)
-The claim follows from `pushout.inl_desc _ _ _`.
+A detailed English derivation is pending.
 -/
 theorem inl_map {P' P : Arrow Spc} (φ : P' ⟶ P) : dbl.inl P' ≫ dbl.map φ = φ.right ≫ dbl.inl P :=
   pushout.inl_desc _ _ _
 
 /- English proof (translation)
-Establish `G` using `fun (q : ℕ) (i : ℤ) => good h1 h2 h3 (ZMod q) (tw q i)`. Establish `ex : ∀ (q : ℕ) (P : Arrow Spc) (n i : ℤ), ∃ d : Ht q P.left n i →+ Hs q P (n + 1) i, Mono P.hom → IsDelta ((chains _).map P.hom) ((chains _).map (dbl.inl P)) ((chains _).map (dbl.inr P)) (res _ (tw q i)) n d`. Introduce `q P n i`. Distinguish the cases in `hP : Mono P.hom`. Take `⟨d, hd⟩` from `h4 _ _ _ _ _ (G q i P hP) n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨d, fun _ => hd⟩`. Conclude with `⟨0, fun h => absurd h hP⟩`. Use `choose d hd using ex`. Use `⟨d, fun q P hP n i => h5 _ _ _ _ _ (G q i P hP) n _ (hd q P n i hP), ?_, ?_⟩` and prove the remaining obligations. Introduce `q P' P φ hP' hP n i u`.
+Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `u.mk_surjective`. Take `⟨c, b, ht⟩` from `(G q i P hP).tri a`. Establish `e` using `hd q P n i hP a c b ht`. Establish `e'` using `hd q P' n i hP' (zcomp (Cocycle.ofHom ((chains _).map φ.left)) a (zero_add n)) (pb ((chains _).map φ.right) c) (zcomp (Cocycle.ofHom ((chains _).map (dbl.map φ))) b (zero_add _)) (by`. Take `⟨t1, t2, t3⟩` from `ht`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = pb _ a.1`. Rewrite using `[← t1, pb_pb, pb_pb, ← Functor.map_comp, ← Functor.map_comp, Arrow.w φ]`. Express the relevant statement in the definitionally equal form `pb _ (pb _ b.1) = _`. Rewrite using `[δ_ofHom_comp, ← t2]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `_ = pb _ (pb _ b.1)`. Rewrite using `[pb_pb, pb_pb, ← Functor.map_comp, ← Functor.map_comp, inl_map]`. Express the relevant statement in the definitionally equal form `pb _ (pb _ b.1) = _`. Rewrite using `[pb_pb, ← Functor.map_comp, dbl.inr_map, Functor.map_comp, ← pb_pb, t3]`. Conclude with `Cochain.comp_zero _ _)`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Use `Eq.trans ?_ e'.symm` and prove the remaining obligations. Conclude with `congrArg (pull _ (dbl.map φ) (tw q i) (n + 1)) e`. Introduce `Q q _ _ P hP n i u`. Take `⟨T, hv, hδ, hp⟩` from `h6 _ _ _ _ (redMap Q q i)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Set `Z : ∀ (E : Spc) (m : ℤ), Cocycle ((chains _).obj E) (res _ (tw Q i)) m → Cocycle ((chains _).obj E) (res _ (tw q i)) m` to `fun E m α => Cocycle.mk (T E m α.1) (m + 1) rfl (by rw [← hδ, α.δ_eq_zero, map_zero])`. Establish `key : (∀ E m x, red Q q E m i x = 0) ∨ ∀ E m α, red Q q E m i (CohomologyClass.mk α) = CohomologyClass.mk (Z E m α)`. Unfold `red SemiMap.op pick`. Use `split_ifs with h`. Conclude with `Or.inr fun E m α => h.choose_spec E m α (Z E m α) (hv E m α.1)`.
+Prove the second alternative. Prove the first alternative. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `Or.inl fun _ _ _ => rfl`. Break down `key with k | k` into its components or cases. Rewrite using `[k, k, map_zero]`. Both sides reduce to the same expression. Take `⟨a, rfl⟩` from `u.mk_surjective`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨c, b, ht⟩` from `(G Q i P hP).tri a`. Establish `e` using `hd Q P n i hP a c b ht`. Establish `e'` using `hd q P n i hP (Z _ _ a) (T _ _ c) (Z _ _ b) (by`. Take `⟨t1, t2, t3⟩` from `ht`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `_ = T _ _ a.1`. Rewrite using `[← hp, t1]`. Express the relevant statement in the definitionally equal form `pb _ (T _ _ b.1) = _`. Rewrite using `[← hp, t2, hδ]`. Express the relevant statement in the definitionally equal form `pb _ (T _ _ b.1) = _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp, t3, map_zero])`. Rewrite using `[k]`. Use `e'.trans ?_` and prove the remaining obligations. Rewrite using `[← k]`. Conclude with `congrArg _ e.symm`.
+A detailed English derivation is pending.
 -/
 theorem goal_of (h1 : LeafMono) (h2 : LeafPush) (h3 : LeafGood) (h4 : LeafDelta) (h5 : LeafExact) (h6 : LeafImg) :
     LeafBd := by

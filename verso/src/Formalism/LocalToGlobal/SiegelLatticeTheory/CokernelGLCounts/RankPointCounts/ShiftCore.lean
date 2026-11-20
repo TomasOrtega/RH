@@ -9,7 +9,7 @@ open MeasureTheory
 namespace Formalism.L2.SG.CovariantRepresentation
 
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ μ _ _ R Γ _ V _ _ f Ω h ν _ hΓR hK hn hσ hne hcon hfin hleft hinv hconj hf hΩ hfi`. Distinguish the cases in `hV : CompleteSpace V`. Conclude with `Formalism.L2.SG.MeasureShiftInvariance.shift_general μ R Γ f Ω h ν hΓR hK hn hσ hne hcon hfin hleft hinv hconj hf hΩ hfi`. Rewrite using `[integral_of_not_completeSpace hV, integral_of_not_completeSpace hV]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem shiftCore : ShiftCore := by
   intro G _ _ _ _ _ _ μ _ _ R Γ _ V _ _ f Ω h ν _ hΓR hK hn hσ hne hcon hfin hleft hinv hconj hf hΩ hfi

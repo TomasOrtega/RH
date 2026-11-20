@@ -22,40 +22,40 @@ Both sides reduce to the same expression.
 theorem incGL_val (b : GL (Fin n ⊕ Fin n) E) : (incGL (F := F) b).1 = incM F b.1 := rfl
 
 /- English proof (translation)
-The claim follows from `(map_inv _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem incGL_inv (b : GL (Fin n ⊕ Fin n) E) : (incGL (F := F) b)⁻¹ = incGL b⁻¹ := (map_inv _ _).symm
 
 /- English proof (translation)
-The claim follows from `Matrix.transpose_map`.
+A detailed English derivation is pending.
 -/
 theorem incM_tr {α β : Type} (X : Matrix α β E) : incM F Xᵀ = (incM F X)ᵀ := Matrix.transpose_map
 
 /- English proof (translation)
-Use `ext`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem incM_cA {α β : Type} (X : Matrix α β E) : (incM F X).map (cA σ) = incM F (X.map σ) := by ext; rfl
 
 /- English proof (translation)
-Apply the tactic sequence `ext (i | i) (j | j) <;> simp [incM, dbl]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem incM_dbl {β : Type} (J : Matrix β β E) : incM F (dbl J) = dbl (incM F J) := by
   ext (i | i) (j | j) <;> simp [incM, dbl]
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem incM_mulT {α β γ : Type} [Fintype β] (X : Matrix α β E) (Z : Matrix β γ E) :
     incM F (X * Z) = incM F X * incM F Z := Matrix.map_mul
 
 /- English proof (translation)
-Rewrite using `[← incM_mulT, Units.inv_mul]`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem incM_invmul (b : GL (Fin n ⊕ Fin n) E) : incM F (b⁻¹).1 * incM F b.1 = 1 := by
   rw [← incM_mulT, Units.inv_mul]; exact Matrix.map_one _ (map_zero _) (map_one _)
 
 /- English proof (translation)
-Rewrite using `[incGL_val, incM_cA, ← incM_dbl, ← incM_tr, ← incM_mulT, ← incM_mulT, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem gram_A {J : Matrix (Fin n) (Fin n) E} {b : GL (Fin n ⊕ Fin n) E} {G : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) E}
     (h : b.1ᵀ * dbl J * b.1.map σ = G) :
@@ -83,7 +83,7 @@ Both sides reduce to the same expression.
 theorem dgU_inv_val (r : (AE F E)ˣ) : ((dgU (n := n) r)⁻¹).1 = Matrix.diagonal (dgv ((r⁻¹ : (AE F E)ˣ) : AE F E)) := rfl
 
 /- English proof (translation)
-Rewrite using `[dgU_val, Matrix.diagonal_transpose, Matrix.diagonal_map (map_zero _)]`. Apply the tactic sequence `ext (i | i) (j | j) <;> by_cases hij : i = j <;>`. Apply the tactic sequence `simp [dgv, Ald.jeps, incM, Matrix.diagonal_mul, Matrix.mul_diagonal, hij] <;> rw [hr, mul_comm]`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem dg_jeps (r : (AE F E)ˣ) (ε ε₀ : ℤˣ)
     (hr : ((ε : ℤ) : AE F E) * cA σ (r : AE F E) = ((ε₀ : ℤ) : AE F E) * (r : AE F E)) :
@@ -95,7 +95,7 @@ theorem dg_jeps (r : (AE F E)ˣ) (ε ε₀ : ℤˣ)
 def MU (b b₀ : GL (Fin n ⊕ Fin n) E) (r : (AE F E)ˣ) : GL (Fin n ⊕ Fin n) (AE F E) := incGL b * dgU r * incGL b₀⁻¹
 
 /- English proof (translation)
-Establish `h1` using `gram_A (F := F) he`. Establish `h0` using `gram_inv (cA σ) (incGL (F := F) b₀) (gram_A (F := F) he₀)`. Rewrite `h0` using `[incGL_inv]`. Simplify using `only [MU, Units.val_mul, Matrix.transpose_mul, map_mul_c]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation.
 -/
 theorem MU_gram {Y Y₀ : Spc F E n} {b b₀ : GL (Fin n ⊕ Fin n) E} {ε ε₀ : ℤˣ}
     (he : b.1ᵀ * dbl Y.J * b.1.map σ = Ald.jeps n ε) (he₀ : b₀.1ᵀ * dbl Y₀.J * b₀.1.map σ = Ald.jeps n ε₀)
@@ -112,7 +112,7 @@ theorem MU_gram {Y Y₀ : Spc F E n} {b b₀ : GL (Fin n ⊕ Fin n) E} {ε ε₀
     _ = _ := by rw [h1, dg_jeps r ε ε₀ hr, Matrix.mul_smul, Matrix.smul_mul, h0]
 
 /- English proof (translation)
-Use `show incM F (b⁻¹).1 * (MU b b₀ r * z.1 * (MU b b₀ r)⁻¹).1 * incM F b.1 = (dgU r).1 * (incM F (b₀⁻¹).1 * z.1.1 * incM F b₀.1) * ((dgU r)⁻¹).1`. Simplify using `only [MU, mul_inv_rev, incGL_inv, inv_inv, Units.val_mul, incGL_val]`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[incM_invmul, Matrix.mul_one, ← Matrix.mul_assoc (incM F (b⁻¹).1), incM_invmul, Matrix.one_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inFrame_cj {Y Y₀ : Spc F E n} {b b₀ : GL (Fin n ⊕ Fin n) E} (r : (AE F E)ˣ)
     (hM : (MU b b₀ r).1ᵀ * dbl (incM F Y.J) * (MU b b₀ r).1.map (cA σ) = (r : AE F E) • dbl (incM F Y₀.J))
@@ -125,18 +125,16 @@ theorem inFrame_cj {Y Y₀ : Spc F E n} {b b₀ : GL (Fin n ⊕ Fin n) E} (r : (
   rw [incM_invmul, Matrix.mul_one, ← Matrix.mul_assoc (incM F (b⁻¹).1), incM_invmul, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[dgU_val, dgU_inv_val, Matrix.mul_diagonal, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dg_entry (r : (AE F E)ˣ) (X : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) (i j : Fin n ⊕ Fin n) :
     ((dgU r).1 * X * ((dgU r)⁻¹).1 : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) i j = dgv (r : AE F E) i * X i j * dgv ((r⁻¹ : (AE F E)ˣ) : AE F E) j := by
   rw [dgU_val, dgU_inv_val, Matrix.mul_diagonal, Matrix.diagonal_mul]
 
 /- English proof (translation)
-Rewrite using `[dg_entry]`. Use `(Frame.mem_intHat _).2 fun v => ?_` and prove the remaining obligations. Establish `hx` using `(Frame.mem_intHat _).1 (hX i j) v`. Rewrite using `[map_mul, map_mul]`. Use `mul_mem (mul_mem ?_ hx) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Break down `i with i | i` into its components or cases. Conclude with `(hrf v).1`. Simplify using `only [dgv, Sum.elim_inr, map_one]`. Conclude with `one_mem _`. Break down `j with j | j` into its components or cases.
-
-Conclude with `(hrf v).2`. Simplify using `only [dgv, Sum.elim_inr, map_one]`. Conclude with `one_mem _`.
+Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dg_fin (r : (AE F E)ˣ)
     (hrf : ∀ v, compFin F E v (r : AE F E) ∈ intLoc F E v ∧ compFin F E v ((r⁻¹ : (AE F E)ˣ) : AE F E) ∈ intLoc F E v)
@@ -155,15 +153,13 @@ theorem dg_fin (r : (AE F E)ˣ)
     · simp only [dgv, Sum.elim_inr, map_one]; exact one_mem _
 
 /- English proof (translation)
-Establish `h0 : π (r : AE F E) ≠ 0`. Introduce `h`. Rewrite `hri` using `[h, norm_zero]`. Conclude with `zero_ne_one hri`. Establish `h2 : star (π (r : AE F E)) * π (r : AE F E) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mul_comm, Complex.star_def, Complex.mul_conj, Complex.normSq_eq_norm_sq, hri]`. Simplify using the standard rewrite rules. Establish `hinv : π ((r⁻¹ : (AE F E)ˣ) : AE F E) = star (π (r : AE F E))`. Establish `h1 : π (r : AE F E) * π ((r⁻¹ : (AE F E)ˣ) : AE F E) = 1` using `by rw [← map_mul, Units.mul_inv, map_one]`. Conclude with `mul_left_cancel₀ h0 (h1.trans (by rw [mul_comm]; exact h2.symm))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e : ((dgU r).1 * X * ((dgU r)⁻¹).1).map π = Matrix.diagonal (fun i => π (dgv (r : AE F E) i)) * X.map π * Matrix.diagonal (star fun i => π (dgv (r : AE F E) i))`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, dgU_val, dgU_inv_val, Matrix.diagonal_map (map_zero π), Matrix.diagonal_map (map_zero π)]`. Use `congr 2`. Use function extensionality and compare the values at `i`. Break down `i with i | i` into its components or cases.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [dgv, Sum.elim_inl, Pi.star_apply, hinv]`. Simplify using `[dgv]`. Rewrite using `[e]`. Use `diag_unitary _ (fun i => ?_) _ hX` and prove the remaining obligations. Break down `i with i | i` into its components or cases.
-
-Conclude with `h2`. Simplify using `[dgv]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dg_arch (r : (AE F E)ˣ) (π : AE F E →+* ℂ) (hri : ‖π (r : AE F E)‖ = 1)
     (X : Matrix (Fin n ⊕ Fin n) (Fin n ⊕ Fin n) (AE F E)) (hX : X.map π * (X.map π)ᴴ = 1) :

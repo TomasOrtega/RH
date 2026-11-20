@@ -33,7 +33,7 @@ def HTIwMap {s' : S' ⟶ Sp R} {s : S ⟶ Sp R} {o' : Obj b N s'} {o : Obj b N s
   ∃ m : ObjMap o' o f, Nonempty (ChainMap C' C f m.φ)
 
 /- English proof (translation)
-Take `⟨C', ⟨e⟩⟩` from `Chain.exists_pull (ρ' := htAct o') C m.cart m.act`. Conclude with `⟨C', m, ⟨e⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem HTIw.exists_pull {s' : S' ⟶ Sp R} {s : S ⟶ Sp R} {o' : Obj b N s'} {o : Obj b N s}
     {w : Ideal (𝓞 D.F)} (C : HTIw o w) {f : S' ⟶ S} (m : ObjMap o' o f) :
@@ -42,7 +42,7 @@ theorem HTIw.exists_pull {s' : S' ⟶ Sp R} {s : S ⟶ Sp R} {o' : Obj b N s'} {
   exact ⟨C', m, ⟨e⟩⟩
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem HTIwMap.subsingleton {s' : S' ⟶ Sp R} {s : S ⟶ Sp R} {o' : Obj b N s'} {o : Obj b N s}
     {w : Ideal (𝓞 D.F)} (C' : HTIw o' w) (C : HTIw o w) (f : S' ⟶ S) (m : ObjMap o' o f) :
@@ -68,21 +68,21 @@ structure HTIwRep (b : Base D R) (N : ℕ) (w : Ideal (𝓞 D.F)) where
 section Basic₂
 
 /- English proof (translation)
-Rewrite using `[pow_mul]`. Simplify using `using C.π_deg (Fin.last D.n)`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 example {s : S ⟶ Sp R} {o : Obj b N s} {w : Ideal (𝓞 D.F)} (C : HTIw o w) :
     IsIsogDeg (C.π (Fin.last D.n)) (Ideal.absNorm w ^ (D.m * D.n)) := by
   rw [pow_mul]; simpa using C.π_deg (Fin.last D.n)
 
 /- English proof (translation)
-The claim follows from `(C.ker_last T x).1 h _ (Ideal.mem_map_of_mem _ hc)`.
+A detailed English derivation is pending.
 -/
 example {s : S ⟶ Sp R} {o : Obj b N s} {w : Ideal (𝓞 D.F)} (C : HTIw o w) {T : Over S} (x : T ⟶ o.A)
     (h : x ≫ C.π (Fin.last D.n) = 1) (c : 𝓞 D.F) (hc : c ∈ w) : x ≫ o.act.act (algebraMap _ _ c) = 1 :=
   (C.ker_last T x).1 h _ (Ideal.mem_map_of_mem _ hc)
 
 /- English proof (translation)
-The claim follows from `(C.existsUnique_close i (Ideal.mem_map_of_mem _ hc)).exists`.
+A detailed English derivation is pending.
 -/
 example {s : S ⟶ Sp R} {o : Obj b N s} {w : Ideal (𝓞 D.F)} (C : HTIw o w) (i : Fin (D.n + 1)) (c : 𝓞 D.F)
     (hc : c ∈ w) : ∃ g : C.B i ⟶ o.A, C.π i ≫ g = o.act.act (algebraMap _ _ c) :=

@@ -6,9 +6,9 @@ open CategoryTheory GlobalTheory.SelFun
 namespace GlobalTheory.SelFun
 
 /- English proof (translation)
-Establish `hi : Function.Injective ((LinearMap.ker g).liftQ g le_rfl)`. Rewrite using `[← LinearMap.ker_eq_bot]`. Conclude with `Submodule.ker_liftQ_eq_bot _ _ _ le_rfl`. Take `⟨u, hu⟩` from `hJ.out ((LinearMap.ker g).liftQ g le_rfl) hi ((LinearMap.ker g).liftQ ψ h)`. Use `⟨u, fun x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hu (Submodule.Quotient.mk x)`.
+A detailed English derivation is pending.
 -/
 theorem exists_factor_of_injective {Λ : Type} [CommRing Λ] {X Y J : Type} [AddCommGroup X] [Module Λ X]
     [AddCommGroup Y] [Module Λ Y] [AddCommGroup J] [Module Λ J] (hJ : Module.Injective Λ J)
@@ -34,30 +34,28 @@ def powTorsion {Λ : Type} [CommRing Λ] (I : Ideal Λ) (J : Type) [AddCommGroup
     exact ⟨n, fun x hx => by rw [smul_comm, hn x hx, smul_zero]⟩
 
 /- English proof (translation)
-Rewrite using `[Algebra.smul_def, IsLocalRing.ResidueField.algebraMap_eq, (IsLocalRing.residue_eq_zero_iff x).2 hx, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem residue_smul_eq_zero {Λ : Type} [CommRing Λ] [IsLocalRing Λ] (x : Λ) (hx : x ∈ IsLocalRing.maximalIdeal Λ)
     (a : IsLocalRing.ResidueField Λ) : x • a = 0 := by
   rw [Algebra.smul_def, IsLocalRing.ResidueField.algebraMap_eq, (IsLocalRing.residue_eq_zero_iff x).2 hx, zero_mul]
 
 /- English proof (translation)
-Set `k` to `ModuleCat.of Λ (IsLocalRing.ResidueField Λ)`. Set `J` to `Injective.under k`. Set `ι : IsLocalRing.ResidueField Λ →ₗ[Λ] J` to `(Injective.ι k).hom`. Establish `hι : Function.Injective ι` using `(ModuleCat.mono_iff_injective (Injective.ι k)).1 inferInstance`. Establish `hJ : Module.Injective Λ J` using `Module.injective_module_of_injective_object Λ J (inj := Injective.injective_under k)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `m` to `IsLocalRing.maximalIdeal Λ`. Establish `hmem : ∀ a, ι a ∈ powTorsion m J` using `fun a => ⟨1, fun x hx => by rw [← map_smul, residue_smul_eq_zero x (by rwa [pow_one] at hx), map_zero]⟩`. Use `⟨ModuleCat.of Λ (powTorsion m J), ι.codRestrict _ hmem, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨b, n, hn⟩`. Conclude with `⟨n, fun x hx => Subtype.ext (hn x hx)⟩`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce `a b hab`. Conclude with `hι (congrArg Subtype.val hab)`. Introduce `φ`. Take `⟨n, hn⟩` from `Ideal.exists_pow_inf_eq_pow_smul m N`. Establish `h1` using `hn (n + 1) (Nat.le_succ n)`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[Nat.add_sub_cancel_left, pow_one]`. Set `K : Submodule Λ P` to `m ^ (n + 1) • ⊤`. Establish `hK : K ⊓ N ≤ m • N`. Rewrite using `[show K ⊓ N = _ from h1]`. Conclude with `Submodule.smul_mono le_rfl inf_le_right`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : LinearMap.ker (K.mkQ ∘ₗ N.subtype) ≤ LinearMap.ker (ι ∘ₗ φ)`. Introduce `y hy`. Establish `hy1 : (y : P) ∈ K` using `by simpa using hy`. Establish `hy2 : (y : P) ∈ m • N` using `hK ⟨hy1, y.2⟩`. Establish `hy3 : y ∈ (m • ⊤ : Submodule Λ N)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[Submodule.mem_smul_top_iff]` and apply the resulting hypothesis. Establish `: φ y = 0`. Use `Submodule.smul_induction_on (p := fun y => φ y = 0) hy3 ?_ ?_` and prove the remaining obligations. Introduce `r hr z _`. Rewrite using `[map_smul, residue_smul_eq_zero r hr]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `a b ha hb`. Rewrite using `[map_add, ha, hb, add_zero]`. Simplify using `[this]`. Take `⟨u, hu⟩` from `exists_factor_of_injective hJ _ _ hker`. Establish `hu2 : ∀ p, (u ∘ₗ K.mkQ) p ∈ powTorsion m J` using `fun p => ⟨n + 1, fun x hx => by`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← map_smul]`. Establish `: K.mkQ (x • p) = 0` using `(Submodule.Quotient.mk_eq_zero K).2 (Submodule.smul_mem_smul hx Submodule.mem_top)`. Rewrite using `[LinearMap.comp_apply, this, map_zero]⟩`. Use `⟨(u ∘ₗ K.mkQ).codRestrict _ hu2, ?_⟩` and prove the remaining obligations. Use extensionality with `y`.
-
-Conclude with `hu y`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem exists_torsion_extension (Λ : Type) [CommRing Λ] [IsLocalRing Λ] [IsNoetherianRing Λ] (P : Type) [AddCommGroup P]
     [Module Λ P] [Module.Finite Λ P] (N : Submodule Λ P) :

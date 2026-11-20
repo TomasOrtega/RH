@@ -9,7 +9,7 @@ variable {E F : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
   [NormedAddCommGroup F] [NormedSpace ℝ F]
 
 /- English proof (translation)
-Establish `h : (⇑(f - g) : E → F) = ⇑f - ⇑g`. Use extensionality with `x`. Simplify using the standard rewrite rules. Rewrite using `[h]`. Conclude with `iteratedFDeriv_sub_apply (f.smooth l).contDiffAt (g.smooth l).contDiffAt`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iteratedFDeriv_sub_apply' (f g : 𝓢(E, F)) (l : ℕ) (x : E) :
     iteratedFDeriv ℝ l (⇑(f - g)) x = iteratedFDeriv ℝ l f x - iteratedFDeriv ℝ l g x := by
@@ -20,9 +20,9 @@ theorem iteratedFDeriv_sub_apply' (f g : 𝓢(E, F)) (l : ℕ) (x : E) :
   exact iteratedFDeriv_sub_apply (f.smooth l).contDiffAt (g.smooth l).contDiffAt
 
 /- English proof (translation)
-Establish `h0` using `hf.tendsto_uniformity`. Rewrite `h0` using `[uniformity_eq_comap_nhds_zero 𝓢(E, F), tendsto_comap_iff]`. Establish `h1` using `((schwartz_withSeminorms ℝ E F).tendsto_nhds _ 0).1 h0 (k, l) ε hε`. Take `⟨⟨N₁, N₂⟩, hN⟩` from `eventually_atTop.1 h1`. Use `⟨max N₁ N₂, fun m hm m' hm' x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hmm` using `hN (m', m) ⟨le_trans (le_max_left _ _) hm', le_trans (le_max_right _ _) hm⟩`. Simplify using `only [Function.comp_apply, Prod.map_apply, sub_zero] at hmm`. Rewrite using `[← iteratedFDeriv_sub_apply']`. Conclude with `(SchwartzMap.le_seminorm ℝ k l (f m - f m') x).trans hmm.le`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cauchy_weighted (f : ℕ → 𝓢(E, F)) (hf : CauchySeq f) (k l : ℕ) {ε : ℝ} (hε : 0 < ε) :
     ∃ N, ∀ m ≥ N, ∀ m' ≥ N, ∀ x, ‖x‖ ^ k *
@@ -38,29 +38,27 @@ theorem cauchy_weighted (f : ℕ → 𝓢(E, F)) (hf : CauchySeq f) (k l : ℕ) 
   exact (SchwartzMap.le_seminorm ℝ k l (f m - f m') x).trans hmm.le
 
 /- English proof (translation)
-Establish `hpt : ∀ l x, CauchySeq (fun n => iteratedFDeriv ℝ l (f n) x)`. Introduce `l x`. Rewrite using `[Metric.cauchySeq_iff']`. Introduce `ε hε`. Take `⟨N, hN⟩` from `cauchy_weighted f hf 0 l (half_pos hε)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨N, fun n hn => ?_⟩` and prove the remaining obligations. Establish `h` using `hN n hn N le_rfl x`. Rewrite `h` using `[pow_zero, one_mul]`. Rewrite using `[dist_eq_norm]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `choose G hG using fun l x => cauchySeq_tendsto_of_complete (hpt l x)`. Establish `hlim : ∀ k l {δ : ℝ}, 0 < δ → ∃ N, ∀ m ≥ N, ∀ x, ‖x‖ ^ k * ‖iteratedFDeriv ℝ l (f m) x - G l x‖ ≤ δ`. Introduce `k l δ hδ`. Take `⟨N, hN⟩` from `cauchy_weighted f hf k l hδ`. Use `⟨N, fun m hm x => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `ht : Tendsto (fun m' => ‖x‖ ^ k * ‖iteratedFDeriv ℝ l (f m) x - iteratedFDeriv ℝ l (f m') x‖) atTop (𝓝 (‖x‖ ^ k * ‖iteratedFDeriv ℝ l (f m) x - G l x‖))` using `((tendsto_const_nhds.sub (hG l x)).norm).const_mul _`. Conclude with `le_of_tendsto ht (eventually_atTop.2 ⟨N, fun m' hm' => hN m hm m' hm' x⟩)`. Establish `hunif : ∀ l, TendstoUniformly (fun n x => iteratedFDeriv ℝ l (f n) x) (G l) atTop`. Introduce `l`. Rewrite using `[Metric.tendstoUniformly_iff]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `ε hε`. Take `⟨N, hN⟩` from `hlim 0 l (half_pos hε)`. Use `filter_upwards [eventually_ge_atTop N] with n hn x`. Establish `h` using `hN n hn x`. Rewrite `h` using `[pow_zero, one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Introduce a local definition for the expression.
 
-Rewrite using `[dist_eq_norm, norm_sub_rev]`. Combine the linear equalities and inequalities to obtain the conclusion. Set `g₀ : E → F` to `fun x => (G 0 x).curry0`. Set `p : E → FormalMultilinearSeries ℝ E F` to `fun x l => G l x`. Establish `hT : HasFTaylorSeriesUpTo ((⊤ : ℕ∞) : WithTop ℕ∞) g₀ p`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨fun x => rfl, fun m _ x => ?_, fun m _ => ?_⟩` and prove the remaining obligations. Establish `hU : TendstoUniformly (fun n y => (iteratedFDeriv ℝ (m + 1) (f n) y).curryLeft) (fun y => (G (m + 1) y).curryLeft) atTop` using `(continuousMultilinearCurryLeftEquiv ℝ (fun _ : Fin (m + 1) => E) F).isometry.uniformContinuous.comp_tendstoUniformly (hunif (m + 1))`. Conclude with `hasFDerivAt_of_tendstoUniformly (f := fun n y => iteratedFDeriv ℝ m (f n) y) hU (fun n y => ((f n).smooth ⊤).ftaylorSeries.fderiv m (WithTop.coe_lt_coe.2 (ENat.natCast_lt_top m)) y) (fun y => hG m y) x`. Conclude with `(hunif m).continuous (Frequently.of_forall fun n => ((f n).smooth m).continuous_iteratedFDeriv le_rfl)`. Establish `hg : ∀ l x, iteratedFDeriv ℝ l g₀ x = G l x` using `fun l x => (hT.eq_iteratedFDeriv (WithTop.coe_le_coe.2 le_top) x).symm`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hdecay : ∀ k l : ℕ, ∃ C : ℝ, ∀ x, ‖x‖ ^ k * ‖iteratedFDeriv ℝ l g₀ x‖ ≤ C`. Introduce `k l`. Take `⟨N, hN⟩` from `hlim k l one_pos`. Use `⟨1 + SchwartzMap.seminorm ℝ k l (f N), fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[hg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hN N le_rfl x`. Establish `h2` using `SchwartzMap.le_seminorm ℝ k l (f N) x`. Establish `h3 : ‖G l x‖ ≤ ‖iteratedFDeriv ℝ l (f N) x‖ + ‖iteratedFDeriv ℝ l (f N) x - G l x‖`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[sub_sub_cancel]`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `_ ≤ _ := norm_sub_le _ _`. Establish `hxk : 0 ≤ ‖x‖ ^ k` using `by positivity`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left h3 hxk]`. Set `g : 𝓢(E, F)` to `⟨g₀, hT.contDiff, hdecay⟩`. Establish `hcoe : (⇑g : E → F) = g₀` using `rfl`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨g, ?_⟩` and prove the remaining obligations. Rewrite using `[(schwartz_withSeminorms ℝ E F).tendsto_nhds _ _]`. Introduce `i ε hε`. Take `⟨N, hN⟩` from `hlim i.1 i.2 (half_pos hε)`. Use `filter_upwards [eventually_ge_atTop N] with m hm`.
-
-Establish `hb : SchwartzMap.seminorm ℝ i.1 i.2 (f m - g) ≤ ε / 2` using `SchwartzMap.seminorm_le_bound ℝ i.1 i.2 _ (by positivity) fun x => by`. Rewrite using `[iteratedFDeriv_sub_apply', hcoe, hg]`. Conclude with `hN m hm x`. Conclude with `lt_of_le_of_lt hb (half_lt_self hε)`.
+A detailed English derivation is pending.
 -/
 theorem exists_tendsto [CompleteSpace F] (f : ℕ → 𝓢(E, F)) (hf : CauchySeq f) :
     ∃ g : 𝓢(E, F), Tendsto f atTop (𝓝 g) := by
@@ -135,14 +133,14 @@ theorem exists_tendsto [CompleteSpace F] (f : ℕ → 𝓢(E, F)) (hf : CauchySe
   exact lt_of_le_of_lt hb (half_lt_self hε)
 
 /- English proof (translation)
-Establish `: (𝓤 𝓢(E, F)).IsCountablyGenerated` using `IsUniformAddGroup.uniformity_countably_generated`. Conclude with `UniformSpace.complete_of_cauchySeq_tendsto fun f hf => exists_tendsto f hf`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem completeSpace [CompleteSpace F] : CompleteSpace 𝓢(E, F) := by
   have : (𝓤 𝓢(E, F)).IsCountablyGenerated := IsUniformAddGroup.uniformity_countably_generated
   exact UniformSpace.complete_of_cauchySeq_tendsto fun f hf => exists_tendsto f hf
 
 /- English proof (translation)
-Establish `: CompleteSpace 𝓢(E, F)` using `completeSpace`. Establish `: (𝓤 𝓢(E, F)).IsCountablyGenerated` using `IsUniformAddGroup.uniformity_countably_generated`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem baireSpace [CompleteSpace F] : BaireSpace 𝓢(E, F) := by
   have : CompleteSpace 𝓢(E, F) := completeSpace

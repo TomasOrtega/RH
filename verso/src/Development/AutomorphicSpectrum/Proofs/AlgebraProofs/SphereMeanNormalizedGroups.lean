@@ -8,17 +8,15 @@ open scoped ENNReal
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `n e h G hint`. Establish `hfin` using `(gaussM_univ_pos_lt_top (e + 1) n).2`. Use `haveI : IsFiniteMeasure (gaussM (e + 1) n) := ⟨hfin⟩`. Use `haveI : IsFiniteMeasure (volume.restrict (ballProd h e)) := ⟨by rw [Measure.restrict_apply_univ]; exact volume_ballProd_lt_top h e⟩`. Take `⟨a, ha⟩` from `ModelDimension.GSph.map_coefRows (e := e) h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmap : Measure.map (coefRows h) (gaussM (e + 1) n) = Measure.map ModelDimension.GSph.scT ((a • (ModelDimension.GSph.exP e).withDensity (ModelDimension.GSph.wt h)).prod (volume.restrict (ballProd h e)))`. Rewrite using `[ha, ModelDimension.GSph.layer, Measure.prod_smul_left, Measure.map_smul]`. Establish `h1 : ∀ᵐ x ∂ModelDimension.GSph.ex1, 0 < x` using `(withDensity_absolutelyContinuous _ _).ae_le (ae_restrict_mem measurableSet_Ioi)`. Establish `hp : ∀ᵐ s ∂(ModelDimension.GSph.exP e), ∀ i, 0 < s i`. Rewrite using `[ae_all_iff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `i`. Conclude with `(Measure.tendsto_eval_ae_ae (μ := fun _ : Fin e => ModelDimension.GSph.ex1) (i := i)).eventually h1`. Establish `hpos0 : ∀ᵐ s ∂((ModelDimension.GSph.exP e).withDensity (ModelDimension.GSph.wt h)), ∀ i, 0 < s i` using `(withDensity_absolutelyContinuous _ _).ae_le hp`. Establish `hpos : ∀ᵐ s ∂(a • (ModelDimension.GSph.exP e).withDensity (ModelDimension.GSph.wt h)), ∀ i, 0 < s i` using `Measure.ae_smul_measure hpos0 a`. Establish `hne : (volume.restrict (ballProd h e)) Set.univ ≠ 0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Measure.restrict_apply_univ]`. Conclude with `(volume_ballProd_pos h e).ne'`. Establish `haesm : AEStronglyMeasurable (fun u => G (nrmGroups h e u)) (Measure.map (coefRows h) (gaussM (e + 1) n))`. Rewrite using `[ha]`. Conclude with `((ModelDimension.GSph.aesm h G hint.1).mono_ac (withDensity_absolutelyContinuous _ _)).smul_measure a`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hinv : ∀ᵐ s ∂(a • (ModelDimension.GSph.exP e).withDensity (ModelDimension.GSph.wt h)), ∀ u, (fun u => G (nrmGroups h e u)) (ModelDimension.GSph.scT (s, u)) = (fun u => G (nrmGroups h e u)) u` using `by filter_upwards [hpos] with s hs u`. Conclude with `congrArg G (ModelDimension.GSph.nrm_sc h (fun i => Real.sqrt_pos.mpr (hs i)) u)`. Establish `key` using `ModelDimension.GSph.transfer (gaussM (e + 1) n) (a • (ModelDimension.GSph.exP e).withDensity (ModelDimension.GSph.wt h)) (volume.restrict (ballProd h e)) hne (ModelDimension.GSph.measurable_coefRows h) ModelDimension.GSph.measurable_scT hmap haesm hinv hint`. Use `⟨key.1, ?_⟩` and prove the remaining obligations. Rewrite using `[key.2]`.
-
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.CompanionTheory.Relay.sphere_mean_normalized_groups : ∀ (n e : ℕ) (h : HermNorm n) (G : (Fin e × Fin n → ℂ) → ℝ),
   IntegrableOn (fun u => G (nrmGroups h e u)) (ballProd h e) →

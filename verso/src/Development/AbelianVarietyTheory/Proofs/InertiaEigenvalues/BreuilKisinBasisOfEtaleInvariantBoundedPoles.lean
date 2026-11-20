@@ -15,32 +15,30 @@ noncomputable section
 namespace GlobalTheory.BKLim
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem map_smul_ringHom {R S : Type*} [CommRing R] [CommRing S] {m n : Type*} (f : R →+* S) (c : R)
     (M : Matrix m n R) : (c • M).map f = f c • M.map f := by
   ext i j; simp
 
 /- English proof (translation)
-Introduce `l _ K bk τ hτ N d ρ T A0 A0' Y Y' hT hA0 hA0' hφ hA hfix hY hYY'`. Establish `htu : IsUnit (inclW l τ)` using `(GlobalTheory.BSP.isUnit_inclW_of_isPer l K bk τ hτ).1`. Take `⟨-, hinj, -⟩` from `GlobalTheory.BSP.BK.evW_isUnit_injective_dvd l K bk`. Establish `hdet : IsUnit T.det` using `(Matrix.isUnit_iff_isUnit_det T).mp hT`. Establish `hTi : T⁻¹ * T = 1` using `Matrix.nonsing_inv_mul T hdet`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hiT : T * T⁻¹ = 1` using `Matrix.mul_nonsing_inv T hdet`. Use `set t := inclW l τ with ht`. Use `set e := bk.evW bk.E with he`. Establish `hYm : Y.map (inclW l) = t ^ N • T` using `hY`. Establish `hYY'm : Y.map (inclW l) * Y'.map (inclW l) = t ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (WCb l))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.map_mul, hYY', map_smul_ringHom, Matrix.map_one _ (map_zero _) (map_one _), map_pow]`. Establish `hTY' : T * Y'.map (inclW l) = t ^ N • (1 : Matrix (Fin d) (Fin d) (WCb l))`. Rewrite `hYY'm` using `[hYm, Matrix.smul_mul, show 2 * N = N + N by ring, pow_add, ← smul_smul]`. Conclude with `((htu.pow N).smul_left_cancel).1 hYY'm`. Establish `hY'm : Y'.map (inclW l) = t ^ N • T⁻¹`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hfr : ∀ M : Matrix (Fin d) (Fin d) (Ainf l), (M.map WittVector.frobenius).map (inclW l) = (M.map (inclW l)).map (frobW l)`. Introduce `M`. Use extensionality with `i j`. Simplify using `[GlobalTheory.Prism.frobW_inclW]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hft : frobW l t = e * t`. Rewrite using `[ht, GlobalTheory.Prism.frobW_inclW, hτ.1, map_mul]`. Both sides reduce to the same expression. Establish `hfmul : ∀ M M' : Matrix (Fin d) (Fin d) (WCb l), (M * M').map (frobW l) = M.map (frobW l) * M'.map (frobW l)` using `fun M M' => Matrix.map_mul (f := (frobW l).toRingHom)`. Establish `hfsmul : ∀ (c : WCb l) (M : Matrix (Fin d) (Fin d) (WCb l)), (c • M).map (frobW l) = frobW l c • M.map (frobW l)` using `fun c M => map_smul_ringHom (frobW l).toRingHom c M`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Establish `hOE : ∀ s : bk.S, bk.evW s ∈ bk.OE` using `fun s n => ⟨0, s, 0, by simp⟩`. Take `⟨A, hAm⟩` from `GlobalTheory.BSP.KisinFF.main l K bk τ hτ d d (2 * N) (e ^ N • A0) (Y' * Y.map WittVector.frobenius) (fun i j => by`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Conclude with `bk.OE.mul_mem (bk.OE.pow_mem (hOE _) _) (hA0 i j)) (by`. Rewrite using `[Matrix.map_mul, hfr, hY'm, hYm, hfsmul, map_pow, hft, hφ, Matrix.smul_mul, Matrix.mul_smul, ← Matrix.mul_assoc, hTi, Matrix.one_mul, smul_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht]; exact congrArg (· • A0) (by ring))`. Establish `hTf : (T⁻¹).map (frobW l) * T = A0'`. Establish `h1 : (T⁻¹).map (frobW l) * T.map (frobW l) = 1`. Rewrite using `[← hfmul, hTi, Matrix.map_one _ (map_zero _) (map_one _)]`. Rewrite `h1` using `[hφ, ← Matrix.mul_assoc]`.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Take `⟨A', hA'm⟩` from `GlobalTheory.BSP.KisinFF.main l K bk τ hτ d d (2 * N) (e ^ N • A0') (Y'.map WittVector.frobenius * Y) (fun i j => by`. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`. Conclude with `bk.OE.mul_mem (bk.OE.pow_mem (hOE _) _) (hA0' i j)) (by`. Rewrite using `[Matrix.map_mul, hfr, hY'm, hYm, hfsmul, map_pow, hft, Matrix.smul_mul, Matrix.mul_smul, hTf, smul_smul, smul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ht]; exact congrArg (· • A0') (by ring))`. Use `⟨{ T := T, unit := hT, A := A, A' := A', A_mul := ?_, φ := ?_, fix := hfix }, rfl⟩` and prove the remaining obligations. Use `Matrix.map_injective hinj (?_ : (A * A').map bk.evW = (bk.E ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) bk.S)).map bk.evW)` and prove the remaining obligations. Rewrite using `[Matrix.map_mul, hAm, hA'm, map_smul_ringHom, Matrix.map_one _ (map_zero _) (map_one _), Matrix.smul_mul, Matrix.mul_smul, hA, smul_smul, map_pow, ← pow_add]`. Rewrite using `[← he, two_mul]`.
-
-Rewrite using `[hAm, hφ, Matrix.mul_smul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pre_of_etale : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (τ : Ainf l), bk.IsPer τ → ∀ (N d : ℕ) (ρ : ↥(GK K) → Matrix (Fin d) (Fin d) (ℤ_[l])) (T A0 A0' : Matrix (Fin d) (Fin d) (WCb l)) (Y Y' : Matrix (Fin d) (Fin d) (Ainf l)), IsUnit T → (∀ i j, A0 i j ∈ bk.OE) → (∀ i j, A0' i j ∈ bk.OE) → T.map (frobW l) = T * A0 → A0 * A0' = 1 → (∀ g : ↥(GK K), bk.FixFlat g → zW (ρ g) * T.map (galW l (g : GQ l)) = T) → Y.map (inclW l) = inclW l τ ^ N • T → Y * Y' = τ ^ (2 * N) • (1 : Matrix (Fin d) (Fin d) (Ainf l)) → ∃ F : Pre bk N d ρ, F.T = T := by
   intro l _ K bk τ hτ N d ρ T A0 A0' Y Y' hT hA0 hA0' hφ hA hfix hY hYY'

@@ -46,15 +46,15 @@ def OmCStatement : Prop :=
 def OmStatement : Prop := OmAStatement ∧ OmBStatement ∧ OmCStatement
 
 /- English proof (translation)
-Establish `hc` using `PowerSeriesCoeffGaps.coeff_subst_gap lg P M hM b hl0 hl1 hlg hP0 hP1 hPg`. Rewrite `hc` using `[hsub, PowerSeries.coeff_smul, smul_eq_mul]`. Establish `hu' : PowerSeries.coeff M P = PowerSeries.coeff M lg * (b + -b ^ M)`. Take the linear combination `-hc`. Establish `hMr : (2 : ℝ) ≤ M` using `by exact_mod_cast hM`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Establish `hvb : v (-b ^ M) = ((M * β : ℝ) : WithTop ℝ)`. Rewrite using `[v.map_neg, v.map_pow, hb, ← WithTop.coe_nsmul, nsmul_eq_mul]`. Establish `hd : v (b + -b ^ M) = β` using `PowerSeriesCoeffGaps.add_eq_of_lt v hb hvb (by nlinarith)`. Establish `hk0 : PowerSeries.coeff M lg ≠ 0`. Introduce `h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hu` using `[hu', h0, zero_mul, v.map_zero]`. Conclude with `WithTop.top_ne_zero hu`. Take `⟨s, hs⟩` from `PowerSeriesCoeffGaps.exists_real v hk0`. Establish `hs' : s = -β`. Rewrite `hu` using `[hu', v.map_mul, hs, hd, ← WithTop.coe_add]`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Use `WithTop.coe_eq_zero.mp hu` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hI` using `hint M`. Unfold `IsIntV at hI`. Rewrite `hI` using `[PowerSeriesCoeffGaps.coeff_expComp_gap Ω lg M hM hl0 hl1 hlg]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : v (Ω * PowerSeries.coeff M lg) = ((r + -β : ℝ) : WithTop ℝ)`. Rewrite using `[v.map_mul, hr, hs, hs', WithTop.coe_add]`. Establish `hy : v (Ω ^ M / (M.factorial : C)) = ((M * r - φ : ℝ) : WithTop ℝ)` using `PowerSeriesCoeffGaps.div_eq_coe v (Nat.cast_ne_zero.mpr (Nat.factorial_ne_zero M)) (by rw [v.map_pow, hr, ← WithTop.coe_nsmul, nsmul_eq_mul]) hfac`. Use `PowerSeriesCoeffGaps.eq_of_nonneg_add v (by linarith) hx hy hI` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 private theorem key {C : Type} [Field C] [CharZero C] (v : AddValuation C (WithTop ℝ))
     (lg P : PowerSeries C) (Ω b : C) (M : ℕ) (hM : 2 ≤ M) (β φ r : ℝ) (hβ : 0 < β)
@@ -94,11 +94,11 @@ private theorem key {C : Type} [Field C] [CharZero C] (v : AddValuation C (WithT
   linarith
 
 /- English proof (translation)
-Introduce `C _ _ _ v p hp hp3 hp1 lg P Ω hl0 hl1 hsym _ hsub hP0 hP1 hPg hu hΩ hint hle`. Establish `hM : 2 ≤ p ^ 2` using `le_trans (by omega) (Nat.le_self_pow (by norm_num) p)`. Establish `hp1' : v (p : C) = ((1 : ℝ) : WithTop ℝ)` using `by rw [hp1, WithTop.coe_one]`. Take `⟨r, hr⟩` from `PowerSeriesCoeffGaps.exists_real v hΩ`. Establish `hpR : (3 : ℝ) ≤ p` using `by exact_mod_cast hp3`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hrle : r ≤ 1 / ((p : ℝ) - 1)` using `by rw [hr] at hle; exact_mod_cast hle`. Establish `hlt1 : 1 / ((p : ℝ) - 1) < 1` using `(div_lt_one (by linarith)).mpr (by linarith)`. Establish `hfac : v (((p ^ 2).factorial : ℕ) : C) = (((p + 1 : ℕ) : ℝ) : WithTop ℝ)`. Rewrite using `[PowerSeriesCoeffGaps.natCast_eq_factorization v hp hp1 (Nat.factorial_ne_zero _), PowerSeriesCoeffGaps.factorization_factorial_sq hp]`. Establish `e` using `key v lg P Ω (p : C) (p ^ 2) hM 1 ((p + 1 : ℕ) : ℝ) r one_pos hp1' hfac hr (by linarith) hl0 hl1 (PowerSeriesCoeffGaps.coeff_eq_zero_of_symm lg (p ^ 2) hM hsym) hsub hP0 hP1 hPg hu hint`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr]`. Use `congr 1`. Move the coercions through the operations in `at e`. Rewrite using `[eq_div_iff (ne_of_gt (by nlinarith))]`. Take the linear combination `-e`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem omA : OmAStatement := by
   intro C _ _ _ v p hp hp3 hp1 lg P Ω hl0 hl1 hsym _ hsub hP0 hP1 hPg hu hΩ hint hle
@@ -120,11 +120,11 @@ theorem omA : OmAStatement := by
   linear_combination -e
 
 /- English proof (translation)
-Introduce `C _ _ _ v p hp hp5 hp1 lg P Ω π hπ hl0 hl1 hsym _ hsub hP0 hP1 hPg hu hΩ hint hle`. Establish `hM : 2 ≤ p` using `hp.two_le`. Take `⟨r, hr⟩` from `PowerSeriesCoeffGaps.exists_real v hΩ`. Establish `hpR : (5 : ℝ) ≤ p` using `by exact_mod_cast hp5`. Establish `hrle : r ≤ 1 / ((p : ℝ) - 1)` using `by rw [hr] at hle; exact_mod_cast hle`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : 1 / ((p : ℝ) - 1) < 1 / 2`. Rewrite using `[div_lt_div_iff₀ (by linarith) (by norm_num)]; linarith`. Establish `hfac : v ((p.factorial : ℕ) : C) = (((1 : ℕ) : ℝ) : WithTop ℝ)`. Rewrite using `[PowerSeriesCoeffGaps.natCast_eq_factorization v hp hp1 (Nat.factorial_ne_zero _), PowerSeriesCoeffGaps.factorization_factorial_self hp]`. Establish `e` using `key v lg P Ω π p hM (1 / 2) ((1 : ℕ) : ℝ) r (by norm_num) hπ hfac hr (by linarith) hl0 hl1 (PowerSeriesCoeffGaps.coeff_eq_zero_of_symm lg p hM hsym) hsub hP0 hP1 hPg hu hint`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hr]`. Use `congr 1`. Move the coercions through the operations in `at e`. Rewrite using `[eq_div_iff (ne_of_gt (by linarith))]`. Take the linear combination `-2 * e`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem omB : OmBStatement := by
   intro C _ _ _ v p hp hp5 hp1 lg P Ω π hπ hl0 hl1 hsym _ hsub hP0 hP1 hPg hu hΩ hint hle
@@ -146,15 +146,15 @@ theorem omB : OmBStatement := by
   linear_combination -2 * e
 
 /- English proof (translation)
-Introduce `C _ _ _ v p hp hp1 lg Ω x₁ ζ hl0 hl1 hΩ _ hx hζ hN`. Establish `h2` using `hN 2 (by norm_num)`. Establish `hc0 : PowerSeries.coeff 0 (expComp Ω lg) = 1`. Simplify using `[expComp, PowerSeries.coeff_mk]`. Establish `hc1 : PowerSeries.coeff 1 (expComp Ω lg) = Ω`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[expComp, PowerSeries.coeff_mk, Finset.sum_range_succ, Finset.sum_range_one]`. Simplify using `[hl1]`. Rewrite `h2` using `[Finset.sum_range_succ, Finset.sum_range_one, hc0, hc1, pow_zero, pow_one, mul_one]`. Establish `hz` using `PowerSeriesCoeffGaps.v_zeta_sub_one v hp hp1 hζ`. Establish `hp2 : (2 : ℝ) ≤ p` using `by exact_mod_cast hp.two_le`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : ((1 / ((p : ℝ) - 1) : ℝ) : WithTop ℝ) < v (ζ - (1 + Ω * x₁))`. Use `lt_of_lt_of_le ?_ h2` and prove the remaining obligations. Establish `h12 : 1 / ((p : ℝ) - 1) < ((2 : ℕ) : ℝ) / ((p : ℝ) - 1)`. Rewrite using `[div_lt_div_iff_of_pos_right (by linarith)]; norm_num`. Conclude with `WithTop.coe_lt_coe.mpr h12`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : Ω * x₁ = (ζ - 1) + -(ζ - (1 + Ω * x₁))` using `by ring`. Establish `hd : v (ζ - 1) ≠ v (-(ζ - (1 + Ω * x₁)))` using `by rw [v.map_neg, hz]; exact hlt.ne`. Establish `hv : v (Ω * x₁) = ((1 / ((p : ℝ) - 1) : ℝ) : WithTop ℝ)`. Rewrite using `[e, v.map_add_of_distinct_val hd, hz, v.map_neg, min_eq_left hlt.le]`. Take `⟨r, hr⟩` from `PowerSeriesCoeffGaps.exists_real v hΩ`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hv` using `[v.map_mul, hr, hx, ← WithTop.coe_add]`. Establish `h3` using `WithTop.coe_injective hv`. Establish `h4 : r = 0` using `by linarith`. Rewrite using `[hr, h4, WithTop.coe_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omC : OmCStatement := by
   intro C _ _ _ v p hp hp1 lg Ω x₁ ζ hl0 hl1 hΩ _ hx hζ hN
@@ -183,7 +183,7 @@ theorem omC : OmCStatement := by
   rw [hr, h4, WithTop.coe_zero]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨omA, omB, omC⟩`.
+Supply the required witnesses or components.
 -/
 theorem om : OmStatement := ⟨omA, omB, omC⟩
 

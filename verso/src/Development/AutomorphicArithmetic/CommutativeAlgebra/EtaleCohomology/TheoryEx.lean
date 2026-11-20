@@ -5,7 +5,7 @@ import Development.AutomorphicArithmetic.EtaleIdempotents.ExistsCohomologyZeroEq
 import Development.AutomorphicArithmetic.EtaleIdempotents.ExistsCoefficientEquivCohomologyOfElements
 
 /- English proof (translation)
-Introduce `C _`. Take `⟨z, hz₁, hz₂⟩` from `UpperTheory.exists_cohomology_zero_equiv_sections_natural C`. Use `⟨{ H := UpperTheory.Ru.crystallineComparison.Th.TH ab := fun _ _ _ => inferInstance pull := fun u F j => UpperTheory.Ru.crystallineComparison.Th.tPull u F j map := fun P _ _ α j => UpperTheory.Ru.crystallineComparison.Th.tMap P α j pull_map := fun u _ _ α j x => UpperTheory.Ru.cr …` and prove the remaining obligations. Take `⟨F', c, e, h₁, h₂⟩` from `UpperTheory.exists_coefficient_equiv_cohomology_of_elements C R F`. Conclude with `⟨F', c, e, h₁, h₂⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem UpperTheory.Ru.crystallineComparison.theoryEx :
     UpperTheory.Ru.crystallineComparison.TheoryEx := by

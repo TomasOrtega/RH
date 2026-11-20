@@ -14,9 +14,7 @@ noncomputable section
 variable {n : ℕ}
 
 /- English proof (translation)
-Establish `hF : ∀ v : V n, ContDiffOn ℝ ∞ (fun y => fderiv ℝ g y v) Ω` using `fun v => ((contDiffOn_infty_iff_fderiv_of_isOpen hΩ).1 hg).2.clm_apply contDiffOn_const`. Prove the components needed by the constructor for the conclusion. Unfold `wd`. Conclude with `((hF _).sub (contDiffOn_const.mul (hF _))).div_const 2`. Unfold `wdb`.
-
-Conclude with `((hF _).add (contDiffOn_const.mul (hF _))).div_const 2`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cdo_wd {Ω : Set (V n)} (hΩ : IsOpen Ω) {g : V n → ℂ} (hg : ContDiffOn ℝ ∞ g Ω)
     (j : Fin n) : ContDiffOn ℝ ∞ (wd n j g) Ω ∧ ContDiffOn ℝ ∞ (wdb n j g) Ω := by
@@ -29,7 +27,7 @@ theorem cdo_wd {Ω : Set (V n)} (hΩ : IsOpen Ω) {g : V n → ℂ} (hg : ContDi
     exact ((hF _).add (contDiffOn_const.mul (hF _))).div_const 2
 
 /- English proof (translation)
-Establish `hev : g =ᶠ[𝓝 y] fun _ => (0 : ℂ)` using `Filter.eventually_of_mem (hZ.mem_nhds hy) fun w hw => h w hw`. Establish `hd : fderiv ℝ g y = 0`. Rewrite using `[hev.fderiv_eq]`. Simplify using the standard rewrite rules. Apply the tactic sequence `constructor <;> simp [wd, wdb, hd]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wd_zero_of_eqOn {Z : Set (V n)} (hZ : IsOpen Z) {g : V n → ℂ}
     (h : ∀ w ∈ Z, g w = 0) (j : Fin n) {y : V n} (hy : y ∈ Z) :
@@ -40,13 +38,13 @@ theorem wd_zero_of_eqOn {Z : Set (V n)} (hZ : IsOpen Z) {g : V n → ℂ}
   constructor <;> simp [wd, wdb, hd]
 
 /- English proof (translation)
-The claim follows from `Complex.ofRealCLM.contDiff.comp_contDiffOn hp`.
+A detailed English derivation is pending.
 -/
 theorem cdo_ofReal {Ω : Set (V n)} {p : V n → ℝ} (hp : ContDiffOn ℝ ∞ p Ω) :
     ContDiffOn ℝ ∞ (fun w => (p w : ℂ)) Ω := Complex.ofRealCLM.contDiff.comp_contDiffOn hp
 
 /- English proof (translation)
-Establish `hF : fderiv ℝ (fun w => g₁ w + c * g₂ w) y = fderiv ℝ g₁ y + c • fderiv ℝ g₂ y`. Establish `H : HasFDerivAt (fun w => g₁ w + c * g₂ w) (fderiv ℝ g₁ y + c • fderiv ℝ g₂ y) y` using `h₁.hasFDerivAt.add (h₂.hasFDerivAt.const_mul c)`. Conclude with `H.fderiv`. Apply the tactic sequence `constructor <;>`. Apply the tactic sequence `simp only [wd, wdb, hF, ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply, smul_eq_mul] <;> ring`.
+Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 private theorem lin_lemma' {g₁ g₂ : V n → ℂ} {y : V n} (h₁ : DifferentiableAt ℝ g₁ y)
     (h₂ : DifferentiableAt ℝ g₂ y) (c : ℂ) (j : Fin n) :
@@ -61,13 +59,13 @@ private theorem lin_lemma' {g₁ g₂ : V n → ℂ} {y : V n} (h₁ : Different
       smul_eq_mul] <;> ring
 
 /- English proof (translation)
-Use extensionality with `j k`. Simplify using `only [cHess, Matrix.of_apply, Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Establish `hP` using `cdo_ofReal hp`. Establish `hQ` using `cdo_ofReal hq`. Establish `dP : ∀ v ∈ Ω, DifferentiableAt ℝ (fun w => (p w : ℂ)) v` using `fun v hv => (hP.contDiffAt (hΩ.mem_nhds hv)).differentiableAt (by simp)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dQ : ∀ v ∈ Ω, DifferentiableAt ℝ (fun w => (q w : ℂ)) v` using `fun v hv => (hQ.contDiffAt (hΩ.mem_nhds hv)).differentiableAt (by simp)`. Establish `hfun : (fun w => ((p w + t * q w : ℝ) : ℂ)) = fun w => (p w : ℂ) + (t : ℂ) * (q w : ℂ)`. Use function extensionality and compare the values at `w`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hfun]`. Establish `hev : wdb n k (fun w => (p w : ℂ) + (t : ℂ) * (q w : ℂ)) =ᶠ[𝓝 y] fun v => wdb n k (fun w => (p w : ℂ)) v + (t : ℂ) * wdb n k (fun w => (q w : ℂ)) v` using `by filter_upwards [hΩ.mem_nhds hy] with v hv`. Conclude with `(lin_lemma' (dP v hv) (dQ v hv) _ k).2`. Establish `e1 : wd n j (wdb n k (fun w => (p w : ℂ) + (t : ℂ) * (q w : ℂ))) y = wd n j (fun v => wdb n k (fun w => (p w : ℂ)) v + (t : ℂ) * wdb n k (fun w => (q w : ℂ)) v) y`. Simplify using `only [wd, hev.fderiv_eq]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e1]`. Establish `dP' : DifferentiableAt ℝ (wdb n k (fun w => (p w : ℂ))) y` using `(((cdo_wd hΩ hP k).2).contDiffAt (hΩ.mem_nhds hy)).differentiableAt (by simp)`. Establish `dQ' : DifferentiableAt ℝ (wdb n k (fun w => (q w : ℂ))) y` using `(((cdo_wd hΩ hQ k).2).contDiffAt (hΩ.mem_nhds hy)).differentiableAt (by simp)`. Conclude with `(lin_lemma' dP' dQ' _ j).1`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cHess_add_smul {Ω : Set (V n)} (hΩ : IsOpen Ω) {p q : V n → ℝ}
     (hp : ContDiffOn ℝ ∞ p Ω) (hq : ContDiffOn ℝ ∞ q Ω) (t : ℝ) {y : V n} (hy : y ∈ Ω) :
@@ -99,7 +97,7 @@ theorem cHess_add_smul {Ω : Set (V n)} (hΩ : IsOpen Ω) {p q : V n → ℝ}
   exact (lin_lemma' dP' dQ' _ j).1
 
 /- English proof (translation)
-Simplify using `only [Matrix.det_apply, Matrix.of_apply, Units.smul_def, zsmul_eq_mul]`. Use `ContDiffOn.sum fun σ _ => contDiffOn_const.mul ?_` and prove the remaining obligations. Conclude with `contDiffOn_prod fun i _ => hF _ _`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem cdo_det {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] {S : Set X} {m : WithTop ℕ∞}
     (F : Fin n → Fin n → X → ℂ) (hF : ∀ i j, ContDiffOn ℝ m (F i j) S) :
@@ -109,9 +107,9 @@ theorem cdo_det {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] {S : Set 
   exact contDiffOn_prod fun i _ => hF _ _
 
 /- English proof (translation)
-Simplify using `only [Matrix.adjugate_apply]`. Use `cdo_det (F := fun i j w => ((Matrix.of fun i j => F i j w).updateRow l (Pi.single k 1)) i j) fun i j => ?_` and prove the remaining obligations. Distinguish the cases in `h : i = l`. Simplify using `only [Matrix.updateRow_apply, h, ↓reduceIte]`. Conclude with `contDiffOn_const`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.updateRow_apply, h, ↓reduceIte, Matrix.of_apply]`. Conclude with `hF i j`.
+A detailed English derivation is pending.
 -/
 theorem cdo_adj {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] {S : Set X} {m : WithTop ℕ∞}
     (F : Fin n → Fin n → X → ℂ) (hF : ∀ i j, ContDiffOn ℝ m (F i j) S) (k l : Fin n) :
@@ -126,9 +124,9 @@ theorem cdo_adj {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X] {S : Set 
     exact hF i j
 
 /- English proof (translation)
-Simplify using `only [Matrix.adjugate_apply, Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`. Use `continuousOn_finset_sum _ fun σ _ => continuousOn_const.mul ?_` and prove the remaining obligations. Use `continuousOn_finset_prod _ fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : σ i = l`. Simplify using `only [Matrix.updateRow_apply, h, ↓reduceIte]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Conclude with `continuousOn_const`. Simplify using `only [Matrix.updateRow_apply, h, ↓reduceIte, Matrix.of_apply]`. Conclude with `hF _ _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cont_adj {X : Type*} [TopologicalSpace X] {S : Set X}
     (F : Fin n → Fin n → X → ℂ) (hF : ∀ i j, ContinuousOn (F i j) S) (k l : Fin n) :
@@ -143,7 +141,7 @@ theorem cont_adj {X : Type*} [TopologicalSpace X] {S : Set X}
     exact hF _ _
 
 /- English proof (translation)
-Rewrite using `[← Matrix.cramer_apply, Matrix.cramer_eq_adjugate_mulVec]`. Simplify using `[Matrix.mulVec, dotProduct]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem adj_sum (M : Matrix (Fin n) (Fin n) ℂ) (k : Fin n) (b : Fin n → ℂ) :
     ∑ j, M.adjugate k j * b j = (M.updateCol k b).det := by
@@ -151,7 +149,7 @@ theorem adj_sum (M : Matrix (Fin n) (Fin n) ℂ) (k : Fin n) (b : Fin n → ℂ)
   simp [Matrix.mulVec, dotProduct]
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_apply]`. Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Units.smul_def, zsmul_eq_mul, ← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k), Matrix.updateCol_self]`. Use `congr 2`. Conclude with `Finset.prod_congr rfl fun l hl => Matrix.updateCol_ne (Finset.ne_of_mem_erase hl)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem det_updateCol_eq (M : Matrix (Fin n) (Fin n) ℂ) (k : Fin n) (b : Fin n → ℂ) :
     (M.updateCol k b).det = ∑ σ : Equiv.Perm (Fin n),
@@ -164,13 +162,13 @@ theorem det_updateCol_eq (M : Matrix (Fin n) (Fin n) ℂ) (k : Fin n) (b : Fin n
   exact Finset.prod_congr rfl fun l hl => Matrix.updateCol_ne (Finset.ne_of_mem_erase hl)
 
 /- English proof (translation)
-Establish `hent : ∀ i j, HasDerivAt (fun s : ℝ => (A + (s : ℂ) • B) i j) (B i j) t`. Introduce `i j`. Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Simplify using `using ((hasDerivAt_id t).ofReal_comp.mul_const (B i j)).const_add (A i j)`. Establish `hdet : HasDerivAt (fun s : ℝ => (A + (s : ℂ) • B).det) (∑ σ : Equiv.Perm (Fin n), ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∑ k, (∏ l ∈ Finset.univ.erase k, (A + (t : ℂ) • B) (σ l) l) • B (σ k) k) t`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `only [Matrix.det_apply, Units.smul_def, zsmul_eq_mul]`. Establish `hs` using `HasDerivAt.sum (u := Finset.univ) (A := fun σ (s : ℝ) => ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∏ i, (A + (s : ℂ) • B) (σ i) i) (A' := fun σ => ((Equiv.Perm.sign σ : ℤ) : ℂ) * ∑ k, (∏ l ∈ Finset.univ.erase k, (A + (t : ℂ) • B) (σ l) l) • B (σ k) k) (fun σ _ => by`. Establish `h` using `(HasDerivAt.finset_prod (u := Finset.univ) fun k _ => hent (σ k) k).const_mul (((Equiv.Perm.sign σ : ℤ) : ℂ))`. Simplify using `only [Finset.prod_apply] at h`. Conclude with `h)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hs` using `[Finset.sum_fn]`. Conclude with `hs`. Use `hdet using 1` and compare the differences between its conclusion and the goal. Repeatedly rewrite using `[adj_sum, det_updateCol_eq, smul_eq_mul]`. Rewrite using `[Finset.sum_comm]`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem hasDerivAt_det (A B : Matrix (Fin n) (Fin n) ℂ) (t : ℝ) :
     HasDerivAt (fun s : ℝ => (A + (s : ℂ) • B).det)

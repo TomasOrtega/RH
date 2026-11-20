@@ -13,11 +13,11 @@ def scaleBlock (k0 : K) (c : ℂ) (z : (Σ k, ι k) → ℂ) : (Σ k, ι k) → 
   fun p => (if p.1 = k0 then c else 1) * z p
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.eval_eq', MvPolynomial.eval_eq', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Establish `hm' : m ∈ f.support` using `MvPolynomial.support_map_subset _ _ hm`. Establish `hdeg` using `hf m hm' k0`. Simplify using `only [scaleBlock, mul_pow, Finset.prod_mul_distrib]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hc : ∏ x : (Σ k, ι k), (if x.1 = k0 then c else 1) ^ m x = c ^ a k0`. Rewrite using `[Fintype.prod_sigma, Finset.prod_eq_single k0]`. Simplify using `[hdeg, Finset.prod_pow_eq_pow_sum]`. Introduce `k _ hk`. Simplify using `[hk]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Rewrite using `[hc]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem eval_scaleBlock (k0 : K) (c : ℂ) (z : (Σ k, ι k) → ℂ) (f : MRing ι) (a : K → ℕ)
     (hf : IsMultiHomog f a) :
@@ -38,11 +38,11 @@ theorem eval_scaleBlock (k0 : K) (c : ℂ) (z : (Σ k, ι k) → ℂ) (f : MRing
   ring
 
 /- English proof (translation)
-Take `⟨S, hS, rfl⟩` from `hP`. Use `show (∀ k, ∃ i, scaleBlock k0 c z ⟨k, i⟩ ≠ 0) ∧ ∀ f ∈ Ideal.span S, eval (scaleBlock k0 c z) (map (Int.castRingHom ℂ) f) = 0`. Use `⟨fun k => ?_, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨i, hi⟩` from `hz.1 k`. Use `⟨i, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [scaleBlock]`. Apply the tactic sequence `split_ifs <;> simp [hc, hi]`. Establish `hle : Ideal.span S ≤ RingHom.ker ((eval (scaleBlock k0 c z)).comp (map (Int.castRingHom ℂ)))`. Rewrite using `[Ideal.span_le]`. Introduce `s hs`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨a, ha⟩` from `hS s hs`. Simplify using `only [SetLike.mem_coe, RingHom.mem_ker, RingHom.comp_apply]`. Rewrite using `[eval_scaleBlock k0 c z s a ha, hz.2 s (Ideal.subset_span hs), mul_zero]`. Conclude with `(RingHom.mem_ker).mp (hle hf)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem scaleBlock_mem_zeroLocus (P : Ideal (MRing ι)) (hP : IsMultiHomogIdeal P) (k0 : K) {c : ℂ} (hc : c ≠ 0)
     {z : (Σ k, ι k) → ℂ} (hz : z ∈ mcPts P) : scaleBlock k0 c z ∈ mcPts P := by
@@ -82,33 +82,31 @@ theorem evQ_mk (P : Ideal (MRing ι)) (z : (Σ k, ι k) → ℂ) (hz : z ∈ mcP
     evQ P z hz (Ideal.Quotient.mk _ q) = eval₂ (algebraMap ℚ ℂ) z q := rfl
 
 /- English proof (translation)
-Introduce `K _ ι _ P e hP`. Take `⟨r, hr, L, hL⟩` from `exists_linear_normalization (k := ℚ) (segQ P) (e + 1) (fun r L hr => forms_not_algebraicIndependent P e hP hr L)`. Establish `hint : ∀ t, ∃ p : Polynomial (MvPolynomial (Fin r) ℚ), p.Monic ∧ Polynomial.eval₂ (aeval (forms (segQ P) L)).toRingHom (segQ P t) p = 0` using `hL`. Use `choose p hpm hpe using hint`. Set `Ψ : (((k : K) → ι k) → ℂ) →ₗ[ℂ] (Fin (e + 1) → ℂ)` to `{ toFun := fun w j => if h : j.val < r then ∑ t, algebraMap ℚ ℂ (L ⟨j.val, h⟩ t) * w t else 0 map_add' := by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w w'`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.add_apply]`. Apply the tactic sequence `split_ifs <;> simp [mul_add, Finset.sum_add_distrib]`. Use the proof step `map_smul' := by`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument.
 
-Introduce `a w`. Use function extensionality and compare the values at `j`. Simplify using `only [Pi.smul_apply, smul_eq_mul, RingHom.id_apply]`. Apply the tactic sequence `split_ifs <;> simp [Finset.mul_sum, mul_left_comm] }`. Establish `hΨ : ∀ w (j : Fin r), Ψ w ⟨j.1, lt_of_lt_of_le j.2 hr⟩ = ∑ t, algebraMap ℚ ℂ (L j t) * w t`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `w j`. Simplify using `only [Ψ, LinearMap.coe_mk, AddHom.coe_mk, dif_pos j.2, Fin.eta]`. Establish `hA : ∀ z' (hz' : z' ∈ mcPts P), Ψ (segre z') = 0 → ∀ t, ((p t).map ((algebraMap ℚ ℂ).comp MvPolynomial.constantCoeff)).IsRoot (segre z' t)`. Introduce `z' hz' h0 t`. Establish `hφs : ∀ t', evQ P z' hz' (segQ P t') = segre z' t'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `t'`. Use `show evQ P z' hz' (Ideal.Quotient.mk _ (segMon t')) = _`. Rewrite using `[evQ_mk]`. Simplify using `[segMon, segre, eval₂_prod]`. Establish `hφf : ∀ j, evQ P z' hz' (forms (segQ P) L j) = 0`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `j`. Establish `h1` using `congrFun h0 ⟨j.1, lt_of_lt_of_le j.2 hr⟩`. Rewrite `h1` using `[hΨ]`. Simplify using `only [forms, map_sum, Algebra.smul_def, map_mul, RingHom.map_rat_algebraMap, hφs]`. Simplify using `using h1`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hcomp : (evQ P z' hz').comp (aeval (forms (segQ P) L)).toRingHom = (algebraMap ℚ ℂ).comp MvPolynomial.constantCoeff`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[RingHom.map_rat_algebraMap]`. Introduce `j`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[hφf]`. Use `show Polynomial.eval (segre z' t) ((p t).map ((algebraMap ℚ ℂ).comp MvPolynomial.constantCoeff)) = 0`. Rewrite using `[Polynomial.eval_map, ← hcomp, ← hφs, ← Polynomial.hom_eval₂, hpe t, map_zero]`. Use `⟨Ψ, fun z hz h0 => ?_⟩` and prove the remaining obligations. Take `⟨k0⟩` from `hP.1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hhom : IsMultiHomogIdeal P` using `hP.2.1.2.1`. Use `choose t0 ht0 using hz.1`. Establish `hs : segre z t0 ≠ 0`. Simplify using `only [segre]`. Conclude with `Finset.prod_ne_zero_iff.mpr fun k _ => ht0 k`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Establish `hsegA : ∀ c : ℂ, segre (scaleBlock k0 c z) = c • segre z`. Introduce `c`. Use function extensionality and compare the values at `t`. Simplify using `only [segre, scaleBlock, Pi.smul_apply, smul_eq_mul, Finset.prod_mul_distrib]`. Use `congr 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_ite_eq' Finset.univ k0 (fun _ => c)]`. Simplify using the standard rewrite rules. Establish `hroot : ∀ n : ℕ, ((p t0).map ((algebraMap ℚ ℂ).comp MvPolynomial.constantCoeff)).IsRoot (((n : ℂ) + 1) * segre z t0)`. Introduce `n`. Establish `hcn : ((n : ℂ) + 1) ≠ 0` using `Nat.cast_add_one_ne_zero n`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : scaleBlock k0 ((n : ℂ) + 1) z ∈ mcPts P` using `scaleBlock_mem_zeroLocus P hhom k0 hcn hz`. Establish `h0' : Ψ (segre (scaleBlock k0 ((n : ℂ) + 1) z)) = 0`. Rewrite using `[hsegA, map_smul, h0, smul_zero]`. Establish `h5` using `hA (scaleBlock k0 ((n : ℂ) + 1) z) hmem h0' t0`. Establish `h7 : segre (scaleBlock k0 ((n : ℂ) + 1) z) t0 = ((n : ℂ) + 1) * segre z t0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hsegA, Pi.smul_apply, smul_eq_mul]`. Rewrite `h5` using `[h7]`. Conclude with `h5`. Establish `hinf` using `Set.infinite_of_injective_forall_mem (s := {x | ((p t0).map ((algebraMap ℚ ℂ).comp MvPolynomial.constantCoeff)).IsRoot x}) (f := fun n : ℕ => ((n : ℂ) + 1) * segre z t0) (by`. Introduce `a b hab`.
-
-Simplify using `only at hab`. Establish `h6` using `mul_right_cancel₀ hs hab`. Conclude with `add_right_cancel h6) hroot` after adjusting the coercions. Conclude with `hinf (Polynomial.finite_setOf_isRoot ((hpm t0).map _).ne_zero)`.
+A detailed English derivation is pending.
 -/
 theorem goodProjExists : GoodProjExistsStatement := by
   intro K _ ι _ P e hP

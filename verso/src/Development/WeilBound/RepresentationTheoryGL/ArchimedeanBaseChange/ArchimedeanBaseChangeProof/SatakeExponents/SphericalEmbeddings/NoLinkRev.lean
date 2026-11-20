@@ -21,15 +21,11 @@ open PositivityTheory.Rg.BcB.N3
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Set `x : Fin 2 → IrrGL k` to `fun i => IrrGL.ofChar (χ i) (hχ i)`. Establish `hx : ∀ i, (x i).IsCusp` using `fun i => IrrGL.isCusp_ofChar _ _`. Establish `hd : ∑ i, (x i).1 = 2` using `by simp [x, IrrGL.ofChar]`. Establish `hnu : ∀ i j, χ j ≠ χ i * absPow k 1 → x j ≠ (x i).nu 1` using `fun i j h e => by`. Simplify using `only [x, IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj] at e`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h e`. Establish `hnl : ∀ i j, ¬ (Segment.single (x i) (hx i)).Linked (Segment.single (x j) (hx j))`. Introduce `i j`. Apply the tactic sequence `fin_cases i <;> fin_cases j`. Conclude with `Segment.not_linked_self _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `GlobalTheory.CompanionTheory.BZPair.not_linked_single (hx 0) (hx 1) (hnu 0 1 h1) (hnu 1 0 h2)`. Conclude with `GlobalTheory.CompanionTheory.BZPair.not_linked_single (hx 1) (hx 0) (hnu 1 0 h2) (hnu 0 1 h1)`. Conclude with `Segment.not_linked_self _`. Establish `hP : (prodIrr x hd).IsIrreducible` using `GlobalTheory.RgGu.Holds.lUnlinkedIrr_holds k 2 2 (fun i => Segment.single (x i) (hx i)) x hd hnl (fun i => (single_spec (hx i)).2.1)`. Take `⟨p⟩` from `(Placing.parInd_jac_placing k _ _ _ (Equiv.sigmaUnique (Fin 2) fun _ => Fin 1) (stdBlocks (fun i => (x i).1) hd) _).1 (piTensor fun i => detRep (Fin 1) (χ i))`.
-
-Set `q` to `multiProdEquiv (stdBlocks (fun i => (x i).1) hd) fun i => equivRep (IrrRep.det (Fin 1) (χ i) (hχ i))`. Establish `hM : (multiProd (Equiv.sigmaUnique (Fin 2) fun _ => Fin 1) fun i => detRep (Fin 1) (χ i)).IsIrreducible` using `GlobalTheory.Parabolic.isIrreducible_of_equiv (p.trans q).symm hP`. Use `haveI := nontrivial_of_irreducible hM`. Use `haveI := nontrivial_of_isSubquotient (GlobalTheory.PermPrin.isSubquotient_multiProd_prinSeries (Equiv.sigmaUnique (Fin 2) fun _ => Fin 1) χ)`. Take `⟨e⟩` from `equiv_of_isSubquotient (GlobalTheory.PrinProd.isSubquotient_prinSeries_multiProd k 2 χ) hM`.
-
-Conclude with `GlobalTheory.Parabolic.isIrreducible_of_equiv e hM`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem prin_irr (χ : Fin 2 → kˣ →* ℂˣ) (hχ : ∀ i, IsSmoothChar (χ i))
     (h1 : χ 1 ≠ χ 0 * absPow k 1) (h2 : χ 0 ≠ χ 1 * absPow k 1) : (prinSeries χ).IsIrreducible := by
@@ -61,14 +57,14 @@ theorem prin_irr (χ : Fin 2 → kˣ →* ℂˣ) (hχ : ∀ i, IsSmoothChar (χ 
   exact GlobalTheory.Parabolic.isIrreducible_of_equiv e hM
 
 /- English proof (translation)
-Take `⟨f, hf, hf0⟩` from `Pee.exists_sph (k := k) n ξ`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨f, hf, hf0⟩`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem iP_sph {n : ℕ} (ξ : Fin n → ℂˣ) : IsSpherical (iP (k := k) ξ) := by
   obtain ⟨f, hf, hf0⟩ := Pee.exists_sph (k := k) n ξ
   exact (Submodule.ne_bot_iff _).2 ⟨f, hf, hf0⟩
 
 /- English proof (translation)
-Introduce `e`. Establish `e' : Pus.cls (k` using `k) b = (Pus.cls (k := k) a).nu ((1 : ℕ) : ℂ) := by`. Rewrite using `[Nat.cast_one, IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`. Conclude with `e`. Conclude with `absurd hab (not_le.2 (Pus.norm_lt_of_nu (k := k) one_pos e'))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem no_link_rev (a b : ℂˣ) (hab : ‖(a : ℂ)‖ ≤ ‖(b : ℂ)‖) : unrChar k b ≠ unrChar k a * absPow k 1 := by
   intro e
@@ -78,22 +74,20 @@ theorem no_link_rev (a b : ℂˣ) (hab : ‖(a : ℂ)‖ ≤ ‖(b : ℂ)‖) : 
   exact absurd hab (not_le.2 (Pus.norm_lt_of_nu (k := k) one_pos e'))
 
 /- English proof (translation)
-The claim follows from `prin_irr (fun i => unrChar k (![a, b] i)) (fun _ => Pus.isSmoothChar_unr _) h1 h2`.
+A detailed English derivation is pending.
 -/
 theorem irr2 (a b : ℂˣ) (h1 : unrChar k b ≠ unrChar k a * absPow k 1) (h2 : unrChar k a ≠ unrChar k b * absPow k 1) :
     (iP (k := k) ![a, b]).IsIrreducible :=
   prin_irr (fun i => unrChar k (![a, b] i)) (fun _ => Pus.isSmoothChar_unr _) h1 h2
 
 /- English proof (translation)
-Apply the tactic sequence `funext i; fin_cases i <;> simp`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem swap_param (a b : ℂˣ) : (![a, b] ∘ Equiv.swap (0 : Fin 2) 1) = ![b, a] := by
   funext i; fin_cases i <;> simp
 
 /- English proof (translation)
-Use `borelize (GL (Fin 2) k)`. Establish `hA` using `GlobalTheory.CompanionTheory.SphSupp.isSatakeParameter_of_isSubquotient (k := k) ![a, b] (IsSubquotient.refl _) (μ := Measure.haar)`. Establish `hB` using `GlobalTheory.CompanionTheory.SphSupp.isSatakeParameter_of_isSubquotient (k := k) ![b, a] (IsSubquotient.refl _) (μ := Measure.haar)`. Establish `hA'` using `GroundTheory.Automorphic.Spherical.isSatakeParameter_comp hA (Equiv.swap (0 : Fin 2) 1)`. Rewrite `hA'` using `[swap_param]`.
-
-Use `haveI := hI1`. Use `haveI := hI2`. Conclude with `GroundTheory.Automorphic.Spherical.nonempty_equiv_of_isSatakeParameter (fun v => isSmooth_parInd _ _ v) (fun v => isSmooth_parInd _ _ v) ((GlobalTheory.CompanionTheory.SphSupp.isSpherical_iff_fixedVectors _).1 (iP_sph ![a, b])) ((GlobalTheory.CompanionTheory.SphSupp.isSpherical_i …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iso2 (a b : ℂˣ) (hI1 : (iP (k := k) ![a, b]).IsIrreducible) (hI2 : (iP (k := k) ![b, a]).IsIrreducible) :
     Nonempty ((iP (k := k) ![a, b]).Equiv (iP (k := k) ![b, a])) := by
@@ -112,7 +106,7 @@ theorem iso2 (a b : ℂˣ) (hI1 : (iP (k := k) ![a, b]).IsIrreducible) (hI2 : (i
     ((GlobalTheory.CompanionTheory.SphSupp.isSpherical_iff_fixedVectors _).1 (iP_sph ![b, a])) hA' hB
 
 /- English proof (translation)
-Establish `h'` using `no_link_rev (k := k) a b hab`. Take `⟨e⟩` from `iso2 a b (irr2 a b h' h) (irr2 b a h h')`. Use `⟨e.toIntertwiningMap, fun v _ hv => ?_⟩` and prove the remaining obligations. Conclude with `e.toLinearEquiv.injective (hv.trans (map_zero _).symm)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem unl (a b : ℂˣ) (h : unrChar k a ≠ unrChar k b * absPow k 1) (hab : ‖(a : ℂ)‖ ≤ ‖(b : ℂ)‖) :
     ∃ T : (iP (k := k) ![a, b]).IntertwiningMap (iP (k := k) ![b, a]), KInj k T := by

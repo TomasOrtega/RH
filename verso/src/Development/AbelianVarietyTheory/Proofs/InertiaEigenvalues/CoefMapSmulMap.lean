@@ -22,9 +22,9 @@ variable {σ : Type} (F : IntermediateField ℚ ℂ) (lam : ℂ →ₗ[F] F)
 def coefFun (p : MvPolynomial σ ℂ) : MvPolynomial σ F := ∑ m ∈ p.support, monomial m (lam (p.coeff m))
 
 /- English proof (translation)
-Rewrite using `[coefFun, coeff_sum]`. Simplify using `only [coeff_monomial]`. Rewrite using `[Finset.sum_ite_eq']`. Use `split_ifs with h`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[notMem_support_iff.1 h, map_zero]`.
+A detailed English derivation is pending.
 -/
 theorem coeff_coefFun (p : MvPolynomial σ ℂ) (m : σ →₀ ℕ) : (coefFun F lam p).coeff m = lam (p.coeff m) := by
   classical
@@ -43,14 +43,14 @@ def coefMap : MvPolynomial σ ℂ →+ MvPolynomial σ F where
 variable {F lam}
 
 /- English proof (translation)
-The claim follows from `coeff_coefFun F lam p m`.
+A detailed English derivation is pending.
 -/
 theorem coeff_coefMap (p : MvPolynomial σ ℂ) (m : σ →₀ ℕ) :
     (coefMap F lam p).coeff m = lam (p.coeff m) :=
   coeff_coefFun F lam p m
 
 /- English proof (translation)
-Use extensionality with `m'`. Rewrite using `[coeff_coefMap, coeff_smul, coeff_monomial, coeff_monomial]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem coefMap_monomial (m : σ →₀ ℕ) (c : ℂ) :
     coefMap F lam (monomial m c) = lam c • monomial m (1 : F) := by
@@ -59,7 +59,7 @@ theorem coefMap_monomial (m : σ →₀ ℕ) (c : ℂ) :
   split_ifs <;> simp
 
 /- English proof (translation)
-Use extensionality with `m`. Rewrite using `[coeff_coefMap, coeff_smul, coeff_map, coeff_smul, smul_eq_mul, smul_eq_mul]`. Establish `: c * algebraMap F ℂ (R.coeff m) = R.coeff m • c`. Rewrite using `[Algebra.smul_def, mul_comm]`. Rewrite using `[this, map_smul, smul_eq_mul, mul_comm]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem coefMap_smul_map (c : ℂ) (R : MvPolynomial σ F) :
     coefMap F lam (c • map (algebraMap F ℂ) R) = lam c • R := by
@@ -70,9 +70,9 @@ theorem coefMap_smul_map (c : ℂ) (R : MvPolynomial σ F) :
   rw [this, map_smul, smul_eq_mul, mul_comm]
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on' with`. Consider the case `monomial m c`. Establish `hm : (monomial m c : MvPolynomial σ ℂ) = c • map (algebraMap F ℂ) (monomial m (1 : F))`. Rewrite using `[map_monomial, map_one, smul_monomial, smul_eq_mul, mul_one]`. Rewrite using `[hm, map_smul, h, coefMap_smul_map, ← hm, coefMap_monomial, map_smul]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add p q hp hq => rw [map_add, map_add, hp, hq, map_add, map_add]`.
+Treat this case separately.
 -/
 theorem coefMap_comm (Φ : MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomial σ ℂ) (Ψ : MvPolynomial σ F →ₗ[F] MvPolynomial σ F)
     (h : ∀ Q, Φ (map (algebraMap F ℂ) Q) = map (algebraMap F ℂ) (Ψ Q)) (p : MvPolynomial σ ℂ) :
@@ -87,7 +87,7 @@ theorem coefMap_comm (Φ : MvPolynomial σ ℂ →ₗ[ℂ] MvPolynomial σ ℂ) 
 variable {T : Type} (r : T → ℕ) (n : ℕ)
 
 /- English proof (translation)
-Simplify using `only [lap, LinearMap.sum_apply, map_sum, LinearMap.smul_apply]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun b' _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.one_apply, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp [pderiv_map]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lap_map (τ τ' : T) (a : Fin (r τ)) (a' : Fin (r τ')) (Q : MvPolynomial (Letter T r n) F) :
     lap r n ℂ 1 τ τ' a a' (map (algebraMap F ℂ) Q) = map (algebraMap F ℂ) (lap r n F 1 τ τ' a a' Q) := by
@@ -97,9 +97,9 @@ theorem lap_map (τ τ' : T) (a : Fin (r τ)) (a' : Fin (r τ')) (Q : MvPolynomi
   split_ifs <;> simp [pderiv_map]
 
 /- English proof (translation)
-Establish `key : (rowShift r n ℂ σ₀ i i' (t : ℂ)).toRingHom.comp (map (algebraMap F ℂ)) = (map (algebraMap F ℂ)).comp (rowShift r n F σ₀ i i' t).toRingHom`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `x`. Simplify using `[rowShift]`. Introduce `ℓ`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [rowShift, RingHom.coe_comp, Function.comp_apply, map_X, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X]`. Apply the tactic sequence `split_ifs <;> simp`. Conclude with `RingHom.congr_fun key Q`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem rowShift_map (σ₀ : T) (i i' : Fin (r σ₀)) (t : F) (Q : MvPolynomial (Letter T r n) F) :
     rowShift r n ℂ σ₀ i i' (t : ℂ) (map (algebraMap F ℂ) Q) = map (algebraMap F ℂ) (rowShift r n F σ₀ i i' t Q) := by
@@ -121,13 +121,13 @@ namespace GlobalTheory.SingleDatum
 open MvPolynomial Formalism.L2.Pj GlobalTheory.CoefLin
 
 /- English proof (translation)
-Introduce `T r n cj isX a F lam P hP`. Take `⟨hH, hR, hD⟩` from `hP`. Use `⟨coefMap F lam P, ⟨?_, ?_, ?_⟩, coeff_coefMap P⟩` and prove the remaining obligations. Simplify using `only [harmK, Submodule.mem_iInf, LinearMap.mem_ker] at hH ⊢`. Introduce `τ hτ i i'`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← coefMap_comm (lap r n ℂ 1 τ (cj τ) i i') (lap r n F 1 τ (cj τ) i i') (lap_map r n τ (cj τ) i i') P, hH τ hτ i i', map_zero]`. Introduce `σ₀ i i' hii t`. Establish `key` using `coefMap_comm (lam := lam) (rowShift r n ℂ σ₀ i i' (t : ℂ)).toLinearMap (rowShift r n F σ₀ i i' t).toLinearMap (rowShift_map r n σ₀ i i' t) P`. Simplify using `only [AlgHom.toLinearMap_apply] at key`. Rewrite using `[← key, hR σ₀ i i' hii (t : ℂ)]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `m hm σ₀ i`. Use `hD m ?_ σ₀ i` and prove the remaining obligations. Rewrite `hm`, the goal using `[mem_support_iff]`. Introduce `h0`. Apply `hm` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[coeff_coefMap, h0, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem HHa_coefLin : ∀ (T : Type) (r : T → ℕ) (n : ℕ) (cj : T → T) (isX : T → Prop) (a : T → ℕ → ℕ)
     (F : IntermediateField ℚ ℂ) (lam : ℂ →ₗ[F] F), ∀ P ∈ HHa r n ℂ cj isX a, ∃ P' ∈ HHa r n F cj isX a,

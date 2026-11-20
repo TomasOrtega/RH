@@ -15,7 +15,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B] in
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem _root_.GlobalTheory.HilbAff.appLE_eq_of_eq {X Y : Scheme.{0}} {f₁ f₂ : X ⟶ Y} (h : f₁ = f₂)
     (U : Y.Opens) (V : X.Opens)
@@ -27,11 +27,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B] in
 /- English proof (translation)
-Establish `key : (I.subschemeι ≫ pullback.fst _ g) ≫ _root_.GlobalTheory.HilbAff.str A B = (I.subschemeι ≫ pullback.snd _ g) ≫ g`. Simplify using `[pullback.condition]`. Establish `h1 : (Scheme.ΓSpecIso (CommRingCat.of B)).inv.hom (algebraMap A B a) = (_root_.GlobalTheory.HilbAff.str A B).appTop.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a)`. Use `congrArg (fun φ => φ.hom a) (Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom (algebraMap A B)))` as an intermediate fact. Simplify using `only [CommRingCat.hom_comp, RingHom.comp_apply, CommRingCat.hom_ofHom] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`. Establish `hm : (_root_.GlobalTheory.HilbAff.str A B).appTop ≫ (I.subschemeι ≫ pullback.fst _ g).appLE ⊤ ((I.subschemeι ≫ pullback.snd _ g) ⁻¹ᵁ U) (by simp) = g.appLE ⊤ U (by simp) ≫ (I.subschemeι ≫ pullback.snd _ g).app U`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Scheme.Hom.app_eq_appLE]`. Conclude with `(Scheme.Hom.appLE_comp_appLE _ _ _ _ _ _ _).symm`.
-
-Rewrite using `[h1]`. Conclude with `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a)) hm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HilbAff.kappa_comm {T : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A))
@@ -79,7 +77,7 @@ def kappa {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A))
     (fun _ _ => Commute.all _ _)).toRingHom
 
 /- English proof (translation)
-Use `letI := (secAlg A g U).toAlgebra`. Use `letI : Algebra A Γ(I.subscheme, (I.subschemeι ≫ pullback.snd _ g) ⁻¹ᵁ U) := (((I.subschemeι ≫ pullback.snd _ g).app U).hom.comp (secAlg A g U)).toAlgebra`. Conclude with `Algebra.TensorProduct.lift_tmul _ _ _ _ _`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem kappa_tmul {T : Scheme.{0}} (g : T ⟶ Spec (CommRingCat.of A))
     (I : (pullback (str A B) g).IdealSheafData) (U : T.Opens) (c : Γ(T, U)) (b : B) :
@@ -101,7 +99,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B] in
 /- English proof (translation)
-Unfold `_root_.GlobalTheory.HilbAff.Basic`. Use `forall_congr' fun U => ?_` and prove the remaining obligations. Simplify using `only [map_sum, _root_.GlobalTheory.HilbAff.kappa_tmul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem _root_.GlobalTheory.HilbAff.basic_iff_kappa {r N : ℕ} (e : Module.Basis (Fin N) A B)
     (σ : Fin r ↪ Fin N) {T : Scheme.{0}}
@@ -120,7 +118,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B] in
 /- English proof (translation)
-Use extensionality with `a`. Conclude with `congrArg (fun φ => φ.hom ((Scheme.ΓSpecIso (CommRingCat.of A)).inv.hom a)) (Scheme.Hom.appLE_map g (U := ⊤) (by simp) (homOfLE h).op)`.
+By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HilbAff.secAlg_res {T : Scheme.{0}}
     (g : T ⟶ Spec (CommRingCat.of A)) {U V : T.Opens}
@@ -134,7 +132,7 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B] in
 /- English proof (translation)
-Establish `hm : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ (h ≫ Spec.map (CommRingCat.ofHom f)).appLE ⊤ U (by simp) = CommRingCat.ofHom f ≫ (Scheme.ΓSpecIso (CommRingCat.of C)).inv ≫ h.appLE ⊤ U (by simp)`. Combine the equalities or inequalities in the displayed calculation. Use extensionality with `a`. Conclude with `congrArg (fun φ => φ.hom a) hm`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HilbAff.secAlg_comp {C : Type} [CommRing C] {T : Scheme.{0}}
     (h : T ⟶ Spec (CommRingCat.of C)) (f : A →+* C) (U : T.Opens) :
@@ -159,9 +157,9 @@ open CategoryTheory CategoryTheory.Limits AlgebraicGeometry Opposite in
 open scoped TensorProduct in
 variable (A B : Type) [CommRing A] [CommRing B] [Algebra A B] in
 /- English proof (translation)
-Apply `ext_of_isAffine` to reduce the goal to its premises. Establish `e₁ : g₁.appLE ⊤ ⊤ le_top = g₁.appTop` using `g₁.appLE_eq_app`. Establish `e₂ : g₂.appLE ⊤ ⊤ le_top = g₂.appTop` using `g₂.appLE_eq_app`. Establish `h' : (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ g₁.appLE ⊤ ⊤ le_top = (Scheme.ΓSpecIso (CommRingCat.of A)).inv ≫ g₂.appLE ⊤ ⊤ le_top` using `CommRingCat.hom_ext h`. Rewrite `h'` using `[e₁, e₂]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(cancel_epi _).1 h'`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.HilbAff.eq_of_secAlg_top {T : Scheme.{0}}
     {g₁ g₂ : T ⟶ Spec (CommRingCat.of A)}

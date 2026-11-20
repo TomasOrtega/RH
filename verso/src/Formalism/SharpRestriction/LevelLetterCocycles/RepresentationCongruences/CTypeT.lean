@@ -22,7 +22,7 @@ variable (W : LocWach PD LL O v n) (A : ArcP n) {T₁ T₂ : LocLat G Qp LL O} (
     (c : ZMod n) {d : ℕ} (b : Fin d → W.DD T₂) (sol : Fin d → ℕ → Fin d → LL) (k₀ : Fin d)
 
 /- English proof (translation)
-The claim follows from `TC.C_typeT_of W A F c b sol k₀ hA hc hthick hcase hl hP9 hSec hGL hFL hArc hW₁ hW₂ hb Si hSi b₁ sol₁ hb₁ c₁ s₀ hlt hpr f hf hdown hup`.
+A detailed English derivation is pending.
 -/
 theorem C_typeT (hA : A.OK) (hc : c ∈ A.cuts)
     (hthick : ∀ s < A.len c, (A.ty (c - (s : ZMod n))).thick) (hcase : Formalism.MainNotions.LiftingTheory.CaseA W) (hl : 5 ≤ PD.p)

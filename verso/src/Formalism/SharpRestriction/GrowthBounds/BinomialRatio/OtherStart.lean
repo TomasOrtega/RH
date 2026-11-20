@@ -11,9 +11,9 @@ variable {n' : ℕ}
 def rot (n : ℕ) (j : Fin n) : Fin n := ⟨(j.val + 1) % n, Nat.mod_lt _ j.pos⟩
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Distinguish the cases in `h : j.val + 1 < n`. Use `left`. Conclude with `⟨h, Nat.mod_eq_of_lt h⟩`. Use `right`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : j.val + 1 = n` using `by omega`. Use `⟨e, ?_⟩` and prove the remaining obligations. Use `show (j.val + 1) % n = 0`. Rewrite using `[e, Nat.mod_self]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rot_val (n : ℕ) (j : Fin n) :
     (j.val + 1 < n ∧ (rot n j).val = j.val + 1) ∨ (j.val + 1 = n ∧ (rot n j).val = 0) := by
@@ -28,7 +28,7 @@ theorem rot_val (n : ℕ) (j : Fin n) :
     rw [e, Nat.mod_self]
 
 /- English proof (translation)
-Introduce `j j' h`. Establish `h'` using `congrArg Fin.val h`. Establish `a` using `rot_val n j`. Establish `b` using `rot_val n j'`. Apply `Fin.ext` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -41,7 +41,7 @@ theorem rot_inj (n : ℕ) : Function.Injective (rot n) := by
   omega
 
 /- English proof (translation)
-The claim follows from `Finite.injective_iff_bijective.mp (rot_inj n)`.
+A detailed English derivation is pending.
 -/
 theorem rot_bij (n : ℕ) : Function.Bijective (rot n) := Finite.injective_iff_bijective.mp (rot_inj n)
 
@@ -51,16 +51,16 @@ Both sides reduce to the same expression.
 theorem next_eq (TT : Finset (Fin n')) (j : Fin (numSeg TT)) : segNext TT j = segStart TT (rot _ j) := rfl
 
 /- English proof (translation)
-The claim follows from `(rot_bij (numSeg TT)).prod_comp (fun j => h (segStart TT j))`.
+A detailed English derivation is pending.
 -/
 theorem prod_next (TT : Finset (Fin n')) (h : Fin n' → ℝ) :
     ∏ j, h (segNext TT j) = ∏ j, h (segStart TT j) :=
   (rot_bij (numSeg TT)).prod_comp (fun j => h (segStart TT j))
 
 /- English proof (translation)
-Distinguish the cases in `h0 : j.val = 0`. Use `⟨segStart TT ⟨1, by omega⟩, (start_mem TT _).1, (start_mem TT _).2, fun e => ?_⟩` and prove the remaining obligations. Use `congrArg Fin.val ((ev_mono TT).injective e)` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use `⟨segStart TT ⟨0, by omega⟩, (start_mem TT _).1, (start_mem TT _).2, fun e => ?_⟩` and prove the remaining obligations. Use `congrArg Fin.val ((ev_mono TT).injective e)` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem other_start (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) (j : Fin (numSeg TT)) :
     ∃ e, e ∈ TT ∧ Even e.val ∧ e ≠ segStart TT j := by
@@ -75,7 +75,7 @@ theorem other_start (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) (j : Fin (numS
     omega
 
 /- English proof (translation)
-Take `⟨e, he, hev, hne⟩` from `other_start TT h2 j`. Take `⟨m1, -⟩` from `next_min TT j e he hev hne`. Use `⟨?_, m1⟩` and prove the remaining obligations. Unfold `segG`. Rewrite using `[if_neg (by omega)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem segG_eq (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) (j : Fin (numSeg TT)) :
     segG TT j = cdist (segStart TT j) (segNext TT j) ∧ 0 < cdist (segStart TT j) (segNext TT j) := by
@@ -86,17 +86,17 @@ theorem segG_eq (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) (j : Fin (numSeg T
   rw [if_neg (by omega)]
 
 /- English proof (translation)
-Establish `key : ∀ j : Fin (numSeg TT), (segG TT j : ℤ) = ((segStart TT (rot _ j)).val : ℤ) - ((segStart TT j).val : ℤ) + (if j = ⟨numSeg TT - 1, by omega⟩ then (n' : ℤ) else 0)`. Introduce `j`. Take `⟨g, g0⟩` from `segG_eq TT h2 j`. Rewrite `*` using `[g, next_eq]`. Establish `c` using `cd_cases (segStart TT j) (segStart TT (rot _ j))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `l1` using `(segStart TT j).isLt`. Establish `l2` using `(segStart TT (rot _ j)).isLt`. Break down `rot_val _ j with ⟨r1, r2⟩ | ⟨r1, r2⟩` into its components or cases. Establish `hlt : (segStart TT j).val < (segStart TT (rot _ j)).val` using `ev_mono TT (Fin.lt_def.mpr (by omega))`. Establish `hne : j ≠ ⟨numSeg TT - 1, by omega⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `e`. Use `congrArg Fin.val e` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hne]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Use linear arithmetic over natural numbers and integers. Establish `hlt : (segStart TT (rot _ j)).val < (segStart TT j).val` using `ev_mono TT (Fin.lt_def.mpr (by omega))`. Establish `he : j = ⟨numSeg TT - 1, by omega⟩`. Apply `Fin.ext` to reduce the goal to its premises. Use `show j.val = numSeg TT - 1`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos he]`. Use linear arithmetic over natural numbers and integers. Establish `hs : (∑ j, ((segStart TT (rot _ j)).val : ℤ)) = ∑ j, ((segStart TT j).val : ℤ)` using `(rot_bij (numSeg TT)).sum_comp (fun j => ((segStart TT j).val : ℤ))`. Establish `: ((∑ j, segG TT j : ℕ) : ℤ) = (n' : ℤ)`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Use `push_cast`. Rewrite using `[Finset.sum_congr rfl fun j _ => key j, Finset.sum_add_distrib, Finset.sum_sub_distrib, hs]`. Simplify using the standard rewrite rules. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_segG (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) : ∑ j, segG TT j = n' := by
   have key : ∀ j : Fin (numSeg TT), (segG TT j : ℤ) =
@@ -135,9 +135,9 @@ theorem sum_segG (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) : ∑ j, segG TT 
   exact_mod_cast this
 
 /- English proof (translation)
-Use `Finset.prod_nbij (fun j => segStart TT j) ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `j _`. Conclude with `Finset.mem_filter.mpr (start_mem TT j)`. Introduce `j _ j' _ e`. Conclude with `(ev_mono TT).injective e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `s hs`. Establish `hs'` using `Finset.mem_filter.mp (Finset.mem_coe.mp hs)`. Take `⟨k, hk⟩` from `List.mem_iff_get.mp ((ev_mem TT s).mpr hs')`. Conclude with `⟨k, Finset.mem_coe.mpr (Finset.mem_univ _), hk⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem prod_starts (TT : Finset (Fin n')) (h : Fin n' → ℝ) :
     ∏ j, h (segStart TT j) = ∏ s ∈ TT.filter (fun s => Even s.val), h s := by
@@ -152,9 +152,9 @@ theorem prod_starts (TT : Finset (Fin n')) (h : Fin n' → ℝ) :
     exact ⟨k, Finset.mem_coe.mpr (Finset.mem_univ _), hk⟩
 
 /- English proof (translation)
-Take `⟨s, hs, h5⟩` from `get_spec TT j i`. Establish `: segPos TT j i = s`. Unfold `segPos`. Rewrite using `[← h5, posAdd_cdist]`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨Finset.mem_filter.mpr hs, h5⟩`.
+Supply the required witnesses or components.
 -/
 theorem pos_spec (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i : Fin (segS TT j)) :
     segPos TT j i ∈ oddSet TT j ∧ cdist (segStart TT j) (segPos TT j i) = (segDists TT j).get i := by
@@ -166,13 +166,11 @@ theorem pos_spec (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (i : Fin (segS TT 
   exact ⟨Finset.mem_filter.mpr hs, h5⟩
 
 /- English proof (translation)
-Use `Finset.prod_nbij (fun i => segPos TT j i) ?_ ?_ ?_ (fun _ _ => rfl)` and prove the remaining obligations. Introduce `i _`. Conclude with `(pos_spec TT j i).1`. Introduce `i _ i' _ e`. Establish `e' : segPos TT j i = segPos TT j i'` using `e`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `(pos_spec TT j i).2`. Establish `h2` using `(pos_spec TT j i').2`. Rewrite `h1` using `[e']`. Conclude with `(dist_strictMono TT j).injective (h1.symm.trans h2)`. Introduce `s hs`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs'` using `Finset.mem_filter.mp (Finset.mem_coe.mp hs)`. Establish `hd : cdist (segStart TT j) s ∈ segDists TT j` using `mem_dists.mpr ⟨s, hs', rfl⟩`. Take `⟨i, hi⟩` from `List.mem_iff_get.mp hd`. Use `⟨i, Finset.mem_coe.mpr (Finset.mem_univ _), ?_⟩` and prove the remaining obligations. Use `show segPos TT j i = s`.
-
-Unfold `segPos`. Rewrite using `[hi, posAdd_cdist]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_pos (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (h : Fin n' → ℝ) :
     ∏ i, h (segPos TT j i) = ∏ s ∈ oddSet TT j, h s := by
@@ -195,17 +193,17 @@ theorem prod_pos (TT : Finset (Fin n')) (j : Fin (numSeg TT)) (h : Fin n' → �
     rw [hi, posAdd_cdist]
 
 /- English proof (translation)
-Establish `hne : (TT.filter (fun x => Even x.val)).Nonempty` using `⟨segStart TT ⟨0, by omega⟩, Finset.mem_filter.mpr (start_mem TT _)⟩`. Take `⟨x, hx, hmin⟩` from `Finset.exists_min_image (TT.filter (fun x => Even x.val)) (fun x => cdist x s) hne`. Establish `hx'` using `Finset.mem_filter.mp hx`. Take `⟨j, hj⟩` from `List.mem_iff_get.mp ((ev_mem TT x).mpr hx')`. Establish `hj' : segStart TT j = x` using `hj`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨j, Finset.mem_filter.mpr ⟨hs, ho, ?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hj']`. Establish `c` using `cd_cases x s`. Establish `l1` using `x.isLt`. Establish `l2` using `s.isLt`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxs : x.val ≠ s.val`. Introduce `e`. Rewrite `ho` using `[← e]`. Conclude with `ho hx'.2`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result.
 
-Take `⟨g, g0⟩` from `segG_eq TT h2 j`. Rewrite using `[g]`. Assume the negation of the conclusion as `hcon`. Establish `hy` using `hmin (segNext TT j) (Finset.mem_filter.mpr (next_mem TT j))`. Rewrite `g0`, `hcon` using `[hj']`.
+Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `c1` using `cd_cases x s`. Establish `c2` using `cd_cases x (segNext TT j)`. Establish `c3` using `cd_cases (segNext TT j) s`. Establish `l1` using `x.isLt`. Establish `l2` using `s.isLt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `l3` using `(segNext TT j).isLt`. Use linear arithmetic over natural numbers and integers.
+Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem odd_covered (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) (s : Fin n') (hs : s ∈ TT) (ho : ¬ Even s.val) :
     ∃ j, s ∈ oddSet TT j := by
@@ -239,9 +237,9 @@ theorem odd_covered (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) (s : Fin n') (
     omega
 
 /- English proof (translation)
-Use extensionality with `s`. Prove the components needed by the constructor for the conclusion. Introduce `hs`. Take `⟨j, -, hj⟩` from `Finset.mem_biUnion.mp hs`. Take `⟨a0, a1, -⟩` from `Finset.mem_filter.mp hj`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `Finset.mem_filter.mpr ⟨a0, a1⟩`. Introduce `hs`. Take `⟨a0, a1⟩` from `Finset.mem_filter.mp hs`. Take `⟨j, hj⟩` from `odd_covered TT h2 s a0 a1`. Conclude with `Finset.mem_biUnion.mpr ⟨j, Finset.mem_univ _, hj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem biUnion_odd (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) :
     Finset.univ.biUnion (oddSet TT) = TT.filter (fun s => ¬ Even s.val) := by
@@ -257,7 +255,7 @@ theorem biUnion_odd (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) :
     exact Finset.mem_biUnion.mpr ⟨j, Finset.mem_univ _, hj⟩
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_mul_distrib, prod_starts, Finset.prod_congr rfl fun j _ => prod_pos TT j h, ← Finset.prod_biUnion (fun j _ j' _ hjj => oddSet_disj TT j j' hjj), biUnion_odd TT h2, Finset.prod_filter_mul_prod_filter_not]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem prod_tops (TT : Finset (Fin n')) (h2 : 2 ≤ numSeg TT) (h : Fin n' → ℝ) :
     ∏ s ∈ TT, h s = ∏ j, (h (segStart TT j) * ∏ i, h (segPos TT j i)) := by

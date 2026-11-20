@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.Divisors.RedSurjective
 open CategoryTheory GlobalTheory.PDiv GlobalTheory.PDivGroup
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.dieuBase_isEt_of_isConn` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FExistsEtaleDieudonneBaseByCartierDuality.lean&line=6#L6)
 -/

@@ -3,11 +3,11 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `G Q _ _ ρ J H hH hρ`. Use `haveI := hH`. Use `haveI : Finite (G ⧸ H) := Subgroup.finite_quotient_of_finiteIndex`. Apply `(Set.finite_range (fun q : G ⧸ H => if h : ∃ g ∈ J, (g : G ⧸ H) = q then ρ h.choose else 1)).subset` to reduce the goal to its premises. Introduce and unpack `_ ⟨g, hg, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨(g : G ⧸ H), ?_⟩` and prove the remaining obligations. Establish `hex : ∃ g' ∈ J, (g' : G ⧸ H) = g` using `⟨g, hg, rfl⟩`. Simplify using `only`. Rewrite using `[dif_pos hex]`. Take `⟨hJ, hq⟩` from `hex.choose_spec`.
+Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmem : (hex.choose)⁻¹ * g ∈ H` using `QuotientGroup.eq.mp hq`. Establish `h1` using `hρ _ (J.mul_mem (J.inv_mem hJ) hg) hmem`. Rewrite `h1` using `[map_mul, map_inv, inv_mul_eq_one]`. Conclude with `h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_finite_of_trivial_on_inf_finiteIndex : ∀ (G Q : Type) [Group G] [Group Q] (ρ : G →* Q) (J H : Subgroup G), H.FiniteIndex → (∀ g ∈ J, g ∈ H → ρ g = 1) → (ρ '' (J : Set G)).Finite := by
   intro G Q _ _ ρ J H hH hρ

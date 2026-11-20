@@ -25,7 +25,7 @@ theorem liftHom_apply {T : Over S} (W : (T ⊗ A).left.Opens) (r : Γ(T.left, �
     liftHom A W r = liftFun A W r := rfl
 
 /- English proof (translation)
-Simplify using `only [liftHom, RingHom.comp_apply]`. Rewrite using `[← CommRingCat.comp_apply, ← Functor.map_comp]`. Both sides reduce to the same expression. Use the proof step `@[instance_reducible]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem res_liftHom {T : Over S} {W W' : (T ⊗ A).left.Opens} (h : W' ≤ W) (r : Γ(T.left, ⊤)) :
     ((T ⊗ A).left.presheaf.map (homOfLE h).op).hom (liftHom A W r) = liftHom A W' r := by
@@ -88,7 +88,7 @@ abbrev de (P : PolAV S) (T : Over S) : Type := Module.Dual Γ(T.left, ⊤) (SecM
 abbrev mulA (n : ℕ) : A ⟶ A := 𝟙 A ^ n
 
 /- English proof (translation)
-Introduce `y hy`. Conclude with `Set.mem_iInter.2 fun _ => Set.mem_iInter.1 hy 0`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem rigT_le (L : LB A.left) {T : Over S} (j : Fin 1 → L.ι) :
     LB.wchart L (fun _ : Fin 1 => T.hom ≫ eSec A) j ≤

@@ -18,11 +18,9 @@ def extLin {U : Set (E d)} (S : Submodule ℂ (U →ᵇ ℂ)) : S →ₗ[ℂ] (E
   map_smul' c u := by funext x; exact GlobalTheory.HCA.SolSub.extendByZeroOffSubset_smul_apply c (u : U →ᵇ ℂ) x
 
 /- English proof (translation)
-Distinguish the cases in `hx : x ∈ U`. Establish `: (fun u : S => extLin S u x) = fun u : S => (u : U →ᵇ ℂ) ⟨x, hx⟩`. Use function extensionality and compare the values at `u`. Simplify using `[extLin, ext0, hx]`. Rewrite using `[this]`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(BoundedContinuousFunction.evalCLM ℂ (⟨x, hx⟩ : U)).continuous.comp continuous_subtype_val`. Establish `: (fun u : S => extLin S u x) = fun _ => 0`. Use function extensionality and compare the values at `u`. Simplify using `[extLin, ext0, hx]`. Rewrite using `[this]`.
-
-Conclude with `continuous_const`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_extLin_apply {U : Set (E d)} (S : Submodule ℂ (U →ᵇ ℂ)) (x : E d) :
     Continuous fun u : S => extLin S u x := by
@@ -36,7 +34,7 @@ theorem continuous_extLin_apply {U : Set (E d)} (S : Submodule ℂ (U →ᵇ ℂ
     rw [this]; exact continuous_const
 
 /- English proof (translation)
-Rewrite using `[continuousOn_iff_continuous_restrict]`. Establish `: U.domRestrict (ext0 U u) = u` using `by funext x; exact dif_pos x.2`. Rewrite using `[this]`. Conclude with `u.continuous`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousOn_extendByZeroOffSubset {U : Set (E d)} (u : U →ᵇ ℂ) : ContinuousOn (ext0 U u) U := by
   rw [continuousOn_iff_continuous_restrict]
@@ -48,11 +46,9 @@ end GlobalTheory.HCA.SolFunc
 open GlobalTheory.HCA.SolFunc in
 
 /- English proof (translation)
-Introduce `d ι _ P U hU ha hell S hS w x hx`. Establish `hcl : IsClosed (S : Set (U →ᵇ ℂ))`. Rewrite using `[hS]`. Conclude with `(GlobalTheory.HCA.solSet_closed_submodule d ι P U hU ha).1`. Use `haveI : CompleteSpace S := hcl.completeSpace_coe`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hsm : ∀ u : S, ContDiffOn ℝ ∞ (extLin S u) U`. Introduce `u`. Establish `hu : (u : U →ᵇ ℂ) ∈ solSet P U` using `by rw [← hS]; exact u.2`. Conclude with `ZetaZeros.D.EllReg.elliptic_regularity_of_parts d ι P U _ ⟨hU, ha, hell, continuousOn_extendByZeroOffSubset _, hu⟩`. Take `⟨l, hl⟩` from `GlobalTheory.T.exists_continuous_functional_iterPartialDeriv d U hU S (extLin S) (fun y _ => continuous_extLin_apply S y) hsm w x hx`.
-
-Conclude with `⟨l, fun u => hl u⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.HCA.dw_solSet_continuous_functional : ∀ (d : ℕ) (ι : Type) [Fintype ι] (P : Sys d ι) (U : Set (E d)), IsOpen U → (∀ i n w, ContDiffOn ℝ ∞ (P.a i n w) U) → (∀ x ∈ U, ∀ ξ : E d, ξ ≠ 0 → ∃ i, P.symb i x ξ ≠ 0) → ∀ S : Submodule ℂ (U →ᵇ ℂ), (S : Set (U →ᵇ ℂ)) = solSet P U → ∀ (w : List (Fin d)), ∀ x ∈ U, ∃ l : S →L[ℂ] ℂ, ∀ u : S, l u = dw w (ext0 U (u : U →ᵇ ℂ)) x := by
   intro d ι _ P U hU ha hell S hS w x hx

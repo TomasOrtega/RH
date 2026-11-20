@@ -17,7 +17,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 noncomputable section
 
 /- English proof (translation)
-Introduce `D S _ U _ hU ψ hψ hr`. Take `⟨hc, hi⟩` from `GlobalTheory.GoodLatCompare.goodSeriesIdempotent_central_idempotent D`. Conclude with `GlobalTheory.T.exists_right_inverse_centralProjectorUnitElement U ψ D.ntypes.e0 hi (fun a => ((Subalgebra.mem_center_iff.mp hc) a).symm) (GlobalTheory.T.good_idempotent_irreducible_character_generic_sum_ne_zero D S U hU ψ hψ hr)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.MeetsGen.exists_right_inv_generic_central_projector : ∀ (D : D7), GrpSide D → ∀ [Fintype (G0g D.nd)]
     (U : Subgroup (G0g D.nd)) [Fintype U],
@@ -33,37 +33,35 @@ theorem GlobalTheory.MeetsGen.exists_right_inv_generic_central_projector : ∀ (
 open GlobalTheory.MeetsGen in
 
 /- English proof (translation)
-Introduce `hG D T S i j b W hW hst hfix`. Distinguish the cases in `hr : D.R.r ≤ 1`. Establish `hFm0 : Fm0 D.nexp i j b = ⊤`. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Fm0, Submodule.mem_iInf, LinearMap.mem_ker]`. Introduce `u`. Establish `hu1 : u = 1` using `Subtype.ext (GlobalTheory.MeetsGen.uup_eq_one_of_le_one _ _ hr _ (T.U_eq ▸ u.2))`. Substitute `hu1` using the available equality. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[hFm0, inf_top_eq]`. Conclude with `hW`. Establish `hr : 2 ≤ D.R.r` using `by omega`. Use `haveI : ∀ k : Fin 2, NeZero (D.host.g k) := fun k => ⟨(D.host.g_prime k).ne_zero⟩`. Use `haveI : Fintype (G0g D.nd) := Fintype.ofFinite _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : Fintype D.nexp.U := Fintype.ofFinite _`. Take `⟨θ, hθ, hψ⟩` from `T.psiU_gen i b`. Set `s : ↥D.LL0 →+* FractionRing (D.ntw.O i)` to `(IsFractionRing.map (A := D.ntw.O0 i) (B := D.ntw.O i) (K := FractionRing (D.ntw.O0 i)) (L := FractionRing (D.ntw.O i)) (D.ntw.O_inj i)).comp (if b then D.ntw.emb0 i else D.ntw.emb0b i)`. Set `t : ↥D.LL0 →+* ℂ` to `D.what₂.embLL.comp D.LL0.val.toRingHom`. Set `Z : Set (FractionRing (D.ntw.O i))` to `{z | ∃ (x : Σ k : Fin 2, D.nd.PlG k) (a : Multiplicative (ZMod (D.host.g x.1))), z = ((θ x a : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i))}`.
+Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hZ : ∀ z ∈ Z, ∃ n : ℕ, 0 < n ∧ z ^ n = 1`. Introduce and unpack `z ⟨x, a, rfl⟩`. Use `haveI : NeZero (D.host.g x.1) := ⟨(D.host.g_prime x.1).ne_zero⟩`. Use `⟨Fintype.card (Multiplicative (ZMod (D.host.g x.1))), Fintype.card_pos, ?_⟩` and prove the remaining obligations. Rewrite using `[← Units.val_pow_eq_pow_val, ← map_pow, pow_card_eq_one, map_one, Units.val_one]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Take `⟨E, jE, hsE, hZE, hj⟩` from `GlobalTheory.T.exists_subfield_adjoin_rootsOfUnity_embedding_complex s t Z hZ`. Set `θE : ∀ x : (Σ k : Fin 2, D.nd.PlG k), Multiplicative (ZMod (D.host.g x.1)) →* Eˣ` to `fun x => { toFun := fun a => ⟨⟨((θ x a : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i)), hZE ⟨x, a, rfl⟩⟩, ⟨(((θ x a)⁻¹ : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i)), hZE ⟨x, a⁻¹, by simp⟩⟩, Subtype.ext (by simp), Subtype.ext (by simp)⟩ map_one' := by ext; …`. Establish `hθE : ∀ x a, (((θE x a : Eˣ) : E) : FractionRing (D.ntw.O i)) = ((θ x a : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i))` using `fun _ _ => rfl`. Set `θ' : ∀ x : (Σ k : Fin 2, D.nd.PlG k), Multiplicative (ZMod (D.host.g x.1)) →* ℂˣ` to `fun x => (Units.map jE.toMonoidHom).comp (θE x)`. Establish `hθ' : 2 ≤ D.R.r → ∀ x, θ' x ≠ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `h x h1`. Apply `hθ h x` to reduce the goal to its premises. Use `MonoidHom.ext fun a => Units.ext ?_` and prove the remaining obligations. Establish `h2` using `congrArg (fun φ : Multiplicative (ZMod (D.host.g x.1)) →* ℂˣ => ((φ a : ℂˣ) : ℂ)) h1`. Simplify using `only [θ', MonoidHom.comp_apply, Units.coe_map, MonoidHom.one_apply, Units.val_one] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h3 : ((θE x a : Eˣ) : E) = 1` using `jE.injective (by rw [map_one]; exact h2)`. Establish `h4 : (((θE x a : Eˣ) : E) : FractionRing (D.ntw.O i)) = 1` using `by rw [h3]; rfl`. Rewrite using `[MonoidHom.one_apply, Units.val_one]`. Conclude with `(hθE x a).symm.trans h4`. Set `ψ' : D.nexp.U →* ℂˣ` to `(Formalism.L2.NX.psiStd _ _ θ').comp (Subgroup.inclusion T.U_eq.le)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hψ' : Formalism.L2.NX.IsStdGeneric (fun kv : (Σ k : Fin 2, D.nd.PlG k) => D.host.g kv.1) D.R.r ψ'` using `⟨θ', hθ', fun u => rfl⟩`. Take `⟨vC, hvC⟩` from `GlobalTheory.MeetsGen.exists_right_inv_generic_central_projector D S D.nexp.U T.U_eq ψ' hψ' hr`. Establish `hψE : ∀ u : D.nexp.U, ((D.nexp.psiU i b u : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i)) ∈ E`. Introduce `u`. Rewrite using `[hψ u]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [Formalism.L2.NX.stdVal, Units.coe_prod]`. Conclude with `E.prod_mem fun x _ => hZE ⟨x, _, rfl⟩`. Set `fE : D.nexp.U → E` to `fun u => ⟨(((D.nexp.psiU i b u)⁻¹ : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i)), by rw [Units.val_inv_eq_inv_val]; exact E.inv_mem (hψE u)⟩`. Set `eE : MonoidAlgebra E (G0g D.nd)` to `MonoidAlgebra.ofCoeff (Finsupp.equivFunOnFinite.symm fun g => (⟨s (D.nexp.eLL0 g), hsE _⟩ : E))`. Establish `hψval : ∀ u : D.nexp.U, jE ⟨((D.nexp.psiU i b u : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i)), hψE u⟩ = ((ψ' u : ℂˣ) : ℂ)`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Introduce `u`. Establish `e1 : (⟨((D.nexp.psiU i b u : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i)), hψE u⟩ : E) = ∏ x, ((θE x (Multiplicative.ofAdd (Formalism.L2.NX.supSum D.R.r (((u : G0g D.nd) x : GL (Fin D.R.r) (ZMod (D.host.g x.1))) : Matrix (Fin D.R.r) (Fin D.R.r) (ZMod (D.host.g x.1)))) …`. Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [SubmonoidClass.coe_finsetProd, hθE]`. Rewrite using `[hψ u]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[Formalism.L2.NX.stdVal, Units.coe_prod]`. Rewrite using `[e1, map_prod]`. Simplify using `[ψ', Formalism.L2.NX.psiStd, Formalism.L2.NX.stdVal, θ', Units.coe_prod]`. Establish `hC1 : MonoidAlgebra.mapRingHom (G0g D.nd) jE (uElt D.nexp.U fE eE) = uElt D.nexp.U (fun u => (((ψ' u)⁻¹ : ℂˣ) : ℂ)) D.ntypes.e0`. Rewrite using `[GlobalTheory.MeetsGen.map_uElt]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `congr 1`. Use function extensionality and compare the values at `u`. Establish `e2 : fE u = (⟨((D.nexp.psiU i b u : (FractionRing (D.ntw.O i))ˣ) : FractionRing (D.ntw.O i)), hψE u⟩ : E)⁻¹` using `Subtype.ext (by simp [fE])`. Rewrite using `[e2, map_inv₀, hψval, Units.val_inv_eq_inv_val]`. Use `MonoidAlgebra.ext (Finsupp.ext fun g => ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[MonoidAlgebra.coeff_mapRingHom]`. Simplify using `only [eE, MonoidAlgebra.coeff_ofCoeff, Finsupp.coe_equivFunOnFinite_symm]`. Rewrite using `[hj, ← D.nStage_trivialCharacter_coeff_eq]`. Both sides reduce to the same expression. Establish `hK1 : MonoidAlgebra.mapRingHom (G0g D.nd) E.subtype eE = D.nexp.eAlg i b`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `MonoidAlgebra.ext (Finsupp.ext fun g => ?_)` and prove the remaining obligations. Rewrite using `[MonoidAlgebra.coeff_mapRingHom, D.nexp.eAlg_def]`. Simplify using `only [eE, MonoidAlgebra.coeff_ofCoeff, Finsupp.coe_equivFunOnFinite_symm]`. Both sides reduce to the same expression. Take `⟨vE, hvE⟩` from `GlobalTheory.T.monoidAlgebra_exists_right_inv_of_map_field jE (uElt D.nexp.U fE eE) ⟨vC, by rw [hC1]; exact hvC⟩`.
-
-Establish `hvK` using `congrArg (MonoidAlgebra.mapRingHom (G0g D.nd) E.subtype) hvE`. Rewrite `hvK` using `[map_mul, map_one, GlobalTheory.MeetsGen.map_uElt, hK1]`. Establish `heq` using `GlobalTheory.MeetsGen.eq_sum_of_uElt_mul D.nexp.U _ (D.nexp.eAlg i b) _ (D.nexp.eAlg_idem i b) (D.nexp.eAlg_central i b) hvK`. Conclude with `GlobalTheory.T.stable_submodule_meets_character_type_vectors (D.nexp.actG i j b) D.nexp.U (D.nexp.psiU i b) (D.nexp.eAlg i b) _ heq W hW (fun g x hx => hst g x hx) (fun x hx => hfix x hx)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TwInputs.meetsAll_of_ties : GlobalTheory.Published.GreenCuspidal → ∀ (D : D7), NExpTied D → GrpSide D → MeetsAll D := by
   intro hG D T S i j b W hW hst hfix

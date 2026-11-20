@@ -4,7 +4,7 @@ open GlobalTheory.NeedB Polynomial
 namespace GlobalTheory
 
 /- English proof (translation)
-Rewrite using `[ZMod.val_add, ← pow_add]`. Use `conv_rhs => rw [← Nat.div_add_mod (x.val + y.val) N, pow_add, pow_mul, hζN, one_pow, one_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem zeta_pow_val_add {Ω : Type} [Field Ω] {N : ℕ} [NeZero N] {ζ : Ω} (hζN : ζ ^ N = 1) (x y : ZMod N) :
     ζ ^ (x + y).val = ζ ^ x.val * ζ ^ y.val := by
@@ -12,49 +12,43 @@ theorem zeta_pow_val_add {Ω : Type} [Field Ω] {N : ℕ} [NeZero N] {ζ : Ω} (
   conv_rhs => rw [← Nat.div_add_mod (x.val + y.val) N, pow_add, pow_mul, hζN, one_pow, one_mul]
 
 /- English proof (translation)
-Introduce `K Ω _ _ _ _ _ N ζ hN hζ hfix E χ hχ hadd`. Use `haveI : NeZero N := ⟨hN.ne'⟩`. Use `set H := E.fixingSubgroup with hH`. Establish `hζN : ζ ^ N = 1` using `hζ.pow_eq_one`. Establish `hζ0 : ζ ≠ 0` using `hζ.ne_zero hN.ne'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : χ 1 = 0`. Use `hadd 1 H.one_mem 1 H.one_mem` as an intermediate fact. Simplify using `using this`. Establish `hV : {g : Ω ≃ₐ[K] Ω | χ g = 0} ∈ nhds (1 : Ω ≃ₐ[K] Ω)`. Use `(hχ.isOpen_fiber (χ 1)).mem_nhds (show (1 : Ω ≃ₐ[K] Ω) ∈ χ ⁻¹' {χ 1} from rfl)` as an intermediate fact.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Simplify `this` using `[h1]`. Take `⟨F, hFfin, hFV⟩` from `(krullTopology_mem_nhds_one_iff K Ω _).mp hV`. Set `r : (Ω ≃ₐ[K] Ω) → (F →ₐ[K] Ω)` to `fun g => (g : Ω →ₐ[K] Ω).comp F.val`. Establish `hr : ∀ g x, r g x = g (x : Ω)` using `fun _ _ => rfl`. Establish `hrχ : ∀ g ∈ H, ∀ h ∈ H, r g = r h → χ g = χ h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `g hg h hh he`. Establish `hm : h⁻¹ * g ∈ H` using `H.mul_mem (H.inv_mem hh) hg`. Establish `hF : h⁻¹ * g ∈ F.fixingSubgroup`. Rewrite using `[IntermediateField.mem_fixingSubgroup_iff]`. Introduce `x hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `congrArg (fun φ => φ ⟨x, hx⟩) he` as an intermediate fact. Simplify using `only [hr] at this`. Simplify using `[AlgEquiv.mul_apply, this]`. Establish `h0 : χ (h⁻¹ * g) = 0` using `hFV hF`. Use `hadd h hh (h⁻¹ * g) hm` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite `this` using `[mul_inv_cancel_left, h0, add_zero]`. Conclude with `this`. Use `haveI : FiniteDimensional K F := hFfin`. Set `ι` to `{φ : F →ₐ[K] Ω // ∃ g ∈ H, r g = φ}`. Use `haveI : Finite (F →ₐ[K] Ω) := inferInstance`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `haveI : Fintype ι := Fintype.ofFinite ι`. Set `s : ι → (Ω ≃ₐ[K] Ω)` to `fun i => i.2.choose`. Establish `hsH : ∀ i, s i ∈ H` using `fun i => i.2.choose_spec.1`. Establish `hsr : ∀ i, r (s i) = i.1` using `fun i => i.2.choose_spec.2`. Set `a : (Ω ≃ₐ[K] Ω) → Ω` to `fun g => ζ ^ (χ g).val`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha0 : ∀ g, a g ≠ 0` using `fun g => pow_ne_zero _ hζ0`. Establish `hamul : ∀ g ∈ H, ∀ h ∈ H, a (g * h) = a g * a h`. Introduce `g hg h hh`. Simplify using `only [a, hadd g hg h hh, zeta_pow_val_add hζN]`. Establish `hafix : ∀ (g h : Ω ≃ₐ[K] Ω), g (a h) = a h`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g h`. Simplify using `only [a, map_pow, hfix]`. Set `w : ι → Ω` to `fun i => (a (s i))⁻¹`. Set `v : ι → (F →* Ω)` to `fun i => (i.1 : F →+* Ω).toMonoidHom`. Establish `hv : Function.Injective v`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Introduce `i j hij`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `x`. Conclude with `DFunLike.congr_fun hij x`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hli` using `(linearIndependent_monoidHom F Ω).comp v hv`. Choose the witnesses or unpack the hypotheses as in `⟨c, hc⟩ : ∃ c : F, ∑ i, w i * i.1 c ≠ 0 := by`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hz : ∑ i, w i • ((v i : F →* Ω) : F → Ω) = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use function extensionality and compare the values at `x`. Simplify `hcon x` using `[Finset.sum_apply, v]`. Use `Fintype.linearIndependent_iff.mp hli w hz ⟨r 1, 1, H.one_mem, rfl⟩` as an intermediate fact. Conclude with `inv_ne_zero (ha0 _) this`. Establish `hmain : ∀ g ∈ H, g (∑ i, w i * i.1 c) = a g * ∑ i, w i * i.1 c`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Introduce `g hg`. Set `e : ι → ι` to `fun i => ⟨r (g * s i), g * s i, H.mul_mem hg (hsH i), rfl⟩`. Establish `hic : ∀ i : ι, i.1 c = s i (c : Ω)`. Introduce `i`. Rewrite using `[← hsr i]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hr _ _`. Establish `hec : ∀ i, (e i).1 c = g (i.1 c)`. Introduce `i`. Rewrite using `[hic i]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hwe : ∀ i, w i = a g * w (e i)`. Introduce `i`. Establish `hχe : χ (s (e i)) = χ (g * s i)` using `hrχ _ (hsH (e i)) _ (H.mul_mem hg (hsH i)) (hsr (e i))`. Establish `: a (s (e i)) = a g * a (s i)`. Rewrite using `[← hamul g hg (s i) (hsH i)]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify using `only [a, hχe]`. Simplify using `only [w, this, mul_inv, ← mul_assoc, mul_inv_cancel₀ (ha0 g), one_mul]`. Establish `he : Function.Injective e`. Introduce `i j hij`. Establish `h2 : r (g * s i) = r (g * s j)` using `congrArg Subtype.val hij`.
+Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[← hsr i, ← hsr j]`. Apply `AlgHom.ext` to reduce the goal to its premises. Introduce `x`. Use `DFunLike.congr_fun h2 x` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [hr, AlgEquiv.mul_apply] at this`. Simplify `g.injective this` using `[hr]`. Establish `hb : Function.Bijective e` using `Finite.injective_iff_bijective.mp he`. Rewrite using `[map_sum, Finset.mul_sum]`. Simplify using `only [map_mul, hfix, w, map_inv₀, hafix]`.
+Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `(Fintype.sum_bijective e hb _ _ ?_)` and prove the remaining obligations. Introduce `i`. Establish `h3` using `hwe i`. Simplify using `only [w] at h3`. Rewrite using `[h3, ← hec i]`.
-
-Expand and normalize the polynomial expressions, which then agree. Use `⟨∑ i, w i * i.1 c, hc, ?_, ?_⟩` and prove the remaining obligations. Use `haveI : IsGalois K Ω := IsAlgClosure.isGalois K Ω`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup E, IntermediateField.mem_fixedField_iff]`. Introduce `g hg`.
-
-Establish `key` using `hmain g hg`. Rewrite using `[map_pow, key, mul_pow]`. Establish `: a g ^ N = 1` using `by show (ζ ^ (χ g).val) ^ N = 1`. Rewrite using `[← pow_mul, mul_comm, pow_mul, hζN, one_pow]`. Rewrite using `[this, one_mul]`.
-
-Conclude with `hmain`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kummer_generator_of_char : ∀ (K Ω : Type) [Field K] [CharZero K] [Field Ω] [Algebra K Ω] [IsAlgClosure K Ω] (N : ℕ) (ζ : Ω), 0 < N →
   IsPrimitiveRoot ζ N → (∀ g : Ω ≃ₐ[K] Ω, g ζ = ζ) → ∀ (E : IntermediateField K Ω) (χ : (Ω ≃ₐ[K] Ω) → ZMod N),

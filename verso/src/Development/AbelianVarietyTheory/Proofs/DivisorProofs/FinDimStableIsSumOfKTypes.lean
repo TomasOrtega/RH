@@ -12,7 +12,7 @@ namespace GlobalTheory.PsCo.PcEF
 variable {n : ℕ} {ε : Fin n → Bool} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Take `⟨hu, hc⟩` from `hg`. Use `⟨Matrix.mem_unitaryGroup_iff.2 (by rw [Matrix.star_eq_conjTranspose, Matrix.conjTranspose_conjTranspose]; exact Matrix.mem_unitaryGroup_iff'.1 hu), ?_⟩` and prove the remaining obligations. Establish `h` using `congrArg Matrix.conjTranspose hc`. Simplify using `only [Matrix.conjTranspose_mul, Formalism.REAL.Jm_conjTranspose] at h`. Conclude with `h.symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sumTypes_conjT_mem {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) : gᴴ ∈ Formalism.REAL.Kset ε := by
   obtain ⟨hu, hc⟩ := hg
@@ -22,17 +22,17 @@ theorem sumTypes_conjT_mem {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalis
   exact h.symm
 
 /- English proof (translation)
-The claim follows from `Matrix.mem_unitaryGroup_iff.1 hg.1`.
+A detailed English derivation is pending.
 -/
 theorem sumTypes_mul_conjT {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) : g * gᴴ = 1 :=
   Matrix.mem_unitaryGroup_iff.1 hg.1
 
 /- English proof (translation)
-Establish `hK` using `Formalism.REAL.kFacts n ε`. Establish `hgU : g ∈ UJset ε` using `hK.1 g hg`. Establish `hgU' : gᴴ ∈ UJset ε` using `hK.1 _ (sumTypes_conjT_mem hg)`. Set `f : H →ₗᵢ[ℂ] H` to `{ (σ g : H →ₗ[ℂ] H) with norm_map' := hσ.2.1 g hgU }`. Establish `e : σ g (σ gᴴ r) = r`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `h1` using `hσ.1.2 g hgU gᴴ hgU'`. Rewrite `h1` using `[sumTypes_mul_conjT hg, hσ.1.1]`. Use `congrArg (fun T : H →L[ℂ] H => T r) h1` as an intermediate fact. Simplify using `using this.symm`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[e]`. Use `_ = ⟪σ gᴴ r, v⟫_ℂ := f.inner_map_map _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sumTypes_inner {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (hσ : IsURepOn (UJset ε) σ)
     {g : Matrix (Fin n) (Fin n) ℂ} (hg : g ∈ Formalism.REAL.Kset ε) (r v : H) :
@@ -52,19 +52,17 @@ theorem sumTypes_inner {σ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)} (h�
     _ = ⟪σ gᴴ r, v⟫_ℂ := f.inner_map_map _ _
 
 /- English proof (translation)
-Introduce `n ε H _ _ σ hσ S hSfd hSK`. Use `set R : Submodule ℂ H := sSup {S' | S' ≤ S ∧ ∃ μ, Formalism.MainNotions.S.IsKTypeOf ε σ μ S'} with hR`. Establish `hRS : R ≤ S` using `sSup_le fun S' hS' => hS'.1`. Establish `: FiniteDimensional ℂ R` using `Submodule.finiteDimensional_of_le hRS`. Establish `hRK : Formalism.MainNotions.S.IsKStableOn ε σ R`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g hg v hv`. Establish `hle : R ≤ Submodule.comap (σ g : H →ₗ[ℂ] H) R` using `sSup_le fun S' hS' x hx => by`. Take `⟨μ, hμ⟩` from `hS'.2`. Conclude with `Submodule.mem_sSup_of_mem hS' (hμ.2.1 g hg x hx)`. Conclude with `hle hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `hRoK : Formalism.MainNotions.S.IsKStableOn ε σ Rᗮ`. Introduce `g hg v hv r hr`. Rewrite using `[sumTypes_inner hσ hg]`. Conclude with `hv _ (hRK _ (sumTypes_conjT_mem hg) r hr)`. Use `set T : Submodule ℂ H := S ⊓ Rᗮ`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hT : T = ⊥`. Assume the negation of the conclusion as `h0`. Establish `: FiniteDimensional ℂ T` using `Submodule.finiteDimensional_of_le inf_le_left`. Take `⟨μ, S', hS'T, hS'⟩` from `GlobalTheory.KTypeExists.exists_kType n ε H σ hσ T inferInstance (fun g hg v hv => Submodule.mem_inf.2 ⟨hSK g hg v (Submodule.mem_inf.1 hv).1, hRoK g hg v (Submodule.mem_inf.1 hv).2⟩) h0`. Take `⟨v, hv, hv0, -⟩` from `hS'.2.2.2.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hvR : v ∈ R` using `Submodule.mem_sSup_of_mem (show S' ∈ {S' | S' ≤ S ∧ ∃ μ, Formalism.MainNotions.S.IsKTypeOf ε σ μ S'} from ⟨hS'T.trans inf_le_left, μ, hS'⟩) hv`. Establish `hvRo : v ∈ Rᗮ` using `(hS'T hv).2`. Conclude with `hv0 (inner_self_eq_zero.1 (hvRo v hvR))`. Introduce `v hv`. Take `⟨y, hy, z, hz, rfl⟩` from `R.exists_add_mem_mem_orthogonal v`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hzS : z ∈ S`. Use `sub_mem hv (hRS hy)` as an intermediate fact. Simplify using `using this`. Establish `hz0 : z ∈ T` using `⟨hzS, hz⟩`. Rewrite `hz0` using `[hT, Submodule.mem_bot]`.
-
-Rewrite using `[hz0, add_zero]`. Conclude with `hy`.
+A detailed English derivation is pending.
 -/
 theorem finDimStable_isSumOfKTypes : SumTypes := by
   intro n ε H _ _ σ hσ S hSfd hSK

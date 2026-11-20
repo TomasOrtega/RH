@@ -12,7 +12,7 @@ section Core
 variable {K : Type} [Field K] {n : ℕ}
 
 /- English proof (translation)
-Establish `h : (k : ℝ) ≤ n` using `by exact_mod_cast hk`. Establish `h0 : (0 : ℝ) ≤ k` using `Nat.cast_nonneg k`. Unfold `prof`. Conclude with `mul_nonneg (mul_nonneg hτ h0) (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem prof_nonneg {τ : ℝ} (hτ : 0 ≤ τ) {k : ℕ} (hk : k ≤ n) : 0 ≤ prof n τ k := by
   have h : (k : ℝ) ≤ n := by exact_mod_cast hk
@@ -21,15 +21,15 @@ theorem prof_nonneg {τ : ℝ} (hτ : 0 ≤ τ) {k : ℕ} (hk : k ≤ n) : 0 ≤
   exact mul_nonneg (mul_nonneg hτ h0) (by linarith)
 
 /- English proof (translation)
-Simplify using `using Submodule.finrank_le W`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem finrank_le_n (W : Submodule K (Fin n → K)) : Module.finrank K W ≤ n := by
   simpa using Submodule.finrank_le W
 
 /- English proof (translation)
-Establish `h : (b : ℝ) = 2 * k - a`. Establish `: ((a + b : ℕ) : ℝ) = ((2 * k : ℕ) : ℝ)` using `by rw [hab]`. Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Unfold `prof`.
+Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Replace the relevant objects with their definitions.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem prof_second_diff (τ : ℝ) (a b k : ℕ) (hab : a + b = 2 * k) :
     prof n τ a + prof n τ b = 2 * prof n τ k - 2 * τ * ((k : ℝ) - a) ^ 2 := by
@@ -42,21 +42,21 @@ theorem prof_second_diff (τ : ℝ) (a b k : ℕ) (hab : a + b = 2 * k) :
   ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hW₀`. Use `push Not at hW₀`. Use `set ψ : Submodule K (Fin n → K) → ℝ := fun W => deg' W - prof n τ (Module.finrank K W) with hψ`. Establish `hψb : BddAbove (Set.range ψ)`. Take `⟨B, hB⟩` from `hbdd`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Use `⟨B, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨W, rfl⟩`. Establish `h1 : deg' W ≤ B` using `hB ⟨W, rfl⟩`. Establish `h2` using `prof_nonneg (n := n) hτ.le (finrank_le_n W)`. Simplify using `only [hψ]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set s : ℝ := ⨆ W, ψ W with hs`. Establish `hle : ∀ W, ψ W ≤ s` using `fun W => le_ciSup hψb W`. Establish `hs0 : 0 < s` using `lt_of_lt_of_le (by simp only [hψ]; linarith) (hle W₀)`. Establish `hε : 0 < min s (τ - D / 2)` using `lt_min hs0 (by linarith)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨W, hW⟩ : ∃ W, s - min s (τ - D / 2) < ψ W` from `exists_lt_of_lt_ciSup (by rw [hs]; linarith [hε])`. Establish `hε1 : min s (τ - D / 2) ≤ s` using `min_le_left _ _`. Establish `hε2 : min s (τ - D / 2) ≤ τ - D / 2` using `min_le_right _ _`. Distinguish the cases in `hg : g W = W`. Establish `h` using `hst W hg`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [hψ] at hW`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hsum` using `Submodule.finrank_sup_add_finrank_inf_eq W (g W)`. Rewrite `hsum` using `[hrank W]`. Establish `hne : W ⊓ g W ≠ W` using `fun h => hg (Submodule.eq_of_le_of_finrank_le (inf_eq_left.1 h) (by rw [hrank W])).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlt : Module.finrank K (W ⊓ g W : Submodule K (Fin n → K)) < Module.finrank K W` using `Submodule.finrank_lt_finrank_of_lt (lt_of_le_of_ne inf_le_left hne)`. Establish `hid` using `prof_second_diff (n := n) τ (Module.finrank K (W ⊓ g W : Submodule K (Fin n → K))) (Module.finrank K (W ⊔ g W : Submodule K (Fin n → K))) (Module.finrank K W) (by omega)`. Establish `hj : (1 : ℝ) ≤ (Module.finrank K W : ℝ) - Module.finrank K (W ⊓ g W : Submodule K (Fin n → K))`. Establish `: ((Module.finrank K (W ⊓ g W : Submodule K (Fin n → K)) + 1 : ℕ) : ℝ) ≤ Module.finrank K W`. Conclude with `hlt` after adjusting the coercions.
+Establish an intermediate fact. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Move the coercions through the operations in `at this`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hj2 : τ * 1 ≤ τ * ((Module.finrank K W : ℝ) - Module.finrank K (W ⊓ g W : Submodule K (Fin n → K))) ^ 2` using `mul_le_mul_of_nonneg_left (by nlinarith) hτ.le`. Establish `h1` using `hle (W ⊓ g W)`. Establish `h2` using `hle (W ⊔ g W)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3` using `hsub W (g W)`. Establish `h4` using `hmove W`. Simplify using `only [hψ] at h1 h2 hW`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem core (deg' : Submodule K (Fin n → K) → ℝ) (g : Submodule K (Fin n → K) → Submodule K (Fin n → K))
     (τ D : ℝ) (hτ : 0 < τ) (hD : D < 2 * τ) (hbdd : BddAbove (Set.range deg'))
@@ -117,9 +117,9 @@ section Global
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n : ℕ}
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (Matrix.toLin' g.val)`. Introduce `a b hab`. Establish `h : (g⁻¹ : GL (Fin n) E).val *ᵥ (g.val *ᵥ a) = (g⁻¹ : GL (Fin n) E).val *ᵥ (g.val *ᵥ b)`. Simplify `congrArg (fun y => (g⁻¹ : GL (Fin n) E).val *ᵥ y) hab` using `[Matrix.toLin'_apply]`. Simplify `h` using `[Matrix.mulVec_mulVec, ← Units.val_mul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ hinj W).symm`.
+A detailed English derivation is pending.
 -/
 theorem finrank_img (g : GL (Fin n) E) (W : Submodule E (Fin n → E)) :
     Module.finrank E (img g W) = Module.finrank E W := by
@@ -131,7 +131,7 @@ theorem finrank_img (g : GL (Fin n) E) (W : Submodule E (Fin n → E)) :
   exact LinearEquiv.finrank_eq (Submodule.equivMapOfInjective _ hinj W).symm
 
 /- English proof (translation)
-The claim follows from `(eq_conjSrc fun x => by rw [← conjPl_conjSrc (IsCMField.complexConj E).toRingEquiv v ((IsCMField.complexConj E).toRingEquiv x)] exact congrArg _ (IsCMField.complexConj_apply_apply E x)).symm`.
+A detailed English derivation is pending.
 -/
 theorem conjSrc_invol (v : HeightOneSpectrum (𝓞 E)) :
     conjSrc (IsCMField.complexConj E).toRingEquiv (conjSrc (IsCMField.complexConj E).toRingEquiv v) = v :=
@@ -140,9 +140,7 @@ theorem conjSrc_invol (v : HeightOneSpectrum (𝓞 E)) :
     exact congrArg _ (IsCMField.complexConj_apply_apply E x)).symm
 
 /- English proof (translation)
-Establish `key : ∀ (v w : HeightOneSpectrum (𝓞 E)) (_ : w = v) (f : w.adicCompletion E → v.adicCompletion E), Continuous f → (∀ k : E, f (algebraMap E _ k) = algebraMap E _ k) → f (pLoc E w x) = pLoc E v x`. Introduce and unpack `_ v rfl f hf h`. Conclude with `congrFun ((HeightOneSpectrum.denseRange_algebraMap (K := E) v).equalizer hf continuous_id (funext h)) _`. Use `FiniteAdeleRing.ext _ fun v => key v _ (conjSrc_invol v) (conjLoc _ v ∘ conjLoc _ _) ((conjLoc_spec _ _).1.comp (conjLoc_spec _ _).1) fun k => ?_` and prove the remaining obligations. Rewrite using `[Function.comp_apply, (conjLoc_spec _ _).2.1, (conjLoc_spec _ _).2.1]`.
-
-Conclude with `congrArg _ (IsCMField.complexConj_apply_apply E k)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conjFin_invol (x : Af E) :
     conjFin (IsCMField.complexConj E).toRingEquiv (conjFin (IsCMField.complexConj E).toRingEquiv x) = x := by
@@ -156,19 +154,19 @@ theorem conjFin_invol (x : Af E) :
   exact congrArg _ (IsCMField.complexConj_apply_apply E k)
 
 /- English proof (translation)
-The claim follows from `(infEq E).symm_apply_apply _`.
+A detailed English derivation is pending.
 -/
 theorem pInf_conj (x : Ad E) : pInf E (conjAd E x) = starRingEnd (Cinf E) (pInf E x) :=
   (infEq E).symm_apply_apply _
 
 /- English proof (translation)
-The claim follows from `ad_ext (by rw [pInf_conj, pInf_conj, starRingEnd_self_apply]) (conjFin_invol _)`.
+A detailed English derivation is pending.
 -/
 theorem conjAd_invol (x : Ad E) : conjAd E (conjAd E x) = x :=
   ad_ext (by rw [pInf_conj, pInf_conj, starRingEnd_self_apply]) (conjFin_invol _)
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Express the relevant statement in the definitionally equal form `conjAd E (conjAd E (x.val i j)) = x.val i j`. Conclude with `conjAd_invol _`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem thetaA_invol (x : GA E n) : thetaA E n (thetaA E n x) = x := by
   refine Units.ext ?_
@@ -177,9 +175,9 @@ theorem thetaA_invol (x : GA E n) : thetaA E n (thetaA E n x) = x := by
   exact conjAd_invol _
 
 /- English proof (translation)
-Use `Units.ext ?_` and prove the remaining obligations. Use extensionality with `i j`. Establish `h : ((ratGL E n d)⁻¹ : GA E n) = ratGL E n d⁻¹` using `(map_inv _ _).symm`. Rewrite using `[thetaR_val, h]`. Express the relevant statement in the definitionally equal form `algebraMap E (Ad E) (conjE E ((d⁻¹ : GL (Fin n) E).val j i)) = conjAd E (algebraMap E (Ad E) ((d⁻¹ : GL (Fin n) E).val j i))`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[conjAd_algebraMap]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem ratGL_thetaE (d : GL (Fin n) E) : ratGL E n (thetaE E n d) = thetaA E n (ratGL E n d) := by
   refine Units.ext ?_
@@ -192,7 +190,7 @@ theorem ratGL_thetaE (d : GL (Fin n) E) : ratGL E n (thetaE E n d) = thetaA E n 
   rfl
 
 /- English proof (translation)
-Simplify using `only [twConj, nrm, map_mul, map_inv, thetaA_invol, ratGL_thetaE]`. Use `group`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem conj_nrm (x : GA E n) (d : GL (Fin n) E) :
     x⁻¹ * ratGL E n (nrm d) * x =
@@ -203,13 +201,13 @@ theorem conj_nrm (x : GA E n) (d : GL (Fin n) E) :
 end Global
 
 /- English proof (translation)
-Establish `ha : 0 ≤ |C₁|` using `abs_nonneg _`. Establish `hb : 0 ≤ |C₂|` using `abs_nonneg _`. Establish `hcc : 0 ≤ |c|` using `abs_nonneg _`. Establish `hprod : 0 ≤ |C₁| * (2 + |c|) * (1 + L)` using `by positivity`. Establish `hprod2 : 0 ≤ |C₂| * (1 + L)` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ' : 1 + L + |C₁| * (2 + |c|) * (1 + L) + |C₂| * (1 + L) ≤ τ`. Combine the equalities or inequalities in the displayed calculation. Establish `hτ0 : 0 < τ` using `by linarith`. Use `⟨hτ0, ?_, ?_⟩` and prove the remaining obligations. Establish `e1 : C₁ * (1 + l) ≤ |C₁| * (1 + l)` using `mul_le_mul_of_nonneg_right (le_abs_self _) (by linarith)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e2 : |C₁| * (1 + l) ≤ |C₁| * (1 + (2 * L + |c|))` using `mul_le_mul_of_nonneg_left (by linarith) ha`. Establish `e3 : |C₁| * (1 + (2 * L + |c|)) ≤ |C₁| * (2 + |c|) * (1 + L)`. Establish `: 0 ≤ |C₁| * (1 + |c| * L)` using `by positivity`. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h3 : C₂ * (1 + L) ≤ |C₂| * (1 + L)` using `mul_le_mul_of_nonneg_right (le_abs_self _) (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem arith (C₁ C₂ c L l τ : ℝ) (hL0 : 0 ≤ L) (hl0 : 0 ≤ l) (hl : l ≤ 2 * L + |c|)
     (hτ : (1 + |C₁| * (2 + |c|) + |C₂|) * (1 + L) ≤ τ) :
@@ -234,13 +232,13 @@ theorem arith (C₁ C₂ c L l τ : ℝ) (hL0 : 0 ≤ L) (hl0 : 0 ≤ l) (hl : l
     linarith
 
 /- English proof (translation)
-Introduce `hSub hMove hBdd hPair hSize E _ _ _ n`. Take `⟨C₁, h₁⟩` from `hMove E n`. Take `⟨C₂, h₂⟩` from `hPair E n`. Take `⟨-, hnn, hθ, c, hc⟩` from `hSize E n`. Use `⟨1 + |C₁| * (2 + |c|) + |C₂|, fun τ x d hτ => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hls : logSize (x⁻¹ * ratGL E n (nrm d) * x) ≤ 2 * logSize (twConj (thetaA E n) x (ratGL E n d)) + |c|`. Rewrite using `[conj_nrm]`. Establish `h` using `hc (twConj (thetaA E n) x (ratGL E n d)) (thetaA E n (twConj (thetaA E n) x (ratGL E n d)))`. Rewrite `h` using `[hθ]`. Use `le_abs_self c` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hτ0, hD, hC₂⟩` from `arith C₁ C₂ c _ _ τ (hnn _) (hnn _) hls hτ`. Prove the components needed by the constructor for the conclusion. Conclude with `fun h W _ => h.1 W`. Introduce `hst`.
+Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨fun W => ?_, ?_⟩` and prove the remaining obligations. Conclude with `core (deg x) (img (nrm d)) τ _ hτ0 hD ((hBdd E n).1 x) (hSub E n x) (fun W => h₁ x (nrm d) W) (fun W => finrank_img _ W) hst W`. Establish `h` using `(h₂ x d).2`. Use `neg_abs_le (deg x (⊤ : Submodule E (Fin n → E)))` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem onlyStable_of : DegSubmod → DegMove → DegBdd → DegPairing → SizeBasic → OnlyStable := by
   intro hSub hMove hBdd hPair hSize E _ _ _ n

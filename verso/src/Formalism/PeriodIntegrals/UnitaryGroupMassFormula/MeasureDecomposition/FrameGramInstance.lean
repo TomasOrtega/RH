@@ -9,7 +9,7 @@ open Matrix
 namespace PI.ScMuExists.UnitaryGroupMassFormula
 
 /- English proof (translation)
-Unfold `instBmat hJ`. Rewrite using `[Matrix.mul_assoc]`. Simplify using `[Matrix.mul_apply, dotProduct, mulVec, Finset.mul_sum]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem gram_entry (I : Formalism.MainNotions.S.AutInst) (v : NumberField.InfinitePlace I.F) {r : ℕ}
     (e f : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) (j k : Fin r ⊕ Fin r ⊕ Unit) :
@@ -20,31 +20,29 @@ theorem gram_entry (I : Formalism.MainNotions.S.AutInst) (v : NumberField.Infini
   simp [Matrix.mul_apply, dotProduct, mulVec, Finset.mul_sum]
 
 /- English proof (translation)
-Introduce `I r e f z hF v`. Take `⟨hee, hff, hef, hz, hzz⟩` from `rv_frame (I := I) hF v`. Establish `hJH : (Formalism.REAL.Jm (I.ε v))ᴴ = Formalism.REAL.Jm (I.ε v)`. Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_conjTranspose]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `by_cases h : I.ε v a <;> simp [h]`. Establish `hH : ((instBmat I v e f z)ᴴ * Formalism.REAL.Jm (I.ε v) * instBmat I v e f z)ᴴ = (instBmat I v e f z)ᴴ * Formalism.REAL.Jm (I.ε v) * instBmat I v e f z`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_conjTranspose, hJH, Matrix.mul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `have hent := gram_entry I v e f z`. Generalize the expression as in `(instBmat I v e f z)ᴴ * Formalism.REAL.Jm (I.ε v) * instBmat I v e f z = G at hH hent ⊢`. Establish `hS : ∀ j k, G j k = star (G k j)`. Introduce `j k`. Establish `hjk` using `congrFun (congrFun hH j) k`.
+Establish an intermediate fact. Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite `hjk` using `[Matrix.conjTranspose_apply]`. Conclude with `hjk.symm`. Establish `h1 : ∀ a b, G (Sum.inl a) (Sum.inl b) = 0` using `fun a b => by rw [hent]; exact hee a b`. Establish `h3 : ∀ a b, G (Sum.inl a) (Sum.inr (Sum.inl b)) = if a = b then 1 else 0` using `fun a b => by rw [hent]; exact hef a b`. Establish `h4 : ∀ a (u : Unit), G (Sum.inl a) (Sum.inr (Sum.inr u)) = 0` using `fun a u => by rw [hent]; exact (hz a).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h5 : ∀ a (u : Unit), G (Sum.inr (Sum.inl a)) (Sum.inr (Sum.inr u)) = 0` using `fun a u => by rw [hent]; exact (hz a).2`. Establish `h3' : ∀ a b, G (Sum.inr (Sum.inl a)) (Sum.inl b) = if b = a then 1 else 0`. Introduce `a b`. Rewrite using `[hS, h3]`. Apply the tactic sequence `split_ifs <;> simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `h4' : ∀ a (u : Unit), G (Sum.inr (Sum.inr u)) (Sum.inl a) = 0`. Introduce `a u`. Rewrite using `[hS, h4, star_zero]`. Establish `h5' : ∀ a (u : Unit), G (Sum.inr (Sum.inr u)) (Sum.inr (Sum.inl a)) = 0`. Introduce `a u`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hS, h5, star_zero]`. Establish `h6 : ∀ u u' : Unit, G (Sum.inr (Sum.inr u)) (Sum.inr (Sum.inr u')) ≠ 0`. Introduce `u u'`. Rewrite using `[hent]`. Conclude with `hzz`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hker : ∀ w, G *ᵥ w = 0 → w = 0`. Introduce `w hw`. Establish `hf : ∀ a, w (Sum.inr (Sum.inl a)) = 0`. Introduce `a`. Use `congrFun hw (Sum.inl a)` as an intermediate fact.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, h1, h3, h4]`. Establish `he : ∀ a, w (Sum.inl a) = 0`. Introduce `a`. Use `congrFun hw (Sum.inr (Sum.inl a))` as an intermediate fact. Simplify `this` using `[Matrix.mulVec, dotProduct, Fintype.sum_sum_type, h3', h5, hf]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hzw : ∀ u : Unit, w (Sum.inr (Sum.inr u)) = 0`. Introduce `u`. Use `congrFun hw (Sum.inr (Sum.inr u))` as an intermediate fact. Simplify using `only [Matrix.mulVec, dotProduct, Fintype.sum_sum_type, h4', h5', zero_mul, Finset.sum_const_zero, zero_add, Pi.zero_apply] at this`. Rewrite `this` using `[Fintype.sum_unique]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Split into cases according to the possible forms of the given data.
 
-Break down `(mul_eq_zero.mp this) with h | h` into its components or cases. Conclude with `absurd h (h6 _ _)`. Consider the cases of `u`. Conclude with `h`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Break down `j with a | a | u` into its components or cases. Conclude with `he a`. Conclude with `hf a`. Conclude with `hzw u`. Use `Matrix.mulVec_injective_iff_isUnit.mp ?_` and prove the remaining obligations.
-
-Introduce `w₁ w₂ h`. Establish `h0 : G *ᵥ (w₁ - w₂) = 0` using `by rw [Matrix.mulVec_sub, h, sub_self]`. Conclude with `sub_eq_zero.mp (hker _ h0)`.
+A detailed English derivation is pending.
 -/
 theorem frame_gram_instance : InstFrameGram := by
   intro I r e f z hF v

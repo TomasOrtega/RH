@@ -10,13 +10,11 @@ open scoped Classical
 namespace GlobalTheory.TameRed
 
 /- English proof (translation)
-Establish `hn : orderOf x ≠ 0` using `hx.orderOf_pos.ne'`. Use `set a := (orderOf x).factorization l with ha`. Use `set M := orderOf x / l ^ a with hM`. Establish `hmul : l ^ a * M = orderOf x` using `Nat.ordProj_mul_ordCompl_eq_self _ _`. Establish `hcop : M.Coprime l` using `(Nat.coprime_ordCompl hl hn).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hM0 : M ≠ 0` using `(Nat.ordCompl_pos l hn).ne'`. Use `haveI : NeZero M := ⟨hM0⟩`. Use `set u := (((l ^ a : ℕ) : ZMod M)⁻¹).val with hu`. Establish `hz : Formalism.CyclotomicNorms.primeToPart l x = x ^ (l ^ a * u)` using `rfl`. Establish `hone : (x ^ (l ^ a)) ^ M = 1` using `by rw [← pow_mul, hmul, pow_orderOf_eq_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hmod : l ^ a * u ≡ 1 [MOD M]`. Rewrite using `[← ZMod.natCast_eq_natCast_iff, Nat.cast_mul, hu, ZMod.natCast_zmod_val, Nat.cast_one]`. Conclude with `ZMod.coe_mul_inv_eq_one _ (Nat.Coprime.pow_left a hcop.symm)`. Use `⟨a, M, hM0, hcop, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hz, pow_mul, ← pow_mul _ u, mul_comm u, pow_mul, hone, one_pow]`.
-
-Rewrite using `[hz, ← pow_mul, mul_comm, pow_mul]`. Use `pow_eq_pow_of_modEq hmod hone` as an intermediate fact. Rewrite `this` using `[pow_one]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem part_spec {G : Type} [Monoid G] {l : ℕ} (hl : l.Prime) {x : G} (hx : IsOfFinOrder x) :
     ∃ a M : ℕ, M ≠ 0 ∧ M.Coprime l ∧ Formalism.CyclotomicNorms.primeToPart l x ^ M = 1 ∧
@@ -41,9 +39,9 @@ theorem part_spec {G : Type} [Monoid G] {l : ℕ} (hl : l.Prime) {x : G} (hx : I
     rwa [pow_one] at this
 
 /- English proof (translation)
-Use `first`. Consider the case `(rename_i h_2 h_3 h_4; revert O k h_2 h_3 h_4 f M hM x y hx hy h; exact @_root_.GlobalTheory.RootsOfUnityInjectiveInertiaEigenvalues.main)`. Consider the case `exact @_root_.GlobalTheory.RootsOfUnityInjectiveInertiaEigenvalues.main`. Consider the case `exact _root_.GlobalTheory.RootsOfUnityInjectiveInertiaEigenvalues.main`. Consider the case `(apply _root_.GlobalTheory.RootsOfUnityInjectiveInertiaEigenvalues.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply _root_.GlobalTheory.RootsOfUnityInjectiveInertiaEigenvalues.main <;> assumption)`. Consider the case `(intros; apply @_root_.GlobalTheory.RootsOfUnityInjectiveInertiaEigenvalues.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.RootsOfUnityInjectiveInertiaEigenvalues.main ..)`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem eq_of_map_eq {O k : Type} [CommRing O] [IsDomain O] [Field k] (f : O →+* k) {M : ℕ} (hM : (M : k) ≠ 0)
     {x y : O} (hx : x ^ M = 1) (hy : y ^ M = 1) (h : f x = f y) : x = y := by

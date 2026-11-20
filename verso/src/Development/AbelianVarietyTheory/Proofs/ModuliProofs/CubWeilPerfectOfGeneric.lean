@@ -19,23 +19,21 @@ namespace GlobalTheory.PerfectPairing
 variable {O : Type} [CommRing O]
 
 /- English proof (translation)
-Take `⟨H, φ, y, hφf, hφl, hpb⟩` from `finRep_exists_isPullback_spec ((𝟙 A) ^ n : A ⟶ A).left (CommRingCat.of O) (eSec A)`. Use `letI : Algebra O H := φ.hom.toAlgebra`. Use `haveI : Module.Finite O H := hφf`. Use `haveI : Module.Flat O H := hφl`. Establish `hpow : ∀ {T : Over (Sp O)} (z : T ⟶ A), z.left ≫ ((𝟙 A) ^ n : A ⟶ A).left = (z ^ n).left`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `T z`. Rewrite using `[← Over.comp_left, MonObj.comp_pow, Category.comp_id]`. Establish `he : eSec A ≫ A.hom = 𝟙 _` using `Over.w (η[A])`. Establish `hy : y ≫ A.hom = (specO O H).hom`. Rewrite using `[← Over.w ((𝟙 A) ^ n : A ⟶ A), ← Category.assoc, hpb.w, Category.assoc, he]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `Category.comp_id _`. Set `y' : specO O H ⟶ A` to `Over.homMk y hy`. Use `⟨H, inferInstance, inferInstance, Module.free_of_flat_of_isLocalRing, inferInstance, y', ?_, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[← hpow, GlobalTheory.UU.one_left]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpb.w`. Introduce `S _ _ z hz`. Establish `hw : z.left ≫ ((𝟙 A) ^ n : A ⟶ A).left = Spec.map (CommRingCat.ofHom (algebraMap O S)) ≫ eSec A`. Rewrite using `[hpow, hz, GlobalTheory.UU.one_left]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Set `l : Spec (CommRingCat.of S) ⟶ Spec H` to `hpb.lift _ _ hw`. Establish `hl : Spec.map (Spec.preimage l) = l` using `Spec.map_preimage l`. Establish `h1 : φ ≫ Spec.preimage l = CommRingCat.ofHom (algebraMap O S)`. Apply `Spec.map_injective` to reduce the goal to its premises. Rewrite using `[Spec.map_comp, hl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hpb.lift_snd _ _ hw`. Use `⟨⟨(Spec.preimage l).hom, fun r => congrArg (fun f => f.hom r) h1⟩, ?_, ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `Spec.map (Spec.preimage l) ≫ y = z.left`. Rewrite using `[hl]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Conclude with `hpb.lift_fst _ _ hw`. Introduce `ψ hψ`. Establish `h2 : Spec.map (CommRingCat.ofHom ψ.toRingHom : H ⟶ CommRingCat.of S) = l`. Apply `hpb.hom_ext` to reduce the goal to its premises. Rewrite using `[hpb.lift_fst _ _ hw, ← hψ]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Both sides reduce to the same expression. Rewrite using `[hpb.lift_snd _ _ hw, ← Spec.map_comp]`. Use `congr 1`. Use extensionality with `r`. Conclude with `ψ.commutes r`.
-
-Establish `h3` using `Spec.map_injective (h2.trans hl.symm)`. Use extensionality with `a`. Conclude with `congrArg (fun f => f.hom a) h3`.
+A detailed English derivation is pending.
 -/
 theorem exists_rep [IsLocalRing O] (A : Over (Sp O)) [GrpObj A] [IsCommMonObj A] (n : ℕ)
     (hfin : IsFinite ((𝟙 A) ^ n : A ⟶ A).left) (hflat : Flat ((𝟙 A) ^ n : A ⟶ A).left) :
@@ -90,13 +88,13 @@ theorem exists_rep [IsLocalRing O] (A : Over (Sp O)) [GrpObj A] [IsCommMonObj A]
       exact congrArg (fun f => f.hom a) h3
 
 /- English proof (translation)
-Use `TorsionReduced.isReduced_of_forall_dualNumber F _ fun φ b => ?_` and prove the remaining obligations. Set `χ : H →ₐ[O] DualNumber F` to `(φ.restrictScalars O).comp Algebra.TensorProduct.includeRight`. Establish `hz : (ptMap χ ≫ y) ^ n = 1` using `by rw [← MonObj.comp_pow, hy, MonObj.comp_one]`. Establish `h2` using `TorsionReduced.eq_const_of_pow_eq_one hn.isUnit _ hz`. Simplify using `only [← Category.assoc] at h2`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[TangentPow.ptMap_comp_ptMap, TangentPow.ptMap_comp_ptMap]`. Establish `h4` using `(hu _ _ hz).unique rfl h2.symm`. Establish `h5 : ∀ a, (χ a).snd = 0` using `fun a => by`. Use `congrArg TrivSqZeroExt.snd (congrArg (fun f => f a) h4)` as an intermediate fact. Simplify using `using this`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Proceed by induction on `b with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp [hx, hy]`. Consider the case `tmul f a`. Establish `: f ⊗ₜ[O] a = f • ((1 : F) ⊗ₜ[O] a)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[this, map_smul, TrivSqZeroExt.snd_smul]`. Conclude with `smul_eq_zero_of_right f (h5 a)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isReduced_rep {A : Over (Sp O)} [GrpObj A] [IsCommMonObj A] {n : ℕ} {H : Type} [CommRing H] [Algebra O H]
     [Module.Finite O H] {y : specO O H ⟶ A} (hy : y ^ n = 1)
@@ -123,9 +121,9 @@ theorem isReduced_rep {A : Over (Sp O)} [GrpObj A] [IsCommMonObj A] {n : ℕ} {H
     exact smul_eq_zero_of_right f (h5 a)
 
 /- English proof (translation)
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `T.left.affineOpenCover.openCover.hom_ext _ _ fun i => ?_` and prove the remaining obligations. Take `⟨ψ, hψ⟩` from `Spec.map_surjective (T.left.affineOpenCover.f i ≫ T.hom)`. Use `letI : Algebra O (T.left.affineOpenCover.X i) := ψ.hom.toAlgebra`. Set `ρ : specO O (T.left.affineOpenCover.X i) ⟶ T` to `Over.homMk (T.left.affineOpenCover.f i) hψ.symm`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Introduce a local definition for the expression.
 
-Use `(h _ ρ).trans (MonObj.comp_one ρ).symm` as an intermediate fact. Conclude with `congrArg (fun q => q.left) this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_one_of_affine {A : Over (Sp O)} [GrpObj A] {T : Over (Sp O)} (x : T ⟶ A)
     (h : ∀ (S : Type) [CommRing S] [Algebra O S] (ρ : specO O S ⟶ T), ρ ≫ x = 1) : x = 1 := by
@@ -147,14 +145,14 @@ def Val (x y : specO O S ⟶ A) (s : S) : Prop :=
 variable {c n} {x x' y y' : specO O S ⟶ A} {s s' : S}
 
 /- English proof (translation)
-Take `⟨ζ, h, -⟩` from `GlobalTheory.UU.existsUnique_cubWeil c hx hy`. Conclude with `⟨_, ζ, h, rfl⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Val.exists (hx : x ^ n = 1) (hy : y ^ n = 1) : ∃ s, Val c n x y s := by
   obtain ⟨ζ, h, -⟩ := GlobalTheory.UU.existsUnique_cubWeil c hx hy
   exact ⟨_, ζ, h, rfl⟩
 
 /- English proof (translation)
-Take `⟨ζ, h, rfl⟩` from `h`. Take `⟨ζ', h', rfl⟩` from `h'`. Rewrite using `[h.unique h']`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Val.unique (h : Val c n x y s) (h' : Val c n x y s') : s = s' := by
   obtain ⟨ζ, h, rfl⟩ := h
@@ -162,14 +160,14 @@ theorem Val.unique (h : Val c n x y s) (h' : Val c n x y s') : s = s' := by
   rw [h.unique h']
 
 /- English proof (translation)
-Take `⟨ζ, h, rfl⟩` from `h`. Conclude with `ζ.isUnit.map _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Val.isUnit (h : Val c n x y s) : IsUnit s := by
   obtain ⟨ζ, h, rfl⟩ := h
   exact ζ.isUnit.map _
 
 /- English proof (translation)
-Use `⟨fun ⟨ζ, h, e⟩ => ?_, fun h => ⟨1, h, map_one _⟩⟩` and prove the remaining obligations. Establish `: ζ = 1` using `Units.ext ((ConcreteCategory.bijective_of_isIso (Scheme.ΓSpecIso (CommRingCat.of S)).hom).1 (e.trans (map_one _).symm))`. Conclude with `this ▸ h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem val_one_iff : Val c n x y 1 ↔ GlobalTheory.UU.CubWeil c n x y 1 := by
   refine ⟨fun ⟨ζ, h, e⟩ => ?_, fun h => ⟨1, h, map_one _⟩⟩
@@ -178,7 +176,7 @@ theorem val_one_iff : Val c n x y 1 ↔ GlobalTheory.UU.CubWeil c n x y 1 := by
   exact this ▸ h
 
 /- English proof (translation)
-Take `⟨ζ, h, rfl⟩` from `h`. Take `⟨ζ', h', rfl⟩` from `h'`. Conclude with `⟨_, h.mul_left h', map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem Val.mul_left (h : Val c n x y s) (h' : Val c n x' y s') : Val c n (x * x') y (s * s') := by
   obtain ⟨ζ, h, rfl⟩ := h
@@ -186,7 +184,7 @@ theorem Val.mul_left (h : Val c n x y s) (h' : Val c n x' y s') : Val c n (x * x
   exact ⟨_, h.mul_left h', map_mul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨ζ, h, rfl⟩` from `h`. Take `⟨ζ', h', rfl⟩` from `h'`. Use `(h.symm.mul_left h'.symm).symm` as an intermediate fact. Rewrite `this` using `[mul_inv, inv_inv, inv_inv]`. Conclude with `⟨_, this, map_mul _ _ _⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 -/
 theorem Val.mul_right (h : Val c n x y s) (h' : Val c n x y' s') : Val c n x (y * y') (s * s') := by
   obtain ⟨ζ, h, rfl⟩ := h
@@ -196,7 +194,7 @@ theorem Val.mul_right (h : Val c n x y s) (h' : Val c n x y' s') : Val c n x (y 
   exact ⟨_, this, map_mul _ _ _⟩
 
 /- English proof (translation)
-Take `⟨ζ, h, rfl⟩` from `h`. Use `⟨_, h.comp (ptMap f), ?_⟩` and prove the remaining obligations. Conclude with `congrArg (fun q => q.hom ζ.val) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f.toRingHom))`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Val.comp (h : Val c n x y s) (f : S →ₐ[O] S') : Val c n (ptMap f ≫ x) (ptMap f ≫ y) (f s) := by
   obtain ⟨ζ, h, rfl⟩ := h
@@ -204,11 +202,11 @@ theorem Val.comp (h : Val c n x y s) (f : S →ₐ[O] S') : Val c n (ptMap f ≫
   exact congrArg (fun q => q.hom ζ.val) (Scheme.ΓSpecIso_naturality (CommRingCat.ofHom f.toRingHom))
 
 /- English proof (translation)
-Establish `hz : ∀ χ : H →ₐ[O] H ⊗[O] H, (ptMap χ ≫ y) ^ n = 1` using `fun χ => by`. Rewrite using `[← MonObj.comp_pow, hy, MonObj.comp_one]`. Take `⟨e, he⟩` from `Val.exists (c := c) (hz Algebra.TensorProduct.includeLeft) (hz Algebra.TensorProduct.includeRight)`. Use `⟨fun i j => (b.tensorProduct b).repr e (i, j), fun S _ _ φ ψ => ?_⟩` and prove the remaining obligations. Establish `h` using `he.comp (Algebra.TensorProduct.productMap φ ψ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h` using `[← Category.assoc, ← Category.assoc, TangentPow.ptMap_comp_ptMap, TangentPow.ptMap_comp_ptMap, Algebra.TensorProduct.productMap_left, Algebra.TensorProduct.productMap_right]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use `conv_rhs => rw [← (b.tensorProduct b).sum_repr e]`. Rewrite using `[map_sum, Fintype.sum_prod_type]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_smul, Module.Basis.tensorProduct_apply, Algebra.TensorProduct.productMap_apply_tmul, Algebra.smul_def, _root_.mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem exists_matrix (c : CubicalStr A L) {H : Type} [CommRing H] [Algebra O H] {r : ℕ} (b : Module.Basis (Fin r) O H)
     {y : specO O H ⟶ A} (hy : y ^ n = 1) :
@@ -231,11 +229,11 @@ theorem exists_matrix (c : CubicalStr A L) {H : Type} [CommRing H] [Algebra O H]
 end Val
 
 /- English proof (translation)
-Establish `key : ∀ ψ : H →ₐ[O] S, ∑ i, ∑ j, algebraMap O (S ⊗[O] H) (D i j) * (ψ (b i) ⊗ₜ[O] (1 : H)) * ((1 : S) ⊗ₜ[O] b j) = ∑ j, (Matrix.vecMul (fun i => ψ (b i)) (D.map (algebraMap O S)) j) • Algebra.TensorProduct.basis S b j`. Introduce `ψ`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[Matrix.vecMul, dotProduct, Finset.sum_smul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[Algebra.TensorProduct.algebraMap_apply, TensorProduct.smul_tmul', mul_comm]`. Rewrite `h` using `[key, key]`. Establish `h1` using `(Algebra.TensorProduct.basis S b).equivFun.symm.injective (((Algebra.TensorProduct.basis S b).equivFun_symm_apply _).trans (h.trans ((Algebra.TensorProduct.basis S b).equivFun_symm_apply _).symm))`. Establish `hD' : IsUnit (D.map (algebraMap O S))`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Use `hD.map (algebraMap O S)` as an intermediate fact. Rewrite `this` using `[RingHom.map_det]`. Then use the resulting hypothesis. Establish `h2` using `(Matrix.vecMul_injective_of_isUnit hD') h1`. Conclude with `AlgHom.toLinearMap_injective (b.ext fun i => congrFun h2 i)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem algHom_eq_of_isUnit_det {H S : Type} [CommRing H] [Algebra O H] [CommRing S] [Algebra O S] {r : ℕ}
     (b : Module.Basis (Fin r) O H) (D : Matrix (Fin r) (Fin r) O) (hD : IsUnit D.det) (φ φ' : H →ₐ[O] S)
@@ -267,23 +265,21 @@ namespace GlobalTheory
 open PerfectPairing in
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ _ _ hinj A _ _ g hsm L c n hn hfin hflat hcard hK T x hx hT`. Take `⟨H, _, _, _, _, y, hy, hu⟩` from `exists_rep A n hfin hflat`. Establish `hnK : (n : K) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hred` using `isReduced_rep hy hu K hnK`. Set `b` to `Module.finBasis O H`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Take `⟨D, hD⟩` from `exists_matrix c b hy`. Establish `hz : ∀ {S : Type} [CommRing S] [Algebra O S] (χ : H →ₐ[O] S), (ptMap χ ≫ y) ^ n = 1` using `fun χ => by`. Rewrite using `[← MonObj.comp_pow, hy, MonObj.comp_one]`. Set `Γ : Subgroup (specO O K ⟶ A)` to `(powMonoidHom n).ker`. Use `choose pt hpt using fun a : Γ => (hu K a.1 a.2).exists`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective pt`. Use `⟨fun a a' e => Subtype.ext (by rw [← hpt, ← hpt, e]), fun χ => ⟨⟨ptMap χ ≫ y, hz χ⟩, ?_⟩⟩` and prove the remaining obligations. Conclude with `(hu K _ (hz χ)).unique (hpt _) rfl`. Set `X : Γ → Γ → K` to `fun a a' => ∑ i, ∑ j, algebraMap O K (D i j) * pt a (b i) * pt a' (b j)`. Establish `hX : ∀ a a' : Γ, Val c n a.1 a'.1 (X a a')` using `fun a a' => by`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hD K (pt a) (pt a')` as an intermediate fact. Rewrite `this` using `[hpt, hpt]`. Then use the resulting hypothesis. Establish `hr : Module.finrank O H = n ^ (2 * g)`. Rewrite using `[← (GlobalTheory.finite_card_trace_algHom_of_isReduced_baseChange O H K hred).2.1, ← Nat.card_eq_of_bijective pt hbij]`. Conclude with `hcard`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hdet : IsUnit D.det`. Use `GlobalTheory.T.isUnit_det_pairing_of_bicharacter_of_dvd_trace O H K Γ _ b D pt X ((n : O) ^ g) hinj hred hbij (fun _ _ => rfl) (fun a a' => (hX a a').isUnit.ne_zero) (fun a a' d => (hX _ _).unique ((hX a d).mul_left (hX a' d))) (fun a d d' => (hX _ _).unique ((hX a d).mul_right ( …` and prove the remaining obligations. Use `hK a.1 a.2 fun z hz => val_one_iff.1 ?_` and prove the remaining obligations. Use `hX a ⟨z, hz⟩` as an intermediate fact. Rewrite `this` using `[ha]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congrArg (algebraMap O K) h0` as an intermediate fact. Rewrite `this` using `[map_pow, map_natCast, map_zero]`. Conclude with `pow_ne_zero g hnK this`. Rewrite using `[hr, Nat.cast_pow, mul_comm, pow_mul]`. Use `eq_one_of_affine x fun S _ _ ρ => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Take `⟨φ, hφ, -⟩` from `hu S (ρ ≫ x) (by rw [← MonObj.comp_pow, hx, MonObj.comp_one])`. Take `⟨φ', hφ', -⟩` from `hu S 1 (one_pow n)`. Set `l : S →ₐ[O] S ⊗[O] H` to `Algebra.TensorProduct.includeLeft`. Set `m : H →ₐ[O] S ⊗[O] H` to `Algebra.TensorProduct.includeRight`. Establish `h1` using `hD _ (l.comp φ) m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h2` using `hD _ (l.comp φ') m`. Rewrite `h1`, `h2` using `[← TangentPow.ptMap_comp_ptMap, Category.assoc]`. Rewrite `h1` using `[hφ, ← Category.assoc]`. Rewrite `h2` using `[hφ', MonObj.comp_one]`. Establish `e1` using `h1.unique (val_one_iff.2 (hT _ _ _ (hz m)))`.
-
-Establish `e2` using `h2.unique (val_one_iff.2 (GlobalTheory.UU.cubWeil_one_left c (hz m)))`. Rewrite using `[← hφ, ← hφ', algHom_eq_of_isUnit_det b D hdet φ φ' (e1.trans e2.symm)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cubWeil_perfect_of_generic : ∀ (O K : Type) [CommRing O] [IsDomain O] [IsLocalRing O] [Field K] [IsAlgClosed K] [CharZero K] [Algebra O K], Function.Injective (algebraMap O K) → ∀ (A : Over (Sp O)) [GrpObj A] [IsCommMonObj A] (g : ℕ), SmoothOfRelativeDimension g A.hom → ∀ (L : RigLB A) (c : CubicalStr A L) (n : ℕ), 1 ≤ n → IsFinite ((𝟙 A) ^ n : A ⟶ A).left → Flat ((𝟙 A) ^ n : A ⟶ A).left → Nat.card {x : specO O K ⟶ A // x ^ n = 1} = n ^ (2 * g) → (∀ x : specO O K ⟶ A, x ^ n = 1 → (∀ y : specO O K ⟶ A, y ^ n = 1 → GlobalTheory.UU.CubWeil c n x y 1) → x = 1) → ∀ (T : Over (Sp O)) (x : T ⟶ A), x ^ n = 1 → (∀ (T' : Over (Sp O)) (ρ : T' ⟶ T) (y : T' ⟶ A), y ^ n = 1 → GlobalTheory.UU.CubWeil c n (ρ ≫ x) y 1) → x = 1 := by
   intro O K _ _ _ _ _ _ _ hinj A _ _ g hsm L c n hn hfin hflat hcard hK T x hx hT

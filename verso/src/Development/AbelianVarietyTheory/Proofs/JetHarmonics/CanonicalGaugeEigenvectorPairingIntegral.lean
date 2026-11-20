@@ -14,11 +14,11 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.CharDepth
 
 /- English proof (translation)
-Introduce `R _ d OE _ _ k _ _ _ B h hc σ a0 ha u u' hu hu' w`. Establish `key : ∀ v : Fin d → R, (∀ a, (linPart (B.A.act a)).mulVec v = σ a • v) → ∀ a, (ReciprocityTheory.ChartRestriction.G.TB.dAct k B a).mulVec (fun i => algebraMap R k (v i)) = algebraMap R k (σ a) • (fun i => algebraMap R k (v i))`. Introduce `v hv a`. Use function extensionality and compare the values at `i`. Establish `e` using `congrArg (algebraMap R k) (congrFun (hv a) i)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, Pi.smul_apply, smul_eq_mul, linPart, Matrix.of_apply] at e ⊢`. Rewrite using `[← e]`. Both sides reduce to the same expression. Establish `h3` using `GlobalTheory.bilinPart_eigen_mem_range R d OE k B h hc a0 u u' _ _ (key u hu a0) (key u' hu' (star a0)) ha`. Rewrite using `[key u' hu' w, Matrix.mulVec_smul, dotProduct_smul, smul_eq_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Subring.mul_mem _ ⟨_, rfl⟩ h3`.
+A detailed English derivation is pending.
 -/
 theorem eigen_pair_mem_range : ∀ (R : Type) [CommRing R] (d : ℕ) (OE : Type) [CommRing OE] [StarRing OE] (k : Type) [CommRing k] [Algebra ℚ k] [Algebra R k] (B : FB R d OE) (h : PS k 2 d), B.IsCanonGauge k h → ∀ (σ : OE →+* R) (a0 : OE), IsUnit (σ a0 - σ (star a0)) → ∀ u u' : Fin d → R, (∀ a, (linPart (B.A.act a)).mulVec u = σ a • u) → (∀ a, (linPart (B.A.act a)).mulVec u' = σ a • u') → ∀ w : OE, dotProduct (fun i => algebraMap R k (u i)) ((ReciprocityTheory.ChartRestriction.G.TB.bilinPart k h).mulVec ((ReciprocityTheory.ChartRestriction.G.TB.dAct k B w).mulVec (fun i => algebraMap R k (u' i)))) ∈ (algebraMap R k).range := by
   intro R _ d OE _ _ k _ _ _ B h hc σ a0 ha u u' hu hu' w

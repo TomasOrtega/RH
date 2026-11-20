@@ -8,9 +8,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.FiberTwo
 
 /- English proof (translation)
-Establish `hr` using `Algebra.IsQuadraticExtension.finrank_eq_two (maximalRealSubfield E) E`. Establish `hc` using `IsCMField.complexConj_ne_one (K := E)`. Break down `(GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) hr hc w u).1 h with h1 | h1` into its components or cases. Conclude with `absurd h1 hu`. Break down `(GlobalTheory.Mem.Chr.under_eq_iff_conjPl (IsCMField.complexConj E) hr hc w u').1 h' with h2 | h2` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative.
 
-Conclude with `Or.inl h2`. Conclude with `Or.inr ((GlobalTheory.Mem.Chr.existsUnique_conjPl _ w).unique h2 h1)`.
+Prove the second alternative. A detailed English derivation is pending.
 -/
 theorem eq_or_eq_of_under_eq (E : Type) [Field E] [NumberField E] [IsCMField E] (w u u' : Pl E) (hu : u ≠ w)
     (h : u.under (𝓞 (maximalRealSubfield E)) = w.under (𝓞 (maximalRealSubfield E)))

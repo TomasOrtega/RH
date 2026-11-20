@@ -14,7 +14,7 @@ attribute [local instance] algPadicInt algPadicField towerPadic factPadic Global
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CompHt.DualHT.smul_mem_wRec_of_mem_span` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FDivisorProofs%2FHodgeTateLatticeSpan.lean&line=79#L79)
 -/

@@ -17,7 +17,7 @@ open GlobalTheory.FockBridge
 open scoped Classical
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hC X om om' R Rf om₁ om₁' R₁ Rf₁ hM hM₁ A C r₀ s₀ Φ hD hAd N _ hN w Y hY h0 v hv`. Conclude with `GlobalTheory.FockBottom.kone_stab hKP hM hD hM₁.triple.geo.hW hC.hH' hAd N hN w Y hY h0 hv`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.KStabSub.sub_stab : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E)
     (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a') (H : Plane E (b + 2) b)

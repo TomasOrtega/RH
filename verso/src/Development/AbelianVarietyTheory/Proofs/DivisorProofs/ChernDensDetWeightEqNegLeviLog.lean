@@ -15,9 +15,9 @@ open scoped ComplexOrder ContDiff
 namespace GlobalTheory.CurveDens
 
 /- English proof (translation)
-Establish `e : ReciprocityTheory.L2DbarEstimates.wdb n k g = fun y => dbar g y (EuclideanSpace.single k 1)`. Use function extensionality and compare the values at `y`. Simplify using `only [ReciprocityTheory.L2DbarEstimates.wdb, dbar_apply, ReciprocityTheory.L2DbarEstimates.bas, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[ddbar_eq_del_dbar hg, del_apply, ReciprocityTheory.L2DbarEstimates.cHess, Matrix.of_apply, e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [ReciprocityTheory.L2DbarEstimates.wd, ReciprocityTheory.L2DbarEstimates.bas, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cHess_apply_eq_ddbar {n : ℕ} {g : ReciprocityTheory.L2DbarEstimates.V n → ℂ} {x : ReciprocityTheory.L2DbarEstimates.V n}
     (hg : ContDiffAt ℝ 2 g x) (j k : Fin n) :
@@ -36,17 +36,17 @@ end GlobalTheory.CurveDens
 namespace GlobalTheory.CurveDens
 
 /- English proof (translation)
-Introduce `k _ X p σ`. Use `⟨fun B φ hφ => ⟨fun c c' y hy hy' => c.chernDens_trans c' hφ hy hy', fun c v hv => ?_⟩, ?_⟩` and prove the remaining obligations. Establish `ho` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) (B.U (pick φ.isLB (c.e.symm v))))`. Establish `hm : v ∈ c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ (B.U (pick φ.isLB (c.e.symm v)))` using `⟨hv, mem_pick φ.isLB _⟩`. Establish `hs : ContDiffOn ℝ ∞ (fun w => ((φ.φ (pick φ.isLB (c.e.symm v)) (c.e.symm w) : ℝ) : ℂ)) (c.e.target ∩ c.e.symm ⁻¹' ptsIn p σ (B.U (pick φ.isLB (c.e.symm v))))` using `Complex.ofRealCLM.contDiff.comp_contDiffOn (contDiffOn_chart (hφ _) c)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc` using `ReciprocityTheory.L2DbarEstimates.Y.continuousOn_wd_wdb ho hs 0 0`. Use `ContinuousAt.continuousWithinAt ?_` and prove the remaining obligations. Use `((continuous_const.mul Complex.continuous_re).continuousAt.comp (hc.continuousAt (ho.mem_nhds hm)) (f := fun w => ReciprocityTheory.L2DbarEstimates.wd 1 0 (ReciprocityTheory.L2DbarEstimates.wdb 1 0 _) w) (g := fun z : ℂ => (Nat.factorial 1 : ℝ) / Real.pi ^ 1 * z.re)).congr ?_` and prove the remaining obligations. Use `filter_upwards [ho.mem_nhds hm] with w hw`. Rewrite using `[Function.comp_apply, c.chernDens_eq hφ (c.e.map_target hw.1) hw.2, AlgChart.hess, c.e.right_inv hw.1, Matrix.det_unique]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Introduce `L g hg U t ht c y hy hU`. Set `c₀ : VB.Chart L 1` to `⟨U, fun _ => t, ht⟩`. Establish `hi : y ∈ ptsIn p σ ((det L 1).U c₀)` using `hU`. Rewrite using `[c.chernDens_eq hg.detWeight hy hi]`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [AlgChart.hess, Matrix.det_unique]`. Establish `ho` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) U)`. Establish `hm` using `ChartGlue.mem_over c.e hy hU`. Establish `e : (fun v => ((g.detWeight.φ c₀ (c.e.symm v) : ℝ) : ℂ)) =ᶠ[𝓝 (c.e y)] fun v => -((Real.log (g.form t t (c.e.symm v)).re : ℝ) : ℂ)` using `by filter_upwards [ho.mem_nhds hm] with v hv`. Rewrite using `[← Complex.ofReal_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use `show -Real.log (g.G c₀ (c.e.symm v)).det.re = -Real.log (g.form t t (c.e.symm v)).re`. Rewrite using `[Matrix.det_unique, ← g.form_frame c₀ hv.2]`. Establish `hd : ContDiffAt ℝ 2 (fun v => g.detWeight.φ c₀ (c.e.symm v)) (c.e y)` using `hg.detWeight.contDiffAt c hy hi`. Establish `hu` using `(contDiffAt_ofReal_comp hd).congr_of_eventuallyEq e.symm`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ReciprocityTheory.L2DbarEstimates.Y.cmpb_cHess_congr e, cHess_apply_eq_ddbar hu]`. Use `erw [ddbar_neg]`. Simplify using `only [leviForm, Nat.factorial_one, Nat.cast_one, pow_one, Fin.default_eq_zero]`. Simplify using `only [ContinuousLinearMap.neg_apply, Complex.neg_re]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem chernDens_curve : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ),
     (∀ (B : LB X) (φ : Weight p σ B), φ.IsCInf → IsDens fun (c : AlgChart p σ 1) y => c.chernDens φ y) ∧

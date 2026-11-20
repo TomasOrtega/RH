@@ -13,13 +13,13 @@ import Formalism.GaussValuationBounds.GaussValueContraction.LemmaCVal
 namespace Formalism.NOK
 
 /- English proof (translation)
-The claim follows from `lemmaCVal_of gaussValMul minLeGaussValAdd gaussValC gaussValUnit gaussEis_true`.
+A detailed English derivation is pending.
 -/
 theorem nok_LemmaCVal : LemmaCVal :=
   lemmaCVal_of gaussValMul minLeGaussValAdd gaussValC gaussValUnit gaussEis_true
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨powMemSpanPow, truncationExponentBounds, scaledPowMemSpan, powMemSpanOfLe, gaussValueContraction_proof_fact_form, gaussValueContraction_proof_fact_variant, phiIterX_proof, psIdeal_proof, delVal_proof, dSat_proof, dUDeg_proof, nok_LemmaCVal, expNonzero_proof, kapBound_proof, wCyc …`.
+Supply the required witnesses or components.
 -/
 theorem nok_all :
     PowContent ∧ SigNum ∧ RelCoeff ∧ RelVanish ∧ Rel1 ∧ Rel2 ∧ PhiIterX ∧ PsIdeal ∧ DelVal ∧
@@ -31,13 +31,13 @@ theorem nok_all :
     eTotal_proof, cjExist_proof, gaussValueContraction_proof_fact_bis, gaussValueContraction_proof_fact_alt, exponentSumIdentity, slopeNum_proof⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨gaussValMul, minLeGaussValAdd, gaussValC, gaussValUnit, gaussEis_true⟩`.
+Supply the required witnesses or components.
 -/
 theorem nok_gauss : GaussMul ∧ GaussAdd ∧ GaussC ∧ GaussUnit ∧ GaussEis :=
   ⟨gaussValMul, minLeGaussValAdd, gaussValC, gaussValUnit, gaussEis_true⟩
 
 /- English proof (translation)
-Establish `: Fact B.ℓ.Prime` using `⟨B.hℓ⟩`. Take `⟨v, -, hv⟩` from `phiIterX_proof O A B j`. Rewrite using `[hv]`. Conclude with `scaledPowMemSpan A B.ℓ hℓ B.X v B.p E M j hj (psIdeal_proof O A B (j - 1)) r`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nok_rel_base {O A : Type} [CommRing O] [CommRing A] [Algebra O A]
     (B : Formalism.WachCohomologyFacts.Base O A) (hℓ : 3 ≤ B.ℓ) (E M j r : ℕ) (hj : 1 ≤ j) :
@@ -50,7 +50,7 @@ theorem nok_rel_base {O A : Type} [CommRing O] [CommRing A] [Algebra O A]
   exact scaledPowMemSpan A B.ℓ hℓ B.X v B.p E M j hj (psIdeal_proof O A B (j - 1)) r
 
 /- English proof (translation)
-Introduce `σ`. Establish `hs` using `sigBound_proof ℓ hℓ g h j hj`. Rewrite using `[eTotal_proof r σ κ g ell hr0 (by positivity) (by positivity) (by positivity)]`. Establish `: (0:ℝ) ≤ 4 * g * ell` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem nok_exponent (ℓ : ℕ) (hℓ : 3 ≤ ℓ) (g h j ell : ℕ) (hj : 1 ≤ j) (r κ R K : ℝ)
     (hr0 : 0 ≤ r) (hr : r ≤ R) (hκ : κ ≤ K) :

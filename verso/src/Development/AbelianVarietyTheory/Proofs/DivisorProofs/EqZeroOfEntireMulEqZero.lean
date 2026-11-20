@@ -14,9 +14,7 @@ noncomputable section
 namespace GlobalTheory.MBLow.Cl.FrameAut
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hc : ContinuousAt D z` using `hD.continuousAt (hS.mem_nhds hz)`. Establish `he : θ =ᶠ[nhds z] 0` using `by filter_upwards [hc.eventually_ne hne, hS.mem_nhds hz] with w hw hwS`. Conclude with `(mul_eq_zero.1 (h w hwS)).resolve_right hw`. Establish `ha : AnalyticOnNhd ℂ θ Set.univ` using `SCV.analyticOnNhd_of_differentiable hθ Set.univ`.
-
-Conclude with `h0 (funext fun w => ha.eqOn_zero_of_preconnected_of_eventuallyEq_zero isPreconnected_univ (Set.mem_univ z) he (Set.mem_univ w))`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_entire_mul_eq_zero {g : ℕ} {θ D : (Fin g → ℂ) → ℂ} (hθ : Differentiable ℂ θ) (h0 : θ ≠ 0)
     {S : Set (Fin g → ℂ)} (hS : IsOpen S) (hD : ContinuousOn D S) (h : ∀ w ∈ S, θ w * D w = 0)
@@ -35,15 +33,15 @@ end GlobalTheory.MBLow.Cl.FrameAut
 namespace GlobalTheory.MBLow.Cl
 
 /- English proof (translation)
-Introduce `g x hg u τ a b c W hNF M N i z hz`. Take `⟨hs, hp, ha, hb, hc, hΛ, _, hth, _⟩` from `hNF`. Take `⟨hd, ⟨z₀, hz₀⟩, hlaw⟩` from `GlobalTheory.T.thetaChar_differentiable_ne_zero_automorphy g τ a b hs hp ha hb`. Establish `hdc : Differentiable ℂ (fun w => c * thetaChar τ a b w)` using `(differentiable_const c).mul hd`. Establish `h0 : (fun w => c * thetaChar τ a b w) ≠ 0` using `fun h => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrFun h z₀` as an intermediate fact. Simplify using `only [Pi.zero_apply, mul_eq_zero] at this`. Conclude with `this.elim hc hz₀`. Establish `hl : u.ex (perV τ M N) = 1` using `(u.ker _).2 ((hΛ _).2 ⟨M, N, rfl⟩)`. Establish `he : ∀ w, u.ex (w + perV τ M N) = u.ex w` using `fun w => by rw [u.ex_add, hl, _root_.mul_one]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hS : IsOpen {w | ⊤ ≤ (u.ex w).left ⁻¹ᵁ x.P.L.U i}` using `(u.hol _ 0).1`. Establish `htr : ∀ w, ⊤ ≤ (u.ex w).left ⁻¹ᵁ x.P.L.U i → ⊤ ≤ (u.ex (w + perV τ M N)).left ⁻¹ᵁ x.P.L.U i` using `fun w hw => by rw [he]; exact hw`. Establish `hcf` using `(u.fr_hol i).continuousOn`. Establish `haut : Continuous (autV τ a b M N)`. Unfold `autV dotProduct`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use `fun_prop`. Establish `hD : ContinuousOn (fun w => u.fr i w - autV τ a b M N w * u.fr i (w + perV τ M N)) {w | ⊤ ≤ (u.ex w).left ⁻¹ᵁ x.P.L.U i}` using `hcf.sub (haut.continuousOn.mul (hcf.comp (continuous_add_const _).continuousOn fun w hw => htr w hw))`. Use `sub_eq_zero.1 (FrameAut.eq_zero_of_entire_mul_eq_zero hdc h0 hS hD (fun w hw => ?_) hz)` and prove the remaining obligations. Establish `h1` using `hth i w hw`. Establish `h2` using `hth i _ (htr w hw)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Use `beta_reduce at h1 h2 ⊢`. Rewrite `h2` using `[he, h1, hlaw]`. Take the linear combination `h2`.
+A detailed English derivation is pending.
 -/
 theorem frame_eq_autV_mul : ∀ (g : ℕ) (x : KeyIn ℂ) (hg : x.P.g = g) (u : HolUnif x.P.A x.P.L g) (τ : Matrix (Fin g) (Fin g) ℂ) (a b : Fin g → ℂ) (c : ℂ) (W : Fin g → Fin g → ℂ), NF x hg u τ a b c W → ∀ M N (i : x.P.L.ι) z, ⊤ ≤ (u.ex z).left ⁻¹ᵁ x.P.L.U i → u.fr i z = autV τ a b M N z * u.fr i (z + perV τ M N) := by
   intro g x hg u τ a b c W hNF M N i z hz

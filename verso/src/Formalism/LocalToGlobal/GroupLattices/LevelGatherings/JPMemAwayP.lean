@@ -14,17 +14,15 @@ section Local
 variable {F E : Type} [Field F] [Field E] [Algebra F E] {n : Type} [Fintype n] [DecidableEq n]
 
 /- English proof (translation)
-Use `set ρ : E →+* R' × R' := (φ : E ⊗[F] R' →+* R' × R').comp (inclE (F := F) R') with hρ`. Use `set J1 : Matrix n n R' := J.map ((RingHom.fst R' R').comp ρ) with hJ1`. Establish `hsw : ∀ x : E, ρ (σE x) = swapR R' (ρ x)`. Introduce `x`. Establish `h0` using `hφ (inclE (F := F) R' x)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show φ ((σE x) ⊗ₜ[F] (1 : R')) = swapR R' (φ (inclE (F := F) R' x))`. Rewrite using `[← h0]`. Use `show φ ((σE x) ⊗ₜ[F] (1 : R')) = φ ((Algebra.TensorProduct.map σE (AlgHom.id F R')) (x ⊗ₜ[F] (1 : R')))`. Rewrite using `[Algebra.TensorProduct.map_tmul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Establish `hJs : J.map ρ = splitJ J1`. Use extensionality with `a b`. Both sides reduce to the same expression. Establish `h1 : σE (J b a) = J a b`. Use `congrFun (congrFun hJ a) b` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify `this` using `[cT]`. Use `show (ρ (J a b)).2 = (ρ (J b a)).1`. Rewrite using `[← h1, hsw]`. Both sides reduce to the same expression. Establish `hd1 : IsUnit J1.det`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Rewrite using `[hJ1, ← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `hdet.map _`. Establish `hsp : ∃ e : UPts σE J R' ≃* UJ (swapR R') (splitJ J1), ∀ g, (e g : GL n (R' × R')) = bc (φ : E ⊗[F] R' →+* R' × R') g`. Rewrite using `[← hJs]`. Conclude with `Formalism.UG.P.split_group_points F E n σE J R' φ hφ`.
-
-Take `⟨e1, h1⟩` from `hsp`. Take `⟨e2, h2⟩` from `Formalism.UG.P.split_unitary_group_iso R' n J1 hd1`. Use `⟨e1.trans e2, fun X => ?_⟩` and prove the remaining obligations. Rewrite using `[MulEquiv.trans_apply, h2, h1]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_locGL (σE : E →ₐ[F] E) (J : Matrix n n E) (hJ : IsHerm (σE : E →+* E) J) (hdet : IsUnit J.det)
     (R' : Type) [CommRing R'] [Algebra F R'] (φ : E ⊗[F] R' ≃+* R' × R')
@@ -68,7 +66,7 @@ def locGL (σE : E →ₐ[F] E) (J : Matrix n n E) (hJ : IsHerm (σE : E →+* E
   Classical.choose (exists_locGL σE J hJ hdet R' φ hφ)
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (exists_locGL σE J hJ hdet R' φ hφ) X`.
+A detailed English derivation is pending.
 -/
 theorem locGL_apply (σE : E →ₐ[F] E) (J : Matrix n n E) (hJ : IsHerm (σE : E →+* E) J) (hdet : IsUnit J.det)
     (R' : Type) [CommRing R'] [Algebra F R'] (φ : E ⊗[F] R' ≃+* R' × R')
@@ -89,7 +87,7 @@ variable {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberFie
 abbrev LocId.plc (I : LocId L p nV W Qq) (v : Fin nV) : HeightOneSpectrum (𝓞 F) := (I.pl v).1
 
 /- English proof (translation)
-Introduce `_ _ h` and use `I.pl.injective (Subtype.ext h)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem LocId.plc_inj (I : LocId L p nV W Qq) : Function.Injective I.plc :=
   fun _ _ h => I.pl.injective (Subtype.ext h)
@@ -104,7 +102,7 @@ def jP (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det) :
     (Pi.monoidHom fun v => (I.uGL hdet v).symm.toMonoidHom.comp (Pi.evalMonoidHom _ v))
 
 /- English proof (translation)
-Use `show bc _ (bc (prV (E := E) (I.plc v)) (secAll F E sp.cm.sig sp.gram0 I.plc I.plc_inj _ : GL (Fin R.k) _)) = g v`. Rewrite using `[bc_secAll_same]`. Use `locGL_apply sp.cm.sig sp.gram0 sp.baseGram_isHermitian hdet _ (I.spl (I.plc v) (I.pl v).2) (I.spl_sig (I.plc v) (I.pl v).2) ((I.uGL hdet v).symm (g v))` as an intermediate fact. Conclude with `this.symm.trans ((I.uGL hdet v).apply_symm_apply (g v))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jP_at (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det)
     (g : ∀ v : Fin nV, GL (Fin R.k) ((I.plc v).adicCompletion F)) (v : Fin nV) :
@@ -117,7 +115,7 @@ theorem jP_at (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det)
   exact this.symm.trans ((I.uGL hdet v).apply_symm_apply (g v))
 
 /- English proof (translation)
-The claim follows from `bc_secAll_off F E sp.cm.sig sp.gram0 I.plc I.plc_inj w' (fun v h => hw (h ▸ (I.pl v).2)) _`.
+A detailed English derivation is pending.
 -/
 theorem jP_off (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det)
     (g : ∀ v : Fin nV, GL (Fin R.k) ((I.plc v).adicCompletion F)) (w' : HeightOneSpectrum (𝓞 F))
@@ -126,7 +124,7 @@ theorem jP_off (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det)
   bc_secAll_off F E sp.cm.sig sp.gram0 I.plc I.plc_inj w' (fun v h => hw (h ▸ (I.pl v).2)) _
 
 /- English proof (translation)
-Use `Subgroup.mem_inf.2 ⟨(jP I hdet g).2, ?_⟩` and prove the remaining obligations. Simplify using `only [Subgroup.mem_iInf, Subgroup.mem_comap]`. Introduce `v hv`. Rewrite using `[jP_off I hdet g v hv]`. Conclude with `Subgroup.one_mem _`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jP_mem_awayP (I : LocId L p nV W Qq) (hdet : IsUnit sp.gram0.det)
     (g : ∀ v : Fin nV, GL (Fin R.k) ((I.plc v).adicCompletion F)) :

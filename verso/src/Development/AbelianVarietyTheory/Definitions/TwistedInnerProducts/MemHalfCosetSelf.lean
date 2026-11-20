@@ -22,11 +22,11 @@ variable (σ) in
 def RootsIn (n : ℕ) : Prop := ∀ z : ℂ, z ^ n = 1 → z ∈ Set.range σ
 
 /- English proof (translation)
-Establish `: NeZero n` using `⟨hn⟩`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `hp` using `Complex.isPrimitiveRoot_exp n hn`. Take `⟨z, hz⟩` from `h _ hp.pow_eq_one`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite `hp` using `[← hz]`. Conclude with `hp.of_map_of_injective σ.injective`. Introduce and unpack `⟨z, hz⟩ w hw`. Take `⟨i, -, hi⟩` from `(hz.map_of_injective σ.injective).eq_pow_of_pow_eq_one hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨z ^ i, by rw [map_pow, hi]⟩`.
+A detailed English derivation is pending.
 -/
 theorem rootsIn_iff {n : ℕ} (hn : n ≠ 0) : RootsIn σ n ↔ ∃ z : K, IsPrimitiveRoot z n := by
   have : NeZero n := ⟨hn⟩
@@ -46,7 +46,7 @@ variable (σ) in
 def LocIn (χ : HChar D.host.E) : Prop := ∀ w x, (χ.loc w x : ℂ) ∈ Set.range σ
 
 /- English proof (translation)
-Introduce `v _`. Take `⟨y, hy⟩` from `h v (Formalism.L2.Host.atFin v (Formalism.L2.Host.unif v))`. Use `⟨y, ?_⟩` and prove the remaining obligations. Simplify using `[Formalism.L2.Host.HChar.valTw, Formalism.L2.Host.HChar.val, Formalism.L2.Host.HChar.locK, hy]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem LocIn.valuesIn {χ : HChar D.host.E} (h : LocIn σ χ) : χ.ValuesIn 0 σ := by
   intro v _
@@ -81,15 +81,15 @@ def halfCoset {m n : ℕ} (e : AE D) (Λ : AddSubgroup (Mx D m n)) (k : ℕ) (x�
   {x | ∃ u ∈ Λ, IsHalf e u ∧ x = x₀ + k • u}
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨0, Λ.zero_mem, (GlobalTheory.SplitScalar.isHalf_iff e 0).2 (smul_zero e), by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_halfCoset_self {m n : ℕ} (e : AE D) (Λ : AddSubgroup (Mx D m n)) (k : ℕ) (x₀ : Mx D m n) :
     x₀ ∈ halfCoset e Λ k x₀ := ⟨0, Λ.zero_mem, (GlobalTheory.SplitScalar.isHalf_iff e 0).2 (smul_zero e), by simp⟩
 
 /- English proof (translation)
-Take `⟨u, hu, hue, rfl⟩` from `h`. Establish `hue'` using `(GlobalTheory.SplitScalar.isHalf_iff e u).1 hue`. Use extensionality with `y`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨v, hv, hve, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨u + v, Λ.add_mem hu hv, (GlobalTheory.SplitScalar.isHalf_iff e _).2 ?_, by rw [smul_add, add_assoc]⟩` and prove the remaining obligations. Rewrite using `[smul_add, hue', (GlobalTheory.SplitScalar.isHalf_iff e v).1 hve]`. Introduce and unpack `⟨v, hv, hve, rfl⟩`. Use `⟨v - u, Λ.sub_mem hv hu, (GlobalTheory.SplitScalar.isHalf_iff e _).2 ?_, by rw [smul_sub]; abel⟩` and prove the remaining obligations. Rewrite using `[smul_sub, hue', (GlobalTheory.SplitScalar.isHalf_iff e v).1 hve]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem halfCoset_eq {m n : ℕ} {e : AE D} {Λ : AddSubgroup (Mx D m n)} {k : ℕ} {x₀ x : Mx D m n} (h : x ∈ halfCoset e Λ k x₀) :
     halfCoset e Λ k x = halfCoset e Λ k x₀ := by
@@ -108,13 +108,13 @@ def IsCosetDatum {t : T} {p : Pair T} (k : ℕ) (d : FinDatum G t p) : Prop :=
   ∃ x₀, IsHalf d.e x₀ ∧ k • x₀ ∈ pairLat G p ∧ d.fn = (halfCoset d.e (pairLat G p) k x₀).indicator 1
 
 /- English proof (translation)
-Use `⟨0, (GlobalTheory.SplitScalar.isHalf_iff e 0).2 (smul_zero e), by simp, ?_⟩` and prove the remaining obligations. Use `(GlobalTheory.PlaceModel.halfInd_eq_ind e (pairLat G p)).trans ?_` and prove the remaining obligations. Simplify using `only [FinDatum.ind]`. Establish `hm : ∀ x, x ∈ halfCoset e (pairLat G p) 1 0 ↔ x ∈ pairLat G p ⊓ GlobalTheory.PlaceModel.half (G.pS p) (G.pT p) e`. Introduce `x`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify by unfolding definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[AddSubgroup.mem_inf, GlobalTheory.PlaceModel.mem_half]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨u, hu, hue, rfl⟩`. Simplify using `using ⟨hu, (GlobalTheory.SplitScalar.isHalf_iff e u).1 hue⟩`. Introduce and unpack `⟨hx, hxe⟩`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, hx, (GlobalTheory.SplitScalar.isHalf_iff e x).2 hxe, by simp⟩`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ pairLat G p ⊓ GlobalTheory.PlaceModel.half (G.pS p) (G.pT p) e`. Rewrite using `[Set.indicator_of_mem ((hm x).2 hx), GlobalTheory.PlaceModel.ind, if_pos hx]`. Both sides reduce to the same expression.
+Supply the required witnesses or components. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Set.indicator_of_notMem (fun h' => hx ((hm x).1 h')), GlobalTheory.PlaceModel.ind, if_neg hx]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isCosetDatum_ind (t : T) (p : Pair T) (P h e he) : IsCosetDatum 1 (FinDatum.ind G t p P h e he) := by
   refine ⟨0, (GlobalTheory.SplitScalar.isHalf_iff e 0).2 (smul_zero e), by simp, ?_⟩
@@ -135,7 +135,7 @@ theorem isCosetDatum_ind (t : T) (p : Pair T) (P h e he) : IsCosetDatum 1 (FinDa
   · rw [Set.indicator_of_notMem (fun h' => hx ((hm x).1 h')), GlobalTheory.PlaceModel.ind, if_neg hx]
 
 /- English proof (translation)
-Take `⟨x₀, -, -, hf⟩` from `h`. Take `⟨x₀', -, -, hf'⟩` from `h'`. Rewrite `hx`, the goal using `[hf]`. Rewrite `hx'`, the goal using `[hf']`. Rewrite using `[← halfCoset_eq (Set.mem_of_indicator_ne_zero hx), ← halfCoset_eq (Set.mem_of_indicator_ne_zero hx'), he]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem IsCosetDatum.fn_eq {t : T} {p : Pair T} {k : ℕ} {d d' : FinDatum G t p} (h : IsCosetDatum k d) (h' : IsCosetDatum k d')
     (he : d.e = d'.e) {x} (hx : d.fn x ≠ 0) (hx' : d'.fn x ≠ 0) : d.fn = d'.fn := by
@@ -157,15 +157,15 @@ def expDepth : ℕ := sInf {k | ∃ τ, IsCosetExpansion S t Φ β k τ}
 variable {S t Φ β}
 
 /- English proof (translation)
-The claim follows from `Nat.sInf_mem (⟨k, τ, h⟩ : Set.Nonempty {k | ∃ τ, IsCosetExpansion S t Φ β k τ})`.
+A detailed English derivation is pending.
 -/
 theorem IsCosetExpansion.exists_expDepth {k τ} (h : IsCosetExpansion S t Φ β k τ) :
     ∃ τ', IsCosetExpansion S t Φ β (expDepth S t Φ β) τ' := Nat.sInf_mem (⟨k, τ, h⟩ : Set.Nonempty {k | ∃ τ, IsCosetExpansion S t Φ β k τ})
 
 /- English proof (translation)
-Consider the cases of `d`. Consider the cases of `d'`. Consider the cases of `hP`. Consider the cases of `he`. Consider the cases of `hf`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hz`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 private theorem finDatum_ext {t : T} {p : Pair T} {d d' : FinDatum G t p} (hP : d.P = d'.P) (he : d.e = d'.e)
     (hf : d.fn = d'.fn) (hz : d.z = d'.z) : d = d' := by
@@ -178,15 +178,13 @@ private theorem finDatum_ext {t : T} {p : Pair T} {d d' : FinDatum G t p} (hP : 
   rfl
 
 /- English proof (translation)
-Take `⟨-, ⟨e, -, hde, hexp⟩, hcos⟩` from `h`. Use `choose x₁ hx₁h _ hx₁f using (hcos d hd).1`. Use `choose y₁ hy₁h _ hy₁f using (hcos d hd).2`. Establish `vx : ∀ j, (d.1 j).fn (x₁ j) = 1` using `fun j => by`. Rewrite using `[hx₁f j, Set.indicator_of_mem (mem_halfCoset_self _ _ _ _)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `vy : ∀ i, (d.2 i).fn (y₁ i) = 1` using `fun i => by`. Rewrite using `[hy₁f i, Set.indicator_of_mem (mem_halfCoset_self _ _ _ _)]`. Both sides reduce to the same expression. Use `⟨x₁, y₁, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hexp x₁ y₁ (fun j => ((hde d hd).1 j).2.1 ▸ hx₁h j) (fun i => ((hde d hd).2 i).2.1 ▸ hy₁h i), Finsupp.sum, Finset.sum_eq_single d]`. Simplify using `[vx, vy]`. Introduce `d' hd' hne`. Assume the negation of the conclusion as `hnz`. Apply `hne` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨h12, h3⟩` from `mul_ne_zero_iff.1 hnz`. Establish `hj` using `Finset.prod_ne_zero_iff.1 (mul_ne_zero_iff.1 h12).2`. Establish `hi` using `Finset.prod_ne_zero_iff.1 h3`. Establish `e1 : ∀ j, d'.1 j = d.1 j` using `fun j => finDatum_ext (((hde d' hd').1 j).1.trans ((hde d hd).1 j).1.symm) (((hde d' hd').1 j).2.1.trans ((hde d hd).1 j).2.1.symm) (IsCosetDatum.fn_eq ((hcos d' hd').1 j) ((hcos d hd).1 j) (((hde d' hd').1 j).2.1.trans ((hde d hd).1 j).2.1.symm) (hj j (Finset.mem_univ j)) (by rw …`. Establish `e2 : ∀ i, d'.2 i = d.2 i` using `fun i => finDatum_ext (((hde d' hd').2 i).1.trans ((hde d hd).2 i).1.symm) (((hde d' hd').2 i).2.1.trans ((hde d hd).2 i).2.1.symm) (IsCosetDatum.fn_eq ((hcos d' hd').2 i) ((hcos d hd).2 i) (((hde d' hd').2 i).2.1.trans ((hde d hd).2 i).2.1.symm) (hi i (Finset.mem_univ i)) (by rw …`.
-
-Conclude with `Prod.ext (funext e1) (funext e2)`. Introduce `hn`. Conclude with `absurd hd hn`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem IsCosetExpansion.coef_eq {k τ} (h : IsCosetExpansion S t Φ β k τ) {d} (hd : d ∈ τ.support) :
     ∃ x y, τ d = ∏ w, (S.term t Φ β w).datum (S.colAt t w x) (S.rowAt t w y) := by
@@ -280,9 +278,9 @@ def BottomIn (i j : Fin D.R.m) : Prop :=
     ∃ (A A' WW : HSp D) (X : Tri T A A' WW), IsBottomTri W i j X ∧ SumsIn W σ X
 
 /- English proof (translation)
-Take `⟨Ω, Ω', hΩ, hΩ', hs⟩` from `h`. Use `⟨Ω, Ω', hΩ, hΩ', fun t g hg => ⟨fun k => ⟨hi t _ g, ?_⟩, fun k => ⟨hi' t _ g, ?_⟩⟩⟩` and prove the remaining obligations. Take `⟨z, hz⟩` from `(hs t g hg).1 k (hi t _ g)`. Conclude with `⟨z, by rw [hz]; field_simp⟩`. Take `⟨z, hz⟩` from `(hs t g hg).2 k (hi' t _ g)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨z, by rw [hz]; field_simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem SumsIn.rationalSums {A A' WW : HSp D} {X : Tri T A A' WW} (h : SumsIn W σ X)
     (hi : ∀ t P g, IntegrableOn (X.ker W.ψ W.θ t P g) X.fd X.m) (hi' : ∀ t P g, IntegrableOn (X.ker' W.ψ W.θ t P g) X.fd' X.m') :
@@ -315,13 +313,13 @@ structure NumbersIn (S : GridChoice W Set.univ) (μ₀ : T) : Prop where
   bottom : ∀ i j, BottomIn W σ i j
 
 /- English proof (translation)
-Introduce `v hv` and use `hσ (h v hv)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem valuesIn_of_range_subset {χ : HChar D.host.E} {s : ℝ} (h : χ.ValuesIn s σ) (hσ : Set.range σ ⊆ Set.range σ') :
     χ.ValuesIn s σ' := fun v hv => hσ (h v hv)
 
 /- English proof (translation)
-The claim follows from `{ mu0 := fun j w x => hσ (h.chars.mu0 j w x) xi := fun t w x => hσ (h.chars.xi t w x) chi := fun i h1 h2 w x => hσ (h.chars.chi i h1 h2 w x) eta := valuesIn_of_range_subset h.chars.eta hσ chiPsi := valuesIn_of_range_subset h.chars.chiPsi hσ del := valuesIn_of_range_subset h.chars …`.
+A detailed English derivation is pending.
 -/
 theorem NumbersIn.mono {S : GridChoice W Set.univ} {μ₀ : T} (h : NumbersIn σ S μ₀) (hσ : Set.range σ ⊆ Set.range σ') :
     NumbersIn σ' S μ₀ where
@@ -346,7 +344,7 @@ theorem NumbersIn.mono {S : GridChoice W Set.univ} {μ₀ : T} (h : NumbersIn σ
       ⟨fun k hk => hσ ((hs t g hg).1 k hk), fun k hk => hσ ((hs t g hg).2 k hk)⟩⟩
 
 /- English proof (translation)
-The claim follows from `{ mu0 := fun _ _ _ => ⟨_, rfl⟩ xi := fun _ _ _ => ⟨_, rfl⟩ chi := fun _ _ _ _ _ => ⟨_, rfl⟩ eta := fun _ _ => ⟨_, rfl⟩ chiPsi := fun _ _ => ⟨_, rfl⟩ del := fun _ _ => ⟨_, rfl⟩ del' := fun _ _ => ⟨_, rfl⟩ } eighth := fun _ _ => ⟨_, rfl⟩ roots := fun _ _ _ _ _ => ⟨_, rfl⟩ phases := …`.
+A detailed English derivation is pending.
 -/
 theorem numbersIn_id (S : GridChoice W Set.univ) (μ₀ : T) : NumbersIn (RingHom.id ℂ) S μ₀ where
   chars :=
@@ -385,14 +383,14 @@ def HasNumberField : Prop :=
 variable {ch}
 
 /- English proof (translation)
-The claim follows from `NumbersIn.mono h hσ`.
+A detailed English derivation is pending.
 -/
 theorem FieldIn.fieldOK (h : ch.FieldIn σ) (hσ : Set.range σ ⊆ Set.range D.what₂.embLL) : ch.FieldOK := NumbersIn.mono h hσ
 
 /- English proof (translation)
-Establish `h' : NumbersIn D.what₂.embLL ch.S.toGridChoice A.μ0` using `h`. Set `f : D.what₂.LL →ₐ[ℚ] ℂ` to `D.what₂.embLL.toRatAlgHom`. Use `⟨f.fieldRange, LinearEquiv.finiteDimensional (AlgEquiv.ofInjectiveField f).toLinearEquiv, ?_⟩` and prove the remaining obligations. Use `NumbersIn.mono h' ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨⟨D.what₂.embLL y, AlgHom.mem_fieldRange.2 ⟨y, rfl⟩⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem FieldOK.hasNumberField (h : ch.FieldOK) : ch.HasNumberField := by
   have h' : NumbersIn D.what₂.embLL ch.S.toGridChoice A.μ0 := h
@@ -403,7 +401,7 @@ theorem FieldOK.hasNumberField (h : ch.FieldOK) : ch.HasNumberField := by
   exact ⟨⟨D.what₂.embLL y, AlgHom.mem_fieldRange.2 ⟨y, rfl⟩⟩, rfl⟩
 
 /- English proof (translation)
-Establish `h' : NumbersIn D.what₂.embLL ch.S.toGridChoice A.μ0` using `h`. Establish `hj` using `h'.jets t Φ β hβ τ hτ d hd c`. Conclude with `⟨fun j a b => hj.1 j a b, fun i a b => hj.2 i a b⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem FieldOK.isRatAt (h : ch.FieldOK) {t Φ β} (hβ : β ∈ ch.S.supp t Φ) {τ}
     (hτ : IsCosetExpansion ch.S.toGridChoice t Φ β (expDepth ch.S.toGridChoice t Φ β) τ) {d} (hd : d ∈ τ.support)
@@ -415,32 +413,30 @@ theorem FieldOK.isRatAt (h : ch.FieldOK) {t Φ β} (hβ : β ∈ ch.S.supp t Φ)
   exact ⟨fun j a b => hj.1 j a b, fun i a b => hj.2 i a b⟩
 
 /- English proof (translation)
-Establish `h' : NumbersIn D.what₂.embLL ch.S.toGridChoice A.μ0` using `h`. Conclude with `⟨fun j => (h'.chars.mu0 j).valuesIn, h'.chars.eta, h'.chars.chiPsi, h'.chars.del, h'.chars.del'⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem FieldOK.valLL (h : ch.FieldOK) : Formalism.L2.Host.ValLL D R.C := by
   have h' : NumbersIn D.what₂.embLL ch.S.toGridChoice A.μ0 := h
   exact ⟨fun j => (h'.chars.mu0 j).valuesIn, h'.chars.eta, h'.chars.chiPsi, h'.chars.del, h'.chars.del'⟩
 
 /- English proof (translation)
-Establish `h' : NumbersIn D.what₂.embLL ch.S.toGridChoice A.μ0` using `h`. Establish `hψ : ch.W.ψ = R.ψ` using `hW.1`. Establish `hθ : ch.W.θ = R.θ` using `hW.2`. Establish `hm : ∀ i : Fin D.R.m, 1 ≤ D.R.m - (i : ℕ) ∧ D.R.m - (i : ℕ) ≤ D.R.m` using `fun i => ⟨by omega, by omega⟩`. Establish `hnu : ∀ (i j : Fin D.R.m) t, GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.nuH G' i j t = SqNum.nuH ch.G t i j`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `i j t`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.nuH SqNum.nuH`. Rewrite using `[(h1 _ (hm i).1 (hm i).2).1]`. Use `⟨h.valLL, ⟨fun i hi1 hi2 => ?_, fun w hw => ?_⟩, fun t => (h'.chars.xi t).valuesIn, fun i j => ?_, fun i j => ?_⟩` and prove the remaining obligations. Rewrite using `[(h1 i hi1 hi2).1]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(h'.chars.chi i hi1 hi2).valuesIn`. Establish `hw' : w ∈ locPl ch.G A.μ0`. Unfold `locPl`. Rewrite using `[← h2]`. Conclude with `Finset.mem_union_left _ hw`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hne : Ideal.absNorm w.asIdeal ^ depthAt ch.G w ≠ 0` using `pow_ne_zero _ (fun h0 => w.ne_bot (Ideal.absNorm_eq_zero_iff.1 h0))`. Take `⟨z, hz⟩` from `(rootsIn_iff hne).1 (h'.roots A.μ0 w hw')`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[h3 w (h2 ▸ hw)]`. Establish `hc : Nat.card (kP w) = Ideal.absNorm w.asIdeal`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.absNorm_apply, Submodule.cardQuot_apply]`. Rewrite using `[hc]`. Conclude with `hz`. Introduce `t Λ Λ₀ hΛ hΛ₀ s hs1 hs2`. Rewrite `hΛ`, `hΛ₀` using `[hnu]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Establish `h0` using `hL i j Λ₀ hΛ₀ s hs1`. Take `⟨ρ, hρ⟩` from `h'.ratios i j t Λ Λ₀ hΛ hΛ₀ s hs1 hs2 h0`. Conclude with `⟨ρ, by rw [hρ]; field_simp⟩`. Take `⟨B, B', WW, X, hX, hS⟩` from `h'.bottom i j (hB i j)`. Establish `hR` using `SumsIn.rationalSums hS (fun t P g => (hI i j B B' WW X hX t).1 P g) (fun t P g => (hI i j B B' WW X hX t).2 P g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hR` using `[hψ, hθ]`. Establish `hX'` using `hX.is`. Rewrite `hX'` using `[hψ, hθ]`. Use `⟨B, B', WW, X, ?_, ?_, hX.std, hX.std', hX.stdW, ?_, hR⟩` and prove the remaining obligations. Rewrite using `[hX.rank]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(SqNum.ranks_exact D i j).1`. Rewrite using `[hX.rank']`. Conclude with `(SqNum.ranks_exact D i j).2.1`. Establish `hpl : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.places G' = locPl ch.G`. Use function extensionality and compare the values at `t`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions.
 
-Use extensionality with `w`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.places, locPl, Finset.mem_union, h2]`. Establish `hb : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.beta G' i j = fun _ => ch.G.ch.chi (D.R.m - i) * R.eta ^ (rankV D i j % 2)`. Use function extensionality and compare the values at `t`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.beta`.
-
-Rewrite using `[(h1 _ (hm i).1 (hm i).2).2]`. Both sides reduce to the same expression. Establish `hn : GlobalTheory.IndefiniteRowSideFullHecke.UnitCharTriangle.nuH G' i j = fun t => SqNum.nuH ch.G t i j` using `funext (hnu i j)`. Rewrite using `[hpl, hb, hn]`. Conclude with `hX'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FieldOK.fieldCond (h : ch.FieldOK) (hW : ch.W.Over R) (G' : GlobalTheory.Grid.GridPre R)
     (h1 : ∀ i, 1 ≤ i → i ≤ D.R.m → G'.chiH i = ch.G.ch.chiH i ∧ G'.chi i = ch.G.ch.chi i)
@@ -507,19 +503,19 @@ theorem FieldOK.fieldCond (h : ch.FieldOK) (hW : ch.W.Over R) (G' : GlobalTheory
 end Choice
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 example (ch : Choice R) (ρ ξ) : (ch.withReal ρ ξ).FieldOK ↔ ch.FieldOK := Iff.rfl
 
 /- English proof (translation)
-Introduce `z hz` and use `by rcases mul_self_eq_one_iff.1 ((sq z).symm.trans hz) with rfl | rfl exacts [⟨1, map_one σ⟩, ⟨-1, by simp⟩]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example : RootsIn σ 2 := fun z hz => by
   rcases mul_self_eq_one_iff.1 ((sq z).symm.trans hz) with rfl | rfl
   exacts [⟨1, map_one σ⟩, ⟨-1, by simp⟩]
 
 /- English proof (translation)
-Introduce `h` and use `by obtain ⟨x, hx⟩ := h.eighth Complex.I (by rw [show 8 = 4 * 2 from rfl, pow_mul, Complex.I_pow_four, one_pow]) simpa using congrArg Complex.im hx`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (S : GridChoice W Set.univ) (μ₀ : T) : ¬ NumbersIn (Rat.castHom ℂ) S μ₀ := fun h => by
   obtain ⟨x, hx⟩ := h.eighth Complex.I (by rw [show 8 = 4 * 2 from rfl, pow_mul, Complex.I_pow_four, one_pow])

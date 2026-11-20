@@ -33,13 +33,13 @@ variable {O C : Type} [CommRing O] [Field C] [Algebra O C]
   (v : Valuation C ℝ≥0)
 
 /- English proof (translation)
-Establish `hpos : 0 < v c` using `pos_iff_ne_zero.2 ((Valuation.ne_zero_iff v).2 hc)`. Establish `e : {r | ∃ a : C, c • x ∈ scaleLat a La ∧ v a = r} = OrderIso.mulLeft₀ (v c) hpos '' {r | ∃ a : C, x ∈ scaleLat a La ∧ v a = r}`. Use extensionality with `r`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Take `⟨y, hy, h⟩` from `mem_scaleLat.1 ha`. Use `⟨_, ⟨c⁻¹ * a, mem_scaleLat.2 ⟨y, hy, ?_⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[mul_smul, h, smul_smul, inv_mul_cancel₀ hc, one_smul]`. Express the relevant statement in the definitionally equal form `v c * v (c⁻¹ * a) = v a`. Rewrite using `[← map_mul, mul_inv_cancel_left₀ hc]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨_, ⟨a, ha, rfl⟩, rfl⟩`. Take `⟨y, hy, h⟩` from `mem_scaleLat.1 ha`. Conclude with `⟨c * a, mem_scaleLat.2 ⟨y, hy, by rw [mul_smul, h]⟩, map_mul v c a⟩`. Rewrite using `[latNorm, latNorm, e]`. Break down `Set.eq_empty_or_nonempty {r | ∃ a : C, x ∈ scaleLat a La ∧ v a = r} with h | h` into its components or cases.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[h, Set.image_empty, NNReal.sInf_empty, mul_zero]`. Conclude with `(OrderIso.map_csInf' _ h (OrderBot.bddBelow _)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latNorm_smul (La : Submodule O U) {c : C} (hc : c ≠ 0) (x : U) :
     latNorm v La (c • x) = v c * latNorm v La x := by
@@ -63,11 +63,11 @@ theorem latNorm_smul (La : Submodule O U) {c : C} (hc : c ≠ 0) (x : U) :
   · exact (OrderIso.map_csInf' _ h (OrderBot.bddBelow _)).symm
 
 /- English proof (translation)
-Establish `h1 : (step C f k).mkQ (f' k) ∈ Submodule.span C {(step C f k).mkQ (f k)}`. Rewrite using `[← map_mkQ_step_succ, ← h (k + 1)]`. Conclude with `Submodule.mem_map_of_mem (mem_step_succ f' k)`. Take `⟨c, hc⟩` from `Submodule.mem_span_singleton.1 h1`. Establish `hc0 : c ≠ 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Rewrite `hc` using `[zero_smul, eq_comm, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero, ← h]`. Conclude with `hk hc`. Use `⟨c, hc0, fun La => ?_⟩` and prove the remaining obligations. Establish `key : ∀ F' F : Submodule C U, step C f' k = F' → step C f' (k + 1) = F → grNorm v La f' k = latNorm v (grLat La F' F) (F'.mkQ (f' k))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Introduce and unpack `_ _ rfl rfl`. Both sides reduce to the same expression. Rewrite using `[key _ _ (h _) (h _), ← hc, latNorm_smul v _ hc0]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_grNorm_eq_mul {f f' : Fin N → U} (h : ∀ i, step C f' i = step C f i) (k : Fin N)
     (hk : f' k ∉ step C f' k) :
@@ -91,9 +91,9 @@ theorem exists_grNorm_eq_mul {f f' : Fin N → U} (h : ∀ i, step C f' i = step
 variable {U' : Type} [AddCommGroup U'] [Module C U'] [Module O U'] [IsScalarTower O C U']
 
 /- English proof (translation)
-Simplify using `only [phiAt_vp, ← Finset.sum_sub_distrib]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Distinguish the cases in `hk : (k : ℕ) < j`. Take `⟨c, hc, e⟩` from `exists_grNorm_eq_mul (O := O) v h k (F'.notMem_step k)`. Establish `hc'` using `(Valuation.ne_zero_iff v).2 hc`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [if_pos hk, e, logAbs_vp_mul p v hc' (hW k hk).1, logAbs_vp_mul p v hc' (hW k hk).2]`. Expand and normalize the polynomial expressions, which then agree. Take `⟨c, hc, e⟩` from `exists_grNorm_eq_mul (O := O) v (f := al ∘ F.f) (f' := al ∘ F'.f) (fun i => by rw [← map_step, ← map_step, h]) k (F'.map_notMem_step al k (not_lt.1 hk))`. Establish `hc'` using `(Valuation.ne_zero_iff v).2 hc`. Simplify using `only [if_neg hk, e, logAbs_vp_mul p v hc' (hom k (not_lt.1 hk)).1, logAbs_vp_mul p v hc' (hom k (not_lt.1 hk)).2]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -130,7 +130,7 @@ section Free
 variable [IsAlgClosed C] [CharZero C]
 
 /- English proof (translation)
-Establish `h` using `(GlobalTheory.firstFiveLaws.1.mulN (Sp C) P.A (p ^ n) (one_le_ppow p n)).2.2.2.2 C (𝟙 _) (Nat.cast_ne_zero.2 (pow_ne_zero _ (Fact.out : p.Prime).ne_zero))`. Rewrite `h` using `[← pow_mul, mul_comm n]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem card_torsion (n : ℕ) :
     Nat.card {x : Pts P.A.A // x ^ p ^ n = 1} = p ^ (2 * P.A.g * n) := by
@@ -140,7 +140,7 @@ theorem card_torsion (n : ℕ) :
   exact h
 
 /- English proof (translation)
-The claim follows from `(tate_free_of_card p _ _ P.card_torsion).1`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_T_equiv : Nonempty (P.T ≃ₗ[ℤ_[p]] (Fin (2 * P.A.g) → ℤ_[p])) :=
   (tate_free_of_card p _ _ P.card_torsion).1
@@ -150,13 +150,13 @@ instance : Module.Free ℤ_[p] P.T := .of_equiv P.nonempty_T_equiv.some.symm
 instance : Module.Finite ℤ_[p] P.T := .equiv P.nonempty_T_equiv.some.symm
 
 /- English proof (translation)
-Rewrite using `[P.nonempty_T_equiv.some.finrank_eq, Module.finrank_fin_fun]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem hodgeTateLatticePoint_finrank_tateModule : Module.finrank ℤ_[p] P.T = 2 * P.A.g := by
   rw [P.nonempty_T_equiv.some.finrank_eq, Module.finrank_fin_fun]
 
 /- English proof (translation)
-The claim follows from `(bijective_pairT_of_lev p C P.A P.eps (tate_free_of_card p _ _ P.card_torsion).2.1 (tate_free_of_card p _ _ P.card_torsion).2.2).2`.
+A detailed English derivation is pending.
 -/
 theorem pairT_bijective : Function.Bijective (pairT P.A P.eps) :=
   (bijective_pairT_of_lev p C P.A P.eps (tate_free_of_card p _ _ P.card_torsion).2.1
@@ -191,9 +191,9 @@ theorem pairV_tmul (c d : C) (s t : P.T) :
     P.pairV (c ⊗ₜ s) (d ⊗ₜ t) = pairT P.A P.eps s t • (c * d) := rfl
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx']`. Consider the case `tmul c s`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, hy, hy']`. Consider the case `tmul d t => exact congrArg (· • (c * d)) (pairT_act P.oA P.eps a s t)`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pairV_act (a : Λ) (x y : P.V) :
     P.pairV (P.actV a x) y = P.pairV x (P.actV (star a) y) := by
@@ -207,9 +207,9 @@ theorem pairV_act (a : Λ) (x y : P.V) :
     | tmul d t => exact congrArg (· • (c * d)) (pairT_act P.oA P.eps a s t)
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x x' hx hx' => simp only [map_add, LinearMap.add_apply, hx, hx', neg_add]`. Consider the case `tmul c s`. Proceed by induction on `y using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add y y' hy hy' => simp only [map_add, LinearMap.add_apply, hy, hy', neg_add]`. Consider the case `tmul d t => rw [pairV_tmul, pairV_tmul, ← (isAlt_pairT P.A P.eps).neg_eq t s, neg_smul, mul_comm]`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem pairV_swap (x y : P.V) : P.pairV x y = -P.pairV y x := by
   induction x using TensorProduct.induction_on with
@@ -222,24 +222,24 @@ theorem pairV_swap (x y : P.V) : P.pairV x y = -P.pairV y x := by
     | tmul d t => rw [pairV_tmul, pairV_tmul, ← (isAlt_pairT P.A P.eps).neg_eq t s, neg_smul, mul_comm]
 
 /- English proof (translation)
-Introduce `x` and use `by have h := P.pairV_swap x x exact self_eq_neg.1 h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isAlt_pairV : P.pairV.IsAlt := fun x => by
   have h := P.pairV_swap x x
   exact self_eq_neg.1 h
 
 /- English proof (translation)
-Rewrite using `[Module.finrank_baseChange, hodgeTateLatticePoint_finrank_tateModule]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_V : Module.finrank C P.V = 2 * P.A.g := by
   rw [Module.finrank_baseChange, hodgeTateLatticePoint_finrank_tateModule]
 
 /- English proof (translation)
-Set `e` to `Module.finBasis ℤ_[p] P.T`. Set `q` to `LinearEquiv.ofBijective _ P.pairT_bijective`. Set `s` to `e.dualBasis.map q.symm`. Establish `h1 : ∀ i t, pairT P.A P.eps (s i) t = e.repr t i` using `fun i t => (LinearMap.congr_fun (q.apply_symm_apply (e.dualBasis i)) t).trans (e.dualBasis_apply i t)`. Use `⟨_, e, s, h1, fun w j => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (s.baseChange C).coord j = P.pairV.flip (1 ⊗ₜ e j)` using `(s.baseChange C).ext fun i => by`. Rewrite using `[Module.Basis.coord_apply, Module.Basis.repr_self, Module.Basis.baseChange_apply]`. Express the relevant statement in the definitionally equal form `_ = P.pairV (1 ⊗ₜ s i) (1 ⊗ₜ e j)`. Rewrite using `[pairV_tmul, h1, Module.Basis.repr_self, Finsupp.single_apply, Finsupp.single_apply]`. Distinguish the cases in `h : i = j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Simplify using `[h]`. Simplify using `[h, Ne.symm h]`. Conclude with `LinearMap.congr_fun this w`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_dual_bases : ∃ (n : ℕ) (e s : Module.Basis (Fin n) ℤ_[p] P.T),
     (∀ i t, pairT P.A P.eps (s i) t = e.repr t i) ∧
@@ -260,9 +260,9 @@ theorem exists_dual_bases : ∃ (n : ℕ) (e s : Module.Basis (Fin n) ℤ_[p] P.
   exact LinearMap.congr_fun this w
 
 /- English proof (translation)
-Take `⟨n, e, s, h1, h2⟩` from `P.exists_dual_bases`. Use `⟨∑ i, l (e i) ⊗ₜ s i, fun t => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Use `conv_rhs => rw [← e.sum_repr t]`. Simplify using `only [map_sum, LinearMap.sum_apply, pairV_tmul, h1, map_smul, _root_.mul_one]`. Use `conv_lhs => rw [← (s.baseChange C).sum_repr w]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[h2, hw, Module.Basis.baseChange_apply, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem existsUnique_pairV (l : P.T →ₗ[ℤ_[p]] C) : ∃! w : P.V, ∀ t, P.pairV w (1 ⊗ₜ t) = l t := by
   obtain ⟨n, e, s, h1, h2⟩ := P.exists_dual_bases
@@ -274,7 +274,7 @@ theorem existsUnique_pairV (l : P.T →ₗ[ℤ_[p]] C) : ∃! w : P.V, ∀ t, P.
     rw [h2, hw, Module.Basis.baseChange_apply, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]
 
 /- English proof (translation)
-The claim follows from `(P.existsUnique_pairV (((P.pairV w').restrictScalars ℤ_[p]) ∘ₗ TensorProduct.mk ℤ_[p] C _ 1)).unique h fun _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_pairV {w w' : P.V} (h : ∀ t : P.T, P.pairV w (1 ⊗ₜ t) = P.pairV w' (1 ⊗ₜ t)) :
     w = w' :=
@@ -290,14 +290,14 @@ def inclT : O ⊗[ℤ_[p]] P.T →ₗ[O] P.V := (TensorProduct.mk ℤ_[p] C P.T 
 def latT : Submodule O P.V := LinearMap.range P.inclT
 
 /- English proof (translation)
-Rewrite using `[inclT, LinearMap.liftBaseChange_tmul, TensorProduct.mk_apply, TensorProduct.smul_tmul', Algebra.algebraMap_eq_smul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inclT_tmul (c : O) (t : P.T) : P.inclT (c ⊗ₜ t) = algebraMap O C c ⊗ₜ t := by
   rw [inclT, LinearMap.liftBaseChange_tmul, TensorProduct.mk_apply, TensorProduct.smul_tmul',
     Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1 ⊗ₜ t, by rw [inclT_tmul, map_one]⟩`.
+Supply the required witnesses or components.
 -/
 theorem one_tmul_mem_latT (t : P.T) : (1 : C) ⊗ₜ t ∈ P.latT :=
   ⟨1 ⊗ₜ t, by rw [inclT_tmul, map_one]⟩
@@ -315,7 +315,7 @@ def latTSub (τ : Λ →+* O) : Submodule O P.V := eigSubLat P.actV ((algebraMap
 def omRec (i : J) : Submodule O P.OmC := eigQuotLat P.actOm h i P.latOm
 
 /- English proof (translation)
-The claim follows from `eigSubLat_le_eigQuotLat P.actV h i P.latT`.
+A detailed English derivation is pending.
 -/
 theorem latTSub_le_latTQuot (i : J) : P.latTSub (σ i) ≤ P.latTQuot h i :=
   eigSubLat_le_eigQuotLat P.actV h i P.latT
@@ -323,23 +323,23 @@ theorem latTSub_le_latTQuot (i : J) : P.latTSub (σ i) ≤ P.latTQuot h i :=
 variable [IsAlgClosed C] [CharZero C]
 
 /- English proof (translation)
-The claim follows from `Module.Finite.iff_fg.1 (Module.Finite.range P.inclT)`.
+A detailed English derivation is pending.
 -/
 theorem fg_latT : P.latT.FG := Module.Finite.iff_fg.1 (Module.Finite.range P.inclT)
 
 /- English proof (translation)
-The claim follows from `P.fg_latT.map _`.
+A detailed English derivation is pending.
 -/
 theorem fg_latTQuot (i : J) : (P.latTQuot h i).FG := P.fg_latT.map _
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, rfl⟩ t`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y hx hy`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Take `⟨c, hc⟩` from `hx`. Take `⟨d, hd⟩` from `hy`. Conclude with `⟨c + d, by rw [map_add, map_add, map_add, LinearMap.add_apply, hc, hd]⟩`. Consider the case `tmul c s`. Use `⟨pairT P.A P.eps s t • c, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[inclT_tmul, pairV_tmul, _root_.mul_one, Algebra.smul_def, Algebra.smul_def, map_mul, ← IsScalarTower.algebraMap_apply]`. Introduce `hw`. Take `⟨n, e, s, -, h2⟩` from `P.exists_dual_bases`. Rewrite using `[← (s.baseChange C).sum_repr w]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨c, hc⟩` from `hw (e i)`. Rewrite using `[h2, ← hc, algebraMap_smul, Module.Basis.baseChange_apply]`. Conclude with `Submodule.smul_mem _ c (P.one_tmul_mem_latT _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_latT_iff (w : P.V) :
     w ∈ P.latT ↔ ∀ t : P.T, ∃ c : O, algebraMap O C c = P.pairV w (1 ⊗ₜ t) := by
@@ -368,14 +368,14 @@ variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
 def alC : P.V →ₗ[C] P.OmC := (P.inclOm.restrictScalars ℤ_[p] ∘ₗ P.al₀).liftBaseChange C
 
 /- English proof (translation)
-Rewrite using `[alC, LinearMap.liftBaseChange_tmul, LinearMap.comp_apply, LinearMap.restrictScalars_apply, inclOm, TensorProduct.mk_apply, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem alC_tmul (c : C) (t : P.T) : P.alC (c ⊗ₜ t) = c ⊗ₜ P.al₀ t := by
   rw [alC, LinearMap.liftBaseChange_tmul, LinearMap.comp_apply, LinearMap.restrictScalars_apply, inclOm,
     TensorProduct.mk_apply, TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c t`. Rewrite using `[inclT_tmul, alC_tmul, al_tmul, inclOm, TensorProduct.mk_apply, TensorProduct.tmul_smul, TensorProduct.smul_tmul', Algebra.algebraMap_eq_smul_one]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem alC_inclT (x : O ⊗[ℤ_[p]] P.T) : P.alC (P.inclT x) = P.inclOm (P.al x) := by
   induction x using TensorProduct.induction_on with
@@ -386,9 +386,9 @@ theorem alC_inclT (x : O ⊗[ℤ_[p]] P.T) : P.alC (P.inclT x) = P.inclOm (P.al 
       TensorProduct.smul_tmul', Algebra.algebraMap_eq_smul_one]
 
 /- English proof (translation)
-Introduce `a x`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul c t`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Express the relevant statement in the definitionally equal form `P.alC (c ⊗ₜ P.actT a t) = P.actOm a (P.alC (c ⊗ₜ t))`. Rewrite using `[alC_tmul, alC_tmul, al₀_act]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem isEquivariant_alC : IsEquivariant P.actV P.actOm P.alC := by
   intro a x
@@ -413,46 +413,46 @@ def omHT (i : J) : Submodule O P.OmC := (P.latTQuot h i).map (P.alC.restrictScal
 def wHT (i : J) : Submodule O P.V := P.latTQuot h i ⊓ (P.eigW (σ i)).restrictScalars O
 
 /- English proof (translation)
-Rewrite using `[omHTAll, latT, ← LinearMap.range_comp, ← LinearMap.range_comp]`. Conclude with `congrArg LinearMap.range (LinearMap.ext P.alC_inclT)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omHTAll_eq : P.omHTAll = (LinearMap.range P.al).map P.inclOm := by
   rw [omHTAll, latT, ← LinearMap.range_comp, ← LinearMap.range_comp]
   exact congrArg LinearMap.range (LinearMap.ext P.alC_inclT)
 
 /- English proof (translation)
-Rewrite using `[omHTAll_eq]`. Conclude with `LinearMap.map_le_range`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omHTAll_le_latOm : P.omHTAll ≤ P.latOm := by
   rw [omHTAll_eq]
   exact LinearMap.map_le_range
 
 /- English proof (translation)
-The claim follows from `map_eigQuotLat P.actV h P.isEquivariant_alC i P.latT`.
+A detailed English derivation is pending.
 -/
 theorem omHT_eq (i : J) : P.omHT h i = eigQuotLat P.actOm h i P.omHTAll :=
   map_eigQuotLat P.actV h P.isEquivariant_alC i P.latT
 
 /- English proof (translation)
-Rewrite using `[omHT_eq]`. Conclude with `eigQuotLat_mono _ h i P.omHTAll_le_latOm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem omHT_le_omRec (i : J) : P.omHT h i ≤ P.omRec h i := by
   rw [omHT_eq]
   exact eigQuotLat_mono _ h i P.omHTAll_le_latOm
 
 /- English proof (translation)
-The claim follows from `(P.fg_latTQuot h i).map _`.
+A detailed English derivation is pending.
 -/
 theorem fg_omHT (i : J) : (P.omHT h i).FG := (P.fg_latTQuot h i).map _
 
 /- English proof (translation)
-The claim follows from `fg_inf P.integers (P.fg_latTQuot h i) _`.
+A detailed English derivation is pending.
 -/
 theorem fg_wHT (i : J) : (P.wHT h i).FG := fg_inf P.integers (P.fg_latTQuot h i) _
 
 include h in
 
 /- English proof (translation)
-Use `le_antisymm (iSup_le fun i => inf_le_left) fun x hx => ?_` and prove the remaining obligations. Rewrite using `[← sum_proj h P.actV x]`. Use `Submodule.sum_mem _ fun i _ => Submodule.mem_iSup_of_mem i ⟨?_, proj_mem h P.actV i x⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `P.alC _ = 0`. Rewrite using `[P.isEquivariant_alC.proj h i x, show P.alC x = 0 from hx, map_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem iSup_eigW [Fintype J] : ⨆ i, P.eigW (σ i) = P.W := by
   refine le_antisymm (iSup_le fun i => inf_le_left) fun x hx => ?_
@@ -467,28 +467,28 @@ def evalAl (x : LieG P.Gt) : P.T →ₗ[ℤ_[p]] C :=
 def bLie (x : LieG P.Gt) : P.V := (P.existsUnique_pairV (P.evalAl x)).choose
 
 /- English proof (translation)
-The claim follows from `(P.existsUnique_pairV (P.evalAl x)).choose_spec.1 t`.
+A detailed English derivation is pending.
 -/
 theorem pairV_bLie (x : LieG P.Gt) (t : P.T) :
     P.pairV (P.bLie x) (1 ⊗ₜ t) = algebraMap O C ((P.al₀ t).1 x) :=
   (P.existsUnique_pairV (P.evalAl x)).choose_spec.1 t
 
 /- English proof (translation)
-The claim follows from `P.eq_of_pairV fun t => by rw [map_add, LinearMap.add_apply, pairV_bLie, pairV_bLie, pairV_bLie, omega_lieAdd, map_add]`.
+A detailed English derivation is pending.
 -/
 theorem bLie_add (x y : LieG P.Gt) : P.bLie (lieAdd x y) = P.bLie x + P.bLie y :=
   P.eq_of_pairV fun t => by
     rw [map_add, LinearMap.add_apply, pairV_bLie, pairV_bLie, pairV_bLie, omega_lieAdd, map_add]
 
 /- English proof (translation)
-The claim follows from `P.eq_of_pairV fun t => by rw [pairV_bLie, omega_lieZero, map_zero, map_zero, LinearMap.zero_apply]`.
+A detailed English derivation is pending.
 -/
 theorem bLie_zero : P.bLie (lieZero P.Gt) = 0 :=
   P.eq_of_pairV fun t => by
     rw [pairV_bLie, omega_lieZero, map_zero, map_zero, LinearMap.zero_apply]
 
 /- English proof (translation)
-The claim follows from `P.eq_of_pairV fun t => by rw [← algebraMap_smul C c, map_smul, LinearMap.smul_apply, pairV_bLie, pairV_bLie, omega_lieScale, map_mul, smul_eq_mul]`.
+A detailed English derivation is pending.
 -/
 theorem bLie_scale (c : O) (x : LieG P.Gt) : P.bLie (AvDefs.lieScale P.Gt c x) = c • P.bLie x :=
   P.eq_of_pairV fun t => by
@@ -496,7 +496,7 @@ theorem bLie_scale (c : O) (x : LieG P.Gt) : P.bLie (AvDefs.lieScale P.Gt c x) =
       omega_lieScale, map_mul, smul_eq_mul]
 
 /- English proof (translation)
-The claim follows from `P.eq_of_pairV fun t => by rw [pairV_act, pairV_bLie] change _ = P.pairV _ (1 ⊗ₜ P.actT (star a) t) rw [pairV_bLie, al₀_act, omegaAct_apply, star_star]`.
+A detailed English derivation is pending.
 -/
 theorem bLie_act (a : Λ) (x : LieG P.Gt) :
     P.bLie (AvDefs.lieAct P.Gt P.oGt a x) = P.actV a (P.bLie x) :=
@@ -506,7 +506,7 @@ theorem bLie_act (a : Λ) (x : LieG P.Gt) :
     rw [pairV_bLie, al₀_act, omegaAct_apply, star_star]
 
 /- English proof (translation)
-The claim follows from `(P.mem_latT_iff _).2 fun t => ⟨_, (P.pairV_bLie x t).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem bLie_mem_latT (x : LieG P.Gt) : P.bLie x ∈ P.latT :=
   (P.mem_latT_iff _).2 fun t => ⟨_, (P.pairV_bLie x t).symm⟩
@@ -532,14 +532,14 @@ def wRec (τ : Λ →+* O) : Submodule O P.V where
     exact ⟨⟨_, isEig_lieScale P.oGt c x.2⟩, P.bLie_scale c x.1⟩
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Conclude with `P.bLie_mem_latT x`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem latLie_le_latT : P.latLie ≤ P.latT := by
   rintro _ ⟨x, rfl⟩
   exact P.bLie_mem_latT x
 
 /- English proof (translation)
-Introduce and unpack `_ ⟨x, rfl⟩`. Use `⟨⟨x.1, rfl⟩, mem_eigenSub.2 fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[← bLie_act, x.2 a, bLie_scale, RingHom.comp_apply, algebraMap_smul]`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem wRec_le (τ : Λ →+* O) :
     P.wRec τ ≤ eigSubLat P.actV ((algebraMap O C).comp τ) P.latLie := by
@@ -548,7 +548,7 @@ theorem wRec_le (τ : Λ →+* O) :
   rw [← bLie_act, x.2 a, bLie_scale, RingHom.comp_apply, algebraMap_smul]
 
 /- English proof (translation)
-The claim follows from `(P.wRec_le τ).trans (eigSubLat_mono _ _ P.latLie_le_latT)`.
+A detailed English derivation is pending.
 -/
 theorem wRec_le_latTSub (τ : Λ →+* O) : P.wRec τ ≤ P.latTSub τ :=
   (P.wRec_le τ).trans (eigSubLat_mono _ _ P.latLie_le_latT)
@@ -556,7 +556,7 @@ theorem wRec_le_latTSub (τ : Λ →+* O) : P.wRec τ ≤ P.latTSub τ :=
 abbrev Frame (τ : Λ →+* O) (N j : ℕ) : Type := AdaptedFrame (P.eigW τ) (P.eigV τ) N j
 
 /- English proof (translation)
-The claim follows from `nonempty_adaptedFrame inf_le_right`.
+A detailed English derivation is pending.
 -/
 theorem nonempty_frame (τ : Λ →+* O) :
     Nonempty (P.Frame τ (Module.finrank C (P.eigV τ)) (Module.finrank C (P.eigW τ))) :=
@@ -579,17 +579,15 @@ omit [IsAlgClosed C] [CharZero C] [Fact ¬IsUnit (p : O)]
 variable (P) in
 
 /- English proof (translation)
-Use `haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)`. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add x y hx hy`. Take `⟨a, ha, hx⟩` from `hx`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb, hy⟩` from `hy`. Use `⟨a * b, mul_ne_zero ha hb, ?_⟩` and prove the remaining obligations. Rewrite using `[smul_add]`. Use `Submodule.add_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.smul_mem _ _ hx`. Rewrite using `[mul_smul]`. Conclude with `Submodule.smul_mem _ _ hy`. Consider the case `tmul c t`. Distinguish the cases in `hc : v c ≤ 1`.
+Treat this case separately. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨b, rfl⟩` from `P.integers.exists_of_le_one hc`. Use `⟨1, one_ne_zero, ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul, Algebra.algebraMap_eq_smul_one, ← TensorProduct.smul_tmul']`. Conclude with `Submodule.smul_mem _ _ (P.one_tmul_mem_latT t)`. Establish `hc0 : c ≠ 0` using `by rintro rfl; simp at hc`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨b, hb⟩` from `P.integers.exists_of_le_one (r := c⁻¹) (by`. Rewrite using `[map_inv₀]`. Conclude with `inv_le_one_of_one_le₀ (not_le.1 hc).le)`. Use `⟨b, ?_, ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
-
-Conclude with `inv_ne_zero hc0 (by rw [← hb, map_zero])`. Rewrite using `[TensorProduct.smul_tmul', Algebra.smul_def, hb, inv_mul_cancel₀ hc0]`. Conclude with `P.one_tmul_mem_latT t`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_latT (x : P.V) : ∃ a : O, a ≠ 0 ∧ a • x ∈ P.latT := by
   haveI : IsDomain O := P.integers.hom_inj.isDomain (algebraMap O C)
@@ -619,7 +617,7 @@ theorem exists_smul_mem_latT (x : P.V) : ∃ a : O, a ≠ 0 ∧ a • x ∈ P.la
         exact P.one_tmul_mem_latT t
 
 /- English proof (translation)
-Take `⟨a, ha, hx⟩` from `P.exists_smul_mem_latT (F.f k)`. Establish `hV : F.f k ∈ P.eigV (σ i)` using `(step_mono F.f k.2).trans F.step_N.le (mem_step_succ F.f k)`. Use `⟨algebraMap O C a, fun h0 => ha (P.integers.hom_inj (by rw [h0, map_zero])), P.latTSub_le_latTQuot h i ((mem_eigSubLat _).2 ⟨?_, Submodule.smul_mem _ _ hV⟩)⟩` and prove the remaining obligations. Rewrite using `[algebraMap_smul]`. Conclude with `hx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_smul_mem_latTQuot (i : J) (F : P.Frame (σ i) N j) (k : Fin N) :
     ∃ a : C, a ≠ 0 ∧ a • F.f k ∈ P.latTQuot h i := by
@@ -631,7 +629,7 @@ theorem exists_smul_mem_latTQuot (i : J) (F : P.Frame (σ i) N j) (k : Fin N) :
   exact hx
 
 /- English proof (translation)
-Take `⟨a, ha, hT⟩` from `exists_smul_mem_latTQuot h i F k`. Establish `hW : F.f k ∈ P.eigW (σ i)` using `(step_mono F.f hk).trans F.step_j.le (mem_step_succ F.f k)`. Use `exists_grAt_eq P.integers (P.fg_wHT h i) F.f k (F.notMem_step k) ha (Submodule.zero_mem _) ?_` and prove the remaining obligations. Rewrite using `[add_zero]`. Conclude with `Submodule.mem_inf.2 ⟨hT, (P.eigW (σ i)).smul_mem a hW⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grAt_wHT (i : J) (F : P.Frame (σ i) N j) (k : Fin N) (hk : (k : ℕ) < j) :
     ∃ c : C, c ≠ 0 ∧
@@ -645,7 +643,7 @@ theorem grAt_wHT (i : J) (F : P.Frame (σ i) N j) (k : Fin N) (hk : (k : ℕ) < 
   exact Submodule.mem_inf.2 ⟨hT, (P.eigW (σ i)).smul_mem a hW⟩
 
 /- English proof (translation)
-Take `⟨a, ha, hT⟩` from `exists_smul_mem_latTQuot h i F k`. Establish `hn` using `AdaptedFrame.map_notMem_step P.alC (U₁ := P.eigV (σ i)) F k hk`. Use `exists_grAt_eq P.integers (P.fg_omHT h i) (P.alC ∘ F.f) k hn ha (Submodule.zero_mem _) ?_` and prove the remaining obligations. Rewrite using `[add_zero, Function.comp_apply, ← map_smul]`. Conclude with `Submodule.mem_map_of_mem (f := P.alC.restrictScalars O) hT`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem grAt_omHT (i : J) (F : P.Frame (σ i) N j) (k : Fin N) (hk : j ≤ k) :
     ∃ c : C, c ≠ 0 ∧
@@ -666,7 +664,7 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] {v : Valuation C ℝ≥0}
   [Algebra O C] {Λ : Type} [CommRing Λ] [StarRing Λ]
 
 /- English proof (translation)
-The claim follows from `polOActPull _ _ f B (StrictPull.polPull B f) _ (isGrpPullback_pullback B.A f) (PolBaseChange.lbIso_refl (StrictPull.polPull B f).isLB) Λ o`.
+A detailed English derivation is pending.
 -/
 theorem exists_oAct_polPull {S S' : Scheme.{0}} (f : S' ⟶ S) (B : Out.PolAV S) (o : B.OAct Λ) :
     ∃ o' : (StrictPull.polPull B f).OAct Λ, ∀ a, (o'.act a).left ≫ pullback.fst B.A.hom f =
@@ -702,11 +700,11 @@ def padicIntHom (p : ℕ) [Fact p.Prime] : ℤ_[p] →+* 𝓞_ℂ_[p] :=
     exact x.2
 
 /- English proof (translation)
-Set `W : WeierstrassCurve ℤ_[2]` to `⟨0, 0, 1, 0, 0⟩`. Establish `hΔ : W.Δ = -27`. Evaluate the numerical expressions using `[W, WeierstrassCurve.Δ, WeierstrassCurve.b₂, WeierstrassCurve.b₄, WeierstrassCurve.b₆, WeierstrassCurve.b₈]`. Establish `: W.IsElliptic` using `⟨by`. Rewrite using `[hΔ, PadicInt.isUnit_iff, norm_neg]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Evaluate the numerical expressions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(PadicInt.norm_natCast_eq_one_iff (p := 2) (n := 27)).2 (by norm_num)⟩` after adjusting the coercions. Take `⟨o, -⟩` from `exists_oAct_int GlobalTheory.firstFiveLaws.1.cube _ (WeierstrassCurve.ellPolAV W)`. Take `⟨o', -⟩` from `exists_oAct_polPull (spMap (padicIntHom 2)) _ o`. Take `⟨ε⟩ : Nonempty (Eps 2 ℂ_[2])` from `inferInstance`. Use `letI a1 : Algebra ℤ_[2] 𝓞_ℂ_[2] := (padicIntHom 2).toAlgebra`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI a2 : Algebra ℤ_[2] ℂ_[2] := ((algebraMap 𝓞_ℂ_[2] ℂ_[2]).comp (padicIntHom 2)).toAlgebra`. Use `⟨⟨PadicComplexHost.not_isUnit_p 2⟩, PadicComplexHost.isAdicComplete 2, a1, a2, IsScalarTower.of_algebraMap_eq fun _ => rfl, ofGoodReduction (PadicComplexInt.integers 2) ε _ o', rfl, Point.finrank_V _, ?_⟩` and prove the remaining obligations. Conclude with `(isSplitting_int 𝓞_ℂ_[2]).map _`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_point_dim_one : ∃ (_ : Fact ¬IsUnit ((2 : ℕ) : 𝓞_ℂ_[2]))
     (_ : IsAdicComplete (Ideal.span {((2 : ℕ) : 𝓞_ℂ_[2])}) 𝓞_ℂ_[2]) (a₁ : Algebra ℤ_[2] 𝓞_ℂ_[2])
@@ -733,7 +731,7 @@ theorem exists_point_dim_one : ∃ (_ : Fact ¬IsUnit ((2 : ℕ) : 𝓞_ℂ_[2])
   exact (isSplitting_int 𝓞_ℂ_[2]).map _
 
 /- English proof (translation)
-Use `Submodule.map_injective_of_injective (omega _).injective_subtype ?_` and prove the remaining obligations. Rewrite using `[map_span_dlogTv, Submodule.map_subtype_top]`. Conclude with `HodgeTateTest.htSpan_gm p`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 example [IsAdicComplete (Ideal.span {(p : O)}) O] :
     Submodule.span O (Set.range (dlogTv (G := Gm (Sp O)) (p := p))) = ⊤ := by
@@ -742,7 +740,7 @@ example [IsAdicComplete (Ideal.span {(p : O)}) O] :
   exact HodgeTateTest.htSpan_gm p
 
 /- English proof (translation)
-The claim follows from `isSplitting_embO hv`.
+A detailed English derivation is pending.
 -/
 example [IsAlgClosed C] [CharZero C] (hv : v.Integers O) (E : Type) [Field E] [NumberField E] :
     IsSplitting (embC C fun φ : E →+* C => embO hv φ) := isSplitting_embO hv

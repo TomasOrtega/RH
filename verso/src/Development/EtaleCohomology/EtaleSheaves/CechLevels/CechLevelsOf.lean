@@ -9,7 +9,7 @@ abbrev qm {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') (I : Ideal 
   Ideal.quotientMap (I.map φ) φ Ideal.le_comap_map
 
 /- English proof (translation)
-Rewrite using `[← Spec.map_comp, ← Spec.map_comp, ← CommRingCat.ofHom_comp, ← CommRingCat.ofHom_comp, qm_comp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem spec_sq {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') (I : Ideal A) :
     Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (I.map φ))) ≫ Spec.map (CommRingCat.ofHom φ) =
@@ -27,7 +27,7 @@ def psi {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') (I : Ideal A)
   Arrow.mapCechNerve (sqA φ I)
 
 /- English proof (translation)
-Use extensionality with `n : 1`. Express the relevant statement in the definitionally equal form `(psi φ I).app n ≫ (cechAug _).app n = (cechAug _).app n ≫ (spMap (Ideal.Quotient.mk I)).app n`. Simplify using `only [psi, cechAug, Arrow.augmentedCechNerve_hom_app, Arrow.mapCechNerve_app, WidePullback.lift_base, sqA, Arrow.homMk_right]`. Use `erw [WidePullback.lift_base]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem psi_aug {A A' : Type} [CommRing A] [CommRing A'] (φ : A →+* A') (I : Ideal A) :
     psi φ I ≫ cechAug _ = cechAug _ ≫ spMap (Ideal.Quotient.mk I) := by
@@ -47,7 +47,7 @@ def Level0 : Prop := ∀ (A A' : Type) [CommRing A] [CommRing A'] (φ : A →+* 
       Arrow.mk (yoneda.map (Spec.map (CommRingCat.ofHom (Ideal.Quotient.mk (I.map φ))))))
 
 /- English proof (translation)
-Introduce `A A' _ _ φ I hi hs`. Conclude with `⟨part1 φ I hi hs, psi φ I, psi_aug φ I, fun p => hL A A' φ I hi p, h0 A A' φ I⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem CechLevels_of (hL : Levels) (h0 : Level0) : LateralTheory.E.t_E1Cut.CechLevels := by
   intro A A' _ _ φ I hi hs

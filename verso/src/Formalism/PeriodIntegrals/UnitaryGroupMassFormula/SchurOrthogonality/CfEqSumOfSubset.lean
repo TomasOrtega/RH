@@ -9,7 +9,7 @@ namespace PI.WSF
 open Formalism.BasicNotions MvPolynomial
 
 /- English proof (translation)
-Unfold `Formalism.REAL.fockF`. Use `Finset.sum_subset hS fun m _ hm => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.notMem_support_iff.mp hm, zero_mul, zero_mul]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem cf_eq_sum_of_subset {σ : Type} (f g : MvPolynomial σ ℂ) (S : Finset (σ →₀ ℕ))
     (hS : f.support ⊆ S) :
@@ -20,7 +20,7 @@ theorem cf_eq_sum_of_subset {σ : Type} (f g : MvPolynomial σ ℂ) (S : Finset 
   rw [MvPolynomial.notMem_support_iff.mp hm, zero_mul, zero_mul]
 
 /- English proof (translation)
-Rewrite using `[cf_eq_sum_of_subset (f + f') g (f.support ∪ f'.support) MvPolynomial.support_add, cf_eq_sum_of_subset f g (f.support ∪ f'.support) Finset.subset_union_left, cf_eq_sum_of_subset f' g (f.support ∪ f'.support) Finset.subset_union_right, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[MvPolynomial.coeff_add]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem cf_add_left {σ : Type} [DecidableEq σ] (f f' g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (f + f') g = Formalism.REAL.fockF f g + Formalism.REAL.fockF f' g := by
@@ -33,14 +33,14 @@ theorem cf_add_left {σ : Type} [DecidableEq σ] (f f' g : MvPolynomial σ ℂ) 
   ring
 
 /- English proof (translation)
-Rewrite using `[MvPolynomial.smul_eq_C_mul, Formalism.GradedWeylDivisibility.LFocks_C_mul_left]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cf_smul_left {σ : Type} (c : ℂ) (f g : MvPolynomial σ ℂ) :
     Formalism.REAL.fockF (c • f) g = c * Formalism.REAL.fockF f g := by
   rw [MvPolynomial.smul_eq_C_mul, Formalism.GradedWeylDivisibility.LFocks_C_mul_left]
 
 /- English proof (translation)
-Establish `hne : extremal ℂ N lam ≠ 0` using `Formalism.GradedWeylDivisibility.hwNe ℂ N N le_rfl lam.natW`. Take `⟨h1, h2⟩` from `Formalism.GradedWeylDivisibility.fockPos _ _ hne`. Conclude with `⟨h2, h1⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cf_F {N : ℕ} (lam : DomWeight N) :
     (Formalism.REAL.fockF (extremal ℂ N lam) (extremal ℂ N lam)).im = 0 ∧
@@ -50,7 +50,7 @@ theorem cf_F {N : ℕ} (lam : DomWeight N) :
   exact ⟨h2, h1⟩
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `(cf_F lam).2`. Rewrite `h1` using `[h0, Complex.zero_re]`. Conclude with `lt_irrefl _ h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cf_F_ne {N : ℕ} (lam : DomWeight N) :
     Formalism.REAL.fockF (extremal ℂ N lam) (extremal ℂ N lam) ≠ 0 := by
@@ -76,9 +76,9 @@ theorem cf_Blin_apply {N : ℕ} (lam : DomWeight N) (p q : MvPolynomial (Fin N �
     Blin lam q p = normFock lam p q := rfl
 
 /- English proof (translation)
-Unfold `normFock`. Rewrite using `[Formalism.GradedWeylDivisibility.fockHerm, star_div₀]`. Use `congr 1`. Establish `h` using `(cf_F lam).1`. Apply `Complex.ext` to reduce the goal to its premises.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using the standard rewrite rules. Simplify using `[h]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem cf_herm {N : ℕ} (lam : DomWeight N) (p q : MvPolynomial (Fin N × Fin N) ℂ) :
     normFock lam q p = star (normFock lam p q) := by
@@ -91,9 +91,9 @@ theorem cf_herm {N : ℕ} (lam : DomWeight N) (p q : MvPolynomial (Fin N × Fin 
   · simp [h]
 
 /- English proof (translation)
-Unfold `normFock`. Use `div_ne_zero ?_ (cf_F_ne lam)` and prove the remaining obligations. Introduce `h0`. Establish `h1` using `(Formalism.GradedWeylDivisibility.fockPos _ p hp).1`. Rewrite `h1` using `[h0, Complex.zero_re]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `lt_irrefl _ h1`.
+A detailed English derivation is pending.
 -/
 theorem normFock_self_ne_zero {N : ℕ} (lam : DomWeight N) (p : MvPolynomial (Fin N × Fin N) ℂ) (hp : p ≠ 0) :
     normFock lam p p ≠ 0 := by
@@ -105,7 +105,7 @@ theorem normFock_self_ne_zero {N : ℕ} (lam : DomWeight N) (p : MvPolynomial (F
   exact lt_irrefl _ h1
 
 /- English proof (translation)
-Unfold `normFock`. Rewrite using `[Formalism.GradedWeylDivisibility.fockRowAdj]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem cf_adj {N : ℕ} (lam : DomWeight N) (g : Matrix (Fin N) (Fin N) ℂ)
     (p q : MvPolynomial (Fin N × Fin N) ℂ) :
@@ -114,7 +114,7 @@ theorem cf_adj {N : ℕ} (lam : DomWeight N) (g : Matrix (Fin N) (Fin N) ℂ)
   rw [Formalism.GradedWeylDivisibility.fockRowAdj]
 
 /- English proof (translation)
-Unfold `normFock`. Conclude with `div_self (cf_F_ne lam)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cf_ee {N : ℕ} (lam : DomWeight N) : normFock lam (extremal ℂ N lam) (extremal ℂ N lam) = 1 := by
   unfold normFock

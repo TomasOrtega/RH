@@ -9,9 +9,9 @@ open NumberField IsDedekindDomain IsDedekindDomain.HeightOneSpectrum IsLocalRing
 variable {F : Type} [Field F] [NumberField F] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Establish `hint` using `Valuation.integer.integers (Valued.v : Valuation (v.adicCompletion F) (WithZero (Multiplicative ℤ)))`. Rewrite using `[IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`. Establish `hle : Valued.v (x : v.adicCompletion F) ≤ 1` using `x.2`. Prove the components needed by the constructor for the conclusion. Introduce `hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `lt_of_le_of_ne hle (fun h => hx ((hint.isUnit_iff_valuation_eq_one (x := x)).mpr h))`. Introduce `hx hu`. Conclude with `(ne_of_lt hx) ((hint.isUnit_iff_valuation_eq_one (x := x)).mp hu)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_maxIdeal_iff (x : v.adicCompletionIntegers F) :
     x ∈ maximalIdeal (v.adicCompletionIntegers F) ↔ Valued.v (x : v.adicCompletion F) < 1 := by
@@ -25,11 +25,11 @@ theorem mem_maxIdeal_iff (x : v.adicCompletionIntegers F) :
     exact (ne_of_lt hx) ((hint.isUnit_iff_valuation_eq_one (x := x)).mp hu)
 
 /- English proof (translation)
-Break down `eq_or_ne (Valued.v x) 0 with h0 | h0` into its components or cases. Rewrite using `[h0]`. Conclude with `zero_le'`. Take `⟨a, ha⟩` from `WithZero.ne_zero_iff_exists.mp h0`. Rewrite `h`, the goal using `[← ha]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : a < 1` using `by exact_mod_cast h`. Establish `h2 : Multiplicative.toAdd a < 0`. Rewrite using `[← toAdd_one, Multiplicative.toAdd_lt]`. Conclude with `h1`. Establish `h3 : a ≤ Multiplicative.ofAdd (-1 : ℤ)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Rewrite using `[← Multiplicative.toAdd_le, toAdd_ofAdd]`. Use linear arithmetic over natural numbers and integers. Use `show (a : WithZero (Multiplicative ℤ)) ≤ ((Multiplicative.ofAdd (-1 : ℤ) : Multiplicative ℤ) : WithZero (Multiplicative ℤ))`. Conclude with `WithZero.coe_le_coe.mpr h3`.
+A detailed English derivation is pending.
 -/
 theorem val_le_exp_neg_one_of_lt_one {x : v.adicCompletion F} (h : Valued.v x < 1) :
     Valued.v x ≤ WithZero.exp (-1 : ℤ) := by
@@ -49,15 +49,13 @@ theorem val_le_exp_neg_one_of_lt_one {x : v.adicCompletion F} (h : Valued.v x < 
     exact WithZero.coe_le_coe.mpr h3
 
 /- English proof (translation)
-Establish `hπ0 : (π : v.adicCompletion F) ≠ 0`. Introduce `h`. Rewrite `hπ` using `[h, map_zero]`. Conclude with `WithZero.zero_ne_coe hπ`. Establish `hexp : WithZero.exp (-1 : ℤ) < 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← WithZero.exp_zero]`. Conclude with `WithZero.exp_lt_exp.mpr (by norm_num)`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `x hx`. Rewrite `hx` using `[mem_maxIdeal_iff]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx1` using `val_le_exp_neg_one_of_lt_one v hx`. Establish `hq : Valued.v ((x : v.adicCompletion F) / π) ≤ 1`. Rewrite using `[map_div₀, hπ]`. Conclude with `(div_le_one₀ (lt_of_le_of_ne zero_le' (Ne.symm (by rw [← hπ]; exact (map_ne_zero _).mpr hπ0)))).mpr hx1`. Rewrite using `[Ideal.mem_span_singleton']`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use `⟨⟨(x : v.adicCompletion F) / π, hq⟩, ?_⟩` and prove the remaining obligations. Use `ext`. Simplify using `[div_mul_cancel₀ _ hπ0]`. Rewrite using `[Ideal.span_le, Set.singleton_subset_iff] show π ∈ maximalIdeal _`. Rewrite using `[mem_maxIdeal_iff, hπ]`.
-
-Conclude with `hexp`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem maxIdeal_eq_span {π : v.adicCompletionIntegers F}
     (hπ : Valued.v (π : v.adicCompletion F) = WithZero.exp (-1 : ℤ)) :

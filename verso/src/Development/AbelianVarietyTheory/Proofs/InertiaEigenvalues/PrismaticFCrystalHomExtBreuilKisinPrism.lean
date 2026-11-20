@@ -14,7 +14,7 @@ namespace GlobalTheory.BSP
 variable {l : ℕ} {R : Type} [CommRing R]
 
 /- English proof (translation)
-Consider the cases of `u`. Consider the cases of `u'`. Reduce the equality to equality of the corresponding arguments. Use function extensionality and compare the values at `P`. Conclude with `h P`.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem FHom.ext_u {M M' : FCrys l R} {u u' : FHom M M'} (h : ∀ P, u.u P = u'.u P) : u = u' := by
   cases u; cases u'
@@ -23,7 +23,7 @@ theorem FHom.ext_u {M M' : FCrys l R} {u u' : FHom M M'} (h : ∀ P, u.u P = u'.
   exact h P
 
 /- English proof (translation)
-Set `v : M.M P →ₛₗ[g.f] M'.M Q` to `(M'.tr g).comp (u.u P)`. Take `⟨w, -, hw⟩` from `M.tr_bc g (M'.M Q) v`. Establish `h1` using `hw (u.u Q) fun x => by simp [v, u.u_tr]`. Establish `h2` using `hw (u'.u Q) fun x => by simp [v, u'.u_tr, hP]`. Rewrite using `[h1, h2]`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem FHom.eq_of_tr {M M' : FCrys l R} (u u' : FHom M M') {P Q : Obj l R} (g : Hom P Q)
     (hP : u.u P = u'.u P) : u.u Q = u'.u Q := by
@@ -34,9 +34,7 @@ theorem FHom.eq_of_tr {M M' : FCrys l R} (u u' : FHom M M') {P Q : Obj l R} (g :
   rw [h1, h2]
 
 /- English proof (translation)
-Use `haveI := M'.fin B`. Use `haveI := M'.proj B`. Establish `hi : Function.Injective (M'.tr h)` using `semiBC_injective_of_injective _ _ h.f hinj _ _ (M'.tr h) (M'.tr_bc h)`. Use extensionality with `x`. Apply `hi` to reduce the goal to its premises.
-
-Rewrite using `[← u.u_tr, ← u'.u_tr, hC]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FHom.eq_of_inj {M M' : FCrys l R} (u u' : FHom M M') {B C : Obj l R} (h : Hom B C)
     (hinj : Function.Injective h.f) (hC : u.u C = u'.u C) : u.u B = u'.u B := by
@@ -49,9 +47,9 @@ theorem FHom.eq_of_inj {M M' : FCrys l R} (u u' : FHom M M') {B C : Obj l R} (h 
   rw [← u.u_tr, ← u'.u_tr, hC]
 
 /- English proof (translation)
-Introduce `l _ K bk M M' u u' hbk`. Apply `FHom.ext_u` to reduce the goal to its premises. Introduce `B`. Take `⟨C, h, ⟨g⟩, hc⟩` from `GlobalTheory.T.exists_prism_cover_receiving_breuilKisin l K bk B`. Establish `hC` using `FHom.eq_of_tr u u' g hbk`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `FHom.eq_of_inj u u' h (GlobalTheory.T.prism_cover_injective_and_descent l _ B C h hc).1 hC`.
+A detailed English derivation is pending.
 -/
 theorem fhom_ext_bk : ∀ (l : ℕ) [Fact l.Prime] (K : FinExt l) (bk : BK K) (M M' : FCrys l ↥(OL K))
     (u u' : FHom M M'), u.u bk.prism = u'.u bk.prism → u = u' := by

@@ -3,9 +3,9 @@ import Mathlib
 namespace GlobalTheory.CharacterConductorBall
 
 /- English proof (translation)
-Establish `h1 : w * w - 1 = (w - 1) * (w + 1)` using `by ring`. Establish `h2 : (2 : ℝ) ≤ ‖w + 1‖ + ‖w - 1‖`. Use `norm_sub_le (w + 1) (w - 1)` as an intermediate fact. Establish `e : (w + 1) - (w - 1) = (2 : ℂ)` using `by ring`. Rewrite `this` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `using this`. Rewrite using `[h1, norm_mul]`. Use polynomial arithmetic with `[norm_nonneg (w - 1)]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 -/
 private lemma norm_sub_one_le_norm_mul_self_sub_one (w : ℂ) (h : ‖w - 1‖ < 1 / 2) :
     3 / 2 * ‖w - 1‖ ≤ ‖w * w - 1‖ := by
@@ -19,13 +19,13 @@ private lemma norm_sub_one_le_norm_mul_self_sub_one (w : ℂ) (h : ‖w - 1‖ <
   nlinarith [norm_nonneg (w - 1)]
 
 /- English proof (translation)
-Establish `key : ∀ k : ℕ, ∀ x ∈ B, (3 / 2 : ℝ) ^ k * ‖ψ x - 1‖ < 1 / 2`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro x hx`. Simplify using `using hψ x hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify to obtain the desired conclusion from the available facts.
 
-Consider the case `succ k ih`. Introduce `x hx`. Establish `h2` using `ih (x + x) (hB x hx)`. Establish `h3` using `norm_sub_one_le_norm_mul_self_sub_one (ψ x) (hψ x hx)`. Rewrite `h2` using `[AddChar.map_add_eq_mul]`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Introduce `x hx`. Assume the negation of the conclusion as `hne`. Establish `hpos : 0 < ‖ψ x - 1‖` using `norm_pos_iff.2 (sub_ne_zero.2 hne)`. Take `⟨k, hk⟩` from `pow_unbounded_of_one_lt (1 / 2 / ‖ψ x - 1‖) (by norm_num : (1 : ℝ) < 3 / 2)`.
+Chain the equalities or inequalities of the calculation. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `key k x hx` as an intermediate fact. Rewrite `hk` using `[div_lt_iff₀ hpos]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem eq_one_of_norm_sub_one_lt {A : Type} [AddMonoid A] (ψ : AddChar A ℂ) (B : Set A)
     (hB : ∀ x ∈ B, x + x ∈ B) (hψ : ∀ x ∈ B, ‖ψ x - 1‖ < 1 / 2) : ∀ x ∈ B, ψ x = 1 := by
@@ -51,13 +51,11 @@ theorem eq_one_of_norm_sub_one_lt {A : Type} [AddMonoid A] (ψ : AddChar A ℂ) 
   linarith
 
 /- English proof (translation)
-Establish `hnhds : (ψ : K → ℂ) ⁻¹' {w : ℂ | ‖w - 1‖ < 1 / 2} ∈ nhds (0 : K)`. Apply `hc.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[AddChar.map_zero_eq_one]`. Conclude with `(isOpen_lt (continuous_norm.comp (continuous_id.sub continuous_const)) continuous_const).mem_nhds (by simp)`. Take `⟨γ, hγ⟩` from `Valued.mem_nhds_zero.1 hnhds`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set c := MonoidWithZeroHom.ValueGroup₀.embedding γ.1 with hc_def`. Establish `hc0 : c ≠ 0`. Use `MonoidWithZeroHom.ValueGroup₀.embedding_strictMono (zero_lt_iff.2 γ.ne_zero)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Conclude with `this.ne'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hlt : ∀ y ∈ {y : K | Valued.v y < c}, ψ y = 1`. Use `eq_one_of_norm_sub_one_lt ψ _ (fun y hy => ?_) (fun y hy => ?_)` and prove the remaining obligations. Conclude with `lt_of_le_of_lt ((Valued.v.map_add y y).trans (max_self _).le) hy`. Apply `hγ` to reduce the goal to its premises. Simplify `hy` using `[Valuation.restrict_lt_iff_lt_embedding]`.
-
-Use `⟨WithZero.log c - 1, fun x hx => hlt x ?_⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem exists_ball_trivial {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
     (ψ : AddChar K ℂ) (hc : Continuous (ψ : K → ℂ)) :
@@ -86,11 +84,11 @@ theorem exists_ball_trivial {K : Type} [Field K] [Valued K (WithZero (Multiplica
     _ = c := WithZero.exp_log hc0
 
 /- English proof (translation)
-Introduce `s hs`. Distinguish the cases in `h0 : t = 0`. Substitute `h0` using the available equality. Establish `: t' = 0` using `by simpa using hle`. Simplify using `[this, AddChar.map_zero_eq_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hv : Valued.v t ≠ 0` using `by simpa using h0`. Establish `e : t' * s = t * (t' * t⁻¹ * s)` using `by field_simp`. Rewrite using `[e]`. Apply `ht` to reduce the goal to its premises. Rewrite using `[map_mul, map_mul, map_inv₀]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 private lemma addChar_trivial_mul_of_valuation_le {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
     (ψ : AddChar K ℂ) {t t' : K}
@@ -112,19 +110,17 @@ private lemma addChar_trivial_mul_of_valuation_le {K : Type} [Field K] [Valued K
       _ = 1 := by rw [mul_one, mul_inv_cancel₀ hv]
 
 /- English proof (translation)
-Take `⟨m, hm⟩` from `exists_ball_trivial ψ hc`. Take `⟨t₀, ht₀⟩` from `hψ`. Establish `ht₀0 : t₀ ≠ 0` using `by rintro rfl; simp [AddChar.map_zero_eq_one] at ht₀`. Establish `hnot : ¬ ∀ s : K, Valued.v s ≤ (1 : WithZero (Multiplicative ℤ)) → ψ (t₀ * s) = 1` using `fun h => ht₀ (by simpa using h 1 (by simp))`. Establish `hmem : ∀ t : K, Valued.v t ≤ WithZero.exp m → ∀ s : K, Valued.v s ≤ (1 : WithZero (Multiplicative ℤ)) → ψ (t * s) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `t ht s hs`. Apply `hm` to reduce the goal to its premises. Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hbdd : ∃ b : ℤ, ∀ k : ℤ, (∀ t : K, Valued.v t ≤ WithZero.exp k → ∀ s : K, Valued.v s ≤ (1 : WithZero (Multiplicative ℤ)) → ψ (t * s) = 1) → k ≤ b`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Use `⟨WithZero.log (Valued.v t₀), fun k hk => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hlt`. Apply `hnot` to reduce the goal to its premises. Apply `hk` to reduce the goal to its premises. Establish `hv : Valued.v t₀ ≠ 0` using `by simpa using ht₀0`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[← WithZero.exp_log hv]`. Conclude with `WithZero.exp_le_exp.2 (by omega)`. Take `⟨n, hn, hmax⟩` from `Int.exists_greatest_of_bdd hbdd ⟨m, hmem⟩`. Use `⟨n, fun t => ⟨fun hS => ?_, fun ht => hn t ht⟩⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hgt`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hgt` using `[not_le]`. Establish `hv : Valued.v t ≠ 0` using `ne_of_gt (lt_trans WithZero.exp_pos hgt)`. Establish `hj : WithZero.log (Valued.v t) ≤ n`. Apply `hmax` to reduce the goal to its premises. Introduce `t' ht'`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ht'` using `[WithZero.exp_log hv]`. Conclude with `addChar_trivial_mul_of_valuation_le ψ hS ht'`. Establish `: Valued.v t ≤ WithZero.exp n`. Rewrite using `[← WithZero.exp_log hv]`. Conclude with `WithZero.exp_le_exp.2 hj`.
-
-Conclude with `absurd hgt (not_lt.2 this)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_conductor {K : Type} [Field K] [Valued K (WithZero (Multiplicative ℤ))]
     (ψ : AddChar K ℂ) (hc : Continuous (ψ : K → ℂ)) (hψ : ∃ t : K, ψ t ≠ 1) :

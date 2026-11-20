@@ -8,9 +8,9 @@ open NumberField IsDedekindDomain Formalism.L2.Host Neutral.B1 ReciprocityTheory
 namespace Formalism.L2.Fam.IdTrans
 
 /- English proof (translation)
-Establish `h1 : b.re * b.re + b.im * b.im = 1`. Establish `h0` using `Complex.sq_norm b`. Rewrite `h0` using `[hb, Complex.normSq_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h3 : ‖b - 1‖ ^ 2 < 1` using `by nlinarith [norm_nonneg (b - 1)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `h3` using `[Complex.sq_norm, Complex.normSq_apply]`. Simplify using `only [Complex.sub_re, Complex.one_re, Complex.sub_im, Complex.one_im, sub_zero] at h3`. Use the polynomial consequences of the given equalities and inequalities.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem re_gt_half {b : ℂ} (hb : ‖b‖ = 1) (h : ‖b - 1‖ < 1) : 1 / 2 < b.re := by
   have h1 : b.re * b.re + b.im * b.im = 1 := by
@@ -23,9 +23,9 @@ theorem re_gt_half {b : ℂ} (hb : ‖b‖ = 1) (h : ‖b - 1‖ < 1) : 1 / 2 < 
   nlinarith
 
 /- English proof (translation)
-Establish `h1 : b.re * b.re + b.im * b.im = 1`. Establish `h0` using `Complex.sq_norm b`. Rewrite `h0` using `[hb, Complex.normSq_apply]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[sq, Complex.mul_re]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Take the linear combination `h1`.
+Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem one_sub_re_sq {b : ℂ} (hb : ‖b‖ = 1) : 1 - (b ^ 2).re = 2 * (1 - b.re) * (1 + b.re) := by
   have h1 : b.re * b.re + b.im * b.im = 1 := by
@@ -36,27 +36,27 @@ theorem one_sub_re_sq {b : ℂ} (hb : ‖b‖ = 1) : 1 - (b ^ 2).re = 2 * (1 - b
   linear_combination h1
 
 /- English proof (translation)
-Establish `hb : ∀ n : ℤ, ‖a‖ ^ n < 2` using `fun n => by`. Establish `h2` using `h n`. Rewrite using `[← norm_zpow]`. Combine the equalities or inequalities in the displayed calculation. Establish `hpos : 0 < ‖a‖` using `norm_pos_iff.2 ha`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `h1 : ‖a‖ = 1`. Assume the negation of the conclusion as `hne`. Break down `lt_or_gt_of_ne hne with hlt | hgt` into its components or cases. Establish `hgt' : 1 < ‖a‖⁻¹` using `(one_lt_inv₀ hpos).2 hlt`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt 2 hgt'`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `h2` using `hb (-(n : ℤ))`. Rewrite `h2` using `[zpow_neg, zpow_natCast, ← inv_pow]`. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt 2 hgt`. Establish `h2` using `hb n`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h2` using `[zpow_natCast]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre : ∀ n : ℕ, 1 / 2 < (a ^ (2 ^ n)).re` using `fun n => by`. Establish `hn` using `h ((2 ^ n : ℕ) : ℤ)`. Rewrite `hn` using `[zpow_natCast]`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `re_gt_half (by rw [norm_pow, h1, one_pow]) hn`. Establish `hd : ∀ n : ℕ, 3 ^ n * (1 - a.re) ≤ 1 - (a ^ (2 ^ n)).re`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => simp`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `succ n ih`. Establish `hnorm : ‖a ^ (2 ^ n)‖ = 1` using `by rw [norm_pow, h1, one_pow]`. Establish `e : a ^ (2 ^ (n + 1)) = (a ^ (2 ^ n)) ^ 2` using `by rw [pow_succ, pow_mul]`. Rewrite using `[e, one_sub_re_sq hnorm, pow_succ]`. Establish `h3` using `hre n`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h4 : 0 ≤ 1 - (a ^ (2 ^ n)).re`. Establish `h5` using `Complex.re_le_norm (a ^ (2 ^ n))`. Rewrite `h5` using `[hnorm]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h6 : 3 * (1 - (a ^ (2 ^ n)).re) ≤ 2 * (1 - (a ^ (2 ^ n)).re) * (1 + (a ^ (2 ^ n)).re)` using `by nlinarith`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use the polynomial consequences of the given equalities and inequalities. Establish `hd0 : 1 - a.re ≤ 0`. Assume the negation of the conclusion as `hpos0`. Use `push_neg at hpos0`. Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (1 / (1 - a.re)) (by norm_num : (1 : ℝ) < 3)`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hd n`. Establish `h5` using `hre n`. Rewrite `hn` using `[div_lt_iff₀ hpos0]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre1 : a.re = 1`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h5` using `Complex.re_le_norm a`. Rewrite `h5` using `[h1]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `him : a.im = 0`. Establish `h0` using `Complex.sq_norm a`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[h1, Complex.normSq_apply, hre1]`. Establish `h7 : a.im * a.im = 0` using `by nlinarith`. Conclude with `mul_self_eq_zero.1 h7`. Conclude with `Complex.ext (by simp [hre1]) (by simp [him])`.
+A detailed English derivation is pending.
 -/
 theorem eq_one_of_pow {a : ℂ} (h : ∀ n : ℤ, ‖a ^ n - 1‖ < 1) (ha : a ≠ 0) : a = 1 := by
   have hb : ∀ n : ℤ, ‖a‖ ^ n < 2 := fun n => by
@@ -121,7 +121,7 @@ section Top
 variable {L : Type} [Field L] [NumberField L]
 
 /- English proof (translation)
-Conclude with `Valued.isOpen_integer _`.
+A detailed English derivation is pending.
 -/
 theorem isOpen_integers (v : HeightOneSpectrum (𝓞 L)) :
     IsOpen (v.adicCompletionIntegers L : Set (v.adicCompletion L)) := by
@@ -129,9 +129,9 @@ theorem isOpen_integers (v : HeightOneSpectrum (𝓞 L)) :
 
 open Classical in
 /- English proof (translation)
-Apply `RestrictedProduct.ext` to reduce the goal to its premises. Introduce `w`. Use `show (Pi.mulSingle (M := fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) v x w) = ((Pi.mulSingle (M := fun w : HeightOneSpectrum (𝓞 L) => ↥(w.adicCompletionIntegers L)) v ⟨x, hx⟩ w : w.adicCompletionIntegers L) : w.adicCompletion L)`. Distinguish the cases in `h : w = v`. Substitute `h` using the available equality.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mulSingle_eq_same, Pi.mulSingle_eq_same]`. Rewrite using `[Pi.mulSingle_eq_of_ne h, Pi.mulSingle_eq_of_ne h]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem finiteSingle_eq (v : HeightOneSpectrum (𝓞 L)) (x : v.adicCompletion L) (hx : x ∈ v.adicCompletionIntegers L) :
     finiteSingle L v x = RestrictedProduct.structureMap (fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L)
@@ -149,13 +149,11 @@ theorem finiteSingle_eq (v : HeightOneSpectrum (𝓞 L)) (x : v.adicCompletion L
     rfl
 
 /- English proof (translation)
-Establish `hS' : S ∈ 𝓝 (((1 : InfiniteAdeleRing L), (1 : FiniteAdeleRing (𝓞 L) L)) : InfiniteAdeleRing L × FiniteAdeleRing (𝓞 L) L)` using `hS`. Take `⟨u, hu, w, hw, huw⟩` from `mem_nhds_prod_iff.mp hS'`. Establish `hw' : w ∈ Filter.map (RestrictedProduct.structureMap (fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) (fun w => (w.adicCompletionIntegers L : Set (w.adicCompletion L))) cofinite) (𝓝 (1 : Π v : HeightOneSpectrum (𝓞 L), v.adicCompletionIntegers L))`. Rewrite using `[← RestrictedProduct.nhds_eq_map_structureMap (fun v => isOpen_integers v)]`. Conclude with `hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hw'' : RestrictedProduct.structureMap (fun w : HeightOneSpectrum (𝓞 L) => w.adicCompletion L) (fun w => (w.adicCompletionIntegers L : Set (w.adicCompletion L))) cofinite ⁻¹' w ∈ 𝓝 (1 : Π v : HeightOneSpectrum (𝓞 L), v.adicCompletionIntegers L)` using `hw'`. Rewrite `hw''` using `[nhds_pi, Filter.mem_pi]`. Take `⟨I, hI, t, ht, hIt⟩` from `hw''`. Use `⟨I, hI, fun v hv x hx => huw ⟨mem_of_mem_nhds hu, ?_⟩⟩` and prove the remaining obligations. Establish `hf : (Pi.mulSingle v (⟨x, hx⟩ : v.adicCompletionIntegers L) : Π v : HeightOneSpectrum (𝓞 L), v.adicCompletionIntegers L) ∈ I.pi t`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `w' hw'`. Establish `hne : w' ≠ v` using `fun h => hv (h ▸ hw')`. Rewrite using `[Pi.mulSingle_eq_of_ne hne]`. Conclude with `mem_of_mem_nhds (ht w')`. Use `hIt hf` as an intermediate fact.
-
-Use `show finiteSingle L v x ∈ w`. Rewrite using `[finiteSingle_eq v x hx]`. Conclude with `this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem single_mem_nhds {S : Set (AdeleRing (𝓞 L) L)} (hS : S ∈ 𝓝 (1 : AdeleRing (𝓞 L) L)) :
     ∃ I : Set (HeightOneSpectrum (𝓞 L)), I.Finite ∧ ∀ v ∉ I, ∀ (x : v.adicCompletion L) (_hx : x ∈ v.adicCompletionIntegers L),
@@ -188,23 +186,21 @@ theorem single_mem_nhds {S : Set (AdeleRing (𝓞 L) L)} (hS : S ∈ 𝓝 (1 : A
 end Top
 
 /- English proof (translation)
-Introduce `χ hχ`. Use `set W : Set ℂˣ := {z | ‖(z : ℂ) - 1‖ < 1} with hWdef`. Establish `hWo : IsOpen W` using `isOpen_lt (continuous_norm.comp (Units.continuous_val.sub continuous_const)) continuous_const`. Establish `hW1 : (1 : ℂˣ) ∈ W` using `by simp [hWdef]`. Establish `hN : χ ⁻¹' W ∈ 𝓝 (1 : Ideles L)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hχ.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[map_one]`. Conclude with `hWo.mem_nhds hW1`. Rewrite `hN` using `[(Units.isEmbedding_embedProduct (M := AdeleRing (𝓞 L) L)).isInducing.nhds_eq_comap]`. Take `⟨T, hT, hTN⟩` from `hN`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hT` using `[map_one]`. Establish `hT' : T ∈ 𝓝 (((1 : AdeleRing (𝓞 L) L), (1 : (AdeleRing (𝓞 L) L)ᵐᵒᵖ)))` using `hT`. Take `⟨T1, hT1, T2, hT2, hT12⟩` from `mem_nhds_prod_iff.mp hT'`. Establish `hT2' : MulOpposite.op ⁻¹' T2 ∈ 𝓝 (1 : AdeleRing (𝓞 L) L)` using `MulOpposite.continuous_op.continuousAt.preimage_mem_nhds (by rw [MulOpposite.op_one]; exact hT2)`. Take `⟨I1, hI1, h1⟩` from `single_mem_nhds hT1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨I2, hI2, h2⟩` from `single_mem_nhds hT2'`. Establish `hmem : ∀ v ∉ I1 ∪ I2, ∀ x : (v.adicCompletion L)ˣ, IsUnitAt v x → χ (localIdele L v x) ∈ W`. Introduce `v hv x hx`. Establish `hv1 : v ∉ I1` using `fun h => hv (Or.inl h)`. Establish `hv2 : v ∉ I2` using `fun h => hv (Or.inr h)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hxO : (x : v.adicCompletion L) ∈ v.adicCompletionIntegers L`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers]`. Conclude with `le_of_eq hx`. Establish `hxO' : ((x⁻¹ : (v.adicCompletion L)ˣ) : v.adicCompletion L) ∈ v.adicCompletionIntegers L`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, Units.val_inv_eq_inv_val, map_inv₀]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[show Valued.v (x : v.adicCompletion L) = 1 from hx, inv_one]`. Apply `hTN` to reduce the goal to its premises. Apply `hT12` to reduce the goal to its premises. Use `⟨h1 v hv1 _ hxO, ?_⟩` and prove the remaining obligations. Use `show (((localIdele L v x)⁻¹ : Ideles L) : AdeleRing (𝓞 L) L) ∈ MulOpposite.op ⁻¹' T2`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← map_inv]`. Conclude with `h2 v hv2 _ hxO'`. Use `Filter.mem_of_superset (hI1.union hI2).compl_mem_cofinite fun v hv x hx => ?_` and prove the remaining obligations. Apply `Units.ext` to reduce the goal to its premises. Apply `eq_one_of_pow _ (Units.ne_zero _)` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `n`. Establish `hxn : IsUnitAt v (x ^ n)` using `by show Valued.v (((x ^ n : (v.adicCompletion L)ˣ)) : v.adicCompletion L) = 1`. Rewrite using `[Units.val_zpow_eq_zpow_val, map_zpow₀, show Valued.v (x : v.adicCompletion L) = 1 from hx, one_zpow]`. Use `hmem v hv (x ^ n) hxn` as an intermediate fact. Rewrite `this` using `[map_zpow, map_zpow]`.
-
-Establish `h' : ‖(((χ (localIdele L v x)) ^ n : ℂˣ) : ℂ) - 1‖ < 1` using `this`. Rewrite `h'` using `[Units.val_zpow_eq_zpow_val]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem unrAE {L : Type} [Field L] [NumberField L] : UnrAE L := by
   intro χ hχ
@@ -253,7 +249,7 @@ theorem unrAE {L : Type} [Field L] [NumberField L] : UnrAE L := by
   rwa [Units.val_zpow_eq_zpow_val] at h'
 
 /- English proof (translation)
-The claim follows from `(unrAE (L := L) χ.1 χ.2.1).mono fun v hv x hx => hv x hx`.
+A detailed English derivation is pending.
 -/
 theorem unrAe {L : Type} [Field L] [NumberField L] (χ : HChar L) : ∀ᶠ v in cofinite, χ.UnrAt v := (unrAE (L := L) χ.1 χ.2.1).mono fun v hv x hx => hv x hx
 

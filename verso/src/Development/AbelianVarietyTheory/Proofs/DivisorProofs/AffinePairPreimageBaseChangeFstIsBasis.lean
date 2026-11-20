@@ -12,7 +12,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.Obs.BC
 
 /- English proof (translation)
-Take `⟨_, ⟨V, hV, rfl⟩, hxV, hVW⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open (show x ∈ (W : Set X) from hx) W.isOpen`. Conclude with `⟨⟨V, hV⟩, hxV, hVW⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_affineOpen_nhds_le {X : Scheme.{0}} (x : X) (W : X.Opens) (hx : x ∈ W) :
     ∃ V : X.affineOpens, x ∈ V.1 ∧ V.1 ≤ W := by
@@ -21,17 +21,15 @@ theorem exists_affineOpen_nhds_le {X : Scheme.{0}} (x : X) (W : X.Opens) (hx : x
   exact ⟨⟨V, hV⟩, hxV, hVW⟩
 
 /- English proof (translation)
-Introduce `X₀ X₁ Y₀ Y₁ pr pr' _ _ f₀ f₁ e hsurj`. Prove the components needed by the constructor for the conclusion. Introduce `x U hx`. Take `⟨W₀, rfl⟩` from `hsurj U`. Establish `hy : pr' x ∈ W₀` using `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨V, hfV, -⟩` from `exists_affineOpen_nhds_le (f₀ (pr' x)) ⊤ trivial`. Take `⟨U', hU', hU'le⟩` from `exists_affineOpen_nhds_le (pr' x) (W₀ ⊓ f₀ ⁻¹ᵁ V.1) ⟨hy, hfV⟩`. Use `⟨Opposite.op (⟨(U', V), hU'le.trans inf_le_right⟩ : Pair f₀), ?_, ?_⟩` and prove the remaining obligations. Use `show pr' x ∈ U'.1`. Conclude with `hU'`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `show pr' ⁻¹ᵁ U'.1 ≤ pr' ⁻¹ᵁ W₀`. Conclude with `pr'.preimage_mono (hU'le.trans inf_le_left)`. Introduce `t₁ t₂ x U hx h₁ h₂`. Take `⟨W₀, rfl⟩` from `hsurj U`. Establish `hy : pr' x ∈ W₀` using `hx`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hy₁ : pr' x ∈ t₁.unop.1.1.1` using `h₁`. Establish `hy₂ : pr' x ∈ t₂.unop.1.1.1` using `h₂`. Establish `hf₁ : f₀ (pr' x) ∈ t₁.unop.1.2.1` using `t₁.unop.2 hy₁`. Establish `hf₂ : f₀ (pr' x) ∈ t₂.unop.1.2.1` using `t₂.unop.2 hy₂`. Take `⟨V, hfV, hVle⟩` from `exists_affineOpen_nhds_le (f₀ (pr' x)) (t₁.unop.1.2.1 ⊓ t₂.unop.1.2.1) ⟨hf₁, hf₂⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨U', hU', hU'le⟩` from `exists_affineOpen_nhds_le (pr' x) (t₁.unop.1.1.1 ⊓ t₂.unop.1.1.1 ⊓ W₀ ⊓ f₀ ⁻¹ᵁ V.1) ⟨⟨⟨hy₁, hy₂⟩, hy⟩, hfV⟩`. Set `p : Pair f₀` to `⟨(U', V), hU'le.trans inf_le_right⟩`. Establish `hp₁ : p ≤ t₁.unop` using `Subtype.coe_le_coe.1 (Prod.mk_le_mk.2 ⟨hU'le.trans (inf_le_left.trans (inf_le_left.trans inf_le_left)), hVle.trans inf_le_left⟩)`. Establish `hp₂ : p ≤ t₂.unop` using `Subtype.coe_le_coe.1 (Prod.mk_le_mk.2 ⟨hU'le.trans (inf_le_left.trans (inf_le_left.trans inf_le_right)), hVle.trans inf_le_right⟩)`. Use `⟨Opposite.op p, ⟨(homOfLE hp₁).op⟩, ⟨(homOfLE hp₂).op⟩, ?_, ?_⟩` and prove the remaining obligations.
-
-Use `show pr' x ∈ U'.1`. Conclude with `hU'`. Use `show pr' ⁻¹ᵁ U'.1 ≤ pr' ⁻¹ᵁ W₀`. Conclude with `pr'.preimage_mono (hU'le.trans (inf_le_left.trans inf_le_right))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pairBC_fst_basis : ∀ (X₀ X₁ Y₀ Y₁ : Scheme.{0}) (pr : X₁ ⟶ X₀) (pr' : Y₁ ⟶ Y₀) [IsAffineHom pr] [IsAffineHom pr'] (f₀ : Y₀ ⟶ X₀) (f₁ : Y₁ ⟶ X₁) (e : f₁ ≫ pr = pr' ≫ f₀), (∀ U : Y₁.Opens, ∃ V : Y₀.Opens, pr' ⁻¹ᵁ V = U) → (∀ (x : Y₁) (U : Y₁.Opens), x ∈ U → ∃ t, x ∈ ((GlobalTheory.Obs.BC.pairBC pr pr' e ⋙ pairFst f₁).obj t).unop.1 ∧ ((GlobalTheory.Obs.BC.pairBC pr pr' e ⋙ pairFst f₁).obj t).unop.1 ≤ U) ∧ (∀ t₁ t₂ (x : Y₁) (U : Y₁.Opens), x ∈ U → x ∈ ((GlobalTheory.Obs.BC.pairBC pr pr' e ⋙ pairFst f₁).obj t₁).unop.1 → x ∈ ((GlobalTheory.Obs.BC.pairBC pr pr' e ⋙ pairFst f₁).obj t₂).unop.1 → ∃ t₃, Nonempty (t₁ ⟶ t₃) ∧ Nonempty (t₂ ⟶ t₃) ∧ x ∈ ((GlobalTheory.Obs.BC.pairBC pr pr' e ⋙ pairFst f₁).obj t₃).unop.1 ∧ ((GlobalTheory.Obs.BC.pairBC pr pr' e ⋙ pairFst f₁).obj t₃).unop.1 ≤ U) := by
   intro X₀ X₁ Y₀ Y₁ pr pr' _ _ f₀ f₁ e hsurj

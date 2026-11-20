@@ -15,7 +15,7 @@ variable {F E : Type} [Field F] [Field E] [Algebra F E] {R : Type} [CommRing R] 
   [TopologicalSpace R] (σ : E →ₐ[F] E) {M : ℕ} (J : Matrix (Fin M) (Fin M) E)
 
 /- English proof (translation)
-Unfold `hR Formalism.UG.hform`. Conclude with `continuous_finsetSum _ fun i _ => continuous_finsetSum _ fun j _ => continuous_const.mul (continuous_apply j)`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_hermitian_form_left [IsTopologicalRing (R ⊗[F] E)] (u : Fin M → R ⊗[F] E) :
     Continuous fun w : Fin M → R ⊗[F] E => hR R σ J u w := by
@@ -24,9 +24,9 @@ theorem continuous_hermitian_form_left [IsTopologicalRing (R ⊗[F] E)] (u : Fin
     continuous_const.mul (continuous_apply j)
 
 /- English proof (translation)
-Establish `: (Wsub R σ J P : Set (Fin M → R ⊗[F] E)) = ((⋂ a, {w | hR R σ J (ratV (F` using `F) R (P.e a)) w = 0}) ∩ (⋂ a, {w | hR R σ J (ratV (F := F) R (P.f a)) w = 0})) ∩ {w | hR R σ J (ratV (F := F) R P.z) w = 0} := by`. Use extensionality with `w`. Simplify using `only [Set.mem_inter_iff, Set.mem_iInter, Set.mem_ofPred_eq, SetLike.mem_coe]`. Conclude with `⟨fun ⟨h1, h2, h3⟩ => ⟨⟨h1, h2⟩, h3⟩, fun ⟨⟨h1, h2⟩, h3⟩ => ⟨h1, h2, h3⟩⟩`. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `((isClosed_iInter fun a => isClosed_eq (continuous_hermitian_form_left σ J _) continuous_const).inter (isClosed_iInter fun a => isClosed_eq (continuous_hermitian_form_left σ J _) continuous_const)).inter (isClosed_eq (continuous_hermitian_form_left σ J _) continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem isClosed_Wsub [IsTopologicalRing (R ⊗[F] E)] [T2Space (R ⊗[F] E)] {r : ℕ}
     (P : Frame E M r) : IsClosed (Wsub R σ J P : Set (Fin M → R ⊗[F] E)) := by
@@ -43,7 +43,7 @@ theorem isClosed_Wsub [IsTopologicalRing (R ⊗[F] E)] [T2Space (R ⊗[F] E)] {r
     (isClosed_eq (continuous_hermitian_form_left σ J _) continuous_const)
 
 /- English proof (translation)
-Establish `: IsModuleTopology R (R ⊗[F] E)` using `⟨rfl⟩`. Conclude with `IsModuleTopology.continuous_of_linearMap (Lc.sigL R σ)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem continuous_tensor_conj [IsTopologicalRing R] [IsTopologicalRing (R ⊗[F] E)] :
     Continuous (sigR R σ) := by
@@ -51,9 +51,9 @@ theorem continuous_tensor_conj [IsTopologicalRing R] [IsTopologicalRing (R ⊗[F
   exact IsModuleTopology.continuous_of_linearMap (Lc.sigL R σ)
 
 /- English proof (translation)
-Establish `: (Sk R σ r : Set (Fin r → Fin r → R ⊗[F] E)) = ⋂ a, ⋂ b, {c | c a b + sigR R σ (c b a) = 0}`. Use extensionality with `c`. Simplify using `only [Set.mem_iInter, Set.mem_ofPred_eq, SetLike.mem_coe]`. Both sides reduce to the same expression. Rewrite using `[this]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Use `isClosed_iInter fun a => isClosed_iInter fun b => ?_` and prove the remaining obligations. Establish `hc : Continuous fun c : Fin r → Fin r → R ⊗[F] E => c a b + sigR R σ (c b a)` using `(continuous_apply_apply a b).add ((continuous_tensor_conj σ).comp (continuous_apply_apply b a))`. Conclude with `isClosed_eq hc continuous_const`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isClosed_Sk [IsTopologicalRing R] [IsTopologicalRing (R ⊗[F] E)] [T2Space (R ⊗[F] E)]
     (r : ℕ) : IsClosed (Sk R σ r : Set (Fin r → Fin r → R ⊗[F] E)) := by
@@ -71,39 +71,39 @@ theorem isClosed_Sk [IsTopologicalRing R] [IsTopologicalRing (R ⊗[F] E)] [T2Sp
 end Gen
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ hCM M J hJ r P T hr hP h hh`. Take `⟨Φ, hmul, hconj⟩` from `hC F E σ hCM M J hJ r P T hr hP`. Take `⟨htr, ht2, hlc, hsc⟩` from `Lc.tensor_adele_topology_holds F E`. Take `⟨hXlc, hXsc, hXt2, hXtg⟩` from `Lc.locally_compact_adelic_unitary F E σ hCM M J hJ`. Establish `: BorelSpace (HA (AF F) σ J)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: BorelSpace (AF F ⊗[F] E)` using `⟨rfl⟩`. Establish `hAFtr : IsTopologicalRing (AF F)` using `inferInstance`. Establish `: LocallyCompactSpace (Wsub (AF F) σ J P)` using `(isClosed_Wsub σ J P).locallyCompactSpace`. Establish `: LocallyCompactSpace (Sk (AF F) σ r)` using `(isClosed_Sk σ r).locallyCompactSpace`. Establish `scV : SecondCountableTopology (Fin M → AF F ⊗[F] E)` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `scW : SecondCountableTopology (Wsub (AF F) σ J P)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `scK : SecondCountableTopology (Fin r → Fin r → AF F ⊗[F] E)` using `inferInstance`. Establish `scS : SecondCountableTopology (Sk (AF F) σ r)` using `TopologicalSpace.Subtype.secondCountableTopology _`. Establish `scP : SecondCountableTopology (Fin r → Wsub (AF F) σ J P)` using `inferInstance`. Establish `scE : SecondCountableTopologyEither (Fin r → Wsub (AF F) σ J P) (Sk (AF F) σ r)` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bV : BorelSpace (Fin M → AF F ⊗[F] E)` using `Pi.borelSpace`. Establish `bW : BorelSpace (Wsub (AF F) σ J P)` using `Subtype.borelSpace _`. Establish `bK : BorelSpace (Fin r → Fin r → AF F ⊗[F] E)` using `Pi.borelSpace`. Establish `bS : BorelSpace (Sk (AF F) σ r)` using `Subtype.borelSpace _`. Establish `bP : BorelSpace (Fin r → Wsub (AF F) σ J P)` using `Pi.borelSpace`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `bX : BorelSpace ((Fin r → Wsub (AF F) σ J P) × Sk (AF F) σ r)` using `Prod.borelSpace`. Establish `bN : BorelSpace (FrameUnipotentSubgroup (AF F) σ J P)` using `Subtype.borelSpace _`. Take `⟨νW, hνW⟩ : ∃ ν : Measure (Wsub (AF F) σ J P), ν.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`. Take `⟨νS, hνS⟩ : ∃ ν : Measure (Sk (AF F) σ r), ν.IsAddHaarMeasure` from `⟨Measure.addHaar, inferInstance⟩`. Establish `cW : SigmaCompactSpace (Wsub (AF F) σ J P)` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `cS : SigmaCompactSpace (Sk (AF F) σ r)` using `inferInstance`. Establish `sW : SigmaFinite νW` using `inferInstance`. Establish `sS : SigmaFinite νS` using `inferInstance`. Set `νP : Measure (Fin r → Wsub (AF F) σ J P)` to `Measure.pi fun _ => νW`. Establish `hνP : νP.IsAddHaarMeasure` using `Measure.pi.isAddHaarMeasure _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `sP : SigmaFinite νP` using `Measure.pi.sigmaFinite _`. Set `ν : Measure ((Fin r → Wsub (AF F) σ J P) × Sk (AF F) σ r)` to `νP.prod νS`. Establish `hν : ν.IsAddHaarMeasure` using `Measure.prod.instIsAddHaarMeasure _ _`. Establish `hΦm : Measurable Φ` using `Φ.continuous.measurable`. Establish `hΦsm : Measurable Φ.symm` using `Φ.symm.continuous.measurable`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ g : FrameUnipotentSubgroup (AF F) σ J P, MeasurePreserving (fun x => Φ (g * Φ.symm x)) ν ν`. Introduce `g`. Establish `hcont : Continuous fun p : (Fin r → Wsub (AF F) σ J P) × Sk (AF F) σ r => (Φ (g * Φ.symm (p.1, 0))).2 + p.2` using `(continuous_snd.comp (Φ.continuous.comp (continuous_const.mul (Φ.symm.continuous.comp (continuous_fst.prodMk continuous_const))))).add continuous_snd`. Establish `hsk` using `MeasurePreserving.skew_product (μa := νP) (μb := νP) (μc := νS) (μd := νS) (f := fun w => (Φ g).1 + w) (g := fun w c => (Φ (g * Φ.symm (w, 0))).2 + c) (measurePreserving_add_left νP (Φ g).1) hcont.measurable (ae_of_all _ fun w => map_add_left_eq_self νS _)`. Use `hsk using 1` and compare the differences between its conclusion and the goal.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion.
 
-Use function extensionality and compare the values at `p`. Take `⟨w, c⟩` from `p`. Establish `h1` using `(hmul g (Φ.symm (w, c))).1`. Establish `h2` using `(hmul g (Φ.symm (w, c))).2`. Establish `h3` using `(hmul g (Φ.symm (w, 0))).2`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [Homeomorph.apply_symm_apply] at h1 h2 h3`. Use `Prod.ext (funext fun a => Subtype.ext ?_) (Subtype.ext ?_)` and prove the remaining obligations. Use `congrFun h1 a` as an intermediate fact. Simplify using `using this`. Use `show ((Φ (g * Φ.symm (w, c))).2 : Fin r → Fin r → AF F ⊗[F] E) = (((Φ (g * Φ.symm (w, 0))).2 + c : Sk (AF F) σ r) : Fin r → Fin r → AF F ⊗[F] E)`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2, AddSubgroup.coe_add, h3]`. Simplify using `only [AddSubgroup.coe_zero, add_zero]`. Normalize the expressions using the abelian group laws. Set `μ : Measure (FrameUnipotentSubgroup (AF F) σ J P)` to `ν.map Φ.symm`. Establish `hinvN : ∀ g : FrameUnipotentSubgroup (AF F) σ J P, μ.map (g * ·) = μ`.
+Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `g`. Establish `hcomp : (fun n => g * n) ∘ Φ.symm = Φ.symm ∘ (fun x => Φ (g * Φ.symm x))`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules. Rewrite using `[Measure.map_map (continuous_const_mul g).measurable hΦsm, hcomp, ← Measure.map_map hΦsm (key g).measurable, (key g).map_eq]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `i1 : μ.IsMulLeftInvariant` using `⟨hinvN⟩`. Establish `i2 : IsFiniteMeasureOnCompacts μ` using `Measure.IsFiniteMeasureOnCompacts.map ν Φ.symm`. Establish `i3 : μ.IsOpenPosMeasure` using `Φ.symm.continuous.isOpenPosMeasure_map Φ.symm.surjective`. Establish `hμ : μ.IsHaarMeasure` using `{ toIsFiniteMeasureOnCompacts := i2, toIsMulLeftInvariant := i1, toIsOpenPosMeasure := i3 }`. Use `⟨μ, hμ, fun f hf => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `c : FrameUnipotentSubgroup (AF F) σ J P → FrameUnipotentSubgroup (AF F) σ J P` to `fun n => ⟨h * (n : HA (AF F) σ J) * h⁻¹, norm_gen (AF F) σ J P h hh n n.2⟩`. Establish `hc : Continuous c` using `((continuous_const.mul continuous_subtype_val).mul continuous_const).subtype_mk _`. Establish `hA : MeasurePreserving (fun x => Φ (c (Φ.symm x))) ν ν`. Establish `hact : MeasurePreserving (actW hh) νW νW` using `⟨(((lin (AF F) σ J h).continuous_on_pi.comp continuous_subtype_val).subtype_mk _).measurable, hW F E σ hCM M J hJ r P T hr hP h hh νW inferInstance⟩`. Establish `hpi : MeasurePreserving (fun (w : Fin r → Wsub (AF F) σ J P) a => actW hh (w a)) νP νP` using `measurePreserving_pi _ _ fun _ => hact`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsk` using `hpi.prod (MeasurePreserving.id νS)`. Use `hsk using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`. Take `⟨h1, h2⟩` from `hconj h hh (Φ.symm x) (c (Φ.symm x)) rfl`. Simplify using `only [Homeomorph.apply_symm_apply] at h1 h2`.
+Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `Prod.ext (funext fun a => Subtype.ext (h1 a)) h2`. Establish `hmapc : μ.map c = μ`. Establish `hcomp : c ∘ Φ.symm = Φ.symm ∘ (fun x => Φ (c (Φ.symm x)))`. Use function extensionality and compare the values at `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Measure.map_map hc.measurable hΦsm, hcomp, ← Measure.map_map hΦsm hA.measurable, hA.map_eq]`. Establish `hfm : Measurable fun n : FrameUnipotentSubgroup (AF F) σ J P => f (n : HA (AF F) σ J)` using `hf.comp measurable_subtype_coe`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem modOne_of (hC : HeisenbergCoordinates) (hW : WMod) : Cj.ModOne := by
   intro F E _ _ _ _ _ σ hCM M J hJ r P T hr hP h hh

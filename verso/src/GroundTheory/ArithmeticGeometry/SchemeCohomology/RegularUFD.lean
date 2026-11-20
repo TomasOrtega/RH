@@ -24,7 +24,7 @@ noncomputable def cofactorToLeft (bN : Module.Basis (Fin n) R N) :
   exteriorPower.alternatingMapLinearEquiv (AlternatingMap.alternatizeUncurryFin (cofactorLinear bN))
 
 /- English proof (translation)
-Simplify using `[cofactorToLeft, cofactorLinear, AlternatingMap.alternatizeUncurryFin_apply, Fin.sum_univ_succ, Module.Basis.det_self]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cofactorToLeft_ιMulti_cons (bN : Module.Basis (Fin n) R N) (m : M) :
     cofactorToLeft bN (exteriorPower.ιMulti R (n + 1) (Fin.cons (m, 0) fun i ↦ (0, bN i))) = m := by
@@ -34,19 +34,19 @@ theorem cofactorToLeft_ιMulti_cons (bN : Module.Basis (Fin n) R N) (m : M) :
 end Cofactor
 
 /- English proof (translation)
-Take `⟨N, _, _, _, _, hfree⟩` from `IsStablyFree.exist_free_prod D P`. Set `n` to `Module.finrank D N`. Set `𝔭 : PrimeSpectrum D` to `⟨⊥, Ideal.bot_prime⟩`. Establish `h1 : rankAtStalk P 𝔭 = 1`. Set `Dp` to `Localization.AtPrime 𝔭.asIdeal`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `pc` to `𝔭.asIdeal.primeCompl`. Set `f` to `Algebra.linearMap D Dp`. Set `g` to `P.toLocalized' Dp pc f`. Establish `htop : P.localized' Dp pc f = ⊤`. Rewrite using `[Ideal.localized'_eq_map]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, ha, ha0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hP`. Conclude with `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ ha) (IsLocalization.map_units Dp (⟨a, fun h ↦ ha0 h⟩ : pc))`. Set `e` to `((IsLocalizedModule.linearEquiv pc (LocalizedModule.mkLinearMap pc P) g ).extendScalarsOfIsLocalization pc Dp).trans ((LinearEquiv.ofEq _ _ htop).trans (Submodule.topEquiv))`. Express the relevant statement in the definitionally equal form `Module.finrank Dp (LocalizedModule pc P) = 1`. Rewrite using `[e.finrank_eq, Module.finrank_self]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hp : Module.finrank D (P × N) = n + 1`. Establish `heq` using `congr($(rankAtStalk_prod P N) 𝔭)`. Simplify using `only [rankAtStalk_eq_finrank_of_free, Pi.natCast_apply, Pi.add_apply, h1] at heq`. Use `grind`. Set `e : D ≃ₗ[D] ⋀[D]^(n + 1) (P × N)` to `(Module.nonempty_linearEquiv_of_finrank_eq_one <| by simp [exteriorPower.finrank_eq, hp]).some`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `bN : Module.Basis (Fin n) D N` to `Module.finBasis D N`. Set `f : D →ₗ[D] P` to `cofactorToLeft bN ∘ₗ e`. Establish `hf : Function.Surjective f` using `fun x ↦ ⟨e.symm (exteriorPower.ιMulti D (n + 1) (Fin.cons (x, 0) fun i ↦ (0, bN i))), by`. Simplify using `[f, cofactorToLeft_ιMulti_cons]⟩`. Use `⟨(f 1 : D), ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `le_antisymm` to reduce the goal to its premises. Introduce `y hy`. Take `⟨r, hr⟩` from `hf ⟨y, hy⟩`. Establish `: y = r * (f 1 : D)`. Rewrite using `[← smul_eq_mul, ← Submodule.coe_smul, ← map_smul, smul_eq_mul, mul_one, hr]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.mul_mem_left _ _ (Submodule.mem_span_singleton_self _)`. Rewrite using `[Submodule.span_le, Set.singleton_subset_iff]`. Conclude with `(f 1).2`.
+A detailed English derivation is pending.
 -/
 theorem isPrincipal_of_isStablyFree {D : Type u} [CommRing D] [IsDomain D] [IsNoetherianRing D]
     (P : Ideal D)
@@ -95,21 +95,19 @@ theorem isPrincipal_of_isStablyFree {D : Type u} [CommRing D] [IsDomain D] [IsNo
 open CategoryTheory in
 
 /- English proof (translation)
-Proceed by induction on `k generalizing M with`. Consider the case `zero`. Rewrite `hM` using `[zero_add, ← projective_iff_hasProjectiveDimensionLT_one, ← IsProjective.iff_projective]`. Establish `: Module.Free R M` using `Module.free_of_flat_of_isLocalRing`. Use `Module.free_of_isLocalizedModule (Rₛ := Localization T) T (LocalizedModule.mkLinearMap T M)` as an intermediate fact.
+Proceed by induction. Treat this case separately. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `infer_instance`. Consider the case `succ k ih`. Take `⟨n, π, hπ⟩` from `Module.Finite.exists_fin' R M`. Set `K` to `LinearMap.ker π`. Establish `hS` using `LinearMap.shortExact_shortComplexKer hπ`.
+Treat this case separately. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hprojF : Projective (π.shortComplexKer).X₂`. Rewrite using `[← IsProjective.iff_projective]`. Use `infer_instance`. Establish `hK : HasProjectiveDimensionLT (ModuleCat.of R K) (k + 1)` using `(hS.hasProjectiveDimensionLT_X₃_iff k hprojF).mp hM`. Set `A` to `Localization T`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `mkK` to `LocalizedModule.mkLinearMap T K`. Set `mkF` to `LocalizedModule.mkLinearMap T (Fin n → R)`. Set `mkM` to `LocalizedModule.mkLinearMap T M`. Set `φ₁` to `(IsLocalizedModule.map T mkK mkF K.subtype).extendScalarsOfIsLocalization T A`. Set `φ₂` to `(IsLocalizedModule.map T mkF mkM π).extendScalarsOfIsLocalization T A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex0 : Function.Exact K.subtype π` using `fun y ↦ ⟨fun h ↦ ⟨⟨y, h⟩, rfl⟩, by rintro ⟨k, rfl⟩; exact k.2⟩`. Establish `ex : Function.Exact φ₁ φ₂` using `LocalizedModule.map_exact T K.subtype π hex0`. Establish `inj : Function.Injective φ₁` using `IsLocalizedModule.map_injective T mkK mkF K.subtype K.injective_subtype`. Establish `surj : Function.Surjective φ₂` using `IsLocalizedModule.map_surjective T mkF mkM π hπ`. Take `⟨h, hh⟩` from `Module.projective_lifting_property φ₂ LinearMap.id surj`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `e` to `(Function.Exact.splitSurjectiveEquiv (R := A) (M := LocalizedModule T K) (N := LocalizedModule T (Fin n → R)) (P := LocalizedModule T M) (f := φ₁) (g := φ₂) ex inj ⟨h, hh⟩).1`. Establish `hFfree : Module.Free A (LocalizedModule T (Fin n → R))` using `Module.free_of_isLocalizedModule T mkF`. Establish `: Module.Free A (LocalizedModule T K × LocalizedModule T M)` using `Module.Free.of_equiv e`. Establish `hKproj : Module.Projective A (LocalizedModule T K)` using `Module.Projective.of_split (LinearMap.inl A _ (LocalizedModule T M)) (LinearMap.fst A _ _) (LinearMap.ext fun _ ↦ rfl)`. Establish `hKsf` using `ih K hK hKproj`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, _, _, _, _, hNfree⟩` from `IsStablyFree.exist_free_prod A (LocalizedModule T K)`. Establish `: Module.Finite R K` using `inferInstance`. Establish `: Module.Finite A (LocalizedModule T K)` using `inferInstance`. Establish `: Module.Free A (LocalizedModule T M × (LocalizedModule T K × N))`. Conclude with `Module.Free.of_equiv ((LinearEquiv.prodAssoc A (LocalizedModule T M) (LocalizedModule T K) N).symm.trans (((LinearEquiv.prodComm A _ _).trans e.symm).prodCongr (LinearEquiv.refl A N))).symm`.
-
-Conclude with `IsStablyFree.of_free_prod A (LocalizedModule T M) (LocalizedModule T K × N)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isStablyFree_localizedModule {R : Type u} [CommRing R] [IsLocalRing R] [IsNoetherianRing R]
     (T : Submonoid R) (k : ℕ) (M : Type u) [AddCommGroup M] [Module R M] [Module.Finite R M]
@@ -169,15 +167,15 @@ instance (priority := 100) IsRegularLocalRing.toIsDomain {R : Type u} [CommRing 
   IsRegularLocalRing.isDomain
 
 /- English proof (translation)
-Set `A` to `Localization.Away x`. Set `Aq` to `Localization.AtPrime q`. Set `Q'` to `q.comap (algebraMap S A)`. Establish `hQ' : Q'.IsPrime` using `Ideal.comap_isPrime _ _`. Establish `: IsLocalization.AtPrime Aq Q'` using `IsLocalization.isLocalization_isLocalization_atPrime_isLocalization (Submonoid.powers x) Aq q`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `IsRegularLocalRing.localization_atPrime Q'` as an intermediate fact. Set `e : Aq ≃ₐ[S] Localization.AtPrime Q'` to `IsLocalization.algEquiv Q'.primeCompl _ _`. Establish `hreg : IsRegularLocalRing Aq` using `IsRegularLocalRing.of_ringEquiv e.symm.toRingEquiv`. Use `⟨hreg, ?_⟩` and prove the remaining obligations. Establish `hxQ : x ∉ Q'` using `fun h ↦ hQ'.ne_top' (by`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hu` using `IsLocalization.Away.algebraMap_isUnit (S := A) x`. Conclude with `(Ideal.comap_eq_top_iff).mpr (q.eq_top_of_isUnit_mem h hu))`. Establish `hlt : Q' < maximalIdeal S` using `lt_of_le_of_ne (IsLocalRing.le_maximalIdeal hQ'.ne_top) (fun h ↦ hxQ (h ▸ hx))`. Establish `h1 : ((maximalIdeal Aq).spanFinrank : WithBot ℕ∞) = (Q'.height : WithBot ℕ∞)`. Rewrite using `[(isRegularLocalRing_iff Aq).mp hreg, IsLocalization.AtPrime.ringKrullDim_eq_height Q' Aq]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Q'.height + 1 ≤ (maximalIdeal S).height` using `Ideal.height_add_one_le_of_lt_of_isPrime hlt`. Establish `h3 : ((maximalIdeal S).height : WithBot ℕ∞) = ((maximalIdeal S).spanFinrank : WithBot ℕ∞)`. Rewrite using `[IsLocalRing.maximalIdeal_height_eq_ringKrullDim, (isRegularLocalRing_iff S).mp inferInstance]`. Establish `h1' : Q'.height = ((maximalIdeal Aq).spanFinrank : ℕ∞)` using `by exact_mod_cast h1.symm`. Establish `h3' : (maximalIdeal S).height = ((maximalIdeal S).spanFinrank : ℕ∞)` using `by exact_mod_cast h3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[h1', h3']`. Establish `: (maximalIdeal Aq).spanFinrank + 1 ≤ (maximalIdeal S).spanFinrank` using `by exact_mod_cast h2`. Express the relevant statement in the definitionally equal form `(maximalIdeal Aq).spanFinrank < _`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem isRegularLocalRing_localization_away_atPrime {S : Type u} [CommRing S]
     [IsRegularLocalRing S] {x : S} (hx : x ∈ maximalIdeal S)
@@ -212,37 +210,35 @@ theorem isRegularLocalRing_localization_away_atPrime {S : Type u} [CommRing S]
   omega
 
 /- English proof (translation)
-It suffices to establish `H : ∀ n : ℕ, ∀ (S : Type u) [CommRing S] [IsRegularLocalRing S], (maximalIdeal S).spanFinrank = n → UniqueFactorizationMonoid S from H _ R rfl`. Introduce `n`. Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `S _ _ hn`.
+Reduce the argument to an intermediate assertion. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hd : ringKrullDim S = (n : WithBot ℕ∞)`. Rewrite using `[← hn]`. Conclude with `((isRegularLocalRing_iff S).mp inferInstance).symm`. Establish `hfg : (maximalIdeal S).FG` using `(maximalIdeal S).fg_of_isNoetherianRing`. Distinguish the cases in `h0 : n = 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `UniqueFactorizationMonoid.of_forall_isPrincipal_of_height_eq_one` to reduce the goal to its premises. Introduce `p hp hp1`. It suffices to derive a contradiction. Establish `h` using `Ideal.height_le_ringKrullDim_of_ne_top hp.ne_top`. Rewrite `h` using `[hp1, hd, h0]`.
+Fix the arbitrary inputs or assume the hypotheses. It suffices to derive a contradiction. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (1 : ℕ) ≤ 0` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers. Establish `hjac : maximalIdeal S ≤ jacobson ⊥` using `(IsLocalRing.jacobson_eq_maximalIdeal ⊥ bot_ne_top).ge`. Establish `hsq : ¬ maximalIdeal S ≤ maximalIdeal S ^ 2`. Introduce `hle`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `: maximalIdeal S = ⊥` using `Submodule.eq_bot_of_le_smul_of_le_jacobson_bot _ _ hfg (by simpa [pow_two, smul_eq_mul] using hle) hjac`. Conclude with `h0 (by rw [← hn, this]; simp)`. Take `⟨x, hx, hx2⟩` from `Set.not_subset.mp hsq`. Establish `hx0 : x ≠ 0` using `fun h ↦ hx2 (h ▸ zero_mem _)`. Establish `hne : span {x} ≠ ⊤` using `fun h ↦ (IsLocalRing.maximalIdeal.isMaximal S).ne_top (top_le_iff.mp (h ▸ (span_singleton_le_iff_mem _).mpr hx))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Nontrivial (S ⧸ span {x})` using `Ideal.Quotient.nontrivial_iff.mpr hne`. Establish `: IsLocalRing (S ⧸ span {x})` using `.of_surjective' _ Ideal.Quotient.mk_surjective`. Take `⟨hreg, -⟩` from `isRegularLocalRing_quotient hx hx2`. Establish `hprime : (span {x} : Ideal S).IsPrime` using `(Ideal.Quotient.isDomain_iff_prime _).mp inferInstance`. Establish `hxp : Prime x` using `(Ideal.span_singleton_prime hx0).mp hprime`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[UniqueFactorizationMonoid.iff_localizationAway_of_prime hxp]`. Set `A` to `Localization.Away x`. Establish `: IsDomain A` using `Localization.Away.isDomain hx0`. Apply `UniqueFactorizationMonoid.of_forall_isPrincipal_of_height_eq_one` to reduce the goal to its premises. Introduce `P hP hP1`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP0 : P ≠ ⊥` using `P.ne_bot_of_height_eq_one hP1`. Establish `: Module.FinitePresentation A P` using `Module.finitePresentation_of_finite A P`. Establish `hPproj : Module.Projective A P`. Apply `Module.projective_of_localization_maximal` to reduce the goal to its premises. Introduce `q hq`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Take `⟨hregq, hltq⟩` from `isRegularLocalRing_localization_away_atPrime hx q`. Set `Aq` to `Localization.AtPrime q`. Establish `: UniqueFactorizationMonoid Aq` using `ih _ (hn ▸ hltq) Aq rfl`. Establish `hPq : (P.map (algebraMap A Aq)).IsPrincipal`. Distinguish the cases in `hle : P ≤ q`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdisj : Disjoint (q.primeCompl : Set A) (P : Set A)`. Rewrite using `[Set.disjoint_left]`. Introduce `a ha haP`. Conclude with `ha (hle haP)`. Establish `: (P.map (algebraMap A Aq)).IsPrime` using `IsLocalization.isPrime_of_isPrime_disjoint q.primeCompl Aq P hP hdisj`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `UniqueFactorizationMonoid.isPrincipal_of_height_eq_one (by rw [IsLocalization.height_map_of_disjoint q.primeCompl P hdisj, hP1])`. Take `⟨a, haP, haq⟩` from `Set.not_subset.mp hle`. Establish `htop : P.map (algebraMap A Aq) = ⊤` using `Ideal.eq_top_of_isUnit_mem _ (Ideal.mem_map_of_mem _ haP) (IsLocalization.map_units Aq (⟨a, haq⟩ : q.primeCompl))`. Rewrite using `[htop]`. Conclude with `⟨⟨1, Ideal.span_singleton_one.symm⟩⟩`.
+Supply the required witnesses or components. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Set `f` to `Algebra.linearMap A Aq`. Set `g` to `P.toLocalized' Aq q.primeCompl f`. Set `e` to `((IsLocalizedModule.linearEquiv q.primeCompl (LocalizedModule.mkLinearMap q.primeCompl P) g).extendScalarsOfIsLocalization q.primeCompl Aq).trans (LinearEquiv.ofEq _ _ (Ideal.localized'_eq_map Aq q.primeCompl P))`. Take `⟨⟨c, hc⟩⟩` from `hPq`. Establish `hfree : Module.Free Aq (P.map (algebraMap A Aq))`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Distinguish the cases in `hc0 : c = 0`. Establish `: Subsingleton (P.map (algebraMap A Aq))`. Rewrite using `[hc, hc0, Submodule.span_singleton_eq_bot.mpr rfl]`. Use `infer_instance`. Use `infer_instance`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `Module.Free.of_equiv ((LinearEquiv.toSpanNonzeroSingleton Aq Aq c hc0).trans (LinearEquiv.ofEq _ _ hc.symm))`. Conclude with `Module.Projective.of_equiv e.symm`. Set `Q` to `P.comap (algebraMap S A)`. Establish `hQpd` using `hasProjectiveDimensionLT_of_isRegularLocalRing hd Q`. Set `T` to `Submonoid.powers x`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `f` to `Algebra.linearMap S A`. Set `gQ` to `Q.toLocalized' A T f`. Establish `hloc : Q.localized' A T f = P`. Rewrite using `[Ideal.localized'_eq_map]`. Conclude with `IsLocalization.map_comap T A P`.
-
-Set `eQ : LocalizedModule T Q ≃ₗ[A] P` to `((IsLocalizedModule.linearEquiv T (LocalizedModule.mkLinearMap T Q) gQ ).extendScalarsOfIsLocalization T A).trans (LinearEquiv.ofEq _ _ hloc)`. Establish `hproj' : Module.Projective A (LocalizedModule T Q)` using `Module.Projective.of_equiv eQ.symm`. Establish `hsf` using `isStablyFree_localizedModule T n Q hQpd hproj'`. Establish `: IsStablyFree A P` using `IsStablyFree.equiv eQ`. Conclude with `isPrincipal_of_isStablyFree P hP0`.
+A detailed English derivation is pending.
 -/
 theorem IsRegularLocalRing.uniqueFactorizationMonoid (R : Type u) [CommRing R]
     [IsRegularLocalRing R] : UniqueFactorizationMonoid R := by
@@ -344,7 +340,7 @@ instance (priority := 100) IsRegularLocalRing.toUniqueFactorizationMonoid {R : T
   IsRegularLocalRing.uniqueFactorizationMonoid R
 
 /- English proof (translation)
-The claim follows from `inferInstance`.
+A detailed English derivation is pending.
 -/
 theorem IsRegularLocalRing.isIntegrallyClosed (R : Type u) [CommRing R] [IsRegularLocalRing R] :
     IsIntegrallyClosed R :=

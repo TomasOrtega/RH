@@ -9,7 +9,7 @@ open NumberField Formalism.BasicNotions Formalism.MainNotions Formalism.L2.Ker
 namespace GlobalTheory.SelfDualDetNorm
 
 /- English proof (translation)
-Use `letI := D.host.cmStar`. Apply `D.host.φ₀.injective` to reduce the goal to its premises. Use `letI := D.host.isCMField_hostE`. Use `show D.host.φ₀ (IsCMField.complexConj D.host.E x) = _`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]`.
+Equip the data with the indicated structure. Reduce the claim to the hypotheses of an applicable result. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem star_eq_conj (D : D7) (x : D.host.E) :
     (letI := D.host.cmStar; star x) = D.host.conj x := by
@@ -20,7 +20,7 @@ theorem star_eq_conj (D : D7) (x : D.host.E) :
   rw [NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply]
 
 /- English proof (translation)
-Take `⟨hfg, hsp, hd⟩` from `hL`. Use `⟨⟨hfg, hsp⟩, ?_⟩` and prove the remaining obligations. Use extensionality with `y`. Rewrite using `[hd y]`. Simplify using `only [Formalism.HermitianLatticesTheory.dual, Formalism.E.hdual, Submodule.mem_iInf, Submodule.mem_comap, LinearMap.restrictScalars_apply, Submodule.mem_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -35,7 +35,7 @@ theorem isSdLat_of_isSDLat {E : Type} [Field E] [NumberField E] [StarRing E] {n 
   rfl
 
 /- English proof (translation)
-Introduce `D N L hL`. Use `letI := D.host.cmStar`. Take `⟨J, hJ, hIJ⟩` from `GlobalTheory.CharValCompare.normOne_detI (isSdLat_of_isSDLat L hL)`. Use `⟨J, fun x => by rw [hJ, star_eq_conj]; exact Iff.rfl, ?_⟩` and prove the remaining obligations. Conclude with `hIJ`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem detId_normOne : ∀ (D : D7) (N : ℕ) (L : Submodule (𝓞 D.host.E) (Fin N → D.host.E)),
     StandardLatticesGL3.SD D L → TaylorLogMetric.N1 D (TaylorLogMetric.detId D (StandardLatticesGL3.stdL D N) L) := by

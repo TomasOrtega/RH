@@ -15,32 +15,30 @@ open scoped InnerProductSpace ComplexConjugate
 namespace GlobalTheory.CompanionTheory.RgHeA
 
 /- English proof (translation)
-The claim follows from `h.norm.mono' (continuous_star.comp_aestronglyMeasurable h.1) (.of_forall fun g => by simp)`.
+A detailed English derivation is pending.
 -/
 theorem integrable_star' {Γ : Type} [MeasurableSpace Γ] {ν : Measure Γ} {f : Γ → ℂ} (h : Integrable f ν) :
     Integrable (fun g => star (f g)) ν :=
   h.norm.mono' (continuous_star.comp_aestronglyMeasurable h.1) (.of_forall fun g => by simp)
 
 /- English proof (translation)
-Take `⟨s, b, l, -, hTb0, hsum0, -⟩` from `GroundTheory.Automorphic.CompactSelfAdjoint.exists_hilbertBasis_eigenvectors_hasSum hT hT'`. Establish `hTb : ∀ i, T (b i) = ((l i : ℝ) : ℂ) • b i` using `hTb0`. Establish `hsum : ∀ x, HasSum (fun i => (((l i : ℝ) : ℂ) * ⟪b i, x⟫_ℂ) • b i) (T x)` using `hsum0`. Establish `hone : ∀ i, ⟪b i, b i⟫_ℂ = 1` using `fun i => by`. Rewrite using `[inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `hli : ∀ i, 0 ≤ l i` using `fun i => by`. Establish `h1` using `h (b i)`. Rewrite `h1` using `[hTb, inner_smul_right, hone, mul_one, Complex.ofReal_re]`. Conclude with `le_trans (by positivity) h1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hlt : ∀ i, l i < ‖p‖ ^ 2 / (2 * d)` using `fun i => by`. Assume the negation of the conclusion as `hh`. Use `push_neg at hh`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hcon _ _ (b.orthonormal.ne_zero i) hh (hTb i)`. Choose the witnesses or unpack the hypotheses as in `⟨i0⟩ : Nonempty s := by`. Assume the negation of the conclusion as `hE`. Rewrite `hE` using `[not_nonempty_iff]`. Conclude with `hw₀ (inner_self_eq_zero.1 ((b.hasSum_inner_mul_inner w₀ w₀).unique hasSum_empty))`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hC : 0 < ‖p‖ ^ 2 / (2 * d)` using `(hli i0).trans_lt (hlt i0)`. Establish `key : ∀ i, ⟪p, b i⟫_ℂ * ⟪b i, p⟫_ℂ = ((‖⟪p, b i⟫_ℂ‖ ^ 2 : ℝ) : ℂ)` using `fun i => by`. Rewrite using `[← inner_conj_symm (b i) p, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `key2 : ∀ i, ((l i : ℝ) : ℂ) * ⟪b i, p⟫_ℂ * ⟪p, b i⟫_ℂ = ((l i * ‖⟪p, b i⟫_ℂ‖ ^ 2 : ℝ) : ℂ)` using `fun i => by`. Rewrite using `[mul_assoc, mul_comm ⟪b i, p⟫_ℂ, key]`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `e : (⟪p, p⟫_ℂ).re = ‖p‖ ^ 2` using `by simpa using inner_self_eq_norm_sq (𝕜 := ℂ) p`. Establish `h1 : HasSum (fun i => ‖⟪p, b i⟫_ℂ‖ ^ 2) (‖p‖ ^ 2)`. Establish `h0` using `Complex.reCLM.hasSum (b.hasSum_inner_mul_inner p p)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Complex.reCLM_apply, key, Complex.ofReal_re, e] at h0`. Conclude with `h0`. Establish `h2 : HasSum (fun i => l i * ‖⟪p, b i⟫_ℂ‖ ^ 2) (⟪p, T p⟫_ℂ).re`. Establish `h0` using `Complex.reCLM.hasSum ((innerSL ℂ p).hasSum (hsum p))`. Simplify using `only [innerSL_apply_apply, inner_smul_right, Complex.reCLM_apply, key2, Complex.ofReal_re] at h0`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h0`. Establish `h3 : (⟪p, T p⟫_ℂ).re ≤ ‖p‖ ^ 2 / (2 * d) * ‖p‖ ^ 2` using `hasSum_le (fun i => mul_le_mul_of_nonneg_right (hlt i).le (by positivity)) h2 (h1.mul_left (‖p‖ ^ 2 / (2 * d)))`. Establish `h5` using `h p`. Establish `e2 : ‖⟪p, p⟫_ℂ‖ = ‖p‖ ^ 2` using `by rw [inner_self_eq_norm_sq_to_K]; simp`. Rewrite `h5` using `[e2]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : 0 < ‖p‖ ^ 2`. Assume the negation of the conclusion as `hh`. Establish `: ‖p‖ ^ 2 = 0` using `le_antisymm (not_lt.1 hh) (by positivity)`. Rewrite `hC` using `[this]`. Simplify using `at hC`.
-
-Establish `e3 : ‖p‖ ^ 2 / (2 * d) * ‖p‖ ^ 2 = (‖p‖ ^ 2) ^ 2 / d / 2` using `by field_simp`. Establish `h6 : 0 < (‖p‖ ^ 2) ^ 2 / d` using `by positivity`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_eig_of_low {A : Type} [NormedAddCommGroup A] [InnerProductSpace ℂ A] [CompleteSpace A]
     (T : A →L[ℂ] A) (hT : IsCompactOperator T) (hT' : IsSelfAdjoint T) (w₀ : A) (hw₀ : w₀ ≠ 0) (p : A) (d : ℝ) (hd : 0 < d)
@@ -94,13 +92,13 @@ theorem exists_eig_of_low {A : Type} [NormedAddCommGroup A] [InnerProductSpace �
   linarith
 
 /- English proof (translation)
-Introduce `Γ _ _ _ _ _ _ _ ν _ _ A B _ _ _ _ _ _ σ ρ d hσ hρ hd w₀ hw₀ hc0 i hi v hm0`. Establish `hm : Integrable (fun g => star ⟪v, ρ g v⟫_ℂ) ν` using `integrable_star' hm0`. Establish `hc : Integrable (fun g => star ⟪w₀, σ g w₀⟫_ℂ) ν` using `integrable_star' hc0`. Establish `hne : w₀ ≠ 0` using `fun h => by simp [h] at hw₀`. Establish `hdense : (Submodule.span ℂ (Set.range fun x => σ x w₀)).topologicalClosure = ⊤`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[Submodule.topologicalClosure_eq_top_iff, eq_bot_iff]`. Introduce `u hu`. Use `PositivityTheory.UnitaryDecomposition.X4.eq_zero_of_orth hd hne fun g => ?_` and prove the remaining obligations. Establish `hg : σ g w₀ ∈ Submodule.span ℂ (Set.range fun x => σ x w₀)` using `Submodule.subset_span ⟨g, rfl⟩`. Conclude with `Submodule.inner_left_of_mem_orthogonal hg hu`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hlow` using `GlobalTheory.T.cyclic_vector_intertwiner_determined σ ρ d hd.1 hσ hρ w₀ v i hi.1 hdense (coefOp ν σ hσ (fun g => star ⟪v, ρ g v⟫_ℂ) hm) (coefOp ν ρ hρ (fun g => star ⟪w₀, σ g w₀⟫_ℂ) hc) (GlobalTheory.T.matrix_coefficient_intertwiner_adjoint ν σ ρ hσ hρ w₀ v hc hm) (GlobalTheory.T …`. Establish `hlow' : ∀ a, ‖⟪ContinuousLinearMap.adjoint i v, a⟫_ℂ‖ ^ 2 / d ≤ (⟪a, coefOp ν σ hσ (fun g => star ⟪v, ρ g v⟫_ℂ) hm a⟫_ℂ).re` using `fun a => by`. Rewrite using `[ContinuousLinearMap.adjoint_inner_left]`. Conclude with `hlow a`. Take `⟨w, c, hw, hcb, hTw⟩` from `exists_eig_of_low _ (GroundTheory.Automorphic.IsHilbertSchmidt.isCompactOperator (GlobalTheory.T.formal_degree_matrix_coefficient_norm ν σ ρ d hσ hρ hd v hm)) (GlobalTheory.T.matrix_coefficient_orthogonality_relation ν σ ρ hσ hρ v hm) w₀ hne _ d hd.1 hlow'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨w, c, hw, hcb, fun b => ⟨integrable_mul_inner hσ hm b w, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[← inner_coefOp ν σ hσ _ hm, hTw, inner_smul_right]`.
+A detailed English derivation is pending.
 -/
 theorem eigA : EigA := by
   intro Γ _ _ _ _ _ _ _ ν _ _ A B _ _ _ _ _ _ σ ρ d hσ hρ hd w₀ hw₀ hc0 i hi v hm0

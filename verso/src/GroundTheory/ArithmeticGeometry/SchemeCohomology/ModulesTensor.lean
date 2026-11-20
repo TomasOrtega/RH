@@ -30,7 +30,7 @@ variable {J}
 variable {M N : PresheafOfModules.{u} (R ⋙ forget₂ _ _)}
 
 /- English proof (translation)
-Use extensionality with `W h`. Express the relevant statement in the definitionally equal form `M.map (h ≫ g).op x = 0 ↔ M.map h.op (M.map g.op x) = 0`. Rewrite using `[op_comp, PresheafOfModules.map_comp_apply]`. Conclude with `Iff.rfl`.
+By extensionality, compare the relevant components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 lemma zeroSieve_pullback {U : Cᵒᵖ} (x : M.obj U) {V : C} (g : V ⟶ U.unop) :
     (zeroSieve x).pullback g = zeroSieve (M.map g.op x) := by
@@ -40,7 +40,7 @@ lemma zeroSieve_pullback {U : Cᵒᵖ} (x : M.obj U) {V : C} (g : V ⟶ U.unop) 
   exact Iff.rfl
 
 /- English proof (translation)
-Use extensionality with `W h`. Simplify using `only [Sieve.top_apply, iff_true]`. Conclude with `map_zero _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma zeroSieve_zero {U : Cᵒᵖ} : zeroSieve (0 : M.obj U) = ⊤ := by
   ext W h
@@ -48,7 +48,7 @@ lemma zeroSieve_zero {U : Cᵒᵖ} : zeroSieve (0 : M.obj U) = ⊤ := by
   exact map_zero _
 
 /- English proof (translation)
-Introduce and unpack `W h ⟨hx, hy⟩`. Express the relevant statement in the definitionally equal form `M.map h.op (x + y) = 0`. Rewrite using `[map_add]`. Use `erw [hx, hy]`. Conclude with `add_zero _`.
+Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma zeroSieve_add {U : Cᵒᵖ} (x y : M.obj U) :
     zeroSieve x ⊓ zeroSieve y ≤ zeroSieve (x + y) := by
@@ -59,7 +59,7 @@ lemma zeroSieve_add {U : Cᵒᵖ} (x y : M.obj U) :
   exact add_zero _
 
 /- English proof (translation)
-Introduce and unpack `W h ⟨⟨a, ha⟩, ⟨b, hb⟩⟩`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, ha, hb, map_add]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 lemma imSieve_add (φ : M ⟶ N) {U : Cᵒᵖ} (x y : N.obj U) :
     imSieve φ x ⊓ imSieve φ y ≤ imSieve φ (x + y) := by
@@ -72,11 +72,11 @@ section
 variable (P : PresheafOfModules.{u} (R ⋙ forget₂ _ _))
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero`. Use `J.superset_covering ?_ (J.top_mem _)` and prove the remaining obligations. Introduce and unpack `W h -`. Conclude with `⟨0, by erw [map_zero]⟩`.
+Proceed by induction. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Consider the case `tmul n p`. Use `J.superset_covering ?_ (hφ U n)` and prove the remaining obligations. Introduce and unpack `W h ⟨m, hm⟩`. Use `⟨m ⊗ₜ P.map h.op p, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `φ.app _ m ⊗ₜ _ = N.map h.op n ⊗ₜ P.map h.op p`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hm]`. Both sides reduce to the same expression. Consider the case `add a b ha hb`. Conclude with `J.superset_covering (imSieve_add (M := M ⊗ P) (N := N ⊗ P) (φ ▷ P) a b) (J.intersection_covering ha hb)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma whiskerRight_imSieve_mem (φ : M ⟶ N) (hφ : ∀ (U : Cᵒᵖ) (y : N.obj U), imSieve φ y ∈ J U.unop)
     (U : Cᵒᵖ) (y : (N ⊗ P).obj U) : imSieve (φ ▷ P) y ∈ J U.unop := by
@@ -97,7 +97,7 @@ lemma whiskerRight_imSieve_mem (φ : M ⟶ N) (hφ : ∀ (U : Cᵒᵖ) (y : N.ob
       (J.intersection_covering ha hb)
 
 /- English proof (translation)
-Introduce `W h hm`. Express the relevant statement in the definitionally equal form `M.map h.op m ⊗ₜ P.map h.op p = 0`. Use `erw [hm]`. Conclude with `TensorProduct.zero_tmul _ _`.
+Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 lemma tmul_zeroSieve_le {U : Cᵒᵖ} (m : M.obj U) (p : P.obj U) :
     zeroSieve m ≤ zeroSieve (M := M ⊗ P) (m ⊗ₜ p : (M ⊗ P).obj U) := by
@@ -107,13 +107,11 @@ lemma tmul_zeroSieve_le {U : Cᵒᵖ} (m : M.obj U) (p : P.obj U) :
   exact TensorProduct.zero_tmul _ _
 
 /- English proof (translation)
-Establish `hex : Function.Exact (LinearMap.ker (φ.app V).hom.rangeRestrict).subtype (φ.app V).hom.rangeRestrict`. Rewrite using `[LinearMap.exact_iff, Submodule.range_subtype]`. Establish `hex'` using `rTensor_exact (P.obj V) hex (φ.app V).hom.surjective_rangeRestrict`. Take `⟨w, rfl⟩` from `(hex' z).1 hz`. Use `clear hz hex hex'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Proceed by induction.
 
-Proceed by induction on `w using TensorProduct.induction_on with`. Consider the case `zero`. Rewrite using `[map_zero]`. Conclude with `J.superset_covering (zeroSieve_zero (M := M ⊗ P) (U := V)).ge (J.top_mem _)`. Consider the case `tmul k p`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `J.superset_covering (tmul_zeroSieve_le P (k : M.obj V) p) (hφ V _ ?_)` and prove the remaining obligations. Use `k.2` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker]`. Conclude with `congrArg Subtype.val this`. Consider the case `add a b ha hb`.
-
-Rewrite using `[map_add]`. Conclude with `J.superset_covering (zeroSieve_add (M := M ⊗ P) _ _) (J.intersection_covering ha hb)`.
+Rewrite the indicated hypotheses using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma zeroSieve_mem_of_rTensor_rangeRestrict (φ : M ⟶ N)
     (hφ : ∀ (U : Cᵒᵖ) (x : M.obj U), φ.app U x = 0 → zeroSieve x ∈ J U.unop)
@@ -145,7 +143,7 @@ section
 variable (P : PresheafOfModules.{u} (R ⋙ forget₂ _ _))
 
 /- English proof (translation)
-The claim follows from `Finset.inf_induction (p := (· ∈ J X)) (J.top_mem X) (fun _ h₁ _ h₂ => J.intersection_covering h₁ h₂) h`.
+A detailed English derivation is pending.
 -/
 lemma finset_inf_mem {X : C} {ι : Type*} (T : Finset ι) (S : ι → Sieve X)
     (h : ∀ t ∈ T, S t ∈ J X) : T.inf S ∈ J X :=
@@ -153,25 +151,21 @@ lemma finset_inf_mem {X : C} {ι : Type*} (T : Finset ι) (S : ι → Sieve X)
     (fun _ h₁ _ h₂ => J.intersection_covering h₁ h₂) h
 
 /- English proof (translation)
-Establish `hx' : (φ.app U).hom.rTensor (P.obj U) x = 0` using `hx`. Take `⟨A, hA, y, rfl⟩` from `Submodule.exists_fg_le_eq_rTensor_subtype (x : (M.obj U) ⊗[_] (P.obj U))`. Use `set f := (φ.app U).hom with hf`. Set `fA : A →ₗ[_] A.map f` to `f.submoduleMap A`. Establish `h1 : (A.map f).subtype ∘ₗ fA = f ∘ₗ A.subtype` using `LinearMap.ext fun _ => rfl`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : (A.map f).subtype.rTensor (P.obj U) (fA.rTensor (P.obj U) y) = (A.map f).subtype.rTensor (P.obj U) 0`. Rewrite using `[← LinearMap.rTensor_comp_apply, h1, LinearMap.rTensor_comp_apply, map_zero]`. Conclude with `hx'`. Take `⟨B, hB, hle, hB0⟩` from `(hA.map f).exists_rTensor_fg_inclusion_eq h2`. Rewrite `hB0` using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨T, hT⟩` from `hB`. Use `J.transitive (finset_inf_mem T _ (fun t _ => hsurj U t)) _ (fun W g hg => ?_)` and prove the remaining obligations. Use `erw [zeroSieve_pullback (M := M ⊗ P)]`. Apply `zeroSieve_mem_of_rTensor_rangeRestrict P φ hinj` to reduce the goal to its premises. Establish `hT' : ∀ t ∈ T, ∃ m, φ.app (op W) m = N.map g.op t` using `fun t ht => (Finset.inf_le ht : _ ≤ imSieve φ t) g hg`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hρ : ∀ b ∈ B, N.map g.op b ∈ LinearMap.range (φ.app (op W)).hom`. Introduce `b hb`. Rewrite `hb` using `[← hT]`. Proceed by induction on `hb using Submodule.span_induction with`. Consider the case `mem t ht => obtain ⟨m, hm⟩ := hT' t ht`.
+Proceed by induction. Treat this case separately. Supply the required witnesses or components. Treat this case separately. Treat this case separately.
 
-Conclude with `⟨m, hm⟩`. Consider the case `zero => erw [map_zero]`. Conclude with `zero_mem _`. Consider the case `add a b _ _ ha hb => erw [map_add]`. Conclude with `add_mem ha hb`.
+Treat this case separately. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Consider the case `smul r a _ ha => erw [PresheafOfModules.map_smul]`. Conclude with `Submodule.smul_mem _ _ ha`. Set `ρ : B →+ LinearMap.range (φ.app (op W)).hom` to `{ toFun := fun b => ⟨N.map g.op b, hρ b b.2⟩ map_zero' := Subtype.ext (map_zero _) map_add' := fun a b => Subtype.ext (map_add _ _ _) }`. Set `RW` to `(R ⋙ forget₂ CommRingCat RingCat).obj (op W)`. Set `pW : P.obj U →+ P.obj (op W)` to `{ toFun := fun p => (P.map g.op p : P.obj (op W)) map_zero' := map_zero (P.map g.op).hom map_add' := map_add (P.map g.op).hom }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `pW_smul : ∀ (r : (R ⋙ forget₂ CommRingCat RingCat).obj U) (p : P.obj U), pW (r • p) = ((R ⋙ forget₂ CommRingCat RingCat).map g.op).hom r • pW p` using `fun r p => PresheafOfModules.map_smul _ _ _ _`. Establish `ρ_smul : ∀ (r : (R ⋙ forget₂ CommRingCat RingCat).obj U) (b : B), ρ (r • b) = ((R ⋙ forget₂ CommRingCat RingCat).map g.op).hom r • ρ b` using `fun r b => Subtype.ext (PresheafOfModules.map_smul _ _ _ _)`. Set `F : B ⊗[(R ⋙ forget₂ CommRingCat RingCat).obj U] P.obj U →+ (LinearMap.range (φ.app (op W)).hom) ⊗[RW] P.obj (op W)` to `TensorProduct.liftAddHom (R := (R ⋙ forget₂ CommRingCat RingCat).obj U) { toFun := fun b => AddMonoidHom.mk' (fun p => ρ b ⊗ₜ[RW] pW p) (fun p q => by rw [map_add, tmul_add]) map_zero' := by ext p; simp map_add' := fun a b => by ext p; simp [add_tmul] } (fun r b p => by`. Express the relevant statement in the definitionally equal form `ρ (r • b) ⊗ₜ[RW] pW p = ρ b ⊗ₜ[RW] pW (r • p)`. Rewrite using `[ρ_smul, pW_smul, smul_tmul])`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `key : ∀ z : A ⊗[_] P.obj U, (φ.app (op W)).hom.rangeRestrict.rTensor (P.obj (op W)) ((M ⊗ P).map g.op (A.subtype.rTensor (P.obj U) z)) = F ((A.map f).inclusion hle |>.rTensor (P.obj U) (fA.rTensor (P.obj U) z))`. Introduce `z`. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp only [map_zero]`. Use `erw [map_zero]`.
-
-Consider the case `tmul a p`. Express the relevant statement in the definitionally equal form `(φ.app (op W)).hom.rangeRestrict (M.map g.op a) ⊗ₜ[RW] pW p = ρ _ ⊗ₜ[RW] pW p`. Use `congr 1`. Conclude with `Subtype.ext (PresheafOfModules.naturality_apply φ g.op (a : M.obj U))`. Consider the case `add a b ha hb`.
-
-Simplify using `only [map_add] at ha hb ⊢`. Conclude with `(congrArg _ (map_add ((M ⊗ P).map g.op).hom _ _)).trans ((map_add _ _ _).trans (congrArg₂ (· + ·) ha hb))`. Use `erw [key, hB0, map_zero]`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma whiskerRight_zeroSieve_mem (φ : M ⟶ N)
     (hinj : ∀ (U : Cᵒᵖ) (x : M.obj U), φ.app U x = 0 → zeroSieve x ∈ J U.unop)
@@ -250,15 +244,15 @@ section
 variable [J.WEqualsLocallyBijective AddCommGrpCat.{u}]
 
 /- English proof (translation)
-Rewrite using `[J.W_iff_isLocallyBijective]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Use `⟨fun U x hx => ?_, fun U y => h2.imageSieve_mem y⟩` and prove the remaining obligations. Use `h1.equalizerSieve_mem (X := U) x 0 (by erw [hx, map_zero]; rfl)` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `J.superset_covering ?_ this` and prove the remaining obligations. Introduce `W g hg`. Express the relevant statement in the definitionally equal form `M.map g.op x = 0`. Establish `hg' : M.map g.op x = M.map g.op 0` using `hg`. Rewrite using `[hg']`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `map_zero _`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨⟨fun {U} x y hxy => ?_⟩, ⟨fun {U} y => h2 _ y⟩⟩` and prove the remaining obligations. Set `x' : M.obj U` to `x`. Set `y' : M.obj U` to `y`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hxy' : φ.app U x' = φ.app U y'` using `hxy`. Establish `h` using `h1 U (x' - y') (by rw [map_sub, hxy', sub_self])`. Use `J.superset_covering ?_ h` and prove the remaining obligations. Introduce `W g hg`. Establish `hg' : M.map g.op (x' - y') = 0` using `hg`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hg'` using `[map_sub, sub_eq_zero]`. Conclude with `hg'`.
+A detailed English derivation is pending.
 -/
 lemma W_toPresheaf_iff (φ : M ⟶ N) :
     J.W ((PresheafOfModules.toPresheaf _).map φ) ↔
@@ -298,7 +292,7 @@ abbrev W : MorphismProperty (PresheafOfModules.{u} (R ⋙ forget₂ CommRingCat 
 variable [J.WEqualsLocallyBijective AddCommGrpCat.{u}]
 
 /- English proof (translation)
-Rewrite `hφ`, the goal using `[W, MorphismProperty.inverseImage_iff, W_toPresheaf_iff]`. Conclude with `⟨whiskerRight_zeroSieve_mem P φ hφ.1 hφ.2, whiskerRight_imSieve_mem P φ hφ.2⟩`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 lemma W_whiskerRight {φ : M ⟶ N} (hφ : W J R φ) (P : PresheafOfModules.{u} (R ⋙ forget₂ _ _)) :
     W J R (φ ▷ P) := by

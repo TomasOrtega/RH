@@ -14,7 +14,7 @@ open Formalism.HermitianLattices.Ext.LogarithmicIntegralBounds Formalism.ZeroFre
 def cAP (M b n : ℕ) : ℝ := if n ≡ b [MOD M] then Λ n else 0
 
 /- English proof (translation)
-Unfold `cAP`. Use `split_ifs`. Conclude with `vonMangoldt_nonneg`. Conclude with `le_refl _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vonMangoldtAP_nonneg (M b n : ℕ) : 0 ≤ cAP M b n := by
   unfold cAP
@@ -23,7 +23,7 @@ theorem vonMangoldtAP_nonneg (M b n : ℕ) : 0 ≤ cAP M b n := by
   · exact le_refl _
 
 /- English proof (translation)
-Unfold `cAP`. Use `split_ifs`. Conclude with `le_refl _`. Conclude with `vonMangoldt_nonneg`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem vonMangoldtAP_le (M b n : ℕ) : cAP M b n ≤ Λ n := by
   unfold cAP
@@ -32,11 +32,11 @@ theorem vonMangoldtAP_le (M b n : ℕ) : cAP M b n ≤ Λ n := by
   · exact vonMangoldt_nonneg
 
 /- English proof (translation)
-Unfold `cAP Formalism.ZeroFreeDirichlet.psiAP`. Rewrite using `[← Finset.sum_filter]`. Use `symm`. Apply `Finset.sum_subset` to reduce the goal to its premises. Introduce `x hx`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at hx ⊢`. Conclude with `⟨⟨Nat.zero_le _, hx.1.2⟩, hx.2⟩`. Introduce `x hx hnx`. Simplify using `only [Finset.mem_filter, Finset.mem_Icc] at hx hnx`. Establish `hx0 : x = 0`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Assume the negation of the conclusion as `h`. Conclude with `hnx ⟨⟨Nat.pos_of_ne_zero h, hx.1.2⟩, hx.2⟩`. Substitute `hx0` using the available equality. Simplify using the standard rewrite rules.
+Assume the negation of the conclusion and derive a contradiction. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem sum_cAP (M b : ℕ) (t : ℝ) : ∑ n ∈ Icc 0 ⌊t⌋₊, cAP M b n = psiAP M b t := by
   unfold cAP Formalism.ZeroFreeDirichlet.psiAP
@@ -55,7 +55,7 @@ theorem sum_cAP (M b : ℕ) (t : ℝ) : ∑ n ∈ Icc 0 ⌊t⌋₊, cAP M b n = 
     simp
 
 /- English proof (translation)
-The claim follows from `|(piAP X M b : ℝ) - ∑ n ∈ Icc 0 ⌊X⌋₊, (Real.log n)⁻¹ * cAP M b n| ≤ 4 * √X * Real.log X := by have hpi : (piAP X M b : ℝ) = ∑ n ∈ Icc 0 ⌊X⌋₊, (if n.Prime ∧ n % M = b % M then (1 : ℝ) else 0) := by unfold piAP rw [Finset.card_filter] push_cast apply Finset.sum_subset (Finset.Icc_s …`.
+A detailed English derivation is pending.
 -/
 theorem abs_piAP_sub_le (M b : ℕ) {X : ℝ} (hX : 1 ≤ X) :
     |(piAP X M b : ℝ) - ∑ n ∈ Icc 0 ⌊X⌋₊, (Real.log n)⁻¹ * cAP M b n| ≤ 4 * √X * Real.log X := by
@@ -116,7 +116,7 @@ theorem abs_piAP_sub_le (M b : ℕ) {X : ℝ} (hX : 1 ≤ X) :
     _ ≤ _ := by linarith
 
 /- English proof (translation)
-The claim follows from `|psiAP M b t - Fm (1 / (M.totient : ℝ)) θ β t| ≤ (∑ χ : DirichletCharacter ℂ M, ‖psiChi χ t - mainPsi e χ t‖) / (M.totient : ℝ) := by have hφ : (0 : ℝ) < M.totient := by exact_mod_cast Nat.totient_pos.2 (Nat.pos_of_ne_zero (NeZero.ne M)) have hid := chebyshev_progression_orthogon …`.
+A detailed English derivation is pending.
 -/
 theorem abs_psiAP_sub_le (M : ℕ) [NeZero M] (b : ℕ) (hb : b.Coprime M) (e : Option (DirichletCharacter ℂ M × ℝ))
     (θ β t : ℝ)
@@ -152,9 +152,9 @@ theorem abs_psiAP_sub_le (M : ℕ) [NeZero M] (b : ℕ) (hb : b.Coprime M) (e : 
     _ ≤ _ := by rw [h3]; exact h2
 
 /- English proof (translation)
-Establish `hu : IsUnit ((b : ZMod M)⁻¹)`. Establish `h1 : IsUnit (b : ZMod M)` using `(ZMod.isUnit_iff_coprime b M).mpr hb`. Take `⟨u, hu⟩` from `h1`. Rewrite using `[← hu, ZMod.inv_coe_unit]`. Conclude with `Units.isUnit _`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mainPsi]`. Simplify using `[Finset.sum_ite_eq', MulChar.one_apply hu]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mainPsi_sum_none (M : ℕ) [NeZero M] (b : ℕ) (hb : b.Coprime M) (t β : ℝ) :
     ∑ χ : DirichletCharacter ℂ M, χ ((b : ZMod M)⁻¹) * mainPsi none χ t = ((t - 0 * t ^ β / β : ℝ) : ℂ) := by
@@ -167,13 +167,13 @@ theorem mainPsi_sum_none (M : ℕ) [NeZero M] (b : ℕ) (hb : b.Coprime M) (t β
   simp [Finset.sum_ite_eq', MulChar.one_apply hu]
 
 /- English proof (translation)
-Establish `hbu : (b : ZMod M) * (b : ZMod M)⁻¹ = 1` using `ZMod.coe_mul_inv_eq_one b hb`. Establish `hunit : IsUnit ((b : ZMod M)⁻¹)` using `⟨⟨(b : ZMod M)⁻¹, (b : ZMod M), by rw [mul_comm]; exact hbu, hbu⟩, rfl⟩`. Establish `h1 : (1 : DirichletCharacter ℂ M) ((b : ZMod M)⁻¹) = 1` using `MulChar.one_apply hunit`. Establish `h2 : χ₁ ((b : ZMod M)⁻¹) = χ₁ (b : ZMod M)`. Establish `h3` using `congrArg χ₁ hbu`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h3` using `[map_mul, map_one]`. Break down `hχ with h | h` into its components or cases. Rewrite `h3` using `[h, one_mul]`. Rewrite using `[h3, h]`. Rewrite `h3`, the goal using `[h]`.
+Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take the linear combination `-h3`. Establish `hre : ((χ₁ (b : ZMod M)).re : ℂ) = χ₁ (b : ZMod M)`. Apply the tactic sequence `rcases hχ with h | h <;> simp [h]`. Simplify using `only [mainPsi, mul_sub, Finset.sum_sub_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true, h1, h2]`. Use `push_cast`.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hre, Complex.ofReal_cpow ht]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem mainPsi_sum_some (M : ℕ) [NeZero M] (b : ℕ) (hb : b.Coprime M) (χ₁ : DirichletCharacter ℂ M)
     (β t : ℝ) (ht : 0 ≤ t) (hχ : χ₁ (b : ZMod M) = 1 ∨ χ₁ (b : ZMod M) = -1) :

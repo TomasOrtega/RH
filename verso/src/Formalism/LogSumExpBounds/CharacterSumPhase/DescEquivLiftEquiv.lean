@@ -22,14 +22,14 @@ variable {M₁ M₂ A₁ A₂ : Type*} [AddCommGroup M₁] [Module RR M₁] [Add
   [AddCommGroup A₁] [Module RR A₁] [AddCommGroup A₂] [Module RR A₂]
 
 /- English proof (translation)
-The claim follows from `(P.ker _).2 ⟨1, (one_smul _ _).symm⟩`.
+A detailed English derivation is pending.
 -/
 theorem π_p (P : Pres RR K M₁ A₁) : P.π P.p = 0 := (P.ker _).2 ⟨1, (one_smul _ _).symm⟩
 
 /- English proof (translation)
-Establish `h3 : P.π (y - y') = 0` using `by rw [map_sub, h1, sub_self]`. Take `⟨r, hr⟩` from `(P.ker _).1 h3`. Establish `h4 : P.g (y - y') = 0` using `by rw [map_sub, h2, sub_self]`. Rewrite `h4` using `[hr, map_smul, P.gp, Algebra.smul_def, mul_one]`. Establish `hr0 : r = 0` using `hinj (by rw [h4, map_zero])`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hr` using `[hr0, zero_smul, sub_eq_zero]`. Conclude with `hr`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uniq (P : Pres RR K M₁ A₁) (hinj : Function.Injective (algebraMap RR K)) {y y' : M₁}
     (h1 : P.π y = P.π y') (h2 : P.g y = P.g y') : y = y' := by
@@ -42,9 +42,9 @@ theorem uniq (P : Pres RR K M₁ A₁) (hinj : Function.Injective (algebraMap RR
   exact hr
 
 /- English proof (translation)
-Take `⟨y₀, rfl⟩` from `P.surj a`. Rewrite `h` using `[P.hℓ, Submodule.Quotient.eq]`. Take `⟨r, hr⟩` from `h`. Rewrite `hr` using `[Algebra.linearMap_apply]`. Use `⟨y₀ - r • P.p, ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_sub, map_smul, π_p, smul_zero, sub_zero]`. Rewrite using `[map_sub, map_smul, P.gp, Algebra.smul_def, mul_one, hr]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem exists_lift (P : Pres RR K M₁ A₁) (a : A₁) (k : K)
     (h : P.ℓ a = Submodule.Quotient.mk k) : ∃ y, P.π y = a ∧ P.g y = k := by
@@ -62,7 +62,7 @@ noncomputable def liftFun (T : A₁ →ₗ[RR] A₂) (hT : ∀ a, P₂.ℓ (T a)
   Classical.choose (P₂.exists_lift (T (P₁.π x)) (P₁.g x) (by rw [hT, P₁.hℓ]))
 
 /- English proof (translation)
-The claim follows from `Classical.choose_spec (P₂.exists_lift (T (P₁.π x)) (P₁.g x) (by rw [hT, P₁.hℓ]))`.
+A detailed English derivation is pending.
 -/
 theorem liftFun_spec (T : A₁ →ₗ[RR] A₂) (hT : ∀ a, P₂.ℓ (T a) = P₁.ℓ a) (x : M₁) :
     P₂.π (liftFun P₁ P₂ T hT x) = T (P₁.π x) ∧ P₂.g (liftFun P₁ P₂ T hT x) = P₁.g x :=
@@ -83,7 +83,7 @@ noncomputable def liftMap (hinj : Function.Injective (algebraMap RR K)) (T : A�
       (liftFun_spec P₁ P₂ T hT _).2, map_smul])
 
 /- English proof (translation)
-The claim follows from `liftFun_spec P₁ P₂ T hT x`.
+A detailed English derivation is pending.
 -/
 theorem liftMap_spec (hinj : Function.Injective (algebraMap RR K)) (T : A₁ →ₗ[RR] A₂)
     (hT : ∀ a, P₂.ℓ (T a) = P₁.ℓ a) (x : M₁) :
@@ -91,9 +91,9 @@ theorem liftMap_spec (hinj : Function.Injective (algebraMap RR K)) (T : A₁ →
   liftFun_spec P₁ P₂ T hT x
 
 /- English proof (translation)
-Establish `h3 : P₁.π (x - x') = 0` using `by rw [map_sub, h, sub_self]`. Take `⟨r, hr⟩` from `(P₁.ker _).1 h3`. Establish `h4 : P₂.π (S (x - x')) = 0`. Rewrite using `[hr, map_smul, hS]`. Conclude with `(P₂.ker _).2 ⟨r, rfl⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `h4` using `[map_sub, map_sub, sub_eq_zero]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem descend_wd (S : M₁ →ₗ[RR] M₂) (hS : S P₁.p = P₂.p) {x x' : M₁}
     (h : P₁.π x = P₁.π x') : P₂.π (S x) = P₂.π (S x') := by
@@ -116,7 +116,7 @@ noncomputable def descMap (S : M₁ →ₗ[RR] M₂) (hS : S P₁.p = P₂.p) : 
       rw [map_smul, Function.surjInv_eq P₁.surj, Function.surjInv_eq P₁.surj])
 
 /- English proof (translation)
-The claim follows from `descend_wd P₁ P₂ S hS (Function.surjInv_eq P₁.surj _)`.
+A detailed English derivation is pending.
 -/
 theorem descMap_π (S : M₁ →ₗ[RR] M₂) (hS : S P₁.p = P₂.p) (x : M₁) :
     descMap P₁ P₂ S hS (P₁.π x) = P₂.π (S x) :=
@@ -147,7 +147,7 @@ noncomputable def liftEquiv (hinj : Function.Injective (algebraMap RR K)) (θ : 
           (liftMap_spec _ _ _ _ _ _).2]))
 
 /- English proof (translation)
-The claim follows from `liftMap_spec P₁ P₂ hinj θ.toLinearMap _ x`.
+A detailed English derivation is pending.
 -/
 theorem liftEquiv_spec (hinj : Function.Injective (algebraMap RR K)) (θ : A₁ ≃ₗ[RR] A₂)
     (hθ : P₂.ℓ.comp θ.toLinearMap = P₁.ℓ) (x : M₁) :
@@ -169,14 +169,14 @@ noncomputable def descEquiv (φ : M₁ ≃ₗ[RR] M₂) (hφ : φ P₁.p = P₂.
       simp)
 
 /- English proof (translation)
-The claim follows from `descMap_π P₁ P₂ φ.toLinearMap hφ x`.
+A detailed English derivation is pending.
 -/
 theorem descEquiv_π (φ : M₁ ≃ₗ[RR] M₂) (hφ : φ P₁.p = P₂.p) (x : M₁) :
     descEquiv P₁ P₂ φ hφ (P₁.π x) = P₂.π (φ x) :=
   descMap_π P₁ P₂ φ.toLinearMap hφ x
 
 /- English proof (translation)
-The claim follows from `LinearMap.ext fun a => by obtain ⟨x, rfl⟩ := P₁.surj a rw [LinearMap.comp_apply, LinearEquiv.coe_coe, descEquiv_π, P₂.hℓ, P₁.hℓ, ← LinearMap.congr_fun hg x] rfl`.
+A detailed English derivation is pending.
 -/
 theorem descEquiv_ℓ (φ : M₁ ≃ₗ[RR] M₂) (hφ : φ P₁.p = P₂.p)
     (hg : P₂.g.comp φ.toLinearMap = P₁.g) :
@@ -188,7 +188,7 @@ theorem descEquiv_ℓ (φ : M₁ ≃ₗ[RR] M₂) (hφ : φ P₁.p = P₂.p)
     rfl
 
 /- English proof (translation)
-The claim follows from `LinearEquiv.ext fun x => P₂.uniq hinj ((liftEquiv_spec P₁ P₂ hinj _ hθ x).1.trans (descEquiv_π P₁ P₂ φ hφ x)) ((liftEquiv_spec P₁ P₂ hinj _ hθ x).2.trans (LinearMap.congr_fun hg x).symm)`.
+A detailed English derivation is pending.
 -/
 theorem liftEquiv_descEquiv (hinj : Function.Injective (algebraMap RR K)) (φ : M₁ ≃ₗ[RR] M₂)
     (hφ : φ P₁.p = P₂.p) (hθ : P₂.ℓ.comp (descEquiv P₁ P₂ φ hφ).toLinearMap = P₁.ℓ)
@@ -199,7 +199,7 @@ theorem liftEquiv_descEquiv (hinj : Function.Injective (algebraMap RR K)) (φ : 
     ((liftEquiv_spec P₁ P₂ hinj _ hθ x).2.trans (LinearMap.congr_fun hg x).symm)
 
 /- English proof (translation)
-The claim follows from `LinearEquiv.ext fun a => by obtain ⟨x, rfl⟩ := P₁.surj a exact (descEquiv_π P₁ P₂ _ hφ x).trans (liftEquiv_spec P₁ P₂ hinj θ hθ x).1`.
+A detailed English derivation is pending.
 -/
 theorem descEquiv_liftEquiv (hinj : Function.Injective (algebraMap RR K)) (θ : A₁ ≃ₗ[RR] A₂)
     (hθ : P₂.ℓ.comp θ.toLinearMap = P₁.ℓ) (hφ : liftEquiv P₁ P₂ hinj θ hθ P₁.p = P₂.p) :
@@ -233,27 +233,27 @@ variable {RR K : Type*} [CommRing RR] [CommRing K] [Algebra RR K]
 def vk {k : ℕ} (v : Fin k → RR) : Fin k → K := fun j => algebraMap RR K (v j)
 
 /- English proof (translation)
-The claim follows from `funext fun j => map_add (algebraMap RR K) (v j) (w j)`.
+A detailed English derivation is pending.
 -/
 theorem vk_add {k : ℕ} (v w : Fin k → RR) : vk (K := K) (v + w) = vk v + vk w :=
   funext fun j => map_add (algebraMap RR K) (v j) (w j)
 
 /- English proof (translation)
-The claim follows from `funext fun j => map_mul (algebraMap RR K) r (v j)`.
+A detailed English derivation is pending.
 -/
 theorem vk_smul {k : ℕ} (r : RR) (v : Fin k → RR) :
     vk (K := K) (r • v) = algebraMap RR K r • vk v :=
   funext fun j => map_mul (algebraMap RR K) r (v j)
 
 /- English proof (translation)
-The claim follows from `funext fun i => RingHom.map_mulVec (algebraMap RR K) Z y i`.
+A detailed English derivation is pending.
 -/
 theorem vk_mulVec {k : ℕ} (Z : Matrix (Fin k) (Fin k) RR) (y : Fin k → RR) :
     vk (K := K) (Z *ᵥ y) = toK K Z *ᵥ vk y :=
   funext fun i => RingHom.map_mulVec (algebraMap RR K) Z y i
 
 /- English proof (translation)
-Simplify using `[mulVec, dotProduct, Fin.sum_univ_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_castSucc {α : Type*} [CommRing α] {m : ℕ} (W : Matrix (Fin (m+1)) (Fin (m+1)) α)
     (y : Fin (m+1) → α) (i : Fin m) :
@@ -262,7 +262,7 @@ theorem mulVec_castSucc {α : Type*} [CommRing α] {m : ℕ} (W : Matrix (Fin (m
   simp [mulVec, dotProduct, Fin.sum_univ_castSucc]
 
 /- English proof (translation)
-Simplify using `[mulVec, dotProduct, Fin.sum_univ_castSucc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mulVec_last {α : Type*} [CommRing α] {m : ℕ} (W : Matrix (Fin (m+1)) (Fin (m+1)) α)
     (y : Fin (m+1) → α) :
@@ -271,11 +271,11 @@ theorem mulVec_last {α : Type*} [CommRing α] {m : ℕ} (W : Matrix (Fin (m+1))
   simp [mulVec, dotProduct, Fin.sum_univ_castSucc]
 
 /- English proof (translation)
-Use `set W' := W.submatrix Fin.castSucc Fin.castSucc`. Use `set a : Fin m → α := fun j => W (Fin.last m) (Fin.castSucc j)`. Use `set b : Fin m → α := fun j => W (Fin.castSucc j) (Fin.last m)`. Use `set y' : Fin m → α := fun j => y (Fin.castSucc j)`. Establish `h1 : (fun i => (W *ᵥ y) (Fin.castSucc i)) = W' *ᵥ y' + y (Fin.last m) • b`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use function extensionality and compare the values at `i`. Rewrite using `[mulVec_castSucc]`. Simplify using `only [Pi.add_apply, Pi.smul_apply, smul_eq_mul, b, mul_comm]`. Both sides reduce to the same expression. Establish `h2 : W'⁻¹ *ᵥ (W' *ᵥ y' + y (Fin.last m) • b) = y' + y (Fin.last m) • (W'⁻¹ *ᵥ b)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mulVec_add, mulVec_mulVec, nonsing_inv_mul _ hW, one_mulVec, mulVec_smul]`. Establish `h3 : ∑ i, ∑ j, W (Fin.last m) (Fin.castSucc i) * W'⁻¹ i j * W (Fin.castSucc j) (Fin.last m) = a ⬝ᵥ (W'⁻¹ *ᵥ b)`. Simplify using `only [dotProduct, mulVec, Finset.mul_sum, mul_assoc, a, b]`. Rewrite using `[h1, h2, mulVec_last, h3, dotProduct_add, dotProduct_smul, smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem key {α : Type*} [CommRing α] {m : ℕ} (W : Matrix (Fin (m+1)) (Fin (m+1)) α)
     (hW : IsUnit (W.submatrix Fin.castSucc Fin.castSucc).det) (y : Fin (m+1) → α) :
@@ -313,14 +313,14 @@ theorem fV_apply (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (v : Fin (m+1) → RR) 
     fV (K := K) Z v = ((toK K Z)⁻¹ *ᵥ vk v) (Fin.last m) := rfl
 
 /- English proof (translation)
-Rewrite using `[fV_apply, vk_mulVec, mulVec_mulVec, nonsing_inv_mul _ hZ, one_mulVec]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fV_mulVec (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (hZ : IsUnit (toK K Z).det)
     (y : Fin (m+1) → RR) : fV (K := K) Z (Z *ᵥ y) = algebraMap RR K (y (Fin.last m)) := by
   rw [fV_apply, vk_mulVec, mulVec_mulVec, nonsing_inv_mul _ hZ, one_mulVec]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Distinguish the cases in `h : j = i`. Substitute `h` using the available equality. Simplify using `[vk]`. Simplify using `[vk, h]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem vk_single {k : ℕ} (i : Fin k) :
     vk (K := K) (Pi.single i (1 : RR)) = Pi.single i 1 := by
@@ -330,14 +330,14 @@ theorem vk_single {k : ℕ} (i : Fin k) :
   · simp [vk, h]
 
 /- English proof (translation)
-Rewrite using `[fV_apply, vk_single, mulVec_single_one]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem fV_single (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) :
     fV (K := K) Z (Pi.single (Fin.last m) 1) = kappa K Z := by
   rw [fV_apply, vk_single, mulVec_single_one]; rfl
 
 /- English proof (translation)
-Simplify using `only [rowInvMod, LinearMap.comp_apply, LinearMap.coe_mk, AddHom.coe_mk, Submodule.mkQ_apply, dotProduct, mulVec, Finset.mul_sum, mul_assoc, vk]`.
+Simplify using the standard rewrite rules.
 -/
 theorem rowInvMod_apply {k : ℕ} (Z : Matrix (Fin k) (Fin k) RR) (r : Fin k → K) (v : Fin k → RR) :
     rowInvMod K Z r v = Submodule.Quotient.mk (r ⬝ᵥ ((toK K Z)⁻¹ *ᵥ vk v)) := by
@@ -345,15 +345,15 @@ theorem rowInvMod_apply {k : ℕ} (Z : Matrix (Fin k) (Fin k) RR) (r : Fin k →
     Submodule.mkQ_apply, dotProduct, mulVec, Finset.mul_sum, mul_assoc, vk]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨x, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_range_alg (x : RR) :
     algebraMap RR K x ∈ LinearMap.range (Algebra.linearMap RR K) := ⟨x, rfl⟩
 
 /- English proof (translation)
-Establish `hle : LinearMap.range Z.mulVecLin ≤ LinearMap.ker (rowInvMod K Z (Pi.single (Fin.last m) 1))`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker, mulVecLin_apply, rowInvMod_apply, single_dotProduct, one_mul, ← fV_apply, fV_mulVec Z hZ, Submodule.Quotient.mk_eq_zero]`. Conclude with `mem_range_alg _`. Unfold `lam descend`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[dif_pos hle, Submodule.liftQ_apply, rowInvMod_apply, single_dotProduct, one_mul]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem lam_mk (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (hZ : IsUnit (toK K Z).det)
     (v : Fin (m+1) → RR) : lam K Z (Submodule.Quotient.mk v) = Submodule.Quotient.mk (fV Z v) := by
@@ -371,11 +371,9 @@ def aK (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) : Fin m → K :=
   fun j => algebraMap RR K (Z (Fin.last m) (Fin.castSucc j))
 
 /- English proof (translation)
-Establish `hle : LinearMap.range (blk Z).mulVecLin ≤ LinearMap.ker (rowInvMod K (blk Z) (aK Z))`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[LinearMap.mem_ker, mulVecLin_apply, rowInvMod_apply, vk_mulVec, mulVec_mulVec, nonsing_inv_mul _ hZ, one_mulVec, Submodule.Quotient.mk_eq_zero]`. Use `⟨(fun j => Z (Fin.last m) (Fin.castSucc j)) ⬝ᵥ y, ?_⟩` and prove the remaining obligations. Rewrite using `[Algebra.linearMap_apply, RingHom.map_dotProduct]`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Unfold `alpha descend`. Use `split_ifs with h`. Rewrite using `[Submodule.liftQ_apply, rowInvMod_apply]`. Both sides reduce to the same expression.
-
-Conclude with `absurd hle h`.
+Both sides reduce to the same expression. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem alpha_mk (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (hZ : IsUnit (toK K (blk Z)).det)
     (v : Fin m → RR) : alpha K Z (Submodule.Quotient.mk v) =
@@ -394,7 +392,7 @@ theorem alpha_mk (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (hZ : IsUnit (toK K (bl
 def eN : Fin (m+1) → RR := Pi.single (Fin.last m) 1
 
 /- English proof (translation)
-Establish `h` using `key (toK K Z) hZ' ((toK K Z)⁻¹ *ᵥ vk v)`. Rewrite `h` using `[mulVec_mulVec, mul_nonsing_inv _ hZ, one_mulVec]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem key_cval (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (hZ : IsUnit (toK K Z).det)
     (hZ' : IsUnit (toK K (blk Z)).det) (v : Fin (m+1) → RR) :
@@ -405,9 +403,9 @@ theorem key_cval (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (hZ : IsUnit (toK K Z).
   exact h
 
 /- English proof (translation)
-Establish `h` using `key_cval Z hZ hZ' eN`. Establish `h0 : (fun i : Fin m => (eN : Fin (m+1) → RR) (Fin.castSucc i)) = 0`. Use function extensionality and compare the values at `i`. Simplify using `[eN, Fin.castSucc_ne_last]`. Rewrite `h` using `[h0, show fV (K := K) Z eN = kappa K Z from fV_single Z]`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hv : vk (K` using `K) (0 : Fin m → RR) = 0 := funext fun _ => map_zero _`. Rewrite using `[← h, hv, mulVec_zero, dotProduct_zero, sub_zero]`. Simplify using `[eN]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem cval_mul_kappa (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (hZ : IsUnit (toK K Z).det)
     (hZ' : IsUnit (toK K (blk Z)).det) : cval K Z * kappa K Z = 1 := by
@@ -424,7 +422,7 @@ def Nsub (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) : Submodule RR (Fin (m+1) → R
     Z.mulVecLin
 
 /- English proof (translation)
-Simplify using `[Nsub]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_Nsub {Z : Matrix (Fin (m+1)) (Fin (m+1)) RR} {x : Fin (m+1) → RR} :
     x ∈ Nsub Z ↔ ∃ y : Fin (m+1) → RR, y (Fin.last m) = 0 ∧ Z *ᵥ y = x := by
@@ -433,7 +431,7 @@ theorem mem_Nsub {Z : Matrix (Fin (m+1)) (Fin (m+1)) RR} {x : Fin (m+1) → RR} 
 abbrev MM (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) : Type _ := (Fin (m+1) → RR) ⧸ Nsub Z
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, -, rfl⟩` from `mem_Nsub.1 hx`. Rewrite using `[Submodule.ker_mkQ]`. Conclude with `⟨y, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem Nsub_le_range (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) :
     Nsub Z ≤ LinearMap.ker (LinearMap.range Z.mulVecLin).mkQ := by
@@ -443,7 +441,7 @@ theorem Nsub_le_range (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) :
   exact ⟨y, rfl⟩
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `mem_Nsub.1 hx`. Rewrite using `[LinearMap.mem_ker, fV_mulVec Z hZ, hy, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem Nsub_le_fV (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (hZ : IsUnit (toK K Z).det) :
     Nsub Z ≤ LinearMap.ker (fV (K := K) Z) := by
@@ -497,9 +495,9 @@ noncomputable def PA (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (hZ : IsUnit (toK K
 def Pcs : (Fin (m+1) → RR) →ₗ[RR] (Fin m → RR) := LinearMap.funLeft RR RR Fin.castSucc
 
 /- English proof (translation)
-Introduce `x hx`. Take `⟨y, hy, rfl⟩` from `mem_Nsub.1 hx`. Rewrite using `[LinearMap.mem_ker, LinearMap.comp_apply, Submodule.mkQ_apply, Submodule.Quotient.mk_eq_zero]`. Use `⟨fun j => y (Fin.castSucc j), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[mulVecLin_apply, Pcs, LinearMap.funLeft_apply, mulVec_castSucc, hy, mul_zero, add_zero]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Nsub_le_B (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) :
     Nsub Z ≤ LinearMap.ker ((LinearMap.range (blk Z).mulVecLin).mkQ ∘ₗ Pcs) := by
@@ -573,7 +571,7 @@ noncomputable def PB (Z : Matrix (Fin (m+1)) (Fin (m+1)) RR) (hZ : IsUnit (toK K
     linear_combination h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `(Submodule.Quotient.mk (Pcs (Z *ᵥ eN)) : coker (blk Z)) = bbar Z`. Unfold `bbar`. Use `congr 1`. Use function extensionality and compare the values at `i`. Rewrite using `[Pcs, LinearMap.funLeft_apply, eN, mulVec_single_one]`.
+Express the relevant assertion in an equivalent form by its definition. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -622,13 +620,13 @@ noncomputable def midEquiv {m₁ m₂ : ℕ} (Z₁ : Matrix (Fin (m₁+1)) (Fin 
 end Conc
 
 /- English proof (translation)
-Introduce `RR K _ _ _ hinj m₁ m₂ Z₁ Z₂ h1 h2 h1' h2' hκ`. Establish `hc : cval K Z₁ = cval K Z₂`. Establish `e1` using `cval_mul_kappa Z₁ h1 h1'`. Establish `e2` using `cval_mul_kappa Z₂ h2 h2'`. Rewrite `e1` using `[hκ]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `eA` using `(PA Z₁ h1).isoEquiv (PA Z₂ h2) hinj (Submodule.Quotient.mk eN) (Submodule.Quotient.mk eN) (by`. Express the relevant statement in the definitionally equal form `fV Z₁ eN = fV Z₂ eN`. Rewrite using `[show fV (K := K) Z₁ eN = kappa K Z₁ from fV_single Z₁, show fV (K := K) Z₂ eN = kappa K Z₂ from fV_single Z₂, hκ])`. Establish `eB` using `(PB Z₁ h1 h1').isoEquiv (PB Z₂ h2 h2') hinj (Submodule.Quotient.mk (Z₁ *ᵥ eN)) (Submodule.Quotient.mk (Z₂ *ᵥ eN)) (by`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `-(cval K Z₁) * fV Z₁ (Z₁ *ᵥ eN) = -(cval K Z₂) * fV Z₂ (Z₂ *ᵥ eN)`. Rewrite using `[fV_mulVec Z₁ h1, fV_mulVec Z₂ h2, hc]`. Simplify using `[eN])`. Establish `eA' : {θ : coker Z₁ ≃ₗ[RR] coker Z₂ // θ (ebar Z₁) = ebar Z₂ ∧ (lam K Z₂).comp θ.toLinearMap = lam K Z₁} ≃ _` using `eA`. Establish `eB' : _ ≃ {θ : coker (blk Z₁) ≃ₗ[RR] coker (blk Z₂) // θ (bbar Z₁) = bbar Z₂ ∧ (alpha K Z₂).comp θ.toLinearMap = alpha K Z₁}` using `eB.symm.trans (Equiv.subtypeEquivRight fun θ => by`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[PB_π_bbar, PB_π_bbar]`. Use the proof step `rfl)`. Conclude with `⟨eA'.trans ((midEquiv Z₁ Z₂ h1 h2 h1' h2' hc).trans eB')⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem isoTransfer_proof2 : Formalism.NuclearRankWeightBounds.C.IsoTransfer := by
   intro RR K _ _ _ hinj m₁ m₂ Z₁ Z₂ h1 h2 h1' h2' hκ

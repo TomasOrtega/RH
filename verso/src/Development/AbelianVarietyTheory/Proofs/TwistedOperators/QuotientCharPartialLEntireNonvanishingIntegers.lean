@@ -29,7 +29,7 @@ namespace GlobalTheory.EvenOnto.QuotL
 variable {D : D7}
 
 /- English proof (translation)
-Introduce `a` and use `by obtain ⟨⟨η, hη⟩, h⟩ := (hc.hecke k hk).2 exact (h η hη a).trans (pow_zero _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem trivialOnF {c : Com D} (hc : c.Is) {k : ℕ} (hk : k < c.m) :
     GlobalTheory.IndefiniteRowSideFullHecke.PartialLFunctionCharacter.TrivialOnF (c.χ k) := fun a => by
@@ -37,15 +37,15 @@ theorem trivialOnF {c : Com D} (hc : c.Is) {k : ℕ} (hk : k < c.m) :
   exact (h η hη a).trans (pow_zero _)
 
 /- English proof (translation)
-Introduce `D c hc i j hij hj`. Establish `hi : i < c.m` using `hij.trans hj`. Take `⟨τ⟩ : Nonempty D.what₂.Tau` from `⟨D.eTau.symm 1⟩`. Establish `hexp : ∃ (τ : D.what₂.Tau) (e e' : ℚ), HasInfExp D (c.χ i) τ (-e) ∧ HasInfExp D (c.χ j) τ (-e') ∧ e ≠ e'` using `⟨τ, -(c.a i τ), -(c.a j τ), by rw [neg_neg]; exact hc.exp i hi τ, by rw [neg_neg]; exact hc.exp j hj τ, fun h => hc.ne i j hij hj τ (neg_injective h)⟩`. Establish `R` using `GlobalTheory.HeckeRatio.heckeRatioPos D (c.χ i) (c.χ j) (hc.hecke i hi).1 (hc.hecke j hj).1 (trivialOnF hc hi) (trivialOnF hc hj) hexp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Λ, hL, -⟩` from `(R 0).2 c.S`. Take `⟨hd, hp⟩` from `hL`. Use `⟨Λ, hd, fun z hz => ?_, fun n h1 h0 => ?_⟩` and prove the remaining obligations. Establish `hunr : ∀ w ∉ GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F))), GlobalTheory.LFun.UnrAt (c.χ i * (c.χ j)⁻¹) w` using `fun w hw => (hc.unr i hi w hw).mul (hc.unr j hj w hw).inv`. Establish `hoff : ∀ P, OffS D c.S P ↔ P ∉ GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))` using `fun P => (GlobalTheory.HeckeRatio.offS_iff c.S P).trans Iff.rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e` to `Equiv.subtypeEquivRight hoff`. Establish `k` using `hp z hz`. Rewrite `k` using `[GlobalTheory.HeckeRatio.lfac_eq]`. Establish `k2 : HasProd (fun w : {w // w ∉ GlobalTheory.LFun.above D.host.E (c.S : Set (HeightOneSpectrum (𝓞 D.host.F)))} => GlobalTheory.LFun.locL (fun w => {GlobalTheory.LFun.val (F` using `D.host.F) (c.χ i * (c.χ j)⁻¹) w}) w.1 z) (Λ z) := by`. Use `(e.hasProd_iff).1 (k.congr_fun fun P => ?_)` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hu` using `hunr P.1 ((hoff P.1).1 P.2)`. Rewrite using `[GlobalTheory.LFun.lfac_eq_locL (Formalism.IndefR.ThmB.InputsHecke.isCMExt D)]`. Simplify using `only [Function.comp_apply, e, Equiv.subtypeEquivRight_apply_coe, GlobalTheory.LFun.locL, GlobalTheory.LFun.charFam_of_unrAt hu]`. Conclude with `k2.tprod_eq.symm`. Take `⟨Λn, hLn, hpos⟩` from `(R n).2 c.S`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hEq : Λ = Λn` using `GlobalTheory.IndefiniteRowSideFullHecke.PartialLFunctionCharacter.IsPartialL.unique ⟨hd, hp⟩ hLn`. Use `(hpos n h1 le_rfl).2` as an intermediate fact. Rewrite `this` using `[← hEq, h0, Complex.zero_re]`. Conclude with `lt_irrefl _ this`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem quotL_entire_ne_zero : ∀ (D : D7) (c : Com D), c.Is → ∀ i j : ℕ, i < j → j < c.m →
     ∃ Λ : ℂ → ℂ, Differentiable ℂ Λ ∧

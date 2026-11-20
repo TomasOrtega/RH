@@ -27,14 +27,14 @@ def frMat {V V' U : X.Opens} {n n' : ℕ} {m : Fin n → Γ(F, V)} {m' : Fin n' 
   ((hm'.basis h').toMatrix (hm.basis h)).transpose
 
 /- English proof (translation)
-Rewrite using `[frMat, Module.Basis.toMatrix_self, Matrix.transpose_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frMat_self {V U : X.Opens} {n : ℕ} {m : Fin n → Γ(F, V)} (hm : VB.IsFrame m) (h : U ≤ V) :
     frMat hm hm h h = 1 := by
   rw [frMat, Module.Basis.toMatrix_self, Matrix.transpose_one]
 
 /- English proof (translation)
-Rewrite using `[frMat, frMat, frMat, ← Matrix.transpose_mul, Module.Basis.toMatrix_mul_toMatrix]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frMat_mul {V V' V'' U : X.Opens} {n n' n'' : ℕ} {m : Fin n → Γ(F, V)} {m' : Fin n' → Γ(F, V')}
     {m'' : Fin n'' → Γ(F, V'')} (hm : VB.IsFrame m) (hm' : VB.IsFrame m') (hm'' : VB.IsFrame m'') (h : U ≤ V) (h' : U ≤ V')
@@ -42,7 +42,7 @@ theorem frMat_mul {V V' V'' U : X.Opens} {n n' n'' : ℕ} {m : Fin n → Γ(F, V
   rw [frMat, frMat, frMat, ← Matrix.transpose_mul, Module.Basis.toMatrix_mul_toMatrix]
 
 /- English proof (translation)
-Simplify using `only [frMat, Matrix.transpose_apply, Module.Basis.toMatrix_apply, VB.IsFrame.basis_apply]`. Rewrite using `[← hm'.repr_resM h' e, resM_resM]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem resG_frMat {V V' U U' : X.Opens} {n n' : ℕ} {m : Fin n → Γ(F, V)} {m' : Fin n' → Γ(F, V')} (hm : VB.IsFrame m)
     (hm' : VB.IsFrame m') (h : U ≤ V) (h' : U ≤ V') (e : U' ≤ U) (l : Fin n) (l' : Fin n') :
@@ -51,7 +51,7 @@ theorem resG_frMat {V V' U U' : X.Opens} {n n' : ℕ} {m : Fin n → Γ(F, V)} {
   rw [← hm'.repr_resM h' e, resM_resM]
 
 /- English proof (translation)
-Simplify using `only [frMat, Matrix.transpose_apply, Module.Basis.toMatrix_apply, ← hm'.basis_apply h']`. Rewrite using `[Module.Basis.sum_repr, hm.basis_apply]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_frMat {V V' U : X.Opens} {n n' : ℕ} {m : Fin n → Γ(F, V)} {m' : Fin n' → Γ(F, V')} (hm : VB.IsFrame m)
     (hm' : VB.IsFrame m') (h : U ≤ V) (h' : U ≤ V') (l : Fin n) :
@@ -60,7 +60,7 @@ theorem sum_frMat {V V' U : X.Opens} {n n' : ℕ} {m : Fin n → Γ(F, V)} {m' :
   rw [Module.Basis.sum_repr, hm.basis_apply]
 
 /- English proof (translation)
-Use extensionality with `l l'`. Use `(ev_appLE z g e hz (le_preimage_map g e hz) _).trans ?_` and prove the remaining obligations. Rewrite using `[← ev_res (z ≫ g) (le_inf h h') hU, resG_frMat]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem map_ev_frMat {V V' U : X.Opens} {n n' : ℕ} {m : Fin n → Γ(F, V)} {m' : Fin n' → Γ(F, V')} (hm : VB.IsFrame m)
     (hm' : VB.IsFrame m') (h : U ≤ V) (h' : U ≤ V') (g : Z ⟶ X) {B : Z.Opens} (e : B ≤ g ⁻¹ᵁ (V ⊓ V')) (z : Sp S ⟶ Z)
@@ -95,7 +95,7 @@ def frameCoc (g : Z ⟶ X) {A : Type} (B : A → Z.Opens) (aff : ∀ α, IsAffin
       map_ev_frMat (hm α) (hm γ) a c g _ z _ hU, ← Matrix.map_mul, frMat_mul]
 
 /- English proof (translation)
-The claim follows from `(hm.res h).map_of_linearEquiv (fun U' e => LinearEquiv.ofBijective (QCoh.appLinear N.incl U') ⟨N.incl_app_injective U', fun s => N.mem_sec_iff.1 (by rw [hO U' (e.trans h')]; trivial)⟩) fun _ e l => (app_resM N.incl e _).trans (congrArg _ (app_resM N.incl h _))`.
+A detailed English derivation is pending.
 -/
 theorem isFrame_incl (N : VB.Sub F) {V U O : X.Opens} {n : ℕ} {m : Fin n → Γ(N.toMod, V)} (hm : VB.IsFrame m)
     (hO : ∀ U : X.Opens, U ≤ O → N.sec U = ⊤) (h : U ≤ V) (h' : U ≤ O) :
@@ -138,7 +138,7 @@ theorem tanLin_tanOf (h : ⊤ ≤ x ⁻¹ᵁ V) {n : ℕ} (s : Fin n → Γ(Glob
     tanLin t h s (tanOf hv) l = tanEv t hv h (s l) := rfl
 
 /- English proof (translation)
-Proceed by induction on `(Finset.univ : Finset (Fin n)) using Finset.induction_on with`. Consider the case `empty`. Use `tanEv_smul t hv h 0 0` as an intermediate fact. Simplify using `using this`. Consider the case `insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, tanEv_add, tanEv_smul, ih]`.
+Proceed by induction. Treat this case separately. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
 Both sides reduce to the same expression.
 -/
@@ -153,7 +153,7 @@ theorem tanEv_sum_smul (h : ⊤ ≤ x ⁻¹ᵁ V) {v : Sp (DualNumber S) ⟶ t.G
   | insert j s hj ih => rw [Finset.sum_insert hj, Finset.sum_insert hj, tanEv_add, tanEv_smul, ih]; rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `l`. Rewrite using `[tanLin_apply, ← tanEv_resM t _ (le_preimage_inf h h') inf_le_left, ← app_resM, sum_frMat hm hm' inf_le_left inf_le_right, map_sum]`. Simplify using `only [Scheme.Modules.Hom.app_smul, app_resM]`. Rewrite using `[tanEv_sum_smul]`. Simplify using `only [tanEv_resM]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Both sides reduce to the same expression.
 -/
@@ -171,7 +171,7 @@ theorem tanLin_tr {F : X.Modules} (θ : F ⟶ GlobalTheory.LieVB.omega t.G) {V' 
   rfl
 
 /- English proof (translation)
-Substitute `e` using the available equality. Conclude with `funext fun l => GlobalTheory.LocM.tanEv_baseChange E H X t S x V h _ (isTan_tv v) S' φ _ h' (s l)`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem tanLin_tanPull {S' : Type} [CommRing S'] (φ : S →+* S') {x' : Sp S' ⟶ X} (e : spMap φ ≫ x = x') (h : ⊤ ≤ x ⁻¹ᵁ V)
     (h' : ⊤ ≤ x' ⁻¹ᵁ V) {n : ℕ} (s : Fin n → Γ(GlobalTheory.LieVB.omega t.G, V)) (v : TanM x t.G) :
@@ -180,7 +180,7 @@ theorem tanLin_tanPull {S' : Type} [CommRing S'] (φ : S →+* S') {x' : Sp S' �
   exact funext fun l => GlobalTheory.LocM.tanEv_baseChange E H X t S x V h _ (isTan_tv v) S' φ _ h' (s l)
 
 /- English proof (translation)
-Introduce `v w hvw` and use `tan_ext ((GlobalTheory.TanFibre.existsUnique_tanEv E H X t S x U hU n _ hs (tanLin t h s w)).unique ⟨isTan_tv v, fun l => (tanEv_resM t _ hU e _).trans (congrFun hvw l)⟩ ⟨isTan_tv w, fun l => tanEv_resM t _ hU e _⟩)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem tanLin_injective (h : ⊤ ≤ x ⁻¹ᵁ V) {n : ℕ} (s : Fin n → Γ(GlobalTheory.LieVB.omega t.G, V)) {U : X.Opens} (e : U ≤ V)
     (hU : ⊤ ≤ x ⁻¹ᵁ U) (hs : VB.IsFrame fun l => resM _ e (s l)) : Function.Injective (tanLin t h s) := fun v w hvw =>
@@ -201,21 +201,21 @@ def tanTrans (z : Sp S ⟶ Z) : TanM (z ≫ π) t.G ≃ₗ[S] TanM (z ≫ g) t'.
     (pushE mu' (z ≫ g) (by rw [Category.assoc, Category.assoc, e] : (z ≫ g) ≫ τ' = (z ≫ π) ≫ τ)).symm
 
 /- English proof (translation)
-The claim follows from `congrArg (fun w => (tv w).left) ((pushE mu' (z ≫ g) _).apply_symm_apply (pushE mu (z ≫ π) rfl v))`.
+A detailed English derivation is pending.
 -/
 theorem left_tanTrans (z : Sp S ⟶ Z) (v : TanM (z ≫ π) t.G) :
     (tv (tanTrans mu mu' e z v)).left ≫ mu'.φ = (tv v).left ≫ mu.φ :=
   congrArg (fun w => (tv w).left) ((pushE mu' (z ≫ g) _).apply_symm_apply (pushE mu (z ≫ π) rfl v))
 
 /- English proof (translation)
-The claim follows from `(pushE mu' (z ≫ g) rfl).injective (tan_ext ((left_tanTrans mu mu' e z v).trans h.symm))`.
+A detailed English derivation is pending.
 -/
 theorem tanTrans_eq (z : Sp S ⟶ Z) (v : TanM (z ≫ π) t.G) (w : TanM (z ≫ g) t'.G)
     (h : (tv w).left ≫ mu'.φ = (tv v).left ≫ mu.φ) : tanTrans mu mu' e z v = w :=
   (pushE mu' (z ≫ g) rfl).injective (tan_ext ((left_tanTrans mu mu' e z v).trans h.symm))
 
 /- English proof (translation)
-The claim follows from `tanTrans_eq mu mu' e z' _ _ (by rw [FlagMod.tanPull_left, FlagMod.tanPull_left, Category.assoc, Category.assoc, left_tanTrans])`.
+A detailed English derivation is pending.
 -/
 theorem tanTrans_tanPull {S' : Type} [CommRing S'] (φ : S →+* S') (z : Sp S ⟶ Z) (z' : Sp S' ⟶ Z)
     (e₁ : spMap φ ≫ z ≫ π = z' ≫ π) (e₂ : spMap φ ≫ z ≫ g = z' ≫ g) (v : TanM (z ≫ π) t.G) :
@@ -226,7 +226,7 @@ theorem tanTrans_tanPull {S' : Type} [CommRing S'] (φ : S →+* S') (z : Sp S �
 end Phi
 
 /- English proof (translation)
-Take `⟨c, φ, hφ⟩` from `Z.exists_chart z hz`. Take `⟨y, hy, -⟩` from `CommonMod.exists_lift_chart Z hφ`. Conclude with `(TransUniq.trans_unique E H Dw Xo p W Y _ _ τ τ₀ mu mu₀ hc tr tr₀).2 K y _ _ (tv v).left (by rw [hy]; exact (isTan_tv v).1)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem tv_comp_eq_of_isTrans {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l} {p : ℕ} {W : ValuationSubring ℂ}
     {Y : LocalSystem Xo p W} {i₀ i : Idx H p} {Z : Mdl Y i₀} (hc : i.c.F ≤ Z.i.c.F) {τ τ₀ : (Y Z.i).X ⟶ (Y i).X}
@@ -239,17 +239,15 @@ theorem tv_comp_eq_of_isTrans {Dw : Datum H} {Xo : ∀ l : Level H, Moduli Dw l}
     (by rw [hy]; exact (isTan_tv v).1)
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw Xo p W Y i₀ hp hW t Z g hg`. Consider the cases of `isEmpty_or_nonempty Z.X with`. Consider the case `inl hZ`. Set `C : Coc Z.X` to `⟨Empty, fun a => a.elim, fun a => a.elim, fun x => hZ.elim x, fun a => a.elim, fun a => a.elim, fun a => a.elim, fun a => a.elim⟩`. Conclude with `⟨⟨C, 0, ⟨fun a => a.elim, fun a => a.elim, fun a => a.elim⟩, fun a => a.elim, fun a => a.elim, fun a => a.elim, fun a => a.elim⟩, fun a => a.elim⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Split into cases according to the possible forms of the given data. Treat this case separately. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Consider the case `inr hZ`. Take `⟨x₀, hx₀⟩` from `Z.dense.nonempty`. Take `⟨τ₀, mu₀, -, tr₀, -⟩` from `hg.2 (Z.X.residueField x₀) (Z.X.fromSpecResidueField x₀) (by`. Introduce and unpack `_ ⟨a, rfl⟩`. Conclude with `(Scheme.fromSpecResidueField_apply x₀ a).symm ▸ hx₀)`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `e` using `CommonMod.comp_π_eq hg tr₀`. Use `choose V n m hV hm using fun x : Z.X => t.L.free (g x)`. Use `choose B aff hB le using fun x : Z.X => QCoh.exists_affine_mem_le (U := g ⁻¹ᵁ V x) x (hV x)`. Use `isDiscreteValuationRing_V Z.i.c W hp hW` as an intermediate fact. Set `C₀` to `frameCoc g B aff (fun x => ⟨x, hB x⟩) hm le`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨Γ', a, D, aff', cover, le', N, ⟨Em⟩⟩` from `Coc.exists_refine_emb _ Z.X _ (geoOf Z).proj C₀`. Establish `lt : ∀ γ, D γ ≤ g ⁻¹ᵁ V (a γ)` using `fun γ => (le' γ).trans (le _)`. Use `⟨{ C := C₀.refine a D aff' cover le' N := N Em := Em crd := fun γ S _ z h => (tanLin t.B.t (le_preimage_map g (lt γ) h) fun l => t.L.N.incl.app _ (m (a γ) l)).comp (tanTrans mu₀ t.B.tMap e z).toLinearMap tr := fun γ δ S _ z hγ hδ v => ?_ bc := fun γ S S' _ _ φ z z' ez h h' e' v = …` and prove the remaining obligations. Rewrite using `[C₀.refine_tr a D aff' cover le' γ δ z hγ hδ]`. Use `Eq.trans (congrArg (Matrix.mulVec · _) (map_ev_frMat (hm _) (hm _) inf_le_left inf_le_right g _ z _ (le_preimage_inf (le_preimage_map g (lt γ) hγ) (le_preimage_map g (lt δ) hδ)))) ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `tanLin_tr t.B.t t.L.N.incl (hm _) (hm _) _ _ _`. Establish `e₂ : spMap φ ≫ z ≫ g = z' ≫ g` using `by rw [← Category.assoc, ez]`. Conclude with `(congrArg _ (tanTrans_tanPull mu₀ t.B.tMap e φ z z' e' e₂ v)).trans (tanLin_tanPull t.B.t φ e₂ _ _ _ _)`. Establish `hO : ⊤ ≤ (z ≫ g) ⁻¹ᵁ t.B.genO` using `le_preimage_map g (CommonMod.preimage_genO g).ge fun y _ => CommonMod.mem_genO_of_mem_opn hp.ne_zero Z (hz ⟨y, rfl⟩)`. Conclude with `(tanLin_injective t.B.t _ _ inf_le_left (le_preimage_inf (le_preimage_map g (lt γ) h) hO) (isFrame_incl t.L.N (hm _) t.L.gen inf_le_left inf_le_right)).comp (tanTrans mu₀ t.B.tMap e z).injective`.
-
-Introduce `τ mu tr K _ z h hz v v' hv' h' hv l`. Establish `u` using `tv_comp_eq_of_isTrans hg.1.2.1 tr tr₀ z hz v`. Use `tanTrans_eq mu₀ t.B.tMap e z v (tanOf hv') (hv.trans u)` as an intermediate fact. Conclude with `(congrFun (congrArg (tanLin t.B.t (le_preimage_map g (lt γ) h) fun l => t.L.N.incl.app _ (m (a γ) l)) this) l).trans (tanLin_tanOf t.B.t _ _ hv' l)`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_lCrd_isLat : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (Xo : ∀ l : Level H, Moduli Dw l) (p : ℕ) (W : ValuationSubring ℂ) (Y : LocalSystem Xo p W) (i₀ : Idx H p), p.Prime → (p : ℂ) ∈ W.nonunits → ∀ (t : Step Y i₀) (Z : Mdl Y i₀) (g : Z.X ⟶ t.B.X), IsMap Z t.B g → ∃ D : LCrd (Y Z.i) Z.π, IsLat t Z g D := by
   intro E _ _ _ H Dw Xo p W Y i₀ hp hW t Z g hg

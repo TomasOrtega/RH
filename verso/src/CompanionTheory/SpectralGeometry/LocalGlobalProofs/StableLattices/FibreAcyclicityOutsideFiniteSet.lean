@@ -29,33 +29,31 @@ noncomputable section
 namespace GlobalTheory.CompanionTheory.PointSurjectivity
 
 /- English proof (translation)
-Introduce `k _ _ X T Z a b p q H ha _ _ _ G hG F hF hfib htot y₀ σ₀ hy h₁ h₂`. Establish `hsepa : IsSeparated a` using `inferInstance`. Establish `hsepb : IsSeparated b` using `inferInstance`. Establish `hX : X.IsSeparated` using `⟨by rw [← terminal.comp_from a]; infer_instance⟩`. Establish `hT' : T.IsSeparated` using `⟨by rw [← terminal.comp_from b]; infer_instance⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcX : CompactSpace X` using `QuasiCompact.compactSpace_of_compactSpace a`. Establish `hcT : CompactSpace T` using `QuasiCompact.compactSpace_of_compactSpace b`. Establish `hpp : IsProper p` using `MorphismProperty.of_isPullback (P := @IsProper) H.flip inferInstance`. Establish `hcZ : CompactSpace Z` using `QuasiCompact.compactSpace_of_compactSpace (p ≫ a)`. Establish `hsepZ : IsSeparated (p ≫ a)` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `q₀ : Sp k` to `IsLocalRing.closedPoint k`. Establish `huniv : ({q₀} : Set (Sp k)) = Set.univ` using `Set.eq_univ_of_forall fun x => Subsingleton.elim (α := PrimeSpectrum k) _ _`. Establish `hclosed (y : Sp k ⟶ T) (hy : y ≫ b = 𝟙 _) : IsClosed ({y q₀} : Set T)`. Establish `: IsClosedImmersion (y ≫ b)` using `by rw [hy]; infer_instance`. Establish `: IsClosedImmersion y` using `IsClosedImmersion.of_comp y b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Set.image_singleton]`. Use `y.isClosedEmbedding.isClosedMap _ ?_` and prove the remaining obligations. Rewrite using `[huniv]`. Conclude with `isClosed_univ`. Set `F₁ : Set T` to `(fun y : Sp k ⟶ T => y q₀) '' ({y ∈ F | y ≫ b = 𝟙 _} ∪ {y₀})`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hF₁ : F₁.Finite` using `(((hF.subset (Set.sep_subset _ _))).union (Set.finite_singleton _)).image _`. Establish `hF₁c : ∀ x ∈ F₁, IsClosed ({x} : Set T)`. Introduce and unpack `_ ⟨y, hyF | rfl, rfl⟩`. Conclude with `hclosed y hyF.2`. Conclude with `hclosed _ hy`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨r, V, hV, hVc, hV₁⟩` from `GlobalTheory.T.affine_cover_separating_finite_closed_points T F₁ hF₁ hF₁c`. Take `⟨m', B, hB, hBc, -⟩` from `GlobalTheory.T.affine_cover_separating_finite_closed_points X ∅ Set.finite_empty (by simp)`. Take `⟨d, D, hD, hDc, -⟩` from `GlobalTheory.T.affine_cover_separating_finite_closed_points Z ∅ Set.finite_empty (by simp)`. Set `U : Fin (m' + 1) → Z.Opens` to `fun i => p ⁻¹ᵁ B i`. Set `W : Fin (r + 1) → Z.Opens` to `fun j => q ⁻¹ᵁ V j`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hT : ∀ n, Limits.IsZero ((cubeComplex (Cube.trunc₂ (secCube (p ≫ a) G fun u : Fin (m' + 1) ⊕ₗ Fin (r + 1) => Sum.elim U W (ofLex u)))).homology (n + 2))`. Introduce `n`. Take `⟨e⟩` from `cechLB_homology_equiv_trunc₂ k Z (p ≫ a) G _ D _ U _ W hG hsepZ hD hDc (by simp only [U]; rw [← Scheme.Hom.preimage_iSup, hBc, Scheme.Hom.preimage_top]) (by simp only [W]; rw [← Scheme.Hom.preimage_iSup, hVc, Scheme.Hom.preimage_top]) (fun i _ h => GlobalTheory.MumfordCohom.isAff …`. Establish `hz` using `((htot _ D hD hDc) n).isZero_homology`. Use `ModuleCat.subsingleton_of_isZero hz` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `e.symm.toEquiv.subsingleton` as an intermediate fact. Conclude with `ModuleCat.isZero_of_subsingleton _`. Establish `hA : ∀ t : Finset (Fin (r + 1)), 2 ≤ t.card → (GlobalTheory.cechComplex (GlobalTheory.Cube.sliceFst (secCube (p ≫ a) G fun u : Fin (m' + 1) ⊕ₗ Fin (r + 1) => Sum.elim U W (ofLex u)) t)).Acyclic`. Introduce `t ht`. Establish `hne : t.Nonempty` using `Finset.card_pos.1 (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hVt : IsAffineOpen (⨅ j ∈ t, V j)` using `IsAffineOpen.biInf _ t.finite_toSet hne fun j _ => hV j`. Take `⟨-, Y, π, f, E, Hy, hE, hEc, ⟨i₁⟩⟩` from `GlobalTheory.T.affine_cover_of_product_fibres a b p q H hVt B hB hBc G hG`. Take `⟨i₂⟩` from `GlobalTheory.MumfordCohom.nonempty_cech_sliceFst_iso (p ≫ a) G U W t _ (preimage_biInf V q t)`. Take `⟨j₁, hj₁, j₂, hj₂, hne'⟩` from `Finset.one_lt_card.1 ht`. Establish `hfac` using `GlobalTheory.T.fibrewise_acyclicity_base_change a b p q H ha G hG Γ(T, ⨅ j ∈ t, V j) hVt.fromSpec Y π f Hy (fun s σ hs hσ₁ hσ₂ => hfib (s ≫ hVt.fromSpec) σ (by simpa using hs) hσ₁ hσ₂ (by`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `hmem`. Establish `hp : hVt.fromSpec (s q₀) ∈ (⨅ j ∈ t, V j : T.Opens)` using `hVt.range_fromSpec.le ⟨_, rfl⟩`. Establish `hx : (s ≫ hVt.fromSpec) q₀ ∈ F₁` using `⟨_, Or.inl ⟨hmem, by simpa using hs⟩, rfl⟩`. Establish `hp' : (s ≫ hVt.fromSpec) q₀ ∈ (⨅ j ∈ t, V j : T.Opens)` using `by simpa using hp`. Conclude with `hne' (hV₁ _ hx j₁ j₂ (biInf_le V hj₁ hp') (biInf_le V hj₂ hp'))))`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `hfac _ E hE hEc`. Conclude with `fun n => (GlobalTheory.MumfordCohom.acyclic_cechLB_of_acyclic f _ _ E h n).of_iso (i₁ ≪≫ i₂)`. Choose the witnesses or unpack the hypotheses as in `⟨j₀, hj₀⟩ : ∃ j, y₀ q₀ ∈ V j := by`. Establish `: y₀ q₀ ∈ (⨆ j, V j : T.Opens)` using `hVc ▸ trivial`. Conclude with `TopologicalSpace.Opens.mem_iSup.1 this`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcol` using `GlobalTheory.T.cech_slice_acyclic_of_truncation _ hA hT j₀`. Take `⟨-, Y, π, f, E, Hy, hE, hEc, ⟨i₁⟩⟩` from `GlobalTheory.T.affine_cover_of_product_fibres a b p q H (hV j₀) B hB hBc G hG`. Take `⟨i₂⟩` from `GlobalTheory.MumfordCohom.nonempty_cech_sliceFst_iso (p ≫ a) G U W {j₀} (q ⁻¹ᵁ V j₀) (by simp [W])`. Establish `hac₁ : (cechLB (f ≫ (hV j₀).fromSpec ≫ b) (G.pull π) E).Acyclic` using `fun n => (hcol n).of_iso (i₁ ≪≫ i₂).symm`. Establish `hac : (cechLB f (G.pull π) E).Acyclic` using `GlobalTheory.MumfordCohom.acyclic_cechLB_of_acyclic _ f _ E hac₁`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hrange : Set.range y₀ ⊆ Set.range (hV j₀).fromSpec`. Rewrite using `[(hV j₀).range_fromSpec]`. Introduce and unpack `_ ⟨x, rfl⟩`. Establish `: x = q₀` using `Subsingleton.elim (α := PrimeSpectrum k) _ _`. Rewrite using `[this]`.
-
-Conclude with `hj₀`. Set `s : Sp k ⟶ Spec Γ(T, V j₀)` to `IsOpenImmersion.lift (hV j₀).fromSpec y₀ hrange`. Establish `hs : s ≫ (hV j₀).fromSpec = y₀` using `IsOpenImmersion.lift_fac _ _ _`. Take `⟨D', hD', hD'c, hD'a⟩` from `GlobalTheory.T.exists_affine_cover_cechLB_fibre_acyclic a b p q H G hG Γ(T, V j₀) (hV j₀).fromSpec Y π f Hy E hE hEc hac s σ₀ (by rw [← Category.assoc, hs]; exact hy) h₁ (by rw [hs]; exact h₂)`. Conclude with `⟨m' + 1, D', hD', hD'c, hD'a⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_acyclic_cechLB_fibre : ∀ {k : Type} [Field k] [IsAlgClosed k] {X T Z : Scheme.{0}} (a : X ⟶ Sp k) (b : T ⟶ Sp k) (p : Z ⟶ X)
     (q : Z ⟶ T) (H : IsPullback p q a b) (ha : IsProjBy a) [IsProper a] [Flat a] [IsProper b] (G : LB Z) (hG : G.IsLB)

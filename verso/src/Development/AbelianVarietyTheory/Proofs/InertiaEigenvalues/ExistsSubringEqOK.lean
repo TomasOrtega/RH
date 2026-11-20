@@ -9,15 +9,15 @@ noncomputable section
 namespace GlobalTheory.JR.Et
 
 /- English proof (translation)
-Use `set a : Matrix n n R[X] := algebraMap R[X] (Matrix n n R[X]) X with ha_def`. Use `set b : Matrix n n R[X] := (Algebra.ofId R R[X]).mapMatrix M with hb_def`. Establish `hab : Commute a b` using `Algebra.commutes X b`. Establish `key : ∀ q : R[X], ∃ H, (a - b) * H = aeval a q - aeval b q`. Introduce `q`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Proceed by induction on `q using Polynomial.induction_on' with`. Consider the case `add p q hp hq`. Take `⟨H1, h1⟩` from `hp`. Take `⟨H2, h2⟩` from `hq`. Conclude with `⟨H1 + H2, by rw [mul_add, h1, h2, map_add, map_add]; abel⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Consider the case `monomial k c`. Use `⟨algebraMap R (Matrix n n R[X]) c * ∑ i ∈ Finset.range k, a ^ i * b ^ (k - 1 - i), ?_⟩` and prove the remaining obligations. Rewrite using `[aeval_monomial, aeval_monomial, ← mul_assoc, ← Algebra.commutes, mul_assoc, hab.mul_geom_sum₂, mul_sub]`. Take `⟨H, hH⟩` from `key p`. Establish `hb : aeval b p = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[hb_def, aeval_algHom_apply, hp, map_zero]`. Establish `ha : aeval a p = algebraMap R[X] (Matrix n n R[X]) p`. Rewrite using `[ha_def, aeval_algebraMap_apply, aeval_X_left_apply]`. Establish `hch : (a - b).det = M.charpoly` using `rfl`. Use `⟨H.det, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hch, ← Matrix.det_mul, hH, hb, sub_zero, ha, Matrix.algebraMap_eq_diagonal, Matrix.det_diagonal]`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem charpoly_dvd_pow_of_aeval_zero {R : Type*} [CommRing R] {n : Type*} [Fintype n] [DecidableEq n]
     (M : Matrix n n R) (p : R[X]) (hp : aeval M p = 0) : M.charpoly ∣ p ^ Fintype.card n := by
@@ -48,7 +48,7 @@ theorem charpoly_dvd_pow_of_aeval_zero {R : Type*} [CommRing R] {n : Type*} [Fin
 variable {F E : Type} [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E] [StarRing E]
 
 /- English proof (translation)
-Establish `h` using `LinearMap.aeval_self_charpoly (Algebra.lmul F A.K z)`. Establish `h' : Algebra.lmul F A.K (aeval z (LinearMap.charpoly (Algebra.lmul F A.K z))) = 0`. Rewrite using `[← aeval_algHom_apply]`. Conclude with `h`. Simplify using `using congrArg (fun f : Module.End F A.K => f 1) h'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem aeval_self_charpoly_lmul (A : Et F E) (z : A.K) :
     aeval z (LinearMap.charpoly (Algebra.lmul F A.K z)) = 0 := by
@@ -58,17 +58,15 @@ theorem aeval_self_charpoly_lmul (A : Et F E) (z : A.K) :
   simpa using congrArg (fun f : Module.End F A.K => f 1) h'
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hz`. Establish `hl : LinearMap.charpoly (Algebra.lmul F A.K z) ∈ Polynomial.lifts (algebraMap (NormedField.valuation (K` using `F)).integer F) := by`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `i`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `⟨⟨_, ?_⟩, rfl⟩` and prove the remaining obligations. Rewrite using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `hz i` after adjusting the coercions. Take `⟨q, hq, -, hqm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl (LinearMap.charpoly_monic _)`. Use `⟨q, hqm, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Polynomial.aeval_def, ← Polynomial.aeval_map_algebraMap F, hq]`. Conclude with `aeval_self_charpoly_lmul A z`. Introduce and unpack `⟨p, hpm, hp⟩ i`. Establish `hp' : aeval z (p.map (algebraMap (NormedField.valuation (K` using `F)).integer F)) = 0 := by`. Rewrite using `[Polynomial.aeval_map_algebraMap, Polynomial.aeval_def]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hp`. Establish `h1 : aeval (Algebra.lmul F A.K z) (p.map (algebraMap (NormedField.valuation (K` using `F)).integer F)) = 0 := by`. Rewrite using `[aeval_algHom_apply, hp', map_zero]`. Set `bs` to `Module.finBasis F A.K`. Establish `h2 : aeval (LinearMap.toMatrixAlgEquiv bs (Algebra.lmul F A.K z)) (p.map (algebraMap (NormedField.valuation (K` using `F)).integer F)) = 0 := by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[aeval_algHom_apply, h1, map_zero]`. Establish `h3` using `charpoly_dvd_pow_of_aeval_zero _ _ h2`. Establish `h4 : (LinearMap.toMatrixAlgEquiv bs (Algebra.lmul F A.K z)).charpoly = LinearMap.charpoly (Algebra.lmul F A.K z)` using `LinearMap.charpoly_toMatrix _ bs`. Rewrite `h3` using `[h4, ← Polynomial.map_pow]`. Establish `h5` using `Polynomial.isIntegral_coeff_of_dvd _ _ (hpm.pow _) (LinearMap.charpoly_monic _) h3 i`.
-
-Establish `h6` using `(Valuation.integer.integers (NormedField.valuation (K := F))).mem_of_integral h5`. Rewrite `h6` using `[Valuation.mem_integer_iff, NormedField.valuation_apply]`. Conclude with `h6` after adjusting the coercions.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_OK_iff_isIntegral [IsUltrametricDist F] (A : Et F E) (z : A.K) :
     z ∈ A.OK ↔ IsIntegral (NormedField.valuation (K := F)).integer z := by
@@ -104,7 +102,7 @@ theorem mem_OK_iff_isIntegral [IsUltrametricDist F] (A : Et F E) (z : A.K) :
     exact_mod_cast h6
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ hU A`. Use `haveI : IsUltrametricDist F := hU.ultraF`. Use `⟨(integralClosure (NormedField.valuation (K := F)).integer A.K).toSubring, ?_⟩` and prove the remaining obligations. Use extensionality with `z`. Conclude with `(mem_OK_iff_isIntegral A z).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem OK_isSubring : ∀ (F E : Type) [NontriviallyNormedField F] [NontriviallyNormedField E] [NormedAlgebra F E]
     [StarRing E] [Unram F E] (A : Et F E), ∃ R : Subring A.K, (R : Set A.K) = A.OK := by

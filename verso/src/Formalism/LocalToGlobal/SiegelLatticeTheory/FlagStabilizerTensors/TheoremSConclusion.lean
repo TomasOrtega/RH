@@ -62,14 +62,14 @@ def TheoremSClosedHypotheses : Prop :=
   Formalism.L2.SG.Pf.WuDecayOfGap ∧ ChoicesC ∧ FormulaC ∧ RowsSumC ∧ RowFormAllP ∧ MassDataHypAll ∧ LinkAll ∧ SplitAll
 
 /- English proof (translation)
-Introduce `Wp Wq _ _ _ _ S δ M hA L u u' hT hC hPH F0 what₂ hR ϖ hϖ nc hF α hα hB` and use `h Wp Wq S δ M hA L u u' hT hPH hC F0 what₂ hR ϖ hϖ nc hF α hα hB`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem rowsInputP_of_dataCut {D : D7} (h : Formalism.L2.SG.DataCut.RowsInputP D) : Formalism.L2.SG.SpectralTiesReal.RowsInputP D :=
   fun Wp Wq _ _ _ _ S δ M hA L u u' hT hC hPH F0 what₂ hR ϖ hϖ nc hF α hα hB =>
     h Wp Wq S δ M hA L u u' hT hPH hC F0 what₂ hR ϖ hϖ nc hF α hα hB
 
 /- English proof (translation)
-Take `⟨h1, h2, h3, h4, h5, h6, h7, h8, h9, h10, h11, h12, h13, h14, h15, h16, h17, h18, h19⟩` from `h`. Conclude with `theoremS_closedP h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 Cthr`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem theoremS_of_conj (h : TheoremSClosedHypotheses) (Cthr : ℝ) :
     ∃ C₄ CA C : ℝ, 1 ≤ C₄ ∧ Cthr ≤ CA ∧ 1 ≤ CA ∧ 0 ≤ C ∧ C ≤ CA ∧
@@ -88,9 +88,9 @@ theorem theoremS_of_conj (h : TheoremSClosedHypotheses) (Cthr : ℝ) :
   exact theoremS_closedP h1 h2 h3 h4 h5 h6 h7 h8 h9 h10 h11 h12 h13 h14 h15 h16 h17 h18 h19 Cthr
 
 /- English proof (translation)
-Introduce `D X Y u u' hT`. Establish `f1` using `Formalism.L2.SG.Closed.FoldOKC_outright D X Y u hT.1 hT.2.2.2.2.1`. Establish `f2` using `Formalism.L2.SG.Closed.FoldOKC_outright D X Y u' hT.1 hT.2.2.2.2.1`. Establish `hFE` using `Formalism.L2.SG.Pf.fundExistsC_holds D X Y u u'`. Establish `hOO` using `Formalism.L2.SG.Closed.OOIntAllC_outright D X Y u u' f1 f2 hFE`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Formalism.L2.SG.Closed.KExpansionC_holds D X Y u u' f1 f2 (Formalism.L2.SG.Closed.InHHC_holds D X Y u hT.2.2.2.2.2.1 f1) (Formalism.L2.SG.Closed.InHHC_holds D X Y u' hT.2.2.2.2.2.1 f2) hFE hOO (Formalism.L2.SG.Closed.OOFundIndepC_holds D X Y u u' hFE hOO) (Formalism.L2.SG.Closed. …`.
+A detailed English derivation is pending.
 -/
 theorem kExpTiedS_holds : KernelExponentAgreement := by
   intro D X Y u u' hT

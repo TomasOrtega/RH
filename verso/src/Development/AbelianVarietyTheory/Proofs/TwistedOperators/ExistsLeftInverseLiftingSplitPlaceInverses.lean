@@ -9,23 +9,23 @@ open scoped TensorProduct Matrix
 namespace GlobalTheory.MatrixLeftInverseLift
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ d v π₁ π₂ hinj hsurj K hK N₁ N₂ h₁ h₂`. Use `choose Z hZA hZ₁ hZ₂ using fun i j => hsurj ((N₁ - 1) i j) ((N₂ - 1) i j)`. Set `Zm : Matrix (Fin d) (Fin d) (AE F E)` to `Matrix.of Z`. Establish `hZm : ∀ u, evFin F v u = 0 → u • Zm = 0`. Introduce `u hu`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify `hZA i j u hu` using `[Zm]`. Establish `hmap : ∀ (π : AE F E →+* Fv F v) (N : Matrix (Fin d) (Fin d) (Fv F v)), (∀ i j, π (Z i j) = (N - 1) i j) → (Zm + 1).map π = N`. Introduce `π N hπ`. Use extensionality with `i j`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Establish `h` using `hπ i j`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Simplify using `[Zm, Matrix.map_apply, Matrix.add_apply, Matrix.one_apply, h]`. Simplify using `[Zm, Matrix.map_apply, Matrix.add_apply, Matrix.one_apply, hij, h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hM₁` using `hmap π₁ N₁ hZ₁`. Establish `hM₂` using `hmap π₂ N₂ hZ₂`. Use `⟨Zm + 1, ?_, hM₁, hM₂⟩` and prove the remaining obligations. Establish `hdecomp : (Zm + 1) * K - 1 = Zm * (K - 1) + Zm + (K - 1)`. Rewrite using `[Matrix.mul_sub, Matrix.mul_one, add_mul, one_mul]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Normalize the expressions using the abelian group laws. Establish `hAt : ∀ u, evFin F v u = 0 → u • ((Zm + 1) * K - 1) = 0`. Introduce `u hu`. Rewrite using `[hdecomp, smul_add, smul_add, ← Matrix.mul_smul, hK u hu, hZm u hu]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hπ : ∀ (π : AE F E →+* Fv F v) (N : Matrix (Fin d) (Fin d) (Fv F v)), (Zm + 1).map π = N → N * K.map π = 1 → ((Zm + 1) * K - 1).map π = 0`. Introduce `π N hM hN`. Establish `: π.mapMatrix ((Zm + 1) * K - 1) = π.mapMatrix (Zm + 1) * π.mapMatrix K - 1`. Rewrite using `[map_sub, map_mul, map_one]`. Express the relevant statement in the definitionally equal form `π.mapMatrix ((Zm + 1) * K - 1) = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Express the relevant statement in the definitionally equal form `(Zm + 1).map π * K.map π - 1 = 0`. Rewrite using `[hM, hN, sub_self]`. Establish `e₁` using `hπ π₁ N₁ hM₁ h₁`. Establish `e₂` using `hπ π₂ N₂ hM₂ h₂`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sub_eq_zero]`. Use extensionality with `i j`. Apply `hinj` to reduce the goal to its premises. Introduce `u hu`. Use `congrArg (fun m => m i j) (hAt u hu)` as an intermediate fact.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using this`. Simplify using `using congrArg (fun m => m i j) e₁`. Simplify using `using congrArg (fun m => m i j) e₂`.
+Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem matrix_left_inverse_lift : ∀ {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {d : ℕ} (v : Pl F) (π₁ π₂ : AE F E →+* Fv F v), (∀ z : AE F E, At (evFin F v) z → π₁ z = 0 → π₂ z = 0 → z = 0) → (∀ x₁ x₂ : Fv F v, ∃ z : AE F E, At (evFin F v) z ∧ π₁ z = x₁ ∧ π₂ z = x₂) →
   ∀ K : Matrix (Fin d) (Fin d) (AE F E), At (evFin F v) (K - 1) →

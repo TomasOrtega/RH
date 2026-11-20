@@ -8,13 +8,13 @@ open scoped InnerProductSpace
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `M _ _ n ε E μ w hrel _ hhi hfin`. Establish `hk : KRel ε E` using `glRel_kRel ε E hrel`. Establish `hsq : ckv ε (lowK ε μ) ≤ (Real.sqrt (ckv ε (lowK ε μ)) + 4 * (n : ℝ) * ((0 : ℕ) : ℝ)) ^ 2`. Break down `le_total 0 (ckv ε (lowK ε μ)) with h | h` into its components or cases. Simplify using `[Real.sq_sqrt h]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[Real.sqrt_eq_zero'.mpr h, h]`. Use `⟨⟨kSpan ε E w, hfin, ?_, mem_compact_span_self w, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `a b hab x hx`. Conclude with `compact_span_stable w a b hab x hx`. Introduce `x hx`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[compact_casimir_span_holds M n ε E (lowK ε μ) w hk hhi x hx, inner_smul_right, inner_self_eq_norm_sq_to_K]`. Establish `hx2 : (0 : ℝ) ≤ ‖x‖ ^ 2` using `by positivity`. Use `le_trans (le_of_eq ?_) (mul_le_mul_of_nonneg_right hsq hx2)` and prove the remaining obligations. Simplify using `only [Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Use `congr 1`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Put the expressions in a common number system so they can be compared.
 
-Use `norm_cast`. Apply `Submodule.subset_span` to reduce the goal to its premises. Conclude with `⟨lowK ε μ, by simp, hhi.1⟩`.
+Reduce the claim to the hypotheses of an applicable result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem lev_zero_of_kHighest : ∀ (M : Type) [NormedAddCommGroup M] [InnerProductSpace ℂ M] (n : ℕ) (ε : Fin n → Bool) (E : Fin n → Fin n → Module.End ℂ M) (μ : Fin n → ℝ) (w : M), GlRel E → IsUnitary ε E → KHighest ε E (lowK ε μ) w → FiniteDimensional ℂ (kSpan ε E w) → Lev ε E μ 0 w := by
   intro M _ _ n ε E μ w hrel _ hhi hfin

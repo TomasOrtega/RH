@@ -8,7 +8,7 @@ open Matrix GlobalTheory.KZ
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `M` and use `GlobalTheory.specialLinearGroup_map_zmod_surjective (Fin 2) M`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem specialLinearGroup_map_intCast_zmod_surjective :
     ∀ (M : ℕ), Function.Surjective (Matrix.SpecialLinearGroup.map (Int.castRingHom (ZMod M)) :

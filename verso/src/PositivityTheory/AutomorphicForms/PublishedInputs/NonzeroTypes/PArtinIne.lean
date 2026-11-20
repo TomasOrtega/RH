@@ -18,7 +18,7 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
   {a : Weil h →* (w.adicCompletion E)ˣ}
 
 /- English proof (translation)
-Establish `h0` using `ha.ord_eq (ineIncl h t)`. Rewrite `h0` using `[deg_ineIncl, neg_zero]`. Conclude with `ord_eq_zero_iff.mp h0`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_ine (ha : IsLocalArtin h a) (t : Ine (F := E) A) :
     valuation (w.adicCompletion E) ((a (ineIncl h t) : (w.adicCompletion E)ˣ) : w.adicCompletion E) = 1 := by
@@ -27,9 +27,9 @@ theorem val_ine (ha : IsLocalArtin h a) (t : Ine (F := E) A) :
   exact ord_eq_zero_iff.mp h0
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `ha.surj u`. Establish `h0` using `ha.ord_eq σ`. Rewrite `h0` using `[hσ, ord_eq_zero hu]`. Establish `hd : deg σ = 0` using `by omega`. Use `⟨⟨(σ : G E Ω), deg_eq_zero_iff.mp hd⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : ineIncl h ⟨(σ : G E Ω), deg_eq_zero_iff.mp hd⟩ = σ` using `Subtype.ext rfl`. Rewrite using `[e, hσ]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_ine (ha : IsLocalArtin h a) (u : (w.adicCompletion E)ˣ)
     (hu : valuation (w.adicCompletion E) (u : w.adicCompletion E) = 1) :
@@ -45,7 +45,7 @@ theorem exists_ine (ha : IsLocalArtin h a) (u : (w.adicCompletion E)ˣ)
 end P_artinIne
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ A w h a ha`. Conclude with `⟨P_artinIne.val_ine ha, P_artinIne.exists_ine ha⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem step_artinIne : ArtinInertiaProp := by
   intro E Ω _ _ _ _ _ A w h a ha

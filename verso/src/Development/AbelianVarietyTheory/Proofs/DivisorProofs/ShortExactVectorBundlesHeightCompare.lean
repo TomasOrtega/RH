@@ -29,7 +29,7 @@ open GlobalTheory.Twist (resM)
 open GlobalTheory.CurveDens (angleForm IsCosSq)
 
 /- English proof (translation)
-Establish `e : N / (A * B) = v` using `by rw [hN]; field_simp`. Rewrite using `[e, hx, hy, hN, hc, hc']`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem green_algebra (A B v bc bc' ch ch' lA lB x y N : ℝ) (n : ℕ) (hA : 0 < A)
     (hB : 0 < B) (hN : N = v * A * B) (hx : x = (A * B - N) * bc)
@@ -43,11 +43,11 @@ theorem green_algebra (A B v bc bc' ch ch' lA lB x y N : ℝ) (n : ℕ) (hA : 0 
   ring
 
 /- English proof (translation)
-Establish `key` using `GlobalTheory.T.hermitian_mix_zero_of_real_part_zero d A ((s : ℂ) • M₁ + ((-s : ℝ) : ℂ) • M₂ + (t : ℂ) • M₃ + ((-t : ℝ) : ℂ) • M₄ + N) hA fun ξ => by`. Rewrite using `[← h ξ]`. Establish `e : ∑ j, ∑ l, ξ j * ((s : ℂ) • M₁ + ((-s : ℝ) : ℂ) • M₂ + (t : ℂ) • M₃ + ((-t : ℝ) : ℂ) • M₄ + N) j l * starRingEnd ℂ (ξ l) = (s : ℂ) * ((∑ j, ∑ l, ξ j * M₁ j l * starRingEnd ℂ (ξ l)) - (∑ j, ∑ l, ξ j * M₂ j l * starRingEnd ℂ (ξ l))) + (t : ℂ) * ((∑ j, ∑ l, ξ j * M₃ j l * starRin …`. Simplify using `only [← Finset.sum_sub_distrib, Finset.mul_sum, ← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Matrix.add_apply, Matrix.smul_apply, smul_eq_mul]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e]`. Simplify using `only [Complex.add_re, Complex.re_ofReal_mul, Complex.sub_re]`.
+Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [mix_add, mix_smul] at key`. Combine the linear equalities and inequalities to obtain the conclusion.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem mix_comb_eq_zero {d : ℕ} {A : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ} (hA : A.IsHermitian)
     (M₁ M₂ M₃ M₄ N : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ) (s t : ℝ)
@@ -78,29 +78,27 @@ theorem mix_comb_eq_zero {d : ℕ} {A : Matrix (Fin (d + 1)) (Fin (d + 1)) ℂ} 
   linarith
 
 /- English proof (translation)
-Take `⟨U₁, e₁, hx₁, he₁⟩` from `hL (y.1 (IsLocalRing.closedPoint ℂ))`. Take `⟨U₂, e₂, hx₂, he₂⟩` from `hL' (y.1 (IsLocalRing.closedPoint ℂ))`. Establish `hU : y ∈ ptsIn p σ (U₁ ⊓ U₂)` using `mem_ptsIn_inf.2 ⟨mem_ptsIn.2 hx₁, mem_ptsIn.2 hx₂⟩`. Take `⟨U, hUdef⟩ : ∃ U, U = U₁ ⊓ U₂` from `⟨_, rfl⟩`. Rewrite `hU` using `[← hUdef]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, ht⟩ : ∃ t : Γ(L, U), IsFrame (fun _ : Fin 1 => t) := by`. Substitute `hUdef` using the available equality. Use `⟨resM L inf_le_left (e₁ 0), ?_⟩` and prove the remaining obligations. Establish `e : (fun _ : Fin 1 => resM L (inf_le_left : U₁ ⊓ U₂ ≤ U₁) (e₁ 0)) = fun i => resM L inf_le_left (e₁ i)`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[Subsingleton.elim i 0]`. Rewrite using `[e]`. Conclude with `he₁.res inf_le_left`. Choose the witnesses or unpack the hypotheses as in `⟨t', ht'⟩ : ∃ t' : Γ(L', U), IsFrame (fun _ : Fin 1 => t') := by`. Substitute `hUdef` using the available equality.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨resM L' inf_le_right (e₂ 0), ?_⟩` and prove the remaining obligations. Establish `e : (fun _ : Fin 1 => resM L' (inf_le_right : U₁ ⊓ U₂ ≤ U₂) (e₂ 0)) = fun i => resM L' inf_le_right (e₂ i)`. Use function extensionality and compare the values at `i`. Rewrite using `[Subsingleton.elim i 0]`. Rewrite using `[e]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `he₂.res inf_le_right`. Establish `e₀ : c.e.symm (c.e y) = y` using `c.e.left_inv hy`. Establish `ho` using `ChartGlue.isOpen_over c.e (isOpen_ptsIn (p := p) (σ := σ) U)`. Establish `hm` using `ChartGlue.mem_over c.e hy hU`. Establish `hn` using `ho.mem_nhds hm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `dq : ContDiffAt ℝ 2 (fun x => h.form (l'.app U t') (l.app U t) (c.e.symm x)) (c.e y)` using `(AngleGlue.contDiffAt_form h H _ _ hU c hy).of_le (by norm_cast)`. Establish `da : ContDiffAt ℝ 2 (fun x => (h.form (l.app U t) (l.app U t) (c.e.symm x)).re) (c.e y)` using `(AngleGlue.contDiffAt_re_form h H _ _ hU c hy).of_le (by norm_cast)`. Establish `da' : ContDiffAt ℝ 2 (fun x => (h.form (l'.app U t') (l'.app U t') (c.e.symm x)).re) (c.e y)` using `(AngleGlue.contDiffAt_re_form h H _ _ hU c hy).of_le (by norm_cast)`. Establish `pa : 0 < (h.form (l.app U t) (l.app U t) y).re` using `AngleGlue.re_form_pos h hl hL t ht hU`. Establish `pa' : 0 < (h.form (l'.app U t') (l'.app U t') y).re` using `AngleGlue.re_form_pos h hl' hL' t' ht' hU`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `mix_comb_eq_zero hA _ _ _ _ _ _ _ fun ξ => ?_` and prove the remaining obligations. Establish `hdb (j : Fin (d + 1)) : dbar (fun x => α c (c.e.symm x) j) (c.e y) = dbar (angleForm n (fun v => (h.form (l.app U t) (l.app U t) (c.e.symm v)).re) (fun v => (h.form (l'.app U t') (l'.app U t') (c.e.symm v)).re) (fun v => h.form (l'.app U t') (l.app U t) (c.e.symm v)) (EuclideanSp …` using `dbar_congr (by filter_upwards [hn] with x hx`. Use `hm₃ U t t' ht ht' c (c.e.symm x) (c.e.map_target hx.1) hx.2 j` as an intermediate fact. Rewrite using `[c.e.right_inv hx.1] at this)` and apply the resulting hypothesis. Establish `hq` using `GlobalTheory.T.angle_form_dbar_hermitian _ n _ _ _ (c.e y) ξ da da' dq (by simpa only [e₀] using pa) (by simpa only [e₀] using pa')`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hcalc` using `CurveDens.re_dbar_angleForm _ n (fun v => (h.form (l.app U t) (l.app U t) (c.e.symm v)).re) (fun v => (h.form (l'.app U t') (l'.app U t') (c.e.symm v)).re) (fun v => h.form (l'.app U t') (l.app U t) (c.e.symm v)) ξ (c.e y) da da' dq (by simpa only [e₀] using pa) (by simpa only [e …`. Establish `hX` using `GlobalTheory.T.dbar_hermitian_form_line_frame_bound k X p σ _ (ShortComplex.mk l m w) h hS hL hQ H U t (l'.app U t') ht c y hy hU ξ`. Establish `hY` using `GlobalTheory.T.dbar_hermitian_form_line_frame_bound k X p σ _ (ShortComplex.mk l' m' w') h hS' hL' hQ' H U t' (l.app U t) ht' c y hy hU ξ`. Establish `hY' : ‖del (fun x => h.form (l'.app U t') (l.app U t) (c.e.symm x)) (c.e y) ξ - h.form (l'.app U t') (l.app U t) y * del (fun x => (Real.log (h.form (l'.app U t') (l'.app U t') (c.e.symm x)).re : ℂ)) (c.e y) ξ‖ ^ 2 = ((h.form (l'.app U t') (l'.app U t') y).re * (h.form (l.app U t …` using `ShortComplex.mk l' m' w') h hS' hL' hQ' c y j i * starRingEnd ℂ (ξ i)).re := by`. Establish `e₁ : (fun x => h.form (l.app U t) (l'.app U t') (c.e.symm x)) = fun x => (starRingEnd ℂ) (h.form (l'.app U t') (l.app U t) (c.e.symm x))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `x`. Rewrite using `[h.conj_form]`. Establish `e₂ : h.form (l.app U t) (l'.app U t') y = (starRingEnd ℂ) (h.form (l'.app U t') (l.app U t) y)` using `by rw [h.conj_form]`. Establish `hY2 : ‖dbar (fun x => h.form (l.app U t) (l'.app U t') (c.e.symm x)) (c.e y) ξ - h.form (l.app U t) (l'.app U t') y * dbar (fun x => (Real.log (h.form (l'.app U t') (l'.app U t') (c.e.symm x)).re : ℂ)) (c.e y) ξ‖ ^ 2 = ((h.form (l'.app U t') (l'.app U t') y).re * (h.form (l.app U …` using `ShortComplex.mk l' m' w') h hS' hL' hQ' c y j i * starRingEnd ℂ (ξ i)).re := hY`. Rewrite `hY2` using `[e₁, e₂, dbar_conj, dbar_ofReal, ← map_mul, ← map_sub, Complex.norm_conj, Complex.norm_conj]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hY2`. Establish `c₁` using `GlobalTheory.T.chern_matrix_levi_form_log k X p σ _ L (h.restrict hl hL) (H.restrict hl hL) U t ht c y hy hU ξ`. Establish `c₂` using `GlobalTheory.T.chern_matrix_levi_form_log k X p σ _ L' (h.restrict hl' hL') (H.restrict hl' hL') U t' ht' c y hy hU ξ`. Establish `l₁ : leviForm (fun x => Real.log ((h.restrict hl hL).form t t (c.e.symm x)).re) (c.e y) = leviForm (fun x => Real.log (h.form (l.app U t) (l.app U t) (c.e.symm x)).re) (c.e y)` using `CurveDens.leviForm_congr_germ (by filter_upwards [hn] with x hx`. Rewrite using `[h.form_restrict hl hL _ _ hx.2])`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `l₂ : leviForm (fun x => Real.log ((h.restrict hl' hL').form t' t' (c.e.symm x)).re) (c.e y) = leviForm (fun x => Real.log (h.form (l'.app U t') (l'.app U t') (c.e.symm x)).re) (c.e y)` using `CurveDens.leviForm_congr_germ (by filter_upwards [hn] with x hx`. Rewrite using `[h.form_restrict hl' hL' _ _ hx.2])`. Rewrite `c₁` using `[l₁]`. Rewrite `c₂` using `[l₂]`. Simplify using `only [e₀] at hcalc`.
-
-Simplify using `only [Matrix.of_apply, hdb]`. Rewrite using `[hq, hcalc]`. Conclude with `green_algebra _ _ (v y) _ _ _ _ _ _ _ _ _ n pa pa' (hv U t t' y hU) hX hY' c₁ c₂`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem green_density {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} {σ : k →+* ℂ} {d : ℕ}
     {E L Q L' Q' : X.Modules} {l : L ⟶ E} {m : E ⟶ Q} {w : l ≫ m = 0} {l' : L' ⟶ E} {m' : E ⟶ Q'}
@@ -210,11 +208,11 @@ theorem green_density {k : Type} [CommRing k] {X : Scheme.{0}} {p : X ⟶ Sp k} 
   exact green_algebra _ _ (v y) _ _ _ _ _ _ _ _ _ n pa pa' (hv U t t' y hU) hX hY' c₁ c₂
 
 /- English proof (translation)
-Introduce `k _ X p σ d _ _ _ hAn E L Q L' Q' l m w l' m' w' hS hS' hL hQ hL' hQ' hl hl' h H N φ hφ v hv n`. Take `⟨α, h₁, h₂, h₃⟩` from `GlobalTheory.T.subbundle_chart_forms_exist k X p σ d E L L' (1 + 1) h l l' H hl hl' hL hL' n`. Establish `st` using `GlobalTheory.T.line_bundle_weight_chart_forms k X p σ d hAn N φ hφ (fun c y j => -α c y j) (fun c y hy j => (h₁ c y hy j).neg) (fun c c' y hy hy' j => by simp only [h₂ c c' y hy hy' j, mul_neg, Finset.sum_neg_distrib])`. Rewrite using `[← st]`. Use `total_congr fun c y hy => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key` using `green_density hS hS' hL hQ hL' hQ' hl hl' h H hv n h₃ c hy ((GlobalTheory.T.chern_matrix_is_form k X p σ _ N φ hφ).2.2 c y hy)`. Establish `e : (Matrix.of fun j i => dbar (fun v => -α c (c.e.symm v) j) (c.e y) (EuclideanSpace.single i 1)) = ((-1 : ℝ) : ℂ) • Matrix.of fun j i => dbar (fun v => α c (c.e.symm v) j) (c.e y) (EuclideanSpace.single i 1)`. Use extensionality with `j i`. Simplify using `only [Matrix.of_apply, Matrix.smul_apply, dbar_apply, fderiv_fun_neg, ContinuousLinearMap.neg_apply, smul_eq_mul]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, mix_smul]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem green_cosSq : ∀ (k : Type) [CommRing k] (X : Scheme.{0}) (p : X ⟶ Sp k) (σ : k →+* ℂ) (d : ℕ) [CompactSpace (CxPts p σ)] [T2Space (CxPts p σ)] [SecondCountableTopology (CxPts p σ)], Nonempty (AnRead p σ (d + 1)) → ∀ (E L Q L' Q' : X.Modules) (l : L ⟶ E) (m : E ⟶ Q) (w : l ≫ m = 0) (l' : L' ⟶ E) (m' : E ⟶ Q') (w' : l' ≫ m' = 0) (hS : (ShortComplex.mk l m w).ShortExact) (hS' : (ShortComplex.mk l' m' w').ShortExact) (hL : IsVB L 1) (hQ : IsVB Q 1) (hL' : IsVB L' 1) (hQ' : IsVB Q' 1) (hl : IsSubbundle l) (hl' : IsSubbundle l') (h : Met p σ E (1 + 1)), h.IsCInf → ∀ (N : LB X) (φ : Weight p σ N), φ.IsCInf → ∀ v : CxPts p σ → ℝ, CurveDens.IsCosSq h l l' v → ∀ n : ℕ, total (fun (c : AlgChart p σ (d + 1)) y => v y ^ (n + 1) * (mix d (chernMat φ c y) (chernMat (h.restrict hl hL).detWeight c y) - mix d (chernMat φ c y) (chernMat (h.restrict hl' hL').detWeight c y)) + (n + 1) * v y ^ n * (1 - v y) * (mix d (chernMat φ c y) (bcMat (S := ShortComplex.mk l m w) h hS hL hQ c y) - mix d (chernMat φ c y) (bcMat (S := ShortComplex.mk l' m' w') h hS' hL' hQ' c y))) = 0 := by
   intro k _ X p σ d _ _ _ hAn E L Q L' Q' l m w l' m' w' hS hS' hL hQ hL' hQ' hl hl' h H N φ hφ v hv n

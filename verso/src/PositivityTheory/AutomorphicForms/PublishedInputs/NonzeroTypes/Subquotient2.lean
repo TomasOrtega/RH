@@ -12,7 +12,7 @@ namespace UpperTheory.TNZ.Grp.Subquotient₂
 variable {F H V : Type} [Field F] [Group H] [AddCommGroup V] [Module F V]
 
 /- English proof (translation)
-Establish `hN` using `(isFiniteLength_iff_isNoetherian_isArtinian.mp h).1`. Use `isNoetherian_iff'.mp hN` as an intermediate fact. Conclude with `(Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)).strictMono.wellFoundedGT`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wellFoundedGT_of_finiteLength {ρ : Representation F H V} (h : HasFiniteLength ρ) :
     WellFoundedGT (Subrepresentation ρ) := by
@@ -21,7 +21,7 @@ theorem wellFoundedGT_of_finiteLength {ρ : Representation F H V} (h : HasFinite
   exact (Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)).strictMono.wellFoundedGT
 
 /- English proof (translation)
-Establish `hA` using `(isFiniteLength_iff_isNoetherian_isArtinian.mp h).2`. Establish `: WellFoundedLT (Submodule (MonoidAlgebra F H) ρ.asModule)` using `hA`. Conclude with `(Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)).strictMono.wellFoundedLT`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem wellFoundedLT_of_finiteLength {ρ : Representation F H V} (h : HasFiniteLength ρ) :
     WellFoundedLT (Subrepresentation ρ) := by
@@ -30,9 +30,9 @@ theorem wellFoundedLT_of_finiteLength {ρ : Representation F H V} (h : HasFinite
   exact (Subrepresentation.subrepresentationSubmoduleOrderIso (ρ := ρ)).strictMono.wellFoundedLT
 
 /- English proof (translation)
-Use `wellFoundedGT_of_finiteLength h` as an intermediate fact. Use `wellFoundedLT_of_finiteLength h` as an intermediate fact. Take `⟨T, hT, hmax⟩` from `wellFounded_gt.has_min {T : Subrepresentation ρ | y ∉ T.toSubmodule} ⟨⊥, fun h' => hy ((Submodule.mem_bot F).1 h')⟩`. Establish `hTtop : T ≠ ⊤`. Introduce and unpack `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Conclude with `hT trivial`. Take `⟨S, hS, hmin⟩` from `wellFounded_lt.has_min {S : Subrepresentation ρ | T < S} ⟨⊤, lt_top_iff_ne_top.2 hTtop⟩`. Use `⟨S, T, ⟨hS, fun U hTU hUS => hmin U hTU hUS⟩, ?_, hT⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hyS`. Conclude with `hmax S hyS hS`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. A detailed English derivation is pending.
 -/
 theorem exists_covBy {ρ : Representation F H V} (h : HasFiniteLength ρ) {y : V} (hy : y ≠ 0) :
     ∃ S T : Subrepresentation ρ, T ⋖ S ∧ y ∈ S.toSubmodule ∧ y ∉ T.toSubmodule := by
@@ -56,11 +56,9 @@ namespace UpperTheory.TNZ.Grp
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `W _ _ ρ hs hfl hη`. Take `⟨y, hy, hyη⟩` from `hη`. Take `⟨S, T, hcov, hyS, hyT⟩` from `Subquotient₂.exists_covBy hfl hy`. Set `p : S.toRepresentation.IntertwiningMap (subQuot S T)` to `⟨Submodule.mkQ _, fun _ => rfl⟩`. Establish `hsq : IsSubquotient (subQuot S T) ρ` using `⟨S, p, Submodule.mkQ_surjective _⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `⟨_, inferInstance, inferInstance, subQuot S T, hsq.isSmooth hs, isIrreducible_subQuot hcov, hsq, Submodule.Quotient.mk ⟨y, hyS⟩, ?_, fun m hm => ?_⟩` and prove the remaining obligations. Rewrite using `[Ne, Submodule.Quotient.mk_eq_zero]`. Conclude with `hyT`. Use `show Submodule.Quotient.mk (S.toRepresentation m ⟨y, hyS⟩) = _`. Rewrite using `[← Submodule.Quotient.mk_smul]`.
-
-Use `congr 1`. Conclude with `Subtype.ext (hyη m hm)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem step_subq {n : ℕ} (G : Grp k n) : G.SubquotientProp := by
   intro W _ _ ρ hs hfl hη

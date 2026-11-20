@@ -9,9 +9,9 @@ open NumberField ReciprocityTheory.ChartRestriction.G.Geo.Tor GlobalTheory.LowDa
 namespace GlobalTheory.LowFilt
 
 /- English proof (translation)
-Distinguish the cases in `h1 : Q a`. Distinguish the cases in `h2 : P b`. Use `⟨a + b, fun h => ha ?_, fun h => hb ?_⟩` and prove the remaining obligations. Simplify using `using hP _ _ h h2`. Simplify using `using hQ _ _ h h1`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `⟨b, h2, hb⟩`. Conclude with `⟨a, ha, h1⟩`.
+Supply the required witnesses or components. Supply the required witnesses or components.
 -/
 theorem exists_not_and_not_of_sub_closed {A : Type} [AddCommGroup A] (P Q : A → Prop)
     (hP : ∀ a b, P a → P b → P (a - b)) (hQ : ∀ a b, Q a → Q b → Q (a - b)) {a b : A} (ha : ¬ P a) (hb : ¬ Q b) :
@@ -25,9 +25,9 @@ theorem exists_not_and_not_of_sub_closed {A : Type} [AddCommGroup A] (P Q : A �
   · exact ⟨a, ha, h1⟩
 
 /- English proof (translation)
-Rewrite using `[Ideal.mem_map_iff_of_surjective (H.bar : 𝓞 E →+* 𝓞 E) (fun a => ⟨H.bar a, bar_bar H a⟩)]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha, rfl⟩`. Use `bar_bar H a` as an intermediate fact. Simplify `ha` using `[this]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `fun hx => ⟨_, hx, bar_bar H x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 theorem mem_map_bar_iff {E : Type} [Field E] [NumberField E] [IsCMField E] (H : Host E) (𝔭 : Ideal (𝓞 E)) (x : 𝓞 E) :
     x ∈ 𝔭.map (H.bar : 𝓞 E →+* 𝓞 E) ↔ H.bar x ∈ 𝔭 := by
@@ -39,7 +39,7 @@ theorem mem_map_bar_iff {E : Type} [Field E] [NumberField E] [IsCMField E] (H : 
   · exact fun hx => ⟨_, hx, bar_bar H x⟩
 
 /- English proof (translation)
-Take `⟨d, i, hi, hd⟩` from `hI.exists_inv hc`. Establish `: x = d • (c • x) + i • x` using `by rw [smul_smul, ← add_smul, hd, one_smul]`. Rewrite using `[this]`. Conclude with `add_mem (Submodule.smul_mem _ _ hx) (Submodule.mem_sup_right (Submodule.smul_mem_smul hi trivial))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_smul_mem_of_not_mem {O X : Type} [CommRing O] [AddCommGroup X] [Module O X] {I : Ideal O}
     (hI : I.IsMaximal) (N : Submodule O X) {c : O} (hc : c ∉ I) {x : X} (hx : c • x ∈ N ⊔ I • (⊤ : Submodule O X)) :
@@ -50,31 +50,25 @@ theorem mem_of_smul_mem_of_not_mem {O X : Type} [CommRing O] [AddCommGroup X] [M
   exact add_mem (Submodule.smul_mem _ _ hx) (Submodule.mem_sup_right (Submodule.smul_mem_smul hi trivial))
 
 /- English proof (translation)
-Introduce `E _ _ _ H D X _ _ y n Z Z' h 𝔭 h𝔭 hn𝔭 hb e he1 he e' he1' he' v hv ℓ₀ hℓ₀ v₂ hv₂ ℓ₁ hℓ₁ θ hθ s hs hs' hgen hZ`. Use `set 𝔭' := 𝔭.map (H.bar : 𝓞 E →+* 𝓞 E) with h𝔭'def`. Establish `hmem : ∀ x, x ∈ 𝔭' ↔ H.bar x ∈ 𝔭` using `mem_map_bar_iff H 𝔭`. Establish `h𝔭' : 𝔭'.IsMaximal`. Establish `: 𝔭' = 𝔭.comap (H.bar : 𝓞 E →+* 𝓞 E)` using `Ideal.ext fun x => hmem x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Conclude with `Ideal.comap_isMaximal_of_surjective _ (fun a => ⟨H.bar a, bar_bar H a⟩)`. Establish `hn' : (n : 𝓞 E) ∈ 𝔭'` using `(hmem _).2 (by simpa using hn𝔭)`. Take `⟨ζ, hζZ, hζ, hζs, hopp⟩` from `h.exists_rank_one (m := 0) (zero_mem _) θ (fun t => by simp [hθ])`. Establish `himg : ∀ I : Ideal (𝓞 E), img D y Z' I = LinearMap.range (y ∘ₗ Z'.subtype) ⊔ I • ⊤` using `fun I => by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[LinearMap.range_comp, Submodule.range_subtype]`. Establish `himg' : ∀ (ℓ : Z' →ₗ[𝓞 E] 𝓞 E) (I : Ideal (𝓞 E)), img D y (LinearMap.range (Z'.subtype + ℓ.smulRight (0 + ζ ℓ))) I = LinearMap.range (y ∘ₗ Z'.subtype + ℓ.smulRight (y (ζ ℓ))) ⊔ I • ⊤` using `fun ℓ I => by`. Establish `: y ∘ₗ Z'.subtype + ℓ.smulRight (y (ζ ℓ)) = y ∘ₗ (Z'.subtype + ℓ.smulRight (0 + ζ ℓ))`. Use extensionality with `x`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[this, LinearMap.range_comp]`. Choose the witnesses or unpack the hypotheses as in `⟨ℓ₂, hℓ₂⟩ : ∃ ℓ₂, y (ζ ℓ₂) ∉ img D y Z' 𝔭 := by`. Take `⟨_, ⟨z, hz, rfl⟩, hz'⟩` from `SetLike.not_le_iff_exists.1 hZ`. Take `⟨ℓ, hℓ⟩` from `GlobalTheory.LowFilt.exists_linear_theta_factor D Z' θ s (fun h0 => hs (h0 ▸ zero_mem _)) hgen z`. Establish `h0 : ζ ℓ - H.bar s • z = 0` using `h.symm.eq_zero (sub_mem (hζZ ℓ) (Z.smul_mem _ hz)) fun x hx => by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[ef_swap, map_sub, hζ ℓ ⟨x, hx⟩, hℓ ⟨x, hx⟩]`. Simplify using the standard rewrite rules. Use `⟨ℓ, fun hh => hz' ?_⟩` and prove the remaining obligations. Rewrite `hh` using `[sub_eq_zero.1 h0, map_smul]`. Conclude with `mem_of_smul_mem_of_not_mem h𝔭 _ hs' hh`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨ℓ', h1, h2⟩` from `exists_not_and_not_of_sub_closed (fun ℓ : Z' →ₗ[𝓞 E] 𝓞 E => ℓ v₂ ∈ 𝔭') (fun ℓ => y (ζ ℓ) ∈ img D y Z' 𝔭) (fun a b ha hb => sub_mem ha hb) (fun a b ha hb => by simpa only [map_sub] using sub_mem ha hb) hℓ₁ hℓ₂`. Establish `he𝔭' : e ∈ 𝔭'` using `he _ h𝔭' hn' hb`. Establish `he'𝔭 : e' ∈ 𝔭` using `he' _ h𝔭 hn𝔭 hb.symm`. Use `set ℓ := e • ℓ₀ + e' • ℓ' with hℓdef`. Establish `hℓx : ∀ x, ℓ x = e * ℓ₀ x + e' * ℓ' x` using `fun x => rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hv𝔭 : ℓ v ∉ 𝔭` using `fun hh => hℓ₀ (by`. Establish `: ℓ₀ v = ℓ v - (e - 1) * ℓ₀ v - e' * ℓ' v` using `by rw [hℓx]; ring`. Rewrite using `[this]`. Conclude with `sub_mem (sub_mem hh (𝔭.mul_mem_right _ he1)) (𝔭.mul_mem_right _ he'𝔭))`. Establish `hv𝔭' : ℓ v₂ ∉ 𝔭'` using `fun hh => h1 (by`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: ℓ' v₂ = ℓ v₂ - (e' - 1) * ℓ' v₂ - e * ℓ₀ v₂` using `by rw [hℓx]; ring`. Use `show ℓ' v₂ ∈ 𝔭'`. Rewrite using `[this]`. Conclude with `sub_mem (sub_mem hh (𝔭'.mul_mem_right _ he1')) (𝔭'.mul_mem_right _ he𝔭'))`. Establish `k𝔭` using `range_le_of_ker (y ∘ₗ Z'.subtype) ℓ (y (ζ ℓ)) 𝔭 h𝔭 (v := v) hv hv𝔭`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Establish `k𝔭'` using `range_le_of_ker (y ∘ₗ Z'.subtype) ℓ (y (ζ ℓ)) 𝔭' h𝔭' (v := v₂) hv₂ hv𝔭'`. Use `⟨_, hopp ℓ, fun 𝔮 h𝔮 hn𝔮 => ?_, fun hle => h2 ?_⟩` and prove the remaining obligations. Rewrite using `[himg, himg']`. Distinguish the cases in `q1 : 𝔮 = 𝔭`. Rewrite using `[q1]`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `k𝔭.2`. Distinguish the cases in `q2 : 𝔮 = 𝔭'`. Rewrite using `[q2]`. Conclude with `k𝔭'.2`. Conclude with `range_le_of_mem _ _ _ _ fun x => by`.
-
-Rewrite using `[hℓx]`. Conclude with `add_mem (𝔮.mul_mem_right _ (he _ h𝔮 hn𝔮 q1)) (𝔮.mul_mem_right _ (he' _ h𝔮 hn𝔮 q2))`. Rewrite `hle` using `[himg']`. Establish `hu` using `hle k𝔭.1`. Establish `b1 : H.bar e ∈ 𝔭` using `(hmem _).1 he𝔭'`.
-
-Establish `b2 : H.bar e' - 1 ∈ 𝔭` using `by simpa using (hmem _).1 he1'`. Establish `: y (ζ ℓ') = y (ζ ℓ) - H.bar e • y (ζ ℓ₀) - (H.bar e' - 1) • y (ζ ℓ')`. Rewrite using `[hℓdef, map_add, hζs, hζs, map_add, map_smul, map_smul, sub_smul, one_smul]`. Normalize the expressions using the abelian group laws. Use `show y (ζ ℓ') ∈ img D y Z' 𝔭`.
-
-Rewrite using `[this]`. Conclude with `sub_mem (sub_mem hu (Submodule.mem_sup_right (Submodule.smul_mem_smul b1 trivial))) (Submodule.mem_sup_right (Submodule.smul_mem_smul b2 trivial))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_improves_of_ne_conj : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} (D : Datum H)
     {X : Type} [AddCommGroup X] [Module (𝓞 E) X] (y : D.La →ₗ[𝓞 E] X) (n : ℕ)

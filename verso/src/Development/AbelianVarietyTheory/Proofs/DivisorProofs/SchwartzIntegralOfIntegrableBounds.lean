@@ -8,21 +8,19 @@ noncomputable section
 namespace GlobalTheory.ConeSch
 
 /- English proof (translation)
-Introduce `D S _ _ _ ν f h1 h3`. Use `choose b hbi hb using h3`. Use `set G : (n : ℕ) → D → ContinuousMultilinearMap ℝ (fun _ : Fin n => D) ℂ := fun n x => ∫ s, iteratedFDeriv ℝ n (f s) x ∂ν with hG`. Establish `bound0 : ∀ n s x, ‖iteratedFDeriv ℝ n (f s) x‖ ≤ b 0 n s` using `fun n s x => by`. Use `(SchwartzMap.le_seminorm ℂ 0 n (f s) x).trans (hb 0 n s)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using this`. Establish `intI : ∀ n x, Integrable (fun s => iteratedFDeriv ℝ n (f s) x) ν` using `fun n x => Integrable.mono' (hbi 0 n) (h1 n x) (ae_of_all _ fun s => bound0 n s x)`. Establish `derivD : ∀ n s x, HasFDerivAt (fun w => iteratedFDeriv ℝ n (f s) w) (iteratedFDeriv ℝ (n + 1) (f s) x).curryLeft x` using `fun n s x => (contDiff_iff_ftaylorSeries.1 ((f s).smooth ⊤)).fderiv n (by exact_mod_cast WithTop.coe_lt_top (n : ℕ)) x`. Establish `derivG : ∀ n x, HasFDerivAt (G n) (G (n + 1) x).curryLeft x` using `fun n x => hasFDerivAt_integral_curry ν (fun s w => iteratedFDeriv ℝ n (f s) w) (fun s w => iteratedFDeriv ℝ (n + 1) (f s) w) (b 0 (n + 1)) (fun s w => derivD n s w) (fun w => h1 n w) (fun w => intI n w) (fun w => h1 (n + 1) w) (fun s w => bound0 (n + 1) s w) (hbi 0 (n + 1)) x`. Use `set g : D → ℂ := fun x => ∫ s, f s x ∂ν with hg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hT : HasFTaylorSeriesUpTo ((⊤ : ℕ∞) : WithTop ℕ∞) g (fun x m => G m x)`. Use `⟨fun x => ?_, fun m _ x => derivG m x, fun m _ => continuous_iff_continuousAt.2 fun x => (derivG m x).continuousAt⟩` and prove the remaining obligations. Apply the tactic sequence `have e : ∀ φ : ContinuousMultilinearMap ℝ (fun _ : Fin 0 => D) ℂ, φ.curry0 = (continuousMultilinearCurryFin0 ℝ D ℂ).toLinearIsometry φ := fun _ => rfl`. Rewrite using `[e, hG]`. Simplify using `only`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Rewrite using `[← LinearIsometry.integral_comp_comm]`. Use `congr 1`. Establish `hD : ∀ n x, iteratedFDeriv ℝ n g x = G n x` using `fun n x => (hT.eq_iteratedFDeriv (by exact_mod_cast le_top) x).symm`. Establish `key : ∀ (p n : ℕ) (c : S → ℝ), Integrable c ν → (∀ s, SchwartzMap.seminorm ℂ p n (f s) ≤ c s) → ∀ x, ‖x‖ ^ p * ‖G n x‖ ≤ ∫ s, c s ∂ν`. Introduce `p n c hci hcb x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Establish `ht : (0 : ℝ) ≤ ‖x‖ ^ p` using `pow_nonneg (norm_nonneg x) p`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hG]`. Simplify using `only`. Rewrite using `[integral_smul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Use `_ ≤ ∫ s, c s ∂ν := by`. Use `norm_integral_le_of_norm_le hci (ae_of_all _ fun s => ?_)` and prove the remaining obligations. Rewrite using `[norm_smul, Real.norm_of_nonneg ht]`. Conclude with `(SchwartzMap.le_seminorm ℂ p n (f s) x).trans (hcb s)`. Set `GS : SchwartzMap D ℂ` to `⟨g, hT.contDiff, fun p n => ⟨∫ s, b p n s ∂ν, fun x => by rw [hD]; exact key p n (b p n) (hbi p n) (hb p n) x⟩⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hGS : ∀ n x, iteratedFDeriv ℝ n GS x = G n x` using `fun n x => hD n x`. Use `⟨GS, fun x => rfl, fun n x => hGS n x, fun m n c hci hcb => ?_⟩` and prove the remaining obligations. Establish `hc0 : 0 ≤ ∫ s, c s ∂ν` using `integral_nonneg fun s => (apply_nonneg _ _).trans (hcb s)`. Use `SchwartzMap.seminorm_le_bound ℂ m n GS hc0 fun x => ?_` and prove the remaining obligations. Rewrite using `[hGS]`.
-
-Conclude with `key m n c hci hcb x`.
+A detailed English derivation is pending.
 -/
 theorem exists_schwartz_integral : ∀ {D S : Type} [NormedAddCommGroup D] [NormedSpace ℝ D] [MeasurableSpace S] (ν : Measure S)
     (f : S → SchwartzMap D ℂ),

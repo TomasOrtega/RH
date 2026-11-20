@@ -5,7 +5,7 @@ set_option backward.isDefEq.respectTransparency false
 open CategoryTheory AlgebraicGeometry TopologicalSpace Opposite Limits GroundTheory.Arith.SchemeCoh GlobalTheory.SheafPull CrystallineSemistableComparison CrystallineSemistableComparison.Om CrystallineSemistableComparison.Om.Cech
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CompanionTheory.CechLerayPull.cechHEquiv_pull | exact GlobalTheory.CompanionTheory.CechLerayPull.cechHEquiv_pull | (intros; apply GlobalTheory.CompanionTheory.CechLerayPull.cechHEquiv_pull <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.cover_system_cech_pull_natural : ∀ {X Y : TopCat.{0}} (f : X ⟶ Y) {BY : Opens Y → Prop}
     {GoodY : ∀ {κ : Type}, Opens Y → (κ → Opens Y) → Prop} {BX : Opens X → Prop}

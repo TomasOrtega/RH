@@ -8,7 +8,7 @@ open scoped BigOperators
 namespace GlobalTheory.NormSum
 
 /- English proof (translation)
-Establish `h : σ * D.host.conj = D.host.conj * σ` using `(D.host.gal).injective (by rw [map_mul, map_mul, mul_comm])`. Conclude with `congrArg (fun f : D.host.E ≃ₐ[ℚ] D.host.E => f x) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem aut_conj_comm (D : D7) (σ : D.host.E ≃ₐ[ℚ] D.host.E) (x : D.host.E) :
     σ (D.host.conj x) = D.host.conj (σ x) := by
@@ -17,9 +17,9 @@ theorem aut_conj_comm (D : D7) (σ : D.host.E ≃ₐ[ℚ] D.host.E) (x : D.host.
   exact congrArg (fun f : D.host.E ≃ₐ[ℚ] D.host.E => f x) h
 
 /- English proof (translation)
-Set `e : D.host.E ≃ₐ[D.host.K] D.host.E` to `{ σ with commutes' := hσ }`. Unfold `hYY`. Rewrite using `[← Algebra.trace_eq_of_algEquiv e (∑ i, ∑ j, x i j * D.host.conj (y i j))]`. Use `congr 1`. Use `show _ = σ _`.
+Introduce a local definition for the expression. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, map_mul, Matrix.map_apply, aut_conj_comm]`.
+A detailed English derivation is pending.
 -/
 theorem hYY_map_aut (D : D7) (σ : D.host.E ≃ₐ[ℚ] D.host.E) (hσ : ∀ a : D.host.K, σ (a : D.host.E) = (a : D.host.E))
     {N N' : ℕ} (x y : Matrix (Fin N') (Fin N) D.host.E) : hYY D (x.map σ) (y.map σ) = hYY D x y := by
@@ -31,9 +31,9 @@ theorem hYY_map_aut (D : D7) (σ : D.host.E ≃ₐ[ℚ] D.host.E) (hσ : ∀ a :
   simp only [map_sum, map_mul, Matrix.map_apply, aut_conj_comm]
 
 /- English proof (translation)
-Introduce `D σ hσ N N' r b hb`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Introduce `i j`. Rewrite using `[hYY_map_aut D σ hσ]`. Conclude with `hb.1 i j`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `e : D.host.E ≃ₐ[D.host.K] D.host.E` to `{ σ with commutes' := hσ }`. Set `L : Matrix (Fin N') (Fin N) D.host.E ≃ₗ[D.host.K] Matrix (Fin N') (Fin N) D.host.E` to `e.toLinearEquiv.mapMatrix`. Establish `h : (fun j => (b j).map σ) = L.toLinearMap ∘ b` using `rfl`. Rewrite using `[h, Set.range_comp, ← Submodule.map_span, hb.2, Submodule.map_top, LinearEquiv.range]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onB_map_aut : ∀ (D : D7) (σ : D.host.E ≃ₐ[ℚ] D.host.E), (∀ a : D.host.K, σ (a : D.host.E) = (a : D.host.E)) →
     ∀ (N N' r : ℕ) (b : Fin r → Matrix (Fin N') (Fin N) D.host.E), OnB D b → OnB D (fun j => (b j).map σ) := by

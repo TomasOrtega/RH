@@ -19,9 +19,9 @@ section
 variable {S S' : Scheme.{0}} {G' : Over S'} [GrpObj G'] {G : Over S} [GrpObj G] {f : S' ⟶ S} {φ : G'.left ⟶ G.left}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `Over.OverMorphism.ext (by rw [e, GlobalTheory.GlueGrpLaw.one_left h T])`. Introduce `h0`. Use `Over.OverMorphism.ext (h.1.hom_ext ?_ ?_)` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← e, h0, GlobalTheory.GlueGrpLaw.one_left h T]`. Rewrite using `[Over.w x, Over.w (1 : T ⟶ G')]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pt_one_iff (h : IsGrpPullback G' G f φ) {T : Over S'} (x : T ⟶ G') (x₀ : Over.mk (T.hom ≫ f) ⟶ G)
     (e : x₀.left = x.left ≫ φ) : x = 1 ↔ x₀ = 1 := by
@@ -40,7 +40,7 @@ variable {p : ℕ} [Fact p.Prime] {D : Datum p} {R : Type} [CommRing R] {b : Bas
   {w : Ideal (𝓞 D.F)} {j c : ℕ}
 
 /- English proof (translation)
-Use `⟨fun h => h a' rfl, fun h b hb => ?_⟩` and prove the remaining obligations. Establish `: b = a'` using `Over.OverMorphism.ext (T.ms.cart.1.hom_ext hb (by rw [Over.w b, Over.w a']))`. Rewrite using `[this]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kerAt_lift (T : TjD M r w j c) {X : Scheme.{0}} (z : X ⟶ T.Y) (a' : Over.mk z ⟶ T.o.A) :
     KerAt T z (a'.left ≫ T.ms.φ) ↔ a' ≫ T.ψ = 1 := by
@@ -57,11 +57,11 @@ variable {p : ℕ} [Fact p.Prime] {D : Datum p} {G : HTGroup p} {L : Link D G} {
   {c₁ c₂ : ℕ} {a₁ a₂ : 𝓞 D.F}
 
 /- English proof (translation)
-Set `a' : Over.mk (z ≫ P.y) ⟶ Tj.o.A` to `Over.homMk (z ≫ e.left ≫ P.fa) (by`. Establish `h1 : e.left ≫ (T.M M₁).univ.A.hom = 𝟙 _` using `Over.w e`. Simplify using `only [Over.mk_hom, Category.assoc]`. Rewrite using `[P.ca.1.w, reassoc_of% h1])`. Establish `h1` using `kerAt_lift Tj (z ≫ P.y) a'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : a'.left ≫ Tj.ms.φ = z ≫ e.left ≫ C₁.m.φ ≫ mf.φ`. Simplify using `only [a', Over.homMk_left, Category.assoc, P.ms]`. Rewrite `h1` using `[h2]`. Rewrite using `[h1]`. Use `(pt_one_iff P.cb (toUnit (Over.mk z) ≫ e ≫ W.ψ) (a' ≫ Tj.ψ) ?_).symm` and prove the remaining obligations.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [a', Over.comp_left, Over.homMk_left, Category.assoc, P.sq]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 private theorem ker_read {C₁ : X₁.site.Cl (T.M M₁).univ c₁ a₁} {C₂ : X₂.site.Cl (T.M M₂).univ c₂ a₂} {W : Wit T h M₁ M₂}
     {f : X₁.Y.X ⟶ X₂.M.X} {mf : ObjMap X₁.Y.univ X₂.M.univ f} {c : ℕ} {Tj : TjD X₂.M r 𝔴' i c} (P : BPt C₁ C₂ W mf Tj)
@@ -87,11 +87,11 @@ variable {q : ℕ} [Fact q.Prime] {D : Datum q} {R R' : Type} [CommRing R] [Comm
   {N₀ N₁ : ℕ} {𝔟 𝔴' : Ideal (𝓞 D.F)}
 
 /- English proof (translation)
-Set `g₁ : Over.mk (x ≫ C.j) ⟶ Y.univ.A` to `Over.homMk (mf.cart.1.lift g.left (x ≫ C.j) (Over.w g)) (by simp)`. Establish `hg₁ : g₁.left ≫ mf.φ = g.left` using `by simp [g₁]`. Establish `hk : ∀ c ∈ 𝔟 ^ 1, g₁ ≫ Y.univ.act.act (algebraMap (𝓞 D.F) D.O c) = 1` using `fun c hc => by`. Use `(pt_one_iff mf.cart _ (g ≫ M.univ.act.act (algebraMap (𝓞 D.F) D.O c)) ?_).2 (hg c (hb (by simpa using hc)))` and prove the remaining obligations. Simplify using `only [Over.comp_left, Category.assoc]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Rewrite using `[mf.act, ← Category.assoc, hg₁]`. Take `⟨y, hy⟩` from `(Y.isLev.2.2.2 Ω (x ≫ C.j)).2 g₁ hk`. Use `⟨algebraMap (𝓞 D.F) D.O a • y, fun z hz => ?_⟩` and prove the remaining obligations. Establish `hl` using `C.lv y`. Rewrite using `[← hg₁, ← hy, reassoc_of% hl, reassoc_of% hz]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Over.toUnit_left]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cls_read (hb : 𝔟 ≤ 𝔴') (Y : EtModel b N₀ 𝔟 1) (M : Model b N₀) {f : Y.X ⟶ M.X} (mf : ObjMap Y.univ M.univ f)
     {X : Scheme.{0}} {s : X ⟶ Sp R'} {o : GObj gb N₁ s} {β : R →+* R'} {c : ℕ} {a : 𝓞 D.F} (C : Cls Y β o c a)
@@ -116,11 +116,11 @@ end
 end UpperTheory.Gal.FiniteEtaleModels
 
 /- English proof (translation)
-Introduce `hS hT p _ D G L hSc E _ _ gb w q _ r 𝔴 𝔫 S k T N₀ 𝔟₁ 𝔟₂ X₁ X₂ 𝔴' i hmax hu hb hi h hint htj M₁ M₂ c₁ c₂ a₁ a₂ hn₁ hn₂ C₁ C₂ W f mf hf e he hpos Tj P Ω _ _ x x' hxx'`. Use `haveI : CharZero Ω := charZero_of_injective_ringHom (Spec.preimage (x ≫ (T.M M₁).s)).hom.injective`. Establish `hb' : 𝔟₁ ≤ 𝔴'` using `hb.trans Ideal.mul_le_right`. Use `hS q (datAt S.atq S.sp) (Ow w) S.b N₀ X₂.lev.1 X₂.lev.2.1 hSc.m1 r 𝔴' i e hmax hu hi hpos X₂.M Tj Ω ((x ≫ C₁.j) ≫ f) (x ≫ P.y) (x' ≫ P.y) ?_ ?_ ?_` and prove the remaining obligations. Rewrite using `[Category.assoc, Category.assoc, P.ys]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, P.ys, ← Category.assoc, hxx', Category.assoc]`. Introduce `g hg`. Take `⟨d, hd⟩` from `cls_read (D := datAt S.atq S.sp) hb' X₁.Y X₂.M mf C₁ x g hg`. Establish `k₁ : KerAt Tj (x ≫ P.y) g.left ↔ toUnit (Over.mk x) ≫ (T.M M₁).univ.eta d ≫ W.ψ = 1`. Rewrite using `[hd x rfl]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `ker_read P x _`. Establish `k₂ : KerAt Tj (x' ≫ P.y) g.left ↔ toUnit (Over.mk x') ≫ (T.M M₁).univ.eta d ≫ W.ψ = 1`. Rewrite using `[hd x' hxx'.symm]`. Conclude with `ker_read P x' _`. Conclude with `k₁.trans (((hT p D G L E gb h (T.M M₁).X (T.M M₁).s M₁ M₂ (T.M M₁).univ W.o W.ψ W.trans Ω x d).1.trans (hT p D G L E gb h (T.M M₁).X (T.M M₁).s M₁ M₂ (T.M M₁).univ W.o W.ψ W.trans Ω x' d).1.symm).trans k₂.symm)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.FiniteEtaleModels.bKer_of :
     SecInjG → TrEtaPt → BKer := by

@@ -13,19 +13,19 @@ namespace GlobalTheory.SepRows
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Distinguish the cases in `h0 : ∃ i, ∀ y, b i y = 0`. Take `⟨i, hi⟩` from `h0`. Use `⟨0, fun x => ?_⟩` and prove the remaining obligations. Take `⟨c, hc⟩` from `h i x`. Use `hc (x i)` as an intermediate fact.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `this` using `[Function.update_eq_self, hi]`. Simplify using `[this]`. Use `push_neg at h0`. Use `choose x₀ hx₀ using h0`. Establish `key : ∀ s : Finset ι, ∀ x, (∀ i, i ∉ s → x i = x₀ i) → β x * ∏ i ∈ s, b i (x₀ i) = β x₀ * ∏ i ∈ s, b i (x i)`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => intro x hx; rw [show x = x₀ from funext fun i => hx i (by simp)]`. Consider the case `insert j s hj ih`. Introduce `x hx`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨c, hc⟩` from `h j x`. Establish `e1` using `hc (x j)`. Rewrite `e1` using `[Function.update_eq_self]`. Establish `e2` using `ih (Function.update x j (x₀ j)) fun i hi => by`. Distinguish the cases in `e : i = j`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `e` using the available equality. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne e]; exact hx i (by simp [e, hi])`. Establish `e3 : ∏ i ∈ s, b i (Function.update x j (x₀ j) i) = ∏ i ∈ s, b i (x i)` using `Finset.prod_congr rfl fun i hi => by rw [Function.update_of_ne (ne_of_mem_of_not_mem hi hj)]`. Rewrite `e2` using `[hc, e3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[Finset.prod_insert hj, Finset.prod_insert hj, e1]`. Take the linear combination `b j (x j) * e2`. Establish `hn : ∏ i, b i (x₀ i) ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => hx₀ i`. Use `⟨β x₀ / ∏ i, b i (x₀ i), fun x => ?_⟩` and prove the remaining obligations. Use `key Finset.univ x (by simp)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `this`.
+A detailed English derivation is pending.
 -/
 theorem mul_prod_of_separately {ι : Type} [Fintype ι] [DecidableEq ι] {X : ι → Type} (b : ∀ i, X i → ℂ) (β : (∀ i, X i) → ℂ)
     (h : ∀ i x, ∃ c : ℂ, ∀ y, β (Function.update x i y) = c * b i y) : ∃ l : ℂ, ∀ x, β x = (∏ i, b i (x i)) * l := by

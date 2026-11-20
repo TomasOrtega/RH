@@ -14,11 +14,11 @@ variable {K V W M N ι : Type} [Field K] [AddCommGroup V] [Module K V] [AddCommG
   [AddCommGroup M] [Module ℂ M] [AddCommGroup N] [Module ℂ N] {σ : K →+* ℂ}
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `LinearMap.exists_extend ((Finsupp.linearCombination ℂ (fun i => g (b i))) ∘ₗ hli.repr)`. Establish `hb : ∀ i, G (e (b i)) = g (b i)`. Introduce `i`. Establish `hm : e (b i) ∈ Submodule.span ℂ (Set.range (fun i => e (b i)))` using `Submodule.subset_span ⟨i, rfl⟩`. Establish `h1` using `LinearMap.congr_fun hG ⟨e (b i), hm⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : hli.repr ⟨e (b i), hm⟩ = Finsupp.single i 1` using `hli.repr_eq_single i _ rfl`. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, h2, Finsupp.linearCombination_single, one_smul] at h1`. Conclude with `h1`. Use `⟨G, fun x => ?_⟩` and prove the remaining obligations. Rewrite using `[← b.sum_repr x]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, LinearMap.map_smulₛₗ, hb, RingHom.id_apply]`.
+A detailed English derivation is pending.
 -/
 theorem exists_complex_extension [Fintype ι] (e : V →ₛₗ[σ] M) (b : Module.Basis ι K V)
     (hli : LinearIndependent ℂ (fun i => e (b i))) (g : V →ₛₗ[σ] N) :
@@ -39,17 +39,17 @@ theorem exists_complex_extension [Fintype ι] (e : V →ₛₗ[σ] M) (b : Modul
   simp only [map_sum, LinearMap.map_smulₛₗ, hb, RingHom.id_apply]
 
 /- English proof (translation)
-Establish `hinj` using `inj_of_li σ e b hli`. Set `f : J → V →ₗ[K] V` to `fun j => descend e e hinj (F j) (hF j)`. Establish `hf : ∀ j x, e (f j x) = F j (e x)` using `fun j x => descend_spec e e hinj (F j) (hF j) x`. Set `g : V →ₗ[K] (J → V)` to `LinearMap.pi f`. Take `⟨s, hs⟩` from `g.rangeRestrict.exists_rightInverse_of_surjective g.range_rangeRestrict`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hh⟩` from `LinearMap.exists_extend s`. Establish `hg : ∀ x, g (h (g x)) = g x`. Introduce `x`. Establish `h1 : h (g x) = s (g.rangeRestrict x)` using `LinearMap.congr_fun hh (g.rangeRestrict x)`. Establish `h2` using `LinearMap.congr_fun hs (g.rangeRestrict x)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `congrArg Subtype.val h2`. Use `choose H hH using fun j : J => exists_complex_extension e b hli (e.comp (h ∘ₗ LinearMap.single K (fun _ : J => V) j))`. Set `P : M →ₗ[ℂ] M` to `LinearMap.id - ∑ j, H j ∘ₗ F j`. Establish `hP : ∀ x, P (e x) = e (x - h (g x))`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `x`. Establish `h1 : g x = ∑ j, Pi.single j (f j x)` using `(Finset.univ_sum_single (g x)).symm`. Rewrite using `[h1]`. Simplify using `only [P, LinearMap.sub_apply, LinearMap.id_apply, LinearMap.sum_apply, LinearMap.comp_apply, map_sub, map_sum, ← hf, hH, LinearMap.coe_single]`. Establish `hPm : P m = m`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[P, LinearMap.sum_apply, h0]`. Rewrite using `[← hPm]`. Establish `hle : Submodule.span ℂ (Set.range (fun i => e (b i))) ≤ (Submodule.span ℂ (e '' {x | ∀ j, F j (e x) = 0})).comap P`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Submodule.subset_span ⟨b i - h (g (b i)), fun j => ?_, (hP _).symm⟩` and prove the remaining obligations. Establish `h1 : g (b i - h (g (b i))) = 0` using `by rw [map_sub, hg, sub_self]`. Establish `h2 : f j (b i - h (g (b i))) = 0` using `congrFun h1 j`. Rewrite using `[← hf, h2, map_zero]`. Conclude with `hle hm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_span_of_kernel [Fintype ι] {J : Type} [Fintype J] (e : V →ₛₗ[σ] M)
     (b : Module.Basis ι K V) (hli : LinearIndependent ℂ (fun i => e (b i)))
@@ -92,11 +92,11 @@ theorem mem_span_of_kernel [Fintype ι] {J : Type} [Fintype J] (e : V →ₛₗ[
   exact hle hm
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span K S` using `hS ▸ Submodule.mem_top`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx => exact hF x hx`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Take `⟨a, ha⟩` from `hx`. Take `⟨c, hc⟩` from `hy`. Conclude with `⟨a + c, by simp [ha, hc]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, ha⟩` from `hx`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨c • a, by simp [LinearMap.map_smulₛₗ, ha]⟩`.
+Supply the required witnesses or components.
 -/
 theorem preserves_of_span (e : V →ₛₗ[σ] M) (S : Set V) (hS : Submodule.span K S = ⊤)
     (F : M →ₗ[ℂ] M) (hF : ∀ x ∈ S, ∃ y, e y = F (e x)) (x : V) : ∃ y, e y = F (e x) := by
@@ -115,15 +115,15 @@ theorem preserves_of_span (e : V →ₛₗ[σ] M) (S : Set V) (hS : Submodule.sp
 end General
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨x, hx, rfl⟩`. Conclude with `hx`. Introduce `m hm`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hsp : Submodule.span ℂ (Set.range (fun a => M.emb 0 ((M.lat 0).b a))) = A.Mu0` using `(M.emb_basis 0).2.trans M.Fi_zero`. Establish `hrho : ∀ v a x, ∃ y, M.emb 0 y = A.rhoT v a (M.emb 0 x)` using `fun v a => preserves_of_span (M.emb 0) _ (M.lat_good 0).2.2 (A.rhoT v a) (fun x hx => by`. Take `⟨y, -, hy⟩` from `M.rhoT_lat v a x hx`. Conclude with `⟨y, hy⟩)`. Establish `hNm : ∀ v x, ∃ y, M.emb 0 y = A.Nm v (M.emb 0 x)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v x`. Use `choose y hy using fun a => hrho v a x`. Conclude with `⟨∑ a, y a, by simp only [map_sum, hy, ColumnsAtT.Nm, LinearMap.sum_apply]⟩`. Establish `hall : ∀ x, M.emb 0 x ∈ A.Mu0`. Introduce `x`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hsp, ← (M.lat 0).b.sum_repr x, map_sum]`. Use `Submodule.sum_mem _ fun i _ => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`. Establish `h` using `mem_span_of_kernel (M.emb 0) (M.lat 0).b (M.emb_basis 0).1 A.Nm hNm m (hsp ▸ hm.1) (fun v => (Submodule.mem_iInf _).1 hm.2 v)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Use `Submodule.span_mono (Set.image_mono ?_) h` and prove the remaining obligations. Introduce `x hx`. Conclude with `⟨hall x, (Submodule.mem_iInf _).2 hx⟩`.
+A detailed English derivation is pending.
 -/
 theorem span_ramSub {R : Ranks} {LL : Type} [Field LL] [NumberField LL] [StarRing LL]
     {embLL : LL →+* ℂ} {Pl : Rows.Places LL} {Tau : Type} [Fintype Tau] {hc : Tau → HCParam R}
@@ -158,7 +158,7 @@ theorem span_ramSub {R : Ranks} {LL : Type} [Field LL] [NumberField LL] [StarRin
     exact ⟨hall x, (Submodule.mem_iInf _).2 hx⟩
 
 /- English proof (translation)
-Introduce `_ C u` and use `span_ramSub (C.fm u)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem span_ramSub_cols : ∀ (B : Base) (C : Cols B) (u : B.Word),
     Submodule.span ℂ ((C.fm u).emb 0 '' ((C.fm u).ramSub : Set ((C.fm u).lat 0).V)) =

@@ -29,17 +29,17 @@ noncomputable section
 namespace GlobalTheory.TargetCoef
 
 /- English proof (translation)
-Introduce `D ψ S T χS χT om hw m X hm F hF g y a b ha hb hab`. Establish `hψ` using `hw.std`. Establish `hG : IsThetaFunO ψ S T (om (1, g) F)` using `hw.om_pres _ F hF`. Establish `hact : actO S T 1 g (actO S T 1 g⁻¹ y) = y`. Use `GlobalTheory.AdelicLatMove.actO_actO_inv S T 1 g y` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[inv_one]`. Then use the resulting hypothesis. Establish `hy : heisO ψ S T y (om (1, g) F) = ψ b • om (1, g) F`. Establish `e` using `hw.om_heis 1 g (actO S T 1 g⁻¹ y) F hF`. Rewrite `e` using `[hb, map_smul, hact]`. Conclude with `e.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hU` using `((GlobalTheory.ThetaPairingLaws.ipO_laws D ψ S T m X hψ hm _ _ hG hF).2.2.2.2.2.2.1 y).1`. Rewrite `hU` using `[hy, ha]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.RestrictedTensorSplitting.ipO at hU`. Establish `hI : (∫ w in X, (ψ b • om (1, g) F) w * conj ((ψ a • F) w) ∂m) = (ψ b * conj (ψ a)) * ∫ w in X, om (1, g) F w * conj (F w) ∂m`. Rewrite using `[← integral_const_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun w => ?_)` and prove the remaining obligations. Simplify using `only [Pi.smul_apply, smul_eq_mul, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hU` using `[hI]`. Establish `hn : conj (ψ a) * ψ a = 1`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Complex.conj_mul', hψ.1.2.1 a]`. Simplify using the standard rewrite rules. Assume the negation of the conclusion as `hne`. Establish `hc : ψ b * conj (ψ a) = 1`. Use `congrArg (· / ∫ w in X, om (1, g) F w * conj (F w) ∂m) hU` as an intermediate fact.
+Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `this` using `[mul_div_assoc, div_self hne]`. Apply `hab` to reduce the goal to its premises. Combine the equalities or inequalities in the displayed calculation.
+Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem coef_zero_of_target_eigen : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om →

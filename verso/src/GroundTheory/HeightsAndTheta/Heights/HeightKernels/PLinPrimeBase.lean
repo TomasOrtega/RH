@@ -15,14 +15,14 @@ variable {T : Type} [Fintype T] {k : Type} [Field k]
 def firstLin (n : T → ℤ) : MRing (stackedBlocks T) := ∑ t, n t • graphFirst t
 
 /- English proof (translation)
-Simplify using `only [firstLin, map_sum, map_zsmul, LinPrimeExample.linPointMap_first, Finset.sum_mul, smul_mul_assoc]`.
+Simplify using the standard rewrite rules.
 -/
 theorem linPointMap_firstLin (α : T → k) (M : T → Fin 1 → k) (n : T → ℤ) :
     linPointMap α M (firstLin n) = C (∑ t, n t • α t) * X none := by
   simp only [firstLin, map_sum, map_zsmul, LinPrimeExample.linPointMap_first, Finset.sum_mul, smul_mul_assoc]
 
 /- English proof (translation)
-Establish `hy : y ∈ Submodule.span ℤ (Set.range α)` using `hα ▸ Submodule.mem_top`. Conclude with `(Submodule.mem_span_range_iff_exists_fun ℤ).mp hy`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_comb {α : T → k} (hα : Submodule.span ℤ (Set.range α) = ⊤) (y : k) :
     ∃ n : T → ℤ, ∑ t, n t • α t = y := by
@@ -35,62 +35,56 @@ def chartEval (α : T → k) (M : T → Fin 1 → k) (a b : k) : MRing (stackedB
   (eval (chartPt a b)).comp (linPointMap α M)
 
 /- English proof (translation)
-Simplify using `[chartEval, linPointMap_firstLin, chartPt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartEval_firstLin (α : T → k) (M : T → Fin 1 → k) (a b : k) (n : T → ℤ) :
     chartEval α M a b (firstLin n) = (∑ t, n t • α t) * a⁻¹ := by
   simp [chartEval, linPointMap_firstLin, chartPt]
 
 /- English proof (translation)
-Simplify using `[chartEval, LinPrimeExample.linPointMap_first, chartPt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartEval_first (α : T → k) (M : T → Fin 1 → k) (a b : k) (t : T) :
     chartEval α M a b (graphFirst t) = α t * a⁻¹ := by
   simp [chartEval, LinPrimeExample.linPointMap_first, chartPt]
 
 /- English proof (translation)
-Simplify using `[chartEval, LinPrimeExample.linPointMap_second, chartPt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chartEval_second (α : T → k) (M : T → Fin 1 → k) (a b : k) (t : T) :
     chartEval α M a b (graphSecond t) = M t 0 * b⁻¹ := by
   simp [chartEval, LinPrimeExample.linPointMap_second, chartPt]
 
 /- English proof (translation)
-Use `set I := linPrime α M ⊔ J with hI`. Use `set φ := chartEval α M (α c₁) (M c₂ 0) with hφ`. Use `set mk := Ideal.Quotient.mk I with hmk`. Establish `hV : ∀ h, linPointMap α M h = 0 → mk h = 0` using `fun h hh => Ideal.Quotient.eq_zero_iff_mem.mpr (Ideal.mem_sup_left (RingHom.mem_ker.mpr hh))`. Establish `hB₁ : mk (graphFirst c₁) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← map_one mk]`. Conclude with `Ideal.Quotient.eq.mpr (Ideal.mem_sup_right hJ₁)`. Establish `hB₂ : mk (graphSecond c₂) = 1`. Rewrite using `[← map_one mk]`. Conclude with `Ideal.Quotient.eq.mpr (Ideal.mem_sup_right hJ₂)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `set N : Submodule ℤ (MRing (stackedBlocks T) ⧸ I) := Submodule.span ℤ (Set.range fun t => mk (graphFirst t)) with hN`. Establish `hLin : ∀ n : T → ℤ, mk (firstLin n) ∈ N` using `fun n => by`. Rewrite using `[firstLin, map_sum]`. Use `Submodule.sum_mem _ fun t _ => ?_` and prove the remaining obligations. Rewrite using `[map_zsmul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨t, rfl⟩)`. Establish `hD : ∀ s t, mk (graphFirst s) * mk (graphFirst t) ∈ N` using `fun s t => by`. Take `⟨n, hn⟩` from `exists_comb hα (α s * α t / α c₁)`. Establish `key : α c₁ * (α s * α t / α c₁) = α s * α t` using `by field_simp`. Establish `h0` using `hV (graphFirst s * graphFirst t - graphFirst c₁ * firstLin n) (by`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[map_sub, map_mul, map_mul, LinPrimeExample.linPointMap_first, LinPrimeExample.linPointMap_first, LinPrimeExample.linPointMap_first, linPointMap_firstLin, hn]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sub, map_mul]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [key, sub_self, map_zero, zero_mul])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite `h0` using `[map_sub, map_mul, map_mul, sub_eq_zero, hB₁, one_mul]`. Rewrite using `[h0]`. Conclude with `hLin n`. Establish `hE : ∀ t, mk (graphSecond t) ∈ N` using `fun t => by`. Take `⟨n, hn⟩` from `exists_comb hα (α c₁ * M t 0 / M c₂ 0)`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `key : M c₂ 0 * (α c₁ * M t 0 / M c₂ 0) = M t 0 * α c₁` using `by field_simp`. Establish `h0` using `hV (graphSecond t * graphFirst c₁ - graphSecond c₂ * firstLin n) (by`. Rewrite using `[map_sub, map_mul, map_mul, LinPrimeExample.linPointMap_first, LinPrimeExample.linPointMap_second, LinPrimeExample.linPointMap_second, linPointMap_firstLin, hn, Fin.sum_univ_one, Fin.sum_univ_one]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [map_sub, map_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ = 0 := by rw [key, sub_self, map_zero, zero_mul])`. Rewrite `h0` using `[map_sub, map_mul, map_mul, sub_eq_zero, hB₁, mul_one, hB₂, one_mul]`. Rewrite using `[h0]`. Conclude with `hLin n`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hMul : ∀ x y, x ∈ N → y ∈ N → x * y ∈ N` using `fun x y hx hy => by`. Establish `hxy : x * y ∈ N * N` using `Submodule.mul_mem_mul hx hy`. Rewrite `hxy` using `[hN, Submodule.span_mul_span]`. Use `(Submodule.span_le.mpr ?_) hxy` and prove the remaining obligations. Introduce and unpack `_ ⟨_, ⟨s, rfl⟩, _, ⟨t, rfl⟩, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hD s t`. Establish `hOne : (1 : MRing (stackedBlocks T) ⧸ I) ∈ N` using `hB₁ ▸ Submodule.subset_span ⟨c₁, rfl⟩`. Establish `hAll : ∀ g, mk g ∈ N` using `fun g => by`. Use `MvPolynomial.induction_on (motive := fun g => mk g ∈ N) g (fun a => ?_) (fun p q hp hq => ?_) (fun p v hp => ?_)` and prove the remaining obligations. Establish `hC : (C a : MRing (stackedBlocks T)) = (a : MRing (stackedBlocks T))` using `eq_intCast C a`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC, map_intCast, ← zsmul_one]`. Conclude with `Submodule.smul_mem _ _ hOne`. Rewrite using `[map_add]`. Conclude with `Submodule.add_mem _ hp hq`. Rewrite using `[map_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `hMul _ _ hp ?_` and prove the remaining obligations. Break down `v with ⟨⟨⟨⟩⟩ | ⟨⟨⟩⟩, t⟩` into its components or cases. Conclude with `Submodule.subset_span ⟨t, rfl⟩`. Conclude with `hE t`. Establish `hIle : I ≤ RingHom.ker φ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `sup_le (fun x hx => ?_) (hJ.trans (Ideal.span_le.mpr ?_))` and prove the remaining obligations. Rewrite `hx` using `[linPrime, RingHom.mem_ker]`. Rewrite using `[RingHom.mem_ker]`. Simplify using `[hφ, chartEval, hx]`. Introduce and unpack `x (rfl | rfl)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, map_sub, map_one, hφ, chartEval_first, mul_inv_cancel₀ h₁, sub_self]`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker, map_sub, map_one, hφ, chartEval_second, mul_inv_cancel₀ h₂, sub_self]`. Establish `hker : I = RingHom.ker φ`. Apply `le_antisymm hIle` to reduce the goal to its premises. Introduce `g hg`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `hg` using `[RingHom.mem_ker]`. Take `⟨n, hn⟩` from `(Submodule.mem_span_range_iff_exists_fun ℤ).mp (hAll g)`. Establish `hn' : mk (firstLin n) = mk g`. Rewrite using `[← hn, firstLin, map_sum]`. Simplify using `only [map_zsmul]`.
-
-Establish `hd : g - firstLin n ∈ I` using `Ideal.Quotient.eq.mp hn'.symm`. Establish `hd' : φ (g - firstLin n) = 0` using `RingHom.mem_ker.mp (hIle hd)`. Rewrite `hd'` using `[map_sub, hg, zero_sub, neg_eq_zero, hφ, chartEval_firstLin]`. Establish `hs : ∑ t, n t • α t = 0`. Break down `mul_eq_zero.mp hd' with h | h` into its components or cases.
-
-Conclude with `h`. Conclude with `absurd h (inv_ne_zero h₁)`. Establish `hl : firstLin n ∈ I` using `Ideal.mem_sup_left (RingHom.mem_ker.mpr (by rw [linPointMap_firstLin, hs, map_zero, zero_mul]))`. Use `I.add_mem hd hl` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Then use the resulting hypothesis.
-
-Establish `hsurj : Function.Surjective φ` using `fun y => by`. Take `⟨n, hn⟩` from `exists_comb hα (y * α c₁)`. Conclude with `⟨firstLin n, by rw [hφ, chartEval_firstLin, hn, mul_inv_cancel_right₀ h₁]⟩`. Conclude with `⟨(Ideal.quotEquivOfEq hker).trans (RingHom.quotientKerEquivOfSurjective hsurj)⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem chart_equiv (α : T → k) (M : T → Fin 1 → k) (hα : Submodule.span ℤ (Set.range α) = ⊤)
     (c₁ c₂ : T) (h₁ : α c₁ ≠ 0) (h₂ : M c₂ 0 ≠ 0) (J : Ideal (MRing (stackedBlocks T)))
@@ -201,11 +195,11 @@ end LinearPrimeBase
 open LinearPrimeBase in
 
 /- English proof (translation)
-Introduce `T _ k _ α M hα _hM c hc`. Establish `h₁ : α (c (Sum.inl ())) ≠ 0` using `fun h => hc (Sum.inl ()) (by`. Rewrite using `[linPrime, RingHom.mem_ker]`. Conclude with `(LinPrimeExample.linPointMap_first α M _).trans (by rw [h, map_zero, zero_mul]))`. Establish `h₂ : M (c (Sum.inr ())) 0 ≠ 0` using `fun h => hc (Sum.inr ()) (by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[linPrime, RingHom.mem_ker]`. Conclude with `(LinPrimeExample.linPointMap_second α M _).trans (by rw [Fin.sum_univ_one, h, map_zero, zero_mul]))`. Use `chart_equiv α M hα (c (Sum.inl ())) (c (Sum.inr ())) h₁ h₂ _ (Ideal.subset_span ⟨Sum.inl (), rfl⟩) (Ideal.subset_span ⟨Sum.inr (), rfl⟩) (Ideal.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨κ, rfl⟩`. Break down `κ with ⟨⟨⟩⟩ | ⟨⟨⟩⟩` into its components or cases.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Prove the first alternative. Prove the second alternative.
 
-Conclude with `Or.inl rfl`. Conclude with `Or.inr rfl`.
+A detailed English derivation is pending.
 -/
 theorem LinPrimeBase.proof : LinPrimeBase.Statement := by
   intro T _ k _ α M hα _hM c hc

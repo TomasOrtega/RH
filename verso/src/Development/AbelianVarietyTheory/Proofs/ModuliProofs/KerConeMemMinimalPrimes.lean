@@ -14,9 +14,9 @@ namespace HomogMinPrime
 open MvPolynomial
 
 /- English proof (translation)
-Rewrite using `[F.as_sum, map_sum, map_sum, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun d hd => ?_` and prove the remaining obligations. Establish `hdeg : d.degree = e`. Assume the negation of the conclusion as `h`. Conclude with `(mem_support_iff.mp hd) (hF.coeff_eq_zero h)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eval₂Hom_monomial, eval₂Hom_monomial, ← hdeg]`. Simplify using `only [Finsupp.prod, mul_pow, Finset.prod_mul_distrib, Finset.prod_pow_eq_pow_sum, Finsupp.degree_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem eval_scale {o σ A : Type} [CommRing o] [CommRing A] (f : o →+* A) (g : σ → A) (c : A)
     {F : MvPolynomial σ o} {e : ℕ} (hF : F.IsHomogeneous e) :
@@ -33,7 +33,7 @@ theorem eval_scale {o σ A : Type} [CommRing o] [CommRing A] (f : o →+* A) (g 
   ring
 
 /- English proof (translation)
-Rewrite using `[eval_scale _ (fun a => Polynomial.C (u a)) Polynomial.X hF, ← Polynomial.C_mul_X_pow_eq_monomial, mul_comm]`. Use `congr 1`. Conclude with `(map_eval₂Hom β u (Polynomial.C : K →+* Polynomial K) F).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem eval_cone {o σ K : Type} [CommRing o] [Field K] (β : o →+* K) (u : σ → K)
     {F : MvPolynomial σ o} {e : ℕ} (hF : F.IsHomogeneous e) :
@@ -46,11 +46,11 @@ theorem eval_cone {o σ K : Type} [CommRing o] [Field K] (β : o →+* K) (u : �
   exact (map_eval₂Hom β u (Polynomial.C : K →+* Polynomial K) F).symm
 
 /- English proof (translation)
-Rewrite using `[RingHom.mem_ker]`. Establish `h : eval₂Hom ((Polynomial.C : K →+* Polynomial K).comp β) (fun a => Polynomial.C (u a) * Polynomial.X) F = ∑ e ∈ Finset.range (F.totalDegree + 1), Polynomial.monomial e (eval₂Hom β u (homogeneousComponent e F))` using `by conv_lhs => rw [← sum_homogeneousComponent F, map_sum]`. Conclude with `Finset.sum_congr rfl fun e _ => eval_cone β u (homogeneousComponent_isHomogeneous e F)`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0 e`. Distinguish the cases in `he : e ∈ Finset.range (F.totalDegree + 1)`. Use `congrArg (fun p => Polynomial.coeff p e) h0` as an intermediate fact. Simplify using `only [Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, Polynomial.coeff_zero, Finset.sum_ite_eq', he, if_true] at this`. Conclude with `this`.
+Consider separately whether the proposition holds or fails. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[homogeneousComponent_eq_zero, map_zero]`. Rewrite `he` using `[Finset.mem_range]`. Use linear arithmetic over natural numbers and integers. Introduce `h0`. Conclude with `Finset.sum_eq_zero fun e _ => by rw [h0, map_zero]`.
+Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem mem_ker_cone {o σ K : Type} [CommRing o] [Field K] (β : o →+* K) (u : σ → K)
     (F : MvPolynomial σ o) :
@@ -83,31 +83,29 @@ end HomogMinPrime
 open HomogMinPrime in
 
 /- English proof (translation)
-Introduce `o σ K _ _ I β u i hI hu hmin`. Establish `hIφ : I ≤ RingHom.ker (MvPolynomial.eval₂Hom β u)` using `le_sup_left.trans hmin.1.2`. Use `⟨⟨RingHom.ker_isPrime _, fun F hF => (mem_ker_cone β u F).2 fun e => hIφ (hI F hF e)⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `Q ⟨hQ, hIQ⟩ hQψ`. Establish `hQφ : ∀ F ∈ Q, MvPolynomial.eval₂Hom β u F = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Introduce `F hF`. Use `(mem_ker_cone β u F).1 (hQψ hF)` as an intermediate fact. Rewrite using `[← MvPolynomial.sum_homogeneousComponent F, map_sum]`. Conclude with `Finset.sum_eq_zero fun e _ => this e`. Set `L` to `FractionRing (MvPolynomial σ o ⧸ Q)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `π : MvPolynomial σ o →+* L` to `(algebraMap (MvPolynomial σ o ⧸ Q) L).comp (Ideal.Quotient.mk Q)`. Establish `hπ : ∀ F, π F = 0 ↔ F ∈ Q`. Introduce `F`. Simplify using `only [π, RingHom.comp_apply]`. Rewrite using `[map_eq_zero_iff _ (IsFractionRing.injective _ L), Ideal.Quotient.eq_zero_iff_mem]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hx : π (MvPolynomial.X i) ≠ 0`. Introduce `h`. Use `hQφ _ ((hπ _).1 h)` as an intermediate fact. Rewrite `this` using `[MvPolynomial.eval₂Hom_X', hu]`. Conclude with `one_ne_zero this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `χ : MvPolynomial σ o →+* L` to `MvPolynomial.eval₂Hom (π.comp MvPolynomial.C) (fun a => π (MvPolynomial.X a) * (π (MvPolynomial.X i))⁻¹)`. Establish `hπe : MvPolynomial.eval₂Hom (π.comp MvPolynomial.C) (fun a => π (MvPolynomial.X a)) = π`. Apply the tactic sequence `apply MvPolynomial.ringHom_ext <;> simp`. Establish `hχ : ∀ (F : MvPolynomial σ o) e, χ (MvPolynomial.homogeneousComponent e F) = (π (MvPolynomial.X i))⁻¹ ^ e * π (MvPolynomial.homogeneousComponent e F)`. Introduce `F e`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `eval_scale (π.comp MvPolynomial.C) (fun a => π (MvPolynomial.X a)) (π (MvPolynomial.X i))⁻¹ (MvPolynomial.homogeneousComponent_isHomogeneous e F)` as an intermediate fact. Rewrite `this` using `[hπe]`. Conclude with `this`. Establish `h1 : I ⊔ Ideal.span {MvPolynomial.X i - 1} ≤ RingHom.ker χ`. Use `sup_le (fun F hF => ?_) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.mem_ker, ← MvPolynomial.sum_homogeneousComponent F, map_sum]`. Use `Finset.sum_eq_zero fun e _ => ?_` and prove the remaining obligations. Rewrite using `[hχ, (hπ _).2 (hIQ (hI F hF e)), mul_zero]`. Rewrite using `[Ideal.span_singleton_le_iff_mem, RingHom.mem_ker, map_sub, map_one]`. Simplify using `only [χ, MvPolynomial.eval₂Hom_X']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mul_inv_cancel₀ hx, sub_self]`. Establish `h2 : RingHom.ker χ ≤ RingHom.ker (MvPolynomial.eval₂Hom β u)`. Introduce `F hF`. Rewrite `hF`, the goal using `[RingHom.mem_ker]`. Establish `hG : (∑ e ∈ Finset.range (F.totalDegree + 1), MvPolynomial.X i ^ (F.totalDegree - e) * MvPolynomial.homogeneousComponent e F) ∈ Q`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← hπ, map_sum]`. Rewrite `hF` using `[← MvPolynomial.sum_homogeneousComponent F, map_sum]`. Use `congrArg (fun y => π (MvPolynomial.X i) ^ F.totalDegree * y) hF` as an intermediate fact. Simplify using `only [mul_zero, Finset.mul_sum] at this`. Rewrite using `[← this]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun e he => ?_` and prove the remaining obligations. Establish `he' : e ≤ F.totalDegree` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp he)`. Rewrite using `[hχ, map_mul, map_pow, pow_sub₀ _ hx he', inv_pow, _root_.mul_assoc]`. Use `hQφ _ hG` as an intermediate fact. Rewrite `this` using `[map_sum]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← MvPolynomial.sum_homogeneousComponent F, map_sum, ← this]`. Use `Finset.sum_congr rfl fun e _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_pow, MvPolynomial.eval₂Hom_X', hu, one_pow, _root_.one_mul]`. Establish `h3` using `hmin.2 ⟨RingHom.ker_isPrime χ, h1⟩ h2`. Introduce `F hF`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hF` using `[mem_ker_cone]`. Rewrite using `[← MvPolynomial.sum_homogeneousComponent F]`. Use `Q.sum_mem fun e _ => ?_` and prove the remaining obligations. Establish `h4 : χ (MvPolynomial.homogeneousComponent e F) = 0` using `h3 (hF e)`. Rewrite `h4` using `[hχ]`.
-
-Conclude with `(hπ _).1 ((mul_eq_zero.1 h4).resolve_left (pow_ne_zero _ (inv_ne_zero hx)))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_cone_mem_minimalPrimes : ∀ (o σ K : Type) [CommRing o] [Field K] (I : Ideal (MvPolynomial σ o)) (β : o →+* K) (u : σ → K) (i : σ), (∀ F ∈ I, ∀ e, MvPolynomial.homogeneousComponent e F ∈ I) → u i = 1 → RingHom.ker (MvPolynomial.eval₂Hom β u) ∈ (I ⊔ Ideal.span {MvPolynomial.X i - 1}).minimalPrimes → RingHom.ker (MvPolynomial.eval₂Hom ((Polynomial.C : K →+* Polynomial K).comp β) (fun a => Polynomial.C (u a) * Polynomial.X)) ∈ I.minimalPrimes := by
   intro o σ K _ _ I β u i hI hu hmin

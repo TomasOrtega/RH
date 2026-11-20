@@ -15,11 +15,11 @@ noncomputable section
 namespace GlobalTheory.Mem.SJ.PairMain
 
 /- English proof (translation)
-Substitute `hw` using the available equality. Take `rfl` from `eq_of_heq hpq`. Take `rfl` from `eq_of_heq hc`. Establish `h1 : ramCrd b c = Submodule.inclusion inf_le_left (∑ i, c i • b i)` using `by show Submodule.inclusion inf_le_left (Fintype.linearCombination ℂ b c) = _`. Rewrite using `[Fintype.linearCombination_apply]`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : (colDict St p.Tr hK p.hI p.hB).symm (Submodule.inclusion inf_le_left (∑ i, c i • b i)) = T`. Rewrite using `[LinearEquiv.symm_apply_eq]`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[colDict_apply, hT]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[h1]`. Simplify using `only [PerW.op, LinearMap.comp_apply, LinearEquiv.coe_toLinearMap, h2]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem op_ramCrd_eq {D : D7} (St : Formalism.L2.SG.HidaSetting.HidaSetting D) (hK : St.LevelSubgroupCharacter) (w u : D.what₂.Word) (hw : w = u)
     (p : PerW St hK w) (q : PerW St hK u) (hpq : HEq p q) {n : ℕ} (b : Fin n → (D.mem w).A.Mram) (c : Fin n → ℂ)
@@ -43,11 +43,11 @@ theorem op_ramCrd_eq {D : D7} (St : Formalism.L2.SG.HidaSetting.HidaSetting D) (
   rfl
 
 /- English proof (translation)
-Introduce `D Bs A X fc s R cr M St G hK pw wdD bR hw hSp hb`. Generalize the expression as in `(fc X.zs).Sp = SP at hSp ⊢`. Substitute `hSp` using the available equality. Introduce `sEE sEEc hE j κ₀ hκ₀ hout u`. Take `rfl` from `eq_of_heq hE`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the chosen expression with an arbitrary variable. Substitute using the available equality. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `⟨starRingEnd ℂ κ₀, (map_ne_zero _).2 hκ₀, ?_⟩` and prove the remaining obligations. Introduce `F φ T hT`. Use `(Pair.inner_tw_of_smul (E := HHX St) s (sEE (M.eR F) : Tw s (HHX St)) ((spOf s (fc X.zs).Dc hK G wdD (fun x => pw (wdD x)) bR).Pu (R.wU u) (cjv s (M.cφ u φ)) : Tw s (HHX St)) κ₀ ((conjHH St G (j F) : HHX St)) (hout F)).trans ?_` and prove the remaining obligations. Use `congr 2`. Establish `hcc : cjVec s _ (cjv s (M.cφ u φ)) = M.cφ u φ` using `funext fun i => cj_cj s _`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Establish `hP : Tw.out (s` using `s) ((spOf s (fc X.zs).Dc hK G wdD (fun x => pw (wdD x)) bR).Pu (R.wU u) (cjv s (M.cφ u φ))) = (pw (wdD (R.wU u))).op (ramCrd (bR (R.wU u)) (M.cφ u φ)) := (spOf_Pu s (fc X.zs).Dc hK G wdD (fun x => pw (wdD x)) bR (R.wU u) (cjv s (M.cφ u φ))).trans (by rw [hcc])`. Establish `key` using `op_ramCrd_eq St hK _ u (hw u) _ _ (congr_arg_heq pw (hw u)) (bR (R.wU u)) (M.cφ u φ) _ (Pair.sum_coord_heq M u _ (hw u) (bR (R.wU u)) (hb u) φ) T hT`. Rewrite using `[Submodule.coe_inner]`. Conclude with `congrArg _ ((congrArg Subtype.val hP).trans key)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pair_step : ∀ (D : D7) (Bs : DefBase D.what₂.LL) (A : DefAmb Bs) (X : CxData A) (fc : DefSub A → DefFace Bs) (s : Bool) (R : Read D X fc s) (cr : Crd A fc) (M : Seam R cr) (St : Formalism.L2.SG.HidaSetting.HidaSetting D) (G : GoodOp St) (hK : St.LevelSubgroupCharacter) (pw : ∀ u, PerW St hK u) (wdD : (fc X.zs).Dc.Mem → D.what₂.Word) (bR : ∀ x, Fin ((fc X.zs).Dc.a x) → (D.mem (wdD x)).A.Mram), (∀ u, wdD (R.wU u) = u) → (fc X.zs).Sp = spOf s (fc X.zs).Dc hK G wdD (fun x => pw (wdD x)) bR → (∀ u i, HEq (bR (R.wU u) i) (D.eMu u (D.jN u (R.eNu u (Pi.single i 1))))) → ∀ (sEE : X.EE →ₗ⋆[ℂ] (fc X.zs).Sp.HH) (sEEc : X.EE →ₗ⋆[ℂ] Tw s (HHX St)), HEq sEE sEEc → ∀ (j : D.what₂.EE ≃ₗᵢ[ℂ] EEC St G) (κ₀ : ℂ), κ₀ ≠ 0 → (∀ F, Tw.out (sEEc (M.eR F)) = κ₀ • conjHH St G (j F)) → ∀ u, ∃ κ : ℂ, κ ≠ 0 ∧ ∀ (F : D.what₂.EE) (φ : D.what₂.Mu u) (T : Cu St u hK), colDictL St (pw u).Tr hK T = ((D.eMu u φ : (D.mem u).A.Mram) : (D.mem u).C.cls 0 → (D.mem u).C.Y 0 → ℂ) → ⟪sEE (M.eR F), (fc X.zs).Sp.Pu (R.wU u) (cjv s (M.cφ u φ))⟫_ℂ = cj s (κ * ⟪((conjHH St G (j F) : HHX St) : L2X St), PuFun St u hK (pw u).Dt T⟫_ℂ) := by
   intro D Bs A X fc s R cr M St G hK pw wdD bR hw hSp hb

@@ -6,19 +6,17 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.N Global
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hO : Function.Injective (algebraMap O (FractionRing O))` using `IsFractionRing.injective _ _`. Establish `hA : Function.Injective (algebraMap A (FractionRing A))` using `IsFractionRing.injective _ _`. Use `set g : A →+* FractionRing O := (algebraMap O (FractionRing O)).comp (algebraMap A O) with hg`. Establish `hgi : Function.Injective g` using `hO.comp hinj`. Express the relevant statement in the definitionally equal form `P.map g = _ at hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((P.map (algebraMap A (FractionRing A))).rootSet _).ncard = t at hcard`. Establish `hmon' : (P.map g).Monic`. Rewrite using `[hP]`. Conclude with `Polynomial.monic_prod_of_monic _ _ (fun c _ => Polynomial.monic_X_sub_C _)`. Establish `hmon : P.Monic` using `Polynomial.monic_of_injective hgi hmon'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hdeg : P.natDegree = t`. Rewrite using `[← hmon.natDegree_map g, hP, Polynomial.natDegree_prod_of_monic _ _ (fun c _ => Polynomial.monic_X_sub_C _)]`. Simplify using the standard rewrite rules. Establish `hsep : (P.map (algebraMap A (FractionRing A))).Separable`. Establish `hne : P.map (algebraMap A (FractionRing A)) ≠ 0` using `(hmon.map _).ne_zero`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[← Polynomial.card_rootSet_eq_natDegree_iff_of_splits (K := AlgebraicClosure (FractionRing A)) hne (IsAlgClosed.splits _), hmon.natDegree_map, hdeg, ← hcard, Set.ncard_eq_toFinset_card', Set.toFinset_card]`. Take `⟨φ, hφ⟩ : ∃ φ : FractionRing A →+* FractionRing O, φ.comp (algebraMap A (FractionRing A)) = g` from `⟨IsFractionRing.lift hgi, RingHom.ext fun a => IsFractionRing.lift_algebraMap (K := FractionRing A) hgi a⟩`. Establish `hsep2 : (P.map g).Separable`. Rewrite using `[← hφ, ← Polynomial.map_map]`. Conclude with `hsep.map`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hα : Function.Injective α`. Rewrite `hsep2` using `[hP]`. Conclude with `Polynomial.separable_prod_X_sub_C_iff.mp hsep2`. Establish `hint : ∀ c, ∃ b : O, algebraMap O (FractionRing O) b = α c`. Introduce `c`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Apply `IsIntegrallyClosed.algebraMap_eq_of_integral` to reduce the goal to its premises. Use `⟨P.map (algebraMap A O), hmon.map _, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval_map, Polynomial.map_map, ← hg, hP, Polynomial.eval_prod]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ c) (by simp)`. Use `choose β hβ using hint`.
-
-Use `⟨β, fun c d h => hα (by rw [← hβ, ← hβ, h]), ?_⟩` and prove the remaining obligations. Apply `Polynomial.map_injective _ hO` to reduce the goal to its premises. Rewrite using `[Polynomial.map_map, ← hg, hP, Polynomial.map_prod]`. Simplify using `[hβ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_injective_roots_of_ncard_rootSet {A O : Type} [CommRing A] [IsDomain A] [CommRing O] [IsDomain O] [IsIntegrallyClosed O] [Algebra A O] (t : ℕ) (P : Polynomial A) (α : Fin t → FractionRing O)
     (hinj : Function.Injective (algebraMap A O))

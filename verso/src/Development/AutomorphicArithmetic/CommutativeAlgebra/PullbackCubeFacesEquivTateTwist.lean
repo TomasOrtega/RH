@@ -22,13 +22,13 @@ open CategoryTheory Limits AlgebraicGeometry Opposite CochainComplex CochainComp
 namespace UpperTheory.BlowEqvInter
 
 /- English proof (translation)
-Use `stackProduct_isPullback_of_actionPullback E (inclLe h1) (inclLe h2) (incl R) (incl S) ?_ ?_ ?_ ?_` and prove the remaining obligations. Introduce `A z`. Both sides reduce to the same expression. Introduce `A z`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `A x y hxy`. Establish `hy : S.P A x.1`. Establish `: (x.1 : a.D.obj A) = y.1` using `hxy`. Rewrite using `[this]`. Conclude with `y.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨⟨x.1, h A x.1 x.2 hy⟩, ⟨rfl, ?_⟩, ?_⟩` and prove the remaining obligations. Conclude with `Subtype.ext hxy`. Introduce and unpack `z ⟨hz1, -⟩`. Substitute `hz1` using the available equality. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Substitute using the available equality. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `A g k hgk`. Use `⟨g, ⟨rfl, hgk⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `z ⟨hz1, -⟩`. Conclude with `hz1`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 private theorem pb_sub (E : Spc) {a : Act} (Q R S : Pred a) (h1 : Q.Le R) (h2 : Q.Le S)
     (h : ∀ A x, R.P A x → S.P A x → Q.P A x) :
@@ -65,11 +65,11 @@ end UpperTheory.BlowEqvInter
 
 open UpperTheory.BlowEqvInter in
 /- English proof (translation)
-Introduce `q _ N E i h₁ h₂ hE`. Take `⟨hiso, hcomp, -, -⟩` from `GlobalTheory.T.etaleCohomologyEquivalence_basic_properties (ZMod q) (tw q i)`. Establish `hP` using `pb_sub E ((Q1 N).inf (Q2 N)) (Q1 N) (Q2 N) (fun A x hx => hx.1) (fun A x hx => hx.2) (fun A x ha hb => ⟨ha, hb⟩)`. Establish `hP'` using `pb_sub E (((Q1 N).inf (Q2 N)).comap (βC N)) ((Q1 N).comap (βC N)) ((Q2 N).comap (βC N)) (fun A x hx => hx.1) (fun A x hx => hx.2) (fun A x ha hb => ⟨ha, hb⟩)`. Establish `hb` using `eqv_twist_blowupRestriction q N E ((Q1 N).inf (Q2 N)) i (fun A x hx => hx.2) hE`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : hP'.isoPullback.hom ≫ pullback.map _ _ _ _ _ _ _ h₁ h₂ = Sp.map E ((βC N).sub ((Q1 N).inf (Q2 N))) ≫ hP.isoPullback.hom`. Apply `pullback.hom_ext` to reduce the goal to its premises. Simplify using `only [pullback.map, Category.assoc, pullback.lift_fst, IsPullback.isoPullback_hom_fst_assoc, IsPullback.isoPullback_hom_fst]`. Conclude with `(comm_sub E (βC N) _ _ _ _).symm`. Simplify using `only [pullback.map, Category.assoc, pullback.lift_snd, IsPullback.isoPullback_hom_snd_assoc, IsPullback.isoPullback_hom_snd]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(comm_sub E (βC N) _ _ _ _).symm`. Use `(hcomp _ _ _ hP'.isoPullback.hom _).2.1 (hiso _ _ hP'.isoPullback.hom inferInstance) ?_` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `(hcomp _ _ _ _ _).1 hb (hiso _ _ _ inferInstance)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.pullback_cube_faces_equiv_tate_twist :
     ∀ (q : ℕ) [NeZero q] (N : ℕ) (E : Spc) (i : ℤ) (h₁ h₂), Inv q E →

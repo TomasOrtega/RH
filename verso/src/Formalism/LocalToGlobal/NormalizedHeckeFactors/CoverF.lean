@@ -9,14 +9,14 @@ def LocsCoverTwF {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Prop :=
   ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, Formalism.MainNotions.N.LocsCoverTw (Fm.D x i)
 
 /- English proof (translation)
-Rewrite using `[Formalism.MainNotions.N.linkEta_iff]`. Conclude with `Iff.rfl`.
+Rewrite the conclusion using the stated equalities. Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem linkEta_iff_tw {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps) : Formalism.MainNotions.LinkEta Fm ↔ LocsCoverTwF Fm := by
   rw [Formalism.MainNotions.N.linkEta_iff]
   exact Iff.rfl
 
 /- English proof (translation)
-Take `⟨x0, hx0⟩` from `h`. Use `⟨x0, fun x hx i => ?_⟩` and prove the remaining obligations. Take `⟨M, T, hT⟩` from `hx0 x hx i`. Conclude with `locsCoverTw_of_tie T hT`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem locsCoverTwF_of {eps : ℝ} (Fm : Formalism.MainNotions.FamP eps)
     (h : ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x,

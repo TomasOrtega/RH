@@ -6,19 +6,19 @@ open scoped Real ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `P hP v w`. Establish `hFa : AnalyticOnNhd ℂ F U` using `GlobalTheory.SCV.analyticOnNhd_of_differentiableOn hU hF`. Establish `hFd : ∀ Q ∈ U, DifferentiableAt ℂ F Q` using `fun Q hQ => hF.differentiableAt (hU.mem_nhds hQ)`. Establish `hFR : ∀ Q ∈ U, fderiv ℝ F Q = (fderiv ℂ F Q).restrictScalars ℝ` using `fun Q hQ => ((hFd Q hQ).hasFDerivAt.restrictScalars ℝ).fderiv`. Establish `huc : ∀ Q ∈ V, ContDiffAt ℝ 2 u Q` using `fun Q hQ => hu.contDiffAt (hV.mem_nhds hQ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hFP : ContDiffAt ℂ ω F P` using `(hFa P hP).contDiffAt`. Establish `hsym : IsSymmSndFDerivAt ℂ F P` using `hFP.isSymmSndFDerivAt_of_omega`. Establish `hD2 : DifferentiableAt ℂ (fderiv ℂ F) P` using `(hFP.fderiv_right (m := 1) (by simp)).differentiableAt (by simp)`. Establish `hDu : DifferentiableAt ℝ (fderiv ℝ u) (F P)` using `((huc _ (hFUV hP)).fderiv_right (m := 1) (by norm_num)).differentiableAt (by simp)`. Establish `hFPR : HasFDerivAt F (fderiv ℝ F P) P` using `((hFd P hP).restrictScalars ℝ).hasFDerivAt`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `happ : ∀ (y c z : Pt E g), DifferentiableAt ℝ (fderiv ℝ u) y → fderiv ℝ (fun Q => fderiv ℝ u Q c) y z = fderiv ℝ (fderiv ℝ u) y z c`. Introduce `y c z hy`. Use `hy.hasFDerivAt.clm_apply (hasFDerivAt_const c y)` as an intermediate fact. Rewrite using `[this.fderiv]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `key : ∀ a b : Pt E g, fderiv ℝ (fun Q => fderiv ℝ (fun Q => u (F Q)) Q (Complex.I • a)) P b = fderiv ℝ (fderiv ℝ u) (F P) (fderiv ℝ F P b) (Complex.I • fderiv ℝ F P a) + fderiv ℝ u (F P) (Complex.I • fderiv ℂ (fderiv ℂ F) P b a)`. Introduce `a b`. Establish `heq : (fun Q => fderiv ℝ (fun Q => u (F Q)) Q (Complex.I • a)) =ᶠ[nhds P] fun Q => fderiv ℝ u (F Q) (Complex.I • fderiv ℂ F Q a)` using `by filter_upwards [hU.mem_nhds hP] with Q hQ`. Establish `hd : DifferentiableAt ℝ u (F Q)` using `(huc _ (hFUV hQ)).differentiableAt (by norm_num)`. Rewrite using `[fderiv_comp' Q hd ((hFd Q hQ).restrictScalars ℝ), hFR Q hQ]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Rewrite using `[heq.fderiv_eq]`. Establish `hA : HasFDerivAt (fun Q => fderiv ℝ u (F Q)) ((fderiv ℝ (fderiv ℝ u) (F P)).comp (fderiv ℝ F P)) P` using `hDu.hasFDerivAt.comp P hFPR`. Establish `hx : HasFDerivAt (fun Q => fderiv ℂ F Q a) ((ContinuousLinearMap.apply ℂ (Pt E g) a).comp (fderiv ℂ (fderiv ℂ F) P)) P` using `(ContinuousLinearMap.apply ℂ (Pt E g) a).hasFDerivAt.comp P hD2.hasFDerivAt`. Establish `hxI` using `(hx.restrictScalars ℝ).const_smul Complex.I`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hA.clm_apply (u := fun Q => Complex.I • fderiv ℂ F Q a) hxI` as an intermediate fact. Rewrite using `[this.fderiv]`. Simplify using `[hFR P hP]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1` using `key v w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Establish `e2` using `key w v`. Establish `s` using `hsym v w`. Unfold `ddc`. Rewrite using `[e1, e2, happ _ _ _ hDu, happ _ _ _ hDu, hFR P hP]`. Simplify using `only [ContinuousLinearMap.coe_restrictScalars', s]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

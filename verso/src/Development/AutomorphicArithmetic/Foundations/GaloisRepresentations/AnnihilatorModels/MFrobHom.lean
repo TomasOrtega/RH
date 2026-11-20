@@ -9,23 +9,21 @@ attribute [local instance] Ideal.Quotient.field
 open UpperTheory.Gal.crystallineComparison UpperTheory.Gal.crystallineComparison.Mod
 
 /- English proof (translation)
-Introduce `p f hp κ _ _ φ hφ A A' _ _ ψ hpull h`. Take `⟨hpb, hmul⟩` from `hpull`. Establish `hκ : ((p : ℕ) : Γ(Sp κ, ⊤)) = 0`. Establish `e` using `congrArg (Scheme.ΓSpecIso (CommRingCat.of κ)).inv.hom (CharP.cast_eq_zero κ p)`. Rewrite `e` using `[map_natCast, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `e`. Establish `hfrκ : GlobalTheory.SS.FrobField.absFrob (Sp κ) p f hp hκ = spMap φ` using `GlobalTheory.SS.FrobField.absFrob_spec κ p f hp hκ φ hφ`. Establish `hsq : GlobalTheory.SS.FrobField.absFrob A.left p f hp h ≫ A.hom = A.hom ≫ spMap φ`. Rewrite using `[GlobalTheory.SS.FrobField.absFrob_nat A.hom p f hp h hκ, hfrκ]`. Set `F : A ⟶ A'` to `Over.homMk (hpb.lift (GlobalTheory.SS.FrobField.absFrob A.left p f hp h) A.hom hsq) (hpb.lift_snd _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hFψ : F.left ≫ ψ = GlobalTheory.SS.FrobField.absFrob A.left p f hp h` using `hpb.lift_fst _ _ _`. Establish `hTz : ∀ T : Over (Sp κ), ((p : ℕ) : Γ(T.left, ⊤)) = 0` using `fun T => GlobalTheory.SS.FrobField.cast_zero_of_hom T.hom hκ`. Establish `key : ∀ (T : Over (Sp κ)) (x : T ⟶ A), (x ≫ F).left ≫ ψ = GlobalTheory.SS.FrobField.absFrob T.left p f hp (hTz T) ≫ x.left`. Introduce `T x`. Rewrite using `[Over.comp_left, Category.assoc, hFψ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Conclude with `(GlobalTheory.SS.FrobField.absFrob_nat x.left p f hp (hTz T) h).symm`. Set `Fr : ∀ T : Over (Sp κ), Over.mk (T.hom ≫ spMap φ) ⟶ T` to `fun T => Over.homMk (GlobalTheory.SS.FrobField.absFrob T.left p f hp (hTz T)) (by`. Simplify using `only [Over.mk_hom]`. Rewrite using `[GlobalTheory.SS.FrobField.absFrob_nat T.hom p f hp (hTz T) hκ, hfrκ])`. Use `haveI hF : IsMonHom F := by`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `isMonHom_of_mul F` to reduce the goal to its premises. Introduce `T x y`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hpb.hom_ext` to reduce the goal to its premises. Rewrite using `[← hmul T (x ≫ F) (y ≫ F) (Fr T ≫ x) (Fr T ≫ y) (by rw [key]; rfl) (by rw [key]; rfl), ← MonObj.comp_mul, key, Over.comp_left]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Both sides reduce to the same expression. Rewrite using `[Over.w, Over.w]`. Use `⟨F, hF, hFψ, fun T g => ?_⟩` and prove the remaining obligations. Establish `hone : (1 : T ⟶ A').left ≫ ψ = GlobalTheory.SS.FrobField.absFrob T.left p f hp (hTz T) ≫ (1 : T ⟶ A).left`. Rewrite using `[← MonObj.one_comp (X := T) F, key]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Prove the components needed by the constructor for the conclusion. Introduce `hg h'`. Establish `e` using `congrArg (fun k => k.left ≫ ψ) hg`. Rewrite `e` using `[key, hone]`. Conclude with `e`.
+Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Introduce `hk`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Apply `hpb.hom_ext` to reduce the goal to its premises. Rewrite using `[key, hone]`. Conclude with `hk (hTz T)`.
-
-Rewrite using `[Over.w, Over.w]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.crystallineComparison.Mod.frobHom_of :
     FrobHom := by

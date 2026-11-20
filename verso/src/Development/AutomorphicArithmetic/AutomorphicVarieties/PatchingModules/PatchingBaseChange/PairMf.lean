@@ -8,25 +8,21 @@ open IsLocalRing UpperTheory.V.Alg UpperTheory.V.W UpperTheory.V.Pa
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `l _ F O _ _ _ _ _ n r B _ _ _ u hPhi`. Use `haveI : CompactSpace F.G₀ := isCompact_iff_compactSpace.mp (Subgroup.isClosed_of_isOpen _ F.η_open).isCompact`. Set `e : ResidueField O ≃+* ResidueField B` to `RingEquiv.ofBijective (ResidueField.map (algebraMap O B)) (resMap_bijective O B)`. Use `haveI hfin : Finite (ResidueField B) := Finite.of_equiv _ e.toEquiv`. Use `haveI : CharP (ResidueField B) l := charP_of_injective_ringHom (f := (e : ResidueField O →+* ResidueField B)) e.injective l`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hE : Function.Injective (Units.map (e : ResidueField O →* ResidueField B))` using `Units.map_injective (f := (e : ResidueField O →* ResidueField B)) e.injective`. Set `χ : Fin n → F.G₀ →* (ResidueField B)ˣ` to `fun i => (Units.map (e : ResidueField O →* ResidueField B)).comp (r.chib i)`. Establish `hker : ∀ i, (χ i).ker = (r.chib i).ker`. Introduce `i`. Use extensionality with `g`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MonoidHom.mem_ker, MonoidHom.mem_ker]`. Use `show Units.map (e : ResidueField O →* ResidueField B) (r.chib i g) = 1 ↔ r.chib i g = 1`. Rewrite using `[← map_one (Units.map (e : ResidueField O →* ResidueField B)), hE.eq_iff]`. Establish `hopen : ∀ i, IsOpen ((χ i).ker : Set F.G₀)` using `fun i => by`. Rewrite using `[hker]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `r.chib_open i`. Establish `hinj : Function.Injective χ`. Introduce `i j hij`. Conclude with `r.chib_inj (MonoidHom.ext fun g => hE (DFunLike.congr_fun hij g))`. Establish `hres : (residue B) = (e : ResidueField O →+* ResidueField B).comp (res O B : B →+* ResidueField O)` using `RingHom.ext fun b => (e.apply_symm_apply (residue B b)).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Take `⟨-, hcomp, -, -⟩` from `UpperTheory.V.CA.d_gmap u.D`. Take `⟨-, -, -, hrep⟩` from `UpperTheory.V.CA.d_gmap (GDet.ofRep (diagRep r.chib))`. Establish `hmap : u.D.map (residue B) = GDet.ofChars χ`. Rewrite using `[hres, ← hcomp, u.red]`. Use `show (GDet.ofRep (diagRep r.chib)).map _ = GDet.ofRep (GDet.diagRep χ)`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hrep]`. Use `congr 1`. Use extensionality with `g i j`. Simplify using `[diagRep, GDet.diagRep, χ, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨h, hmf⟩` from `UpperTheory.V.CA.exists_multFree_of_phiCond_of_injective_chars l χ hPhi hopen hinj`. Use `⟨hfin, ⟨χ, h, hmap, hmf⟩, fun Z => ?_⟩` and prove the remaining obligations. Take `⟨⟨s, -, hs⟩, -, -⟩` from `UpperTheory.V.CA.finE u.D χ u.cont hmap hmf Z`. Use `⟨s, fun y => ?_⟩` and prove the remaining obligations. Establish `hy : u.D.toQuot Z y ∈ Submodule.span B ((fun g ↦ (u.D.toQuot Z) (MonoidAlgebra.single g 1)) '' (s : Set F.G₀))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hs]`. Conclude with `Submodule.mem_top`. Take `⟨c, hc, hcy⟩` from `(Finsupp.mem_span_image_iff_linearCombination B).mp hy`. Rewrite `hcy` using `[Finsupp.linearCombination_apply_of_mem_supported B hc]`. Use `⟨c, ?_⟩` and prove the remaining obligations.
-
-Establish `hz : u.D.toQuot Z (y - ∑ g ∈ s, MonoidAlgebra.single g (c g)) = 0`. Rewrite using `[map_sub, map_sum, ← hcy, sub_eq_zero]`. Use `Finset.sum_congr rfl (fun g _ => ?_)` and prove the remaining obligations. Rewrite using `[← map_smul, MonoidAlgebra.smul_single', mul_one]`. Rewrite using `[TwoSidedIdeal.mem_iff]`.
-
-Conclude with `(u.D.chBar Z).ringCon.eq.mp hz`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Pa.BC.pair_mf :
     ∀ (l : ℕ) [Fact l.Prime] (F : GFrame l) (O : Type) [CommRing O] [IsLocalRing O] [Finite (ResidueField O)] [CharP (ResidueField O) l] [Algebra ℤ_[l] O] (n : ℕ) (r : Resid F O n) (B : Type) [CommRing B] [Algebra O B] [IsCO O B] (u : Pair r B), PhiCond F.G₀ l → Finite (ResidueField B) ∧ (∃ (χ : Fin n → F.G₀ →* (ResidueField B)ˣ) (h : ℕ), u.D.map (residue B) = GDet.ofChars χ ∧ UpperTheory.V.CA.MultFree χ h) ∧ ∀ Z : Set (MonoidAlgebra B F.G₀), ∃ s : Finset F.G₀, ∀ y : MonoidAlgebra B F.G₀, ∃ c : F.G₀ → B, y - ∑ g ∈ s, MonoidAlgebra.single g (c g) ∈ u.D.chBar Z := by

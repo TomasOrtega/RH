@@ -10,7 +10,7 @@ noncomputable def UpperTheory.Reformulated.B.TwistedKernelFixed.IsSmooth :
       ∀ (v : V), IsOpen {g : G | ((ρ : G → V →ₗ[k] V) g : V → V) v = v}
 
 /- English proof (translation)
-Introduce `k G V _ _ _ _ ρ H χ a b ha hb h`. Rewrite using `[map_add, ha h, hb h, smul_add]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.TwistedKernelFixed.aux2 :
     ∀ {k G V : Type} [inst : Field k] [inst_1 : Group G] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module k V]
@@ -22,7 +22,7 @@ theorem UpperTheory.Reformulated.B.TwistedKernelFixed.aux2 :
   rw [map_add, ha h, hb h, smul_add]
 
 /- English proof (translation)
-Introduce `k G V _ _ _ _ ρ H χ h`. Rewrite using `[map_zero, smul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.TwistedKernelFixed.aux3 :
     ∀ {k G V : Type} [inst : Field k] [inst_1 : Group G] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module k V]
@@ -32,7 +32,7 @@ theorem UpperTheory.Reformulated.B.TwistedKernelFixed.aux3 :
   rw [map_zero, smul_zero]
 
 /- English proof (translation)
-Introduce `k G V _ _ _ _ ρ H χ c v hv h`. Rewrite using `[map_smul, hv h, smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem UpperTheory.Reformulated.B.TwistedKernelFixed.aux4 :
     ∀ {k G V : Type} [inst : Field k] [inst_1 : Group G] [inst_2 : AddCommGroup V] [inst_3 : _root_.Module k V]
@@ -75,9 +75,9 @@ noncomputable def UpperTheory.Reformulated.B.TwistedKernelFixed.twKer :
         {w : V | ∃ (n : ↥N) (v : V), w = ((ρ : G → V →ₗ[k] V) (↑n : G) : V → V) v - (↑((ψ : ↥N → kˣ) n) : k) • v}
 
 /- English proof (translation)
-Use `Fintype.sum_equiv (Equiv.mulRight (n : H ⧸ K)) _ _ fun q => ?_` and prove the remaining obligations. Establish `h1 : ((q.out * n : H) : H ⧸ K) = (((q * (n : H ⧸ K)).out : H) : H ⧸ K)`. Rewrite using `[QuotientGroup.mk_mul, QuotientGroup.out_eq', QuotientGroup.out_eq']`. Establish `h2` using `hu _ (QuotientGroup.eq.mp h1)`. Establish `h3 : (q * (n : H ⧸ K)).out = q.out * n * ((q.out * n)⁻¹ * (q * (n : H ⧸ K)).out)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[mul_inv_cancel_left]`. Rewrite using `[Equiv.coe_mulRight, h3, map_mul, Module.End.mul_apply, h2, map_mul, Module.End.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.Reformulated.B.TwistedKernelFixed.sum_shift {H V : Type} [Group H] [AddCommGroup V] [_root_.Module ℂ V]
     (ρ : H →* (V →ₗ[ℂ] V)) (K : Subgroup H) [K.Normal] [Fintype (H ⧸ K)] (u : V)
@@ -92,25 +92,21 @@ private theorem UpperTheory.Reformulated.B.TwistedKernelFixed.sum_shift {H V : T
   rw [Equiv.coe_mulRight, h3, map_mul, Module.End.mul_apply, h2, map_mul, Module.End.mul_apply]
 
 /- English proof (translation)
-Introduce `G V _ _ _ π _ _ hs H hH v hv hw`. Use `haveI : CompactSpace H := isCompact_iff_compactSpace.mp hH`. Establish `key : ∀ w ∈ UpperTheory.Reformulated.B.TwistedKernelFixed.twKer π H (1 : ↥H →* ℂˣ), ∃ K : Subgroup H, K.FiniteIndex ∧ ∀ (L : Subgroup H) [L.Normal] [Fintype (H ⧸ L)], L ≤ K → ∑ q : H ⧸ L, π (q.out : H) w = 0`. Introduce `w hw`. Proceed by induction on `hw using Submodule.span_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `mem x hx`. Take `⟨n, u, rfl⟩` from `hx`. Set `K : Subgroup H` to `{ carrier := {h | π (h : G) u = u} mul_mem' := fun {a b} ha hb => by`. Establish `ha' : π (a : G) u = u` using `ha`. Establish `hb' : π (b : G) u = u` using `hb`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show π ((a : G) * b) u = u`. Rewrite using `[map_mul, Module.End.mul_apply, hb', ha']`. Use the proof step `one_mem' := by show π (1 : G) u = u`. Rewrite using `[map_one, Module.End.one_apply]`. Use the proof step `inv_mem' := fun {a} ha => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `ha' : π (a : G) u = u` using `ha`. Use `show π ((a : G)⁻¹) u = u`. Use `conv_lhs => rw [← ha']`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one, Module.End.one_apply] }`. Establish `hK : IsOpen (K : Set H)` using `(hs u).preimage continuous_subtype_val`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Use `haveI := Subgroup.quotient_finite_of_isOpen K hK`. Use `⟨K, Subgroup.finiteIndex_of_finite_quotient, fun L _ _ hL => ?_⟩` and prove the remaining obligations. Use `UpperTheory.Reformulated.B.TwistedKernelFixed.sum_shift (π.comp H.subtype) L u (fun k hk => hL hk) n` as an intermediate fact. Simplify using `only [MonoidHom.one_apply, Units.val_one, one_smul, map_sub, Finset.sum_sub_distrib]`. Conclude with `sub_eq_zero.mpr this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `zero => exact ⟨⊤, inferInstance, fun L _ _ _ => by simp⟩`. Consider the case `add x y _ _ hx hy`. Take `⟨K₁, h₁, hx⟩` from `hx`. Take `⟨K₂, h₂, hy⟩` from `hy`. Use `⟨K₁ ⊓ K₂, inferInstance, fun L _ _ hL => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [map_add, Finset.sum_add_distrib]`. Rewrite using `[hx L (hL.trans inf_le_left), hy L (hL.trans inf_le_right), add_zero]`. Consider the case `smul c x _ hx`. Take `⟨K, h, hx⟩` from `hx`. Use `⟨K, h, fun L _ _ hL => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smul]`. Rewrite using `[← Finset.smul_sum, hx L hL, smul_zero]`. Take `⟨K, hK, h⟩` from `key v hw`. Use `haveI : Fintype (H ⧸ K.normalCore) := Fintype.ofFinite _`. Establish `h0` using `h K.normalCore K.normalCore_le`.
-
-Establish `hv' : ∀ g : H, π (g : G) v = v` using `fun g => by`. Use `hv g` as an intermediate fact. Simplify using `using this`. Simplify using `only [hv', Finset.sum_const, Finset.card_univ] at h0`. Rewrite `h0` using `[← Nat.cast_smul_eq_nsmul ℂ]`.
-
-Conclude with `(smul_eq_zero.mp h0).resolve_left (Nat.cast_ne_zero.mpr Fintype.card_ne_zero)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.TwistedKernelFixed.eq_zero_of_fixed :
     ∀ {G V : Type} [inst : Group G] [inst_1 : AddCommGroup V] [inst_2 : _root_.Module ℂ V] {π : Representation ℂ G V}

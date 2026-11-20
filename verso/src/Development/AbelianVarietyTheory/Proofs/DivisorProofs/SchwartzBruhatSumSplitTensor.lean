@@ -9,7 +9,7 @@ noncomputable section
 namespace GlobalTheory.SBBlocks
 
 /- English proof (translation)
-Establish `: Function.support f = (f ⁻¹' {0})ᶜ` using `by ext; simp`. Rewrite using `[this]`. Conclude with `(hf.isOpen_fiber 0).isClosed_compl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isClosed_support_of_isLocallyConstant {Z : Type} [TopologicalSpace Z] {f : Z → ℂ}
     (hf : IsLocallyConstant f) : IsClosed (Function.support f) := by
@@ -17,7 +17,7 @@ theorem isClosed_support_of_isLocallyConstant {Z : Type} [TopologicalSpace Z] {f
   rw [this]; exact (hf.isOpen_fiber 0).isClosed_compl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hf, HasCompactSupport.intro' (hC.of_isClosed_subset (isClosed_support_of_isLocallyConstant hf) hs) (isClosed_support_of_isLocallyConstant hf) fun _ hx => Function.notMem_support.1 hx⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_SB_of_support_subset {Z : Type} [TopologicalSpace Z] {f : Z → ℂ} {C : Set Z}
     (hf : IsLocallyConstant f) (hC : IsCompact C) (hs : Function.support f ⊆ C) : f ∈ SB Z :=
@@ -25,27 +25,23 @@ theorem mem_SB_of_support_subset {Z : Type} [TopologicalSpace Z] {f : Z → ℂ}
     (isClosed_support_of_isLocallyConstant hf) fun _ hx => Function.notMem_support.1 hx⟩
 
 /- English proof (translation)
-Take `⟨hlc, hcs⟩` from `hh`. Establish `hK : IsCompact (tsupport h)` using `hcs.isCompact`. Establish `hK1 : IsCompact (Prod.fst '' tsupport h)` using `hK.image continuous_fst`. Establish `hK2 : IsCompact (Prod.snd '' tsupport h)` using `hK.image continuous_snd`. Establish `hzero : ∀ x y, h (x, y) ≠ 0 → x ∈ Prod.fst '' tsupport h ∧ y ∈ Prod.snd '' tsupport h` using `fun x y hne => ⟨⟨(x, y), subset_tsupport h hne, rfl⟩, ⟨(x, y), subset_tsupport h hne, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `s : Y → X → ℂ` to `fun y x => h (x, y)`. Establish `hs : IsLocallyConstant s`. Rewrite using `[IsLocallyConstant.iff_eventually_eq]`. Introduce `y₀`. Establish `key : ∀ᶠ y in 𝓝 y₀, ∀ x ∈ Prod.fst '' tsupport h, h (x, y) = h (x, y₀)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hK1.eventually_forall_of_forall_eventually (P := fun y x => h (x, y) = h (x, y₀)) ?_` and prove the remaining obligations. Introduce `x _`. Establish `h1 : IsLocallyConstant (fun z : Y × X => h (z.2, z.1))` using `hlc.comp_continuous continuous_swap`. Establish `h2 : IsLocallyConstant (fun z : Y × X => h (z.2, y₀))` using `hlc.comp_continuous (continuous_snd.prodMk continuous_const)`. Use `filter_upwards [h1.eventually_eq (y₀, x), h2.eventually_eq (y₀, x)] with z hz1 hz2`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz1, hz2]`. Use `filter_upwards [key] with y hy`. Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : x ∈ Prod.fst '' tsupport h`. Conclude with `hy x hx`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show h (x, y) = h (x, y₀)`. Rewrite using `[image_eq_zero_of_notMem_tsupport (fun hm => hx ⟨_, hm, rfl⟩), image_eq_zero_of_notMem_tsupport (fun hm => hx ⟨_, hm, rfl⟩)]`. Establish `hsSB : ∀ y, s y ∈ SB X` using `fun y => mem_SB_of_support_subset (hlc.comp_continuous (continuous_id.prodMk continuous_const)) hK1 (fun x hx => (hzero x y hx).1)`. Establish `hsne : ∀ y, s y ≠ 0 → y ∈ Prod.snd '' tsupport h` using `fun y hy => by`. Take `⟨x, hx⟩` from `Function.ne_iff.1 hy`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Conclude with `(hzero x y hx).2`. Take `⟨t, ht⟩` from `hK2.elim_finite_subcover (fun φ : X → ℂ => s ⁻¹' {φ}) (fun φ => hs.isOpen_fiber φ) (fun y _ => Set.mem_iUnion.2 ⟨s y, rfl⟩)`. Set `t'` to `t.filter (fun φ => φ ≠ 0 ∧ φ ∈ SB X)`. Set `bb : (X → ℂ) → Y → ℂ` to `fun φ y => if s y = φ then 1 else 0`. Establish `hbSB : ∀ φ ∈ t', bb φ ∈ SB Y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `φ hφ`. Establish `hφ0 : φ ≠ 0` using `(Finset.mem_filter.1 hφ).2.1`. Use `mem_SB_of_support_subset (hs.comp fun v => if v = φ then (1 : ℂ) else 0) hK2 ?_` and prove the remaining obligations. Introduce `y hy`. Establish `: s y = φ`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Assume the negation of the conclusion as `hne`. Conclude with `hy (if_neg hne)`. Conclude with `hsne y (this ▸ hφ0)`. Establish `hsum : ∀ x y, h (x, y) = ∑ φ ∈ t', φ x * bb φ y`. Introduce `x y`.
+Both sides reduce to the same expression. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result.
 
-Apply the tactic sequence `have e1 : ∑ φ ∈ t', φ x * bb φ y = ∑ φ ∈ t', if s y = φ then φ x else 0 := Finset.sum_congr rfl fun φ _ => by simp only [bb]; split_ifs <;> simp`. Rewrite using `[e1, Finset.sum_ite_eq]`. Use `split_ifs with hin`. Both sides reduce to the same expression. Use `show s y x = 0`.
-
-Assume the negation of the conclusion as `hne`. Establish `hy0 : s y ≠ 0` using `fun h0 => hne (by rw [h0]; rfl)`. Apply `hin` to reduce the goal to its premises. Take `⟨φ, hφ, hyφ⟩` from `Set.mem_iUnion₂.1 (ht (hsne y hy0))`. Establish `: s y = φ` using `hyφ`.
-
-Conclude with `Finset.mem_filter.2 ⟨this ▸ hφ, hy0, hsSB y⟩`. Use `⟨t'.card, fun j => (t'.equivFin.symm j : X → ℂ), fun j => bb (t'.equivFin.symm j), fun j => (Finset.mem_filter.1 (t'.equivFin.symm j).2).2.2, fun j => hbSB _ (t'.equivFin.symm j).2, ?_⟩` and prove the remaining obligations. Introduce `x y`. Rewrite using `[hsum x y, ← Finset.sum_coe_sort t']`. Conclude with `(Equiv.sum_comp t'.equivFin.symm (fun φ : t' => (φ : X → ℂ) x * bb φ y)).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prod_decomp {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (h : X × Y → ℂ)
     (hh : h ∈ SB (X × Y)) :
@@ -117,9 +113,9 @@ theorem prod_decomp {X Y : Type} [TopologicalSpace X] [TopologicalSpace Y] (h : 
   exact (Equiv.sum_comp t'.equivFin.symm (fun φ : t' => (φ : X → ℂ) x * bb φ y)).symm
 
 /- English proof (translation)
-Set `e : (κ ⊕ κ' → Af F) ≃ₜ (κ → Af F) × (κ' → Af F)` to `Homeomorph.sumArrowHomeomorphProdArrow`. Establish `hh : g ∘ e.symm ∈ SB ((κ → Af F) × (κ' → Af F))` using `⟨hg.1.comp_continuous e.symm.continuous, hg.2.comp_homeomorph e.symm⟩`. Take `⟨m, a, b, ha, hb, hab⟩` from `prod_decomp _ hh`. Use `⟨m, a, b, ha, hb, fun x x' => ?_⟩` and prove the remaining obligations. Rewrite using `[← hab]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show g _ = g (e.symm (x, x'))`. Use `congr 1`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sum_prod_blocks {F : Type} [Field F] [NumberField F] {κ κ' : Type} [Fintype κ] [Fintype κ']
     (g : (κ ⊕ κ' → Af F) → ℂ) (hg : g ∈ SB (κ ⊕ κ' → Af F)) :

@@ -9,7 +9,7 @@ namespace ReciprocityTheory.PGsh
 local notation "𝕢" => Periodic.qParam
 
 /- English proof (translation)
-Rewrite using `[Periodic.qParam, ← Complex.exp_nat_mul]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma qParam_one_pow_eq_cexp (z : ℂ) (m : ℕ) :
     𝕢 1 z ^ m = cexp (2 * π * I * m * z) := by
@@ -19,25 +19,23 @@ lemma qParam_one_pow_eq_cexp (z : ℂ) (m : ℕ) :
   ring
 
 /- English proof (translation)
-Use `set y0 : ℝ := τ.im / 2 with hy0`. Establish `hy0pos : 0 < y0` using `by have := τ.im_pos; positivity`. Establish `hy0lt : y0 < τ.im` using `by have := τ.im_pos; rw [hy0]; linarith`. Set `τ0 : ℍ` to `⟨(y0 : ℂ) * I, by simpa using hy0pos⟩`. Establish `hτ0im : (τ0 : ℂ).im = y0` using `by simp [τ0]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set r : ℝ := ‖𝕢 1 (τ0 : ℂ)‖ with hr`. Establish `hsum : Summable (fun m : ℕ ↦ ‖c m‖ * r ^ m)`. Use `(hF τ0).summable.norm` as an intermediate fact. Use `this.congr fun m ↦ ?_` and prove the remaining obligations. Rewrite using `[norm_smul, norm_pow]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set U : Set ℂ := {z : ℂ | y0 < z.im} with hU`. Establish `hUo : IsOpen U` using `isOpen_lt continuous_const Complex.continuous_im`. Establish `hτU : (τ : ℂ) ∈ U` using `by simpa [hU] using hy0lt`. Set `G : ℕ → ℂ → ℂ` to `fun m z ↦ c m * cexp (2 * π * I * m * z)`. Establish `hGd : ∀ m, DifferentiableOn ℂ (G m) U` using `fun m ↦ by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `z _`. Conclude with `(by fun_prop : Differentiable ℂ (G m)).differentiableAt.differentiableWithinAt`. Establish `hGle : ∀ m (z : ℂ), z ∈ U → ‖G m z‖ ≤ ‖c m‖ * r ^ m`. Introduce `m z hz`. Simplify using `only [G, norm_mul, ← qParam_one_pow_eq_cexp, norm_pow]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `gcongr`. Rewrite using `[hr, Periodic.norm_qParam, Periodic.norm_qParam, Real.exp_le_exp, hτ0im]`. Establish `: y0 < z.im` using `hz`. Use `Real.pi_pos` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hmain` using `hasSum_deriv_of_summable_norm hsum hGd hUo hGle hτU`. Establish `heq : (fun w : ℂ ↦ ∑' m, G m w) =ᶠ[𝓝 (τ : ℂ)] F ∘ ofComplex` using `by filter_upwards [hUo.mem_nhds hτU] with w hw`. Establish `hw0 : 0 < w.im` using `lt_trans hy0pos hw`. Simplify using `only [comp_apply, ofComplex_apply_of_im_pos hw0]`. Rewrite using `[← (hF ⟨w, hw0⟩).tsum_eq]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `tsum_congr fun m ↦ ?_` and prove the remaining obligations. Simplify using `[G, qParam_one_pow_eq_cexp]`. Rewrite `hmain` using `[heq.deriv_eq]`. Establish `hderiv : ∀ m, deriv (G m) τ = 2 * π * I * m * (c m * cexp (2 * π * I * m * τ))`. Introduce `m`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `h1 : HasDerivAt (fun z : ℂ ↦ 2 * π * I * m * z) (2 * π * I * m) (τ : ℂ)`. Simplify using `using (hasDerivAt_id (τ : ℂ)).const_mul (2 * π * I * m)`. Establish `h2` using `(h1.cexp).const_mul (c m)`. Rewrite using `[h2.deriv]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [hderiv] at hmain`. Establish `hfin` using `hmain.mul_left (2 * π * I)⁻¹`. Unfold `Derivative.normalizedDerivOfComplex`. Establish `h2pi : (2 * π * I : ℂ) ≠ 0`. Simplify using `[Real.pi_ne_zero, I_ne_zero]`.
-
-Use `hfin.congr_fun fun m ↦ ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, qParam_one_pow_eq_cexp]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem hasSum_normalizedDeriv {F : ℍ → ℂ} {c : ℕ → ℂ}
     (hF : ∀ τ : ℍ, HasSum (fun m ↦ c m • 𝕢 1 τ ^ m) (F τ)) (τ : ℍ) :

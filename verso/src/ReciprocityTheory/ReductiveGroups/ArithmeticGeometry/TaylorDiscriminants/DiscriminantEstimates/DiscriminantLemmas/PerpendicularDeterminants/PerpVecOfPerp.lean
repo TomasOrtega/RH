@@ -6,13 +6,13 @@ namespace PI.UnitaryGroupMassFormula.FormPartialDerivatives
 open ReciprocityTheory.ChartRestriction.G.TB
 
 /- English proof (translation)
-Apply the tactic sequence `have hentry : ∀ a', hMat h e e' a' c = h (e' a') (e c) := fun _ => rfl`. Establish `key : ∀ a, ∑ a', (hMat h e e').adjugate a a' * h (e' a') (e c) = if a = c then (hMat h e e').det else 0`. Introduce `a`. Establish `hk` using `congrFun (congrFun (Matrix.adjugate_mul (hMat h e e')) a) c`. Rewrite `hk` using `[Matrix.mul_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hentry] at hk`. Rewrite using `[hk, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul]`. Apply the tactic sequence `split_ifs <;> simp`. Simplify using `only [perpVec, map_sub, map_smul, map_sum, Pi.sub_apply, Pi.smul_apply, Finset.sum_apply, smul_eq_mul]`. Establish `hsum : ∑ a, ∑ a', (hMat h e e').adjugate a a' * h g (e a) * h (e' a') (e c) = (hMat h e e').det * h g (e c)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Use `Finset.sum_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl fun a' _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `_ = (hMat h e e').det * h g (e c) := by`. Simplify using `only [key, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, if_true]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hsum]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem perpVec_perp (R : Type) [CommRing R] (V : Type) [AddCommGroup V] [Module R V] (p : ℕ)
     (h : V →ₗ[R] (V → R)) (e e' : Fin p → V) (g : V) (c : Fin p) :
@@ -43,13 +43,11 @@ theorem perpVec_perp (R : Type) [CommRing R] (V : Type) [AddCommGroup V] [Module
   ring
 
 /- English proof (translation)
-Set `MO : Matrix (Fin p) (Fin p) O` to `Matrix.of fun a' a => ⟨h (e' a') (e a), hL _ (he' a') _ (he a)⟩`. Establish `hMap : hMat h e e' = O.subtype.mapMatrix MO`. Use extensionality with `a' a`. Both sides reduce to the same expression. Establish `hdet : (hMat h e e').det ∈ O`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Rewrite using `[hMap, ← RingHom.map_det]`. Conclude with `(MO.det).2`. Establish `hadj : ∀ a a', (hMat h e e').adjugate a a' ∈ O`. Introduce `a a'`. Rewrite using `[hMap, ← RingHom.map_adjugate]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `(MO.adjugate a a').2`. Establish `hs : ∀ r ∈ O, ∀ v ∈ L, r • v ∈ L`. Introduce `r hr v hv`. Conclude with `L.smul_mem (⟨r, hr⟩ : O) hv`. Unfold `perpVec`.
-
-Use `L.sub_mem (hs _ hdet _ hg) (L.sum_mem fun a _ => L.sum_mem fun a' _ => ?_)` and prove the remaining obligations. Conclude with `hs _ (O.mul_mem (hadj a a') (hL _ hg _ (he a))) _ (he' a')`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem perpVec_int (R : Type) [CommRing R] (O : Subring R) (V : Type) [AddCommGroup V] [Module R V]
     (p : ℕ) (h : V →ₗ[R] (V → R)) (L : Submodule O V)
@@ -74,7 +72,7 @@ theorem perpVec_int (R : Type) [CommRing R] (O : Subring R) (V : Type) [AddCommG
   exact hs _ (O.mul_mem (hadj a a') (hL _ hg _ (he a))) _ (he' a')
 
 /- English proof (translation)
-Simplify using `[perpVec, hg]`.
+Simplify using the standard rewrite rules.
 -/
 theorem perpVec_of_perp (R : Type) [CommRing R] (V : Type) [AddCommGroup V] [Module R V] (p : ℕ)
     (h : V →ₗ[R] (V → R)) (e e' : Fin p → V) (g : V) (hg : ∀ a, h g (e a) = 0) :

@@ -19,7 +19,7 @@ def cSix : ℝ := 32
 def ceilEight (n : ℕ) : ℕ := 8 * ((n + 7) / 8)
 
 /- English proof (translation)
-Unfold `ceilEight`. Use `⟨⟨_, rfl⟩, by omega, fun a ha h => by omega⟩` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 -/
 theorem ceilEight_spec (n : ℕ) : 8 ∣ ceilEight n ∧ n ≤ ceilEight n ∧ ∀ a, 8 ∣ a → n ≤ a → ceilEight n ≤ a := by
   unfold ceilEight
@@ -63,7 +63,7 @@ def expC : ℕ := sInf {c : ℕ | bigR D ^ 8 * degStar D L ^ 2 ≤ (3 : ℝ) ^ c
 def levDeep : ℕ := D.host.g 0 * D.host.g 1 * (3 ^ expC D L * 5 ^ expC D L)
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (bigR D ^ 7 * degStar D L ^ 2) (by norm_num : (1 : ℝ) < 3)`. Establish `: n ∈ {c : ℕ | bigR D ^ 7 * degStar D L ^ 2 ≤ (3 : ℝ) ^ (2 * c)}` using `hn.le.trans (pow_le_pow_right₀ (by norm_num) (by omega))`. Conclude with `Nat.sInf_mem ⟨n, this⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem expQ_spec : bigR D ^ 7 * degStar D L ^ 2 ≤ (3 : ℝ) ^ (2 * expQ D L) := by
   obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt (bigR D ^ 7 * degStar D L ^ 2) (by norm_num : (1 : ℝ) < 3)
@@ -72,7 +72,7 @@ theorem expQ_spec : bigR D ^ 7 * degStar D L ^ 2 ≤ (3 : ℝ) ^ (2 * expQ D L) 
   exact Nat.sInf_mem ⟨n, this⟩
 
 /- English proof (translation)
-Take `⟨n, hn⟩` from `pow_unbounded_of_one_lt (bigR D ^ 8 * degStar D L ^ 2) (by norm_num : (1 : ℝ) < 3)`. Establish `: n + max 4 (2 * expQ D L) ∈ {c : ℕ | bigR D ^ 8 * degStar D L ^ 2 ≤ (3 : ℝ) ^ c ∧ max 4 (2 * expQ D L) ≤ c}` using `⟨hn.le.trans (pow_le_pow_right₀ (by norm_num) (by omega)), by omega⟩`. Conclude with `Nat.sInf_mem ⟨_, this⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem expC_spec : bigR D ^ 8 * degStar D L ^ 2 ≤ (3 : ℝ) ^ expC D L ∧ max 4 (2 * expQ D L) ≤ expC D L := by
   obtain ⟨n, hn⟩ := pow_unbounded_of_one_lt (bigR D ^ 8 * degStar D L ^ 2) (by norm_num : (1 : ℝ) < 3)
@@ -117,7 +117,7 @@ def shift : ℝ := (D.R.nV : ℝ) / 2 * D.R.f * D.R.r * (Real.log (2 * Real.pi) 
 def nOne (j : ℕ) : ℝ := (D.R.f : ℝ) * D.R.nV * (cFlat D L j + 3 * D.R.m * lrd D)
 
 /- English proof (translation)
-Unfold `nU placeRankTwoOne.normU nrm`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_range]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `[uAn, kap, i.2]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem nU_eq (j : ℕ) : nU D j = placeRankTwoOne.normU D j (wAn D j) := by
   unfold nU placeRankTwoOne.normU nrm
@@ -127,7 +127,7 @@ theorem nU_eq (j : ℕ) : nU D j = placeRankTwoOne.normU D j (wAn D j) := by
   simp [uAn, kap, i.2]
 
 /- English proof (translation)
-The claim follows from `sub_self _`.
+A detailed English derivation is pending.
 -/
 theorem uAn_anchor (j : ℕ) (τ : D.what₂.Tau) : uAn D j τ (D.R.k - 2) = 0 := sub_self _
 
@@ -164,7 +164,7 @@ def epsR (j : ℕ) : ℝ := 7 * dY D ^ 2 / tR Q + 3 / 2 * dY D * rhoB Q j
 def xZero (j : ℕ) : ℝ := dY D * (2 * dY D + 5 + rhoB Q j * tR Q) / ((1 - rhoB Q j) * (tR Q - dY D))
 
 /- English proof (translation)
-Simplify using `[uOne]`.
+Simplify using the standard rewrite rules.
 -/
 theorem uOne_anchor (j : ℕ) (τ : D.what₂.Tau) : uOne Q j τ (D.R.k - 2) = 0 := by simp [uOne]
 
@@ -339,7 +339,7 @@ def DelStrong (D : D7) (L : SizeData₂ D) (j : ℕ) (N : OT.Num) : Prop :=
   24 * del D * ppE D N * nKap D j ≤ L.sc.b / 8
 
 /- English proof (translation)
-Establish `h1 : 24 * δ * A * K ≤ 24 * δ * A * (32 * fk * b)` using `mul_le_mul_of_nonneg_left hK (by positivity)`. Establish `h2 : δ * (16 * A) * fk ≤ e * PP * fk` using `mul_le_mul_of_nonneg_right (mul_le_mul hδe h16 (by positivity) (hδ.trans hδe)) hfk`. Establish `h3 : δ * A * fk ≤ 1 / 6144` using `by nlinarith`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_right h3 hb]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem strong_arith {δ e A PP K fk b : ℝ} (hδ : 0 ≤ δ) (hδe : δ ≤ e) (hA : 0 ≤ A) (h16 : 16 * A ≤ PP)
     (hK : K ≤ 32 * fk * b) (hfk : 0 ≤ fk) (hb : 0 ≤ b) (h : 385 * PP * fk * e ≤ 1) :
@@ -385,7 +385,7 @@ structure Choice (j : ℕ) : Prop where
   share : 385 * Q.PP * D.R.f * D.R.k * Real.exp (-L.sc.x ^ (L.sc.ez / 7)) ≤ 1
 
 /- English proof (translation)
-Establish `h1 : L.sc.x ^ (L.sc.ez / 6) ≤ L.sc.x ^ (L.sc.eps / 6)` using `Real.rpow_le_rpow_of_exponent_le L.sc.one_lt_alt.le (by linarith [L.sc.ez_le])`. Conclude with `⟨h.x_ge.1.trans h1, h.x_ge.2.trans h1⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem Choice.x_ge_eps {Q : ParamsT D L P} {j : ℕ} (h : Choice Q j) :
     2 * L.sc.x ^ (L.sc.ez / 7) ≤ L.sc.x ^ (L.sc.eps / 6) ∧

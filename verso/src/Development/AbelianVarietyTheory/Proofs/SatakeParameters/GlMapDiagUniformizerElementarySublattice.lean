@@ -11,9 +11,9 @@ namespace GlobalTheory.DiagElem
 variable {E : Type} [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E))
 
 /- English proof (translation)
-Break down `eq_or_ne x 0 with rfl | hx` into its components or cases. Conclude with `zero_le`. Rewrite `h`, the goal using `[← WithZero.exp_log hx]`. Rewrite `h` using `[← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[WithZero.exp_le_exp]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1) :
     x ≤ WithZero.exp (-1) := by
@@ -25,17 +25,15 @@ theorem le_exp_neg_one_of_lt_one {x : WithZero (Multiplicative ℤ)} (h : x < 1)
     omega
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Use `Submodule.span_induction (p := fun x _ => ∀ i, Valued.v (x i) ≤ 1) ?_ ?_ ?_ ?_ hx` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩ i`. Distinguish the cases in `h : i = j`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[Pi.single_apply, h]`. Introduce `i`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `a b _ _ ha hb i`. Simplify using `using (Valued.v.map_add (a i) (b i)).trans (max_le (ha i) (hb i))`. Introduce `c a _ ha i`. Establish `hc : Valued.v (c : w.adicCompletion E) ≤ 1` using `c.2`. Use `show Valued.v ((c : w.adicCompletion E) * a i) ≤ 1`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul]`. Conclude with `mul_le_one' hc (ha i)`. Introduce `hx`. Establish `e : x = ∑ i, (⟨x i, hx i⟩ : w.adicCompletionIntegers E) • Pi.basisFun (w.adicCompletion E) (Fin n) i`. Use extensionality with `j`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_apply, Finset.sum_eq_single j (fun b _ hb => by simp [Pi.single_apply, Ne.symm hb]) (by simp)]`. Simplify using `only [Pi.basisFun_apply, Pi.smul_apply, Pi.single_eq_same]`. Rewrite using `[Algebra.smul_def]`. Simplify using the standard rewrite rules. Rewrite using `[e]`.
-
-Conclude with `Submodule.sum_mem _ fun i _ => Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_std {n : ℕ} (x : Fin n → w.adicCompletion E) :
     x ∈ (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ↔
@@ -69,11 +67,11 @@ def dEnt {n : ℕ} (ϖ : w.adicCompletion E) (S : Finset (Fin n)) (i : Fin n) : 
   if i ∈ S then ϖ else 1
 
 /- English proof (translation)
-Establish `hϖ0 : ϖ ≠ 0` using `fun h0 => by simp [IsUnifV, h0] at hϖ`. Apply the tactic sequence `have hf0 : ∀ i, dEnt w ϖ S i ≠ 0 := fun i => by unfold dEnt; split_ifs <;> simp [hϖ0]`. Simplify using `only [glMap, Submodule.mem_map, LinearMap.coe_restrictScalars, Matrix.toLin'_apply, hd, Matrix.mulVec_diagonal, mem_std]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, hy, rfl⟩ i`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Rewrite using `[Matrix.mulVec_diagonal, map_mul]`. Conclude with `mul_le_of_le_one_right' (hy i)`. Introduce `hx`. Use `⟨fun i => x i / dEnt w ϖ S i, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_div₀]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `div_le_one_of_le₀ (hx i) zero_le`. Use function extensionality and compare the values at `i`. Rewrite using `[Matrix.mulVec_diagonal, mul_div_cancel₀ _ (hf0 i)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_glMap_diag {n : ℕ} {ϖ : w.adicCompletion E} (hϖ : IsUnifV E w ϖ) (S : Finset (Fin n))
     (d : GL (Fin n) (w.adicCompletion E))
@@ -117,11 +115,9 @@ def redS {n : ℕ} (S : Finset (Fin n)) :
     congr 1
 
 /- English proof (translation)
-Introduce `c`. Use `choose a ha using fun i : S => IsLocalRing.residue_surjective (c i)`. Use `⟨⟨fun j => if h : j ∈ S then (a ⟨j, h⟩ : w.adicCompletion E) else 0, (mem_std w _).2 fun j => ?_⟩, ?_⟩` and prove the remaining obligations. Use `split_ifs`. Conclude with `(a _).2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using the standard rewrite rules. Use function extensionality and compare the values at `⟨i, hi⟩`. Express the relevant statement in the definitionally equal form `IsLocalRing.residue _ _ = _`. Rewrite using `[← ha]`. Use `congr 1`.
-
-Use `ext`. Simplify using `[hi]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem redS_surjective {n : ℕ} (S : Finset (Fin n)) : Function.Surjective (redS w S) := by
   intro c
@@ -139,7 +135,7 @@ theorem redS_surjective {n : ℕ} (S : Finset (Fin n)) : Function.Surjective (re
     simp [hi]
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.RowSatakeBound.finite_residue w; glMap d (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ∈ Subtype.val '' subElem S.card (std (w.adicCompletionIntegers E) (w.adicCompletion E) n) := by intro E _ _ w n ϖ hϖ S d hd have hd' : (d : Matrix (Fin n) (Fin n) (w. …`.
+A detailed English derivation is pending.
 -/
 theorem glMap_diag_mem_subElem : ∀ (E : Type) [Field E] [NumberField E] (w : HeightOneSpectrum (𝓞 E)) (n : ℕ) (ϖ : w.adicCompletion E), IsUnifV E w ϖ → ∀ (S : Finset (Fin n)) (d : GL (Fin n) (w.adicCompletion E)), (d : Matrix (Fin n) (Fin n) (w.adicCompletion E)) = Matrix.diagonal (fun i => if i ∈ S then ϖ else 1) → haveI := GlobalTheory.RowSatakeBound.finite_residue w; glMap d (std (w.adicCompletionIntegers E) (w.adicCompletion E) n).1 ∈ Subtype.val '' subElem S.card (std (w.adicCompletionIntegers E) (w.adicCompletion E) n) := by
   intro E _ _ w n ϖ hϖ S d hd

@@ -11,9 +11,9 @@ set_option maxHeartbeats 1600000
 namespace GlobalTheory.WeakClosed
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Use extensionality with `m`. Simplify using `only [Pi.add_apply, Finset.sum_apply, Pi.mul_apply, Pi.pow_apply, letπ, map_add, map_sum, PowerSeries.coeff_C_mul_X_pow, PowerSeries.coeff_X_pow_mul', PowerSeries.coeff_mk, Finset.sum_ite_eq, Finset.mem_range]`. Distinguish the cases in `hk : m < k`. Simplify using `[hk, Nat.not_le.2 hk]`.
+Apply function extensionality and compare values at an arbitrary argument. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hk, Nat.le_of_not_lt hk, Nat.sub_add_cancel (Nat.le_of_not_lt hk)]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tailDecomp {O : Type} [CommRing O] {n : ℕ} (k : ℕ) (a : LetA O n) :
     a = (∑ j ∈ Finset.range k, fun i => PowerSeries.C (PowerSeries.coeff j (a i)) * PowerSeries.X ^ j) +
@@ -28,17 +28,15 @@ theorem tailDecomp {O : Type} [CommRing O] {n : ℕ} (k : ℕ) (a : LetA O n) :
   · simp [hk, Nat.le_of_not_lt hk, Nat.sub_add_cancel (Nat.le_of_not_lt hk)]
 
 /- English proof (translation)
-Rewrite using `[continuous_iff_continuousAt]`. Introduce `a₀`. Rewrite using `[ContinuousAt, ← tendsto_sub_nhds_zero_iff]`. Introduce `U hU`. Take `⟨V, hV, hVV⟩` from `exists_nhds_zero_half hU`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨k, hk⟩` from `hsmall V hV`. Set `mono : ℕ → LetA O n → M` to `fun j a => Φ (fun i => PowerSeries.C (PowerSeries.coeff j (a i)) * PowerSeries.X ^ j)`. Establish `hcont : ∀ j, Continuous (mono j)` using `fun j => (hmono j).comp (continuous_pi fun i => (PowerSeries.WithPiTopology.continuous_coeff O j).comp (continuous_apply i))`. Set `S : LetA O n → M` to `fun a => ∑ j ∈ Finset.range k, (mono j a - mono j a₀)`. Establish `hS : Continuous S` using `continuous_finset_sum _ fun j _ => (hcont j).sub continuous_const`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hS0 : S a₀ = 0` using `by simp [S]`. Establish `hSV : ∀ᶠ a in 𝓝 a₀, S a ∈ V`. Use `hS.continuousAt (x := a₀)` as an intermediate fact. Rewrite `this` using `[ContinuousAt, hS0]`. Conclude with `this hV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Filter.mem_map]`. Use `filter_upwards [hSV] with a ha`. Set `tl : LetA O n → LetA O n` to `fun b i => PowerSeries.mk fun m => PowerSeries.coeff (m + k) (b i)`. Establish `hΦ : ∀ b, Φ b = (∑ j ∈ Finset.range k, mono j b) + Φ (letπ ^ k * tl b)`. Introduce `b`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `conv_lhs => rw [tailDecomp k b]`. Rewrite using `[map_add, map_sum]`. Establish `: Φ a - Φ a₀ = S a + Φ (letπ ^ k * (tl a - tl a₀))`. Rewrite using `[hΦ a, hΦ a₀, mul_sub, map_sub]`. Simplify using `only [S, Finset.sum_sub_distrib]`.
-
-Normalize the expressions using the abelian group laws. Use `show Φ a - Φ a₀ ∈ U`. Rewrite using `[this]`. Conclude with `hVV _ ha _ (hk _)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_of_tail {O : Type} [CommRing O] [TopologicalSpace O] {n : ℕ} {M : Type}
     [AddCommGroup M] [TopologicalSpace M] [IsTopologicalAddGroup M] (Φ : LetA O n →+ M)

@@ -26,24 +26,22 @@ open UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.E UpperTheory.V.Z.Invaria
 variable {K : Type} [Field K] [NumberField K] {n : ℕ}
 
 /- English proof (translation)
-Introduce `w` and use `⟨⟨GLnLocal.isCompact_integralGL _ n, GLnLocal.isOpen_integralGL _ n⟩, le_rfl⟩`.
+Fix the arbitrary inputs and assume any hypotheses. Supply the required witnesses or components.
 -/
 private theorem UpperTheory.Reformulated.B.Gul4.lev_top :
     Lev (fun w : Pl K => (GLnLocal.integralGL (w.adicCompletion K) n : Subgroup (Gw n w))) := fun w =>
   ⟨⟨GLnLocal.isCompact_integralGL _ n, GLnLocal.isOpen_integralGL _ n⟩, le_rfl⟩
 
 /- English proof (translation)
-Use `⟨fun h => ?_, fun h => Submodule.subset_span h⟩` and prove the remaining obligations. Take `⟨-, hinf, -, harc, hcpt, -⟩` from `levLaws (K := K) n S`. Establish `hq` using `RightCosetSpace.quasiMeasurePreserving_mk (Gam K n) μ`. Use `hp.haar.prob` as an intermediate fact. Proceed by induction on `h using Submodule.span_induction with`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Proceed by induction.
 
-Consider the case `mem x hx => exact hx`. Consider the case `zero`. Use `⟨continuous_const, ⟨0, τ.zero_mem, ?_⟩, fun g => by simp, _, UpperTheory.Reformulated.B.Gul4.lev_top, fun u _ g => rfl⟩` and prove the remaining obligations. Conclude with `hq.ae (Lp.coeFn_zero ℂ 2 _)`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨cx, ⟨v, hv, rv⟩, ax, U, hU, fx⟩` from `hx`. Take `⟨cy, ⟨v', hv', rv'⟩, ay, U', hU', fy⟩` from `hy`. Take `⟨hL, hE⟩` from `hinf U U' hU hU'`. Use `⟨cx.add cy, ⟨v + v', τ.add_mem hv hv', ?_⟩, UpperTheory.mean_value_uniqueness κ arc1 p harc hp.cont x y cx cy ax ay, _, hL, fun u hu g => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hq.ae (Lp.coeFn_add v v'), rv, rv'] with z h1 h2 h3`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[Pi.add_apply, ← h2, ← h3]`. Conclude with `h1`. Rewrite `hu` using `[hE]`. Rewrite using `[Pi.add_apply, Pi.add_apply, fx u hu.1, fy u hu.2]`. Consider the case `smul c x _ hx`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨cx, ⟨v, hv, rv⟩, ax, U, hU, fx⟩` from `hx`. Use `⟨cx.const_smul c, ⟨c • v, τ.smul_mem c hv, ?_⟩, fun g => ?_, U, hU, fun u hu g => ?_⟩` and prove the remaining obligations. Use `filter_upwards [hq.ae (Lp.coeFn_smul c v), rv] with z h1 h2`. Rewrite using `[Pi.smul_apply, ← h2]`. Conclude with `h1`.
-
-Rewrite using `[Pi.smul_apply, ← ax g, smul_eq_mul, ← integral_const_mul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_left_comm]`. Rewrite using `[Pi.smul_apply, Pi.smul_apply, fx u hu]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Gul4.mem_iff (μ : Measure (G1 K n)) (τ : Submodule ℂ (L2 μ))
     (κ : Measure (archCompact K n)) (p : archCompact K n → ℂ) (hp : IdemA κ p) (hμ : μ.IsHaarMeasure)
@@ -79,11 +77,11 @@ private theorem UpperTheory.Reformulated.B.Gul4.mem_iff (μ : Measure (G1 K n)) 
     · rw [Pi.smul_apply, Pi.smul_apply, fx u hu]
 
 /- English proof (translation)
-Take `⟨-, -, hcomm, -, -, hconj⟩` from `levLaws (K := K) n (im w)`. Take `⟨cφ, ⟨v, hv, rv⟩, aφ, U, hU, fφ⟩` from `hφ`. Take `⟨U', hU', hc⟩` from `hconj w ι hw hι rfl U hU g`. Take `⟨-, -, -, hst, -⟩` from `hτ`. Use `⟨cφ.comp (continuous_id.mul continuous_const), ⟨_, hst (fin1 (ι g)) v hv, ?_⟩, fun x => ?_, U', hU', fun u hu x => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `UpperTheory.ae_translate_eq μ _ (RightCosetSpace.mk (Gam K n)) (RightCosetSpace.rightMul (Gam K n) (fin1 (ι g))) _ v _ φ (RightCosetSpace.quasiMeasurePreserving_mk (Gam K n) μ) (fun y => RightCosetSpace.rightMul_mk _ _) (RightCosetSpace.coeFn_rightRegularRep (Gam K n) μ _ v) rv`. Use `beta_reduce`. Rewrite using `[← aφ (x * fin1 (ι g))]`. Simplify using `only [mul_assoc, fun k => (hcomm k (ι g)).eq]`. Establish `h` using `fφ _ (hc u hu) (x * fin1 (ι g)) beta_reduce`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h]`. Simplify using `only [fin1, map_mul, map_inv, mul_assoc, mul_inv_cancel_left]`.
+A detailed English derivation is pending.
 -/
 private theorem UpperTheory.Reformulated.B.Gul4.isX_translate (μ : Measure (G1 K n)) [μ.IsHaarMeasure] (τ : Submodule ℂ (L2 μ))
     (κ : Measure (archCompact K n)) (p : archCompact K n → ℂ) (hτ : CuspIrr μ τ)
@@ -110,9 +108,9 @@ private theorem UpperTheory.Reformulated.B.Gul4.isX_translate (μ : Measure (G1 
 end
 
 /- English proof (translation)
-Introduce `K _ _ _ μ hμ τ κ p hp`. Use `⟨UpperTheory.Reformulated.B.Gul4.mem_iff μ τ κ p hp hμ, fun hτ r w ι hw hι φ hφ => ?_⟩` and prove the remaining obligations. Rewrite `hφ` using `[UpperTheory.Reformulated.B.Gul4.mem_iff μ τ κ p hp hμ]`. Use `⟨?_, fun g => Submodule.subset_span (UpperTheory.Reformulated.B.Gul4.isX_translate μ τ κ p hτ w ι hw hι φ hφ g)⟩` and prove the remaining obligations. Take `⟨-, -, -, U, hU, fφ⟩` from `hφ`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Conclude with `UpperTheory.isOpen_right_invariance ι (GroundTheory.Automorphic.MultiplicityOne.finProj K 2) _ φ ((UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.embEx 2 w hw).2 ι hι).1 ((UpperTheory.V.Z.InvariantSubmoduleMonicPolynomial.IwahoriBlocks.levLaws 2 _).1 U hU).1.2 fφ`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Gul4.xMem :
     ∀ {K : Type} [inst : Field K] [inst_1 : NumberField K] [NumberField.IsTotallyComplex K]

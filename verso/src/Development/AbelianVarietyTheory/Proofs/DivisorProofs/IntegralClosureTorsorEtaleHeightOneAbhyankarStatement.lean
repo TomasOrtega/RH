@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ComapMaximalIdealEq
 open IsLocalRing Polynomial
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | (exact @GlobalTheory.KeyOriginBC.closureEtaleAt_of_mem_height_le_one) | (exact GlobalTheory.KeyOriginBC.closureEtaleAt_of_mem_height_le_one) | (intros; apply GlobalTheory.KeyOriginBC.closureEtaleAt_of_mem_height_le_one <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.integralClosure_torsor_etale_height_one_abhyankar : ∀ (T O : Type) [CommRing T] [CommRing O] [IsLocalRing O] [Algebra T O] [Algebra T[X] O]
     [IsScalarTower T T[X] O]

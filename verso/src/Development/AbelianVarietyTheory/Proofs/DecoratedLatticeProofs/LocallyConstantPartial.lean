@@ -13,11 +13,11 @@ variable {X A : Type} [NormedAddCommGroup X] [NormedSpace ℝ X] [FiniteDimensio
   [NormedAddCommGroup A] [NormedSpace ℝ A] (μ : Measure X) [μ.IsAddHaarMeasure]
 
 /- English proof (translation)
-Use `set N : ℕ := Module.finrank ℝ X + 1 with hN`. Choose the witnesses or unpack the hypotheses as in `⟨C, hC⟩ : ∃ C : ℝ, ∀ z : X × A, (1 + ‖z‖) ^ (k + N) * ‖F z‖ ≤ C := by`. Use `fun z => SchwartzMap.one_add_le_sup_seminorm_apply (𝕜 := ℝ) (m := (k + N, 0)) (k := k + N) (n := 0) le_rfl le_rfl F z` as an intermediate fact. Simplify using `only [norm_iteratedFDeriv_zero] at this`. Conclude with `⟨_, this⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x => C * (1 + ‖x‖) ^ (-(N : ℝ)), (integrable_one_add_norm (by rw [hN]; push_cast; linarith)).const_mul C, fun x a => ?_⟩` and prove the remaining obligations. Establish `hp : 0 < 1 + ‖x‖` using `by positivity`. Use `show _ ≤ C * (1 + ‖x‖) ^ (-(N : ℝ))`. Rewrite using `[Real.rpow_neg hp.le, Real.rpow_natCast, ← div_eq_mul_inv, le_div_iff₀ (by positivity)]`. Use `le_trans ?_ (hC (x, a))` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ‖a‖ ≤ 1 + ‖(x, a)‖` using `by have := norm_snd_le (x, a); simp only at this; linarith`. Establish `h2 : 1 + ‖x‖ ≤ 1 + ‖(x, a)‖` using `by have := norm_fst_le (x, a); simp only at this; linarith`. Rewrite using `[pow_add _ k N, mul_right_comm]`. Use `gcongr`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_majorant {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (F : 𝓢(X × A, E)) (k : ℕ) :
     ∃ b : X → ℝ, Integrable b μ ∧ ∀ x a, ‖a‖ ^ k * ‖F (x, a)‖ ≤ b x := by
@@ -39,13 +39,13 @@ theorem exists_majorant {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (F
   gcongr
 
 /- English proof (translation)
-The claim follows from `F.continuous.comp (continuous_id.prodMk continuous_const)`.
+A detailed English derivation is pending.
 -/
 theorem continuous_slice {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (F : 𝓢(X × A, E)) (a : A) :
     Continuous fun x => F (x, a) := F.continuous.comp (continuous_id.prodMk continuous_const)
 
 /- English proof (translation)
-Take `⟨b, hb, h⟩` from `exists_majorant μ F 0`. Conclude with `hb.mono' (continuous_slice F a).aestronglyMeasurable (Eventually.of_forall fun x => by simpa using h x a)`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem integrable_slice {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (F : 𝓢(X × A, E)) (a : A) :
     Integrable (fun x => F (x, a)) μ := by
@@ -57,14 +57,14 @@ def dSnd {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (F : 𝓢(X × A,
     (SchwartzMap.fderivCLM ℝ (X × A) E F)
 
 /- English proof (translation)
-The claim follows from `(F.differentiable (x, a)).hasFDerivAt.comp a (hasFDerivAt_prodMk_right x a)`.
+A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_slice {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (F : 𝓢(X × A, E)) (x : X) (a : A) :
     HasFDerivAt (fun a => F (x, a)) (dSnd F (x, a)) a :=
   (F.differentiable (x, a)).hasFDerivAt.comp a (hasFDerivAt_prodMk_right x a)
 
 /- English proof (translation)
-Take `⟨b, hb, h⟩` from `exists_majorant μ (dSnd F) 0`. Conclude with `hasFDerivAt_integral_of_dominated_of_fderiv_le (F := fun a x => F (x, a)) (F' := fun a x => dSnd F (x, a)) (s := Set.univ) (bound := b) univ_mem (Eventually.of_forall fun a => (continuous_slice F a).aestronglyMeasurable) (integrable_slice μ F a) (continuous_slice (dSnd F) a).aest …`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasFDerivAt_integral {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (F : 𝓢(X × A, E)) (a : A) :
     HasFDerivAt (fun a => ∫ x, F (x, a) ∂μ) (∫ x, dSnd F (x, a) ∂μ) a := by
@@ -77,15 +77,13 @@ theorem hasFDerivAt_integral {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ 
     (Eventually.of_forall fun x a _ => hasFDerivAt_slice F x a)
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `E _ _ F`. Use `⟨contDiff_zero.2 (continuous_iff_continuousAt.2 fun a => (hasFDerivAt_integral μ F a).continuousAt), fun k => ?_⟩` and prove the remaining obligations. Take `⟨b, hb, h⟩` from `exists_majorant μ F k`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨∫ x, b x ∂μ, fun a => ?_⟩` and prove the remaining obligations. Rewrite using `[norm_iteratedFDeriv_zero]`. Combine the equalities or inequalities in the displayed calculation. Conclude with `norm_integral_le_integral_norm _`. Use `_ = ∫ x, ‖a‖ ^ k * ‖F (x, a)‖ ∂μ := (integral_const_mul _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `_ ≤ _ := integral_mono ((integrable_slice μ F a).norm.const_mul _) hb fun x => h x a`. Consider the case `succ n ih`. Introduce `E _ _ F`. Take `⟨h1, h2⟩` from `ih _ (dSnd F)`. Establish `e : fderiv ℝ (fun a => ∫ x, F (x, a) ∂μ) = fun a => ∫ x, dSnd F (x, a) ∂μ`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `fun a => (hasFDerivAt_integral μ F a).fderiv`. Use `⟨?_, fun k => ?_⟩` and prove the remaining obligations. Rewrite using `[Nat.cast_succ, contDiff_succ_iff_fderiv, e]`. Conclude with `⟨fun a => (hasFDerivAt_integral μ F a).differentiableAt, by simp, h1⟩`. Take `⟨C, hC⟩` from `h2 k`.
-
-Conclude with `⟨C, fun a => by rw [← norm_iteratedFDeriv_fderiv, e]; exact hC a⟩`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem smooth_decay (n : ℕ) : ∀ (E : Type) [NormedAddCommGroup E] [NormedSpace ℝ E] (F : 𝓢(X × A, E)),
     ContDiff ℝ n (fun a => ∫ x, F (x, a) ∂μ) ∧
@@ -119,7 +117,7 @@ def intFst {E : Type} [NormedAddCommGroup E] [NormedSpace ℝ E] (F : 𝓢(X × 
   decay' k n := (smooth_decay μ n E F).2 k
 
 /- English proof (translation)
-Set `L : (X × A) →L[ℝ] V` to `LinearMap.toContinuousLinearMap (L₁.coprod L₂)`. Take `⟨K, -, hK⟩` from `LinearMap.exists_antilipschitzWith (L₁.coprod L₂) (LinearMap.ker_eq_bot'.2 fun z hz => Prod.ext (hL z.1 z.2 hz).1 (hL z.1 z.2 hz).2)`. Set `F : 𝓢(X × A, ℂ)` to `SchwartzMap.compCLMOfAntilipschitz ℂ (g := L) L.hasTemperateGrowth hK f`. Conclude with `⟨fun a => integrable_slice μ F a, intFst μ F, fun a => rfl⟩`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 -/
 theorem schwartz_partial [FiniteDimensional ℝ A] {V : Type} [NormedAddCommGroup V] [NormedSpace ℝ V] (f : 𝓢(V, ℂ))
     (L₁ : X →ₗ[ℝ] V) (L₂ : A →ₗ[ℝ] V) (hL : ∀ x a, L₁ x + L₂ a = 0 → x = 0 ∧ a = 0) :
@@ -139,13 +137,11 @@ variable {Y B W : Type} [AddCommGroup Y] [TopologicalSpace Y] [IsTopologicalAddG
   (ν : Measure Y) [ν.IsAddHaarMeasure]
 
 /- English proof (translation)
-Establish `h : ∀ᶠ u in 𝓝 (0 : W), ∀ x ∈ tsupport g, g (x + u) = g x ∧ g (x - u) = g x`. Apply `h2.isCompact.eventually_forall_of_forall_eventually` to reduce the goal to its premises. Introduce `x _`. Establish `a1` using `(h1.comp_continuous (show Continuous fun z : W × W => z.2 + z.1 by fun_prop)).eventually_eq (0, x)`. Establish `a2` using `(h1.comp_continuous (show Continuous fun z : W × W => z.2 - z.1 by fun_prop)).eventually_eq (0, x)`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a3` using `(h1.comp_continuous (show Continuous fun z : W × W => z.2 by fun_prop)).eventually_eq (0, x)`. Use `filter_upwards [a1, a2, a3] with z b1 b2 b3`. Simplify using `only [Function.comp, add_zero, sub_zero] at b1 b2 b3`. Conclude with `⟨b1.trans b3.symm, b2.trans b3.symm⟩`. Use `filter_upwards [h] with u hu x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails.
 
-Distinguish the cases in `hx : x ∈ tsupport g`. Conclude with `(hu x hx).1`. Distinguish the cases in `hx' : x + u ∈ tsupport g`. Use `(hu _ hx').2` as an intermediate fact. Rewrite `this` using `[add_sub_cancel_right]`.
-
-Conclude with `this.symm`. Rewrite using `[image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hx']`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eventually_invariant {g : W → ℂ} (h1 : IsLocallyConstant g) (h2 : HasCompactSupport g) :
     ∀ᶠ u in 𝓝 (0 : W), ∀ x, g (x + u) = g x := by
@@ -168,13 +164,13 @@ theorem eventually_invariant {g : W → ℂ} (h1 : IsLocallyConstant g) (h2 : Ha
     · rw [image_eq_zero_of_notMem_tsupport hx, image_eq_zero_of_notMem_tsupport hx']
 
 /- English proof (translation)
-Use `⟨fun b => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `Continuous.integrable_of_hasCompactSupport (h1.continuous.comp (c₁.add continuous_const)) ?_` and prove the remaining obligations. Use `HasCompactSupport.intro (h2.isCompact.image d₁) fun y hy => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hy ⟨_, subset_tsupport g h, e₁ y b⟩`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Use `(IsLocallyConstant.iff_eventually_eq _).2 fun b => ?_` and prove the remaining obligations. Establish `ht : Tendsto (fun b' => M₂ b' - M₂ b) (𝓝 b) (𝓝 0)` using `(c₂.sub continuous_const).tendsto' b 0 (sub_self _)`. Use `filter_upwards [ht.eventually (eventually_invariant h1 h2)] with b' hb'`. Use `congr 1`. Use function extensionality and compare the values at `y`.
+Establish an intermediate fact. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← hb' (M₁ y + M₂ b)]`. Use `congr 1`. Normalize the expressions using the abelian group laws. Use `HasCompactSupport.intro (h2.isCompact.image d₂) fun b hb => ?_` and prove the remaining obligations. Establish `: (fun y => g (M₁ y + M₂ b)) = fun _ => 0`.
+Normalize the expressions using the abelian group laws. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction.
 
-Use function extensionality and compare the values at `y`. Assume the negation of the conclusion as `h`. Conclude with `hb ⟨_, subset_tsupport g h, e₂ y b⟩`. Rewrite using `[this, integral_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locallyConstant_partial {g : W → ℂ} (h1 : IsLocallyConstant g) (h2 : HasCompactSupport g)
     {M₁ : Y → W} {M₂ : B → W} {Q₁ : W → Y} {Q₂ : W → B} (c₁ : Continuous M₁) (c₂ : Continuous M₂) (d₁ : Continuous Q₁)
@@ -205,11 +201,9 @@ theorem locallyConstant_partial {g : W → ℂ} (h1 : IsLocallyConstant g) (h2 :
 end Finite
 
 /- English proof (translation)
-Use `haveI : (μ.prod ν).IsAddHaarMeasure := Measure.prod.instIsAddHaarMeasure μ ν`. Use `haveI : (m.map e).IsAddHaarMeasure := e.isAddHaarMeasure_map m`. Establish `h` using `Measure.isAddLeftInvariant_eq_smul (m.map e) (μ.prod ν)`. Establish `he : MeasurableEmbedding e` using `e.toHomeomorph.measurableEmbedding`. Use `⟨((Measure.addHaarScalarFactor (m.map e) (μ.prod ν) : ℝ) : ℂ), fun u v hu hv => ⟨?_, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: Integrable (fun z : X × Y => u z.1 * v z.2) (m.map e)`. Rewrite using `[h]`. Conclude with `(hu.mul_prod hv).smul_measure_nnreal`. Conclude with `he.integrable_map_iff.1 this`. Rewrite using `[← he.integral_map (fun z : X × Y => u z.1 * v z.2)] conv_lhs => rw [h]`.
-
-Rewrite using `[integral_smul_nnreal_measure, integral_prod_mul, NNReal.smul_def, Complex.real_smul]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_integral_split {G X Y : Type} [AddCommGroup G] [TopologicalSpace G] [IsTopologicalAddGroup G]
     [MeasurableSpace G] [BorelSpace G]

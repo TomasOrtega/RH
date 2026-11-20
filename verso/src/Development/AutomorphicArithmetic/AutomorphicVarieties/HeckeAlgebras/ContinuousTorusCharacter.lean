@@ -291,7 +291,7 @@ structure WtRep {G : Type} [Group G] (I : Iwa G) (O Ω : Type) [CommRing O] [IsL
   central : ∀ t : I.Tf, (t : G) ∈ Subgroup.center G → ∀ i j, ξ t i j = if i = j then (χ t : Ω) else 0
 
 /- English proof (translation)
-The claim follows from `Subsingleton.elim (α := Fin 1) i j`.
+A detailed English derivation is pending.
 -/
 private theorem fin1 (i j : Fin (0 + 1)) : i = j := Subsingleton.elim (α := Fin 1) i j
 

@@ -19,9 +19,9 @@ open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.E
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.Fam
 /- English proof (translation)
-Establish `hs` using `h.recPin.s`. Use `⟨q.w.ok, ⟨q.w.pins⟩, q.x.pin.isTw, ⟨?_⟩, ?_⟩` and prove the remaining obligations. Establish `e : b.R.T.cols = q.x.col.C` using `hs.cols`. Rewrite using `[e]`. Conclude with `q.x.col.std`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨he, hstd⟩` from `hs.tw`. Conclude with `⟨q.w.l0, _, he, (eqRec_heq _ _).symm, hstd⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem colsStd_of_bWit_alt {hL : _root_.UpperTheory.Zero.LLC.RecTExists} {p : _root_.GlobalTheory.Mem.Top.Bl.Parameters hL} {K : Ctx} (q : Bl.WPt p.s K) {c : ℝ}
     (b : _root_.GlobalTheory.Fc.BundleCondition (q.w.D q.Z) q.O c) (h : _root_.GlobalTheory.Mem.Top.Bl.BundleWitness q b) :

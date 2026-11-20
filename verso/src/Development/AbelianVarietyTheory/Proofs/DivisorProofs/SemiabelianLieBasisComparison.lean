@@ -19,11 +19,11 @@ noncomputable section
 namespace GlobalTheory.ArchAbBound
 
 /- English proof (translation)
-Establish `e : ∀ i j, h'.form σ (x i) (x j) = ∑ b, ∑ a, σ (x j b) * star (σ (x i a)) * ((Real.pi : ℂ) * hermForm Hm (W b) (W a))` using `fun i j => by`. Rewrite using `[GlobalTheory.CM.LieMetric.form_eq_sum_sum]`. Simplify using `only [hf]`. Rewrite using `[GlobalTheory.CM.LieMetric.hermForm_sum_sum]`. Simplify using `only [dotProduct, mulVec, HermFam.gram, of_apply, e, Pi.star_apply, star_sum, star_mul', Finset.mul_sum, Finset.sum_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `conv_lhs => enter [2, i]`. Rewrite using `[Finset.sum_comm]`. Use `enter [2, b]`. Rewrite using `[Finset.sum_comm]`. Use `conv_lhs => rw [Finset.sum_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `enter [2, b]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun b _ => Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem gram_quad_eq {K : Type} [Field K] {g g' n : ℕ} (h' : HermFam K (Fin g → K)) (σ : K →+* ℂ)
     (Hm : Matrix (Fin g') (Fin g') ℂ) (W : Fin g → Fin g' → ℂ)
@@ -45,7 +45,7 @@ theorem gram_quad_eq {K : Type} [Field K] {g g' n : ℕ} (h' : HermFam K (Fin g 
   ring
 
 /- English proof (translation)
-Establish `e : star x ⬝ᵥ M *ᵥ x = star (star x ⬝ᵥ M *ᵥ x)` using `by conv_lhs => rw [star_dotProduct, star_mulVec, hM.eq, ← dotProduct_mulVec]`. Conclude with `Complex.conj_eq_iff_im.1 e.symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem im_quad_eq_zero {m : Type} [Fintype m] {M : Matrix m m ℂ} (hM : M.IsHermitian) (x : m → ℂ) :
     (star x ⬝ᵥ M *ᵥ x).im = 0 := by
@@ -58,29 +58,25 @@ end GlobalTheory.ArchAbBound
 open GlobalTheory.ArchAbBound in
 
 /- English proof (translation)
-Introduce `E _ _ _ H X t K _ _ xK φ m hφ G _ hG θ hθ v hv h' hH q hq σ z hz g C hg hC n w`. Take `⟨Λ, Hm, W, ⟨Q, hQg, ψ, v', u, χ, hpol, -, hAH, hv'⟩, hf⟩` from `hH σ`. Establish `key : ∀ c : Fin n → ℂ, Real.pi * (hermForm Hm (∑ a, (∑ i, c i * σ (q (w i) a)) • W a) (∑ a, (∑ i, c i * σ (q (w i) a)) • W a)).re ≤ C * (g (∑ i, c i • bcTan σ hz (w i)) (∑ i, c i • bcTan σ hz (w i))).re`. Introduce `c`. Take `⟨φ', m', χ', ψ', hP, hψ, hφ', hpb, hχm, hq', -⟩` from `T.fibre_change_of_polarized_field E H X t K ℂ σ xK φ m hφ Q ψ hpol`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Substitute `hP` using the available equality. Take `rfl` from `eq_of_heq hψ`. Substitute `hz` using the available equality. Use `choose w' hw'F hw'C using fun i => hq (w i)`. Establish `hsq : ∀ i, (spMap (Chart.dualMapR σ) ≫ (w' i).left) ≫ φ.G.hom = (epsR ℂ).hom ≫ spMap σ` using `fun i => by`.
+Substitute using the available equality. Extract witnesses or component facts from the available result. Substitute using the available equality. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Over.w (w' i)]`. Conclude with `GlobalTheory.LieCombBaseChange.dualMap_over σ`. Set `w'' : Fin n → (epsR ℂ ⟶ φ'.G)` to `fun i => Over.homMk (hpb.1.lift _ _ (hsq i)) (hpb.1.lift_snd _ _ _)`. Establish `hw''χ : ∀ i, (w'' i).left ≫ χ' = spMap (Chart.dualMapR σ) ≫ (w' i).left` using `fun i => hpb.1.lift_fst _ _ _`. Set `u' : Fin n → (epsR ℂ ⟶ φ'.G)` to `fun i => Over.homMk (spMap (epsScaleR (c i)) ≫ (w'' i).left) (by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, Over.w (w'' i)]`. Conclude with `GlobalTheory.LieCombBaseChange.epsScale_over (c i))`. Establish `hV'c : IsLieComb c w'' (List.ofFn u').prod` using `⟨u', fun i => rfl, rfl⟩`. Take `⟨u2, hu2, hu2p⟩` from `(isComb_iff (fun i => bcTan σ rfl (w i)) c (∑ i, c i • bcTan σ rfl (w i))).2 rfl`. Establish `hVF : (List.ofFn u').prod.left ≫ m'.F = (tv (∑ i, c i • bcTan σ rfl (w i))).left`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hu2p]`. Use `(GlobalTheory.LieCombBaseChange.prod_left_comp hφ'.1 (T := Formalism.L2.Pj.tEpsG (spMap σ ≫ xK)) (T' := epsR ℂ) (𝟙 _) (Category.id_comp _) u2 u' fun i => ?_).trans (Category.id_comp _)` and prove the remaining obligations. Rewrite using `[Category.id_comp, hu2 i]`. Use `beta_reduce`. Rewrite using `[left_bcTan, ← hχm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `show (spMap (epsScaleR (c i)) ≫ (w'' i).left) ≫ χ' ≫ m.F = _`. Rewrite using `[Category.assoc, ← Category.assoc _ χ', hw''χ, Category.assoc, hw'F]`. Both sides reduce to the same expression. Establish `hw''q : ∀ i, IsLieComb (fun a => σ (q (w i) a)) v' (w'' i ≫ φ'.q)` using `fun i => (GlobalTheory.lieComb_baseChange K ℂ σ φ.P.A φ'.P.A ψ' hpol.2.1 φ.P.g v (w' i ≫ φ.q) (q (w i)) v' (w'' i ≫ φ'.q) (fun j => (hv' j).1) (hw'C i)).1 (by show ((w'' i).left ≫ φ'.q.left) ≫ ψ' = spMap _ ≫ (w' i).left ≫ φ.q.left`. Rewrite using `[Category.assoc, hq', ← Category.assoc, hw''χ, Category.assoc])`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Establish `hVq` using `GlobalTheory.CM.DiffCoord.isLieComb_comp_hom φ'.q hV'c`. Establish `hvt : ∀ a, IsTangent (v' a)` using `fun a => (hv' a).1.isTangent hpol.2.1 (hv.1 a)`. Use `haveI := φ'.P.isAb.comm`. Establish `hcomb` using `(LieComb.lieComb_algebra ℂ φ'.P.A φ.P.g v' hvt).2.2.1 n (fun i a => σ (q (w i) a)) _ c _ hw''q hVq`. Establish `e : (∑ i, c i • fun a => σ (q (w i) a)) = fun a => ∑ i, c i * σ (q (w i) a)`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using `[Finset.sum_apply]`. Rewrite `hcomb` using `[e]`. Establish `hdiff` using `isDiff_sum_smul_of_isLieComb φ'.P.A φ'.P.isAb φ'.P.L _ _ u v' W _ _ hvt (fun a => (hv' a).2) hcomb`. Conclude with `hC φ' m' hφ' _ hQg u Hm χ hAH _ _ _ hVF hdiff`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hG1 : (gramOf g (fun i => bcTan σ hz (w i))).IsHermitian`. Use extensionality with `a b`. Conclude with `(hg.1 _ _).symm`. Establish `hG2 : (h'.gram σ (fun i => q (w i))).IsHermitian`. Use extensionality with `a b`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `h'.conj_symm σ _ _`. Establish `hM : ((C : ℂ) • gramOf g (fun i => bcTan σ hz (w i)) - h'.gram σ (fun i => q (w i))).IsHermitian`. Use `by`. Use `IsHermitian.sub ?_ hG2` and prove the remaining obligations. Rewrite using `[IsHermitian, conjTranspose_smul, hG1.eq, Complex.star_def, Complex.conj_ofReal]`.
-
-Use `posSemidef_iff_dotProduct_mulVec.2 ⟨hM, fun c => ?_⟩` and prove the remaining obligations. Use `Complex.le_def.2 ⟨?_, (im_quad_eq_zero hM c).symm⟩` and prove the remaining obligations. Rewrite using `[sub_mulVec, dotProduct_sub, smul_mulVec, dotProduct_smul, gram_quad_eq h' σ Hm W hf, ← GlobalTheory.LieMet.form_sum]`. Simplify using `only [Complex.zero_re, Complex.sub_re, smul_eq_mul, Complex.re_ofReal_mul, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero]`. Use `key c` as an intermediate fact.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.ArchAbBound.gram_le : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (X : Scheme.{0}) (t : SAB H X) (K : Type) [Field K] [NumberField K] (xK : Sp K ⟶ X) (φ : Fib K) (m : CubeMap φ.G t.G), FibAt t xK φ m → ∀ (G : Over (Sp (𝓞 K))) [GrpObj G] (hG : IsSemiAbelian G) (θ : φ.P.A.left ⟶ G.left) (hθ : IsGrpPullback φ.P.A G (spMap (algebraMap (𝓞 K) K)) θ) (v : Fin φ.P.g → (epsR K ⟶ φ.P.A)) (hv : IsLieBasis v) (h' : HermFam K (Fin φ.P.g → K)), (SemiFib.mk φ.P G hG θ hθ v hv).IsHerm h' → ∀ q : TanM xK t.G →ₗ[K] (Fin φ.P.g → K), IsAbMap φ m v q → ∀ (σ : K →+* ℂ) (z : Sp ℂ ⟶ X) (hz : spMap σ ≫ xK = z) (g : TanM z t.G →ₗ[ℂ] TanM z t.G →ₗ⋆[ℂ] ℂ) (C : ℝ), IsBlockMetric g → AbLe g C → ∀ (n : ℕ) (w : Fin n → TanM xK t.G), ((C : ℂ) • gramOf g (fun i => bcTan σ hz (w i)) - h'.gram σ (fun i => q (w i))).PosSemidef := by
   intro E _ _ _ H X t K _ _ xK φ m hφ G _ hG θ hθ v hv h' hH q hq σ z hz g C hg hC n w

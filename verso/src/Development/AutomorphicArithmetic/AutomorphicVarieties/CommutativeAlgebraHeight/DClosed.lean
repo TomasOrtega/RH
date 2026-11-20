@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.CommutativeAlgebra
 open TensorProduct IsLocalRing Polynomial UpperTheory.V.W UpperTheory.V.Alg UpperTheory.V.CA
 
 /- English proof (translation)
-Use `letI : Algebra A B' := ((algebraMap A' B').comp f).toAlgebra`. Conclude with `D.nat B B' { φ with commutes' := hφ } x`.
+Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 private theorem map_nat {n : ℕ} {A A' G B B' : Type} [CommRing A] [CommRing A'] [Group G] (D : GDet n A G)
     [CommRing B] [CommRing B'] [Algebra A B] [Algebra A' B'] (f : A →+* A') (φ : B →+* B')
@@ -18,7 +18,7 @@ private theorem map_nat {n : ℕ} {A A' G B B' : Type} [CommRing A] [CommRing A'
   exact D.nat B B' { φ with commutes' := hφ } x
 
 /- English proof (translation)
-Use extensionality with `a`. Simplify using the standard rewrite rules.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem mapR_comp {A B C G : Type} [CommRing A] [CommRing B] [CommRing C] [Group G]
     (f : A →+* B) (g : B →+* C) (x : MonoidAlgebra A G) :
@@ -26,7 +26,7 @@ private theorem mapR_comp {A B C G : Type} [CommRing A] [CommRing B] [CommRing C
   ext a; simp
 
 /- English proof (translation)
-Introduce `B _ _ h`. Use `letI : Algebra A B := ((algebraMap A' B).comp f).toAlgebra`. Rewrite using `[mapR_comp]`. Conclude with `hz B h`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem kills_map {n : ℕ} {A A' G : Type} [CommRing A] [CommRing A'] [Group G] (D : GDet n A G)
     (f : A →+* A') (z : MonoidAlgebra A G) (hz : D.Kills z) :
@@ -37,19 +37,17 @@ private theorem kills_map {n : ℕ} {A A' G : Type} [CommRing A] [CommRing A'] [
   exact hz B h
 
 /- English proof (translation)
-Introduce `n A G _ _ D _ _ _ _ I _ hD Z hZ y hy`. Establish `key : ∀ N : ℕ, (D.map (Ideal.Quotient.mk (I ^ N))).Kills (MonoidAlgebra.mapRingHom G (Ideal.Quotient.mk (I ^ N)) y)`. Introduce `N`. Take `⟨H, hH⟩` from `exists_openNormalSubgroup_kills_of_groupDetLaw_isCont D I hD N`. Establish `hiff : ∀ x, x ∈ (D.map (Ideal.Quotient.mk (I ^ N))).toDet.ker ↔ (D.map (Ideal.Quotient.mk (I ^ N))).Kills x` using `fun x => (d_ker _ x).1.trans (d_toDet _ x).2.2.2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy'` using `(TwoSidedIdeal.mem_iInf _).1 ((TwoSidedIdeal.mem_iInf _).1 hy N) H`. Establish `hle : TwoSidedIdeal.span (Z ∪ {z | ∃ a ∈ I ^ N, z = MonoidAlgebra.single 1 a} ∪ {z | ∃ h ∈ H, z = MonoidAlgebra.single h 1 - 1}) ≤ TwoSidedIdeal.comap (MonoidAlgebra.mapRingHom G (Ideal.Quotient.mk (I ^ N))) (D.map (Ideal.Quotient.mk (I ^ N))).toDet.ker`. Rewrite using `[TwoSidedIdeal.span_le]`. Introduce and unpack `z ((hz | ⟨a, ha, rfl⟩) | ⟨h, hh, rfl⟩)`. Rewrite using `[SetLike.mem_coe, TwoSidedIdeal.mem_comap, hiff]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `kills_map D _ z (hZ z hz)`. Rewrite using `[SetLike.mem_coe, TwoSidedIdeal.mem_comap, MonoidAlgebra.mapRingHom_single, Ideal.Quotient.eq_zero_iff_mem.2 ha, MonoidAlgebra.single_zero]`. Conclude with `TwoSidedIdeal.zero_mem _`. Rewrite using `[SetLike.mem_coe, TwoSidedIdeal.mem_comap, hiff, map_sub, map_one, MonoidAlgebra.mapRingHom_single, map_one]`. Conclude with `hH h hh`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hiff _).1 ((TwoSidedIdeal.mem_comap _).1 (hle hy'))`. Establish `key2 : ∀ (k : ℕ) (h : MonoidAlgebra (MvPolynomial (Fin k) A) G), D.D (MvPolynomial (Fin k) A) (1 + h * MonoidAlgebra.mapRingHom G (algebraMap A (MvPolynomial (Fin k) A)) y) = 1`. Introduce `k h`. Rewrite using `[← sub_eq_zero]`. Use `MvPolynomial.ext _ _ fun β => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[MvPolynomial.coeff_zero]`. Use `IsHausdorff.haus (inferInstance : IsHausdorff I A) _ fun N => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, ← Ideal.Quotient.eq_zero_iff_mem, ← MvPolynomial.coeff_map, map_sub, map_one]`. Establish `h1` using `map_nat D (Ideal.Quotient.mk (I ^ N)) (MvPolynomial.map (σ := Fin k) (Ideal.Quotient.mk (I ^ N))) (fun a => by simp) (1 + h * MonoidAlgebra.mapRingHom G (algebraMap A (MvPolynomial (Fin k) A)) y)`. Establish `h2` using `key N (MvPolynomial (Fin k) (A ⧸ I ^ N)) (MonoidAlgebra.mapRingHom G (MvPolynomial.map (σ := Fin k) (Ideal.Quotient.mk (I ^ N))) h)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : (MvPolynomial.map (σ` using `Fin k) (Ideal.Quotient.mk (I ^ N))).comp (algebraMap A (MvPolynomial (Fin k) A)) = (algebraMap (A ⧸ I ^ N) (MvPolynomial (Fin k) (A ⧸ I ^ N))).comp (Ideal.Quotient.mk (I ^ N)) := RingHom.ext fun a => by simp`. Rewrite `h1` using `[map_add, map_one, map_mul, mapR_comp, h3, ← mapR_comp, h2]`. Rewrite using `[← h1, sub_self, MvPolynomial.coeff_zero]`. Use `(d_toDet D y).2.2.2.1 (d_kills_poly D.toDet y Set.univ Submodule.span_univ fun k h _ => ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `D.D _ (ofT A G _ _) = 1`.
-
-Rewrite using `[map_add, map_one, map_mul, ofT_tmul, one_smul]`. Conclude with `key2 k _`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.CA.d_closed :
     ∀ {n : ℕ} {A G : Type} [CommRing A] [Group G] (D : GDet n A G) [TopologicalSpace G] [IsTopologicalGroup G] [CompactSpace G] [TotallyDisconnectedSpace G] (I : Ideal A) [IsHausdorff I A], D.IsCont I → ∀ Z : Set (MonoidAlgebra A G), (∀ z ∈ Z, D.Kills z) → ∀ y ∈ closureIdeal I Z, D.Kills y := by

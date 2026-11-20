@@ -71,7 +71,7 @@ def RealAllO (D : D7) : Prop :=
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)), IsWeilDatumO ψ S T χS χT om → RealAtO ψ S T χS χT om
 
 /- English proof (translation)
-Introduce `ψ S T χS χT hψ hS hT hrS hrT`. Take `⟨om, hom⟩` from `h ψ S T χS χT hψ hS hT hrS hrT`. Conclude with `⟨om, hom, hi ψ S T χS χT om hom, hr ψ S T χS χT om hom⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem weilExistsFull_of (h : AutomorphicFormsHyp.WeilExistsO D) (hi : InertAllO D) (hr : RealAllO D) : WeilExistsFull D := by
   intro ψ S T χS χT hψ hS hT hrS hrT

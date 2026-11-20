@@ -6,7 +6,7 @@ open scoped InnerProductSpace
 namespace GlobalTheory.SgInf.ProdHaarS
 
 /- English proof (translation)
-Introduce `k r z μW μN hz hT hW hN`. Take `⟨-, -, h, -⟩` from `GlobalTheory.muSof_isHaar k r z μW μN hz hT hW hN`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isHaarOn_prod_map : ∀ (k r : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (μW μN : Measure (Mt k r)),
     inWb k r z → 0 < Tz k r z → IsHaarOn (UWset k r z) μW → IsHaarOn (Nset k r) μN →

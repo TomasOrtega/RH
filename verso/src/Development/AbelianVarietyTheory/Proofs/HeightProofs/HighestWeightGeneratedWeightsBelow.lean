@@ -11,23 +11,23 @@ open scoped TensorProduct
 namespace GlobalTheory.RealPar.HwGen
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Set `M : Submonoid (Module.End ℂ V)` to `Submonoid.closure {P | ∃ a c, c ≠ ν a ∧ P = H a - c • (1 : Module.End ℂ V)}`. Establish `hM : ∀ P ∈ M, ∀ (s : V) (η : ι → ℂ), (∀ a, H a s = η a • s) → ∃ c : ℂ, P s = c • s ∧ (η = ν → c ≠ 0)`. Introduce `P hP s η hs`.
+Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `hP using Submonoid.closure_induction with`. Consider the case `mem P hP`. Take `⟨a, c, hc, rfl⟩` from `hP`. Use `⟨η a - c, by simp [hs, sub_smul], ?_⟩` and prove the remaining obligations. Introduce and unpack `rfl`.
+Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Treat this case separately.
 
-Conclude with `sub_ne_zero.2 hc.symm`. Consider the case `one => exact ⟨1, by simp, fun _ => one_ne_zero⟩`. Consider the case `mul P Q _ _ hP hQ`. Take `⟨c, hc, hc'⟩` from `hP`. Take `⟨d, hd, hd'⟩` from `hQ`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `⟨d * c, by simp [hc, hd, mul_smul], fun h => mul_ne_zero (hd' h) (hc' h)⟩`. Establish `key : ∀ x ∈ Submodule.span ℂ (Set.range m), ∀ Q ∈ M, ∃ P ∈ M, P (Q x) = 0`. Introduce `x hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨k, rfl⟩` from `hx`. Introduce `Q hQ`. Take `⟨c, hc, -⟩` from `hM Q hQ (m k) (χ k) (hm k)`. Take `⟨a, ha⟩` from `Function.ne_iff.1 (hne k)`. Use `⟨H a - χ k a • 1, Submonoid.subset_closure ⟨a, _, ha, rfl⟩, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hc, map_smul]`. Simplify using `[hm]`. Consider the case `zero => exact fun Q _ => ⟨1, one_mem _, by simp⟩`. Consider the case `add x y _ _ hx hy`. Introduce `Q hQ`.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨P, hP, h1⟩` from `hx Q hQ`. Take `⟨R, hR, h2⟩` from `hy (P * Q) (mul_mem hP hQ)`. Use `⟨R * P, mul_mem hR hP, ?_⟩` and prove the remaining obligations. Simplify using `only [Module.End.mul_apply] at h2 ⊢`. Simplify using `[h1, h2]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `smul c x _ hx`. Introduce `Q hQ`. Take `⟨P, hP, h1⟩` from `hx Q hQ`. Conclude with `⟨P, hP, by simp [h1]⟩`. Take `⟨P, hP, h1⟩` from `key w hw 1 (one_mem _)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨c, hc, hc'⟩` from `hM P hP w ν hν`. Rewrite `h1` using `[Module.End.one_apply, hc]`. Conclude with `h0 ((smul_eq_zero.1 h1).resolve_left (hc' rfl))`.
+A detailed English derivation is pending.
 -/
 theorem weight_of_mem_span {V ι κ : Type*} [AddCommGroup V] [Module ℂ V] (H : ι → Module.End ℂ V)
     (m : κ → V) (χ : κ → ι → ℂ) (hm : ∀ k a, H a (m k) = χ k a • m k) (ν : ι → ℂ) (w : V)
@@ -82,9 +82,9 @@ theorem weight_of_mem_span {V ι κ : Type*} [AddCommGroup V] [Module ℂ V] (H 
 variable {p q : ℕ}
 
 /- English proof (translation)
-Introduce `x y hxy`. Assume the negation of the conclusion as `hne`. Establish `: b = x ∧ a = y`. Assume the negation of the conclusion as `hh`. Conclude with `hne (by simp [Eab, hh])`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨rfl, rfl⟩` from `this`. Apply the tactic sequence `cases a <;> cases b <;> simp_all [posC, sameBlock]`.
+Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem isKC_Eab {a b : Ix p q} (h : posC a b) : IsKC (Eab b a) := by
   intro x y hxy
@@ -96,9 +96,9 @@ theorem isKC_Eab {a b : Ix p q} (h : posC a b) : IsKC (Eab b a) := by
   cases a <;> cases b <;> simp_all [posC, sameBlock]
 
 /- English proof (translation)
-Introduce `a b hab`. Rewrite using `[Matrix.mul_apply]`. Use `Finset.sum_eq_zero fun c _ => ?_` and prove the remaining obligations. Distinguish the cases in `h : sameBlock a c`. Apply the tactic sequence `rw [hY c b (by cases a <;> cases b <;> cases c <;> simp_all [sameBlock]), mul_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Apply the first step, then apply the next step to every resulting obligation.
 
-Rewrite using `[hX a c h, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isKC_mul {X Y : Mat p q} (hX : IsKC X) (hY : IsKC Y) : IsKC (X * Y) := by
   intro a b hab
@@ -109,18 +109,14 @@ theorem isKC_mul {X Y : Mat p q} (hX : IsKC X) (hY : IsKC Y) : IsKC (X * Y) := b
   · rw [hX a c h, zero_mul]
 
 /- English proof (translation)
-Introduce `a b hab`. Simplify using `[hX a b hab, hY a b hab]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 -/
 theorem isKC_sub {X Y : Mat p q} (hX : IsKC X) (hY : IsKC Y) : IsKC (X - Y) := by
   intro a b hab
   simp [hX a b hab, hY a b hab]
 
 /- English proof (translation)
-Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b`. Break down `lt_trichotomy a b with x | x | x` into its components or cases. Conclude with `.inr (.inl x)`. Conclude with `.inl (by rw [x])`. Conclude with `.inr (.inr x)`.
-
-Conclude with `h.elim`. Conclude with `h.elim`. Break down `lt_trichotomy a b with x | x | x` into its components or cases. Conclude with `.inr (.inl x)`. Conclude with `.inl (by rw [x])`.
-
-Conclude with `.inr (.inr x)`.
+Apply the first step, then apply the next step to every resulting obligation. Separate the alternatives or extract the components of the hypothesis. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem sameBlock_cases {a b : Ix p q} (h : sameBlock a b) : a = b ∨ posC a b ∨ posC b a := by
   rcases a with a | a <;> rcases b with b | b
@@ -136,11 +132,11 @@ theorem sameBlock_cases {a b : Ix p q} (h : sameBlock a b) : a = b ∨ posC a b 
     · exact .inr (.inr x)
 
 /- English proof (translation)
-Establish `h1 : Eab x x * Eab b a = ((if x = b then 1 else 0) : ℂ) • Eab b a`. Distinguish the cases in `h : x = b`. Substitute `h` using the available equality. Simplify using `[Eab]`. Simplify using `[Eab, h]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `h2 : Eab b a * Eab x x = ((if x = a then 1 else 0) : ℂ) • Eab b a`. Distinguish the cases in `h : x = a`. Substitute `h` using the available equality. Simplify using `[Eab]`. Simplify using `[Eab, h, Matrix.single_mul_single_of_ne _ _ _ _ (Ne.symm h)]`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[h1, h2, sub_smul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem bracket_diag (x a b : Ix p q) :
     Eab x x * Eab b a - Eab b a * Eab x x =
@@ -168,9 +164,9 @@ noncomputable def cnt : List (PosRoot p q) → Ix p q → Ix p q → ℕ
   | r :: l, a, b => cnt l a b + if a = r.1.1 ∧ b = r.1.2 then 1 else 0
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => exact (h rfl).elim`. Consider the case `cons r l ih`. Distinguish the cases in `hh : a = r.1.1 ∧ b = r.1.2`. Rewrite using `[hh.1, hh.2]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `r.2`. Conclude with `ih (by simpa [cnt, hh] using h)`.
+A detailed English derivation is pending.
 -/
 theorem posC_of_cnt (l : List (PosRoot p q)) (a b : Ix p q) (h : cnt l a b ≠ 0) : posC a b := by
   induction l with
@@ -184,9 +180,9 @@ noncomputable def drop (l : List (PosRoot p q)) (x : Ix p q) : ℝ :=
   ∑ a, ∑ b, (cnt l a b : ℝ) * ((if x = a then 1 else 0) - (if x = b then 1 else 0))
 
 /- English proof (translation)
-Simplify using `only [drop, cnt, Nat.cast_add, add_mul, Finset.sum_add_distrib]`. Use `congr 1`. Rewrite using `[Finset.sum_eq_single r.1.1, Finset.sum_eq_single r.1.2]`. Simplify using the standard rewrite rules. Introduce `b _ hb`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[hb]`. Simplify using the standard rewrite rules. Introduce `a _ ha`. Simplify using `[ha]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem drop_cons (r : PosRoot p q) (l : List (PosRoot p q)) (x : Ix p q) :
     drop (r :: l) x = drop l x + ((if x = r.1.1 then 1 else 0) - (if x = r.1.2 then 1 else 0)) := by
@@ -200,16 +196,16 @@ theorem drop_cons (r : PosRoot p q) (l : List (PosRoot p q)) (x : Ix p q) :
   · simp
 
 /- English proof (translation)
-Rewrite using `[h X Y]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem act_comm {act : Mat p q →ₗ[ℂ] Module.End ℂ V} (h : IsLieAct act) (X Y : Mat p q) (u : V) :
     act X (act Y u) = act Y (act X u) + act (X * Y - Y * X) u := by
   rw [h X Y]; simp
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simp [mono, drop, cnt, hv]`. Consider the case `cons r l ih`. Rewrite using `[mono, act_comm h, ih, bracket_diag, map_smul, map_smul, LinearMap.smul_apply, ← add_smul, drop_cons]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `push_cast`. Apply the tactic sequence `split_ifs <;> simp <;> ring`.
+Move the embeddings inside the algebraic operations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mono_weight {act : Mat p q →ₗ[ℂ] Module.End ℂ V} (h : IsLieAct act) {μ : Ix p q → ℚ} {v : V}
     (hv : ∀ a, act (Eab a a) v = ((μ a : ℚ) : ℂ) • v) (l : List (PosRoot p q)) (x : Ix p q) :
@@ -223,19 +219,17 @@ theorem mono_weight {act : Mat p q →ₗ[ℂ] Module.End ℂ V} (h : IsLieAct a
     split_ifs <;> simp <;> ring
 
 /- English proof (translation)
-Use `set W := Submodule.span ℂ (Set.range (mono act v)) with hW`. Establish `hm : ∀ l, mono act v l ∈ W` using `fun l => Submodule.subset_span ⟨l, rfl⟩`. Establish `ext : ∀ T : Module.End ℂ V, (∀ l, T (mono act v l) ∈ W) → ∀ w ∈ W, T w ∈ W`. Introduce `T hT w hw`. Establish `: W ≤ W.comap T` using `Submodule.span_le.2 (by rintro _ ⟨l, rfl⟩; exact hT l)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `this hw`. Establish `low : ∀ r : PosRoot p q, ∀ w ∈ W, act (Eab r.1.2 r.1.1) w ∈ W` using `fun r => ext _ fun l => hm (r :: l)`. Establish `key : ∀ l, ∀ Z, IsKC Z → act Z (mono act v l) ∈ W`. Introduce `l`. Proceed by induction on `l with`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `nil`. Introduce `Z hZ`. Establish `hZ' : Z = ∑ a, ∑ b, Z a b • Eab a b` using `by conv_lhs => rw [Matrix.matrix_eq_sum_single Z]`. Simplify using `[Eab]`. Rewrite using `[hZ']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [map_sum, map_smul, LinearMap.sum_apply, LinearMap.smul_apply]`. Use `W.sum_mem fun a _ => W.sum_mem fun b _ => ?_` and prove the remaining obligations. Distinguish the cases in `hab : sameBlock a b`. Use `W.smul_mem _ ?_` and prove the remaining obligations. Break down `sameBlock_cases hab with x | x | x` into its components or cases.
+Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Substitute `x` using the available equality. Rewrite using `[mono, hv]`. Conclude with `W.smul_mem _ (hm [])`. Rewrite using `[mono, hr a b x]`. Conclude with `W.zero_mem`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm [⟨(b, a), x⟩]`. Rewrite using `[hZ a b hab, zero_smul]`. Conclude with `W.zero_mem`. Consider the case `cons r l ih`. Introduce `Z hZ`.
-
-Rewrite using `[mono, act_comm h]`. Establish `hF` using `isKC_Eab r.2`. Conclude with `W.add_mem (low r _ (ih Z hZ)) (ih _ (isKC_sub (isKC_mul hZ hF) (isKC_mul hF hZ)))`. Conclude with `fun Z hZ => ext _ fun l => key l Z hZ`.
+Establish an intermediate fact. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem mono_stable {act : Mat p q →ₗ[ℂ] Module.End ℂ V} (h : IsLieAct act) {μ : Ix p q → ℚ} {v : V}
     (hv : ∀ a, act (Eab a a) v = ((μ a : ℚ) : ℂ) • v) (hr : ∀ a b, posC a b → act (Eab a b) v = 0) :
@@ -275,15 +269,15 @@ theorem mono_stable {act : Mat p q →ₗ[ℂ] Module.End ℂ V} (h : IsLieAct a
   exact fun Z hZ => ext _ fun l => key l Z hZ
 
 /- English proof (translation)
-Introduce `p q V _ _ act h μ v hv`. Take `⟨-, hw, hr⟩` from `hv`. Establish `hv : ∀ a, act (Eab a a) v = ((μ a : ℚ) : ℂ) • v`. Introduce `a`. Use `(Submodule.mem_iInf _).1 hw a` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[sub_eq_zero]`. Establish `hr : ∀ a b, posC a b → act (Eab a b) v = 0`. Introduce `a b hab`. Use `(Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 ((Submodule.mem_iInf _).1 hr a) b) hab` as an intermediate fact. Simplify using `using this`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨Submodule.span ℂ (Set.range (mono act v)), Submodule.subset_span ⟨[], rfl⟩, mono_stable h hv hr, ?_, ?_⟩` and prove the remaining obligations. Introduce `W' hvW hW`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨l, rfl⟩`. Proceed by induction on `l with`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Proceed by induction.
 
-Consider the case `nil => exact hvW`. Consider the case `cons r l ih => exact hW _ (isKC_Eab r.2) _ ih`. Introduce `ν w hw h0 hν`. Take `⟨l, hl⟩` from `weight_of_mem_span (fun a => act (Eab a a)) (mono act v) _ (fun l x => mono_weight h hv l x) (fun a => ((ν a : ℝ) : ℂ)) w hw h0 hν`. Use `⟨cnt l, posC_of_cnt l, fun x => ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `Complex.ofReal_injective (congrFun hl x)` as an intermediate fact. Express the relevant statement in the definitionally equal form `_ = drop l x`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem hw_generated : ∀ (p q : ℕ) (V : Type) [AddCommGroup V] [Module ℂ V] (act : Mat p q →ₗ[ℂ] Module.End ℂ V), IsLieAct act → ∀ (μ : Ix p q → ℚ) (v : V), Formalism.BasicNotions.TH.IsHW act μ v → ∃ W : Submodule ℂ V, v ∈ W ∧ KStable act W ∧ (∀ W' : Submodule ℂ V, v ∈ W' → KStable act W' → W ≤ W') ∧ ∀ (ν : Ix p q → ℝ) (w : V), w ∈ W → w ≠ 0 → (∀ a, act (Eab a a) w = ((ν a : ℝ) : ℂ) • w) → ∃ c : Ix p q → Ix p q → ℕ, (∀ a b, c a b ≠ 0 → posC a b) ∧ ∀ x, ((μ x : ℚ) : ℝ) - ν x = ∑ a, ∑ b, (c a b : ℝ) * ((if x = a then 1 else 0) - (if x = b then 1 else 0)) := by
   intro p q V _ _ act h μ v hv

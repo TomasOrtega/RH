@@ -12,7 +12,7 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι] {A B : Type*} [CommRing A] [
 omit [DecidableEq ι] in
 
 /- English proof (translation)
-Establish `hc : (φ : A → B) ∘ sA = sB ∘ φ` using `funext hs`. Rewrite using `[Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Matrix.map_map, Matrix.map_map, hc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_unitaryExpr (φ : A →+* B) {sA : A →+* A} {sB : B →+* B}
     (hs : ∀ x, φ (sA x) = sB (φ x)) (H M : Matrix ι ι A) :
@@ -21,7 +21,7 @@ theorem map_unitaryExpr (φ : A →+* B) {sA : A →+* A} {sB : B →+* B}
   rw [Matrix.map_mul, Matrix.map_mul, Matrix.transpose_map, Matrix.map_map, Matrix.map_map, hc]
 
 /- English proof (translation)
-Rewrite `*` using `[mem_unitaryGroupMatrix]`. Use `congrArg (fun M => M.map φ) hg` as an intermediate fact. Rewrite `this` using `[map_unitaryExpr φ hs, hH]`. Conclude with `this`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_mem_unitaryGroupMatrix (φ : A →+* B) {sA : A →+* A} {sB : B →+* B}
     (hs : ∀ x, φ (sA x) = sB (φ x)) {HA : Matrix ι ι A} {HB : Matrix ι ι B}
@@ -90,7 +90,7 @@ theorem tensorMap_tmul (f : R →ₐ[F] S) (r : R) (e : E) :
     tensorMap E f (r ⊗ₜ e) = f r ⊗ₜ e := rfl
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e => rw [conjBase_tmul, tensorMap_tmul, tensorMap_tmul, conjBase_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem tensorMap_conjBase (f : R →ₐ[F] S) (z : R ⊗[F] E) :
     tensorMap E f (conjBase F E R z) = conjBase F E S (tensorMap E f z) := by
@@ -101,7 +101,7 @@ theorem tensorMap_conjBase (f : R →ₐ[F] S) (z : R ⊗[F] E) :
 
 omit [Algebra.IsQuadraticExtension F E] in
 /- English proof (translation)
-Simplify using `[Algebra.TensorProduct.includeRight_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem tensorMap_includeRight (f : R →ₐ[F] S) (e : E) :
     tensorMap E f (Algebra.TensorProduct.includeRight e) =
@@ -110,14 +110,14 @@ theorem tensorMap_includeRight (f : R →ₐ[F] S) (e : E) :
 
 omit [Algebra.IsQuadraticExtension F E] in
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.map_id`.
+A detailed English derivation is pending.
 -/
 theorem tensorMap_id : tensorMap E (AlgHom.id F R) = AlgHom.id F (R ⊗[F] E) :=
   Algebra.TensorProduct.map_id
 
 omit [Algebra.IsQuadraticExtension F E] in
 /- English proof (translation)
-The claim follows from `Algebra.TensorProduct.ext' fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem tensorMap_comp (f : R →ₐ[F] S) (g : S →ₐ[F] T) :
     tensorMap E (g.comp f) = (tensorMap E g).comp (tensorMap E f) :=
@@ -139,7 +139,7 @@ noncomputable def unitaryPoints : Subgroup (GL ι (R ⊗[F] E)) :=
 variable {F E H R S T}
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_unitaryPoints {g : GL ι (R ⊗[F] E)} :
     g ∈ unitaryPoints F E H R ↔
@@ -149,7 +149,7 @@ theorem mem_unitaryPoints {g : GL ι (R ⊗[F] E)} :
 
 omit [Algebra.IsQuadraticExtension F E] [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[Matrix.map_map]`. Use `congr 1`. Use function extensionality and compare the values at `e`. Conclude with `tensorMap_includeRight f e`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem map_includeRight_tensorMap (f : R →ₐ[F] S) :
     (H.map (Algebra.TensorProduct.includeRight : E →ₐ[F] R ⊗[F] E)).map
@@ -176,7 +176,7 @@ theorem unitaryMap_apply (f : R →ₐ[F] S) (g : unitaryPoints F E H R) :
       ((g : GL ι (R ⊗[F] E)) : Matrix ι ι (R ⊗[F] E)).map (tensorMap E f) := rfl
 
 /- English proof (translation)
-Use extensionality with `g : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[unitaryMap_apply, tensorMap_id]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitaryMap_id : unitaryMap F E H (AlgHom.id F R) = MonoidHom.id _ := by
   ext g : 1
@@ -185,7 +185,7 @@ theorem unitaryMap_id : unitaryMap F E H (AlgHom.id F R) = MonoidHom.id _ := by
   rfl
 
 /- English proof (translation)
-Use extensionality with `x : 1`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Rewrite using `[MonoidHom.comp_apply, unitaryMap_apply, unitaryMap_apply, unitaryMap_apply, tensorMap_comp, Matrix.map_map]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem unitaryMap_comp (f : R →ₐ[F] S) (g : S →ₐ[F] T) :
     unitaryMap F E H (g.comp f) = (unitaryMap F E H g).comp (unitaryMap F E H f) := by
@@ -223,7 +223,7 @@ section Rational
 variable {F E H}
 
 /- English proof (translation)
-Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul r e`. Simplify using `only [conjBase_tmul, Algebra.TensorProduct.lid_tmul, map_smul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 -/
 theorem lid_conjBase (z : F ⊗[F] E) :
     Algebra.TensorProduct.lid F E (conjBase F E F z) = conj F E (Algebra.TensorProduct.lid F E z) := by
@@ -235,7 +235,7 @@ theorem lid_conjBase (z : F ⊗[F] E) :
 
 omit [Algebra.IsQuadraticExtension F E] [Fintype ι] [DecidableEq ι] in
 /- English proof (translation)
-Rewrite using `[Matrix.map_map]`. Use `conv_rhs => rw [← Matrix.map_id H]`. Use `congr 1`. Use function extensionality and compare the values at `e`. Simplify using `[Algebra.TensorProduct.includeRight_apply]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem map_includeRight_lid :
     (H.map (Algebra.TensorProduct.includeRight : E →ₐ[F] F ⊗[F] E)).map

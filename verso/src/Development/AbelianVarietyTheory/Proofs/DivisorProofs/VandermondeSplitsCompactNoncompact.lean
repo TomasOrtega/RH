@@ -11,7 +11,7 @@ namespace GlobalTheory.PsCo.PcEF.VandermondeCompactNoncompactSplit
 variable {n : ℕ}
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_prod_type]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Rewrite using `[← Finset.prod_filter]`. Use `congr 1`. Use extensionality with `b`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components.
 
 Simplify using the standard rewrite rules.
 -/
@@ -26,7 +26,7 @@ theorem lhs_eq (t : Fin n → ℂ) :
   simp
 
 /- English proof (translation)
-Rewrite using `[Fintype.prod_prod_type]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem wden_eq (ε : Fin n → Bool) (t : Fin n → ℂ) :
     ReciprocityTheory.ChartRestriction.TR.Weyl.wdenK ε t =
@@ -35,7 +35,7 @@ theorem wden_eq (ε : Fin n → Bool) (t : Fin n → ℂ) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_filter]`. Conclude with `(Finset.prod_subtype _ (fun x => by simp) (fun x : Fin n × Fin n => t x.1 - t x.2)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mode_eq (ε : Fin n → Bool) (t : Fin n → ℂ) :
     (∏ x : GlobalTheory.PsCo.Pc1.Mode ε, (t x.1.1 - t x.1.2)) =
@@ -44,7 +44,7 @@ theorem mode_eq (ε : Fin n → Bool) (t : Fin n → ℂ) :
   exact (Finset.prod_subtype _ (fun x => by simp) (fun x : Fin n × Fin n => t x.1 - t x.2)).symm
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_filter, Finset.prod_const]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sign_eq (ε : Fin n → Bool) :
     (∏ x : Fin n × Fin n, if ε x.1 = true ∧ ε x.2 = false ∧ x.2 < x.1 then (-1 : ℂ) else 1) =
@@ -53,7 +53,7 @@ theorem sign_eq (ε : Fin n → Bool) :
   rfl
 
 /- English proof (translation)
-The claim follows from `Fintype.prod_equiv (Equiv.prodComm _ _) _ _ (fun _ => rfl)`.
+A detailed English derivation is pending.
 -/
 theorem swap_eq (ε : Fin n → Bool) (t : Fin n → ℂ) :
     (∏ x : Fin n × Fin n, if ε x.1 = true ∧ ε x.2 = false ∧ x.2 < x.1 then t x.2 - t x.1 else 1) =
@@ -61,9 +61,9 @@ theorem swap_eq (ε : Fin n → Bool) (t : Fin n → ℂ) :
   Fintype.prod_equiv (Equiv.prodComm _ _) _ _ (fun _ => rfl)
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Take `⟨a, b⟩` from `x`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Apply the tactic sequence `cases h1 : ε a <;> cases h2 : ε b <;> simp [h, lt_asymm h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `cases h1 : ε a <;> simp`. Apply the tactic sequence `cases h1 : ε a <;> cases h2 : ε b <;> simp [h, lt_asymm h]`.
+Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mode_split (ε : Fin n → Bool) (t : Fin n → ℂ) :
     (∏ x : Fin n × Fin n, if ε x.1 = true ∧ ε x.2 = false then t x.1 - t x.2 else 1) =
@@ -79,9 +79,9 @@ theorem mode_split (ε : Fin n → Bool) (t : Fin n → ℂ) :
   · cases h1 : ε a <;> cases h2 : ε b <;> simp [h, lt_asymm h]
 
 /- English proof (translation)
-Rewrite using `[← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]`. Use `Finset.prod_congr rfl fun x _ => ?_` and prove the remaining obligations. Take `⟨a, b⟩` from `x`. Break down `lt_trichotomy a b with h | rfl | h` into its components or cases. Apply the tactic sequence `cases h1 : ε a <;> cases h2 : ε b <;> simp [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using the standard rewrite rules. Apply the tactic sequence `cases h1 : ε a <;> cases h2 : ε b <;> simp [lt_asymm h]`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem lhs_split (ε : Fin n → Bool) (t : Fin n → ℂ) :
     (∏ x : Fin n × Fin n, if x.1 < x.2 then t x.1 - t x.2 else 1) =
@@ -103,9 +103,9 @@ namespace GlobalTheory.PsCo.PcEF
 open VandermondeCompactNoncompactSplit in
 
 /- English proof (translation)
-Introduce `n ε t`. Rewrite using `[lhs_eq, wden_eq, mode_eq, mode_split, sign_eq, swap_eq, lhs_split]`. Establish `hs : ((-1 : ℂ) ^ ReciprocityTheory.ChartRestriction.DS.TRGap.sDeg ε) * (-1) ^ ReciprocityTheory.ChartRestriction.DS.TRGap.sDeg ε = 1`. Rewrite using `[← mul_pow]`. Evaluate the numerical expressions.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 
-Generalize the expression as in `(-1 : ℂ) ^ ReciprocityTheory.ChartRestriction.DS.TRGap.sDeg ε = s at hs ⊢`. Take the linear combination `(-((∏ x : Fin n × Fin n, if x.1 < x.2 ∧ ε x.1 = ε x.2 then t x.1 - t x.2 else 1) * (∏ x : Fin n × Fin n, if ε x.1 = true ∧ ε x.2 = false ∧ x.1 < x.2 then t x.1 - t x.2 else 1) * ∏ x : Fin n × Fin n, if ε x.2 = true ∧ ε x.1 = false ∧ x.1 < x.2 then t x.1 - t x.2 else 1)) * hs`.
+Replace the chosen expression with an arbitrary variable. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem vandermonde_splits_compactNoncompact : VdmSplit := by
   intro n ε t

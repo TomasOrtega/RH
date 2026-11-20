@@ -12,9 +12,9 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.IndefiniteRowSideFullHecke.WeilTensorModels GlobalTheory.ThK PositivityTheory.ThKG
 
 /- English proof (translation)
-Introduce and unpack `F E _ _ _ _ _ σ B a a' G X om om' t _ ⟨Φ, hΦ, Φ', hΦ', rfl⟩`. Take `⟨-, C, k, h1⟩` from `(hW F E σ B _ _ _ _ _ _ _ _ _ _ _ _ (pairV t) (weilCondV t)).1 Φ (polData_le t.geo.hM hΦ)`. Take `⟨C', k', h2⟩` from `((hD F E σ B a a' G X om om' t).2 Φ' hΦ'.2).2.2`. Use `⟨max C 0 + max C' 0, max k k', fun h => ?_⟩` and prove the remaining obligations. Establish `o : (1 : ℝ) ≤ ht h` using `by exact_mod_cast one_le_heightGL F h.1`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[add_mul]`. Use `(norm_sub_le _ _).trans (add_le_add (((norm_integral_le_integral_norm _).trans (h1 h)).trans ?_) ((h2 h).trans ?_))` and prove the remaining obligations. Conclude with `mul_le_mul (le_max_left _ _) (pow_le_pow_right₀ o (le_max_left _ _)) (by positivity) (le_max_right _ _)`. Conclude with `mul_le_mul (le_max_left _ _) (pow_le_pow_right₀ o (le_max_right _ _)) (by positivity) (le_max_right _ _)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sigMod_of (hW : WeilConv) (hD : KDecay) : SigMod := by
   rintro F E _ _ _ _ _ σ B a a' G X om om' t _ ⟨Φ, hΦ, Φ', hΦ', rfl⟩
@@ -28,9 +28,9 @@ theorem sigMod_of (hW : WeilConv) (hD : KDecay) : SigMod := by
   · exact mul_le_mul (le_max_left _ _) (pow_le_pow_right₀ o (le_max_right _ _)) (by positivity) (le_max_right _ _)
 
 /- English proof (translation)
-Establish `k3` using `isCT_right ((hC F E σ B _ _ _ _ H _ _ hB hW p).1 _ _ _ _ 1 hf hg k1.1 k2.1) y`. Use `⟨_, _, ?_, hasLaw_right (hasLaw_sub k1.2.1 k2.2.1 1) y, hasLaw_right (hasLaw_sub k1.2.2 k2.2.2 1) y⟩` and prove the remaining obligations. Rewrite `k3` using `[one_smul, one_smul]`. Use `k3 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `only [Pi.add_apply, Pi.sub_apply, one_smul]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem split_sub {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E} {B : Base F E}
     {a a' d₁ r s : ℕ} {W : Spc F E (a + a')} {W₁ : Spc F E d₁} {H : Plane E (a + a') d₁} {X : Chars F E} (hC : CTBasic)
@@ -46,13 +46,13 @@ theorem split_sub {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B a a' G X om om' t hy`. Establish `g` using `t.geo`. Use `g.aBig` as an intermediate fact. Use `g.lt` as an intermediate fact. Take `⟨Y, W₁, H, h1, -, h2⟩` from `hP F E σ B t.base (a + a') (a + a' - 2) (by omega) (by omega) G.W _ _ (by omega) hy g.hW 0 1 one_pos (by omega)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `t' : IsTriple B (reG G G.V G.V' Y) X om om'` using `⟨t.base, ⟨g.lt, g.even, g.kappa, g.eBig, g.aBig, g.hV, g.hV', h1, ⟨g.hM.rat, g.hM.vac, g.hM.std, g.hM.haar, g.hM.dom⟩, ⟨g.hM'.rat, g.hM'.vac, g.hM'.std, g.hM'.haar, g.hM'.dom⟩⟩, t.chars, t.weil, t.weil'⟩`. Establish `p` using `(hI F E σ B _ _ _ _ H _ _ _ _ t.base h1 h2).1`. Take `⟨h₀, hh⟩` from `hR F E σ B a a' G X om om' t _ _ _ t'`. Use `⟨_, W₁, H, ⟨p.rank, p.xx, p.yy, p.xy, p.orth, p.gram, p.nondeg⟩, fun f hf => ?_⟩` and prove the remaining obligations. Take `⟨Φ, hΦ, Φ', hΦ', e⟩` from `hh f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨s1, s2⟩` from `hS F E σ B a a' (reG G G.V G.V' Y) X om om' t' _ W₁ H _ _ h2`. Take `⟨⟨fa, fb⟩, k1, -⟩` from `s1 Φ hΦ`. Take `⟨⟨fa', fb'⟩, k2, -⟩` from `s2 Φ' hΦ'`. Take `⟨a1, a2⟩` from `hA F E σ B a a' (reG G G.V G.V' Y) X om om' t'`. Establish `k3` using `split_sub (W := (reG G G.V G.V' Y).W) hC t.base h1 p (a1 Φ hΦ) (a2 Φ' hΦ') k1 k2 h₀⁻¹`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `e' : f = _` using `funext fun y => (congrArg f (inv_mul_cancel_right y h₀).symm).trans (congrFun e (y * h₀⁻¹))`. Rewrite using `[e']`. Conclude with `k3`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigSplit_of (hS : SplitEx) (hP : Tow.PlaneSkew) (hI : Iwa) (hC : CTBasic) (hA : IAut) (hR : SigRe) : SigSplit := by
   intro F E _ _ _ _ _ σ B a a' G X om om' t hy

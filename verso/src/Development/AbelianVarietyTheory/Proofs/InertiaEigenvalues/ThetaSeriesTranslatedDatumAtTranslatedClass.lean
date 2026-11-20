@@ -17,7 +17,7 @@ open Classical
 namespace CompanionTheory.Member.ThetaTranslation
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.FiniteFock.pureTensorO_smul, ← GlobalTheory.OrientedHeis.om_fin_pureTensorO ψ S T χS χT om hom θ hθ z hz 1 (one_mem _) sS sT BS BT f P hf]`. Unfold `thetaKO`. Establish `e : ((h * z, g) : GA D S × GA D T) = (h, g) * (z, 1)` using `by rw [Prod.mk_mul_mk, mul_one]`. Rewrite using `[e, map_mul, map_smul, Module.End.mul_apply, Pi.smul_apply, smul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem thetaKO_translate {D : D7} (ψ : AddChar (AF D.host.F) ℂ) (S T : HSp D) (χS χT : (AE D)ˣ →* Circle)
     (om : GA D S × GA D T →* Module.End ℂ (WO S T → ℂ)) (hom : IsWeilDatumO ψ S T χS χT om) (θ : InfFam D)
@@ -35,9 +35,9 @@ end CompanionTheory.Member.ThetaTranslation
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A Ks _ _ _ R F hC i t z c hz u h w g`. Establish `hf : IsThetaFunO R.ψ (Vc D i) (Wc D i) (R.vP i t)`. Establish `h1` using `hC.thP.pt_theta i t 1`. Unfold `RealDat.ptP at h1`. Rewrite `h1` using `[GlobalTheory.FiniteFock.pureTensorO_one]`. Then use the resulting hypothesis.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `CompanionTheory.Member.ThetaTranslation.thetaKO_translate R.ψ _ _ _ _ (R.ωP i t) (hC.thP.ωP i t) R.θ hC.models.inf z hz _ _ _ _ _ _ hf c h g`.
+A detailed English derivation is pending.
 -/
 theorem CompanionTheory.Member.thetaSeries_translated_datum_eq_translated_class : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m) (t : T0) (z : GA D (Vc D i)) (c : ℂ), z ∈ GfC (Vc D i) → ∀ (u : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (h : GA D (Vc D i)) (w : (R.cV i).W) (g : GA D (Wc D i)), ser R i t (c • R.ωP i t (z, 1) (R.vP i t)) u h w g = c * ser R i t (R.vP i t) u (h * z) w g := by
   intro D G _ _ Pl0 T0 A Ks _ _ _ R F hC i t z c hz u h w g
@@ -56,7 +56,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 open GlobalTheory.ConjTwist GlobalTheory.GalTw ReciprocityTheory.ChartRestriction.G.Geo.Tor
 open Classical
 /- English proof (translation)
-Apply the tactic sequence `first | exact @CompanionTheory.Member.thetaSeries_translated_datum_eq_translated_class | exact CompanionTheory.Member.thetaSeries_translated_datum_eq_translated_class | (intros; apply CompanionTheory.Member.thetaSeries_translated_datum_eq_translated_class <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.Adopt.thetaSeries_translated_datum_at_translated_class : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : FamIn D.what₂.LL G Pl0 T0 D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat D A Ks) (F : Face D A), GlobalTheory.Hk3.Core R F → ∀ (i : Fin D.R.m) (t : T0) (z : GA D (Vc D i)) (c : ℂ), z ∈ GfC (Vc D i) → ∀ (u : ∀ ρ, lowT (R.MW i (sg0 D A)) ρ) (h : GA D (Vc D i)) (w : (R.cV i).W) (g : GA D (Wc D i)), ser R i t (c • R.ωP i t (z, 1) (R.vP i t)) u h w g = c * ser R i t (R.vP i t) u (h * z) w g := by
   first | exact @CompanionTheory.Member.thetaSeries_translated_datum_eq_translated_class | exact CompanionTheory.Member.thetaSeries_translated_datum_eq_translated_class | (intros; apply CompanionTheory.Member.thetaSeries_translated_datum_eq_translated_class <;> assumption)

@@ -14,7 +14,7 @@ namespace GlobalTheory.BlockChTwoSum
 variable {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E]
 
 /- English proof (translation)
-Simplify using `only [chTwo, h]`.
+Simplify using the standard rewrite rules.
 -/
 theorem chTwo_congr_curv {n : Type} [Fintype n] [DecidableEq n] {H K : E → Matrix n n ℂ} {z : E}
     (h : ∀ ξ η, curv H z ξ η = curv K z ξ η) (ξ₁ η₁ ξ₂ η₂ : E) :
@@ -22,7 +22,7 @@ theorem chTwo_congr_curv {n : Type} [Fintype n] [DecidableEq n] {H K : E → Mat
   simp only [chTwo, h]
 
 /- English proof (translation)
-Simplify using `only [chTwo, curv_submatrix_equiv, submatrix_apply]`. Use `congr 1`. Conclude with `Fintype.sum_equiv e _ _ fun a => Fintype.sum_equiv e _ _ fun b => rfl`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem chTwo_submatrix_equiv {m n : Type} [Fintype m] [DecidableEq m] [Fintype n] [DecidableEq n]
     (K : E → Matrix n n ℂ) (e : m ≃ n) (z ξ₁ η₁ ξ₂ η₂ : E) :
@@ -32,24 +32,24 @@ theorem chTwo_submatrix_equiv {m n : Type} [Fintype m] [DecidableEq m] [Fintype 
   exact Fintype.sum_equiv e _ _ fun a => Fintype.sum_equiv e _ _ fun b => rfl
 
 /- English proof (translation)
-The claim follows from `hM.mul_mul_conjTranspose_same (vecMul_injective_iff.2 hP)`.
+A detailed English derivation is pending.
 -/
 theorem posDef_mul_mul_conjTranspose {m n : Type} [Fintype m] [Fintype n] {M : Matrix n n ℂ} (hM : M.PosDef)
     {P : Matrix m n ℂ} (hP : LinearIndependent ℂ P) : (P * M * Pᴴ).PosDef :=
   hM.mul_mul_conjTranspose_same (vecMul_injective_iff.2 hP)
 
 /- English proof (translation)
-Establish `hQ2 : ∀ τ, MContDiffAt 2 (Q τ) w` using `fun τ i l => HoloNormed.contDiffAt_two_real hW (hQ τ i l) hw`. Establish `h1 : ∀ τ, MContDiffAt 2 (fun z => Q τ z * M z * (Q τ z)ᴴ) w` using `fun τ => ((hQ2 τ).mul hM).mul (hQ2 τ).conjTranspose`. Establish `h2 : ∀ τ, IsUnit (Q τ w * M w * (Q τ w)ᴴ).det` using `fun τ => (isUnit_iff_isUnit_det _).1 (posDef_mul_mul_conjTranspose hp (hl.comp (Sigma.mk τ) sigma_mk_injective)).isUnit`. Use `⟨fun τ => ⟨h1 τ, h2 τ⟩, fun ξ₁ η₁ ξ₂ η₂ => ?_⟩` and prove the remaining obligations. Set `e : Fin g ≃ (Σ τ, Fin (μ τ))` to `(Fintype.equivFinOfCardEq hc).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Set `A : E → Matrix (Fin g) (Fin g) ℂ` to `fun z => of fun l a => Q (e a).1 z (e a).2 l`. Establish `hA2 : MContDiffAt 2 A w` using `fun l a => hQ2 _ _ _`. Establish `hAu : IsUnit (A w).det`. Rewrite using `[← det_transpose, ← isUnit_iff_isUnit_det, ← linearIndependent_rows_iff_isUnit]`. Conclude with `hl.comp e e.injective`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hA0 : ∀ᶠ x in 𝓝 w, ∀ η, mdbar A x η = 0` using `by filter_upwards [hW.mem_nhds hw] with x hx η`. Use extensionality with `l a`. Conclude with `DFunLike.congr_fun (dbar_eq_zero ((hQ (e a).1 (e a).2 l).differentiableAt (hW.mem_nhds hx))) η`. Establish `he : (fun x => (blockDiagonal' fun τ => Q τ x * M x * (Q τ x)ᴴ).submatrix e e) =ᶠ[𝓝 w] fun x => (A x)ᵀ * M x * (A x)ᴴᵀ` using `by filter_upwards [hW.mem_nhds hw] with x hx`. Use extensionality with `a b`.
+By extensionality, compare the relevant components. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : ((A x)ᵀ * M x * (A x)ᴴᵀ) a b = (Q (e a).1 x * M x * (Q (e b).1 x)ᴴ) (e a).2 (e b).2` using `rfl`. Rewrite using `[e1, submatrix_apply]`. Generalize the expression as in `e a = p`. Generalize the expression as in `e b = q`. Take `⟨τ, i⟩` from `p`.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails.
 
-Take `⟨τ', j⟩` from `q`. Distinguish the cases in `h : τ = τ'`. Substitute `h` using the available equality. Rewrite using `[blockDiagonal'_apply_eq]`. Rewrite using `[blockDiagonal'_apply_ne _ _ _ h, ho x hx τ τ' h]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[← GlobalTheory.T.chTwo_block_diagonal_sum h1 h2, ← chTwo_submatrix_equiv _ e, chTwo_congr_curv (curv_congr he), HodgeChTwo.chTwo_changeFrame hM ((isUnit_iff_isUnit_det _).1 hp.isUnit) hA2 hAu hA0]`.
+A detailed English derivation is pending.
 -/
 theorem sum_chTwo_blocks {ι : Type} [Fintype ι] {μ : ι → ℕ} {g : ℕ} {W : Set E} {w : E}
     (Q : ∀ τ, E → Matrix (Fin (μ τ)) (Fin g) ℂ) {M : E → Matrix (Fin g) (Fin g) ℂ} (hW : IsOpen W) (hw : w ∈ W)
@@ -94,11 +94,9 @@ theorem sum_chTwo_blocks {ι : Type} [Fintype ι] {μ : ι → ℕ} {g : ℕ} {W
     HodgeChTwo.chTwo_changeFrame hM ((isUnit_iff_isUnit_det _).1 hp.isUnit) hA2 hAu hA0]
 
 /- English proof (translation)
-Introduce `E _ _ _ _ ι _ μ g W w Q Z κ H hW hw hQ hZ hs hp hc hl hκ hH`. Establish `hY : MContDiffAt 2 (fun z => (Z z).map fun c => ((c.im : ℝ) : ℂ)) w` using `fun i k => (Complex.ofRealCLM.comp Complex.imCLM).contDiff.contDiffAt.comp w (HoloNormed.contDiffAt_two_real hW (hZ i k) hw)`. Establish `hYu` using `(isUnit_iff_isUnit_det _).1 (hp w hw).isUnit`. Take `⟨h1, h2⟩` from `sum_chTwo_blocks Q hW hw hQ (hY.inv hYu) (hp w hw).inv hc hl fun z hz => (hH z hz).2`. Establish `he : ∀ τ, H τ =ᶠ[𝓝 w] fun z => ((κ τ : ℝ) : ℂ) • (Q τ z * ((Z z).map fun c => ((c.im : ℝ) : ℂ))⁻¹ * (Q τ z)ᴴ)` using `fun τ => mem_of_superset (hW.mem_nhds hw) fun z hz => (hH z hz).1 τ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `⟨fun τ => ⟨fun a b => ?_, ?_⟩, fun ξ₁ η₁ ξ₂ η₂ => ?_⟩` and prove the remaining obligations. Conclude with `(MContDiffAt.smul contDiffAt_const (h1 τ).1 a b).congr_of_eventuallyEq ((he τ).mono fun x hx => congrFun (congrFun hx a) b)`. Rewrite using `[(hH w hw).1 τ, det_smul]`. Conclude with `(pow_ne_zero _ (Complex.ofReal_ne_zero.2 (hκ τ).ne')).isUnit.mul (h1 τ).2`. Rewrite using `[Finset.sum_congr rfl fun τ _ => chTwo_congr_curv (fun ξ η => (curv_congr (he τ) ξ η).trans (CurvInterp.Block.curv_const_smul (hκ τ).ne' (h1 τ).1 (h1 τ).2 ξ η)) ξ₁ η₁ ξ₂ η₂, h2, HodgeChTwo.chTwo_inv_of_isSymm hY hYu (mem_of_superset (hW.mem_nhds hw) fun z hz => (hs z hz).map _)]`.
-
-Conclude with `GlobalTheory.T.chTwo_imaginary_part_symmetric_zero hW hw hZ hs hYu ξ₁ η₁ ξ₂ η₂`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_chTwo_blocks_eq_zero : ∀ {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] [NormedSpace ℝ E] [IsScalarTower ℝ ℂ E] {ι : Type} [Fintype ι] {μ : ι → ℕ} {g : ℕ} {W : Set E} {w : E} (Q : ∀ τ, E → Matrix (Fin (μ τ)) (Fin g) ℂ) (Z : E → Matrix (Fin g) (Fin g) ℂ) (κ : ι → ℝ) (H : ∀ τ, E → Matrix (Fin (μ τ)) (Fin (μ τ)) ℂ), IsOpen W → w ∈ W → (∀ τ i l, DifferentiableOn ℂ (fun z => Q τ z i l) W) → (∀ i k, DifferentiableOn ℂ (fun z => Z z i k) W) → (∀ z ∈ W, (Z z).IsSymm) → (∀ z ∈ W, ((Z z).map fun c => ((c.im : ℝ) : ℂ)).PosDef) → Fintype.card (Σ τ, Fin (μ τ)) = g → LinearIndependent ℂ (fun p : Σ τ, Fin (μ τ) => Q p.1 w p.2) → (∀ τ, 0 < κ τ) → (∀ z ∈ W, (∀ τ, H τ z = ((κ τ : ℝ) : ℂ) • (Q τ z * ((Z z).map fun c => ((c.im : ℝ) : ℂ))⁻¹ * (Q τ z)ᴴ)) ∧ ∀ τ τ', τ ≠ τ' → Q τ z * ((Z z).map fun c => ((c.im : ℝ) : ℂ))⁻¹ * (Q τ' z)ᴴ = 0) → (∀ τ, MContDiffAt 2 (H τ) w ∧ IsUnit (H τ w).det) ∧ ∀ ξ₁ η₁ ξ₂ η₂ : E, ∑ τ, chTwo (H τ) w ξ₁ η₁ ξ₂ η₂ = 0 := by
   intro E _ _ _ _ ι _ μ g W w Q Z κ H hW hw hQ hZ hs hp hc hl hκ hH

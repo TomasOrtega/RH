@@ -10,7 +10,7 @@ noncomputable section
 namespace GlobalTheory.CovDom.RealPts
 
 /- English proof (translation)
-Unfold `Formalism.REAL.Jm`. Rewrite using `[Matrix.diagonal_mul_diagonal, ← Matrix.diagonal_one]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Apply the tactic sequence `split_ifs <;> norm_num`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jm_mul_self {n : ℕ} (ε : Fin n → Bool) : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1 := by
   unfold Formalism.REAL.Jm
@@ -34,7 +34,7 @@ theorem uMat_mkUJc {n : ℕ} (ε : Fin n → Bool) (A : Matrix (Fin n) (Fin n) �
     (h : Aᴴ * Formalism.REAL.Jm ε * A = Formalism.REAL.Jm ε) : Formalism.MainNotions.S.uMat (mkUJc ε A h) = A := rfl
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply]`. Unfold `Formalism.QuantumDeterminants.Hpk`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hpk_star (k r : ℕ) : (Formalism.QuantumDeterminants.Hpk k r).map star = Formalism.QuantumDeterminants.Hpk k r := by
   ext i j
@@ -43,20 +43,20 @@ theorem hpk_star (k r : ℕ) : (Formalism.QuantumDeterminants.Hpk k r).map star 
   split_ifs <;> simp
 
 /- English proof (translation)
-Unfold `tauOf`. Conclude with `(GlobalTheory.RealPlaces.existsUnique_place D w).exists.choose_spec`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem tauOf_spec (D : D7) (w : InfinitePlace D.host.E) : InfinitePlace.mk (embS D (tauOf D w)) = w := by
   unfold tauOf
   exact (GlobalTheory.RealPlaces.existsUnique_place D w).exists.choose_spec
 
 /- English proof (translation)
-The claim follows from `(GlobalTheory.RealPlaces.existsUnique_place D _).unique (tauOf_spec D _) rfl`.
+A detailed English derivation is pending.
 -/
 theorem tauOf_mk (D : D7) (τ : D.what₂.Tau) : tauOf D (InfinitePlace.mk (embS D τ)) = τ :=
   (GlobalTheory.RealPlaces.existsUnique_place D _).unique (tauOf_spec D _) rfl
 
 /- English proof (translation)
-Unfold `cjw`. Use `split_ifs with h`. Both sides reduce to the same expression. Use function extensionality and compare the values at `i j`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Both sides reduce to the same expression. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem cjw_cjw (D : D7) (w : InfinitePlace D.host.E) (M : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS) :
     cjw D w (cjw D w M) = M := by
@@ -67,14 +67,14 @@ theorem cjw_cjw (D : D7) (w : InfinitePlace D.host.E) (M : Formalism.QuantumDete
     simp
 
 /- English proof (translation)
-Introduce `M N hMN`. Rewrite using `[← cjw_cjw D w M, hMN, cjw_cjw]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem cjw_injective (D : D7) (w : InfinitePlace D.host.E) : Function.Injective (cjw D w) := by
   intro M N hMN
   rw [← cjw_cjw D w M, hMN, cjw_cjw]
 
 /- English proof (translation)
-Unfold `cjw`. Use `split_ifs with h`. Simplify using the standard rewrite rules. Use extensionality with `i j`. Simplify using `[Matrix.mul_apply, star_sum]`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem of_cjw_mul (D : D7) (w : InfinitePlace D.host.E) (A B : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS) :
     Matrix.of (cjw D w (Matrix.of.symm (Matrix.of A * Matrix.of B))) =
@@ -86,7 +86,7 @@ theorem of_cjw_mul (D : D7) (w : InfinitePlace D.host.E) (A B : Formalism.Quantu
     simp [Matrix.mul_apply, star_sum]
 
 /- English proof (translation)
-Establish `e` using `congrFun (congrFun (hpk_star k r) i) j`. Simplify `e` using `only [Matrix.map_apply]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 private theorem hpk_apply_of_outer_index (k r : ℕ) (i j : Fin (2 * r + k + 1)) :
     star (Formalism.QuantumDeterminants.Hpk k r i j) = Formalism.QuantumDeterminants.Hpk k r i j := by
@@ -94,9 +94,9 @@ private theorem hpk_apply_of_outer_index (k r : ℕ) (i j : Fin (2 * r + k + 1))
   simpa only [Matrix.map_apply] using e
 
 /- English proof (translation)
-Unfold `cjw`. Use `split_ifs with h`. Conclude with `hM`. Simplify using `only [Formalism.QuantumDeterminants.UH, Set.mem_setOf_eq] at hM ⊢`. Establish `e : (Matrix.of fun i j => star (M i j))ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * (Matrix.of fun i j => star (M i j)) = ((Matrix.of M)ᴴ * Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS * Matrix.of M).map star`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.map_apply, Matrix.mul_apply, Matrix.conjTranspose_apply, Matrix.of_apply, star_sum, star_mul', star_star, hpk_apply_of_outer_index]`. Rewrite using `[e, hM, hpk_star]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cjw_mem (D : D7) (w : InfinitePlace D.host.E) (M : Formalism.QuantumDeterminants.Mt D.R.k D.R.rS)
     (hM : Matrix.of M ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)) :
@@ -123,7 +123,7 @@ theorem trX_of {D : D7} (X : HidaSetting D) {θ : ℝ} (C : Choice X θ) (g : X.
     Matrix.of (trX X C g τ) = C.Qi τ * Formalism.MainNotions.S.uMat (g (vOf X τ)) * C.Q τ := rfl
 
 /- English proof (translation)
-Establish `hQ : C.Q τ * C.Qi τ = 1` using `(C.isT τ).2.1`. Rewrite using `[trX_of, trX_of, trX_of]`. Simplify using `only [Pi.mul_apply, Formalism.MainNotions.S.uMat, Subgroup.coe_mul, Units.val_mul, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (C.Q τ) (C.Qi τ), hQ, Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem of_trX_mul_eq_mul {D : D7} (X : HidaSetting D) {θ : ℝ} (C : Choice X θ) (s g : X.B.I.Ginf)
     (τ : D.what₂.Tau) :
@@ -134,7 +134,7 @@ private theorem of_trX_mul_eq_mul {D : D7} (X : HidaSetting D) {θ : ℝ} (C : C
   rw [← Matrix.mul_assoc (C.Q τ) (C.Qi τ), hQ, Matrix.one_mul]
 
 /- English proof (translation)
-Simplify using `only [← Matrix.mul_assoc, hQ, Matrix.one_mul]`. Rewrite using `[Matrix.mul_assoc, hQ, Matrix.mul_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem eq_of_mul_mul_eq_of_det_ne_zero {n m : ℕ} (Q : Matrix (Fin n) (Fin m) ℂ) (Qi : Matrix (Fin m) (Fin n) ℂ)
     (hQ : Q * Qi = 1) (A : Matrix (Fin n) (Fin n) ℂ) : Q * (Qi * A * Q) * Qi = A := by
@@ -142,7 +142,7 @@ private theorem eq_of_mul_mul_eq_of_det_ne_zero {n m : ℕ} (Q : Matrix (Fin n) 
   rw [Matrix.mul_assoc, hQ, Matrix.mul_one]
 
 /- English proof (translation)
-Establish `e : (Q * N * Qi)ᴴ * J * (Q * N * Qi) = Qiᴴ * (Nᴴ * (Qᴴ * J * Q) * N) * Qi`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Establish `e' : (Q * Qi)ᴴ * J * (Q * Qi) = Qiᴴ * (Qᴴ * J * Q) * Qi`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Rewrite using `[e, hJ, hN, ← hJ, ← e', hQ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
 Simplify using the standard rewrite rules.
 -/
@@ -164,19 +164,17 @@ namespace GlobalTheory.CovDom
 open GlobalTheory.CovDom.RealPts
 
 /- English proof (translation)
-Introduce `D X θ C`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Establish `hM : ∀ τ, Matrix.of (cjw D (InfinitePlace.mk (embS D τ)) (x (InfinitePlace.mk (embS D τ)))) ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk D.R.k D.R.rS)` using `fun τ => cjw_mem D _ _ (hx _).1`. Establish `hU : ∀ v, (C.Q (X.pl v) * Matrix.of (cjw D (InfinitePlace.mk (embS D (X.pl v))) (x (InfinitePlace.mk (embS D (X.pl v))))) * C.Qi (X.pl v))ᴴ * Formalism.REAL.Jm (X.B.I.ε v) * (C.Q (X.pl v) * Matrix.of (cjw D (InfinitePlace.mk (embS D (X.pl v))) (x (InfinitePlace.mk (embS D (X.pl v …`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `v`. Establish `hT` using `C.isT (X.pl v)`. Simplify using `only [IsTranspC, vOf, Equiv.symm_apply_apply] at hT`. Conclude with `hcompl_unit_property_of_isPrime _ _ _ _ _ hT.2.1 hT.2.2.1 (hM _)`. Use `⟨fun v => mkUJc (X.B.I.ε v) _ (hU v), ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `key : ∀ τ, trX X C (fun v => mkUJc (X.B.I.ε v) _ (hU v)) τ = cjw D (InfinitePlace.mk (embS D τ)) (x (InfinitePlace.mk (embS D τ)))`. Introduce `τ`. Apply `Matrix.of.injective` to reduce the goal to its premises. Establish `hQi : C.Qi τ * C.Q τ = 1` using `(C.isT τ).1`. Simplify using `only [trX_of, uMat_mkUJc, vOf, Equiv.apply_symm_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `eq_of_mul_mul_eq_of_det_ne_zero (C.Qi τ) (C.Q τ) hQi _`. Use function extensionality and compare the values at `w`. Simplify using `only [Gm, key, tauOf_spec, cjw_cjw]`. Introduce `s g hsg`. Use function extensionality and compare the values at `v`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ, rfl⟩ : ∃ τ, vOf X τ = v` from `⟨X.pl v, X.pl.symm_apply_apply v⟩`. Establish `hw` using `congrFun hsg (InfinitePlace.mk (embS D τ))`. Simplify using `only [Gm, tauOf_mk] at hw`. Establish `h2` using `congrArg Matrix.of (cjw_injective D _ hw)`. Rewrite `h2` using `[trX_of, trX_of]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h3` using `congrArg (fun N => C.Q τ * N * C.Qi τ) h2`. Simplify using `only [eq_of_mul_mul_eq_of_det_ne_zero (C.Q τ) (C.Qi τ) (C.isT τ).2.1] at h3`. Conclude with `Subtype.ext (Units.ext h3)`. Introduce `s g w`. Simplify using `only [Gm]`.
-
-Rewrite using `[← of_cjw_mul, ← of_trX_mul_eq_mul, Equiv.symm_apply_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem transport_real_points : ∀ (D : D7) (X : HidaSetting D) (θ : ℝ) (C : Choice X θ),
     (∀ x : InfinitePlace D.host.E → Formalism.QuantumDeterminants.Mt D.R.k D.R.rS, (∀ w, Matrix.of (x w) ∈ Formalism.QuantumDeterminants.Nset D.R.k D.R.rS) →

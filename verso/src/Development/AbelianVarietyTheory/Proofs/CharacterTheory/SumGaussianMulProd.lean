@@ -5,7 +5,7 @@ open Polynomial GlobalTheory.CuspGL
 namespace GlobalTheory.QBinomialSum
 
 /- English proof (translation)
-Rewrite using `[Finset.prod_range_succ']`. Establish `: ∀ i, x ^ (n + 1) - x ^ (i + 1) = x * (x ^ n - x ^ i)` using `fun i => by ring`. Simplify using `only [this, Finset.prod_mul_distrib, Finset.prod_const, Finset.card_range]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma prod_succ_succ (x : ℂ) (n a : ℕ) :
     ∏ i ∈ Finset.range (a + 1), (x ^ (n + 1) - x ^ i)
@@ -16,7 +16,7 @@ lemma prod_succ_succ (x : ℂ) (n a : ℕ) :
   ring
 
 /- English proof (translation)
-Proceed by induction on `a with`. Consider the case `zero => simp`. Consider the case `succ a ih`. Rewrite using `[prod_succ_succ]`. Conclude with `mul_ne_zero (mul_ne_zero (h1 a) (pow_ne_zero _ hx)) ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma den_ne (x : ℂ) (hx : x ≠ 0) (h1 : ∀ k : ℕ, x ^ (k + 1) - 1 ≠ 0) (a : ℕ) :
     ∏ i ∈ Finset.range a, (x ^ a - x ^ i) ≠ 0 := by
@@ -27,15 +27,15 @@ lemma den_ne (x : ℂ) (hx : x ≠ 0) (h1 : ∀ k : ℕ, x ^ (k + 1) - 1 ≠ 0) 
     exact mul_ne_zero (mul_ne_zero (h1 a) (pow_ne_zero _ hx)) ih
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simp`. Consider the case `succ n ih => set c : ℕ → ℂ := fun a => (∏ i ∈ Finset.range a, (x ^ n - x ^ i)) / (∏ i ∈ Finset.range a, (x ^ a - x ^ i)) * ∏ i ∈ Finset.range a, (1 - x ^ (i + 1)) with hc`. Establish `key : ∀ a, (∏ i ∈ Finset.range (a + 1), (x ^ (n + 1) - x ^ i)) / (∏ i ∈ Finset.range (a + 1), (x ^ (a + 1) - x ^ i)) * ∏ i ∈ Finset.range a, (1 - x ^ (i + 1)) = (∏ i ∈ Finset.range (a + 1), (x ^ n - x ^ i)) / (∏ i ∈ Finset.range (a + 1), (x ^ (a + 1) - x ^ i)) * (∏ i ∈ Finset.ran …`. Introduce `a`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [hc]`. Rewrite using `[prod_succ_succ x n a, prod_succ_succ x a a, Finset.prod_range_succ (fun i => x ^ n - x ^ i), Finset.prod_range_succ (fun i => 1 - x ^ (i + 1))]`. Establish `hd` using `den_ne x hx h1 a`. Establish `h2` using `h1 a`. Establish `h3` using `pow_ne_zero a hx`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Generalize the expression as in `∏ i ∈ Finset.range a, (x ^ a - x ^ i) = D at *`. Generalize the expression as in `∏ i ∈ Finset.range a, (x ^ n - x ^ i) = P at *`. Generalize the expression as in `∏ i ∈ Finset.range a, (1 - x ^ (i + 1)) = F at *`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Replace the chosen expression with an arbitrary variable. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hz : ∏ i ∈ Finset.range (n + 1), (x ^ n - x ^ i) = 0` using `Finset.prod_eq_zero (Finset.self_mem_range_succ n) (sub_self _)`. Simplify using `only [key]`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_range_sub', Finset.sum_range_succ, ih, hz]`. Establish `h0 : c 0 = 1` using `by simp [hc]`. Establish `hn : c (n + 1) = 0` using `by simp only [hc, hz]; simp`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h0, hn]`. Use `push_cast`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Simplify using the standard rewrite rules.
 -/
 lemma sum_eq (x : ℂ) (hx : x ≠ 0) (h1 : ∀ k : ℕ, x ^ (k + 1) - 1 ≠ 0) (n : ℕ) :
     ∑ a ∈ Finset.range n,
@@ -78,17 +78,17 @@ lemma sum_eq (x : ℂ) (hx : x ≠ 0) (h1 : ∀ k : ℕ, x ^ (k + 1) - 1 ≠ 0) 
     simp
 
 /- English proof (translation)
-Introduce `q n N hq hN`. Establish `hx : (q : ℂ) ≠ 0` using `by exact_mod_cast (by omega : q ≠ 0)`. Establish `h1 : ∀ k : ℕ, (q : ℂ) ^ (k + 1) - 1 ≠ 0`. Introduce `k h`. Establish `h' : (q : ℂ) ^ (k + 1) = 1` using `sub_eq_zero.mp h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h'' : q ^ (k + 1) = 1` using `by exact_mod_cast h'`. Use `Nat.one_lt_pow (n := k + 1) (a := q) (by omega) (by omega)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish `cast : ∀ m a, a ≤ m → ((∏ i ∈ Finset.range a, (q ^ m - q ^ i) : ℕ) : ℂ) = ∏ i ∈ Finset.range a, ((q : ℂ) ^ m - (q : ℂ) ^ i)`. Introduce `m a ha`.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Nat.cast_prod]`. Use `Finset.prod_congr rfl fun i hi => ?_` and prove the remaining obligations. Establish `hi'` using `Finset.mem_range.mp hi`. Rewrite using `[Nat.cast_sub (Nat.pow_le_pow_right (by omega) (by omega))]`. Use `push_cast`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Both sides reduce to the same expression. Rewrite using `[← sum_eq (q : ℂ) hx h1 n, ← Finset.Ico_add_one_right_eq_Icc, Finset.sum_Ico_eq_sum_range]`. Simplify using `only [Nat.add_sub_cancel]`. Use `Finset.sum_congr rfl fun a ha => ?_` and prove the remaining obligations. Establish `ha'` using `Finset.mem_range.mp ha`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Finset.prod_Ico_eq_prod_range, add_comm 1 a]`. Simplify using `only [Nat.add_sub_cancel]`. Establish `h` using `congrArg (Nat.cast : ℕ → ℂ) (hN (a + 1) (by omega))`. Rewrite `h` using `[Nat.cast_mul, cast _ _ le_rfl, cast _ _ (by omega)]`. Rewrite using `[← h, mul_div_cancel_right₀ _ (den_ne _ hx h1 (a + 1))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `Finset.prod_congr rfl fun i _ => by rw [add_comm]`.
+Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem sum_gaussian_mul_prod : ∀ (q n : ℕ) (N : ℕ → ℕ), 2 ≤ q → (∀ a, a ≤ n → N a * ∏ i ∈ Finset.range a, (q ^ a - q ^ i) = ∏ i ∈ Finset.range a, (q ^ n - q ^ i)) → ∑ a ∈ Finset.Icc 1 n, (N a : ℂ) * ∏ i ∈ Finset.Ico 1 a, (1 - (q : ℂ) ^ i) = n := by
   intro q n N hq hN

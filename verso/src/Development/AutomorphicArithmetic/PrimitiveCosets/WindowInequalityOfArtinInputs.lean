@@ -15,9 +15,9 @@ variable {Fam : ℝ → Type 1} {core : ∀ {eps : ℝ}, Fam eps → FamCore eps
   {Tied : ∀ {eps : ℝ}, Fam eps → (eD eL K cHH eK CL x : ℝ) → Prop}
 
 /- English proof (translation)
-Introduce and unpack `eD eL eps he Fm ⟨C, xE, hE⟩ ⟨K, cHH, eK, CL, x0, hT⟩`. Take `⟨x1, hx1⟩` from `core_gm Λ eD eL K cHH eK C eps he`. Use `⟨max x1 (max x0 xE), fun x hx hw => ?_⟩` and prove the remaining obligations. Establish `b` using `le_of_max_le_right hx`. Take `⟨i, hi⟩` from `h Fm _ _ _ _ _ _ _ (hT x (le_of_max_le_left b) hw)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `hx1 x (le_of_max_le_left hx) _ ((core Fm).D x i).host.toHostAx _ (hE x (le_of_max_le_right b) i) hi`.
+A detailed English derivation is pending.
 -/
 theorem windowInequality_of_artinInputs
     (h : ∀ {eps : ℝ} (Fm : Fam eps) (eD eL K cHH eK CL x : ℝ), Tied Fm eD eL K cHH eK CL x → FamCoreConstantBounds (core Fm) eD eL K cHH eK x)
@@ -30,7 +30,7 @@ theorem windowInequality_of_artinInputs
   exact hx1 x (le_of_max_le_left hx) _ ((core Fm).D x i).host.toHostAx _ (hE x (le_of_max_le_right b) i) hi
 
 /- English proof (translation)
-The claim follows from `zeroFreeOn_of_tiedWin fun ψ hψ => by obtain ⟨Λ, la, a, b, c⟩ := hW ψ hψ exact ⟨Λ, la, a, b, windowInequality_of_artinInputs h Λ, formB Λ, c⟩`.
+A detailed English derivation is pending.
 -/
 theorem zeroFreeOn_of_core {Q : PChar → Prop}
     (h : ∀ {eps : ℝ} (Fm : Fam eps) (eD eL K cHH eK CL x : ℝ), Tied Fm eD eL K cHH eK CL x → FamCoreConstantBounds (core Fm) eD eL K cHH eK x)

@@ -13,7 +13,7 @@ namespace GlobalTheory.MapLaw
 variable {R S : Type} [CommRing R] [CommRing S] {d : ℕ} {τ : Type}
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero fun i => by cases i with | inl i => exact hu i | inr i => exact hv i`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_elim {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
     (hv : ∀ i, constantCoeff (v i) = 0) : HasSubst (Sum.elim u v) :=
@@ -22,7 +22,7 @@ theorem hasSubst_elim {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constant
     | inr i => exact hv i
 
 /- English proof (translation)
-Unfold `at2`. Conclude with `constantCoeff_subst_eq_zero (hasSubst_elim hu hv) (fun i => by cases i with`. Consider the case `inl i => exact hu i`. Consider the case `inr i => exact hv i) hc`.
+Replace the relevant objects with their definitions. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem constantCoeff_powerSeriesEvalTwoGroups_eq_zero {c : MvPowerSeries (Fin d ⊕ Fin d) R} (hc : constantCoeff c = 0)
     {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
@@ -34,7 +34,7 @@ theorem constantCoeff_powerSeriesEvalTwoGroups_eq_zero {c : MvPowerSeries (Fin d
       | inr i => exact hv i) hc
 
 /- English proof (translation)
-Unfold `at2`. Rewrite using `[map_subst (hasSubst_elim hu hv)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `cases i <;> rfl`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem mvPowerSeriesMap_evalTwoGroups (r : R →+* S) (c : MvPowerSeries (Fin d ⊕ Fin d) R)
     {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
@@ -47,7 +47,7 @@ theorem mvPowerSeriesMap_evalTwoGroups (r : R →+* S) (c : MvPowerSeries (Fin d
   cases i <;> rfl
 
 /- English proof (translation)
-The claim follows from `mvPowerSeriesMap_evalTwoGroups r (μ i) hu hv`.
+A detailed English derivation is pending.
 -/
 theorem map_op (r : R →+* S) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R)
     {u v : Fin d → MvPowerSeries τ R} (hu : ∀ i, constantCoeff (u i) = 0)
@@ -56,7 +56,7 @@ theorem map_op (r : R →+* S) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R
   mvPowerSeriesMap_evalTwoGroups r (μ i) hu hv
 
 /- English proof (translation)
-The claim follows from `constantCoeff_powerSeriesEvalTwoGroups_eq_zero (hμ i) hu hv`.
+A detailed English derivation is pending.
 -/
 theorem constantCoeff_op {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R}
     (hμ : ∀ i, constantCoeff (μ i) = 0)
@@ -68,29 +68,29 @@ end GlobalTheory.MapLaw
 
 open GlobalTheory.MapLaw in
 /- English proof (translation)
-Introduce `R _ d μ hμ S _ r`. Establish `hX : ∀ {σ : Type} (i : σ), constantCoeff (X i : MvPowerSeries σ R) = 0` using `fun i => constantCoeff_X i`. Establish `h0 : ∀ i : Fin d, constantCoeff (0 : MvPowerSeries (Fin d) R) = 0` using `fun _ => map_zero _`. Use `⟨⟨fun i => ?_, ?_, fun i => ?_, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[constantCoeff_map, hμ.const i, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Use `congrArg (map r) (congrFun hμ.unit i)` as an intermediate fact. Rewrite `this` using `[map_op r μ (fun j => hX j) h0]`. Simplify `this` using `[map_X]`. Use `congrArg (map r) (hμ.comm i)` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Unfold `swap at this ⊢`. Rewrite `this` using `[mvPowerSeriesMap_evalTwoGroups r (μ i) (fun j => hX _) (fun j => hX _)]`. Simplify `this` using `[map_X]`. Establish `hx1 : ∀ j, constantCoeff (x1 j : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) = 0` using `fun j => hX _`. Establish `hx2 : ∀ j, constantCoeff (x2 j : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) = 0` using `fun j => hX _`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hx3 : ∀ j, constantCoeff (x3 j : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R) = 0` using `fun j => hX _`. Establish `m1 : (fun j => map r (x1 j : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R)) = x1`. Use function extensionality and compare the values at `j`. Simplify using `[x1, map_X]`. Establish `m2 : (fun j => map r (x2 j : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R)) = x2`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `j`. Simplify using `[x2, map_X]`. Establish `m3 : (fun j => map r (x3 j : MvPowerSeries (Fin d ⊕ (Fin d ⊕ Fin d)) R)) = x3`. Use function extensionality and compare the values at `j`. Simplify using `[x3, map_X]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `i`. Use `congrArg (map r) (congrFun hμ.assoc i)` as an intermediate fact. Rewrite `this` using `[map_op r μ (constantCoeff_op hμ.const hx1 hx2) hx3, map_op r μ hx1 (constantCoeff_op hμ.const hx2 hx3)]`. Establish `e12 : (fun j => map r (op μ x1 x2 j)) = op (fun j => map r (μ j)) x1 x2`. Use function extensionality and compare the values at `j`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Rewrite using `[map_op r μ hx1 hx2, m1, m2]`. Establish `e23 : (fun j => map r (op μ x2 x3 j)) = op (fun j => map r (μ j)) x2 x3`. Use function extensionality and compare the values at `j`. Rewrite using `[map_op r μ hx2 hx3, m2, m3]`. Rewrite `this` using `[e12, e23, m1, m3]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`. Introduce `n`. Proceed by induction on `n with`. Consider the case `zero => intro i`. Simplify using `[nmul]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Consider the case `succ n ih`. Introduce `i`. Establish `hc : ∀ j, constantCoeff (nmul μ n j) = 0` using `fun j => (ih j).1`. Establish `e : ∀ (m : ℕ) (ν : Fin d → MvPowerSeries (Fin d ⊕ Fin d) S), nmul ν (m + 1) = op ν (nmul ν m) (fun j => X j)`. Introduce `m ν`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `nmul`. Rewrite using `[Function.iterate_succ_apply']`. Establish `e' : nmul μ (n + 1) = op μ (nmul μ n) (fun j => X j)`. Unfold `nmul`. Rewrite using `[Function.iterate_succ_apply']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e', e]`. Use `⟨constantCoeff_op hμ.const hc (fun j => hX j) i, ?_⟩` and prove the remaining obligations. Rewrite using `[map_op r μ hc (fun j => hX j)]`. Establish `hn : (fun j => map r (nmul μ n j)) = nmul (fun i => map r (μ i)) n` using `funext fun j => (ih j).2`. Rewrite using `[hn]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_X]`.
+A detailed English derivation is pending.
 -/
 theorem GlobalTheory.isLaw_map_nmul : ∀ (R : Type) [CommRing R] (d : ℕ) (μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) R), IsLaw μ → ∀ (S : Type) [CommRing S] (r : R →+* S), IsLaw (fun i => map r (μ i)) ∧ ∀ n i, constantCoeff (nmul μ n i) = 0 ∧ map r (nmul μ n i) = nmul (fun i => map r (μ i)) n i := by
   intro R _ d μ hμ S _ r

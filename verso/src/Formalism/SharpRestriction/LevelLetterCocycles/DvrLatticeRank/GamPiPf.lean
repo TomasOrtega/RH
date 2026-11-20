@@ -18,7 +18,7 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     (W : LocWach PD LL O v n) (T : LocLat G Qp LL O)
 
 /- English proof (translation)
-Introduce `δ hδ`. Rewrite using `[map_sub, ← W.γD_mul, mul_comm, W.γD_mul, hx δ hδ]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem gampi_delta {x : W.DD T} (hx : ∀ δ ∈ W.DelF, W.γD T δ x = x) :
     ∀ δ ∈ W.DelF, W.γD T δ (W.γD T W.gamK x - x) = W.γD T W.gamK x - x := by
@@ -26,11 +26,11 @@ theorem gampi_delta {x : W.DD T} (hx : ∀ δ ∈ W.DelF, W.γD T δ x = x) :
   rw [map_sub, ← W.γD_mul, mul_comm, W.γD_mul, hx δ hδ]
 
 /- English proof (translation)
-Establish `hl : letγ (W.γ₀ W.gamK) (letE c : LetA O n) = letE c`. Use function extensionality and compare the values at `j`. Use `show W.γ₀ W.gamK ((letE c : LetA O n) j) = (letE c : LetA O n) j`. Break down `eq_or_ne j c with rfl | h` into its components or cases. Simplify using `[letE]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[letE, Pi.single_apply, h]`. Establish `key : ∀ y : W.DD T, W.γD T W.gamK ((letE c : LetA O n) • y) = (letE c : LetA O n) • W.γD T W.gamK y`. Introduce `y`. Rewrite using `[← algebraMap_smul W.EE (letE c : LetA O n) y, W.γD_smul, W.γE_ext, hl, algebraMap_smul]`. Unfold `letS at hx ⊢`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hx`, the goal using `[LinearMap.mem_ker]`. Simplify using `only [LinearMap.restrictScalars_apply, LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.id_apply] at hx ⊢`. Rewrite using `[smul_sub, ← key, sub_eq_zero.1 hx, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem gampi_letter (c : ZMod n) {x : W.DD T} (hx : x ∈ letS W T c) :
     W.γD T W.gamK x - x ∈ letS W T c := by
@@ -50,19 +50,19 @@ theorem gampi_letter (c : ZMod n) {x : W.DD T} (hx : x ∈ letS W T c) :
   rw [smul_sub, ← key, sub_eq_zero.1 hx, sub_self]
 
 /- English proof (translation)
-Introduce `c x hx`. Unfold `NcS at hx`. Rewrite `hx` using `[Submodule.mem_inf, Submodule.mem_inf]`. Take `⟨⟨hxN, hxD⟩, hxL⟩` from `hx`. Rewrite `hxN` using `[Submodule.restrictScalars_mem]`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hxfix : ∀ δ ∈ W.DelF, W.γD T δ x = x`. Introduce `δ hδ`. Unfold `DelS at hxD`. Establish `h1` using `(Submodule.mem_iInf _).1 hxD δ`. Establish `h2` using `(Submodule.mem_iInf _).1 h1 hδ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `h2`. Establish `hxΔ : x ∈ W.NΔ T` using `show x ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ x = x from ⟨hxN, hxfix⟩`. Take `⟨x', hx'mem, hx'⟩` from `hm x hxΔ`. Establish `hx'N : x' ∈ W.N T` using `(show x' ∈ W.N T ∧ ∀ δ ∈ W.DelF, W.γD T δ x' = x' from hx'mem).1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_inf]`. Use `⟨?_, gampi_letter W T c hxL⟩` and prove the remaining obligations. Unfold `PiNS`. Rewrite using `[Submodule.mem_inf]`. Use `⟨?_, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.restrictScalars_mem]`. Unfold `Formalism.MainNotions.DeltaInvariantLattices.aN`. Use `Submodule.mem_map.2 ⟨u • x', (W.N T).smul_mem u hx'N, ?_⟩` and prove the remaining obligations. Unfold `Formalism.MainNotions.DeltaInvariantLattices.smulA`. Rewrite using `[LinearMap.smul_apply, LinearMap.id_apply, hx', hu, pow_one, smul_smul, mul_comm]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `DelS`. Rewrite using `[Submodule.mem_iInf]`. Introduce `δ`. Rewrite using `[Submodule.mem_iInf]`. Introduce `hδ`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.mem_ker, LinearMap.sub_apply, LinearMap.id_apply, sub_eq_zero]`. Conclude with `gampi_delta W T hxfix δ hδ`.
+A detailed English derivation is pending.
 -/
 theorem gampi_local (π' π'₀ u : LetA O n) (hu : π'₀ = u * π')
     (hm : ∀ x ∈ W.NΔ T, ∃ x' ∈ W.NΔ T, W.γD T W.gamK x - x = π'₀ • x') :
@@ -103,11 +103,11 @@ theorem gampi_local (π' π'₀ u : LetA O n) (hu : π'₀ = u * π')
 end Local
 
 /- English proof (translation)
-Introduce `D HW F Cm CA CB CK hA l _ hl K LL hG π' E hp9 T hcrys`. Establish `hT1` using `hA.1 l K 1 LL hG`. Establish `hP9` using `hT1.2.2.2.2.2.2.2.2.1`. Establish `hs1 : ((HW l).W K 1 LL hG).s = 1` using `(HW l).W_s K 1 LL hG`. Establish `hp : ((D.loc l).PD K).p = l` using `(D.loc l).PD_p K`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp2 : ((D.loc l).PD K).p ≠ 2` using `by rw [hp]; exact hl`. Take `⟨-, ⟨π₁, E₁, hr₁, hm₁⟩, -⟩` from `hP9 T hcrys hs1 hp2`. Take `⟨w₁, hw₁⟩` from `hr₁.2.2.1`. Take `⟨w, hw⟩` from `hp9.2.2.1`. Establish `hgam : ((HW l).W K 1 LL hG).gamK = ((HW l).W K 1 LL hG).gam` using `((HW l).W K 1 LL hG).gamK_eq_one hs1 hp2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `gampi_local _ T π' π₁ ((w₁ * w⁻¹ : (LetA _ _)ˣ) : LetA _ _) ?_ ?_` and prove the remaining obligations. Rewrite using `[hw₁, hw, hp, Units.val_mul, mul_assoc, Units.inv_mul_cancel_left]`. Introduce `x hx`. Take `⟨x', hx', h⟩` from `hm₁.2 x hx`. Conclude with `⟨x', hx', by rw [hgam]; exact h⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem gamPiCondition : GamPiStep := by
   intro D HW F Cm CA CB CK hA l _ hl K LL hG π' E hp9 T hcrys

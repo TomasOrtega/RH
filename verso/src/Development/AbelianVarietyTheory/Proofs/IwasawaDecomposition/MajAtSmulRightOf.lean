@@ -21,7 +21,7 @@ section Polar
 variable {K : Type} [Field K] {V : Type} [AddCommGroup V] [Module K V] {ι : Type} [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Establish `hv : vecAt b v (a • x) = v.embedding a • vecAt b v x`. Use function extensionality and compare the values at `i`. Simplify using `[vecAt, map_mul]`. Simplify using `only [fcoord, hv, Matrix.mulVec_smul]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fcoord_smul_emb (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (a : K) (x : V) : fcoord b X v (a • x) = v.embedding a • fcoord b X v x := by
@@ -30,7 +30,7 @@ theorem fcoord_smul_emb (b : Module.Basis ι K V) (X : InfinitePlace K → Matri
   simp only [fcoord, hv, Matrix.mulVec_smul]
 
 /- English proof (translation)
-Establish `hv : vecAt b v (x + y) = vecAt b v x + vecAt b v y`. Use function extensionality and compare the values at `i`. Simplify using `[vecAt, map_add]`. Simplify using `only [fcoord, hv, Matrix.mulVec_add]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem fcoord_add_of (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (x y : V) : fcoord b X v (x + y) = fcoord b X v x + fcoord b X v y := by
@@ -39,21 +39,21 @@ theorem fcoord_add_of (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix 
   simp only [fcoord, hv, Matrix.mulVec_add]
 
 /- English proof (translation)
-Simplify using `only [majAt, fcoord_add_of b X v x x', Pi.add_apply, star_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem majAt_add_left_of (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (x x' y : V) : majAt b X v (x + x') y = majAt b X v x y + majAt b X v x' y := by
   simp only [majAt, fcoord_add_of b X v x x', Pi.add_apply, star_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [majAt, fcoord_add_of b X v y y', Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem majAt_add_right_of (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (x y y' : V) : majAt b X v x (y + y') = majAt b X v x y + majAt b X v x y' := by
   simp only [majAt, fcoord_add_of b X v y y', Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [majAt, fcoord_smul_emb, Pi.smul_apply, smul_eq_mul, star_mul', Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem majAt_smul_left_of (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (a : K) (x y : V) : majAt b X v (a • x) y = star (v.embedding a) * majAt b X v x y := by
@@ -62,7 +62,7 @@ theorem majAt_smul_left_of (b : Module.Basis ι K V) (X : InfinitePlace K → Ma
   ring
 
 /- English proof (translation)
-Simplify using `only [majAt, fcoord_smul_emb, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem majAt_smul_right_of (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (v : InfinitePlace K)
     (a : K) (x y : V) : majAt b X v x (a • y) = v.embedding a * majAt b X v x y := by
@@ -71,7 +71,7 @@ theorem majAt_smul_right_of (b : Module.Basis ι K V) (X : InfinitePlace K → M
   ring
 
 /- English proof (translation)
-Unfold `normAt cnorm majAt`. Rewrite using `[Real.sq_sqrt (Finset.sum_nonneg fun i _ => sq_nonneg _), Complex.ofReal_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.star_def, Complex.conj_mul']`. Use `push_cast`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -85,11 +85,11 @@ theorem majAt_self_eq (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix 
   ring
 
 /- English proof (translation)
-Establish `hadd : ∀ x y : V', (majAt b X v (e x) (e y) - majAt b' X' v x y) + (majAt b X v (e y) (e x) - majAt b' X' v y x) = 0`. Introduce `x y`. Establish `h0` using `h (x + y)`. Establish `h1` using `h x`. Establish `h2` using `h y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_add, majAt_add_left_of, majAt_add_right_of] at h0`. Take the linear combination `h0 - h1 - h2`. Take `⟨a, ha⟩` from `hv`. Establish `h3` using `hadd x (a • y)`. Simplify using `only [map_smul, majAt_smul_left_of, majAt_smul_right_of] at h3`.
+Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h4` using `hadd x y`. Establish `h5 : (v.embedding a - star (v.embedding a)) * (majAt b X v (e x) (e y) - majAt b' X' v x y) = 0`. Take the linear combination `h3 - star (v.embedding a) * h4`. Establish `h6 : v.embedding a - star (v.embedding a) ≠ 0` using `sub_ne_zero.2 (Ne.symm ha)`. Conclude with `sub_eq_zero.1 ((mul_eq_zero.1 h5).resolve_left h6)`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem majAt_eq_of_diag {V' ι' : Type} [AddCommGroup V'] [Module K V'] [Fintype ι'] [DecidableEq ι']
     (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ) (b' : Module.Basis ι' K V')
@@ -117,9 +117,9 @@ theorem majAt_eq_of_diag {V' ι' : Type} [AddCommGroup V'] [Module K V'] [Fintyp
 end Polar
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hc`. Use `push_neg at hc`. Apply `InfinitePlace.not_isReal_iff_isComplex.2 hv` to reduce the goal to its premises. Rewrite using `[InfinitePlace.isReal_iff]`. Use extensionality with `a`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Simplify using `only [ComplexEmbedding.conjugate_coe_eq]`. Conclude with `hc a`.
+A detailed English derivation is pending.
 -/
 theorem exists_nonreal {K : Type} [Field K] (v : InfinitePlace K) (hv : v.IsComplex) :
     ∃ a : K, star (v.embedding a) ≠ v.embedding a := by
@@ -138,25 +138,23 @@ namespace GlobalTheory.Mem.R3.MetBase
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 I0 T A3 Ks _ _ _ R F cG X0 Y Z hP hH`. Establish `hCx` using `Formalism.IndefR.Links.complex_data_conditions_base_level_of_primitive_links hH.ok hH.sep hP.char hH.prim`. Establish `h2 : (R.toCx3 F).H2 F.cr false` using `(hCx.what₂ false).1`. Establish `hE : R.models_HE` using `hP.char.base.models.HE`. Establish `hn : 0 < RealDat.nP F.lv2 false`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `RealDat.nP`. Conclude with `Nat.card_pos` after adjusting the coercions. Establish `hv0 : A3.A.v0 = InfinitePlace.mk D.what₂.embLL` using `R.hv0`. Establish `hcx : ∃ a : D.what₂.LL, star (A3.A.v0.embedding a) ≠ A3.A.v0.embedding a` using `by haveI := (GlobalTheory.ptField_main D).1`. Conclude with `exists_nonreal _ (IsTotallyComplex.isComplex _)`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `majAt_eq_of_diag _ _ _ _ _ Z.eRR0.toLinearMap hcx ?_` and prove the remaining obligations. Introduce `x`. Establish `hR` using `PrincipalLevelLattice.majorant_at_base_place_eq_inner (R.toCx3 F) F.cr false h2 hn x x`. Use `set w := (R.toCx3 F).iC F.cr false A3.A.μ0 (cpt A3.A.v0.embedding x) with hw`. Use `set z := X0.s.jEE (Z.eRR0 x) with hz`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Use `set u : R.HE.H := Tw.out (s := twAt D.what₂.embLL A3.A.v0) (E := R.HE.H) w with hu`. Establish `hjE` using `Z.jEE0 x`. Rewrite `hjE` using `[← hz]`. Express the relevant statement in the definitionally equal form `_ = PiTensorProduct.lift (R.HE.e u) at hjE`. Establish `hee` using `Y.tied.base.ee z z`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Establish `hnorm` using `X0.s.jEE_norm (Z.eRR0 x)`. Establish `hL : Formalism.HermitianLatticesTheory.majAt X0.s.RR.b X0.s.RR.X A3.A.v0 (Z.eRR0 x) (Z.eRR0 x) = ⟪z, z⟫_ℂ`. Rewrite using `[majAt_self_eq, hv0, hnorm, inner_self_eq_norm_sq_to_K]`. Use `push_cast`. Both sides reduce to the same expression.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hK : ⟪z, z⟫_ℂ = (((RealDat.nP F.lv2 false)⁻¹ : ℝ) : ℂ) * ⟪u, u⟫_ℂ`. Distinguish the cases in `hT : R.HE.e (u) = 0`. Establish `h0 : u = 0` using `hE.1 (hT.trans (map_zero _).symm)`. Establish `hz0 : Y.Iz.jE z = 0`. Apply `Subtype.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hjE, hT, map_zero]`. Both sides reduce to the same expression. Establish `hz1 : z = 0` using `Y.Iz.jE.map_eq_zero_iff.1 hz0`. Rewrite using `[hz1, h0]`. Simplify using the standard rewrite rules.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Take `⟨v, hv⟩` from `GlobalTheory.KapRedII.exists_vec_of_ne hT`. Rewrite using `[hee]`. Use `show ipMT (R.MY 0) (ENNReal.ofReal (RealDat.nP F.lv2 false)⁻¹ • R.ν0) R.fd0 _ _ = _`. Rewrite using `[hjE, ipMT, LinearEquiv.symm_apply_apply, GlobalTheory.KapRedII.ipM_smul_of_vec _ _ _ _ _ (inv_pos.2 hn) v hv, ← hE.2.2]`. Express the relevant statement in the definitionally equal form `Formalism.HermitianLatticesTheory.majAt X0.s.RR.b X0.s.RR.X A3.A.v0 (Z.eRR0 x) (Z.eRR0 x) = Formalism.HermitianLatticesTheory.majAt (Pi.basisFun D.what₂.LL _) ((R.toCx3 F).XE F.cr false) A3.fam3.base3.v0 x x`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Apply the first step, then apply the next step to every resulting obligation. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hL, hK, hR]`. Establish `hc : ∀ (s : Bool) (c : ℂ), starRingEnd ℂ c = c → Formalism.IndefR.Links.cj s c = c`. Introduce `s c h`. Apply the tactic sequence `cases s <;> simp [Formalism.IndefR.Links.cj, h]`. Express the relevant statement in the definitionally equal form `_ = _ * Formalism.IndefR.Links.cj (twAt D.what₂.embLL A3.A.v0) ⟪u, u⟫_ℂ`.
-
-Rewrite using `[hc _ _ (inner_conj_symm u u)]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem metric_base_fixed : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 I0 T : Type) (A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T D.R.m) (Ks : Type) [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] (R : RealDat3 D A3 Ks) (F : Face3 D A3) (cG : G0 R.Pg D.R.r ≃* G0g D.nd) (X0 : BaseLevelRowSide D) (Y : Read (A3 := A3) R.toRealDat F.lv2 X0) (Z : ReadL R F X0 Y), Pins R F cG → Holds R F →
     ∀ x y, Formalism.HermitianLatticesTheory.majAt X0.s.RR.b X0.s.RR.X A3.A.v0 (Z.eRR0 x) (Z.eRR0 y) =

@@ -17,19 +17,17 @@ open scoped ContDiff ComplexOrder ENNReal Classical
 namespace GlobalTheory.ClopenPush
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Oz _ β Z _ Y q j hj σ _ hu hc hL B ψ s`. Use `⟨fun x => ?_, fun x x' z hz => ?_⟩` and prove the remaining obligations. Rewrite using `[AnRead.finAtlas_holoOn_iff _ (LocPot.isOpen_U _ x)]`. Distinguish the cases in `hx : x ∈ Set.range (up j hj σ)`. Take `⟨y₀, rfl⟩` from `hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[pot_U_up]`. Establish `h` using `fun y : ψ.locPot.U y₀ => hL _ (s.f (pick ψ.isLB y₀)) y.1 y.2`. Use `choose W G hW hG using h`. Use `AnRead.holoOn_of_cover (T := fun y => ptsIn (genStr Z) σ (W y)) (fun _ => isOpen_ptsIn _) ?_ fun y => ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨y, hy, rfl⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Conclude with `⟨⟨y, hy⟩, hW _⟩`. Use `(((manifold Z σ).holoOn_ev _ (G y)).mono Set.inter_subset_right).congr ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨y', -, rfl⟩, h'⟩`. Rewrite using `[sec_up _ hu.injective, (hG y y' h').2]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Consider separately whether the proposition holds or fails.
 
-Conclude with `AnRead.HoloOn.congr (f := fun _ => 0) (fun _ => differentiableOn_const (0 : ℂ)) fun z _ => sec_of_not _ hx z`. Distinguish the cases in `hx : x ∈ Set.range (up j hj σ)`. Establish `hz'` using `pot_U_subset hu hc _ hx hz.1`. Distinguish the cases in `hx' : x' ∈ Set.range (up j hj σ)`. Take `⟨y, rfl⟩` from `hx`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨y', rfl⟩` from `hx'`. Take `⟨w, rfl⟩` from `hz'`. Rewrite `hz` using `[pot_U_up, pot_U_up, Set.mem_inter_iff, hu.injective.mem_set_image, hu.injective.mem_set_image]`. Rewrite using `[sec_up _ hu.injective, sec_up _ hu.injective, pot_φ_up, pot_φ_up]`. Conclude with `(ψ.norm_mul_exp_eq_sqrt (secVal_mem s) hz.1).trans (ψ.norm_mul_exp_eq_sqrt (secVal_mem s) hz.2).symm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Establish `h2` using `hz.2`. Rewrite `h2` using `[pot_U_of_not hu hc _ hx']`. Conclude with `absurd hz' h2`. Distinguish the cases in `hx' : x' ∈ Set.range (up j hj σ)`. Establish `h1` using `hz.1`.
-
-Rewrite `h1` using `[pot_U_of_not hu hc _ hx]`. Conclude with `absurd (pot_U_subset hu hc _ hx' hz.2) h1`. Rewrite using `[sec_of_not _ hx, sec_of_not _ hx', norm_zero, zero_mul, zero_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSection_pot_sec : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l} {c : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Coeff l} {Oz : Type} [CommRing Oz] {β : Oz →+* c.F} (Z : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Model Xo c β) [SmoothOfRelativeDimension Dw.dim (genStr Z)] {Y : Scheme.{0}} {q : Y ⟶ Sp Oz} (j : Y ⟶ Z.X) (hj : j ≫ Z.s = q) (σ : c.F →+* ℂ) [CompactSpace (CxPts (genStr Z) σ)] (hu : IsOpenEmbedding (up j hj σ)) (hc : IsClosed (Set.range (up j hj σ))), ClopenPush.LiftsFns j hj σ → ∀ {B : LB Y} (ψ : Weight q (σ.comp β) B) (s : B.Sec), IsSection (manifold Z σ).finAtlas (ClopenPush.pot (up j hj σ) hu hc ψ.locPot) (ClopenPush.sec (up j hj σ) (ψ.locSec (secVal q (σ.comp β) s))) := by
   intro E _ _ _ H Dw l Xo c Oz _ β Z _ Y q j hj σ _ hu hc hL B ψ s

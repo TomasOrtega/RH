@@ -15,17 +15,15 @@ noncomputable section
 namespace GlobalTheory.ConeIntV
 
 /- English proof (translation)
-The claim follows from `(Module.finBasis ℚ E).equivFun.injective.countable`.
+A detailed English derivation is pending.
 -/
 theorem countable_numberField (E : Type) [Field E] [NumberField E] : Countable E :=
   (Module.finBasis ℚ E).equivFun.injective.countable
 
 /- English proof (translation)
-Establish `hmp : ∀ i, MeasurePreserving (fun g => r i * g) μ μ` using `fun i => measurePreserving_mul_left μ (r i)`. Establish `hm : ∀ i, AEStronglyMeasurable (fun g => u (r i * g)) (μ.restrict s)` using `fun i => (hu.comp_measurePreserving (hmp i)).restrict`. Use `⟨(AEMeasurable.tsum fun i => (hm i).aemeasurable).aestronglyMeasurable, ?_⟩` and prove the remaining obligations. Establish `key : ∀ i, ∫⁻ g in s, ‖u (r i * g)‖ₑ ∂μ = ∫⁻ g in (fun g => (r i)⁻¹ * g) ⁻¹' s, ‖u g‖ₑ ∂μ`. Introduce `i`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `(hmp i).setLIntegral_comp_preimage_emb (MeasurableEquiv.mulLeft (r i)).measurableEmbedding (fun g => ‖u g‖ₑ) ((fun g => (r i)⁻¹ * g) ⁻¹' s)`. Establish `h2 : (fun g => r i * g) ⁻¹' ((fun g => (r i)⁻¹ * g) ⁻¹' s) = s` using `by ext g; simp`. Rewrite `h1` using `[h2]`. Conclude with `h1`. Use `show ∫⁻ g in s, ‖∑' i, u (r i * g)‖ₑ ∂μ < ⊤`.
-
-Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem integrableOn_tsum_translates {G ι : Type} [Group G] [MeasurableSpace G] [MeasurableMul G] [Countable ι]
     (μ : Measure G) [μ.IsMulLeftInvariant] (s : Set G) (u : G → ℂ) (r : ι → G)
@@ -54,9 +52,9 @@ theorem integrableOn_tsum_translates {G ι : Type} [Group G] [MeasurableSpace G]
     _ < ⊤ := hfin
 
 /- English proof (translation)
-Set `e : UA σ J ≃* GAd σ ((1 : E) • J.map σ)` to `MulEquiv.subgroupCongr (GlobalTheory.SiegelSet.ug_eq_hr (J := J) hσ one_ne_zero)`. Establish `he : Continuous e` using `continuous_subtype_val.subtype_mk _`. Establish `he' : Continuous e.symm` using `continuous_subtype_val.subtype_mk _`. Use `⟨?_⟩` and prove the remaining obligations. Establish `h3 : (fun p : UA σ J × UA σ J => p.1 * p.2) = fun p => e.symm (e p.1 * e p.2)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `fun p => by rw [← map_mul, MulEquiv.symm_apply_apply]`. Rewrite using `[h3]`. Conclude with `he'.comp ((he.comp continuous_fst).mul (he.comp continuous_snd))`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuousMul_UA {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : ∀ x, σ (σ x) = x) {n : ℕ} (J : Matrix (Fin n) (Fin n) E) : ContinuousMul (UA σ J) := by
@@ -92,11 +90,9 @@ def stabRat {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Al
       _ = incV F x₀ := by rw [Matrix.mulVec_mulVec, h1, Matrix.one_mulVec]
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hEv γ hγ Φ hΦ h`. Use `haveI := countable_numberField E`. Establish `hG` using `hT.geo.hM`. Use `haveI := hG.haar`. Use `haveI : BorelSpace (UA σ G.V.J) := ⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI := continuousMul_UA (GlobalTheory.SiegelSet.sigma_sigma hT.base.cm) G.V.J`. Use `haveI : MeasurableMul (UA σ G.V.J) := ⟨fun g => (continuous_const.mul continuous_id).measurable, fun g => (continuous_id.mul continuous_const).measurable⟩`. Establish `hA` using `GlobalTheory.T.second_configuration_triple_compatible hKP F E σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hEv Φ hΦ h`. Take `⟨hd, hfd⟩` from `GlobalTheory.T.second_configuration_unramified_identity hKP F E σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hEv γ hγ`. Establish `hQ : ∀ q, q ∈ stabRat σ G.V.J H₀.x ↔ q ∈ ratU σ G.V.J ∧ mat q *ᵥ incV F H₀.x = incV F H₀.x` using `fun q => Iff.rfl`.
-
-Establish `hB2` using `GlobalTheory.T.second_configuration_archimedean_identity hKP F E σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hEv Φ hΦ h (stabRat σ G.V.J H₀.x) hQ _ (hfd _ hQ)`. Conclude with `integrableOn_tsum_translates G.M.μ G.M.dom (fun g => thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (g, h) Φ)))) γ hA (fun x => hG.dom.nullMeasurableSet.preimage (measurePreserving_mul_left G.M.μ _).quasiMeasurePreserving) hd hB2`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cone_integrable : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (a b : ℕ) (G : Geo σ a (b + 2)) (G₁ : Geo σ a b) (H : Plane E (b + 2) b) (H' : Plane E (a + (b + 2)) (a + b)), CfgB B G G₁ H H' → ∀ (X : Chars F E) (om : Rep σ G.V G.W) (om' : Rep σ G.V' G.W) (om₁ : Rep σ G₁.V G₁.W) (om₁' : Rep σ G₁.V' G₁.W), IsTriple B G X om om' → IsTriple B G₁ X om₁ om₁' → ∀ (V₂ : Spc F E a) (n₁ : ℕ) (X₁ : Spc F E n₁) (H₀ : Plane E a n₁) (j₀ j₁ : ℕ) (M₂ : Model σ X₁ G₁.W) (e₂ : Fn F a (a + (b + 2)) →ₗ[ℂ] Fn F n₁ (a + b)), (reS G.V V₂).IsHerm σ B (a - G.p) G.p → H₀.IsAdapted σ B (reS G.V V₂) X₁ j₀ j₁ → M₂.IsGood B.ψ → IsEv B G.M M₂ H₀.ι H'.ι (isoA H₀ H') e₂ → ∀ γ : {x : Fin a → E // x ≠ 0 ∧ form σ G.V.J x x = 0} → UA σ G.V.J, (∀ x, γ x ∈ ratU σ G.V.J ∧ mat (γ x) *ᵥ incV F x.1 = incV F H₀.x) → ∀ Φ ∈ PolData B G.M, ∀ h, IntegrableOn (fun g => ∑' x, thetaSum F (e₂ (G.M.co.rho B.ψ (shiftA H₀ H' 1) (om (γ x * g, h) Φ)))) G.M.dom G.M.μ := by
   intro hKP F E _ _ _ _ _ σ B a b G G₁ H H' hC X om om' om₁ om₁' hT hT₁ V₂ n₁ X₁ H₀ j₀ j₁ M₂ e₂ hV₂ hH₀ hM₂ hEv γ hγ Φ hΦ h

@@ -20,9 +20,9 @@ open Formalism.BasicNotions Formalism.MainNotions Formalism.MainNotions.S
 namespace GlobalTheory.CritLevelGap
 
 /- English proof (translation)
-Establish `hanti : StrictAnti (lamSH D.R (D.hc τ))` using `(GlobalTheory.Mem.Vol.lamSH_isHCParam D.R (D.hc τ)).1`. Establish `hd : D.dsig τ = Formalism.QuantumDeterminants.fdegHC (lamSH D.R (D.hc τ))` using `hDs D large₂ C' Cl Cg cb Cu cT CT hT hS hL τ`. Establish `hN : 2 * D.R.rS + D.R.k + 1 = D.R.r` using `dimS_eq D.R`. Establish `hpos : (0 : ℝ) < ∏ i ∈ Finset.range (2 * D.R.rS + D.R.k + 1), (i.factorial : ℝ)` using `Finset.prod_pos fun i _ => by exact_mod_cast Nat.factorial_pos i`. Unfold `VV`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[hd, Formalism.MainNotions.BridgeLemma.szh_fdegHC _ hanti, ← hN]`. Clear the denominators using the available nonvanishing facts.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 -/
 private theorem VV_eq_vand_lamSH_of_standingHypotheses (hDs : Formalism.L2.SG.Pf.SzHypFD.DsigHC) (D : D7) (large₂ : SizeData₂ D)
     (C' Cl Cg cb Cu cT CT : ℝ) (hT : Ties D) (hS : StandingHypotheses D large₂ C' Cl Cg cb Cu cT CT) (hL : 1 ≤ Cl * large₂.sc.L)
@@ -38,11 +38,9 @@ private theorem VV_eq_vand_lamSH_of_standingHypotheses (hDs : Formalism.L2.SG.Pf
   field_simp
 
 /- English proof (translation)
-Introduce `_ hH _ Cg cb Cu cT CT C0`. Use `⟨40, fun eps Fm _ hCl _ => ?_⟩` and prove the remaining obligations. Unfold `VanishingOnXAndXPlusBranching.admF5 OwnEv`. Use `⟨Fm.x1 + 1, fun x hx i => ?_⟩` and prove the remaining obligations. Establish `hx1 : Fm.x1 < x` using `by linarith`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨hxk, hb⟩` from `GlobalTheory.CritLevel.sizes_low _ (Fm.sizes x hx1 i)`. Establish `hL1 : 1 ≤ (Fm.L x i).sc.L` using `by show 1 ≤ (Fm.L x i).sc.x ^ (Fm.L x i).sc.eps`. Conclude with `Real.one_le_rpow (Fm.L x i).sc.one_lt_alt.le (Fm.L x i).sc.eps_pos.le`. Establish `hL : 1 ≤ sCl Fm * (Fm.L x i).sc.L` using `by nlinarith`. Introduce `h0`.
-
-Conclude with `GlobalTheory.CritLevel.tcrit_low _ _ _ _ _ _ _ _ _ _ hCl (fun τ => VV_eq_vand_lamSH_of_standingHypotheses hH.2.2.2 _ _ _ _ _ _ _ _ _ (Fm.ties x i) h0.1 hL τ) hb hxk h0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem tcritLow_along_family_gap :
     Formalism.HermitianLatticesTheory.SiegelMassRatio → GlobalTheory.GapIn.Hyp → BpJoin.ThmBpDS → ∀ Cg cb Cu cT CT C0 : ℝ, ∃ thr : ℝ, ∀ (eps : ℝ) (Fm : FamP eps), thr ≤ sC' Fm → thr ≤ sCl Fm → PX.RanksF Fm C0 Cg cb Cu cT CT → VanishingOnXAndXPlusBranching.admF5 Fm Cg cb Cu cT CT C0 := by

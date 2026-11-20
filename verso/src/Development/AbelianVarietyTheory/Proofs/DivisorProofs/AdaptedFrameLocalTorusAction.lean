@@ -14,19 +14,19 @@ noncomputable section
 namespace GlobalTheory.LeviFrameSplit
 
 /- English proof (translation)
-Use extensionality with `i j`. Take `⟨⟨a, i⟩, rfl⟩` from `(linePlace h2).surjective i`. Take `⟨⟨b, j⟩, rfl⟩` from `(linePlace h2).surjective j`. Establish `hv` using `GlobalTheory.BlockForms.LeviLoc.tripPlace_val (l := 1) (d := d - 2) (n := d) (by omega) a i`. Distinguish the cases in `hab : a = b`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Substitute `hab` using the available equality. Rewrite using `[leviEmb_apply_same]`. Distinguish the cases in `hij : i = j`. Substitute `hij` using the available equality. Rewrite using `[Matrix.diagonal_apply_eq]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Establish `hi` using `i.2`. Simplify using `only [tripSizes, Matrix.cons_val_zero] at hi`. Establish `hv0 : ((linePlace h2 ⟨0, i⟩ : Fin d) : ℕ) = 0`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hv]`. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_pos hv0]`. Simplify using `[firstBlockScalar]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `have h1 : 1 ≤ (![0, 1, 1 + (d - 2)] : Fin 3 → ℕ) a := by fin_cases a <;> simp_all`. Establish `hv1 : ((linePlace h2 ⟨a, i⟩ : Fin d) : ℕ) ≠ 0`. Rewrite using `[hv]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[if_neg hv1]`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[firstBlockScalar, Pi.mulSingle_eq_of_ne ha]`. Rewrite using `[Matrix.diagonal_apply_ne _ ((linePlace h2).injective.ne fun h => hij (eq_of_heq (Sigma.mk.inj_iff.1 h).2))]`. Distinguish the cases in `ha : a = 0`. Substitute `ha` using the available equality. Simplify using `[firstBlockScalar, hij]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[firstBlockScalar, Pi.mulSingle_eq_of_ne ha, Matrix.one_apply_ne hij]`. Rewrite using `[leviEmb_apply_ne _ _ _ hab, Matrix.diagonal_apply_ne _ ((linePlace h2).injective.ne fun h => hab (congrArg Sigma.fst h))]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem leviEmb_positionOne_eq (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     {d : ℕ} (h2 : 2 ≤ d) (y : kˣ) :
@@ -71,25 +71,23 @@ namespace GlobalTheory.LeviFrameSplit
 open GlobalTheory.Div.CoordOpp (piW_inclR piW_cA incM_map_piW)
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B d m i₀ i₁ W W₁ H hcm hA hdet v t h2 y g hL`. Take `⟨hx, hy, hι⟩` from `hL`. Use `set A := (mat g).map (piW t) with hAdef`. Establish `cx : ∀ r, ∑ k, A r k * t (H.x k) = (y : Fv F v) * t (H.x r)` using `fun r => by`. Use `congrArg (piW t) (congrFun hx r)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[RingHom.map_mulVec]`. Simplify `this` using `[Matrix.mulVec, dotProduct, GlobalTheory.ThK.incV, piW_inclR, GlobalTheory.JacGeom.piW_idl, A]`. Establish `cy : ∀ r, ∑ k, A r k * t (H.y k) = t (H.y r)` using `fun r => by`. Use `congrArg (piW t) (congrFun hy r)` as an intermediate fact. Rewrite `this` using `[RingHom.map_mulVec]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ((GlobalTheory.JacGeom.idl hcm t (y, 1))⁻¹ : (AE F E)ˣ) = GlobalTheory.JacGeom.idl hcm t (y⁻¹, 1)`. Rewrite using `[← map_inv, Prod.inv_mk, inv_one]`. Rewrite `this` using `[e1]`. Simplify `this` using `[Matrix.mulVec, dotProduct, GlobalTheory.ThK.incV, piW_inclR, piW_cA, GlobalTheory.JacGeom.piW_comp_idl, A]`. Establish `cι : A * H.ι.map t = H.ι.map t`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg (fun Z => Z.map (piW t)) hι` as an intermediate fact. Simplify using `only [Matrix.map_mul, incM_map_piW] at this`. Rewrite `this` using `[show mat (1 : UA σ W₁.J) = 1 from rfl, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one]`. Conclude with `this`. Establish `hPe : ∀ r c, frameMat t H hA.rank r (frameEquiv hA.rank c) = t (GlobalTheory.JacGeom.frame H.x H.ι H.y r c)` using `fun r c => by simp only [frameMat, Matrix.submatrix_apply, Matrix.map_apply, id, Equiv.symm_apply_apply]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : A * frameMat t H hA.rank = frameMat t H hA.rank * Matrix.diagonal fun j : Fin d => if (j : ℕ) = 0 then (y : Fv F v) else 1`. Use `Matrix.ext fun r j => ?_` and prove the remaining obligations. Take `⟨c, rfl⟩` from `(frameEquiv hA.rank).surjective j`. Rewrite using `[Matrix.mul_diagonal, Matrix.mul_apply, hPe]`. Break down `c with (i | i | i)` into its components or cases.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_pos (frameEquiv_inl hA.rank i)]`. Simplify using `only [hPe, GlobalTheory.JacGeom.frame, Matrix.of_apply, Sum.elim_inl]`. Rewrite using `[cx r, mul_comm]`. Establish `hv : ((frameEquiv hA.rank (.inr (.inl i)) : Fin d) : ℕ) ≠ 0` using `by rw [frameEquiv_mid]; omega`. Rewrite using `[if_neg hv, mul_one]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hPe, GlobalTheory.JacGeom.frame, Matrix.of_apply, Sum.elim_inl, Sum.elim_inr]`. Use `congrFun (congrFun cι r) i` as an intermediate fact. Simplify `this` using `only [Matrix.mul_apply, Matrix.map_apply]`. Establish `hv : ((frameEquiv hA.rank (.inr (.inr i)) : Fin d) : ℕ) ≠ 0` using `by rw [frameEquiv_inr]; omega`. Rewrite using `[if_neg hv, mul_one]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hPe, GlobalTheory.JacGeom.frame, Matrix.of_apply, Sum.elim_inr]`. Conclude with `cy r`. Establish `hU : IsUnit (frameMat t H hA.rank)`. Rewrite using `[Matrix.isUnit_iff_isUnit_det, isUnit_iff_ne_zero]`. Express the relevant statement in the definitionally equal form `(((GlobalTheory.JacGeom.frame H.x H.ι H.y).submatrix id (frameEquiv hA.rank).symm).map (t : E →+* Fv F v)).det ≠ 0`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← RingHom.mapMatrix_apply, ← RingHom.map_det]`. Conclude with `(map_ne_zero _).2 hdet`. Establish `hc : frameMat t H hA.rank * ((frameGL t H hA.rank)⁻¹ : GL (Fin d) (Fv F v)) = 1`. Rewrite using `[← frameGL_val t H hA.rank hU]`. Conclude with `Units.mul_inv _`.
-
-Rewrite using `[Units.val_mul, Units.val_mul, frameGL_val t H hA.rank hU, leviEmb_positionOne_eq, ← key, Matrix.mul_assoc, hc, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem levi_frame_conj : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (d m i₀ i₁ : ℕ) (W : Spc F E d) (W₁ : Spc F E m) (H : Plane E d m) (hcm : IsCMExt F E σ)

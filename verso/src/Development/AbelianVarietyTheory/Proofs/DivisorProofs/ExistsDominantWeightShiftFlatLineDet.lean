@@ -5,7 +5,7 @@ open NumberField IsDedekindDomain Module Formalism.BasicNotions Formalism.L2.Pj 
 namespace GlobalTheory.FlatShift
 
 /- English proof (translation)
-Simplify using `only [wtOf, flatWt, parWt, Datum.mult] at hi hj ⊢`. Apply the tactic sequence `split_ifs at hi hj ⊢ <;> omega`.
+Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem flat_step {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     (Dw : Datum H) (τ : Psi H) (ρ : E →+* ℂ) (i j : ℕ) (hi : i < Dw.mult ρ) (hj : j < Dw.mult ρ) :
@@ -15,15 +15,15 @@ theorem flat_step {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Recipr
   split_ifs at hi hj ⊢ <;> omega
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw a n τ hD ha`. Use `⟨fun x => if x.2 < Dw.mult x.1 then ((a x : ℤ) + (wtOf Dw (flatWt Dw τ) 0).1 x).toNat else 0, ⟨fun ρ i j hij => ?_, hD.2⟩, fun ρ i hi => ?_, ?_⟩` and prove the remaining obligations. Distinguish the cases in `hj : j < Dw.mult ρ`. Establish `hi : i < Dw.mult ρ` using `lt_of_le_of_lt hij hj`. Establish `h1 : a (ρ, j) ≤ a (ρ, i)` using `hD.1 ρ hij`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨e, -⟩` from `flat_step Dw τ ρ i j hi hj`. Simplify using `only [if_pos hi, if_pos hj]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [if_neg hj]`. Conclude with `Nat.zero_le _`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `h1` using `ha ρ i hi`. Establish `h2` using `(flat_step Dw τ ρ i i hi hi).2`. Simplify using `only [if_pos hi]`. Use linear arithmetic over natural numbers and integers. Use function extensionality and compare the values at `x`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Apply function extensionality and compare values at an arbitrary argument. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `x with _ | ⟨ρ, i⟩` into its components or cases. Simplify using `[exZ, wtZ, wtOf_snd]`. Establish `h1` using `ha ρ i i.2`. Establish `h2` using `(flat_step Dw τ ρ i i i.2 i.2).2`. Simplify using `only [exZ, wtZ, Prod.fst_add, Pi.add_apply, if_pos i.2]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers.
+A detailed English derivation is pending.
 -/
 theorem exists_shift : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (a : (E →+* ℂ) × ℕ → ℕ) (n : ℕ) (τ : Psi H), Dom a n → (∀ ρ i, i < Dw.mult ρ → 2 ≤ a (ρ, i)) → ∃ a' : (E →+* ℂ) × ℕ → ℕ, Dom a' n ∧ (∀ ρ i, i < Dw.mult ρ → 1 ≤ a' (ρ, i)) ∧ exZ Dw (wtZ a' n) = exZ Dw (wtZ a n + wtOf Dw (flatWt Dw τ) 0) := by
   intro E _ _ _ H Dw a n τ hD ha

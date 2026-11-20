@@ -9,11 +9,11 @@ noncomputable section
 namespace GlobalTheory.KJAvg
 
 /- English proof (translation)
-Proceed by induction on `p using MvPolynomial.induction_on with`. Consider the case `C c => exact ⟨‖c‖, norm_nonneg _, fun x _ => by simp⟩`. Consider the case `add p q hp hq`. Take `⟨B1, h1, hB1⟩` from `hp`. Take `⟨B2, h2, hB2⟩` from `hq`.
+Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨B1 + B2, by positivity, fun x hx => by`. Rewrite using `[map_add]`. Conclude with `(norm_add_le _ _).trans (add_le_add (hB1 x hx) (hB2 x hx))⟩`. Consider the case `mul_X p n hp`. Take `⟨B, h0, hB⟩` from `hp`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Treat this case separately. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨B * max (M n) 0, by positivity, fun x hx => ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, eval_X, norm_mul]`. Conclude with `mul_le_mul (hB x hx) ((hx n).trans (le_max_left _ _)) (norm_nonneg _) h0`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eval_bounded_on_box {σ : Type} (p : MvPolynomial σ ℂ) (M : σ → ℝ) :
     ∃ B : ℝ, 0 ≤ B ∧ ∀ x : σ → ℂ, (∀ v, ‖x v‖ ≤ M v) → ‖eval x p‖ ≤ B := by
@@ -34,9 +34,9 @@ def univSubst {ι : Type} [Fintype ι] {a b : ℕ} (P : FP ι a b) :
   aeval (fun v => ∑ j, C (X (v.1, v.2.2, j)) * X (v.1, v.2.1, j)) P
 
 /- English proof (translation)
-Establish `: (mvZ g (fun _ => (1 : Matrix (Fin b) (Fin b) ℂ)) : FP ι a b →ₐ[ℂ] FP ι a b) = (MvPolynomial.mapAlgHom (aeval fun w : ι × Fin a × Fin a => g w.1 w.2.1 w.2.2)).comp (aeval (fun v => ∑ j, C (X (v.1, v.2.2, j)) * X (v.1, v.2.1, j)))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [mvZ, aeval_X, AlgHom.comp_apply, Matrix.one_apply, ite_mul, one_mul, zero_mul, apply_ite C, C_0, map_sum, map_mul, mapAlgHom_apply, map_C, map_X]`. Rewrite using `[Finset.sum_comm]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[Finset.sum_ite_eq', coe_aeval_eq_eval]`. Establish `h` using `DFunLike.congr_fun this P`. Rewrite using `[h]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mvZ_one_eq_map_univSubst {ι : Type} [Fintype ι] {a b : ℕ} (g : ι → Matrix (Fin a) (Fin a) ℂ) (P : FP ι a b) :
     mvZ g (fun _ => 1) P = map (eval fun w => g w.1 w.2.1 w.2.2) (univSubst P) := by
@@ -53,9 +53,9 @@ theorem mvZ_one_eq_map_univSubst {ι : Type} [Fintype ι] {a b : ℕ} (g : ι �
   rw [h]; rfl
 
 /- English proof (translation)
-Use `conv_lhs => rw [p.as_sum]`. Rewrite using `[map_sum, Finset.sum_subset hp]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[show monomial m (coeff m p) = coeff m p • monomial m (1 : ℂ) by rw [smul_monomial, smul_eq_mul, mul_one], map_smul, smul_eq_mul]`. Introduce `m _ hm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `[notMem_support_iff.mp hm]`.
+A detailed English derivation is pending.
 -/
 theorem linear_eq_sum_coeff {σ : Type} (Λ : MvPolynomial σ ℂ →ₗ[ℂ] ℂ) (S : Finset (σ →₀ ℕ)) (p : MvPolynomial σ ℂ)
     (hp : p.support ⊆ S) : Λ p = ∑ m ∈ S, coeff m p * Λ (monomial m 1) := by
@@ -71,7 +71,7 @@ variable {ι : Type} [Fintype ι] {a : ℕ} {K : Type} [Group K] [TopologicalSpa
   {r : K → ι → Matrix (Fin a) (Fin a) ℂ}
 
 /- English proof (translation)
-Establish `hm : r 1 τ * r 1 τ = r 1 τ` using `by rw [← hr.mul, one_mul]`. Establish `hu : star (r 1 τ) * r 1 τ = 1` using `(Matrix.mem_unitaryGroup_iff'.mp (hr.uni 1 τ))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem ontoUni_one (hr : OntoUni r) (τ : ι) : r 1 τ = 1 := by
   have hm : r 1 τ * r 1 τ = r 1 τ := by rw [← hr.mul, one_mul]
@@ -81,17 +81,17 @@ theorem ontoUni_one (hr : OntoUni r) (τ : ι) : r 1 τ = 1 := by
     _ = 1 := by rw [hm, hu]
 
 /- English proof (translation)
-The claim follows from `Matrix.inv_eq_left_inv (by rw [← hr.mul, inv_mul_cancel, ontoUni_one hr])`.
+A detailed English derivation is pending.
 -/
 theorem ontoUni_inv (hr : OntoUni r) (k : K) (τ : ι) : (r k τ)⁻¹ = r k⁻¹ τ :=
   Matrix.inv_eq_left_inv (by rw [← hr.mul, inv_mul_cancel, ontoUni_one hr])
 
 /- English proof (translation)
-Simplify using `only [evalAt]`. Establish `hc : Continuous (fun k => eval (fun w => r k⁻¹ w.1 w.2.1 w.2.2) p * eval (fun x => (r k x.1 * y x.1) x.2.1 x.2.2) F)`. Apply `Continuous.mul` to reduce the goal to its premises. Conclude with `(MvPolynomial.continuous_eval p).comp (continuous_pi fun w => (((continuous_apply w.1).comp (hr.cont.comp continuous_inv))).matrix_elem _ _)`. Conclude with `(MvPolynomial.continuous_eval F).comp (continuous_pi fun w => ((((continuous_apply w.1).comp hr.cont)).matrix_mul continuous_const).matrix_elem _ _)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨B1, h1, hB1⟩` from `GlobalTheory.KJAvg.eval_bounded_on_box p (fun _ => 1)`. Take `⟨B2, h2, hB2⟩` from `GlobalTheory.KJAvg.eval_bounded_on_box F (fun w => ∑ l, ‖y w.1 l w.2.2‖)`. Use `Integrable.of_bound hc.aestronglyMeasurable (B1 * B2) (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Use `mul_le_mul (hB1 _ fun w => entry_norm_bound_of_unitary (hr.uni _ _) _ _) (hB2 _ fun w => ?_) (norm_nonneg _) h1` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.mul_apply]`. Use `(norm_sum_le _ _).trans (Finset.sum_le_sum fun l _ => ?_)` and prove the remaining obligations. Rewrite using `[norm_mul]`. Conclude with `mul_le_of_le_one_left (norm_nonneg _) (entry_norm_bound_of_unitary (hr.uni _ _) _ _)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem integrable_avg_term [IsTopologicalGroup K] [MeasurableSpace K] [BorelSpace K] (ν : Measure K) [IsFiniteMeasure ν]
     (hr : OntoUni r) (p : MvPolynomial (ι × Fin a × Fin a) ℂ) (y : ι → Matrix (Fin a) (Fin a) ℂ) (F : PY ι a) :
@@ -118,29 +118,27 @@ theorem integrable_avg_term [IsTopologicalGroup K] [MeasurableSpace K] [BorelSpa
 end
 
 /- English proof (translation)
-Introduce `ι _ a b hab ha lam n K _ _ _ _ _ ν _ _ r hr y P`. Take `⟨-, hcomp, -, -, -, hev, -, -⟩` from `GlobalTheory.T.fockSubstitution_identities ι a b hab`. Set `S` to `(univSubst P).support`. Set `c : (ι × Fin b × Fin a →₀ ℕ) → K → ℂ` to `fun m k => eval (fun w => r k⁻¹ w.1 w.2.1 w.2.2) (coeff m (univSubst P))`. Establish `hΛ : ∀ (Λ : FP ι a b →ₗ[ℂ] ℂ) k, Λ (mvZ (fun τ => r k⁻¹ τ) (fun _ => 1) P) = ∑ m ∈ S, c m k * Λ (monomial m 1)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `Λ k`. Rewrite using `[mvZ_one_eq_map_univSubst, linear_eq_sum_coeff Λ S _ (support_map_subset _ _)]`. Simplify using `only [coeff_map]`. Both sides reduce to the same expression. Establish `hint : ∀ m F, Integrable (fun k => c m k * evalAt (fun τ => r k τ * y τ) F) ν` using `fun m F => integrable_avg_term ν hr _ y F`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Set `φ : (ι × Fin b × Fin a →₀ ℕ) → PY ι a →ₗ[ℂ] ℂ` to `fun m => { toFun := fun F => ∫ k, c m k * evalAt (fun τ => r k τ * y τ) F ∂ν map_add' := fun F G => by`. Establish `e : ∀ k, c m k * evalAt (fun τ => r k τ * y τ) (F + G) = c m k * evalAt (fun τ => r k τ * y τ) F + c m k * evalAt (fun τ => r k τ * y τ) G`. Introduce `k`. Simplify using `only [evalAt, map_add, mul_add]`. Simplify using `only [e]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `integral_add (hint m F) (hint m G)`. Use the proof step `map_smul' := fun t F => by`. Establish `e : ∀ k, c m k * evalAt (fun τ => r k τ * y τ) (t • F) = t * (c m k * evalAt (fun τ => r k τ * y τ) F)`. Introduce `k`. Simplify using `only [evalAt, smul_eval]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules.
 
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [e, RingHom.id_apply, smul_eq_mul]`. Conclude with `integral_const_mul _ _ }`. Set `Q : PY ι a →ₗ[ℂ] FP ι a b` to `∑ m ∈ S, (φ m).smulRight (monomial m 1)`. Establish `hQ : ∀ (Λ : FP ι a b →ₗ[ℂ] ℂ) F, Λ (Q F) = ∫ k, Λ (mvZ (fun τ => r k⁻¹ τ) (fun _ => 1) P) * evalAt (fun τ => r k τ * y τ) F ∂ν`.
+Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `Λ F`. Establish `e : ∀ k, Λ (mvZ (fun τ => r k⁻¹ τ) (fun _ => 1) P) * evalAt (fun τ => r k τ * y τ) F = ∑ m ∈ S, c m k * evalAt (fun τ => r k τ * y τ) F * Λ (monomial m 1)`. Introduce `k; rw [hΛ, Finset.sum_mul]; exact Finset.sum_congr rfl fun _ _ => by ring`. Simplify using `only [e]`. Rewrite using `[integral_finset_sum _ (fun m _ => (hint m F).mul_const _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Q, LinearMap.sum_apply, LinearMap.smulRight_apply, map_sum, map_smul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[integral_mul_const]`. Both sides reduce to the same expression. Establish `heq : ∀ u, IsUni u → ∀ F ∈ Vn lam n, Q (lft u F) = mvZ u (fun _ => 1) (Q F)`.
+Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components.
 
-Introduce `u hu F _`. Take `⟨k0, rfl⟩` from `hr.onto u hu`. Use extensionality with `m'`. Establish `h1` using `hQ (lcoeff ℂ m') (lft (r k0) F)`. Establish `h2` using `hQ ((lcoeff ℂ m').comp (mvZ (r k0) (fun _ => 1)).toLinearMap) F`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [lcoeff_apply, LinearMap.comp_apply, AlgHom.toLinearMap_apply] at h1 h2`. Rewrite using `[h1, h2]`. Use `conv_rhs => rw [← integral_mul_left_eq_self _ k0]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun k => ?_)` and prove the remaining obligations. Establish `e1 : (fun τ => r (k0 * k)⁻¹ τ * r k0 τ) = fun τ => r k⁻¹ τ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `τ`. Rewrite using `[← hr.mul]`. Use `congr 2`. Use `group`. Establish `e2 : (fun τ => r (k0 * k) τ * y τ) = fun τ => r k0 τ * (r k τ * y τ)`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify by unfolding definitions. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use function extensionality and compare the values at `τ`. Rewrite using `[hr.mul, mul_assoc]`. Simplify using `only`. Rewrite using `[hev, hcomp, e1, e2, mul_one]`. Take `⟨m, y', s, hinv, hspan⟩` from `GlobalTheory.T.howeSpan_families_of_places ι a b hab ha lam n Q heq`.
-
-Use `⟨m, y', s, hinv, fun F hF Λ => ?_⟩` and prove the remaining obligations. Repeatedly rewrite using `[ontoUni_inv hr]`. Rewrite using `[← hQ, hspan F hF, map_sum]`. Simplify using `[map_smul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion repeatedly using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem avg_span : ∀ (ι : Type) [Fintype ι] (a b : ℕ) (hab : a ≤ b), 0 < a → ∀ (lam : ι → DomWeight a) (n : ι → ℕ) (K : Type) [Group K] [TopologicalSpace K] [IsTopologicalGroup K] [MeasurableSpace K] [BorelSpace K] (ν : Measure K) [IsProbabilityMeasure ν] [ν.IsMulLeftInvariant] (r : K → ι → Matrix (Fin a) (Fin a) ℂ), OntoUni r → ∀ (y : ι → Matrix (Fin a) (Fin a) ℂ) (P : FP ι a b), ∃ (m : ℕ) (y' : Fin m → ι → Matrix (Fin b) (Fin b) ℂ) (s : Fin m → ℂ), (∀ j, IsInv (y' j)) ∧ ∀ F ∈ Vn lam n, ∀ Λ : FP ι a b →ₗ[ℂ] ℂ, ∫ k, Λ (mvZ (fun τ => (r k τ)⁻¹) (fun _ => 1) P) * evalAt (fun τ => r k τ * y τ) F ∂ν = ∑ j, s j * Λ (subY hab (y' j) F) := by
   intro ι _ a b hab ha lam n K _ _ _ _ _ ν _ _ r hr y P

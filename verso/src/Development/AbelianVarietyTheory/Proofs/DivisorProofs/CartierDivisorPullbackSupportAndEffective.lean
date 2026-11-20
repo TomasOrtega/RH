@@ -16,7 +16,7 @@ namespace GlobalTheory.Discrepancy
 set_option autoImplicit false in
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter in
 /- English proof (translation)
-Take `⟨a, hunit, ha⟩` from `hf`. Conclude with `⟨ConcreteCategory.hom (s.stalkMap y) a, hunit.map _, by`. Rewrite using `[← _root_.GlobalTheory.functionFieldMap_algebraMap, ha]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem unitAt_functionFieldMap_of_unitAt {X Y : Scheme} [IsIntegral X]
     [IsIntegral Y] (s : Y ⟶ X) [IsDominant s] {y : Y} {f : X.functionField}
@@ -29,7 +29,7 @@ private theorem unitAt_functionFieldMap_of_unitAt {X Y : Scheme} [IsIntegral X]
 set_option autoImplicit false in
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter in
 /- English proof (translation)
-Take `⟨a, ha⟩` from `hf`. Conclude with `⟨ConcreteCategory.hom (s.stalkMap y) a, by`. Rewrite using `[← _root_.GlobalTheory.functionFieldMap_algebraMap, ha]⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 -/
 private theorem regAt_functionFieldMap_of_regAt {X Y : Scheme} [IsIntegral X]
     [IsIntegral Y] (s : Y ⟶ X) [IsDominant s] {y : Y} {f : X.functionField}
@@ -43,13 +43,13 @@ set_option autoImplicit false in
 open CategoryTheory Limits AlgebraicGeometry TopologicalSpace Filter in
 
 /- English proof (translation)
-Introduce `X Y _ _ s _ D`. Use `⟨fun y hy => ?_, fun hD => ?_⟩` and prove the remaining obligations. Take `⟨g, hg⟩` from `D.exists_isEqn (s y)`. Establish `hg'` using `_root_.GlobalTheory.Discrepancy.isEqn_pullCart s hg`. Rewrite `hy` using `[hg'.mem_supp_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hg.mem_supp_iff]`. Introduce `hunit`. Conclude with `hy (unitAt_functionFieldMap_of_unitAt s hunit)`. Rewrite `hD`, the goal using `[_root_.GlobalTheory.Cartier.CartierDiv.eff_iff]`. Introduce `y g' hg'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨g, hg⟩` from `D.exists_isEqn (s y)`. Establish `hpull` using `_root_.GlobalTheory.Discrepancy.isEqn_pullCart s hg`. Establish `hquot` using `(hpull.iff_unitAt).1 hg'`. Establish `hreg : _root_.GlobalTheory.Cartier.RegAt y ((_root_.GlobalTheory.Discrepancy.fnPull s g : (Y.functionField)ˣ) : Y.functionField)` using `regAt_functionFieldMap_of_regAt s (hD (s y) g hg)`. Establish `hprod` using `hquot.regAt.mul hreg`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `hprod` using `[div_mul_cancel₀ _ (Units.ne_zero _)]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.Discrepancy.pullCart_supp_and_eff : ∀ (X Y : Scheme.{0}) [IsIntegral X]
     [IsIntegral Y] (s : Y ⟶ X) [IsDominant s] (D : _root_.GlobalTheory.Cartier.CartierDiv X),

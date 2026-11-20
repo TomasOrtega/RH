@@ -26,7 +26,7 @@ def act {R : Type} [CommRing R] {m : ℕ} (vec : Bool) (g : Matrix (Fin (m + 1))
   if vec then g else g.adjugate.transpose
 
 /- English proof (translation)
-Use extensionality with `a s`. Simplify using `only [Matrix.map_apply, genM, Matrix.of_apply, Matrix.mul_apply, rowAct, MvPolynomial.aeval_X]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem genM_map_rowAct (R : Type) [CommRing R] (m : ℕ) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) R) :
     (genM R m).map (rowAct R g) = (g.map C) * genM R m := by
@@ -34,11 +34,11 @@ theorem genM_map_rowAct (R : Type) [CommRing R] (m : ℕ) (g : Matrix (Fin (m + 
   simp only [Matrix.map_apply, genM, Matrix.of_apply, Matrix.mul_apply, rowAct, MvPolynomial.aeval_X]
 
 /- English proof (translation)
-Consider the cases of `vec with`. Consider the case `true`. Simplify using `only [Nv, act, ↓reduceIte, rowAct, MvPolynomial.aeval_X]`. Consider the case `false`. Simplify using `only [Nv, act, Bool.false_eq_true, ↓reduceIte]`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately. Simplify using the standard rewrite rules.
 
-Establish `h1 : (rowAct R g) ((genM R m).adjugate (Fin.last m) c) = ((genM R m).map (rowAct R g)).adjugate (Fin.last m) c` using `congrFun (congrFun (RingHom.map_adjugate (rowAct R g).toRingHom (genM R m)) (Fin.last m)) c`. Establish `h2` using `RingHom.map_adjugate (MvPolynomial.C : R →+* MvPolynomial (Fin (m + 1) × Fin (m + 1)) R) g`. Simplify using `only [RingHom.mapMatrix_apply] at h2`. Rewrite using `[h1, genM_map_rowAct, Matrix.adjugate_mul_distrib, Matrix.mul_apply, ← h2]`. Use `Finset.sum_congr rfl fun b _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Matrix.map_apply, Matrix.transpose_apply, mul_comm]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rowAct_Nv (R : Type) [CommRing R] (m : ℕ) (vec : Bool) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) R)
     (c : Fin (m + 1)) :
@@ -62,9 +62,7 @@ def lin {R : Type} [CommRing R] {k : ℕ} (M : Matrix (Fin k) (Fin k) R) :
   aeval fun c => ∑ b, C (M c b) * X b
 
 /- English proof (translation)
-Establish `h : (rowAct R g).comp (theta R m vec) = (theta R m vec).comp (lin (act vec g))`. Apply `MvPolynomial.algHom_ext` to reduce the goal to its premises. Introduce `c`. Simplify using `only [AlgHom.comp_apply, theta, lin, MvPolynomial.aeval_X, map_sum, map_mul, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq]`. Conclude with `rowAct_Nv R m vec g c`.
-
-Conclude with `AlgHom.congr_fun h P`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem rowAct_theta (R : Type) [CommRing R] (m : ℕ) (vec : Bool) (g : Matrix (Fin (m + 1)) (Fin (m + 1)) R)
     (P : MvPolynomial (Fin (m + 1)) R) :
@@ -94,9 +92,9 @@ def qf (R : Type) [CommRing R] (m : ℕ) (vec : Bool) : MvPolynomial (Fin (m + 1
   if vec then 1 else X (Fin.last m) ^ (m - 1)
 
 /- English proof (translation)
-Rewrite using `[Matrix.det_of_lowerTriangular]`. Simplify using `[psiM_apply, Finset.prod_const]`. Introduce `i j h`. Establish `hij : i < j` using `OrderDual.toDual_lt_toDual.mp h`. Establish `h1 : i ≠ j` using `ne_of_lt hij`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : i ≠ Fin.last m` using `ne_of_lt (lt_of_lt_of_le hij (Fin.le_last j))`. Simplify using `[psiM_apply, h1, h2]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem psiM_det (R : Type) [CommRing R] (m : ℕ) : (psiM R m).det = X (Fin.last m) ^ (m + 1) := by
   rw [Matrix.det_of_lowerTriangular]
@@ -108,21 +106,21 @@ theorem psiM_det (R : Type) [CommRing R] (m : ℕ) : (psiM R m).det = X (Fin.las
     simp [psiM_apply, h1, h2]
 
 /- English proof (translation)
-Consider the cases of `vec with`. Consider the case `true => simp [psi, Nv, qf]`. Consider the case `false`. Simplify using `only [Nv, qf, Bool.false_eq_true, ↓reduceIte]`. Establish `hmap : (genM R m).map (psi R m false) = psiM R m`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use extensionality with `a s`. Simplify using `[genM, psi]`. Establish `h1 : (psi R m false) ((genM R m).adjugate (Fin.last m) c) = ((genM R m).map (psi R m false)).adjugate (Fin.last m) c` using `congrFun (congrFun (RingHom.map_adjugate (psi R m false).toRingHom (genM R m)) (Fin.last m)) c`. Rewrite using `[h1, hmap]`. Establish `ht : (X (Fin.last m) : MvPolynomial (Fin (m + 1)) R) ≠ 0` using `MvPolynomial.X_ne_zero _`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hrow : ∀ s, ∑ a, (psiM R m).adjugate (Fin.last m) a * psiM R m a s = if Fin.last m = s then X (Fin.last m) ^ (m + 1) else 0`. Introduce `s`. Establish `k` using `congrFun (congrFun (Matrix.adjugate_mul (psiM R m)) (Fin.last m)) s`. Rewrite `k` using `[Matrix.mul_apply, psiM_det]`. Rewrite using `[k, Matrix.smul_apply, Matrix.one_apply, smul_eq_mul, mul_ite, mul_one, mul_zero]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∀ s, ∑ a, (psiM R m).adjugate (Fin.last m) a * psiM R m a s = (psiM R m).adjugate (Fin.last m) s * X (Fin.last m) - (if s ≠ Fin.last m then (psiM R m).adjugate (Fin.last m) (Fin.last m) * X s else 0)`. Introduce `s`. Simplify using `only [psiM_apply, mul_sub, Finset.sum_sub_distrib, mul_ite, mul_zero, Finset.sum_ite_eq', Finset.mem_univ, ↓reduceIte]`. Use `congr 1`. Distinguish the cases in `hs : s = Fin.last m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails.
 
-Simplify using `[hs]`. Simplify using `[hs]`. Establish `hlast : (psiM R m).adjugate (Fin.last m) (Fin.last m) = X (Fin.last m) ^ m`. Establish `e` using `(hsum (Fin.last m)).symm.trans (hrow (Fin.last m))`. Simplify using `only [ne_eq, not_true_eq_false, ↓reduceIte, sub_zero] at e`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply `mul_right_cancel₀ ht` to reduce the goal to its premises. Rewrite using `[e, pow_succ]`. Distinguish the cases in `hc : c = Fin.last m`. Substitute `hc` using the available equality. Rewrite using `[hlast, ← pow_succ]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use linear arithmetic over natural numbers and integers. Establish `e` using `(hsum c).symm.trans (hrow c)`. Establish `hc' : Fin.last m ≠ c` using `Ne.symm hc`. Simplify using `only [hc, hc', ne_eq, not_false_eq_true, ↓reduceIte] at e`.
+Reduce the equality to equality of the corresponding arguments. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `e` using `[hlast, sub_eq_zero]`. Apply `mul_right_cancel₀ ht` to reduce the goal to its premises. Rewrite using `[e]`. Take `⟨k, rfl⟩ : ∃ k, m = k + 1` from `⟨m - 1, by omega⟩`. Simplify using `only [Nat.add_sub_cancel]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/

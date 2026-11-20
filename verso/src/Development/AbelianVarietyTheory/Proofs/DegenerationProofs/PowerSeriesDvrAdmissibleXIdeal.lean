@@ -26,14 +26,14 @@ open scoped CategoryTheory.Obj TensorProduct
 namespace GlobalTheory.ConstantFamily
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨inferInstance, by rw [PowerSeries.maximalIdeal_eq_span_X]; infer_instance, algebraRat.charZero _⟩`.
+Supply the required witnesses or components.
 -/
 theorem cDvr_powerSeries : GlobalTheory.LN.CDvr (PowerSeries ℂ) :=
   ⟨inferInstance, by rw [PowerSeries.maximalIdeal_eq_span_X]; infer_instance,
     algebraRat.charZero _⟩
 
 /- English proof (translation)
-Establish `h` using `cDvr_powerSeries`. Use `h.2.1` as an intermediate fact. Use `⟨⟨inferInstance, inferInstance, inferInstance, inferInstance⟩, inferInstance, h.2.2, inferInstance, ?_⟩` and prove the remaining obligations. Use `letI := Ideal.Quotient.field (IsLocalRing.maximalIdeal (PowerSeries ℂ))`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem powerSeries_dvr_admissible_X_ideal : GlobalTheory.LN.admitted (PowerSeries ℂ) (IsLocalRing.maximalIdeal _) := by
   have h := cDvr_powerSeries
@@ -43,19 +43,17 @@ theorem powerSeries_dvr_admissible_X_ideal : GlobalTheory.LN.admitted (PowerSeri
   infer_instance
 
 /- English proof (translation)
-Introduce `E _ _ _ H D hD`. Take `⟨h₁, h₂, -⟩` from `GlobalTheory.T.all_six_abelian_scheme_laws_hold`. Take `⟨l, -⟩` from `GlobalTheory.exists_level_goodAt_all_primes_and_idx E H 1 one_pos`. Take `⟨b, o, -, -, hd, -⟩` from `GlobalTheory.T.exists_complex_cm_abelian_object E H D hD l`. Set `f : Sp (PowerSeries ℂ) ⟶ Sp ℂ` to `spMap (PowerSeries.C (R := ℂ))`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Choose the witnesses or unpack the hypotheses as in `⟨t, ⟨m⟩⟩ : ∃ t : SAB H (Sp (PowerSeries ℂ)), Nonempty (SABMap t o.t f) := by`. Take `⟨_, _, _, _, _, m, -⟩` from `sabPull Out.CubePf.cubePull f o.t`. Conclude with `⟨_, ⟨m⟩⟩`. Take `⟨m', -⟩` from `ObjMaps.exists_sab_id o.t`. Establish `hpol : GlobalTheory.LN.PolAt t (Out.jK (PowerSeries ℂ))` using `GlobalTheory.LN.GenericPoint.polAt_of_lift m m' o.proper o.ample o.ktriv _ (Out.jK (PowerSeries ℂ) ≫ f) (Category.comp_id _)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : IsProper t.G.hom` using `MorphismProperty.of_isPullback (P := @IsProper) m.cart.1 o.proper`. Establish `hab : IsAbelianScheme t.G` using `⟨t.semi.comm, t.semi.smooth, hp, t.semi.geomConnected⟩`. Establish `hs : GlobalTheory.LN.SplitOver t.G (IsLocalRing.maximalIdeal _)` using `⟨_, ZJ.isGt_splitExtOfAbelian _ (isAbelianScheme_pullback_obj _ t.G hab)⟩`. Take `⟨A, -, gen, hgen, hL, -⟩` from `GlobalTheory.LN.exists_polAV_of_polAt h₁ h₂ E H _ t hpol`. Take `⟨P, hPA, -, hP⟩` from `GlobalTheory.UU.exists_pelUnif_of_cdvr_unconditional E H _ cDvr_powerSeries t A gen hgen hL hs`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hst` using `smoothOfRelativeDimension_isStableUnderBaseChange.{0} (Module.finrank ℚ E / 2 * (D.p + D.q))`. Establish `hdt : SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) t.G.hom` using `MorphismProperty.of_isPullback (P := @SmoothOfRelativeDimension _) m.cart.1 hd`. Establish `hdA : SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) A.A.hom`. Establish `: SmoothOfRelativeDimension (Module.finrank ℚ E / 2 * (D.p + D.q)) ((Over.pullback (Out.jK (PowerSeries ℂ))).obj t.G).hom` using `hst.of_isPullback (IsPullback.of_hasPullback t.G.hom (Out.jK (PowerSeries ℂ))) hdt`. Establish `hi : IsIso gen.inv.left` using `inferInstanceAs (IsIso ((Over.forget _).map gen.inv))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `hst.of_isPullback (IsPullback.of_horiz_isIso (fst := gen.inv.left) (g := 𝟙 _) ⟨(Over.w gen.inv).trans (Category.comp_id _).symm⟩) this`. Establish `hg : P.A.g = Module.finrank ℚ E / 2 * (D.p + D.q)`. Rewrite using `[hPA]`. Conclude with `H1.dim_unique _ A.smoothDim hdA (eSec A.A (IsLocalRing.closedPoint _))`. Establish `h2 : 2 ≤ Module.finrank ℚ E`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Module.finrank_mul_finrank ℚ (maximalRealSubfield E) E, Algebra.IsQuadraticExtension.finrank_eq_two _ E]`. Use `Module.finrank_pos (R := ℚ) (M := maximalRealSubfield E)` as an intermediate fact. Use linear arithmetic over natural numbers and integers. Use `⟨t, P, hP, hg, ?_, cDvr_powerSeries, hpol, hs, GlobalTheory.ThetaDvr.thetaNZ_of_polAt h₁ h₂ E H _ t hpol, powerSeries_dvr_admissible_X_ideal⟩` and prove the remaining obligations. Rewrite using `[hg]`.
-
-Conclude with `Nat.mul_pos (by omega) hD`.
+Use linear arithmetic over natural numbers and integers. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pelUnif_powerSeries :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H), 1 ≤ D.p + D.q → ∃ (t : SAB H (Sp (PowerSeries ℂ))) (P : PELUnif (IsLocalRing.maximalIdeal (PowerSeries ℂ)) t), P.TorsionIso ∧ P.A.g = Module.finrank ℚ E / 2 * (D.p + D.q) ∧ 0 < P.A.g ∧ GlobalTheory.LN.CDvr (PowerSeries ℂ) ∧ GlobalTheory.LN.PolAt t (Out.jK (PowerSeries ℂ)) ∧ GlobalTheory.LN.SplitOver t.G (IsLocalRing.maximalIdeal _) ∧ GlobalTheory.LN.ThetaNZ t.G t.PP.L ∧ GlobalTheory.LN.admitted (PowerSeries ℂ) (IsLocalRing.maximalIdeal _) := by

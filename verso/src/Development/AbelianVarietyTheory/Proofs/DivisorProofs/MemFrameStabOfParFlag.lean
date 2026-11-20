@@ -16,15 +16,15 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 omit [NumberField E] in
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun i j => congrArg (X i) (Fin.ext (Nat.lt_one_iff.1 j.2))`.
+A detailed English derivation is pending.
 -/
 theorem initCols_zero {r : ℕ} (X : Matrix (Fin n) (Fin (r + 1)) E) : initCols X 0 = col X :=
   Matrix.ext fun i j => congrArg (X i) (Fin.ext (Nat.lt_one_iff.1 j.2))
 
 /- English proof (translation)
-Take `⟨⟨B, -, e⟩, B', -, e'⟩` from `hg`. Establish `hL' : adMat F L * adMat F C = 1` using `by rw [← Matrix.map_mul, hL, Matrix.map_one _ (map_zero _) (map_one _)]`. Establish `hMM : (matHom _ σ J g).1 * (matHom _ σ J g⁻¹).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, mul_inv_cancel, map_one, Units.val_one]`. Establish `hBB : B * B' = 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [← e, e', Matrix.mul_assoc]`. Use `_ = 1 := by rw [← Matrix.mul_assoc (matHom _ σ J g).1, hMM, Matrix.one_mul, hL']`. Conclude with `⟨⟨B, B', hBB, mul_eq_one_comm.1 hBB⟩, Subgroup.mem_top _, e⟩`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_frameStab_of_parFlag {s : ℕ} {C : Matrix (Fin n) (Fin s) E} {L : Matrix (Fin s) (Fin n) E} (hL : L * C = 1)
     {d : Fin s → ℕ} {g : GAd σ J} (hg : g ∈ GlobalTheory.UAut.parFlag σ J C d) : g ∈ frameStab σ J C ⊤ := by
@@ -42,9 +42,9 @@ theorem mem_frameStab_of_parFlag {s : ℕ} {C : Matrix (Fin n) (Fin s) E} {L : M
 omit [NumberField E] in
 
 /- English proof (translation)
-Establish `: unipRad σ J C ≤ frameStab σ J C ⊥` using `(Subgroup.closure_le _).2 fun g hg => ⟨1, one_mem _, by`. Establish `h` using `hg.1`. Rewrite `h` using `[Matrix.sub_mul, Matrix.one_mul, sub_eq_zero]`. Rewrite using `[h, Units.val_one, Matrix.mul_one]⟩`. Take `⟨B, hB, e⟩` from `this hu`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[e, Subgroup.mem_bot.1 hB, Units.val_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unipRad_fix {s : ℕ} {C : Matrix (Fin n) (Fin s) E} {u : GAd σ J} (hu : u ∈ unipRad σ J C) :
     (matHom _ σ J u).1 * adMat F C = adMat F C := by
@@ -58,7 +58,7 @@ theorem unipRad_fix {s : ℕ} {C : Matrix (Fin n) (Fin s) E} {u : GAd σ J} (hu 
 omit [NumberField E] in
 
 /- English proof (translation)
-Unfold `Scales at *`. Use `congrArg (fun Z => (l⁻¹).1 • ((matHom _ σ J p⁻¹).1 * Z)) e` as an intermediate fact. Simplify using `only [← Matrix.mul_assoc, ← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one, Matrix.one_mul, Matrix.mul_smul, smul_smul, Units.inv_mul, one_smul] at this`. Conclude with `this.symm`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem scales_inv {x : Matrix (Fin n) (Fin 1) E} {p : GAd σ J} {l : (AF F ⊗[F] E)ˣ} (e : Scales σ J x p l) :
     Scales σ J x p⁻¹ l⁻¹ := by
@@ -69,17 +69,17 @@ theorem scales_inv {x : Matrix (Fin n) (Fin 1) E} {p : GAd σ J} {l : (AF F ⊗[
   exact this.symm
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ n J r X Y h hJ hW p l hp`. Establish `sub : ∀ A B : Matrix (Fin n) (Fin (r + 1)) E, Formalism.UG.cT (σ : E →+* E) (col A) * J * col B = (Formalism.UG.cT (σ : E →+* E) A * J * B).submatrix (fun _ => 0) fun _ => 0` using `fun A B => rfl`. Establish `one : (1 : Matrix (Fin (r + 1)) (Fin (r + 1)) E).submatrix (fun _ : Fin 1 => 0) (fun _ : Fin 1 => 0) = 1` using `Matrix.ext fun i j => by obtain rfl := Subsingleton.elim i j; simp`. Establish `xy : Formalism.UG.cT (σ : E →+* E) (col X) * J * col Y = 1` using `by rw [sub, hW.xy, one]`. Establish `yx' : Formalism.UG.cT (σ : E →+* E) (col Y) * J * col X = 1` using `by rw [sub, yx h hJ hW, one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `sc : ∀ {g : GAd σ J} {l : (AF F ⊗[F] E)ˣ}, Scales σ J (col X) g l → (matHom _ σ J g).1 * adMat F (col X) = adMat F (col X) * (l.1 • (1 : Matrix (Fin 1) (Fin 1) (AF F ⊗[F] E)))` using `fun e => by rw [Matrix.mul_smul, Matrix.mul_one]; exact e`. Establish `hpF : p ∈ GlobalTheory.UAut.parFlag σ J (col X) fun _ => 0` using `⟨⟨_, fun _ _ hlt => absurd hlt (lt_irrefl _), sc hp⟩, _, fun _ _ hlt => absurd hlt (lt_irrefl _), sc (scales_inv hp)⟩`. Take `⟨u, hu, m, hmF, hpm, hr⟩` from `(GlobalTheory.LeviFlag.levi_decomposition F E σ h n J hJ 1 (col X) (col Y) (fun _ => 0) (by rw [sub, hW.xx]; rfl) (by rw [sub, hW.yy]; rfl) xy).1 p hpF`. Rewrite `hu` using `[GlobalTheory.UAut.unipFlag_const]`. Establish `hm : m ∈ levi σ J X Y {0}`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [levi, Subgroup.mem_iInf, Finset.mem_singleton]`. Introduce and unpack `k rfl`. Rewrite using `[initCols_zero, initCols_zero]`. Conclude with `⟨mem_frameStab_of_parFlag yx' hmF.1, mem_frameStab_of_parFlag xy hmF.2⟩`. Establish `hml : Scales σ J (col X) m l`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `e : m = u⁻¹ * p` using `by rw [hpm, inv_mul_cancel_left]`. Establish `hp' : (matHom _ σ J p).1 * adMat F (col X) = l.1 • adMat F (col X)` using `hp`. Unfold `Scales`. Rewrite using `[e, map_mul, Units.val_mul, Matrix.mul_assoc, hp', Matrix.mul_smul, unipRad_fix (inv_mem hu)]`. Use `⟨u, hu, m, hm, hpm, hml, hr, fun hl => Subgroup.mem_inf.2 ⟨hm, ?_⟩⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Subgroup.mem_iInf, Finset.mem_singleton]`. Introduce and unpack `k rfl`. Rewrite using `[initCols_zero]`. Set `B : GL (Fin 1) (AF F ⊗[F] E)` to `⟨l.1 • 1, (l⁻¹).1 • 1, by simp [smul_smul], by simp [smul_smul]⟩`. Use `⟨B, ?_, sc hml⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `e : Matrix.GeneralLinearGroup.det B = l` using `Units.ext (by simp [B])`. Conclude with `(congrArg (absE F E) e).trans hl`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem levi_dec_line : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (n : ℕ) (J : Matrix (Fin n) (Fin n) E) (r : ℕ) (X Y : Matrix (Fin n) (Fin (r + 1)) E), IsCMExt F E σ → IsHermND σ J → IsWittFrame σ J X Y → ∀ p l, Scales σ J (col X) p l → ∃ u ∈ unipRad σ J (col X), ∃ m ∈ levi σ J X Y {0}, p = u * m ∧ Scales σ J (col X) m l ∧ (p ∈ ratPts σ J → m ∈ ratPts σ J) ∧ (absE F E l = 1 → m ∈ leviOne σ J X Y {0}) := by
   intro F E _ _ _ _ _ σ n J r X Y h hJ hW p l hp

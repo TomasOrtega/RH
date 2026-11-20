@@ -7,17 +7,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.NumberFieldTowers.
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.Gal Formalism.GaloisCohomology UpperTheory.V UpperTheory.V.LDataCardLeFinrank UpperTheory.V.Base UpperTheory.V.Kum UpperTheory.V.Tower
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `V _ _ h`. Establish `h0 : Module.length A V = 0` using `by simpa using h`. Establish `: Subsingleton V` using `Module.length_eq_zero_iff.1 h0`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `⟨fun _ => 0, Subsingleton.elim _ _⟩`. Consider the case `succ n ih`. Introduce `V _ _ h`. Break down `subsingleton_or_nontrivial V with hV | hV` into its components or cases. Conclude with `⟨fun _ => 0, Subsingleton.elim _ _⟩`.
+Supply the required witnesses or components. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components.
 
-Take `⟨v, hv⟩` from `exists_ne (0 : V)`. Use `set P : Submodule A V := Submodule.span A {v} with hP`. Establish `hadd : Module.length A V = Module.length A P + Module.length A (V ⧸ P)` using `Module.length_eq_add_of_exact P.subtype P.mkQ P.injective_subtype P.mkQ_surjective (LinearMap.exact_subtype_mkQ P)`. Establish `hP1 : 1 ≤ Module.length A P`. Rewrite using `[Order.one_le_iff_ne_zero, Ne, Module.length_eq_zero_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `hs`. Conclude with `hv (congrArg Subtype.val (Subsingleton.elim (⟨v, Submodule.mem_span_singleton_self v⟩ : P) 0))`. Establish `hq : Module.length A (V ⧸ P) ≤ n`. Establish `h2 : Module.length A (V ⧸ P) + 1 ≤ (n : ℕ∞) + 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(ENat.add_le_add_iff_right ENat.one_ne_top).1 h2`. Take `⟨t, ht⟩` from `ih (V ⧸ P) hq`. Use `choose s hs using fun i => P.mkQ_surjective (t i)`. Use `⟨Fin.cons v s, ?_⟩` and prove the remaining obligations. Rewrite using `[Fin.range_cons, Submodule.span_insert, ← hP, ← Submodule.map_mkQ_eq_top, Submodule.map_span, ← Set.range_comp, ← ht]`.
-
-Use `congr 2`. Conclude with `funext hs`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 private theorem span_of_length_le {A : Type} [CommRing A] (n : ℕ) :
     ∀ (V : Type) [AddCommGroup V] [Module A V], Module.length A V ≤ n →
@@ -57,19 +55,17 @@ private theorem span_of_length_le {A : Type} [CommRing A] (n : ℕ) :
     exact funext hs
 
 /- English proof (translation)
-Introduce `l _ M _ _ R hM`. Establish `hc` using `UpperTheory.V.Tower.cokerDual l M ((l : ℤ_[l]) • (1 : Module.End ℤ_[l] M)) ((l : ℤ_[l]) • (1 : Module.End ℤ_[l] (M →ₗ[ℤ_[l]] QZ l))) (fun x φ => by simp)`. Establish `hk : LinearMap.ker ((l : ℤ_[l]) • (1 : Module.End ℤ_[l] M)) = Submodule.torsionBy ℤ_[l] M (l : ℤ_[l])`. Use extensionality with `m`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Rewrite `hc` using `[hk]`. Rewrite using `[← hc]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Conclude with `UpperTheory.V.PropA.cokL l _ R h`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h set I : Ideal ℤ_[l] := Ideal.span {(l : ℤ_[l])} with hI haveI : IsPrecomplete I ℤ_[l] := by`. Rewrite using `[hI, ← PadicInt.maximalIdeal_eq_span_p]`. Use `infer_instance`. Use `haveI : IsHausdorff I (M →ₗ[ℤ_[l]] QZ l) := by`. Use `⟨fun x hx => LinearMap.ext fun m => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨r, hr⟩` from `hM m`. Establish `h1` using `hx r`. Rewrite `h1` using `[SModEq.zero, hI, Ideal.span_singleton_pow, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists]`. Take `⟨y, -, rfl⟩` from `h1`. Rewrite using `[LinearMap.smul_apply, ← map_smul, hr, map_zero, LinearMap.zero_apply]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `set N : Submodule ℤ_[l] (M →ₗ[ℤ_[l]] QZ l) := LinearMap.range ((l : ℤ_[l]) • (1 : Module.End ℤ_[l] (M →ₗ[ℤ_[l]] QZ l))) with hN`. Establish `hNI : N = I • (⊤ : Submodule ℤ_[l] (M →ₗ[ℤ_[l]] QZ l))`. Use extensionality with `x`. Rewrite using `[hI, Submodule.ideal_span_singleton_smul, Submodule.mem_smul_pointwise_iff_exists, hN]`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨t, ht⟩` from `span_of_length_le R ((M →ₗ[ℤ_[l]] QZ l) ⧸ N) h`. Use `choose s hs using fun i => N.mkQ_surjective (t i)`. Establish `h2 : Submodule.span ℤ_[l] (Set.range s) = ⊤`. Use `(UpperTheory.V.abelian₂.nakayama ℤ_[l] I _).1 R s ?_` and prove the remaining obligations. Rewrite using `[← hNI, sup_comm, ← Submodule.map_mkQ_eq_top, Submodule.map_span, ← Set.range_comp, ← ht]`.
-
-Use `congr 2`. Conclude with `funext hs`. Use `⟨Fintype.linearCombination ℤ_[l] s, ?_⟩` and prove the remaining obligations. Rewrite using `[← LinearMap.range_eq_top, Fintype.range_linearCombination, h2]`.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Tower.genDual :
     ∀ (l : ℕ) [Fact l.Prime] (M : Type) [AddCommGroup M] [Module ℤ_[l] M] (R : ℕ), (∀ m : M, ∃ r : ℕ, (l : ℤ_[l]) ^ r • m = 0) →

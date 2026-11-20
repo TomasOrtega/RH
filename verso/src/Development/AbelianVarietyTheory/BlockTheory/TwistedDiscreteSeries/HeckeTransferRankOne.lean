@@ -76,7 +76,7 @@ def HeckeTransfer {G : Type} [Group G] [Fintype G] {Pl0 T0 : Type} {A : FamIn D.
   R.Char F → Nonempty (FWTie T R κ v₀) → ∀ (i : Fin D.R.m) (t : T0), TransferAt R i t
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨D.sp.V_rank _ (Nat.le_add_left _ _) i.2, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem rank_Vc (i : Fin D.R.m) : (Vc D i).rank = D.R.nV ∧ D.R.nV = D.R.r + D.R.t :=
   ⟨D.sp.V_rank _ (Nat.le_add_left _ _) i.2, rfl⟩

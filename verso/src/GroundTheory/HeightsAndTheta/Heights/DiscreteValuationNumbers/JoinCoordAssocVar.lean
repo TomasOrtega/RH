@@ -15,7 +15,7 @@ def assocVar (ι₂ : K₂ → Type) :
   | ⟨.inr k, i⟩ => ⟨.inr (.inl k), i⟩
 
 /- English proof (translation)
-Apply the tactic sequence `obtain ⟨k | k, i⟩ := p <;> rfl`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem joinCoord_assocVar {Ω : Type*} (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω) {ι₂ : K₂ → Type}
     (w : (Σ k, ι₂ k) → Ω) (p : Σ k : K ⊕ K', Sum.elim ι ι' k) :

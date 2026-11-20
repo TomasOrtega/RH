@@ -20,7 +20,7 @@ namespace GlobalTheory.SeeConjChar
 open Formalism.L2.SG.HidaSetting Formalism.L2.SG.Pf
 
 /- English proof (translation)
-Establish `h2` using `GlobalTheory.StdFrames.cpt_sg_eq_zero (Q := GlobalTheory.IdemSupport.cP PP) (z := 1 - e) (by rw [GlobalTheory.StdFrames.cP_cP, RingHom.map_sub, h1, RingHom.map_one, sub_self])`. Rewrite `h2` using `[RingHom.map_sub, RingHom.map_one, RingHom.map_sub, RingHom.map_one, sub_eq_zero]`. Establish `h3` using `congrArg (GlobalTheory.StdFrames.cpt (GlobalTheory.IdemSupport.cP PP)) ho`. Rewrite `h3` using `[RingHom.map_mul, ← h2, mul_one, RingHom.map_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem cpt_cP_eq_zero_of_orth {D : D7} {PP : Pl D.host.E} {e : EAf D} (ho : e * GlobalTheory.StdFrames.sg D e = 0)
     (h1 : GlobalTheory.StdFrames.cpt PP e = 1) : GlobalTheory.StdFrames.cpt (GlobalTheory.IdemSupport.cP PP) e = 0 := by
@@ -31,9 +31,9 @@ theorem cpt_cP_eq_zero_of_orth {D : D7} {PP : Pl D.host.E} {e : EAf D} (ho : e *
   rwa [RingHom.map_mul, ← h2, mul_one, RingHom.map_zero] at h3
 
 /- English proof (translation)
-Unfold `resT`. Rewrite using `[dif_pos hx]`. Use `(GlobalTheory.AdIsom.resS_eq_zero_iff_cpt Q ⟨x, hx⟩).2 ?_` and prove the remaining obligations. Establish `h0 : GlobalTheory.StdFrames.cpt Q x = 0` using `by rw [hf, RingHom.map_mul, he, zero_mul]`. Use `show Valued.v (GlobalTheory.StdFrames.cpt Q x) < 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h0, Valuation.map_zero]`. Conclude with `zero_lt_one`.
+A detailed English derivation is pending.
 -/
 theorem resT_eq_zero_of_fixed {D : D7} {Q : Pl D.host.E} {e x : EAf D} (hx : x ∈ Formalism.L2.Herm.intAf D.host.F D.host.E)
     (he : GlobalTheory.StdFrames.cpt Q e = 0) (hf : x = e * x) : resT Q x = 0 := by
@@ -46,13 +46,13 @@ theorem resT_eq_zero_of_fixed {D : D7} {Q : Pl D.host.E} {e x : EAf D} (hx : x �
   exact zero_lt_one
 
 /- English proof (translation)
-Introduce `D X h β hF PP hs M hM i j`. Establish `hb` using `X.vectorsInLattice.2.2`. Establish `ho` using `X.ew_orth`. Establish `hw` using `X.bwd_w i`. Establish `h1 : GlobalTheory.StdFrames.cpt PP (ewT X h) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `sideAt at hs`. Simplify `hs` using `only [decide_eq_true_eq]`. Establish `hfix : ∀ v, hA X.B.I (X.bwd i) v = X.ew * hA X.B.I (X.bwd i) v` using `fun v => by conv_lhs => rw [hw, unitaryCongruence.hA_smul_left, unitaryCongruence.sigA_sigA]`. Take `⟨⟨I⟩⟩` from `X`. Simplify using `only at h hb ho hfix`.
+Replace the relevant objects with their definitions. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Simplify by unfolding definitions.
 
-Substitute `h` using the available equality. Establish `hv` using `(hb j).1`. Rewrite `hv` using `[GlobalTheory.SeeMatchOnto.Lf_eq]`. Establish `hv2` using `(GlobalTheory.SeeMatchOnto.mem_hatL_iff_of_St hF hM _).1 hv`. Establish `hv3` using `(GlobalTheory.SeeMatchOnto.Lf_eq (D := D)).ge hv2`.
+Substitute using the available equality. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hint` using `unitaryCongruence.hA_int _ (hb i).2 hv3`. Conclude with `⟨hint, resT_eq_zero_of_fixed hint (cpt_cP_eq_zero_of_orth ho h1) (hfix _)⟩`.
+Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem resT_cP_hT_bwd_eq_zero : ∀ {D : D7} (X : Formalism.L2.SG.HidaSetting.HidaSetting D) (h : X.B.I = Formalism.L2.SG.InstExistsPf.instOf D) (β : GL (Fin (Yc D 0).rank) (EAf D)), IsFrame β (Formalism.L2.Herm.crdLat (Yc D 0) (Yc D 0).L0) → ∀ PP : Pl D.host.E, GlobalTheory.SeeConjChar.sideAt X h PP = true → ∀ M ∈ St β, ∀ i j : Fin D.R.k, GlobalTheory.SeeConjChar.hT X h (bwdT X h i) (Matrix.mulVec M.val (bwT X h j)) ∈ Formalism.L2.Herm.intAf D.host.F D.host.E ∧ GlobalTheory.SeeConjChar.resT (GlobalTheory.IdemSupport.cP PP) (GlobalTheory.SeeConjChar.hT X h (bwdT X h i) (Matrix.mulVec M.val (bwT X h j))) = 0 := by
   intro D X h β hF PP hs M hM i j

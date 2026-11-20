@@ -22,15 +22,15 @@ open GlobalTheory GlobalTheory.Cartier GlobalTheory.CxPts GlobalTheory.Points Gl
 namespace GlobalTheory.SncComp
 
 /- English proof (translation)
-Establish `: JacobsonSpace Y` using `LocallyOfFiniteType.jacobsonSpace q`. Use `choose A _ _ j _ pt hj hq using exists_affine_chart_over q`. Set `𝒰 : Y.OpenCover` to `Scheme.Cover.mkOfCovers Y (fun y => Spec (.of (A y))) j (fun y => ⟨y, pt y, hj y⟩)`. Use `HasRingHomProperty.instIsZariskiLocalAtSource (P := @SmoothOfRelativeDimension d)` as an intermediate fact. Use `IsZariskiLocalAtSource.of_openCover (P := @SmoothOfRelativeDimension d) 𝒰 fun (y : Y) => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `SmoothOfRelativeDimension d (j y ≫ q)`. Establish `hft : LocallyOfFiniteType (spMap (algebraMap K (A y)))`. Establish `: LocallyOfFiniteType (j y ≫ q)` using `inferInstance`. Rewrite `this` using `[hq y]`. Then use the resulting hypothesis. Rewrite `hft` using `[HasRingHomProperty.Spec_iff (P := @LocallyOfFiniteType)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: Algebra.FiniteType K (A y)` using `RingHom.finiteType_algebraMap.mp hft`. Rewrite using `[hq y]`. Use `RegGenSmooth.smooth_of_regular K (A y) d fun m hm => ?_` and prove the remaining obligations. Set `w : Spec (.of (A y))` to `(⟨m, inferInstance⟩ : PrimeSpectrum _)`. Establish `hw : IsClosed ({w} : Set (Spec (.of (A y))))` using `(PrimeSpectrum.isClosed_singleton_iff_isMaximal _).2 hm`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : IsClosed ({j y w} : Set Y)`. Establish `h1` using `(j y).isOpenEmbedding.preimage_closedPoints`. Establish `h2 : w ∈ (j y) ⁻¹' closedPoints Y` using `by rw [h1]; exact hw`. Conclude with `h2`. Take `⟨h1, h2⟩` from `h _ hc`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Supply the required witnesses or components.
 
-Set `e` to `(asIso ((j y).stalkMap w) ≪≫ Spec.stalkIso (.of _) w).commRingCatIsoToRingEquiv`. Conclude with `⟨IsRegularLocalRing.of_ringEquiv e, (ringKrullDim_eq_of_ringEquiv e).symm.trans h2⟩`.
+A detailed English derivation is pending.
 -/
 theorem smooth_of_regular_stalk (K : Type) [Field K] [PerfectField K] (Y : Scheme.{0}) (q : Y ⟶ Sp K)
     [LocallyOfFiniteType q] (d : ℕ)
@@ -61,17 +61,17 @@ theorem smooth_of_regular_stalk (K : Type) [Field K] [PerfectField K] (Y : Schem
   exact ⟨IsRegularLocalRing.of_ringEquiv e, (ringKrullDim_eq_of_ringEquiv e).symm.trans h2⟩
 
 /- English proof (translation)
-Introduce `F _ _ X _ p e _ hsm r z hL a`. Establish `: Smooth p` using `SmoothOfRelativeDimension.smooth (e + 1) p`. Establish `hdim` using `GlobalTheory.HSCore.VanishNumberField.topologicalKrullDim_eq_of_smooth p (e + 1) hsm`. Use `smooth_of_regular_stalk F _ _ e fun y hy => ?_` and prove the remaining obligations. Set `I` to `Scheme.IdealSheafData.vanishingIdeal (Closeds.closure {z a})`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Establish `hc : IsClosed ({closι (z a) y} : Set X)`. Simplify using `using (closι (z a)).isClosedEmbedding.isClosedMap _ hy`. Establish `hd` using `(ProperCut.ringKrullDim_stalk_eq p hc).trans hdim`. Take `⟨hreg, n, t, ε, hR, hI⟩` from `hL (closι (z a) y)`. Establish `hmem : closι (z a) y ∈ Closeds.closure {z a}`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Vanishing.ι_mem_support I y` as an intermediate fact. Establish `h` using `Scheme.IdealSheafData.coe_support_vanishingIdeal (Closeds.closure {z a})`. Conclude with `h.le this`. Establish `hker : RingHom.ker ((closι (z a)).stalkMap y).hom = Ideal.span {t (ε ⟨a, hmem⟩)}` using `(Vanishing.ker_stalkMap I y).trans (hI ⟨a, hmem⟩)`. Establish `hm : t (ε ⟨a, hmem⟩) ∈ IsLocalRing.maximalIdeal _` using `hR.1 ▸ Ideal.subset_span ⟨_, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2⟩` from `isRegularLocalRing_quotient_of_not_mem_sq hm ((regular_params_spec t hR.1 hR.2).1 _)`. Set `φ` to `(Ideal.quotEquivOfEq hker.symm).trans (RingHom.quotientKerEquivOfSurjective ((closι (z a)).stalkMap_surjective y))`. Use `⟨IsRegularLocalRing.of_ringEquiv φ, ?_⟩` and prove the remaining obligations. Rewrite using `[← ringKrullDim_eq_of_ringEquiv φ]`. Rewrite `h2` using `[hd]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable.
 
-Generalize the expression as in `ringKrullDim (X.presheaf.stalk (closι (z a) y) ⧸ Ideal.span {t (ε ⟨a, hmem⟩)}) = u at h2`. Proceed by induction on `u using WithBot.recBotCoe with`. Consider the case `bot => exact absurd h2 (by rw [WithBot.bot_add]; exact WithBot.bot_ne_coe)`. Consider the case `coe u`. Proceed by induction on `u using ENat.recTopCoe with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction. Treat this case separately.
 
-Consider the case `top => exact absurd (WithBot.coe_injective h2) (ENat.top_ne_coe _)`. Consider the case `coe u`. Establish `: u + 1 = e + 1` using `by exact_mod_cast h2`. Conclude with `Nat.succ_injective this` after adjusting the coercions.
+Treat this case separately. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem smooth_component : ∀ (F : Type) [Field F] [CharZero F] (X : Scheme.{0}) [IsIntegral X] (p : X ⟶ Sp F) (e : ℕ), IsProjOver p → SmoothOfRelativeDimension (e + 1) p → ∀ (r : ℕ) (z : Fin r → X), (∀ x : X, FinalTheorems.LSncAt X (fun a => (Closeds.closure {z a})) x) → ∀ a, SmoothOfRelativeDimension e (closι (z a) ≫ p) := by
   intro F _ _ X _ p e _ hsm r z hL a

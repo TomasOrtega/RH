@@ -75,14 +75,14 @@ def FinK : Prop :=
       {x | Good D T' F0 Λ Z x ∧ pWf D x ∈ Wf ∧ alM D x * R ∈ Af}.Finite
 
 /- English proof (translation)
-Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) b <;> simp [fr, act]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem fr_act (D : Formalism.BasicNotions.D7) (n : (VS D).V ≃ₗ[D.host.E] (VS D).V) (x : (Fin D.R.rS → (VS D).V) × (VS D).V)
     (b : Fin (D.R.rS + 1)) : fr D (act D n x) b = n (fr D x b) := by
   refine Fin.lastCases ?_ (fun i => ?_) b <;> simp [fr, act]
 
 /- English proof (translation)
-Take `⟨-, he, hz⟩` from `hn`. Apply the tactic sequence `refine Fin.lastCases ?_ (fun i => ?_) a <;> simp [FlagG.fvec, he, hz]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unipotentIntegral_fixes_flag (D : Formalism.BasicNotions.D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ N0 F0 Λ)
@@ -91,7 +91,7 @@ theorem unipotentIntegral_fixes_flag (D : Formalism.BasicNotions.D7) {T : D.host
   refine Fin.lastCases ?_ (fun i => ?_) a <;> simp [FlagG.fvec, he, hz]
 
 /- English proof (translation)
-Take `⟨hL, -, -⟩` from `hn`. Unfold `NLam at hL`. Take `⟨hA, -, -⟩` from `hL`. Unfold `IsAutLam at hA`. Conclude with `hA.1 x y`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem unipotentIntegral_isometry (D : Formalism.BasicNotions.D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ N0 F0 Λ)
@@ -103,7 +103,7 @@ theorem unipotentIntegral_isometry (D : Formalism.BasicNotions.D7) {T : D.host.E
   exact hA.1 x y
 
 /- English proof (translation)
-Take `⟨hL, -, -⟩` from `hn`. Take `⟨⟨-, hg⟩, -, -⟩` from `hL`. Unfold `Formalism.HermitianLatticesTheory.gmap at hg`. Rewrite using `[← hg]`. Conclude with `Submodule.mem_map_of_mem hv`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unipotentIntegral_preserves_lattice (D : Formalism.BasicNotions.D7) {T : D.host.E} (F0 : FlagG (VS D) D.R.rS T)
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) {n : (VS D).V ≃ₗ[D.host.E] (VS D).V} (hn : n ∈ N0 F0 Λ)
@@ -115,11 +115,9 @@ theorem unipotentIntegral_preserves_lattice (D : Formalism.BasicNotions.D7) {T :
   exact Submodule.mem_map_of_mem hv
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hx`. Use `⟨fun b => ?_, fun a b => ?_, fun a b => ?_⟩` and prove the remaining obligations. Rewrite using `[fr_act]`. Conclude with `unipotentIntegral_preserves_lattice D F0 Λ hn (h1 b)`. Rewrite using `[fr_act, ← unipotentIntegral_fixes_flag D F0 Λ hn a]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `brS`. Apply the tactic sequence `rw [unipotentIntegral_isometry D F0 Λ hn]`. Establish `h2'` using `h2 a b`. Unfold `brS at h2'`. Conclude with `h2'`.
-
-Apply the tactic sequence `rw [fr_act, fr_act, unipotentIntegral_isometry D F0 Λ hn]`. Conclude with `h3 a b`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem good_move (D : Formalism.BasicNotions.D7) {T : D.host.E} (T' : D.host.E) (F0 : FlagG (VS D) D.R.rS T)
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (Z : MatZ D) {x : (Fin D.R.rS → (VS D).V) × (VS D).V}

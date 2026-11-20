@@ -13,13 +13,13 @@ open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Compl
 open scoped ContDiff nonZeroDivisors in
 open Filter Topology Set Asymptotics in
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Establish `hd : 0 < ‖R - R'‖` using `norm_pos_iff.2 (sub_ne_zero.2 hne)`. Use `set D := |C| + |C'| + 1 with hD_def`. Establish `hD : 0 < D` using `by positivity`. Use `set t := min 1 (‖R - R'‖ / (2 * D)) with ht_def`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht0 : 0 < t` using `lt_min one_pos (by positivity)`. Establish `ht1 : t ≤ 1` using `min_le_left _ _`. Establish `htD : t * D ≤ ‖R - R'‖ / 2`. Combine the equalities or inequalities in the displayed calculation. Establish `htc : (t : ℂ) ≠ 0` using `ofReal_ne_zero.2 ht0.ne'`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts.
 
-Establish `key : R - R' = (t : ℂ) * ((f t - R' / t) - (f t - R / t))`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Establish `hle : ‖R - R'‖ ≤ t * (C' + C)`. Rewrite using `[key, norm_mul, Complex.norm_real, Real.norm_of_nonneg ht0.le]`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `gcongr`. Conclude with `(norm_sub_le _ _).trans (add_le_add (h' t ht0 ht1) (h t ht0 ht1))`. Establish `: t * (C' + C) ≤ t * D` using `mul_le_mul_of_nonneg_left (by linarith [le_abs_self C, le_abs_self C']) ht0.le`. Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 private theorem eq_of_norm_sub_div_le {f : ℝ → ℂ} {R R' : ℂ} {C C' : ℝ}
     (h : ∀ t : ℝ, 0 < t → t ≤ 1 → ‖f t - R / t‖ ≤ C)
@@ -50,15 +50,13 @@ open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Compl
 open scoped ContDiff nonZeroDivisors in
 open Filter Topology Set Asymptotics in
 /- English proof (translation)
-Establish `hcross : ∀ i j s, G i s * M j s = G j s * M i s`. Introduce `i j s`. Establish `hU : IsOpen {s : ℂ | 1 < s.re}` using `isOpen_lt continuous_const Complex.continuous_re`. Establish `h2 : (fun s => G i s * M j s) =ᶠ[𝓝 (2 : ℂ)] fun s => G j s * M i s` using `by filter_upwards [hU.mem_nhds (by norm_num : (1 : ℝ) < (2 : ℂ).re)] with s hs`. Rewrite using `[hGF i s hs, hGF j s hs]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hf : AnalyticOnNhd ℂ (fun s => G i s * M j s) univ` using `fun z _ => ((hG i).mul (hM j)).analyticAt z`. Establish `hg : AnalyticOnNhd ℂ (fun s => G j s * M i s) univ` using `fun z _ => ((hG j).mul (hM i)).analyticAt z`. Conclude with `hf.eqOn_of_preconnected_of_eventuallyEq hg isPreconnected_univ (mem_univ _) h2 (mem_univ s)`. Use `choose w hw using hne`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hZ : ∀ i s, M i s ≠ 0 → G (w s) s / M (w s) s = G i s / M i s`. Introduce `i s hi`. Rewrite using `[div_eq_div_iff (hw s) hi]`. Conclude with `hcross (w s) i s`. Use `⟨fun s => G (w s) s / M (w s) s, ?_, ?_, hZ⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `s₀`. Establish `hev : ∀ᶠ s in 𝓝 s₀, M (w s₀) s ≠ 0` using `(hM (w s₀)).continuous.continuousAt.eventually_ne (hw s₀)`. Conclude with `(((hG _) s₀).div ((hM _) s₀) (hw s₀)).congr_of_eventuallyEq (hev.mono fun s hs => hZ _ s hs)`. Introduce `s hs`. Simplify using `only`.
-
-Rewrite using `[hGF _ s hs, mul_div_cancel_left₀ _ (hw s)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_differentiable_eq_div_of_family {ι : Type} (M G : ι → ℂ → ℂ)
     (F : ℂ → ℂ) (hM : ∀ i, Differentiable ℂ (M i)) (hG : ∀ i, Differentiable ℂ (G i))
@@ -97,9 +95,9 @@ open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Compl
 open scoped ContDiff nonZeroDivisors in
 open Filter Topology Set Asymptotics in
 /- English proof (translation)
-Introduce `s`. Establish `htop : w =ᶠ[atTop] 0` using `by filter_upwards [eventually_gt_atTop b] with y hy`. Assume the negation of the conclusion as `h`. Conclude with `absurd (hab y h).2 (not_le.2 hy)`. Establish `hzero : w =ᶠ[𝓝[>] 0] 0` using `by filter_upwards [Ioo_mem_nhdsGT ha] with y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `absurd (hab y h).1 (not_le.2 hy.2)`. Conclude with `mellin_differentiableAt_of_isBigO_rpow (a := s.re + 1) (b := s.re - 1) (hw.locallyIntegrable.locallyIntegrableOn _) ((isBigO_zero _ _).congr' htop.symm EventuallyEq.rfl) (by linarith) ((isBigO_zero _ _).congr' hzero.symm EventuallyEq.rfl) (by linarith)`.
+A detailed English derivation is pending.
 -/
 private theorem differentiable_mellin_of_support_in_Icc_pos {w : ℝ → ℂ} (hw : Continuous w) {a b : ℝ}
     (ha : 0 < a) (hab : ∀ y, w y ≠ 0 → a ≤ y ∧ y ≤ b) : Differentiable ℂ (mellin w) := by
@@ -121,19 +119,17 @@ open NumberField IsDedekindDomain NumberField.mixedEmbedding MeasureTheory Compl
 open scoped ContDiff nonZeroDivisors in
 open Filter Topology Set Asymptotics in
 /- English proof (translation)
-Set `ψ : ContDiffBump (2 : ℝ)` to `⟨1 / 2, 1, by norm_num, by norm_num⟩`. Establish `hψ0 : ∀ y : ℝ, y ≤ 0 → ψ y = 0` using `fun y hy => ψ.zero_of_le_dist (by`. Rewrite using `[Real.dist_eq, abs_of_neg (by linarith)]`. Use `show (1 : ℝ) ≤ _`. Use the proof step `linarith)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨fun y => Complex.exp (-(s₀ - 1) * (Real.log y : ℂ)) * (ψ y : ℂ), ?_, ⟨1, 3, one_pos, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[contDiff_iff_contDiffAt]`. Introduce `x`. Distinguish the cases in `hx : x ∈ tsupport ψ`. Establish `hx0 : x ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce and unpack `rfl`. Rewrite `hx` using `[ψ.tsupport_eq, Metric.mem_closedBall, Real.dist_eq]`. Evaluate the numerical expressions using `at hx`. Establish `h1 : ContDiffAt ℝ ∞ (fun y : ℝ => Complex.exp (-(s₀ - 1) * (Real.log y : ℂ))) x` using `Complex.contDiff_exp.contDiffAt.comp x (contDiffAt_const.mul (ofRealCLM.contDiff.contDiffAt.comp x (Real.contDiffAt_log.2 hx0)))`. Conclude with `h1.mul (ofRealCLM.contDiff.comp ψ.contDiff).contDiffAt`.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `hev : (fun y => Complex.exp (-(s₀ - 1) * (Real.log y : ℂ)) * (ψ y : ℂ)) =ᶠ[𝓝 x] fun _ => 0` using `(notMem_tsupport_iff_eventuallyEq.1 hx).mono fun y hy => by simp [hy]`. Conclude with `contDiffAt_const.congr_of_eventuallyEq hev`. Introduce `y hy`. Establish `hψy : ψ y ≠ 0` using `fun h => hy (by simp [h])`. Establish `hmem : y ∈ Metric.ball (2 : ℝ) 1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Rewrite using `[← ψ.support_eq]`. Conclude with `hψy`. Rewrite `hmem` using `[Real.ball_eq_Ioo]`. Apply the tactic sequence `constructor <;> linarith [hmem.1, hmem.2]`. Establish `hint : ∫ y in Ioi (0 : ℝ), (y : ℂ) ^ (s₀ - 1) • (Complex.exp (-(s₀ - 1) * (Real.log y : ℂ)) * (ψ y : ℂ)) = ∫ y in Ioi (0 : ℝ), ((ψ y : ℝ) : ℂ)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `setIntegral_congr_fun measurableSet_Ioi fun y hy => ?_` and prove the remaining obligations. Simplify using `only [smul_eq_mul]`. Rewrite using `[Complex.cpow_def_of_ne_zero (ofReal_ne_zero.2 (ne_of_gt hy)), ← Complex.ofReal_log (le_of_lt hy), ← mul_assoc, ← Complex.exp_add, show (Real.log y : ℂ) * (s₀ - 1) + -(s₀ - 1) * (Real.log y : ℂ) = 0 by ring, Complex.exp_zero, one_mul]`. Unfold `mellin`. Rewrite using `[hint, integral_complex_ofReal, setIntegral_eq_integral_of_forall_compl_eq_zero (fun y (hy : y ∉ Ioi (0 : ℝ)) => hψ0 y (not_lt.1 hy))]`.
-
-Conclude with `ofReal_ne_zero.2 ψ.integral_pos.ne'`.
+A detailed English derivation is pending.
 -/
 private theorem exists_weight_mellin_ne_zero (s₀ : ℂ) :
     ∃ w : ℝ → ℂ, ContDiff ℝ ∞ w ∧ (∃ a b : ℝ, 0 < a ∧ ∀ y, w y ≠ 0 → a ≤ y ∧ y ≤ b) ∧
@@ -186,39 +182,33 @@ open scoped ContDiff nonZeroDivisors in
 open Filter Topology Set Asymptotics in
 
 /- English proof (translation)
-Introduce `K _ _ m X φ hm hX0 hXmul hXn hXz hφmul hφh hφs hφn hβ`. Establish `hmain` using `_root_.GlobalTheory.smoothedSum_main_term_representatives K m X φ hm hX0 hXmul hXn hXz hφmul hφh hφs hφn hβ`. Take `⟨hcount, hsum⟩` from `_root_.GlobalTheory.countable_ideal_and_summable_absNorm_rpow K`. Use `haveI := hcount`. Use `choose b hb using _root_.GlobalTheory.exists_integral_ideal_in_class_coprime K m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hbij : Function.Bijective fun c => ClassGroup.mk0 (b c)`. Establish `: (fun c => ClassGroup.mk0 (b c)) = id` using `funext fun c => (hb c).1`. Rewrite using `[this]`. Conclude with `Function.bijective_id`. Establish `hbm : ∀ c, (b c : Ideal (𝓞 K)) ⊔ m = ⊤` using `fun c => (hb c).2`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails.
 
-Establish `hXle : ∀ I, ‖X I‖ ≤ 1`. Introduce `I`. Distinguish the cases in `hI : I = ⊥`. Rewrite using `[hI, hX0, norm_zero]`. Conclude with `zero_le_one`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Distinguish the cases in `hIm : I ⊔ m = ⊤`. Rewrite using `[hXn I hI hIm]`. Rewrite using `[hXz I hIm, norm_zero]`. Conclude with `zero_le_one`. Establish `hN : ∀ I, X I ≠ 0 → (1 : ℝ) ≤ (Ideal.absNorm I : ℝ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `I hI`. Establish `hI0 : I ≠ ⊥` using `fun h => hI (h ▸ hX0)`. Establish `: Ideal.absNorm I ≠ 0` using `by rwa [Ne, Ideal.absNorm_eq_zero_iff]`. Conclude with `Nat.one_le_iff_ne_zero.2 this` after adjusting the coercions. Establish `hsumm : ∀ σ : ℝ, 1 < σ → Summable fun I => ‖X I‖ * (Ideal.absNorm I : ℝ) ^ (-σ)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Introduce `σ hσ`. Use `((hsum σ hσ).1).of_nonneg_of_le (fun I => mul_nonneg (norm_nonneg _) (Real.rpow_nonneg (Nat.cast_nonneg _) _)) fun I => ?_` and prove the remaining obligations. Conclude with `mul_le_of_le_one_left (Real.rpow_nonneg (Nat.cast_nonneg _) _) (hXle I)`. Use `set S := ∑ c, (X (b c : Ideal (𝓞 K)))⁻¹ with hS`. Use `set F : ℂ → ℂ := fun s => (s - 1) * ∑' I, X I * ((Ideal.absNorm I : ℕ) : ℂ) ^ (-s) with hF`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hweight : ∀ w : {w : ℝ → ℂ // ContDiff ℝ ∞ w ∧ ∃ a b : ℝ, 0 < a ∧ ∀ y, w y ≠ 0 → a ≤ y ∧ y ≤ b}, ∃ G : ℂ → ℂ, Differentiable ℂ G ∧ (∀ s, 1 < s.re → G s = mellin w.1 s * F s) ∧ ((∃ J, J ≠ ⊥ ∧ J ⊔ m = ⊤ ∧ X J ≠ 1) → G 1 = 0)`. Introduce and unpack `⟨w, hw, hwsupp⟩`. Take `⟨κ, hκ⟩` from `hmain w hw hwsupp`. Take `⟨G, hGd, hG1, hGs⟩` from `_root_.GlobalTheory.SmoothedSumMellin.exists_entire_mellin (Ideal (𝓞 K)) X (fun I => (Ideal.absNorm I : ℝ)) (κ * S) w hw hwsupp hN hsumm (hκ b hbij hbm)`. Use `⟨G, hGd, fun s hs => ?_, fun hJ => ?_⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Rewrite using `[hGs s hs]`. Simplify using `only [F, Complex.ofReal_natCast]`. Rewrite using `[hG1]`. Take `⟨J, hJ0, hJm, hXJ⟩` from `hJ`. Set `J' : (Ideal (𝓞 K))⁰` to `⟨J, mem_nonZeroDivisors_of_ne_zero hJ0⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Set `b' : ClassGroup (𝓞 K) → (Ideal (𝓞 K))⁰` to `fun c => b (c * (ClassGroup.mk0 J')⁻¹) * J'`. Establish `hb'mk : ∀ c, ClassGroup.mk0 (b' c) = c`. Introduce `c`. Simplify using `only [b', map_mul, (hb _).1, inv_mul_cancel_right]`. Establish `hbij' : Function.Bijective fun c => ClassGroup.mk0 (b' c)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Establish `: (fun c => ClassGroup.mk0 (b' c)) = id` using `funext hb'mk`. Rewrite using `[this]`. Conclude with `Function.bijective_id`. Establish `hbm' : ∀ c, (b' c : Ideal (𝓞 K)) ⊔ m = ⊤`. Introduce `c`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [b', Submonoid.coe_mul]`. Rewrite using `[sup_comm, Ideal.sup_mul_eq_of_coprime_left (by rw [sup_comm]; exact hbm _), sup_comm]`. Conclude with `hJm`. Establish `hS' : ∑ c, (X (b' c : Ideal (𝓞 K)))⁻¹ = (X J)⁻¹ * S`. Simplify using `only [b', Submonoid.coe_mul, hXmul, mul_inv, hS, Finset.mul_sum]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Conclude with `Fintype.sum_equiv (Equiv.mulRight (ClassGroup.mk0 J')⁻¹) _ _ fun c => by`. Simplify using `only [Equiv.coe_mulRight]`. Expand and normalize the polynomial expressions, which then agree. Establish `heq : κ * S = κ * ((X J)⁻¹ * S)`. Take `⟨C, hC⟩` from `hκ b hbij hbm 0`.
+Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C', hC'⟩` from `hκ b' hbij' hbm' 0`. Rewrite using `[← hS']`. Use `eq_of_norm_sub_div_le (f := fun t => ∑' I, X I * w (t * (Ideal.absNorm I : ℝ))) (C := C) (C' := C') (fun t h0 h1 => ?_) (fun t h0 h1 => ?_)` and prove the remaining obligations. Use `hC t h0 h1` as an intermediate fact. Rewrite `this` using `[pow_zero, mul_one]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `hC' t h0 h1` as an intermediate fact. Rewrite `this` using `[pow_zero, mul_one]`. Then use the resulting hypothesis. Establish `hinv : (X J)⁻¹ ≠ 1` using `fun h => hXJ (inv_eq_one.1 h)`. Establish `h0 : κ * S * (1 - (X J)⁻¹) = 0` using `by linear_combination heq`. Break down `mul_eq_zero.1 h0 with h | h` into its components or cases.
-
-Conclude with `h`. Conclude with `absurd (sub_eq_zero.1 h).symm hinv`. Use `choose G hGd hGF hG1 using hweight`. Take `⟨Z, hZd, hZF, hZdiv⟩` from `exists_differentiable_eq_div_of_family (fun w => mellin w.1) G F (fun w => by`. Take `⟨a, c, ha, hac⟩` from `w.2.2`.
-
-Conclude with `differentiable_mellin_of_support_in_Icc_pos w.2.1.continuous ha hac)`. Use `hGd hGF (fun s => by`. Take `⟨w, hw, hws, hne⟩` from `exists_weight_mellin_ne_zero s`. Conclude with `⟨⟨w, hw, hws⟩, hne⟩)`. Use `⟨Z, hZd, hZF, fun hJ => ?_⟩` and prove the remaining obligations.
-
-Take `⟨w, hw, hws, hne⟩` from `exists_weight_mellin_ne_zero 1`. Rewrite using `[hZdiv ⟨w, hw, hws⟩ 1 hne, hG1 _ hJ, zero_div]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.idealCharacter_LSeries_continuation : ∀ (K : Type) [Field K] [NumberField K] (m : Ideal (𝓞 K)) (X : Ideal (𝓞 K) → ℂ) (φ : mixedSpace K → ℂ), m ≠ ⊥ → X ⊥ = 0 → (∀ I J, X (I * J) = X I * X J) → (∀ I, I ≠ ⊥ → I ⊔ m = ⊤ → ‖X I‖ = 1) → (∀ I, I ⊔ m ≠ ⊤ → X I = 0) → (∀ x y, φ (x * y) = φ x * φ y) → (∀ (t : ℝ) x, 0 < t → φ (t • x) = φ x) → ContDiffOn ℝ ∞ φ {x | mixedEmbedding.norm x ≠ 0} → (∀ x, mixedEmbedding.norm x ≠ 0 → ‖φ x‖ = 1) → (∀ β : 𝓞 K, β ≠ 0 → β - 1 ∈ m → X (Ideal.span {β}) = φ (mixedEmbedding K β)) → ∃ Z : ℂ → ℂ, Differentiable ℂ Z ∧ (∀ s : ℂ, 1 < s.re → Z s = (s - 1) * ∑' I, X I * ((Ideal.absNorm I : ℕ) : ℂ) ^ (-s)) ∧ ((∃ J, J ≠ ⊥ ∧ J ⊔ m = ⊤ ∧ X J ≠ 1) → Z 1 = 0) := by
   intro K _ _ m X φ hm hX0 hXmul hXn hXz hφmul hφh hφs hφn hβ

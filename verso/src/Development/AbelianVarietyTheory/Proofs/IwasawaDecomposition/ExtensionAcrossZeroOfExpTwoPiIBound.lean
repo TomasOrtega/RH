@@ -4,11 +4,9 @@ open Metric Filter Topology Set
 namespace GlobalTheory.PuncturedDiscExtension
 
 /- English proof (translation)
-Take `⟨B, hB⟩` from `hb`. Establish `ht : Tendsto F (𝓝[≠] (0:ℂ)) (𝓝 (limUnder (𝓝[≠] (0:ℂ)) F))`. Apply `Complex.tendsto_limUnder_of_differentiable_on_punctured_nhds_of_bounded_under hd` to reduce the goal to its premises. Use `isBoundedUnder_of_eventually_le (a := B + ‖F 0‖) ?_` and prove the remaining obligations. Use `filter_upwards [hB] with z hz`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `(norm_sub_le _ _).trans (by linarith)`. Apply `Complex.analyticAt_of_differentiable_on_punctured_nhds_of_continuousAt` to reduce the goal to its premises. Rewrite using `[eventually_nhdsWithin_iff] at hd ⊢ filter_upwards [hd] with z hz hz0`. Establish `heq : Function.update F 0 (limUnder (𝓝[≠] (0:ℂ)) F) =ᶠ[𝓝 z] F` using `by filter_upwards [isOpen_ne.mem_nhds hz0] with w hw`. Conclude with `Function.update_of_ne hw _ _`.
-
-Conclude with `(hz hz0).congr_of_eventuallyEq heq`. Conclude with `continuousAt_update_same.2 ht`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem analyticAt_update_of_bdd {F : ℂ → ℂ}
     (hd : ∀ᶠ z in 𝓝[≠] (0:ℂ), DifferentiableAt ℂ F z)
@@ -30,33 +28,27 @@ theorem analyticAt_update_of_bdd {F : ℂ → ℂ}
   · exact continuousAt_update_same.2 ht
 
 /- English proof (translation)
-Use `set g : ℂ → ℂ := fun z => (F z - ((M:ℂ) + 1))⁻¹ with hg`. Establish `hre : ∀ᶠ z in 𝓝[≠] (0:ℂ), (F z - ((M:ℂ)+1)).re ≤ -1` using `by filter_upwards [hM] with z hz`. Simplify using `only [Complex.sub_re, Complex.add_re, Complex.ofReal_re, Complex.one_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hne : ∀ᶠ z in 𝓝[≠] (0:ℂ), F z - ((M:ℂ)+1) ≠ 0` using `by filter_upwards [hre] with z hz h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hz` using `[h, Complex.zero_re]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hnorm : ∀ᶠ z in 𝓝[≠] (0:ℂ), 1 ≤ ‖F z - ((M:ℂ)+1)‖` using `by filter_upwards [hre] with z hz`. Establish `h1` using `Complex.abs_re_le_norm (F z - ((M:ℂ)+1))`. Establish `h2 : 1 ≤ |(F z - ((M:ℂ)+1)).re|`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[abs_of_neg (by linarith)]; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hgd : ∀ᶠ z in 𝓝[≠] (0:ℂ), DifferentiableAt ℂ g z` using `by filter_upwards [hd, hne] with z h1 h2`. Conclude with `(h1.sub_const _).inv h2`. Establish `hgb : ∃ B : ℝ, ∀ᶠ z in 𝓝[≠] (0:ℂ), ‖g z‖ ≤ B` using `⟨1, by filter_upwards [hnorm] with z hz`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [hg, norm_inv]`. Conclude with `inv_le_one_of_one_le₀ hz⟩`. Establish `ha` using `analyticAt_update_of_bdd hgd hgb`. Use `set g' := Function.update g 0 (limUnder (𝓝[≠] (0:ℂ)) g) with hg'`. Establish `hg'eq : ∀ z, z ≠ 0 → g' z = g z` using `fun z hz => Function.update_of_ne hz _ _`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. It suffices to derive a contradiction. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Distinguish the cases in `hL : g' 0 = 0`. It suffices to derive a contradiction. Break down `ha.eventually_constant_or_nhds_le_map_nhds with h | h` into its components or cases. Establish `hF : ∀ᶠ z in 𝓝[≠] (0:ℂ), False` using `by filter_upwards [nhdsWithin_le_nhds h, hne, self_mem_nhdsWithin] with z h1 h2 h3`. Rewrite `h1` using `[hg'eq z h3, hL]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Conclude with `inv_ne_zero h2 h1`. Conclude with `hF.exists.elim fun _ h => h`. Establish `hS : ∀ᶠ z in 𝓝 (0:ℂ), g' z = 0 ∨ ((g' z)⁻¹).re ≤ -1`. Establish `h0` using `eventually_nhdsWithin_iff.1 hre`. Use `filter_upwards [h0] with z hz`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hz0 : z = 0`. Use `left`. Rewrite using `[hz0]`. Conclude with `hL`. Use `right`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite using `[hg'eq z hz0]`. Simplify using `only [hg, inv_inv]`. Conclude with `hz hz0`. Establish `hS' : {w : ℂ | w = 0 ∨ (w⁻¹).re ≤ -1} ∈ 𝓝 (g' 0)` using `h hS`. Rewrite `hS'` using `[hL]`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Take `⟨ε, hε, hball⟩` from `Metric.mem_nhds_iff.1 hS'`. Establish `hmem : ((ε/2 : ℝ) : ℂ) ∈ ball (0:ℂ) ε`. Rewrite using `[mem_ball, dist_zero_right, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (by linarith)]`. Combine the linear equalities and inequalities to obtain the conclusion. Break down `hball hmem with h1 | h1` into its components or cases.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `: (ε/2 : ℝ) = 0` using `by exact_mod_cast h1`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `h1` using `[← Complex.ofReal_inv, Complex.ofReal_re]`. Establish `: 0 < (ε/2)⁻¹` using `inv_pos.2 (by linarith)`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hpos : 0 < ‖g' 0‖` using `norm_pos_iff.2 hL`. Establish `hc : ContinuousAt g' 0` using `ha.continuousAt`. Establish `hev : ∀ᶠ z in 𝓝 (0:ℂ), ‖g' 0‖ / 2 < ‖g' z‖` using `hc.norm.eventually (lt_mem_nhds (by linarith))`. Use `⟨‖(M:ℂ)+1‖ + 2 / ‖g' 0‖, ?_⟩` and prove the remaining obligations. Use `filter_upwards [nhdsWithin_le_nhds hev, self_mem_nhdsWithin, hne] with z h1 h2 h3`.
-
-Rewrite `h1` using `[hg'eq z h2]`. Establish `hq : 0 < ‖F z - ((M:ℂ)+1)‖` using `norm_pos_iff.2 h3`. Establish `hgz : ‖g z‖ = ‖F z - ((M:ℂ)+1)‖⁻¹` using `by simp only [hg, norm_inv]`. Rewrite `h1` using `[hgz]`. Establish `key : ‖F z - ((M:ℂ)+1)‖ ≤ 2 / ‖g' 0‖`.
-
-Establish `h4` using `mul_lt_mul_of_pos_right h1 hq`. Rewrite `h4` using `[inv_mul_cancel₀ hq.ne']`. Rewrite using `[le_div_iff₀ hpos]`. Use the polynomial consequences of the given equalities and inequalities. Establish `h5` using `norm_sub_norm_le (F z) ((M:ℂ)+1)`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem bdd_of_re_le {F : ℂ → ℂ}
     (hd : ∀ᶠ z in 𝓝[≠] (0:ℂ), DifferentiableAt ℂ F z)
@@ -139,41 +131,35 @@ namespace GlobalTheory
 open GlobalTheory.PuncturedDiscExtension in
 
 /- English proof (translation)
-Introduce `H r C N hr hH hC`. Establish `hball : ∀ᶠ z in 𝓝[≠] (0:ℂ), z ∈ ball (0:ℂ) r ∧ z ≠ 0` using `by filter_upwards [nhdsWithin_le_nhds (ball_mem_nhds (0:ℂ) hr), self_mem_nhdsWithin] with z h1 h2`. Conclude with `⟨h1, h2⟩`. Establish `hHd : ∀ᶠ z in 𝓝[≠] (0:ℂ), DifferentiableAt ℂ H z` using `by filter_upwards [hball] with z hz`. Conclude with `hH.differentiableAt ((isOpen_ball.sdiff isClosed_singleton).mem_nhds ⟨hz.1, hz.2⟩)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set f : ℂ → ℂ := fun z => 2 * (Real.pi:ℂ) * Complex.I * H z with hf`. Establish `hfd : ∀ᶠ z in 𝓝[≠] (0:ℂ), DifferentiableAt ℂ f z` using `by filter_upwards [hHd] with z hz`. Conclude with `hz.const_mul _`. Establish `hfb : ∃ B : ℝ, ∀ᶠ z in 𝓝[≠] (0:ℂ), ‖f z‖ ≤ B` using `by set Gf : ℂ → ℂ := fun z => z ^ N * Complex.exp (f z) with hGf`. Establish `hGd : ∀ᶠ z in 𝓝[≠] (0:ℂ), DifferentiableAt ℂ Gf z` using `by filter_upwards [hfd] with z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(differentiableAt_id.pow N).mul hz.cexp`. Establish `hGb : ∃ B : ℝ, ∀ᶠ z in 𝓝[≠] (0:ℂ), ‖Gf z‖ ≤ B` using `⟨C, by filter_upwards [hball] with z hz`. Establish `h` using `hC z hz.1 hz.2`. Use `show ‖z ^ N * Complex.exp (f z)‖ ≤ C`. Rewrite using `[norm_mul, norm_pow, mul_comm]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h⟩`. Establish `ha` using `analyticAt_update_of_bdd hGd hGb`. Use `set G' := Function.update Gf 0 (limUnder (𝓝[≠] (0:ℂ)) Gf) with hG'`. Establish `hG'eq : ∀ z, z ≠ 0 → G' z = Gf z` using `fun z hz => Function.update_of_ne hz _ _`. Establish `hnz : ¬ ∀ᶠ z in 𝓝 (0:ℂ), G' z = 0`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `h`. Establish `hF : ∀ᶠ z in 𝓝[≠] (0:ℂ), False` using `by filter_upwards [nhdsWithin_le_nhds h, self_mem_nhdsWithin] with z h1 h2`. Rewrite `h1` using `[hG'eq z h2]`. Conclude with `mul_ne_zero (pow_ne_zero _ h2) (Complex.exp_ne_zero _) h1`. Conclude with `hF.exists.elim fun _ h => h`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨k, u, hu, hu0, hGu⟩` from `(ha.exists_eventuallyEq_pow_smul_nonzero_iff).2 hnz`. Establish `hpos : 0 < ‖u 0‖` using `norm_pos_iff.2 hu0`. Establish `huc : ContinuousAt u 0` using `hu.continuousAt`. Establish `hup : ∀ᶠ z in 𝓝 (0:ℂ), ‖u z‖ < ‖u 0‖ + 1` using `huc.norm.eventually (gt_mem_nhds (by linarith))`. Establish `hlo : ∀ᶠ z in 𝓝 (0:ℂ), ‖u 0‖ / 2 < ‖u z‖` using `huc.norm.eventually (lt_mem_nhds (by linarith))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : ∀ᶠ z in 𝓝 (0:ℂ), ‖z‖ < 1` using `by filter_upwards [ball_mem_nhds (0:ℂ) one_pos] with z hz`. Simplify using `using hz`. Establish `hrel : ∀ᶠ z in 𝓝[≠] (0:ℂ), z ≠ 0 ∧ ‖z‖ < 1 ∧ ‖u z‖ < ‖u 0‖ + 1 ∧ ‖u 0‖ / 2 < ‖u z‖ ∧ z ^ N * Complex.exp (f z) = z ^ k * u z` using `by filter_upwards [self_mem_nhdsWithin, nhdsWithin_le_nhds (h1.and (hup.and (hlo.and hGu)))] with z hz hh`. Take `⟨ha1, ha2, ha3, ha4⟩` from `hh`. Use `⟨hz, ha1, ha2, ha3, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hG'eq z hz` as an intermediate fact. Rewrite `this` using `[ha4, sub_zero, smul_eq_mul]`. Conclude with `this.symm`. Break down `le_or_gt N k with hk | hk` into its components or cases. Use `bdd_of_re_le hfd (M := Real.log (‖u 0‖ + 1)) ?_ filter_upwards [hrel] with z hh` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Take `⟨hz, hz1, hu1, hu2, he⟩` from `hh`. Establish `hk' : z ^ k = z ^ N * z ^ (k - N)` using `by rw [← pow_add, Nat.add_sub_cancel' hk]`. Rewrite `he` using `[hk', mul_assoc]`. Establish `he2 : Complex.exp (f z) = z ^ (k - N) * u z` using `mul_left_cancel₀ (pow_ne_zero _ hz) he`. Establish `hn : ‖Complex.exp (f z)‖ ≤ ‖u 0‖ + 1`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[he2, norm_mul, norm_pow]`. Establish `: ‖z‖ ^ (k - N) ≤ 1` using `pow_le_one₀ (norm_nonneg _) hz1.le`. Use polynomial arithmetic with `[norm_nonneg (u z)]`. Rewrite `hn` using `[Complex.norm_exp]`. Use `Real.log_le_log (Real.exp_pos _) hn` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `this` using `[Real.log_exp]`. Then use the resulting hypothesis. Take `⟨B, hB⟩` from `bdd_of_re_le (F := fun z => -f z) (by filter_upwards [hfd] with z hz; exact hz.neg) (M := -Real.log (‖u 0‖ / 2)) (by filter_upwards [hrel] with z hh`. Take `⟨hz, hz1, hu1, hu2, he⟩` from `hh`. Establish `hN : z ^ N = z ^ k * z ^ (N - k)` using `by rw [← pow_add, Nat.add_sub_cancel' hk.le]`. Rewrite `he` using `[hN, mul_assoc]`.
+Use the polynomial consequences of the given equalities and inequalities. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `he2 : z ^ (N - k) * Complex.exp (f z) = u z` using `mul_left_cancel₀ (pow_ne_zero _ hz) he`. Establish `hn : ‖u 0‖ / 2 ≤ ‖Complex.exp (f z)‖`. Establish `: ‖u z‖ ≤ ‖Complex.exp (f z)‖`. Rewrite using `[← he2, norm_mul, norm_pow]`. Establish `: ‖z‖ ^ (N - k) ≤ 1` using `pow_le_one₀ (norm_nonneg _) hz1.le`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use polynomial arithmetic with `[norm_nonneg (Complex.exp (f z))]`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite `hn` using `[Complex.norm_exp]`. Use `Real.log_le_log (by positivity) hn` as an intermediate fact. Rewrite `this` using `[Real.log_exp]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [Complex.neg_re]`. Use the proof step `linarith)`. Conclude with `⟨B, by filter_upwards [hB] with z hz; simpa only [norm_neg] using hz⟩`. Take `⟨B, hB⟩` from `hfb`. Establish `hHb : ∃ B : ℝ, ∀ᶠ z in 𝓝[≠] (0:ℂ), ‖H z‖ ≤ B` using `⟨B / (2 * Real.pi), by filter_upwards [hB] with z hz`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hf' : ‖f z‖ = 2 * Real.pi * ‖H z‖`. Simplify using `only [hf, norm_mul, Complex.norm_ofNat, Complex.norm_real, Complex.norm_I, Real.norm_eq_abs, abs_of_pos Real.pi_pos]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hz` using `[hf']`. Rewrite using `[le_div_iff₀ (by positivity)]`.
-
-Use the proof step `linarith⟩`. Establish `haH` using `analyticAt_update_of_bdd hHd hHb`. Use `⟨Function.update H 0 (limUnder (𝓝[≠] (0:ℂ)) H), ?_, fun t _ ht => Function.update_of_ne ht _ _⟩` and prove the remaining obligations. Introduce `z hz`. Distinguish the cases in `h0 : z = 0`.
-
-Substitute `h0` using the available equality. Conclude with `haH.differentiableAt.differentiableWithinAt`. Establish `hzd : DifferentiableAt ℂ H z` using `hH.differentiableAt ((isOpen_ball.sdiff isClosed_singleton).mem_nhds ⟨hz, h0⟩)`. Establish `heq : Function.update H 0 (limUnder (𝓝[≠] (0:ℂ)) H) =ᶠ[𝓝 z] H` using `by filter_upwards [isOpen_ne.mem_nhds h0] with w hw`. Conclude with `Function.update_of_ne hw _ _`.
-
-Conclude with `(hzd.congr_of_eventuallyEq heq).differentiableWithinAt`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem holomorphic_extension_of_exp_two_pi_I_bound :
     ∀ (H : ℂ → ℂ) (r C : ℝ) (N : ℕ), 0 < r →

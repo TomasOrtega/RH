@@ -9,9 +9,9 @@ open scoped LaurentSeries PowerSeries
 namespace GlobalTheory.Models
 
 /- English proof (translation)
-Introduce `k _ l n m _ _ _ R D r Dt N₁ N₂ h₁ h₂ i y hy`. Take `⟨hL₁, hAB₁, hC₁⟩` from `h₁`. Take `⟨hL₂, hAB₂, hC₂⟩` from `h₂`. Establish `e12` using `CloseTw.main D Dt.h Dt.w N₁ N₂ hL₁ hL₂ hAB₁ hAB₂ i`. Establish `e21` using `CloseTw.main D Dt.h Dt.w N₂ N₁ hL₂ hL₁ hAB₂ hAB₁ i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle : N₂ i ≤ sh (-(sg l Dt.h i : ℤ)) (N₁ i)`. Establish `h'` using `sh_le_sh (-(sg l Dt.h i : ℤ)) e21`. Rewrite `h'` using `[sh_sh_eq, neg_add_cancel, sh_zero_eq]`. Then use the resulting hypothesis. Conclude with `Compare.sen_compare R (D.γ i) (D.γ_semi i) (N₁ i) (N₂ i) (hL₁ i) (hL₂ i) (hC₁ i) (hC₂ i) _ e12 hle y hy`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem sen_near_of_abc : ∀ {k : Type} [Field k] {l n m : ℕ} [Fact l.Prime] [CharP k l] [NeZero n]
     {R : RingPG k l} (D : ModPG R n (Vc k m)) {r : ℕ} (Dt : TopData n r) (N₁ N₂ : Lats k n m),

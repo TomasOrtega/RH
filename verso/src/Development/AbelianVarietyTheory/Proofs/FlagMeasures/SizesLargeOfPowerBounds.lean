@@ -6,25 +6,23 @@ open Formalism.MainNotions Formalism.BasicNotions Filter
 namespace GlobalTheory
 
 /- English proof (translation)
-Take `⟨-, hM, hK, -, hT, hC, hQ, -, -, -, -, -, -, -, -, -, hD, -⟩` from `h`. Establish `hx1` using `L.sc.one_lt_alt`. Establish `hx0 : 0 < L.sc.x` using `by linarith`. Establish `he0` using `L.sc.eps_pos`. Establish `he1` using `L.sc.eps_lt`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL0 : 0 ≤ L.sc.L` using `by unfold Scale.L; positivity`. Establish `hb1 : 1 ≤ L.sc.b` using `Real.one_le_exp hL0`. Use `⟨?_, h2, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `h1.trans (le_trans ?_ hM.1)` and prove the remaining obligations. Establish `e : Real.sqrt (L.sc.x * L.sc.delta1) = L.sc.x ^ ((1 + -(L.sc.eps / 8)) * (1 / 2))`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[Real.sqrt_eq_rpow, Real.rpow_mul hx0.le, Real.rpow_add hx0, Real.rpow_one]`. Both sides reduce to the same expression. Rewrite using `[e, ← Real.rpow_add hx0]`. Apply `Real.rpow_le_rpow_of_exponent_le hx1.le` to reduce the goal to its premises. Unfold `szTh`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `hk1 : (1 : ℝ) ≤ D.R.k`. Use `D.R.m_add_three_le_k` as an intermediate fact. Conclude with `(by omega : 1 ≤ D.R.k)` after adjusting the coercions. Establish `hk5 : (D.R.k : ℝ) ≤ L.sc.x ^ (5 : ℝ)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hK.2.trans (Real.rpow_le_rpow_of_exponent_le hx1.le ?_)` and prove the remaining obligations. Unfold `szTh`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← Real.rpow_mul hx0.le, Real.rpow_def_of_pos hx0, mul_comm]`.
+Replace the relevant objects with their definitions. Combine the linear equalities and inequalities to obtain the conclusion. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `_ ≤ L.sc.b := Real.exp_le_exp.mpr h3`. Establish `hr` using `hQ.2.2.2.2.2.2.2`. Establish `hs : Real.sqrt ((D.host.q : ℝ) * D.host.d) ≤ (D.host.q : ℝ) * D.host.d`. Establish `hn : ∀ n : ℕ, Real.sqrt n ≤ n`. Introduce `n`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Real.sqrt_le_left (by positivity)]`. Conclude with `Nat.le_self_pow two_ne_zero n` after adjusting the coercions. Conclude with `hn (D.host.q * D.host.d)` after adjusting the coercions. Establish `hn0 : (0 : ℝ) ≤ D.R.n` using `by positivity`. Establish `hqd : (0 : ℝ) ≤ (D.host.q : ℝ) * D.host.d` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Use the polynomial consequences of the given equalities and inequalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hc : D.host.rdE ≤ szCond L`. Unfold `szCond`. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hs hn0, mul_nonneg hn0 hqd]`. Use `hc.trans ?_` and prove the remaining obligations. Break down `le_total (szCond L) 1 with h | h` into its components or cases.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Conclude with `h.trans hb1`. Establish `ht : (1 : ℝ) ≤ (D.R.t : ℝ) ^ 150` using `one_le_pow₀ hT.1`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Real.sqrt_le_left (by linarith)]`. Use the polynomial consequences of the given equalities and inequalities.
-
-Use `le_trans ?_ hD.1` and prove the remaining obligations. Establish `: (D.R.k : ℝ) ≤ (D.R.N D.R.m : ℝ)`. Conclude with `Nat.le_add_right _ _` after adjusting the coercions. Use `gcongr`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sizes_large_of_power_bounds {D : D7} (L : SizeData₂ D) (h : SizesAt L) (M : ℝ)
     (h1 : M ≤ L.sc.x ^ (1 / 4 : ℝ)) (h2 : M ≤ L.sc.x ^ L.sc.eps)
@@ -87,13 +85,11 @@ theorem sizes_large_of_power_bounds {D : D7} (L : SizeData₂ D) (h : SizesAt L)
     gcongr
 
 /- English proof (translation)
-Introduce `eps Fm M`. Establish `he : 0 < eps`. Take `⟨i⟩` from `Fm.Ix_zero`. Rewrite using `[← Fm.L_eps 0 i]`. Conclude with `(Fm.L 0 i).sc.eps_pos`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e1 : ∀ᶠ x : ℝ in atTop, M ≤ x ^ (1 / 4 : ℝ)` using `(tendsto_rpow_atTop (by norm_num)).eventually_ge_atTop M`. Establish `e2 : ∀ᶠ x : ℝ in atTop, M ≤ x ^ eps` using `(tendsto_rpow_atTop he).eventually_ge_atTop M`. Establish `e3 : ∀ᶠ x : ℝ in atTop, 5 * |M| * Real.log x ≤ x ^ eps`. Use `((isLittleO_log_rpow_atTop he).const_mul_left (5 * |M|)).bound one_pos` as an intermediate fact. Use `filter_upwards [this, eventually_ge_atTop 0] with x hx h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `hx` using `[one_mul, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (Real.rpow_nonneg h0 _)]`. Conclude with `(le_abs_self _).trans hx`. Take `⟨x0, hx0⟩` from `eventually_atTop.mp (e1.and (e2.and (e3.and (eventually_gt_atTop Fm.x1))))`. Use `⟨x0, fun x hx i => ?_⟩` and prove the remaining obligations. Take `⟨a1, a2, a3, a4⟩` from `hx0 x hx`.
-
-Apply the tactic sequence `refine ⟨a4, sizes_large_of_power_bounds (Fm.L x i) (Fm.sizes x a4 i) M ?_ ?_ ?_⟩ <;>`. Apply the tactic sequence `simp only [Fm.L_x x i a4, Fm.L_eps x i] <;> assumption`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem family_sizes_eventually_large : ∀ (eps : ℝ) (Fm : FamP eps) (M : ℝ), ∃ x0 : ℝ, ∀ x ≥ x0, ∀ i : Fm.Ix x, Fm.x1 < x ∧ M ≤ ((Fm.D x i).R.m : ℝ) ∧ M ≤ (Fm.L x i).sc.L ∧ ((Fm.D x i).R.k : ℝ) ^ M ≤ (Fm.L x i).sc.b ∧ (Fm.D x i).host.rdE ≤ (Fm.L x i).sc.b ∧ ((Fm.D x i).R.k : ℝ) * ((Fm.D x i).R.m : ℝ) ^ 10 ≤ ((Fm.D x i).s.Del : ℝ) := by
   intro eps Fm M

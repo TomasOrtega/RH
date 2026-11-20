@@ -10,12 +10,12 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.LiteratureResults.
 namespace PositivityTheory.KB.BlockInvariants
 
 /- English proof (translation)
-The claim follows from `TwAG.aGood`.
+A detailed English derivation is pending.
 -/
 theorem aGood : AGood := TwAG.aGood
 
 /- English proof (translation)
-The claim follows from `swt hE hS (fft_of cplx sw1 sw2) aGood wPad weylTwoBlockMatrix wInv wOne wCyc tStab tBlk pStab blockSum_preserves_cone`.
+A detailed English derivation is pending.
 -/
 theorem swt_all (hE : SEv) (hS : SStokes) : SWt :=
   swt hE hS (fft_of cplx sw1 sw2) aGood wPad weylTwoBlockMatrix wInv wOne wCyc tStab tBlk pStab blockSum_preserves_cone

@@ -23,16 +23,16 @@ open Classical
 namespace GlobalTheory.Poinc.Extend
 
 /- English proof (translation)
-The claim follows from `le_antisymm ((pow_dvd_pow_iff h.ne_zero h.not_isUnit).1 e.dvd) ((pow_dvd_pow_iff h.ne_zero h.not_isUnit).1 e.symm.dvd)`.
+A detailed English derivation is pending.
 -/
 theorem pow_exp_eq {V : Type} [CommRing V] [IsDomain V] {ϖ : V} (h : Irreducible ϖ) {a b : ℕ}
     (e : Associated (ϖ ^ a) (ϖ ^ b)) : a = b :=
   le_antisymm ((pow_dvd_pow_iff h.ne_zero h.not_isUnit).1 e.dvd) ((pow_dvd_pow_iff h.ne_zero h.not_isUnit).1 e.symm.dvd)
 
 /- English proof (translation)
-Establish `h1 : ∀ i j, B (b i) (b i) + 2 * B (b i) (b j) + B (b j) (b j) = 0`. Introduce `i j`. Use `h i j` as an intermediate fact. Simplify using `only [map_add, LinearMap.add_apply] at this`. Rewrite `this` using `[hB (b j) (b i)]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ∀ i, B (b i) (b i) = 0` using `fun i => by have := h1 i i; linarith`. Establish `h3 : ∀ i j, B (b i) (b j) = 0` using `fun i j => by have := h1 i j; have := h2 i; have := h2 j; linarith`. Use `LinearMap.ext_on_range hb fun i => LinearMap.ext_on_range hb fun j => ?_` and prove the remaining obligations. Simplify using `using h3 i j`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem form_eq_zero {X I : Type} [AddCommGroup X] (B : LinearMap.BilinForm ℤ X) (hB : ∀ a b, B a b = B b a) (b : I → X)
     (hb : Submodule.span ℤ (Set.range b) = ⊤) (h : ∀ i j, B (b i + b j) (b i + b j) = 0) : B = 0 := by
@@ -48,9 +48,9 @@ theorem form_eq_zero {X I : Type} [AddCommGroup X] (B : LinearMap.BilinForm ℤ 
   simpa using h3 i j
 
 /- English proof (translation)
-Establish `hon` using `hφ T.D.toPre.X (Trait.finrank_le g n hn F T)`. Establish `hc : toReal T.β ∈ psdCone (id : ℤ → ℤ) T.D.toPre.X` using `GlobalTheory.PolFan.TameZ.toReal_mem_psdCone_int (mem_balForms_int.2 T.symm) fun x => by simpa using T.mono.nonneg 0 x`. Establish `hc' : toReal (pull e.toIntLinearEquiv.toLinearMap T'.β) ∈ psdCone (id : ℤ → ℤ) T.D.toPre.X` using `GlobalTheory.PolFan.TameZ.toReal_mem_psdCone_int (mem_balForms_int.2 fun a b => T'.symm _ _) fun x => by`. Simplify using `using T'.mono.nonneg 0 (e x)`. Rewrite using `[← evalR_toReal φ T.β, ← hon.homog _ hc s s.cast_nonneg, ← evalZ_pull φ (r := e.toIntLinearEquiv.toLinearMap) e.surjective, ← evalR_toReal, ← hon.homog _ hc' m m.cast_nonneg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `LinearMap.ext₂ fun a b => ?_` and prove the remaining obligations. Establish `h` using `he a b`. Simplify using `only [toReal_apply, pull_apply, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `h` after adjusting the coercions.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evalZ_prop {g n : ℕ} (hn : 2 ≤ n) {F : SFam g n (zetaAway n)} {φ : InvFun ℤ} (hφ : IsPolFan id g φ) (T T' : Trait F)
     (e : T.D.toPre.X ≃+ T'.D.toPre.X) (m s : ℕ) (he : ∀ a b, (m : ℤ) * T'.β (e a) (e b) = s * T.β a b) :
@@ -71,7 +71,7 @@ theorem evalZ_prop {g n : ℕ} (hn : 2 ≤ n) {F : SFam g n (zetaAway n)} {φ : 
   exact_mod_cast h
 
 /- English proof (translation)
-Introduce `h0`. Establish `h1` using `idlAlong_eq_top_of_notMem_support X J _ _ h`. Establish `h2` using `GlobalTheory.TraitOrder.idlAlong_comp J ξ (algebraMap R (FractionRing R))`. Rewrite `h2` using `[h0, Ideal.map_bot]`. Conclude with `bot_ne_top (h2.symm.trans h1)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem idlAlong_ne_bot {X : Scheme.{0}} (J : X.IdealSheafData) {R : Type} [CommRing R] [IsDomain R] [IsLocalRing R]
     (ξ : Sp R ⟶ X) (h : (jK R ≫ ξ) (closedPoint (FractionRing R)) ∉ J.support) : idlAlong J ξ ≠ ⊥ := by
@@ -82,11 +82,11 @@ theorem idlAlong_ne_bot {X : Scheme.{0}} (J : X.IdealSheafData) {R : Type} [Comm
   exact bot_ne_top (h2.symm.trans h1)
 
 /- English proof (translation)
-Take `⟨e, he⟩` from `hj`. Establish `hj : j = e.toRingHom.comp (algebraMap O _)` using `RingHom.ext fun a => (he a).symm`. Establish `hl : IsLocalHom (algebraMap O (AdicCompletion (maximalIdeal O) O))` using `inferInstance`. Use `⟨?_, ?_, fun V _ _ hV φ hφ => ?_⟩` and prove the remaining obligations. Rewrite using `[hj]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `e.injective.comp (AdicCompletion.of_injective (maximalIdeal O) O)`. Use `⟨fun a ha => ?_⟩` and prove the remaining obligations. Rewrite `ha` using `[← he, MulEquiv.isUnit_map]`. Conclude with `isUnit_of_map_unit _ _ ha`. Take `⟨ψ, h1, h2⟩` from `GlobalTheory.LocalCompletion.exists_localHom_adicCompletion_extend O V hV φ hφ`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `⟨ψ.comp e.symm.toRingHom, ⟨fun a ha => ?_⟩, RingHom.ext fun a => ?_⟩` and prove the remaining obligations. Use `isUnit_of_map_unit ψ _ ha` as an intermediate fact. Conclude with `(MulEquiv.isUnit_map e.symm).1 this`. Rewrite using `[← h2, RingHom.comp_apply, ← he]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isCpl_props {O R : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing O] [CommRing R] [IsLocalRing R]
     {j : O →+* R} (hj : IsCpl j) : Function.Injective j ∧ IsLocalHom j ∧
@@ -109,37 +109,33 @@ theorem isCpl_props {O R : Type} [CommRing O] [IsLocalRing O] [IsNoetherianRing 
       simp
 
 /- English proof (translation)
-Introduce `g n hn F φ hφ W hW o' Ω _ _ _ _ S ρ u hu M U₀ EE FinalForm hU V v hv D ι hD hgen T ξ hT`. Use `haveI : CharZero Ω := ArithBase.char o'`. Use `haveI : IsDedekindDomain o' := ArithBase.ded Ω`. Use `haveI := M.lft`. Use `haveI : IsLocallyNoetherian M.Z := LocallyOfFiniteType.isLocallyNoetherian M.s`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨R, _, _, _, j, Λ, _, p, c, hR, hj, hc, hper⟩` from `GlobalTheory.T.thetaModel_point_lattice_periods_traits g n _ _ F W hW o' Ω S ρ u hu M U₀ EE FinalForm hU V v hv (ξ (closedPoint T.V))`. Use `haveI := hR.1.1`. Use `haveI := hR.2`. Take `⟨jinj, jloc, jext⟩` from `isCpl_props hj`. Take `⟨ψ, ψloc, hψ⟩` from `jext T.V T.complete (Scheme.stalkClosedPointTo ξ).hom inferInstance`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hξ : spMap (ψ.comp j) ≫ M.Z.fromSpecStalk (ξ (closedPoint T.V)) = ξ`. Rewrite using `[hψ]`. Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ`. Choose the witnesses or unpack the hypotheses as in `⟨d, hd⟩ : ∃ d, FinalTheorems.stalkId D.idealSheaf (ξ (closedPoint T.V)) = Ideal.span {d} := by`. Take `⟨i, hi⟩` from `D.exists_mem (ξ (closedPoint T.V))`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨_, D.stalkId_idealSheaf i _ hi⟩`. Establish `hid : idlAlong D.idealSheaf ξ = Ideal.span {ψ (j d)}`. Rewrite using `[idlAlong, hd, Ideal.map_span, Set.image_singleton, ← hψ]`. Both sides reduce to the same expression. Take `⟨ξ₀, hξ₀, hξ₀'⟩` from `hT`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmem : (jK T.V ≫ ξ) (closedPoint (FractionRing T.V)) ∈ V`. Rewrite using `[← hξ₀]`. Conclude with `(ξ₀ (closedPoint (FractionRing T.V))).2`. Establish `hne` using `idlAlong_ne_bot D.idealSheaf ξ fun h => hD _ h hmem`. Take `⟨a, ha⟩` from `IsDiscreteValuationRing.ideal_eq_span_pow_irreducible hne T.irr`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨a, ?_, ha⟩` and prove the remaining obligations. Establish `hda : Associated (ψ (j d)) (T.ϖ ^ a)` using `Ideal.span_singleton_eq_span_singleton.1 (hid.symm.trans ha)`. Take `⟨e, he⟩` from `hper T ψ ψloc (by rw [hξ]; exact ⟨ξ₀, hξ₀, hξ₀'⟩)`. Use `choose k hk hk' using he`. Use `haveI := T.D.toPre.finX`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨N, b, hb⟩` from `Module.Finite.exists_fin (R := ℤ) (M := T.D.toPre.X)`. Take `⟨A, _, _, _, ϖ', ψ', m, m', k', hA, hϖ', ψ'inj, ψ'loc, hm, hm', hk''⟩` from `GlobalTheory.T.exists_complete_dvr_with_proportional_valuations R T.V T.ϖ T.irr ψ ψloc (Option (Fin N × Fin N)) (fun i => i.elim (j d) fun ii => p (e.symm (b ii.1 + b ii.2))) (fun i => i.elim a fun ii => k (e.symm (b ii.1 + b ii.2))) (by rintro (_ | ii); exacts [hda, hk' _])`. Take `⟨T', f, γ, finj, floc, -, hγ, hy⟩` from `GlobalTheory.T.exists_trait_moduli_of_stalk_completeDVR g n _ _ F o' Ω M (spMap S.R.val.toRingHom ≫ u) (ξ (closedPoint T.V)) A hA (ψ'.comp j) (ψ'inj.comp jinj)`. Establish `hrange : Set.range M.pt ⊆ Set.range V.ι`. Rewrite using `[Scheme.Opens.range_ι]`.
+Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `(M.pt_specializes w _).mem_open V.isOpen hmem`. Establish `hx₀` using `IsOpenImmersion.lift_fac V.ι M.pt hrange`. Take `⟨e', he'⟩` from `hper T' (f.comp ψ') inferInstance ⟨spMap γ ≫ IsOpenImmersion.lift V.ι M.pt hrange, by rw [Category.assoc, hx₀]; exact hγ.symm, by rw [Category.comp_id, Category.assoc, hv _ hx₀, hy]⟩`. Take `⟨r, hr⟩` from `IsDiscreteValuationRing.associated_pow_irreducible ((map_ne_zero_iff f finj).2 hϖ'.ne_zero) T'.irr`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hr0 : r ≠ 0`. Introduce and unpack `rfl`. Rewrite `hr` using `[pow_zero]`. Conclude with `hϖ'.not_isUnit ((isUnit_map_iff f ϖ').1 (associated_one_iff_isUnit.1 hr))`. Establish `hpow : ∀ {x : A} {l : ℕ}, Associated x (ϖ' ^ l) → Associated (f x) (T'.ϖ ^ (r * l))`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `x l h`. Establish `h1` using `h.map f`. Rewrite `h1` using `[map_pow]`. Rewrite using `[pow_mul]`. Conclude with `h1.trans hr.pow_pow`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨a', ha', hid'⟩` from `hgen T' _ γ hγ hy`. Rewrite `hid'` using `[GlobalTheory.TraitStalk.idlAlong_spMap_fromSpecStalk _ _ _ _ _ inferInstance, hd, Ideal.map_span, Set.image_singleton, Ideal.span_singleton_eq_span_singleton]`. Establish `h0` using `hk'' none`. Establish `ea : a' = r * k' none` using `pow_exp_eq T'.irr (hid'.symm.trans (hpow h0.1))`. Establish `h02 : m * k' none = m' * a` using `h0.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Set `E` to `e.symm.trans e'`. Establish `hz` using `form_eq_zero ((m : ℤ) • pull E.toIntLinearEquiv.toLinearMap T'.β - ((m' * r : ℕ) : ℤ) • T.β) (fun x y => by`. Simplify using `only [LinearMap.sub_apply, LinearMap.smul_apply, pull_apply]`. Rewrite using `[T.symm x y, T'.symm]) b hb (fun i i' => by`. Take `⟨l, hl, hl'⟩` from `he' (e.symm (b i + b i'))`.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨h1, h2⟩` from `hk'' (some (i, i'))`. Establish `h3 : l = r * k' (some (i, i'))` using `pow_exp_eq T'.irr (hl'.symm.trans (hpow h1))`. Establish `h4` using `hk (e.symm (b i + b i'))`. Rewrite `h4` using `[e.apply_symm_apply]`. Establish `h5 : (m : ℤ) * k' (some (i, i')) = m' * k (e.symm (b i + b i'))` using `by exact_mod_cast h2`.
+Establish an intermediate fact. Establish an intermediate fact. Check the signs of the components of the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc0 : (c : ℤ) ≠ 0` using `by omega`. Express the relevant statement in the definitionally equal form `(m : ℤ) * T'.β (e' (e.symm (b i + b i'))) (e' (e.symm (b i + b i'))) - ((m' * r : ℕ) : ℤ) * T.β (b i + b i') (b i + b i') = 0`. Use `mul_left_cancel₀ hc0 ?_` and prove the remaining obligations. Rewrite `hl` using `[h3]`. Move the coercions through the operations in `at hl ⊢`.
-
-Take the linear combination `(-(m : ℤ)) * hl + r * h5 + m' * r * h4)`. Establish `hev` using `evalZ_prop (by omega) hφ T T' E m (m' * r) fun x y => sub_eq_zero.1 (congrArg (fun B : LinearMap.BilinForm ℤ T.D.toPre.X => B x y) hz)`. Establish `h02' : (m : ℝ) * k' none = m' * a` using `by exact_mod_cast h02`. Establish `hmr : ((m' : ℝ) * r) ≠ 0`. Establish `: m' ≠ 0` using `by omega`.
-
-Check the signs of the components of the expression. Use `mul_left_cancel₀ hmr ?_` and prove the remaining obligations. Rewrite `ha'` using `[ea]`. Move the coercions through the operations in `at ha' hev`. Take the linear combination `(-(r : ℝ)) * h02' + m * ha' + ι * hev`.
+Move the embeddings inside the algebraic operations. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem orders_extend : ∀ (g n : ℕ), 3 ≤ n → ∀ (F : SFam g n (zetaAway n)) (φ : InvFun ℤ), IsPolFan id g φ → ∀ (W : Matrix (Fin 8) (Fin 8) ℤ), IsE8 W → ∀ (o' Ω : Type) [CommRing o'] [Field Ω] [Algebra o' Ω] [ArithBase o' Ω] (S : ThetaSys o' Ω) (ρ : S.Real) (u : Sp S.R ⟶ F.X), SharpOver F W ρ.P u → ∀ (M : RatModel o' Ω) (U₀ : M.Z.Opens) (EE : M.Lat S.J) (FinalForm : ZHOut ρ M U₀ EE), S.Over₀ M U₀ → ∀ (V : M.Z.Opens) (v : V.toScheme ⟶ F.X), (∀ x : Sp Ω ⟶ V.toScheme, x ≫ V.ι = M.pt → x ≫ v = spMap S.R.val.toRingHom ≫ u) → ∀ (D : GlobalTheory.EffCartierData M.Z) (ι : ℕ), (∀ z ∈ D.idealSheaf.support, z ∉ V) → (∀ (T : Trait F) (ξ : Sp T.V ⟶ M.Z) (γ : Ω →+* FractionRing T.V), jK T.V ≫ ξ = spMap γ ≫ M.pt → T.y = spMap γ ≫ spMap S.R.val.toRingHom ≫ u → ∃ a : ℕ, (a : ℝ) = ι * φ.evalZ T.β ∧ idlAlong D.idealSheaf ξ = Ideal.span {T.ϖ ^ a}) → ∀ (T : Trait F) (ξ : Sp T.V ⟶ M.Z), ThroughU M V v (𝟙 F.X) T ξ → ∃ a : ℕ, (a : ℝ) = ι * φ.evalZ T.β ∧ idlAlong D.idealSheaf ξ = Ideal.span {T.ϖ ^ a} := by
   intro g n hn F φ hφ W hW o' Ω _ _ _ _ S ρ u hu M U₀ EE FinalForm hU V v hv D ι hD hgen T ξ hT

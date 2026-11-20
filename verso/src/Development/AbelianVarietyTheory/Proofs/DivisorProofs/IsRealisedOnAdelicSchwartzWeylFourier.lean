@@ -17,7 +17,7 @@ namespace GlobalTheory.AdelicSvN.Weyl
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Rewrite using `[Algebra.trace_prod_apply, PI.ProdFormulaE.Tr.trace_pi, PI.ProdFormulaE.Tr.trace_pi, mixedTrace_apply]`. Simplify using `only [Algebra.trace_complex_apply, Algebra.trace_self_apply]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem trace_eq_mixedTrace (m : mixedEmbedding.mixedSpace F) :
     Algebra.trace ℝ (mixedEmbedding.mixedSpace F) m = mixedTrace F m := by
@@ -26,11 +26,11 @@ theorem trace_eq_mixedTrace (m : mixedEmbedding.mixedSpace F) :
   simp only [Algebra.trace_complex_apply, Algebra.trace_self_apply]
 
 /- English proof (translation)
-Establish `hat : At (evI F) (infiniteAdeleInl z : AF F)`. Introduce `u hu`. Establish `h1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (by rw [map_zero]; exact hu)`. Use `Prod.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u.1 * _ = 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[h1, zero_mul]`. Express the relevant statement in the definitionally equal form `u.2 * 0 = 0`. Rewrite using `[mul_zero]`. Establish `h2 : adelicChar F (infiniteAdeleInl z) = Real.fourierChar (-infiniteTrace F z)` using `adelicChar_infinite z`. Rewrite using `[hψ.2.2 _ hat, h2, trace_eq_mixedTrace, ← mixedTrace_homeomorphMixedSpace, homeomorphMixedSpace_apply, Real.fourierChar_apply]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Establish `: evI F (infiniteAdeleInl z) = InfiniteAdeleRing.ringEquiv_mixedSpace F z` using `rfl`. Rewrite using `[this]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem isStd_infinite {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (z : InfiniteAdeleRing F) :
     ψ (infiniteAdeleInl z) = (adelicChar F (infiniteAdeleInl z) : ℂ) := by
@@ -52,9 +52,9 @@ theorem isStd_infinite {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (z : InfiniteA
   ring
 
 /- English proof (translation)
-Establish `hfin : ∀ y : FiniteAdeleRing (𝓞 F) F, ψ (finiteAdeleInr y) = (adelicChar F (finiteAdeleInr y) : ℂ)`. Introduce `y`. Use `(GroundTheory.Automorphic.AdelicGLn.denseRange_algebraMap_finiteAdeleRing F).induction_on (p := fun y => ψ (finiteAdeleInr y) = (adelicChar F (finiteAdeleInr y) : ℂ)) y (isClosed_eq (hψ.1.comp continuous_finiteAdeleInr) (continuous_subtype_val.comp ((continuous_adelicChar (K := F …` and prove the remaining obligations. Establish `hs` using `infiniteAdeleInl_add_finiteAdeleInr (algebraMap F (AF F) k)`. Rewrite `hs` using `[adeleRing_algebraMap_fst, adeleRing_algebraMap_snd]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (finiteAdeleInr (algebraMap F (FiniteAdeleRing (𝓞 F) F) k) : AF F) = algebraMap F (AF F) k + infiniteAdeleInl (-algebraMap F (InfiniteAdeleRing F) k)`. Rewrite using `[← hs, map_neg]`. Normalize the expressions using the abelian group laws. Rewrite using `[e, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, hψ.2.1, adelicChar_algebraMap, one_mul, one_mul, isStd_infinite hψ]`. Rewrite using `[← infiniteAdeleInl_add_finiteAdeleInr a, AddChar.map_add_eq_mul, AddChar.map_add_eq_mul, Circle.coe_mul, isStd_infinite hψ, hfin]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isStd_eq {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (a : AF F) : ψ a = (adelicChar F a : ℂ) := by
   have hfin : ∀ y : FiniteAdeleRing (𝓞 F) F,
@@ -77,7 +77,7 @@ theorem isStd_eq {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (a : AF F) : ψ a = 
 variable {κ : Type} [Fintype κ]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Simplify using `only [pureA, schwartzBruhatTensorPi]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem pureA_eq (f : SInf F κ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) :
     pureA F f g = schwartzBruhatTensorPi f g := by
@@ -87,14 +87,14 @@ theorem pureA_eq (f : SInf F κ) (g : (κ → FiniteAdeleRing (𝓞 F) F) → �
 
 omit [Fintype κ] in
 /- English proof (translation)
-The claim follows from `(mem_finiteSchwartzBruhatPi F).symm`.
+A detailed English derivation is pending.
 -/
 theorem mem_SB_iff (g : (κ → FiniteAdeleRing (𝓞 F) F) → ℂ) :
     g ∈ SB (κ → FiniteAdeleRing (𝓞 F) F) ↔ g ∈ finiteSchwartzBruhatPi F :=
   (mem_finiteSchwartzBruhatPi F).symm
 
 /- English proof (translation)
-Unfold `schA schwartzBruhatPi`. Use `congr 1`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem schA_eq : schA F κ = schwartzBruhatPi F κ := by
   unfold schA schwartzBruhatPi
@@ -107,7 +107,7 @@ def fourierLin : schA F κ →ₗ[ℂ] (κ → AF F) → ℂ where
   map_smul' c φ := adelicFourierPi_smul c φ.1
 
 /- English proof (translation)
-Establish `h0 : (0 : Matrix κ κ F).map (algebraMap F (AF F)) = 0` using `Matrix.map_zero _ (map_zero _)`. Establish `h1 : (1 : Matrix κ κ F).map (algebraMap F (AF F)) = 1` using `Matrix.map_one _ (map_zero _) (map_one _)`. Establish `h2 : (-1 : Matrix κ κ F).map (algebraMap F (AF F)) = -1` using `by rw [Matrix.map_neg _ (map_neg _), h1]`. Simplify using `only [act, Matrix.fromBlocks_map, h0, h1, h2, Matrix.fromBlocks_mulVec, Sum.elim_comp_inl, Sum.elim_comp_inr, Matrix.zero_mulVec, Matrix.one_mulVec, Matrix.neg_mulVec, zero_add, add_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem act_weyl [DecidableEq κ] (w : (κ → AF F) × (κ → AF F)) :
     act (Matrix.fromBlocks (0 : Matrix κ κ F) 1 (-1) 0) w = (w.2, -w.1) := by
@@ -118,7 +118,7 @@ theorem act_weyl [DecidableEq κ] (w : (κ → AF F) × (κ → AF F)) :
     Matrix.zero_mulVec, Matrix.one_mulVec, Matrix.neg_mulVec, zero_add, add_zero]
 
 /- English proof (translation)
-Set `_ : MeasurableSpace (AdeleRing (𝓞 F) F)` to `measurableSpace_adeleRing F`. Establish `: BorelSpace (AdeleRing (𝓞 F) F)` using `borelSpace_adeleRing F`. Establish `: BorelSpace (κ → AdeleRing (𝓞 F) F)` using `Pi.borelSpace`. Establish `: MeasurableAdd (κ → AdeleRing (𝓞 F) F)` using `ContinuousAdd.measurableAdd`. Conclude with `integral_add_right_eq_self f a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem integral_add_right_pi (f : (κ → AF F) → ℂ) (a : κ → AF F) :
     ∫ x, f (x + a) ∂(adeleMeasurePi F) = ∫ x, f x ∂(adeleMeasurePi F) := by
@@ -129,11 +129,11 @@ theorem integral_add_right_pi (f : (κ → AF F) → ℂ) (a : κ → AF F) :
   exact integral_add_right_eq_self f a
 
 /- English proof (translation)
-Use function extensionality and compare the values at `y`. Simplify using `only [adelicFourierPi, schr, ← isStd_eq hψ]`. Rewrite using `[← integral_const_mul, ← integral_add_right_pi _ (-w.1)]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun x => ?_)` and prove the remaining obligations. Establish `h2 : ⅟(2 : AF F) + ⅟(2 : AF F) = 1` using `invOf_two_add_invOf_two`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `e : ((x + -w.1) ⬝ᵥ w.2 + ⅟(2 : AF F) * (w.1 ⬝ᵥ w.2)) + (x + -w.1) ⬝ᵥ y = (y ⬝ᵥ -w.1 + ⅟(2 : AF F) * (w.2 ⬝ᵥ -w.1)) + x ⬝ᵥ (y + w.2)`. Simplify using `only [add_dotProduct, dotProduct_add, neg_dotProduct, dotProduct_neg, dotProduct_comm y w.1, dotProduct_comm w.2 w.1]`. Take the linear combination `(w.1 ⬝ᵥ w.2) * h2`. Establish `e'` using `congrArg ψ e`. Rewrite `e'` using `[AddChar.map_add_eq_mul ψ _ ((x + -w.1) ⬝ᵥ y), AddChar.map_add_eq_mul ψ _ (x ⬝ᵥ (y + w.2))]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [neg_add_cancel_right]`. Express the relevant statement in the definitionally equal form `_ * _ * ψ ((x + -w.1) ⬝ᵥ y) = _ * (_ * ψ (x ⬝ᵥ (y + w.2)))`. Take the linear combination `φ x * e'`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem fourier_schr {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (w : (κ → AF F) × (κ → AF F)) (φ : (κ → AF F) → ℂ) :
     adelicFourierPi F (schr ψ w φ) = schr ψ (w.2, -w.1) (adelicFourierPi F φ) := by
@@ -154,13 +154,13 @@ theorem fourier_schr {ψ : AddChar (AF F) ℂ} (hψ : IsStd ψ) (w : (κ → AF 
   linear_combination φ x * e'
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ _`. Establish `hk : ∀ φ ∈ schA F κ, adelicFourierPi F φ ∈ schA F κ` using `fun φ hφ => by`. Rewrite `hφ`, the goal using `[schA_eq]`. Conclude with `adelicFourierPi_mem_schwartzBruhatPi hφ`. Establish `hinv : ∀ φ ∈ schA F κ, adelicFourierPi F (adelicFourierPi F φ) = fun x => φ (-x)` using `fun φ hφ => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hφ` using `[schA_eq]`. Conclude with `adelicFourierPi_adelicFourierPi hφ`. Use `⟨adelicFourierPi F, hk, fun φ hφ => ⟨_, hk _ (hk _ (hk _ hφ)), ?_⟩, fun l hl => ?_, fun w φ _ => ?_⟩` and prove the remaining obligations. Rewrite using `[hinv _ (hk _ (hk _ hφ)), hinv _ hφ]`. Simplify using `only [neg_neg]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨T, hT⟩` from `LinearMap.exists_extend (fourierLin (F := F) (κ := κ))`. Establish `hT' : ∀ φ ∈ schA F κ, T φ = adelicFourierPi F φ` using `fun φ hφ => LinearMap.congr_fun hT ⟨φ, hφ⟩`. Use `⟨l ∘ₗ T, fun g hg => ?_, fun φ hφ => by rw [LinearMap.comp_apply, hT' φ hφ]⟩` and prove the remaining obligations. Take `⟨U, hU⟩` from `hl (finiteFourierPi F g) ((mem_SB_iff _).2 (finiteFourierPi_mem ((mem_SB_iff g).1 hg)))`. Use `⟨U.comp (mixedFourierPiSchwartz F), fun f => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[LinearMap.comp_apply, hT' _ (Submodule.subset_span ⟨f, g, hg, rfl⟩), ContinuousLinearMap.comp_apply, ← hU, pureA_eq, pureA_eq, adelicFourierPi_schwartzBruhatTensorPi]`. Rewrite using `[act_weyl, fourier_schr hψ]`.
+A detailed English derivation is pending.
 -/
 theorem realised_weyl : ∀ (F : Type) [Field F] [NumberField F] (ψ : AddChar (AF F) ℂ), IsStd ψ → ∀ (κ : Type) [Fintype κ]
     [DecidableEq κ], Realised ψ (Matrix.fromBlocks (0 : Matrix κ κ F) 1 (-1) 0) := by

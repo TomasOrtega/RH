@@ -12,12 +12,12 @@ namespace GlobalTheory.UnitarySwap
 variable {L : Type} [Field L] [Valued L (WithZero (Multiplicative ℤ))]
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_int (x : L) : x ∈ intL L ↔ Valued.v x ≤ 1 := Iff.rfl
 
 /- English proof (translation)
-Establish `h : Valued.v (1 - x) = 1` using `Valuation.map_one_sub_of_lt _ hx`. Use `⟨fun h0 => ?_, ?_⟩` and prove the remaining obligations. Rewrite `h` using `[h0, map_zero]`. Conclude with `zero_ne_one h`. Rewrite using `[mem_int, map_inv₀, h, inv_one]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inv_one_sub_mem {x : L} (hx : Valued.v x < 1) : (1 - x) ≠ 0 ∧ (1 - x)⁻¹ ∈ intL L := by
   have h : Valued.v (1 - x) = 1 := Valuation.map_one_sub_of_lt _ hx
@@ -26,7 +26,7 @@ theorem inv_one_sub_mem {x : L} (hx : Valued.v x < 1) : (1 - x) ≠ 0 ∧ (1 - x
   · rw [mem_int, map_inv₀, h, inv_one]
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Conclude with `lt_of_le_of_lt (mul_le_of_le_one_right' hy) hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_lt_one {x y : L} (hx : Valued.v x < 1) (hy : y ∈ intL L) : Valued.v (x * y) < 1 := by
   rw [map_mul]
@@ -42,7 +42,7 @@ def SelfDual (B : V →ₛₗ[σ] V →ₗ[L] L) (W : Submodule L V) (Λ : Set V
 variable {B : V →ₛₗ[σ] V →ₗ[L] L} {W : Submodule L V} {Λ : Set V}
 
 /- English proof (translation)
-Rewrite `hu`, `hv`, the goal using `[h]`. Use `⟨W.add_mem hu.1 hv.1, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `add_mem (hu.2 w hw) (hv.2 w hw)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SelfDual.add (h : SelfDual B W Λ) {u v : V} (hu : u ∈ Λ) (hv : v ∈ Λ) : u + v ∈ Λ := by
   rw [h] at hu hv ⊢
@@ -51,7 +51,7 @@ theorem SelfDual.add (h : SelfDual B W Λ) {u v : V} (hu : u ∈ Λ) (hv : v ∈
   exact add_mem (hu.2 w hw) (hv.2 w hw)
 
 /- English proof (translation)
-Rewrite `hv`, the goal using `[h]`. Use `⟨W.smul_mem c hv.1, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul]`. Conclude with `mul_mem (hσ c hc) (hv.2 w hw)`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem SelfDual.smul (h : SelfDual B W Λ) (hσ : ∀ x ∈ intL L, σ x ∈ intL L) {c : L} (hc : c ∈ intL L)
     {v : V} (hv : v ∈ Λ) : c • v ∈ Λ := by
@@ -61,15 +61,15 @@ theorem SelfDual.smul (h : SelfDual B W Λ) (hσ : ∀ x ∈ intL L, σ x ∈ in
   exact mul_mem (hσ c hc) (hv.2 w hw)
 
 /- English proof (translation)
-The claim follows from `((h u).1 hu).2 v hv`.
+A detailed English derivation is pending.
 -/
 theorem SelfDual.pair (h : SelfDual B W Λ) {u v : V} (hu : u ∈ Λ) (hv : v ∈ Λ) : B u v ∈ intL L :=
   ((h u).1 hu).2 v hv
 
 /- English proof (translation)
-Take `⟨h0, hi⟩` from `inv_one_sub_mem hs`. Establish `hc : (B y v - B y y * B x v) * (1 - B x x * B y y)⁻¹ ∈ intL L` using `mul_mem (sub_mem (h.pair hy hv) (mul_mem (h.pair hy hy) (h.pair hx hv))) hi`. Establish `hd : (B x v - B x x * B y v) * (1 - B x x * B y y)⁻¹ ∈ intL L` using `mul_mem (sub_mem (h.pair hx hv) (mul_mem (h.pair hx hx) (h.pair hy hv))) hi`. Use `⟨_, hc, _, hd, v + ((-((B y v - B y y * B x v) * (1 - B x x * B y y)⁻¹)) • x + (-((B x v - B x x * B y v) * (1 - B x x * B y y)⁻¹)) • y), h.add hv (h.add (h.smul hσ (neg_mem hc) hx) (h.smul hσ (neg_mem hd) hy)), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_smul, smul_eq_mul, hxy]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Take the linear combination `(-(B x v)) * mul_inv_cancel₀ h0`. Simplify using `only [map_add, map_smul, smul_eq_mul, hyx]`. Take the linear combination `(-(B y v)) * mul_inv_cancel₀ h0`. Use `module`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem SelfDual.decomp (h : SelfDual B W Λ) (hσ : ∀ x ∈ intL L, σ x ∈ intL L)
     {x y : V} (hx : x ∈ Λ) (hy : y ∈ Λ) (hxy : B x y = 1) (hyx : B y x = 1)
@@ -93,17 +93,17 @@ def perp (B : V →ₛₗ[σ] V →ₗ[L] L) (W : Submodule L V) (e f : V) : Sub
   W ⊓ (LinearMap.ker (B e) ⊓ LinearMap.ker (B f))
 
 /- English proof (translation)
-Simplify using `[perp]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_perp {e f v : V} : v ∈ perp B W e f ↔ v ∈ W ∧ B e v = 0 ∧ B f v = 0 := by
   simp [perp]
 
 /- English proof (translation)
-Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨hv, hv'⟩`. Conclude with `⟨hv', fun w hw => h.pair hv hw.1⟩`. Introduce and unpack `⟨hv, hv'⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Use `⟨(h v).2 ⟨(mem_perp.1 hv).1, fun w hw => ?_⟩, hv⟩` and prove the remaining obligations. Take `⟨c, -, d, -, w₀, hw₀, h1, h2, rfl⟩` from `hdec w hw`. Establish `e1 : B v x = 0` using `by rw [← hB, hx v (mem_perp.1 hv).2.1, map_zero]`. Establish `e2 : B v y = 0` using `by rw [← hB, hy v (mem_perp.1 hv).2.2, map_zero]`. Simplify using `only [map_add, map_smul, e1, e2, smul_zero, zero_add]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `hv' w₀ ⟨hw₀, mem_perp.2 ⟨((h w₀).1 hw₀).1, h1, h2⟩⟩`.
+A detailed English derivation is pending.
 -/
 theorem SelfDual.inter (h : SelfDual B W Λ) (hB : ∀ u v, σ (B u v) = B v u) {e f x y : V}
     (hx : ∀ v, B e v = 0 → B x v = 0) (hy : ∀ v, B f v = 0 → B y v = 0)
@@ -126,13 +126,13 @@ def refl (B : V →ₛₗ[σ] V →ₗ[L] L) (w : V) (μ : L) : V →ₗ[L] V :=
   LinearMap.id - μ⁻¹ • (B w).smulRight w
 
 /- English proof (translation)
-Simplify using `[refl, mul_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem refl_apply (w : V) (μ : L) (v : V) : refl B w μ v = v - (μ⁻¹ * B w v) • w := by
   simp [refl, mul_smul]
 
 /- English proof (translation)
-Establish `hμ' : σ μ ≠ 0` using `(map_ne_zero σ).2 hμ`. Simplify using `only [refl_apply, map_sub, map_smulₛₗ, LinearMap.sub_apply, LinearMap.smul_apply, smul_eq_mul, map_mul, map_inv₀, hB, hw, RingHom.id_apply]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem refl_isom (hB : ∀ u v, σ (B u v) = B v u) (w : V) (μ : L) (hμ : μ ≠ 0)
     (hw : B w w = μ + σ μ) (u v : V) : B (refl B w μ u) (refl B w μ v) = B u v := by
@@ -143,13 +143,13 @@ theorem refl_isom (hB : ∀ u v, σ (B u v) = B v u) (w : V) (μ : L) (hμ : μ 
   ring
 
 /- English proof (translation)
-Establish `hfe : B f e = π⁻¹` using `by rw [← hB, hef, map_inv₀, hσπ]`. Establish `ht : τ * (B e e + B f f) ∈ intL L` using `mul_mem hτ (add_mem he hf)`. Take `⟨h0, hi⟩` from `inv_one_sub_mem (mul_lt_one hπ ht)`. Use `set t := τ * (B e e + B f f) with htdef`. Establish `hfix : ∀ v, B e v = 0 → B f v = 0 → refl B (e - f) (-(π⁻¹ * (1 - π * t))) v = v`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v h1 h2`. Rewrite using `[refl_apply]`. Simplify using `[h1, h2]`. Use `⟨refl B (e - f) (-(π⁻¹ * (1 - π * t))), refl_isom hB _ _ ?_ ?_, hfix, (t - B e e) * (1 - π * t)⁻¹, mul_mem (sub_mem ht he) hi, (t - B f f) * (1 - π * t)⁻¹, mul_mem (sub_mem ht hf) hi, ?_, ?_⟩` and prove the remaining obligations. Conclude with `neg_ne_zero.2 (mul_ne_zero (inv_ne_zero hπ0) h0)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `: σ τ = 1 - τ` using `by rw [← hτ1]; ring`. Simplify using `only [htdef, map_sub, LinearMap.sub_apply, hef, hfe, map_neg, map_mul, map_inv₀, hσπ, map_one, map_add, hB, this]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[refl_apply]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `only [map_sub, LinearMap.sub_apply, hfe]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`. Rewrite using `[refl_apply]`. Simplify using `only [map_sub, LinearMap.sub_apply, hef]`. Apply the tactic sequence `match_scalars <;> field_simp <;> ring`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. A detailed English derivation is pending.
 -/
 theorem exists_refl (hB : ∀ u v, σ (B u v) = B v u) {τ : L} (hτ : τ ∈ intL L)
     (hτ1 : τ + σ τ = 1) {π : L} (hπ0 : π ≠ 0) (hπ : Valued.v π < 1) (hσπ : σ π = π) {e f : V}
@@ -182,53 +182,47 @@ theorem exists_refl (hB : ∀ u v, σ (B u v) = B v u) {τ : L} (hτ : τ ∈ in
     match_scalars <;> field_simp <;> ring
 
 /- English proof (translation)
-Establish `hσO : ∀ x ∈ intL L, σ x ∈ intL L` using `fun x hx => by rw [mem_int, hσ]; exact hx`. Establish `hϖ0 : ϖ ≠ 0`. Introduce `h`. Rewrite `hϖ` using `[h, map_zero]`. Conclude with `WithZero.exp_ne_zero hϖ.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hϖ1 : Valued.v ϖ < 1`. Rewrite using `[hϖ, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Evaluate the numerical expressions. Proceed by induction on `m with`. Consider the case `zero => intro W hW`.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Proceed by induction. Treat this case separately. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `succ m ih`. Introduce `W hW Λ Λ' hΛ hΛ' hN`. Establish `hback : ∀ N : ℕ, (∀ v ∈ Λ', ϖ ^ N • v ∈ Λ) → ∀ v ∈ Λ, ϖ ^ N • v ∈ Λ'`. Introduce `N h v hv`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hΛ' _).2 ⟨W.smul_mem _ ((hΛ v).1 hv).1, fun w hw => ?_⟩` and prove the remaining obligations. Use `hΛ.pair hv (h w hw)` as an intermediate fact. Simplify `this` using `[map_smulₛₗ, hσϖ]`. Establish `ha` using `Nat.find_spec hN`. Break down `h0 : Nat.find hN with _ | b` into its components or cases.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[h0]`. Use `⟨LinearMap.id, fun _ _ => rfl, fun _ _ => rfl, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `using hback 0 ha v hv`. Simplify using `using ha v hv`. Establish `hb : ¬ ∀ v ∈ Λ', ϖ ^ b • v ∈ Λ` using `Nat.find_min hN (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `ha` using `[h0]`. Use `push Not at hb`. Take `⟨e, he, hne⟩` from `hb`. Establish `heW : e ∈ W` using `((hΛ' e).1 he).1`. Rewrite `hne` using `[hΛ]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `push Not at hne`. Take `⟨y, hy, hy'⟩` from `hne (W.smul_mem _ heW)`. Use `set π := ϖ ^ (b + 1) with hπdef`. Establish `hπ0 : π ≠ 0` using `pow_ne_zero _ hϖ0`. Establish `hσπ : σ π = π` using `by rw [hπdef, map_pow, hσϖ]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hπ1 : Valued.v π < 1`. Rewrite using `[hπdef, map_pow]; exact pow_lt_one₀ zero_le hϖ1 (by omega)`. Establish `hπO : π ∈ intL L` using `hπ1.le`. Establish `hπe : π • e ∈ Λ` using `ha e he`. Establish `hunit : Valued.v (π * B e y) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1 : Valued.v (π * B e y) ≤ 1`. Use `hΛ.pair hπe hy` as an intermediate fact. Simplify `this` using `[map_smulₛₗ, hσπ, mem_int]`. Use `le_antisymm h1 ?_` and prove the remaining obligations. Establish `h2 : 1 < Valued.v (ϖ ^ b * B e y)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hy'` using `[mem_int, not_le]`. Simplify `hy'` using `[map_smulₛₗ, hσϖ]`. Establish `h3 : π * B e y = ϖ * (ϖ ^ b * B e y)` using `by rw [hπdef]; ring`. Rewrite using `[h3, map_mul, hϖ]`. Establish `h4 : Valued.v (ϖ ^ b * B e y) ≠ 0` using `(lt_trans zero_lt_one h2).ne'`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Rewrite `h2` using `[← WithZero.exp_log h4, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_log h4, ← WithZero.exp_add, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `hu0 : π * B e y ≠ 0`. Introduce `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite `hunit` using `[h, map_zero]`. Conclude with `zero_ne_one hunit`. Establish `hey : B e y ≠ 0` using `right_ne_zero_of_mul hu0`. Choose the witnesses or unpack the hypotheses as in `⟨f, hf, hef⟩ : ∃ f ∈ Λ, B e f = π⁻¹ := by`. Use `⟨(π * B e y)⁻¹ • y, hΛ.smul hσO (by rw [mem_int, map_inv₀, hunit, inv_one]) hy, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_smul, smul_eq_mul]`. Clear the denominators using the available nonvanishing facts. Establish `hfe : B f e = π⁻¹` using `by rw [← hB, hef, map_inv₀, hσπ]`. Establish `hfW : f ∈ W` using `((hΛ f).1 hf).1`. Establish `hπf : π • f ∈ Λ'` using `hback _ ha f hf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hee` using `hΛ'.pair he he`. Establish `hff` using `hΛ.pair hf hf`. Establish `hsm : ∀ x v, B (π • x) v = π * B x v`. Introduce `x v`. Simplify using `[map_smulₛₗ, hσπ]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hsmall : Valued.v (π * (π * (B e e * B f f))) < 1` using `mul_lt_one hπ1 (mul_mem hπO (mul_mem hee hff))`. Establish `hdec : ∀ v ∈ Λ, ∃ c ∈ intL L, ∃ d ∈ intL L, ∃ v₀ ∈ Λ, B e v₀ = 0 ∧ B f v₀ = 0 ∧ v = c • (π • e) + d • f + v₀`. Introduce `v hv`. Take `⟨c, hc, d, hd, v₀, hv₀, h1, h2, h3⟩` from `hΛ.decomp hσO hπe hf (by rw [hsm, hef, mul_inv_cancel₀ hπ0]) (by rw [map_smul, hfe, smul_eq_mul, mul_inv_cancel₀ hπ0]) (by convert hsmall using 2; rw [hsm, map_smul, smul_eq_mul]; ring) hv`. Rewrite `h1` using `[hsm]`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨c, hc, d, hd, v₀, hv₀, (mul_eq_zero.1 h1).resolve_left hπ0, h2, h3⟩`. Establish `hdec' : ∀ v ∈ Λ', ∃ c ∈ intL L, ∃ d ∈ intL L, ∃ v₀ ∈ Λ', B e v₀ = 0 ∧ B f v₀ = 0 ∧ v = c • e + d • (π • f) + v₀`. Introduce `v hv`. Take `⟨c, hc, d, hd, v₀, hv₀, h1, h2, h3⟩` from `hΛ'.decomp hσO he hπf (by rw [map_smul, hef, smul_eq_mul, mul_inv_cancel₀ hπ0]) (by rw [hsm, hfe, mul_inv_cancel₀ hπ0]) (by convert hsmall using 2; rw [hsm, map_smul, smul_eq_mul]; ring) hv`. Rewrite `h2` using `[hsm]`.
+Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨c, hc, d, hd, v₀, hv₀, h1, (mul_eq_zero.1 h2).resolve_left hπ0, h3⟩`. Establish `hS` using `hΛ.inter hB (fun v h => by rw [hsm, h, mul_zero]) (fun v h => h) hdec`. Establish `hS'` using `hΛ'.inter hB (fun v h => h) (fun v h => by rw [hsm, h, mul_zero]) hdec'`. Establish `hlt : perp B W e f < W`. Use `lt_of_le_of_ne inf_le_left fun h => ?_` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `hfW` using `[← h]`. Conclude with `inv_ne_zero hπ0 (hef ▸ (mem_perp.1 hfW).2.1)`. Take `⟨s₀, i₀, f₀, m₀, m₀'⟩` from `ih (perp B W e f) (by have := Submodule.finrank_lt_finrank_of_lt hlt; omega) _ _ hS hS' ⟨b + 1, fun v hv => ⟨ha v hv.1, (perp B W e f).smul_mem _ hv.2⟩⟩`. Take `⟨s₁, i₁, f₁, r, hr, r', hr', se, sf⟩` from `exists_refl hB hτ hτ1 hπ0 hπ1 hσπ hef hee hff`. Establish `s₀e : s₀ e = e` using `f₀ e fun w hw => by rw [← hB, (mem_perp.1 hw).2.1, map_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `s₀f : s₀ f = f` using `f₀ f fun w hw => by rw [← hB, (mem_perp.1 hw).2.2, map_zero]`. Establish `h1r : 1 + π * r ∈ intL L` using `add_mem (one_mem _) (mul_mem hπO hr)`. Establish `h1r' : 1 + π * r' ∈ intL L` using `add_mem (one_mem _) (mul_mem hπO hr')`. Use `⟨s₁ ∘ₗ s₀, fun u v => ?_, fun u hu => ?_, fun v hv => ?_, fun v hv => ?_⟩` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, i₁, i₀]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[LinearMap.comp_apply, f₀ u fun w hw => hu w (mem_perp.1 hw).1, f₁ u (hu e heW) (hu f hfW)]`. Take `⟨c, hc, d, hd, v₀, hv₀, h1, h2, rfl⟩` from `hdec v hv`. Establish `h3` using `m₀ v₀ ⟨hv₀, mem_perp.2 ⟨((hΛ v₀).1 hv₀).1, h1, h2⟩⟩`. Establish `h4` using `mem_perp.1 h3.2`. Establish `: (s₁ ∘ₗ s₀) (c • (π • e) + d • f + v₀) = (c * (-r * π * π) + d * (1 + π * r')) • e + (c * (1 + π * r) + d * (-r')) • (π • f) + s₀ v₀`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [LinearMap.comp_apply, map_add, map_smul, s₀e, s₀f, f₁ _ h4.2.1 h4.2.2, se, sf]`. Use `module`. Rewrite using `[this]`. Use `hΛ'.add (hΛ'.add (hΛ'.smul hσO ?_ he) (hΛ'.smul hσO ?_ hπf)) h3.1` and prove the remaining obligations. Conclude with `add_mem (mul_mem hc (mul_mem (mul_mem (neg_mem hr) hπO) hπO)) (mul_mem hd h1r')`.
-
-Conclude with `add_mem (mul_mem hc h1r) (mul_mem hd (neg_mem hr'))`. Take `⟨c, hc, d, hd, v₀, hv₀, h1, h2, rfl⟩` from `hdec' v hv`. Establish `h3` using `m₀' v₀ ⟨hv₀, mem_perp.2 ⟨((hΛ' v₀).1 hv₀).1, h1, h2⟩⟩`. Establish `h4` using `mem_perp.1 h3.2`. Establish `: (s₁ ∘ₗ s₀) (c • e + d • (π • f) + v₀) = (c * (-r) + d * (1 + π * r')) • (π • e) + (c * (1 + π * r) + d * (-r' * π * π)) • f + s₀ v₀`.
-
-Simplify using `only [LinearMap.comp_apply, map_add, map_smul, s₀e, s₀f, f₁ _ h4.2.1 h4.2.2, se, sf]`. Use `module`. Rewrite using `[this]`. Use `hΛ.add (hΛ.add (hΛ.smul hσO ?_ hπe) (hΛ.smul hσO ?_ hf)) h3.1` and prove the remaining obligations. Conclude with `add_mem (mul_mem hc (neg_mem hr)) (mul_mem hd h1r')`.
-
-Conclude with `add_mem (mul_mem hc h1r) (mul_mem hd (mul_mem (mul_mem (neg_mem hr') hπO) hπO))`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_swap [FiniteDimensional L V] (hσ : ∀ x, Valued.v (σ x) = Valued.v x)
     (hB : ∀ u v, σ (B u v) = B v u) {τ : L} (hτ : τ ∈ intL L) (hτ1 : τ + σ τ = 1) {ϖ : L}
@@ -382,7 +376,7 @@ theorem form_apply (J : Matrix (Fin n) (Fin n) L) (u v : Fin n → L) :
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Establish `: σ ∘ (M *ᵥ u) = (σ ∘ u) ᵥ* cT σ M`. Use function extensionality and compare the values at `i`. Simplify using `[cT, Matrix.mulVec, Matrix.vecMul, dotProduct, mul_comm]`. Rewrite using `[form_apply, form_apply, this, ← Matrix.dotProduct_mulVec, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem form_mulVec (J M : Matrix (Fin n) (Fin n) L) (u v : Fin n → L) :
     form σ J (M *ᵥ u) (M *ᵥ v) = form σ (cT σ M * J * M) u v := by
@@ -394,7 +388,7 @@ theorem form_mulVec (J M : Matrix (Fin n) (Fin n) L) (u v : Fin n → L) :
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Establish `: σ ∘ (Pi.single i 1 : Fin n → L) = Pi.single i 1`. Apply the tactic sequence `funext k; by_cases h : k = i <;> simp [h]`. Rewrite using `[form_apply, this]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_single (J : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
     form σ J (Pi.single i 1) (Pi.single j 1) = J i j := by
@@ -405,7 +399,7 @@ theorem form_single (J : Matrix (Fin n) (Fin n) L) (i j : Fin n) :
 
 omit [Valued L (WithZero (Multiplicative ℤ))] in
 /- English proof (translation)
-Simplify using `only [form_apply, Matrix.mulVec, dotProduct, map_sum, map_mul, Function.comp_apply, hσσ, hJ, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => by ring`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem form_herm (hσσ : ∀ x, σ (σ x) = x) {J : Matrix (Fin n) (Fin n) L}
     (hJ : ∀ i j, σ (J i j) = J j i) (u v : Fin n → L) : σ (form σ J u v) = form σ J v u := by
@@ -418,7 +412,7 @@ def intVec (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] (n : 
   {v | ∀ i, v i ∈ intL L}
 
 /- English proof (translation)
-Introduce `i` and use `by show ∑ j, M i j * v j ∈ intL L exact Subring.sum_mem _ fun j _ => mul_mem (hM i j) (hv j)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem mulVec_mem {M : Matrix (Fin n) (Fin n) L} (hM : ∀ i j, M i j ∈ intL L) {v : Fin n → L}
     (hv : v ∈ intVec L n) : M *ᵥ v ∈ intVec L n := fun i => by
@@ -426,7 +420,7 @@ theorem mulVec_mem {M : Matrix (Fin n) (Fin n) L} (hM : ∀ i j, M i j ∈ intL 
   exact Subring.sum_mem _ fun j _ => mul_mem (hM i j) (hv j)
 
 /- English proof (translation)
-Introduce `i`. Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using the standard rewrite rules. Simplify using `[h]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem single_mem (j : Fin n) : (Pi.single j 1 : Fin n → L) ∈ intVec L n := by
   intro i
@@ -435,18 +429,18 @@ theorem single_mem (j : Fin n) : (Pi.single j 1 : Fin n → L) ∈ intVec L n :=
   · simp [h]
 
 /- English proof (translation)
-Simplify using `using hM _ (single_mem j) i`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem entries_mem {M : Matrix (Fin n) (Fin n) L} (hM : ∀ v ∈ intVec L n, M *ᵥ v ∈ intVec L n)
     (i j : Fin n) : M i j ∈ intL L := by
   simpa using hM _ (single_mem j) i
 
 /- English proof (translation)
-Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Use `⟨trivial, fun w hw => ?_⟩` and prove the remaining obligations. Rewrite using `[form_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subring.sum_mem _ fun i _ => mul_mem ?_ (mulVec_mem (P.cartan_entries_of_mem _ J hJ) hw i)` and prove the remaining obligations. Rewrite using `[Function.comp_apply, mem_int, hσ]`. Conclude with `hv i`. Introduce and unpack `⟨-, hv⟩ i`. Use `hv _ (mulVec_mem (P.cartan_entries_of_mem _ J⁻¹ (inv_mem hJ)) (single_mem i))` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[form_apply, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec, dotProduct_single, mul_one, Function.comp_apply, mem_int, hσ]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem selfDual_intVec (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {J : GL (Fin n) L}
     (hJ : J ∈ GLint (Fin n) (intL L)) :
@@ -465,11 +459,11 @@ theorem selfDual_intVec (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {J : GL (Fin
     exact this
 
 /- English proof (translation)
-Establish `hg' : ∀ u v, form σ J ((g : Matrix (Fin n) (Fin n) L) *ᵥ u) ((g : Matrix (Fin n) (Fin n) L) *ᵥ v) = form σ J u v` using `fun u v => by rw [form_mulVec, show _ = J from hg]`. Introduce `v`. Prove the components needed by the constructor for the conclusion. Introduce `hv`. Conclude with `⟨trivial, fun w hw => by rw [← hg']; exact h.pair hv hw⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Introduce and unpack `⟨-, hv⟩`. Use `(h _).2 ⟨trivial, fun w hw => ?_⟩` and prove the remaining obligations. Establish `e : (g : Matrix (Fin n) (Fin n) L) *ᵥ (((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) *ᵥ w) = w`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Rewrite using `[← e, hg']`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hv _ (by show _ ∈ Λ; rw [e]; exact hw)`.
+A detailed English derivation is pending.
 -/
 theorem selfDual_image {J : Matrix (Fin n) (Fin n) L} {Λ : Set (Fin n → L)}
     (h : SelfDual (form σ J) ⊤ Λ) {g : GL (Fin n) L} (hg : g ∈ UJ σ J) :
@@ -488,11 +482,11 @@ theorem selfDual_image {J : Matrix (Fin n) (Fin n) L} {Λ : Set (Fin n → L)}
     exact hv _ (by show _ ∈ Λ; rw [e]; exact hw)
 
 /- English proof (translation)
-Use `P.cartan_mem_of_entries _ k hi ?_` and prove the remaining obligations. Establish `hk' : cT σ (k : Matrix (Fin n) (Fin n) L) * J * k = J` using `hk`. Establish `: ((k⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) = ((J⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (cT σ (k : Matrix (Fin n) (Fin n) L) * J)`. Apply `Units.inv_eq_of_mul_eq_one_left` to reduce the goal to its premises. Rewrite using `[Matrix.mul_assoc, hk', Units.inv_mul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Introduce `i j`. Rewrite using `[Matrix.mul_apply]`. Use `Subring.sum_mem _ fun a _ => mul_mem (P.cartan_entries_of_mem _ _ (inv_mem hJ) _ _) ?_` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Subring.sum_mem _ fun b _ => mul_mem ?_ (P.cartan_entries_of_mem _ _ hJ _ _)` and prove the remaining obligations. Use `show σ _ ∈ _`. Rewrite using `[mem_int, hσ]`. Conclude with `hi _ _`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_GLint_of_unitary (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {J : GL (Fin n) L}
     (hJ : J ∈ GLint (Fin n) (intL L)) {k : GL (Fin n) L} (hk : k ∈ UJ σ (J : Matrix (Fin n) (Fin n) L))
@@ -513,9 +507,9 @@ theorem mem_GLint_of_unitary (hσ : ∀ x, Valued.v (σ x) = Valued.v x) {J : GL
   rw [mem_int, hσ]; exact hi _ _
 
 /- English proof (translation)
-Use `first`. Consider the case `exact @_root_.GlobalTheory.MatrixEntryBound.main`. Consider the case `exact _root_.GlobalTheory.MatrixEntryBound.main`. Consider the case `(apply _root_.GlobalTheory.MatrixEntryBound.main <;> assumption)`. Consider the case `(intros; apply _root_.GlobalTheory.MatrixEntryBound.main <;> assumption)`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(intros; apply @_root_.GlobalTheory.MatrixEntryBound.main <;> first | assumption | infer_instance)`. Consider the case `(intros; exact _root_.GlobalTheory.MatrixEntryBound.main ..)`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exists_pow_mem {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (M : Matrix (Fin n) (Fin n) L) :
     ∃ N : ℕ, ∀ i j, ϖ ^ N * M i j ∈ intL L := by
@@ -528,21 +522,19 @@ theorem exists_pow_mem {ϖ : L} (hϖ : Valued.v ϖ = WithZero.exp (-1 : ℤ)) (M
   | (intros; exact _root_.GlobalTheory.MatrixEntryBound.main ..)
 
 /- English proof (translation)
-Take `⟨hσσ, hσ, hσϖ, hϖ, ⟨x, hx, hx1⟩, -, -⟩` from `hU`. Establish `hx0 : σ x - x ≠ 0`. Introduce `h`. Rewrite `hx1` using `[h, map_zero]`. Conclude with `zero_ne_one hx1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hτ : σ x * (σ x - x)⁻¹ ∈ intL L` using `mul_mem (by rw [mem_int, hσ]; exact hx) (by rw [mem_int, map_inv₀, hx1, inv_one])`. Establish `hτ1 : σ x * (σ x - x)⁻¹ + σ (σ x * (σ x - x)⁻¹) = 1`. Rewrite using `[map_mul, map_inv₀, map_sub, hσσ, ← neg_sub (σ x) x, inv_neg]`. Take the linear combination `mul_inv_cancel₀ hx0`. Establish `hΛ` using `selfDual_intVec hσ hJ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hΛ'` using `selfDual_image hΛ hg`. Take `⟨N, hN⟩` from `exists_pow_mem hϖ ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)`. Take `⟨s, hs, -, h1, h2⟩` from `exists_swap hσ (form_herm hσσ hh) hτ hτ1 hσϖ hϖ _ ⊤ (Nat.lt_succ_self _) _ _ hΛ hΛ' ⟨N, fun v hv => by`. Use `mulVec_mem (M := ϖ ^ N • ((g⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L)) hN hv` as an intermediate fact. Rewrite using `[Matrix.smul_mulVec, Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec] at this⟩` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result.
 
-Take `⟨S, rfl⟩ : ∃ S : Matrix (Fin n) (Fin n) L, Matrix.toLin' S = s` from `Matrix.toLin'.surjective s`. Simplify using `only [Matrix.toLin'_apply] at hs h1 h2`. Establish `hS : cT σ S * J * S = J`. Use extensionality with `i j`. Rewrite using `[← form_single (σ := σ) (cT σ S * (J : Matrix (Fin n) (Fin n) L) * S), ← form_mulVec, hs, form_single]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hSi : (((J⁻¹ : GL (Fin n) L) : Matrix (Fin n) (Fin n) L) * (cT σ S * J)) * S = 1`. Rewrite using `[Matrix.mul_assoc, hS, Units.inv_mul]`. Set `S' : GL (Fin n) L` to `⟨S, _, mul_eq_one_comm.mp hSi, hSi⟩`. Establish `hS' : S' ∈ UJ σ (J : Matrix (Fin n) (Fin n) L)` using `hS`. Establish `k1 : g * S' ∈ UJ σ (J : Matrix (Fin n) (Fin n) L) ⊓ GLint (Fin n) (intL L)`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨mul_mem hg hS', mem_GLint_of_unitary hσ hJ (mul_mem hg hS') (entries_mem fun v hv => ?_)⟩` and prove the remaining obligations. Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec]`. Conclude with `h1 v hv`. Establish `k2 : S' * g⁻¹ ∈ UJ σ (J : Matrix (Fin n) (Fin n) L) ⊓ GLint (Fin n) (intL L)`. Use `⟨(UJ σ (J : Matrix (Fin n) (Fin n) L)).mul_mem hS' (inv_mem hg), mem_GLint_of_unitary hσ hJ (mul_mem hS' (inv_mem hg)) (entries_mem fun v hv => ?_)⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[Units.val_mul, ← Matrix.mulVec_mulVec]`. Apply `h2` to reduce the goal to its premises. Use `show _ ∈ intVec L n`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Conclude with `hv`.
-
-Conclude with `⟨_, k2, _, inv_mem k1, by group⟩`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem inv_mem_doubleCoset {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {J : GL (Fin n) L}
     (hJ : J ∈ GLint (Fin n) (intL L))
@@ -589,9 +581,9 @@ theorem inv_mem_doubleCoset {ϖ : L} {q : ℕ} (hU : IsUnramInv ϖ σ q) {J : GL
   exact ⟨_, k2, _, inv_mem k1, by group⟩
 
 /- English proof (translation)
-Use extensionality with `i j`. Rewrite using `[Matrix.mul_apply, Finset.sum_eq_single (Fin.rev i)]`. Use `i.2` as an intermediate fact. Use `j.2` as an intermediate fact. Simplify using `only [antiJ, Fin.val_rev, Matrix.one_apply, Fin.ext_iff]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> first | omega | simp`. Introduce `b _ hb`. Establish `: ¬ (i.val + b.val + 1 = n)` using `fun h => hb (Fin.ext (by rw [Fin.val_rev]; omega))`. Simplify using `[antiJ, this]`. Simplify using the standard rewrite rules.
+Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem antiJ_mul_self : antiJ L n * antiJ L n = 1 := by
   ext i j
@@ -606,13 +598,11 @@ theorem antiJ_mul_self : antiJ L n * antiJ L n = 1 := by
   · simp
 
 /- English proof (translation)
-Introduce `L _ _ _ ϖ σ q n k _ hU f₁ hf₁ f₂ hf₂`. Establish `hint : ∀ i j, antiJ L n i j ∈ intL L`. Introduce `i j`. Unfold `antiJ`. Use `split_ifs`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result.
 
-Conclude with `one_mem _`. Conclude with `zero_mem _`. Take `⟨J, hJ, hJe⟩` from `P.cartan_exists_glint (intL L) _ _ (antiJ_mul_self (L := L) (n := n)) hint hint`. Use `P.heckecomm_gelfand (KU σ n) (fun g => g⁻¹) (fun x y => mul_inv_rev x y) (fun x => inv_inv x) (fun x hx => inv_mem hx) (fun g => ?_) f₁ f₂ hf₁.1 hf₂.1` and prove the remaining obligations. Take `⟨k₁, hk₁, k₂, hk₂, e⟩` from `inv_mem_doubleCoset hU hJ (g := (g : GL (Fin n) L)) (by`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Introduce `i j`. Rewrite using `[hJe]`. Simplify using `only [antiJ, add_comm i.val j.val]`. Apply the tactic sequence `split_ifs <;> simp) (by rw [hJe]; exact g.2)`. Rewrite `hk₁`, `hk₂` using `[hJe]`.
-
-Conclude with `⟨⟨⟨k₁, hk₁.1⟩, hk₁⟩, ⟨⟨k₂, hk₂.1⟩, hk₂⟩, Subtype.ext e⟩`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem heckeCommU : HeckeCommU := by
   intro L _ _ _ ϖ σ q n k _ hU f₁ hf₁ f₂ hf₂
@@ -634,7 +624,7 @@ theorem heckeCommU : HeckeCommU := by
 end Matrices
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun _ _ _ _ _ _ _ _ _ hU hJ hh _ hg => inv_mem_doubleCoset hU hJ hh hg, heckeCommU⟩`.
+Supply the required witnesses or components.
 -/
 theorem inv_mem_doubleCoset_and_comm : (∀ (L : Type) [Field L] [Valued L (WithZero (Multiplicative ℤ))] [CompleteSpace L] (ϖ : L) (σ : L →+* L) (q n : ℕ) (J : GL (Fin n) L), IsUnramInv ϖ σ q → J ∈ GLint (Fin n) (intL L) → (∀ i j, σ ((J : Matrix (Fin n) (Fin n) L) i j) = (J : Matrix (Fin n) (Fin n) L) j i) → ∀ g ∈ UJ σ (J : Matrix (Fin n) (Fin n) L), ∃ k₁ ∈ UJ σ (J : Matrix (Fin n) (Fin n) L) ⊓ GLint (Fin n) (intL L), ∃ k₂ ∈ UJ σ (J : Matrix (Fin n) (Fin n) L) ⊓ GLint (Fin n) (intL L), g⁻¹ = k₁ * g * k₂) ∧ HeckeCommU :=
   ⟨fun _ _ _ _ _ _ _ _ _ hU hJ hh _ hg => inv_mem_doubleCoset hU hJ hh hg, heckeCommU⟩

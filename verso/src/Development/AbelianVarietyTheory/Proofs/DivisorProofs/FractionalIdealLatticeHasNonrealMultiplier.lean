@@ -10,15 +10,15 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.LatOfMult
 
 /- English proof (translation)
-Introduce `K _ _ d δ ι 𝔞 Λ hd hδ hL`. Establish `hmem : ∀ z : ℂ, z ∈ Λ.lattice ↔ ∃ x ∈ (𝔞 : Set K), ι x = z`. Introduce `z`. Use `congrArg (fun S : Set ℂ => z ∈ S) hL` as an intermediate fact. Simplify using `using this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hstab : ∀ a : 𝓞 K, MulStable Λ (ι a)`. Introduce `a ω hω`. Take `⟨x, hx, rfl⟩` from `(hmem ω).1 hω`. Use `(hmem _).2 ⟨(a : K) * x, ?_, by simp⟩` and prove the remaining obligations. Establish `h1 : a • x ∈ (𝔞 : Submodule (𝓞 K) K)` using `Submodule.smul_mem _ a hx`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite `h1` using `[Algebra.smul_def]`. Then use the resulting hypothesis. Establish `hint : IsIntegral ℤ δ`. Use `⟨Polynomial.X ^ 2 + Polynomial.C (d : ℤ), ?_, ?_⟩` and prove the remaining obligations. Conclude with `Polynomial.monic_X_pow_add_C _ (by norm_num)`. Simplify using `[hδ]`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hstab, ?_, ?_, hint⟩` and prove the remaining obligations. Conclude with `hstab ⟨δ, hint⟩`. Introduce `him`. Establish `h2 : (ι δ) ^ 2 = -(d : ℂ)` using `by rw [← map_pow, hδ]; simp`. Establish `h3` using `congrArg Complex.re h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[pow_two, Complex.mul_re, him] at h3`. Establish `: (0:ℝ) < d` using `by exact_mod_cast hd`. Use polynomial arithmetic with `[sq_nonneg (ι δ).re]`.
+Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem main : ∀ (K : Type) [Field K] [NumberField K] (d : ℕ) (δ : K) (ι : K →+* ℂ) (𝔞 : FractionalIdeal (nonZeroDivisors (𝓞 K)) K) (Λ : PeriodPair), 0 < d → δ ^ 2 = -(d : K) → GlobalTheory.IndefiniteRowSideFullHecke.LatticeNormTransport.IsLatOf ι 𝔞 Λ → (∀ a : 𝓞 K, MulStable Λ (ι a)) ∧ MulStable Λ (ι δ) ∧ (ι δ).im ≠ 0 ∧ IsIntegral ℤ δ := by
   intro K _ _ d δ ι 𝔞 Λ hd hδ hL

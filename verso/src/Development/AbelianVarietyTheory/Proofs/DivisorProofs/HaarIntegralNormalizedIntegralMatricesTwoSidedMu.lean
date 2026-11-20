@@ -6,9 +6,9 @@ attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalDat
 namespace GlobalTheory.BCT.HintInv
 
 /- English proof (translation)
-Use extensionality with `k`. Simplify using `only [Subgroup.mem_comap, MulEquiv.coe_toMonoidHom]`. Use `show (∀ x, u (φ (x * k)) = u (φ x)) ↔ ∀ x, u (x * φ k) = u x`. Prove the components needed by the constructor for the conclusion. Introduce `h x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `h (φ.symm x)` as an intermediate fact. Simplify using `using this`. Introduce `h x`. Rewrite using `[map_mul]`. Conclude with `h _`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rStab_comp_equiv {H : Type} [Group H] (φ : H ≃* H) (u : H → ℂ) :
     rStab (u ∘ φ) = (rStab u).comap (φ : H →* H) := by
@@ -23,13 +23,13 @@ theorem rStab_comp_equiv {H : Type} [Group H] (φ : H ≃* H) (u : H → ℂ) :
     rw [map_mul]; exact h _
 
 /- English proof (translation)
-Use `set S := rStab u ⊓ K with hS`. Establish `hS' : rStab (u ∘ φ) ⊓ K = S.comap (φ : H →* H)`. Rewrite using `[rStab_comp_equiv, hS, Subgroup.comap_inf]`. Use `congr 1`. Establish `h1 : (K.map (φ : H →* H)).comap (φ : H →* H) = K` using `Subgroup.comap_map_eq_self_of_injective φ.injective K`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[hK]`. Conclude with `h1.symm`. Unfold `hint`. Rewrite using `[hS', Subgroup.relIndex_comap, hK]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Introduce a local definition for the expression. Simplify using the standard rewrite rules.
 
-Set `e : H ⧸ S.comap (φ : H →* H) ≃ H ⧸ S` to `Quotient.congr φ.toEquiv (fun a b => by`. Simplify using `only [QuotientGroup.leftRel_apply, Subgroup.mem_comap, MulEquiv.coe_toMonoidHom, map_mul, map_inv]`. Use the proof step `rfl)`. Rewrite using `[← finsum_comp_equiv e]`. Use `finsum_congr fun q => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Both sides reduce to the same expression.
 
-Take `⟨s, hs⟩` from `QuotientGroup.mk_out_eq_mul S (φ q.out)`. Establish `he : e q = ((φ q.out : H) : H ⧸ S)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Rewrite using `[he, hs]`. Conclude with `((Subgroup.mem_inf.1 s.2).1 _).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hint_comp_equiv {H : Type} [Group H] (K : Subgroup H) (φ : H ≃* H) (hK : K.map (φ : H →* H) = K)
     (u : H → ℂ) : hint K (u ∘ φ) = hint K u := by
@@ -62,7 +62,7 @@ section Integral
 variable {L : Type} [Field L] {a b : ℕ}
 
 /- English proof (translation)
-Take `⟨y, rfl⟩` from `hA`. Rewrite using `[← map_inv]`. Conclude with `⟨(y.val i j).2, ((y⁻¹).val i j).2⟩`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem entries_of_mem_GLint {O : Subring L} {A : GL (Fin a) L} (hA : A ∈ GLint (Fin a) O) (i j : Fin a) :
     A.val i j ∈ O ∧ (A⁻¹).val i j ∈ O := by
@@ -71,7 +71,7 @@ theorem entries_of_mem_GLint {O : Subring L} {A : GL (Fin a) L} (hA : A ∈ GLin
   exact ⟨(y.val i j).2, ((y⁻¹).val i j).2⟩
 
 /- English proof (translation)
-Rewrite using `[Matrix.mul_apply]`. Use `Subring.sum_mem _ fun l _ => Subring.mul_mem _ ?_ (hQ l j)` and prove the remaining obligations. Rewrite using `[Matrix.mul_apply]`. Conclude with `Subring.sum_mem _ fun k _ => Subring.mul_mem _ (hP i k) (hX k l)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mul_mul_mem {O : Subring L} {P : Matrix (Fin a) (Fin a) L} {X : Matrix (Fin a) (Fin b) L}
     {Q : Matrix (Fin b) (Fin b) L} (hP : ∀ i j, P i j ∈ O) (hX : ∀ i j, X i j ∈ O) (hQ : ∀ i j, Q i j ∈ O)
@@ -97,13 +97,13 @@ def lrEquiv (A : GL (Fin a) L) (B : GL (Fin b) L) : Matrix (Fin a) (Fin b) L ≃
 end Integral
 
 /- English proof (translation)
-Establish `hint' : ∀ X : Matrix (Fin a) (Fin b) (w.adicCompletion E), (∀ i j, Valued.v (X i j) ≤ 1) ↔ ∀ i j, X i j ∈ Ov E w` using `fun X => forall_congr' fun i => forall_congr' fun j => (HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).symm`. Establish `hA1` using `fun i j => (entries_of_mem_GLint hA i j).1`. Establish `hA2` using `fun i j => (entries_of_mem_GLint hA i j).2`. Establish `hB1` using `fun i j => (entries_of_mem_GLint hB i j).1`. Establish `hB2` using `fun i j => (entries_of_mem_GLint hB i j).2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key : ∀ (P : GLw a w) (Q : GLw b w), (∀ i j, P.val i j ∈ Ov E w) → (∀ i j, Q.val i j ∈ Ov E w) → (intMat a b w).map ((lrEquiv P Q).toMultiplicative : _ →* _) ≤ intMat a b w`. Introduce `P Q hP hQ`. Rewrite using `[intMat, MonoidHom.map_closure, Subgroup.closure_le]`. Introduce and unpack `_ ⟨X, hX, rfl⟩`. Use `Subgroup.subset_closure ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Use `show ∀ i j, Valued.v ((P.val * Multiplicative.toAdd X * Q.val) i j) ≤ 1`. Rewrite using `[hint']`. Conclude with `mul_mul_mem hP ((hint' _).1 hX) hQ`. Use `le_antisymm (key A B hA1 hB1) ?_` and prove the remaining obligations. Establish `h2` using `key A⁻¹ B⁻¹ hA2 hB2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `X hX`. Use `⟨(lrEquiv A⁻¹ B⁻¹).toMultiplicative X, h2 ⟨X, hX, rfl⟩, ?_⟩` and prove the remaining obligations. Use `show Multiplicative.ofAdd (A.val * ((A⁻¹).val * Multiplicative.toAdd X * (B⁻¹).val) * B.val) = X`. Rewrite using `[show A.val * ((A⁻¹).val * Multiplicative.toAdd X * (B⁻¹).val) * B.val = Multiplicative.toAdd X from (lrEquiv A B).right_inv _]`. Both sides reduce to the same expression.
+Rewrite the hypotheses and the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem map_intMat {E : Type} [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E) (A : GLw a w) (B : GLw b w)
     (hA : A ∈ GlobalTheory.LFun.KGL w a) (hB : B ∈ GlobalTheory.LFun.KGL w b) :
@@ -134,7 +134,7 @@ theorem map_intMat {E : Type} [Field E] [NumberField E] [IsCMField E] (a b : ℕ
   rfl
 
 /- English proof (translation)
-Introduce `E _ _ _ a b w u A B hA hB`. Conclude with `hint_comp_equiv (intMat a b w) (lrEquiv A B).toMultiplicative (map_intMat a b w A B hA hB) u`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem hint_intMat_mul_mul :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (a b : ℕ) (w : Pl E)

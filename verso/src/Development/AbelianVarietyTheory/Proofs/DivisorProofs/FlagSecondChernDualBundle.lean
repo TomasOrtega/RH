@@ -17,11 +17,11 @@ open scoped ContDiff Real CategoryTheory.Obj ComplexOrder
 namespace GlobalTheory.DualFlag
 
 /- English proof (translation)
-Introduce `k _ S p _ r E fl a hS ⟨hfin, x, hx, ha⟩`. Use `hS.toIsArithVar.finite_emb` as an intermediate fact. Use `Fintype.ofFinite (k →+* ℂ)` as an intermediate fact. Establish `hsum` using `fun σ => GlobalTheory.T.dual_flag_bott_chern_sum k S p E.E r E.h E.cInf fl σ hS`. Establish `hfin' : E.h.dual.FlagBcFinite (dualFlag fl)` using `fun i σ => ne_top_of_le_ne_top ((hsum σ).symm ▸ ENNReal.sum_ne_top.2 fun j _ => hfin j σ) (Finset.single_le_sum (f := fun j => ((E.h.dual.stepMet (dualFlag fl) j).met σ).bcMeas (VMetric.stepSeq_shortExact (dualFlag fl) j) ((dualFlag fl).isVB j.castSucc) ((dualFlag fl).isVB_gr j) …`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨dualFlag fl, hfin', fun i => x i.rev, fun i => (GlobalTheory.T.dual_flag_graded_isometric k S p E.E r E.h E.cInf fl i).isSelfInter hS.toIsArithVar (GlobalTheory.T.self_intersection_dual k S p _ _ hS (hx i.rev)), ?_⟩` and prove the remaining obligations. Establish `hbc : E.h.dual.flagBc (dualFlag fl) = E.h.flagBc fl`. Simplify using `only [VMetric.flagBc, VMetric.bcInt, finsum_eq_sum_of_fintype]`. Use `conv_lhs => rw [Finset.sum_comm]`. Use `conv_rhs => rw [Finset.sum_comm]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun σ _ => ?_` and prove the remaining obligations. Rewrite using `[← ENNReal.toReal_sum fun j _ => hfin' j σ, ← ENNReal.toReal_sum fun j _ => hfin j σ, hsum σ]`. Rewrite using `[ha, show E.dual.h.flagBc (dualFlag fl) = E.h.flagBc fl from hbc]`. Use `congr 1`. Conclude with `(Fintype.sum_equiv Fin.revPerm _ _ fun i => rfl).symm`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem isFlagCh2_dual : ∀ (k : Type) [CommRing k] (S : Scheme.{0}) (p : S ⟶ Sp k) [IsIntegral S] (r : ℕ) (E : HermVB p r) (fl : Vert.Flag E.E r) (a : ℝ), IsRegSurf p → VMetric.IsFlagCh2 E.cInf fl a → ∃ fl' : Vert.Flag E.dual.E r, VMetric.IsFlagCh2 E.dual.cInf fl' a := by
   intro k _ S p _ r E fl a hS ⟨hfin, x, hx, ha⟩

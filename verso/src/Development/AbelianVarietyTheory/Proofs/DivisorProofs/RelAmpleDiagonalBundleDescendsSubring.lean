@@ -30,19 +30,19 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.AmpleDiagSubring
 
 /- English proof (translation)
-Introduce `R _ R₁ _ A _ P A₁ _ P₁ φ φ₂ hA₁ hP hP₁ hφ sq e hamp`. Use `hA₁.proper` as an intermediate fact. Use `hA₁.smooth` as an intermediate fact. Set `M : LB A₁.left` to `diagPull A₁ P₁`. Establish `hM : M.IsLB` using `pull_isLB hP₁ _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hL : (diagPull A P).IsLB` using `pull_isLB hP _`. Establish `e' : LBIso (diagPull A P) (M.pull φ)` using `GlobalTheory.SiegelPull.diag_iso sq e`. Establish `hspan` using `GlobalTheory.CompanionTheory.PolSpread.span_good R₁.subtype A A₁ hM hL hφ.1 e' hamp`. Establish `h1 : (1 : R) ∈ Ideal.span (R₁.subtype '' GlobalTheory.CompanionTheory.PolSpread.good A₁ M)` using `by rw [hspan]; trivial`. Take `⟨c, hc, hs⟩` from `Submodule.mem_span_set.1 h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `choose! t ht hty using fun y (hy : y ∈ c.support) => hc hy`. Use `⟨c.support.image c, fun R₂ h hF A₂ _ π π₂ hπ sq₂ => ?_⟩` and prove the remaining obligations. Set `τ : R₁ →+* R₂` to `Subring.inclusion h`. Establish `hmem : ∀ y ∈ c.support, c y ∈ R₂` using `fun y hy => hF (Finset.mem_coe.2 (Finset.mem_image_of_mem c hy))`. Establish `hT : Ideal.span (τ '' (t '' (c.support : Set R))) = ⊤`.
+Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Ideal.eq_top_iff_one]`. Establish `e1 : (1 : R₂) = ∑ y ∈ c.support.attach, (⟨c y.1, hmem y.1 y.2⟩ : R₂) * τ (t y.1)`. Apply `Subtype.ext` to reduce the goal to its premises. Use `(OneMemClass.coe_one R₂).trans (hs.symm.trans ?_)` and prove the remaining obligations. Rewrite using `[Finsupp.sum, ← Finset.sum_attach]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [AddSubmonoidClass.coe_finset_sum, MulMemClass.coe_mul, smul_eq_mul]`. Use `Finset.sum_congr rfl fun y _ => ?_` and prove the remaining obligations. Establish `: ((τ (t y.1) : R₂) : R) = y.1` using `hty y.1 y.2`. Rewrite using `[this]`. Rewrite using `[e1]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.sum_mem _ fun y _ => Ideal.mul_mem_left _ _ (Ideal.subset_span ⟨t y.1, ⟨y.1, y.2, rfl⟩, rfl⟩)`. Establish `hB` using `GlobalTheory.CompanionTheory.PolSpread.relAmple_of_span τ A₁ hM _ (by rintro _ ⟨y, hy, rfl⟩; exact ht y hy) hT`. Establish `hπ' : Out.RelAmple (Over.mk A₂.hom) (M.pull π)` using `GlobalTheory.FibreAmple.relAmple_of_factor hM (IsPullback.of_hasPullback A₁.hom (spMap τ)) hπ.1 (𝟙 _) (Category.id_comp _) (pull_isLB hM _) (GlobalTheory.lbIso_refl (pull_isLB hM _)) hB`. Establish `: IsProper (Over.mk A₂.hom).hom` using `MorphismProperty.of_isPullback (P := @IsProper) hπ.1 ‹_›`. Establish `hMπ : (M.pull π).IsLB` using `pull_isLB hM π`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL₂ : (diagPull A₂ (P₁.pull π₂)).IsLB` using `pull_isLB (pull_isLB hP₁ π₂) _`. Establish `e₂ : LBIso (diagPull A₂ (P₁.pull π₂)) (M.pull π)` using `GlobalTheory.SiegelPull.diag_iso sq₂ (GlobalTheory.lbIso_refl (pull_isLB hP₁ π₂))`. Establish `e₃ : LBIso (M.pull π) ((M.pull π).pull (𝟙 _))` using `GlobalTheory.FibreAmple.lbIso_pull_comp (Category.id_comp π).symm (GlobalTheory.lbIso_refl hMπ)`. Conclude with `GlobalTheory.ModelAbLocus.relAmple_of_lbIso_pull (A := Over.mk A₂.hom) (A' := A₂) (f := 𝟙 _) (φ := 𝟙 _) (IsPullback.of_horiz_isIso ⟨by simp⟩) hMπ hL₂ (LBIso.trans hL₂ hMπ (pull_isLB hMπ _) e₂ e₃) hπ'`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relAmple_diag_subring : ∀ (R : Type) [CommRing R] (R₁ : Subring R) [IsNoetherianRing R₁] (A : Over (Sp R)) [GrpObj A] (P : LB (A ⊗ A).left) (A₁ : Over (Sp R₁)) [GrpObj A₁] (P₁ : LB (A₁ ⊗ A₁).left) (φ : A.left ⟶ A₁.left) (φ₂ : (A ⊗ A).left ⟶ (A₁ ⊗ A₁).left), IsAbelianScheme A₁ → P.IsLB → P₁.IsLB → IsGrpPullback A A₁ (spMap R₁.subtype) φ → Geo.Tor.IsSquare φ φ₂ → LBIso P (P₁.pull φ₂) → Out.RelAmple A (diagPull A P) → ∃ F : Finset R, ∀ (R₂ : Subring R) (h : R₁ ≤ R₂), (F : Set R) ⊆ R₂ → ∀ (A₂ : Over (Sp R₂)) [GrpObj A₂] (π : A₂.left ⟶ A₁.left) (π₂ : (A₂ ⊗ A₂).left ⟶ (A₁ ⊗ A₁).left), IsGrpPullback A₂ A₁ (spMap (Subring.inclusion h)) π → Geo.Tor.IsSquare π π₂ → Out.RelAmple A₂ (diagPull A₂ (P₁.pull π₂)) := by
   intro R _ R₁ _ A _ P A₁ _ P₁ φ φ₂ hA₁ hP hP₁ hφ sq e hamp

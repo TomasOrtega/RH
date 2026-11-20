@@ -20,25 +20,25 @@ variable {Ω : Type} [Field Ω] {A : ValuationSubring Ω}
   {v : HeightOneSpectrum (𝓞 K)} {v' : HeightOneSpectrum (𝓞 L)}
 
 /- English proof (translation)
-Establish `: FiniteDimensional K L` using `Module.Finite.of_restrictScalars_finite ℚ K L`. Set `perm : G K Ω →* Equiv.Perm (L →ₐ[K] Ω)` to `{ toFun := fun g => { toFun := fun ι => (g : Ω →ₐ[K] Ω).comp ι invFun := fun ι => ((g⁻¹ : G K Ω) : Ω →ₐ[K] Ω).comp ι left_inv := fun ι => by ext x; simp [AlgEquiv.aut_inv] right_inv := fun ι => by ext x; simp [AlgEquiv.aut_inv] } map_one' := by ext ι x; simp map_mul' := fun g g' …`. Take `⟨N, hNpos, hN⟩ : ∃ N, 0 < N ∧ perm (σ : G K Ω) ^ N = 1` from `(isOfFinOrder_of_finite _).exists_pow_eq_one`. Establish `hfix : ∀ (g : Weil h) (x : L), ((g⁻¹ * σ ^ N * g : Weil h) : G K Ω) (algebraMap L Ω x) = algebraMap L Ω x`. Introduce `g x`.
+Establish an intermediate fact. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h1` using `congrArg (fun p : Equiv.Perm (L →ₐ[K] Ω) => p (((g : G K Ω) : Ω →ₐ[K] Ω).comp (IsScalarTower.toAlgHom K L Ω)) x) hN`. Rewrite `h1` using `[← map_pow]`. Simplify using `only [perm, MonoidHom.coe_mk, OneHom.coe_mk, Equiv.coe_fn_mk, AlgHom.comp_apply, IsScalarTower.coe_toAlgHom', AlgEquiv.coe_toAlgHom, Equiv.Perm.coe_one, id_eq] at h1`. Rewrite using `[Subgroup.coe_mul, Subgroup.coe_mul, Subgroup.coe_inv, Subgroup.coe_pow, AlgEquiv.mul_apply, AlgEquiv.mul_apply, h1, AlgEquiv.aut_inv, AlgEquiv.symm_apply_apply]`. Establish `hconj : ∀ g : Weil h, ∃ τ : Weil h', g⁻¹ * σ ^ N * g = resWeil h h' τ` using `fun g => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨τ, hτ⟩` from `GlobalTheory.WeilSurj.exists_weil_of_fixes K L Ω A v v' h h' (g⁻¹ * σ ^ N * g) (hfix g)`. Conclude with `⟨τ, eq_resWeil_of_agree h h' hτ⟩`. Take `⟨m, n, a, b, j, ha, hb, -, hint, hspan⟩` from `hy`. Establish `hscal : ∀ (τ : Weil h') (u : Fin m → ℂ), a.ρ τ u = (ξ τ : ℂ) • u`. Rewrite `ha` using `[WD.lpOfChar]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨e, he, -⟩` from `WD.mk_eq_mk.1 ha`. Introduce `τ u`. Apply `e.injective` to reduce the goal to its premises. Rewrite using `[he, map_smul]`. Use extensionality with `i`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Simplify using `[WDRep.ofChars_ρ]`. Establish `hgen : ∀ (g : Weil h) (u : Fin m → ℂ), ∃ c : ℂ, (∃ τ : Weil h', deg (resWeil h h' τ) = N * deg σ ∧ c = ξ τ) ∧ b.ρ (σ ^ N) (b.ρ g (j u)) = c • b.ρ g (j u)`. Introduce `g u`. Take `⟨τ, hτ⟩` from `hconj g`. Use `⟨ξ τ, ⟨τ, ?_, rfl⟩, ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← hτ]`. Simplify using `only [deg_mul, deg_inv, deg_pow]`. Expand and normalize the polynomial expressions, which then agree. Establish `e1 : σ ^ N * g = g * (g⁻¹ * σ ^ N * g)` using `by group`. Establish `e2 : b.ρ (g⁻¹ * σ ^ N * g) (j u) = j (a.ρ τ u)` using `(hint τ (g⁻¹ * σ ^ N * g) (fun z => by rw [hτ]; exact resWeil_apply h h' τ z) u).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Module.End.mul_apply, ← map_mul, e1, map_mul, Module.End.mul_apply, e2, hscal, map_smul, map_smul]`. Use `⟨N, hNpos, fun μ hμ => ?_⟩` and prove the remaining obligations. Rewrite `hμ` using `[← hb, WD.eig_mk]`. Establish `hroot : (b.ρ σ).charpoly.IsRoot μ` using `Polynomial.isRoot_of_mem_roots hμ`. Take `⟨v, hv⟩` from `((Module.End.hasEigenvalue_iff_isRoot_charpoly _ _).2 hroot).exists_hasEigenvector`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hvN : b.ρ (σ ^ N) v = μ ^ N • v` using `by rw [map_pow]; exact hv.pow_apply N`. Set `M : Set ℂ` to `{c | ∃ τ : Weil h', deg (resWeil h h' τ) = N * deg σ ∧ c = ξ τ}`. Establish `htop : (⊤ : Submodule ℂ (Fin n → ℂ)) ≤ ⨆ c ∈ M, Module.End.eigenspace (b.ρ (σ ^ N)) c`. Rewrite using `[← hspan, Submodule.span_le]`. Introduce and unpack `_ ⟨⟨g, u⟩, rfl⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc, hcv⟩` from `hgen g u`. Conclude with `Submodule.mem_iSup_of_mem c (Submodule.mem_iSup_of_mem hc (Module.End.mem_eigenspace_iff.2 hcv))`. Establish `hmem : μ ^ N ∈ M`. Assume the negation of the conclusion as `hnot`. Establish `hd` using `(Module.End.eigenspaces_iSupIndep (b.ρ (σ ^ N))).disjoint_biSup hnot`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hv1 : v ∈ Module.End.eigenspace (b.ρ (σ ^ N)) (μ ^ N)` using `Module.End.mem_eigenspace_iff.2 hvN`. Conclude with `hv.2 ((Submodule.disjoint_def.1 hd) v hv1 (htop Submodule.mem_top))`. Take `⟨τ, hτ1, hτ2⟩` from `hmem`. Conclude with `⟨τ, hτ1, hτ2⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem eig_pow_of_induces (h : IsPlaceOver A v) (h' : IsPlaceOver A v')
     (ξ : Weil h' →* ℂˣ) (hξ : IsSmooth ξ) {y : WD h}

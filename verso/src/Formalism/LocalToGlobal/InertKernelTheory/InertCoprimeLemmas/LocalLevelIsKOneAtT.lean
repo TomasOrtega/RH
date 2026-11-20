@@ -17,7 +17,7 @@ theorem resV_coeff (f : κ → ι) (a : MvPowerSeries ι R) (n : κ →₀ ℕ) 
     MvPowerSeries.coeff n (resV f a) = MvPowerSeries.coeff (n.mapDomain f) a := rfl
 
 /- English proof (translation)
-Use `Finsupp.induction n ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a b g _ _ ih`. Rewrite using `[Finsupp.mapDomain_add, Finsupp.mapDomain_single, map_add, map_add, Finsupp.degree_single, Finsupp.degree_single, ih]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 theorem degree_mapDomain (f : κ → ι) (n : κ →₀ ℕ) : (n.mapDomain f).degree = n.degree := by
   classical
@@ -31,7 +31,7 @@ def resFam (f : κ → ι) (i : ι) : MvPowerSeries κ R := by
   classical exact if h : ∃ k, f k = i then MvPowerSeries.X h.choose else 0
 
 /- English proof (translation)
-Establish `h : ∃ k', f k' = f k` using `⟨k, rfl⟩`. Unfold `resFam`. Rewrite using `[dif_pos h, hf h.choose_spec]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem resFam_apply {f : κ → ι} (hf : Function.Injective f) (k : κ) :
     resFam (R := R) f (f k) = MvPowerSeries.X k := by
@@ -40,7 +40,7 @@ theorem resFam_apply {f : κ → ι} (hf : Function.Injective f) (k : κ) :
   rw [dif_pos h, hf h.choose_spec]
 
 /- English proof (translation)
-Unfold `resFam`. Rewrite using `[dif_neg]`. Introduce and unpack `⟨k, hk⟩`. Conclude with `hi k hk`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem resFam_off (f : κ → ι) (i : ι) (hi : ∀ k, f k ≠ i) : resFam (R := R) f i = 0 := by
   unfold resFam
@@ -49,20 +49,20 @@ theorem resFam_off (f : κ → ι) (i : ι) (hi : ∀ k, f k ≠ i) : resFam (R 
   exact hi k hk
 
 /- English proof (translation)
-Unfold `resFam`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem cc_resFam (f : κ → ι) (i : ι) : MvPowerSeries.constantCoeff (resFam (R := R) f i) = 0 := by
   unfold resFam
   split_ifs <;> simp
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => cc_resFam f i)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_resFam [Finite ι] (f : κ → ι) : MvPowerSeries.HasSubst (resFam (R := R) f) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => cc_resFam f i)
 
 /- English proof (translation)
-Use `Finsupp.induction d ?_ ?_` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce `a b g _ _ ih`. Rewrite using `[Finsupp.prod_add_index' (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _), Finsupp.prod_single_index (h := fun k m => (MvPowerSeries.X k : MvPowerSeries σ R) ^ m) (pow_zero _), ih, MvPowerSeries.X_pow_eq, MvPowerSeries.monomial_mul_monomial, one_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 -/
 private theorem prod_X_pow_lemma {σ : Type} (d : σ →₀ ℕ) :
     (d.prod fun k m => (MvPowerSeries.X k : MvPowerSeries σ R) ^ m) = MvPowerSeries.monomial d 1 := by
@@ -76,15 +76,13 @@ private theorem prod_X_pow_lemma {σ : Type} (d : σ →₀ ℕ) :
       MvPowerSeries.monomial_mul_monomial, one_mul]
 
 /- English proof (translation)
-Use extensionality with `e`. Rewrite using `[resV_coeff, MvPowerSeries.coeff_subst (hasSubst_resFam f), finsum_eq_single _ (e.mapDomain f)]`. Use `beta_reduce`. Rewrite using `[Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`. Simplify using `only [resFam_apply hf]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[prod_X_pow_lemma, MvPowerSeries.coeff_monomial, if_pos rfl, smul_eq_mul, mul_one]`. Introduce `d hd beta_reduce`. Distinguish the cases in `hsub : ↑d.support ⊆ Set.range f`. Take `⟨d', rfl⟩ : ∃ d', Finsupp.mapDomain f d' = d` from `⟨_, Finsupp.mapDomain_comapDomain f hf d hsub⟩`. Rewrite using `[Finsupp.prod_mapDomain_index (fun _ => pow_zero _) (fun _ _ _ => pow_add _ _ _)]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [resFam_apply hf]`. Rewrite using `[prod_X_pow_lemma, MvPowerSeries.coeff_monomial, if_neg, smul_zero]`. Introduce and unpack `rfl`. Conclude with `hd rfl`. Rewrite `hsub` using `[Set.not_subset]`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨s, hs, hsf⟩` from `hsub`. Establish `hz : (d.prod fun s m => resFam (R` using `R) f s ^ m) = 0 := by`. Rewrite using `[Finsupp.prod]`. Apply `Finset.prod_eq_zero (Finset.mem_coe.mp hs)` to reduce the goal to its premises. Rewrite using `[resFam_off f s (fun k hk => hsf ⟨k, hk⟩), zero_pow (Finsupp.mem_support_iff.mp hs)]`.
-
-Rewrite using `[hz, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resV_eq_subst [Finite ι] {f : κ → ι} (hf : Function.Injective f) (g : MvPowerSeries ι R) :
     resV f g = MvPowerSeries.subst (resFam f) g := by
@@ -114,16 +112,16 @@ theorem resV_eq_subst [Finite ι] {f : κ → ι} (hf : Function.Injective f) (g
       rw [hz, map_zero, smul_zero]
 
 /- English proof (translation)
-Rewrite using `[resV_eq_subst hf, resV_eq_subst hf a, resV_eq_subst hf b, MvPowerSeries.subst_mul (hasSubst_resFam f)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resV_mul [Finite ι] {f : κ → ι} (hf : Function.Injective f) (a b : MvPowerSeries ι R) :
     resV f (a * b) = resV f a * resV f b := by
   rw [resV_eq_subst hf, resV_eq_subst hf a, resV_eq_subst hf b, MvPowerSeries.subst_mul (hasSubst_resFam f)]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[resV_coeff, MvPowerSeries.coeff_one, MvPowerSeries.coeff_one]`. Distinguish the cases in `h : n = 0`. Rewrite using `[if_pos h, if_pos (by rw [h, Finsupp.mapDomain_zero])]`. Rewrite using `[if_neg h, if_neg]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Apply `h` to reduce the goal to its premises. Apply `Finsupp.mapDomain_injective hf` to reduce the goal to its premises. Rewrite using `[h', Finsupp.mapDomain_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 private theorem resV_one_lemma [Finite ι] {f : κ → ι} (hf : Function.Injective f) :
     resV f (1 : MvPowerSeries ι R) = 1 := by
@@ -139,7 +137,7 @@ private theorem resV_one_lemma [Finite ι] {f : κ → ι} (hf : Function.Inject
     rw [h', Finsupp.mapDomain_zero]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => rw [pow_zero, pow_zero, resV_one_lemma hf]`. Consider the case `succ k ih => rw [pow_succ, pow_succ, resV_mul hf, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem resV_pow [Finite ι] {f : κ → ι} (hf : Function.Injective f) (a : MvPowerSeries ι R) (k : ℕ) :
     resV f (a ^ k) = resV f a ^ k := by
@@ -148,7 +146,7 @@ theorem resV_pow [Finite ι] {f : κ → ι} (hf : Function.Injective f) (a : Mv
   | succ k ih => rw [pow_succ, pow_succ, resV_mul hf, ih]
 
 /- English proof (translation)
-The claim follows from `resV_one_lemma hf`.
+A detailed English derivation is pending.
 -/
 theorem resV_one [Finite ι] {f : κ → ι} (hf : Function.Injective f) :
     resV f (1 : MvPowerSeries ι R) = 1 :=
@@ -170,7 +168,7 @@ Both sides reduce to the same expression.
 theorem resV_sub (f : κ → ι) (a b : MvPowerSeries ι R) : resV f (a - b) = resV f a - resV f b := rfl
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [resV_coeff, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem resV_sum {α : Type} (f : κ → ι) (s : Finset α) (a : α → MvPowerSeries ι R) :
     resV f (∑ x ∈ s, a x) = ∑ x ∈ s, resV f (a x) := by
@@ -178,7 +176,7 @@ theorem resV_sum {α : Type} (f : κ → ι) (s : Finset α) (a : α → MvPower
   simp only [resV_coeff, map_sum]
 
 /- English proof (translation)
-Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, ← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, resV_coeff, Finsupp.mapDomain_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_resV (f : κ → ι) (a : MvPowerSeries ι R) :
     MvPowerSeries.constantCoeff (resV f a) = MvPowerSeries.constantCoeff a := by
@@ -186,7 +184,7 @@ theorem cc_resV (f : κ → ι) (a : MvPowerSeries ι R) :
     resV_coeff, Finsupp.mapDomain_zero]
 
 /- English proof (translation)
-Use extensionality with `n`. Simplify using `only [resV_coeff, MvPowerSeries.coeff_map]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem resV_map {S : Type} [CommRing S] (f : κ → ι) (φ : R →+* S) (a : MvPowerSeries ι R) :
     resV f (MvPowerSeries.map φ a) = MvPowerSeries.map φ (resV f a) := by
@@ -194,9 +192,9 @@ theorem resV_map {S : Type} [CommRing S] (f : κ → ι) (φ : R →+* S) (a : M
   simp only [resV_coeff, MvPowerSeries.coeff_map]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[resV_coeff, MvPowerSeries.coeff_X, MvPowerSeries.coeff_X]`. Distinguish the cases in `h : n = Finsupp.single k 1`. Rewrite using `[if_pos h, if_pos (by rw [h, Finsupp.mapDomain_single])]`. Rewrite using `[if_neg h, if_neg]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h'`. Apply `h` to reduce the goal to its premises. Apply `Finsupp.mapDomain_injective hf` to reduce the goal to its premises. Rewrite using `[h', Finsupp.mapDomain_single]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem resV_X [Finite ι] {f : κ → ι} (hf : Function.Injective f) (k : κ) :
     resV f (MvPowerSeries.X (f k) : MvPowerSeries ι R) = MvPowerSeries.X k := by
@@ -212,9 +210,9 @@ theorem resV_X [Finite ι] {f : κ → ι} (hf : Function.Injective f) (k : κ) 
     rw [h', Finsupp.mapDomain_single]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[resV_coeff, MvPowerSeries.coeff_X, map_zero, if_neg]`. Introduce `h`. Establish `h2` using `congrArg (fun d => d i) h`. Simplify using `only [Finsupp.single_eq_same] at h2`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite `h2` using `[Finsupp.mapDomain_notin_range]`. Conclude with `zero_ne_one h2`. Introduce and unpack `⟨k, hk⟩`. Conclude with `hi k hk`.
+Rewrite the indicated hypotheses using the stated equalities. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem resV_X_off [Finite ι] {f : κ → ι} (hf : Function.Injective f) (i : ι) (hi : ∀ k, f k ≠ i) :
     resV f (MvPowerSeries.X i : MvPowerSeries ι R) = 0 := by
@@ -230,7 +228,7 @@ theorem resV_X_off [Finite ι] {f : κ → ι} (hf : Function.Injective f) (i : 
     exact hi k hk
 
 /- English proof (translation)
-Rewrite using `[resV_eq_subst hf, MvPowerSeries.subst_comp_subst_apply ha (hasSubst_resFam f)]`. Use `congr 1`. Use function extensionality and compare the values at `s`. Rewrite using `[resV_eq_subst hf]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 -/
 theorem resV_subst [Finite ι] {σ : Type} {f : κ → ι} (hf : Function.Injective f) {a : σ → MvPowerSeries ι R}
     (ha : MvPowerSeries.HasSubst a) (g : MvPowerSeries σ R) :
@@ -241,9 +239,9 @@ theorem resV_subst [Finite ι] {σ : Type} {f : κ → ι} (hf : Function.Inject
   rw [resV_eq_subst hf]
 
 /- English proof (translation)
-Rewrite using `[resV_subst hf ha, resV_eq_subst hf g, MvPowerSeries.subst_comp_subst_apply (hasSubst_resFam f) ha']`. Use `congr 1`. Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : ∃ k, f k = i`. Take `⟨k, rfl⟩` from `hi`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[resFam_apply hf, MvPowerSeries.subst_X ha', h1]`. Use `push_neg at hi`. Rewrite using `[resFam_off f i hi, h0 i hi, ← MvPowerSeries.coe_substAlgHom ha', map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resV_subst_diag [Finite ι] {f : κ → ι} (hf : Function.Injective f) {a : ι → MvPowerSeries ι R}
     (ha : MvPowerSeries.HasSubst a) {a' : κ → MvPowerSeries κ R} (ha' : MvPowerSeries.HasSubst a')
@@ -260,7 +258,7 @@ theorem resV_subst_diag [Finite ι] {f : κ → ι} (hf : Function.Injective f) 
     rw [resFam_off f i hi, h0 i hi, ← MvPowerSeries.coe_substAlgHom ha', map_zero]
 
 /- English proof (translation)
-Establish `hc' : MvPowerSeries.HasSubst (fun _ : Unit => c)` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => hc)`. Rewrite using `[PowerSeries.subst, PowerSeries.subst, MvPowerSeries.subst_comp_subst_apply hc' hb]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem subst_psubst {σ τ : Type} {b : σ → MvPowerSeries τ R} (hb : MvPowerSeries.HasSubst b)
     {c : MvPowerSeries σ R} (hc : MvPowerSeries.constantCoeff c = 0) (L : PowerSeries R) :
@@ -270,9 +268,9 @@ theorem subst_psubst {σ τ : Type} {b : σ → MvPowerSeries τ R} (hb : MvPowe
   rw [PowerSeries.subst, PowerSeries.subst, MvPowerSeries.subst_comp_subst_apply hc' hb]
 
 /- English proof (translation)
-Rewrite using `[PowerSeries.constantCoeff_subst (PowerSeries.HasSubst.of_constantCoeff_zero hc)]`. Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `d`. Break down `d with _ | d` into its components or cases. Simplify using `[hL]`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules.
 
-Simplify using `[hc]`.
+Simplify using the standard rewrite rules.
 -/
 private theorem cc_psubst_lemma {τ : Type} {c : MvPowerSeries τ R} (hc : MvPowerSeries.constantCoeff c = 0)
     {L : PowerSeries R} (hL : PowerSeries.constantCoeff L = 0) :
@@ -285,16 +283,16 @@ private theorem cc_psubst_lemma {τ : Type} {c : MvPowerSeries τ R} (hc : MvPow
   · simp [hc]
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => cc_psubst_lemma (MvPowerSeries.constantCoeff_X i) hL)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_diag [Finite ι] (L : PowerSeries R) (hL : PowerSeries.constantCoeff L = 0) :
     MvPowerSeries.HasSubst (fun i : ι => PowerSeries.subst (MvPowerSeries.X i : MvPowerSeries ι R) L) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => cc_psubst_lemma (MvPowerSeries.constantCoeff_X i) hL)
 
 /- English proof (translation)
-Establish `hc : ∀ i : ι, MvPowerSeries.HasSubst (fun _ : Unit => (MvPowerSeries.X i : MvPowerSeries ι R))` using `fun i => MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => MvPowerSeries.constantCoeff_X i)`. Use `resV_subst_diag hf (hasSubst_diag L hL) (hasSubst_diag L hL) (fun k => ?_) (fun i hi => ?_) g` and prove the remaining obligations. Rewrite using `[PowerSeries.subst, PowerSeries.subst, resV_subst hf (hc (f k)), resV_X hf]`. Take `⟨L', hL'⟩` from `PowerSeries.X_dvd_iff.mpr hL`. Establish `hs : PowerSeries.HasSubst (MvPowerSeries.X i : MvPowerSeries ι R)` using `PowerSeries.HasSubst.of_constantCoeff_zero (MvPowerSeries.constantCoeff_X i)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hL', PowerSeries.subst_mul hs, PowerSeries.subst_X hs, resV_mul hf, resV_X_off hf i hi, zero_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem resV_diag [Finite ι] [Finite κ] {f : κ → ι} (hf : Function.Injective f) (L : PowerSeries R)
     (hL : PowerSeries.constantCoeff L = 0) (g : MvPowerSeries ι R) :
@@ -310,14 +308,14 @@ theorem resV_diag [Finite ι] [Finite κ] {f : κ → ι} (hf : Function.Injecti
     rw [hL', PowerSeries.subst_mul hs, PowerSeries.subst_X hs, resV_mul hf, resV_X_off hf i hi, zero_mul]
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => by simp)`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_negX [Finite ι] :
     MvPowerSeries.HasSubst (fun i : ι => -(MvPowerSeries.X i : MvPowerSeries ι R)) :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => by simp)
 
 /- English proof (translation)
-Use `resV_subst_diag hf hasSubst_negX hasSubst_negX (fun k => ?_) (fun i hi => ?_) g` and prove the remaining obligations. Rewrite using `[resV_neg, resV_X hf]`. Rewrite using `[resV_neg, resV_X_off hf i hi, neg_zero]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem resV_negX [Finite ι] [Finite κ] {f : κ → ι} (hf : Function.Injective f) (g : MvPowerSeries ι R) :
     resV f (MvPowerSeries.subst (fun i => -(MvPowerSeries.X i : MvPowerSeries ι R)) g) =
@@ -331,14 +329,14 @@ end Res
 variable {p : ℕ} [Fact p.Prime]
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, logF, PowerSeries.coeff_mk]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem cc_logF_lemma : PowerSeries.constantCoeff (logF p) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff_apply, logF, PowerSeries.coeff_mk]
   simp
 
 /- English proof (translation)
-Rewrite using `[← PowerSeries.coeff_zero_eq_constantCoeff_apply, PowerSeries.coeff_map, PowerSeries.coeff_zero_eq_constantCoeff_apply, cc_logF_lemma, map_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem cc_logF' (K1 : Type) [Field K1] [Algebra (K0 p) K1] :
     PowerSeries.constantCoeff (PowerSeries.map (algebraMap (K0 p) K1) (logF p)) = 0 := by
@@ -346,7 +344,7 @@ theorem cc_logF' (K1 : Type) [Field K1] [Algebra (K0 p) K1] :
     PowerSeries.coeff_zero_eq_constantCoeff_apply, cc_logF_lemma, map_zero]
 
 /- English proof (translation)
-Rewrite using `[inParamK, inParamK]`. Conclude with `resV_diag hf _ (cc_logF' K1) g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resV_inParamK {ι κ : Type} [Finite ι] [Finite κ] {f : κ → ι} (hf : Function.Injective f)
     (K1 : Type) [Field K1] [Algebra (K0 p) K1] (g : MvPowerSeries ι K1) :
@@ -355,7 +353,7 @@ theorem resV_inParamK {ι κ : Type} [Finite ι] [Finite κ] {f : κ → ι} (hf
   exact resV_diag hf _ (cc_logF' K1) g
 
 /- English proof (translation)
-Rewrite using `[inParam, inParam]`. Conclude with `resV_diag hf _ cc_logF_lemma g`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resV_inParam {ι κ : Type} [Finite ι] [Finite κ] {f : κ → ι} (hf : Function.Injective f)
     (g : MvPowerSeries ι (K0 p)) : resV f (inParam p g) = inParam p (resV f g) := by
@@ -363,9 +361,9 @@ theorem resV_inParam {ι κ : Type} [Finite ι] [Finite κ] {f : κ → ι} (hf 
   exact resV_diag hf _ cc_logF_lemma g
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[resV_coeff]`. Use `show expS p g (n.mapDomain f) = expS p (resV f g) n`. Rewrite using `[expS, expS, degree_mapDomain]`. Use `Finset.sum_congr rfl (fun k _ => ?_)` and prove the remaining obligations.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← resV_pow hf, resV_coeff]`.
+A detailed English derivation is pending.
 -/
 theorem resV_expS {ι κ : Type} [Finite ι] {f : κ → ι} (hf : Function.Injective f) (g : MvPowerSeries ι (K0 p)) :
     resV f (expS p g) = expS p (resV f g) := by
@@ -377,7 +375,7 @@ theorem resV_expS {ι κ : Type} [Finite ι] {f : κ → ι} (hf : Function.Inje
   rw [← resV_pow hf, resV_coeff]
 
 /- English proof (translation)
-Rewrite `h`, the goal using `[Simeq]`. Take `⟨h0, c, hc0, hc⟩` from `h`. Use `⟨by rw [← resV_sub, cc_resV, h0], resV f c, by rw [cc_resV, hc0], ?_⟩` and prove the remaining obligations. Rewrite using `[← resV_sub, ← resV_inParam hf, ← resV_expS hf, hc, resV_add, resV_one hf, resV_map]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem simeq_resV {ι κ : Type} [Finite ι] [Finite κ] {f : κ → ι} (hf : Function.Injective f)
     {a b : MvPowerSeries ι (K0 p)} (h : Simeq p a b) : Simeq p (resV f a) (resV f b) := by
@@ -387,14 +385,14 @@ theorem simeq_resV {ι κ : Type} [Finite ι] [Finite κ] {f : κ → ι} (hf : 
   rw [← resV_sub, ← resV_inParam hf, ← resV_expS hf, hc, resV_add, resV_one hf, resV_map]
 
 /- English proof (translation)
-The claim follows from `MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => by fin_cases i <;> simp [hx, hy])`.
+A detailed English derivation is pending.
 -/
 theorem hasSubst_pair {τ : Type} {x y : MvPowerSeries τ (K0 p)} (hx : MvPowerSeries.constantCoeff x = 0)
     (hy : MvPowerSeries.constantCoeff y = 0) : MvPowerSeries.HasSubst ![x, y] :=
   MvPowerSeries.hasSubst_of_constantCoeff_zero (fun i => by fin_cases i <;> simp [hx, hy])
 
 /- English proof (translation)
-Rewrite using `[sub2, sub2, resV_subst hf (hasSubst_pair hx hy)]`. Use `congr 1`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem restrict_formalSum {ι κ : Type} [Finite ι] {f : κ → ι} (hf : Function.Injective f) (be : MvPowerSeries (Fin 2) (K0 p))
     {x y : MvPowerSeries ι (K0 p)} (hx : MvPowerSeries.constantCoeff x = 0)
@@ -406,15 +404,15 @@ theorem restrict_formalSum {ι κ : Type} [Finite ι] {f : κ → ι} (hf : Func
   fin_cases i <;> rfl
 
 /- English proof (translation)
-Establish `hcc : MvPowerSeries.constantCoeff be = 0`. Assume the negation of the conclusion as `hne`. Establish `h1` using `hbe.1 0 (by rwa [MvPowerSeries.coeff_zero_eq_constantCoeff_apply])`. Simplify using `at h1`. Establish `h00 : (![0, 0] : Fin 2 → MvPowerSeries τ (K0 p)) = fun _ => 0`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`. Rewrite using `[sub2, h00]`. Use extensionality with `e`. Rewrite using `[MvPowerSeries.coeff_subst (MvPowerSeries.hasSubst_of_constantCoeff_zero (fun _ => map_zero _)), map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Apply `finsum_eq_zero_of_forall_eq_zero` to reduce the goal to its premises. Introduce `d`. Distinguish the cases in `hd : d = 0`. Substitute `hd` using the available equality. Rewrite using `[MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hcc, zero_smul]`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, hs⟩` from `Finsupp.ne_iff.mp hd`. Simplify using `only [Finsupp.coe_zero, Pi.zero_apply] at hs`. Establish `hz : (d.prod fun s m => (fun _ => (0 : MvPowerSeries τ (K0 p))) s ^ m) = 0`. Rewrite using `[Finsupp.prod]`. Apply `Finset.prod_eq_zero (Finsupp.mem_support_iff.mpr hs)` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `zero_pow hs`. Rewrite using `[hz, map_zero, smul_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formalSum_zero_zero {τ : Type} {be : MvPowerSeries (Fin 2) (K0 p)} (hbe : BeProp p be) :
     sub2 p be (0 : MvPowerSeries τ (K0 p)) 0 = 0 := by
@@ -442,15 +440,13 @@ theorem formalSum_zero_zero {τ : Type} {be : MvPowerSeries (Fin 2) (K0 p)} (hbe
     rw [hz, map_zero, smul_zero]
 
 /- English proof (translation)
-Establish `hgg : Function.Injective (Sum.map g g)` using `Sum.map_injective.mpr ⟨hg, hg⟩`. Rewrite using `[resV_sum]`. Use `symm`. Apply `Fintype.sum_of_injective g hg` to reduce the goal to its premises. Introduce `i hi`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use symmetry to reverse the relation. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hl : ∀ k, Sum.map g g k ≠ Sum.inl i`. Introduce and unpack `(k | k) hk`. Simplify using `only [Sum.map_inl, Sum.inl.injEq] at hk`. Conclude with `hi ⟨k, hk⟩`. Simplify using `at hk`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hr : ∀ k, Sum.map g g k ≠ Sum.inr i`. Introduce and unpack `(k | k) hk`. Simplify using `at hk`. Simplify using `only [Sum.map_inr, Sum.inr.injEq] at hk`. Conclude with `hi ⟨k, hk⟩`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[restrict_formalSum hgg _ (MvPowerSeries.constantCoeff_X _) (MvPowerSeries.constantCoeff_X _), resV_X_off hgg _ hl, resV_X_off hgg _ hr, formalSum_zero_zero hbe]`. Introduce `k`. Establish `hl` using `resV_X (R := K0 p) hgg (Sum.inl k)`. Establish `hr` using `resV_X (R := K0 p) hgg (Sum.inr k)`. Simplify using `only [Sum.map_inl, Sum.map_inr] at hl hr`.
-
-Rewrite using `[restrict_formalSum hgg _ (MvPowerSeries.constantCoeff_X _) (MvPowerSeries.constantCoeff_X _), hl, hr]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resV_beSum {ι κ : Type} [Fintype ι] [Fintype κ] {g : κ → ι} (hg : Function.Injective g)
     {be : MvPowerSeries (Fin 2) (K0 p)} (hbe : BeProp p be) :
@@ -480,11 +476,11 @@ theorem resV_beSum {ι κ : Type} [Fintype ι] [Fintype κ] {g : κ → ι} (hg 
     rw [restrict_formalSum hgg _ (MvPowerSeries.constantCoeff_X _) (MvPowerSeries.constantCoeff_X _), hl, hr]
 
 /- English proof (translation)
-Establish `hgg : Function.Injective (Sum.map g g)` using `Sum.map_injective.mpr ⟨hg, hg⟩`. Rewrite `h`, the goal using `[ExtensionGeneratorCondition]`. Take `⟨Ph, U, hTh, hU, hneg, hbe, hPh⟩` from `h`. Use `⟨resV (Sum.map g g) Ph, resV (Sum.map g g) U, ?_, ?_, ?_, hbe, ?_⟩` and prove the remaining obligations. Rewrite using `[hTh, resV_mul hgg, resV_map, resV_expS hgg, resV_neg]`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← resV_inParamK hgg K1 U]`. Rewrite `hU`, the goal using `[IntR]`. Introduce `n`. Rewrite using `[resV_coeff]`. Conclude with `hU _`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← resV_negX hgg]`. Conclude with `simeq_resV hgg hneg`. Rewrite using `[← resV_beSum hg hbe]`. Conclude with `simeq_resV hgg hPh`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem K1gen_resV {ι κ : Type} [Fintype ι] [Fintype κ] {K1 : Type} [Field K1] [Algebra (K0 p) K1] {R1 : Subring K1}
     {be : MvPowerSeries (Fin 2) (K0 p)} {g : κ → ι} (hg : Function.Injective g) {Th : MvPowerSeries (ι ⊕ ι) K1}
@@ -511,7 +507,7 @@ namespace Formalism.L2.KerInert
 open Formalism.L2.KerInert.Loc Formalism.L2.G.Pend
 
 /- English proof (translation)
-Introduce `p _ X _ E hfin be T pos F H v j hj L0 hL0 La' hL' φ`. Set `_` to `wittFractionAlgebraCp p`. Conclude with `K1gen_resV (g := fun e => (⟨v, e⟩ : X.EA j)) (fun a b h => eq_of_heq (Sigma.mk.inj_iff.1 h).2) (H j hj L0 hL0 La' hL' φ)`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. A detailed English derivation is pending.
 -/
 theorem first_kernel_local_of_general : FirstKernelLocalOfGeneral := by
   intro p _ X _ E hfin be T pos F H v j hj L0 hL0 La' hL' φ
@@ -520,7 +516,7 @@ theorem first_kernel_local_of_general : FirstKernelLocalOfGeneral := by
     (H j hj L0 hL0 La' hL' φ)
 
 /- English proof (translation)
-Introduce `h` and use `(adm_two_iff_local_representative D X E hfin hst hLT pos F).2 (first_kernel_local_of_general X E hfin _ pos F ((adm_two_pendant_iff_representative D X E hfin hst hLT pos F).1 h))`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem admissible_second_of_variant (D : Formalism.BasicNotions.D7) {p : ℕ} [Fact p.Prime] (X : Sys p) [IsFractionRing X.G.O X.G.Kf]
     (E : CEmbC X.G) (hfin : ∀ j c, (X.Lv.lev j c).FinClasses) (hst : FinStab X.Lv) {g : Formalism.MainNotions.GL3Theta.G1 p}

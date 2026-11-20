@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.WeakTop
 
 /- English proof (translation)
-Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [smul_add, map_add, Pi.add_apply, hx, hy, mul_add]`. Consider the case `tmul r t`. Proceed by induction on `r using TensorProduct.induction_on with`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [add_tmul, smul_add, map_add, Pi.add_apply, hx, hy, mul_add]`. Consider the case `tmul a w`. Rewrite using `[TensorProduct.smul_tmul', TensorProduct.smul_tmul', coords_tmul, coords_tmul, smul_eq_mul, mul_smul, algebraMap_smul, map_smul, Finsupp.smul_apply, smul_eq_mul, mul_smul, Algebra.smul_def]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities.
 -/
 theorem coords_algebraMap_smul {R O W T ι : Type} [CommRing R] [CommRing O] [Algebra R O]
     [CommRing W] [Algebra R W] [AddCommGroup T] [Module O T] [Module R T] [IsScalarTower R O T]
@@ -36,11 +36,9 @@ theorem coords_algebraMap_smul {R O W T ι : Type} [CommRing R] [CommRing O] [Al
 end GlobalTheory.WeakTop
 
 /- English proof (translation)
-Introduce `l _ K LL T d b m`. Use `letI := twTop T b`. Use `letI := zlMod T`. Use `haveI := zlTower T`. Use `letI := cbTop l`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Use `letI := cbValued l`. Use `letI := wTop l`. Use `haveI : IsTopologicalRing (WCb l) := GlobalTheory.WeakTop.isTopologicalRing_witt`. Establish `hW : Continuous (algebraMap ℤ_[l] (WCb l))` using `GlobalTheory.WeakTop.continuous_padicInt_witt _`. Use `continuous_induced_rng.2 (continuous_pi fun i => ?_)` and prove the remaining obligations.
-
-Simplify using `only [Function.comp_apply, GlobalTheory.WeakTop.coords_algebraMap_smul]`. Conclude with `hW.mul continuous_const`.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.WeakClosed.continuous_zl_smul : ∀ {l : ℕ} [Fact l.Prime] {K LL : FinExt l} (T : Lt K LL) {d : ℕ} (b : LatB T d) (m : TW (RW LL) T), letI := twTop T b; Continuous fun c : ℤ_[l] => algebraMap ℤ_[l] ↥(OL LL) c • m := by
   intro l _ K LL T d b m

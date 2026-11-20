@@ -178,17 +178,15 @@ def DownAt (ep : Bool) {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     EmbTypeUe (!ep) τ₀ ∧ ∀ x, τ x = C.inc (τ₀ x)
 
 /- English proof (translation)
-Introduce and unpack `⟨⟨τ₀, h0, e0⟩, ⟨τ₁, h1, e1⟩⟩`. Establish `hτ : τ₀ = τ₁`. Use extensionality with `x`. Conclude with `congrArg _ ((C.inc).injective ((e0 x).symm.trans (e1 x)))`. Substitute `hτ` using the available equality.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. By extensionality, compare the relevant components. Substitute using the available equality. Establish an intermediate fact.
 
-Establish `hd : (0 : ℝ) < Real.sqrt (D.host.d : ℝ)`. Use `D.host.qd_big.2` as an intermediate fact. Conclude with `Real.sqrt_pos.2 (by exact_mod_cast (by omega : 0 < D.host.d))`. Establish `key : ∀ (ψ₁ ψ₂ : D.host.E →+* ℂ), ψ₁ ∈ D.host.cmType → ψ₂ ∈ D.host.cmType → (∃ y : D.what₂.LL, D.what₂.embLL y = ψ₁ (D.host.sqd) ∧ D.what₂.embLL y = starRingEnd ℂ (ψ₂ (D.host.sqd))) → False`. Introduce `ψ₁ ψ₂ m1 m2 ⟨y, hy1, hy2⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h` using `hy1.symm.trans hy2`. Simplify using `only [Formalism.HC.HostRaw.cmType, Set.mem_ofPred_eq] at m1 m2`. Rewrite `h` using `[m1, m2]`. Establish `him` using `congrArg Complex.im h`. Simplify using `at him`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Split into cases according to the possible forms of the given data.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Consider the cases of `ep with`. Consider the case `true`. Take `⟨hr, φ, hφ, hφr⟩` from `h0`. Take `⟨-, φ', hφ', hφ'r⟩` from `h1`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Take `⟨y, hy⟩` from `hr (D.host.sqd)`. Conclude with `key φ φ' hφ hφ' ⟨y, hφr _ _ hy, hφ'r _ _ hy⟩`. Consider the case `false`. Take `⟨hr, φ, hφ, hφr⟩` from `h0`. Take `⟨-, φ', hφ', hφ'r⟩` from `h1`.
-
-Take `⟨y, hy⟩` from `hr (D.host.sqd)`. Conclude with `key φ' φ hφ' hφ ⟨y, hφ'r _ _ hy, hφr _ _ hy⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem not_upAt_and_downAt (ep : Bool) {i : D.nd.Loc} {w : HeightOneSpectrum (𝓞 D.host.E)}
     {hw : w ∈ placesOver D.host.E (D.nd.l i)} (C : Formalism.MainNotions.TruncatedSeriesCountingIdentities.CoefExt D i w hw)

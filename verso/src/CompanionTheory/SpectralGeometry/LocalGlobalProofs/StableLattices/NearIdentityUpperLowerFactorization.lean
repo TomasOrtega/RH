@@ -18,34 +18,34 @@ def blk (P : Matrix (Fin n) (Fin n) L) (b c : Fin n → L) (d : L) :
 
 omit [IsUltrametricDist L] in
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_cc (P : Matrix (Fin n) (Fin n) L) (b c : Fin n → L) (d : L) (i j : Fin n) :
     blk P b c d i.castSucc j.castSucc = P i j := by simp [blk]
 
 omit [IsUltrametricDist L] in
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_cl (P : Matrix (Fin n) (Fin n) L) (b c : Fin n → L) (d : L) (i : Fin n) :
     blk P b c d i.castSucc (Fin.last n) = b i := by simp [blk]
 
 omit [IsUltrametricDist L] in
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_lc (P : Matrix (Fin n) (Fin n) L) (b c : Fin n → L) (d : L) (j : Fin n) :
     blk P b c d (Fin.last n) j.castSucc = c j := by simp [blk]
 
 omit [IsUltrametricDist L] in
 /- English proof (translation)
-Simplify using `[blk]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem blk_ll (P : Matrix (Fin n) (Fin n) L) (b c : Fin n → L) (d : L) :
     blk P b c d (Fin.last n) (Fin.last n) = d := by simp [blk]
 
 /- English proof (translation)
-The claim follows from `_root_.UpperTheory.Reformulated.B.TriangularFactorizationNearIdentity.factor n r h0 h1`.
+A detailed English derivation is pending.
 -/
 theorem factor (n : ℕ) (r : ℝ) (h0 : 0 ≤ r) (h1 : r < 1) :
     ∀ A : Matrix (Fin n) (Fin n) L, (∀ i j, ‖(A - 1) i j‖ ≤ r) →
@@ -54,7 +54,7 @@ theorem factor (n : ℕ) (r : ℝ) (h0 : 0 ≤ r) (h1 : r < 1) :
   _root_.UpperTheory.Reformulated.B.TriangularFactorizationNearIdentity.factor n r h0 h1
 
 /- English proof (translation)
-The claim follows from `factor n r h0 h1 A hA`.
+A detailed English derivation is pending.
 -/
 theorem iwahori_factorisation (L : Type) [NontriviallyNormedField L] [IsUltrametricDist L] (n : ℕ) (r : ℝ)
     (h0 : 0 ≤ r) (h1 : r < 1) (A : Matrix (Fin n) (Fin n) L) (hA : ∀ i j, ‖(A - 1) i j‖ ≤ r) :

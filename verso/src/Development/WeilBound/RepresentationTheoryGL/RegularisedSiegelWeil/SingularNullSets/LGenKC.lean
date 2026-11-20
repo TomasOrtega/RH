@@ -12,7 +12,7 @@ namespace PositivityTheory.Rg.Rsw.L.LGenK
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (v : HeightOneSpectrum (𝓞 F))
 
 /- English proof (translation)
-Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a x => simp [sigR, finEmb_tmul]`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem finEmb_sigR (σ : E →ₐ[F] E) (τ : E →ₐ[F] FvBar F v) (y : Fv F v ⊗[F] E) :
     finEmb F v τ (sigR (Fv F v) σ y) = finEmb F v (τ.comp σ) y := by
@@ -22,7 +22,7 @@ theorem finEmb_sigR (σ : E →ₐ[F] E) (τ : E →ₐ[F] FvBar F v) (y : Fv F 
   | add x y hx hy => simp only [map_add, hx, hy]
 
 /- English proof (translation)
-The claim follows from `sigR_mem_intLoc σ hy`.
+A detailed English derivation is pending.
 -/
 theorem sigR_mem (σ : E →ₐ[F] E) {y : Fv F v ⊗[F] E} (hy : y ∈ intLoc F E v) : sigR (Fv F v) σ y ∈ intLoc F E v := sigR_mem_intLoc σ hy
 
@@ -35,7 +35,7 @@ Both sides reduce to the same expression.
 @[simp] theorem coe_sR (σ : E →ₐ[F] E) (y : intLoc F E v) : (sR v σ y : Fv F v ⊗[F] E) = sigR (Fv F v) σ y := rfl
 
 /- English proof (translation)
-The claim follows from `(le_absFin F v τ y).trans (absFin_le_one_of_mem_intLoc y.2)`.
+A detailed English derivation is pending.
 -/
 theorem absBar_le_one (τ : E →ₐ[F] FvBar F v) (y : intLoc F E v) : absBar F v (finEmb F v τ y) ≤ 1 := (le_absFin F v τ y).trans (absFin_le_one_of_mem_intLoc y.2)
 
@@ -56,13 +56,13 @@ def p0 (τ : E →ₐ[F] FvBar F v) : Ideal (intLoc F E v) where
       _ < 1 := by rw [one_mul]; exact hy
 
 /- English proof (translation)
-Rewrite using `[map_one]`. Simplify using `using absBar_algebraMap F v 1`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem absBar_finEmb_one (τ : E →ₐ[F] FvBar F v) : absBar F v (finEmb F v τ 1) = 1 := by
   rw [map_one]; simpa using absBar_algebraMap F v 1
 
 /- English proof (translation)
-Introduce `h`. Establish `: (1 : intLoc F E v) ∈ p0 v τ` using `h ▸ Submodule.mem_top`. Express the relevant statement in the definitionally equal form `absBar F v (finEmb F v τ ((1 : intLoc F E v) : Fv F v ⊗[F] E)) < 1 at this`. Rewrite `this` using `[OneMemClass.coe_one, absBar_finEmb_one]`. Conclude with `lt_irrefl _ this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem prime_valuation_ne_top (τ : E →ₐ[F] FvBar F v) : p0 v τ ≠ ⊤ := by
   intro h
@@ -72,15 +72,15 @@ theorem prime_valuation_ne_top (τ : E →ₐ[F] FvBar F v) : p0 v τ ≠ ⊤ :=
   exact lt_irrefl _ this
 
 /- English proof (translation)
-Establish `hne : ∀ τ : E →ₐ[F] FvBar F v, finEmb F v τ (y : Fv F v ⊗[F] E) ≠ 0`. Introduce `τ h0`. Establish `h1` using `h τ`. Rewrite `h1` using `[h0, (absBar_eq_zero F v).2 rfl]`. Conclude with `zero_ne_one h1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hinj : Function.Injective (LinearMap.mulLeft (Fv F v) (y : Fv F v ⊗[F] E))`. Rewrite using `[← LinearMap.ker_eq_bot, LinearMap.ker_eq_bot']`. Introduce `z hz`. Rewrite `hz` using `[LinearMap.mulLeft_apply]`. Apply `absFin_eq_zero_iff.1` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `le_antisymm (Finset.sup_le fun τ _ => ?_) bot_le` and prove the remaining obligations. Establish `h1` using `congrArg (finEmb F v τ) hz`. Rewrite `h1` using `[map_mul, map_zero]`. Rewrite using `[le_zero_iff, absBar_eq_zero]`. Conclude with `(mul_eq_zero.1 h1).resolve_left (hne τ)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hz⟩` from `(LinearMap.injective_iff_surjective.1 hinj) 1`. Rewrite `hz` using `[LinearMap.mulLeft_apply]`. Establish `hzmem : z ∈ intLoc F E v`. Rewrite using `[mem_intLoc_iff_absFin_le_one]`. Use `Finset.sup_le fun τ _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1` using `absBar_finEmb_one v τ`. Establish `h1` using `congrArg (fun w => absBar F v (finEmb F v τ w)) hz`. Simplify using `only [map_mul, absBar_mul, h τ, one_mul] at h1`. Rewrite using `[h1, e1]`. Conclude with `isUnit_iff_exists_inv.2 ⟨⟨z, hzmem⟩, Subtype.ext hz⟩`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_of_absBar (y : intLoc F E v) (h : ∀ τ : E →ₐ[F] FvBar F v, absBar F v (finEmb F v τ y) = 1) :
     IsUnit y := by
@@ -111,11 +111,11 @@ theorem isUnit_of_absBar (y : intLoc F E v) (h : ∀ τ : E →ₐ[F] FvBar F v,
   exact isUnit_iff_exists_inv.2 ⟨⟨z, hzmem⟩, Subtype.ext hz⟩
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `push_neg at hne`. Establish `hd : τ0 ≠ τ0.comp σ`. Introduce `h`. Apply `hσ1` to reduce the goal to its premises.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components.
 
-Use extensionality with `x`. Establish `hx : τ0 x = τ0 (σ x)` using `congrArg (fun g => g x) h`. Conclude with `(τ0.injective hx).symm`. Establish `hc` using `card_algHom_le_finrank F E (FvBar F v)`. Rewrite `hc` using `[h2, ← Fintype.card_eq_nat_card]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3 : ({τ, τ0, τ0.comp σ} : Finset (E →ₐ[F] FvBar F v)).card = 3`. Rewrite using `[Finset.card_insert_of_notMem, Finset.card_pair hd]`. Simplify using `[hne.1, hne.2]`. Establish `h4` using `Finset.card_le_univ ({τ, τ0, τ0.comp σ} : Finset (E →ₐ[F] FvBar F v))`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem emb_cases (σ : E →ₐ[F] E) (hσ1 : σ ≠ AlgHom.id F E) (h2 : Module.finrank F E = 2) (τ0 τ : E →ₐ[F] FvBar F v) :
     τ = τ0 ∨ τ = τ0.comp σ := by
@@ -137,9 +137,9 @@ theorem emb_cases (σ : E →ₐ[F] E) (hσ1 : σ ≠ AlgHom.id F E) (h2 : Modul
   omega
 
 /- English proof (translation)
-Establish `τ0 : E →ₐ[F] FvBar F v` using `IsAlgClosed.lift`. Take `⟨𝔭, hmax, hle⟩` from `Ideal.exists_le_maximal _ (prime_valuation_ne_top v τ0)`. Use `⟨𝔭, hmax, fun x hx hsx => isUnit_of_absBar v x fun τ => ?_⟩` and prove the remaining obligations. Establish `hone : ∀ w : intLoc F E v, w ∉ 𝔭 → absBar F v (finEmb F v τ0 w) = 1`. Introduce `w hw`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `le_antisymm (absBar_le_one v τ0 w) (not_lt.1 fun hlt => hw (hle (show w ∈ p0 v τ0 from hlt)))`. Break down `emb_cases v σ hσ1 h2 τ0 τ with rfl | rfl` into its components or cases. Conclude with `hone x hx`. Establish `h5` using `hone _ hsx`. Rewrite `h5` using `[coe_sR, finEmb_sigR]`. Then use the resulting hypothesis.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_max (σ : E →ₐ[F] E) (hσ1 : σ ≠ AlgHom.id F E) (h2 : Module.finrank F E = 2) :
     ∃ 𝔭 : Ideal (intLoc F E v), 𝔭.IsMaximal ∧ ∀ x, x ∉ 𝔭 → sR v σ x ∉ 𝔭 → IsUnit x := by
@@ -155,15 +155,15 @@ theorem exists_max (σ : E →ₐ[F] E) (hσ1 : σ ≠ AlgHom.id F E) (h2 : Modu
     rwa [coe_sR, finEmb_sigR] at h5
 
 /- English proof (translation)
-Establish `hv : Valued.v (2 : Fv F v) = 1`. Establish `e : (2 : Fv F v) = ((2 : F) : Fv F v)`. Rewrite using `[show (2 : F) = 1 + 1 by norm_num, HeightOneSpectrum.adicCompletion.coe_add, HeightOneSpectrum.adicCompletion.coe_one]`. Evaluate the numerical expressions. Establish `e2 : (2 : F) = algebraMap (𝓞 F) F 2` using `(map_ofNat (algebraMap (𝓞 F) F) 2).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Rewrite using `[e, HeightOneSpectrum.adicCompletion.valued_coe, e2, HeightOneSpectrum.valuation_of_algebraMap, HeightOneSpectrum.intValuation_eq_one_iff_mem_primeCompl]`. Conclude with `h`. Establish `hmem : (2 : Fv F v)⁻¹ ∈ HeightOneSpectrum.adicCompletionIntegers F v`. Rewrite using `[HeightOneSpectrum.mem_adicCompletionIntegers, map_inv₀, hv, inv_one]`. Establish `h0 : (2 : Fv F v) ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h0`. Rewrite `hv` using `[h0, map_zero]`. Conclude with `zero_ne_one hv`. Establish `h2 : (2 : Fv F v ⊗[F] E) = (2 : Fv F v) ⊗ₜ[F] (1 : E)`. Rewrite using `[show (2 : Fv F v) = 1 + 1 by norm_num, TensorProduct.add_tmul, ← Algebra.TensorProduct.one_def]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions. Establish an intermediate fact.
 
-Evaluate the numerical expressions. Establish `hc : ((2 : intLoc F E v) : Fv F v ⊗[F] E) = 2` using `by first`. Consider the case `rfl`. Consider the case `norm_cast`. Consider the case `simp`.
+Treat this case separately. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Move the embeddings inside the algebraic operations.
 
-Use `isUnit_iff_exists_inv.2 ⟨⟨_, tmul_mem_intLoc hmem (1 : 𝓞 E)⟩, Subtype.ext ?_⟩` and prove the remaining obligations. Use `push_cast`. Rewrite using `[hc, h2, Algebra.TensorProduct.tmul_mul_tmul, mul_inv_cancel₀ h0, one_mul, ← Algebra.TensorProduct.one_def]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isUnit_two (h : (2 : 𝓞 F) ∉ v.asIdeal) : IsUnit (2 : intLoc F E v) := by
   have hv : Valued.v (2 : Fv F v) = 1 := by

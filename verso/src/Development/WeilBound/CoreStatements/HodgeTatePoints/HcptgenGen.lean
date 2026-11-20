@@ -12,23 +12,23 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.G
 open scoped TensorProduct
 
 /- English proof (translation)
-Introduce `Ω _ _ E _ _ F _ _ ρ I _ _ σ hσ hcard`. Set `τ : I → (F →+* Ω)` to `fun s => IsFractionRing.lift (EigSplit.injective_of_charZero F (σ s))`. Establish `hτ : ∀ s (a : 𝓞 F), τ s (a : F) = σ s a` using `fun s a => IsFractionRing.lift_algebraMap (EigSplit.injective_of_charZero F (σ s)) a`. Establish `hτinj : Function.Injective τ`. Introduce `s t hst'`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hσ` to reduce the goal to its premises. Use extensionality with `a`. Rewrite using `[← hτ, ← hτ, hst']`. Set `j : (F →+* Ω) → (F →ₐ[ℚ] AlgebraicClosure Ω)` to `fun φ => ((algebraMap Ω (AlgebraicClosure Ω)).comp φ).toRatAlgHom`. Establish `hj : Function.Injective j`.
+Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Introduce `φ ψ hφψ`. Use extensionality with `x`. Apply `(algebraMap Ω (AlgebraicClosure Ω)).injective` to reduce the goal to its premises. Use `DFunLike.congr_fun hφψ x` as an intermediate fact. Simplify `this` using `[j]`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `haveI : Finite (F →+* Ω) := Finite.of_injective j hj`. Use `letI : Fintype (F →+* Ω) := Fintype.ofFinite _`. Establish `hle : Fintype.card (F →+* Ω) ≤ Module.finrank ℚ F`. Rewrite using `[← AlgHom.card ℚ F (AlgebraicClosure Ω)]`. Conclude with `Fintype.card_le_of_injective j hj`.
+Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hge : Module.finrank ℚ F ≤ Fintype.card (F →+* Ω)` using `hcard ▸ Fintype.card_le_of_injective τ hτinj`. Establish `hc : Fintype.card (F →+* Ω) = Module.finrank ℚ F` using `le_antisymm hle hge`. Establish `hbij : Function.Bijective τ` using `(Fintype.bijective_iff_injective_and_card τ).2 ⟨hτinj, hcard.trans hc.symm⟩`. Establish `hsum : ∑ s, HT.eigProj ρ (τ s) = 1`. Rewrite using `[← HT.sum_eigProj_eq_one Ω E F ρ hc]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hbij.sum_comp fun φ => HT.eigProj ρ φ`. Establish `heig : ∀ s, eigSp ρ (σ s) = HT.eigSp ρ (τ s)`. Introduce `s`. Use extensionality with `v`. Simplify using `[GlobalTheory.CompanionTheory.Ar.eigSp, HT.eigSp, Submodule.mem_iInf, sub_eq_zero, hτ]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Establish `spec` using `fun s => HT.ProjEig.eigProj_spec Ω E F ρ (τ s)`. Simplify using `only [heig]`. Use `DirectSum.isInternal_submodule_of_iSupIndep_of_iSup_eq_top (fun s => ?_) ?_` and prove the remaining obligations. Rewrite using `[Submodule.disjoint_def]`. Introduce `x hx hx'`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h0 : ⨆ t, ⨆ (_ : t ≠ s), HT.eigSp ρ (τ t) ≤ LinearMap.ker (HT.eigProj ρ (τ s))` using `iSup₂_le fun t ht y hy => (spec s).2.2.1 (τ t) (hτinj.ne ht) y hy`. Use `h0 hx'` as an intermediate fact. Rewrite `this` using `[LinearMap.mem_ker, (spec s).2.1 x hx]`. Then use the resulting hypothesis. Rewrite using `[eq_top_iff]`. Introduce `x _`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h : x = ∑ s, HT.eigProj ρ (τ s) x`. Rewrite using `[← LinearMap.sum_apply, hsum, Module.End.one_apply]`. Rewrite using `[h]`. Conclude with `Submodule.sum_mem _ fun s _ => Submodule.mem_iSup_of_mem s ((spec s).1 x)`.
+A detailed English derivation is pending.
 -/
 theorem eig_generic : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (E : Type) [AddCommGroup E] [Module Ω E] (F : Type) [Field F] [NumberField F] (ρ : NumberField.RingOfIntegers F →+* Module.End Ω E) (I : Type) [Fintype I] [DecidableEq I] (σ : I → (NumberField.RingOfIntegers F →+* Ω)), Function.Injective σ → Fintype.card I = Module.finrank ℚ F → DirectSum.IsInternal fun s => eigSp ρ (σ s) := by
   intro Ω _ _ E _ _ F _ _ ρ I _ _ σ hσ hcard
@@ -82,13 +82,13 @@ theorem eig_generic : ∀ (Ω : Type) [Field Ω] [CharZero Ω] (E : Type) [AddCo
     exact Submodule.sum_mem _ fun s _ => Submodule.mem_iSup_of_mem s ((spec s).1 x)
 
 /- English proof (translation)
-Establish `h1 : ∀ u : F, _root_.IsIntegral Ω₀ ((1 : Ω₀) ⊗ₜ[O] u)`. Introduce `u`. Take `⟨a, ha, hi⟩` from `(hF u).exists_integral_multiple`. Establish `h2 : _root_.IsIntegral ℤ ((1 : Ω₀) ⊗ₜ[O] (a • u))` using `hi.map_of_comp_eq (RingHom.id ℤ) (Algebra.TensorProduct.includeRight : F →ₐ[O] Ω₀ ⊗[O] F).toRingHom (Subsingleton.elim _ _)`. Establish `h3 : _root_.IsIntegral Ω₀ ((1 : Ω₀) ⊗ₜ[O] (a • u))` using `h2.map_of_comp_eq (Int.castRingHom Ω₀) (RingHom.id _) (Subsingleton.elim _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ha' : (a : Ω₀) ≠ 0` using `Int.cast_ne_zero.2 ha`. Establish `e : (1 : Ω₀) ⊗ₜ[O] u = (a : Ω₀)⁻¹ • ((1 : Ω₀) ⊗ₜ[O] (a • u))`. Rewrite using `[TensorProduct.tmul_smul, ← Int.cast_smul_eq_zsmul Ω₀, smul_smul, inv_mul_cancel₀ ha', one_smul]`. Rewrite using `[e]`. Conclude with `h3.smul _`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun x => ?_⟩` and prove the remaining obligations. Proceed by induction on `x using TensorProduct.induction_on with`. Consider the case `zero => exact isIntegral_zero`. Consider the case `tmul a u`. Establish `e : a ⊗ₜ[O] u = a • ((1 : Ω₀) ⊗ₜ[O] u)`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[TensorProduct.smul_tmul', smul_eq_mul, _root_.mul_one]`. Rewrite using `[e]`. Conclude with `(h1 u).smul a`. Consider the case `add x y hx hy => exact hx.add hy`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem isIntegral_tensor {O Ω₀ F : Type} [CommRing O] [Field Ω₀] [CharZero Ω₀] [Field F] [Algebra O Ω₀]
     [Algebra O F] (hF : ∀ u : F, IsAlgebraic ℤ u) : Algebra.IsIntegral Ω₀ (Ω₀ ⊗[O] F) := by
@@ -116,17 +116,17 @@ theorem isIntegral_tensor {O Ω₀ F : Type} [CommRing O] [Field Ω₀] [CharZer
   | add x y hx hy => exact hx.add hy
 
 /- English proof (translation)
-Use `letI := β.toAlgebra`. Use `letI := g₀.toAlgebra`. Establish `hy' : pullback.fst s (spMap β) y' = genPt ξ₀` using `GlobalTheory.CompanionTheory.Ar.CptInh.nogen ξ₀ h₀ _ (hy ▸ hyy.map (pullback.fst s (spMap β)).continuous)`. Establish `hsurj : SurjectiveOnStalks ξ₀`. Establish `: IsIso (Scheme.stalkClosedPointTo ξ₀)` using `(ConcreteCategory.isIso_iff_bijective _).2 h₀.bij`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Scheme.Spec_stalkClosedPointTo_fromSpecStalk ξ₀]`. Use `infer_instance`. Establish `hemb` using `SurjectiveOnStalks.isEmbedding_pullback (pullback.fst s (spMap β)) ξ₀`. Take `⟨z, hz, hz₂⟩` from `Scheme.Pullback.exists_preimage_pullback (f := pullback.fst s (spMap β)) (g := ξ₀) y (IsLocalRing.closedPoint Ω₀) hy`. Take `⟨z', hz', hz₂'⟩` from `Scheme.Pullback.exists_preimage_pullback (f := pullback.fst s (spMap β)) (g := ξ₀) y' (IsLocalRing.closedPoint Ω₀) hy'`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hzz : z' ⤳ z`. Rewrite using `[← hemb.isInducing.specializes_iff, specializes_prod]`. Simplify using `only [hz, hz', hz₂, hz₂']`. Conclude with `⟨hyy, specializes_rfl⟩`. Establish `sq : IsPullback (pullback.snd (pullback.fst s (spMap β)) ξ₀) (pullback.fst (pullback.fst s (spMap β)) ξ₀ ≫ pullback.snd s (spMap β)) (spMap g₀) (spMap β)`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hs]`. Conclude with `(IsPullback.of_hasPullback (pullback.fst s (spMap β)) ξ₀).flip.paste_vert (IsPullback.of_hasPullback s (spMap β))`. Set `e` to `sq.isoPullback ≪≫ pullbackSpecIso O Ω₀ F`. Establish `hint : Algebra.IsIntegral Ω₀ (Ω₀ ⊗[O] F)` using `isIntegral_tensor hF`. Set `p' : PrimeSpectrum (Ω₀ ⊗[O] F)` to `e.hom z'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `p : PrimeSpectrum (Ω₀ ⊗[O] F)` to `e.hom z`. Establish `hle : p' ≤ p` using `(PrimeSpectrum.le_iff_specializes _ _).2 (hzz.map e.hom.continuous)`. Establish `hcm : (Ideal.comap (algebraMap Ω₀ (Ω₀ ⊗[O] F)) p'.asIdeal).IsMaximal` using `Ideal.IsPrime.isMaximal' (Ideal.comap_isPrime _ _)`. Establish `hmax : p'.asIdeal.IsMaximal` using `Ideal.isMaximal_of_isIntegral_of_isMaximal_comap (R := Ω₀) p'.asIdeal hcm`. Establish `heq : p' = p` using `PrimeSpectrum.ext (hmax.eq_of_le p.isPrime.ne_top hle)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hzeq : z' = z`. Establish `h` using `congrArg e.inv heq`. Simplify `h` using `[p, p']`. Rewrite using `[← hz, ← hz', hzeq]`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_specializes_of_fst {X : Scheme.{0}} {O F Ω₀ : Type} [CommRing O] [Field F] [Field Ω₀] [CharZero Ω₀]
     (s : X ⟶ Sp O) (β : O →+* F) (g₀ : O →+* Ω₀) (ξ₀ : Sp Ω₀ ⟶ X) (h₀ : IsCptGen ξ₀) (hs : ξ₀ ≫ s = spMap g₀)
@@ -174,15 +174,15 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {D : Da
   {Ω : Type} [Field Ω] {K : Type} [Fintype K] {J : K → Type} {y : (Σ k, J k) → Ω} (𝔐 : HodgeCpt Y S y)
 
 /- English proof (translation)
-Establish `hchar : CharZero Ω` using `charZero_of_injective_ringHom 𝔐.cst.injective`. Use `haveI : CharZero 𝔐.Ω₀ := 𝔐.fn.charZero`. Set `g₀ : O →+* 𝔐.Ω₀` to `(Spec.preimage (𝔐.ξ₀ ≫ Y.s)).hom`. Establish `hs : 𝔐.ξ₀ ≫ Y.s = spMap g₀` using `by show _ = Spec.map (CommRingCat.ofHom (Spec.preimage (𝔐.ξ₀ ≫ Y.s)).hom)`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hfn : 𝔐.ξ ≫ 𝔐.f = spMap 𝔐.fn ≫ 𝔐.ξ₀` using `𝔐.fn_over`. Establish `hw : (𝔐.ξ ≫ 𝔐.f) ≫ Y.s = spMap 𝔐.cst ≫ spMap β`. Rewrite using `[Category.assoc, 𝔐.cst_over]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp]`. Set `g : Sp Ω ⟶ pullback Y.s (spMap β)` to `pullback.lift (𝔐.ξ ≫ 𝔐.f) (spMap 𝔐.cst) hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hgf : g ≫ pullback.fst _ _ = 𝔐.ξ ≫ 𝔐.f` using `pullback.lift_fst _ _ _`. Establish `hall : ∀ w : Sp Ω, pullback.fst Y.s (spMap β) (g w) = genPt 𝔐.ξ₀`. Introduce `w`. Rewrite using `[← Scheme.Hom.comp_apply, hgf, hfn, Scheme.Hom.comp_apply]`. Conclude with `congrArg 𝔐.ξ₀ (Subsingleton.elim (α := PrimeSpectrum 𝔐.Ω₀) _ _)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `HodgeBasic.noetherianSpace_pullback Y.proj β` as an intermediate fact. Use `Y.jQ_open` as an intermediate fact. Use `c.fin` as an intermediate fact. Establish `hF : ∀ u : c.F, IsAlgebraic ℤ u` using `fun u => (IsFractionRing.isAlgebraic_iff ℤ ℚ c.F).2 (Algebra.IsAlgebraic.isAlgebraic u)`. Establish `hran : Set.range g ⊆ Set.range Y.jQ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨w, rfl⟩`. Conclude with `HodgeBasic.mem_of_dense_of_maximal Y.jQ.isOpenEmbedding.isOpen_range Y.jQ_dense fun y' h' => eq_of_specializes_of_fst Y.s β g₀ 𝔐.ξ₀ 𝔐.gen₀ hs hF (hall w) h'`. Use `⟨IsOpenImmersion.lift Y.jQ g hran, ?_⟩` and prove the remaining obligations. Rewrite using `[Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, hgf]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lift : ∃ x : Sp Ω ⟶ Xo.XF c, 𝔐.ξ ≫ 𝔐.f = x ≫ Y.j := by
   have hchar : CharZero Ω := charZero_of_injective_ringHom 𝔐.cst.injective
@@ -214,9 +214,9 @@ theorem exists_lift : ∃ x : Sp Ω ⟶ Xo.XF c, 𝔐.ξ ≫ 𝔐.f = x ≫ Y.j 
   rw [Model.j, ← Category.assoc, IsOpenImmersion.lift_fac, hgf]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `exists_lift 𝔐`. Use `haveI := Y.oF.proper`. Establish `sq : IsPullback (pullback.fst 𝔐.t.G.hom 𝔐.ξ ≫ 𝔐.m.φ) (pullback.snd 𝔐.t.G.hom 𝔐.ξ) Y.t.G.hom (𝔐.ξ ≫ 𝔐.f)` using `(IsPullback.of_hasPullback 𝔐.t.G.hom 𝔐.ξ).paste_horiz 𝔐.m.cart.1`. Establish `sq' : IsPullback (pullback.fst Y.oF.t.G.hom x ≫ Y.m.φ) (pullback.snd Y.oF.t.G.hom x) Y.t.G.hom (x ≫ Y.j)` using `(IsPullback.of_hasPullback Y.oF.t.G.hom x).paste_horiz Y.m.cart.1`. Rewrite `sq` using `[hx]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← sq.isoIsPullback_hom_snd _ _ sq']`. Use `infer_instance`.
+A detailed English derivation is pending.
 -/
 theorem isProper_gen : IsProper (pullback.snd 𝔐.t.G.hom 𝔐.ξ) := by
   obtain ⟨x, hx⟩ := exists_lift 𝔐
@@ -230,7 +230,7 @@ theorem isProper_gen : IsProper (pullback.snd 𝔐.t.G.hom 𝔐.ξ) := by
   infer_instance
 
 /- English proof (translation)
-Take `⟨U, hU, b, hb, hfr⟩` from `𝔐.vb s ⟨genPt 𝔐.ξ, specializes_rfl⟩ (Set.mem_univ _)`. Establish `hli` using `(hfr ⟨genPt 𝔐.ξ, specializes_rfl⟩ (Set.mem_univ _) hU).1`. Establish `e : 𝔐.Vgen s = Submodule.span Ω (Set.range b)` using `hb.symm`. Rewrite using `[e]`. Conclude with `⟨Module.Finite.span_of_finite Ω (Set.finite_range b), by rw [finrank_span_eq_card hli, Fintype.card_fin]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem finrank_Vgen (s : CMType H ⊕ CMType H) : Module.Finite Ω (𝔐.Vgen s) ∧
     Module.finrank Ω (𝔐.Vgen s) = labelRk D s := by
@@ -241,13 +241,11 @@ theorem finrank_Vgen (s : CMType H ⊕ CMType H) : Module.Finite Ω (𝔐.Vgen s
   exact ⟨Module.Finite.span_of_finite Ω (Set.finite_range b), by rw [finrank_span_eq_card hli, Fintype.card_fin]⟩
 
 /- English proof (translation)
-Establish `hchar : CharZero Ω` using `charZero_of_injective_ringHom 𝔐.cst.injective`. Establish `hinj : Function.Injective 𝔐.emb`. Introduce `s s' h`. Use `HodgeBasic.labelEmb_injective c (RingHom.ext fun a => 𝔐.cst.injective ?_)` and prove the remaining obligations. Conclude with `congrArg (fun m : 𝓞 E →+* Ω => m a) h`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Equip the data with the indicated structure.
 
-Use `letI : Fintype (CMType H) := Fintype.ofFinite _`. Establish `hcard : Fintype.card (CMType H ⊕ CMType H) = Module.finrank ℚ E`. Rewrite using `[Fintype.card_of_bijective (HodgeBasic.labelHom_bijective H), Embeddings.card]`. Establish `hint : DirectSum.IsInternal 𝔐.Vgen` using `eig_generic Ω 𝔐.Li E 𝔐.ρ (CMType H ⊕ CMType H) 𝔐.emb hinj hcard`. Use `haveI := fun s => (finrank_Vgen 𝔐 s).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : Module.finrank Ω 𝔐.Li = ∑ s, labelRk D s`. Rewrite using `[← (LinearEquiv.ofBijective (DirectSum.coeLinearMap 𝔐.Vgen) hint).finrank_eq, Module.finrank_directSum]`. Conclude with `Finset.sum_congr rfl fun s _ => (finrank_Vgen 𝔐 s).2`. Rewrite using `[h1, GlobalTheory.datum_finrank_int D, ← hcard, Fintype.sum_sum_type, Fintype.card_sum, ← two_mul, Nat.mul_div_cancel_left _ two_pos]`. Simplify using `[labelRk]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem two_mul_finrank : 2 * Module.finrank Ω 𝔐.Li = Module.finrank ℤ D.La := by
   classical

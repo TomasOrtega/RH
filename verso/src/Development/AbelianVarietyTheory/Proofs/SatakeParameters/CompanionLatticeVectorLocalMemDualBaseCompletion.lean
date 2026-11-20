@@ -11,19 +11,19 @@ open Formalism.MainNotions.G.KAat Matrix
 namespace GlobalTheory.CompanLocal
 
 /- English proof (translation)
-Introduce `R F E _ _ _ _ _ _ N sp J crd a x hx hJ Lb hfin hspan hint v u hu`. Use `set y := bc (prV (E := E) v) x with hy_def`. Simplify using `only [latCo, mvL, Submodule.mem_map] at hu`. Take `⟨w, hw, rfl⟩` from `hu`. Set `locV : (Fin N → E) → (Fin N → E ⊗[F] v.adicCompletion F)` to `fun z i => inclE (F := F) (v.adicCompletion F) (z i)`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hcomp : (fun l => prV (E` using `E) v (pullV (F := F) (ratA F crd * x) (((toLE crd : (Fin N → E) ≃ₗ[E] (Fin N → E)) : (Fin N → E) →ₗ[E] (Fin N → E)).restrictScalars (𝓞 E) w) l)) = ((y⁻¹ : GL (Fin N) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin N) (Fin N) (E ⊗[F] v.adicCompletion F)) *ᵥ locV w := by`. Establish `h1 : pullV (F` using `F) (ratA F crd * x) (((toLE crd : (Fin N → E) ≃ₗ[E] (Fin N → E)) : (Fin N → E) →ₗ[E] (Fin N → E)).restrictScalars (𝓞 E) w) = ((x⁻¹ : GL (Fin N) (E ⊗[F] FiniteAdeleRing (𝓞 F) F)) : Matrix (Fin N) (Fin N) _) *ᵥ (fun i => inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (w i)) := by`. Unfold `pullV`. Rewrite using `[_root_.mul_inv_rev, Units.val_mul, ← Matrix.mulVec_mulVec, ← map_inv]`. Use `congr 1`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact.
 
-Use `bc_mulVec (F := F) crd⁻¹ (toLE crd w)` as an intermediate fact. Use `this.trans ?_` and prove the remaining obligations. Use function extensionality and compare the values at `i`. Use `show inclE (F := F) (FiniteAdeleRing (𝓞 F) F) (toLE crd⁻¹ (toLE crd w) i) = _`. Rewrite using `[toLE_inv_apply']`.
+Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[h1, GlobalTheory.LocCarry.prV_mulVec, ← GlobalTheory.LocCarry.coe_bc_inv]`. Use `congr 1`. Establish `hlat : latAd x Lb = Formalism.UG.CS.globLat x Lb` using `Submodule.span_eq (Formalism.UG.CS.globLat x Lb)`. Establish `hL : Submodule.IsLattice E (latAd x Lb)`. Rewrite using `[hlat]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `Formalism.UG.P.csGlob_lattice Lb hfin hspan x`. Establish `hLb : Submodule.IsLattice E Lb` using `⟨Module.Finite.iff_fg.mp hfin, hspan⟩`. Establish `hyU : y ∈ UPts sp.cm.sig J (v.adicCompletion F)` using `Formalism.UG.P.afsplit_bc_mem _ J v x hx`. Establish `hyl` using `fun z => GlobalTheory.LocCarry.mem_latS_latAd_iff x Lb hfin hspan v z`. Establish `hdm` using `GlobalTheory.DualCompletion.dual_move F E sp.cm.sig N J v (latAd x Lb) Lb y hJ hL hLb hyU hyl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hsub : latS (F` using `F) (v.adicCompletion F) (intV E v) Lb ≤ latS (F := F) (v.adicCompletion F) (intV E v) (Formalism.L2.Forms.dualL (sp.cm.sig : E →+* E) J Lb) := Submodule.span_mono (Set.image_mono (fun z hz => Submodule.subset_span (hint z hz)))`. Establish `hmem : ∀ (Λ : Submodule (𝓞 E) (Fin N → E)) z, z ∈ Λ → locV z ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) Λ := fun Λ z hz => Submodule.subset_span ⟨z, hz, rfl⟩`. Simplify using `only [compan] at hw`. Take `⟨w1, hw1, w2, hw2, rfl⟩` from `Submodule.mem_sup.1 hw`. Establish `hw2' : w2 ∈ Formalism.L2.Forms.dualL (sp.cm.sig : E →+* E) J (latAd x Lb)` using `Submodule.smul_le_right hw2`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hadd : locV (w1 + w2) = locV w1 + locV w2` using `by funext i; simp [locV, map_add]`. Establish `key : ((y⁻¹ : GL (Fin N) (E ⊗[F] v.adicCompletion F)) : Matrix (Fin N) (Fin N) (E ⊗[F] v.adicCompletion F)) *ᵥ locV (w1 + w2) ∈ latS (F` using `F) (v.adicCompletion F) (intV E v) (Formalism.L2.Forms.dualL (sp.cm.sig : E →+* E) J Lb) := by`. Rewrite using `[hadd, Matrix.mulVec_add]`. Conclude with `add_mem (hsub ((hyl _).1 (hmem _ _ hw1))) ((hdm _).1 (hmem _ _ hw2'))`. Conclude with `⟨⟨_, key⟩, hcomp.symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_latS_dual_of_mem_latCo : ∀ {R : Ranks} {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {N : ℕ}
     (sp : Spaces R F E) (J : Matrix (Fin N) (Fin N) E) (crd : GL (Fin N) E) (a : 𝓞 E)

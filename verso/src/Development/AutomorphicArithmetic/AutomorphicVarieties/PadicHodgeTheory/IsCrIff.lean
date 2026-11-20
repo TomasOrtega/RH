@@ -2,18 +2,18 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.PadicHodgeTheory.L
 open Formalism.WeaklyAdmissibleFiltrations Formalism.MainNotions.N Formalism.BasicNotions Formalism.BasicNotions.Loc ReciprocityTheory.Gal TensorProduct Module UpperTheory.V.Loc Topology
 
 /- English proof (translation)
-The claim follows from `(IntermediateField.finrank_eq_fixingSubgroup_index (Om l) K).symm`.
+A detailed English derivation is pending.
 -/
 private theorem idx_GK {l : ℕ} [Fact l.Prime] (K : IntermediateField ℚ_[l] (Om l)) :
     K.fixingSubgroup.index = finrank ℚ_[l] K :=
   (IntermediateField.finrank_eq_fixingSubgroup_index (Om l) K).symm
 
 /- English proof (translation)
-Use `haveI := K.2`. Establish `ho : IsOpen ((GK K ⊔ Iq l : Subgroup (GQ l)) : Set (GQ l))` using `Subgroup.isOpen_mono le_sup_left (IntermediateField.fixingSubgroup_isOpen K.1)`. Establish `hc` using `Subgroup.isClosed_of_isOpen _ ho`. Establish `h1` using `InfiniteGalois.fixingSubgroup_fixedField (k := ℚ_[l]) (K := Om l) ⟨GK K ⊔ Iq l, hc⟩`. Establish `h2 : IntermediateField.fixedField (GK K ⊔ Iq l) = K0 K`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm` to reduce the goal to its premises. Use `le_inf ?_ ?_` and prove the remaining obligations. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup K.1]`. Conclude with `IntermediateField.fixedField_le le_sup_left`. Rewrite using `[← InfiniteGalois.fixedField_fixingSubgroup (MaximalUnramifiedExtension l)]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IntermediateField.fixedField_le le_sup_right`. Rewrite using `[IntermediateField.le_iff_le]`. Conclude with `sup_le (IntermediateField.fixingSubgroup_le inf_le_left) (IntermediateField.fixingSubgroup_le inf_le_right)`. Rewrite using `[← h2]`. Conclude with `h1.symm`.
+A detailed English derivation is pending.
 -/
 private theorem sup_Iq {l : ℕ} [Fact l.Prime] (K : FinExt l) :
     GK K ⊔ Iq l = (K0 K).fixingSubgroup := by
@@ -36,15 +36,15 @@ private theorem sup_Iq {l : ℕ} [Fact l.Prime] (K : FinExt l) :
   exact h1.symm
 
 /- English proof (translation)
-Introduce `l _ K A _ _ V _ _ _ _ ρ`. Establish `hC : Dcr (GK K).subtype (resCoef ℚ_[l] ρ) = Dcris ((PP l).PD K) (resCoef ℚ_[l] ρ)`. Unfold `Dcr Dcris`. Use `iInf_congr fun g => ?_` and prove the remaining obligations. Establish `: actC (GK K).subtype (resCoef ℚ_[l] ρ) g = actVB ((PP l).PD K) (resCoef ℚ_[l] ρ) g`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `actC actVB`. Use `congr 1`. Use extensionality with `b`. Conclude with `((PP l).PD_actB K g b).symm`. Rewrite using `[this]`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hD : Ddr (GK K).subtype (resCoef ℚ_[l] ρ) = DdR ((PP l).PD K) (resCoef ℚ_[l] ρ)`. Unfold `Ddr DdR`. Use `iInf_congr fun g => ?_` and prove the remaining obligations. Establish `: actD (GK K).subtype (resCoef ℚ_[l] ρ) g = actVdR ((PP l).PD K) (resCoef ℚ_[l] ρ) g`. Unfold `actD actVdR`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Use extensionality with `b`. Conclude with `((PP l).PD_actdR K g b).symm`. Rewrite using `[this]`. Prove the components needed by the constructor for the conclusion.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `IsCr Crys IsCrys`. Rewrite using `[hC, Subgroup.range_subtype, sup_Iq, idx_GK]`. Unfold `IsDr DeRham IsDR`. Rewrite using `[hD, Subgroup.range_subtype, show (GK K).index = finrank ℚ_[l] K.1 from idx_GK K.1]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Loc.isCrIff :
     ∀ {l : ℕ} [Fact l.Prime] (K : FinExt l) {A : Type} [CommRing A] [Algebra ℚ_[l] A] {V : Type} [AddCommGroup V] [Module A V] [Module ℚ_[l] V] [IsScalarTower ℚ_[l] A V] (ρ : Representation A ↥(GK K) V), (IsCr (GK K).subtype ρ ↔ Crys K ρ) ∧ (IsDr (GK K).subtype ρ ↔ DeRham K ρ) := by

@@ -24,9 +24,9 @@ open GlobalTheory.MixModel
 open scoped TensorProduct
 
 /- English proof (translation)
-Establish `hz : ∀ z : (A × B) ⊗[F] E, z = LinearMap.rTensor E (LinearMap.inl F A B) (Algebra.TensorProduct.map (AlgHom.fst F A B) (AlgHom.id F E) z) + LinearMap.rTensor E (LinearMap.inr F A B) (Algebra.TensorProduct.map (AlgHom.snd F A B) (AlgHom.id F E) z)`. Introduce `z`. Proceed by induction on `z with`. Consider the case `zero => simp`. Consider the case `tmul x y => simp [← TensorProduct.add_tmul]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy`. Simplify using `only [map_add]`. Rewrite using `[add_add_add_comm, ← hx, ← hy]`. Rewrite using `[hz z, hz z', a, b]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem tens_prod_ext {F E A B : Type} [Field F] [Field E] [Algebra F E] [CommRing A] [CommRing B] [Algebra F A]
     [Algebra F B] {z z' : (A × B) ⊗[F] E}
@@ -48,9 +48,9 @@ theorem tens_prod_ext {F E A B : Type} [Field F] [Field E] [Algebra F E] [CommRi
   rw [hz z, hz z', a, b]
 
 /- English proof (translation)
-Use `tens_prod_ext (A := Ainf F) (B := Af F) (GlobalTheory.AutFunCompare.infTens_ext fun w => ?_) h2` and prove the remaining obligations. Establish `e : ∀ y : AF F ⊗[F] E, Algebra.TensorProduct.map (GlobalTheory.AutFunCompare.evW w) (AlgHom.id F E) (Algebra.TensorProduct.map (AlgHom.fst F (Ainf F) (Af F)) (AlgHom.id F E) y) = GlobalTheory.AdelicU.compInf F E w y` using `fun y => by`. Proceed by induction on `y using TensorProduct.induction_on with`. Consider the case `zero => erw [map_zero]`. Consider the case `tmul a x => rfl`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `add x y hx hy => erw [map_add, map_add, map_add, hx, hy]`. Rewrite using `[e, e]`. Conclude with `h1 w`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem adTens_ext {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] {z z' : AF F ⊗[F] E}
     (h1 : ∀ w : InfinitePlace F, GlobalTheory.AdelicU.compInf F E w z = GlobalTheory.AdelicU.compInf F E w z')
@@ -68,7 +68,7 @@ theorem adTens_ext {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E
   exact h1 w
 
 /- English proof (translation)
-Establish `hPX' : P.map φ * X.map φ = 1`. Rewrite using `[← Matrix.map_mul, hPX, Matrix.map_one _ (map_zero φ) (map_one φ)]`. Simplify using `only [Matrix.map_mul]`. Rewrite using `[h, Matrix.mul_assoc (P.map φ), h, ← Matrix.mul_assoc (P.map φ), hPX', Matrix.one_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem map_mul_eq_of_keeps {A R : Type} [CommRing A] [CommRing R] (φ : A →+* R) {n r : ℕ}
     (M : Matrix (Fin n) (Fin n) A) (X : Matrix (Fin n) (Fin r) A) (P : Matrix (Fin r) (Fin n) A)
@@ -80,7 +80,7 @@ theorem map_mul_eq_of_keeps {A R : Type} [CommRing A] [CommRing R] (φ : A →+*
   rw [h, Matrix.mul_assoc (P.map φ), h, ← Matrix.mul_assoc (P.map φ), hPX', Matrix.one_mul]
 
 /- English proof (translation)
-The claim follows from `Matrix.ext fun _ _ => rfl`.
+A detailed English derivation is pending.
 -/
 theorem mat_projArch {D : D7} {T : HSp D} (q : GA D T) (w : InfinitePlace D.host.F) :
     (GlobalTheory.AdelicU.matHom _ D.sp.cm.sig T.gram (GlobalTheory.AdelicU.projArch D.sp.cm.sig T.gram w q)).1 =
@@ -88,7 +88,7 @@ theorem mat_projArch {D : D7} {T : HSp D} (q : GA D T) (w : InfinitePlace D.host
   Matrix.ext fun _ _ => rfl
 
 /- English proof (translation)
-Use `show (Formalism.L2.Theta.matHom T q⁻¹).1 * (Formalism.L2.Theta.matHom T q).1 = 1`. Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mt_inv_mul_self {D : D7} {T : HSp D} (q : GA D T) :
     Formalism.L2.Theta.mt T q⁻¹ * Formalism.L2.Theta.mt T q = 1 := by
@@ -96,7 +96,7 @@ theorem mt_inv_mul_self {D : D7} {T : HSp D} (q : GA D T) :
   rw [← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]
 
 /- English proof (translation)
-Rewrite using `[← mat_projArch q w]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem keeps_map {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (q : GA D T) (w : InfinitePlace D.host.F)
     (β : Matrix (Fin r) (Fin r) (TensorProduct D.host.F w.Completion D.host.E))
@@ -107,7 +107,7 @@ theorem keeps_map {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (q :
   exact h
 
 /- English proof (translation)
-Establish `h2` using `keeps_map d q w β h`. Establish `h3` using `map_mul_eq_of_keeps (GlobalTheory.AdelicU.compInf D.host.F D.host.E w) (Formalism.L2.Theta.mt T q) d.jX d.pX d.pX_jX β h2`. Rewrite using `[← Matrix.map_apply (f := GlobalTheory.AdelicU.compInf D.host.F D.host.E w), h3]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem arch_comp {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (q : GA D T) (w : InfinitePlace D.host.F)
     (β : Matrix (Fin r) (Fin r) (TensorProduct D.host.F w.Completion D.host.E))
@@ -122,7 +122,7 @@ theorem arch_comp {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (q :
   rfl
 
 /- English proof (translation)
-Set `φf : AE D →+* Af D.host.F ⊗[D.host.F] D.host.E` to `(Algebra.TensorProduct.map (sndA D.host.F) (AlgHom.id D.host.F D.host.E)).toRingHom`. Establish `hf : (Formalism.L2.Theta.mt T q).map φf = 1` using `congrArg Units.val (MonoidHom.mem_ker.1 hq)`. Establish `hfin` using `map_mul_eq_of_keeps φf (Formalism.L2.Theta.mt T q) d.jX d.pX d.pX_jX 1 (by rw [hf, Matrix.one_mul, Matrix.mul_one])`. Use function extensionality and compare the values at `i j`. Conclude with `adTens_ext (F := D.host.F) (E := D.host.E) (fun w => Exists.elim (hw w) fun β hβ => arch_comp d q w β hβ i j) (congrFun (congrFun hfin i) j)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mul_jX_eq {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (q : GA D T) (hq : q ∈ GinfC T)
     (hw : ∀ w : InfinitePlace D.host.F, ∃ β : Matrix (Fin r) (Fin r) (TensorProduct D.host.F w.Completion D.host.E), (matHom _ D.sp.cm.sig T.gram (projArch D.sp.cm.sig T.gram w q)).1 * Matrix.map d.jX (compInf D.host.F D.host.E w) = Matrix.map d.jX (compInf D.host.F D.host.E w) * β) :
@@ -137,11 +137,9 @@ theorem mul_jX_eq {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (q :
     (congrFun (congrFun hfin i) j)
 
 /- English proof (translation)
-Introduce `D T T₀ r d q hq hw`. Establish `hPX : d.pX ⬝ d.jX = 1` using `d.pX_jX`. Establish `key` using `mul_jX_eq d q hq hw`. Establish `hinv : Formalism.L2.Theta.mt T q⁻¹ ⬝ Formalism.L2.Theta.mt T q = 1` using `mt_inv_mul_self q`. Establish `h1 : (d.pX ⬝ Formalism.L2.Theta.mt T q⁻¹ ⬝ d.jX) ⬝ (d.pX ⬝ Formalism.L2.Theta.mt T q ⬝ d.jX) = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc]`. Use `_ = (d.pX ⬝ Formalism.L2.Theta.mt T q⁻¹) ⬝ (Formalism.L2.Theta.mt T q ⬝ d.jX) := by rw [← key]`. Use `_ = d.pX ⬝ ((Formalism.L2.Theta.mt T q⁻¹ ⬝ Formalism.L2.Theta.mt T q) ⬝ d.jX) := by`. Simplify using `only [Matrix.mul_assoc]`.
-
-Use `_ = 1 := by rw [hinv, Matrix.one_mul, hPX]`. Conclude with `⟨⟨_, _, mul_eq_one_comm.mp h1, h1⟩, key⟩`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem mem_stab_of_keeps : ∀ {D : D7} {T T₀ : HSp D} {r : ℕ} (d : HypDec T T₀ r) (q : GA D T), q ∈ GinfC T → (∀ w : InfinitePlace D.host.F, ∃ β : Matrix (Fin r) (Fin r) (TensorProduct D.host.F w.Completion D.host.E), (matHom _ D.sp.cm.sig T.gram (projArch D.sp.cm.sig T.gram w q)).1 * Matrix.map d.jX (compInf D.host.F D.host.E w) = Matrix.map d.jX (compInf D.host.F D.host.E w) * β) → q ∈ stab d := by
   intro D T T₀ r d q hq hw

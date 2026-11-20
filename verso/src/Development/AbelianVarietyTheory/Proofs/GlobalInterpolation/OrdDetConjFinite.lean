@@ -16,7 +16,7 @@ variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ}
 
 omit [StarRing E] in
 /- English proof (translation)
-Unfold `ordE`. Rewrite using `[map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 ha) ((Valuation.ne_zero_iff _).2 hb), neg_add]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem ordE_mul (P : HeightOneSpectrum (𝓞 E)) {a b : E} (ha : a ≠ 0) (hb : b ≠ 0) :
     ordE P (a * b) = ordE P a + ordE P b := by
@@ -24,15 +24,15 @@ theorem ordE_mul (P : HeightOneSpectrum (𝓞 E)) {a b : E} (ha : a ≠ 0) (hb :
   rw [map_mul, WithZero.log_mul ((Valuation.ne_zero_iff _).2 ha) ((Valuation.ne_zero_iff _).2 hb), neg_add]
 
 /- English proof (translation)
-Take `⟨π, hπ⟩` from `P.valuation_exists_uniformizer E`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`. Rewrite `hπ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hs0 : (conjPrime₂ P).valuation E (star π) ≠ 0` using `(Valuation.ne_zero_iff _).2 (star_ne_zero.2 hπ0)`. Use `⟨ordE (conjPrime₂ P) (star π), ?_, fun a ha => ?_⟩` and prove the remaining obligations. Establish `h1 : (conjPrime₂ P).valuation E (star π) ≤ 1` using `intAt_iff.1 (intAt_star (intAt_iff.2 (by`. Rewrite using `[hπ, ← WithZero.exp_zero, WithZero.exp_le_exp]`. Use the proof step `norm_num)))`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `ordE`. Rewrite using `[neg_nonneg, WithZero.log_le_iff_le_exp hs0]`. Conclude with `h1`. Establish `ha' : P.valuation E a ≠ 0` using `(Valuation.ne_zero_iff _).2 ha`. Establish `hsa : (conjPrime₂ P).valuation E (star a) ≠ 0` using `(Valuation.ne_zero_iff _).2 (star_ne_zero.2 ha)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : P.valuation E (a * π ^ (WithZero.log (P.valuation E a))) = 1`. Rewrite using `[map_mul, map_zpow₀, hπ, ← WithZero.exp_zsmul]`. Use `conv_lhs => arg 1`. Rewrite using `[← WithZero.exp_log ha']`. Rewrite using `[← WithZero.exp_add]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Replace the relevant objects with their definitions.
 
-Simplify using the standard rewrite rules. Establish `h2` using `congrArg WithZero.log (val_star_eq_one h1)`. Rewrite `h2` using `[star_mul', star_zpow₀, map_mul, map_zpow₀, WithZero.log_mul hsa (zpow_ne_zero _ hs0), WithZero.log_zpow, WithZero.log_one, smul_eq_mul]`. Unfold `ordE`. Take the linear combination `-h2`.
+Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_ordE_star (P : HeightOneSpectrum (𝓞 E)) :
     ∃ m : ℤ, 0 ≤ m ∧ ∀ a : E, a ≠ 0 → ordE (conjPrime₂ P) (star a) = m * ordE P a := by
@@ -62,11 +62,11 @@ theorem exists_ordE_star (P : HeightOneSpectrum (𝓞 E)) :
     linear_combination -h2
 
 /- English proof (translation)
-Take `⟨m, hm, h⟩` from `exists_ordE_star P`. Take `⟨m', hm', h'⟩` from `exists_ordE_star (conjPrime₂ P)`. Take `⟨π, hπ⟩` from `P.valuation_exists_uniformizer E`. Establish `hπ0 : π ≠ 0`. Introduce and unpack `rfl`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Rewrite `hπ` using `[map_zero]`. Conclude with `WithZero.exp_ne_zero hπ.symm`. Establish `h1 : ordE P π = 1`. Unfold `ordE`. Rewrite using `[hπ, WithZero.log_exp, neg_neg]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `h' (star π) (star_ne_zero.2 hπ0)`. Rewrite `h2` using `[conjP_conjP, star_star, h π hπ0, h1, mul_one]`. Establish `h3 : m = 1` using `Int.eq_one_of_mul_eq_one_left hm h2.symm`. Rewrite using `[h a ha, h3, one_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ordE_star (P : HeightOneSpectrum (𝓞 E)) {a : E} (ha : a ≠ 0) : ordE (conjPrime₂ P) (star a) = ordE P a := by
   obtain ⟨m, hm, h⟩ := exists_ordE_star P
@@ -85,9 +85,9 @@ theorem ordE_star (P : HeightOneSpectrum (𝓞 E)) {a : E} (ha : a ≠ 0) : ordE
   rw [h a ha, h3, one_mul]
 
 /- English proof (translation)
-Take `⟨f, hf⟩` from `exists_isFr P hN.1`. Take `⟨f', hf'⟩` from `exists_isFr (conjPrime₂ P) hN.1`. Establish `h` using `val_dual hN hf hf'`. Establish `h0 : star (dt f) ≠ 0` using `star_ne_zero.2 (dt_ne _)`. Rewrite `h` using `[← ordE_eq_zero_iff (mul_ne_zero h0 (dt_ne _)), ordE_mul _ h0 (dt_ne _), ordE_star P (dt_ne _)]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[ordDet_eq hf, ordDet_eq hf']`. Take the linear combination `h`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem ordDet_conjP {N : Submodule (𝓞 E) (Sp E n)} (hN : IsSdLat N) (P : HeightOneSpectrum (𝓞 E)) :
     ordDet (conjPrime₂ P) N = -ordDet P N := by
@@ -100,13 +100,11 @@ theorem ordDet_conjP {N : Submodule (𝓞 E) (Sp E n)} (hN : IsSdLat N) (P : Hei
   linear_combination h
 
 /- English proof (translation)
-Break down `Set.eq_empty_or_nonempty {Q : HeightOneSpectrum (𝓞 E) | 0 < ordDet Q N} with h | ⟨P, -⟩` into its components or cases. Rewrite using `[h]`. Conclude with `Set.finite_empty`. Take `⟨f, hf⟩` from `exists_isFr P hN`. Take `⟨s, hs, hx⟩` from `(mem_locP _ _ _).1 (((gen_detI hf).2 _).2 le_rfl)`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hs0 : s ≠ 0`. Introduce and unpack `rfl`. Conclude with `hs (zero_mem _)`. Establish `hx0 : s • dt f ≠ 0` using `smul_ne_zero hs0 (dt_ne _)`. Use `(HeightOneSpectrum.Support.finite (𝓞 E) (s • dt f)⁻¹).subset fun Q hQ => ?_` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨g, hg⟩` from `exists_isFr Q hN`. Establish `h1` using `((gen_detI hg).2 _).1 (le_locP Q _ hx)`. Establish `h2 : Q.valuation E (dt g) < 1`. Rewrite `hQ` using `[Set.mem_ofPred_eq, ordDet_eq hg, ordE, neg_pos, WithZero.log_lt_iff_lt_exp ((Valuation.ne_zero_iff _).2 (dt_ne _))]`. Conclude with `hQ`.
-
-Use `show 1 < Q.valuation E (s • dt f)⁻¹`. Rewrite using `[map_inv₀, one_lt_inv₀ (zero_lt_iff.2 ((Valuation.ne_zero_iff _).2 hx0))]`. Conclude with `h1.trans_lt h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_pos {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E N) :
     {Q : HeightOneSpectrum (𝓞 E) | 0 < ordDet Q N}.Finite := by
@@ -130,9 +128,9 @@ theorem finite_pos {N : Submodule (𝓞 E) (Sp E n)} (hN : Submodule.IsLattice E
   exact h1.trans_lt h2
 
 /- English proof (translation)
-Introduce `E _ _ _ n N hN`. Use `⟨ordDet_conjP hN, ((finite_pos hN.1).union ((finite_pos hN.1).image conjPrime₂)).subset fun Q hQ => ?_⟩` and prove the remaining obligations. Break down `lt_or_gt_of_ne hQ with h | h` into its components or cases. Use `Or.inr ⟨conjPrime₂ Q, ?_, conjP_conjP Q⟩` and prove the remaining obligations. Rewrite using `[Set.mem_ofPred_eq, ordDet_conjP hN]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `neg_pos.2 h`. Conclude with `Or.inl h`.
+Prove the first alternative. A detailed English derivation is pending.
 -/
 theorem ordDet_conj_finite : ∀ (E : Type) [Field E] [NumberField E] [StarRing E] (n : ℕ) (N : Submodule (𝓞 E) (Sp E n)), IsSdLat N → (∀ P : HeightOneSpectrum (𝓞 E), ordDet (conjPrime₂ P) N = -ordDet P N) ∧ {Q : HeightOneSpectrum (𝓞 E) | ordDet Q N ≠ 0}.Finite := by
   intro E _ _ _ n N hN

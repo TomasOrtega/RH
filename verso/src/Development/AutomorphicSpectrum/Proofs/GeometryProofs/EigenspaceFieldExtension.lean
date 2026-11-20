@@ -11,7 +11,7 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.CompanionTheory.Ar.EigExt
 
 /- English proof (translation)
-Simplify using `[eigSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem mem_eigSp_iff' {R E O : Type} [CommRing R] [AddCommGroup E] [Module R E] [CommRing O]
     (ρ : O →+* Module.End R E) (σ : O →+* R) (v : E) :
@@ -19,21 +19,21 @@ theorem mem_eigSp_iff' {R E O : Type} [CommRing R] [AddCommGroup E] [Module R E]
   simp [eigSp, Submodule.mem_iInf, LinearMap.mem_ker, sub_eq_zero]
 
 /- English proof (translation)
-Introduce `F _ _ Ω Ω' _ _ _ i V V' _ _ _ _ j ρ ρ' σ hj hspan hcomp`. Take `⟨n, a, c, hsum, hcas⟩` from `GlobalTheory.CompanionTheory.Ar.ScaledCasimir.exists_scaledCasimir F`. Set `P' : V' →ₗ[Ω'] V'` to `∑ m, i (σ (c m)) • ρ' (a m)`. Establish `hP'apply : ∀ w, P' w = ∑ m, i (σ (c m)) • ρ' (a m) w` using `fun w => by`. Simplify using `[P', LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hscal : ∑ m, i (σ (c m)) * i (σ (a m)) = ((NumberField.discr F : ℤ) : Ω')`. Rewrite using `[← map_intCast (i.comp σ), ← hsum, map_sum]`. Simplify using `[map_mul]`. Establish `hP'eig : ∀ w ∈ eigSp ρ' (i.comp σ), P' w = ((NumberField.discr F : ℤ) : Ω') • w`. Introduce `w hw`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hw'` using `(GlobalTheory.CompanionTheory.Ar.EigExt.mem_eigSp_iff' ρ' (i.comp σ) w).mp hw`. Combine the equalities or inequalities in the displayed calculation. Establish `hP'j : ∀ e, P' (j e) = j (∑ m, σ (c m) • ρ (a m) e)`. Introduce `e`. Rewrite using `[hP'apply, map_sum]`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[hcomp, hj.1]`. Establish `hPe : ∀ e, ∑ m, σ (c m) • ρ (a m) e ∈ eigSp ρ σ` using `fun e => (GlobalTheory.CompanionTheory.Ar.EigExt.mem_eigSp_iff' ρ σ _).mpr fun b => hcas Ω V ρ σ b e`. Apply `le_antisymm` to reduce the goal to its premises. Introduce `w hw`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hle : Submodule.span Ω' (Set.range j) ≤ (Submodule.span Ω' (j '' (eigSp ρ σ : Set V))).comap P'`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨e, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, hP'j]`. Conclude with `Submodule.subset_span ⟨_, hPe e, rfl⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : P' w ∈ Submodule.span Ω' (j '' (eigSp ρ σ : Set V))` using `hle (by rw [hspan]; exact Submodule.mem_top)`. Rewrite `hmem` using `[hP'eig w hw]`. Establish `hd : ((NumberField.discr F : ℤ) : Ω') ≠ 0`. Rewrite using `[← map_intCast i]`. Conclude with `(map_ne_zero i).mpr (Int.cast_ne_zero.mpr (NumberField.discr_ne_zero F))`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `h2` using `Submodule.smul_mem _ ((NumberField.discr F : ℤ) : Ω')⁻¹ hmem`. Rewrite `h2` using `[smul_smul, inv_mul_cancel₀ hd, one_smul]`. Then use the resulting hypothesis. Rewrite using `[Submodule.span_le]`. Introduce and unpack `_ ⟨v, hv, rfl⟩`. Establish `hv'` using `(GlobalTheory.CompanionTheory.Ar.EigExt.mem_eigSp_iff' ρ σ v).mp hv`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(GlobalTheory.CompanionTheory.Ar.EigExt.mem_eigSp_iff' ρ' (i.comp σ) (j v)).mpr fun b => ?_` and prove the remaining obligations. Rewrite using `[hcomp, hv' b, hj.1, RingHom.comp_apply]`.
+A detailed English derivation is pending.
 -/
 theorem eigSp_ext :
     ∀ (F : Type) [Field F] [NumberField F] (Ω Ω' : Type) [Field Ω] [Field Ω'] [CharZero Ω] (i : Ω →+* Ω') (V V' : Type) [AddCommGroup V] [Module Ω V] [AddCommGroup V'] [Module Ω' V'] (j : V →+ V') (ρ : 𝓞 F →+* Module.End Ω V) (ρ' : 𝓞 F →+* Module.End Ω' V') (σ : 𝓞 F →+* Ω), IsExtOver i j → Submodule.span Ω' (Set.range j) = ⊤ → (∀ a e, ρ' a (j e) = j (ρ a e)) → eigSp ρ' (i.comp σ) = Submodule.span Ω' (j '' (eigSp ρ σ : Set V)) := by

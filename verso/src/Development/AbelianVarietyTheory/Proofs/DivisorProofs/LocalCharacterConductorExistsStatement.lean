@@ -8,7 +8,7 @@ open scoped Matrix Topology
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.CondRescale.exists_rescale_conductor_integers | exact GlobalTheory.CondRescale.exists_rescale_conductor_integers | (intros; apply GlobalTheory.CondRescale.exists_rescale_conductor_integers <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.local_character_conductor_exists : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] [CharZero k]
     (ψ0 : AddChar k ℂ), Continuous ψ0 → ψ0 ≠ 1 →

@@ -22,7 +22,7 @@ def lt (X : Submodule ℂ (Kinf E n → ℂ)) : Submodule ℂ (Kinf E n → ℂ)
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Simplify using `only [lt, Submodule.mem_iInf, Submodule.mem_comap]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mem_lt {X : Submodule ℂ (Kinf E n → ℂ)} {w : Kinf E n → ℂ} :
     w ∈ lt X ↔ ∀ k₀, (fun k => w (k₀ * k)) ∈ X := by
@@ -31,7 +31,7 @@ theorem mem_lt {X : Submodule ℂ (Kinf E n → ℂ)} {w : Kinf E n → ℂ} :
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Introduce `w hw`. Simplify `mem_lt.1 hw 1` using `only [one_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem lt_le (X : Submodule ℂ (Kinf E n → ℂ)) : lt X ≤ X := by
   intro w hw
@@ -39,7 +39,7 @@ theorem lt_le (X : Submodule ℂ (Kinf E n → ℂ)) : lt X ≤ X := by
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-The claim follows from `mem_lt.2 fun k₀ => by simpa only [mul_assoc] using mem_lt.1 hw (k₁ * k₀)`.
+A detailed English derivation is pending.
 -/
 theorem lt_left {X : Submodule ℂ (Kinf E n → ℂ)} {w : Kinf E n → ℂ} (hw : w ∈ lt X) (k₁ : Kinf E n) :
     (fun k => w (k₁ * k)) ∈ lt X :=
@@ -50,7 +50,7 @@ def rsp (X : Submodule ℂ (Kinf E n → ℂ)) : Submodule ℂ (Kinf E n → ℂ
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-The claim follows from `Submodule.subset_span ⟨w, hw, k, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem mem_rsp {X : Submodule ℂ (Kinf E n → ℂ)} {w : Kinf E n → ℂ} (hw : w ∈ X) (k : Kinf E n) :
     (fun k₀ => w (k₀ * k)) ∈ rsp X :=
@@ -58,7 +58,7 @@ theorem mem_rsp {X : Submodule ℂ (Kinf E n → ℂ)} {w : Kinf E n → ℂ} (h
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Introduce `w hw`. Simplify `mem_rsp hw 1` using `only [mul_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem le_rsp (X : Submodule ℂ (Kinf E n → ℂ)) : X ≤ rsp X := by
   intro w hw
@@ -66,9 +66,9 @@ theorem le_rsp (X : Submodule ℂ (Kinf E n → ℂ)) : X ≤ rsp X := by
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Proceed by induction on `hw using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨u, hu, k', rfl⟩` from `hv`. Simplify `mem_rsp hu (k * k')` using `only [mul_assoc]`. Consider the case `zero => exact Submodule.zero_mem _`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify to obtain the desired conclusion from the available facts. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy => exact Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => exact Submodule.smul_mem _ a hx`.
+Treat this case separately. Treat this case separately.
 -/
 theorem rsp_right {X : Submodule ℂ (Kinf E n → ℂ)} {w : Kinf E n → ℂ} (hw : w ∈ rsp X) (k : Kinf E n) :
     (fun k₀ => w (k₀ * k)) ∈ rsp X := by
@@ -83,11 +83,9 @@ theorem rsp_right {X : Submodule ℂ (Kinf E n → ℂ)} {w : Kinf E n → ℂ} 
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Use `set Y := lt X with hY`. Establish `: FiniteDimensional ℂ Y` using `Submodule.finiteDimensional_of_le (lt_le X)`. Set `Lm : Kinf E n → Y →ₗ[ℂ] Y` to `fun k₀ => { toFun := fun y => ⟨fun k => y.1 (k₀ * k), lt_left y.2 k₀⟩ map_add' := fun _ _ => rfl map_smul' := fun _ _ => rfl }`. Set `M : Module.Dual ℂ Y →ₗ[ℂ] Y →ₗ[ℂ] (Kinf E n → ℂ)` to `LinearMap.mk₂ ℂ (fun ℓ y => fun k₀ => ℓ (Lm k₀ y)) (fun _ _ _ => by funext k₀; simp) (fun _ _ _ => by funext k₀; simp) (fun _ _ _ => by funext k₀; simp) (fun _ _ _ => by funext k₀; simp)`. Establish `hle : rsp Y ≤ LinearMap.range (TensorProduct.lift M)`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `v ⟨w, hw, k, rfl⟩`. Use `⟨((LinearMap.proj k : (Kinf E n → ℂ) →ₗ[ℂ] ℂ).comp Y.subtype) ⊗ₜ ⟨w, hw⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[TensorProduct.lift.tmul]`. Both sides reduce to the same expression.
-
-Conclude with `Submodule.finiteDimensional_of_le hle`.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem fd_rsp_lt (X : Submodule ℂ (Kinf E n → ℂ)) [FiniteDimensional ℂ X] : FiniteDimensional ℂ (rsp (lt X)) := by
   set Y := lt X with hY
@@ -132,7 +130,7 @@ def w_pre (N : ℕ) (W : Submodule ℂ (Kinf E N → ℂ)) (n : ℕ) : Submodule
     (⨆ (s : Fin (N + 1)) (_ : 0 < (s : ℕ) ∧ (s : ℕ) + n ≤ N), DR s n (Wf N W (s + n)))
 
 /- English proof (translation)
-Rewrite using `[Wf]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem w_Wf_eq (N : ℕ) (W : Submodule ℂ (Kinf E N → ℂ)) (n : ℕ) : Wf N W n = rsp (lt (w_pre N W n)) := by
   rw [Wf]
@@ -140,14 +138,14 @@ theorem w_Wf_eq (N : ℕ) (W : Submodule ℂ (Kinf E N → ℂ)) (n : ℕ) : Wf 
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Introduce `_ hw` and use `mem_lt.2 fun k₀ => h (mem_lt.1 hw k₀)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem w_lt_mono {n : ℕ} {X Y : Submodule ℂ (Kinf E n → ℂ)} (h : X ≤ Y) : lt X ≤ lt Y :=
   fun _ hw => mem_lt.2 fun k₀ => h (mem_lt.1 hw k₀)
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Use `h` as an intermediate fact. Use `infer_instance`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem w_fd_iSup {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Sort*} [Finite ι] (S : ι → Submodule ℂ V)
     (h : ∀ i, FiniteDimensional ℂ (S i)) : FiniteDimensional ℂ ↥(⨆ i, S i : Submodule ℂ V) := by
@@ -155,9 +153,9 @@ theorem w_fd_iSup {V : Type} [AddCommGroup V] [Module ℂ V] {ι : Sort*} [Finit
   infer_instance
 
 /- English proof (translation)
-Establish `hle : DL r s X ≤ (rsp (lt X)).map (LinearMap.funLeft ℂ ℂ (Slice1.levK E r s))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `v ⟨w, hw, k, rfl⟩`. Conclude with `⟨_, mem_rsp hw k, rfl⟩`. Use `fd_rsp_lt X` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `Submodule.finiteDimensional_of_le hle`.
+A detailed English derivation is pending.
 -/
 theorem w_fd_DL (r s : ℕ) (X : Submodule ℂ (Kinf E (r + s) → ℂ)) [FiniteDimensional ℂ X] :
     FiniteDimensional ℂ (DL r s X) := by
@@ -169,9 +167,9 @@ theorem w_fd_DL (r s : ℕ) (X : Submodule ℂ (Kinf E (r + s) → ℂ)) [Finite
   exact Submodule.finiteDimensional_of_le hle
 
 /- English proof (translation)
-Establish `hle : DR r s X ≤ (rsp (lt X)).map (LinearMap.funLeft ℂ ℂ (Slice2.levK E r s))`. Use `Submodule.span_le.2 ?_` and prove the remaining obligations. Introduce and unpack `v ⟨w, hw, k, rfl⟩`. Conclude with `⟨_, mem_rsp hw k, rfl⟩`. Use `fd_rsp_lt X` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Conclude with `Submodule.finiteDimensional_of_le hle`.
+A detailed English derivation is pending.
 -/
 theorem w_fd_DR (r s : ℕ) (X : Submodule ℂ (Kinf E (r + s) → ℂ)) [FiniteDimensional ℂ X] :
     FiniteDimensional ℂ (DR r s X) := by
@@ -185,15 +183,13 @@ theorem w_fd_DR (r s : ℕ) (X : Submodule ℂ (Kinf E (r + s) → ℂ)) [Finite
 variable {N : ℕ} {W : Submodule ℂ (Kinf E N → ℂ)}
 
 /- English proof (translation)
-Proceed by induction on `h : N - n using Nat.strong_induction_on generalizing n with`. Consider the case `_ d ih`. Rewrite using `[w_Wf_eq]`. Establish `h1 : FiniteDimensional ℂ (topW N W n)`. Break down `eq_or_ne n N with rfl | hn` into its components or cases.
+Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Establish `e : topW n W n = W`. Unfold `topW`. Rewrite using `[dif_pos rfl]`. Rewrite using `[e]`. Conclude with `hW`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `e : topW N W n = ⊥`. Unfold `topW`. Rewrite using `[dif_neg hn]`. Rewrite using `[e]`. Use `infer_instance`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : FiniteDimensional ℂ ↥(⨆ (s : Fin (N + 1)) (_ : 0 < (s : ℕ) ∧ n + s ≤ N), DL n s (Wf N W (n + s)) : Submodule ℂ (Kinf E n → ℂ))` using `w_fd_iSup _ fun s => w_fd_iSup _ fun hs => by`. Use `ih (N - (n + s)) (by omega) (n + s) rfl` as an intermediate fact. Conclude with `w_fd_DL _ _ _`. Establish `h3 : FiniteDimensional ℂ ↥(⨆ (s : Fin (N + 1)) (_ : 0 < (s : ℕ) ∧ (s : ℕ) + n ≤ N), DR s n (Wf N W (s + n)) : Submodule ℂ (Kinf E n → ℂ))` using `w_fd_iSup _ fun s => w_fd_iSup _ fun hs => by`. Use `ih (N - (s + n)) (by omega) (s + n) rfl` as an intermediate fact.
-
-Conclude with `w_fd_DR _ _ _`. Establish `: FiniteDimensional ℂ (w_pre N W n)`. Unfold `w_pre`. Use `infer_instance`. Conclude with `fd_rsp_lt _`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fd_Wf (hW : FiniteDimensional ℂ W) (n : ℕ) : FiniteDimensional ℂ (Wf N W n) := by
   induction h : N - n using Nat.strong_induction_on generalizing n with
@@ -227,9 +223,9 @@ theorem fd_Wf (hW : FiniteDimensional ℂ W) (n : ℕ) : FiniteDimensional ℂ (
     exact fd_rsp_lt _
 
 /- English proof (translation)
-Rewrite using `[w_Wf_eq]`. Use `le_trans (w_lt_mono ?_) (le_rsp _)` and prove the remaining obligations. Establish `e : topW N W N = W`. Unfold `topW`. Rewrite using `[dif_pos rfl]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem lt_le_Wf : lt W ≤ Wf N W N := by
   rw [w_Wf_eq]
@@ -241,7 +237,7 @@ theorem lt_le_Wf : lt W ≤ Wf N W N := by
     _ ≤ w_pre N W N := le_sup_left.trans le_sup_left
 
 /- English proof (translation)
-Rewrite `hw`, the goal using `[w_Wf_eq]`. Conclude with `rsp_right hw k`.
+Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem w_Wf_rinv {n : ℕ} {w : Kinf E n → ℂ} (hw : w ∈ Wf N W n) (k : Kinf E n) :
     (fun k₀ => w (k₀ * k)) ∈ Wf N W n := by
@@ -249,9 +245,9 @@ theorem w_Wf_rinv {n : ℕ} {w : Kinf E n → ℂ} (hw : w ∈ Wf N W n) (k : Ki
   exact rsp_right hw k
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Use `InducedTensorMap.B.lev_cc (R := Cinf E) (s := 0) (Unitary.toUnits k, 1) i j` as an intermediate fact. Establish `e : ∀ i : Fin r, Fin.castAdd 0 i = i` using `fun i => Fin.ext rfl`. Rewrite `this` using `[e, e]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem w_levK_zero {r : ℕ} (k : Kinf E r) : Slice1.levK E r 0 k = k := by
   apply Subtype.ext
@@ -265,7 +261,7 @@ def w_castK {a b : ℕ} (h : a = b) (k : Kinf E a) : Kinf E b := h ▸ k
 
 omit [NumberField E] [IsCMField E] in
 /- English proof (translation)
-Substitute `h` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem w_castK_val {a b : ℕ} (h : a = b) (k : Kinf E a) (i j : Fin b) :
     (w_castK h k).1 i j = k.1 (Fin.cast h.symm i) (Fin.cast h.symm j) := by
@@ -273,9 +269,9 @@ theorem w_castK_val {a b : ℕ} (h : a = b) (k : Kinf E a) (i j : Fin b) :
   rfl
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations. Take `⟨i', rfl⟩ : ∃ i' : Fin s, i = Fin.natAdd 0 i'` from `⟨Fin.cast (Nat.zero_add s) i, Fin.ext (by simp)⟩`. Take `⟨j', rfl⟩ : ∃ j' : Fin s, j = Fin.natAdd 0 j'` from `⟨Fin.cast (Nat.zero_add s) j, Fin.ext (by simp)⟩`. Rewrite using `[w_castK_val]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `(InducedTensorMap.B.lev_nn (R := Cinf E) (r := 0) (s := s) (1, Unitary.toUnits k) i' j').trans ?_` and prove the remaining obligations. Establish `hi : ∀ x : Fin s, Fin.cast (Nat.zero_add s) (Fin.natAdd 0 x) = x` using `fun x => Fin.ext (by simp)`. Rewrite using `[hi, hi]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem levi_K_zero_left_cast {s : ℕ} (k : Kinf E s) : Slice2.levK E 0 s k = w_castK (Nat.zero_add s).symm k := by
   apply Subtype.ext
@@ -289,7 +285,7 @@ theorem levi_K_zero_left_cast {s : ℕ} (k : Kinf E s) : Slice2.levK E 0 s k = w
   rfl
 
 /- English proof (translation)
-Substitute `h` using the available equality. Conclude with `w_Wf_rinv (lt_le _ hw) k`.
+Substitute using the available equality. A detailed English derivation is pending.
 -/
 theorem w_transport {a b : ℕ} (h : a = b) {w : Kinf E b → ℂ} (hw : w ∈ lt (Wf N W b)) (k : Kinf E b) :
     (fun k₂ => w (w_castK h k₂ * k)) ∈ Wf N W a := by
@@ -297,11 +293,11 @@ theorem w_transport {a b : ℕ} (h : a = b) {w : Kinf E b → ℂ} (hw : w ∈ l
   exact w_Wf_rinv (lt_le _ hw) k
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos s with hs | hs` into its components or cases. Substitute `hs` using the available equality. Establish `e : (fun k₁ : Kinf E r => w (Slice1.levK E r 0 k₁ * k)) = fun k₁ => w (k₁ * k)`. Use function extensionality and compare the values at `k₁`. Rewrite using `[w_levK_zero]`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `w_Wf_rinv (lt_le _ hw) k`. Rewrite using `[w_Wf_eq]`. Use `le_rsp _ (mem_lt.2 fun k₀ => ?_)` and prove the remaining obligations. Establish `hmem : (fun k₁ => w (Slice1.levK E r s (k₀ * k₁) * k)) ∈ DL r s (Wf N W (r + s))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨fun κ => w (Slice1.levK E r s k₀ * κ), lt_left hw _, k, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k₁`. Simplify using `only [map_mul, mul_assoc]`. Establish `hle : DL r s (Wf N W (r + s)) ≤ w_pre N W r` using `(le_iSup₂_of_le (f := fun (s' : Fin (N + 1)) (_ : 0 < (s' : ℕ) ∧ r + s' ≤ N) => DL r s' (Wf N W (r + s'))) (⟨s, by omega⟩ : Fin (N + 1)) ⟨hs, hN⟩ le_rfl).trans (le_sup_right.trans le_sup_left)`. Conclude with `hle hmem`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Wf_left {r s : ℕ} (hN : r + s ≤ N) {w : Kinf E (r + s) → ℂ} (hw : w ∈ lt (Wf N W (r + s)))
     (k : Kinf E (r + s)) : (fun k₁ => w (Slice1.levK E r s k₁ * k)) ∈ Wf N W r := by
@@ -324,11 +320,11 @@ theorem Wf_left {r s : ℕ} (hN : r + s ≤ N) {w : Kinf E (r + s) → ℂ} (hw 
     exact hle hmem
 
 /- English proof (translation)
-Break down `Nat.eq_zero_or_pos r with hr | hr` into its components or cases. Substitute `hr` using the available equality. Establish `e : (fun k₂ : Kinf E s => w (Slice2.levK E 0 s k₂ * k)) = fun k₂ => w (w_castK (Nat.zero_add s).symm k₂ * k)`. Use function extensionality and compare the values at `k₂`. Rewrite using `[levi_K_zero_left_cast]`.
+Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `w_transport _ hw k`. Rewrite using `[w_Wf_eq]`. Use `le_rsp _ (mem_lt.2 fun k₀ => ?_)` and prove the remaining obligations. Establish `hmem : (fun k₂ => w (Slice2.levK E r s (k₀ * k₂) * k)) ∈ DR r s (Wf N W (r + s))`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Submodule.subset_span ⟨fun κ => w (Slice2.levK E r s k₀ * κ), lt_left hw _, k, ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `k₂`. Simplify using `only [map_mul, mul_assoc]`. Establish `hle : DR r s (Wf N W (r + s)) ≤ w_pre N W s` using `(le_iSup₂_of_le (f := fun (s' : Fin (N + 1)) (_ : 0 < (s' : ℕ) ∧ (s' : ℕ) + s ≤ N) => DR s' s (Wf N W (s' + s))) (⟨r, by omega⟩ : Fin (N + 1)) ⟨hr, hN⟩ le_rfl).trans le_sup_right`. Conclude with `hle hmem`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Wf_right {r s : ℕ} (hN : r + s ≤ N) {w : Kinf E (r + s) → ℂ} (hw : w ∈ lt (Wf N W (r + s)))
     (k : Kinf E (r + s)) : (fun k₂ => w (Slice2.levK E r s k₂ * k)) ∈ Wf N W s := by

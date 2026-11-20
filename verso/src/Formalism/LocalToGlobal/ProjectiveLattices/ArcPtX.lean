@@ -11,9 +11,9 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
   {Xo : Moduli Dw l} {c : Coeff l} {O : Type} [CommRing O] {β : O →+* c.F}
 
 /- English proof (translation)
-Establish `h : IsUnit (HahnSeries.ofPowerSeries ℤ K₁ PowerSeries.X)`. Rewrite using `[isUnit_iff_ne_zero]`. Use `first`. Consider the case `(rw [HahnSeries.ofPowerSeries_X]; exact HahnSeries.single_ne_zero one_ne_zero)`. Consider the case `(intro h0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Conclude with `PowerSeries.X_ne_zero ((map_eq_zero_iff _ HahnSeries.ofPowerSeries_injective).mp h0))`. Consider the case `(simp; done)`. Conclude with `(h.map (MvPolynomial.C (σ := ArcLt Dw))).map (algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K₁)) (ArcS Dw K₁))`.
+A detailed English derivation is pending.
 -/
 lemma arcι_X_isUnit (Dw : Datum H) (K₁ : Type) [Field K₁] : IsUnit (arcι Dw K₁ PowerSeries.X) := by
   have h : IsUnit (HahnSeries.ofPowerSeries ℤ K₁ PowerSeries.X) := by
@@ -27,7 +27,7 @@ lemma arcι_X_isUnit (Dw : Datum H) (K₁ : Type) [Field K₁] : IsUnit (arcι D
     (algebraMap (MvPolynomial (ArcLt Dw) (LaurentSeries K₁)) (ArcS Dw K₁))
 
 /- English proof (translation)
-Introduce `hX`. Establish `h1 : arcι Dw K₁ PowerSeries.X ∈ q.asIdeal` using `by first`. Consider the case `exact hX`. Consider the case `(simpa using hX)`. Conclude with `q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h1 (arcι_X_isUnit Dw K₁))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 lemma arc_pt_X (Dw : Datum H) (K₁ : Type) [Field K₁] (q : Sp (ArcS Dw K₁)) :
     PowerSeries.X ∉ ((spMap (arcι Dw K₁)) q).asIdeal := by
@@ -39,15 +39,13 @@ lemma arc_pt_X (Dw : Datum H) (K₁ : Type) [Field K₁] (q : Sp (ArcS Dw K₁))
   exact q.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ h1 (arcι_X_isUnit Dw K₁))
 
 /- English proof (translation)
-Use `haveI := Y.jQ_open`. Establish `hw : (spMap (arcι Dw K₁) ≫ χ) ≫ Y.s = spMap (algebraMap c.F (ArcS Dw K₁)) ≫ spMap β`. Rewrite using `[Category.assoc, hχs, ← spMap_comp, ← spMap_comp, ← spMap_comp, hcomp]`. Set `g : Sp (ArcS Dw K₁) ⟶ pullback Y.s (spMap β)` to `pullback.lift (spMap (arcι Dw K₁) ≫ χ) (spMap (algebraMap c.F (ArcS Dw K₁))) hw`. Establish `hg : Set.range g ⊆ Set.range Y.jQ`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `_ ⟨q, rfl⟩`. Rewrite using `[← Y.ab_gen]`. Establish `e1 : (pullback.fst Y.s (spMap β)) (g q) = χ ((spMap (arcι Dw K₁)) q)`. Use `congrArg (fun f : Sp (ArcS Dw K₁) ⟶ Y.X => f q) (pullback.lift_fst _ _ hw)` as an intermediate fact. Use `first`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact this`. Consider the case `(simpa using this)`. Use `show (pullback.fst Y.s (spMap β)) (g q) ∈ abLocus Y.t.G`. Rewrite using `[e1]`. Take `⟨p, hp⟩` from `hj _ (arc_pt_X Dw K₁ q)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hp]`. Establish `h2 : Y.jQ p ∈ (pullback.fst Y.s (spMap β)) ⁻¹' abLocus Y.t.G`. Rewrite using `[Y.ab_gen]`. Conclude with `⟨p, rfl⟩`. Conclude with `h2`.
-
-Use `⟨IsOpenImmersion.lift Y.jQ g hg, ?_, ?_⟩` and prove the remaining obligations. Use `show IsOpenImmersion.lift Y.jQ g hg ≫ Y.jQ ≫ pullback.fst _ _ = _`. Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_fst]`. Rewrite using `[← Category.assoc, IsOpenImmersion.lift_fac, pullback.lift_snd]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem arcPt_point (Y : Model Xo c β) {K₁ : Type} [Field K₁] (b : O →+* K₁) [Algebra c.F (ArcS Dw K₁)]
     (hcomp : (algebraMap c.F (ArcS Dw K₁)).comp β = (arcι Dw K₁).comp ((PowerSeries.C (R := K₁)).comp b))

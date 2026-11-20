@@ -29,43 +29,37 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.IsogModel
 
 /- English proof (translation)
-Introduce `A₀ _ A X _ _ p g hA₀ hg₀ hp hX hgX ψ hψ hpts`. Use `haveI : IsAlgClosed Qb := (algebraicClosure.isAlgClosure ℚ ℂ).isAlgClosed`. Establish `hA : IsAbelianScheme A` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hA₀ hp`. Establish `hgA : SmoothOfRelativeDimension g A.hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange _).of_isPullback hp.1 hg₀`. Use `haveI : Surjective ψ.left := GlobalTheory.T.surjective_of_surjective_on_points A X ψ hA hX hpts`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨hfin, hflat⟩` from `GlobalTheory.T.isogeny_finite_flat A X g hA hX hgA hgX ψ`. Take `⟨n, hn, hkn⟩` from `GlobalTheory.HolUnifEnd.exists_pow_eq_one_of_surjective A X g hA hX hgA hgX ψ`. Use `set t : Sp ℂ ⟶ Sp Qb := spMap (algebraMap Qb ℂ) with ht`. Establish `hSub : Subsingleton (Sp Qb)` using `inferInstanceAs (Subsingleton (PrimeSpectrum Qb))`. Establish `: Flat t` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `: Surjective t` using `⟨fun _ => ⟨(default : PrimeSpectrum ℂ), Subsingleton.elim _ _⟩⟩`. Establish `: Epi t` using `Flat.epi_of_flat_of_surjective _`. Take `⟨e, he⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback hp (𝟙 (Sp ℂ)) t (Category.id_comp t).symm`. Establish `hl : (toUnit (Over.mk t)).left = t` using `by simpa using Over.w (toUnit (Over.mk t))`. Set `r : (𝟙_ (Over (Sp Qb)) ⟶ A₀) →* (Over.mk t ⟶ A₀)` to `{ toFun := fun c => toUnit (Over.mk t) ≫ c map_one' := MonObj.comp_one _ map_mul' := fun a b => MonObj.comp_mul _ _ _ }`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hr : Function.Injective r` using `fun a b h => Over.OverMorphism.ext ((cancel_epi t).1 (by`. Use `congrArg (fun q => q.left) h` as an intermediate fact. Simplify `this))` using `only [r, MonoidHom.coe_mk, OneHom.coe_mk, Over.comp_left, hl]`. Set `ψp : (Over.mk (𝟙 (Sp ℂ)) ⟶ A) →* (Over.mk (𝟙 (Sp ℂ)) ⟶ X)` to `{ toFun := fun x => x ≫ ψ map_one' := MonObj.one_comp _ map_mul' := fun a b => MonObj.mul_comp _ _ _ }`. Set `C₀ : Subgroup (𝟙_ (Over (Sp Qb)) ⟶ A₀)` to `(ψp.comp (e.symm.toMonoidHom.comp r)).ker`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hC : ∀ c, c ∈ C₀ ↔ e.symm (r c) ≫ ψ = 1` using `fun c => Iff.rfl`. Establish `hnQ : ((n : ℕ) : Qb) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Establish `hfinT` using `GlobalTheory.Published.AbMulNSt.finite GlobalTheory.abMulN_holds hA₀ hg₀ hnQ`. Establish `hC₀ : Finite C₀`. Use `Finite.of_injective (β := {c : 𝟙_ (Over (Sp Qb)) ⟶ A₀ // c ^ n = 1}) (fun c => ⟨c.1, ?_⟩) (fun a b h => Subtype.ext (by simpa using congrArg Subtype.val h))` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `hkn (e.symm (r c.1)) ((hC c.1).1 c.2)`. Apply `hr` to reduce the goal to its premises. Rewrite using `[map_pow, map_one, ← e.apply_symm_apply (r c.1), ← map_pow, h1, map_one]`. Take `⟨X₀, _, π₀, hX₀, hπ₀, hfin₀, het₀, hsurj₀, hker₀⟩` from `GlobalTheory.exists_quotient_abelian_by_finite_points Qb A₀ hA₀ C₀ hC₀`. Use `haveI := hπ₀`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Equip the data with the indicated structure.
 
-Establish `hgX₀ : SmoothOfRelativeDimension g X₀.hom`. Use `hX₀.smooth` as an intermediate fact. Conclude with `GlobalTheory.SmoothDescent.smoothOfRelativeDimension_of_etale_cover Qb A₀.left X₀.left π₀.left X₀.hom g het₀ hsurj₀ inferInstance (by rw [Over.w]; exact hg₀)`. Set `X' : Over (Sp ℂ)` to `(Over.pullback t).obj X₀`. Use `letI : GrpObj X' := Functor.grpObjObj`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hX' : IsGrpPullback X' X₀ t (pullback.fst X₀.hom t)` using `isGrpPullback_pullback X₀ t`. Establish `hXa' : IsAbelianScheme X'` using `GlobalTheory.PolPull.isAbelianScheme_of_isGrpPullback hX₀ hX'`. Take `⟨e', he'⟩` from `GlobalTheory.exists_mulEquiv_of_isGrpPullback hX' (𝟙 (Sp ℂ)) t (Category.id_comp t).symm`. Take `⟨π, hπ, hπp⟩` from `GlobalTheory.HomDescent.exists_isMonHom_pull hp hX' π₀`. Use `haveI := hπ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hsq : IsPullback p π.left π₀.left (pullback.fst X₀.hom t)` using `IsPullback.of_bot (by rw [Over.w π, Over.w π₀]; exact hp.1) hπp.symm hX'.1`. Establish `hπe : Etale π.left` using `MorphismProperty.of_isPullback (P := @Etale) hsq het₀`. Establish `hπs : Surjective π.left` using `MorphismProperty.of_isPullback (P := @Surjective) hsq hsurj₀`. Establish `hπf : IsFinite π.left` using `MorphismProperty.of_isPullback (P := @IsFinite) hsq hfin₀`. Establish `key : ∀ x : 𝟙_ (Over (Sp ℂ)) ⟶ A, e' (x ≫ π) = e x ≫ π₀` using `fun x => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `Over.OverMorphism.ext ?_` and prove the remaining obligations. Rewrite using `[he', Over.comp_left, Over.comp_left, he, Category.assoc, hπp, Category.assoc]`. Establish `hsep : IsSeparated X.hom` using `by have := hX.proper; infer_instance`. Establish `hsep' : IsSeparated X'.hom` using `by have := hXa'.proper; infer_instance`. Take `⟨Zπ, _, iπ, _, _, hkπ⟩` from `GlobalTheory.TorsionKernelModel.exists_kernel π`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hZπ : Etale Zπ.hom`. Establish `h1 : Etale (toUnit Zπ).left` using `MorphismProperty.of_isPullback (P := @Etale) (hkπ.map (Over.forget _)) hπe`. Establish `h2 : (toUnit Zπ).left = Zπ.hom` using `by simpa using Over.w (toUnit Zπ)`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Use `haveI : IsReduced Zπ.left := GlobalTheory.isReduced_of_smooth_of_isReduced Zπ.hom`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hkill1 : ∀ (T : Over (Sp ℂ)) (x : T ⟶ A), x ≫ π = 1 → x ≫ ψ = 1`. Use `GlobalTheory.T.morphism_trivial_on_reduced_kernel A X' X Zπ π ψ iπ hkπ fun x hx => ?_` and prove the remaining obligations. Establish `h1 : e x ≫ π₀ = 1` using `by rw [← key, hx, map_one]`. Take `⟨c, hc, hcx⟩` from `(hker₀ ℂ t (e x)).1 h1`. Establish `: x = e.symm (r c)` using `by rw [show r c = e x from hcx.symm]; simp`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[this]`. Conclude with `(hC c).1 hc`. Take `⟨⟨β, hβ, hβc⟩, hepiπ⟩` from `GlobalTheory.exists_monHom_factor_of_flat_surjective _ A X' X π ψ hπ hψ inferInstance hπs inferInstance hkill1`. Take `⟨Zψ, _, iψ, _, _, hkψ⟩` from `GlobalTheory.TorsionKernelModel.exists_kernel ψ`. Establish `hZψf : IsFinite Zψ.hom`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `h1 : IsFinite (toUnit Zψ).left` using `MorphismProperty.of_isPullback (P := @IsFinite) (hkψ.map (Over.forget _)) hfin`. Establish `h2 : (toUnit Zψ).left = Zψ.hom` using `by simpa using Over.w (toUnit Zψ)`. Rewrite `h1` using `[h2]`. Then use the resulting hypothesis. Use `letI : GrpObj (Over.mk Zψ.hom) := ‹GrpObj Zψ›`. Establish `hZψ : Etale Zψ.hom` using `GlobalTheory.etale_of_grpObj_of_isFinite (k := ℂ) Zψ.hom`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : IsReduced Zψ.left := GlobalTheory.isReduced_of_smooth_of_isReduced Zψ.hom`. Establish `hkill2 : ∀ (T : Over (Sp ℂ)) (x : T ⟶ A), x ≫ ψ = 1 → x ≫ π = 1`. Use `GlobalTheory.T.morphism_trivial_on_reduced_kernel A X X' Zψ ψ π iψ hkψ fun x hx => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `GlobalTheory.T.torsion_point_algebraic_model A₀ A p g n hA₀ hg₀ hp hn x (hkn x hx)`. Establish `hxc : e x = r c` using `Over.OverMorphism.ext (by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[he, hc]`. Use `show t ≫ c.left = (toUnit (Over.mk t) ≫ c).left`. Rewrite using `[Over.comp_left, hl])`. Establish `hcC : c ∈ C₀`. Rewrite using `[hC, ← hxc, e.symm_apply_apply]`.
-
-Conclude with `hx`. Establish `h1 : e x ≫ π₀ = 1` using `(hker₀ ℂ t (e x)).2 ⟨c, hcC, hxc⟩`. Rewrite `h1` using `[← key]`. Conclude with `(map_eq_one_iff e' e'.injective).1 h1`. Take `⟨⟨κ, hκ, hκc⟩, hepiψ⟩` from `GlobalTheory.exists_monHom_factor_of_flat_surjective _ A X X' ψ π hψ hπ hflat inferInstance inferInstance hkill2`.
-
-Establish `h1 : β ≫ κ = 𝟙 X'` using `(cancel_epi π).1 (by rw [← Category.assoc, hβc, hκc, Category.comp_id])`. Establish `h2 : κ ≫ β = 𝟙 X` using `(cancel_epi ψ).1 (by rw [← Category.assoc, hκc, hβc, Category.comp_id])`. Set `iso : X ≅ X'` to `⟨κ, β, h2, h1⟩`. Use `haveI : IsMonHom iso.hom := hκ`. Use `⟨X₀, inferInstance, κ.left ≫ pullback.fst X₀.hom t, hX₀, hgX₀, ?_⟩` and prove the remaining obligations.
-
-Conclude with `((isGrpPullback_of_iso iso).comp hX').congr (Category.id_comp t) rfl`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_model_of_surjective : ∀ (A₀ : Over (Sp Qb)) [GrpObj A₀] (A X : Over (Sp ℂ)) [GrpObj A] [GrpObj X] (p : A.left ⟶ A₀.left) (g : ℕ),
     IsAbelianScheme A₀ → SmoothOfRelativeDimension g A₀.hom → IsGrpPullback A A₀ (spMap (algebraMap Qb ℂ)) p →

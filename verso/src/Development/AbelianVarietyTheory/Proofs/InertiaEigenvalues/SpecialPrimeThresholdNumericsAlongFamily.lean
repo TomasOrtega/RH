@@ -10,21 +10,21 @@ open NumberField IsDedekindDomain Formalism Formalism.ConjugateSelfDual Reciproc
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `eps Fm x hx a`. Establish `P` using `Fm.params x hx a`. Use `set L := Fm.L x a with hLdef`. Establish `e : Formalism.MainNotions.TwistedPlaces.lStar L = LevelStarExponents.lStar L` using `rfl`. Establish `hls` using `Formalism.MainNotions.TwistedPlaces.lStar_pos L`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h7` using `Formalism.MainNotions.TwistedPlaces.seven_lt_lStar L P`. Establish `hmD` using `Formalism.MainNotions.TwistedPlaces.lStar_mul_Den L`. Establish `hDen` using `Formalism.MainNotions.TwistedPlaces.Den_ge L`. Establish `hDp` using `Formalism.MainNotions.TwistedPlaces.Den_pos L`. Rewrite `hls`, `h7`, `hmD` using `[e]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1` using `P.lstar1`. Establish `h2` using `P.lstar2`. Establish `hb` using `Formalism.MainNotions.TwistedPlaces.one_le_b L`. Establish `he` using `L.etaSz_pos`. Establish `hS` using `L.Sc_pos`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `ht` using `Formalism.MainNotions.TwistedPlaces.t_ge_one (Fm.D x a)`. Establish `hk` using `Formalism.MainNotions.TwistedPlaces.k_ge_five (Fm.D x a)`. Establish `hmk` using `Formalism.MainNotions.TwistedPlaces.m_le_k (Fm.D x a)`. Establish `hm1` using `Formalism.MainNotions.TwistedPlaces.m_ge_one (Fm.D x a)`. Establish `hn` using `Formalism.MainNotions.TwistedPlaces.n_ge_one (Fm.D x a)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL1` using `Formalism.MainNotions.TwistedPlaces.L_ge_one L`. Establish `hbl : 0 ≤ L.sc.b / LevelStarExponents.lStar L` using `div_nonneg (by linarith) hls.le`. Establish `h8 : 8 * L.sc.b / LevelStarExponents.lStar L = 8 * (L.sc.b / LevelStarExponents.lStar L)` using `by ring`. Rewrite `h2` using `[h8]`. Establish `hDen2 : 2 * ((Fm.D x a).R.m : ℝ) ≤ Formalism.MainNotions.TwistedPlaces.Den L`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `Formalism.MainNotions.TwistedPlaces.Den`. Establish `hn2 : (1 : ℝ) ≤ ((Fm.D x a).R.n : ℝ) ^ 2` using `by nlinarith`. Establish `hLg0 : (0 : ℝ) ≤ Formalism.MainNotions.TwistedPlaces.large₂ L` using `by linarith`. Establish `h0 : (0 : ℝ) ≤ ((Fm.D x a).R.n : ℝ) * ((Fm.D x a).R.t : ℝ) ^ 2 * (((Fm.D x a).R.N (Fm.D x a).R.m : ℝ) + (Fm.D x a).R.t) * Formalism.MainNotions.TwistedPlaces.large₂ L ^ 2` using `by positivity`. Establish `hA : (2 : ℝ) ≤ L.Sc + (Fm.D x a).R.t + Formalism.MainNotions.TwistedPlaces.large₂ L` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hB : (1 : ℝ) ≤ ((Fm.D x a).R.k : ℝ) * ((Fm.D x a).R.n : ℝ) ^ 2` using `by nlinarith`. Establish `: 2 * ((Fm.D x a).R.k : ℝ) * ((Fm.D x a).R.n : ℝ) ^ 2 ≤ ((Fm.D x a).R.k : ℝ) * ((Fm.D x a).R.n : ℝ) ^ 2 * (L.Sc + (Fm.D x a).R.t + Formalism.MainNotions.TwistedPlaces.large₂ L)`. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish `hlb : 2 * LevelStarExponents.lStar L ≤ L.sc.b` using `by nlinarith`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hb'` using `Formalism.MainNotions.TwistedPlaces.b'_pos L`. Establish `hq : L.sc.b / LevelStarExponents.lStar L * LevelStarExponents.lStar L = L.sc.b` using `div_mul_cancel₀ _ hls.ne'`. Use `⟨P.t_le_eta, he, hbl, hS.le, by linarith, h2, ?_⟩` and prove the remaining obligations. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem lStar_numerics_at_record : ∀ {eps : ℝ} (Fm : FamP eps) (x : ℝ), Fm.x1 < x → ∀ (a : Fm.Ix x),
     ((Fm.D x a).R.t : ℝ) ≤ (Fm.L x a).etaSz ∧ 0 < (Fm.L x a).etaSz ∧ 0 ≤ (Fm.L x a).sc.b / LevelStarExponents.lStar (Fm.L x a) ∧

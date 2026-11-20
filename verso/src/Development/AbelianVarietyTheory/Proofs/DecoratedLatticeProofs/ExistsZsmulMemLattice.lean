@@ -5,7 +5,7 @@ namespace GlobalTheory.LatticeIntegerMultiple
 open NumberField
 
 /- English proof (translation)
-Establish `hQ : IsAlgebraic ℚ a` using `Algebra.IsAlgebraic.isAlgebraic a`. Establish `hZ : IsAlgebraic ℤ a` using `(IsFractionRing.isAlgebraic_iff ℤ ℚ E).2 hQ`. Take `⟨m, hm, hi⟩` from `hZ.exists_integral_multiple`. Conclude with `⟨m, ⟨m • a, hi⟩, hm, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_int_mul_mem {E : Type} [Field E] [NumberField E] (a : E) :
     ∃ (m : ℤ) (b : RingOfIntegers E), m ≠ 0 ∧ algebraMap (RingOfIntegers E) E b = m • a := by
@@ -15,15 +15,15 @@ theorem exists_int_mul_mem {E : Type} [Field E] [NumberField E] (a : E) :
   exact ⟨m, ⟨m • a, hi⟩, hm, rfl⟩
 
 /- English proof (translation)
-Establish `hx : x ∈ Submodule.span E (L : Set (Fin n → E))`. Rewrite using `[Submodule.IsLattice.span_eq_top (A := E)]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem y hy => exact ⟨1, one_ne_zero, by simpa using hy⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => exact ⟨1, one_ne_zero, by simp⟩`. Consider the case `add y z _ _ hy hz`. Take `⟨m, hm, hy⟩` from `hy`. Take `⟨k, hk, hz⟩` from `hz`. Use `⟨m * k, mul_ne_zero hm hk, ?_⟩` and prove the remaining obligations.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[smul_add]`. Use `L.add_mem ?_ ?_` and prove the remaining obligations. Rewrite using `[mul_comm, mul_smul]`. Conclude with `zsmul_mem hy k`. Rewrite using `[mul_smul]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Conclude with `zsmul_mem hz m`. Consider the case `smul a y _ hy`. Take `⟨m, hm, hy⟩` from `hy`. Take `⟨k, b, hk, hb⟩` from `exists_int_mul_mem a`. Use `⟨k * m, mul_ne_zero hk hm, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h : (k * m) • a • y = b • (m • y)`. Rewrite using `[← algebraMap_smul E b, hb, mul_smul, smul_comm m a y, smul_assoc]`. Rewrite using `[h]`. Conclude with `L.smul_mem b hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_zsmul_mem_lattice {E : Type} [Field E] [NumberField E] {n : ℕ}
     (L : Submodule (RingOfIntegers E) (Fin n → E)) [Submodule.IsLattice E L] (x : Fin n → E) :

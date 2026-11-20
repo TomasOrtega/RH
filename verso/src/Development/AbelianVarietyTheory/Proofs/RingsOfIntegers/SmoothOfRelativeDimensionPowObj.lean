@@ -16,7 +16,7 @@ attribute [local instance] Over.cartesianMonoidalCategory
 open scoped CategoryTheory.Obj
 
 /- English proof (translation)
-The claim follows from `| 0 => by have h : SmoothOfRelativeDimension 0 (𝟙 S) := inferInstance rw [Nat.zero_mul] exact h | n + 1 => by have ih := smoothOfRelativeDimension_powObj G g hG n have h1 : SmoothOfRelativeDimension (n * g) (pullback.fst G.hom (powObj G n).hom) := (smoothOfRelativeDimension_isSta …`.
+A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_powObj {S : Scheme.{0}} (G : Over S) (g : ℕ)
     (hG : SmoothOfRelativeDimension g G.hom) : ∀ n : ℕ, SmoothOfRelativeDimension (n * g) (powObj G n).hom
@@ -34,9 +34,9 @@ theorem smoothOfRelativeDimension_powObj {S : Scheme.{0}} (G : Over S) (g : ℕ)
     exact h2
 
 /- English proof (translation)
-Introduce `K _ j A A' p`. Set `e : A'.A ≅ powObj A.A j` to `p.lim.conePointUniqueUpToIso (powIsLimit A.A j)`. Establish `hw : A'.A.hom = e.hom.left ≫ (powObj A.A j).hom` using `(Over.w e.hom).symm`. Establish `h1` using `smoothOfRelativeDimension_powObj A.A A.g A.smoothDim j`. Establish `: IsIso e.hom.left` using `inferInstanceAs (IsIso ((Over.forget _).map e.hom))`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : SmoothOfRelativeDimension (0 + j * A.g) A'.A.hom`. Rewrite using `[hw]`. Use `infer_instance`. Use `H1.dim_unique _ A'.smoothDim h2 (eSec A'.A (default : PrimeSpectrum K))` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem polAV_g_of_isPowPolAV : ∀ (K : Type) [Field K] (j : ℕ) (A A' : PolAV (Spec (CommRingCat.of K))),
     IsPowPolAV A' A j → A'.g = j * A.g := by

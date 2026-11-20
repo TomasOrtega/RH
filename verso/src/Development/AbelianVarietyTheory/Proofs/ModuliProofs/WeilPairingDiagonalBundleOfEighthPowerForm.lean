@@ -21,7 +21,7 @@ namespace GlobalTheory.WeilDown
 def qf (W : Matrix (Fin 8) (Fin 8) ℤ) (v : Fin 8 → ℤ) : ℤ := ∑ u, ∑ u', W u u' * (v u * v u')
 
 /- English proof (translation)
-Simplify using `only [Matrix.add_apply, Matrix.transpose_apply, add_mul, Finset.sum_add_distrib, two_mul, qf]`. Use `congr 1`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sum_symm (W : Matrix (Fin 8) (Fin 8) ℤ) (v : Fin 8 → ℤ) :
     ∑ u, ∑ u', (W + W.transpose) u u' * (v u * v u') = 2 * qf W v := by
@@ -31,9 +31,9 @@ theorem sum_symm (W : Matrix (Fin 8) (Fin 8) ℤ) (v : Fin 8 → ℤ) :
   exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring
 
 /- English proof (translation)
-Establish `h` using `hW.1.posSemidef.dotProduct_mulVec_nonneg (fun i => (v i : ℝ))`. Establish `e : (((2 * qf W v : ℤ)) : ℝ) = star (fun i => (v i : ℝ)) ⬝ᵥ ((W + W.transpose).map (Int.cast : ℤ → ℝ)).mulVec (fun i => (v i : ℝ))`. Rewrite using `[← sum_symm]`. Simplify using `only [dotProduct, Matrix.mulVec, Matrix.map_apply, Pi.star_apply, star_trivial, Finset.mul_sum]`. Use `push_cast`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations.
 
-Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Rewrite `h` using `[← e]`. Establish `: (0 : ℤ) ≤ 2 * qf W v` using `by exact_mod_cast h`. Use linear arithmetic over natural numbers and integers.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem qf_nonneg {W : Matrix (Fin 8) (Fin 8) ℤ} (hW : IsE8 W) (v : Fin 8 → ℤ) : 0 ≤ qf W v := by
   have h := hW.1.posSemidef.dotProduct_mulVec_nonneg (fun i => (v i : ℝ))
@@ -48,9 +48,9 @@ theorem qf_nonneg {W : Matrix (Fin 8) (Fin 8) ℤ} (hW : IsE8 W) (v : Fin 8 → 
   omega
 
 /- English proof (translation)
-Simplify using `only [qf, dotProduct, Matrix.mulVec, Matrix.add_apply, Matrix.transpose_apply, Pi.add_apply, add_mul, mul_add, Finset.sum_add_distrib, Finset.mul_sum]`. Establish `e₁ : ∑ u, ∑ u', W u u' * (b u * a u') = ∑ u, ∑ u', b u * (W u u' * a u')` using `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`. Establish `e₂ : ∑ u, ∑ u', W u u' * (a u * b u') = ∑ u, ∑ u', b u * (W u' u * a u')`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => by ring`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e₁, e₂]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem qf_add (W : Matrix (Fin 8) (Fin 8) ℤ) (a b : Fin 8 → ℤ) :
     qf W (a + b) = qf W a + qf W b + b ⬝ᵥ (W + W.transpose).mulVec a := by
@@ -65,7 +65,7 @@ theorem qf_add (W : Matrix (Fin 8) (Fin 8) ℤ) (a b : Fin 8 → ℤ) :
   ring
 
 /- English proof (translation)
-Use `⟨(W + W.transpose).adjugate.mulVec (Pi.single 0 1), Pi.single 0 1, ?_⟩` and prove the remaining obligations. Rewrite using `[qf_add, Matrix.mulVec_mulVec, Matrix.mul_adjugate, hW.2]`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem exists_qf_one {W : Matrix (Fin 8) (Fin 8) ℤ} (hW : IsE8 W) :
     ∃ a b, qf W (a + b) = qf W a + qf W b + 1 := by
@@ -74,7 +74,7 @@ theorem exists_qf_one {W : Matrix (Fin 8) (Fin 8) ℤ} (hW : IsE8 W) :
   simp
 
 /- English proof (translation)
-Take `⟨v, w, e⟩` from `exists_qf_one hW`. Use `h (v + w)` as an intermediate fact. Rewrite `this` using `[e, zpow_add, zpow_add, zpow_add, zpow_add, h v, h w, zpow_one, zpow_one]`. Conclude with `mul_left_cancel this`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_of_zpow_qf {W : Matrix (Fin 8) (Fin 8) ℤ} (hW : IsE8 W) {U : Type*} [CommGroup U] (a b : U)
     (h : ∀ v, a ^ qf W v = b ^ qf W v) : a = b := by
@@ -84,7 +84,7 @@ theorem eq_of_zpow_qf {W : Matrix (Fin 8) (Fin 8) ℤ} (hW : IsE8 W) {U : Type*}
   exact mul_left_cancel this
 
 /- English proof (translation)
-Simplify using `only [omegaStd, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun a _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem omegaStd_smul {h : ℕ} (m n : ℤ) (x y : Fin h ⊕ Fin h → ℤ) :
     omegaStd (m • x) (n • y) = m * n * omegaStd x y := by
@@ -100,13 +100,13 @@ variable {S : Scheme.{0}} {A : Over S} {T T' : Over S}
 def q (π : Pic (A ⊗ A).left) (a b : T ⟶ A) : Pic T.left := pull (lift a b).left π
 
 /- English proof (translation)
-Rewrite using `[q, q, ← pull_comp, ← Over.comp_left, comp_lift]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem qp (π : Pic (A ⊗ A).left) (t : T' ⟶ T) (a b : T ⟶ A) : pull t.left (q π a b) = q π (t ≫ a) (t ≫ b) := by
   rw [q, q, ← pull_comp, ← Over.comp_left, comp_lift]
 
 /- English proof (translation)
-Establish `k : (lift b a).left ≫ (lift (snd A A) (fst A A)).left = (lift a b).left`. Rewrite using `[← Over.comp_left, comp_lift, lift_fst, lift_snd]`. Rewrite using `[q, q, ← k, pull_comp, ← e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem q_comm {π : Pic (A ⊗ A).left} (e : π = pull (lift (snd A A) (fst A A)).left π) (a b : T ⟶ A) :
     q π a b = q π b a := by
@@ -117,7 +117,7 @@ theorem q_comm {π : Pic (A ⊗ A).left} (e : π = pull (lift (snd A A) (fst A A
 variable [GrpObj A]
 
 /- English proof (translation)
-Establish `e` using `(cls_eq_zero_iff (LB.isLB_linComb hP _ _)).2 h`. Rewrite `e` using `[cls_linComb hP, Fin.sum_univ_three]`. Simplify using `only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val, one_smul, neg_smul] at e`. Rewrite using `[← sub_eq_zero, ← e, q, q, q]`. Normalize the expressions using the abelian group laws.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 -/
 theorem q_mul {P : LB (A ⊗ A).left} (hP : P.IsLB) (a a' b : T ⟶ A)
     (h : ∃ t : (LB.LinComb P (K := Fin 3) ![(lift (a * a') b).left, (lift a b).left, (lift a' b).left]
@@ -129,7 +129,7 @@ theorem q_mul {P : LB (A ⊗ A).left} (hP : P.IsLB) (a a' b : T ⟶ A)
   abel
 
 /- English proof (translation)
-Use `(cls_linComb hD _ _ h).trans ?_` and prove the remaining obligations. Rewrite using `[Fin.sum_univ_two]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem cls_theta {D : LB A.left} (hD : D.IsLB) (k : ℤ) (x : T ⟶ A) (h : (Out.thetaLB A D k x).IsLB) :
     cls _ h = k • pull (snd T A).left (cls D hD) + (-k) • pull ((fst T A ≫ x) * snd T A).left (cls D hD) := by
@@ -140,7 +140,7 @@ theorem cls_theta {D : LB A.left} (hD : D.IsLB) (k : ℤ) (x : T ⟶ A) (h : (Ou
 variable [IsCommMonObj A]
 
 /- English proof (translation)
-Use `BilinCalc.map_prod_zpow (fun z => q π z b) (fun s t => ql s t b) (fun _ : Fin 1 => a) (fun _ => n)` as an intermediate fact. Simplify using `using this`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem q_zpow {π : Pic (A ⊗ A).left} (ql : ∀ a a' b : T ⟶ A, q π (a * a') b = q π a b + q π a' b)
     (a b : T ⟶ A) (n : ℤ) : q π (a ^ n) b = n • q π a b := by
@@ -148,11 +148,11 @@ theorem q_zpow {π : Pic (A ⊗ A).left} (ql : ∀ a a' b : T ⟶ A, q π (a * a
   simpa using this
 
 /- English proof (translation)
-Establish `hz : cls (Out.thetaLB A D k x) (LB.isLB_linComb hD _ _) = 0`. Establish `e₁ : q π (fst T A ≫ x) (fst T A ≫ x) = 0`. Rewrite using `[← qp, h0, map_zero]`. Establish `e₂ : (k : ℤ) • q π (fst T A ≫ x) (snd T A) = 0`. Rewrite using `[← q_zpow ql, zpow_natCast, ← MonObj.comp_pow, hx, MonObj.comp_one, ← zpow_zero 1, q_zpow ql, zero_smul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `(cls_theta hD _ _ _).trans ?_` and prove the remaining obligations. Rewrite using `[cD, qp, qp, Category.comp_id, Category.comp_id, ql, qs (fst _ _ ≫ _), qs (snd _ _) (_ * _), ql, ql, e₁, qs (snd _ _) (fst _ _ ≫ _)]`. Simplify using `only [smul_add, neg_smul, e₂, smul_zero]`. Normalize the expressions using the abelian group laws. Take `⟨t, ht⟩` from `(cls_eq_zero_iff _).1 hz`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Normalize the expressions using the abelian group laws. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⟨x, t, ht⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_theta {π : Pic (A ⊗ A).left} {D : LB A.left} (hD : D.IsLB) (cD : cls D hD = q π (𝟙 A) (𝟙 A))
     (ql : ∀ a a' b : T ⊗ A ⟶ A, q π (a * a') b = q π a b + q π a' b) (qs : ∀ a b : T ⊗ A ⟶ A, q π a b = q π b a)
@@ -175,23 +175,23 @@ end Pairing
 open GlobalTheory.CechPic in
 
 /- English proof (translation)
-Introduce `hG h k W S G A _ _ _ _ pr L P K _ p lev c hW hGab hA hpr hprod hL hP hsym hbi hLP hadd htor hweil x y`. Establish `hD` using `pull_isLB hP (lift (𝟙 A) (𝟙 A)).left`. Establish `ql : ∀ {T : Over S} (a a' b : T ⟶ A), q (cls P hP) (a * a') b = q (cls P hP) a b + q (cls P hP) a' b` using `fun {T} a a' b => q_mul hP a a' b (hbi T a a' b).1`. Establish `qs : ∀ {T : Over S} (a b : T ⟶ A), q (cls P hP) a b = q (cls P hP) b a` using `q_comm ((cls_eq_iff hP (pull_isLB hP _)).2 hsym)`. Establish `cD : cls _ hD = q (cls P hP) (𝟙 A) (𝟙 A)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `q0 : ∀ a b : Over.mk p ⟶ A, q (cls P hP) a b = 0` using `fun a b => (cls_eq_zero_iff (pull_isLB hP (lift a b).left)).2 (DVR.exists_gen_of_local (V := K) P hP _ _)`. Establish `lift_ : ∀ z, ∃ θ : Out.ThetaGrp A (P.pull (lift (𝟙 A) (𝟙 A)).left) k (Over.mk p), θ.pt = lev z` using `fun z => exists_theta hD cD ql qs k _ (htor z) (q0 _ _)`. Establish `loc : ∀ z (s : (Over.mk p).left), ∃ V : (Over.mk p).left.Opens, s ∈ V ∧ ∃ θ : Out.ThetaGrp A (P.pull (lift (𝟙 A) (𝟙 A)).left) k (Out.overRes V), θ.pt = Out.overResι V ≫ lev z` using `fun z s => by`. Take `⟨θ, e⟩` from `lift_ z`. Take `⟨θ', e'⟩` from `CommutatorPairing.exists_pull hD θ (Out.overResι ⊤)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨⊤, trivial, θ', by rw [e', e]⟩`. Take `⟨c₀, hc₀⟩` from `CommutatorPairing.exists_weilIs hG hA hD (loc x) (loc y)`. It suffices to establish `c₀ = c ^ (2 * omegaStd x y) from this ▸ hc₀`. Use `eq_of_zpow_qf hW _ _ fun v => ?_` and prove the remaining obligations. Establish `levz : ∀ z (n : ℤ), lev (n • z) = lev z ^ n` using `fun z n => by`.
+Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the argument to an intermediate assertion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Set `F : Multiplicative (Fin h ⊕ Fin h → ℤ) →* (Over.mk p ⟶ A)` to `MonoidHom.mk' (fun w => lev w.toAdd) fun a b => hadd _ _`. Conclude with `map_zpow F (Multiplicative.ofAdd z) n`. Take `⟨ψ, hψ, -⟩` from `hprod A fun u => 𝟙 A ^ v u`. Establish `ext : ∀ {T : Over S} (a b : T ⟶ G), (∀ u, a ≫ pr u = b ≫ pr u) → a = b` using `fun {T} a b e => (hprod T fun u => b ≫ pr u).unique e fun _ => rfl`. Establish `hc : ∀ {T : Over S} (a : T ⟶ A) u, (a ≫ ψ) ≫ pr u = a ^ v u` using `fun a u => by`.
+Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hψ, GrpObj.comp_zpow, Category.comp_id]`. Establish `hmon : IsMonHom ψ`. Prove the components needed by the constructor for the conclusion. Use `ext _ _ fun u => ?_` and prove the remaining obligations. Establish `e₁ : (η[A] : 𝟙_ _ ⟶ A) = 1` using `by rw [Hom.one_def]; simp`.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hc, IsMonHom.one_hom, e₁, one_zpow]`. Use `ext _ _ fun u => ?_` and prove the remaining obligations. Establish `e₁ : μ[A] = fst A A * snd A A` using `by rw [Hom.mul_def]; simp`. Establish `e₂ : (ψ ⊗ₘ ψ) ≫ μ[G] = (fst A A ≫ ψ) * (snd A A ≫ ψ)` using `by rw [Hom.mul_def]; congr 1`. Rewrite using `[hc, e₁, e₂, MonObj.mul_comp, hc, hc, mul_zpow]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hd : ((qf W v).toNat : ℤ) = qf W v` using `Int.toNat_of_nonneg (qf_nonneg hW v)`. Establish `hn : (lbPow (P.pull (lift (𝟙 A) (𝟙 A)).left) (qf W v).toNat).IsLB` using `LB.isLB_linComb hD _ _`. Establish `hiso : LBIso (lbPow (P.pull (lift (𝟙 A) (𝟙 A)).left) (qf W v).toNat) (L.pull ψ.left)`. Rewrite using `[← cls_eq_iff hn (pull_isLB hL _), cls_lbPow hD, cD, cls_pull hL, (cls_eq_iff hL (LB.isLB_linComb hP _ _)).2 hLP, cls_linComb hP, map_sum, ← natCast_zsmul, hd, qf, ← Fintype.sum_prod_type', Finset.sum_smul]`. Use `Finset.sum_congr rfl fun uv _ => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_zsmul]`. Use `Eq.trans ?_ (congrArg _ (qp (cls P hP) ψ (pr uv.1) (pr uv.2))).symm` and prove the remaining obligations. Rewrite using `[hψ, hψ, q_zpow ql, qs _ (_ ^ _), q_zpow ql, smul_smul, smul_smul, _root_.mul_assoc]`. Establish `key` using `(weilIs_along_hom hG S A G ψ _ L _ k _ (lev x) (lev y) c₀ _ hA hGab hD hL hmon hiso (hweil (fun u => v u • x) (fun u => v u • y) _ _ (fun u => by rw [hc, levz]) (fun u => by rw [hc, levz]))).2 hc₀`. Rewrite using `[← hd, zpow_natCast, ← key, hd, ← zpow_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 1`. Establish `e : ∀ a b : ℤ, a * (b * omegaStd x y) = a * b * omegaStd x y` using `fun a b => (_root_.mul_assoc _ _ _).symm`. Simplify using `only [omegaStd_smul, e, ← Finset.sum_mul]`. Rewrite using `[sum_symm]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem weilIs_diag : Out.GlobalFnsSt → ∀ (h k : ℕ) (W : Matrix (Fin 8) (Fin 8) ℤ) (S : Scheme.{0}) (G A : Over S) [GrpObj G] [IsCommMonObj G] [GrpObj A] [IsCommMonObj A] (pr : Fin 8 → (G ⟶ A)) (L : LB G.left) (P : LB (G2 A).left) (K : Type) [Field K] (p : Sp K ⟶ S) (lev : (Fin h ⊕ Fin h → ℤ) → (Over.mk p ⟶ A)) (c : Γ((Over.mk p).left, ⊤)ˣ), IsE8 W → IsAbelianScheme G → IsAbelianScheme A → (∀ u, IsMonHom (pr u)) → (∀ (T : Over S) (y : Fin 8 → (T ⟶ A)), ∃! x : T ⟶ G, ∀ u, x ≫ pr u = y u) → L.IsLB → P.IsLB → LBIso P (P.pull (lift (snd A A) (fst A A)).left) → (∀ (T : Over S) (x x' y : T ⟶ A), (∃ t : (LB.LinComb P (K := Fin 3) ![(lift (x * x') y).left, (lift x y).left, (lift x' y).left] ![1, -1, -1]).Gen, t.IsGen) ∧ ∃ t : (LB.LinComb P (K := Fin 3) ![(lift y (x * x')).left, (lift y x).left, (lift y x').left] ![1, -1, -1]).Gen, t.IsGen) → LBIso L (LB.LinComb P (K := Fin 8 × Fin 8) (fun uv => (lift (pr uv.1) (pr uv.2)).left) (fun uv => W uv.1 uv.2)) → (∀ x y, lev (x + y) = lev x * lev y) → (∀ x, lev x ^ k = 1) → (∀ (X Y : Fin 8 → (Fin h ⊕ Fin h → ℤ)) (y y' : Over.mk p ⟶ G), (∀ u, y ≫ pr u = lev (X u)) → (∀ u, y' ≫ pr u = lev (Y u)) → Out.WeilIs G L k y y' (c ^ ∑ u, ∑ v, (W + W.transpose) u v * omegaStd (X u) (Y v))) → ∀ x y, Out.WeilIs A (P.pull (lift (𝟙 A) (𝟙 A)).left) k (lev x) (lev y) (c ^ (2 * omegaStd x y)) := by
   intro hG h k W S G A _ _ _ _ pr L P K _ p lev c hW hGab hA hpr hprod hL hP hsym hbi hLP hadd htor hweil x y

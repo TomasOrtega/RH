@@ -24,7 +24,7 @@ private theorem conjEquiv_apply (g : GL (Fin n) k) (v : Fin n → k) :
     conjEquiv g v = (g : Matrix (Fin n) (Fin n) k).mulVec v := rfl
 
 /- English proof (translation)
-Establish `h : (r' s : Matrix (Fin n) (Fin n) k) * (g : Matrix (Fin n) (Fin n) k) = (g : Matrix (Fin n) (Fin n) k) * (r s : Matrix (Fin n) (Fin n) k)`. Rewrite using `[← Units.val_mul, ← Units.val_mul, hg s, inv_mul_cancel_right]`. Simplify using `only [conjEquiv_apply, Matrix.mulVec_mulVec, h]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private theorem intertwine {r r' : Γ →* GL (Fin n) k} {g : GL (Fin n) k}
     (hg : ∀ s, r' s = g * r s * g⁻¹) (s : Γ) (v : Fin n → k) :
@@ -36,13 +36,13 @@ private theorem intertwine {r r' : Γ →* GL (Fin n) k} {g : GL (Fin n) k}
   simp only [conjEquiv_apply, Matrix.mulVec_mulVec, h]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Introduce `W hW`. Establish `h0 : IsInv r (W.comap (conjEquiv g).toLinearMap)`. Introduce `s v hv`. Establish `hv' : conjEquiv g v ∈ W` using `hv`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `show conjEquiv g _ ∈ W`. Rewrite using `[← intertwine hg]`. Conclude with `hW s _ hv'`. Take `⟨W', hW', hc⟩` from `H _ h0`. Use `⟨W'.map (conjEquiv g).toLinearMap, ?_, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `s _ ⟨v, hv, rfl⟩`. Conclude with `⟨(r s : Matrix (Fin n) (Fin n) k).mulVec v, hW' s v hv, (intertwine hg s v).symm⟩`. Establish `hm` using `(Submodule.orderIsoMapComap (conjEquiv g)).isCompl hc`. Establish `hW2 : (Submodule.orderIsoMapComap (conjEquiv g)) (W.comap (conjEquiv g).toLinearMap) = W`. Use extensionality with `x`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `[Submodule.orderIsoMapComap_apply, Submodule.mem_map]`. Rewrite `hm` using `[hW2]`. Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 private theorem ss_of_conj {r r' : Γ →* GL (Fin n) k} (h : RepIso r r') (H : IsSSRep r) : IsSSRep r' := by
   obtain ⟨g, hg⟩ := h
@@ -67,9 +67,9 @@ private theorem ss_of_conj {r r' : Γ →* GL (Fin n) k} (h : RepIso r r') (H : 
 end Conj
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `h`. Introduce `A hA`. Take `⟨h1, h2⟩` from `H A hA`. Use `⟨fun s hs => ?_, fun σ hσ => ?_⟩` and prove the remaining obligations. Rewrite using `[hg s, h1 s hs, mul_one, mul_inv_cancel]`.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hg σ⁻¹, Units.val_mul, Units.val_mul, Matrix.coe_units_inv, Matrix.charpoly_units_conj]`. Conclude with `h2 σ hσ`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem frob_of_conj {F Ω : Type} [Field F] [NumberField F] [Field Ω] [Algebra F Ω] {l : ℕ} [Fact l.Prime] {n : ℕ}
     {ι : Qbar l ≃+* ℂ} {r r' : G F Ω →* GL (Fin n) (Qbar l)} (h : RepIso r r')
@@ -83,7 +83,7 @@ private theorem frob_of_conj {F Ω : Type} [Field F] [NumberField F] [Field Ω] 
     exact h2 σ hσ
 
 /- English proof (translation)
-Introduce `F Ω _ _ _ _ _ _ l _ ι n r r' h`. Introduce and unpack `⟨π, h1, h2, h3⟩`. Conclude with `⟨π, h1, ⟨ss_of_conj h h2.1, h2.2.mono fun _ ⟨B, hB, hB'⟩ => ⟨B, hB, frob_of_conj h hB'⟩⟩, h3⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem prIso : PrIso := by
   intro F Ω _ _ _ _ _ _ l _ ι n r r' h

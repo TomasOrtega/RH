@@ -15,15 +15,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.DetLine.GoodTransport
 
 /- English proof (translation)
-Set `L : Submodule ℤ (Fin g → ℂ)` to `LinearMap.range P.toIntLinearMap`. Set `L' : Submodule ℤ (Fin g → ℂ)` to `LinearMap.range P'.toIntLinearMap`. Use `haveI : DiscreteTopology L := hd`. Use `haveI : DiscreteTopology L' := hd'`. Use `haveI : IsZLattice ℝ L := ⟨hs⟩`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI : IsZLattice ℝ L' := ⟨hs'⟩`. Set `e : La ≃ₗ[ℤ] L` to `LinearEquiv.ofInjective P.toIntLinearMap hi`. Set `e' : La ≃ₗ[ℤ] L'` to `LinearEquiv.ofInjective P'.toIntLinearMap hi'`. Set `b` to `Module.Free.chooseBasis ℤ L`. Set `b₀` to `b.map e.symm`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `b'` to `b₀.map e'`. Set `φ` to `(b.ofZLatticeBasis ℝ L).equiv (b'.ofZLatticeBasis ℝ L') (Equiv.refl _)`. Establish `key : (φ.toLinearMap.restrictScalars ℤ).comp P.toIntLinearMap = P'.toIntLinearMap`. Use `b₀.ext fun k => ?_` and prove the remaining obligations. Establish `h1 : P (b₀ k) = b.ofZLatticeBasis ℝ L k`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[Module.Basis.ofZLatticeBasis_apply]`. Conclude with `congrArg Subtype.val (e.apply_symm_apply (b k))`. Establish `h2 : P' (b₀ k) = b'.ofZLatticeBasis ℝ L' k`. Rewrite using `[Module.Basis.ofZLatticeBasis_apply]`. Both sides reduce to the same expression.
-
-Express the relevant statement in the definitionally equal form `φ (P (b₀ k)) = P' (b₀ k)`. Rewrite using `[h1, h2, Module.Basis.equiv_apply]`. Both sides reduce to the same expression. Conclude with `⟨φ, fun a => LinearMap.congr_fun key a⟩`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_equiv_of_lattices {La : Type} [AddCommGroup La] {g : ℕ} (P P' : La →+ (Fin g → ℂ))
     (hi : Function.Injective P) (hd : DiscreteTopology P.range) (hs : Submodule.span ℝ (Set.range P) = ⊤)
@@ -55,7 +53,7 @@ theorem exists_equiv_of_lattices {La : Type} [AddCommGroup La] {g : ℕ} (P P' :
   exact ⟨φ, fun a => LinearMap.congr_fun key a⟩
 
 /- English proof (translation)
-Use `u.ex_add (z - w) w` as an intermediate fact. Rewrite `this` using `[sub_add_cancel]`. Rewrite using `[← u.ker, this]`. Conclude with `mul_eq_right`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ex_eq_iff {A : Over (Sp ℂ)} [GrpObj A] {L : LB A.left} {g : ℕ} (u : HolUnif A L g) (z w : Fin g → ℂ) :
     u.ex z = u.ex w ↔ z - w ∈ u.Λ := by
@@ -76,9 +74,9 @@ def imHerm {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) : (Fin g → ℂ) →ₗ[
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Geo.Tor.Host E} {D : Datum H} {l : Level H}
 
 /- English proof (translation)
-Substitute `hy` using the available equality. Establish `inj : ∀ x y : 𝟙_ (Over (Sp ℂ)) ⟶ o.t.G, x.left ≫ m.toSABMap.φ = y.left ≫ m.toSABMap.φ → x = y` using `fun x y h => Over.OverMorphism.ext (m.cart.1.hom_ext h (by rw [Over.w x, Over.w y]))`. Use `⟨fun a z => inj _ _ ?_, fun a ha => inj _ _ ?_, fun a => inj _ _ ?_⟩` and prove the remaining obligations. Rewrite using `[hh, Fu.ex_lin i P hP, Over.comp_left, Over.comp_left, ← hh, Category.assoc, Category.assoc]`. Conclude with `congrArg _ (m.act a)`.
+Substitute using the available equality. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hh, ← Fu.ex_eta i P hP a ha]`. Conclude with `m.eta a`. Rewrite using `[hh, ← Fu.ex_etaA i P hP a]`. Conclude with `m.etaA a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fibre_marks {Xo : Moduli D l} {σ : KA l →+* ℂ} {g₀ : ℕ} {ty : Fin g₀ → (E →+* ℂ)} (Fu : FamilyUnif Xo σ ty)
     (i : Fin Fu.n) {P : (Fu.Di i).La →+ (Fin g₀ → ℂ)} (hP : IsPeriod (Fu.Di i) ty P) {y₀ : Sp ℂ ⟶ Xo.X}
@@ -101,9 +99,9 @@ theorem fibre_marks {Xo : Moduli D l} {σ : KA l →+* ℂ} {g₀ : ℕ} {ty : F
     exact m.etaA a
 
 /- English proof (translation)
-Establish `h1 : (1 : 𝓞 E) ∈ l.Mb ⊔ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E)` using `by rw [l.coprime]; trivial`. Take `⟨x, hx, y, hy, hxy⟩` from `Submodule.mem_sup.1 h1`. Use `⟨y • a, Submodule.smul_mem_smul hy trivial, fun o => ?_⟩` and prove the remaining obligations. Establish `: a = x • a + y • a` using `by rw [← add_smul, hxy, one_smul]`. Use `conv_lhs => rw [this]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[o.eta_add, o.eta_ker _ (Submodule.smul_mem_smul hx trivial), _root_.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem exists_eta_eq (a : D.La) : ∃ a₁ ∈ l.Mb.map (H.bar : 𝓞 E →+* 𝓞 E) • (⊤ : Submodule (𝓞 E) D.La),
     ∀ {B : Type} [CommRing B] {b : Base l B} {S : Scheme.{0}} {s : S ⟶ Sp B} (o : Obj D l b s),
@@ -116,25 +114,25 @@ theorem exists_eta_eq (a : D.La) : ∃ a₁ ∈ l.Mb.map (H.bar : 𝓞 E →+* �
   rw [o.eta_add, o.eta_ker _ (Submodule.smul_mem_smul hx trivial), _root_.one_mul]
 
 /- English proof (translation)
-Take `⟨h, hex, hΛ, hE, -⟩` from `FibreCmp.exists_equiv_of_isAH E H D l Xo σ g₀ ty Fu i P y₀ s o m g u Hm κ hP hy hAH`. Take `⟨h', hex', hΛ', hE', -⟩` from `FibreCmp.exists_equiv_of_isAH E H D l Xo σ g₀ ty Fu i P' y₀' s' o' m' g' u' Hm' κ' hP' hy' hAH'`. Take `⟨a1, a2, a3⟩` from `fibre_marks Fu i hP hy m u h hex`. Take `⟨b1, b2, b3⟩` from `fibre_marks Fu i hP' hy' m' u' h' hex'`. Take `⟨φ₀, hφ₀⟩` from `exists_equiv_of_lattices P P' hP.2.1 hP.2.2.1 hP.2.2.2.1 hP'.2.1 hP'.2.2.1 hP'.2.2.2.1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Set `φ : (Fin g → ℂ) ≃ₗ[ℝ] (Fin g' → ℂ)` to `((h.symm.restrictScalars ℝ).trans φ₀).trans (h'.restrictScalars ℝ)`. Establish `hφ : ∀ z, φ (h z) = h' (φ₀ z)` using `fun z => congrArg (fun t => h' (φ₀ t)) (h.symm_apply_apply z)`. Establish `lat : ∀ z, φ z ∈ u'.Λ ↔ z ∈ u.Λ` using `fun z => by`. Take `⟨z, rfl⟩` from `h.surjective z`. Rewrite using `[hφ, hΛ, hΛ']`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, ha⟩`. Conclude with `⟨a, φ₀.injective ((hφ₀ a).trans ha)⟩`. Introduce and unpack `⟨a, rfl⟩`. Conclude with `⟨a, (hφ₀ a).symm⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `exq : ∀ z w, u.ex z = u.ex w → u'.ex (φ z) = u'.ex (φ w)` using `fun z w hzw => by`. Rewrite `hzw`, the goal using `[ex_eq_iff]`. Rewrite using `[← map_sub, lat]`. Conclude with `hzw`. Establish `lin : ∀ (a : 𝓞 E) z, φ₀ (fun k => ty k (a : E) * z k) = fun k => ty k (a : E) * φ₀ z k` using `fun a z => by`.
+Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Set `T : (Fin g₀ → ℂ) →ₗ[ℝ] (Fin g₀ → ℂ)` to `LinearMap.pi fun k => (LinearMap.mulLeft ℝ (ty k (a : E))).comp (LinearMap.proj k)`. Establish `: φ₀.toLinearMap.comp T = T.comp φ₀.toLinearMap`. Use `LinearMap.ext_on_range hP.2.2.2.1 fun x => ?_` and prove the remaining obligations. Establish `e1 : T (P x) = P (a • x)` using `funext fun k => (hP.1 a x k).symm`. Establish `e2 : T (P' x) = P' (a • x)` using `funext fun k => (hP'.1 a x k).symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `φ₀ (T (P x)) = T (φ₀ (P x))`. Rewrite using `[e1, hφ₀, hφ₀, e2]`. Conclude with `LinearMap.congr_fun this z`. Establish `dv : ∀ (n : ℕ) x, φ₀ ((n : ℂ)⁻¹ • P x) = (n : ℂ)⁻¹ • P' x` using `fun n x => by`. Establish `e : ∀ v : Fin g₀ → ℂ, (n : ℂ)⁻¹ • v = (n : ℝ)⁻¹ • v` using `fun v => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Complex.coe_smul]`. Simplify using the standard rewrite rules. Rewrite using `[e, e, map_smul, hφ₀]`. Use `⟨φ, lat, fun a z w hw => ?_, fun z w => ?_, fun a z hz => ?_, fun a z hz => ?_⟩` and prove the remaining obligations. Take `⟨z, rfl⟩` from `h.surjective z`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hw` using `[a1]`. Rewrite using `[exq _ _ hw, hφ, hφ, b1, lin]`. Take `⟨z, rfl⟩` from `h.surjective z`. Take `⟨w, rfl⟩` from `h.surjective w`. Set `j` to `(h.restrictScalars ℝ).toLinearMap`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: (imHerm Hm').compl₁₂ (φ.toLinearMap.comp j) (φ.toLinearMap.comp j) = (imHerm Hm).compl₁₂ j j`. Use `LinearMap.ext_on_range hP.2.2.2.1 fun x => LinearMap.ext_on_range hP.2.2.2.1 fun y => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(herm Hm' (φ (h (P x))) (φ (h (P y)))).im = (herm Hm (h (P x)) (h (P y))).im`. Rewrite using `[hφ, hφ, hφ₀, hφ₀, hE, hE']`. Conclude with `LinearMap.congr_fun (LinearMap.congr_fun this z) w`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a₁, ha₁, e⟩` from `exists_eta_eq (l := l) a`. Rewrite `hz` using `[e o, a2 a₁ ha₁]`. Rewrite using `[exq _ _ hz, e o', b2 a₁ ha₁, hφ, dv]`. Rewrite `hz` using `[a3]`. Rewrite using `[exq _ _ hz, b3, hφ, dv]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_transport {Xo : Moduli D l} {σ : KA l →+* ℂ} {g₀ : ℕ} {ty : Fin g₀ → (E →+* ℂ)}
     (Fu : FamilyUnif Xo σ ty) (i : Fin Fu.n) {P P' : (Fu.Di i).La →+ (Fin g₀ → ℂ)} (hP : IsPeriod (Fu.Di i) ty P)
@@ -197,9 +195,9 @@ theorem exists_transport {Xo : Moduli D l} {σ : KA l →+* ℂ} {g₀ : ℕ} {t
     rw [exq _ _ hz, b3, hφ, dv]
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y U e B io hU hio hr hs hpq he y y' hy hy' hyU hyU' o o' ⟨m⟩ ⟨m'⟩ g g' u u' Hm Hm' κ κ' hAH hAH'`. Set `e₀ : Fin (Fintype.card (Pad.Letter D)) ≃ Pad.Letter D` to `(Fintype.equivFin _).symm`. Establish `hty` using `(GlobalTheory.Relab.relab_good E H l c e he).2.2.2 D _ e₀`. Take `⟨Fu⟩` from `GlobalTheory.closing_of_abelianSchemeLaws E H D l Xo (e.comp (IntermediateField.inclusion c.le).toRingHom) _ (fun j => Formalism.L2.PjFree.relab c e (e₀ j).1) hpq he hty`. Establish `ov : ∀ x : Sp ℂ ⟶ Xo.XF c, x ≫ toF Xo c = spMap e → (x ≫ toX Xo c) ≫ Xo.s = spMap (e.comp (IntermediateField.inclusion c.le).toRingHom)` using `fun x hx => by`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, pullback.condition, ← Category.assoc, hx, DetExtendZero.spMap_comp]`. Take `⟨i, P, hP, hu⟩` from `Fu.onto _ (ov y hy)`. Take `⟨i', P', hP', hu'⟩` from `Fu.onto _ (ov y' hy')`. Take `rfl : i = i'` from `GlobalTheory.T.complexPoints_component_same_periodSpace E H D l Xo c O β Y U e _ _ Fu i i' P P' y y' B io hU hio hr hs hy hy' hyU hyU' hP hP' hu.symm hu'.symm`. Conclude with `exists_transport Fu i hP hP' hu.symm hu'.symm m m' u u' hAH hAH'`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem hasTransport_of_goodEmb : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (U : (Xo.XF c).Opens) (e : c.F →+* ℂ) (B : GlobalTheory.ProjVar.Var c.F) (io : B.X ⟶ gen Y), IsClosed (U : Set (Xo.XF c)) → IsOpenImmersion io → Set.range io = compactOf Y U → io ≫ genStr Y = B.str → 1 ≤ D.p + D.q → Formalism.L2.PjFree.GoodEmb c e → HasTransport Xo c U e := by
   intro E _ _ _ H D l Xo c O _ β Y U e B io hU hio hr hs hpq he y y' hy hy' hyU hyU' o o' ⟨m⟩ ⟨m'⟩ g g' u u' Hm Hm'

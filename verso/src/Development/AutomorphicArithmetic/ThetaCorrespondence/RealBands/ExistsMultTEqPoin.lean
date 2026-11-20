@@ -13,25 +13,21 @@ noncomputable section
 namespace UpperTheory.Lit.Cusp
 
 /- English proof (translation)
-Introduce `D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c hT a`. Take `⟨i1, i2, i3, i4, i5, i6, i7⟩` from `GlobalTheory.Mem.AdelicGroupTop.adelic_unitary_topology D V`. Introduce `r C hC μ 𝓕 hμ h𝓕 g`. Use `haveI := i1`. Use `haveI := i2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI := i3`. Use `haveI := i4`. Use `haveI := i5`. Use `haveI := i7`. Use `haveI : LocallyCompactSpace (NI V C) := (GlobalTheory.CuspDecay.Model.isClosed_NI V hC).locallyCompactSpace`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result.
 
-Use `haveI : SecondCountableTopology (NI V C) := TopologicalSpace.Subtype.secondCountableTopology _`. Use `haveI := hμ`. Use `set K := congLev D.sp.cm V.gram Λ 𝔪 with hK`. Establish `hm : Measurable (coef θ M K v fun τ => (a τ : M.H τ))` using `GlobalTheory.T.measurable_level_indicator_coefficient_test_function D θ hθ V S M Λ 𝔪 hΛ h𝔪 v _`. Use `set f : GA D V → ℂ := fun y => coef θ M K v (fun τ => (a τ : M.H τ)) (c * y * g) with hf`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hfm : ∀ γ : GA D V, Measurable fun h : NI V C => f (γ * (NI V C).subtype h)` using `fun γ => hm.comp ((continuous_const.mul (continuous_const.mul continuous_subtype_val)).mul continuous_const).measurable`. Take `⟨-, Kc, hKc, hcov⟩` from `GlobalTheory.Mem.UnipCocompact.radicals_cocompact D V r C ⟨hC.2.1, hC.2.2⟩`. Establish `hcov' : ∀ h : NI V C, ∃ δ ∈ (GQ V).comap (NI V C).subtype, δ * h ∈ Kc` using `fun h => by`. Take `⟨γ, hγ, k, hk, rfl⟩` from `hcov h`. Conclude with `⟨γ⁻¹, Subgroup.inv_mem _ hγ, by simpa using hk⟩`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨B, hB⟩` from `GlobalTheory.T.poincareSeries_partialSums_bounded_compact D θ hθ V S M Λ 𝔪 hΛ v hv hT c a ((fun h : NI V C => (h : GA D V) * g) '' Kc) (hKc.image (continuous_subtype_val.mul continuous_const))`. Establish `hpt : ∀ h ∈ Kc, ∑' γ : GQ V, ‖f (γ * (NI V C).subtype h) * 1‖ₑ ≤ ENNReal.ofReal B`. Introduce `h hh`. Rewrite using `[ENNReal.tsum_eq_iSup_sum]`. Use `iSup_le fun s => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : ∀ γ : GQ V, f (↑γ * (NI V C).subtype h) * 1 = coef θ M K v (fun τ => (a τ : M.H τ)) (c * (γ : GA D V) * ((h : GA D V) * g))` using `fun γ => by`. Simplify using `only [hf, mul_one, Subgroup.coe_subtype, mul_assoc]`. Simplify using `only [e, ← ofReal_norm_eq_enorm]`. Rewrite using `[← ENNReal.ofReal_sum_of_nonneg (fun _ _ => norm_nonneg _)]`. Conclude with `ENNReal.ofReal_le_ofReal (hB _ ⟨h, hh, rfl⟩ s)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `hfin : (∑' q : GQ V ⧸ (NI V C).subtype.range.subgroupOf (GQ V), ∫⁻ h, ‖f ((q.out : GQ V) * (NI V C).subtype h) * 1‖ₑ ∂μ) ≠ ⊤`. Use `ne_top_of_le_ne_top ?_ (GlobalTheory.T.lintegral_unfolding_le_of_translate_cover (GA D V) (NI V C) μ (NI V C).subtype Subtype.val_injective (GQ V) Kc hcov' (fun y => ‖f y * 1‖ₑ) (fun γ => ((hfm γ).mul_const 1).enorm))` and prove the remaining obligations. Use `ne_top_of_le_ne_top (ENNReal.mul_ne_top (ENNReal.ofReal_ne_top (r := B)) (hKc.measure_lt_top (μ := μ)).ne) ?_` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `hunf` using `GlobalTheory.T.integrableOn_and_hasSum_tsum_subgroup (GA D V) (NI V C) μ (NI V C).subtype Subtype.val_injective (GQ V) 𝓕 h𝓕 f (fun _ => 1) hfm measurable_const (fun _ _ _ => rfl) hfin`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Establish `hzero : ∀ q : GQ V ⧸ (NI V C).subtype.range.subgroupOf (GQ V), ∫ h, f ((q.out : GQ V) * (NI V C).subtype h) * 1 ∂μ = 0`. Introduce `q`. Take `⟨τ⟩` from `hT`. Take `⟨P, Q, hPc, hQc, hcomm, hgen, htriv, hvan⟩` from `fibre_integral_eq_zero D θ hθ V S M K v (fun τ => (a τ : M.H τ)) (fun τ => (hv τ).2 _ (hv τ).1) (fun τ => (hv τ).2 _ (a τ).2) τ r C hC`. Use `GlobalTheory.T.integral_haar_eq_zero_of_fibre_integrals_eq_zero_alt (NI V C) μ hμ P Q hPc hQc hcomm hgen htriv (fun n => coef θ M K v (fun τ => (a τ : M.H τ)) ((c * (q.out : GQ V)) * (n : GA D V) * g)) (fun ν hν q' hq' => hvan ν hν q' hq' _ g)` as an intermediate fact.
-
-Simplify `this` using `[hf, mul_assoc]`. Establish `hsum0 : HasSum (fun q : GQ V ⧸ (NI V C).subtype.range.subgroupOf (GQ V) => ∫ h, f ((q.out : GQ V) * (NI V C).subtype h) * 1 ∂μ) 0`. Simplify `(hasSum_zero : HasSum (fun _ : GQ V ⧸ (NI V C).subtype.range.subgroupOf (GQ V) => (0:ℂ)) 0)` using `only [hzero]`. Establish `h0` using `hunf.2.unique hsum0`. Rewrite using `[← h0]`.
-
-Use `integral_congr_ae (.of_forall fun n => ?_)` and prove the remaining obligations. Simplify using `only [poin, hf, mul_one, Subgroup.coe_subtype, mul_assoc]`.
+A detailed English derivation is pending.
 -/
 theorem poin_isCuspFun : ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC V Λ → 𝔪 ≠ ⊥ → ∀ (v : ∀ τ, M.H τ), KDecay M v → ∀ c : GA D V, Nonempty D.what₂.Tau → ∀ a : GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.KVec M, IsCuspFun V (poin θ M (congLev D.sp.cm V.gram Λ 𝔪) v c fun τ => a τ) := by
   intro D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c hT a
@@ -94,21 +90,19 @@ open GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension
 open Classical in
 
 /- English proof (translation)
-Introduce `hHC hCW hRD D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c hτ`. Take `⟨haut, ⟨T₀, hT₀⟩, hKeq⟩` from `GlobalTheory.T.coefficientPoincareSeries_isAutomorphic D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c`. Establish `hder` using `GlobalTheory.T.poincareSeries_smooth_moderateGrowth_deriv hHC D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c`. Establish `hcusp` using `poin_isCuspFun D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c hτ`. Take `⟨vol⟩` from `(GlobalTheory.Unf.VolExist.measures_exist D).1 V`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hGK : IsGKMap θ M (Lev.levA V (congLev D.sp.cm V.gram Λ 𝔪) : Set _) 1 vol.μ vol.𝓕 T₀`. Use `⟨fun u => ?_, fun u => ?_, fun u => ?_, fun u => ?_, fun u => ?_, fun u k hk g => ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hT₀]`. Conclude with `(haut u).1`. Rewrite using `[hT₀]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(hder u).1`. Rewrite using `[hT₀]`. Conclude with `hcusp u`. Rewrite using `[hT₀]`. Establish `hr` using `GlobalTheory.Grow.rapidDec_of_unifModGrowth hRD hθ (haut u).1 (hder u).1 (hder u).2.1 (hcusp u)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `GlobalTheory.CuspDecay.memLp_of_bounded hr.continuous hr.bounded _ _ vol.haar vol.fund 2`. Rewrite using `[hT₀]`. Conclude with `(hder u).2.1`. Rewrite using `[hT₀, (haut u).2.2.2 k hk g]`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Introduce `τ k hk u w hw`. Rewrite using `[hT₀, hT₀]`. Establish `e : (fun τ' => ((Function.update u τ w τ' : kFin M τ') : M.H τ')) = Function.update (fun τ' => (u τ' : M.H τ')) τ (M.rep τ k (u τ))`. Use function extensionality and compare the values at `τ'`. Distinguish the cases in `h : τ' = τ`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Substitute `h` using the available equality. Simplify using `[hw]`. Simplify using `[Function.update_of_ne h]`. Rewrite using `[e]`. Conclude with `hKeq _ τ k (maxCpt_subset M τ hk)`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `τ X hX u w hw`. Rewrite using `[hT₀, hT₀]`. Conclude with `(hder u).2.2 τ X hX w hw`. Take `⟨T, ⟨hTm, hTe⟩, -⟩` from `(GlobalTheory.GKExtensionToSmoothVectors.gkExtension hHC hCW D).1 θ hθ V S M _ 1 vol.μ vol.𝓕 vol.haar vol.fund T₀ hGK`. Use `⟨PiTensorProduct.lift T, ?_, fun a ha => ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[mem_multT, LinearEquiv.symm_apply_apply]`. Conclude with `Submodule.subset_span hTm`. Rewrite using `[PiTensorProduct.lift.tprod, hTe a (fun τ => ⟨a τ, ha τ⟩) (fun τ => rfl), hT₀]`.
+A detailed English derivation is pending.
 -/
 theorem exists_multT_eq_poin : GlobalTheory.Published.HarishChandraModules → GlobalTheory.Published.CasselmanWallach → GlobalTheory.Published.CuspRapidDecay → ∀ (D : D7) (θ : InfFam D), IsInfFam θ → ∀ (V : HSp D) (S : D.what₂.Tau → SPar) (M : DSModel V S) (Λ : Lat V) (𝔪 : Ideal (𝓞 D.host.E)), IsSelfDualC V Λ → 𝔪 ≠ ⊥ → ∀ (v : ∀ τ, M.H τ), KDecay M v → ∀ c : GA D V, Nonempty D.what₂.Tau → ∃ y ∈ MultT θ M (Lev.levA V (congLev D.sp.cm V.gram Λ 𝔪) : Set _) 1, ∀ a : M.Vec, (∀ τ, (a τ : M.H τ) ∈ GlobalTheory.IndefiniteRowSideFullHecke.KTypeExtension.kFin M τ) → y (PiTensorProduct.tprod ℂ a) = poin θ M (congLev D.sp.cm V.gram Λ 𝔪) v c fun τ => a τ := by
   intro hHC hCW hRD D θ hθ V S M Λ 𝔪 hΛ h𝔪 v hv c hτ

@@ -11,7 +11,7 @@ set_option autoImplicit false
 namespace GlobalTheory.TangentComb
 
 /- English proof (translation)
-Introduce `α`. Take `⟨b, -, hb⟩` from `hf α`. Take `⟨b', -, hb'⟩` from `hg α`. Use `⟨b + a * b', trivial, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, hb, hb', map_add, map_mul, smul_eq_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem in_top_add_smul {O Q σ : Type} [CommRing O] [CommRing Q] [Algebra O Q]
     {f g : MvPowerSeries σ Q} (hf : In (⊤ : Ideal O) f) (hg : In (⊤ : Ideal O) g) (a : O) :
@@ -23,11 +23,11 @@ theorem in_top_add_smul {O Q σ : Type} [CommRing O] [CommRing Q] [Algebra O Q]
   rw [map_add, map_smul, hb, hb', map_add, map_mul, smul_eq_mul]
 
 /- English proof (translation)
-Establish `hμ' : ∀ i, constantCoeff (up Q μ i) = 0` using `fun i => by`. Rewrite using `[up, ← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hμ, map_zero]`. Use `⟨?_, fun i => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[← coeff_zero_eq_constantCoeff_apply, map_add, map_smul, coeff_zero_eq_constantCoeff_apply, coeff_zero_eq_constantCoeff_apply, hf.1, hg.1, smul_zero, add_zero]`. Take `⟨b, -, hb⟩` from `hf.2.1 i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨b', -, hb'⟩` from `hg.2.1 i`. Use `⟨b + a * b', trivial, ?_⟩` and prove the remaining obligations. Simplify using `only [lin] at hb hb' ⊢`. Rewrite using `[map_add, map_smul, hb, hb', map_add, map_mul, smul_eq_mul]`. Rewrite using `[formalCoboundary_add hμ', formalCoboundary_smul hμ']`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `in_top_add_smul hf.2.2 hg.2.2 a`.
+A detailed English derivation is pending.
 -/
 theorem ql_add_smul {O Q : Type} [CommRing O] [CommRing Q] [Algebra O Q] {d : ℕ}
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} (hμ : ∀ i, constantCoeff (μ i) = 0)
@@ -48,9 +48,9 @@ theorem ql_add_smul {O Q : Type} [CommRing O] [CommRing Q] [Algebra O Q] {d : �
     exact in_top_add_smul hf.2.2 hg.2.2 a
 
 /- English proof (translation)
-Establish `hμ' : ∀ i, constantCoeff (up Q μ i) = 0` using `fun i => by`. Rewrite using `[up, ← coeff_zero_eq_constantCoeff_apply, coeff_map, coeff_zero_eq_constantCoeff_apply, hμ, map_zero]`. Establish `h0 : cob1 (up Q μ) (0 : MvPowerSeries (Fin d) Q) = 0`. Use `formalCoboundary_smul hμ' (0 : Q) (0 : MvPowerSeries (Fin d) Q)` as an intermediate fact. Rewrite `this` using `[zero_smul, zero_smul]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `⟨map_zero _, fun i => ⟨0, trivial, ?_⟩, ?_⟩` and prove the remaining obligations. Simplify using `[lin]`. Rewrite using `[h0]`. Conclude with `In.top_iff.2 ⟨0, map_zero _⟩`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ql_zero {O Q : Type} [CommRing O] [CommRing Q] [Algebra O Q] {d : ℕ}
     {μ : Fin d → MvPowerSeries (Fin d ⊕ Fin d) O} (hμ : ∀ i, constantCoeff (μ i) = 0) :
@@ -70,15 +70,15 @@ end GlobalTheory.TangentComb
 
 open GlobalTheory.TangentComb in
 /- English proof (translation)
-Introduce `p _ C _ _ _ v O _ _ _ _ _ hv G d c ι _ e he L hL g hg a hint`. Establish `hF : IsFrame p C (RingHom.id O)` using `GlobalTheory.T.isTorsionFreePDThickeningFrame_valuation_integers p C v O hv`. Establish `lin` using `GlobalTheory.T.pDivGroup_dual_tangent_linear_kills_integral p C v O hv G d c C hF`. Establish `hμ` using `c.isLaw.const`. Establish `key : ∀ s : Finset ι, QL c.μ ⊤ (∑ m ∈ s, algebraMap O C (a m) • e m) ∧ c.IsLie (∑ m ∈ s, algebraMap O C (a m) • e m) (∑ m ∈ s, a m • L m)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `s`. Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty`. Simplify using `only [Finset.sum_empty]`. Conclude with `⟨ql_zero hμ, c.isLie_zero hF.inj⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Consider the case `insert j s hj ih`. Rewrite using `[Finset.sum_insert hj, Finset.sum_insert hj, add_comm, add_comm (a j • L j)]`. Conclude with `⟨ql_add_smul hμ ih.1 (he j) (a j), (lin _ _ _ _ (a j) ih.2 (hL j)).1 ih.1 (he j)⟩`. Take `⟨hQ, hI⟩` from `key Finset.univ`. Take `⟨l, hl, -⟩` from `GlobalTheory.T.pDivGroup_dual_tangent_of_quasiLogarithm p C v O hv G d c C hF g hg`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `(lin g (comb a e) l (∑ m, a m • L m) (-1) hl hI).1 hg hQ`. Establish `hser : g + algebraMap O C (-1) • comb a e = g - comb a e`. Rewrite using `[map_neg, map_one, neg_one_smul, sub_eq_add_neg]`. Rewrite `h1` using `[hser]`. Take `⟨s, hs⟩` from `In.top_iff.1 hint`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h0` using `(lin _ (comb a e) _ (∑ m, a m • L m) 0 h1 hI).2.1 ⟨s, hs.symm⟩`. Rewrite `h0` using `[neg_one_smul, ← sub_eq_add_neg, sub_eq_zero]`. Conclude with `h0 ▸ hl`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TangentComb.main : ∀ (p : ℕ) [Fact p.Prime] (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type) [CommRing O] [Algebra O C] [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O] [IsDomain O], v.Integers O → ∀ (G : PDivGroup p O) (d : ℕ) (c : QLog.Chart G d) {ι : Type} [Fintype ι] (e : ι → MvPowerSeries (Fin d) C), (∀ m, QL c.μ ⊤ (e m)) → ∀ (L : ι → G.dual.Lie), (∀ m, c.IsLie (e m) (L m)) → ∀ (g : MvPowerSeries (Fin d) C), QL c.μ ⊤ g → ∀ (a : ι → O), In (⊤ : Ideal O) (g - comb a e) → c.IsLie g (∑ m, a m • L m) := by
   intro p _ C _ _ _ v O _ _ _ _ _ hv G d c ι _ e he L hL g hg a hint

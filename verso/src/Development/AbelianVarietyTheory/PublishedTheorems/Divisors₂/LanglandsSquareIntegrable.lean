@@ -35,7 +35,7 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {J : Matrix (Fin n) (Fin n) E} {r : ℕ} {X Y : Matrix (Fin n) (Fin r) E} {K : Subgroup (GAd σ J)} {φ : GAd σ J → ℂ}
 
 /- English proof (translation)
-Simplify `H F E σ h n J hJ r X Y hW K hK ∅ φ (isAutOn_empty.2 hφ)` using `only [isSqIntOn_empty, negExp_empty, Finset.empty_subset, forall_const]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isSqInt_iff (H : GlobalTheory.Published.LanglandsSquareIntegrable) (h : IsCMExt F E σ) (hJ : IsHermND σ J)
     (hW : IsWittFrame σ J X Y) (hK : IsMaxCpt σ J K) (hφ : IsAut σ J K φ) :
@@ -44,7 +44,7 @@ theorem isSqInt_iff (H : GlobalTheory.Published.LanglandsSquareIntegrable) (h : 
     H F E σ h n J hJ r X Y hW K hK ∅ φ (isAutOn_empty.2 hφ)
 
 /- English proof (translation)
-Introduce `μ 𝓕 _ _ h1 g` and use `by simp [fun u : unip σ J X S => hφ.leftN u u.2 g, Measure.real, h1]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem IsAutOn.isConstAlong_self {S : Finset (Fin r)} (hφ : IsAutOn σ J X Y S K φ) : IsConstAlong σ J X S φ φ :=
   fun μ 𝓕 _ _ h1 g => by simp [fun u : unip σ J X S => hφ.leftN u u.2 g, Measure.real, h1]
@@ -52,9 +52,9 @@ theorem IsAutOn.isConstAlong_self {S : Finset (Fin r)} (hφ : IsAutOn σ J X Y S
 omit [NumberField E] in
 
 /- English proof (translation)
-Unfold `IsConstAlong at hc`. Rewrite `hc` using `[unip_empty]`. Use `haveI : Finite (⊥ : Subgroup (GAd σ J)) := inferInstance`. Use `haveI : Subsingleton ((ratPts σ J).subgroupOf ⊥) := inferInstance`. Establish `e : (Measure.haarMeasure ⊤ : Measure (⊥ : Subgroup (GAd σ J))) Set.univ = 1` using `Measure.haarMeasure_self`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `g`. Rewrite using `[hc (Measure.haarMeasure ⊤) Set.univ inferInstance ⟨nullMeasurableSet_univ, .of_forall fun _ => ⟨1, trivial⟩, Subsingleton.pairwise⟩ e g]`. Simplify using `[fun u : (⊥ : Subgroup (GAd σ J)) => Subgroup.mem_bot.1 u.2, Measure.real, e]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isConstAlong_empty {c : GAd σ J → ℂ} (hc : IsConstAlong σ J X ∅ φ c) : c = φ := by
   unfold IsConstAlong at hc
@@ -68,7 +68,7 @@ theorem isConstAlong_empty {c : GAd σ J → ℂ} (hc : IsConstAlong σ J X ∅ 
   simp [fun u : (⊥ : Subgroup (GAd σ J)) => Subgroup.mem_bot.1 u.2, Measure.real, e]
 
 /- English proof (translation)
-Take `⟨_, ⟨-, c, h1, h2⟩, -⟩` from `(H F E σ h n J hJ r X Y hW K hK ∅ φ hφ.1).1 ∅ le_rfl`. Take `rfl` from `isConstAlong_empty h1`. Conclude with `⟨hφ, c, h1, fun ψ hψ μ 𝓕 a b g g' => ⟨(h2 ψ hψ μ 𝓕 a b g g').1, (h2 ψ hψ μ 𝓕 a b g g').1, rfl⟩⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isCuspComp_self (H : GlobalTheory.Published.LanglandsLemmaUnitary) (h : IsCMExt F E σ) (hJ : IsHermND σ J)
     (hW : IsWittFrame σ J X Y) (hK : IsMaxCpt σ J K) (hφ : IsCuspOn σ J X Y ∅ K φ) : IsCuspComp σ J X Y ∅ K φ φ := by
@@ -77,7 +77,7 @@ theorem isCuspComp_self (H : GlobalTheory.Published.LanglandsLemmaUnitary) (h : 
   exact ⟨hφ, c, h1, fun ψ hψ μ 𝓕 a b g g' => ⟨(h2 ψ hψ μ 𝓕 a b g g').1, (h2 ψ hψ μ 𝓕 a b g g').1, rfl⟩⟩
 
 /- English proof (translation)
-The claim follows from `(isSqInt_iff H h hJ hW hK hφ).2 fun _ _ _ k => k.elim0`.
+A detailed English derivation is pending.
 -/
 example (H : GlobalTheory.Published.LanglandsSquareIntegrable) (h : IsCMExt F E σ) (hJ : IsHermND σ J) {X Y : Matrix (Fin n) (Fin 0) E}
     (hW : IsWittFrame σ J X Y) (hK : IsMaxCpt σ J K) (hφ : IsAut σ J K φ) : IsSqInt σ J φ :=

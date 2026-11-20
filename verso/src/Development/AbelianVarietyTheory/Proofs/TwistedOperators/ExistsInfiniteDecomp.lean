@@ -15,9 +15,9 @@ namespace GlobalTheory.TraceClasses
 def IsValue {R : Type} [CommRing R] (d x : R) : Prop := ∃ a b, x = a ^ 2 - d * b ^ 2
 
 /- English proof (translation)
-Set `b` to `fun i => Module.finBasis A (B i)`. Rewrite using `[Algebra.norm_eq_matrix_det (Pi.basis b), Finset.prod_congr rfl fun i _ => Algebra.norm_eq_matrix_det (b i) (x i), ← ReciprocityTheory.ChartRestriction.G.T0.HDiscLat.det_blockDiagonal']`. Use `congr 1`. Use extensionality with `⟨i, p⟩ ⟨j, q⟩`. Rewrite using `[Algebra.leftMulMatrix_eq_repr_mul, Pi.basis_repr, Pi.basis_apply, Pi.mul_apply]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `h : i = j`. Substitute `h` using the available equality. Simplify using `[Algebra.leftMulMatrix_eq_repr_mul]`. Simplify using `[Matrix.blockDiagonal'_apply_ne _ _ _ h, Pi.single_eq_of_ne h]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem norm_pi {A ι : Type} [Field A] [Fintype ι] {B : ι → Type} [∀ i, CommRing (B i)]
     [∀ i, Algebra A (B i)] [∀ i, Module.Finite A (B i)] (x : ∀ i, B i) :
@@ -38,7 +38,7 @@ theorem norm_pi {A ι : Type} [Field A] [Fintype ι] {B : ι → Type} [∀ i, C
 variable (F K : Type) [Field F] [NumberField F] [Field K] [NumberField K] [Algebra F K]
 
 /- English proof (translation)
-Use `v.isMaximal` as an intermediate fact. Use `Set.Finite.of_finite_image (f := fun w => w.asIdeal) ?_ fun a _ b _ h => HeightOneSpectrum.ext h` and prove the remaining obligations. Use `(IsDedekindDomain.primesOver_finite v.asIdeal (𝓞 K)).subset ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨w, rfl, rfl⟩`. Conclude with `⟨w.isPrime, ⟨rfl⟩⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem finite_fibre (v : HeightOneSpectrum (𝓞 F)) :
     {w : HeightOneSpectrum (𝓞 K) | w.under (𝓞 F) = v}.Finite := by
@@ -49,13 +49,13 @@ theorem finite_fibre (v : HeightOneSpectrum (𝓞 F)) :
   exact ⟨w.isPrime, ⟨rfl⟩⟩
 
 /- English proof (translation)
-Use `⟨fun v w => GlobalTheory.LFun.toCompl w.2, fun v w x => by simp, fun v => ⟨?_, fun z => ?_⟩, fun v w a ha => ?_⟩` and prove the remaining obligations. Use `(injective_iff_map_eq_zero (RingHom.pi fun w : {w : HeightOneSpectrum (𝓞 K) // w.under (𝓞 F) = v} => GlobalTheory.LFun.toCompl w.2)).2 fun y hy => ?_` and prove the remaining obligations. Establish `h1` using `GlobalTheory.AutFunCompare.map_tensNU_self _ _ (GlobalTheory.AdelicU.singleFin_mul v) (GlobalTheory.AdelicU.evalV_singleFin_self v) y`. Establish `h2 : GlobalTheory.LFun.finAdEquiv F K (GlobalTheory.IndefiniteRowSideFullHecke.AdelicUnitaryGroups.tensNU _ (GlobalTheory.AdelicU.singleFin_mul v) y) = 0` using `FiniteAdeleRing.ext _ fun u => by`. Distinguish the cases in `e : u.under (𝓞 F) = v`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[GlobalTheory.LFun.finAdEquiv_apply e, h1]`. Conclude with `congrFun hy ⟨u, e⟩`. Rewrite using `[GlobalTheory.LFun.finAdEquiv_apply rfl, GlobalTheory.AutFunCompare.map_tensNU_zero _ _ _ (GlobalTheory.AdelicU.evalV_singleFin_ne e), map_zero]`. Both sides reduce to the same expression. Rewrite using `[← h1, (map_eq_zero_iff _ (GlobalTheory.LFun.finAdEquiv F K).injective).1 h2, map_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hf` using `finite_fibre F K v`. Take `⟨Y, hY⟩` from `(GlobalTheory.LFun.finAdEquiv F K).surjective ⟨fun u => if h : u.under (𝓞 F) = v then z ⟨u, h⟩ else 0, by`. Use `hf.subset fun u hu => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Conclude with `hu (by simp only [Set.mem_ofPred_eq] at h; simp [h])⟩`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨_, funext fun w => (GlobalTheory.LFun.finAdEquiv_apply w.2 Y).symm.trans ?_⟩` and prove the remaining obligations. Rewrite using `[hY]`. Conclude with `dif_pos w.2`. Simplify using `using GlobalTheory.LFun.complMap_mem w.2 ha`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_finite_decomp :
     ∃ ψ : ∀ (v : HeightOneSpectrum (𝓞 F)) (w : {w : HeightOneSpectrum (𝓞 K) // w.under (𝓞 F) = v}),
@@ -93,17 +93,15 @@ theorem exists_finite_decomp :
 open scoped NumberField.LiesOver in
 
 /- English proof (translation)
-Establish `hl : ∀ (v : InfinitePlace F) (w : {w : InfinitePlace K // w.comap (algebraMap F K) = v}), w.1.LiesOver v` using `fun v w => ⟨congrArg Subtype.val w.2⟩`. Use `haveI : ∀ w : InfinitePlace K, IsScalarTower F K w.Completion := fun w => .of_algebraMap_eq fun x => by`. Apply `InfinitePlace.Completion.ext` to reduce the goal to its premises. Rewrite using `[InfinitePlace.Completion.algebraMap_toCompletion, InfinitePlace.Completion.algebraMap_toCompletion, UniformSpace.Completion.algebraMap_def, UniformSpace.Completion.algebraMap_def]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Set `φ : ∀ (v : InfinitePlace F) (w : {w : InfinitePlace K // w.comap (algebraMap F K) = v}), v.Completion ⊗[F] K →ₐ[v.Completion] w.1.Completion` to `fun v w => Algebra.TensorProduct.lift (Algebra.ofId _ _) (IsScalarTower.toAlgHom F K _) fun _ _ => Commute.all _ _`. Establish `h1 : ∀ v w x, φ v w (1 ⊗ₜ x) = algebraMap K _ x` using `fun v w x => by simp [φ]`. Use `⟨fun v w => φ v w, h1, fun v => ?_⟩` and prove the remaining obligations. Set `f : v.Completion ⊗[F] K →ₗ[v.Completion] ∀ w : {w : InfinitePlace K // w.comap (algebraMap F K) = v}, w.1.Completion` to `LinearMap.pi fun w => (φ v w).toLinearMap`. Establish `hs : Function.Surjective f`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Use `letI : NontriviallyNormedField v.Completion := { (inferInstance : NormedField v.Completion) with non_trivial := ⟨2, by`. Rewrite using `[← (InfinitePlace.Completion.isometry_extensionEmbedding v).norm_map_of_map_zero (map_zero _), map_ofNat]`. Use the proof step `simp⟩ }`. Establish `hcl : IsClosed (SetLike.coe (LinearMap.range f))` using `Submodule.closed_of_finiteDimensional _`. Introduce `z`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc : Continuous fun (y : InfiniteAdeleRing K) (w : {w : InfinitePlace K // w.comap (algebraMap F K) = v}) => y w.1` using `continuous_pi fun w => continuous_apply w.1`. Establish `key : ∀ y : InfiniteAdeleRing K, (fun w : {w : InfinitePlace K // w.comap (algebraMap F K) = v} => y w.1) ∈ SetLike.coe (LinearMap.range f)` using `fun y => (InfiniteAdeleRing.denseRange_algebraMap K).induction_on y (hcl.preimage hc) fun x => ⟨1 ⊗ₜ x, funext fun w => h1 v w x⟩`. Use `key fun u => if h : u.comap (algebraMap F K) = v then z ⟨u, h⟩ else 0` as an intermediate fact. Rewrite using `[show (fun w : {w : InfinitePlace K // w.comap (algebraMap F K) = v} => _) = z from` and apply the resulting hypothesis. Use function extensionality and compare the values at `fun w => dif_pos w.2] at this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : Module.Finite v.Completion (∀ w : {w : InfinitePlace K // w.comap (algebraMap F K) = v}, w.1.Completion) := Module.Finite.of_surjective f hs`. Use `haveI : ∀ w : {w : InfinitePlace K // w.comap (algebraMap F K) = v}, Module.Finite v.Completion w.1.Completion := fun w => Module.Finite.of_surjective (LinearMap.proj (R := v.Completion) (φ := fun w : {w : InfinitePlace K // w.comap (algebraMap F K) = v} => w.1.Completion) w) (Fu …`. Use `⟨(LinearMap.injective_iff_surjective_of_finrank_eq_finrank (f := f) ?_).2 hs, hs⟩` and prove the remaining obligations. Rewrite using `[Module.finrank_baseChange, Module.finrank_pi_fintype, ← InfinitePlace.sum_inertiaDeg_eq_finrank F K v]`. Use `(Finset.sum_subtype _ (fun w => ?_) _).trans (Finset.sum_congr rfl fun w _ => InfinitePlace.inertiaDeg_eq_finrank v w.1)` and prove the remaining obligations.
-
-Rewrite using `[Set.mem_toFinset]`. Conclude with `⟨fun h => haveI : w.LiesOver v := h; InfinitePlace.LiesOver.comap_eq w v, fun h => hl v ⟨w, h⟩⟩`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_infinite_decomp :
     ∃ ψ : ∀ (v : InfinitePlace F) (w : {w : InfinitePlace K // w.comap (algebraMap F K) = v}),
@@ -168,9 +166,9 @@ variable {F K}
 omit [NumberField F] [NumberField K] in
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, b, rfl⟩ i`. Conclude with `⟨ψ i a, ψ i b, by simp [h1]⟩`. Introduce `h choose a b h using h`. Take `⟨a, rfl⟩` from `hb.2 a`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, rfl⟩` from `hb.2 b`. Conclude with `⟨a, b, hb.1 (funext fun i => by simp [h1, h])⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem form_iff {A ι : Type} [CommRing A] [Algebra F A] {B : ι → Type} [∀ i, CommRing (B i)]
     [∀ i, Algebra K (B i)] (ψ : ∀ i, A ⊗[F] K →+* B i) (h1 : ∀ i x, ψ i (1 ⊗ₜ x) = algebraMap K _ x)
@@ -186,13 +184,11 @@ theorem form_iff {A ι : Type} [CommRing A] [Algebra F A] {B : ι → Type} [∀
     exact ⟨a, b, hb.1 (funext fun i => by simp [h1, h])⟩
 
 /- English proof (translation)
-Use `letI : ∀ i, Algebra A (B i) := fun i => ((ψ i).comp (algebraMap A _)).toAlgebra`. Use `letI : ∀ i, Algebra F (B i) := fun i => ((algebraMap K (B i)).comp (algebraMap F K)).toAlgebra`. Use `haveI : ∀ i, IsScalarTower F K (B i) := fun i => .of_algebraMap_eq fun _ => rfl`. Use `haveI : ∀ i, IsScalarTower F A (B i) := fun i => .of_algebraMap_eq fun t => by`. Express the relevant statement in the definitionally equal form `algebraMap K (B i) (algebraMap F K t) = ψ i (algebraMap A _ (algebraMap F A t))`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Rewrite using `[← h1, ← IsScalarTower.algebraMap_apply, Algebra.TensorProduct.algebraMap_apply']`. Set `f : A ⊗[F] K →ₐ[A] ∀ i, B i` to `{ RingHom.pi ψ with commutes' := fun _ => rfl }`. Set `e : A ⊗[F] K ≃ₐ[A] ∀ i, B i` to `AlgEquiv.ofBijective f hb`. Use `haveI : Module.Finite F K := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : Module.Finite A (∀ i, B i) := Module.Finite.equiv e.toLinearEquiv`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Use `haveI : ∀ i, Module.Finite A (B i) := fun i => Module.Finite.of_surjective (LinearMap.proj (R := A) (φ := B) i) (Function.surjective_eval i)`. Set `η : Aˣ →* ℤˣ` to `MonoidHom.mk' (eta F E A) hm`. Establish `h2 : Units.map (Algebra.norm A : A ⊗[F] K →* A) x = ∏ i, Units.map (Algebra.norm A : B i →* A) (Units.map (ψ i : A ⊗[F] K →* B i) x)`. Use `ext`. Rewrite using `[Units.coe_prod, Units.coe_map, ← Algebra.norm_eq_of_algEquiv e, norm_pi]`.
-
-Both sides reduce to the same expression. Rewrite using `[h2]`. Conclude with `(map_prod η _ _).trans (Finset.prod_congr rfl fun i _ => (hc (B i) _).symm)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eta_norm_eq_prod {E L A ι : Type} [Field E] [Field L] [Algebra F E] [Algebra K L] [Field A]
     [Algebra F A] [Fintype ι] {B : ι → Type} [∀ i, Field (B i)]
@@ -229,15 +225,15 @@ section Global
 variable {F K}
 
 /- English proof (translation)
-Take `⟨ψ, h1, hb, hi⟩` from `exists_finite_decomp F K`. Use `(((GlobalTheory.QNorm.finite_valuation_ne_one K (Units.mk0 2 two_ne_zero)).union (GlobalTheory.QNorm.finite_valuation_ne_one K (Units.mk0 d hd))).image fun w => w.under (𝓞 F)).subset ?_` and prove the remaining obligations. Introduce and unpack `v ⟨u, hu, hu', hn⟩`. Assume the negation of the conclusion as `hv`. Use `hn ((form_iff (ψ v) (h1 v) (hb v) d u).2 fun w => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hw : ¬ (w.1.valuation K 2 ≠ 1 ∨ w.1.valuation K d ≠ 1)` using `fun h => hv ⟨w.1, h, w.2⟩`. Rewrite `hw` using `[not_or, not_not, not_not]`. Establish `key : ∀ x : K, Valued.v (algebraMap K (w.1.adicCompletion K) x) = w.1.valuation K x` using `fun x => HeightOneSpectrum.valuedAdicCompletion_eq_valuation' w.1 x`. Establish `hint : ∀ z, ((algebraMap (v.adicCompletion F) (v.adicCompletion F ⊗[F] K)).comp (v.adicCompletionIntegers F).subtype).IsIntegralElem z → Valued.v (ψ v w z) ≤ 1`. Introduce and unpack `z ⟨p, hp, hz⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Set `g : v.adicCompletionIntegers F →+* w.1.adicCompletionIntegers K` to `(((ψ v w).comp (algebraMap _ _)).comp (v.adicCompletionIntegers F).subtype).codRestrict _ fun a => hi v w a a.2`. Establish `: IsIntegral (w.1.adicCompletionIntegers K) (ψ v w z)`. Use `⟨p.map g, hp.map g, ?_⟩` and prove the remaining obligations. Rewrite using `[Polynomial.eval₂_map, ← map_zero (ψ v w), ← hz, Polynomial.hom_eval₂]`. Both sides reduce to the same expression.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Take `⟨y, hy⟩` from `(IsIntegrallyClosed.isIntegral_iff (K := w.1.adicCompletion K)).1 this`. Rewrite using `[← hy]`. Conclude with `y.2`. Establish `h3 : Valued.v (ψ v w u) * Valued.v (ψ v w (u⁻¹ : (v.adicCompletion F ⊗[F] K)ˣ)) = 1`. Rewrite using `[← map_mul, ← map_mul, u.mul_inv, map_one, map_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : Valued.v (ψ v w u) = 1` using `le_antisymm (hint _ hu) (h3 ▸ mul_le_of_le_one_right' (hint _ hu'))`. Take `⟨x, -, y, -, h⟩` from `GlobalTheory.QNorm.exists_integral_sq_sub_mul_sq_of_unit K w.1 (algebraMap K _ d) (ψ v w u) (by rw [← map_ofNat (algebraMap K (w.1.adicCompletion K)) 2]; exact (key _).trans hw.1) (by rw [key, hw.2]) h4`. Conclude with `⟨x, y, h⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem finite_not_form {d : K} (hd : d ≠ 0) :
     {v : HeightOneSpectrum (𝓞 F) | ∃ u : (v.adicCompletion F ⊗[F] K)ˣ,
@@ -280,15 +276,15 @@ theorem finite_not_form {d : K} (hd : d ≠ 0) :
   exact ⟨x, y, h⟩
 
 /- English proof (translation)
-Use `haveI : Module.Finite F K := Module.Finite.of_restrictScalars_finite ℚ _ _`. Establish `ht : IsIntegral F t` using `Algebra.IsIntegral.isIntegral t`. Establish `hfin : ∀ a : F, {v : HeightOneSpectrum (𝓞 F) | ¬ v.valuation F a ≤ 1}.Finite` using `fun a => by`. Distinguish the cases in `ha : a = 0`. Simplify using `[ha]`.
+Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(GlobalTheory.QNorm.finite_valuation_ne_one F (Units.mk0 a ha)).subset fun v hv h => hv (le_of_eq h)`. Use `((minpoly F t).support.finite_toSet.biUnion fun n _ => hfin ((minpoly F t).coeff n)).subset ?_` and prove the remaining obligations. Introduce `v hv`. Assume the negation of the conclusion as `hn`. Simplify using `only [Set.mem_iUnion, Set.mem_ofPred_eq, not_exists, not_not] at hn`.
+Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hl : (minpoly F t).map (algebraMap F (v.adicCompletion F)) ∈ Polynomial.lifts (v.adicCompletionIntegers F).subtype`. Rewrite using `[Polynomial.lifts_iff_coeff_lifts]`. Introduce `n`. Rewrite using `[Polynomial.coeff_map]`. Use `⟨⟨_, ?_⟩, rfl⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `Valued.v (algebraMap F (v.adicCompletion F) _) ≤ 1`. Use `(HeightOneSpectrum.valuedAdicCompletion_eq_valuation' v _).trans_le ?_` and prove the remaining obligations. Distinguish the cases in `h : n ∈ (minpoly F t).support`. Conclude with `hn n h`. Simplify using `[Polynomial.notMem_support_iff.1 h]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨q, hq, -, hm⟩` from `Polynomial.lifts_and_natDegree_eq_and_monic hl ((minpoly.monic ht).map _)`. Use `hv ⟨q, hm, ?_⟩` and prove the remaining obligations. Rewrite using `[← Polynomial.eval₂_map, hq, ← Polynomial.aeval_def, Polynomial.aeval_map_algebraMap]`. Conclude with `(Polynomial.aeval_algHom_apply (Algebra.TensorProduct.includeRight : K →ₐ[F] v.adicCompletion F ⊗[F] K) t _).trans (by rw [minpoly.aeval, map_zero])`.
+A detailed English derivation is pending.
 -/
 theorem finite_not_integral (t : K) :
     {v : HeightOneSpectrum (𝓞 F) | ¬ ((algebraMap (v.adicCompletion F) (v.adicCompletion F ⊗[F] K)).comp
@@ -326,9 +322,9 @@ variable {L : Type} [Field L] [NumberField L] [Algebra K L] [Algebra.IsQuadratic
 include h0 h1
 
 /- English proof (translation)
-Take `⟨ψ, g1, gb, -⟩` from `exists_finite_decomp F K`. Take `⟨χ, k1, kb⟩` from `exists_infinite_decomp F K`. Use `(normTheorem K L t).2 ⟨fun w => (mem_normGroup_iff_form e h0 h1).2 (by` as an intermediate fact. Use `(form_iff (ψ _) (g1 _) (gb _) d _).1 (hf _) ⟨w, rfl⟩` as an intermediate fact. Rewrite using `[g1] at this), fun w => (mem_normGroup_iff_form e h0 h1).2 (by` and apply the resulting hypothesis.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `(form_iff (χ _) (k1 _) (kb _) d _).1 (hi _) ⟨w, rfl⟩` as an intermediate fact. Rewrite using `[k1] at this)⟩` and apply the resulting hypothesis. Conclude with `(mem_normGroup_iff_form e h0 h1).1 (toUnits_mem_normGroup K this)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem form_of_local (t : Kˣ)
     (hf : ∀ v : HeightOneSpectrum (𝓞 F),
@@ -345,25 +341,23 @@ theorem form_of_local (t : Kˣ)
   exact (mem_normGroup_iff_form e h0 h1).1 (toUnits_mem_normGroup K this)
 
 /- English proof (translation)
-Take `⟨ψ, g1, gb, -⟩` from `exists_finite_decomp F K`. Take `⟨χ, k1, kb⟩` from `exists_infinite_decomp F K`. Take `⟨bf, bi⟩` from `baseChange F E K L hadj`. Take `⟨mf, mi⟩` from `localCharacters F E`. Set `X : FinFam K` to `fun w => Units.map (ψ _ ⟨w, rfl⟩ : _ →* _) (x (w.under (𝓞 F)))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `Y : InfFam K` to `fun w => Units.map (χ _ ⟨w, rfl⟩ : _ →* _) (y (w.comap (algebraMap F K)))`. Establish `hT : ((fun w : HeightOneSpectrum (𝓞 K) => w.under (𝓞 F)) ⁻¹' hx.toFinset).Finite` using `hx.toFinset.finite_toSet.preimage' fun v _ => finite_fibre F K v`. Establish `hX : ∀ w, w.under (𝓞 F) ∉ hx.toFinset → X w ∈ normGroup K L _` using `fun w hw => (mem_normGroup_iff_form e h0 h1).2 ((form_iff (ψ _) (g1 _) (gb _) d _).1 (by simpa using hw) ⟨w, rfl⟩)`. Establish `hA : AlmostNorm K L X` using `hT.subset fun w hw => by`. Assume the negation of the conclusion as `h`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hw (hX w h)`. Establish `hfib : ∀ v, eta F E _ (finDiag F δ v) = ∏ w ∈ (finite_fibre F K v).toFinset, eta K L _ (X w)` using `fun v => by haveI : Fintype {w : HeightOneSpectrum (𝓞 K) // w.under (𝓞 F) = v} := (finite_fibre F K v).fintype`. Rewrite using `[Finset.prod_subtype (p := fun w => w.under (𝓞 F) = v) _ (by simp)]`. Use `(eta_eq_of_div_mem (hf v)).symm.trans ((eta_norm_eq_prod (ψ v) (g1 v) (gb v) (bf v) (mf v) (x v)).trans ?_)` and prove the remaining obligations. Use `Finset.prod_congr rfl ?_` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨w, rfl⟩ _`. Both sides reduce to the same expression. Establish `p1 : ∏ᶠ w, eta K L _ (X w) = ∏ᶠ v, eta F E _ (finDiag F δ v)`. Rewrite using `[finprod_eq_prod_of_mulSupport_subset (s := hT.toFinset) _ (fun w hw => by`. Assume the negation of the conclusion as `h`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hw (eta_eq_one_iff.2 (hX w (by simpa using h)))),`. Use `finprod_eq_prod_of_mulSupport_subset (s := hx.toFinset) _ (fun v hv => by`. Assume the negation of the conclusion as `h`. Use `hv ((hfib v).trans (Finset.prod_eq_one fun w hw => eta_eq_one_iff.2 (hX w ?_)))` and prove the remaining obligations. Rewrite using `[(Set.Finite.mem_toFinset _).1 hw]),` and apply the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use the proof step `← Finset.prod_fiberwise_of_maps_to (t := hx.toFinset) (g := fun w => w.under (𝓞 F)) (fun w hw => hT.mem_toFinset.1 hw)]`. Use `Finset.prod_congr rfl fun v hv => ?_` and prove the remaining obligations. Rewrite using `[hfib]`. Use `Finset.prod_congr (Finset.ext fun w => ?_) fun _ _ => rfl` and prove the remaining obligations. Simplify using `only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_preimage, Set.mem_ofPred_eq]`.
+Simplify using the standard rewrite rules. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨fun h => h.2, fun h => ⟨h ▸ hv, h⟩⟩`. Establish `p2 : ∏ w, eta K L _ (Y w) = ∏ v, eta F E _ (infDiag F δ v)`. Rewrite using `[← Finset.prod_fiberwise (g := fun w : InfinitePlace K => w.comap (algebraMap F K))]`. Use `Finset.prod_congr rfl fun v _ => ?_` and prove the remaining obligations. Rewrite using `[Finset.prod_subtype (p := fun w : InfinitePlace K => w.comap (algebraMap F K) = v) _ (by simp)]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Both sides reduce to the same expression.
 
-Use `Eq.trans ?_ ((eta_norm_eq_prod (χ v) (k1 v) (kb v) (bi v) (mi v) (y v)).symm.trans (eta_eq_of_div_mem (hi v)))` and prove the remaining obligations. Use `Finset.prod_congr rfl ?_` and prove the remaining obligations. Introduce and unpack `⟨w, rfl⟩ _`. Both sides reduce to the same expression. Take `⟨t, tf, ti⟩` from `exists_everywhereNorm_div_of_etaProd_eq_one K L X Y hA (by`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Rewrite using `[etaProd, p1, p2]`. Conclude with `(productFormula F E δ).2)`. Use `⟨t, fun v => (form_iff (ψ v) (g1 v) (gb v) d _).2 ?_, fun v => (form_iff (χ v) (k1 v) (kb v) d _).2 ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨w, rfl⟩`. Use `(mem_normGroup_iff_form e h0 h1).1 (tf w)` as an intermediate fact.
-
-Simplify `this` using `[X, finDiag, QuadSymbol.toUnits, g1, div_eq_mul_inv, IsValue]`. Introduce and unpack `⟨w, rfl⟩`. Use `(mem_normGroup_iff_form e h0 h1).1 (ti w)` as an intermediate fact. Simplify `this` using `[Y, infDiag, QuadSymbol.toUnits, k1, div_eq_mul_inv, IsValue]`.
+Simplify to obtain the desired conclusion from the available facts. Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_global {E : Type} [Field E] [NumberField E] [Algebra F E] [Algebra E L] [Algebra F L]
     [IsScalarTower F K L] [IsScalarTower F E L] [Algebra.IsQuadraticExtension F E]

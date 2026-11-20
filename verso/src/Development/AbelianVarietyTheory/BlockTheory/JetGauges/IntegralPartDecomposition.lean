@@ -89,20 +89,20 @@ def IdempotentBound : Prop :=
       PlaceClaim C b
 
 /- English proof (translation)
-Simplify using `[evalAt]`.
+Simplify using the standard rewrite rules.
 -/
 theorem evalAt_tmul (σ : E →+* C) (a : E) (x : C) : evalAt σ (a ⊗ₜ[ℚ] x) = σ a * x := by
   simp [evalAt]
 
 omit [Fintype ι] in
 /- English proof (translation)
-Simplify using `[ratBasis]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ratBasis_apply (b : Basis ι ℤ (𝓞 E)) (i : ι) : ratBasis b i = ((b i : 𝓞 E) : E) := by
   simp [ratBasis]
 
 /- English proof (translation)
-Use `(Algebra.TensorProduct.productMap_apply_tmul _ _ a x).trans ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `((a : E) ⊗ₜ[ℚ] (1 : C)) * ((1 : E) ⊗ₜ[ℚ] (x : C)) = _`. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem integralMap_tmul (R : Subring C) (a : 𝓞 E) (x : R) :
     integralMap E R (a ⊗ₜ[ℤ] x) = (a : E) ⊗ₜ[ℚ] (x : C) := by

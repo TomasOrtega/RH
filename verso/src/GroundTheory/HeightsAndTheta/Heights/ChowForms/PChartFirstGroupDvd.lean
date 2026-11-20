@@ -14,11 +14,9 @@ noncomputable section
 namespace ChartFirstGroupDvd
 
 /- English proof (translation)
-Use `set π := Ideal.Quotient.mk (Ideal.span {a})`. Establish `h : π.comp (aeval σ).toRingHom = π`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `r`. Simplify using `[π]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `m`. Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, aeval_X, π]`. Rewrite using `[Ideal.Quotient.eq, Ideal.mem_span_singleton]`. Conclude with `hσ m`. Rewrite using `[← Ideal.mem_span_singleton, ← Ideal.Quotient.eq]`.
-
-Conclude with `(RingHom.congr_fun h P).symm`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dvd_sub_aeval {R : Type*} [CommRing R] {n : ℕ} (a : MvPolynomial (Fin n) R)
     (σ : Fin n → MvPolynomial (Fin n) R) (hσ : ∀ m, a ∣ σ m - X m) (P : MvPolynomial (Fin n) R) :
@@ -38,41 +36,35 @@ theorem dvd_sub_aeval {R : Type*} [CommRing R] {n : ℕ} (a : MvPolynomial (Fin 
 variable {F : Type} [Field F] {n : ℕ}
 
 /- English proof (translation)
-Use `set K := FractionRing (MvPolynomial (Fin n) F ⧸ I)`. Use `set η : Fin n → K := (aeval (genPt I) (linForm t))⁻¹ • genPt I with hη`. Use `set ψ : MvPolynomial (Fin n) F →+* K := (aeval η).toRingHom with hψ`. Establish `hJeq : RingHom.ker ψ = I ⊔ Ideal.span {linForm t - 1}`. Rewrite using `[← ChartIncDomain.ker_aeval_eta I t hI ht]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Use `set J := RingHom.ker ψ with hJ`. Use `set q : MvPolynomial (Fin n) F →+* MvPolynomial (Fin n) F ⧸ J := Ideal.Quotient.mk J with hq`. Use `set ζ : Fin n → MvPolynomial (Fin n) F ⧸ J := fun m => q (X m) with hζ`. Use `set c : Fin n → MvPolynomial (Fin n) F ⧸ J := fun m => q (C (t m)) with hc'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hc : ∑ l, c l * ζ l = 1`. Establish `h1 : q (linForm t) = 1`. Rewrite using `[← sub_eq_zero, ← map_one q, ← map_sub, hq, Ideal.Quotient.eq_zero_iff_mem, hJeq]`. Conclude with `Ideal.mem_sup_right (Ideal.mem_span_singleton_self _)`. Rewrite using `[← h1, linForm, map_sum]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `only [map_mul, hζ, hc']`. Use `set γ : MvPolynomial (Fin n ⊕ Fin e × Fin n) F →+* MvPolynomial (Fin e × Fin n) (MvPolynomial (Fin n) F ⧸ J) := eval₂Hom (C.comp (q.comp C)) (Sum.elim (fun m => C (ζ m)) (genSubst ζ c)) with hγ`. Establish `hγX : ∀ g, γ (rename Sum.inl g) = C (q g)`. Introduce `g`. Establish `: γ.comp (rename Sum.inl).toRingHom = C.comp q`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[hγ]`. Introduce `m`. Simplify using `[hγ, hζ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `RingHom.congr_fun this g`. Establish `hker : chartIncIdeal I t e ≤ RingHom.ker γ`. Use `sup_le ?_ ?_` and prove the remaining obligations. Rewrite using `[Ideal.map_le_iff_le_comap]`. Introduce `g hg`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[Ideal.mem_comap, RingHom.mem_ker, hγX, hq, (Ideal.Quotient.eq_zero_iff_mem).mpr (hJeq ▸ hg), map_zero]`. Rewrite using `[Ideal.span_le]`. Introduce and unpack `_ ⟨i, rfl⟩`. Rewrite using `[SetLike.mem_coe, RingHom.mem_ker]`. Establish `hC : ∑ l, C (c l) * C (ζ l) = (1 : MvPolynomial (Fin e × Fin n) (MvPolynomial (Fin n) F ⧸ J))`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[← C_1, ← hc, map_sum]`. Simplify using `only [C_mul]`. Simplify using `only [map_sum, map_mul, hγ, coe_eval₂Hom, eval₂_X, Sum.elim_inl, Sum.elim_inr]`. Simplify using `only [genSubst, sub_mul, Finset.sum_sub_distrib, mul_assoc, ← Finset.mul_sum, hC, mul_one, sub_self]`. Use `set γbar : MvPolynomial (Fin n ⊕ Fin e × Fin n) F ⧸ chartIncIdeal I t e →+* MvPolynomial (Fin e × Fin n) (MvPolynomial (Fin n) F ⧸ J) := Ideal.Quotient.lift (chartIncIdeal I t e) γ (fun a ha => RingHom.mem_ker.mp (hker ha)) with hγbar`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Use `set χ : MvPolynomial (Fin n) F →+* MvPolynomial (Fin n ⊕ Fin e × Fin n) F ⧸ chartIncIdeal I t e := (Ideal.Quotient.mk (chartIncIdeal I t e)).comp (rename Sum.inl).toRingHom with hχ`. Establish `hJX : ∀ a ∈ J, χ a = 0`. Introduce `a ha`. Rewrite `ha` using `[hJeq]`. Rewrite using `[hχ, RingHom.comp_apply, Ideal.Quotient.eq_zero_iff_mem]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mem_sup_left (Ideal.mem_map_of_mem _ ha)`. Use `set β : MvPolynomial (Fin e × Fin n) (MvPolynomial (Fin n) F ⧸ J) →+* MvPolynomial (Fin n ⊕ Fin e × Fin n) F ⧸ chartIncIdeal I t e := eval₂Hom (Ideal.Quotient.lift J χ hJX) (fun im => Ideal.Quotient.mk (chartIncIdeal I t e) (X (Sum.inr im))) with hβ`. Establish `hβγ : β.comp γ = Ideal.Quotient.mk (chartIncIdeal I t e)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[hβ, hγ, hq, hχ]`. Introduce and unpack `(m | im)`. Simplify using `[hβ, hγ, hζ, hq, hχ]`. Establish `h0 : Ideal.Quotient.mk (chartIncIdeal I t e) (∑ l, X (Sum.inr (im.1, l)) * X (Sum.inl l)) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `Ideal.mem_sup_right (Ideal.subset_span ⟨im.1, rfl⟩)`. Simplify using `only [map_sum, map_mul] at h0`. Simplify using `[hβ, hγ, hζ, hc', hq, hχ, genSubst]`. Rewrite using `[h0, zero_mul]`. Establish `hleft : ∀ x : MvPolynomial (Fin n ⊕ Fin e × Fin n) F ⧸ chartIncIdeal I t e, β (γbar x) = x`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `x`. Take `⟨g, rfl⟩` from `Ideal.Quotient.mk_surjective (I := chartIncIdeal I t e) x`. Rewrite using `[hγbar, Ideal.Quotient.lift_mk]`. Conclude with `RingHom.congr_fun hβγ g`. Establish `hinj : Function.Injective γbar` using `Function.LeftInverse.injective hleft`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hjinj : Function.Injective (RingHom.kerLift ψ)` using `RingHom.kerLift_injective ψ`. Use `⟨(MvPolynomial.map (RingHom.kerLift ψ)).comp γbar, (map_injective _ hjinj).comp hinj, ?_, ?_⟩` and prove the remaining obligations. Introduce `g`. Establish `h' : γbar (Ideal.Quotient.mk _ (rename Sum.inl g)) = C (q g)`. Rewrite using `[hγbar, Ideal.Quotient.lift_mk]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hγX g`. Express the relevant statement in the definitionally equal form `MvPolynomial.map (RingHom.kerLift ψ) (γbar (Ideal.Quotient.mk _ (rename Sum.inl g))) = _`. Rewrite using `[h', map_C, hq, RingHom.kerLift_mk]`. Both sides reduce to the same expression. Introduce `im`.
-
-Establish `h' : γbar (Ideal.Quotient.mk _ (rename Sum.inr (X im))) = genSubst ζ c im`. Rewrite using `[hγbar, Ideal.Quotient.lift_mk, rename_X]`. Simplify using `[hγ]`. Express the relevant statement in the definitionally equal form `MvPolynomial.map (RingHom.kerLift ψ) (γbar (Ideal.Quotient.mk _ (rename Sum.inr (X im)))) = _`. Rewrite using `[h', IncidenceGeneric.map_genSubst]`.
-
-Use `congr 1`. Use function extensionality and compare the values at `m`. Express the relevant statement in the definitionally equal form `RingHom.kerLift ψ (Ideal.Quotient.mk _ (X m)) = _`. Rewrite using `[RingHom.kerLift_mk, hψ]`. Simplify using `[η]`.
-
-Use function extensionality and compare the values at `m`. Express the relevant statement in the definitionally equal form `RingHom.kerLift ψ (Ideal.Quotient.mk _ (C (t m))) = _`. Rewrite using `[RingHom.kerLift_mk, hψ]`. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_injective (I : Ideal (MvPolynomial (Fin n) F)) [I.IsPrime] (t : Fin n → F) (e : ℕ)
     (hI : IsProjPrime I) (ht : linForm t ∉ I) :
@@ -185,27 +177,23 @@ theorem exists_injective (I : Ideal (MvPolynomial (Fin n) F)) [I.IsPrime] (t : F
       rfl
 
 /- English proof (translation)
-Introduce `F _ n e I f t hI hf ht`. Use `hI.isPrime` as an intermediate fact. Take `⟨φ, hφinj, hφX, hφU⟩` from `exists_injective I t e hI ht`. Use `set τ : (FractionRing (MvPolynomial (Fin n) F ⧸ I)) := aeval (genPt I) (linForm t) with hτdef`. Establish `hτ : τ ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hτdef, ChartIncDomain.aeval_genPt, Ne, IsFractionRing.to_map_eq_zero_iff, Ideal.Quotient.eq_zero_iff_mem]`. Conclude with `ht`. Establish `hτsum : τ = ∑ l, algebraMap F (FractionRing (MvPolynomial (Fin n) F ⧸ I)) (t l) * genPt I l`. Simplify using `[hτdef, linForm]`. Use `set cK : Fin n → (FractionRing (MvPolynomial (Fin n) F ⧸ I)) := fun m => algebraMap F (FractionRing (MvPolynomial (Fin n) F ⧸ I)) (t m) / τ with hcK`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `homogComponent_comm_first_action : ∑ j, cK j * genPt I j = 1`. Simplify using `only [hcK, div_mul_eq_mul_div, ← Finset.sum_div, ← hτsum]`. Conclude with `div_self hτ`. Establish `hcKm : ∀ m, cK m = τ⁻¹ * algebraMap F (FractionRing (MvPolynomial (Fin n) F ⧸ I)) (t m)` using `fun m => by`. Simplify using `only [hcK]`.
+Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Establish `hfI : f ∈ incIdeal I (e + 1)` using `mem_incIdeal_iff.mpr ((hf.2 f).mpr dvd_rfl)`. Establish `hgen : aeval (genSubst (genPt I) cK) f = 0` using `(h₁ F n (e + 1) I cK homogComponent_comm_first_action f).mp hfI`. Use `set θ : MvPolynomial (Fin n) (ChartInc I t e) := ∑ m, X m * C (chartX I t e (X m)) with hθ`. Use `set σ : Fin n → MvPolynomial (Fin n) (ChartInc I t e) := fun m => X m - θ * C (chartX I t e (C (t m))) with hσ`.
+Reduce the argument to an intermediate assertion. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hdvd` using `dvd_sub_aeval θ σ (fun m => ⟨-C (chartX I t e (C (t m))), by simp only [hσ]; ring⟩) (map (algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e)) (firstGroup f))`. It suffices to establish `h0 : aeval σ (map (algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e)) (firstGroup f)) = 0 by`. Rewrite `hdvd` using `[h0, sub_zero]`. Conclude with `hdvd`. Apply `map_injective φ hφinj` to reduce the goal to its premises.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[map_zero]`. Use `set ρ : MvPolynomial (Fin (e + 1) × Fin n) (FractionRing (MvPolynomial (Fin n) F ⧸ I)) →+* MvPolynomial (Fin n) (MvPolynomial (Fin e × Fin n) (FractionRing (MvPolynomial (Fin n) F ⧸ I))) := eval₂Hom (C.comp C) (fun ij => Fin.cases (motive := fun _ => MvPolynomial (Fin n) (MvPolyn …`. Establish `key : (MvPolynomial.map φ).comp ((aeval σ).toRingHom.comp ((MvPolynomial.map (algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e))).comp (aeval (fun ij : Fin (e + 1) × Fin n => Fin.cases (motive` using `fun _ => MvPolynomial (Fin n) (MvPolynomial (Fin e × Fin n) F)) (X ij.2) (fun i => C (X (i, ij.2))) ij.1)).toRingHom)) = ρ.comp (aeval (genSubst (genPt I) cK) : MvPolynomial (Fin (e + 1) × Fin n) F →ₐ[F] MvPolynomial (Fin (e + 1) × Fin n) (FractionRing (MvPolynomial (Fin n) F ⧸ I …`. Establish `hρ0 : ∀ m, ρ (X (0, m)) = X m` using `fun m => by simp [hρ]`. Establish `hρs : ∀ (i : Fin e) m, ρ (X (i.succ, m)) = C (X (i, m))` using `fun i m => by simp [hρ]`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components.
 
-Establish `hρC : ∀ k, ρ (C k) = C (C k)` using `fun k => by simp [hρ]`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Establish `hCa : algebraMap (MvPolynomial (Fin e × Fin n) F) (ChartInc I t e) (C a) = chartX I t e (C a)`. Express the relevant statement in the definitionally equal form `Ideal.Quotient.mk _ (rename Sum.inr (C a)) = Ideal.Quotient.mk _ (rename Sum.inl (C a))`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[rename_C, rename_C]`. Simplify using `[hρC, hCa, hφX]`. Introduce and unpack `⟨i, m⟩`. Consider the cases of `i using Fin.cases with`. Consider the case `zero`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `[hρ0, hσ, hθ, hφX, hρC, genSubst]`. Rewrite using `[hcKm]`. Simplify using `only [map_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Consider the case `succ i`.
-
-Simplify using `[hρs, hρC, hφU, genSubst]`. Rewrite using `[hcKm]`. Simplify using `only [map_mul, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun l _ => by ring`. Use `RingHom.congr_fun key f` as an intermediate fact.
-
-Simplify using `only [RingHom.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe, hgen, map_zero] at this`. Conclude with `this`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem proof (h₁ : IncidenceGeneric.Statement) : ChartFirstGroupDvd.Statement := by
   intro F _ n e I f t hI hf ht

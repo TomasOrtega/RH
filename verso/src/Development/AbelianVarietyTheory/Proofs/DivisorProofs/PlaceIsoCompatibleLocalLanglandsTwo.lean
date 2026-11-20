@@ -24,17 +24,15 @@ open GlobalTheory.TypeLawTransport
 set_option maxHeartbeats 1000000 in
 
 /- English proof (translation)
-Introduce `E E' Ω _ _ _ _ _ _ _ _ _ A w w' h h' j i P rc rc' hrel hT`. Introduce `E'' _ _ _ _ _ _ g _ w'' h'' ii hii n hn hg hnorm a'' ha'' K _ _ red hred hker θ hθ τ hτ hτc σ' hσ'`. Use `letI iE : Algebra E E'' := ((algebraMap E' E'').comp j).toAlgebra`. Use `haveI : IsScalarTower E E'' Ω := IsScalarTower.of_algebraMap_eq fun x => by show algebraMap E Ω x = algebraMap E'' Ω (algebraMap E' E'' (j x))`. Rewrite using `[← IsScalarTower.algebraMap_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `P.ext x`. Use `haveI := GlobalTheory.LocLanglands.FieldCompat.charZero_compl w`. Use `haveI := GlobalTheory.LocLanglands.FieldCompat.charZero_compl w'`. Establish `hs : Continuous i.symm` using `(GlobalTheory.T.continuous_ringEquiv_localField_preserves_valuation _ _ i P.cont).1`. Establish `hcont : Continuous (ii.trans i.symm)` using `hs.comp hii`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨T, hT1, -⟩` from `GlobalTheory.transport_irrGL_bijective _ _ i.symm hs`. Take `⟨σ₀, e, h2, he⟩` from `GlobalTheory.TheRecTransport.exists_of_repRel σ' ((hT1 _ _).2 rfl)`. Establish `hR' : RepRel i.symm (cls σ') (cls σ₀)` using `h2 ▸ (hT1 _ _).2 rfl`. Establish `hR : RepRel i (cls σ₀) (cls σ')` using `GlobalTheory.LocLanglands.FieldCompat.repRel_symm hR'`. Establish `W` using `hrel _ _ hR`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components.
 
-Establish `hinf : GlobalTheory.SerSys.TameGen.Inflates (σ₀.ρ.comp (Matrix.GeneralLinearGroup.map (ii.trans i.symm).toRingHom)) τ`. Take `⟨f, hf0, hf⟩` from `hσ'`. Use `⟨e.toLinearMap ∘ₗ f, fun h0 => hf0 ?_, fun k v => ?_⟩` and prove the remaining obligations. Use extensionality with `v`. Use `congrArg (fun F => F v) h0` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Simplify using `using this`. Simplify using `only [LinearMap.comp_apply, LinearEquiv.coe_coe, MonoidHom.comp_apply] at hf ⊢`. Rewrite using `[hf, he]`. Both sides reduce to the same expression. Take `⟨hm, hp⟩` from `hT E'' g w'' h'' (ii.trans i.symm) hcont n hn hg hnorm a'' ha'' K red hred hker θ hθ τ hτ hτc σ₀ hinf`.
-
-Use `⟨(monodromy_vanishing_iff_of_weil_deligne_rel W).1 hm, fun t x z hxz hv => ?_⟩` and prove the remaining obligations. Rewrite using `[← hp t x z hxz hv]`. Conclude with `(inePol_transport P W fun _ => rfl).symm`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.TypeLawTransport.typeLaw_transport_fwd : ∀ (E E' Ω : Type) [Field E] [NumberField E] [Field E'] [NumberField E'] [Field Ω] [Algebra E Ω] [Algebra E' Ω] [IsAlgClosure E Ω] [IsAlgClosure E' Ω] (A : ValuationSubring Ω) (w : HeightOneSpectrum (𝓞 E)) (w' : HeightOneSpectrum (𝓞 E')) (h : IsPlaceOver A w) (h' : IsPlaceOver A w') (j : E →+* E') (i : w.adicCompletion E ≃+* w'.adicCompletion E'), GlobalTheory.LocLanglands.PlaceIso A w A w' (RingEquiv.refl Ω) j i → ∀ (rc : IrrGL (w.adicCompletion E) → WD h) (rc' : IrrGL (w'.adicCompletion E') → WD h'), (∀ x x', RepRel i x x' → WDRel (RingEquiv.refl Ω) (rc x) (rc' x')) → UpperTheory.Zero.LLC.TypeLaw h rc → UpperTheory.Zero.LLC.TypeLaw h' rc' := by
   intro E E' Ω _ _ _ _ _ _ _ _ _ A w w' h h' j i P rc rc' hrel hT

@@ -26,13 +26,13 @@ theorem polD_eq_aeval (Q : MvPolynomial (FrV T N) ℂ) :
     polD s Q y' = MvPolynomial.aeval (gD s y') Q := rfl
 
 /- English proof (translation)
-Establish `hN` using `le_of_oe Jc`. Set `A : Matrix (Fin h) (Fin N') (MvPolynomial (Idx T N N') ℂ)` to `Matrix.of fun i b => MvPolynomial.C (s τ) * MvPolynomial.X (τ, b, Jc i)`. Set `B : Matrix (Fin N') (Fin h) (MvPolynomial (Idx T N N') ℂ)` to `Matrix.of fun b j => MvPolynomial.C (colsOf (y' τ) b (j : ℕ))`. Establish `hAB : (MvPolynomial.aeval (gD s y')).mapMatrix (Matrix.of fun i j : Fin h => if hj : (j : ℕ) < N then (MvPolynomial.X (τ, Jc i, ⟨j, hj⟩) : MvPolynomial (FrV T N) ℂ) else 0) = A * B`. Use `Matrix.ext fun i j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hj : (j : ℕ) < N` using `lt_of_lt_of_le j.2 hN`. Simplify using `only [AlgHom.mapMatrix_apply, Matrix.map_apply, Matrix.of_apply, dif_pos hj, MvPolynomial.aeval_X, gD, Matrix.mul_apply, A, B, colsOf]`. Apply `Finset.sum_congr rfl` to reduce the goal to its premises. Introduce `b _`. Rewrite using `[MvPolynomial.C_mul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[AlgHom.map_det, hAB, cauchyBinet]`. Use `Finset.sum_congr rfl fun I _ => ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← Matrix.det_transpose (A.submatrix id I)]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Rewrite using `[RingHom.map_det]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem minor_expand (τ : T) {h : ℕ} (Jc : Fin h ↪o Fin N) :
     MvPolynomial.aeval (gD s y') (Matrix.det (Matrix.of fun i j : Fin h =>
@@ -69,9 +69,9 @@ theorem minor_expand (τ : T) {h : ℕ} (Jc : Fin h ↪o Fin N) :
 variable {Lt : Type} [Fintype Lt] [DecidableEq Lt] (tp : Lt → T) (nu : Lt → YoungDiagram)
 
 /- English proof (translation)
-Unfold `mY`. Rewrite using `[map_prod]`. Simplify using `only [map_prod, minor_expand]`. Rewrite using `[Finset.prod_congr rfl fun z _ => Fintype.prod_sum _, Fintype.prod_sum]`. Use `Fintype.sum_equiv (Equiv.refl _) _ _ fun I => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Equiv.refl_apply, PIJ, minY, Finset.prod_mul_distrib, map_prod]`.
+Simplify using the standard rewrite rules.
 -/
 theorem aeval_mY (J : ColChoice N nu) :
     MvPolynomial.aeval (gD s y') (mY tp nu J) =
@@ -86,9 +86,9 @@ theorem aeval_mY (J : ColChoice N nu) :
 end expand
 
 /- English proof (translation)
-Introduce `Lt T _ _ _ tp N N' nu s Θ φ Q hQ y'`. Rewrite using `[polD_eq_aeval, Q_eq tp nu φ Q hQ, map_sum]`. Simplify using `only [map_mul, MvPolynomial.aeval_C, MvPolynomial.algebraMap_eq, aeval_mY]`. Rewrite using `[applyAt0_sum]`. Simplify using `only [applyAt0_C_mul, applyAt0_sum, applyAt0_mul_C]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Unfold `canC prC hvC AOp`. Rewrite using `[finsum_eq_sum_of_fintype]`. Simplify using `only [finsum_eq_sum_of_fintype, Finset.mul_sum, Finset.sum_mul]`. Rewrite using `[Finset.sum_comm]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isoDerivB : IsoDerivB := by
   intro Lt T _ _ _ tp N N' nu s Θ φ Q hQ y'

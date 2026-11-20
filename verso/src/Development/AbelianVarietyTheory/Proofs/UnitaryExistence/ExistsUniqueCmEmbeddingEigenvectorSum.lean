@@ -12,13 +12,13 @@ open ReciprocityTheory.ChartRestriction.G ReciprocityTheory.ChartRestriction.G.S
 namespace GlobalTheory.Frames
 
 /- English proof (translation)
-Introduce `E _ _ _ H l c S _ _ N _ _ ρ m`. Establish `hσ₀ : Function.Injective (fun τ : E →+* ℂ => embK c τ)` using `fun τ τ' h => (EigenSplit.isSplitting_complex E).injective (RingHom.ext fun a => by`. Establish `h1` using `embK_coe c τ a`. Establish `h2` using `embK_coe c τ' a`. Establish `h3 : embK c τ a = embK c τ' a` using `RingHom.congr_fun h a`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `h1.symm.trans ((congrArg _ h3).trans h2))`. Establish `hσ : EigenSplit.IsSplitting fun τ : E →+* ℂ => (algebraMap c.F S).comp (embK c τ)` using `EigenSplit.isSplitting_of_isDomain hσ₀ (NumberField.Embeddings.card E ℂ) (algebraMap c.F S) (by`. Simplify using `using (EigenSplit.isUnit_discr_of_charZero (E := E) c.F).map (algebraMap c.F S))`. Establish `hI` using `EigenSplit.isInternal_eigenSub hσ ρ`. Set `A` to `fun τ : E →+* ℂ => EigenSplit.eigenSub ρ ((algebraMap c.F S).comp (embK c τ))`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hsum : ∀ x : DirectSum _ (fun τ => A τ), DirectSum.coeAddMonoidHom A x = ∑ τ, (x τ : N)` using `fun x => by conv_lhs => rw [← DirectSum.sum_univ_of x]`. Simplify using `[map_sum, DirectSum.coeAddMonoidHom_of]`. Take `⟨x, hx⟩` from `hI.2 m`. Use `⟨fun τ => x τ, ⟨fun τ a => EigenSplit.mem_eigenSub.1 (x τ).2 a, (hsum x).symm.trans hx⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `f ⟨hf, hm⟩`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Introduce a local definition for the expression.
 
-Set `y : DirectSum _ (fun τ => A τ)` to `DFinsupp.equivFunOnFintype.symm fun τ => ⟨f τ, EigenSplit.mem_eigenSub.2 (hf τ)⟩`. Establish `hy : y = x` using `hI.1 (((hsum y).trans hm).trans hx.symm)`. Use function extensionality and compare the values at `τ`. Rewrite using `[← hy]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem existsUnique_eigen_sum : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (l : Level H) (c : Coeff l) (S : Type) [CommRing S] [Algebra c.F S] (N : Type) [AddCommGroup N] [Module S N] (ρ : 𝓞 E →+* Module.End S N) (m : N), ∃! f : (E →+* ℂ) → N, (∀ τ a, ρ a (f τ) = algebraMap c.F S (embK c τ a) • f τ) ∧ ∑ τ, f τ = m := by
   intro E _ _ _ H l c S _ _ N _ _ ρ m

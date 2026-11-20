@@ -14,15 +14,13 @@ noncomputable section
 namespace GroundTheory.PAdicHodge
 
 /- English proof (translation)
-Use `set B := Module.finBasis F N`. Use `set f : Polynomial F := ∏ i, minpoly F (B i : L)`. Establish `hint : ∀ i, IsIntegral F (B i : L)` using `fun i => (IsIntegral.of_finite F (B i)).map (IntermediateField.val N)`. Establish `hf0 : f ≠ 0` using `Finset.prod_ne_zero_iff.2 fun i _ => minpoly.ne_zero (hint i)`. Use `set N' := IntermediateField.adjoin F (f.rootSet L)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsplit : (f.map (algebraMap F L)).Splits` using `IsAlgClosed.splits _`. Establish `: Polynomial.IsSplittingField F N' f` using `IntermediateField.adjoin_rootSet_isSplittingField hsplit`. Establish `hfin : FiniteDimensional F N'` using `Polynomial.IsSplittingField.finiteDimensional N' f`. Establish `: Normal F N'` using `Normal.of_isSplittingField f`. Establish `: IsGalois F N'` using `IsGalois.mk`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Use `⟨N', ?_, hfin, this⟩` and prove the remaining obligations. Establish `hB : ∀ i, (B i : L) ∈ N'` using `fun i => by`. Apply `IntermediateField.subset_adjoin` to reduce the goal to its premises. Rewrite using `[Polynomial.mem_rootSet]`. Use `⟨hf0, ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Rewrite using `[Polynomial.aeval_def, Polynomial.eval₂_finsetProd]`. Conclude with `Finset.prod_eq_zero (Finset.mem_univ i) (minpoly.aeval F (B i : L))`. Introduce `x hx`. Use `congrArg (fun u : N => (u : L)) (B.sum_repr ⟨x, hx⟩)` as an intermediate fact. Simplify using `only [IntermediateField.coe_sum, IntermediateField.coe_smul] at this`.
-
-Rewrite using `[← this]`. Conclude with `N'.sum_mem fun i _ => N'.smul_mem (hB i)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isGalois_le {F L : Type*} [Field F] [Field L] [Algebra F L] [IsAlgClosed L]
     [PerfectField F] (N : IntermediateField F L) [FiniteDimensional F N] :
@@ -66,7 +64,7 @@ variable (K C p) in
 include K in
 
 /- English proof (translation)
-The claim follows from `IsPerfectoidField.of_isAlgClosed p (by rw [← map_natCast (algebraMap K C), norm_algebraMap'] exact IsPerfectoidField.norm_natCast_lt_one)`.
+A detailed English derivation is pending.
 -/
 theorem isPerfectoidField_of_isAlgClosed_of_normedAlgebra [CompleteSpace C] :
     IsPerfectoidField C p :=
@@ -77,7 +75,7 @@ theorem isPerfectoidField_of_isAlgClosed_of_normedAlgebra [CompleteSpace C] :
 variable [IsPerfectoidField C p]
 
 /- English proof (translation)
-Take `⟨N, hN, hLN⟩` from `exists_le_untiltField (p := p) L`. Establish `: PerfectField K♭` using `PerfectRing.toPerfectField K♭ p`. Take `⟨N', hNN', hN', hgal⟩` from `exists_isGalois_le N`. Take `⟨M, -, hM, hML⟩` from `exists_untiltField_eq_of_le N' L (hLN.trans (untiltField_mono hNN'))`. Conclude with `⟨M, hM, hML⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_eq_untiltField (L : IntermediateField K C) [FiniteDimensional K L] :
     ∃ M : IntermediateField K♭ C♭, FiniteDimensional K♭ M ∧ untiltField K C p M = L := by
@@ -95,7 +93,7 @@ instance isPerfectoidField_of_finiteDimensional (L : IntermediateField K C) [Fin
     fun _ => rfl
 
 /- English proof (translation)
-Take `⟨M, hM, rfl⟩` from `exists_eq_untiltField (p := p) L`. Establish `h : tiltIntermediateField p (untiltField K C p M) = M` using `tiltIntermediateField_untiltField M`. Rewrite using `[h]`. Conclude with `⟨hM, rfl⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 -/
 theorem untiltField_tiltIntermediateField (L : IntermediateField K C) [FiniteDimensional K L] :
     ∃ _ : FiniteDimensional K♭ (tiltIntermediateField p L),
@@ -107,7 +105,7 @@ theorem untiltField_tiltIntermediateField (L : IntermediateField K C) [FiniteDim
   exact ⟨hM, rfl⟩
 
 /- English proof (translation)
-Take `⟨M, hM, rfl⟩` from `exists_eq_untiltField (p := p) L`. Establish `h : tiltIntermediateField p (untiltField K C p M) = M` using `tiltIntermediateField_untiltField M`. Rewrite using `[h, finrank_untiltField]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_tiltIntermediateField (L : IntermediateField K C) [FiniteDimensional K L] :
     Module.finrank K♭ (tiltIntermediateField p L) = Module.finrank K L := by
@@ -117,9 +115,9 @@ theorem finrank_tiltIntermediateField (L : IntermediateField K C) [FiniteDimensi
   rw [h, finrank_untiltField]
 
 /- English proof (translation)
-Use `⟨untiltField K C p M, ⟨inferInstance, tiltIntermediateField_untiltField M⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `L ⟨hL, hLM⟩`. Take `⟨M', hM', rfl⟩` from `exists_eq_untiltField (p := p) L`. Establish `h : tiltIntermediateField p (untiltField K C p M') = M'` using `tiltIntermediateField_untiltField M'`. Rewrite `hLM` using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hLM]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem existsUnique_tiltIntermediateField_eq (M : IntermediateField K♭ C♭)
     [FiniteDimensional K♭ M] :
@@ -139,11 +137,11 @@ section Abstract
 variable {K : Type*} [NontriviallyNormedField K] [IsUltrametricDist K]
 
 /- English proof (translation)
-Break down `IsPerfectoidField.charZero_or_charP (K := K) p with h0 | hp` into its components or cases. Use `IsPerfectoidField.completeSpace (K := K) p` as an intermediate fact. Establish `: IsPerfectoidField (CompletedAlgClosure K) p` using `isPerfectoidField_of_isAlgClosed_of_normedAlgebra K (CompletedAlgClosure K) p`. Use `set j := CompletedAlgClosure.embedding K L`. Set `e : L ≃ₐ[K] j.fieldRange` to `AlgEquiv.ofInjectiveField j`.
+Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `: FiniteDimensional K j.fieldRange` using `LinearEquiv.finiteDimensional e.toLinearEquiv`. Use `IsPerfectoidField.of_ringEquiv p e.symm.toRingEquiv fun y => ?_` and prove the remaining obligations. Establish `h1 : ((e (e.symm y) : j.fieldRange) : CompletedAlgClosure K) = j (e.symm y)` using `rfl`. Rewrite `h1` using `[AlgEquiv.apply_symm_apply]`. Express the relevant statement in the definitionally equal form `‖e.symm y‖ = ‖(y : CompletedAlgClosure K)‖`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h1, CompletedAlgClosure.norm_embedding]`. Conclude with `IsPerfectoidField.of_finiteDimensional_of_charP (K := K) p L`.
+A detailed English derivation is pending.
 -/
 theorem IsPerfectoidField.of_finiteDimensional (p : ℕ) [Fact p.Prime] [IsPerfectoidField K p]
     (L : Type*) [NontriviallyNormedField L] [IsUltrametricDist L] [NormedAlgebra K L]

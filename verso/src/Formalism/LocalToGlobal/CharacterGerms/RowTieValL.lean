@@ -21,7 +21,7 @@ variable {C : Type} [Field C] [CharZero C] {V : VF C} {Orb : Type} [Fintype Orb]
   [∀ o g, Fintype (I o g)]
 
 /- English proof (translation)
-Unfold `toAllS`. Conclude with `VP.cc_subst_eq (fun _ => MvPowerSeries.constantCoeff_X _) F`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem cc_toAllS (o : Orb) (F : MvPowerSeries (WV (I o)) C) :
     MvPowerSeries.constantCoeff (toAllS o F) = MvPowerSeries.constantCoeff F := by
@@ -29,7 +29,7 @@ theorem cc_toAllS (o : Orb) (F : MvPowerSeries (WV (I o)) C) :
   exact VP.cc_subst_eq (fun _ => MvPowerSeries.constantCoeff_X _) F
 
 /- English proof (translation)
-Unfold `toAllS`. Conclude with `VP.subst_subst hE (fun _ => MvPowerSeries.constantCoeff_X _) T`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem toAllS_subst {κ : Type} [Finite κ] (o : Orb) {E : κ → MvPowerSeries (WV (I o)) C}
     (hE : ∀ x, MvPowerSeries.constantCoeff (E x) = 0) (T : MvPowerSeries κ C) :
@@ -38,11 +38,9 @@ theorem toAllS_subst {κ : Type} [Finite κ] (o : Orb) {E : κ → MvPowerSeries
   exact VP.subst_subst hE (fun _ => MvPowerSeries.constantCoeff_X _) T
 
 /- English proof (translation)
-Introduce `F hF`. Take `⟨γ, hγ, rfl⟩` from `hF`. Use `choose T hTi hT0 hTA using hT`. Establish `hE : ∀ w : WV (I o), MvPowerSeries.constantCoeff (upG w.1 (t w.1 w.2)) = 0` using `fun w => by`. Unfold `upG`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `VP.cc_subst (fun _ => MvPowerSeries.constantCoeff_X _) (ht0 _ _)`. Use `⟨MvPowerSeries.subst T γ, IntS.subst hT0 hTi hγ, ?_⟩` and prove the remaining obligations. Rewrite using `[VP.subst_subst hT0 hA, toAllS_subst o hE]`. Use `congr 1`. Use function extensionality and compare the values at `w`.
-
-Conclude with `hTA w`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem germLift_gen {σ : Type} [Finite σ] {A : σ → MvPowerSeries (WVO I) C}
     (hA : ∀ s, MvPowerSeries.constantCoeff (A s) = 0) (o : Orb) (t : ∀ g, I o g → MvPowerSeries (I o g) C)
@@ -63,9 +61,9 @@ theorem germLift_gen {σ : Type} [Finite σ] {A : σ → MvPowerSeries (WVO I) C
   exact hTA w
 
 /- English proof (translation)
-Establish `hπA : ∀ x, MvPowerSeries.constantCoeff (MvPowerSeries.subst A (π x)) = 0` using `fun x => VP.cc_subst hA (hπ0 x)`. Establish `hE : ∀ x, MvPowerSeries.constantCoeff (E x) = 0` using `fun x => by`. Rewrite using `[← cc_toAllS o (E x), ← hπ x]`. Conclude with `hπA x`. Use `⟨MvPowerSeries.subst π T, IntS.subst hπ0 hπi hTi, VP.cc_subst hπ0 hT0, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[VP.subst_subst hπ0 hA, toAllS_subst o hE]`. Use `congr 1`. Use function extensionality and compare the values at `x`. Conclude with `hπ x`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem tLift_gen {σ κ : Type} [Finite σ] [Finite κ] {A : σ → MvPowerSeries (WVO I) C}
     (hA : ∀ s, MvPowerSeries.constantCoeff (A s) = 0) (o : Orb) {E : κ → MvPowerSeries (WV (I o)) C}
@@ -98,9 +96,9 @@ def ProjPullSt (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) : Prop :=
     (∀ i, MvPowerSeries.constantCoeff (π i) = 0) ∧ ∀ i, pull1 Y p (π i) = toAllS o ((Y.raw (p o)).expPt g i)
 
 /- English proof (translation)
-Introduce `hsep o S t hS F hF`. Establish `hA : ∀ q : Fin 1 × Fin dd, MvPowerSeries.constantCoeff (expAll Y p q.2) = 0` using `fun q => VP.cc_expAll Y p q.2`. Establish `ht0 : ∀ g c, MvPowerSeries.constantCoeff (t g c) = 0` using `fun g c => (hS g).1 c`. Establish `hTw : ∀ w : WV (I o), ∃ T : MvPowerSeries (Fin 1 × Fin dd) C, IntS V T ∧ MvPowerSeries.constantCoeff T = 0 ∧ MvPowerSeries.subst (fun q : Fin 1 × Fin dd => expAll Y p q.2) T = toAllS o (upG w.1 (t w.1 w.2))`. Introduce `w`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨π, hπi, hπ0, hπ⟩` from `hP hsep o w.1`. Take `⟨T, hTi, hT0, hTe⟩` from `hT o S t hS w.1 w.2`. Take `⟨T', h1, h2, h3⟩` from `VP.tLift_gen hA o hπi hπ0 hπ hTi hT0`. Conclude with `⟨T', h1, h2, by rw [h3, hTe]⟩`. Conclude with `VP.germLift_gen hA o t ht0 hTw F hF`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem germLift_of (Y : FBChart C V O dd) (p : ∀ o, PairData Y d (I o)) (H : ∀ o, (Y.raw (p o)).Hyps V)
     (hP : ProjPullSt Y p) (hT : ∀ o, RawChart.TCoordSt (H o).cartH) : GermLiftSt Y p H := by
@@ -128,9 +126,9 @@ def ProjSelfSt (Y : FBChart C V O dd) (p : ∀ o, SelfData Y d (I0 o)) : Prop :=
     ∀ x, pull2 Y p (π x) = toAllS (I := IS I0) o ((Y.rawSelf (p o)).expPt g x)
 
 /- English proof (translation)
-Introduce `hsep o S t hS F hF`. Unfold `pull2`. Establish `hA : ∀ q : Fin 2 × Fin dd, MvPowerSeries.constantCoeff (VP.linPt Y (uS Y p) q) = 0` using `VP.cc_linPt Y (uS Y p)`. Use `VP.germLift_gen (I := IS I0) hA o t (fun g c => (hS g).1 c) (fun w => ?_) F hF` and prove the remaining obligations. Take `⟨π, hπi, hπ0, hπ⟩` from `hP hsep o w.1`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨T, hTi, hT0, hTe⟩` from `hT o S t hS w.1 w.2`. Take `⟨T', h1, h2, h3⟩` from `VP.tLift_gen (I := IS I0) hA o hπi hπ0 hπ hTi hT0`. Conclude with `⟨T', h1, h2, by rw [h3, hTe]⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem germLiftSelf_of (Y : FBChart C V O dd) (p : ∀ o, SelfData Y d (I0 o)) (H : ∀ o, (Y.rawSelf (p o)).Hyps V)
     (hP : ProjSelfSt Y p) (hT : ∀ o, RawChart.TCoordSt (H o).cartH) : GermLiftSelfSt Y p H := by

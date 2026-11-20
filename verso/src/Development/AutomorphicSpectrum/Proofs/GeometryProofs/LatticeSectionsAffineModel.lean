@@ -22,9 +22,9 @@ namespace GlobalTheory.CompanionTheory.Ar.LocFrames.Chart
 open GlobalTheory.CompanionTheory.Ar.LieVB GlobalTheory.CompanionTheory.Ar.LieTangent
 
 /- English proof (translation)
-Establish `h1 : spMap ((Scheme.stalkClosedPointTo z).hom.comp ψ) ≫ x = spMap f ≫ x`. Establish `e1 : spMap ((Scheme.stalkClosedPointTo z).hom.comp ψ) = spMap (Scheme.stalkClosedPointTo z).hom ≫ spMap ψ`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression. Rewrite using `[e1, Category.assoc, hψ, hf]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Conclude with `spec_centre z`. Conclude with `congrArg (fun g => g.hom) (Spec.map_injective ((cancel_mono x).1 h1))`.
+A detailed English derivation is pending.
 -/
 theorem ring_eq' {X : Scheme.{0}} {R : Type} [CommRing R] (x : Sp R ⟶ X) [Mono x] (z : Sp ℂ ⟶ X)
     (ψ : R →+* X.presheaf.stalk (centre z)) (hψ : spMap ψ ≫ x = X.fromSpecStalk (centre z)) (f : R →+* ℂ)
@@ -38,21 +38,19 @@ theorem ring_eq' {X : Scheme.{0}} {R : Type} [CommRing R] (x : Sp R ⟶ X) [Mono
   exact congrArg (fun g => g.hom) (Spec.map_injective ((cancel_mono x).1 h1))
 
 /- English proof (translation)
-Introduce `X G _ _ _ Ω _ ξ E _ _ M p N J _ c hpN hc`. Take `⟨R, _, x, _, F, _, _, MR, e, hpx, hxN, hext⟩` from `GlobalTheory.T.local_lie_model_extends X G Ω ξ E M p N J c hpN hc`. Take `⟨_, ⟨A, hA, rfl⟩, hpA, hAx⟩` from `X.isBasis_affineOpens.exists_subset_of_mem_open hpx x.opensRange.isOpen`. Use `replace hA : IsAffineOpen A := hA`. Establish `hrange : Set.range hA.fromSpec ⊆ Set.range x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hA.range_fromSpec]`. Conclude with `hAx`. Take `⟨a, ha⟩ : ∃ a : R →+* Γ(X, A), spMap a ≫ x = hA.fromSpec` from `⟨(Spec.preimage (IsOpenImmersion.lift x hA.fromSpec hrange)).hom, by`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom (Spec.preimage (IsOpenImmersion.lift x _ hrange)).hom) ≫ x = _`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_preimage, IsOpenImmersion.lift_fac]⟩`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨EB, iEB, mEB, ⟨MB⟩⟩` from `lieModel_exists X G Γ(X, A) hA.fromSpec`. Establish `hex : ∀ i, ∃ b, MB.pt b = epsBase a ha ≫ MR.pt (e i)` using `fun i => MB.onto _ (isTanAt_base a ha (MR.tan _))`. Use `choose eB heB using hex`. Use `⟨A, hA, EB, iEB, mEB, MB, eB, hpA, fun t ht => hxN (hAx ht), ?_⟩` and prove the remaining obligations. Introduce `y f hg hy i w hw`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `q : Cpt ξ` to `⟨centre y, hg⟩`. Establish `hqr : q.1 ∈ x.opensRange`. Use `hrange ⟨spMap f (IsLocalRing.closedPoint ℂ), ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `_ = centre y`. Simplify using `only [centre, hy, Scheme.Hom.comp_apply]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hqx : (X.fromSpecStalk q.1) (IsLocalRing.closedPoint (X.presheaf.stalk q.1)) ∈ x.opensRange`. Rewrite using `[Scheme.fromSpecStalk_closedPoint]`. Conclude with `hqr`. Take `⟨ψ, hψ⟩` from `exists_lift (A := X.presheaf.stalk q.1) x (X.fromSpecStalk q.1) hqx`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hring : (Scheme.stalkClosedPointTo y).hom.comp ψ = f.comp a`. Use `ring_eq' x y ψ hψ _ ?_` and prove the remaining obligations. Establish `e2 : spMap (f.comp a) = spMap f ≫ spMap a`. Simplify using `only [spMap, ← Spec.map_comp]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, Category.assoc, ha, hy]`. Set `vq : epsAt (R` to `X.presheaf.stalk q.1) (X.fromSpecStalk q.1) ⟶ G := epsBase ψ hψ ≫ MR.pt (e i)`. Use `⟨hg, vq, hext q ψ hψ i vq rfl, ?_⟩` and prove the remaining obligations. Rewrite using `[hw, heB]`. Express the relevant statement in the definitionally equal form `spMap (dualMap f) ≫ spMap (dualMap a) ≫ (MR.pt (e i)).left = spMap (dualMap (Scheme.stalkClosedPointTo y).hom) ≫ spMap (dualMap ψ) ≫ (MR.pt (e i)).left`.
-
-Rewrite using `[← Category.assoc, ← Category.assoc, spMap_dual_comp, spMap_dual_comp, hring]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_chart_values : ∀ (X : Scheme.{0}) (G : Over X) [GrpObj G] [IsCommMonObj G] [Smooth G.hom] (Ω : Type) [Field Ω] (ξ : Sp Ω ⟶ X) (E : Type) [AddCommGroup E] [Module Ω E] (M : LieModel G ξ E) (p : Cpt ξ) (N : X.Opens) (J : Type) [Finite J] (c : J → E), p.1 ∈ N → (∀ i, c i ∈ M.lat p) → ∃ (A : X.Opens) (hA : IsAffineOpen A) (EB : Type) (_ : AddCommGroup EB) (_ : Module Γ(X, A) EB) (MB : LieModel G hA.fromSpec EB) (e : J → EB), p.1 ∈ A ∧ A ≤ N ∧ ∀ (y : Sp ℂ ⟶ X) (f : Γ(X, A) →+* ℂ), genPt ξ ⤳ centre y → y = spMap f ≫ hA.fromSpec → ∀ (i : J) (w : epsAt y ⟶ G), w.left = spMap (dualMap f) ≫ (MB.pt (e i)).left → M.ValAt y (c i) w := by
   intro X G _ _ _ Ω _ ξ E _ _ M p N J _ c hpN hc

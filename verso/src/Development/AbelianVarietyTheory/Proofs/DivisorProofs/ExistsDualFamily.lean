@@ -24,25 +24,25 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {A A' :
 open GlobalTheory.LieVB GlobalTheory.VB GlobalTheory.HTSheaf GlobalTheory.LocM GlobalTheory.LocM.TanPair in
 
 /- English proof (translation)
-Use `t.semi` as an intermediate fact. Use `t.semi.smooth` as an intermediate fact. Establish `: Smooth G'.hom` using `MorphismProperty.of_isPullback hψ.1 ‹_›`. Take `⟨h1, h2⟩` from `GlobalTheory.FramesFGP.finite_projective_top (omega t.G) (exists_isFrame_omega t.G)`. Take `⟨m, f, g, -, -, hfg⟩` from `Module.Finite.exists_comp_eq_id_of_projective Γ(Sp A, ⊤) Γ(omega t.G, ⊤)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hv (i : Fin m) : ∃ v : Pdiv.LieG t.G, ∀ s, dualApp (tangent v) le_top s = g s i`. Take `⟨lam, hlam⟩` from `(GlobalTheory.OmegaGlobal.dualApp_top_bijective (omega t.G)).2 (LinearMap.proj i ∘ₗ g)`. Take `⟨v, rfl⟩` from `TangentSurj.tangent_surjective A t.G lam`. Conclude with `⟨v, fun s => LinearMap.congr_fun hlam s⟩`. Use `choose v hv using hv`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `hid : IsGrpPullback t.G t.G (𝟙 _) (𝟙 _)` using `@isGrpPullback_of_iso _ _ _ _ _ (Iso.refl t.G) (inferInstanceAs (IsMonHom (𝟙 t.G)))`. Establish `ht (i : Fin m) : IsTanAtG t (𝟙 _) (v i).1.left`. Simplify `isTanAtG_lieG hid (v i)` using `only [Category.comp_id]`. Establish `ht' (i : Fin m) : IsTanAtG t (spMap σ) (spMap (Formalism.L2.Pj.dualMap σ) ≫ (v i).1.left)` using `LieMet.isTan_map σ (Category.comp_id _) (ht i)`. Use `choose v' hv' using fun i => exists_lieG hψ (ht' i)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `k : (⊤ : (Sp A').Opens) ≤ spMap σ ⁻¹ᵁ ⊤` using `le_top`. Establish `k₀ : (⊤ : (Sp A).Opens) ≤ 𝟙 (Sp A) ⁻¹ᵁ ⊤` using `le_top`. Establish `val (i : Fin m) (s : Γ(omega t.G, ⊤)) : (toOmega G' (pb hψ k s)).1 (v' i) = σ ((Scheme.ΓSpecIso (.of A)).hom (g (pb hid k₀ s) i))`. Use `(tanEv_eq hψ (v' i) (ht' i) (hv' i) k s).symm.trans ?_` and prove the remaining obligations. Use `(tanEv_baseChange E H _ t A (𝟙 _) ⊤ k₀ _ (ht i) A' σ (ht' i) k s).trans (congrArg σ ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Rewrite using `[tanEv_eq hid (v i) (ht i) (Category.comp_id _) k₀ s, hv]`. Both sides reduce to the same expression. Establish `sm (a : Γ(Sp A, ⊤)) (s : Γ(omega t.G, ⊤)) : toOmega G' (pb hψ k (a • s)) = σ ((Scheme.ΓSpecIso (.of A)).hom a) • toOmega G' (pb hψ k s)`. Rewrite using `[pb_smul, ← toOmega_smul]`. Use `congr 2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(appLE_top _ _).trans ?_` and prove the remaining obligations. Use `.trans ?_ congr($(Scheme.ΓSpecIso_inv_naturality (CommRingCat.ofHom σ)) ((Scheme.ΓSpecIso (.of A)).hom a)).symm` and prove the remaining obligations. Conclude with `congrArg _ (Iso.hom_inv_id_apply (Scheme.ΓSpecIso (.of A)) a).symm`. Use `⟨m, v, v', fun i => toOmega G' (pb hψ k (f (Pi.single i 1))), hv', fun d => ?_⟩` and prove the remaining obligations. Take `⟨s, rfl⟩` from `(GlobalTheory.OmegaGlobal.toOmega_bijective A' G' ⟨tangent_injective A' G', TangentSurj.tangent_surjective A' G'⟩).2 d`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition.
 
-Establish `hs : s ∈ Submodule.span Γ(Sp A', ⊤) (Set.range (pb hψ k))`. Rewrite using `[span_range_pb hψ (isAffineOpen_top _) (isAffineOpen_top _)]`. Discharge the goal by the elementary cases of `trivial`. Proceed by induction on `hs using Submodule.span_induction with`. Consider the case `mem _ hx`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Take `⟨s, rfl⟩` from `hx`. Simplify using `only [val, ← sm, ← map_sum, ← map_smul]`. Rewrite using `[← pi_eq_sum_univ', show f (g (pb hid k₀ s)) = pb hid k₀ s from LinearMap.congr_fun hfg _, pb_pb hid hψ hψ (Category.comp_id _) (Category.comp_id _)]`. Consider the case `zero => simp`. Consider the case `add x y _ _ hx hy`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_add]`. Use `(congrArg₂ (· + ·) hx hy).trans ?_` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun i _ => (add_smul _ _ _).symm`. Consider the case `smul a x _ hx`.
+Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨a, rfl⟩ : ∃ b, a = cst A' b` from `⟨_, (Iso.hom_inv_id_apply (Scheme.ΓSpecIso (.of A')) a).symm⟩`. Rewrite using `[toOmega_smul]`. Use `(congrArg (a • ·) hx).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.smul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => (mul_smul _ _ _).symm`.
+A detailed English derivation is pending.
 -/
 theorem exists_dual_family (t : SAB H (Sp A)) {G' : Over (Sp A')} [GrpObj G'] (σ : A →+* A') {ψ : G'.left ⟶ t.G.left}
     (hψ : IsGrpPullback G' t.G (spMap σ) ψ) [QuasiSeparated G'.hom] :
@@ -119,19 +119,19 @@ def dualMod : DualNumber (ModPow p A n) →ₐ[A] DualNumber (ModPow p A' n) :=
       ext <;> simp [dualMap, TrivSqZeroExt.algebraMap_eq_inl', modMap] }
 
 /- English proof (translation)
-The claim follows from `add_zero _`.
+A detailed English derivation is pending.
 -/
 theorem fst_dualMod (z : DualNumber (ModPow p A n)) : (dualMod A A' p n z).fst = modMap A A' p n z.fst := add_zero _
 
 /- English proof (translation)
-The claim follows from `zero_add _`.
+A detailed English derivation is pending.
 -/
 theorem snd_dualMod (z : DualNumber (ModPow p A n)) : (dualMod A A' p n z).snd = modMap A A' p n z.snd := zero_add _
 
 variable (A A') in
 
 /- English proof (translation)
-Use `(Cris.spMap_comp _ _).symm.trans (.trans (congrArg spMap ?_) (Cris.spMap_comp _ _))` and prove the remaining obligations. Use `RingHom.ext fun y => TrivSqZeroExt.ext ?_ ?_` and prove the remaining obligations. Conclude with `(fst_dualMod ..).trans ((congrArg _ (fst_epsTo _ y)).trans ((fst_epsTo _ (dualMap (algebraMap A A') y)).trans (congrArg (algebraMap A' _) (add_zero _))).symm)`. Conclude with `(snd_dualMod ..).trans ((congrArg _ (snd_epsTo _ y)).trans ((snd_epsTo _ (dualMap (algebraMap A A') y)).trans (congrArg (algebraMap A' _) (zero_add _))).symm)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem dualMod_square : (spOver (dualMod A A' p n)).left ≫ (spOver (epsTo A (ModPow p A n))).left =
     (spOver (epsTo A' (ModPow p A' n))).left ≫ spMap (dualMap (algebraMap A A')) := by
@@ -143,17 +143,17 @@ theorem dualMod_square : (spOver (dualMod A A' p n)).left ≫ (spOver (epsTo A (
       ((snd_epsTo _ (dualMap (algebraMap A A') y)).trans (congrArg (algebraMap A' _) (zero_add _))).symm)
 
 /- English proof (translation)
-Introduce `E _ _ _ H p _ X tX A A' _ _ _ x t t' φ φ' hφ hφ' GG GG' θ θ' c c' f hc hc' hθ w w' hw`. Use `t'.semi` as an intermediate fact. Take `⟨ψ, e₁, e₂⟩ : ∃ ψ : t'.G.left ⟶ t.G.left, ψ ≫ φ = φ' ∧ ψ ≫ t.G.hom = t'.G.hom ≫ spMap (algebraMap A A')` from `⟨hφ.1.lift φ' _ (hφ'.1.w.trans (Category.assoc ..).symm), hφ.1.lift_fst .., hφ.1.lift_snd ..⟩`. Substitute `e₁` using the available equality. Take `⟨m, v, v', e, hv, he⟩` from `exists_dual_family t (algebraMap A A') (hφ.cancel hφ' e₂)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Substitute using the available equality. Extract witnesses or component facts from the available result.
 
-Use `Subtype.ext (funext fun n => ?_)` and prove the remaining obligations. Take `⟨-, -, htan⟩` from `hc n`. Take `⟨hsurj, hker, htan'⟩` from `hc' n`. Take `⟨b, hb⟩` from `AugCot.d_surjective (Bialgebra.counitAlgHom A (GG.A n)) ((c w).1 n)`. Take `⟨u, hu⟩` from `hsurj (dUnit A' (f.hom.app n (1 ⊗ₜ b)))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `key (i : Fin m) : ∃ q : A', (w' - u).1 (v' i) = (p : A') ^ n * q`. Set `z : Tors t.G (p ^ n) (DualNumber (ModPow p A' n))` to `⟨spOver (dualMod A A' p n) ≫ (tanTors p n (v i)).1, by`. Rewrite using `[← MonObj.comp_pow, (tanTors p n (v i)).2, MonObj.comp_one]⟩`. Establish `h3 : (v' i).1.left ≫ ψ ≫ φ = spMap (dualMap (algebraMap A A')) ≫ (v i).1.left ≫ φ` using `(Category.assoc ..).symm.trans ((congrArg (· ≫ φ) (hv i)).trans (Category.assoc ..))`. Establish `hz : z.1.left ≫ φ = (tanTors p n (v' i)).1.left ≫ ψ ≫ φ`.
+Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `.trans ?_ ((Category.assoc (spOver (epsTo A' (ModPow p A' n))).left (v' i).1.left _).trans (congrArg (_ ≫ ·) h3)).symm` and prove the remaining obligations. Use `.trans ?_ ((congrArg (· ≫ (v i).1.left ≫ φ) (dualMod_square A A' p n)).trans (Category.assoc ..))` and prove the remaining obligations. Conclude with `(congrArg (· ≫ φ) (Category.assoc ..).symm).trans (Category.assoc ..)`. Establish `h1` using `hθ n _ z _ hz b`. Establish `h2` using `htan' (v' i) u _ hu.symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2` using `[← h1, θ.nat n _ _ (dualMod A A' p n) (tanTors p n (v i)) z rfl, AlgHom.comp_apply, snd_dualMod, htan (v i) w b hb]`. Conclude with `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 ((congrArg _ (hw (v i) (v' i) h3)).trans h2))`. Use `choose q hq using key`. Establish `h0` using `(hker (w' - u)).2 ⟨∑ i, q i • e i, by`. Rewrite using `[he (w' - u), Finset.smul_sum]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by rw [hq, mul_smul]⟩`. Rewrite `h0` using `[map_sub, hu, sub_eq_zero]`. Use `h0.trans ?_` and prove the remaining obligations. Rewrite using `[omegaMap_val, SemiHom.omega_val, ← hb]`. Conclude with `((congrArg (cotMap (f.hom.app n)) (((GG.toBase A').app n).cot_d b)).trans (cotMap_d (f.hom.app n) _)).symm`.
+A detailed English derivation is pending.
 -/
 theorem omegaResSt : OmegaResSt := by
   intro E _ _ _ H p _ X tX A A' _ _ _ x t t' φ φ' hφ hφ' GG GG' θ θ' c c' f hc hc' hθ w w' hw

@@ -27,11 +27,11 @@ def Ker (θ : UA σ X.J → UA σ W.J → ℂ) : Prop :=
 variable {θ : UA σ X.J → UA σ W.J → ℂ} {φ : UA σ W.J → ℂ} {μ : Measure (UA σ W.J)} {D : Set (UA σ W.J)}
 
 /- English proof (translation)
-Take `⟨-, hi, C, k, hC⟩` from `hθ`. Take `⟨C', hC'⟩` from `hφ.2.2 k`. Establish `h0 : 0 ≤ C'` using `le_trans (by positivity) (hC' 1)`. Use `⟨|C| * C', k, by positivity, fun g h => ?_⟩` and prove the remaining obligations. Establish `h1 : ‖θ g h‖ ≤ |C| * (ht g : ℝ) ^ k * (qht h : ℝ) ^ k`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Monotone.map_ciInf_of_continuousAt (f := fun x : ℝ≥0 => |C| * (ht g : ℝ) ^ k * (x : ℝ) ^ k) (g := fun γ : ratU σ W.J => ht (γ.1 * h)) (by fun_prop) (fun x y hxy => by` as an intermediate fact. Establish `: (x : ℝ) ≤ y` using `hxy`. Simplify using `only`. Use the proof step `gcongr) (OrderBot.bddBelow _)`. Use `le_of_le_of_eq (le_ciInf fun γ => ?_) this.symm` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Simplify by unfolding definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hi 1 (one_mem _) γ.1 γ.2, one_mul, mul_assoc, ← mul_pow]`. Conclude with `(hC _ _).trans (mul_le_mul_of_nonneg_right (le_abs_self C) (by positivity))`. Rewrite using `[norm_mul, norm_star]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem Ker.bd (hθ : Ker θ) (hφ : IsRapid φ) : ∃ (K : ℝ) (k : ℕ), 0 ≤ K ∧ ∀ g h, ‖φ h * star (θ g h)‖ ≤ K * (ht g : ℝ) ^ k := by
   obtain ⟨-, hi, C, k, hC⟩ := hθ
@@ -53,13 +53,13 @@ theorem Ker.bd (hθ : Ker θ) (hφ : IsRapid φ) : ∃ (K : ℝ) (k : ℕ), 0 �
     _ = _ := by ring
 
 /- English proof (translation)
-The claim follows from `(hφ.1.mul (hθ.1.comp (Continuous.prodMk_right g)).star).aestronglyMeasurable`.
+A detailed English derivation is pending.
 -/
 theorem Ker.meas (hθ : Ker θ) (hφ : IsRapid φ) (g) : AEStronglyMeasurable (fun h => φ h * star (θ g h)) (μ.restrict D) :=
   (hφ.1.mul (hθ.1.comp (Continuous.prodMk_right g)).star).aestronglyMeasurable
 
 /- English proof (translation)
-Take `⟨K, k, -, hK⟩` from `hθ.bd hφ`. Conclude with `Measure.integrableOn_of_bounded hD.ne (hφ.1.mul (hθ.1.comp (Continuous.prodMk_right g)).star).aestronglyMeasurable (Eventually.of_forall (hK g))`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Ker.int (hθ : Ker θ) (hφ : IsRapid φ) (hD : μ D < ⊤) (g) : IntegrableOn (fun h => φ h * star (θ g h)) D μ := by
   obtain ⟨K, k, -, hK⟩ := hθ.bd hφ
@@ -67,9 +67,9 @@ theorem Ker.int (hθ : Ker θ) (hφ : IsRapid φ) (hD : μ D < ⊤) (g) : Integr
     (Eventually.of_forall (hK g))
 
 /- English proof (translation)
-Take `⟨K, k, h0, hK⟩` from `hθ.bd hφ`. Use `continuous_iff_continuousAt.2 fun g => ?_` and prove the remaining obligations. Take `⟨Ω, hΩ, hg⟩` from `exists_compact_mem_nhds g`. Take `⟨C, hC⟩` from `hb Ω hΩ`. Use `continuousAt_of_dominated (bound := fun _ => K * (C : ℝ) ^ k) (Eventually.of_forall (hθ.meas hφ)) ?_ (integrableOn_const hD.ne) (Eventually.of_forall fun h => ?_)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `filter_upwards [hg] with x hx`. Use `Eventually.of_forall fun h => (hK x h).trans ?_` and prove the remaining obligations. Establish `: (ht x : ℝ) ≤ C` using `hC x hx`. Use `gcongr`. Conclude with `(continuous_const.mul (hθ.1.comp (Continuous.prodMk_left h)).star).continuousAt`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem Ker.cont [LocallyCompactSpace (UA σ X.J)] [FirstCountableTopology (UA σ X.J)]
     (hb : ∀ Ω : Set (UA σ X.J), IsCompact Ω → ∃ C : ℝ≥0, ∀ g ∈ Ω, ht g ≤ C) (hθ : Ker θ) (hφ : IsRapid φ) (hD : μ D < ⊤) :
@@ -87,14 +87,14 @@ theorem Ker.cont [LocallyCompactSpace (UA σ X.J)] [FirstCountableTopology (UA �
   · exact (continuous_const.mul (hθ.1.comp (Continuous.prodMk_left h)).star).continuousAt
 
 /- English proof (translation)
-Rewrite using `[theta, theta, ← Module.End.mul_apply, ← map_mul]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem theta_act (om : Rep σ X W) (Ψ : Fn F n d) (u g : UA σ X.J) (h x : UA σ W.J) :
     theta om (om (u, h) Ψ) g x = theta om Ψ (g * u) (x * h) := by
   rw [theta, theta, ← Module.End.mul_apply, ← map_mul]; rfl
 
 /- English proof (translation)
-Simplify using `only [theta, map_add]`. Conclude with `thetaSum_add F (hp _ _ hΦ) (hp _ _ hΨ)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem theta_add {om : Rep σ X W} (hp : ∀ x, ∀ Ψ ∈ schA F (Fin n × Fin d), om x Ψ ∈ schA F _) {Φ Ψ : Fn F n d} (hΦ : Φ ∈ schA F _)
     (hΨ : Ψ ∈ schA F _) (g h) : theta om (Φ + Ψ) g h = theta om Φ g h + theta om Ψ g h := by
@@ -102,17 +102,17 @@ theorem theta_add {om : Rep σ X W} (hp : ∀ x, ∀ Ψ ∈ schA F (Fin n × Fin
   exact thetaSum_add F (hp _ _ hΦ) (hp _ _ hΨ)
 
 /- English proof (translation)
-Simplify using `only [theta, map_smul, thetaSum_smul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem theta_smul (om : Rep σ X W) (c : ℂ) (Φ : Fn F n d) (g h) : theta om (c • Φ) g h = c * theta om Φ g h := by
   simp only [theta, map_smul, thetaSum_smul]
 
 /- English proof (translation)
-Take `⟨q, hq⟩` from `P.subtype.exists_leftInverse_of_injective P.ker_subtype`. Take `⟨q', hq'⟩` from `(schA F (Fin n × Fin d)).subtype.exists_leftInverse_of_injective (Submodule.ker_subtype _)`. Establish `i` using `fun (a : Q) (b : Fn F n d) => (hk _ (q' b).2).int (hr _ (q a).2) hD g`. Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun a b => th om μ D (C (q a)) (q' b) g) (fun a a' b => ?_) (fun c a b => ?_) (fun a b b' => ?_) fun c a b => ?_, fun Φ hΦ Ψ hΨ => ?_⟩` and prove the remaining obligations. Simplify using `only [th, pet, map_add, Submodule.coe_add, Pi.add_apply, add_mul]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `integral_add (i a b) (i a' b)`. Simplify using `only [th, pet, map_smul, Submodule.coe_smul, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul, RingHom.id_apply]`. Simplify using `only [th, pet, map_add, Submodule.coe_add, theta_add hp (q' b).2 (q' b').2, star_add, mul_add]`. Conclude with `integral_add (i a b) (i a b')`. Simplify using `only [th, pet, map_smul, Submodule.coe_smul, theta_smul, star_mul', smul_eq_mul, mul_left_comm _ (star c), integral_const_mul]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Establish `e : q Φ = ⟨Φ, hΦ⟩` using `LinearMap.congr_fun hq ⟨Φ, hΦ⟩`. Establish `e' : q' Ψ = ⟨Ψ, hΨ⟩` using `LinearMap.congr_fun hq' ⟨Ψ, hΨ⟩`. Express the relevant statement in the definitionally equal form `th om μ D (C (q Φ)) (q' Ψ) g = _`. Rewrite using `[e, e']`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_form {om : Rep σ X W} (hp : ∀ x, ∀ Ψ ∈ schA F (Fin n × Fin d), om x Ψ ∈ schA F _)
     (hk : ∀ Ψ ∈ schA F (Fin n × Fin d), Ker (theta om Ψ)) (hD : μ D < ⊤) {Q : Type} [AddCommGroup Q] [Module ℂ Q]
@@ -137,7 +137,7 @@ theorem exists_form {om : Rep σ X W} (hp : ∀ x, ∀ Ψ ∈ schA F (Fin n × F
     rw [e, e']
 
 /- English proof (translation)
-Simplify using `only [th, pet, theta_act, mul_one]`. Conclude with `PositivityTheory.ThKF.L2.integral_right hD (fun x => φ x * star (theta om Ψ g x)) (fun γ hγ x => by`. Rewrite using `[hφ.2.1 γ hγ, ← hθ.2.1 1 (one_mem _) γ hγ g x, one_mul]) h`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_right [μ.IsHaarMeasure] [μ.IsMulRightInvariant] [Countable (ratU σ W.J)] (hD : IsFundamentalDomain (ratU σ W.J) D μ)
     {om : Rep σ X W} {Ψ : Fn F n d} (hθ : Ker (theta om Ψ)) (hφ : IsRapid φ) (g h) :
@@ -147,7 +147,7 @@ theorem th_right [μ.IsHaarMeasure] [μ.IsMulRightInvariant] [Countable (ratU σ
     rw [hφ.2.1 γ hγ, ← hθ.2.1 1 (one_mem _) γ hγ g x, one_mul]) h
 
 /- English proof (translation)
-Take `⟨C, hC⟩` from `((LinearMap.ker f).liftQ g h ∘ₗ f.quotKerEquivRange.symm.toLinearMap).exists_extend`. Use `⟨C, fun x => (LinearMap.congr_fun hC ⟨f x, x, rfl⟩).trans ?_⟩` and prove the remaining obligations. Conclude with `congrArg ((LinearMap.ker f).liftQ g h) (f.quotKerEquivRange_symm_apply_image x ⟨x, rfl⟩)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_fac {P A Z : Type} [AddCommGroup P] [Module ℂ P] [AddCommGroup A] [Module ℂ A] [AddCommGroup Z] [Module ℂ Z]
     (f : P →ₗ[ℂ] A) (g : P →ₗ[ℂ] Z) (h : ∀ x, f x = 0 → g x = 0) : ∃ C : A →ₗ[ℂ] Z, ∀ x, C (f x) = g x := by

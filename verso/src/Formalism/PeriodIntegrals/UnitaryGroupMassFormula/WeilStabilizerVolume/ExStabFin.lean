@@ -6,7 +6,7 @@ noncomputable section
 namespace PI.VolStabW
 
 /- English proof (translation)
-The claim follows from `exStab_of_U secCtblW_holds lcscPolish_holds hO hI hF hN`.
+A detailed English derivation is pending.
 -/
 theorem exStab_of_orb (hO : OrbTup) (hI : NuInv) (hF : NuFin) (hN : NuNeZero) : ExStab :=
   exStab_of_U secCtblW_holds lcscPolish_holds hO hI hF hN

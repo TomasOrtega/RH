@@ -18,11 +18,9 @@ open GlobalTheory.MixModel
 variable {D : D7}
 
 /- English proof (translation)
-Establish `hq : d.qX * d.e = 1` using `d.e'e`. Use `⟨⟨hρ, ?_, ?_⟩, ?_, ?_, d.rank_add.symm⟩` and prove the remaining obligations. Conclude with `Matrix.mulVec_injective_iff.1 fun x y h => by`. Use `congrArg (d.qX *ᵥ ·) h` as an intermediate fact. Simplify `this` using `only [Matrix.mulVec_mulVec, hq, Matrix.one_mulVec]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[cT_sig]`. Conclude with `d.ee`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj, cT_sig]`. Conclude with `d.iso`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj, cT_sig]`.
-
-Apply `rat_injective` to reduce the goal to its premises. Rewrite using `[rat_mul, rat_mul, rat_conjTranspose, rat_zero, Matrix.mul_assoc]`. Conclude with `d.wittDecomp_gram_X_anisotropic`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isIsoSplit_hyp {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (hρ : 0 < ρ) :
     GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit S S₀ d.e d.i₀ := by
@@ -40,19 +38,17 @@ theorem isIsoSplit_hyp {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (hρ :
 
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply `Subgroup.subset_closure` to reduce the goal to its premises. Establish `hm1 : (mt S g - 1) ⬝ d.jX = 0` using `by rw [Matrix.sub_mul, h1, Matrix.one_mul, sub_self]`. Establish `hm0 : (mt S g - 1) ⬝ d.j0 = d.jX ⬝ B` using `by rw [Matrix.sub_mul, h3, Matrix.one_mul, add_sub_cancel_left]`. Use `⟨hm1, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[cT_sig]`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `d.pY ⬝ (mt S g - 1) = 0`. Rewrite using `[Matrix.mul_sub, h2, Matrix.mul_one, sub_self]`. Introduce `x hx`. Rewrite `hx` using `[cT_sig]`. Use `⟨B *ᵥ (d.p0 *ᵥ fun i => incA D (x i)), ?_⟩` and prove the remaining obligations.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hv : d.pY *ᵥ (fun i => incA D (x i)) = 0`. Use function extensionality and compare the values at `i`. Use `RingHom.map_mulVec (incA D) d.qY x i` as an intermediate fact. Express the relevant statement in the definitionally equal form `incA D (((d.eᴴ * HSpace.gram S) *ᵥ x) i) = _ at this`. Rewrite `this` using `[hx, Pi.zero_apply, map_zero]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `this.symm`. Establish `hsum : (fun i => incA D (x i)) = d.jX *ᵥ (d.pX *ᵥ fun i => incA D (x i)) + d.j0 *ᵥ (d.p0 *ᵥ fun i => incA D (x i))`. Establish `h` using `congrArg (· *ᵥ fun i => incA D (x i)) d.sum_eq_one`. Simplify using `only [Matrix.add_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, hv, Matrix.mulVec_zero, add_zero] at h`. Conclude with `h.symm`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hX : ∀ a, mt S g *ᵥ (d.jX *ᵥ a) = d.jX *ᵥ a` using `fun a => by rw [Matrix.mulVec_mulVec, h1]`. Establish `h0 : ∀ a, mt S g *ᵥ (d.j0 *ᵥ a) = d.j0 *ᵥ a + d.jX *ᵥ (B *ᵥ a)` using `fun a => by`. Rewrite using `[Matrix.mulVec_mulVec, h3, Matrix.add_mulVec, Matrix.mulVec_mulVec]`. Establish `final : (mt S g - 1) *ᵥ (fun i => incA D (x i)) = d.jX *ᵥ (B *ᵥ (d.p0 *ᵥ fun i => incA D (x i)))`. Establish `hs` using `Matrix.sub_mulVec (mt S g) (1 : Matrix (Fin S.rank) (Fin S.rank) (AE D)) (fun i => incA D (x i))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hs` using `[Matrix.one_mulVec]`. Rewrite using `[hs]`. Use `conv_lhs => rw [hsum]`. Rewrite using `[Matrix.mulVec_add, hX, h0]`. Normalize the expressions using the abelian group laws.
-
-Conclude with `final`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem mem_NI_hyp {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (g : GA D S) (h1 : mt S g ⬝ d.jX = d.jX)
     (h2 : d.pY ⬝ mt S g = d.pY) (B : Mx D ρ S₀.rank) (h3 : mt S g ⬝ d.j0 = d.j0 + d.jX ⬝ B) : g ∈ NI S d.e := by
@@ -96,7 +92,7 @@ open GlobalTheory.MixModel
 variable {D : D7}
 
 /- English proof (translation)
-Rewrite using `[HypDec.matrixExtendByZero_apply]`. Unfold `GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart`. Simplify using `only [GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.adj, cT_sig, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem orthProjPartHomToHermitian_eq_wittDecompositionCore {S S₀ : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (T : HSp D) (w : WO S₀ T) :
     GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart S S₀ T d.i₀ w = d.ext0 T w := by
@@ -106,7 +102,7 @@ theorem orthProjPartHomToHermitian_eq_wittDecompositionCore {S S₀ : HSp D} {ρ
   rfl
 
 /- English proof (translation)
-Rewrite using `[d.integrandS_eq]`. Simplify using `only [heisO]`. Rewrite using `[GlobalTheory.OrientedHeis.symplOH_add_left, symplOH_skew S T (d.extX T x) (d.ext0 T w), d.wittDecomp_sympl_extIsotropic_extAnisotropic T x w, neg_zero, add_zero, add_right_comm]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem integrand_eq {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (ψ : AddChar (AF D.host.F) ℂ) (f : WO S T → ℂ)
     (x a : Mx D T.rank ρ) (w : WO S₀ T) :
@@ -118,7 +114,7 @@ theorem integrand_eq {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (ψ : 
     neg_zero, add_zero, add_right_comm]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [HypDec.mixS, GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res, orthProjPartHomToHermitian_eq_wittDecompositionCore]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Conclude with `integrand_eq d ψ f x a w`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem mixS_eq_res {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (ψ : AddChar (AF D.host.F) ℂ)
     (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) :
@@ -130,9 +126,9 @@ theorem mixS_eq_res {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (ψ : A
   exact integrand_eq d ψ f x a w
 
 /- English proof (translation)
-Use function extensionality and compare the values at `w`. Simplify using `only [HypDec.mixS]`. Use `congr 1`. Use function extensionality and compare the values at `a`. Rewrite using `[integrand_eq d ψ f x a w, integrand_eq d ψ _ 0 a w, map_zero]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [heisO, add_zero, GlobalTheory.OrientedHeis.symplOH_add_left]`. Rewrite using `[symplOH_skew S T 0 (d.extY T a), symplOH_skew S T 0 (d.ext0 T w)]`. Simplify using `only [symplOH_zero_left, neg_zero, zero_add, AddChar.map_zero_eq_one, one_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem mixS_heis {S S₀ T : HSp D} {ρ : ℕ} (d : HypDec S S₀ ρ) (ψ : AddChar (AF D.host.F) ℂ)
     (μ : Measure (Mx D T.rank ρ)) (𝓕 : Set (Mx D T.rank ρ)) (f : WO S T → ℂ) (x : Mx D T.rank ρ) :
@@ -153,7 +149,7 @@ namespace GlobalTheory.Bridge
 open GlobalTheory.MixModel
 
 /- English proof (translation)
-Introduce `D ψ S S₀ T ρ d`. Conclude with `⟨isIsoSplit_hyp d, rfl, fun _ => rfl, fun _ => rfl, orthProjPartHomToHermitian_eq_wittDecompositionCore d T, fun μ 𝓕 f x => mixS_eq_res d ψ μ 𝓕 f x, fun μ 𝓕 f x => mixS_heis d ψ μ 𝓕 f x, fun b => mem_NI_hyp d _ (d.nB_jX b) (d.pY_nB b) b (d.nB_j0 b), fun c => mem_NI_hyp d _ (d.nC_ …`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 -/
 theorem heis_bridge : ∀ (D : D7) (ψ : AddChar (AF D.host.F) ℂ) (S S₀ T : HSp D) (ρ : ℕ) (d : HypDec S S₀ ρ), (0 < ρ → GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.IsIsoSplit S S₀ d.e d.i₀) ∧ GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.ratMx D T.rank ρ = ratMx D T.rank ρ ∧ (∀ y, GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart S T d.e y = d.extY T y) ∧ (∀ y, GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.isoPart S T d.e' y = d.extX T y) ∧ (∀ w, GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.midPart S S₀ T d.i₀ w = d.ext0 T w) ∧ (∀ μ 𝓕 f x, d.mixS T ψ μ 𝓕 f x = GlobalTheory.IndefiniteRowSideFullHecke.AdjointIsotropicDecomposition.res S S₀ T d.e d.i₀ μ 𝓕 (heisO ψ S T (d.extX T x) f)) ∧ (∀ μ 𝓕 f x, d.mixS T ψ μ 𝓕 f x = d.mixS T ψ μ 𝓕 (heisO ψ S T (d.extX T x) f) 0) ∧ (∀ b, d.nB b ∈ NI S d.e) ∧ ∀ c, d.nC c ∈ NI S d.e := by
   intro D ψ S S₀ T ρ d

@@ -15,15 +15,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.SemiAbKer
 
 /- English proof (translation)
-Introduce `R _ G _ _ hG N hN`. Use `hG.smooth` as an intermediate fact. Use `hG.separated` as an intermediate fact. Use `hG.quasiCompact` as an intermediate fact. Use `set f : G.left ⟶ G.left := ((𝟙 G) ^ N : G ⟶ G).left with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `set e : Sp R ⟶ G.left := η[G].left with he`. Establish `hfw : f ≫ G.hom = G.hom` using `Over.w _`. Establish `hew : e ≫ G.hom = 𝟙 _` using `Over.w η[G]`. Establish `hπ : pullback.fst f e ≫ G.hom = pullback.snd f e`. Rewrite using `[← hfw, ← Category.assoc, pullback.condition, Category.assoc, hew, Category.comp_id]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hfl, hqf⟩` from `GlobalTheory.SemiAbMulFlat.flat_and_locallyQuasiFinite_pow _ G hG N hN`. Establish `: LocallyOfFinitePresentation (f ≫ G.hom)` using `by rw [hfw]; infer_instance`. Establish `: LocallyOfFinitePresentation f` using `GlobalTheory.TangentCrit.locallyOfFinitePresentation_of_comp f G.hom`. Establish `: QuasiCompact (f ≫ G.hom)` using `by rw [hfw]; infer_instance`. Establish `: QuasiCompact f` using `QuasiCompact.of_comp f G.hom`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: IsSeparated (f ≫ G.hom)` using `by rw [hfw]; infer_instance`. Establish `: IsSeparated f` using `IsSeparated.of_comp f G.hom`. Establish `: Flat f` using `hfl`. Establish `: LocallyQuasiFinite f` using `hqf`. Rewrite using `[hπ]`.
-
-Use `⟨inferInstance, inferInstance, inferInstance, inferInstance, ?_, inferInstance⟩` and prove the remaining obligations. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem kernel_props : ∀ (R : Type) [CommRing R] (G : Over (Sp R)) [GrpObj G] [IsCommMonObj G], IsSemiAbelian G → ∀ (N : ℕ), N ≠ 0 →
     IsSeparated (pullback.fst ((𝟙 G) ^ N : G ⟶ G).left η[G].left ≫ G.hom) ∧

@@ -21,17 +21,17 @@ def cell (ω : Set (GA E n)) (t₀ : ℝ) (m : Fin n → ℤ) : Set (H E n 0) :=
     ∃ k ∈ maxCompact (K := E) (n := n), y.1 = b * An.tor E x * k}
 
 /- English proof (translation)
-Introduce `n t₀ x ht hA i j hij`. Establish `key : ∀ d : ℕ, ∀ i j : Fin n, (j : ℕ) = i + d → x j ≤ x i + d * t₀`. Introduce `d`. Proceed by induction on `d with`. Consider the case `zero`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Introduce `i j h`. Establish `: j = i` using `Fin.ext (by simpa using h)`. Simplify using `[this]`. Consider the case `succ d ih`. Introduce `i j h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hj : (j : ℕ) < n` using `j.2`. Establish `h1` using `ih i ⟨i + d, by omega⟩ rfl`. Establish `h2` using `hA j`. Unfold `An.sr at h2`. Rewrite `h2` using `[dif_pos ⟨by omega, j.2⟩]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e : (⟨(j : ℕ) - 1, by omega⟩ : Fin n) = ⟨i + d, by omega⟩` using `Fin.ext (by simp only; omega)`. Rewrite `h2` using `[e]`. Simplify using `only [Fin.eta] at h2`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `h1` using `key (j - i) i j (by have := Fin.le_def.1 hij; omega)`. Establish `h2 : (((j : ℕ) - i : ℕ) : ℝ) ≤ n`. Establish `: (j : ℕ) - i ≤ n` using `by have := j.2; omega`. Conclude with `this` after adjusting the coercions. Use `mul_le_mul_of_nonneg_right h2 ht` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion.
+A detailed English derivation is pending.
 -/
 theorem admissible_coordinates_bounded_rise : AdmLe := by
   intro n t₀ x ht hA i j hij

@@ -21,37 +21,35 @@ def FinGradedSub.cellCone (I : StdCell N) : LocMod S N M.coneSub I.1 →ₗ[Poly
   if h : I.1 ⊆ support x then locCone M I.1 h else 0
 
 /- English proof (translation)
-The claim follows from `dif_pos h`.
+A detailed English derivation is pending.
 -/
 theorem FinGradedSub.cellCone_of_subset {I : StdCell N} (h : I.1 ⊆ support x) :
     M.cellCone I = locCone M I.1 h := dif_pos h
 
 /- English proof (translation)
-Rewrite using `[Cech.sgn, ← mul_pow, neg_one_mul, neg_neg, one_pow]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Cech.sgn_mul_self {n : ℕ} (J : Finset (Fin n)) (j : Fin n) : Cech.sgn J j * Cech.sgn J j = 1 := by
   rw [Cech.sgn, ← mul_pow, neg_one_mul, neg_neg, one_pow]
 
 /- English proof (translation)
-Take `⟨a, ha⟩` from `Finset.card_eq_one.mp K.2`. Take `⟨b, hb⟩` from `Finset.card_eq_one.mp K'.2`. Distinguish the cases in `hab : a = b`. Establish `: K = K'` using `Subtype.ext (Subtype.ext (ha.trans (hab ▸ hb.symm)))`. Substitute `this` using the available equality.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Substitute using the available equality.
 
-Both sides reduce to the same expression. Set `Kp : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) 1` to `⟨⟨{a, b}, Finset.insert_nonempty _ _, Finset.subset_univ _⟩, Finset.card_pair hab⟩`. Establish `hKp : Kp.1.1 ⊆ support x`. Introduce `i hi`. Break down `Finset.mem_insert.mp hi with rfl | hi` into its components or cases.
+Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Conclude with `hK (by rw [ha]; exact Finset.mem_singleton_self _)`. Conclude with `hK' (by rw [hb]; exact hi)`. Establish `hfa : ∀ j : Kp.1.1, (j : Fin (N + 1)) = a → Cech.face Kp j = K'`. Introduce `j hj`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Express the relevant assertion in an equivalent form by its definition.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `({a, b} : Finset (Fin (N + 1))).erase j = K'.1.1`. Rewrite using `[hj, hb, Finset.erase_insert (Finset.notMem_singleton.mpr hab)]`. Establish `hfb : ∀ j : Kp.1.1, (j : Fin (N + 1)) = b → Cech.face Kp j = K`. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Apply `Subtype.ext` to reduce the goal to its premises. Express the relevant statement in the definitionally equal form `({a, b} : Finset (Fin (N + 1))).erase j = K.1.1`. Rewrite using `[hj, ha, Finset.pair_comm, Finset.erase_insert (Finset.notMem_singleton.mpr (Ne.symm hab))]`. Establish `h0` using `congrArg (M.cellCone Kp.1) (congrFun hz Kp)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h0` using `[Cech.d_apply, map_sum, Pi.zero_apply, map_zero]`. Establish `hterm : ∀ j : Kp.1.1, M.cellCone Kp.1 (Cech.sgn Kp.1.1 j • locResS (Cech.face Kp j).1 Kp.1 (Cech.face_subset Kp j) (z (Cech.face Kp j))) = Cech.sgn Kp.1.1 j • M.cellCone (Cech.face Kp j).1 (z (Cech.face Kp j))`. Introduce `j`. Rewrite using `[map_zsmul, M.cellCone_of_subset hKp, M.cellCone_of_subset ((Cech.face_subset Kp j).trans hKp)]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `locCone_locRes M (Cech.face_subset Kp j) hKp _`. Rewrite `h0` using `[Finset.sum_congr rfl fun j _ => hterm j]`. Rewrite `h0` using `[Fintype.sum_eq_add (⟨a, Finset.mem_insert_self a {b}⟩ : Kp.1.1) (⟨b, Finset.mem_insert_of_mem (Finset.mem_singleton_self b)⟩ : Kp.1.1) (fun h => hab (congrArg Subtype.val h)) (fun j hj => ?_)]`. Rewrite `h0` using `[hfa ⟨a, Finset.mem_insert_self a {b}⟩ rfl, hfb ⟨b, Finset.mem_insert_of_mem (Finset.mem_singleton_self b)⟩ rfl]`. Establish `hs : Cech.sgn Kp.1.1 b = -Cech.sgn Kp.1.1 a`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Use `Cech.sum_sgn_of_card_two (J := Kp.1.1) Kp.2` as an intermediate fact. Rewrite `this` using `[show Kp.1.1 = {a, b} from rfl, Finset.sum_pair hab]`. Combine the linear equalities and inequalities to obtain the conclusion. Express the relevant statement in the definitionally equal form `Cech.sgn Kp.1.1 a • M.cellCone K'.1 (z K') + Cech.sgn Kp.1.1 b • M.cellCone K.1 (z K) = 0 at h0`. Rewrite `h0` using `[hs, neg_smul, ← sub_eq_add_neg, ← smul_sub]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. It suffices to derive a contradiction.
 
-Establish `h1` using `congrArg (Cech.sgn Kp.1.1 a • ·) h0`. Simplify using `only [smul_smul, Cech.sgn_mul_self, one_smul, smul_zero] at h1`. Conclude with `(sub_eq_zero.mp h1).symm`. It suffices to derive a contradiction. Break down `Finset.mem_insert.mp j.2 with h | h` into its components or cases.
-
-Conclude with `hj.1 (Subtype.ext h)`. Conclude with `hj.2 (Subtype.ext (Finset.mem_singleton.mp h))`.
+Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem FinGradedSub.cellCone_cocycle {z : Cech.Cochain (locSys S N M.coneSub) 0}
     (hz : Cech.d (locSys S N M.coneSub) locResS 0 z = 0)
@@ -111,11 +109,11 @@ theorem FinGradedSub.cellCone_cocycle {z : Cech.Cochain (locSys S N M.coneSub) 0
     · exact hj.2 (Subtype.ext (Finset.mem_singleton.mp h))
 
 /- English proof (translation)
-Take `⟨v, -, hzv⟩` from `locCone_degLoc M c K.1 hK (hz.2 K (Set.mem_univ _))`. Rewrite `hzv` using `[← M.cellCone_of_subset hK]`. Use `⟨v, ?_, hzv⟩` and prove the remaining obligations. Rewrite using `[SubSystem.secs, Submodule.mem_iInf]`. Introduce `J`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨i, hi⟩` from `J.2.1`. Set `Ki : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) 0` to `⟨⟨{i}, Finset.singleton_nonempty i, Finset.subset_univ _⟩, Finset.card_singleton i⟩`. Establish `hKi : Ki.1.1 ⊆ support x` using `Finset.singleton_subset_iff.mpr (J.2.2 hi)`. Take `⟨v', hv', hzv'⟩` from `locCone_degLoc M c Ki.1 hKi (hz.2 Ki (Set.mem_univ _))`. Rewrite `hzv'` using `[← M.cellCone_of_subset hKi, ← M.cellCone_cocycle (LinearMap.mem_ker.mp hz.1) K Ki hK hKi, hzv]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hvv : v = v'`. Use `congrArg (coeffAt S x c) hzv'` as an intermediate fact. Rewrite `this` using `[coeffAt_coneSingle_same, coeffAt_coneSingle_same]`. Then use the resulting hypothesis. Rewrite using `[hvv]`. Conclude with `(M.tildeSys c).mono _ J (Finset.singleton_subset_iff.mpr hi) v' hv'`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem FinGradedSub.cocycle_eq_coneSingle {c : ℤ} {z : Cech.Cochain (locSys S N M.coneSub) 0}
     (hz : z ∈ Cech.cocyDeg (locSys S N M.coneSub) (degLoc M.coneGraded c) locResS 0)
@@ -139,17 +137,15 @@ theorem FinGradedSub.cocycle_eq_coneSingle {c : ℤ} {z : Cech.Cochain (locSys S
   exact (M.tildeSys c).mono _ J (Finset.singleton_subset_iff.mpr hi) v' hv'
 
 /- English proof (translation)
-Rewrite `hv` using `[SubSystem.secs, Submodule.mem_iInf]`. Establish `hl : ∀ (I : StdCell N) (h : I.1 ⊆ support x), ∃ z ∈ degLoc M.coneGraded c I, locCone M I.1 h z = coneSingle S x c v` using `fun I h => exists_locCone_eq M c I h (hv ⟨I.1, I.2.1, h⟩)`. Use `choose w hw hwv using hl`. Set `u : ∀ I : StdCell N, LocMod S N M.coneSub I.1` to `fun I => if h : I.1 ⊆ support x then w I h else 0`. Establish `hcompat : ∀ (I J : StdCell N) (h : I.1 ⊆ J.1), locResS I J h (u I) = u J`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `I J h`. Distinguish the cases in `hJ : J.1 ⊆ support x`. Apply `locCone_injective M J.1 hJ` to reduce the goal to its premises. Establish `hI : I.1 ⊆ support x` using `h.trans hJ`. Simplify using `only [u, dif_pos hJ, dif_pos hI]`.
+Consider separately whether the proposition holds or fails. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hwv J hJ]`. Conclude with `(locCone_locRes M h hJ (w I hI)).trans (hwv I hI)`. Choose the witnesses or unpack the hypotheses as in `⟨i, hiJ, hi⟩ : ∃ i ∈ J.1, x i = 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `hJ fun i hi => (mem_support x).mpr (hne i hi)`. Use `locMod_subsingleton M hiJ hi` as an intermediate fact. Conclude with `Subsingleton.elim _ _`. Use `⟨fun K => u K.1, ⟨LinearMap.mem_ker.mpr (Cech.d_zero_of_compat u hcompat), fun K _ => ?_⟩, fun K hK => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `u K.1 ∈ degLoc M.coneGraded c K.1`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 
-Distinguish the cases in `hK : K.1.1 ⊆ support x`. Simplify using `only [u, dif_pos hK]`. Conclude with `hw K.1 hK`. Simplify using `only [u, dif_neg hK]`. Conclude with `zero_mem _`.
-
-Express the relevant statement in the definitionally equal form `M.cellCone K.1 (u K.1) = _`. Simplify using `only [u, dif_pos hK, M.cellCone_of_subset hK]`. Conclude with `hwv K.1 hK`.
+A detailed English derivation is pending.
 -/
 theorem FinGradedSub.exists_cocycle_of_mem_secs {c : ℤ} {v : Ω} (hv : v ∈ (M.tildeSys c).secs) :
     ∃ z ∈ Cech.cocyDeg (locSys S N M.coneSub) (degLoc M.coneGraded c) locResS 0,
@@ -190,37 +186,31 @@ theorem FinGradedSub.exists_cocycle_of_mem_secs {c : ℤ} {v : Ω} (hv : v ∈ (
 end Cocycles
 
 /- English proof (translation)
-Introduce `S _ _ Ω _ _ N x M hx c₁`. Choose the witnesses or unpack the hypotheses as in `⟨i₀, hi₀⟩ : ∃ i, x i ≠ 0 := by`. Assume the negation of the conclusion as `hne`. Use `push Not at hne`. Conclude with `hx (funext hne)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `K₀ : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) 0` to `⟨⟨{i₀}, Finset.singleton_nonempty i₀, Finset.subset_univ _⟩, Finset.card_singleton i₀⟩`. Establish `hK₀ : K₀.1.1 ⊆ support x` using `Finset.singleton_subset_iff.mpr ((mem_support x).mpr hi₀)`. Set `Ψ : Cech.Cochain (locSys S N M.coneSub) 0 →ₗ[Poly S N] ConeLaurent S x` to `(M.cellCone K₀.1).comp (LinearMap.proj (R := Poly S N) (φ := fun K : Cech.Idx (Finset.univ : Finset (Fin (N + 1))) 0 => LocMod S N M.coneSub K.1.1) K₀)`. Establish `hΨ : ∀ z, Ψ z = M.cellCone K₀.1 (z K₀)` using `fun z => rfl`. Take `⟨t, ht, hspan⟩` from `h S N M.coneSub M.coneGraded M.coneSub_finite c₁`.
+Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Set `G : Submodule S (Cech.Cochain (locSys S N M.coneSub) 0)` to `{ carrier := {z | ∀ d, coeffAt S x d (Ψ z) ∈ (M.tildeSys d).secs ∧ (d < c₁ → coeffAt S x d (Ψ z) = 0)} add_mem' := fun {a b} ha hb d => by`. Rewrite using `[map_add, map_add]`. Conclude with `⟨add_mem (ha d).1 (hb d).1, fun hd => by rw [(ha d).2 hd, (hb d).2 hd, add_zero]⟩`. Use the proof step `zero_mem' := fun d => by rw [map_zero, map_zero]; exact ⟨zero_mem _, fun _ => rfl⟩`. Use the proof step `smul_mem' := fun s z hz d => by`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[LinearMap.map_smul_of_tower, map_smul]`. Conclude with `⟨Submodule.smul_mem _ s (hz d).1, fun hd => by rw [(hz d).2 hd, smul_zero]⟩ }`. Establish `hG : H0tail M.coneGraded c₁ ≤ G`. Use `iSup₂_le fun c hc z hz => ?_` and prove the remaining obligations. Use `show ∀ d, coeffAt S x d (Ψ z) ∈ (M.tildeSys d).secs ∧ (d < c₁ → coeffAt S x d (Ψ z) = 0)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Introduce `d`. Take `⟨v, hv, hzv⟩` from `M.cocycle_eq_coneSingle hz K₀ hK₀`. Rewrite using `[hΨ, hzv]`. Distinguish the cases in `hcd : c = d`. Substitute `hcd` using the available equality.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact.
 
-Rewrite using `[coeffAt_coneSingle_same]`. Conclude with `⟨hv, fun h => absurd hc (not_le.mpr h)⟩`. Rewrite using `[coeffAt_coneSingle_ne hcd]`. Conclude with `⟨zero_mem _, fun _ => rfl⟩`. Establish `hgood : ∀ z ∈ t, ∀ d, coeffAt S x d (Ψ z) ∈ (M.tildeSys d).secs ∧ (d < c₁ → coeffAt S x d (Ψ z) = 0)` using `fun z hz => hG (ht z hz)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components.
 
-Set `D : Finset ℤ` to `(t.biUnion fun z => coneSupp (Ψ z)).filter (c₁ ≤ ·)`. Set `e` to `(t ×ˢ D).equivFin.symm`. Use `⟨(t ×ˢ D).card, fun j => (e j).1.2, fun j => coeffAt S x (e j).1.2 (Ψ (e j).1.1), fun j => ?_, fun c hc y hy => ?_⟩` and prove the remaining obligations. Establish `hm` using `Finset.mem_product.mp (e j).2`. Conclude with `⟨(Finset.mem_filter.mp hm.2).2, (hgood _ hm.1 _).1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z, hz, hzy⟩` from `M.exists_cocycle_of_mem_secs hy`. Establish `hzt : z ∈ H0tail M.coneGraded c₁` using `(le_iSup₂ (f := fun c (_ : c₁ ≤ c) => Cech.cocyDeg (locSys S N M.coneSub) (degLoc M.coneGraded c) locResS 0) c hc) hz`. Set `Sp : ℤ → Submodule S Ω` to `fun d => Submodule.span S {w | ∃ (j : Fin (t ×ˢ D).card) (f : Poly S N) (k : ℕ), f.IsHomogeneous k ∧ (k : ℤ) + (e j).1.2 = d ∧ w = aeval x f * coeffAt S x (e j).1.2 (Ψ (e j).1.1)}`. Establish `hmulSp : ∀ (f : Poly S N) (k : ℕ), f.IsHomogeneous k → ∀ d, ∀ u ∈ Sp (d - k), aeval x f * u ∈ Sp d`. Introduce `f k hf d u hu`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Use `Submodule.span_induction (p := fun u _ => aeval x f * u ∈ Sp d) ?_ ?_ ?_ ?_ hu` and prove the remaining obligations. Introduce and unpack `_ ⟨j, g, k', hg, hgk, rfl⟩`. Conclude with `Submodule.subset_span ⟨j, f * g, k + k', hf.mul hg, by push_cast; omega, by rw [map_mul, mul_assoc]⟩`. Rewrite using `[mul_zero]`. Conclude with `zero_mem _`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `a b _ _ ha hb`. Rewrite using `[mul_add]`. Conclude with `add_mem ha hb`. Introduce `s a _ ha`. Rewrite using `[mul_smul_comm]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `Submodule.smul_mem _ s ha`. Establish `key : ∀ w ∈ Submodule.span (Poly S N) (t : Set (Cech.Cochain (locSys S N M.coneSub) 0)), ∀ d, coeffAt S x d (Ψ w) ∈ Sp d`. Introduce `w hw`. Use `Submodule.span_induction (p := fun w _ => ∀ d, coeffAt S x d (Ψ w) ∈ Sp d) ?_ ?_ ?_ ?_ hw` and prove the remaining obligations. Introduce `z' hz' d`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Distinguish the cases in `h0 : coeffAt S x d (Ψ z') = 0`. Rewrite using `[h0]`. Conclude with `zero_mem _`. Establish `hd : c₁ ≤ d`. Assume the negation of the conclusion as `hlt`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h0 ((hgood z' hz' d).2 (not_le.mp hlt))`. Establish `hmem : (z', d) ∈ t ×ˢ D` using `Finset.mem_product.mpr ⟨hz', Finset.mem_filter.mpr ⟨Finset.mem_biUnion.mpr ⟨z', hz', mem_coneSupp.mpr h0⟩, hd⟩⟩`. Use `Submodule.subset_span ⟨e.symm ⟨(z', d), hmem⟩, 1, 0, isHomogeneous_one _ _, ?_, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
-
-Introduce `d`. Rewrite using `[map_zero, map_zero]`. Conclude with `zero_mem _`. Introduce `a b _ _ ha hb d`. Rewrite using `[map_add, map_add]`.
-
-Conclude with `add_mem (ha d) (hb d)`. Introduce `p a _ ha d`. Rewrite using `[map_smul, ← sum_homogeneousComponent p, Finset.sum_smul, map_sum]`. Use `Submodule.sum_mem _ fun k _ => ?_` and prove the remaining obligations. Rewrite using `[coeffAt_smul_of_isHomogeneous (homogeneousComponent_isHomogeneous k p)]`.
-
-Conclude with `hmulSp _ k (homogeneousComponent_isHomogeneous k p) d _ (ha (d - k))`. Establish `hyc` using `key z (hspan hzt) c`. Rewrite `hyc` using `[hΨ, hzy K₀ hK₀, coeffAt_coneSingle_same]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem TildeTail.proof (h : SerreTail.Statement.{u, w}) : TildeTail.Statement.{u, w} := by
   classical

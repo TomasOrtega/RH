@@ -13,13 +13,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace MainStatements.Hodge.Free
 
 /- English proof (translation)
-Introduce `R _ A _ g hA hg`. Take `⟨⟨a1, a2, a3⟩, hw, ⟨f1, f2, f3⟩, ⟨o1, o2, -⟩, ⟨hcl, hinj, hsurj⟩, hbc⟩` from `H R A g hA hg`. Set `i` to `formEquiv A.hom hcl hinj`. Establish `hk : Hodge1 A.hom = LinearMap.ker (toHO1 A.hom)` using `(cechHodgeFiltration_eq_range A.hom).symm`. Set `q : (HH1 A.hom ⧸ Hodge1 A.hom) ≃ₗ[R] HO1 A.hom` to `(Submodule.quotEquivOfEq _ _ hk).trans ((toHO1 A.hom).quotKerEquivOfSurjective hsurj)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Use `⟨hw, ⟨⟨a1, a2⟩, a3⟩, ⟨hcl, hinj, ⟨⟨Module.Finite.equiv i, Module.Projective.of_equiv i⟩, fun p ↦ by rw [← Module.rankAtStalk_eq_of_equiv i, f3]⟩, Module.Finite.equiv q.symm, Module.Projective.of_equiv q.symm⟩, ⟨by rw [hk]; exact LinearMap.exact_subtype_ker_map _, hsurj⟩, fun R' _ …` and prove the remaining obligations. Take `⟨b1, ⟨e, he⟩, b3⟩` from `hbc R' X' s' φ h`. Use `⟨b1, ?_, b3⟩` and prove the remaining obligations. Take `⟨_, hA'⟩` from `exists_abelian A hA h`. Establish `hg' : SmoothOfRelativeDimension g (Over.mk s').hom` using `(smoothOfRelativeDimension_isStableUnderBaseChange (n := g)).of_isPullback h hg`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨-, -, -, -, ⟨hcl', hinj', -⟩, -⟩` from `H R' (Over.mk s') g hA' hg'`. Set `i'` to `formEquiv s' hcl' hinj'`. Use `⟨(LinearEquiv.baseChange R R' _ _ i.symm).trans (e.trans i'), fun c ↦ ?_⟩` and prove the remaining obligations. Take `⟨c, rfl⟩` from `i.surjective c`. Establish `k : ((LinearEquiv.baseChange R R' _ _ i.symm).trans (e.trans i')) (1 ⊗ₜ i c) = i' (e (1 ⊗ₜ c))`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Rewrite using `[k]`. Conclude with `IsPullForm.cl (ω := ⟨c, hcl ▸ trivial⟩) (ω' := ⟨e (1 ⊗ₜ c), hcl' ▸ trivial⟩) (he c)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem page_of_hodge (H : GlobalTheory.Published.AbelianHodgeDeRham) : AbelianDeRhamPage := by
   intro R _ A _ g hA hg

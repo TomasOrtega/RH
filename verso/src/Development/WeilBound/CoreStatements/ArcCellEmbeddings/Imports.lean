@@ -17,7 +17,7 @@ def trB [Fintype ι] (H : ι → Matrix (Fin r) (Fin r) ℂ) : LinearMap.BilinFo
     (fun c X Y => by simp [trForm, Finset.mul_sum])
 
 /- English proof (translation)
-Use extensionality with `k l`. Rewrite using `[LinearMap.BilinForm.toMatrix_apply]`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem gram_eq [Fintype ι] {H : ι → Matrix (Fin r) (Fin r) ℂ} {n : ℕ} (b : Module.Basis (Fin n) ℝ (suLie H)) :
     (Matrix.of fun k l => trForm (b k).1 (b l).1) = LinearMap.BilinForm.toMatrix b (trB H) := by

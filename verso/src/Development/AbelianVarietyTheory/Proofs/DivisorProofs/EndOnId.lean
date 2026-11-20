@@ -73,9 +73,9 @@ def Link {T : Scheme.{0}} (x : T ⟶ M.Z) (u : T ⟶ Sp S.R) (A : Over T) [GrpOb
         p ≫ φ = p ≫ A.hom ≫ u ≫ (ρ.pt a).left → p ≫ gm = x' ≫ h
 
 /- English proof (translation)
-Establish `e : w ≫ A.hom = A'.hom ≫ v` using `hw.1.w`. Use `⟨hw.comp h.1, fun f Fm hf T' p p' h₁ h₂ => ?_, fun a Wo s hs T' p x' h₁ h₂ => ?_⟩` and prove the remaining obligations. Use `h.2.1 f Fm hf T' (p ≫ w) (p' ≫ w) (by rw [Category.assoc, Category.assoc, e, reassoc_of% h₁]) (by simpa only [Category.assoc] using h₂)` as an intermediate fact. Simplify `this` using `only [Category.assoc]`. Use `h.2.2 a Wo s hs T' (p ≫ w) x' (by rw [h₁, Category.assoc, reassoc_of% e]) (by rw [Category.assoc, Category.assoc, reassoc_of% e]; simpa only [Category.assoc] using h₂)` as an intermediate fact.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify `this` using `only [Category.assoc]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem Link.pull {T T₁ : Scheme.{0}} {x : T ⟶ M.Z} {u : T ⟶ Sp S.R} {A : Over T} [GrpObj A] {φ : A.left ⟶ ρ.P.A.left}
     {gm : A.left ⟶ FinalForm.G.left} (h : Link FinalForm x u A φ gm) {v : T₁ ⟶ T} {A' : Over T₁} [GrpObj A'] {w : A'.left ⟶ A.left}

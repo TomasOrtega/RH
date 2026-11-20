@@ -12,21 +12,21 @@ open scoped TensorProduct
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E] [Algebra F E] {n : ℕ}
 
 /- English proof (translation)
-Use `Set.Subset.antisymm ?_ Submodule.subset_span` and prove the remaining obligations. Introduce `v hv`. Rewrite `hv` using `[SetLike.mem_coe]`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx => exact hx`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `zero`. Unfold `dualSet`. Introduce `w _`. Use `⟨0, ?_⟩` and prove the remaining obligations. Unfold `hform`.
+Treat this case separately. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions.
 
-Simplify using the standard rewrite rules. Consider the case `add x y hx' hy' hx hy => clear hx' hy'`. Unfold `dualSet at hx hy ⊢`. Introduce `w hw`. Take `⟨a, ha⟩` from `hx w hw`.
+Simplify using the standard rewrite rules. Treat this case separately. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨b, hb⟩` from `hy w hw`. Use `clear hx hy hw`. Use `⟨a + b, ?_⟩` and prove the remaining obligations. Unfold `hform at ha hb ⊢`. Rewrite using `[map_add, ha, hb, ← Finset.sum_add_distrib]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[← Finset.sum_add_distrib]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Pi.add_apply, mul_add]`. Consider the case `smul c x hx' hx => clear hx'`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Replace the relevant objects with their definitions.
 
-Unfold `dualSet at hx ⊢`. Introduce `w hw`. Take `⟨a, ha⟩` from `hx w hw`. Use `⟨c * a, ?_⟩` and prove the remaining obligations. Unfold `hform at ha ⊢`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, ha, Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `Finset.sum_congr rfl (fun j _ => ?_)` and prove the remaining obligations. Rewrite using `[Pi.smul_apply, Algebra.smul_def]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem span_dualSet_eq (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (L : Submodule (𝓞 E) (Fin n → E)) :
     ((Submodule.span (𝓞 E) (dualSet σ J L) : Submodule (𝓞 E) (Fin n → E)) : Set (Fin n → E)) = dualSet σ J L := by
@@ -70,23 +70,21 @@ theorem span_dualSet_eq (σ : E →+* E) (J : Matrix (Fin n) (Fin n) E) (L : Sub
     ring
 
 /- English proof (translation)
-Establish `hint : ∀ x ∈ L, ∀ z ∈ L, IsIntegral ℤ (((1 : ℤ) : E) * hform (hc.sig : E →+* E) J x z)`. Introduce `x hx z hz`. Establish `hz' : z ∈ dualSet (hc.sig : E →+* E) J L` using `by rw [hsd]; exact hz`. Take `⟨a, ha⟩` from `hz' x hx`. Rewrite using `[Int.cast_one, one_mul, ← ha]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `RingOfIntegers.isIntegral_coe a`. Establish `hG1 : ∀ i j, gramA hc J β i j ∈ intAf F E`. Introduce `i j`. Use `Formalism.UG.P.csScale_latS hc.sig J L 1 hint (frame_mulVec_mem hβ _ (single_mem_intAf i)) (frame_mulVec_mem hβ _ (single_mem_intAf j))` as an intermediate fact. Rewrite `this` using `[Int.cast_one, map_one, one_mul, Formalism.UG.P.hform_mulVec, Formalism.UG.P.hform_single]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hJu : IsUnit (J.map (inclE (F` using `F) (Af F))) := by`. Rewrite using `[Matrix.isUnit_iff_isUnit_det]`. Establish `: (J.map (inclE (F` using `F) (Af F))).det = inclE (F := F) (Af F) J.det := (RingHom.map_det (inclE (F := F) (Af F)) J).symm`. Rewrite using `[this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Conclude with `hJ.map _`. Take `⟨Ju, hJu'⟩` from `hJu`. Set `cβ : GL (Fin n) (E ⊗[F] Af F)` to `⟨cT (sigR hc.sig (Af F)) (β : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)), cT (sigR hc.sig (Af F)) ((β⁻¹ : GL (Fin n) (E ⊗[F] Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)), by rw [← cT_mul, Units.inv_mul, cT_one], by rw [← cT_mul, Units.mul_inv, cT_one]⟩`. Use `set Gu : GL (Fin n) (E ⊗[F] Af F) := cβ * Ju * β with hGu`. Establish `hGv : (Gu : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)) = gramA hc J β`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hGu, Units.val_mul, Units.val_mul, hJu']`. Both sides reduce to the same expression. Establish `hG2 : ∀ i j, ((Gu⁻¹ : GL (Fin n) (E ⊗[F] Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)) i j ∈ intAf F E`. Introduce `i j`. Use `set u : Fin n → E ⊗[F] Af F := ((Gu⁻¹ : GL (Fin n) (E ⊗[F] Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)) *ᵥ Pi.single j 1 with hu`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : (β : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)) *ᵥ u ∈ hatL (F` using `F) L := by`. Use `hat_selfdual hc.sig J L hspan hsd _ fun l hl => ?_` and prove the remaining obligations. Use `set y : Fin n → E ⊗[F] Af F := ((β⁻¹ : GL (Fin n) (E ⊗[F] Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)) *ᵥ (fun i => inclE (F := F) (Af F) (l i)) with hy`. Establish `hyS : ∀ i, y i ∈ intAf F E` using `(hβ _).1 (Submodule.subset_span ⟨l, hl, rfl⟩)`. Establish `e : (fun i => inclE (F` using `F) (Af F) (l i)) = (β : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)) *ᵥ y := by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hy, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Rewrite using `[e, Formalism.UG.P.hform_mulVec, Formalism.UG.P.hform_eq_dot]`. Establish `e2 : (cT (sigR hc.sig (Af F)) (β : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)) * J.map (inclE (F` using `F) (Af F)) * (β : Matrix (Fin n) (Fin n) (E ⊗[F] Af F))) *ᵥ u = Pi.single j 1 := by`. Establish `: (cT (sigR hc.sig (Af F)) (β : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)) * J.map (inclE (F` using `F) (Af F)) * (β : Matrix (Fin n) (Fin n) (E ⊗[F] Af F))) = (Gu : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)) := hGv.symm`. Rewrite using `[this, hu, Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, dotProduct_single, mul_one]`. Conclude with `Formalism.UG.P.csScale_sigR_mem hc.sig (hyS j)`. Establish `h3` using `(hβ _).1 hw i`. Rewrite `h3` using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec, hu, Matrix.mulVec_single_one]`. Conclude with `h3`.
-
-Take `⟨G, hG⟩` from `Formalism.UG.P.levelaf_mem_range_of_integral (intAf F E) Gu ⟨fun i j => ⟨(Gu : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)) i j, by rw [hGv]; exact hG1 i j⟩, by ext i j; rfl⟩ ⟨fun i j => ⟨((Gu⁻¹ : GL (Fin n) (E ⊗[F] Af F)) : Matrix (Fin n) (Fin n) (E ⊗[F] Af F)) i j, hG2 i j⟩, by ext i …`. Use `⟨G, ?_⟩` and prove the remaining obligations. Rewrite using `[← hGv, ← hG]`. Both sides reduce to the same expression.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_gramS_sd (hc : CMData F E) {J : Matrix (Fin n) (Fin n) E} {L : Submodule (𝓞 E) (Fin n → E)}
     {β : GL (Fin n) (E ⊗[F] Af F)} (hJ : IsUnit J.det) (hspan : Submodule.span E (L : Set (Fin n → E)) = ⊤)
@@ -154,7 +152,7 @@ theorem exists_gramS_sd (hc : CMData F E) {J : Matrix (Fin n) (Fin n) E} {L : Su
   rfl
 
 /- English proof (translation)
-Take `⟨G, hG⟩` from `exists_gramS_sd hc hJ hspan hsd hβ`. Take `⟨z, hz, hzy⟩` from `exists_unitary_lift hc G (gramS_herm hc hJh hG) T hT y`. Use `⟨frGL β z, ⟨(frGL_mem_UA_iff hc hG z).2 hz, ⟨z, rfl⟩⟩, fun PP => ?_⟩` and prove the remaining obligations. Rewrite using `[redFn_frGL]`. Conclude with `hzy PP`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem redSurj_sd (hc : CMData F E) {J : Matrix (Fin n) (Fin n) E} {L : Submodule (𝓞 E) (Fin n → E)}
     {β : GL (Fin n) (E ⊗[F] Af F)} (T : Finset (Pl E)) (hJh : Formalism.UG.IsHerm (hc.sig : E →+* E) J) (hJ : IsUnit J.det)

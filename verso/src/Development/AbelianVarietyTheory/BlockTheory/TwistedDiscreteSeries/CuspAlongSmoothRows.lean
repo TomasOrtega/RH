@@ -116,21 +116,19 @@ def LiftsCuspidalSmoothAt (D : D7) : Prop :=
     RowBase R → G.Is → CuspAlongSmooth G
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis ℂ (A.Cusp θ)`. Use `choose F' hF'mem hF' using fun i => H (b i).1 (b i).2`. Set `io` to `b.constr ℂ (fun i => (⟨F' i, hF'mem i⟩ : B.Cusp θ))`. Use `⟨io, fun F => ?_⟩` and prove the remaining obligations. Establish `hF : F ∈ Submodule.span ℂ (Set.range b)` using `by rw [b.span_eq]; trivial`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `hF using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Introduce `p v h`. Simplify using `only [io, b.constr_basis]`.
+Treat this case separately. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately.
 
-Conclude with `hF' i p v h`. Consider the case `zero`. Introduce `p v h`. Simplify using the standard rewrite rules. Consider the case `add x y _ _ hx hy`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Introduce `p v h`. Take `⟨hx1, hx2⟩` from `hx p v h`. Take `⟨hy1, hy2⟩` from `hy p v h`. Establish `e : (fun g => K p h g * (x + y).1 v g) = fun g => K p h g * x.1 v g + K p h g * y.1 v g`. Use function extensionality and compare the values at `g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[mul_add]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `hx1.add hy1`. Rewrite using `[e, integral_add hx1 hy1, hx2, hy2, map_add]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using the standard rewrite rules. Consider the case `smul c x _ hx`. Introduce `p v h`. Take `⟨hx1, hx2⟩` from `hx p v h`. Establish `e : (fun g => K p h g * (c • x).1 v g) = fun g => c * (K p h g * x.1 v g)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use function extensionality and compare the values at `g`. Simplify using `[mul_left_comm]`. Use `⟨?_, ?_⟩` and prove the remaining obligations. Rewrite using `[e]`. Conclude with `hx1.const_mul c`.
-
-Establish `h3 : (io (c • x)).1 (It p v) h = c * (io x).1 (It p v) h`. Simplify using `only [map_smul, Submodule.coe_smul, LinearMap.smul_apply, Pi.smul_apply, smul_eq_mul]`. Rewrite using `[h3, e, integral_const_mul, hx2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem LiftsMult.exists_linear {θ : InfFam D} {A B : Node D} {P : Type} {m : A.MeasDat} {K : P → GA D B.V → GA D A.V → ℂ}
     {It : P → SmT A.M → SmT B.M} (H : LiftsMult θ m K It) :
@@ -182,19 +180,19 @@ variable {G₀ : Type} [Group G₀] [Fintype G₀] {Pl0 T : Type} {A : FamIn D.w
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL] {R : RealDat D A Ks}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hc`. Use `{ X := ?_, th := ?_, col := ?_, dn := ?_, up := ?_ }` and prove the remaining obligations. Introduce `t i j hi hj f hf`. Take `⟨io, hio⟩` from `(hc.X t i j hi hj f hf).exists_linear`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨io, Lift.IsIo.mk (fun F φ v g => (hio F φ v g).1) (fun F φ v g => (hio F φ v g).2)⟩`. Introduce `t i j hi hj f hf`. Take `⟨io, hio⟩` from `(hc.th t i j hi hj f hf).exists_linear`. Conclude with `⟨io, Lift.IsIo.mk (fun F φ v g => (hio F φ v g).1) (fun F φ v g => (hio F φ v g).2)⟩`. Introduce `t j hj f hf`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨io, hio⟩` from `(hc.col t j hj f hf).exists_linear`. Conclude with `⟨io, Lift.IsIo.mk (fun F φ v g => (hio F φ v g).1) (fun F φ v g => (hio F φ v g).2)⟩`. Introduce `i hi f hf`. Take `⟨io, hio⟩` from `(hc.dn i hi f hf).exists_linear`. Conclude with `⟨io, Lift.IsIo.mk (fun F φ v g => (hio F φ v g).1) (fun F φ v g => (hio F φ v g).2)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Introduce `i hi f hf`. Take `⟨io, hio⟩` from `(hc.up i hi f hf).exists_linear`. Conclude with `⟨io, Lift.IsIoUp.mk (fun F φ v g => (hio F φ v g).1) (fun F φ v g => (hio F φ v g).2)⟩`. Introduce `hl`. Use `{ X := ?_, th := ?_, up := ?_, dn := ?_, col := ?_ }` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `t i j hi hj f hf F hF`. Take `⟨io, hio⟩` from `hl.X t i j hi hj f hf`. Conclude with `⟨(io ⟨F, hF⟩).1, (io ⟨F, hF⟩).2, fun p v h => ⟨Lift.IsIo.integ hio ⟨F, hF⟩ p v h, Lift.IsIo.eq hio ⟨F, hF⟩ p v h⟩⟩`. Introduce `t i j hi hj f hf F hF`. Take `⟨io, hio⟩` from `hl.th t i j hi hj f hf`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨(io ⟨F, hF⟩).1, (io ⟨F, hF⟩).2, fun p v h => ⟨Lift.IsIo.integ hio ⟨F, hF⟩ p v h, Lift.IsIo.eq hio ⟨F, hF⟩ p v h⟩⟩`. Introduce `i hi f hf F hF`. Take `⟨io, hio⟩` from `hl.up i hi f hf`. Conclude with `⟨(io ⟨F, hF⟩).1, (io ⟨F, hF⟩).2, fun p v h => ⟨Lift.IsIoUp.integ hio ⟨F, hF⟩ p v h, Lift.IsIoUp.eq hio ⟨F, hF⟩ p v h⟩⟩`. Introduce `i hi f hf F hF`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨io, hio⟩` from `hl.dn i hi f hf`. Conclude with `⟨(io ⟨F, hF⟩).1, (io ⟨F, hF⟩).2, fun p v h => ⟨Lift.IsIo.integ hio ⟨F, hF⟩ p v h, Lift.IsIo.eq hio ⟨F, hF⟩ p v h⟩⟩`. Introduce `t j hj f hf F hF`. Take `⟨io, hio⟩` from `hl.col t j hj f hf`. Conclude with `⟨(io ⟨F, hF⟩).1, (io ⟨F, hF⟩).2, fun p v h => ⟨Lift.IsIo.integ hio ⟨F, hF⟩ p v h, Lift.IsIo.eq hio ⟨F, hF⟩ p v h⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cuspAlong_iff_hasLifts (G : GridPre R) : CuspAlong G ↔ G.HasLifts := by
   constructor
@@ -239,7 +237,7 @@ theorem cuspAlong_iff_hasLifts (G : GridPre R) : CuspAlong G ↔ G.HasLifts := b
         ⟨Lift.IsIo.integ hio ⟨F, hF⟩ p v h, Lift.IsIo.eq hio ⟨F, hF⟩ p v h⟩⟩
 
 /- English proof (translation)
-The claim follows from `(cuspAlong_iff_hasLifts _).2 h.lifts.hasLifts`.
+A detailed English derivation is pending.
 -/
 example (G : GridDat R) (h : G.Is) : CuspAlong G.toGridPre := (cuspAlong_iff_hasLifts _).2 h.lifts.hasLifts
 

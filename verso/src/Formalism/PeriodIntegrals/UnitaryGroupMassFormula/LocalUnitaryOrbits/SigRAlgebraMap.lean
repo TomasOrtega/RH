@@ -15,20 +15,20 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 def IsU (z : Fv F v ⊗[F] E) : Prop := ∃ w ∈ OEv (E := E) v, z * w = 1
 
 /- English proof (translation)
-Simplify using `[Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.map_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem sigR_algebraMap (a : Fv F v) :
     sigR (Fv F v) σ (algebraMap (Fv F v) (Fv F v ⊗[F] E) a) = algebraMap (Fv F v) (Fv F v ⊗[F] E) a := by
   simp [Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.sigR, Algebra.TensorProduct.algebraMap_apply, Algebra.TensorProduct.map_tmul]
 
 /- English proof (translation)
-Proceed by induction on `hz using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨b, -, rfl⟩` from `hx`. Rewrite using `[sigR_inclR]`. Establish `hb : IsIntegral ℤ (σ (b : E))`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using (b.isIntegral_coe).map (σ.toRingHom.toIntAlgHom)`. Conclude with `gen_mem v ⟨σ (b : E), hb⟩`. Consider the case `zero => rw [map_zero]`. Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [map_add]`.
+Simplify to obtain the desired conclusion from the available facts. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul r x _ hx`. Establish `h1 : r • x = algebraMap (Fv F v) (Fv F v ⊗[F] E) (r : Fv F v) * x`. Rewrite using `[← Algebra.smul_def]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h2 : algebraMap (Fv F v) (Fv F v ⊗[F] E) (r : Fv F v) * sigR (Fv F v) σ x = r • sigR (Fv F v) σ x`. Rewrite using `[← Algebra.smul_def]`. Both sides reduce to the same expression. Rewrite using `[h1, map_mul, sigR_algebraMap, h2]`. Conclude with `Submodule.smul_mem _ r hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem sigR_mem {z : Fv F v ⊗[F] E} (hz : z ∈ OEv (E := E) v) : sigR (Fv F v) σ z ∈ OEv (E := E) v := by
   induction hz using Submodule.span_induction with
@@ -50,28 +50,28 @@ theorem sigR_mem {z : Fv F v ⊗[F] E} (hz : z ∈ OEv (E := E) v) : sigR (Fv F 
     exact Submodule.smul_mem _ r hx
 
 /- English proof (translation)
-Simplify using `only [hR, hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_add_left' (x y z : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (x + y) z = hR (Fv F v) σ J x z + hR (Fv F v) σ J y z := by
   simp only [hR, hform, Pi.add_apply, map_add, add_mul, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hR, hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_add_right' (x y z : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J x (y + z) = hR (Fv F v) σ J x y + hR (Fv F v) σ J x z := by
   simp only [hR, hform, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Simplify using `only [hR, hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hR_sub_left' (x y z : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (x - y) z = hR (Fv F v) σ J x z - hR (Fv F v) σ J y z := by
   simp only [hR, hform, Pi.sub_apply, map_sub, sub_mul, Finset.sum_sub_distrib]
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.induction_on with`. Consider the case `empty => simp only [Finset.sum_empty]`. Conclude with `hR_zero_left _`. Consider the case `insert k s hk ih => rw [Finset.sum_insert hk, Finset.sum_insert hk, hR_add_left', ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem hR_sum_left' {ι : Type} (s : Finset ι) (f : ι → Fin n → Fv F v ⊗[F] E) (z : Fin n → Fv F v ⊗[F] E) :
     hR (Fv F v) σ J (∑ k ∈ s, f k) z = ∑ k ∈ s, hR (Fv F v) σ J (f k) z := by
@@ -81,13 +81,13 @@ theorem hR_sum_left' {ι : Type} (s : Finset ι) (f : ι → Fin n → Fv F v �
   | insert k s hk ih => rw [Finset.sum_insert hk, Finset.sum_insert hk, hR_add_left', ih]
 
 /- English proof (translation)
-Set `e : ι ≃ Fin (Fintype.card ι)` to `Fintype.equivFin ι`. Set `X' : TupV (E` to `E) v n (Fintype.card ι) := fun k => X (e.symm k)`. Establish `hX' : X' ∈ LamT v Λ (Fintype.card ι)` using `fun k => hX _`. Take `⟨w, hw0, hw⟩` from `hU`. Establish `hdet : (gramR (Fv F v) σ J X').det = (gramG σ J v X).det`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `: gramR (Fv F v) σ J X' = (gramG σ J v X).submatrix e.symm e.symm`. Use extensionality with `i j`. Both sides reduce to the same expression. Rewrite using `[this, det_submatrix_equiv_self]`. Take `⟨c', hc'0, hc'⟩` from `split σ J v Λ (oSub v) (fun c hc y hy => oSmul v Λ hL c hc y hy) hsd X' hX' w hw0 (by rw [hdet]; exact hw) x hx`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨fun i => c' (e i), fun i => hc'0 _, ?_⟩` and prove the remaining obligations. Establish `hs : ∑ i, c' (e i) • X i = ∑ k, c' k • X' k`. Rewrite using `[← e.symm.sum_comp]`. Simplify using `[X']`. Rewrite using `[hs]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `⟨hc'.1, fun i => ?_⟩` and prove the remaining obligations. Use `hc'.2 (e i)` as an intermediate fact. Simplify `this` using `[X']`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem splitG (hL : ∃ L : Submodule (𝓞 E) (Fin n → E), Submodule.IsLattice E L ∧ (L : Set (Fin n → E)) = Λ)
     (hsd : IsSDLoc σ J v Λ) {ι : Type} [Fintype ι] [DecidableEq ι] (X : ι → Fin n → Fv F v ⊗[F] E)

@@ -21,9 +21,9 @@ namespace GlobalTheory.EnlargeBaseChange
 open IsLocalRing Polynomial in
 open scoped TensorProduct in
 /- English proof (translation)
-Use `letI : Algebra R Z := (v.comp (algebraMap R E)).toAlgebra`. Set `u' : S →ₐ[R] Z` to `{ u with commutes' := fun r => RingHom.congr_fun h r }`. Set `v' : E →ₐ[R] Z` to `{ v with commutes' := fun _ => rfl }`. Use `⟨(Algebra.TensorProduct.lift u' v' fun _ _ => Commute.all _ _).toRingHom, ?_, ?_⟩` and prove the remaining obligations. Use `RingHom.ext fun s => ?_` and prove the remaining obligations.
+Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `[Algebra.TensorProduct.algebraMap_apply, u', v']`. Use `RingHom.ext fun e => ?_` and prove the remaining obligations. Simplify using `[u', v']`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 private theorem exists_ringHom_tensor_of_comp_eq {R S E : Type} [CommRing R] [CommRing S]
     [CommRing E] [Algebra R S] [Algebra R E] (Z : Type) [CommRing Z] (u : S →+* Z) (v : E →+* Z)
@@ -42,7 +42,7 @@ private theorem exists_ringHom_tensor_of_comp_eq {R S E : Type} [CommRing R] [Co
 open IsLocalRing Polynomial in
 open scoped TensorProduct in
 /- English proof (translation)
-Use extensionality with `r`. Simplify using `[Algebra.TensorProduct.algebraMap_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem includeRight_comp_algebraMap_eq {R S E : Type} [CommRing R] [CommRing S]
     [CommRing E] [Algebra R S] [Algebra R E] :
@@ -54,9 +54,9 @@ private theorem includeRight_comp_algebraMap_eq {R S E : Type} [CommRing R] [Com
 open IsLocalRing Polynomial in
 open scoped TensorProduct in
 /- English proof (translation)
-Use `RingHom.ext fun z => ?_` and prove the remaining obligations. Proceed by induction on `z using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul s e`. Establish `hs` using `RingHom.congr_fun h₁ s`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Establish `he : w₁ ((1 : S) ⊗ₜ[R] e) = w₂ ((1 : S) ⊗ₜ[R] e)` using `RingHom.congr_fun h₂ e`. Simplify using `only [RingHom.comp_apply, Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self, RingHom.id_apply] at hs`. Rewrite using `[show s ⊗ₜ[R] e = (s ⊗ₜ[R] (1 : E)) * ((1 : S) ⊗ₜ[R] e) by simp, map_mul, map_mul, hs, he]`. Consider the case `add x y hx hy => rw [map_add, map_add, hx, hy]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the hypotheses and the conclusion using the stated equalities. Treat this case separately.
 -/
 private theorem tensorProduct_ringHom_ext_of_comp_eq {R S E Z : Type} [CommRing R] [CommRing S] [CommRing E]
     [CommRing Z] [Algebra R S] [Algebra R E] (w₁ w₂ : S ⊗[R] E →+* Z)
@@ -78,39 +78,33 @@ open IsLocalRing Polynomial in
 open scoped TensorProduct in
 
 /- English proof (translation)
-Introduce `T O _ _ _ _ _ _ _ _ _ P _ φ hφ hφs hP q hq _ A _ _ _ _ _ _ i EA _ _ _ _ _ QA _ jA ψA DA _ _ actA hfits A₁ _ _ _ f i₁ hi₁ hloc hcomp`. Take `⟨hi, -, hqA, -, hjA, hψA, htors⟩` from `hfits`. Use `haveI : IsLocalHom φ := hφs.2.2.1`. Use `letI : Algebra A[X] A₁[X] := (Polynomial.mapRingHom f).toAlgebra`. Establish `huv : ((algebraMap T[X] O).comp (Polynomial.mapRingHom i₁)).comp (algebraMap A[X] A₁[X]) = (jA.comp (algebraMap EA (Localization.AtPrime QA))).comp (algebraMap A[X] EA)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_assoc, RingHom.comp_assoc, ← IsScalarTower.algebraMap_eq, hjA, RingHom.algebraMap_toAlgebra, Polynomial.mapRingHom_comp, hcomp]`. Take `⟨g, hgu, hgv⟩` from `exists_ringHom_tensor_of_comp_eq O _ _ huv`. Set `QA' : Ideal (A₁[X] ⊗[A[X]] EA)` to `(maximalIdeal O).comap g`. Establish `hmemQ : ∀ z, z ∈ QA' ↔ ¬IsUnit (g z)` using `fun z => by`. Simplify using `[QA', Ideal.mem_comap, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff]`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Use `haveI : QA'.IsPrime := Ideal.comap_isPrime _ _`. Set `jA' : Localization.AtPrime QA' →+* O` to `IsLocalization.lift (M := QA'.primeCompl) (g := g) fun s => by`. Assume the negation of the conclusion as `hs`. Conclude with `s.2 ((hmemQ s).2 hs)`. Establish `hjA'comp : jA'.comp (algebraMap _ (Localization.AtPrime QA')) = g` using `IsLocalization.lift_comp _`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hjA'g : ∀ z, jA' (algebraMap _ (Localization.AtPrime QA') z) = g z` using `fun z => RingHom.congr_fun hjA'comp z`. Establish `hgγ : ∀ e, g (Algebra.TensorProduct.includeRight e) = jA (algebraMap EA (Localization.AtPrime QA) e)` using `fun e => RingHom.congr_fun hgv e`. Establish `hgA₁ : ∀ a : A₁, g (algebraMap A₁ _ a) = algebraMap T O (i₁ a)` using `fun a => by`. Use `RingHom.congr_fun hgu (Polynomial.C a)` as an intermediate fact. Simplify using `only [RingHom.comp_apply, Polynomial.coe_mapRingHom, Polynomial.map_C] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[IsScalarTower.algebraMap_apply A₁ A₁[X] (A₁[X] ⊗[A[X]] EA), Polynomial.algebraMap_eq, IsScalarTower.algebraMap_apply T T[X] O, Polynomial.algebraMap_eq]`. Conclude with `this`. Establish `hjA'A₁ : ∀ a : A₁, jA' (algebraMap A₁ (Localization.AtPrime QA') a) = algebraMap T O (i₁ a)` using `fun a => by`. Rewrite using `[IsScalarTower.algebraMap_apply A₁ (A₁[X] ⊗[A[X]] EA) (Localization.AtPrime QA'), hjA'g, hgA₁]`. Establish `hunitT : ∀ a : A₁, a ∈ nonZeroDivisors A₁ → IsUnit (algebraMap O (_root_.GlobalTheory.LocAcyc.GenFib T O) (algebraMap T O (i₁ a)))` using `fun a ha => IsLocalization.map_units (M := Algebra.algebraMapSubmonoid O (nonZeroDivisors T)) (_root_.GlobalTheory.LocAcyc.GenFib T O) ⟨algebraMap T O (i₁ a), ⟨i₁ a, mem_nonZeroDivisors_of_ne_zero ((map_ne_zero_iff i₁ hi₁).2 (nonZeroDivisors.ne_zero ha)), rfl⟩⟩`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `haveI hlocA₁ : IsLocalization (Algebra.algebraMapSubmonoid (Localization.AtPrime QA') (nonZeroDivisors A₁)) (_root_.GlobalTheory.LocAcyc.GenFib A₁ (Localization.AtPrime QA')) := by`. Unfold `_root_.GlobalTheory.LocAcyc.GenFib`. Conclude with `Localization.isLocalization`. Set `ψA' : _root_.GlobalTheory.LocAcyc.GenFib A₁ (Localization.AtPrime QA') →+* _root_.GlobalTheory.LocAcyc.GenFib T O` to `IsLocalization.lift (M := Algebra.algebraMapSubmonoid (Localization.AtPrime QA') (nonZeroDivisors A₁)) (g := (algebraMap O (_root_.GlobalTheory.LocAcyc.GenFib T O)).comp jA') fun s => by`. Take `⟨a, ha, hs⟩` from `s.2`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[RingHom.comp_apply, ← hs, hjA'A₁]`. Conclude with `hunitT a ha`. Establish `hψA'comp : ψA'.comp (algebraMap _ (_root_.GlobalTheory.LocAcyc.GenFib A₁ (Localization.AtPrime QA'))) = (algebraMap O (_root_.GlobalTheory.LocAcyc.GenFib T O)).comp jA'` using `IsLocalization.lift_comp _`. Establish `hψA'alg : ∀ y, ψA' (algebraMap _ (_root_.GlobalTheory.LocAcyc.GenFib A₁ (Localization.AtPrime QA')) y) = algebraMap O (_root_.GlobalTheory.LocAcyc.GenFib T O) (jA' y)` using `fun y => RingHom.congr_fun hψA'comp y`. Set `ℓ : Localization.AtPrime QA →+* Localization.AtPrime QA'` to `IsLocalization.lift (M := QA.primeCompl) (g := (algebraMap _ (Localization.AtPrime QA')).comp (Algebra.TensorProduct.includeRight.toRingHom : EA →+* A₁[X] ⊗[A[X]] EA)) fun s => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `IsLocalization.map_units (M := QA'.primeCompl) (Localization.AtPrime QA') (⟨Algebra.TensorProduct.includeRight (s : EA), ?_⟩ : QA'.primeCompl)` and prove the remaining obligations. Rewrite using `[Ideal.mem_primeCompl_iff, hmemQ, not_not, hgγ]`. Conclude with `(IsLocalization.map_units (Localization.AtPrime QA) s).map jA`. Establish `hℓ : ∀ e, ℓ (algebraMap EA (Localization.AtPrime QA) e) = algebraMap (A₁[X] ⊗[A[X]] EA) (Localization.AtPrime QA') (Algebra.TensorProduct.includeRight (R` using `A[X]) (A := A₁[X]) e) := fun e => IsLocalization.lift_eq _ e`. Establish `hγ1 : (Algebra.TensorProduct.includeRight.toRingHom : EA →+* A₁[X] ⊗[A[X]] EA).comp (algebraMap A[X] EA) = (algebraMap A₁[X] (A₁[X] ⊗[A[X]] EA)).comp (Polynomial.mapRingHom f)` using `includeRight_comp_algebraMap_eq`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hγC : ∀ a : A, Algebra.TensorProduct.includeRight (R` using `A[X]) (A := A₁[X]) (algebraMap A EA a) = algebraMap A₁ (A₁[X] ⊗[A[X]] EA) (f a) := fun a => by`. Rewrite using `[IsScalarTower.algebraMap_apply A A[X] EA, Polynomial.algebraMap_eq, IsScalarTower.algebraMap_apply A₁ A₁[X] (A₁[X] ⊗[A[X]] EA), Polynomial.algebraMap_eq]`. Use `RingHom.congr_fun hγ1 (Polynomial.C a)` as an intermediate fact. Simplify using `only [RingHom.comp_apply, Polynomial.coe_mapRingHom, Polynomial.map_C, AlgHom.coe_toRingHom] at this`. Conclude with `this`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Set `β : _root_.GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA) →+* _root_.GlobalTheory.LocAcyc.GenFib A₁ (Localization.AtPrime QA')` to `IsLocalization.lift (M := Algebra.algebraMapSubmonoid (Localization.AtPrime QA) (nonZeroDivisors A)) (g := (algebraMap _ (_root_.GlobalTheory.LocAcyc.GenFib A₁ (Localization.AtPrime QA'))).comp ℓ) fun s => by`. Take `⟨a, ha, hs⟩` from `s.2`. Rewrite using `[RingHom.comp_apply, ← hs, IsScalarTower.algebraMap_apply A EA (Localization.AtPrime QA), hℓ, hγC, ← IsScalarTower.algebraMap_apply A₁ (A₁[X] ⊗[A[X]] EA) (Localization.AtPrime QA')]`. Use `IsLocalization.map_units (M := Algebra.algebraMapSubmonoid (Localization.AtPrime QA') (nonZeroDivisors A₁)) _ ⟨_, ⟨f a, mem_nonZeroDivisors_of_ne_zero fun h0 => ?_, rfl⟩⟩` and prove the remaining obligations. Apply `nonZeroDivisors.ne_zero ha` to reduce the goal to its premises.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Apply `hi` to reduce the goal to its premises. Rewrite using `[map_zero, ← hcomp, RingHom.comp_apply, h0, map_zero]`. Establish `hβalg : ∀ y, β (algebraMap _ (_root_.GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) y) = algebraMap _ (_root_.GlobalTheory.LocAcyc.GenFib A₁ (Localization.AtPrime QA')) (ℓ y)` using `fun y => IsLocalization.lift_eq _ y`. Use `letI : Algebra (_root_.GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) (_root_.GlobalTheory.LocAcyc.GenFib A₁ (Localization.AtPrime QA')) := β.toAlgebra`. Establish `htors' : _root_.GlobalTheory.LocAcyc.IsZModTorsor _ DA q actA`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Unfold `_root_.GlobalTheory.KeyOriginCut.IsZTorsor at htors`. Unfold `_root_.GlobalTheory.LocAcyc.IsZModTorsor`. Conclude with `htors`. Take `⟨act', -, hact'⟩` from `_root_.GlobalTheory.LocAcyc.isZModTorsor_baseChange (_root_.GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)) (_root_.GlobalTheory.LocAcyc.GenFib A₁ (Localization.AtPrime QA')) DA q hq actA htors'`. Use `⟨A₁[X] ⊗[A[X]] EA, inferInstance, inferInstance, inferInstance, inferInstance, inferInstance, QA', inferInstance, jA', ψA', _root_.GlobalTheory.LocAcyc.GenFib A₁ (Localization.AtPrime QA') ⊗[_root_.GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)] DA, inferInstance, inferI …` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Unfold `_root_.GlobalTheory.KeyOriginEnlarge.Fits`. Use `⟨hi₁, hloc, by simpa using hqA.map f, ?_, ?_, hψA'comp, ?_⟩` and prove the remaining obligations. Establish `hO : (maximalIdeal O).comap (algebraMap T[X] O) = _root_.GlobalTheory.KeyOriginCut.originIdeal T`. Rewrite using `[← hφ, ← Ideal.comap_comap, IsLocalRing.maximalIdeal_comap φ, ← hP]`. Conclude with `IsLocalization.AtPrime.under_maximalIdeal (Localization.AtPrime P) P`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `show ((maximalIdeal O).comap g).comap _ = _`. Rewrite using `[Ideal.comap_comap, hgu, ← Ideal.comap_comap, hO]`. Conclude with `_root_.GlobalTheory.VertUnitsNoeth.comap_originIdeal' A₁ T i₁`. Rewrite using `[IsScalarTower.algebraMap_eq A₁[X] (A₁[X] ⊗[A[X]] EA) (Localization.AtPrime QA'), ← RingHom.comp_assoc, hjA'comp, hgu]`. Unfold `_root_.GlobalTheory.LocAcyc.IsZModTorsor at hact'`.
-
-Unfold `_root_.GlobalTheory.KeyOriginCut.IsZTorsor`. Conclude with `hact'`. Use `_root_.GlobalTheory.LocAcyc.genFib_ringHom_ext fun y => ?_` and prove the remaining obligations. Establish `key : (ψA'.comp β).comp (algebraMap (Localization.AtPrime QA) (_root_.GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA))) = ψA.comp (algebraMap (Localization.AtPrime QA) (_root_.GlobalTheory.LocAcyc.GenFib A (Localization.AtPrime QA)))`. Use `IsLocalization.ringHom_ext QA.primeCompl (RingHom.ext fun e => ?_)` and prove the remaining obligations.
-
-Simplify using `only [RingHom.comp_apply]`. Rewrite using `[hβalg, hℓ, hψA'alg, hjA'g, hgγ]`. Conclude with `(RingHom.congr_fun hψA _).symm`. Conclude with `RingHom.congr_fun key y`. Rewrite using `[← RingHom.comp_assoc, hjA'comp, hgv]`.
-
-Rewrite using `[hjA'comp]`. Introduce `Z _ u v huv'`. Conclude with `exists_ringHom_tensor_of_comp_eq Z u v huv'`. Introduce `Z _ w₁ w₂ h₁ h₂`. Conclude with `tensorProduct_ringHom_ext_of_comp_eq w₁ w₂ h₁ h₂`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.EnlargeBaseChange.fits_baseChange : ∀ (T O : Type) [CommRing T] [IsDomain T] [IsLocalRing T] [CommRing O] [IsLocalRing O] [Algebra T O]
     [Algebra (Polynomial T) O] [IsScalarTower T (Polynomial T) O], _root_.GlobalTheory.LocAcyc.AbsIntClosed T →

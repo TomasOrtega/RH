@@ -5,7 +5,7 @@ import Development.AbelianVarietyTheory.Definitions.CommutativeAlgebra.Invariant
 open Polynomial GlobalTheory.CuspGL GlobalTheory.BI
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.BI.virt_expand | exact GlobalTheory.BI.virt_expand | (intros; apply GlobalTheory.BI.virt_expand <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.virtualCharacter_irreducible_expansion_normSq : ∀ (G : Type) [Group G] [Finite G] (φ : G → ℂ), φ ∈ Virt ℂ ℂ G → ∃ c : (G → ℂ) →₀ ℤ, (∀ χ ∈ c.support, IsIrrChar ℂ ℂ χ) ∧ φ = c.sum (fun χ m => m • χ) ∧ ∑ᶠ g, φ g * star (φ g) = (c.sum fun _ m => (m : ℂ) ^ 2) * (Nat.card G : ℂ) := by
   first | exact @GlobalTheory.BI.virt_expand | exact GlobalTheory.BI.virt_expand | (intros; apply GlobalTheory.BI.virt_expand <;> assumption)

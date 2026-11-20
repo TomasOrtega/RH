@@ -5,7 +5,7 @@ open KaehlerDifferential GlobalTheory.CechDR GlobalTheory.PD GlobalTheory.WH Glo
 open scoped TensorProduct
 
 /- English proof (translation)
-Rewrite using `[← Matrix.det_submatrix_equiv_self (s.orderIsoOfFin h).toEquiv (B.submatrix (Subtype.val : s → Fin d) Subtype.val)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 private theorem det_submatrix_orderEmbOfFin_eq_subtype {R : Type*} [CommRing R] {d k : ℕ}
     (B : Matrix (Fin d) (Fin d) R) (s : Finset (Fin d)) (h : s.card = k) :
@@ -16,7 +16,7 @@ private theorem det_submatrix_orderEmbOfFin_eq_subtype {R : Type*} [CommRing R] 
   rfl
 
 /- English proof (translation)
-Introduce `d a A`. Rewrite using `[Matrix.coeff_det_one_add_X_smul_eq_sum_minors]`. Use `Finset.sum_congr rfl fun S _ => ?_` and prove the remaining obligations. Conclude with `(det_submatrix_orderEmbOfFin_eq_subtype A S _).symm`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.productCup_of_system.minorSum_of :
     MinorSum := by

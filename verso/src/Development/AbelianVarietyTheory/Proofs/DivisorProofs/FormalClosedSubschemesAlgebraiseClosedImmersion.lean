@@ -13,9 +13,9 @@ noncomputable section
 namespace GlobalTheory.FormalAlg
 
 /- English proof (translation)
-Introduce `R _ I W W' f i hf hi hA t ht hp`. Take `⟨hs, hsp, hc⟩` from `GlobalTheory.T.compatibleReductionSystem_map_immersion R I W W' f i hf inferInstance t ht hp`. Take `⟨T, hT, hred⟩` from `hA _ hs hsp`. Use `⟨T.comap i, ?_, fun e => ?_⟩` and prove the remaining obligations. Establish `h1 : (T.comap i).subschemeι ≫ i ≫ f = (T.comapIso i).hom ≫ pullback.snd i T.subschemeι ≫ T.subschemeι ≫ f`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[← T.comapIso_hom_fst_assoc i, pullback.condition_assoc]`. Rewrite using `[h1]`. Use `infer_instance`. Rewrite using `[← (GlobalTheory.T.baseIdealSheafOfIdeal_comap_specMap_support).1 R W W' f i, ← Scheme.IdealSheafData.comap_sup, hred e]`. Conclude with `hc e`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem alg_of_isClosedImmersion : ∀ (R : Type) [CommRing R] (I : Ideal R) (W W' : Scheme.{0})
     (f : W ⟶ Spec (CommRingCat.of R)) (i : W' ⟶ W), IsSeparated f → IsClosedImmersion i → Alg f I →

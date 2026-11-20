@@ -25,7 +25,7 @@ open GlobalTheory.MovedDict Formalism.L2.Ker GlobalTheory.SignedHC
 
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.EntireJetUniq.eq_of_applyAt0_monomial_eq` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FTwistedOperators%2FEntireEqOfMonomialDerivationsAtZeroEq.lean&line=33#L33)
 -/

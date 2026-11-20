@@ -15,11 +15,11 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ThK
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B b a' G G₁ H H' hc e he K μK μ hK hμK hμ`. Take `⟨C₁, hC₁, hA⟩` from `GlobalTheory.T.exists_nonzero_isotropic_integral hKP F E σ B b a' G G₁ H H' hc e he`. Take `⟨C₂, hC₂, hB2⟩` from `GlobalTheory.T.config_a_eigen_integral_unimodular hKP F E σ B b a' G G₁ H H' hc e he K μK μ hK hμK hμ`. Use `⟨C₁ * C₂, mul_ne_zero hC₁ hC₂, ?_⟩` and prove the remaining obligations. Introduce `X om om' om₁ om₁' hT hT₁ Φ hΦ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨γ, hγ⟩` from `GlobalTheory.T.exists_isotropic_vector_translation F E σ B b a' G G₁ H H' hc X om om' hT`. Take `⟨𝓓, h𝓓⟩` from `GlobalTheory.T.exists_fundamental_domain_closure F E σ B b a' G G₁ H H' hc X om om' hT`. Take `⟨A₀, hA₀, hCT⟩` from `hA γ hγ X om om' om₁ om₁' hT hT₁ Φ hΦ`. Use `⟨A₀, hA₀, ?_⟩` and prove the remaining obligations. Establish `hfun : (fun h => C₁ * ∫ g in G.M.dom, ∑' x, thetaSum F (e (G.M.co.rho B.ψ (shiftA H H' 1) (om (γ x * g, h) Φ))) ∂G.M.μ + A₀ h) = (fun h => C₁ * C₂ * G₁.M.I om₁ (cone B G.M om e K μK μ (shiftA H H') X.ν ((b + 2 - a') / 2) (om (1, h) Φ)) 1 + A₀ h)`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `h`. Rewrite using `[GlobalTheory.T.config_a_eigen_theta_triples hKP F E σ B b a' G G₁ H H' hc e he X om om' om₁ om₁' hT hT₁ γ hγ 𝓓 h𝓓 Φ hΦ h, hB2 X om om' om₁ om₁' hT hT₁ 𝓓 h𝓓 Φ hΦ h]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[← hfun]`. Conclude with `hCT`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfoldCTBigCone : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (b a' : ℕ) (G : Geo σ (b + 2) a') (G₁ : Geo σ b a')
     (H : Plane E (b + 2) b) (H' : Plane E (b + 2 + a') (b + a')), CfgA B G G₁ H H' →

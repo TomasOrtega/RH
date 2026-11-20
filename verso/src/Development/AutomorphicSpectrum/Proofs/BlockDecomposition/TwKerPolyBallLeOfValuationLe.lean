@@ -15,7 +15,7 @@ section
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `x hx i`. Conclude with `le_trans (show valuation k (Multiplicative.toAdd x i) ≤ valuation k (s₁ : k) from hx i) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem polyBall_le_of_valuation_le {n : ℕ} {s₁ s₂ : kˣ}
     (h : valuation k (s₁ : k) ≤ valuation k (s₂ : k)) : polyBall n s₁ ≤ polyBall n s₂ := by
@@ -23,7 +23,7 @@ theorem polyBall_le_of_valuation_le {n : ℕ} {s₁ s₂ : kˣ}
   exact le_trans (show valuation k (Multiplicative.toAdd x i) ≤ valuation k (s₁ : k) from hx i) h
 
 /- English proof (translation)
-Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨m, u, rfl⟩`. Conclude with `⟨⟨m.1, polyBall_le_of_valuation_le h m.2⟩, u, rfl⟩`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem twKer_polyBall_le_of_valuation_le (ψ : AddChar k Circle) {n : ℕ} {V : Type} [AddCommGroup V] [Module ℂ V]
     (ρ : Representation ℂ (Multiplicative (Fin n → k)) V) (a : Fin n → k) {s₁ s₂ : kˣ}
@@ -35,11 +35,11 @@ theorem twKer_polyBall_le_of_valuation_le (ψ : AddChar k Circle) {n : ℕ} {V :
   exact ⟨⟨m.1, polyBall_le_of_valuation_le h m.2⟩, u, rfl⟩
 
 /- English proof (translation)
-Use extensionality with `x`. Establish `hx : ∀ i, valuation k ((Multiplicative.toAdd x.1) i) ≤ valuation k (s : k)` using `x.2`. Establish `hd : (a - b) ⬝ᵥ Multiplicative.toAdd x.1 ∈ cball c` using `by show valuation k _ ≤ valuation k (c : k)`. Unfold `dotProduct`. Use `Valuation.map_sum_le _ fun i _ => ?_` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Valuation.map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `key : a ⬝ᵥ Multiplicative.toAdd x.1 = b ⬝ᵥ Multiplicative.toAdd x.1 + (a - b) ⬝ᵥ Multiplicative.toAdd x.1`. Rewrite using `[sub_dotProduct]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws.
 
-Use `show ((Circle.toUnits (ψ (a ⬝ᵥ Multiplicative.toAdd x.1)) : ℂˣ) : ℂ) = ((Circle.toUnits (ψ (b ⬝ᵥ Multiplicative.toAdd x.1)) : ℂˣ) : ℂ)`. Rewrite using `[key, AddChar.map_add_eq_mul, hc _ hd, mul_one]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem resChr_polyBall_eq (ψ : AddChar k Circle) {n : ℕ} {c s : kˣ}
     (hc : ∀ y ∈ cball c, ψ y = 1) {a b : Fin n → k}
@@ -63,7 +63,7 @@ theorem resChr_polyBall_eq (ψ : AddChar k Circle) {n : ℕ} {c s : kˣ}
   rw [key, AddChar.map_add_eq_mul, hc _ hd, mul_one]
 
 /- English proof (translation)
-Break down `T.eq_empty_or_nonempty with hT | hT` into its components or cases. Conclude with `⟨1, by simp [hT]⟩`. Take `⟨a₀, -, ha₀⟩` from `T.exists_max_image (fun a => valuation k (S a : k)) hT`. Conclude with `⟨S a₀, ha₀⟩`.
+Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_unit_valuation_ge {ι : Type} (S : ι → kˣ) (T : Finset ι) :
     ∃ s : kˣ, ∀ a ∈ T, valuation k (S a : k) ≤ valuation k (s : k) := by
@@ -76,29 +76,27 @@ theorem exists_unit_valuation_ge {ι : Type} (S : ι → kˣ) (T : Finset ι) :
 end
 
 /- English proof (translation)
-Establish `hU : IsOpen {z : Circle | 0 < (z : ℂ).re}` using `isOpen_lt continuous_const (Complex.continuous_re.comp continuous_subtype_val)`. Establish `hW : ψ ⁻¹' {z : Circle | 0 < (z : ℂ).re} ∈ 𝓝 (0 : k)`. Apply `hψ.continuousAt.preimage_mem_nhds` to reduce the goal to its premises. Rewrite using `[AddChar.map_zero_eq_one]`. Conclude with `hU.mem_nhds (by simp)`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hW' : {f : Fin 1 → k | f 0 ∈ ψ ⁻¹' {z : Circle | 0 < (z : ℂ).re}} ∈ 𝓝 (0 : Fin 1 → k)` using `(continuous_apply 0).continuousAt.preimage_mem_nhds hW`. Take `⟨c, hcW⟩` from `GlobalTheory.SplitWeil.FourierPi.exists_box_subset hW'`. Use `⟨c, fun y hy => ?_⟩` and prove the remaining obligations. Establish `hmem : ∀ m : ℕ, m • y ∈ GlobalTheory.SplitWeil.cball c`. Introduce `m`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Proceed by induction on `m with`. Consider the case `zero => simp only [zero_smul, GlobalTheory.SplitWeil.cball, Set.mem_setOf_eq, map_zero]`. Conclude with `zero_le'`. Consider the case `succ m ih`. Rewrite using `[succ_nsmul]`.
+Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [GlobalTheory.SplitWeil.cball, Set.mem_setOf_eq] at ih hy ⊢`. Conclude with `Valuation.map_add_le _ ih hy`. Establish `hpos : ∀ m : ℕ, 0 < (((ψ y) ^ m : Circle) : ℂ).re`. Introduce `m`. Use `hcW (show (fun _ : Fin 1 => m • y) ∈ GlobalTheory.SplitWeil.FourierPi.box (Fin 1) c from fun i _ => hmem m)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← AddChar.map_nsmul_eq_pow]`. Conclude with `this`. Establish `hn : ∀ w : Circle, (w : ℂ).re * (w : ℂ).re + (w : ℂ).im * (w : ℂ).im = 1`. Introduce `w`. Rewrite using `[← Complex.normSq_apply]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Circle.normSq_coe w`. Establish `hsq : ∀ w : Circle, ((w ^ 2 : Circle) : ℂ).re = 2 * (w : ℂ).re ^ 2 - 1`. Introduce `w`. Establish `h2 : ((w ^ 2 : Circle) : ℂ) = (w : ℂ) * (w : ℂ)` using `by rw [pow_two]; rfl`. Rewrite using `[h2, Complex.mul_re]`.
+Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use polynomial arithmetic with `[hn w]`. Establish `hle1 : ∀ w : Circle, (w : ℂ).re ≤ 1` using `fun w => by nlinarith [hn w]`. Establish `hstep : ∀ j : ℕ, (ψ y) ^ (2 ^ (j + 1)) = ((ψ y) ^ (2 ^ j)) ^ 2` using `fun j => by rw [pow_succ, pow_mul]`. Establish `hgrow : ∀ j : ℕ, (2 : ℝ) ^ j * (1 - ((ψ y : Circle) : ℂ).re) ≤ 1 - ((((ψ y) ^ (2 ^ j) : Circle)) : ℂ).re`. Introduce `j`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[hstep j, hsq]`. Establish `h0` using `hpos (2 ^ j)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h1` using `hle1 ((ψ y) ^ (2 ^ j))`. Rewrite using `[pow_succ]`. Use the polynomial consequences of the given equalities and inequalities. Establish `hx0 : 1 ≤ ((ψ y : Circle) : ℂ).re`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `push_neg at hlt`. Establish `hd : 0 < 1 - ((ψ y : Circle) : ℂ).re` using `by linarith`. Take `⟨j, hj⟩` from `pow_unbounded_of_one_lt (1 / (1 - ((ψ y : Circle) : ℂ).re)) (by norm_num : (1 : ℝ) < 2)`. Establish `h1` using `hgrow j`. Establish `h2` using `hpos (2 ^ j)`.
+Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h3 : 1 < (2 : ℝ) ^ j * (1 - ((ψ y : Circle) : ℂ).re)`. Rewrite `hj` using `[div_lt_iff₀ hd]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Establish `hre : ((ψ y : Circle) : ℂ).re = 1` using `le_antisymm (hle1 _) hx0`.
-
-Establish `him : ((ψ y : Circle) : ℂ).im = 0` using `by nlinarith [hn (ψ y)]`. Apply `Circle.ext` to reduce the goal to its premises. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `[hre]`. Simplify using `[him]`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem isHecke_div_and_resEtaPow_div {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
     (ψ : AddChar k Circle) (hψ : Continuous ψ) : ∃ c : kˣ, ∀ y ∈ GlobalTheory.SplitWeil.cball c, ψ y = 1 := by
@@ -165,11 +163,11 @@ private theorem isHecke_div_and_resEtaPow_div {k : Type} [Field k] [ValuativeRel
   · simp [him]
 
 /- English proof (translation)
-Introduce `k _ _ _ _ ψ hψ n V _ _ ρ v t hv`. Take `⟨c, hc⟩` from `isHecke_div_and_resEtaPow_div ψ hψ`. Use `choose S hS using hv`. Take `⟨T, hT⟩` from `(GlobalTheory.SplitWeil.FourierPi.isCompact_box (n := Fin n) t).elim_finite_subcover (fun a : Fin n → k => (fun b => b - a) ⁻¹' GlobalTheory.SplitWeil.FourierPi.box (Fin n) (c * (S a)⁻¹)) (fun a => (GlobalTheory.SplitWeil.FourierPi.isOpen_box _).preimage (continuous_id.sub contin …`. Take `⟨s, hs⟩` from `exists_unit_valuation_ge S T`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨s, fun a ha => ?_⟩` and prove the remaining obligations. Establish `haK : a ∈ GlobalTheory.SplitWeil.FourierPi.box (Fin n) t` using `fun i _ => ha i`. Take `⟨b, hbT, hab⟩` from `Set.mem_iUnion₂.1 (hT haK)`. Establish `heq : resChr ψ a (polyBall n (S b)) = resChr ψ b (polyBall n (S b))` using `resChr_polyBall_eq ψ hc (fun i => hab i (Set.mem_univ i))`. Establish `h1` using `hS b`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h1` using `[← heq]`. Conclude with `twKer_polyBall_le_of_valuation_le ψ ρ a (hs b hbT) h1`.
+A detailed English derivation is pending.
 -/
 theorem exists_polyBall_twKer_uniform : ∀ {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k]
     [IsNonarchimedeanLocalField k] (ψ : AddChar k Circle), Continuous ψ →

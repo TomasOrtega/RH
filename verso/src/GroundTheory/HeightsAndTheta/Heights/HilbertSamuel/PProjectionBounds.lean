@@ -21,19 +21,19 @@ def pnorm (e : Fin (D + 1) → Ix κ) (z : Ix κ → ℂ) : ℝ :=
   Real.sqrt (∑ k, ‖z (e k)‖ ^ 2)
 
 /- English proof (translation)
-The claim follows from `Real.sqrt_nonneg _`.
+A detailed English derivation is pending.
 -/
 theorem pnorm_nonneg (e : Fin (D + 1) → Ix κ) (z : Ix κ → ℂ) : 0 ≤ pnorm e z :=
   Real.sqrt_nonneg _
 
 /- English proof (translation)
-Unfold `pnorm`. Use `fun_prop`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem continuous_pnorm (e : Fin (D + 1) → Ix κ) : Continuous (pnorm e) := by
   unfold pnorm; fun_prop
 
 /- English proof (translation)
-Simplify using `only [pnorm, Pi.smul_apply, smul_eq_mul, norm_mul, mul_pow, ← Finset.mul_sum]`. Rewrite using `[Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem pnorm_smul (e : Fin (D + 1) → Ix κ) (c : ℂ) (z : Ix κ → ℂ) :
     pnorm e (c • z) = ‖c‖ * pnorm e z := by
@@ -41,19 +41,19 @@ theorem pnorm_smul (e : Fin (D + 1) → Ix κ) (c : ℂ) (z : Ix κ → ℂ) :
   rw [Real.sqrt_mul (sq_nonneg _), Real.sqrt_sq (norm_nonneg _)]
 
 /- English proof (translation)
-Simplify using `[pnorm, sqN]`.
+Simplify using the standard rewrite rules.
 -/
 theorem pnorm_eq_sqN (e : Fin (D + 1) → Ix κ) (z : Ix κ → ℂ) : pnorm e z = Real.sqrt (sqN (z ∘ e)) := by
   simp [pnorm, sqN]
 
 /- English proof (translation)
-Simplify using `[fsMetric, sqN, EuclideanSpace.norm_eq]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fs_rho_eq (t : Fin (D + 1) → ℂ) : (fsMetric (Fin (D + 1))).ρ t = Real.sqrt (sqN t) := by
   simp [fsMetric, sqN, EuclideanSpace.norm_eq]
 
 /- English proof (translation)
-Take `⟨k, hk⟩` from `exists_proj_ne_zero hfr hz`. Use `Real.sqrt_pos.2 (lt_of_lt_of_le (pow_pos (norm_pos_iff.2 hk) 2) ?_)` and prove the remaining obligations. Conclude with `Finset.single_le_sum (f := fun k => ‖z (e k)‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ k)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem pnorm_pos {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e) {z : Ix κ → ℂ}
     (hz : z ∈ pts (coordIdeal ℤ x)) : 0 < pnorm e z := by
@@ -62,17 +62,15 @@ theorem pnorm_pos {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsProjFr
   exact Finset.single_le_sum (f := fun k => ‖z (e k)‖ ^ 2) (fun _ _ => by positivity) (Finset.mem_univ k)
 
 /- English proof (translation)
-Use `set K : Set (Ix κ → ℂ) := Metric.sphere 0 1 ∩ {z | ∀ g ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) g) = 0} with hKdef`. Establish `hcl : IsClosed {z : Ix κ → ℂ | ∀ g ∈ coordIdeal ℤ x, eval z (map (Int.castRingHom ℂ) g) = 0}`. Simplify using `only [Set.ofPred_forall]`. Conclude with `isClosed_iInter fun g => isClosed_iInter fun _ => isClosed_eq (continuous_eval _) continuous_const`. Establish `hKc : IsCompact K` using `(isCompact_sphere 0 1).inter_right hcl`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hKpts : K ⊆ pts (coordIdeal ℤ x)` using `fun z hz => ⟨fun h0 => by`. Use `hz.1` as an intermediate fact. Rewrite `this` using `[mem_sphere_zero_iff_norm, h0, norm_zero]`. Conclude with `zero_ne_one this, hz.2⟩`. Establish `hF : ContinuousOn (fun z => ‖eval z f‖ / pnorm e z ^ n) K` using `(continuous_eval f).norm.continuousOn.div ((continuous_pnorm e).pow n).continuousOn fun z hz => pow_ne_zero n (pnorm_pos hfr (hKpts hz)).ne'`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨C, hC⟩` from `hKc.exists_bound_of_continuousOn hF`. Use `⟨|C|, abs_nonneg _, fun z hz => ?_⟩` and prove the remaining obligations. Establish `ht : 0 < ‖z‖` using `norm_pos_iff.mpr hz.1`. Use `set c : ℂ := ((‖z‖⁻¹ : ℝ) : ℂ) with hcdef`. Establish `hcn : ‖c‖ = ‖z‖⁻¹`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hcdef, Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr ht)]`. Establish `hcpos : 0 < ‖c‖` using `by rw [hcn]; exact inv_pos.mpr ht`. Establish `hc0 : c ≠ 0` using `norm_pos_iff.mp hcpos`. Establish `hzK : c • z ∈ K`. Use `⟨?_, (smul_mem_pts_coord x hz hc0).2⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[mem_sphere_zero_iff_norm, norm_smul, hcn, inv_mul_cancel₀ ht.ne']`. Establish `hρ` using `pnorm_pos hfr hz`. Establish `h1 : ‖‖eval (c • z) f‖ / pnorm e (c • z) ^ n‖ ≤ C` using `hC _ hzK`. Rewrite `h1` using `[ReciprocityTheory.ChartRestriction.G.ArakelovGeometry.eval_smul_of_isHomogeneous hf, pnorm_smul, Real.norm_eq_abs, abs_of_nonneg (div_nonneg (norm_nonneg _) (pow_nonneg (mul_nonneg (norm_nonneg _) hρ.le) n)), norm_mul, norm_pow, mul_pow, mul_div_mul_left _ _ (pow_ne_zero n hcpos …`. Establish `h2 : ‖eval z f‖ ≤ C * pnorm e z ^ n` using `(div_le_iff₀ (pow_pos hρ n)).mp h1`.
-
-Conclude with `h2.trans (mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg hρ.le n))`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem form_le_pnorm {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e) (n : ℕ)
     (f : MvPolynomial (Ix κ) ℂ) (hf : f.IsHomogeneous n) :
@@ -113,9 +111,9 @@ theorem form_le_pnorm {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsPr
   exact h2.trans (mul_le_mul_of_nonneg_right (le_abs_self C) (pow_nonneg hρ.le n))
 
 /- English proof (translation)
-Take `⟨Δ, hΔ0, hΔ⟩` from `exists_isDiscr hfr`. Take `⟨w, hw⟩` from `(dense_eval_ne_zero hΔ0).nonempty`. Take `⟨-, hcard, -⟩` from `hΔ w hw`. Establish `hpos` using `projDeg_pos x e hfr.isRatProjFrame`. Rewrite `hpos` using `[← hcard]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨z, hz⟩` from `Set.nonempty_of_ncard_ne_zero hpos.ne'`. Conclude with `⟨z, hz.1⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem pts_nonempty {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e) :
     (pts (coordIdeal ℤ x)).Nonempty := by
@@ -128,15 +126,15 @@ theorem pts_nonempty {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsPro
   exact ⟨z, hz.1⟩
 
 /- English proof (translation)
-Take `⟨Δ, hΔ0, hΔ⟩` from `exists_isDiscr hfr`. Establish `hFc : Continuous fun w : Fin (D + 1) → ℂ => ‖eval w (map (Int.castRingHom ℂ) g)‖` using `(continuous_eval _).norm`. Establish `hGc : Continuous fun w : Fin (D + 1) → ℂ => (projDeg x e : ℝ) * S * Real.sqrt (sqN w) ^ N`. Unfold `sqN`. Use `fun_prop`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `hgood : ∀ w ∈ {w : Fin (D + 1) → ℂ | eval w Δ ≠ 0}, w ∈ {w : Fin (D + 1) → ℂ | ‖eval w (map (Int.castRingHom ℂ) g)‖ ≤ (projDeg x e : ℝ) * S * Real.sqrt (sqN w) ^ N}`. Introduce `w hw`. Take `⟨hfin, hcard, -, htrace⟩` from `hΔ w hw`. Simplify using `only [Set.mem_ofPred_eq]`. Rewrite using `[htrace N f g hf hg htr, finsum_mem_eq_finite_toFinset_sum _ hfin]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `(norm_sum_le _ _).trans ?_` and prove the remaining obligations. Establish `hb : ∀ z ∈ hfin.toFinset, ‖eval z (map (Int.castRingHom ℂ) f)‖ ≤ S * Real.sqrt (sqN w) ^ N`. Introduce `z hz`. Rewrite `hz` using `[Set.Finite.mem_toFinset]`. Establish `h` using `hS z hz.1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw' : z ∘ e = w` using `funext hz.2`. Rewrite `h` using `[pnorm_eq_sqN, hw']`. Then use the resulting hypothesis. Use `(Finset.sum_le_sum hb).trans ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_const, nsmul_eq_mul, ← Set.ncard_eq_toFinset_card _ hfin, hcard, mul_assoc]`. Establish `hcl` using `closure_minimal hgood (isClosed_le hFc hGc)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hcl` using `[(dense_eval_ne_zero hΔ0).closure_eq]`. Conclude with `hcl (Set.mem_univ w)`.
+A detailed English derivation is pending.
 -/
 theorem trace_le {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e) {N : ℕ}
     (f : MvPolynomial (Ix κ) ℤ) (g : MvPolynomial (Fin (D + 1)) ℤ) (hf : f.IsHomogeneous N)
@@ -173,15 +171,13 @@ theorem trace_le {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsProjFra
   exact hcl (Set.mem_univ w)
 
 /- English proof (translation)
-Use `set F : ℕ → ℝ := fun n => (Module.finrank ℤ (sec ℤ x n) : ℝ) - (projDeg x e : ℝ) * (n : ℝ) ^ D / (D.factorial : ℝ) with hFdef`. Take `⟨c, hc⟩` from `(finrank_sec_asymp x e hfr).bound`. Take `⟨N, hN⟩` from `eventually_atTop.mp hc`. Use `⟨|c| + ∑ i ∈ Finset.range (N + 1), |F i|, by positivity, fun n => ?_⟩` and prove the remaining obligations. Establish `hsum0 : 0 ≤ ∑ i ∈ Finset.range (N + 1), |F i|` using `Finset.sum_nonneg fun i _ => abs_nonneg _`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : (1 : ℝ) ≤ ((n : ℝ) + 1) ^ (D - 1)` using `one_le_pow₀ (by linarith [(n.cast_nonneg : (0 : ℝ) ≤ n)])`. Express the relevant statement in the definitionally equal form `|F n| ≤ _`. Distinguish the cases in `hn : N + 1 ≤ n`. Establish `hb` using `hN n (by omega)`. Establish `hn1 : (1 : ℝ) ≤ n` using `by exact_mod_cast (show 1 ≤ n by omega)`.
+Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hpow : (n : ℝ) ^ D / (n : ℝ) = (n : ℝ) ^ (D - 1)`. Rewrite using `[← pow_sub_one_mul (by omega : D ≠ 0) (n : ℝ), mul_div_assoc, div_self (by linarith), mul_one]`. Establish `hn0 : (0 : ℝ) ≤ n` using `n.cast_nonneg`. Rewrite `hb` using `[hpow, Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg (pow_nonneg hn0 (D - 1))]`. Establish `hle : (n : ℝ) ^ (D - 1) ≤ ((n : ℝ) + 1) ^ (D - 1)` using `pow_le_pow_left₀ (by linarith) (by linarith) _`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `hmem : n ∈ Finset.range (N + 1)` using `Finset.mem_range.2 (by omega)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[mul_one]`. Conclude with `le_add_of_nonneg_left (abs_nonneg c)`.
-
-Use `_ ≤ _ := mul_le_mul_of_nonneg_left h1 (by positivity)`.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rank_bound {x : Ix κ → Ω} {e : Fin (D + 1) → Ix κ} (hfr : IsProjFrame x e) (hD : 1 ≤ D) :
     ∃ C : ℝ, 0 ≤ C ∧ ∀ n : ℕ, |(Module.finrank ℤ (sec ℤ x n) : ℝ) -
@@ -219,49 +215,43 @@ end ProjectionBounds
 open ProjectionBounds in
 
 /- English proof (translation)
-Introduce `D Ω _ _ κ _ d e hfr hFS`. Establish `hrat` using `hfr.isRatProjFrame`. Take `⟨kχ, Cχ, hχ⟩` from `hR D Ω κ d e hfr hFS`. Take `⟨k₀, ε, hε, hli⟩` from `exists_indep_sections d.x e hrat`. Establish `hεH : ∀ l, ∃ Hl : MvPolynomial (Ix κ) ℤ, Hl.IsHomogeneous k₀ ∧ aeval d.x Hl = ε l` using `fun l => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨p, hp, hpe⟩` from `Submodule.mem_map.mp (hε l)`. Conclude with `⟨p, (mem_homogeneousSubmodule _ _).mp hp, hpe⟩`. Use `choose H hHh hHe using hεH`. Set `E : Fin (projDeg d.x e) → MvPolynomial (Ix κ) ℤ` to `fun l => X (e 0) ^ kχ * H l`. Establish `hEh : ∀ l, (E l).IsHomogeneous (kχ + k₀)` using `fun l => (isHomogeneous_X_pow (e 0) kχ).mul (hHh l)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hEv : ∀ l, aeval d.x (E l) = d.x (e 0) ^ kχ * ε l` using `fun l => by`. Simplify using `only [E, map_mul, map_pow, aeval_X, hHe]`. Establish `hx0 : d.x (e 0) ≠ 0` using `coord_ne_zero_of_free (d.x ∘ e) hfr.free 0`. Establish `hEmem : ∀ l, aeval d.x (E l) ∈ sec ℤ d.x (kχ + k₀)` using `fun l => Submodule.mem_map.mpr ⟨E l, (mem_homogeneousSubmodule _ _).mpr (hEh l), rfl⟩`. Establish `hli' : LinearIndependent (fnField (d.x ∘ e)) (fun l => aeval d.x (E l))`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `hli.map' (LinearMap.mulLeft (fnField (d.x ∘ e)) (d.x (e 0) ^ kχ)) (LinearMap.ker_eq_bot.2 (mul_right_injective₀ (pow_ne_zero _ hx0)))` as an intermediate fact. Establish `hfun : (fun l => aeval d.x (E l)) = ⇑(LinearMap.mulLeft (fnField (d.x ∘ e)) (d.x (e 0) ^ kχ)) ∘ ε`. Use function extensionality and compare the values at `l`. Simplify using `[hEv]`. Rewrite using `[hfun]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Establish `hCl : ∀ l, ∃ S : ℝ, 0 ≤ S ∧ ∀ z ∈ pts (coordIdeal ℤ d.x), ‖eval z (map (Int.castRingHom ℂ) (E l))‖ ≤ S * pnorm e z ^ (kχ + k₀)` using `fun l => form_le_pnorm hfr (kχ + k₀) _ ((hEh l).map _)`. Use `choose Sl hSl0 hSl using hCl`. Establish `hCE0 : 0 ≤ ∑ l, Sl l` using `Finset.sum_nonneg fun l _ => hSl0 l`. Establish `hCE : ∀ l, ∀ z ∈ pts (coordIdeal ℤ d.x), ‖eval z (map (Int.castRingHom ℂ) (E l))‖ ≤ (∑ l, Sl l) * pnorm e z ^ (kχ + k₀)` using `fun l z hz => (hSl l z hz).trans (mul_le_mul_of_nonneg_right (Finset.single_le_sum (f := Sl) (fun i _ => hSl0 i) (Finset.mem_univ l)) (pow_nonneg (pnorm_nonneg e z) _))`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨Cr, hCr0, hCr⟩` from `rank_bound hfr d.one_le`. Establish `hδ0 : (0 : ℝ) ≤ projDeg d.x e` using `Nat.cast_nonneg _`. Establish `hA0 : 0 ≤ (projDeg d.x e : ℝ) * ∑ l, Sl l` using `mul_nonneg hδ0 hCE0`. Use `⟨kχ + k₀, E, (projDeg d.x e : ℝ) * (∑ l, Sl l) + (∑ l, Sl l) + Cr + |Cχ|, hEh, hli', ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `n s l hs`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hm : s * aeval d.x (E l) ∈ sec ℤ d.x (n + (kχ + k₀))`. Rewrite using `[← sec_mul_sec]`. Conclude with `Submodule.mul_mem_mul hs (hEmem l)`. Conclude with `secTrace_mem d.x e hfr _ hm`. Introduce `n s hs h0`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Conclude with `eq_zero_of_secTrace_mul_eq_zero d.x e hrat (fun l => aeval d.x (E l)) hEmem hli' n hs h0`. Introduce `n`. Use `(hCr n).trans (mul_le_mul_of_nonneg_right ?_ (by positivity))` and prove the remaining obligations. Combine the linear relations using `[abs_nonneg Cχ]`. Introduce `n f g l c hf hg htr hc t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨z₀, hz₀⟩` from `pts_nonempty hfr`. Establish `hc0 : 0 ≤ c` using `le_trans (div_nonneg (norm_nonneg _) (pow_nonneg (d.m.pos z₀ hz₀.1).le n)) (hc z₀ hz₀)`. Establish `htr' : aeval (d.x ∘ e) g = secTrace d.x e (n + (kχ + k₀)) (aeval d.x (f * E l))`. Rewrite using `[map_mul]`. Conclude with `htr`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hS : ∀ z ∈ pts (coordIdeal ℤ d.x), ‖eval z (map (Int.castRingHom ℂ) (f * E l))‖ ≤ (c * ∑ l, Sl l) * pnorm e z ^ (n + (kχ + k₀))`. Introduce `z hz`. Establish `hρ : 0 < pnorm e z` using `pnorm_pos hfr hz`. Establish `hmz : d.m.ρ z = pnorm e z` using `hFS z hz`. Establish `h1 : ‖eval z (map (Int.castRingHom ℂ) f)‖ ≤ c * pnorm e z ^ n`.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `hc z hz` as an intermediate fact. Rewrite `this` using `[ptNorm, hmz]`. Conclude with `(div_le_iff₀ (pow_pos hρ n)).mp this`. Rewrite using `[map_mul, eval_mul, norm_mul, pow_add]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hb` using `trace_le hfr (f * E l) g (hf.mul (hEh l)) hg htr' hS t`. Establish `hρt : 0 < (fsMetric (Fin (D + 1))).ρ t` using `(fsMetric _).pos t ht`. Rewrite using `[ptNorm, div_le_iff₀ (pow_pos hρt _), fs_rho_eq]`. Rewrite `hρt` using `[fs_rho_eq]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Apply `mul_le_mul_of_nonneg_right _ (pow_nonneg hρt.le _)` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_nonneg hA0 hc0, mul_nonneg hCE0 hc0, mul_nonneg hCr0 hc0, mul_nonneg (abs_nonneg Cχ) hc0]`. Introduce `n Q c hkn hQ hc z hz`. Establish `hρ : 0 < pnorm e z` using `pnorm_pos hfr hz`. Establish `hmz : d.m.ρ z = pnorm e z` using `hFS z hz`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hze : z ∘ e ≠ 0`. Take `⟨j, hj⟩` from `exists_proj_ne_zero hfr hz`. Conclude with `fun h0 => hj (congrFun h0 j)`. Establish `hfsz : (fsMetric (Fin (D + 1))).ρ (z ∘ e) = pnorm e z` using `by rw [fs_rho_eq, pnorm_eq_sqN]`. Establish `hc0 : ∀ l, 0 ≤ c l` using `fun l => le_trans (div_nonneg (norm_nonneg _) (pow_nonneg ((fsMetric _).pos _ hze).le _)) (hc l (z ∘ e) hze)`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hQb : ∀ l, ‖eval (z ∘ e) (map (Int.castRingHom ℂ) (Q l))‖ ≤ c l * pnorm e z ^ (n - (kχ + k₀))` using `fun l => by`. Use `hc l (z ∘ e) hze` as an intermediate fact. Rewrite `this` using `[ptNorm, hfsz]`. Conclude with `(div_le_iff₀ (pow_pos hρ _)).mp this`. Establish `hexp : eval z (map (Int.castRingHom ℂ) (∑ l, rename e (Q l) * E l)) = ∑ l, eval (z ∘ e) (map (Int.castRingHom ℂ) (Q l)) * eval z (map (Int.castRingHom ℂ) (E l))`.
+Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [map_sum, map_mul, map_rename, eval_rename]`. Establish `hs0 : 0 ≤ ∑ l, c l` using `Finset.sum_nonneg fun l _ => hc0 l`. Rewrite using `[ptNorm, hmz, div_le_iff₀ (pow_pos hρ n), hexp]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[norm_mul]`.
+Use the polynomial consequences of the given equalities and inequalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Conclude with `mul_le_mul (hQb l) (hCE l z hz) (norm_nonneg _) (le_trans (norm_nonneg _) (hQb l))`. Use `_ = (∑ l, Sl l) * (∑ l, c l) * pnorm e z ^ n := by`. Rewrite using `[show (∑ l, (c l * pnorm e z ^ (n - (kχ + k₀))) * ((∑ l, Sl l) * pnorm e z ^ (kχ + k₀))) = ∑ l, c l * ((∑ l, Sl l) * pnorm e z ^ n) from Finset.sum_congr rfl fun l _ => by`. Rewrite using `[← pow_sub_mul_pow (pnorm e z) hkn]`. Use the proof step `ring, ← Finset.sum_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Expand and normalize the polynomial expressions, which then agree. Use `_ ≤ _ := by`. Apply `mul_le_mul_of_nonneg_right _ (pow_nonneg hρ.le _)` to reduce the goal to its premises. Use polynomial arithmetic with `[mul_nonneg hA0 hs0, mul_nonneg hCr0 hs0, mul_nonneg (abs_nonneg Cχ) hs0]`. Introduce `n hn`.
+Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Establish `hmono : Monotone (chiP D)` using `monotone_nat_of_le_succ fun m => by`. Use `chiP_succ_sub_nonneg D m` as an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Take `⟨hlo, hhi⟩` from `hχ n (by omega)`. Establish `hP1 : chiP D (n - (kχ + k₀)) ≤ chiP D (n - kχ)` using `hmono (by omega)`.
-
-Establish `hP2 : chiP D (n + kχ) ≤ chiP D (n + (kχ + k₀))` using `hmono (by omega)`. Establish `hn0 : (0 : ℝ) ≤ n` using `n.cast_nonneg`. Establish `hL : 0 ≤ (n : ℝ) ^ D * Real.log (n + 1)` using `mul_nonneg (pow_nonneg hn0 _) (Real.log_nonneg (by linarith))`. Establish `hCC : Cχ ≤ (projDeg d.x e : ℝ) * (∑ l, Sl l) + (∑ l, Sl l) + Cr + |Cχ|`. Combine the linear relations using `[le_abs_self Cχ]`.
-
-Establish `h3 : Cχ * (n : ℝ) ^ D * Real.log (n + 1) ≤ ((projDeg d.x e : ℝ) * (∑ l, Sl l) + (∑ l, Sl l) + Cr + |Cχ|) * (n : ℝ) ^ D * Real.log (n + 1)`. Rewrite using `[mul_assoc, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_right hCC hL`. Prove the components needed by the constructor for the conclusion. Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hP1 hδ0]`.
-
-Use polynomial arithmetic with `[mul_le_mul_of_nonneg_left hP2 hδ0]`.
+Use the polynomial consequences of the given equalities and inequalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem ProjectionBounds.proof (hR : ResChiBounds.Statement) : ProjectionBounds.Statement := by
   classical

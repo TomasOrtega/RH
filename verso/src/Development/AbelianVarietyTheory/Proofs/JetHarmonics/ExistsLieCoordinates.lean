@@ -23,9 +23,9 @@ abbrev specV {V O : Type} [CommRing V] [CommRing O] (f : V →+* O) (A : Type) [
   Over.mk (Spec.map (CommRingCat.ofHom ((algebraMap O A).comp f)))
 
 /- English proof (translation)
-Use `⟨fun i => const_map (hα.1 i), fun n a y hy => ?_⟩` and prove the remaining obligations. Take `⟨Θ, t, hΘ, ht, e⟩` from `exists_move hπ hJ hx' ![a] ![y] (fun i => by fin_cases i; exact hy)`. Establish `H` using `hα.2 1 _ _ (ht 0)`. Establish `hFe : comp1 α (ReciprocityTheory.ChartRestriction.G.Geo.Tor.Germ.pt R (n` using `1) d 0) = α := funext fun i => germEval_oneStandardPoint_self _`. Rewrite `H` using `[hFe]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `(rep_iff hπ hJ hx' (single_point_zero_constant hy.1) hΘ H _).2 fun m => ?_` and prove the remaining obligations. Rewrite using `[← Category.assoc, ← e 0 m]`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Use `show ((y m).left ≫ f'.left) ≫ π = ((y m).left ≫ π) ≫ f.left`. Rewrite using `[Category.assoc, Category.assoc, hf]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isMapOf_baseChange {R R' : Type} [CommRing R] [CommRing R'] [Algebra R R']
     {G : Over (Spec (CommRingCat.of R))} [GrpObj G] {G' : Over (Spec (CommRingCat.of R'))} [GrpObj G']
@@ -53,11 +53,11 @@ variable {O : Type} [CommRing O] {Gt G' : Over (Spec (CommRingCat.of O))} [GrpOb
 
 include hmul hinj hnat in
 /- English proof (translation)
-Establish `h1 : K 1 = 1`. Use `hmul 1 1` as an intermediate fact. Rewrite `this` using `[_root_.mul_one]`. Conclude with `left_eq_mul.mp this`. Establish `key : ∀ {G : Over (Spec (CommRingCat.of O))} [GrpObj G] (z : specO O (DualNumber O) ⟶ G), IsTan z ↔ ptMap (scaleD (0 : O)) ≫ z = 1` using `fun z => ⟨fun h => spMap_scaleD_zero h, fun h => by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fstD O).comp (scaleD (0 : O)) = fstD O`. Use `ext`. Conclude with `TrivSqZeroExt.fst_map _ _`. Use `congrArg (Chart.spMap (fstD O) ≫ ·) h` as an intermediate fact. Simplify using `only [MonObj.comp_one] at this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans ?_ this` and prove the remaining obligations. Use `show _ = Chart.spMap (fstD O) ≫ Chart.spMap (scaleD (0 : O)) ≫ z`. Rewrite using `[← Category.assoc, Chart.spMap_comp, e]⟩`. Rewrite using `[key, key, ← hnat, ← h1]`. Conclude with `hinj.eq_iff.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isTan_iff (w : specO O (DualNumber O) ⟶ Gt) : IsTan w ↔ IsTan (K w) := by
   have h1 : K 1 = 1 := by
@@ -80,31 +80,27 @@ theorem isTan_iff (w : specO O (DualNumber O) ⟶ Gt) : IsTan w ↔ IsTan (K w) 
 end Transfer
 
 /- English proof (translation)
-Use `letI : Algebra V O := f.toAlgebra`. Use `letI alg : Algebra V (DualNumber O) := ((algebraMap O (DualNumber O)).comp f).toAlgebra`. Use `haveI tow : @IsScalarTower V O (DualNumber O) _ _ alg.toSMul := IsScalarTower.of_algebraMap_eq (R := V) (S := O) (A := DualNumber O) fun _ => rfl`. Set `j` to `Spec.map (CommRingCat.ofHom (algebraMap V O))`. Set `G'` to `(Over.pullback j).obj G`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hπ : IsGrpPullback G' G j (pullback.fst G.hom j)` using `isGrpPullback_pullback G j`. Use `choose x' hx' using fun m => push_surjective hπ (Chart.spMap (jetCoeff V O (Fin d) m) ≫ x m)`. Establish `hu` using `isUnivChart_baseChange hπ hx hx'`. Use `choose K hK using fun w => push_surjective (A := DualNumber O) hπ (J w)`. Establish `hK' : ∀ w, (K w).left ≫ pullback.fst G.hom j = (J w).left` using `fun w => congrArg (·.left) (hK w)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `Kmul : ∀ w w', K (w * w') = K w * K w'` using `fun w w' => push_injective hπ (by rw [push_mul, hK, hK, hK]; exact hmul w w')`. Establish `Kinj : Function.Injective K` using `fun w w' h => hinj (by rw [← hK, ← hK, h])`. Establish `Knat : ∀ (φ : DualNumber O →ₐ[O] DualNumber O) w, K (ptMap φ ≫ w) = ptMap φ ≫ K w` using `fun φ w => push_injective hπ (Over.OverMorphism.ext (by`. Rewrite using `[push_left, push_left, hK', hnat, Over.comp_left, Category.assoc, hK']`. Use the proof step `rfl))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `htan` using `isTan_iff K Kmul Kinj Knat`. Establish `lie : ∀ w : specO O (DualNumber O) ⟶ Gt, (ptMap (TrivSqZeroExt.fstHom O O O) ≫ w = toUnit (specO O O) ≫ η[Gt]) ↔ IsTan w` using `fun w => Iff.rfl`. Establish `ex : ∀ b : Fin d → O, ∃ w : LieG Gt, K w.1 = Chart.spMap (dualLift b) ≫ x' 1` using `fun b => by`. Take `⟨w, hw⟩` from `hsurj (push hπ (Chart.spMap (dualLift b) ≫ x' 1)) (by`. Establish `h` using `congrArg (·.left ≫ pullback.fst G.hom j) (isTan_dualLift hu b)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1` using `congrArg (·.left) (push_one (A := DualNumber O) hπ)`. Establish `h2 : Chart.spMap (fstD O) ≫ (1 : sp (R₀` using `O) (DualNumber O) ⟶ G') = 1 := MonObj.comp_one _`. Rewrite `h` using `[← h2]`. Simplify using `only [Over.comp_left, Category.assoc] at h`. Rewrite `h1` using `[push_left]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Supply the required witnesses or components. Introduce a local definition for the expression.
 
-Rewrite `h` using `[h1]`. Conclude with `h)`. Establish `e : K w = Chart.spMap (dualLift b) ≫ x' 1` using `push_injective hπ ((hK w).trans hw)`. Conclude with `⟨⟨w, (lie w).2 ((htan w).2 (e ▸ isTan_dualLift hu b))⟩, e⟩`. Use `choose tv htv using ex`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `co : LieG Gt → Fin d → O` to `fun w => tcoord hu (K w.1) ((htan _).1 ((lie _).1 w.2))`. Establish `hco : ∀ b, co (tv b) = b` using `fun b => tcoord_eq hu _ _ b (htv b)`. Use `⟨co, tv, fun s => ⟨fun w w' h => ?_, fun a w h => ?_⟩, hco, fun b => ?_, ?_⟩` and prove the remaining obligations. Use `tcoord_mul hu ((htan _).1 ((lie _).1 w.2)) ((htan _).1 ((lie _).1 w'.2))` as an intermediate fact. Conclude with `(congrFun (Chart.tcoord_congr hu (Kmul _ _) _ _) s).trans (congrFun this s)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `tcoord_scale hu a ((htan _).1 ((lie _).1 w.2))` as an intermediate fact. Conclude with `(congrFun (Chart.tcoord_congr hu (Knat _ _) _ _) s).trans (congrFun this s)`. Use `⟨(dualLift b).toRingHom.comp (jetCoeff V O (Fin d) 1).toRingHom, fun i => ?_, ?_⟩` and prove the remaining obligations. Use `show dualLift b (jetCoeff V O (Fin d) 1 (zR 1 i)) = _`. Rewrite using `[jetCoeff_zR, dualLift_zR]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h : (x' 1).left ≫ pullback.fst G.hom j = _` using `congrArg (·.left) (hx' 1)`. Rewrite using `[← hK', htv, Over.comp_left, Category.assoc, h, Over.comp_left, ← Category.assoc, Chart.spMap_left, Chart.spMap_left, ← Spec.map_comp]`. Both sides reduce to the same expression. Introduce `u _ ut α hα hut b a hb`. Set `u' : G' ⟶ G'` to `(Over.pullback j).map u`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hu' : u'.left ≫ pullback.fst G.hom j = pullback.fst G.hom j ≫ u.left` using `pullback.lift_fst _ _ _`. Establish `hm` using `isMapOf_baseChange hπ hJ hx' u u' α hu' hα`. Establish `ht` using `(htan _).1 ((lie _).1 (tv b).2)`. Establish `h` using `hD O G' G' d x' x' hu hu u' _ hm (K (tv b).1) ht (Chart.isTan_comp ht u')`. Establish `h2 : dLin (fun i => MvPowerSeries.map (algebraMap V O) (α i)) = (dLin α).map f`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use extensionality with `i k`. Simplify using `[dLin, RingHom.algebraMap_toAlgebra]`. Establish `h3 : tcoord hu (K (tv b).1) ht = b` using `hco b`. Rewrite `h` using `[h2, h3, hb]`. Establish `h4` using `tcoord_scale hu a ht`.
-
-Rewrite `h4` using `[h3]`. Apply `Kinj` to reduce the goal to its premises. Rewrite using `[Knat]`. Establish `e1 : K ((tv b).1 ≫ ut) = K (tv b).1 ≫ u'` using `push_injective hπ (Over.OverMorphism.ext (by`. Rewrite using `[push_left, push_left, hK', hut, Over.comp_left, Over.comp_left, Category.assoc, hu', ← Category.assoc, hK']))`.
-
-Rewrite using `[e1, tcoord_spec hu _ (Chart.isTan_comp ht u'), h, ← h4]`. Conclude with `(tcoord_spec hu _ _).symm`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_lie_coordinates (hJ : JetAlgSt) (hD : DLinSt) {V O : Type} [CommRing V] [IsLocalRing V] [CommRing O]
     (f : V →+* O) (G : Over (Spec (CommRingCat.of V))) [GrpObj G] [IsCommMonObj G] {d : ℕ} (x : JetSer.Fam G (Fin d))

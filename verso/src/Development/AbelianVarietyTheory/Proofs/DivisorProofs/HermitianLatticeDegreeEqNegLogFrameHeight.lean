@@ -14,13 +14,13 @@ noncomputable section
 namespace GlobalTheory.FrameDeg
 
 /- English proof (translation)
-Establish `hFl : ∀ x x' y, F (x + x') y = F x y + F x' y`. Introduce `x x' y`. Rewrite using `[← hFc y (x + x'), hFa, map_add, hFc, hFc]`. Establish `hGl : ∀ x x' y, G (x + x') y = G x y + G x' y`. Introduce `x x' y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[← hGc y (x + x'), hGa, map_add, hGc, hGc]`. Establish `hre : ∀ x y, (F x y).re = (G x y).re`. Introduce `x y`. Establish `h1` using `hd (x + y)`. Rewrite `h1` using `[hFl, hFa, hFa, hGl, hGa, hGa, ← hFc x y, ← hGc x y]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [Complex.add_re, Complex.conj_re] at h1`. Combine the linear relations using `[hd x, hd y]`. Take `⟨a, ha⟩` from `ha`. Establish `h2` using `hre x (a • y)`. Rewrite `h2` using `[hFs, hGs, Complex.mul_re, Complex.mul_re, hre x y]`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `him : (F x y).im = (G x y).im`. Establish `: (σ a).im * (F x y).im = (σ a).im * (G x y).im` using `by linarith`. Conclude with `mul_left_cancel₀ ha this`. Conclude with `Complex.ext (hre x y) him`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem form_eq_of_re_diag {K V : Type} [Field K] [AddCommGroup V] [Module K V] (σ : K →+* ℂ)
     (F G : V → V → ℂ)
@@ -54,7 +54,7 @@ variable {K V ι : Type} [Field K] [NumberField K] [StarRing K] [AddCommGroup V]
   [Fintype ι] [DecidableEq ι]
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord_add, Pi.add_apply, mul_add, Finset.sum_add_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem majAt_add_right (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) (x y z : V) :
@@ -62,7 +62,7 @@ theorem majAt_add_right (b : Module.Basis ι K V) (X : InfinitePlace K → Matri
   simp only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord_add, Pi.add_apply, mul_add, Finset.sum_add_distrib]
 
 /- English proof (translation)
-Establish `hv : Formalism.HermitianLatticesTheory.vecAt b v (a • y) = v.embedding a • Formalism.HermitianLatticesTheory.vecAt b v y`. Use function extensionality and compare the values at `i`. Simplify using `[Formalism.HermitianLatticesTheory.vecAt]`. Simplify using `only [Formalism.HermitianLatticesTheory.majAt, Formalism.HermitianLatticesTheory.fcoord, hv, Matrix.mulVec_smul, Pi.smul_apply, smul_eq_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem majAt_smul_right (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) (a : K) (x y : V) :
@@ -74,7 +74,7 @@ theorem majAt_smul_right (b : Module.Basis ι K V) (X : InfinitePlace K → Matr
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Simplify using `only [Formalism.HermitianLatticesTheory.majAt, map_sum, map_mul, Complex.star_def, Complex.conj_conj]`. Conclude with `Finset.sum_congr rfl fun i _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem majAt_conj (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) (x y : V) :
@@ -83,7 +83,7 @@ theorem majAt_conj (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι 
   exact Finset.sum_congr rfl fun i _ => by ring
 
 /- English proof (translation)
-Rewrite using `[Formalism.HermitianLatticesTheory.normAt, Formalism.HermitianLatticesTheory.cnorm, Real.sq_sqrt (by positivity)]`. Simplify using `only [Formalism.HermitianLatticesTheory.majAt, Complex.re_sum, Complex.star_def]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[Complex.mul_re, Complex.conj_re, Complex.conj_im, Complex.sq_norm, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem majAt_self_re (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ)
     (v : InfinitePlace K) (x : V) :
@@ -97,11 +97,11 @@ theorem majAt_self_re (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix 
 end Maj
 
 /- English proof (translation)
-Distinguish the cases in `hx : x = 0`. Substitute `hx` using the available equality. Establish `h0 : nm.form σ 0 0 = 0`. Use `nm.add_right σ 0 0 0` as an intermediate fact. Simplify using `only [add_zero] at this`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Take the linear combination `-this`. Simplify using `[h0]`. Establish `hli : LinearIndependent K ![x]`. Rewrite using `[linearIndependent_unique_iff]`. Simplify using `using hx`.
+Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `hp` using `(nm.posDef σ 1 ![x] hli).det_pos`. Rewrite `hp` using `[Matrix.det_unique]`. Simplify using `using (Complex.pos_iff.1 hp).1.le`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem form_self_re_nonneg {K V : Type} [Field K] [AddCommGroup V] [Module K V] (nm : HermFam K V)
     (σ : K →+* ℂ) (x : V) : 0 ≤ (nm.form σ x x).re := by
@@ -119,7 +119,7 @@ theorem form_self_re_nonneg {K V : Type} [Field K] [AddCommGroup V] [Module K V]
     simpa using (Complex.pos_iff.1 hp).1.le
 
 /- English proof (translation)
-Rewrite using `[IsTotallyComplex.finrank, Formalism.HN.nPl, InfinitePlace.card_eq_nrRealPlaces_add_nrComplexPlaces, IsTotallyComplex.nrRealPlaces_eq_zero, zero_add]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem finrank_eq_two_mul_nPl' {K : Type} [Field K] [NumberField K] [IsTotallyComplex K] :
     Module.finrank ℚ K = 2 * Formalism.HN.nPl K := by
@@ -131,23 +131,23 @@ end GlobalTheory.FrameDeg
 namespace GlobalTheory.FrameDeg
 
 /- English proof (translation)
-Introduce `K V _ _ _ _ _ _ _ _ _ nm hinv ι _ _ b X hX hnorm L hL`. Establish `hform : ∀ (v : InfinitePlace K) (x y : V), Formalism.HermitianLatticesTheory.majAt b X v x y = nm.form v.embedding x y`. Introduce `v`. Use `form_eq_of_re_diag v.embedding _ _ (majAt_add_right b X v) (nm.add_right _) (majAt_smul_right b X v) (nm.smul_right _) (majAt_conj b X v) (nm.conj_symm _) ?_ ?_` and prove the remaining obligations. Introduce `x`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[majAt_self_re, hnorm, HermFam.nrm, Real.sq_sqrt (form_self_re_nonneg nm _ x)]`. Establish `hc : v.IsComplex` using `IsTotallyComplex.isComplex v`. Rewrite `hc` using `[InfinitePlace.isComplex_iff, ComplexEmbedding.isReal_iff]`. Assume the negation of the conclusion as `hall`. Use `push_neg at hall`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hc` to reduce the goal to its premises. Use extensionality with `a`. Rewrite using `[ComplexEmbedding.conjugate_coe_eq]`. Conclude with `Complex.conj_eq_iff_im.mpr (hall a)`. Take `⟨e, he⟩` from `exists_isFrame L hL`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hdeg` using `arakelovDegree_eq_degreeOfFamily nm hL he`. Take `⟨hS, hSL⟩` from `Formalism.HN.htGram K V ι b X hX _ e he.2.1`. Establish `hle : Submodule.span (𝓞 K) (Set.range e) ≤ L` using `Submodule.span_le.mpr (by rintro _ ⟨i, rfl⟩; exact he.1 i)`. Establish `hidx` using `hSL L hL hle rfl`. Establish `hne` using `he.relIndex_ne_zero hL`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hgram : ∀ v, Formalism.HN.gramPl b X v e = nm.gram v.embedding e`. Introduce `v`. Use extensionality with `a c`. Simplify using `[Formalism.HN.gramPl, HermFam.gram, hform]`. Establish `hpos : ∀ σ, 0 < (nm.gram σ e).det.re` using `fun σ => (Complex.pos_iff.1 (Matrix.PosDef.det_pos (nm.posDef σ _ e he.2.1))).1`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hsum : ∑ σ : K →+* ℂ, Real.log (nm.gram σ e).det.re = 2 * ∑ w : InfinitePlace K, Real.log (nm.gram w.embedding e).det.re`. Rewrite using `[← Finset.sum_fiberwise Finset.univ InfinitePlace.mk, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun w _ => ?_` and prove the remaining obligations. Establish `hc : ∀ σ ∈ Finset.univ.filter (fun σ : K →+* ℂ => InfinitePlace.mk σ = w), Real.log (nm.gram σ e).det.re = Real.log (nm.gram w.embedding e).det.re`. Introduce `σ hσ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite `hσ` using `[Finset.mem_filter]`. Break down `InfinitePlace.mk_eq_iff.mp (hσ.2.trans (InfinitePlace.mk_embedding w).symm) with h | h` into its components or cases. Rewrite using `[h]`. Rewrite using `[← h, det_gram_conj_re nm hinv]`. Rewrite using `[Finset.sum_congr rfl hc, Finset.sum_const, InfinitePlace.card_filter_mk_eq, (IsTotallyComplex.isComplex w).mult_eq_two, nsmul_eq_mul]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 
-Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Establish `hprod : 0 < ∏ w : InfinitePlace K, (nm.gram w.embedding e).det.re` using `Finset.prod_pos fun w _ => hpos _`. Establish `hidx' : (0 : ℝ) < ((Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup.relIndex L.toAddSubgroup : ℝ)` using `by exact_mod_cast Nat.pos_of_ne_zero hne`. Establish `hht : Formalism.HN.ht b X L = (∏ w : InfinitePlace K, (nm.gram w.embedding e).det.re) / ((Submodule.span (𝓞 K) (Set.range e)).toAddSubgroup.relIndex L.toAddSubgroup : ℝ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[eq_div_iff hidx'.ne', hidx, hS]`. Conclude with `Finset.prod_congr rfl fun w _ => by rw [hgram]`. Rewrite using `[hdeg, degreeOfFamily, hsum, finrank_eq_two_mul_nPl', hht, Real.log_div hprod.ne' hidx'.ne', Real.log_prod (fun w _ => (hpos _).ne')]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem deg_eq_neg_log_ht : ∀ (K V : Type) [Field K] [NumberField K] [AddCommGroup V] [Module K V] [Module (𝓞 K) V] [IsScalarTower (𝓞 K) K V] [StarRing K] [IsTotallyComplex K] [FiniteDimensional K V] (nm : HermFam K V), nm.IsConjInv → ∀ (ι : Type) [Fintype ι] [DecidableEq ι] (b : Module.Basis ι K V) (X : InfinitePlace K → Matrix ι ι ℂ), (∀ v, IsUnit (X v).det) → (∀ v x, Formalism.HermitianLatticesTheory.normAt b X v x = nm.nrm v.embedding x) → ∀ L : Submodule (𝓞 K) V, L.FG → deg nm L = -Real.log (Formalism.HN.ht b X L) / (2 * (Formalism.HN.nPl K : ℝ)) := by
   intro K V _ _ _ _ _ _ _ _ _ nm hinv ι _ _ b X hX hnorm L hL

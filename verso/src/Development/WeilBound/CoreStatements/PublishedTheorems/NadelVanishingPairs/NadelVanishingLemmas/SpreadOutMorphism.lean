@@ -16,21 +16,21 @@ open scoped TensorProduct
 namespace GlobalTheory.SecDescent
 
 /- English proof (translation)
-Introduce `k _ R₀ X X₀ f f₀ π _ L hL σ hp`. Take `⟨S, hS⟩` from `GlobalTheory.LBLimit.lb_descends_to_fg_subring k R₀ X X₀ f f₀ π L hp hL`. Set `R' : Subring k` to `R₀ ⊔ Subring.closure (S : Set k)`. Establish `h' : R₀ ≤ R'` using `le_sup_left`. Establish `hs' : (S : Set k) ⊆ R'` using `fun x hx => (le_sup_right : _ ≤ R') (Subring.subset_closure hx)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `a : Sp R' ⟶ Sp R₀` to `spMap (Subring.inclusion h')`. Establish `e₁ : spMap R'.subtype ≫ a = spMap R₀.subtype`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Establish `PX'` using `IsPullback.of_hasPullback f₀ a`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Set `j' : X ⟶ pullback f₀ a` to `PX'.lift π (f ≫ spMap R'.subtype) (by rw [Category.assoc, e₁, hp.w])`. Establish `hj₁ : j' ≫ pullback.fst f₀ a = π` using `PX'.lift_fst _ _ _`. Establish `hj₂ : j' ≫ pullback.snd f₀ a = f ≫ spMap R'.subtype` using `PX'.lift_snd _ _ _`. Take `⟨L', hL', hI⟩` from `hS R' h' hs' _ _ _ j' PX' hj₁ hj₂`. Establish `hLj : (L'.pull j').IsLB` using `LB.isLB_pull hL' j'`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨τ, hστ⟩` from `GlobalTheory.T.exists_sectionsHaveSameZeroScheme_of_lineBundleIso X L (L'.pull j') σ hL hLj hI`. Establish `QX : IsPullback j' f (pullback.snd f₀ a) (spMap R'.subtype)` using `IsPullback.of_right (by rw [hj₁, e₁]; exact hp) hj₂ PX'`. Take `⟨F₂, hF₂⟩` from `GlobalTheory.T.spread_out_line_bundle k R' X (pullback f₀ a) f (pullback.snd f₀ a) j' L' τ QX hL'`. Use `⟨S ∪ F₂, fun R₁ hR hs X₁ f₁ π₁ j hp₁ hjπ hjf => ?_⟩` and prove the remaining obligations. Rewrite `hs` using `[Finset.coe_union, Set.union_subset_iff]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hle : R' ≤ R₁` using `sup_le hR (Subring.closure_le.2 hs.1)`. Set `b : Sp R₁ ⟶ Sp R'` to `spMap (Subring.inclusion hle)`. Establish `e₂ : b ≫ a = spMap (Subring.inclusion hR)`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `e₃ : spMap R₁.subtype ≫ b = spMap R'.subtype`. Rewrite using `[← Spec.map_comp, ← CommRingCat.ofHom_comp]`. Both sides reduce to the same expression. Set `q : X₁ ⟶ pullback f₀ a` to `PX'.lift π₁ (f₁ ≫ b) (by rw [Category.assoc, e₂, hp₁.w])`. Establish `hq₁ : q ≫ pullback.fst f₀ a = π₁` using `PX'.lift_fst _ _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hq₂ : q ≫ pullback.snd f₀ a = f₁ ≫ b` using `PX'.lift_snd _ _ _`. Establish `QX₁ : IsPullback q f₁ (pullback.snd f₀ a) b` using `IsPullback.of_right (by rw [hq₁, e₂]; exact hp₁) hq₂ PX'`. Establish `hjq : j ≫ q = j'`. Apply `PX'.hom_ext` to reduce the goal to its premises. Rewrite using `[Category.assoc, hq₁, hjπ, hj₁]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, hq₂, reassoc_of% hjf, e₃, hj₂]`. Take `⟨τ₁, hτ₁⟩` from `hF₂ R₁ hle hs.2 X₁ f₁ q j QX₁ hjq hjf`. Use `⟨L'.pull q, LB.isLB_pull hL' q, τ₁, ?_, GlobalTheory.T.same_divisor_trans X L (L'.pull j') _ σ τ _ hLj hστ hτ₁⟩` and prove the remaining obligations. Rewrite using `[(CechPic.cls_eq_iff hL hLj).2 hI, CechPic.cls_pull hL' j' hLj, CechPic.cls_pull hL' q, ← hjq, CechPic.pull_comp]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem lbSec_descends_to_subring : ∀ (k : Type) [Field k] (R₀ : Subring k) (X X₀ : Scheme.{0}) (f : X ⟶ Sp k) (f₀ : X₀ ⟶ Sp R₀) (π : X ⟶ X₀) [IsProper f₀] (L : LB X) (hL : L.IsLB) (σ : L.Sec), IsPullback π f f₀ (spMap R₀.subtype) → ∃ F : Finset k, ∀ (R₁ : Subring k) (hR : R₀ ≤ R₁), (F : Set k) ⊆ R₁ → ∀ (X₁ : Scheme.{0}) (f₁ : X₁ ⟶ Sp R₁) (π₁ : X₁ ⟶ X₀) (j : X ⟶ X₁), IsPullback π₁ f₁ f₀ (spMap (Subring.inclusion hR)) → j ≫ π₁ = π → j ≫ f₁ = f ≫ spMap R₁.subtype → ∃ (L₁ : LB X₁) (h₁ : L₁.IsLB) (σ₁ : L₁.Sec), cls L hL = CechPic.pull j (cls L₁ h₁) ∧ SameDiv σ (Cartier.secPull σ₁ j) := by
   intro k _ R₀ X X₀ f f₀ π _ L hL σ hp

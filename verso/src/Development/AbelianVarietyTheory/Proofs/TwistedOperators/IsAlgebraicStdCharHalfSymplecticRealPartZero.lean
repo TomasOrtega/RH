@@ -9,9 +9,9 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.PsiFinAlgebraic
 
 /- English proof (translation)
-Take `⟨N, hN, h⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele F {c | ψ (pairA F 0 c) = 1} (GlobalTheory.FinTranslate.eventually_fin_eq_one hψ)`. Take `⟨m, hm, hy⟩` from `GlobalTheory.UnRep.SmallMat.exists_nsmul_integral y`. Use `⟨N * m, Nat.mul_pos hN (Nat.pos_of_ne_zero hm), ?_⟩` and prove the remaining obligations. Establish `h1 : ψ (pairA F 0 (N • m • y)) = 1` using `h _ hy`. Establish `e : pairA F 0 (N • m • y) = (N * m) • pairA F 0 y` using `Prod.ext (smul_zero (N * m)).symm (mul_smul N m y).symm`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h1` using `[e, AddChar.map_nsmul_eq_pow]`. Then use the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem exists_pow_psi_fin_eq_one {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ)
     (y : Af F) : ∃ M : ℕ, 0 < M ∧ ψ (pairA F 0 y) ^ M = 1 := by
@@ -25,7 +25,7 @@ theorem exists_pow_psi_fin_eq_one {F : Type} [Field F] [NumberField F] {ψ : Add
   rwa [e, AddChar.map_nsmul_eq_pow] at h1
 
 /- English proof (translation)
-Take `⟨M, hM, h⟩` from `exists_pow_psi_fin_eq_one hψ y`. Use `IsAlgebraic.of_pow hM ?_` and prove the remaining obligations. Rewrite using `[h]`. Conclude with `isAlgebraic_one`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_psi_fin {F : Type} [Field F] [NumberField F] {ψ : AddChar (AF F) ℂ} (hψ : IsCharAF F ψ)
     (y : Af F) : IsAlgebraic ℚ (ψ (pairA F 0 y)) := by
@@ -35,7 +35,7 @@ theorem isAlgebraic_psi_fin {F : Type} [Field F] [NumberField F] {ψ : AddChar (
   exact isAlgebraic_one
 
 /- English proof (translation)
-Introduce `D ψ hψ S T u v hu _`. Establish `e : pairA D.host.F 0 (sndA D.host.F (symplOH S T u v)) = symplOH S T u v` using `Prod.ext (GlobalTheory.WeilVacMove.fst_symplOH S T u v (Or.inl hu)).symm rfl`. Rewrite using `[← e]`. Conclude with `isAlgebraic_psi_fin hψ.1 _`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isAlgebraic_psi_symplOH : ∀ {D : D7} {ψ : AddChar (AF D.host.F) ℂ}, IsStdChar D ψ (-1) → ∀ (S T : HSp D) (u v : WO S T),
     u.map (infPart D) = 0 → v.map (infPart D) = 0 → IsAlgebraic ℚ (ψ (symplOH S T u v)) := by

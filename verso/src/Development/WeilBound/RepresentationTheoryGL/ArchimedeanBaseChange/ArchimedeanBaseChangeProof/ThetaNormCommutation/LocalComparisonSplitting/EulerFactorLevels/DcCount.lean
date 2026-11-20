@@ -13,13 +13,13 @@ namespace PositivityTheory.Rg.BcB.G8.Fin.DoubleCosetCounting
 open PositivityTheory.Rg.BcB.G8 PositivityTheory.Rg.BcB.G8.Fin
 
 /- English proof (translation)
-Establish `hR : rStab (fun y => u (h * y)) = rStab u`. Use extensionality with `k`. Use `show (∀ x, u (h * (x * k)) = u (h * x)) ↔ ∀ x, u (x * k) = u x`. Prove the components needed by the constructor for the conclusion. Introduce `H x`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `H (h⁻¹ * x)` as an intermediate fact. Simplify `this` using `[mul_assoc]`. Introduce `H x`. Simplify `H (h * x)` using `[mul_assoc]`. Unfold `avg`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Simplify to obtain the desired conclusion from the available facts. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hR]`. Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Use `finsum_congr fun q => ?_` and prove the remaining obligations. Take `⟨r, hr⟩` from `QuotientGroup.mk_out_eq_mul (rStab u) (h * q.out)`.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : h • q = ((h * q.out : H) : H ⧸ rStab u)` using `by conv_lhs => rw [← QuotientGroup.out_eq' q]`. Both sides reduce to the same expression. Rewrite using `[hq, hr]`. Conclude with `(r.2 (h * q.out)).symm`. Use `_ = ∑ᶠ q : H ⧸ rStab u, u q.out := finsum_comp_equiv (MulAction.toPerm h) (f := fun q : H ⧸ rStab u => u q.out)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem avg_comp_mul_left {H : Type} [Group H] (u : H → ℂ) (h : H) : avg (fun y => u (h * y)) = avg u := by
   have hR : rStab (fun y => u (h * y)) = rStab u := by
@@ -51,15 +51,15 @@ namespace PositivityTheory.Rg.BcB.G8.Fin
 open PositivityTheory.Rg.BcB.G8
 
 /- English proof (translation)
-Introduce `G _ _ _ θ K Γ δ f _ _ hG hΓ _ _ _ _ _`. Establish `hCT : cptPart (twCent θ δ) ≤ twCent θ δ` using `(Subgroup.closure_le _).2 fun t ht => ht.1`. Establish `hinv : ∀ t ∈ twCent θ δ, ∀ k ∈ K, ∀ x : G, (avg fun k' : K => f ((t * x * k * k')⁻¹ * δ * θ (t * x * k * k'))) = avg fun k' : K => f ((x * k')⁻¹ * δ * θ (x * k'))`. Introduce `t ht k hk x`. Establish `ht' : t * δ = δ * θ t` using `ht`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `e1 : t⁻¹ * δ * θ t = δ`. Rewrite using `[mul_assoc, ← ht', ← mul_assoc, inv_mul_cancel, one_mul]`. Establish `e2 : ∀ y : G, (t * y)⁻¹ * δ * θ (t * y) = y⁻¹ * δ * θ y`. Introduce `y`. Rewrite using `[map_mul, _root_.mul_inv_rev]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Establish `e3 : (fun k' : K => f ((t * x * k * k')⁻¹ * δ * θ (t * x * k * k'))) = fun k' : K => (fun y : K => f ((x * y)⁻¹ * δ * θ (x * y))) (⟨k, hk⟩ * k')`. Use function extensionality and compare the values at `k'`. Establish `: t * x * k * (k' : G) = t * (x * ((⟨k, hk⟩ * k' : K) : G))` using `by simp [mul_assoc]`. Rewrite using `[this, e2]`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e3]`. Conclude with `DoubleCosetCounting.avg_comp_mul_left (fun y : K => f ((x * y)⁻¹ * δ * θ (x * y))) ⟨k, hk⟩`. Establish `hreg` using `GlobalTheory.T.finsum_doubleCoset_regroup_commutative G (twCent θ δ) Γ (cptPart (twCent θ δ)) K (fun x => avg fun k : K => f ((x * k)⁻¹ * δ * θ (x * k))) hG.1 hCT hG.2 hinv`. Rewrite `hreg` using `[inf_eq_left.2 hΓ]`. Establish `key : dcSum Γ K (fun x => f (x⁻¹ * δ * θ x)) = ∑ᶠ q : DoubleCoset.Quotient (Γ : Set G) (K : Set G), ((Nat.card (Γ ⊓ K.map (MulAut.conj (Quotient.out q)).toMonoidHom : Subgroup G) : ℂ))⁻¹ * avg (fun k : K => f ((Quotient.out q * k)⁻¹ * δ * θ (Quotient.out q * k)))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Unfold `dcSum`. Conclude with `finsum_congr fun q => by rw [div_eq_inv_mul]`. Rewrite using `[key, hreg]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem DcCount_pf : DcCount := by
   intro G _ _ _ θ K Γ δ f _ _ hG hΓ _ _ _ _ _

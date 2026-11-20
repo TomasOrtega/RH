@@ -18,7 +18,7 @@ def IntCoordGeoNum.Statement : Prop :=
       ∀ a : Fin n → Unit → ℤ, geoNum n (V.comap (intCoordSubst A)) a = geoNum n V a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by simp, (Bridge.intNum_map_eq_geoNum_hyps 2 0).1, Nat.prime_two, (Bridge.intNum_map_eq_geoNum_hyps 2 0).2.1, (Bridge.intNum_map_eq_geoNum_hyps 2 0).2.2⟩`.
+Supply the required witnesses or components.
 -/
 example : (-1 : Matrix (Fin 1) (Fin 1) ℤ) * (-1) = 1 ∧
     IsMultiProjPrime (RingHom.ker (Bridge.GeoNum.red (ι := fun _ : Unit => Fin (0 + 1)) 2)) ∧

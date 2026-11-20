@@ -7,9 +7,9 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Fo
 open scoped Classical
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i`. Establish `e' : ∀ j, (v j).2 = (v' j).2` using `fun j => congrFun e j`. Set `s : A F →+* FiniteAdeleRing (𝓞 F) F` to `RingHom.snd (InfiniteAdeleRing F) (FiniteAdeleRing (𝓞 F) F)`. Establish `e'' : ∀ j, s (v j) = s (v' j)` using `e'`. Express the relevant statement in the definitionally equal form `s ((M *ᵥ v) i) = s ((M *ᵥ v') i)`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [Matrix.mulVec, dotProduct, map_sum, map_mul, e'']`.
+Simplify using the standard rewrite rules.
 -/
 private theorem finPart_mulVec {F : Type} [Field F] [NumberField F] (M : Matrix (Fin 4) (Fin 4) (A F))
     {v v' : V4 F} (e : finPartPi v = finPartPi v') : finPartPi (M *ᵥ v) = finPartPi (M *ᵥ v') := by
@@ -21,13 +21,13 @@ private theorem finPart_mulVec {F : Type} [Field F] [NumberField F] (M : Matrix 
   simp only [Matrix.mulVec, dotProduct, map_sum, map_mul, e'']
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W h hu φ hφ v v' e`. Establish `hinv : (Matrix.GeneralLinearGroup.map (pInf E) h⁻¹).val ∈ Matrix.unitaryGroup (Fin 2) (Cinf E)`. Establish `hs` using `Unitary.star_mem hu`. Establish `hm : (Matrix.GeneralLinearGroup.map (pInf E) h⁻¹).val = star (Matrix.GeneralLinearGroup.map (pInf E) h).val`. Establish `h1 : (Matrix.GeneralLinearGroup.map (pInf E) h⁻¹).val * (Matrix.GeneralLinearGroup.map (pInf E) h).val = 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Units.val_mul, ← map_mul, inv_mul_cancel, map_one, Units.val_one]`. Establish `h2 : (Matrix.GeneralLinearGroup.map (pInf E) h).val * star (Matrix.GeneralLinearGroup.map (pInf E) h).val = 1` using `Unitary.mul_star_self_of_mem hu`. Conclude with `left_inv_eq_right_inv h1 h2`. Rewrite using `[hm]`. Conclude with `hs`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hg` using `gaussAct F E D h⁻¹ hinv`. Take `⟨ρ, hρ, -, -⟩` from `UpperTheory.ConvolutionTheory.R2.D.actMat F E D`. Establish `hfin : finPartPi (D.act h⁻¹ v) = finPartPi (D.act h⁻¹ v')`. Rewrite using `[hρ, hρ]`. Conclude with `finPart_mulVec _ e`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `key` using `hφ _ _ hfin`. Rewrite `key` using `[hg, hg]`. Rewrite using `[W.L_apply, W.L_apply, mul_assoc, mul_assoc, key]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Fo.vacL :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (h : GL (Fin 2) (A E)), (Matrix.GeneralLinearGroup.map (pInf E) h).val ∈ Matrix.unitaryGroup (Fin 2) (Cinf E) →

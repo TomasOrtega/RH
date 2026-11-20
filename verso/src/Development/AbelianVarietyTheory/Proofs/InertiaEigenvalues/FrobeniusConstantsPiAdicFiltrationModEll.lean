@@ -15,7 +15,7 @@ namespace GlobalTheory.DecomplFrob
 variable {l : ℕ} [Fact l.Prime]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_frobW, coeff_inclW, coeff_inclW, WittVector.map_coeff, frobenius_def, map_pow]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 -/
 theorem frobW_inclW (a : Ainf l) :
     frobW l (inclW l a) = inclW l (WittVector.map (frobenius (OCb l) l) a) := by
@@ -23,7 +23,7 @@ theorem frobW_inclW (a : Ainf l) :
   rw [coeff_frobW, coeff_inclW, coeff_inclW, WittVector.map_coeff, frobenius_def, map_pow]
 
 /- English proof (translation)
-Use `⟨∑ j, basisO LL j ⊗ₜ[ℤ_[l]] WittVector.map (frobenius (OCb l) l) (crd (basisO LL) j a), ext_crd (basisO LL) fun i => ?_⟩` and prove the remaining obligations. Rewrite using `[crd_φRW, crd_inclR, crd_inclR, crd_sum, frobW_inclW]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem frob_inclR (LL : FinExt l) (a : RA LL) :
     ∃ a' : RA LL, φRW LL (inclR LL a) = inclR LL a' := by
@@ -32,9 +32,9 @@ theorem frob_inclR (LL : FinExt l) (a : RA LL) :
   rw [crd_φRW, crd_inclR, crd_inclR, crd_sum, frobW_inclW]
 
 /- English proof (translation)
-Rewrite `hx`, the goal using `[nearPi_iff_crd]`. Introduce `i`. Take `⟨c, hc⟩` from `hx i`. Take `⟨k, hk⟩` from `Nat.exists_eq_add_of_le h`. Use `⟨(AI.εroot s - 1) ^ k * c ^ l, ?_⟩` and prove the remaining obligations.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[crd_φRW, coeff_frobW, hc, ← map_pow, mul_pow, ← pow_mul, hk, pow_add, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem nearPi_frob {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (s m n : ℕ)
     (h : n ≤ m * l) (x : RW LL) (hx : NearPi AI LL s m x) : NearPi AI LL s n (φRW LL x) := by
@@ -46,13 +46,13 @@ theorem nearPi_frob {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (s m n :
   rw [crd_φRW, coeff_frobW, hc, ← map_pow, mul_pow, ← pow_mul, hk, pow_add, mul_assoc]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨1, 0, by simp⟩`.
+Supply the required witnesses or components.
 -/
 theorem near_self {A R : Type} [CommRing A] [CommRing R] (ι : A →+* R) (p : ℕ) (t : R) :
     Near ι p t 1 t := ⟨1, 0, by simp⟩
 
 /- English proof (translation)
-Introduce `h` and use `one_ne_zero ((GlobalTheory.TiltComplete.tilt_separated_complete l P AI s).1 1 fun m => (h.pow m).dvd)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem not_isUnit_root_sub_one {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) :
     ¬ IsUnit (AI.εroot s - 1) := fun h =>
@@ -60,11 +60,11 @@ theorem not_isUnit_root_sub_one {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) :
     fun m => (h.pow m).dvd)
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hz`. Establish `hu : IsUnit z`. Rewrite using `[PadicInt.isUnit_iff]`. Rewrite `hz` using `[← PadicInt.norm_lt_one_iff_dvd]`. Conclude with `le_antisymm z.2 (not_lt.1 hz)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : z • (1 : WCb l) = inclW l (zlW l (OCb l) z)`. Rewrite using `[← Algebra.algebraMap_eq_smul_one]`. Conclude with `(map_zlW l (algebraMap (OCb l) (Cb l)) z).symm`. Rewrite `h` using `[h1, coeff_inclW, pow_one]`. Establish `h2` using `IsFractionRing.injective (OCb l) (Cb l) h`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : IsUnit ((zlW l (OCb l) z).coeff 0)` using `(hu.map (zlW l (OCb l))).map (WittVector.constantCoeff : Ainf l →+* OCb l)`. Rewrite `h3` using `[h2]`. Conclude with `not_isUnit_root_sub_one AI s (isUnit_of_mul_isUnit_left h3)`.
+A detailed English derivation is pending.
 -/
 theorem dvd_of_coeff {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) (z : ℤ_[l]) (c : OCb l)
     (h : (z • (1 : WCb l)).coeff 0 = algebraMap (OCb l) (Cb l) ((AI.εroot s - 1) ^ 1 * c)) :
@@ -85,9 +85,9 @@ theorem dvd_of_coeff {P : LocPrime l} (AI : LocAinf l P) (s : ℕ) (z : ℤ_[l])
   exact not_isUnit_root_sub_one AI s (isUnit_of_mul_isUnit_left h3)
 
 /- English proof (translation)
-Rewrite `h` using `[nearPi_iff_crd]`. Establish `h1 : ∀ i, (l : ℤ_[l]) ∣ (basisO LL).repr o i` using `fun i => by`. Take `⟨c, hc⟩` from `h i`. Conclude with `dvd_of_coeff AI s _ c hc`. Use `choose d hd using h1`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨∑ i, d i • basisO LL i, ?_⟩` and prove the remaining obligations. Rewrite using `[Finset.mul_sum]`. Use `((basisO LL).sum_repr o).symm.trans (Finset.sum_congr rfl fun i _ => ?_)` and prove the remaining obligations. Rewrite using `[hd, mul_smul, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem const_dvd {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (s : ℕ) (o : ↥(OL LL))
     (h : NearPi AI LL s 1 (algebraMap ↥(OL LL) (RW LL) o)) :
@@ -103,7 +103,7 @@ theorem const_dvd {P : LocPrime l} (AI : LocAinf l P) (LL : FinExt l) (s : ℕ) 
   rw [hd, mul_smul, Nat.cast_smul_eq_nsmul, nsmul_eq_mul]
 
 /- English proof (translation)
-Introduce `l hl P AI LL s`. Use `⟨frob_inclR LL, ?_, fun m x hx => ?_, const_dvd AI LL s⟩` and prove the remaining obligations. Conclude with `nearPi_frob AI LL s 1 2 (by rw [one_mul]; exact hl.out.two_le) _ (near_self _ _ _)`. Conclude with `nearPi_frob AI LL s m m (Nat.le_mul_of_pos_right m hl.out.pos) x hx`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem frobenius_and_constants : ∀ (l : ℕ) [Fact l.Prime] (P : LocPrime l) (AI : LocAinf l P)
     (LL : FinExt l) (s : ℕ),

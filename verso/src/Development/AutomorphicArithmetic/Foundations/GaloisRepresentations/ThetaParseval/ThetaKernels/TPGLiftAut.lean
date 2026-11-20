@@ -26,13 +26,13 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
   {X : Spc F E n} {W : Spc F E d}
 open PositivityTheory.ThKEnd.Grp in
 /- English proof (translation)
-Introduce `Φ hΦ`. Establish `h1 : Tendsto (fun S : Finset (Pl F) => (piece (eps S) (eps_sq S) g)⁻¹ * g) atTop (𝓝 1)`. Rewrite using `[← inv_mul_cancel g]`. Conclude with `(tendsto_piece g).inv.mul_const g`. Take `⟨S, h2⟩` from `(h1.eventually (hlev Φ hΦ)).exists`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h4 : ∀ w, (mat ((piece (eps S) (eps_sq S) g)⁻¹ * g)).map (piInf (τ w)) = 1` using `fun w => by`. Rewrite using `[mat_mul, Matrix.map_mul, ← piInf_piece S g, ← Matrix.map_mul, mat_inv_mul, Matrix.map_one _ (map_zero _) (map_one _)]`. Take `⟨l, l1, l2⟩` from `piece_prod g S`. Establish `e : g = piece (eps ∅) (eps_sq ∅) g * l.prod * ((piece (eps S) (eps_sq S) g)⁻¹ * g)`. Rewrite using `[← l2, mul_inv_cancel_left]`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e, map_mul, map_mul, Module.End.mul_apply, Module.End.mul_apply, h2 h4]`. Use `hr _ (piece_inf g) _ ?_` and prove the remaining obligations. Use `clear e h2 h4 l2`. Proceed by induction on `l with`. Consider the case `nil => simpa using hΦ`.
+Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Consider the case `cons x l ih`. Take `⟨v, hv⟩` from `l1 x List.mem_cons_self`. Rewrite using `[List.prod_cons, map_mul, Module.End.mul_apply]`. Conclude with `hl v x hv _ (ih fun h hh => l1 h (List.mem_cons_of_mem _ hh))`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem stab_of_pk {m : ℕ} {Y : Spc F E m} {V : Type} [AddCommGroup V] [Module ℂ V] (τ : ∀ w : InfinitePlace F, EmbOver E w)
     (A : UA σ Y.J →* Module.End ℂ V) (P : Submodule ℂ V)
@@ -60,9 +60,9 @@ private theorem stab_of_pk {m : ℕ} {Y : Spc F E m} {V : Type} [AddCommGroup V]
     exact hl v x hv _ (ih fun h hh => l1 h (List.mem_cons_of_mem _ hh))
 variable {B : Base F E} {M : Model σ X W} {χX χW : Chr F E} {om : Rep σ X W}
 /- English proof (translation)
-Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem _ h`. Take `⟨f, g, hg, rfl⟩` from `h`. Take `⟨U, hU, h⟩` from `_root_.UpperTheory.exists_nhds_one_weil_fixes_pure_tensor F E σ B n d X W M χX χW om r s r' s' hp g hg`. Conclude with `mem_of_superset hU fun u hu k => h u hu k f`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Treat this case separately.
 
-Consider the case `zero => exact Eventually.of_forall fun _ _ => map_zero _`. Consider the case `add x y _ _ hx hy => filter_upwards [hx, hy] with u h1 h2 k using by rw [map_add, h1 k, h2 k]`. Consider the case `smul a x _ hx => filter_upwards [hx] with u h1 k using by rw [map_smul, h1 k]`.
+Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem levelX_sch_k {r s r' s' : ℕ} (hp : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om r s r' s') {Φ : Fn F n d} (hΦ : Φ ∈ schA F (Fin n × Fin d)) :
     ∀ᶠ u in 𝓝 (1 : UA σ X.J), (∀ w, (mat u).map (piInf (B.emb w)) = 1) → om (u, 1) Φ = Φ := by
@@ -75,9 +75,9 @@ theorem levelX_sch_k {r s r' s' : ℕ} (hp : _root_.GlobalTheory.ThK.IsPair_k B 
   | add x y _ _ hx hy => filter_upwards [hx, hy] with u h1 h2 k using by rw [map_add, h1 k, h2 k]
   | smul a x _ hx => filter_upwards [hx] with u h1 k using by rw [map_smul, h1 k]
 /- English proof (translation)
-Establish `hsch : ∀ Φ ∈ PolData B M, Φ ∈ schA F (Fin n × Fin d)` using `fun Φ h => PositivityTheory.ThKG.polData_le hp.good h`. Establish `o1 : ∀ {m : ℕ} {v : Pl F} (Y : Spc F E m), (1 : UA σ Y.J) ∈ UAt σ Y (evFin F v)` using `fun Y => PositivityTheory.ThKH.Locrep.one_mem_UAt (σ := σ) Y _`. Establish `o2 : ∀ {m : ℕ} (Y : Spc F E m), (1 : UA σ Y.J) ∈ UAt σ Y (evI F)` using `fun Y u _ => by`. Rewrite using `[show mat (1 : UA σ Y.J) = 1 from rfl, sub_self, smul_zero]`. Establish `e : ((x, y) : UA σ X.J × UA σ W.J) = (x, 1) * (1, y)` using `by simp`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `Φ hΦ`. Rewrite using `[e, map_mul, Module.End.mul_apply]`. Use `stab_of_pk B.emb (om.comp (MonoidHom.inl _ _)) _ (fun Φ h => _root_.UpperTheory.TP.levelX_sch_k hp (hsch Φ h)) (fun g hg Φ h => _root_.UpperTheory.weilRep_mem_polynomialFock_of_archimedean F E σ B n d X W M χX χW om hp g hg 1 (o2 W) Φ h) (fun v g hg Φ h => _root_.UpperTheory.weil …` and prove the remaining obligations. Conclude with `stab_of_pk B.emb (om.comp (MonoidHom.inr _ _)) _ (fun Φ h => _root_.PositivityTheory.ThKEnd.Grp.level_sch_k _root_.PositivityTheory.ThKEst.level_k hp (hsch Φ h)) (fun g hg Φ h => _root_.UpperTheory.weilRep_mem_polynomialFock_of_archimedean F E σ B n d X W M χX χW om hp 1 (o2 X) g …`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem polStab_k (T : _root_.UpperTheory.TP.Tools_k) (hp : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om n 0 d 0) (x : UA σ X.J) (y : UA σ W.J) :
     ∀ Φ ∈ PolData B M, om (x, y) Φ ∈ PolData B M := by
@@ -96,9 +96,9 @@ theorem polStab_k (T : _root_.UpperTheory.TP.Tools_k) (hp : _root_.GlobalTheory.
     (fun g hg Φ h => _root_.UpperTheory.weilRep_mem_polynomialFock_of_archimedean F E σ B n d X W M χX χW om hp 1 (o2 X) g hg Φ h)
     (fun v g hg Φ h => _root_.UpperTheory.weilRep_mem_polynomialFock_of_finite_place T F E σ B n d X W M χX χW om _ _ _ _ hp v 1 (o1 X) g hg Φ h) y _ hΦ
 /- English proof (translation)
-Use `integral_congr_ae (.of_forall fun g => ?_)` and prove the remaining obligations. Use `(T.basic F E σ B n d X W M χX χW om n 0 d 0 hp).1 Φ hΦ` as an intermediate fact. Establish `h2` using `this.2.1 1 (one_mem _) γ hγ g h`. Rewrite `h2` using `[one_mul]`. Use `show theta om Φ g (γ * h) * star (φ g) = theta om Φ g h * star (φ g)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h2]`.
+A detailed English derivation is pending.
 -/
 theorem lift_left_k (T : _root_.UpperTheory.TP.Tools_k) (hp : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om n 0 d 0) {Φ : Fn F n d} (hΦ : Φ ∈ schA F (Fin n × Fin d))
     (φ : UA σ X.J → ℂ) {γ : UA σ W.J} (hγ : γ ∈ ratU σ W.J) (h : UA σ W.J) : lift M om Φ φ (γ * h) = lift M om Φ φ h := by
@@ -109,11 +109,11 @@ theorem lift_left_k (T : _root_.UpperTheory.TP.Tools_k) (hp : _root_.GlobalTheor
   show theta om Φ g (γ * h) * star (φ g) = theta om Φ g h * star (φ g)
   rw [h2]
 /- English proof (translation)
-Establish `h : ∀ w, (mat g).map (compInf F E w) = 1`. Use `Subgroup.closure_induction (p := fun g _ => ∀ w, (mat g).map (compInf F E w) = 1) (fun x hx => hx.1) ?_ ?_ ?_ hg` and prove the remaining obligations. Introduce `w`. Conclude with `Matrix.map_one _ (map_zero _) (map_one _)`. Introduce `x y _ _ hx hy w`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite using `[show mat (x * y) = mat x * mat y from rfl, Matrix.map_mul, hx, hy, one_mul]`. Introduce `x _ hx w`. Establish `e : mat x⁻¹ * mat x = 1` using `PositivityTheory.ThKEnd.Grp.mat_inv_mul x`. Use `congrArg (fun A => A.map (compInf F E w)) e` as an intermediate fact. Simplify using `only [Matrix.map_mul, hx w, mul_one, Matrix.map_one _ (map_zero _) (map_one _)] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Conclude with `this`. Establish `e : (mat g).map (piInf (τ w)) = ((mat g).map (compInf F E w)).map (infEmb (τ w))` using `by ext i j; rfl`. Rewrite using `[e, h, Matrix.map_one _ (map_zero _) (map_one _)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem real_of_off_pk {τ : ∀ w : InfinitePlace F, EmbOver E w} {g : UA σ W.J} (hg : g ∈ gOff σ W ∅) (w : InfinitePlace F) :
     (mat g).map (piInf (τ w)) = 1 := by
@@ -135,7 +135,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {n d : ℕ} {X : Spc
   {W : Spc (maximalRealSubfield E) E d} {B : Base (maximalRealSubfield E) E} {M : Model (cj E) X W}
   {χX χW : Chr (maximalRealSubfield E) E} {om : Rep (cj E) X W}
 /- English proof (translation)
-Use function extensionality and compare the values at `h`. Use `_root_.UpperTheory.thetaLift_weil_translate_equivariant T _ E (cj E) B n d X W M χX χW om hp Φ hΦ ψ hψ 1 (e' k) (e' h)` as an intermediate fact. Simplify using `only [mul_one] at this`. Conclude with `(congrArg (lift M om Φ ψ) (map_mul e' h k)).trans this.symm`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem RU_lift_k (T : _root_.UpperTheory.TP.Tools_k) (hp : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om n 0 d 0) {e' : GlobalTheory.UnitaryBC.UA E d ≃ₜ* UA (cj E) W.J}
     {Φ : Fn (maximalRealSubfield E) n d} (hΦ : Φ ∈ schA (maximalRealSubfield E) (Fin n × Fin d)) {ψ : UA (cj E) X.J → ℂ} (hψ : IsFn ψ)
@@ -146,19 +146,15 @@ theorem RU_lift_k (T : _root_.UpperTheory.TP.Tools_k) (hp : _root_.GlobalTheory.
   simp only [mul_one] at this
   exact (congrArg (lift M om Φ ψ) (map_mul e' h k)).trans this.symm
 /- English proof (translation)
-Establish `hs : Φ ∈ schA (maximalRealSubfield E) (Fin n × Fin d)` using `PositivityTheory.ThKG.polData_le hp.good hΦ`. Use `⟨(_root_.UpperTheory.continuous_thetaLift_of_definite T _ E (cj E) B n d X W M χX χW om hp Φ hs ψ hψ).comp e'.continuous, fun γ hγ g => ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show lift M om Φ ψ (e' (γ * g)) = lift M om Φ ψ (e' g)`. Rewrite using `[map_mul]`. Conclude with `_root_.UpperTheory.TP.lift_left_k T hp hs ψ ((he'.rat γ).2 hγ) _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `f` to `lift M om Φ ψ ∘ e'`. Set `H : Subgroup (GlobalTheory.UnitaryBC.finU E d)` to `{ carrier := {k | GlobalTheory.UnitaryBC.RU E d k f = f} one_mem' := by show GlobalTheory.UnitaryBC.RU E d 1 f = f; rw [map_one]; rfl mul_mem' := fun {a b} ha hb => by show GlobalTheory.UnitaryBC.RU E d (a.1 * b.1) f = f`. Rewrite using `[map_mul, Module.End.mul_apply, show GlobalTheory.UnitaryBC.RU E d b.1 f = f from hb]`. Conclude with `ha`. Use the proof step `inv_mem' := fun {a} ha => by show GlobalTheory.UnitaryBC.RU E d (a.1⁻¹) f = f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations.
 
-Establish `: GlobalTheory.UnitaryBC.RU E d a.1 f = f` using `ha`. Use `conv_lhs => rw [← this]`. Rewrite using `[← Module.End.mul_apply, ← map_mul, inv_mul_cancel, map_one]`. Use `rfl }`. Use `Subgroup.isOpen_of_mem_nhds H (g := 1) ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `h1` using `_root_.PositivityTheory.ThKEnd.Grp.level_sch_k _root_.PositivityTheory.ThKEst.level_k hp hs`. Establish `c : Tendsto (fun k : GlobalTheory.UnitaryBC.finU E d => e' k.1) (𝓝 1) (𝓝 1)` using `(e'.continuous.comp continuous_subtype_val).tendsto' _ _ (map_one e')`. Use `filter_upwards [c.eventually h1] with k hk`. Use `show GlobalTheory.UnitaryBC.RU E d k.1 f = f`. Rewrite using `[_root_.UpperTheory.TP.RU_lift_k T hp hs hψ, hk fun w => real_of_off_pk ((he'.fin k.1).2 k.2) w]`.
+Introduce a local definition for the expression. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Take `⟨V, hV, hVs, hk⟩` from `_root_.UpperTheory.exists_finiteDimensional_weil_archimedean_orbit _ E (cj E) B n d X W M χX χW om hp Φ hΦ`. Take `⟨l1, l2, -, -⟩` from `_root_.UpperTheory.thetaLift_linear_in_schwartz T _ E (cj E) B n d X W M χX χW om hp`. Set `L : V →ₗ[ℂ] (GlobalTheory.UnitaryBC.UA E d → ℂ)` to `{ toFun := fun x => lift M om x.1 ψ ∘ e' map_add' := fun x y => by`. Use function extensionality and compare the values at `h`. Conclude with `congrFun (l1 x.1 (hVs x.2) y.1 (hVs y.2) ψ hψ) (e' h)`.
-
-Use the proof step `map_smul' := fun c x => by`. Use function extensionality and compare the values at `h`. Conclude with `congrFun (l2 c x.1 (hVs x.2) ψ hψ) (e' h) }`. Use `Submodule.finiteDimensional_of_le (S₂ := LinearMap.range L) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨k, rfl⟩`.
-
-Conclude with `⟨⟨_, hk _ ((he'.inf k.1).2 k.2)⟩, (_root_.UpperTheory.TP.RU_lift_k T hp hs hψ k.1).symm⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem aut_lift_k (T : _root_.UpperTheory.TP.Tools_k) (hp : _root_.GlobalTheory.ThK.IsPair_k B M χX χW om n 0 d 0) {e' : GlobalTheory.UnitaryBC.UA E d ≃ₜ* UA (cj E) W.J} (he' : IsBr W e')
     {Φ : Fn (maximalRealSubfield E) n d} (hΦ : Φ ∈ PolData B M) {ψ : UA (cj E) X.J → ℂ} (hψ : IsFn ψ) :
@@ -202,23 +198,21 @@ theorem aut_lift_k (T : _root_.UpperTheory.TP.Tools_k) (hp : _root_.GlobalTheory
     exact ⟨⟨_, hk _ ((he'.inf k.1).2 k.2)⟩, (_root_.UpperTheory.TP.RU_lift_k T hp hs hψ k.1).symm⟩
 end CM
 /- English proof (translation)
-Introduce `T E _ _ _ B n d X W M χX χW om hP hn e e' he he'`. Set `C : Submodule ℂ (GlobalTheory.UnitaryBC.UA E n → ℂ)` to `{ carrier := {φ | Continuous φ ∧ ∀ γ ∈ GlobalTheory.UnitaryBC.ratU E n, ∀ g, φ (γ * g) = φ g} add_mem' := fun {a b} ha hb => ⟨ha.1.add hb.1, fun γ hγ g => by simp only [Pi.add_apply, ha.2 γ hγ g, hb.2 γ hγ g]⟩ zero_mem' := ⟨continuous_const, fun _ _ _ => rfl⟩ smul_mem' := fun c a …`. Take `⟨C', hC'⟩` from `Submodule.exists_isCompl C`. Set `Pj : (GlobalTheory.UnitaryBC.UA E n → ℂ) →ₗ[ℂ] (GlobalTheory.UnitaryBC.UA E n → ℂ)` to `C.subtype ∘ₗ C.linearProjOfIsCompl C' hC'`. Establish `p1 : ∀ φ, Pj φ ∈ C` using `fun φ => (C.linearProjOfIsCompl C' hC' φ).2`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `p2 : ∀ φ ∈ C, Pj φ = φ` using `fun φ h => by`. Conclude with `congrArg Subtype.val (Submodule.linearProjOfIsCompl_apply_left hC' ⟨φ, h⟩)`. Establish `fn : ∀ φ ∈ C, IsFn (φ ∘ e.symm)` using `fun φ h => ⟨h.1.comp e.symm.continuous, fun γ hγ g => by show φ (e.symm (γ * g)) = φ (e.symm g)`. Rewrite using `[map_mul]`. Conclude with `h.2 _ ((he.rat _).1 (by simpa using hγ)) _⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `sch : ∀ Φ : PolData B M, Φ.1 ∈ schA (maximalRealSubfield E) (Fin n × Fin d)` using `fun Φ => PositivityTheory.ThKG.polData_le hP.good Φ.2`. Take `⟨l1, l2, l3, l4⟩` from `_root_.UpperTheory.thetaLift_linear_in_schwartz T _ E (cj E) B n d X W M χX χW om hP`. Set `Θ : PolData B M →ₗ[ℂ] (GlobalTheory.UnitaryBC.UA E n → ℂ) →ₛₗ[starRingEnd ℂ] (GlobalTheory.UnitaryBC.UA E d → ℂ)` to `LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun Φ ψ => lift M om Φ.1 (Pj ψ ∘ e.symm) ∘ e') (fun Φ Φ' ψ => funext fun h => congrFun (l1 Φ.1 (sch Φ) Φ'.1 (sch Φ') _ (fn _ (p1 ψ))) (e' h)) (fun c Φ ψ => funext fun h => congrFun (l2 c Φ.1 (sch Φ) _ (fn _ (p1 ψ))) (e' h)) (fun Φ …`. Use `congrFun (l3 Φ.1 (sch Φ) _ _ (fn _ (p1 ψ)) (fn _ (p1 ψ'))) (e' h)` as an intermediate fact. Use `Eq.trans ?_ this` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `show lift M om Φ.1 (Pj (ψ + ψ') ∘ e.symm) (e' h) = _`. Rewrite using `[map_add]`. Use the proof step `rfl)`. Use the proof step `(fun c Φ ψ => funext fun h => by`. Use `congrFun (l4 c Φ.1 (sch Φ) _ (fn _ (p1 ψ))) (e' h)` as an intermediate fact.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Eq.trans ?_ this` and prove the remaining obligations. Use `show lift M om Φ.1 (Pj (c • ψ) ∘ e.symm) (e' h) = _`. Rewrite using `[map_smul]`. Use the proof step `rfl)`. Establish `q : ∀ (Φ₀ : PolData B M) (φ₀ : GlobalTheory.UnitaryBC.UA E n → ℂ), φ₀ ∈ C → Θ Φ₀ φ₀ = lift M om Φ₀.1 (φ₀ ∘ e.symm) ∘ e'` using `fun Φ₀ φ₀ h => by show lift M om Φ₀.1 (Pj φ₀ ∘ e.symm) ∘ e' = _`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[p2 _ h]`. Use `⟨Θ, fun Φ φ hφ => ?_⟩` and prove the remaining obligations. Establish `hφC : φ ∈ C` using `⟨hφ.cont, hφ.left⟩`. Use `⟨q Φ φ hφC, by rw [q _ _ hφC]; exact _root_.UpperTheory.TP.aut_lift_k T hP he' Φ.2 (fn φ hφC), fun g h => ?_⟩` and prove the remaining obligations. Establish `hm` using `_root_.UpperTheory.TP.polStab_k T hP (e g) (e' h) Φ.1 Φ.2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨⟨_, hm⟩, rfl, ?_⟩` and prove the remaining obligations. Establish `hRC : GlobalTheory.UnitaryBC.RU E n g φ ∈ C` using `⟨hφ.cont.comp (continuous_mul_right g), fun γ hγ x => by show φ (γ * x * g) = φ (x * g)`. Rewrite using `[mul_assoc]`. Conclude with `hφ.left γ hγ _⟩`. Rewrite using `[q _ _ hRC, q _ _ hφC]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `h₀`. Use `_root_.UpperTheory.thetaLift_weil_translate_equivariant T _ E (cj E) B n d X W M χX χW om hP Φ.1 (sch Φ) (φ ∘ e.symm) (fn φ hφC) (e g) (e' h) (e' h₀)` as an intermediate fact. Establish `e1 : GlobalTheory.UnitaryBC.RU E n g φ ∘ e.symm = fun y => (φ ∘ e.symm) (y * e g)`. Use function extensionality and compare the values at `y`. Use `show φ (e.symm y * g) = φ (e.symm (y * e g))`.
-
-Rewrite using `[map_mul, e.symm_apply_apply]`. Rewrite using `[e1]`. Use `this.trans ?_` and prove the remaining obligations. Use `show lift M om Φ.1 (φ ∘ e.symm) (e' h₀ * e' h) = lift M om Φ.1 (φ ∘ e.symm) (e' (h₀ * h))`. Rewrite using `[map_mul]`.
+A detailed English derivation is pending.
 -/
 theorem _root_.UpperTheory.TP.liftAut_k :
     _root_.UpperTheory.TP.Tools_k → _root_.UpperTheory.TP.LiftAut_k := by

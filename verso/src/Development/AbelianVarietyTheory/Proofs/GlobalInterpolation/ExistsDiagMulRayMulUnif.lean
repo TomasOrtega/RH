@@ -28,9 +28,9 @@ def unifAway (𝔮 : Ideal (𝓞 K)) : Subgroup (Ideles K) :=
     ¬ v.asIdeal ∣ 𝔮 ∧ IsUniformiserAt K v (π : v.adicCompletion K) ∧ x = localIdele K v π}
 
 /- English proof (translation)
-Proceed by induction on `hb using Subgroup.closure_induction with`. Consider the case `mem x hx`. Take `⟨v, π, hv, -, rfl⟩` from `hx`. Conclude with `⟨(localIdele_isSupportedAt K v π).1, fun v' hv' => (localIdele_isSupportedAt K v π).2 v' (by rintro rfl; exact hv hv')⟩`. Consider the case `one => exact ⟨fun w => map_one _, fun v _ => map_one _⟩`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `mul x y _ _ hx hy`. Conclude with `⟨fun w => by rw [map_mul, hx.1, hy.1, one_mul], fun v hv => by rw [map_mul, hx.2 v hv, hy.2 v hv, one_mul]⟩`. Consider the case `inv x _ hx => exact ⟨fun w => by rw [map_inv, hx.1, inv_one], fun v hv => by rw [map_inv, hx.2 v hv, inv_one]⟩`.
+Treat this case separately. Supply the required witnesses or components. Treat this case separately.
 -/
 theorem comp_of_mem_unifAway {𝔮 : Ideal (𝓞 K)} {b : Ideles K} (hb : b ∈ unifAway 𝔮) :
     (∀ w, compInf w b = 1) ∧ ∀ v : HeightOneSpectrum (𝓞 K), v.asIdeal ∣ 𝔮 → compAt v b = 1 := by
@@ -45,11 +45,11 @@ theorem comp_of_mem_unifAway {𝔮 : Ideal (𝓞 K)} {b : Ideles K} (hb : b ∈ 
   | inv x _ hx => exact ⟨fun w => by rw [map_inv, hx.1, inv_one], fun v hv => by rw [map_inv, hx.2 v hv, inv_one]⟩
 
 /- English proof (translation)
-Use `choose π hπ using exists_isUniformiserAt K`. Establish `hfin` using `Filter.eventually_cofinite.mp (valued_comp_eventually K c)`. Set `S` to `hfin.toFinset`. Establish `hS : ∀ v, v ∈ S ↔ Valued.v (compAt v c) ≠ 1` using `fun v => hfin.mem_toFinset`. Use `⟨∏ v ∈ S, localIdele K v (π v) ^ ordAt K v c, Subgroup.prod_mem _ fun v hv => Subgroup.zpow_mem _ (Subgroup.subset_closure (by exact ⟨v, π v, fun h => (hS v).1 hv (hc v h), hπ v, rfl⟩)) _, fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h1 : ∀ v, v ≠ w → compAt w (localIdele K v (π v) ^ ordAt K v c) = 1` using `fun v hv => by`. Rewrite using `[map_zpow, show compAt w (localIdele K v (π v)) = 1 from (localIdele_isSupportedAt K v _).2 w hv.symm, one_zpow]`. Rewrite using `[map_prod]`. Distinguish the cases in `hw : w ∈ S`. Rewrite using `[Finset.prod_eq_single_of_mem w hw fun v _ hv => h1 v hv, map_zpow, show compAt w (localIdele K w (π w)) = π w from localIdele_snd_self K w _, map_zpow₀, valued_eq_exp_of_isUniformiserAt K w _ (hπ w), ← WithZero.exp_zsmul, ordAt]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_neg, neg_smul, neg_neg, smul_eq_mul, mul_one]`. Conclude with `WithZero.exp_log (valued_comp_ne_zero K c w)`. Rewrite using `[Finset.prod_eq_one fun v hv => h1 v (fun e => hw (e ▸ hv)), map_one]`. Conclude with `(not_not.1 ((hS w).not.1 hw)).symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_unifAway {𝔮 : Ideal (𝓞 K)} (c : Ideles K)
     (hc : ∀ v : HeightOneSpectrum (𝓞 K), v.asIdeal ∣ 𝔮 → Valued.v (compAt v c) = 1) :
@@ -75,7 +75,7 @@ theorem exists_unifAway {𝔮 : Ideal (𝓞 K)} (c : Ideles K)
     exact (not_not.1 ((hS w).not.1 hw)).symm
 
 /- English proof (translation)
-Establish `e : algebraMap K (v.adicCompletion K) (x : K) = ((algebraMap (𝓞 K) K x : K) : v.adicCompletion K)` using `rfl`. Rewrite using `[e, HeightOneSpectrum.valuedAdicCompletion_eq_valuation']`. Conclude with `(v.valuation_lt_one_iff_mem x).2 hx`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valued_lt_one_of_mem (v : HeightOneSpectrum (𝓞 K)) {x : 𝓞 K} (hx : x ∈ v.asIdeal) :
     Valued.v (algebraMap K (v.adicCompletion K) (x : K)) < 1 := by
@@ -85,27 +85,23 @@ theorem valued_lt_one_of_mem (v : HeightOneSpectrum (𝓞 K)) {x : 𝓞 K} (hx :
   exact (v.valuation_lt_one_iff_mem x).2 hx
 
 /- English proof (translation)
-Set `T` to `(Ideal.finite_factors h𝔮).toFinset`. Set `t' : InfinitePlace K → ℝ` to `fun w => if hw : w.IsReal then InfinitePlace.Completion.ringEquivRealOfIsReal hw (compInf w a) else 1`. Establish `ht' : ∀ w, t' w ≠ 0` using `fun w => by`. Simplify using `only [t']`. Use `split_ifs with hw`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression.
 
-Conclude with `(map_ne_zero _).2 (inf_comp_ne_zero K a w)`. Conclude with `one_ne_zero`. Set `t : (K →+* ℝ) → ℝ` to `fun σ => t' (InfinitePlace.mk (Complex.ofRealHom.comp σ))`. Set `r : ∀ v : HeightOneSpectrum (𝓞 K), v.adicCompletion K` to `fun v => (algebraMap K (v.adicCompletion K) (x : K) * compAt v a)⁻¹`. Set `U : Set (((v : T) → v.1.adicCompletion K) × ((K →+* ℝ) → ℝ))` to `(⋂ v : T, {y | (y.1 v - compAt v.1 a) * r v.1 ∈ v.1.adicCompletionIntegers K}) ∩ ⋂ σ : K →+* ℝ, {y | 0 < y.2 σ * t σ}`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `: Finite (K →+* ℝ)` using `Finite.of_injective (fun σ : K →+* ℝ => Complex.ofRealHom.comp σ) (fun σ τ h => by`. Use extensionality with `y`. Simplify using `using RingHom.congr_fun h y)`. Establish `hU : IsOpen U`. Use `(isOpen_iInter_of_finite fun v => ?_).inter (isOpen_iInter_of_finite fun σ => ?_)` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h : IsOpen (v.1.adicCompletionIntegers K : Set (v.1.adicCompletion K))` using `Valued.isOpen_valuationSubring _`. Conclude with `h.preimage ((((continuous_apply v).comp continuous_fst).sub continuous_const).mul continuous_const)`. Conclude with `isOpen_lt continuous_const (((continuous_apply σ).comp continuous_snd).mul continuous_const)`. Take `⟨k, hk1, hk2⟩` from `(GlobalTheory.LocalQuad.denseRange_finite_real K T).exists_mem_open hU ⟨(fun v => compAt v.1 a, t), Set.mem_iInter.2 fun v => by simp, Set.mem_iInter.2 fun σ => mul_self_pos.2 (ht' _)⟩`. Establish `hxK : (x : K) ≠ 0` using `by exact_mod_cast hx0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Establish `h1 : ∀ v : HeightOneSpectrum (𝓞 K), v.asIdeal ∣ 𝔮 → Valued.v (algebraMap K (v.adicCompletion K) k - compAt v a) ≤ Valued.v (algebraMap K (v.adicCompletion K) (x : K)) * Valued.v (compAt v a)` using `fun v hv => by`. Establish `h : Valued.v ((algebraMap K (v.adicCompletion K) k - compAt v a) * r v) ≤ 1` using `Set.mem_iInter.1 hk1 ⟨v, (Ideal.finite_factors h𝔮).mem_toFinset.2 hv⟩`. Establish `h0 : Valued.v (algebraMap K (v.adicCompletion K) (x : K) * compAt v a) ≠ 0` using `(map_ne_zero _).2 (mul_ne_zero ((map_ne_zero _).2 hxK) (comp_ne_zero K a v))`. Rewrite `h` using `[map_mul, map_inv₀, mul_inv_le_iff₀ (zero_lt_iff.2 h0), one_mul, map_mul]`. Then use the resulting hypothesis. Establish `h2 : ∀ v : HeightOneSpectrum (𝓞 K), v.asIdeal ∣ 𝔮 → Valued.v (algebraMap K (v.adicCompletion K) k) = Valued.v (compAt v a)` using `fun v hv => by`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Valuation.map_eq_of_sub_lt _ ((h1 v hv).trans_lt ?_)` and prove the remaining obligations. Conclude with `mul_lt_of_lt_one_left (zero_lt_iff.2 (valued_comp_ne_zero K a v)) (valued_lt_one_of_mem v (Ideal.le_of_dvd hv hx))`. Establish `h3 : ∀ (w : InfinitePlace K) (hw : w.IsReal), 0 < InfinitePlace.embedding_of_isReal hw k * InfinitePlace.Completion.ringEquivRealOfIsReal hw (compInf w a)` using `fun w hw => by`. Establish `h : 0 < InfinitePlace.embedding_of_isReal hw k * t (InfinitePlace.embedding_of_isReal hw)` using `Set.mem_iInter.1 hk2 _`. Establish `e : InfinitePlace.mk (Complex.ofRealHom.comp (InfinitePlace.embedding_of_isReal hw)) = w`.
+Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `Eq.trans ?_ (InfinitePlace.mk_embedding w)` and prove the remaining obligations. Use `congr 1`. Use extensionality with `y`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `0 < _ * t' _ at h`.
+Simplify to obtain the desired conclusion from the available facts. Consider separately whether the proposition holds or fails. Substitute using the available equality. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h` using `[e]`. Simplify `h` using `only [t', dif_pos hw]`. Distinguish the cases in `hk : k = 0`. Substitute `hk` using the available equality. Use `⟨1, fun v hv => absurd (h2 v hv).symm ?_, fun w hw => absurd (h3 w hw) (by simp)⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite using `[map_zero, map_zero]`. Conclude with `valued_comp_ne_zero K a v`. Use `⟨Units.mk0 k hk, fun v hv => ?_, fun w hw => ?_⟩` and prove the remaining obligations. Establish `hk' : algebraMap K (v.adicCompletion K) k ≠ 0` using `(map_ne_zero _).2 hk`. Rewrite using `[map_mul, map_inv, show compAt v (diagUnits K (Units.mk0 k hk)) = algebraMap K (v.adicCompletion K) k from rfl, show (algebraMap K (v.adicCompletion K) k)⁻¹ * compAt v a - 1 = (compAt v a - algebraMap K (v.adicCompletion K) k) * (algebraMap K (v.adicCompletion K) k)⁻¹ by field_si …`.
-
-Conclude with `h1 v hv`. Set `e` to `InfinitePlace.Completion.ringEquivRealOfIsReal hw`. Establish `he : e (algebraMap K w.Completion k) = InfinitePlace.embedding_of_isReal hw k` using `InfinitePlace.Completion.extensionEmbeddingOfIsReal_coe hw ((WithAbs.equiv w.1).symm k)`. Establish `hp : 0 < e (compInf w ((diagUnits K (Units.mk0 k hk))⁻¹ * a))`. Rewrite using `[map_mul, map_inv, show compInf w (diagUnits K (Units.mk0 k hk)) = algebraMap K w.Completion k from rfl, map_mul, map_inv₀, he, mul_comm, ← div_eq_mul_inv, div_pos_iff, ← mul_pos_iff, mul_comm]`.
-
-Conclude with `h3 w hw`. Use `(Real.isSquare_iff.2 hp.le).map e.symm` as an intermediate fact. Rewrite `this` using `[e.symm_apply_apply]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 theorem exists_approx {𝔮 : Ideal (𝓞 K)} (h𝔮 : 𝔮 ≠ ⊥) {x : 𝓞 K} (hx : x ∈ 𝔮) (hx0 : x ≠ 0) (a : Ideles K) :
     ∃ k : Kˣ, (∀ v : HeightOneSpectrum (𝓞 K), v.asIdeal ∣ 𝔮 →
@@ -189,15 +185,15 @@ theorem exists_approx {𝔮 : Ideal (𝓞 K)} (h𝔮 : 𝔮 ≠ ⊥) {x : 𝓞 K
     rwa [e.symm_apply_apply] at this
 
 /- English proof (translation)
-Introduce `K _ _ 𝔮 h𝔮 a`. Take `⟨x, hx, hx0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot h𝔮`. Take `⟨k, hk1, hk2⟩` from `exists_approx h𝔮 hx hx0 a`. Use `set c := (diagUnits K k)⁻¹ * a with hc`. Take `⟨b, hb, hbv⟩` from `exists_unifAway (𝔮 := 𝔮) c fun v hv => by`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Valuation.map_eq_of_sub_lt _ (x := 1), map_one]`. Rewrite using `[map_one]`. Conclude with `(hk1 v hv).trans_lt (valued_lt_one_of_mem v (Ideal.le_of_dvd hv hx))`. Take `⟨hb1, hb2⟩` from `comp_of_mem_unifAway hb`. Use `⟨k, c * b⁻¹, ⟨fun w hw => ?_, fun v => ?_⟩, b, hb, by rw [hc]; group⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `IsSquare (compInf w (c * b⁻¹))`. Rewrite using `[map_mul, map_inv, hb1, inv_one, mul_one]`. Conclude with `hk2 w hw`. Establish `h1 : Valued.v (compAt v (c * b⁻¹)) = 1`. Rewrite using `[map_mul, map_inv, map_mul, map_inv₀, hbv]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails.
 
-Conclude with `mul_inv_cancel₀ (valued_comp_ne_zero K c v)`. Use `⟨h1, ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `∃ x ∈ 𝔮, Valued.v (compAt v (c * b⁻¹) - 1) ≤ _`. Distinguish the cases in `hv : v.asIdeal ∣ 𝔮`. Rewrite using `[map_mul, map_inv, hb2 v hv, inv_one, mul_one]`.
+Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨x, hx, hk1 v hv⟩`. Take `⟨y, hy, hyv⟩` from `SetLike.not_le_iff_exists.mp (Ideal.dvd_iff_le.not.1 hv)`. Use `⟨y, hy, ?_⟩` and prove the remaining obligations. Rewrite using `[valued_algebraMap_eq_one K v y hyv]`. Conclude with `Valuation.map_sub_le _ h1.le (map_one _).le`.
+A detailed English derivation is pending.
 -/
 theorem exists_diag_mul_ray_mul_unif : ∀ (K : Type) [Field K] [NumberField K] (𝔮 : Ideal (𝓞 K)), 𝔮 ≠ ⊥ → ∀ a : Ideles K, ∃ k : Kˣ, ∃ u ∈ rayUnits K 𝔮 {w | w.IsReal}, ∃ b ∈ Subgroup.closure {x : Ideles K | ∃ (v : HeightOneSpectrum (𝓞 K)) (π : (v.adicCompletion K)ˣ), ¬ v.asIdeal ∣ 𝔮 ∧ IsUniformiserAt K v (π : v.adicCompletion K) ∧ x = localIdele K v π}, a = diagUnits K k * u * b := by
   intro K _ _ 𝔮 h𝔮 a

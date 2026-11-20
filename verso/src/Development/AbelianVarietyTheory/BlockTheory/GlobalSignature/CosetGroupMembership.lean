@@ -72,7 +72,7 @@ def ClassDictionary : Prop :=
             γ ∈ stabGL (crdLat S L)))
 
 /- English proof (translation)
-Simplify using `only [cosetGrp, Subgroup.mem_inf, Subgroup.mem_map, MulEquiv.coe_toMonoidHom, MulAut.conj_apply]`. Use `and_congr_right fun _ => ⟨?_, fun h => ⟨_, h, by group⟩⟩` and prove the remaining obligations. Introduce and unpack `⟨k, hk, rfl⟩`. Establish `: y⁻¹ * (y * k * y⁻¹) * y = k` using `by group`. Rewrite using `[this]` and apply the resulting hypothesis.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 -/
 theorem mem_cosetGrp {G : Type} [Group G] (Γ K : Subgroup G) (y x : G) :
     x ∈ cosetGrp Γ K y ↔ x ∈ Γ ∧ y⁻¹ * x * y ∈ K := by
@@ -83,7 +83,7 @@ theorem mem_cosetGrp {G : Type} [Group G] (Γ K : Subgroup G) (y x : G) :
   rwa [this]
 
 /- English proof (translation)
-Use extensionality with `x`. Conclude with `⟨fun h => ⟨x.2, h⟩, fun h => h.2⟩`.
+By extensionality, compare the relevant components. Supply the required witnesses or components.
 -/
 theorem stabHat_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [StarRing E]
     [Algebra F E] (hc : CMData F E) (S : HSpace E) (N : Submodule (𝓞 E) S.V) :
@@ -92,11 +92,9 @@ theorem stabHat_eq {F E : Type} [Field F] [NumberField F] [Field E] [NumberField
   exact ⟨fun h => ⟨x.2, h⟩, fun h => h.2⟩
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `h`. Use `letI : Fintype (ClassSet Γ K) := Fintype.ofFinite _`. Use `haveI : Nonempty (ClassSet Γ K) := ⟨DoubleCoset.mk Γ K 1⟩`. Establish `hb : Function.Bijective (fun c : ClassSet Γ K => (DoubleCoset.mk Γ K (Quotient.out c) : ClassSet Γ K))`. Establish `: (fun c : ClassSet Γ K => (DoubleCoset.mk Γ K (Quotient.out c) : ClassSet Γ K)) = id`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `c`. Conclude with `Quotient.out_eq' c`. Rewrite using `[this]`. Conclude with `Function.bijective_id`. Rewrite using `[← h3 _ _ hb]`.
-
-Use `Finset.sum_pos (fun c _ => ?_) Finset.univ_nonempty` and prove the remaining obligations. Use `haveI := h2 (Quotient.out c)`. Conclude with `inv_pos.2 (Nat.cast_pos.2 Nat.card_pos)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem CosetSum.pos {G : Type} [Group G] {Γ K : Subgroup G} {m : ℝ} (h : CosetSum Γ K m) : 0 < m := by
   obtain ⟨h1, h2, h3⟩ := h

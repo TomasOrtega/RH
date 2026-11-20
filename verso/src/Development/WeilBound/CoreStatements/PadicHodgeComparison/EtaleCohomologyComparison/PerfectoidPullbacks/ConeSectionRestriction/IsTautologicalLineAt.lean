@@ -62,7 +62,7 @@ open ReciprocityTheory.ChartRestriction.G.Geo.Tor
 attribute [local instance] MvPolynomial.gradedAlgebra
 
 /- English proof (translation)
-The claim follows from `MvPolynomial.isHomogeneous_X R j`.
+A detailed English derivation is pending.
 -/
 theorem X_mem (R : Type) [CommRing R] (N : ℕ) (j : Fin (N + 1)) :
     (MvPolynomial.X j : MvPolynomial (Fin (N + 1)) R) ∈ MvPolynomial.homogeneousSubmodule (Fin (N + 1)) R 1 :=

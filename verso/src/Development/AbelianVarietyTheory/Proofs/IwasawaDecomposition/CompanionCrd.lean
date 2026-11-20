@@ -16,9 +16,9 @@ section Gen
 variable {E : Type} [Field E] [NumberField E] [StarRing E] {n : ℕ} {ST SG : Finset (HeightOneSpectrum (𝓞 E))}
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `hx`. Take `⟨s, t, hst⟩` from `hcop`. Use `⟨s • (π • x), d.L.smul_mem s (hd.smul_N_mem_L hmem hx), t • x, d.Lsh.smul_mem t (hd.N_le_Lsh hx), ?_⟩` and prove the remaining obligations. Rewrite using `[smul_smul, smul_smul, ← add_smul, mul_comm (cO E π) t, hst, one_smul]`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Conclude with `d.N.add_mem (hd.L_le_N ha) (hd.smul_Lsh_mem_N (fun P => by rw [cO_cO]; exact hmem P) hb)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem mem_N_iff (d : Deco E n ST SG) (hd : d.Ok) (π : 𝓞 E) (hmem : ∀ P : ST, π ∈ P.1.asIdeal)
     (hcop : IsCoprime π (cO E π)) (x : Sp E n) :
@@ -32,9 +32,9 @@ theorem mem_N_iff (d : Deco E n ST SG) (hd : d.Ok) (π : 𝓞 E) (hmem : ∀ P :
     exact d.N.add_mem (hd.L_le_N ha) (hd.smul_Lsh_mem_N (fun P => by rw [cO_cO]; exact hmem P) hb)
 
 /- English proof (translation)
-Substitute `h` using the available equality. Establish `hg' : ∀ a b, S.hT (S.frame a) (S.frame b) = if a = b then 1 else 0` using `fun a b => by`. Use `congrFun (congrFun hg a) b` as an intermediate fact. Simplify `this` using `[HSpace.gram, Matrix.one_apply]`. Use `conv_rhs => rw [← S.frame.sum_repr x, ← S.frame.sum_repr y]`.
+Substitute using the available equality. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_sum, LinearMap.map_smulₛₗ₂, LinearMap.map_smul, LinearMap.sum_apply, hg', smul_eq_mul, mul_ite, mul_one, mul_zero]`. Simplify using `[stdH, Crd.co, starRingEnd_apply]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem std_of_gram (S : HSpace E) {m : ℕ} (h : S.rank = m) (hg : S.gram.reindex (finCongr h) (finCongr h) = 1) (x y : S.V) :
     stdH E m (Crd.co S h x) (Crd.co S h y) = S.hT x y := by
@@ -54,11 +54,11 @@ Both sides reduce to the same expression.
 theorem hStd_eq_stdH (x y : Fin n → E) : hStd E n x y = stdH E n x y := rfl
 
 /- English proof (translation)
-Rewrite using `[mem_dual]`. Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]`. Prove the components needed by the constructor for the conclusion. Introduce `H z hz`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨a, ha, rfl⟩` from `hz`. Use `H a ha` as an intermediate fact. Simplify `this` using `[hStd_eq_stdH, hco]`. Introduce `H a ha`. Use `H (co a) ⟨a, ha, rfl⟩` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[hStd_eq_stdH, hco]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem mem_dual_crd (S : HSpace E) (co : S.V ≃ₗ[E] (Fin n → E)) (hco : ∀ x y, stdH E n (co x) (co y) = S.hT x y)
     (L : Submodule (𝓞 E) S.V) (b : S.V) :
@@ -76,13 +76,13 @@ theorem mem_dual_crd (S : HSpace E) (co : S.V ≃ₗ[E] (Fin n → E)) (hco : �
     simpa [hStd_eq_stdH, hco] using this
 
 /- English proof (translation)
-Establish `hA : ∀ a, a ∈ L ↔ co a ∈ d.L` using `fun a => by`. Rewrite using `[← hL]`. Conclude with `⟨fun h => ⟨a, h, rfl⟩, fun ⟨z, hz, e⟩ => co.injective e ▸ hz⟩`. Establish `hB : ∀ b, b ∈ Formalism.HermitianLatticesTheory.dual S.hT L ↔ co b ∈ d.Lsh` using `fun b => by`. Rewrite using `[mem_dual_crd S co hco, hL]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Iff.rfl`. Establish `hc : ∀ v : Fin n → E, cO E π • v = star (algebraMap (𝓞 E) E π) • v` using `fun v => by`. Rewrite using `[← algebraMap_smul E (cO E π) v, algebraMap_cO]`. Rewrite using `[mem_N_iff d hd π hmem hcop]`. Prove the components needed by the constructor for the conclusion.
+Unfold both sides to obtain the same proposition, which implies itself. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨a', ha', b', hb', e⟩`. Use `⟨co.symm a', (hA _).2 (by simpa using ha'), co.symm b', (hB _).2 (by simpa using hb'), co.injective ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, map_smul, co.apply_symm_apply, co.apply_symm_apply, e, hc]`. Introduce and unpack `⟨a, ha, b, hb, rfl⟩`. Use `⟨co a, (hA a).1 ha, co b, (hB b).1 hb, ?_⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_add, map_smul, hc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem companion_crd (S : HSpace E) (co : S.V ≃ₗ[E] (Fin n → E)) (hco : ∀ x y, stdH E n (co x) (co y) = S.hT x y)
     (L : Submodule (𝓞 E) S.V) (d : Deco E n ST SG) (hd : d.Ok)
@@ -113,15 +113,15 @@ end GlobalTheory.Mem.Col2.MemLat
 set_option maxHeartbeats 1600000 in
 
 /- English proof (translation)
-Introduce `B X I hI hP l Z u O hlat`. Take `⟨-, -, -, hsp⟩` from `spaces_in_coordinates I hI hP l Z`. Introduce `i hi`. Take `⟨hg, hl0, hL⟩` from `hsp i hi`. Establish `hL'` using `(hL u I.mu0).1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set co := GlobalTheory.Mem.Col2.Crd.co ((I.rec7 l Z).sp.X i) (rankN (I.rec7 l Z) i hi) with hco`. Establish `hiso` using `GlobalTheory.Mem.Col2.MemLat.std_of_gram _ _ hg`. Use `⟨co, hiso, ?_, ?_⟩` and prove the remaining obligations. Introduce `y`. Rewrite using `[O.lattice_integral_coordinates]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : co y ∈ selfDualLatticeCoords (I.rec7 l Z) i hi ↔ y ∈ ((I.rec7 l Z).sp.X i).L0` using `⟨fun ⟨z, hz, e⟩ => co.injective e ▸ hz, fun h => ⟨y, h, rfl⟩⟩`. Rewrite using `[← h1, hl0]`. Use `forall_congr' fun k => ⟨fun h => ⟨⟨_, h⟩, rfl⟩, ?_⟩` and prove the remaining obligations. Introduce and unpack `⟨r, hr⟩`. Rewrite using `[← hr]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `RingOfIntegers.isIntegral_coe r`. Introduce `c y`. Rewrite using `[hlat i c]`. Establish `hsep` using `sepElt_of_ok l.pr u`. Establish `hmem : ∀ P : (B.primes X).vT u, (B.primes X).piT u ∈ P.1.asIdeal` using `fun P => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `hsep.conj P` as an intermediate fact. Rewrite `this` using `[cO_cO]`. Then use the resulting hypothesis. Establish `hLm : ((I.rec7 l Z).clsLat u i c).map ((co : ((I.rec7 l Z).sp.X i).V →ₗ[(I.rec7 l Z).host.E] (Fin ((I.rec7 l Z).R.N i) → (I.rec7 l Z).host.E)).restrictScalars (𝓞 (I.rec7 l Z).host.E)) = (((I.stp u I.mu0 i).rep c).1.1.deco).1.L` using `hL' c`. Use `(GlobalTheory.Mem.Col2.MemLat.companion_crd _ co hiso _ (((I.stp u I.mu0 i).rep c).1.1.deco).1 (((I.stp u I.mu0 i).rep c).1.1.deco).2 hLm ((B.primes X).piT u) hmem (l.pr.piT_cop u) y).trans ?_` and prove the remaining obligations. Rewrite using `[Formalism.BasicNotions.Examples₂.star_eq_conj]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.Mem.Col2.TC.memLatAt_std : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → TC.Pins B X → ∀ (l : I.Laws) (Z : TC.Later B (I.cols l)) (u : B.Word) (O : GL3Theta.LiftObj (I.rec7 l Z) ((I.rec7 l Z).mem u).C), (∀ i c, (O.lat i c).1 = ((I.stp u I.mu0 i).rep c).1.1.deco.1.N) → MemLatAt O (X.piT u) := by
   intro B X I hI hP l Z u O hlat

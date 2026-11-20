@@ -12,7 +12,7 @@ open scoped Classical
 namespace GlobalTheory.ArchLen
 
 /- English proof (translation)
-Simplify using `only [hermForm, dotProduct, Matrix.mulVec, Finset.mul_sum, Pi.star_apply, mul_assoc]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem hermForm_eq_sum {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g → ℂ) :
     hermForm Hm z w = ∑ i, ∑ j, z i * Hm i j * (starRingEnd ℂ) (w j) := by
@@ -20,35 +20,35 @@ theorem hermForm_eq_sum {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w : Fin g
   rfl
 
 /- English proof (translation)
-Simplify using `only [hermForm, add_dotProduct]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_add_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z z' w : Fin g → ℂ) :
     hermForm Hm (z + z') w = hermForm Hm z w + hermForm Hm z' w := by
   simp only [hermForm, add_dotProduct]
 
 /- English proof (translation)
-Simplify using `only [hermForm, star_add, Matrix.mulVec_add, dotProduct_add]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_add_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (z w w' : Fin g → ℂ) :
     hermForm Hm z (w + w') = hermForm Hm z w + hermForm Hm z w' := by
   simp only [hermForm, star_add, Matrix.mulVec_add, dotProduct_add]
 
 /- English proof (translation)
-Simplify using `only [hermForm, smul_dotProduct, smul_eq_mul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem hermForm_smul_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (a : ℂ) (z w : Fin g → ℂ) :
     hermForm Hm (a • z) w = a * hermForm Hm z w := by
   simp only [hermForm, smul_dotProduct, smul_eq_mul]
 
 /- English proof (translation)
-Rewrite using `[← hermForm_smul_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem hermForm_rsmul_left {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (a : ℝ) (z w : Fin g → ℂ) :
     hermForm Hm (a • z) w = a * hermForm Hm z w := by
   rw [← hermForm_smul_left]; rfl
 
 /- English proof (translation)
-Simplify using `only [hermForm_eq_sum, Finset.mul_sum, Pi.smul_apply, Complex.real_smul, map_mul, Complex.conj_ofReal]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermForm_rsmul_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (a : ℝ) (z w : Fin g → ℂ) :
     hermForm Hm z (a • w) = a * hermForm Hm z w := by
@@ -56,9 +56,9 @@ theorem hermForm_rsmul_right {g : ℕ} (Hm : Matrix (Fin g) (Fin g) ℂ) (a : �
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Introduce `z hz w hw`. Proceed by induction on `hz, hw using Submodule.span_induction₂ with`. Consider the case `mem_mem x y hx hy => exact h x hx y hy`. Consider the case `zero_left y _ => simp [hermForm]`. Consider the case `zero_right x _ => simp [hermForm]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `add_left x y z _ _ _ h1 h2 => simp only [map_add, hermForm_add_left, Complex.add_im, h1, h2]`. Consider the case `add_right x y z _ _ _ h1 h2 => simp only [map_add, hermForm_add_right, Complex.add_im, h1, h2]`. Consider the case `smul_left r x y _ _ h1 => simp only [map_smul, hermForm_rsmul_left, Complex.im_ofReal_mul, h1]`. Consider the case `smul_right r x y _ _ h1 => simp only [map_smul, hermForm_rsmul_right, Complex.im_ofReal_mul, h1]`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem im_eq_on_span {g : ℕ} (Hm Hm' : Matrix (Fin g) (Fin g) ℂ)
     (A B A' B' : (Fin g → ℂ) →ₗ[ℝ] (Fin g → ℂ)) (S : Set (Fin g → ℂ))
@@ -76,9 +76,9 @@ theorem im_eq_on_span {g : ℕ} (Hm Hm' : Matrix (Fin g) (Fin g) ℂ)
   | smul_right r x y _ _ h1 => simp only [map_smul, hermForm_rsmul_right, Complex.im_ofReal_mul, h1]
 
 /- English proof (translation)
-Rewrite using `[hermForm_eq_sum]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : p (ty i)`. Simplify using `only [hi, if_true]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Distinguish the cases in `hj : p (ty j)`. Simplify using `only [hj, if_true]`. Establish `: ty i ≠ ty j` using `fun h => hj (h ▸ hi)`. Simplify using `[hb i j this]`. Simplify using `[hi]`.
+Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 -/
 theorem hermForm_block {g : ℕ} {ι : Type} (ty : Fin g → ι) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (hb : ∀ i j, ty i ≠ ty j → Hm i j = 0) (p : ι → Prop) [DecidablePred p] (z : Fin g → ℂ) :
@@ -98,7 +98,7 @@ theorem hermForm_block {g : ℕ} {ι : Type} (ty : Fin g → ι) (Hm : Matrix (F
 variable {E : Type} [Field E] [NumberField E]
 
 /- English proof (translation)
-Use `IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) ?_` and prove the remaining obligations. Use extensionality with `a`. Conclude with `h a`.
+Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 theorem emb_ext {ρ ρ' : E →+* ℂ} (h : ∀ a : 𝓞 E, ρ (a : E) = ρ' (a : E)) : ρ = ρ' := by
   refine IsLocalization.ringHom_ext (nonZeroDivisors (𝓞 E)) ?_
@@ -106,9 +106,9 @@ theorem emb_ext {ρ ρ' : E →+* ℂ} (h : ∀ a : 𝓞 E, ρ (a : E) = ρ' (a 
   exact h a
 
 /- English proof (translation)
-Rewrite using `[← InfinitePlace.mk_eq_iff]`. Use extensionality with `x`. Take `⟨a, b, -, rfl⟩` from `IsFractionRing.div_surjective (A := 𝓞 E) x`. Express the relevant statement in the definitionally equal form `‖ρ _‖ = ‖ρ' _‖`. Rewrite using `[map_div₀, map_div₀, norm_div, norm_div]`.
+Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `congrArg₂ (· / ·) (h a) (h b)`.
+A detailed English derivation is pending.
 -/
 theorem emb_of_norm_eq {ρ ρ' : E →+* ℂ} (h : ∀ a : 𝓞 E, ‖ρ (a : E)‖ = ‖ρ' (a : E)‖) :
     ρ = ρ' ∨ ComplexEmbedding.conjugate ρ = ρ' := by
@@ -125,15 +125,13 @@ noncomputable def sqAbs (ρ : E →+* ℂ) : 𝓞 E →* ℝ where
   map_mul' a b := by simp [mul_pow]
 
 /- English proof (translation)
-Establish `hinj : Function.Injective (fun τ : Ψ => sqAbs τ.1)`. Introduce `τ τ' hh`. Establish `h1 : ∀ a : 𝓞 E, ‖τ.1 (a : E)‖ = ‖τ'.1 (a : E)‖` using `fun a => by`. Establish `: ‖τ.1 (a : E)‖ ^ 2 = ‖τ'.1 (a : E)‖ ^ 2` using `DFunLike.congr_fun hh a`. Conclude with `(pow_left_inj₀ (norm_nonneg _) (norm_nonneg _) two_ne_zero).1 this`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `emb_of_norm_eq h1 with h2 | h2` into its components or cases. Conclude with `Subtype.ext h2`. Conclude with `absurd (h2 ▸ τ'.2) ((hΨ τ.1).1 τ.2)`. Establish `hli` using `(linearIndependent_monoidHom (𝓞 E) ℝ).comp _ hinj`. Rewrite `hli` using `[Fintype.linearIndependent_iff]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `τ`. Use `hli (m - m') (by` as an intermediate fact. Use function extensionality and compare the values at `a`. Simplify using `only [Finset.sum_apply, Pi.smul_apply, Function.comp, Pi.sub_apply, smul_eq_mul, Pi.zero_apply]`. Use `h a` as an intermediate fact.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite `this` using `[← sub_eq_zero, ← Finset.sum_sub_distrib]`. Rewrite using `[← this]`. Conclude with `Finset.sum_congr rfl fun τ _ => by`. Express the relevant statement in the definitionally equal form `_ * ‖τ.1 (a : E)‖ ^ 2 = _`. Use the proof step `ring) τ`.
-
-Conclude with `sub_eq_zero.1 this`.
+A detailed English derivation is pending.
 -/
 theorem coeff_eq (Ψ : Finset (E →+* ℂ)) (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ)
     (m m' : Ψ → ℝ) (h : ∀ a : 𝓞 E, ∑ τ : Ψ, ‖τ.1 (a : E)‖ ^ 2 * m τ = ∑ τ : Ψ, ‖τ.1 (a : E)‖ ^ 2 * m' τ) :
@@ -161,25 +159,25 @@ theorem coeff_eq (Ψ : Finset (E →+* ℂ)) (hΨ : ∀ τ : E →+* ℂ, τ ∈
   exact sub_eq_zero.1 this
 
 /- English proof (translation)
-Establish `hnn : ∀ z : Fin g → ℂ, 0 ≤ (hermForm Hm z z).re` using `fun z => by`. Distinguish the cases in `hz : z = 0`. Simplify using `[hz, hermForm]`. Conclude with `(hpos z hz).le`. Establish `cc2 : ∀ φ : E →+* ℂ, ComplexEmbedding.conjugate (ComplexEmbedding.conjugate φ) = φ` using `fun φ => by`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using the standard rewrite rules. Set `π : (E →+* ℂ) → Ψ` to `fun φ => if hφ : φ ∈ Ψ then ⟨φ, hφ⟩ else ⟨ComplexEmbedding.conjugate φ, by by_contra h'; exact hφ ((hΨ φ).2 h')⟩`. Establish `hπ : ∀ φ (a : E), ‖(π φ).1 a‖ = ‖φ a‖` using `fun φ a => by`. Distinguish the cases in `hφ : φ ∈ Ψ`.
+Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[π, hφ]`. Simplify using `[π, hφ]`. Establish `hπρ : π ρ = τ'`. Break down `hρ with h1 | h1` into its components or cases. Substitute `h1` using the available equality.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Simplify using `[π, τ'.2]`. Substitute `h1` using the available equality. Use `(hΨ τ'.1).1 τ'.2` as an intermediate fact. Simplify using `only [π, this, dif_neg, not_false_eq_true]`. Conclude with `Subtype.ext (cc2 _)`.
+Substitute using the available equality. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set q : Fin g → ℂ := fun i => ∑ j, z i * Hm i j * (starRingEnd ℂ) (z j) with hq`. Establish `key : m = fun τ => ∑ i, if π (ty i) = τ then (q i).re else 0`. Use `coeff_eq Ψ hΨ _ _ fun a => ?_` and prove the remaining obligations. Rewrite using `[← h a, hermForm_eq_sum]`. Establish `e1 : ∀ i, ∑ j, ty i (a : E) * z i * Hm i j * (starRingEnd ℂ) (ty j (a : E) * z j) = ((‖ty i (a : E)‖ ^ 2 : ℝ) : ℂ) * q i` using `fun i => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails.
 
-Simplify using `only [hq, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Distinguish the cases in `hij : ty i = ty j`. Rewrite using `[← hij, map_mul, ← Complex.normSq_eq_norm_sq, ← Complex.mul_conj]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hb i j hij]`. Simplify using `only [e1, Complex.re_sum, Complex.re_ofReal_mul, Finset.mul_sum]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [mul_ite, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, if_true, hπ]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1` using `hermForm_block ty Hm hb (fun φ => φ = ρ) z`. Establish `h2` using `hermForm_block ty Hm hb (fun φ => π φ = τ' ∧ φ ≠ ρ) z`. Establish `h3` using `hnn (fun j => if π (ty j) = τ' ∧ ty j ≠ ρ then z j else 0)`. Establish `h4 : m τ' = (∑ i, if ty i = ρ then q i else 0).re + (∑ i, if π (ty i) = τ' ∧ ty i ≠ ρ then q i else 0).re`. Rewrite using `[key, Complex.re_sum, Complex.re_sum, ← Finset.sum_add_distrib]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Distinguish the cases in `hi : ty i = ρ`. Simplify using `[hi, hπρ]`. Apply the tactic sequence `by_cases hi' : π (ty i) = τ' <;> simp [hi, hi']`. Establish `h5 : (∑ i, if π (ty i) = τ' ∧ ty i ≠ ρ then q i else 0).re ≥ 0`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite `h3` using `[h2]`. Conclude with `h3`. Establish `h6 : hermForm Hm (fun j => if ty j = ρ then z j else 0) (fun j => if ty j = ρ then z j else 0) = ∑ i, if ty i = ρ then q i else 0` using `by convert h1`. Rewrite using `[h6, h4]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem block_le {g : ℕ} (Ψ : Finset (E →+* ℂ))
     (hΨ : ∀ τ : E →+* ℂ, τ ∈ Ψ ↔ ComplexEmbedding.conjugate τ ∉ Ψ) (ty : Fin g → (E →+* ℂ))
@@ -242,13 +240,13 @@ theorem block_le {g : ℕ} (Ψ : Finset (E →+* ℂ))
 variable [IsCMField E]
 
 /- English proof (translation)
-The claim follows from `IsCMField.complexEmbedding_complexConj E ρ x`.
+A detailed English derivation is pending.
 -/
 theorem emb_cc (ρ : E →+* ℂ) (x : E) : ρ (cc x) = (starRingEnd ℂ) (ρ x) :=
   IsCMField.complexEmbedding_complexConj E ρ x
 
 /- English proof (translation)
-Simplify using `only [herm, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem herm_smul_left {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (a : E) (x y : Fin r → E) :
     herm G (a • x) y = a * herm G x y := by
@@ -256,7 +254,7 @@ theorem herm_smul_left {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (a : E) (x y : F
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [herm, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, cc, map_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem herm_smul_right {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (a : E) (x y : Fin r → E) :
     herm G x (a • y) = cc a * herm G x y := by
@@ -264,7 +262,7 @@ theorem herm_smul_right {r : ℕ} (G : Matrix (Fin r) (Fin r) E) (a : E) (x y : 
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hermC, Finset.mul_sum, Pi.smul_apply, smul_eq_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermC_smul_left {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (a : ℂ) (x y : Fin r → ℂ) :
     hermC τ G (a • x) y = a * hermC τ G x y := by
@@ -272,7 +270,7 @@ theorem hermC_smul_left {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r)
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Simplify using `only [hermC, Finset.mul_sum, Pi.smul_apply, smul_eq_mul, map_mul]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hermC_smul_right {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r) E) (a : ℂ) (x y : Fin r → ℂ) :
     hermC τ G x (a • y) = (starRingEnd ℂ) a * hermC τ G x y := by
@@ -280,11 +278,11 @@ theorem hermC_smul_right {r : ℕ} (τ : E →+* ℂ) (G : Matrix (Fin r) (Fin r
   exact Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring
 
 /- English proof (translation)
-Establish `e : ((‖a‖ ^ 2 : ℝ) : ℂ) = a * (starRingEnd ℂ) a`. Rewrite using `[Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Establish `h1 : X.posPart x τ (a • v) = ‖a‖ ^ 2 * X.posPart x τ v`. Simplify using `only [Data.posPart]`. Rewrite using `[← Complex.re_ofReal_mul, e]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Simplify using `only [hermC_smul_left, map_mul, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => by ring`. Establish `h2 : (hermC τ.1 X.Gm (a • v) (a • v)).re = ‖a‖ ^ 2 * (hermC τ.1 X.Gm v v).re`. Rewrite using `[← Complex.re_ofReal_mul, e, hermC_smul_left, hermC_smul_right, mul_assoc]`.
+Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Data.maj, h1, h2]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem maj_smul {r : ℕ} (X : Data E r) (x : Frame X.Ψ r) (τ : X.Ψ) (a : ℂ) (v : Fin r → ℂ) :
     X.maj x τ (a • v) = ‖a‖ ^ 2 * X.maj x τ v := by
@@ -306,11 +304,11 @@ noncomputable def diagMul {g : ℕ} (d : Fin g → ℂ) : (Fin g → ℂ) →ₗ
   map_smul' a z := by funext j; simp only [Pi.smul_apply, Complex.real_smul, RingHom.id_apply]; ring
 
 /- English proof (translation)
-Assume the negation of the conclusion as `hne`. Use `hij (emb_ext fun a => ?_)` and prove the remaining obligations. Establish `key : ∀ s : ℂ, (s * (ty i (a : E) * Hm i j)).im = (s * (ty j (a : E) * Hm i j)).im` using `fun s => by`. Use `h a (Pi.single i s) (Pi.single j 1)` as an intermediate fact. Simplify using `only [hermForm_eq_sum, Pi.single_apply, mul_ite, ite_mul, mul_zero, zero_mul, apply_ite (starRingEnd ℂ), map_zero, map_one, mul_one, Finset.sum_ite_eq', Finset.mem_univ, if_true, emb_cc, Complex.conj_conj] at this`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `convert this using 2 <;> ring`. Establish `: ty i (a : E) * Hm i j = ty j (a : E) * Hm i j`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `using key Complex.I`. Simplify using `using key 1`.
+Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `mul_right_cancel₀ hne this`.
+A detailed English derivation is pending.
 -/
 theorem block_of_adjoint {g : ℕ} (ty : Fin g → (E →+* ℂ)) (Hm : Matrix (Fin g) (Fin g) ℂ)
     (h : ∀ (a : 𝓞 E) (z w : Fin g → ℂ), (hermForm Hm (fun j => ty j (a : E) * z j) w).im =
@@ -332,7 +330,7 @@ variable {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} {Dw : Datum H
   {σ : c.F →+* ℂ} {r : ℕ}
 
 /- English proof (translation)
-Introduce `τ τ' h`. Use extensionality with `a`. Establish `h1 : σ (embF c τ a) = σ (embF c τ' a)` using `congrArg (fun f : E →+* ℂ => f a) h`. Conclude with `congrArg Subtype.val (σ.injective h1)`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem relab_inj (c : Coeff l) (σ : c.F →+* ℂ) : Function.Injective (relab (E := E) c σ) := by
   intro τ τ' h
@@ -341,7 +339,7 @@ theorem relab_inj (c : Coeff l) (σ : c.F →+* ℂ) : Function.Injective (relab
   exact congrArg Subtype.val (σ.injective h1)
 
 /- English proof (translation)
-Establish `h2 : embF c τ (H.rt : E) = (IntermediateField.inclusion c.le).toRingHom (baseKA l).ρ` using `Subtype.ext h`. Express the relevant statement in the definitionally equal form `σ (embF c τ (H.rt : E)) = _`. Rewrite using `[h2]`. Conclude with `hσ`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem relab_rt (hσ : GoodEmb c σ) (τ : E →+* ℂ) (h : τ (H.rt : E) = H.rt0) :
     relab c σ τ (H.rt : E) = H.rt0 := by
@@ -350,13 +348,13 @@ theorem relab_rt (hσ : GoodEmb c σ) (τ : E →+* ℂ) (h : τ (H.rt : E) = H.
   rw [h2]; exact hσ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `j`. Rewrite using `[Uw.Pm_eq, Uw.Pm_eq, hx]`. Establish `hf` using `(GlobalTheory.T.framePeriods_along_isotropic_flow_and_block_change E r (U.X k)).1 ξ' hξ.2.1 s x.1 x.2 (Uw.φ k v : Fin r → E)`. Distinguish the cases in `hm : relab c σ (Uw.e j).1 ∈ (U.X k).Ψ`. Use `(hf ⟨_, hm⟩ (Uw.e j).2).1` as an intermediate fact.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Establish an intermediate fact.
 
-Simplify `this` using `[hv]`. Establish `hm' : conjEmb (relab c σ (Uw.e j).1) ∈ (U.X k).Ψ`. Assume the negation of the conclusion as `h'`. Conclude with `hm (((U.X k).cmType _).2 h')`. Establish `hcc : conjEmb (conjEmb (relab c σ (Uw.e j).1)) = relab c σ (Uw.e j).1`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `a`. Simplify using `[conjEmb]`. Establish `hne : ¬ (Uw.e j).1 (H.rt : E) = H.rt0` using `fun h => hm (((hU.2.1 k).2 _).2 (relab_rt hσ _ h))`. Establish `hlt : ((Uw.e j).2 : ℕ) < (U.X k).p0`. Establish `h1` using `(Uw.e j).2.2`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : Dw.mult (Uw.e j).1 = Dw.q` using `if_neg hne`. Rewrite using `[(hU.2.1 k).1, ← h2]`. Conclude with `h1`. Use `(hf ⟨_, hm'⟩ (Uw.e j).2).2 hlt` as an intermediate fact. Simplify `this` using `[hv, hcc]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem period_flow (U : Unf Xo c σ r) (Uw : UnfWit U) (k : U.Comp) (ξ' : Fin r → E) (x x' : (U.X k).dom)
     (s : (U.X k).Ψ → ℂ) (hσ : GoodEmb c σ) (hU : IsUnf U) (hξ : (U.X k).IsIso ξ')
@@ -383,13 +381,13 @@ theorem period_flow (U : Unf Xo c σ r) (Uw : UnfWit U) (k : U.Comp) (ξ' : Fin 
     simpa [hv, hcc] using this
 
 /- English proof (translation)
-Use `block_of_adjoint (fun j => relab c σ (Uw.e j).1) Hm (fun a z w => ?_) i j hij` and prove the remaining obligations. Take `⟨hlin, -, -, hspan, -⟩` from `Uw.period k x`. Set `a' : 𝓞 E` to `RingOfIntegers.mapRingEquiv (IsCMField.complexConj E).toRingEquiv a`. Establish `ha' : (a' : E) = cc (a : E)` using `rfl`. Use `im_eq_on_span Hm Hm LinearMap.id (diagMul fun j => relab c σ (Uw.e j).1 (cc (a : E))) (diagMul fun j => relab c σ (Uw.e j).1 (a : E)) LinearMap.id (Set.range (Uw.Pm k x)) ?_ z (hspan ▸ Submodule.mem_top) w (hspan ▸ Submodule.mem_top)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Introduce and unpack `_ ⟨u, rfl⟩ _ ⟨v, rfl⟩`. Establish `e1 : diagMul (fun j => relab c σ (Uw.e j).1 (a : E)) (Uw.Pm k x u) = Uw.Pm k x (a • u)`. Use function extensionality and compare the values at `j`. Conclude with `(hlin a u j).symm`. Establish `e2 : diagMul (fun j => relab c σ (Uw.e j).1 (cc (a : E))) (Uw.Pm k x v) = Uw.Pm k x (a' • v)`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Conclude with `(hlin a' v j).symm`. Rewrite using `[e1, e2, LinearMap.id_apply, LinearMap.id_apply, hH.2.2, hH.2.2]`. Establish `: (((Uw.F.Di (Uw.ik k)).EF (a • u) v : ℤ) : ℚ) = (((Uw.F.Di (Uw.ik k)).EF u (a' • v) : ℤ) : ℚ)`. Rewrite using `[Uw.iso, Uw.iso, map_smul, map_smul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `s1 : ((a • Uw.φ k u : (U.X k).Λ) : Fin r → E) = (a : E) • (Uw.φ k u : Fin r → E)` using `rfl`. Establish `s2 : ((a' • Uw.φ k v : (U.X k).Λ) : Fin r → E) = (a' : E) • (Uw.φ k v : Fin r → E)` using `rfl`. Rewrite using `[s1, s2, herm_smul_left, herm_smul_right, ha']`. Simplify using `[cc]`. Conclude with `this` after adjusting the coercions.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem riem_block (U : Unf Xo c σ r) (Uw : UnfWit U) (k : U.Comp) (x : (U.X k).dom)
     (Hm : Matrix (Fin Uw.g) (Fin Uw.g) ℂ) (hH : IsRiem Uw.F (Uw.ik k) (Uw.Pm k x) Hm) (i j : Fin Uw.g)
@@ -416,17 +414,17 @@ theorem riem_block (U : Unf Xo c σ r) (Uw : UnfWit U) (k : U.Comp) (x : (U.X k)
   exact_mod_cast this
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c σ r U Uw k ξ' x x' s Hm Hm' hσ hU hξ hx hH hH'`. Establish `hper` using `period_flow U Uw k ξ' x x' s hσ hU hξ hx`. Use `⟨fun V hV z hz => ?_, fun t ht τ τ' hτ => ?_⟩` and prove the remaining obligations. Establish `him` using `im_eq_on_span Hm Hm' LinearMap.id LinearMap.id LinearMap.id LinearMap.id {p | ∃ v, herm (U.X k).Gm (Uw.φ k v : Fin r → E) ξ' = 0 ∧ p = Uw.Pm k x v} (by`. Introduce and unpack `_ ⟨u, hu, rfl⟩ _ ⟨v, hv, rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Simplify using `only [LinearMap.id_apply]`. Rewrite using `[hH.2.2, ← hper u hu, ← hper v hv, hH'.2.2])`. Simplify using `only [LinearMap.id_apply] at him`. Apply `Complex.ext` to reduce the goal to its premises. Use `him _ (hV _ (V.smul_mem Complex.I hz)) _ (hV _ hz)` as an intermediate fact.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Simplify `this` using `[hermForm_smul_left]`. Conclude with `him _ (hV _ hz) _ (hV _ hz)`. Rewrite using `[← hper t (by rw [ht]; exact hξ.2.1)]`. Establish `hmaj` using `(GlobalTheory.T.riemann_form_frame_periods_eq_majorant E H Dw l Xo c σ r U Uw k x' Hm' hσ hU hH').1`. Establish `hlin` using `(Uw.period k x').1`.
+Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `key` using `block_le (U.X k).Ψ (U.X k).cmType (fun j => relab c σ (Uw.e j).1) Hm' hH'.2.1 (riem_block U Uw k x' Hm' hH') (Uw.Pm k x' t) (fun τ => (U.X k).c τ * (U.X k).maj x'.1 τ (Data.emb τ.1 ξ')) (fun a => by`. Establish `e1 : (fun j => relab c σ (Uw.e j).1 (a : E) * Uw.Pm k x' t j) = Uw.Pm k x' (a • t)`. Use function extensionality and compare the values at `j`. Conclude with `(hlin a t j).symm`. Rewrite using `[e1, hmaj]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Establish `e2 : Data.emb τ.1 (Uw.φ k (a • t) : Fin r → E) = τ.1 (a : E) • Data.emb τ.1 ξ'`. Rewrite using `[map_smul, ← ht]`. Use function extensionality and compare the values at `b`. Conclude with `map_mul τ.1 (a : E) _`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e2, maj_smul]`. Use the proof step `ring) (relab c σ τ) τ' hτ`. Simplify using `only [(relab_inj c σ).eq_iff] at key`. Rewrite using `[Data.tt, one_div, inv_inv]`. Conclude with `key`.
+A detailed English derivation is pending.
 -/
 theorem lengths_along_flow : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) (σ : c.F →+* ℂ) (r : ℕ) (U : Unf Xo c σ r) (Uw : UnfWit U) (k : U.Comp) (ξ' : Fin r → E) (x x' : (U.X k).dom) (s : (U.X k).Ψ → ℂ) (Hm Hm' : Matrix (Fin Uw.g) (Fin Uw.g) ℂ), GoodEmb c σ → IsUnf U → (U.X k).IsIso ξ' → x'.1 = (U.X k).flow ξ' s x.1 → IsRiem Uw.F (Uw.ik k) (Uw.Pm k x) Hm → IsRiem Uw.F (Uw.ik k) (Uw.Pm k x') Hm' → (∀ V : Submodule ℂ (Fin Uw.g → ℂ), (∀ z ∈ V, z ∈ Submodule.span ℝ {p | ∃ v, herm (U.X k).Gm (Uw.φ k v : Fin r → E) ξ' = 0 ∧ p = Uw.Pm k x v}) → ∀ z ∈ V, hermForm Hm' z z = hermForm Hm z z) ∧ ∀ t, (Uw.φ k t : Fin r → E) = ξ' → ∀ (τ : E →+* ℂ) (τ' : (U.X k).Ψ), (τ'.1 = relab c σ τ ∨ conjEmb τ'.1 = relab c σ τ) → (hermForm Hm' (fun j => if (Uw.e j).1 = τ then Uw.Pm k x t j else 0) (fun j => if (Uw.e j).1 = τ then Uw.Pm k x t j else 0)).re ≤ ((U.X k).tt ξ' x'.1 τ')⁻¹ := by
   intro E _ _ _ H Dw l Xo c σ r U Uw k ξ' x x' s Hm Hm' hσ hU hξ hx hH hH'

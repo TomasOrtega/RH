@@ -14,7 +14,7 @@ def kerLoc : Prop :=
       Loc V fun _ k => TensorProduct.map (G.obj.map k.op).hom (P.map k.op).hom u = 0
 
 /- English proof (translation)
-Rewrite using `[← LinearMap.comp_apply, ← TensorProduct.map_comp, hf, hg, TensorProduct.map_comp, LinearMap.comp_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_map_eq {S : Type*} [CommRing S] {A B C D A' B' C' D' : Type*} [AddCommGroup A] [Module S A]
     [AddCommGroup B] [Module S B] [AddCommGroup C] [Module S C] [AddCommGroup D] [Module S D]
@@ -30,15 +30,15 @@ end LateralTheory.EtaleFoundations.columnPf
 
 open LateralTheory.EtaleFoundations.columnPf in
 /- English proof (translation)
-Introduce `R _ M P φ hsurj hker F G δ U x hx`. Take `⟨S, hS⟩` from `TensorProduct.exists_finset x`. Use `loc_bind (loc_finset S fun i _ => hsurj U i.2) ?_` and prove the remaining obligations. Introduce `V g hV`. Use `choose p hp using hV`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Set `x' : Sec F V ⊗[ULift.{1} R] P.obj (op V)` to `∑ i ∈ S.attach, (F.obj.map g.op).hom i.1.1 ⊗ₜ p i.1 i.2`. Establish `h1 : TensorProduct.map LinearMap.id (φ.app (op V)).hom x' = TensorProduct.map (F.obj.map g.op).hom (M.obj.map g.op).hom x`. Rewrite using `[hS, map_sum, map_sum, ← Finset.sum_attach S]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Simplify using `only [TensorProduct.map_tmul, LinearMap.id_apply]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hp i.1 i.2]`. Establish `nat : ∀ {V' V : Scheme.{0}} (k : V' ⟶ V), (G.obj.map k.op).hom ∘ₗ (δ.hom.app (op V)).hom = (δ.hom.app (op V')).hom ∘ₗ (F.obj.map k.op).hom` using `fun k => by`. Rewrite using `[← ModuleCat.hom_comp, ← ModuleCat.hom_comp, δ.hom.naturality]`. Establish `h2 : TensorProduct.map LinearMap.id (φ.app (op V)).hom (TensorProduct.map (δ.hom.app (op V)).hom LinearMap.id x') = 0`. Rewrite using `[map_map_eq (f1 := (δ.hom.app (op V)).hom) (f2 := LinearMap.id) (g1 := LinearMap.id) (g2 := (φ.app (op V)).hom) (f1' := LinearMap.id) (f2' := (δ.hom.app (op V)).hom) (g1' := (φ.app (op V)).hom) (g2' := LinearMap.id) (by simp) (by simp), h1, map_map_eq (f1 := (F.obj.map g.op).hom) …`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `loc_mono (hK R M P φ hsurj hker G V _ h2) ?_` and prove the remaining obligations. Introduce `W k hk`. Use `⟨TensorProduct.map (F.obj.map k.op).hom (P.map k.op).hom x', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_map_eq (f1 := (F.obj.map k.op).hom) (f2 := (δ.hom.app (op W)).hom) (g1 := (P.map k.op).hom) (g2 := LinearMap.id) (f1' := (δ.hom.app (op V)).hom) (f2' := (G.obj.map k.op).hom) (g1' := LinearMap.id) (g2' := (P.map k.op).hom) (nat k).symm (by simp), hk]`. Establish `hφ : (φ.app (op W)).hom ∘ₗ (P.map k.op).hom = (M.obj.map k.op).hom ∘ₗ (φ.app (op V)).hom`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← ModuleCat.hom_comp, ← ModuleCat.hom_comp, φ.naturality]`. Rewrite using `[map_map_eq (f1 := (F.obj.map k.op).hom) (f2 := LinearMap.id) (g1 := (P.map k.op).hom) (g2 := (φ.app (op W)).hom) (f1' := LinearMap.id) (f2' := (F.obj.map k.op).hom) (g1' := (φ.app (op V)).hom) (g2' := (M.obj.map k.op).hom) (by simp) hφ, h1, ← LinearMap.comp_apply, ← TensorProduc …`. Simplify using `only [op_comp, Functor.map_comp, ModuleCat.hom_comp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.columnPf.lift_of (hK : kerLoc) : lift := by
   classical
@@ -80,7 +80,7 @@ theorem LateralTheory.EtaleFoundations.columnPf.lift_of (hK : kerLoc) : lift := 
 
 open LateralTheory.EtaleFoundations.columnPf in
 /- English proof (translation)
-The claim follows from `LateralTheory.EtaleFoundations.acyc.column_of_cut (lift_of hK) kill_of`.
+A detailed English derivation is pending.
 -/
 theorem LateralTheory.EtaleFoundations.columnPf.column_of' (hK : kerLoc) : LateralTheory.EtaleFoundations.acyc.column :=
   LateralTheory.EtaleFoundations.acyc.column_of_cut (lift_of hK) kill_of

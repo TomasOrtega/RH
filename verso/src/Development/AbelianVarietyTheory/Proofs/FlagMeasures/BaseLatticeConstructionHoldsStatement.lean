@@ -4,7 +4,7 @@ import Mathlib
 import Development.AbelianVarietyTheory.Definitions.SemilocalFrames.RowsMeanC
 set_option maxHeartbeats 1000000 in
 /- English proof (translation)
-Apply the tactic sequence `first | exact @GlobalTheory.TypeAsm.lat0C | exact GlobalTheory.TypeAsm.lat0C | (intros; apply GlobalTheory.TypeAsm.lat0C <;> assumption)`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem _root_.GlobalTheory.T.base_lattice_construction_holds : GlobalTheory.TypeAsm.LatticeNormalizationCondition := by
   first | exact @GlobalTheory.TypeAsm.lat0C | exact GlobalTheory.TypeAsm.lat0C | (intros; apply GlobalTheory.TypeAsm.lat0C <;> assumption)

@@ -18,9 +18,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 variable {n : ℕ}
 
 /- English proof (translation)
-Use `haveI := FiniteDimensional.complete ℂ E.V`. Take `⟨cL, cR, heq⟩` from `hK n lam E Fr ε ι S Γ T hC k hks hke`. Establish `hz` using `hKZ n μ E (fun y => kapL ε Fr k y - kapR ε Fr k y) (cL.sub cR) (fun y hy k₂ => by simp only [(heq y hy k₂).1, (heq y hy k₂).2, sub_mul]) (fun f hf hfc => by`. Simplify using `only [ContinuousLinearMap.sub_apply]`. Rewrite using `[integral_sub (int_of_cpt hL μ _ f cL hf.1.continuousOn hfc) (int_of_cpt hL μ _ f cR hf.1.continuousOn hfc), ← kapL_int hA hU hL Fr ε μ k hks hkc f hf.1 hfc, ← kapR_int hI hU hR hL Fr ε μ k hks hkc f hf.1 hfc, hD f hf, sub_self])`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 
-Conclude with `fun y hy => sub_eq_zero.1 (hz y hy)`.
+A detailed English derivation is pending.
 -/
 theorem dc_of_comm (hA : ActDer) (hI : IBPAct) (hK : KapEquiv) (hKZ : KerZero) (hU : Unimod) (hR : RCalc)
     (hL : LgFacts) {lam : Fin n → ℤ} {E : KMod n} {Fr : Mat n → (E.V →L[ℂ] E.V)} {ε ι : Mat n →ₗ[ℝ] (E.V →L[ℂ] E.V)}

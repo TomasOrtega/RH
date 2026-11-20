@@ -14,7 +14,7 @@ open AlgebraicGeometry CategoryTheory NumberField ReciprocityTheory.ChartRestric
 open GroundTheory.Heights₂.Heights.LowerBoundFree (ComponentData ComponentSetting degMu ArLimExists slX)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `RootFieldNumerics.global_model_tower_final_condition` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FWeilBound%2FCoreStatements%2FFlagImmersions%2FGlobalModelTowerFinalCondition.lean&line=32#L32)
 -/

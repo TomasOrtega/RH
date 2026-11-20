@@ -6,29 +6,25 @@ namespace ReciprocityTheory.MultiplicativeHeights
 open Matrix NumberField Module
 
 /- English proof (translation)
-Introduce `K _ _ r S L hLat hSD`. Take `⟨M, hM⟩` from `hP K r S L hLat hSD`. Use `⟨M, hM, fun N hNL hN => ?_⟩` and prove the remaining obligations. Assume the negation of the conclusion as `hN0`. Take `⟨b, hbL, hbN, hbli, hker⟩` from `sc_kerfam L hLat.2 N`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Take `⟨c, hcL, hcli⟩` from `sc_imfam L hLat.2 N`. Establish `hm` using `sc_rank_pos N hN0`. Establish `hli` using `sc_append_li N b c hbN hbli hcli`. Establish `hkm : finrank K (LinearMap.ker N.mulVecLin) + finrank K (LinearMap.range N.mulVecLin) = r`. Use `LinearMap.finrank_range_add_finrank_ker N.mulVecLin` as an intermediate fact.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[Module.finrank_fin_fun]`. Use linear arithmetic over natural numbers and integers. Establish `hspan : Submodule.span K (Set.range (Fin.append b c)) = ⊤` using `hli.span_eq_top_of_card_eq_finrank' (by rw [Fintype.card_fin, Module.finrank_fin_fun, hkm])`. Establish `happL : ∀ i, Fin.append b c i ∈ L`. Introduce `i`.
+Rewrite the indicated hypotheses using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `i using Fin.addCases with`. Consider the case `left i => rw [Fin.append_left]`. Conclude with `hbL i`. Consider the case `right j => rw [Fin.append_right]`. Conclude with `hcL j`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hspanL : ∀ x ∈ L, x ∈ Submodule.span K (Set.range (Fin.append b c))`. Introduce `x _`. Rewrite using `[hspan]`. Conclude with `Submodule.mem_top`. Establish `hdegL` using `hM.1 _ (Fin.append b c) ⟨happL, hli, hspanL⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdegK` using `hM.2 (satSub L b) inf_le_left _ b ⟨fun i => ⟨hbL i, Submodule.subset_span ⟨i, rfl⟩⟩, hbli, fun x hx => hx.2⟩`. Establish `hadd` using `hD K r _ _ M.H L b c M.posDef hLat.1 hbL hcL hli hspanL`. Use `set NL := L.map (N.mulVecLin.restrictScalars (𝓞 K)) with hNLdef`. Establish `hNLle : NL ≤ L`. Introduce and unpack `_ ⟨x, hx, rfl⟩`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hNL x hx`. Establish `hNspan : ∀ y, N *ᵥ y ∈ Submodule.span K (Set.range fun j => N *ᵥ c j)`. Introduce `y`. Establish `hy : y ∈ Submodule.span K (Set.range (Fin.append b c))`. Rewrite using `[hspan]`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Proceed by induction. Treat this case separately.
 
-Conclude with `Submodule.mem_top`. Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨i, rfl⟩` from `hx`. Proceed by induction on `i using Fin.addCases with`.
+Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact.
 
-Consider the case `left i => rw [Fin.append_left, hbN i]`. Conclude with `Submodule.zero_mem _`. Consider the case `right j => rw [Fin.append_right]`. Conclude with `Submodule.subset_span ⟨j, rfl⟩`. Consider the case `zero => rw [mulVec_zero]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.zero_mem _`. Consider the case `add x y _ _ hx hy => rw [mulVec_add]`. Conclude with `Submodule.add_mem _ hx hy`. Consider the case `smul a x _ hx => rw [mulVec_smul]`. Conclude with `Submodule.smul_mem _ a hx`.
-
-Establish `hdegN` using `hM.2 NL hNLle _ (fun j => N *ᵥ c j) ⟨fun j => ⟨c j, hcL j, rfl⟩, hcli, by rintro _ ⟨x, _, rfl⟩; exact hNspan x⟩`. Establish `hidx` using `sc_index L N b c hcL hbN hker`. Establish `hσ` using `fun σ => sc_gram_lt hm (M.H σ) (M.posDef σ) σ N (hN σ) b c hli hbN hcli`. Establish `hsum : ∑ σ : K →+* ℂ, Real.log (gramC (M.H σ) σ fun j => N *ᵥ c j).det.re < ∑ σ : K →+* ℂ, Real.log (quotGramC (M.H σ) σ b c).det.re` using `Finset.sum_lt_sum_of_nonempty Finset.univ_nonempty fun σ _ => Real.log_lt_log (hσ σ).1 (hσ σ).2`. Establish `hlt : quotDeg M.H L b c < latDeg M.H NL (fun j => N *ᵥ c j)`.
-
-Rewrite using `[quotDeg, latDeg, ← hidx]`. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
+Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem semiContract_holds (hP : SemiPointStatement) (hD : DegAddStatement) :
     SemistableStatement := by

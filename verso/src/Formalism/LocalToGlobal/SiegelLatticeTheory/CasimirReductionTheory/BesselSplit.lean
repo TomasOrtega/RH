@@ -87,7 +87,7 @@ variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   {Vp : Type} [NormedAddCommGroup Vp] [InnerProductSpace ℂ Vp]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [beInt, Pi.add_apply, map_add, inner_add_right, add_mul, add_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem beInt_add_left (σ : Mat k r → (H →L[ℂ] H)) (π : Mat k r → (Vp →L[ℂ] Vp)) (ψ : Mat k r → ℂ)
     (v₁ v₂ v' : H) : beInt σ π ψ (v₁ + v₂) v' = beInt σ π ψ v₁ v' + beInt σ π ψ v₂ v' := by
@@ -95,7 +95,7 @@ theorem beInt_add_left (σ : Mat k r → (H →L[ℂ] H)) (π : Mat k r → (Vp 
   simp only [beInt, Pi.add_apply, map_add, inner_add_right, add_mul, add_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [beInt, Pi.smul_apply, map_smul, inner_smul_right, mul_assoc, smul_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem beInt_smul_left (σ : Mat k r → (H →L[ℂ] H)) (π : Mat k r → (Vp →L[ℂ] Vp)) (ψ : Mat k r → ℂ)
     (a : ℂ) (v v' : H) : beInt σ π ψ (a • v) v' = a • beInt σ π ψ v v' := by
@@ -103,7 +103,7 @@ theorem beInt_smul_left (σ : Mat k r → (H →L[ℂ] H)) (π : Mat k r → (Vp
   simp only [beInt, Pi.smul_apply, map_smul, inner_smul_right, mul_assoc, smul_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [beInt, Pi.add_apply, inner_add_left, add_mul, add_smul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 -/
 theorem beInt_add_right (σ : Mat k r → (H →L[ℂ] H)) (π : Mat k r → (Vp →L[ℂ] Vp)) (ψ : Mat k r → ℂ)
     (v v₁' v₂' : H) : beInt σ π ψ v (v₁' + v₂') = beInt σ π ψ v v₁' + beInt σ π ψ v v₂' := by
@@ -111,7 +111,7 @@ theorem beInt_add_right (σ : Mat k r → (H →L[ℂ] H)) (π : Mat k r → (Vp
   simp only [beInt, Pi.add_apply, inner_add_left, add_mul, add_smul]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `p`. Simplify using `only [beInt, Pi.smul_apply, inner_smul_left, mul_assoc, smul_smul]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem beInt_smul_right (σ : Mat k r → (H →L[ℂ] H)) (π : Mat k r → (Vp →L[ℂ] Vp)) (ψ : Mat k r → ℂ)
     (a : ℂ) (v v' : H) : beInt σ π ψ v (a • v') = star a • beInt σ π ψ v v' := by
@@ -120,7 +120,7 @@ theorem beInt_smul_right (σ : Mat k r → (H →L[ℂ] H)) (π : Mat k r → (V
   rfl
 
 /- English proof (translation)
-Simplify using `only [beOp, beInt_add_left]`. Conclude with `integral_add h₁ h₂`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beOp_add_left (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (σ : Mat k r → (H →L[ℂ] H))
     (π : Mat k r → (Vp →L[ℂ] Vp)) (ψ : Mat k r → ℂ) {v₁ v₂ v' : H}
@@ -130,7 +130,7 @@ theorem beOp_add_left (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r))
   exact integral_add h₁ h₂
 
 /- English proof (translation)
-Simplify using `only [beOp, beInt_smul_left]`. Conclude with `integral_smul a _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beOp_smul_left (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (σ : Mat k r → (H →L[ℂ] H))
     (π : Mat k r → (Vp →L[ℂ] Vp)) (ψ : Mat k r → ℂ) (a : ℂ) (v v' : H) :
@@ -139,7 +139,7 @@ theorem beOp_smul_left (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)
   exact integral_smul a _
 
 /- English proof (translation)
-Simplify using `only [beOp, beInt_add_right]`. Conclude with `integral_add h₁ h₂`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beOp_add_right (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (σ : Mat k r → (H →L[ℂ] H))
     (π : Mat k r → (Vp →L[ℂ] Vp)) (ψ : Mat k r → ℂ) {v v₁' v₂' : H}
@@ -149,7 +149,7 @@ theorem beOp_add_right (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)
   exact integral_add h₁ h₂
 
 /- English proof (translation)
-Simplify using `only [beOp, beInt_smul_right]`. Conclude with `integral_smul (star a) _`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem beOp_smul_right (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r)) (σ : Mat k r → (H →L[ℂ] H))
     (π : Mat k r → (Vp →L[ℂ] Vp)) (ψ : Mat k r → ℂ) (a : ℂ) (v v' : H) :
@@ -158,9 +158,9 @@ theorem beOp_smul_right (μW μN : Measure (Formalism.QuantumDeterminants.Mt k r
   exact integral_smul (star a) _
 
 /- English proof (translation)
-Take `⟨hI, hCl, hCr⟩` from `hP k r ε lam H σ z c u Vp π μW μN hlam hσ hz hT hπ hW hN`. Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `step1 : ∀ x₀ ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), ∀ y ∈ smoothVecs (k` using `k) (r := r) σ, beOp μW μN σ π (psiGen k r z c) y (σ x₀ w) = 0 := by`. Introduce `x₀ hx₀`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `hS k r ε lam H σ hlam hσ w hw hw0 (Vp →L[ℂ] Vp) (fun y => beOp μW μN σ π (psiGen k r z c) y (σ x₀ w)) (fun y hy y' hy' => beOp_add_left μW μN σ π _ (hI y hy _ (htr x₀ hx₀)) (hI y' hy' _ (htr x₀ hx₀))) (Or.inl fun a y _ => beOp_smul_left μW μN σ π _ a y _) (hCl (σ x₀ w) (htr x₀ hx …`. Establish `step2` using `hS k r ε lam H σ hlam hσ w hw hw0 (Vp →L[ℂ] Vp) (fun y' => beOp μW μN σ π (psiGen k r z c) v y') (fun y hy y' hy' => beOp_add_right μW μN σ π _ (hI v hv y hy) (hI v hv y' hy')) (Or.inr fun a y _ => beOp_smul_right μW μN σ π _ a v y) (hCr v hv) (fun x₀ hx₀ => step1 x₀ hx₀ v hv)`. Conclude with `hne (step2 v' hv')`.
+A detailed English derivation is pending.
 -/
 theorem trans_of_steps (hP : PeriodCont) (hS : SmoothIrred) {ε : Fin (2 * r + k + 1) → Bool}
     {lam : Fin (2 * r + k + 1) → ℝ} [CompleteSpace H] {σ : Mat k r → (H →L[ℂ] H)}
@@ -201,13 +201,13 @@ section Smooth
 variable {k r : ℕ} {H : Type} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /- English proof (translation)
-Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hPu`. Establish `h1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Establish `h2 : P * P⁻¹ = 1` using `Matrix.mul_nonsing_inv P hdet`. Establish `hJ : Formalism.REAL.Jm ε = Matrix.conjTranspose P⁻¹ * Formalism.QuantumDeterminants.Hpk k r * P⁻¹`. Rewrite using `[← hPJ]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[show Matrix.conjTranspose P⁻¹ * (Matrix.conjTranspose P * Formalism.REAL.Jm ε * P) * P⁻¹ = Matrix.conjTranspose (P * P⁻¹) * Formalism.REAL.Jm ε * (P * P⁻¹) by`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]]`. Rewrite using `[h2, Matrix.conjTranspose_one, Matrix.one_mul, Matrix.mul_one]`. Establish `hPP : Matrix.conjTranspose P * Matrix.conjTranspose P⁻¹ = 1` using `by rw [← Matrix.conjTranspose_mul, h1, Matrix.conjTranspose_one]`. Establish `ha' : Matrix.conjTranspose a * Formalism.QuantumDeterminants.Hpk k r * a = Formalism.QuantumDeterminants.Hpk k r` using `ha`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[hJ]`. Simplify using `only [Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Matrix.conjTranspose P⁻¹ * (Matrix.conjTranspose a * Formalism.QuantumDeterminants.Hpk k r * a) * P⁻¹ := by`. Rewrite using `[hPP, h1]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.mul_one, Matrix.mul_assoc]`. Use `_ = Formalism.REAL.Jm ε := by rw [ha', hJ]`.
+A detailed English derivation is pending.
 -/
 private theorem conjTranspose_conj_mul_Jm_mul_conj_eq_Jm_of_mem_UH {k r : ℕ} {ε : Fin (2 * r + k + 1) → Bool} {P : Mat k r}
     (hPu : IsUnit P) (hPJ : Matrix.conjTranspose P * Formalism.REAL.Jm ε * P = Formalism.QuantumDeterminants.Hpk k r) {a : Mat k r}
@@ -231,13 +231,13 @@ private theorem conjTranspose_conj_mul_Jm_mul_conj_eq_Jm_of_mem_UH {k r : ℕ} {
     _ = Formalism.REAL.Jm ε := by rw [ha', hJ]
 
 /- English proof (translation)
-Take `⟨P, ⟨⟨hPu, hPJ⟩, -⟩, hDS⟩` from `hσ`. Establish `hdet : IsUnit P.det` using `(Matrix.isUnit_iff_isUnit_det P).1 hPu`. Establish `h1 : P⁻¹ * P = 1` using `Matrix.nonsing_inv_mul P hdet`. Take `⟨⟨hone, hmul⟩, -, -⟩` from `hDS.2.2.1`. Establish `conj : ∀ a : Mat k r, P⁻¹ * (P * a * P⁻¹) * P = a` using `fun a => by`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[h1, Matrix.mul_one, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `mem : ∀ a ∈ Formalism.QuantumDeterminants.UH (Formalism.QuantumDeterminants.Hpk k r), P * a * P⁻¹ ∈ UJset ε` using `fun a ha => conjTranspose_conj_mul_Jm_mul_conj_eq_Jm_of_mem_UH hPu hPJ ha`. Use `⟨?_, fun a ha b hb => ?_⟩` and prove the remaining obligations. Simplify `hone` using `[h1]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `e` using `hmul _ (mem a ha) _ (mem b hb)`. Establish `e3 : P * a * P⁻¹ * (P * b * P⁻¹) = P * (a * b) * P⁻¹`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc P⁻¹ P, h1, Matrix.one_mul]`. Simplify using `only [e3, conj] at e`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `e`.
+A detailed English derivation is pending.
 -/
 theorem mulOnUH_of_dsHpk {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsDSHpk k r ε lam σ) :
@@ -260,7 +260,7 @@ theorem mulOnUH_of_dsHpk {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r +
     exact e
 
 /- English proof (translation)
-Conclude with `PI.PhMeasCore.UnitaryGroupMassFormula.smooth_translate (mulOnUH_of_dsHpk hσ) hw hx`.
+A detailed English derivation is pending.
 -/
 theorem smooth_translate_ds {ε : Fin (2 * r + k + 1) → Bool} {lam : Fin (2 * r + k + 1) → ℝ}
     {σ : Mat k r → (H →L[ℂ] H)} (hσ : IsDSHpk k r ε lam σ) {w : H} (hw : w ∈ smoothVecs (k := k) (r := r) σ)

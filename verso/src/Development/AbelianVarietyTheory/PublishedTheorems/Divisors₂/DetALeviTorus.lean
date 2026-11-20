@@ -13,9 +13,9 @@ namespace GlobalTheory.Published.LeviInducedModel
 variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] {σ : E →ₐ[F] E}
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `_ = starRingEnd ℂ (infEmb τ _)`. Rewrite using `[infEmb_sigR hσ]`. Express the relevant statement in the definitionally equal form `infEmb τ _ = _`. Use `congr 1`. Proceed by induction on `a using TensorProduct.induction_on with`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Reduce the equality to equality of the corresponding arguments. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `add x y hx hy => simp only [map_add, hx, hy]`. Consider the case `tmul a e => rfl`.
+Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem piInf_conj (hσ : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) (a : AE F E) :
     piInf τ (cA σ a) = starRingEnd ℂ (piInf τ a) := by
@@ -29,9 +29,9 @@ theorem piInf_conj (hσ : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E 
   | tmul a e => rfl
 
 /- English proof (translation)
-Set `L : AE F E →+ ℂ` to `(piInf τ).toAddMonoidHom`. Use `IsModuleTopology.continuous_of_distribMulActionHomₑ (R := AF F) (σ := (piInf τ).toMonoidHom.comp (algebraMap (AF F) (AE F E)).toMonoidHom) ?_ { L with map_smul' := fun r x => by simp [L, Algebra.smul_def] }` and prove the remaining obligations. Conclude with `(InfinitePlace.Completion.isometry_extensionEmbedding w).continuous.comp ((continuous_apply w).comp continuous_fst) |>.congr fun a => by`. Express the relevant statement in the definitionally equal form `_ = infEmb τ (_ ⊗ₜ[F] (1 : E))`. Rewrite using `[infEmb_tmul, map_one, mul_one]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem cont_piInf {w : InfinitePlace F} (τ : EmbOver E w) : Continuous (piInf τ : AE F E → ℂ) := by
   let L : AE F E →+ ℂ := (piInf τ).toAddMonoidHom
@@ -52,11 +52,11 @@ def chi (hσ : IsCMExt F E σ) {w : InfinitePlace F} (τ : EmbOver E w) : Chr F 
     simp only [mul_inv_rev, Units.val_mul, map_mul]; ring)
 
 /- English proof (translation)
-Take `⟨h1, h2, h3⟩` from `hm`. Establish `a0` using `congrFun h1 0`. Establish `a1` using `congrFun h1 1`. Establish `a2` using `congrFun h1 2`. Establish `b0` using `congrFun h2 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `b1` using `congrFun h2 1`. Establish `b2` using `congrFun h2 2`. Establish `c1` using `congrFun (congrFun h3 1) 0`. Establish `c2` using `congrFun (congrFun h3 2) 0`. Establish `e : mat (1 : UA σ (small F δ).J) = 1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `c1`, `c2` using `[e]`. Generalize the expression as in `cA σ (t⁻¹).1 = s at *`. Simplify using `[pl, incV, incM, Matrix.mulVec, dotProduct, Fin.sum_univ_three, Matrix.mul_apply] at a0 a1 a2 b0 b1 b2 c1 c2`. Rewrite using `[detA_apply, Matrix.det_fin_three]`. Simplify using `[a0, a1, a2, b0, b1, b2, c1, c2]`.
+Rewrite the indicated hypotheses using the stated equalities. Replace the chosen expression with an arbitrary variable. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem detA_levi_torus (δ : E) (t : (AE F E)ˣ) (m : UA σ (big F δ).J)
     (hm : IsLevi (W₁ := small F δ) (pl E) t 1 m) : detA (big F δ).J m = t.1 * cA σ (t⁻¹).1 := by
@@ -77,37 +77,33 @@ theorem detA_levi_torus (δ : E) (t : (AE F E)ˣ) (m : UA σ (big F δ).J)
   simp [a0, a1, a2, b0, b1, b2, c1, c2]
 
 /- English proof (translation)
-Take `⟨δ, h0, hδ⟩` from `exists_anti hσ`. Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Use `⟨big F δ, small F δ, pl E, fun g => piInf τ (detA _ g), chi hσ τ, δ, fun g' => piInf τ (g'.1.1.det), Submodule.span ℂ {fun g => piInf τ (g.1.1 0 0)}, Set.univ, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, h0, ⟨?_, ?_⟩, ⟨?_, ?_⟩, ?_, ?_, inferInstance, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `intro i j; fin_cases i <;> fin_cases j <;> simp [big, hδ]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 
-Simplify using `[form, big, pl, Matrix.mulVec, dotProduct, Fin.sum_univ_three]`. Simplify using `[form, big, pl, Matrix.mulVec, dotProduct, Fin.sum_univ_three]`. Simplify using `[form, big, pl, Matrix.mulVec, dotProduct, Fin.sum_univ_three]`. Introduce `u`. Simplify using `[form, big, pl, Matrix.mulVec, dotProduct, Fin.sum_univ_three]`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Use extensionality with `i j`. Use `fin_cases i`. Use `fin_cases j`. Simplify using `[big, small, pl, Matrix.mul_apply, Fin.sum_univ_three]`. Introduce `u hu x`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [map_mul, detA_unip δ u hu, one_mul]`. Express the relevant statement in the definitionally equal form `Continuous fun t : (AE F E)ˣ => piInf τ (t.1 * cA σ (t⁻¹).1)`. Simplify using `only [map_mul, piInf_conj hσ]`. Conclude with `((cont_piInf τ).comp Units.continuous_val).mul (Complex.continuous_conj.comp ((cont_piInf τ).comp Units.continuous_coe_inv))`. Introduce `t m hm x`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Express the relevant statement in the definitionally equal form `piInf τ (detA _ (m * x)) = piInf τ (t.1 * cA σ (t⁻¹).1) * piInf τ (detA _ x)`. Rewrite using `[map_mul, detA_levi_torus δ t m hm, map_mul]`. Apply the tactic sequence `intro i j; fin_cases i <;> fin_cases j <;> simp [big, hδ]`. Simplify using `[big, Matrix.det_fin_three, h0, hδ]`. Introduce `i j`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `fin_cases i`. Use `fin_cases j`. Simplify using `[small, hδ]`. Simplify using `[small, h0, hδ]`. Introduce `g g' hg`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `congrArg (fun x : GL (Fin 3) (AE F E) => piInf τ x.1.det) hg.symm`. Introduce `k γ hγ g`. Apply the tactic sequence `have e := fun i j => GlobalTheory.UAut.Model.isSm_entry (J := δ • (big F δ).J.map σ) hσ τ i j k γ hγ g`. Simplify using `only [arch_entry] at e`. Simplify using `only [Matrix.det_fin_three, map_add, map_sub, map_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Use `fun_prop`. Introduce `v hv k γ hγ g`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hv`. Apply the tactic sequence `have e := GlobalTheory.UAut.Model.isSm_entry (J := δ • (small F δ).J.map σ) hσ τ 0 0 k γ hγ g`. Simplify using `only [arch_entry] at e`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Conclude with `e.const_smul a`. Introduce `v hv z _`. Take `⟨a, rfl⟩` from `Submodule.mem_span_singleton.1 hv`. Use `choose c hc using GlobalTheory.UAut.foldr_lineDer_char (φ := fun g' : GAd σ (δ • (small F δ).J.map σ) => piInf τ (g'.1.1 0 0)) (fun g h => by`. Rewrite using `[← map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `piInf τ ((g.1.1 * h.1.1) 0 0) = _`. Simplify using `[Matrix.mul_apply]) a`. Conclude with `Submodule.mem_span_singleton.2 ⟨z.sum fun l a => a * c l, funext fun g => by`. Simplify using `only [GlobalTheory.UAut.dop, hc]`. Simplify using `[Finsupp.sum, Finset.sum_mul, mul_assoc]⟩`.
+Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `x`. Use `⟨1, one_mem _, 1, 1, 1, ⟨?_, ?_, ?_⟩, x, trivial, by simp⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ _) *ᵥ _ = _`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ _) *ᵥ _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `(1 : Matrix _ _ _) * _ = _ * (1 : Matrix _ _ _)`. Simplify using the standard rewrite rules. Introduce `k _`. Use `⟨piInf τ (detA _ k) • fun g => piInf τ (g.1.1 0 0), Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self _), ?_⟩` and prove the remaining obligations.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 
-Introduce `h₁ m g' hm e`. Simplify using `only [map_mul, detA_levi δ h₁ m hm, mat, e, Pi.smul_apply, smul_eq_mul, mul_comm]`. Simplify using the standard rewrite rules. Use `⟨Units.map (inclR (F := F) (E := E) (AF F)).toMonoidHom (Units.mk0 δ h0), fun e => ?_⟩` and prove the remaining obligations. Establish `e1 : piInf τ (inclR (F` using `F) (AF F) δ * inclR (F := F) (AF F) (σ δ⁻¹)) = 1 := congrArg Subtype.val e`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components.
 
-Rewrite `e1` using `[← map_mul, map_inv₀, hδ, inv_neg, mul_neg, mul_inv_cancel₀ h0, map_neg, map_one, map_neg, map_one]`. Evaluate the numerical expressions using `at e1`. Use `⟨_, Submodule.mem_span_singleton_self _, ⟨-1, show _ * _ * _ = _ by` and prove the remaining obligations. Use extensionality with `i j`. Use `fin_cases i`.
-
-Use `fin_cases j`. Simplify using `[Formalism.UG.cT, Matrix.mul_apply]⟩, ?_⟩`. Express the relevant statement in the definitionally equal form `piInf τ ((-1 : Matrix (Fin 1) (Fin 1) _) 0 0) ≠ piInf τ ((1 : Matrix (Fin 1) (Fin 1) _) 0 0)`. Simplify using `only [Matrix.neg_apply, Matrix.one_apply_eq, map_neg, map_one]`. Evaluate the numerical expressions.
-
-Use `Submodule.finiteDimensional_of_le (S₂ := Submodule.span ℂ {fun g' : GAd σ (δ • (big F δ).J.map σ) => piInf τ (g'.1.1.det)}) (Submodule.span_le.2 ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨z, -, rfl⟩`. Use `choose c hc using GlobalTheory.UAut.Model.foldr_char (φ := fun g' : GAd σ (δ • (big F δ).J.map σ) => piInf τ (g'.1.1.det)) fun g h => by rw [← map_mul, ← Matrix.det_mul]; rfl`. Conclude with `Submodule.mem_span_singleton.2 ⟨z.sum fun l a => a * c l, funext fun g => by`. Simplify using `[GlobalTheory.UAut.dop, hc, Finsupp.sum, Finset.sum_mul, mul_assoc]⟩`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_inhabitant (hσ : IsCMExt F E σ) :
     ∃ (Y : Spc F E 3) (Y₁ : Spc F E 1) (H : Plane E 3 1) (ψ : UA σ Y.J → ℂ) (χ : Chr F E) (c : E)
@@ -198,7 +194,7 @@ theorem exists_inhabitant (hσ : IsCMExt F E σ) :
       simp [GlobalTheory.UAut.dop, hc, Finsupp.sum, Finset.sum_mul, mul_assoc]⟩
 
 /- English proof (translation)
-Take `⟨w⟩ : Nonempty (InfinitePlace F)` from `inferInstance`. Take `⟨τ⟩ : Nonempty (EmbOver E w)` from `inferInstance`. Conclude with `⟨_, GlobalTheory.UAut.Model.not_zfin_exp hσ hJ τ 0⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (hσ : IsCMExt F E σ) {δ : E} (hJ : IsHermND σ (δ • (big F δ).J.map σ)) :
     ∃ φ : GAd σ (δ • (big F δ).J.map σ) → ℂ, GlobalTheory.UAut.IsSm σ _ φ ∧ ¬ FiniteDimensional ℂ (Submodule.span ℂ

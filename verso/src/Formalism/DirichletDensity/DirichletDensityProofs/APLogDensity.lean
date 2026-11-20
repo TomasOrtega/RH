@@ -10,7 +10,7 @@ namespace Formalism.HF.P
 variable {q : ℕ} [NeZero q] {a : ZMod q}
 
 /- English proof (translation)
-Break down `eq_or_ne n 0 with rfl | hn` into its components or cases. Rewrite using `[LSeries.term_zero, residueClass_apply_zero, zero_div, Complex.ofReal_zero]`. Rewrite using `[LSeries.term_of_ne_zero hn, Complex.ofReal_div, Complex.ofReal_cpow (Nat.cast_nonneg n), Complex.ofReal_natCast]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 private lemma apld_term_lemma (a : ZMod q) (x : ℝ) (n : ℕ) :
     LSeries.term (fun n ↦ (residueClass a n : ℂ)) (x : ℂ) n =
@@ -21,11 +21,11 @@ private lemma apld_term_lemma (a : ZMod q) (x : ℝ) (n : ℕ) :
       Complex.ofReal_natCast]
 
 /- English proof (translation)
-Establish `hx' : (x : ℂ) ∈ {s : ℂ | 1 < s.re}` using `by simpa using hx`. Establish `hLS : LSeries (fun n ↦ (residueClass a n : ℂ)) x = ((∑' n, residueClass a n / (n : ℝ) ^ x : ℝ) : ℂ)`. Unfold `LSeries`. Rewrite using `[Complex.ofReal_tsum]`. Conclude with `tsum_congr fun n => apld_term_lemma a x n`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hE` using `eqOn_LFunctionResidueClassAux ha hx'`. Establish `hA : LFunctionResidueClassAux a x = (((∑' n, residueClass a n / (n : ℝ) ^ x) - (q.totient : ℝ)⁻¹ / (x - 1) : ℝ) : ℂ)`. Rewrite using `[hE]`. Simplify using `only [hLS]`. Use `push_cast`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[hA, Complex.ofReal_re]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma apld_tsum_residueClass_eq (ha : IsUnit a) {x : ℝ} (hx : 1 < x) :
     ∑' n, residueClass a n / (n : ℝ) ^ x =
@@ -47,9 +47,9 @@ lemma apld_tsum_residueClass_eq (ha : IsUnit a) {x : ℝ} (hx : 1 < x) :
   ring
 
 /- English proof (translation)
-Establish `hL : LSeriesSummable (fun n ↦ (residueClass a n : ℂ)) x` using `LSeriesSummable_of_abscissaOfAbsConv_lt_re ((abscissaOfAbsConv_residueClass_le_one a).trans_lt (by simp only [Complex.ofReal_re]; exact_mod_cast hx))`. Establish `h2 : Summable (LSeries.term (fun n ↦ (residueClass a n : ℂ)) x)` using `hL`. Establish `h3 : Summable fun n : ℕ ↦ ((residueClass a n / (n : ℝ) ^ x : ℝ) : ℂ)`. Use `h2 using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(apld_term_lemma a x n).symm`. Conclude with `Complex.summable_ofReal.1 h3`.
+A detailed English derivation is pending.
 -/
 lemma apld_summable (a : ZMod q) {x : ℝ} (hx : 1 < x) :
     Summable fun n : ℕ ↦ residueClass a n / (n : ℝ) ^ x := by
@@ -64,9 +64,9 @@ lemma apld_summable (a : ZMod q) {x : ℝ} (hx : 1 < x) :
   exact Complex.summable_ofReal.1 h3
 
 /- English proof (translation)
-Establish `hc : ContinuousWithinAt (fun x : ℝ ↦ LFunctionResidueClassAux a x) (Set.Ioi 1) 1`. Establish `h1 : ContinuousWithinAt (LFunctionResidueClassAux a) {s : ℂ | 1 ≤ s.re} ((1 : ℝ) : ℂ)` using `continuousOn_LFunctionResidueClassAux a _ (by simp)`. Conclude with `h1.comp Complex.continuous_ofReal.continuousWithinAt (fun x hx => by simp only [Set.mem_setOf_eq, Complex.ofReal_re]; exact le_of_lt hx)`. Establish `hre : Tendsto (fun x : ℝ ↦ (LFunctionResidueClassAux a x).re) (𝓝[>] 1) (𝓝 (LFunctionResidueClassAux a ((1 : ℝ) : ℂ)).re)` using `(Complex.continuous_re.tendsto _).comp hc.tendsto`. Establish `hlin : Tendsto (fun x : ℝ ↦ x - 1) (𝓝[>] 1) (𝓝 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: Tendsto (fun x : ℝ ↦ x - 1) (𝓝 1) (𝓝 (1 - 1))` using `(continuous_id.sub continuous_const).tendsto 1`. Rewrite `this` using `[sub_self]`. Conclude with `this.mono_left nhdsWithin_le_nhds`. Simplify using `using hlin.mul hre`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 lemma residue_class_l_function_tendsto (a : ZMod q) :
     Tendsto (fun x : ℝ ↦ (x - 1) * (LFunctionResidueClassAux a x).re) (𝓝[>] 1) (𝓝 0) := by
@@ -85,7 +85,7 @@ lemma residue_class_l_function_tendsto (a : ZMod q) :
   simpa using hlin.mul hre
 
 /- English proof (translation)
-Use `split_ifs`. Simplify using the standard rewrite rules. Conclude with `div_nonneg (residueClass_nonneg a n) (Real.rpow_nonneg (Nat.cast_nonneg n) x)`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 lemma apld_nonprime_nonneg (a : ZMod q) (x : ℝ) (n : ℕ) :
     0 ≤ (if n.Prime then 0 else residueClass a n) / (n : ℝ) ^ x := by
@@ -94,9 +94,9 @@ lemma apld_nonprime_nonneg (a : ZMod q) (x : ℝ) (n : ℕ) :
   · exact div_nonneg (residueClass_nonneg a n) (Real.rpow_nonneg (Nat.cast_nonneg n) x)
 
 /- English proof (translation)
-Use `split_ifs`. Simplify using the standard rewrite rules. Break down `Nat.eq_zero_or_pos n with rfl | hn` into its components or cases. Rewrite using `[residueClass_apply_zero, zero_div, zero_div]`. Apply `div_le_div_of_nonneg_left (residueClass_nonneg a n) (by exact_mod_cast hn)` to reduce the goal to its premises.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Chain the equalities or inequalities of the calculation.
 
-Combine the equalities or inequalities in the displayed calculation.
+A detailed English derivation is pending.
 -/
 lemma apld_nonprime_le (a : ZMod q) {x : ℝ} (hx : 1 ≤ x) (n : ℕ) :
     (if n.Prime then 0 else residueClass a n) / (n : ℝ) ^ x ≤
@@ -110,9 +110,9 @@ lemma apld_nonprime_le (a : ZMod q) {x : ℝ} (hx : 1 ≤ x) (n : ℕ) :
         _ ≤ (n : ℝ) ^ x := Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hn) hx
 
 /- English proof (translation)
-Distinguish the cases in `hp : n.Prime`. Distinguish the cases in `hn : (n : ZMod q) = a`. Establish `hmem : n ∈ {p : ℕ | p.Prime ∧ p ∈ {p : ℕ | (p : ZMod q) = a}}` using `⟨hp, hn⟩`. Rewrite using `[if_pos hp, Set.indicator_of_mem hmem]`. Simplify using `[residueClass, Set.indicator, hn, vonMangoldt_apply_prime hp]`.
+Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `hmem : n ∉ {p : ℕ | p.Prime ∧ p ∈ {p : ℕ | (p : ZMod q) = a}}` using `fun h => hn h.2`. Rewrite using `[if_pos hp, Set.indicator_of_notMem hmem]`. Simplify using `[residueClass, Set.indicator, hn]`. Establish `hmem : n ∉ {p : ℕ | p.Prime ∧ p ∈ {p : ℕ | (p : ZMod q) = a}}` using `fun h => hp h.1`. Rewrite using `[if_neg hp, Set.indicator_of_notMem hmem, zero_div]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 lemma apld_prime_part_eq (a : ZMod q) (x : ℝ) (n : ℕ) :
     (if n.Prime then residueClass a n else 0) / (n : ℝ) ^ x =
@@ -134,27 +134,23 @@ end Formalism.HF.P
 open Formalism.HF.P in
 
 /- English proof (translation)
-Introduce `N _ a ha`. Unfold `Formalism.HF.LogDensity`. Use `set P : ℝ → ℕ → ℝ := fun x n => (if n.Prime then residueClass a n else 0) / (n : ℝ) ^ x with hP`. Use `set Q : ℝ → ℕ → ℝ := fun x n => (if n.Prime then 0 else residueClass a n) / (n : ℝ) ^ x with hQ`. Establish `hPQ : ∀ x n, residueClass a n / (n : ℝ) ^ x = P x n + Q x n`.
+Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x n`. Simplify using `only [hP, hQ, ← add_div]`. Use `congr 1`. Apply the tactic sequence `split_ifs <;> simp`. Establish `hPnn : ∀ x n, 0 ≤ P x n`.
+Reduce the equality to equality of the corresponding arguments. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Introduce `x n`. Simplify using `only [hP]`. Use `div_nonneg ?_ (Real.rpow_nonneg (Nat.cast_nonneg n) x)` and prove the remaining obligations. Use `split_ifs`. Conclude with `residueClass_nonneg a n`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `le_rfl`. Establish `hQnn : ∀ x n, 0 ≤ Q x n` using `fun x n => apld_nonprime_nonneg a x n`. Establish `hPs : ∀ x : ℝ, 1 < x → Summable (P x)` using `fun x hx => (apld_summable a hx).of_nonneg_of_le (hPnn x) (fun n => by rw [hPQ]; linarith [hQnn x n])`. Establish `hQs : ∀ x : ℝ, 1 < x → Summable (Q x)` using `fun x hx => (apld_summable a hx).of_nonneg_of_le (hQnn x) (fun n => by rw [hPQ]; linarith [hPnn x n])`. Establish `hB : Summable fun n : ℕ => (if n.Prime then 0 else residueClass a n) / n` using `summable_residueClass_non_primes_div a`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set B := ∑' n : ℕ, (if n.Prime then 0 else residueClass a n) / n with hBdef`. Establish `hQle : ∀ x : ℝ, 1 < x → ∑' n, Q x n ≤ B` using `fun x hx => (hQs x hx).tsum_le_tsum (fun n => apld_nonprime_le a hx.le n) hB`. Establish `hsplit : ∀ x : ℝ, 1 < x → (x - 1) * (LFunctionResidueClassAux a x).re + (N.totient : ℝ)⁻¹ - (x - 1) * ∑' n, Q x n = (x - 1) * (∑' n : ℕ, {p : ℕ | p.Prime ∧ p ∈ {p : ℕ | (p : ZMod N) = a}}.indicator (fun m : ℕ => Real.log m / (m : ℝ) ^ x) n)`. Introduce `x hx`. Establish `hsum : ∑' n, residueClass a n / (n : ℝ) ^ x = ∑' n, P x n + ∑' n, Q x n`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← (hPs x hx).tsum_add (hQs x hx)]`. Conclude with `tsum_congr (hPQ x)`. Establish `hPind : ∑' n, P x n = ∑' n : ℕ, {p : ℕ | p.Prime ∧ p ∈ {p : ℕ | (p : ZMod N) = a}}.indicator (fun m : ℕ => Real.log m / (m : ℝ) ^ x) n` using `tsum_congr (fun n => apld_prime_part_eq a x n)`. Establish `hT` using `apld_tsum_residueClass_eq ha hx`. Establish `hx1 : x - 1 ≠ 0` using `sub_ne_zero.2 hx.ne'`.
+Combine the linear equalities and inequalities to obtain the conclusion. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← hPind]`. Establish `: ∑' n, P x n = (LFunctionResidueClassAux a x).re + (N.totient : ℝ)⁻¹ / (x - 1) - ∑' n, Q x n`. Combine the linear equalities and inequalities to obtain the conclusion. Rewrite using `[this]`. Clear the denominators using the available nonvanishing facts.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `h1 : Tendsto (fun x : ℝ => (x - 1) * (LFunctionResidueClassAux a x).re) (𝓝[>] 1) (𝓝 0)` using `residue_class_l_function_tendsto a`. Establish `hlin : Tendsto (fun x : ℝ ↦ x - 1) (𝓝[>] 1) (𝓝 0)`. Establish `: Tendsto (fun x : ℝ ↦ x - 1) (𝓝 1) (𝓝 (1 - 1))` using `(continuous_id.sub continuous_const).tendsto 1`. Rewrite `this` using `[sub_self]`. Conclude with `this.mono_left nhdsWithin_le_nhds`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : Tendsto (fun x : ℝ => (x - 1) * ∑' n, Q x n) (𝓝[>] 1) (𝓝 0)`. Establish `hup : Tendsto (fun x : ℝ => (x - 1) * B) (𝓝[>] 1) (𝓝 0)`. Simplify using `using hlin.mul_const B`. Use `squeeze_zero' ?_ ?_ hup` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with x hx`.
-
-Conclude with `mul_nonneg (sub_nonneg.2 (le_of_lt hx)) (tsum_nonneg (hQnn x))`. Use `filter_upwards [self_mem_nhdsWithin] with x hx`. Conclude with `mul_le_mul_of_nonneg_left (hQle x hx) (sub_nonneg.2 (le_of_lt hx))`. Establish `hlim` using `(h1.add (tendsto_const_nhds (x := (N.totient : ℝ)⁻¹))).sub h3`. Establish `e : (0 : ℝ) + (N.totient : ℝ)⁻¹ - 0 = 1 / (N.totient : ℝ)` using `by simp`.
-
-Rewrite `hlim` using `[e]`. Use `hlim.congr' ?_` and prove the remaining obligations. Use `filter_upwards [self_mem_nhdsWithin] with x hx`. Conclude with `hsplit x hx`.
+A detailed English derivation is pending.
 -/
 theorem Formalism.HF.apLogDensity : Formalism.HF.APLogDensity := by
   intro N _ a ha

@@ -7,9 +7,9 @@ open scoped NNReal ENNReal TensorProduct
 namespace GlobalTheory
 
 /- English proof (translation)
-Establish `hf` using `GlobalTheory.Doubling.finite_mulSupport_absEv (F := F) (E := E) y`. Rewrite using `[GlobalTheory.Doubling.absE_apply, NNReal.coe_mul, NNReal.coe_prod]`. Simplify using `only [GlobalTheory.Doubling.absEw_unitInf] at *`. Simplify using `only [GlobalTheory.Doubling.absEv_unitFin] at hf ⊢`. Rewrite using `[show ((∏ᶠ v, ‖GlobalTheory.AdelicU.evFin F v (Algebra.norm (AF F) y.1)‖₊ : ℝ≥0) : ℝ) = ∏ᶠ v, ((‖GlobalTheory.AdelicU.evFin F v (Algebra.norm (AF F) y.1)‖₊ : ℝ≥0) : ℝ) from NNReal.toRealHom.toMonoidHom.map_finprod hf]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use `Finset.prod_congr rfl fun w _ => ?_` and prove the remaining obligations. Rewrite using `[InfinitePlace.mult, if_pos (IsTotallyReal.isReal w), pow_one, coe_nnnorm]`. Both sides reduce to the same expression.
+Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem absE_eq_prod_norm_fstA_sndA (F E : Type) [Field F] [NumberField F] [IsTotallyReal F] [Field E]
     [NumberField E] [Algebra F E] (y : (AF F ⊗[F] E)ˣ) :

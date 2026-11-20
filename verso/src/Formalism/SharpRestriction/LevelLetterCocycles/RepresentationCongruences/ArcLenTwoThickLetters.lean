@@ -19,13 +19,13 @@ variable {G : Type} [Group G] [TopologicalSpace G] {Qp K₀ K : Type} [Field Qp]
     {PD : PeriodData G Qp K₀ K B BdR}
 
 /- English proof (translation)
-Use `set s := {d : ℕ | 1 ≤ d ∧ ¬ Formalism.MainNotions.TruncatedSeriesCountingBounds.Thick b η size (c - (d : ZMod n) + 1)} with hs`. Establish `hlen' : sInf s = 2` using `hlen`. Establish `hne : s.Nonempty`. Assume the negation of the conclusion as `h`. Rewrite `h` using `[Set.not_nonempty_iff_eq_empty]`.
+Establish an intermediate fact. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hlen'` using `[h, Nat.sInf_empty]`. Evaluate the numerical expressions using `at hlen'`. Establish `h2 : 2 ∈ s` using `hlen' ▸ Nat.sInf_mem hne`. Establish `h1 : 1 ∉ s` using `fun h => by`. Use `Nat.sInf_le h` as an intermediate fact.
+Evaluate the numerical expressions. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion as `hT`. Apply `h1` to reduce the goal to its premises. Use `⟨le_rfl, ?_⟩` and prove the remaining obligations.
+Prove the components needed by the constructor for the conclusion. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hT`. Establish `h22` using `h2.2`. Use `h22 using 2` and compare the differences between its conclusion and the goal. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem arc_len_two_thick_letters [NeZero n] {b w S η : ℕ} {up : ZMod n → Bool} {size : ZMod n → ℕ} (c : ZMod n)
     (hlen : (arcOf b w S η up size).len c = 2) :
@@ -52,9 +52,9 @@ theorem arc_len_two_thick_letters [NeZero n] {b w S η : ℕ} {up : ZMod n → B
     ring
 
 /- English proof (translation)
-Take `⟨w₁, z, h1, h2, h3, h4, h5⟩` from `h`. Use `⟨w₁, z, h1, h2, h3, h4, ?_⟩` and prove the remaining obligations. Establish `he : lE W (e + k) * f = lE W e * (lE W k * f)`. Simplify using `only [lE, pow_add, mul_assoc]`. Establish `hfun : (fun kk => if kk = k₀ then lE W (e + k) * f else 0) = (fun kk => if kk = k₀ then lE W e * (lE W k * f) else 0)` using `funext fun kk => by rw [he]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[hfun]`. Conclude with `h5`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem lifts_scale (W : LocWach PD LL O v n) (A : ArcP n) {T₁ T₂ : LocLat G Qp LL O} (F : LatHom T₁.L T₂.L)
     (c : ZMod n) {d : ℕ} (bb : Fin d → W.DD T₂) (sol : Fin d → ℕ → Fin d → LL) (k₀ : Fin d) {f : W.EE}
@@ -69,52 +69,50 @@ theorem lifts_scale (W : LocWach PD LL O v n) (A : ArcP n) {T₁ T₂ : LocLat G
   exact h5
 
 /- English proof (translation)
-Simplify using `only [lE, lA, map_pow, map_natCast]`.
+Simplify using the standard rewrite rules.
 -/
 theorem lE_alg (W : LocWach PD LL O v n) (k : ℕ) :
     lE W k = algebraMap (LetA O n) W.EE (lA W ^ k) := by
   simp only [lE, lA, map_pow, map_natCast]
 
 /- English proof (translation)
-The claim follows from `IsScalarTower.algebraMap_apply O (LetA O n) W.EE x`.
+A detailed English derivation is pending.
 -/
 theorem algO (W : LocWach PD LL O v n) (x : O) :
     algebraMap O W.EE x = algebraMap (LetA O n) W.EE (algebraMap O (LetA O n) x) := IsScalarTower.algebraMap_apply O (LetA O n) W.EE x
 
 /- English proof (translation)
-Use `haveI := Fact.mk PD.hp`. Use `set P := Br.P`. Establish `hp0 : P.p 0 = X` using `rfl`. Establish `hps : ∀ s k, ps W s ^ k = Br.cst (P.p s ^ k)`. Introduce `s k`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Br.cst_pow, Br.ps_eq]`. Establish `h1 : (1 : LetA O n) = Br.cst 1` using `Br.cst_one.symm`. Rewrite `hf` using `[hps, h1]`. Rewrite `hx` using `[hps, hps, hp0]`. Take `⟨U₁, U₂, hU⟩` from `Br.inFr_const c hf hx`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hd1, hd2⟩` from `den_bound P y Bq κ hy hBq x U₁ U₂ hU`. Use `set D := ⌈max 0 ((y : ℝ) - Bq / PD.p + 2 + Real.logb PD.p y)⌉₊ with hD`. Use `set de : ℕ := if PD.p * y < Bq then 0 else min D κ with hde`. Establish `hxd : ((PD.p : ℕ) : O) ^ (κ - de) ∣ x`. Rewrite using `[hde]`.
+Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use `split_ifs with hlt`. Simplify using `using hd2 hlt`. Establish `: κ - min D κ = κ - D` using `by omega`. Rewrite using `[this]`. Conclude with `hd1`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `have hdeκ : de ≤ κ := by rw [hde]; split_ifs <;> omega`. Take `⟨x', hx'⟩` from `hxd`. Use `⟨de, x', ?_, ?_, ?_⟩` and prove the remaining obligations. Apply the tactic sequence `rw [hde]; split_ifs <;> omega`. Introduce `hlt`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails.
 
-Rewrite using `[hde, if_pos hlt]`. Take `⟨u₁, hu₁, hfu⟩` from `hf`. Take `⟨F₁, hF₁⟩` from `Br.range u₁ hu₁ c`. Use `set G : PowerSeries O := C ((PD.p : ℕ) : O) ^ de * F₁ - P.p 1 ^ y * C x' with hG`. Establish `hletu : (letE c : LetA O n) * u₁ = letE c * Br.cst F₁`.
+Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i`. Distinguish the cases in `hi : i = c`. Substitute `hi` using the available equality. Simplify using `[letE, hF₁, Formalism.MainNotions.N.FrobeniusPowerSeries.PhiBridge.cst]`. Simplify using `[letE, Pi.single_apply, hi]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `e1 : (letE c : LetA O n) * Br.cst G = lA W ^ de * (letE c * Br.cst 1 * u₁) - Br.cst (P.p 1 ^ y) * (letE c * algebraMap O (LetA O n) x')`. Rewrite using `[Br.cst_one, mul_one, hletu, hG, Br.lA_eq, ← Br.cst_pow, ← Br.cst_C]`. Use function extensionality and compare the values at `i`. Simplify using `only [Formalism.MainNotions.N.FrobeniusPowerSeries.PhiBridge.cst, Pi.mul_apply, Pi.sub_apply, map_sub, map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hkey : algebraMap (LetA O n) W.EE (Br.cst (P.p 1 ^ y)) * (lE W de * f - algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE x') = algebraMap (LetA O n) W.EE (letE c * Br.cst G)`. Rewrite using `[algO, e1]`. Simplify using `only [map_sub, map_mul] at hfu ⊢`. Rewrite using `[← lE_alg]`. Take the linear combination `(lE W de) * hfu`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `⟨⟨Br.cst G, Br.cst_mem G, ?_⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[hps 1 y, hkey, mul_one]`. Establish `hscale : lE W κ * f - algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE x = lE W (κ - de) * (lE W de * f - algebraMap (LetA O n) W.EE (letE c) * algebraMap O W.EE x')`. Establish `hj' : lE W κ = lE W (κ - de) * lE W de`. Unfold `lE`.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← pow_add, Nat.sub_add_cancel hdeκ]`. Rewrite using `[hx', map_mul, map_pow, map_natCast, hj']`. Unfold `lE`. Expand and normalize the polynomial expressions, which then agree. Take `⟨u₂, hu₂, hxu⟩` from `hx`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hxu2 : algebraMap (LetA O n) W.EE (lA W ^ (κ - de) * (letE c * Br.cst G)) = algebraMap (LetA O n) W.EE (letE c * Br.cst (X ^ Bq) * u₂)`. Rewrite using `[map_mul, ← hkey, ← lE_alg, ← hxu, hscale]`. Expand and normalize the polynomial expressions, which then agree. Establish `hxc` using `congrFun (W.EE_inj hxu2) c`. Take `⟨F₂, hF₂⟩` from `Br.range u₂ hu₂ c`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hιeq : Br.ι (C ((PD.p : ℕ) : O) ^ (κ - de) * G) = Br.ι (X ^ Bq * F₂)`. Establish `e2 : (lA W ^ (κ - de) * (letE c * Br.cst G) : LetA O n) c = Br.ι (C ((PD.p : ℕ) : O) ^ (κ - de) * G)`. Rewrite using `[Br.lA_eq, ← Br.cst_pow]`. Simplify using `[letE, Formalism.MainNotions.N.FrobeniusPowerSeries.PhiBridge.cst, map_mul]`. Establish `e3 : (letE c * Br.cst (X ^ Bq) * u₂ : LetA O n) c = Br.ι (X ^ Bq * F₂)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[letE, Formalism.MainNotions.N.FrobeniusPowerSeries.PhiBridge.cst, hF₂, map_mul]`. Rewrite using `[← e2, ← e3, hxc]`. Establish `hGB` using `Br.inj hιeq`. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`. Take `⟨u, hu⟩` from `l_eq_unit_mul_pow hϖ P.hl0`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmem : C ϖ ^ (eO (O` using `O) PD.p * (κ - de)) * (C ((↑u : O) ^ (κ - de)) * G) ∈ Ideal.span {(X : O⟦X⟧) ^ Bq} := by`. Establish `: C ϖ ^ (eO (O` using `O) PD.p * (κ - de)) * (C ((↑u : O) ^ (κ - de)) * G) = X ^ Bq * F₂ := by`. Rewrite using `[← hGB, hu]`. Simplify using `only [map_mul, map_pow, mul_pow, ← pow_mul]`. Expand and normalize the polynomial expressions, which then agree.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[this]`. Conclude with `Ideal.mul_mem_right _ _ (Ideal.mem_span_singleton_self _)`. Establish `hmem2` using `Cont.mem_of_pow_mul_mem hϖ (ContPA.dist_X_pow (O := O) Bq).1 _ _ hmem`. Take `⟨U', hU'⟩` from `Ideal.mem_span_singleton'.mp hmem2`. Establish `hone : (C ((↑(u⁻¹) : O) ^ (κ - de)) : O⟦X⟧) * C ((↑u : O) ^ (κ - de)) = 1`.
-
-Rewrite using `[← map_mul, ← mul_pow, Units.inv_mul, one_pow, map_one]`. Establish `hG2 : G = X ^ Bq * (C ((↑(u⁻¹) : O) ^ (κ - de)) * U')`. Take the linear combination `(-G) * hone + (-(C ((↑(u⁻¹) : O) ^ (κ - de)) : O⟦X⟧)) * hU'`. Use `⟨Br.cst (C ((↑(u⁻¹) : O) ^ (κ - de)) * U'), Br.cst_mem _, ?_⟩` and prove the remaining obligations. Rewrite using `[hps 1 y, hps 0 Bq, hp0, hkey, hG2, Br.cst_mul, mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem den_step [IsDomain O] [IsDiscreteValuationRing O] [IsAdicComplete (IsLocalRing.maximalIdeal O) O]
     (W : LocWach PD LL O v n) (Br : Formalism.MainNotions.N.FrobeniusPowerSeries.PhiBridge W) (c : ZMod n) (y Bq κ : ℕ)

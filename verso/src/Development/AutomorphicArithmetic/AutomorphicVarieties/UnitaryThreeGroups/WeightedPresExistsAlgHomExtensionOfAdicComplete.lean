@@ -11,7 +11,7 @@ section SlopeTestRemainingChoices
 open MvPowerSeries
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.algHom_coe_mvPolynomial f (MvPolynomial.monomial m (1 : O))`. Rewrite `h` using `[MvPolynomial.coe_monomial, MvPolynomial.aeval_monomial, RingHom.map_one, one_mul]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pf_monomial {O σ S : Type} [CommRing O] [CommRing S] [Algebra O S]
     (f : MvPowerSeries σ O →ₐ[O] S) (m : σ →₀ ℕ) :
@@ -21,7 +21,7 @@ private theorem pf_monomial {O σ S : Type} [CommRing O] [CommRing S] [Algebra O
   exact h
 
 /- English proof (translation)
-Simplify using `only [mul_pow, Finsupp.prod_mul]`. Use `congr 1`. Rewrite using `[Finsupp.weight_apply, Finsupp.sum, ofAdd_sum, map_prod, Units.coe_prod, Finsupp.prod]`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Rewrite using `[ofAdd_nsmul, map_pow, Units.val_pow_eq_pow_val]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pf_prod {X σ S : Type} [AddCommGroup X] [CommRing S] (wt : σ → X)
     (t : Multiplicative X →* Sˣ) (x : σ → S) (d : σ →₀ ℕ) :
@@ -34,9 +34,9 @@ private theorem pf_prod {X σ S : Type} [AddCommGroup X] [CommRing S] (wt : σ �
   rw [ofAdd_nsmul, map_pow, Units.val_pow_eq_pow_val]
 
 /- English proof (translation)
-Take `⟨T, hT⟩ : ∃ T : Finset (σ →₀ ℕ), ∀ d, Finsupp.degree d < n → d ∈ T` from `⟨(Finsupp.finite_of_degree_lt (σ := σ) n).toFinset, fun d hd => by simpa using hd⟩`. Use `⟨T.image (Finsupp.weight wt), MvPowerSeries.le_order fun d hd => ?_⟩` and prove the remaining obligations. Establish `hd' : Finsupp.degree d < n` using `by exact_mod_cast hd`. Establish `hmem : Finsupp.weight wt d ∈ T.image (Finsupp.weight wt)` using `Finset.mem_image_of_mem _ (hT d hd')`. Rewrite using `[map_sub, map_sum]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [coeff_wcomp]`. Rewrite using `[Finset.sum_ite_eq, if_pos hmem, sub_self]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 private theorem pf_approx {O X σ : Type} [CommRing O] [AddCommGroup X] [Finite σ] (wt : σ → X)
     (F : MvPowerSeries σ O) (n : ℕ) :
@@ -53,9 +53,9 @@ private theorem pf_approx {O X σ : Type} [CommRing O] [AddCommGroup X] [Finite 
   rw [Finset.sum_ite_eq, if_pos hmem, sub_self]
 
 /- English proof (translation)
-Use `GlobalTheory.eq_of_forall_sub_mem_ideal_pow J fun n => ?_` and prove the remaining obligations. Take `⟨s, hs⟩` from `pf_approx wt F n`. Establish `h1` using `GlobalTheory.algHom_mem_pow_of_le_order φ hφ hs`. Establish `h2 : φ (∑ j ∈ s, wcomp O wt j F) = 0`. Rewrite using `[map_sum]`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_eq_zero fun j _ => h j`. Rewrite `h1` using `[map_sub, h2, sub_zero]`. Rewrite using `[sub_zero]` and apply the resulting hypothesis.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Use the resulting assumption. A detailed English derivation is pending.
 -/
 private theorem pf_vanish {O X σ S : Type} [CommRing O] [AddCommGroup X] [Finite σ] [CommRing S]
     [Algebra O S] (wt : σ → X) (J : Ideal S) [IsHausdorff J S] (φ : MvPowerSeries σ O →ₐ[O] S)
@@ -74,7 +74,7 @@ variable {O X R K : Type} [CommRing O] [AddCommGroup X] [CommRing R] [Algebra O 
   [CommRing K] [Algebra O K] (ξ : W.A →ₐ[O] K)
 
 /- English proof (translation)
-Rewrite using `[pf_monomial]`. Conclude with `map_finsuppProd W.A.val _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pf_zprod (m : W.σ →₀ ℕ) :
     ((m.prod fun s k => W.zA s ^ k : W.A) : R) = W.π (monomial m 1) := by
@@ -85,17 +85,15 @@ variable [Module.Free ℤ X] [Module.Finite ℤ X] {B : Type} [CommRing B] [Alge
   (t : Multiplicative X →* Kˣ) (g : MvPowerSeries W.σ O →ₐ[O] B)
 
 /- English proof (translation)
-Take `⟨μ, hμS, hμ⟩` from `part_span O R X W S j hS`. Take `⟨b, hb, hFb⟩` from `hμ F hF`. Establish `hy : ∀ m, W.π (b m) ∈ W.A` using `fun m => W.part_le_A (j := 0) (show W.π (b m) ∈ W.part 0 from Submodule.mem_map_of_mem (hb m))`. Use `choose c hc hcI using fun m => hI (b m) (hb m) ⟨W.π (b m), hy m⟩ rfl`. Use `⟨∑ m ∈ μ, c m * g (monomial m 1), ?_, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hx' : x = ∑ m ∈ μ, (⟨W.π (b m), hy m⟩ : W.A) * (m.prod fun s k => W.zA s ^ k)`. Apply `Subtype.ext` to reduce the goal to its premises. Rewrite using `[hx, hFb]`. Use `show _ = W.A.val _`. Rewrite using `[map_sum, map_sum]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_congr rfl fun m _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul]`. Use `show _ = W.π (b m) * ((m.prod fun s k => W.zA s ^ k : W.A) : R)`. Rewrite using `[pf_zprod]`. Establish `hgm : ∀ m ∈ μ, ι (g (monomial m 1)) = (t (Multiplicative.ofAdd j) : K) * ξ (m.prod fun s k => W.zA s ^ k)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Introduce `m hm`. Establish `h1` using `pf_monomial (ι.comp g) m`. Simplify using `only [AlgHom.comp_apply, hg] at h1`. Rewrite using `[h1, pf_prod W.wt t (fun s => ξ (W.zA s)) m, hS m (hμS (Finset.mem_coe.mpr hm)), map_finsuppProd]`. Simplify using `only [map_pow]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hx', map_sum ι, map_sum ξ, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun m hm => ?_` and prove the remaining obligations. Rewrite using `[map_mul ι, map_mul ξ, hc m, hgm m hm]`. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hFb, map_sum, ← Finset.sum_sub_distrib]`.
-
-Use `Ideal.sum_mem _ fun m hm => ?_` and prove the remaining obligations. Rewrite using `[map_mul, ← sub_mul]`. Conclude with `Ideal.mul_mem_mul (hcI m) (hJ m (hμS (Finset.mem_coe.mpr hm)))`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pf_step (hg : ∀ s, ι (g (MvPowerSeries.X s)) = t (Multiplicative.ofAdd (W.wt s)) * ξ (W.zA s))
     (I J : Ideal B) (S : Set (W.σ →₀ ℕ)) (j : X) (hS : ∀ n ∈ S, Finsupp.weight W.wt n = j)
@@ -137,9 +135,9 @@ private theorem pf_step (hg : ∀ s, ι (g (MvPowerSeries.X s)) = t (Multiplicat
     exact Ideal.mul_mem_mul (hcI m) (hJ m (hμS (Finset.mem_coe.mpr hm)))
 
 /- English proof (translation)
-Establish `h` using `GlobalTheory.algHom_mem_pow_of_le_order g' hJ (n := 1) (g := monomial m 1) ?_`. Simplify using `using h`. Use `MvPowerSeries.le_order fun d hd => ?_` and prove the remaining obligations. Establish `hd' : Finsupp.degree d < 1` using `by exact_mod_cast hd`. Establish `hd0 : d = 0` using `(Finsupp.degree_eq_zero_iff d).mp (by omega)`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Substitute `hd0` using the available equality. Rewrite using `[MvPowerSeries.coeff_monomial, if_neg (Ne.symm hm)]`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities.
 -/
 private theorem mono_lemma {O' σ' B' : Type} [CommRing O'] [CommRing B'] [Algebra O' B'] [Finite σ']
     (g' : MvPowerSeries σ' O' →ₐ[O'] B') (J : Ideal B') (hJ : ∀ s, g' (MvPowerSeries.X s) ∈ J)
@@ -154,21 +152,19 @@ private theorem mono_lemma {O' σ' B' : Type} [CommRing O'] [CommRing B'] [Algeb
   rw [MvPowerSeries.coeff_monomial, if_neg (Ne.symm hm)]
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `b hb x hx`. Take `⟨c, hc⟩` from `h0 x (show (x : R) ∈ W.part 0 from Submodule.mem_map.mpr ⟨b, hb, hx.symm⟩)`. Conclude with `⟨c, hc, by simp⟩`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Consider the case `succ n ih`. Introduce `b hb x hx`. Establish `hb' : ∀ m, Finsupp.weight W.wt m ≠ 0 → coeff m b = 0` using `hb`. Take `⟨b0, hb0⟩ : ∃ b0, b0 = MvPowerSeries.constantCoeff b` from `⟨_, rfl⟩`. Establish `hC : (MvPowerSeries.C b0 : MvPowerSeries W.σ O) = algebraMap O _ b0` using `rfl`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x', hxe⟩ : ∃ x' : W.A, x' = x - algebraMap O W.A b0` from `⟨_, rfl⟩`. Establish `hx' : (x' : R) = W.π (b - MvPowerSeries.C b0)`. Rewrite using `[hxe, map_sub, hC, AlgHom.commutes, ← hx]`. Both sides reduce to the same expression. Establish `hF : ∀ m, m ∉ {m : W.σ →₀ ℕ | Finsupp.weight W.wt m = 0 ∧ m ≠ 0} → coeff m (b - MvPowerSeries.C b0) = 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Introduce `m hm`. Rewrite using `[map_sub, MvPowerSeries.coeff_C]`. Distinguish the cases in `hw : Finsupp.weight W.wt m = 0`. Establish `hm0 : m = 0`. Assume the negation of the conclusion as `h`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `hm ⟨hw, h⟩`. Substitute `hm0` using the available equality. Rewrite using `[if_pos rfl, hb0, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, sub_self]`. Establish `hm0 : m ≠ 0`. Introduce and unpack `rfl`.
+Substitute using the available equality. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hw (map_zero _)`. Rewrite using `[if_neg hm0, hb' m hw, sub_zero]`. Take `⟨c', hc', hcm⟩` from `pf_step W ξ ι t g hg (J ^ n) J {m : W.σ →₀ ℕ | Finsupp.weight W.wt m = 0 ∧ m ≠ 0} 0 (fun m hm => hm.1) (fun m hm => mono_lemma g J hJ m hm.2) ih _ hF x' hx'`. Use `⟨algebraMap O B b0 + c', ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[map_add, AlgHom.commutes, hc', ofAdd_zero, map_one, Units.val_one, one_mul, ← AlgHom.commutes ξ b0, ← map_add, hxe]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Normalize the expressions using the abelian group laws.
 
-Use `congr 1`. Normalize the expressions using the abelian group laws. Establish `he : g b - (algebraMap O B b0 + c') = g (b - MvPowerSeries.C b0) - c'`. Rewrite using `[map_sub, hC, AlgHom.commutes]`. Expand and normalize the polynomial expressions, which then agree.
-
-Rewrite using `[he, pow_succ]`. Conclude with `hcm`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem exists_lift_sub_mem_pow_of_mem_wtPart_zero
     (hg : ∀ s, ι (g (MvPowerSeries.X s)) = t (Multiplicative.ofAdd (W.wt s)) * ξ (W.zA s))
@@ -219,13 +215,13 @@ private theorem exists_lift_sub_mem_pow_of_mem_wtPart_zero
       exact hcm
 
 /- English proof (translation)
-Establish `hF' : ∀ m, Finsupp.weight W.wt m ≠ j → coeff m F = 0` using `hF`. Establish `key : ∀ n : ℕ, ∃ c, ι c = t (Multiplicative.ofAdd j) * ξ x ∧ g F - c ∈ J ^ n`. Introduce `n`. Distinguish the cases in `hj : j = 0`. Substitute `hj` using the available equality.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Take `⟨c, hc, hm⟩` from `exists_lift_sub_mem_pow_of_mem_wtPart_zero W ξ ι t g hg J hJ h0 n F hF x hx`. Conclude with `⟨c, by rw [hc, ofAdd_zero, map_one, Units.val_one, one_mul], hm⟩`. Take `⟨c, hc, hm⟩` from `pf_step W ξ ι t g hg (J ^ n) J {m | Finsupp.weight W.wt m = j} j (fun m hm => hm) (fun m hm => mono_lemma g J hJ m (by`. Introduce and unpack `rfl`. Conclude with `hj (hm.symm.trans (map_zero _))))`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Use the proof step `(exists_lift_sub_mem_pow_of_mem_wtPart_zero W ξ ι t g hg J hJ h0 n) F (fun m hm => hF' m hm) x hx`. Conclude with `⟨c, hc, (Ideal.mul_le_left : J ^ n * J ≤ J ^ n) hm⟩`. Take `⟨c0, hc0, -⟩` from `key 0`. Establish `hgF : g F = c0` using `GlobalTheory.eq_of_forall_sub_mem_ideal_pow J fun n => by`. Take `⟨c, hc, hm⟩` from `key n`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hcc : c = c0` using `hι (hc.trans hc0.symm)`. Rewrite `hm` using `[hcc]`. Then use the resulting hypothesis. Rewrite using `[hgF, hc0]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pf_agree (hι : Function.Injective ι)
     (hg : ∀ s, ι (g (MvPowerSeries.X s)) = t (Multiplicative.ofAdd (W.wt s)) * ξ (W.zA s))
@@ -254,13 +250,13 @@ private theorem pf_agree (hι : Function.Injective ι)
   rw [hgF, hc0]
 
 /- English proof (translation)
-Establish `hker : ∀ F ∈ RingHom.ker W.π, g F = 0`. Introduce `F hF`. Use `pf_vanish W.wt J g hJ F fun j => ?_` and prove the remaining obligations. Establish `hmem : wcomp O W.wt j F ∈ RingHom.ker W.π` using `W.homog F hF j`. Establish `h` using `pf_agree W ξ ι t g hι hg J hJ h0 j (wcomp O W.wt j F) (wcomp_mem O W.wt j F) 0 (by show (0 : R) = _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(RingHom.mem_ker.mp hmem).symm)`. Rewrite `h` using `[map_zero, mul_zero]`. Conclude with `hι (h.trans (map_zero ι).symm)`. Use `⟨(Ideal.Quotient.liftₐ (RingHom.ker W.π) g hker).comp (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm.toAlgHom, fun j x hx => ?_⟩` and prove the remaining obligations. Take `⟨F, hF, hFx⟩` from `Submodule.mem_map.mp (show (x : R) ∈ W.part j from hx)`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmk : (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm (W.π F) = Ideal.Quotient.mk (RingHom.ker W.π) F`. Rewrite using `[AlgEquiv.symm_apply_eq]`. Both sides reduce to the same expression. Establish `hval : (Ideal.Quotient.liftₐ (RingHom.ker W.π) g hker).comp (Ideal.quotientKerAlgEquivOfSurjective W.surj).symm.toAlgHom (x : R) = g F`. Rewrite using `[← hFx]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Use `show Ideal.Quotient.liftₐ (RingHom.ker W.π) g hker ((Ideal.quotientKerAlgEquivOfSurjective W.surj).symm (W.π F)) = g F`. Rewrite using `[hmk]`. Both sides reduce to the same expression. Rewrite using `[hval]`. Conclude with `pf_agree W ξ ι t g hι hg J hJ h0 j F hF x hFx.symm`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem pf_factor [DecidableEq X] (hι : Function.Injective ι)
     (hg : ∀ s, ι (g (MvPowerSeries.X s)) = t (Multiplicative.ofAdd (W.wt s)) * ξ (W.zA s))
@@ -297,11 +293,11 @@ private theorem pf_factor [DecidableEq X] (hι : Function.Injective ι)
 end SlopeTestRemainingChoices
 
 /- English proof (translation)
-Introduce `O X R _ _ _ _ _ _ _ W B _ _ J _ τ hτ`. Set `g` to `GlobalTheory.mvEvalAdic O J (fun s => τ (W.zA s)) hτ`. Establish `hgX : ∀ s, g (MvPowerSeries.X s) = τ (W.zA s)` using `fun s => GlobalTheory.mvEvalAdic_X J _ hτ s`. Take `⟨f, hf⟩` from `pf_factor W τ (AlgHom.id O B) (1 : Multiplicative X →* Bˣ) g (fun a b h => h) (fun s => by simp [hgX]) J (fun s => by rw [hgX]; exact hτ s) (fun x _ => ⟨τ x, rfl⟩)`. Use `⟨f, AlgHom.ext fun a => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `key : ∀ y ∈ ⨆ j, W.part j, y ∈ W.A ∧ ∀ h : y ∈ W.A, f y = τ ⟨y, h⟩`. Introduce `y hy`. Use `Submodule.iSup_induction (fun j => W.part j) (motive := fun y => y ∈ W.A ∧ ∀ h : y ∈ W.A, f y = τ ⟨y, h⟩) hy ?_ ?_ ?_` and prove the remaining obligations. Introduce `j z hz`. Conclude with `⟨W.part_le_A hz, fun h => by simpa using hf j ⟨z, h⟩ hz⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components.
 
-Conclude with `⟨W.A.zero_mem, fun h => by rw [map_zero]; exact (map_zero τ).symm⟩`. Introduce `z w hz hw`. Conclude with `⟨W.A.add_mem hz.1 hw.1, fun h => by rw [map_add, hz.2 hz.1, hw.2 hw.1, ← map_add]; rfl⟩`. Conclude with `(key a a.2).2 a.2`.
+Supply the required witnesses or components. Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.weightedPres_exists_algHom_extension_of_adicComplete :
     ∀ {O X R : Type} [CommRing O] [AddCommGroup X] [Module.Free ℤ X] [Module.Finite ℤ X] [DecidableEq X] [CommRing R] [Algebra O R] (W : WPres O X R)

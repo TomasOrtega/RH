@@ -10,7 +10,7 @@ namespace GlobalTheory.CompanionTheory.CechLine
 variable {X : Scheme.{0}} (D : LineData X)
 
 /- English proof (translation)
-Establish `h2 : D.u a a h * D.u a a h = D.u a a h * 1`. Rewrite using `[mul_one]`. Conclude with `D.coc a a a h h`. Conclude with `mul_left_cancel h2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem u_self {V : Scheme.{0}} (a : V ⟶ D.Y) (h : a ≫ D.f = a ≫ D.f) : D.u a a h = 1 := by
   have h2 : D.u a a h * D.u a a h = D.u a a h * 1 := by
@@ -19,7 +19,7 @@ theorem u_self {V : Scheme.{0}} (a : V ⟶ D.Y) (h : a ≫ D.f = a ≫ D.f) : D.
   exact mul_left_cancel h2
 
 /- English proof (translation)
-Substitute `ha` using the available equality. Substitute `hb` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem u_congr {V : Scheme.{0}} {a a' b b' : V ⟶ D.Y} (ha : a = a') (hb : b = b')
     (h : a ≫ D.f = b ≫ D.f) (h' : a' ≫ D.f = b' ≫ D.f) : D.u a b h = D.u a' b' h' := by
@@ -40,7 +40,7 @@ def lineFun {V : Scheme.{0}} {k : ℕ} (y : Fin (k + 1) → (V ⟶ D.Y)) (hy : �
 variable {D}
 
 /- English proof (translation)
-Take `⟨x, y, h, hz⟩` from `(hC D.Y X D.f k U).1 z`. Conclude with `⟨y, x, h, hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_pts (hC : CechPt) {k : ℕ} {U : Scheme.{0}} (z : Sx (cech D.f) k U) :
     ∃ y : Fin (k + 1) → (U ⟶ D.Y), ∃ x h, z = cechPt D.f k x y h := by
@@ -51,14 +51,14 @@ def pts (hC : CechPt) {k : ℕ} {U : Scheme.{0}} (z : Sx (cech D.f) k U) : Fin (
   (exists_pts hC z).choose
 
 /- English proof (translation)
-Conclude with `(exists_pts hC z).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem pts_spec (hC : CechPt) {k : ℕ} {U : Scheme.{0}} (z : Sx (cech D.f) k U) :
     ∃ x h, z = cechPt D.f k x (pts hC z) h := by
   exact (exists_pts hC z).choose_spec
 
 /- English proof (translation)
-Take `⟨x, h, -⟩` from `pts_spec hC z`. Conclude with `(h i).trans (h j).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pts_eq (hC : CechPt) {k : ℕ} {U : Scheme.{0}} (z : Sx (cech D.f) k U) (i j : Fin (k + 1)) :
     pts hC z i ≫ D.f = pts hC z j ≫ D.f := by
@@ -66,7 +66,7 @@ theorem pts_eq (hC : CechPt) {k : ℕ} {U : Scheme.{0}} (z : Sx (cech D.f) k U) 
   exact (h i).trans (h j).symm
 
 /- English proof (translation)
-Take `⟨x', h', hz⟩` from `pts_spec hC (cechPt D.f k x y h)`. Conclude with `((hC D.Y X D.f k U).2.1 _ _ _ _ _ _ hz).symm`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem pts_cechPt (hC : CechPt) {k : ℕ} {U : Scheme.{0}} (x : U ⟶ X) (y : Fin (k + 1) → (U ⟶ D.Y))
     (h : ∀ i, y i ≫ D.f = x) : pts hC (cechPt D.f k x y h) = y := by
@@ -74,7 +74,7 @@ theorem pts_cechPt (hC : CechPt) {k : ℕ} {U : Scheme.{0}} (x : U ⟶ X) (y : F
   exact ((hC D.Y X D.f k U).2.1 _ _ _ _ _ _ hz).symm
 
 /- English proof (translation)
-Take `⟨x, h, hz⟩` from `pts_spec hC z`. Establish `e` using `((hC D.Y X D.f k U).2.2 x (pts hC z) h).2.1 V g`. Rewrite `e` using `[← hz]`. Rewrite using `[e, pts_cechPt]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pts_res (hC : CechPt) {k : ℕ} {U V : Scheme.{0}} (g : V ⟶ U) (z : Sx (cech D.f) k U) (i : Fin (k + 1)) :
     pts hC (Sx.res g z) i = g ≫ pts hC z i := by
@@ -84,7 +84,7 @@ theorem pts_res (hC : CechPt) {k : ℕ} {U V : Scheme.{0}} (g : V ⟶ U) (z : Sx
   rw [e, pts_cechPt]
 
 /- English proof (translation)
-Take `⟨x, h, hz⟩` from `pts_spec hC z`. Establish `e` using `((hC D.Y X D.f k U).2.2 x (pts hC z) h).2.2 p θ`. Rewrite `e` using `[← hz]`. Rewrite using `[e, pts_cechPt]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem pts_along (hC : CechPt) {k p : ℕ} {U : Scheme.{0}} (z : Sx (cech D.f) k U)
     (θ : SimplexCategory.mk p ⟶ SimplexCategory.mk k) (i : Fin (p + 1)) :
@@ -95,7 +95,7 @@ theorem pts_along (hC : CechPt) {k p : ℕ} {U : Scheme.{0}} (z : Sx (cech D.f) 
   rw [e, pts_cechPt]
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[Matrix.GeneralLinearGroup.scalar, Matrix.scalar_apply, Matrix.diagonal_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem scalar_map {A B : CommRingCat.{0}} (f : A ⟶ B) (u : (A : Type)ˣ) :
     Matrix.GeneralLinearGroup.scalar (Fin 1) (Units.map f.hom.toMonoidHom u) =
@@ -106,9 +106,9 @@ theorem scalar_map {A B : CommRingCat.{0}} (f : A ⟶ B) (u : (A : Type)ˣ) :
 
 variable (D) in
 /- English proof (translation)
-Use `CategoryTheory.Functor.ext (fun _ => rfl) (fun i j _ => ?_)` and prove the remaining obligations. Simplify using `only [eqToHom_refl, Category.comp_id, Category.id_comp]`. Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.scalar (Fin 1) (D.u (y' i) (y' j) (hy' i j)) = Matrix.GeneralLinearGroup.map (Scheme.Γ.map g.op).hom (Matrix.GeneralLinearGroup.scalar (Fin 1) (D.u (y i) (y j) (hy i j)))`. Rewrite using `[← scalar_map]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[u_congr D (e i) (e j) (hy' i j) (by rw [Category.assoc, Category.assoc, hy i j]), D.nat g (y i) (y j) (hy i j)]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem lineFun_res {U V : Scheme.{0}} {k : ℕ} (g : V ⟶ U) (y : Fin (k + 1) → (U ⟶ D.Y))
     (hy : ∀ i j, y i ≫ D.f = y j ≫ D.f) (y' : Fin (k + 1) → (V ⟶ D.Y))
@@ -144,9 +144,9 @@ def lineMap (hC : CechPt) : cech D.f ⟶ ofCat (glCat 1) where
       (u_congr D (pts_along hC _ θ.unop i) (pts_along hC _ θ.unop j) _ _)
 
 /- English proof (translation)
-Introduce `hC X D`. Use `⟨lineMap D hC, ?_⟩` and prove the remaining obligations. Unfold `CrystallineSemistableComparison.E.LineData.IsMap`. Introduce `V x a h`. Establish `hp` using `pts_cechPt (D := D) hC x a h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Express the relevant statement in the definitionally equal form `Matrix.GeneralLinearGroup.det (Matrix.GeneralLinearGroup.scalar (Fin 1) (D.u (pts hC (cechPt D.f 1 x a h) 0) (pts hC (cechPt D.f 1 x a h) 1) (pts_eq hC _ 0 1))) = _`. Rewrite using `[u_congr D (congrFun hp 0) (congrFun hp 1) _ ((h 0).trans (h 1).symm)]`. Use `ext`. Simplify using `[Matrix.GeneralLinearGroup.scalar]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem lineMap_exists : CrystallineSemistableComparison.E.CechPt → CrystallineSemistableComparison.E.LineMap := by
   intro hC X D

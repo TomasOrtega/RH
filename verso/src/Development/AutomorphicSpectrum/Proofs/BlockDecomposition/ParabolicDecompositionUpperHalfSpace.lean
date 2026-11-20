@@ -10,7 +10,7 @@ open Matrix PositivityTheory.Rg.Sw
 variable {n : ℕ}
 
 /- English proof (translation)
-Unfold `InG JJ at h`. Rewrite `h` using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Take `⟨-, h12, -, h22⟩` from `fromBlocks_inj.mp h`. Simplify using `only [conjTranspose_zero, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_neg, Matrix.neg_mul, add_zero, zero_add, neg_zero] at h12 h22`. Conclude with `⟨h12, (neg_add_eq_zero.mp h22).symm⟩`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem block_relations (A B D : Matrix (Fin n) (Fin n) ℂ)
     (h : InG (fromBlocks A B 0 D : M2 n)) : Aᴴ * D = 1 ∧ Bᴴ * D = Dᴴ * B := by
@@ -22,9 +22,9 @@ theorem block_relations (A B D : Matrix (Fin n) (Fin n) ℂ)
   exact ⟨h12, (neg_add_eq_zero.mp h22).symm⟩
 
 /- English proof (translation)
-Establish `h' : Dᴴ * a = 1`. Establish `h2` using `congrArg conjTranspose h`. Rewrite `h2` using `[conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_one]`. Then use the resulting hypothesis. Unfold `InG JJ`. Rewrite using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [conjTranspose_zero, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_neg, Matrix.neg_mul, add_zero, zero_add, h, h', neg_zero]`.
+Simplify using the standard rewrite rules.
 -/
 theorem levi_inG (a D : Matrix (Fin n) (Fin n) ℂ) (h : aᴴ * D = 1) :
     InG (fromBlocks a 0 0 D : M2 n) := by
@@ -37,23 +37,21 @@ theorem levi_inG (a D : Matrix (Fin n) (Fin n) ℂ) (h : aᴴ * D = 1) :
     Matrix.mul_neg, Matrix.neg_mul, add_zero, zero_add, h, h', neg_zero]
 
 /- English proof (translation)
-Introduce `n p hp`. Use `set A := (mR p).toBlocks₁₁ with hA`. Use `set B := (mR p).toBlocks₁₂ with hB`. Use `set D := (mR p).toBlocks₂₂ with hD`. Establish `hpm : mR p = fromBlocks A B 0 D`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← hp]`. Conclude with `(fromBlocks_toBlocks (mR p)).symm`. Establish `hG : InG (mR p)` using `p.2`. Rewrite `hG` using `[hpm]`. Take `⟨h1, h2⟩` from `block_relations A B D hG`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Establish `hDA : D * Aᴴ = 1` using `mul_eq_one_comm.mp h1`. Establish `hADh : A * Dᴴ = 1`. Establish `h3` using `congrArg conjTranspose hDA`. Rewrite `h3` using `[conjTranspose_mul, conjTranspose_conjTranspose, conjTranspose_one]`. Then use the resulting hypothesis. Establish `hinv : (Aᴴ)⁻¹ = D` using `Matrix.inv_eq_right_inv h1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Establish `hDinv : D⁻¹ = Aᴴ` using `Matrix.inv_eq_right_inv hDA`. Use `set b := B * Aᴴ with hb`. Establish `hbh : bᴴ = b`. Rewrite using `[hb, conjTranspose_mul, conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hnbG : InG (nU b : M2 n)`. Unfold `InG JJ nU`. Rewrite using `[fromBlocks_conjTranspose, fromBlocks_multiply, fromBlocks_multiply]`. Simplify using `only [conjTranspose_zero, conjTranspose_one, Matrix.mul_zero, Matrix.zero_mul, Matrix.mul_one, Matrix.one_mul, Matrix.mul_neg, Matrix.neg_mul, add_zero, zero_add, hbh, neg_add_cancel, neg_zero]`. Establish `hdet1 : IsUnit (nU b : M2 n).det`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Unfold `nU`. Rewrite using `[det_fromBlocks_zero₂₁, det_one, mul_one]`. Conclude with `isUnit_one`. Establish `hmaG : InG (fromBlocks A 0 0 D : M2 n)` using `levi_inG A D h1`. Establish `hM : (fromBlocks A 0 0 D : M2 n) * fromBlocks Dᴴ 0 0 Aᴴ = 1`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, hADh, hDA, fromBlocks_one]`. Establish `hdet2 : IsUnit (fromBlocks A 0 0 D : M2 n).det` using `Matrix.isUnit_det_of_right_inverse hM`. Use `⟨⟨Matrix.nonsingInvUnit _ hdet1, hnbG⟩, ⟨Matrix.nonsingInvUnit _ hdet2, hmaG⟩, b, A, hbh, Matrix.isUnit_det_of_right_inverse hADh, rfl, ?_, ?_, ?_⟩` and prove the remaining obligations. Use `show (fromBlocks A 0 0 D : M2 n) = fromBlocks A 0 0 (Aᴴ)⁻¹`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hinv]`. Apply `Subtype.ext` to reduce the goal to its premises. Apply `Units.ext` to reduce the goal to its premises. Use `show mR p = nU b * fromBlocks A 0 0 D`. Rewrite using `[hpm]`.
-
-Unfold `nU`. Rewrite using `[fromBlocks_multiply]`. Simplify using `only [Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, add_zero, zero_add]`. Rewrite using `[hb, Matrix.mul_assoc, h1, Matrix.mul_one]`. Rewrite using `[hp, Matrix.zero_mul, zero_add, hDinv, Matrix.add_mul, Matrix.mul_smul, Matrix.mul_one, Matrix.smul_mul, hb, add_comm]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem siegel_point :
     ∀ (n : ℕ) (p : PositivityTheory.Rg.Sw.GR n), (PositivityTheory.Rg.Sw.mR p).toBlocks₂₁ = 0 →

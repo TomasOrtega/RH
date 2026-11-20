@@ -30,47 +30,43 @@ theorem fact_arith (a b c d : ℤ) (h : a = b + c + d + 0 + 0) : a = b + c + d :
   omega
 
 /- English proof (translation)
-Establish `hp` using `hpF.out`. Establish `: CharZero (KK O)` using `dvr_fraction_field_char_zero hp S`. Establish `hy : (levImg Fr p hk Dt.nL rho dPl dNo G).coeff bp0 ∈ Pol (KK O) K dNo` using `(hDig G hdeg).2.1 rho dPl dNo bp0`. Establish `hy1 : vBB (O` using `O) p ((levImg Fr p hk Dt.nL rho dPl dNo G).coeff bp0) ≤ (((padicValNat p (expFact bn0) : ℚ) / 2 : ℚ) : WithTop ℚ) := by`. Use `vBB_le_coeff (p := p) ((levImg Fr p hk Dt.nL rho dPl dNo G).coeff bp0) bn0` as an intermediate fact.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hcoef, hmo0, zero_add]`. Then use the resulting hypothesis. Take `⟨q1, hq1, hq1le⟩` from `WithTop.le_coe_iff.1 (le_trans hvle hy1)`. Take `⟨nu, hnus, hnu⟩` from `vBB_attained (p := p) (e ((levImg Fr p hk Dt.nL rho dPl dNo G).coeff bp0)) (by rw [hq1]; exact WithTop.coe_ne_top)`. Rewrite `hnu` using `[hq1]`. Take `⟨q2, c2, hq2, hc2, hq2c⟩` from `WithTop.add_eq_coe.1 hnu.symm`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hc2' : c2 = (padicValNat p (expFact nu) : ℚ) / 2` using `by exact_mod_cast hc2`. Take `⟨Pc, hPc⟩ : ∃ Pc, Pc = planeCoeff nu (oneT e (levImg Fr p hk Dt.nL rho dPl dNo G))` from `⟨_, rfl⟩`. Establish `hPc0 : Pc.coeff bp0 = (e ((levImg Fr p hk Dt.nL rho dPl dNo G).coeff bp0)).coeff nu` using `by rw [hPc, coeff_planeCoeff, coeff_oneT]`. Establish `hPc1 : vBB (O` using `O) p Pc ≤ ((q2 + (padicValNat p (expFact bp0) : ℚ) / 2 : ℚ) : WithTop ℚ) := by`. Use `vBB_le_coeff (p := p) Pc bp0` as an intermediate fact.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[hPc0, ← hq2, ← WithTop.coe_add]`. Then use the resulting hypothesis. Take `⟨q3, hq3, hq3le⟩` from `WithTop.le_coe_iff.1 hPc1`. Take `⟨m3, hm3s, hm3⟩` from `vBB_attained (p := p) Pc (by rw [hq3]; exact WithTop.coe_ne_top)`. Take `⟨z, hzdef⟩ : ∃ z, z = Pc.coeff m3 * (algebraMap O (KK O) w) ^ (padicValNat p (expFact m3))` from `⟨_, rfl⟩`. Establish `hz : vK p z = (q3 : WithTop ℚ)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hzdef, valuation_mul_alt, vK_w_pow hp S w hw2, ← hm3, hq3]`. Establish `hz0 : z ≠ 0`. Introduce and unpack `rfl`. Rewrite `hz` using `[valuation_zero_alt]`. Conclude with `WithTop.top_ne_coe hz`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hvF2 : vBB (O` using `O) p (z⁻¹ • Pc) = 0 := by`. Rewrite using `[vBB_smul _ (inv_ne_zero hz0), vK_inv z q3 hz, hq3, ← WithTop.coe_add]`. Simplify using the standard rewrite rules. Establish `hey : e ((levImg Fr p hk Dt.nL rho dPl dNo G).coeff bp0) ∈ Pol (KK O) K dNo` using `(hJPOK.2.2.1 _ hy).1`. Establish `hnud : ∀ x, multideg nu x = dNo x` using `((mem_restrictSupport_iff (KK O)).1 hey) hnus`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hmonpol : (monomial nu (1 : KK O)) ∈ Pol (KK O) K dNo`. Rewrite using `[Pol, mem_restrictSupport_iff]`. Introduce `mo hmo`. Establish `: mo = nu`. Rewrite `hmo` using `[Finset.mem_coe, mem_support_iff, coeff_monomial]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `h`. Conclude with `hmo (if_neg fun h' => h h'.symm)`. Rewrite using `[this]`. Conclude with `hnud`. Take `⟨N0, cY, hNT, hcY, hNerr⟩` from `hNo dNo ka rho e nu hBlk.1 hJPOK hnud`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hXX : Dt.XX (z⁻¹ • Pc)`. Rewrite using `[hPc]`. Conclude with `XX_smul _ z⁻¹ (hMem J Dt dPl dNo ka hTP.1 rho e hJPOK.1 nu)`. Use `⟨J, inferInstance, Dt, dPl, dNo, ka, rho, z⁻¹ • Pc, N0, ((cstOf Fr p Dt.nL rho dPl dNo : ℕ) : KK O) * cY * ((expFact nu : ℕ) : KK O) * z, hTP, hBlk, hXX, hvF2, hNT, ?_, ?_⟩` and prove the remaining obligations. Establish `hE : ∀ {τ : Type} (al : τ →₀ ℕ), expFact al ≠ 0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Introduce `τ al`. Unfold `expFact Finsupp.prod`. Conclude with `Finset.prod_ne_zero_iff.2 fun _ _ => Nat.factorial_ne_zero _`. Establish `hcst0 : cstOf Fr p Dt.nL rho dPl dNo ≠ 0`. Unfold `cstOf`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Conclude with `Nat.mul_ne_zero (Finset.prod_ne_zero_iff.2 fun _ _ => Nat.factorial_ne_zero _) (Finset.prod_ne_zero_iff.2 fun _ _ => pow_ne_zero _ (Nat.factorial_ne_zero _))`. Establish `l1 : leQ (vK p ((cstOf Fr p Dt.nL rho dPl dNo : ℕ) : KK O)) (padicValNat p (cstOf Fr p Dt.nL rho dPl dNo) : ℝ)` using `⟨_, valuation_natCast_padicVal hp S _ hcst0, by push_cast; exact le_rfl⟩`. Establish `l3 : leQ (vK p ((expFact nu : ℕ) : KK O)) (padicValNat p (expFact nu) : ℝ)` using `⟨_, valuation_natCast_padicVal hp S _ (hE nu), by push_cast; exact le_rfl⟩`. Establish `l4 : leQ (vK p z) (q3 : ℝ)` using `⟨q3, hz, le_rfl⟩`. Use `leQ_mono ?_ (leQ_mul _ _ (leQ_mul _ _ (leQ_mul _ _ l1 hcY) l3) l4)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hfactV : (padicValNat p (expFact mo0) : ℤ) = (padicValNat p (cstOf Fr p Dt.nL rho dPl dNo) : ℤ) + padicValNat p (expFact bp0) + padicValNat p (expFact bn0)`. Establish `ha : ((cstOf Fr p Dt.nL rho dPl dNo : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast hcst0`. Establish `hb : ((expFact bp0 : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast hE bp0`. Establish `hc : ((expFact bn0 : ℕ) : ℚ) ≠ 0` using `by exact_mod_cast hE bn0`. Establish `h` using `congrArg (padicValRat p) hfact`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[padicValRat.mul (mul_ne_zero (mul_ne_zero (mul_ne_zero ha hb) hc) (hgpU bp0).1) (hgnU bn0).1, padicValRat.mul (mul_ne_zero (mul_ne_zero ha hb) hc) (hgpU bp0).1, padicValRat.mul (mul_ne_zero ha hb) hc, padicValRat.mul ha hb, (hgnU bn0).2, (hgpU bp0).2, padicValRat.of_nat, padicVa …`. Conclude with `fact_arith _ _ _ _ h`. Establish `hfactR : (padicValNat p (expFact mo0) : ℝ) = (padicValNat p (cstOf Fr p Dt.nL rho dPl dNo) : ℝ) + padicValNat p (expFact bp0) + padicValNat p (expFact bn0)` using `by exact_mod_cast hfactV`. Establish `hM0 : (padicValNat p (expFact mo0) : ℝ) ≤ twiceValuationFactorialProduct p d`. Unfold `twiceValuationFactorialProduct`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `padicVal_expFact_le p d mo0 hmo0d` after adjusting the coercions. Establish `hS` using `hSz rho dPl dNo hBlk bp0 bn0 hdp hdn`. Establish `hn0 : Dt.n0 = (padicValNat p (∏ x, (dPl x).factorial) : ℝ) / 2`. Unfold `SignedChainData.n0`. Rewrite using `[hTP.1.2.2.2.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Establish `r1 : (q3 : ℝ) ≤ (q2 : ℝ) + (padicValNat p (expFact bp0) : ℝ) / 2`. Establish `h : ((q3 : ℚ) : ℝ) ≤ ((q2 + (padicValNat p (expFact bp0) : ℚ) / 2 : ℚ) : ℝ)` using `Rat.cast_le.2 hq3le`. Move the coercions through the operations in `at h`. Conclude with `h`. Establish `r2 : (q2 : ℝ) + (c2 : ℝ) = (q1 : ℝ)` using `by exact_mod_cast hq2c`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `r3 : (c2 : ℝ) = (padicValNat p (expFact nu) : ℝ) / 2` using `by rw [hc2']; push_cast; ring`. Establish `r4 : (q1 : ℝ) ≤ (padicValNat p (expFact bn0) : ℝ) / 2`. Establish `h : ((q1 : ℚ) : ℝ) ≤ (((padicValNat p (expFact bn0) : ℚ) / 2 : ℚ) : ℝ)` using `Rat.cast_le.2 hq1le`. Move the coercions through the operations in `at h`. Conclude with `h`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[hn0]`. Conclude with `gram_exponent_arithmetic _ _ _ _ _ _ _ _ _ _ _ _ _ _ r1 r2 r3 r4 hfactR hM0 hS`. Introduce `A hA hAint`. Establish `hex` using `value_exact Fr p O hk Dt.nL d hDig G hdeg rho dPl dNo hBlk.1 (fun bn => by exact_mod_cast (hgnU bn).1) e hJPOK.2.1 nu cY (hJPOK.2.2.1 _ hmonpol).1 A hA`. Establish `hBf : Dt.Bform (z⁻¹ • Pc) A = z⁻¹ * fock Pc (diagK (fun bp => ((gamPl Fr p Dt.nL rho bp : ℚ) : KK O)) A)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Establish `h1 : (fun bp => ((gamPl Fr p Dt.nL rho bp : ℚ) : KK O)) = fun bp => algebraMap O (KK O) (Dt.ga bp)`. Use function extensionality and compare the values at `fun bp => (hgaeq bp).symm`. Rewrite using `[h1, ← fock_smul_left]`. Both sides reduce to the same expression. Take `⟨Nex, hNex⟩ : ∃ Nex, Nex = diagK (fun bn => ((gamNo Fr p Dt.nL rho bn : ℚ) : KK O)⁻¹) (cY • e (monomial nu 1))` from `⟨_, rfl⟩`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite `hex` using `[← hNex]`. Establish `hNerr' : CoefGe p (N0 - Nex) cP` using `by rw [hNex]; exact hNerr`. Establish `hsub : fock G (asm Fr p O hk Dt.nL rho A N0) - ((cstOf Fr p Dt.nL rho dPl dNo : ℕ) : KK O) * cY * ((expFact nu : ℕ) : KK O) * z * Dt.Bform (z⁻¹ • Pc) A = fock G (asm Fr p O hk Dt.nL rho A (N0 - Nex))`. Establish `h2 : asm Fr p O hk Dt.nL rho A N0 = asm Fr p O hk Dt.nL rho A Nex + asm Fr p O hk Dt.nL rho A (N0 - Nex)`. Rewrite using `[← asm_add_right]`.
-
-Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `h3 : z * z⁻¹ = 1` using `mul_inv_cancel₀ hz0`. Rewrite using `[h2, fock_add_right, hex, hBf, ← hPc]`. Take the linear combination `(-(((cstOf Fr p Dt.nL rho dPl dNo : ℕ) : KK O) * cY * ((expFact nu : ℕ) : KK O) * fock Pc (diagK (fun bp => ((gamPl Fr p Dt.nL rho bp : ℚ) : KK O)) A))) * h3`.
-
-Establish `hfin` using `geQ_fock S d G _ hdeg hGint (asm_coefGe' Fr p O hk Dt.nL rho hAint hNerr')`. Rewrite `hfin` using `[← hsub]`. Conclude with `hfin`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pick_core (p : ℕ) [hpF : Fact p.Prime] {n' r K m : ℕ} [NeZero n'] [NeZero r] [NeZero K] (O : Type) [CommRing O]
     [IsDomain O] [IsDiscreteValuationRing O] (S : UniformizedDVR p O) (w : O) (hw2 : w ^ 2 = (p : O))

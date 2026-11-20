@@ -15,9 +15,9 @@ def W (w : ℤ) (f : MvPowerSeries σ K) : Prop :=
 variable {c}
 
 /- English proof (translation)
-Introduce `e`. Rewrite using `[MvPowerSeries.coeff_one]`. Use `split_ifs with h`. Substitute `h` using the available equality. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Substitute using the available equality. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [norm_zero]`. Check the signs of the components of the expression.
+Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem W_one (hc : 0 < c) (_hc1 : c ≤ 1) : W c 0 (1 : MvPowerSeries σ K) := by
   classical
@@ -28,9 +28,9 @@ theorem W_one (hc : 0 < c) (_hc1 : c ≤ 1) : W c 0 (1 : MvPowerSeries σ K) := 
   · simp only [norm_zero]; positivity
 
 /- English proof (translation)
-Introduce `e`. Rewrite using `[MvPowerSeries.coeff_mul]`. Use `norm_sum_le_of_forall_le_of_nonneg (by positivity) fun p hp => ?_` and prove the remaining obligations. Establish `hp : p.1 + p.2 = e` using `Finset.HasAntidiagonal.mem_antidiagonal.mp hp`. Rewrite using `[norm_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← zpow_add₀ hc.ne', ← hp, map_add]`. Use `push_cast`. Put the polynomial expressions in normal form.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form.
 -/
 theorem W_mul (hc : 0 < c) {w₁ w₂ : ℤ} {f g : MvPowerSeries σ K} (hf : W c w₁ f) (hg : W c w₂ g) :
     W c (w₁ + w₂) (f * g) := by
@@ -47,9 +47,9 @@ theorem W_mul (hc : 0 < c) {w₁ w₂ : ℤ} {f g : MvPowerSeries σ K} (hf : W 
         rw [← zpow_add₀ hc.ne', ← hp, map_add]; push_cast; ring_nf
 
 /- English proof (translation)
-Proceed by induction on `n with`. Consider the case `zero => simpa using W_one hc hc1`. Consider the case `succ n ih => rw [pow_succ]`. Use `push_cast`. Rewrite using `[add_mul, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `W_mul hc ih hf`.
+A detailed English derivation is pending.
 -/
 theorem W_pow (hc : 0 < c) (hc1 : c ≤ 1) {w : ℤ} {f : MvPowerSeries σ K} (hf : W c w f) (n : ℕ) :
     W c (n * w) (f ^ n) := by
@@ -58,9 +58,9 @@ theorem W_pow (hc : 0 < c) (hc1 : c ≤ 1) {w : ℤ} {f : MvPowerSeries σ K} (h
   | succ n ih => rw [pow_succ]; push_cast; rw [add_mul, one_mul]; exact W_mul hc ih hf
 
 /- English proof (translation)
-Introduce `e`. Rewrite using `[PowerSeries.coeff_subst_single]`. Use `split_ifs with h`. Break down `Nat.eq_zero_or_pos (e i) with h0 | h0` into its components or cases. Rewrite using `[h0, coeff_zero_eq_constantCoeff_apply, hE, norm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Check the signs of the components of the expression. Use `conv_rhs => rw [h, Finsupp.degree_single]`. Conclude with `hb _ h0`. Rewrite using `[norm_zero]`. Check the signs of the components of the expression.
+Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. A detailed English derivation is pending.
 -/
 theorem W_E (E : PowerSeries K) (hE : constantCoeff E = 0)
     (hb : ∀ n : ℕ, 1 ≤ n → ‖coeff n E‖ ≤ c ^ (1 - (n : ℤ))) (hc : 0 < c) (i : σ) :
@@ -76,9 +76,9 @@ theorem W_E (E : PowerSeries K) (hE : constantCoeff E = 0)
   · rw [norm_zero]; positivity
 
 /- English proof (translation)
-Unfold `Finsupp.prod`. Establish `hdeg : (d.degree : ℤ) = ∑ s ∈ d.support, ((d s : ℕ) : ℤ)` using `by show (((∑ i ∈ d.support, d i : ℕ)) : ℤ) = _ push_cast; rfl`. Rewrite using `[hdeg]`. Proceed by induction on `d.support using Finset.induction_on with`. Consider the case `empty => simpa using W_one hc hc1`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately.
 
-Consider the case `insert s S hs ih`. Rewrite using `[Finset.prod_insert hs, Finset.sum_insert hs]`. Use `W_pow hc hc1 (ha s) (d s)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Conclude with `W_mul hc this ih`.
+Treat this case separately. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem W_prod (hc : 0 < c) (hc1 : c ≤ 1) (a : σ → MvPowerSeries σ K) (ha : ∀ i, W c 1 (a i))
     (d : σ →₀ ℕ) : W c (d.degree : ℤ) (d.prod fun s n => a s ^ n) := by
@@ -97,9 +97,9 @@ theorem W_prod (hc : 0 < c) (hc1 : c ≤ 1) (a : σ → MvPowerSeries σ K) (ha 
     exact W_mul hc this ih
 
 /- English proof (translation)
-Introduce `K _ _ σ _ c hc hc1 E hE hb G hG α`. Establish `ha` using `MvPowerSeries.hasSubst_of_constantCoeff_zero (σ := σ) (S := K) (a := fun i : σ => E.subst (MvPowerSeries.X i : MvPowerSeries σ K)) fun i => PowerSeries.constantCoeff_subst_eq_zero (by simp) E hE`. Rewrite using `[MvPowerSeries.coeff_subst ha]`. Establish `hfin` using `MvPowerSeries.coeff_subst_finite ha G α`. Rewrite using `[finsum_eq_sum _ hfin]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `norm_sum_le_of_forall_le_of_nonneg (by positivity) fun d _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_mul, norm_mul]`. Establish `h1` using `W_prod hc hc1 _ (W_E E hE hb hc) d α`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[one_mul]; exact zpow_le_zpow_right_of_le_one₀ hc hc1 (by omega)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 -/
 theorem comp_exp_coeff_weight_of : CompExpWeight.{u} := by
   intro K _ _ σ _ c hc hc1 E hE hb G hG α
@@ -125,7 +125,7 @@ end Formalism.ELL.MultiplicativeWeight
 namespace Formalism.ELL
 
 /- English proof (translation)
-The claim follows from `Formalism.ELL.MultiplicativeWeight.comp_exp_coeff_weight_of`.
+A detailed English derivation is pending.
 -/
 theorem comp_exp_coeff_weight : Formalism.ELL.CompExpWeight := Formalism.ELL.MultiplicativeWeight.comp_exp_coeff_weight_of
 

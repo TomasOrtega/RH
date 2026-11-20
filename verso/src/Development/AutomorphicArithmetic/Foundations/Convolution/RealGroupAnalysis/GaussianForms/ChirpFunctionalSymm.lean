@@ -10,7 +10,7 @@ open scoped Classical
 open UpperTheory.ConvolutionTheory.R2.C
 
 /- English proof (translation)
-Establish `hq : Continuous fun v : V4 F => q4 δ v`. Unfold `q4`. Use `fun_prop`. Conclude with `continuous_subtype_val.comp ((continuous_adelicChar (K := F)).comp (continuous_const.mul hq))`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem continuous_chirp {F : Type} [Field F] [NumberField F] (δ : F) (b : A F) :
     Continuous fun v : V4 F => ψ (b * q4 δ v) := by
@@ -20,14 +20,14 @@ private theorem continuous_chirp {F : Type} [Field F] [NumberField F] (δ : F) (
   exact continuous_subtype_val.comp ((continuous_adelicChar (K := F)).comp (continuous_const.mul hq))
 
 /- English proof (translation)
-Conclude with `(Circle.norm_coe _).le`.
+A detailed English derivation is pending.
 -/
 private theorem norm_chirp_le {F : Type} [Field F] [NumberField F] (δ : F) (b : A F) (v : V4 F) :
     ‖ψ (b * q4 δ v)‖ ≤ 1 := by
   exact (Circle.norm_coe _).le
 
 /- English proof (translation)
-The claim follows from `symm (V4 F) (adeleMeasurePi F) (fun v => ψ ((b : A F) * q4 δ v)) φ₁ φ₂ (continuous_chirp δ (b : A F)).measurable (norm_chirp_le δ (b : A F)) (integrable_of_mem_schwartzBruhatPi h1) (integrable_of_mem_schwartzBruhatPi h2) (integrable_of_mem_schwartzBruhatPi ((pcMem F δ).2 hδ b φ₁ …`.
+A detailed English derivation is pending.
 -/
 private theorem chirpFunctional_symm {F : Type} [Field F] [NumberField F] (δ : F) (hδ : δ ≠ 0) (b : (A F)ˣ)
     (φ₁ φ₂ : V4 F → ℂ) (h1 : φ₁ ∈ schwartzBruhatPi F (Fin 4)) (h2 : φ₂ ∈ schwartzBruhatPi F (Fin 4)) :
@@ -40,9 +40,9 @@ private theorem chirpFunctional_symm {F : Type} [Field F] [NumberField F] (δ : 
     (integrable_of_mem_schwartzBruhatPi ((pcMem F δ).2 hδ b φ₂ h2))
 
 /- English proof (translation)
-Introduce `F _ _ _ δ hδ b`. Take `⟨g, hmem, hne, -⟩` from `testEx F`. Use `⟨Lam4 δ (b : A F) (four (g1 g)) / ∫ v, four (g1 g) v ∂(adeleMeasurePi F), ?_, ?_⟩` and prove the remaining obligations. Introduce `φ`. Establish `h` using `chirpFunctional_symm δ hδ b φ.1 (four (g1 g)) φ.2 hmem`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Conclude with `h`. Introduce `c hc`. Establish `h` using `hc ⟨four (g1 g), hmem⟩`. Conclude with `eq_div_of_mul_eq hne h.symm`.
+Clear the denominators using the available nonvanishing facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.C.idxEx :
     ∀ (F : Type) [Field F] [NumberField F] [IsTotallyReal F] (δ : F), δ ≠ 0 → ∀ b : (A F)ˣ, ∃! c, IsIdx δ (b : A F) c := by

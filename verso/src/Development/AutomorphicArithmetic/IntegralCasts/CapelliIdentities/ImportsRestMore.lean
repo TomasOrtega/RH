@@ -4,14 +4,14 @@ namespace ZbYha7
 
 open scoped ComplexOrder in
 /- English proof (translation)
-The claim follows from `(RCLike.pos_iff.mp (hA.dotProduct_mulVec_pos hx)).1`.
+A detailed English derivation is pending.
 -/
 private lemma pos {I : Type} [Fintype I] (A : Matrix I I ℂ) (hA : A.PosDef) (x : I → ℂ) (hx : x ≠ 0) :
     0 < RCLike.re (star x ⬝ᵥ A.mulVec x) :=
   (RCLike.pos_iff.mp (hA.dotProduct_mulVec_pos hx)).1
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_smul, dotProduct_smul, star_smul, smul_dotProduct]`. Simplify using `only [smul_eq_mul, RCLike.star_def, Complex.conj_ofReal]`. Rewrite using `[← mul_assoc, ← Complex.ofReal_mul]`. Simplify using `[Complex.re_ofReal_mul, sq]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 private lemma scale {I : Type} [Fintype I] (A : Matrix I I ℂ) (x : I → ℂ) (r : ℝ) :
     RCLike.re (star ((r : ℂ) • x) ⬝ᵥ A.mulVec ((r : ℂ) • x)) = r ^ 2 * RCLike.re (star x ⬝ᵥ A.mulVec x) := by
@@ -21,7 +21,7 @@ private lemma scale {I : Type} [Fintype I] (A : Matrix I I ℂ) (x : I → ℂ) 
   simp [Complex.re_ofReal_mul, sq]
 
 /- English proof (translation)
-Simplify using `only [dotProduct, Matrix.mulVec]`. Use `fun_prop`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private lemma cont {I : Type} [Fintype I] (A : Matrix I I ℂ) :
     Continuous fun x : I → ℂ => RCLike.re (star x ⬝ᵥ A.mulVec x) := by
@@ -31,19 +31,17 @@ private lemma cont {I : Type} [Fintype I] (A : Matrix I I ℂ) :
 end ZbYha7
 
 /- English proof (translation)
-Introduce `I inst _ A hA`. Use `set f : (I → ℂ) → ℝ := fun x => RCLike.re (star x ⬝ᵥ A.mulVec x) with hf`. Establish `hpos : ∀ x : I → ℂ, x ≠ 0 → 0 < f x` using `fun x hx => by`. Conclude with `ZbYha7.pos A hA x hx`. Establish `hS : ∃ l : ℝ, 0 < l ∧ ∀ y ∈ Metric.sphere (0 : I → ℂ) 1, l ≤ f y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Distinguish the cases in `hne : (Metric.sphere (0 : I → ℂ) 1).Nonempty`. Take `⟨y0, hy0, hmin⟩` from `(isCompact_sphere (0 : I → ℂ) 1).exists_isMinOn hne (ZbYha7.cont A).continuousOn`. Use `⟨f y0, hpos y0 ?_, fun y hy => hmin hy⟩` and prove the remaining obligations. Introduce `h`. Rewrite `hy0` using `[h]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Simplify using `at hy0`. Conclude with `⟨1, one_pos, fun y hy => (hne ⟨y, hy⟩).elim⟩`. Take `⟨l, hl, hlS⟩` from `hS`. Use `⟨l, hl, fun x => ?_⟩` and prove the remaining obligations. Distinguish the cases in `hx : x = 0`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hx` using the available equality. Simplify using the standard rewrite rules. Establish `hn : 0 < ‖x‖` using `norm_pos_iff.mpr hx`. Use `set y : I → ℂ := ((‖x‖⁻¹ : ℝ) : ℂ) • x with hy`. Establish `hyS : y ∈ Metric.sphere (0 : I → ℂ) 1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite using `[mem_sphere_zero_iff_norm, hy, norm_smul]`. Rewrite using `[Complex.norm_real, Real.norm_eq_abs, abs_of_pos (inv_pos.mpr hn)]`. Clear the denominators using the available nonvanishing facts. Establish `h1` using `hlS y hyS`. Establish `hxy : x = ((‖x‖ : ℝ) : ℂ) • y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[hy, smul_smul, ← Complex.ofReal_mul, mul_inv_cancel₀ hn.ne', Complex.ofReal_one, one_smul]`. Establish `h2 : f x = ‖x‖ ^ 2 * f y` using `by conv_lhs => rw [hxy]`. Conclude with `ZbYha7.scale A y ‖x‖`. Express the relevant statement in the definitionally equal form `l * ‖x‖ ^ 2 ≤ f x`. Rewrite using `[h2, mul_comm l]`.
-
-Conclude with `mul_le_mul_of_nonneg_left h1 (by positivity)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.Yha7.main :
     ∀ {I : Type} [inst : Fintype I] [DecidableEq I] (A : Matrix I I Complex),

@@ -14,9 +14,9 @@ section NatUnits
 variable {p : ℕ} [hp : Fact p.Prime] {R : Type*} [CommRing R] [CharP R p] [PerfectRing R p]
 
 /- English proof (translation)
-Apply `isUnit_of_isUnit_coeff_zero` to reduce the goal to its premises. Establish `h : (m : WittVector p R).coeff 0 = (m : R)`. Rewrite using `[← WittVector.constantCoeff_apply, map_natCast]`. Rewrite using `[h]`. Establish `hu : IsUnit (m : ZMod p)` using `(ZMod.unitOfCoprime m hm).isUnit`.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `using hu.map (ZMod.castHom (dvd_refl p) R)`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem WittVector.isUnit_natCast_of_coprime {m : ℕ} (hm : m.Coprime p) :
     IsUnit (m : WittVector p R) := by
@@ -28,9 +28,9 @@ theorem WittVector.isUnit_natCast_of_coprime {m : ℕ} (hm : m.Coprime p) :
   simpa using hu.map (ZMod.castHom (dvd_refl p) R)
 
 /- English proof (translation)
-Take `⟨k, m', hm', rfl⟩` from `Nat.exists_eq_pow_mul_and_not_dvd hm p hp.out.ne_one`. Establish `h1 : IsUnit (p : Localization.Away (p : WittVector p R))`. Simplify using `using IsLocalization.Away.algebraMap_isUnit (S := Localization.Away (p : WittVector p R)) (p : WittVector p R)`. Establish `hc : m'.Coprime p` using `Nat.coprime_comm.mp ((Nat.Prime.coprime_iff_not_dvd hp.out).2 hm')`. Establish `h2 : IsUnit (m' : Localization.Away (p : WittVector p R))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `using (WittVector.isUnit_natCast_of_coprime (R := R) hc).map (algebraMap (WittVector p R) (Localization.Away (p : WittVector p R)))`. Use `push_cast`. Conclude with `(h1.pow k).mul h2`.
+Simplify to obtain the desired conclusion from the available facts. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem WittVector.isUnit_natCast_away {m : ℕ} (hm : m ≠ 0) :
     IsUnit (m : Localization.Away (p : WittVector p R)) := by
@@ -52,7 +52,7 @@ section AdicExtend
 variable {A B : Type*} [CommRing A] [CommRing B]
 
 /- English proof (translation)
-Take `⟨c, rfl⟩` from `AdicCompletion.mk_surjective J A x`. Rewrite using `[AdicCompletion.evalₐ_mk, AdicCompletion.evalₐ_mk]`. Simplify using `only [Ideal.Quotient.factor_mk]`. Conclude with `AdicCompletion.Ideal.mk_eq_mk J hle c`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem AdicCompletion.factorPow_evalₐ (J : Ideal A) {m n : ℕ} (hle : m ≤ n)
     (x : AdicCompletion J A) :
@@ -68,7 +68,7 @@ def AdicCompletion.extendFamily (J : Ideal A) (I : Ideal B) (f : A →+* B) (hf 
     (Ideal.le_comap_pow f n))).comp (AdicCompletion.evalₐ J n).toRingHom
 
 /- English proof (translation)
-Use extensionality with `x`. Take `⟨y, hy⟩` from `Ideal.Quotient.mk_surjective (AdicCompletion.evalₐ J n x)`. Simplify using `only [AdicCompletion.extendFamily, RingHom.coe_comp, Function.comp_apply, AlgHom.toRingHom_eq_coe, RingHom.coe_coe]`. Rewrite using `[← AdicCompletion.factorPow_evalₐ J hle x, ← hy, Ideal.quotientMap_mk]`. Simplify using `only [Ideal.Quotient.factor_mk, Ideal.quotientMap_mk]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem AdicCompletion.extendFamily_compat (J : Ideal A) (I : Ideal B) (f : A →+* B)
     (hf : J ≤ I.comap f) {m n : ℕ} (hle : m ≤ n) :
@@ -87,7 +87,7 @@ def AdicCompletion.extendRingHom (J : Ideal A) (I : Ideal B) [IsAdicComplete I B
     (AdicCompletion.extendFamily_compat J I f hf)
 
 /- English proof (translation)
-The claim follows from `IsAdicComplete.mk_liftRingHom I _ _ n x`.
+A detailed English derivation is pending.
 -/
 theorem AdicCompletion.mk_extendRingHom (J : Ideal A) (I : Ideal B) [IsAdicComplete I B]
     (f : A →+* B) (hf : J ≤ I.comap f) (n : ℕ) (x : AdicCompletion J A) :
@@ -97,7 +97,7 @@ theorem AdicCompletion.mk_extendRingHom (J : Ideal A) (I : Ideal B) [IsAdicCompl
   IsAdicComplete.mk_liftRingHom I _ _ n x
 
 /- English proof (translation)
-Establish `h` using `IsHausdorff.funext' I (f := fun y : A => AdicCompletion.extendRingHom J I f hf (AdicCompletion.of J A y)) (g := f) (fun n y => by`. Rewrite using `[AdicCompletion.mk_extendRingHom, AdicCompletion.evalₐ_of, Ideal.quotientMap_mk])`. Conclude with `congrFun h x`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem AdicCompletion.extendRingHom_of (J : Ideal A) (I : Ideal B) [IsAdicComplete I B]
     (f : A →+* B) (hf : J ≤ I.comap f) (x : A) :
@@ -123,7 +123,7 @@ local notation "θ" => fontaineTheta (normInteger K) p
 local notation "𝔸" => Localization.Away (p : AInf K p)
 
 /- English proof (translation)
-The claim follows from `WittVector.isUnit_natCast_away hm`.
+A detailed English derivation is pending.
 -/
 theorem isUnit_natCast {m : ℕ} (hm : m ≠ 0) : IsUnit (m : 𝔸) :=
   WittVector.isUnit_natCast_away hm
@@ -132,7 +132,7 @@ def dpow (n : ℕ) (x : AInf K p) : 𝔸 :=
   Ring.inverse (n.factorial : 𝔸) * algebraMap (AInf K p) 𝔸 x ^ n
 
 /- English proof (translation)
-Rewrite using `[dpow, ← mul_assoc, Ring.mul_inverse_cancel _ (isUnit_natCast (Nat.factorial_ne_zero n)), one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem factorial_mul_dpow (n : ℕ) (x : AInf K p) :
     (n.factorial : 𝔸) * dpow n x = algebraMap (AInf K p) 𝔸 x ^ n := by
@@ -140,9 +140,9 @@ theorem factorial_mul_dpow (n : ℕ) (x : AInf K p) :
     one_mul]
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `rfl`. Conclude with `factorial_mul_dpow n x`. Introduce `h`. Establish `hu` using `isUnit_natCast (K := K) (p := p) (Nat.factorial_ne_zero n)`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[← factorial_mul_dpow n x]`. Conclude with `(hu.mul_left_cancel h).symm`. Use the proof step `@[simp]`.
+A detailed English derivation is pending.
 -/
 theorem dpow_eq_iff (n : ℕ) (x : AInf K p) (y : 𝔸) :
     dpow n x = y ↔ (n.factorial : 𝔸) * y = algebraMap (AInf K p) 𝔸 x ^ n := by
@@ -155,31 +155,31 @@ theorem dpow_eq_iff (n : ℕ) (x : AInf K p) (y : 𝔸) :
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[dpow_eq_iff]`. Simplify using the standard rewrite rules. Use the proof step `@[simp]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem dpow_zero (x : AInf K p) : dpow 0 x = 1 := by
   rw [dpow_eq_iff]; simp
 
 @[simp]
 /- English proof (translation)
-Rewrite using `[dpow_eq_iff]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dpow_one (x : AInf K p) : dpow 1 x = algebraMap (AInf K p) 𝔸 x := by
   rw [dpow_eq_iff]; simp
 
 /- English proof (translation)
-Rewrite using `[dpow, dpow, map_mul, mul_pow, mul_assoc]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem dpow_mul (n : ℕ) (x y : AInf K p) :
     dpow n (x * y) = dpow n x * algebraMap (AInf K p) 𝔸 y ^ n := by
   rw [dpow, dpow, map_mul, mul_pow, mul_assoc]
 
 /- English proof (translation)
-Establish `hu` using `isUnit_natCast (K := K) (p := p) (Nat.factorial_ne_zero (m + n))`. Apply `hu.mul_left_cancel` to reduce the goal to its premises. Establish `h : ((m + n).factorial : 𝔸) = ((m + n).choose m : 𝔸) * m.factorial * n.factorial`. Rewrite using `[← Nat.add_choose_mul_factorial_mul_factorial m n, Nat.cast_mul, Nat.cast_mul, Nat.choose_symm_add]`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 
-Rewrite using `[h]`. Expand and normalize the polynomial expressions, which then agree. Use `_ = ((m + n).choose m : 𝔸) * algebraMap (AInf K p) 𝔸 x ^ (m + n) := by`. Rewrite using `[factorial_mul_dpow, factorial_mul_dpow, pow_add]`. Use `_ = ((m + n).factorial : 𝔸) * (((m + n).choose m : 𝔸) * dpow (m + n) x) := by`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[← factorial_mul_dpow (m + n) x]`. Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem dpow_mul_dpow (m n : ℕ) (x : AInf K p) :
     dpow m x * dpow n x = ((m + n).choose m : 𝔸) * dpow (m + n) x := by
@@ -202,16 +202,16 @@ def ACrisZero : Subalgebra (AInf K p) 𝔸 :=
   Algebra.adjoin (AInf K p) {y | ∃ n : ℕ, ∃ x ∈ RingHom.ker θ, dpow n x = y}
 
 /- English proof (translation)
-The claim follows from `Algebra.subset_adjoin ⟨n, x, hx, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem dpow_mem {x : AInf K p} (hx : x ∈ RingHom.ker θ) (n : ℕ) :
     dpow n x ∈ ACrisZero K p :=
   Algebra.subset_adjoin ⟨n, x, hx, rfl⟩
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨n, x, hx, rfl⟩`. Rewrite `hx` using `[hξ]`. Take `⟨c, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[mul_comm, dpow_mul]`. Conclude with `Subalgebra.mul_mem _ (Algebra.subset_adjoin ⟨n, rfl⟩) (Subalgebra.pow_mem _ (Subalgebra.algebraMap_mem _ c) n)`. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨n, rfl⟩`. Conclude with `dpow_mem (by rw [hξ]; exact Ideal.mem_span_singleton_self ξ) n`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem acrisZero_eq_adjoin {ξ : AInf K p} (hξ : RingHom.ker θ = Ideal.span {ξ}) :
     ACrisZero K p = Algebra.adjoin (AInf K p) (Set.range fun n : ℕ => dpow n ξ) := by
@@ -250,7 +250,7 @@ def thetaAway : 𝔸 →+* K :=
     Localization.Away (p : 𝒪) →+* K).comp (fontaineThetaInvertP 𝒪 p)
 
 /- English proof (translation)
-Rewrite using `[thetaAway, RingHom.comp_apply, fontaineThetaInvertP_algebraMap]`. Conclude with `(IsPerfectoidField.awayEquiv (K := K) p).commutes (θ x)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem thetaAway_algebraMap (x : AInf K p) :
     thetaAway K p (algebraMap (AInf K p) 𝔸 x) = (θ x : K) := by
@@ -258,7 +258,7 @@ theorem thetaAway_algebraMap (x : AInf K p) :
   exact (IsPerfectoidField.awayEquiv (K := K) p).commutes (θ x)
 
 /- English proof (translation)
-Establish `h` using `congrArg (thetaAway K p) (factorial_mul_dpow n x)`. Rewrite `h` using `[map_mul, map_pow, thetaAway_algebraMap, RingHom.mem_ker.1 hx, map_natCast]`. Simplify using `only [ZeroMemClass.coe_zero, zero_pow hn, mul_eq_zero, Nat.cast_eq_zero] at h`. Conclude with `h.resolve_left (Nat.factorial_ne_zero n)`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem thetaAway_dpow {x : AInf K p} (hx : x ∈ RingHom.ker θ) {n : ℕ} (hn : n ≠ 0) :
     thetaAway K p (dpow n x) = 0 := by
@@ -277,9 +277,9 @@ def thetaIntegral : Subalgebra (AInf K p) 𝔸 :=
       exact (θ x).2 }
 
 /- English proof (translation)
-Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨n, x, hx, rfl⟩`. Use `show thetaAway K p (dpow n x) ∈ normInteger K`. Break down `n with _ | n` into its components or cases. Rewrite using `[dpow_zero, map_one]`.
+Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `one_mem _`. Rewrite using `[thetaAway_dpow hx n.succ_ne_zero]`. Conclude with `zero_mem _`.
+A detailed English derivation is pending.
 -/
 theorem acrisZero_le_thetaIntegral : ACrisZero K p ≤ thetaIntegral K p := by
   apply Algebra.adjoin_le
@@ -302,21 +302,21 @@ theorem coe_thetaZero (y : ACrisZero K p) : (thetaZero K p y : K) = thetaAway K 
   rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (thetaAway_algebraMap x)`.
+A detailed English derivation is pending.
 -/
 theorem thetaZero_algebraMap (x : AInf K p) :
     thetaZero K p (algebraMap (AInf K p) (ACrisZero K p) x) = θ x :=
   Subtype.ext (thetaAway_algebraMap x)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (thetaAway_dpow hx hn)`.
+A detailed English derivation is pending.
 -/
 theorem thetaZero_dpow {x : AInf K p} (hx : x ∈ RingHom.ker θ) {n : ℕ} (hn : n ≠ 0) :
     thetaZero K p ⟨dpow n x, dpow_mem hx n⟩ = 0 :=
   Subtype.ext (thetaAway_dpow hx hn)
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_p_le_comap_thetaZero :
     Ideal.span {(p : ACrisZero K p)} ≤ (Ideal.span {(p : 𝒪)}).comap (thetaZero K p) := by
@@ -329,21 +329,21 @@ def theta : ACris K p →+* 𝒪 :=
   AdicCompletion.extendRingHom _ _ (thetaZero K p) span_p_le_comap_thetaZero
 
 /- English proof (translation)
-The claim follows from `AdicCompletion.extendRingHom_of _ _ _ _ y`.
+A detailed English derivation is pending.
 -/
 theorem theta_of (y : ACrisZero K p) :
     theta K p (AdicCompletion.of _ _ y) = thetaZero K p y :=
   AdicCompletion.extendRingHom_of _ _ _ _ y
 
 /- English proof (translation)
-Rewrite using `[AdicCompletion.algebraMap_apply, theta_of, thetaZero_algebraMap]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem theta_algebraMap (x : AInf K p) :
     theta K p (algebraMap (AInf K p) (ACris K p) x) = θ x := by
   rw [AdicCompletion.algebraMap_apply, theta_of, thetaZero_algebraMap]
 
 /- English proof (translation)
-Introduce `y` and use `by obtain ⟨x, rfl⟩ := IsPerfectoidField.surjective_fontaineTheta (K := K) p y exact ⟨_, theta_algebraMap x⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem theta_surjective : Function.Surjective (theta K p) := fun y => by
   obtain ⟨x, rfl⟩ := IsPerfectoidField.surjective_fontaineTheta (K := K) p y
@@ -361,9 +361,9 @@ local notation "𝔸" => Localization.Away (p : AInf K p)
 local notation "φ" => WittVector.frobeniusEquiv p (PreTilt (normInteger K) p)
 
 /- English proof (translation)
-Use `set e := n.factorization p`. Use `set d := ordCompl[p] n`. Establish `hnd : (n : AInf K p) = (p : AInf K p) ^ e * (d : AInf K p)`. Rewrite using `[← Nat.cast_pow, ← Nat.cast_mul, Nat.ordProj_mul_ordCompl_eq_self n p]`. Establish `hu : IsUnit (d : AInf K p)` using `WittVector.isUnit_natCast_of_coprime (Nat.coprime_comm.mp (Nat.coprime_ordCompl hp.out hn))`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(p : AInf K p) ^ (k - e) * ↑hu.unit⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[hnd]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← pow_add, Nat.add_sub_cancel' hk, IsUnit.mul_val_inv, mul_one]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_natCast_mul_eq_pow {n k : ℕ} (hn : n ≠ 0) (hk : n.factorization p ≤ k) :
     ∃ w : AInf K p, (n : AInf K p) * w = (p : AInf K p) ^ k := by
@@ -381,7 +381,7 @@ theorem exists_natCast_mul_eq_pow {n k : ℕ} (hn : n ≠ 0) (hk : n.factorizati
         rw [← pow_add, Nat.add_sub_cancel' hk, IsUnit.mul_val_inv, mul_one]
 
 /- English proof (translation)
-Rewrite using `[Nat.factorization_def _ hp.out]`. Establish `h : (p - 1) * padicValNat p m.factorial = m - (p.digits m).sum` using `sub_one_mul_padicValNat_factorial m`. Establish `h1 : 1 ≤ p - 1` using `Nat.le_sub_of_add_le hp.out.two_le`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 theorem factorization_factorial_le (m : ℕ) : (m.factorial).factorization p ≤ m := by
   rw [Nat.factorization_def _ hp.out]
@@ -393,7 +393,7 @@ theorem factorization_factorial_le (m : ℕ) : (m.factorial).factorization p ≤
     _ ≤ m := Nat.sub_le _ _
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `exists_natCast_mul_eq_pow (K := K) (p := p) (Nat.factorial_ne_zero m) (factorization_factorial_le (p := p) m)`. Use `⟨c * y ^ m, ?_⟩` and prove the remaining obligations. Rewrite using `[dpow_eq_iff, map_mul, map_pow, ← mul_assoc, ← map_natCast (algebraMap (AInf K p) 𝔸), ← map_mul, hc, map_mul, map_pow, mul_pow]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_dpow_p_mul (m : ℕ) (y : AInf K p) :
     ∃ w : AInf K p, dpow m ((p : AInf K p) * y) = algebraMap (AInf K p) 𝔸 w := by
@@ -404,7 +404,7 @@ theorem exists_dpow_p_mul (m : ℕ) (y : AInf K p) :
     ← map_mul, hc, map_mul, map_pow, mul_pow]
 
 /- English proof (translation)
-Rewrite using `[dpow_eq_iff, Finset.mul_sum, map_add, add_pow]`. Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `hk' : k ≤ n` using `Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)`. Rewrite using `[← Nat.choose_mul_factorial_mul_factorial hk']`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem dpow_add (n : ℕ) (x y : AInf K p) :
     dpow n (x + y) = ∑ k ∈ Finset.range (n + 1), dpow k x * dpow (n - k) y := by
@@ -418,7 +418,7 @@ theorem dpow_add (n : ℕ) (x y : AInf K p) :
     _ = _ := by rw [factorial_mul_dpow, factorial_mul_dpow]; ring
 
 /- English proof (translation)
-Establish `hdvd : k.factorial ∣ (m * k).factorial` using `Nat.factorial_dvd_factorial (Nat.le_mul_of_pos_left k (Nat.pos_of_ne_zero hm))`. Rewrite using `[dpow_eq_iff, ← mul_assoc, ← Nat.cast_mul, Nat.mul_div_cancel' hdvd, factorial_mul_dpow, map_pow, ← pow_mul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem dpow_pow {m : ℕ} (hm : m ≠ 0) (k : ℕ) (x : AInf K p) :
     dpow k (x ^ m) = (((m * k).factorial / k.factorial : ℕ) : 𝔸) * dpow (m * k) x := by
@@ -428,7 +428,7 @@ theorem dpow_pow {m : ℕ} (hm : m ≠ 0) (k : ℕ) (x : AInf K p) :
     map_pow, ← pow_mul]
 
 /- English proof (translation)
-Establish `h : φ x - x ^ p ∈ Ideal.span {(p : AInf K p)}`. Rewrite using `[mem_span_p_iff_coeff_zero_eq_zero, ← WittVector.constantCoeff_apply, map_sub, map_pow, WittVector.constantCoeff_apply, WittVector.constantCoeff_apply, WittVector.frobeniusEquiv_coeff, sub_self]`. Take `⟨y, hy⟩` from `Ideal.mem_span_singleton'.1 h`. Conclude with `⟨y, by rw [mul_comm, hy]; ring⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_frobenius_eq (x : AInf K p) : ∃ y : AInf K p, φ x = x ^ p + (p : AInf K p) * y := by
   have h : φ x - x ^ p ∈ Ideal.span {(p : AInf K p)} := by
@@ -439,9 +439,9 @@ theorem exists_frobenius_eq (x : AInf K p) : ∃ y : AInf K p, φ x = x ^ p + (p
   exact ⟨y, by rw [mul_comm, hy]; ring⟩
 
 /- English proof (translation)
-Take `⟨y, hy⟩` from `exists_frobenius_eq x`. Rewrite using `[hy, dpow_add]`. Use `Subalgebra.sum_mem _ fun k _ => Subalgebra.mul_mem _ ?_ ?_` and prove the remaining obligations. Rewrite using `[dpow_pow hp.out.ne_zero]`. Conclude with `Subalgebra.mul_mem _ (Subalgebra.natCast_mem _ _) (dpow_mem hx _)`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨w, hw⟩` from `exists_dpow_p_mul (n - k) y`. Rewrite using `[hw]`. Conclude with `Subalgebra.algebraMap_mem _ w`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem dpow_frobenius_mem {x : AInf K p} (hx : x ∈ RingHom.ker θ) (n : ℕ) :
     dpow n (φ x) ∈ ACrisZero K p := by
@@ -463,14 +463,14 @@ def phiAway : 𝔸 →+* 𝔸 :=
       exact IsLocalization.Away.algebraMap_isUnit (p : AInf K p))
 
 /- English proof (translation)
-The claim follows from `IsLocalization.lift_eq _ x`.
+A detailed English derivation is pending.
 -/
 theorem phiAway_algebraMap (x : AInf K p) :
     phiAway K p (algebraMap (AInf K p) 𝔸 x) = algebraMap (AInf K p) 𝔸 (φ x) :=
   IsLocalization.lift_eq _ x
 
 /- English proof (translation)
-Use `symm`. Rewrite using `[dpow_eq_iff, ← map_natCast (phiAway K p), ← map_mul, factorial_mul_dpow, map_pow, phiAway_algebraMap]`.
+Use symmetry to reverse the relation. Rewrite the conclusion using the stated equalities.
 -/
 theorem phiAway_dpow (n : ℕ) (x : AInf K p) : phiAway K p (dpow n x) = dpow n (φ x) := by
   symm
@@ -478,11 +478,9 @@ theorem phiAway_dpow (n : ℕ) (x : AInf K p) : phiAway K p (dpow n x) = dpow n 
     phiAway_algebraMap]
 
 /- English proof (translation)
-Proceed by induction on `hy using Algebra.adjoin_induction with`. Consider the case `mem y hy`. Take `⟨n, x, hx, rfl⟩` from `hy`. Rewrite using `[phiAway_dpow]`. Conclude with `dpow_frobenius_mem hx n`.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `algebraMap r`. Rewrite using `[phiAway_algebraMap]`. Conclude with `Subalgebra.algebraMap_mem _ _`. Consider the case `add y z _ _ hy hz => rw [map_add]`. Conclude with `add_mem hy hz`.
-
-Consider the case `mul y z _ _ hy hz => rw [map_mul]`. Conclude with `mul_mem hy hz`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem phiAway_mem {y : 𝔸} (hy : y ∈ ACrisZero K p) : phiAway K p y ∈ ACrisZero K p := by
   induction hy using Algebra.adjoin_induction with
@@ -509,7 +507,7 @@ theorem coe_phiZero (y : ACrisZero K p) : (phiZero K p y : 𝔸) = phiAway K p y
   rfl
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (phiAway_algebraMap x)`.
+A detailed English derivation is pending.
 -/
 theorem phiZero_algebraMap (x : AInf K p) :
     phiZero K p (algebraMap (AInf K p) (ACrisZero K p) x) =
@@ -528,7 +526,7 @@ instance isAdicComplete : IsAdicComplete (Ideal.span {(p : ACris K p)}) (ACris K
   exact h
 
 /- English proof (translation)
-Rewrite using `[Ideal.span_le, Set.singleton_subset_iff, SetLike.mem_coe, Ideal.mem_comap, map_natCast]`. Conclude with `Ideal.mem_span_singleton_self _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem span_p_le_comap_phiZero :
     Ideal.span {(p : ACrisZero K p)} ≤ (Ideal.span {(p : ACris K p)}).comap
@@ -543,14 +541,14 @@ def phi : ACris K p →+* ACris K p :=
     span_p_le_comap_phiZero
 
 /- English proof (translation)
-The claim follows from `AdicCompletion.extendRingHom_of _ _ _ _ y`.
+A detailed English derivation is pending.
 -/
 theorem phi_of (y : ACrisZero K p) :
     phi K p (AdicCompletion.of _ _ y) = AdicCompletion.of _ _ (phiZero K p y) :=
   AdicCompletion.extendRingHom_of _ _ _ _ y
 
 /- English proof (translation)
-Rewrite using `[AdicCompletion.algebraMap_apply, phi_of, phiZero_algebraMap, AdicCompletion.algebraMap_apply]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem phi_algebraMap (x : AInf K p) :
     phi K p (algebraMap (AInf K p) (ACris K p) x) = algebraMap (AInf K p) (ACris K p) (φ x) := by

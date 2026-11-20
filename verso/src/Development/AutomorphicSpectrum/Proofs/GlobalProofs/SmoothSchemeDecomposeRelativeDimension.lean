@@ -10,9 +10,9 @@ open GlobalTheory GlobalTheory.CxPts
 namespace GlobalTheory.CompanionTheory.Gaga
 
 /- English proof (translation)
-Establish `e₁ : SmoothOfRelativeDimension (0 + n) ((U ⊓ V).ι ≫ f)`. Rewrite using `[← Scheme.homOfLE_ι _ (inf_le_left : U ⊓ V ≤ U), Category.assoc]`. Use `infer_instance`. Establish `e₂ : SmoothOfRelativeDimension (0 + m) ((U ⊓ V).ι ≫ f)`. Rewrite using `[← Scheme.homOfLE_ι _ (inf_le_right : U ⊓ V ≤ V), Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Use `infer_instance`. Simplify using `using ReciprocityTheory.ChartRestriction.G.H1.dim_unique _ e₁ e₂ ⟨x, hxU, hxV⟩`.
+A detailed English derivation is pending.
 -/
 theorem dim_eq_of_mem_inf {X Y : Scheme.{0}} (f : X ⟶ Y) {U V : X.Opens} {n m : ℕ}
     (hU : SmoothOfRelativeDimension n (U.ι ≫ f)) (hV : SmoothOfRelativeDimension m (V.ι ≫ f))
@@ -24,13 +24,13 @@ theorem dim_eq_of_mem_inf {X Y : Scheme.{0}} (f : X ⟶ Y) {U V : X.Opens} {n m 
   simpa using ReciprocityTheory.ChartRestriction.G.H1.dim_unique _ e₁ e₂ ⟨x, hxU, hxV⟩
 
 /- English proof (translation)
-Establish `: IsZariskiLocalAtSource (@SmoothOfRelativeDimension.{0} D)` using `HasRingHomProperty.instIsZariskiLocalAtSource`. Use `IsZariskiLocalAtSource.of_iSup_eq_top (P := @SmoothOfRelativeDimension.{0} D) (fun i => (⨆ i, U i).ι ⁻¹ᵁ U i) ?_ fun i => ?_` and prove the remaining obligations. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations. Take `⟨i, hi⟩` from `Opens.mem_iSup.1 x.2`. Conclude with `Opens.mem_iSup.2 ⟨i, hi⟩`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression.
 
-Set `j` to `((⨆ i, U i).ι ⁻¹ᵁ U i).ι ≫ (⨆ i, U i).ι`. Establish `hr : Set.range j ⊆ Set.range (U i).ι`. Introduce and unpack `_ ⟨y, rfl⟩`. Rewrite using `[Scheme.Opens.range_ι]`. Conclude with `y.2`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `k` to `IsOpenImmersion.lift (U i).ι j hr`. Establish `hk : k ≫ (U i).ι = j` using `IsOpenImmersion.lift_fac _ _ _`. Establish `: IsOpenImmersion (k ≫ (U i).ι)` using `by rw [hk]; infer_instance`. Establish `: IsOpenImmersion k` using `IsOpenImmersion.of_comp k (U i).ι`. Establish `e : ((⨆ i, U i).ι ⁻¹ᵁ U i).ι ≫ (⨆ i, U i).ι ≫ f = k ≫ (U i).ι ≫ f`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Category.assoc, ← Category.assoc, hk]`. Rewrite using `[e]`. Conclude with `IsZariskiLocalAtSource.comp (P := @SmoothOfRelativeDimension.{0} D) (hU i) k`.
+A detailed English derivation is pending.
 -/
 theorem smoothOfRelativeDimension_iSup {X Y : Scheme.{0}} (f : X ⟶ Y) (D : ℕ) {ι : Type*}
     (U : ι → X.Opens) (hU : ∀ i, SmoothOfRelativeDimension D ((U i).ι ≫ f)) :
@@ -57,17 +57,17 @@ theorem smoothOfRelativeDimension_iSup {X Y : Scheme.{0}} (f : X ⟶ Y) (D : ℕ
     exact IsZariskiLocalAtSource.comp (P := @SmoothOfRelativeDimension.{0} D) (hU i) k
 
 /- English proof (translation)
-Introduce `X s hs`. Set `W : ℕ → X.Opens` to `fun D => ⨆ U : {U : X.Opens // SmoothOfRelativeDimension D (U.ι ≫ s)}, U.1`. Establish `hsm : ∀ D, SmoothOfRelativeDimension D ((W D).ι ≫ s)` using `fun D => smoothOfRelativeDimension_iSup s D _ fun U => U.2`. Establish `hcov : (⨆ D, W D) = ⊤`. Use `top_le_iff.1 fun x _ => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨n, U, hx, hU⟩` from `ReciprocityTheory.ChartRestriction.G.H1.exists_dim s x`. Conclude with `Opens.mem_iSup.2 ⟨n, Opens.mem_iSup.2 ⟨⟨U, hU⟩, hx⟩⟩`. Establish `hdis : Pairwise fun D D' => W D ⊓ W D' = ⊥`. Introduce `D D' hne`. Use `le_bot_iff.1 fun x hx => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Take `⟨U, hU⟩` from `Opens.mem_iSup.1 hx.1`. Take `⟨V, hV⟩` from `Opens.mem_iSup.1 hx.2`. Conclude with `(hne (dim_eq_of_mem_inf s U.2 V.2 hU hV)).elim`. Use `⟨W, fun D => ?_, hsm, hcov, hdis⟩` and prove the remaining obligations. Establish `hc : (W D : Set X)ᶜ = ((⨆ D' : {D' // D' ≠ D}, W D'.1 : X.Opens) : Set X)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Use extensionality with `x`. Prove the components needed by the constructor for the conclusion. Introduce `hx`. Establish `hx' : x ∈ (⨆ D, W D)` using `hcov ▸ trivial`. Take `⟨D', hD'⟩` from `Opens.mem_iSup.1 hx'`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `Opens.mem_iSup.2 ⟨⟨D', fun e => hx (e ▸ hD')⟩, hD'⟩` and prove the remaining obligations. Introduce `hx hxD`. Take `⟨D', hD'⟩` from `Opens.mem_iSup.1 hx`. Use `hdis D'.2` as an intermediate fact. Establish `hm : x ∈ W D'.1 ⊓ W D` using `⟨hD', hxD⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `hm` using `[this]`. Conclude with `hm`. Rewrite using `[← isOpen_compl_iff, hc]`. Conclude with `Opens.isOpen _`.
+A detailed English derivation is pending.
 -/
 theorem exists_clopen_smoothOfRelativeDimension :
     ∀ (X : Scheme.{0}) (s : X ⟶ Sp ℂ), Smooth s → ∃ W : ℕ → X.Opens, (∀ D, IsClosed (W D : Set X)) ∧ (∀ D, SmoothOfRelativeDimension D ((W D).ι ≫ s)) ∧ (⨆ D, W D) = ⊤ ∧ Pairwise fun D D' => W D ⊓ W D' = ⊥ := by

@@ -3,17 +3,17 @@ import Mathlib
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `S using Finset.induction_on with`. Consider the case `empty`. Introduce `n hn`. Use `⟨fun _ => 0, fun _ => Nat.zero_le _, ?_, fun _ _ => rfl⟩` and prove the remaining obligations. Simplify using `only [Finset.sum_empty] at hn ⊢`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Consider the case `insert a S ha ih`. Introduce `n hn`. Rewrite `hn` using `[Finset.sum_insert ha]`. Take `⟨g, hge, hgs, hgo⟩` from `ih (min n (∑ k ∈ S, e k)) (min_le_right _ _)`.
+Use linear arithmetic over natural numbers and integers. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use `⟨fun k => if k = a then n - min n (∑ k ∈ S, e k) else g k, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k`. Distinguish the cases in `hk : k = a`. Substitute `hk` using the available equality. Simplify using `only [if_true]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Simplify using `only [hk, if_false]`. Conclude with `hge k`. Rewrite using `[Finset.sum_insert ha, if_pos rfl]`. Establish `hS : ∑ k ∈ S, (if k = a then n - min n (∑ k ∈ S, e k) else g k) = ∑ k ∈ S, g k`.
+Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.sum_congr rfl fun k hk => ?_` and prove the remaining obligations. Establish `: k ≠ a` using `fun h => ha (h ▸ hk)`. Simplify using `only [this, if_false]`. Rewrite using `[hS, hgs]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k hk`. Establish `hka : k ≠ a` using `fun h => hk (h ▸ Finset.mem_insert_self _ _)`. Establish `hkS : k ∉ S` using `fun h => hk (Finset.mem_insert_of_mem h)`. Simplify using `only [hka, if_false]`. Conclude with `hgo k hkS`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem exists_le_sum_eq_of_le_sum (S : Finset ℕ) (e : ℕ → ℕ) :
     ∀ n, n ≤ ∑ k ∈ S, e k →
@@ -51,19 +51,19 @@ theorem exists_le_sum_eq_of_le_sum (S : Finset ℕ) (e : ℕ → ℕ) :
       exact hgo k hkS
 
 /- English proof (translation)
-Introduce `s`. Proceed by induction on `s with`. Consider the case `zero`. Introduce `e he`. Use `⟨fun _ _ => 0, ?_, fun u => u.elim0, fun u => u.elim0⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k hk`. Simplify using `only [zero_mul, nonpos_iff_eq_zero] at he`. Rewrite `he` using `[Finset.sum_eq_zero_iff]`. Simplify using `[he k hk]`. Consider the case `succ s ih`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Treat this case separately.
 
-Introduce `e he`. Take `⟨f, hfe, hfs, hfo⟩` from `exists_le_sum_eq_of_le_sum S e (min B (∑ k ∈ S, e k)) (min_le_right _ _)`. Establish `hsplit : ∑ k ∈ S, (e k - f k) + ∑ k ∈ S, f k = ∑ k ∈ S, e k`. Rewrite using `[← Finset.sum_add_distrib]`. Conclude with `Finset.sum_congr rfl fun k _ => Nat.sub_add_cancel (hfe k)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hmul : (s + 1) * B = s * B + B` using `by ring`. Take `⟨pc, hpcs, hpcb, hpco⟩` from `ih (fun k => e k - f k) (by omega)`. Use `⟨Fin.cons f pc, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `k hk`. Rewrite using `[Fin.sum_univ_succ]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fin.cons_zero, Fin.cons_succ]`. Rewrite using `[hpcs k hk]`. Conclude with `Nat.add_sub_cancel' (hfe k)`. Introduce `u`. Use `Fin.cases ?_ (fun i => ?_) u` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 
-Simplify using `only [Fin.cons_zero]`. Use linear arithmetic over natural numbers and integers. Simplify using `only [Fin.cons_succ]`. Conclude with `hpcb i`. Introduce `u k hk`.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `Fin.cases ?_ (fun i => ?_) u` and prove the remaining obligations. Simplify using `only [Fin.cons_zero]`. Conclude with `hfo k hk`. Simplify using `only [Fin.cons_succ]`. Conclude with `hpco i k hk`.
+A detailed English derivation is pending.
 -/
 theorem exists_cut_into_bounded_groups_finset (S : Finset ℕ) (B : ℕ) :
     ∀ (s : ℕ) (e : ℕ → ℕ), ∑ k ∈ S, e k ≤ s * B →
@@ -108,7 +108,7 @@ theorem exists_cut_into_bounded_groups_finset (S : Finset ℕ) (B : ℕ) :
         exact hpco i k hk
 
 /- English proof (translation)
-Introduce `K s B e h`. Conclude with `exists_cut_into_bounded_groups_finset (Finset.Icc 1 K) B s e h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem exists_cut_columns_bounded_width : ∀ (K s B : ℕ) (e : ℕ → ℕ), ∑ k ∈ Finset.Icc 1 K, e k ≤ s * B → ∃ pc : Fin s → ℕ → ℕ, (∀ k ∈ Finset.Icc 1 K, ∑ u, pc u k = e k) ∧ (∀ u, ∑ k ∈ Finset.Icc 1 K, pc u k ≤ B) ∧ ∀ u k, k ∉ Finset.Icc 1 K → pc u k = 0 := by
   intro K s B e h

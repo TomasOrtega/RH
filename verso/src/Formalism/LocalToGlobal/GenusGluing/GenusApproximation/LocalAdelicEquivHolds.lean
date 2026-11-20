@@ -12,34 +12,34 @@ open NumberField IsDedekindDomain Matrix Formalism.L2.Col
 open scoped TensorProduct
 
 /- English proof (translation)
-The claim follows from `glueExists_of idempotentCalculation_holds`.
+A detailed English derivation is pending.
 -/
 theorem glueExists_holds : GlueExists := glueExists_of idempotentCalculation_holds
 
 /- English proof (translation)
-The claim follows from `genusToPoint_of localEquality_holds memLocalizedStd_holds idempotentCofinite_holds idempotentCalculation_holds glueExists_holds commensurable_holds`.
+A detailed English derivation is pending.
 -/
 theorem genusToPoint_holds : GenusToPoint :=
   genusToPoint_of localEquality_holds memLocalizedStd_holds idempotentCofinite_holds idempotentCalculation_holds glueExists_holds commensurable_holds
 
 /- English proof (translation)
-The claim follows from `pointToGenus_of localEquality_holds memLocalizedStd_holds idempotentDenominator_holds idempotentCalculation_holds`.
+A detailed English derivation is pending.
 -/
 theorem pointToGenus_holds : PointToGenus :=
   pointToGenus_of localEquality_holds memLocalizedStd_holds idempotentDenominator_holds idempotentCalculation_holds
 
 /- English proof (translation)
-The claim follows from `locToAd_of genusToPoint_holds`.
+A detailed English derivation is pending.
 -/
 theorem localToAdelic_holds : LocToAd := locToAd_of genusToPoint_holds
 
 /- English proof (translation)
-The claim follows from `adToLoc_of pointToGenus_holds`.
+A detailed English derivation is pending.
 -/
 theorem adelicToLocal_holds : AdToLoc := adToLoc_of pointToGenus_holds
 
 /- English proof (translation)
-The claim follows from `bridge_of localToAdelic_holds adelicToLocal_holds`.
+A detailed English derivation is pending.
 -/
 theorem localAdelicEquiv_holds : Bridge := bridge_of localToAdelic_holds adelicToLocal_holds
 

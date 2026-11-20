@@ -22,32 +22,32 @@ open scoped TensorProduct GlobalTheory.CuspRep.CuspidalL2GL
 variable {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {Ξ : AlgRep E a}
 
 /- English proof (translation)
-Introduce `X N` and use `h [] X N`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 private theorem rapid_of_rapidD {q : ℕ} {ω : Co Ξ q} (h : RapidD ω) : Rapid ω := fun X N => h [] X N
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[ev]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem ev_add' (x y : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ)) (g : GA E a) : ev (x + y) g = ev x g + ev y g := by
   ext i; simp [ev]
 
 /- English proof (translation)
-Use extensionality with `i`. Simplify using `[ev]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 private theorem ev_smul' (c : ℂ) (x : Sm E a ⊗[ℂ] (Fin Ξ.d → ℂ)) (g : GA E a) : ev (c • x) g = c • ev x g := by
   ext i; simp [ev]
 
 /- English proof (translation)
-Establish `hq : ∀ g : GA E a, 0 ≤ qht g` using `fun g => zero_le_one.trans ((qhtFacts E a).1 g)`. Use `Finset.sum_induction _ (fun ω : Co Ξ q => Rapid ω) ?_ ?_ ?_` and prove the remaining obligations. Introduce `α β hα hβ X N`. Take `⟨C, hC⟩` from `hα X N`. Take `⟨D, hD⟩` from `hβ X N`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨C + D, fun g => ?_⟩` and prove the remaining obligations. Rewrite using `[AlternatingMap.add_apply, ev_add']`. Use `(mul_le_mul_of_nonneg_right (norm_add_le _ _) (pow_nonneg (hq _) N)).trans ?_` and prove the remaining obligations. Rewrite using `[add_mul]`. Conclude with `add_le_add (hC g) (hD g)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `X N`. Use `⟨0, fun g => ?_⟩` and prove the remaining obligations. Establish `: ev ((0 : Co Ξ q) X) g.1 = 0`. Use `ev_smul' (Ξ := Ξ) 0 0 g.1` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[this]`. Simplify using the standard rewrite rules. Introduce `i _ X N`. Take `⟨C, hC⟩` from `h i X N`. Use `⟨‖c i‖ * C, fun g => ?_⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[AlternatingMap.smul_apply, ev_smul', norm_smul, mul_assoc]`. Conclude with `mul_le_mul_of_nonneg_left (hC g) (norm_nonneg _)`.
+A detailed English derivation is pending.
 -/
 private theorem rapid_sum {q s : ℕ} (ω : Fin s → Co Ξ q) (c : Fin s → ℂ) (h : ∀ i, Rapid (ω i)) :
     Rapid (∑ i, c i • ω i) := by
@@ -74,11 +74,11 @@ private theorem rapid_sum {q s : ℕ} (ω : Fin s → Co Ξ q) (c : Fin s → �
     exact mul_le_mul_of_nonneg_left (hC g) (norm_nonneg _)
 
 /- English proof (translation)
-Consider the cases of `q with`. Consider the case `zero => exact hex`. Consider the case `succ q`. Take `⟨η, hη, rfl⟩` from `hex`. Take `⟨χ, hχ⟩` from `twEx E a ha r`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨G, hG⟩` from `admEx E a Ξ`. Establish `hd : IsData Ξ r χ G e` using `⟨hr, hχ, hG, he⟩`. Establish `hL : IsLev U Ξ (dCo (smLie Ξ) η)` using `((harmLin E a n e U Ξ r (q + 1)).2 _).1 hω`. Establish `hM : Moderate (dCo (smLie Ξ) η)` using `⟨0, fun X => by`. Take `⟨C, hC⟩` from `hR X 0`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨C, fun g => by simpa using hC g⟩⟩`. Establish `hP` using `pairFacts E a ha Measure.haar U hUo Ξ r χ G n e hd (q + 1)`. Conclude with `hP.2.2.1 _ hL (hP.1 _ _ hL hL hR hM) (g1 E a ha Measure.haar U hUo hUc Ξ r χ G n e hd q _ η hL hη hR hω.coclosed hM)`.
+Supply the required witnesses or components. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem noExact' (ha : 1 ≤ a) {n : ℕ} {e : Fin n → Herm E a} (he : IsFrame e) {U : Subgroup (GL (Fin a) (Af E))}
     (hUo : IsOpen (U : Set (GL (Fin a) (Af E)))) (hUc : IsCompact (U : Set (GL (Fin a) (Af E)))) {r : ℝ} (hr : HasOne Ξ r)
@@ -99,13 +99,11 @@ private theorem noExact' (ha : 1 ≤ a) {n : ℕ} {e : Fin n → Herm E a} (he :
       (g1 E a ha Measure.haar U hUo hUc Ξ r χ G n e hd q _ η hL hη hR hω.coclosed hM)
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha U hUo hUc Ξ S hS hC`. Take `⟨n, e, he⟩` from `frameEx E a`. Take `⟨r, hr⟩` from `oneReal E a Ξ`. Establish `hex : ∀ π : CuspSub E a, ∃ (q : ℕ) (ω : Co Ξ q), π ∈ S → ω ≠ 0 ∧ IsHarm U Ξ r e ω ∧ ∀ X, ω X ∈ tens Ξ.d π.V` using `fun π => by`. Distinguish the cases in `h : π ∈ S`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Take `⟨q, ω, hω⟩` from `harmEx E a ha n e he U hUc π Ξ r hr (hC π h).1 (hC π h).2`. Conclude with `⟨q, ω, fun _ => hω⟩`. Conclude with `⟨0, 0, fun h' => absurd h' h⟩`. Use `choose deg w hw using hex`. Use `UpperTheory.V.Lit.Bor.count _ S deg _ fun q s f hf hq => ?_` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hex2 : ∀ i, ∃ ω : Co Ξ q, ω ≠ 0 ∧ IsHarm U Ξ r e ω ∧ ∀ X, ω X ∈ tens Ξ.d (f i).V` using `fun i => by`. Take `⟨hi, rfl⟩` from `hq i`. Conclude with `⟨w _, hw _ hi⟩`. Use `choose ω h0 hH hV using hex2`. Use `deRhamInj E a ha U hUo hUc Ξ q s ω (fun i => ⟨((harmLin E a n e U Ξ r q).2 _).1 (hH i), (hH i).closed⟩) fun c hc => ?_` and prove the remaining obligations.
-
-Conclude with `indep E a Ξ.d q s f (fun i j h => hf (hS _ (hq i).1 _ (hq j).1 h)) ω h0 hV c (noExact' ha he hUo hUc hr _ ((harmLin E a n e U Ξ r q).1 s ω c hH) (rapid_sum ω c fun i => rapid_of_rapidD (cuspRapid E a (f i) Ξ q (ω i) (hV i))) hc)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Geo.borelInjC :
     UpperTheory.V.Published.BorelInjC := by

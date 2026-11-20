@@ -3,19 +3,19 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AutomorphicForms.H
 open NumberField IsDedekindDomain Matrix Formalism.L2.Host UpperTheory.V UpperTheory.V.TR UpperTheory.V.Af.Gk
 
 /- English proof (translation)
-Introduce `F _ _ a w V W _ _ _ _ ρ ρ' H C hdef hH hC B hB`. Establish `hK : ∀ k ∈ GlobalTheory.LFun.KGL w a, GlobalTheory.CuspRep.invT a _ k ∈ GlobalTheory.LFun.KGL w a`. Introduce and unpack `_ ⟨k, rfl⟩`. Conclude with `⟨GlobalTheory.CuspRep.invT a _ k, InvT.map_invT _ k⟩`. Establish `hB' : GlobalTheory.LFun.HasSatGL w (ρ.comp (GlobalTheory.CuspRep.invT a (w.adicCompletion F))) (B.map (·⁻¹))` using `InvT.hasSatGL_invT (ρ := ρ) (LinearEquiv.refl ℂ V) (fun _ _ => rfl) hB`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Establish `key : ∀ x ∈ GlobalTheory.PRep.fixed ρ (GlobalTheory.LFun.KGL w a), x ≠ 0 → GlobalTheory.LFun.IsSatVecGL w ρ' (C x) (B.map (·⁻¹))`. Introduce `x hx h0`. Establish `hfix` using `GlobalTheory.LGrp.mem_fixed.1 hx`. Establish `h1` using `hB.2 x hx h0`. Establish `h2` using `hB'.2 x (GlobalTheory.LGrp.mem_fixed.2 fun k hk => hfix _ (hK k hk)) h0`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(map_ne_zero_iff C C.injective).2 h0, GlobalTheory.LGrp.mem_fixed.2 fun k hk => by rw [← hC, hfix k hk], h2.2.2.1, fun ϖ hϖ j hj => ?_⟩` and prove the remaining obligations. Establish `e` using `heckeAdj F a w V ρ H hH x hx ϖ hϖ j`. Rewrite `e` using `[h1.2.2.2 ϖ hϖ j hj, h2.2.2.2 ϖ hϖ j hj, H.map_smulₛₗ, (H x).map_smul, LinearMap.smul_apply, smul_eq_mul, smul_eq_mul]`. Establish `e'` using `mul_right_cancel₀ (fun h => h0 (hdef x h)) e`. Rewrite using `[← e', ← C.map_smulₛₗ, ← h1.2.2.2 ϖ hϖ j hj]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `((C.toLinearMap.toAddMonoidHom.map_finsum (GlobalTheory.LFun.finite_heckeVec (Formalism.UG.Final.GLintComm F w a) (GlobalTheory.LFun.Tj_mem_hecke hϖ j) ρ x)).trans (finsum_congr fun c => ?_)).symm` and prove the remaining obligations. Generalize the expression as in `c.out = g`. Express the relevant statement in the definitionally equal form `C (_ • ρ g x) = _ • ρ' g (C x)`. Rewrite using `[C.map_smulₛₗ, hC]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Replace the chosen expression with an arbitrary variable. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Unfold `Formalism.UG.Tj`. Distinguish the cases in `hg : g ∈ {g : GL (Fin a) (w.adicCompletion F) | ∃ k ∈ Formalism.UG.GLint (Fin a) (Formalism.UG.Ov F w), ∃ b ∈ Formalism.UG.GLint (Fin a) (Formalism.UG.Ov F w), g.val = k.val * Formalism.UG.diagJ a ϖ j * b.val}`. Rewrite using `[Set.indicator_of_mem hg, Pi.one_apply, map_one]`. Rewrite using `[Set.indicator_of_notMem hg, map_zero]`. Prove the components needed by the constructor for the conclusion.
+Replace the relevant objects with their definitions. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Take `⟨x, hx⟩` from `hB.exists_vec`. Conclude with `(Submodule.ne_bot_iff _).2 ⟨_, (key x hx.2.1 hx.1).2.1, (key x hx.2.1 hx.1).1⟩`. Introduce `y hy h0`. Take `⟨x, rfl⟩` from `C.surjective y`. Use `key x (GlobalTheory.LGrp.mem_fixed.2 fun k hk => C.injective ?_) ((map_ne_zero_iff C C.injective).1 h0)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hC, GlobalTheory.LGrp.mem_fixed.1 hy k hk]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Af.Gk.satConj :
     UpperTheory.V.Af.Gk.SatConj := by

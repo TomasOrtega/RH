@@ -29,7 +29,7 @@ variable {D' : D7} {G' : Type} [Group G'] [Fintype G'] {Pl0' T0' : Type} {A' : F
   {v₀' : ∀ (i : Fin D'.R.m) (σ : D'.what₂.LL →+* ℂ), (R'.MW i σ).Vec} {i' : Fin D'.R.m}
 
 /- English proof (translation)
-Rewrite `hz`, the goal using `[Subgroup.mem_center_iff]`. Introduce `g`. Take `⟨g, rfl⟩` from `φ.surjective g`. Rewrite using `[← map_mul, ← map_mul, hz g]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem center_map {G G' : Type} [Group G] [Group G'] (φ : G ≃* G') {z : G} (hz : z ∈ Subgroup.center G) :
     φ z ∈ Subgroup.center G' := by
@@ -41,11 +41,11 @@ theorem center_map {G G' : Type} [Group G] [Group G'] (φ : G ≃* G') {z : G} (
 set_option maxHeartbeats 2000000 in
 
 /- English proof (translation)
-Use `(lift_of_oneMapOf O hP h).elim fun z h0 => h0.2.elim fun ζ h0' => h0'.2.2.elim fun r h0'' => h0''.elim fun J h1 => ?_` and prove the remaining obligations. Use `hO.2.elim fun c hO => hO.elim fun hle hO => (hO.2 r J h1.1).elim fun r' h2 => h2.elim fun J' h2 => ?_` and prove the remaining obligations. Use `oneMapOf_of_span hR hchi hT O' hF hP' hU hE (center_map φ h0.1) (hL h0'.1) h0'.2.1 ?_` and prove the remaining obligations. Establish `h3` using `span_image e (GlobalTheory.LiftScalarCompare.span_jVx hV hj)`. Use `top_le_iff.1 (h3.ge.trans (Submodule.span_mono fun y hy => ?_))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `hy.elim fun y₁ hy => hy.1.elim fun y₀ hy₀ => ?_` and prove the remaining obligations. Establish `hy' : e (jVx R i A.μ0 y₀) = y` using `(congrArg e hy₀).trans hy.2`. Use `hy' ▸ ?_` and prove the remaining obligations. Use `(h1.2 y₀).elim fun x h4 => h4.elim fun f h4 => ?_` and prove the remaining obligations. Use `(h2.2 y₀ x h4.1 _ (he _).1).elim fun x' h8 => ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hf c hle hO.1 f h4.2.1).elim fun f' h10 => ?_` and prove the remaining obligations. Use `⟨r', J', x', f', h2.1, h8.1, h10.1, h8.2 _ _ f h4.2.1 h4.2.2.1 f' h10.2.1, fun q => ?_⟩` and prove the remaining obligations. Conclude with `((he _).2 q).trans ((h4.2.2.2 _).trans ((mul_assoc _ _ _).trans ((congrArg (ζ * ·) (h10.2.2 z q).symm).trans (mul_assoc _ _ _).symm)))`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem oneMapOf_two (hR : PreChar R') (hchi : R'.grp_chiW) (hT : TieIn T' R' κ' v₀')
     (O' : OMDat T'.toCore R' i' Unit (fun _ => A'.μ0)) (hF : O'.c'.F = D'.what₂.embLL.toRatAlgHom.fieldRange)
@@ -80,7 +80,7 @@ theorem oneMapOf_two (hR : PreChar R') (hchi : R'.grp_chiW) (hT : TieIn T' R' κ
 end Two
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hch.base.lev, hch.base.grp.red_R, hch.base.grp.red_L, hch.base.grp.record, hch.base.fam, hch.base.models, RealDat.chain_of_weak hch.base.chain hEx, RealDat.thP_of_weak hch.base.thP hEx⟩`.
+Supply the required witnesses or components.
 -/
 theorem preChar_of {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type}
     {A3 : FamIn3 D.what₂.LL G Pl0 I0 (List ℕ) T0 D.R.m} {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
@@ -91,9 +91,9 @@ theorem preChar_of {D : D7} {G : Type} [Group G] [Fintype G] {Pl0 I0 T0 : Type}
 set_option maxHeartbeats 4000000 in
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg hc Xg tr R' cG' hPins hRS κ' hκ i i' hi`. Take `⟨h1, -, -, -⟩` from `hE`. Break down `B' with ⟨P'⟩` into its components or cases. Express the relevant statement in the definitionally equal form `P' = B.toPre at h1`. Substitute `h1` using the available equality.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Express the relevant assertion in an equivalent form by its definition. Substitute using the available equality.
 
-Break down `w' with ⟨px'⟩` into its components or cases. Take `rfl : px' = w.px` from `eq_of_heq hpx`. Take `rfl : i' = Fin.cast rfl i` from `Fin.ext hi.symm`. Conclude with `⟨⟨(by with_unfolding_all exact ((MulEquiv.refl (Gc B w.px)) :)), fun g => HEq.rfl⟩, (by with_unfolding_all exact ((id : AutQ (Wc (w.st Z).toD7 i) → AutQ (Wc (w.st Z).toD7 i)) :)), fun q => HEq.rfl⟩`.
+Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem cpt : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T) (w' : ColW B' f' T')
     (Z : w.Lt) (Z' : w'.Lt) (hX : B.fields.Ok) (hX' : B'.fields.Ok) (Wt : Set B.places.Pl) (Wt' : Set B'.places.Pl)
@@ -124,15 +124,15 @@ theorem cpt : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B
   exact ⟨⟨(by with_unfolding_all exact ((MulEquiv.refl (Gc B w.px)) :)), fun g => HEq.rfl⟩, (by with_unfolding_all exact ((id : AutQ (Wc (w.st Z).toD7 i) → AutQ (Wc (w.st Z).toD7 i)) :)), fun q => HEq.rfl⟩
 
 /- English proof (translation)
-Introduce `B B' f f' T T' w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg hc Xg tr R' cG' hPins hRS κ' hκ v₀' fw' hcrd hv0 O' hOP hOm hEx hLU hEx' hMW`. Use `letI := alg'`. Establish `hz` using `z.pins.char`. Establish `hpz` using `preChar_of z.R z.F hz hEx`. Establish `hp'` using `preChar_of R' _ hPins.char hEx'`.
+Fix the arbitrary inputs or assume the hypotheses. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hio` using `GlobalTheory.IoExtremal.ioExt _ _ _ _ _ _ z.R.toRealDat hpz.lev hpz.fam hpz.models hpz.thP`. Establish `hm : (w.st Z).toD7.R.m = (w'.st Z').toD7.R.m` using `congrArg (fun P : Pre => P.R.m) hE.1.symm`. Establish `key : ∀ i', (O' i').OneMapOf (κ' i') (v₀' i' (sg0 _ _)) (core'.cE ((i' : ℕ) + 1) (O' i').s0) 1`. Introduce `i'`. Set `i : Fin (w.st Z).toD7.R.m` to `Fin.cast hm.symm i'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `hi : (i : ℕ) = i'` using `rfl`. Establish `h0` using `GlobalTheory.OneMapTies.oneMapRow0_of_ties_base_clauses GlobalTheory.ChartFree.chartIndep _ _ _ _ _ z.core z.R.toRealDat _ z.geo.κ z.geo.v₀ hpz.lev hz.base.grp hpz.fam hpz.models hpz.thP (GlobalTheory.OneMapRefObj.tieIn_of_fwTie z.geo.fw) hio z.geo.O i (z.geo.pins i)`. Establish `h1` using `z.geo.phase i hLU h0`. Establish `hc0` using `cpt w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg hc Xg tr R' cG' hPins hRS κ' hκ i i' hi`. Use `hc0.1.elim fun φ hφ => hc0.2.elim fun pt hpt => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hl` using `UpperTheory.theta_lift_data_over_coefficient_extension w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg hc Xg tr R' cG' hPins hRS κ' hκ v₀' fw' hcrd hv0 i i' hi hMW pt hpt`. Establish `hf` using `UpperTheory.cusp_sections_over_coefficient_extension w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg hc Xg tr R' cG' hPins hRS κ' hκ O' i i' hi (hOm i i' hi).1 φ hφ pt hpt`. Use `hl.elim fun e he => ?_` and prove the remaining obligations. Establish `hE'` using `(EqvMove.equivAll_enl w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg hc Xg tr R' cG' hPins hRS κ' hκ O' (fun i i' h => (hOm i i' h).1)).2 i i' hi h1.1`. Use `oneMapOf_two hp' hPins.char.base.grp.chiW (GlobalTheory.OneMapRefObj.tieIn_of_fwTie fw') (O' i') (hOP i').1 (hOP i').2 (fun k => fw'.laws.cUnit _ (inR i') _ ((by with_unfolding_all exact (core'.toCore.good_σ₀ :))) k) hE' (z.geo.O i) (z.geo.pins i).2 h1 hpz.models.HV hpz.models.jV …` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `⟨barTie_enl w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg hc Xg tr R' cG' hPins hRS κ' hκ v₀' fw' hcrd hMW, UpperTheory.geometric_action_over_coefficient_extension w w' Z Z' hX hX' Wt Wt' z hE hpx core' alg' halg hc Xg tr R' cG' hPins hRS κ' hκ v₀' fw' hcrd O' (fun i i' h => ( …`.
+Supply the required witnesses or components.
 -/
 theorem ties_enl : ∀ {B B' : Base} {f : Fr B.toPre} {f' : Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} (w : ColW B f T) (w' : ColW B' f' T')
     (Z : w.Lt) (Z' : w'.Lt) (hX : B.fields.Ok) (hX' : B'.fields.Ok) (Wt : Set B.places.Pl) (Wt' : Set B'.places.Pl)

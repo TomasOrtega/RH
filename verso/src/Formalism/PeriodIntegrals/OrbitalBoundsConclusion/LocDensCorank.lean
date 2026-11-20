@@ -5,7 +5,7 @@ import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalDensityCorank.Fiel
 import Formalism.PeriodIntegrals.UnitaryGroupMassFormula.LocalDensityCorank.ResidueEqZeroIff
 
 /- English proof (translation)
-The claim follows from `PI.UnitaryGroupMassFormula.LocDensCorank.locDensCorank_of_counts PI.UnitaryGroupMassFormula.LocDensCorank.fieldCount_holds PI.UnitaryGroupMassFormula.LocDensCorank.splitCount_holds`.
+A detailed English derivation is pending.
 -/
 theorem local_density_corank : PI.LocDensCorank.LocDensCorank :=
   PI.UnitaryGroupMassFormula.LocDensCorank.locDensCorank_of_counts PI.UnitaryGroupMassFormula.LocDensCorank.fieldCount_holds

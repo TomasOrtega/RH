@@ -7,15 +7,15 @@ open UpperTheory.ConvolutionTheory.R2 UpperTheory.ConvolutionTheory.R2.Ff
 open scoped Classical
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ _ _ D W M π hreg Φ hΦ`. Establish `hcap` using `UpperTheory.ConvolutionTheory.R2.cap F E D W M π`. Establish `key : ∀ z ∈ GlobalTheory.CuspRep.Zalg E 2, ∃ c : ℂ, z Φ = c • Φ`. Introduce `z hz`. Proceed by induction on `hz using Algebra.adjoin_induction with`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `mem x hx`. Take `⟨τ, u, rfl⟩` from `hx`. Take `⟨m, hm, -⟩` from `hreg (InfinitePlace.mk (τ.comp (algebraMap F E)))`. Conclude with `⟨_, hcap τ m hm u Φ hΦ⟩`. Consider the case `algebraMap r => exact ⟨r, by simp [Module.algebraMap_end_apply]⟩`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Consider the case `add x y _ _ hx hy`. Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨a + b, by rw [LinearMap.add_apply, ha, hb, add_smul]⟩`. Consider the case `mul x y _ _ hx hy`.
+Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately.
 
-Take `⟨a, ha⟩` from `hx`. Take `⟨b, hb⟩` from `hy`. Conclude with `⟨b * a, by rw [Module.End.mul_apply, hb, map_smul, ha, mul_smul]⟩`. Establish `hle : Submodule.span ℂ ((fun z : Module.End ℂ (Sm E 2) => z Φ) '' GlobalTheory.CuspRep.Zalg E 2) ≤ Submodule.span ℂ {Φ}` using `Submodule.span_le.2 (by`. Introduce and unpack `_ ⟨z, hz, rfl⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Take `⟨c, hc⟩` from `key z hz`. Express the relevant statement in the definitionally equal form `z Φ ∈ Submodule.span ℂ {Φ}`. Rewrite using `[hc]`. Conclude with `Submodule.smul_mem _ _ (Submodule.mem_span_singleton_self Φ))`. Conclude with `Submodule.finiteDimensional_of_le hle`.
+Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.R2.Ff.zFin :
     ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] [IsTotallyReal F] [IsTotallyComplex E] (D : Dat F E) (W : Weil D) (M : Meas F) (π : TR.CuspSub F 2), ZFin W M π := by

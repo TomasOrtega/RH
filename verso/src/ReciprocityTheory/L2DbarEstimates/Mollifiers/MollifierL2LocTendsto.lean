@@ -124,13 +124,13 @@ def StdSt (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensio
   Tendsto (fun ε : ℝ => (Kernel.std E μ ε).r) (𝓝[>] 0) (𝓝 0)
 
 /- English proof (translation)
-The claim follows from `Kernel.std (EuclideanSpace ℂ (Fin n)) volume 1`.
+A detailed English derivation is pending.
 -/
 noncomputable example (n : ℕ) : Kernel (EuclideanSpace ℂ (Fin n)) volume :=
   Kernel.std (EuclideanSpace ℂ (Fin n)) volume 1
 
 /- English proof (translation)
-Use `⟨fun _ => locallyIntegrable_zero, locallyIntegrable_zero, fun φ _ _ => ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem isWeakD_zero (E : Type*) [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E]
     [MeasurableSpace E] [BorelSpace E] (μ : Measure E) [μ.IsAddHaarMeasure] (m : ℕ) (c : Fin m → ℂ) (v : Fin m → E) :

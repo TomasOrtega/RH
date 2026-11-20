@@ -9,9 +9,9 @@ open MvPolynomial
 noncomputable section
 
 /- English proof (translation)
-Rewrite using `[coeff_sum, Finset.sum_eq_single i]`. Rewrite using `[mul_comm, coeff_C_mul, coeff_X]`. Simplify using the standard rewrite rules. Introduce `j _ hji`. Rewrite using `[mul_comm, coeff_C_mul, coeff_X, if_neg, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `hji ((Finsupp.single_left_inj one_ne_zero).mp h)`. Simplify using the standard rewrite rules.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem linearForm_coeff_single {F : Type} [Field F] {n : ℕ} (a : Fin n → F) (i : Fin n) :
     (∑ m, X m * C (a m) : MvPolynomial (Fin n) F).coeff (Finsupp.single i 1) = a i := by
@@ -26,13 +26,13 @@ theorem linearForm_coeff_single {F : Type} [Field F] {n : ℕ} (a : Fin n → F)
   · simp
 
 /- English proof (translation)
-Introduce `F _ n a ha`. Choose the witnesses or unpack the hypotheses as in `⟨i, hi⟩ : ∃ i, a i ≠ 0 := by`. Assume the negation of the conclusion as `h`. Use `push Not at h`. Conclude with `ha (funext h)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `Irreducible.prime (irreducible_of_totalDegree_eq_one ?_ ?_)` and prove the remaining obligations. Apply `le_antisymm` to reduce the goal to its premises. Use `(totalDegree_finsetSum _ _).trans (Finset.sup_le fun m _ => ?_)` and prove the remaining obligations. Use `(totalDegree_mul _ _).trans ?_` and prove the remaining obligations. Rewrite using `[totalDegree_X, totalDegree_C]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : Finsupp.single i 1 ∈ (∑ m, X m * C (a m) : MvPolynomial (Fin n) F).support`. Rewrite using `[mem_support_iff, linearForm_coeff_single]`. Conclude with `hi`. Simplify using `using le_totalDegree hs`. Introduce `x hx`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h` using `hx (Finsupp.single i 1)`. Rewrite `h` using `[linearForm_coeff_single]`. Use `isUnit_iff_ne_zero.mpr ?_` and prove the remaining obligations. Introduce and unpack `rfl`. Conclude with `hi (zero_dvd_iff.mp h)`.
+Assume the hypotheses and unpack their components. A detailed English derivation is pending.
 -/
 theorem LinearFormPrime.proof : LinearFormPrime.Statement := by
   intro F _ n a ha

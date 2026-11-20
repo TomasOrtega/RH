@@ -12,7 +12,7 @@ section General
 variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω]
 
 /- English proof (translation)
-Rewrite using `[valuation_lt_one_iff', valuation_lt_one_iff', ValuationSubring.mem_comap, ValuationSubring.mem_comap, ← map_inv₀, map_eq_zero_iff _ c.symm.injective]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem valuation_comap_lt_one (c : Ω ≃+* Ω) (A : ValuationSubring Ω) (y : Ω) :
     (A.comap c.symm.toRingHom).valuation y < 1 ↔ A.valuation (c.symm y) < 1 := by
@@ -21,13 +21,13 @@ theorem valuation_comap_lt_one (c : Ω ≃+* Ω) (A : ValuationSubring Ω) (y : 
   rfl
 
 /- English proof (translation)
-Establish `hs : ∀ x, c.symm (algebraMap E Ω x) = algebraMap E Ω (κ x)` using `fun x => by`. Rewrite using `[RingEquiv.symm_apply_eq, hc, hκ]`. Set `σ' : Ω ≃ₐ[E] Ω` to `AlgEquiv.ofRingEquiv (f := (c.symm.trans (σ : Ω ≃ₐ[E] Ω).toRingEquiv).trans c) (fun x => by show c (σ (c.symm (algebraMap E Ω x))) = _`. Rewrite using `[hs, AlgEquiv.commutes, hc, hκ])`. Establish `h' : ∀ x, σ' x = c (σ (c.symm x))` using `fun _ => rfl`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm : ∀ y, y ∈ A.comap c.symm.toRingHom ↔ c.symm y ∈ A` using `fun _ => Iff.rfl`. Use `⟨σ', h', ?_, fun x hx => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `σ' ∈ Dec (F := E) _`. Rewrite using `[mem_Dec]`. Use extensionality with `y`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. By extensionality, compare the relevant components.
 
-Take `⟨z, rfl⟩` from `σ'.surjective y`. Rewrite using `[← AlgEquiv.smul_def σ' z, ValuationSubring.smul_mem_pointwise_smul_iff, AlgEquiv.smul_def, hm, hm, h', RingEquiv.symm_apply_apply, apply_mem_iff_of_mem_Dec hσ.1]`. Rewrite using `[valuation_comap_lt_one, map_sub, h', RingEquiv.symm_apply_apply]`. Use `hσ.2 _ ?_` and prove the remaining obligations. Rewrite `hx`, the goal using `[ValuationSubring.valuation_le_one_iff]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Conclude with `(hm x).1 hx`.
+A detailed English derivation is pending.
 -/
 theorem exists_conj_mem_Ine (c : Ω ≃+* Ω) (κ : E → E)
     (hc : ∀ x, c (algebraMap E Ω x) = algebraMap E Ω (κ x)) (hκ : ∀ x, κ (κ x) = x)
@@ -56,15 +56,13 @@ theorem exists_conj_mem_Ine (c : Ω ≃+* Ω) (κ : E → E)
 end General
 
 /- English proof (translation)
-Introduce `D M _ ψ Q hA hR P hP P' hPP`. Use `haveI : IsCMField D.host.E := D.host.isCMField_hostE`. Establish `hst : ∀ x : D.host.E, IsCMField.complexConj D.host.E x = D.host.conj x` using `bridge_star_holds D.R D.host`. Take `⟨⟨j, hj⟩, -⟩` from `D.ntw.cc_cm`. Establish `hκ : ∀ x, D.host.conj (D.host.conj x) = x` using `fun x => by`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← hst, ← hst, IsCMField.complexConj_apply_apply]`. Establish `hc : ∀ x, D.ntw.cc (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x)` using `fun x => by`. Apply `j.injective` to reduce the goal to its premises. Rewrite using `[hj, ← hst]`. Conclude with `(IsCMField.complexEmbedding_complexConj D.host.E (j.comp (algebraMap D.host.E D.nd.Om)) x).symm`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hs : ∀ x, D.ntw.cc.symm (algebraMap D.host.E D.nd.Om x) = algebraMap D.host.E D.nd.Om (D.host.conj x)` using `fun x => by`. Rewrite using `[RingEquiv.symm_apply_eq, hc, hκ]`. Establish `hpl : IsPlaceOver (D.nd.plOm.1 P) P` using `D.nd.plOm.2 P`. Take `⟨σ, hσ, hne⟩` from `(hR P _ hpl).2 hP`. Take `⟨σ', h1, h2⟩` from `exists_conj_mem_Ine D.ntw.cc (fun x => D.host.conj x) hc hκ _ σ hσ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `(hR P' _ (fun y => ?_)).1 ⟨σ', h2, ?_⟩` and prove the remaining obligations. Establish `hint : IsIntegral ℤ (D.host.conj (y : D.host.E))`. Rewrite using `[← hst]`. Conclude with `(RingOfIntegers.isIntegral_coe y).map ((IsCMField.complexConj D.host.E).toRingEquiv.toRingHom.toIntAlgHom)`. Rewrite using `[valuation_comap_lt_one, hs, ← hPP ⟨_, hint⟩ y (hκ _).symm]`.
-
-Conclude with `hpl ⟨_, hint⟩`. Rewrite using `[hA σ σ' h1]`. Conclude with `inv_ne_one.2 hne`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ramExactly_conj : ∀ (D : D7) (M : Type) [CommGroup M] (ψ : G D.host.E D.nd.Om →* M) (Q : Set (PlE D.host)), AntiHom D.ntw.cc ψ → RamExactly ψ Q → ∀ P ∈ Q, ∀ P' : PlE D.host, IsConjPl D.host P P' → P' ∈ Q := by
   intro D M _ ψ Q hA hR P hP P' hPP

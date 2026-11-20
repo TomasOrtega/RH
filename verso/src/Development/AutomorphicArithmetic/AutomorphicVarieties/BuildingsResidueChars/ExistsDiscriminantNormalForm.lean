@@ -3,35 +3,31 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.ModularityArgument
 open QuadraticAlgebra UpperTheory.V.Z.Sym UpperTheory.V.Z.Sym.Loc UpperTheory.V.Z.Sym.Loc.PK
 
 /- English proof (translation)
-Introduce `O K _ _ _ _ _ Δ τ hL hτ hτr s ε hs`. Use `haveI := hL.frac`. Establish `inj : Function.Injective (algebraMap O K)` using `IsFractionRing.injective O K`. Take `⟨t, rfl⟩` from `hτr`. Establish `hs0 : s ≠ 0`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `rfl`. Apply `hτ` to reduce the goal to its premises. Rewrite using `[hs]`. Simplify using the standard rewrite rules. Take `⟨ϖ, hϖ⟩` from `IsDiscreteValuationRing.exists_irreducible O`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨n, μ, hμ⟩` from `IsDiscreteValuationRing.eq_unit_mul_pow_irreducible hs0 hϖ`. Establish `h2K : algebraMap O K (((hL.two.unit)⁻¹ : Oˣ) : O) * 2 = 1`. Establish `h1 : (((hL.two.unit)⁻¹ : Oˣ) : O) * 2 = 1` using `hL.two.val_inv_mul`. Establish `h3` using `congrArg (algebraMap O K) h1`. Rewrite `h3` using `[map_mul, map_one, map_ofNat]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `h3`. Establish `two_ne : (2 : K) ≠ 0`. Introduce `h`. Rewrite `h2K` using `[h, mul_zero]`. Conclude with `zero_ne_one h2K`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact.
 
-Establish `hI : algebraMap O K (((hL.two.unit)⁻¹ : Oˣ) : O) = 2⁻¹`. Clear the denominators using the available nonvanishing facts. Conclude with `h2K`. Establish `hP : algebraMap O K (ϖ ^ n) ≠ 0`. Rewrite using `[map_ne_zero_iff _ inj]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Conclude with `pow_ne_zero _ hϖ.ne_zero`. Establish `hrel : algebraMap O K t ^ 2 - 4 = algebraMap O K ε * algebraMap O K μ ^ 2 * algebraMap O K (ϖ ^ n) ^ 2`. Rewrite using `[hs, hμ]`. Simplify using `only [map_mul, map_pow]`. Expand and normalize the polynomial expressions, which then agree.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `set T := algebraMap O K t with hT`. Use `set P := algebraMap O K (ϖ ^ n) with hPdef`. Set `x : Etau K T` to `⟨-T / 2 / P, 1 / P⟩`. Establish `hxre : x.re = -T / 2 / P` using `rfl`. Establish `hxim : x.im = 1 / P` using `rfl`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Establish `htr : trace x = 0`. Rewrite using `[trace_def, hxre, hxim]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Use `⟨ϖ, n, ε * μ * μ * (hL.two.unit)⁻¹ * (hL.two.unit)⁻¹, t * (((hL.two.unit)⁻¹ : Oˣ) : O), x, ⟨hϖ, ⟨?_, ?_, ?_⟩, htr, ?_, ?_⟩, ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion.
 
-Rewrite using `[htr]`. Conclude with `⟨0, map_zero _⟩`. Use `⟨-((ε * μ * μ * (hL.two.unit)⁻¹ * (hL.two.unit)⁻¹ : Oˣ) : O), ?_⟩` and prove the remaining obligations. Rewrite using `[norm_def, hxre, hxim]`. Simplify using `only [map_neg, Units.val_mul, map_mul, hI]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Reduce the claim to the hypotheses of an applicable result.
 
-Clear the denominators using the available nonvanishing facts. Take the linear combination `hrel`. Use `⟨ε * μ * μ, ?_⟩` and prove the remaining obligations. Rewrite using `[hxim, hrel]`. Simplify using `only [Units.val_mul, map_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Take a linear combination of the given relations to obtain the conclusion. Rewrite the conclusion using the stated equalities.
 
-Clear the denominators using the available nonvanishing facts. Apply `QuadraticAlgebra.ext` to reduce the goal to its premises. Rewrite using `[algebraMap_etau, QuadraticAlgebra.algebraMap_re, QuadraticAlgebra.re_mul, hxre, hxim]`. Simplify using `only [Units.val_mul, map_mul, hI]`. Clear the denominators using the available nonvanishing facts.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Take the linear combination `hrel`. Rewrite using `[algebraMap_etau, QuadraticAlgebra.algebraMap_im, QuadraticAlgebra.im_mul, hxre, hxim]`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Apply `QuadraticAlgebra.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show (0 : K) = (algebraMap O (Etau K T) (t * (((hL.two.unit)⁻¹ : Oˣ) : O))).re + (yy ϖ n x).re`. Rewrite using `[algebraMap_etau, QuadraticAlgebra.algebraMap_re]`. Simplify using `only [yy, QuadraticAlgebra.re_smul, smul_eq_mul, map_mul, hI, hxre]`. Rewrite using `[← hT, ← hPdef]`. Clear the denominators using the available nonvanishing facts.
-
-Expand and normalize the polynomial expressions, which then agree. Use `show (1 : K) = (algebraMap O (Etau K T) (t * (((hL.two.unit)⁻¹ : Oˣ) : O))).im + (yy ϖ n x).im`. Rewrite using `[algebraMap_etau, QuadraticAlgebra.algebraMap_im]`. Simplify using `only [yy, QuadraticAlgebra.im_smul, smul_eq_mul, hxim]`. Rewrite using `[← hPdef]`.
-
-Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[Ideal.span_singleton_eq_span_singleton, hμ]`. Conclude with `associated_unit_mul_left _ _ μ.isUnit`.
+Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.exists_discriminant_normal_form :
     ∀ (O K : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] [Field K] [Algebra O K] (Δ τ : K), IsLoc O Δ → τ ^ 2 - 4 ≠ 0 → τ ∈ (algebraMap O K).range → ∀ (s : O) (ε : Oˣ), τ ^ 2 - 4 = algebraMap O K (ε * s ^ 2) → ∃ (π : O) (n : ℕ) (e : Oˣ) (h : O) (x : Etau K τ), Cond π n e h x ∧ Ideal.span {s} = Ideal.span {π ^ n} := by

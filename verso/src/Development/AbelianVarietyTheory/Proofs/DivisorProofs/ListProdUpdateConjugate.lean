@@ -4,15 +4,15 @@ open scoped ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => exact j.elim0`. Consider the case `succ k ih`. Use `Fin.cases ?_ (fun j' => ?_) j` and prove the remaining obligations. Establish `h1 : ∀ i : Fin k, Function.update f 0 (f 0 * y) i.succ = f i.succ` using `fun i => Function.update_of_ne (Fin.succ_ne_zero i) _ _`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : ∀ i : Fin k, (if (0 : Fin (k+1)) < i.succ then f i.succ else 1) = f i.succ` using `fun i => if_pos (Fin.succ_pos i)`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.ofFn_succ]`. Simplify using `only [List.prod_cons, Function.update_self, h1, h2, lt_irrefl, if_false, one_mul]`. Use `group`. Establish `h0 : Function.update f j'.succ (f j'.succ * y) 0 = f 0` using `Function.update_of_ne (Fin.succ_ne_zero j').symm _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h1 : ∀ i : Fin k, Function.update f j'.succ (f j'.succ * y) i.succ = Function.update (fun i => f i.succ) j' (f j'.succ * y) i`. Introduce `i`. Break down `eq_or_ne i j' with rfl | h` into its components or cases. Simplify using the standard rewrite rules. Rewrite using `[Function.update_of_ne (fun e => h (Fin.succ_injective _ e)), Function.update_of_ne h]`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : (if j'.succ < (0 : Fin (k+1)) then f 0 else 1) = 1` using `if_neg (Fin.not_lt_zero _)`. Establish `h3 : ∀ i : Fin k, (if j'.succ < i.succ then f i.succ else 1) = (if j' < i then f i.succ else 1)` using `fun i => by`. Simplify using `only [Fin.succ_lt_succ_iff]`. Establish `ih'` using `ih (fun i => f i.succ) j'`. Rewrite using `[List.ofFn_succ, List.ofFn_succ, List.ofFn_succ]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [List.prod_cons, h0, h1, h2, h3, one_mul]`. Rewrite using `[ih']`. Simplify using `only [mul_assoc]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem list_prod_ofFn_update_mul_right (M : Type) [Group M] (k : ℕ) (f : Fin k → M)
     (j : Fin k) (y : M) :

@@ -20,11 +20,9 @@ open scoped ComplexConjugate ComplexOrder Real Classical
 namespace GlobalTheory.SW.SpanMain
 
 /- English proof (translation)
-Set `k : Fin (Fintype.card J) ≃ J` to `(Fintype.equivFin J).symm`. Establish `hk' : ∀ a ∈ S, ∀ i, (fun y => ∑' γ : Γ, f a (γ • i) (γ • y)) =ᵐ[ν.restrict (D i)] fun y => ∑ j, e (k j) a * t (k j) i y` using `fun a ha i => by`. Use `ae_restrict_of_ae ((hk a ha i).mono fun y hy => ?_)` and prove the remaining obligations. Conclude with `hy.trans (k.sum_comp fun j => e j a * t j i y).symm`. Take `⟨b, hb⟩` from `finiteRank_integral_mem_span A I Y ν D S _ (fun j => e (k j)) (fun j => t (k j)) fun a ha => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨h1, h2, -⟩` from `unfolding_abstract Γ I Y ν hν D hD hD' (f a) (hf a ha) (hs a ha)`. Use `⟨fun i => (h1 i).congr (hk' a ha i), h2.congr fun i => ?_⟩` and prove the remaining obligations. Conclude with `integral_congr_ae ((hk' a ha i).mono fun y hy => congrArg norm hy)`. Use `⟨_, k, b, fun a ha => ?_⟩` and prove the remaining obligations. Take `⟨-, -, h3⟩` from `unfolding_abstract Γ I Y ν hν D hD hD' (f a) (hf a ha) (hs a ha)`.
-
-Rewrite using `[← h3, ← hb a ha]`. Conclude with `tsum_congr fun i => integral_congr_ae (hk' a ha i)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unfold_span (Γ I Y A J : Type) [Group Γ] [Countable Γ] [Countable I] [MeasurableSpace Y]
     [MulAction Γ I] [MulAction Γ Y] [Fintype J] (ν : Measure Y) [SFinite ν]
@@ -53,9 +51,9 @@ theorem unfold_span (Γ I Y A J : Type) [Group Γ] [Countable Γ] [Countable I] 
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {r : ℕ} (X : Data E r)
 
 /- English proof (translation)
-Establish `h : ∀ τ i, ‖dmin X.Gm x τ i‖ = 1` using `fun τ i => by`. Unfold `dmin lminor`. Rewrite using `[hx τ, sgnM, Matrix.submatrix_diagonal _ _ (Fin.castLE_injective _), Matrix.det_diagonal, norm_prod]`. Use `Finset.prod_eq_one fun a _ => ?_` and prove the remaining obligations. Simplify using `only [Function.comp_apply, sgn]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Apply the tactic sequence `split_ifs <;> simp`. Unfold `Data.pnorm`. Simplify using `[h]`.
+Apply the first step, then apply the next step to every resulting obligation. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules.
 -/
 theorem pnorm_of_gram (la : Wt X.Ψ r) (F : Frame X.Ψ r → ℂ) {x : Frame X.Ψ r}
     (hx : ∀ τ : X.Ψ, gram τ.1 X.Gm (mat x τ) = sgnM X) : X.pnorm la F x = ‖F x‖ := by
@@ -72,9 +70,9 @@ theorem pnorm_of_gram (la : Wt X.Ψ r) (F : Frame X.Ψ r → ℂ) {x : Frame X.�
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Unfold `bchar`. Rewrite using `[norm_prod]`. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[norm_prod]`. Use `Finset.prod_le_prod (fun _ _ => norm_nonneg _) fun i _ => ?_` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨k, hk | hk⟩` from `Int.eq_nat_or_neg (la τ i)`. Rewrite using `[hk, zpow_natCast, Int.natAbs_natCast, norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hb τ i).1 _`. Rewrite using `[hk, _root_.zpow_neg, zpow_natCast, Int.natAbs_neg, Int.natAbs_natCast, ← inv_pow, norm_pow]`. Conclude with `pow_le_pow_left₀ (norm_nonneg _) (hb τ i).2 _`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem norm_bchar_le {Ψ : Finset (E →+* ℂ)} (la : Wt Ψ r) (C : ℝ) {b : Frame Ψ r}
     (hb : ∀ τ i, ‖b τ i i‖ ≤ C ∧ ‖(b τ i i)⁻¹‖ ≤ C) :
@@ -91,9 +89,9 @@ theorem norm_bchar_le {Ψ : Finset (E →+* ℂ)} (la : Wt Ψ r) (C : ℝ) {b : 
     exact pow_le_pow_left₀ (norm_nonneg _) (hb τ i).2 _
 
 /- English proof (translation)
-Establish `h1 : Summable (u ∘ ((↑) : (𝓛 \ {L} : Set α) → α))` using `h`. Establish `h2 : Summable (u ∘ ((↑) : (𝓛 ∩ {L} : Set α) → α))` using `((Set.finite_singleton L).subset Set.inter_subset_right).summable u`. Rewrite `h1`, `h2` using `[summable_subtype_iff_indicator]`. Express the relevant statement in the definitionally equal form `Summable (u ∘ ((↑) : 𝓛 → α))`. Rewrite using `[summable_subtype_iff_indicator]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `(h2.add h1).congr fun x => ?_` and prove the remaining obligations. Apply the tactic sequence `by_cases hx : x ∈ 𝓛 <;> by_cases hL : x = L <;> simp [Set.indicator, hx, hL]`.
+Reduce the conclusion to the remaining proof obligations. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem summable_of_ne {α : Type} (𝓛 : Set α) (L : α) (u : α → ℝ)
     (h : Summable fun L' : {L' // L' ∈ 𝓛 ∧ L' ≠ L} => u L'.1) : Summable fun L' : 𝓛 => u L'.1 := by
@@ -107,9 +105,9 @@ theorem summable_of_ne {α : Type} (𝓛 : Set α) (L : α) (u : α → ℝ)
   by_cases hx : x ∈ 𝓛 <;> by_cases hL : x = L <;> simp [Set.indicator, hx, hL]
 
 /- English proof (translation)
-Use `⟨(∏ τ, ∏ i, K ^ (la τ i).natAbs) * B, fun F h1 h2 x hx => ?_⟩` and prove the remaining obligations. Take `⟨x', hx', b, hb, rfl, hbK⟩` from `hK x hx`. Establish `h3` using `norm_bchar_le la K fun τ i => hbK τ i i`. Rewrite using `[h1 x' (hd _ hx') b hb, norm_mul]`. Use `mul_le_mul h3 ?_ (norm_nonneg _) ((norm_nonneg _).trans h3)` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← pnorm_of_gram X la _ hx']`. Conclude with `h2 x' (hd _ hx')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem bound_on (la : Wt X.Ψ r) (S : Set (Frame X.Ψ r)) (K B : ℝ)
     (hd : ∀ x : Frame X.Ψ r, (∀ τ : X.Ψ, gram τ.1 X.Gm (mat x τ) = sgnM X) → x ∈ X.dom)
@@ -144,7 +142,7 @@ theorem bound_on (la : Wt X.Ψ r) (S : Set (Frame X.Ψ r)) (K B : ℝ)
 omit [IsCMField E] in
 
 /- English proof (translation)
-Establish `: Countable E` using `Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm`. Establish `: Countable (Matrix (Fin r) (Fin r) E)` using `inferInstanceAs (Countable (Fin r → Fin r → E))`. Conclude with `(Units.val_injective (α := Matrix (Fin r) (Fin r) E)).countable`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem countable_gl : Countable (GL (Fin r) E) := by
   have : Countable E := Countable.of_equiv _ (Module.finBasis ℚ E).equivFun.toEquiv.symm
@@ -152,7 +150,7 @@ theorem countable_gl : Countable (GL (Fin r) E) := by
   exact (Units.val_injective (α := Matrix (Fin r) (Fin r) E)).countable
 
 /- English proof (translation)
-Establish `: SigmaFinite (volume : Measure (Fin r → ℂ))` using `inferInstance`. Establish `: SigmaFinite (volume : Measure (Fin r → Fin r → ℂ))` using `inferInstance`. Establish `: SigmaFinite (volume : Measure (X.Ψ → Fin r → Fin r → ℂ))` using `inferInstance`. Use `infer_instance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem sFinite_frame : SFinite (volume : Measure (Frame X.Ψ r)) := by
   have : SigmaFinite (volume : Measure (Fin r → ℂ)) := inferInstance
@@ -161,9 +159,9 @@ theorem sFinite_frame : SFinite (volume : Measure (Frame X.Ψ r)) := by
   infer_instance
 
 /- English proof (translation)
-Take `⟨hcount, hmul, hone, D, hD, hD'⟩` from `LatFrame.exists_fundamentalDomain E r X Δ 𝓛 hun hlat hstab`. Establish `: Countable 𝓛` using `hcount.to_subtype`. Establish `: Countable (GL (Fin r) E)` using `countable_gl`. Use `sFinite_frame X` as an intermediate fact. Use `letI : MulAction Δ 𝓛 := { smul := fun γ L => ⟨mapL γ L, hstab γ γ.2 L L.2⟩ one_smul := fun L => Subtype.ext (hone _) mul_smul := fun γ γ' L => Subtype.ext (hmul _ _ _) }`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure.
 
-Establish `hae : ∀ᵐ y ∂(volume.restrict S), y ∈ S` using `ae_restrict_mem hmeas`. Conclude with `@unfold_span Δ 𝓛 (Frame X.Ψ r) A J _ _ _ MeasureSpace.toMeasurableSpace _ (frameAct X Δ) _ (volume.restrict S) _ (fun γ => hmp γ γ.2) (fun L => D L) (fun L => (hD L).1) (fun L => hae.mono fun y hy => hD' L L.2 y (hsub hy)) T (fun a L => f a L) (fun a ha L => hf a ha L L.2) hs e ( …`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem unfold_frames (Δ : Subgroup (GL (Fin r) E)) (𝓛 : Set (Lt E r)) (hun : ∀ γ ∈ Δ, IsUn X γ)
     (hlat : ∀ L ∈ 𝓛, L.FG ∧ Submodule.span E (L : Set (Fin r → E)) = ⊤)
@@ -198,7 +196,7 @@ theorem unfold_frames (Δ : Subgroup (GL (Fin r) E)) (𝓛 : Set (Lt E r)) (hun 
 omit [NumberField E] [IsCMField E] in
 
 /- English proof (translation)
-Establish `h5` using `h3.restrict_preimage hmeas`. Rewrite `h5` using `[show f ⁻¹' S = S from Set.ext h4]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem mp_restrict {Ψ : Finset (E →+* ℂ)} (S : Set (Frame Ψ r)) (hmeas : MeasurableSet S)
     (f : Frame Ψ r → Frame Ψ r) (h3 : MeasurePreserving f volume volume)
@@ -207,29 +205,27 @@ theorem mp_restrict {Ψ : Finset (E →+* ℂ)} (S : Set (Frame Ψ r)) (hmeas : 
   rwa [show f ⁻¹' S = S from Set.ext h4] at h5
 
 /- English proof (translation)
-Introduce `E _ _ _ r X g q0 hr bas idx n hs hn hrn M Δ 𝓛 Φ μ hM hS c c' F hF`. Take `⟨m, P, hP, hP0, hPi⟩` from `exists_invFam_rowHighest X.Ψ q0 X.p0 n c c' (by omega)`. Take `⟨a, θ, ha, hθ, hC1, hC2⟩` from `lattice_operator_coefficients E r X g bas idx n hs hn M Δ 𝓛 Φ μ hM hS`. Take `⟨κ, hκ, hker⟩` from `kernel_identity E r X g q0 hr bas idx n hs hn hrn M Δ 𝓛 Φ μ hM hS`. Use `replace hker := hker c c' m P hP hPi`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨C, hC⟩ : ∃ C : Lt E r → Lt E r → ℂ, ∀ L L', classSum M (fun Λ => ip (Φ L Λ) (Φ L' Λ)) = C L L'` from `⟨_, fun _ _ => rfl⟩`. Simplify using `only [hC] at hC1 hC2 hker`. Take `⟨F', hF', hFF⟩` from `Neumann.main E r X Δ 𝓛 μ (wtOf X hr c c' n) C a θ ha hθ (fun γ hγ L hL => ⟨hS.stab γ hγ L hL, (hS.mu γ hγ L hL).1⟩) (fun γ hγ x hx => (hS.un γ hγ).lact_mem hx) hC1 hC2 F hF`. Take `⟨δ₀, hδ₀, hslab⟩` from `thin_slab E r X`. Take `⟨δ₁, hδ₁, hint⟩` from `kern_integrableOn_slab E r X g q0 hr idx n c c' m P hn hP (by omega)`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ₂, hδ₂, hrep⟩` from `kern_reproducing E r X g q0 hr idx n c c' m P hn hP (by omega) hP0`. Take `⟨δ, hδ, h0, h1, h2⟩ : ∃ δ : ℝ, 0 < δ ∧ δ ≤ δ₀ ∧ δ ≤ δ₁ ∧ δ ≤ δ₂` from `⟨min δ₀ (min δ₁ δ₂), by positivity, min_le_left _ _, (min_le_right _ _).trans (min_le_left _ _), (min_le_right _ _).trans (min_le_right _ _)⟩`. Take `⟨hopen, hsub, horth, -, hun, ⟨K, hK⟩, -⟩` from `hslab δ hδ h0`. Use `replace hint := hint δ hδ h1`. Take `⟨ρ, hρ, hrep⟩` from `hrep δ hδ h2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hmeas : MeasurableSet (slab X δ)` using `hopen.measurableSet`. Take `⟨B, hB⟩` from `hF'.bdd`. Take `⟨B', hB0⟩` from `bound_on X (wtOf X hr c c' n) (slab X δ) K B (fun x hx => hsub (horth x hx)) hK`. Establish `hB' : ∀ L ∈ 𝓛, ∀ x ∈ slab X δ, ‖F' L x‖ ≤ B'` using `fun L hL => hB0 _ (hF'.bor L hL) (hB L hL)`. Establish `: Finite (Cls E n M)` using `(finite_cls_and_stab E n M hM).1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Equip the data with the indicated structure. Establish an intermediate fact.
 
-Use `letI : Fintype (Cls E n M) := Fintype.ofFinite _`. Establish `hae : ∀ᵐ y ∂(volume.restrict (slab X δ)), y ∈ slab X δ` using `ae_restrict_mem hmeas`. Establish `hi : ∀ x₁ ∈ X.dom, ∀ L ∈ 𝓛, Integrable (fun y => kern X hr idx P x₁ y * F' L y) (volume.restrict (slab X δ))` using `fun x₁ hx₁ L hL => Integrable.mul_bdd (c := B') (hint x₁ hx₁).1 (((hF'.hol L hL).continuousOn.mono hsub).aestronglyMeasurable hmeas) (hae.mono fun y hy => hB' L hL y hy)`. Establish `hmp : ∀ γ ∈ Δ, MeasurePreserving (lact γ : Frame X.Ψ r → Frame X.Ψ r) (volume.restrict (slab X δ)) (volume.restrict (slab X δ))` using `fun γ hγ => by`. Establish `e : (lact γ : Frame X.Ψ r → Frame X.Ψ r) = X.lmulC fun τ => (γ : Matrix (Fin r) (Fin r) E).map τ.1` using `rfl`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h3` using `hun (fun τ => (γ : Matrix (Fin r) (Fin r) E).map τ.1) fun τ v w => by rw [PerMove.hermC_unitary _ _ _ (hS.un γ hγ)]`. Rewrite using `[e]`. Conclude with `mp_restrict _ hmeas _ h3.1 h3.2.1`. Generalize the expression as in `kern X hr idx P = Kr at hker hint hrep hi`. Establish `hsum : ∀ p ∈ 𝓛 ×ˢ X.dom, Summable fun L : 𝓛 => ∫ y in slab X δ, ‖C p.1 L * (Kr p.2 y * F' L y)‖` using `fun p hp => by`.
+Replace the chosen expression with an arbitrary variable. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `Summable.of_nonneg_of_le (fun L => integral_nonneg fun y => norm_nonneg _) (fun L => ?_) ((summable_of_ne 𝓛 p.1 (fun L => ‖C p.1 L‖) (hC1 p.1 hp.1).2.1).mul_right (∫ y in slab X δ, ‖Kr p.2 y‖ * B'))` and prove the remaining obligations. Simplify using `only [norm_mul]`. Rewrite using `[integral_const_mul]`. Use `mul_le_mul_of_nonneg_left (integral_mono_ae ?_ ((hint p.2 hp.2).1.norm.mul_const _) (hae.mono fun y hy => ?_)) (norm_nonneg _)` and prove the remaining obligations. Simplify `(hi p.2 hp.2 L L.2).norm` using `only [norm_mul]`.
+Reduce the conclusion to the remaining proof obligations. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result.
 
-Conclude with `mul_le_mul_of_nonneg_left (hB' L L.2 y hy) (norm_nonneg _)`. Take `⟨th, hth⟩ : ∃ th : Lt E r → Lt E n → Fin m → Frame X.Ψ r → ℂ, ∀ L Λ j x, thP X hr bas idx (Φ L Λ) (P j) x = th L Λ j x` from `⟨_, fun _ _ _ _ => rfl⟩`. Simplify using `only [hth] at hker`. Take `⟨N, k, b, hb⟩` from `unfold_frames X Δ 𝓛 hS.un hS.lat hS.stab (slab X δ) hmeas hsub hmp (Lt E r × Frame X.Ψ r) (Cls E n M × Fin m) (𝓛 ×ˢ X.dom) (fun p L y => C p.1 L * (Kr p.2 y * F' L y)) (fun p hp L hL => (hi p.2 hp.2 L hL).const_mul _) hsum (fun j p => th p.1 (Quot.out j.1).1 j.2 p.2) (fun j L y = …`. Establish `h3` using `((hker p.1 hp.1 L hL p.2 hp.2 y (hsub hy)).mul_left κ⁻¹).mul_right (F' L y)`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Rewrite the conclusion using the stated equalities.
 
-Use `Eq.trans (tsum_congr fun γ => ?_) (h3.tsum_eq.trans ?_)` and prove the remaining obligations. Rewrite using `[hF'.aut γ γ.2 L hL y (hsub hy), Complex.inv_eq_conj (hS.mu γ γ.2 L hL).1]`. Clear the denominators using the available nonvanishing facts. Rewrite using `[classSum, finsum_eq_sum_of_fintype, Fintype.sum_prod_type]`. Simplify using `only [Finset.mul_sum, Finset.sum_mul]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun _ _ => Finset.sum_congr rfl fun _ _ => ?_` and prove the remaining obligations. Use the proof step `ring)`. Use `⟨N, fun i => (Quot.out (k i).1).1, fun i => P (k i).2, fun i => (ρ : ℂ)⁻¹ * b i, fun i => ⟨(Quot.out (k i).1).2, hP _⟩, fun L hL x hx => ?_⟩` and prove the remaining obligations. Establish `h3` using `hb (L, x) ⟨hL, hx⟩`. Establish `hρ' : (ρ : ℂ) ≠ 0` using `ofReal_ne_zero.2 hρ.ne'`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h4 : ∀ L' : 𝓛, ∫ y in slab X δ, C L L' * (Kr x y * F' L' y) = ρ * (C L L' * F' L' x)` using `fun L' => by`. Rewrite using `[integral_const_mul, hrep (F' L') (hF'.hol _ L'.2) (hF'.bor _ L'.2) ⟨B, hB _ L'.2⟩ x hx]`. Expand and normalize the polynomial expressions, which then agree. Simplify using `only [h4] at h3`. Rewrite `h3` using `[tsum_mul_left, ← hFF L hL x hx]`.
-
-Simplify using `only [mul_assoc, hth]`. Rewrite using `[← Finset.mul_sum, ← h3, inv_mul_cancel_left₀ hρ']`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem theta_span : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (r : ℕ) (X : Data E r) (g q0 : ℕ) (hr : X.p0 + q0 = r) (bas : (Fin g ⊕ Fin g → ℤ) ≃ₗ[ℤ] X.Λ) (idx : Fin g ≃ X.Ψ × Fin r) (n : ℕ), IsSympl X bas → Even n → 4 * r < n → ∀ (M : ℕ) (Δ : Subgroup (GL (Fin r) E)) (𝓛 : Set (Lt E r)) (Φ : Lt E r → Lt E n → TF n g) (μ : GL (Fin r) E → Lt E r → ℂ), 0 < M → IsSystem X bas idx M Δ 𝓛 Φ μ → ∀ (c : X.Ψ → Fin q0 → ℕ) (c' : X.Ψ → Fin X.p0 → ℕ) (F : Lt E r → Frame X.Ψ r → ℂ), IsForm X Δ 𝓛 μ (wtOf X hr c c' n) F → InSpan X hr bas idx M 𝓛 Φ (Harm.rowHighest ℂ c c' : Submodule ℂ (Harm.Poly ℂ X.Ψ q0 X.p0 (Fin n))) F := by
   intro E _ _ _ r X g q0 hr bas idx n hs hn hrn M Δ 𝓛 Φ μ hM hS c c' F hF

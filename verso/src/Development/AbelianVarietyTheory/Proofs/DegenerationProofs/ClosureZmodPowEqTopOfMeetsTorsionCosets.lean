@@ -3,11 +3,9 @@ import Mathlib
 namespace GlobalTheory.ThetaReal
 
 /- English proof (translation)
-Use `haveI : NeZero (n ^ J) := ⟨pow_ne_zero _ (by omega)⟩`. Take `⟨k, rfl⟩` from `ZMod.natCast_zmod_surjective y`. Rewrite `hy` using `[nsmul_eq_mul, ← Nat.cast_mul, ZMod.natCast_eq_zero_iff]`. Take `⟨j, rfl⟩ : ∃ j, J = j + 2` from `⟨J - 2, by omega⟩`. Establish `h1 : n * (n * n ^ j) ∣ n * k`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `: n * (n * n ^ j) = n ^ (j + 2)` using `by ring`. Rewrite using `[this]`. Conclude with `hy`. Establish `h2 : n * n ^ j ∣ k` using `Nat.dvd_of_mul_dvd_mul_left (by omega) h1`. Take `⟨c, rfl⟩` from `(Dvd.intro _ rfl : n ∣ n * n ^ j).trans h2`.
-
-Conclude with `⟨(c : ZMod (n ^ (j + 2))), by rw [nsmul_eq_mul, Nat.cast_mul]⟩`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem zmod_pow_exists_nsmul_of_nsmul_eq_zero (n J : ℕ) (hn : 1 ≤ n) (hJ : 2 ≤ J)
     (y : ZMod (n ^ J)) (hy : n • y = 0) : ∃ w : ZMod (n ^ J), y = n • w := by
@@ -23,19 +21,19 @@ theorem zmod_pow_exists_nsmul_of_nsmul_eq_zero (n J : ℕ) (hn : 1 ≤ n) (hJ : 
   exact ⟨(c : ZMod (n ^ (j + 2))), by rw [nsmul_eq_mul, Nat.cast_mul]⟩
 
 /- English proof (translation)
-Introduce `κ n J M hn hJ hM X hX`. Substitute `hM` using the available equality. Establish `step : ∀ a : κ → ZMod (n ^ J), ∃ w : κ → ZMod (n ^ J), a + n • w ∈ AddSubgroup.closure X`. Introduce `a`. Take `⟨y, hy, hay⟩` from `hX a`.
+Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `: ∀ i, ∃ w : ZMod (n ^ J), y i = n • w` using `fun i => zmod_pow_exists_nsmul_of_nsmul_eq_zero n J hn hJ (y i) (congrFun hy i)`. Use `choose w hw using this`. Use `⟨w, ?_⟩` and prove the remaining obligations. Establish `: n • w = y` using `funext fun i => (hw i).symm`. Rewrite using `[this]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `AddSubgroup.subset_closure hay`. Establish `ind : ∀ (i : ℕ) (a : κ → ZMod (n ^ J)), ∃ w : κ → ZMod (n ^ J), a + n ^ i • w ∈ AddSubgroup.closure X`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero => intro a; exact ⟨-a, by simp⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Consider the case `succ i ih`. Introduce `a`. Take `⟨w, hw⟩` from `ih a`. Take `⟨v, hv⟩` from `step (-w)`. Use `⟨v, ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h` using `(AddSubgroup.closure X).add_mem hw ((AddSubgroup.closure X).nsmul_mem hv (n ^ i))`. Establish `e : a + n ^ i • w + n ^ i • (-w + n • v) = a + n ^ (i + 1) • v`. Rewrite using `[smul_add, smul_neg, smul_smul, pow_succ]`. Normalize the expressions using the abelian group laws. Rewrite `h` using `[e]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[eq_top_iff]`. Introduce `a _`. Take `⟨w, hw⟩` from `ind J a`. Establish `: n ^ J • w = 0`. Use function extensionality and compare the values at `i`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `show n ^ J • w i = 0`. Rewrite using `[nsmul_eq_mul, ZMod.natCast_self, zero_mul]`. Rewrite `hw` using `[this, add_zero]`. Then use the resulting hypothesis.
+A detailed English derivation is pending.
 -/
 theorem closure_eq_top_of_meets_torsion_cosets :
     ∀ (κ : Type) (n J M : ℕ), 1 ≤ n → 2 ≤ J → M = n ^ J → ∀ X : Set (κ → ZMod M),

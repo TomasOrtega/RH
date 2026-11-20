@@ -12,7 +12,7 @@ def flw (α : ℂ) (e : Fin r → ℂ) (τ : E →+* ℂ) (G : Matrix (Fin r) (F
   fun a => f a + (α * hermC τ G (f a) e) • e
 
 /- English proof (translation)
-Use function extensionality and compare the values at `a`. Use `show hermC τ G e (f a + (α * hermC τ G (f a) e) • e) = hermC τ G e (f a)`. Rewrite using `[GramDeterminantReal.hC_add_right, GramDeterminantReal.hermC_smul_right, he, mul_zero, add_zero]`. Apply the tactic sequence `all_goals exact hG`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem cv_flw (hG : ∀ a b, τ (G b a) = conj (τ (G a b))) (e : Fin r → ℂ)
     (he : hermC τ G e e = 0) (α : ℂ) {n : ℕ} (f : Fin n → Fin r → ℂ) :
@@ -23,9 +23,9 @@ theorem cv_flw (hG : ∀ a b, τ (G b a) = conj (τ (G a b))) (e : Fin r → ℂ
   all_goals exact hG
 
 /- English proof (translation)
-Use extensionality with `a b`. Establish `hc` using `GramDeterminantReal.hC_conj hG`. Simplify using `only [Matrix.add_apply, Matrix.mul_apply, replicateCol, replicateRow, Matrix.of_apply, Finset.univ_unique, Finset.sum_singleton, GramDeterminantReal.gramF, flw]`. Rewrite using `[GramDeterminantReal.hC_add_left, GramDeterminantReal.hC_add_right, GramDeterminantReal.hC_add_right, GramDeterminantReal.hermC_smul_left, GramDeterminantReal.hermC_smul_left, GramDeterminantReal.hermC_smul_right, GramDeterminantReal.hermC_smul_right, he, hc e (f a)]`. Apply the tactic sequence `all_goals try exact hG`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [GramDeterminantReal.cv, map_mul]`. Rewrite using `[← hc (f b) e]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem gramF_flw (hG : ∀ a b, τ (G b a) = conj (τ (G a b))) (e : Fin r → ℂ)
     (he : hermC τ G e e = 0) (α : ℂ) {n : ℕ} (f : Fin n → Fin r → ℂ) :
@@ -45,7 +45,7 @@ theorem gramF_flw (hG : ∀ a b, τ (G b a) = conj (τ (G a b))) (e : Fin r → 
   ring
 
 /- English proof (translation)
-Simplify using `only [GramDeterminantReal.mt, GramDeterminantReal.yv, Matrix.vecMul, dotProduct, Finset.sum_mul]`. Conclude with `Finset.sum_comm`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem mt_y {n : ℕ} (f : Fin n → Fin r → ℂ) (e : Fin r → ℂ) :
     GramDeterminantReal.mt τ G f e = ∑ b, yv τ G f e b * conj (cv τ G f e b) := by
@@ -53,9 +53,9 @@ theorem mt_y {n : ℕ} (f : Fin n → Fin r → ℂ) (e : Fin r → ℂ) :
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[gramF_flw hG e he α f, Matrix.det_add_replicateCol_mul_replicateRow hA]`. Use `congr 1`. Rewrite using `[Matrix.det_unique]`. Simplify using `only [Matrix.add_apply, Matrix.one_apply_eq, Matrix.mul_apply, replicateCol, replicateRow, Matrix.of_apply, Finset.univ_unique, Finset.sum_singleton, GramDeterminantReal.mt, Finset.mul_sum, Finset.sum_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem det_flw (hG : ∀ a b, τ (G b a) = conj (τ (G a b))) (e : Fin r → ℂ)
     (he : hermC τ G e e = 0) (α : ℂ) {n : ℕ} (f : Fin n → Fin r → ℂ)
@@ -73,15 +73,13 @@ theorem det_flw (hG : ∀ a b, τ (G b a) = conj (τ (G a b))) (e : Fin r → �
   ring
 
 /- English proof (translation)
-Use `set s := α + conj α with hs`. Use `set m := GramDeterminantReal.mt τ G f e with hm`. Establish `hA' : IsUnit (gramF τ G (flw α e τ G f)).det`. Rewrite using `[det_flw hG e he α f hA]`. Conclude with `hA.mul (isUnit_iff_ne_zero.mpr h1)`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hyA : Matrix.vecMul (yv τ G f e) (gramF τ G f) = cv τ G f e`. Simplify using `only [GramDeterminantReal.yv, Matrix.vecMul_vecMul, Matrix.nonsing_inv_mul _ hA, Matrix.vecMul_one]`. Establish `hyB : Matrix.vecMul (yv τ G f e) (replicateCol Unit (fun a => s * conj (cv τ G f e a)) * replicateRow Unit (cv τ G f e)) = (s * m) • cv τ G f e`. Use function extensionality and compare the values at `j`. Simplify using `only [Matrix.vecMul, dotProduct, Matrix.mul_apply, replicateCol, replicateRow, Matrix.of_apply, Finset.univ_unique, Finset.sum_singleton, Pi.smul_apply, smul_eq_mul]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[hm, mt_y, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Establish `key : Matrix.vecMul (yv τ G f e) (gramF τ G (flw α e τ G f)) = (1 + s * m) • cv τ G f e`. Rewrite using `[gramF_flw hG e he α f, Matrix.vecMul_add, hyA, hyB, add_smul, one_smul]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hy : yv τ G (flw α e τ G f) e = (1 + s * m)⁻¹ • yv τ G f e`. Establish `h2 : yv τ G f e = (1 + s * m) • yv τ G (flw α e τ G f) e` using `by conv_rhs => rw [GramDeterminantReal.yv, cv_flw hG e he α f, ← Matrix.smul_vecMul, ← key, Matrix.vecMul_vecMul, Matrix.mul_nonsing_inv _ hA', Matrix.vecMul_one]`. Rewrite using `[h2, smul_smul, inv_mul_cancel₀ h1, one_smul]`. Rewrite using `[mt_y (flw α e τ G f) e, hy, cv_flw hG e he α f, div_eq_inv_mul]`. Simplify using `only [Pi.smul_apply, smul_eq_mul, mul_assoc, ← Finset.mul_sum]`.
-
-Use `congr 1`. Conclude with `(mt_y f e).symm`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem mt_flw (hG : ∀ a b, τ (G b a) = conj (τ (G a b))) (e : Fin r → ℂ)
     (he : hermC τ G e e = 0) (α : ℂ) {n : ℕ} (f : Fin n → Fin r → ℂ)

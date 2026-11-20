@@ -18,24 +18,24 @@ open Matrix
 variable (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Unfold `nabs`. Conclude with `MeasureTheory.distribHaarChar_pos` after adjusting the coercions.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem nabs_pos' (x : kˣ) : 0 < nabs k x := by
   unfold nabs; exact_mod_cast MeasureTheory.distribHaarChar_pos
 
 /- English proof (translation)
-Simplify using `[nabs]`.
+Simplify using the standard rewrite rules.
 -/
 theorem nabs_mul' (x y : kˣ) : nabs k (x * y) = nabs k x * nabs k y := by simp [nabs]
 
 open scoped Pointwise in
 
 /- English proof (translation)
-Use `borelize k`. Establish `hc : IsCompact (𝒪[k] : Set k)` using `IsNonarchimedeanLocalField.isCompact_closedBall k 1`. Establish `ho : IsOpen (𝒪[k] : Set k)` using `Valuation.isOpen_integer`. Set `K : TopologicalSpace.PositiveCompacts k` to `⟨⟨(𝒪[k] : Set k), hc⟩, by`. Rewrite using `[show interior ((⟨(𝒪[k] : Set k), hc⟩ : TopologicalSpace.Compacts k).carrier) = (𝒪[k] : Set k) from ho.interior_eq]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨0, zero_mem _⟩⟩`. Establish `h1 : MeasureTheory.Measure.addHaarMeasure K (𝒪[k] : Set k) = 1` using `MeasureTheory.Measure.addHaarMeasure_self`. Establish `hs : x • (𝒪[k] : Set k) = (𝒪[k] : Set k)`. Use extensionality with `y`. Rewrite using `[Set.mem_smul_set_iff_inv_smul_mem]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `show valuation k (((x⁻¹ : kˣ) : k) * y) ≤ 1 ↔ valuation k y ≤ 1`. Simplify using `[hx]`. Use `MeasureTheory.distribHaarChar_eq_of_measure_smul_eq_mul (μ := MeasureTheory.Measure.addHaarMeasure K) (s := (𝒪[k] : Set k)) (g := x) (r := 1) (by simp [h1]) (by simp [h1]) (by simp [hs])` as an intermediate fact. Simplify using `[nabs, this]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem nabs_eq_one {x : kˣ} (hx : valuation k (x : k) = 1) : nabs k x = 1 := by
   borelize k
@@ -71,13 +71,13 @@ Both sides reduce to the same expression.
 theorem val_absPow (s : ℂ) (x : kˣ) : (absPow k s x : ℂ) = ((nabs k x : ℝ) : ℂ) ^ s := rfl
 
 /- English proof (translation)
-The claim follows from `(Complex.ofReal_cpow (nabs_pos' k x).le s).symm`.
+A detailed English derivation is pending.
 -/
 theorem val_absPow_ofReal (s : ℝ) (x : kˣ) : (absPow k s x : ℂ) = ((nabs k x ^ s : ℝ) : ℂ) :=
   (Complex.ofReal_cpow (nabs_pos' k x).le s).symm
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `only [val_absPow, MonoidHom.mul_apply, Units.val_mul]`. Conclude with `Complex.cpow_add _ _ (by exact_mod_cast (nabs_pos' k x).ne')`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem absPow_add (s t : ℂ) : absPow k (s + t) = absPow k s * absPow k t := by
   ext x
@@ -85,19 +85,19 @@ theorem absPow_add (s t : ℂ) : absPow k (s + t) = absPow k s * absPow k t := b
   exact Complex.cpow_add _ _ (by exact_mod_cast (nabs_pos' k x).ne')
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[val_absPow]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 @[simp] theorem absPow_zero : absPow k 0 = 1 := by
   ext x; simp [val_absPow]
 
 /- English proof (translation)
-Use extensionality with `x`. Simplify using `[val_absPow, Complex.cpow_neg]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem absPow_neg (s : ℂ) : absPow k (-s) = (absPow k s)⁻¹ := by
   ext x; simp [val_absPow, Complex.cpow_neg]
 
 /- English proof (translation)
-Introduce `x hx` and use `by ext; simp [val_absPow, nabs_eq_one k hx]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnram_absPow (s : ℂ) : IsUnram (absPow k s) := fun x hx => by
   ext; simp [val_absPow, nabs_eq_one k hx]
@@ -105,9 +105,9 @@ theorem isUnram_absPow (s : ℂ) : IsUnram (absPow k s) := fun x hx => by
 variable {k} in
 
 /- English proof (translation)
-Establish `ho : IsOpen (𝒪[k] : Set k)` using `Valuation.isOpen_integer`. Establish `h1 : IsOpen ({x : kˣ | (x : k) ∈ (𝒪[k] : Set k)} ∩ {x : kˣ | ((x⁻¹ : kˣ) : k) ∈ (𝒪[k] : Set k)})` using `(ho.preimage Units.continuous_val).inter (ho.preimage Units.continuous_coe_inv)`. Use `Subgroup.isOpen_of_mem_nhds _ (g := 1) (Filter.mem_of_superset (h1.mem_nhds ?_) ?_)` and prove the remaining obligations. Conclude with `⟨one_mem 𝒪[k], by simpa using one_mem 𝒪[k]⟩`. Introduce and unpack `x ⟨hx, hx'⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Establish `a1 : valuation k (x : k) ≤ 1` using `hx`. Establish `a2 : valuation k ((x⁻¹ : kˣ) : k) ≤ 1` using `hx'`. Use `h x (le_antisymm a1 ?_)` and prove the remaining obligations. Rewrite `a2` using `[Units.val_inv_eq_inv_val, map_inv₀]`. Conclude with `(inv_le_one₀ (zero_lt_iff.2 (by simp))).1 a2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isSmoothChar_of_isUnram {χ : kˣ →* ℂˣ} (h : IsUnram χ) : IsSmoothChar χ := by
   have ho : IsOpen (𝒪[k] : Set k) := Valuation.isOpen_integer
@@ -127,7 +127,7 @@ def ord (x : kˣ) : ℤ :=
   -WithZero.log (IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k (valuation k (x : k)))
 
 /- English proof (translation)
-Simplify using `only [ord, Units.val_mul, map_mul]`. Rewrite using `[WithZero.log_mul (by simp) (by simp)]`. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ord_mul (x y : kˣ) : ord k (x * y) = ord k x + ord k y := by
   simp only [ord, Units.val_mul, map_mul]
@@ -137,18 +137,18 @@ theorem ord_mul (x y : kˣ) : ord k (x * y) = ord k x + ord k y := by
 variable {k} in
 
 /- English proof (translation)
-Simplify using `[ord, hx]`.
+Simplify using the standard rewrite rules.
 -/
 theorem ord_eq_zero {x : kˣ} (hx : valuation k (x : k) = 1) : ord k x = 0 := by simp [ord, hx]
 
 variable {k} in
 
 /- English proof (translation)
-Use `set φ := IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k`. Establish `h0 : φ (uniformizer k) ≠ 0` using `by simp`. Establish `key : φ (uniformizer k) = WithZero.exp (-1)`. Apply `le_antisymm` to reduce the goal to its premises. Establish `: φ (uniformizer k) < φ 1` using `φ.strictMono uniformizer_lt_one`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[map_one, ← WithZero.exp_log h0, ← WithZero.exp_zero, WithZero.exp_lt_exp]`. Rewrite using `[← WithZero.exp_log h0, WithZero.exp_le_exp]`. Use linear arithmetic over natural numbers and integers. Establish `: φ.symm (WithZero.exp (-1)) ≤ uniformizer k`. Rewrite using `[le_uniformizer_iff, ← map_one φ.symm]`.
+Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Conclude with `φ.symm.strictMono (by rw [← WithZero.exp_zero, WithZero.exp_lt_exp]; omega)`. Simplify using `using φ.strictMono.monotone this`. Simplify using `[ord, hx, φ, key]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem ord_eq_one {x : kˣ} (hx : valuation k (x : k) = uniformizer k) : ord k x = 1 := by
   set φ := IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k
@@ -168,9 +168,9 @@ theorem ord_eq_one {x : kˣ} (hx : valuation k (x : k) = uniformizer k) : ord k 
 variable {k} in
 
 /- English proof (translation)
-Use `⟨fun h => ?_, ord_eq_zero⟩` and prove the remaining obligations. Use `set φ := IsNonarchimedeanLocalField.valueGroupWithZeroIsoInt k`. Establish `h0 : φ (valuation k (x : k)) ≠ 0` using `by simp`. Establish `h1 : WithZero.log (φ (valuation k (x : k))) = 0` using `neg_eq_zero.1 h`. Apply `φ.strictMono.injective` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_one, ← WithZero.exp_log h0, h1, WithZero.exp_zero]`.
+A detailed English derivation is pending.
 -/
 theorem ord_eq_zero_iff {x : kˣ} : ord k x = 0 ↔ valuation k (x : k) = 1 := by
   refine ⟨fun h => ?_, ord_eq_zero⟩
@@ -191,13 +191,13 @@ Both sides reduce to the same expression.
 theorem unrChar_apply (α : ℂˣ) (x : kˣ) : unrChar k α x = α ^ ord k x := rfl
 
 /- English proof (translation)
-Introduce `x hx` and use `by rw [unrChar_apply, ord_eq_zero hx, zpow_zero]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isUnram_unrChar (α : ℂˣ) : IsUnram (unrChar k α) := fun x hx => by
   rw [unrChar_apply, ord_eq_zero hx, zpow_zero]
 
 /- English proof (translation)
-Rewrite using `[unrChar_apply, ord_eq_one hx, zpow_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem unrChar_uniformizer (α : ℂˣ) {x : kˣ} (hx : valuation k (x : k) = uniformizer k) :
     unrChar k α x = α := by
@@ -206,9 +206,9 @@ theorem unrChar_uniformizer (α : ℂˣ) {x : kˣ} (hx : valuation k (x : k) = u
 variable {k} in
 
 /- English proof (translation)
-Set `o : kˣ →* Multiplicative ℤ` to `MonoidHom.mk' (fun x => .ofAdd (ord k x)) fun x y => by`. Rewrite using `[ord_mul, ofAdd_add]`. Use `MonoidHom.ext fun x => ?_` and prove the remaining obligations. Establish `h1 : o (x / ϖ ^ ord k x) = 1`. Rewrite using `[map_div, map_zpow, show o ϖ = .ofAdd 1 from congrArg Multiplicative.ofAdd (ord_eq_one hϖ), ← ofAdd_zsmul, smul_eq_mul, mul_one]`.
+Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `div_self' _`. Establish `h2` using `h _ (ord_eq_zero_iff.1 (ofAdd_eq_one.1 h1))`. Rewrite `h2` using `[map_div, map_zpow, div_eq_one]`. Conclude with `h2`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_unrChar {χ : kˣ →* ℂˣ} (h : IsUnram χ) {ϖ : kˣ}
     (hϖ : valuation k (ϖ : k) = uniformizer k) : χ = unrChar k (χ ϖ) := by
@@ -244,7 +244,7 @@ def detRep (n : Type) [Fintype n] [DecidableEq n] (χ : Rˣ →* ℂˣ) : Repres
   ofChar (detChar n χ)
 
 /- English proof (translation)
-Use `Units.continuous_iff.2 ⟨Units.continuous_val.matrix_det, ?_⟩` and prove the remaining obligations. Simplify using `only [← map_inv]`. Conclude with `Units.continuous_coe_inv.matrix_det`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem continuous_glDet [TopologicalSpace R] [IsTopologicalRing R] :
     Continuous (GeneralLinearGroup.det : GL n R → Rˣ) := by
@@ -253,7 +253,7 @@ theorem continuous_glDet [TopologicalSpace R] [IsTopologicalRing R] :
   exact Units.continuous_coe_inv.matrix_det
 
 /- English proof (translation)
-The claim follows from `h.comp _ continuous_glDet`.
+A detailed English derivation is pending.
 -/
 theorem IsSmoothChar.detChar [TopologicalSpace R] [IsTopologicalRing R] {χ : Rˣ →* ℂˣ}
     (h : IsSmoothChar χ) : IsSmoothChar (detChar n χ) :=
@@ -266,7 +266,7 @@ def torusChar {n : Type} [Fintype n] (χ : n → Rˣ →* ℂˣ) : (n → Rˣ) �
   ∏ i, (χ i).comp (Pi.evalMonoidHom (fun _ => Rˣ) i)
 
 /- English proof (translation)
-Simplify using `[torusChar, MonoidHom.finsetProd_apply]`.
+Simplify using the standard rewrite rules.
 -/
 @[simp] theorem torusChar_apply {n : Type} [Fintype n] (χ : n → Rˣ →* ℂˣ) (t : n → Rˣ) :
     torusChar χ t = ∏ i, χ i (t i) := by
@@ -284,20 +284,20 @@ def deltaHalf (m : α → Type) [∀ a, Fintype (m a)] [∀ a, DecidableEq (m a)
   ∏ a, (detChar (m a) (absPow k ((modExp m a : ℂ) / 2))).comp (Pi.evalMonoidHom (fun a => GL (m a) k) a)
 
 /- English proof (translation)
-Simplify using `[deltaHalf, MonoidHom.finsetProd_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem deltaHalf_apply (g : Levi k m) :
     deltaHalf k m g = ∏ a, absPow k ((modExp m a : ℂ) / 2) (GeneralLinearGroup.det (g a)) := by
   simp [deltaHalf, MonoidHom.finsetProd_apply]
 
 /- English proof (translation)
-The claim follows from `Finset.prod_pos fun _ _ => zpow_pos (nabs_pos' k _) _`.
+A detailed English derivation is pending.
 -/
 theorem modulus_pos (g : Levi k m) : 0 < modulus k m g :=
   Finset.prod_pos fun _ _ => zpow_pos (nabs_pos' k _) _
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply, Units.coe_prod, modulus, Real.sqrt_prod _ fun _ _ => (zpow_pos (nabs_pos' k _) _).le, Complex.ofReal_prod]`. Use `Finset.prod_congr rfl fun a _ => ?_` and prove the remaining obligations. Establish `: ((modExp m a : ℂ) / 2) = (((modExp m a : ℝ) * (1 / 2) : ℝ) : ℂ)` using `by push_cast; ring`. Rewrite using `[this, val_absPow_ofReal, Real.sqrt_eq_rpow, Real.rpow_mul (nabs_pos' k _).le, Real.rpow_intCast]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem val_deltaHalf (g : Levi k m) : (deltaHalf k m g : ℂ) = (√(modulus k m g) : ℝ) := by
   rw [deltaHalf_apply, Units.coe_prod, modulus,
@@ -307,7 +307,7 @@ theorem val_deltaHalf (g : Levi k m) : (deltaHalf k m g : ℂ) = (√(modulus k 
   rw [this, val_absPow_ofReal, Real.sqrt_eq_rpow, Real.rpow_mul (nabs_pos' k _).le, Real.rpow_intCast]
 
 /- English proof (translation)
-Unfold `deltaHalf`. Use `Finset.prod_induction _ IsSmoothChar (fun _ _ => IsSmoothChar.mul) ?_ fun a _ => ?_` and prove the remaining obligations. Unfold `IsSmoothChar`. Simplify using the standard rewrite rules. Conclude with `(isSmoothChar_of_isUnram (isUnram_absPow k _)).detChar.comp _ (continuous_apply a)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSmoothChar_deltaHalf : IsSmoothChar (deltaHalf k m) := by
   unfold deltaHalf
@@ -325,7 +325,7 @@ def parInd (e : (Σ a, m a) ≃ n) (ρ : Representation ℂ (Levi k m) W) :
   smInd (parab k e) ((twist ρ (deltaHalf k m)).comp (leviProj k e))
 
 /- English proof (translation)
-The claim follows from `f.1.2 p g`.
+A detailed English derivation is pending.
 -/
 theorem parInd_law (e : (Σ a, m a) ≃ n) (ρ : Representation ℂ (Levi k m) W)
     (f : IndSp e ρ)
@@ -341,7 +341,7 @@ Both sides reduce to the same expression.
     (parInd e ρ g f).1.1 x = f.1.1 (x * g) := rfl
 
 /- English proof (translation)
-The claim follows from `isSmooth_smoothRep _`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_parInd (e : (Σ a, m a) ≃ n) (ρ : Representation ℂ (Levi k m) W) :
     IsSmooth (parInd e ρ) := isSmooth_smoothRep _
@@ -367,14 +367,14 @@ theorem jac_mk (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) V) (g :
       (((deltaHalf k m g)⁻¹ : ℂˣ) : ℂ) • Submodule.Quotient.mk (π (leviEmb k e g) v) := rfl
 
 /- English proof (translation)
-The claim follows from `isSmooth_jacquet hπ _ _ _ (continuous_leviEmb k e)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_jacU (e : (Σ a, m a) ≃ n) {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) :
     IsSmooth (jacU e π) :=
   isSmooth_jacquet hπ _ _ _ (continuous_leviEmb k e)
 
 /- English proof (translation)
-The claim follows from `isSmooth_twist (isSmooth_jacU e hπ) (isSmoothChar_deltaHalf k).inv`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_jac (e : (Σ a, m a) ≃ n) {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) :
     IsSmooth (jac e π) :=
@@ -387,7 +387,7 @@ def jacMap (e : (Σ a, m a) ≃ n) {π : Representation ℂ (GL n k) V} {τ : Re
 omit [∀ a, DecidableEq (m a)] in
 
 /- English proof (translation)
-Unfold `modExp`. Rewrite using `[neg_sub]`. Both sides reduce to the same expression.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem modExp_opp (a : α) :
     modExp (fun a : αᵒᵈ => m (OrderDual.ofDual a)) (OrderDual.toDual a) = -modExp m a := by
@@ -396,9 +396,9 @@ theorem modExp_opp (a : α) :
   rfl
 
 /- English proof (translation)
-Rewrite using `[deltaHalf_apply k g, ← Finset.prod_inv_distrib]`. Use `(deltaHalf_apply k (m := fun a : αᵒᵈ => m (OrderDual.ofDual a)) g).trans (Finset.prod_congr rfl fun a _ => ?_)` and prove the remaining obligations. Establish `key : ∀ (z : ℤ) (x : kˣ), z = -modExp m a → absPow k ((z : ℂ) / 2) x = (absPow k ((modExp m a : ℂ) / 2) x)⁻¹`. Introduce and unpack `_ x rfl`. Rewrite using `[Int.cast_neg, neg_div, absPow_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `key _ _ (modExp_opp (m := m) a)`.
+Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem deltaHalf_opp (g : Levi k m) :
     deltaHalf k (fun a : αᵒᵈ => m (OrderDual.ofDual a)) g = (deltaHalf k m g)⁻¹ := by
@@ -430,7 +430,7 @@ def jacLower (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) V) :
   twist (jacquet π (unipRadLower k e) (leviEmb k e) (leviEmb_mem_normalizer_lower k e)) (deltaHalf k m)
 
 /- English proof (translation)
-Establish `h : deltaHalf k m g = (deltaHalf k (fun a : αᵒᵈ => m (OrderDual.ofDual a)) g)⁻¹` using `((inv_inv _).symm.trans (congrArg _ (deltaHalf_opp g).symm))`. Conclude with `congrArg (fun c : ℂˣ => (c : ℂ) • jacU (opp e) π g) h`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem jacLower_eq (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) V) (g : Levi k m) :
     jacLower e π g = jac (opp e) π g := by
@@ -439,7 +439,7 @@ theorem jacLower_eq (e : (Σ a, m a) ≃ n) (π : Representation ℂ (GL n k) V)
   exact congrArg (fun c : ℂˣ => (c : ℂ) • jacU (opp e) π g) h
 
 /- English proof (translation)
-The claim follows from `isSmooth_twist (isSmooth_jacquet hπ _ _ _ (continuous_leviEmb k e)) (isSmoothChar_deltaHalf k)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_jacLower (e : (Σ a, m a) ≃ n) {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) :
     IsSmooth (jacLower e π) :=
@@ -454,9 +454,9 @@ section Two
 variable {a b : Type} [Fintype a] [DecidableEq a] [Fintype b] [DecidableEq b]
 
 /- English proof (translation)
-Establish `h1 : modExp (Two a b) false = Fintype.card b`. Simplify using `[modExp, Finset.sum_filter]`. Establish `h2 : modExp (Two a b) true = -Fintype.card a`. Simplify using `[modExp, Finset.sum_filter]`. Rewrite using `[deltaHalf_apply, Fintype.prod_bool, h1, h2, mul_comm]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Use `push_cast`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression.
 -/
 theorem deltaHalf_two (g : GL a k × GL b k) :
     deltaHalf k (Two a b) (leviTwo k a b g) =
@@ -489,14 +489,14 @@ def jac₂Lower (e : a ⊕ b ≃ n) (π : Representation ℂ (GL n k) V) :
   (jacLower (two e) π).comp (leviTwo k a b).toMonoidHom
 
 /- English proof (translation)
-The claim follows from `isSmooth_comp (isSmooth_jac _ hπ) _ (continuous_leviTwo k)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_jac₂ (e : a ⊕ b ≃ n) {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) :
     IsSmooth (jac₂ e π) :=
   isSmooth_comp (isSmooth_jac _ hπ) _ (continuous_leviTwo k)
 
 /- English proof (translation)
-The claim follows from `isSmooth_comp (isSmooth_jacLower _ hπ) _ (continuous_leviTwo k)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_jac₂Lower (e : a ⊕ b ≃ n) {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) :
     IsSmooth (jac₂Lower e π) :=
@@ -506,17 +506,17 @@ def prod₂ {r t : ℕ} (π₁ : Representation ℂ (GL (Fin r) k) V) (π₂ : R
   ind₂ (stdSum (rfl : r + t = r + t)) (extTensor π₁ π₂)
 
 /- English proof (translation)
-The claim follows from `isSmooth_parInd _ _`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_prod₂ {r t : ℕ} (π₁ : Representation ℂ (GL (Fin r) k) V)
     (π₂ : Representation ℂ (GL (Fin t) k) W) : IsSmooth (prod₂ π₁ π₂) := isSmooth_parInd _ _
 
 /- English proof (translation)
-Take `⟨v, rfl⟩` from `Submodule.Quotient.mk_surjective _ x`. Establish `h` using `jac_mk (two e) (detRep n χ) (leviTwo k a b g) v`. Establish `h2 : detRep n χ (leviEmb k (two e) (leviTwo k a b g)) v = ((χ (GeneralLinearGroup.det g.1) * χ (GeneralLinearGroup.det g.2) : ℂˣ) : ℂ) • v`. Rewrite using `[← map_mul, ← det_emb₂ k e g]`. Conclude with `ofChar_apply _ _ _`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[h2, Submodule.Quotient.mk_smul, smul_smul, deltaHalf_two]`. Use `h.trans ?_` and prove the remaining obligations. Use `congr 1`. Rewrite using `[← Units.val_mul]`. Use `congr 1`.
+Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Simplify using `only [detChar_apply, MonoidHom.mul_apply, neg_div, absPow_neg, MonoidHom.inv_apply, mul_inv, inv_inv]`. Simplify using `only [mul_comm, mul_left_comm, mul_assoc]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem jac₂_detRep (e : a ⊕ b ≃ n) (χ : kˣ →* ℂˣ) (g : GL a k × GL b k)
     (x : Jacquet (detRep n χ) (unipRad k (two e))) :
@@ -541,7 +541,7 @@ theorem jac₂_detRep (e : a ⊕ b ≃ n) (χ : kˣ →* ℂˣ) (g : GL a k × G
 end Two
 
 /- English proof (translation)
-Use `Submodule.span_eq_bot.2 ?_` and prove the remaining obligations. Introduce and unpack `_ ⟨u, v, rfl⟩`. Simplify using `[detRep, det_eq_one_of_mem_unipRad R u.2]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules.
 -/
 theorem twKer_detRep {R : Type} [CommRing R] (e : (Σ a, m a) ≃ n) (χ : Rˣ →* ℂˣ) :
     twKer (detRep n χ) (unipRad R e) 1 = ⊥ := by
@@ -572,9 +572,9 @@ section Borel
 variable [LinearOrder n]
 
 /- English proof (translation)
-Establish `hd : ∀ i, GeneralLinearGroup.det (leviTorus k n t i) = t i` using `congrFun ((leviTorus k n).left_inv t)`. Establish `hq : ∀ x y : kˣ, nabs k (x / y) = nabs k x / nabs k y` using `fun x y => by simp [nabs]`. Simplify using `only [modulus, hd, modExp, hq, Finset.prod_div_distrib, Fintype.card_unique, Nat.cast_one, Finset.sum_const, nsmul_eq_mul, mul_one, zpow_sub₀ (nabs_pos' k _).ne', zpow_natCast, Finset.prod_const]`. Use `congr 1`. Simplify using `only [← Finset.prod_const, Finset.prod_filter]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Conclude with `Finset.prod_comm`.
+A detailed English derivation is pending.
 -/
 theorem modulus_torus {n : Type} [Fintype n] [LinearOrder n] (t : n → kˣ) :
     modulus k (fun _ : n => Unit) (leviTorus k n t) =
@@ -607,13 +607,13 @@ theorem jacBU_mk (π : Representation ℂ (GL n k) V) (t : n → kˣ) (v : V) :
     jacBU π t (Submodule.Quotient.mk v) = Submodule.Quotient.mk (π (diagT k n t) v) := rfl
 
 /- English proof (translation)
-The claim follows from `isSmooth_comp (isSmooth_jacU _ hπ) _ (continuous_leviTorus k n)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_jacBU {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) : IsSmooth (jacBU π) :=
   isSmooth_comp (isSmooth_jacU _ hπ) _ (continuous_leviTorus k n)
 
 /- English proof (translation)
-The claim follows from `isSmooth_comp (isSmooth_jac _ hπ) _ (continuous_leviTorus k n)`.
+A detailed English derivation is pending.
 -/
 theorem isSmooth_jacB {π : Representation ℂ (GL n k) V} (hπ : IsSmooth π) : IsSmooth (jacB π) :=
   isSmooth_comp (isSmooth_jac _ hπ) _ (continuous_leviTorus k n)
@@ -637,12 +637,12 @@ def torusO (n : Type) : Subgroup (n → kˣ) where
     simp [ht i]
 
 /- English proof (translation)
-The claim follows from `Subgroup.map_le_range _ _`.
+A detailed English derivation is pending.
 -/
 theorem iwahori_le_KO : iwahori k n ≤ KO k n := Subgroup.map_le_range _ _
 
 /- English proof (translation)
-The claim follows from `Subgroup.map_mono fun g hg => by rw [Subgroup.mem_comap, MonoidHom.mem_ker.1 hg] exact one_mem _`.
+A detailed English derivation is pending.
 -/
 theorem KOne_le_iwahori : KOne k n ≤ iwahori k n :=
   Subgroup.map_mono fun g hg => by
@@ -652,9 +652,9 @@ theorem KOne_le_iwahori : KOne k n ≤ iwahori k n :=
 variable {k n}
 
 /- English proof (translation)
-Establish `key : ∀ x : 𝒪[k], IsLocalRing.residue 𝒪[k] x = 0 ↔ valuation k (algebraMap 𝒪[k] k x) < 1`. Introduce `x`. Rewrite using `[IsLocalRing.residue_eq_zero_iff, IsLocalRing.mem_maximalIdeal, mem_nonunits_iff, (Valuation.integer.integers (valuation k)).isUnit_iff_valuation_eq_one]`. Conclude with `⟨fun h => lt_of_le_of_ne x.2 h, fun h => h.ne⟩`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨h, hh, rfl⟩`. Conclude with `⟨⟨h, rfl⟩, fun i j hij => (key _).1 ((mem_borel _).1 hh i j hij)⟩`. Introduce and unpack `⟨⟨h, rfl⟩, hh⟩`. Conclude with `⟨h, (mem_borel _).2 fun i j hij => (key _).2 (hh i j hij), rfl⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_iwahori {g : GL n k} :
     g ∈ iwahori k n ↔ g ∈ KO k n ∧ ∀ i j, j < i → valuation k ((g : Matrix n n k) i j) < 1 := by
@@ -670,9 +670,9 @@ theorem mem_iwahori {g : GL n k} :
     exact ⟨h, (mem_borel _).2 fun i j hij => (key _).2 (hh i j hij), rfl⟩
 
 /- English proof (translation)
-Set `u : n → 𝒪[k]ˣ` to `fun i => ⟨⟨t i, (ht i).le⟩, ⟨((t i)⁻¹ : kˣ), (inv_mem ht i).le⟩, Subtype.ext (t i).mul_inv, Subtype.ext (t i).inv_mul⟩`. Use `mem_iwahori.2 ⟨⟨diagT _ n u, ?_⟩, fun i j hij => ?_⟩` and prove the remaining obligations. Use extensionality with `i j show algebraMap 𝒪[k] k ((diagT _ n u : Matrix n n 𝒪[k]) i j) = _`. Rewrite using `[val_diagT, val_diagT, diagonal_apply, diagonal_apply]`. Use `split_ifs`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Simplify using the standard rewrite rules. Rewrite using `[val_diagT, diagonal_apply_ne _ hij.ne']`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diagT_mem_iwahori {t : n → kˣ} (ht : t ∈ torusO k n) : diagT k n t ∈ iwahori k n := by
   let u : n → 𝒪[k]ˣ := fun i => ⟨⟨t i, (ht i).le⟩, ⟨((t i)⁻¹ : kˣ), (inv_mem ht i).le⟩,
@@ -726,14 +726,14 @@ def detLevi (e : (Σ a, m a) ≃ n) (χ : kˣ →* ℂˣ) : Levi k m →* ℂˣ 
   (detChar n χ).comp (leviEmb k e) * (deltaHalf k m)⁻¹
 
 /- English proof (translation)
-Simplify using `[detLevi, det_leviEmb, deltaHalf_apply, neg_div, absPow_neg, Finset.prod_mul_distrib]`.
+Simplify using the standard rewrite rules.
 -/
 theorem detLevi_apply (e : (Σ a, m a) ≃ n) (χ : kˣ →* ℂˣ) (g : Levi k m) :
     detLevi e χ g = ∏ a, (χ * absPow k (-(modExp m a : ℂ) / 2)) (GeneralLinearGroup.det (g a)) := by
   simp [detLevi, det_leviEmb, deltaHalf_apply, neg_div, absPow_neg, Finset.prod_mul_distrib]
 
 /- English proof (translation)
-Use `.of_surjective ⟨(twKer (detRep n χ) (unipRad k e) 1).liftQ LinearMap.id (by rw [twKer_detRep]; exact bot_le), fun g => ?_⟩ fun x => ⟨Submodule.Quotient.mk x, rfl⟩` and prove the remaining obligations. Use `Submodule.linearMap_qext _ (LinearMap.ext fun v => ?_)` and prove the remaining obligations. Use `show (((deltaHalf k m g)⁻¹ : ℂˣ) : ℂ) • detRep n χ (leviEmb k e g) v = ofChar (detLevi e χ) g v`. Simplify using `[detRep, detLevi, mul_comm, mul_left_comm]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSubquotient_jac_detRep (e : (Σ a, m a) ≃ n) (χ : kˣ →* ℂˣ) :
     IsSubquotient (ofChar (detLevi e χ)) (jac e (detRep n χ)) := by
@@ -744,13 +744,11 @@ theorem isSubquotient_jac_detRep (e : (Σ a, m a) ≃ n) (χ : kˣ →* ℂˣ) :
   simp [detRep, detLevi, mul_comm, mul_left_comm]
 
 /- English proof (translation)
-Set `f : ℂ →ₗ[ℂ] IndSp e (ofChar (detLevi e χ))` to `{ toFun := fun c => ⟨⟨fun g => (detChar n χ g : ℂ) * c, fun p g => by`. Establish `: GeneralLinearGroup.det (leviEmb k e (leviProj k e p)) = GeneralLinearGroup.det (p : GL n k)` using `by rw [det_leviEmb, det_parab]`. Use `show _ = (deltaHalf k m _ : ℂ) • ofChar (detLevi e χ) (leviProj k e p) _`. Simplify using `[detLevi, this, mul_assoc, mul_left_comm (deltaHalf k m (leviProj k e p) : ℂ)]⟩,`. Use `mem_smoothPart_of_nhds (Filter.mem_of_superset (IsOpen.mem_nhds (hχ.detChar (n := n)) (one_mem _)) fun g hg => by`.
+Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hg' : detChar n χ g = 1` using `hg`. Apply `Subtype.ext` to reduce the goal to its premises. Use function extensionality and compare the values at `x`. Use `show (detChar n χ (x * g) : ℂ) * c = (detChar n χ x : ℂ) * c`. Rewrite using `[map_mul, hg', mul_one])⟩`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use the proof step `map_add' := fun c d => by ext g; exact mul_add _ _ _`. Use the proof step `map_smul' := fun c d => by ext g; exact mul_left_comm _ _ _ }`. Use `.of_injective ⟨f, fun g => ?_⟩ fun c d h => ?_` and prove the remaining obligations. Use `LinearMap.ext fun c => Subtype.ext (Subtype.ext (funext fun x => ?_)) show (detChar n χ x : ℂ) * (detRep n χ g c) = (detChar n χ (x * g) : ℂ) * c` and prove the remaining obligations. Simplify using `[detRep, mul_assoc]`.
-
-Simplify `congrFun (congrArg (fun φ => φ.1.1) h) 1` using `[f]`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem isSubquotient_detRep_parInd (e : (Σ a, m a) ≃ n) {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     IsSubquotient (detRep n χ) (parInd e (ofChar (detLevi e χ))) := by
@@ -776,7 +774,7 @@ theorem isSubquotient_detRep_parInd (e : (Σ a, m a) ≃ n) {χ : kˣ →* ℂˣ
   · simpa [f] using congrFun (congrArg (fun φ => φ.1.1) h) 1
 
 /- English proof (translation)
-Establish `h1 : Finset.univ.filter (fun b => i < b) = Finset.Ioi i` using `by ext; simp`. Establish `h2 : Finset.univ.filter (fun b => b < i) = Finset.Iio i` using `by ext; simp`. Use `i.2` as an intermediate fact. Simplify using `only [modExp, hX, h1, h2, Finset.sum_const, Fin.card_Ioi, Fin.card_Iio, Nat.cast_one, nsmul_eq_mul, mul_one]`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers.
 -/
 theorem modExp_fin {N : ℕ} (X : Fin N → Type) [∀ i, Fintype (X i)] (hX : ∀ i, Fintype.card (X i) = 1)
     (i : Fin N) : modExp X i = (N : ℤ) - 1 - 2 * (i : ℕ) := by
@@ -788,9 +786,9 @@ theorem modExp_fin {N : ℕ} (X : Fin N → Type) [∀ i, Fintype (X i)] (hX : �
   omega
 
 /- English proof (translation)
-Set `e : (Σ _ : Fin N, Fin 1) ≃ Fin N` to `Equiv.sigmaUnique _ _`. Use `⟨N, fun _ => 1, e, i, rfl, ℂ, inferInstance, inferInstance, ofChar (detLevi e χ), isIrreducible_ofChar _, isSubquotient_jac_detRep e χ, fun g y => ?_⟩` and prove the remaining obligations. Rewrite using `[ofChar_apply, detLevi_apply, Finset.prod_eq_single i, Pi.mulSingle_eq_same, modExp_fin _ (fun _ => by simp), smul_eq_mul]`. Use `congr 6`. Use `push_cast`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations.
 
-Expand and normalize the polynomial expressions, which then agree. Introduce `j _ hj`. Rewrite using `[Pi.mulSingle_eq_of_ne hj, map_one, map_one]`. Simplify using the standard rewrite rules.
+Expand and normalize the polynomial expressions, which then agree. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem inSupport_detRep {N : ℕ} (χ : kˣ →* ℂˣ) (i : Fin N) :
     InSupport (detRep (Fin N) χ) (χ * absPow k (((i : ℕ) : ℂ) - ((N : ℂ) - 1) / 2)) := by
@@ -807,9 +805,9 @@ theorem inSupport_detRep {N : ℕ} (χ : kˣ →* ℂˣ) (i : Fin N) :
   · simp
 
 /- English proof (translation)
-Use `(Submodule.ne_bot_iff _).2 ⟨1, ?_, one_ne_zero⟩` and prove the remaining obligations. Introduce and unpack `⟨_, g, rfl⟩`. Establish `: χ (GeneralLinearGroup.det (GeneralLinearGroup.map (algebraMap 𝒪[k] k) g)) = 1`. Apply `h` to reduce the goal to its premises. Establish `h1 : ((GeneralLinearGroup.det (GeneralLinearGroup.map (algebraMap 𝒪[k] k) g) : kˣ) : k) = algebraMap 𝒪[k] k (GeneralLinearGroup.det g : 𝒪[k]ˣ)` using `((algebraMap 𝒪[k] k).map_det _).symm`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Rewrite using `[h1]`. Conclude with `(Valuation.integer.integers (valuation k)).one_of_isUnit (Units.isUnit _)`. Simplify using `[detRep, this]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isSpherical_detRep {χ : kˣ →* ℂˣ} (h : IsUnram χ) : IsSpherical (detRep n χ) := by
   refine (Submodule.ne_bot_iff _).2 ⟨1, ?_, one_ne_zero⟩
@@ -824,13 +822,11 @@ theorem isSpherical_detRep {χ : kˣ →* ℂˣ} (h : IsUnram χ) : IsSpherical 
   simp [detRep, this]
 
 /- English proof (translation)
-Use `⟨isIrreducible_ofChar _, isSpherical_detRep h, ?_⟩` and prove the remaining obligations. Establish `key : (ofChar (torusChar fun i : Fin N => unrChar k (χ ϖ * absPow k (((i : ℕ) : ℂ) - ((N : ℂ) - 1) / 2) ϖ))).comp (leviTorus k (Fin N)).symm.toMonoidHom = ofChar (detLevi (points (Fin N)) χ)`. Use `MonoidHom.ext fun g => LinearMap.ext fun y => ?_` and prove the remaining obligations. Use `show ofChar _ _ y = _`. Rewrite using `[ofChar_apply, ofChar_apply, detLevi_apply, torusChar_apply]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use `Finset.prod_congr rfl fun i _ => ?_` and prove the remaining obligations. Establish `hu : IsUnram (χ * absPow k (((i : ℕ) : ℂ) - ((N : ℂ) - 1) / 2))` using `fun x hx => by`. Rewrite using `[MonoidHom.mul_apply, h x hx, isUnram_absPow k _ x hx, one_mul]`. Rewrite using `[← MonoidHom.mul_apply, ← eq_unrChar hu hϖ, modExp_fin _ (fun _ => by simp)]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 3`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree. Use `isSubquotient_detRep_parInd (points (Fin N)) (isSmoothChar_of_isUnram h)` as an intermediate fact. Rewrite `this` using `[← key]`.
-
-Conclude with `this`.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasSatake_detRep {N : ℕ} {χ : kˣ →* ℂˣ} (h : IsUnram χ) {ϖ : kˣ}
     (hϖ : valuation k (ϖ : k) = uniformizer k) :
@@ -856,9 +852,9 @@ theorem hasSatake_detRep {N : ℕ} {χ : kˣ →* ℂˣ} (h : IsUnram χ) {ϖ : 
   exact this
 
 /- English proof (translation)
-Use `⟨(isSmooth_ofChar_iff _).2 hχ.detChar, fun s d e he => absurd ?_ he⟩` and prove the remaining obligations. Use `(Subgroup.eq_bot_iff_forall _).2 fun u hu => ?_` and prove the remaining obligations. Use extensionality with `i j`. Take `rfl : i = j` from `Subsingleton.elim _ _`. Take `⟨⟨a, i⟩, rfl⟩` from `e.surjective i`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Simplify using `using (mem_unipRad.1 hu).2 a i i`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem isCuspidal_detRep_one {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
     IsCuspidal (detRep (Fin 1) χ) := by
@@ -870,13 +866,11 @@ theorem isCuspidal_detRep_one {χ : kˣ →* ℂˣ} (hχ : IsSmoothChar χ) :
   simpa using (mem_unipRad.1 hu).2 a i i
 
 /- English proof (translation)
-Introduce `h`. Set `e : (Σ _ : Fin 2, Fin 1) ≃ Fin 2` to `Equiv.sigmaUnique _ _`. Set `u : GL (Fin 2) k` to `GeneralLinearGroup.mkOfDetNeZero !![1, 1; 0, 1] (by simp)`. Establish `hu : u ∈ unipRad k e`. Use `mem_unipRad.2 ⟨mem_parab_iff.2 fun a b i j hab => ?_, fun a i j => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `show (!![1, 1; 0, 1] : Matrix (Fin 2) (Fin 2) k) a b = 0 fin_cases a <;> fin_cases b <;> simp at hab ⊢`. Use `show (!![1, 1; 0, 1] : Matrix (Fin 2) (Fin 2) k) a a = _`. Rewrite using `[Subsingleton.elim i j]`. Apply the tactic sequence `fin_cases a <;> simp`. Establish `hne : unipRad k e ≠ ⊥` using `fun hb => by`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `hu` using `[hb, Subgroup.mem_bot]`. Establish `: (!![1, 1; 0, 1] : Matrix (Fin 2) (Fin 2) k) 0 1 = (1 : Matrix (Fin 2) (Fin 2) k) 0 1` using `congrArg (fun g : GL (Fin 2) k => (g : Matrix (Fin 2) (Fin 2) k) 0 1) hu`. Simplify using `at this`. Use `Submodule.Quotient.subsingleton_iff.1 (h.2 2 (fun _ => 1) e hne)` as an intermediate fact. Rewrite `this` using `[twKer_detRep]`.
-
-Conclude with `bot_ne_top this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem not_isCuspidal_detRep_two (χ : kˣ →* ℂˣ) : ¬ IsCuspidal (detRep (Fin 2) χ) := by
   intro h
@@ -899,7 +893,7 @@ theorem not_isCuspidal_detRep_two (χ : kˣ →* ℂˣ) : ¬ IsCuspidal (detRep 
   exact bot_ne_top this
 
 /- English proof (translation)
-Introduce `z v` and use `by have : GeneralLinearGroup.det (GeneralLinearGroup.scalar n z) = z ^ Fintype.card n := by ext; simp [GeneralLinearGroup.scalar] simp [detRep, this]`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 example (χ : kˣ →* ℂˣ) : HasCentralChar (detRep n χ) (χ ^ Fintype.card n) := fun z v => by
   have : GeneralLinearGroup.det (GeneralLinearGroup.scalar n z) = z ^ Fintype.card n := by
@@ -907,13 +901,13 @@ example (χ : kˣ →* ℂˣ) : HasCentralChar (detRep n χ) (χ ^ Fintype.card 
   simp [detRep, this]
 
 /- English proof (translation)
-The claim follows from `(isUnitarisable_ofChar_iff _).2 fun _ => h _`.
+A detailed English derivation is pending.
 -/
 example {χ : kˣ →* ℂˣ} (h : IsUnitaryChar χ) : IsUnitarisable (detRep n χ) :=
   (isUnitarisable_ofChar_iff _).2 fun _ => h _
 
 /- English proof (translation)
-Use `le_iSup₂_of_le 1 ⟨fun _ => ⊤, fun _ => ⊥, fun _ => bot_le, fun i j h => absurd (Subsingleton.elim i j) h.ne, fun _ => ⟨.mk ((Submodule.quotEquivOfEqBot _ (by ext; simp [show (⊥ : Subrepresentation (ofChar χ)).toSubmodule = ⊥ from rfl])).trans Submodule.topEquiv) fun g => ?_⟩⟩ le_ …` and prove the remaining obligations. Conclude with `Submodule.linearMap_qext _ rfl`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 example {G : Type} [Group G] (χ : G →* ℂˣ) : 1 ≤ jhMult (ofChar χ) (ofChar χ) := by
   refine le_iSup₂_of_le 1 ⟨fun _ => ⊤, fun _ => ⊥, fun _ => bot_le,

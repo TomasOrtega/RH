@@ -11,15 +11,15 @@ namespace GlobalTheory.Mem.Col2.AdT
 open Formalism.HermitianLatticesTheory GlobalTheory.ThetaMove in
 
 /- English proof (translation)
-Use `P.isPrime` as an intermediate fact. Establish `hmem : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 H.E) ∈ P.asIdeal` using `Ideal.absNorm_mem _`. Establish `hnd` using `GlobalTheory.PeriodIdealUnit.not_dvd_different (K := H.K) hp P.asIdeal hmem h2`. Establish `hnot : ¬ H.𝔟 ≤ P.asIdeal` using `fun hle => hnd (by`. Rewrite using `[H.𝔟_spec.1]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(Ideal.dvd_iff_le.2 hle).mul_right _)`. Take `⟨z, hz, hzP⟩` from `SetLike.not_le_iff_exists.1 hnot`. Establish `hB : ((H.𝔟 : Ideal (𝓞 H.E)) : FractionalIdeal (nonZeroDivisors (𝓞 H.E)) H.E) ≠ 0` using `FractionalIdeal.coeIdeal_ne_zero.2 fun h => by`. Establish `h3` using `H.𝔟_spec.2`. Simplify using `[h] at h3`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `GlobalTheory.PeriodIdealUnit.locP_eq_one P _ ?_ ?_` and prove the remaining obligations. Introduce `t ht`. Establish `ht' : t ∈ H.AA0` using `ht`. Unfold `Host.AA0 at ht'`. Take `⟨w, hw⟩` from `(FractionalIdeal.mem_one_iff _).1 ((FractionalIdeal.mem_inv_iff hB).1 ht' _ (FractionalIdeal.mem_coeIdeal_of_mem _ hz))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `(mem_locP P 1 t).2 ⟨z, hzP, Submodule.mem_one.2 ⟨w, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[Algebra.smul_def, hw, mul_comm]`. Use `⟨1, fun h => P.isPrime.ne_top ((Ideal.eq_top_iff_one _).2 h), ?_⟩` and prove the remaining obligations. Rewrite using `[one_smul]`. Use `show (1 : H.E) ∈ H.AA0`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Unfold `Host.AA0`. Use `(FractionalIdeal.mem_inv_iff hB).2 fun y hy => ?_` and prove the remaining obligations. Rewrite using `[one_mul]`. Conclude with `FractionalIdeal.coeIdeal_le_one hy`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inverseHalfDifferent_local_trivial_at_prime_norm {R : Ranks} (H : Host R) (P : HeightOneSpectrum (𝓞 H.E)) (hp : (Ideal.absNorm P.asIdeal).Prime)
     (h2 : ((Ideal.absNorm P.asIdeal : ℕ) : 𝓞 H.E) ∉ P.asIdeal ^ 2) :
@@ -52,9 +52,7 @@ theorem inverseHalfDifferent_local_trivial_at_prime_norm {R : Ranks} (H : Host R
     exact FractionalIdeal.coeIdeal_le_one hy
 
 /- English proof (translation)
-Introduce `B X I hOk u a χ P hP`. Take `⟨hX, hPr, -⟩` from `base_fields_primes_ok B X`. Establish `bad` using `GlobalTheory.ThetaMove.BadPrimes.bad_primes B.fields (B.primes X) I.sel I.S (I.tup a) u hX hPr hOk.sel_ok (hOk.T_mem u) hOk.g_mem P hP`. Use `show Formalism.HermitianLatticesTheory.localization₂ P.asIdeal (Th.perAA B.host ⊤) = _`. Rewrite using `[Th.perAA_top]`.
-
-Conclude with `inverseHalfDifferent_local_trivial_at_prime_norm B.host P bad.2.1 bad.2.2.1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem aaUnit_sall : ∀ {B : Base} {X : PreX B.toPre} (I : TC B X), I.Ok → ∀ (u : B.Word) (a : I.ι) (χ : Submodule (𝓞 B.host.E) B.host.E → ℂ), (I.J.amb B χ).AAUnit (Sall (Pr := B.primes X) I.sel (I.tup a) u) := by
   intro B X I hOk u a χ P hP

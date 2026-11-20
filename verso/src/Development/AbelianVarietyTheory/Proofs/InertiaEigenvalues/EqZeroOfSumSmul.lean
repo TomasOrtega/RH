@@ -25,14 +25,14 @@ def co : Laur L M →+ (ℤ → M) where
   map_add' _ _ := rfl
 
 /- English proof (translation)
-Introduce `x y h`. Conclude with `HahnModule.ext x y h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem co_injective : Function.Injective (co : Laur L M → ℤ → M) := by
   intro x y h
   exact HahnModule.ext x y h
 
 /- English proof (translation)
-Conclude with `⟨((HahnModule.of L).symm x).order, fun k hk => HahnSeries.coeff_eq_zero_of_lt_order hk⟩`.
+Supply the required witnesses or components.
 -/
 theorem isLaurent_co (x : Laur L M) : IsLaurent (co x) := by
   exact ⟨((HahnModule.of L).symm x).order, fun k hk => HahnSeries.coeff_eq_zero_of_lt_order hk⟩
@@ -48,25 +48,21 @@ Both sides reduce to the same expression.
 @[simp] theorem co_mk (u : ℤ → M) (hu : IsLaurent u) : co (mk u hu : Laur L M) = u := rfl
 
 /- English proof (translation)
-Use `set F := HahnSeries.ofPowerSeries ℤ L f with hFdef`. Establish `hF : ∀ j : ℕ, F.coeff (j : ℤ) = PowerSeries.coeff j f` using `fun j => HahnSeries.ofPowerSeries_apply_coeff f j`. Establish `hneg : ∀ i : ℤ, F.coeff i ≠ 0 → 0 ≤ i`. Introduce `i hi`. Assume the negation of the conclusion as `hlt`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `hi` to reduce the goal to its premises. Rewrite using `[hFdef, HahnSeries.ofPowerSeries_apply]`. Apply `HahnSeries.embDomain_notin_image_support` to reduce the goal to its premises. Introduce and unpack `⟨j, -, hj⟩`. Express the relevant statement in the definitionally equal form `(j : ℤ) = i at hj`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition. Use linear arithmetic over natural numbers and integers.
 
-Use linear arithmetic over natural numbers and integers. Establish `key : ∀ ij : ℤ × ℤ, F.coeff ij.1 ≠ 0 → ij.1 + ij.2 = k → ((ij.1.toNat : ℕ) : ℤ) = ij.1 ∧ k - ((ij.1.toNat : ℕ) : ℤ) = ij.2`. Introduce `ij h1 h3`. Use `hneg _ h1` as an intermediate fact. Apply the tactic sequence `constructor <;> omega`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Establish `hlau : IsLaurent ((HahnModule.of L).symm y).coeff` using `⟨_, fun k hk => HahnSeries.coeff_eq_zero_of_lt_order hk⟩`. Establish `hfin` using `serMul_finite f hlau k`. Rewrite using `[HahnModule.coeff_smul]`. Use `show _ = ∑ᶠ j : ℕ, PowerSeries.coeff j f • ((HahnModule.of L).symm y).coeff (k - (j : ℤ))`. Rewrite using `[finsum_eq_sum_of_support_subset _ (s := hfin.toFinset) (by rw [Set.Finite.coe_toFinset])]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `Finset.sum_bij_ne_zero (fun ij _ _ => ij.1.toNat)` to reduce the goal to its premises. Introduce `ij hij hne`. Simplify using `only [Finset.mem_vaddAntidiagonal, HahnSeries.mem_support, vadd_eq_add] at hij`. Take `⟨e1, e2⟩` from `key ij hij.1 hij.2.2`. Rewrite using `[Set.Finite.mem_toFinset, Function.mem_support, e2, ← hF, e1]`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `hne`. Introduce `a ha _ b hb _ hab`. Simplify using `only [Finset.mem_vaddAntidiagonal, HahnSeries.mem_support, vadd_eq_add] at ha hb`. Take `⟨ea1, ea2⟩` from `key a ha.1 ha.2.2`. Take `⟨eb1, eb2⟩` from `key b hb.1 hb.2.2`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Apply the tactic sequence `apply Prod.ext <;> omega`. Introduce `j _ hne`. Use `⟨((j : ℤ), k - j), ?_, ?_, ?_⟩` and prove the remaining obligations. Simplify using `only [Finset.mem_vaddAntidiagonal, HahnSeries.mem_support, vadd_eq_add]`. Use `⟨?_, right_ne_zero_of_smul hne, by omega⟩` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[hF]`. Conclude with `left_ne_zero_of_smul hne`. Use `show F.coeff (j : ℤ) • ((HahnModule.of L).symm y).coeff (k - j) ≠ 0`. Rewrite using `[hF]`. Conclude with `hne`.
-
-Use `show ((j : ℤ)).toNat = j`. Simplify using the standard rewrite rules. Introduce `ij hij _`. Simplify using `only [Finset.mem_vaddAntidiagonal, HahnSeries.mem_support, vadd_eq_add] at hij`. Take `⟨e1, e2⟩` from `key ij hij.1 hij.2.2`.
-
-Use `show F.coeff ij.1 • ((HahnModule.of L).symm y).coeff ij.2 = PowerSeries.coeff ij.1.toNat f • ((HahnModule.of L).symm y).coeff (k - (ij.1.toNat : ℤ))`. Rewrite using `[e2, ← hF, e1]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem coeff_ofPowerSeries_smul_eq_serMul (f : L⟦X⟧) (y : HahnModule ℤ L M) (k : ℤ) :
     ((HahnModule.of L).symm (HahnSeries.ofPowerSeries ℤ L f • y)).coeff k =
@@ -124,16 +120,16 @@ private theorem coeff_ofPowerSeries_smul_eq_serMul (f : L⟦X⟧) (y : HahnModul
     rw [e2, ← hF, e1]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `k`. Conclude with `coeff_ofPowerSeries_smul_eq_serMul f x k`.
+Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem co_smul (f : L⟦X⟧) (x : Laur L M) : co (f • x) = serMul f (co x) := by
   funext k
   exact coeff_ofPowerSeries_smul_eq_serMul f x k
 
 /- English proof (translation)
-Rewrite using `[co_smul]`. Use `show ∑ᶠ j : ℕ, PowerSeries.coeff j f • co x (m + n - j) = _`. Rewrite using `[finsum_eq_single _ n]`. Simplify using the standard rewrite rules. Introduce `j hj`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `lt_or_gt_of_ne hj with h | h` into its components or cases. Rewrite using `[hf j h, zero_smul]`. Rewrite using `[hx (m + n - j) (by omega), smul_zero]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem co_smul_add_eq_coeff_smul_co (f : L⟦X⟧) (x : Laur L M) (m : ℤ) (n : ℕ)
     (hf : ∀ j < n, PowerSeries.coeff j f = 0) (hx : ∀ k < m, co x k = 0) :
@@ -148,7 +144,7 @@ private theorem co_smul_add_eq_coeff_smul_co (f : L⟦X⟧) (x : Laur L M) (m : 
     · rw [hx (m + n - j) (by omega), smul_zero]
 
 /- English proof (translation)
-Use `⟨fun k hk => ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[co_smul] show ∑ᶠ j : ℕ, PowerSeries.coeff j f • co x (k - j) = 0`. Conclude with `(finsum_congr fun j => by rw [hx (k - j) (by omega), smul_zero]).trans finsum_zero`. Establish `e` using `co_smul_add_eq_coeff_smul_co f x m 0 (fun j hj => absurd hj (Nat.not_lt_zero j)) hx`. Simplify using `using e`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem co_smul_low (f : L⟦X⟧) (x : Laur L M) (m : ℤ) (hx : ∀ k < m, co x k = 0) :
     (∀ k < m, co (f • x) k = 0) ∧ co (f • x) m = constantCoeff f • co x m := by
@@ -181,9 +177,9 @@ Both sides reduce to the same expression.
     co (tw c g x) k = c ^ k • g (co x k) := rfl
 
 /- English proof (translation)
-Apply `co_injective` to reduce the goal to its premises. Use function extensionality and compare the values at `k`. Rewrite using `[co_tw, co_smul, co_smul]`. Use `show (c ^ k • g) (∑ᶠ j : ℕ, PowerSeries.coeff j f • co x (k - j)) = ∑ᶠ j : ℕ, PowerSeries.coeff j (rescale c f) • co (tw c g x) (k - j)`. Rewrite using `[map_finsum (c ^ k • g) (serMul_finite f (isLaurent_co x) k)]`.
+Reduce the claim to the hypotheses of an applicable result. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun j => ?_` and prove the remaining obligations. Rewrite using `[LinearMap.smul_apply, map_smul, co_tw, PowerSeries.coeff_rescale, smul_smul, smul_smul]`. Use `congr 1`. Rewrite using `[show c ^ k = c ^ (j : ℤ) * c ^ (k - j) by rw [← zpow_add₀ hc, add_sub_cancel], zpow_natCast]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the hypotheses and the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem tw_smul {c : L} (hc : c ≠ 0) (g : M →ₗ[L] M') (f : L⟦X⟧) (x : Laur L M) :
     tw c g (f • x) = rescale c f • tw c g x := by

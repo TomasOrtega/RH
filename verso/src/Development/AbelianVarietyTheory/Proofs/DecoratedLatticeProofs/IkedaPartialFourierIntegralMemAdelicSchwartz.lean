@@ -31,11 +31,11 @@ open GlobalTheory.SchwartzBruhatTensor GlobalTheory.PartialIntegral
 abbrev AEf (D : D7) : Type := Af D.host.F ⊗[D.host.F] D.host.E
 
 /- English proof (translation)
-Take `⟨σ, hσ⟩` from `GlobalTheory.RealLineAt.exists_inverse_chart hθ`. Take `⟨s, hsc, hsf, hsi⟩` from `exists_finSection D`. Use `⟨{ toFun := fun x => (fun τ i j => compAt θ τ x i j, fun i j => finPart D (x i j)) invFun := fun p => s.mapMatrix (Matrix.of p.2) + chartM σ m n p.1 left_inv := fun x => (decomp hσ hsf hsi x).symm right_inv := fun p => Prod.ext ?_ ?_ map_add' := fun x y => Prod.ext ?_ ?_ continuo …` and prove the remaining obligations. Use function extensionality and compare the values at `τ i j show θ τ (infPart D (s (p.2 i j) + σ fun τ => p.1 τ i j)) = p.1 τ i j`. Rewrite using `[RingHom.map_add, RingHom.map_add, hsi, hσ.comp, RingHom.map_zero, zero_add]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use function extensionality and compare the values at `i j show finPart D (s (p.2 i j) + σ fun τ => p.1 τ i j) = p.2 i j`. Rewrite using `[RingHom.map_add, hsf, hσ.fin, add_zero]`. Use function extensionality and compare the values at `τ i j show θ τ (infPart D (x i j + y i j)) = θ τ (infPart D (x i j)) + θ τ (infPart D (y i j))`. Rewrite using `[RingHom.map_add, RingHom.map_add]`. Use function extensionality and compare the values at `i j`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Conclude with `(finPart D).map_add _ _`. Conclude with `(continuous_pi fun τ => continuous_pi fun i => continuous_pi fun j => (GlobalTheory.FockCompare.continuous_comp hθ τ).comp (continuous_id.matrix_elem i j)).prodMk (continuous_pi fun i => continuous_pi fun j => (GlobalTheory.Member.continuous_finPart D).comp (continuous_id.matrix_ …`. Use `haveI := (lattice_Mx D m n).1`. Use `Continuous.add ?_ ((continuous_chartM hσ.cont m n).comp continuous_fst)` and prove the remaining obligations. Conclude with `continuous_pi fun i => continuous_pi fun j => hsc.comp ((continuous_apply j).comp ((continuous_apply i).comp continuous_snd))`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_split {D : D7} {θ : InfFam D} (hθ : IsInfFam θ) (m n : ℕ) :
     ∃ e : Mx D m n ≃ₜ+ (D.what₂.Tau → Fin m → Fin n → ℂ) × (Fin m → Fin n → AEf D),
@@ -73,7 +73,7 @@ def lmul {R : Type} [CommRing R] {m t : ℕ} (n : ℕ) (J : Matrix (Fin m) (Fin 
     Fin m → Fin n → R := J ⬝ Matrix.of x
 
 /- English proof (translation)
-The claim follows from `Continuous.matrix_mul (A := fun _ => J) (B := fun x : Matrix (Fin t) (Fin n) R => x) continuous_const continuous_id`.
+A detailed English derivation is pending.
 -/
 theorem continuous_lmul {R : Type} [CommRing R] [TopologicalSpace R] [IsTopologicalRing R] {m t : ℕ} (n : ℕ)
     (J : Matrix (Fin m) (Fin t) R) : Continuous (lmul n J) :=
@@ -88,7 +88,7 @@ def lmulC {ι : Type} {m t : ℕ} (n : ℕ) (J : ι → Matrix (Fin m) (Fin t) �
 variable {D : D7} {T T' : HSp D} {t : ℕ} (d : HypDec T T' t) {R : Type} [CommRing R] (φ : AE D →+* R) {n : ℕ}
 
 /- English proof (translation)
-Use `show (d.jX ⬝ x + d.j0 ⬝ a : Mx D T.rank n).map φ = d.jX.map φ ⬝ x.map φ + d.j0.map φ ⬝ a.map φ`. Rewrite using `[Matrix.map_add _ φ.map_add, Matrix.map_mul, Matrix.map_mul]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_emb (x : Mx D t n) (a : Mx D T'.rank n) :
     (fun i j => φ ((d.jX ⬝ x + d.j0 ⬝ a : Mx D T.rank n) i j)) =
@@ -97,7 +97,7 @@ theorem map_emb (x : Mx D t n) (a : Mx D T'.rank n) :
   rw [Matrix.map_add _ φ.map_add, Matrix.map_mul, Matrix.map_mul]
 
 /- English proof (translation)
-Use `show d.pX.map φ ⬝ (d.jX.map φ ⬝ Matrix.of x + d.j0.map φ ⬝ Matrix.of a) = Matrix.of x`. Rewrite using `[Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul, ← Matrix.map_mul, d.pX_jX, d.pX_j0, Matrix.map_one _ φ.map_zero φ.map_one, Matrix.map_zero _ φ.map_zero, Matrix.one_mul, Matrix.zero_mul, add_zero]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pX_emb (x : Fin t → Fin n → R) (a : Fin T'.rank → Fin n → R) :
     lmul n (d.pX.map φ) (lmul n (d.jX.map φ) x + lmul n (d.j0.map φ) a) = x := by
@@ -106,7 +106,7 @@ theorem pX_emb (x : Fin t → Fin n → R) (a : Fin T'.rank → Fin n → R) :
     Matrix.map_one _ φ.map_zero φ.map_one, Matrix.map_zero _ φ.map_zero, Matrix.one_mul, Matrix.zero_mul, add_zero]
 
 /- English proof (translation)
-Use `show d.p0.map φ ⬝ (d.jX.map φ ⬝ Matrix.of x + d.j0.map φ ⬝ Matrix.of a) = Matrix.of a`. Rewrite using `[Matrix.mul_add, ← Matrix.mul_assoc, ← Matrix.mul_assoc, ← Matrix.map_mul, ← Matrix.map_mul, d.p0_jX, d.p0_j0, Matrix.map_one _ φ.map_zero φ.map_one, Matrix.map_zero _ φ.map_zero, Matrix.one_mul, Matrix.zero_mul, zero_add]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem wittHyperbolic_projAnisotropic_leftMul_embedding (x : Fin t → Fin n → R) (a : Fin T'.rank → Fin n → R) :
     lmul n (d.p0.map φ) (lmul n (d.jX.map φ) x + lmul n (d.j0.map φ) a) = a := by
@@ -115,7 +115,7 @@ theorem wittHyperbolic_projAnisotropic_leftMul_embedding (x : Fin t → Fin n �
     Matrix.map_one _ φ.map_zero φ.map_one, Matrix.map_zero _ φ.map_zero, Matrix.one_mul, Matrix.zero_mul, zero_add]
 
 /- English proof (translation)
-The claim follows from `map_emb d (finPart D) x a`.
+A detailed English derivation is pending.
 -/
 theorem map_emb_fin (x : Mx D t n) (a : Mx D T'.rank n) :
     (fun i j => finPart D ((d.jX ⬝ x + d.j0 ⬝ a : Mx D T.rank n) i j)) =
@@ -125,23 +125,17 @@ theorem map_emb_fin (x : Mx D t n) (a : Mx D T'.rank n) :
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Use `haveI : IsModuleTopology (Af D.host.F) (AEf D) := ⟨rfl⟩`. Use `haveI : Module.Finite D.host.F D.host.E := Module.Finite.of_restrictScalars_finite ℚ _ _`. Use `haveI : IsTopologicalRing (AEf D) := IsModuleTopology.isTopologicalRing (Af D.host.F) _`. Use `haveI := GlobalTheory.AdelicUnitaryTop.secondCountable_finiteAdele D.host.F`. Use `haveI := GlobalTheory.AdelicUnitaryTop.locallyCompact_finiteAdele D.host.F`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Use `haveI := GlobalTheory.AdelicUnitaryTop.t2Space_finiteAdeleRing_of_numberField D.host.F`. Take `⟨e0⟩` from `GlobalTheory.AdelicUnitaryTop.nonempty_homeomorph (F := D.host.F) (E := D.host.E) (Af D.host.F)`. Use `haveI : LocallyCompactSpace (AEf D) := e0.isClosedEmbedding.locallyCompactSpace`. Use `haveI : SecondCountableTopology (AEf D) := e0.secondCountableTopology`. Use `haveI : T2Space (AEf D) := e0.isEmbedding.t2Space`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `letI : MeasurableSpace (Fin t → Fin n → AEf D) := borel _`. Use `haveI : BorelSpace (Fin t → Fin n → AEf D) := ⟨rfl⟩`. Use `haveI : BorelSpace (Mx D t n) := ⟨rfl⟩`. Use `haveI := (lattice_Mx D t n).1`. Take `⟨e, he⟩` from `exists_split hθ t n`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Set `μr : Measure (D.what₂.Tau → Fin t → Fin n → ℂ)` to `Measure.addHaar`. Set `ν : Measure (Fin t → Fin n → AEf D)` to `Measure.addHaar`. Take `⟨c, hc⟩` from `exists_integral_split e μ μr ν`. Set `φ : D.what₂.Tau → AE D →+* ℂ` to `fun τ => (θ τ).comp (infPart D)`. Take `⟨hf1, h, hh⟩` from `schwartz_partial μr f (lmulC n fun τ => d.jX.map (φ τ)) (lmulC n fun τ => d.j0.map (φ τ)) (fun x a hxa => by`.
+Fix the arbitrary inputs or assume the hypotheses. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨funext fun τ => ?_, funext fun τ => ?_⟩` and prove the remaining obligations. Establish `h0 : lmul n (d.jX.map (φ τ)) (x τ) + lmul n (d.j0.map (φ τ)) (a τ) = 0` using `congrFun hxa τ`. Rewrite using `[← pX_emb d (φ τ) (x τ) (a τ), h0]`. Conclude with `Matrix.mul_zero _`. Establish `h0 : lmul n (d.jX.map (φ τ)) (x τ) + lmul n (d.j0.map (φ τ)) (a τ) = 0` using `congrFun hxa τ`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← wittHyperbolic_projAnisotropic_leftMul_embedding d (φ τ) (x τ) (a τ), h0]`. Conclude with `Matrix.mul_zero _)`. Take `⟨hg1, hg2, hg3⟩` from `locallyConstant_partial ν hg.1 hg.2 (continuous_lmul n (d.jX.map (finPart D))) (continuous_lmul n (d.j0.map (finPart D))) (continuous_lmul n (d.pX.map (finPart D))) (continuous_lmul n (d.p0.map (finPart D))) (pX_emb d (finPart D)) (wittHyperbolic_projAnisotropic_leftMul_embedding …`. Establish `key : ∀ a : Mx D T'.rank n, (fun x : Mx D t n => Φ (d.jX ⬝ x + d.j0 ⬝ a)) = fun x => f (lmulC n (fun τ => d.jX.map (φ τ)) (e x).1 + lmulC n (fun τ => d.j0.map (φ τ)) fun τ i j => compAt θ τ a i j) * g (lmul n (d.jX.map (finPart D)) (e x).2 + lmul n (d.j0.map (finPart D)) fun i j …`. Introduce `a`.
-
-Use function extensionality and compare the values at `x`. Establish `h2 : (fun τ i j => compAt θ τ (d.jX ⬝ x + d.j0 ⬝ a : Mx D T.rank n) i j) = lmulC n (fun τ => d.jX.map (φ τ)) (fun τ i j => compAt θ τ x i j) + lmulC n (fun τ => d.j0.map (φ τ)) fun τ i j => compAt θ τ a i j` using `funext fun τ => map_emb d (φ τ) x a`. Rewrite using `[hΦ, he]`. Conclude with `congrArg₂ (· * ·) (congrArg f h2) (congrArg g (map_emb_fin d x a))`. Use `⟨fun a => by rw [key a]; exact (hc _ _ (hf1 _) (hg1 _)).1, ?_⟩` and prove the remaining obligations.
-
-Establish `e2 : ikS d μ Φ = c • fun a : Mx D T'.rank n => h (fun τ i j => compAt θ τ a i j) * (fun b => ∫ y, g (lmul n (d.jX.map (finPart D)) y + lmul n (d.j0.map (finPart D)) b) ∂ν) (fun i j => finPart D (a i j))`. Use function extensionality and compare the values at `a`. Use `(congrArg (fun F => ∫ x, F x ∂μ) (key a)).trans ?_` and prove the remaining obligations. Use `(hc _ _ (hf1 _) (hg1 _)).2.trans ?_` and prove the remaining obligations. Rewrite using `[← hh]`.
-
-Both sides reduce to the same expression. Rewrite using `[e2]`. Conclude with `Submodule.smul_mem _ c (Submodule.subset_span ⟨h, _, ⟨hg2, hg3⟩, rfl⟩)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem pure {θ : InfFam D} (hθ : IsInfFam θ) (μ : Measure (Mx D t n)) [μ.IsAddHaarMeasure]
     (f : SchwartzMap (D.what₂.Tau → Fin T.rank → Fin n → ℂ) ℂ) (g : (Fin T.rank → Fin n → AEf D) → ℂ)
@@ -202,15 +196,13 @@ theorem pure {θ : InfFam D} (hθ : IsInfFam θ) (μ : Measure (Mx D t n)) [μ.I
   exact Submodule.smul_mem _ c (Submodule.subset_span ⟨h, _, ⟨hg2, hg3⟩, rfl⟩)
 
 /- English proof (translation)
-Introduce `D θ hθ T T' t n d μ 𝓕 hμ Φ hΦ`. Use `haveI := hμ.1`. It suffices to establish `h : (∀ a : Mx D T'.rank n, Integrable (fun x : Mx D t n => Φ (d.jX ⬝ x + d.j0 ⬝ a)) μ) ∧ ikS d μ Φ ∈ schwartzA θ T'.rank n from h.2`. Proceed by induction on `hΦ using Submodule.span_induction with`. Consider the case `mem Φ h`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the argument to an intermediate assertion. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨f, g, hg, h⟩` from `h`. Conclude with `pure d hθ μ f g hg Φ h`. Consider the case `zero`. Use `⟨fun a => integrable_zero _ _ _, ?_⟩` and prove the remaining obligations. Establish `: ikS d μ (0 : Mx D T.rank n → ℂ) = 0` using `funext fun a => integral_zero _ _`.
+Treat this case separately. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Rewrite using `[this]`. Conclude with `Submodule.zero_mem _`. Consider the case `add Φ Ψ _ _ h1 h2`. Use `⟨fun a => (h1.1 a).add (h2.1 a), ?_⟩` and prove the remaining obligations. Establish `: ikS d μ (Φ + Ψ) = ikS d μ Φ + ikS d μ Ψ` using `funext fun a => integral_add (h1.1 a) (h2.1 a)`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Treat this case separately. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[this]`. Conclude with `Submodule.add_mem _ h1.2 h2.2`. Consider the case `smul c Φ _ h`. Use `⟨fun a => (h.1 a).smul c, ?_⟩` and prove the remaining obligations. Establish `: ikS d μ (c • Φ) = c • ikS d μ Φ` using `funext fun a => integral_smul c _`.
-
-Rewrite using `[this]`. Conclude with `Submodule.smul_mem _ c h.2`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ikS_mem_schwartzA : ∀ (D : D7), ∀ θ : InfFam D, IsInfFam θ → ∀ (T T' : HSp D) (t n : ℕ) (d : HypDec T T' t) (μ : Measure (Mx D t n)) (𝓕 : Set (Mx D t n)), IsCovolOne (ratMx D t n) μ 𝓕 → ∀ Φ ∈ schwartzA θ T.rank n, ikS d μ Φ ∈ schwartzA θ T'.rank n := by
   intro D θ hθ T T' t n d μ 𝓕 hμ Φ hΦ

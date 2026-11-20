@@ -18,9 +18,9 @@ open scoped Formalism.Per
 namespace GlobalTheory.PSer
 
 /- English proof (translation)
-Proceed by induction on `j with`. Consider the case `zero => simp`. Consider the case `succ j ih`. Rewrite using `[Function.iterate_succ_apply', ih, (GlobalTheory.CrisMaps.phiA_extends l).alg]`. Use `congr 1`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `(GlobalTheory.RingIface.phiA_teich l (z ^ l ^ j)).trans ?_` and prove the remaining obligations. Rewrite using `[← pow_mul, ← pow_succ]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem iter_tm {l : ℕ} [Fact l.Prime] (j : ℕ) (z : Fl l) :
     (⇑(GlobalTheory.MemLoc.phiA l))^[j] (algebraMap (Ainf l) (Acris l) (tm z)) =
@@ -34,9 +34,9 @@ theorem iter_tm {l : ℕ} [Fact l.Prime] (j : ℕ) (z : Fl l) :
     rw [← pow_mul, ← pow_succ]
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simpa using e`. Consider the case `succ k ih`. Apply `ih` to reduce the goal to its premises. Rewrite using `[← sub_eq_zero]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply `(GlobalTheory.MemLoc.acris_basic l).2.1` to reduce the goal to its premises. Take the linear combination `e`.
+Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem acris_cancel {l : ℕ} [Fact l.Prime] (k : ℕ) (u v : Acris l)
     (e : (l : Acris l) ^ k * u = (l : Acris l) ^ k * v) : u = v := by
@@ -49,23 +49,21 @@ theorem acris_cancel {l : ℕ} [Fact l.Prime] (k : ℕ) (u v : Acris l)
     linear_combination e
 
 /- English proof (translation)
-Introduce `l _ h x h2 hx`. Take `⟨-, -, -, hpw_comp, hpw_nat, -, -⟩` from `GlobalTheory.T.tiltFrobeniusIntegerPower_laws l`. Take `⟨c, hdvd, hc⟩` from `GlobalTheory.T.acris_series_terms_mem_prime_pow l h x h2 hx`. Use `haveI := (GlobalTheory.MemLoc.acris_basic l).1`. Establish `hφl : ∀ (j : ℕ) (k : ℕ) (a : Acris l), (⇑(GlobalTheory.MemLoc.phiA l))^[j] ((l : Acris l) ^ k * a) = (l : Acris l) ^ k * (⇑(GlobalTheory.MemLoc.phiA l))^[j] a`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j k a`. Rewrite using `[← RingHom.coe_pow, map_mul, map_pow, map_natCast]`. Establish `hpwj : ∀ (n : ℤ) (j : ℕ), pw (n * h) x ^ l ^ j = pw (n * h + j) x`. Introduce `n j`. Rewrite using `[← hpw_nat, ← hpw_comp, add_comm]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `shift : ∀ n : ℤ, (⇑(GlobalTheory.MemLoc.phiA l))^[h] (c n) = (l : Acris l) * c (n + 1)`. Introduce `n`. Apply `acris_cancel (n.toNat + (n+1).toNat)` to reduce the goal to its premises. Establish `e1` using `congrArg ((⇑(GlobalTheory.MemLoc.phiA l))^[h]) (hc n)`. Rewrite `e1` using `[hφl, hφl, iter_tm, hpwj]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e2` using `hc (n + 1)`. Establish `hh : (n + 1) * (h : ℤ) = n * h + h` using `by ring`. Rewrite `e2` using `[hh]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← mul_assoc, ← mul_assoc, ← pow_add, ← pow_add]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `congr 2`. Use linear arithmetic over natural numbers and integers. Use `_ = _ := by rw [← e2]; ring`. Take `⟨w, hw, hsum⟩` from `GlobalTheory.T.twoSided_shift_series_hasSum l (Acris l) (GlobalTheory.MemLoc.phiA l) h c hdvd shift`. Use `⟨w, hw, fun Θ hΘ hΘt j => ?_⟩` and prove the remaining obligations.
+Use linear arithmetic over natural numbers and integers. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hs` using `hsum (Θ.comp (GlobalTheory.MemLoc.phiA l ^ j)) (fun a => hΘ _)`. Establish `hl : (l : ℂ_[l]) ≠ 0` using `GlobalTheory.RingBasics.p_ne_zero`. Establish `hterm : ∀ n : ℤ, (Θ.comp (GlobalTheory.MemLoc.phiA l ^ j)) (c n) = (l : ℂ_[l]) ^ (-n) * sh (pw (n * h + j) x)`. Introduce `n`. Establish `e` using `congrArg (Θ.comp (GlobalTheory.MemLoc.phiA l ^ j)) (hc n)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `e` using `[RingHom.comp_apply, RingHom.comp_apply, RingHom.coe_pow, hφl, hφl, iter_tm, hpwj, map_mul, map_mul, map_pow, map_pow, map_natCast, hΘt]`. Rewrite using `[RingHom.comp_apply, RingHom.coe_pow]`. Establish `hn : -n = ((-n).toNat : ℤ) - (n.toNat : ℤ)` using `by omega`. Establish `ha : (l : ℂ_[l]) ^ n.toNat ≠ 0` using `pow_ne_zero _ hl`. Rewrite using `[hn, zpow_sub₀ hl, zpow_natCast, zpow_natCast]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[inv_mul_cancel_left₀ ha]`. Use `_ = _ := by rw [e]; ring`. Establish `hs' : HasSum (fun n : ℤ => (l : ℂ_[l]) ^ (-n) * sh (pw (n * h + j) x)) ((Θ.comp (GlobalTheory.MemLoc.phiA l ^ j)) w)`. Simplify `hs` using `only [hterm]`.
-
-Rewrite using `[lam, hs'.tsum_eq, RingHom.comp_apply, RingHom.coe_pow]`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem series_acris : ∀ (l : ℕ) [Fact l.Prime] (h : ℕ) (x : Fl l), 2 ≤ h → ‖sh x‖ ≤ ‖(l : ℂ_[l])‖ → ∃ w : Acris l, (GlobalTheory.MemLoc.phiA l)^[h] w = (l : Acris l) * w ∧ ∀ (Θ : Acris l →+* ℂ_[l]), (∀ a, ‖Θ a‖ ≤ 1) → (∀ z : Fl l, Θ (algebraMap (Ainf l) (Acris l) (tm z)) = sh z) → ∀ j : ℕ, Θ ((GlobalTheory.MemLoc.phiA l)^[j] w) = lam h j x := by
   intro l _ h x h2 hx

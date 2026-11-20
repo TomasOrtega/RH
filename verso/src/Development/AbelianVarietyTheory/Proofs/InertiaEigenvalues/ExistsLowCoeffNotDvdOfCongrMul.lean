@@ -10,25 +10,21 @@ open scoped BigOperators in
 open PowerSeries in
 
 /- English proof (translation)
-Introduce `O _ _ _ ϖ hϖ D g f m₀ v nT MT hD hg hv hM hf`. Establish `hnu : ∀ x : O, ¬ IsUnit x → ϖ ∣ x` using `fun x hx => by`. Establish `hmax : x ∈ IsLocalRing.maximalIdeal O` using `hx`. Rewrite `hmax` using `[(IsDiscreteValuationRing.irreducible_iff_uniformizer ϖ).1 hϖ, Ideal.mem_span_singleton]`. Conclude with `hmax`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Assume the negation of the conclusion and derive a contradiction.
 
-Assume the negation of the conclusion as `hcon`. Use `push_neg at hcon`. Establish `hDg : ∀ i ≤ (v + 1) * m₀, ϖ ^ (v + 1) ∣ PowerSeries.coeff i (D * g)`. Introduce `i hi`. Establish `h1` using `dvd_trans (pow_dvd_pow ϖ hv) (hf i (hi.trans hM))`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `hcon i hi`. Establish `: PowerSeries.coeff i (D * g) = PowerSeries.coeff i f - PowerSeries.coeff i (f - D * g)`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `dvd_sub h2 h1`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD' : ∃ m, m ≤ m₀ ∧ IsUnit (PowerSeries.coeff m D)` using `hD`. Use `set m₁ := Nat.find hD' with hm₁`. Establish `hm₁le : m₁ ≤ m₀` using `(Nat.find_spec hD').1`. Establish `hm₁u : IsUnit (PowerSeries.coeff m₁ D)` using `(Nat.find_spec hD').2`. Establish `hlow : ∀ a < m₁, ϖ ∣ PowerSeries.coeff a D` using `fun a ha => hnu _ fun hu => Nat.find_min hD' ha ⟨(ha.trans_le hm₁le).le, hu⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Establish `claim : ∀ j ≤ v + 1, ∀ i, i + j * m₁ ≤ (v + 1) * m₀ → ϖ ^ j ∣ PowerSeries.coeff i g`. Introduce `j`. Proceed by induction on `j with`. Consider the case `zero => intro _ i _`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `succ j ihj`. Introduce `hj i`. Proceed by induction on `i using Nat.strong_induction_on with`. Consider the case `_ i ihi`. Introduce `hi`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsplit` using `(Finset.add_sum_erase (Finset.HasAntidiagonal.antidiagonal (i + m₁)) (fun p : ℕ × ℕ => PowerSeries.coeff p.1 D * PowerSeries.coeff p.2 g) (a := (m₁, i)) (by simp [add_comm])).symm`. Rewrite `hsplit` using `[← PowerSeries.coeff_mul]`. Establish `hrest : ϖ ^ (j + 1) ∣ ∑ p ∈ (Finset.HasAntidiagonal.antidiagonal (i + m₁)).erase (m₁, i), PowerSeries.coeff p.1 D * PowerSeries.coeff p.2 g`. Apply `Finset.dvd_sum` to reduce the goal to its premises. Introduce and unpack `⟨a, b⟩ hp`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Finset.mem_erase, Finset.HasAntidiagonal.mem_antidiagonal, ne_eq, Prod.mk.injEq] at hp`. Take `⟨hne, hab⟩` from `hp`. Break down `lt_trichotomy a m₁ with h | h | h` into its components or cases. Rewrite using `[pow_succ, mul_comm (ϖ ^ j)]`. Conclude with `mul_dvd_mul (hlow a h) (ihj (by omega) b (by nlinarith))`.
-
-Conclude with `absurd ⟨h, by omega⟩ hne`. Conclude with `dvd_mul_of_dvd_right (ihi b (by omega) (by nlinarith)) _`. Establish `htot : ϖ ^ (j + 1) ∣ PowerSeries.coeff (i + m₁) (D * g)` using `dvd_trans (pow_dvd_pow ϖ hj) (hDg _ (by nlinarith))`. Rewrite `htot` using `[hsplit]`. Use `(dvd_add_left hrest).1 htot` as an intermediate fact.
-
-Conclude with `(hm₁u.dvd_mul_left).1 this`. Conclude with `hg (by simpa using claim (v + 1) le_rfl 0 (by simpa using Nat.mul_le_mul_left (v + 1) hm₁le))`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem _root_.GlobalTheory.exists_low_coeff_not_dvd_of_congr_mul : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (ϖ : O), Irreducible ϖ → ∀ (D g f : PowerSeries O) (m₀ v nT MT : ℕ), (∃ m ≤ m₀, IsUnit (PowerSeries.coeff m D)) → ¬ ϖ ^ (v + 1) ∣ PowerSeries.coeff 0 g → v + 1 ≤ nT → (v + 1) * m₀ ≤ MT → (∀ i ≤ MT, ϖ ^ nT ∣ PowerSeries.coeff i (f - D * g)) → ∃ i ≤ (v + 1) * m₀, ¬ ϖ ^ (v + 1) ∣ PowerSeries.coeff i f := by
   intro O _ _ _ ϖ hϖ D g f m₀ v nT MT hD hg hv hM hf

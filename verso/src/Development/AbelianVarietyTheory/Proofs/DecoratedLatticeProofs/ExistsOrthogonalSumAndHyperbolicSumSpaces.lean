@@ -26,7 +26,7 @@ def col {V W : HSpace E} {k : ℕ} (X : Matrix (Fin V.rank) (Fin k) E) (Y : Matr
   (Matrix.fromRows X Y).submatrix finSumFinEquiv.symm id
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.Doubling.gram_hsum, GlobalTheory.Doubling.blkMat, col, col, Matrix.conjTranspose_submatrix, Matrix.submatrix_mul_equiv, Matrix.submatrix_mul_equiv, Matrix.submatrix_id_id, Matrix.conjTranspose_fromRows_eq_fromCols_conjTranspose, Matrix.fromCols_mul_fromBlocks, Matri …`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem col_gram {V W : HSpace E} {k l : ℕ} (X : Matrix (Fin V.rank) (Fin k) E) (Y : Matrix (Fin W.rank) (Fin k) E)
     (X' : Matrix (Fin V.rank) (Fin l) E) (Y' : Matrix (Fin W.rank) (Fin l) E) :
@@ -59,13 +59,13 @@ def orthSumDec (D : D7) (A L : HSp D) : OrthDec (GlobalTheory.Doubling.hsum A L)
   baseLattice_isUnimodular := Formalism.BasicNotions.Examples₂.stdLat_unimod Formalism.BasicNotions.Examples₂.star_isIntegral ρ _
 
 /- English proof (translation)
-The claim follows from `Formalism.BasicNotions.Examples₂.posSpace_sigOK (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral ρ`.
+A detailed English derivation is pending.
 -/
 theorem posSp_sigOK (D : D7) (ρ : ℕ) : (posSp D ρ).SigOK :=
   Formalism.BasicNotions.Examples₂.posSpace_sigOK (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral ρ
 
 /- English proof (translation)
-Use function extensionality and compare the values at `i j`. Rewrite using `[Matrix.one_apply]`. Use `(Formalism.BasicNotions.Examples₂.stdSpace_gram_apply (E := D.host.E) Formalism.BasicNotions.Examples₂.star_isIntegral ρ (fun _ => false) ρ 0 i j).trans ?_` and prove the remaining obligations. Simplify using `[Formalism.BasicNotions.Examples₂.sgn]`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 -/
 theorem posSp_gram (D : D7) (ρ : ℕ) : (posSp D ρ).gram = 1 := by
   funext i j
@@ -77,13 +77,13 @@ theorem posSp_gram (D : D7) (ρ : ℕ) : (posSp D ρ).gram = 1 := by
   GlobalTheory.Doubling.hdbl (posSp D ρ)
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.Doubling.sigOK_hdbl (posSp_sigOK D ρ)`.
+A detailed English derivation is pending.
 -/
 theorem hypSp_sigOK (D : D7) (ρ : ℕ) : (hypSp D ρ).SigOK :=
   GlobalTheory.Doubling.sigOK_hdbl (posSp_sigOK D ρ)
 
 /- English proof (translation)
-Use `show (ρ, 0) + (0, ρ) = (ρ, ρ)`. Simplify using the standard rewrite rules.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hypSp_sig (D : D7) (ρ : ℕ) (τ) : (hypSp D ρ).sig τ = (ρ, ρ) := by
   show (ρ, 0) + (0, ρ) = (ρ, ρ)
@@ -106,7 +106,7 @@ def hypSumDec (D : D7) (A : HSp D) (ρ : ℕ) : HypDec (GlobalTheory.Doubling.hs
   rank_add := by show A.rank + 2 * ρ = A.rank + (ρ + ρ); omega
 
 /- English proof (translation)
-Introduce `D`. Use `⟨fun A L hA hL => ⟨_, orthSumDec D A L, GlobalTheory.Doubling.sigOK_hsum hA hL, fun τ => rfl⟩, fun A ρ hA => ⟨_, hypSumDec D A ρ, GlobalTheory.Doubling.sigOK_hsum hA (hypSp_sigOK D ρ), fun τ => ?_⟩⟩` and prove the remaining obligations. Use `show A.sig τ + (hypSp D ρ).sig τ = _`. Rewrite using `[hypSp_sig]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_orthSum_hypSum : ∀ (D : D7), (∀ A L : HSp D, A.SigOK → L.SigOK → ∃ (S : HSp D) (_ : OrthDec S A L), S.SigOK ∧ ∀ τ, S.sig τ = A.sig τ + L.sig τ) ∧ ∀ (A : HSp D) (ρ : ℕ), A.SigOK → ∃ (S : HSp D) (_ : HypDec S A ρ), S.SigOK ∧ ∀ τ, S.sig τ = A.sig τ + (ρ, ρ) := by
   intro D

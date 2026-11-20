@@ -16,9 +16,9 @@ variable {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algeb
 set_option linter.unusedSectionVars false
 
 /- English proof (translation)
-Introduce `g _`. Use `⟨g 0 • ((BoundedContinuousFunction.evalCLM ℂ 0).comp (SchwartzMap.toBoundedContinuousFunctionCLM ℂ (κ → mixedEmbedding.mixedSpace F) ℂ)), fun f => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `f (fun i => InfiniteAdeleRing.ringEquiv_mixedSpace F ((0 : κ → AF F) i).1) * g (fun i => ((0 : κ → AF F) i).2) = _`. Establish `e1 : ∀ i, ((0 : κ → AF F) i).1 = 0` using `fun _ => rfl`. Establish `e2 : (fun i => ((0 : κ → AF F) i).2) = (0 : κ → FiniteAdeleRing (𝓞 F) F)` using `rfl`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [e1, e2, map_zero]`. Simplify using `[mul_comm]`. Use `left`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem adelicCoordinatesEvalZeroForm_mem_admissible (κ : Type) [Fintype κ] : ev0 (F := F) κ ∈ (adeleClass F).adm κ := by
   intro g _
@@ -32,24 +32,24 @@ theorem adelicCoordinatesEvalZeroForm_mem_admissible (κ : Type) [Fintype κ] : 
   left; rfl
 
 /- English proof (translation)
-The claim follows from `Matrix.map_mul`.
+A detailed English derivation is pending.
 -/
 theorem incM_mul' {a b c : Type} [Fintype b] (X : Matrix a b E) (Y : Matrix b c E) :
     incM F (X * Y) = incM F X * incM F Y := Matrix.map_mul
 
 /- English proof (translation)
-The claim follows from `Matrix.transpose_map`.
+A detailed English derivation is pending.
 -/
 theorem incM_transpose' {a b : Type} (X : Matrix a b E) : incM F Xᵀ = (incM F X)ᵀ := Matrix.transpose_map
 
 /- English proof (translation)
-Use extensionality with `i j`. Simplify using `[incM]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem incM_add' {a b : Type} (X Y : Matrix a b E) : incM F (X + Y) = incM F X + incM F Y := by
   ext i j; simp [incM]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.fromCols_mul_fromRows, ← Matrix.transpose_fromCols, Matrix.fromCols_toCols, Matrix.fromCols_toCols, Matrix.mul_assoc, ← Matrix.transpose_mul, b.mul_inv, Matrix.transpose_one, Matrix.mul_one]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem frame_decomp {m n : ℕ} (b : GL (Fin n ⊕ Fin n) E) (v : Matrix (Fin m) (Fin n ⊕ Fin n) E) :
     v = (v * (b⁻¹).1ᵀ).toCols₁ * b.1.toCols₁ᵀ + (v * (b⁻¹).1ᵀ).toCols₂ * b.1.toCols₂ᵀ := by
@@ -57,14 +57,14 @@ theorem frame_decomp {m n : ℕ} (b : GL (Fin n ⊕ Fin n) E) (v : Matrix (Fin m
     Matrix.mul_assoc, ← Matrix.transpose_mul, b.mul_inv, Matrix.transpose_one, Matrix.mul_one]
 
 /- English proof (translation)
-Simplify using `[crdB, incM, inclR, Algebra.TensorProduct.basis_repr_tmul]`.
+Simplify using the standard rewrite rules.
 -/
 theorem crdB_incM {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (X : Matrix (Fin m) (Fin n) E) (k : Fin m × Fin n × Fin 2) :
     crdB bs (incM F X) k = algebraMap F (AF F) (bs.repr (X k.1 k.2.1) k.2.2) := by
   simp [crdB, incM, inclR, Algebra.TensorProduct.basis_repr_tmul]
 
 /- English proof (translation)
-Establish `ht' : b.1.toCols₁ = (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) E) * (t.1 : Matrix (Fin n) (Fin n) E)` using `ht`. Establish `e3 : (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) E) * (t.1 : Matrix (Fin n) (Fin n) E) * (t⁻¹).1 = diagCols (Fin n)`. Rewrite using `[Matrix.mul_assoc, t.mul_inv, Matrix.mul_one]`. Rewrite using `[← incM_mul', ht', e3]`. Apply the tactic sequence `ext i j; rcases i with i | i <;> by_cases h : i = j <;> simp [incM, diagCols, h]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem diag_eq {n : ℕ} (b : GL (Fin n ⊕ Fin n) E) (t : GL (Fin n) E) (ht : b.1.toCols₁ = diagCols (Fin n) * t.1) :
     (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E)) = incM F b.1.toCols₁ * incM F (t⁻¹).1 := by
@@ -76,9 +76,9 @@ theorem diag_eq {n : ℕ} (b : GL (Fin n ⊕ Fin n) E) (t : GL (Fin n) E) (ht : 
   ext i j; rcases i with i | i <;> by_cases h : i = j <;> simp [incM, diagCols, h]
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hb.2`. Establish `e : z * (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) (AE F E))ᵀ = (z * (incM F (t⁻¹).1)ᵀ) * (incM F b.1.toCols₁)ᵀ + (0 : Matrix (Fin m) (Fin n) (AE F E)) * (incM F b.1.toCols₂)ᵀ`. Rewrite using `[diag_eq b t ht, Matrix.transpose_mul, Matrix.zero_mul, add_zero, Matrix.mul_assoc]`. Rewrite using `[e, hd]`. Use function extensionality and compare the values at `k`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument.
 
-Simplify using `[crdB]`.
+Simplify using the standard rewrite rules.
 -/
 theorem fst_diag {m n : ℕ} {σ : E →ₐ[F] E} (bs : Module.Basis (Fin 2) F E) (A : Spc F E m) (Y : Spc F E n)
     (b : GL (Fin n ⊕ Fin n) E) (hb : IsFrame2 σ Y b)
@@ -93,7 +93,7 @@ theorem fst_diag {m n : ℕ} {σ : E →ₐ[F] E} (bs : Module.Basis (Fin 2) F E
   funext k; simp [crdB]
 
 /- English proof (translation)
-Use `show Algebra.trace (AF F) (AF F ⊗[F] E) ((1 : AF F) ⊗ₜ[F] e) = _`. Rewrite using `[Algebra.trace_apply, Algebra.trace_apply, ← Algebra.baseChange_lmul, LinearMap.trace_baseChange]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem trace_inclR' [FiniteDimensional F E] (e : E) :
     Algebra.trace (AF F) (AE F E) (inclR (F := F) (AF F) e) = algebraMap F (AF F) (Algebra.trace F E e) := by
@@ -104,13 +104,13 @@ def EkE {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (k : Fin m × Fin n × Fin 2
   Matrix.single k.1 k.2.1 (bs k.2.2)
 
 /- English proof (translation)
-Apply the tactic sequence `ext i j; by_cases h1 : k.1 = i <;> by_cases h2 : k.2.1 = j <;> simp [Ek, EkE, incM, h1, h2, inclR]`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem Ek_eq {m n : ℕ} (bs : Module.Basis (Fin 2) F E) (k : Fin m × Fin n × Fin 2) : Ek bs k = incM F (EkE bs k) := by
   ext i j; by_cases h1 : k.1 = i <;> by_cases h2 : k.2.1 = j <;> simp [Ek, EkE, incM, h1, h2, inclR]
 
 /- English proof (translation)
-Establish `h1 : (incM F Z).map (cA σ) = incM F (Z.map σ)` using `by ext; rfl`. Rewrite using `[Bf, h1, ← incM_transpose', ← incM_mul', ← incM_mul', ← trace_inclR']`. Use `congr 1`. Rewrite using `[Matrix.trace, Matrix.trace, map_sum]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem Bf_incM [FiniteDimensional F E] {m n : ℕ} (σ : E →ₐ[F] E) (J : Matrix (Fin m) (Fin m) E) (X Z : Matrix (Fin m) (Fin n) E) :
     Bf σ J (incM F X) (incM F Z) = algebraMap F (AF F) (Algebra.trace F E (Xᵀ * J * Z.map σ).trace) := by
@@ -121,9 +121,9 @@ theorem Bf_incM [FiniteDimensional F E] {m n : ℕ} (σ : E →ₐ[F] E) (J : Ma
   rfl
 
 /- English proof (translation)
-Establish `: FiniteDimensional F E` using `Module.Finite.of_basis bs`. Use `set Q := v * (b⁻¹).1ᵀ`. Establish `hv : incM F v = incM F Q.toCols₁ * (incM F b.1.toCols₁)ᵀ + incM F Q.toCols₂ * (incM F b.1.toCols₂)ᵀ` using `by conv_lhs => rw [frame_decomp b v]`. Rewrite using `[incM_add', incM_mul', incM_mul', incM_transpose', incM_transpose']`. Use `⟨fun k => Algebra.trace F E (Q.toCols₁ᵀ * A.J * (EkE bs k).map σ).trace, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hv, hd]`. Use `Prod.ext (funext fun k => crdB_incM bs _ k) (funext fun k => ?_)` and prove the remaining obligations. Use `show Bf σ A.J (incM F Q.toCols₁) (Ek bs k) = _`. Rewrite using `[Ek_eq, Bf_incM]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem e_rat {m n : ℕ} {σ : E →ₐ[F] E} (bs : Module.Basis (Fin 2) F E) (A : Spc F E m) (Y : Spc F E n)
     (b : GL (Fin n ⊕ Fin n) E)
@@ -144,7 +144,7 @@ theorem e_rat {m n : ℕ} {σ : E →ₐ[F] E} (bs : Module.Basis (Fin 2) F E) (
   rw [Ek_eq, Bf_incM]
 
 /- English proof (translation)
-Establish `h0` using `fst_diag bs A Y b hb dd hd z`. Simplify using `[ev0, Darboux.rho, schr, h0]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem evaluation_zero_unipotent_kill {m n : ℕ} {σ : E →ₐ[F] E} (bs : Module.Basis (Fin 2) F E) (A : Spc F E m) (Y : Spc F E n)
     (b : GL (Fin n ⊕ Fin n) E) (hb : IsFrame2 σ Y b)
@@ -159,7 +159,7 @@ def Cm {n : ℕ} (b : GL (Fin n ⊕ Fin n) E) : Matrix (Fin n) (Fin n) E :=
   (Matrix.fromCols (1 : Matrix (Fin n) (Fin n) E) (-1) * (b⁻¹).1ᵀ).toCols₂
 
 /- English proof (translation)
-Establish `e : Matrix.fromCols y (-y) = y * Matrix.fromCols (1 : Matrix (Fin n) (Fin n) E) (-1)`. Rewrite using `[Matrix.mul_fromCols, Matrix.mul_one, Matrix.mul_neg, Matrix.mul_one]`. Rewrite using `[e, Matrix.mul_assoc]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem toCols₂_anti {m n : ℕ} (b : GL (Fin n ⊕ Fin n) E) (y : Matrix (Fin m) (Fin n) E) :
     (Matrix.fromCols y (-y) * (b⁻¹).1ᵀ).toCols₂ = y * Cm b := by
@@ -169,9 +169,9 @@ theorem toCols₂_anti {m n : ℕ} (b : GL (Fin n ⊕ Fin n) E) (y : Matrix (Fin
   rfl
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `hb.2`. Establish `ht' : b.1.toCols₁ = (diagCols (Fin n) : Matrix (Fin n ⊕ Fin n) (Fin n) E) * (t.1 : Matrix (Fin n) (Fin n) E)` using `ht`. Establish `h` using `frame_decomp b (Matrix.fromCols y (-y))`. Rewrite `h` using `[toCols₂_anti, hy, Matrix.zero_mul, add_zero, ht', Matrix.transpose_mul, ← Matrix.mul_assoc, diagCols, Matrix.transpose_fromRows, Matrix.transpose_one, Matrix.mul_fromCols, Matrix.mul_one]`. Take `⟨h1, h2⟩` from `Matrix.fromCols_inj h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Use extensionality with `i j`. Use `congrFun (congrFun (h1.trans h2.symm) i) j` as an intermediate fact. Simplify using `only [Matrix.neg_apply, Matrix.zero_apply] at this ⊢`. Take the linear combination `(1 / 2 : E) * this`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem Cm_inj {m n : ℕ} {σ : E →ₐ[F] E} {Y : Spc F E n} (b : GL (Fin n ⊕ Fin n) E) (hb : IsFrame2 σ Y b)
     (y : Matrix (Fin m) (Fin n) E) (hy : y * Cm b = 0) : y = 0 := by
@@ -206,7 +206,7 @@ def xiEquiv {m n : ℕ} {σ : E →ₐ[F] E} {Y : Spc F E n} (bs : Module.Basis 
         rw [LinearEquiv.apply_symm_apply] }
 
 /- English proof (translation)
-Rewrite using `[toCols₂_anti]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem xiEquiv_apply {m n : ℕ} {σ : E →ₐ[F] E} {Y : Spc F E n} (bs : Module.Basis (Fin 2) F E)
     (b : GL (Fin n ⊕ Fin n) E) (hb : IsFrame2 σ Y b) (y : Matrix (Fin m) (Fin n) E) (k : Fin m × Fin n × Fin 2) :
@@ -214,18 +214,16 @@ theorem xiEquiv_apply {m n : ℕ} {σ : E →ₐ[F] E} {Y : Spc F E n} (bs : Mod
   rw [toCols₂_anti]; rfl
 
 /- English proof (translation)
-Rewrite using `[map_mul]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 -/
 theorem invOf_two_alg (x : F) : ⅟(2 : AF F) * algebraMap F (AF F) x = algebraMap F (AF F) (2⁻¹ * x) := by
   rw [map_mul]
   congr 1
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `e_rat bs A Y b dd hd (Matrix.fromCols y (-y))`. Use `set a : Fin m × Fin n × Fin 2 → F := xiEquiv bs b hb y`. Establish `ha : (dd.e (incM F (Matrix.fromCols y (-y)))) = (fun k => algebraMap F (AF F) (a k), fun k => algebraMap F (AF F) (c k))`. Rewrite using `[hc]`. Use `congr 1`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `k`. Use `show _ = algebraMap F (AF F) (xiEquiv bs b hb y k)`. Rewrite using `[xiEquiv_apply]`. Establish `hdot : (fun k => algebraMap F (AF F) (a k)) ⬝ᵥ (fun k => algebraMap F (AF F) (c k)) = algebraMap F (AF F) (a ⬝ᵥ c)`. Simplify using `[dotProduct, map_sum]`.
-
-Simplify using `only [ev0, LinearMap.coe_mk, AddHom.coe_mk, Darboux.rho, schr, ha, zero_dotProduct, zero_add, hdot, invOf_two_alg, hψ, one_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem evaluation_zero_antisymmetric {m n : ℕ} {σ : E →ₐ[F] E} (bs : Module.Basis (Fin 2) F E) (A : Spc F E m) (Y : Spc F E n)
     (b : GL (Fin n ⊕ Fin n) E) (hb : IsFrame2 σ Y b)
@@ -245,9 +243,9 @@ theorem evaluation_zero_antisymmetric {m n : ℕ} {σ : E →ₐ[F] E} (bs : Mod
     one_mul]
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B bs m n A Y b ε r s hB hm hn hsg hb hε dd hd`. Use `⟨adelicCoordinatesEvalZeroForm_mem_admissible _, fun z Φ _ => evaluation_zero_unipotent_kill bs A Y b hb dd hd B.ψ z Φ, fun Φ hΦ => ?_⟩` and prove the remaining obligations. Establish `hψ : ∀ x : F, B.ψ (algebraMap F (AF F) x) = 1` using `hB.std.2.1`. Establish `hs` using `(summable_of_mem_schA F hΦ).hasSum`. Establish `h` using `(Equiv.hasSum_iff (xiEquiv (m := m) bs b hb)).mpr hs`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e1 : thetaSum F Φ = ∑' ξ : Fin m × Fin n × Fin 2 → F, Φ fun i => algebraMap F (AF F) (ξ i)` using `rfl`. Rewrite using `[e1]`. Use `h using 1` and compare the differences between its conclusion and the goal. Use function extensionality and compare the values at `y`. Conclude with `evaluation_zero_antisymmetric bs A Y b hb dd hd B.ψ hψ Φ y`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument. A detailed English derivation is pending.
 -/
 theorem sEv : SEv := by
   intro F E _ _ _ _ _ σ B bs m n A Y b ε r s hB hm hn hsg hb hε dd hd

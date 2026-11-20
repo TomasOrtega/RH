@@ -7,11 +7,11 @@ open scoped TensorProduct Topology
 namespace GlobalTheory.CompanionTheory.SaGen
 
 /- English proof (translation)
-Introduce `F _ _ A₁ B₁ A₂ B₂ a b ha hb h1 h2`. Take `⟨ha1, ha2, ha3, ha4⟩` from `ha`. Take `⟨hb1, -, hb3, -⟩` from `hb`. Use `adele_ext ?_ (finAdele_ext fun v => ?_)` and prove the remaining obligations. Rewrite using `[map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `ainf_ext fun w => ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `fstA F b w * fstA F a w = fstA F a w`. Distinguish the cases in `hw : w ∈ A₁`. Rewrite using `[hb1 w (h1 hw), one_mul]`. Rewrite using `[ha2 w hw, mul_zero]`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_mul, map_mul]`. Distinguish the cases in `hv : v ∈ A₂`. Rewrite using `[hb3 v (h2 hv), one_mul]`. Rewrite using `[ha4 v hv, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem idem_mul_eq_of_subset : ∀ {F : Type} [Field F] [NumberField F] {A₁ B₁ : Finset (InfinitePlace F)}
     {A₂ B₂ : Finset (HeightOneSpectrum (𝓞 F))} {a b : AF F}, IsPlacesIdem A₁ A₂ a → IsPlacesIdem B₁ B₂ b →

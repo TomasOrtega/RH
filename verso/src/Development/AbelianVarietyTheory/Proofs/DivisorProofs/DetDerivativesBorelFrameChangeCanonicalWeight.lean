@@ -25,23 +25,21 @@ def movedVert (g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.m
     (g' q.1 * (Matrix.of fun i j => (Pi.single k.toF (1 : K) : FIx Dw → K) (some ⟨q.1, i, j⟩)) * g q.1) q.2.1 q.2.2
 
 /- English proof (translation)
-Establish `eM : ∀ k j : HIx Dw Φ, ksChg Φ g (Pi.single k 1) j ≠ 0 → k = j ∨ ((j.2.1 : ℤ) + j.2.2 < (k.2.1 : ℤ) + k.2.2)`. Introduce and unpack `k ⟨τ, a, b⟩ hne`. Rewrite `hne` using `[ksChg_apply]`. Take `⟨a', -, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Take `⟨b', -, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Choose the witnesses or unpack the hypotheses as in `rfl : ⟨τ, a', b'⟩ = k := by`. Assume the negation of the conclusion as `hk`. Simplify using `[Pi.single_eq_of_ne hk] at hne`. Establish `h1 : ¬ a' < a` using `fun k => by simp [hg _ _ _ k] at hne`. Establish `h2 : ¬ b' < b` using `fun k => by simp [hg _ _ _ k] at hne`.
+Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Distinguish the cases in `h3 : a' = a ∧ b' = b`. Use `left`. Rewrite using `[h3.1, h3.2]`. Use `right`. Simplify using `only [Fin.ext_iff, Fin.lt_def] at h1 h2 h3 ⊢`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact.
 
-Use linear arithmetic over natural numbers and integers. Establish `dM : ∀ k : HIx Dw Φ, ksChg Φ g (Pi.single k 1) k = ((t (some ⟨conjEmb k.1.1, k.2.1⟩) * t (some ⟨k.1.1, k.2.2⟩) : Kˣ) : K)`. Introduce and unpack `⟨τ, a, b⟩`. Simplify using `[ksChg_apply, Pi.single_apply, hd, ite_and]`. Establish `fN : ∀ (k : VIx Dw) (σ : E →+* ℂ) (i j : Fin (Dw.mult σ)), (g' σ * (Matrix.of fun i j => (Pi.single k.toF (1 : K) : FIx Dw → K) (some ⟨σ, i, j⟩)) * g σ) i j = ∑ a, ∑ b, g' σ i a * (Pi.single k.toF (1 : K) : FIx Dw → K) (some ⟨σ, a, b⟩) * g σ b j` using `fun k σ i j => by`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Matrix.mul_apply, Matrix.of_apply, Finset.sum_mul]`. Conclude with `Finset.sum_comm`. Rewrite using `[det_eq_prod_diag_of_height _ (fun k => (k.2.1 : ℤ) + k.2.2) eM, det_eq_prod_diag_of_height (m := VIx Dw) _ (fun k => (k.2.1.2 : ℤ) - k.2.1.1)]`. Rewrite using `[exOf_kap, ← prod_char_eq hΦ, Units.val_mul, Units.coe_prod, Units.coe_prod]`. Use `congrArg₂ (· * ·) (Finset.prod_congr rfl fun k _ => dM k) (Finset.prod_congr rfl fun ⟨σ, ⟨i, j⟩, hij⟩ _ => (fN _ σ i j).trans ?_)` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Simplify using `[VIx.toF, Pi.single_apply, hd, hd', ite_and]`. Introduce and unpack `⟨σ', ⟨i', j'⟩, hij'⟩ ⟨σ, ⟨i, j⟩, hij⟩ hne`. Establish `hne` using `fun e => hne ((fN _ σ i j).trans e)`. Take `⟨a, -, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`. Take `⟨b, -, hne⟩` from `Finset.exists_ne_zero_of_sum_ne_zero hne`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result.
 
-Establish `e : (some ⟨σ, a, b⟩ : FIx Dw) = some ⟨σ', i', j'⟩`. Assume the negation of the conclusion as `hk`. Conclude with `hne (by rw [VIx.toF, Pi.single_eq_of_ne hk, mul_zero, zero_mul])`. Take `⟨rfl, e⟩` from `Sigma.mk.inj_iff.1 (Option.some.inj e)`. Take `⟨rfl, rfl⟩` from `Prod.mk.inj (eq_of_heq e)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Establish `h1 : ¬ i < a` using `fun k => by simp [hg' _ _ _ k] at hne`. Establish `h2 : ¬ b < j` using `fun k => by simp [hg _ _ _ k] at hne`. Distinguish the cases in `h3 : a = i ∧ b = j`. Use `left`. Take `⟨rfl, rfl⟩` from `h3`.
-
-Both sides reduce to the same expression. Use `right`. Simplify using `only [Fin.ext_iff, Fin.lt_def] at h1 h2 h3 ⊢`. Use linear arithmetic over natural numbers and integers.
+Both sides reduce to the same expression. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem det_moved {Φ : Finset (E →+* ℂ)} (hΦ : IsHalf Φ) {t : Ix Dw → Kˣ}
     {g g' : ∀ τ : E →+* ℂ, Matrix (Fin (Dw.mult τ)) (Fin (Dw.mult τ)) K}
@@ -101,13 +99,13 @@ theorem det_moved {Φ : Finset (E →+* ℂ)} (hΦ : IsHalf Φ) {t : Ix Dw → K
 variable {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} [Algebra c.F K]
 
 /- English proof (translation)
-Take `⟨g, hg, hd, hc⟩` from `(frBor_iff_frChg _ _ _).1 h`. Take `⟨g', a', -, e1, e2⟩` from `exists_frChg_inv hc`. Establish `hg' : ∀ τ i j, i < j → g' τ i j = 0` using `fun τ i j hij => by`. Set `_ : Invertible (g τ)` to `⟨g' τ, e1 τ, e2 τ⟩`. Use `Matrix.blockTriangular_inv_of_blockTriangular (M := g τ) (b := OrderDual.toDual) (fun i j hij => hg τ i j hij)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Rewrite `this` using `[Matrix.inv_eq_left_inv (e1 τ)]`. Conclude with `this hij`. Establish `hd' : ∀ τ i, g' τ i i = ((t (some ⟨τ, i⟩))⁻¹ : Kˣ)` using `fun τ i => by`. Use `congrFun (congrFun (e1 τ) i) i` as an intermediate fact. Rewrite `this` using `[Matrix.mul_apply, Finset.sum_eq_single i, hd, Matrix.one_apply_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(Units.mul_eq_one_iff_eq_inv).1 this`. Introduce `j _ hj`. Break down `lt_or_gt_of_ne hj with k | k` into its components or cases. Rewrite using `[hg τ j i k, mul_zero]`. Rewrite using `[hg' τ i j k, zero_mul]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using the standard rewrite rules. Use `choose w hw hw' using fun k => exists_move hc (hv'.isDef k)`. Use `⟨w, fun k => ksChg Φ g (Pi.single k 1), movedVert g g', fun k => ⟨fun i => Units.map (cst c K).toRingHom.toMonoidHom (t i), (frBor_iff_frChg _ _ _).2 ⟨_, fun τ i j hij => by simp [hg τ i j hij], fun τ i => by simp [hd], hw' k⟩⟩, fun k => ⟨hw _, by rw [← (hw' _).1]; exact (hv'.1 k …` and prove the remaining obligations.
+A detailed English derivation is pending.
 -/
 theorem exists_moved_defs {Φ : Finset (E →+* ℂ)} (hΦ : IsHalf Φ) {t : Ix Dw → Kˣ} {y y' : FrPt Xo c K}
     (h : FrBor t y y') {v' : TIx Dw Φ → FrPt Xo c (DualNumber K)} (hv' : IsTanFrame Φ y' v') :
@@ -151,15 +149,13 @@ open GlobalTheory.AllWt (exOf)
 open scoped Classical
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c Y X Z M hKS K _ _ z ho P Q t hz ht v v' hv hv' zv zv' hl hl' O g hzv hzv'`. Take `⟨w, Mx, N, hb, hM, hN, hdet⟩` from `GlobalTheory.FlagTan.exists_moved_defs (GlobalTheory.FlagTan.isHalf_psiSet H) ht hv`. Establish `hlw : ∀ k, zv k ≫ toFlag M = X.ptY (w k)` using `fun k => by`. Take `⟨_, h⟩` from `hb k`. Rewrite using `[hl, X.ptY_frBor h]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Use `choose C hC using fun k => GlobalTheory.T.derivative_along_kodairaSpencer_deformation_lift M z ho (hKS K Q) hz hv' hl' (hM k).1 (hM k).2 (hlw (.inl k))`. Establish `hV` using `fun k => GlobalTheory.T.derivative_along_vertical_deformation_lift M z ho hz (v := fun j => v' (.inr j)) (fun j => hv'.2 j) (zv := fun j => zv' (.inr j)) (fun j => hl' _) (hN k) (hlw (.inr k))`. Set `T : Matrix (TIx Dw (psiSet H)) (TIx Dw (psiSet H)) K` to `Matrix.fromBlocks (Matrix.of Mx) (Matrix.of C) 0 (Matrix.of fun k j : VIx Dw => N k j.toF)`. Establish `hT : ∀ a b, (evalPt (zv b) O (hzv b) (g a)).snd = ∑ c', T b c' * (evalPt (zv' c') O (hzv' c') (g a)).snd`. Introduce `a b`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `b with k | k` into its components or cases. Rewrite using `[hC k O (g a) (hzv _) hzv', Fintype.sum_sum_type]`. Simplify using `[T]`. Rewrite using `[hV k O (g a) (hzv _) (fun j => hzv' _), Fintype.sum_sum_type]`. Simplify using `[T]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hA : (Matrix.of fun a b => (evalPt (zv (tanOrd Dw b)) O (hzv _) (g a)).snd) = (Matrix.of fun a b => (evalPt (zv' (tanOrd Dw b)) O (hzv' _) (g a)).snd) * (T.submatrix (tanOrd Dw) (tanOrd Dw)).transpose`. Use extensionality with `a b`. Simplify using `only [Matrix.of_apply, Matrix.mul_apply, Matrix.transpose_apply, Matrix.submatrix_apply, hT]`. Rewrite using `[← (tanOrd Dw).sum_comp]`. Conclude with `Finset.sum_congr rfl fun _ _ => mul_comm _ _`.
-
-Rewrite using `[hA, Matrix.det_mul, Matrix.det_transpose, Matrix.det_submatrix_equiv_self, Matrix.det_fromBlocks_zero₂₁, hdet, mul_comm]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_der_frBor : ∀ {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : Datum H} {l : Level H} {Xo : Moduli Dw l} {c : Coeff l} {Y : Model Xo c (RingHom.id c.F)} {X : GlobalTheory.FlagMod.FlagCover Y} {Z : Comp Xo c} (M : Modif (str₀ X Z) (U₀ X Z) (GlobalTheory.FlagTan.dimFlag Dw)) (hKS : ∀ (K : Type) [Field K] [Algebra c.F K] (y : FrPt Xo c K), KSIso (psiSet H) y)
     {K : Type} [Field K] [Algebra c.F K] (z : Sp K ⟶ M.X) (ho : ⊤ ≤ z ⁻¹ᵁ M.off) {P Q : FrPt Xo c K}

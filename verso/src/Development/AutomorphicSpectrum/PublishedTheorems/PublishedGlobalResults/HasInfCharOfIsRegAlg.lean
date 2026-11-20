@@ -13,19 +13,17 @@ def finUnit {E : Type} [Field E] [NumberField E] : (𝓞 E)ˣ →* (Af E)ˣ :=
   Units.map ((algebraMap E (Af E)).comp (algebraMap (𝓞 E) E)).toMonoidHom
 
 /- English proof (translation)
-Establish `hV : {u | ψ u = 1} ∈ 𝓝 (1 : (Af E)ˣ)` using `(isOpen_ker_finIdele E ψ hψ).mem_nhds (map_one ψ)`. Rewrite `hV` using `[Units.isInducing_embedProduct.nhds_eq_comap, Filter.mem_comap]`. Take `⟨T, hT, hTV⟩` from `hV`. Take `⟨T1, hT1, T2, hT2, hTT⟩` from `mem_nhds_prod_iff.1 hT`. Establish `hf : Continuous fun b : Af E => 1 + b` using `continuous_const.add continuous_id`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h1 : (fun b : Af E => 1 + b) ⁻¹' T1 ∈ 𝓝 0` using `hf.continuousAt.preimage_mem_nhds (by rw [add_zero]; exact hT1)`. Establish `h2 : (fun b : Af E => MulOpposite.op (1 + b)) ⁻¹' T2 ∈ 𝓝 0` using `(MulOpposite.continuous_op.comp hf).continuousAt.preimage_mem_nhds (by rw [Function.comp_apply, add_zero]; exact hT2)`. Take `⟨N, hN, hNW⟩` from `GlobalTheory.AdLat.OpenLat.exists_nsmul_adele E _ (Filter.inter_mem h1 h2)`. Establish `: Finite (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})` using `Ideal.finiteQuotientOfFreeOfNeBot _ (by simpa using hN.ne')`. Set `q : (𝓞 E)ˣ →* (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})ˣ` to `Units.map (Ideal.Quotient.mk _).toMonoidHom`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `key : ∀ η : (𝓞 E)ˣ, q η = 1 → ∃ a : Af E, (∀ v, a v ∈ v.adicCompletionIntegers E) ∧ ((finUnit η : (Af E)ˣ) : Af E) = 1 + N • a`. Introduce `η hη`. Establish `h3 : Ideal.Quotient.mk (Ideal.span {(N : 𝓞 E)}) (η : 𝓞 E) = Ideal.Quotient.mk _ 1` using `congrArg Units.val hη`. Take `⟨b, hb⟩` from `Ideal.mem_span_singleton.1 (Ideal.Quotient.eq.1 h3)`. Use `⟨algebraMap E (Af E) (algebraMap (𝓞 E) E b), fun v => HeightOneSpectrum.coe_mem_adicCompletionIntegers v b, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Express the relevant statement in the definitionally equal form `algebraMap E (Af E) (algebraMap (𝓞 E) E (η : 𝓞 E)) = _`. Rewrite using `[eq_add_of_sub_eq' hb]`. Simplify using the standard rewrite rules. Use `⟨Nat.card (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})ˣ, Nat.card_pos, ?_⟩` and prove the remaining obligations. Use `set k := Nat.card (𝓞 E ⧸ Ideal.span {(N : 𝓞 E)})ˣ`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hk : q (θ ^ k) = 1` using `by rw [map_pow]; exact pow_card_eq_one'`. Take `⟨a, ha, e⟩` from `key _ hk`. Take `⟨b, hb, e'⟩` from `key (θ ^ k)⁻¹ (by rw [map_inv, hk, inv_one])`. Rewrite using `[← map_pow, ← map_pow]`. Use `hTV (a := finUnit (θ ^ k)) (hTT ⟨?_, ?_⟩)` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `((finUnit (θ ^ k) : (Af E)ˣ) : Af E) ∈ T1`. Rewrite using `[e]`. Conclude with `(hNW a ha).1`. Express the relevant statement in the definitionally equal form `MulOpposite.op (((finUnit (θ ^ k))⁻¹ : (Af E)ˣ) : Af E) ∈ T2`. Rewrite using `[← map_inv, e']`.
-
-Conclude with `(hNW b hb).2`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_pow_eq_one {E : Type} [Field E] [NumberField E] (ψ : (Af E)ˣ →* ℂˣ) (hψ : Continuous ψ) (θ : (𝓞 E)ˣ) :
     ∃ k : ℕ, 0 < k ∧ ψ (finUnit θ) ^ k = 1 := by
@@ -70,15 +68,15 @@ def infUnit : (𝓞 E)ˣ →* (Cinf E)ˣ :=
   Units.map ((pInf E).comp ((algebraMap E (Ad E)).comp (algebraMap (𝓞 E) E))).toMonoidHom
 
 /- English proof (translation)
-Establish `hi : ∀ x, pInf E (sInf E x) = x` using `fun x => (infEq E).symm_apply_apply x`. Establish `hf : ∀ x, pInf E (sFin E x) = 0` using `fun x => map_zero (infEq E).symm`. Establish `hi' : ∀ x, pFin E (sInf E x) = 0` using `fun x => rfl`. Establish `hf' : ∀ x, pFin E (sFin E x) = x` using `fun x => rfl`. Establish `e : infId E (infUnit θ) * finId E (finUnit θ) = diagUnits E (Units.map (algebraMap (𝓞 E) E).toMonoidHom θ)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `Units.ext (ad_ext ?_ ?_)` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `pInf E ((1 - sInf E 1 + sInf E _) * (1 - sFin E 1 + sFin E _)) = _`. Simplify using `only [map_mul, map_add, map_sub, map_one, hi, hf, sub_self, zero_add, sub_zero, add_zero, mul_one]`. Both sides reduce to the same expression. Express the relevant statement in the definitionally equal form `pFin E ((1 - sInf E 1 + sInf E _) * (1 - sFin E 1 + sFin E _)) = _`.
+Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Express the relevant assertion in an equivalent form by its definition.
 
-Simplify using `only [map_mul, map_add, map_sub, map_one, hi', hf', sub_self, zero_add, sub_zero, add_zero, one_mul]`. Both sides reduce to the same expression. Establish `h1` using `χ.2.2 (Units.map (algebraMap (𝓞 E) E).toMonoidHom θ)`. Rewrite `h1` using `[← e, map_mul]`. Take `⟨k, hk, h2⟩` from `exists_pow_eq_one (χ.1.comp (finId E)) (χ.2.1.comp (continuous_finId E)) θ`.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `h3 : chiInf χ (infUnit θ) ^ k = 1`. Use `congrArg (· ^ k) h1` as an intermediate fact. Simplify using `only [mul_pow, one_pow] at this`. Rewrite `this` using `[show χ.1 (finId E (finUnit θ)) ^ k = 1 from h2, mul_one]`. Conclude with `this`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h4 : ‖((chiInf χ (infUnit θ) : ℂˣ) : ℂ)‖ ^ k = 1`. Rewrite using `[← norm_pow, ← Units.val_pow_eq_pow_val, h3]`. Simplify using the standard rewrite rules. Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) hk.ne').1 h4`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem norm_chiInf_unit (χ : HChar E) (θ : (𝓞 E)ˣ) : ‖((chiInf χ (infUnit θ) : ℂˣ) : ℂ)‖ = 1 := by
   have hi : ∀ x, pInf E (sInf E x) = x := fun x => (infEq E).symm_apply_apply x
@@ -107,15 +105,13 @@ theorem norm_chiInf_unit (χ : HChar E) (θ : (𝓞 E)ˣ) : ‖((chiInf χ (infU
   exact (pow_eq_one_iff_of_nonneg (norm_nonneg _) hk.ne').1 h4
 
 /- English proof (translation)
-Take `⟨c, hc⟩` from `GlobalTheory.CompanionTheory.Ar.Flat.exists_eq_mul_mult_of_units E (fun w => ((n w.embedding + n (ComplexEmbedding.conjugate w.embedding) : ℤ) : ℝ)) (fun θ => by`. Establish `h1` using `norm_chiInf_unit χ θ`. Rewrite `h1` using `[GlobalTheory.RegAlgPurityModel.chiInf_eq_prod χ n h, norm_prod]`. Establish `hc : ∀ τ : E →+* ℂ, coord τ (infUnit θ : (Cinf E)ˣ) = τ ((θ : 𝓞 E) : E)` using `fun τ => coord_algebraMap τ _`. Establish `hp : ∀ w : InfinitePlace E, 0 < w ((θ : 𝓞 E) : E)` using `fun w => Units.pos_at_place θ w`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2 : ∀ w : InfinitePlace E, ‖coord w.embedding (infUnit θ : (Cinf E)ˣ) ^ n w.embedding * coord (ComplexEmbedding.conjugate w.embedding) (infUnit θ : (Cinf E)ˣ) ^ n (ComplexEmbedding.conjugate w.embedding)‖ = w ((θ : 𝓞 E) : E) ^ (n w.embedding + n (ComplexEmbedding.conjugate w.emb …` using `fun w => by`. Rewrite using `[hc, hc, norm_mul, norm_zpow, norm_zpow, zpow_add₀ (hp w).ne', ComplexEmbedding.conjugate_coe_eq, Complex.norm_conj, InfinitePlace.norm_embedding_eq]`. Simplify using `only [h2] at h1`. Establish `h3` using `congrArg Real.log h1`. Rewrite `h3` using `[Real.log_prod (fun w _ => (zpow_pos (hp w) _).ne'), Real.log_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[← h3]`. Conclude with `Finset.sum_congr rfl fun w _ => by rw [Real.log_zpow, mul_comm])`. Establish `hm : ∀ w : InfinitePlace E, ((n w.embedding + n (ComplexEmbedding.conjugate w.embedding) : ℤ) : ℝ) = c * 2` using `fun w => by rw [hc w, (IsTotallyComplex.isComplex w).mult_eq_two]; norm_num`. Take `⟨w₀⟩ : Nonempty (InfinitePlace E)` from `inferInstance`. Use `⟨n w₀.embedding + n (ComplexEmbedding.conjugate w₀.embedding), fun τ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h5 : n (InfinitePlace.mk τ).embedding + n (ComplexEmbedding.conjugate (InfinitePlace.mk τ).embedding) = n w₀.embedding + n (ComplexEmbedding.conjugate w₀.embedding)`. Conclude with `(hm _).trans (hm w₀).symm` after adjusting the coercions. Break down `InfinitePlace.embedding_mk_eq τ with e | e` into its components or cases. Rewrite `h5` using `[e]`. Then use the resulting hypothesis. Rewrite `h5` using `[e, show ComplexEmbedding.conjugate (ComplexEmbedding.conjugate τ) = τ from star_star τ, add_comm]`.
-
-Conclude with `h5`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hecke_pure (χ : HChar E) (n : (E →+* ℂ) → ℤ) (h : ∀ τ, expo χ τ = n τ) :
     ∃ w₀ : ℤ, ∀ τ : E →+* ℂ, n τ + n (ComplexEmbedding.conjugate τ) = w₀ := by
@@ -149,9 +145,9 @@ theorem hecke_pure (χ : HChar E) (n : (E →+* ℂ) → ℤ) (h : ∀ τ, expo 
     exact h5
 
 /- English proof (translation)
-Use `⟨?_, GlobalTheory.RegAlgPurityModel.isCohomological_rank_one π hr⟩` and prove the remaining obligations. Take `⟨χ, rfl⟩` from `RankOne.exists_eq_twist π`. Use `choose n hn using (CG.isRegAlg_ofChar χ).1 hr`. Take `⟨w₀, hw⟩` from `hecke_pure χ n hn`. Use `⟨w₀, fun τ => ?_⟩` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `(CG.ofChar χ).infChar (ComplexEmbedding.conjugate τ) = ((CG.ofChar χ).infChar τ).map _`. Rewrite using `[CG.infChar_ofChar, CG.infChar_ofChar, Multiset.map_singleton, hn, hn, ← hw τ]`. Use `congr 1`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 theorem rank_one (π : CuspSub E 1) (hr : (CG.mk π).IsRegAlg) :
     (∃ w₀ : ℤ, ∀ τ : E →+* ℂ,
@@ -167,7 +163,7 @@ theorem rank_one (π : CuspSub E 1) (hr : (CG.mk π).IsRegAlg) :
   congr 1; push_cast; ring
 
 /- English proof (translation)
-Use `⟨fun H L _ _ _ a ha π hr => H L a (by omega) π hr, fun H L _ _ _ a ha π hr => ?_⟩` and prove the remaining obligations. Break down `ha.eq_or_lt with rfl | h` into its components or cases. Conclude with `rank_one π hr`. Conclude with `H L a h π hr`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem iff_two_le : GlobalTheory.CompanionTheory.Published.Rd.RegularAlgebraicPurity ↔
     ∀ (L : Type) [Field L] [NumberField L] [IsCMField L] (a : ℕ), 2 ≤ a → ∀ π : CuspSub L a, (CG.mk π).IsRegAlg →
@@ -180,9 +176,9 @@ theorem iff_two_le : GlobalTheory.CompanionTheory.Published.Rd.RegularAlgebraicP
   · exact H L a h π hr
 
 /- English proof (translation)
-Distinguish the cases in `hm : ∃ m, π.HasInfChar τ m`. Take `⟨m, hm⟩` from `hm`. Rewrite using `[hm.infChar_eq]` and apply the resulting hypothesis. Establish `h1` using `(h τ).1`. Rewrite `h1` using `[CG.infChar, dif_neg hm]`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take `⟨b, rfl⟩ : ∃ b, a = b + 2` from `⟨a - 2, by omega⟩`. Simplify using `[Multiset.replicate_succ] at h1`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem hasInfChar_of_isRegAlg {a : ℕ} (ha : 2 ≤ a) {π : CG E a} (h : π.IsRegAlg) (τ : E →+* ℂ) :
     π.HasInfChar τ (π.infChar τ) := by

@@ -45,7 +45,7 @@ def dg (j : Fin N) (γ : K) : Matrix (Fin N) (Fin N) K := Matrix.diagonal (Funct
 def PInt (p : ℕ) (f : K) : Prop := ∃ r : ℕ, r.Coprime p ∧ IsIntegral ℤ ((r : K) * f)
 
 /- English proof (translation)
-Take `⟨E, hE, h₁, h₂⟩` from `H`. Apply the tactic sequence `refine ⟨b • E, fun i j => R.mul_mem hb (hE i j), ?_, ?_⟩ <;> rwa [smul_smul]`.
+Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem TriMod.of_mul {R : Subring K} {h b : K} {A : Matrix (Fin N) (Fin N) K} {d : Fin N → K} (H : TriMod R (h * b) A d)
     (hb : b ∈ R) : TriMod R h A d := by
@@ -53,14 +53,14 @@ theorem TriMod.of_mul {R : Subring K} {h b : K} {A : Matrix (Fin N) (Fin N) K} {
   refine ⟨b • E, fun i j => R.mul_mem hb (hE i j), ?_, ?_⟩ <;> rwa [smul_smul]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [Matrix.det_mul]; exact mul_ne_zero hA.1 hB.1, mul_mem hA.2.1 hB.2.1, by rw [Matrix.mul_inv_rev]; exact mul_mem hB.2.2 hA.2.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem Fr.mul {R : Subring K} {A B : Matrix (Fin N) (Fin N) K} (hA : Fr R A) (hB : Fr R B) : Fr R (A * B) :=
   ⟨by rw [Matrix.det_mul]; exact mul_ne_zero hA.1 hB.1, mul_mem hA.2.1 hB.2.1,
     by rw [Matrix.mul_inv_rev]; exact mul_mem hB.2.2 hA.2.2⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv']; exact inv_ne_zero hA.1, hA.2.2, by rw [Matrix.nonsing_inv_nonsing_inv _ hA.1.isUnit]; exact hA.2.1⟩`.
+Supply the required witnesses or components.
 -/
 theorem Fr.inv {R : Subring K} {A : Matrix (Fin N) (Fin N) K} (hA : Fr R A) : Fr R A⁻¹ :=
   ⟨by rw [Matrix.det_nonsing_inv, Ring.inverse_eq_inv']; exact inv_ne_zero hA.1, hA.2.2,
@@ -70,7 +70,7 @@ variable {K' : Type} [Field K'] {R : Subring K} {R' : Subring K'} (φ : K →+* 
 include hφ
 
 /- English proof (translation)
-Take `⟨E, hE, h₁, h₂⟩` from `H`. Establish `e (i j) : (A.map φ - φ h • E.map φ) i j = φ ((A - h • E) i j)` using `by simp`. Conclude with `⟨E.map φ, fun i j => hφ _ (hE i j), fun i j hij => by rw [e, h₁ hij, map_zero], fun i => by rw [e, h₂]⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem TriMod.map {h : K} {A : Matrix (Fin N) (Fin N) K} {d : Fin N → K} (H : TriMod R h A d) :
     TriMod R' (φ h) (A.map φ) fun i => φ (d i) := by
@@ -79,7 +79,7 @@ theorem TriMod.map {h : K} {A : Matrix (Fin N) (Fin N) K} {d : Fin N → K} (H :
   exact ⟨E.map φ, fun i j => hφ _ (hE i j), fun i j hij => by rw [e, h₁ hij, map_zero], fun i => by rw [e, h₂]⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨by rw [show (A.map φ).det = φ A.det from (RingHom.map_det φ A).symm]; exact (map_ne_zero φ).2 H.1, fun i j => hφ _ (H.2.1 i j), by rw [GlobalTheory.FrameGlue.Pull.matrix_map_inv]; exact fun i j => hφ _ (H.2.2 i j)⟩`.
+Supply the required witnesses or components.
 -/
 theorem Fr.map {A : Matrix (Fin N) (Fin N) K} (H : Fr R A) : Fr R' (A.map φ) :=
   ⟨by rw [show (A.map φ).det = φ A.det from (RingHom.map_det φ A).symm]; exact (map_ne_zero φ).2 H.1,
@@ -96,26 +96,26 @@ def Ov (p : ℕ) {X : Scheme.{0}} (x : X) : Prop := ¬ IsUnit (p : X.presheaf.st
 def loc (x : X) : Subring X.functionField := (algebraMap (X.presheaf.stalk x) X.functionField).range
 
 /- English proof (translation)
-Unfold both sides. The equivalence is reflexive.
+Unfold both sides to obtain the same proposition, which implies itself.
 -/
 theorem mem_loc {x : X} {f : X.functionField} : f ∈ loc x ↔ RegAt x f := Iff.rfl
 
 /- English proof (translation)
-Take `⟨U, hx, a, rfl⟩` from `h.exists_fnOf`. Conclude with `Filter.eventually_of_mem (U.isOpen.mem_nhds hx) fun z hz => regAt_fnOf hz _ a`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_regAt {x : X} {f : X.functionField} (h : RegAt x f) : ∀ᶠ z in 𝓝 x, RegAt z f := by
   obtain ⟨U, hx, a, rfl⟩ := h.exists_fnOf
   exact Filter.eventually_of_mem (U.isOpen.mem_nhds hx) fun z hz => regAt_fnOf hz _ a
 
 /- English proof (translation)
-Take `⟨U, hx, hU⟩` from `h.exists_nhds`. Conclude with `Filter.eventually_of_mem (U.isOpen.mem_nhds hx) hU`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem eventually_unitAt {x : X} {f : X.functionField} (h : UnitAt x f) : ∀ᶠ z in 𝓝 x, UnitAt z f := by
   obtain ⟨U, hx, hU⟩ := h.exists_nhds
   exact Filter.eventually_of_mem (U.isOpen.mem_nhds hx) hU
 
 /- English proof (translation)
-Establish `: ∀ᶠ z in 𝓝 x, ∀ i j, RegAt z (M i j)` using `eventually_all.2 fun i => eventually_all.2 fun j => eventually_regAt (h i j)`. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eventually_mem_matrix {x : X} {M : Matrix (Fin N) (Fin N) X.functionField} (h : M ∈ (loc x).matrix) :
     ∀ᶠ z in 𝓝 x, M ∈ (loc z).matrix := by
@@ -124,16 +124,16 @@ theorem eventually_mem_matrix {x : X} {M : Matrix (Fin N) (Fin N) X.functionFiel
   exact this
 
 /- English proof (translation)
-The claim follows from `((eventually_mem_matrix h.2.1).and (eventually_mem_matrix h.2.2)).mono fun _ hz => ⟨h.1, hz⟩`.
+A detailed English derivation is pending.
 -/
 theorem Fr.eventually {x : X} {M : Matrix (Fin N) (Fin N) X.functionField} (h : Fr (loc x) M) :
     ∀ᶠ z in 𝓝 x, Fr (loc z) M :=
   ((eventually_mem_matrix h.2.1).and (eventually_mem_matrix h.2.2)).mono fun _ hz => ⟨h.1, hz⟩
 
 /- English proof (translation)
-Use `⟨pow_mem (natCast_mem _ p) _, ?_⟩` and prove the remaining obligations. Introduce and unpack `_ ⟨r, rfl⟩`. Establish `h : IsUnit (1 + (p : X.presheaf.stalk x) ^ (k + 1) * r)`. Use `(IsLocalRing.isUnit_or_isUnit_one_sub_self _).resolve_right fun h => hx ?_` and prove the remaining obligations. Rewrite `h` using `[sub_add_cancel_left, IsUnit.neg_iff, pow_succ', mul_assoc]`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `isUnit_of_mul_isUnit_left h`. Take `⟨s, hs⟩` from `h.exists_right_inv`. Use `⟨_, ⟨s, rfl⟩, ?_⟩` and prove the remaining obligations. Use `congrArg (algebraMap _ X.functionField) hs` as an intermediate fact. Simplify using `using this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem small_pow {p : ℕ} {x : X} (hx : Ov p x) (k : ℕ) : Small (loc x) ((p : X.functionField) ^ (k + 1)) := by
   refine ⟨pow_mem (natCast_mem _ p) _, ?_⟩
@@ -174,7 +174,7 @@ def Link (p : ℕ) (c c' : X → Fin N → X.functionFieldˣ) : Prop :=
       fun x => (c x i : X.functionField) / η x i.castSucc
 
 /- English proof (translation)
-Use `⟨fun _ _ => 1, 1, fun j x _ => ⟨(unitAt_one x).regAt, ⟨0, by simpa using (unitAt_one x).regAt⟩, .of_forall fun z _ => by simpa using unitAt_one z⟩, fun x hx => ⟨unitAt_one x, by simpa using unitAt_one x, fun i => ⟨by simpa using (unitAt_one x).regAt, by simpa using h x hx i⟩⟩, fu …` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations.
 -/
 theorem link_of_unitAt {p : ℕ} {c c' : X → Fin N → X.functionFieldˣ}
     (h : ∀ x, Ov p x → ∀ i, UnitAt x ((c' x i : X.functionField) / c x i)) : Link p c c' := by
@@ -198,7 +198,7 @@ Both sides reduce to the same expression.
     (i : Fin N) : (pf π hπ c x i : X'.functionField) = SmallSec.fnMap π hπ (c (π x) i) := rfl
 
 /- English proof (translation)
-The claim follows from `funext fun x => funext fun i => Units.ext (ProjSpace.fnMap_comp a b ha hb hab _)`.
+A detailed English derivation is pending.
 -/
 theorem pf_comp (a : X'' ⟶ X') (b : X' ⟶ X) (ha : a (genericPoint X'') ⤳ genericPoint X')
     (hb : b (genericPoint X') ⤳ genericPoint X) (hab : (a ≫ b) (genericPoint X'') ⤳ genericPoint X)
@@ -206,7 +206,7 @@ theorem pf_comp (a : X'' ⟶ X') (b : X' ⟶ X) (ha : a (genericPoint X'') ⤳ g
   funext fun x => funext fun i => Units.ext (ProjSpace.fnMap_comp a b ha hb hab _)
 
 /- English proof (translation)
-The claim follows from `funext fun x => Matrix.ext fun i j => ProjSpace.fnMap_comp a b ha hb hab _`.
+A detailed English derivation is pending.
 -/
 theorem pm_comp (a : X'' ⟶ X') (b : X' ⟶ X) (ha : a (genericPoint X'') ⤳ genericPoint X')
     (hb : b (genericPoint X') ⤳ genericPoint X) (hab : (a ≫ b) (genericPoint X'') ⤳ genericPoint X)
@@ -222,17 +222,17 @@ variable (π : X' ⟶ X) (hπ : π (genericPoint X') ⤳ genericPoint X) {p : �
 omit [IsIntegral X] [IsIntegral X'] in
 
 /- English proof (translation)
-Introduce `hu` and use `h (by simpa using hu.map (π.stalkMap x).hom)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Ov.map {x : X'} (h : Ov p x) : Ov p (π x) := fun hu => h (by simpa using hu.map (π.stalkMap x).hom)
 
 /- English proof (translation)
-Introduce `_ h` and use `regAt_fnMap π hπ h`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem map_mem_loc (x : X') : ∀ f ∈ loc (π x), SmallSec.fnMap π hπ f ∈ loc x := fun _ h => regAt_fnMap π hπ h
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨h₁, h₂⟩ := h _ (hx.map π) refine ⟨h₁.map _ (map_mem_loc π hπ x), (π.continuous.tendsto x).eventually h₂ |>.mono fun z hz hz' => ?_⟩ have := (hz (hz'.map π)).map _ (map_mem_loc π hπ z) rw [Matrix.map_mul, ← matrix_map_inv, map_pow, map_natCast] at this (have H := this; …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem Coh.pull {k : ℕ} {M : X → Matrix (Fin N) (Fin N) X.functionField} {c : X → Fin N → X.functionFieldˣ}
     (h : Coh p k M c) : Coh p k (pm π hπ M) (pf π hπ c) := fun x hx => by
@@ -243,7 +243,7 @@ theorem Coh.pull {k : ℕ} {M : X → Matrix (Fin N) (Fin N) X.functionField} {c
   (have H := this; simp only [map_div₀] at H; exact H)
 
 /- English proof (translation)
-Introduce `x hx` and use `by obtain ⟨h₁, ⟨a, h₂⟩, h₃⟩ := h _ (hx.map π) refine ⟨regAt_fnMap π hπ h₁, ⟨a, ?_⟩, (π.continuous.tendsto x).eventually h₃ |>.mono fun z hz hz' => ?_⟩ · (have H := regAt_fnMap π hπ h₂; simp only [map_div₀, map_pow, map_natCast] at H; exact H) · (have H := unitAt_fnMap π hπ (hz (h …`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem VEq.pull {η : X → X.functionFieldˣ} (h : VEq p η) :
     VEq p fun x => Units.map (SmallSec.fnMap π hπ).toMonoidHom (η (π x)) := fun x hx => by
@@ -253,9 +253,7 @@ theorem VEq.pull {η : X → X.functionFieldˣ} (h : VEq p η) :
   · (have H := unitAt_fnMap π hπ (hz (hz'.map π)); simp only [map_div₀] at H; exact H)
 
 /- English proof (translation)
-Take `⟨t, ht⟩` from `h`. Use `⟨fun x => Units.map (SmallSec.fnMap π hπ).toMonoidHom (t (π x)), fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨h₁, h₂⟩` from `ht _ (hx.map π)`. Use `⟨fun hn => ?_, (π.continuous.tendsto x).eventually h₂ |>.mono fun z hz hz' hn => ?_⟩` and prove the remaining obligations. Use the proof step `(have H := unitAt_fnMap π hπ (h₁ fun hu => hn (unitAt_fnMap π hπ hu)); simp only [map_mul] at H; exact H)`.
-
-Use the proof step `(have H := regAt_fnMap π hπ (hz (hz'.map π) fun hu => hn (unitAt_fnMap π hπ hu)); simp only [map_div₀, map_sub, map_one] at H; exact H)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem TrivOn.pull {e b : X → X.functionField} (h : TrivOn p e b) :
     TrivOn p (fun x => SmallSec.fnMap π hπ (e (π x))) fun x => SmallSec.fnMap π hπ (b (π x)) := by
@@ -267,9 +265,7 @@ theorem TrivOn.pull {e b : X → X.functionField} (h : TrivOn p e b) :
   · (have H := regAt_fnMap π hπ (hz (hz'.map π) fun hu => hn (unitAt_fnMap π hπ hu)); simp only [map_div₀, map_sub, map_one] at H; exact H)
 
 /- English proof (translation)
-Take `⟨η, γ, h₁, h₂, h₃⟩` from `h`. Use `⟨pf π hπ η, Units.map (SmallSec.fnMap π hπ).toMonoidHom γ, fun j => (h₁ j).pull π hπ, fun x hx => ?_, fun i => by (have H := (h₃ i).pull π hπ; simp only [map_div₀] at H; exact H)⟩` and prove the remaining obligations. Take `⟨a, b, d⟩` from `h₂ _ (hx.map π)`. Use `⟨unitAt_fnMap π hπ a, by (have H := unitAt_fnMap π hπ b; simp only [map_div₀] at H; exact H), fun i => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use the proof step `(have H := regAt_fnMap π hπ (d i).1; simp only [map_div₀] at H; exact H)`.
-
-Use the proof step `(have H := unitAt_fnMap π hπ (d i).2; simp only [map_div₀] at H; exact H)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem Link.pull {c c' : X → Fin N → X.functionFieldˣ} (h : Link p c c') : Link p (pf π hπ c) (pf π hπ c') := by
   obtain ⟨η, γ, h₁, h₂, h₃⟩ := h
@@ -281,7 +277,7 @@ theorem Link.pull {c c' : X → Fin N → X.functionFieldˣ} (h : Link p c c') :
   · (have H := unitAt_fnMap π hπ (d i).2; simp only [map_div₀] at H; exact H)
 
 /- English proof (translation)
-Proceed by induction on `h with`. Consider the case `rel _ _ h => exact .rel _ _ (h.pull π hπ)`. Consider the case `refl => exact .refl _`. Consider the case `symm _ _ _ ih => exact .symm _ _ ih`. Consider the case `trans _ _ _ _ _ ih ih' => exact .trans _ _ _ ih ih'`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem eqvGen_pull {c c' : X → Fin N → X.functionFieldˣ} (h : Relation.EqvGen (Link p) c c') :
     Relation.EqvGen (Link p) (pf π hπ c) (pf π hπ c') := by
@@ -323,14 +319,14 @@ Both sides reduce to the same expression.
 theorem bil_apply (a b : E) : bil num G a b = num (Fin.cons a (Fin.cons b G)) := rfl
 
 /- English proof (translation)
-Use `ha (Fin.cons a (Fin.cons b G)) 0` as an intermediate fact. Rewrite `this` using `[Fin.update_cons_zero]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem bil_rad_left {a : E} (ha : a ∈ rad num) (b : E) : bil num G a b = 0 := by
   have := ha (Fin.cons a (Fin.cons b G)) 0
   rwa [Fin.update_cons_zero] at this
 
 /- English proof (translation)
-Rewrite using `[bil_apply, bil_apply, ← hs _ (Equiv.swap 0 1)]`. Use `congr 1`. Use function extensionality and compare the values at `j`. Use `Fin.cases rfl (fun j => Fin.cases rfl (fun j => ?_) j) j` and prove the remaining obligations. Rewrite using `[Function.comp_apply, Equiv.swap_apply_of_ne_of_ne (Fin.succ_ne_zero _) (Fin.succ_succ_ne_one _)]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
 Both sides reduce to the same expression.
 -/
@@ -343,13 +339,13 @@ theorem bil_symm (hs : IsSymm num) (a b : E) : bil num G a b = bil num G b a := 
   rfl
 
 /- English proof (translation)
-The claim follows from `(bil_symm G hs a b).trans (bil_rad_left G hb a)`.
+A detailed English derivation is pending.
 -/
 theorem bil_rad_right (hs : IsSymm num) (a : E) {b : E} (hb : b ∈ rad num) : bil num G a b = 0 :=
   (bil_symm G hs a b).trans (bil_rad_left G hb a)
 
 /- English proof (translation)
-Establish `h₁` using `bil_rad_left G ha b`. Establish `h₂` using `bil_rad_right G hs a' hb`. Rewrite `h₁` using `[map_sub, LinearMap.sub_apply]`. Rewrite `h₂` using `[map_sub]`. Combine the linear equalities and inequalities to obtain the conclusion.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion.
 -/
 theorem bil_congr (hs : IsSymm num) {a a' b b' : E} (ha : a - a' ∈ rad num) (hb : b - b' ∈ rad num) :
     bil num G a b = bil num G a' b' := by
@@ -394,7 +390,7 @@ def NormsX (V : Cover Y) (M : HermLB V.p) (lg : ∀ v : HeightOneSpectrum (𝓞 
       lg v e y = Real.log (e.w (valAt (z ≫ V.j) (r i : V.X.functionField)))
 
 /- English proof (translation)
-Take `⟨e', he₁', he₂'⟩` from `ha`. Take `⟨e, he₁, he₂⟩` from `hb`. Conclude with `⟨e' ≫ e, by rw [Category.assoc, he₁, ← Category.assoc, he₁', Category.assoc], by rw [Category.assoc, he₂, he₂']⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem lies_comp {V₁ V₂ V₃ : Cover Y} {a : V₁.X ⟶ V₂.X} {b : V₂.X ⟶ V₃.X} (ha : Lies V₁ V₂ a) (hb : Lies V₂ V₃ b) :
     Lies V₁ V₃ (a ≫ b) := by

@@ -18,7 +18,7 @@ def LamOpen (a : ℕ) : Prop :=
     IsOpen (LamT v Λ a)
 
 /- English proof (translation)
-Introduce and unpack `rfl`. Unfold `IsUnif at hϖ`. Rewrite `hϖ` using `[map_zero]`. Conclude with `WithZero.zero_ne_coe hϖ`.
+Assume the hypotheses and unpack their components. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem unif_ne_zero {ϖ : Fv F v} (hϖ : IsUnif v ϖ) : ϖ ≠ 0 := by
   rintro rfl
@@ -27,13 +27,13 @@ theorem unif_ne_zero {ϖ : Fv F v} (hϖ : IsUnif v ϖ) : ϖ ≠ 0 := by
   exact WithZero.zero_ne_coe hϖ
 
 /- English proof (translation)
-Introduce `hG ϖ hϖ`. Use `PI.VolStabSW.secondCountable_Fv F v` as an intermediate fact. Establish `: IsModuleTopology (Fv F v) (Fv F v ⊗[F] E)` using `⟨rfl⟩`. Establish `: IsTopologicalAddGroup (Fv F v ⊗[F] E)` using `IsModuleTopology.topologicalAddGroup (Fv F v) (Fv F v ⊗[F] E)`. Establish `: BorelSpace (Fv F v ⊗[F] E)` using `⟨rfl⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hOpen` using `hO hG.2.1`. Use `⟨inferInstance, hOpen.measurableSet, ?_⟩` and prove the remaining obligations. Establish `e : (lamP v Λ a ϖ : Set (TupV (E` using `E) v n a)) = (fun X => ϖ • X) '' LamT v Λ a := by`. Unfold `lamP`. Rewrite using `[AddSubgroup.coe_map]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Use function extensionality and compare the values at `X`. Use function extensionality and compare the values at `i p`. Use `show sc (E := E) v ϖ * X i p = ϖ • X i p`. Rewrite using `[Algebra.smul_def, Algebra.TensorProduct.algebraMap_apply]`.
+Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Rewrite using `[e]`. Conclude with `(isOpenMap_smul₀ (unif_ne_zero v hϖ) _ hOpen).measurableSet`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem measU_of (a : ℕ) (Y : TupV (E := E) v n a) (hO : LamOpen v Λ a) : MeasU σ J ψ v Λ a Y := by
   intro hG ϖ hϖ
@@ -57,7 +57,7 @@ theorem measU_of (a : ℕ) (Y : TupV (E := E) v n a) (hO : LamOpen v Λ a) : Mea
   exact (isOpenMap_smul₀ (unif_ne_zero v hϖ) _ hOpen).measurableSet
 
 /- English proof (translation)
-The claim follows from `countU_of_red σ J ψ v Λ a Y (measU_of σ J ψ v Λ a Y hO) hI hR`.
+A detailed English derivation is pending.
 -/
 theorem countU_of_open (a : ℕ) (Y : TupV (E := E) v n a) (hO : LamOpen v Λ a)
     (hI : IdxU σ J ψ v Λ a Y) (hR : RedU σ J ψ v Λ a Y) : CountU σ J ψ v Λ a Y :=

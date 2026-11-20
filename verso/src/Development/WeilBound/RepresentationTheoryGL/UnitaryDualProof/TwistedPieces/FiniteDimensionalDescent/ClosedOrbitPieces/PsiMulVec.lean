@@ -17,13 +17,13 @@ def Psi : Module.End (Fe hA he) (Wd e) →ₗ[k] Matrix (Fin N) (Fin N) k where
   map_smul' c f := by rw [RingHom.id_apply, ← map_smul]; rfl
 
 /- English proof (translation)
-The claim follows from `Th_mulVec (φ.restrictScalars k) v`.
+A detailed English derivation is pending.
 -/
 lemma Psi_mulVec (φ : Module.End (Fe hA he) (Wd e)) (v : Fin N → k) :
     Psi hA he φ *ᵥ v = (φ (Pe e v) : Fin N → k) := Th_mulVec (φ.restrictScalars k) v
 
 /- English proof (translation)
-Introduce `f g h`. Use `Th_inj h` as an intermediate fact. Use extensionality with `w : 1`. Conclude with `congrArg (fun F : Module.End k (Wd e) => F w) this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. By extensionality, compare the relevant components. A detailed English derivation is pending.
 -/
 lemma Psi_inj : Function.Injective (Psi hA he) := by
   intro f g h
@@ -32,7 +32,7 @@ lemma Psi_inj : Function.Injective (Psi hA he) := by
   exact congrArg (fun F : Module.End k (Wd e) => F w) this
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show e *ᵥ (a.1 *ᵥ v) = a.1 *ᵥ (e *ᵥ v)`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hA _ a.2 _ he]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma Pe_smul (a : A) (v : Fin N → k) :
     Pe e (a.1 *ᵥ v) = (⟨rho hA he a, a, rfl⟩ : Fe hA he) • Pe e v := by
@@ -50,15 +50,15 @@ def phiOf (c : Matrix (Fin N) (Fin N) k) (hc : ∀ a ∈ A, a * c = c * a) : Mod
     rw [Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, hc _ a.2]
 
 /- English proof (translation)
-Use extensionality with `m`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨φ, rfl⟩`. Use `⟨Psi hA he φ, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[SetLike.mem_coe, Subalgebra.mem_toSubmodule, Subalgebra.mem_centralizer_iff]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Introduce `a ha`. Apply `mat_ext` to reduce the goal to its premises. Introduce `v`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, Psi_mulVec, Psi_mulVec, Pe_smul hA he ⟨a, ha⟩, map_smul]`. Both sides reduce to the same expression.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Apply `mat_ext` to reduce the goal to its premises. Introduce `v`. Simplify using `only [LinearMap.mulLeft_apply]`. Rewrite using `[← Matrix.mulVec_mulVec, Psi_mulVec]`. Conclude with `W_fix hid (φ (Pe e v)).2`.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components.
 
-Introduce and unpack `⟨c, hc, rfl⟩`. Rewrite `hc` using `[SetLike.mem_coe, Subalgebra.mem_toSubmodule, Subalgebra.mem_centralizer_iff]`. Use `⟨phiOf hA he c hc, ?_⟩` and prove the remaining obligations. Apply `mat_ext` to reduce the goal to its premises. Introduce `v`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Psi_mulVec]`. Use `show c *ᵥ (e *ᵥ v) = (e * c) *ᵥ v`. Rewrite using `[Matrix.mulVec_mulVec, hc e he]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma range_Psi (hid : IsIdempotentElem e) :
     LinearMap.range (Psi hA he) =

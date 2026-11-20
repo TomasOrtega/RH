@@ -21,13 +21,13 @@ namespace Ell
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {a b : ℕ}
 
 /- English proof (translation)
-The claim follows from `Prod.ext (map_mul (thetaA E a) x.1 y.1) (map_mul (thetaA E b) x.2 y.2)`.
+A detailed English derivation is pending.
 -/
 theorem th_mul (x y : H E a b) : E1.th (x * y) = E1.th x * E1.th y :=
   Prod.ext (map_mul (thetaA E a) x.1 y.1) (map_mul (thetaA E b) x.2 y.2)
 
 /- English proof (translation)
-Take `⟨γ, rfl⟩` from `hδ`. Use `⟨(thetaE E a γ.1, thetaE E b γ.2), ?_⟩` and prove the remaining obligations. Use `show (ratGL E a (thetaE E a γ.1), ratGL E b (thetaE E b γ.2)) = (thetaA E a (ratGL E a γ.1), thetaA E b (ratGL E b γ.2))`. Rewrite using `[(E1.thetaBasic_holds E a).2.2 γ.1, (E1.thetaBasic_holds E b).2.2 γ.2]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem th_mem {δ : H E a b} (hδ : δ ∈ ratH E a b) : E1.th δ ∈ ratH E a b := by
   obtain ⟨γ, rfl⟩ := hδ
@@ -37,23 +37,21 @@ theorem th_mem {δ : H E a b} (hδ : δ ∈ ratH E a b) : E1.th δ ∈ ratH E a 
   rw [(E1.thetaBasic_holds E a).2.2 γ.1, (E1.thetaBasic_holds E b).2.2 γ.2]
 
 /- English proof (translation)
-Take `⟨-, -, C₁, hC₁, hs₁⟩` from `E1.mahler_holds E a τ`. Take `⟨-, -, C₂, hC₂, hs₂⟩` from `E1.mahler_holds E b τ`. Take `⟨B, hB⟩` from `hφ.1.bounded_above_of_compact_support hφ.2`. Establish `thc : Continuous (E1.th : H E a b → H E a b)` using `(E1.cntPair E a b).2.1`. Set `K : Set (H E a b)` to `(fun p : H E a b × H E a b × H E a b => p.1 * p.2.1 * (E1.th p.2.2)⁻¹) '' ((C₁ ×ˢ C₂) ×ˢ tsupport φ ×ˢ (C₁ ×ˢ C₂))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hKc : IsCompact K` using `((hC₁.prod hC₂).prod (hφ.2.isCompact.prod (hC₁.prod hC₂))).image ((continuous_fst.mul continuous_snd.fst).mul ((thc.comp continuous_snd.snd).inv))`. Establish `hS` using `E1.proper_ratH E1.ratProper_holds K hKc`. Use `⟨hS.toFinset.card * max B 0, by positivity, fun x hx => ?_⟩` and prove the remaining obligations. Take `⟨_, ⟨γ₁, rfl⟩, c₁, hc₁, hx₁⟩` from `hs₁ hx.1`. Take `⟨_, ⟨γ₂, rfl⟩, c₂, hc₂, hx₂⟩` from `hs₂ hx.2`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨δ, hδ⟩ : ∃ δ : ratH E a b, (δ : H E a b) = (ratGL E a γ₁, ratGL E b γ₂)` from `⟨⟨_, (γ₁, γ₂), rfl⟩, rfl⟩`. Take `⟨t, ht⟩ : ∃ t : ratH E a b, (t : H E a b) = E1.th δ` from `⟨⟨_, th_mem δ.2⟩, rfl⟩`. Establish `hx' : x = (δ : H E a b) * (c₁, c₂)` using `by rw [hδ]; exact Prod.ext hx₁.symm hx₂.symm`. Establish `h1 : ‖kerH φ x (E1.th x)‖ₑ ≤ ∑' γ : ratH E a b, ‖φ (x⁻¹ * (γ : H E a b) * E1.th x)‖ₑ` using `(E1.kerBasic (E1.ctx E1.ratProper_holds D) φ hφ).2.2.2.2.2 x (E1.th x)`. Establish `h2 : ∑' γ : ratH E a b, ‖φ (x⁻¹ * (γ : H E a b) * E1.th x)‖ₑ = ∑' γ : ratH E a b, ‖φ ((c₁, c₂)⁻¹ * (γ : H E a b) * E1.th (c₁, c₂))‖ₑ`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← ((Equiv.mulLeft δ).trans (Equiv.mulRight t⁻¹)).tsum_eq]`. Use `tsum_congr fun γ => ?_` and prove the remaining obligations. Simplify using `only [Equiv.trans_apply, Equiv.coe_mulLeft, Equiv.coe_mulRight, Subgroup.coe_mul, Subgroup.coe_inv, ht]`. Rewrite using `[hx', th_mul]`. Use `group`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h3 : ∀ γ : ratH E a b, ‖φ ((c₁, c₂)⁻¹ * (γ : H E a b) * E1.th (c₁, c₂))‖ₑ ≤ {γ : ratH E a b | (γ : H E a b) ∈ K}.indicator (fun _ => ENNReal.ofReal (max B 0)) γ`. Introduce `γ`. Distinguish the cases in `hγ : (γ : H E a b) ∈ K`. Rewrite using `[Set.indicator_of_mem (show γ ∈ {γ : ratH E a b | (γ : H E a b) ∈ K} from hγ), ← ofReal_norm]`. Conclude with `ENNReal.ofReal_le_ofReal ((hB _).trans (le_max_left _ _))`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h0 : φ ((c₁, c₂)⁻¹ * (γ : H E a b) * E1.th (c₁, c₂)) = 0`. Assume the negation of the conclusion as `hne`. Apply `hγ` to reduce the goal to its premises. Use `⟨((c₁, c₂), (c₁, c₂)⁻¹ * (γ : H E a b) * E1.th (c₁, c₂), (c₁, c₂)), ⟨⟨hc₁, hc₂⟩, subset_tsupport _ hne, ⟨hc₁, hc₂⟩⟩, ?_⟩` and prove the remaining obligations. Simplify using `only`.
+Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `group`. Rewrite using `[h0]`. Simplify using the standard rewrite rules. Establish `h4 : ∑' γ : ratH E a b, {γ : ratH E a b | (γ : H E a b) ∈ K}.indicator (fun _ => ENNReal.ofReal (max B 0)) γ = hS.toFinset.card * ENNReal.ofReal (max B 0)`. Rewrite using `[tsum_eq_sum (s := hS.toFinset) (fun γ hγ => Set.indicator_of_notMem (by simpa using hγ) _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[Finset.sum_congr rfl (fun γ hγ => Set.indicator_of_mem ((Set.Finite.mem_toFinset hS).1 hγ) _)]`. Rewrite using `[Finset.sum_const, nsmul_eq_mul]`. Establish `h5 : ‖kerH φ x (E1.th x)‖ₑ ≤ ENNReal.ofReal (hS.toFinset.card * max B 0)`. Rewrite using `[ENNReal.ofReal_mul (Nat.cast_nonneg _), ENNReal.ofReal_natCast, ← h4]`. Conclude with `h1.trans (h2.le.trans (ENNReal.tsum_le_tsum h3))`.
-
-Rewrite `h5` using `[← ofReal_norm]`. Conclude with `(ENNReal.ofReal_le_ofReal_iff (by positivity)).1 h5`.
+Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem ker_bound (D : Dom E a b) (τ : ℝ) (φ : H E a b → ℂ) (hφ : IsTestH φ) :
     ∃ M : ℝ, 0 ≤ M ∧ ∀ x ∈ cutSet E a τ ×ˢ cutSet E b τ, ‖kerH φ x (E1.th x)‖ ≤ M := by
@@ -107,15 +105,15 @@ theorem ker_bound (D : Dom E a b) (τ : ℝ) (φ : H E a b → ℂ) (hφ : IsTes
   exact (ENNReal.ofReal_le_ofReal_iff (by positivity)).1 h5
 
 /- English proof (translation)
-Establish `: BorelSpace (H E a b)` using `⟨rfl⟩`. Take `⟨hcl₁, -, -⟩` from `E1.mahler_holds E a τ`. Take `⟨hcl₂, -, -⟩` from `E1.mahler_holds E b τ`. Establish `hms : MeasurableSet (cutSet E a τ ×ˢ cutSet E b τ)` using `(hcl₁.prod hcl₂).measurableSet`. Establish `heq : (fun x : H E a b => chiT τ x.1 * chiT τ x.2 * kerTw2 φ x x) = (cutSet E a τ ×ˢ cutSet E b τ).indicator (fun x => kerH φ x (E1.th x))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [chiT, (E1.cntPair E a b).2.2]`. Apply the tactic sequence `by_cases h1 : x.1 ∈ cutSet E a τ <;> by_cases h2 : x.2 ∈ cutSet E b τ <;>`. Simplify using `[Set.indicator, h1, h2, Set.mem_prod]`. Rewrite using `[heq, integrable_indicator_iff hms]`.
+Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Establish `hk : Continuous (Function.uncurry (kerH φ))` using `(E1.kerBasic (E1.ctx E1.ratProper_holds D) φ hφ).2.1`. Establish `hc₀ : Continuous fun x : H E a b => Function.uncurry (kerH φ) (x, E1.th x)` using `hk.comp (Continuous.prodMk continuous_id (E1.cntPair E a b).2.1)`. Establish `hc : Continuous fun x : H E a b => kerH φ x (E1.th x)`. Simplify `hc₀` using `only [Function.uncurry_apply_pair]`. Take `⟨M, -, hM⟩` from `ker_bound D τ φ hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Establish `hfin : D.ν (cutSet E a τ ×ˢ cutSet E b τ) ≠ ⊤`. Take `⟨C, N, -, hC⟩` from `E1.cutCount E a b D {1} isCompact_singleton`. Use `ne_top_of_le_ne_top ENNReal.ofReal_ne_top (le_trans ?_ (hC τ hτ))` and prove the remaining obligations. Rewrite using `[← lintegral_indicator_one hms]`. Use `lintegral_mono fun x => Set.indicator_le_indicator ?_` and prove the remaining obligations.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `show (1 : ℝ≥0∞) ≤ ∑' γ : ratH E a b, ({1} : Set (H E a b)).indicator 1 (x⁻¹ * (γ : H E a b) * x)`. Use `le_trans ?_ (ENNReal.le_tsum (1 : ratH E a b))` and prove the remaining obligations. Simplify using the standard rewrite rules. Conclude with `Measure.integrableOn_of_bounded (M := M) hfin hc.aestronglyMeasurable (ae_restrict_of_forall_mem hms hM)`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_cut (D : Dom E a b) {τ : ℝ} (hτ : 0 ≤ τ) (φ : H E a b → ℂ) (hφ : IsTestH φ) :
     Integrable (fun x : H E a b => chiT τ x.1 * chiT τ x.2 * kerTw2 φ x x) D.ν := by
@@ -147,9 +145,9 @@ theorem integrable_cut (D : Dom E a b) {τ : ℝ} (hτ : 0 ≤ τ) (φ : H E a b
   exact Measure.integrableOn_of_bounded (M := M) hfin hc.aestronglyMeasurable (ae_restrict_of_forall_mem hms hM)
 
 /- English proof (translation)
-Establish `hL` using `(E1.kerLin (E1.ctx E1.ratProper_holds D) s (fun i => φ i) (fun i => c i) (fun i => hφ i i.2)).2 x (E1.th y)`. Establish `hL' : kerH (fun z => ∑ i : s, φ i z * c i) x (E1.th y) = ∑ i : s, kerH (φ i) x (E1.th y) * c i` using `hL`. Establish `he : (∑ j ∈ s, c j • φ j) = fun z => ∑ i : s, φ i z * c i`. Use function extensionality and compare the values at `z`. Rewrite using `[Finset.sum_apply, ← Finset.sum_coe_sort s]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Finset.sum_congr rfl fun i _ => by simp [mul_comm]`. Simplify using `only [(E1.cntPair E a b).2.2]`. Rewrite using `[he, hL', ← Finset.sum_coe_sort s]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kerTw2_sum (D : Dom E a b) {J : Type} (s : Finset J) (c : J → ℂ) (φ : J → H E a b → ℂ)
     (hφ : ∀ j ∈ s, IsTestH (φ j)) (x y : H E a b) :
@@ -166,9 +164,9 @@ theorem kerTw2_sum (D : Dom E a b) {J : Type} (s : Finset J) (c : J → ℂ) (φ
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
 /- English proof (translation)
-Establish `hk : ∀ x : H E a b, chiT τ x.1 * chiT τ x.2 * kerTw2 (∑ j ∈ s, c j • φ j) x x = ∑ j ∈ s, c j * (chiT τ x.1 * chiT τ x.2 * kerTw2 (φ j) x x)`. Introduce `x`. Rewrite using `[kerTw2_sum D s c φ hφ x x, Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun j _ => by ring`. Simplify using `only [cutTrD, hk]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[integral_finsetSum s fun j hj => (integrable_cut D hτ (φ j) (hφ j hj)).const_mul (c j)]`. Conclude with `Finset.sum_congr rfl fun j _ => integral_const_mul (c j) _`.
+A detailed English derivation is pending.
 -/
 theorem cutTrD_sum (D : Dom E a b) {τ : ℝ} (hτ : 0 ≤ τ) {J : Type} (s : Finset J) (c : J → ℂ)
     (φ : J → H E a b → ℂ) (hφ : ∀ j ∈ s, IsTestH (φ j)) :
@@ -185,9 +183,9 @@ theorem cutTrD_sum (D : Dom E a b) {τ : ℝ} (hτ : 0 ≤ τ) {J : Type} (s : F
 end Ell
 
 /- English proof (translation)
-Introduce `E _ _ _ _ a b _ _ _ _ μ₁ _ μ₂ _ J s c φ r hr hφ`. Take `⟨C, hC, hE⟩` from `h E a b`. Take `⟨F₁, hF₁⟩` from `E1.domEx_holds E a μ₁`. Take `⟨F₂, hF₂⟩` from `E1.domEx_holds E b μ₂`. Take `⟨D, -, hD⟩` from `E1.bridge_holds E a b μ₁ μ₂ F₁ F₂ hF₁ hF₂`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hτ : 0 ≤ C * (1 + r)` using `mul_nonneg hC (by linarith)`. Establish `hs : D4.IsTest2J (∑ j ∈ s, c j • φ j) r` using `isTest2J_sum s fun j hj => isTest2J_smul (c j) (hφ j hj)`. Rewrite using `[← hE μ₁ μ₂ F₁ F₂ (C * (1 + r)) r _ hF₁ hF₂ hs hr le_rfl, ← hD, Ell.cutTrD_sum D hτ s c φ fun j hj => ⟨(hφ j hj).cont, (hφ j hj).supp⟩]`. Use `Finset.sum_congr rfl fun j hj => ?_` and prove the remaining obligations. Rewrite using `[hD, hE μ₁ μ₂ F₁ F₂ (C * (1 + r)) r _ hF₁ hF₂ (hφ j hj) hr le_rfl]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities.
 -/
 theorem ellLin (h : D4.EllFormula2J) : EllLin := by
   intro E _ _ _ _ a b _ _ _ _ μ₁ _ μ₂ _ J s c φ r hr hφ
@@ -203,7 +201,7 @@ theorem ellLin (h : D4.EllFormula2J) : EllLin := by
   rw [hD, hE μ₁ μ₂ F₁ F₂ (C * (1 + r)) r _ hF₁ hF₂ (hφ j hj) hr le_rfl]
 
 /- English proof (translation)
-The claim follows from `ellLin CV.ellFormula2J`.
+A detailed English derivation is pending.
 -/
 theorem ellLin_holds : EllLin := ellLin CV.ellFormula2J
 

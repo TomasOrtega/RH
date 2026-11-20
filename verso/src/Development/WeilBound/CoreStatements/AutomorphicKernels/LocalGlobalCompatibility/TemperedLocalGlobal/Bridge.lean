@@ -17,9 +17,7 @@ section Groups
 variable {G : Type*} [Group G]
 
 /- English proof (translation)
-Establish `h1 : ⁅g, n⁆ ∈ U` using `hc (Subgroup.commutator_mem_commutator hg (hUV hn))`. Establish `e : g * n * g⁻¹ = ⁅g, n⁆ * n`. Rewrite using `[commutatorElement_def]`. Use `group`. Rewrite using `[e]`.
-
-Conclude with `U.mul_mem h1 hn`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem conj_mem_of_commutator_le {U V : Subgroup G} (hUV : U ≤ V) (hc : ⁅V, V⁆ ≤ U) {g n : G}
     (hg : g ∈ V) (hn : n ∈ U) : g * n * g⁻¹ ∈ U := by
@@ -30,7 +28,7 @@ theorem conj_mem_of_commutator_le {U V : Subgroup G} (hUV : U ≤ V) (hc : ⁅V,
   exact U.mul_mem h1 hn
 
 /- English proof (translation)
-Use `⟨fun n hn g => ?_⟩` and prove the remaining obligations. Rewrite `hn`, the goal using `[Subgroup.mem_subgroupOf]`. Use `conj_mem_of_commutator_le (hUW.trans hWV) hc (hWV g.2) hn` as an intermediate fact. Simplify using `using this`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem normal_subgroupOf {U W V : Subgroup G} (hUW : U ≤ W) (hWV : W ≤ V) (hc : ⁅V, V⁆ ≤ U) :
     (U.subgroupOf W).Normal := by
@@ -40,17 +38,15 @@ theorem normal_subgroupOf {U W V : Subgroup G} (hUW : U ≤ W) (hWV : W ≤ V) (
   simpa using this
 
 /- English proof (translation)
-Establish `: Fact p.Prime` using `⟨hp⟩`. Establish `hN : (U.subgroupOf V).Normal` using `normal_subgroupOf hUV le_rfl hc`. Establish `: (U.subgroupOf V).FiniteIndex` using `⟨hn0⟩`. Establish `hcard : Nat.card (↥V ⧸ U.subgroupOf V) = U.relIndex V` using `(Subgroup.index_eq_card _).symm`. Take `⟨q, hq⟩` from `exists_prime_orderOf_dvd_card' (G := ↥V ⧸ U.subgroupOf V) p (hcard ▸ hpn)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Use `set W' : Subgroup ↥V := (Subgroup.zpowers q).comap (QuotientGroup.mk' (U.subgroupOf V)) with hW'`. Establish `hUW : U ≤ W'.map V.subtype`. Introduce `u hu`. Use `⟨⟨u, hUV hu⟩, ?_, rfl⟩` and prove the remaining obligations. Use `show QuotientGroup.mk' (U.subgroupOf V) ⟨u, hUV hu⟩ ∈ Subgroup.zpowers q`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[QuotientGroup.mk'_apply, (QuotientGroup.eq_one_iff _).mpr ((Subgroup.mem_subgroupOf).mpr hu)]`. Conclude with `Subgroup.one_mem _`. Use `⟨W'.map V.subtype, hUW, Subgroup.map_subtype_le _, ?_, ?_⟩` and prove the remaining obligations. Establish `hidx : (W'.map V.subtype).relIndex V = (Subgroup.zpowers q).index`. Rewrite using `[Subgroup.relIndex, Subgroup.subgroupOf, Subgroup.comap_map_eq_self_of_injective V.subtype_injective, hW', Subgroup.index_comap_of_surjective _ (QuotientGroup.mk'_surjective _)]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h1 : (Subgroup.zpowers q).index * p = U.relIndex V`. Rewrite using `[← hq, ← Nat.card_zpowers, Subgroup.index_mul_card, hcard]`. Establish `h2` using `Subgroup.relIndex_mul_relIndex U (W'.map V.subtype) V hUW (Subgroup.map_subtype_le _)`. Rewrite `h2` using `[hidx]`. Establish `hm : (Subgroup.zpowers q).index ≠ 0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Introduce `h0`. Rewrite `h1` using `[h0, zero_mul]`. Conclude with `hn0 h1.symm`. Establish `: U.relIndex (W'.map V.subtype) * (Subgroup.zpowers q).index = p * (Subgroup.zpowers q).index`. Rewrite using `[h2, ← h1, mul_comm]`.
-
-Conclude with `Nat.eq_of_mul_eq_mul_right (Nat.pos_of_ne_zero hm) this`. Rewrite using `[Subgroup.relIndex, Subgroup.subgroupOf, Subgroup.comap_map_eq_self_of_injective V.subtype_injective, hW', Subgroup.index_comap_of_surjective _ (QuotientGroup.mk'_surjective _), ← hq, ← Nat.card_zpowers, Subgroup.index_mul_card, hcard]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_mid {U V : Subgroup G} (hUV : U ≤ V) (hc : ⁅V, V⁆ ≤ U) (hn0 : U.relIndex V ≠ 0) {p : ℕ}
     (hp : p.Prime) (hpn : p ∣ U.relIndex V) :
@@ -94,16 +90,16 @@ variable {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAl
 omit [IsAlgClosure E Ω] in
 
 /- English proof (translation)
-Take `⟨O, hO, hs⟩` from `hU`. Conclude with `⟨O, hO, fun σ h0 h1 => hUV (hs σ h0 h1)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem smoothSub_mono {U V : Subgroup (Weil h)} (hU : K.SmoothSub U) (hUV : U ≤ V) : K.SmoothSub V := by
   obtain ⟨O, hO, hs⟩ := hU
   exact ⟨O, hO, fun σ h0 h1 => hUV (hs σ h0 h1)⟩
 
 /- English proof (translation)
-Establish `h1 : {s : ↥(Ine (F` using `E) A) | ineIncl h s ∈ U} ∈ 𝓝 (1 : ↥(Ine (F := E) A)) := hU.mem_nhds (by simp)`. Take `⟨u, hu, hsub⟩` from `(mem_nhds_subtype (Ine (F := E) A : Set (G E Ω)) 1 _).mp h1`. Take `⟨L, hL, hLu⟩` from `(krullTopology_mem_nhds_one_iff E Ω u).mp hu`. Use `⟨L.fixingSubgroup, L.fixingSubgroup_isOpen, fun σ hσ hO => ?_⟩` and prove the remaining obligations. Establish `hI : (σ : G E Ω) ∈ Ine (F` using `E) A := deg_eq_zero_iff.mp hσ`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h2 : (⟨(σ : G E Ω), hI⟩ : ↥(Ine (F` using `E) A)) ∈ {s : ↥(Ine (F := E) A) | ineIncl h s ∈ U} := hsub (hLu hO)`. Establish `e : ineIncl h (⟨(σ : G E Ω), hI⟩ : ↥(Ine (F` using `E) A)) = σ := Subtype.ext rfl`. Simplify using `only [Set.mem_ofPred_eq, e] at h2`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem smoothSub_of_isOpen {U : Subgroup (Weil h)}
     (hU : IsOpen {s : ↥(Ine (F := E) A) | ineIncl h s ∈ U}) : K.SmoothSub U := by
@@ -122,13 +118,13 @@ theorem smoothSub_of_isOpen {U : Subgroup (Weil h)}
 omit [IsAlgClosure E Ω] in
 
 /- English proof (translation)
-Proceed by induction on `n using Nat.strong_induction_on with`. Consider the case `_ n ih`. Introduce `U V hV hUV hc hn hn0 hs`. Break down `eq_or_ne n 1 with rfl | hn1` into its components or cases. Rewrite using `[le_antisymm hUV (Subgroup.relIndex_eq_one.mp hn)]` and apply the resulting hypothesis.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Use the resulting assumption.
 
-Establish `hp : n.minFac.Prime` using `Nat.minFac_prime hn1`. Take `⟨W, hUW, hWV, hUWp, hWVn⟩` from `exists_mid hUV hc (hn ▸ hn0) hp (hn ▸ Nat.minFac_dvd n)`. Establish `hlt : W.relIndex V < n`. Rewrite `hn0`, the goal using `[← hn]`. Rewrite using `[← hWVn]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hpos : 0 < W.relIndex V`. Break down `Nat.eq_zero_or_pos (W.relIndex V) with h0 | h0` into its components or cases. Rewrite `hWVn` using `[h0, zero_mul]`. Conclude with `absurd hWVn.symm hn0`. Conclude with `h0`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 
-Use `hp.two_le` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Establish `hW : K.Chain h W` using `ih _ hlt W V hV hWV (hc.trans hUW) rfl (by intro h0; rw [h0, zero_mul] at hWVn; exact (hn ▸ hn0) hWVn.symm) (smoothSub_mono hs hUW)`. Conclude with `K.Chain.step hW hUW (normal_subgroupOf hUW hWV hc) (hUWp ▸ hp) hs`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem chain_of_le (n : ℕ) : ∀ U V : Subgroup (Weil h), K.Chain h V → U ≤ V → ⁅V, V⁆ ≤ U →
     U.relIndex V = n → n ≠ 0 → K.SmoothSub U → K.Chain h U := by
@@ -154,7 +150,7 @@ theorem chain_of_le (n : ℕ) : ∀ U V : Subgroup (Weil h), K.Chain h V → U �
     exact K.Chain.step hW hUW (normal_subgroupOf hUW hWV hc) (hUWp ▸ hp) hs
 
 /- English proof (translation)
-Proceed by induction on `hU with`. Consider the case `top => exact K.Chain.top`. Consider the case `step _ hUV hc hi ho ih => exact chain_of_le _ _ _ ih hUV hc rfl hi (smoothSub_of_isOpen ho)`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem chain_of_sub {U : Subgroup (Weil h)} (hU : LocalGlobalAboveLAlt.Sub U) : K.Chain h U := by
   induction hU with
@@ -171,14 +167,14 @@ variable {E E' Ω : Type} [Field E] [NumberField E] [Field E'] [NumberField E'] 
   (h : IsPlaceOver A w) (h' : IsPlaceOver A w')
 
 /- English proof (translation)
-Proceed by induction on `x using WD.ind with`. Consider the case `hP n a => rw [WD.res_mk, WD.monodromyZero_ofWeilDeligneRepClass_iff, WD.monodromyZero_ofWeilDeligneRepClass_iff, resRep_N]`.
+Proceed by induction. Treat this case separately.
 -/
 theorem mono0_res (x : WD h) : (WD.res h h' x).mono0 ↔ x.mono0 := by
   induction x using WD.ind with
   | hP n a => rw [WD.res_mk, WD.monodromyZero_ofWeilDeligneRepClass_iff, WD.monodromyZero_ofWeilDeligneRepClass_iff, resRep_N]
 
 /- English proof (translation)
-Proceed by induction on `x using WD.ind with`. Consider the case `hP n a => rw [WD.res_mk, WD.charPol_mk, WD.charPol_mk, resRep_ρ]`.
+Proceed by induction. Treat this case separately.
 -/
 theorem charPol_res (x : WD h) (σ : ↥(Weil h')) : (WD.res h h' x).charPol σ = x.charPol (resW h h' σ) := by
   induction x using WD.ind with
@@ -187,7 +183,7 @@ theorem charPol_res (x : WD h) (σ : ↥(Weil h')) : (WD.res h h' x).charPol σ 
 end Res
 
 /- English proof (translation)
-Take `⟨_, _, _, _, L⟩` from `hrc`. Conclude with `L.dim _`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem lpDim_rc {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E Ω] [IsAlgClosure E Ω]
     {A : ValuationSubring Ω} {w : HeightOneSpectrum (𝓞 E)} {h : IsPlaceOver A w} {a : ℕ}
@@ -197,9 +193,9 @@ theorem lpDim_rc {E Ω : Type} [Field E] [NumberField E] [Field Ω] [Algebra E �
   exact L.dim _
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hc hr r wt HT hG P AI hT w hw A hA O _ _ _ Bw hj σ hσ rc hrc`. Establish `hx : (wdAt P ι Bw hA hj (r.comp (Dec (F` using `E) A).subtype)).lpDim = a := GlobalTheory.PstLaws.lpDim_wdAt _ _ _ _ _ _`. Establish `hy` using `lpDim_rc hrc σ`. Use `⟨hx.trans hy.symm, fun U hU htriv => ?_⟩` and prove the remaining obligations. Take `⟨X, w', h', hrange, heq⟩` from `H E Ω l ι a (by omega) π hc hr r wt HT hG P AI hT w hw A hA O Bw hj σ hσ rc hrc U (chain_of_sub hU) (fun t ht h0 => by have := htriv t ht h0; unfold LocalGlobalAboveLAlt.Triv at this; rwa [hy] at this)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨?_, fun g hg => ?_⟩` and prove the remaining obligations. Rewrite using `[← mono0_res hA h', heq, mono0_res hA h']`. Rewrite `hg` using `[← hrange]`. Take `⟨g', rfl⟩` from `hg`. Rewrite using `[← charPol_res hA h', heq, charPol_res hA h']`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 -/
 theorem iwahori_compatibility_of_chains (H : K.Main) : LocalGlobalAboveLAlt.IwahoriBaseChange := by
   intro E Ω _ _ _ _ _ _ l _ ι a ha π hc hr r wt HT hG P AI hT w hw A hA O _ _ _ Bw hj σ hσ rc hrc
@@ -216,9 +212,9 @@ theorem iwahori_compatibility_of_chains (H : K.Main) : LocalGlobalAboveLAlt.Iwah
     rw [← charPol_res hA h', heq, charPol_res hA h']
 
 /- English proof (translation)
-Introduce `E Ω _ _ _ _ _ _ l _ ι a ha π hc hr r wt HT hG P AI hT w hw A hA O _ _ _ Bw hj σ hσ rc hrc s hs`. Take `⟨U, hU, -, htriv⟩` from `hE E Ω A w hA (rc (algNorm σ))`. Establish `hy` using `lpDim_rc hrc σ`. Take `⟨X, w', h', -, heq⟩` from `H E Ω l ι a (by omega) π hc hr r wt HT hG P AI hT w hw A hA O Bw hj σ hσ rc hrc U (chain_of_sub hU) (fun t ht h0 => by have := htriv t ht h0; unfold LocalGlobalAboveLAlt.Triv at this; rwa [hy] at this)`. Establish `h1` using `(hR E X.M Ω A w w' hA h' (rc (algNorm σ)) s).mpr hs`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite `h1` using `[← heq]`. Conclude with `(hR E X.M Ω A w w' hA h' _ s).mp h1`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem temperedness_of_restriction (H : K.Main) (hE : LocalGlobalAboveLAlt.ExSub) (hR : LocalGlobalAboveLAlt.TempRes) : LocalGlobalAboveLAlt.TemperednessTransfer := by
   intro E Ω _ _ _ _ _ _ l _ ι a ha π hc hr r wt HT hG P AI hT w hw A hA O _ _ _ Bw hj σ hσ rc hrc s hs

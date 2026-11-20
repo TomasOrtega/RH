@@ -13,9 +13,9 @@ namespace UpperTheory.Esk.adelicTermLemmas
 variable {F : Type} [Field F] [NumberField F]
 
 /- English proof (translation)
-Establish `hN : (zc F).range.Normal` using `⟨fun n hn g => by`. Take `⟨z, rfl⟩` from `hn`. Use `⟨z, ?_⟩` and prove the remaining obligations. Rewrite using `[(Subgroup.mem_center_iff.1 (zc_center z) g), mul_assoc, mul_inv_cancel, mul_one]⟩`. Establish `h2 : h ∈ ((Kc c ⊔ (zc F).range : Subgroup (GF F)) : Set (GF F))` using `hh`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite `h2` using `[Subgroup.mul_normal]`. Take `⟨k, hk, y, ⟨z, rfl⟩, rfl⟩` from `h2`. Conclude with `⟨k, hk, z, rfl⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem hc_decomp {c : Pl F → ℕ} {h : GF F} (hh : h ∈ Hc c) : ∃ k ∈ Kc c, ∃ z, h = k * zc F z := by
   have hN : (zc F).range.Normal := ⟨fun n hn g => by
@@ -28,7 +28,7 @@ theorem hc_decomp {c : Pl F → ℕ} {h : GF F} (hh : h ∈ Hc c) : ∃ k ∈ Kc
   exact ⟨k, hk, z, rfl⟩
 
 /- English proof (translation)
-Take `⟨k, -, rfl⟩` from `hg`. Establish `hu : IsUnit (k : Matrix (Fin 2) (Fin 2) (w.adicCompletionIntegers F)).det` using `(Matrix.GeneralLinearGroup.det k).isUnit`. Rewrite `hu` using `[HeightOneSpectrum.adicCompletionIntegers.isUnit_iff_valued_eq_one]`. Rewrite using `[← hu]`. Conclude with `congrArg Valued.v ((w.adicCompletionIntegers F).subtype.map_det _).symm`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem valuation_det_congruence_subgroup_eq_one (w : Pl F) (n : ℕ) {g : GL (Fin 2) (w.adicCompletion F)} (hg : g ∈ K1 w n) :
     Valued.v (g : Matrix (Fin 2) (Fin 2) (w.adicCompletion F)).det = 1 := by
@@ -40,7 +40,7 @@ theorem valuation_det_congruence_subgroup_eq_one (w : Pl F) (n : ℕ) {g : GL (F
   exact congrArg Valued.v ((w.adicCompletionIntegers F).subtype.map_det _).symm
 
 /- English proof (translation)
-Use `Subgroup.mem_iInf.1 hk w` as an intermediate fact. Conclude with `this`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem mem_local_congruence_of_mem_global {c : Pl F → ℕ} {k : GF F} (hk : k ∈ Kc c) (w : Pl F) :
     Matrix.GeneralLinearGroup.map (pLoc F w) k ∈ K1 w (c w) := by
@@ -48,7 +48,7 @@ theorem mem_local_congruence_of_mem_global {c : Pl F → ℕ} {k : GF F} (hk : k
   exact this
 
 /- English proof (translation)
-Proceed by induction on `W with`. Consider the case `nil => simp`. Consider the case `cons w W ih => simp [ih, mul_comm]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem list_prod_inv {α : Type*} (W : List α) (f : α → ℝ) : (W.map fun w => (f w)⁻¹).prod = ((W.map f).prod)⁻¹ := by
   induction W with
@@ -56,7 +56,7 @@ theorem list_prod_inv {α : Type*} (W : List α) (f : α → ℝ) : (W.map fun w
   | cons w W ih => simp [ih, mul_comm]
 
 /- English proof (translation)
-Use `ext`. Simplify using `[zc, sq]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem det_zc (z : (Af F)ˣ) : Matrix.GeneralLinearGroup.det (zc F z) = z ^ 2 := by
   ext
@@ -65,7 +65,7 @@ theorem det_zc (z : (Af F)ˣ) : Matrix.GeneralLinearGroup.det (zc F z) = z ^ 2 :
 variable [IsTotallyReal F]
 
 /- English proof (translation)
-Use `(Hm.absf F).2.2.1 _ fun w => ?_` and prove the remaining obligations. Establish `h` using `valuation_det_congruence_subgroup_eq_one w (c w) (mem_local_congruence_of_mem_global hk w)`. Rewrite using `[Matrix.GeneralLinearGroup.val_det_apply, RingHom.map_det]`. Conclude with `h`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem absF_det_Kc {c : Pl F → ℕ} {k : GF F} (hk : k ∈ Kc c) : absF (Matrix.GeneralLinearGroup.det k) = 1 := by
   refine (Hm.absf F).2.2.1 _ fun w => ?_
@@ -74,17 +74,17 @@ theorem absF_det_Kc {c : Pl F → ℕ} {k : GF F} (hk : k ∈ Kc c) : absF (Matr
   exact h
 
 /- English proof (translation)
-Establish `h1` using `(Hm.absf F).2.2.2 (Matrix.GeneralLinearGroup.det γ)`. Establish `h2 : Units.map (algebraMap F (Af F)).toMonoidHom (Matrix.GeneralLinearGroup.det γ) = Matrix.GeneralLinearGroup.det (jF F γ)`. Rewrite using `[jF, Matrix.GeneralLinearGroup.map_det]`. Both sides reduce to the same expression. Establish `h3 : Matrix.GeneralLinearGroup.det (jF F γ) * (Matrix.GeneralLinearGroup.det k * z ^ 2) = Matrix.GeneralLinearGroup.det (a i)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Use `congrArg Matrix.GeneralLinearGroup.det hrel` as an intermediate fact. Simplify using `only [map_mul, det_zc] at this`. Establish `e : Matrix.GeneralLinearGroup.det x * (Matrix.GeneralLinearGroup.det (jF F γ) * (Matrix.GeneralLinearGroup.det k * z ^ 2)) = Matrix.GeneralLinearGroup.det x * Matrix.GeneralLinearGroup.det (a i)`. Rewrite using `[← this, ← mul_assoc, ← mul_assoc, ← mul_assoc, mul_comm (Matrix.GeneralLinearGroup.det x)]`. Conclude with `mul_left_cancel e`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h4` using `congrArg absF h3`. Rewrite `h4` using `[(Hm.absf F).2.1, (Hm.absf F).2.1, absF_det_Kc hk, pow_two, (Hm.absf F).2.1, hR.det i]`. Rewrite `h4` using `[list_prod_inv]`. Rewrite `h1` using `[h2]`. Establish `hp : 0 < absF (Matrix.GeneralLinearGroup.det (jF F γ))` using `(Hm.absf F).1 _`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz : 0 < absF z` using `(Hm.absf F).1 _`. Establish `hN : (W.map fun w => (normV w : ℝ)).prod ≠ 0`. Introduce `h0`. Rewrite `h4` using `[h0, inv_zero]`. Establish `: 0 < absF (Matrix.GeneralLinearGroup.det (jF F γ)) * (1 * (absF z * absF z))` using `by positivity`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Establish `e1 : (∏ v, |reAt v γ.val.det|) = (absF (Matrix.GeneralLinearGroup.det (jF F γ)))⁻¹`. Rewrite `h1` using `[Matrix.GeneralLinearGroup.val_det_apply]`. Conclude with `eq_inv_of_mul_eq_one_left h1`. Rewrite using `[e1]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Clear the denominators using the available nonvanishing facts.
 
-Rewrite `h4` using `[one_mul]`. Clear the denominators using the available nonvanishing facts. Establish `h5 : absF (Matrix.GeneralLinearGroup.det (jF F γ)) * (absF z * absF z) * (W.map fun w => (normV w : ℝ)).prod = 1`. Rewrite using `[h4, inv_mul_cancel₀ hN]`. Use polynomial arithmetic with `[h5]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem prod_reAt {c : Pl F → ℕ} {W : List (Pl F)} {n : ℕ} {a : Fin n → GF F} (hR : IsReps c W a) {γ : GL (Fin 2) F}
     {x : GF F} {i : Fin n} {k : GF F} (hk : k ∈ Kc c) {z : (Af F)ˣ} (hrel : jF F γ * x * (k * zc F z) = x * a i) :
@@ -123,7 +123,7 @@ theorem prod_reAt {c : Pl F → ℕ} {W : List (Pl F)} {n : ℕ} {a : Fin n → 
   nlinarith [h5]
 
 /- English proof (translation)
-Proceed by induction on `m with`. Consider the case `zero => simp`. Consider the case `succ m ih`. Use `push_cast`. Conclude with `(Valuation.map_add ν _ _).trans (max_le ih (by simp))`.
+Proceed by induction. Treat this case separately. Treat this case separately. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem val_nat_le (ν : Valuation ℂ ℝ≥0) (m : ℕ) : ν (m : ℂ) ≤ 1 := by
   induction m with
@@ -133,14 +133,14 @@ theorem val_nat_le (ν : Valuation ℂ ℝ≥0) (m : ℕ) : ν (m : ℂ) ≤ 1 :
     exact (Valuation.map_add ν _ _).trans (max_le ih (by simp))
 
 /- English proof (translation)
-Rewrite using `[Units.val_mul, Units.val_mul, Matrix.trace_mul_comm, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem tr_conj {R : Type*} [CommRing R] (g y : GL (Fin 2) R) :
     ((g * y * g⁻¹ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R).trace = (y : Matrix (Fin 2) (Fin 2) R).trace := by
   rw [Units.val_mul, Units.val_mul, Matrix.trace_mul_comm, ← Matrix.mul_assoc, Units.inv_mul, Matrix.one_mul]
 
 /- English proof (translation)
-Rewrite using `[← Matrix.GeneralLinearGroup.val_det_apply, ← Matrix.GeneralLinearGroup.val_det_apply]`. Use `congr 1`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 -/
 theorem det_conj2 {R : Type*} [CommRing R] (g y : GL (Fin 2) R) :
     ((g * y * g⁻¹ : GL (Fin 2) R) : Matrix (Fin 2) (Fin 2) R).det = (y : Matrix (Fin 2) (Fin 2) R).det := by
@@ -153,9 +153,9 @@ section Loc
 variable {l : ℕ} [Fact l.Prime] {ι : Qbar l ≃+* ℂ} (D : LDat F ι)
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce `h`. Break down `lt_or_eq_of_le ((D.le v y).1 h.le) with h2 | h2` into its components or cases. Conclude with `absurd ((D.lt v y).2 h2) (by rw [h]; exact lt_irrefl 1)`. Conclude with `h2`.
+Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis.
 
-Introduce `h`. Break down `lt_or_eq_of_le ((D.le v y).2 h.le) with h2 | h2` into its components or cases. Conclude with `absurd ((D.lt v y).1 h2) (by rw [h]; exact lt_irrefl 1)`. Conclude with `h2`.
+A detailed English derivation is pending.
 -/
 theorem nu_eq_one_iff (v : InfinitePlace F) (y : (D.pl v).adicCompletion F) : nu ι (D.em v y) = 1 ↔ Valued.v y = 1 := by
   constructor
@@ -176,7 +176,7 @@ theorem gl_apply (v : InfinitePlace F) (y : GF F) (p q : Fin 2) :
       D.em v ((↑(Matrix.GeneralLinearGroup.map (pLoc F (D.pl v)) y) : Matrix (Fin 2) (Fin 2) ((D.pl v).adicCompletion F)) p q) := rfl
 
 /- English proof (translation)
-Use extensionality with `p q`. Rewrite using `[gl_apply]`. Apply the tactic sequence `fin_cases p <;> fin_cases q <;> simp [zc, LDat.ea]`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem gl_zc (v : InfinitePlace F) (y : (Af F)ˣ) :
     (D.gl (zc F y) v : Matrix (Fin 2) (Fin 2) ℂ) = D.ea v y • (1 : Matrix (Fin 2) (Fin 2) ℂ) := by
@@ -186,43 +186,39 @@ theorem gl_zc (v : InfinitePlace F) (y : (Af F)ˣ) :
 
 open Classical in
 /- English proof (translation)
-Establish `hea : ∀ y : F, D.em v (pLoc F (D.pl v) (algebraMap F (Af F) y)) = v.embedding y` using `fun y => D.em_alg v y`. Take `⟨hK, -⟩` from `(glFacts F l ι D).1 c hc`. Take `⟨hK0, hK1, hK2, -, -⟩` from `hK k⁻¹ (inv_mem hk) v`. Take `⟨u, hu⟩` from `hR.loc i (D.pl v) (by rw [hc]; exact one_ne_zero)`. Use `set M : Matrix (Fin 2) (Fin 2) ℂ := (D.gl (a i * k⁻¹) v : Matrix (Fin 2) (Fin 2) ℂ) with hM`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `set T : (D.pl v).adicCompletion F := (↑(Matrix.GeneralLinearGroup.map (pLoc F (D.pl v)) (a i * k⁻¹)) : Matrix (Fin 2) (Fin 2) ((D.pl v).adicCompletion F)).trace with hT`. Use `set Δ : (D.pl v).adicCompletion F := (↑(Matrix.GeneralLinearGroup.map (pLoc F (D.pl v)) (a i * k⁻¹)) : Matrix (Fin 2) (Fin 2) ((D.pl v).adicCompletion F)).det with hΔ`. Establish `hτT : M.trace = D.em v T`. Rewrite using `[hM, hT, Matrix.trace_fin_two, Matrix.trace_fin_two, map_add, gl_apply, gl_apply]`. Establish `hδΔ : M.det = D.em v Δ`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hM, hΔ, Matrix.det_fin_two, Matrix.det_fin_two, gl_apply, gl_apply, gl_apply, gl_apply, map_sub, (D.em v).map_mul, (D.em v).map_mul]`. Establish `hS : (D.gl (zc F z⁻¹) v : Matrix (Fin 2) (Fin 2) ℂ) = (D.ea v z)⁻¹ • (1 : Matrix (Fin 2) (Fin 2) ℂ)`. Rewrite using `[gl_zc, map_units_inv]`. Establish `hj : D.gl (jF F γ) v = D.gl x v * (D.gl (a i * k⁻¹) v * D.gl (zc F z⁻¹) v) * (D.gl x v)⁻¹`. Rewrite using `[hrel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [map_mul, map_inv, Pi.mul_apply, Pi.inv_apply]`. Establish `htr : v.embedding γ.val.trace = (D.ea v z)⁻¹ * M.trace`. Establish `e1 : v.embedding γ.val.trace = (D.gl (jF F γ) v : Matrix (Fin 2) (Fin 2) ℂ).trace`. Rewrite using `[Matrix.trace_fin_two, Matrix.trace_fin_two, map_add, gl_apply, gl_apply]`. Simplify using `only [jF, Matrix.GeneralLinearGroup.map_apply, ← hea]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e1, hj, tr_conj, Units.val_mul, hS, Matrix.mul_smul, Matrix.mul_one, Matrix.trace_smul, smul_eq_mul]`. Establish `hdt : v.embedding γ.val.det = ((D.ea v z)⁻¹) ^ 2 * M.det`. Establish `e1 : v.embedding γ.val.det = (D.gl (jF F γ) v : Matrix (Fin 2) (Fin 2) ℂ).det`. Rewrite using `[Matrix.det_fin_two, Matrix.det_fin_two, map_sub, map_mul, map_mul, gl_apply, gl_apply, gl_apply, gl_apply]`. Simplify using `only [jF, Matrix.GeneralLinearGroup.map_apply, ← hea]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[e1, hj, det_conj2, Units.val_mul, hS, Matrix.mul_smul, Matrix.mul_one, Matrix.det_smul, Fintype.card_fin]`. Use `set cnt := W.count (D.pl v) with hcnt`. Use `set e : ℂ := D.em v ((atFin (D.pl v) (unif (D.pl v)) : (D.pl v).adicCompletion F)) with he_def`. Use `set K : Matrix (Fin 2) (Fin 2) ℂ := (D.gl k⁻¹ v : Matrix (Fin 2) (Fin 2) ℂ) with hK_def`. Establish `hA : ∀ p q, (D.gl (a i) v : Matrix (Fin 2) (Fin 2) ℂ) p q = !![e ^ cnt, D.em v (u : (D.pl v).adicCompletion F); 0, 1] p q`.
+Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `p q`. Rewrite using `[gl_apply, hu]`. Apply the tactic sequence `fin_cases p <;> fin_cases q <;> simp [aff, he_def, hcnt]`. Establish `hMmul : M = (D.gl (a i) v : Matrix (Fin 2) (Fin 2) ℂ) * K`. Rewrite using `[hM, hK_def, map_mul, Pi.mul_apply, Units.val_mul]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hτ' : M.trace = e ^ cnt * K 0 0 + D.em v (u : (D.pl v).adicCompletion F) * K 1 0 + K 1 1`. Rewrite using `[hMmul, Matrix.trace_fin_two]`. Simplify using `only [Matrix.mul_apply, Fin.sum_univ_two, hA]`. Simplify using the standard rewrite rules. Establish `hϖ : Valued.v ((atFin (D.pl v) (unif (D.pl v)) : (D.pl v).adicCompletion F)) = WithZero.exp (-1 : ℤ)` using `Formalism.L2.Host.unif_spec _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hexp : WithZero.exp (-1 : ℤ) < 1`. Establish `: WithZero.exp (-1 : ℤ) < WithZero.exp 0` using `WithZero.exp_lt_exp.2 (by norm_num)`. Simplify using `using this`. Establish `he : nu ι e < 1` using `(D.lt v _).2 (by rw [hϖ]; exact hexp)`. Establish `hu1 : nu ι (D.em v (u : (D.pl v).adicCompletion F)) ≤ 1` using `(D.le v _).2 u.2`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Establish `hcnt1 : cnt ≠ 0` using `by have := hW v; omega`. Establish `hτ1 : nu ι M.trace = 1`. Establish `h1 : nu ι (M.trace - 1) < 1`. Establish `e1 : M.trace - 1 = e ^ cnt * K 0 0 + D.em v (u : (D.pl v).adicCompletion F) * K 1 0 + (K 1 1 - 1)`. Rewrite using `[hτ']`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e1]`. Use `Valuation.map_add_lt _ (Valuation.map_add_lt _ ?_ ?_) hK2` and prove the remaining obligations. Rewrite using `[map_mul, map_pow]`. Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[map_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `e2 : M.trace = 1 + (M.trace - 1)` using `by ring`. Rewrite using `[e2]`. Conclude with `Valuation.map_one_add_of_lt _ h1`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hTv : Valued.v T = 1` using `(nu_eq_one_iff D v T).1 (hτT ▸ hτ1)`. Establish `hΔmul : Δ = (↑(Matrix.GeneralLinearGroup.map (pLoc F (D.pl v)) (a i)) : Matrix (Fin 2) (Fin 2) ((D.pl v).adicCompletion F)).det * (↑(Matrix.GeneralLinearGroup.map (pLoc F (D.pl v)) k⁻¹) : Matrix (Fin 2) (Fin 2) ((D.pl v).adicCompletion F)).det`. Rewrite using `[hΔ, map_mul, Units.val_mul, Matrix.det_mul]`. Establish `hAdet : (↑(Matrix.GeneralLinearGroup.map (pLoc F (D.pl v)) (a i)) : Matrix (Fin 2) (Fin 2) ((D.pl v).adicCompletion F)).det = ((atFin (D.pl v) (unif (D.pl v)) : (D.pl v).adicCompletion F)) ^ cnt`. Rewrite using `[hu]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `[aff, Matrix.det_fin_two, hcnt]`. Establish `hKdet` using `valuation_det_congruence_subgroup_eq_one (D.pl v) (c (D.pl v)) (mem_local_congruence_of_mem_global (inv_mem hk) (D.pl v))`. Establish `hvΔ : Valued.v Δ = Valued.v (((l : ℕ) : (D.pl v).adicCompletion F)) ^ cnt`. Rewrite using `[hΔmul, hAdet, map_mul, hKdet, map_pow, hϖ, D.unif v, mul_one]`. Establish `hΔ0 : Δ ≠ 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hΔ]`. Conclude with `(Matrix.GeneralLinearGroup.map (pLoc F (D.pl v)) (a i * k⁻¹)).det_ne_zero`. Use `set Y : (D.pl v).adicCompletion F := ((l : ℕ) : (D.pl v).adicCompletion F) ^ cnt / Δ with hY_def`. Establish `hY : Valued.v Y = 1`. Rewrite using `[hY_def, map_div₀, map_pow, hvΔ, div_self]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `pow_ne_zero _ (by rw [D.unif v]; exact WithZero.exp_ne_zero)`. Establish `hUeq : D.em v Y = (l : ℂ) ^ cnt / D.em v Δ`. Rewrite using `[hY_def, map_div₀, map_pow, map_natCast]`. Establish `hδ0 : D.em v Δ ≠ 0` using `(map_ne_zero (D.em v)).2 hΔ0`. Establish `hδU : M.det * D.em v Y = (l : ℂ) ^ cnt`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hδΔ, hUeq, mul_div_cancel₀ _ hδ0]`. Establish `hU1 : nu ι (D.em v Y) = 1` using `(nu_eq_one_iff D v Y).2 hY`. Establish `hνδ : nu ι M.det = nu ι (l : ℂ) ^ cnt`. Use `congrArg (nu ι) hδU` as an intermediate fact. Rewrite `this` using `[map_mul, hU1, mul_one, map_pow]`.
-
-Conclude with `this`. Establish `hνl : nu ι (l : ℂ) ≤ 1` using `val_nat_le _ l`. Establish `hδr : nu ι M.det ≤ nu ι (l : ℂ) ^ r`. Rewrite using `[hνδ]`. Conclude with `pow_le_pow_of_le_one zero_le hνl (hW v)`.
-
-Establish `hδ1 : nu ι M.det ≤ 1` using `hδr.trans (pow_le_one₀ zero_le hνl)`. Use `⟨M.trace, M.det, D.em v Y, htr, hdt, hτ1.le, hδ1, hδr, hU1.le, hδU, fun t ht => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Rewrite using `[hτT]`. Conclude with `hU F l ι D v T hTv N (2 * t) (dvd_mul_of_dvd_right ht 2)`. Conclude with `hU F l ι D v Y hY N t ht`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem loc (hU : GUnit) {c : Pl F → ℕ} (hc : ∀ v, c (D.pl v) = 1) {W : List (Pl F)} {r : ℕ} (hr : 1 ≤ r)
     (hW : ∀ v, r ≤ W.count (D.pl v)) {n : ℕ} {a : Fin n → GF F} (hR : IsReps c W a) {γ : GL (Fin 2) F} {x : GF F} {i : Fin n}

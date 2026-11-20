@@ -5,45 +5,39 @@ open GlobalTheory.PRep GlobalTheory.SmGL GlobalTheory.LocGL ValuativeRel Matrix 
 open GroundTheory.Automorphic.Whittaker
 
 /- English proof (translation)
-Introduce `hSt X H _ _ _ _ _ _ _ _ _ _ _ _ _ s τ p hp hs hτ hsp hτp hsτ χ hχL D hD hsum U C x₀ hU hC hUC hHU hsU hsx₀ hvan f hf`. Take `⟨L, hLo, hL1⟩` from `hχL`. Take `⟨L₀, hL₀c, hL₀o, hL₀L, hL₀τ⟩` from `hSt H τ p hp hτ hτp L hLo`. Establish `hχL₀ : ∀ l ∈ L₀, χ l = 1` using `fun l hl => hL1 l (hL₀L hl)`. Establish `hsp' : ∀ y, s^[p - 1 + 1] y = y` using `fun y => by rw [Nat.sub_add_cancel hp]; exact hsp y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `toCc : ∀ g ∈ supportedIn U, g ∈ Cc X`. Introduce `g hg`. Take `⟨h1, -⟩` from `hg`. Conclude with `h1`. Set `e : X ≃ₜ X` to `{ toFun := s invFun := s^[p - 1] left_inv := fun y => by show s^[p - 1] (s y) = y`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← Function.iterate_succ_apply s (p - 1) y]`. Conclude with `hsp' y`. Use `right_inv := fun y => by show s (s^[p - 1] y) = y`. Rewrite using `[← Function.iterate_succ_apply' s (p - 1) y]`. Conclude with `hsp' y`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `continuous_toFun := hs`. Use `continuous_invFun := hs.iterate (p - 1) }`. Establish `hcomp : ∀ g ∈ supportedIn U, g ∘ s ∈ supportedIn U`. Introduce `g hg`. Take `⟨hg1, hsupp⟩` from `hg`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite `hg1` using `[GroundTheory.Automorphic.mem_locallyConstantCompactSupport]`. Take `⟨hlc, hcs⟩` from `hg1`. Use `⟨GroundTheory.Automorphic.mem_locallyConstantCompactSupport.2 ⟨hlc.comp_continuous hs, hcs.comp_homeomorph e⟩, ?_⟩` and prove the remaining obligations. Introduce `x hx`. Conclude with `(hsU x).1 (hsupp hx)`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hiter : ∀ i, ∀ g ∈ supportedIn U, g ∘ s^[i] ∈ supportedIn U`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`. Introduce `g hg`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hg`. Consider the case `succ i ih`. Introduce `g hg`. Conclude with `hcomp _ (ih g hg)`. Take `⟨f₀, hf₀U, hf₀eq⟩` from `exists_lift_orbit_piece hU hC hUC hL₀c hL₀o (y := x₀) (mem_orbit_self x₀)`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hs_orb : ∀ y ∈ orbit H x₀, s y ∈ orbit H x₀`. Introduce and unpack `_ ⟨h, rfl⟩`. Conclude with `⟨τ h, by show τ h • x₀ = s (h • x₀)`. Rewrite using `[hsτ, hsx₀]⟩`. Establish `hs_piece : ∀ z ∈ orbitPiece L₀ x₀, s z ∈ orbitPiece L₀ x₀`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately.
 
-Introduce and unpack `_ ⟨l, hl, rfl⟩`. Conclude with `⟨τ l, (hL₀τ l).2 hl, by show τ l • x₀ = s (l • x₀)`. Rewrite using `[hsτ, hsx₀]⟩`. Establish `hpiece_iter : ∀ n, ∀ z ∈ orbitPiece L₀ x₀, s^[n] z ∈ orbitPiece L₀ x₀`. Introduce `n`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Proceed by induction on `n with`. Consider the case `zero`. Introduce `z hz`. Conclude with `hz`. Consider the case `succ n ih`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `z hz`. Rewrite using `[Function.iterate_succ_apply']`. Conclude with `hs_piece _ (ih z hz)`. Establish `hs_piece_iff : ∀ z, s z ∈ orbitPiece L₀ x₀ ↔ z ∈ orbitPiece L₀ x₀`. Introduce `z`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun hz => ?_, hs_piece z⟩` and prove the remaining obligations. Establish `h1` using `hpiece_iter (p - 1) _ hz`. Rewrite `h1` using `[← Function.iterate_succ_apply s (p - 1) z, hsp']`. Conclude with `h1`. Establish `hf₀s : ∀ x ∈ orbit H x₀, f₀ (s x) = f₀ x`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Both sides reduce to the same expression.
 
-Introduce `x hx`. Rewrite using `[hf₀eq _ (hs_orb x hx), hf₀eq x hx]`. Distinguish the cases in `hz : x ∈ orbitPiece L₀ x₀`. Rewrite using `[Set.indicator_of_mem hz, Set.indicator_of_mem ((hs_piece_iff x).2 hz)]`. Both sides reduce to the same expression.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[Set.indicator_of_notMem hz, Set.indicator_of_notMem (fun h => hz ((hs_piece_iff x).1 h))]`. Establish `hf₀i : ∀ i, ∀ x ∈ orbit H x₀, f₀ (s^[i] x) = f₀ x`. Introduce `i`. Proceed by induction on `i with`. Consider the case `zero`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Introduce `x _`. Both sides reduce to the same expression. Consider the case `succ i ih`. Introduce `x hx`. Rewrite using `[Function.iterate_succ_apply, ih _ (hs_orb x hx)]`.
+Simplify using the standard rewrite rules. Separate the alternatives or extract the components of the hypothesis. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hf₀s x hx`. Establish `hDi : ∀ i, D (f₀ ∘ s^[i]) = D f₀`. Introduce `i`. Establish `hm` using `sub_mem_of_eqOn_orbit hUC (hiter i f₀ hf₀U) hf₀U (fun x hx => hf₀i i x hx)`. Establish `h0` using `hvan _ hm`.
+Assume the hypotheses and unpack their components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite `h0` using `[map_sub, sub_eq_zero]`. Then use the resulting hypothesis. Establish `hD0 : D f₀ = 0`. Establish `h0` using `hsum f₀ (toCc f₀ hf₀U)`. Simplify using `only [hDi, Finset.sum_const, Finset.card_range, nsmul_eq_mul] at h0`. Break down `mul_eq_zero.mp h0 with h | h` into its components or cases.
-
-Conclude with `absurd h (Nat.cast_ne_zero.mpr hp.ne')`. Conclude with `h`. Set `W : Submodule ℂ (X → ℂ)` to `supportedIn U ⊓ LinearMap.ker D`. Establish `hrel : relSpan χ U ≤ W`. Use `le_inf (relSpan_le_supportedIn χ hHU) (Submodule.span_le.mpr ?_)` and prove the remaining obligations.
-
-Introduce and unpack `g ⟨h, f', hf'U, rfl⟩`. Simplify using `only [SetLike.mem_coe, LinearMap.mem_ker, map_sub, map_smul, smul_eq_mul]`. Rewrite using `[hD h f' (toCc f' hf'U)]`. Expand and normalize the polynomial expressions, which then agree. Establish `hmem : f₀ ∈ W ⊔ supportedIn U ⊓ vanishingOn C` using `Submodule.mem_sup_left (Submodule.mem_inf.mpr ⟨hf₀U, LinearMap.mem_ker.mpr hD0⟩)`.
-
-Establish `hle` using `supportedIn_le_of_base hU hC hUC hHU χ (W := W) inf_le_left hrel L₀ hL₀c hL₀o hχL₀ f₀ hf₀eq hmem`. Take `⟨a, ha, b, hb, rfl⟩` from `Submodule.mem_sup.mp (hle hf)`. Rewrite using `[map_add, LinearMap.mem_ker.mp (Submodule.mem_inf.mp ha).2, hvan b hb, add_zero]`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Gal.LocD.cellStep :
     StabSub → CellStep := by

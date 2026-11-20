@@ -16,9 +16,9 @@ open scoped InnerProductSpace ENNReal
 namespace GlobalTheory.GapWedgeKappaL
 
 /- English proof (translation)
-Unfold `n1`. Establish `h1 : ∑ i, (eZ I i).natAbs = I.card`. Establish `: ∀ i, (eZ I i).natAbs = if i ∈ I then 1 else 0`. Apply the tactic sequence `intro i; unfold eZ; split_ifs <;> rfl`. Simplify using `[this]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h1, ← Finset.sum_add_distrib]`. Conclude with `Finset.sum_le_sum fun i _ => Int.natAbs_add_le _ _`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem n1_add_eZ_le_add_card' {n : ℕ} (ν : Fin n → ℤ) (I : Finset (Fin n)) : n1 (ν + eZ I) ≤ n1 ν + I.card := by
   unfold n1
@@ -30,7 +30,7 @@ theorem n1_add_eZ_le_add_card' {n : ℕ} (ν : Fin n → ℤ) (I : Finset (Fin n
   exact Finset.sum_le_sum fun i _ => Int.natAbs_add_le _ _
 
 /- English proof (translation)
-Introduce `I J h`. Use extensionality with `i`. Use `congrFun h i` as an intermediate fact. Unfold `eZ at this`. Apply the tactic sequence `by_cases hI : i ∈ I <;> by_cases hJ : i ∈ J <;> simp_all`.
+Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components. Establish an intermediate fact. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem eZ_injective' {n : ℕ} : Function.Injective (eZ : Finset (Fin n) → Fin n → ℤ) := by
   intro I J h
@@ -40,33 +40,31 @@ theorem eZ_injective' {n : ℕ} : Function.Injective (eZ : Finset (Fin n) → Fi
   by_cases hI : i ∈ I <;> by_cases hJ : i ∈ J <;> simp_all
 
 /- English proof (translation)
-Introduce `hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R lb dg hS l hl ν hν io pr ep hT hnz I κ₀ hnzI hκ`. Establish `hyp` using `hH.1`. Establish `hSG` using `(GlobalTheory.T.families_have_largeGap_of_numericalHypotheses.2 k r Wp lam u b bv ga h q0 z π μW μN μG νq R lb dg).1 hS`. Take `⟨hNum, hFam, hG, hSF⟩` from `hSG`. Establish `hν0 : n1 ν ≤ q0` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hνJ : ∀ J : Sub (2 * r + k + 1) l, n1 (ν + eZ J.1) + (r + 1) ^ 2 ≤ q0`. Introduce `J`. Use `n1_add_eZ_le_add_card' ν J.1` as an intermediate fact. Rewrite `this` using `[J.2]`. Use the polynomial consequences of the given equalities and inequalities.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `hνJ0 : ∀ J : Sub (2 * r + k + 1) l, n1 (ν + eZ J.1) ≤ q0` using `fun J => le_trans (Nat.le_add_right _ _) (hνJ J)`. Establish `hDS` using `hFam ν hν0`. Establish `hDSJ` using `fun J : Sub (2 * r + k + 1) l => hFam (ν + eZ J.1) (hνJ0 J)`. Establish `hF` using `GlobalTheory.WedgeFRep.isFRep_cmp k r l`. Establish `hdual` using `fun J : Sub (2 * r + k + 1) l => Gp91.GlobalTheory.T.bessel_tensor_projection_scalar_and_adjoint hyp k r _ _ _ _ _ (R ν) _ io pr ep _ _ _ Wp z π u μW μN μG νq (wedge (fun a : Fin l => Formalism.QuantumDeterminants.fvec k r z (Fin.castLE hl a))) (lb ν) hDS hDSJ hF hT hG (fun s hs …`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hex : ∀ J : Sub (2 * r + k + 1) l, ∃ c : ℂ, (J = I → c = κ₀) ∧ ∀ y ∈ (R (ν + eZ J.1)).sm, lb ν (ev (cmp l (Formalism.QuantumDeterminants.Hpk k r)) (R ν) (wedge (fun a : Fin l => Formalism.QuantumDeterminants.fvec k r z (Fin.castLE hl a))) (fun c => io J c y)) = ((ep J : ℂ) * star …`. Introduce `J`. Distinguish the cases in `hJ : J = I`. Substitute `hJ` using the available equality. Conclude with `⟨κ₀, fun _ => rfl, (hdual J).2 κ₀ hκ⟩`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Substitute using the available equality. Supply the required witnesses or components.
 
-Take `⟨c, hc⟩` from `(hdual J).1`. Conclude with `⟨c, fun h => absurd h hJ, (hdual J).2 c hc⟩`. Use `choose κ hκI hκd using hex`. Establish `hd0 : 0 < dg ν` using `(hSF ν hν0).2.1`. Establish `hdJ : ∀ J : Sub (2 * r + k + 1) l, 0 < dg (ν + eZ J.1)` using `fun J => (hSF _ (hνJ0 J)).2.1`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Apply the tactic sequence `have hmass := Gp91.GlobalTheory.T.bessel_functional_l2_bound_and_isometry hyp k r Wp lam u b bv ga h q0 z π μW μN μG νq R lb dg ((GlobalTheory.T.families_have_largeGap_of_numericalHypotheses.2 k r Wp lam u b bv ga h q0 z π μW μN μG νq R lb dg).1 hS)`. Take `⟨w, hw, hw1, hint⟩` from `GlobalTheory.T.productMoment_firstLengths_lowestVector hH k r Wp lam u b bv ga h q0 z π μW μN μG νq R lb dg hS l hl _ (hνJ I) hnzI`. Establish `hinj : Function.Injective (fun (J : Sub (2 * r + k + 1) l) (a : Fin (2 * r + k + 1)) => lam a + (((ν + eZ J.1) a : ℤ) : ℝ))`. Introduce `J J' hJ`. Apply `Subtype.ext` to reduce the goal to its premises.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `eZ_injective'` to reduce the goal to its premises. Use function extensionality and compare the values at `a`. Use `congrFun hJ a` as an intermediate fact. Simplify using `only [Pi.add_apply, add_right_inj, Int.cast_inj] at this`. Conclude with `this`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Consider separately whether the proposition holds or fails.
 
-Establish `h8` using `Gp91.GlobalTheory.T.tensor_moment_weighted hyp k r _ _ _ _ _ (R ν) _ io pr ep _ _ _ Wp z π u μW μN μG νq (wedge (fun a : Fin l => Formalism.QuantumDeterminants.fvec k r z (Fin.castLE hl a))) (fun w => ((Real.sqrt (dg ν) : ℝ) : ℂ) • lb ν w) (fun J w => ((Real.sqrt (dg (ν + eZ J.1) …`. Distinguish the cases in `hJ : NzOn (R (ν + eZ J.1)) (lb (ν + eZ J.1))`. Conclude with `Or.inl ((hmass _ (hνJ0 J)).2 hJ).1`. Conclude with `Or.inr (if_neg hJ))`. Use the proof step `(fun J y hy => by`.
+Prove the first alternative. Prove the second alternative. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hκd J y hy]`. Distinguish the cases in `hJ : NzOn (R (ν + eZ J.1)) (lb (ν + eZ J.1))`. Rewrite using `[if_pos hJ, smul_smul, smul_smul]`. Use `congr 1`. Establish `: ((Real.sqrt (dg (ν + eZ J.1)) : ℝ) : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 (Real.sqrt_pos.2 (hdJ J)).ne'`.
+Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Clear the denominators using the available nonvanishing facts. Establish `: lb (ν + eZ J.1) y = 0`. Assume the negation of the conclusion as `hne`. Conclude with `hJ ⟨y, hy, hne⟩`. Rewrite using `[if_neg hJ, this]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Use the proof step `simp)`. Use `I ((hmass _ (hνJ0 I)).2 hnzI).1 w hw`. Establish `hae` using `(Gp91.GlobalTheory.T.quotientMeasure_ae_mem_and_measurable_besselModel hyp.1.2.2.1 k r _ _ (R ν) Wp z π u μW μN μG νq hDS hG).1`. Rewrite `h8` using `[if_pos hnzI, hκI I rfl, hw1]`. Establish `h9` using `h8.trans (le_trans (le_of_eq (lintegral_congr_ae ?_)) hint)`.
+Reduce the claim to the hypotheses of an applicable result. Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Rewrite the hypotheses and the conclusion using the stated equalities. Check the signs of the components of the expression.
 
-Establish `hHs : 0 ≤ Hsq r (Formalism.QuantumDeterminants.Tz k r z) b ^ l`. Apply `pow_nonneg` to reduce the goal to its premises. Unfold `Hsq`. Apply `mul_nonneg (le_trans zero_le_one (le_max_left _ _))` to reduce the goal to its premises. Rewrite using `[show 20 * (r + 1) = 2 * (10 * (r + 1)) by ring, pow_mul]`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities.
 
-Check the signs of the components of the expression. Rewrite `h9` using `[ENNReal.ofReal_le_ofReal_iff hHs]`. Use `le_trans (le_of_eq ?_) h9` and prove the remaining obligations. Establish `hep : ‖(ep I : ℂ)‖ = 1`. Apply the tactic sequence `rcases hT.ep_sq I with h | h <;> simp [h]`.
-
-Rewrite using `[norm_div, norm_mul, norm_mul, hep, norm_star, Complex.norm_real, Complex.norm_real, Real.norm_eq_abs, Real.norm_eq_abs, div_pow, mul_pow, sq_abs, sq_abs, Real.sq_sqrt hd0.le, Real.sq_sqrt (hdJ I).le]`. Expand and normalize the polynomial expressions, which then agree. Use `filter_upwards [hae] with x hx`. Rewrite using `[(GlobalTheory.T.flagWedge_fixed_and_length_eq_prod_distances k r l hl z hG.1).2 _ hx, norm_smul, mul_pow, Complex.norm_real, Real.norm_eq_abs, sq_abs, Real.sq_sqrt (hdJ I).le]`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem kappa_bound : GlobalTheory.GapIn.Hyp → ∀ (k r : ℕ) (Wp : Type) [NormedAddCommGroup Wp] [InnerProductSpace ℂ Wp] [CompleteSpace Wp] [FiniteDimensional ℂ Wp] (lam : Fin (2 * r + k + 1) → ℝ) (u : ℕ → ℝ) (b bv ga h : ℝ) (q0 : ℕ) (z : Fin (2 * r + k + 1) → ℂ) (π : Mx k r → (Wp →L[ℂ] Wp)) (μW μN μG νq : Measure (Formalism.QuantumDeterminants.Mt k r)) (R : (Fin (2 * r + k + 1) → ℤ) → Rep k r) (lb : ∀ ν, (R ν).H → Wp) (dg : (Fin (2 * r + k + 1) → ℤ) → ℝ), Setup lam u b bv ga h q0 z π μW μN μG νq R lb dg → ∀ (l : ℕ) (hl : l ≤ r + 1) ν, n1 ν + (r + 1) * (r + 2) ≤ q0 → ∀ io pr ep, TensH (cmp l) (cmp l (Formalism.QuantumDeterminants.Hpk k r)) (R ν) (fun I : Sub (2 * r + k + 1) l => R (ν + eZ I.1)) io pr ep → NzOn (R ν) (lb ν) → ∀ (I : Sub (2 * r + k + 1) l) (κ₀ : ℂ), NzOn (R (ν + eZ I.1)) (lb (ν + eZ I.1)) → (∀ v ∈ (R ν).sm, lb (ν + eZ I.1) (∑ c, pr I c (tm (R ν) (wedge (fun a : Fin l => Formalism.QuantumDeterminants.fvec k r z (Fin.castLE hl a))) v c)) = κ₀ • lb ν v) → ‖κ₀‖ ^ 2 * dg ν / dg (ν + eZ I.1) ≤ Hsq r (Formalism.QuantumDeterminants.Tz k r z) b ^ l := by
   intro hH k r Wp _ _ _ _ lam u b bv ga h q0 z π μW μN μG νq R lb dg hS l hl ν hν io pr ep hT hnz I κ₀ hnzI hκ

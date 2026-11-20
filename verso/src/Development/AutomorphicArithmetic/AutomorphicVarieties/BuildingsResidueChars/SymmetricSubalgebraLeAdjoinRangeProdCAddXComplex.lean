@@ -4,21 +4,21 @@ import Mathlib.RingTheory.Polynomial.Vieta
 
 open MvPolynomial in
 /- English proof (translation)
-Introduce `n`. Use `set S := Algebra.adjoin ℂ (Set.range fun u : ℂ => ∏ k : Fin n, (MvPolynomial.C u + MvPolynomial.X k : MvPolynomial (Fin n) ℂ)) with hS`. Establish `hv : ∀ u : ℂ, ∏ k : Fin n, (C u + X k : MvPolynomial (Fin n) ℂ) = ∑ j ∈ Finset.range (n + 1), u ^ (n - j) • esymm (Fin n) ℂ j`. Introduce `u`. Establish `h` using `congrArg (Polynomial.eval (C u : MvPolynomial (Fin n) ℂ)) (MvPolynomial.prod_C_add_X_eq_sum_esymm ℂ (Fin n))`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [Polynomial.eval_prod, Polynomial.eval_finset_sum, Polynomial.eval_add, Polynomial.eval_X, Polynomial.eval_C, Polynomial.eval_mul, Polynomial.eval_pow, Fintype.card_fin] at h`. Rewrite using `[h]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[smul_eq_C_mul, map_pow, mul_comm]`. Establish `he : ∀ j, j < n + 1 → esymm (Fin n) ℂ j ∈ S`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj`. Assume the negation of the conclusion as `hc`. Take `⟨φ, hφ, h0⟩` from `Submodule.exists_dual_map_eq_bot_of_notMem (p := Subalgebra.toSubmodule S) hc inferInstance`. Establish `h1 : ∀ x ∈ S, φ x = 0` using `fun x hx => (Submodule.eq_bot_iff _).1 h0 _ ⟨x, hx, rfl⟩`. Establish `hp : (∑ i ∈ Finset.range (n + 1), Polynomial.monomial (n - i) (φ (esymm (Fin n) ℂ i))) = 0`.
+Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Polynomial.funext` to reduce the goal to its premises. Introduce `u`. Establish `h2` using `h1 _ (Algebra.subset_adjoin ⟨u, rfl⟩)`. Simplify using `only [hv, map_sum, map_smul, smul_eq_mul] at h2`. Simplify using `only [Polynomial.eval_finset_sum, Polynomial.eval_monomial, Polynomial.eval_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Conclude with `Finset.sum_congr rfl fun i _ => mul_comm _ _`. Establish `h3` using `congrArg (fun p => Polynomial.coeff p (n - j)) hp`. Simplify using `only [Polynomial.finset_sum_coeff, Polynomial.coeff_monomial, Polynomial.coeff_zero] at h3`. Rewrite `h3` using `[Finset.sum_eq_single j]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `hφ (by simpa using h3)`. Introduce `b hb hbj`. Rewrite `hb` using `[Finset.mem_range]`. Rewrite using `[if_neg (by omega)]`. Introduce `h`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `absurd (Finset.mem_range.2 hj) h`. Introduce `p hp`. Take `⟨q, hq⟩` from `(esymmAlgHom_fin_bijective ℂ n).2 ⟨p, hp⟩`. Establish `hq' : p = aeval (fun i : Fin n => esymm (Fin n) ℂ (i + 1)) q`. Rewrite using `[← esymmAlgHom_apply, hq]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hq']`. Establish `: Algebra.adjoin ℂ (Set.range fun i : Fin n => esymm (Fin n) ℂ (i + 1)) ≤ S` using `Algebra.adjoin_le (by rintro _ ⟨i, rfl⟩; exact he _ (by have := i.2; omega))`. Apply `this` to reduce the goal to its premises. Rewrite using `[Algebra.adjoin_range_eq_range_aeval]`. Conclude with `⟨q, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.symmetricSubalgebra_le_adjoin_range_prod_C_add_X_complex :
     ∀ n : ℕ, MvPolynomial.symmetricSubalgebra (Fin n) ℂ ≤ Algebra.adjoin ℂ (Set.range fun u : ℂ => ∏ k : Fin n, (MvPolynomial.C u + MvPolynomial.X k : MvPolynomial (Fin n) ℂ)) := by

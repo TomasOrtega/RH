@@ -15,7 +15,7 @@ section Field
 variable {K : Type} [Field K]
 
 /- English proof (translation)
-The claim follows from `hasSubst_of_constantCoeff_zero h`.
+A detailed English derivation is pending.
 -/
 theorem hs0 {α β : Type} [Finite α] {u : α → MvPowerSeries β K} (h : ∀ a, constantCoeff (u a) = 0) : HasSubst u :=
   hasSubst_of_constantCoeff_zero h

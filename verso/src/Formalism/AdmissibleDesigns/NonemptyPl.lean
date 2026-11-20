@@ -14,7 +14,7 @@ open NumberField IsDedekindDomain Formalism.ConjugateSelfDual ReciprocityTheory.
 variable {D : D7} (i : D.nd.Loc) (dc : TruncatedSeriesCountingIdentities.Decl D i)
 
 /- English proof (translation)
-Take `⟨M, hM⟩` from `Ideal.exists_maximal (𝓞 D.host.E)`. Conclude with `⟨⟨M, hM.isPrime, Ring.ne_bot_of_isMaximal_of_not_isField hM (NumberField.RingOfIntegers.not_isField _)⟩⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem nonempty_pl : Nonempty (HeightOneSpectrum (𝓞 D.host.E)) := by
   obtain ⟨M, hM⟩ := Ideal.exists_maximal (𝓞 D.host.E)
@@ -31,7 +31,7 @@ def plOf (n : ℕ) : HeightOneSpectrum (𝓞 D.host.E) :=
   else Classical.choice nonempty_pl
 
 /- English proof (translation)
-Unfold `plOf idx`. Rewrite using `[dif_pos h, dif_pos ((plSet i dc).equivFin ⟨v, h⟩).isLt]`. Simplify using the standard rewrite rules.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem plOf_idx {v : HeightOneSpectrum (𝓞 D.host.E)} (h : v ∈ plSet i dc) : plOf i dc (idx i dc v) = v := by
   unfold plOf idx
@@ -39,7 +39,7 @@ theorem plOf_idx {v : HeightOneSpectrum (𝓞 D.host.E)} (h : v ∈ plSet i dc) 
   simp
 
 /- English proof (translation)
-Combine the equalities or inequalities in the displayed calculation.
+Chain the equalities or inequalities of the calculation.
 -/
 theorem idx_inj {v w : HeightOneSpectrum (𝓞 D.host.E)} (hv : v ∈ plSet i dc) (hw : w ∈ plSet i dc)
     (h : idx i dc v = idx i dc w) : v = w := by
@@ -56,9 +56,9 @@ abbrev Col : Type := {u : HeightOneSpectrum (𝓞 D.host.E) // u ∈ dc.col}
 def colIdx (l : Col i dc) : ℕ := idx i dc l.1
 
 /- English proof (translation)
-Introduce `l₁ l₂ h`. Apply `Subtype.ext` to reduce the goal to its premises. Establish `m₁ : l₁.1 ∈ plSet i dc`. Unfold `plSet`. Conclude with `Finset.mem_union_left _ (Finset.mem_union_right _ l₁.2)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Establish `m₂ : l₂.1 ∈ plSet i dc`. Unfold `plSet`. Conclude with `Finset.mem_union_left _ (Finset.mem_union_right _ l₂.2)`. Conclude with `idx_inj i dc m₁ m₂ h`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem colIdx_inj : Function.Injective (colIdx i dc) := by
   intro l₁ l₂ h

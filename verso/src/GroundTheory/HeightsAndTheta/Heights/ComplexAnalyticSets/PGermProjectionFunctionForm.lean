@@ -14,14 +14,14 @@ namespace GermProjectionFunctionForm
 variable {σ : Type} [Fintype σ]
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (germPull_coe A (A.analyticAt w) rfl _ u.1 rfl)`.
+A detailed English derivation is pending.
 -/
 theorem germPull_toGerm {d : ℕ} (A : (σ → ℂ) →L[ℂ] (Fin d → ℂ)) (w : σ → ℂ) (u : anFun (A w)) :
     germPull A (A.analyticAt w) rfl (toGerm (A w) u) = toGerm w (compA A w u) :=
   Subtype.ext (germPull_coe A (A.analyticAt w) rfl _ u.1 rfl)
 
 /- English proof (translation)
-The claim follows from `Subtype.ext rfl`.
+A detailed English derivation is pending.
 -/
 theorem coordGerm_eq_toGerm (w : σ → ℂ) (i : σ) :
     coordGerm w i = toGerm w (mkA (fun z : σ → ℂ => z i)
@@ -29,7 +29,7 @@ theorem coordGerm_eq_toGerm (w : σ → ℂ) (i : σ) :
   Subtype.ext rfl
 
 /- English proof (translation)
-Take `⟨h, hh, e⟩` from `exists_of_mem_holGermIdeal p hu`. Conclude with `⟨h, hh, (Germ.coe_eq.1 e).mono fun z hz => by rw [← hf]; exact hz⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isGermCombination_of_mem {w : σ → ℂ} {k : ℕ} (p : Fin k → (σ → ℂ) → ℂ) (u : anFun w)
     (hu : toGerm w u ∈ holGermIdeal w p) (f : (σ → ℂ) → ℂ) (hf : ∀ z, u.1 z = f z) :
@@ -42,19 +42,19 @@ end GermProjectionFunctionForm
 open GermProjectionFunctionForm in
 
 /- English proof (translation)
-Introduce `σ _ w k p d A hp ⟨hinj, hgen, hint⟩`. Set `Z : σ → anFun w` to `fun i => mkA (fun z : σ → ℂ => z i) ((ContinuousLinearMap.proj (R := ℂ) (φ := fun _ : σ => ℂ) i).analyticAt w)`. Establish `hZ : ∀ i, coordGerm w i = toGerm w (Z i)` using `coordGerm_eq_toGerm w`. Establish `hpull : ∀ φ : holGerms (A w), germPull A (A.analyticAt w) rfl φ = toGerm w (compA A w (rep φ))`. Introduce `φ`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `conv_lhs => rw [← toGerm_rep φ]`. Conclude with `germPull_toGerm A w (rep φ)`. Use `⟨?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `h hh hcomb`. Establish `hmem` using `(toGerm_mem_iff hp (compA A w (mkA h hh))).2 hcomb`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hmem` using `[← germPull_toGerm]`. Establish `h0` using `congrArg Subtype.val (hinj _ hmem)`. Conclude with `Germ.coe_eq.1 (h0.trans (Germ.coe_zero (l := 𝓝 (A w)) (M := ℂ)).symm)`. Introduce `i`. Take `⟨q, hq, hqP⟩` from `hint i`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `⟨q.natDegree, fun j => (rep (q.coeff j)).1, fun j => (rep (q.coeff j)).2, ?_⟩` and prove the remaining obligations. Establish `key : q.eval₂ (germPull A (A.analyticAt w) rfl) (coordGerm w i) = toGerm w (Z i ^ q.natDegree + ∑ j : Fin q.natDegree, compA A w (rep (q.coeff j)) * Z i ^ (j : ℕ))` using `by conv_lhs => rw [hq.as_sum]`. Simplify using `only [Polynomial.eval₂_add, Polynomial.eval₂_pow, Polynomial.eval₂_X, Polynomial.eval₂_finsetSum, Polynomial.eval₂_mul, Polynomial.eval₂_C, map_add, map_pow, map_sum, map_mul, hpull, hZ]`. Rewrite using `[Fin.sum_univ_eq_sum_range (fun j => toGerm w (compA A w (rep (q.coeff j))) * toGerm w (Z i) ^ j)]`. Rewrite `hqP` using `[key]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `isGermCombination_of_mem p _ hqP _ fun z => ?_` and prove the remaining obligations. Simplify using `[Z, mkA, compA, Finset.sum_apply]`. Introduce `g hg`. Take `⟨F, hF⟩` from `hgen (toGerm w (mkA g hg))`. Set `e` to `Finsupp.equivFunOnFinite (α := σ) (M := ℕ)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨F.support.image e, fun m => (rep (F.coeff (e.symm m))).1, fun m _ => (rep (F.coeff (e.symm m))).2, ?_⟩` and prove the remaining obligations. Establish `key : toGerm w (mkA g hg) - MvPolynomial.eval₂ (germPull A (A.analyticAt w) rfl) (coordGerm w) F = toGerm w (mkA g hg - ∑ m ∈ F.support, compA A w (rep (F.coeff m)) * ∏ i, Z i ^ m i)`. Rewrite using `[MvPolynomial.eval₂_eq']`. Simplify using `only [map_sub, map_sum, map_mul, map_prod, map_pow, hpull, hZ]`. Rewrite `hF` using `[key]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Use `isGermCombination_of_mem p _ hF _ fun z => ?_` and prove the remaining obligations. Rewrite using `[Finset.sum_image (fun x _ y _ h => e.injective h)]`. Simplify using `[Z, mkA, compA, Finset.sum_apply, Finset.prod_apply, e]`.
+A detailed English derivation is pending.
 -/
 theorem GermProjectionFunctionForm.proof : GermProjectionFunctionForm.Statement := by
   classical

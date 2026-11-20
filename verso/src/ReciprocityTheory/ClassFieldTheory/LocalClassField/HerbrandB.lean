@@ -15,7 +15,7 @@ def cokerMap (f : A →+ B) (fD : ∀ a, f (DA a) = DB (f a)) : B ⧸ f.range �
     exact ⟨DA a, fD a⟩)
 
 /- English proof (translation)
-The claim follows from `hf exact := fun b => by rw [QuotientAddGroup.mk'_apply, QuotientAddGroup.eq_zero_iff]; rfl surj := QuotientAddGroup.mk'_surjective _ fD := fD fN := fN gD := fun _ => rfl gN := fun _ => rfl DN := DN ND := ND`.
+A detailed English derivation is pending.
 -/
 theorem ses_coker (hf : Injective f)
     (fD : ∀ a, f (DA a) = DB (f a)) (fN : ∀ a, f (NA a) = NB (f a))
@@ -33,7 +33,7 @@ theorem ses_coker (hf : Injective f)
   ND := ND
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun hA => isFin_mid (ses_coker hf fD fN DN ND) hA (isFin_of_finite _ _), fun hB => isFin_left (ses_coker hf fD fN DN ND) hB (isFin_of_finite _ _)⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFin_iff_of_finiteIndex (hf : Injective f) (hfi : f.range.FiniteIndex)
     (fD : ∀ a, f (DA a) = DB (f a)) (fN : ∀ a, f (NA a) = NB (f a))
@@ -42,7 +42,7 @@ theorem isFin_iff_of_finiteIndex (hf : Injective f) (hfi : f.range.FiniteIndex)
     fun hB => isFin_left (ses_coker hf fD fN DN ND) hB (isFin_of_finite _ _)⟩
 
 /- English proof (translation)
-Establish `h` using `ses_coker hf fD fN DN ND`. Rewrite using `[q_mul h hA (isFin_of_finite _ _), q_of_finite _ _ h.DN_C h.swap.DN_C, mul_one]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem q_eq_of_finiteIndex (hf : Injective f) (hfi : f.range.FiniteIndex)
     (fD : ∀ a, f (DA a) = DB (f a)) (fN : ∀ a, f (NA a) = NB (f a))
@@ -67,28 +67,28 @@ Both sides reduce to the same expression.
 @[simp] theorem dHom_apply (ρ : Representation k G M) (g : G) (x : M) : dHom ρ g x = ρ g x - x := rfl
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ρ.norm x = _`. Simplify using `[Representation.norm]`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules.
 -/
 theorem nHom_apply (ρ : Representation k G M) (x : M) : nHom ρ x = ∑ c : G, ρ c x := by
   change ρ.norm x = _
   simp [Representation.norm]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ρ g (ρ.norm x) - ρ.norm x = 0`. Rewrite using `[Representation.self_norm_apply, sub_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem dHom_nHom (ρ : Representation k G M) (g : G) (x : M) : dHom ρ g (nHom ρ x) = 0 := by
   change ρ g (ρ.norm x) - ρ.norm x = 0
   rw [Representation.self_norm_apply, sub_self]
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `ρ.norm (ρ g x - x) = 0`. Rewrite using `[map_sub, Representation.norm_self_apply, sub_self]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem nHom_dHom (ρ : Representation k G M) (g : G) (x : M) : nHom ρ (dHom ρ g x) = 0 := by
   change ρ.norm (ρ g x - x) = 0
   rw [map_sub, Representation.norm_self_apply, sub_self]
 
 /- English proof (translation)
-Rewrite using `[AddMonoidHom.mem_ker, dHom_apply, sub_eq_zero, ← Representation.mem_invariants_iff_of_forall_mem_zpowers ρ g hg x]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem mem_ker_dHom_iff (ρ : Representation k G M) (g : G) (hg : ∀ x, x ∈ Subgroup.zpowers g) (x : M) :
     x ∈ (dHom ρ g).ker ↔ ∀ c : G, ρ c x = x := by
@@ -114,14 +114,14 @@ variable {A B C : Type*} [AddCommGroup A] [Module k A] [AddCommGroup B] [Module 
   [AddCommGroup C] [Module k C]
 
 /- English proof (translation)
-Rewrite using `[dHom_apply, dHom_apply, map_sub, hiG]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem map_dHom (ρA : Representation k G A) (ρB : Representation k G B) (g : G) (i : A →+ B)
     (hiG : ∀ c a, i (ρA c a) = ρB c (i a)) (a : A) : i (dHom ρA g a) = dHom ρB g (i a) := by
   rw [dHom_apply, dHom_apply, map_sub, hiG]
 
 /- English proof (translation)
-Rewrite using `[nHom_apply, nHom_apply, map_sum]`. Conclude with `Finset.sum_congr rfl fun c _ => hiG c a`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_nHom (ρA : Representation k G A) (ρB : Representation k G B) (i : A →+ B)
     (hiG : ∀ c a, i (ρA c a) = ρB c (i a)) (a : A) : i (nHom ρA a) = nHom ρB (i a) := by
@@ -129,7 +129,7 @@ theorem map_nHom (ρA : Representation k G A) (ρB : Representation k G B) (i : 
   exact Finset.sum_congr rfl fun c _ => hiG c a
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨hi, hip, hp, map_dHom ρA ρB g i hiG, map_nHom ρA ρB i hiG, map_dHom ρB ρC g p hpG, map_nHom ρB ρC p hpG, dHom_nHom ρB g, nHom_dHom ρB g⟩`.
+Supply the required witnesses or components.
 -/
 theorem ses_of_rep (ρA : Representation k G A) (ρB : Representation k G B) (ρC : Representation k G C)
     (g : G) (i : A →+ B) (p : B →+ C) (hi : Injective i) (hip : Function.Exact i p) (hp : Surjective p)
@@ -139,7 +139,7 @@ theorem ses_of_rep (ρA : Representation k G A) (ρB : Representation k G B) (ρ
     map_nHom ρB ρC p hpG, dHom_nHom ρB g, nHom_dHom ρB g⟩
 
 /- English proof (translation)
-The claim follows from `have hs := ses_of_rep ρA ρB ρC g i p hi hip hp hiG hpG ⟨isFin_mid hs hA hC, q_mul hs hA hC⟩`.
+A detailed English derivation is pending.
 -/
 theorem h_mul (ρA : Representation k G A) (ρB : Representation k G B) (ρC : Representation k G C)
     (g : G) (i : A →+ B) (p : B →+ C) (hi : Injective i) (hip : Function.Exact i p) (hp : Surjective p)
@@ -149,7 +149,7 @@ theorem h_mul (ρA : Representation k G A) (ρB : Representation k G B) (ρC : R
   ⟨isFin_mid hs hA hC, q_mul hs hA hC⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨isFin_iff_of_finiteIndex hi hfi (map_dHom ρA ρB g i hiG) (map_nHom ρA ρB i hiG) (dHom_nHom ρB g) (nHom_dHom ρB g), q_eq_of_finiteIndex hi hfi (map_dHom ρA ρB g i hiG) (map_nHom ρA ρB i hiG) (dHom_nHom ρB g) (nHom_dHom ρB g)⟩`.
+Supply the required witnesses or components.
 -/
 theorem h_eq_of_finiteIndex (ρA : Representation k G A) (ρB : Representation k G B) (g : G) (i : A →+ B)
     (hi : Injective i) (hfi : i.range.FiniteIndex) (hiG : ∀ c a, i (ρA c a) = ρB c (i a)) :
@@ -160,7 +160,7 @@ theorem h_eq_of_finiteIndex (ρA : Representation k G A) (ρB : Representation k
       (nHom_dHom ρB g)⟩
 
 /- English proof (translation)
-Use `⟨⟨inferInstance, inferInstance⟩, ?_⟩` and prove the remaining obligations. Rewrite using `[h_eq, Nat.card_of_subsingleton (0 : TateZerothCohomology ρ g), Nat.card_of_subsingleton (0 : H1 ρ g)]`. Evaluate the numerical expressions.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem h_of_subsingleton (ρ : Representation k G M) (g : G) [Subsingleton (TateZerothCohomology ρ g)]
     [Subsingleton (H1 ρ g)] : HFin ρ g ∧ h ρ g = 1 := by
@@ -169,7 +169,7 @@ theorem h_of_subsingleton (ρ : Representation k G M) (g : G) [Subsingleton (Tat
   norm_num
 
 /- English proof (translation)
-Rewrite using `[h_eq, Nat.card_of_subsingleton (0 : H1 ρ g)]`. Evaluate the numerical expressions.
+Rewrite the conclusion using the stated equalities. Evaluate the numerical expressions.
 -/
 theorem h_eq_card_H0hat (ρ : Representation k G M) (g : G) [Subsingleton (H1 ρ g)] :
     h ρ g = Nat.card (TateZerothCohomology ρ g) := by
@@ -177,19 +177,19 @@ theorem h_eq_card_H0hat (ρ : Representation k G M) (g : G) [Subsingleton (H1 ρ
   norm_num
 
 /- English proof (translation)
-Establish `hpos : 0 < Nat.card G` using `Nat.card_pos`. Establish `hD : (dHom ρ g).ker = ⊤`. Use extensionality with `x`. Simplify using `[AddMonoidHom.mem_ker, hρ]`. Establish `hNx : ∀ x, nHom ρ x = (Nat.card G : ℤ) * x` using `fun x => by`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Rewrite using `[nHom_apply]`. Simplify using `[hρ]`. Establish `hN : (nHom ρ).range = AddSubgroup.zmultiples (Nat.card G : ℤ)`. Use extensionality with `x`. Rewrite using `[Int.mem_zmultiples_iff]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, hNx y⟩`. Introduce and unpack `⟨y, rfl⟩`. Conclude with `⟨y, hNx y⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Establish `h0 : Nat.card (TateZerothCohomology ρ g) = Nat.card G`. Express the relevant statement in the definitionally equal form `((nHom ρ).range.addSubgroupOf (dHom ρ g).ker).index = _`. Express the relevant statement in the definitionally equal form `(nHom ρ).range.relIndex (dHom ρ g).ker = _`. Rewrite using `[hD, AddSubgroup.relIndex_top_right, hN, Int.index_zmultiples]`. Simplify using the standard rewrite rules.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `h1 : Subsingleton (H1 ρ g)`. Establish `: Subsingleton (nHom ρ).ker` using `⟨fun x y => by`. Establish `hx : nHom ρ x = 0` using `x.2`. Establish `hy : nHom ρ y = 0` using `y.2`. Rewrite `hx`, `hy` using `[hNx]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `Subtype.ext` to reduce the goal to its premises. Establish `hne : (Nat.card G : ℤ) ≠ 0` using `by exact_mod_cast hpos.ne'`. Rewrite using `[(mul_eq_zero.1 hx).resolve_left hne, (mul_eq_zero.1 hy).resolve_left hne]⟩`. Conclude with `(QuotientAddGroup.mk_surjective).subsingleton`. Use `⟨⟨Nat.finite_of_card_ne_zero (by rw [h0]; exact hpos.ne'), inferInstance⟩, h0, h1, ?_⟩` and prove the remaining obligations.
+Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[h_eq_card_H0hat, h0]`.
+A detailed English derivation is pending.
 -/
 theorem h_int (ρ : Representation ℤ G ℤ) (hρ : ∀ c x, ρ c x = x) (g : G) :
     HFin ρ g ∧ Nat.card (TateZerothCohomology ρ g) = Nat.card G ∧ Subsingleton (H1 ρ g) ∧ h ρ g = Nat.card G := by

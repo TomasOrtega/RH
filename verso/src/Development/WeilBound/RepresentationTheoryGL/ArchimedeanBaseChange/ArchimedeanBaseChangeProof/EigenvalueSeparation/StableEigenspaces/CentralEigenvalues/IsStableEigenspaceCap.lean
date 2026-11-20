@@ -13,7 +13,7 @@ namespace PositivityTheory.Rg.BcB.E.E3
 namespace centeig
 
 /- English proof (translation)
-Introduce `o φ hφ`. Rewrite `hφ`, the goal using `[Module.End.mem_eigenspace_iff]`. Rewrite using `[← Module.End.mul_apply, (GlobalTheory.SpehInfChar.cap_commute_act τ u o).eq, Module.End.mul_apply, hφ, map_smul]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem isStable_eigenspace_cap {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ} (τ : E →+* ℂ)
     (u c : ℂ) : IsStable (Module.End.eigenspace (cap (a := N) τ u) c) := by
@@ -22,7 +22,7 @@ theorem isStable_eigenspace_cap {E : Type} [Field E] [NumberField E] [IsTotallyC
   rw [← Module.End.mul_apply, (GlobalTheory.SpehInfChar.cap_commute_act τ u o).eq, Module.End.mul_apply, hφ, map_smul]
 
 /- English proof (translation)
-Introduce `o φ hφ`. Conclude with `PositivityTheory.Rg.Rs.PrAut.isAutForm_act PositivityTheory.Rg.HF.GL.automorphicFormsFiniteGL o hφ`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem isStable_autSub {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {N : ℕ} :
     IsStable (GlobalTheory.DiscClosure.autSub E N) := by
@@ -32,9 +32,7 @@ theorem isStable_autSub {E : Type} [Field E] [NumberField E] [IsTotallyComplex E
 end centeig
 
 /- English proof (translation)
-Introduce `E _ _ _ N S hS`. Use `⟨fun φ hφ => ?_, fun τ m hm => ⟨hm.1, fun u φ hφ => ?_⟩⟩` and prove the remaining obligations. Establish `hle : hull S ≤ GlobalTheory.DiscClosure.autSub E N` using `sInf_le ⟨fun ψ h => hS ψ h, centeig.isStable_autSub⟩`. Conclude with `hle hφ`. Establish `hle : hull S ≤ Module.End.eigenspace (cap (a` using `N) τ u) ((m.map (u + ·)).prod) := sInf_le ⟨fun ψ h => Module.End.mem_eigenspace_iff.2 (hm.2 u ψ (Submodule.subset_span h)), centeig.isStable_eigenspace_cap τ u _⟩`.
-
-Conclude with `Module.End.mem_eigenspace_iff.1 (hle hφ)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hullaut_holds : HullAut := by
   intro E _ _ _ N S hS

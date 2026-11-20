@@ -12,9 +12,9 @@ open GlobalTheory.PlaceInt
 namespace GlobalTheory.PlaceInt
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c _ hst nab hnab S _ _ _ y C k n F f hf w P hP`. Take `⟨C₀, hex, hpin⟩` from `hnab.2 S y`. Use `choose f₀ hf₀ using fun b => hex k (F b)`. Establish `e₀ : ∀ m, ∏ b, nab y k (F b) (colOf m b) = ∏ b, C₀.B.nabVal S C₀.h H.w0 k (f₀ b) C₀.uvec (MvPolynomial.monomial (colOf m b) 1)` using `fun m => Finset.prod_congr rfl fun b _ => hpin k (F b) (f₀ b) (hf₀ b) (colOf m b)`. Take `⟨N, hN, hA, hs⟩` from `GlobalTheory.exists_natCast_smul_mem_harmA E H Dw l c w n P hP`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h` using `GlobalTheory.T.harmonicValue_germs_independent_of_chart E H Dw l Xo c hst S y C₀ C k n F f₀ f hf₀ hf w _ hA`. Establish `hu : IsUnit (algebraMap c.F S (N : c.F))` using `(IsUnit.mk0 (N : c.F) (Nat.cast_ne_zero.2 hN.ne')).map _`. Simplify using `only [chartVal, hs, MvPolynomial.coeff_smul, smul_eq_mul, map_mul, _root_.mul_assoc, ← Finset.mul_sum] at h`. Simplify using `only [hv, chartVal, e₀]`. Conclude with `hu.mul_left_cancel h`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem hv_eq_chartVal :
     ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l) [StarRing (𝓞 E)], (∀ a : 𝓞 E, star a = H.bar a) → ∀ nab : NabV Xo c, IsNab Xo c nab → ∀ (S : Type) [Field S] [Algebra c.F S] [Algebra ℚ S] (y : FrPt Xo c S) (C : ChartAt Xo c y) (k n : ℕ) (F : Fin n → SecN Xo y.x k) (f : Fin n → PS S 1 C.d), (∀ b, IsGerm y C.d C.x C.B.A.act C.e C.wP k (F b) (f b)) → ∀ (w : (E →+* ℂ) × ℕ → ℕ) (P : MvPolynomial (LtN Dw n) c.F), P ∈ HH c w n → hv Xo c nab y k F P = chartVal C k f P := by

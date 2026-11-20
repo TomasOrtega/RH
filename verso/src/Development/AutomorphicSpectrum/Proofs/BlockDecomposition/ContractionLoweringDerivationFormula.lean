@@ -17,7 +17,7 @@ def form (l l' : Module.Dual R V) : Module.Dual R (⋀[R]^2 V) :=
   exteriorPower.pairingDual R V 2 (exteriorPower.ιMulti R 2 ![l, l'])
 
 /- English proof (translation)
-Rewrite using `[GlobalTheory.CompanionTheory.HopfC.Wedge.form, exteriorPower.pairingDual_ιMulti_ιMulti, Matrix.det_fin_two]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem form_ιMulti (l l' : Module.Dual R V) (v : Fin 2 → V) :
     form l l' (exteriorPower.ιMulti R 2 v) = l (v 0) * l' (v 1) - l' (v 0) * l (v 1) := by
@@ -25,9 +25,9 @@ theorem form_ιMulti (l l' : Module.Dual R V) (v : Fin 2 → V) :
   simp
 
 /- English proof (translation)
-Use `(b.exteriorPower 2).forall_coord_eq_zero_iff.mp fun s => ?_` and prove the remaining obligations. Rewrite using `[Module.Basis.coord_apply, exteriorPower.basis_repr_apply]`. Establish `hv : (b.coord ∘ ⇑(Set.powersetCard.ofFinEmbEquiv.symm s)) = ![b.coord (Set.powersetCard.ofFinEmbEquiv.symm s 0), b.coord (Set.powersetCard.ofFinEmbEquiv.symm s 1)]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> first | rfl | simp`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `key : exteriorPower.ιMultiDual R 2 b s = GlobalTheory.CompanionTheory.HopfC.Wedge.form (b.coord (Set.powersetCard.ofFinEmbEquiv.symm s 0)) (b.coord (Set.powersetCard.ofFinEmbEquiv.symm s 1))` using `by show exteriorPower.pairingDual R V 2 (exteriorPower.ιMulti R 2 (b.coord ∘ ⇑(Set.powersetCard.ofFinEmbEquiv.symm s))) = _`. Rewrite using `[hv]`. Both sides reduce to the same expression. Rewrite using `[key]`. Conclude with `h _ _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_form {g : ℕ} (b : Module.Basis (Fin g) R V) (t : ⋀[R]^2 V)
     (h : ∀ l l', form l l' t = 0) : t = 0 := by
@@ -80,7 +80,7 @@ variable {L : ∀ n, H 1 →ₗ[R] H n →ₗ[R] H (n + 1)}
   {D : ∀ n, Module.Dual R (H 1) → H (n + 1) →ₗ[R] H n} {τ : ∀ n, H n →ₗ[R] H n}
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `nil => exact hc`. Consider the case `cons x xs ih => show τ (xs.length + 1 + 2) (L (xs.length + 1 + 1) x (GlobalTheory.CompanionTheory.HopfC.Wedge.iter L c xs)) = L (xs.length + 1 + 1) x (GlobalTheory.CompanionTheory.HopfC.Wedge.iter L c xs)`. Conclude with `(hτ (xs.length + 1) x _).trans (congrArg (L (xs.length + 1 + 1) x) ih)`.
+Proceed by induction. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem tau_iter (hτ : ∀ n x z, τ (n + 2) (L (n + 1) x z) = L (n + 1) x (τ (n + 1) z))
     {c : H 2} (hc : τ 2 c = c) (s : List (H 1)) : τ (s.length + 2) (iter L c s) = iter L c s := by
@@ -92,9 +92,9 @@ theorem tau_iter (hτ : ∀ n x z, τ (n + 2) (L (n + 1) x z) = L (n + 1) x (τ 
     exact (hτ (xs.length + 1) x _).trans (congrArg (L (xs.length + 1 + 1) x) ih)
 
 /- English proof (translation)
-Proceed by induction on `s with`. Consider the case `nil => exact hc`. Consider the case `cons x xs ih`. Establish `hx : l x = 0` using `hs x (by simp)`. Establish `hxs : ∀ y ∈ xs, l y = 0` using `fun y hy => hs y (by simp [hy])`.
+Proceed by induction. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show D (xs.length + 1 + 1) l (L (xs.length + 1 + 1) x (GlobalTheory.CompanionTheory.HopfC.Wedge.iter L c xs)) = 0`. Rewrite using `[hD]`. Simplify using `[hx, ih hxs]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem D_iter (hD : ∀ n l x z, D (n + 1) l (L (n + 1) x z) = l x • τ (n + 1) z - L n x (D n l z))
     {l : Module.Dual R (H 1)} {c : H 2} (hc : D 1 l c = 0) (s : List (H 1))
@@ -109,7 +109,7 @@ theorem D_iter (hD : ∀ n l x z, D (n + 1) l (L (n + 1) x z) = l x • τ (n + 
     simp [hx, ih hxs]
 
 /- English proof (translation)
-Establish `h1 : D (s.length + 2) l (GlobalTheory.CompanionTheory.HopfC.Wedge.iter L c (x :: s)) = GlobalTheory.CompanionTheory.HopfC.Wedge.iter L c s - L (s.length + 1) x (D (s.length + 1) l (GlobalTheory.CompanionTheory.HopfC.Wedge.iter L c s))` using `by show D (s.length + 1 + 1) l (L (s.length + 1 + 1) x (GlobalTheory.CompanionTheory.HopfC.Wedge.iter L c s)) = _`. Rewrite using `[hD, hx, one_smul]`. Use `congr 1`. Conclude with `GlobalTheory.CompanionTheory.HopfC.Wedge.tau_iter hτ hc s`. Rewrite using `[h1, sub_add_cancel]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem iter_eq (hD : ∀ n l x z, D (n + 1) l (L (n + 1) x z) = l x • τ (n + 1) z - L n x (D n l z))
     (hτ : ∀ n x z, τ (n + 2) (L (n + 1) x z) = L (n + 1) x (τ (n + 1) z))
@@ -129,7 +129,7 @@ def M {J : Type} (L : ∀ n, H 1 →ₗ[R] H n →ₗ[R] H (n + 1)) (b : J → H
   Submodule.span R {w | ∃ i ∈ T, ∃ z : H n, w = L n (b i) z}
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.HopfC.Wedge.M`. Apply `Submodule.span_mono` to reduce the goal to its premises. Introduce and unpack `w ⟨i, hi, z, rfl⟩`. Conclude with `⟨i, h hi, z, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem M_mono {J : Type} (b : J → H 1) {T T' : Set J} (h : T ⊆ T') (n : ℕ) :
     M L b T n ≤ M L b T' n := by
@@ -139,7 +139,7 @@ theorem M_mono {J : Type} (b : J → H 1) {T T' : Set J} (h : T ⊆ T') (n : ℕ
   exact ⟨i, h hi, z, rfl⟩
 
 /- English proof (translation)
-Unfold `GlobalTheory.CompanionTheory.HopfC.Wedge.M`. Conclude with `Submodule.subset_span ⟨i, hi, z, rfl⟩`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem L_mem {J : Type} (b : J → H 1) {T : Set J} {i : J} (hi : i ∈ T) (n : ℕ) (z : H n) :
     L n (b i) z ∈ M L b T n := by
@@ -147,9 +147,9 @@ theorem L_mem {J : Type} (b : J → H 1) {T : Set J} {i : J} (hi : i ∈ T) (n :
   exact Submodule.subset_span ⟨i, hi, z, rfl⟩
 
 /- English proof (translation)
-Establish `hle : GlobalTheory.CompanionTheory.HopfC.Wedge.M L b T (n + 1) ≤ (GlobalTheory.CompanionTheory.HopfC.Wedge.M L b T n).comap (D (n + 1) l)`. Unfold `GlobalTheory.CompanionTheory.HopfC.Wedge.M`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `w ⟨i, hi, z, rfl⟩`. Rewrite using `[SetLike.mem_coe, Submodule.mem_comap, hD, hl i hi, zero_smul, zero_sub]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Conclude with `Submodule.neg_mem _ (Submodule.subset_span ⟨i, hi, D n l z, rfl⟩)`. Conclude with `hle hw`.
+A detailed English derivation is pending.
 -/
 theorem D_mem (hD : ∀ n l x z, D (n + 1) l (L (n + 1) x z) = l x • τ (n + 1) z - L n x (D n l z))
     {J : Type} (b : J → H 1) {T : Set J} {l : Module.Dual R (H 1)} (hl : ∀ j ∈ T, l (b j) = 0)
@@ -178,20 +178,18 @@ theorem coord_self (b : Module.Basis (Fin g) R (H 1)) (i : Fin g) : b.coord i (b
   simp
 
 /- English proof (translation)
-Simplify using `[Module.Basis.coord_apply, Finsupp.single_apply, h, h.symm]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coord_ne (b : Module.Basis (Fin g) R (H 1)) {i j : Fin g} (h : i ≠ j) :
     b.coord i (b j) = 0 := by
   simp [Module.Basis.coord_apply, Finsupp.single_apply, h, h.symm]
 
 /- English proof (translation)
-Establish `key : ∀ s : List (Fin g), s.Nodup → GlobalTheory.CompanionTheory.HopfC.Wedge.iter L c (s.map b) = 0 → c = 0`. Introduce `s`. Proceed by induction on `s with`. Consider the case `nil => exact fun _ h => h`. Consider the case `cons i s ih`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Introduce `hs h`. Rewrite `hs` using `[List.nodup_cons]`. Establish `hx : b.coord i (b i) = 1` using `GlobalTheory.CompanionTheory.HopfC.Wedge.coord_self b i`. Establish `hzero : ∀ y ∈ s.map b, b.coord i y = 0`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨j, hj, rfl⟩` from `List.mem_map.mp hy`. Conclude with `GlobalTheory.CompanionTheory.HopfC.Wedge.coord_ne b fun hij => hs.1 (by rw [hij]; exact hj)`. Establish `h' : GlobalTheory.CompanionTheory.HopfC.Wedge.iter L c (b i :: s.map b) = 0` using `h`. Apply `ih hs.2` to reduce the goal to its premises. Rewrite using `[GlobalTheory.CompanionTheory.HopfC.Wedge.iter_eq hD hτ hc (s.map b) hx, h', map_zero, GlobalTheory.CompanionTheory.HopfC.Wedge.D_iter hD (hc0 (b.coord i)) (s.map b) hzero, map_zero, add_zero]`.
-
-Conclude with `key s hs h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_zero_of_iter
     (hD : ∀ n l x z, D (n + 1) l (L (n + 1) x z) = l x • τ (n + 1) z - L n x (D n l z))
@@ -218,15 +216,13 @@ theorem eq_zero_of_iter
   exact key s hs h
 
 /- English proof (translation)
-Establish `key : ∀ s : List (Fin g), s.Nodup → ∀ T : Set (Fin g), (∀ i ∈ s, i ∉ T) → GlobalTheory.CompanionTheory.HopfC.Wedge.iter L y (s.map b) ∈ GlobalTheory.CompanionTheory.HopfC.Wedge.M L b T ((s.map b).length + 1) → y ∈ GlobalTheory.CompanionTheory.HopfC.Wedge.M L b Set.univ 1`. Introduce `s`. Proceed by induction on `s with`. Consider the case `nil`. Introduce `_ T _ h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `GlobalTheory.CompanionTheory.HopfC.Wedge.M_mono b (Set.subset_univ T) 1 h`. Consider the case `cons i s ih`. Introduce `hs T hT h`. Rewrite `hs` using `[List.nodup_cons]`. Establish `hiT : i ∉ T` using `hT i (by simp)`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hl : ∀ j ∈ T, b.coord i (b j) = 0` using `fun j hj => GlobalTheory.CompanionTheory.HopfC.Wedge.coord_ne b fun hij => hiT (by rw [hij]; exact hj)`. Establish `hw : GlobalTheory.CompanionTheory.HopfC.Wedge.iter L y (b i :: s.map b) ∈ GlobalTheory.CompanionTheory.HopfC.Wedge.M L b T ((s.map b).length + 1 + 1)` using `h`. Establish `h1` using `GlobalTheory.CompanionTheory.HopfC.Wedge.D_mem hD b hl ((s.map b).length + 1) hw`. Establish `h2` using `GlobalTheory.CompanionTheory.HopfC.Wedge.iter_eq hD hτ hy (s.map b) (GlobalTheory.CompanionTheory.HopfC.Wedge.coord_self b i)`. Use `ih hs.2 (insert i T) ?_ ?_` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `j hj hjT`. Break down `Set.mem_insert_iff.mp hjT with rfl | hjT` into its components or cases. Conclude with `hs.1 hj`. Conclude with `hT j (by simp [hj]) hjT`. Rewrite using `[h2]`.
-
-Conclude with `add_mem (GlobalTheory.CompanionTheory.HopfC.Wedge.M_mono b (Set.subset_insert i T) _ h1) (GlobalTheory.CompanionTheory.HopfC.Wedge.L_mem b (Set.mem_insert i T) _ _)`. Conclude with `key s hs T hT h`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem mem_of_iter
     (hD : ∀ n l x z, D (n + 1) l (L (n + 1) x z) = l x • τ (n + 1) z - L n x (D n l z))
@@ -266,25 +262,23 @@ theorem mem_of_iter
 end Basis
 
 /- English proof (translation)
-Establish `hsub : ∀ n, n = g → ∀ w : H (n + 2), w = 0`. Introduce and unpack `n rfl w`. Conclude with `@Subsingleton.elim _ hS w 0`. Establish `hlen : (List.map b (List.finRange g)).length = g` using `by simp`. Establish `hzero : ∀ w : H ((List.map b (List.finRange g)).length + 2), w = 0` using `fun w => hsub _ hlen w`.
+Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD1 : ∀ (l : Module.Dual R (H 1)) (x y : H 1), D 1 l (L 1 x y) = l x • y - l y • x`. Introduce `l x y`. Establish `h : D 1 l (L 1 x y) = l x • τ 1 y - L 0 x (D 0 l y)` using `hD 0 l x y`. Rewrite `h` using `[hτ1, hD0, map_smul, hL0]`. Conclude with `h`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hLxx : ∀ x : H 1, L 1 x x = 0`. Introduce `x`. Use `GlobalTheory.CompanionTheory.HopfC.Wedge.eq_zero_of_iter hD hτ b (hτ2 _) ?_ (List.finRange g) (List.nodup_finRange g) (hzero _)` and prove the remaining obligations. Introduce `l`. Rewrite using `[hD1, sub_self]`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨φ, hφ⟩ : ∃ φ : ⋀[R]^2 (H 1) →ₗ[R] H 2, ∀ v : Fin 2 → H 1, φ (exteriorPower.ιMulti R 2 v) = L 1 (v 0) (v 1)` from `⟨exteriorPower.alternatingMapLinearEquiv (GlobalTheory.CompanionTheory.HopfC.Wedge.alt (N := H 2) (L 1) hLxx), fun v => exteriorPower.alternatingMapLinearEquiv_apply_ιMulti _ v⟩`. Establish `hext : ∀ l l' : Module.Dual R (H 1), (D 0 l').comp ((D 1 l).comp φ) = (GlobalTheory.CompanionTheory.HopfC.Wedge.form l l').smulRight one`. Introduce `l l'`. Apply `exteriorPower.linearMap_ext` to reduce the goal to its premises. Use extensionality with `v`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments.
 
-Simplify using `only [LinearMap.compAlternatingMap_apply, LinearMap.comp_apply, LinearMap.smulRight_apply, GlobalTheory.CompanionTheory.HopfC.Wedge.form_ιMulti, hφ, hD1, hD0, map_sub, map_smul, smul_eq_mul]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree. Establish `key : ∀ (l l' : Module.Dual R (H 1)) (t : ⋀[R]^2 (H 1)), D 0 l' (D 1 l (φ t)) = GlobalTheory.CompanionTheory.HopfC.Wedge.form l l' t • one` using `fun l l' t => LinearMap.congr_fun (hext l l') t`. Establish `hinj : Function.Injective φ`.
+Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[injective_iff_map_eq_zero]`. Introduce `t ht`. Apply `GlobalTheory.CompanionTheory.HopfC.Wedge.eq_zero_of_form b t` to reduce the goal to its premises. Introduce `l l'`. Apply `hone` to reduce the goal to its premises.
+Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← key l l' t, ht, map_zero, map_zero]`. Establish `hsurj : Function.Surjective φ`. Introduce `y`. Establish `hy : y ∈ GlobalTheory.CompanionTheory.HopfC.Wedge.M L b Set.univ 1` using `GlobalTheory.CompanionTheory.HopfC.Wedge.mem_of_iter hD hτ b (hτ2 y) (List.finRange g) (List.nodup_finRange g) ∅ (by simp) (by rw [hzero (GlobalTheory.CompanionTheory.HopfC.Wedge.iter L y _)]; exact Submodule.zero_mem _)`. Establish `hle : GlobalTheory.CompanionTheory.HopfC.Wedge.M L b Set.univ 1 ≤ LinearMap.range φ`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Unfold `GlobalTheory.CompanionTheory.HopfC.Wedge.M`. Rewrite using `[Submodule.span_le]`. Introduce and unpack `w ⟨i, -, z, rfl⟩`. Rewrite using `[SetLike.mem_coe, LinearMap.mem_range]`. Conclude with `⟨exteriorPower.ιMulti R 2 ![b i, z], by simpa using hφ ![b i, z]⟩`.
+Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `LinearMap.mem_range.mp (hle hy)`. Establish `hbij : Function.Bijective φ` using `⟨hinj, hsurj⟩`. Use `⟨LinearEquiv.ofBijective φ hbij, fun a a' => ?_⟩` and prove the remaining obligations. Use `first`. Consider the case `(rw [LinearEquiv.ofBijective_apply]; simpa using hφ ![a, a'])`.
-
-Consider the case `exact hφ ![a, a']`. Consider the case `simpa using hφ ![a, a']`.
+Treat this case separately. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem exteriorSquare_equiv {R : Type} [CommRing R] (H : ℕ → Type) [∀ n, AddCommGroup (H n)]
     [∀ n, Module R (H n)] (g : ℕ) (b : Module.Basis (Fin g) R (H 1)) (one : H 0)

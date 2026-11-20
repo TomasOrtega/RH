@@ -17,51 +17,41 @@ noncomputable section
 namespace GlobalTheory.Nef
 
 /- English proof (translation)
-Introduce `k K _ _ _ _ _ C _ x hx c hc`. Take `⟨hC, hg, hstr⟩` from `hx`. Use `haveI : IsIntegral C := GlobalTheory.LieSemineg.isIntegral_curve hC.1 hC.2.2`. Use `haveI := hC.1`. Use `haveI : Smooth (strHom k C) := SmoothOfRelativeDimension.smooth 1 _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : GlobalTheory.IsNormalScheme C := isNormalScheme_of_smooth (strHom k C)`. Use `haveI : IsLocallyNoetherian C := LocallyOfFiniteType.isLocallyNoetherian (strHom k C)`. Use `haveI := hg.2`. Use `set p : Sp K := IsLocalRing.closedPoint K with hp`. Establish `hη : x p = genericPoint C`.
+By extensionality, compare the relevant components. Supply the required witnesses or components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd : Dense (Set.range x)` using `hg.1.denseRange`. Establish `hr : Set.range x = {x p}`. Use extensionality with `y`. Conclude with `⟨by rintro ⟨q, rfl⟩; rw [Subsingleton.elim q p]; rfl, by rintro rfl; exact ⟨p, rfl⟩⟩`. Rewrite `hd` using `[hr]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Conclude with `(IsGenericPoint.eq (isGenericPoint_def.2 hd.closure_eq) (genericPoint_spec C))`. Establish `hco : Order.coheight c = 1`. Establish `hne : Order.coheight c ≠ 0`. Introduce `h0`. Establish `hm : IsMax c` using `Order.coheight_eq_zero.1 h0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h3 : genericPoint C ⤳ c` using `genericPoint_specializes c`. Apply `hc` to reduce the goal to its premises. Rewrite using `[hη]`. Conclude with `((show c ⤳ genericPoint C from hm (show c ≤ genericPoint C from h3)).antisymm h3).eq`. Establish `hle : (Order.coheight c : WithBot ℕ∞) ≤ 1` using `by haveI : Nonempty C := ⟨c⟩`.
+Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hd` using `GlobalTheory.LieSemineg.dim_curve (k := k) (C := C) hC.1`. Establish `h1` using `(Order.coheight_le_krullDim c).trans (Order.krullDim_eq_of_orderIso (irreducibleSetEquivPoints (α := C))).ge`. Rewrite `hd` using `[topologicalKrullDim]`. Rewrite `h1` using `[hd]`. Conclude with `h1`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hle' : Order.coheight c ≤ 1` using `by exact_mod_cast hle`. Conclude with `le_antisymm hle' (ENat.one_le_iff_ne_zero.2 hne)`. Use `haveI hdvr := GlobalTheory.IsNormalScheme.isDiscreteValuationRing_stalk hco`. Use `set A := C.presheaf.stalk c`. Set `P : IsDedekindDomain.HeightOneSpectrum A` to `IsDiscreteValuationRing.maximalIdeal A`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Set `ic` to `C.presheaf.stalkCongr (Inseparable.of_eq hη.symm)`. Set `ψ : C.functionField →+* K` to `(ic.hom ≫ Scheme.stalkClosedPointTo x).hom`. Establish `hψ : Function.Bijective ψ`. Use `⟨RingHom.injective ψ, ?_⟩` and prove the remaining obligations. Establish `h1 : Function.Surjective ic.hom.hom` using `((ConcreteCategory.isIso_iff_bijective ic.hom).1 inferInstance).2`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `h2 : Function.Surjective (Scheme.stalkClosedPointTo x).hom`. Establish `h3` using `x.stalkMap_surjective p`. Establish `h4 : Function.Surjective (stalkClosedPointIso (CommRingCat.of K)).hom.hom` using `((ConcreteCategory.isIso_iff_bijective (stalkClosedPointIso (CommRingCat.of K)).hom).1 inferInstance).2`. Conclude with `h4.comp h3`. Conclude with `h2.comp h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Set `e : C.functionField ≃+* K` to `RingEquiv.ofBijective ψ hψ`. Set `φ : A →+* K` to `ψ.comp (algebraMap A C.functionField)`. Establish `hφ : spMap φ ≫ C.fromSpecStalk c = x`. Establish `h1 : φ = (C.presheaf.stalkSpecializes (hη ▸ genericPoint_specializes c : x p ⤳ c) ≫ Scheme.stalkClosedPointTo x).hom` using `by show ψ.comp (C.presheaf.stalkSpecializes ((genericPoint_spec C).specializes trivial)).hom = _`. Express the relevant statement in the definitionally equal form `(C.presheaf.stalkSpecializes _ ≫ ic.hom ≫ Scheme.stalkClosedPointTo x).hom = _`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Rewrite using `[TopCat.Presheaf.stalkCongr_hom, ← Category.assoc]`. Use `erw [TopCat.Presheaf.stalkSpecializes_comp]`. Rewrite using `[h1]`. Express the relevant statement in the definitionally equal form `Spec.map (CommRingCat.ofHom _) ≫ _ = x`. Rewrite using `[CommRingCat.ofHom_hom, Spec.map_comp, Category.assoc, Scheme.SpecMap_stalkSpecializes_fromSpecStalk]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `Scheme.Spec_stalkClosedPointTo_fromSpecStalk x`. Establish `hval : ∀ a : A, (P.valuation C.functionField) (e.symm (φ a)) = P.intValuation a`. Introduce `a`. Establish `: e.symm (φ a) = algebraMap A C.functionField a` using `e.symm_apply_apply _`. Rewrite using `[this]`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `IsDedekindDomain.HeightOneSpectrum.valuation_of_algebraMap P a`. Establish `hk : ∀ t : k, algebraMap k K t = φ (C.presheaf.germ ⊤ c trivial (algebraMap k Γ(C, ⊤) t))`. Establish `h1 : x ≫ strHom k C = spMap ((φ.comp (C.presheaf.germ ⊤ c trivial).hom).comp (algebraMap k Γ(C, ⊤)))`. Rewrite using `[← hφ, Category.assoc, strHom, ← Category.assoc (C.fromSpecStalk c), Scheme.fromSpecStalk_toSpecΓ]`. Simplify using `only [spMap, CommRingCat.ofHom_comp, Spec.map_comp, CommRingCat.ofHom_hom, Category.assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Establish `h2` using `Spec.map_injective (hstr.symm.trans h1)`. Introduce `t`. Conclude with `congrArg (fun f => f.hom t) h2`. Set `vK : Valuation K (WithZero (Multiplicative ℤ))` to `(P.valuation C.functionField).comap e.symm.toRingHom`. Establish `hvφ : ∀ a, vK (φ a) = P.intValuation a` using `fun a => hval a`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hunit : ∀ a : A, IsUnit a → P.intValuation a = 1`. Introduce `a ha`. Use `le_antisymm (P.intValuation_le_one a) (not_lt.1 fun h => ?_)` and prove the remaining obligations. Conclude with `P.isPrime.ne_top (Ideal.eq_top_of_isUnit_mem _ ((P.intValuation_lt_one_iff_mem a).1 h) ha)`. Set `v : Place k K` to `⟨vK, fun g => by`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take `⟨y, hy⟩` from `P.valuation_surjective C.functionField g`. Conclude with `⟨e y, by`. Express the relevant statement in the definitionally equal form `P.valuation C.functionField (e.symm (e y)) = g`. Rewrite using `[e.symm_apply_apply]`. Conclude with `hy⟩,`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use `fun t ht => by`. Rewrite using `[hk, hvφ]`. Conclude with `hunit _ (((Ne.isUnit ht).map (algebraMap k Γ(C, ⊤))).map _)⟩`. Establish `hle : ∀ a : A, φ a ∈ v.O` using `fun a => by show vK (φ a) ≤ 1`. Rewrite using `[hvφ]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `P.intValuation_le_one a`. Set `ψO : A →+* v.O` to `φ.codRestrict v.O hle`. Establish `hPm : P.asIdeal = IsLocalRing.maximalIdeal A` using `rfl`. Use `haveI : IsLocalHom ψO := ⟨fun a ha => by`. Assume the negation of the conclusion as `hna`.
-
-Establish `hm : a ∈ P.asIdeal` using `by rw [hPm]; exact hna`. Establish `hlt : vK (φ a) < 1` using `by rw [hvφ]; exact (P.intValuation_lt_one_iff_mem a).2 hm`. Take `⟨u, hu⟩` from `ha`. Set `w : v.O` to `((u⁻¹ : v.Oˣ) : v.O)`. Establish `hinv : vK (w : K) ≤ 1` using `w.2`.
-
-Establish `h1 : φ a * (w : K) = 1`. Use `congrArg (fun z : v.O => (z : K)) u.mul_inv` as an intermediate fact. Establish `e1 : φ a = ((u : v.O) : K)` using `by rw [hu]; rfl`. Rewrite using `[e1]`. Conclude with `this`.
-
-Establish `h2` using `congrArg vK h1`. Rewrite `h2` using `[map_mul, map_one]`. Establish `: vK (φ a) * vK (w : K) < 1` using `lt_of_le_of_lt (mul_le_of_le_one_right' hinv) hlt`. Conclude with `absurd h2 this.ne⟩`. Use `⟨v, spMap ψO ≫ C.fromSpecStalk c, ?_, ?_⟩` and prove the remaining obligations.
-
-Rewrite using `[← Category.assoc, ← hφ]`. Use `congr 1`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = _`. Rewrite using `[← Spec.map_comp]`. Both sides reduce to the same expression.
-
-Establish `: spMap ψO (IsLocalRing.closedPoint v.O) = IsLocalRing.closedPoint A` using `IsLocalRing.comap_closedPoint ψO`. Express the relevant statement in the definitionally equal form `C.fromSpecStalk c (spMap ψO (IsLocalRing.closedPoint v.O)) = c`. Rewrite using `[this, Scheme.fromSpecStalk_closedPoint]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem centre_place : ∀ (k K : Type) [Field k] [IsAlgClosed k] [CharZero k] [Field K] [Algebra k K] (C : Scheme.{0}) [Algebra k Γ(C, ⊤)] (x : Sp K ⟶ C), IsGenOver k x →
     ∀ c : C, c ≠ x (IsLocalRing.closedPoint K) → ∃ (v : Place k K) (b : Sp v.O ⟶ C), spMap v.O.subtype ≫ b = x ∧ b (IsLocalRing.closedPoint v.O) = c := by

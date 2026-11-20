@@ -24,7 +24,7 @@ namespace GlobalTheory.EigWhole
 open GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.CovTest GlobalTheory.Mean4 GlobalTheory.Published GlobalTheory.FlagAr
 
 /- English proof (translation)
-Use function extensionality and compare the values at `q`. Distinguish the cases in `hq : q = 1`. Substitute `hq` using the available equality. Simplify using `[ArIn.ind, h]`. Rewrite using `[Function.update_of_ne hq]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem update_ind_one (T : Finset ℕ) (h : 1 ∉ T) : Function.update (ArIn.ind T) 1 false = ArIn.ind T := by
   funext q
@@ -33,7 +33,7 @@ theorem update_ind_one (T : Finset ℕ) (h : 1 ∉ T) : Function.update (ArIn.in
   · rw [Function.update_of_ne hq]
 
 /- English proof (translation)
-Introduce `h`. Break down `Finset.mem_union.1 h with h | h` into its components or cases. Conclude with `Nat.not_prime_one (Finset.mem_filter.1 h).2`. Conclude with `Nat.not_prime_one (Nat.prime_of_mem_primeFactors h)`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. A detailed English derivation is pending.
 -/
 theorem one_not_mem_setB {D : D7} (O : Setup D) (B : ℝ) : 1 ∉ Pad.setB O.κ B := by
   intro h
@@ -42,15 +42,15 @@ theorem one_not_mem_setB {D : D7} (O : Setup D) (B : ℝ) : 1 ∉ Pad.setB O.κ 
   · exact Nat.not_prime_one (Nat.prime_of_mem_primeFactors h)
 
 /- English proof (translation)
-Introduce `a ha`. Establish `key : a.1 = ArIn.ind T ∧ a.2.1 = some R`. Break down `i with x | l` into its components or cases. Simplify using `only [fam, rootSym] at ha split_ifs at ha`. Use `Finsupp.support_single_subset ha` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Finset.mem_singleton] at this`. Substitute `this` using the available equality. Conclude with `⟨rfl, rfl⟩`. Use `Finsupp.support_single_subset ha` as an intermediate fact. Simplify using `only [Finset.mem_singleton] at this`.
+Simplify using the standard rewrite rules. Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Substitute `this` using the available equality. Conclude with `⟨rfl, rfl⟩`. Break down `l with k | k` into its components or cases. Use `Finsupp.support_single_subset ha` as an intermediate fact. Simplify using `only [Finset.mem_singleton] at this`.
+Substitute using the available equality. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Substitute `this` using the available equality. Conclude with `⟨rfl, rfl⟩`. Use `Finsupp.support_single_subset ha` as an intermediate fact. Simplify using `only [Finset.mem_singleton] at this`. Substitute `this` using the available equality.
+Substitute using the available equality. Supply the required witnesses or components. Establish an intermediate fact. Simplify using the standard rewrite rules. Substitute using the available equality.
 
-Conclude with `⟨rfl, rfl⟩`. Use `⟨?_, key.2⟩` and prove the remaining obligations. Rewrite using `[key.1]`. Simplify `T.finite_toSet` using `[ArIn.ind]`.
+Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem fam_support {D : D7} (O : Setup D) (T : Finset ℕ) (R : ℝ) (i : Var O) :
     ∀ a ∈ (fam O T R i).support, {q | a.1 q = true}.Finite ∧ a.2.1 = some R := by
@@ -85,9 +85,9 @@ open GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.CovTest GlobalTheory.Me
 variable {D : D7} (O : Setup D)
 
 /- English proof (translation)
-Establish `e1 : ((arIn O.s O.Φ O.met.hm).mixEv T R 1 c).comp (DV.tagDR D.what₂.Tau O.N) = rename fun x => (arIn O.s O.Φ O.met.hm).root (ArIn.ind T) R x c`. Use extensionality with `x : 1`. Simplify using `[ArIn.mixEv, DV.tagDR, update_ind_one T hT]`. Establish `e2` using `congrArg (fun f => f (curveCl D.what₂.Tau O.N O.j)) e1`. Simplify using `only [AlgHom.comp_apply] at e2`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[map_mul, e2, map_mul, map_mul, rename_rename]`. Use `congr 1`. Simplify using `only [ArIn.mixEv, aeval_X, update_ind_one T hT, map_sum, map_pow, rename_X, map_mul, algHom_C]`. Evaluate the numerical expressions. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Both sides reduce to the same expression.
 -/
 theorem mixEv_sieg (T : Finset ℕ) (hT : 1 ∉ T) (R : ℝ) (c : O.s.Comp) :
     (arIn O.s O.Φ O.met.hm).mixEv T R 1 c
@@ -114,9 +114,9 @@ open GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.CovTest GlobalTheory.Me
 variable {D : D7} (O : Setup D)
 
 /- English proof (translation)
-Establish `e : rename f (testF O.Y) = rename f (∑ τ, pSum τ 2 * curveCl D.what₂.Tau O.N O.j : Pol D.what₂.Tau O.N)` using `rfl`. Rewrite using `[e, map_sum, Fintype.sum_prod_type, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[map_mul, show (pSum τ 2 : Pol D.what₂.Tau O.N) = ∑ i, X (τ, i) ^ 2 from rfl, map_sum, Finset.sum_mul]`. Simplify using `only [map_pow, rename_X]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[Finset.sum_mul]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem rename_testF_gen {σ : Type} (f : DV.Rt D.what₂.Tau O.N → σ) :
     rename f (testF O.Y) = (∑ x, X (f x) ^ 2) * rename f (curveCl D.what₂.Tau O.N O.j) := by
@@ -137,9 +137,9 @@ open GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.CovTest GlobalTheory.Me
 variable {D : D7} (O : Setup D)
 
 /- English proof (translation)
-Establish `hι : 0 < Fintype.card D.what₂.Tau` using `Fintype.card_pos_iff.2 ⟨D.eTau.symm (Classical.arbitrary _)⟩`. Take `⟨m, hm, hG⟩` from `WholeShift.curveCl_isHomogeneous hι O.j O.indef.1 O.indef.2`. Establish `hG'` using `hG.rename_isHomogeneous (f := (Sum.inl : DV.Rt D.what₂.Tau O.N → Var O))`. Establish `hsq : ∀ v : Var O, (X v ^ 2 : MvPolynomial (Var O) ℝ).IsHomogeneous 2` using `fun v => by`. Simplify using `using (isHomogeneous_X ℝ v).pow 2`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Use `⟨?_, ?_⟩` and prove the remaining obligations. Use `(IsHomogeneous.sum Finset.univ (fun x : DV.Rt D.what₂.Tau O.N => (X (Sum.inl x) ^ 2 : MvPolynomial (Var O) ℝ)) 2 fun x _ => hsq (Sum.inl x)).mul hG'` as an intermediate fact. Rewrite `this` using `[add_comm, hm]`. Then use the resulting hypothesis. Use `((isHomogeneous_C (Var O) (1 / 2 : ℝ)).mul (IsHomogeneous.sum Finset.univ (fun l : Fin (D.R.f * O.N) ⊕ Fin (D.R.f * O.N) => (X (Sum.inr l) ^ 2 : MvPolynomial (Var O) ℝ)) 2 fun l _ => hsq (Sum.inr l))).mul hG'` as an intermediate fact. Rewrite `this` using `[zero_add, add_comm, hm]`. Then use the resulting hypothesis.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem isHomogeneous_sides :
     ((∑ x, X (Sum.inl x) ^ 2) * rename (Sum.inl : DV.Rt D.what₂.Tau O.N → Var O) (curveCl D.what₂.Tau O.N O.j)).IsHomogeneous
@@ -160,15 +160,15 @@ theorem isHomogeneous_sides :
     rwa [zero_add, add_comm, hm] at this
 
 /- English proof (translation)
-Take `⟨x, P, hW⟩` from `hO`. Establish `hm` using `hW.hm_eq`. Take `⟨-, h2⟩` from `GlobalTheory.ArTopTrue.arTop_true hC hD GlobalTheory.ShFam.Pad.HTBound.htBound D O.A O.N O.j O.S O.κ O.s x O.Φ c R hR`. Take `⟨M, L, m, Ψ, hI, hΨ, hnum⟩` from `h2 (Var O) (fam O (Pad.setB O.κ B) R) (fam_support O _ R)`. Establish `hdim` using `O.dim_eq c`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hnum' : ∀ μ : Multiset (Var O), Multiset.card μ = dimFl D.what₂.Tau O.N + 1 → (arIn O.s O.Φ O.met.hm).num c (μ.map (fam O (Pad.setB O.κ B) R)) = Ψ ((μ.map X).prod) / ((((m : ℕ) : ℝ)) ^ ((O.Φ.C c).Y.dim + 1) * (Module.finrank ℚ D.what₂.LL : ℝ))`. Introduce `μ hμ`. Rewrite using `[hm]`. Conclude with `hnum μ (by rw [hdim]; exact hμ)`. Establish `key` using `GlobalTheory.NumLRename.numL_rename_of_agree _ _ _ Ψ _ hnum'`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hz` using `hM D O ⟨x, P, hW⟩ B hB R hR c hA M L m Ψ (by rw [hm]; exact hI) hΨ`. Establish `hL : rename (fun y => (arIn O.s O.Φ O.met.hm).root (ArIn.ind (Pad.setB O.κ B)) R y c) (testF O.Y) = rename (fam O (Pad.setB O.κ B) R) ((∑ x, X (Sum.inl x) ^ 2) * rename Sum.inl (curveCl D.what₂.Tau O.N O.j))`. Rewrite using `[rename_testF_gen, map_mul, map_sum, rename_rename]`. Simplify using `only [map_pow, rename_X]`. Both sides reduce to the same expression.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Extract witnesses or component facts from the available result.
 
-Take `⟨hPL, hPR⟩` from `isHomogeneous_sides O`. Rewrite using `[hL, mixEv_sieg O _ (one_not_mem_setB O B)]`. Use `(key _ hPL).trans (Eq.trans ?_ (key _ hPR).symm)` and prove the remaining obligations. Use `congr 1`. Establish `e : diffPol O = C (1 / 2 : ℝ) * (∑ l, X (Sum.inr l) ^ 2) * rename Sum.inl (curveCl D.what₂.Tau O.N O.j) - (∑ x, X (Sum.inl x) ^ 2) * rename Sum.inl (curveCl D.what₂.Tau O.N O.j)`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the equality to equality of the corresponding arguments. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[diffPol]`. Expand and normalize the polynomial expressions, which then agree. Rewrite `hz` using `[e, map_sub, sub_eq_zero]`. Conclude with `hz.symm`.
+Expand and normalize the polynomial expressions, which then agree. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem comp_eq (hM : RamModel) (hC : ArCalc) (hD : ArDegree) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ)
     (hR : 2 ≤ R) (c : O.s.Comp) (hA : AwayAgree O (Pad.setB O.κ B) R c) :
@@ -213,11 +213,11 @@ namespace GlobalTheory.EigWhole
 open GlobalTheory.CovTop GlobalTheory.CovHt GlobalTheory.CovTest GlobalTheory.Mean4 GlobalTheory.Published GlobalTheory.FlagAr
 
 /- English proof (translation)
-Introduce `hM h2 hH _ _ _ D O hO _ A T H hRd B hB R hR`. Rewrite using `[Setup.setB_eq O B]`. Establish `eR : sieg O.Y (Pad.setB O.κ B) R = (arIn O.s O.Φ O.met.hm).arMix (Pad.setB O.κ B) R 1 (X (Sum.inr (false, 2)) * DV.tagDR D.what₂.Tau O.N (curveCl D.what₂.Tau O.N O.j))` using `rfl`. Establish `eR' : (arIn O.s O.Φ O.met.hm).arMix (Pad.setB O.κ B) R 1 (X (Sum.inr (false, 2)) * DV.tagDR D.what₂.Tau O.N (curveCl D.what₂.Tau O.N O.j)) = ∑ c, numL ((arIn O.s O.Φ O.met.hm).num c) (dimFl D.what₂.Tau O.N + 1) ((arIn O.s O.Φ O.met.hm).mixEv (Pad.setB O.κ B) R 1 c (X (Sum.inr (fa …`. Rewrite using `[ArIn.arMix, LinearMap.sum_apply]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `eL : O.Y.arDeg (Pad.setB O.κ B) R (testF O.Y) = ∑ c, numL ((arIn O.s O.Φ O.met.hm).num c) (dimFl D.what₂.Tau O.N + 1) (rename (fun y => (arIn O.s O.Φ O.met.hm).root (ArIn.ind (Pad.setB O.κ B)) R y c) (testF O.Y))`. Establish `e0 : O.Y.arDeg (Pad.setB O.κ B) R (testF O.Y) = (arIn O.s O.Φ O.met.hm).arDeg (Pad.setB O.κ B) R (testF O.Y : Pol D.what₂.Tau O.N)` using `rfl`. Establish `hsum : ∀ F : Pol D.what₂.Tau O.N, (arIn O.s O.Φ O.met.hm).arDeg (Pad.setB O.κ B) R F = ∑ c, numL ((arIn O.s O.Φ O.met.hm).num c) (dimFl D.what₂.Tau O.N + 1) (rename (fun y => (arIn O.s O.Φ O.met.hm).root (ArIn.ind (Pad.setB O.κ B)) R y c) F)` using `fun F => by`. Rewrite using `[ArIn.arDeg, LinearMap.sum_apply]`.
+Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Conclude with `e0.trans (hsum _)`. Rewrite using `[eR, eR', eL]`. Conclude with `Finset.sum_congr rfl fun c _ => comp_eq O hM h2.p4 hH.deg hO B hB R hR c (GlobalTheory.T.eigen_away_agree D O hO _ R c)`.
+Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem latAt_of_ramModel : RamModel → Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB →
     PrismaticDieudonnePerfd → OnObj fun _ O _ _ _ _ => LatAt O.Y := by

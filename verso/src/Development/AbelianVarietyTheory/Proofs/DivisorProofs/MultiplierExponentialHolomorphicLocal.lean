@@ -6,15 +6,15 @@ open scoped Real ContDiff
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `g E _ _ U τ u a ha hac hf i j P hP`. Take `⟨b, z⟩` from `P`. Establish `hb : b ∈ U` using `(Set.mem_prod.1 hP).1`. Take `⟨f, hf1, hf2⟩` from `hf b hb`. Establish `hstd : ∀ k, (Pi.single k 1 : Fl g) ∈ stdLat g` using `fun k => Submodule.subset_span ⟨k, by simp [Pi.basisFun_apply]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmaps : Set.MapsTo (fun w : Fin g → ℂ => (b, w)) Set.univ (cov U g)` using `fun w _ => Set.mem_prod.2 ⟨hb, Set.mem_univ _⟩`. Establish `hdisc : DiscreteTopology (Set.range ((↑) : ℤ → ℂ))` using `(Complex.isometry_intCast.isEmbedding.toHomeomorph).symm.isEmbedding.discreteTopology`. Establish `key : ∀ k w, a k (b, w) - f (Pi.single k 1) w = a k (b, z) - f (Pi.single k 1) z`. Introduce `k w`. Use `isPreconnected_univ.constant_of_mapsTo (T := Set.range ((↑) : ℤ → ℂ)) ⟨hdisc⟩ (f := fun w => a k (b, w) - f (Pi.single k 1) w) (hc := ?_) (hTm := ?_) (hx := Set.mem_univ w) (hy := Set.mem_univ z)` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `((hac k).comp (continuous_const.prodMk continuous_id).continuousOn hmaps).sub (hf1 _ (hstd k)).1.continuous.continuousOn`. Introduce `w _`. Establish `h2` using `(hf1 _ (hstd k)).2 w`. Rewrite `h2` using `[ha k (b, w) (hmaps (Set.mem_univ w))]`. Take `⟨n, hn⟩` from `Complex.exp_eq_exp_iff_exists_int.1 h2`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨n, ?_⟩` and prove the remaining obligations. Establish `h0 : (2 * π * Complex.I : ℂ) ≠ 0` using `by simp [Real.pi_ne_zero, Complex.I_ne_zero]`. Apply `mul_left_cancel₀ h0` to reduce the goal to its premises. Take the linear combination `-hn`. Simplify using `only [transl]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Take a linear combination of the given relations to obtain the conclusion. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1` using `key i (z + per (τ b) (Pi.single j 1))`. Establish `e2` using `key j (z + per (τ b) (Pi.single i 1))`. Establish `h` using `hf2 _ (hstd i) _ (hstd j) z`. Take the linear combination `e1 - e2 + h`.
+Establish an intermediate fact. Establish an intermediate fact. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem degZero_log_comm : ∀ {g : ℕ} {E : Type} [NormedAddCommGroup E] [NormedSpace ℂ E] {U : Set E} {τ : E → Matrix (Fin g) (Fin g) ℂ} (u : Fl g → Pt E g → ℂ) (a : Fin g ⊕ Fin g → Pt E g → ℂ), (∀ i, ∀ P ∈ cov U g, u (Pi.single i 1) P = Complex.exp (2 * π * Complex.I * a i P)) → (∀ i, ContinuousOn (a i) (cov U g)) → (∀ b ∈ U, ∃ f : Fl g → (Fin g → ℂ) → ℂ, (∀ l ∈ stdLat g, Differentiable ℂ (f l) ∧ ∀ z, u l (b, z) = Complex.exp (2 * π * Complex.I * f l z)) ∧ ∀ l ∈ stdLat g, ∀ l' ∈ stdLat g, ∀ z, f l (z + per (τ b) l') + f l' z - f l' (z + per (τ b) l) - f l z = 0) → ∀ i j, ∀ P ∈ cov U g, a i (transl τ (Pi.single j 1) P) + a j P = a j (transl τ (Pi.single i 1) P) + a i P := by
   intro g E _ _ U τ u a ha hac hf i j P hP

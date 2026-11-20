@@ -14,9 +14,9 @@ variable {X : Type} [AddCommGroup X]
 abbrev mulSub (X : Type) [AddCommGroup X] (k : ℕ) : AddSubgroup X := (nsmulAddMonoidHom (α := X) k).range
 
 /- English proof (translation)
-Rewrite using `[QuotientAddGroup.eq]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨z, hz⟩`. Use `⟨z, ?_⟩` and prove the remaining obligations. Establish `: k • z = -a + b` using `hz`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Rewrite using `[this]`. Normalize the expressions using the abelian group laws. Introduce and unpack `⟨z, rfl⟩`. Conclude with `⟨z, by simp⟩`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mk_eq_iff (k : ℕ) (a b : X) :
     (QuotientAddGroup.mk a : X ⧸ mulSub X k) = QuotientAddGroup.mk b ↔ ∃ z, b = a + k • z := by
@@ -30,7 +30,7 @@ theorem mk_eq_iff (k : ℕ) (a b : X) :
     exact ⟨z, by simp⟩
 
 /- English proof (translation)
-Introduce `c`. Take `⟨a, rfl⟩` from `QuotientAddGroup.mk_surjective c`. Take `⟨i, z, hz⟩` from `h.2.2.1 a`. Conclude with `⟨i, (mk_eq_iff k _ _).2 ⟨z, hz⟩⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem surj {k r mu : ℕ} {Q : X → ℤ} {cls : Fin r → X} (h : Adapted k Q cls mu) :
     Function.Surjective (fun i => (QuotientAddGroup.mk (cls i) : X ⧸ mulSub X k)) := by
@@ -40,9 +40,9 @@ theorem surj {k r mu : ℕ} {Q : X → ℤ} {cls : Fin r → X} (h : Adapted k Q
   exact ⟨i, (mk_eq_iff k _ _).2 ⟨z, hz⟩⟩
 
 /- English proof (translation)
-Rewrite using `[← Finset.sum_fiberwise (s := Finset.univ) (g := fun i => (QuotientAddGroup.mk (cls i) : X ⧸ mulSub X k)), Finset.mul_sum]`. Use `Finset.sum_congr rfl fun c _ => ?_` and prove the remaining obligations. Take `⟨i₀, rfl⟩` from `surj h c`. Rewrite using `[Finset.sum_congr rfl (g := fun _ => g (QuotientAddGroup.mk (cls i₀))) (fun i hi => by rw [(Finset.mem_filter.1 hi).2]), Finset.sum_const, nsmul_eq_mul]`. Use `congr 2`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[← h.2.2.2 i₀, Nat.card_eq_fintype_card, Fintype.card_subtype]`. Use `congr 1`. Use `Finset.filter_congr fun i _ => ⟨fun hi => ?_, fun hi => by simp only [hi]⟩` and prove the remaining obligations. Conclude with `h.2.1 i i₀ ((mk_eq_iff k _ _).1 hi.symm)`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem sum_comp {k r mu : ℕ} {Q : X → ℤ} {cls : Fin r → X} (h : Adapted k Q cls mu)
     [Fintype (X ⧸ mulSub X k)] (g : X ⧸ mulSub X k → ℤ) :
@@ -61,9 +61,9 @@ theorem sum_comp {k r mu : ℕ} {Q : X → ℤ} {cls : Fin r → X} (h : Adapted
   exact h.2.1 i i₀ ((mk_eq_iff k _ _).1 hi.symm)
 
 /- English proof (translation)
-Apply `le_antisymm` to reduce the goal to its premises. Take `⟨z, hz⟩` from `(mk_eq_iff k _ _).1 e`. Rewrite using `[hz]`. Conclude with `h.1 i z`. Take `⟨z, hz⟩` from `(mk_eq_iff k _ _).1 e.symm`.
+Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hz]`. Conclude with `h'.1 i' z`.
+A detailed English derivation is pending.
 -/
 theorem val_eq {k r r' mu mu' : ℕ} {Q : X → ℤ} {cls : Fin r → X} {cls' : Fin r' → X} (h : Adapted k Q cls mu)
     (h' : Adapted k Q cls' mu') {i : Fin r} {i' : Fin r'}
@@ -76,9 +76,9 @@ theorem val_eq {k r r' mu mu' : ℕ} {Q : X → ℤ} {cls : Fin r → X} {cls' :
     rw [hz]; exact h'.1 i' z
 
 /- English proof (translation)
-Use `haveI : Finite (X ⧸ mulSub X k) := Finite.of_surjective _ (surj h)`. Use `letI : Fintype (X ⧸ mulSub X k) := Fintype.ofFinite _`. Establish `a` using `sum_comp h (fun _ => 1)`. Establish `a'` using `sum_comp h' (fun _ => 1)`. Establish `hm : (mu : ℤ) = mu'`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hp : (∑ _c : X ⧸ mulSub X k, (1 : ℤ)) ≠ 0` using `by simp`. Conclude with `mul_right_cancel₀ hp (a.symm.trans a')`. Establish `b` using `sum_comp h (fun c => Q (cls (Function.surjInv (surj h) c)))`. Establish `b'` using `sum_comp h' (fun c => Q (cls (Function.surjInv (surj h) c)))`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. A detailed English derivation is pending.
 -/
 theorem sum_eq {k r mu mu' : ℕ} {Q : X → ℤ} {cls cls' : Fin r → X} (h : Adapted k Q cls mu)
     (h' : Adapted k Q cls' mu') : ∑ i, Q (cls i) = ∑ i, Q (cls' i) := by
@@ -99,13 +99,13 @@ theorem sum_eq {k r mu mu' : ℕ} {Q : X → ℤ} {cls cls' : Fin r → X} (h : 
     _ = _ := Finset.sum_congr rfl fun i _ => val_eq h h' (Function.surjInv_eq (surj h) _)
 
 /- English proof (translation)
-Use `⟨fun i z => ?_, fun i i' ⟨z, hz⟩ => ?_, fun α => ?_, fun i₀ => ?_⟩` and prove the remaining obligations. Establish `h1` using `h.1 i (e z)`. Establish `h2` using `hQ (e.symm (cls i))`. Establish `h3` using `hQ (e.symm (cls i) + k • z)`. Rewrite `h3` using `[map_add, map_nsmul]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h2`, `h3` using `[e.apply_symm_apply]`. Rewrite `h1` using `[h2, h3]`. Conclude with `le_of_mul_le_mul_left h1 (by exact_mod_cast hw)`. Establish `h1` using `congrArg e hz`. Simplify using `only [map_add, map_nsmul, e.apply_symm_apply] at h1`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [h.2.1 i i' ⟨_, h1⟩]`. Take `⟨i, z, hz⟩` from `h.2.2.1 (e α)`. Use `⟨i, e.symm z, e.injective ?_⟩` and prove the remaining obligations. Simplify using `only [map_add, map_nsmul, e.apply_symm_apply]`. Conclude with `hz`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[← h.2.2.2 i₀]`. Simplify using `only [e.symm.injective.eq_iff]`.
+A detailed English derivation is pending.
 -/
 theorem transport {X₀ : Type} [AddCommGroup X₀] {q₀ : X₀ → ℤ} {Q : X → ℤ} (e : X₀ ≃+ X) {w : ℕ} (hw : 0 < w)
     (hQ : ∀ y, Q (e y) = w * q₀ y) {k r mu : ℕ} {cls : Fin r → X} (h : Adapted k Q cls mu) :
@@ -133,11 +133,11 @@ end GlobalTheory.OneBasis.ShortSum
 namespace GlobalTheory.OneBasis
 
 /- English proof (translation)
-Introduce `X₀ _ _ _ q₀ k r hk hq`. Distinguish the cases in `hex : ∃ (c₀ : Fin r → X₀) (m₀ : ℕ), Adapted k q₀ c₀ m₀`. Take `⟨c₀, m₀, h₀⟩` from `hex`. Use `⟨k, (∑ i, q₀ (c₀ i)).toNat, hk, fun X _ Q e w hw hQ cls mu h => ?_⟩` and prove the remaining obligations. Rewrite using `[Int.toNat_of_nonneg (Finset.sum_nonneg fun i _ => hq _), ShortSum.sum_eq h₀ (ShortSum.transport e hw hQ h)]`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `: ∑ i, Q (cls i) = w * ∑ i, q₀ (e.symm (cls i))`. Rewrite using `[Finset.mul_sum]`. Conclude with `Finset.sum_congr rfl fun i _ => by rw [← hQ, e.apply_symm_apply]`. Rewrite using `[this]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Supply the required witnesses or components.
 
-Conclude with `⟨k, 0, hk, fun X _ Q e w hw hQ cls mu h => (hex ⟨_, _, ShortSum.transport e hw hQ h⟩).elim⟩`.
+A detailed English derivation is pending.
 -/
 theorem sum_adapted_eq : ∀ (X₀ : Type) [AddCommGroup X₀] [Module.Free ℤ X₀] [Module.Finite ℤ X₀] (q₀ : X₀ → ℤ) (k r : ℕ), 1 ≤ k → (∀ y, 0 ≤ q₀ y) → ∃ d C : ℕ, 1 ≤ d ∧ ∀ (X : Type) [AddCommGroup X] (Q : X → ℤ) (e : X₀ ≃+ X) (w : ℕ), 0 < w → (∀ y, Q (e y) = w * q₀ y) → ∀ (cls : Fin r → X) (mu : ℕ), Adapted k Q cls mu → (d : ℤ) * ∑ i, Q (cls i) = C * w * k := by
   intro X₀ _ _ _ q₀ k r hk hq

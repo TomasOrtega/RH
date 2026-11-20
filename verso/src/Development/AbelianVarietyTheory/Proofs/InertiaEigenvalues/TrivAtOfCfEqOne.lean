@@ -35,19 +35,19 @@ theorem cf_val (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g : GfC V) :
     (cf V v g : GA D V) = GlobalTheory.LevelProduct.cmp V v g := rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨_, GlobalTheory.LevelProduct.epsF_spec v, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFinIdem_fE (v : HeightOneSpectrum (𝓞 D.host.F)) : IsFinIdem D v (GlobalTheory.LevelProduct.fE D v) :=
   ⟨_, GlobalTheory.LevelProduct.epsF_spec v, rfl⟩
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.LevelProduct.cmp_supp V v g`.
+A detailed English derivation is pending.
 -/
 theorem cf_supp (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g : GfC V) :
     SuppF V (GlobalTheory.LevelProduct.fE D v) (cf V v g : GA D V) := GlobalTheory.LevelProduct.cmp_supp V v g
 
 /- English proof (translation)
-Apply `GlobalTheory.IdemSupport.mt_inj V` to reduce the goal to its premises. Rewrite using `[GlobalTheory.LevelProduct.mt_cmp, ← (GlobalTheory.IdemSupport.suppF_iff V _ g).1 h, GlobalTheory.IdemSupport.mix_self]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem cmp_eq_self {V : HSp D} {v : HeightOneSpectrum (𝓞 D.host.F)} {g : GA D V}
     (h : SuppF V (GlobalTheory.LevelProduct.fE D v) g) : GlobalTheory.LevelProduct.cmp V v g = g := by
@@ -55,14 +55,14 @@ theorem cmp_eq_self {V : HSp D} {v : HeightOneSpectrum (𝓞 D.host.F)} {g : GA 
   rw [GlobalTheory.LevelProduct.mt_cmp, ← (GlobalTheory.IdemSupport.suppF_iff V _ g).1 h, GlobalTheory.IdemSupport.mix_self]
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h ▸ cf_supp V v g, fun h => Subtype.ext (cmp_eq_self h)⟩`.
+Supply the required witnesses or components.
 -/
 theorem cf_eq_self_iff (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g : GfC V) :
     cf V v g = g ↔ SuppF V (GlobalTheory.LevelProduct.fE D v) (g : GA D V) :=
   ⟨fun h => h ▸ cf_supp V v g, fun h => Subtype.ext (cmp_eq_self h)⟩
 
 /- English proof (translation)
-Establish `e : GlobalTheory.LevelProduct.cmp V v (g : GA D V) = 1` using `congrArg Subtype.val h`. Use `GlobalTheory.LevelProduct.cmp_triv V v (g : GA D V)` as an intermediate fact. Rewrite `this` using `[e, inv_one, mul_one]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem trivAt_of_cf_eq_one (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g : GfC V) (h : cf V v g = 1) :
     TrivAt V (GlobalTheory.LevelProduct.fE D v) (g : GA D V) := by
@@ -71,19 +71,19 @@ theorem trivAt_of_cf_eq_one (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) 
   rwa [e, inv_one, mul_one] at this
 
 /- English proof (translation)
-The claim follows from `(cf_eq_self_iff V v _).2 (cf_supp V v g)`.
+A detailed English derivation is pending.
 -/
 theorem cf_cf (V : HSp D) (v : HeightOneSpectrum (𝓞 D.host.F)) (g : GfC V) : cf V v (cf V v g) = cf V v g :=
   (cf_eq_self_iff V v _).2 (cf_supp V v g)
 
 /- English proof (translation)
-Take `⟨Φ, hΦ⟩` from `GlobalTheory.IdemSupport.exists_comp D`. Establish `ho : GlobalTheory.LevelProduct.fE D w * GlobalTheory.LevelProduct.fE D v = 0` using `GlobalTheory.IdemSupport.place_orth hΦ (GlobalTheory.LevelProduct.epsF_spec w) (GlobalTheory.LevelProduct.epsF_spec v) (Ne.symm hvw)`. Use `set h := cf V v g with hh`. Establish `hs` using `cf_supp V v g`. Establish `ht : TrivAt V (GlobalTheory.LevelProduct.fE D w) (h : GA D V)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b`. Rewrite using `[← hs a b, ← mul_assoc, ho, zero_mul]`. Apply `Subtype.ext` to reduce the goal to its premises. Use `show GlobalTheory.LevelProduct.cmp V w (h : GA D V) = 1`. Apply `GlobalTheory.IdemSupport.mt_inj V` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[GlobalTheory.LevelProduct.mt_cmp, GlobalTheory.IdemSupport.mt_one]`. Establish `e : GlobalTheory.LevelProduct.fE D w • mt V (h : GA D V) = GlobalTheory.LevelProduct.fE D w • (1 : Matrix (Fin V.rank) (Fin V.rank) (AE D))`. Use extensionality with `a b`. Use `ht a b` as an intermediate fact. Simplify using `only [Matrix.smul_apply, smul_eq_mul]`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite `this` using `[Matrix.sub_apply, mul_sub, sub_eq_zero]`. Conclude with `this`. Rewrite using `[e, GlobalTheory.IdemSupport.mix_self]`.
+A detailed English derivation is pending.
 -/
 theorem cf_orth (V : HSp D) {v w : HeightOneSpectrum (𝓞 D.host.F)} (hvw : v ≠ w) (g : GfC V) :
     cf V w (cf V v g) = 1 := by
@@ -117,7 +117,7 @@ variable {G : Type} [Group G] [Fintype G] {Pl0 T : Type} {A : FamIn D.what₂.LL
   {Ks : Type} [Field Ks] [NumberField Ks] [Algebra Ks D.what₂.LL]
 
 /- English proof (translation)
-Establish `hH : (R.datWp i R.triv).P.H = ⊥` using `rfl`. Simplify using `only [KR, Subgroup.mem_subgroupOf, cf_val]`. Conclude with `⟨fun h v => GlobalTheory.LevelProduct.cmp_mem_of_mem hH h v, fun h => GlobalTheory.LevelProduct.mem_of_cmp_mem hH g.2 h⟩`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 -/
 theorem kr_mem_iff (R : RealDat D A Ks) (i : Fin D.R.m) (g : GfC (Wc D i)) :
     g ∈ KR R i ↔ ∀ v, cf (Wc D i) v g ∈ KR R i := by
@@ -126,7 +126,7 @@ theorem kr_mem_iff (R : RealDat D A Ks) (i : Fin D.R.m) (g : GfC (Wc D i)) :
   exact ⟨fun h v => GlobalTheory.LevelProduct.cmp_mem_of_mem hH h v, fun h => GlobalTheory.LevelProduct.mem_of_cmp_mem hH g.2 h⟩
 
 /- English proof (translation)
-Simplify using `only [KR, Subgroup.mem_subgroupOf, cf_val]`. Conclude with `GlobalTheory.LevelProduct.finite_cmp (g : GA D (Wc D i))`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem kr_finite (R : RealDat D A Ks) (i : Fin D.R.m) (g : GfC (Wc D i)) :
     {v | cf (Wc D i) v g ∉ KR R i}.Finite := by

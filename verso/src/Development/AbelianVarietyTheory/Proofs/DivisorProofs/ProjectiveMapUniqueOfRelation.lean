@@ -11,9 +11,9 @@ noncomputable section
 namespace GlobalTheory.LineQuot
 
 /- English proof (translation)
-Use `set b := he.basis (le_refl V)`. Take `⟨t, ht⟩` from `hb.2 (b 0)`. Use `set c := b.repr ((s i).app V t) 0`. Establish `hc : (s i).app V t = c • b 0` using `by conv_lhs => rw [← b.sum_repr ((s i).app V t)]`. Simplify using `[Fin.sum_univ_one, c]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `h1` using `hχ i j V hi t`. Rewrite `h1` using `[ht, hc, smul_smul]`. Establish `h2` using `congrArg (fun x => b.repr x 0) h1`. Simplify using `only [map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul, mul_one] at h2`. Conclude with `.of_mul_eq_one _ h2.symm`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isUnit_pullRatio_of_frame {k : Type} [CommRing k] {N : ℕ} {T : Scheme.{0}} {L Q : T.Modules}
     {s : Fin (N + 1) → (L ⟶ Q)} {χ : T ⟶ PSpace k N} (hχ : Rel χ s) {V : T.Opens} {i j : Fin (N + 1)}
@@ -33,7 +33,7 @@ theorem isUnit_pullRatio_of_frame {k : Type} [CommRing k] {N : ℕ} {T : Scheme.
   exact .of_mul_eq_one _ h2.symm
 
 /- English proof (translation)
-The claim follows from `hχ j m V hj t`.
+A detailed English derivation is pending.
 -/
 theorem pullRatio_smul_eq {k : Type} [CommRing k] {N : ℕ} {T : Scheme.{0}} {L Q : T.Modules}
     {s : Fin (N + 1) → (L ⟶ Q)} {χ : T ⟶ PSpace k N} (hχ : Rel χ s) {V : T.Opens} {j : Fin (N + 1)}
@@ -42,7 +42,7 @@ theorem pullRatio_smul_eq {k : Type} [CommRing k] {N : ℕ} {T : Scheme.{0}} {L 
   hχ j m V hj t
 
 /- English proof (translation)
-Establish `h` using `ProjSpace.basicOpen_pullRatio (φ := χ) (W := V) (i := i) (hi := hi) (j := j)`. Rewrite `h` using `[T.basicOpen_of_isUnit (isUnit_pullRatio_of_frame hχ hi hb he)]`. Conclude with `h.le.trans inf_le_right`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem le_preimage_chart {k : Type} [CommRing k] {N : ℕ} {T : Scheme.{0}} {L Q : T.Modules}
     {s : Fin (N + 1) → (L ⟶ Q)} {χ : T ⟶ PSpace k N} (hχ : Rel χ s) {V : T.Opens} {i j : Fin (N + 1)}
@@ -53,7 +53,7 @@ theorem le_preimage_chart {k : Type} [CommRing k] {N : ℕ} {T : Scheme.{0}} {L 
   exact h.le.trans inf_le_right
 
 /- English proof (translation)
-Establish `: χ y ∈ (⨆ i, ProjSpace.chart k N i : (PSpace k N).Opens)`. Rewrite using `[ProjSpace.iSup_chart]`. Discharge the goal by the elementary cases of `trivial`. Conclude with `(TopologicalSpace.Opens.mem_iSup (s := fun i => ProjSpace.chart k N i)).1 this`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Check the elementary cases of the proposition. A detailed English derivation is pending.
 -/
 theorem exists_mem_preimage_chart {k : Type} [CommRing k] {N : ℕ} {T : Scheme.{0}} (χ : T ⟶ PSpace k N)
     (y : T) : ∃ i, y ∈ χ ⁻¹ᵁ ProjSpace.chart k N i := by
@@ -62,13 +62,13 @@ theorem exists_mem_preimage_chart {k : Type} [CommRing k] {N : ℕ} {T : Scheme.
   exact (TopologicalSpace.Opens.mem_iSup (s := fun i => ProjSpace.chart k N i)).1 this
 
 /- English proof (translation)
-Introduce `k _ N T L Q s φ ψ _ hQ hG hstr hφ hψ`. Use `ProjSpace.hom_ext hstr fun y => ?_` and prove the remaining obligations. Take `⟨j, W, hyW, hbij⟩` from `hG y`. Take `⟨i, hi⟩` from `exists_mem_preimage_chart φ y`. Take `⟨l, hl⟩` from `exists_mem_preimage_chart ψ y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `⟨V, e, -, hyV, hV, he⟩` from `hQ.exists_affine (V := W ⊓ φ ⁻¹ᵁ ProjSpace.chart k N i ⊓ ψ ⁻¹ᵁ ProjSpace.chart k N l) ⟨⟨hyW, hi⟩, hl⟩`. Establish `hb` using `hbij V (hV.trans (inf_le_left.trans inf_le_left))`. Establish `hjφ` using `le_preimage_chart hφ (hV.trans (inf_le_left.trans inf_le_right)) hb he`. Establish `hjψ` using `le_preimage_chart hψ (hV.trans inf_le_right) hb he`. Use `⟨V, hyV, j, hjφ, hjψ, fun m => ?_⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `set b := he.basis (le_refl V)`. Take `⟨t, ht⟩` from `hb.2 (b 0)`. Establish `h` using `(pullRatio_smul_eq hφ hjφ t m).symm.trans (pullRatio_smul_eq hψ hjψ t m)`. Rewrite `h` using `[ht]`. Establish `h2` using `congrArg (fun x => b.repr x 0) h`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `h2` using `only [map_smul, Module.Basis.repr_self, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul, mul_one]`.
+A detailed English derivation is pending.
 -/
 theorem eq_of_rel : ∀ (k : Type) [CommRing k] (N : ℕ) (T : Scheme.{0}) (L Q : T.Modules)
     (s : Fin (N + 1) → (L ⟶ Q)) (φ ψ : T ⟶ PSpace k N), IsVB L 1 → IsVB Q 1 → Gen s →

@@ -15,42 +15,42 @@ section Dual
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-Use extensionality with `φ x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem dm_mul (f g : Module.End ℂ V) : (f * g).dualMap = g.dualMap * f.dualMap := by
   ext φ x
   rfl
 
 /- English proof (translation)
-Use extensionality with `φ x`. Simplify using `[LinearMap.dualMap_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dm_add (f g : Module.End ℂ V) : (f + g).dualMap = f.dualMap + g.dualMap := by
   ext φ x
   simp [LinearMap.dualMap_apply]
 
 /- English proof (translation)
-Use extensionality with `φ x`. Simplify using `[LinearMap.dualMap_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dm_sub (f g : Module.End ℂ V) : (f - g).dualMap = f.dualMap - g.dualMap := by
   ext φ x
   simp [LinearMap.dualMap_apply]
 
 /- English proof (translation)
-Use extensionality with `φ x`. Simplify using `[LinearMap.dualMap_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dm_zero : (0 : Module.End ℂ V).dualMap = 0 := by
   ext φ x
   simp [LinearMap.dualMap_apply]
 
 /- English proof (translation)
-Use extensionality with `φ x`. Both sides reduce to the same expression.
+By extensionality, compare the relevant components. Both sides reduce to the same expression.
 -/
 theorem dm_one : (1 : Module.End ℂ V).dualMap = 1 := by
   ext φ x
   rfl
 
 /- English proof (translation)
-Use extensionality with `φ x`. Simplify using `[LinearMap.dualMap_apply, LinearMap.sum_apply, map_sum]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dm_sum {ι : Type*} (s : Finset ι) (f : ι → Module.End ℂ V) :
     (∑ i ∈ s, f i).dualMap = ∑ i ∈ s, (f i).dualMap := by
@@ -58,14 +58,14 @@ theorem dm_sum {ι : Type*} (s : Finset ι) (f : ι → Module.End ℂ V) :
   simp [LinearMap.dualMap_apply, LinearMap.sum_apply, map_sum]
 
 /- English proof (translation)
-Use extensionality with `φ x`. Simplify using `[LinearMap.dualMap_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dm_intCast (z : ℤ) : ((z : Module.End ℂ V)).dualMap = (z : Module.End ℂ (Module.Dual ℂ V)) := by
   ext φ x
   simp [LinearMap.dualMap_apply]
 
 /- English proof (translation)
-Use extensionality with `φ x`. Simplify using `[LinearMap.dualMap_apply, Module.algebraMap_end_apply]`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules.
 -/
 theorem dm_algebraMap (u : ℂ) :
     (algebraMap ℂ (Module.End ℂ V) u).dualMap = algebraMap ℂ (Module.End ℂ (Module.Dual ℂ V)) u := by
@@ -73,7 +73,7 @@ theorem dm_algebraMap (u : ℂ) :
   simp [LinearMap.dualMap_apply, Module.algebraMap_end_apply]
 
 /- English proof (translation)
-The claim follows from `| 0, f => by simp [dm_one] | t + 1, f => by rw [List.ofFn_succ, List.prod_cons, dm_mul, dm_ofFn_prod (fun i => f i.succ), List.ofFn_succ' (fun i : Fin (t + 1) => (f i.rev).dualMap), List.prod_concat] simp only [Fin.rev_last, Fin.rev_castSucc]`.
+A detailed English derivation is pending.
 -/
 theorem dm_ofFn_prod : ∀ {t : ℕ} (f : Fin t → Module.End ℂ V),
     ((List.ofFn f).prod).dualMap = (List.ofFn fun i => (f i.rev).dualMap).prod
@@ -84,7 +84,7 @@ theorem dm_ofFn_prod : ∀ {t : ℕ} (f : Fin t → Module.End ℂ V),
     simp only [Fin.rev_last, Fin.rev_castSucc]
 
 /- English proof (translation)
-Introduce `a b c d`. Simplify using `only [dualE]`. Rewrite using `[← dm_mul, ← dm_mul, ← dm_sub, hE d c b a, dm_sub]`. Apply the tactic sequence `split_ifs <;> simp_all [dm_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem glRel_dualE {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (hE : GlRel E) : GlRel (dualE E) := by
   intro a b c d
@@ -93,9 +93,9 @@ theorem glRel_dualE {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (hE : G
   split_ifs <;> simp_all [dm_zero]
 
 /- English proof (translation)
-Simplify using `only [Tm, dualE, dm_add]`. Use `congr 1`. Distinguish the cases in `h : a = b`. Substitute `h` using the available equality. Simplify using `[dm_algebraMap]`.
+Simplify using the standard rewrite rules. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Rewrite using `[if_neg h, if_neg (Ne.symm h), dm_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Tm_dualE {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (u : ℂ) (a b : Fin n) :
     Tm (dualE E) u a b = (Tm E u b a).dualMap := by
@@ -106,7 +106,7 @@ theorem Tm_dualE {n : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (u : ℂ) 
   · rw [if_neg h, if_neg (Ne.symm h), dm_zero]
 
 /- English proof (translation)
-Establish `hj` using `j.isLt`. Rewrite using `[Fin.val_rev, Nat.cast_sub (by omega : (j : ℕ) + 1 ≤ t)]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem arg_rev {t : ℕ} (w : ℂ) (j : Fin t) :
     w - (t : ℂ) + 1 + (((Fin.rev j : Fin t) : ℕ) : ℂ) = w - ((j : ℕ) : ℂ) := by
@@ -116,7 +116,7 @@ theorem arg_rev {t : ℕ} (w : ℂ) (j : Fin t) :
   ring
 
 /- English proof (translation)
-Unfold `qminor qminorRow`. Rewrite using `[dm_sum]`. Use `Fintype.sum_equiv (PI.UnitaryGroupMassFormula.QmStar.conjRev t) _ _ (fun σ => ?_)` and prove the remaining obligations. Rewrite using `[dm_mul, dm_intCast, dm_ofFn_prod, PI.UnitaryGroupMassFormula.QmStar.sign_conjRev, Int.cast_comm]`. Simplify using `only [Function.comp_apply, PI.UnitaryGroupMassFormula.QmStar.conjRev_apply, Fin.rev_rev, arg_rev, Tm_dualE]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem dm_qminorRow {n t : ℕ} (E : Fin n → Fin n → Module.End ℂ V) (a b : Fin t → Fin n) (w : ℂ) :
     (qminorRow E (b ∘ Fin.rev) (a ∘ Fin.rev) w).dualMap = qminor (dualE E) a b w := by
@@ -133,7 +133,7 @@ section Weight
 variable {V : Type} [AddCommGroup V] [Module ℂ V]
 
 /- English proof (translation)
-The claim follows from `| 0, g, e, _ => by simp | n + 1, g, e, h => by have ih := comm_prod H (fun x => g x.succ) (fun x => e x.succ) (fun x => h x.succ) rw [List.ofFn_succ, List.prod_cons, ← mul_assoc, h 0, add_mul, mul_assoc, ih, Fin.sum_univ_succ, mul_add, add_smul, mul_smul_comm, smul_mul_assoc, mul …`.
+A detailed English derivation is pending.
 -/
 theorem comm_prod (H : Module.End ℂ V) : ∀ {n : ℕ} (g : Fin n → Module.End ℂ V) (e : Fin n → ℂ),
     (∀ x, H * g x = g x * H + e x • g x) →
@@ -146,7 +146,7 @@ theorem comm_prod (H : Module.End ℂ V) : ∀ {n : ℕ} (g : Fin n → Module.E
     abel
 
 /- English proof (translation)
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih`. Rewrite using `[pow_succ, ← mul_assoc, ih, add_mul, mul_assoc, h]`. Simplify using `only [mul_add, add_mul, smul_mul_assoc, mul_smul_comm, mul_assoc, Nat.cast_succ, add_smul, one_mul]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Normalize the expressions using the abelian group laws.
 -/
@@ -160,7 +160,7 @@ theorem comm_pow (H f : Module.End ℂ V) (d : ℂ) (h : H * f = f * H + d • f
     abel
 
 /- English proof (translation)
-Unfold `mono`. Conclude with `comm_prod H (fun x => f x ^ a x) (fun x => (a x : ℂ) * d x) (fun x => comm_pow H (f x) (d x) (h x) (a x))`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem comm_mono (H : Module.End ℂ V) {n : ℕ} (f : Fin n → Module.End ℂ V) (d : Fin n → ℂ)
     (h : ∀ x, H * f x = f x * H + d x • f x) (a : Fin n → ℕ) :
@@ -169,13 +169,13 @@ theorem comm_mono (H : Module.End ℂ V) {n : ℕ} (f : Fin n → Module.End ℂ
   exact comm_prod H (fun x => f x ^ a x) (fun x => (a x : ℂ) * d x) (fun x => comm_pow H (f x) (d x) (h x) (a x))
 
 /- English proof (translation)
-Establish `hd : ∀ x, E c.castSucc c.castSucc * etaK E x = etaK E x * E c.castSucc c.castSucc + (if x = c then (1 : ℂ) else 0) • etaK E x`. Introduce `x`. Establish `h` using `hE c.castSucc c.castSucc x.castSucc (Fin.last n)`. Rewrite `h` using `[if_neg (Fin.castSucc_lt_last c).ne', sub_zero]`. Distinguish the cases in `hx : x = c`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Consider separately whether the proposition holds or fails.
 
-Substitute `hx` using the available equality. Rewrite `h` using `[if_pos rfl]`. Rewrite using `[if_pos rfl, one_smul]`. Conclude with `eq_add_of_sub_eq' h`. Rewrite `h` using `[if_neg (fun e => hx (Fin.castSucc_injective _ e).symm)]`.
+Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[if_neg hx, zero_smul, add_zero]`. Conclude with `sub_eq_zero.mp h`. Establish `hc` using `congrArg (fun g : Module.End ℂ V => g w) (comm_mono _ (etaK E) _ hd a)`. Simplify using `only [Module.End.mul_apply, LinearMap.add_apply, LinearMap.smul_apply, hw, map_smul] at hc`. Rewrite using `[hc, add_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules.
 
-Use `congr 2`. Simplify using the standard rewrite rules.
+A detailed English derivation is pending.
 -/
 theorem weight_mono {n : ℕ} (E : Fin (n + 1) → Fin (n + 1) → Module.End ℂ V) (hE : GlRel E) (c : Fin n) (m : ℂ)
     (w : V) (hw : E c.castSucc c.castSucc w = m • w) (a : Fin n → ℕ) :
@@ -208,7 +208,7 @@ namespace Formalism.FourierDecayAlt.P
 open Formalism.REAL Formalism.FourierDecayAlt Formalism.FourierDecayAlt.Q Formalism.FourierDecayAlt.Qr DegreeMapArithmetic
 
 /- English proof (translation)
-Introduce `V _ _ n E hE`. Use `⟨glRel_dualE E hE, fun t a b w => ?_⟩` and prove the remaining obligations. Rewrite using `[← dm_qminorRow, ← line_form_of_minor _ n t E hE, PI.UnitaryGroupMassFormula.QmStar.qminor_rev_rev E hE]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem dual_minor : Qr.DualMinor := by
   intro V _ _ n E hE
@@ -216,23 +216,21 @@ theorem dual_minor : Qr.DualMinor := by
   rw [← dm_qminorRow, ← line_form_of_minor _ n t E hE, PI.UnitaryGroupMassFormula.QmStar.qminor_rev_rev E hE]
 
 /- English proof (translation)
-Introduce `V _ _ _ n E μ w₁ w₂ hE hIrr h1 h2 hw1`. Establish `: Nontrivial V` using `hIrr.1`. Take `⟨ν, ξ₀, -, hξ0, hHW, -⟩` from `hS (Module.Dual ℂ V) (n + 1) (dualE E) (hD V (n + 1) E hE).1 ⊤ (fun _ _ _ _ => Submodule.mem_top) top_ne_bot`. Establish `hdiag : ∀ (a : Fin (n + 1)) (v : V), ξ₀ (E a a v) = ν a * ξ₀ v`. Introduce `a v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `congrArg (fun ζ : Module.Dual ℂ V => ζ v) (hHW.1 a)` as an intermediate fact. Simplify `this` using `[dualE, LinearMap.dualMap_apply]`. Establish `hlow : ∀ a b : Fin (n + 1), b < a → ∀ v, ξ₀ (E a b v) = 0`. Introduce `a b hab v`. Use `congrArg (fun ζ : Module.Dual ℂ V => ζ v) (hHW.2 b a hab)` as an intermediate fact.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Simplify `this` using `[dualE, LinearMap.dualMap_apply]`. Establish `key : ∀ w, IsHW (subA E) μ w → ∀ a : Fin n → ℕ, ξ₀ (mono (etaK E) a w) ≠ 0 → ∀ c, (a c : ℂ) = ν c.castSucc - μ c`. Introduce `w hw a ha c`. Establish `e1` using `hdiag c.castSucc (mono (etaK E) a w)`. Rewrite `e1` using `[weight_mono E hE c (μ c) w (hw.1 c) a, map_smul, smul_eq_mul]`.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `mul_right_cancel₀ ha e1` as an intermediate fact. Rewrite using `[← this]`. Expand and normalize the polynomial expressions, which then agree. Establish `hex : ∃ a₀ : Fin n → ℕ, ξ₀ (mono (etaK E) a₀ w₁) ≠ 0`. Assume the negation of the conclusion as `hcon`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction.
 
-Use `push Not at hcon`. Conclude with `hw1 (hP V n E ξ₀ μ w₁ hE hIrr hξ0 hlow h1 hcon)`. Take `⟨a₀, ha₀⟩` from `hex`. Use `⟨ξ₀ (mono (etaK E) a₀ w₂) / ξ₀ (mono (etaK E) a₀ w₁), ?_⟩` and prove the remaining obligations. Use `set c := ξ₀ (mono (etaK E) a₀ w₂) / ξ₀ (mono (etaK E) a₀ w₁) with hc`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hw : IsHW (subA E) μ (w₂ - c • w₁)`. Use `⟨fun a => ?_, fun a b hab => ?_⟩` and prove the remaining obligations. Rewrite using `[map_sub, map_smul, h1.1 a, h2.1 a, smul_sub, smul_comm]`. Rewrite using `[map_sub, map_smul, h1.2 a b hab, h2.2 a b hab, smul_zero, sub_zero]`. Establish `hz : w₂ - c • w₁ = 0`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Use `hP V n E ξ₀ μ _ hE hIrr hξ0 hlow hw (fun a => ?_)` and prove the remaining obligations. Assume the negation of the conclusion as `hne`. Establish `haa : a = a₀`. Use function extensionality and compare the values at `x`. Establish `e1` using `key _ hw a hne x`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `e2` using `key _ h1 a₀ ha₀ x`. Conclude with `Nat.cast_injective (R := ℂ) (e1.trans e2.symm)`. Substitute `haa` using the available equality. Apply `hne` to reduce the goal to its premises. Rewrite using `[map_sub, map_sub, map_smul, map_smul, smul_eq_mul, hc, div_mul_cancel₀ _ ha₀, sub_self]`.
-
-Conclude with `sub_eq_zero.mp hz`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qr_multOne_of (hS : Qr.ExistsSingMax) (hD : Qr.DualMinor) (hP : Qr.SpanSing) : Qr.MultOne := by
   intro V _ _ _ n E μ w₁ w₂ hE hIrr h1 h2 hw1

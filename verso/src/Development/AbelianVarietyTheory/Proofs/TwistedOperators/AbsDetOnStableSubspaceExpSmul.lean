@@ -6,25 +6,21 @@ open Matrix
 namespace GlobalTheory.FlagMeas
 
 /- English proof (translation)
-Introduce `n A V hA`. Establish `hA' : ∀ y ∈ V, Matrix.toLin' A y ∈ V` using `fun y hy => by`. Rewrite using `[Matrix.toLin'_apply]`. Conclude with `hA y hy`. Use `set f : V →ₗ[ℂ] V := (Matrix.toLin' A).restrict hA' with hf`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `set b := Module.finBasis ℂ V with hb`. Use `set B := LinearMap.toMatrixAlgEquiv b f with hB`. Use `⟨(B.trace).re, fun t => ?_⟩` and prove the remaining obligations. Establish `hts : t • A = (t : ℂ) • A` using `by ext i j; simp [Complex.real_smul]`. Rewrite using `[hts]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Use `set s : ℂ := (t : ℂ) with hs`. Establish `hpowA : ∀ (k : ℕ) (v : V), (s • A) ^ k *ᵥ (v : Fin n → ℂ) = (((s • f) ^ k) v : Fin n → ℂ)`. Introduce `k`. Proceed by induction on `k with`. Consider the case `zero => intro v`.
+Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using the standard rewrite rules. Consider the case `succ k ih`. Introduce `v`. Rewrite using `[pow_succ', pow_succ', ← Matrix.mulVec_mulVec, ih, Module.End.mul_apply]`. Simplify using `[hf, LinearMap.restrict_apply, Matrix.toLin'_apply, Matrix.smul_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `hpowB : ∀ k : ℕ, Matrix.toLinAlgEquiv b ((s • B) ^ k) = (s • f) ^ k`. Introduce `k`. Rewrite using `[map_pow, map_smul, hB, Matrix.toLinAlgEquiv_toMatrixAlgEquiv]`. Establish `key : ∀ v : V, NormedSpace.exp (s • A) *ᵥ (v : Fin n → ℂ) = ((Matrix.toLinAlgEquiv b (NormedSpace.exp (s • B))) v : Fin n → ℂ)`. Introduce `v`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `open scoped Matrix.Norms.Operator in`. Establish `h1` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) (s • A)`. Use `open scoped Matrix.Norms.Operator in`. Establish `h2` using `NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) (s • B)`. Set `g1 : Matrix (Fin n) (Fin n) ℂ →ₗ[ℂ] (Fin n → ℂ)` to `LinearMap.applyₗ (v : Fin n → ℂ) ∘ₗ Matrix.toLin'.toLinearMap`.
+Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Set `g2 : Matrix (Fin (Module.finrank ℂ V)) (Fin (Module.finrank ℂ V)) ℂ →ₗ[ℂ] (Fin n → ℂ)` to `V.subtype ∘ₗ LinearMap.applyₗ v ∘ₗ (Matrix.toLinAlgEquiv b).toLinearMap`. Establish `h1'` using `h1.map g1 (LinearMap.continuous_of_finiteDimensional g1)`. Establish `h2'` using `h2.map g2 (LinearMap.continuous_of_finiteDimensional g2)`. Establish `heq : (g1 ∘ fun k : ℕ => ((k.factorial : ℂ)⁻¹) • (s • A) ^ k) = (g2 ∘ fun k : ℕ => ((k.factorial : ℂ)⁻¹) • (s • B) ^ k)`. Use function extensionality and compare the values at `k`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Function.comp_apply, map_smul, g1, g2, LinearMap.comp_apply, LinearMap.applyₗ_apply_apply, LinearEquiv.coe_coe, Matrix.toLin'_apply, AlgEquiv.toLinearMap_apply, Submodule.subtype_apply]`. Rewrite using `[hpowA, hpowB]`. Rewrite `h1'` using `[heq]`. Conclude with `h1'.unique h2'`. Establish `hstab : ∀ y ∈ V, Matrix.toLin' (NormedSpace.exp (s • A)) y ∈ V` using `fun y hy => by`.
-
-Rewrite using `[Matrix.toLin'_apply, key ⟨y, hy⟩]`. Conclude with `Submodule.coe_mem _`. Establish `hres : (Matrix.toLin' (NormedSpace.exp (s • A))).restrict hstab = Matrix.toLinAlgEquiv b (NormedSpace.exp (s • B))`. Use `LinearMap.ext fun v => Subtype.ext ?_` and prove the remaining obligations. Simplify using `only [LinearMap.restrict_coe_apply, Matrix.toLin'_apply]`.
-
-Conclude with `key v`. Rewrite using `[detOn, dif_pos hstab, hres]`. Use `show ‖LinearMap.det (Matrix.toLin b b (NormedSpace.exp (s • B)))‖ = _`. Rewrite using `[LinearMap.det_toLin, GlobalTheory.SUVol.det_exp, Matrix.trace_smul, smul_eq_mul, Complex.norm_exp, hs, Complex.re_ofReal_mul]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem detOn_exp_smul : ∀ (n : ℕ) (A : Matrix (Fin n) (Fin n) ℂ) (V : Submodule ℂ (Fin n → ℂ)),
     (∀ y ∈ V, A *ᵥ y ∈ V) → ∃ c : ℝ, ∀ t : ℝ,

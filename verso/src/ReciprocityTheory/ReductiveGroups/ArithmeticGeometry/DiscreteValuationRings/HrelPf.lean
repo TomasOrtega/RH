@@ -21,9 +21,9 @@ section HrelGen
 variable {X Y Y' Z : Scheme.{0}} {L : LB X} {K₁ K₂ : Type} [Fintype K₁] [Fintype K₂]
 
 /- English proof (translation)
-Establish `hc : LB.Coh L (Sum.elim φ₁ (fun k => h ≫ φ₂ k)) (Sum.elim (fun k => J (r ≫ φ₁ k)) (fun k => J (r ≫ h ≫ φ₂ k)))`. Apply the tactic sequence `rintro (a | a) (b | b) e <;> exact congrArg (fun q => J (r ≫ q)) e`. Establish `e` using `H _ _ hc`. Establish `hm : r z ∈ LB.wchart L φ₁ (fun k => J (r ≫ φ₁ k)) ⊓ LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k))` using `⟨hJ.mem φ₁ r, hJ.mem (fun k => h ≫ φ₂ k) r⟩`. Establish `le : LB.wchart L (fun k => h ≫ φ₂ k) (fun k => J (r ≫ h ≫ φ₂ k)) ≤ h ⁻¹ᵁ LB.wchart L φ₂ (fun k => J (r ≫ h ≫ φ₂ k))` using `fun _ hy => Set.mem_iInter.2 fun k => Set.mem_iInter.1 hy k`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[sval_of s₂ (r ≫ h) z J (fun k => J (r ≫ h ≫ φ₂ k)) (fun k => by rw [Category.assoc])]`. Establish `e2` using `congrArg (gs r z _) e`. Use `((gs_res r z _ hm _).trans (gs_pull r h z _ (le hm.2) _)).symm.trans (e2.trans ?_)` and prove the remaining obligations. Conclude with `(gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) (gs_res r z le_top hm _) (gs_res r z _ hm _))`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem hr_secScal_sval {φ₁ : K₁ → (Y' ⟶ X)} {ε₁ : K₁ → ℤ} {s₁ : LB.Sec (LB.LinComb L φ₁ ε₁)}
     {φ₂ : K₂ → (Y ⟶ X)} {ε₂ : K₂ → ℤ} {s₂ : LB.Sec (LB.LinComb L φ₂ ε₂)} {h : Y' ⟶ Y} {c : Γ(Y', ⊤)}
@@ -45,7 +45,7 @@ theorem hr_secScal_sval {φ₁ : K₁ → (Y' ⟶ X)} {ε₁ : K₁ → ℤ} {s�
   exact (gs_mul r z _ hm _ _).trans (congrArg₂ (· * ·) (gs_res r z le_top hm _) (gs_res r z _ hm _))
 
 /- English proof (translation)
-Unfold `gs`. Apply the tactic sequence `split_ifs <;> simp`.
+Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem hr_gs_zero (f : Z ⟶ Y) (z : Z) (U : Y.Opens) : gs f z U 0 = 0 := by
   unfold gs
@@ -58,9 +58,9 @@ section HrelInj
 variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] (D : DegData V (maximalIdeal V))
 
 /- English proof (translation)
-Establish `: IsDominant (DegPre.jFR (R` using `V) (FractionRing V)) := GC.isDominant_jFR _`. Establish `: IsSchemeTheoreticallyDominant (DegPre.jFR (R` using `V) (FractionRing V)) := .of_isDominant _`. Establish `: Smooth D.toPre.P.A.hom` using `D.toPre.P.isAb.smooth`. Establish `hfst : Function.Injective ((pullback.fst D.toPre.P.A.hom (DegPre.jFR (R` using `V) (FractionRing V))).app W).hom := Scheme.Hom.app_injective _ W`. Apply the tactic sequence `have e : (DegPre.prB D.toPre (FractionRing V)).left = (pullbackSymmetry (DegPre.jFR (R := V) (FractionRing V)) D.toPre.P.A.hom).hom ≫ pullback.fst D.toPre.P.A.hom (DegPre.jFR (R := V) (FractionRing V)) := (pullbackSymmetry_hom_comp_fst _ _).symm`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[e, Scheme.Hom.comp_app]`. Apply the tactic sequence `have : IsIso ((pullbackSymmetry (DegPre.jFR (R := V) (FractionRing V)) D.toPre.P.A.hom).hom.app ((pullback.fst D.toPre.P.A.hom (DegPre.jFR (R := V) (FractionRing V))) ⁻¹ᵁ W)) := inferInstance`. Apply the tactic sequence `have hiso := (ConcreteCategory.bijective_of_isIso ((pullbackSymmetry (DegPre.jFR (R := V) (FractionRing V)) D.toPre.P.A.hom).hom.app ((pullback.fst D.toPre.P.A.hom (DegPre.jFR (R := V) (FractionRing V))) ⁻¹ᵁ W))).1`. Conclude with `hiso.comp hfst`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem hr_prB_app_injective (W : D.toPre.P.A.left.Opens) :
     Function.Injective ((DegPre.prB D.toPre (FractionRing V)).left.app W).hom := by
@@ -88,23 +88,21 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V] {D : D
   {O : Type} [CommRing O] [StarRing O] [Module O D.toPre.X]
 
 /- English proof (translation)
-Introduce `U _ h`. Use `set p : D.toPre.P.A ⟶ D.toPre.P.A := toUnit D.toPre.P.A ≫ D.toPre.c χ with hp`. Use `set f := oa.onB.act (star a) with hf`. Use `set g := oa.onB.act a with hg`. Establish `hcl : SectionScalarValuation.cQ D.toPre D.toPre.P.A (star a • χ) = p ≫ f`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only [SectionScalarValuation.cQ, oa.c_lin, hp, hf, Category.assoc]`. Establish `p₃` using `SectionScalarValuation.prod_famB D.toPre (𝟙 _) (star a • χ) (k * N) h`. Establish `p₄` using `SectionScalarValuation.prod_famB D.toPre g χ k h`. Establish `e₃ : ∀ i, Over.Hom.left (𝟙 D.toPre.P.A) ≫ D.toPre.famφB (star a • χ) i = D.toPre.famφB (star a • χ) i` using `fun i => by simp`. Simplify using `only [e₃] at p₃`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `p₃` using `[hcl, Over.id_left]`. Establish `hcq : SectionScalarValuation.cQ D.toPre D.toPre.P.A χ = p` using `rfl`. Rewrite `p₄` using `[hcq]`. Establish `i0 : (lift p (𝟙 D.toPre.P.A)).left ≫ (padd D.toPre.P.A (fst D.toPre.P.A D.toPre.P.A ≫ f) (snd _ _)).left = ((p ≫ f) * 𝟙 D.toPre.P.A).left`. Rewrite using `[← Over.comp_left]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Use `congr 1`. Simplify using `only [padd, comp_lift_assoc, lift_fst_assoc, lift_snd]`. Both sides reduce to the same expression. Establish `i1 : (lift p (𝟙 D.toPre.P.A)).left ≫ (fst D.toPre.P.A D.toPre.P.A ≫ f).left = (p ≫ f).left`. Rewrite using `[← Over.comp_left, lift_fst_assoc]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `i2 : (lift p (𝟙 D.toPre.P.A)).left ≫ (snd D.toPre.P.A D.toPre.P.A).left = 𝟙 D.toPre.P.A.left`. Rewrite using `[← Over.comp_left, lift_snd, Over.id_left]`. Establish `i3 : (lift p (𝟙 D.toPre.P.A)).left ≫ (padd D.toPre.P.A (fst D.toPre.P.A D.toPre.P.A) (snd _ _ ≫ g)).left = (p * g).left`. Rewrite using `[← Over.comp_left]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Simplify using `only [padd, comp_lift_assoc, lift_fst, lift_snd_assoc, Category.id_comp]`. Both sides reduce to the same expression. Establish `i4 : (lift p (𝟙 D.toPre.P.A)).left ≫ (fst D.toPre.P.A D.toPre.P.A).left = p.left`. Rewrite using `[← Over.comp_left, lift_fst]`. Establish `i5 : (lift p (𝟙 D.toPre.P.A)).left ≫ (snd D.toPre.P.A D.toPre.P.A ≫ g).left = g.left`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, lift_snd_assoc, Category.id_comp]`. Establish `q₁ : 𝟙 D.toPre.P.A * (p ≫ f) = (p ≫ f) * 𝟙 D.toPre.P.A` using `mul_comm _ _`. Establish `q₂ : g * p = p * g` using `mul_comm _ _`. Rewrite `p₃` using `[q₁]`. Rewrite `p₄` using `[q₂]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Fintype.prod_sum_type, Sum.elim_inl, Sum.elim_inr, pullε]`. Rewrite using `[p₃, SectionScalarValuation.prod_neg' _ _ p₄]`. Simplify using `only [Fin.prod_univ_succ, Fin.prod_univ_zero, Matrix.cons_val_zero, Matrix.cons_val_succ, rosatiφ, rosatiε, Matrix.cons_val_one, Matrix.head_cons, i0, i1, i2, i3, i4, i5]`. Apply `Additive.ofMul.injective` to reduce the goal to its premises. Simplify using `only [ofMul_mul, ofMul_inv, ofMul_zpow, ofMul_pow, ofMul_one]`.
-
-Use `push_cast`. Use `module`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem hr_form (oa : D.toPre.OAct O) (a : O) (k N : ℕ) (χ : D.toPre.X) :
     FormEq (Sum.elim ![𝟙 D.toPre.P.A.left, (oa.onB.act a).left]
@@ -163,41 +161,39 @@ variable {V : Type} [CommRing V] [IsDomain V] [IsDiscreteValuationRing V]
 variable (D : DegData V (maximalIdeal V)) {O : Type} [CommRing O] [StarRing O] [Module O D.toPre.X]
 
 /- English proof (translation)
-Establish `hL` using `D.toPre.P.isLB`. Establish `hΛ : ∀ {Z : Scheme.{0}} (r : Z ⟶ (DegPre.BF D.toPre (FractionRing V)).left) (g : (DegPre.BF D.toPre (FractionRing V)).left ⟶ (DegPre.BF D.toPre (FractionRing V)).left), g ≫ (DegPre.BF D.toPre (FractionRing V)).hom = (DegPre.BF D.toPre (FractionRing V)).hom → ∀ z : Z, gs (r ≫ g) z …` using `fun r g hg z => by`. Rewrite using `[ps_gs_scal (DegPre.BF D.toPre (FractionRing V)).hom (r ≫ g) z lam, ps_gs_scal (DegPre.BF D.toPre (FractionRing V)).hom r z lam, Category.assoc, hg]`. Establish `haF : (aF D (FractionRing V) oa a).left ≫ (DegPre.BF D.toPre (FractionRing V)).hom = (DegPre.BF D.toPre (FractionRing V)).hom` using `Over.w _`. Establish `haFB : (aF D (FractionRing V) oa a).left ≫ (DegPre.prB D.toPre (FractionRing V)).left = (DegPre.prB D.toPre (FractionRing V)).left ≫ (oa.onB.act a).left`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, aF_prB, Over.comp_left]`. Establish `hext : ∀ {β : D.toPre.X} {m : ℕ} (s s' : D.toPre.SecB m β), (∀ (y : (DegPre.BF D.toPre (FractionRing V)).left) (J : ((DegPre.BF D.toPre (FractionRing V)).left ⟶ D.toPre.P.A.left) → D.toPre.P.L.ι), Good D.toPre.P.L y J → sval s (DegPre.prB D.toPre (FractionRing V)).left y J = sval …`. Introduce `β m s s' hs j`. Apply `hr_prB_app_injective D` to reduce the goal to its premises. Use `fn_ext fun y hy => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Reduce the conclusion to the remaining proof obligations.
 
-Use `choose I hI using fun ψ : (DegPre.BF D.toPre (FractionRing V)).left ⟶ D.toPre.P.A.left => Geo.Tor.exists_chart hL (ψ y)`. Establish `hIy : Good D.toPre.P.L y I` using `hI`. Establish `hm : (DegPre.prB D.toPre (FractionRing V)).left y ∈ LB.wchart D.toPre.P.L (D.toPre.famφB β) j` using `hy`. Establish `m2` using `hIy.mem (D.toPre.famφB β) (DegPre.prB D.toPre (FractionRing V)).left`. Establish `e1` using `gs_pull (𝟙 _) (DegPre.prB D.toPre (FractionRing V)).left y _ hm (s.f j)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2` using `gs_pull (𝟙 _) (DegPre.prB D.toPre (FractionRing V)).left y _ hm (s'.f j)`. Rewrite `e1`, `e2` using `[Category.id_comp]`. Conclude with `e1.trans ((sec_trans s _ y hm m2).trans ((congrArg _ (hs y I hIy)).trans ((sec_trans s' _ y hm m2).symm.trans e2.symm)))`. Use `⟨fun χ => ?_, fun β hβ j => ?_⟩` and prove the remaining obligations. Take `⟨u, hu, vu⟩` from `exists_gen hL (hr_form oa a k N χ) (LB.mulGen D.toPre.P.L _ _ _ _ X (LB.pullGen D.toPre.P.L _ _ uR (lift (toUnit D.toPre.P.A ≫ D.toPre.c χ) (𝟙 D.toPre.P.A)).left)) (mulGen_isGen _ _ _ _ _ _ _ hX (pullGen_isGen _ _ _ _ huR _))`.
+Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨u, hu, corr_of_val hL fun y J hJ => vu _ (𝟙 _) y J hJ, ?_⟩` and prove the remaining obligations. Take `⟨uF, huF, hnF, hrelF⟩` from `hPA.1 χ`. Establish `hformK : FormEq (fun m => (DegPre.prB D.toPre (FractionRing V)).left ≫ Sum.elim (D.toPre.famφB (star a • χ)) (fun i => (oa.onB.act a).left ≫ D.toPre.famφB χ i) m) (pullε k N) (pullφ D (FractionRing V) oa a χ) (pullε k N)` using `fun U _ h => Finset.prod_congr rfl fun m _ => by`. Break down `m with i | i` into its components or cases. Simplify using `only [Sum.elim_inl, pullφ, GC.famφ_eq]`.
+Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hm : (aF D (FractionRing V) oa a).left ≫ ((DegPre.prB D.toPre (FractionRing V)).left ≫ D.toPre.famφB χ i) = (DegPre.prB D.toPre (FractionRing V)).left ≫ ((oa.onB.act a).left ≫ D.toPre.famφB χ i)`. Rewrite using `[← Category.assoc, haFB, Category.assoc]`. Simplify using `only [Sum.elim_inr, pullφ, GC.famφ_eq, hm]`. Take `⟨u', hu', vu'⟩` from `exists_gen hL hformK (LB.pullGen D.toPre.P.L _ _ u (DegPre.prB D.toPre (FractionRing V)).left) (pullGen_isGen _ _ _ _ hu _)`. Establish `hliftB : (lift (cPB D (FractionRing V) χ) (DegPre.prB D.toPre (FractionRing V))).left = (DegPre.prB D.toPre (FractionRing V)).left ≫ (lift (toUnit D.toPre.P.A ≫ D.toPre.c χ) (𝟙 D.toPre.P.A)).left`.
+Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Over.comp_left, comp_lift, Category.comp_id, ← Category.assoc, comp_toUnit]`. Establish `huF_eq` using `gen_unique hL (fst (TF (R := V) (FractionRing V)) D.toPre.P.A).left (DegPre.zF D.toPre (FractionRing V)).left GC.zF_fst (surj_appTop D.toPre (FractionRing V) hGF) huF hu' (fun y J hJ => by`. Establish `a1` using `val_corr hJ hnF (𝟙 _)`. Rewrite `a1` using `[val_pull hJ, val_pull hJ, Category.id_comp, Category.id_comp]`. Rewrite using `[a1, vu' _ _ y J hJ, val_pull hJ, vu _ _ y J hJ, val_mul hJ, val_pull hJ]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `a2` using `val_corr hJ (rFac_zero_pf (F := FractionRing V) oa a uR huR huR0 χ) (𝟙 _)`. Rewrite `a2` using `[val_pull hJ, val_one, Category.id_comp]`. Unfold `rFac at a2`. Rewrite `a2` using `[val_pull hJ, hliftB, ← Category.assoc]`. Rewrite using `[a2]`.
+Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `Eq.trans ?_ (_root_.mul_one _).symm` and prove the remaining obligations. Establish `a3` using `val_corr hJ hXn (DegPre.jFR (R := V) (FractionRing V))`. Rewrite `a3` using `[val_pull hJ]`. Establish `a4 : val X ((DegPre.zF D.toPre (FractionRing V)).left ≫ (DegPre.prB D.toPre (FractionRing V)).left) y J = val X (DegPre.jFR (R` using `V) (FractionRing V) ≫ eSec D.toPre.P.A) y J := congrArg (fun r => val X r y J) (GC.zF_prB D.toPre (FractionRing V))`. Rewrite using `[a4, a3]`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(map_pow _ _ _).trans ((congrArg (· ^ _) ?_).trans (map_pow _ _ _).symm)` and prove the remaining obligations. Use `show val D.toPre.rigK (jFK (R := V) (FractionRing V)) y J = val D.toPre.rig (DegPre.jFR (R := V) (FractionRing V)) y J`. Rewrite using `[DegPre.rigK, val_pull hJ, GC.toUnit_TK_left])`. Establish `hcanc : FormEq (Sum.elim (fun i => (oa.onB.act a).left ≫ D.toPre.famφB χ i) (Sum.elim (D.toPre.famφB (star a • χ)) (fun i => (oa.onB.act a).left ≫ D.toPre.famφB χ i))) (Sum.elim (DegPre.famε k) (pullε k N)) (D.toPre.famφB (star a • χ)) (DegPre.famε (k * N))` using `fun U _ h => by`. Rewrite using `[Fintype.prod_sum_type, Fintype.prod_sum_type]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Simplify using `only [Sum.elim_inl, Sum.elim_inr, pullε, zpow_neg, Finset.prod_inv_distrib]`. Rewrite using `[mul_left_comm, mul_inv_cancel, _root_.mul_one]`. Take `⟨S2, hS2⟩` from `exists_sec hL hcanc (pullMulSec (f χ) (oa.onB.act a).left u hu)`. Establish `hΛaF : ∀ y : (DegPre.BF D.toPre (FractionRing V)).left, gs (aF D (FractionRing V) oa a).left y ⊤ (scal (DegPre.BF D.toPre (FractionRing V)).hom lam) = gs (𝟙 _) y ⊤ (scal (DegPre.BF D.toPre (FractionRing V)).hom lam)` using `fun y => by`. Establish `e` using `hΛ (𝟙 _) _ haF y`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `e` using `[Category.id_comp]`. Then use the resulting hypothesis. Establish `hS : ∀ j, (f'' (star a • χ)).f j = S2.f j` using `hext _ _ fun y J hJ => by`. Establish `e1` using `hr_secScal_sval (hf'' (star a • χ)) (𝟙 _) y hJ`. Establish `e2` using `hr_secScal_sval (hf χ) (aF D (FractionRing V) oa a).left y hJ`. Establish `e3` using `(secRel_iff hL _ _ _ _ _ _ _ _ _ uF).1 hrelF _ (𝟙 _) y J hJ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e4` using `hS2 _ (DegPre.prB D.toPre (FractionRing V)).left y J hJ`. Rewrite `e4` using `[sval_pullMulSec _ _ _ hu _ y hJ, ← haFB, e2, hΛaF]`. Establish `e5` using `congrArg Units.val (huF_eq _ (𝟙 _) y J hJ)`. Establish `e6` using `vu' _ (𝟙 _) y J hJ`. Rewrite `e6` using `[val_pull hJ, Category.id_comp]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite `e1`, `e3` using `[Category.id_comp]`. Rewrite using `[e1, e3, e4, e5, e6]`. Expand and normalize the polynomial expressions, which then agree. Use `(secRel_iff hL _ _ _ _ _ _ _ _ _ u).2 fun y J hJ => ?_` and prove the remaining obligations. Establish `e` using `hS2 _ (𝟙 _) y J hJ`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite `e` using `[sval_pullMulSec _ _ _ hu _ y hJ]`. Conclude with `(congrArg (gs (𝟙 _) y _) (hS _)).trans e`. Establish `h0 : ∀ j', ((F''.s β).f j') = 0` using `hPA.2 β hβ`. Apply `hr_prB_app_injective D` to reduce the goal to its premises. Rewrite using `[map_zero]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `fn_ext fun y hy => ?_` and prove the remaining obligations. Use `choose I hI using fun ψ : (DegPre.BF D.toPre (FractionRing V)).left ⟶ D.toPre.P.A.left => Geo.Tor.exists_chart hL (ψ y)`. Establish `hIy : Good D.toPre.P.L y I` using `hI`. Establish `hm : (DegPre.prB D.toPre (FractionRing V)).left y ∈ LB.wchart D.toPre.P.L (D.toPre.famφB β) j` using `hy`. Establish `m2` using `hIy.mem (D.toPre.famφB β) (DegPre.prB D.toPre (FractionRing V)).left`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `e1` using `gs_pull (𝟙 _) (DegPre.prB D.toPre (FractionRing V)).left y _ hm ((f'' β).f j)`. Rewrite `e1` using `[Category.id_comp]`. Establish `e` using `hr_secScal_sval (hf'' β) (𝟙 _) y hIy`. Rewrite `e` using `[Category.id_comp]`. Establish `hz : sval (F''.s β) (𝟙 _) y I = 0` using `(congrArg (gs (𝟙 _) y _) (h0 _)).trans (hr_gs_zero _ _ _)`.
-
-Use `e1.trans ((sec_trans (f'' β) _ y hm m2).trans ?_)` and prove the remaining obligations. Use `show _ * sval (f'' β) (DegPre.prB D.toPre (FractionRing V)).left y I = _`. Rewrite using `[e, hz, mul_zero, mul_zero]`. Conclude with `(hr_gs_zero _ _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hrel_integral_pf (hGF : GlobalFnsSt) (oa : D.toPre.OAct O) (a : O) (N : ℕ) (hN : a * star a = (N : O))
     (hN1 : 1 ≤ N) (k : ℕ)

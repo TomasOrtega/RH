@@ -15,17 +15,17 @@ noncomputable section
 namespace GlobalTheory.DRDescent
 
 /- English proof (translation)
-Introduce `K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' l _ P AI hT a r hr O _ _ _ Bw hj`. Take `⟨T⟩` from `hT`. Take `⟨LL₀, Bw', hjj, hS, hKle⟩` from `GlobalTheory.AboveLRes.exists_bridge (L := L) Bw hj Bw.LL`. Establish `hj' : GlobalTheory.Pst.Induces Bw'` using `fun x => by rw [hjj]; exact hj x`. Use `⟨_, _, _, _, Bw', hj', hjj, fun hc => ?_⟩` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hcont : Continuous (fun g => (r g : Matrix (Fin a) (Fin a) (Om l)))` using `Units.continuous_val.comp hr`. Take `⟨M, hM, hmem⟩` from `GlobalTheory.CompactRepField.exists_finExt_entries_mem l (G K Ω) a r hcont Bw'.LL`. Take `⟨r₁, -, hr₁⟩` from `GlobalTheory.DeRhamRead.exists_model_of_mem r hcont M hmem`. Use `set rE : ↥(Dec (F := K) A) →* GL (Fin a) ↥M.1 := r₁.comp (Dec (F := K) A).subtype with hrE`. Establish `hmodE : IsModel Bw (r.comp (Dec (F` using `K) A).subtype) M rE := by`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨hS.trans hM, ?_⟩` and prove the remaining obligations. Use extensionality with `g i k`. Conclude with `congrArg (fun f : G K Ω →* GL (Fin a) (Om l) => ((f (g : G K Ω) : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i k) hr₁`. Establish `hmodL : IsModel Bw' ((resTo L r).comp (Dec (F` using `L) A).subtype) M (rE.comp (GlobalTheory.AboveLRes.decRes A)) := by`. Use `⟨hM, ?_⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use extensionality with `g i k`. Conclude with `congrArg (fun f : G K Ω →* GL (Fin a) (Om l) => ((f ((GlobalTheory.AboveLRes.decRes (K := K) A g : ↥(Dec (F := K) A)) : G K Ω) : GL (Fin a) (Om l)) : Matrix (Fin a) (Fin a) (Om l)) i k) hr₁`. Establish `hrep` using `GlobalTheory.AboveLRes.repE_decRes Bw Bw' hjj hKle M rE`. Establish `hdL : Bw'.IsdRE P M (rE.comp (GlobalTheory.AboveLRes.decRes A))` using `(hmodL.isdRAt_iff P).1 hc`. Establish `hdR' : IsDR (P.PD Bw'.Kw) (GlobalTheory.Pst.resTo (Bw.repE M rE) hKle)`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `IsDR`. Rewrite using `[← hrep, Module.finrank_fin_fun]`. Conclude with `hdL`. Establish `hdR : IsDR (P.PD Bw.Kw) (Bw.repE M rE)` using `(GlobalTheory.Per.TiedRestrict.isDR_restrict_iff hKle (Bw.repE M rE) T).2 hdR'`. Establish `hdK : Bw.IsdRE P M rE`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Supply the required witnesses or components.
 
-Use `hdR` as an intermediate fact. Unfold `IsDR at this`. Rewrite `this` using `[Module.finrank_fin_fun]`. Conclude with `this`. Conclude with `⟨M, rE, hmodE, hdK⟩`.
+A detailed English derivation is pending.
 -/
 theorem deRham_descends : ∀ (K L Ω : Type) [Field Ω] [Field K] [NumberField K] [Algebra K Ω] [IsAlgClosure K Ω] [Field L] [NumberField L] [Algebra L Ω] [IsAlgClosure L Ω] [Algebra K L] [IsScalarTower K L Ω] (A : ValuationSubring Ω) (v : HeightOneSpectrum (𝓞 K)) (v' : HeightOneSpectrum (𝓞 L)) (h : IsPlaceOver A v) (h' : IsPlaceOver A v') (l : ℕ) [Fact l.Prime], ∀ (P : LocPrime l) (AI : LocAinf l P), Nonempty (LocTied l P AI) → ∀ (a : ℕ) (r : G K Ω →* GL (Fin a) (Qbar l)), Continuous r → ∀ (O : Type) [CommRing O] [Algebra ℤ_[l] O] [TopologicalSpace O] (Bw : LocBridge l K Ω (Dec (F := K) A) O), GlobalTheory.Pst.Induces Bw → ∃ (O' : Type) (_ : CommRing O') (_ : Algebra ℤ_[l] O') (_ : TopologicalSpace O') (Bw' : LocBridge l L Ω (Dec (F := L) A) O'), GlobalTheory.Pst.Induces Bw' ∧ Bw'.j = Bw.j ∧ (IsdRAt P Bw' ((resTo L r).comp (Dec (F := L) A).subtype) → IsdRAt P Bw (r.comp (Dec (F := K) A).subtype)) := by
   intro K L Ω _ _ _ _ _ _ _ _ _ _ _ A v v' h h' l _ P AI hT a r hr O _ _ _ Bw hj

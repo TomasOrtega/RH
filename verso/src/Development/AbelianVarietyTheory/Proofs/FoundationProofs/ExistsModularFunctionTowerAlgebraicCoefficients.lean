@@ -27,9 +27,9 @@ open ModularForm (E₄ E₆)
 namespace GlobalTheory.FN
 
 /- English proof (translation)
-Introduce `Ω _ _ _ ε`. Take `⟨T⟩` from `GlobalTheory.T.modularFunctionFractionField_nonempty Ω ε`. Take `⟨a, ha, hinv, h1, h2, h3⟩` from `GlobalTheory.T.exists_jInvariant_in_modularFunctionFractionField Ω ε T`. Establish `hgerm` using `GlobalTheory.T.upperHalfPlane_germ_ringHom_and_restrict`. Establish `hj` using `GlobalTheory.T.lv_jT_one_and_jT_smul_eq`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hhol : DifferentiableOn ℂ (up jT) Hs` using `(hgerm.2.1 jT).1 (GlobalTheory.T.mdifferentiable_of_hasSomeLevelOver ⊤ jT ⟨1, 1, one_pos, (hj ⊤).1⟩)`. Use `⟨{ K := T.K, exp := T.exp, sl := T.sl, sl_one := (GlobalTheory.T.modularFunctionFractionField_sl_rightAction Ω ε T).1, sl_mul := (GlobalTheory.T.modularFunctionFractionField_sl_rightAction Ω ε T).2, gal := T.gal, gal_exp := T.gal_exp, an := T.an, an_c := (GlobalTheory.T.modularFu …` and prove the remaining obligations. Use `show T.an (T.io a) = germ jT`. Rewrite using `[T.an_io, ha]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tower_exists : ∀ (Ω : Type) [Field Ω] [Algebra ℚ Ω] [IsAlgClosure ℚ Ω] (ε : Ω →+* ℂ), ∃ T : Tower Ω ε, IsStd T := by
   intro Ω _ _ _ ε

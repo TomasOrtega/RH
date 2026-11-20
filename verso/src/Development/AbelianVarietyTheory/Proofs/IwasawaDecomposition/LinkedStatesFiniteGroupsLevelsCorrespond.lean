@@ -12,9 +12,9 @@ noncomputable section
 namespace GlobalTheory.HeightCounting.SerMove.GrpsPf
 
 /- English proof (translation)
-Take `⟨P, r⟩` from `B`. Take `⟨P', r'⟩` from `B'`. Simplify using `only at h px px' hp Pg Pg' hPg eG eG' he u u' hu ⊢`. Substitute `h` using the available equality. Consider the cases of `hp`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Consider the cases of `hPg`. Consider the cases of `he`. Consider the cases of `hu`. Both sides reduce to the same expression.
+Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Split into cases according to the possible forms of the given data. Both sides reduce to the same expression.
 -/
 theorem eG_heq (B B' : Base) (h : B'.toPre = B.toPre) (px : PreX B.toPre) (px' : PreX B'.toPre) (hp : HEq px' px)
     (Pg : Finset (Formalism.L2.DIV.Pl B.host.E)) (Pg' : Finset (Formalism.L2.DIV.Pl B'.host.E)) (hPg : HEq Pg' Pg)
@@ -35,13 +35,13 @@ end GlobalTheory.HeightCounting.SerMove.GrpsPf
 namespace GlobalTheory.HeightCounting.SerMove.GrpsPf
 
 /- English proof (translation)
-Take `⟨P, r⟩` from `B`. Take `⟨P', r'⟩` from `B'`. Simplify using `only at h Pg Pg' hPg pw pw' hpw c c' hc hc' ⊢`. Substitute `h` using the available equality. Consider the cases of `hPg`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Simplify by unfolding definitions. Substitute using the available equality. Split into cases according to the possible forms of the given data.
 
-Substitute `hQ` using the available equality. Consider the cases of `hpw`. Apply `heq_of_eq` to reduce the goal to its premises. Take `⟨p, i, h1, h2⟩` from `hc`. Take `⟨p', i', h1', h2'⟩` from `hc'`.
+Substitute using the available equality. Split into cases according to the possible forms of the given data. Reduce the claim to the hypotheses of an applicable result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Take `rfl : p = p'` from `Equiv.ext fun kv => Subtype.ext ((h1 kv).trans (h1' kv).symm)`. Use `MulEquiv.ext fun y => funext fun kv => ?_` and prove the remaining obligations. Establish `h3` using `(h2 y kv).symm.trans (h2' y kv)`. Use `Units.ext (Matrix.ext fun a b => (i' kv).injective ?_)` and prove the remaining obligations. Establish `h4 : (i kv) ((c y kv).1 a b) = (i' kv) ((c' y kv).1 a b)` using `congrArg (fun m : GL _ _ => m.1 a b) h3`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `h5 : (i kv) ((c y kv).1 a b) = (i' kv) ((c y kv).1 a b)` using `RingHom.congr_fun (Subsingleton.elim (i kv).toRingHom (i' kv).toRingHom) _`. Conclude with `h5.symm.trans h4`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem cG_heq (B B' : Base) (h : B'.toPre = B.toPre) (Pg : Finset (Formalism.L2.DIV.Pl B.host.E)) (Pg' : Finset (Formalism.L2.DIV.Pl B'.host.E))
     (hPg : HEq Pg' Pg) (Q Q' : Fin 2 → Type) (hQ : Q = Q') (pw : ∀ k, Q k → Formalism.L2.DIV.Pl B.host.E)
@@ -79,7 +79,7 @@ end GlobalTheory.HeightCounting.SerMove.GrpsPf
 namespace GlobalTheory.HeightCounting.SerMove.GrpsPf
 
 /- English proof (translation)
-Take `⟨plg, iso, h1, -, -, h4⟩` from `z.pins.keep.grp`. Use `⟨plg, iso, h1, fun y kv => ?_⟩` and prove the remaining obligations. Take `⟨u, rfl⟩` from `z.R.eG.surjective y`. Conclude with `h4 u kv`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem cG_read {X : Stages} {px : PreX X.B.toPre} {I : ColIn X.B px} {hX : X.B.fields.Ok} {T : TwDat X.B} {Wt : Set X.B.places.Pl}
     (z : Dat X I hX T Wt) :
@@ -92,9 +92,7 @@ theorem cG_read {X : Stages} {px : PreX X.B.toPre} {I : ColIn X.B px} {hX : X.B.
   exact h4 u kv
 
 /- English proof (translation)
-Introduce `K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a' γ hγ`. Use `⟨fun u => ?_, ?_, fun u => ?_, fun u u' hu => ?_⟩` and prove the remaining obligations. Conclude with `eG_heq B B' l.enl.1 w.px w'.px l.px x.m.z.R.Pg x'.m.z.R.Pg l.extN.Pg x.m.z.R.eG x'.m.z.R.eG l.extN.eG u (γ u) (hγ u)`. Conclude with `cG_heq B B' l.enl.1 x.m.z.R.Pg x'.m.z.R.Pg l.extN.Pg (Dof x).nd.PlG (Dof x').nd.PlG (eq_of_heq l.gal.gal.PlG) (Dof x).naut.plGw (Dof x').naut.plGw l.gal.pl x.m.z.cG x'.m.z.cG (cG_read x.m.z) (cG_read x'.m.z)`. Conclude with `(GlobalTheory.Mem.R3.LevBC.lev_bc B B' l.enl.1 w.px w'.px l.px w.I w'.I w.ok w'.ok ι l.cp.embLL u (γ u) (hγ u)).1.symm`.
-
-Establish `h : HEq (u' : (sideAt x' g' hg' a').Γ) (u : (sideAt x g hg a).Γ)` using `hu ▸ hγ u`. Conclude with `(GlobalTheory.Mem.R3.LevBC.lev_bc B B' l.enl.1 w.px w'.px l.px w.I w'.I w.ok w'.ok ι l.cp.embLL u.1 u'.1 h).2 u.2 u'.2`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem grps_of_link : ∀ {K : Ctx} {B B' : Base} {f : Top.Fr B.toPre} {f' : Top.Fr B'.toPre} {T : TwDat B} {T' : TwDat B'} {w : ColW B f T} {w' : ColW B' f' T'} {P : Pre2 K w} {P' : Pre2 K w'} (x : St P) (x' : St P') (ι : (Dof x).what₂.LL →+* (Dof x').what₂.LL) (e : ↥(Dof x').LL0 ≃+* ↥(Dof x).LL0) (g : Geo x) (g' : Geo x'), Link x x' ι e g g' → ∀ (hg : GlobalTheory.RealGeo.InGeo g) (hg' : GlobalTheory.RealGeo.InGeo g') (a : BigHost (Dof x)) (a' : BigHost (Dof x')), ∀ (γ : (sideAt x g hg a).Γ ≃* (sideAt x' g' hg' a').Γ), (∀ u, HEq (γ u) u) → Grps (sideAt x g hg a) (sideAt x' g' hg' a') ι γ := by
   intro K B B' f f' T T' w w' P P' x x' ι e g g' l hg hg' a a' γ hγ

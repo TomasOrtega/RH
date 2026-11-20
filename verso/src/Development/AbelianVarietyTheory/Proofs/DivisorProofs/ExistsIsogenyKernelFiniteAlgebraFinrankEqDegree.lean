@@ -15,7 +15,7 @@ namespace GlobalTheory.AV.KerPart
 open CategoryTheory.Limits MonoidalCategory
 
 /- English proof (translation)
-Rewrite using `[CategoryTheory.Hom.one_def, Over.comp_left]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem one_left_eq {k : Type} [Field k] {X : Over (Sp k)} [MonObj X] (T : Over (Sp k)) :
     (1 : T ⟶ X).left = T.hom ≫ (MonObj.one : 𝟙_ (Over (Sp k)) ⟶ X).left := by
@@ -23,7 +23,7 @@ theorem one_left_eq {k : Type} [Field k] {X : Over (Sp k)} [MonObj X] (T : Over 
   rfl
 
 /- English proof (translation)
-Rewrite using `[Spec.map_comp, Scheme.isoSpec_hom, ← Category.assoc, ← Scheme.toSpecΓ_naturality, Category.assoc, toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem isoSpec_hom_comp_spec {X : Scheme.{0}} [IsAffine X] {R : CommRingCat.{0}} (g : X ⟶ Spec R) :
     X.isoSpec.hom ≫ Spec.map ((Scheme.ΓSpecIso R).inv ≫ g.appTop) = g := by
@@ -31,31 +31,27 @@ theorem isoSpec_hom_comp_spec {X : Scheme.{0}} [IsAffine X] {R : CommRingCat.{0}
     toSpecΓ_SpecMap_ΓSpecIso_inv, Category.comp_id]
 
 /- English proof (translation)
-Introduce `k _ A B f hf`. Take `⟨-, hflat, -, hrank⟩` from `isogeny_flat_finrank k A B f hf`. Use `haveI : IsFinite f.hom.left := hf.1`. Use `haveI := hflat`. Set `e : Sp k ⟶ B.X.left` to `(MonObj.one : 𝟙_ (Over (Sp k)) ⟶ B.X).left`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `he : e ≫ B.X.hom = 𝟙 _` using `Over.w (MonObj.one : 𝟙_ (Over (Sp k)) ⟶ B.X)`. Set `P` to `pullback f.hom.left e`. Set `g : P ⟶ Sp k` to `pullback.snd f.hom.left e`. Use `haveI : IsAffine P := isAffine_of_isAffineHom g`. Set `H : Type` to `Γ(P, ⊤)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `letI : Algebra k H := ((Scheme.ΓSpecIso (CommRingCat.of k)).inv ≫ g.appTop).hom.toAlgebra`. Establish `hg : P.isoSpec.hom ≫ spMap (algebraMap k H) = g` using `isoSpec_hom_comp_spec g`. Establish `hig : P.isoSpec.inv ≫ g = spMap (algebraMap k H)` using `by rw [← hg, Iso.inv_hom_id_assoc]`. Establish `hw : (P.isoSpec.inv ≫ pullback.fst f.hom.left e) ≫ A.X.hom = spMap (algebraMap k H)`. Rewrite using `[← Over.w f.hom, Category.assoc, pullback.condition_assoc, he, Category.comp_id, hig]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Set `i : ptOver k H ⟶ A.X` to `Over.homMk (P.isoSpec.inv ≫ pullback.fst f.hom.left e) hw`. Establish `hi : i.left = P.isoSpec.inv ≫ pullback.fst f.hom.left e` using `rfl`. Use `⟨H, inferInstance, inferInstance, i, ⟨⟨?_, pow_zero i⟩, ?_⟩, ?_⟩` and prove the remaining obligations. Use `ext1`. Rewrite using `[Over.comp_left, one_left_eq, hi, Category.assoc, pullback.condition, ← Category.assoc, hig]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Both sides reduce to the same expression. Introduce `R _ _ x hx _`. Establish `hx' : x.left ≫ f.hom.left = spMap (algebraMap k R) ≫ e`. Use `congrArg Over.Hom.left hx` as an intermediate fact. Rewrite `this` using `[Over.comp_left, one_left_eq]`.
+Rewrite the indicated hypotheses using the stated equalities. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `this`. Set `l : Sp R ⟶ P` to `pullback.lift x.left (spMap (algebraMap k R)) hx'`. Take `⟨φ0, hφ0⟩` from `Spec.map_surjective (l ≫ P.isoSpec.hom)`. Establish `hc : CommRingCat.ofHom (algebraMap k H) ≫ φ0 = CommRingCat.ofHom (algebraMap k R)`. Apply `Spec.map_injective` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[Spec.map_comp, hφ0, Category.assoc, hg]`. Conclude with `pullback.lift_snd _ _ _`. Set `φ : H →ₐ[k] R` to `{ φ0.hom with commutes' := fun c => congrArg (fun u => u.hom c) hc }`. Establish `hφ : spMap φ.toRingHom = l ≫ P.isoSpec.hom` using `hφ0`. Use `⟨φ, ?_, fun ψ hψ => ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `spMap φ.toRingHom ≫ i.left = x.left`. Rewrite using `[hφ, hi, Category.assoc, Iso.hom_inv_id_assoc]`. Conclude with `pullback.lift_fst _ _ _`. Establish `h1 : spMap ψ.toRingHom ≫ P.isoSpec.inv = l`. Apply `pullback.hom_ext` to reduce the goal to its premises.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Rewrite using `[Category.assoc, ← hi]`. Conclude with `hψ.trans (pullback.lift_fst _ _ _).symm`. Rewrite using `[Category.assoc, hig, pullback.lift_snd]`. Express the relevant statement in the definitionally equal form `Spec.map _ ≫ Spec.map _ = Spec.map _`. Rewrite using `[← Spec.map_comp]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Use `congr 1`. Use extensionality with `c`. Conclude with `ψ.commutes c`. Establish `h2 : spMap ψ.toRingHom = spMap φ.toRingHom`. Rewrite using `[hφ, ← h1, Category.assoc, Iso.inv_hom_id, Category.comp_id]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `h3` using `Spec.map_injective h2`. Conclude with `AlgHom.ext fun a => congrArg (fun u => u.hom a) h3`. Use `haveI : IsFinite (spMap (algebraMap k H)) := by rw [← hig]; infer_instance haveI : Flat (spMap (algebraMap k H)) := by rw [← hig]; infer_instance haveI : Module.Finite k H := by`. Rewrite using `[← RingHom.finite_algebraMap]`. Conclude with `(IsFinite.SpecMap_iff _).1 ‹_›`.
-
-Set `pt : Sp k` to `IsLocalRing.closedPoint k`. Establish `h1` using `Scheme.Hom.finrank_pullback_snd f.hom.left e pt`. Rewrite `h1` using `[hrank]`. Rewrite using `[← h1]`. Express the relevant statement in the definitionally equal form `_ = Scheme.Hom.finrank g pt`.
-
-Rewrite using `[← hg, Scheme.Hom.finrank_comp_left_of_isIso, Scheme.Hom.finrank_SpecMap_algebraMap, Module.rankAtStalk_eq_finrank_of_free]`. Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem exists_kerPow_zero_finrank_eq_deg : ∀ (k : Type) [Field k] (A B : AbVar k) (f : A ⟶ B), IsIsogeny f →
     ∃ (H : Type) (_ : CommRing H) (_ : Algebra k H) (i : ptOver k H ⟶ A.X),

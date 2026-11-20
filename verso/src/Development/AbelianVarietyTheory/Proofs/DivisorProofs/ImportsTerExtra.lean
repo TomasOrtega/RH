@@ -7,7 +7,7 @@ open NumberField
 namespace GlobalTheory.StarIntegralityLemmas
 
 /- English proof (translation)
-Establish `hi : IsIntegral ℤ (star (r : K))`. Use `(RingOfIntegers.isIntegral_coe r).map (starRingEnd K).toIntAlgHom` as an intermediate fact. Simplify `this` using `[starRingEnd_apply]`. Conclude with `⟨⟨star (r : K), (mem_integralClosure_iff ℤ K).mpr hi⟩, rfl⟩`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Supply the required witnesses or components.
 -/
 theorem star_int {K : Type} [Field K] [NumberField K] [StarRing K] (r : 𝓞 K) :
     ∃ r' : 𝓞 K, (r' : K) = star (r : K) := by
@@ -17,17 +17,17 @@ theorem star_int {K : Type} [Field K] [NumberField K] [StarRing K] (r : 𝓞 K) 
   exact ⟨⟨star (r : K), (mem_integralClosure_iff ℤ K).mpr hi⟩, rfl⟩
 
 /- English proof (translation)
-Introduce `K _ _ _ d h T hT x`. Take `⟨S, rfl⟩` from `hT`. Take `⟨b, hb⟩` from `IsLocalization.exist_integer_multiples_of_finset (nonZeroDivisors (𝓞 K)) (S.image fun v => h v x)`. Use `⟨(b : 𝓞 K), nonZeroDivisors.coe_ne_zero b, ?_⟩` and prove the remaining obligations. Establish `key : ∀ y : Fin d → K, h y ((b : 𝓞 K) • x) = algebraMap (𝓞 K) K (b : 𝓞 K) * h y x`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Introduce `y`. Rewrite using `[← algebraMap_smul K (b : 𝓞 K) x, map_smul, smul_eq_mul]`. Unfold `Formalism.HermitianLatticesTheory.dual Formalism.E.hdual`. Simplify using `only [Submodule.mem_iInf, Submodule.mem_comap, LinearMap.coe_restrictScalars]`. Introduce `y hy`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Proceed by induction on `hy using Submodule.span_induction with`. Consider the case `mem v hv`. Take `⟨c, hc⟩` from `hb (h v x) (Finset.mem_image_of_mem _ hv)`. Rewrite using `[key, Submodule.mem_one]`. Use `⟨c, ?_⟩` and prove the remaining obligations.
+Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hc, Algebra.smul_def]`. Consider the case `zero => simp`. Consider the case `add u w _ _ hu hw`. Rewrite using `[map_add, LinearMap.add_apply]`. Conclude with `Submodule.add_mem _ hu hw`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `smul r u _ hu`. Take `⟨r', hr'⟩` from `star_int r`. Rewrite using `[← algebraMap_smul K r u, LinearMap.map_smulₛₗ, LinearMap.smul_apply, smul_eq_mul, starRingEnd_apply]`. Take `⟨c, hc⟩` from `Submodule.mem_one.mp hu`. Rewrite using `[Submodule.mem_one]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨r' * c, ?_⟩` and prove the remaining obligations. Rewrite using `[map_mul, hc]`. Simplify using `[hr']`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem main : ∀ {K : Type} [inst : Field K] [NumberField K] [inst_2 : StarRing K] {d : ℕ}
     (h : (Fin d → K) →ₗ⋆[K] (Fin d → K) →ₗ[K] K)

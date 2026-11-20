@@ -6,11 +6,11 @@ open MeasureTheory ValuativeRel Matrix GlobalTheory.PRep GlobalTheory.SplitWeil 
 namespace GlobalTheory.ParHecke
 
 /- English proof (translation)
-Introduce `k _ _ _ _ A D _ _ _ _ ϖ H hH`. Use `⟨fun κ hκ g => ?_, fun e => ?_⟩` and prove the remaining obligations. Establish `hK : emb₂ k (Equiv.refl (A ⊕ D)) (1, κ) ∈ KO k (A ⊕ D)` using `(mem_parahoric.1 (GlobalTheory.ChainStepSupp.emb₂_mem_parahoric (one_mem _) hκ)).1`. Establish `e1 : emb₂ k (Equiv.refl (A ⊕ D)) (1, κ * g) = emb₂ k (Equiv.refl (A ⊕ D)) (1, κ) * emb₂ k (Equiv.refl (A ⊕ D)) (1, g)`. Rewrite using `[← map_mul]`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Establish `e2 : emb₂ k (Equiv.refl (A ⊕ D)) (1, g * κ) = emb₂ k (Equiv.refl (A ⊕ D)) (1, g) * emb₂ k (Equiv.refl (A ⊕ D)) (1, κ)`. Rewrite using `[← map_mul]`. Simplify using the standard rewrite rules. Conclude with `⟨by simp only [e1]; exact (hH.1 _ hK _).1, by simp only [e2]; exact (hH.1 _ hK _).2⟩`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Supply the required witnesses or components.
 
-Use `show H (emb₂ k (Equiv.refl (A ⊕ D)) (1, torusElt k D ϖ e)) = _`. Rewrite using `[GlobalTheory.ChainStepSupp.emb₂_one_torusElt, mtor, hH.2]`. Use `congr 2`. Simplify using `[sumAbs, Fintype.sum_sum_type]`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isHgt_lower : ∀ (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] (A D : Type) [Fintype A] [DecidableEq A] [Fintype D] [DecidableEq D] (ϖ : kˣ) (H : GL (A ⊕ D) k → ℝ), IsHgt ϖ H → IsHgt ϖ (fun m : GL D k => H (emb₂ k (Equiv.refl (A ⊕ D)) (1, m))) := by
   intro k _ _ _ _ A D _ _ _ _ ϖ H hH

@@ -16,19 +16,19 @@ open GlobalTheory.SmoothGlob (lieSet)
 namespace GlobalTheory.GKLie
 
 /- English proof (translation)
-Introduce `κ hκ X hX v hv`. Establish `h1 : κᴴ * κ = 1` using `Matrix.mem_unitaryGroup_iff'.1 hκ.1`. Establish `h2 : κ * κᴴ = 1` using `Matrix.mem_unitaryGroup_iff.1 hκ.1`. Establish `hu : IsUnit κ` using `IsUnit.of_mul_eq_one _ h2`. Establish `hinv : κ⁻¹ * κ = 1` using `Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det κ).1 hu)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hκU : κ ∈ UJset ε`. Express the relevant statement in the definitionally equal form `κᴴ * Jm ε * κ = Jm ε`. Rewrite using `[Matrix.mul_assoc, ← hκ.2, ← Matrix.mul_assoc, h1, Matrix.one_mul]`. Establish `hmul : ∀ a ∈ UJset ε, ∀ b ∈ UJset ε, a * b ∈ UJset ε` using `fun a ha b hb => by`. Express the relevant statement in the definitionally equal form `(a * b)ᴴ * Jm ε * (a * b) = Jm ε`.
+Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Establish `ha' : aᴴ * Jm ε * a = Jm ε` using `ha`. Establish `hb' : bᴴ * Jm ε * b = Jm ε` using `hb`. Rewrite using `[Matrix.conjTranspose_mul]`. Combine the equalities or inequalities in the displayed calculation. Establish `hE : ∀ t : ℝ, NormedSpace.exp (t • X) ∈ UJset ε` using `fun t => GlobalTheory.GardingVec.exp_mem (IsUnit.of_mul_eq_one _ (Jm_mul_self ε)) hX t`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Establish `hinvU : κ⁻¹ ∈ UJset ε`. Establish `hκinv : κ⁻¹ = κᴴ` using `Matrix.inv_eq_left_inv h1`. Rewrite using `[hκinv]`. Express the relevant statement in the definitionally equal form `κᴴᴴ * Jm ε * κᴴ = Jm ε`. Rewrite using `[Matrix.conjTranspose_conjTranspose, hκ.2, Matrix.mul_assoc, h2, Matrix.mul_one]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Establish `hfun : (fun t : ℝ => ρ (NormedSpace.exp (t • (κ * X * κ⁻¹))) (ρ κ v)) = fun t : ℝ => ρ κ (ρ (NormedSpace.exp (t • X)) v)`. Use function extensionality and compare the values at `t`. Establish `hc : NormedSpace.exp (t • (κ * X * κ⁻¹)) = κ * NormedSpace.exp (t • X) * κ⁻¹`. Rewrite using `[← Matrix.exp_conj _ _ hu, Matrix.mul_smul, Matrix.smul_mul]`. Rewrite using `[hc]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `hA : κ * NormedSpace.exp (t • X) * κ⁻¹ ∈ UJset ε` using `hmul _ (hmul _ hκU _ (hE t)) _ hinvU`. Rewrite using `[← ContinuousLinearMap.comp_apply, ← hρ.2 _ hA _ hκU, Matrix.mul_assoc _ κ⁻¹ κ, hinv, Matrix.mul_one, hρ.2 _ hκU _ (hE t), ContinuousLinearMap.comp_apply]`. Unfold `dRep`. Rewrite using `[hfun]`. Establish `hd` using `(differentiableAt_orbit hv hX).hasDerivAt`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hL : HasFDerivAt (ρ κ) ((ρ κ).restrictScalars ℝ) (ρ (NormedSpace.exp ((0 : ℝ) • X)) v)` using `((ρ κ).restrictScalars ℝ).hasFDerivAt`. Conclude with `(hL.comp_hasDerivAt (0 : ℝ) hd).deriv`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem dRep_conj_Kset (n : ℕ) (ε : Fin n → Bool) (H : Type) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     (ρ : Matrix (Fin n) (Fin n) ℂ → (H →L[ℂ] H)) (hρ : Formalism.QuantumDeterminants.IsCRepOn (Formalism.MainNotions.S.UJset ε) ρ) :

@@ -9,7 +9,7 @@ import Development.AutomorphicSpectrum.Proofs.BlockDecomposition.SemisimpleClass
 namespace PositivityTheory.RgBcC.RealD
 
 /- English proof (translation)
-The claim follows from `multFor_of GlobalTheory.T.invariant_pick_real GlobalTheory.T.levi_stability_real GlobalTheory.T.levi_relations_real GlobalTheory.T.semisimple_classification_real hCC GlobalTheory.T.commutant_reduction_real GlobalTheory.T.scalar_action_fifth_real`.
+A detailed English derivation is pending.
 -/
 theorem multFor_of_capCls (hCC : CapCls) : MultFor :=
   multFor_of GlobalTheory.T.invariant_pick_real GlobalTheory.T.levi_stability_real GlobalTheory.T.levi_relations_real GlobalTheory.T.semisimple_classification_real hCC GlobalTheory.T.commutant_reduction_real GlobalTheory.T.scalar_action_fifth_real

@@ -14,15 +14,15 @@ namespace GlobalTheory.MinorFrame.AvgCore
 variable {ι : Type} [Fintype ι] {a d : ℕ}
 
 /- English proof (translation)
-Proceed by induction on `P using MvPolynomial.induction_on with`. Consider the case `C c`. Introduce `Q`. Establish `h : ∀ G : ι → Fin a → Fin a → ℂ, colSub (d` using `d) (fun τ => Matrix.of (G τ)) (C c) = C c := by`. Introduce `G`.
+Proceed by induction. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[colSub, MvPolynomial.algebraMap_eq]`. Simplify using `only [h]`. Conclude with `continuous_const`. Consider the case `add p q hp hq`. Introduce `Q`.
+Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_add, add_mul]`. Conclude with `(hp Q).add (hq Q)`. Consider the case `mul_X p y hp`. Introduce `Q`. Establish `h : ∀ G : ι → Fin a → Fin a → ℂ, Λ (colSub (fun τ => Matrix.of (G τ)) (p * X y) * Q) = ∑ j' : Fin a, G y.1 j' y.2.2 * Λ (colSub (fun τ => Matrix.of (G τ)) p * (X (y.1, y.2.1, j') * Q))`.
+Treat this case separately. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Introduce `G`. Establish `hX : colSub (d` using `d) (fun τ => Matrix.of (G τ)) (X y) = ∑ j' : Fin a, C (G y.1 j' y.2.2) * X (y.1, y.2.1, j') := by`. Simplify using `[colSub]`. Rewrite using `[map_mul (colSub (fun τ => Matrix.of (G τ))) p (X y), hX, Finset.mul_sum, Finset.sum_mul, map_sum]`. Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[show colSub (fun τ => Matrix.of (G τ)) p * (C (G y.1 j y.2.2) * X (y.1, y.2.1, j)) * Q = C (G y.1 j y.2.2) * (colSub (fun τ => Matrix.of (G τ)) p * (X (y.1, y.2.1, j) * Q)) by ring, ← smul_eq_C_mul, map_smul, smul_eq_mul]`. Simplify using `only [h]`. Use `continuous_finset_sum _ fun j _ => ?_` and prove the remaining obligations. Conclude with `Continuous.mul (by fun_prop) (hp _)`.
+Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_colSub_mul (Λ : Pol ι d a →ₗ[ℂ] ℂ) (P : Pol ι d a) : ∀ Q : Pol ι d a,
     Continuous (fun G : ι → Fin a → Fin a → ℂ => Λ (colSub (fun τ => Matrix.of (G τ)) P * Q)) := by
@@ -55,21 +55,19 @@ theorem continuous_colSub_mul (Λ : Pol ι d a →ₗ[ℂ] ℂ) (P : Pol ι d a)
     exact Continuous.mul (by fun_prop) (hp _)
 
 /- English proof (translation)
-Conclude with `CStarRing.norm_of_mem_unitary (Matrix.det_of_mem_unitary u.2)`.
+A detailed English derivation is pending.
 -/
 theorem norm_det_unitary (u : Matrix.unitaryGroup (Fin a) ℂ) : ‖(u : Matrix (Fin a) (Fin a) ℂ).det‖ = 1 := by
   exact CStarRing.norm_of_mem_unitary (Matrix.det_of_mem_unitary u.2)
 
 /- English proof (translation)
-Set `F : (ι → Fin a → Fin a → ℂ) → ℂ` to `fun G => Λ (colSub (fun τ => Matrix.of (G τ)) P)`. Establish `hF : Continuous F` using `by simpa [F] using continuous_colSub_mul Λ P 1`. Set `e : K → (ι → Fin a → Fin a → ℂ)` to `fun g τ i j => (ρ g τ : Matrix (Fin a) (Fin a) ℂ) i j`. Establish `he : Measurable e` using `measurable_pi_lambda _ fun τ => measurable_pi_lambda _ fun i => measurable_pi_lambda _ fun j => hmeas τ i j`. Establish `hFe : ∀ g, Λ (colSub (fun τ => (ρ g τ : Matrix (Fin a) (Fin a) ℂ)) P) = F (e g)` using `fun g => rfl`.
+Introduce a local definition for the expression. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hdetc : ∀ τ, Continuous fun G : ι → Fin a → Fin a → ℂ => (Matrix.of (G τ)).det` using `fun τ => Continuous.matrix_det (continuous_apply τ)`. Establish `hdete : ∀ g τ, (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det = (Matrix.of (e g τ)).det` using `fun g τ => rfl`. Take `⟨C, hC⟩` from `(isCompact_closedBall (0 : ι → Fin a → Fin a → ℂ) 1).exists_bound_of_continuousOn hF.continuousOn`. Establish `hball : ∀ g, e g ∈ Metric.closedBall (0 : ι → Fin a → Fin a → ℂ) 1`. Introduce `g`.
+Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[mem_closedBall_zero_iff]`. Use `(pi_norm_le_iff_of_nonneg zero_le_one).2 fun τ => (pi_norm_le_iff_of_nonneg zero_le_one).2 fun i => (pi_norm_le_iff_of_nonneg zero_le_one).2 fun j => entry_norm_bound_of_unitary (ρ g τ).2 i j` and prove the remaining obligations. Use `Integrable.of_bound ?_ C (Filter.Eventually.of_forall fun g => ?_)` and prove the remaining obligations. Use `Measurable.aestronglyMeasurable ?_` and prove the remaining obligations. Simplify using `only [hFe, hdete]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `Measurable.mul ?_ (hF.measurable.comp he)` and prove the remaining obligations. Use `Finset.measurable_prod _ fun τ _ => ?_` and prove the remaining obligations. Conclude with `Measurable.pow_const ((hdetc τ).measurable.comp he) _`. Rewrite using `[norm_mul, norm_prod]`. Simplify using `only [norm_zpow, norm_det_unitary, one_zpow, Finset.prod_const_one, one_mul, hFe]`.
-
-Conclude with `hC _ (hball g)`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem integrable_avg {K : Type} [Group K] [MeasurableSpace K] (ν : Measure K) [IsFiniteMeasure ν]
     (ρ : K →* (ι → Matrix.unitaryGroup (Fin a) ℂ))
@@ -103,29 +101,25 @@ theorem integrable_avg {K : Type} [Group K] [MeasurableSpace K] (ν : Measure K)
     exact hC _ (hball g)
 
 /- English proof (translation)
-Introduce `ι _ a d m`. Use `⟨fun τ => (-m τ).toNat, ?_⟩` and prove the remaining obligations. Introduce `K _ _ ν hP hInv ρ hmeas hsurj Λ k`. Use `haveI := hP`. Distinguish the cases in `hpos : 0 < a ∧ ∃ τ₀, 0 < m τ₀`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Take `⟨ha, τ₀, hτ₀⟩` from `hpos`. Use `⟨0, Fin.elim0, Fin.elim0, fun p => p.elim0, ?_⟩` and prove the remaining obligations. Rewrite using `[GlobalTheory.T.integral_detCharacter_fockColumnSubstitution_eq_zero a d m τ₀ ha hτ₀ ν hP hInv ρ hmeas hsurj Λ _]`. Simplify using the standard rewrite rules. Take `⟨M, r, U, hR⟩` from `GlobalTheory.T.exists_rational_fock_projection_maximal_minors (ι := ι) a d (fun τ => (-m τ).toNat) k`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨M, fun p => ((r p : ℚ) : ℂ), U, fun p => isAlgebraic_ratCast ℚ (r p), ?_⟩` and prove the remaining obligations. Use `set R : Pol ι d a := MvPolynomial.monomial k 1 - ∑ p, ((r p : ℚ) : ℂ) • prodMinors (U p) with hRdef`. Establish `hperp : ∀ I ∈ inv a d (fun τ => (-m τ).toNat), Formalism.L2.DIV.fockS I R = 0`. Introduce `I hI`. Establish `hspan` using `GlobalTheory.T.fockDetCharInvariants_le_span_prodMaximalMinors a d (fun τ => (-m τ).toNat) hI`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Proceed by induction. Treat this case separately.
 
-Use `clear hI`. Use `show Formalism.L2.DIV.fockL I R = 0`. Proceed by induction on `hspan using Submodule.span_induction with`. Consider the case `mem x hx => obtain ⟨T, rfl⟩ := hx`. Conclude with `hR T`.
+Treat this case separately. Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Consider the case `zero => rw [map_zero, LinearMap.zero_apply]`. Consider the case `add x y _ _ hx hy => rw [map_add, LinearMap.add_apply, hx, hy, add_zero]`. Consider the case `smul c x _ hx => rw [map_smulₛₗ, LinearMap.smul_apply, hx, smul_zero]`. Establish `h0` using `GlobalTheory.T.unitaryAverage_kills_fock_complement_relInvariants a d (fun τ => (-m τ).toNat) ν hP hInv ρ hmeas hsurj Λ R hperp`. Establish `hdet0 : ∀ g τ, (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det ≠ 0` using `fun g τ => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis.
 
-Rewrite using `[← norm_ne_zero_iff, norm_det_unitary]`. Conclude with `one_ne_zero`. Establish `hD : ∀ g, (∏ τ, (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det ^ (m τ)) = ∏ τ, (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det ^ (-(((-m τ).toNat : ℕ) : ℤ))`. Introduce `g`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Rewrite the conclusion using the stated equalities.
 
-Break down `Nat.eq_zero_or_pos a with ha | ha` into its components or cases. Substitute `ha` using the available equality. Simplify using `[Matrix.det_fin_zero]`. Establish `hm : m τ ≤ 0`. Assume the negation of the conclusion as `h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hpos ⟨ha, τ, by omega⟩`. Rewrite using `[Int.toNat_of_nonneg (by omega), neg_neg]`. Establish `hinv : ∀ g, (∏ τ, (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det ^ (-(((-m τ).toNat : ℕ) : ℤ))) * detChar (fun τ => (-m τ).toNat) (fun τ => (ρ g τ : Matrix (Fin a) (Fin a) ℂ)) = 1`. Introduce `g`. Unfold `detChar`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Establish an intermediate fact.
 
-Rewrite using `[← Finset.prod_mul_distrib]`. Use `Finset.prod_eq_one fun τ _ => ?_` and prove the remaining obligations. Rewrite using `[zpow_neg, zpow_natCast, inv_mul_cancel₀ (pow_ne_zero _ (hdet0 g τ))]`. Establish `hmono : MvPolynomial.monomial k 1 = ∑ p, ((r p : ℚ) : ℂ) • prodMinors (U p) + R`. Rewrite using `[hRdef]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Normalize the expressions using the abelian group laws. Establish `hpoint : ∀ g, (∏ τ, (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det ^ (m τ)) * Λ (colSub (fun τ => (ρ g τ : Matrix (Fin a) (Fin a) ℂ)) (MvPolynomial.monomial k 1)) = ∑ p, ((r p : ℚ) : ℂ) * Λ (prodMinors (U p)) + (∏ τ, (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det ^ (-(((-m τ).toNat : ℕ) : ℤ))) * …`. Introduce `g`. Rewrite using `[hD g, hmono, map_add, map_sum, map_add, map_sum, mul_add, Finset.mul_sum]`. Use `congr 1`.
-
-Use `Finset.sum_congr rfl fun p _ => ?_` and prove the remaining obligations. Rewrite using `[map_smul, colSub_prodMinors, smul_smul, map_smul, smul_eq_mul]`. Rewrite using `[show (∏ τ, (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det ^ (-(((-m τ).toNat : ℕ) : ℤ))) * ((((r p : ℚ) : ℂ) * detChar (fun τ => (-m τ).toNat) (fun τ => (ρ g τ : Matrix (Fin a) (Fin a) ℂ))) * Λ (prodMinors (U p))) = ((∏ τ, (ρ g τ : Matrix (Fin a) (Fin a) ℂ).det ^ (-(((-m τ).toNat : ℕ) : …`. Use `(integral_congr_ae (Filter.Eventually.of_forall hpoint)).trans ?_` and prove the remaining obligations. Rewrite using `[integral_add (integrable_const _) (integrable_avg ν ρ hmeas _ Λ R), integral_const, h0]`.
-
-Simplify using the standard rewrite rules.
+Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem average_monomial_eq_sum_prodMinors : ∀ {ι : Type} [Fintype ι] (a d : ℕ) (m : ι → ℤ), ∃ n : ι → ℕ,
   ∀ {K : Type} [Group K] [MeasurableSpace K] (ν : Measure K), IsProbabilityMeasure ν → ν.IsMulLeftInvariant →

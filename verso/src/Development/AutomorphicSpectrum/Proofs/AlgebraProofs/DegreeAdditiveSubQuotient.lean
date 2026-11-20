@@ -10,19 +10,17 @@ open GlobalTheory.CompanionTheory.Ar.Crv
 namespace GlobalTheory.CompanionTheory.Ar.Crv.SubQuotDeg
 
 /- English proof (translation)
-Establish `h1 : ∀ (i : Fin m) (x : W), b.repr (x : V) (Fin.castAdd _ i) = bW.repr x i`. Introduce `i x`. Establish `: (b.coord (Fin.castAdd _ i)).comp W.subtype = bW.coord i`. Use `bW.ext fun j => ?_` and prove the remaining obligations. Simplify using `only [LinearMap.comp_apply, Submodule.subtype_apply, Module.Basis.coord_apply, ← hb1, Module.Basis.repr_self, Finsupp.single_apply, Fin.castAdd_inj]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Conclude with `LinearMap.congr_fun this x`. Establish `h2 : ∀ (i : Fin n) (x : V), b.repr x (Fin.natAdd _ i) = bQ.repr (W.mkQ x) i`. Introduce `i x`. Establish `: b.coord (Fin.natAdd _ i) = (bQ.coord i).comp W.mkQ`. Use `b.ext fun j => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use `Fin.addCases (fun j => ?_) (fun j => ?_) j` and prove the remaining obligations. Establish `h0 : W.mkQ (b (Fin.castAdd n j)) = 0`. Rewrite using `[hb1]`. Simplify using the standard rewrite rules. Establish `hne : Fin.castAdd n j ≠ Fin.natAdd m i`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `at this`. Use linear arithmetic over natural numbers and integers. Simplify using `only [LinearMap.comp_apply, Module.Basis.coord_apply, h0, map_zero, Module.Basis.repr_self, Finsupp.single_apply, hne, if_false, Finsupp.coe_zero, Pi.zero_apply]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `only [LinearMap.comp_apply, Module.Basis.coord_apply, hb2, Module.Basis.repr_self, Finsupp.single_apply, Fin.natAdd_inj]`. Conclude with `LinearMap.congr_fun this x`. Establish `key : (b.toMatrix c).submatrix finSumFinEquiv finSumFinEquiv = Matrix.fromBlocks (bW.toMatrix cW) (Matrix.of fun i j => b.repr (c (Fin.natAdd _ j)) (Fin.castAdd _ i)) 0 (bQ.toMatrix cQ)`. Use extensionality with `(i | i) (j | j)`. Simplify using `[Module.Basis.toMatrix_apply, hc1, h1]`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Module.Basis.toMatrix_apply]`. Simplify using `only [Matrix.submatrix_apply, finSumFinEquiv_apply_right, finSumFinEquiv_apply_left, Module.Basis.toMatrix_apply, hc1, h2, Matrix.fromBlocks_apply₂₁, Matrix.zero_apply]`. Rewrite using `[Submodule.mkQ_apply, (Submodule.Quotient.mk_eq_zero W).2 (cW j).2]`. Simplify using the standard rewrite rules. Simplify using `only [Matrix.submatrix_apply, finSumFinEquiv_apply_right, Module.Basis.toMatrix_apply, hc2, h2, Matrix.fromBlocks_apply₂₂]`.
-
-Rewrite using `[Module.Basis.det_apply, Module.Basis.det_apply, Module.Basis.det_apply, ← Matrix.det_submatrix_equiv_self finSumFinEquiv, key, Matrix.det_fromBlocks_zero₂₁]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem det_adapted {K V : Type} [Field K] [AddCommGroup V] [Module K V] (W : Submodule K V)
     {m n : ℕ} (bW cW : Module.Basis (Fin m) K W) (bQ cQ : Module.Basis (Fin n) K (V ⧸ W))
@@ -72,13 +70,13 @@ theorem det_adapted {K V : Type} [Field K] [AddCommGroup V] [Module K V] (W : Su
     ← Matrix.det_submatrix_equiv_self finSumFinEquiv, key, Matrix.det_fromBlocks_zero₂₁]
 
 /- English proof (translation)
-Introduce `K _ C V _ _ _ L W hL`. Break down `isEmpty_or_nonempty C.I with hI | ⟨⟨i₀⟩⟩` into its components or cases. Simplify using `[subDeg, deg, finsum_of_isEmpty]`. Establish `hex` using `fun i => (hL.1 i).elim fun b hb => GlobalTheory.T.lattice_basis_adapted_to_subspace K C V i _ b (L i) W hb`. Use `choose bW bQ b hb hbW hbQ h1 h2 using hex`.
+Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Simplify using the standard rewrite rules. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hS, hQ⟩` from `GlobalTheory.T.sub_and_quotient_bundles K C V L W hL`. Take `⟨-, eL⟩` from `GlobalTheory.T.bundle_degree_eq_sum_valuations K C V L _ (b i₀) b hL hb`. Take `⟨fS, eS⟩` from `GlobalTheory.T.bundle_degree_eq_sum_valuations K C W (sub C L W) _ (bW i₀) bW hS hbW`. Take `⟨fQ, eQ⟩` from `GlobalTheory.T.bundle_degree_eq_sum_valuations K C (V ⧸ W) (quot C L W) _ (bQ i₀) bQ hQ hbQ`. Rewrite using `[subDeg, eL, eS, eQ, ← finsum_add_distrib]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `finsum_congr fun i => ?_` and prove the remaining obligations. Rewrite using `[det_adapted W (bW i₀) (bW i) (bQ i₀) (bQ i) (b i₀) (b i) (h1 i₀) (h2 i₀) (h1 i) (h2 i), map_mul, WithZero.log_mul, mul_add]`. Conclude with `(C.v i).ne_zero_iff.2 ((bW i₀).isUnit_det (bW i)).ne_zero`. Conclude with `(C.v i).ne_zero_iff.2 ((bQ i₀).isUnit_det (bQ i)).ne_zero`. Use `fS.subset fun i hi h => hi ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [h, WithZero.log_one, mul_zero]`. Use `fQ.subset fun i hi h => hi ?_` and prove the remaining obligations. Simplify using `only [h, WithZero.log_one, mul_zero]`.
+A detailed English derivation is pending.
 -/
 theorem deg_eq_subDeg_add_deg_quot : ∀ (K : Type) [Field K] (C : ACurve K) (V : Type)
     [AddCommGroup V] [Module K V] [FiniteDimensional K V] (L : C.I → AddSubgroup V)

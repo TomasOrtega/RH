@@ -19,7 +19,7 @@ namespace ReciprocityTheory.ChartRestriction.G.Out.CubePf
 open Semi
 
 /- English proof (translation)
-Proceed by induction on `s using Finset.cons_induction with`. Consider the case `empty => simp`. Consider the case `cons k s hk ih => rw [Finset.sum_cons, Finset.prod_cons, zpow_add, ih]`.
+Proceed by induction. Treat this case separately. Treat this case separately.
 -/
 theorem zpow_sum' {M : Type} [CommGroup M] {K : Type} (a : M) (s : Finset K) (f : K → ℤ) :
     a ^ (∑ k ∈ s, f k) = ∏ k ∈ s, a ^ f k := by
@@ -28,11 +28,11 @@ theorem zpow_sum' {M : Type} [CommGroup M] {K : Type} (a : M) (s : Finset K) (f 
   | cons k s hk ih => rw [Finset.sum_cons, Finset.prod_cons, zpow_add, ih]
 
 /- English proof (translation)
-Establish `key : ∀ {L : Type} [Fintype L] (g : L → (Y ⟶ X)) (e : L → ℤ) (S : Finset (Y ⟶ X)), (∀ k, g k ∈ S) → ∏ k, B (g k) ^ e k = ∏ φ ∈ S, B φ ^ (∑ k, if g k = φ then e k else 0)`. Introduce `L _ g e S hS`. Rewrite using `[← Finset.prod_fiberwise_of_maps_to (g := g) (t := S) (fun k _ => hS k)]`. Use `Finset.prod_congr rfl (fun φ _ => ?_)` and prove the remaining obligations. Rewrite using `[zpow_sum', Finset.prod_filter]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl (fun k _ => ?_)` and prove the remaining obligations. Use `split_ifs with hk`. Rewrite using `[hk]`. Simplify using the standard rewrite rules. Rewrite using `[key ψ ε (Finset.univ.image ψ ∪ Finset.univ.image ψ') (fun k => Finset.mem_union_left _ (Finset.mem_image_of_mem _ (Finset.mem_univ _))), key ψ' ε' (Finset.univ.image ψ ∪ Finset.univ.image ψ') (fun k => Finset.mem_union_right _ (Finset.mem_image_of_mem _ (Finset.mem_univ _)))]`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `Finset.prod_congr rfl (fun φ _ => ?_)` and prove the remaining obligations. Use `congr 1`. Use `first`. Consider the case `exact hS φ`. Consider the case `convert hS φ`.
+Reduce the equality to equality of the corresponding arguments. Treat this case separately. Treat this case separately. A detailed English derivation is pending.
 -/
 theorem prod_sameSum {M : Type} [CommGroup M] {Y X : Scheme.{0}} {K K' : Type} [Fintype K]
     [Fintype K'] (B : (Y ⟶ X) → M) (ψ : K → (Y ⟶ X)) (ψ' : K' → (Y ⟶ X)) (ε : K → ℤ)
@@ -62,11 +62,11 @@ theorem prod_sameSum {M : Type} [CommGroup M] {Y X : Scheme.{0}} {K K' : Type} [
 open ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison (gU unit_ext gU_res gU_pullU gU_pullU_congr base_eq) in
 
 /- English proof (translation)
-Establish `m1` using `GeneratorPullback.pullAlong_le L F h φ ψ hψ jj hy`. Establish `step : ∀ k (hk : h.base y ∈ φ k ⁻¹ᵁ (L.U (jj k ⟨⟩) ⊓ L.U (idx (ψ k ≫ F)))), Units.map (h.stalkMap y).hom (gU (h.base y) hk (pullU (φ k) _ (L.g (jj k ⟨⟩) (idx (ψ k ≫ F))))) = gU y (mk k) (pullU (ψ k ≫ F) _ (L.g (jj k ⟨⟩) (idx (ψ k ≫ F))))`. Introduce `k hk`. Establish `hk' : y ∈ h ⁻¹ᵁ (φ k ⁻¹ᵁ (L.U (jj k ⟨⟩) ⊓ L.U (idx (ψ k ≫ F))))` using `hk`. Conclude with `(gU_pullU h _ y hk' _).symm.trans ((LBxP.gU_pullU_comp h (φ k) _ _ y hk' (show y ∈ (h ≫ φ k) ⁻¹ᵁ _ from hk)).trans (gU_pullU_congr (hψ k).symm _ _ y _ _))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `(LBxP.gU_pullAlong L F h φ ε ψ hψ t jj y hy).trans ?_` and prove the remaining obligations. Rewrite using `[Semi.Transport.gU_isGen ht (h.base y) m1 mem0, map_mul]`. Use `erw [LBxP.gU_lcg L φ ε (fun k => jj k ⟨⟩) (fun k => idx (ψ k ≫ F)) (h.base y) ⟨m1, mem0⟩]`. Rewrite using `[map_prod]`. Use `congr 1`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.prod_congr rfl fun k _ => ?_` and prove the remaining obligations. Rewrite using `[map_zpow]`. Conclude with `congrArg (· ^ ε k) (step k _)`.
+A detailed English derivation is pending.
 -/
 theorem gU_pullAlong_idx {X X' Y Y' : Scheme.{0}} (L : LB X) {K : Type} [Fintype K]
     (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : K → ℤ) (ψ : K → (Y' ⟶ X'))
@@ -99,31 +99,25 @@ theorem gU_pullAlong_idx {X X' Y Y' : Scheme.{0}} (L : LB X) {K : Type} [Fintype
 open ReciprocityTheory.ChartRestriction.G.Pdiv.PullbackComparison (gU unit_ext gU_res) in
 
 /- English proof (translation)
-Introduce `j j' cj cj' cjj`. Apply `unit_ext` to reduce the goal to its premises. Introduce `y hy`. Use `(gU_res _ y hy _).trans (Eq.trans ?_ (gU_res _ y hy _).symm)` and prove the remaining obligations. Take `⟨idx, hidx⟩` from `TLinPf.idx_exists L hL y`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Establish `hF : ∀ (ζ : Y' ⟶ X') (a : (L.pull F).ι), ζ y ∈ (L.pull F).U a → F (ζ y) ∈ L.U (a ⟨⟩)` using `fun ζ a hz => Set.mem_iInter.1 hz ⟨⟩`. Establish `mk : ∀ k, y ∈ (ψ k ≫ F) ⁻¹ᵁ (L.U (j k ⟨⟩) ⊓ L.U (idx (ψ k ≫ F)))` using `fun k => ⟨show (ψ k ≫ F) y ∈ L.U (j k ⟨⟩) by`. Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hF _ _ (Set.mem_iInter.1 hy.1 k), hidx _⟩`. Establish `mk' : ∀ k, y ∈ (ψ' k ≫ F) ⁻¹ᵁ (L.U (j' k ⟨⟩) ⊓ L.U (idx (ψ' k ≫ F)))` using `fun k => ⟨show (ψ' k ≫ F) y ∈ L.U (j' k ⟨⟩) by`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Scheme.Hom.comp_apply]`. Conclude with `hF _ _ (Set.mem_iInter.1 hy.2 k), hidx _⟩`. Establish `mem0 : h y ∈ LB.wchart L φ (fun k => idx (ψ k ≫ F))` using `Set.mem_iInter.2 fun k => by show (φ k) (h y) ∈ L.U (idx (ψ k ≫ F))`. Rewrite using `[← Scheme.Hom.comp_apply, ← hψ k]`. Conclude with `hidx _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `mem0' : h y ∈ LB.wchart L φ' (fun k => idx (ψ' k ≫ F))` using `Set.mem_iInter.2 fun k => by show (φ' k) (h y) ∈ L.U (idx (ψ' k ≫ F))`. Rewrite using `[← Scheme.Hom.comp_apply, ← hψ' k]`. Conclude with `hidx _`. Use `(gU_pullAlong_idx L F h φ ε ψ hψ t ht j y hy.1 idx mk mem0).trans (Eq.trans ?_ (gU_pullAlong_idx L F h φ' ε' ψ' hψ' t' ht' j' y hy.2 idx mk' mem0').symm)` and prove the remaining obligations. Establish `hmid : gU (h y) mem0 (t.s (fun k => idx (ψ k ≫ F))) = gU (h y) mem0' (t'.s (fun k => idx (ψ' k ≫ F)))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Establish `hc0` using `hc (fun k => idx (ψ k ≫ F)) (fun k => idx (ψ' k ≫ F)) (fun k1 k2 e => congrArg idx (by rw [hψ k1, hψ k2, e])) (fun k1 k2 e => congrArg idx (by rw [hψ' k1, hψ' k2, e])) (fun k k' e => congrArg idx (by rw [hψ k, hψ' k', e]))`. Use `congrArg (gU (h y) (⟨mem0, mem0'⟩ : h y ∈ LB.wchart L φ (fun k => idx (ψ k ≫ F)) ⊓ LB.wchart L φ' (fun k => idx (ψ' k ≫ F)))) hc0` as an intermediate fact. Conclude with `(gU_res _ (h y) _ _).symm.trans (this.trans (gU_res _ (h y) _ _))`. Set `Jf : (Y' ⟶ X') → L.ι` to `fun ζ => if hz : ∃ k, ψ k = ζ then j hz.choose ⟨⟩ else if hz' : ∃ k', ψ' k' = ζ then j' hz'.choose ⟨⟩ else idx (ζ ≫ F)`. Establish `hJ : ∀ k, Jf (ψ k) = j k ⟨⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `k`. Establish `hz : ∃ k', ψ k' = ψ k` using `⟨k, rfl⟩`. Use `show (if hz : ∃ k', ψ k' = ψ k then j hz.choose ⟨⟩ else _) = _`. Rewrite using `[dif_pos hz]`. Conclude with `congrFun (cj _ _ hz.choose_spec) ⟨⟩`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hJ' : ∀ k', Jf (ψ' k') = j' k' ⟨⟩`. Introduce `k'`. Use `show (if hz : ∃ k, ψ k = ψ' k' then j hz.choose ⟨⟩ else if hz' : ∃ k'', ψ' k'' = ψ' k' then j' hz'.choose ⟨⟩ else idx (ψ' k' ≫ F)) = _`. Distinguish the cases in `hz : ∃ k, ψ k = ψ' k'`. Rewrite using `[dif_pos hz]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Substitute using the available equality. Both sides reduce to the same expression. Establish an intermediate fact.
 
-Conclude with `congrFun (cjj _ _ hz.choose_spec) ⟨⟩`. Establish `hz' : ∃ k'', ψ' k'' = ψ' k'` using `⟨k', rfl⟩`. Rewrite using `[dif_neg hz, dif_pos hz']`. Conclude with `congrFun (cj' _ _ hz'.choose_spec) ⟨⟩`. Set `B : (Y' ⟶ X') → (Y'.presheaf.stalk y)ˣ` to `fun ζ => if hm : y ∈ (ζ ≫ F) ⁻¹ᵁ (L.U (Jf ζ) ⊓ L.U (idx (ζ ≫ F))) then gU y hm (pullU (ζ ≫ F) _ (L.g (Jf ζ) (idx (ζ ≫ F)))) else 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hgc : ∀ (ζ : Y' ⟶ X) (a b c : L.ι) (hab : a = b) (hm : y ∈ ζ ⁻¹ᵁ (L.U a ⊓ L.U c)) (hm' : y ∈ ζ ⁻¹ᵁ (L.U b ⊓ L.U c)), gU y hm (pullU ζ _ (L.g a c)) = gU y hm' (pullU ζ _ (L.g b c))`. Introduce `ζ a b c hab hm hm'`. Substitute `hab` using the available equality. Both sides reduce to the same expression. Establish `hB : ∀ k, gU y (mk k) (pullU (ψ k ≫ F) _ (L.g (j k ⟨⟩) (idx (ψ k ≫ F)))) = B (ψ k)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Introduce `k`. Establish `hm : y ∈ (ψ k ≫ F) ⁻¹ᵁ (L.U (Jf (ψ k)) ⊓ L.U (idx (ψ k ≫ F)))`. Rewrite using `[hJ k]`. Conclude with `mk k`. Use `show _ = (if hm : _ then _ else _)`.
-
-Rewrite using `[dif_pos hm]`. Conclude with `hgc _ _ _ _ (hJ k).symm _ _`. Establish `hB' : ∀ k, gU y (mk' k) (pullU (ψ' k ≫ F) _ (L.g (j' k ⟨⟩) (idx (ψ' k ≫ F)))) = B (ψ' k)`. Introduce `k`. Establish `hm : y ∈ (ψ' k ≫ F) ⁻¹ᵁ (L.U (Jf (ψ' k)) ⊓ L.U (idx (ψ' k ≫ F)))`.
-
-Rewrite using `[hJ' k]`. Conclude with `mk' k`. Use `show _ = (if hm : _ then _ else _)`. Rewrite using `[dif_pos hm]`. Conclude with `hgc _ _ _ _ (hJ' k).symm _ _`.
-
-Use `congrArg₂ (· * ·) ?_ (congrArg _ hmid)` and prove the remaining obligations. Conclude with `((Finset.prod_congr rfl fun k _ => congrArg (· ^ ε k) (hB k)).trans (prod_sameSum B ψ ψ' ε ε' hS)).trans (Finset.prod_congr rfl fun k _ => congrArg (· ^ ε' k) (hB' k)).symm`.
+A detailed English derivation is pending.
 -/
 theorem corr_pullAlong_sameSum {X X' Y Y' : Scheme.{0}} (L : LB X) (hL : L.IsLB) {K K' : Type}
     [Fintype K] [Fintype K'] (F : X' ⟶ X) (h : Y' ⟶ Y) (φ : K → (Y ⟶ X)) (ε : K → ℤ)

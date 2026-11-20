@@ -9,15 +9,15 @@ open scoped ComplexOrder
 namespace GlobalTheory.HodgeLogBd
 
 /- English proof (translation)
-Establish `hmem` using `FlagCpt.prodPow_mem n h2.mem_eqnSet`. Establish `k1` using `FlagCpt.met_h G n h2`. Establish `k2` using `FlagCpt.met_h G₀ n h2`. Establish `hT : 0 < ‖((prodPow t' n : ℂˣ) : ℂ)‖ ^ 2` using `pow_pos (norm_pos_iff.2 (Units.ne_zero _)) _`. Establish `e1 : (cxSt F).pn Y.Y σ _ (Y.met G n) ((cxSt F).cx Y.Y σ (genAt (Pad.divOf Y n) (under p))) p = ‖GlobalTheory.ProjVar.Var.fval (prodPow t n) ((cxSt F).cx Y.Y σ (genAt (Pad.divOf Y n) (under p))) p‖ ^ 2 * (Y.genSq G n g / ‖((prodPow t' n : ℂˣ) : ℂ)‖ ^ 2)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[← k1]`. Conclude with `GlobalTheory.ProjVar.Var.pn_eq hmem`. Establish `e2 : (cxSt F).pn Y.Y σ _ (Y.met G₀ n) ((cxSt F).cx Y.Y σ (genAt (Pad.divOf Y n) (under p))) p = ‖GlobalTheory.ProjVar.Var.fval (prodPow t n) ((cxSt F).cx Y.Y σ (genAt (Pad.divOf Y n) (under p))) p‖ ^ 2 * (Y.genSq G₀ n g / ‖((prodPow t' n : ℂˣ) : ℂ)‖ ^ 2)`. Rewrite using `[← k2]`. Conclude with `GlobalTheory.ProjVar.Var.pn_eq hmem`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hP : PosAt (C` using `cxSt F) (Y.met G n) p := posAt_of_posSet (FlagCpt.posSet_met _ _) p`. Establish `hg` using `Y.genSq_pos G n g`. Establish `hg₀` using `Y.genSq_pos G₀ n g`. Establish `hK : 0 < ‖GlobalTheory.ProjVar.Var.fval (prodPow t n) ((cxSt F).cx Y.Y σ (genAt (Pad.divOf Y n) (under p))) p‖ ^ 2`. Establish `: 0 < (cxSt F).pn Y.Y σ _ (Y.met G n) ((cxSt F).cx Y.Y σ (genAt (Pad.divOf Y n) (under p))) p` using `hP`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite `this` using `[e1]`. Conclude with `pos_of_mul_pos_left this (div_pos hg hT).le`. Simplify using `only [lnRatio, lnN]`. Rewrite using `[e1, e2, Real.log_mul hK.ne' (div_pos hg hT).ne', Real.log_mul hK.ne' (div_pos hg₀ hT).ne', Real.log_div hg.ne' hT.ne', Real.log_div hg₀.ne' hT.ne']`. Establish `lg : ∀ G' : EigMet Z (embOf e σ), Real.log (Y.genSq G' n g) = ∑ z : Pad.Letter Dw, (n z : ℝ) * Real.log (grSq (G'.gram _ g z.1) z.2)` using `fun G' => by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Rewrite using `[FlagCpt.genSq, Real.log_prod (fun z _ => (zpow_pos (grSq_pos (G'.pos _ _ _) _) _).ne')]`. Conclude with `Finset.sum_congr rfl fun z _ => Real.log_zpow _ _`. Rewrite using `[lg G, lg G₀]`. Simplify using `only [mul_sub, Finset.sum_sub_distrib]`. Expand and normalize the polynomial expressions, which then agree.
+Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 private theorem hodge_log_bound_adapted {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E}
     {Dw : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Datum H} {l : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Level H} {Xo : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Moduli Dw l}
@@ -69,9 +69,9 @@ open scoped ComplexOrder
 open GlobalTheory.ShFam.Hor GlobalTheory.HermFrame GlobalTheory.Toroidal
 
 /- English proof (translation)
-Introduce `D O x P _ _ _ c σ ch U g hA y hy n`. Take `⟨-, hU, -, hAd, -⟩` from `hA`. Take `⟨t, t', h⟩` from `hAd y hy`. Establish `hgram : ∀ (G : EigMet O.s.T.Z (embOf O.κ.e σ)) (τ : D.host.E →+* ℂ), GlobalTheory.BdGram.gramIn O G ch g τ (ch.e y) = G.gram _ (g y) τ` using `fun G τ => by`. Unfold `GlobalTheory.BdGram.gramIn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite using `[ch.e.left_inv (hU hy)]`. Simplify using `only [hgram]`. Conclude with `GlobalTheory.HodgeLogBd.hodge_log_bound_adapted (O.Φ.C c) (x.hodge (embOf O.κ.e σ)) (x.eigMet (embOf O.κ.e σ)) n y (g y) h`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem UpperTheory.log_ratio_metrics_adapted :
     OnCore fun D O x P => ∀ (c : O.s.Comp) (σ : D.what₂.LL →+* ℂ) (ch : GlobalTheory.AlgChart (O.var c).str σ (O.var c).dim) (U : Set (GlobalTheory.CxPts (O.var c).str σ)) (g : ∀ p : GlobalTheory.CxPts (O.var c).str σ, (O.Φ.C c).FrameAt p), GlobalTheory.BdGram.IsHolAdapted O ch U g →

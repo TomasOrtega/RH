@@ -7,9 +7,9 @@ open NumberField IsDedekindDomain MeasureTheory Matrix GlobalTheory.CuspRep Glob
 namespace GlobalTheory.CuspGeneric
 
 /- English proof (translation)
-Introduce `E _ _ _ a w g`. Take `⟨gw, hgw⟩ : ∃ gw, gw = GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) g)` from `⟨_, rfl⟩`. Use `⟨g * (finGL E a (locGL E a w gw))⁻¹, gw, by rw [inv_mul_cancel_right], fun u => ?_⟩` and prove the remaining obligations. Establish `hk : GeneralLinearGroup.map (pLoc E w) (GeneralLinearGroup.map (pFin E) (g * (finGL E a (locGL E a w gw))⁻¹)) = 1`. Rewrite using `[map_mul, map_inv, pFin_finGL, map_mul, map_inv, pLoc_locGL, hgw, mul_inv_cancel]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Generalize the expression as in `g * (finGL E a (locGL E a w gw))⁻¹ = k at hk ⊢`. Use `ga_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[map_mul, map_mul, pInf_finGL, one_mul, mul_one]`. Rewrite using `[map_mul, map_mul, pFin_finGL]`. Conclude with `LocUniq.comm_locGL w hk u`.
+Replace the chosen expression with an arbitrary variable. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_split_loc : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (a : ℕ)
     (w : HeightOneSpectrum (𝓞 E)) (g : GA E a), ∃ (h : GA E a) (gw : GL (Fin a) (w.adicCompletion E)),

@@ -157,15 +157,15 @@ def wts (ι : Type) (N kc p T Dd c0 G V : ℕ) (b : ℝ) : Wts ι N where
   u1 := fun _ i => (G : ℤ) * ((kc : ℤ) - 1 - (i : ℕ)) - (if kc ≤ (i : ℕ) then (V : ℤ) else 0)
 
 /- English proof (translation)
-Introduce `τ`. Use `⟨fun a ha => ?_, fun a c hc => ?_⟩` and prove the remaining obligations. Simplify using `only [wts] at ha ⊢`. Establish `h1 : ¬ kc ≤ (a : ℕ)` using `by omega`. Establish `h2 : (kc : ℤ) - 1 - (a : ℕ) = 0` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `[h1, h2]`. Establish `hc' : ((c : ℕ) : ℤ) = (a : ℕ) + 1` using `by exact_mod_cast hc`. Establish `key : ∀ x y : ℤ, y = 1 + ((T : ℤ) + Dd + 1) * x → x = y / ((T : ℤ) + Dd + 1)`. Introduce `x y h`. Rewrite using `[h, Int.add_mul_ediv_left _ _ (by omega), Int.ediv_eq_zero_of_lt (by omega) (by omega)]; simp`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hp : (c : ℕ) = (wts ι N kc p T Dd c0 G V b).p`. Rewrite using `[if_pos hp]`. Simplify using `only [wts] at hp ⊢`. Apply `key` to reduce the goal to its premises. Rewrite using `[hc']`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | ring1`. Rewrite using `[if_neg hp]`. Simplify using `only [wts] at hp ⊢`. Apply `key` to reduce the goal to its premises. Rewrite using `[hc']`.
+Apply the first step, then apply the next step to every resulting obligation. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Apply the tactic sequence `split_ifs <;> first | (exfalso; omega) | ring1`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem wts_isDiv (ι : Type) (N kc p T Dd c0 G V : ℕ) (b : ℝ) (hT : 1 ≤ T) :
     (wts ι N kc p T Dd c0 G V b).IsDiv := by
@@ -192,35 +192,33 @@ theorem wts_isDiv (ι : Type) (N kc p T Dd c0 G V : ℕ) (b : ℝ) (hT : 1 ≤ T
       split_ifs <;> first | (exfalso; omega) | ring1
 
 /- English proof (translation)
-Establish `hG0 : (1 : ℤ) ≤ G` using `by omega`. Establish `hGM : (G : ℤ) ≤ ((T : ℤ) + Dd + 1) * G` using `by nlinarith [Int.natCast_nonneg T, Int.natCast_nonneg Dd]`. Establish `hVM : (0 : ℤ) ≤ ((T : ℤ) + Dd + 1) * V` using `by positivity`. Establish `hmain : ∀ a : Fin N, |(((T : ℤ) + Dd + 1) * G - 1) * ((kc : ℤ) - 1 - (a : ℕ))| ≤ ((T : ℤ) + Dd + 1) * G * N`. Introduce `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `ha` using `a.isLt`. Rewrite using `[abs_mul]`. Apply `mul_le_mul` to reduce the goal to its premises. Apply the tactic sequence `rw [abs_le]; constructor <;> linarith`. Apply the tactic sequence `rw [abs_le]; constructor <;> omega`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Apply the first step, then apply the next step to every resulting obligation. Apply the first step, then apply the next step to every resulting obligation.
 
-Conclude with `abs_nonneg _`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨h1, h2, h3, h4, by simp [wts], ?_, hT, ⟨?_, ?_⟩, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `τ a ha`. Simplify using `only [wts] at ha ⊢`.
+Combine the linear equalities and inequalities to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `e1 : ¬ kc ≤ (a : ℕ)` using `by omega`. Establish `e2 : ¬ p ≤ (a : ℕ)` using `by omega`. Establish `e3 : (kc : ℤ) - 1 - (a : ℕ) = 0` using `by omega`. Simplify using `[e1, e2, e3]`. Simplify using `only [wts]; have : (4 * ((c0 : ℤ) + 2 * N + T + Dd + 1) + 1 ≤ G) := by exact_mod_cast hG1`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Simplify using `only [wts]; have : (24 * (N : ℤ) * T + 1 ≤ G) := by exact_mod_cast hG2`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `τ a ha`. Simplify using `only [wts] at ha ⊢`.
+Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hm` using `abs_le.mp (hmain a)`. Establish `: |(((T : ℤ) + Dd + 1) * G - 1) * ((kc : ℤ) - 1 - (a : ℕ)) - (if kc ≤ (a : ℕ) then ((T : ℤ) + Dd + 1) * V else 0) - (if p ≤ (a : ℕ) then 2 * (N : ℤ) + c0 else 0) + ((T : ℤ) + Dd + 1) * V| ≤ 2 * N + c0 + ((T : ℤ) + Dd + 1) * G * N + N`. Rewrite using `[if_pos ha, abs_le]`. Use `Int.natCast_nonneg N` as an intermediate fact. Use `Int.natCast_nonneg c0` as an intermediate fact.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `split_ifs <;> constructor <;> linarith [hm.1, hm.2]`. Conclude with `this` after adjusting the coercions. Introduce `τ a ha`. Simplify using `only [wts] at ha ⊢`. Establish `e1 : ¬ kc ≤ (a : ℕ)` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e2 : ¬ p ≤ (a : ℕ)` using `by omega`. Establish `hm` using `abs_le.mp (hmain a)`. Simplify using `only [if_neg e1, if_neg e2, sub_zero]`. Use `⟨mul_nonneg (by linarith) (by omega), ?_⟩` and prove the remaining obligations. Conclude with `hm.2` after adjusting the coercions.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Introduce `τ`. Simplify using `only [wts]`. Establish `h : (4 * ((2 * N + c0 + (T + Dd + 1) * G * N + N) + (T + Dd + 1) * G * N + c0 + 2 * N) + 20 * N * T : ℝ) ≤ V`. Conclude with `hV` after adjusting the coercions. Establish `h' : (V : ℝ) ≤ ((T : ℝ) + Dd + 1) * V`.
+Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Use polynomial arithmetic with `[Nat.cast_nonneg (α := ℝ) T, Nat.cast_nonneg (α := ℝ) Dd, Nat.cast_nonneg (α := ℝ) V]`. Use `push_cast`. Combine the linear equalities and inequalities to obtain the conclusion. Introduce `τ a c hc`. Simplify using `only [wts]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hc' : ((c : ℕ) : ℤ) = (a : ℕ) + 1` using `by exact_mod_cast hc`. Establish `h : ((T : ℤ) + Dd + 2) * ((T : ℤ) + Dd + 2 + 2 * N) ≤ G` using `by exact_mod_cast hG3`. Use `Int.natCast_nonneg N` as an intermediate fact. Use `Int.natCast_nonneg c0` as an intermediate fact. Rewrite using `[hc']`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `e : (((T : ℤ) + Dd + 1) * G - 1) * ((kc : ℤ) - 1 - (a : ℕ)) = (((T : ℤ) + Dd + 1) * G - 1) * ((kc : ℤ) - 1 - ((a : ℕ) + 1)) + (((T : ℤ) + Dd + 1) * G - 1)` using `by ring`. Rewrite using `[e]`. Apply the tactic sequence `refine ⟨fun _ => ?_, fun _ => ?_, fun _ => ?_⟩ <;> split_ifs <;> first | (exfalso; omega) | linarith`. Introduce `τ a`. Simplify using `only [wts]`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hm` using `abs_le.mp (hmain a)`. Establish `: |(((T : ℤ) + Dd + 1) * G - 1) * ((kc : ℤ) - 1 - (a : ℕ)) - (if kc ≤ (a : ℕ) then ((T : ℤ) + Dd + 1) * V else 0) - (if p ≤ (a : ℕ) then 2 * (N : ℤ) + c0 else 0)| + c0 + 4 * N ≤ ((T : ℤ) + Dd + 1) * G * N + ((T : ℤ) + Dd + 1) * V + 6 * N + 2 * c0`. Use `Int.natCast_nonneg N` as an intermediate fact. Use `Int.natCast_nonneg c0` as an intermediate fact. Establish `: |(((T : ℤ) + Dd + 1) * G - 1) * ((kc : ℤ) - 1 - (a : ℕ)) - (if kc ≤ (a : ℕ) then ((T : ℤ) + Dd + 1) * V else 0) - (if p ≤ (a : ℕ) then 2 * (N : ℤ) + c0 else 0)| ≤ ((T : ℤ) + Dd + 1) * G * N + ((T : ℤ) + Dd + 1) * V + 2 * N + c0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact.
 
-Rewrite using `[abs_le]`. Apply the tactic sequence `split_ifs <;> constructor <;> linarith [hm.1, hm.2]`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `h2 : ((|(((T : ℤ) + Dd + 1) * G - 1) * ((kc : ℤ) - 1 - (a : ℕ)) - (if kc ≤ (a : ℕ) then ((T : ℤ) + Dd + 1) * V else 0) - (if p ≤ (a : ℕ) then 2 * (N : ℤ) + c0 else 0)| + c0 + 4 * N : ℤ) : ℝ) ≤ ((((T : ℤ) + Dd + 1) * G * N + ((T : ℤ) + Dd + 1) * V + 6 * N + 2 * c0 : ℤ) : ℝ)` using `by exact_mod_cast this`. Rewrite `h2` using `[Int.cast_add, Int.cast_add, Int.cast_abs]`.
-
-Move the coercions through the operations in `at h2 hb ⊢`. Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the indicated hypotheses using the stated equalities. Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem wts_hyp (ι : Type) (N kc p T Dd c0 G V : ℕ) (b : ℝ) (h1 : 1 ≤ kc) (h2 : kc < p) (h3 : p < N) (h4 : N - p < p)
     (hT : 4 * Dd + 4 ≤ T) (hG1 : 4 * (c0 + 2 * N + T + Dd + 1) + 1 ≤ G) (hG2 : 24 * N * T + 1 ≤ G)
@@ -311,13 +309,11 @@ theorem wts_hyp (ι : Type) (N kc p T Dd c0 G V : ℕ) (b : ℝ) (h1 : 1 ≤ kc)
     linarith
 
 /- English proof (translation)
-Take `⟨G, hG⟩ : ∃ G, G = 4 * (c0 + 2 * N + T + Dd + 1) + 1 + (24 * N * T + 1) + (T + Dd + 2) * (T + Dd + 2 + 2 * N) + Hb` from `⟨_, rfl⟩`. Take `⟨V, hV⟩ : ∃ V, V = 4 * ((2 * N + c0 + (T + Dd + 1) * G * N + N) + (T + Dd + 1) * G * N + c0 + 2 * N) + 20 * N * T` from `⟨_, rfl⟩`. Establish `p1 : (0 : ℝ) ≤ (((T + Dd + 1) * G * N + (T + Dd + 1) * V + 6 * N + 2 * c0 : ℕ) : ℝ)` using `Nat.cast_nonneg _`. Establish `p2 : (0 : ℝ) ≤ ((kc : ℝ) + 1) * (((T : ℝ) + Dd + 1) * G * N)` using `by positivity`. Establish `p3 : (0 : ℝ) ≤ ((kc : ℝ) + 1) * (2 * (N : ℝ) + c0)` using `by positivity`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `⟨(((T + Dd + 1) * G * N + (T + Dd + 1) * V + 6 * N + 2 * c0 : ℕ) : ℝ) / 2 + ((kc : ℝ) + 1) * (((T : ℝ) + Dd + 1) * G * N) + ((kc : ℝ) + 1) * (2 * (N : ℝ) + c0), fun b hb => ⟨wts ι N kc p T Dd c0 G V b, wts_hyp ι N kc p T Dd c0 G V b h1 h2 h3 h4 hT (by omega) (by omega) (by omega) …` and prove the remaining obligations. Use `show (Hb : ℤ) ≤ ((T : ℤ) + Dd + 1) * G - 1`. Establish `: (Hb : ℤ) + 1 ≤ G` using `by omega`. Use polynomial arithmetic with `[Int.natCast_nonneg T, Int.natCast_nonneg Dd, Int.natCast_nonneg Hb]`. Use `show (0 : ℝ) ≤ ((T : ℝ) + Dd + 1) * G * N`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities. Check the signs of the components of the expression. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Check the signs of the components of the expression. Use `show ((kc : ℝ) + 1) * (((T : ℝ) + Dd + 1) * G * N) ≤ b`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show ((kc : ℝ) + 1) * (2 * (N : ℝ) + ((c0 : ℤ) : ℝ)) ≤ b`. Use `push_cast`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Move the embeddings inside the algebraic operations. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_wts (ι : Type) (N kc p T Dd c0 Hb : ℕ) (h1 : 1 ≤ kc) (h2 : kc < p) (h3 : p < N) (h4 : N - p < p)
     (hT : 4 * Dd + 4 ≤ T) : ∃ b0 : ℝ, ∀ b, b0 ≤ b → ∃ W : Wts ι N, W.Hyp ∧ W.IsDiv ∧ W.kc = kc ∧ W.p = p ∧ W.T = T ∧
@@ -346,20 +342,20 @@ theorem exists_wts (ι : Type) (N kc p T Dd c0 Hb : ℕ) (h1 : 1 ≤ kc) (h2 : k
     linarith
 
 /- English proof (translation)
-Apply the tactic sequence `refine ⟨?_, ?_, ?_⟩ <;> funext i <;> fin_cases i <;> simp [wts, Wts.u']`.
+Apply the first step, then apply the next step to every resulting obligation.
 -/
 example : (wts Unit 3 1 2 16 3 0 7 5 0).u1 () = ![0, -12, -19] ∧ (wts Unit 3 1 2 16 3 0 7 5 0).u' () = ![0, -12, -10] ∧
     (wts Unit 3 1 2 16 3 0 7 5 0).u () = ![0, -239, -384] := by
   refine ⟨?_, ?_, ?_⟩ <;> funext i <;> fin_cases i <;> simp [wts, Wts.u']
 
 /- English proof (translation)
-Use function extensionality and compare the values at `τ`. Establish `step : ∀ a c : Fin N, (c : ℕ) = a + 1 → v τ a - W.u1 τ a = v τ c - W.u1 τ c` using `fun a c hc => by`. Establish `e1` using `(h τ).2 a c hc`. Establish `e2` using `(h' τ).2 a c hc`. Simplify using `only at e2`.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use linear arithmetic over natural numbers and integers. Establish `hN0 : 0 < N` using `by omega`. Establish `all : ∀ n (hn : n < N), v τ ⟨n, hn⟩ - W.u1 τ ⟨n, hn⟩ = v τ ⟨0, hN0⟩ - W.u1 τ ⟨0, hN0⟩`. Introduce `n`. Proceed by induction on `n with`.
+Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => intro _`. Both sides reduce to the same expression. Consider the case `succ n ih => intro hn; rw [← ih (by omega)]; exact (step ⟨n, by omega⟩ ⟨n + 1, hn⟩ rfl).symm`. Establish `a1` using `(h τ).1 ⟨W.kc - 1, by omega⟩ (by simp only; omega)`. Establish `a2` using `(h' τ).1 ⟨W.kc - 1, by omega⟩ (by simp only; omega)`.
+Treat this case separately. Both sides reduce to the same expression. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact.
 
-Simplify using `only at a2`. Establish `a3` using `all (W.kc - 1) (by omega)`. Use function extensionality and compare the values at `i`. Establish `a4` using `all i i.isLt`. Simplify using `only [Fin.eta] at a4`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
 Use linear arithmetic over natural numbers and integers.
 -/
@@ -387,13 +383,13 @@ theorem dividedWeight_unique {ι : Type} {N : ℕ} (W : Wts ι N) (v : ι → Fi
   omega
 
 /- English proof (translation)
-Establish `hp : Fact D.host.d.Prime` using `⟨D.host.hyp.2.1⟩`. Establish `hd` using `D.host.hyp.2.2.2.1`. Establish `hodd : (chiK D).Odd`. Unfold `DirichletCharacter.Odd chiK`. Rewrite using `[MulChar.ringHomComp_apply, quadraticChar_neg_one (by rw [ZMod.ringChar_zmod_n]; omega), ZMod.card, ZMod.χ₄_nat_three_mod_four (by omega)]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Use `⟨fun n => ?_, ?_, hodd⟩` and prove the remaining obligations. Unfold `chiK`. Rewrite using `[MulChar.ringHomComp_apply, ← jacobiSym.legendreSym.to_jacobiSym]`. Simplify using `[legendreSym]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Establish `: NeZero D.host.d` using `⟨D.host.hyp.2.1.ne_zero⟩`. Rewrite using `[DirichletCharacter.isPrimitive_def]`. Break down `(Nat.Prime.eq_one_or_self_of_dvd D.host.hyp.2.1 _ (DirichletCharacter.conductor_dvd_level (chiK D))) with h | h` into its components or cases. Establish `h1` using `DirichletCharacter.eq_one_iff_conductor_eq_one.mpr h`. Unfold `DirichletCharacter.Odd at hodd`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Rewrite `hodd` using `[h1, MulChar.one_apply (by simp)]`. Evaluate the numerical expressions using `at hodd`. Conclude with `h`.
+Rewrite the indicated hypotheses using the stated equalities. Evaluate the numerical expressions. A detailed English derivation is pending.
 -/
 theorem chi_facts (D : D7) : (∀ n : ℕ, chiK D n = ((jacobiSym n D.host.d : ℤ) : ℂ)) ∧ (chiK D).IsPrimitive ∧ (chiK D).Odd := by
   have hp : Fact D.host.d.Prime := ⟨D.host.hyp.2.1⟩
@@ -423,7 +419,7 @@ def page (D : D7) (N kc : ℕ) (x S η : ℝ) : SlopeBoundParameters :=
     PPT := 5 * ((N : ℝ) - kc), Zpg := 0, nV := 0, Nr := N, g12 := 1 }
 
 /- English proof (translation)
-Use `D.R.two_le_m` as an intermediate fact. Use `D.R.m_le_f` as an intermediate fact. Use `show 1 ≤ 2 * D.R.ord`. Use linear arithmetic over natural numbers and integers.
+Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers. A detailed English derivation is pending.
 -/
 theorem f_pos (D : D7) : 1 ≤ D.R.f := by
   have := D.R.two_le_m
@@ -432,32 +428,26 @@ theorem f_pos (D : D7) : 1 ≤ D.R.f := by
   omega
 
 /- English proof (translation)
-The claim follows from `Real.rpow_one x`.
+A detailed English derivation is pending.
 -/
 theorem page_L (D : D7) (N kc : ℕ) (x S η : ℝ) : (page D N kc x S η).L = x := Real.rpow_one x
 
 /- English proof (translation)
-Unfold `SlopeBoundParameters.b`. Rewrite using `[page_L]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem page_b (D : D7) (N kc : ℕ) (x S η : ℝ) : (page D N kc x S η).b = Real.exp x := by
   unfold SlopeBoundParameters.b; rw [page_L]
 
 /- English proof (translation)
-Take `⟨c1, c2, c3⟩` from `chi_facts D`. Establish `hb : 0 < (page D N kc x S η).b` using `Real.exp_pos _`. Establish `hL` using `page_L D N kc x S η`. Use `⟨c1, c2, c3, by show 1 ≤ x; linarith, by show (0 : ℝ) < 1; norm_num, hrd, by show 2 * (_ / 2) = D.host.rdE; ring, by show 0 < D.host.rdE / 2; linarith, by rw [hL]; exact h1, by rw [hL]; exact h2, ?_, ?_, ?_, ?_, ?_, ?_, ?_, by rw [page_b]; exact hS, by rw [page_b]; exact hη, hS0, …` and prove the remaining obligations. Rewrite using `[hL]; show Real.log x ≤ x; linarith [Real.log_le_sub_one_of_pos (show 0 < x by linarith)]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `show 1 ≤ Real.log (Real.log x)`. Establish `e` using `Real.exp_one_lt_d9`. Establish `e3 : Real.exp 3 ≤ x`. Establish `: Real.exp 3 = Real.exp 1 ^ 3` using `by rw [← Real.exp_nat_mul]; norm_num`. Rewrite using `[this]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `: Real.exp 1 ^ 3 ≤ 3 ^ 3` using `by gcongr; linarith`. Combine the linear equalities and inequalities to obtain the conclusion. Establish `: 3 ≤ Real.log x` using `(Real.le_log_iff_exp_le (by linarith)).mpr e3`. Conclude with `(Real.le_log_iff_exp_le (by linarith)).mpr (by linarith)`. Use `show 3 ≤ x ^ ((1 : ℝ) / 7)`.
+Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Establish `: (3 : ℝ) = ((3 : ℝ) ^ (7 : ℕ)) ^ ((1 : ℝ) / 7)`. Rewrite using `[← Real.rpow_natCast, ← Real.rpow_mul (by norm_num)]; norm_num`. Rewrite using `[this]`. Conclude with `Real.rpow_le_rpow (by norm_num) (by norm_num; exact hx) (by norm_num)`. Use `show ((Fintype.card D.what₂.Tau : ℕ) : ℝ) ≤ D.R.f`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Rewrite using `[D.what₂.card_Tau]`. Use `show (1 : ℝ) ≤ (N : ℝ) - kc`. Establish `: (kc : ℝ) + 1 ≤ N` using `by exact_mod_cast hk`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show (1 : ℝ) ≤ D.R.f`.
-
-Conclude with `f_pos D` after adjusting the coercions. Use `show (1 : ℝ) ≤ (kc : ℝ) + 1`. Combine the linear relations using `[Nat.cast_nonneg (α := ℝ) kc]`. Use `show ((kc : ℝ) + 1) * 0 ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion.
-
-Rewrite using `[hL]`. Conclude with `le_rfl`. Use `show (0 : ℝ) ≤ _`. Combine the linear equalities and inequalities to obtain the conclusion. Use `show (0 : ℝ) + 2 * 0 * 0 ≤ _`.
-
-Combine the linear equalities and inequalities to obtain the conclusion.
+Rewrite the conclusion using the stated equalities. Combine the linear equalities and inequalities to obtain the conclusion. Combine the linear equalities and inequalities to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem page_params (D : D7) (N kc : ℕ) (x S η : ℝ) (hrd : 4 ≤ D.host.rdE) (hx : 2187 ≤ x) (h1 : Real.log D.host.rdE ≤ x)
     (h2 : |dlogL D 1| ≤ x) (hk : kc < N) (hS0 : 0 ≤ S) (hS : ((kc : ℝ) + 1) * S ≤ Real.exp x)
@@ -511,34 +501,32 @@ def fac {D : D7} (Y : ShimX D.what₂.Tau) (K : Type) [Field K] [NumberField K] 
 def shifts : Shifts := { Pe := {2}, e := fun _ => 1, C7 := 40, Pa := 1, Pinf := 1, PPe := Real.log 2, XW := 1 }
 
 /- English proof (translation)
-Introduce `p hp` and use `by obtain rfl : p = 2 := Finset.mem_singleton.mp hp exact ⟨Nat.prime_two, zero_le_one⟩`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem shifts_proper : shifts.Proper := fun p hp => by
   obtain rfl : p = 2 := Finset.mem_singleton.mp hp
   exact ⟨Nat.prime_two, zero_le_one⟩
 
 /- English proof (translation)
-Establish `hj` using `Y.j_lt`. Establish `hD : 1 ≤ WeightThresholdDefs.dimY Y` using `by show 1 ≤ Fintype.card D.what₂.Tau * (Y.N * (Y.N - 1) / 2)`. Rewrite using `[D.what₂.card_Tau]`. Establish `a : 3 * 2 ≤ Y.N * (Y.N - 1)` using `Nat.mul_le_mul (by omega) (by omega)`. Conclude with `Nat.mul_pos (f_pos D) (by omega)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩ : ∃ n, Y.N = kc + (n + 1)` from `⟨Y.N - kc - 1, by omega⟩`. Take `⟨b0, hW⟩` from `exists_wts D.what₂.Tau Y.N kc Y.j (25 * WeightThresholdDefs.dimY Y ^ 2 * ((kc + 1) * (n + 1))) (WeightThresholdDefs.dimY Y) c0 (32 * D.R.f * Y.N ^ 2) h1 h2 hj h3 (by`. Establish `: 1 ≤ (kc + 1) * (n + 1)` using `Nat.mul_pos (by omega) (by omega)`. Establish `h25 : 4 * WeightThresholdDefs.dimY Y + 4 ≤ 25 * WeightThresholdDefs.dimY Y ^ 2` using `by nlinarith`. Conclude with `h25.trans (Nat.le_mul_of_pos_right _ this))`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨x, hx⟩ : ∃ x : ℝ, x = 2187 + |Real.log D.host.rdE| + |dlogL D 1| + |b0| + 4 * (D.R.f : ℝ) * (Y.N : ℝ) ^ 2` from `⟨_, rfl⟩`. Establish `n1` using `abs_nonneg (Real.log D.host.rdE)`. Establish `n2` using `abs_nonneg (dlogL D 1)`. Establish `n3` using `abs_nonneg b0`. Establish `n4 : 0 ≤ 4 * (D.R.f : ℝ) * (Y.N : ℝ) ^ 2` using `by positivity`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hb : x ≤ Real.exp x` using `by linarith [Real.add_one_le_exp x]`. Take `⟨W, w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12⟩` from `hW (Real.exp x) (by linarith [le_abs_self b0])`. Establish `hP : PageParams (page D Y.N W.kc x W.S W.eta)` using `page_params D Y.N W.kc x W.S W.eta hrd (by linarith) (by linarith [le_abs_self (Real.log D.host.rdE)]) (by linarith) (by omega) w10 (by rw [w3]; exact w11) (by rw [w3]; exact w12)`. Establish `hm : (Y.N : ℝ) - W.kc = (n : ℝ) + 1`. Rewrite using `[w3]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Combine the linear equalities and inequalities to obtain the conclusion.
 
-Establish `: (Y.N : ℝ) = kc + (n + 1)` using `by exact_mod_cast hn`. Combine the linear equalities and inequalities to obtain the conclusion. Use `⟨page D Y.N W.kc x W.S W.eta, fac Y K x W shifts CI (sl (bZero Y W) (reWt W.u')), W, w3, w7, hP, ⟨w4, w6, w2, ?_, ⟨Equiv.refl _, fun _ => rfl⟩, ⟨Equiv.refl _, hsl _ _⟩, ⟨by rw [page_b, w8], rfl, rfl, rfl, D.what₂.card_Tau⟩, rfl, rfl, rfl, rfl⟩, ⟨rfl, rfl, rfl, rfl, rfl, rfl, ⟨rfl …` and prove the remaining obligations. Rewrite using `[w5] show ((⌈(5 * ((Y.N : ℝ) - W.kc)) ^ 2 * ((W.Dd : ℕ) : ℝ) ^ 2 * ((W.kc : ℝ) + 1) / ((Y.N : ℝ) - W.kc)⌉ : ℤ) : ℝ) = _`. Establish `e : (5 * ((Y.N : ℝ) - W.kc)) ^ 2 * ((W.Dd : ℕ) : ℝ) ^ 2 * ((W.kc : ℝ) + 1) / ((Y.N : ℝ) - W.kc) = ((25 * WeightThresholdDefs.dimY Y ^ 2 * ((kc + 1) * (n + 1)) : ℕ) : ℝ)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the hypotheses and the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations.
 
-Rewrite using `[hm, w3, w6]`. Use `push_cast`. Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[e, Int.ceil_natCast]`.
+Clear the denominators using the available nonvanishing facts. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Put the expressions in a common number system so they can be compared. Establish an intermediate fact.
 
-Use `norm_cast`. Establish `hT : (0 : ℝ) ≤ W.T` using `Nat.cast_nonneg _`. Establish `hl : 0 ≤ l1 W.u1` using `Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => abs_nonneg _`. Establish `hlx : 0 ≤ Real.log x` using `Real.log_nonneg (by linarith)`. Establish `hLL : 0 ≤ (page D Y.N W.kc x W.S W.eta).LL0`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `a1 : 1 ≤ (page D Y.N W.kc x W.S W.eta).llx` using `hP.2.2.2.2.2.2.2.2.2.2.2.1`. Establish `a2 : 0 ≤ Real.log ((page D Y.N W.kc x W.S W.eta).b * (page D Y.N W.kc x W.S W.eta).rd)`. Rewrite using `[page_b]`. Apply `Real.log_nonneg` to reduce the goal to its premises. Use `show 1 ≤ Real.exp x * D.host.rdE`.
+Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Use the polynomial consequences of the given equalities and inequalities. Replace the relevant objects with their definitions. Establish an intermediate fact.
 
-Use the polynomial consequences of the given equalities and inequalities. Unfold `SlopeBoundParameters.LL0`. Conclude with `add_nonneg (add_nonneg (mul_nonneg a2 (by linarith)) (abs_nonneg _)) hlx`. Establish `hY : 0 ≤ addY C2 (page D Y.N W.kc x W.S W.eta)`. Unfold `addY`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Check the signs of the components of the expression. Establish an intermediate fact.
 
-Rewrite using `[page_b]`. Use `show 0 ≤ C2 * (D.R.f : ℝ) * ((Y.N : ℝ) - W.kc) * Real.exp x * Real.log x`. Rewrite using `[hm]`. Check the signs of the components of the expression. Establish `hC : 0 ≤ Ce * (page D Y.N W.kc x W.S W.eta).LL0 * (W.T * l1 W.u1)` using `by positivity`.
-
-Unfold `SumBound shifts`. Simplify using `only [Finset.sum_singleton]`. Use `push_cast`. Use the polynomial consequences of the given equalities and inequalities.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Use the polynomial consequences of the given equalities and inequalities. A detailed English derivation is pending.
 -/
 theorem joint {D : D7} (Y : ShimX D.what₂.Tau) (K : Type) [Field K] [NumberField K] [StarRing K] (kc c0 : ℕ) (CI Ce C2 : ℝ)
     (hCe : 0 ≤ Ce) (hC2 : 0 ≤ C2) (h1 : 1 ≤ kc) (h2 : kc < Y.j) (h3 : Y.N - Y.j < Y.j) (hrd : 4 ≤ D.host.rdE)
@@ -663,9 +651,9 @@ def twoFlag (Tau : Type) [Fintype Tau] (N j : ℕ) (hj : 1 ≤ j) (hjN : j < N) 
   Mbar _ u s := (s : ℝ) - ∑ τ, ∑ i, |u τ i|
 
 /- English proof (translation)
-Introduce `c`. Establish `h : Tendsto (fun s : ℚ => (s : ℝ)) (𝓝[>] (0 : ℚ)) (𝓝 0)`. Use `(Rat.continuous_coe_real.tendsto 0).mono_left (nhdsWithin_le_nhds (s := Set.Ioi 0))` as an intermediate fact. Simplify using `using this`. Use `((h.sub_const _).const_add _).congr fun s => ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Reduce the conclusion to the remaining proof obligations.
 
-Use `show _ = (((Formalism.DegreeFormula.dimFl D.what₂.Tau N : ℕ) : ℝ) + 1) * (_ + ((s : ℝ) - ∑ τ, ∑ i, |u τ i|)) / ((((Formalism.DegreeFormula.dimFl D.what₂.Tau N : ℕ) : ℝ) + 1) * 1)`. Rewrite using `[mul_one, mul_div_cancel_left₀ _ (by positivity)]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twoFlag_isSlope (D : D7) (N j : ℕ) (hj : 1 ≤ j) (hjN : j < N) (B : ℝ) (u : D.what₂.Tau → Fin N → ℝ) :
     GlobalTheory.IndefiniteRowSideFullHecke.ComponentMean.IsSlope (twoFlag D.what₂.Tau N j hj hjN) B u
@@ -679,7 +667,7 @@ theorem twoFlag_isSlope (D : D7) (N j : ℕ) (hj : 1 ≤ j) (hjN : j < N) (B : �
   rw [mul_one, mul_div_cancel_left₀ _ (by positivity)]
 
 /- English proof (translation)
-Take `⟨P, F, W, a1, a2, a3, a4, a5, a6, a7, e, he⟩` from `joint (twoFlag D.what₂.Tau N j (by omega) hjN) K kc c0 CI Ce C2 hCe hC2 h1 h2 h3 hrd (by show (∅ : Finset ℕ).card ≤ 15; simp) _ (twoFlag_isSlope D N j (by omega) hjN)`. Use `⟨_, P, F, W, shifts, rfl, rfl, a1, a2, a3, a4, a5, a6, a7, shifts_proper, ⟨2, Finset.mem_singleton_self 2, one_pos⟩, by norm_num [shifts], e true, e false, ?_⟩` and prove the remaining obligations. Introduce `h`. Use `(he true).symm.trans (h.trans (he false))` as an intermediate fact. Simplify using `at this`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 -/
 theorem exists_joint (D : D7) (K : Type) [Field K] [NumberField K] [StarRing K] (N j kc c0 : ℕ) (CI Ce C2 : ℝ)
     (hCe : 0 ≤ Ce) (hC2 : 0 ≤ C2) (h1 : 1 ≤ kc) (h2 : kc < j) (hjN : j < N) (h3 : N - j < j) (hrd : 4 ≤ D.host.rdE) :

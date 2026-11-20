@@ -16,9 +16,9 @@ def lineSecondVariation (ε : ℝ) (x y w : ℂ) : ℝ :=
     halfLogRatioSqDeriv ε (‖x‖ ^ 2) * (2 * (inner ℝ x w + inner ℝ y y))
 
 /- English proof (translation)
-Establish `hi : ∀ u v : ℂ, inner ℝ u v = u.re * v.re + u.im * v.im`. Introduce `u v`. Use `first`. Consider the case `(rw [Complex.inner]; simp; ring)`. Consider the case `(simp [Complex.inner_def]; ring)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Consider the case `(rw [Complex.real_inner_eq_re_inner]; simp; ring)`. Unfold `lineSecondVariation`. Simplify using `only [hi, Complex.mul_re, Complex.mul_im, Complex.one_re, Complex.one_im, Complex.I_re, Complex.I_im]`. Rewrite using `[Complex.sq_norm a, Complex.sq_norm x, Complex.normSq_apply, Complex.normSq_apply]`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma lineSecondVariation_add_I (ε : ℝ) (x a S : ℂ) :
     lineSecondVariation ε x (a * 1) (S * 1 * 1) + lineSecondVariation ε x (a * I) (S * I * I) =
@@ -36,9 +36,9 @@ lemma lineSecondVariation_add_I (ε : ℝ) (x a S : ℂ) :
   ring
 
 /- English proof (translation)
-Establish `hs : 0 < ‖F z‖ ^ 2 + ε` using `by positivity`. Establish `hFd : HasFDerivAt F (fderiv ℂ F z) z` using `(hF.differentiableAt (hΩ.mem_nhds hz)).hasFDerivAt`. Establish `hFR` using `hFd.restrictScalars ℝ`. Establish `hN` using `hFR.norm_sq`. Establish `hC` using `(hasDerivAt_cutP hs).comp_hasFDerivAt z hN`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hL` using `hC.hasLineDerivAt (μ • e)`. Use `HasDerivAt.congr_deriv hL ?_` and prove the remaining obligations. Simplify using `only [lineFirstVariation, ContinuousLinearMap.smul_apply, ContinuousLinearMap.comp_apply, ContinuousLinearMap.coe_restrictScalars', innerSL_apply_apply, map_smul, smul_eq_mul, nsmul_eq_mul, Nat.cast_ofNat]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 -/
 lemma hasLineDerivAt_halfLogRatioSq_comp {Ω : Set (V n)} {F : V n → ℂ} (hΩ : IsOpen Ω)
     (hF : DifferentiableOn ℂ F Ω) {z : V n} (hz : z ∈ Ω) {ε : ℝ} (hε : 0 < ε) (e : V n)
@@ -59,11 +59,11 @@ lemma hasLineDerivAt_halfLogRatioSq_comp {Ω : Set (V n)} {F : V n → ℂ} (hΩ
   ring
 
 /- English proof (translation)
-Establish `hp` using `hasDerivAt_line hΩ hF hz e μ`. Establish `hq` using `(hasDerivAt_realLine_fderiv hΩ hF hz e μ).mul_const μ`. Establish `hs : HasDerivAt (fun t : ℝ => ‖F (z + t • (μ • e))‖ ^ 2) (2 * inner ℝ (F z) (fderiv ℂ F z e * μ)) 0`. Simplify using `using hp.norm_sq`. Establish `h1' : HasDerivAt (halfLogRatioSqDeriv ε) (halfLogRatioSqSecondDeriv ε (‖F z‖ ^ 2)) ((fun t : ℝ => ‖F (z + t • (μ • e))‖ ^ 2) 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Simplify using `using hasDerivAt_halfLogRatioSqDeriv (ε := ε) (s := ‖F z‖ ^ 2) (by positivity)`. Establish `h1` using `h1'.comp 0 hs`. Establish `h2` using `(hp.inner (𝕜 := ℝ) hq).const_mul 2`. Use `show HasDerivAt (fun t : ℝ => halfLogRatioSqDeriv ε (‖F (z + t • (μ • e))‖ ^ 2) * (2 * inner ℝ (F (z + t • (μ • e))) (fderiv ℂ F (z + t • (μ • e)) e * μ))) _ 0`. Use `(h1.mul h2).congr_deriv ?_` and prove the remaining obligations.
+Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Simplify using `only [zero_smul, add_zero, Function.comp_apply]`. Unfold `lineSecondVariation`. Expand and normalize the polynomial expressions, which then agree.
+Replace the relevant objects with their definitions. Expand and normalize the polynomial expressions, which then agree. A detailed English derivation is pending.
 -/
 lemma hasLineDerivAt_lineFirstVariation {Ω : Set (V n)} {F : V n → ℂ} (hΩ : IsOpen Ω)
     (hF : DifferentiableOn ℂ F Ω) {z : V n} (hz : z ∈ Ω) {ε : ℝ} (hε : 0 < ε) (e : V n)
@@ -88,11 +88,11 @@ lemma hasLineDerivAt_lineFirstVariation {Ω : Set (V n)} {F : V n → ℂ} (hΩ 
   ring
 
 /- English proof (translation)
-Establish `hTm : MeasurableSet T` using `hT.isClosed.measurableSet`. Use `haveI : IsFiniteMeasure (volume.restrict T) := isFiniteMeasure_restrict.2 hT.measure_lt_top.ne`. Establish `hb' : ∀ᵐ z ∂(volume.restrict T), ‖h z‖ ≤ C` using `(ae_restrict_iff' hTm).2 (Filter.Eventually.of_forall hb)`. Establish `hon : IntegrableOn h T` using `by first`. Consider the case `exact Integrable.of_bound hm C hb'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Treat this case separately. Treat this case separately.
 
-Consider the case `exact Integrable.of_bound hm hb'`. Consider the case `exact Measure.integrableOn_of_bounded (M := C) hT.measure_lt_top.ne hm hb'`. Establish `he : h = T.indicator h`. Use function extensionality and compare the values at `z`. Distinguish the cases in `hz : z ∈ T`.
+Treat this case separately. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Simplify using the standard rewrite rules.
 
-Simplify using `[hz]`. Simplify using `[hz, h0 z hz]`. Rewrite using `[he]`. Conclude with `(integrable_indicator_iff hTm).2 hon`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 lemma integrable_of_bounded_of_isCompact {T : Set (V n)} (hT : IsCompact T) {h : V n → ℝ}
     (hm : AEStronglyMeasurable h (volume.restrict T)) {C : ℝ} (hb : ∀ z ∈ T, ‖h z‖ ≤ C)
@@ -115,7 +115,7 @@ lemma integrable_of_bounded_of_isCompact {T : Set (V n)} (hT : IsCompact T) {h :
   exact (integrable_indicator_iff hTm).2 hon
 
 /- English proof (translation)
-Introduce `z hz`. Establish `h1 : ContinuousWithinAt (fun z => ‖F z‖ ^ 2) T z` using `((hFc z hz).norm).pow 2`. Conclude with `(hg _ (by positivity)).comp_continuousWithinAt h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 lemma continuousOn_cutComp {T : Set (V n)} {F : V n → ℂ} (hFc : ContinuousOn F T) {g : ℝ → ℝ}
     (hg : ∀ s, 0 ≤ s → ContinuousAt g s) : ContinuousOn (fun z => g (‖F z‖ ^ 2)) T := by
@@ -124,7 +124,7 @@ lemma continuousOn_cutComp {T : Set (V n)} {F : V n → ℂ} (hFc : ContinuousOn
   exact (hg _ (by positivity)).comp_continuousWithinAt h1
 
 /- English proof (translation)
-Establish `hx2 : 2 * |x| ≤ 2 * X` using `by linarith`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 -/
 lemma abs_mul_two_mul_le {p x c X : ℝ} (hp : |p| ≤ c) (hx : |x| ≤ X) : |p * (2 * x)| ≤ c * (2 * X) := by
   have hx2 : 2 * |x| ≤ 2 * X := by linarith
@@ -132,7 +132,7 @@ lemma abs_mul_two_mul_le {p x c X : ℝ} (hp : |p| ≤ c) (hx : |x| ≤ X) : |p 
     _ ≤ c * (2 * X) := mul_le_mul hp hx2 (by positivity) ((abs_nonneg p).trans hp)
 
 /- English proof (translation)
-The claim follows from `|p2 * (2 * x) * (2 * x) + p1 * (2 * (y + z))| ≤ c2 * (2 * X) * (2 * X) + c1 * (2 * (Y + Z)) := by have hX : 0 ≤ X := (abs_nonneg x).trans hx have hc2 : 0 ≤ c2 := (abs_nonneg _).trans h2 have hc1 : 0 ≤ c1 := (abs_nonneg _).trans h1 have hx2 : 2 * |x| ≤ 2 * X := by linarith have hA …`.
+A detailed English derivation is pending.
 -/
 lemma abs_second_variation_le {p1 p2 x y z c1 c2 X Y Z : ℝ} (h1 : |p1| ≤ c1) (h2 : |p2| ≤ c2) (hx : |x| ≤ X)
     (hy : |y| ≤ Y) (hz : |z| ≤ Z) :
@@ -152,37 +152,31 @@ lemma abs_second_variation_le {p1 p2 x y z c1 c2 X Y Z : ℝ} (h1 : |p1| ≤ c1)
   exact (abs_add_le _ _).trans (add_le_add hA hB)
 
 /- English proof (translation)
-Use `set v : V n := μ • e with hv`. Use `set D1 : V n → ℝ := fun w => fderiv ℝ ψ w v with hD1`. Use `set D2 : V n → ℝ := fun w => fderiv ℝ D1 w v with hD2`. Establish `hψd : Differentiable ℝ ψ` using `hψ.differentiable (by norm_num)`. Establish `hD1c : ContDiff ℝ 1 D1` using `(hψ.fderiv_right (m := 1) (by norm_num)).clm_apply contDiff_const`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hD1d : Differentiable ℝ D1` using `hD1c.differentiable (by norm_num)`. Establish `hD2c : Continuous D2` using `(hD1c.continuous_fderiv (by norm_num)).clm_apply continuous_const`. Establish `hsD1 : tsupport D1 ⊆ T`. Establish `: tsupport D1 ⊆ tsupport (fderiv ℝ ψ)` using `tsupport_comp_subset (g := fun L : V n →L[ℝ] ℝ => L v) (by simp) _`. Conclude with `this.trans ((tsupport_fderiv_subset ℝ).trans hψT)`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsD2 : tsupport D2 ⊆ T`. Establish `: tsupport D2 ⊆ tsupport (fderiv ℝ D1)` using `tsupport_comp_subset (g := fun L : V n →L[ℝ] ℝ => L v) (by simp) _`. Conclude with `this.trans ((tsupport_fderiv_subset ℝ).trans hsD1)`. Establish `z0 : ∀ {w : V n → ℝ}, tsupport w ⊆ T → ∀ z ∉ T, w z = 0` using `fun hw z hz => image_eq_zero_of_notMem_tsupport (fun h => hz (hw h))`. Establish `hFc : ContinuousOn F T` using `hF.continuousOn.mono hTΩ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hTm` using `hT.measurableSet`. Establish `mF : AEStronglyMeasurable F (volume.restrict T)` using `hFc.aestronglyMeasurable hTm`. Establish `ma : AEStronglyMeasurable (fun z => fderiv ℂ F z e * μ) (volume.restrict T)` using `((measurable_fderiv_apply_const ℂ F e).mul_const μ).aestronglyMeasurable`. Establish `cP : ContinuousOn (fun z => cutP ε (‖F z‖ ^ 2)) T` using `continuousOn_cutComp hFc (fun s hs => continuousAt_cutP (by linarith))`. Establish `cP1 : ContinuousOn (fun z => halfLogRatioSqDeriv ε (‖F z‖ ^ 2)) T` using `continuousOn_cutComp hFc (fun s hs => continuousAt_halfLogRatioSqDeriv (by linarith))`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `cP2 : ContinuousOn (fun z => halfLogRatioSqSecondDeriv ε (‖F z‖ ^ 2)) T` using `continuousOn_cutComp hFc (fun s hs => continuousAt_halfLogRatioSqSecondDeriv (by linarith))`. Take `⟨c0, hc0⟩` from `hT.exists_bound_of_continuousOn cP`. Take `⟨c1, hc1⟩` from `hT.exists_bound_of_continuousOn cP1`. Take `⟨c2, hc2⟩` from `hT.exists_bound_of_continuousOn cP2`. Establish `hin : ∀ z ∈ T, |inner ℝ (F z) (fderiv ℂ F z e * μ)| ≤ M * A` using `fun z hz => by`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `(abs_real_inner_le_norm _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hμ, mul_one]`. Conclude with `mul_le_mul (hM z hz) (hA z hz) (norm_nonneg _) ((norm_nonneg _).trans (hM z hz))`. Establish `hinS : ∀ z ∈ T, |inner ℝ (F z) (complexLineSecondDeriv F z e * μ * μ)| ≤ M * B` using `fun z hz => by`. Use `(abs_real_inner_le_norm _ _).trans ?_` and prove the remaining obligations.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[norm_mul, norm_mul, hμ, mul_one, mul_one]`. Conclude with `mul_le_mul (hM z hz) (hB z hz) (norm_nonneg _) ((norm_nonneg _).trans (hM z hz))`. Establish `hinA : ∀ z ∈ T, |inner ℝ (fderiv ℂ F z e * μ) (fderiv ℂ F z e * μ)| ≤ A * A` using `fun z hz => by`. Use `(abs_real_inner_le_norm _ _).trans ?_` and prove the remaining obligations. Rewrite using `[norm_mul, hμ, mul_one]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `mul_le_mul (hA z hz) (hA z hz) (norm_nonneg _) ((norm_nonneg _).trans (hA z hz))`. Establish `intP : ∀ w : V n → ℝ, Continuous w → tsupport w ⊆ T → Integrable (fun z => w z * cutP ε (‖F z‖ ^ 2))`. Introduce `w hw hwT`. Take `⟨bw, hbw⟩` from `hT.exists_bound_of_continuousOn hw.continuousOn`. Use `integrable_of_bounded_of_isCompact hT (hw.aestronglyMeasurable.mul (cP.aestronglyMeasurable hTm)) (C := bw * c0) (fun z hz => ?_) (fun z hz => by simp [z0 hwT z hz])` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[norm_mul]`. Conclude with `mul_le_mul (hbw z hz) (hc0 z hz) (norm_nonneg _) ((norm_nonneg _).trans (hbw z hz))`. Establish `intQ1 : ∀ w : V n → ℝ, Continuous w → tsupport w ⊆ T → Integrable (fun z => w z * lineFirstVariation ε (F z) (fderiv ℂ F z e * μ))`. Introduce `w hw hwT`. Take `⟨bw, hbw⟩` from `hT.exists_bound_of_continuousOn hw.continuousOn`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `integrable_of_bounded_of_isCompact hT ?_ (C := bw * (c1 * (2 * (M * A)))) (fun z hz => ?_) (fun z hz => by simp [z0 hwT z hz])` and prove the remaining obligations. Unfold `lineFirstVariation`. Conclude with `hw.aestronglyMeasurable.mul ((cP1.aestronglyMeasurable hTm).mul (aestronglyMeasurable_const.mul (mF.inner ma)))`. Rewrite using `[norm_mul]`. Use `mul_le_mul (hbw z hz) ?_ (norm_nonneg _) ((norm_nonneg _).trans (hbw z hz))` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact.
 
-Rewrite using `[Real.norm_eq_abs]`. Conclude with `abs_mul_two_mul_le (by simpa [Real.norm_eq_abs] using hc1 z hz) (hin z hz)`. Establish `intQ2 : ∀ w : V n → ℝ, Continuous w → tsupport w ⊆ T → Integrable (fun z => w z * lineSecondVariation ε (F z) (fderiv ℂ F z e * μ) (complexLineSecondDeriv F z e * μ * μ))`. Introduce `w hw hwT`. Take `⟨bw, hbw⟩` from `hT.exists_bound_of_continuousOn hw.continuousOn`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hid : (fun z => w z * lineSecondVariation ε (F z) (fderiv ℂ F z e * μ) (complexLineSecondDeriv F z e * μ * μ)) = fun z => (w z * (halfLogRatioSqSecondDeriv ε (‖F z‖ ^ 2) * (2 * inner ℝ (F z) (fderiv ℂ F z e * μ)) * (2 * inner ℝ (F z) (fderiv ℂ F z e * μ))) + w z * (halfLogRatioSq …`. Use function extensionality and compare the values at `z`. Unfold `lineSecondVariation`. Simplify using `only [Complex.inner, mul_re, mul_im, ofReal_re, ofReal_im, conj_re, conj_im]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hS : Measurable (fun z => ((w z : ℝ) : ℂ) * complexLineSecondDeriv F z e)` using `measurable_mul_complexLineSecondDeriv hΩ hF e (Complex.measurable_ofReal.comp hw.measurable) (fun z hz => by`. Assume the negation of the conclusion as `h`. Conclude with `hz (by simp [z0 hwT z (fun h' => h (hTΩ h'))]))`. Establish `cX : ContinuousOn (fun z => ((halfLogRatioSqDeriv ε (‖F z‖ ^ 2) * 2 : ℝ) : ℂ) * (μ * μ * (starRingEnd ℂ) (F z))) T` using `(Complex.continuous_ofReal.comp_continuousOn (cP1.mul continuousOn_const)).mul (continuousOn_const.mul (Complex.continuous_conj.comp_continuousOn hFc))`. Use `integrable_of_bounded_of_isCompact hT ?_ (C := bw * (c2 * (2 * (M * A)) * (2 * (M * A)) + c1 * (2 * (M * B + A * A)))) (fun z hz => ?_) (fun z hz => by simp [z0 hwT z hz])` and prove the remaining obligations.
-
-Rewrite using `[hid]`. Use `((hw.aestronglyMeasurable.mul (((cP2.aestronglyMeasurable hTm).mul (aestronglyMeasurable_const.mul (mF.inner ma))).mul (aestronglyMeasurable_const.mul (mF.inner ma)))).add (hw.aestronglyMeasurable.mul ((cP1.aestronglyMeasurable hTm).mul (aestronglyMeasurable_const.mul (ma.inner m …` and prove the remaining obligations. Conclude with `Complex.continuous_re.comp_aestronglyMeasurable ((cX.aestronglyMeasurable hTm).mul hS.aestronglyMeasurable)`. Rewrite using `[norm_mul]`. Use `mul_le_mul (hbw z hz) ?_ (norm_nonneg _) ((norm_nonneg _).trans (hbw z hz))` and prove the remaining obligations.
-
-Rewrite using `[Real.norm_eq_abs]`. Unfold `lineSecondVariation`. Conclude with `abs_second_variation_le (by simpa [Real.norm_eq_abs] using hc1 z hz) (by simpa [Real.norm_eq_abs] using hc2 z hz) (hin z hz) (hinS z hz) (hinA z hz)`. Use `⟨intQ2 ψ hψd.continuous hψT, intP D2 hD2c hsD2, hD2c.integrable_of_hasCompactSupport (IsCompact.of_isClosed_subset hT (isClosed_tsupport _) hsD2), z0 hsD2, ?_⟩` and prove the remaining obligations. Establish `ibp1` using `integral_bilinear_hasLineDerivAt_right_eq_neg_left_of_integrable (μ := volume) (B := ContinuousLinearMap.mul ℝ ℝ) (f := ψ) (f' := D1) (g := fun w => lineFirstVariation ε (F w) (fderiv ℂ F w e * μ)) (g' := fun z => lineSecondVariation ε (F z) (fderiv ℂ F z e * μ) (complexLineSecon …`.
-
-Establish `ibp2` using `integral_bilinear_hasLineDerivAt_right_eq_neg_left_of_integrable (μ := volume) (B := ContinuousLinearMap.mul ℝ ℝ) (f := D1) (f' := D2) (g := fun w => cutP ε (‖F w‖ ^ 2)) (g' := fun w => lineFirstVariation ε (F w) (fderiv ℂ F w e * μ)) (v := v) (by simpa using intP D2 hD2c hsD2) ( …`. Simplify using `only [ContinuousLinearMap.mul_apply'] at ibp1 ibp2`. Rewrite using `[ibp1, ibp2, neg_neg]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem green_dir {Ω : Set (V n)} {F : V n → ℂ} (hΩ : IsOpen Ω) (hF : DifferentiableOn ℂ F Ω)
     {T : Set (V n)} (hT : IsCompact T) (hTΩ : T ⊆ Ω) {ψ : V n → ℝ} (hψ : ContDiff ℝ 2 ψ)

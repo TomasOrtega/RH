@@ -12,13 +12,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory
 
 /- English proof (translation)
-Introduce `P H R _ I h R₀ _ π hπ hker g A₀ _ A _ i hA abA smA g' B₀ _ B _ j hB abB smB f₀ _ hfil`. Take `⟨S, ι₀, AS₀, _, AS, _, iS, BS₀, _, BS, _, jS, fS₀, φA, φB, ψA, ψB, hfg, hι, _, hAS, hBS, abAS, smAS, abBS, smBS, pA, pB, qA, qB, cA, cB, cf⟩` from `GlobalTheory.T.abelian_hom_reduction_descends_finitely_generated R I R₀ π hπ hker g A₀ A i hA abA smA g' B₀ B j hB abB smB f₀`. Establish `hS : (I.comap S.subtype) ^ 2 = 0`. Rewrite using `[Ideal.zero_eq_bot, eq_bot_iff]`. Use `(Ideal.le_comap_pow _ 2).trans ?_` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[h, Ideal.zero_eq_bot, Ideal.comap_bot_of_injective _ Subtype.val_injective]`. Use `haveI : IsNoetherianRing S := Algebra.FiniteType.isNoetherianRing ℤ S`. Establish `hfilS` using `GlobalTheory.T.push_mem_liftFil_of_injective_alt P R I h R₀ π hπ hker S S.subtype Subtype.val_injective (I.comap S.subtype) hS (S ⧸ I.comap S.subtype) (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective (Ideal.mk_ker) ι₀ hι g A₀ A i hA AS₀ AS iS hAS abA smA abAS smAS φA ψA pA qA c …`. Take `⟨fS, ⟨_, efS⟩, -⟩` from `(H S (I.comap S.subtype) hS (S ⧸ I.comap S.subtype) (Ideal.Quotient.mk _) Ideal.Quotient.mk_surjective Ideal.mk_ker).2 g AS₀ AS iS hAS abAS smAS g' BS₀ BS jS hBS abBS smBS fS₀ hfilS`. Set `fl : A.left ⟶ B.left` to `pB.1.lift (φA ≫ fS.left) A.hom (by`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Category.assoc, Over.w fS, pA.1.w])`. Use `⟨Over.homMk fl (pB.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Apply `pB.1.hom_ext` to reduce the goal to its premises. Simplify using `only [Over.homMk_left, Category.assoc, fl, pB.1.lift_fst]`. Rewrite using `[reassoc_of% cA, efS, ← Category.assoc, ← cf, Category.assoc, cB]`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Over.homMk_left, Category.assoc, fl, pB.1.lift_snd]`. Rewrite using `[hA.1.w, hB.1.w, ← Category.assoc, Over.w f₀]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem liftHom_exists_of_noetherian : AbelianDeRham → (∀ (R : Type) [CommRing R] [IsNoetherianRing R] (I : Ideal R) (hI : I ^ 2 = 0) (R₀ : Type) [CommRing R₀] (π : R →+* R₀),
     Function.Surjective π → RingHom.ker π = I → LiftObj (divided₂ hI) π ∧ LiftHom (divided₂ hI) π) →

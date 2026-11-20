@@ -11,7 +11,7 @@ noncomputable section
 namespace GlobalTheory.ThK.IsoSymp
 
 /- English proof (translation)
-Establish `τ : E →+* ℂ` using `(IsAlgClosed.lift (M := ℂ) (R := ℚ) (S := E)).toRingHom`. Apply `τ.injective` to reduce the goal to its premises. Rewrite using `[h.2.2.2, h.2.2.2, star_star]`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem sigma_sigma {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (h : IsCMExt F E σ) (e : E) : σ (σ e) = e := by
@@ -20,14 +20,14 @@ theorem sigma_sigma {F E : Type} [Field F] [NumberField F] [Field E] [NumberFiel
   rw [h.2.2.2, h.2.2.2, star_star]
 
 /- English proof (translation)
-Simplify using `[cA, inclR, Algebra.TensorProduct.includeRight_apply]`.
+Simplify using the standard rewrite rules.
 -/
 theorem cA_inclR {F E : Type} [Field F] [NumberField F] [Field E] [Algebra F E] (σ : E →ₐ[F] E) (e : E) :
     cA σ (inclR (AF F) e) = inclR (AF F) (σ e) := by
   simp [cA, inclR, Algebra.TensorProduct.includeRight_apply]
 
 /- English proof (translation)
-Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, hσ, hJ, Finset.mul_sum, ← Finset.sum_neg_distrib]`. Rewrite using `[Finset.sum_comm]`. Use `Finset.sum_congr rfl fun i _ => Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem form_swap {F E : Type} [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E]
     {σ : E →ₐ[F] E} (hσ : ∀ e, σ (σ e) = e) {d : ℕ} (J : Matrix (Fin d) (Fin d) E)
@@ -39,13 +39,13 @@ theorem form_swap {F E : Type} [Field F] [NumberField F] [Field E] [NumberField 
   ring
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n d d₁ X W W₁ H' i₀ i₁ r s r' s' hB hX hW hH ξ y`. Establish `hσ : ∀ e, σ (σ e) = e` using `sigma_sigma hB.cm`. Establish `hf : form σ W.J H'.y H'.x = -1`. Establish `h1` using `form_swap hσ W.J hW.skew H'.x H'.y`. Rewrite `h1` using `[hH.xy, map_one]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Take the linear combination `h1`. Establish `key : hTens (cA σ) (incM F X.J) (incM F W.J) (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) (Matrix.vecMulVec y (incV F H'.x)) = (∑ i, incV F ξ i * (incM F X.J *ᵥ fun k => cA σ (y k)) i) * inclR (AF F) (form σ W.J H'.y H'.x)`. Simplify using `only [hTens, Matrix.vecMulVec_apply, incV, incM, Matrix.map_apply, map_mul, cA_inclR]`. Rewrite using `[Finset.sum_mul]`. Use `Finset.sum_congr rfl fun i _ => ?_` and prove the remaining obligations.
+Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Finset.sum_comm, Matrix.mulVec, dotProduct, Finset.mul_sum, Finset.sum_mul]`. Use `Finset.sum_congr rfl fun k _ => ?_` and prove the remaining obligations. Simplify using `only [form, dotProduct, Matrix.mulVec, map_sum, map_mul, Finset.mul_sum, Matrix.map_apply]`. Use `Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree.
 
-Rewrite using `[symp, key, hf, map_neg, map_one]`. Use `congr 1`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem symp_iso_term : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (H' : Plane E d d₁) (i₀ i₁ r s r' s' : ℕ), B.IsGood σ → X.IsHerm σ B r s → W.IsSkew σ B r' s' → H'.IsAdapted σ B W W₁ i₀ i₁ → ∀ (ξ : Fin n → E) (y : Fin n → AE F E), symp (cA σ) (-1) (incM F X.J) (incM F W.J) (Matrix.vecMulVec (incV F ξ) (incV F H'.y)) (Matrix.vecMulVec y (incV F H'.x)) = Algebra.trace (AF F) (AE F E) (∑ i, incV F ξ i * (incM F X.J *ᵥ fun k => cA σ (y k)) i) := by
   intro F E _ _ _ _ _ σ B n d d₁ X W W₁ H' i₀ i₁ r s r' s' hB hX hW hH ξ y

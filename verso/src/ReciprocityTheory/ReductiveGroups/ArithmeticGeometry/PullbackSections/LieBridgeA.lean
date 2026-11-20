@@ -16,7 +16,7 @@ variable {X0 : Scheme.{0}} {S : Type} [CommRing S] (x0 : Sp S ⟶ X0) (G : Over 
 def tanSub : Subgroup (overAt x0 (DualNumber S) ⟶ G) := (smHom (G := G) x0 0).ker
 
 /- English proof (translation)
-The claim follows from `MonoidHom.mem_ker`.
+A detailed English derivation is pending.
 -/
 theorem mem_tanSub {v : overAt x0 (DualNumber S) ⟶ G} : v ∈ tanSub x0 G ↔ smT x0 0 v = 1 := MonoidHom.mem_ker
 
@@ -27,12 +27,12 @@ variable {x0 G}
 def tv (v : TanM x0 G) : overAt x0 (DualNumber S) ⟶ G := ((Additive.toMul v : tanSub x0 G) : overAt x0 (DualNumber S) ⟶ G)
 
 /- English proof (translation)
-The claim follows from `(mem_tanSub x0 G).1 (Additive.toMul v).2`.
+A detailed English derivation is pending.
 -/
 theorem tv_mem (v : TanM x0 G) : smT x0 0 (tv v) = 1 := (mem_tanSub x0 G).1 (Additive.toMul v).2
 
 /- English proof (translation)
-The claim follows from `Additive.toMul.injective (Subtype.ext h)`.
+A detailed English derivation is pending.
 -/
 theorem tanM_ext {u v : TanM x0 G} (h : tv u = tv v) : u = v := Additive.toMul.injective (Subtype.ext h)
 
@@ -53,7 +53,7 @@ Both sides reduce to the same expression.
 theorem tv_mkT (v : overAt x0 (DualNumber S) ⟶ G) (h : smT x0 0 v = 1) : tv (mkT v h) = v := rfl
 
 /- English proof (translation)
-Rewrite using `[smT_smT, zero_mul, tv_mem]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem smT_mem (a : S) (v : TanM x0 G) : smT x0 0 (smT x0 a (tv v)) = 1 := by
   rw [smT_smT, zero_mul, tv_mem]
@@ -84,7 +84,7 @@ Both sides reduce to the same expression.
 theorem tv_actL (φ : G ⟶ G) [IsMonHom φ] (v : TanM x0 G) : tv (actL φ v) = tv v ≫ φ := rfl
 
 /- English proof (translation)
-Establish `h` using `A.add 0 0`. Rewrite `h` using `[add_zero]`. Conclude with `mul_eq_left.1 h.symm`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem oact_zero {O : Type} [CommRing O] (A : OAct O G) : A.act 0 = 1 := by
   have h := A.add 0 0

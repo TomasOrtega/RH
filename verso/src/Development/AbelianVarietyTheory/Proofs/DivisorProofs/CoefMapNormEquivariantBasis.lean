@@ -15,11 +15,11 @@ variable {K K' : Type} [Field K] [Field K'] {σ : K →+* ℂ} {σ' : K' →+* �
   {I : Type} [Fintype I] {n : ℕ} (lam : I → DomWeight n) {W : Type} [AddCommGroup W] [Module ℂ W]
 
 /- English proof (translation)
-Establish `h1 : (MvPolynomial.map φ).comp (trAct B).toRingHom = (trAct (fun τ => Formalism.UG.bc φ (B τ))).toRingHom.comp (MvPolynomial.map φ)`. Apply `MvPolynomial.ringHom_ext` to reduce the goal to its premises. Introduce `a`. Simplify using `[trAct]`. Introduce `v`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Simplify using `[trAct, blockAct_X, bc_coe]`. Establish `h2 : MvPolynomial.map φ (trAct B F) = trAct (fun τ => Formalism.UG.bc φ (B τ)) (MvPolynomial.map φ F)` using `congrArg (fun ψ : Pol K I n →+* Pol K' I n => ψ F) h1`. Establish `h3 : φ (detTwK lam B) = detTwK lam (fun τ => Formalism.UG.bc φ (B τ))`. Rewrite using `[detTw_eq, detTw_eq, map_prod]`. Use `Finset.prod_congr rfl fun τ _ => ?_` and prove the remaining obligations.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[map_zpow₀, bc_coe, RingHom.map_det]`. Both sides reduce to the same expression. Simplify using `only [actP, LinearMap.smul_apply, AlgHom.toLinearMap_apply, smul_eq_C_mul, map_mul, map_C, h2, h3]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Simplify using the standard rewrite rules.
 -/
 theorem map_actP (B : I → GL (Fin n) K) (F : Pol K I n) :
     MvPolynomial.map φ (actP lam B F) = actP lam (fun τ => Formalism.UG.bc φ (B τ)) (MvPolynomial.map φ F) := by
@@ -42,7 +42,7 @@ theorem map_actP (B : I → GL (Fin n) K) (F : Pol K I n) :
 def up (v : VV K lam) : VV K' lam := ⟨MvPolynomial.map φ (v : Pol K I n), GlobalTheory.Proof.TensorMapDescent.map_mem_VV φ lam _ v.2⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Simplify using `only [up, Submodule.coe_sum, Submodule.coe_smul, map_sum, smul_eq_C_mul, map_mul, map_C]`.
+Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 -/
 theorem up_sum (a : VVIdx lam → K) (v : VVIdx lam → VV K lam) :
     up φ lam (∑ j, a j • v j) = ∑ j, φ (a j) • up φ lam (v j) := by
@@ -50,13 +50,13 @@ theorem up_sum (a : VVIdx lam → K) (v : VVIdx lam → VV K lam) :
   simp only [up, Submodule.coe_sum, Submodule.coe_smul, map_sum, smul_eq_C_mul, map_mul, map_C]
 
 /- English proof (translation)
-Establish `hv : v ∈ Submodule.span K' (Set.range (bVV K' lam))` using `by rw [(bVV K' lam).span_eq]; exact Submodule.mem_top`. Proceed by induction on `hv using Submodule.span_induction with`. Consider the case `mem x hx`. Take `⟨j, rfl⟩` from `hx`. Take `⟨F, hF, hj⟩` from `GlobalTheory.Proof.TensorMapDescent.bVVfun_desc φ lam j`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Use `⟨fun k => φ ((bVV K lam).repr ⟨F, hF⟩ k), ?_⟩` and prove the remaining obligations. Rewrite using `[← up_sum, (bVV K lam).sum_repr]`. Conclude with `Subtype.ext ((bVV_coe _ _ _).trans hj)`. Consider the case `zero => exact ⟨0, by simp⟩`. Consider the case `add x y _ _ hx hy`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨a, rfl⟩` from `hx`. Take `⟨b, rfl⟩` from `hy`. Conclude with `⟨a + b, by simp [← Finset.sum_add_distrib, add_smul]⟩`. Consider the case `smul c x _ hx`. Take `⟨a, rfl⟩` from `hx`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Treat this case separately. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Conclude with `⟨fun j => c * a j, by simp [Finset.smul_sum, mul_smul]⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_coord (v : VV K' lam) : ∃ a : VVIdx lam → K', v = ∑ j, a j • up φ lam (bVV K lam j) := by
   have hv : v ∈ Submodule.span K' (Set.range (bVV K' lam)) := by rw [(bVV K' lam).span_eq]; exact Submodule.mem_top
@@ -77,7 +77,7 @@ theorem exists_coord (v : VV K' lam) : ∃ a : VVIdx lam → K', v = ∑ j, a j 
     exact ⟨fun j => c * a j, by simp [Finset.smul_sum, mul_smul]⟩
 
 /- English proof (translation)
-Apply `Subtype.ext` to reduce the goal to its premises. Use `show MvPolynomial.map φ (actP lam (invTrK (embGL emb g)) (v : Pol K I n)) = actP lam (invTrK (embGL (fun τ => φ.comp (emb τ)) g)) (MvPolynomial.map φ (v : Pol K I n))`. Rewrite using `[map_actP]`. Both sides reduce to the same expression.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem up_rhoVr {E : Type} [Field E] [NumberField E] [NumberField K] [NumberField K'] (emb : I → E →+* K)
     (g : GL (Fin n) E) (v : VV K lam) :
@@ -91,7 +91,7 @@ theorem up_rhoVr {E : Type} [Field E] [NumberField E] [NumberField K] [NumberFie
 variable {φ lam} {c₀ : VV K lam →ₛₗ[σ] W} {c' : VV K' lam →ₛₗ[σ'] W}
 
 /- English proof (translation)
-Take `⟨a, rfl⟩` from `exists_coord φ lam v`. Simplify using `only [map_sum, map_smul, map_smulₛₗ, ← hS, hE, hT, RingHom.id_apply]`.
+Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 -/
 theorem equivariant (hE : ∀ v, c' (up φ lam v) = c₀ v) (T : W →ₗ[ℂ] W) (S : VV K lam →ₗ[K] VV K lam)
     (S' : VV K' lam →ₗ[K'] VV K' lam) (hS : ∀ v, up φ lam (S v) = S' (up φ lam v)) (hT : ∀ v, c₀ (S v) = T (c₀ v))
@@ -100,7 +100,7 @@ theorem equivariant (hE : ∀ v, c' (up φ lam v) = c₀ v) (T : W →ₗ[ℂ] W
   simp only [map_sum, map_smul, map_smulₛₗ, ← hS, hE, hT, RingHom.id_apply]
 
 /- English proof (translation)
-Use `top_le_iff.1 (hs ▸ Submodule.span_mono ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨j, rfl⟩`. Conclude with `⟨_, hE _⟩`.
+Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem span_top (hE : ∀ v, c' (up φ lam v) = c₀ v)
     (hs : Submodule.span ℂ (Set.range fun j => c₀ (bVV K lam j)) = ⊤) : Submodule.span ℂ (Set.range c') = ⊤ := by
@@ -109,13 +109,13 @@ theorem span_top (hE : ∀ v, c' (up φ lam v) = c₀ v)
   exact ⟨_, hE _⟩
 
 /- English proof (translation)
-Use `letI : Algebra K' ℂ := σ'.toAlgebra`. Use `choose a ha using fun j => exists_coord φ lam (b j)`. Establish `h1 : LinearIndependent K' a`. Use `LinearIndependent.of_comp (Fintype.linearCombination K' fun k => up φ lam (bVV K lam k)) ?_` and prove the remaining obligations. Use `hb using 1` and compare the differences between its conclusion and the goal.
+Equip the data with the indicated structure. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Apply an available result and prove the equalities needed to match it to the conclusion. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `j`. Rewrite using `[ha j]`. Simplify using `[Fintype.linearCombination_apply]`. Establish `h2 : LinearIndependent ℂ fun j => algebraMap K' ℂ ∘ a j` using `linearIndependent_algebraMap_comp_iff.2 h1`. Establish `h3` using `h2.map' (Fintype.linearCombination ℂ fun k => c₀ (bVV K lam k)) (LinearMap.ker_eq_bot'.2 fun g hg => funext (Fintype.linearIndependent_iff.1 hli g (by simpa [Fintype.linearCombination_apply] using hg)))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `e : (fun j => c' (b j)) = ⇑(Fintype.linearCombination ℂ fun k => c₀ (bVV K lam k)) ∘ fun j => algebraMap K' ℂ ∘ a j`. Use function extensionality and compare the values at `j`. Rewrite using `[ha j]`. Simplify using `only [map_sum, map_smulₛₗ, hE, Function.comp_apply, Fintype.linearCombination_apply]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h3`.
+A detailed English derivation is pending.
 -/
 theorem linearIndependent (hE : ∀ v, c' (up φ lam v) = c₀ v)
     (hli : LinearIndependent ℂ fun j => c₀ (bVV K lam j)) {m : ℕ} (b : Fin m → VV K' lam) (hb : LinearIndependent K' b) :
@@ -141,9 +141,9 @@ theorem linearIndependent (hE : ∀ v, c' (up φ lam v) = c₀ v)
   exact h3
 
 /- English proof (translation)
-Establish `hG : gramKd emb (1 : Matrix (Fin n) (Fin n) E) = fun _ => 1`. Use function extensionality and compare the values at `τ`. Simplify using `[gramKd]`. Establish `h` using `pairingExtremal_holds K I n lam (fun _ => 1) 1 (fun τ => by simp)`. Rewrite `h` using `[polyAction_one₂]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[pairVr, pairK_apply, hG, hv, h]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem pairVr_extremal {E : Type} [Field E] [NumberField E] [NumberField K] [StarRing K] (emb : I → E →+* K)
     (v : VV K lam) (hv : (v : Pol K I n) = ten fun τ => extremal K n (lam τ)) : pairVr emb lam 1 v v = 1 := by
@@ -167,7 +167,7 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.AdTh
 
 /- English proof (translation)
-Take `⟨e, -, he, hp, -⟩` from `h`. Establish `hi` using `P.coef_pair (e.symm v) (e.symm w)`. Rewrite `hi` using `[he, he, ← hp, e.apply_symm_apply, e.apply_symm_apply]`. Then use the resulting hypothesis.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 -/
 theorem inner_of_coefTie {D : D7} {V : HSp D} {C : Bridge.CoefDat D V} {S : Formalism.L2.DIV.CSD D.what₂.LL} {J : Subgroup (Bridge.Gf V)}
     {χ : J →* ℂˣ} {P : Bridge.ClassPres (Bridge.ratF V) S D.what₂.embLL C.ρ J χ} {lam : D.what₂.Tau → DomWeight V.rank}
@@ -181,23 +181,21 @@ theorem inner_of_coefTie {D : D7} {V : HSp D} {C : Bridge.CoefDat D V} {S : Form
 set_option maxHeartbeats 800000 in
 
 /- English proof (translation)
-Introduce `D G _ _ Pl0 T0 A T _ R F κ v₀ _ _ i Tp tup O hP`. Take `⟨gramR, c0R, c0L, hT, hc⟩` from `hP.lift.c0`. Establish `hσ` using `hP.lift.field`. Establish `hE : ∀ v, O.c0' (CoefExt.up O.jL (lamV D i) v) = c0L i v`. Introduce `v`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Take `⟨w, hw, h⟩` from `hc v`. Rewrite using `[show CoefExt.up O.jL (lamV D i) v = w from Subtype.ext hw.symm]`. Conclude with `h`. Take `⟨h1, h2, h3⟩` from `hT.mapL i`. Use `⟨?_, ?_, CoefExt.span_top (W := (R.cV i).W) hE h3, fun m b hb => CoefExt.linearIndependent (W := (R.cV i).W) hE h2 b hb⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `hn` using `GlobalTheory.StdFrame.neg_eq_false_of_vStd D i hP.lift.std`. Establish `hg : (D.sp.V ((i : ℕ) + 1)).gram = 1` using `hP.lift.std.1`. Set `v : VsV D i D.what₂.LL` to `⟨Formalism.L2.DIV.ten fun τ => Formalism.BasicNotions.extremal D.what₂.LL _ (lamV D i τ), GlobalTheory.Proof.TensorMapDescent.ten_mem _ _ fun τ => Formalism.GradedWeylDivisibility.hwMem _ _ _ le_rfl _ (Formalism.L2.DIV.natW_antitone _)⟩`. Establish `hv : CoefExt.up O.jL (lamV D i) v = O.hw`. Apply `Subtype.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact.
 
-Establish `hw` using `hP.io.1`. Unfold `hwOK at hw`. Use `Eq.trans ?_ hw.symm` and prove the remaining obligations. Use `show MvPolynomial.map O.jL (Formalism.L2.DIV.ten _) = _`. Rewrite using `[GlobalTheory.Proof.TensorMapDescent.map_ten]`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `congr 1`. Use function extensionality and compare the values at `τ`. Conclude with `Formalism.L2.DIV.map_extremal _ _ _`. Establish `hG : (if D.sp.Vneg ((i : ℕ) + 1) then -(D.sp.V ((i : ℕ) + 1)).gram else (D.sp.V ((i : ℕ) + 1)).gram) = 1`. Rewrite using `[hn, hg]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Both sides reduce to the same expression. Establish `hi` using `inner_of_coefTie (hT.coefL i A.μ0) v v`. Rewrite `hi` using `[hG]`. Use `replace hi := hi.trans ((congrArg D.what₂.embLL (CoefExt.pairVr_extremal (labLL D) v rfl)).trans (map_one _))`. Rewrite using `[← hv, hE]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hi' : inner ℂ (c0L i v : (R.cV i).W) (c0L i v : (R.cV i).W) = 1` using `hi`. Rewrite `hi'` using `[inner_self_eq_norm_sq_to_K]`. Establish `h4 : ‖(c0L i v : (R.cV i).W)‖ ^ 2 = 1`. Establish `h5` using `congrArg norm hi'`. Simplify using `using h5`.
+Simplify to obtain the desired conclusion from the available facts. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(pow_eq_one_iff_of_nonneg (norm_nonneg _) two_ne_zero).1 h4`. Introduce `γ γE hγ v`. Establish `hu : IsUnit (γE.val).det` using `(Matrix.isUnit_iff_isUnit_det γE.val).1 γE.isUnit`. Establish `hγE : Matrix.nonsingInvUnit γE.val hu = γE` using `Units.ext rfl`. Establish `hemb : (fun τ => embF O.c' (tauE D τ)) = fun τ => O.jL.comp (labLL D τ)`.
-
-Use function extensionality and compare the values at `fun τ => (embV_eq_embF O.c' O.jL hσ τ).symm`. Rewrite using `[rhoM, dif_pos hu, hγE, hemb]`. Conclude with `CoefExt.equivariant (W := (R.cV i).W) hE ((R.cV i).ρ γ) (Formalism.L2.DIV.rhoVr (labLL D) (lamV D i) γE) _ (CoefExt.up_rhoVr O.jL (lamV D i) (labLL D) γE) (h1 γ γE hγ) v`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem coefMap_norm_equivariant_basis : ∀ (D : D7) (G : Type) [Group G] [Fintype G] (Pl0 T0 : Type) (A : Formalism.L2.DIV.FamIn D.what₂.LL G Pl0 T0 D.R.m) (T : CoreJ D) [Algebra T.Q.c.F D.what₂.LL] (R : RealDat D A T.Q.c.F) (F : Face D A) (κ : ∀ i : Fin D.R.m, WeightFamilies.Wt D ((i : ℕ) + 1)) (v₀ : ∀ (i : Fin D.R.m) (σ : D.what₂.LL →+* ℂ), (R.MW i σ).Vec), R.Char F → TieIn T R κ v₀ → ∀ (i : Fin D.R.m) (Tp : Type) (tup : Tp → T0) (O : OMDat T.toCore R i Tp tup), O.Pins (κ i) (v₀ i (sg0 D A)) (iotaW T i) (T.x₀ ((i : ℕ) + 1) O.s0) → ‖O.c0' O.hw‖ = 1 ∧ (∀ (γ : GQ (Vc D i)) (γE : GL (Fin (Vc D i).rank) D.host.E), Bridge.IsRatMat (Vc D i) γ γE → ∀ v, O.c0' (rhoM O.c' (fun τ => embF O.c' (tauE D τ)) (lamV D i) (γE : Matrix _ _ D.host.E) v) = (R.cV i).ρ γ (O.c0' v)) ∧ Submodule.span ℂ (Set.range O.c0') = ⊤ ∧ ∀ (m : ℕ) (b : Fin m → VsV D i O.c'.F), LinearIndependent O.c'.F b → LinearIndependent ℂ (fun j => O.c0' (b j)) := by
   intro D G _ _ Pl0 T0 A T _ R F κ v₀ _ _ i Tp tup O hP

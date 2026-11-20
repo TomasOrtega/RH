@@ -8,17 +8,17 @@ open scoped ContDiff ComplexConjugate Topology
 namespace GlobalTheory.CxForm
 
 /- English proof (translation)
-Introduce `M M' _ _ n n' A A' f α hf hα x i h`. Establish `key : ∀ (j : A.ι) (hj : f x.pt ∈ (A.e j).source), pull (fderiv ℂ (A.e j ∘ f ∘ x.ch.symm) x.crd) (α ⟨(j, f x.pt), hj⟩) = pull (fderiv ℂ (A.e i ∘ f ∘ x.ch.symm) x.crd) (α ⟨(i, f x.pt), h⟩)`. Introduce `j hj`. Establish `hc` using `hα.compat ⟨(j, f x.pt), hj⟩ ⟨(i, f x.pt), h⟩ rfl`. Rewrite using `[hc, ← GlobalTheory.T.pullbackComplexFormsLinearMap_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hx : x.ch.symm x.crd = x.pt` using `x.ch.left_inv x.2`. Establish `hxt : x.crd ∈ x.ch.target` using `x.ch.map_source x.2`. Establish `hopen : IsOpen (x.ch.target ∩ x.ch.symm ⁻¹' (f ⁻¹' (A.e j).source))` using `x.ch.isOpen_inter_preimage_symm ((A.e j).open_source.preimage hf.1)`. Establish `hmem : x.crd ∈ x.ch.target ∩ x.ch.symm ⁻¹' (f ⁻¹' (A.e j).source)`. Use `⟨hxt, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [Set.mem_preimage, hx]`. Conclude with `hj`. Establish `hd1 : DifferentiableAt ℂ (A.e j ∘ f ∘ x.ch.symm) x.crd` using `(hf.2 x.1.1 j).differentiableAt (hopen.mem_nhds hmem)`. Establish `hopen2 : IsOpen ((A.e j).target ∩ (A.e j).symm ⁻¹' (A.e i).source)` using `(A.e j).isOpen_inter_preimage_symm (A.e i).open_source`. Establish `hmem2 : A.e j (f x.pt) ∈ (A.e j).target ∩ (A.e j).symm ⁻¹' (A.e i).source`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨(A.e j).map_source hj, ?_⟩` and prove the remaining obligations. Simplify using `only [Set.mem_preimage, (A.e j).left_inv hj]`. Conclude with `h`. Establish `hd2 : DifferentiableAt ℂ (A.e i ∘ (A.e j).symm) (A.e j (f x.pt))` using `(A.holo j i).differentiableAt (hopen2.mem_nhds hmem2)`. Establish `hpt : (A.e j ∘ f ∘ x.ch.symm) x.crd = A.e j (f x.pt)`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Simplify using `only [Function.comp, hx]`. Establish `hcomp` using `fderiv_comp x.crd (hpt ▸ hd2) hd1`. Rewrite `hcomp` using `[hpt]`. Establish `hev : (A.e i ∘ (A.e j).symm) ∘ (A.e j ∘ f ∘ x.ch.symm) =ᶠ[𝓝 x.crd] A.e i ∘ f ∘ x.ch.symm` using `by filter_upwards [hopen.mem_nhds hmem] with v hv`. Establish `hv' : f (x.ch.symm v) ∈ (A.e j).source` using `hv.2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Simplify using `only [Function.comp, (A.e j).left_inv hv']`. Rewrite using `[← hev.fderiv_eq, hcomp]`. Conclude with `key _ (A.cover (f x.pt)).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem pullback_eq_chart : ∀ (M M' : Type) [TopologicalSpace M] [TopologicalSpace M'] (n n' : ℕ) (A : HolAtlas M n) (A' : HolAtlas M' n')
     (f : M' → M) (α : A.Fld), A.IsHolo A' f → A.IsForm α →

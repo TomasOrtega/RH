@@ -20,13 +20,13 @@ attribute [local instance] Over.cartesianMonoidalCategory
 namespace GlobalTheory.ChF
 
 /- English proof (translation)
-Substitute `ht` using the available equality. Set `m : (Over.mk t' ⟶ G') → (Over.mk (t' ≫ f) ⟶ G)` to `fun z => Over.homMk (z.left ≫ π) (by`. Use `Over.w z` as an intermediate fact. Simplify using `only [Over.mk_hom] at this`. Simplify using `only [Over.mk_hom, Category.assoc, h.1.w]`.
+Substitute using the available equality. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Rewrite using `[← Category.assoc, this])`. Establish `hm : ∀ z, (m z).left = z.left ≫ π` using `fun _ => rfl`. Establish `hb : Function.Bijective m`. Use `⟨fun z w hzw => ?_, fun y => ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Use `h.1.hom_ext ?_ ?_` and prove the remaining obligations. Rewrite using `[← hm, ← hm, hzw]`. Rewrite using `[Over.w z, Over.w w]`. Use `⟨Over.homMk (h.1.lift y.left t' (Over.w y)) (h.1.lift_snd _ _ _), ?_⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `h.1.lift_fst _ _ _`. Use `⟨MulEquiv.mk (Equiv.ofBijective m hb) (fun z w => ?_), hm⟩` and prove the remaining obligations. Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Conclude with `(h.2 (Over.mk t') z w (m z) (m w) rfl rfl).symm`.
+Reduce the conclusion to the remaining proof obligations. Reduce the claim to the hypotheses of an applicable result. A detailed English derivation is pending.
 -/
 private theorem exists_mulEquiv {B B' : Scheme.{0}} {G : Over B} [GrpObj G] {G' : Over B'} [GrpObj G']
     {f : B' ⟶ B} {π : G'.left ⟶ G.left} (h : Geo.Tor.IsGrpPullback G' G f π) {Y : Scheme.{0}}
@@ -64,19 +64,17 @@ private def resHom {R R' : Type} [CommRing R] [CommRing R'] (β : R →+* R') {S
   { φ.toRingHom with commutes' := fun r => φ.commutes (β r) }
 
 /- English proof (translation)
-Introduce `R R' _ _ β G _ _ G' _ _ π h d F X hX`. Establish `key : ∀ (S : Type) [CommRing S] [Algebra R' S], ∃ e : (sp (R₀` using `R') S ⟶ G') ≃* (@sp R _ S _ (resAlg β S) ⟶ G), ∀ z, (e z).left = z.left ≫ π := fun S _ _ => exists_mulEquiv h _ _ (by rw [← Spec.map_comp]; rfl)`. Use `choose e he using key`. Establish `hnat : ∀ (S : Type) [CommRing S] [Algebra R' S] (S' : Type) [CommRing S'] [Algebra R' S'] (φ : S →ₐ[R'] S') (z : sp (R₀` using `R') S ⟶ G'), e S' (spMap φ ≫ z) = @spMap R _ S S' _ (resAlg β S) _ (resAlg β S') (resHom β φ) ≫ e S z := by`. Introduce `S _ _ S' _ _ φ z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `Over.OverMorphism.ext` to reduce the goal to its premises. Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc]`. Both sides reduce to the same expression. Establish `hnv : ∀ (S : Type) [CommRing S] [Algebra R' S] (n : ℕ) (a : Fin n → Fin d → S), (∀ i j, IsNilpotent (a i j)) → ∀ f : PS R n d, nv (@algebraMap R S _ _ (resAlg β S)) f a = nv (algebraMap R' S) (MvPowerSeries.map β f) a` using `fun S _ _ n a ha f => (nv_calculus R' S (algebraMap R' S) n d a ha).2.2.2.1 R β f`. Use `⟨fun S _ _ a => (e S).symm (@X S _ (resAlg β S) a), ⟨fun S _ _ => ?_, fun S _ _ S' _ _ φ a ha => ?_, fun S _ _ a b ha hb hab => ?_, fun S _ _ S' _ _ ρ σ hρ hn z hz => ?_, fun S _ _ a b ha hb => ?_⟩, fun f f' α hf hα => ⟨fun j => ?_, fun S _ _ a ha => ?_⟩⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[@hX.zero S _ (resAlg β S), map_one]`. Apply `(e S').injective` to reduce the goal to its premises. Rewrite using `[hnat, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply]`. Conclude with `@hX.nat S _ (resAlg β S) S' _ (resAlg β S') (resHom β φ) a ha`. Conclude with `@hX.inj S _ (resAlg β S) a b ha hb ((e S).symm.injective hab)`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure.
 
-Take `⟨a, ha, hz'⟩` from `@hX.surj S _ (resAlg β S) S' _ (resAlg β S') (resHom β ρ) (resHom β σ) (by`. Use `letI := resAlg β S`. Use `letI := resAlg β S'`. Conclude with `AlgHom.ext fun x => DFunLike.congr_fun hρ x) hn (e S z)`. Use the proof step `(by rw [← hnat, hz, map_one])`.
+Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Conclude with `⟨a, ha, by rw [← hz', MulEquiv.symm_apply_apply]⟩`. Rewrite using `[← map_mul, @hX.law S _ (resAlg β S) a b ha hb]`. Use `congrArg (fun c => (e S).symm (@X S _ (resAlg β S) c)) (funext fun k => hnv S 2 _ (fun i j => ?_) _)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `ha j`.
+Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `hb j`. Rewrite using `[← MvPowerSeries.coeff_zero_eq_constantCoeff_apply, MvPowerSeries.coeff_map, MvPowerSeries.coeff_zero_eq_constantCoeff_apply, hα.1 j, map_zero]`. Apply `(e S).injective` to reduce the goal to its premises. Establish `h1 : ∀ z : sp (R₀` using `R') S ⟶ G', e S (z ≫ f') = e S z ≫ f := fun z => by`. Apply `Over.OverMorphism.ext` to reduce the goal to its premises.
-
-Rewrite using `[he, Over.comp_left, Over.comp_left, he, Category.assoc, Category.assoc, hf]`. Rewrite using `[h1, MulEquiv.apply_symm_apply, MulEquiv.apply_symm_apply, @hα.2 S _ (resAlg β S) a ha]`. Use `congrArg (@X S _ (resAlg β S)) (funext fun k => hnv S 1 _ (fun i j => ?_) _)` and prove the remaining obligations. Use `fin_cases i`. Conclude with `ha j`.
+A detailed English derivation is pending.
 -/
 theorem nilChart_baseChange : ∀ (R R' : Type) [CommRing R] [CommRing R'] (β : R →+* R') (G : Over (Spec (CommRingCat.of R))) [GrpObj G] [IsCommMonObj G] (G' : Over (Spec (CommRingCat.of R'))) [GrpObj G'] [IsCommMonObj G'] (π : G'.left ⟶ G.left), Geo.Tor.IsGrpPullback G' G (Spec.map (CommRingCat.ofHom β)) π → ∀ (d : ℕ) (F : Fin d → PS R 2 d) (X : Fam G d), NilChart G F X → ∃ X' : Fam G' d, NilChart G' (fun i => MvPowerSeries.map β (F i)) X' ∧ ∀ (f : G ⟶ G) (f' : G' ⟶ G') (α : Fin d → PS R 1 d), f'.left ≫ π = π ≫ f.left → Reads X X f α → Reads X' X' f' (fun i => MvPowerSeries.map β (α i)) := by
   intro R R' _ _ β G _ _ G' _ _ π h d F X hX

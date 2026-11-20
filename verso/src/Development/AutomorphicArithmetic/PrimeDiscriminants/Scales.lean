@@ -19,7 +19,7 @@ variable {la : ℝ}
 def Mem (S : Scales la) (s : Scale) : Prop := s.J = S.J ∧ s.x ∈ S.Win
 
 /- English proof (translation)
-Take `⟨Y, hY, hW⟩` from `S.windows (max y 1)`. Establish `h1 : 1 ≤ Y` using `le_trans (le_max_right y 1) hY`. Use `⟨Y, hW Y le_rfl ?_, le_trans (le_max_left y 1) hY⟩` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation.
 -/
 theorem unb (S : Scales la) (hla : 1 ≤ la) (y : ℝ) : ∃ x ∈ S.Win, y ≤ x := by
   obtain ⟨Y, hY, hW⟩ := S.windows (max y 1)
@@ -32,13 +32,13 @@ def scale (S : Scales la) (x eps : ℝ) (hx : 1 < x) (h0 : 0 < eps) (h1 : eps < 
   ⟨x, eps, hx, h0, h1, S.J, S.one_le_J⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨rfl, hw⟩`.
+Supply the required witnesses or components.
 -/
 theorem scale_mem (S : Scales la) {x eps : ℝ} (hx : 1 < x) (h0 : 0 < eps) (h1 : eps < 1 / 52) (hw : x ∈ S.Win) :
     S.Mem (S.scale x eps hx h0 h1) := ⟨rfl, hw⟩
 
 /- English proof (translation)
-Take `⟨x, hw, hx⟩` from `S.unb hla (max y 2)`. Establish `h2 : 1 < x` using `lt_of_lt_of_le (by norm_num) (le_of_max_le_right hx)`. Conclude with `⟨S.scale x eps h2 h0 h1, rfl, le_of_max_le_left hx, S.scale_mem h2 h0 h1 hw⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem exists_mem (S : Scales la) (hla : 1 ≤ la) {eps : ℝ} (h0 : 0 < eps) (h1 : eps < 1 / 52) (y : ℝ) :
     ∃ s : Scale, s.eps = eps ∧ y ≤ s.x ∧ S.Mem s := by
@@ -59,7 +59,7 @@ def above (S : Scales la) (x0 : ℝ) : Scales la where
 def univ (la J : ℝ) (hJ : 1 ≤ J) : Scales la := ⟨J, hJ, Set.univ, fun y => ⟨y, le_rfl, fun _ _ _ => trivial⟩⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fun h => h.1, fun h => ⟨h, trivial⟩⟩`.
+Supply the required witnesses or components.
 -/
 theorem mem_univ {J : ℝ} {hJ : 1 ≤ J} {s : Scale} : (univ la J hJ).Mem s ↔ s.J = J :=
   ⟨fun h => h.1, fun h => ⟨h, trivial⟩⟩

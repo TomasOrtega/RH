@@ -6,7 +6,7 @@ noncomputable section
 namespace LateralTheory.E.LSurjChartPf
 
 /- English proof (translation)
-The claim follows from `(Algebra.ZariskisMainProperty.of_finiteType q).exists_fg_and_exists_notMem_and_awayMap_bijective _`.
+A detailed English derivation is pending.
 -/
 theorem zmt_etale_at (A A' : Type) [CommRing A] [CommRing A'] [Algebra A A'] [Algebra.Etale A A']
     (q : Ideal A') [q.IsPrime] :
@@ -35,14 +35,14 @@ def FiniteChartSurj : Prop :=
     ∃ g : A', IsUnit (φ g) ∧ Function.Surjective (algebraMap A (Localization.Away g))
 
 /- English proof (translation)
-Introduce `A _ I A' _ _ _ φ`. Conclude with `hP A I A' φ (fun q hq _ => zmt_etale_at A A' q)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem FiniteGraphChart_of (hP : GraphPatch) : FiniteGraphChart := by
   intro A _ I A' _ _ _ φ
   exact hP A I A' φ (fun q hq _ => zmt_etale_at A A' q)
 
 /- English proof (translation)
-Introduce `A _ I hI hid A' _ _ _ φ`. Take `⟨S, hS, r, hr, hb⟩` from `hA A I A' φ`. Conclude with `hB A I hI hid A' φ S hS r hr hb`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem LSurjChart_of' (hA : FiniteGraphChart) (hB : FiniteChartSurj) :
     LateralTheory.E.LChartPf.LSurjChart := by
@@ -51,7 +51,7 @@ theorem LSurjChart_of' (hA : FiniteGraphChart) (hB : FiniteChartSurj) :
   exact hB A I hI hid A' φ S hS r hr hb
 
 /- English proof (translation)
-The claim follows from `LSurjChart_of' (FiniteGraphChart_of hP) hB`.
+A detailed English derivation is pending.
 -/
 theorem LSurjChart_of (hP : GraphPatch) (hB : FiniteChartSurj) : LateralTheory.E.LChartPf.LSurjChart :=
   LSurjChart_of' (FiniteGraphChart_of hP) hB

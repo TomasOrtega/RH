@@ -1,19 +1,17 @@
 import Mathlib
 
 /- English proof (translation)
-Introduce `R G M _ _ _ _ ρ l H C _ _ _ i f hcop hl z hz hker`. Establish `hfac : ∀ u v : H, f u = f v → z (i u) = z (i v)`. Introduce `u v huv`. Establish `h1 : z (i (v⁻¹ * u)) = 0` using `hker _ (by simp [huv])`. Establish `h2 : i u = i v * i (v⁻¹ * u)` using `by simp`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[h2, hz, h1, map_zero, add_zero]`. Use `haveI : Fintype f.range := Fintype.ofFinite _`. Take `⟨s, hs⟩ : ∃ s : f.range → H, ∀ q, f (s q) = (q : C)` from `⟨fun q => q.2.choose, fun q => q.2.choose_spec⟩`. Establish `hcop' : (Nat.card f.range).Coprime l` using `Nat.Coprime.coprime_dvd_left (Subgroup.card_subgroup_dvd_card f.range) hcop`. Use `set n := Nat.card f.range with hn`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Use `set S : M := ∑ q : f.range, z (i (s q)) with hS`. Establish `key : ∀ u : H, S = n • z (i u) + ρ (i u) S`. Introduce `u`. Establish `h1 : S = ∑ q : f.range, z (i (s (f.rangeRestrict u * q)))` using `(Equiv.sum_comp (Equiv.mulLeft (f.rangeRestrict u)) (fun q => z (i (s q)))).symm`. Establish `h2 : ∀ q : f.range, z (i (s (f.rangeRestrict u * q))) = z (i u) + ρ (i u) (z (i (s q)))`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result.
 
-Introduce `q`. Rewrite using `[← hz, ← map_mul]`. Apply `hfac` to reduce the goal to its premises. Simplify using `[hs]`. Combine the equalities or inequalities in the displayed calculation.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite using `[h1]`. Conclude with `Finset.sum_congr rfl fun q _ => h2 q`. Use `_ = n • z (i u) + ρ (i u) S := by`. Rewrite using `[Finset.sum_add_distrib, Finset.sum_const, hS, map_sum, hn, Nat.card_eq_fintype_card, Finset.card_univ]`. Take `⟨a, c, hac⟩ : IsCoprime (n : ℤ) (l : ℤ)` from `Nat.isCoprime_iff_coprime.mpr hcop'`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Use `⟨-(a • S), fun u => ?_⟩` and prove the remaining obligations. Establish `h3 : (n : ℤ) • z (i u) = S - ρ (i u) S`. Rewrite using `[natCast_zsmul, eq_sub_iff_add_eq]`. Conclude with `(key u).symm`. Establish `h4 : (l : ℤ) • z (i u) = 0` using `by rw [natCast_zsmul, hl]`.
-
-Combine the equalities or inequalities in the displayed calculation. Rewrite using `[map_neg, map_zsmul, smul_sub]`. Normalize the expressions using the abelian group laws.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.CoboundaryCriterion.isCoboundary_of_coprime :
     ∀ {R G M : Type} [inst : CommRing R]

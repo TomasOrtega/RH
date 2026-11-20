@@ -25,13 +25,13 @@ open PI.RhsWLim
 variable {k r : ℕ}
 
 /- English proof (translation)
-The claim follows from `hpk_mulVec_apply v i`.
+A detailed English derivation is pending.
 -/
 theorem hpk_mulVec_gen (v : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     (Hpk k r *ᵥ v) i = HU.sgn k r i * v (HU.tau k r i) := hpk_mulVec_apply v i
 
 /- English proof (translation)
-Unfold `herm bvec`. Establish `: star (Pi.single i (1 : ℂ) : Fin (2 * r + k + 1) → ℂ) = Pi.single i (1 : ℂ)`. Use function extensionality and compare the values at `j`. Simplify using `[Pi.single_apply]`. Rewrite using `[this, single_dotProduct, one_mul]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_bvec (u : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
     herm (Hpk k r) u (bvec i) = (Hpk k r *ᵥ u) i := by
@@ -41,38 +41,36 @@ theorem herm_bvec (u : Fin (2 * r + k + 1) → ℂ) (i : Fin (2 * r + k + 1)) :
   rw [this, single_dotProduct, one_mul]
 
 /- English proof (translation)
-Rewrite using `[herm_mulVec_right hp, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (HU.isUnit_of_uh hp), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem herm_pres {p : Mat k r} (hp : p ∈ UH (Hpk k r)) (u v : Fin (2 * r + k + 1) → ℂ) :
     herm (Hpk k r) (p *ᵥ u) (p *ᵥ v) = herm (Hpk k r) u v := by
   rw [herm_mulVec_right hp, Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ (HU.isUnit_of_uh hp), Matrix.one_mulVec]
 
 /- English proof (translation)
-Use extensionality with `i j`. Distinguish the cases in `hj : j.val < r ∨ r + k < j.val`. Establish `hcol : p *ᵥ bvec j = bvec j`. Break down `hj with hj | hj` into its components or cases. Use `(hp.2 ⟨j.val, hj⟩).1` as an intermediate fact.
+By extensionality, compare the relevant components. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Establish `e : eI k r ⟨j.val, hj⟩ = j` using `Fin.ext rfl`. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Use `(hp.2 ⟨2 * r + k - j.val, by omega⟩).2` as an intermediate fact. Establish `e : esI k r ⟨2 * r + k - j.val, by omega⟩ = j`. Apply `Fin.ext` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Simplify using `only [esI]`. Use linear arithmetic over natural numbers and integers. Rewrite `this` using `[e]`. Then use the resulting hypothesis. Establish `h1` using `congrFun hcol i`. Rewrite `h1` using `[MB.mulVec_bvec, MB.bvec_apply]`.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1]`. Unfold `embWb`. Rewrite using `[dif_neg (by omega)]`. Distinguish the cases in `hij : i = j`. Substitute `hij; rw [if_pos rfl, if_pos ⟨rfl, by omega⟩]` using the available equality.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Rewrite using `[if_neg hij, if_neg (fun h => hij h.1)]`. Use `push Not at hj`. Take `⟨j', rfl⟩ : ∃ j' : Fin (k + 1), wI k r j' = j` from `⟨⟨j.val - r, by omega⟩, by apply Fin.ext; simp only [wI]; omega⟩`. Distinguish the cases in `hi : i.val < r ∨ r + k < i.val`. Establish `hw : (p *ᵥ bvec (wI k r j')) i = 0`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Separate the alternatives or extract the components of the hypothesis.
 
-Break down `hi with hi | hi` into its components or cases. Use `set a : Fin r := ⟨i.val, hi⟩`. Establish `hfix` using `(hp.2 a).2`. Establish `h1` using `herm_pres hp.1 (bvec (wI k r j')) (bvec (esI k r a))`. Rewrite `h1` using `[hfix, herm_bvec, herm_bvec, hpk_mulVec_gen, hpk_mulVec_gen]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation.
 
-Establish `ht : HU.tau k r (esI k r a) = i`. Apply the tactic sequence `unfold HU.tau esI; apply Fin.ext; simp only [a]; split_ifs <;> omega`. Establish `hs : HU.sgn k r (esI k r a) = 1`. Unfold `HU.sgn esI; simp only [a]; rw [if_neg (by omega)]`. Rewrite `h1` using `[ht, hs, one_mul, one_mul, MB.bvec_apply, if_neg]`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Conclude with `h1`. Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [wI] at this`. Use linear arithmetic over natural numbers and integers.
+Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set a : Fin r := ⟨2 * r + k - i.val, by omega⟩`. Establish `hfix` using `(hp.2 a).1`. Establish `h1` using `herm_pres hp.1 (bvec (wI k r j')) (bvec (eI k r a))`. Rewrite `h1` using `[hfix, herm_bvec, herm_bvec, hpk_mulVec_gen, hpk_mulVec_gen]`. Establish `ht : HU.tau k r (eI k r a) = i`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply the tactic sequence `unfold HU.tau eI; apply Fin.ext; simp only [a]; split_ifs <;> omega`. Establish `hs : HU.sgn k r (eI k r a) = 1`. Unfold `HU.sgn eI; simp only [a]; rw [if_neg (by omega)]`. Rewrite `h1` using `[ht, hs, one_mul, one_mul, MB.bvec_apply, if_neg]`. Conclude with `h1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules. Use linear arithmetic over natural numbers and integers. Rewrite the indicated hypotheses using the stated equalities.
 
-Introduce `h`. Use `congrArg Fin.val h` as an intermediate fact. Simplify using `only [wI] at this`. Use linear arithmetic over natural numbers and integers. Rewrite `hw` using `[MB.mulVec_bvec]`.
+Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[hw]`. Unfold `embWb`. Rewrite using `[dif_neg (by omega), if_neg (fun h => by have := congrArg Fin.val h.1; simp only [wI] at this; omega)]`. Use `push Not at hi`. Take `⟨i', rfl⟩ : ∃ i' : Fin (k + 1), wI k r i' = i` from `⟨⟨i.val - r, by omega⟩, by apply Fin.ext; simp only [wI]; omega⟩`.
-
-Use `embWb_wI (k := k) (r := r) (fun i j => p (wI k r i) (wI k r j)) i' j'` as an intermediate fact. Conclude with `this.symm`.
+A detailed English derivation is pending.
 -/
 theorem uwb_emb {p : Mat k r} (hp : p ∈ UWb k r) :
     p = embWb k r (fun i j => p (wI k r i) (wI k r j)) := by
@@ -137,17 +135,17 @@ theorem uwb_emb {p : Mat k r} (hp : p ∈ UWb k r) :
       exact this.symm
 
 /- English proof (translation)
-Establish `hl0 : conj l ≠ 0` using `by intro h; rw [h, zero_mul] at hl; exact zero_ne_one hl`. Establish `hrow : ∀ j, j ≠ Fin.last k → μ (Fin.last k) j = 0`. Introduce `j hj`. Establish `h` using `congrFun (congrFun hμ (Fin.last k)) j`. Rewrite `h` using `[form_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Simplify using `only [hcol, Fin.castSucc_ne_last, if_false, map_zero, zero_mul, Finset.sum_const_zero, if_true, zero_sub, Hb, Matrix.diagonal_apply_ne _ (Ne.symm hj)] at h`. Establish `: conj l * μ (Fin.last k) j = 0` using `by linear_combination -h`. Conclude with `(mul_eq_zero.1 this).resolve_left hl0`. Establish `key : ∀ i j, (μᴴ * μ) i j = Hb k i j + 2 * (conj (μ (Fin.last k) i) * μ (Fin.last k) j)`. Introduce `i j`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Establish `h` using `congrFun (congrFun hμ i) j`. Rewrite `h` using `[form_apply]`. Rewrite using `[← h, Matrix.mul_apply, Fin.sum_univ_castSucc]`. Simplify using `only [Matrix.conjTranspose_apply, Complex.star_def]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Rewrite using `[key]`. Distinguish the cases in `hi : i = Fin.last k`. Distinguish the cases in `hj : j = Fin.last k`. Substitute `hi` using the available equality.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Consider separately whether the proposition holds or fails. Substitute using the available equality. Substitute using the available equality.
 
-Substitute `hj` using the available equality. Rewrite using `[hcol, if_pos rfl, hl]`. Simplify using `[Hb]`. Evaluate the numerical expressions. Rewrite using `[hrow j hj, mul_zero, mul_zero, add_zero, Hb, Matrix.diagonal_apply_ne _ (fun h => hj (h.symm.trans hi)), Matrix.one_apply_ne (fun h => hj (h.symm.trans hi))]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Evaluate the numerical expressions. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Apply the tactic sequence `rw [hrow i hi, map_zero, zero_mul, mul_zero, add_zero, Hb, Matrix.diagonal_apply, Matrix.one_apply] split_ifs with h1 h2 <;> first | rfl | (exfalso; exact hi (h1 ▸ h2))`.
+A detailed English derivation is pending.
 -/
 theorem col_unitary (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hμ : μᴴ * Hb k * μ = Hb k) (l : ℂ)
     (hl : conj l * l = 1) (hcol : ∀ i, μ i (Fin.last k) = if i = Fin.last k then l else 0) : μᴴ * μ = 1 := by
@@ -180,13 +178,13 @@ theorem col_unitary (μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ) (hμ : μᴴ *
     split_ifs with h1 h2 <;> first | rfl | (exfalso; exact hi (h1 ▸ h2))
 
 /- English proof (translation)
-Establish `hnn : ‖(n : ℂ)‖ = n` using `by rw [Complex.norm_real, Real.norm_eq_abs, abs_of_pos hn]`. Establish `hn0 : (n : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hn.ne'`. Use extensionality with `i j`. Rewrite using `[Matrix.conjTranspose_apply, Complex.star_def]`. Proceed by induction on `i using Fin.lastCases with`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Proceed by induction.
 
-Consider the case `last`. Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [boost]`. Consider the case `cast j => simp [boost, hnn, hn0, abs_of_pos hn, div_self hn0]`. Consider the case `cast i`.
+Treat this case separately. Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `j using Fin.lastCases with`. Consider the case `last => simp [boost, hnn, hn0, abs_of_pos hn, div_self hn0]`. Consider the case `cast j`. Simplify using `only [boost, Fin.lastCases_castSucc, hnn, map_add, map_div₀, map_mul, Complex.conj_conj, Complex.conj_ofReal, map_one]`. Distinguish the cases in `h : i = j`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Consider separately whether the proposition holds or fails.
 
-Substitute `h` using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[if_neg (Ne.symm h), if_neg h]`. Simplify using the standard rewrite rules.
+Substitute using the available equality. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
 Expand and normalize the polynomial expressions, which then agree.
 -/
@@ -211,39 +209,35 @@ theorem boost_herm (y : Fin k → ℂ) (n : ℝ) (hn : 0 < n) : (boost y (n : �
       · rw [if_neg (Ne.symm h), if_neg h]; simp; ring
 
 /- English proof (translation)
-Introduce `k r p hp`. Use `set μ : Matrix (Fin (k + 1)) (Fin (k + 1)) ℂ := fun i j => p (wI k r i) (wI k r j) with hμdef`. Establish `hpμ : p = embWb k r μ` using `uwb_emb hp`. Establish `hμ : μᴴ * Hb k * μ = Hb k` using `(MB.emb_mem μ).1 (hpμ ▸ hp.1)`. Use `set y : Fin k → ℂ := fun l => μ l.castSucc (Fin.last k) with hy`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `set c : ℂ := μ (Fin.last k) (Fin.last k) with hc`. Establish `hform` using `congrFun (congrFun hμ (Fin.last k)) (Fin.last k)`. Rewrite `hform` using `[form_apply]`. Establish `hS0 : ∑ l, conj (y l) * y l = conj c * c - 1`. Simplify using `only [Hb, Matrix.diagonal_apply_eq, if_true] at hform`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact.
 
-Simplify using `only [hy, hc]`. Take the linear combination `hform`. Establish `hA : ∑ l, conj (y l) * y l = ((∑ l, Complex.normSq (y l) : ℝ) : ℂ)`. Move the coercions through the operations in `[Complex.normSq_eq_conj_mul_self]`. Both sides reduce to the same expression.
+Move the embeddings inside the algebraic operations. Both sides reduce to the same expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hA0 : 0 ≤ ∑ l, Complex.normSq (y l)` using `Finset.sum_nonneg fun l _ => Complex.normSq_nonneg _`. Establish `hcc : conj c * c = ((‖c‖ : ℝ) : ℂ) ^ 2`. Rewrite using `[mul_comm, Complex.mul_conj, Complex.normSq_eq_norm_sq]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `hc0 : c ≠ 0`. Introduce `h0`. Rewrite `hS0` using `[h0, map_zero, zero_mul, zero_sub, hA]`. Use `congrArg Complex.re hS0` as an intermediate fact. Simplify using `at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Combine the linear equalities and inequalities to obtain the conclusion. Establish an intermediate fact. Establish an intermediate fact.
 
-Combine the linear equalities and inequalities to obtain the conclusion. Use `set n : ℝ := ‖c‖ with hn`. Establish `hnpos : 0 < n` using `norm_pos_iff.2 hc0`. Establish `hn0 : (n : ℂ) ≠ 0` using `Complex.ofReal_ne_zero.2 hnpos.ne'`. Use `set y' : Fin k → ℂ := fun l => y l * ((n : ℂ) / c) with hy'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Establish `hnn : ‖((n : ℝ) : ℂ)‖ = n` using `by rw [Complex.norm_real, Real.norm_eq_abs, abs_of_pos hnpos]`. Establish `hS' : ∑ l, conj (y' l) * y' l = ((‖((n : ℝ) : ℂ)‖ : ℝ) : ℂ) ^ 2 - 1`. Establish `e : ∀ l, conj (y' l) * y' l = conj (y l) * y l * (((n : ℂ) ^ 2) / (conj c * c))`. Introduce `l`. Simplify using `only [hy', map_mul, map_div₀, Complex.conj_ofReal]`.
+Clear the denominators using the available nonvanishing facts. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Establish an intermediate fact.
 
-Clear the denominators using the available nonvanishing facts. Simplify using `only [e, ← Finset.sum_mul, hS0, hcc, hnn]`. Clear the denominators using the available nonvanishing facts. Use `set B₀ := boost y' (n : ℂ) with hB₀`. Establish `hB : B₀ᴴ * Hb k * B₀ = Hb k` using `boost_mem y' (n : ℂ) hS' hn0`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hBh : B₀ᴴ = B₀` using `boost_herm y' n hnpos`. Establish `hHbh : (Hb k)ᴴ = Hb k` using `MB.Hb_conjT`. Use `set Bi := Hb k * B₀ᴴ * Hb k with hBi`. Establish `hBiB : Bi * B₀ = 1`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hBBi : B₀ * Bi = 1` using `mul_eq_one_comm.mp hBiB`. Establish `hBHB : B₀ * Hb k * B₀ᴴ = Hb k`. Establish `: B₀ * Hb k * B₀ᴴ * Hb k = 1` using `by rw [← hBBi, hBi]; simp only [Matrix.mul_assoc]`. Combine the equalities or inequalities in the displayed calculation. Use `set μq := Bi * μ with hμq`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hμqU : μqᴴ * Hb k * μq = Hb k`. Establish `hBi' : Biᴴ * Hb k * Bi = Hb k`. Simplify using `only [hBi, Matrix.conjTranspose_mul, hHbh, conjTranspose_conjTranspose]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`.
+Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Clear the denominators using the available nonvanishing facts. Treat this case separately.
 
-Use `_ = Hb k := by rw [hb_sq, Matrix.mul_one, hBHB, hb_sq, Matrix.one_mul]`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [hμq, Matrix.conjTranspose_mul, Matrix.mul_assoc]`. Use `_ = Hb k := by rw [hBi', hμ]`. Use `set e : ℂ := c / n with he`.
+Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `hucol : ∀ l, μ l (Fin.last k) = e * B₀ l (Fin.last k)`. Introduce `l`. Proceed by induction on `l using Fin.lastCases with`. Consider the case `last => simp only [hB₀, boost, Fin.lastCases_last, he, hc]`. Clear the denominators using the available nonvanishing facts.
+Reduce the conclusion to the remaining proof obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Establish an intermediate fact.
 
-Consider the case `cast j => simp only [hB₀, boost, Fin.lastCases_last, Fin.lastCases_castSucc, he, hy', hy]`. Clear the denominators using the available nonvanishing facts. Establish `hcol : ∀ i, μq i (Fin.last k) = if i = Fin.last k then e else 0`. Introduce `i`. Establish `: μq i (Fin.last k) = e * (Bi * B₀) i (Fin.last k)`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Clear the denominators using the available nonvanishing facts. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [hμq, Matrix.mul_apply, hucol, Finset.mul_sum]`. Use `Finset.sum_congr rfl fun l _ => ?_` and prove the remaining obligations. Expand and normalize the polynomial expressions, which then agree. Rewrite using `[this, hBiB, Matrix.one_apply]`. Apply the tactic sequence `split_ifs <;> simp`.
-
-Establish `he1 : conj e * e = 1`. Simplify using `only [he, map_div₀, Complex.conj_ofReal]`. Rewrite using `[div_mul_div_comm, hcc]`. Clear the denominators using the available nonvanishing facts. Establish `hqu` using `col_unitary μq hμqU e he1 hcol`.
-
-Use `⟨B₀, hB, hBh, embWb k r μq, MB.emb_mem_UWb hμqU, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[MB.emb_conjT, ← MB.emb_mul, hqu, MB.emb_one]`. Rewrite using `[← MB.emb_mul, hμq, ← Matrix.mul_assoc, hBBi, Matrix.one_mul, ← hpμ]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem polarDecW : PolarDecW := by
   intro k r p hp
@@ -324,7 +318,7 @@ theorem polarDecW : PolarDecW := by
   · rw [← MB.emb_mul, hμq, ← Matrix.mul_assoc, hBBi, Matrix.one_mul, ← hpμ]
 
 /- English proof (translation)
-The claim follows from `unimodW_of_two ballConj polarDecW`.
+A detailed English derivation is pending.
 -/
 theorem unimodW : UnimodW := unimodW_of_two ballConj polarDecW
 

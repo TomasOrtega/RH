@@ -12,23 +12,21 @@ noncomputable def UpperTheory.Reformulated.B.StronglyIrreducible.StrongIrr :
         S.FiniteIndex → (∀ (g : G), g ∈ S ↔ ∀ v ∈ W, (UpperTheory.Reformulated.B.StronglyIrreducible.gm r g).mulVec v ∈ W) → W = ⊥ ∨ W = ⊤
 
 /- English proof (translation)
-Introduce `G κ _ _ n r h P W S hS hW`. Establish `h1 : ∀ v : Fin n → κ, ((P⁻¹ : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ).mulVec ((P : Matrix (Fin n) (Fin n) κ).mulVec v) = v`. Introduce `v`. Rewrite using `[Matrix.mulVec_mulVec, Units.inv_mul, Matrix.one_mulVec]`. Establish `h2 : ∀ v : Fin n → κ, (P : Matrix (Fin n) (Fin n) κ).mulVec (((P⁻¹ : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ).mulVec v) = v`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `v`. Rewrite using `[Matrix.mulVec_mulVec, Units.mul_inv, Matrix.one_mulVec]`. Establish `h3 : ∀ (g : G) (v : Fin n → κ), (UpperTheory.Reformulated.B.StronglyIrreducible.gm ((MulEquiv.toMonoidHom ((MulAut.conj : GL (Fin n) κ → MulAut (GL (Fin n) κ)) P⁻¹)).comp r) g).mulVec v = ((P⁻¹ : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ).mulVec ((UpperTheory.Reformulated.B.Strong …`. Introduce `g v`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mulVec_mulVec]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Express the relevant statement in the definitionally equal form `(((P⁻¹ * r g * P⁻¹⁻¹ : GL (Fin n) κ)) : Matrix (Fin n) (Fin n) κ).mulVec v = _`. Rewrite using `[inv_inv, Units.val_mul, Units.val_mul]`. Establish `hmem : ∀ v : Fin n → κ, v ∈ W.comap (Matrix.mulVecLin ((P⁻¹ : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ)) ↔ ((P⁻¹ : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ).mulVec v ∈ W` using `fun v => Iff.rfl`. Establish `key` using `h (W.comap (Matrix.mulVecLin ((P⁻¹ : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ))) S hS (by`. Introduce `g`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hW g]`. Prove the components needed by the constructor for the conclusion. Introduce `hg v hv`. Use `hg _ ((hmem v).1 hv)` as an intermediate fact. Rewrite `this` using `[h3, h2]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `(hmem _).2 this`. Introduce `hg v hv`. Rewrite using `[h3]`. Apply `(hmem _).1` to reduce the goal to its premises. Apply `hg` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmem, h1]`. Conclude with `hv)`. Break down `key with key | key` into its components or cases. Use `left`. Rewrite using `[eq_bot_iff]`.
+Separate the alternatives or extract the components of the hypothesis. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `v hv`. Establish `hv' : (P : Matrix (Fin n) (Fin n) κ).mulVec v ∈ W.comap (Matrix.mulVecLin ((P⁻¹ : GL (Fin n) κ) : Matrix (Fin n) (Fin n) κ))`. Rewrite using `[hmem, h1]`. Conclude with `hv`. Rewrite `hv'` using `[key, Submodule.mem_bot]`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Submodule.mem_bot, ← h1 v, hv', Matrix.mulVec_zero]`. Use `right`. Rewrite using `[eq_top_iff]`. Introduce `v _`. Rewrite using `[← h1 v]`.
-
-Apply `(hmem _).1` to reduce the goal to its premises. Rewrite using `[key]`. Conclude with `Submodule.mem_top`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.Reformulated.B.StronglyIrreducible.strongIrr_conj :
     ∀ {G κ : Type} [inst : Group G] [inst_1 : Field κ] {n : ℕ} (r : G →* GL (Fin n) κ),

@@ -11,11 +11,11 @@ variable {O : Type} [CommRing O] {Ω : Type} [Field Ω] [Algebra O Ω]
 variable {K : Type} [Fintype K] {ι : K → Type}
 
 /- English proof (translation)
-Establish `h1 : mseg x (Function.update c k i) = x ⟨k, i⟩ * ∏ l ∈ Finset.univ.erase k, x ⟨l, c l⟩`. Unfold `mseg`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k), Function.update_self]`. Use `congr 1`. Use `Finset.prod_congr rfl fun l hl => ?_` and prove the remaining obligations.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[Function.update_of_ne (Finset.ne_of_mem_erase hl)]`. Establish `h2 : mseg x c = x ⟨k, c k⟩ * ∏ l ∈ Finset.univ.erase k, x ⟨l, c l⟩`. Unfold `mseg`. Rewrite using `[← Finset.mul_prod_erase Finset.univ _ (Finset.mem_univ k)]`. Rewrite `hc` using `[h2]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite using `[h1, h2, mul_div_mul_right _ _ (right_ne_zero_of_mul hc)]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem ratio_eq [DecidableEq K] (x : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : mseg x c ≠ 0) (k : K) (i : ι k) :
     mseg x (Function.update c k i) / mseg x c = x ⟨k, i⟩ / x ⟨k, c k⟩ := by
@@ -32,7 +32,7 @@ theorem ratio_eq [DecidableEq K] (x : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc
   rw [h1, h2, mul_div_mul_right _ _ (right_ne_zero_of_mul hc)]
 
 /- English proof (translation)
-Simplify using `only [mseg, Fintype.prod_sum_type]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem mseg_join {K' : Type} [Fintype K'] {ι' : K' → Type} (x : (Σ k, ι k) → Ω) (z : (Σ k, ι' k) → Ω)
     (c : ∀ k : K ⊕ K', Sum.elim ι ι' k) :
@@ -48,11 +48,11 @@ def comb {K' : Type} {ι' : K' → Type} (t : ∀ k, ι k) (c : ∀ k : K ⊕ K'
 variable [∀ k, Fintype (ι k)]
 
 /- English proof (translation)
-Establish `hk : ∀ k, x ⟨k, c k⟩ ≠ 0` using `fun k => Finset.prod_ne_zero_iff.1 hc k (Finset.mem_univ k)`. Establish `hm : ∀ k (i : ι k), x ⟨k, i⟩ / x ⟨k, c k⟩ ∈ Subfield.closure (chartRing O (mseg x) c : Set Ω)`. Introduce `k i`. Rewrite using `[← ratio_eq x c hc k i]`. Conclude with `Subfield.subset_closure (ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing (o := O) _ _ _)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions.
 
-Unfold `fnField`. Rewrite using `[Subfield.closure_le]`. Introduce and unpack `_ (⟨a, rfl⟩ | ⟨⟨k, i, j⟩, rfl⟩)`. Conclude with `Subfield.subset_closure (Subalgebra.algebraMap_mem _ a)`. Establish `h : x ⟨k, i⟩ / x ⟨k, j⟩ = (x ⟨k, i⟩ / x ⟨k, c k⟩) / (x ⟨k, j⟩ / x ⟨k, c k⟩)`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[div_div_div_cancel_right₀ (hk k)]`. Use `show x ⟨k, i⟩ / x ⟨k, j⟩ ∈ Subfield.closure (chartRing O (mseg x) c : Set Ω)`. Rewrite using `[h]`. Conclude with `div_mem (hm k i) (hm k j)`.
+A detailed English derivation is pending.
 -/
 theorem fnField_le [DecidableEq K] (x : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (hc : mseg x c ≠ 0) :
     fnField O x ≤ Subfield.closure (chartRing O (mseg x) c : Set Ω) := by
@@ -72,9 +72,9 @@ theorem fnField_le [DecidableEq K] (x : (Σ k, ι k) → Ω) (c : ∀ k, ι k) (
     exact div_mem (hm k i) (hm k j)
 
 /- English proof (translation)
-Use `IsFractionRing.of_field R Ω fun z => ?_` and prove the remaining obligations. Establish `hz : z ∈ Subfield.closure (R : Set Ω)` using `h ▸ Subfield.mem_top z`. Take `⟨a, ha, b, hb, rfl⟩` from `Subfield.mem_closure_iff.1 hz`. Establish `e : Subring.closure (R : Set Ω) = R.toSubring` using `Subring.closure_eq R.toSubring`. Rewrite `ha`, `hb` using `[e]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `⟨⟨a, ha⟩, ⟨b, hb⟩, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem isFractionRing_of_closure (R : Subalgebra O Ω) (h : Subfield.closure (R : Set Ω) = ⊤) :
     IsFractionRing R Ω := by
@@ -89,13 +89,13 @@ end PositivityTheory.Xgn.A_chart_noeth_frac
 
 open PositivityTheory.Xgn.A_chart_noeth_frac in
 /- English proof (translation)
-Introduce `O _ _ _ Ω _ _ K _ _ ι _ x`. Use `⟨fun c => isNoetherianRing_of_fg (Subalgebra.fg_def.2 ⟨_, Set.finite_range _, rfl⟩), fun h c hc => ?_, fun K' _ _ ι' _ z => ⟨fun h => ?_, fun c hc => ?_⟩⟩` and prove the remaining obligations. Conclude with `isFractionRing_of_closure _ (top_le_iff.1 (h ▸ fnField_le x c hc))`. Rewrite using `[eq_top_iff, ← h]`. Unfold `fnField`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Use `Subfield.closure_mono (Set.union_subset_union_right _ ?_)` and prove the remaining obligations. Introduce and unpack `_ ⟨⟨k, i, j⟩, rfl⟩`. Conclude with `⟨⟨.inl k, i, j⟩, rfl⟩`. Establish `hc'` using `hc`. Rewrite `hc'` using `[mseg_join]`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨left_ne_zero_of_mul hc', ?_⟩` and prove the remaining obligations. Unfold `chartRing`. Apply `Algebra.adjoin_le` to reduce the goal to its premises. Introduce and unpack `_ ⟨t, rfl⟩`. Establish `h : mseg x t / mseg x (restrictChart c) = mseg (joinCoord x z) (comb t c) / mseg (joinCoord x z) c`.
+Replace the relevant objects with their definitions. Reduce the claim to the hypotheses of an applicable result. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[mseg_join x z (comb t c), mseg_join x z c]`. Conclude with `(mul_div_mul_right _ _ (right_ne_zero_of_mul hc')).symm`. Simplify using `only`. Rewrite using `[h]`. Conclude with `ReciprocityTheory.ChartRestriction.G.Geo.div_mem_chartRing (o := O) _ _ _`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem PositivityTheory.Xgn.t_chart_noeth_frac : ∀ (O : Type) [CommRing O] [IsDomain O] [IsDiscreteValuationRing O] (Ω : Type) [Field Ω] [Algebra O Ω] (K : Type) [Fintype K] [DecidableEq K] (ι : K → Type) [∀ k, Fintype (ι k)] (x : (Σ k, ι k) → Ω), (∀ c, IsNoetherianRing (chartRing O (mseg x) c)) ∧ (fnField O x = ⊤ → ∀ c, mseg x c ≠ 0 → IsFractionRing (chartRing O (mseg x) c) Ω) ∧ ∀ (K' : Type) [Fintype K'] [DecidableEq K'] (ι' : K' → Type) [∀ k, Fintype (ι' k)] (z : (Σ k, ι' k) → Ω), (fnField O x = ⊤ → fnField O (joinCoord x z) = ⊤) ∧ ∀ c, mseg (joinCoord x z) c ≠ 0 → mseg x (restrictChart c) ≠ 0 ∧ (chartRing O (mseg x) (restrictChart c)) ≤ (chartRing O (mseg (joinCoord x z)) c) := by
   intro O _ _ _ Ω _ _ K _ _ ι _ x

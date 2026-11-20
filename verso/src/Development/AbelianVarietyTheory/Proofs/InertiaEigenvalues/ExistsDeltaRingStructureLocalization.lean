@@ -6,11 +6,11 @@ open scoped Formalism.Per NNReal
 namespace GlobalTheory.BSP
 
 /- English proof (translation)
-Take `⟨u, hu⟩` from `h0`. Take `⟨v, hv⟩` from `h1`. Use `isUnit_iff_exists_inv.2 ⟨⟨(↑u⁻¹ : L), -(↑u⁻¹ : L) ^ l * x.snd * ↑v⁻¹⟩, ?_⟩` and prove the remaining obligations. Use `W2.ext ?_ ?_` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `x.fst * (↑u⁻¹ : L) = 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hu]`. Simplify using the standard rewrite rules. Express the relevant statement in the definitionally equal form `x.fst ^ l * (-(↑u⁻¹ : L) ^ l * x.snd * ↑v⁻¹) + (↑u⁻¹ : L) ^ l * x.snd + (l : L) * x.snd * (-(↑u⁻¹ : L) ^ l * x.snd * ↑v⁻¹) = 0`. Establish `hg : (↑v⁻¹ : L) * (x.fst ^ l + (l : L) * x.snd) = 1`. Express the relevant statement in the definitionally equal form `(↑v⁻¹ : L) * W2.gh x = 1`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← hv]`. Simplify using the standard rewrite rules. Take the linear combination `(-(↑u⁻¹ : L) ^ l * x.snd) * hg`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Take a linear combination of the given relations to obtain the conclusion.
 -/
 theorem W2.isUnit_of_fst_gh {l : ℕ} [Fact l.Prime] {L : Type} [CommRing L] (x : W2 l L) (h0 : IsUnit x.fst)
     (h1 : IsUnit (W2.gh x)) : IsUnit x := by
@@ -28,15 +28,13 @@ theorem W2.isUnit_of_fst_gh {l : ℕ} [Fact l.Prime] {L : Type} [CommRing L] (x 
     linear_combination (-(↑u⁻¹ : L) ^ l * x.snd) * hg
 
 /- English proof (translation)
-Set `s0 : A →+* W2 l (Localization M)` to `(W2.map (algebraMap A (Localization M))).comp (deltaSectionToWittLengthTwo D)`. Establish `hs0 : ∀ m : M, IsUnit (s0 m)` using `fun m => by`. Apply `W2.isUnit_of_fst_gh` to reduce the goal to its premises. Conclude with `IsLocalization.map_units (Localization M) m`. Establish `: W2.gh (s0 m) = algebraMap A (Localization M) (D.φ m)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[D.φ_eq]`. Express the relevant statement in the definitionally equal form `(algebraMap A _ m) ^ l + (l : Localization M) * algebraMap A _ (D.δ m) = _`. Simplify using the standard rewrite rules. Rewrite using `[this]`. Conclude with `IsLocalization.map_units (Localization M) (⟨D.φ m, hM m m.2⟩ : M)`.
+Express the relevant assertion in an equivalent form by its definition. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact.
 
-Set `s : Localization M →+* W2 l (Localization M)` to `IsLocalization.lift hs0`. Establish `hsa : ∀ a : A, s (algebraMap A _ a) = s0 a` using `fun a => IsLocalization.lift_eq hs0 a`. Establish `hsec : ∀ y, (s y).fst = y` using `fun y => by`. Establish `: (W2.fstHom.comp s : Localization M →+* Localization M) = RingHom.id _` using `IsLocalization.ringHom_ext M (RingHom.ext fun a => by`. Simplify using `only [RingHom.comp_apply, RingHom.id_apply]`.
+Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[hsa]`. Use the proof step `rfl)`. Conclude with `RingHom.congr_fun this y`. Use `⟨deltaStructureOfWittLengthTwoSection s hsec, fun a => ?_⟩` and prove the remaining obligations. Express the relevant statement in the definitionally equal form `algebraMap A _ (D.δ a) = (s (algebraMap A _ a)).snd`.
-
-Rewrite using `[hsa]`. Both sides reduce to the same expression.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem delta_localization (l : ℕ) [Fact l.Prime] (A : Type) [CommRing A] (D : Delta l A)
     (M : Submonoid A) (hM : ∀ x ∈ M, D.φ x ∈ M) :

@@ -5,9 +5,9 @@ set_option maxSynthPendingDepth 1
 namespace GroundTheory.Heights₂.Heights
 
 /- English proof (translation)
-Introduce `f j k hf hj hk I hI vol hvol P hP B₀ hB φ`. Distinguish the cases in `hkj : k ≤ j`. Take `⟨hF, hJ⟩` from `h₂ f j k hkj`. Conclude with `h₁ f j k k j .last (restLastEquiv j k) hf hj hk hk hj (Nat.add_comm k j) (Nat.mul_comm k j) hF hJ (h₄ f j k hkj) I hI vol hvol P hP B₀ hB φ`. Establish `hjk : j < k` using `by omega`.
+Fix the arbitrary inputs or assume the hypotheses. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨hF, hJ⟩` from `h₃ f j k hjk`. Conclude with `h₁ f j k j k .first (restFirstEquiv j k) hf hj hk hj hk rfl rfl hF hJ (h₅ f j k hjk) I hI vol hvol P hP B₀ hB φ`.
+A detailed English derivation is pending.
 -/
 theorem RestTermSharp.proof (h₁ : RestCutCaseSharp.Statement)
     (h₂ : RestCutTransportLast.Statement) (h₃ : RestCutTransportFirst.Statement)
@@ -24,9 +24,9 @@ theorem RestTermSharp.proof (h₁ : RestCutCaseSharp.Statement)
       I hI vol hvol P hP B₀ hB φ
 
 /- English proof (translation)
-Use `⟨1.6, by norm_num, ?_⟩` and prove the remaining obligations. Introduce `f j k hf hj hk I hI vol hvol P hP B₀ hB φ`. Take `⟨hex, hall⟩` from `h f j k hf hj hk I hI vol hvol P hP B₀ hB φ`. Use `⟨hex, fun Q hQ => ?_⟩` and prove the remaining obligations. Take `⟨hs, hb⟩` from `hall Q hQ`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Use `⟨hs, hb.trans ?_⟩` and prove the remaining obligations. Establish `hmin : (1 : ℝ) ≤ ((min j k : ℕ) : ℝ)` using `by exact_mod_cast le_min hj hk`. Establish `hnn : 0 ≤ (((f * j * k : ℕ) : ℝ) + 1) * vol * |I (degreeInput f j k)|` using `by positivity`. Use `mul_nonneg (sub_nonneg.2 hmin) hnn` as an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Use the polynomial consequences of the given equalities and inequalities.
 -/
 theorem RestTerm.proof (h : RestTermSharp.Statement) : RestTerm.Statement := by
   refine ⟨1.6, by norm_num, ?_⟩

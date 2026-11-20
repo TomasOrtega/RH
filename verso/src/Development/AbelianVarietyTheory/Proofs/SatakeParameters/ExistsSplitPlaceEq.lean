@@ -11,13 +11,11 @@ noncomputable section
 namespace GlobalTheory.RowUnitProof
 
 /- English proof (translation)
-Establish `hstar : ∀ x : D.host.E, D.host.conj x = IsCMField.complexConj D.host.E x` using `fun _ => D.host.φ₀.injective (by`. Rewrite using `[NumberField.IsCMField.complexEmbedding_complexConj, Formalism.HC.HostAx.conjE_apply])`. Take `⟨x, hx, hy⟩` from `hw`. Establish `hc : IsSplitPl D.host (GlobalTheory.SplitConjPlace.conjPlE w)`. Use `⟨IsCMField.ringOfIntegersComplexConj D.host.E x, ?_, fun y hy' => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[GlobalTheory.SplitConjPlace.mem_conjPlE, GlobalTheory.SplitConjPlace.cO_cO]`. Conclude with `hx`. Rewrite using `[GlobalTheory.SplitConjPlace.mem_conjPlE]`. Apply `hy` to reduce the goal to its premises. Rewrite using `[hstar, IsCMField.coe_ringOfIntegersComplexConj, hy', hstar, IsCMField.coe_ringOfIntegersComplexConj, IsCMField.complexConj_apply_apply]`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result.
 
-Take `⟨s, -, hs, -⟩` from `GlobalTheory.SplitConjPlace.splitEx_all D _ hc`. Use `⟨s, HeightOneSpectrum.ext (Ideal.ext fun y => ?_)⟩` and prove the remaining obligations. Establish `h1` using `hs (IsCMField.ringOfIntegersComplexConj D.host.E y) y (by`. Rewrite using `[hstar, IsCMField.coe_ringOfIntegersComplexConj, IsCMField.complexConj_apply_apply])`. Rewrite `h1` using `[GlobalTheory.SplitConjPlace.mem_conjPlE, GlobalTheory.SplitConjPlace.cO_cO]`.
-
-Conclude with `h1.symm`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_splitPlace_eq (D : D7) (w : PlE D.host) (hw : IsSplitPl D.host w) :
     ∃ s : SplitPlace D.host.E, s.w = w := by
@@ -44,27 +42,25 @@ end GlobalTheory.RowUnitProof
 namespace GlobalTheory.RowUnitProof
 
 /- English proof (translation)
-Introduce `hL D P hX S hS i w hw σ hσ`. Take `⟨X⟩` from `hX i`. Take `⟨s, rfl⟩` from `exists_splitPlace_eq D w hw`. Establish `hB00 : X.B 0 0 = 0`. Establish `h` using `X.lin 0 X.C.zero_mem 0 X.C.zero_mem 0 X.C.zero_mem 1`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h` using `[one_smul, add_zero, one_mul]`. Take the linear combination `-h`. Establish `hne : Formalism.IndefR.principalLevelFrame.isotIn (D` using `D) X.ρ X.C (P.rep σ) ≠ ⊥ := by`. Take `⟨y, hy, hy0⟩` from `Submodule.exists_mem_ne_zero_of_ne_bot hσ`. Establish `hmem` using `(X.isot σ y).1 hy`.
+Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `hbot`. Rewrite `hmem` using `[hbot, Submodule.mem_bot]`. Apply `hy0` to reduce the goal to its premises. Establish `h` using `X.φ_inner y y`. Rewrite `h` using `[hmem, hB00]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Conclude with `inner_self_eq_zero.1 h`. Take `⟨B', hlin, hherm, hpos, hinv⟩` from `GlobalTheory.finTyp_invariant_form_of_isotIn D D.R.r X.A X.ρ X.C X.B X.lin X.herm X.pos X.stab X.inv (P.rep σ) hne`. Take `⟨ι, T, -, -, hTinj, hTS, hTeq⟩` from `hS.row i s hw σ hσ`. Establish `hadd : ∀ x y z, B' x (y + z) = B' x y + B' x z` using `fun x y z => by`. Simplify using `using hlin x y z 1`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Establish `h0 : ∀ x, B' x 0 = 0` using `fun x => by`. Establish `h` using `hadd x 0 0`. Rewrite `h` using `[add_zero]`. Take the linear combination `-h`. Establish `hsmul : ∀ x (c : ℂ) y, B' x (c • y) = c * B' x y` using `fun x c y => by`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify `hlin x 0 y c` using `[h0]`. Establish `hadd' : ∀ x y z, B' (x + y) z = B' x z + B' y z` using `fun x y z => by`. Rewrite using `[hherm, hadd, map_add, ← hherm, ← hherm]`. Establish `hsmul' : ∀ (c : ℂ) x y, B' (c • x) y = starRingEnd ℂ c * B' x y` using `fun c x y => by`. Rewrite using `[hherm, hsmul, map_mul, ← hherm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Set `Tm` to `LinearMap.codRestrict (P.rep σ).S T hTS`. Establish `hTm : ∀ a, ((Tm a : (P.rep σ).S) : GAf D.host.E D.R.r → ℂ) = T a` using `fun _ => rfl`. Use `⟨LinearMap.mk₂'ₛₗ (RingHom.id ℂ) (starRingEnd ℂ) (fun v u => B' (Tm u) (Tm v)) (fun _ _ _ => by simp only [map_add, hadd]) (fun _ _ _ => by simp only [map_smul, hsmul, smul_eq_mul, RingHom.id_apply]) (fun _ _ _ => by simp only [map_add, hadd']) (fun _ _ _ => by simp only [map_smu …` and prove the remaining obligations. Introduce `v u`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply]`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hherm _ _`. Introduce `v hv`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply]`. Use `hpos _ fun h => hv (hTinj ?_)` and prove the remaining obligations. Rewrite using `[map_zero]`.
+Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules.
 
-Conclude with `congrArg Subtype.val h`. Introduce `g v u`. Simplify using `only [LinearMap.mk₂'ₛₗ_apply]`. Take `⟨x, ⟨hx, hxg⟩, -⟩` from `(GlobalTheory.SplitAdelic.main D.host.E D.R.r s).2.2 (Matrix.GeneralLinearGroup.map ι.symm.toRingHom g)`. Establish `hg : Matrix.GeneralLinearGroup.map ι.toRingHom (s.loc D.R.r x) = g`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[hxg]`. Conclude with `Units.ext (Matrix.ext fun a b => ι.apply_symm_apply _)`. Establish `key : ∀ a, T (((S i s.w hw).row σ).π g a) = NG.rt D.host.E D.R.r x (T a)` using `fun a => by`. Use `hTeq x hx a` as an intermediate fact. Rewrite `this` using `[hg]`.
-
-Conclude with `this`. Conclude with `hinv x (Tm u) (Tm v) _ _ (key u) (key v)`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rowUnit_of_isTrue : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (D : D7) (P : Pin hL D),
     (∀ i : D.nd.Loc, Nonempty (RowMod D P.rep (D.nd.j i))) → ∀ S : Reading P.T, IsTrue P S → RowUnit S := by

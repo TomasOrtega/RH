@@ -17,7 +17,7 @@ section Sums
 variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E} (Dw : Datum H)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `z`. Rewrite using `[Finset.sum_apply]`. Unfold `expo`. Apply the tactic sequence `exact (Finsupp.sum_finsetSum_index (fun _ => by simp) fun _ _ _ => by split_ifs <;> simp).symm`.
+Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem expo_finsetSum {ι : Type} (t : Finset ι) (w : ι → (Sym E →₀ ℤ)) :
     expo Dw (∑ i ∈ t, w i) = ∑ i ∈ t, expo Dw (w i) := by
@@ -35,7 +35,7 @@ namespace GlobalTheory.ShFam
 variable {D : D7} {A : Amb D} {N j : ℕ} {S : Sig A N j} {κ : Lv A} {s : FinalTheorems S κ} (Φ : s.Flag)
 
 /- English proof (translation)
-Unfold `divOf`. Simplify using `only [Finset.sum_apply, Finset.sum_smul]`. Conclude with `Finset.sum_comm`.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem divOf_finsetSum (k : s.Comp) {ι : Type} (t : Finset ι) (n : ι → Letter S.Dw → ℤ) :
     divOf (Φ.C k) (∑ i ∈ t, n i) = ∑ i ∈ t, divOf (Φ.C k) (n i) := by
@@ -44,7 +44,7 @@ theorem divOf_finsetSum (k : s.Comp) {ι : Type} (t : Finset ι) (n : ι → Let
   exact Finset.sum_comm
 
 /- English proof (translation)
-Rewrite using `[detSym, expo_finsetSum, S.rank_eq, Finset.sum_range]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem sum_rootExp (τ : D.what₂.Tau) :
     ∑ i : Fin N, rootExp S (τ, i) = expo S.Dw (detSym S.Dw (fun _ => false) none (DV.tauEmb D τ)) := by
@@ -52,9 +52,9 @@ theorem sum_rootExp (τ : D.what₂.Tau) :
   rfl
 
 /- English proof (translation)
-Establish `hf` using `GlobalTheory.T.flat_section_isFlat D A N j S κ s Φ k τ`. Rewrite using `[← divOf_finsetSum, sum_rootExp]`. Establish `h0 : flatSec s Φ k τ ≠ 0` using `(hf (genericPoint _)).ne_zero`. Use `⟨(Units.mk0 _ h0)⁻¹, CartierDiv.ext_of_isEqn fun x => ⟨(Units.mk0 _ h0)⁻¹, ?_, CartierDiv.isEqn_principal _ x⟩⟩` and prove the remaining obligations. Rewrite using `[CartierDiv.isEqn_iff_generatesAt_inv, Units.val_inv_eq_inv_val, inv_inv, Units.val_mk0]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hf x`.
+A detailed English derivation is pending.
 -/
 theorem sum_divOf_rootExp_eq_principal (k : s.Comp) (τ : D.what₂.Tau) :
     ∃ g, ∑ i : Fin N, divOf (Φ.C k) (rootExp S (τ, i)) = CartierDiv.principal g := by
@@ -66,7 +66,7 @@ theorem sum_divOf_rootExp_eq_principal (k : s.Comp) (τ : D.what₂.Tau) :
   exact hf x
 
 /- English proof (translation)
-Introduce `D A N j S κ s Φ k τ`. Take `⟨g, hg⟩` from `sum_divOf_rootExp_eq_principal Φ k τ`. Rewrite using `[hg]`. Conclude with `toPic_principal g`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toPic_sum_divOf_rootExp : ∀ (D : D7) (A : Amb D) (N j : ℕ) (S : Sig A N j) (κ : Lv A) (s : FinalTheorems S κ) (Φ : s.Flag)
     (k : s.Comp) (τ : D.what₂.Tau), toPic (∑ i : Fin N, divOf (Φ.C k) (rootExp S (τ, i))) = 0 := by

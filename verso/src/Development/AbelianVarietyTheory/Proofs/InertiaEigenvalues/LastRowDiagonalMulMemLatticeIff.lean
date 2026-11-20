@@ -22,9 +22,9 @@ theorem compV_val (v : HeightOneSpectrum (𝓞 E)) (x : GA E n) (i j : Fin n) :
     (compV E n v x).val i j = pLoc E v (pFin E (x.val i j)) := rfl
 
 /- English proof (translation)
-Take `⟨h1, h2⟩` from `(GlobalTheory.SmGL.mem_unipB R).1 hU`. Rewrite using `[Units.val_mul, Matrix.mul_apply, Finset.sum_eq_single (Fin.last m)]`. Rewrite using `[h2, one_mul]`. Introduce `j _ hj`. Rewrite using `[h1 _ _ (lt_of_le_of_ne (Fin.le_last j) hj), zero_mul]`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Conclude with `absurd (Finset.mem_univ _) h`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem row_unip_mul {R : Type} [CommRing R] {m : ℕ} {U : GL (Fin (m + 1)) R}
     (hU : U ∈ GlobalTheory.SmGL.unipB R (Fin (m + 1))) (K : GL (Fin (m + 1)) R) (i : Fin (m + 1)) :
@@ -37,9 +37,9 @@ theorem row_unip_mul {R : Type} [CommRing R] {m : ℕ} {U : GL (Fin (m + 1)) R}
   · intro h; exact absurd (Finset.mem_univ _) h
 
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `pLoc E v ((y - Pi.single (Fin.last m) (1 : Af E) : Fin (m + 1) → Af E) i) = pLoc E v (y i) - _`. Rewrite using `[Pi.sub_apply, map_sub]`. Use `congr 1`. Distinguish the cases in `h : i = Fin.last m`. Substitute `h` using the available equality.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Consider separately whether the proposition holds or fails. Substitute using the available equality.
 
-Simplify using the standard rewrite rules. Rewrite using `[Pi.single_eq_of_ne h, if_neg h, map_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sub_single_apply {m : ℕ} (y : Fin (m + 1) → Af E) (i : Fin (m + 1)) (v : HeightOneSpectrum (𝓞 E)) :
     (((y - Pi.single (Fin.last m) (1 : Af E)) : Fin (m + 1) → Af E) i) v = y i v - if i = Fin.last m then 1 else 0 := by
@@ -51,7 +51,7 @@ theorem sub_single_apply {m : ℕ} (y : Fin (m + 1) → Af E) (i : Fin (m + 1)) 
   · rw [Pi.single_eq_of_ne h, if_neg h, map_zero]
 
 /- English proof (translation)
-Use `(Valuation.map_sub _ _ _).trans (max_le hx ?_)` and prove the remaining obligations. Use `split_ifs`. Rewrite using `[map_one]`. Rewrite using `[map_zero]`. Conclude with `zero_le'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem val_sub_ite_le_one {v : HeightOneSpectrum (𝓞 E)} {x : v.adicCompletion E} (hx : Valued.v x ≤ 1) (p : Prop)
     [Decidable p] : Valued.v (x - if p then 1 else 0) ≤ 1 := by
@@ -65,19 +65,17 @@ end GlobalTheory.CellDec.RowPos
 open GlobalTheory.CellDec GlobalTheory.CellDec.RowPos in
 
 /- English proof (translation)
-Introduce `E _ _ m T ϖ hϖ J hJ g hg l hl`. Take `⟨u, hu, k, hk, rfl⟩` from `hg`. Establish `hgv : ∀ v i, (pFin E ((u * k).val (Fin.last m) i)) v = (compV E (m + 1) v k).val (Fin.last m) i`. Introduce `v i`. Express the relevant statement in the definitionally equal form `pLoc E v _ = _`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition.
 
-Rewrite using `[← compV_val, map_mul, row_unip_mul (compV_mem_unipB v hu)]`. Establish `htv : ∀ v i, (pFin E ((tl (m + 1) ϖ l.1 * (u * k)).val (Fin.last m) i)) v = ((ϖ v ^ (l.1 v (Fin.last m)) : (v.adicCompletion E)ˣ) : v.adicCompletion E) * (pFin E ((u * k).val (Fin.last m) i)) v`. Introduce `v i`. Express the relevant statement in the definitionally equal form `pLoc E v _ = _ * pLoc E v _`. Rewrite using `[← compV_val, ← compV_val, map_mul (compV E (m + 1) v), compV_tl, Units.val_mul, GlobalTheory.IwaCell.val_tD, Matrix.diagonal_mul]`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Use `forall_congr' fun i => ?_` and prove the remaining obligations. Rewrite using `[GroundTheory.Global.mem_idealFiniteAdeles, GroundTheory.Global.mem_idealFiniteAdeles]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[sub_single_apply, sub_single_apply]`. Use `beta_reduce`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[htv]`. Distinguish the cases in `hv : v ∈ T`. Rewrite using `[l.2 v hv]`. Simplify using the standard rewrite rules. Rewrite using `[hJ v hv]`.
+Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hK` using `(GlobalTheory.AdelicU.mem_GLint_iff.1 (mem_US.1 hk v hv)).1 (Fin.last m) i`. Establish `hK' : Valued.v ((compV E (m + 1) v k).val (Fin.last m) i) ≤ 1` using `(HeightOneSpectrum.mem_adicCompletionIntegers _ _ _).1 hK`. Establish `hϖ1 : Valued.v ((ϖ v : v.adicCompletion E)) ≤ 1`. Rewrite using `[hϖ v]; exact le_of_lt (by decide)`. Take `⟨a, ha⟩` from `Int.eq_ofNat_of_zero_le (hl v)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hp : Valued.v (((ϖ v ^ (l.1 v (Fin.last m)) : (v.adicCompletion E)ˣ) : v.adicCompletion E)) ≤ 1`. Rewrite using `[ha, zpow_natCast, Units.val_pow_eq_pow_val, map_pow]`. Conclude with `pow_le_one' hϖ1 a`. Rewrite using `[hgv, neg_zero, WithZero.exp_zero]`. Use `⟨fun _ => val_sub_ite_le_one hK' _, fun _ => val_sub_ite_le_one ?_ _⟩` and prove the remaining obligations.
-
-Rewrite using `[map_mul]`. Conclude with `mul_le_one' hp hK'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.CellDec.lastRow_tl_mul_mem_latt_iff : ∀ (E : Type) [Field E] [NumberField E] (m : ℕ) (T : Finset (HeightOneSpectrum (𝓞 E)))
     (ϖ : ∀ w : HeightOneSpectrum (𝓞 E), (w.adicCompletion E)ˣ), (∀ w, IsUnifV E w (ϖ w : w.adicCompletion E)) →

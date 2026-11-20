@@ -4,7 +4,7 @@ import Development.AbelianVarietyTheory.Proofs.DivisorProofs.ExistsEtDualOfConn
 open CategoryTheory GlobalTheory.PDiv GlobalTheory.PDivGroup
 
 /- English proof (translation)
-Introduce `p _ Bc` and use `GlobalTheory.Dieu.exists_etDual_of_conn p Bc`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem GlobalTheory.dieuBase_isEt_of_isConn :
     ∀ (p : ℕ) [Fact p.Prime] (Bc : GlobalTheory.Dieu.Base p (fun _ _ G => G.IsConn)),

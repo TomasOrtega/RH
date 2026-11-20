@@ -14,7 +14,7 @@ variable (I : AutInst) (hb : Formalism.L2.SG.AdBridge.AdBridgeIso I)
 abbrev Mv (g : HI I) (v : InfinitePlace I.F) : Matrix (Fin I.n) (Fin I.n) ℂ := (hmI I g).map (thI I v)
 
 /- English proof (translation)
-Establish `h` using `congrFun (betaI_toInfL I hb s) v`. Rewrite using `[← h]`. Conclude with `betaV_val I v _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem uMat_toInf (s : I.Ginf) (v : InfinitePlace I.F) :
     uMat (s v) = (I.P v)⁻¹ * Mv I (Formalism.L2.SG.Pf.MeasInf.toInfL I hb s) v * I.P v := by
@@ -29,7 +29,7 @@ theorem lin_eq (g : HI I) (w : Fin I.n → TI I) :
     Formalism.L2.SG.Sub.lin (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J g w = hmI I g *ᵥ w := rfl
 
 /- English proof (translation)
-Rewrite using `[lin_eq, thV_sub, thV_mulVec, Matrix.sub_mulVec, Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem thV_lin_sub (g : HI I) (v : InfinitePlace I.F) (w : Fin I.n → TI I) :
     thV I v (Formalism.L2.SG.Sub.lin (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J g w - w) =
@@ -42,20 +42,20 @@ Both sides reduce to the same expression.
 theorem rv_eq (v : InfinitePlace I.F) (x : Fin I.n → I.E) : rv I v x = (I.P v)⁻¹ *ᵥ phV I v x := rfl
 
 /- English proof (translation)
-Rewrite using `[Matrix.mulVec_mulVec, Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)), Matrix.one_mulVec]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem Pinv_mulVec_P_mulVec (v : InfinitePlace I.F) (y : Fin I.n → ℂ) : (I.P v)⁻¹ *ᵥ (I.P v *ᵥ y) = y := by
   rw [Matrix.mulVec_mulVec,
     Matrix.nonsing_inv_mul _ ((Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)), Matrix.one_mulVec]
 
 /- English proof (translation)
-Establish `hdet` using `(Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)`. Establish `hPi : ∀ y, I.P v *ᵥ ((I.P v)⁻¹ *ᵥ y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`. Establish `hL : ((I.P v)⁻¹ * Mv I g v * I.P v - 1) *ᵥ ((I.P v)⁻¹ *ᵥ u) = (I.P v)⁻¹ *ᵥ ((Mv I g v - 1) *ᵥ u)`. Rewrite using `[Matrix.sub_mulVec, Matrix.one_mulVec, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hPi, Matrix.sub_mulVec, Matrix.one_mulVec, Matrix.mulVec_sub]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `himg : (fun a => (I.P v)⁻¹ *ᵥ phV I v (Y a)) '' t = (Matrix.mulVecLin (I.P v)⁻¹) '' ((fun a => phV I v (Y a)) '' t)`. Rewrite using `[Set.image_image]`. Both sides reduce to the same expression. Rewrite using `[hL, himg, Submodule.span_image]`. Prove the components needed by the constructor for the conclusion.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion.
 
-Introduce and unpack `⟨y, hy, hxy⟩`. Establish `h2` using `congrArg (fun x => I.P v *ᵥ x) hxy`. Simplify using `only [Matrix.mulVecLin_apply, hPi] at h2`. Rewrite using `[← h2]`. Conclude with `hy`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `h`. Conclude with `⟨_, h, rfl⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem conj_mem_iff {m : ℕ} (g : HI I) (v : InfinitePlace I.F) (Y : Fin m → Fin I.n → I.E) (t : Set (Fin m))
     (u : Fin I.n → ℂ) :
@@ -84,15 +84,15 @@ theorem conj_mem_iff {m : ℕ} (g : HI I) (v : InfinitePlace I.F) (Y : Fin m →
     exact ⟨_, h, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ v, ((I.P v)⁻¹ * Mv I g v * I.P v) *ᵥ rv I v x = rv I v x ↔ Mv I g v *ᵥ phV I v x = phV I v x`. Introduce `v`. Establish `hdet` using `(Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)`. Establish `hPi : ∀ y, I.P v *ᵥ ((I.P v)⁻¹ *ᵥ y) = y` using `fun y => by`. Rewrite using `[Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hdet, Matrix.one_mulVec]`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[rv_eq, ← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec, hPi]`. Prove the components needed by the constructor for the conclusion. Introduce `h`. Establish `h2` using `congrArg (fun y => I.P v *ᵥ y) h`. Simplify `h2` using `only [hPi]`.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts.
 
-Introduce `h`. Rewrite using `[h]`. Prove the components needed by the constructor for the conclusion. Introduce `h v`. Rewrite using `[key]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Establish `h2` using `congrArg (thV I v) h`. Rewrite `h2` using `[lin_eq, thV_mulVec, thV_ratV]`. Conclude with `h2`. Introduce `h`. Apply `thV_ext (I := I)` to reduce the goal to its premises.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Rewrite using `[lin_eq, thV_mulVec, thV_ratV]`. Conclude with `(key v).1 (h v)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem fix_iff (g : HI I) (x : Fin I.n → I.E) :
     Formalism.L2.SG.Sub.lin (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J g
@@ -125,17 +125,15 @@ theorem fix_iff (g : HI I) (x : Fin I.n → I.E) :
     exact (key v).1 (h v)
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.SG.Sub.tupH, Formalism.L2.SG.Sub.F0]`. Prove the components needed by the constructor for the conclusion. Introduce `h x hx`. Break down `hx with (⟨a, rfl⟩ | ⟨a, rfl⟩) | hx` into its components or cases. Establish `h2` using `h (Fin.castAdd r (Fin.castSucc a))`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Separate the alternatives or extract the components of the hypothesis. Establish an intermediate fact.
 
-Rewrite `h2` using `[Fin.append_left, Fin.snoc_castSucc]`. Then use the resulting hypothesis. Establish `h2` using `h (Fin.natAdd (r + 1) a)`. Rewrite `h2` using `[Fin.append_right]`. Then use the resulting hypothesis. Rewrite `hx` using `[Set.mem_singleton_iff]`. Substitute `hx` using the available equality.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Establish `h2` using `h (Fin.castAdd r (Fin.last r))`. Rewrite `h2` using `[Fin.append_left, Fin.snoc_last]`. Then use the resulting hypothesis. Introduce `h b`. Proceed by induction on `b using Fin.addCases with`. Consider the case `left i`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Rewrite using `[Fin.append_left]`. Proceed by induction on `i using Fin.lastCases with`. Consider the case `last`. Rewrite using `[Fin.snoc_last]`. Conclude with `h _ (by simp)`.
+Rewrite the conclusion using the stated equalities. Proceed by induction. Treat this case separately. Rewrite the conclusion using the stated equalities. Treat this case separately.
 
-Consider the case `cast a`. Rewrite using `[Fin.snoc_castSucc]`. Conclude with `h _ (by simp)`. Consider the case `right j`. Rewrite using `[Fin.append_right]`.
-
-Conclude with `h _ (by simp)`.
+Rewrite the conclusion using the stated equalities. Treat this case separately. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem tup_all {r : ℕ} (e f : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) (Q : (Fin I.n → I.E) → Prop) :
     (∀ b, Q (Formalism.L2.SG.Sub.tupH (⟨e, f, z⟩ : Formalism.L2.SG.Sub.Frame I.E I.n r) b)) ↔
@@ -168,11 +166,11 @@ theorem tup_all {r : ℕ} (e f : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E
       exact h _ (by simp)
 
 /- English proof (translation)
-Introduce `I hb r e f z s`. Establish `hmem : ∀ g : HI I, g ∈ Formalism.L2.SG.Sub.Hsub (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J (⟨e, f, z⟩ : Formalism.L2.SG.Sub.Frame I.E I.n r) ↔ ∀ b, Formalism.L2.SG.Sub.lin (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) …` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) (Formalism.L2.SG.Sub.tupH (⟨e, f, z⟩ : Formalism.L2.SG.Sub.Frame I.E I.n r) b)) = Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) (Formalism.L2.SG.Su …`. Introduce `g`. Simplify using `only [Formalism.L2.SG.Sub.Hsub, Formalism.L2.SG.Sub.stabT, MulAction.mem_stabilizer_iff]`. Conclude with `funext_iff`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Use `(hmem _).trans ((tup_all I e f z (fun x => Formalism.L2.SG.Sub.lin (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J (Formalism.L2.SG.Pf.MeasInf.toInfL I hb s) (Formalism.L2.SG.Sub.ratV (F := I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMass …` and prove the remaining obligations. Simplify using `only [Formalism.L2.SG.HidaSetting.Hset, Set.mem_setOf_eq]`. Prove the components needed by the constructor for the conclusion. Introduce `h v x hx`. Rewrite using `[uMat_toInf I hb s v]`.
+Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `(fix_iff I _ x).1 (h x hx) v`. Introduce `h x hx`. Conclude with `(fix_iff I _ x).2 fun v => by`. Rewrite using `[← uMat_toInf I hb s v]`. Conclude with `h v x hx`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hermitian_measure_recursion : HStep := by
   intro I hb r e f z s
@@ -199,13 +197,13 @@ theorem hermitian_measure_recursion : HStep := by
       exact h v x hx
 
 /- English proof (translation)
-The claim follows from `Set.ext fun _ => Fin.lt_iff_val_lt_val`.
+A detailed English derivation is pending.
 -/
 theorem span_lt_eq {m : ℕ} (b : Fin m) : {a : Fin m | a < b} = {c : Fin m | c.1 < b.1} :=
   Set.ext fun _ => Fin.lt_iff_val_lt_val
 
 /- English proof (translation)
-The claim follows from `Set.ext fun c => ⟨fun _ => c.2, fun _ => Set.mem_univ _⟩`.
+A detailed English derivation is pending.
 -/
 theorem span_univ_eq (m : ℕ) : (Set.univ : Set (Fin m)) = {c : Fin m | c.1 < m} :=
   Set.ext fun c => ⟨fun _ => c.2, fun _ => Set.mem_univ _⟩
@@ -219,11 +217,9 @@ def Acond {r : ℕ} (e : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) (M : M
       (M - 1) *ᵥ u ∈ Submodule.span ℂ ((fun c => phV I v (e c)) '' {c | c.1 < r})
 
 /- English proof (translation)
-Simplify using `only [Formalism.L2.SG.HidaSetting.InN, Formalism.L2.SG.HidaSetting.InS, Formalism.L2.SG.HidaSetting.spanLt, Acond, rv_eq]`. Rewrite using `[and_assoc]`. Use `and_congr (forall_congr' fun a => conj_mem_iff I g v e _ _) (and_congr (conj_mem_iff I g v e _ _) ?_)` and prove the remaining obligations. Prove the components needed by the constructor for the conclusion. Introduce `h u hu`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h2` using `h ((I.P v)⁻¹ *ᵥ u) (fun a => by rw [hJ_conj]; exact hu a)`. Conclude with `(conj_mem_iff I g v e _ u).1 h2`. Introduce `h y hy`. Establish `hy' : y = (I.P v)⁻¹ *ᵥ (I.P v *ᵥ y)` using `(Pinv_mulVec_P_mulVec I v y).symm`. Rewrite `hy`, the goal using `[hy']`.
-
-Conclude with `(conj_mem_iff I g v e _ _).2 (h _ fun a => by rw [← hJ_conj]; exact hy a)`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the hypotheses and the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem inN_iff {r : ℕ} (g : HI I) (v : InfinitePlace I.F) (e : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) :
     InN (I.ε v) (fun a => rv I v (e a)) (rv I v z) ((I.P v)⁻¹ * Mv I g v * I.P v) ↔
@@ -242,23 +238,19 @@ theorem inN_iff {r : ℕ} (g : HI I) (v : InfinitePlace I.F) (e : Fin r → Fin 
     exact (conj_mem_iff I g v e _ _).2 (h _ fun a => by rw [← hJ_conj]; exact hy a)
 
 /- English proof (translation)
-Establish `hz : ∀ a, Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.hE I.cm.sig I.J (e a) z = 0` using `hstd.2.2.2.1`. Prove the components needed by the constructor for the conclusion. Introduce `hg v`. Take `⟨h1, h2⟩` from `hg`. Use `⟨fun a => ?_, ?_, fun u hu => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Prove the components needed by the constructor for the conclusion. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3` using `(mem_spanR_iff (I := I) e _ _).1 (h1 a) v`. Rewrite `h3` using `[thV_lin_sub, thV_ratV]`. Conclude with `h3`. Establish `hw : Formalism.L2.SG.Sub.InXperp (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J (⟨e, f, z⟩ : Formalism.L2.SG.Sub.Frame I.E I.n r) (Formalism.L2.SG.Sub.ratV (F` using `I.F) (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) z) := by`. Introduce `a`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `thI_inj (I := I)` to reduce the goal to its premises. Introduce `v'`. Rewrite using `[thI_hR, thV_ratV]`. Conclude with `(phi_hE (I := I) v' (e a) z).symm.trans (by rw [hz a, map_zero])`. Establish `h3` using `(mem_spanR_iff (I := I) e _ _).1 (h2 _ hw) v`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Rewrite `h3` using `[thV_lin_sub, thV_ratV, span_univ_eq]`. Conclude with `h3`. Take `⟨w, hw⟩` from `exists_single (I := I) v u`. Establish `hx : Formalism.L2.SG.Sub.InXperp (Formalism.MainNotions.GlobalTheoryTheory.GenusMassVolumes.Ainf I.F) I.cm.sig I.J (⟨e, f, z⟩ : Formalism.L2.SG.Sub.Frame I.E I.n r) w`. Introduce `a`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities.
 
-Apply `thI_inj (I := I)` to reduce the goal to its premises. Introduce `v'`. Rewrite using `[thI_hR, hw v']`. Use `split_ifs with hv`. Substitute `hv` using the available equality.
+Substitute using the available equality. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hu a`. Simplify using `[Bv]`. Establish `h3` using `(mem_spanR_iff (I := I) e _ _).1 (h2 _ hx) v`. Rewrite `h3` using `[thV_lin_sub, hw v, if_pos rfl, span_univ_eq]`. Conclude with `h3`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Introduce `h`. Use `(show _ ∧ _ from ⟨fun b => ?_, fun w hw => ?_⟩)` and prove the remaining obligations. Rewrite using `[mem_spanR_iff (I := I)]`. Introduce `v`. Rewrite using `[thV_lin_sub, thV_ratV]`.
-
-Conclude with `(h v).1 b`. Rewrite using `[mem_spanR_iff (I := I)]`. Introduce `v`. Rewrite using `[thV_lin_sub, span_univ_eq]`. Use `(h v).2.2 _ fun a => ?_` and prove the remaining obligations.
-
-Rewrite using `[← thI_hR]`. Conclude with `(congrArg (thI I v) (hw a)).trans (map_zero _)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem nsub_iff {r : ℕ} (g : HI I) (e f : Fin r → Fin I.n → I.E) (z : Fin I.n → I.E) (T : I.F)
     (hstd : (⟨e, f, z⟩ : Formalism.L2.SG.Sub.Frame I.E I.n r).IsStd I.cm.sig I.J T) :
@@ -310,7 +302,7 @@ theorem nsub_iff {r : ℕ} (g : HI I) (e f : Fin r → Fin I.n → I.E) (z : Fin
       exact (congrArg (thI I v) (hw a)).trans (map_zero _)
 
 /- English proof (translation)
-Introduce `I hb r e f z T hstd s`. Rewrite using `[nsub_iff I _ e f z T hstd]`. Simplify using `only [Formalism.L2.SG.HidaSetting.Ninf, Set.mem_setOf_eq]`. Use `forall_congr' fun v => ?_` and prove the remaining obligations. Rewrite using `[uMat_toInf I hb s v, inN_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem nilpotent_measure_recursion : NStep := by
   intro I hb r e f z T hstd s

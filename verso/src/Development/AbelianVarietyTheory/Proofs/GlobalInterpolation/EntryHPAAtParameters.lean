@@ -9,7 +9,7 @@ namespace GlobalTheory.Fc.RL.PrimAt
 variable {hL : GlobalTheory.Published.LocalLanglandsGL} {p : Prm hL}
 
 /- English proof (translation)
-Establish `h : (fun r : RPk b.R b.S => Formalism.IndefR.Links.PrimRows3 r.B.Q.Rl r.B.Q.F ∧ r.P.A3.fam3.TypesSep3) (rpkX w.y.y)` using `⟨w.y.intersectionNumber_baseChange.prim, w.y.intersectionNumber_baseChange.sep⟩`. Rewrite `h` using `[← w.y.eq]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem of_wit {K : Ctx} {q : WPt p.s K} {c : ℝ} {b : Bundle (q.w.D q.Z) q.O c} (w : BWit q b) : R1.P_hPA _ _ c b := by
   have h : (fun r : RPk b.R b.S => Formalism.IndefR.Links.PrimRows3 r.B.Q.Rl r.B.Q.F ∧ r.P.A3.fam3.TypesSep3) (rpkX w.y.y) :=
@@ -18,7 +18,7 @@ theorem of_wit {K : Ctx} {q : WPt p.s K} {c : ℝ} {b : Bundle (q.w.D q.Z) q.O c
   exact h
 
 /- English proof (translation)
-Use `RowE.row (R := R1.P_hPA) (RowE.of_all fun κ K β c b _ _ hl => ?_)` and prove the remaining obligations. Take `⟨q, b', ⟨w⟩, he⟩` from `hl`. Use `congrArg (fun s : Σ (D : D7) (O : Obj D), Bundle D O c => R1.P_hPA s.1 s.2.1 c s.2.2) he` as an intermediate fact. Conclude with `cast this.symm (of_wit w)`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem row (p : Prm hL) (Q : V4.Slot) : R1.PeriodAdmissibilityAtBundlePoints Q (IsLinked p) := by
   refine RowE.row (R := R1.P_hPA) (RowE.of_all fun κ K β c b _ _ hl => ?_)
@@ -27,7 +27,7 @@ theorem row (p : Prm hL) (Q : V4.Slot) : R1.PeriodAdmissibilityAtBundlePoints Q 
   exact cast this.symm (of_wit w)
 
 /- English proof (translation)
-Introduce `_ N S Γ` and use `At.of_row (row (prmR N S Γ) _)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem at_linked : ∀ (hL : GlobalTheory.Published.LocalLanglandsGL) (N : NExt hL) (S : SExt) (Γ : GeoP),
     RL.At (prmR N S Γ) R1.PeriodAdmissibilityAtBundlePoints :=

@@ -19,13 +19,13 @@ attribute [local instance] Formalism.BasicNotions.Host.cmStar
 namespace GlobalTheory.IntExpOnto
 
 /- English proof (translation)
-Take `⟨s, hs⟩` from `GlobalTheory.ExportSeries.DeltaExtremal.harmFn_delta D m n w B hw hm`. Establish `hs0 : ((s : ℤ) : ℂ) ≠ 0` using `by exact_mod_cast s.ne_zero`. Establish `key : ∀ u : GLR D n, harmFn m w B (fockGL m w B u (w.delta m)) = ((s : ℤ) : ℂ) • Onto.coefLin w.lam (actP w.lam (invTrK (u * B)) (ten fun τ => extremal ℂ n (w.lam τ)))` using `fun u => by`. Use function extensionality and compare the values at `x`. Rewrite using `[harmFn_fockGL, hs, Pi.smul_apply, smul_eq_mul]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `_ = coefFn _ _ _ _`. Rewrite using `[Onto.coefFn_actP, _root_.mul_inv_rev, mul_assoc]`. Establish `hle : (VV ℂ w.lam).map (Onto.coefLin w.lam) ≤ (harm m w B).map (harmFn m w B)`. Rewrite using `[GlobalTheory.OrbitSpan.VV_eq_span_orbit, harm, Submodule.map_span, Submodule.map_span, Submodule.span_le]`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨_, ⟨g, rfl⟩, rfl⟩`. Establish `h2` using `key (invTrK g * B⁻¹)`. Rewrite `h2` using `[inv_mul_cancel_right, Onto.invTrK_invTrK]`. Use `(Submodule.smul_mem_iff _ hs0).1 ?_` and prove the remaining obligations. Use `beta_reduce`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[← h2]`. Conclude with `Submodule.subset_span ⟨_, ⟨_, rfl⟩, rfl⟩`. Conclude with `hle ⟨F, hF, rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem exists_harm_complex {D : D7} (m n : ℕ) (w : Weight D n) (B : GLR D n) (hw : w.Good) (hm : ∀ τ, w.p τ + w.q τ ≤ m)
     (F : Pol ℂ D.what₂.Tau n) (hF : F ∈ VV ℂ w.lam) :
@@ -51,7 +51,7 @@ theorem exists_harm_complex {D : D7} (m n : ℕ) (w : Weight D n) (B : GLR D n) 
   exact hle ⟨F, hF, rfl⟩
 
 /- English proof (translation)
-Take `⟨P, hP, e⟩` from `exists_harm_complex m n w B hw hm (MvPolynomial.map σ F.1) (GlobalTheory.Proof.TensorMapDescent.map_mem_VV _ _ _ F.2)`. Use `⟨P, hP, e.trans (funext fun x => ?_)⟩` and prove the remaining obligations. Rewrite using `[coefFn, coefFn, MvPolynomial.eval₂Hom_map_hom, RingHom.id_comp]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem exists_harm {D : D7} (m n : ℕ) (w : Weight D n) (B : GLR D n) (hw : w.Good) (hm : ∀ τ, w.p τ + w.q τ ≤ m)
     {K : Type} [Field K] [CharZero K] (σ : K →+* ℂ) (F : VV K w.lam) :
@@ -61,9 +61,9 @@ theorem exists_harm {D : D7} (m n : ℕ) (w : Weight D n) (B : GLR D n) (hw : w.
   rw [coefFn, coefFn, MvPolynomial.eval₂Hom_map_hom, RingHom.id_comp]
 
 /- English proof (translation)
-Introduce `_ _ _ D X E Y _ _ i _ j b F`. Establish `hB` using `Y.Z.good.base i j b`. Use `exists_harm _ _ _ _ hB.wt (fun τ => ?_) _ F` and prove the remaining obligations. Establish `h1` using `hB.sig τ`. Establish `h2` using `Formalism.BasicNotions.sig_sum _ hB.sigOK (tauE D τ)`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `h2` using `[← h1]`. Conclude with `h2.le`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem onto : GlobalTheory.Published.GlobalArtinReciprocity → GlobalTheory.IndefiniteRowSideFullHecke.RationalRayLevels.SeriesRat → GlobalTheory.IndefiniteRowSideFullHecke.TwistSeries.SerInt → ∀ (D : D7) (X : RealSide D) (E : IntegralHeckeForms.XD D) (Y : SerSide X E), FieldOk X → (∀ (j : Fin D.R.m) hV, GlobalTheory.IndefiniteRowSideFullHecke.OrthonormalLatticeThetaValues.FramePin X.core X.R.toRealDat j X.core.σ₀ hV) → ∀ i, D.ntw.NonzeroIndexPlace i → ∀ (j : Fin D.R.m) b (F : VV ↥D.LL0 (Y.Z.ρ.B i j b).w.lam), ∃ P ∈ (Y.Z.ρ.B i j b).valSpace, harmFn (Wc D j).rank (Y.Z.ρ.B i j b).w (Y.Z.ρ.B i j b).F.BS P = coefFn (Formalism.L2.Host.embLL0 D) (Y.Z.ρ.B i j b).w.lam (F : Pol ↥D.LL0 D.what₂.Tau (Vc D j).rank) := by
   intro _ _ _ D X E Y _ _ i _ j b F

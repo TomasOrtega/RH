@@ -9,7 +9,7 @@ namespace PI.OrbJet.OrbW
 open Formalism.BasicNotions Formalism.MainNotions.G MvPowerSeries Finsupp PI.OrbJet
 
 /- English proof (translation)
-Introduce `s t h`. Conclude with `ZMod.val_injective _ (posPl_inj D p z s.val t.val (ZMod.val_lt s) (ZMod.val_lt t) h)`.
+Fix the arbitrary inputs or assume the hypotheses. A detailed English derivation is pending.
 -/
 theorem orbMap_inj (D : D7) (p : ℕ) (z : Pl D) : Function.Injective (orbMap D p z) := by
   intro s t h
@@ -27,7 +27,7 @@ theorem orbEmb_apply (D : D7) (p : ℕ) (z : Pl D) (β : Type) (v : ZMod (nP D p
     orbEmb D p z β v = (orbMap D p z v.1, v.2) := rfl
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Use `show _ = killComplFun (orbEmb D p z (Fin N0 × Fin N1)) Th m`. Unfold `restr killComplFun`. Rewrite using `[Finsupp.embDomain_eq_mapDomain]`. Both sides reduce to the same expression.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem restr_eq_killCompl (D : D7) (p : ℕ) [Fact p.Prime] {N0 N1 : ℕ} (z : Pl D)
     (Th : MvPowerSeries (Pl D × Fin N0 × Fin N1) ℂ_[p]) :
@@ -39,7 +39,7 @@ theorem restr_eq_killCompl (D : D7) (p : ℕ) [Fact p.Prime] {N0 N1 : ℕ} (z : 
   rfl
 
 /- English proof (translation)
-Establish `hn : 1 ≤ n` using `Nat.one_le_iff_ne_zero.mpr (NeZero.ne n)`. Rewrite using `[Nat.cast_add, Nat.cast_mul, Nat.cast_sub hn, ZMod.natCast_self, Nat.cast_one, ZMod.natCast_zmod_val]`. Expand and normalize the polynomial expressions, which then agree.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem natCast_val_add_mul (n : ℕ) [NeZero n] (s : ZMod n) (e : ℕ) :
     ((s.val + e * (n - 1) : ℕ) : ZMod n) = s - e := by
@@ -49,7 +49,7 @@ theorem natCast_val_add_mul (n : ℕ) [NeZero n] (s : ZMod n) (e : ℕ) :
   ring
 
 /- English proof (translation)
-Use `show posPl D p z k = posPl D p z ((k : ZMod (nP D p)).val)`. Rewrite using `[ZMod.val_natCast, posPl_mod]`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem posPl_eq_orbMap (D : D7) (p : ℕ) (z : Pl D) (k : ℕ) :
     posPl D p z k = orbMap D p z (k : ZMod (nP D p)) := by
@@ -57,7 +57,7 @@ theorem posPl_eq_orbMap (D : D7) (p : ℕ) (z : Pl D) (k : ℕ) :
   rw [ZMod.val_natCast, posPl_mod]
 
 /- English proof (translation)
-Establish `h` using `posPl_eq_orbMap D p z (s.val + e * (nP D p - 1))`. Rewrite `h` using `[natCast_val_add_mul]`. Use `show posPl D p (posPl D p z s.val) (e * (nP D p - 1)) = orbMap D p z (s - e)`. Rewrite using `[posPl_add]`. Conclude with `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem backPl_orbMap (D : D7) (p : ℕ) (z : Pl D) (s : ZMod (nP D p)) (e : ℕ) :
     backPl D p (orbMap D p z s) e = orbMap D p z (s - e) := by
@@ -68,11 +68,11 @@ theorem backPl_orbMap (D : D7) (p : ℕ) (z : Pl D) (s : ZMod (nP D p)) (e : ℕ
   exact h
 
 /- English proof (translation)
-Use `⟨s + e, ?_⟩` and prove the remaining obligations. Establish `h3 : e * (nP D p - 1) + e = e * nP D p`. Take `⟨k, hk⟩` from `Nat.exists_eq_succ_of_ne_zero (NeZero.ne (nP D p))`. Rewrite using `[hk, Nat.succ_sub_one, Nat.mul_succ]`. Establish `h1 : posPl D p (backPl D p y e) e = y`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Unfold `backPl`. Rewrite using `[posPl_add, h3, ← posPl_mod, Nat.mul_mod_left, posPl_zero]`. Establish `h2 : posPl D p (orbMap D p z s) e = orbMap D p z (s + e)` using `by show posPl D p (posPl D p z s.val) e = _`. Rewrite using `[posPl_add, posPl_eq_orbMap]`. Use `congr 1`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Rewrite using `[Nat.cast_add, ZMod.natCast_zmod_val]`. Combine the equalities or inequalities in the displayed calculation.
+Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem orbit_of_backPl (D : D7) (p : ℕ) (z y : Pl D) (s : ZMod (nP D p)) (e : ℕ)
     (h : backPl D p y e = orbMap D p z s) : ∃ s', orbMap D p z s' = y := by
@@ -93,20 +93,20 @@ theorem orbit_of_backPl (D : D7) (p : ℕ) (z y : Pl D) (s : ZMod (nP D p)) (e :
     _ = y := h1
 
 /- English proof (translation)
-Unfold `JetTdeg`. Rewrite using `[Finsupp.sum_embDomain]`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 -/
 theorem JetTdeg_embDomain {σ τ : Type*} (f : σ ↪ τ) (m : σ →₀ ℕ) : JetTdeg (embDomain f m) = JetTdeg m := by
   unfold JetTdeg
   rw [Finsupp.sum_embDomain]
 
 /- English proof (translation)
-Establish `key : ∀ e : ℕ, ((backPl D p (orbEmb D p z β w).1 (2 * e), (orbEmb D p z β w).2) : Pl D × β) = orbEmb D p z β (w.1 - 2 * (e : ZMod (nP D p)), w.2)`. Introduce `e`. Rewrite using `[orbEmb_apply, orbEmb_apply]`. Simplify using `only [backPl_orbMap, Nat.cast_mul, Nat.cast_ofNat]`. Use function extensionality and compare the values at `m`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show killComplFun (orbEmb D p z β) (logPl D p (orbEmb D p z β w)) m = jetLogG p (nP D p) w m`. Unfold `killComplFun`. Use `show logPl D p (orbEmb D p z β w) (embDomain (orbEmb D p z β) m) = jetLogG p (nP D p) w m`. Simplify using `only [logPl, jetLogG, JetTdeg_embDomain]`. Use `Finset.sum_congr rfl (fun e _ => ?_)` and prove the remaining obligations.
+Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Consider separately whether the proposition holds or fails. Rewrite the conclusion using the stated equalities.
 
-Distinguish the cases in `hm : m = Finsupp.single (w.1 - 2 * (e : ZMod (nP D p)), w.2) ((p ^ 2) ^ e)`. Rewrite using `[if_pos hm, if_pos]`. Rewrite using `[key e, hm, Finsupp.embDomain_single]`. Rewrite using `[if_neg hm, if_neg]`. Introduce `h'`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Rewrite the indicated hypotheses using the stated equalities.
 
-Apply `hm` to reduce the goal to its premises. Rewrite `h'` using `[key e, ← Finsupp.embDomain_single]`. Conclude with `Finsupp.embDomain_injective _ h'`.
+A detailed English derivation is pending.
 -/
 theorem killCompl_logPl_emb (D : D7) (p : ℕ) [Fact p.Prime] {β : Type} (z : Pl D) (w : ZMod (nP D p) × β) :
     killCompl (orbEmb D p z β) (logPl D p (orbEmb D p z β w)) = jetLogG p (nP D p) w := by
@@ -131,13 +131,13 @@ theorem killCompl_logPl_emb (D : D7) (p : ℕ) [Fact p.Prime] {β : Type} (z : P
     exact Finsupp.embDomain_injective _ h'
 
 /- English proof (translation)
-Use function extensionality and compare the values at `m`. Use `show killComplFun (orbEmb D p z β) (logPl D p v) m = 0`. Unfold `killComplFun`. Use `show logPl D p v (embDomain (orbEmb D p z β) m) = 0`. Simplify using `only [logPl]`.
+Apply function extensionality and compare values at an arbitrary argument. Replace the relevant objects with their definitions. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `Finset.sum_eq_zero (fun e _ => ?_)` and prove the remaining obligations. Rewrite using `[if_neg]`. Introduce `h'`. Apply `hv` to reduce the goal to its premises. Establish `hk : (p ^ 2) ^ e ≠ 0` using `pow_ne_zero _ (pow_ne_zero _ (Fact.out : p.Prime).ne_zero)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hmem : (backPl D p v.1 (2 * e), v.2) ∈ (embDomain (orbEmb D p z β) m).support`. Rewrite using `[h', Finsupp.support_single_ne_zero _ hk]`. Conclude with `Finset.mem_singleton_self _`. Rewrite `hmem` using `[Finsupp.support_embDomain]`. Take `⟨a, -, ha⟩` from `Finset.mem_map.mp hmem`.
+Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Rewrite `ha` using `[orbEmb_apply]`. Take `⟨s', hs'⟩` from `orbit_of_backPl D p z v.1 a.1 (2 * e) (Prod.ext_iff.mp ha).1.symm`. Conclude with `⟨(s', v.2), by rw [orbEmb_apply]; exact Prod.ext hs' rfl⟩`.
+A detailed English derivation is pending.
 -/
 theorem killCompl_logPl_off (D : D7) (p : ℕ) [Fact p.Prime] {β : Type} (z : Pl D) (v : Pl D × β)
     (hv : ¬ ∃ w, orbEmb D p z β w = v) : killCompl (orbEmb D p z β) (logPl D p v) = 0 := by

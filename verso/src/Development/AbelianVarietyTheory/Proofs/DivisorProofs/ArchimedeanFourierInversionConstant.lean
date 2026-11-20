@@ -11,11 +11,11 @@ open scoped GlobalTheory.VacAny
 namespace GlobalTheory.ArchFourier
 
 /- English proof (translation)
-Introduce `F _ _ κ _ _ _ μ hμ`. Take `⟨⟨c, hc, hinv⟩, hint⟩` from `GlobalTheory.fourier_inversion_haar_symm_form (-(traceDot F κ)) (fun x y => by simp only [LinearMap.neg_apply, traceDot_comm x y]) (fun x hx => traceDot_nondeg x (fun y => by simpa using hx y)) μ hμ`. Use `⟨(c : ℂ), by exact_mod_cast hc.ne', fun f a => ?_⟩` and prove the remaining obligations. Establish `hk : ∀ x y : κ → mixedEmbedding.mixedSpace F, Complex.exp (2 * Real.pi * Complex.I * (((-(traceDot F κ)) x y : ℝ) : ℂ)) = Complex.exp (-(2 * Real.pi * Complex.I) * (Algebra.trace ℝ (mixedEmbedding.mixedSpace F) (x ⬝ᵥ y) : ℝ))`. Introduce `x y`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[LinearMap.neg_apply, LinearMap.neg_apply, traceDot_apply]`. Use `push_cast`. Put the polynomial expressions in normal form. Establish `h` using `hinv f f.continuous (hint f).1 (hint f).2 a`. Simplify using `only [hk] at h`.
+Rewrite the conclusion using the stated equalities. Move the embeddings inside the algebraic operations. Put the polynomial expressions in normal form. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `h`.
+A detailed English derivation is pending.
 -/
 theorem fourier_twice_sInf : ∀ (F : Type) [Field F] [NumberField F] (κ : Type) [Fintype κ] [MeasurableSpace (κ → mixedEmbedding.mixedSpace F)]
     [BorelSpace (κ → mixedEmbedding.mixedSpace F)] (μ : Measure (κ → mixedEmbedding.mixedSpace F)) [μ.IsAddHaarMeasure],

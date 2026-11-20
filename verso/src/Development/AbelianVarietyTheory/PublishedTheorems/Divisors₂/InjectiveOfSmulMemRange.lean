@@ -117,15 +117,15 @@ variable {A O M D : Type*} [CommRing A] [CommRing O] [AddCommGroup M] [Module A 
   [AddCommGroup D] [Module O D]
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis A M`. Use `choose s hs using h`. Set `P : Matrix _ _ A` to `Matrix.of fun i j => b.repr (φ (b j)) i`. Establish `key : ∀ m i, b.repr (φ m) i = (P.mulVec fun j => σ (b.repr m j)) i` using `fun m i => by`. Establish `h1 : φ m = ∑ j, σ (b.repr m j) • φ (b j)` using `by conv_lhs => rw [← b.sum_repr m, map_sum]`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [map_smulₛₗ]`. Rewrite using `[h1]`. Simplify using `[P, Matrix.mulVec, dotProduct, mul_comm]`. Establish `hP : P * Matrix.of (fun j k => σ (b.repr (s (b k)) j)) = x • 1`. Use extensionality with `i k`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact.
 
-Use `key (s (b k)) i` as an intermediate fact. Rewrite `this` using `[hs]`. Simplify using `only [Matrix.mulVec, dotProduct] at this`. Simplify using `[Matrix.mul_apply, ← this, Matrix.one_apply, Finsupp.single_apply, eq_comm]`. Establish `hd : P.det ≠ 0` using `fun h0 => by`.
+Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `congrArg Matrix.det hP` as an intermediate fact. Rewrite `this` using `[Matrix.det_mul, h0, zero_mul, Matrix.det_smul, Matrix.det_one, mul_one]`. Conclude with `pow_ne_zero _ hx this.symm`. Rewrite using `[injective_iff_map_eq_zero]`. Introduce `m hm`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h1` using `Matrix.eq_zero_of_mulVec_eq_zero hd (v := fun j => σ (b.repr m j)) (funext fun i => by rw [← key, hm]; simp)`. Use `b.ext_elem fun j => hσ ?_` and prove the remaining obligations. Simplify using `using congrFun h1 j`.
+Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem injective_of_smul_mem_range [IsDomain A] [Module.Free A M] [Module.Finite A M]
     {σ : A →+* A} (hσ : Injective σ) (φ : M →ₛₗ[σ] M) {x : A} (hx : x ≠ 0)
@@ -158,13 +158,13 @@ theorem injective_of_smul_mem_range [IsDomain A] [Module.Free A M] [Module.Finit
   simpa using congrFun h1 j
 
 /- English proof (translation)
-Set `b` to `Module.Free.chooseBasis A M`. Establish `li : LinearIndependent O fun i => r (b i)`. Rewrite using `[Fintype.linearIndependent_iff]`. Introduce `g hg i`. Use `choose a ha using fun i => hθ (g i)`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨n, hn⟩` from `hk (∑ i, a i • b i) (by simpa [map_sum, map_smulₛₗ, ha] using hg)`. Use `congrArg (fun m => θ (b.repr m i)) hn` as an intermediate fact. Simplify `this` using `[Finsupp.single_apply, apply_ite θ, ha, hξ]`. Establish `sp : ⊤ ≤ Submodule.span O (Set.range fun i => r (b i))`. Introduce `y _`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Take `⟨m, rfl⟩` from `hr y`. Rewrite using `[← b.sum_repr m, map_sum]`. Conclude with `Submodule.sum_mem _ fun i _ => by`. Rewrite using `[map_smulₛₗ]`. Conclude with `Submodule.smul_mem _ _ (Submodule.subset_span ⟨i, rfl⟩)`.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities.
 
-Set `c` to `Module.Basis.mk li sp`. Conclude with `⟨Module.Free.of_basis c, Module.Finite.of_basis c, by`. Rewrite using `[Module.finrank_eq_card_basis c, Module.finrank_eq_card_chooseBasisIndex]⟩`.
+A detailed English derivation is pending.
 -/
 theorem free_of_reduction [Nontrivial A] [Nontrivial O] [Module.Free A M] [Module.Finite A M]
     {θ : A →+* O} (hθ : Surjective θ) {ξ : A} (hξ : θ ξ = 0) (r : M →ₛₗ[θ] D) (hr : Surjective r)
@@ -190,11 +190,9 @@ theorem free_of_reduction [Nontrivial A] [Nontrivial O] [Module.Free A M] [Modul
     rw [Module.finrank_eq_card_basis c, Module.finrank_eq_card_chooseBasisIndex]⟩
 
 /- English proof (translation)
-Use `haveI : Module.Finite O (Module.Dual O Y) := Module.Finite.of_surjective π hπ`. Use `haveI : Module.Flat O (Module.Dual O Y) := by`. Rewrite using `[Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, eq_bot_iff]`. Introduce and unpack `y ⟨⟨a, ha⟩, hy⟩`. Use `LinearMap.ext fun w => ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Conclude with `(mul_eq_zero.1 (LinearMap.congr_fun hy w)).resolve_left (nonZeroDivisors.ne_zero ha)`. Use `haveI : Module.Free O (Module.Dual O Y) := Module.free_of_flat_of_isLocalRing`. Take `⟨s, hs⟩` from `Module.projective_lifting_property π LinearMap.id hπ`. Establish `hs' : ∃ l, π ∘ₗ l = LinearMap.id` using `⟨s, hs⟩`. Take `⟨t, ht⟩ : ∃ l, l ∘ₗ ι = LinearMap.id` from `((he.split_tfae hι hπ).out 0 1).1 hs'`.
-
-Use `haveI : Module.Finite O X := Module.Finite.of_surjective t fun x => ⟨ι x, LinearMap.congr_fun ht x⟩`. Use `haveI : Module.Projective O X := Module.Projective.of_split ι t ht`. Conclude with `⟨⟨Module.free_of_flat_of_isLocalRing, inferInstance⟩, inferInstance, inferInstance⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem free_of_exact [IsDomain O] [ValuationRing O] [Module.Free O D] [Module.Finite O D]
     {X Y : Type*} [AddCommGroup X] [Module O X] [AddCommGroup Y] [Module O Y]
@@ -217,9 +215,9 @@ theorem free_of_exact [IsDomain O] [ValuationRing O] [Module.Free O D] [Module.F
   exact ⟨⟨Module.free_of_flat_of_isLocalRing, inferInstance⟩, inferInstance, inferInstance⟩
 
 /- English proof (translation)
-Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus' (I := span {(p : A)}) _ fun n => ?_` and prove the remaining obligations. Take `⟨c, hc⟩` from `PDiv.pow_dvd_sub_digit n a`. Establish `h` using `sub_eq_iff_eq_add.1 hc`. Establish `h1 : T (a • f) - φ a • T f = (p : A) ^ n • (T (c • f) - φ c • T f)` using `by conv_lhs => rw [h]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite using `[add_smul, map_add, map_add, add_smul, Nat.cast_smul_eq_nsmul, map_nsmul, map_natCast, Nat.cast_smul_eq_nsmul, mul_smul, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul, map_nsmul, map_mul, map_natCast, mul_smul, ← Nat.cast_pow, Nat.cast_smul_eq_nsmul, Nat.cast_smul_eq_nsmul, smul_sub]`. Normalize the expressions using the abelian group laws. Rewrite using `[SModEq.zero, h1, Ideal.span_singleton_pow]`. Conclude with `Submodule.smul_mem_smul (Ideal.mem_span_singleton_self _) Submodule.mem_top`.
+Rewrite the conclusion using the stated equalities. Normalize the expressions using the abelian group laws. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem map_padic_smul {p : ℕ} [Fact p.Prime] [IsHausdorff (span {(p : A)}) M] {N : Type*}
     [AddCommGroup N] [Module ℤ_[p] N] (φ : ℤ_[p] →+* A) (T : N →+ M) (a : ℤ_[p]) (f : N) :
@@ -246,7 +244,7 @@ variable {p : ℕ} [Fact p.Prime] {O : Type} [CommRing O] [Fact ¬IsUnit (p : O)
   [IsAdicComplete (span {(p : O)}) O]
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[coeff_frobenius_charP, phiInv, map_coeff]`. Conclude with `frobeniusEquiv_symm_pow_p _ p _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frobenius_phiInv (a : Ainf p O) : WittVector.frobenius (phiInv p O a) = a := by
   ext n
@@ -254,7 +252,7 @@ theorem frobenius_phiInv (a : Ainf p O) : WittVector.frobenius (phiInv p O a) = 
   exact frobeniusEquiv_symm_pow_p _ p _
 
 /- English proof (translation)
-Use extensionality with `n`. Rewrite using `[phiInv, map_coeff, coeff_frobenius_charP]`. Conclude with `(_root_.frobeniusEquiv (PreTilt O p) p).symm_apply_apply _`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem phiInv_frobenius (a : Ainf p O) : phiInv p O (WittVector.frobenius a) = a := by
   ext n
@@ -262,20 +260,20 @@ theorem phiInv_frobenius (a : Ainf p O) : phiInv p O (WittVector.frobenius a) = 
   exact (_root_.frobeniusEquiv (PreTilt O p) p).symm_apply_apply _
 
 /- English proof (translation)
-The claim follows from `LeftInverse.injective phiInv_frobenius`.
+A detailed English derivation is pending.
 -/
 theorem frobenius_injective : Injective (WittVector.frobenius : Ainf p O →+* Ainf p O) :=
   LeftInverse.injective phiInv_frobenius
 
 /- English proof (translation)
-Use `conv_lhs => rw [← xi_mul_nu, map_mul, ← phiInv_mu, frobenius_phiInv]`.
+A detailed English derivation is pending.
 -/
 theorem frobenius_mu (ε : PreTilt O p) : WittVector.frobenius (Sandwich.mu ε) =
     WittVector.frobenius (xi ε) * Sandwich.mu ε := by
   conv_lhs => rw [← xi_mul_nu, map_mul, ← phiInv_mu, frobenius_phiInv]
 
 /- English proof (translation)
-Rewrite using `[← map_pow, iterate_succ_apply']`. Use `congr 1`. Conclude with `(_root_.frobeniusEquiv (PreTilt O p) p).apply_symm_apply _`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. A detailed English derivation is pending.
 -/
 theorem untilt_root_succ_pow (ε : PreTilt O p) (n : ℕ) :
     (root^[n + 1] ε).untilt ^ p = (root^[n] ε).untilt := by
@@ -284,18 +282,16 @@ theorem untilt_root_succ_pow (ε : PreTilt O p) (n : ℕ) :
   exact (_root_.frobeniusEquiv (PreTilt O p) p).apply_symm_apply _
 
 /- English proof (translation)
-The claim follows from `(untilt_root_succ_pow ε 0).symm.trans hε.pow_eq_one`.
+A detailed English derivation is pending.
 -/
 theorem untilt_root_zero {ε : PreTilt O p} (hε : IsPrimitiveRoot (root ε).untilt p) :
     (root^[0] ε).untilt = 1 :=
   (untilt_root_succ_pow ε 0).symm.trans hε.pow_eq_one
 
 /- English proof (translation)
-Consider the cases of `n with`. Consider the case `zero => rw [untilt_root_zero hε, pow_zero]`. Conclude with `IsPrimitiveRoot.one`. Consider the case `succ n`. Establish `h1 : ∀ k, (root^[k + 1] ε).untilt ^ p ^ k = (root ε).untilt` using `fun k => by`.
+Split into cases according to the possible forms of the given data. Treat this case separately. Treat this case separately. Establish an intermediate fact. Proceed by induction.
 
-Proceed by induction on `k with`. Consider the case `zero => simp`. Consider the case `succ k ih => rw [pow_succ', pow_mul, untilt_root_succ_pow, ih]`. Establish `h2` using `orderOf_eq_prime_pow (p := p) (n := n) (x := (root^[n + 1] ε).untilt) (by rw [h1]; exact hε.ne_one (Fact.out : p.Prime).one_lt) (by rw [pow_succ, pow_mul, h1, hε.pow_eq_one])`. Rewrite using `[← h2]`.
-
-Conclude with `IsPrimitiveRoot.orderOf _`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrimitiveRoot_untilt_root {ε : PreTilt O p} (hε : IsPrimitiveRoot (root ε).untilt p)
     (n : ℕ) : IsPrimitiveRoot (root^[n] ε).untilt (p ^ n) := by
@@ -313,7 +309,7 @@ theorem isPrimitiveRoot_untilt_root {ε : PreTilt O p} (hε : IsPrimitiveRoot (r
     exact IsPrimitiveRoot.orderOf _
 
 /- English proof (translation)
-Introduce and unpack `⟨c, hc⟩`. Establish `h` using `congrArg (WittVector.constantCoeff (p := p)) hc`. Rewrite `h` using `[map_mul, map_natCast, CharP.cast_eq_zero, zero_mul, Sandwich.mu, map_sub, map_one, constantCoeff_apply, teichmuller_coeff_zero, sub_eq_zero]`. Use `hε.ne_one (Fact.out : p.Prime).one_lt ?_` and prove the remaining obligations. Rewrite using `[h, root, map_one, map_one]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 theorem not_dvd_mu {ε : PreTilt O p} (hε : IsPrimitiveRoot (root ε).untilt p) :
     ¬ (p : Ainf p O) ∣ Sandwich.mu ε := by
@@ -348,33 +344,27 @@ instance PDivGroup.dualFunctor_additive : (dualFunctor p O).Additive where
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (span {(p : O)}) O]
 
 /- English proof (translation)
-Take `⟨M, D, φ, r, ι, π, hadd, hM, hφ, nφ, hr, nr, hex, nι, nπ, ⟨ec, hec⟩, ⟨em, hem⟩, hff⟩` from `h`. Use `haveI : IsDomain O := hv.hom_inj.isDomain (algebraMap O C)`. Use `haveI : ValuationRing O := ValuationRing.of_integers v hv`. Use `haveI : IsDomain (PreTilt O p) := PreTilt.isDomain C v O hv p`. Use `haveI : IsAdicComplete (span {(p : Ainf p O)}) (Ainf p O) := WittVector.isAdicCompleteIdealSpanP`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression.
 
-Establish `hξ : xi ε ≠ 0` using `fun h0 => one_ne_zero (ReciprocityTheory.PGsh.Ainf.xi_nzd p O hv ε hε 1 ((one_mul _).trans h0))`. Establish `hξ' : (WittVector.frobenius (xi ε) : Ainf p O) ≠ 0` using `fun h0 => hξ (frobenius_injective (h0.trans (map_zero _).symm))`. Establish `inj : ∀ G, Injective (φ G)` using `fun G => by haveI := (hM G).1 haveI := (hM G).2.1`. Conclude with `injective_of_smul_mem_range frobenius_injective (φ G) hξ' (hφ G)`. Use `choose s hs using hφ`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Introduce a local definition for the expression.
 
-Set `ψ : ∀ G : PDivGroup p O, M.obj (op G) →ₛₗ[phiInv p O] M.obj (op G)` to `fun G => { toFun := s G map_add' := fun a b => inj G (by rw [map_add, hs, hs, hs, smul_add]) map_smul' := fun a m => inj G (by rw [map_smulₛₗ, hs, hs, frobenius_phiInv, smul_comm]) }`. Establish `hψ : ∀ G m, φ G (ψ G m) = (WittVector.frobenius (xi ε) : Ainf p O) • m` using `hs`. Establish `nψ : ∀ (G H : PDivGroup p O) (f : G ⟶ H) (m : M.obj (op H)), M.map f.op (ψ H m) = ψ G (M.map f.op m)` using `fun G H f m => inj G (by rw [← nφ, hψ, hψ, map_smul])`. Establish `h0` using `untilt_root_zero hε`. Set `t` to `muTate O (fun n => (root^[n] ε).untilt) h0 (untilt_root_succ_pow ε)`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules.
 
-Set `T : (const p O ⟶ PDivGroup.mu p O) →+ Ainf p O` to `AddMonoidHom.mk' (fun f => ec (M.map f.op (em.symm 1))) fun f g => by`. Rewrite using `[op_add, M.map_add, ← map_add]`. Both sides reduce to the same expression. Set `g : M.obj (op (PDivGroup.mu p O)) →ₗ[Ainf p O] M.obj (op (const p O))` to `ec.symm.toLinearMap ∘ₗ (Sandwich.mu ε • em.toLinearMap)`. Take `⟨f, hf, -⟩` from `hff g fun m => ec.injective (by`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Simplify using `only [g, hec, LinearMap.comp_apply, LinearMap.smul_apply, LinearEquiv.coe_coe, LinearEquiv.apply_symm_apply, smul_eq_mul, hem, map_mul, frobenius_mu]`. Use the proof step `ring)`. Take `⟨t', rfl⟩` from `(dualChar (PDivGroup.mu p O)).surjective f`. Take `⟨a, rfl⟩` from `(smul_muTate_bijective (O := O) _ h0 (untilt_root_succ_pow ε) (isPrimitiveRoot_untilt_root hε)).2 t'`. Establish `ha : ofPadic p O a * T (dualChar _ t) = Sandwich.mu ε`.
+Establish an intermediate fact. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Rewrite using `[← smul_eq_mul, ← map_padic_smul, ← map_smul]`. Use `congrArg (fun l => ec (l (em.symm 1))) hf` as an intermediate fact. Conclude with `this.trans (by simp [g])`. Establish `hu : IsUnit a`. Assume the negation of the conclusion as `hu`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Introduce a local definition for the expression.
 
-Take `⟨c, rfl⟩ : (p : ℤ_[p]) ∣ a` from `(PadicInt.norm_lt_one_iff_dvd a).1 (PadicInt.not_isUnit_iff.1 hu)`. Conclude with `not_dvd_mu hε ⟨_, by rw [← ha, map_mul, map_natCast, mul_assoc]⟩`. Take `⟨u, rfl⟩` from `hu`. Establish `hT : ∀ m, ec (M.map (dualChar _ t).op m) = ofPadic p O ↑u⁻¹ * Sandwich.mu ε * em m`. Introduce `m`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hm : m = em m • em.symm 1` using `em.injective (by simp)`. Rewrite using `[← ha, ← mul_assoc, ← map_mul, Units.inv_mul, map_one, one_mul, mul_comm]`. Use `conv_lhs => rw [hm, map_smul, map_smul]`. Both sides reduce to the same expression. Set `b` to `(M.mapIso (PDivGroup.mu p O).bidual.op).toLinearEquiv`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Establish `hπ : ∀ G : PDivGroup p O, Bijective (lieMap G.dual.dual G G.bidual.inv)` using `fun G => bijective_iff_has_inverse.2 ⟨lieMap _ _ G.bidual.hom, fun x => by rw [← LinearMap.comp_apply, ← lieMap_comp, Iso.inv_hom_id, lieMap_id]; rfl, fun x => by rw [← LinearMap.comp_apply, ← lieMap_comp, Iso.hom_inv_id, lieMap_id]; rfl⟩`. Establish `hex' : ∀ G : PDivGroup p O, Injective (ι G.dual) ∧ Function.Exact (ι G.dual) (lieMap G.dual.dual G G.bidual.inv ∘ₗ π G.dual) ∧ Surjective (lieMap G.dual.dual G G.bidual.inv ∘ₗ π G.dual)` using `fun G => ⟨(hex _).1, fun x => by`. Rewrite using `[← (hex G.dual).2.1 x, LinearMap.comp_apply, map_eq_zero_iff _ (hπ G).1],`. Use the proof step `(hπ G).2.comp (hex _).2.2⟩`. Establish `k1 : ∀ G : PDivGroup p O, Injective (ψ G) ∧ ∀ m, ∃ n, ψ G n = xi ε • m` using `fun G => by haveI := (hM G).1`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `⟨fun x y hxy => ?_, fun m => ⟨φ G m, inj _ ?_⟩⟩` and prove the remaining obligations. Use `congrArg (φ G) hxy` as an intermediate fact. Rewrite `this` using `[hψ, hψ]`. Conclude with `smul_right_injective _ hξ' this`. Conclude with `(hψ _ _).trans (map_smulₛₗ (φ G) _ _).symm`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `k2 : ∀ (G G' : PDivGroup p O) (f : G ⟶ G') (x : D.obj (op G.dual)), lieMap _ _ G'.bidual.inv (π G'.dual (D.map (dualHom G G' f).op x)) = lieMap G G' f (lieMap _ _ G.bidual.inv (π G.dual x))` using `fun G G' f x => by`. Rewrite using `[nπ, ← LinearMap.comp_apply, ← lieMap_comp, dualHom_dualHom_bidual_inv, lieMap_comp]`. Both sides reduce to the same expression. Establish `k3 : ∀ m : M.obj (op (PDivGroup.mu p O).dual.dual), em (M.map (PDivGroup.mu p O).bidual.hom.op (ψ _ m)) = phiInv p O (em (M.map (PDivGroup.mu p O).bidual.hom.op m))` using `fun m => by`. Rewrite using `[nψ]`.
-
-Use `frobenius_injective (mul_left_cancel₀ hξ' ?_)` and prove the remaining obligations. Rewrite using `[← hem, hψ, map_smul, frobenius_phiInv, smul_eq_mul]`. Establish `k4 : ∀ m, ec (ψ _ m) = xi ε * phiInv p O (ec m)` using `fun m => by`. Use `frobenius_injective ?_` and prove the remaining obligations. Rewrite using `[← hec, hψ, map_smul, map_mul, frobenius_phiInv, smul_eq_mul]`.
-
-Establish `k5 : ∀ m : M.obj (op (PDivGroup.mu p O).dual.dual), ec (M.map (dualHom _ _ (constHom _ t)).op m) = ofPadic p O ↑u⁻¹ * Sandwich.mu ε * em (M.map (PDivGroup.mu p O).bidual.hom.op m)` using `fun m => by`. Rewrite using `[← hT, ← dualHom_constHom, ← ModuleCat.comp_apply, ← M.map_comp, ← op_comp, Category.assoc, Iso.inv_hom_id, Category.comp_id]`. Use `⟨dualFunctor p O ⋙ M, dualFunctor p O ⋙ D, fun G => ψ G.dual, fun G => r G.dual, fun G => ι G.dual, fun G => lieMap G.dual.dual G G.bidual.inv ∘ₗ π G.dual, inferInstance, fun G => hM G.dual, fun G => k1 G.dual, fun G G' f => nψ _ _ (dualHom G G' f), fun G => hr G.dual, fun G G' f …` and prove the remaining obligations. Use `haveI := (hM G.dual).1 haveI := (hM G.dual).2.1`. Take `⟨h1, h2, h3⟩` from `free_of_reduction (ReciprocityTheory.PGsh.Ainf.theta_surj p O hv) (ReciprocityTheory.PGsh.Ainf.theta_xi p O hv ε hε) (r G.dual) (hr _).1 fun m => ((hr _).2 m).1`.
-
-Conclude with `⟨⟨h1, h2, h3.trans (hM G.dual).2.2⟩, free_of_exact _ _ (hex' G).1 (hex' G).2.1 (hex' G).2.2⟩`. Take `rfl : ζ = fun n => (root^[n] ε).untilt` from `funext hζ`. Conclude with `k5 m`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem Published.PrismaticDieudonneHodgeAt.covariant {C : Type} [Field C] [IsAlgClosed C] [CharZero C]
     {v : Valuation C NNReal} [Algebra O C] (hv : v.Integers O) {ε : PreTilt O p}
@@ -488,7 +478,7 @@ theorem Published.PrismaticDieudonneHodgeAt.covariant {C : Type} [Field C] [IsAl
 end Main
 
 /- English proof (translation)
-The claim follows from `(h p C v O hv ε hε).covariant hv hε`.
+A detailed English derivation is pending.
 -/
 theorem Published.PrismaticDieudonneHodge.covariant (h : Published.PrismaticDieudonneHodge) (p : ℕ) [Fact p.Prime]
     (C : Type) [Field C] [IsAlgClosed C] [CharZero C] (v : Valuation C NNReal) (O : Type)
@@ -498,7 +488,7 @@ theorem Published.PrismaticDieudonneHodge.covariant (h : Published.PrismaticDieu
   (h p C v O hv ε hε).covariant hv hε
 
 /- English proof (translation)
-Take `⟨h1, h2, ε, hv, hε⟩` from `PadicComplexHost.main p`. Conclude with `⟨h1, h2, ε, hε, h.covariant p ℂ_[p] Valued.v _ hv ε hε⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 example (h : Published.PrismaticDieudonneHodge) (p : ℕ) [Fact p.Prime] :
     ∃ (_ : Fact ¬IsUnit ((p : ℕ) : 𝓞_ℂ_[p]))

@@ -10,23 +10,21 @@ open NumberField IsDedekindDomain MeasureTheory Filter Topology Formalism.MainNo
 namespace GlobalTheory.RealLift
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ h emb f`. Use `h.1` as an intermediate fact. Establish `him : ∀ (τ : E →+* ℂ) (e : E), σ e ≠ e → (τ e).im ≠ 0` using `fun τ e he him => by`. Apply `he` to reduce the goal to its premises. Apply `τ.injective` to reduce the goal to its premises.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Reduce the claim to the hypotheses of an applicable result.
 
-Rewrite using `[h.2.2.2 τ e]`. Conclude with `Complex.conj_eq_iff_im.2 him`. Distinguish the cases in `hσ : ∃ e : E, σ e ≠ e`. Use `swap`. Use `push_neg at hσ`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Reduce the conclusion to the remaining proof obligations. It suffices to derive a contradiction. Establish an intermediate fact.
 
-Use `⟨0, fun u _ => smul_zero u, fun w => ?_⟩` and prove the remaining obligations. It suffices to derive a contradiction. Use `h.2.1` as an intermediate fact. Use `(InfinitePlace.not_isReal_iff_isComplex.2 (IsTotallyComplex.isComplex (InfinitePlace.mk (emb w).1))) (InfinitePlace.isReal_mk_iff.2 (ComplexEmbedding.isReal_iff.2 (RingHom.ext fun x => ?_)))` and prove the remaining obligations. Conclude with `(h.2.2.2 (emb w).1 x).symm.trans (congrArg _ (hσ x))`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Take `⟨e, he⟩` from `hσ`. Set `lift : ∀ w : InfinitePlace F, ℝ → w.Completion` to `fun w t => (InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).symm t`. Establish `hlift : ∀ w t, InfinitePlace.Completion.extensionEmbedding w (lift w t) = (t : ℂ)` using `fun w t => by`. Rewrite using `[← InfinitePlace.Completion.extensionEmbeddingOfIsReal_apply (IsTotallyReal.isReal w)]`. Conclude with `congrArg _ ((InfinitePlace.Completion.ringEquivRealOfIsReal (IsTotallyReal.isReal w)).apply_symm_apply t)`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations.
 
-Set `c : InfinitePlace F → ℝ` to `fun w => (f w).im / ((emb w).1 e).im`. Set `a : InfinitePlace F → ℝ` to `fun w => (f w).re - c w * ((emb w).1 e).re`. Set `A : AF F` to `((fun w => lift w (a w) : Ainf F), 0)`. Set `C : AF F` to `((fun w => lift w (c w) : Ainf F), 0)`. Use `⟨A ⊗ₜ[F] (1 : E) + C ⊗ₜ[F] e, fun u hu => ?_, fun w => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu1 : u.1 = 0` using `(InfiniteAdeleRing.ringEquiv_mixedSpace F).injective (hu.trans (map_zero _).symm)`. Establish `hA : u * A = 0` using `by show ((u.1 * A.1, u.2 * (0 : Af F)) : Ainf F × Af F) = ((0, 0) : Ainf F × Af F)`. Rewrite using `[hu1, zero_mul, mul_zero]`. Establish `hC : u * C = 0` using `by show ((u.1 * C.1, u.2 * (0 : Af F)) : Ainf F × Af F) = ((0, 0) : Ainf F × Af F)`. Rewrite using `[hu1, zero_mul, mul_zero]`.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[smul_add, TensorProduct.smul_tmul', TensorProduct.smul_tmul', smul_eq_mul, smul_eq_mul, hA, hC, TensorProduct.zero_tmul, TensorProduct.zero_tmul, add_zero]`. Express the relevant statement in the definitionally equal form `infEmb (emb w) (compInf F E w (A ⊗ₜ[F] (1 : E) + C ⊗ₜ[F] e)) = f w`. Rewrite using `[map_add]`. Express the relevant statement in the definitionally equal form `infEmb (emb w) (evInf F w A ⊗ₜ[F] (1 : E) + evInf F w C ⊗ₜ[F] e) = f w`. Rewrite using `[map_add, infEmb_tmul, infEmb_tmul, map_one, mul_one]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Express the relevant statement in the definitionally equal form `InfinitePlace.Completion.extensionEmbedding w (lift w (a w)) + InfinitePlace.Completion.extensionEmbedding w (lift w (c w)) * (emb w).1 e = f w`. Rewrite using `[hlift, hlift]`. Establish `hne` using `him (emb w).1 e he`. Apply `Complex.ext` to reduce the goal to its premises. Simplify using `only [Complex.add_re, Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im, zero_mul, sub_zero, a]`.
-
-Expand and normalize the polynomial expressions, which then agree. Simplify using `only [Complex.add_im, Complex.ofReal_im, Complex.mul_im, Complex.ofReal_re, zero_mul, add_zero, zero_add, c]`. Clear the denominators using the available nonvanishing facts.
+Expand and normalize the polynomial expressions, which then agree. Simplify using the standard rewrite rules. Clear the denominators using the available nonvanishing facts. A detailed English derivation is pending.
 -/
 theorem exists_atInf_piInf_eq : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E),
     IsCMExt F E σ → ∀ (emb : ∀ w : InfinitePlace F, EmbOver E w) (f : InfinitePlace F → ℂ),

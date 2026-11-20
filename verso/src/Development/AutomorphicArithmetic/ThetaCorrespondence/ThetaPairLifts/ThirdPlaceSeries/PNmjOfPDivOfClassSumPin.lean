@@ -10,7 +10,7 @@ section
 open Formalism.BasicNotions Formalism.MainNotions GlobalTheory.EX GlobalTheory.EX.OB GlobalTheory.Fc GlobalTheory.Fc.Ind GlobalTheory.BigTop
 namespace GlobalTheory.Fc.Ind
 /- English proof (translation)
-Introduce `D O _ b hdiv hpin` and use `_root_.GlobalTheory.T.lattice_family_adoption_fourth_alt D _ _ _ _ _ _ _ O.ex _ _ _ _ _ _ b.B b.pins b.Rr O.ex.nch_tie hdiv hpin`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem pNmj_of_pDiv_of_classSumPin_alt :
     ∀ (D : D7) (O : Obj D) (c : ℝ) (b : _root_.GlobalTheory.Fc.Ind.PointSummands D O c),

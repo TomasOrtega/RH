@@ -20,7 +20,7 @@ namespace PositivityTheory.PfSWUS
 open PositivityTheory.Rg.Sw.Glob
 
 /- English proof (translation)
-The claim follows from `GlobalTheory.T.nondegenerate_of_whittaker GlobalTheory.T.unfolding_holds (GlobalTheory.T.theta_coefficient_of_convergence hW) (GlobalTheory.T.whittaker_nondegenerate_of_iwasawa (GlobalTheory.T.whittaker_maximal_compact_general hG (GlobalTheory.T.dictionary_maximal_compact_parts G …`.
+A detailed English derivation is pending.
 -/
 theorem coefND_of (hW : GlobalTheory.Published.WeilThetaConvergence) (hG : PositivityTheory.SiegelWeilFormula.Gen.WhitGenLt) : CoefND :=
   GlobalTheory.T.nondegenerate_of_whittaker GlobalTheory.T.unfolding_holds (GlobalTheory.T.theta_coefficient_of_convergence hW)

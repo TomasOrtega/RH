@@ -26,7 +26,7 @@ def GaugeDens (ε : Fin n → Bool) : Prop := Tendsto (ratioAt ε) (𝓝[>] (0 :
 def muGauge (ε : Fin n → Bool) : Measure (Formalism.REAL.UJ ε) := ENNReal.ofReal (gaugeU ε)⁻¹ • Formalism.REAL.muG ε
 
 /- English proof (translation)
-The claim follows from `h.limUnder_eq`.
+A detailed English derivation is pending.
 -/
 theorem gaugeU_eq {ε : Fin n → Bool} {c : ℝ} (h : Tendsto (ratioAt ε) (𝓝[>] (0 : ℝ)) (𝓝 c)) : gaugeU ε = c :=
   h.limUnder_eq
@@ -53,7 +53,7 @@ namespace Formalism.MainNotions.S.Gauge
 variable {n : ℕ}
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify, realifyFun]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_realify (X : Matrix (Fin n) (Fin n) ℂ) :
     unrealify ((WithLp.equiv 2 _).symm (realifyFun X)) = X := by
@@ -61,7 +61,7 @@ theorem unrealify_realify (X : Matrix (Fin n) (Fin n) ℂ) :
   apply Complex.ext <;> simp [unrealify, realifyFun]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_add (x y : EuclideanSpace ℝ (Fin n × Fin n × Bool)) :
     unrealify (x + y) = unrealify x + unrealify y := by
@@ -69,7 +69,7 @@ theorem unrealify_add (x y : EuclideanSpace ℝ (Fin n × Fin n × Bool)) :
   apply Complex.ext <;> simp [unrealify]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_smul (c : ℝ) (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) :
     unrealify (c • x) = (c : ℂ) • unrealify x := by
@@ -77,7 +77,7 @@ theorem unrealify_smul (c : ℝ) (x : EuclideanSpace ℝ (Fin n × Fin n × Bool
   apply Complex.ext <;> simp [unrealify]
 
 /- English proof (translation)
-Use extensionality with `i j`. Apply the tactic sequence `apply Complex.ext <;> simp [unrealify]`.
+By extensionality, compare the relevant components. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem unrealify_zero : unrealify (0 : EuclideanSpace ℝ (Fin n × Fin n × Bool)) = 0 := by
   ext i j
@@ -92,14 +92,14 @@ def unrealL (n : ℕ) : EuclideanSpace ℝ (Fin n × Fin n × Bool) →ₗ[ℝ] 
     exact Complex.coe_smul c _
 
 /- English proof (translation)
-The claim follows from `(unrealL n).continuous_of_finiteDimensional`.
+A detailed English derivation is pending.
 -/
 theorem continuous_unrealify : Continuous (fun x : EuclideanSpace ℝ (Fin n × Fin n × Bool) => unrealify x) :=
   (unrealL n).continuous_of_finiteDimensional
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-The claim follows from `NormedSpace.exp_continuous`.
+A detailed English derivation is pending.
 -/
 theorem continuous_expM {ι : Type*} [Fintype ι] [DecidableEq ι] :
     Continuous (fun X : Matrix ι ι ℂ => NormedSpace.exp X) := NormedSpace.exp_continuous
@@ -110,9 +110,9 @@ attribute [local instance] Matrix.normedAddCommGroup Matrix.normedSpace
 
 open scoped Matrix.Norms.Operator in
 /- English proof (translation)
-Establish `h` using `hasDerivAt_exp_smul_const (𝕂 := ℝ) X (0 : ℝ)`. Simplify using `only [zero_smul, NormedSpace.exp_zero, one_mul] at h`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Use `L.hasFDerivAt.comp_hasDerivAt (0 : ℝ) h` as an intermediate fact. Simplify using `only [Complex.coe_smul]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exp_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
     HasDerivAt (fun t : ℝ => (NormedSpace.exp ((t : ℂ) • X)) i j) (X i j) 0 := by
@@ -124,9 +124,9 @@ theorem exp_entry (X : Matrix (Fin n) (Fin n) ℂ) (i j : Fin n) :
   exact this
 
 /- English proof (translation)
-Establish `: HasDerivAt (fun t : ℝ => (fun i j => (NormedSpace.exp ((t : ℂ) • X)) i j : Fin n → Fin n → ℂ)) (fun i j => X i j) 0`. Rewrite using `[hasDerivAt_pi]`. Introduce `i`. Rewrite using `[hasDerivAt_pi]`. Introduce `j`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply the tactic sequence `exact exp_entry X i j`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem exp_deriv (X : Matrix (Fin n) (Fin n) ℂ) :
     HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • X)) X 0 := by
@@ -145,13 +145,13 @@ def mulR (a : Matrix (Fin n) (Fin n) ℂ) : Matrix (Fin n) (Fin n) ℂ →L[ℝ]
   LinearMap.toContinuousLinearMap (LinearMap.mulRight ℝ a)
 
 /- English proof (translation)
-Establish `hJ : Formalism.REAL.Jm ε * Formalism.REAL.Jm ε = 1` using `Formalism.REAL.Jm_mul_self ε`. Establish `hf : HasDerivAt (fun t : ℝ => NormedSpace.exp ((t : ℂ) • Xᴴ)) Xᴴ 0` using `exp_deriv _`. Establish `hg : HasDerivAt (fun t : ℝ => Formalism.REAL.Jm ε * NormedSpace.exp ((t : ℂ) • (-X)) * Formalism.REAL.Jm ε) (Formalism.REAL.Jm ε * (-X) * Formalism.REAL.Jm ε) 0` using `(mulR (Formalism.REAL.Jm ε)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) ((mulL (Formalism.REAL.Jm ε)).hasFDerivAt.comp_hasDerivAt (0 : ℝ) (exp_deriv (-X)))`. Establish `hfg : (fun t : ℝ => NormedSpace.exp ((t : ℂ) • Xᴴ)) = fun t : ℝ => Formalism.REAL.Jm ε * NormedSpace.exp ((t : ℂ) • (-X)) * Formalism.REAL.Jm ε`. Use function extensionality and compare the values at `t`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Establish `hU : (NormedSpace.exp ((t : ℂ) • X))ᴴ * Formalism.REAL.Jm ε * NormedSpace.exp ((t : ℂ) • X) = Formalism.REAL.Jm ε` using `hX t`. Establish `hst : star (t : ℂ) = (t : ℂ)` using `Complex.conj_ofReal t`. Rewrite `hU` using `[← Matrix.exp_conjTranspose, Matrix.conjTranspose_smul, hst]`. Establish `e2 : NormedSpace.exp ((t : ℂ) • X) * NormedSpace.exp ((t : ℂ) • (-X)) = 1`. Rewrite using `[smul_neg, ← Matrix.exp_add_of_commute _ _ ((Commute.refl ((t : ℂ) • X)).neg_right)]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using the standard rewrite rules. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[e2, Matrix.mul_one, Matrix.mul_assoc, hJ, Matrix.mul_one]`. Use `_ = (NormedSpace.exp ((t : ℂ) • Xᴴ) * Formalism.REAL.Jm ε * NormedSpace.exp ((t : ℂ) • X)) * NormedSpace.exp ((t : ℂ) • (-X)) * Formalism.REAL.Jm ε := by simp only [Matrix.mul_assoc]`. Use `_ = _ := by rw [hU]`.
+Simplify using the standard rewrite rules. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hf` using `[hfg]`. Establish `e` using `hf.unique hg`. Use `show Xᴴ * Formalism.REAL.Jm ε + Formalism.REAL.Jm ε * X = 0`. Rewrite using `[e, Matrix.mul_assoc, hJ]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem inG_of_lieOf {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ}
     (hX : X ∈ lieOf {g : Matrix (Fin n) (Fin n) ℂ | Formalism.REAL.inUJ ε g}) : Formalism.REAL.inG ε X := by
@@ -186,7 +186,7 @@ theorem inG_of_lieOf {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ}
 end ExpD
 
 /- English proof (translation)
-Unfold `Formalism.REAL.inG at *`. Rewrite using `[Matrix.conjTranspose_add, Matrix.add_mul, Matrix.mul_add]`. Combine the equalities or inequalities in the displayed calculation.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation.
 -/
 theorem inG_add {ε : Fin n → Bool} {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : Formalism.REAL.inG ε X) (hY : Formalism.REAL.inG ε Y) :
     Formalism.REAL.inG ε (X + Y) := by
@@ -197,7 +197,7 @@ theorem inG_add {ε : Fin n → Bool} {X Y : Matrix (Fin n) (Fin n) ℂ} (hX : F
     _ = 0 := by rw [hX, hY, add_zero]
 
 /- English proof (translation)
-Unfold `Formalism.REAL.inG at *`. Establish `hst : star (c : ℂ) = (c : ℂ)` using `Complex.conj_ofReal c`. Rewrite using `[Matrix.conjTranspose_smul, hst, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]`.
+Replace the relevant objects with their definitions. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 -/
 theorem inG_smul {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : Formalism.REAL.inG ε X) (c : ℝ) :
     Formalism.REAL.inG ε ((c : ℂ) • X) := by
@@ -206,11 +206,11 @@ theorem inG_smul {ε : Fin n → Bool} {X : Matrix (Fin n) (Fin n) ℂ} (hX : Fo
   rw [Matrix.conjTranspose_smul, hst, Matrix.smul_mul, Matrix.mul_smul, ← smul_add, hX, smul_zero]
 
 /- English proof (translation)
-Take `⟨x, hx⟩` from `x`. Use `show Formalism.REAL.inG ε (unrealify x)`. Unfold `gLie lieE at hx`. Proceed by induction on `hx using Submodule.span_induction with`. Consider the case `mem x h`.
+Extract witnesses or component facts from the available result. Replace the relevant objects with their definitions. Proceed by induction. Treat this case separately. Extract witnesses or component facts from the available result.
 
-Take `⟨X, hX, rfl⟩` from `h`. Simplify using `only`. Rewrite using `[unrealify_realify]`. Conclude with `inG_of_lieOf hX`. Consider the case `zero => rw [unrealify_zero]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Treat this case separately. Simplify using the standard rewrite rules. Treat this case separately.
 
-Simplify using `[Formalism.REAL.inG]`. Consider the case `add x y _ _ hx hy => rw [unrealify_add]`. Conclude with `inG_add hx hy`. Consider the case `smul c x _ hx => rw [unrealify_smul]`. Conclude with `inG_smul hx c`.
+Treat this case separately. A detailed English derivation is pending.
 -/
 theorem inG_of_gLie (ε : Fin n → Bool) (x : gLie ε) :
     Formalism.REAL.inG ε (unrealify (x : EuclideanSpace ℝ (Fin n × Fin n × Bool))) := by
@@ -228,9 +228,9 @@ theorem inG_of_gLie (ε : Fin n → Bool) (x : gLie ε) :
   | smul c x _ hx => rw [unrealify_smul]; exact inG_smul hx c
 
 /- English proof (translation)
-Establish `h` using `Formalism.REAL.exp_indefinite_unitary_holds n ε _ (inG_of_gLie ε x) 1`. Simplify using `only [Complex.ofReal_one, one_smul] at h`. Establish `hr` using `(Formalism.REAL.isClosedEmbeddingMatrix n ε).2`. Establish `: NormedSpace.exp (unrealify (x : EuclideanSpace ℝ (Fin n × Fin n × Bool))) ∈ Set.range (fun g : Formalism.REAL.UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))`. Rewrite using `[hr]`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `h`. Take `⟨g, hg⟩` from `this`. Conclude with `⟨g, hg⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_uMat (ε : Fin n → Bool) (x : gLie ε) :
     ∃ g : Formalism.REAL.UJ ε, uMat g = NormedSpace.exp (unrealify (x : EuclideanSpace ℝ (Fin n × Fin n × Bool))) := by
@@ -246,22 +246,20 @@ theorem exists_uMat (ε : Fin n → Bool) (x : gLie ε) :
 def expG (ε : Fin n → Bool) (x : gLie ε) : Formalism.REAL.UJ ε := (exists_uMat ε x).choose
 
 /- English proof (translation)
-The claim follows from `(exists_uMat ε x).choose_spec`.
+A detailed English derivation is pending.
 -/
 theorem uMat_expG (ε : Fin n → Bool) (x : gLie ε) :
     uMat (expG ε x) = NormedSpace.exp (unrealify (x : EuclideanSpace ℝ (Fin n × Fin n × Bool))) :=
   (exists_uMat ε x).choose_spec
 
 /- English proof (translation)
-The claim follows from `Subtype.ext (Units.ext e)`.
+A detailed English derivation is pending.
 -/
 theorem uMat_inj {ε : Fin n → Bool} {g h : Formalism.REAL.UJ ε} (e : uMat g = uMat h) : g = h :=
   Subtype.ext (Units.ext e)
 
 /- English proof (translation)
-Rewrite using `[(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isInducing.continuous_iff]`. Establish `: ((fun g : Formalism.REAL.UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ)) ∘ expG ε) = fun x : gLie ε => NormedSpace.exp (unrealify (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)))`. Use function extensionality and compare the values at `x`. Conclude with `uMat_expG ε x`. Rewrite using `[this]`.
-
-Conclude with `continuous_expM.comp (continuous_unrealify.comp continuous_subtype_val)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem continuous_expG (ε : Fin n → Bool) : Continuous (expG ε) := by
   rw [(Formalism.REAL.isClosedEmbeddingMatrix n ε).1.isInducing.continuous_iff]
@@ -272,9 +270,9 @@ theorem continuous_expG (ε : Fin n → Bool) : Continuous (expG ε) := by
   exact continuous_expM.comp (continuous_unrealify.comp continuous_subtype_val)
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨x, hx, e⟩`. Conclude with `⟨x, hx, uMat_inj ((uMat_expG ε x).trans e.symm)⟩`. Introduce and unpack `⟨x, hx, rfl⟩`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components.
 
-Conclude with `⟨x, hx, uMat_expG ε x⟩`.
+Supply the required witnesses or components.
 -/
 theorem expSet_eq_image (ε : Fin n → Bool) (A : Set (gLie ε)) : expSet ε A = expG ε '' A := by
   ext g
@@ -289,7 +287,7 @@ abbrev MP (n : ℕ) := Fin n → Fin n → ℂ
 def realV (X : Matrix (Fin n) (Fin n) ℂ) : EuclideanSpace ℝ (Fin n × Fin n × Bool) := (WithLp.equiv 2 _).symm (realifyFun X)
 
 /- English proof (translation)
-Use extensionality with `p`. Take `⟨i, j, b⟩` from `p`. Apply the tactic sequence `cases b <;> simp [realV, realifyFun, unrealify]`.
+By extensionality, compare the relevant components. Extract witnesses or component facts from the available result. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem realV_unrealify (x : EuclideanSpace ℝ (Fin n × Fin n × Bool)) : realV (unrealify x) = x := by
   ext p
@@ -318,7 +316,7 @@ def toUJ (ε : Fin n → Bool) (M : Matrix (Fin n) (Fin n) ℂ) : Formalism.REAL
   if h : ∃ g : Formalism.REAL.UJ ε, uMat g = M then h.choose else 1
 
 /- English proof (translation)
-Unfold `toUJ`. Rewrite using `[dif_pos h]`. Conclude with `h.choose_spec`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem toUJ_uMat {ε : Fin n → Bool} {M : Matrix (Fin n) (Fin n) ℂ} (h : ∃ g : Formalism.REAL.UJ ε, uMat g = M) :
     uMat (toUJ ε M) = M := by
@@ -344,7 +342,7 @@ theorem linT_apply (ε : Fin n → Bool) (t : EuclideanSpace ℝ (Fin (dimL ε))
     linT ε t = unrealify (((obG ε).repr.symm t : gLie ε) : EuclideanSpace ℝ (Fin n × Fin n × Bool)) := rfl
 
 /- English proof (translation)
-Introduce `s t h`. Rewrite `h` using `[linT_apply, linT_apply]`. Establish `h2` using `congrArg realV h`. Rewrite `h2` using `[realV_unrealify, realV_unrealify]`. Conclude with `(obG ε).repr.symm.injective (Subtype.ext h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem linT_injective (ε : Fin n → Bool) : Function.Injective (linT ε) := by
   intro s t h
@@ -356,7 +354,7 @@ theorem linT_injective (ε : Fin n → Bool) : Function.Injective (linT ε) := b
 def thetaExp (ε : Fin n → Bool) (t : EuclideanSpace ℝ (Fin (dimL ε))) : MP n := Matrix.of.symm (NormedSpace.exp (linT ε t))
 
 /- English proof (translation)
-The claim follows from `Matrix.of.apply_symm_apply _`.
+A detailed English derivation is pending.
 -/
 theorem of_thetaExp (ε : Fin n → Bool) (t : EuclideanSpace ℝ (Fin (dimL ε))) :
     Matrix.of (thetaExp ε t) = NormedSpace.exp (linT ε t) := Matrix.of.apply_symm_apply _
@@ -366,15 +364,15 @@ section ExpChart
 open scoped Matrix.Norms.Operator
 
 /- English proof (translation)
-The claim follows from `contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic x).contDiffAt`.
+A detailed English derivation is pending.
 -/
 theorem contDiff_expM : ContDiff ℝ ⊤ (fun X : Matrix (Fin n) (Fin n) ℂ => NormedSpace.exp X) :=
   contDiff_iff_contDiffAt.2 fun x => (NormedSpace.exp_analytic x).contDiffAt
 
 /- English proof (translation)
-Rewrite using `[contDiff_pi]`. Introduce `i`. Rewrite using `[contDiff_pi]`. Introduce `j`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression.
 
-Establish `h1 : ContDiff ℝ ⊤ (fun t => NormedSpace.exp (linT ε t))` using `contDiff_expM.comp (linT ε).contDiff`. Establish `h2 : ContDiff ℝ ⊤ (fun t => L (NormedSpace.exp (linT ε t)))` using `L.contDiff.comp h1`. Conclude with `h2`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem contDiff_thetaExp (ε : Fin n → Bool) : ContDiff ℝ ⊤ (thetaExp ε) := by
   rw [contDiff_pi]; intro i
@@ -385,13 +383,13 @@ theorem contDiff_thetaExp (ε : Fin n → Bool) : ContDiff ℝ ⊤ (thetaExp ε)
   exact h2
 
 /- English proof (translation)
-Establish `hexp : HasFDerivAt (fun X : Matrix (Fin n) (Fin n) ℂ => NormedSpace.exp X) (1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ) (linT ε 0)`. Rewrite using `[map_zero]`. Conclude with `hasStrictFDerivAt_exp_zero.hasFDerivAt`. Establish `hcomp : HasFDerivAt (fun t => NormedSpace.exp (linT ε t)) ((1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ).comp (linT ε)) 0` using `hexp.comp (0 : EuclideanSpace ℝ (Fin (dimL ε))) (linT ε).hasFDerivAt`. Establish `hd : DifferentiableAt ℝ (thetaExp ε) 0` using `(contDiff_thetaExp ε).differentiable (by simp) 0`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `i j`. Set `L : Matrix (Fin n) (Fin n) ℂ →L[ℝ] ℂ` to `LinearMap.toContinuousLinearMap (Matrix.entryLinearMap ℝ ℂ i j)`. Establish `hij : HasFDerivAt (fun t => L (NormedSpace.exp (linT ε t))) (L.comp ((1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ).comp (linT ε))) 0` using `L.hasFDerivAt.comp (0 : EuclideanSpace ℝ (Fin (dimL ε))) hcomp`. Establish `e1 : fderiv ℝ (thetaExp ε) 0 v i j = fderiv ℝ (fun t => L (NormedSpace.exp (linT ε t))) 0 v`. Rewrite using `[fderiv_pi (fun i => differentiableAt_pi.1 hd i)]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [ContinuousLinearMap.pi_apply]`. Rewrite using `[fderiv_pi (fun j => differentiableAt_pi.1 (differentiableAt_pi.1 hd i) j)]`. Simplify using `only [ContinuousLinearMap.pi_apply]`. Both sides reduce to the same expression. Rewrite using `[e1, hij.fderiv]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression.
+A detailed English derivation is pending.
 -/
 theorem fderiv_thetaExp_zero (ε : Fin n → Bool) (v : EuclideanSpace ℝ (Fin (dimL ε))) :
     fderiv ℝ (thetaExp ε) 0 v = Matrix.of.symm (linT ε v) := by
@@ -417,11 +415,11 @@ theorem fderiv_thetaExp_zero (ε : Fin n → Bool) (v : EuclideanSpace ℝ (Fin 
   rfl
 
 /- English proof (translation)
-Establish `hs : HasStrictFDerivAt (fun X : Matrix (Fin n) (Fin n) ℂ => NormedSpace.exp X) (1 : Matrix (Fin n) (Fin n) ℂ →L[ℝ] Matrix (Fin n) (Fin n) ℂ) 0` using `hasStrictFDerivAt_exp_zero`. Establish `ho` using `hasStrictFDerivAt_iff_isLittleO.1 hs`. Establish `hev` using `ho.def (show (0 : ℝ) < 1 / 2 by norm_num)`. Take `⟨δ, hδ, hball⟩` from `Metric.eventually_nhds_iff.1 hev`. Use `⟨δ, hδ, fun X hX Y hY e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hp : dist (X, Y) ((0 : Matrix (Fin n) (Fin n) ℂ), (0 : Matrix (Fin n) (Fin n) ℂ)) < δ`. Rewrite using `[Prod.dist_eq]`. Conclude with `max_lt (by simpa using hX) (by simpa using hY)`. Establish `h` using `hball hp`. Simplify using `only [e, sub_self, zero_sub, norm_neg] at h`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Simplify using the standard rewrite rules. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `‖X - Y‖ ≤ 1 / 2 * ‖X - Y‖ at h`. Establish `h2 : ‖X - Y‖ ≤ 0` using `by linarith [norm_nonneg (X - Y)]`. Conclude with `sub_eq_zero.1 (norm_le_zero_iff.1 h2)`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem exists_injOn_expM : ∃ δ > 0, ∀ X ∈ Metric.ball (0 : Matrix (Fin n) (Fin n) ℂ) δ,
     ∀ Y ∈ Metric.ball (0 : Matrix (Fin n) (Fin n) ℂ) δ, NormedSpace.exp X = NormedSpace.exp Y → X = Y := by
@@ -441,11 +439,11 @@ theorem exists_injOn_expM : ∃ δ > 0, ∀ X ∈ Metric.ball (0 : Matrix (Fin n
   exact sub_eq_zero.1 (norm_le_zero_iff.1 h2)
 
 /- English proof (translation)
-Take `⟨δ, hδ, hinj⟩` from `exists_injOn_expM (n := n)`. Take `⟨ρ₀, hρ₀, hcont⟩` from `Metric.continuousAt_iff.1 (linT ε).continuous.continuousAt δ hδ`. Use `⟨ρ₀, hρ₀, fun s hs t ht e => ?_⟩` and prove the remaining obligations. Establish `hs' : linT ε s ∈ Metric.ball (0 : Matrix (Fin n) (Fin n) ℂ) δ`. Use `hcont (show dist s 0 < ρ₀ from hs)` as an intermediate fact.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis. Establish `ht' : linT ε t ∈ Metric.ball (0 : Matrix (Fin n) (Fin n) ℂ) δ`. Use `hcont (show dist t 0 < ρ₀ from ht)` as an intermediate fact. Rewrite `this` using `[map_zero]`. Then use the resulting hypothesis. Establish `e' : NormedSpace.exp (linT ε s) = NormedSpace.exp (linT ε t)`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Rewrite using `[← of_thetaExp, ← of_thetaExp, e]`. Conclude with `linT_injective ε (hinj _ hs' _ ht' e')`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem injOn_thetaExp (ε : Fin n → Bool) : ∃ ρ₀ > 0, Set.InjOn (thetaExp ε) (Metric.ball 0 ρ₀) := by
   obtain ⟨δ, hδ, hinj⟩ := exists_injOn_expM (n := n)
@@ -462,15 +460,15 @@ theorem injOn_thetaExp (ε : Fin n → Bool) : ∃ ρ₀ > 0, Set.InjOn (thetaEx
 end ExpChart
 
 /- English proof (translation)
-Rewrite using `[of_thetaExp, map_zero, NormedSpace.exp_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem of_thetaExp_zero (ε : Fin n → Bool) : Matrix.of (thetaExp ε 0) = (1 : Matrix (Fin n) (Fin n) ℂ) := by
   rw [of_thetaExp, map_zero, NormedSpace.exp_zero]
 
 /- English proof (translation)
-Take `⟨g, hg⟩` from `exists_uMat ε ((obG ε).repr.symm t)`. Establish `h` using `(Formalism.REAL.isClosedEmbeddingMatrix n ε).2`. Establish `hm : (uMat g) ∈ Set.range (fun g : Formalism.REAL.UJ ε => ((g : (Matrix (Fin n) (Fin n) ℂ)ˣ) : Matrix (Fin n) (Fin n) ℂ))` using `⟨g, rfl⟩`. Rewrite `hm` using `[h, hg]`. Rewrite using `[of_thetaExp, linT_apply]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Conclude with `hm`.
+A detailed English derivation is pending.
 -/
 theorem thetaExp_inUJ (ε : Fin n → Bool) (t : EuclideanSpace ℝ (Fin (dimL ε))) :
     Formalism.REAL.inUJ ε (Matrix.of (thetaExp ε t)) := by
@@ -482,16 +480,16 @@ theorem thetaExp_inUJ (ε : Fin n → Bool) (t : EuclideanSpace ℝ (Fin (dimL �
   exact hm
 
 /- English proof (translation)
-Rewrite using `[Matrix.exp_neg, of_thetaExp]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem inv_thetaExp (ε : Fin n → Bool) (t : EuclideanSpace ℝ (Fin (dimL ε))) :
     (Matrix.of (thetaExp ε t))⁻¹ = NormedSpace.exp (-(linT ε t)) := by
   rw [Matrix.exp_neg, of_thetaExp]
 
 /- English proof (translation)
-Establish `hinv : Continuous fun t : EuclideanSpace ℝ (Fin (dimL ε)) => (Matrix.of (thetaExp ε t))⁻¹`. Simplify using `only [inv_thetaExp]`. Conclude with `continuous_expM.comp (linT ε).continuous.neg`. Establish `hfd : Continuous (fderiv ℝ (thetaExp ε))` using `(contDiff_thetaExp ε).continuous_fderiv (by simp)`. Establish `hd : ∀ i, Continuous fun t => Matrix.of (dPart (thetaExp ε) t i)` using `fun i => hfd.clm_apply continuous_const`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hw : ∀ i, Continuous fun t => realV ((Matrix.of (thetaExp ε t))⁻¹ * Matrix.of (dPart (thetaExp ε) t i))` using `fun i => (realL n).continuous_of_finiteDimensional.comp (hinv.matrix_mul (hd i))`. Unfold `chartJac`. Use `Real.continuous_sqrt.comp (Continuous.matrix_det ?_)` and prove the remaining obligations. Use `continuous_matrix fun i j => ?_` and prove the remaining obligations. Conclude with `(hw i).inner (hw j)`.
+Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem continuous_chartJac_thetaExp (ε : Fin n → Bool) : Continuous (chartJac (thetaExp ε)) := by
   have hinv : Continuous fun t : EuclideanSpace ℝ (Fin (dimL ε)) => (Matrix.of (thetaExp ε t))⁻¹ := by
@@ -508,11 +506,9 @@ theorem continuous_chartJac_thetaExp (ε : Fin n → Bool) : Continuous (chartJa
   exact (hw i).inner (hw j)
 
 /- English proof (translation)
-Establish `hi : ∀ k, realV ((Matrix.of (thetaExp ε 0))⁻¹ * Matrix.of (dPart (thetaExp ε) 0 k)) = (((obG ε) k : gLie ε) : EuclideanSpace ℝ (Fin n × Fin n × Bool))`. Introduce `k`. Rewrite using `[of_thetaExp_zero, inv_one, one_mul, dPart, fderiv_thetaExp_zero, Equiv.apply_symm_apply, linT_apply, OrthonormalBasis.repr_symm_single]`. Conclude with `realV_unrealify _`. Establish `hG : (Matrix.of fun i j : Fin (dimL ε) => @inner ℝ _ _ (realV ((Matrix.of (thetaExp ε 0))⁻¹ * Matrix.of (dPart (thetaExp ε) 0 i))) (realV ((Matrix.of (thetaExp ε 0))⁻¹ * Matrix.of (dPart (thetaExp ε) 0 j)))) = 1`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `only [Matrix.of_apply, hi, Matrix.one_apply]`. Rewrite using `[← Submodule.coe_inner]`. Conclude with `orthonormal_iff_ite.1 (obG ε).orthonormal i j`. Unfold `chartJac`.
-
-Rewrite using `[hG, Matrix.det_one, Real.sqrt_one]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem chartJac_thetaExp_zero (ε : Fin n → Bool) : chartJac (thetaExp ε) 0 = 1 := by
   have hi : ∀ k, realV ((Matrix.of (thetaExp ε 0))⁻¹ * Matrix.of (dPart (thetaExp ε) 0 k)) =
@@ -532,11 +528,11 @@ theorem chartJac_thetaExp_zero (ε : Fin n → Bool) : chartJac (thetaExp ε) 0 
   rw [hG, Matrix.det_one, Real.sqrt_one]
 
 /- English proof (translation)
-Use extensionality with `g`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨t, ht, e⟩`. Use `⟨(obG ε).repr.symm t, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[Metric.mem_ball, dist_zero_right, LinearIsometryEquiv.norm_map, ← dist_zero_right]`.
+By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `ht`. Establish `e2 : NormedSpace.exp (linT ε t) = uMat g` using `by rw [← of_thetaExp, e]; rfl`. Rewrite using `[← e2, linT_apply]`. Introduce and unpack `⟨x, hx, e⟩`. Use `⟨(obG ε).repr x, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Metric.mem_ball, dist_zero_right, LinearIsometryEquiv.norm_map, ← dist_zero_right]`. Conclude with `hx`. Rewrite using `[thetaExp, linT_apply, LinearIsometryEquiv.symm_apply_apply, ← e]`. Both sides reduce to the same expression.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem expSet_ball_eq (ε : Fin n → Bool) (ρ : ℝ) :
     {g : Formalism.REAL.UJ ε | (uMat g : MP n) ∈ thetaExp ε '' Metric.ball 0 ρ} = expSet ε (Metric.ball (0 : gLie ε) ρ) := by
@@ -553,7 +549,7 @@ theorem expSet_ball_eq (ε : Fin n → Bool) (ρ : ℝ) :
     · rw [thetaExp, linT_apply, LinearIsometryEquiv.symm_apply_apply, ← e]; rfl
 
 /- English proof (translation)
-Establish `hmp` using `((obG ε).repr).measurePreserving`. Establish `h` using `hmp.measure_preimage (measurableSet_ball (x := (0 : EuclideanSpace ℝ (Fin (dimL ε)))) (ε := ρ)).nullMeasurableSet`. Rewrite `h` using `[LinearIsometryEquiv.preimage_ball, map_zero]`. Conclude with `h`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem volume_ball_gLie (ε : Fin n → Bool) (ρ : ℝ) :
     volume (Metric.ball (0 : gLie ε) ρ) = volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ) := by
@@ -563,7 +559,7 @@ theorem volume_ball_gLie (ε : Fin n → Bool) (ρ : ℝ) :
   exact h
 
 /- English proof (translation)
-Establish `h` using `hcv (Metric.ball 0 ρ) (thetaExp ε) Metric.isOpen_ball ((contDiff_thetaExp ε).contDiffOn.of_le le_top) hinj (fun t _ => thetaExp_inUJ ε t) (fun _ => 1) measurable_const`. Rewrite `h` using `[expSet_ball_eq, setLIntegral_one]`. Rewrite using `[h]`. Simplify using `only [one_mul]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 -/
 theorem muG_expBall_of_CV {ε : Fin n → Bool} {c : ℝ}
     (hcv : ∀ (U : Set (EuclideanSpace ℝ (Fin (dimL ε)))) (Θ : EuclideanSpace ℝ (Fin (dimL ε)) → MP n),
@@ -581,29 +577,27 @@ theorem muG_expBall_of_CV {ε : Fin n → Bool} {c : ℝ}
   simp only [one_mul]
 
 /- English proof (translation)
-Take `⟨ρ₀, hρ₀, hinj⟩` from `injOn_thetaExp ε`. Rewrite using `[Metric.tendsto_nhdsWithin_nhds]`. Introduce `e he`. Use `set δ : ℝ := min (1 / 2) (e / (2 * c)) with hδ`. Establish `hδpos : 0 < δ` using `lt_min (by norm_num) (div_pos he (by linarith))`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hδ1 : δ ≤ 1 / 2` using `min_le_left _ _`. Establish `hδe : c * δ < e`. Establish `: δ ≤ e / (2 * c)` using `min_le_right _ _`. Combine the equalities or inequalities in the displayed calculation. Establish `hJc` using `(continuous_chartJac_thetaExp ε).continuousAt (x := 0)`.
+Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Take `⟨η, hη, hcont⟩` from `Metric.continuousAt_iff.1 hJc δ hδpos`. Use `⟨min η ρ₀, lt_min hη hρ₀, fun ρ hρpos hρd => ?_⟩` and prove the remaining obligations. Establish `hρ0 : 0 < ρ` using `hρpos`. Establish `hρd' : ρ < min η ρ₀`. Establish `: dist ρ 0 < min η ρ₀` using `hρd`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite `this` using `[Real.dist_eq, sub_zero, abs_of_pos hρ0]`. Then use the resulting hypothesis. Establish `hρη : ρ ≤ η` using `(lt_of_lt_of_le hρd' (min_le_left _ _)).le`. Establish `hρr : ρ ≤ ρ₀` using `(lt_of_lt_of_le hρd' (min_le_right _ _)).le`. Establish `hbound : ∀ t ∈ Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ, |chartJac (thetaExp ε) t - 1| < δ`. Introduce `t ht`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `hcont (lt_of_lt_of_le ht hρη)` as an intermediate fact. Rewrite `this` using `[chartJac_thetaExp_zero, Real.dist_eq]`. Conclude with `this`. Use `set V := volume (Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ) with hV`. Establish `hVpos : 0 < V` using `Metric.measure_ball_pos volume 0 hρ0`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Chain the equalities or inequalities of the calculation.
 
-Establish `hVfin : V ≠ ⊤` using `measure_ball_lt_top.ne`. Use `set I := ∫⁻ t in Metric.ball (0 : EuclideanSpace ℝ (Fin (dimL ε))) ρ, ENNReal.ofReal (chartJac (thetaExp ε) t) with hI`. Establish `hup : I ≤ ENNReal.ofReal (1 + δ) * V`. Combine the equalities or inequalities in the displayed calculation. Use `lintegral_mono_ae ?_` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Chain the equalities or inequalities of the calculation. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Use `filter_upwards [ae_restrict_mem measurableSet_ball] with x hx`. Conclude with `ENNReal.ofReal_le_ofReal (by linarith [(abs_lt.1 (hbound x hx)).2])`. Use `_ = ENNReal.ofReal (1 + δ) * V := setLIntegral_const _ _`. Establish `hlo : ENNReal.ofReal (1 - δ) * V ≤ I`. Combine the equalities or inequalities in the displayed calculation.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact.
 
-Use `lintegral_mono_ae ?_` and prove the remaining obligations. Use `filter_upwards [ae_restrict_mem measurableSet_ball] with x hx`. Conclude with `ENNReal.ofReal_le_ofReal (by linarith [(abs_lt.1 (hbound x hx)).1])`. Establish `hIfin : I ≠ ⊤` using `ne_top_of_le_ne_top (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hVfin) hup`. Establish `hVr : 0 < V.toReal` using `ENNReal.toReal_pos hVpos.ne' hVfin`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `hupR : I.toReal ≤ (1 + δ) * V.toReal`. Use `ENNReal.toReal_mono (ENNReal.mul_ne_top ENNReal.ofReal_ne_top hVfin) hup` as an intermediate fact. Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)]`. Then use the resulting hypothesis. Establish `hloR : (1 - δ) * V.toReal ≤ I.toReal`. Use `ENNReal.toReal_mono hIfin hlo` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Establish an intermediate fact.
 
-Rewrite `this` using `[ENNReal.toReal_mul, ENNReal.toReal_ofReal (by linarith)]`. Then use the resulting hypothesis. Establish `hratio : ratioAt ε ρ = c * I.toReal / V.toReal`. Unfold `ratioAt`. Rewrite using `[muG_expBall_of_CV hcv (hinj.mono (Metric.ball_subset_ball hρr)), volume_ball_gLie, ENNReal.toReal_mul, ENNReal.toReal_ofReal hc.le]`. Rewrite using `[Real.dist_eq, hratio]`.
+Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use the polynomial consequences of the given equalities and inequalities.
 
-Establish `key : |c * I.toReal / V.toReal - c| ≤ c * δ`. Rewrite using `[abs_le]`. Prove the components needed by the constructor for the conclusion. Establish `: c * ((1 - δ) * V.toReal) ≤ c * I.toReal` using `mul_le_mul_of_nonneg_left hloR hc.le`. Rewrite using `[le_sub_iff_add_le, le_div_iff₀ hVr]`.
-
-Use the polynomial consequences of the given equalities and inequalities. Establish `: c * I.toReal ≤ c * ((1 + δ) * V.toReal)` using `mul_le_mul_of_nonneg_left hupR hc.le`. Rewrite using `[sub_le_iff_le_add, div_le_iff₀ hVr]`. Use the polynomial consequences of the given equalities and inequalities. Conclude with `lt_of_le_of_lt key hδe`.
+A detailed English derivation is pending.
 -/
 theorem tendsto_ratioAt_of_CV {ε : Fin n → Bool} {c : ℝ} (hc : 0 < c)
     (hcv : ∀ (U : Set (EuclideanSpace ℝ (Fin (dimL ε)))) (Θ : EuclideanSpace ℝ (Fin (dimL ε)) → MP n),
@@ -679,7 +673,7 @@ theorem tendsto_ratioAt_of_CV {ε : Fin n → Bool} {c : ℝ} (hc : 0 < c)
   exact lt_of_le_of_lt key hδe
 
 /- English proof (translation)
-Take `⟨c, hc, hcv⟩` from `h`. Establish `ht` using `tendsto_ratioAt_of_CV hc hcv`. Establish `he` using `gaugeU_eq ht`. Conclude with `⟨he ▸ ht, he ▸ hc⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem gaugeDens_of_CV {ε : Fin n → Bool} (h : GaugeCV ε) : GaugeDens ε := by
   obtain ⟨c, hc, hcv⟩ := h
@@ -688,7 +682,7 @@ theorem gaugeDens_of_CV {ε : Fin n → Bool} (h : GaugeCV ε) : GaugeDens ε :=
   exact ⟨he ▸ ht, he ▸ hc⟩
 
 /- English proof (translation)
-Take `⟨c, hc, hcv⟩` from `h`. Establish `he` using `gaugeU_eq (tendsto_ratioAt_of_CV hc hcv)`. Conclude with `⟨he ▸ hc, he ▸ hcv⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem gaugeCV_gaugeU {ε : Fin n → Bool} (h : GaugeCV ε) :
     0 < gaugeU ε ∧ ∀ (U : Set (EuclideanSpace ℝ (Fin (dimL ε)))) (Θ : EuclideanSpace ℝ (Fin (dimL ε)) → MP n),

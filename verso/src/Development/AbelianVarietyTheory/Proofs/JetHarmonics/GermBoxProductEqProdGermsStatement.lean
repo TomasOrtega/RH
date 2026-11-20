@@ -12,7 +12,7 @@ open Formalism.MainNotions.ModuliIntegralCharts.H1.BoxTuple Formalism.MainNotion
 open ReciprocityTheory.ChartRestriction.G.TB (colM dAct)
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.PowGerm.boxGermSt_holds` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FJetHarmonics%2FGermBoxProductEqProdGerms.lean&line=100#L100)
 -/

@@ -7,11 +7,11 @@ open scoped Formalism.Per
 namespace GlobalTheory.PSer.TshOnto
 
 /- English proof (translation)
-Introduce `l _ F _ ι tsh _hn hsh _ t`. Take `⟨-, -, -, -, -, honto, -, -⟩` from `GlobalTheory.PSer.Laws.sh_laws l`. Distinguish the cases in `ht : ‖t‖ ≤ 1`. Take `⟨x, hx⟩` from `honto t ht`. Conclude with `⟨ι x, by rw [hsh, hx]⟩`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 
-Use `push_neg at ht`. Establish `hinv : ‖t⁻¹‖ ≤ 1`. Rewrite using `[norm_inv]`. Conclude with `inv_le_one_of_one_le₀ ht.le`. Take `⟨x, hx⟩` from `honto t⁻¹ hinv`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨(ι x)⁻¹, ?_⟩` and prove the remaining obligations. Rewrite using `[map_inv₀, hsh, hx, inv_inv]`.
+A detailed English derivation is pending.
 -/
 theorem tsh_surjective : ∀ (l : ℕ) [Fact l.Prime] (F : Type) [NormedField F] (ι : Fl l →+* F) (tsh : F →*₀ ℂ_[l]),
     (∀ z, ‖tsh z‖ = ‖z‖) → (∀ x, tsh (ι x) = sh x) → (∀ z : F, ‖z‖ ≤ 1 → ∃ x, ι x = z) →

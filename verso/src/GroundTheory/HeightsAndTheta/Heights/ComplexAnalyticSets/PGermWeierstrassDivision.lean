@@ -11,9 +11,9 @@ open Topology Filter
 noncomputable section
 
 /- English proof (translation)
-Introduce `σ _ d f g hf hg hord`. Take `⟨e, c, he, he0, hc, hc0, hfe⟩` from `hP σ d f hf hord`. Take `⟨q, a, hq, ha, hgq⟩` from `hD σ d c g hc hc0 hg`. Use `⟨fun x => q x / e x, a, hq.div he he0, ha, ?_⟩` and prove the remaining obligations. Use `filter_upwards [hfe, hgq, he.continuousAt.eventually_ne he0] with x hfx hgx hex`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hgx, hfx, div_mul_eq_mul_div, mul_left_comm, mul_div_cancel_left₀ _ hex]`.
+A detailed English derivation is pending.
 -/
 theorem WeierstrassDivision.proof (hP : WeierstrassPreparation.Statement)
     (hD : WeierstrassPolynomialDivision.Statement) : WeierstrassDivision.Statement := by

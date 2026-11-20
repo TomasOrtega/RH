@@ -13,7 +13,7 @@ open Formalism.BasicNotions NumberField IsDedekindDomain Formalism.MainNotions F
 open Formalism.L2.Th1.H Formalism.L2.KerInert.RepComb
 set_option maxHeartbeats 1000000 in
 /- English proof (citation)
-Apply `GlobalTheory.CommonScale.scale` to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
+Apply the cited theorem to the given parameters and hypotheses. The imported theorem has the same written statement and gives the conclusion directly.
 
 [Source theorem](?module=Development%2FAbelianVarietyTheory%2FProofs%2FSatakeParameters%2FExistsCommonScaleLatticePairsSplitPrime.lean&line=52#L52)
 -/

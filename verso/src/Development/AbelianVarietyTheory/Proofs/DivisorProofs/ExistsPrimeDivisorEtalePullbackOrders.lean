@@ -14,7 +14,7 @@ namespace GlobalTheory.EtaleDiv
 open IsLocalRing
 
 /- English proof (translation)
-Use `algebraize [f]`. Conclude with `Algebra.FormallyEtale.of_equiv (AlgEquiv.ofBijective (Algebra.ofId R S) hf)`.
+A detailed English derivation is pending.
 -/
 theorem formallyEtale_of_bijective {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
     (hf : Function.Bijective f) : f.FormallyEtale := by
@@ -22,9 +22,7 @@ theorem formallyEtale_of_bijective {R S : Type*} [CommRing R] [CommRing S] (f : 
   exact Algebra.FormallyEtale.of_equiv (AlgEquiv.ofBijective (Algebra.ofId R S) hf)
 
 /- English proof (translation)
-Set `e` to `RingEquiv.ofBijective g hg`. Establish `: f = (e.symm : T →+* S).comp (g.comp f)`. Use extensionality with `x`. Conclude with `(e.symm_apply_apply (f x)).symm`. Rewrite using `[this]`.
-
-Conclude with `h.comp (formallyEtale_of_bijective _ e.symm.bijective)`.
+Introduce a local definition for the expression. Establish an intermediate fact. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem formallyEtale_of_comp_bijective {R S T : Type*} [CommRing R] [CommRing S] [CommRing T]
     (f : R →+* S) (g : S →+* T) (hg : Function.Bijective g) (h : (g.comp f).FormallyEtale) :
@@ -37,9 +35,9 @@ theorem formallyEtale_of_comp_bijective {R S T : Type*} [CommRing R] [CommRing S
   exact h.comp (formallyEtale_of_bijective _ e.symm.bijective)
 
 /- English proof (translation)
-Establish `hu` using `FormallyUnramified.stalkMap (U.ι ≫ f) w`. Establish `hs : ((U.ι ≫ f).stalkMap w).hom.FormallySmooth` using `Scheme.Hom.mem_smoothLocus.mp ((U.ι ≫ f).smoothLocus_eq_top.ge (Set.mem_univ w))`. Establish `h : ((U.ι ≫ f).stalkMap w).hom.FormallyEtale` using `by algebraize [((U.ι ≫ f).stalkMap w).hom]`. Conclude with `Algebra.FormallyEtale.iff_formallyUnramified_and_formallySmooth.mpr ⟨hu, hs⟩`. Establish `: IsIso (U.ι.stalkMap w)` using `inferInstance`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `h` using `[Scheme.Hom.stalkMap_comp]`. Conclude with `formallyEtale_of_comp_bijective (f.stalkMap (U.ι w)).hom (U.ι.stalkMap w).hom (ConcreteCategory.bijective_of_isIso _) h`.
+A detailed English derivation is pending.
 -/
 theorem formallyEtale_stalkMap {M W : Scheme.{0}} (f : M ⟶ W) (U : M.Opens)
     [Etale (U.ι ≫ f)] (w : U.toScheme) : (f.stalkMap (U.ι w)).hom.FormallyEtale := by
@@ -55,7 +53,7 @@ theorem formallyEtale_stalkMap {M W : Scheme.{0}} (f : M ⟶ W) (U : M.Opens)
     (ConcreteCategory.bijective_of_isIso _) h
 
 /- English proof (translation)
-Establish `hi` using `U.ι.isOpenEmbedding.isInducing`. Introduce `a b h`. Use `lt_of_le_not_ge ?_ ?_` and prove the remaining obligations. Conclude with `hi.specializes_iff.2 h.le`. Conclude with `fun h' => h.not_ge (hi.specializes_iff.1 h')`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. A detailed English derivation is pending.
 -/
 theorem strictMono_ι {M : Scheme.{0}} (U : M.Opens) : StrictMono U.ι := by
   have hi := U.ι.isOpenEmbedding.isInducing
@@ -65,7 +63,7 @@ theorem strictMono_ι {M : Scheme.{0}} (U : M.Opens) : StrictMono U.ι := by
   · exact fun h' => h.not_ge (hi.specializes_iff.1 h')
 
 /- English proof (translation)
-Establish `hft` using `LocallyOfFiniteType.stalkMap f z`. Use `algebraize [(f.stalkMap z).hom]`. Establish `: IsLocalHom (algebraMap (W.presheaf.stalk (f z)) (M.presheaf.stalk z))` using `inferInstanceAs (IsLocalHom (f.stalkMap z).hom)`. Conclude with `Algebra.FormallyUnramified.map_maximalIdeal`.
+Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem map_maximalIdeal_stalk {M W : Scheme.{0}} (f : M ⟶ W) [LocallyOfFiniteType f] (z : M)
     (h : (f.stalkMap z).hom.FormallyEtale) :
@@ -78,9 +76,9 @@ theorem map_maximalIdeal_stalk {M W : Scheme.{0}} (f : M ⟶ W) [LocallyOfFinite
   exact Algebra.FormallyUnramified.map_maximalIdeal
 
 /- English proof (translation)
-Take `⟨m, u, rfl⟩` from `exists_eq_unit_mul_zpow (F := K) ht hg`. Establish `h1` using `ordTop_vw_unit_mul_zpow (F := K) ht u m`. Establish `h2` using `ordTop_vw_unit_mul_zpow (F := L) ht' (Units.map ψ.toMonoidHom u) m`. Establish `e : ρ (algebraMap V K u * algebraMap V K t ^ m) = algebraMap V' L (Units.map ψ.toMonoidHom u) * algebraMap V' L (ψ t) ^ m`. Rewrite using `[map_mul, map_zpow₀]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Simplify using `[hψ]`. Rewrite `h2` using `[← e]`. Rewrite `h1` using `[ordTop_vw_of_ne_zero _ hg, WithTop.coe_inj]`. Rewrite `h2` using `[ordTop_vw_of_ne_zero _ ((map_ne_zero ρ).2 hg), WithTop.coe_inj]`. Rewrite using `[h1, h2]`.
+Simplify using the standard rewrite rules. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 -/
 theorem log_ordFrac_map {K L : Type} [Field K] [Field L] (V : ValuationSubring K)
     (V' : ValuationSubring L) [IsDiscreteValuationRing V] [IsDiscreteValuationRing V']
@@ -100,9 +98,7 @@ theorem log_ordFrac_map {K L : Type} [Field K] [Field L] (V : ValuationSubring K
   rw [h1, h2]
 
 /- English proof (translation)
-Use `letI := α.toAlgebra`. Use `letI := β.toAlgebra`. Use `letI := ρ.toAlgebra`. Use `haveI : IsScalarTower k A B := IsScalarTower.of_algebraMap_eq' h.symm`. Use `haveI : Algebra.FormallyEtale A B := hρ`.
-
-Conclude with `hω.of_isBaseChange (isBaseChange_exteriorPower (KaehlerDifferential.isBaseChange_of_formallyEtale k A B) D)`.
+Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. A detailed English derivation is pending.
 -/
 theorem isFreeGen_formMap {k A B : Type*} [CommRing k] [CommRing A] [CommRing B] {α : k →+* A}
     {β : k →+* B} {ρ : A →+* B} (hρ : ρ.FormallyEtale) (h : ρ.comp α = β) {D : ℕ}
@@ -116,7 +112,7 @@ theorem isFreeGen_formMap {k A B : Type*} [CommRing k] [CommRing A] [CommRing B]
     (KaehlerDifferential.isBaseChange_of_formallyEtale k A B) D)
 
 /- English proof (translation)
-Establish `: Ring.KrullDimLE 0 (X.presheaf.stalk x)` using `krullDimLE_of_coheight_le h.le`. Conclude with `(Ring.KrullDimLE.eq_maximalIdeal_of_isPrime ⊥).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem maximalIdeal_eq_bot {X : Scheme.{0}} [IsIntegral X] {x : X} (h : Order.coheight x = 0) :
     maximalIdeal (X.presheaf.stalk x) = ⊥ := by
@@ -124,9 +120,9 @@ theorem maximalIdeal_eq_bot {X : Scheme.{0}} [IsIntegral X] {x : X} (h : Order.c
   exact (Ring.KrullDimLE.eq_maximalIdeal_of_isPrime ⊥).symm
 
 /- English proof (translation)
-Establish `hle : Order.coheight w ≤ 1` using `h1 ▸ Order.coheight_le_coheight_apply_of_strictMono _ (strictMono_ι U) w`. Establish `hle'` using `GlobalTheory.GenExtendNormal.coheight_apply_le_one (U.ι ≫ f) (Flat.generalizingMap _) w hle`. Use `le_antisymm hle' ?_` and prove the remaining obligations. Rewrite using `[Order.one_le_iff_ne_zero]`. Introduce `h0`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Apply `hB` to reduce the goal to its premises. Rewrite using `[← map_maximalIdeal_stalk f _ (formallyEtale_stalkMap f U w), maximalIdeal_eq_bot h0, Ideal.map_bot]`.
+Reduce the claim to the hypotheses of an applicable result. Rewrite the conclusion using the stated equalities.
 -/
 theorem coheight_apply_eq_one {M W : Scheme.{0}} [IsIntegral W] (f : M ⟶ W) [LocallyOfFiniteType f]
     (U : M.Opens) [Etale (U.ι ≫ f)] (w : U.toScheme) (h1 : Order.coheight (U.ι w) = 1)
@@ -142,27 +138,23 @@ theorem coheight_apply_eq_one {M W : Scheme.{0}} [IsIntegral W] (f : M ⟶ W) [L
     Ideal.map_bot]
 
 /- English proof (translation)
-Introduce `M W _ _ _ _ p f _ n _ _ U hU z hz E' hE'`. Use `haveI := hU`. Take `⟨w, rfl⟩ : ∃ w : U.toScheme, U.ι w = z` from `⟨⟨z, hz⟩, rfl⟩`. Use `haveI := SmoothOfRelativeDimension.smooth n p`. Use `haveI := SmoothOfRelativeDimension.smooth n (f ≫ p)`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `haveI : GlobalTheory.IsNormalScheme W := GlobalTheory.ModifSections.isNormalScheme_of_smooth p`. Use `haveI : LocallyOfFiniteType f := locallyOfFiniteType_of_comp f p`. Use `haveI hB : IsDiscreteValuationRing (M.presheaf.stalk (U.ι w)) := IsDiscreteValuationRing.RingEquivClass.isDiscreteValuationRing hE'.equiv.symm`. Establish `hφ` using `formallyEtale_stalkMap f U w`. Establish `hmax` using `map_maximalIdeal_stalk f (U.ι w) hφ`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result.
 
-Establish `hc` using `coheight_apply_eq_one f U w hE'.coheight_eq_one (IsDiscreteValuationRing.not_a_field _)`. Take `⟨E, hE⟩` from `DivOver.exists_isAt_of_coheight_eq_one (p := p) hc`. Use `haveI hA : IsDiscreteValuationRing (W.presheaf.stalk (f (U.ι w))) := GlobalTheory.IsNormalScheme.isDiscreteValuationRing_stalk hc`. Set `ψ : E.ring →+* E'.ring` to `hE'.equiv.toRingHom.comp ((f.stalkMap (U.ι w)).hom.comp hE.equiv.symm.toRingHom)`. Establish `hψ : ∀ a, (ψ a : M.functionField) = functionFieldMap f a`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Introduce `a`. Take `⟨b, rfl⟩` from `hE.equiv.surjective a`. Establish `e : ψ (hE.equiv b) = hE'.equiv (f.stalkMap (U.ι w) b)`. Simplify using `only [ψ, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply]`. Rewrite using `[e]`.
+Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `(functionFieldMap_algebraMap f (U.ι w) b).symm`. Take `⟨t, ht⟩` from `IsDiscreteValuationRing.exists_irreducible (W.presheaf.stalk (f (U.ι w)))`. Establish `ht' : Irreducible (f.stalkMap (U.ι w) t)`. Rewrite `ht`, the goal using `[IsDiscreteValuationRing.irreducible_iff_uniformizer]`. Rewrite using `[← hmax, ht, Ideal.map_span, Set.image_singleton]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Establish `htE : Irreducible (hE.equiv t)` using `ht.map hE.equiv`. Establish `htE' : Irreducible (ψ (hE.equiv t))`. Establish `e : ψ (hE.equiv t) = hE'.equiv (f.stalkMap (U.ι w) t)`. Simplify using `only [ψ, RingHom.comp_apply, RingEquiv.toRingHom_eq_coe, RingEquiv.coe_toRingHom, RingEquiv.symm_apply_apply]`. Rewrite using `[e]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `ht'.map hE'.equiv`. Establish `hord : ∀ g : W.functionFieldˣ, E'.ord (Units.map (functionFieldMap f).toMonoidHom g) = E.ord g` using `fun g => log_ordFrac_map E.ring E'.ring (functionFieldMap f) ψ hψ htE htE' g.ne_zero`. Use `⟨E, hE, hord, fun η hη => ?_⟩` and prove the remaining obligations. Establish `hn : topologicalKrullDim W = n` using `GlobalTheory.NadelApp.topologicalKrullDim_eq_of_smooth W p n`. Take `⟨ω, hω⟩` from `E.exists_isFreeGen hn`.
+Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Establish an intermediate fact.
 
-Take `⟨c, rfl⟩` from `(E.isFreeGen_toRat hω).2 η`. Establish `hc0 : c ≠ 0` using `fun h => hη (by rw [h]; exact zero_smul _ _)`. Establish `hconst : ψ.comp E.const = E'.const` using `RingHom.ext fun a => Subtype.ext ((hψ _).trans (RingHom.congr_fun (GlobalTheory.EtaleKlt.functionFieldMap_comp_constFn p f) a))`. Establish `hψFE : ψ.FormallyEtale` using `RingHom.FormallyEtale.comp (RingHom.FormallyEtale.comp (formallyEtale_of_bijective _ hE.equiv.symm.bijective) hφ) (formallyEtale_of_bijective _ hE'.equiv.bijective)`. Establish `h3 : ((functionFieldMap f).comp E.ring.subtype).comp E.const = Cartier.constFn (f ≫ p)`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use extensionality with `a`. Conclude with `RingHom.congr_fun (GlobalTheory.EtaleKlt.functionFieldMap_comp_constFn p f) a`. Establish `e1 : GlobalTheory.EtaleKlt.ratPull p f n (E.toRat n ω) = E'.toRat n (TopForm.formMap n ψ hconst ω)`. Express the relevant statement in the definitionally equal form `TopForm.formMap n (functionFieldMap f) _ (TopForm.formMap n E.ring.subtype rfl ω) = TopForm.formMap n E'.ring.subtype rfl (TopForm.formMap n ψ hconst ω)`. Conclude with `(formMap_formMap E.ring.subtype (functionFieldMap f) ((functionFieldMap f).comp E.ring.subtype) rfl _ _ h3 ω).trans (formMap_formMap ψ E'.ring.subtype ((functionFieldMap f).comp E.ring.subtype) (RingHom.ext hψ) _ _ h3 ω).symm`.
-
-Establish `h1 : E.formOrd (c • E.toRat n ω) = E.ord (Units.mk0 c hc0)` using `DivOver.IsFormOrd.formOrd_eq hη ⟨ω, hω, Units.mk0 c hc0, rfl, rfl⟩`. Establish `hη' : GlobalTheory.EtaleKlt.ratPull p f n (c • E.toRat n ω) ≠ 0`. Establish `hfree` using `E'.isFreeGen_toRat (isFreeGen_formMap hψFE hconst hω)`. Rewrite using `[map_smulₛₗ, e1]`. Introduce `h0`.
-
-Use `hfree.1 (a₁ := functionFieldMap f c) (a₂ := 0) (by simp only [h0, zero_smul])` as an intermediate fact. Conclude with `hc0 ((map_eq_zero _).1 this)`. Establish `h2 : E'.formOrd (GlobalTheory.EtaleKlt.ratPull p f n (c • E.toRat n ω)) = E'.ord (Units.map (functionFieldMap f).toMonoidHom (Units.mk0 c hc0))` using `DivOver.IsFormOrd.formOrd_eq hη' ⟨_, isFreeGen_formMap hψFE hconst hω, _, by rw [map_smulₛₗ, e1]; rfl, rfl⟩`. Rewrite using `[h1, h2, hord]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem exists_isAt_ord_formOrd : ∀ (M W : Scheme.{0}) [IsIntegral M] [IsIntegral W]
     [IsLocallyNoetherian M] [IsLocallyNoetherian W] (p : W ⟶ Sp ℂ) (f : M ⟶ W) [IsDominant f]

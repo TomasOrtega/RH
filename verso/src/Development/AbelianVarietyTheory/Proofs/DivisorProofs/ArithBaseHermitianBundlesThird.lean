@@ -21,7 +21,7 @@ noncomputable section
 namespace GlobalTheory.FlagCovCx
 
 /- English proof (translation)
-Introduce `h1 h2 h3 _ D O hO B hB R hR c Bs _ q arq nBs E h H Bg jB πB u Gm hL Y₀ _ π₀ fl₀ hfb ar₀ n₀ G _ j πG pb _ _ φ φs jG r hc a i σ z y y' ch e1 e2 e3`. Take `⟨pbB, finB, rngB, frB, latB, metB, lmB⟩` from `hL`. Conclude with `GlobalTheory.T.arith_base_hermitian_bundles_fifth h1 h2 h3 D O hO (FlagAr.setB O.Y B) R hR c Bs q arq nBs E h H Bg jB πB u ⟨pbB, finB, rngB, frB⟩ latB ⟨Gm, metB, lmB⟩ Y₀ π₀ fl₀ hfb ar₀ n₀ G j πG pb φ φs jG r hc a i σ z y y' ch e1 e2 e3`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem norms_cx : Hypotheses2 → HypothesesH → RegularAlteration → ScholzeWeinsteinB →
   ∀ (D : D7) (O : Setup D) (hO : O.Core) (B : ℝ) (hB : 2 ≤ B) (R : ℝ) (hR : 2 ≤ R) (c : O.s.Comp)

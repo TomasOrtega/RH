@@ -13,13 +13,11 @@ namespace GlobalTheory.StabUnfold.RatPts
 open GlobalTheory.RatDiscrete
 
 /- English proof (translation)
-Establish `h1 : (vecMulVec x u + A * A').map ι = 1`. Rewrite using `[h]`. Conclude with `Matrix.map_one ι (map_zero ι) (map_one ι)`. Establish `hvm : ∀ y w : Fin n → E, (vecMulVec y w).map ι = vecMulVec (fun i => ι (y i)) (fun i => ι (w i))`. Introduce `y w`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. By extensionality, compare the relevant components.
 
-Use extensionality with `i j`. Simplify using `[vecMulVec_apply]`. Establish `key : M * vecMulVec (fun i => ι (x i)) (fun i => ι (u i)) = vecMulVec (fun i => ι (x i)) (fun i => ι (u i))`. Use extensionality with `i j`. Establish `hi` using `congrFun hx i`.
+Simplify using the standard rewrite rules. Establish an intermediate fact. By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Simplify using `only [mulVec, dotProduct] at hi`. Simplify using `only [mul_apply, vecMulVec_apply]`. Rewrite using `[← hi, Finset.sum_mul]`. Conclude with `Finset.sum_congr rfl fun k _ => (mul_assoc _ _ _).symm`. Combine the equalities or inequalities in the displayed calculation.
-
-Rewrite using `[Matrix.map_add _ (map_add ι), Matrix.map_add _ (map_add ι), Matrix.map_mul, Matrix.map_mul, Matrix.map_mul, hvm, Matrix.mul_add, key, ← Matrix.mul_assoc, hA]`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem eq_map_of_resolution {E R : Type} [CommRing E] [CommRing R] (ι : E →+* R) {n m : ℕ}
     {x u : Fin n → E} {A : Matrix (Fin n) (Fin m) E} {A' : Matrix (Fin m) (Fin n) E}
@@ -44,23 +42,21 @@ theorem eq_map_of_resolution {E R : Type} [CommRing E] [CommRing R] (ι : E →+
         Matrix.mul_add, key, ← Matrix.mul_assoc, hA]
 
 /- English proof (translation)
-Establish `hU : Formalism.UG.cT (starRingEnd I.E) (γ : Matrix (Fin I.n) (Fin I.n) I.E) * I.J * (γ : Matrix (Fin I.n) (Fin I.n) I.E) = I.J` using `hγ`. Establish `hG : ∀ v, ((γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v))ᴴ * I.J.map (I.φ v) * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) = I.J.map (I.φ v)`. Introduce `v`. Establish `h2` using `congrArg (fun M : Matrix (Fin I.n) (Fin I.n) I.E => M.map (I.φ v)) hU`. Simplify using `only [Matrix.map_mul] at h2`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Use `h2 using 3` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `[Formalism.UG.cT, Matrix.conjTranspose_apply]`. Conclude with `(I.cm.cmUnram.2.1 (I.φ v) _).symm`. Establish `hR : ∀ v, Formalism.REAL.inUJ (I.ε v) ((I.P v)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v)`.
+Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)`. Establish `hdH : IsUnit (I.P v)ᴴ.det` using `by rw [Matrix.det_conjTranspose]; exact hd.star`. Unfold `Formalism.REAL.inUJ`. Rewrite using `[← I.P_spec v]`.
+Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules.
 
-Simplify using `only [Matrix.conjTranspose_mul, Matrix.conjTranspose_nonsing_inv, Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc ((I.P v)ᴴ)⁻¹ (I.P v)ᴴ, Matrix.nonsing_inv_mul _ hdH, Matrix.one_mul, ← Matrix.mul_assoc (I.P v) (I.P v)⁻¹, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul]`. Use `congr 1`. Rewrite using `[← Matrix.mul_assoc, ← Matrix.mul_assoc, hG v]`. Establish `hC : ∀ v (X Y : Matrix (Fin I.n) (Fin I.n) ℂ), ((I.P v)⁻¹ * X * I.P v) * ((I.P v)⁻¹ * Y * I.P v) = (I.P v)⁻¹ * (X * Y) * I.P v`.
+Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v X Y`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)`. Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[← Matrix.mul_assoc (I.P v) (I.P v)⁻¹, Matrix.mul_nonsing_inv _ hd, Matrix.one_mul]`. Establish `hE : ∀ v (X : Matrix (Fin I.n) (Fin I.n) I.E) (Y : Matrix (Fin I.n) (Fin I.n) I.E), X * Y = 1 → ((I.P v)⁻¹ * X.map (I.φ v) * I.P v) * ((I.P v)⁻¹ * Y.map (I.φ v) * I.P v) = 1`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `v X Y hXY`. Establish `hd` using `(Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)`. Rewrite using `[hC, ← Matrix.map_mul, hXY, Matrix.map_one _ (map_zero _) (map_one _), Matrix.mul_one, Matrix.nonsing_inv_mul _ hd]`. Set `ι` to `Formalism.UG.inclE (F := I.F) (E := I.E) (Af I.F)`. Establish `hF : Formalism.UG.cT (Formalism.UG.sigR I.cm.sig (Af I.F)) ((γ : Matrix (Fin I.n) (Fin I.n) I.E).map ι) * I.J.map ι * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map ι = I.J.map ι`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `h2` using `congrArg (fun M : Matrix (Fin I.n) (Fin I.n) I.E => M.map ι) hU`. Simplify using `only [Matrix.map_mul] at h2`. Use `h2 using 3` and compare the differences between its conclusion and the goal. Use extensionality with `i j`. Simplify using `[ι, Formalism.UG.cT, Formalism.UG.sigR, Formalism.UG.inclE]`.
+Simplify using the standard rewrite rules. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 
-Both sides reduce to the same expression. Set `af : GL (Fin I.n) (I.E ⊗[I.F] Af I.F)` to `Units.map (RingHom.mapMatrix ι).toMonoidHom γ`. Establish `haf : af ∈ Formalism.UG.UPts I.cm.sig I.J (Af I.F)`. Unfold `Formalism.UG.UPts`. Conclude with `hF`.
-
-Use `⟨(fun v => ⟨⟨(I.P v)⁻¹ * (γ : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v, (I.P v)⁻¹ * ((γ⁻¹ : GL (Fin I.n) I.E) : Matrix (Fin I.n) (Fin I.n) I.E).map (I.φ v) * I.P v, hE v _ _ (Units.mul_inv γ), hE v _ _ (Units.inv_mul γ)⟩, hR v⟩, ⟨af, haf⟩), fun v => rfl, rfl⟩` and prove the remaining obligations.
+Introduce a local definition for the expression. Establish an intermediate fact. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem exists_isImage (I : AutInst) (γ : GL (Fin I.n) I.E)
     (hγ : γ ∈ Formalism.UG.UJ (starRingEnd I.E) I.J) : ∃ a : I.GA, IsImage I γ a := by
@@ -117,17 +113,15 @@ theorem exists_isImage (I : AutInst) (γ : GL (Fin I.n) I.E)
       hE v _ _ (Units.mul_inv γ), hE v _ _ (Units.inv_mul γ)⟩, hR v⟩, ⟨af, haf⟩), fun v => rfl, rfl⟩
 
 /- English proof (translation)
-Take `⟨hg1, hg2⟩` from `hg`. Use `⟨fun v => ?_, ?_⟩` and prove the remaining obligations. Establish `hPu` using `(Matrix.isUnit_iff_isUnit_det _).mp (I.P_unit v)`. Establish `hDu` using `(Matrix.isUnit_iff_isUnit_det _).mp (D.P_unit v)`. Take `⟨h1, h2⟩` from `hv v (g.1 v)`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hxv : (I.P v * uMat (jv v (g.1 v)) * (I.P v)⁻¹) *ᵥ (fun i => I.φ v (x i)) = fun i => I.φ v (x i)`. Rewrite using `[← Matrix.mulVec_mulVec, ← Matrix.mulVec_mulVec]`. Express the relevant statement in the definitionally equal form `I.P v *ᵥ (uMat (jv v (g.1 v)) *ᵥ infVec I v x) = _`. Rewrite using `[h1, infVec, Matrix.mulVec_mulVec, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mulVec]`. Establish `key : I.P v * uMat (jv v (g.1 v)) * (I.P v)⁻¹ * A.map (I.φ v) * D.P v = A.map (I.φ v) * γ.map (I.φ v) * D.P v`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Combine the equalities or inequalities in the displayed calculation. Simplify using `only [Matrix.mul_assoc]`. Use `_ = I.P v * (((I.P v)⁻¹ * A.map (I.φ v) * D.P v) * ((D.P v)⁻¹ * γ.map (I.φ v) * D.P v)) := congrArg (I.P v * ·) (h2.trans (congrArg (infMat D v A * ·) (hg1 v)))`. Use `_ = A.map (I.φ v) * γ.map (I.φ v) * D.P v := by`. Simplify using `only [Matrix.mul_assoc]`.
+Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← Matrix.mul_assoc (D.P v) (D.P v)⁻¹, Matrix.mul_nonsing_inv _ hDu, Matrix.one_mul, ← Matrix.mul_assoc (I.P v) (I.P v)⁻¹, Matrix.mul_nonsing_inv _ hPu, Matrix.one_mul]`. Establish `hAv : (I.P v * uMat (jv v (g.1 v)) * (I.P v)⁻¹) * A.map (I.φ v) = A.map (I.φ v) * γ.map (I.φ v)`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[Matrix.mul_assoc _ (D.P v), Matrix.mul_nonsing_inv _ hDu, Matrix.mul_one]`. Use `_ = A.map (I.φ v) * γ.map (I.φ v) * D.P v * (D.P v)⁻¹ := by rw [key]`.
+Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition.
 
-Use `_ = A.map (I.φ v) * γ.map (I.φ v) := by`. Rewrite using `[Matrix.mul_assoc _ (D.P v), Matrix.mul_nonsing_inv _ hDu, Matrix.mul_one]`. Establish `hM` using `eq_map_of_resolution (I.φ v) h (I.P v * uMat (jv v (g.1 v)) * (I.P v)⁻¹) γ hxv hAv`. Express the relevant statement in the definitionally equal form `uMat (jv v (g.1 v)) = _`. Rewrite using `[← hM]`.
-
-Simplify using `only [Matrix.mul_assoc]`. Rewrite using `[Matrix.nonsing_inv_mul _ hPu, Matrix.mul_one, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hPu, Matrix.one_mul]`. Express the relevant statement in the definitionally equal form `I.fmat (jf g.2) = _`. Conclude with `eq_map_of_resolution (Formalism.UG.inclE (F := I.F) (Af I.F)) h (I.fmat (jf g.2)) γ (hf g.2).1 ((hf g.2).2.trans (congrArg (afMat I A * ·) hg2))`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. A detailed English derivation is pending.
 -/
 theorem isImage_embA {I : AutInst} (D : Sib I) {x u : Fin I.n → I.E} {A : Matrix (Fin I.n) (Fin D.n) I.E}
     {A' : Matrix (Fin D.n) (Fin I.n) I.E} (h : vecMulVec x u + A * A' = 1)
@@ -175,9 +169,9 @@ theorem isImage_embA {I : AutInst} (D : Sib I) {x u : Fin I.n → I.E} {A : Matr
       ((hf g.2).2.trans (congrArg (afMat I A * ·) hg2))
 
 /- English proof (translation)
-Establish `hnf : ¬ IsField (𝓞 I.F)`. Conclude with `NumberField.RingOfIntegers.not_isField I.F`. Take `⟨p, hp0, hpp⟩` from `Ring.not_isField_iff_exists_prime.mp hnf`. Set `v : IsDedekindDomain.HeightOneSpectrum (𝓞 I.F)` to `⟨p, hpp, hp0⟩`. Establish `: Nontrivial (Af I.F)` using `⟨⟨1, 0, fun h => one_ne_zero (congrArg (fun a : Af I.F => (a.1 v : v.adicCompletion I.F)) h)⟩⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses.
 
-Introduce `a b hab`. Conclude with `Algebra.TensorProduct.includeLeft_injective (R := I.F) (S := I.F) (A := I.E) (B := Af I.F) (RingHom.injective _) hab`.
+A detailed English derivation is pending.
 -/
 theorem inclE_injective (I : AutInst) :
     Function.Injective (Formalism.UG.inclE (F := I.F) (E := I.E) (Af I.F)) := by
@@ -198,21 +192,19 @@ namespace GlobalTheory.StabUnfold
 open GlobalTheory.RatDiscrete RatPts
 
 /- English proof (translation)
-Introduce `I D s x A xf hP jv jf hv hf`. Take `⟨hn, hβ, hxA, hAJ, -, -⟩` from `hP`. Establish `hJ : I.Jᴴ = I.J`. Establish `hh` using `I.J_herm`. Unfold `Formalism.UG.IsHerm at hh`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions.
 
-Use extensionality with `i j`. Establish `hij` using `congrFun (congrFun hh i) j`. Simplify using `only [Formalism.UG.cT, Matrix.transpose_apply, Matrix.map_apply] at hij`. Rewrite using `[Matrix.conjTranspose_apply]`. Conclude with `hij`.
+By extensionality, compare the relevant components. Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hβ0 : star x ⬝ᵥ (I.J *ᵥ x) ≠ 0`. Apply the tactic sequence `rw [hβ]; cases s <;> simp [GlobalTheory.GaussMean.sgn]`. Take `⟨u, A', hA'A, hA'x, huA, hux, hres, hAJx⟩` from `exists_dual_of_anisotropic_orthogonal I.E I.n D.n I.J D.J x A hn hJ D.J_det hβ0 hxA hAJ`. Take `⟨j, hjv, hjr⟩` from `GlobalTheory.T.exists_unitary_orthogonal_embedding_stabilizer I.E (starRingEnd I.E) I.n D.n I.J D.J x u A A' (isUnit_iff_ne_zero.mpr hβ0) hxA hAJx hAJ hA'A hA'x huA hux hres`. Use extensionality with `y`.
+Apply the first step, then apply the next step to every resulting obligation. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨g, ⟨γ, hγ, hg1, hg2⟩, rfl⟩`. Establish `hIm` using `isImage_embA D hres hv hf (γ := (γ : Matrix (Fin D.n) (Fin D.n) I.E)) (g := g) ⟨hg1, hg2⟩`. Establish `hj` using `hjv ⟨γ, hγ⟩`. Use `⟨⟨(j ⟨γ, hγ⟩ : GL (Fin I.n) I.E), (j ⟨γ, hγ⟩).2, ?_⟩, (hf g.2).1⟩` and prove the remaining obligations.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Express the relevant assertion in an equivalent form by its definition.
 
-Express the relevant statement in the definitionally equal form `IsImage I _ _`. Rewrite using `[hj]`. Conclude with `hIm`. Introduce and unpack `⟨⟨δ, hδ, hy1, hy2⟩, hyx⟩`. Establish `h3 : (fun i => Formalism.UG.inclE (F` using `I.F) (Af I.F) (((δ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ x) i)) = fun i => Formalism.UG.inclE (F := I.F) (Af I.F) (x i) := by`.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Rewrite using `[← GlobalTheory.Proof.rational_unipotentRadical_mem_adelic.map_mulVec_incl, ← hy2]`. Conclude with `hyx`. Establish `hδx : (δ : Matrix (Fin I.n) (Fin I.n) I.E) *ᵥ x = x`. Use function extensionality and compare the values at `i`. Conclude with `inclE_injective I (congrFun h3 i)`.
+Apply function extensionality and compare values at an arbitrary argument. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact.
 
-Take `⟨γ₀, hγ₀⟩` from `hjr ⟨δ, hδ⟩ hδx`. Take `⟨g, hg⟩` from `exists_isImage D.inst (γ₀ : GL (Fin D.n) I.E) γ₀.2`. Use `⟨g, ⟨(γ₀ : GL (Fin D.n) I.E), γ₀.2, hg.1, hg.2⟩, ?_⟩` and prove the remaining obligations. Establish `hIm` using `isImage_embA D hres hv hf hg`. Establish `hM : vecMulVec x u + A * ((γ₀ : GL (Fin D.n) I.E) : Matrix (Fin D.n) (Fin D.n) I.E) * A' = (δ : Matrix (Fin I.n) (Fin I.n) I.E)`.
-
-Rewrite using `[← hjv γ₀, hγ₀]`. Rewrite `hIm` using `[hM]`. Conclude with `subsingleton_isImage I _ hIm ⟨hy1, hy2⟩`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem image_rational_eq_stab : ∀ (I : AutInst) (D : Sib I) (s : Bool) (x : Fin I.n → I.E) (A : Matrix (Fin I.n) (Fin D.n) I.E) (xf : I.Gf), IsPerp D s x A xf → ∀ (jv : ∀ v, Formalism.REAL.UJ (D.ε v) →* Formalism.REAL.UJ (I.ε v)) (jf : D.inst.Gf →* I.Gf), IsInfEmb D x A jv → IsFinEmb D x A jf → embA D jv jf '' D.inst.GFset = stabF I x := by
   intro I D s x A xf hP jv jf hv hf

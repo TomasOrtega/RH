@@ -8,9 +8,9 @@ open AlgebraicGeometry CategoryTheory Limits
 namespace GlobalTheory.NormSheafDescent
 
 /- English proof (translation)
-Rewrite using `[IsLocalRing.isField_iff_maximalIdeal_eq]`. Set `p : Spec (Z.presheaf.stalk ζ)` to `(⟨⊥, Ideal.isPrime_bot⟩ : PrimeSpectrum (Z.presheaf.stalk ζ))`. Establish `hp : Z.fromSpecStalk ζ p ∈ Set.range (Z.fromSpecStalk ζ)` using `⟨p, rfl⟩`. Rewrite `hp` using `[Scheme.range_fromSpecStalk]`. Establish `h1 : Z.fromSpecStalk ζ p = Z.fromSpecStalk ζ (IsLocalRing.closedPoint _)` using `(h _ hp).trans Scheme.fromSpecStalk_closedPoint.symm`.
+Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `h2` using `(Z.fromSpecStalk ζ).isEmbedding.injective h1`. Conclude with `(congrArg PrimeSpectrum.asIdeal h2).symm`.
+Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem isField_stalk_of_forall_specializes {Z : Scheme.{0}} (ζ : Z) [IsDomain (Z.presheaf.stalk ζ)]
     (h : ∀ z : Z, z ⤳ ζ → z = ζ) : IsField (Z.presheaf.stalk ζ) := by
@@ -24,7 +24,7 @@ theorem isField_stalk_of_forall_specializes {Z : Scheme.{0}} (ζ : Z) [IsDomain 
   exact (congrArg PrimeSpectrum.asIdeal h2).symm
 
 /- English proof (translation)
-Introduce `Y Z π _ _ hW`. Use `haveI := GlobalTheory.IsNormalScheme.isDomain_stalk (X := Z) (genPt π)`. Use `isField_stalk_of_forall_specializes _ fun z hz => ?_` and prove the remaining obligations. Take `⟨y, rfl⟩ : z ∈ Set.range π` from `hz.mem_open hW ⟨_, rfl⟩`. Conclude with `(hz.antisymm ((genericPoint_specializes y).map π.continuous)).eq`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem isField_stalk_genPt :
     ∀ (Y Z : Scheme.{0}) (π : Y ⟶ Z) [IsIntegral Y] [GlobalTheory.IsNormalScheme Z], IsOpen (Set.range π) →

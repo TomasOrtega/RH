@@ -9,7 +9,7 @@ noncomputable section
 variable {K : Type}
 
 /- English proof (translation)
-Simplify `Filter.tendsto_atTop_add_const_right Filter.atTop (-s) Filter.tendsto_id` using `[sub_eq_add_neg]`.
+Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem tendsto_sub_const_atTop (s : K → ℤ) :
     Filter.Tendsto (fun m : K → ℤ => m - s) Filter.atTop Filter.atTop := by
@@ -17,7 +17,7 @@ theorem tendsto_sub_const_atTop (s : K → ℤ) :
     Filter.tendsto_atTop_add_const_right Filter.atTop (-s) Filter.tendsto_id
 
 /- English proof (translation)
-Establish `h' : ∀ᶠ m in Filter.atTop, F (m - b) = G (m - b)` using `(tendsto_sub_const_atTop b).eventually h`. Use `filter_upwards [h, h'] with m hm hm'`. Simplify using `only [diffStep, hm, hm']`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem diffStep_eventuallyEq (b : K → ℤ) {F G : (K → ℤ) → ℤ} (h : F =ᶠ[Filter.atTop] G) :
     diffStep b F =ᶠ[Filter.atTop] diffStep b G := by
@@ -26,7 +26,7 @@ theorem diffStep_eventuallyEq (b : K → ℤ) {F G : (K → ℤ) → ℤ} (h : F
   simp only [diffStep, hm, hm']
 
 /- English proof (translation)
-Proceed by induction on `l with`. Consider the case `nil => simpa using h`. Consider the case `cons b l ih`. Simplify using `only [List.foldr_cons]`. Conclude with `diffStep_eventuallyEq b ih`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem foldr_diffStep_eventuallyEq (l : List (K → ℤ)) {F G : (K → ℤ) → ℤ}
     (h : F =ᶠ[Filter.atTop] G) :
@@ -38,15 +38,15 @@ theorem foldr_diffStep_eventuallyEq (l : List (K → ℤ)) {F G : (K → ℤ) �
     exact diffStep_eventuallyEq b ih
 
 /- English proof (translation)
-Introduce `K n f g c s`. Use `⟨?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Introduce `hf hg bs filter_upwards [hf bs, hg bs] with m hm hm'`. Rewrite using `[(h1 K n bs f g c s 0).1, Pi.add_apply, hm, hm', add_zero]`. Introduce `hf bs filter_upwards [hf bs] with m hm`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[(h1 K n bs f g c s 0).2.1, Pi.smul_apply, hm, smul_zero]`. Introduce `hf bs`. Establish `h'` using `(tendsto_sub_const_atTop s).eventually (hf bs)`. Use `filter_upwards [h'] with m hm`. Rewrite using `[(h1 K n bs f g c s 0).2.2.1]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `hm`. Introduce `hf bs`. Establish `hz : ∀ᶠ m in Filter.atTop, mixedDiff (fun i : Fin n => bs i.succ) f m = 0` using `hf (fun i => bs i.succ)`. Establish `hz'` using `(tendsto_sub_const_atTop (bs 0)).eventually hz`. Use `filter_upwards [hz, hz'] with m hm hm'`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities.
 
-Establish `e : mixedDiff bs f = diffStep (bs 0) (mixedDiff (fun i : Fin n => bs i.succ) f)`. Unfold `mixedDiff`. Rewrite using `[List.ofFn_succ, List.foldr_cons]`. Rewrite using `[e]`. Simplify using `only [diffStep, hm, hm', sub_zero]`.
+Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Introduce `hfg hf bs`. Establish `e : mixedDiff bs f =ᶠ[Filter.atTop] mixedDiff bs g` using `foldr_diffStep_eventuallyEq (List.ofFn bs) hfg`. Use `filter_upwards [e, hf bs] with m hm hm'`. Rewrite using `[← hm, hm']`.
+A detailed English derivation is pending.
 -/
 theorem DegLTClosure.proof (h1 : MixedDiffLinear.Statement) : DegLTClosure.Statement := by
   intro K n f g c s

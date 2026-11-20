@@ -10,15 +10,15 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.HeightAndVanishing
 open NumberField IsDedekindDomain Formalism.ConjugateSelfDual Formalism.HC ReciprocityTheory.Gal IsLocalRing Polynomial UpperTheory.V.Base UpperTheory.V.Alg UpperTheory.V.HV UpperTheory.V.GradeZeroInterpolatingElement UpperTheory.V.Ws
 
 /- English proof (translation)
-Introduce `O _ _ N _ χ x hx`. Establish `hn : 0 < orderOf χ` using `orderOf_pos χ`. Use `haveI : NeZero (orderOf χ) := ⟨hn.ne'⟩`. Use `haveI : Finite χ.toUnitHom.range := Finite.of_surjective χ.toUnitHom.rangeRestrict χ.toUnitHom.rangeRestrict_surjective`. Establish `hle : χ.toUnitHom.range ≤ rootsOfUnity (orderOf χ) O`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the conclusion using the stated equalities.
 
-Introduce and unpack `_ ⟨b, rfl⟩`. Rewrite using `[mem_rootsOfUnity]`. Use `ext`. Rewrite using `[Units.val_pow_eq_pow_val, MulChar.coe_toUnitHom, ← MulChar.pow_apply' χ hn.ne', pow_orderOf_eq_one, MulChar.one_apply_coe, Units.val_one]`. Establish `hcard : orderOf χ ≤ Nat.card χ.toUnitHom.range`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hpos : 0 < Nat.card χ.toUnitHom.range` using `Nat.card_pos`. Apply `orderOf_le_of_pow_eq_one hpos` to reduce the goal to its premises. Use `MulChar.ext fun a => ?_` and prove the remaining obligations. Rewrite using `[MulChar.pow_apply' χ hpos.ne', MulChar.one_apply_coe]`. Establish `h1` using `pow_card_eq_one' (G := χ.toUnitHom.range) (x := ⟨χ.toUnitHom a, a, rfl⟩)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Establish `h2` using `congrArg (fun u : χ.toUnitHom.range => ((u : Oˣ) : O)) h1`. Simplify using `only [SubmonoidClass.coe_pow, Subgroup.coe_pow, Units.val_pow_eq_pow_val, OneMemClass.coe_one, Units.val_one] at h2`. Rewrite using `[← MulChar.coe_toUnitHom]`. Conclude with `h2`. Establish `heq : χ.toUnitHom.range = rootsOfUnity (orderOf χ) O` using `Subgroup.eq_of_le_of_card_ge hle ((card_rootsOfUnity O (orderOf χ)).trans hcard)`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result.
 
-Establish `hxmem : x ∈ rootsOfUnity (orderOf χ) O` using `(mem_rootsOfUnity _ _).2 hx`. Rewrite `hxmem` using `[← heq]`. Take `⟨b, hb⟩` from `hxmem`. Conclude with `⟨b, hb⟩`.
+Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Ws.large₂.imgRoots :
     ∀ {O : Type} [CommRing O] [IsDomain O] (N : ℕ) [NeZero N] (χ : DirichletCharacter O N) (x : Oˣ), x ^ orderOf χ = 1 → ∃ b : (ZMod N)ˣ, χ.toUnitHom b = x := by

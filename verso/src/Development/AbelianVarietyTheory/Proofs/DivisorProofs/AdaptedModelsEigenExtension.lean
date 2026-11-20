@@ -12,7 +12,7 @@ open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.ThK.IsoDecomp
 
 /- English proof (translation)
-Introduce `hKP F E _ _ _ _ _ σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ n₁ X₁ H j₀ j₁ hH χX χW om r s r' s' hP u hu`. Take `⟨z, β, hz⟩` from `GlobalTheory.T.unipotent_moves_y_by_iota_and_x F E σ B d d₁ W W₁ H' i₀ i₁ r' s' hP.base.cm hP.skew hH' u⁻¹ (inv_mem hu)`. Use `⟨z, β, by rw [hz]; abel, fun Ψ hΨ => ?_⟩` and prove the remaining obligations. Conclude with `GlobalTheory.T.adapted_evaluation_pair_relation hKP F E σ B n d d₁ X W W₁ M M₁ H' i₀ i₁ hH' hM₁ e₀ he₀ χX χW om r s r' s' hP n₁ X₁ H j₀ j₁ hH u hu z β hz Ψ hΨ`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. A detailed English derivation is pending.
 -/
 theorem decomp_ev : GlobalTheory.ThK.KP → ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E)
     (n d d₁ : ℕ) (X : Spc F E n) (W : Spc F E d) (W₁ : Spc F E d₁) (M : Model σ X W) (M₁ : Model σ X W₁) (H' : Plane E d d₁) (i₀ i₁ : ℕ),

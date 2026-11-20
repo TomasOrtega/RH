@@ -50,7 +50,7 @@ def ConjugateLevelLeMaximalCompact : Prop :=
       Set (HA (Af X.B.I.F) X.B.I.cm.sig X.B.I.J))
 
 /- English proof (translation)
-Introduce `D X hb hK hM hL w`. Rewrite using `[h2 X hb hK hM hL w, h4 X hb hK hM hL w]`. Simplify using `only [h1 X hb hK hM hL w, h3 X hb hK hM hL w, Finset.prod_mul_distrib]`. Use `push_cast`. Expand and normalize the polynomial expressions, which then agree.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Move the embeddings inside the algebraic operations. Expand and normalize the polynomial expressions, which then agree.
 -/
 theorem ratioH_of (h1 : HaarIdxLoc) (h2 : HaarIdxGlob) (h3 : LocLevi) (h4 : GlobProd) : RatioH := by
   intro D X hb hK hM hL w

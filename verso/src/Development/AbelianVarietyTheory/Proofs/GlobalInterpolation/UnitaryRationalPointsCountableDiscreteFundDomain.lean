@@ -7,7 +7,7 @@ open NumberField IsDedekindDomain Formalism.MainNotions.GlobalTheoryTheory.Genus
 namespace GlobalTheory.RationalUnitaryDomains
 
 /- English proof (translation)
-Use `⟨hc, hd, fun μ _ => ?_⟩` and prove the remaining obligations. Take `⟨𝓕, hF, h⟩` from `GlobalTheory.FundDomDiscrete.exists_measurable_section Γ`. Conclude with `⟨𝓕, hF, IsFundamentalDomain.mk' hF.nullMeasurableSet h⟩`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem isDiscreteWithDomains_of_discrete {G : Type} [Group G] [TopologicalSpace G]
     [IsTopologicalGroup G] [SecondCountableTopology G] [MeasurableSpace G] [BorelSpace G]
@@ -17,9 +17,9 @@ theorem isDiscreteWithDomains_of_discrete {G : Type} [Group G] [TopologicalSpace
   exact ⟨𝓕, hF, IsFundamentalDomain.mk' hF.nullMeasurableSet h⟩
 
 /- English proof (translation)
-Use `(GlobalTheory.AdelicUnitaryTop.lcsc_adelicUnitary F E σ M J).2.1` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.topGroupHA σ J` as an intermediate fact. Use `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.borelHA σ J` as an intermediate fact. Establish `: Countable (ratPts (AF F) σ J)` using `Formalism.L2.GlobalTheoryTheory.GenusMassVolumes.Unfold.countableGamma σ J`. Establish `: DiscreteTopology (ratPts (AF F) σ J)` using `GlobalTheory.RationalDiscrete.discreteTopology_HFinIn σ J`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Conclude with `isDiscreteWithDomains_of_discrete _`.
+A detailed English derivation is pending.
 -/
 theorem isDiscreteWithDomains_ratPts' (F E : Type) [Field F] [NumberField F] [Field E]
     [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (M : ℕ) (J : Matrix (Fin M) (Fin M) E) :
@@ -32,7 +32,7 @@ theorem isDiscreteWithDomains_ratPts' (F E : Type) [Field F] [NumberField F] [Fi
   exact isDiscreteWithDomains_of_discrete _
 
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ _ M J _` and use `isDiscreteWithDomains_ratPts' F E σ M J`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem isDiscreteWithDomains_ratPts : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E), IsCMExt F E σ → ∀ (M : ℕ) (J : Matrix (Fin M) (Fin M) E), IsHermND σ J → IsDiscreteWithDomains (ratPts (AF F) σ J) :=
   fun F E _ _ _ _ _ σ _ M J _ => isDiscreteWithDomains_ratPts' F E σ M J

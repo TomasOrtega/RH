@@ -6,19 +6,17 @@ open scoped Topology
 namespace GlobalTheory.RootEx
 
 /- English proof (translation)
-Take `⟨s0, -, hcov⟩` from `hcs.elim_nhds_subcover (fun a => {x | x - a ∈ V}) (fun a _ => (hV.preimage (continuous_id.sub continuous_const)).mem_nhds (by simp [V.zero_mem]))`. Use `⟨(s0.image (fun a : X => (QuotientAddGroup.mk a : X ⧸ V))).image Quotient.out, fun t => ?_⟩` and prove the remaining obligations. Establish `hmk : ∀ a : X, t - a ∈ V → (a : X ⧸ V) = (t : X ⧸ V)` using `fun a h => by`. Rewrite using `[QuotientAddGroup.eq]`. Simplify `h` using `[sub_eq_neg_add]`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Establish `huniq : ∀ a ∈ (s0.image (fun a : X => (QuotientAddGroup.mk a : X ⧸ V))).image Quotient.out, ∀ b ∈ (s0.image (fun a : X => (QuotientAddGroup.mk a : X ⧸ V))).image Quotient.out, t - a ∈ V → t - b ∈ V → a = b`. Introduce `a ha b hb hta htb`. Take `⟨qa, -, rfl⟩` from `Finset.mem_image.1 ha`. Take `⟨qb, -, rfl⟩` from `Finset.mem_image.1 hb`. Establish `h1` using `hmk _ hta`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h2` using `hmk _ htb`. Rewrite `h1`, `h2` using `[QuotientAddGroup.out_eq']`. Rewrite using `[h1, h2]`. Distinguish the cases in `h : ∃ a ∈ (s0.image (fun a : X => (QuotientAddGroup.mk a : X ⧸ V))).image Quotient.out, t - a ∈ V`. Take `⟨a, ha, hta⟩` from `h`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result.
 
-Rewrite using `[Finset.sum_eq_single a (fun b hb hba => by`. Rewrite using `[Set.indicator_of_notMem (fun htb => hba (huniq b hb a ha htb hta)), mul_zero])`. Use the proof step `(fun h' => absurd ha h'), Set.indicator_of_mem hta, mul_one]`. Use `hper a (t - a) hta` as an intermediate fact. Rewrite `this` using `[add_sub_cancel]`. Then use the resulting hypothesis.
+Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Rewrite the conclusion using the stated equalities.
 
-Use `push_neg at h`. Rewrite using `[Finset.sum_eq_zero (fun b hb => by rw [Set.indicator_of_notMem (h b hb), mul_zero])]`. Assume the negation of the conclusion as `hne`. Establish `ht : t ∈ tsupport Φ` using `subset_tsupport _ hne`. Take `⟨a0, ha0, hta0⟩` from `Set.mem_iUnion₂.1 (hcov ht)`.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hT : (a0 : X ⧸ V) ∈ s0.image (fun a : X => (QuotientAddGroup.mk a : X ⧸ V))` using `Finset.mem_image_of_mem _ ha0`. Use `h (Quotient.out (a0 : X ⧸ V)) (Finset.mem_image_of_mem _ hT) ?_` and prove the remaining obligations. Establish `h1 : ((Quotient.out (a0 : X ⧸ V) : X) : X ⧸ V) = (t : X ⧸ V)`. Rewrite using `[QuotientAddGroup.out_eq']`. Conclude with `hmk a0 hta0`.
-
-Rewrite `h1` using `[QuotientAddGroup.eq]`. Simplify `h1` using `[sub_eq_neg_add]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the indicated hypotheses using the stated equalities. Simplify to obtain the desired conclusion from the available facts. A detailed English derivation is pending.
 -/
 theorem exists_finset_eq_sum_indicator_of_periodic {X : Type*} [AddCommGroup X] [TopologicalSpace X]
     [IsTopologicalAddGroup X] {Φ : X → ℂ} (hcs : IsCompact (tsupport Φ)) (V : AddSubgroup X)

@@ -15,11 +15,11 @@ section D7
 attribute [local instance] Formalism.BasicNotions.Host.cmStar
 
 /- English proof (translation)
-Introduce `v`. Establish `hmap : XS D F₂.fl = (XS D x.fl).map ((γ.restrictScalars (𝓞 D.host.E) : (VS D).V ≃ₗ[𝓞 D.host.E] (VS D).V) : (VS D).V →ₗ[𝓞 D.host.E] (VS D).V)`. Unfold `XS`. Rewrite using `[Submodule.map_span]`. Use `congr 1`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Use extensionality with `y`. Simplify using `only [Set.mem_setOf_eq, Set.mem_image]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨a, c, hc, rfl⟩`. Conclude with `⟨c • x.fl.e a, ⟨a, c, hc, rfl⟩, by simp [he]⟩`.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 
-Introduce and unpack `⟨_, ⟨a, c, hc, rfl⟩, rfl⟩`. Conclude with `⟨a, c, hc, by simp [he]⟩`. Rewrite using `[hmap, Submodule.mem_map_equiv]`. Both sides reduce to the same expression.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression.
 -/
 theorem tr_XS (D : D7) {T' : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     {x F₂ : LFlag (VS D) D.R.rS T'} (he : ∀ k, F₂.fl.e k = γ (x.fl.e k)) :
@@ -42,7 +42,7 @@ theorem tr_XS (D : D7) {T' : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V}
   rfl
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨fixedConv_tr Λ (gS D) hΛ he hz hiso hx.1, Tr.eq (tr_XLam Λ hΛ he) (tr_XS D he) hx.2⟩`.
+Supply the required witnesses or components.
 -/
 theorem frameOK_tr (D : D7) {T' : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS D).V}
     {x F₂ : LFlag (VS D) D.R.rS T'} (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : Tr γ Λ Λ)
@@ -51,15 +51,15 @@ theorem frameOK_tr (D : D7) {T' : D.host.E} {γ : (VS D).V ≃ₗ[D.host.E] (VS 
   ⟨fixedConv_tr Λ (gS D) hΛ he hz hiso hx.1, Tr.eq (tr_XLam Λ hΛ he) (tr_XS D he) hx.2⟩
 
 /- English proof (translation)
-Introduce `F0 Λ hΛ x F₂ hDC`. Take `⟨hxl, hxa, hxf⟩` from `x.2`. Take `⟨n, hn, m, hm, hfr, hzt⟩` from `hDC`. Take `⟨_, ⟨_, _, hFl, hFc⟩, _⟩` from `hΛ`. Establish `hΛn : Tr n Λ Λ` using `tr_of_gmap hn.1.2`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hΛm : Tr m Λ Λ` using `tr_of_gmap hm.1.2`. Establish `hΛγ : Tr (m.trans n) Λ Λ`. Introduce `v`. Rewrite using `[LinearEquiv.symm_trans_apply, ← hΛm, ← hΛn]`. Establish `hn1 : ∀ a b, (VS D).hT (n a) (n b) = (VS D).hT a b` using `hn.1.1`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Establish `hm1 : ∀ a b, (VS D).hT (m a) (m b) = (VS D).hT a b` using `hm.1.1`. Establish `hiso : ∀ a b, (VS D).hT ((m.trans n) a) ((m.trans n) b) = (VS D).hT a b`. Introduce `a b`. Rewrite using `[LinearEquiv.trans_apply, LinearEquiv.trans_apply, hn1, hm1]`. Establish `he : ∀ k, F₂.fl.e k = (m.trans n) (x.1.fl.e k)`.
+Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Introduce `k`. Use `hfr k.castSucc` as an intermediate fact. Rewrite `this` using `[frame_castSucc, frame_castSucc]`. Then use the resulting hypothesis. Establish `hz : F₂.fl.z = (m.trans n) x.1.fl.z`. Use `hfr (Fin.last _)` as an intermediate fact.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact.
 
-Rewrite `this` using `[frame_last, frame_last]`. Then use the resulting hypothesis. Conclude with `⟨isLift_tr Λ hΛγ hz hzt hxl, admissible_stable_under_frame_change Λ (gS D) (lf D F0) x.1 F₂ hFl.1 hFc hxl.1 hxf.1 hxa n hn m hm hfr, frameOK_tr D Λ hΛγ he hz hiso hxf⟩`.
+Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Supply the required witnesses or components.
 -/
 theorem termStable_holds (D : D7) (u u' : D.what₂.Word) : TermStable D u u' := by
   intro F0 Λ hΛ x F₂ hDC
@@ -88,7 +88,7 @@ theorem termStable_holds (D : D7) (u u' : D.what₂.Word) : TermStable D u u' :=
     frameOK_tr D Λ hΛγ he hz hiso hxf⟩
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨⟨lf D F0, pd_self F0 Λ hΛ⟩, lf D F0, 1, one_mem_NLam Λ _, 1, one_mem_NLam Λ _, fun _ => rfl, rfl⟩`.
+Supply the required witnesses or components.
 -/
 theorem hyp_inhabited (D : D7) (u : D.what₂.Word) (F0 : FlagG (VS D) D.R.rS ((Tu D u : ℕ) : D.host.E))
     (Λ : Submodule (𝓞 D.host.E) (VS D).V) (hΛ : IsRowLat D F0 Λ) :

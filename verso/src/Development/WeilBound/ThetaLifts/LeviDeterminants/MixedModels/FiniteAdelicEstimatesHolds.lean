@@ -21,28 +21,28 @@ def liftW (v : Pl F) (y : (κ → Fv F v) × (κ → Fv F v)) : (κ → AF F) ×
 
 omit [Fintype κ] in
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun _ => map_mul _ _ _) (funext fun _ => map_mul _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem locW_smul (a : AF F) (z : (κ → AF F) × (κ → AF F)) : locW v (a • z) = evFin F v a • locW v z :=
   Prod.ext (funext fun _ => map_mul _ _ _) (funext fun _ => map_mul _ _ _)
 
 omit [Fintype κ] in
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun _ => map_add _ _ _) (funext fun _ => map_add _ _ _)`.
+A detailed English derivation is pending.
 -/
 theorem locW_add (z z' : (κ → AF F) × (κ → AF F)) : locW v (z + z') = locW v z + locW v z' :=
   Prod.ext (funext fun _ => map_add _ _ _) (funext fun _ => map_add _ _ _)
 
 omit [Fintype κ] in
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun _ => evFin_liftV _ _) (funext fun _ => evFin_liftV _ _)`.
+A detailed English derivation is pending.
 -/
 theorem locW_liftW (y : (κ → Fv F v) × (κ → Fv F v)) : locW v (liftW v y) = y :=
   Prod.ext (funext fun _ => evFin_liftV _ _) (funext fun _ => evFin_liftV _ _)
 
 omit [Fintype κ] in
 /- English proof (translation)
-The claim follows from `Prod.ext (funext fun _ => (GlobalTheory.LatVacArith.liftV_one_mul _ _).symm) (funext fun _ => (GlobalTheory.LatVacArith.liftV_one_mul _ _).symm)`.
+A detailed English derivation is pending.
 -/
 theorem liftW_locW (z : (κ → AF F) × (κ → AF F)) : liftW v (locW v z) = liftV v 1 • z :=
   Prod.ext (funext fun _ => (GlobalTheory.LatVacArith.liftV_one_mul _ _).symm) (funext fun _ => (GlobalTheory.LatVacArith.liftV_one_mul _ _).symm)
@@ -63,7 +63,7 @@ def locT (v : Pl F) (T : ((κ → AF F) × (κ → AF F)) →ₗ[AF F] ((κ → 
 
 omit [Fintype κ] in
 /- English proof (translation)
-Express the relevant statement in the definitionally equal form `locW v (T (liftW v (locW v z))) = _`. Rewrite using `[liftW_locW, map_smul, locW_smul, evFin_liftV, one_smul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 -/
 theorem locT_locW (T : ((κ → AF F) × (κ → AF F)) →ₗ[AF F] ((κ → AF F) × (κ → AF F))) (z) : locT v T (locW v z) = locW v (T z) := by
   change locW v (T (liftW v (locW v z))) = _
@@ -87,17 +87,17 @@ def intW (v : Pl F) : Submodule (v.adicCompletionIntegers F) ((κ → Fv F v) ×
   smul_mem' c _ h := ⟨fun i => mul_mem c.2 (h.1 i), fun i => mul_mem c.2 (h.2 i)⟩
 
 /- English proof (translation)
-The claim follows from `(eventually_all.2 fun i => (z.1 i).2.2).and (eventually_all.2 fun i => (z.2 i).2.2)`.
+A detailed English derivation is pending.
 -/
 theorem locW_int (z : (κ → AF F) × (κ → AF F)) : ∀ᶠ v in cofinite, locW v z ∈ intW v :=
   (eventually_all.2 fun i => (z.1 i).2.2).and (eventually_all.2 fun i => (z.2 i).2.2)
 
 /- English proof (translation)
-Use `filter_upwards [eventually_all.2 fun i => locW_int (T (Pi.single i 1, 0)), eventually_all.2 fun i => locW_int (T (0, Pi.single i 1))] with v h1 h2 y hy`. Establish `e : liftW v y = ∑ i, liftV v (y.1 i) • ((Pi.single i 1, 0) : (κ → AF F) × (κ → AF F)) + ∑ i, liftV v (y.2 i) • ((0, Pi.single i 1) : (κ → AF F) × (κ → AF F))`. Apply the tactic sequence `refine Prod.ext (funext fun j => ?_) (funext fun j => ?_) <;>`. Simplify using `[liftW, Prod.fst_sum, Prod.snd_sum, Finset.sum_apply, Pi.single_apply]`. Establish `hs : ∀ (c : κ → Fv F v) (z : κ → (κ → AF F) × (κ → AF F)), (∀ i, c i ∈ v.adicCompletionIntegers F) → (∀ i, locW v (T (z i)) ∈ intW v) → locW v (T (∑ i, liftV v (c i) • z i)) ∈ intW v` using `fun c z hc hz => by`.
+Establish an intermediate fact. Apply the first step, then apply the next step to every resulting obligation. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[map_sum]`. Use `Finset.sum_induction _ (fun t => locW v t ∈ intW v) (fun a b ha hb => locW_add a b ▸ add_mem ha hb) ?_ fun i _ => ?_` and prove the remaining obligations. Establish `z0 : evFin F v 0 ∈ v.adicCompletionIntegers F` using `by rw [map_zero]; exact zero_mem _`. Conclude with `⟨fun _ => z0, fun _ => z0⟩`. Rewrite using `[map_smul, locW_smul, evFin_liftV]`.
+Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Supply the required witnesses or components. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components.
 
-Conclude with `⟨fun j => mul_mem (hc i) ((hz i).1 j), fun j => mul_mem (hc i) ((hz i).2 j)⟩`. Express the relevant statement in the definitionally equal form `locW v (T (liftW v y)) ∈ _`. Rewrite using `[e, map_add, locW_add]`. Conclude with `add_mem (hs _ _ hy.1 h1) (hs _ _ hy.2 h2)`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem locT_int (T : ((κ → AF F) × (κ → AF F)) →ₗ[AF F] ((κ → AF F) × (κ → AF F))) :
     ∀ᶠ v in cofinite, ∀ y ∈ intW v, locT v T y ∈ intW v := by
@@ -121,9 +121,9 @@ theorem locT_int (T : ((κ → AF F) × (κ → AF F)) →ₗ[AF F] ((κ → AF 
   exact add_mem (hs _ _ hy.1 h1) (hs _ _ hy.2 h2)
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : ∀ i, x i ∈ v.adicCompletionIntegers F`. Establish `h : psiV ψ v (x ⬝ᵥ y.2 + ⅟(2 : Fv F v) * (y.1 ⬝ᵥ y.2)) = 1`. Use `(hψ _).2 (show x ⬝ᵥ y.2 + ⅟(2 : Fv F v) * (y.1 ⬝ᵥ y.2) ∈ v.adicCompletionIntegers F from add_mem (sum_mem fun i _ => mul_mem (hx i) (hy.2 i)) (mul_mem (by rwa [invOf_eq_inv]) (sum_mem fun i _ => mul_mem (hy.1 i) (hy.2 i)))) 1 (one_mem _)` as an intermediate fact. Rewrite `this` using `[mul_one]`. Then use the resulting hypothesis.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Rewrite using `[schr, h, one_mul, Set.indicator_of_mem (show x ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx), Set.indicator_of_mem (show x + y.1 ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from fun i => add_mem (hx i) (hy.1 i))]`. Both sides reduce to the same expression. Rewrite using `[schr, Set.indicator_of_notMem (show x ∉ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx), Set.indicator_of_notMem (show x + y.1 ∉ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from fun h => hx fun i => by`. Simplify using `using sub_mem (h i) (hy.1 i)), mul_zero]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 -/
 theorem schr_std {ψ : AddChar (AF F) ℂ} (hψ : PsiUnr ψ v) (h2 : (2 : Fv F v)⁻¹ ∈ v.adicCompletionIntegers F) {y} (hy : y ∈ intW (κ := κ) v) :
     schr (psiV ψ v) y (Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1) =
@@ -144,13 +144,13 @@ theorem schr_std {ψ : AddChar (AF F) ℂ} (hψ : PsiUnr ψ v) (h2 : (2 : Fv F v
         simpa using sub_mem (h i) (hy.1 i)), mul_zero]
 
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Distinguish the cases in `hx : ∀ i, x i ∈ v.adicCompletionIntegers F`. Use `congrFun (h (x, 0) ⟨hx, fun _ => zero_mem _⟩) 0` as an intermediate fact. Rewrite using `[Pi.smul_apply, Set.indicator_of_mem (show x ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx)]`. Simplify `this` using `[schr]`.
+Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts.
 
-Rewrite using `[Pi.smul_apply, Set.indicator_of_notMem (show x ∉ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from hx), smul_zero]`. Take `⟨i, hi⟩` from `not_forall.1 hx`. Choose the witnesses or unpack the hypotheses as in `⟨y, hy, hne⟩ : ∃ y ∈ v.adicCompletionIntegers F, psiLoc ψ v (x i * y) ≠ 1 := by`. Assume the negation of the conclusion as `hc`. Use `push_neg at hc`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hi ((hψ _).1 hc)`. Use `congrFun (h (0, Pi.single i y) ⟨fun _ => zero_mem _, fun j => by` as an intermediate fact. Distinguish the cases in `e : j = i`. Substitute `e` using the available equality. Simplify using `using hy`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify to obtain the desired conclusion from the available facts. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Simplify using `[Pi.single_eq_of_ne e]⟩) x`. Simplify using `only [schr, dotProduct_single, zero_dotProduct, mul_zero, add_zero, Pi.zero_apply, zero_mul] at this`. Conclude with `(mul_left_eq_self₀.1 this).resolve_left hne`.
+A detailed English derivation is pending.
 -/
 theorem eq_std {ψ : AddChar (AF F) ℂ} (hψ : PsiUnr ψ v) {Φ : (κ → Fv F v) → ℂ} (h : ∀ y ∈ intW v, schr (psiV ψ v) y Φ = Φ) :
     Φ = Φ 0 • Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1 := by
@@ -174,21 +174,19 @@ theorem eq_std {ψ : AddChar (AF F) ℂ} (hψ : PsiUnr ψ v) {Φ : (κ → Fv F 
     exact (mul_left_eq_self₀.1 this).resolve_left hne
 
 /- English proof (translation)
-Introduce `F _ _ ψ hψ κ _ S hS`. Establish `hsy : ∀ (v : Pl F) y y', ((locE v S).symm y).1 ⬝ᵥ ((locE v S).symm y').2 - ((locE v S).symm y').1 ⬝ᵥ ((locE v S).symm y).2 = y.1 ⬝ᵥ y'.2 - y'.1 ⬝ᵥ y.2` using `fun v y y' => by`. Use `congrArg (evFin F v) (hS (S.symm (liftW v y)) (S.symm (liftW v y')))` as an intermediate fact. Rewrite `this` using `[S.apply_symm_apply, S.apply_symm_apply]`. Simplify using `only [dotProduct, map_sub, map_sum, map_mul, liftW, evFin_liftV] at this`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Simplify using the standard rewrite rules.
 
-Conclude with `this.symm`. Use `choose ι hb hi using fun v : Pl F => Mod.model ((adjoint_statement.psi F ψ hψ).2 v).1 ((adjoint_statement.psi F ψ hψ).2 v).2 (locE v S).symm (hsy v)`. Set `s : ∀ v : Pl F, (κ → Fv F v) → ℂ` to `fun v => Set.indicator {x | ∀ i, x i ∈ v.adicCompletionIntegers F} 1`. Set `c : Pl F → ℂ` to `fun v => if ι v (s v) 0 = 0 then 1 else (ι v (s v) 0)⁻¹`. Establish `hc : ∀ v, c v ≠ 0` using `fun v => by`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations.
 
-Simplify using `only [c]`. Use `split_ifs with e`. Use `exacts [one_ne_zero, inv_ne_zero e]`. Use `⟨fun v => c v • ι v, fun v => ⟨fun φ hφ => Submodule.smul_mem _ _ ((hb v).1 hφ), fun φ hφ φ' hφ' e => (hb v).2.1 hφ hφ' (smul_right_injective _ (hc v) e), fun Φ hΦ => ?_⟩, fun v w φ hφ => ?_, ?_⟩` and prove the remaining obligations. Take `⟨φ, hφ, e⟩` from `(hb v).2.2 (Submodule.smul_mem _ (c v)⁻¹ hΦ)`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components. Establish an intermediate fact. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities.
 
-Conclude with `⟨φ, hφ, by rw [LinearMap.smul_apply, e, smul_inv_smul₀ (hc v)]⟩`. Establish `e : locW v w = (locE v S).symm (locW v (S w))`. Express the relevant statement in the definitionally equal form `_ = locT v _ _`. Rewrite using `[locT_locW, LinearEquiv.coe_coe, S.symm_apply_apply]`. Rewrite using `[LinearMap.smul_apply, LinearMap.smul_apply, e, hi v _ φ hφ]`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Establish an intermediate fact. Establish an intermediate fact.
 
-Use function extensionality and compare the values at `x`. Simplify using `[schr, mul_left_comm]`. Establish `hd : ∀ᶠ v : Pl F in cofinite, ¬ differentIdeal ℤ (𝓞 F) ≤ v.asIdeal` using `(Ideal.finite_factors differentIdeal_ne_bot).subset fun v hv => Ideal.dvd_iff_le.2 (not_not.1 hv)`. Establish `h2 : ∀ᶠ v : Pl F in cofinite, evFin F v (algebraMap F (AF F) 2⁻¹) ∈ v.adicCompletionIntegers F` using `(algebraMap F (AF F) 2⁻¹).2.2`. Use `filter_upwards [hd, h2, locT_int S.symm.toLinearMap] with v e1 e2 e3`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hu : PsiUnr ψ v` using `psiUnr_of_not_le hψ v e1`. Establish `e2' : (2 : Fv F v)⁻¹ ∈ v.adicCompletionIntegers F`. Rewrite `e2` using `[AlgHom.commutes, map_inv₀, map_ofNat]`. Then use the resulting hypothesis. Establish `h` using `eq_std hu (Φ := ι v (s v)) fun y hy => by`. Rewrite using `[← hi v y _ (std_mem_SB v)]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Express the relevant assertion in an equivalent form by its definition.
 
-Conclude with `congrArg (ι v) (schr_std hu e2' (e3 y hy))`. Establish `h0 : ι v (s v) 0 ≠ 0` using `fun e => by`. Rewrite `h` using `[e, zero_smul]`. Use `congrFun ((hb v).2.1 (std_mem_SB v) (zero_mem (SB _)) (h.trans (map_zero _).symm)) 0` as an intermediate fact. Rewrite `this` using `[Set.indicator_of_mem (show (0 : κ → Fv F v) ∈ {x : κ → Fv F v | ∀ i, x i ∈ v.adicCompletionIntegers F} from fun i => zero_mem _)]`.
-
-Conclude with `one_ne_zero this`. Express the relevant statement in the definitionally equal form `c v • ι v (s v) = _`. Rewrite using `[show c v = (ι v (s v) 0)⁻¹ from if_neg h0, inv_smul_eq_iff₀ h0]`. Conclude with `h`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem finite_adelic_estimates_holds : FinSt := by
   intro F _ _ ψ hψ κ _ S hS

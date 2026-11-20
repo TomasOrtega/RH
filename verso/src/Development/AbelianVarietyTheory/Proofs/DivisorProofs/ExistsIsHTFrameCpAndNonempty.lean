@@ -35,7 +35,7 @@ variable {p : ℕ} [Fact p.Prime] {C : Type} [Field C] [IsAlgClosed C] [CharZero
   [Algebra c.F C] [StarRing (𝓞 E)]
 
 /- English proof (translation)
-Unfold `htLat`. Use `split_ifs`. Conclude with `P.fg_latTQuot _ _`. Conclude with `fg_inf P.integers P.fg_latT _`.
+Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 theorem fg_htLat (P : Point p v O (𝓞 E)) (τ : E →+* ℂ) : (htLat c P τ).FG := by
   classical
@@ -47,11 +47,9 @@ theorem fg_htLat (P : Point p v O (𝓞 E)) (τ : E →+* ℂ) : (htLat c P τ).
 variable [Fact ¬IsUnit (p : O)] [IsAdicComplete (Ideal.span {(p : O)}) O]
 
 /- English proof (translation)
-Use `letI := io.toAlgebra`. Take `⟨P, ψ, hP⟩` from `GlobalTheory.CompHt.exists_pointOver E H Dw l Xo c p C v O hs hv T io y₀ hy k.toRingHom kO hk`. Take `⟨z, hz⟩` from `GlobalTheory.Frames.FramedBaseChange.exists_frMap GlobalTheory.allSixLaws.1.secBaseChange E H Dw l Xo c _ C k y₀.1`. Take `⟨x, hx⟩` from `GlobalTheory.CompHt.TieFrame.exists_lieTie_of_frMap E H Dw l Xo c p C v O T io y₀ k kO P ψ z hP hz`. Establish `hli : ∀ τ, LinearIndependent C fun j => P.bLie (x τ j)` using `fun τ => (GlobalTheory.CompHt.alC_surjective_and_linearIndependent_bLie p C v O (𝓞 E) P (GlobalTheory.T.hodgeTate_inclusion_raynaudExtension_algebraicPoint E H Dw l Xo c p C v O T io y₀ hy k.toRingHom kO P ψ hP)).2 _ (x τ) (GlobalTheory.CompHt.linearIndependent_evLie_of_lieTie E …`.
+Equip the data with the indicated structure. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hmem : ∀ τ j, P.bLie (x τ j) ∈ htLat c P τ` using `fun τ j => wRec_le_htLat P τ ⟨⟨x τ j, (hx τ j).isEig hP (z.eig τ j)⟩, rfl⟩`. Use `choose g hg0 hg1 hg2 using fun τ => GlobalTheory.CompHt.FlagBasis.exists_adapted_basis O C P.V v hv (Dw.mult τ) (htLat c P τ) (fg_htLat P τ) (fun j => P.bLie (x τ j)) (hli τ) fun j => ⟨1, one_ne_zero, by rw [one_smul]; exact hmem τ j⟩`. Take `⟨y, hy', -⟩` from `existsUnique_frChg E H Dw l Xo c C z g 1 fun τ => by`. Rewrite using `[Matrix.det_of_lowerTriangular _ fun i j hij => hg0 τ i j hij]`. Conclude with `(Finset.prod_ne_zero_iff.2 fun i _ => hg1 τ i).isUnit`.
-
-Conclude with `⟨y, (GlobalTheory.Exist.frame_laws_of_moduli E H Dw l Xo c).1.2.2.2.2.1 C y, kO, P, ψ, z, hP, hz, g, _, x, hy', hg0, by simp, hx, hg2⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem exists_isHTFrame (hs : ∀ a : 𝓞 E, star a = H.bar a) (hv : v.Integers O) {T : CDVR} {io : c.F →+* T.Fr}
     (y₀ : IntFr Xo c T io) (hy : y₀.IsAlg) (k : letI := io.toAlgebra; T.Fr →ₐ[c.F] C) (kO : T.V →+* O)
@@ -80,9 +78,9 @@ end General
 attribute [local instance] algPadicInt algPadicField towerPadic factPadic PadicComplexHost.isAdicComplete
 
 /- English proof (translation)
-Take `⟨p, hp, k, kO, hk⟩` from `GlobalTheory.CompleteDvrEmbedding.exists_embedding_padicComplexInt T hy`. Use `letI := io.toAlgebra`. Use `letI : Algebra c.F ℂ_[p] := (k.comp io).toAlgebra`. Use `letI := H.starRing`. Take `⟨y, h⟩` from `exists_isHTFrame (p := p) (v := (Valued.v : Valuation ℂ_[p] ℝ≥0)) (O := 𝓞_ℂ_[p]) (fun _ => rfl) (PadicComplexInt.integers p) y₀ hy { k with commutes' := fun _ => rfl } kO hk`.
+Extract witnesses or component facts from the available result. Equip the data with the indicated structure. Equip the data with the indicated structure. Equip the data with the indicated structure. Extract witnesses or component facts from the available result.
 
-Conclude with `⟨p, hp, _, _, y, h⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_isHTFrameCp {T : CDVR} {io : c.F →+* T.Fr} (y₀ : IntFr Xo c T io) (hy : y₀.IsAlg) :
     ∃ (p : ℕ) (_ : Fact p.Prime) (_ : Algebra c.F ℂ_[p]) (k : letI := io.toAlgebra; T.Fr →ₐ[c.F] ℂ_[p])
@@ -96,11 +94,11 @@ theorem exists_isHTFrameCp {T : CDVR} {io : c.F →+* T.Fr} (y₀ : IntFr Xo c T
   exact ⟨p, hp, _, _, y, h⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ H Dw l Xo c`. Use `⟨fun T io y₀ hy => exists_isHTFrameCp y₀ hy, fun hpq hg B la => ?_⟩` and prove the remaining obligations. Take `⟨Z⟩` from `(GlobalTheory.Reg.evLaws_genFr_nonempty_comp E H Dw l Xo c).2.2.2 hpq`. Establish `hv : (valSet Xo c (algCls Xo c) la).Nonempty` using `(GlobalTheory.FlatLine.valOn_nonempty (((GlobalTheory.Exist.frame_laws_of_moduli E H Dw l Xo c).2 hpq).2.2 hg).1 Z la).mono (GlobalTheory.FlatLine.valOn_subset Z la)`. Establish `hh : ((htVals Xo c).1 la).Nonempty`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Take `⟨_, ⟨_, T, io, e, ho, y₀, hy, -⟩, -⟩` from `hv`. Take `⟨p, hp, inst, k, y, h⟩` from `exists_isHTFrameCp y₀ hy`. Conclude with `⟨_, p, hp, inst, T, io, e, y₀, k, y, ho, hy, h, rfl⟩`. Use `⟨hh, ?_⟩` and prove the remaining obligations. Simplify using `only [mixVals, ValFam.patch]`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `split_ifs`. Use `exacts [hh, hv]`.
+A detailed English derivation is pending.
 -/
 theorem exists_isHTFrameCp_and_nonempty : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : ReciprocityTheory.ChartRestriction.G.Geo.Tor.Host E) (Dw : Datum H) (l : Level H) (Xo : Moduli Dw l) (c : Coeff l), (∀ (T : CDVR) (io : c.F →+* T.Fr) (y₀ : IntFr Xo c T io), y₀.IsAlg → ∃ (p : ℕ) (_ : Fact p.Prime) (_ : Algebra c.F ℂ_[p]) (k : letI := io.toAlgebra; T.Fr →ₐ[c.F] ℂ_[p]) (y : FrPt Xo c ℂ_[p]), IsHTFrameCp p y₀ k y) ∧ (1 ≤ Dw.p + Dw.q → (∀ q : ℕ, q.Prime → l.GoodAt q) → ∀ (B : ℝ) (la : HeightOneSpectrum (𝓞 c.F)), ((htVals Xo c).1 la).Nonempty ∧ ((mixVals Xo c B).1 la).Nonempty) := by
   intro E _ _ _ H Dw l Xo c

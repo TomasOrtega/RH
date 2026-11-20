@@ -12,16 +12,16 @@ variable {G : Type} [Group G] [TopologicalSpace G] [IsTopologicalGroup G] [Local
 
 omit [LocallyCompactSpace G] [T2Space G] [SecondCountableTopology G] in
 /- English proof (translation)
-The claim follows from `Continuous.integrable_of_hasCompactSupport (by fun_prop) (ha'.mul_right)`.
+A detailed English derivation is pending.
 -/
 private theorem cvb_int {a b : G → ℂ} (ha : Continuous a) (ha' : HasCompactSupport a) (hb : Continuous b) (x : G) :
     Integrable (fun y => a y * b (y⁻¹ * x)) μ :=
   Continuous.integrable_of_hasCompactSupport (by fun_prop) (ha'.mul_right)
 
 /- English proof (translation)
-Establish `h : cv μ a b = fun x => ∫ y in tsupport a, a y * b (y⁻¹ * x) ∂μ`. Use function extensionality and compare the values at `x`. Use `(setIntegral_eq_integral_of_forall_compl_eq_zero fun y hy => ?_).symm` and prove the remaining obligations. Rewrite using `[image_eq_zero_of_notMem_tsupport hy, zero_mul]`. Rewrite using `[h]`.
+Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `continuous_parametric_integral_of_continuous (f := fun x y => a y * b (y⁻¹ * x)) ?_ ha'` and prove the remaining obligations. Unfold `Function.uncurry`. Use `fun_prop`.
+Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. A detailed English derivation is pending.
 -/
 private theorem cvb_cont {a b : G → ℂ} (ha : Continuous a) (ha' : HasCompactSupport a) (hb : Continuous b) :
     Continuous (cv μ a b) := by
@@ -37,9 +37,9 @@ private theorem cvb_cont {a b : G → ℂ} (ha : Continuous a) (ha' : HasCompact
 omit [TopologicalSpace G] [IsTopologicalGroup G] [LocallyCompactSpace G] [T2Space G]
     [SecondCountableTopology G] [BorelSpace G] [μ.IsHaarMeasure] in
 /- English proof (translation)
-Assume the negation of the conclusion as `h`. Apply `hx` to reduce the goal to its premises. Establish `: (fun y => a y * b (y⁻¹ * x)) = fun _ => 0`. Use function extensionality and compare the values at `y`. Assume the negation of the conclusion as `h'`.
+Assume the negation of the conclusion and derive a contradiction. Reduce the claim to the hypotheses of an applicable result. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument. Assume the negation of the conclusion and derive a contradiction.
 
-Conclude with `h ⟨y, y⁻¹ * x, left_ne_zero_of_mul h', right_ne_zero_of_mul h', by simp⟩`. Simplify using `only [cv, this, integral_zero]`.
+Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 private theorem cvb_supp {a b : G → ℂ} (x : G) (hx : cv μ a b x ≠ 0) :
     ∃ y z, a y ≠ 0 ∧ b z ≠ 0 ∧ x = y * z := by
@@ -54,7 +54,7 @@ private theorem cvb_supp {a b : G → ℂ} (x : G) (hx : cv μ a b x ≠ 0) :
 open scoped Pointwise in
 omit [LocallyCompactSpace G] [SecondCountableTopology G] [BorelSpace G] [μ.IsHaarMeasure] in
 /- English proof (translation)
-Use `HasCompactSupport.intro (K := tsupport a * tsupport b) (IsCompact.mul ha' hb') fun x hx => ?_` and prove the remaining obligations. Assume the negation of the conclusion as `h`. Take `⟨y, z, hy, hz, rfl⟩` from `cvb_supp μ x h`. Conclude with `hx (Set.mul_mem_mul (subset_tsupport _ hy) (subset_tsupport _ hz))`.
+Reduce the conclusion to the remaining proof obligations. Assume the negation of the conclusion and derive a contradiction. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem cvb_cs {a b : G → ℂ} (ha' : HasCompactSupport a) (hb' : HasCompactSupport b) :
     HasCompactSupport (cv μ a b) := by
@@ -65,15 +65,15 @@ private theorem cvb_cs {a b : G → ℂ} (ha' : HasCompactSupport a) (hb' : HasC
 
 open scoped Pointwise in
 /- English proof (translation)
-Use function extensionality and compare the values at `x`. Establish `hint : Integrable (Function.uncurry fun y z : G => a z * b (z⁻¹ * y) * c (y⁻¹ * x)) (μ.prod μ)`. Use `Continuous.integrable_of_hasCompactSupport ?_ ?_` and prove the remaining obligations. Unfold `Function.uncurry fun_prop`. Use `HasCompactSupport.intro (K := (tsupport a * tsupport b) ×ˢ tsupport a) ((IsCompact.mul ha' hb').prod ha') fun p hp => ?_` and prove the remaining obligations.
+Apply function extensionality and compare values at an arbitrary argument. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Replace the relevant objects with their definitions. Reduce the conclusion to the remaining proof obligations.
 
-Assume the negation of the conclusion as `h`. Establish `h1` using `left_ne_zero_of_mul h`. Establish `h2 : a p.2 ≠ 0` using `left_ne_zero_of_mul h1`. Establish `h3 : b (p.2⁻¹ * p.1) ≠ 0` using `right_ne_zero_of_mul h1`. Use `hp ⟨?_, subset_tsupport _ h2⟩` and prove the remaining obligations.
+Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `Set.mul_mem_mul (subset_tsupport _ h2) (subset_tsupport _ h3)` as an intermediate fact. Simplify using `using this`. Combine the equalities or inequalities in the displayed calculation. Simplify using `only [cv, integral_mul_const]`. Use `_ = ∫ z, ∫ y, a z * b (z⁻¹ * y) * c (y⁻¹ * x) ∂μ ∂μ := integral_integral_swap hint`.
+Establish an intermediate fact. Simplify to obtain the desired conclusion from the available facts. Chain the equalities or inequalities of the calculation. Simplify using the standard rewrite rules. Simplify using the standard rewrite rules.
 
-Use `_ = cv μ a (cv μ b c) x := by`. Simplify using `only [cv]`. Use `integral_congr_ae (Filter.Eventually.of_forall fun z => ?_)` and prove the remaining obligations. Simplify using `only`. Rewrite using `[← integral_const_mul, ← integral_mul_left_eq_self _ z]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules.
 
-Use `integral_congr_ae (Filter.Eventually.of_forall fun y => ?_)` and prove the remaining obligations. Simplify using `[mul_assoc]`.
+A detailed English derivation is pending.
 -/
 private theorem cvb_assoc {a b c : G → ℂ} (ha : Continuous a) (ha' : HasCompactSupport a) (hb : Continuous b)
     (hb' : HasCompactSupport b) (hc : Continuous c) : cv μ (cv μ a b) c = cv μ a (cv μ b c) := by
@@ -108,11 +108,11 @@ end UpperTheory.ConvolutionTheory.L1
 
 open UpperTheory.ConvolutionTheory.L1 in
 /- English proof (translation)
-Introduce `G _ _ _ _ _ _ _ _ μ _ a b c ha ha' hb hb' hc hc'`. Use `⟨cvb_cont μ ha ha' hb, cvb_cs μ ha' hb', cvb_supp μ, cvb_assoc μ ha ha' hb hb' hc, ?_, ?_, fun t => ⟨?_, ?_⟩⟩` and prove the remaining obligations. Use function extensionality and compare the values at `x`. Simplify using `only [cv, Pi.add_apply, add_mul]`. Conclude with `integral_add (cvb_int μ ha ha' hc x) (cvb_int μ hb hb' hc x)`.
+Fix the arbitrary inputs or assume the hypotheses. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [cv, Pi.add_apply, mul_add]`. Conclude with `integral_add (cvb_int μ ha ha' hb x) (cvb_int μ ha ha' hc x)`. Use function extensionality and compare the values at `x`. Simplify using `only [cv, Pi.smul_apply, smul_eq_mul, mul_assoc, integral_const_mul]`.
+Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules. Apply function extensionality and compare values at an arbitrary argument. Simplify using the standard rewrite rules.
 
-Use function extensionality and compare the values at `x`. Simplify using `only [cv, Pi.smul_apply, smul_eq_mul, mul_left_comm _ t, integral_const_mul]`.
+A detailed English derivation is pending.
 -/
 theorem UpperTheory.ConvolutionTheory.L1.cvBasic :
     UpperTheory.ConvolutionTheory.L1.CvBasic := by

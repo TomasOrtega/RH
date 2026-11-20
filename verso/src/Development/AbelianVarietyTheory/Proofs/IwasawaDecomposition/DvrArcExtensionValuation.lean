@@ -18,13 +18,13 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E}
   {T : CDVR} {t : SAB H (Sp T.V)}
 
 /- English proof (translation)
-Establish `h0 : algebraMap (FractionRing T.V) F (algebraMap T.V _ ϖ) ≠ 0` using `(map_ne_zero _).2 ((map_ne_zero_iff _ (IsFractionRing.injective T.V (FractionRing T.V))).2 hϖ.ne_zero)`. Establish `hq : beF P hϖ y y / 2 = qv P hϖ y` using `by rw [beF_self]; omega`. Set `u : Fˣ` to `Units.mk0 _ h0 ^ (beF P hϖ y y / 2)`. Establish `hu : ((u : Fˣ) : F) = (algebraMap (FractionRing T.V) F (algebraMap T.V _ ϖ)) ^ (beF P hϖ y y / 2)`. Simplify using `only [u, Units.val_zpow_eq_zpow_val, Units.val_mk0]`.
+Establish an intermediate fact. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Simplify using the standard rewrite rules.
 
-Rewrite using `[← hu]`. Use `ArcOfPoint.genRel_id_of_val P.D.toPre.P.isLB (pullGen_isGen _ _ _ _ (P.D.toPre.psi_gen y) _) fun z J hJ => ?_` and prove the remaining obligations. Establish `ht : Units.map (algebraMap (FractionRing T.V) F).toMonoidHom (tF P hϖ y (H.w0 • y)) = u⁻¹`. Apply `Units.ext` to reduce the goal to its premises. Simplify using `only [u, tF, beF_w0, hq, Units.coe_map, map_zpow, Units.val_inv_eq_inv_val, Units.val_zpow_eq_zpow_val, Units.val_mk0, zpow_neg]`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result. Simplify using the standard rewrite rules.
 
-Use `show (algebraMap (FractionRing T.V) F) ((((piK hϖ : (FractionRing T.V)ˣ) : FractionRing T.V) ^ qv P hϖ y)⁻¹) = _`. Rewrite using `[map_inv₀, map_zpow₀]`. Both sides reduce to the same expression. Use `letI := H.starRing`. Rewrite using `[val_pull hJ, val_pull hJ, Category.id_comp]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use `erw [val_psi_twist H.w0 (tF P hϖ) y (jFK (R := T.V) F) hJ]`. Rewrite using `[show jFK (R := T.V) F = 𝟙 _ ≫ spMap (algebraMap (FractionRing T.V) F) from (Category.id_comp _).symm, unitAt_spMap, ht, map_inv, ← _root_.mul_assoc, mul_inv_cancel, _root_.one_mul]`.
+A detailed English derivation is pending.
 -/
 theorem genRel_psi_D0 (P : PELUnif (maximalIdeal T.V) t) {ϖ : T.V} (hϖ : Irreducible ϖ) (F : Type) [Field F]
     [Algebra (FractionRing T.V) F] (y : P.D.toPre.X) :
@@ -55,15 +55,13 @@ theorem genRel_psi_D0 (P : PELUnif (maximalIdeal T.V) t) {ϖ : T.V} (hϖ : Irred
 attribute [local instance] GlobalTheory.TorusExt.gtGroup in
 
 /- English proof (translation)
-Use `letI := H.starRing`. Establish `hr` using `isRootForm_rF P hϖ hk`. Establish `h1` using `qkRel_qkScale (D := P.D.toPre) (ψ := (D0 P hϖ).psi) (hψ := (D0 P hϖ).psi_gen) (cmIdempotent_add_star_eq_one (H := H)) (isScalarForm_tF P hϖ) (psiRel0 P hϖ) hr r`. Establish `h2 : QkRel (D` using `D0 P hϖ) (ψ := P.D.toPre.psi) (hψ := P.D.toPre.psi_gen) (fun y x => (rF P hϖ k y x)⁻¹) (qkScale (cmIdempotent_add_star_eq_one (H := H)) (isScalarForm_tF P hϖ) (psiRel0 P hϖ) hr (D0 P hϖ).psi_gen r) r := h1.symm`. Establish `h0 : algebraMap (FractionRing T.V) F (algebraMap T.V _ ϖ) ≠ 0` using `(map_ne_zero _).2 ((map_ne_zero_iff _ (IsFractionRing.injective T.V (FractionRing T.V))).2 hϖ.ne_zero)`.
+Equip the data with the indicated structure. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hval : ∀ χ (y : Sp F) J, Good P.D.toPre.P.L y J → val (q.g.s χ) (𝟙 (Sp F)) y J = unitAt (𝟙 (Sp F)) y (Units.mk0 _ h0 ^ (beF P hϖ q₀.y χ / k)) * val (q₀.g.s χ) (𝟙 (Sp F)) y J`. Introduce `χ y J hJ`. Establish `g` using `hgen χ`. Rewrite `g` using `[show (algebraMap (FractionRing T.V) F (algebraMap T.V (FractionRing T.V) ϖ)) ^ (beF P hϖ q₀.y χ / k) = ((Units.mk0 _ h0 ^ (beF P hϖ q₀.y χ / k) : Fˣ) : F) by simp only [Units.val_zpow_eq_zpow_val, Units.val_mk0]]`. Conclude with `ArcOfPoint.val_of_genRel_id P.D.toPre.P.isLB (q.g.isGen χ) g y hJ`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Establish `hb : q.g.b = q₀.g.b`. Take `⟨h₁, -⟩` from `(ArcOfPoint.genRel_id_iff P.D.toPre.P.isLB (q.g.isGen 0) (q₀.g.s 0) (Units.mk0 _ h0 ^ (beF P hϖ q₀.y 0 / k)) (IsLocalRing.closedPoint F)).1 (by`. Establish `g` using `hgen 0`. Rewrite using `[show (algebraMap (FractionRing T.V) F (algebraMap T.V (FractionRing T.V) ϖ)) ^ (beF P hϖ q₀.y 0 / k) = ((Units.mk0 _ h0 ^ (beF P hϖ q₀.y 0 / k) : Fˣ) : F) by simp only [Units.val_zpow_eq_zpow_val, Units.val_mk0]] at g)` and apply the resulting hypothesis. Conclude with `Over.OverMorphism.ext (h₁ 2)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Establish `h3 : QkRel (D` using `D0 P hϖ) (ψ := P.D.toPre.psi) (hψ := P.D.toPre.psi_gen) (fun y x => Units.map (algebraMap (FractionRing T.V) F).toMonoidHom ((rF P hϖ k y x)⁻¹)) q₀ q := by`. Use `⟨hqy, gtRel_of_val hb fun χ y J hJ => ?_⟩` and prove the remaining obligations. Establish `e : Units.map (algebraMap (FractionRing T.V) F).toMonoidHom ((rF P hϖ k q₀.y χ)⁻¹) = Units.mk0 _ h0 ^ (beF P hϖ q₀.y χ / k)`. Rewrite using `[rF, ← zpow_neg, neg_neg, map_zpow]`. Use `congr 1`.
-
-Conclude with `Units.ext rfl`. Use `beta_reduce`. Rewrite using `[e]`. Conclude with `hval χ y J hJ`. Conclude with `QkRel.qkExt (D := D0 P hϖ) (ψ := P.D.toPre.psi) (hψ := P.D.toPre.psi_gen) (f := algebraMap (FractionRing T.V) F) (r := fun y x => (rF P hϖ k y x)⁻¹) (r' := fun y x => Units.map (algebraMap (FractionRing T.V) F).toMonoidHom ((rF P hϖ k y x)⁻¹)) (fun y x => rfl) h2 h3 hext`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem qkExt_of_genRel (P : PELUnif (maximalIdeal T.V) t) {ϖ : T.V} (hϖ : Irreducible ϖ) {k : ℕ}
     (hk : ∀ a a', (k : ℤ) ∣ beF P hϖ a a') (F : Type) [Field F] [Algebra (FractionRing T.V) F]
@@ -114,17 +112,15 @@ theorem qkExt_of_genRel (P : PELUnif (maximalIdeal T.V) t) {ϖ : T.V} (hϖ : Irr
     h2 h3 hext
 
 /- English proof (translation)
-Introduce `E _ _ _ H D l Xo c O _ β Y T io b y z hb hy hz hzj t m P hX ϖ hϖ hdiv hL hLie hTate`. Rewrite using `[← hϖ.maximalIdeal_eq]`. Establish `hs : spMap (RingHom.id T.V) = 𝟙 _` using `Spec.map_id _`. Establish `he : eSec P.D.toPre.P.A ≫ 𝟙 _ = spMap (RingHom.id T.V) ≫ eSec P.D.toPre.P.A`. Rewrite using `[hs, Category.comp_id, Category.id_comp]`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `⟨t, m, P, 𝟙 _, he, isoPullId (idIso P.D.toPre.P.L) rfl, LinearEquiv.refl _ _, ?_, ?_, ?_, ?_, ?_, ?_⟩` and prove the remaining obligations. Rewrite using `[hs]`. Establish `: IsMonHom (Iso.refl P.D.toPre.P.A).hom` using `inferInstanceAs (IsMonHom (𝟙 P.D.toPre.P.A))`. Conclude with `@isGrpPullback_of_iso _ _ _ _ _ (Iso.refl _) this`. Conclude with `(isGen_iff _).2 (isoPullId_pgen (idIso_isGen P.D.toPre.P.isLB) rfl)`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses.
 
-Conclude with `isoPullId_maps (L' := ⟨P.D.toPre.P.L, P.D.toPre.rig, P.D.toPre.P.isLB, P.D.toPre.rig_gen⟩) (L := ⟨P.D.toPre.P.L, P.D.toPre.rig, P.D.toPre.P.isLB, P.D.toPre.rig_gen⟩) (idIso_maps _) rfl hs he`. Introduce `x`. Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Introduce `x`. Rewrite using `[hs]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Substitute using the available equality.
 
-Conclude with `(Category.comp_id _).trans (Category.id_comp _).symm`. Introduce `F _ _ i₁ i₂ uF hF huF`. Establish `hi : i₁ = i₂`. Establish `h : (@algebraMap (FractionRing T.V) F _ _ i₁) = (@algebraMap (FractionRing T.V) F _ _ i₂)` using `IsLocalization.ringHom_ext (nonZeroDivisors T.V) (RingHom.ext fun x => (hF x).symm)`. Conclude with `Algebra.algebra_ext _ _ fun r => congrArg (· r) h`.
+Reduce the conclusion to the remaining proof obligations. Separate the alternatives or extract the components of the hypothesis. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Substitute `hi huF` using the available equality. Use `⟨fun y => genRel_psi_D0 P hϖ F y, fun yF hyF k p₀ σ hσ q₀ q x hext hqy hgen hx => ?_⟩` and prove the remaining obligations. Break down `hσ with ⟨rfl, v, hp, rfl⟩ | ⟨rfl, v, hv, hp, rfl⟩` into its components or cases. Take `rfl` from `eq_of_heq hp`. Conclude with `(hL.1 v).choose_spec F yF hyF q x (qkExt_of_genRel P hϖ (dvd_of_dvd P hϖ (Nat.dvd_lcm_right l.M l.A) hdiv) F _ q₀ q hext hqy hgen) hx`.
-
-Take `rfl` from `eq_of_heq hp`. Establish `hext' : QkExt (algebraMap (FractionRing T.V) F) (eta0 P hϖ Y y m hdiv hL v) q₀` using `hext`. Rewrite `hext'` using `[eta0, dif_pos hv]`. Conclude with `(hL.2 v hv).choose_spec F yF hyF q x (qkExt_of_genRel P hϖ (dvd_of_dvd P hϖ (Nat.dvd_lcm_left l.M l.A) hdiv) F _ q₀ q hext' hqy hgen) hx`.
+Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem hasArcData_arc : ∀ (E : Type) [Field E] [NumberField E] [IsCMField E] (H : Host E) (D : Datum H) (l : Level H) (Xo : Moduli D l) (c : Coeff l) (O : Type) [CommRing O] (β : O →+* c.F) (Y : Model Xo c β) (T : CDVR) (io : c.F →+* T.Fr) (b : O →+* T.V) (y : Sp T.V ⟶ Y.X) (z : Sp T.Fr ⟶ Xo.XF c), (algebraMap T.V T.Fr).comp b = io.comp β → y ≫ Y.s = spMap b → z ≫ pullback.snd _ _ = spMap io → z ≫ Y.j = spMap (algebraMap T.V T.Fr) ≫ y → ∀ (t : SAB H (Sp T.V)) (m : SABMap t Y.t y) (P : PELUnif (maximalIdeal T.V) t) (hX : Nontrivial P.D.toPre.X) (ϖ : T.V) (hϖ : Irreducible ϖ) (hdiv : ∀ a a', (2 * l.M' : ℤ) ∣ GlobalTheory.ArcBuild.beF P hϖ a a') (hL : GlobalTheory.ArcExt.LevelReps Y y t m P) (hLie : GlobalTheory.ArcBuild.LieCl P D β b) (hTate : GlobalTheory.ArcBuild.TateCl P hϖ Y b y m hdiv hL), Y.HasArcData (GlobalTheory.ArcBuild.arc P hϖ Y b y m hX hdiv hL hLie hTate) (Ideal.span {ϖ}) (RingHom.id T.V) ϖ y := by
   intro E _ _ _ H D l Xo c O _ β Y T io b y z hb hy hz hzj t m P hX ϖ hϖ hdiv hL hLie hTate

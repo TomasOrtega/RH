@@ -8,18 +8,18 @@ noncomputable section
 namespace GlobalTheory.FockBlockDeg
 
 /- English proof (translation)
-Apply the tactic sequence `rcases c with c | c <;> rcases e with e | e <;>`. Simplify using `[Jm, Formalism.UG.Jpq]`.
+Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together.
 -/
 theorem Jm_apply_of_ne {r s : ℕ} {c e : Ix r s} (h : c ≠ e) : Jm r s c e = 0 := by
   rcases c with c | c <;> rcases e with e | e <;>
     simp_all [Jm, Formalism.UG.Jpq]
 
 /- English proof (translation)
-Introduce `p q r s E hE d P hP`. Rewrite `hP`, the goal using `[← mem_restrictTotalDegree]`. Use `GlobalTheory.FockPolGK.omAct_mem d _ ?_ P hP` and prove the remaining obligations. Introduce and unpack `⟨a, c⟩ ⟨b, e⟩ h`. Express the relevant statement in the definitionally equal form `E a b * Jm r s c e = 0`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Assume the hypotheses and unpack their components. Express the relevant assertion in an equivalent form by its definition.
 
-Distinguish the cases in `hc : c = e`. Substitute `hc` using the available equality. Rewrite using `[hE a b, zero_mul]`. Apply the tactic sequence `rcases a with a | a <;> rcases b with b | b <;> rcases c with c | c <;>`. Simplify using `[linePos, sameBlock]`.
+Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation. Simplify the hypotheses and the goal together.
 
-Rewrite using `[Jm_apply_of_ne hc, mul_zero]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem totalDegree_omAct_kron_le : ∀ (p q r s : ℕ) (E : Mat p q), IsKC E → ∀ (d : ℕ) (P : Pol p q r s), P.totalDegree ≤ d → (omAct p q r s (Matrix.kroneckerMap (· * ·) E (Jm r s)) P).totalDegree ≤ d := by
   intro p q r s E hE d P hP

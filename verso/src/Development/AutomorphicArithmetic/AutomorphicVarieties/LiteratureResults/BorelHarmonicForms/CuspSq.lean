@@ -14,7 +14,7 @@ open scoped TensorProduct
 open MeasureTheory GlobalTheory.UnitaryBC in
 open scoped GlobalTheory.CuspRep.CuspidalL2GL in
 /- English proof (translation)
-Take `⟨μ, hμ⟩ : ∃ μ : Measure (GA E a), μ.IsHaarMeasure` from `⟨Measure.haar, inferInstance⟩`. Use `(GlobalTheory.CovolGL.finvol E a μ).1` as an intermediate fact. Establish `hc : Continuous ψ.1` using `GlobalTheory.CuspRep.ContAut.continuous_of_isOpen_stab E a ψ hψ.1.level`. Take `⟨C, hC⟩` from `UpperTheory.V.KernelIndexFullLattice.partC UpperTheory.V.KernelIndexFullLattice.splitEq_holds UpperTheory.V.KernelIndexFullLattice.brCusp_holds E a ψ hψ (fun t g => by rw [hn t g])`. Conclude with `(GlobalTheory.CuspRep.CuspidalL2GL.memL2_iff_isSqInt (μ := μ) hc hψ.1.left hn).1 (GlobalTheory.CuspQuot.memL2_of_bound (μ := μ) hc (GlobalTheory.CuspRep.CuspidalL2GL.leftInv_latticeGL hψ.1.left hn) hC)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 private theorem isSqInt_of_cusp {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {a : ℕ} {ψ : Sm E a}
     (hψ : IsCuspForm ψ) (hn : ∀ t g, ψ.1 (splitCentre E a t * g) = ψ.1 g) : IsSqInt ψ.1 := by
@@ -28,13 +28,13 @@ private theorem isSqInt_of_cusp {E : Type} [Field E] [NumberField E] [IsTotallyC
     (GlobalTheory.CuspQuot.memL2_of_bound (μ := μ) hc (GlobalTheory.CuspRep.CuspidalL2GL.leftInv_latticeGL hψ.1.left hn) hC)
 
 /- English proof (translation)
-Introduce `E _ _ _ a ha π r hr φ hφ`. Take `⟨χ, ⟨s, hs⟩, hχ⟩` from `UpperTheory.V.Lit.Bor.twEx E a ha r`. Establish `key : ∀ ψ ∈ π.V, IsSqIntMod ψ` using `fun ψ hψ => by`. Establish `h0 : lie E a (oneL E a) (mulChi a χ ψ) = (0 : ℂ) • mulChi a χ ψ`. Rewrite using `[hχ, hr ψ hψ, (UpperTheory.V.Lit.Bor.ellFacts E a).1 ha, mul_one, ← add_smul, neg_add_cancel, zero_smul, zero_smul, map_zero]`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `h1` using `isSqInt_of_cusp ((π.cusp ψ hψ).mulChi χ) fun t g => by`. Rewrite using `[UpperTheory.V.Lit.Bor.aInv E a _ 0 h0 t g, zero_mul, Complex.exp_zero, one_mul]`. Use `⟨s, χ, hs, ?_⟩` and prove the remaining obligations. Establish `e : (fun g => ((chiDet a χ g : ℂˣ) : ℂ) * ψ.1 g) = (mulChi a χ ψ).1` using `funext fun g => by`. Rewrite using `[mulChi_apply, mul_comm]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[e]`. Conclude with `h1`. Use `⟨(π.cusp φ hφ).1.left, (π.cusp φ hφ).1.level, hr φ hφ, fun l => key _ ?_⟩` and prove the remaining obligations. Proceed by induction on `l with`. Consider the case `nil => exact hφ`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Consider the case `cons X l ih`. Rewrite using `[List.map_cons, List.prod_cons]`. Conclude with `π.stable (.lie X) _ ih`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.Lit.Bor.cuspSq :
     UpperTheory.V.Lit.Bor.CuspSq := by

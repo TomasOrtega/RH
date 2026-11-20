@@ -14,9 +14,9 @@ namespace PositivityTheory.RgGu.NR.JmTh
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `m`. Set `P` to `Equiv.piCongrLeft (fun b => GL (Fin (d b)) k) (Fin.revPerm : Equiv.Perm (Fin h))`. Use `⟨fun b => thetaW k (d b) (P m b), ?_⟩` and prove the remaining obligations. Use function extensionality and compare the values at `a`. Use `show thetaW k _ (thetaW k _ (P m (Fin.revPerm a))) = m a`.
+Fix the arbitrary inputs or assume the hypotheses. Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Apply function extensionality and compare values at an arbitrary argument. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW]`. Conclude with `Equiv.piCongrLeft_apply_apply (fun b => GL (Fin (d b)) k) Fin.revPerm m a`.
+A detailed English derivation is pending.
 -/
 theorem thetaL_surjective {h : ℕ} (d : Fin h → ℕ) : Function.Surjective (thetaL (A := k) d) := by
   intro m
@@ -28,7 +28,7 @@ theorem thetaL_surjective {h : ℕ} (d : Fin h → ℕ) : Function.Surjective (t
   exact Equiv.piCongrLeft_apply_apply (fun b => GL (Fin (d b)) k) Fin.revPerm m a
 
 /- English proof (translation)
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨p, hp, rfl⟩`. Conclude with `⟨p.2, hp⟩`. Introduce and unpack `⟨hg, h1⟩`. Conclude with `⟨⟨g, hg⟩, h1, rfl⟩`.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 theorem mem_unipRad_iff' {h N : ℕ} {d : Fin h → ℕ} {e : (Σ a, Fin (d a)) ≃ Fin N} {g : GL (Fin N) k} :
     g ∈ unipRad k e ↔ ∃ hg : g ∈ parab k e, leviProj k e ⟨g, hg⟩ = 1 := by
@@ -39,9 +39,9 @@ theorem mem_unipRad_iff' {h N : ℕ} {d : Fin h → ℕ} {e : (Σ a, Fin (d a)) 
     exact ⟨⟨g, hg⟩, h1, rfl⟩
 
 /- English proof (translation)
-Establish `key : ∀ b, m (Fin.rev b) = 1` using `fun b => by`. Establish `h2 : thetaW k (d (Fin.rev b)) (m (Fin.rev b)) = 1` using `congrFun hm b`. Use `congrArg (thetaW k (d (Fin.rev b))) h2` as an intermediate fact. Rewrite `this` using `[GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW, map_one]`. Then use the resulting hypothesis. Use function extensionality and compare the values at `a`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Apply function extensionality and compare values at an arbitrary argument.
 
-Take `⟨b, rfl⟩` from `Fin.revPerm.surjective a`. Conclude with `key b`.
+Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem thetaL_eq_one {h : ℕ} (d : Fin h → ℕ) (m : Levi k fun a => Fin (d a)) (hm : thetaL d m = 1) : m = 1 := by
   have key : ∀ b, m (Fin.rev b) = 1 := fun b => by
@@ -53,11 +53,11 @@ theorem thetaL_eq_one {h : ℕ} (d : Fin h → ℕ) (m : Levi k fun a => Fin (d 
   exact key b
 
 /- English proof (translation)
-Rewrite using `[mem_unipRad_iff', mem_unipRad_iff']`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨h1, h2⟩`. Establish `hg : g ∈ parab k (stdBlocks d hd)` using `(thetaW_mem_parab_iff d hd hd' g).1 h1`. Use `⟨hg, thetaL_eq_one d _ ?_⟩` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[← leviProj_thetaW d hd hd' ⟨g, hg⟩]`. Conclude with `h2`. Introduce and unpack `⟨h1, h2⟩`. Use `⟨(thetaW_mem_parab_iff d hd hd' g).2 h1, ?_⟩` and prove the remaining obligations. Use `leviProj_thetaW (A := k) d hd hd' ⟨g, h1⟩` as an intermediate fact.
+Rewrite the conclusion using the stated equalities. Assume the hypotheses and unpack their components. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Rewrite `this` using `[h2, map_one]`. Conclude with `this`.
+A detailed English derivation is pending.
 -/
 theorem thetaW_mem_unipRad_iff {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd' : ∑ a, d (Fin.rev a) = N)
     (g : GL (Fin N) k) :
@@ -76,11 +76,11 @@ theorem thetaW_mem_unipRad_iff {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a 
     exact this
 
 /- English proof (translation)
-Unfold `twKer`. Use `congr 1`. Use extensionality with `w`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, v, rfl⟩`.
+Replace the relevant objects with their definitions. Reduce the equality to equality of the corresponding arguments. By extensionality, compare the relevant components. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components.
 
-Use `⟨⟨thetaW k N n, (thetaW_mem_unipRad_iff (k := k) d hd hd' n).2 n.2⟩, v, ?_⟩` and prove the remaining obligations. Simplify using the standard rewrite rules. Introduce and unpack `⟨n, v, rfl⟩`. Establish `hn : thetaW k N (n : GL (Fin N) k) ∈ unipRad k (stdBlocks d hd)`. Rewrite using `[← thetaW_mem_unipRad_iff d hd hd', GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Conclude with `n.2`. Use `⟨⟨_, hn⟩, v, ?_⟩` and prove the remaining obligations. Simplify using `[GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW]`.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem twKer_theta {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd' : ∑ a, d (Fin.rev a) = N) {V : Type}
     [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) :
@@ -101,11 +101,11 @@ theorem twKer_theta {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd' :
     simp [GlobalTheory.CompanionTheory.ThetaInv.thetaW_thetaW]
 
 /- English proof (translation)
-Use `set e := stdBlocks d hd`. Use `set e' := stdBlocks (fun a => d (Fin.rev a)) hd'`. Establish `hx : thetaW k N (leviEmb k e m) ∈ parab k e'` using `(thetaW_mem_parab_iff d hd hd' _).2 (leviEmb_mem_parab k e m)`. Establish `hy : leviEmb k e' (thetaL d m) ∈ parab k e'` using `leviEmb_mem_parab k e' _`. Use `⟨thetaW k N (leviEmb k e m) * (leviEmb k e' (thetaL d m))⁻¹, ?_, by group⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[mem_unipRad_iff']`. Use `⟨(parab k e').mul_mem hx ((parab k e').inv_mem hy), ?_⟩` and prove the remaining obligations. Establish `e1 : leviProj k e' ⟨_, hx⟩ = thetaL d m`. Rewrite using `[leviProj_thetaW d hd hd' ⟨leviEmb k e m, leviEmb_mem_parab k e m⟩, leviProj_leviEmb]`. Establish `e2 : leviProj k e' ⟨_, hy⟩ = thetaL d m` using `leviProj_leviEmb k e' _`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `: (⟨_, (parab k e').mul_mem hx ((parab k e').inv_mem hy)⟩ : parab k e') = ⟨_, hx⟩ * (⟨_, hy⟩)⁻¹` using `rfl`. Rewrite using `[this, map_mul, map_inv, e1, e2, mul_inv_cancel]`.
+A detailed English derivation is pending.
 -/
 theorem leviProj_thetaW_leviEmb {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd' : ∑ a, d (Fin.rev a) = N)
     (m : Levi k fun a => Fin (d a)) :
@@ -141,7 +141,7 @@ def jacTheta {h N : ℕ} (d : Fin h → ℕ) (hd : ∑ a, d a = N) (hd' : ∑ a,
     simp
 
 /- English proof (translation)
-Substitute `hyz` using the available equality. Both sides reduce to the same expression.
+Substitute using the available equality. Both sides reduce to the same expression.
 -/
 theorem jm_congr {h N : ℕ} {y z : Fin h → IrrGL k} (hyz : y = z) (hy : ∑ a, (y a).1 = N) (hz : ∑ a, (z a).1 = N)
     {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) : jm y hy π = jm z hz π := by
@@ -149,9 +149,9 @@ theorem jm_congr {h N : ℕ} {y z : Fin h → IrrGL k} (hyz : y = z) (hy : ∑ a
   rfl
 
 /- English proof (translation)
-Establish `hd' : ∑ a, (x (Fin.rev a)).1 = N` using `sum_dualRev hA x hd`. Establish `T1` using `piTensorRevEquiv (fun a => (x a).rep)`. Establish `T2` using `compEquiv (piTensorEquiv fun a => blockEquiv hA hGK x a) (revPi fun a => GL (Fin (x a).1) k)`. Establish `T3` using `equivOfEq (piTensor_comp_thetaL (k := k) (fun a => (x a).1) fun a => (dualRev hA x a).rep)`. Establish `T` using `(T1.trans T2).trans T3`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Unfold `jm`. Rewrite using `[jhMult_congr_right _ (jacTheta (fun a => (x a).1) hd hd' π), jhMult_congr_left T]`. Conclude with `GlobalTheory.SmGL.EmptyBlocks.jhMult_comp_surjective (thetaL fun a => (x a).1) (thetaL_surjective _) _ _`.
+Replace the relevant objects with their definitions. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem jacquet_module_theta_twist (hA : GlobalTheory.Published.IrreducibleAdmissibleGL) (hGK : GKLocal k) {h N : ℕ} (x : Fin h → IrrGL k)
     (hd : ∑ a, (x a).1 = N) {V : Type} [AddCommGroup V] [Module ℂ V] (π : Representation ℂ (GL (Fin N) k) V) :
@@ -172,9 +172,9 @@ namespace PositivityTheory.RgGu.NR
 open JmTh
 
 /- English proof (translation)
-Introduce `N V _ _ π _ _ a b hd hd'`. Establish `hA` using `GlobalTheory.CompanionTheory.BZCuspPair.irrAdm`. Establish `hGK : GKLocal k` using `GlobalTheory.T.local_langlands_of_irreducible_admissible hA`. Rewrite using `[jacquet_module_theta_twist hA hGK ![a, b] hd π]`. Use `jm_congr ?_ _ _ π` and prove the remaining obligations.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[dualRev_eq hA]`. Use function extensionality and compare the values at `i`. Apply the tactic sequence `fin_cases i <;> rfl`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Apply the first step, then apply the next step to every resulting obligation.
 -/
 theorem jmTheta (k : Type) [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k] :
     GlobalTheory.BZSeg.JmTheta k := by

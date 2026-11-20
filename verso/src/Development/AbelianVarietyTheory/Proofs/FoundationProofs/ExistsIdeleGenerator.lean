@@ -10,13 +10,13 @@ open scoped BigOperators Nat
 namespace GlobalTheory.IdealIdele
 
 /- English proof (translation)
-Choose the witnesses or unpack the hypotheses as in `⟨i, j, hij, hj, e⟩ : ∃ i j : ℕ, i < j ∧ j ≤ Fintype.card M ∧ a ^ i = a ^ j := by`. Take `⟨i, j, hne, e⟩` from `Fintype.exists_ne_map_eq_of_card_lt (fun i : Fin (Fintype.card M + 1) => a ^ (i : ℕ)) (by simp)`. Break down `lt_or_gt_of_ne hne with h | h` into its components or cases. Conclude with `⟨i, j, h, Nat.lt_succ_iff.1 j.2, e⟩`. Conclude with `⟨j, i, h, Nat.lt_succ_iff.1 i.2, e.symm⟩`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Separate the alternatives or extract the components of the hypothesis. Supply the required witnesses or components. Supply the required witnesses or components.
 
-Take `⟨d, rfl⟩` from `Nat.exists_eq_add_of_le hij.le`. Establish `hd : 0 < d` using `by omega`. Establish `key : ∀ u : ℕ, a ^ (i + d * u) = a ^ i`. Introduce `u`. Proceed by induction on `u with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction.
 
-Consider the case `zero => simp`. Consider the case `succ u ih => rw [Nat.mul_succ, ← add_assoc, pow_add, ih, ← pow_add, ← e]`. Take `⟨c, hc⟩ : d ∣ (Fintype.card M)!` from `Nat.dvd_factorial hd (by omega)`. Take `⟨s, hs⟩` from `Nat.exists_eq_add_of_le (show i ≤ (Fintype.card M)! from le_trans (by omega) (Nat.self_le_factorial _))`. Take `⟨t, rfl⟩` from `Nat.exists_eq_succ_of_ne_zero ht.ne'`.
+Treat this case separately. Treat this case separately. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `: (Fintype.card M)! * t.succ = i + d * (c * t) + s`. Rewrite using `[Nat.mul_succ, ← mul_assoc, ← hc]`. Use linear arithmetic over natural numbers and integers. Rewrite using `[this, pow_add, key, ← pow_add, ← hs]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Use linear arithmetic over natural numbers and integers. Rewrite the conclusion using the stated equalities.
 -/
 theorem pow_factorial_mul {M : Type} [Monoid M] [Fintype M] (a : M) (t : ℕ) (ht : 0 < t) :
     a ^ ((Fintype.card M)! * t) = a ^ (Fintype.card M)! := by
@@ -42,7 +42,7 @@ theorem pow_factorial_mul {M : Type} [Monoid M] [Fintype M] (a : M) (t : ℕ) (h
   rw [this, pow_add, key, ← pow_add, ← hs]
 
 /- English proof (translation)
-Use `haveI : NeZero N := ⟨hN.ne'⟩`. Establish `h` using `pow_factorial_mul (m : ZMod N) t ht`. Rewrite `h` using `[ZMod.card]`. Take `⟨c, hc⟩` from `(ZMod.intCast_zmod_eq_zero_iff_dvd ((m : ℤ) ^ (N ! * t) - (m : ℤ) ^ N !) N).1 (by push_cast; rw [h, sub_self])`. Conclude with `⟨c, by linear_combination hc⟩`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem int_dvd_pow_sub (m N t : ℕ) (hN : 0 < N) (ht : 0 < t) :
     ∃ c : ℤ, (m : ℤ) ^ (N ! * t) = (m : ℤ) ^ N ! + N * c := by
@@ -58,23 +58,21 @@ section Abstract
 variable {A : Type} [CommRing A] (S : Subring A)
 
 /- English proof (translation)
-Establish `hc : ∀ N t : ℕ, 0 < N → 0 < t → ∃ c : ℤ, (m : A) ^ (N ! * t) = (m : A) ^ N ! + N * c` using `fun N t hN ht => by`. Take `⟨c, h⟩` from `int_dvd_pow_sub m N t hN ht`. Use `⟨c, ?_⟩` and prove the remaining obligations. Use `congrArg (Int.cast : ℤ → A) h` as an intermediate fact. Move the coercions through the operations in `at this`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Conclude with `this`. Establish `hx : ∀ k : ℕ, (m : A) ^ k ∈ S` using `fun k => pow_mem (natCast_mem S m) k`. Take `⟨f, hf, h⟩` from `hcpl (fun N => (m : A) ^ N !) (fun N => hx _) (by`. Introduce `N k hN hk`. Take `⟨t, ht⟩` from `Nat.factorial_dvd_factorial (Nat.le_mul_of_pos_right N hk)`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `ht0 : 0 < t` using `Nat.pos_of_ne_zero (by`. Introduce and unpack `rfl`. Conclude with `(Nat.factorial_ne_zero _) (by simpa using ht))`. Take `⟨c, hc⟩` from `hc N t hN ht0`. Conclude with `⟨c, intCast_mem S c, by simp only [ht, hc]⟩)`.
+Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Supply the required witnesses or components. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `⟨f, hf, ?_, ?_, fun n hn hmn => ?_⟩` and prove the remaining obligations. Rewrite using `[← sub_eq_zero]`. Use `hsep _ fun N hN => ?_` and prove the remaining obligations. Take `⟨w, hw, hh⟩` from `h N hN`. Take `⟨c, hc⟩` from `hc N 2 hN two_pos`.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the indicated hypotheses using the stated equalities.
 
-Use `⟨c + (2 * (m : A) ^ N ! * w + N * w * w - w), ?_, ?_⟩` and prove the remaining obligations. Conclude with `add_mem (intCast_mem S c) (sub_mem (add_mem (mul_mem (mul_mem (ofNat_mem _ 2) (hx _)) hw) (mul_mem (mul_mem (natCast_mem _ _) hw) hw)) hw)`. Rewrite `hc` using `[pow_mul]`. Rewrite using `[hh]`. Take the linear combination `hc`.
+Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Take `⟨w, hw, hh⟩` from `h m hm`. Take `⟨s, hs⟩` from `Nat.exists_eq_succ_of_ne_zero (Nat.factorial_ne_zero m)`. Use `⟨(m : A) ^ s + w, add_mem (hx s) hw, ?_⟩` and prove the remaining obligations. Rewrite using `[hh, hs, pow_succ]`. Expand and normalize the polynomial expressions, which then agree.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨w, hw, hh⟩` from `h n hn`. Take `⟨t, ht⟩` from `Nat.dvd_factorial (Nat.totient_pos.2 hn) (Nat.totient_le n)`. Establish `h1 : m ^ n ! ≡ 1 [MOD n]`. Use `(Nat.ModEq.pow_totient hmn).pow t` as an intermediate fact. Rewrite `this` using `[← pow_mul, ← ht, one_pow]`. Then use the resulting hypothesis.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Extract witnesses or component facts from the available result. Establish an intermediate fact. Move the embeddings inside the algebraic operations.
 
-Take `⟨c, hc⟩` from `h1.dvd`. Establish `hc'` using `congrArg (Int.cast : ℤ → A) hc`. Move the coercions through the operations in `at hc'`. Use `⟨c - w, sub_mem (intCast_mem S c) hw, ?_⟩` and prove the remaining obligations. Rewrite using `[hh]`.
-
-Take the linear combination `hc'`.
+Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion. A detailed English derivation is pending.
 -/
 theorem exists_idem
     (hsep : ∀ y : A, (∀ N : ℕ, 0 < N → ∃ w ∈ S, y = (N : A) * w) → y = 0)
@@ -128,23 +126,21 @@ theorem exists_idem
 end Abstract
 
 /- English proof (translation)
-Use `set m := 2 * Ideal.absNorm B with hm`. Establish `hN : 0 < Ideal.absNorm B` using `Nat.pos_of_ne_zero (by simpa [Ideal.absNorm_eq_zero_iff] using hB)`. Establish `hm2 : 2 ≤ m` using `by omega`. Establish `hmB : (m : 𝓞 E) ∈ B`. Rewrite using `[hm, Nat.cast_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Ideal.mul_mem_left _ _ (Ideal.absNorm_mem B)`. Establish `hm0 : (m : 𝓞 E) ≠ 0` using `Nat.cast_ne_zero.2 (by omega)`. Take `⟨β, hβ⟩` from `IsDedekindDomain.exists_sup_span_eq (I := B * Ideal.span {(m : 𝓞 E)}) (J := B) Ideal.mul_le_left (mul_ne_zero hB (by simpa using hm0))`. Establish `hβB : β ∈ B` using `hβ ▸ Ideal.mem_sup_right (Ideal.mem_span_singleton_self β)`. Take `⟨C, hC⟩ : B ∣ Ideal.span {β}` from `Ideal.dvd_iff_le.2 ((Ideal.span_singleton_le_iff_mem _).2 hβB)`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hsup : Ideal.span {(m : 𝓞 E)} ⊔ C = ⊤`. Apply `mul_left_cancel₀ hB` to reduce the goal to its premises. Rewrite using `[Ideal.mul_sup, ← hC, hβ, Ideal.mul_top]`. Establish `hC0 : C ≠ ⊥`. Introduce and unpack `rfl`.
+Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Assume the hypotheses and unpack their components. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Rewrite `hsup` using `[sup_bot_eq, Ideal.span_singleton_eq_top]`. Establish `h1` using `Ideal.absNorm_eq_one_iff.2 (Ideal.span_singleton_eq_top.2 hsup)`. Rewrite `h1` using `[Ideal.absNorm_span_natCast]`. Establish `h2` using `(Nat.pow_eq_one.1 h1).resolve_left (by omega)`. Conclude with `Module.finrank_pos.ne' h2`.
+Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. Assume the hypotheses and unpack their components. Establish an intermediate fact.
 
-Establish `hβ0 : β ≠ 0`. Introduce and unpack `rfl`. Conclude with `mul_ne_zero hB hC0 (by rw [← hC]; simp)`. Use `haveI : Finite (𝓞 E ⧸ C) := Ideal.finiteQuotientOfFreeOfNeBot C hC0`. Establish `hu : IsUnit (Ideal.Quotient.mk C (m : 𝓞 E))`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Take `⟨x, hx, c, hc, e⟩` from `Submodule.mem_sup.1 ((Ideal.eq_top_iff_one _).1 hsup)`. Take `⟨a, rfl⟩` from `Ideal.mem_span_singleton'.1 hx`. Use `IsUnit.of_mul_eq_one (Ideal.Quotient.mk C a) ?_` and prove the remaining obligations. Rewrite using `[← map_mul, ← map_one (Ideal.Quotient.mk C), Ideal.Quotient.eq]`. Rewrite using `[show (m : 𝓞 E) * a - 1 = -c by linear_combination e]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Establish an intermediate fact.
 
-Conclude with `neg_mem hc`. Take `⟨k, hk, e⟩` from `isOfFinOrder_iff_pow_eq_one.1 (isOfFinOrder_of_finite hu.unit)`. Establish `e' : (m : 𝓞 E) ^ k - 1 ∈ C`. Rewrite using `[← Ideal.Quotient.eq, map_pow, map_one]`. Simplify using `using congrArg Units.val e`.
+Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `h1 : 1 < m ^ k` using `Nat.one_lt_pow hk.ne' (by omega)`. Use `⟨m, m ^ k - 1, β, by omega, by omega, ?_, hmB, hβB, hβ0, fun b hb => ?_⟩` and prove the remaining obligations. Use `Nat.Coprime.of_dvd_left (dvd_pow_self m hk.ne') ?_` and prove the remaining obligations. Conclude with `(Nat.coprime_self_sub_right h1.le).2 (Nat.coprime_one_right _)`. Rewrite using `[← Ideal.mem_span_singleton, hC, mul_comm (((m ^ k - 1 : ℕ)) : 𝓞 E)]`.
-
-Use `Ideal.mul_mem_mul hb ?_` and prove the remaining obligations. Rewrite using `[Nat.cast_sub h1.le]`. Use `push_cast`. Conclude with `e'`.
+Move the embeddings inside the algebraic operations. A detailed English derivation is pending.
 -/
 theorem exists_local_generator {E : Type} [Field E] [NumberField E] (B : Ideal (𝓞 E)) (hB : B ≠ ⊥) :
     ∃ (m n : ℕ) (β : 𝓞 E), 0 < m ∧ 0 < n ∧ m.Coprime n ∧ (m : 𝓞 E) ∈ B ∧ β ∈ B ∧ β ≠ 0 ∧
@@ -196,21 +192,19 @@ theorem exists_local_generator {E : Type} [Field E] [NumberField E] (B : Ideal (
     exact e'
 
 /- English proof (translation)
-Introduce `D B hB`. Take `⟨m, n, β, hm, hn, hmn, hmB, hβB, hβ0, hdvd⟩` from `exists_local_generator B hB`. Take `⟨hsep, hcpl⟩` from `GlobalTheory.IntAdeleComplete.integral_separated_complete D`. Take `⟨f, hf, hff, ⟨w, hw, hfw⟩, h3⟩` from `exists_idem (OhE D) hsep hcpl m hm`. Take `⟨v, hv, hfv⟩` from `h3 n hn hmn`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hint : ∀ b : 𝓞 D.host.E, inc D (b : D.host.E) ∈ OhE D` using `fun b => (GlobalTheory.HeckeVal.inc_mem_iff D _).2 b.isIntegral_coe`. Establish `hβE : (β : D.host.E) ≠ 0` using `by simpa using hβ0`. Establish `hinv : inc D (β : D.host.E) * inc D (β : D.host.E)⁻¹ = 1`. Rewrite using `[← map_mul, mul_inv_cancel₀ hβE, map_one]`. Establish `hy : ((1 - f) * inc D (β : D.host.E) + f) * ((1 - f) * inc D (β : D.host.E)⁻¹ + f) = 1`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Take the linear combination `(1 - f) ^ 2 * hinv + (2 - inc D (β : D.host.E) - inc D (β : D.host.E)⁻¹) * hff`. Use `⟨⟨_, _, hy, by rw [mul_comm, hy]⟩, fun b hb => ?_, 2, ![β, m], ![1 - f, w], ?_, ?_, ?_⟩` and prove the remaining obligations. Take `⟨d, hd⟩` from `hdvd b hb`. Establish `hd' : (n : AE D) * inc D (b : D.host.E) = inc D (β : D.host.E) * inc D (d : D.host.E)`. Rewrite using `[← map_natCast (inc D), ← map_mul, ← map_mul]`.
+Take a linear combination of the given relations to obtain the conclusion. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Use `congr 1`. Conclude with `congrArg (fun x : 𝓞 D.host.E => (x : D.host.E)) hd` after adjusting the coercions. Express the relevant statement in the definitionally equal form `((1 - f) * inc D (β : D.host.E)⁻¹ + f) * inc D (b : D.host.E) ∈ OhE D`. Rewrite using `[show ((1 - f) * inc D (β : D.host.E)⁻¹ + f) * inc D (b : D.host.E) = v * inc D (d : D.host.E) + f * inc D (b : D.host.E) by`. Rewrite using `[hfv]`.
+Reduce the equality to equality of the corresponding arguments. Express the relevant assertion in an equivalent form by its definition. Rewrite the hypotheses and the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Take a linear combination of the given relations to obtain the conclusion.
 
-Take the linear combination `v * inc D (β : D.host.E)⁻¹ * hd' + v * inc D (d : D.host.E) * hinv]`. Conclude with `add_mem (mul_mem hv (hint d)) (mul_mem hf (hint b))`. Introduce `i fin_cases i`. Conclude with `hβB`. Conclude with `hmB`.
+Fix the arbitrary inputs or assume the hypotheses. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the equality to equality of the corresponding arguments.
 
-Introduce `i fin_cases i`. Conclude with `sub_mem (one_mem _) hf`. Conclude with `hw`. Establish `: inc D (((m : 𝓞 D.host.E)) : D.host.E) = (m : AE D)`. Rewrite using `[← map_natCast (inc D)]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree.
 
-Use `congr 1`. Express the relevant statement in the definitionally equal form `(1 - f) * inc D (β : D.host.E) + f = _`. Rewrite using `[Fin.sum_univ_two]`. Express the relevant statement in the definitionally equal form `_ = inc D (β : D.host.E) * (1 - f) + inc D (((m : 𝓞 D.host.E)) : D.host.E) * w`. Rewrite using `[this, ← hfw]`.
-
-Expand and normalize the polynomial expressions, which then agree.
+A detailed English derivation is pending.
 -/
 theorem exists_idele_generator : ∀ (D : D7) (B : Ideal (𝓞 D.host.E)), B ≠ ⊥ → ∃ y : (AE D)ˣ, (∀ b ∈ B, ((y⁻¹ : (AE D)ˣ) : AE D) * inc D (b : D.host.E) ∈ OhE D) ∧ ∃ (k : ℕ) (b : Fin k → 𝓞 D.host.E) (w : Fin k → AE D), (∀ i, b i ∈ B) ∧ (∀ i, w i ∈ OhE D) ∧ (y : AE D) = ∑ i, inc D (b i : D.host.E) * w i := by
   intro D B hB

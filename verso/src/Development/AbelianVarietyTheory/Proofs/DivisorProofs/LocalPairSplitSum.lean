@@ -7,21 +7,17 @@ open scoped TensorProduct
 namespace GlobalTheory.KeyOriginCut
 
 /- English proof (translation)
-Take `⟨hfin, hproj, hff, hbij⟩` from `h`. Use `set Φ := Algebra.TensorProduct.productMap (Pi.algHom B (fun _ : Multiplicative (ZMod q) => D) (fun _ => AlgHom.id B D)) (Pi.algHom B (fun _ : Multiplicative (ZMod q) => D) (fun g => (act g).toAlgHom)) with hΦ`. Establish `hmul : ∀ x : D ⊗[B] D, Algebra.TensorProduct.lmul' B x = Φ x 1`. Introduce `x`. Proceed by induction on `x using TensorProduct.induction_on with`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately.
 
-Consider the case `zero => simp`. Consider the case `tmul a b => simp [hΦ, Algebra.TensorProduct.productMap_apply_tmul]`. Consider the case `add x y hx hy => simp [map_add, hx, hy]`. Establish `hidem : IsIdempotentElem (KaehlerDifferential.ideal B D)`. Take `⟨e, he⟩` from `hbij.2 (1 - Pi.single (1 : Multiplicative (ZMod q)) (1 : D))`.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `heI : e ∈ KaehlerDifferential.ideal B D`. Rewrite using `[KaehlerDifferential.ideal, RingHom.mem_ker]`. Express the relevant statement in the definitionally equal form `Algebra.TensorProduct.lmul' B e = 0`. Rewrite using `[hmul, he]`. Simplify using the standard rewrite rules.
+Rewrite the conclusion using the stated equalities. Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Reduce the claim to the hypotheses of an applicable result.
 
-Apply `le_antisymm Ideal.mul_le_left` to reduce the goal to its premises. Introduce `x hx`. Establish `hx0 : Φ x 1 = 0`. Rewrite using `[← hmul]`. Conclude with `(RingHom.mem_ker).1 hx`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the claim to the hypotheses of an applicable result.
 
-Establish `hxe : x = x * e`. Apply `hbij.1` to reduce the goal to its premises. Rewrite using `[map_mul, he]`. Use function extensionality and compare the values at `g`. Distinguish the cases in `hg : g = 1`.
+Rewrite the conclusion using the stated equalities. Apply function extensionality and compare values at an arbitrary argument. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules.
 
-Substitute `hg` using the available equality. Simplify using `[hx0]`. Simplify using `[Pi.single_apply, hg]`. Rewrite using `[hxe]`. Conclude with `Ideal.mul_mem_mul hx heI`.
-
-Use `haveI : Subsingleton Ω[D⁄B] := (Ideal.cotangent_subsingleton_iff _).2 hidem`. Use `haveI : Algebra.FormallyUnramified B D := ⟨inferInstance⟩`. Use `haveI : Module.Flat B D := inferInstance`. Use `haveI : Module.FinitePresentation B D := Module.finitePresentation_of_projective B D`. Use `haveI : Algebra.FinitePresentation B D := (Module.FinitePresentation.iff_finitePresentation_of_finite B D).mp inferInstance`.
-
-Conclude with `Algebra.Etale.of_formallyUnramified_of_flat`.
+Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem etale_of_isZTorsor (B D : Type) [CommRing B] [CommRing D] [Algebra B D] (q : ℕ)
     (act : Multiplicative (ZMod q) →* (D ≃ₐ[B] D)) (h : IsZTorsor B D q act) :

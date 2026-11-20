@@ -14,19 +14,17 @@ open GlobalTheory.WeilM GlobalTheory.AdelicU GlobalTheory.LFun GlobalTheory.Inde
 open GlobalTheory.Doubling (absE)
 namespace GlobalTheory.CompanionTheory.SiegelEis
 /- English proof (translation)
-Introduce `F E _ _ _ _ _ σ B n Y r s hB hn hY b K a hb hK hH χ s₁ f hf`. Establish `hKc : IsCompact (K : Set (G2 σ Y))` using `_root_.GlobalTheory.T.isCompact_standard_maximal_compact F E σ B n Y r s hB hn hY b K a hb hK hH`. Take `⟨-, hpos⟩` from `_root_.GlobalTheory.T.height_function_continuous_pos F E σ B n Y r s hB hn hY b K a hb hK hH`. Take `⟨C, hC⟩` from `GlobalTheory.T.flat_section_growth_bound K a hKc hH hpos χ s₁ f hf`. Take `⟨σ₀, hσ⟩` from `_root_.GlobalTheory.T.eisenstein_series_convergence_bound F E σ B n Y r s hB hn hY b K a hb hK hH`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hsum : ∀ σ' : ℝ, σ₀ < σ' → ∀ x : G2 σ Y, Summable (fun q : Cos σ Y => a ((Quotient.out q).1 * x) ^ σ')`. Introduce `σ' h x`. Take `⟨_, _, h'⟩` from `hσ σ' h`. Conclude with `(h' x).1`. Establish `hterm : ∀ (z : ℂ) (x : G2 σ Y) (q : Cos σ Y), ‖eisTerm (flat a f s₁ z) x q‖ ≤ C * a ((Quotient.out q).1 * x) ^ (z.re + (n : ℝ) / 2)` using `fun z x q => hC z _`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `⟨fun z x => ∑' q, eisTerm (flat a f s₁ z) x q, σ₀ - (n : ℝ) / 2, ?_, ?_⟩` and prove the remaining obligations. Introduce `z hz x`. Establish `h1 : σ₀ < z.re + (n : ℝ) / 2` using `by linarith`. Conclude with `(Summable.of_norm_bounded ((hsum _ h1 x).mul_left C) (hterm z x)).hasSum`. Introduce `x z hz`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hz' : σ₀ - (n : ℝ) / 2 < z.re` using `hz`. Take `⟨c, hc1, hc2⟩` from `exists_between hz'`. Use `set d : ℝ := z.re + 1 with hd`. Establish `hopen : IsOpen {w : ℂ | c < w.re ∧ w.re < d}` using `(isOpen_lt continuous_const Complex.continuous_re).inter (isOpen_lt Complex.continuous_re continuous_const)`. Establish `hc3 : σ₀ < c + (n : ℝ) / 2` using `by linarith`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hd3 : σ₀ < d + (n : ℝ) / 2` using `by linarith`. Establish `hu : Summable (fun q : Cos σ Y => |C| * (a ((Quotient.out q).1 * x) ^ (c + (n : ℝ) / 2) + a ((Quotient.out q).1 * x) ^ (d + (n : ℝ) / 2)))` using `((hsum _ hc3 x).add (hsum _ hd3 x)).mul_left _`. Establish `hdiff : ∀ q : Cos σ Y, DifferentiableOn ℂ (fun w : ℂ => eisTerm (flat a f s₁ w) x q) {w : ℂ | c < w.re ∧ w.re < d}` using `fun q => (differentiable_cpow_term (hpos _) s₁ _).differentiableOn`. Establish `hle : ∀ (q : Cos σ Y) (w : ℂ), w ∈ {w : ℂ | c < w.re ∧ w.re < d} → ‖eisTerm (flat a f s₁ w) x q‖ ≤ |C| * (a ((Quotient.out q).1 * x) ^ (c + (n : ℝ) / 2) + a ((Quotient.out q).1 * x) ^ (d + (n : ℝ) / 2))`. Introduce `q w hw`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hA` using `hpos ((Quotient.out q).1 * x)`. Establish `h2` using `rpow_le_add_rpow (u := w.re + (n : ℝ) / 2) (c := c + (n : ℝ) / 2) (d := d + (n : ℝ) / 2) hA (by linarith [hw.1]) (by linarith [hw.2])`. Establish `h3` using `Real.rpow_nonneg hA.le (w.re + (n : ℝ) / 2)`. Combine the equalities or inequalities in the displayed calculation. Establish `hD` using `Complex.differentiableOn_tsum_of_summable_norm hu hdiff hopen hle`.
-
-Establish `hmem : {w : ℂ | c < w.re ∧ w.re < d} ∈ 𝓝 z` using `hopen.mem_nhds ⟨hc2, by rw [hd]; linarith⟩`. Conclude with `(hD.differentiableAt hmem).differentiableWithinAt`.
+Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 theorem eis_half_plane_k : ∀ (F E : Type) [Field F] [NumberField F] [Field E] [NumberField E] [Algebra F E] (σ : E →ₐ[F] E) (B : Base F E) (n : ℕ) (Y : Spc F E n) (r s : ℕ), _root_.UpperTheory.TP.W.GoodK σ B → 1 ≤ n → (Y.IsHerm σ B r s ∨ Y.IsSkew σ B r s) → ∀ (b : GL (Fin n ⊕ Fin n) E) (K : Subgroup (G2 σ Y)) (a : G2 σ Y → ℝ), IsFrame2 σ Y b → IsStdK (σ := σ) (Y := Y) B b K → IsHgt K a → ∀ (χ : Chr F E) (s₁ : ℂ) (f : G2 σ Y → ℂ), IsSec K χ s₁ f → ∃ Ê : ℂ → G2 σ Y → ℂ, ∃ t : ℝ, (∀ s : ℂ, t < s.re → ∀ x, HasSum (eisTerm (flat a f s₁ s) x) (Ê s x)) ∧ ∀ x, DifferentiableOn ℂ (Ê · x) {s | t < s.re} := by
   intro F E _ _ _ _ _ σ B n Y r s hB hn hY b K a hb hK hH χ s₁ f hf

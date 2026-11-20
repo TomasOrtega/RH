@@ -15,16 +15,16 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-The claim follows from `(h₁.detChar.comp _ (continuous_apply (0 : Fin 2))).mul (h₂.detChar.comp _ (continuous_apply (1 : Fin 2)))`.
+A detailed English derivation is pending.
 -/
 theorem isSmoothChar_twoDet (x x' : ℕ) {χ₁ χ₂ : kˣ →* ℂˣ} (h₁ : IsSmoothChar χ₁) (h₂ : IsSmoothChar χ₂) :
     IsSmoothChar (twoDet x x' χ₁ χ₂) :=
   (h₁.detChar.comp _ (continuous_apply (0 : Fin 2))).mul (h₂.detChar.comp _ (continuous_apply (1 : Fin 2)))
 
 /- English proof (translation)
-Establish `hdet : ∀ b, Matrix.GeneralLinearGroup.det ((Pi.mulSingle a u : ∀ b, GL (Fin (![x, x'] b)) k) b) = 1` using `fun b => by`. Distinguish the cases in `hb : b = a`. Substitute `hb` using the available equality. Rewrite using `[Pi.mulSingle_eq_same]`. Conclude with `det_eq_one_of_mem_unipRad k hu`.
+Establish an intermediate fact. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[Pi.mulSingle_eq_of_ne hb, map_one]`. Express the relevant statement in the definitionally equal form `χ₁ (Matrix.GeneralLinearGroup.det ((Pi.mulSingle a u : ∀ b, GL (Fin (![x, x'] b)) k) 0)) * χ₂ (Matrix.GeneralLinearGroup.det ((Pi.mulSingle a u : ∀ b, GL (Fin (![x, x'] b)) k) 1)) = 1`. Rewrite using `[hdet, hdet, map_one, map_one, one_mul]`.
+Express the relevant assertion in an equivalent form by its definition. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem twoDet_mulSingle (x x' : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ) (a : Fin 2) (u : GL (Fin (![x, x'] a)) k)
     (hu : u ∈ unipB k (Fin (![x, x'] a))) : twoDet x x' χ₁ χ₂ (Pi.mulSingle a u) = 1 := by
@@ -40,7 +40,7 @@ theorem twoDet_mulSingle (x x' : ℕ) (χ₁ χ₂ : kˣ →* ℂˣ) (a : Fin 2)
   rw [hdet, hdet, map_one, map_one, one_mul]
 
 /- English proof (translation)
-Take `⟨e, hs⟩` from `h`. Establish `hb` using `fun a => H.block_le_one hc h1 e ((isSmooth_ofChar_iff _).2 (isSmoothChar_twoDet x x' h₁ h₂)) hs hg a (fun u hu v => by rw [ofChar_apply, twoDet_mulSingle x x' χ₁ χ₂ a u hu]; simp)`. Conclude with `⟨hb 0, hb 1⟩`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Supply the required witnesses or components.
 -/
 theorem IsDetProdConst.le_one_of_isGeneric (H : GlobalTheory.Published.GenericityGL) {ψ : AddChar k Circle} (hc : Continuous ψ)
     (h1 : ψ ≠ 1) {n x x' : ℕ} {χ₁ χ₂ : kˣ →* ℂˣ} (h₁ : IsSmoothChar χ₁) (h₂ : IsSmoothChar χ₂) {V : Type}
@@ -56,9 +56,9 @@ end Local
 attribute [local instance] GlobalTheory.LocalData.complRel GlobalTheory.LocalData.isLocalField
 
 /- English proof (translation)
-Take `⟨f, hf0, hf⟩` from `h`. Set `S : Subrepresentation (τ.locRep w)` to `⟨LinearMap.range f, by`. Introduce and unpack `g _ ⟨v, rfl⟩`. Conclude with `⟨ρ.ρ g v, hf g v⟩⟩`. Establish `hS : S.toSubmodule ≠ ⊥` using `fun h => hf0 (LinearMap.range_eq_bot.1 h)`.
+Extract witnesses or component facts from the available result. Introduce a local definition for the expression. Assume the hypotheses and unpack their components. Supply the required witnesses or components. Establish an intermediate fact.
 
-Take `⟨ψ, hc, h1, hg⟩` from `GlobalTheory.CuspDetBlocks.exists_isGeneric_subrep τ w S hS`. Conclude with `⟨ψ, hc, h1, hg.of_surjective (σ := S.toRepresentation) ⟨f.rangeRestrict, fun g => LinearMap.ext fun v => by exact Subtype.ext (hf g v)⟩ (LinearMap.surjective_rangeRestrict _)⟩`.
+Extract witnesses or component facts from the available result. Supply the required witnesses or components.
 -/
 theorem exists_isGeneric_of_isLocComp {E : Type} [Field E] [NumberField E] [IsTotallyComplex E] {n : ℕ}
     {τ : GlobalTheory.CuspRep.CuspSub E n} {w : HeightOneSpectrum (𝓞 E)}
@@ -74,7 +74,7 @@ theorem exists_isGeneric_of_isLocComp {E : Type} [Field E] [NumberField E] [IsTo
     (LinearMap.surjective_rangeRestrict _)⟩
 
 /- English proof (translation)
-Introduce `E _ _ _ n τ w ρ x x' χ₁ χ₂ H _ hρ h₁ h₂ hc`. Take `⟨ψ, hψ, h1, hg⟩` from `exists_isGeneric_of_isLocComp hρ`. Conclude with `IsDetProdConst.le_one_of_isGeneric H hψ h1 (isSmoothChar_of_isUnram h₁) (isSmoothChar_of_isUnram h₂) hc hg`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. A detailed English derivation is pending.
 -/
 theorem blocks_le_one_of_isLocComp : ∀ (E : Type) [Field E] [NumberField E] [IsTotallyComplex E] (n : ℕ) (τ : GlobalTheory.CuspRep.CuspSub E n)
     (w : HeightOneSpectrum (𝓞 E)) (ρ : GlobalTheory.CuspRep.SmIrr (GL (Fin n) (w.adicCompletion E))) (x x' : ℕ)

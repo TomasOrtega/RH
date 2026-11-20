@@ -11,7 +11,7 @@ namespace ReciprocityTheory.ChartRestriction.DS
 variable {n : ℕ}
 
 /- English proof (translation)
-The claim follows from `closure_genSub_stable hσ hD hV.1 hV.2.1 hc`.
+A detailed English derivation is pending.
 -/
 theorem closGen_stable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {ε : Fin n → Bool} {lam : Fin n → ℝ} (hgap : StdGap ε lam)
@@ -24,31 +24,25 @@ theorem closGen_stable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ
   closure_genSub_stable hσ hD hV.1 hV.2.1 hc
 
 /- English proof (translation)
-Establish `: CompleteSpace S` using `hSc.completeSpace_coe`. Establish `: FiniteDimensional ℂ V` using `hV.1`. Use `set VH : Submodule ℂ H := V.map D.subtype with hVH`. Establish `: FiniteDimensional ℂ VH` using `inferInstance`. Establish `: CompleteSpace VH` using `FiniteDimensional.complete ℂ VH`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hSo : ∀ g ∈ UJset ε, ∀ x ∈ Sᗮ, σ g x ∈ Sᗮ`. Introduce `g hg`. Take `⟨g', hg', hgg⟩` from `UnitaryGroupOfForm.inv_mem_UJ hg`. Conclude with `UnitaryGroupOfForm.orth_stable hσ hg hg' hgg S (hSG g' hg')`. Establish `hVHK : ∀ k ∈ Kset ε, ∀ x ∈ VH, σ k x ∈ VH`.
+Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Introduce and unpack `k hk x ⟨v, hv, rfl⟩`. Take `⟨w, hw, hw'⟩` from `hVK k hk v hv`. Conclude with `⟨w, hw, hw'⟩`. Establish `hVHo : ∀ k ∈ Kset ε, ∀ x ∈ VHᗮ, σ k x ∈ VHᗮ`. Introduce `k hk`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨hk', hkk⟩` from `UnitaryGroupOfForm.K_inv hk`. Conclude with `UnitaryGroupOfForm.orth_stable hσ (UnitaryGroupOfForm.K_mem_UJ hk) (UnitaryGroupOfForm.K_mem_UJ hk') hkk VH (hVHK _ hk')`. Use `set S' : Submodule ℂ D := V ⊓ (Sᗮ).comap D.subtype with hS'`. Establish `hS'K : IsKStableSub ε E S'`. Introduce `a b hab v hv`.
+Fix the arbitrary inputs or assume the hypotheses. Supply the required witnesses or components. Separate the alternatives or extract the components of the hypothesis. Reduce the conclusion to the remaining proof obligations. Introduce a local definition for the expression.
 
-Conclude with `⟨hV.2.1 a b hab v hv.1, UnitaryGroupOfForm.E_mem hD Sᗮ (Submodule.isClosed_orthogonal S) hSo a b v hv.2⟩`. Break down `hV.2.2.1 S' inf_le_left hS'K with h0 | hV'` into its components or cases. Use `right`. Use `le_antisymm hS (UnitaryGroupOfForm.closGen_le hD S hSc hSG V ?_)` and prove the remaining obligations. Use `set P := S.starProjection with hP`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `set Q := VH.starProjection with hQ`. Set `j' : V →ₗ[ℂ] H` to `(((ContinuousLinearMap.id ℂ H - Q).comp P).toLinearMap).comp (D.subtype.comp V.subtype)`. Establish `hj'v : ∀ v : V, j' v = P ((v : D) : H) - Q (P ((v : D) : H))` using `fun v => rfl`. Establish `hj'0 : j' = 0`. Use `rigid_multOne hgap hσ hD hV hc hVK j' ?_ ?_ ?_` and prove the remaining obligations.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result.
 
-Introduce `k hk v w hvw`. Establish `hkU` using `UnitaryGroupOfForm.K_mem_UJ hk`. Rewrite using `[hj'v, hj'v, hvw, UnitaryGroupOfForm.proj_comm S (σ k) (hSG k hkU) (hSo k hkU), UnitaryGroupOfForm.proj_comm VH (σ k) (hVHK k hk) (hVHo k hk), map_sub]`. Introduce `v`. Rewrite using `[hj'v]`.
+Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact.
 
-Use `Submodule.sub_mem _ (hS (S.starProjection_apply_mem _)) ?_` and prove the remaining obligations. Take `⟨y, hy, e⟩` from `VH.starProjection_apply_mem (P ((v : D) : H))`. Rewrite using `[← e]`. Conclude with `UnitaryGroupOfForm.mem_closGen V y hy`. Introduce `v v'`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hj'v]`. Conclude with `Submodule.inner_left_of_mem_orthogonal (Submodule.mem_map_of_mem v.2) (VH.sub_starProjection_mem_orthogonal _)`. Introduce `v hv`. Establish `h1 : P (v : H) - Q (P (v : H)) = 0`. Rewrite using `[← hj'v ⟨v, hv⟩, hj'0]`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Both sides reduce to the same expression. Establish `h2 : P (v : H) ∈ VH`. Rewrite `h1` using `[sub_eq_zero]`. Rewrite using `[h1]`. Conclude with `VH.starProjection_apply_mem _`.
-
-Take `⟨y, hy, hyv⟩` from `h2`. Establish `hyv' : (y : H) = P (v : H)` using `hyv`. Establish `hvy : v - y ∈ S'`. Use `⟨V.sub_mem hv hy, ?_⟩` and prove the remaining obligations. Use `show ((v - y : D) : H) ∈ Sᗮ`.
-
-Rewrite using `[Submodule.coe_sub, hyv']`. Conclude with `S.sub_starProjection_mem_orthogonal _`. Rewrite `hvy` using `[h0, Submodule.mem_bot, sub_eq_zero]`. Rewrite using `[hvy, hyv']`. Conclude with `S.starProjection_apply_mem _`.
-
-Use `left`. Establish `hle : closGen E V ≤ Sᗮ` using `UnitaryGroupOfForm.closGen_le hD Sᗮ (Submodule.isClosed_orthogonal S) hSo V (fun v hv => (show v ∈ S' by rw [hV']; exact hv).2)`. Rewrite using `[eq_bot_iff, ← Submodule.inf_orthogonal_eq_bot S]`. Conclude with `le_inf le_rfl (hS.trans hle)`.
+Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem rigid_irred {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     {ε : Fin n → Bool} {lam : Fin n → ℝ} (hgap : StdGap ε lam)

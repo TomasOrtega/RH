@@ -22,7 +22,7 @@ section Local
 variable {k : Type} [Field k] [ValuativeRel k] [TopologicalSpace k] [IsNonarchimedeanLocalField k]
 
 /- English proof (translation)
-Introduce `e`. Rewrite `e` using `[IrrGL.nu, IrrGL.tw_ofChar, IrrGL.ofChar_inj]`. Establish `h1 : absPow k 1 = 1` using `mul_left_cancel (a := θ) (by rw [mul_one]; exact e.symm)`. Establish `h2 : absPow k ((1 : ℝ) : ℂ) = 1` using `by simpa using h1`. Conclude with `one_ne_zero (absPow_ofReal_eq_one.1 h2)`.
+Fix the arbitrary inputs or assume the hypotheses. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Establish an intermediate fact. A detailed English derivation is pending.
 -/
 private theorem ofChar_ne_nu (θ : kˣ →* ℂˣ) (hθ : IsSmoothChar θ) : IrrGL.ofChar θ hθ ≠ (IrrGL.ofChar θ hθ).nu 1 := by
   intro e
@@ -32,9 +32,9 @@ private theorem ofChar_ne_nu (θ : kˣ →* ℂˣ) (hθ : IsSmoothChar θ) : Irr
   exact one_ne_zero (absPow_ofReal_eq_one.1 h2)
 
 /- English proof (translation)
-Use extensionality with `x`. Rewrite using `[Segment.mem_carrier, Set.mem_singleton_iff]`. Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, rfl⟩`. Take `rfl : n = 0` from `by omega`.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result.
 
-Simplify using the standard rewrite rules. Introduce and unpack `rfl`. Conclude with `⟨0, by omega, by simp⟩`.
+Simplify using the standard rewrite rules. Assume the hypotheses and unpack their components. Supply the required witnesses or components.
 -/
 private theorem carrier_of_len {D : Segment k} (h : D.len = 1) : D.carrier = {D.first} := by
   ext x
@@ -47,15 +47,15 @@ private theorem carrier_of_len {D : Segment k} (h : D.len = 1) : D.carrier = {D.
     exact ⟨0, by omega, by simp⟩
 
 /- English proof (translation)
-Establish `hne : D.first ≠ D'.first`. Rewrite using `[e, e']`. Conclude with `fun h => ofChar_ne_nu θ hθ h.symm`. Rewrite using `[Segment.Linked, carrier_of_len h, carrier_of_len h']`. Use `⟨⟨Segment.ofChar θ hθ 2 (by norm_num), ?_⟩, ?_, ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Establish `hf : (Segment.ofChar θ hθ 2 (by norm_num)).first = D'.first` using `e'.symm`. Establish `hl : (Segment.ofChar θ hθ 2 (by norm_num)).len = 2` using `rfl`. Use extensionality with `x`. Simplify using `only [Segment.mem_carrier, Set.mem_union, Set.mem_singleton_iff]`. Rewrite using `[hl, hf]`.
+Establish an intermediate fact. Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Prove the components needed by the constructor for the conclusion. Introduce and unpack `⟨n, hn, rfl⟩`. Take `rfl | rfl : n = 0 ∨ n = 1` from `by omega`. Use `right`. Simplify using the standard rewrite rules.
+Prove the components needed by the constructor for the conclusion. Assume the hypotheses and unpack their components. Extract witnesses or component facts from the available result. Simplify using the standard rewrite rules. Simplify to obtain the desired conclusion from the available facts.
 
-Use `left`. Simplify using `using e.symm`. Introduce and unpack `(rfl | rfl)`. Conclude with `⟨1, by omega, by simpa using e.symm⟩`. Conclude with `⟨0, by omega, by simp⟩`.
+Assume the hypotheses and unpack their components. Supply the required witnesses or components. Supply the required witnesses or components. Simplify to obtain the desired conclusion from the available facts. Simplify to obtain the desired conclusion from the available facts.
 
-Simplify using `using hne`. Simplify using `using hne.symm`.
+A detailed English derivation is pending.
 -/
 private theorem linked_of_len {D D' : Segment k} (h : D.len = 1) (h' : D'.len = 1) (θ : kˣ →* ℂˣ) (hθ : IsSmoothChar θ)
     (e' : D'.first = IrrGL.ofChar θ hθ) (e : D.first = D'.first.nu 1) : D.Linked D' := by
@@ -85,19 +85,19 @@ private theorem linked_of_len {D D' : Segment k} (h : D.len = 1) (h' : D'.len = 
 end Local
 
 /- English proof (translation)
-Use `haveI : CharZero (w.adicCompletion E) := charZero_of_injective_algebraMap (algebraMap E _).injective`. Take `⟨ξ, hξ, ϖ, hs, -, -, -⟩` from `GlobalTheory.SatSupp.hasSupport_of_hasSatGL E N hN w σ B hB`. Take `⟨α, -, hα⟩` from `(GlobalTheory.LGrp.SatakeCompare.hasSatakeGL_iff _ _ _ σ.ρ B).1 (GlobalTheory.LFun.SatCompare.hasSatakeGL_iff.2 ⟨⟨σ.smooth, σ.irred⟩, hB⟩)`. Take `⟨h, Δ, y, hd, hun, hL, ⟨φ⟩⟩` from `GlobalTheory.RgGu.Holds.genericUnlinkedGL_holds _ N σ.V σ.ρ σ.smooth σ.irred hg`. Establish `hsub : IsSubquotient σ.ρ (prodIrr y hd)` using `IsSubquotient.of_injective φ.toIntertwiningMap φ.toLinearEquiv.injective`.
+Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact. Establish an intermediate fact.
 
-Establish `hsp` using `GlobalTheory.LocLanglands.SphFac.isSpherical_factor _ h N y hd σ.V σ.ρ hsub hα.2.1`. Establish `h1 : ∀ i, (y i).1 = 1` using `fun i => GlobalTheory.TempSat.deg_eq_one_of_isLSeg (hL i) (hsp i)`. Establish `hlen : ∀ i, (Δ i).len = 1` using `fun i => by`. Establish `h2` using `(hL i).deg_eq`. Rewrite `h2` using `[h1 i, Segment.deg]`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact.
 
-Conclude with `Nat.eq_one_of_mul_eq_one_right h2`. Establish `hG : GlobalTheory.Published.GeometricLemma` using `GlobalTheory.geometricLemma_of_filtration GlobalTheory.Laid.bzfin_holds GlobalTheory.geometricLemmaFiltration_holds`. Establish `hs2 : HasSupport σ.ρ (∑ i, (Δ i).ms)` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_of_isSubquotient_prodIrr (fun i => (hL i).hasSupport) σ.irred hsub`. Establish `he : ∑ i, (Δ i).ms = chars ξ hξ` using `GlobalTheory.CompanionTheory.Hypotheses₂.TD.hasSupport_unique hG GlobalTheory.Laid.bzfin_holds hs2 (hs.of_equiv (IrrGL.equivOf σ.ρ σ.smooth σ.irred).symm)`. Use `⟨chars ξ hξ, hs, fun z hz => ?_, fun a ha b hb e => ?_⟩` and prove the remaining obligations.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Both sides reduce to the same expression.
 
-Take `⟨j, -, rfl⟩` from `Multiset.mem_map.1 hz`. Both sides reduce to the same expression. Take `⟨j, -, hj⟩` from `Multiset.mem_map.1 hb`. Rewrite `ha`, `hb` using `[← he]`. Take `⟨i, -, hi⟩` from `Multiset.mem_sum.1 ha`.
+Extract witnesses or component facts from the available result. Rewrite the indicated hypotheses using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Take `⟨i', -, hi'⟩` from `Multiset.mem_sum.1 hb`. Establish `ea : a = (Δ i).first`. Use `Segment.mem_ms.1 hi` as an intermediate fact. Rewrite `this` using `[carrier_of_len (hlen i)]`. Then use the resulting hypothesis. Establish `eb : b = (Δ i').first`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption. Establish an intermediate fact. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Use the resulting assumption.
 
-Use `Segment.mem_ms.1 hi'` as an intermediate fact. Rewrite `this` using `[carrier_of_len (hlen i')]`. Then use the resulting hypothesis. Substitute `ea` using the available equality. Distinguish the cases in `hii : i = i'`. Substitute `hii` using the available equality.
+Substitute using the available equality. Consider separately whether the proposition holds or fails. Substitute using the available equality. Rewrite the indicated hypotheses using the stated equalities. Substitute using the available equality.
 
-Rewrite `e` using `[← eb]`. Substitute `hj` using the available equality. Conclude with `ofChar_ne_nu _ _ e`. Conclude with `hun i i' hii (linked_of_len (hlen i) (hlen i') (ξ j) (hξ j) (eb ▸ hj.symm) (eb ▸ e))`.
+A detailed English derivation is pending.
 -/
 theorem plainTor_of_sph {E : Type} [Field E] [NumberField E] {N : ℕ} (hN : 1 ≤ N) (w : HeightOneSpectrum (𝓞 E))
     (σ : SmIrr (GL (Fin N) (w.adicCompletion E))) (B : Multiset ℂˣ) (hB : GlobalTheory.LFun.HasSatGL w σ.ρ B)
@@ -146,7 +146,7 @@ theorem plainTor_of_sph {E : Type} [Field E] [NumberField E] {N : ℕ} (hN : 1 �
 variable {F : Type} [Field F] [NumberField F] [IsTotallyReal F]
 
 /- English proof (translation)
-Introduce `σ hσ` and use `plainTor_of_sph hn v σ B (((satLocFree F n v σ).2 _ π.finPart (UpperTheory.V.Af.RealLocalComponent.isotypic π v σ hσ) B).1 hB) (isGeneric_of_isLocCompR n π v σ hσ)`.
+Fix the arbitrary inputs and assume any hypotheses. A detailed English derivation is pending.
 -/
 theorem plainAtR_of_hasSat {n : ℕ} (hn : 1 ≤ n) (π : TR.CuspSub F n) (v : HeightOneSpectrum (𝓞 F)) (B : Multiset ℂˣ)
     (hB : π.HasSat v B) : PlainAtR π v := fun σ hσ =>

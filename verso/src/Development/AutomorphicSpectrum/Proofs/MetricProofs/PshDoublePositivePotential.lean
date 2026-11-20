@@ -8,15 +8,13 @@ open MvPolynomial MeasureTheory Filter Topology ReciprocityTheory.AnForm Recipro
 namespace GlobalTheory.CompanionTheory.Ar.Giv.Mix.TwicePos
 
 /- English proof (translation)
-Unfold `ReciprocityTheory.AnForm.M.IsPsh`. Introduce `x j y hy w`. Establish `hy' : y ∈ (A.chart j).target ∩ (A.chart j).symm ⁻¹' Θ.U x` using `⟨hy.1, hy.2.2⟩`. Establish `hfun : ((Θ + LocPot.ofFun (fun _ => (0 : ℝ)) + Θ).φ x ∘ (A.chart j).symm) = fun z => (2 : ℝ) • (Θ.φ x ∘ (A.chart j).symm) z`. Use function extensionality and compare the values at `z`.
+Replace the relevant objects with their definitions. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `show Θ.φ x _ + 0 + Θ.φ x _ = (2 : ℝ) • Θ.φ x _`. Rewrite using `[smul_eq_mul]`. Expand and normalize the polynomial expressions, which then agree. Establish `hlevi : ∀ z v, ReciprocityTheory.AnForm.levi (fun z => (2 : ℝ) • (Θ.φ x ∘ (A.chart j).symm) z) z v = 2 * ReciprocityTheory.AnForm.levi (Θ.φ x ∘ (A.chart j).symm) z v`. Introduce `z v`.
+Rewrite the conclusion using the stated equalities. Expand and normalize the polynomial expressions, which then agree. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Replace the relevant objects with their definitions.
 
-Unfold `ReciprocityTheory.AnForm.levi`. Establish `h1 : fderiv ℝ (fun z => (2 : ℝ) • (Θ.φ x ∘ (A.chart j).symm) z) = (2 : ℝ) • fderiv ℝ (Θ.φ x ∘ (A.chart j).symm)` using `fderiv_const_smul_of_field (2 : ℝ)`. Establish `h2 : fderiv ℝ ((2 : ℝ) • fderiv ℝ (Θ.φ x ∘ (A.chart j).symm)) = (2 : ℝ) • fderiv ℝ (fderiv ℝ (Θ.φ x ∘ (A.chart j).symm))` using `fderiv_const_smul_of_field (2 : ℝ)`. Rewrite using `[h1, h2]`. Simplify using `only [Pi.smul_apply, ContinuousLinearMap.smul_apply, smul_eq_mul]`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. Expand and normalize the polynomial expressions, which then agree.
 
-Expand and normalize the polynomial expressions, which then agree. Rewrite using `[hfun, hlevi]`. Distinguish the cases in `hw : w = 0`. Substitute `hw` using the available equality. Simplify using `[ReciprocityTheory.AnForm.levi]`.
-
-Conclude with `mul_nonneg (by norm_num) (hpos x j y hy' w hw).le`.
+Rewrite the conclusion using the stated equalities. Consider separately whether the proposition holds or fails. Substitute using the available equality. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem isPsh_add_zero_add (e : ℕ) (X : Type) [TopologicalSpace X] (A : FinHolAtlas e X)
     (Θ : LocPot X) (hΘ : IsPotential A Θ) (hpos : IsPosPot A Θ) :

@@ -18,14 +18,14 @@ variable {Γ : Type} [Group Γ] [TopologicalSpace Γ] {η : Γ →* ℤˣ} {Ψ :
   [CommRing R''] [Algebra O R''] [IsCO O R'']
 
 /- English proof (translation)
-The claim follows from `Lift.ext (MonoidHom.ext fun g => emb_map' (f : R →+* R') (r.hom g))`.
+A detailed English derivation is pending.
 -/
 private theorem toLift_map (hη : IsLocallyConstant η) (r : GLift O η Ψ R) (f : R →ₐ[O] R') :
     (r.map f).toLift hη = (r.toLift hη).map f :=
   Lift.ext (MonoidHom.ext fun g => emb_map' (f : R →+* R') (r.hom g))
 
 /- English proof (translation)
-The claim follows from `GLift.ext (MonoidHom.ext fun g => eq_of_emb ((r.hasMult g).trans (r'.hasMult g).symm) (DFunLike.congr_fun (congrArg Lift.hom h) g))`.
+A detailed English derivation is pending.
 -/
 private theorem toLift_inj (hη : IsLocallyConstant η) {r r' : GLift O η Ψ R} (h : r.toLift hη = r'.toLift hη) :
     r = r' :=
@@ -33,11 +33,9 @@ private theorem toLift_inj (hη : IsLocallyConstant η) {r r' : GLift O η Ψ R}
     (DFunLike.congr_fun (congrArg Lift.hom h) g))
 
 /- English proof (translation)
-Establish `hs` using `hq.surjective`. Set `φ` to `π.liftOfRightInverse (Function.surjInv hs) (Function.rightInverse_surjInv hs) ⟨r.hom, h⟩`. Establish `hφ : ∀ g, φ (π g) = r.hom g` using `fun g => π.liftOfRightInverse_comp_apply _ _ _ g`. Use `⟨⟨φ, fun a b n s => ?_, fun g => ?_⟩, GLift.ext (MonoidHom.ext hφ)⟩` and prove the remaining obligations. Rewrite using `[← hq.isOpen_preimage]`.
+Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Use `r.cont a b n s` as an intermediate fact. Simplify using `only [← hφ] at this`. Conclude with `this`. Take `⟨g, rfl⟩` from `hs g`. Rewrite using `[hφ]`.
-
-Conclude with `r.red g`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem descend {G : Type} [Group G] [TopologicalSpace G] (π : G →* Γ) (hq : IsQuotientMap π)
     (r : GLift O (η.comp π) (Ψ.comp π) R) (h : π.ker ≤ r.hom.ker) :
@@ -55,11 +53,11 @@ private theorem descend {G : Type} [Group G] [TopologicalSpace G] (π : G →* �
     exact r.red g
 
 /- English proof (translation)
-Establish `: (r.hom.ker : Set Γ) = ⋂ n : ℕ, {g | GG.map (Ideal.Quotient.mk (maximalIdeal R ^ n)) (r.hom g) = 1}`. Use extensionality with `g`. Simplify using `only [SetLike.mem_coe, MonoidHom.mem_ker, Set.mem_iInter, Set.mem_setOf_eq]`. Use `⟨fun h n => by rw [h, map_one], fun h => ?_⟩` and prove the remaining obligations. Use `SemidirectProduct.ext (Units.ext ?_) (congrArg SemidirectProduct.right (h 0) :)` and prove the remaining obligations.
+Establish an intermediate fact. By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Reduce the conclusion to the remaining proof obligations. Reduce the conclusion to the remaining proof obligations.
 
-Use extensionality with `a b`. Rewrite using `[← sub_eq_zero]`. Use `IsHausdorff.haus (I := maximalIdeal R) inferInstance _ fun n => ?_` and prove the remaining obligations. Rewrite using `[SModEq.zero, smul_eq_mul, Ideal.mul_top, ← Ideal.Quotient.eq]`. Use `congrArg (fun x : GG 3 _ => x.mat a b) ((h n).trans (map_one (GG.map (Ideal.Quotient.mk _))).symm)` as an intermediate fact.
+By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Conclude with `this`. Rewrite using `[this]`. Conclude with `isClosed_iInter fun n => (r.locConst hη n).isClosed_fiber 1`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem ker_closed (hη : IsLocallyConstant η) (r : GLift O η Ψ R) : IsClosed (r.hom.ker : Set Γ) := by
   have : (r.hom.ker : Set Γ) = ⋂ n : ℕ, {g | GG.map (Ideal.Quotient.mk (maximalIdeal R ^ n)) (r.hom g) = 1} := by
@@ -79,45 +77,37 @@ private theorem ker_closed (hη : IsLocallyConstant η) (r : GLift O η Ψ R) : 
 end Tools
 
 /- English proof (translation)
-Establish `hπ` using `hq.continuous`. Establish `hηG : IsLocallyConstant (η.comp π)` using `hη.comp_continuous hπ`. Establish `hηH : IsLocallyConstant ((η.comp π).comp ι)` using `hηG.comp_continuous hι`. Take `⟨hBK, f₀, hf₀, hI⟩ : BoxCond Kill ι hι U I B.R B.r` from `(B.rep B.R).1 (AlgHom.id O _)`. Establish `hne : I ≠ ⊤` using `fun h => RingHom.ker_ne_top f₀ (top_le_iff.1 (h ▸ hI))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Use `haveI : Nontrivial (U.R ⧸ I) := Ideal.Quotient.nontrivial_iff.2 hne`. Use `haveI : IsCO O (U.R ⧸ I) := co_quot O U.R (U.R ⧸ I) (Ideal.Quotient.mkₐ O I) (Ideal.Quotient.mkₐ_surjective O I)`. Set `F` to `unitFrame π hπ ι hι D N`. Set `u` to `U.r.map (Ideal.Quotient.mkₐ O I)`. Set `ρ : ∀ v, Lift O ((emb.comp (rbar O η Ψ)).comp (F.φ v)) (U.R ⧸ I)` to `fun _ => u.toLift hηH`.
+Introduce a local definition for the expression. Introduce a local definition for the expression. Introduce a local definition for the expression. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities.
 
-Take `⟨R, _, _, _, i, r, α, W, τ, κ, _, _, e, f, wf, ⟨⟨h1, h2, -, h4, h5⟩, hu⟩, hrel, hhom, -, hz, hτ, hκ⟩` from `hP l O hl _ ℤ wt6 (form6 O) Γ hΦ _ ((baseLift O η Ψ hΨ).toLift hη) (blockPairingForm_normalises_baseLift O η (barChar O Ψ)) (blockPairingForm_normalises_baseLift O η Ψ) F (fun q => killCond _ (F.N q)) (fun q n hn => by show emb (rbar O η Ψ (π n)) = 1`. Rewrite using `[← baseLift_map_residue, hN q n hn, map_one, map_one])`. Use `hloc (fun q n hn => by show emb (r0 η Ψ (π n)) = 1`. Rewrite using `[hN q n hn, map_one])`. Use the proof step `(fun j => (hc j).1) (U.R ⧸ I) WB ρ`.
+Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Rewrite the conclusion using the stated equalities.
 
-Use the proof step `(fun s => by`. Take `⟨g, a, b, -, h⟩` from `hW.1 s`. Establish `h1 : res O _ (emb (u.hom g) a b) = emb (rbar O _ _ g) a b` using `(u.toLift hηH).red g a b`. Rewrite `h1` using `[← baseLift_map_residue, emb_map']`. Rewrite using `[h, ← res_eq_zero_iff O, map_sub, AlgHom.commutes, sub_eq_zero]`.
+Establish an intermediate fact. Substitute using the available equality. Extract witnesses or component facts from the available result. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `h1)`. Use the proof step `(fun _ => (UpperTheory.gLift_toLift_inH_and_surjective hηH).1 u) (fun _ => hW.2)`. Establish `hα : α = fun _ => 1` using `funext fun _ => h4`. Substitute `hα` using the available equality. Take `⟨r', rfl⟩` from `(UpperTheory.gLift_toLift_inH_and_surjective hη).2 r h1`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Establish `hloc' : U.r.map (i.comp (Ideal.Quotient.mkₐ O I)) = (r'.comap π hπ).comap ι hι`. Use `toLift_inj hηH (Lift.ext (MonoidHom.ext fun s => ?_))` and prove the remaining obligations. Use `h5 () s` as an intermediate fact. Rewrite `this` using `[mul_one, one_mul]`. Conclude with `(emb_map' (i : (U.R ⧸ I) →+* R) (u.hom s)).trans this.symm`.
+Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result.
 
-Establish `hbox : BoxCond Kill ι hι U I R (r'.comap π hπ)`. Use `⟨(hK _ (ker_closed hηG (r'.comap π hπ))).2 ⟨fun g hg => ?_, fun q n hn => ?_⟩, _, hloc', fun y hy => ?_⟩` and prove the remaining obligations. Use `show r'.hom (π g) = 1`. Rewrite using `[show π g = 1 from hg, map_one]`. Establish `h6 : emb (r'.hom (π n)) = 1` using `h2 q ⟨n, hND q hn⟩ hn`.
+Extract witnesses or component facts from the available result. Establish an intermediate fact. Introduce a local definition for the expression. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `eq_of_emb ((r'.hasMult _).trans (congrArg SemidirectProduct.right (hN q n hn))) (h6.trans (map_one _).symm)` and prove the remaining obligations. Use `show i (Ideal.Quotient.mk I y) = 0`. Rewrite using `[Ideal.Quotient.eq_zero_iff_mem.2 hy, map_zero]`. Take `⟨a, ha, -⟩` from `(B.rep R).2 _ hbox`. Take `⟨hB1, hB2⟩` from `(hK _ (ker_closed hηG B.r)).1 hBK`.
+Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Take `⟨r'', hr''⟩` from `descend π hq B.r hB1`. Establish `hr2 : ∀ g, r''.hom (π g) = B.r.hom g` using `fun g => DFunLike.congr_fun (congrArg GLift.hom hr'') g`. Set `i' : (U.R ⧸ I) →ₐ[O] B.R` to `Ideal.Quotient.liftₐ I f₀ hI`. Establish `hi' : i'.comp (Ideal.Quotient.mkₐ O I) = f₀` using `AlgHom.ext fun _ => rfl`. Establish `hpush : push f₀ U.r.hom = B.r.hom.comp ι` using `congrArg GLift.hom hf₀`.
+Establish an intermediate fact. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations. Chain the equalities or inequalities of the calculation. Establish an intermediate fact.
 
-Take `⟨b, ⟨hb1, hb2, -⟩, -⟩` from `hu B.R i' (r''.toLift hη) (fun _ => 1) ⟨(UpperTheory.gLift_toLift_inH_and_surjective hη).1 r'', fun q n hn => by show emb (r''.hom (π n)) = 1`. Rewrite using `[hr2, show B.r.hom n = 1 from hB2 q hn, map_one],`. Use `fun _ => (hh_group O _ ℤ wt6 (form6 O) B.R).1, rfl, fun _ s => by`. Rewrite using `[mul_one, one_mul]`. Use `Eq.trans ?_ (emb_map' (i' : (U.R ⧸ I) →+* B.R) (u.hom s))` and prove the remaining obligations.
+Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Reduce the conclusion to the remaining proof obligations.
 
-Use `show emb (r''.hom (π (ι s))) = emb (push f₀ U.r.hom s)`. Rewrite using `[hr2, hpush]`. Use the proof step `rfl⟩`. Establish `hb3 : r'.map b = r''` using `toLift_inj hη ((toLift_map hη r' b).trans hb2)`. Establish `hba : b.comp a = AlgHom.id O _`.
+Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Chain the equalities or inequalities of the calculation. Rewrite the conclusion using the stated equalities.
 
-Use `((B.rep B.R).2 B.r ⟨hBK, f₀, hf₀, hI⟩).unique ?_ rfl` and prove the remaining obligations. Combine the equalities or inequalities in the displayed calculation. Establish `ha2 : r''.map a = r'`. Use `GLift.ext (MonoidHom.ext fun g => ?_)` and prove the remaining obligations. Take `⟨g, rfl⟩` from `hq.surjective g`.
+Reduce the equality to equality of the corresponding arguments. Chain the equalities or inequalities of the calculation. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact.
 
-Use `show GG.map _ (r''.hom (π g)) = _`. Rewrite using `[hr2]`. Conclude with `DFunLike.congr_fun (congrArg GLift.hom ha) g`. Establish `hab : a.comp b = AlgHom.id O _`. Use `(hu R i (r'.toLift hη) (fun _ => 1) ⟨h1, h2, fun _ => (hh_group O _ ℤ wt6 (form6 O) R).1, rfl, h5⟩).unique ⟨?_, ?_, fun _ => Matrix.map_one _ (map_zero _) (map_one _)⟩ ⟨rfl, rfl, fun _ => Matrix.map_one _ rfl rfl⟩` and prove the remaining obligations.
+By extensionality, compare the relevant components. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations.
 
-Rewrite using `[AlgHom.comp_assoc, hb1]`. Use `Ideal.Quotient.algHom_ext O (((U.rep R).2 _ trivial).unique ?_ hloc')` and prove the remaining obligations. Rewrite using `[AlgHom.comp_assoc, hi', ← ha]`. Combine the equalities or inequalities in the displayed calculation. Rewrite using `[← toLift_map]`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations.
 
-Use `congr 1`. Combine the equalities or inequalities in the displayed calculation. Establish `hbs : Function.Surjective b` using `fun y => ⟨a y, DFunLike.congr_fun hba y⟩`. Establish `hbi : Function.Injective b` using `Function.LeftInverse.injective (g := a) fun y => DFunLike.congr_fun hab y`. Establish `hker : RingHom.ker (b.comp W.π) = RingHom.ker W.π`.
+Rewrite the conclusion using the stated equalities. Both sides reduce to the same expression. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Apply the first step, then apply the next step to every resulting obligation.
 
-Use extensionality with `x`. Simplify using `only [RingHom.mem_ker, AlgHom.comp_apply, map_eq_zero_iff b hbi]`. Establish `hent : ∀ g x y, b (emb (r'.hom (π g)) x y) = emb (B.r.hom g) x y` using `fun g x y => by`. Rewrite using `[← hr2, ← hb3]`. Conclude with `(congrFun (congrFun (emb_map' (b : R →+* B.R) (r'.hom (π g))) x) y).symm`.
-
-Use `⟨⟨W.σ, W.wt, b.comp W.π, hbs.comp W.surj, hker ▸ W.homog⟩, i', τ, κ, inferInstance, inferInstance, e, f, wf, ⟨hrel.1, fun x => ?_, hrel.2.2.1, hker.trans hrel.2.2.2⟩, hi' ▸ hpush, fun t => ?_, fun g x y => ?_, fun j => ?_⟩` and prove the remaining obligations. Use `show b (W.π _) = _`. Rewrite using `[hrel.2.1, ← hb1]`. Both sides reduce to the same expression. Take `⟨x, y, hw, ⟨s, hs⟩ | ⟨v, hv⟩⟩` from `hz t`.
-
-Take `⟨g, rfl⟩` from `hq.surjective s`. Use `⟨g, x, y, hw, ?_⟩` and prove the remaining obligations. Use `show b (W.z _) = _`. Rewrite using `[hs, map_sub, AlgHom.commutes, ← hent]`. Both sides reduce to the same expression.
-
-Use `⟨1, x, y, hw, ?_⟩ show b (W.z _) = _` and prove the remaining obligations. Rewrite using `[hv, map_one, map_one, map_one]`. Apply the tactic sequence `by_cases hxy : x = y <;> simp [Matrix.one_apply, hxy]`. Take `⟨p, hp, hp'⟩` from `hhom (π g) x y`. Use `⟨p, hp, ?_⟩` and prove the remaining obligations.
-
-Use `show b (W.π p) = _`. Rewrite using `[← hent]`. Conclude with `congrArg b hp'`. Rewrite using `[hκ, hτ]`. Conclude with `(hc j).2`.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem boxPres_abs (hP : LemmaP) (l : ℕ) [Fact l.Prime] [IsNoetherianRing O] [IsAdicComplete (maximalIdeal O) O]
     [Finite (ResidueField O)] [CharP (ResidueField O) l] (hl : l ≠ 2) {G Γ H : Type} [Group G] [TopologicalSpace G]

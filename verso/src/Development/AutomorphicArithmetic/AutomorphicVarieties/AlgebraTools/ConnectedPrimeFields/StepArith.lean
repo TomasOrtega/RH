@@ -8,7 +8,7 @@ import Development.AutomorphicArithmetic.AutomorphicVarieties.AlgebraTools.Conne
 open IsLocalRing UpperTheory.V.AlgebraTools.Conn
 
 /- English proof (translation)
-Establish `h` using `Module.supportDim_le_supportDim_quotSMulTop_succ (R := R) (M := R ⧸ J) (x := y) hy`. Rewrite `h` using `[Module.supportDim_quotient_eq_ringKrullDim]`. Use `h.trans (le_of_eq ?_)` and prove the remaining obligations. Rewrite using `[ringKrullDim_quotient, Module.supportDim, Module.support_quotSMulTop, Module.support_eq_zeroLocus, Ideal.annihilator_quotient, PrimeSpectrum.zeroLocus_sup, PrimeSpectrum.zeroLocus_span]`.
+Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 -/
 private theorem UpperTheory.V.AlgebraTools.Conn.step_krull {R : Type} [CommRing R] [IsLocalRing R]
     [IsNoetherianRing R] (J : Ideal R) (y : R) (hy : y ∈ maximalIdeal R) :
@@ -22,7 +22,7 @@ private theorem UpperTheory.V.AlgebraTools.Conn.step_krull {R : Type} [CommRing 
     PrimeSpectrum.zeroLocus_span]
 
 /- English proof (translation)
-Rewrite using `[ringKrullDim_quotient, ringKrullDim_quotient]`. Conclude with `Order.krullDim_le_of_strictMono (Set.inclusion h) (fun _ _ hab => hab)`.
+Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 private theorem UpperTheory.V.AlgebraTools.Conn.step_mono {R : Type} [CommRing R] (J I : Ideal R)
     (h : PrimeSpectrum.zeroLocus (J : Set R) ⊆ PrimeSpectrum.zeroLocus (I : Set R)) :
@@ -31,9 +31,9 @@ private theorem UpperTheory.V.AlgebraTools.Conn.step_mono {R : Type} [CommRing R
   exact Order.krullDim_le_of_strictMono (Set.inclusion h) (fun _ _ hab => hab)
 
 /- English proof (translation)
-Establish `h4 : d < k` using `lt_of_le_of_lt h1 h2`. Proceed by induction on `d using WithBot.recBotCoe with`. Consider the case `bot => simp at h3`. Consider the case `coe d`. Proceed by induction on `d using ENat.recTopCoe with`.
+Establish an intermediate fact. Proceed by induction. Treat this case separately. Treat this case separately. Proceed by induction.
 
-Consider the case `top => exact absurd h4 (not_lt.2 (WithBot.coe_le_coe.2 le_top))`. Consider the case `coe d`. Establish `h5 : d < k` using `by exact_mod_cast h4`. Establish `h6 : k + 1 ≤ d + 1` using `by exact_mod_cast h3`. Use linear arithmetic over natural numbers and integers.
+Treat this case separately. Treat this case separately. Establish an intermediate fact. Establish an intermediate fact. Use linear arithmetic over natural numbers and integers.
 -/
 private theorem UpperTheory.V.AlgebraTools.Conn.step_arith (d e : WithBot ℕ∞) (k : ℕ) (h1 : d ≤ e) (h2 : e < k)
     (h3 : ((k + 1 : ℕ) : WithBot ℕ∞) ≤ d + 1) : False := by
@@ -49,25 +49,23 @@ private theorem UpperTheory.V.AlgebraTools.Conn.step_arith (d e : WithBot ℕ∞
       omega
 
 /- English proof (translation)
-Introduce `R _ _ _ hC a f k hf hconn hdim I hI hIk`. Use `set X : Ideal R → Set (PrimeSpectrum R) := fun b => PrimeSpectrum.zeroLocus ((b ⊔ Ideal.span {f} : Ideal R) : Set R) \ PrimeSpectrum.zeroLocus (I : Set R) with hX`. Establish `hmem : ∀ (b : Ideal R) (z : PrimeSpectrum R), z ∈ X b ↔ (b ≤ z.asIdeal ∧ Ideal.span {f} ≤ z.asIdeal) ∧ ¬ I ≤ z.asIdeal`. Introduce `b z`. Simplify using `only [hX, Set.mem_diff, PrimeSpectrum.mem_zeroLocus, SetLike.coe_subset_coe, sup_le_iff]`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Establish an intermediate fact.
 
-Establish `hXc : ∀ p ∈ a.minimalPrimes, IsConnected (X p)`. Introduce `p hp`. Establish `h` using `hyper hC p f k hp.1.1 hf (hdim p hp) ((p ⊔ Ideal.span {f}) ⊔ I) le_sup_left (lt_of_le_of_lt (step_mono _ _ (PrimeSpectrum.zeroLocus_anti_mono_ideal le_sup_right)) hIk)`. Use `h using 1` and compare the differences between its conclusion and the goal. Use extensionality with `z`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Apply an available result and prove the equalities needed to match it to the conclusion. By extensionality, compare the relevant components. Rewrite the conclusion using the stated equalities.
 
-Rewrite using `[hmem]`. Simplify using `only [Set.mem_diff, PrimeSpectrum.mem_zeroLocus, SetLike.coe_subset_coe, sup_le_iff]`. The claim follows by propositional logic. Establish `hsub : ∀ p ∈ a.minimalPrimes, X p ⊆ X a`. Introduce `p hp z hz`.
+Simplify using the standard rewrite rules. The claim follows by propositional logic. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Rewrite the hypotheses and the conclusion using the stated equalities.
 
-Rewrite `hz`, the goal using `[hmem]`. Conclude with `⟨⟨hp.1.2.trans hz.1.1, hz.1.2⟩, hz.2⟩`. Establish `hmeet : ∀ p q : Ideal R, ReciprocityTheory.CA.Linked R ((k + 1 : ℕ) : WithBot ℕ∞) p q → (X p ∩ X q).Nonempty`. Introduce `p q hl`. Assume the negation of the conclusion as `hne`.
+Supply the required witnesses or components. Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Establish `hl' : ((k + 1 : ℕ) : WithBot ℕ∞) ≤ ringKrullDim (R ⧸ (p ⊔ q))` using `hl`. Use `step_arith _ _ k (step_mono ((p ⊔ q) ⊔ Ideal.span {f}) I ?_) hIk (hl'.trans (step_krull _ f hf))` and prove the remaining obligations. Introduce `z hz`. Simplify using `only [PrimeSpectrum.mem_zeroLocus, SetLike.coe_subset_coe, sup_le_iff] at hz ⊢`. Assume the negation of the conclusion as `hzI`.
+Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses. Simplify using the standard rewrite rules. Assume the negation of the conclusion and derive a contradiction. Establish an intermediate fact.
 
-Conclude with `hne ⟨z, (hmem p z).2 ⟨⟨hz.1.1, hz.2⟩, hzI⟩, (hmem q z).2 ⟨⟨hz.1.2, hz.2⟩, hzI⟩⟩`. Establish `ha : a ≠ ⊤`. Introduce and unpack `rfl`. Establish `h` using `hconn ⊤ le_rfl (by`. Rewrite using `[ringKrullDim_eq_bot_of_subsingleton]`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify to obtain the desired conclusion from the available facts. Extract witnesses or component facts from the available result.
 
-Conclude with `WithBot.bot_lt_coe _)`. Simplify using `using h.nonempty`. Take `⟨p₀, hp₀, -⟩` from `Ideal.exists_minimalPrimes_le (I := a) (J := maximalIdeal R) (le_maximalIdeal ha)`. Establish `key : ∀ q, Relation.ReflTransGen (fun x y : Ideal R => x ∈ a.minimalPrimes ∧ y ∈ a.minimalPrimes ∧ ReciprocityTheory.CA.Linked R ((k + 1 : ℕ) : WithBot ℕ∞) x y) p₀ q → ∃ t, t ⊆ X a ∧ X p₀ ⊆ t ∧ X q ⊆ t ∧ IsConnected t`. Introduce `q hq`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Proceed by induction. Treat this case separately. Treat this case separately.
 
-Proceed by induction on `hq with`. Consider the case `refl => exact ⟨X p₀, hsub _ hp₀, le_rfl, le_rfl, hXc _ hp₀⟩`. Consider the case `@tail b c _ hbc ih`. Take `⟨t, h1, h2, h3, h4⟩` from `ih`. Use `⟨t ∪ X c, Set.union_subset h1 (hsub _ hbc.2.1), h2.trans Set.subset_union_left, Set.subset_union_right, h4.union ?_ (hXc _ hbc.2.1)⟩` and prove the remaining obligations.
+Extract witnesses or component facts from the available result. Reduce the conclusion to the remaining proof obligations. Extract witnesses or component facts from the available result. Express the relevant assertion in an equivalent form by its definition. Reduce the conclusion to the remaining proof obligations.
 
-Conclude with `(hmeet b c hbc.2.2).mono (Set.inter_subset_inter_left _ h3)`. Take `⟨x, hx⟩` from `(hXc _ hp₀).nonempty`. Express the relevant statement in the definitionally equal form `IsConnected (X a)`. Use `⟨⟨x, hsub _ hp₀ hx⟩, isPreconnected_of_forall x fun y hy => ?_⟩` and prove the remaining obligations. Establish `hy'` using `(hmem a y).1 hy`.
-
-Take `⟨q, hq, hqy⟩` from `Ideal.exists_minimalPrimes_le (I := a) (J := y.asIdeal) hy'.1.1`. Take `⟨t, h1, h2, h3, h4⟩` from `key q (chain a _ hconn p₀ hp₀ q hq)`. Conclude with `⟨t, h1, h2 hx, h3 ((hmem q y).2 ⟨⟨hqy, hy'.1.2⟩, hy'.2⟩), h4.isPreconnected⟩`.
+Establish an intermediate fact. Extract witnesses or component facts from the available result. Extract witnesses or component facts from the available result. Supply the required witnesses or components. A detailed English derivation is pending.
 -/
 theorem UpperTheory.V.AlgebraTools.Conn.step :
     ∀ {R : Type} [CommRing R] [IsLocalRing R] [IsNoetherianRing R], CohenType R → ∀ (a : Ideal R) (f : R) (k : ℕ),

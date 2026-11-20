@@ -10,17 +10,15 @@ noncomputable section
 namespace GlobalTheory.WachPlace
 
 /- English proof (translation)
-Introduce and unpack `⟨hc, hcr, hj⟩ ht hdet`. Use `set φ := algebraMap ↥(OL LL) ↥LL.1 with hφ`. Establish `hinj : Function.Injective φ` using `fun x y h => Subtype.ext h`. Use `set aL : Mx ↥LL.1 n n := a.map φ with haL`. Establish `hdL : IsUnit aL.det`.
+Assume the hypotheses and unpack their components. Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities.
 
-Establish `hd : aL.det = φ a.det` using `(RingHom.map_det φ a).symm`. Rewrite using `[hd]`. Conclude with `isUnit_iff_ne_zero.mpr (fun h => hdet (hinj (by rw [h, map_zero])))`. Establish `htL : ∀ g, aL * (r' g : Mx ↥(OL LL) n n).map φ = (r g : Mx ↥(OL LL) n n).map φ * aL` using `fun g => by`. Rewrite using `[haL, ← Matrix.map_mul, ← Matrix.map_mul, ht g]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Introduce a local definition for the expression.
 
-Establish `hconj : ∀ g, (r' g : Mx ↥(OL LL) n n).map φ = aL⁻¹ * ((r g : Mx ↥(OL LL) n n).map φ * aL)` using `fun g => by`. Rewrite using `[← htL g, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hdL, Matrix.one_mul]`. Set `e : (Fin n → ↥LL.1) ≃ₗ[↥LL.1] (Fin n → ↥LL.1)` to `LinearEquiv.ofLinear (Matrix.toLin' aL) (Matrix.toLin' aL⁻¹) (by rw [← Matrix.toLin'_mul, Matrix.mul_nonsing_inv _ hdL, Matrix.toLin'_one]) (by rw [← Matrix.toLin'_mul, Matrix.nonsing_inv_mul _ hdL, Matrix.toLin'_one])`. Establish `he : ∀ g v, e (repOf r' g v) = repOf r g (e v)` using `fun g v => by show aL.mulVec (repOf r' g v) = repOf r g (aL.mulVec v)`. Rewrite using `[repOf_apply, repOf_apply, Matrix.mulVec_mulVec, Matrix.mulVec_mulVec, htL g]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Establish an intermediate fact. Apply function extensionality and compare values at an arbitrary argument.
 
-Use `⟨fun i j => ?_, GlobalTheory.HTW.Rec.isCrys_of_equiv _ e he hcr, fun i τ hτ u => ?_⟩` and prove the remaining obligations. Establish `hform : (fun g => (((r' g : Mx ↥(OL LL) n n) i j : ↥(OL LL)) : ↥LL.1)) = fun g => ∑ k, aL⁻¹ i k * ∑ m, (((r g : Mx ↥(OL LL) n n) k m : ↥(OL LL)) : ↥LL.1) * aL m j`. Use function extensionality and compare the values at `g`. Use `congrFun (congrFun (hconj g) i) j` as an intermediate fact. Simplify using `only [Matrix.map_apply, Matrix.mul_apply] at this`.
+Establish an intermediate fact. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities.
 
-Conclude with `this`. Rewrite using `[hform]`. Use `continuous_finset_sum _ fun k _ => continuous_const.mul ?_` and prove the remaining obligations. Conclude with `continuous_finset_sum _ fun m _ => (hc k m).mul continuous_const`. Rewrite using `[GlobalTheory.HTW.Rec.multV_eq_of_equiv _ e he]`.
-
-Conclude with `hj i τ hτ u`.
+A detailed English derivation is pending.
 -/
 theorem matGood_of_tw {l : ℕ} [Fact l.Prime] (P : LocPrime l) (K LL : FinExt l) (f n : ℕ)
     (emb : ZMod f → (↥(K0 K) →ₐ[ℚ_[l]] ↥LL.1)) (r r' : ↥(GK K) →* GL (Fin n) ↥(OL LL))

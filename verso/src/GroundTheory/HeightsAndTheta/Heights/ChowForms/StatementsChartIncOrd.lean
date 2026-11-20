@@ -21,7 +21,7 @@ def ChartIncOrd.Statement : Prop :=
 section Inhabitants
 
 /- English proof (translation)
-Establish `e : K.map f = (K ⊔ RingHom.ker f).map f`. Rewrite using `[Ideal.map_sup, (Ideal.map_eq_bot_iff_le_ker f).mpr le_rfl, sup_bot_eq]`. Rewrite using `[e]`. Conclude with `Ideal.map_isPrime_of_surjective hf le_sup_right`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem isPrime_map_of_sup_ker {R S : Type*} [CommRing R] [CommRing S] (f : R →+* S)
     (hf : Function.Surjective f) (K : Ideal R) (h : (K ⊔ RingHom.ker f).IsPrime) : (K.map f).IsPrime := by

@@ -26,13 +26,13 @@ def coord (lam : K' →ₗ[K] K) (R : Type) [CommRing R] [Algebra K R] : K' ⊗[
   (TensorProduct.lid K R).toLinearMap ∘ₗ lam.rTensor R
 
 /- English proof (translation)
-Simplify using `[coord]`.
+Simplify using the standard rewrite rules.
 -/
 theorem coord_tmul (lam : K' →ₗ[K] K) {R : Type} [CommRing R] [Algebra K R] (a : K') (r : R) :
     coord lam R (a ⊗ₜ r) = lam a • r := by simp [coord]
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a r => simp [coord_tmul]`. Consider the case `add x y hx hy => simp [hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coord_map (lam : K' →ₗ[K] K) {R T : Type} [CommRing R] [Algebra K R] [CommRing T] [Algebra K T]
     (ψ : R →ₐ[K] T) (v : K' ⊗[K] R) :
@@ -43,7 +43,7 @@ theorem coord_map (lam : K' →ₗ[K] K) {R T : Type} [CommRing R] [Algebra K R]
   | add x y hx hy => simp [hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a s => simp [coord_tmul, Algebra.TensorProduct.tmul_mul_tmul]`. Consider the case `add x y hx hy => simp [mul_add, hx, hy]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Treat this case separately.
 -/
 theorem coord_mul (lam : K' →ₗ[K] K) {R : Type} [CommRing R] [Algebra K R] (r : R) (v : K' ⊗[K] R) :
     coord lam R (((1 : K') ⊗ₜ[K] r) * v) = r * coord lam R v := by
@@ -53,9 +53,9 @@ theorem coord_mul (lam : K' →ₗ[K] K) {R : Type} [CommRing R] [Algebra K R] (
   | add x y hx hy => simp [mul_add, hx, hy]
 
 /- English proof (translation)
-Proceed by induction on `v using TensorProduct.induction_on with`. Consider the case `zero => simp`. Consider the case `tmul a r`. Simplify using `only [coord_tmul, Module.Basis.coord_apply, ← TensorProduct.smul_tmul]`. Rewrite using `[← TensorProduct.sum_tmul, B.sum_repr]`.
+Proceed by induction. Treat this case separately. Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 
-Consider the case `add x y hx hy`. Simplify using `only [map_add, TensorProduct.tmul_add, Finset.sum_add_distrib]`. Rewrite using `[← hx, ← hy]`.
+Treat this case separately. Simplify using the standard rewrite rules. Rewrite the conclusion using the stated equalities.
 -/
 theorem sum_coord {d : ℕ} (B : Module.Basis (Fin d) K K') {R : Type} [CommRing R] [Algebra K R] (v : K' ⊗[K] R) :
     v = ∑ j, B j ⊗ₜ[K] coord (B.coord j) R v := by
@@ -77,13 +77,13 @@ instance algBig : Algebra K' (Ext K K' R) := inferInstanceAs (Algebra K' (K' ⊗
 instance algSmall : Algebra K (Ext K K' R) := inferInstanceAs (Algebra K (K' ⊗[K] R))
 
 /- English proof (translation)
-The claim follows from `(IsScalarTower.algebraMap_apply K K' (K' ⊗[K] R) x).symm`.
+A detailed English derivation is pending.
 -/
 theorem ext_tower (x : K) : algebraMap K' (Ext K K' R) (algebraMap K K' x) = algebraMap K (Ext K K' R) x :=
   (IsScalarTower.algebraMap_apply K K' (K' ⊗[K] R) x).symm
 
 /- English proof (translation)
-Use `haveI := ((GlobalTheory.reduced_finiteType_iff_testRing K).2 p).2`. Use `haveI := ((GlobalTheory.reduced_finiteType_iff_testRing K).2 p).1`. Conclude with `GlobalTheory.ReducedAlg.isReduced_field_tensor _ _`.
+A detailed English derivation is pending.
 -/
 theorem ext_reduced [CharZero K] (p : TRing K) : IsReduced (Ext K K' p.R) := by
   haveI := ((GlobalTheory.reduced_finiteType_iff_testRing K).2 p).2
@@ -96,7 +96,7 @@ def inR (K' : Type) [Field K'] [Algebra K K'] (R : Type) [CommRing R] [Algebra K
 def crd (lam : K' →ₗ[K] K) (v : Ext K K' R) : R := coord lam R v
 
 /- English proof (translation)
-Assemble the required witnesses or components as `⟨Algebra.TensorProduct.map (AlgHom.id K' K') ψ, (Algebra.TensorProduct.map (AlgHom.id K' K') ψ).restrictScalars K, fun _ => rfl, AlgHom.ext fun v => by show Algebra.TensorProduct.map (AlgHom.id K' K') ψ ((1 : K') ⊗ₜ[K] v) = (1 : K') ⊗ₜ[K] ψ v simp, fun lam v => coord_map lam ψ v⟩`.
+Supply the required witnesses or components.
 -/
 theorem exists_map (ψ : R →ₐ[K] T) : ∃ (Ψ : Ext K K' R →ₐ[K'] Ext K K' T) (Ψ₀ : Ext K K' R →ₐ[K] Ext K K' T),
     (∀ x, Ψ₀ x = Ψ x) ∧ Ψ₀.comp (inR K' R) = (inR K' T).comp ψ ∧ ∀ lam v, crd lam (Ψ v) = ψ (crd lam v) :=
@@ -108,15 +108,15 @@ theorem exists_map (ψ : R →ₐ[K] T) : ∃ (Ψ : Ext K K' R →ₐ[K'] Ext K 
     fun lam v => coord_map lam ψ v⟩
 
 /- English proof (translation)
-The claim follows from `coord_mul lam r v`.
+A detailed English derivation is pending.
 -/
 theorem crd_mul (lam : K' →ₗ[K] K) (r : R) (v : Ext K K' R) : crd lam (inR K' R r * v) = r * crd lam v :=
   coord_mul lam r v
 
 /- English proof (translation)
-Use `haveI : IsScalarTower K K' S := IsScalarTower.of_algebraMap_eq fun x => (h x).symm`. Set `Φ : K' ⊗[K] R →ₐ[K'] S` to `Algebra.TensorProduct.lift (Algebra.ofId K' S) φ (fun _ _ => Commute.all _ _)`. Use `⟨Φ, Φ.restrictScalars K, fun _ => rfl, AlgHom.ext fun v => ?_, fun d B v => ?_⟩` and prove the remaining obligations. Use `show Φ ((1 : K') ⊗ₜ[K] v) = φ v`. Simplify using `[Φ]`.
+Introduce a local definition for the expression. Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Establish an intermediate fact. Rewrite the indicated hypotheses using the stated equalities.
 
-Establish `e` using `congrArg Φ (sum_coord B (R := R) v)`. Rewrite `e` using `[map_sum]`. Use `e.trans (Finset.sum_congr rfl fun j _ => ?_)` and prove the remaining obligations. Simplify using `only [Φ, Algebra.TensorProduct.lift_tmul]`. Both sides reduce to the same expression.
+Reduce the conclusion to the remaining proof obligations. Simplify using the standard rewrite rules. Both sides reduce to the same expression. A detailed English derivation is pending.
 -/
 theorem exists_lift {S : Type} [CommRing S] [Algebra K S] [Algebra K' S]
     (h : ∀ x, algebraMap K' S (algebraMap K K' x) = algebraMap K S x) (φ : R →ₐ[K] S) :
@@ -135,7 +135,7 @@ theorem exists_lift {S : Type} [CommRing S] [Algebra K S] [Algebra K' S]
     rfl
 
 /- English proof (translation)
-Simplify using `only [wchar, map_prod, map_pow]`. Both sides reduce to the same expression.
+Simplify using the standard rewrite rules. Both sides reduce to the same expression.
 -/
 theorem wchar_inR {ι : Type} [Fintype ι] (e : ι → ℕ) (t : ι → Rˣ) :
     wchar e (fun i => Units.map ((inR K' R : R →ₐ[K] Ext K K' R) : R →* Ext K K' R) (t i)) =
@@ -149,7 +149,7 @@ variable {E : Type} [Field E] [NumberField E] [IsCMField E] {H : Host E} {Dw : D
 variable {Xo : Moduli Dw l} {c c' : Coeff l} (hle : c.F ≤ c'.F)
 
 /- English proof (translation)
-Establish `e' : φ.toRingHom = Φ.toRingHom` using `RingHom.ext e`. Unfold `FrMap at h ⊢`. Rewrite `h` using `[e']`. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frMap_ext {S T : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] [CommRing T] [Algebra c.F T]
     [Algebra c'.F T] (hS : AlgOver c c' hle S) (hT : AlgOver c c' hle T) (φ : S →ₐ[c.F] T) (Φ : S →ₐ[c'.F] T)
@@ -161,7 +161,7 @@ theorem frMap_ext {S T : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] [Co
   exact h
 
 /- English proof (translation)
-Establish `e' : φ.toRingHom = Φ.toRingHom` using `RingHom.ext e`. Unfold `FrMap at h ⊢`. Rewrite `h` using `[← e']`. Conclude with `h`.
+Establish an intermediate fact. Replace the relevant objects with their definitions. Rewrite the indicated hypotheses using the stated equalities. A detailed English derivation is pending.
 -/
 theorem frMap_res {S T : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] [CommRing T] [Algebra c.F T]
     [Algebra c'.F T] (hS : AlgOver c c' hle S) (hT : AlgOver c c' hle T) (φ : S →ₐ[c.F] T) (Φ : S →ₐ[c'.F] T)
@@ -173,29 +173,27 @@ theorem frMap_res {S T : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] [Co
   exact h
 
 /- English proof (translation)
-The claim follows from `h`.
+A detailed English derivation is pending.
 -/
 theorem frBor_ext {S : Type} [CommRing S] [Algebra c.F S] [Algebra c'.F S] (hS : AlgOver c c' hle S)
     {t : Ix Dw → Sˣ} {y z : FrPt Xo c S} (h : FrBor t y z) : FrBor t (y.ext hle hS) (z.ext hle hS) := h
 
 /- English proof (translation)
-Introduce `a n f' hf'`. Establish `hov : ∀ p : TRing c.F, AlgOver c c' hle (Ext c.F c'.F p.R)` using `fun p x => by`. Rewrite using `[← halg]`. Conclude with `ext_tower x`. Use `choose z hz using fun (p : TRing c.F) (y : FrPt Xo c p.R) => hBC p.R (Ext c.F c'.F p.R) (inR c'.F p.R) y`.
+Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Establish an intermediate fact. Extract witnesses or component facts from the available result.
 
-Establish `hT : ∀ (p : TRing c.F) (y : FrPt Xo c p.R), FromT ((z p y).ext hle (hov p))` using `fun p y => by haveI := ext_reduced (K' := c'.F) p`. Conclude with `hA' _ _`. Take `⟨fs, hfs⟩ : ∃ fs : Fin d → Rul Xo c, ∀ j p y, fs j p y = crd (B.coord j) (evR Xo c' f' ((z p y).ext hle (hov p)))` from `⟨fun j p y => _, fun _ _ _ => rfl⟩`. Establish `hnat : ∀ j, Natural c (fs j)`. Introduce `j p q ψ y w h`.
+Establish an intermediate fact. Fix the arbitrary inputs or assume the hypotheses. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `h' : FrMap ψ y w` using `h`. Take `⟨Ψ, Ψ₀, e₁, e₂, e₃⟩` from `exists_map (K' := c'.F) ψ`. Establish `h0` using `map_trans ψ (inR c'.F q.R) h' (hz q w)`. Establish `h1` using `map_cancel hBC e₂ (hz p y) h0`. Establish `h2` using `frMap_ext hle (hov p) (hov q) Ψ₀ Ψ e₁ h1`.
+Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Fix the arbitrary inputs or assume the hypotheses.
 
-Rewrite using `[hfs, hfs, evR_map hWD' hf'.1 (hT p y) h2, e₃]`. Use `⟨d, fun j => B j, fs, fun j => ⟨hnat j, ?_⟩, ?_⟩` and prove the remaining obligations. Introduce `p t y y' h`. Establish `h' : FrBor t y y'` using `h`. Establish `h2` using `frBor_ext hle (hov p) (frBor_map h' (hz p y) (hz p y'))`.
+Establish an intermediate fact. Establish an intermediate fact. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Fix the arbitrary inputs or assume the hypotheses.
 
-Establish `h3 : evR Xo c' f' ((z p y').ext hle (hov p)) = _ * evR Xo c' f' ((z p y).ext hle (hov p))` using `wtAll_of_borChart hB' (ex Dw a n) hf'.1 hf'.2 _ _ _ _ (hT p y) (hT p y') h2`. Rewrite using `[hfs, hfs, h3, wchar_inR, crd_mul]`. Introduce `S _ _ _ h y`. Distinguish the cases in `hy : FromT (y.res hle h)`. Take `⟨p, φ, y₀, hy₀'⟩` from `hy`.
+Consider separately whether the proposition holds or fails. Extract witnesses or component facts from the available result. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hy₀ : FrMap φ y₀ (y.res hle h)` using `hy₀'`. Take `⟨Φ, Φ₀, e₁, e₂, e₃⟩` from `exists_lift (K' := c'.F) (fun x => by rw [halg]; exact h x) φ`. Establish `h1` using `map_cancel hBC e₂ (hz p y₀) hy₀`. Establish `h2 : FrMap Φ ((z p y₀).ext hle (hov p)) y` using `frMap_ext hle (hov p) h Φ₀ Φ e₁ h1`. Rewrite using `[evR_map hWD' hf'.1 (hT p y₀) h2, e₃ d B]`.
+Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Reduce the conclusion to the remaining proof obligations. Rewrite the conclusion using the stated equalities. Establish an intermediate fact.
 
-Use `Finset.sum_congr rfl fun j _ => ?_` and prove the remaining obligations. Rewrite using `[evR_of_map hWD (hnat j) hy₀, hfs]`. Establish `hy' : ¬ FromT y`. Introduce and unpack `⟨q, ψ, y₁, hy₁⟩`. Use `letI : Algebra c.F q.R := ((algebraMap c'.F q.R).comp (incF c c' hle)).toAlgebra`.
+Assume the hypotheses and unpack their components. Equip the data with the indicated structure. Establish an intermediate fact. Extract witnesses or component facts from the available result. Establish an intermediate fact.
 
-Establish `hq : AlgOver c c' hle q.R` using `fun _ => rfl`. Use `haveI := ((GlobalTheory.reduced_finiteType_iff_testRing c'.F).2 q).2`. Take `⟨p, φ, y₀, hy₀'⟩` from `hA q.R (y₁.res hle hq)`. Establish `hy₀ : FrMap φ y₀ (y₁.res hle hq)` using `hy₀'`. Set `ψ' : q.R →ₐ[c.F] S` to `{ ψ.toRingHom with commutes' := fun x => (ψ.commutes _).trans (h x) }`.
-
-Establish `h1 : FrMap ψ' (y₁.res hle hq) (y.res hle h)` using `frMap_res hle hq h ψ' ψ (fun _ => rfl) hy₁`. Conclude with `hy ⟨p, _, y₀, map_trans φ ψ' hy₀ h1⟩`. Rewrite using `[evR_not hy']`. Simplify using `[evR_not hy]`.
+Introduce a local definition for the expression. Establish an intermediate fact. Rewrite the conclusion using the stated equalities. Simplify using the standard rewrite rules. A detailed English derivation is pending.
 -/
 theorem section_base_change_of_basis [Algebra c.F c'.F] (halg : ∀ x, algebraMap c.F c'.F x = incF c c' hle x) {d : ℕ}
     (B : Module.Basis (Fin d) c.F c'.F) (hWD : ValueWD Xo c) (hWD' : ValueWD Xo c') (hBC : HasBC Xo c)
@@ -249,9 +247,7 @@ theorem section_base_change_of_basis [Algebra c.F c'.F] (halg : ∀ x, algebraMa
       simp [evR_not hy]
 
 /- English proof (translation)
-Use `letI alg : Algebra c.F c'.F := (incF c c' hle).toAlgebra`. Use `haveI : IsScalarTower ℚ c.F c'.F := IsScalarTower.of_algebraMap_eq fun q => by`. Rewrite using `[eq_ratCast (algebraMap ℚ c'.F), eq_ratCast (algebraMap ℚ c.F), map_ratCast]`. Use `haveI := c'.fin`. Use `haveI : FiniteDimensional c.F c'.F := Module.Finite.of_restrictScalars_finite ℚ c.F c'.F`.
-
-Conclude with `section_base_change_of_basis hle (fun _ => rfl) (Module.finBasis c.F c'.F) hWD hWD' hBC hA hA' hB'`.
+Equip the data with the indicated structure. Rewrite the conclusion using the stated equalities. A detailed English derivation is pending.
 -/
 theorem secBC_of_laws (hWD : ValueWD Xo c) (hWD' : ValueWD Xo c') (hBC : HasBC Xo c) (hA : AllTest Xo c)
     (hA' : AllTest Xo c') (hB' : BorChartF Xo c') : Formalism.L2.Pj.SecBC Xo hle := by
@@ -263,7 +259,7 @@ theorem secBC_of_laws (hWD : ValueWD Xo c) (hWD' : ValueWD Xo c') (hBC : HasBC X
   exact section_base_change_of_basis hle (fun _ => rfl) (Module.finBasis c.F c'.F) hWD hWD' hBC hA hA' hB'
 
 /- English proof (translation)
-The claim follows from `have hS := GlobalTheory.abelianSchemeLaws_all.1.secBaseChange have hc := fun c => GlobalTheory.Frames.chartCoverF_of_secBaseChange hS E H Dw l Xo c secBC_of_laws hle (evalWD_fr (frChartF_of (hc c))) (evalWD_fr (frChartF_of (hc c'))) (hasBC_of hS) (GlobalTheory.Frames.allTest_of_s …`.
+A detailed English derivation is pending.
 -/
 theorem secBC_holds : Formalism.L2.Pj.SecBC Xo hle :=
   have hS := GlobalTheory.abelianSchemeLaws_all.1.secBaseChange
@@ -273,13 +269,13 @@ theorem secBC_holds : Formalism.L2.Pj.SecBC Xo hle :=
     (borChartF_of_cover (hc c'))
 
 /- English proof (translation)
-The claim follows from `cuspBC_of hle U (secBC_holds hle)`.
+A detailed English derivation is pending.
 -/
 theorem cuspBC_holds {r : ℕ} (U : ∀ σ : c.F →+* ℂ, Formalism.L2.Pj.Unf Xo c σ r) : Formalism.L2.Pj.CuspBC hle U :=
   cuspBC_of hle U (secBC_holds hle)
 
 /- English proof (translation)
-Rewrite using `[← evR_test hf' q y, h q.R hq y]`.
+Rewrite the conclusion using the stated equalities.
 -/
 theorem val_of_isBC {m : ℕ} {f' : Rul Xo c'} (hf' : Natural c' f') {as : Fin m → c'.F} {fs : Fin m → Rul Xo c}
     (h : IsBC hle f' as fs) (q : TRing c'.F) [Algebra c.F q.R] (hq : AlgOver c c' hle q.R) (y : FrPt Xo c' q.R) :
